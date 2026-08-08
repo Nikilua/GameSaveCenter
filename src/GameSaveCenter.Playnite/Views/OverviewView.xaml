@@ -27,7 +27,8 @@
                    BasedOn="{StaticResource GscWpfUiButton}">
                 <Setter Property="Appearance" Value="Transparent"/>
                 <Setter Property="Background" Value="{DynamicResource GscErrorIconFillBrush}"/>
-                <Setter Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/>
+                <!-- 与今日概览其它胶囊保持一致的中性描边；浅红底保留“需关注”语义。 -->
+                <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
                 <Setter Property="BorderThickness" Value="1"/>
                 <Setter Property="ui:Button.CornerRadius" Value="12"/>
                 <Setter Property="Padding" Value="10,5"/>

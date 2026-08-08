@@ -517,6 +517,11 @@
                                           RecognizesAccessKey="True"/>
                     </Border>
                     <ControlTemplate.Triggers>
+                        <Trigger Property="Appearance" Value="Primary">
+                            <Setter TargetName="ButtonChrome" Property="Background" Value="{DynamicResource GscPrimaryButtonBrush}"/>
+                            <Setter TargetName="ButtonChrome" Property="BorderBrush" Value="{DynamicResource GscPrimaryButtonBorderBrush}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource GscOnAccentTextBrush}"/>
+                        </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="ButtonChrome" Property="BorderBrush" Value="{DynamicResource GscAccentTintStrongBrush}"/>
                         </Trigger>
