@@ -1,7 +1,9 @@
 # 开发实现进度
 
-更新时间：2026-08-08
+更新时间：2026-08-09
 当前版本：`0.6.70-development-preview`
+
+- [x] UI-173：媒体中心「来源规则」页列表按内容自然高度收口，空状态不再显示巨大空框：来源规则列表 `MediaSourceRulesFrame` 此前 `MinHeight=220` 且在星号行默认拉伸，无来源时也渲染 220+ 高的空 Border、来源较多时撑满整行；现改为 `MinHeight=0` + `MaxHeight=520` + `VerticalAlignment=Top`（仍 `Grid.Row=1`，表单行 Auto 与两行 Auto/* 布局不变），列表随内容自然高度回落、来源很多时封顶 520 由 ListBox 内部 Auto 滚动接管、无来源时只剩紧凑空态提示，多余空间由星号行吸收；`MediaSourceFields` 表单、添加/更新/删除来源命令、ListBox Recycling 虚拟化与空态数据触发器原样保留。回归测试重写为 `MediaSourceRulesTabUsesOneNaturalHeightPageChannel`，锁定两行 Auto/*、MinHeight 0/MaxHeight 520/Top、无 MinHeight=220 填充与 ListBox 虚拟化契约。源码校验、Release 构建与 Playnite 131 项测试全部通过；离屏 render-prod 复核 1600×900 列表底部落点与 980×640 无裁切、空态区像素扫描无玻璃蓝残留，仍需 Playnite 宿主验证。
 
 - [x] UI-171：FLiNG 在线库搜索卡窄屏按钮换行，避免裁剪：搜索卡原为三列 Grid（`*/Auto/Auto`，TextBox `MinWidth=620` 常驻首行，两个按钮被钉在右侧），窗口收窄到约 850–1000 DIP 时按钮被裁剪出卡外；现改为两行 Grid（Auto/Auto），第一行 TextBox（`MinWidth=620`/`MaxWidth=680`/`TrainerSearchText` 绑定与 `ToolTip` 原样保留），第二行 `WrapPanel`（`Grid.Row=1`，Margin `0,12,0,0`）承载「搜索目录」「刷新目录」两个按钮，窄窗自动换行、宽窗两按钮并排，卡片 `HorizontalAlignment` 改为 `Stretch`、`VerticalAlignment=Top`（`MaxWidth=1080` 保留）。搜索/刷新命令、TextBox 绑定与输入逻辑均未改动。新增结构回归断言锁定两行布局/两按钮命令。源码校验、Release 构建与全部测试通过，仍需 Playnite 宿主验证。
 
