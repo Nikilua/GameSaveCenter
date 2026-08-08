@@ -185,7 +185,7 @@
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                     <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                     <!-- 图标与文本/指标共享第 0 行垂直居中；按钮行独立下沉到第 1 行，避免图标随整块内容下移 -->
-                    <Border Grid.Row="0" Grid.Column="0" Width="48" Height="48" CornerRadius="15" Background="{DynamicResource GscAccentTintBrush}" VerticalAlignment="Center" HorizontalAlignment="Left">
+                    <Border Grid.Row="0" Grid.Column="0" Width="48" Height="48" CornerRadius="15" Background="{DynamicResource GscAccentTintBrush}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,-1.5,0,1.5">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE7FC;" FontSize="22" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <Grid Grid.Row="0" Grid.Column="1" Margin="12,0,0,0" MinWidth="0">
