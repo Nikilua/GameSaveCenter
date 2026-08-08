@@ -852,7 +852,7 @@
                 Padding="16,2"
                 ClipToBounds="True"
                 SnapsToDevicePixels="True">
-            <Grid x:Name="HeaderGrid" Margin="12,0,12,0" MinWidth="0">
+            <Grid x:Name="HeaderGrid" Margin="16,0,16,0" MinWidth="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
