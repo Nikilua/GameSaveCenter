@@ -1520,6 +1520,42 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void OverviewHeroMatchesDemoHeadlineScaleWithRadialAmbientGlow()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var overviewPath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml");
+        var overview = XDocument.Parse(File.ReadAllText(overviewPath));
+        var overviewText = File.ReadAllText(overviewPath);
+
+        // Demo HomeView's TODAY headline is 35px; production keeps the same scale while
+        // preserving the semantic DataTriggers on the same TextBlock (no demo placeholders).
+        Assert.Contains("FontSize=\"35\"", overviewText);
+        Assert.Contains("存在需要处理的项目", overviewText);
+        Assert.Contains("整体状态安全", overviewText);
+        Assert.Contains("Worker 异常", overviewText);
+
+        // The demo hero glow is a blurred ambient ellipse; production keeps the same
+        // decorative light as theme-adaptive radial gradients (no BlurEffect on the
+        // workspace) that must never intercept mouse input or sit above the text/pills.
+        var glowEllipses = overview.Descendants()
+            .Where(element => element.Name.LocalName == "Ellipse"
+                && element.Attribute("IsHitTestVisible")?.Value == "False"
+                && element.Descendants().Any(child => child.Name.LocalName == "RadialGradientBrush"))
+            .ToList();
+        Assert.True(glowEllipses.Count >= 2, "Hero should carry at least two decorative radial glow ellipses.");
+        Assert.DoesNotContain("BlurEffect", overviewText);
+        Assert.Contains("GscAccentShadowColor", overviewText);
+        Assert.Contains("GscInfoShadowColor", overviewText);
+        Assert.Contains("GscSuccessShadowColor", overviewText);
+
+        // The decorative gradient centers live in the shared token dictionary so the
+        // hero glow keeps a single source of truth instead of inline hex colors.
+        var designTokens = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml"));
+        Assert.Contains("x:Key=\"GscInfoShadowColor\"", designTokens);
+        Assert.Contains("x:Key=\"GscSuccessShadowColor\"", designTokens);
+    }
+
+    [Fact]
     public void OverviewStatCardsShowRealRatioBarsThatCollapseOnEmptyLibrary()
     {
         var repositoryRoot = FindRepositoryRoot();

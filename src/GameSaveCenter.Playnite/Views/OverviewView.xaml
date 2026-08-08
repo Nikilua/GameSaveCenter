@@ -83,16 +83,19 @@
                         <!-- Demo HomeView hero carries a soft ambient glow behind the
                              TODAY headline; the same decorative light keeps the workbench
                              header from reading as a flat panel. Purely decorative.
-                             The demo uses a blurred ellipse, but the production workspace
-                             views forbid expensive blur effects (large-library performance
-                             guard), so this glow is a theme-adaptive radial gradient that
-                             fades to transparent. -->
+                             The demo uses blurred ellipses (top-left blue, top-right
+                             purple, bottom-right green), but the production workspace
+                             views avoid expensive blur effects for large libraries, so
+                             the glow is theme-adaptive radial gradients that fade to
+                             transparent. The ellipses sit behind the text/pill layer and
+                             never intercept input. -->
                         <Ellipse Width="230" Height="230"
                                  IsHitTestVisible="False"
+                                 Opacity="0.85"
                                  Grid.ColumnSpan="2"
-                                 HorizontalAlignment="Right"
+                                 HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 Margin="0,-112,-86,0">
+                                 Margin="-112,-112,0,0">
                             <Ellipse.Fill>
                                 <RadialGradientBrush>
                                     <GradientStop Offset="0" Color="{DynamicResource GscAccentShadowColor}"/>
@@ -100,9 +103,37 @@
                                 </RadialGradientBrush>
                             </Ellipse.Fill>
                         </Ellipse>
+                        <Ellipse Width="230" Height="230"
+                                 IsHitTestVisible="False"
+                                 Opacity="0.85"
+                                 Grid.ColumnSpan="2"
+                                 HorizontalAlignment="Right"
+                                 VerticalAlignment="Top"
+                                 Margin="0,-112,-86,0">
+                            <Ellipse.Fill>
+                                <RadialGradientBrush>
+                                    <GradientStop Offset="0" Color="{DynamicResource GscInfoShadowColor}"/>
+                                    <GradientStop Offset="1" Color="Transparent"/>
+                                </RadialGradientBrush>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                        <Ellipse Width="230" Height="230"
+                                 IsHitTestVisible="False"
+                                 Opacity="0.85"
+                                 Grid.ColumnSpan="2"
+                                 HorizontalAlignment="Right"
+                                 VerticalAlignment="Bottom"
+                                 Margin="0,0,-86,-112">
+                            <Ellipse.Fill>
+                                <RadialGradientBrush>
+                                    <GradientStop Offset="0" Color="{DynamicResource GscSuccessShadowColor}"/>
+                                    <GradientStop Offset="1" Color="Transparent"/>
+                                </RadialGradientBrush>
+                            </Ellipse.Fill>
+                        </Ellipse>
                         <StackPanel MinWidth="0" VerticalAlignment="Center" Margin="0,0,20,0">
                             <TextBlock Style="{DynamicResource GscRedesignHeroEyebrow}" Text="TODAY"/>
-                            <TextBlock FontSize="26" FontWeight="SemiBold" Margin="0,4,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}">
+                            <TextBlock FontSize="35" FontWeight="SemiBold" Margin="0,8,0,8" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Text" Value="存在需要处理的项目"/>
