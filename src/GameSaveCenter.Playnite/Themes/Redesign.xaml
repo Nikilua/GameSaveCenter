@@ -162,9 +162,9 @@
          of games. Clicking this button opens the existing virtualized search/filter/sort
          browser, so there is only one game-selection surface at every breakpoint. -->
     <Style x:Key="GscRedesignGameContextButton" TargetType="Button">
-        <Setter Property="MinHeight" Value="54"/>
+        <Setter Property="MinHeight" Value="46"/>
         <Setter Property="MinWidth" Value="250"/>
-        <Setter Property="Padding" Value="8,5"/>
+        <Setter Property="Padding" Value="8,4"/>
         <Setter Property="Margin" Value="0"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>

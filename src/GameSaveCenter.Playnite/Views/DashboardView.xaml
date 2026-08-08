@@ -849,7 +849,7 @@
                 BorderBrush="{DynamicResource GscGlassStrokeBrush}"
                 BorderThickness="1"
                 CornerRadius="20"
-                Padding="16,2"
+                Padding="16,7"
                 ClipToBounds="True"
                 SnapsToDevicePixels="True">
             <Grid x:Name="HeaderGrid" Margin="16,0,16,0" MinWidth="0">
@@ -867,7 +867,7 @@
             <StackPanel x:Name="HeaderTitlePanel" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" MinWidth="0">
                 <TextBlock x:Name="PageTitleText" Text="首页" FontSize="26" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
                 <TextBlock x:Name="PageSubtitleText" Text="今日整体状态、需处理关注项与全局批量操作"
-                           Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,4,0,0"
+                           Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,4,14,0"
                            TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
             </StackPanel>
 
@@ -903,9 +903,10 @@
 
             <Border x:Name="GameSwitcherHost" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1"
                     Margin="0" MaxWidth="640" HorizontalAlignment="Left"
+                    Height="54" VerticalAlignment="Center"
                     Background="{DynamicResource GscGlassFillBrush}"
                     BorderBrush="Transparent" BorderThickness="0"
-                    CornerRadius="16" Padding="5" Visibility="Collapsed">
+                    CornerRadius="16" Padding="4" Visibility="Collapsed">
                 <Button x:Name="CompactGameSelector" Style="{StaticResource GscRedesignGameContextButton}"
                         HorizontalAlignment="Stretch" Click="OnToggleGameBrowserClick"
                         AutomationProperties.Name="选择当前游戏"
