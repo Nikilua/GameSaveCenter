@@ -62,6 +62,20 @@ namespace GameSaveCenter.Playnite.Views
             // the SaveCenter policy page. The 4 is the right padding of
             // GscPageScrollViewer.
             MaintenanceRetentionStack.Width = Math.Max(0, Math.Min(width - 4, 1050));
+            var stackRetention = width < 980;
+            // The two detail cards share a row on wide windows; on compact windows
+            // the second card drops below the first while the metric strip above
+            // stays a full-width three-card row.
+            MaintenanceRetentionDetailsLayout.ColumnDefinitions[1].Width = stackRetention ? new GridLength(0) : new GridLength(14);
+            MaintenanceRetentionDetailsLayout.ColumnDefinitions[2].Width = stackRetention ? new GridLength(0) : new GridLength(1, GridUnitType.Star);
+            MaintenanceRetentionDetailsLayout.RowDefinitions[2].Height = stackRetention ? new GridLength(1, GridUnitType.Auto) : new GridLength(0);
+            Grid.SetColumn(MaintenanceRetentionKeepCard, 0);
+            Grid.SetColumnSpan(MaintenanceRetentionKeepCard, stackRetention ? 3 : 1);
+            Grid.SetRow(MaintenanceRetentionKeepCard, 0);
+            Grid.SetColumn(MaintenanceRetentionDeleteCard, stackRetention ? 0 : 2);
+            Grid.SetColumnSpan(MaintenanceRetentionDeleteCard, stackRetention ? 3 : 1);
+            Grid.SetRow(MaintenanceRetentionDeleteCard, stackRetention ? 1 : 0);
+            MaintenanceRetentionDeleteCard.Margin = stackRetention ? new Thickness(0, 14, 0, 0) : new Thickness(0);
             // The findings table has five readable columns plus an inspector. Keep the
             // inspector beside it only when the main table can still show those columns;
             // otherwise stack it before WPF starts compressing the text into a single strip.

@@ -3,6 +3,20 @@
 更新时间：2026-08-09
 当前版本：`0.6.70-development-preview`
 
+- [x] UI-179：维护中心 Phase F 收口：诊断 Tab 操作按钮收进卡片（「诊断操作」标题 + 安全只读说明 + WrapPanel 六按钮原样保留）；设备状态 Tab 改为标题/刷新按钮 + `GscRedesignInfoBand` 提示的整卡结构（`SyncDeviceStatesCommand` 移到右上角 `GscWpfUiContextButton`）；保留策略 Tab 三张指标卡由 `GscRedesignSubCard` 统一为 `GscRedesignMetricBorder`，预计保留/候选清理/安全边界明细双卡加响应式堆叠（`MaintenanceRetentionDetailsLayout`，宽屏 `*/14/*` 双卡同行、窄屏 <980 第二卡沉到下方整宽），`MaintenanceRetentionStack.Width` 与明细卡命令/绑定全部保留。源码校验、Release 构建 0 错误与 Core 13 + Worker 23 + Playnite 131 测试全部通过，仍需 Playnite 宿主验证。
+
+- [x] UI-178：FLiNG 在线库搜索框与搜索/刷新按钮同行排布并窄屏自然换行：`TrainerCenterView` 搜索卡由三列 Grid（TextBox 常驻首行、按钮钉在右侧）改为两行 Grid（Auto/Auto），首行 TextBox（`MinWidth=620`/`MaxWidth=680` 保留），次行 `WrapPanel` 承载「搜索目录」「刷新目录」两按钮（`Grid.Row=1`，Margin `0,12,0,0`），窄窗自动换行、宽窗两按钮并排；搜索/刷新命令、TextBox 绑定与输入逻辑均未改动。新增结构回归断言锁定两行布局/两按钮命令。源码校验、Release 构建与全部测试通过，仍需 Playnite 宿主验证。
+
+- [x] UI-177：顶部游戏选框固定 54 高与头部垂直居中、副标题右侧留白避免挤压：Dashboard 顶部游戏选框固定高度 54，标题/副标题/游戏选框在 Header 内垂直居中，副标题右侧留白避免被选框挤压。源码校验、Release 构建与全部测试通过，仍需 Playnite 宿主验证。
+
+- [x] UI-176：顶部标题内边距 12→16，统一标题与卡片内容左缘对齐：Dashboard 顶部标题内边距由 12 增至 16，与各页卡片内容左缘对齐，消除标题贴左边缘线问题。源码校验、Release 构建与全部测试通过，仍需 Playnite 宿主验证。
+
+- [x] UI-175：首页「当前游戏」图标上移 1.5px 与文字中心对齐：`OverviewView` 当前游戏 48×48 图标微调垂直位置，使图标与文字视觉中线一致。源码校验、Release 构建与全部测试通过，仍需 Playnite 宿主验证。
+
+- [x] UI-174：Primary 按钮统一主色渐变、首页需关注胶囊描边中性化：共享 Primary 按钮模板补主色渐变；「需关注」胶囊按钮描边由强调色改为中性色，与其它 pill 视觉一致。源码校验、Release 构建与全部测试通过，仍需 Playnite 宿主验证。
+
+- [x] UI-172：首页「今日概览」六枚胶囊统一字体与字重：`OverviewView` 今日概览 `UniformGrid` 补 `TextElement.FontFamily="Segoe UI Variable Text, Segoe UI"` + `TextElement.FontWeight="SemiBold"`，消除宿主/按钮模板继承差异导致的需关注按钮与其它胶囊文字度量不一致。源码校验、Release 构建与全部测试通过，仍需 Playnite 宿主验证。
+
 - [x] UI-173：媒体中心「来源规则」页列表按内容自然高度收口，空状态不再显示巨大空框：来源规则列表 `MediaSourceRulesFrame` 此前 `MinHeight=220` 且在星号行默认拉伸，无来源时也渲染 220+ 高的空 Border、来源较多时撑满整行；现改为 `MinHeight=0` + `MaxHeight=520` + `VerticalAlignment=Top`（仍 `Grid.Row=1`，表单行 Auto 与两行 Auto/* 布局不变），列表随内容自然高度回落、来源很多时封顶 520 由 ListBox 内部 Auto 滚动接管、无来源时只剩紧凑空态提示，多余空间由星号行吸收；`MediaSourceFields` 表单、添加/更新/删除来源命令、ListBox Recycling 虚拟化与空态数据触发器原样保留。回归测试重写为 `MediaSourceRulesTabUsesOneNaturalHeightPageChannel`，锁定两行 Auto/*、MinHeight 0/MaxHeight 520/Top、无 MinHeight=220 填充与 ListBox 虚拟化契约。源码校验、Release 构建与 Playnite 131 项测试全部通过；离屏 render-prod 复核 1600×900 列表底部落点与 980×640 无裁切、空态区像素扫描无玻璃蓝残留，仍需 Playnite 宿主验证。
 
 - [x] UI-171：FLiNG 在线库搜索卡窄屏按钮换行，避免裁剪：搜索卡原为三列 Grid（`*/Auto/Auto`，TextBox `MinWidth=620` 常驻首行，两个按钮被钉在右侧），窗口收窄到约 850–1000 DIP 时按钮被裁剪出卡外；现改为两行 Grid（Auto/Auto），第一行 TextBox（`MinWidth=620`/`MaxWidth=680`/`TrainerSearchText` 绑定与 `ToolTip` 原样保留），第二行 `WrapPanel`（`Grid.Row=1`，Margin `0,12,0,0`）承载「搜索目录」「刷新目录」两个按钮，窄窗自动换行、宽窗两按钮并排，卡片 `HorizontalAlignment` 改为 `Stretch`、`VerticalAlignment=Top`（`MaxWidth=1080` 保留）。搜索/刷新命令、TextBox 绑定与输入逻辑均未改动。新增结构回归断言锁定两行布局/两按钮命令。源码校验、Release 构建与全部测试通过，仍需 Playnite 宿主验证。
