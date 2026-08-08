@@ -3,6 +3,8 @@
 更新时间：2026-08-09
 当前版本：`0.6.70-development-preview`
 
+- [x] UI-180：媒体中心顶部四卡对齐 Demo 三行指标节奏并补副文案：`MediaCenterView` 顶部 `MediaSummaryPanel` 四张指标卡由两行（11px 标题 + 21px 数值）改为三行节奏（11px 标题 → 30px SemiBold 数值 → 11px 副文案），卡样式由 `GscRedesignSectionCard` 统一为共享 `GscRedesignMetricBorder`（Padding 14,12、间距 8）：当前游戏媒体（`MediaSummary.TotalCount`，副行「截图 `ScreenshotCount` · 录像 `VideoCount`」）、媒体占用（`MediaSummary.TotalSizeDisplay`，副行「归档目录可访问」）、已收藏（`MediaSummary.FavoriteCount`，副行「支持批量收藏与备注」）、待归类（`Snapshot.UnassignedMediaCount`/`GscWarningBrush`，副行「来源文件始终保留」）。四卡全部 OneWay 绑定真实数据，无 demo 假数据；第 4 卡 Margin 缺省沿用 `GscRedesignMetricBorder` 自带 `0,0,12,0`。新增 `MediaSummaryCardsFollowTheDemoThreeLineMetricRhythm` 结构回归测试锁定四卡 `GscRedesignMetricBorder`、三行节奏、OneWay 绑定与无 TwoWay。源码校验、Release 构建 0 错误与 Playnite 132 项测试全部通过，仍需 Playnite 宿主验证。
+
 - [x] UI-179：维护中心 Phase F 收口：诊断 Tab 操作按钮收进卡片（「诊断操作」标题 + 安全只读说明 + WrapPanel 六按钮原样保留）；设备状态 Tab 改为标题/刷新按钮 + `GscRedesignInfoBand` 提示的整卡结构（`SyncDeviceStatesCommand` 移到右上角 `GscWpfUiContextButton`）；保留策略 Tab 三张指标卡由 `GscRedesignSubCard` 统一为 `GscRedesignMetricBorder`，预计保留/候选清理/安全边界明细双卡加响应式堆叠（`MaintenanceRetentionDetailsLayout`，宽屏 `*/14/*` 双卡同行、窄屏 <980 第二卡沉到下方整宽），`MaintenanceRetentionStack.Width` 与明细卡命令/绑定全部保留。源码校验、Release 构建 0 错误与 Core 13 + Worker 23 + Playnite 131 测试全部通过，仍需 Playnite 宿主验证。
 
 - [x] UI-178：FLiNG 在线库搜索框与搜索/刷新按钮同行排布并窄屏自然换行：`TrainerCenterView` 搜索卡由三列 Grid（TextBox 常驻首行、按钮钉在右侧）改为两行 Grid（Auto/Auto），首行 TextBox（`MinWidth=620`/`MaxWidth=680` 保留），次行 `WrapPanel` 承载「搜索目录」「刷新目录」两按钮（`Grid.Row=1`，Margin `0,12,0,0`），窄窗自动换行、宽窗两按钮并排；搜索/刷新命令、TextBox 绑定与输入逻辑均未改动。新增结构回归断言锁定两行布局/两按钮命令。源码校验、Release 构建与全部测试通过，仍需 Playnite 宿主验证。

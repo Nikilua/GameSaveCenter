@@ -1215,6 +1215,33 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void MediaSummaryCardsFollowTheDemoThreeLineMetricRhythm()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var media = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
+
+        // The media center keeps the demo's four metric cards, each in the same
+        // three-line rhythm as the home overview cards: caption -> 30px value -> subtitle.
+        Assert.Contains("x:Name=\"MediaSummaryPanel\" Grid.Row=\"0\" Columns=\"4\"", media);
+        Assert.Equal(4, Regex.Matches(media, "Style=\"{DynamicResource GscRedesignMetricBorder}\"").Count);
+        Assert.Contains("Text=\"当前游戏媒体\"", media);
+        Assert.Contains("Text=\"{Binding MediaSummary.TotalCount, Mode=OneWay}\" FontSize=\"30\" FontWeight=\"SemiBold\"", media);
+        Assert.Contains("Text=\"{Binding MediaSummary.ScreenshotCount, Mode=OneWay}\"", media);
+        Assert.Contains("Text=\"{Binding MediaSummary.VideoCount, Mode=OneWay}\"", media);
+        Assert.Contains("Text=\"媒体占用\"", media);
+        Assert.Contains("Text=\"{Binding MediaSummary.TotalSizeDisplay, Mode=OneWay}\" FontSize=\"30\" FontWeight=\"SemiBold\"", media);
+        Assert.Contains("Text=\"归档目录可访问\"", media);
+        Assert.Contains("Text=\"已收藏\"", media);
+        Assert.Contains("Text=\"{Binding MediaSummary.FavoriteCount, Mode=OneWay}\" FontSize=\"30\" FontWeight=\"SemiBold\"", media);
+        Assert.Contains("Text=\"支持批量收藏与备注\"", media);
+        Assert.Contains("Text=\"待归类\"", media);
+        Assert.Contains("Text=\"{Binding Snapshot.UnassignedMediaCount, Mode=OneWay}\" Foreground=\"{DynamicResource GscWarningBrush}\"", media);
+        Assert.Contains("Text=\"来源文件始终保留\"", media);
+        Assert.DoesNotContain("MediaSummary.TotalCount, Mode=TwoWay", media);
+        Assert.DoesNotContain("MediaSummary.FavoriteCount, Mode=TwoWay", media);
+    }
+
+    [Fact]
     public void DemoPhaseTwoLayoutKeepsNaturalFormsAndDesktopInspectors()
     {
         var repositoryRoot = FindRepositoryRoot();
