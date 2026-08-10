@@ -3,6 +3,8 @@
 更新时间：2026-08-10
 当前版本：`0.6.70-development-preview`
 
+- [x] DOC-001：新增 `docs/DEVELOPMENT_HANDOFF.md` 作为跨电脑、跨模型的持续维护入口，固化必读资料、Demo 路径、用户原话、UI 约束、验证流程、commit 要求、当前基线和下一步方向；`PROJECT_MEMORY.md` 已增加入口链接。未修改生产代码或业务行为。
+
 - [x] UI-180：首页 Overview 按 Demo HomeView 的阅读顺序重排真实内容：工作台/今日状态之后先展示“当前游戏”上下文卡，再展示六项 `Snapshot.*` 指标，最后进入最近活动列表；原布局把六项指标放在当前游戏卡之前，导致页面层级与 Demo 相反。仅调整 `Grid.Row` 与当前游戏卡的自然间隔，保留 `OverviewMetricPanel`、立即备份/刷新详情/查看需关注项命令、真实 `SelectedGame`/`OverviewTasks` 绑定、ListBox Recycling 虚拟化和右侧风险滚动通道；新增结构回归断言锁定“上下文 → 指标 → 活动”顺序。未修改业务层。仍需 Playnite 宿主、主题和 DPI 真机验证。
 
 - [x] UI-179：设置页窄屏标题区与默认下拉态收口：`SettingsHeaderGrid` 在宽屏保持标题、说明和“由 Playnite 的保存按钮提交”提示同排；紧凑宽度（与设置分类切到顶部相同断点）将保存提示移动到标题第二行并跨两列，避免约 720 DIP 以下标题与提示互相挤压，同时保留提示可见。备份格式、压缩方式和主题模式三个真实设置 ComboBox 继续保留 `SelectedIndex=0`，并为 null/失效绑定分别补 ZIP、Zstandard、跟随 Playnite 的 `TargetNullValue`/`FallbackValue`，保证初始值与显示文字一致；未改变 Playnite `ISettings` 保存生命周期、主题事件、字段绑定或业务设置模型。回归断言覆盖标题行切换和三个安全默认值；源码校验、Playnite WPF 138 项测试通过，仍需 Playnite 宿主、主题和 DPI 真机验证。
