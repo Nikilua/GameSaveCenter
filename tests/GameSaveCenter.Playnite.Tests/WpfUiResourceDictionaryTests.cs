@@ -2731,6 +2731,90 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void SharedActionAndFilterStylesKeepButtonAlignmentAndVisibleAllDefault()
+    {
+        Exception? exception = null;
+        double actionMinHeight = 0;
+        HorizontalAlignment actionHorizontalAlignment = HorizontalAlignment.Left;
+        VerticalAlignment actionVerticalAlignment = VerticalAlignment.Top;
+        int filterSelectedIndex = -1;
+        object? filterSelectedItem = null;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var resources = (ResourceDictionary)XamlReader.Parse(@"
+<ResourceDictionary xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""
+                    xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml"">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source=""/GameSaveCenter.Playnite;component/Themes/DesignTokens.xaml""/>
+        <ResourceDictionary Source=""/GameSaveCenter.Playnite;component/Themes/WpfUiProduction.xaml""/>
+        <ResourceDictionary Source=""/GameSaveCenter.Playnite;component/Themes/Redesign.xaml""/>
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>");
+
+                var host = new UserControl { Resources = resources };
+                var panel = new StackPanel();
+                var action = new GameSaveCenter.Playnite.Controls.Button
+                {
+                    Style = Assert.IsType<Style>(resources["GscWpfUiPrimaryButton"]),
+                    Content = "测试操作"
+                };
+                var filter = new ComboBox
+                {
+                    Style = Assert.IsType<Style>(resources["GscWpfUiFilterComboBox"]),
+                    ItemsSource = new[] { "全部", "失败" }
+                };
+                panel.Children.Add(action);
+                panel.Children.Add(filter);
+                host.Content = panel;
+                host.Measure(new Size(420, 120));
+                host.Arrange(new Rect(0, 0, 420, 120));
+                host.UpdateLayout();
+                actionMinHeight = action.MinHeight;
+                actionHorizontalAlignment = action.HorizontalContentAlignment;
+                actionVerticalAlignment = action.VerticalContentAlignment;
+                filterSelectedIndex = filter.SelectedIndex;
+                filterSelectedItem = filter.SelectedItem;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.Equal(HorizontalAlignment.Center, actionHorizontalAlignment);
+        Assert.Equal(VerticalAlignment.Center, actionVerticalAlignment);
+        Assert.Equal(38, actionMinHeight);
+        Assert.Equal(0, filterSelectedIndex);
+        Assert.Equal("全部", filterSelectedItem);
+
+        var repositoryRoot = FindRepositoryRoot();
+        var production = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml"));
+        var redesign = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "Redesign.xaml"));
+        var dashboard = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml"));
+        var media = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
+        var tasks = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml"));
+        var overview = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml"));
+
+        Assert.Contains("x:Key=\"GscButtonHeight\">38", File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml")));
+        Assert.Contains("x:Key=\"GscWpfUiFilterComboBox\"", production);
+        Assert.Contains("<Setter Property=\"SelectedIndex\" Value=\"0\"/>", production);
+        Assert.Contains("MinHeight\" Value=\"{DynamicResource GscButtonHeight}\"", redesign);
+        Assert.Contains("Style=\"{StaticResource GscWpfUiFilterComboBox}\" SelectedIndex=\"0\"", dashboard);
+        Assert.Contains("Style=\"{DynamicResource GscWpfUiFilterComboBox}\" SelectedIndex=\"0\"", media);
+        Assert.Equal(3, Regex.Matches(tasks, "Style=\"\\{DynamicResource GscWpfUiFilterComboBox\\}\" SelectedIndex=\"0\"").Count);
+        Assert.Contains("<Setter Property=\"VerticalContentAlignment\" Value=\"Center\"/>", overview);
+        Assert.DoesNotContain("<Setter Property=\"VerticalContentAlignment\" Value=\"Top\"/>", overview);
+    }
+
+    [Fact]
     public void ExtractedWorkspacesUseTheSharedDemoLayoutWithoutReplacingTheirRealContent()
     {
         var repositoryRoot = FindRepositoryRoot();

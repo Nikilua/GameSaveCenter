@@ -106,6 +106,7 @@
                                 <ContentPresenter Content="{Binding SelectionBoxItem, RelativeSource={RelativeSource AncestorType=ComboBox}}"
                                                   ContentTemplate="{Binding SelectionBoxItemTemplate, RelativeSource={RelativeSource AncestorType=ComboBox}}"
                                                   ContentStringFormat="{Binding SelectionBoxItemStringFormat, RelativeSource={RelativeSource AncestorType=ComboBox}}"
+                                                  HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType=ComboBox}}"
                                                   VerticalAlignment="Center"
                                                   TextElement.Foreground="{DynamicResource GscPrimaryTextBrush}"/>
                                 <Path x:Name="Chevron"
@@ -485,7 +486,7 @@
     <Style x:Key="GscWpfUiButton"
            TargetType="{x:Type ui:Button}">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
-        <Setter Property="MinHeight" Value="38"/>
+        <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
         <Setter Property="MinWidth" Value="42"/>
         <Setter Property="Padding" Value="14,7"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
@@ -547,7 +548,7 @@
     <Style x:Key="GscWpfUiCompactButton"
            TargetType="{x:Type ui:Button}"
            BasedOn="{StaticResource GscWpfUiSecondaryButton}">
-        <Setter Property="MinHeight" Value="38"/>
+        <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
         <Setter Property="Padding" Value="10,5"/>
     </Style>
 
@@ -567,14 +568,14 @@
            TargetType="{x:Type ui:Button}"
            BasedOn="{StaticResource GscWpfUiSecondaryButton}">
         <Setter Property="Margin" Value="0"/>
-        <Setter Property="MinHeight" Value="38"/>
+        <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
     </Style>
 
     <Style x:Key="GscWpfUiToolbarPrimaryButton"
            TargetType="{x:Type ui:Button}"
            BasedOn="{StaticResource GscWpfUiPrimaryButton}">
         <Setter Property="Margin" Value="0"/>
-        <Setter Property="MinHeight" Value="38"/>
+        <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
     </Style>
 
     <Style x:Key="GscWpfUiContextButton"
@@ -668,5 +669,18 @@
         <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
         <Setter Property="ToolTipService.ShowDuration" Value="12000"/>
         <Setter Property="Template" Value="{StaticResource GscWpfUiComboBoxTemplate}"/>
+    </Style>
+
+    <!-- Filter selectors always begin with the first, human-readable "全部" option.
+         This style is intentionally opt-in: game/version/path selectors must be allowed
+         to start empty until the real selection is loaded. It is declared after the base
+         ComboBox adapter so StaticResource resolution remains valid in WPF. -->
+    <Style x:Key="GscWpfUiFilterComboBox"
+           TargetType="ComboBox"
+           BasedOn="{StaticResource GscWpfUiComboBox}">
+        <Setter Property="SelectedIndex" Value="0"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
     </Style>
 </ResourceDictionary>

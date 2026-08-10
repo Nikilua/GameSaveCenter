@@ -90,6 +90,9 @@
     <sys:Double x:Key="GscSpacing5">20</sys:Double>
     <sys:Double x:Key="GscSpacing6">24</sys:Double>
     <sys:Double x:Key="GscSpacing8">32</sys:Double>
+    <!-- All ordinary actions use one control height.  Larger cards and the active-game
+         context are intentionally separate surfaces, not alternate button sizes. -->
+    <sys:Double x:Key="GscButtonHeight">38</sys:Double>
     <!-- Vertical rhythm between section cards inside a page scroll channel. -->
     <sys:Double x:Key="GscSectionSpacing">14</sys:Double>
     <!-- Demo-aligned side navigation and workspace inspector channels. The dashboard

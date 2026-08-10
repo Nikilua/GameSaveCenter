@@ -33,8 +33,8 @@
                 <Setter Property="Padding" Value="10,5"/>
                 <Setter Property="Margin" Value="0,0,0,6"/>
                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                <Setter Property="VerticalContentAlignment" Value="Top"/>
-                <Setter Property="ScrollViewer.VerticalContentAlignment" Value="Top"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="ScrollViewer.VerticalContentAlignment" Value="Center"/>
                 <Setter Property="ToolTipService.ShowDuration" Value="12000"/>
             </Style>
             <Style x:Key="OverviewStatCard" TargetType="Border" BasedOn="{StaticResource GscRedesignMetricBorder}">
