@@ -7,7 +7,22 @@ namespace GameSaveCenter.Playnite.Views
 {
     public partial class TrainerCenterView : UserControl
     {
-        public TrainerCenterView() => InitializeComponent();
+        private double responsiveWidth;
+        private double responsiveHeight;
+
+        public TrainerCenterView()
+        {
+            InitializeComponent();
+            TrainerToolsSettingsScrollViewer.IsVisibleChanged += OnTrainerInspectorIsVisibleChanged;
+        }
+
+        private void OnTrainerInspectorIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (!IsLoaded || responsiveWidth <= 0 || responsiveHeight <= 0)
+                return;
+
+            ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
+        }
 
         private void OnTrainerCatalogSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -20,6 +35,8 @@ namespace GameSaveCenter.Playnite.Views
 
         public void ApplyResponsiveLayout(double width, double height)
         {
+            responsiveWidth = width;
+            responsiveHeight = height;
             InstalledToolsLayout.HorizontalAlignment = HorizontalAlignment.Stretch;
             InstalledToolsLayout.VerticalAlignment = VerticalAlignment.Stretch;
             TrainerReleasesLayout.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -37,22 +54,26 @@ namespace GameSaveCenter.Playnite.Views
             // The inspector is a full-height secondary pane in the normal two-column layout.
             // Only the stacked compact layout receives a finite scroll channel; otherwise the
             // card would collapse into a short block and leave a large unused area beside it.
+            var showInspector = TrainerToolsSettingsScrollViewer.Visibility == Visibility.Visible;
             TrainerToolsSettingsScrollViewer.MaxHeight = double.PositiveInfinity;
             var stackInstalled = width < 1080;
             InstalledToolsLayout.ColumnDefinitions[1].Width = stackInstalled
                 ? new GridLength(0)
-                : new GridLength(14);
-            InstalledToolsLayout.ColumnDefinitions[2].Width = stackInstalled
-                ? new GridLength(0)
-                : inspectorWidth;
+                : showInspector ? new GridLength(14) : new GridLength(0);
+            InstalledToolsLayout.ColumnDefinitions[2].Width = !stackInstalled && showInspector
+                ? inspectorWidth
+                : new GridLength(0);
+            InstalledToolsLayout.RowDefinitions[3].Height = showInspector && stackInstalled
+                ? GridLength.Auto
+                : new GridLength(0);
             Grid.SetColumn(TrainerToolsSettingsScrollViewer, stackInstalled ? 0 : 2);
             Grid.SetRow(TrainerToolsSettingsScrollViewer, stackInstalled ? 3 : 0);
             Grid.SetRowSpan(TrainerToolsSettingsScrollViewer, stackInstalled ? 1 : 4);
-            TrainerToolsSettingsScrollViewer.MaxHeight = stackInstalled
+            TrainerToolsSettingsScrollViewer.MaxHeight = showInspector && stackInstalled
                 ? Math.Max(190, Math.Min(420, height * 0.56))
                 : double.PositiveInfinity;
             TrainerToolsSettingsScrollViewer.Margin = stackInstalled
-                ? new Thickness(0, 10, 0, 0)
+                ? showInspector ? new Thickness(0, 10, 0, 0) : new Thickness(0)
                 : new Thickness(0);
             var stackReleases = width < 1080;
             TrainerReleasesLayout.RowDefinitions[0].Height = new GridLength(1, GridUnitType.Star);

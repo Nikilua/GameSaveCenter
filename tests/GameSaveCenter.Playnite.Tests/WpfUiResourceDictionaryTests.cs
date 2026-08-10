@@ -991,12 +991,80 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Equal("Disabled", scrollViewer.Attribute("HorizontalScrollBarVisibility")?.Value);
         Assert.Null(scrollViewer.Attribute("MaxHeight"));
         Assert.Contains("TrainerToolsSettingsScrollViewer.MaxHeight = double.PositiveInfinity", trainerCode);
-        Assert.Contains("TrainerToolsSettingsScrollViewer.MaxHeight = stackInstalled", trainerCode);
+        Assert.Contains("TrainerToolsSettingsScrollViewer.MaxHeight = showInspector && stackInstalled", trainerCode);
         Assert.Contains("Math.Min(420, height * 0.56)", trainerCode);
         Assert.Contains("VerticalContentAlignment=\"Stretch\"", trainerText);
         Assert.Contains("Style=\"{DynamicResource GscRedesignSectionCard}\"", trainerText);
         Assert.Contains("ScrollViewer.VerticalScrollBarVisibility\" Value=\"Auto\"", trainerText);
         Assert.Contains("ScrollViewer.HorizontalScrollBarVisibility\" Value=\"Disabled\"", trainerText);
+        Assert.Contains("BasedOn=\"{StaticResource GscInspectorScrollViewer}\"", trainerText);
+        Assert.Contains("<DataTrigger Binding=\"{Binding SelectedGameTool}\" Value=\"{x:Null}\">", trainerText);
+    }
+
+    [Fact]
+    public void TrainerInspectorReleasesEmptyRightColumn()
+    {
+        Exception? exception = null;
+        var emptyGutterWidth = -1d;
+        var emptyInspectorWidth = -1d;
+        var emptyStackedRowType = GridUnitType.Auto;
+        var selectedGutterWidth = -1d;
+        var selectedInspectorWidth = -1d;
+        var selectedInspectorUnitType = GridUnitType.Auto;
+        var emptyCompactRowType = GridUnitType.Auto;
+        var selectedCompactRowType = GridUnitType.Pixel;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var view = new TrainerCenterView();
+                var layout = (Grid)typeof(TrainerCenterView)
+                    .GetField("InstalledToolsLayout", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var inspector = (ScrollViewer)typeof(TrainerCenterView)
+                    .GetField("TrainerToolsSettingsScrollViewer", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+
+                inspector.Visibility = Visibility.Collapsed;
+                view.ApplyResponsiveLayout(1280, 720);
+                emptyGutterWidth = layout.ColumnDefinitions[1].Width.Value;
+                emptyInspectorWidth = layout.ColumnDefinitions[2].Width.Value;
+                emptyStackedRowType = layout.RowDefinitions[3].Height.GridUnitType;
+
+                inspector.Visibility = Visibility.Visible;
+                view.ApplyResponsiveLayout(1280, 720);
+                selectedGutterWidth = layout.ColumnDefinitions[1].Width.Value;
+                selectedInspectorWidth = layout.ColumnDefinitions[2].Width.Value;
+                selectedInspectorUnitType = layout.ColumnDefinitions[2].Width.GridUnitType;
+
+                inspector.Visibility = Visibility.Collapsed;
+                view.ApplyResponsiveLayout(1024, 640);
+                emptyCompactRowType = layout.RowDefinitions[3].Height.GridUnitType;
+
+                inspector.Visibility = Visibility.Visible;
+                view.ApplyResponsiveLayout(1024, 640);
+                selectedCompactRowType = layout.RowDefinitions[3].Height.GridUnitType;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.Equal(0, emptyGutterWidth);
+        Assert.Equal(0, emptyInspectorWidth);
+        Assert.Equal(GridUnitType.Pixel, emptyStackedRowType);
+        Assert.Equal(14, selectedGutterWidth);
+        Assert.True(selectedInspectorWidth > 0);
+        Assert.Equal(GridUnitType.Pixel, selectedInspectorUnitType);
+        Assert.Equal(GridUnitType.Pixel, emptyCompactRowType);
+        Assert.Equal(GridUnitType.Auto, selectedCompactRowType);
     }
 
     [Fact]

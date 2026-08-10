@@ -1,6 +1,13 @@
 # 项目记忆与不可丢失约束
 
-更新时间：2026-08-07
+> UI-177：修改器中心空 Inspector 释放（2026-08-10）
+
+- 当前 HEAD 在 `TrainerCenterView` 的“已绑定工具”页，对 `TrainerToolsSettingsScrollViewer` 增加了基于共享 `GscInspectorScrollViewer` 的条件样式：`SelectedGameTool == null` 时折叠整个设置 Inspector，避免空的 `GscInspectorWidth` 固定右栏；选中工具后恢复真实设置内容和所有原有命令。
+- `TrainerCenterView.xaml.cs` 记录最近一次响应式尺寸，并在 Inspector 可见性变化时重新应用布局。宽屏无选择时释放分隔列与右栏，选中时恢复 `14 + GscInspectorWidth`；窄屏仍把真实 Inspector 放到工具列表下方并使用有限 `MaxHeight`。
+- 新增 `TrainerInspectorReleasesEmptyRightColumn` STA WPF 几何回归测试；工具列表 `GameTools`、Recycling 虚拟化、导入确认和全部绑定未改动。验证时不要把静态/STA 测试等同于 Playnite 宿主或 DPI 真机渲染验证。
+- 跨电脑继续维护时，以该 commit 为基线；不要覆盖本地已有提交。下一步可继续按同一证据标准审计 Media/Overview 的真实空 Inspector 状态。
+
+更新时间：2026-08-10
 当前版本：`0.6.70-development-preview`
 
 > UI-176：存档中心历史版本与候选路径的 Inspector 必须跟随真实 `SelectedBackup`/`SelectedCandidate`。无选中项时释放 `14 + GscInspectorWidth` 分隔列与堆叠行，让空表使用完整主区域；选中后恢复列表 + Inspector，窄屏仍按既有响应式断点堆叠。比较与保留页的只读预览入口不因无比较结果而隐藏。不得修改存档 Command、Binding、选择回退、虚拟化或安全恢复链路；跨机器继续任务时先读取 `DEVELOPMENT_PROGRESS.md` 的 UI-176 记录。
