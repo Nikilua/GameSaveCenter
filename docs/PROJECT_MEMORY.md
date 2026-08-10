@@ -1,5 +1,7 @@
 # 项目记忆与不可丢失约束
 
+> 跨电脑或跨模型接手请先读取 [`docs/DEVELOPMENT_HANDOFF.md`](DEVELOPMENT_HANDOFF.md)，其中包含资料读取顺序、用户原话、持续开发流程、当前基线和下一步方向。
+
 > UI-180：首页 Overview 的生产阅读顺序必须保持 Demo 对齐：`OverviewHomeToolbar`/TODAY 状态之后是 `OverviewCurrentGameCard`（`Grid.Row=1`），再是 `OverviewStatStrip`（`Grid.Row=2`），最近活动列表继续位于第 3 行。当前游戏卡仍只绑定真实 `SelectedGame` 和既有备份/详情/关注命令；指标仍只绑定真实 `Snapshot.*`；`OverviewActivityList` 的 `OverviewTasks`/`SelectedTask`、Recycling 虚拟化和右侧风险/关注滚动器不能因后续视觉调整被移除或重新包进无界 StackPanel。该轮只重排 XAML 行，不改业务层或顶部唯一 GamePicker。
 
 > UI-179：设置页窄屏标题区必须保持信息完整：`SettingsHeaderGrid` 宽屏使用单行标题/说明/Playnite 保存提示；`SettingsHeaderHintRow` 在 `compact` 断点切为 `Auto`，`SettingsSaveHint` 移到第 2 行并跨两列，不能通过隐藏保存语义来换取宽度。设置页备份格式、压缩方式和主题模式下拉框必须同时保留 `SelectedIndex="0"` 与绑定的安全默认值（ZIP / zstd / FollowPlaynite）；不要把动态选择的游戏、工具版本、目标游戏下拉框强行改成默认第一项，它们的空值仍表示“等待真实上下文”。本轮未修改 `ISettings` 生命周期、主题事件、业务设置模型或任何 Worker 设置字段。
