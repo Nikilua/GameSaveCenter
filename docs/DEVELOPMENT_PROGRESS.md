@@ -3,6 +3,8 @@
 更新时间：2026-08-10
 当前版本：`0.6.70-development-preview`
 
+- [x] UI-183：维护中心“诊断”页顶部操作区按 Demo 的“诊断操作”阅读卡重排：新增带标题/说明的 `MaintenanceDiagnosticsActionCard`，将“刷新诊断”提升为右上主操作，其余复制诊断、打开数据目录、打开存档目录、打开媒体目录和 Worker 日志放入第二行可换行操作带；六个真实 Command、诊断指标、表格、Inspector 和空态均保留，未修改业务层、Worker、IPC 或持久化。新增 XAML 结构回归测试确认六个命令完整存在且操作带位于卡片第二行；源码验证、Debug/Release 构建与测试通过（Core 13、Worker 23、Playnite 142）。真实 Playnite 宿主、主题、DPI 运行时渲染验收仍需完成。
+
 - [x] UI-182：维护中心“进程映射”编辑器按 Demo 的完整编辑行重构：用 Grid 替换按内容宽度排列的 WrapPanel，让 EXE 输入框在宽屏占据剩余 `*` 宽度，目标游戏下拉框固定 240 DIP，绑定按钮继续使用共享 38 DIP 按钮节奏；宽度小于 720 DIP 时把目标游戏和绑定按钮移到第二行，避免三个控件被压缩成不可读的一条。保留 `ProcessMappingExecutable`、`ProcessMappingTargetGame`、`Games`、`SaveProcessMappingCommand` 的真实绑定/命令和原有目标游戏模板，未修改业务层、Worker、IPC 或持久化。新增宽屏/窄屏 STA 几何回归测试；源码验证、全量 Debug 测试通过（Core 13、Worker 23、Playnite 141）。Release 构建和真实 Playnite 宿主、主题、DPI 运行时渲染验收仍需完成。
 
 - [x] UI-181：维护中心五张真实 `DataGrid` 的首列显式声明 `MaintenanceFirstColumnHeader`，与已有的 `MaintenanceLastColumnHeader`/`GscLastColumnHeader` 共同锁定 Demo 对齐所需的首尾圆角、主题前景和背景所有权，避免首列继续依赖宿主默认表头样式。保留 `MaintenanceDataGrid` 的 `ItemsSource`、选中项绑定、`Standard` 行虚拟化、键盘/Automation 入口以及 `DataGridLoaded` 的一次性资源兜底；未修改业务层、Worker、IPC 或持久化。新增 XAML 结构回归测试，确认五张维护表的真实列顺序都声明首尾表头样式。源码验证通过；Debug/Release 编译与测试通过（Core 13、Worker 23、Playnite 140）。尚未在真实 Playnite 宿主、Light/Dark/高对比度和多 DPI 环境完成运行时渲染验收。

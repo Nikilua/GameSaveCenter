@@ -58,14 +58,24 @@
             <TabItem Header="诊断">
                 <Grid Margin="0,12,0,0">
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
-                    <WrapPanel>
-                        <ui:Button Style="{DynamicResource GscWpfUiToolbarPrimaryButton}" Command="{Binding RefreshDiagnosticsCommand}" Content="刷新诊断" Margin="0,0,8,8"/>
-                        <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CopyDiagnosticsCommand}" Content="复制诊断" Margin="0,0,8,8"/>
-                        <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenDataDirectoryCommand}" Content="打开数据目录" Margin="0,0,8,8"/>
-                        <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenBackupDirectoryCommand}" Content="打开存档目录" Margin="0,0,8,8"/>
-                        <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenMediaDirectoryCommand}" Content="打开媒体目录" Margin="0,0,8,8"/>
-                        <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenWorkerLogCommand}" Content="Worker 日志" Margin="0,0,0,8"/>
-                    </WrapPanel>
+                    <Border x:Name="MaintenanceDiagnosticsActionCard" Style="{DynamicResource GscReadingCardStyle}" Padding="16" Margin="0,0,0,10">
+                        <Grid>
+                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                            <StackPanel MinWidth="0" VerticalAlignment="Center">
+                                <TextBlock Text="诊断操作" Style="{DynamicResource GscSectionTitleStyle}"/>
+                                <TextBlock Text="打开目录和复制动作均为安全只读入口。" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0" TextWrapping="Wrap"/>
+                            </StackPanel>
+                            <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiToolbarPrimaryButton}" Command="{Binding RefreshDiagnosticsCommand}" Content="刷新诊断"/>
+                            <WrapPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="0,16,0,0">
+                                <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CopyDiagnosticsCommand}" Content="复制诊断" Margin="0,0,8,8"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenDataDirectoryCommand}" Content="打开数据目录" Margin="0,0,8,8"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenBackupDirectoryCommand}" Content="打开存档目录" Margin="0,0,8,8"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenMediaDirectoryCommand}" Content="打开媒体目录" Margin="0,0,8,8"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenWorkerLogCommand}" Content="Worker 日志" Margin="0,0,0,8"/>
+                            </WrapPanel>
+                        </Grid>
+                    </Border>
                     <UniformGrid x:Name="DiagnosticHealthPanel" Grid.Row="1" Columns="4" Margin="0,4,0,10">
                         <Border Style="{DynamicResource GscRedesignMetricBorder}" Padding="12" Margin="0,0,8,8"><StackPanel><TextBlock Text="Worker" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="12"/><TextBlock Text="{Binding Snapshot.WorkerVersion}" FontSize="16" FontWeight="SemiBold" Margin="0,4,0,0"/><TextBlock Text="{Binding EffectiveSettings.DataDirectory}" TextTrimming="CharacterEllipsis" ToolTip="{Binding EffectiveSettings.DataDirectory}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0"/></StackPanel></Border>
                         <Border Style="{DynamicResource GscRedesignMetricBorder}" Padding="12" Margin="0,0,8,8"><StackPanel><TextBlock Text="Ludusavi" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="12"/><TextBlock Text="{Binding Snapshot.LudusaviVersion}" FontSize="16" FontWeight="SemiBold" Margin="0,4,0,0"/><TextBlock Text="{Binding EffectiveSettings.LudusaviExecutable}" TextTrimming="CharacterEllipsis" ToolTip="{Binding EffectiveSettings.LudusaviExecutable}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0"/></StackPanel></Border>

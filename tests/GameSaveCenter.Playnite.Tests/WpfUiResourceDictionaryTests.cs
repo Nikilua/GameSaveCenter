@@ -1540,6 +1540,8 @@ public sealed class WpfUiResourceDictionaryTests
         var maintenance = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
         var maintenanceCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml.cs"));
 
+        Assert.Contains("x:Name=\"MaintenanceDiagnosticsActionCard\"", maintenance);
+        Assert.Contains("Text=\"诊断操作\"", maintenance);
         Assert.Contains("x:Name=\"DiagnosticHealthPanel\"", maintenance);
         Assert.Contains("x:Name=\"ProcessMappingEditor\"", maintenance);
         Assert.Contains("x:Name=\"ProcessMappingExecutableTextBox\"", maintenance);
@@ -1549,6 +1551,37 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("DiagnosticHealthPanel.Columns = width >= 1320 ? 4 : width >= 980 ? 2 : 1", maintenanceCode);
         Assert.Contains("var stackProcessEditor = width < 720", maintenanceCode);
         Assert.Contains("ProcessMappingEditorCompactRow.Height = stackProcessEditor", maintenanceCode);
+    }
+
+    [Fact]
+    public void MaintenanceDiagnosticsActionsUseDemoCardWithoutDroppingCommands()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var maintenancePath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml");
+        var document = XDocument.Parse(File.ReadAllText(maintenancePath));
+        var xamlNamespace = XNamespace.Get("http://schemas.microsoft.com/winfx/2006/xaml");
+        var actionCard = document.Descendants()
+            .Single(element => element.Attribute(xamlNamespace + "Name")?.Value == "MaintenanceDiagnosticsActionCard");
+
+        Assert.Equal("Border", actionCard.Name.LocalName);
+        Assert.Contains(actionCard.Descendants().Where(element => element.Name.LocalName == "TextBlock"),
+            element => element.Attribute("Text")?.Value == "诊断操作");
+
+        var actionRow = actionCard.Descendants()
+            .Single(element => element.Name.LocalName == "WrapPanel" && element.Attribute("Grid.Row")?.Value == "1");
+        var commands = actionCard.Descendants()
+            .Where(element => element.Name.LocalName == "Button")
+            .Select(element => element.Attribute("Command")?.Value)
+            .ToArray();
+
+        Assert.Equal(6, commands.Length);
+        Assert.Contains("{Binding RefreshDiagnosticsCommand}", commands);
+        Assert.Contains("{Binding CopyDiagnosticsCommand}", commands);
+        Assert.Contains("{Binding OpenDataDirectoryCommand}", commands);
+        Assert.Contains("{Binding OpenBackupDirectoryCommand}", commands);
+        Assert.Contains("{Binding OpenMediaDirectoryCommand}", commands);
+        Assert.Contains("{Binding OpenWorkerLogCommand}", commands);
+        Assert.Equal(5, actionRow.Descendants().Count(element => element.Name.LocalName == "Button"));
     }
 
     [Fact]
