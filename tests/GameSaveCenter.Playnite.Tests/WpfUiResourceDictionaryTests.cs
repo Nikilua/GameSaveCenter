@@ -650,6 +650,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"OverviewSecondaryScrollViewer\"", overview);
         Assert.Contains("x:Name=\"OverviewSecondaryScrollViewer\"\n                      Style=\"{DynamicResource GscPageScrollViewer}\"", overview);
         Assert.Contains("x:Name=\"OverviewRiskScrollViewer\" Style=\"{DynamicResource GscPageScrollViewer}\"", overview);
+        var overviewCode = File.ReadAllText(Path.Combine(viewDirectory, "OverviewView.xaml.cs"));
+        Assert.Contains("OverviewSecondaryScrollViewer.VerticalScrollBarVisibility = stack", overviewCode);
+        Assert.Contains("OverviewRiskScrollViewer.VerticalScrollBarVisibility = stack", overviewCode);
         Assert.Contains("<ScrollViewer Style=\"{DynamicResource GscPageScrollViewer}\" VerticalScrollBarVisibility=\"Hidden\"", save);
         Assert.Contains("<ScrollViewer Style=\"{DynamicResource GscPageScrollViewer}\" Grid.Row=\"0\"", media);
         Assert.DoesNotContain("Grid.Row=\"0\" MaxHeight=\"190\"", media);
@@ -1801,8 +1804,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"OverviewSecondaryScrollViewer\"", File.ReadAllText(overviewPath));
         Assert.Contains("OverviewSecondaryScrollViewer.MaxHeight = stack", File.ReadAllText(overviewPath + ".cs"));
         Assert.DoesNotContain("OverviewSecondaryScrollViewer.MaxHeight = stack || compactHeight", File.ReadAllText(overviewPath + ".cs"));
-        Assert.Contains("OverviewSecondaryScrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Hidden", File.ReadAllText(overviewPath + ".cs"));
-        Assert.Contains("OverviewRiskScrollViewer.MaxHeight = Math.Max(180, Math.Min(360, height * 0.42))", File.ReadAllText(overviewPath + ".cs"));
+        Assert.Contains("OverviewSecondaryScrollViewer.VerticalScrollBarVisibility = stack", File.ReadAllText(overviewPath + ".cs"));
+        Assert.Contains("Math.Max(180, Math.Min(360, height * 0.42))", File.ReadAllText(overviewPath + ".cs"));
+        Assert.Contains("OverviewRiskScrollViewer.VerticalScrollBarVisibility = stack", File.ReadAllText(overviewPath + ".cs"));
         Assert.Contains("RowDefinition x:Name=\"OverviewSummaryRow\" Height=\"Auto\"", File.ReadAllText(overviewPath));
         Assert.Contains("GscRedesignSectionCard}\" VerticalAlignment=\"Top\">", File.ReadAllText(overviewPath));
         Assert.Contains("VerticalAlignment=\"Top\">", File.ReadAllText(overviewPath));
