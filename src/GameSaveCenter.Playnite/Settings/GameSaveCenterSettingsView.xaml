@@ -43,17 +43,18 @@
             <Grid x:Name="SettingsShell" Opacity="0" Margin="0" MaxWidth="1360" HorizontalAlignment="Stretch">
                 <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                 <Border x:Name="SettingsHeader" Style="{DynamicResource GscRedesignWorkspaceHeroCard}">
-                <Grid>
+                <Grid x:Name="SettingsHeaderGrid">
+                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition x:Name="SettingsHeaderHintRow" Height="0"/></Grid.RowDefinitions>
                     <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                    <Border x:Name="SettingsHeaderIcon" Width="46" Height="46" CornerRadius="15" Background="{DynamicResource GscAccentBrush}" Margin="0,0,12,0">
+                    <Border x:Name="SettingsHeaderIcon" Grid.Row="0" Width="46" Height="46" CornerRadius="15" Background="{DynamicResource GscAccentBrush}" Margin="0,0,12,0">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE713;" Foreground="{DynamicResource GscOnAccentTextBrush}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
-                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center">
                         <TextBlock Text="SETTINGS" Style="{DynamicResource GscRedesignHeroEyebrow}"/>
                         <TextBlock Text="GameSaveCenter 设置" Style="{DynamicResource GscRedesignHeroTitle}"/>
                         <TextBlock x:Name="SettingsHeaderSubtitle" Text="工具路径、版本策略、外观效果与自动化安全" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,3,0,0" TextWrapping="Wrap"/>
                     </StackPanel>
-                    <Border x:Name="SettingsSaveHint" Grid.Column="2" Style="{StaticResource GscRedesignContextPill}" VerticalAlignment="Center" Margin="14,0,0,0">
+                    <Border x:Name="SettingsSaveHint" Grid.Row="0" Grid.Column="2" Style="{StaticResource GscRedesignContextPill}" VerticalAlignment="Center" Margin="14,0,0,0">
                         <TextBlock Text="由 Playnite 的保存按钮提交" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
                     </Border>
                 </Grid>
@@ -97,14 +98,14 @@
                     <UniformGrid x:Name="StorageFormatFields" Columns="2" Margin="0,0,0,12">
                         <StackPanel Margin="0,0,12,0">
                         <TextBlock Text="备份格式" VerticalAlignment="Center" Margin="0,0,0,4"/>
-                        <ComboBox Style="{StaticResource GscWpfUiComboBox}" SelectedIndex="0" SelectedValue="{Binding BackupFormat}" SelectedValuePath="Tag">
+                        <ComboBox Style="{StaticResource GscWpfUiComboBox}" SelectedIndex="0" SelectedValue="{Binding BackupFormat, Mode=TwoWay, TargetNullValue={x:Static contracts:BackupStorageFormat.Zip}, FallbackValue={x:Static contracts:BackupStorageFormat.Zip}}" SelectedValuePath="Tag">
                             <ComboBoxItem Content="ZIP（多版本）" Tag="{x:Static contracts:BackupStorageFormat.Zip}"/>
                             <ComboBoxItem Content="Simple（单副本）" Tag="{x:Static contracts:BackupStorageFormat.Simple}"/>
                         </ComboBox>
                         </StackPanel>
                         <StackPanel Margin="0,0,0,0">
                         <TextBlock Text="压缩方式" VerticalAlignment="Center" Margin="0,0,0,4"/>
-                        <ComboBox Style="{StaticResource GscWpfUiComboBox}" SelectedIndex="0" SelectedValue="{Binding Compression}" SelectedValuePath="Tag">
+                        <ComboBox Style="{StaticResource GscWpfUiComboBox}" SelectedIndex="0" SelectedValue="{Binding Compression, Mode=TwoWay, TargetNullValue=zstd, FallbackValue=zstd}" SelectedValuePath="Tag">
                             <ComboBoxItem Content="Zstandard" Tag="zstd"/><ComboBoxItem Content="Deflate" Tag="deflate"/>
                             <ComboBoxItem Content="Bzip2" Tag="bzip2"/><ComboBoxItem Content="不压缩" Tag="none"/>
                         </ComboBox>
@@ -144,7 +145,7 @@
                     <UniformGrid x:Name="AppearanceFields" Columns="2" Margin="0,0,0,12">
                         <StackPanel Margin="0,0,12,10">
                         <TextBlock Text="界面主题" Margin="0,0,0,4"/>
-                        <ComboBox Style="{StaticResource GscWpfUiComboBox}" SelectedIndex="0" SelectedValue="{Binding ThemeMode, Mode=TwoWay}" SelectedValuePath="Tag" SelectionChanged="OnThemeModeChanged">
+                        <ComboBox Style="{StaticResource GscWpfUiComboBox}" SelectedIndex="0" SelectedValue="{Binding ThemeMode, Mode=TwoWay, TargetNullValue={x:Static settings:GameSaveCenterThemeMode.FollowPlaynite}, FallbackValue={x:Static settings:GameSaveCenterThemeMode.FollowPlaynite}}" SelectedValuePath="Tag" SelectionChanged="OnThemeModeChanged">
                             <ComboBoxItem Content="跟随 Playnite" Tag="{x:Static settings:GameSaveCenterThemeMode.FollowPlaynite}"/>
                             <ComboBoxItem Content="浅色" Tag="{x:Static settings:GameSaveCenterThemeMode.Light}"/>
                             <ComboBoxItem Content="深色" Tag="{x:Static settings:GameSaveCenterThemeMode.Dark}"/>

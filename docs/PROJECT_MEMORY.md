@@ -1,5 +1,7 @@
 # 项目记忆与不可丢失约束
 
+> UI-179：设置页窄屏标题区必须保持信息完整：`SettingsHeaderGrid` 宽屏使用单行标题/说明/Playnite 保存提示；`SettingsHeaderHintRow` 在 `compact` 断点切为 `Auto`，`SettingsSaveHint` 移到第 2 行并跨两列，不能通过隐藏保存语义来换取宽度。设置页备份格式、压缩方式和主题模式下拉框必须同时保留 `SelectedIndex="0"` 与绑定的安全默认值（ZIP / zstd / FollowPlaynite）；不要把动态选择的游戏、工具版本、目标游戏下拉框强行改成默认第一项，它们的空值仍表示“等待真实上下文”。本轮未修改 `ISettings` 生命周期、主题事件、业务设置模型或任何 Worker 设置字段。
+
 > UI-177：修改器中心空 Inspector 释放（2026-08-10）
 
 - 当前 HEAD 在 `TrainerCenterView` 的“已绑定工具”页，对 `TrainerToolsSettingsScrollViewer` 增加了基于共享 `GscInspectorScrollViewer` 的条件样式：`SelectedGameTool == null` 时折叠整个设置 Inspector，避免空的 `GscInspectorWidth` 固定右栏；选中工具后恢复真实设置内容和所有原有命令。

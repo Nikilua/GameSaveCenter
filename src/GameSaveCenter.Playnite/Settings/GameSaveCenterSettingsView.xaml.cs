@@ -335,7 +335,8 @@ namespace GameSaveCenter.Playnite.Settings
 
         private void ApplyResponsiveLayout(double width, double height)
         {
-            if (SettingsShell == null || SettingsHeaderSubtitle == null || SettingsSectionTabs == null) return;
+            if (SettingsShell == null || SettingsHeaderGrid == null || SettingsHeaderHintRow == null
+                || SettingsHeaderSubtitle == null || SettingsSaveHint == null || SettingsSectionTabs == null) return;
 
             // SettingsShell is the real layout surface.  The Playnite settings host can be
             // wider than this shell because the shell is capped at 1360 DIP and inset by the
@@ -372,6 +373,20 @@ namespace GameSaveCenter.Playnite.Settings
             SettingsHeaderSubtitle.MaxWidth = narrow ? 300 : double.PositiveInfinity;
             SettingsSaveHint.Visibility = Visibility.Visible;
             SettingsSaveHint.MaxWidth = layoutWidth >= 1040 ? 320 : narrow ? 180 : 230;
+            var stackHeaderHint = compact;
+            SettingsHeaderHintRow.Height = stackHeaderHint ? GridLength.Auto : new GridLength(0);
+            Grid.SetRow(SettingsSaveHint, stackHeaderHint ? 1 : 0);
+            Grid.SetColumn(SettingsSaveHint, stackHeaderHint ? 1 : 2);
+            Grid.SetColumnSpan(SettingsSaveHint, stackHeaderHint ? 2 : 1);
+            SettingsSaveHint.HorizontalAlignment = stackHeaderHint
+                ? HorizontalAlignment.Left
+                : HorizontalAlignment.Stretch;
+            SettingsSaveHint.VerticalAlignment = stackHeaderHint
+                ? VerticalAlignment.Top
+                : VerticalAlignment.Center;
+            SettingsSaveHint.Margin = stackHeaderHint
+                ? new Thickness(0, 12, 0, 0)
+                : new Thickness(14, 0, 0, 0);
             SettingsSectionTabs.TabStripPlacement = compact ? Dock.Top : Dock.Left;
 
             foreach (var item in SettingsSectionTabs.Items)
