@@ -70,7 +70,7 @@
 - 当前 UI 基线：`3350f15`（`重构：维护中心显式声明表头主题`，UI-181）
 - 版本：`0.6.70-development-preview`
 - 当前工作区：本轮交接文档提交完成后应干净
-- 相对 `origin/main`：本地领先 23 个 commit，远端尚未包含本轮提交
+- 相对 `origin/main`：请运行 `git rev-list --count origin/main..HEAD` 实时确认；UI-181 实现提交 `3350f15` 当时领先 23 个 commit，后续文档提交不改变生产 UI
 - 最近已完成的重点：
   - UI-177：修改器中心无选中工具时释放空 Inspector 和固定右栏
   - UI-178：媒体中心无选中媒体时释放空 Inspector 和堆叠行
