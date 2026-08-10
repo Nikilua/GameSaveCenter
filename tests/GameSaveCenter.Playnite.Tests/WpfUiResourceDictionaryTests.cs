@@ -1542,9 +1542,70 @@ public sealed class WpfUiResourceDictionaryTests
 
         Assert.Contains("x:Name=\"DiagnosticHealthPanel\"", maintenance);
         Assert.Contains("x:Name=\"ProcessMappingEditor\"", maintenance);
-        Assert.Contains("MinWidth=\"220\"", maintenance);
+        Assert.Contains("x:Name=\"ProcessMappingExecutableTextBox\"", maintenance);
+        Assert.Contains("x:Name=\"ProcessMappingTargetGameComboBox\"", maintenance);
+        Assert.Contains("Width=\"240\"", maintenance);
         Assert.Contains("Command=\"{Binding SaveProcessMappingCommand}\"", maintenance);
         Assert.Contains("DiagnosticHealthPanel.Columns = width >= 1320 ? 4 : width >= 980 ? 2 : 1", maintenanceCode);
+        Assert.Contains("var stackProcessEditor = width < 720", maintenanceCode);
+        Assert.Contains("ProcessMappingEditorCompactRow.Height = stackProcessEditor", maintenanceCode);
+    }
+
+    [Fact]
+    public void MaintenanceProcessMappingEditorUsesDemoWidthAndStacksAtNarrowWidth()
+    {
+        Exception? exception = null;
+        var wideTargetWidth = -1d;
+        var wideTargetRow = -1;
+        var wideTargetColumn = -1;
+        var wideCompactRowType = GridUnitType.Auto;
+        var narrowTargetUnitType = GridUnitType.Pixel;
+        var narrowTargetRow = -1;
+        var narrowTargetSpan = -1;
+        var narrowActionRow = -1;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var view = new MaintenanceView();
+                var viewType = typeof(MaintenanceView);
+                var editor = (Grid)viewType.GetField("ProcessMappingEditor", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var targetColumn = (ColumnDefinition)viewType.GetField("ProcessMappingTargetColumn", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var target = (ComboBox)viewType.GetField("ProcessMappingTargetGameComboBox", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var action = (GameSaveCenter.Playnite.Controls.Button)viewType.GetField("ProcessMappingSaveButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+
+                view.ApplyResponsiveLayout(1100, 700);
+                wideTargetWidth = targetColumn.Width.Value;
+                wideTargetRow = Grid.GetRow(target);
+                wideTargetColumn = Grid.GetColumn(target);
+                wideCompactRowType = editor.RowDefinitions[1].Height.GridUnitType;
+
+                view.ApplyResponsiveLayout(650, 700);
+                narrowTargetUnitType = targetColumn.Width.GridUnitType;
+                narrowTargetRow = Grid.GetRow(target);
+                narrowTargetSpan = Grid.GetColumnSpan(target);
+                narrowActionRow = Grid.GetRow(action);
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.Equal(240, wideTargetWidth);
+        Assert.Equal(0, wideTargetRow);
+        Assert.Equal(2, wideTargetColumn);
+        Assert.Equal(GridUnitType.Pixel, wideCompactRowType);
+        Assert.Equal(GridUnitType.Star, narrowTargetUnitType);
+        Assert.Equal(1, narrowTargetRow);
+        Assert.Equal(3, narrowTargetSpan);
+        Assert.Equal(1, narrowActionRow);
     }
 
     [Fact]

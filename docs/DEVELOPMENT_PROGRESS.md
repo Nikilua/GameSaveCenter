@@ -3,6 +3,8 @@
 更新时间：2026-08-10
 当前版本：`0.6.70-development-preview`
 
+- [x] UI-182：维护中心“进程映射”编辑器按 Demo 的完整编辑行重构：用 Grid 替换按内容宽度排列的 WrapPanel，让 EXE 输入框在宽屏占据剩余 `*` 宽度，目标游戏下拉框固定 240 DIP，绑定按钮继续使用共享 38 DIP 按钮节奏；宽度小于 720 DIP 时把目标游戏和绑定按钮移到第二行，避免三个控件被压缩成不可读的一条。保留 `ProcessMappingExecutable`、`ProcessMappingTargetGame`、`Games`、`SaveProcessMappingCommand` 的真实绑定/命令和原有目标游戏模板，未修改业务层、Worker、IPC 或持久化。新增宽屏/窄屏 STA 几何回归测试；源码验证、全量 Debug 测试通过（Core 13、Worker 23、Playnite 141）。Release 构建和真实 Playnite 宿主、主题、DPI 运行时渲染验收仍需完成。
+
 - [x] UI-181：维护中心五张真实 `DataGrid` 的首列显式声明 `MaintenanceFirstColumnHeader`，与已有的 `MaintenanceLastColumnHeader`/`GscLastColumnHeader` 共同锁定 Demo 对齐所需的首尾圆角、主题前景和背景所有权，避免首列继续依赖宿主默认表头样式。保留 `MaintenanceDataGrid` 的 `ItemsSource`、选中项绑定、`Standard` 行虚拟化、键盘/Automation 入口以及 `DataGridLoaded` 的一次性资源兜底；未修改业务层、Worker、IPC 或持久化。新增 XAML 结构回归测试，确认五张维护表的真实列顺序都声明首尾表头样式。源码验证通过；Debug/Release 编译与测试通过（Core 13、Worker 23、Playnite 140）。尚未在真实 Playnite 宿主、Light/Dark/高对比度和多 DPI 环境完成运行时渲染验收。
 
 - [x] DOC-001：新增 `docs/DEVELOPMENT_HANDOFF.md` 作为跨电脑、跨模型的持续维护入口，固化必读资料、Demo 路径、用户原话、UI 约束、验证流程、commit 要求、当前基线和下一步方向；`PROJECT_MEMORY.md` 已增加入口链接。未修改生产代码或业务行为。

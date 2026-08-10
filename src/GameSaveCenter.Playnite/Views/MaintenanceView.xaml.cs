@@ -137,6 +137,27 @@ namespace GameSaveCenter.Playnite.Views
             Grid.SetColumnSpan(MaintenanceProcessInspector, stackProcess ? 3 : 1);
             Grid.SetRow(MaintenanceProcessInspector, stackProcess ? 2 : 1);
             MaintenanceProcessInspector.Margin = showProcessInspector && stackProcess ? new Thickness(0, 10, 0, 0) : new Thickness(0);
+
+            // Match the Demo process-mapping editor on wide workspaces: the EXE field
+            // receives the flexible space, the game target stays readable at 240 DIP,
+            // and the action button keeps the shared 38-DIP control height. At a narrow
+            // width, move the target and action to a second row instead of compressing
+            // three controls into an unreadable strip.
+            var stackProcessEditor = width < 720;
+            ProcessMappingEditorPrimaryRow.Height = new GridLength(1, GridUnitType.Auto);
+            ProcessMappingEditorCompactRow.Height = stackProcessEditor
+                ? new GridLength(1, GridUnitType.Auto)
+                : new GridLength(0);
+            ProcessMappingTargetColumn.Width = stackProcessEditor
+                ? new GridLength(1, GridUnitType.Star)
+                : new GridLength(240);
+            Grid.SetColumnSpan(ProcessMappingExecutableTextBox, stackProcessEditor ? 5 : 1);
+            Grid.SetRow(ProcessMappingExecutableTextBox, 0);
+            Grid.SetColumn(ProcessMappingTargetGameComboBox, stackProcessEditor ? 0 : 2);
+            Grid.SetColumnSpan(ProcessMappingTargetGameComboBox, stackProcessEditor ? 3 : 1);
+            Grid.SetRow(ProcessMappingTargetGameComboBox, stackProcessEditor ? 1 : 0);
+            Grid.SetColumn(ProcessMappingSaveButton, 4);
+            Grid.SetRow(ProcessMappingSaveButton, stackProcessEditor ? 1 : 0);
             var stackDevice = width < 1180;
             MaintenanceDeviceLayout.ColumnDefinitions[1].Width = stackDevice ? new GridLength(0) : new GridLength(14);
             MaintenanceDeviceLayout.ColumnDefinitions[2].Width = stackDevice ? new GridLength(0) : inspectorWidth;

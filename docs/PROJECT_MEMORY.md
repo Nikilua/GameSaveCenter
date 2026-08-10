@@ -2,6 +2,8 @@
 
 > 跨电脑或跨模型接手请先读取 [`docs/DEVELOPMENT_HANDOFF.md`](DEVELOPMENT_HANDOFF.md)，其中包含资料读取顺序、用户原话、持续开发流程、当前基线和下一步方向。
 
+> UI-182：维护中心“进程映射”编辑器必须保持 Demo 对齐的 Grid 结构：宽屏由 EXE 输入框占据 `*` 剩余空间，目标游戏下拉框保持 240 DIP，控件之间使用共享 8 DIP 节奏，绑定按钮继续使用共享按钮模板和 38 DIP 高度；宽度 `<720` DIP 时目标游戏与绑定按钮移动到第二行。`ProcessMappingExecutable`、`ProcessMappingTargetGame`、`Games`、`SaveProcessMappingCommand` 的真实绑定/命令必须保留；不要用运行时视觉树扫描或业务层改动解决布局问题。动态目标游戏 ComboBox 的空值仍表示等待真实上下文，不能为了显示效果强行选择第一项。
+
 > UI-181：维护中心五张真实 `DataGrid`（诊断、设备、审计发现、审计日志、进程映射）必须在 XAML 列声明中显式使用 `MaintenanceFirstColumnHeader` 作为首列表头样式，并继续使用 `MaintenanceLastColumnHeader` 或 `GscLastColumnHeader` 作为末列样式。这样首列左上角圆角、首尾主题背景/前景和宿主默认样式隔离由声明式资源负责，不依赖运行时才能补齐。`MaintenanceDataGrid` 的真实 `ItemsSource`、选中项绑定、`Standard`/Recycling 虚拟化、键盘/Automation 和 `DataGridLoaded` 一次性资源兜底必须保持；禁止通过视觉树周期扫描修复表头，也不得把本轮 UI 调整扩展到业务层、Worker、IPC 或持久化。新增结构测试锁定五张表的真实首尾列样式。静态源码、Debug/Release 编译及 Core 13、Worker 23、Playnite 140 测试已通过；真实 Playnite 宿主、主题和 DPI 渲染仍须后续手工验收。
 
 > UI-180：首页 Overview 的生产阅读顺序必须保持 Demo 对齐：`OverviewHomeToolbar`/TODAY 状态之后是 `OverviewCurrentGameCard`（`Grid.Row=1`），再是 `OverviewStatStrip`（`Grid.Row=2`），最近活动列表继续位于第 3 行。当前游戏卡仍只绑定真实 `SelectedGame` 和既有备份/详情/关注命令；指标仍只绑定真实 `Snapshot.*`；`OverviewActivityList` 的 `OverviewTasks`/`SelectedTask`、Recycling 虚拟化和右侧风险/关注滚动器不能因后续视觉调整被移除或重新包进无界 StackPanel。该轮只重排 XAML 行，不改业务层或顶部唯一 GamePicker。
