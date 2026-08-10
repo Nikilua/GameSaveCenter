@@ -2669,9 +2669,15 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Style=\"{StaticResource GscRedesignSettingsTabControl}\"", settings);
         Assert.Contains("x:Name=\"SettingsHeader\" Style=\"{DynamicResource GscRedesignWorkspaceHeroCard}\"", settings);
         Assert.Contains("Style=\"{DynamicResource GscRedesignHeroEyebrow}\"", settings);
+        Assert.Contains("Text=\"常规与目录\"", settings);
+        Assert.Contains("Text=\"备份与恢复\"", settings);
+        Assert.Contains("Text=\"外观与可访问性\"", settings);
+        Assert.Contains("Text=\"自动化与媒体\"", settings);
         Assert.Contains("由 Playnite 的保存按钮提交", settings);
         Assert.Contains("Text=\"{Binding WorkerExecutable, UpdateSourceTrigger=PropertyChanged}\"", settings);
-        Assert.Contains("SelectedValue=\"{Binding BackupFormat}\"", settings);
+        Assert.Contains("SelectedIndex=\"0\" SelectedValue=\"{Binding BackupFormat}\"", settings);
+        Assert.Contains("SelectedIndex=\"0\" SelectedValue=\"{Binding Compression}\"", settings);
+        Assert.Contains("SelectedIndex=\"0\" SelectedValue=\"{Binding ThemeMode, Mode=TwoWay}\"", settings);
         Assert.Contains("IsChecked=\"{Binding EnableUiAnimations}\"", settings);
         Assert.Contains("IsChecked=\"{Binding EnableCloudUpload}\"", settings);
         Assert.Contains("Click=\"OnExportSettingsClick\"", settings);
