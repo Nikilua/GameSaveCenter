@@ -67,10 +67,10 @@
 ## 当前交接基线（2026-08-10）
 
 - 分支：`main`
-- 当前 UI 基线：`05b2e07`（`重构：维护中心进程映射编辑器对齐 Demo`，UI-182）
+- 当前 UI 基线：`2db4336`（`重构：维护中心诊断操作区对齐 Demo`，UI-183）
 - 版本：`0.6.70-development-preview`
 - 当前工作区：本轮交接文档提交完成后应干净
-- 相对 `origin/main`：请运行 `git rev-list --count origin/main..HEAD` 实时确认；UI-182 实现提交为 `05b2e07`，后续交接文档提交不改变生产 UI
+- 相对 `origin/main`：请运行 `git rev-list --count origin/main..HEAD` 实时确认；UI-183 实现提交为 `2db4336`，后续交接文档提交不改变生产 UI
 - 最近已完成的重点：
   - UI-177：修改器中心无选中工具时释放空 Inspector 和固定右栏
   - UI-178：媒体中心无选中媒体时释放空 Inspector 和堆叠行
@@ -78,7 +78,8 @@
   - UI-180：首页阅读顺序调整为“工作台/今日状态 → 当前游戏 → 六项指标 → 最近活动”
   - UI-181：维护中心五张 DataGrid 的首列显式使用 `MaintenanceFirstColumnHeader`，末列继续使用显式维护表头主题
   - UI-182：维护中心进程映射编辑器宽屏使用 EXE `*`、目标游戏 240 DIP、绑定按钮的 Demo 对齐 Grid，窄于 720 DIP 时目标和按钮换到第二行
-- 当前已完成的自动化基线：Core 13、Worker 23、Playnite 141 测试通过；Release 构建 0 警告/0 错误；XAML 结构检查 13/13；WPF 源码验证通过。静态测试不等同于真实 Playnite 宿主、主题和 DPI 渲染验证。
+  - UI-183：维护中心诊断页顶部改为 Demo 式“诊断操作”阅读卡，刷新诊断提升为主操作，其余五个只读入口保留在第二行操作带
+- 当前已完成的自动化基线：Core 13、Worker 23、Playnite 142 测试通过；Release 构建 0 警告/0 错误；XAML 结构检查 13/13；WPF 源码验证通过。静态测试不等同于真实 Playnite 宿主、主题和 DPI 渲染验证。
 
 ## 下一步开发方向
 
