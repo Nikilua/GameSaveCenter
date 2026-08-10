@@ -561,7 +561,7 @@
         <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Padding" Value="11,7"/>
-        <Setter Property="MinHeight" Value="38"/>
+        <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="CaretBrush" Value="{DynamicResource GscAccentBrush}"/>
         <Setter Property="SelectionBrush" Value="{DynamicResource GscAccentTintStrongBrush}"/>
@@ -681,7 +681,7 @@
         <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Padding" Value="11,7"/>
-        <Setter Property="MinHeight" Value="38"/>
+        <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Template">
             <Setter.Value>

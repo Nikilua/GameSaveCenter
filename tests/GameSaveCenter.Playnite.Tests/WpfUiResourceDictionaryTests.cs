@@ -1273,7 +1273,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.All(rows, row => Assert.Equal("Auto", row.Attribute("Height")?.Value));
 
         var searchBox = searchGrid.Descendants().Single(element => element.Name.LocalName == "TextBox");
-        Assert.Equal("620", searchBox.Attribute("MinWidth")?.Value);
+        Assert.Equal("TrainerSearchTextBox", searchBox.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value);
+        Assert.Equal("680", searchBox.Attribute("Width")?.Value);
+        Assert.Equal("0", searchBox.Attribute("MinWidth")?.Value);
         Assert.Equal("680", searchBox.Attribute("MaxWidth")?.Value);
         Assert.Contains("TrainerSearchText", searchBox.Attribute("Text")?.Value ?? string.Empty);
 
@@ -2735,6 +2737,8 @@ public sealed class WpfUiResourceDictionaryTests
     {
         Exception? exception = null;
         double actionMinHeight = 0;
+        double textBoxMinHeight = 0;
+        double comboBoxMinHeight = 0;
         HorizontalAlignment actionHorizontalAlignment = HorizontalAlignment.Left;
         VerticalAlignment actionVerticalAlignment = VerticalAlignment.Top;
         int filterSelectedIndex = -1;
@@ -2766,13 +2770,20 @@ public sealed class WpfUiResourceDictionaryTests
                     Style = Assert.IsType<Style>(resources["GscWpfUiFilterComboBox"]),
                     ItemsSource = new[] { "全部", "失败" }
                 };
+                var textBox = new TextBox
+                {
+                    Style = Assert.IsType<Style>(resources["GscWpfUiTextBox"])
+                };
                 panel.Children.Add(action);
                 panel.Children.Add(filter);
+                panel.Children.Add(textBox);
                 host.Content = panel;
                 host.Measure(new Size(420, 120));
                 host.Arrange(new Rect(0, 0, 420, 120));
                 host.UpdateLayout();
                 actionMinHeight = action.MinHeight;
+                textBoxMinHeight = textBox.MinHeight;
+                comboBoxMinHeight = filter.MinHeight;
                 actionHorizontalAlignment = action.HorizontalContentAlignment;
                 actionVerticalAlignment = action.VerticalContentAlignment;
                 filterSelectedIndex = filter.SelectedIndex;
@@ -2792,6 +2803,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Equal(HorizontalAlignment.Center, actionHorizontalAlignment);
         Assert.Equal(VerticalAlignment.Center, actionVerticalAlignment);
         Assert.Equal(38, actionMinHeight);
+        Assert.Equal(actionMinHeight, textBoxMinHeight);
+        Assert.Equal(actionMinHeight, comboBoxMinHeight);
         Assert.Equal(0, filterSelectedIndex);
         Assert.Equal("全部", filterSelectedItem);
 
@@ -2801,6 +2814,7 @@ public sealed class WpfUiResourceDictionaryTests
         var redesign = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "Redesign.xaml"));
         var dashboard = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml"));
         var trainer = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml"));
+        var trainerCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml.cs"));
         var media = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
         var tasks = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml"));
         var overview = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml"));
@@ -2808,14 +2822,22 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Key=\"GscButtonHeight\">38", tokens);
         Assert.Contains("<Style x:Key=\"GscButtonBase\"", tokens);
         Assert.Contains("<Setter Property=\"MinHeight\" Value=\"{DynamicResource GscButtonHeight}\"/>", tokens);
+        Assert.Contains("<Setter Property=\"MinHeight\" Value=\"{DynamicResource GscButtonHeight}\"/>", production);
+        Assert.Contains("<Setter Property=\"MinHeight\" Value=\"{DynamicResource GscButtonHeight}\"/>", redesign);
         Assert.Contains("<Style x:Key=\"GscButtonBase\"", dashboard);
         Assert.Contains("<Setter Property=\"MinHeight\" Value=\"{DynamicResource GscButtonHeight}\"/>", dashboard);
         Assert.DoesNotContain("MinHeight=\"38\"", trainer);
+        Assert.Contains("x:Name=\"TrainerSearchTextBox\"", trainer);
+        Assert.Contains("x:Name=\"TrainerImportEntryComboBox\"", trainer);
+        Assert.Contains("var searchWidth = Math.Max(260, Math.Min(680", trainerCode);
+        Assert.Contains("var importWidth = Math.Max(240, Math.Min(520", trainerCode);
         Assert.Contains("x:Key=\"GscWpfUiFilterComboBox\"", production);
         Assert.Contains("<Setter Property=\"SelectedIndex\" Value=\"0\"/>", production);
         Assert.Contains("MinHeight\" Value=\"{DynamicResource GscButtonHeight}\"", redesign);
         Assert.Contains("Style=\"{StaticResource GscWpfUiFilterComboBox}\" SelectedIndex=\"0\"", dashboard);
         Assert.Contains("Style=\"{DynamicResource GscWpfUiFilterComboBox}\" SelectedIndex=\"0\"", media);
+        Assert.Contains("x:Key=\"MediaSummaryCard\" TargetType=\"Border\" BasedOn=\"{StaticResource GscRedesignMetricBorder}\"", media);
+        Assert.Equal(4, Regex.Matches(media, "Style=\"\\{StaticResource MediaSummaryCard\\}\"").Count);
         Assert.Equal(3, Regex.Matches(tasks, "Style=\"\\{DynamicResource GscWpfUiFilterComboBox\\}\" SelectedIndex=\"0\"").Count);
         Assert.Contains("<Setter Property=\"VerticalContentAlignment\" Value=\"Center\"/>", overview);
         Assert.DoesNotContain("<Setter Property=\"VerticalContentAlignment\" Value=\"Top\"/>", overview);

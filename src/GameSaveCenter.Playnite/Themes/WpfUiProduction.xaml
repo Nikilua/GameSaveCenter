@@ -235,7 +235,7 @@
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Padding" Value="10,8"/>
         <Setter Property="Margin" Value="0,0,0,4"/>
-        <Setter Property="MinHeight" Value="38"/>
+        <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Template">
@@ -640,7 +640,7 @@
            TargetType="TextBox"
            BasedOn="{StaticResource {x:Type TextBox}}">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
-        <Setter Property="MinHeight" Value="38"/>
+        <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
@@ -658,7 +658,7 @@
            TargetType="ComboBox"
            BasedOn="{StaticResource {x:Type ComboBox}}">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
-        <Setter Property="MinHeight" Value="38"/>
+        <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>

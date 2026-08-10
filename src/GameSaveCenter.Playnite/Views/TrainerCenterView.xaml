@@ -52,7 +52,7 @@
                         </StackPanel>
                     </Border>
                     <TextBlock Text="主程序" Style="{DynamicResource GscCaptionStyle}" Margin="0,18,0,6"/>
-                    <ComboBox Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding ImportEntryCandidates}" SelectedItem="{Binding SelectedImportEntryCandidate}" MinWidth="320" MaxWidth="520">
+                    <ComboBox x:Name="TrainerImportEntryComboBox" Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding ImportEntryCandidates}" SelectedItem="{Binding SelectedImportEntryCandidate}" Width="520" MinWidth="0" MaxWidth="520">
                         <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Display}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Display}"/></DataTemplate></ComboBox.ItemTemplate>
                     </ComboBox>
                     <WrapPanel Margin="0,16,0,0">
@@ -69,7 +69,7 @@
                 <Border Style="{DynamicResource GscReadingCardStyle}" Padding="16" MaxWidth="1080" HorizontalAlignment="Stretch" VerticalAlignment="Top">
                     <Grid>
                         <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-                        <TextBox Style="{DynamicResource GscWpfUiTextBox}" Height="38" MinWidth="620" MaxWidth="680" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding TrainerSearchText, UpdateSourceTrigger=PropertyChanged}" ToolTip="输入游戏名称，搜索本地缓存的 FLiNG 目录"/>
+                        <TextBox x:Name="TrainerSearchTextBox" Style="{DynamicResource GscWpfUiTextBox}" Width="680" MinWidth="0" MaxWidth="680" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding TrainerSearchText, UpdateSourceTrigger=PropertyChanged}" ToolTip="输入游戏名称，搜索本地缓存的 FLiNG 目录"/>
                         <WrapPanel Grid.Row="1" Margin="0,12,0,0">
                             <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding SearchTrainerCatalogCommand}" Content="搜索目录" Margin="0,0,8,0"/>
                             <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding SyncTrainerCatalogCommand}" Content="刷新目录" Margin="0,0,0,0"/>

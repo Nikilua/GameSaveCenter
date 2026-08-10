@@ -25,6 +25,15 @@ namespace GameSaveCenter.Playnite.Views
             TrainerReleasesLayout.HorizontalAlignment = HorizontalAlignment.Stretch;
             TrainerReleasesLayout.VerticalAlignment = VerticalAlignment.Stretch;
             var inspectorWidth = InstalledToolsLayout.TryFindResource("GscInspectorWidth") is GridLength gl ? gl : new GridLength(360);
+            // Keep the demo-aligned 560–680 DIP search rhythm on desktop, but let the
+            // input shrink before the host reaches the Narrow fallback.  The form is
+            // presentation-only; the existing binding and search command are untouched.
+            var searchWidth = Math.Max(260, Math.Min(680, width - (width < 960 ? 200 : 320)));
+            TrainerSearchTextBox.Width = searchWidth;
+            TrainerSearchTextBox.MinWidth = 0;
+            var importWidth = Math.Max(240, Math.Min(520, width - 360));
+            TrainerImportEntryComboBox.Width = importWidth;
+            TrainerImportEntryComboBox.MinWidth = 0;
             // The inspector is a full-height secondary pane in the normal two-column layout.
             // Only the stacked compact layout receives a finite scroll channel; otherwise the
             // card would collapse into a short block and leave a large unused area beside it.
