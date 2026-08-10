@@ -5,7 +5,7 @@
 - 当前 HEAD 在 `TrainerCenterView` 的“已绑定工具”页，对 `TrainerToolsSettingsScrollViewer` 增加了基于共享 `GscInspectorScrollViewer` 的条件样式：`SelectedGameTool == null` 时折叠整个设置 Inspector，避免空的 `GscInspectorWidth` 固定右栏；选中工具后恢复真实设置内容和所有原有命令。
 - `TrainerCenterView.xaml.cs` 记录最近一次响应式尺寸，并在 Inspector 可见性变化时重新应用布局。宽屏无选择时释放分隔列与右栏，选中时恢复 `14 + GscInspectorWidth`；窄屏仍把真实 Inspector 放到工具列表下方并使用有限 `MaxHeight`。
 - 新增 `TrainerInspectorReleasesEmptyRightColumn` STA WPF 几何回归测试；工具列表 `GameTools`、Recycling 虚拟化、导入确认和全部绑定未改动。验证时不要把静态/STA 测试等同于 Playnite 宿主或 DPI 真机渲染验证。
-- 跨电脑继续维护时，以该 commit 为基线；不要覆盖本地已有提交。下一步可继续按同一证据标准审计 Media/Overview 的真实空 Inspector 状态。
+- 跨电脑继续维护时，以该 commit 为基线；不要覆盖本地已有提交。Media 空 Inspector 已在 UI-178 完成，下一步按同一证据标准继续审计 Overview，再处理 Settings 的页面级层次与宽度问题。
 
 > UI-178：媒体中心空 Inspector 释放（2026-08-10）
 
