@@ -989,6 +989,7 @@ public sealed class WpfUiResourceDictionaryTests
         var repositoryRoot = FindRepositoryRoot();
         var maintenancePath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml");
         var maintenanceText = File.ReadAllText(maintenancePath);
+        var maintenanceCode = File.ReadAllText(maintenancePath + ".cs");
 
         Assert.Contains("<TabItem Header=\"保留策略\">", maintenanceText);
         Assert.Contains("Command=\"{Binding PreviewRetentionCommand}\"", maintenanceText);
@@ -998,6 +999,82 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("ItemsSource=\"{Binding LastRetentionPreview.DeleteCandidateIds}\"", maintenanceText);
         Assert.Contains("Style=\"{DynamicResource GscPageScrollViewer}\"", maintenanceText);
         Assert.Contains("不会自动删除", maintenanceText);
+        Assert.Contains("x:Name=\"MaintenanceRetentionMetrics\"", maintenanceText);
+        Assert.Contains("x:Name=\"MaintenanceRetentionDetailsLayout\"", maintenanceText);
+        Assert.Contains("x:Name=\"MaintenanceRetentionKeepCard\"", maintenanceText);
+        Assert.Contains("x:Name=\"MaintenanceRetentionDeleteCard\"", maintenanceText);
+        Assert.Contains("MaintenanceRetentionMetrics.Columns = width >= 720 ? 3 : width >= 480 ? 2 : 1", maintenanceCode);
+        Assert.Contains("var stackRetentionDetails = width < 720", maintenanceCode);
+        Assert.Contains("Grid.SetRow(MaintenanceRetentionDeleteCard, stackRetentionDetails ? 1 : 0)", maintenanceCode);
+        Assert.Contains("MaintenanceRetentionDeleteCard.Margin = stackRetentionDetails", maintenanceCode);
+    }
+
+    [Fact]
+    public void MaintenanceRetentionPreviewReflowsDetailsAtNarrowWidth()
+    {
+        Exception? exception = null;
+        var narrowMetricsColumns = 0;
+        var narrowDeleteRow = -1;
+        var narrowDeleteColumnSpan = 0;
+        var narrowDeleteMargin = new Thickness();
+        var narrowSecondRowType = GridUnitType.Pixel;
+        var wideMetricsColumns = 0;
+        var wideDeleteColumn = -1;
+        var wideDeleteColumnSpan = 0;
+        var wideDeleteRow = -1;
+        var wideSecondRowType = GridUnitType.Auto;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var view = new MaintenanceView();
+                var viewType = typeof(MaintenanceView);
+                var metrics = (UniformGrid)viewType
+                    .GetField("MaintenanceRetentionMetrics", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var details = (Grid)viewType
+                    .GetField("MaintenanceRetentionDetailsLayout", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var deleteCard = (Border)viewType
+                    .GetField("MaintenanceRetentionDeleteCard", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+
+                view.ApplyResponsiveLayout(640, 640);
+                narrowMetricsColumns = metrics.Columns;
+                narrowDeleteRow = Grid.GetRow(deleteCard);
+                narrowDeleteColumnSpan = Grid.GetColumnSpan(deleteCard);
+                narrowDeleteMargin = deleteCard.Margin;
+                narrowSecondRowType = details.RowDefinitions[1].Height.GridUnitType;
+
+                view.ApplyResponsiveLayout(820, 640);
+                wideMetricsColumns = metrics.Columns;
+                wideDeleteColumn = Grid.GetColumn(deleteCard);
+                wideDeleteColumnSpan = Grid.GetColumnSpan(deleteCard);
+                wideDeleteRow = Grid.GetRow(deleteCard);
+                wideSecondRowType = details.RowDefinitions[1].Height.GridUnitType;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.Equal(2, narrowMetricsColumns);
+        Assert.Equal(1, narrowDeleteRow);
+        Assert.Equal(3, narrowDeleteColumnSpan);
+        Assert.Equal(14, narrowDeleteMargin.Top);
+        Assert.Equal(GridUnitType.Auto, narrowSecondRowType);
+        Assert.Equal(3, wideMetricsColumns);
+        Assert.Equal(2, wideDeleteColumn);
+        Assert.Equal(1, wideDeleteColumnSpan);
+        Assert.Equal(0, wideDeleteRow);
+        Assert.Equal(GridUnitType.Pixel, wideSecondRowType);
     }
 
     [Fact]

@@ -124,16 +124,17 @@
                                 </Grid>
                                 <TextBlock Text="{Binding SelectedGame.Name, TargetNullValue=尚未选择游戏}" Style="{DynamicResource GscBodyStyle}" Margin="0,16,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedGame.Name}"/>
                                 <Border Style="{DynamicResource GscRedesignInfoBand}" Padding="12" Margin="0,12,0,0"><TextBlock Text="{Binding RetentionSummary, TargetNullValue=尚未生成保留预览。请先选择游戏并刷新。}" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap"/></Border>
-                                <UniformGrid Columns="3" Margin="0,14,0,0">
+                                <UniformGrid x:Name="MaintenanceRetentionMetrics" Columns="3" Margin="0,14,0,0">
                                     <Border Style="{DynamicResource GscRedesignSubCard}" Margin="0,0,8,0"><StackPanel><TextBlock Text="预计保留" Style="{DynamicResource GscCaptionStyle}"/><TextBlock Text="{Binding LastRetentionPreview.KeepBackupIds.Count, TargetNullValue=—}" FontSize="28" FontWeight="SemiBold" Margin="0,8,0,0"/><TextBlock Text="个版本" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/></StackPanel></Border>
                                     <Border Style="{DynamicResource GscRedesignSubCard}" Margin="0,0,8,0"><StackPanel><TextBlock Text="候选清理" Style="{DynamicResource GscCaptionStyle}"/><TextBlock Text="{Binding LastRetentionPreview.DeleteCandidateIds.Count, TargetNullValue=—}" FontSize="28" FontWeight="SemiBold" Margin="0,8,0,0"/><TextBlock Text="当前仅预览" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/></StackPanel></Border>
                                     <Border Style="{DynamicResource GscRedesignSubCard}"><StackPanel><TextBlock Text="安全边界" Style="{DynamicResource GscCaptionStyle}"/><TextBlock Text="只读" FontSize="28" FontWeight="SemiBold" Margin="0,8,0,0"/><TextBlock Text="不会自动删除" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/></StackPanel></Border>
                                 </UniformGrid>
                             </StackPanel>
                         </Border>
-                        <Grid Margin="0,14,0,0">
+                        <Grid x:Name="MaintenanceRetentionDetailsLayout" Margin="0,14,0,0">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                            <Border Style="{DynamicResource GscReadingCardStyle}" Padding="16">
+                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="0"/></Grid.RowDefinitions>
+                            <Border x:Name="MaintenanceRetentionKeepCard" Style="{DynamicResource GscReadingCardStyle}" Padding="16">
                                 <StackPanel>
                                     <TextBlock Text="预计保留明细" Style="{DynamicResource GscSectionTitleStyle}"/>
                                     <TextBlock Text="刷新预览后显示建议保留的版本。" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/>
@@ -145,7 +146,7 @@
                                     </TextBlock>
                                 </StackPanel>
                             </Border>
-                            <Border Grid.Column="2" Style="{DynamicResource GscReadingCardStyle}" Padding="16">
+                            <Border x:Name="MaintenanceRetentionDeleteCard" Grid.Column="2" Style="{DynamicResource GscReadingCardStyle}" Padding="16">
                                 <StackPanel>
                                     <TextBlock Text="候选清理明细" Style="{DynamicResource GscSectionTitleStyle}"/>
                                     <TextBlock Text="锁定版本永不进入候选清理，预览只读不会执行删除。" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0" TextWrapping="Wrap"/>

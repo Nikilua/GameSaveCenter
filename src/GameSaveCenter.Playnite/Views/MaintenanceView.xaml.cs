@@ -62,6 +62,29 @@ namespace GameSaveCenter.Playnite.Views
             // the SaveCenter policy page. The 4 is the right padding of
             // GscPageScrollViewer.
             MaintenanceRetentionStack.Width = Math.Max(0, Math.Min(width - 4, 1050));
+            MaintenanceRetentionMetrics.Columns = width >= 720 ? 3 : width >= 480 ? 2 : 1;
+            // The two detail cards read well as peers on a wide form, but squeezing
+            // long backup IDs into two narrow columns makes the preview look like a
+            // clipped table. Stack them as natural-height sections in the narrow form;
+            // the page ScrollViewer remains the single overflow owner.
+            var stackRetentionDetails = width < 720;
+            MaintenanceRetentionDetailsLayout.ColumnDefinitions[1].Width = stackRetentionDetails
+                ? new GridLength(0)
+                : new GridLength(14);
+            MaintenanceRetentionDetailsLayout.ColumnDefinitions[2].Width = stackRetentionDetails
+                ? new GridLength(0)
+                : new GridLength(1, GridUnitType.Star);
+            MaintenanceRetentionDetailsLayout.RowDefinitions[1].Height = stackRetentionDetails
+                ? new GridLength(1, GridUnitType.Auto)
+                : new GridLength(0);
+            Grid.SetColumnSpan(MaintenanceRetentionKeepCard, stackRetentionDetails ? 3 : 1);
+            Grid.SetRow(MaintenanceRetentionKeepCard, 0);
+            Grid.SetColumn(MaintenanceRetentionDeleteCard, stackRetentionDetails ? 0 : 2);
+            Grid.SetColumnSpan(MaintenanceRetentionDeleteCard, stackRetentionDetails ? 3 : 1);
+            Grid.SetRow(MaintenanceRetentionDeleteCard, stackRetentionDetails ? 1 : 0);
+            MaintenanceRetentionDeleteCard.Margin = stackRetentionDetails
+                ? new Thickness(0, 14, 0, 0)
+                : new Thickness(0);
             // The findings table has five readable columns plus an inspector. Keep the
             // inspector beside it only when the main table can still show those columns;
             // otherwise stack it before WPF starts compressing the text into a single strip.
