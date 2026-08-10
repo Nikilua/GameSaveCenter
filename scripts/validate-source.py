@@ -1046,7 +1046,7 @@ def check_responsive_ui_layout_guards() -> None:
         if token not in settings:
             fail(f"Settings responsive layout guard missing: {token}")
     for token in ("SizeChanged += OnSizeChanged", "ApplyResponsiveLayout(ActualWidth, ActualHeight)",
-                  "SettingsHeaderSubtitle.Visibility", "width < 720"):
+                  "SettingsHeaderSubtitle.Visibility", "layoutWidth < 720"):
         if token not in settings_code:
             fail(f"Settings responsive behavior guard missing: {token}")
     for token in ("SetToolbarLabelsVisible(mode == LayoutMode.Expanded)", "TopRefreshLabel.Visibility"):
@@ -1145,7 +1145,7 @@ def check_final_redesign_guards() -> None:
           'x:Name="AppearanceFields"', 'x:Name="AutomationIntervalFields"',
           'Click="OnExportSettingsClick"', 'Click="OnImportSettingsClick"')),
         (settings_code, "Settings final responsive behavior",
-         ('var compact = width < 920', 'var narrow = width < 720',
+         ('var compact = layoutWidth < 920', 'var narrow = layoutWidth < 720',
           'SettingsSectionTabs.TabStripPlacement = compact ? Dock.Top : Dock.Left',
           'tab.MinWidth = compact ? (narrow ? 132 : 158) : 218',
           'SettingsDemoShell.Margin = new Thickness(horizontalMargin)',

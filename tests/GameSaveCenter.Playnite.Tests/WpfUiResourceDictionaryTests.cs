@@ -2175,7 +2175,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Path=\"ProcessPollingSeconds\" UpdateSourceTrigger=\"LostFocus\"", settings);
         Assert.Contains("Path=\"DashboardRefreshSeconds\" UpdateSourceTrigger=\"LostFocus\"", settings);
         Assert.Contains("AppearanceFields.Columns = twoColumns ? 2 : 1", settingsCode);
-        Assert.Contains("var contentWidth = Math.Max(320, width - horizontalMargin * 2 - 40);", settingsCode);
+        Assert.Contains("var layoutWidth = SettingsShell.ActualWidth > 0", settingsCode);
+        Assert.Contains("var contentWidth = Math.Max(320, layoutWidth - horizontalMargin * 2 - 40);", settingsCode);
         Assert.Contains("AutomationIntervalFields.Columns = expanded && formWidth >= 930 ? 3 : formWidth >= 650 ? 2 : 1", settingsCode);
         // 核心工具路径字段保持单列全宽行（路径可读性），不再参与两列网格切换。
         Assert.Contains("x:Name=\"CoreToolFields\"", settings);
