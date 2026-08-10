@@ -943,7 +943,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("{Binding LastRetentionPreview.KeepBackupIds.Count", saveText);
         Assert.Contains("Command=\"{Binding CompareBackupCommand}\"", saveText);
         Assert.Contains("Command=\"{Binding PreviewRetentionCommand}\"", saveText);
-        Assert.Contains("var stackCompare = width < 980 || height < 760;", saveCode);
+        Assert.Contains("var stackCompare = width < 1080 || height < 760;", saveCode);
         Assert.Contains("SaveCompareRetentionScrollViewer.MaxHeight = stackCompare ? Math.Max(180, Math.Min(420, height * 0.42)) : double.PositiveInfinity;", saveCode);
         Assert.Contains("SaveCompareLayout.RowDefinitions[1].Height = stackCompare ? new GridLength(1, GridUnitType.Auto) : new GridLength(0);", saveCode);
         Assert.Contains("Grid.SetRow(SaveCompareRetentionScrollViewer, stackCompare ? 1 : 0);", saveCode);
@@ -1228,7 +1228,7 @@ public sealed class WpfUiResourceDictionaryTests
         // width (capped at 980) instead of shrinking to its natural width.
         Assert.Contains("MaxWidth=\"980\" HorizontalAlignment=\"Stretch\" VerticalAlignment=\"Top\"", trainers);
         Assert.Contains("MaxWidth=\"1050\" HorizontalAlignment=\"Left\"", maintenance);
-        Assert.Contains("var stackOverview = width < 1040", dashboardCode);
+        Assert.Contains("var stackOverview = width < 1080", dashboardCode);
         Assert.Contains("var stackDiagnostics = width < 1120", maintenanceCode);
         Assert.Contains("var stackDevice = width < 1180", maintenanceCode);
         Assert.DoesNotContain("width < 1360", maintenanceCode);
@@ -1247,7 +1247,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"TrainerCatalogReleasesPanel\"", trainer);
         Assert.Contains("x:Name=\"TrainerReleasesLayout\"", trainer);
         Assert.Contains("x:Name=\"TrainerReleaseInfoPanel\"", trainer);
-        Assert.Contains("var stackReleases = width < 980", codeBehind);
+        Assert.Contains("var stackReleases = width < 1080", codeBehind);
         Assert.Contains("Grid.SetColumnSpan(TrainerCatalogReleasesPanel, stackReleases ? 3 : 1)", codeBehind);
         Assert.Contains("Grid.SetRow(TrainerReleaseInfoPanel, stackReleases ? 1 : 0)", codeBehind);
         Assert.Contains("x:Name=\"TrainerReleaseInfoScrollViewer\"", trainer);
@@ -2622,9 +2622,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"HeaderGamePickerColumn\"", dashboard);
         Assert.Contains("x:Name=\"CompactGameSelector\"", dashboard);
         Assert.Contains("x:Name=\"ToggleGameBrowserButton\"", dashboard);
-        Assert.Contains("width >= 1260 ? LayoutMode.Expanded", dashboardCode);
-        Assert.Contains("width >= 980 ? LayoutMode.Standard", dashboardCode);
-        Assert.Contains("width >= 760 ? LayoutMode.Compact", dashboardCode);
+        Assert.Contains("width >= 1280 ? LayoutMode.Expanded", dashboardCode);
+        Assert.Contains("width >= 1080 ? LayoutMode.Standard", dashboardCode);
+        Assert.Contains("width >= 960 ? LayoutMode.Compact", dashboardCode);
         Assert.Contains("Grid.SetRow(TopActionsScroller, 2)", dashboardCode);
         Assert.Contains("Grid.SetColumnSpan(TopActionsScroller, 3)", dashboardCode);
         Assert.Contains("var pickerOnTopBar = gameScopedWorkspace", dashboardCode);
@@ -2796,14 +2796,21 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Equal("全部", filterSelectedItem);
 
         var repositoryRoot = FindRepositoryRoot();
+        var tokens = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml"));
         var production = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml"));
         var redesign = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "Redesign.xaml"));
         var dashboard = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml"));
+        var trainer = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml"));
         var media = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
         var tasks = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml"));
         var overview = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml"));
 
-        Assert.Contains("x:Key=\"GscButtonHeight\">38", File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml")));
+        Assert.Contains("x:Key=\"GscButtonHeight\">38", tokens);
+        Assert.Contains("<Style x:Key=\"GscButtonBase\"", tokens);
+        Assert.Contains("<Setter Property=\"MinHeight\" Value=\"{DynamicResource GscButtonHeight}\"/>", tokens);
+        Assert.Contains("<Style x:Key=\"GscButtonBase\"", dashboard);
+        Assert.Contains("<Setter Property=\"MinHeight\" Value=\"{DynamicResource GscButtonHeight}\"/>", dashboard);
+        Assert.DoesNotContain("MinHeight=\"38\"", trainer);
         Assert.Contains("x:Key=\"GscWpfUiFilterComboBox\"", production);
         Assert.Contains("<Setter Property=\"SelectedIndex\" Value=\"0\"/>", production);
         Assert.Contains("MinHeight\" Value=\"{DynamicResource GscButtonHeight}\"", redesign);

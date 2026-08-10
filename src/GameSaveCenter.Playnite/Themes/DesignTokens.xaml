@@ -334,7 +334,7 @@
         <Setter Property="BorderBrush" Value="{DynamicResource GscDividerBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Padding" Value="15,8"/>
-        <Setter Property="MinHeight" Value="38"/>
+        <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
         <Setter Property="Margin" Value="0,0,8,8"/>
         <Setter Property="FontFamily" Value="Segoe UI Variable Text, Segoe UI"/>
         <Setter Property="FontWeight" Value="SemiBold"/>

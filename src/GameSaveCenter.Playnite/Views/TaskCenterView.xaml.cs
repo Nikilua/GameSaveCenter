@@ -24,7 +24,7 @@ namespace GameSaveCenter.Playnite.Views
             // surface and the selected task is a right-side inspector. At
             // compact widths the inspector drops below the table instead of
             // compressing the task columns into an unreadable strip.
-            var stack = width < 980;
+            var stack = width < 1080;
             var inspectorWidth = TaskWorkspaceLayout.TryFindResource("GscInspectorWidth") is GridLength gl ? gl : new GridLength(360);
             TaskWorkspaceLayout.ColumnDefinitions[1].Width = stack ? new GridLength(0) : new GridLength(14);
             TaskWorkspaceLayout.ColumnDefinitions[2].Width = stack ? new GridLength(0) : inspectorWidth;

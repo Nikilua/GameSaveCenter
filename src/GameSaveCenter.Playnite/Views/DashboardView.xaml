@@ -86,7 +86,7 @@
             <Setter Property="BorderBrush" Value="{DynamicResource GscDividerBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="15,8"/>
-            <Setter Property="MinHeight" Value="38"/>
+            <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
             <Setter Property="Margin" Value="0,0,8,8"/>
             <Setter Property="FontFamily" Value="Segoe UI Variable Text, Segoe UI"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
@@ -176,7 +176,7 @@
              measured height and vertical center. Spacing is owned by the parent layout. -->
         <Style x:Key="GscToolbarButton" TargetType="Button" BasedOn="{StaticResource GscButtonBase}">
             <Setter Property="Margin" Value="0"/>
-            <Setter Property="MinHeight" Value="38"/>
+            <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -184,7 +184,7 @@
 
         <Style x:Key="GscToolbarPrimaryButton" TargetType="Button" BasedOn="{StaticResource GscPrimaryButton}">
             <Setter Property="Margin" Value="0"/>
-            <Setter Property="MinHeight" Value="38"/>
+            <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>

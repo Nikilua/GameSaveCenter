@@ -29,7 +29,7 @@ namespace GameSaveCenter.Playnite.Views
             // Only the stacked compact layout receives a finite scroll channel; otherwise the
             // card would collapse into a short block and leave a large unused area beside it.
             TrainerToolsSettingsScrollViewer.MaxHeight = double.PositiveInfinity;
-            var stackInstalled = width < 980;
+            var stackInstalled = width < 1080;
             InstalledToolsLayout.ColumnDefinitions[1].Width = stackInstalled
                 ? new GridLength(0)
                 : new GridLength(14);
@@ -45,7 +45,7 @@ namespace GameSaveCenter.Playnite.Views
             TrainerToolsSettingsScrollViewer.Margin = stackInstalled
                 ? new Thickness(0, 10, 0, 0)
                 : new Thickness(0);
-            var stackReleases = width < 980;
+            var stackReleases = width < 1080;
             TrainerReleasesLayout.RowDefinitions[0].Height = new GridLength(1, GridUnitType.Star);
             TrainerReleasesLayout.RowDefinitions[1].Height = stackReleases
                 ? GridLength.Auto

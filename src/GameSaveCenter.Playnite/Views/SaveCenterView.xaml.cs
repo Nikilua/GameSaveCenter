@@ -10,7 +10,7 @@ namespace GameSaveCenter.Playnite.Views
 
         public void ApplyResponsiveLayout(double width, double height)
         {
-            var compact = height < 760 || width < 980;
+            var compact = height < 760 || width < 1080;
             var inspectorWidth = SaveHistoryLayout.TryFindResource("GscInspectorWidth") is GridLength gl ? gl : new GridLength(360);
             // The demo keeps the history table and the selected-version inspector
             // side by side when there is room. On a compact host, stack the
@@ -32,7 +32,7 @@ namespace GameSaveCenter.Playnite.Views
             Grid.SetRow(SaveCandidateInspectorScrollViewer, compact ? 1 : 0);
             SaveCandidateInspectorScrollViewer.Margin = compact ? new Thickness(0, 10, 0, 0) : new Thickness(0);
             SaveCandidateInspectorScrollViewer.MaxHeight = compact ? Math.Max(150, Math.Min(360, height * 0.42)) : double.PositiveInfinity;
-            var stackPolicy = width < 980;
+            var stackPolicy = width < 1080;
             // The policy page is a left-aligned form capped by the shared
             // GscFormMaxWidth token (1120). Give the StackPanel an explicit
             // viewport width so the reading cards fill the form instead of
@@ -51,7 +51,7 @@ namespace GameSaveCenter.Playnite.Views
             Grid.SetRow(SavePolicySafetyCard, stackPolicy ? 2 : 1);
             SavePolicyMediaCard.Margin = stackPolicy ? new Thickness(0, 14, 0, 0) : new Thickness(0);
 
-            var stackCompare = width < 980 || height < 760;
+            var stackCompare = width < 1080 || height < 760;
             SaveCompareLayout.ColumnDefinitions[1].Width = stackCompare ? new GridLength(0) : new GridLength(14);
             SaveCompareLayout.ColumnDefinitions[2].Width = stackCompare ? new GridLength(0) : inspectorWidth;
             SaveCompareLayout.RowDefinitions[1].Height = stackCompare ? new GridLength(1, GridUnitType.Auto) : new GridLength(0);

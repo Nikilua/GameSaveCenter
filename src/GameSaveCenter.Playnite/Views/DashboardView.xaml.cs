@@ -233,9 +233,9 @@ namespace GameSaveCenter.Playnite.Views
         {
             if (SidebarColumn == null || GameListColumn == null) return;
 
-            var mode = width >= 1260 ? LayoutMode.Expanded
-                : width >= 980 ? LayoutMode.Standard
-                : width >= 760 ? LayoutMode.Compact
+            var mode = width >= 1280 ? LayoutMode.Expanded
+                : width >= 1080 ? LayoutMode.Standard
+                : width >= 960 ? LayoutMode.Compact
                 : LayoutMode.Narrow;
             viewModel.LayoutMode = mode;
 
@@ -305,7 +305,7 @@ namespace GameSaveCenter.Playnite.Views
                 : 72);
             SidebarGutterColumn.Width = new GridLength(iconSidebar ? 10 : 16);
             TopChromeSafetyColumn.Width = new GridLength(0);
-            ToastHost.Margin = new Thickness(0, height < 760 ? 66 : 78, width < 980 ? 12 : 22, 0);
+            ToastHost.Margin = new Thickness(0, height < 760 ? 66 : 78, width < 1080 ? 12 : 22, 0);
             SetSidebarLabelsVisible(!iconSidebar);
             SetToolbarLabelsVisible(mode == LayoutMode.Expanded);
 
@@ -429,7 +429,7 @@ namespace GameSaveCenter.Playnite.Views
             }
             if (OverviewWorkspaceView != null)
             {
-                var stackOverview = width < 1040;
+                var stackOverview = width < 1080;
                 OverviewWorkspaceView.OverviewCompactSecondaryRowHeight = stackOverview ? GridLength.Auto : new GridLength(0);
                 OverviewWorkspaceView.ApplyResponsiveColumns(stackOverview);
                 OverviewWorkspaceView.ApplyResponsiveWidth(width);
