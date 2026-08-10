@@ -3,6 +3,8 @@
 更新时间：2026-08-10
 当前版本：`0.6.70-development-preview`
 
+- [x] UI-181：维护中心五张真实 `DataGrid` 的首列显式声明 `MaintenanceFirstColumnHeader`，与已有的 `MaintenanceLastColumnHeader`/`GscLastColumnHeader` 共同锁定 Demo 对齐所需的首尾圆角、主题前景和背景所有权，避免首列继续依赖宿主默认表头样式。保留 `MaintenanceDataGrid` 的 `ItemsSource`、选中项绑定、`Standard` 行虚拟化、键盘/Automation 入口以及 `DataGridLoaded` 的一次性资源兜底；未修改业务层、Worker、IPC 或持久化。新增 XAML 结构回归测试，确认五张维护表的真实列顺序都声明首尾表头样式。源码验证通过；Debug/Release 编译与测试通过（Core 13、Worker 23、Playnite 140）。尚未在真实 Playnite 宿主、Light/Dark/高对比度和多 DPI 环境完成运行时渲染验收。
+
 - [x] DOC-001：新增 `docs/DEVELOPMENT_HANDOFF.md` 作为跨电脑、跨模型的持续维护入口，固化必读资料、Demo 路径、用户原话、UI 约束、验证流程、commit 要求、当前基线和下一步方向；`PROJECT_MEMORY.md` 已增加入口链接。未修改生产代码或业务行为。
 
 - [x] UI-180：首页 Overview 按 Demo HomeView 的阅读顺序重排真实内容：工作台/今日状态之后先展示“当前游戏”上下文卡，再展示六项 `Snapshot.*` 指标，最后进入最近活动列表；原布局把六项指标放在当前游戏卡之前，导致页面层级与 Demo 相反。仅调整 `Grid.Row` 与当前游戏卡的自然间隔，保留 `OverviewMetricPanel`、立即备份/刷新详情/查看需关注项命令、真实 `SelectedGame`/`OverviewTasks` 绑定、ListBox Recycling 虚拟化和右侧风险滚动通道；新增结构回归断言锁定“上下文 → 指标 → 活动”顺序。未修改业务层。仍需 Playnite 宿主、主题和 DPI 真机验证。

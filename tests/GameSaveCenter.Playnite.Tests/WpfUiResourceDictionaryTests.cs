@@ -564,6 +564,36 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void MaintenanceDataGridsDeclareExplicitFirstAndLastHeaderStyles()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var maintenancePath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml");
+        var document = XDocument.Parse(File.ReadAllText(maintenancePath));
+        var dataGrids = document.Descendants()
+            .Where(element => element.Name.LocalName == "DataGrid")
+            .ToList();
+
+        Assert.Equal(5, dataGrids.Count);
+
+        foreach (var dataGrid in dataGrids)
+        {
+            var columns = dataGrid.Descendants()
+                .Where(element => element.Name.LocalName is "DataGridTextColumn" or "DataGridTemplateColumn")
+                .ToList();
+
+            Assert.NotEmpty(columns);
+            Assert.Equal("{StaticResource MaintenanceFirstColumnHeader}", columns[0].Attribute("HeaderStyle")?.Value);
+
+            var lastHeaderStyle = columns[columns.Count - 1].Attribute("HeaderStyle")?.Value;
+            Assert.Contains(lastHeaderStyle, new[]
+            {
+                "{StaticResource MaintenanceLastColumnHeader}",
+                "{DynamicResource GscLastColumnHeader}"
+            });
+        }
+    }
+
+    [Fact]
     public void MediaInboxActionsStayOutsideTheGridScrollSurface()
     {
         var repositoryRoot = FindRepositoryRoot();
