@@ -2816,6 +2816,7 @@ public sealed class WpfUiResourceDictionaryTests
         var trainer = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml"));
         var trainerCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml.cs"));
         var media = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
+        var maintenance = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
         var tasks = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml"));
         var overview = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml"));
 
@@ -2836,9 +2837,11 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("MinHeight\" Value=\"{DynamicResource GscButtonHeight}\"", redesign);
         Assert.Contains("Style=\"{StaticResource GscWpfUiFilterComboBox}\" SelectedIndex=\"0\"", dashboard);
         Assert.Contains("Style=\"{DynamicResource GscWpfUiFilterComboBox}\" SelectedIndex=\"0\"", media);
+        Assert.Contains("SelectedItem=\"{Binding MediaFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}\"", media);
         Assert.Contains("x:Key=\"MediaSummaryCard\" TargetType=\"Border\" BasedOn=\"{StaticResource GscRedesignMetricBorder}\"", media);
         Assert.Equal(4, Regex.Matches(media, "Style=\"\\{StaticResource MediaSummaryCard\\}\"").Count);
         Assert.Equal(3, Regex.Matches(tasks, "Style=\"\\{DynamicResource GscWpfUiFilterComboBox\\}\" SelectedIndex=\"0\"").Count);
+        Assert.Contains("Style=\"{DynamicResource GscWpfUiComboBox}\" SelectedIndex=\"0\" ItemsSource=\"{Binding DeviceDecisionOptions}\" SelectedItem=\"{Binding DeviceDecision, TargetNullValue=稍后处理, FallbackValue=稍后处理}\"", maintenance);
         Assert.Contains("<Setter Property=\"VerticalContentAlignment\" Value=\"Center\"/>", overview);
         Assert.DoesNotContain("<Setter Property=\"VerticalContentAlignment\" Value=\"Top\"/>", overview);
     }
