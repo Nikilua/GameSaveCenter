@@ -1016,16 +1016,104 @@ public sealed class WpfUiResourceDictionaryTests
                 element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == name);
             Assert.Equal("Auto", viewer.Attribute("VerticalScrollBarVisibility")?.Value);
             Assert.Equal("Disabled", viewer.Attribute("HorizontalScrollBarVisibility")?.Value);
-            Assert.Equal("{DynamicResource GscInspectorScrollViewer}", viewer.Attribute("Style")?.Value);
+            Assert.Null(viewer.Attribute("Style"));
+            var inspectorStyle = viewer.Descendants().Single(element =>
+                element.Name.LocalName == "Style" && element.Attribute("BasedOn") != null);
+            Assert.Equal("{StaticResource GscInspectorScrollViewer}", inspectorStyle.Attribute("BasedOn")?.Value);
         }
 
-        Assert.Contains("SaveHistoryActionsScrollViewer.MaxHeight = compact ? Math.Max(150, Math.Min(360, height * 0.42)) : double.PositiveInfinity;", saveCode);
-        Assert.Contains("SaveCandidateInspectorScrollViewer.MaxHeight = compact ? Math.Max(150, Math.Min(360, height * 0.42)) : double.PositiveInfinity;", saveCode);
+        Assert.Contains("SaveHistoryActionsScrollViewer.MaxHeight = showHistoryInspector && compact ? Math.Max(150, Math.Min(360, height * 0.42)) : double.PositiveInfinity;", saveCode);
+        Assert.Contains("SaveCandidateInspectorScrollViewer.MaxHeight = showCandidateInspector && compact ? Math.Max(150, Math.Min(360, height * 0.42)) : double.PositiveInfinity;", saveCode);
         Assert.Contains("Grid.SetRow(SaveCandidateInspectorScrollViewer, compact ? 1 : 0)", saveCode);
         Assert.Contains("SaveCandidateInspectorScrollViewer", saveText);
+        Assert.Contains("<DataTrigger Binding=\"{Binding SelectedBackup}\" Value=\"{x:Null}\">", saveText);
+        Assert.Contains("<DataTrigger Binding=\"{Binding SelectedCandidate}\" Value=\"{x:Null}\">", saveText);
         Assert.DoesNotContain("SaveCandidateReasonScrollViewer", saveText);
         Assert.DoesNotContain("SaveCandidateActionsScrollViewer", saveText);
         Assert.DoesNotContain("<Border Grid.Row=\"1\" Style=\"{DynamicResource GscSurface}\"", saveText);
+    }
+
+    [Fact]
+    public void SaveCenterReleasesEmptyHistoryAndCandidateInspectors()
+    {
+        Exception? exception = null;
+        var emptyHistoryGutter = -1d;
+        var emptyHistoryInspector = -1d;
+        var emptyHistoryStackRow = GridUnitType.Auto;
+        var emptyCandidateGutter = -1d;
+        var emptyCandidateInspector = -1d;
+        var emptyCandidateStackRow = GridUnitType.Auto;
+        var selectedHistoryGutter = -1d;
+        var selectedHistoryInspector = -1d;
+        var selectedCandidateGutter = -1d;
+        var selectedCandidateInspector = -1d;
+        var compactHistoryStackRow = GridUnitType.Pixel;
+        var compactCandidateStackRow = GridUnitType.Pixel;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var view = new SaveCenterView();
+                var viewType = typeof(SaveCenterView);
+                var historyLayout = (Grid)viewType
+                    .GetField("SaveHistoryLayout", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var candidateLayout = (Grid)viewType
+                    .GetField("SaveCandidateLayout", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var historyInspector = (ScrollViewer)viewType
+                    .GetField("SaveHistoryActionsScrollViewer", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var candidateInspector = (ScrollViewer)viewType
+                    .GetField("SaveCandidateInspectorScrollViewer", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+
+                historyInspector.Visibility = Visibility.Collapsed;
+                candidateInspector.Visibility = Visibility.Collapsed;
+                view.ApplyResponsiveLayout(1280, 800);
+                emptyHistoryGutter = historyLayout.ColumnDefinitions[1].Width.Value;
+                emptyHistoryInspector = historyLayout.ColumnDefinitions[2].Width.Value;
+                emptyHistoryStackRow = historyLayout.RowDefinitions[1].Height.GridUnitType;
+                emptyCandidateGutter = candidateLayout.ColumnDefinitions[1].Width.Value;
+                emptyCandidateInspector = candidateLayout.ColumnDefinitions[2].Width.Value;
+                emptyCandidateStackRow = candidateLayout.RowDefinitions[1].Height.GridUnitType;
+
+                historyInspector.Visibility = Visibility.Visible;
+                candidateInspector.Visibility = Visibility.Visible;
+                view.ApplyResponsiveLayout(1280, 800);
+                selectedHistoryGutter = historyLayout.ColumnDefinitions[1].Width.Value;
+                selectedHistoryInspector = historyLayout.ColumnDefinitions[2].Width.Value;
+                selectedCandidateGutter = candidateLayout.ColumnDefinitions[1].Width.Value;
+                selectedCandidateInspector = candidateLayout.ColumnDefinitions[2].Width.Value;
+
+                view.ApplyResponsiveLayout(1024, 640);
+                compactHistoryStackRow = historyLayout.RowDefinitions[1].Height.GridUnitType;
+                compactCandidateStackRow = candidateLayout.RowDefinitions[1].Height.GridUnitType;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.Equal(0, emptyHistoryGutter);
+        Assert.Equal(0, emptyHistoryInspector);
+        Assert.Equal(GridUnitType.Pixel, emptyHistoryStackRow);
+        Assert.Equal(0, emptyCandidateGutter);
+        Assert.Equal(0, emptyCandidateInspector);
+        Assert.Equal(GridUnitType.Pixel, emptyCandidateStackRow);
+        Assert.Equal(14, selectedHistoryGutter);
+        Assert.True(selectedHistoryInspector > 0);
+        Assert.Equal(14, selectedCandidateGutter);
+        Assert.True(selectedCandidateInspector > 0);
+        Assert.Equal(GridUnitType.Auto, compactHistoryStackRow);
+        Assert.Equal(GridUnitType.Auto, compactCandidateStackRow);
     }
 
     [Fact]

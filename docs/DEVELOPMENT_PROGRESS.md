@@ -9,6 +9,8 @@
 
 - [x] UI-175：维护中心无选中项时释放空 Inspector 列：诊断、异常审计和进程映射页此前只折叠详情控件，宽屏仍保留 `* + 14 + GscInspectorWidth`，导致全宽表格右侧出现不可用空白；现根据真实选中项同时释放分隔列、Inspector 列和窄屏堆叠行，选中后恢复 Demo 对齐的列表 + Inspector 布局。诊断摘要、审计日志、显式表头样式、命令绑定和设备页单滚动通道均未改变；新增 STA WPF 几何回归测试，仍需 Playnite 宿主、主题和 DPI 真机验证。
 
+- [x] UI-176：存档中心无选中版本/候选时释放空 Inspector 列：历史版本与候选路径页此前在 `SelectedBackup`/`SelectedCandidate` 为空时仍固定保留 `* + 14 + GscInspectorWidth`，空表无法使用完整主区域；现让两个详情滚动容器跟随真实选择折叠，无详情时释放分隔列、Inspector 列和堆叠行，选中后恢复 Demo 对齐的列表 + Inspector，窄屏仍按原断点堆叠。比较与保留面板仍保留真实的只读预览入口；所有存档命令、绑定、选择回退、虚拟化和安全恢复链路均未改变；新增 STA WPF 几何回归测试，仍需 Playnite 宿主、主题和 DPI 真机验证。
+
 - [x] UI-172：统一共享下拉框选中文本的对齐与主题前景：生产 `GscWpfUiComboBoxTemplate` 与 `DesignTokens.xaml` 回退模板此前把选中项垂直位置固定为 `Center`，并将前景色固定到主文本令牌，未完整遵循控件自身的 `VerticalContentAlignment`/`Foreground`；现改为绑定控件契约，ComboBoxItem 也绑定自身前景，保证按钮与下拉框的文字位置、选中态和禁用态颜色由同一套属性驱动。保留筛选器 `SelectedIndex=0`、动态选择框初始空值、所有 ItemsSource/SelectedItem 绑定与命令不变。新增共享样式结构回归断言；源码校验、WPF 资源测试与 Release 构建通过后提交，仍需 Playnite 宿主、主题和 DPI 真机验证。
 
 - [x] UI-171：FLiNG 在线库搜索卡窄屏按钮换行，避免裁剪：搜索卡原为三列 Grid（`*/Auto/Auto`，TextBox `MinWidth=620` 常驻首行，两个按钮被钉在右侧），窗口收窄到约 850–1000 DIP 时按钮被裁剪出卡外；现改为两行 Grid（Auto/Auto），第一行 TextBox（`MinWidth=620`/`MaxWidth=680`/`TrainerSearchText` 绑定与 `ToolTip` 原样保留），第二行 `WrapPanel`（`Grid.Row=1`，Margin `0,12,0,0`）承载「搜索目录」「刷新目录」两个按钮，窄窗自动换行、宽窗两按钮并排，卡片 `HorizontalAlignment` 改为 `Stretch`、`VerticalAlignment=Top`（`MaxWidth=1080` 保留）。搜索/刷新命令、TextBox 绑定与输入逻辑均未改动。新增结构回归断言锁定两行布局/两按钮命令。源码校验、Release 构建与全部测试通过，仍需 Playnite 宿主验证。

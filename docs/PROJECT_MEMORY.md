@@ -3,6 +3,8 @@
 更新时间：2026-08-07
 当前版本：`0.6.70-development-preview`
 
+> UI-176：存档中心历史版本与候选路径的 Inspector 必须跟随真实 `SelectedBackup`/`SelectedCandidate`。无选中项时释放 `14 + GscInspectorWidth` 分隔列与堆叠行，让空表使用完整主区域；选中后恢复列表 + Inspector，窄屏仍按既有响应式断点堆叠。比较与保留页的只读预览入口不因无比较结果而隐藏。不得修改存档 Command、Binding、选择回退、虚拟化或安全恢复链路；跨机器继续任务时先读取 `DEVELOPMENT_PROGRESS.md` 的 UI-176 记录。
+
 > UI-155：900+ 游戏库的性能保护是不可丢失约束：`LargeLibraryThreshold=100`/`VeryLargeLibraryThreshold=500` 双阈值、`ConfigureLargeLibraryStartupGate` 25 秒静默窗、Dashboard 未打开时跳过自动目录同步、500+ 库 Dashboard 首次打开缓存优先（显式刷新才整库匹配）、`observedGameCount` 只增不减、500+ 库 Worker 健康检查不 Kill/重启、`GameCatalogService` 后台匹配（30 秒初始延迟、每轮 4 个、批间 180ms、500+ 库预算 64/超大库 12、只优先已安装/90 天内游玩）、任务通知长轮询 60 秒延迟 + 指数退避、Worker 单实例 Mutex。任何重构不得把这些闸门换成同步整库匹配或循环拉起 Ludusavi 进程；否则 900+ 游戏库会复现 0.6.22 的 967 次 `findTitle` 风暴与管道超时。
 
 > UI-136：首页 Overview 右栏 `OverviewSecondaryScrollViewer.MaxHeight` 只允许在堆叠模式限高（`stack` 时 `Max(260, Min(480, 高度*0.58))`）；宽屏非堆叠（宽度 ≥1040）必须保持 `PositiveInfinity` 拉伸到所在 `*` 行，即使窗口高度 <760 也不得恢复 `stack || compactHeight` 组合，否则右栏会出现底部死空白。内层 `OverviewRiskScrollViewer` 在堆叠或低高度时仍保留 `Max(180, Min(360, 高度*0.42))` 内部滚动上限。
