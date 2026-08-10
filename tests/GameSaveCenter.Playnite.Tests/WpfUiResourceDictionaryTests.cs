@@ -1833,6 +1833,28 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void OverviewFollowsDemoContextThenMetricsThenActivityOrder()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var overview = XDocument.Parse(File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml")));
+        var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
+        var currentGame = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewCurrentGameCard");
+        var metrics = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewStatStrip");
+        var activity = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewActivityList");
+
+        // The production page keeps the Demo's reading order while retaining the
+        // real Dashboard context and task list: context, metrics, recent activity.
+        Assert.Equal("1", currentGame.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
+        Assert.Equal("2", metrics.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
+        var activityFrame = activity.Ancestors().Single(element => element.Name.LocalName == "Border"
+            && element.Attributes().Any(attribute => attribute.Name.LocalName == "Grid.Row")
+            && element.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value == "3");
+        Assert.Equal("3", activityFrame.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
+        Assert.Equal("{Binding OverviewTasks}", activity.Attribute("ItemsSource")?.Value);
+        Assert.Equal("{Binding SelectedTask}", activity.Attribute("SelectedItem")?.Value);
+    }
+
+    [Fact]
     public void OverviewStatCardsShowRealRatioBarsThatCollapseOnEmptyLibrary()
     {
         var repositoryRoot = FindRepositoryRoot();

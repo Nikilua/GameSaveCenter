@@ -3,6 +3,8 @@
 更新时间：2026-08-10
 当前版本：`0.6.70-development-preview`
 
+- [x] UI-180：首页 Overview 按 Demo HomeView 的阅读顺序重排真实内容：工作台/今日状态之后先展示“当前游戏”上下文卡，再展示六项 `Snapshot.*` 指标，最后进入最近活动列表；原布局把六项指标放在当前游戏卡之前，导致页面层级与 Demo 相反。仅调整 `Grid.Row` 与当前游戏卡的自然间隔，保留 `OverviewMetricPanel`、立即备份/刷新详情/查看需关注项命令、真实 `SelectedGame`/`OverviewTasks` 绑定、ListBox Recycling 虚拟化和右侧风险滚动通道；新增结构回归断言锁定“上下文 → 指标 → 活动”顺序。未修改业务层。仍需 Playnite 宿主、主题和 DPI 真机验证。
+
 - [x] UI-179：设置页窄屏标题区与默认下拉态收口：`SettingsHeaderGrid` 在宽屏保持标题、说明和“由 Playnite 的保存按钮提交”提示同排；紧凑宽度（与设置分类切到顶部相同断点）将保存提示移动到标题第二行并跨两列，避免约 720 DIP 以下标题与提示互相挤压，同时保留提示可见。备份格式、压缩方式和主题模式三个真实设置 ComboBox 继续保留 `SelectedIndex=0`，并为 null/失效绑定分别补 ZIP、Zstandard、跟随 Playnite 的 `TargetNullValue`/`FallbackValue`，保证初始值与显示文字一致；未改变 Playnite `ISettings` 保存生命周期、主题事件、字段绑定或业务设置模型。回归断言覆盖标题行切换和三个安全默认值；源码校验、Playnite WPF 138 项测试通过，仍需 Playnite 宿主、主题和 DPI 真机验证。
 
 - [x] UI-177：修改器中心“已绑定工具”页在 `SelectedGameTool` 为空时释放右侧 Inspector：设置滚动容器改为基于共享 `GscInspectorScrollViewer` 的条件样式，无选择时自然收起 `* + 14 + GscInspectorWidth` 的分隔列/Inspector 列，工具选中后恢复 Demo 对齐的主列表 + 右侧设置栏，窄屏仍按原有堆叠策略保留有限滚动通道。`GameTools` ListBox 的 ItemsSource/SelectedItem、Recycling 虚拟化、导入确认区、启动/保存/打开目录/解除绑定命令均未改动；新增 STA WPF 几何回归测试。仍需 Playnite 宿主、主题和 DPI 真机验证。
