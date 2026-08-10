@@ -1186,7 +1186,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("SelectedIndex=\"0\"", taskView);
         Assert.Contains("TaskGameFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部", taskView);
         Assert.Contains("TaskTypeFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部", taskView);
-        Assert.Contains("TaskDetailScrollViewer.MaxHeight = stack ? Math.Max(180, height * 0.42) : double.PositiveInfinity", taskCode);
+        Assert.Contains("TaskDetailScrollViewer.MaxHeight = showInspector && stack", taskCode);
         Assert.Contains("VerticalScrollBarVisibility=\"Auto\" HorizontalScrollBarVisibility=\"Disabled\"", taskView);
         Assert.Contains("var workspaceContentWidth = DetailsTabControl.ActualWidth > 0", workspaceCode);
         Assert.Contains("var stackGameHeaderActions = workspaceContentWidth < 1180", workspaceCode);
@@ -1926,9 +1926,62 @@ public sealed class WpfUiResourceDictionaryTests
         var dataGrid = task.Descendants().Single(element => element.Name.LocalName == "DataGrid");
         Assert.DoesNotContain(dataGrid.Ancestors(), ancestor => ancestor.Name.LocalName == "StackPanel");
         Assert.Contains("<Setter Property=\"EnableRowVirtualization\" Value=\"True\"/>", File.ReadAllText(taskPath));
+        Assert.Contains("BasedOn=\"{StaticResource GscInspectorScrollViewer}\"", File.ReadAllText(taskPath));
+        Assert.Contains("<DataTrigger Binding=\"{Binding SelectedTask}\" Value=\"{x:Null}\">", File.ReadAllText(taskPath));
         Assert.Contains("CopyTaskErrorCommand", File.ReadAllText(taskPath));
         Assert.Contains("RetryTaskCommand", File.ReadAllText(taskPath));
         Assert.Contains("CancelTaskCommand", File.ReadAllText(taskPath));
+    }
+
+    [Fact]
+    public void TaskInspectorReleasesEmptyRightColumn()
+    {
+        Exception? exception = null;
+        var emptyGutterWidth = -1d;
+        var emptyInspectorWidth = -1d;
+        var emptyStackedRowType = GridUnitType.Auto;
+        var selectedGutterWidth = -1d;
+        var selectedInspectorWidth = -1d;
+        var selectedInspectorUnitType = GridUnitType.Auto;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var view = new TaskCenterView();
+                var layout = (Grid)typeof(TaskCenterView)
+                    .GetField("TaskWorkspaceLayout", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+
+                view.TaskDetailScrollViewerElement.Visibility = Visibility.Collapsed;
+                view.ApplyResponsiveLayout(1280, 720);
+                emptyGutterWidth = layout.ColumnDefinitions[1].Width.Value;
+                emptyInspectorWidth = layout.ColumnDefinitions[2].Width.Value;
+                emptyStackedRowType = layout.RowDefinitions[3].Height.GridUnitType;
+
+                view.TaskDetailScrollViewerElement.Visibility = Visibility.Visible;
+                view.ApplyResponsiveLayout(1280, 720);
+                selectedGutterWidth = layout.ColumnDefinitions[1].Width.Value;
+                selectedInspectorWidth = layout.ColumnDefinitions[2].Width.Value;
+                selectedInspectorUnitType = layout.ColumnDefinitions[2].Width.GridUnitType;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.Equal(0, emptyGutterWidth);
+        Assert.Equal(0, emptyInspectorWidth);
+        Assert.Equal(GridUnitType.Pixel, emptyStackedRowType);
+        Assert.Equal(14, selectedGutterWidth);
+        Assert.True(selectedInspectorWidth > 0);
+        Assert.Equal(GridUnitType.Pixel, selectedInspectorUnitType);
     }
 
     [Fact]

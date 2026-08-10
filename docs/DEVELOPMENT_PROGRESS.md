@@ -5,6 +5,8 @@
 
 - [x] UI-173：维护中心“保留策略”详情窄屏改为自然单列：原“预计保留明细/候选清理明细”始终保持两列，在工作区变窄时会把长版本 ID 压缩成狭窄卡片；现保留宽屏 `* + 14 + *` 双列，`width < 720` 时改为两行、每张卡跨三列并由页面滚动器承载自然高度，同时指标摘要在 720/480 DIP 阈值下切换为 3/2/1 列。真实 `PreviewRetentionCommand`、`LastRetentionPreview` 绑定、空状态和只读安全边界均未改变；新增响应式结构回归断言，仍需 Playnite 宿主、主题和 DPI 真机验证。
 
+- [x] UI-174：任务中心无选中任务时释放空 Inspector 列：原任务详情卡片虽然通过 `SelectedTask=null` 隐藏，但 `* + 14 + GscInspectorWidth` 仍固定占用右侧空间，空任务表无法使用完整主区域；现让详情滚动容器与真实 `SelectedTask` 绑定，无详情时同时释放分隔列、Inspector 列和堆叠行，选中任务后恢复 Demo 对齐的主表 + Inspector 布局。任务表虚拟化、详情命令、绑定和失败状态均未改变；新增 STA WPF 几何回归测试，仍需 Playnite 宿主、主题和 DPI 真机验证。
+
 - [x] UI-172：统一共享下拉框选中文本的对齐与主题前景：生产 `GscWpfUiComboBoxTemplate` 与 `DesignTokens.xaml` 回退模板此前把选中项垂直位置固定为 `Center`，并将前景色固定到主文本令牌，未完整遵循控件自身的 `VerticalContentAlignment`/`Foreground`；现改为绑定控件契约，ComboBoxItem 也绑定自身前景，保证按钮与下拉框的文字位置、选中态和禁用态颜色由同一套属性驱动。保留筛选器 `SelectedIndex=0`、动态选择框初始空值、所有 ItemsSource/SelectedItem 绑定与命令不变。新增共享样式结构回归断言；源码校验、WPF 资源测试与 Release 构建通过后提交，仍需 Playnite 宿主、主题和 DPI 真机验证。
 
 - [x] UI-171：FLiNG 在线库搜索卡窄屏按钮换行，避免裁剪：搜索卡原为三列 Grid（`*/Auto/Auto`，TextBox `MinWidth=620` 常驻首行，两个按钮被钉在右侧），窗口收窄到约 850–1000 DIP 时按钮被裁剪出卡外；现改为两行 Grid（Auto/Auto），第一行 TextBox（`MinWidth=620`/`MaxWidth=680`/`TrainerSearchText` 绑定与 `ToolTip` 原样保留），第二行 `WrapPanel`（`Grid.Row=1`，Margin `0,12,0,0`）承载「搜索目录」「刷新目录」两个按钮，窄窗自动换行、宽窗两按钮并排，卡片 `HorizontalAlignment` 改为 `Stretch`、`VerticalAlignment=Top`（`MaxWidth=1080` 保留）。搜索/刷新命令、TextBox 绑定与输入逻辑均未改动。新增结构回归断言锁定两行布局/两按钮命令。源码校验、Release 构建与全部测试通过，仍需 Playnite 宿主验证。

@@ -8,7 +8,18 @@ namespace GameSaveCenter.Playnite.Views
     /// <summary>Physical task-center workspace; it deliberately has no current-game picker.</summary>
     public partial class TaskCenterView : UserControl
     {
-        public TaskCenterView() => InitializeComponent();
+        public TaskCenterView()
+        {
+            InitializeComponent();
+            TaskDetailScrollViewer.IsVisibleChanged += OnTaskDetailScrollViewerIsVisibleChanged;
+        }
+
+        private void OnTaskDetailScrollViewerIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (!IsLoaded) return;
+            ApplyResponsiveLayout(TaskWorkspaceLayout.ActualWidth, TaskWorkspaceLayout.ActualHeight);
+        }
+
         public UniformGrid TaskSummaryPanelElement => TaskSummaryPanel;
         public Border TaskDetailCardElement => TaskDetailCard;
         public ScrollViewer TaskDetailScrollViewerElement => TaskDetailScrollViewer;
@@ -25,15 +36,20 @@ namespace GameSaveCenter.Playnite.Views
             // compact widths the inspector drops below the table instead of
             // compressing the task columns into an unreadable strip.
             var stack = width < 1080;
+            var showInspector = TaskDetailScrollViewer.Visibility == Visibility.Visible;
             var inspectorWidth = TaskWorkspaceLayout.TryFindResource("GscInspectorWidth") is GridLength gl ? gl : new GridLength(360);
-            TaskWorkspaceLayout.ColumnDefinitions[1].Width = stack ? new GridLength(0) : new GridLength(14);
-            TaskWorkspaceLayout.ColumnDefinitions[2].Width = stack ? new GridLength(0) : inspectorWidth;
-            TaskWorkspaceLayout.RowDefinitions[3].Height = stack ? new GridLength(1, GridUnitType.Auto) : new GridLength(0);
+            TaskWorkspaceLayout.ColumnDefinitions[1].Width = showInspector && !stack ? new GridLength(14) : new GridLength(0);
+            TaskWorkspaceLayout.ColumnDefinitions[2].Width = showInspector && !stack ? inspectorWidth : new GridLength(0);
+            TaskWorkspaceLayout.RowDefinitions[3].Height = showInspector && stack
+                ? new GridLength(1, GridUnitType.Auto)
+                : new GridLength(0);
             Grid.SetColumn(TaskDetailScrollViewer, stack ? 0 : 2);
             Grid.SetColumnSpan(TaskDetailScrollViewer, stack ? 3 : 1);
             Grid.SetRow(TaskDetailScrollViewer, stack ? 3 : 2);
-            TaskDetailScrollViewer.Margin = stack ? new Thickness(0, 10, 0, 0) : new Thickness(0);
-            TaskDetailScrollViewer.MaxHeight = stack ? Math.Max(180, height * 0.42) : double.PositiveInfinity;
+            TaskDetailScrollViewer.Margin = showInspector && stack ? new Thickness(0, 10, 0, 0) : new Thickness(0);
+            TaskDetailScrollViewer.MaxHeight = showInspector && stack
+                ? Math.Max(180, height * 0.42)
+                : double.PositiveInfinity;
         }
     }
 }
