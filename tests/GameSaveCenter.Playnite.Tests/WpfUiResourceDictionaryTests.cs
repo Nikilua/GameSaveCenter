@@ -1111,10 +1111,11 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("TaskTypeFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部", taskView);
         Assert.Contains("TaskDetailScrollViewer.MaxHeight = stack ? Math.Max(180, height * 0.42) : double.PositiveInfinity", taskCode);
         Assert.Contains("VerticalScrollBarVisibility=\"Auto\" HorizontalScrollBarVisibility=\"Disabled\"", taskView);
-        Assert.Contains("TaskWorkspaceView.ApplyResponsiveLayout(width, height)", workspaceCode);
-        Assert.Contains("SaveWorkspaceView.ApplyResponsiveLayout(width, height)", workspaceCode);
-        Assert.Contains("TrainerWorkspaceView.ApplyResponsiveLayout(width, height)", workspaceCode);
-        Assert.Contains("MaintenanceWorkspaceView.ApplyResponsiveLayout(width, height)", workspaceCode);
+        Assert.Contains("var workspaceContentWidth = DetailsTabControl.ActualWidth > 0", workspaceCode);
+        Assert.Contains("TaskWorkspaceView.ApplyResponsiveLayout(workspaceContentWidth, height)", workspaceCode);
+        Assert.Contains("SaveWorkspaceView.ApplyResponsiveLayout(workspaceContentWidth, height)", workspaceCode);
+        Assert.Contains("TrainerWorkspaceView.ApplyResponsiveLayout(workspaceContentWidth, height)", workspaceCode);
+        Assert.Contains("MaintenanceWorkspaceView.ApplyResponsiveLayout(workspaceContentWidth, height)", workspaceCode);
         Assert.Contains("x:Key=\"GscRedesignWorkspaceTabControl\"", redesign);
         Assert.Contains("HorizontalScrollBarVisibility=\"Auto\"", redesign);
         Assert.Contains("x:Key=\"GscRedesignWorkspaceTabItem\"", redesign);
@@ -1231,7 +1232,7 @@ public sealed class WpfUiResourceDictionaryTests
         // width (capped at 980) instead of shrinking to its natural width.
         Assert.Contains("MaxWidth=\"980\" HorizontalAlignment=\"Stretch\" VerticalAlignment=\"Top\"", trainers);
         Assert.Contains("MaxWidth=\"1050\" HorizontalAlignment=\"Left\"", maintenance);
-        Assert.Contains("var stackOverview = width < 1080", dashboardCode);
+        Assert.Contains("var stackOverview = workspaceContentWidth < 900", dashboardCode);
         Assert.Contains("var stackDiagnostics = width < 1120", maintenanceCode);
         Assert.Contains("var stackDevice = width < 1180", maintenanceCode);
         Assert.DoesNotContain("width < 1360", maintenanceCode);
@@ -1840,7 +1841,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("<views:TaskCenterView x:Name=\"TaskWorkspaceView\"/>", dashboard);
         Assert.DoesNotContain("SetVisibility(TaskTab, false);", dashboardCode);
         Assert.DoesNotContain("TaskTab", dashboard);
-        Assert.Contains("TaskWorkspaceView.ApplyResponsiveLayout(width, height)", dashboardCode);
+        Assert.Contains("TaskWorkspaceView.ApplyResponsiveLayout(workspaceContentWidth, height)", dashboardCode);
         Assert.Contains("TaskWorkspaceView.TaskDetailCardElement", dashboardCode);
         Assert.DoesNotContain("GamePicker", File.ReadAllText(taskPath));
 
