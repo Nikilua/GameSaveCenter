@@ -2859,6 +2859,17 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Style=\"{DynamicResource GscWpfUiComboBox}\" SelectedIndex=\"0\" ItemsSource=\"{Binding DeviceDecisionOptions}\" SelectedItem=\"{Binding DeviceDecision, TargetNullValue=稍后处理, FallbackValue=稍后处理}\"", maintenance);
         Assert.Contains("<Setter Property=\"VerticalContentAlignment\" Value=\"Center\"/>", overview);
         Assert.DoesNotContain("<Setter Property=\"VerticalContentAlignment\" Value=\"Top\"/>", overview);
+
+        // ComboBox selection text follows the same content-alignment and foreground
+        // contract as shared buttons; the DesignTokens template must remain a safe
+        // fallback when the production adapter is not present.
+        Assert.Contains("VerticalAlignment=\"{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType=ComboBox}}\"", production);
+        Assert.Contains("TextElement.Foreground=\"{Binding Foreground, RelativeSource={RelativeSource AncestorType=ComboBox}}\"", production);
+        Assert.Contains("TextElement.Foreground=\"{TemplateBinding Foreground}\"", production);
+        Assert.Contains("HorizontalAlignment=\"{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType=ComboBox}}\"", tokens);
+        Assert.Contains("VerticalAlignment=\"{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType=ComboBox}}\"", tokens);
+        Assert.Contains("TextElement.Foreground=\"{Binding Foreground, RelativeSource={RelativeSource AncestorType=ComboBox}}\"", tokens);
+        Assert.Contains("TextElement.Foreground=\"{TemplateBinding Foreground}\"", tokens);
     }
 
     [Fact]
