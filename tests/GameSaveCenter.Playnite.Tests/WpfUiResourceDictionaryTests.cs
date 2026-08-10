@@ -1112,6 +1112,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("TaskDetailScrollViewer.MaxHeight = stack ? Math.Max(180, height * 0.42) : double.PositiveInfinity", taskCode);
         Assert.Contains("VerticalScrollBarVisibility=\"Auto\" HorizontalScrollBarVisibility=\"Disabled\"", taskView);
         Assert.Contains("var workspaceContentWidth = DetailsTabControl.ActualWidth > 0", workspaceCode);
+        Assert.Contains("var stackGameHeaderActions = workspaceContentWidth < 1180", workspaceCode);
         Assert.Contains("TaskWorkspaceView.ApplyResponsiveLayout(workspaceContentWidth, height)", workspaceCode);
         Assert.Contains("SaveWorkspaceView.ApplyResponsiveLayout(workspaceContentWidth, height)", workspaceCode);
         Assert.Contains("TrainerWorkspaceView.ApplyResponsiveLayout(workspaceContentWidth, height)", workspaceCode);

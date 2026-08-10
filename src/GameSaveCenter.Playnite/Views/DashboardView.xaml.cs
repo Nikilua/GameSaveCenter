@@ -466,7 +466,12 @@ namespace GameSaveCenter.Playnite.Views
                 // Do not restore the legacy metric strip here: UpdateWorkspacePresentation
                 // intentionally collapses it so the page header does not duplicate the
                 // picker and consume the table viewport.
-                var stackGameHeaderActions = width < 1180;
+                // The selected-game header lives inside the measured workspace, not the
+                // complete Playnite page. Using the shell width here kept five actions on
+                // one row after the sidebar had already consumed 200+ DIP, which compressed
+                // the identity and metric columns instead of following the Demo's readable
+                // context-header rhythm.
+                var stackGameHeaderActions = workspaceContentWidth < 1180;
                 Grid.SetRow(GameHeaderActions, stackGameHeaderActions ? 1 : 0);
                 Grid.SetColumn(GameHeaderActions, stackGameHeaderActions ? 0 : 1);
                 Grid.SetColumnSpan(GameHeaderActions, stackGameHeaderActions ? 2 : 1);
