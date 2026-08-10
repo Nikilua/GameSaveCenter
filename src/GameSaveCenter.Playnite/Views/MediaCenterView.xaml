@@ -216,7 +216,17 @@
                         </Grid>
                     </Border>
                     <Border x:Name="MediaInspectorFrame" Grid.Row="2" Grid.Column="2" Background="Transparent" BorderThickness="0" ClipToBounds="True" Padding="0">
-                    <ScrollViewer x:Name="MediaInspectorScrollViewer" Style="{DynamicResource GscPageScrollViewer}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0">
+                    <ScrollViewer x:Name="MediaInspectorScrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0">
+                        <ScrollViewer.Style>
+                            <Style TargetType="ScrollViewer" BasedOn="{StaticResource GscInspectorScrollViewer}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedMedia}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ScrollViewer.Style>
                     <Border x:Name="MediaInspectorPanel" Style="{DynamicResource GscReadingCardStyle}" Padding="14">
                         <StackPanel x:Name="MediaMetadataPanel">
                                 <TextBlock Text="媒体详情" Style="{DynamicResource GscSectionTitleStyle}"/>

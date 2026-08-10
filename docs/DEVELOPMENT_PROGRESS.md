@@ -5,6 +5,8 @@
 
 - [x] UI-177：修改器中心“已绑定工具”页在 `SelectedGameTool` 为空时释放右侧 Inspector：设置滚动容器改为基于共享 `GscInspectorScrollViewer` 的条件样式，无选择时自然收起 `* + 14 + GscInspectorWidth` 的分隔列/Inspector 列，工具选中后恢复 Demo 对齐的主列表 + 右侧设置栏，窄屏仍按原有堆叠策略保留有限滚动通道。`GameTools` ListBox 的 ItemsSource/SelectedItem、Recycling 虚拟化、导入确认区、启动/保存/打开目录/解除绑定命令均未改动；新增 STA WPF 几何回归测试。仍需 Playnite 宿主、主题和 DPI 真机验证。
 
+- [x] UI-178：媒体中心“当前游戏媒体”页在 `SelectedMedia` 为空时释放右侧 Inspector：详情滚动容器改为共享 `GscInspectorScrollViewer` 条件样式，无选择时释放 `14 + GscInspectorWidth` 与窄屏堆叠行，选中媒体后恢复 Demo 对齐的媒体列表 + 详情预览布局；媒体预览、元数据、收藏、备注、打开、重新归类和批量命令均未改动，`MediaInboxGrid` 的稳定行样式、Standard 虚拟化和显式表头契约未触碰。新增宽屏/窄屏 STA WPF 几何回归测试。仍需 Playnite 宿主、主题和 DPI 真机验证。
+
 - [x] UI-173：维护中心“保留策略”详情窄屏改为自然单列：原“预计保留明细/候选清理明细”始终保持两列，在工作区变窄时会把长版本 ID 压缩成狭窄卡片；现保留宽屏 `* + 14 + *` 双列，`width < 720` 时改为两行、每张卡跨三列并由页面滚动器承载自然高度，同时指标摘要在 720/480 DIP 阈值下切换为 3/2/1 列。真实 `PreviewRetentionCommand`、`LastRetentionPreview` 绑定、空状态和只读安全边界均未改变；新增响应式结构回归断言，仍需 Playnite 宿主、主题和 DPI 真机验证。
 
 - [x] UI-174：任务中心无选中任务时释放空 Inspector 列：原任务详情卡片虽然通过 `SelectedTask=null` 隐藏，但 `* + 14 + GscInspectorWidth` 仍固定占用右侧空间，空任务表无法使用完整主区域；现让详情滚动容器与真实 `SelectedTask` 绑定，无详情时同时释放分隔列、Inspector 列和堆叠行，选中任务后恢复 Demo 对齐的主表 + Inspector 布局。任务表虚拟化、详情命令、绑定和失败状态均未改变；新增 STA WPF 几何回归测试，仍需 Playnite 宿主、主题和 DPI 真机验证。
