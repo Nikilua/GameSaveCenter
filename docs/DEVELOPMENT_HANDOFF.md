@@ -67,16 +67,17 @@
 ## 当前交接基线（2026-08-10）
 
 - 分支：`main`
-- 当前 HEAD：`d3a07d4`（`重构：首页上下文与指标阅读顺序`）
+- 当前 UI 基线：`3350f15`（`重构：维护中心显式声明表头主题`，UI-181）
 - 版本：`0.6.70-development-preview`
-- 当前工作区：干净，无未提交改动
-- 相对 `origin/main`：本地领先 20 个 commit，远端尚未包含这些提交
+- 当前工作区：本轮交接文档提交完成后应干净
+- 相对 `origin/main`：本地领先 23 个 commit，远端尚未包含本轮提交
 - 最近已完成的重点：
   - UI-177：修改器中心无选中工具时释放空 Inspector 和固定右栏
   - UI-178：媒体中心无选中媒体时释放空 Inspector 和堆叠行
   - UI-179：设置页窄屏标题提示换行，以及 ZIP/Zstandard/跟随 Playnite 默认值显示
   - UI-180：首页阅读顺序调整为“工作台/今日状态 → 当前游戏 → 六项指标 → 最近活动”
-- 当前已完成的自动化基线：Core 13、Worker 23、Playnite 139 测试通过；Release 构建无警告/错误；WPF 静态扫描 0 errors。静态测试不等同于真实 Playnite 宿主渲染验证。
+  - UI-181：维护中心五张 DataGrid 的首列显式使用 `MaintenanceFirstColumnHeader`，末列继续使用显式维护表头主题
+- 当前已完成的自动化基线：Core 13、Worker 23、Playnite 140 测试通过；Release 构建 0 警告/0 错误；XAML 结构检查 13/13；WPF 源码验证通过。静态测试不等同于真实 Playnite 宿主渲染验证。
 
 ## 下一步开发方向
 
