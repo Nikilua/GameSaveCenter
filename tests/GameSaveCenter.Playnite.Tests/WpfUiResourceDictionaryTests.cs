@@ -788,7 +788,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Equal("Auto", auditInspector.Attribute("VerticalScrollBarVisibility")?.Value);
         Assert.Equal("Disabled", auditInspector.Attribute("HorizontalScrollBarVisibility")?.Value);
         Assert.Null(auditInspector.Attribute("MaxHeight"));
-        Assert.Contains("MaintenanceAuditInspector.MaxHeight = stackAudit ? Math.Max(150, height * 0.34) : double.PositiveInfinity", File.ReadAllText(maintenancePath + ".cs"));
+        Assert.Contains("MaintenanceAuditInspector.MaxHeight = showAuditInspector && stackAudit ? Math.Max(150, height * 0.34) : double.PositiveInfinity", File.ReadAllText(maintenancePath + ".cs"));
         Assert.DoesNotContain("Height=\"{DynamicResource GscTableViewportHeight}\"", maintenanceText);
     }
 
@@ -844,7 +844,105 @@ public sealed class WpfUiResourceDictionaryTests
             element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "MaintenanceDiagnosticSummaryGrid");
         Assert.Equal("1", summary.Attribute("Grid.Row")?.Value);
         Assert.Equal("3", summary.Attribute("Grid.ColumnSpan")?.Value);
-        Assert.Contains("MaintenanceDiagnosticsInspector.MaxHeight = stackDiagnostics ? Math.Max(150, height * 0.34) : double.PositiveInfinity", File.ReadAllText(maintenancePath + ".cs"));
+        Assert.Contains("MaintenanceDiagnosticsInspector.MaxHeight = showDiagnosticsInspector && stackDiagnostics ? Math.Max(150, height * 0.34) : double.PositiveInfinity", File.ReadAllText(maintenancePath + ".cs"));
+    }
+
+    [Fact]
+    public void MaintenanceReleasesEmptyInspectorColumns()
+    {
+        Exception? exception = null;
+        var emptyDiagnosticsGutter = -1d;
+        var emptyDiagnosticsInspector = -1d;
+        var emptyDiagnosticsStackRow = GridUnitType.Auto;
+        var emptyAuditGutter = -1d;
+        var emptyAuditInspector = -1d;
+        var emptyAuditStackRow = GridUnitType.Auto;
+        var emptyProcessGutter = -1d;
+        var emptyProcessInspector = -1d;
+        var emptyProcessStackRow = GridUnitType.Auto;
+        var selectedDiagnosticsGutter = -1d;
+        var selectedDiagnosticsInspector = -1d;
+        var selectedAuditGutter = -1d;
+        var selectedAuditInspector = -1d;
+        var selectedProcessGutter = -1d;
+        var selectedProcessInspector = -1d;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var view = new MaintenanceView();
+                var viewType = typeof(MaintenanceView);
+                var diagnosticsLayout = (Grid)viewType
+                    .GetField("MaintenanceDiagnosticsLayout", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var auditLayout = (Grid)viewType
+                    .GetField("MaintenanceAuditLayout", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var processLayout = (Grid)viewType
+                    .GetField("MaintenanceProcessLayout", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var diagnosticsInspector = (ScrollViewer)viewType
+                    .GetField("MaintenanceDiagnosticsInspector", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var auditInspector = (ScrollViewer)viewType
+                    .GetField("MaintenanceAuditInspector", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var processInspector = (Border)viewType
+                    .GetField("MaintenanceProcessInspector", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+
+                diagnosticsInspector.Visibility = Visibility.Collapsed;
+                auditInspector.Visibility = Visibility.Collapsed;
+                processInspector.Visibility = Visibility.Collapsed;
+                view.ApplyResponsiveLayout(1280, 720);
+                emptyDiagnosticsGutter = diagnosticsLayout.ColumnDefinitions[1].Width.Value;
+                emptyDiagnosticsInspector = diagnosticsLayout.ColumnDefinitions[2].Width.Value;
+                emptyDiagnosticsStackRow = diagnosticsLayout.RowDefinitions[2].Height.GridUnitType;
+                emptyAuditGutter = auditLayout.ColumnDefinitions[1].Width.Value;
+                emptyAuditInspector = auditLayout.ColumnDefinitions[2].Width.Value;
+                emptyAuditStackRow = auditLayout.RowDefinitions[1].Height.GridUnitType;
+                emptyProcessGutter = processLayout.ColumnDefinitions[1].Width.Value;
+                emptyProcessInspector = processLayout.ColumnDefinitions[2].Width.Value;
+                emptyProcessStackRow = processLayout.RowDefinitions[2].Height.GridUnitType;
+
+                diagnosticsInspector.Visibility = Visibility.Visible;
+                auditInspector.Visibility = Visibility.Visible;
+                processInspector.Visibility = Visibility.Visible;
+                view.ApplyResponsiveLayout(1280, 720);
+                selectedDiagnosticsGutter = diagnosticsLayout.ColumnDefinitions[1].Width.Value;
+                selectedDiagnosticsInspector = diagnosticsLayout.ColumnDefinitions[2].Width.Value;
+                selectedAuditGutter = auditLayout.ColumnDefinitions[1].Width.Value;
+                selectedAuditInspector = auditLayout.ColumnDefinitions[2].Width.Value;
+                selectedProcessGutter = processLayout.ColumnDefinitions[1].Width.Value;
+                selectedProcessInspector = processLayout.ColumnDefinitions[2].Width.Value;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.Equal(0, emptyDiagnosticsGutter);
+        Assert.Equal(0, emptyDiagnosticsInspector);
+        Assert.Equal(GridUnitType.Pixel, emptyDiagnosticsStackRow);
+        Assert.Equal(0, emptyAuditGutter);
+        Assert.Equal(0, emptyAuditInspector);
+        Assert.Equal(GridUnitType.Pixel, emptyAuditStackRow);
+        Assert.Equal(0, emptyProcessGutter);
+        Assert.Equal(0, emptyProcessInspector);
+        Assert.Equal(GridUnitType.Pixel, emptyProcessStackRow);
+        Assert.Equal(14, selectedDiagnosticsGutter);
+        Assert.True(selectedDiagnosticsInspector > 0);
+        Assert.Equal(14, selectedAuditGutter);
+        Assert.True(selectedAuditInspector > 0);
+        Assert.Equal(14, selectedProcessGutter);
+        Assert.True(selectedProcessInspector > 0);
     }
 
     [Fact]
