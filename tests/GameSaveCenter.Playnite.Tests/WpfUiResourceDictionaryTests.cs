@@ -2825,6 +2825,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("<Setter Property=\"MinHeight\" Value=\"{DynamicResource GscButtonHeight}\"/>", tokens);
         Assert.Contains("<Setter Property=\"MinHeight\" Value=\"{DynamicResource GscButtonHeight}\"/>", production);
         Assert.Contains("<Setter Property=\"MinHeight\" Value=\"{DynamicResource GscButtonHeight}\"/>", redesign);
+        Assert.Contains("<Setter Property=\"HorizontalContentAlignment\" Value=\"Center\"/>", redesign);
+        Assert.Contains("<Setter Property=\"VerticalContentAlignment\" Value=\"Center\"/>", redesign);
         Assert.Contains("<Style x:Key=\"GscButtonBase\"", dashboard);
         Assert.Contains("<Setter Property=\"MinHeight\" Value=\"{DynamicResource GscButtonHeight}\"/>", dashboard);
         Assert.DoesNotContain("MinHeight=\"38\"", trainer);
