@@ -456,7 +456,12 @@ namespace GameSaveCenter.Playnite.Views
             }
             if (OverviewWorkspaceView != null)
             {
-                var stackOverview = workspaceContentWidth < 900;
+                // The Demo HomeView is a single page flow; at common 1280/1366-DIP
+                // windowed sizes the persistent right summary column left the primary
+                // workbench only ~550-600 DIP wide, forcing Hero and 当前游戏 to stack
+                // below the fold. Switch the Overview to its stacked single-column flow
+                // until the content area is wide enough to keep both columns comfortable.
+                var stackOverview = workspaceContentWidth < 1200;
                 OverviewWorkspaceView.OverviewCompactSecondaryRowHeight = stackOverview ? GridLength.Auto : new GridLength(0);
                 OverviewWorkspaceView.ApplyResponsiveColumns(stackOverview);
                 OverviewWorkspaceView.ApplyResponsiveWidth(workspaceContentWidth);

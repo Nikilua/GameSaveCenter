@@ -108,7 +108,9 @@ public static class Program
             report,
             () =>
             {
-                var stack = contentW < 900;
+                // Mirrors DashboardView.ApplyResponsiveLayout: the Overview switches to
+                // its single-column flow until the shell content area reaches 1200 DIP.
+                var stack = contentW < 1200;
                 view.OverviewCompactSecondaryRowHeight = stack ? GridLength.Auto : new GridLength(0);
                 view.ApplyResponsiveColumns(stack);
                 view.ApplyResponsiveWidth(contentW);
@@ -233,6 +235,26 @@ public static class Program
             if (string.IsNullOrEmpty(list.Name))
                 continue;
             report.AppendLine($"  {label} {list.Name}: size={list.ActualWidth:0}x{list.ActualHeight:0}, items={list.Items.Count}");
+        }
+
+        if (label.StartsWith("Overview", StringComparison.OrdinalIgnoreCase))
+        {
+            foreach (var elementName in new[]
+                     {
+                         "OverviewHomeToolbar",
+                         "OverviewTodayHeroCard",
+                         "OverviewCurrentGameCard",
+                         "OverviewMetricPanel",
+                         "OverviewActivityList"
+                     })
+            {
+                var element = FindVisualChildren<FrameworkElement>(host).FirstOrDefault(candidate => candidate.Name == elementName);
+                if (element == null)
+                    continue;
+                var origin = element.TransformToAncestor(host).Transform(new Point(0, 0));
+                report.AppendLine(
+                    $"  {label} {elementName}: x={origin.X:0}, y={origin.Y:0}, size={element.ActualWidth:0}x{element.ActualHeight:0}, vis={element.Visibility}");
+            }
         }
     }
 

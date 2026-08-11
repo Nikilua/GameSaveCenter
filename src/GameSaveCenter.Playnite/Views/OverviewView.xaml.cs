@@ -135,7 +135,7 @@ namespace GameSaveCenter.Playnite.Views
             // as a single readable flow instead of compressing the context pills.
             if (OverviewHeroAndGameRow != null)
             {
-                var stackHeroAndGame = primaryWidth < 760;
+                var stackHeroAndGame = primaryWidth < 700;
                 OverviewHeroGameCompactRow.Height = stackHeroAndGame
                     ? GridLength.Auto
                     : new GridLength(0);
