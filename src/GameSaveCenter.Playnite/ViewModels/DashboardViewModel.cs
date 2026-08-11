@@ -1668,6 +1668,14 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private void RebuildTaskFilters()
         {
+            // Full snapshots arrive on every refresh even when RecentTasks is unchanged.
+            // Skip the O(n log n) game/type option rebuild when the visible task order and
+            // identity are identical; user filter changes still refresh TasksView directly.
+            var fingerprint = ComputeTaskFilterFingerprint(Tasks);
+            if (fingerprint == lastTaskFilterFingerprint)
+                return;
+            lastTaskFilterFingerprint = fingerprint;
+
             var selectedGame = TaskGameFilter;
             var selectedType = TaskTypeFilter;
             Replace(TaskGameFilterOptions, new[] { "全部" }.Concat(Tasks.Select(x => x.GameName).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct(StringComparer.OrdinalIgnoreCase).OrderBy(x => x)));
@@ -1683,6 +1691,23 @@ namespace GameSaveCenter.Playnite.ViewModels
             TaskGameFilter = nextGame;
             TaskTypeFilter = nextType;
             TasksView.Refresh();
+        }
+
+        private long lastTaskFilterFingerprint;
+
+        private static long ComputeTaskFilterFingerprint(IEnumerable<TaskStatusDto> tasks)
+        {
+            unchecked
+            {
+                long hash = 17;
+                var count = 0;
+                foreach (var task in tasks)
+                {
+                    count++;
+                    hash = hash * 31 + (task.TaskId?.GetHashCode() ?? 0);
+                }
+                return hash * 31 + count;
+            }
         }
 
         private void ApplyGameSort()
