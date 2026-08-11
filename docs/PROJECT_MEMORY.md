@@ -26,6 +26,8 @@
 
 > UI-194（2026-08-11，提交 `00157c5`）：页面级滚动通道必须像 Demo 一样可发现，不能用 `Hidden` 让常用窗口下的底部内容只能依赖用户猜测滚轮。共享 `GscPageScrollViewer` 的垂直滚动默认改为 `Auto`；设置页、存档策略、维护保留策略、侧栏导航和 Overview 辅助页面均移除页面级 `Hidden` 覆盖。Overview 的宽屏风险/摘要列仍由 `ApplyResponsiveHeight` 明确决定 `Disabled`/`Auto`，避免把有限内部滚动误变成重复滚轮；表格/列表的独立内部滚动和虚拟化保持。未修改命令、Binding、业务层、持久化或页面信息层级；源码验证通过，隔离 Release 构建 0 警告/0 错误，Playnite 149/149 通过。真实 Playnite 宿主、主题、DPI、窗口化截图和连续缩放流畅性仍未验证。
 
+> UI-195（2026-08-11，提交 `a97698d`）：Maintenance 的“设备状态 / 异常与审计 / 进程映射”三个 Tab 也必须有明确的页面级纵向滚动面，不能因为诊断和保留策略已有滚动而让这三页在窗口化或低高度时把底部内容裁掉。新增 `MaintenanceDeviceScrollSurface`、`MaintenanceAuditScrollSurface`、`MaintenanceProcessScrollSurface`，三者统一使用 `GscPageScrollViewer`、垂直 `Auto`、水平禁用且 `CanContentScroll=False`；对应 `MaintenanceDeviceGrid`、`MaintenanceAuditFindingsGrid`、`MaintenanceProcessGrid` 仍由 code-behind 设置 236–460 DIP 的有限 Height，DataGrid 自己保留内部滚动、键盘访问和虚拟化，Inspector 的独立滚动继续负责长内容。`scripts/validate-source.py` 与 WPF 结构回归同步识别“命名页面滚动 + 有限表格视口”组合；未修改任何维护命令、Binding、选中项、审计日志、Worker、IPC 或业务层。源码验证通过，隔离 Release 构建 0 警告/0 错误，Playnite 149/149 通过；真实 Playnite 宿主、主题、DPI、窗口化截图和连续缩放流畅性仍未验证。
+
 > RESP-001（2026-08-11）：“4K 已适配”不能代替 1080p 验收。WPF 按 DIP 排版，4K 在 150%/175%/200% DPI 下可能落入与 2K/1080p 相同或更小的逻辑工作区，1080p 窗口化也可能只剩 1280–1600 DIP。每轮 UI 修改必须按 1080p、2K、4K 的全屏/窗口化/最大化逻辑尺寸检查首屏内容、页脚遮挡、卡片堆叠和滚动；看不到的真实内容必须能通过明确的页面级滚动访问，DataGrid/ListBox 仍使用有限视口、内部滚动和虚拟化。以表格/列表为主的区域常用高度下目标约四行可读内容，不能被上方 Auto 行挤成一行；极端小窗口不要求不变形，但不得用裁切、负 Margin、隐藏滚动条或全页缩放伪装适配。该规则已同步到 `docs/design/UI_CHANGE_GATE.md`，并作为后续每轮 UI 的固定验收项。
 
 > UI-183：维护中心“诊断”页顶部必须保持 Demo 式的 `MaintenanceDiagnosticsActionCard` 阅读卡：标题/说明与“刷新诊断”主操作位于首行，复制诊断、打开数据目录、打开存档目录、打开媒体目录和 Worker 日志位于第二行可换行操作带。六个真实 Command 必须保留，操作区不能退回裸 `WrapPanel` 或被挪入 DataGrid/其滚动表面；诊断指标、有限表格滚动、选中项 Inspector、完整摘要和空态不因本轮布局调整消失。共享按钮模板继续负责 38 DIP 高度和文字对齐，不新增业务逻辑。
