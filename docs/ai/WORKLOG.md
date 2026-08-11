@@ -266,3 +266,37 @@ NEXT: UI-QA-REAL-001 真机回归与最终收尾。
 **下一步：**
 
 NEXT: 按真实 Playnite 使用反馈决定 PERF-008/009/010 是否值得继续；当前无真实 profiling 证据，不为了编号做无收益优化。
+
+## 2026-08-12 PERF-009 / PERF-010 代码级热点优化
+
+**做了什么：**
+
+- PERF-009：新增 `TaskIndexedCollection`，用 TaskId→index 字典替代每次进度事件 `Tasks.ToList().FindIndex(...)` 的 O(n) 拷贝扫描；快照替换后重建索引，事件更新 O(1)，列表仍保持 200 行上限。
+- PERF-010：`RaiseCommandStates()` 改为 Dispatcher 合帧刷新（DataBind 优先级），同一 UI 帧内多次属性变化只执行一次全部命令的 `RaiseCanExecuteChanged`；Dispatcher 关闭时回退为立即刷新。
+
+**为什么这样做：**
+
+任务进度是高频更新路径（每次 Progress/Message/State 变化都会到达 Dashboard），列表拷贝 + 线性查找在 200 行规模下也是每次事件的浪费；命令状态在一次业务操作里可能被触发数十次，合并后不会影响 CanExecute 正确性（WPF 在命令执行时仍会查询）。
+
+**修改文件：**
+
+- 新增 `src/GameSaveCenter.Playnite/Infrastructure/TaskIndexedCollection.cs`
+- `src/GameSaveCenter.Playnite/ViewModels/DashboardViewModel.cs`
+- 新增测试 `tests/GameSaveCenter.Playnite.Tests/TaskIndexedCollectionTests.cs`
+
+**测试结果：**
+
+- Playnite 167/167（新增 4 个任务索引测试）通过；Release 编译通过。
+
+**性能变化：**
+
+- 任务事件合并：O(n) 拷贝+查找 → O(1) 索引更新。
+- 命令状态刷新：一次业务操作内 N 次触发 → 约 1 次合帧刷新。
+
+**仍需验证内容：**
+
+真实 Playnite 下高频任务进度事件的 UI 帧率。
+
+**下一步：**
+
+NEXT: 仅剩 PERF-008（按 Workspace 按需刷新）未实施；目标文件要求先有真实 profiling 证据，当前保留为待定，不做无收益重构。

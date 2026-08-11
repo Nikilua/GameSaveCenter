@@ -84,6 +84,7 @@
 - PERF-004（旧编号）：GamePickerItem 缓存复用（新任务编号体系中 PERF-004 是性能基线设施，不要混淆）。
 - PERF-004/005/006（新编号）：`[PERF]` 基线日志、Snapshot 无变化 0 Reset、Task/Media 搜索防抖。
 - PERF-007：媒体缩略图异步化（`AsyncThumbnailLoader` 3 并发 + LRU + Freeze，`AsyncThumbnailImage` 占位加载）。
+- PERF-009/010：任务事件合并 TaskId 索引 O(1) 更新；命令状态刷新 Dispatcher 合帧。
 - GAME-TOOL-001/002：自定义启动项正式支持 EXE/LNK/BAT/CMD/PS1，外部路径引用不复制文件；Session 级 PID 追踪与 CloseOnGameExit 安全关闭。
 - UI-204/205：TaskCenter 与 GamePicker 下拉框默认值恢复（含真实 Playnite 异步物化重试）。
 
@@ -103,6 +104,7 @@
 - P1：媒体性能（PERF-007 异步缩略图，已完成）。
 - P1：真实 Playnite / DPI / 大型游戏库 QA（UI-QA-REAL-001，当前进行中）。
 - P2：架构进一步拆分（不主动做）。
+- P2：PERF-008 按 Workspace 按需刷新（待真实 profiling 证据再决定，当前不做无收益重构）。
 
 已完成：见 WORKLOG.md 与 Git log；不要重复实现已完成的 UI/性能工作。
 
