@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using GameSaveCenter.Playnite.Settings;
 using GameSaveCenter.Playnite.Views;
 
 namespace GameSaveCenter.RenderHarness;
@@ -52,6 +54,12 @@ public static class Program
 
         try
         {
+            // The Settings view and Dashboard shell reference Playnite's host-provided
+            // BaseTextBlockStyle. Standalone layout QA supplies a neutral fallback so the
+            // XAML parses without a real Playnite window.
+            var app = new Application();
+            app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+
             foreach (var (windowW, windowH) in WindowSizes)
             {
                 var (contentW, contentH) = ContentSize(windowW, windowH);
@@ -63,6 +71,7 @@ public static class Program
                 RenderMedia(outputRoot, windowW, windowH, contentW, contentH, report);
                 RenderMaintenance(outputRoot, windowW, windowH, contentW, contentH, report);
                 RenderTasks(outputRoot, windowW, windowH, contentW, contentH, report);
+                RenderSettings(outputRoot, windowW, windowH, contentW, contentH, report);
                 report.AppendLine();
             }
 
@@ -136,6 +145,26 @@ public static class Program
     {
         var view = new TrainerCenterView { DataContext = new FakeDashboardData() };
         RenderTabs(view, outputRoot, "Trainer", windowW, windowH, contentW, contentH, report, () => view.ApplyResponsiveLayout(contentW, windowH));
+    }
+
+    private static void RenderSettings(string outputRoot, int windowW, int windowH, double contentW, double contentH, StringBuilder report)
+    {
+        var view = new GameSaveCenterSettingsView { DataContext = new GameSaveCenterSettings() };
+        var apply = typeof(GameSaveCenterSettingsView).GetMethod(
+            "ApplyResponsiveLayout",
+            BindingFlags.Instance | BindingFlags.NonPublic);
+        if (apply == null)
+            throw new InvalidOperationException("GameSaveCenterSettingsView.ApplyResponsiveLayout not found.");
+        RenderTabs(
+            view,
+            outputRoot,
+            "Settings",
+            windowW,
+            windowH,
+            contentW,
+            contentH,
+            report,
+            () => apply.Invoke(view, new object[] { contentW, windowH }));
     }
 
     private static void RenderMaintenance(string outputRoot, int windowW, int windowH, double contentW, double contentH, StringBuilder report)
