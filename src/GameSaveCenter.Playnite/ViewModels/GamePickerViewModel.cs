@@ -27,6 +27,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private int filteredCount;
         private bool disposed;
         private bool rebuildingItems;
+        private readonly Dictionary<string, GamePickerItem> itemCache = new Dictionary<string, GamePickerItem>(StringComparer.OrdinalIgnoreCase);
 
         public GamePickerViewModel()
         {
@@ -160,9 +161,19 @@ namespace GameSaveCenter.Playnite.ViewModels
                 batch?.BeginUpdate();
                 try
                 {
+                    var gameList = (games ?? Enumerable.Empty<GameStatusDto>()).ToList();
+                    if (itemCache.Count > Math.Max(1024, gameList.Count * 2 + 100))
+                        itemCache.Clear();
                     Items.Clear();
-                    foreach (var game in games ?? Enumerable.Empty<GameStatusDto>())
-                        Items.Add(new GamePickerItem(game));
+                    foreach (var game in gameList)
+                    {
+                        var item = itemCache.TryGetValue(game.PlayniteId, out var cached)
+                            ? cached
+                            : new GamePickerItem(game);
+                        item.UpdateGame(game);
+                        itemCache[game.PlayniteId] = item;
+                        Items.Add(item);
+                    }
                     RebuildPlatformOptions();
                 }
                 finally
@@ -205,6 +216,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             refreshCancellation?.Cancel();
             refreshCancellation?.Dispose();
             Items.CollectionChanged -= OnItemsChanged;
+            itemCache.Clear();
         }
 
         private bool FilterItem(object item)

@@ -11,12 +11,17 @@ namespace GameSaveCenter.Playnite.ViewModels
     /// </summary>
     public sealed class GamePickerItem
     {
+        private GameStatusDto game;
+
         public GamePickerItem(GameStatusDto game)
         {
-            Game = game ?? throw new ArgumentNullException(nameof(game));
+            this.game = game ?? throw new ArgumentNullException(nameof(game));
         }
 
-        public GameStatusDto Game { get; }
+        public GameStatusDto Game => game;
+
+        public void UpdateGame(GameStatusDto game)
+            => this.game = game ?? throw new ArgumentNullException(nameof(game));
         public string PlayniteId => Game.PlayniteId;
         public string Name => Game.Name ?? string.Empty;
         public string PlatformDisplay => Game.PlatformDisplay;
