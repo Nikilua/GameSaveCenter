@@ -752,9 +752,18 @@ def check_067_media_browsing_guards() -> None:
         if token not in converter:
             fail(f"Bounded selected-media preview guard missing: {token}")
     for token in ('ItemsSource="{Binding MediaView}"', "MediaThumbnailConverter", "MediaVideoSourceConverter",
-                  'ConverterParameter=96', 'EnableRowVirtualization" Value="True"', "<MediaElement"):
+                  'EnableRowVirtualization" Value="True"', "<MediaElement"):
         if token not in ui:
             fail(f"Media virtualized preview guard missing: {token}")
+    if 'ConverterParameter=96' not in ui and 'PreviewWidth="96"' not in ui:
+        fail("Media virtualized preview guard missing: bounded 96px thumbnail decode")
+    if "AsyncThumbnailImage" not in ui:
+        fail("Media thumbnails must load asynchronously through AsyncThumbnailImage")
+    loader = ROOT / "src/GameSaveCenter.Playnite/Converters/AsyncThumbnailLoader.cs"
+    for token in ("MaxConcurrency = 3", "CacheLimit = 96", "DecodePixelWidth",
+                  "BitmapCacheOption.OnLoad", "image.Freeze()", "FileShare.ReadWrite | FileShare.Delete"):
+        if token not in loader.read_text(encoding="utf-8"):
+            fail(f"Async thumbnail loader guard missing: {token}")
     if "LoadedBehavior=\"Play\"" not in ui or "IsMuted=\"True\"" not in ui:
         fail("Embedded video preview must remain selected-only and muted")
     if "MediaVideoSourceConverter" not in converter:
