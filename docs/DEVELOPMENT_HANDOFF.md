@@ -97,9 +97,10 @@
 - QA-002（本轮）：离屏渲染 QA 覆盖补齐全部工作区与设置页：Overview、Save、Trainer、Media、Maintenance、Task、Settings 均在 1040×700/1280×720/1366×768/1600×900/1920×1080 渲染并输出 PNG/报告。设置页依赖 Playnite 宿主 `BaseTextBlockStyle`，harness 在 Application.Resources 预置中性 fallback 后可在无宿主环境解析；1040×700 下 Settings 四个 Tab 的 `SettingsScroller` 均为 Auto 且内容超限时 `scrollable=True`。
 - QA-003（本轮）：`render-qa.ps1` 增加自动失败门禁：任何命名工作区主表/主列表（排除 `MaintenanceAuditLogGrid` 审计条带与 `OverviewActivityList` 最近活动）在任一常用窗口下的有限视口 `<236` DIP，或命名页面滚动面（`*ScrollSurface`/`SettingsScroller`）内容超限却使用 Hidden 滚动条，render-qa 将以退出码 1 失败并在报告中列出 `PROBLEM`。当前 7 页面 × 5 尺寸全绿。
 - QA-004（本轮）：在 C 盘恢复可用空间并重定向 `TEMP/TMP` 到 `.tmp/qa-temp`、测试输出隔离到 `artifacts/ui-qa/*-tests` 后，完整隔离测试重跑通过：Core 13/13、Worker 23/23、Playnite 151/151。Playnite 源码结构断言同步更新为 UI-201/202/203 的新阈值（`Math.Max(160, ...)`、`workspaceContentWidth < 1200`、`primaryWidth < 700`）。
+- QA-005（本轮）：`scripts/dev-install-run.ps1 -Configuration Release -NoStart` 一键构建安装成功：解决方案 Release 构建 0 警告/0 错误，Core 13/13、Worker 23/23、Playnite 151/151 全部通过，已打包并安装到 `C:\Users\lopmatu\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec`（extension.yaml 0.6.70、DLL 0.6.70.0），未自动启动 Playnite。真实 Playnite 宿主内的 Light/Dark/Follow/高对比度、DPI、键盘与连续缩放仍需用户手工验收。
 - 新增的响应式门禁要求：1080p、2K、4K 不能只按物理分辨率判断，必须按 DPI 换算后的逻辑 DIP 尺寸检查全屏、窗口化和最大化；常用窗口下首屏下方真实内容不得被页脚或工作区边界遮住，主表/主列表应保留约四行可读视口，页面滚动与列表内部虚拟化滚动必须分工明确。具体门禁见 `docs/design/UI_CHANGE_GATE.md`。
 - 本轮工作区：`40bc4ab` 提交后干净；后续 agent 仍须先运行 `git status`、`git log -5 --oneline --decorate` 和 `git branch --show-current`。
-- 验证：`python scripts/validate-source.py` 通过；`scripts/render-qa.ps1` 覆盖 Overview/Save/Trainer/Media/Maintenance/Task/Settings × 1040×700/1280×720/1366×768/1600×900/1920×1080 全部通过（含自动失败门禁）；技能静态审查 0 error；隔离测试 Core 13/13、Worker 23/23、Playnite 151/151 全部通过。完整解决方案原位 Release 构建仍受测试输出 DLL 残留句柄占用影响，验证使用隔离输出完成；真实 Playnite 宿主、主题、DPI、窗口化截图和连续缩放运行时渲染尚未验证。
+- 验证：`python scripts/validate-source.py` 通过；`scripts/render-qa.ps1` 覆盖 Overview/Save/Trainer/Media/Maintenance/Task/Settings × 1040×700/1280×720/1366×768/1600×900/1920×1080 全部通过（含自动失败门禁）；技能静态审查 0 error；`scripts/dev-install-run.ps1 -NoStart` 一键构建安装成功（解决方案 Release 0 警告/0 错误，Core 13/13、Worker 23/23、Playnite 151/151），最新扩展已安装到本机 Playnite Extensions，未自动启动。真实 Playnite 宿主、主题、DPI、窗口化截图和连续缩放运行时渲染仍需用户在 Playnite 内手工验收。
 
 以下原有的远端交接基线保留为历史记录，便于追溯另一台机器的 UI-183 上下文：
 

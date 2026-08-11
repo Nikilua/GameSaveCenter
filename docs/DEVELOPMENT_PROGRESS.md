@@ -16,6 +16,8 @@
 
 - [x] QA-004（2026-08-11）：C 盘恢复可用空间后，重定向 `TEMP/TMP` 到 `.tmp/qa-temp` 并用隔离输出重跑完整测试：Core 13/13、Worker 23/23、Playnite 151/151 全部通过；Playnite 源码结构断言同步为 UI-201/202/203 新阈值。
 
+- [x] QA-005（2026-08-11）：`scripts/dev-install-run.ps1 -Configuration Release -NoStart` 一键构建安装成功：解决方案 Release 0 警告/0 错误，Core/Worker/Playnite 全部通过，最新扩展已安装到本机 Playnite Extensions（未启动 Playnite）。真实宿主视觉验收待用户手工完成。
+
 - [x] UI-200（代码提交 `f11e9b7`）：按 Demo `MainWindow` 的 `1040×700 DIP` 最小常用窗口修正响应式外壳：Dashboard 在 `>=1040` 保留带文字侧栏和单行顶栏，低于该值才切换紧凑图标壳；同时按扣除侧栏后的约 700 DIP 内容区校准 Media `>=700` 四列、Task `>=900` 四列/`>=680` 两列、Maintenance `>=980` 三列/`>=680` 两列。1040×700 离屏复核中媒体摘要保持四卡并露出两行主表，任务摘要为 2×2 且露出队列，维护健康卡为两列；1366×768 恢复完整多列。没有改变页面滚动所有权、表格/列表有限视口、内部滚动、虚拟化、键盘/Automation、真实命令、Binding 或业务层。同步更新 `scripts/validate-source.py` 和 WPF 结构断言；源码验证通过，生产插件 Release 构建 0 警告/0 错误，隔离测试 151/151，生产离屏 render harness 覆盖 1600/1366/1280/1100/1040/980 DIP 与 900/768/720/700/640 DIP 并返回 `render-prod OK`。真实 Playnite 宿主、主题、DPI 和连续缩放流畅性仍需手工验收。
 
 - [x] UI-199（代码提交 `5cbd512`）：修复工作区由程序化导航、恢复状态或离屏渲染直接切换时 Dashboard 顶栏仍显示“首页”的语义不同步；`UpdateWorkspacePresentation()` 与侧栏点击共同调用 `UpdateWorkspaceHeader`，媒体/维护/任务等页面标题和副标题跟随当前可见工作区。MediaCenter 摘要卡改为逻辑 DIP 响应式断点：`>=760` 四列、`>=520` 两列、其余单列，常用 1080p/2K/4K 窗口保持 Demo 四卡横排并为媒体主表保留可见行；表格有限视口、内部滚动、虚拟化、Inspector、真实命令和 Binding 未改变。源码验证通过，生产插件 Release 构建 0 警告/0 错误，隔离 WPF 测试 150/150，生产离屏 render harness 覆盖 1600/1366/1280/1100/980 DIP 与 900/768/720/700/640 DIP 并返回 `render-prod OK`；真实 Playnite 宿主、主题、DPI 和连续缩放流畅性仍需手工验收。
