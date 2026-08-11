@@ -1240,6 +1240,29 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void SaveCenterPathWorkspaceShowsRealRuleAndValidationEntryPoints()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var savePath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "SaveCenterView.xaml");
+        var save = XDocument.Parse(File.ReadAllText(savePath));
+        var pathWorkspace = save.Descendants().Single(element =>
+            element.Name.LocalName == "TabItem" && element.Attribute("Header")?.Value == "路径与校验");
+        var pathText = pathWorkspace.ToString();
+
+        Assert.Contains("x:Name=\"SaveCandidateLayout\"", pathText);
+        Assert.Contains("Text=\"当前存档规则\"", pathText);
+        Assert.Contains("{Binding SelectedGame.LudusaviName", pathText);
+        Assert.Contains("{Binding SelectedGame.HealthStateDisplay", pathText);
+        Assert.Contains("Command=\"{Binding DetectPathsCommand}\"", pathText);
+        Assert.Contains("Command=\"{Binding ValidateCommand}\"", pathText);
+        Assert.Contains("Command=\"{Binding LoadDetailsCommand}\"", pathText);
+        Assert.Contains("ItemsSource=\"{Binding SaveCandidates}\"", pathText);
+        Assert.Contains("x:Name=\"SaveCandidateInspectorScrollViewer\"", pathText);
+        Assert.Contains("Command=\"{Binding AcceptCandidateCommand}\"", pathText);
+        Assert.Contains("Command=\"{Binding RejectCandidateCommand}\"", pathText);
+    }
+
+    [Fact]
     public void MaintenanceDeviceActionsUseSingleFiniteScrollChannel()
     {
         var repositoryRoot = FindRepositoryRoot();
