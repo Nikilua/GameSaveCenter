@@ -200,3 +200,40 @@ CloseOnGameExit 的安全边界必须按 PID + StartTime + Session 确认，避�
 **下一步：**
 
 NEXT: PERF-007 媒体缩略图异步化。
+
+## 2026-08-11 PERF-007 媒体缩略图异步化
+
+**做了什么：**
+
+- 新增 `AsyncThumbnailLoader`：File IO + BitmapImage 解码全部移到后台线程，最多 3 个并发，解码后 Freeze，LRU 缓存 96 项，缓存 key 覆盖路径/宽度/文件长度/最后修改时间。
+- 新增 `AsyncThumbnailImage` 控件：先显示空占位，后台解码完成后回 UI 只更新对应 item；路径被替换或控件卸载时取消过期加载。
+- 媒体列表缩略图（96px）与选中媒体大图预览（480px）都改用异步控件；原 `MediaThumbnailConverter` 保留兼容。
+- `scripts/validate-source.py` 门禁同步支持 `PreviewWidth="96"` 异步缩略图写法，并校验异步加载器存在。
+
+**为什么这样做：**
+
+原绑定转换器在 UI 线程同步做 File.Exists/FileInfo/FileStream/Decode，大量截图滚动时会卡 UI；异步化后滚动只触发可见项加载，且并发有界。
+
+**修改文件：**
+
+- 新增 `src/GameSaveCenter.Playnite/Converters/AsyncThumbnailLoader.cs`
+- 新增 `src/GameSaveCenter.Playnite/Controls/AsyncThumbnailImage.cs`
+- `src/GameSaveCenter.Playnite/Views/MediaCenterView.xaml`
+- `scripts/validate-source.py`
+- 新增测试 `tests/GameSaveCenter.Playnite.Tests/AsyncThumbnailLoaderTests.cs`
+
+**测试结果：**
+
+- Playnite 163/163（新增 3 个异步加载测试）通过；render-qa 全绿；技能静态审查 0 error；`scripts/validate-source.py` 通过。
+
+**性能变化：**
+
+- 缩略图解码不再占用 UI 线程；并发限制 3，避免 200 张图同时 200 个 Task。
+
+**仍需验证内容：**
+
+真实 Playnite 下大量截图滚动的帧率与解码耗时（`[PERF]` 日志 + UI-QA-REAL-001）。
+
+**下一步：**
+
+NEXT: UI-QA-REAL-001 真机回归与最终收尾。

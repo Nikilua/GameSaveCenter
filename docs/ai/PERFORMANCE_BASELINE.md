@@ -38,7 +38,8 @@
 
 - PERF-005：Snapshot 内容未变化时 0 次 CollectionChanged。`BatchObservableCollection.ReplaceAll` + `SnapshotComparers` 内容比较已覆盖 Games/Tasks/Findings/Audit/Backups/SaveCandidates/Media/MediaSources/GameTools/ProcessMappings/DeviceComparisons；GamePicker 相同内容跳过重建。测试：Playnite 156/156，render-qa 全绿。
 - PERF-006：Task/Media 搜索 180ms 防抖已实现（`DebouncedRefresh`），连续输入只执行约 1 次最终 Refresh，清空立即刷新，卸载时取消。测试：Playnite 160/160。
-- 下一项：GAME-TOOL-001 自定义游戏启动项。
+- PERF-007：媒体缩略图异步化已实现（`AsyncThumbnailLoader`：后台解码、3 并发、LRU 96、Freeze；`AsyncThumbnailImage` 占位加载）。测试：Playnite 163/163，render-qa 全绿。
+- 下一项：UI-QA-REAL-001 真机回归。
 
 ## 离屏渲染基线（2026-08-11，render-qa 报告）
 

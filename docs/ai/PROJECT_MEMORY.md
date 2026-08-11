@@ -58,7 +58,7 @@
 - Dashboard `MergeTaskChange` 增量合并；`knownTaskStates` 去重通知。
 
 ### 媒体系统
-- `MediaItemDto` 由 Worker 索引；缩略图当前是 `MediaThumbnailConverter`（UI 线程同步 File IO + BitmapImage 解码，带 LRU 缓存和 DecodePixelWidth）。
+- `MediaItemDto` 由 Worker 索引；列表与详情预览已改为 `AsyncThumbnailImage` 异步加载（后台解码、3 并发、LRU 96、Freeze 后回 UI）；`MediaThumbnailConverter` 保留为兼容实现。
 - Media 列表使用 ListBox + Recycling 虚拟化；页面滚动面与列表滚动分工明确。
 
 ### 缓存与性能机制
@@ -83,6 +83,7 @@
 - PERF-002/003：Task 筛选与 GamePicker 平台指纹短路。
 - PERF-004（旧编号）：GamePickerItem 缓存复用（新任务编号体系中 PERF-004 是性能基线设施，不要混淆）。
 - PERF-004/005/006（新编号）：`[PERF]` 基线日志、Snapshot 无变化 0 Reset、Task/Media 搜索防抖。
+- PERF-007：媒体缩略图异步化（`AsyncThumbnailLoader` 3 并发 + LRU + Freeze，`AsyncThumbnailImage` 占位加载）。
 - GAME-TOOL-001/002：自定义启动项正式支持 EXE/LNK/BAT/CMD/PS1，外部路径引用不复制文件；Session 级 PID 追踪与 CloseOnGameExit 安全关闭。
 - UI-204/205：TaskCenter 与 GamePicker 下拉框默认值恢复（含真实 Playnite 异步物化重试）。
 
@@ -90,7 +91,7 @@
 
 - `DashboardViewModel` 仍很大，包含命令、筛选、导入、诊断、设备状态等职责；只有性能实现被严重阻碍或 GAME-TOOL 无法接入时才拆（独立 `ARCH-xxx` 任务）。
 - `DashboardView.xaml.cs` 仍承担部分响应式协调。
-- `MediaThumbnailConverter` 仍在 UI 线程同步解码，PERF-007 计划异步化。
+- 媒体列表/详情缩略图已异步化；真实大量截图滚动下的帧率仍需真机验证。
 - Task/Media 搜索目前每次按键都 `ICollectionView.Refresh()`，PERF-006 计划防抖。
 - Snapshot 内容未变化时部分集合仍会 Reset，PERF-005 计划 0 CollectionChanged。
 - 真实 Playnite 宿主、主题切换、DPI 真机、连续缩放流畅性尚未验证（UI-QA-REAL-001）。
@@ -99,8 +100,8 @@
 
 - P0：性能基础设施与真实热点优化（PERF-004 基线 → PERF-005 0 Reset → PERF-006 搜索防抖）。
 - P0：自定义游戏启动项（已完成，GAME-TOOL-001/002）。
-- P1：媒体性能（PERF-007 异步缩略图，当前进行中）。
-- P1：真实 Playnite / DPI / 大型游戏库 QA（UI-QA-REAL-001）。
+- P1：媒体性能（PERF-007 异步缩略图，已完成）。
+- P1：真实 Playnite / DPI / 大型游戏库 QA（UI-QA-REAL-001，当前进行中）。
 - P2：架构进一步拆分（不主动做）。
 
 已完成：见 WORKLOG.md 与 Git log；不要重复实现已完成的 UI/性能工作。
