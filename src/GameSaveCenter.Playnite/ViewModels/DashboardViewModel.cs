@@ -15,6 +15,7 @@ using System.Windows.Data;
 using System.Windows.Threading;
 using Microsoft.Win32;
 using GameSaveCenter.Contracts;
+using GameSaveCenter.Playnite.Infrastructure;
 using Playnite.SDK;
 
 namespace GameSaveCenter.Playnite.ViewModels
@@ -177,34 +178,34 @@ namespace GameSaveCenter.Playnite.ViewModels
             Observe(InitializeAsync());
         }
 
-        public ObservableCollection<GameStatusDto> Games { get; } = new ObservableCollection<GameStatusDto>();
+        public BatchObservableCollection<GameStatusDto> Games { get; } = new BatchObservableCollection<GameStatusDto>();
         /// <summary>Shared global picker state. The dashboard keeps the legacy bindings below for compatibility.</summary>
         public GamePickerViewModel GamePicker => gamePicker;
-        public ObservableCollection<TaskStatusDto> Tasks { get; } = new ObservableCollection<TaskStatusDto>();
-        public ObservableCollection<TaskStatusDto> OverviewTasks { get; } = new ObservableCollection<TaskStatusDto>();
+        public BatchObservableCollection<TaskStatusDto> Tasks { get; } = new BatchObservableCollection<TaskStatusDto>();
+        public BatchObservableCollection<TaskStatusDto> OverviewTasks { get; } = new BatchObservableCollection<TaskStatusDto>();
         public ObservableCollection<string> TaskGameFilterOptions { get; } = new ObservableCollection<string> { "全部" };
         public ObservableCollection<string> TaskTypeFilterOptions { get; } = new ObservableCollection<string> { "全部" };
-        public ObservableCollection<ValidationFindingDto> Findings { get; } = new ObservableCollection<ValidationFindingDto>();
+        public BatchObservableCollection<ValidationFindingDto> Findings { get; } = new BatchObservableCollection<ValidationFindingDto>();
         /// <summary>Small overview projection so a warning count always has a visible reason.</summary>
-        public ObservableCollection<ValidationFindingDto> AttentionFindings { get; } = new ObservableCollection<ValidationFindingDto>();
-        public ObservableCollection<DeviceConflictStatusDto> DeviceComparisons { get; } = new ObservableCollection<DeviceConflictStatusDto>();
+        public BatchObservableCollection<ValidationFindingDto> AttentionFindings { get; } = new BatchObservableCollection<ValidationFindingDto>();
+        public BatchObservableCollection<DeviceConflictStatusDto> DeviceComparisons { get; } = new BatchObservableCollection<DeviceConflictStatusDto>();
         public IReadOnlyList<string> DeviceDecisionOptions { get; } = new[] { "稍后处理", "保留两者", "以本机为准", "以远端为准" };
-        public ObservableCollection<ProcessMappingDto> ProcessMappings { get; } = new ObservableCollection<ProcessMappingDto>();
-        public ObservableCollection<BackupVersionDto> Backups { get; } = new ObservableCollection<BackupVersionDto>();
-        public ObservableCollection<MediaItemDto> Media { get; } = new ObservableCollection<MediaItemDto>();
-        private ObservableCollection<MediaItemDto> unassignedMedia = new ObservableCollection<MediaItemDto>();
-        public ObservableCollection<MediaItemDto> UnassignedMedia
+        public BatchObservableCollection<ProcessMappingDto> ProcessMappings { get; } = new BatchObservableCollection<ProcessMappingDto>();
+        public BatchObservableCollection<BackupVersionDto> Backups { get; } = new BatchObservableCollection<BackupVersionDto>();
+        public BatchObservableCollection<MediaItemDto> Media { get; } = new BatchObservableCollection<MediaItemDto>();
+        private BatchObservableCollection<MediaItemDto> unassignedMedia = new BatchObservableCollection<MediaItemDto>();
+        public BatchObservableCollection<MediaItemDto> UnassignedMedia
         {
             get => unassignedMedia;
             private set => SetValue(ref unassignedMedia, value);
         }
-        public ObservableCollection<AuditLogEntryDto> Audit { get; } = new ObservableCollection<AuditLogEntryDto>();
-        public ObservableCollection<SavePathCandidateDto> SaveCandidates { get; } = new ObservableCollection<SavePathCandidateDto>();
-        public ObservableCollection<MediaSourceRuleDto> MediaSources { get; } = new ObservableCollection<MediaSourceRuleDto>();
-        public ObservableCollection<GameToolDto> GameTools { get; } = new ObservableCollection<GameToolDto>();
-        public ObservableCollection<GameToolEntryCandidateDto> ImportEntryCandidates { get; } = new ObservableCollection<GameToolEntryCandidateDto>();
-        public ObservableCollection<TrainerCatalogItemDto> TrainerCatalogResults { get; } = new ObservableCollection<TrainerCatalogItemDto>();
-        public ObservableCollection<TrainerReleaseDto> TrainerReleases { get; } = new ObservableCollection<TrainerReleaseDto>();
+        public BatchObservableCollection<AuditLogEntryDto> Audit { get; } = new BatchObservableCollection<AuditLogEntryDto>();
+        public BatchObservableCollection<SavePathCandidateDto> SaveCandidates { get; } = new BatchObservableCollection<SavePathCandidateDto>();
+        public BatchObservableCollection<MediaSourceRuleDto> MediaSources { get; } = new BatchObservableCollection<MediaSourceRuleDto>();
+        public BatchObservableCollection<GameToolDto> GameTools { get; } = new BatchObservableCollection<GameToolDto>();
+        public BatchObservableCollection<GameToolEntryCandidateDto> ImportEntryCandidates { get; } = new BatchObservableCollection<GameToolEntryCandidateDto>();
+        public BatchObservableCollection<TrainerCatalogItemDto> TrainerCatalogResults { get; } = new BatchObservableCollection<TrainerCatalogItemDto>();
+        public BatchObservableCollection<TrainerReleaseDto> TrainerReleases { get; } = new BatchObservableCollection<TrainerReleaseDto>();
         public ICollectionView GamesView { get; }
         public ICollectionView TasksView { get; }
         public ICollectionView MediaView { get; }
@@ -1887,6 +1888,12 @@ namespace GameSaveCenter.Playnite.ViewModels
         }
         private static void Replace<T>(ObservableCollection<T> target, IEnumerable<T> source)
         {
+            if (target is BatchObservableCollection<T> batch)
+            {
+                batch.ReplaceAll(source);
+                return;
+            }
+
             var incoming = (source ?? Enumerable.Empty<T>()).ToList();
             var existing = target.ToList();
             if (existing.SequenceEqual(incoming))

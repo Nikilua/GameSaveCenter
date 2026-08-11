@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -224,7 +225,10 @@ public static class Program
             host.UpdateLayout();
             applyLayout();
             host.UpdateLayout();
+            var sw = Stopwatch.StartNew();
             SavePng(host, Path.Combine(outputRoot, $"{name}-{windowW}x{windowH}-tab{i}.png"));
+            sw.Stop();
+            report.AppendLine($"  {name} tab{i} render_ms={sw.ElapsedMilliseconds}");
             CollectScrollDiagnostics(host, report, name, windowW, windowH, i);
         }
     }
@@ -246,7 +250,10 @@ public static class Program
         host.UpdateLayout();
         applyLayout();
         host.UpdateLayout();
+        var sw = Stopwatch.StartNew();
         SavePng(host, Path.Combine(outputRoot, $"{name}-{windowW}x{windowH}.png"));
+        sw.Stop();
+        report.AppendLine($"  {name} render_ms={sw.ElapsedMilliseconds}");
         CollectScrollDiagnostics(host, report, name, windowW, windowH, -1);
     }
 

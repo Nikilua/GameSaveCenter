@@ -26,7 +26,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             ApplyOnUi(() =>
             {
                 if (!InboxEquals(UnassignedMedia, inbox))
-                    UnassignedMedia = new System.Collections.ObjectModel.ObservableCollection<MediaItemDto>(inbox);
+                    UnassignedMedia = new GameSaveCenter.Playnite.Infrastructure.BatchObservableCollection<MediaItemDto>(inbox);
 
                 SelectedInboxMedia = UnassignedMedia.FirstOrDefault(x => string.Equals(x.MediaId, selectedId, StringComparison.OrdinalIgnoreCase))
                                      ?? UnassignedMedia.FirstOrDefault();
