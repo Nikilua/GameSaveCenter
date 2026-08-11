@@ -67,9 +67,11 @@
 ## 合并后当前交接基线（2026-08-11）
 
 - 分支：`main`
-- 当前合并提交：`e87e2af`（`merge: reconcile local and cross-machine UI migration`）
+- 当前交接提交：`4863b25`（`ui: align overview hero and game context with demo`）
+- 上一合并提交：`e87e2af`（`merge: reconcile local and cross-machine UI migration`）
 - 合并共同基线：`9cdd975`；本机 UI-173～UI-181 与 `origin/main` 的 UI-181～UI-183、交接文档线均已保留，没有删除任一方共同基线后的提交。
 - 本机额外 WIP 已先由 `e61d0fc` 固化后纳入合并；本机的长期约束已追加到 `docs/PROJECT_MEMORY.md` 的 `MERGE-001`，远端既有记忆条目保持原文。
+- UI-184 已将 Overview 的 Demo 层级落地为“今日工作台动作卡 → Hero/当前游戏双列（受限宽度堆叠）→ 六项指标 → 最近活动”，具体约束见 `docs/PROJECT_MEMORY.md` 与 `docs/DEVELOPMENT_PROGRESS.md`。
 - 本轮工作区：合并提交完成时干净；后续 agent 仍须先运行 `git status`、`git log -5 --oneline --decorate` 和 `git branch --show-current`。
 - 验证：源码验证通过；隔离 Release 构建 0 错误；Playnite 测试 144/144 通过。真实 Playnite 宿主、主题、DPI 和运行时渲染仍未验证。
 
