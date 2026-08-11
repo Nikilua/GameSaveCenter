@@ -74,6 +74,12 @@
 - Snapshot 数据未变化时，目标为 0 次 CollectionChanged（PERF-005）。
 - 连续输入 `abcdef` 时 Task/Media 搜索目标约 1 次最终刷新（PERF-006）。
 
+已实现证据（Playnite 170/170）：
+
+- 2000 游戏相同 Snapshot：GamePicker 第二次 SetItems 0 次集合通知。
+- 2000 游戏中单游戏状态变化：1 次 Reset、0 次逐项 Add。
+- 2000 任务相同 Snapshot：`BatchObservableCollection` 第二次 ReplaceAll 0 次 CollectionChanged。
+
 ## 待真机验证
 
 - 真实 Playnite 宿主下 Dashboard 初次加载与各 Workspace 切换耗时。

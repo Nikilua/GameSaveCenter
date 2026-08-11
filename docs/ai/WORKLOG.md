@@ -300,3 +300,29 @@ NEXT: 按真实 Playnite 使用反馈决定 PERF-008/009/010 是否值得继续�
 **下一步：**
 
 NEXT: 仅剩 PERF-008（按 Workspace 按需刷新）未实施；目标文件要求先有真实 profiling 证据，当前保留为待定，不做无收益重构。
+
+## 2026-08-12 大库 2000 规模回归测试
+
+**做了什么：**
+
+- 新增 `LargeLibraryPerformanceTests`：2000 游戏相同 Snapshot 时 GamePicker 0 次二次集合通知；单游戏状态变化时只发 1 次 Reset 且无逐项 Add；2000 任务相同 Snapshot 时 0 次二次 CollectionChanged。
+
+**为什么这样做：**
+
+目标文件的性能验收要求 1000+ 游戏不冻结，并明确要求用 Unit Test / Instrumentation 证明“相同 Snapshot 从 1 次 Reset 降到 0 次”；补上 2000 规模证据，避免只在小样本上证明。
+
+**修改文件：**
+
+- 新增 `tests/GameSaveCenter.Playnite.Tests/LargeLibraryPerformanceTests.cs`
+
+**测试结果：**
+
+- Playnite 170/170（新增 3 个大库规模测试）通过。
+
+**仍需验证内容：**
+
+真实 Playnite 1000+ 游戏库的 IPC 与渲染帧率。
+
+**下一步：**
+
+NEXT: PERF-008 仍待真实 profiling；当前按 Workspace 按需刷新已有基础（详情只在激活 Workspace 加载），暂不追加重构。
