@@ -1513,6 +1513,10 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("MinHeight=\"96\" MaxHeight=\"160\"", maintenance);
         Assert.Contains("TaskSummaryPanel.Columns", taskCode);
         var taskView = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml"));
+        Assert.Contains("Style=\"{DynamicResource GscRedesignMetricBorder}\" Padding=\"14,12\"", taskView);
+        Assert.Contains("FontSize=\"30\" FontWeight=\"SemiBold\"", taskView);
+        Assert.Contains("运行、失败、取消和完成", taskView);
+        Assert.DoesNotContain("x:Key=\"TaskMetricCard\"", taskView);
         Assert.Contains("x:Name=\"TaskDetailScrollViewer\"", taskView);
         Assert.Contains("Text=\"{Binding TaskSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}\"", taskView);
         Assert.Contains("ToolTip=\"搜索任务、游戏或错误\"", taskView);
