@@ -68,7 +68,7 @@
 ## 合并后当前交接基线（2026-08-11）
 
 - 分支：`main`
-- 当前 UI 交接基线：`f11e9b7`（`ui: keep demo shell at common minimum width`）；Demo 最小常用窗口 1040×700 DIP 的带文字侧栏/单行顶栏、Media 四卡、Task 2×2 摘要和 Maintenance 两列健康卡响应式节奏已固化，记忆与进度文档随后单独提交
+- 当前 UI 交接基线：`40bc4ab`（`qa: cover settings page in offscreen render harness`）；生产 UI 最近提交 `ffd3d21`（UI-203）。UI-201/202/203 已把 Task/Save/Trainer 堆叠 Inspector 统一为 160 DIP 下限，并把 Overview 在常用 1040/1280/1366 窗口恢复为“Hero + 当前游戏”同行；QA-001/002 已提供 7 页面 × 5 种常用逻辑窗口的离屏渲染回归。
 - 上一合并提交：`e87e2af`（`merge: reconcile local and cross-machine UI migration`）
 - 合并共同基线：`9cdd975`；本机 UI-173～UI-181 与 `origin/main` 的 UI-181～UI-183、交接文档线均已保留，没有删除任一方共同基线后的提交。
 - 本机额外 WIP 已先由 `e61d0fc` 固化后纳入合并；本机的长期约束已追加到 `docs/PROJECT_MEMORY.md` 的 `MERGE-001`，远端既有记忆条目保持原文。
@@ -96,8 +96,8 @@
 - UI-203（本轮）：存档中心与修改器中心的堆叠 Inspector 最小高度统一从 96 提高到 160 DIP（`SaveHistoryActionsScrollViewer`、`SaveCandidateInspectorScrollViewer`、`TrainerToolsSettingsScrollViewer`、`TrainerReleaseInfoScrollViewer`），与 UI-201 的 Task 规则一致；`SaveHistoryGrid`/`SaveCandidateGrid`、修改器主表与可下载版本面板仍保持 236 DIP 最小视口、内部滚动和虚拟化。离屏 QA 已扩展覆盖 SaveCenterView/TrainerCenterView（含假数据）：1040×700/1280×720/1366×768 下四个堆叠 Inspector 均为 160 DIP 且内部 Auto 滚动，主表 236 DIP 高、8 行；1600×900/1920×1080 保持右栏 360 宽。源码验证通过；真实 Playnite 宿主、主题、DPI 和连续缩放流畅性仍未验证。
 - QA-002（本轮）：离屏渲染 QA 覆盖补齐全部工作区与设置页：Overview、Save、Trainer、Media、Maintenance、Task、Settings 均在 1040×700/1280×720/1366×768/1600×900/1920×1080 渲染并输出 PNG/报告。设置页依赖 Playnite 宿主 `BaseTextBlockStyle`，harness 在 Application.Resources 预置中性 fallback 后可在无宿主环境解析；1040×700 下 Settings 四个 Tab 的 `SettingsScroller` 均为 Auto 且内容超限时 `scrollable=True`。
 - 新增的响应式门禁要求：1080p、2K、4K 不能只按物理分辨率判断，必须按 DPI 换算后的逻辑 DIP 尺寸检查全屏、窗口化和最大化；常用窗口下首屏下方真实内容不得被页脚或工作区边界遮住，主表/主列表应保留约四行可读视口，页面滚动与列表内部虚拟化滚动必须分工明确。具体门禁见 `docs/design/UI_CHANGE_GATE.md`。
-- 本轮工作区：合并提交完成时干净；后续 agent 仍须先运行 `git status`、`git log -5 --oneline --decorate` 和 `git branch --show-current`。
-- 验证：源码验证通过；生产插件隔离 Release 构建 0 警告/0 错误；隔离测试输出 151/151 通过；生产离屏 render harness 返回 `render-prod OK`，自身有 3 个 FakeApi 未使用事件警告。覆盖尺寸包含 1600/1366/1280/1100/1040/980 DIP 与 900/768/720/700/640 DIP。由于本机只有 .NET 9 SDK 且仓库 `global.json` 以 .NET 8 为基线，测试使用隔离输出验证，未覆盖真实 Playnite 宿主、主题、DPI、窗口化截图和连续缩放运行时渲染。
+- 本轮工作区：`40bc4ab` 提交后干净；后续 agent 仍须先运行 `git status`、`git log -5 --oneline --decorate` 和 `git branch --show-current`。
+- 验证：`python scripts/validate-source.py` 通过；`scripts/render-qa.ps1` 覆盖 Overview/Save/Trainer/Media/Maintenance/Task/Settings × 1040×700/1280×720/1366×768/1600×900/1920×1080 全部通过；技能静态审查 0 error。完整 Release 构建与隔离测试本轮未重跑：测试输出 DLL 被残留句柄占用且 C 盘 0 可用导致 VSTest shadow copy 失败；真实 Playnite 宿主、主题、DPI、窗口化截图和连续缩放运行时渲染尚未验证。
 
 以下原有的远端交接基线保留为历史记录，便于追溯另一台机器的 UI-183 上下文：
 
@@ -122,11 +122,12 @@
 
 继续以 Demo 对齐为目标，对生产页面做页面级收口和真实宿主验收，优先顺序如下：
 
-1. 逐页检查 Overview、SaveCenter、TrainerCenter、TaskCenter、Maintenance、MediaCenter、Settings 的层级、按钮尺寸、文字对齐、默认选择和空状态。
+1. 以 `scripts/render-qa.ps1`（7 页面 × 5 种常用逻辑窗口）为离屏回归基线；继续检查 Overview、SaveCenter、TrainerCenter、TaskCenter、Maintenance、MediaCenter、Settings 的层级、按钮尺寸、文字对齐、默认选择和空状态。
 2. 检查共享 `Button`、`ComboBox`、`TextBox`、`ListBox`、`DataGrid`、Tab 和 Inspector 资源，发现同类问题时修共享模板。
-3. 按 980/1040/1100/1280/1366/1600 DIP 宽度、640/720/900/1080 DIP 高，以及 1080p/2K/4K 在 100%/125%/150%/175%/200% DPI 下的常用窗口化逻辑尺寸，复核窄屏堆叠、首屏内容可见性、有限滚动和长文本；不把 4K 通过当作 1080p 通过。
+3. 每次页面级改动后运行 `scripts/render-qa.ps1`（C 盘满时先设 `TEMP/TMP` 到仓库 `.tmp/qa-temp`）；按 980/1040/1100/1280/1366/1600 DIP 宽度、640/720/900/1080 DIP 高，以及 1080p/2K/4K 在 100%/125%/150%/175%/200% DPI 下的常用窗口化逻辑尺寸，复核窄屏堆叠、首屏内容可见性、有限滚动和长文本；不把 4K 通过当作 1080p 通过。
 4. 在可用环境中运行 Playnite 宿主，验证 Light/Dark/Follow Playnite/高对比度、键盘焦点、真实数据加载和窗口关闭生命周期；若环境不可用，保留明确的手工验收清单。
 5. 发现问题后继续使用新的 UI 编号记录，不要删除历史记录或把未验证事项标成完成。
+6. 在可用的干净环境中重跑完整 Release 构建与隔离测试；本机曾因测试输出 DLL 残留句柄占用和 C 盘 0 可用空间而无法在本次重跑。
 
 ## 跨电脑、跨模型规则
 
