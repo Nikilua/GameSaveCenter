@@ -613,6 +613,7 @@ namespace GameSaveCenter.Playnite.Views
             var item = sender as RadioButton;
             if (item == null || item.Tag == null) return;
             if (!Enum.TryParse(item.Tag.ToString(), out WorkspaceKind workspace)) return;
+            var timer = System.Diagnostics.Stopwatch.StartNew();
             viewModel.CurrentWorkspace = workspace;
             UpdateWorkspaceHeader(workspace);
             if (compactGameBrowserOpen)
@@ -622,6 +623,8 @@ namespace GameSaveCenter.Playnite.Views
             }
             UpdateWorkspacePresentation();
             ApplyResponsiveLayout(ActualWidth, ActualHeight);
+            timer.Stop();
+            Logger.Debug($"[PERF] WorkspaceSwitch workspace={workspace} layout={timer.ElapsedMilliseconds}ms");
             viewModel.RequestWorkspaceLoad();
             AnimateElement(DetailsTabControl, 10, 0, 0.2);
         }

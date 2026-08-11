@@ -33,3 +33,41 @@
 **下一步：**
 
 NEXT: PERF-004 性能基线设施（`[PERF]` 日志 + `docs/ai/PERFORMANCE_BASELINE.md`）。
+
+## 2026-08-11 PERF-004 性能基线设施
+
+**做了什么：**
+
+- 新增统一 `[PERF]` Debug 日志：Worker 快照生成（fetch）、Playnite 快照应用（apply）、Workspace 切换布局、GamePicker setItems/refresh、Task/Media 搜索刷新、Media 详情加载、缩略图解码。
+- 新增 `docs/ai/PERFORMANCE_BASELINE.md`，记录测量清单、离屏 render-qa 基线数字与待真机验证项。
+- Worker `DashboardService` 注入 `ILogger<DashboardService>`，只输出 Debug，Release 正常运行不刷屏。
+
+**为什么这样做：**
+
+性能优化前先建立可重复的测量设施，避免“凭感觉优化”；日志带数据量便于对照大库规模。
+
+**修改文件：**
+
+- `src/GameSaveCenter.Worker/Services/DashboardService.cs`
+- `src/GameSaveCenter.Playnite/ViewModels/DashboardViewModel.cs`
+- `src/GameSaveCenter.Playnite/ViewModels/GamePickerViewModel.cs`
+- `src/GameSaveCenter.Playnite/Views/DashboardView.xaml.cs`
+- `src/GameSaveCenter.Playnite/Converters/MediaThumbnailConverter.cs`
+- 新增 `docs/ai/PERFORMANCE_BASELINE.md`
+
+**测试结果：**
+
+- Release 编译通过（Contracts/Core/Worker/Playnite 四个生产项目；测试输出目录有外部残留进程锁，改用隔离 `--output` 目录跑测试）。
+- Core 13/13、Worker 23/23、Playnite 152/152 通过。
+
+**性能变化：**
+
+- 离屏渲染基线已记录（1040×700 到 1920×1080 的 render_ms），见 `docs/ai/PERFORMANCE_BASELINE.md`。
+
+**仍需验证内容：**
+
+真实 Playnite 宿主下 `[PERF]` 日志的实际耗时、1000+ 游戏库搜索/切页、缩略图滚动。
+
+**下一步：**
+
+NEXT: PERF-005 Snapshot 无变化 0 Reset。

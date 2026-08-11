@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using GameSaveCenter.Contracts;
+using Playnite.SDK;
 
 namespace GameSaveCenter.Playnite.ViewModels
 {
@@ -17,6 +19,7 @@ namespace GameSaveCenter.Playnite.ViewModels
     /// </summary>
     public sealed class GamePickerViewModel : INotifyPropertyChanged, IDisposable
     {
+        private static readonly ILogger Logger = LogManager.GetLogger();
         private readonly SynchronizationContext? synchronizationContext;
         private CancellationTokenSource? refreshCancellation;
         private GamePickerItem? selectedItem;
@@ -147,6 +150,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public void SetItems(IEnumerable<GameStatusDto> games, string? preferredGameId = null)
         {
             if (disposed) return;
+            var timer = Stopwatch.StartNew();
             var previousId = preferredGameId ?? SelectedGame?.PlayniteId;
             rebuildingItems = true;
             try
@@ -183,6 +187,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                 RefreshNow();
             }
             finally { rebuildingItems = false; }
+            timer.Stop();
+            Logger.Debug($"[PERF] GamePicker setItems={timer.ElapsedMilliseconds}ms games={Items.Count}");
             var candidate = Items.FirstOrDefault(x => string.Equals(x.PlayniteId, previousId, StringComparison.OrdinalIgnoreCase) && ItemsView.Contains(x))
                             ?? ItemsView.Cast<GamePickerItem>().FirstOrDefault()
                             ?? null;
@@ -308,8 +314,11 @@ namespace GameSaveCenter.Playnite.ViewModels
         private void ApplyViewRefresh()
         {
             if (disposed) return;
+            var timer = Stopwatch.StartNew();
             ItemsView.Refresh();
             FilteredCount = ItemsView.Cast<object>().Count();
+            timer.Stop();
+            Logger.Debug($"[PERF] GamePicker refresh={timer.ElapsedMilliseconds}ms filtered={FilteredCount} games={Items.Count}");
             if (!rebuildingItems && SelectedItem != null && !ItemsView.Contains(SelectedItem))
                 SelectedItem = ItemsView.Cast<GamePickerItem>().FirstOrDefault();
         }

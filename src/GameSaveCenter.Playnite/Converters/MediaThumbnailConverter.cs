@@ -1,16 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Playnite.SDK;
 
 namespace GameSaveCenter.Playnite.Converters
 {
     /// <summary>Loads bounded, frozen thumbnails with a small process-local LRU cache.</summary>
     public sealed class MediaThumbnailConverter : IValueConverter
     {
+        private static readonly ILogger Logger = LogManager.GetLogger();
         private const int DefaultPreviewWidth = 480;
         private const int CacheLimit = 96;
         private static readonly object CacheGate = new object();
@@ -38,6 +41,7 @@ namespace GameSaveCenter.Playnite.Converters
                     }
                 }
                 using var stream=new FileStream(path,FileMode.Open,FileAccess.Read,FileShare.ReadWrite|FileShare.Delete);
+                var timer=Stopwatch.StartNew();
                 var image=new BitmapImage();
                 image.BeginInit();
                 image.CacheOption=BitmapCacheOption.OnLoad;
@@ -45,6 +49,8 @@ namespace GameSaveCenter.Playnite.Converters
                 image.StreamSource=stream;
                 image.EndInit();
                 image.Freeze();
+                timer.Stop();
+                Logger.Debug($"[PERF] Thumbnail decode={timer.ElapsedMilliseconds}ms width={width} path={path}");
                 AddToCache(key,image);
                 return image;
             }

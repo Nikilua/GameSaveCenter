@@ -1,7 +1,9 @@
+using System.Diagnostics;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Worker.Infrastructure;
 using GameSaveCenter.Worker.Persistence;
 using GameSaveCenter.Worker.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace GameSaveCenter.Worker.Services;
 
@@ -13,15 +15,17 @@ public sealed class DashboardService
     private readonly LudusaviClient _ludusavi;
     private readonly RcloneClient _rclone;
     private readonly WorkerOptions _options;
+    private readonly ILogger<DashboardService> _logger;
     private readonly SemaphoreSlim _versionGate=new(1,1);
     private string _cachedLudusaviVersion=string.Empty;
     private DateTime _versionCachedUtc=DateTime.MinValue;
 
-    public DashboardService(SqliteStateStore store,GameSessionCoordinator sessions,LudusaviClient ludusavi,RcloneClient rclone,WorkerOptions options)
-    { _store=store;_sessions=sessions;_ludusavi=ludusavi;_rclone=rclone;_options=options; }
+    public DashboardService(SqliteStateStore store,GameSessionCoordinator sessions,LudusaviClient ludusavi,RcloneClient rclone,WorkerOptions options,ILogger<DashboardService> logger)
+    { _store=store;_sessions=sessions;_ludusavi=ludusavi;_rclone=rclone;_options=options;_logger=logger; }
 
     public async Task<DashboardSnapshotDto> GetAsync(CancellationToken token)
     {
+        var stopwatch=Stopwatch.StartNew();
         var games=await _store.GetDashboardGameRecordsAsync(token).ConfigureAwait(false);
         var active=_sessions.ActiveSessions.Select(x=>x.PlayniteId).ToHashSet(StringComparer.OrdinalIgnoreCase);
         var tasks=await _store.GetRecentTasksAsync(50,token).ConfigureAwait(false);
@@ -67,6 +71,9 @@ public sealed class DashboardService
                 Policy=record.Policy
             });
         }
+        stopwatch.Stop();
+        _logger.LogDebug("[PERF] DashboardSnapshot fetch={FetchMs}ms games={Games} tasks={Tasks} findings={Findings} audit={Audit}",
+            stopwatch.ElapsedMilliseconds,snapshot.Games.Count,snapshot.RecentTasks.Count,snapshot.Findings.Count,snapshot.RecentAudit.Count);
         return snapshot;
     }
 

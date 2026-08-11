@@ -286,7 +286,10 @@ namespace GameSaveCenter.Playnite.ViewModels
             set
             {
                 SetValue(ref taskSearchText, value ?? string.Empty);
+                var timer = Stopwatch.StartNew();
                 TasksView.Refresh();
+                timer.Stop();
+                Logger.Debug($"[PERF] TaskSearch refresh={timer.ElapsedMilliseconds}ms tasks={Tasks.Count}");
             }
         }
         public string TaskStatusFilter
@@ -412,7 +415,14 @@ namespace GameSaveCenter.Playnite.ViewModels
         public string MediaSearchText
         {
             get => mediaSearchText;
-            set { SetValue(ref mediaSearchText,value??string.Empty); MediaView.Refresh(); }
+            set
+            {
+                SetValue(ref mediaSearchText,value??string.Empty);
+                var timer = Stopwatch.StartNew();
+                MediaView.Refresh();
+                timer.Stop();
+                Logger.Debug($"[PERF] MediaSearch refresh={timer.ElapsedMilliseconds}ms media={Media.Count}");
+            }
         }
         public string MediaFilter
         {
@@ -865,9 +875,12 @@ namespace GameSaveCenter.Playnite.ViewModels
         private async Task<bool> RefreshDashboardAsync(bool synchronize, bool notifyTaskChanges, TimeSpan? snapshotTimeout = null)
         {
             if (synchronize) await plugin.SynchronizeAsync();
+            var fetchTimer = Stopwatch.StartNew();
             var data = await plugin.RequestAsync<DashboardSnapshotDto>(MessageTypes.GetDashboard, new { }, snapshotTimeout);
+            fetchTimer.Stop();
             var notifications = new List<TaskStatusDto>();
             var selectedTaskCompleted = false;
+            var applyTimer = Stopwatch.StartNew();
             ApplyOnUi(() =>
             {
                 var selectedGameId = SelectedGame?.PlayniteId;
@@ -918,6 +931,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                     ? data.LudusaviAvailable ? "Worker 与 Ludusavi 均正常" : "Worker 正常，Ludusavi 尚未配置"
                     : "Worker 不可用";
             });
+            applyTimer.Stop();
+            Logger.Debug($"[PERF] DashboardSnapshot fetch={fetchTimer.ElapsedMilliseconds}ms apply={applyTimer.ElapsedMilliseconds}ms games={data.Games.Count} tasks={data.RecentTasks.Count} findings={data.Findings.Count}");
             foreach (var task in notifications) plugin.ShowTaskNotification(task);
             lastFullDashboardRefreshUtc=DateTime.UtcNow;
             return selectedTaskCompleted;
@@ -1046,11 +1061,14 @@ namespace GameSaveCenter.Playnite.ViewModels
                 }
                 case WorkspaceKind.Media:
                 {
+                    var mediaLoadTimer = Stopwatch.StartNew();
                     var mediaTask = plugin.RequestAsync<MediaItemDto[]>(MessageTypes.ListMedia, new GameQueryDto { PlayniteId = id, Limit = 1000 });
                     var sourcesTask = plugin.RequestAsync<MediaSourceRuleDto[]>(MessageTypes.ListMediaSources, new GameQueryDto { PlayniteId = id });
                     var summaryTask = plugin.RequestAsync<MediaStorageSummaryDto>(MessageTypes.GetMediaSummary, new GameQueryDto { PlayniteId = id });
                     await Task.WhenAll(mediaTask, sourcesTask, summaryTask);
+                    mediaLoadTimer.Stop();
                     if (!IsCurrentDetailsLoad(id, cancellationToken, expectedGeneration)) return;
+                    var mediaApplyTimer = Stopwatch.StartNew();
                     ApplyOnUi(() =>
                     {
                         if (!IsCurrentDetailsLoad(id, cancellationToken, expectedGeneration)) return;
@@ -1064,6 +1082,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                                           ?? Games.FirstOrDefault();
                         RaiseCommandStates();
                     });
+                    mediaApplyTimer.Stop();
+                    Logger.Debug($"[PERF] MediaDetails load={mediaLoadTimer.ElapsedMilliseconds}ms apply={mediaApplyTimer.ElapsedMilliseconds}ms media={mediaTask.Result.Length} sources={sourcesTask.Result.Length}");
                     break;
                 }
                 case WorkspaceKind.Trainers:
