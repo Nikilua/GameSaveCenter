@@ -1,3 +1,5 @@
+using System.IO;
+
 namespace GameSaveCenter.Contracts
 {
     /// <summary>Supported platform/source categories.</summary>
@@ -109,5 +111,50 @@ namespace GameSaveCenter.Contracts
     {
         AfterGameStarted = 0,
         Delayed = 1
+    }
+
+    /// <summary>How a custom launch item should be started on Windows.</summary>
+    public enum GameToolLaunchKind
+    {
+        Executable = 0,
+        Shortcut = 1,
+        BatchScript = 2,
+        PowerShellScript = 3,
+        ShellDocument = 4
+    }
+
+    /// <summary>Launch-kind helpers shared by the Worker and the UI.</summary>
+    public static class GameToolLaunchKinds
+    {
+        public static GameToolLaunchKind FromPath(string? path)
+        {
+            var extension = Path.GetExtension(path ?? string.Empty);
+            if (string.Equals(extension, ".exe", StringComparison.OrdinalIgnoreCase))
+                return GameToolLaunchKind.Executable;
+            if (string.Equals(extension, ".lnk", StringComparison.OrdinalIgnoreCase))
+                return GameToolLaunchKind.Shortcut;
+            if (string.Equals(extension, ".bat", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(extension, ".cmd", StringComparison.OrdinalIgnoreCase))
+                return GameToolLaunchKind.BatchScript;
+            if (string.Equals(extension, ".ps1", StringComparison.OrdinalIgnoreCase))
+                return GameToolLaunchKind.PowerShellScript;
+            return GameToolLaunchKind.ShellDocument;
+        }
+
+        /// <summary>
+        /// Only directly started EXEs (including resolved shortcut targets) can be tracked
+        /// by PID + start time. Scripts, shell documents and unresolved shortcuts cannot be
+        /// safely closed when the game exits.
+        /// </summary>
+        public static bool CanTrackProcess(string? path) => FromPath(path) == GameToolLaunchKind.Executable;
+
+        public static string DisplayName(string? path) => FromPath(path) switch
+        {
+            GameToolLaunchKind.Executable => "外部 EXE",
+            GameToolLaunchKind.Shortcut => "快捷方式",
+            GameToolLaunchKind.BatchScript => "批处理",
+            GameToolLaunchKind.PowerShellScript => "PowerShell",
+            _ => "系统默认程序"
+        };
     }
 }

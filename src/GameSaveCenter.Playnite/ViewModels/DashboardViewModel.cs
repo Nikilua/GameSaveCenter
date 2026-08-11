@@ -163,6 +163,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             OpenWorkerLogCommand = new RelayCommand(_ => RunLocal(OpenWorkerLog));
             ImportTrainerCommand = new RelayCommand(_ => Run(() => ImportGameToolAsync(GameToolType.Trainer)), _ => !IsBusy && SelectedGame != null);
             ImportCheatTableCommand = new RelayCommand(_ => Run(() => ImportGameToolAsync(GameToolType.CheatTable)), _ => !IsBusy && SelectedGame != null);
+            ImportCustomLaunchItemCommand = new RelayCommand(_ => Run(ImportCustomLaunchItemAsync), _ => !IsBusy && SelectedGame != null);
             ImportToolFolderCommand = new RelayCommand(_ => Run(ImportGameToolFolderAsync), _ => !IsBusy && SelectedGame != null);
             ConfirmGameToolImportCommand = new RelayCommand(_ => Run(ConfirmGameToolImportAsync), _ => !IsBusy && HasPendingGameToolEntrySelection && SelectedImportEntryCandidate != null);
             CancelGameToolImportCommand = new RelayCommand(_ => ClearPendingGameToolImport(), _ => HasPendingGameToolEntrySelection);
@@ -557,6 +558,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         }
         public ICommand ImportTrainerCommand { get; }
         public ICommand ImportCheatTableCommand { get; }
+        public ICommand ImportCustomLaunchItemCommand { get; }
         public ICommand ImportToolFolderCommand { get; }
         public ICommand ConfirmGameToolImportCommand { get; }
         public ICommand CancelGameToolImportCommand { get; }
@@ -1153,6 +1155,18 @@ namespace GameSaveCenter.Playnite.ViewModels
             await PrepareGameToolImportAsync(folder,GameToolType.Trainer);
         }
 
+        private async Task ImportCustomLaunchItemAsync()
+        {
+            var dialog=new OpenFileDialog
+            {
+                Title="添加自定义启动项",
+                Filter="可执行文件 (*.exe)|*.exe|快捷方式 (*.lnk)|*.lnk|脚本 (*.bat;*.cmd;*.ps1)|*.bat;*.cmd;*.ps1|所有文件 (*.*)|*.*",
+                Multiselect=false,CheckFileExists=true
+            };
+            if(dialog.ShowDialog()!=true)return;
+            await ExecuteGameToolImportAsync(dialog.FileName,GameToolType.CustomExecutable,Path.GetFileName(dialog.FileName),false);
+        }
+
         private async Task PrepareGameToolImportAsync(string source,GameToolType type)
         {
             var inspection=await plugin.RequestAsync<GameToolImportInspectionDto>(MessageTypes.InspectGameToolImport,
@@ -1177,15 +1191,21 @@ namespace GameSaveCenter.Playnite.ViewModels
             return ExecuteGameToolImportAsync(pendingGameToolImportSource,pendingGameToolImportType,SelectedImportEntryCandidate.RelativePath);
         }
 
-        private async Task ExecuteGameToolImportAsync(string source,GameToolType type,string entryFileName)
+        private async Task ExecuteGameToolImportAsync(string source,GameToolType type,string entryFileName,bool copyIntoLibrary=true)
         {
             var imported=await plugin.RequestAsync<GameToolDto>(MessageTypes.ImportGameTool,new ImportGameToolRequestDto
             {
-                PlayniteId=SelectedGame.PlayniteId,ToolType=type,SourcePath=source,EntryFileName=entryFileName,CopyIntoLibrary=true
+                PlayniteId=SelectedGame.PlayniteId,ToolType=type,SourcePath=source,EntryFileName=entryFileName,CopyIntoLibrary=copyIntoLibrary
             },TimeSpan.FromMinutes(5));
             ClearPendingGameToolImport();
             await LoadDetailsAsync();SelectedGameTool=GameTools.FirstOrDefault(x=>x.ToolId==imported.ToolId)??GameTools.FirstOrDefault();
-            ConfirmSuccess(type==GameToolType.CheatTable?"Cheat Table 已导入，自动启动保持关闭":"修改器已导入，自动启动保持关闭");
+            var message=type switch
+            {
+                GameToolType.CheatTable=>"Cheat Table 已导入，自动启动保持关闭",
+                GameToolType.CustomExecutable=>"自定义启动项已添加，外部路径引用，不复制文件",
+                _=>"修改器已导入，自动启动保持关闭"
+            };
+            ConfirmSuccess(message);
         }
 
         private void ClearPendingGameToolImport()
@@ -1200,13 +1220,22 @@ namespace GameSaveCenter.Playnite.ViewModels
         private async Task SaveSelectedGameToolAsync()
         {
             var tool=SelectedGameTool;
+            var closeWasUnsafe=tool.CloseOnGameExit&&!tool.CanTrackProcess;
+            var adminWasUnsupported=tool.RequiresAdmin&&tool.LaunchKind==GameToolLaunchKind.ShellDocument;
+            var closeOnExit=tool.CanTrackProcess&&tool.CloseOnGameExit;
+            var requiresAdmin=tool.LaunchKind==GameToolLaunchKind.ShellDocument?false:tool.RequiresAdmin;
             await plugin.RequestAsync<object>(MessageTypes.UpdateGameTool,new UpdateGameToolRequestDto
             {
                 ToolId=tool.ToolId,Enabled=tool.Enabled,AutoStart=tool.AutoStart,LaunchTiming=tool.LaunchTiming,
-                LaunchDelaySeconds=Math.Max(0,Math.Min(300,tool.LaunchDelaySeconds)),CloseOnGameExit=tool.CloseOnGameExit,
-                RequiresAdmin=tool.RequiresAdmin,ActiveVersionId=tool.ActiveVersionId
+                LaunchDelaySeconds=Math.Max(0,Math.Min(300,tool.LaunchDelaySeconds)),CloseOnGameExit=closeOnExit,
+                RequiresAdmin=requiresAdmin,ActiveVersionId=tool.ActiveVersionId
             });
-            await LoadDetailsAsync();ConfirmSuccess("游戏工具设置已保存");
+            await LoadDetailsAsync();
+            ConfirmSuccess(closeWasUnsafe
+                ? "设置已保存；该类型无法可靠跟踪进程，已自动关闭“随游戏退出关闭”"
+                : adminWasUnsupported
+                    ? "设置已保存；系统默认程序打开的类型不支持管理员运行"
+                    : "游戏工具设置已保存");
         }
 
         private async Task LaunchSelectedGameToolAsync()
@@ -1916,7 +1945,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,
                 SaveProcessMappingCommand,DeleteProcessMappingCommand,
                 OpenDataDirectoryCommand, OpenBackupDirectoryCommand, OpenMediaDirectoryCommand, OpenWorkerLogCommand
-                ,ImportTrainerCommand,ImportCheatTableCommand,ImportToolFolderCommand,SaveGameToolCommand,LaunchGameToolCommand,
+                ,ImportTrainerCommand,ImportCheatTableCommand,ImportCustomLaunchItemCommand,ImportToolFolderCommand,SaveGameToolCommand,LaunchGameToolCommand,
                 ConfirmGameToolImportCommand,CancelGameToolImportCommand,
                 OpenGameToolDirectoryCommand,DeleteGameToolCommand,SyncTrainerCatalogCommand,SearchTrainerCatalogCommand,
                 LoadTrainerReleasesCommand,DownloadTrainerCommand

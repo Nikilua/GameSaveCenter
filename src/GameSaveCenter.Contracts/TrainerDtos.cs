@@ -25,7 +25,19 @@ namespace GameSaveCenter.Contracts
         public GameToolVersionDto ActiveVersion => Versions.Find(x => x.VersionId == ActiveVersionId)
                                                        ?? (Versions.Count > 0 ? Versions[0] : new GameToolVersionDto());
         public string TypeDisplay => ToolType == GameToolType.CheatTable ? "Cheat Table"
-            : ToolType == GameToolType.Trainer ? "修改器" : "自定义工具";
+            : ToolType == GameToolType.Trainer ? "修改器" : "自定义启动项";
+        public GameToolLaunchKind LaunchKind => ToolType == GameToolType.CustomExecutable
+            ? GameToolLaunchKinds.FromPath(ActiveVersion.EntryPath)
+            : GameToolLaunchKind.Executable;
+        /// <summary>Whether GameSaveCenter can reliably close the launched process on game exit.</summary>
+        public bool CanTrackProcess => ToolType == GameToolType.CustomExecutable
+            ? GameToolLaunchKinds.CanTrackProcess(ActiveVersion.EntryPath)
+            : true;
+        public bool IsExternalReference => ToolType == GameToolType.CustomExecutable;
+        public string LaunchKindDisplay => GameToolLaunchKinds.DisplayName(ActiveVersion.EntryPath);
+        public string ExternalReferenceHint => IsExternalReference
+            ? "外部路径引用，不会复制文件；路径缺失时请重新定位、禁用或解除绑定。"
+            : string.Empty;
         public string SourceDisplay => SourceType == GameToolSourceType.Fling ? "FLiNG"
             : SourceType == GameToolSourceType.Manual ? "手动导入" : "其他来源";
         public string FileStateDisplay => ActiveVersion.IsAvailable ? "已就绪" : "文件缺失";
