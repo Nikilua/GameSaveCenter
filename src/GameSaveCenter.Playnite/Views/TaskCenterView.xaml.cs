@@ -84,7 +84,10 @@ namespace GameSaveCenter.Playnite.Views
                     - TaskSummaryPanel.ActualHeight
                     - TaskQueuePanel.ActualHeight
                 : Math.Max(320, height - 200);
-            var inspectorHeight = Math.Max(96, Math.Min(420, workspaceHeight - tableViewportHeight - 10));
+            // A 96-DIP strip below the queue was too small to read task details at the
+            // demo-minimum and common 1366-DIP windows. Keep the finite cap so the
+            // inspector owns its own scroll, but give stacked mode a readable floor.
+            var inspectorHeight = Math.Max(160, Math.Min(420, workspaceHeight - tableViewportHeight - 10));
             TaskDetailScrollViewer.MaxHeight = showInspector && stack
                 ? inspectorHeight
                 : double.PositiveInfinity;
