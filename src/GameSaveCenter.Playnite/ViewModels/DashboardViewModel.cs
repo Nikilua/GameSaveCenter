@@ -275,6 +275,9 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
         }
         public IReadOnlyList<string> TaskStatusFilterOptions { get; } = new[] { "全部", "运行中", "等待中", "失败", "已完成" };
+        public int RunningTaskCount => Tasks.Count(task => task.State == TaskState.Running);
+        public int RetryableTaskCount => Tasks.Count(CanRetryTask);
+        public int CompletedTaskCount => Tasks.Count(task => task.State == TaskState.Succeeded);
         public string TaskStatusFilter
         {
             get => taskStatusFilter;
@@ -891,6 +894,9 @@ namespace GameSaveCenter.Playnite.ViewModels
                 }
                 finally { suppressSelectionLoad = false; }
                 Replace(Tasks, data.RecentTasks);
+                OnPropertyChanged(nameof(RunningTaskCount));
+                OnPropertyChanged(nameof(RetryableTaskCount));
+                OnPropertyChanged(nameof(CompletedTaskCount));
                 Replace(OverviewTasks, data.RecentTasks.Take(8));
                 RebuildTaskFilters();
                 SelectedTask = Tasks.FirstOrDefault(x => x.TaskId == selectedTaskId) ?? Tasks.FirstOrDefault();
@@ -1333,14 +1339,19 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private bool CanRetrySelectedTask()
         {
-            if (SelectedTask == null) return false;
-            if (SelectedTask.State != TaskState.Failed && SelectedTask.State != TaskState.Cancelled) return false;
-            if (string.Equals(SelectedTask.TaskType, "MediaInbox", StringComparison.OrdinalIgnoreCase)) return true;
-            if (string.IsNullOrWhiteSpace(SelectedTask.GameId)) return false;
-            if (string.Equals(SelectedTask.TaskType, "CloudUpload", StringComparison.OrdinalIgnoreCase)) return true;
-            if (string.Equals(SelectedTask.ErrorCode, "RCLONE_COPY_FAILED", StringComparison.OrdinalIgnoreCase)) return true;
-            return string.Equals(SelectedTask.TaskType, "Backup", StringComparison.OrdinalIgnoreCase)
-                   || string.Equals(SelectedTask.TaskType, "MediaSync", StringComparison.OrdinalIgnoreCase);
+            return CanRetryTask(SelectedTask);
+        }
+
+        private static bool CanRetryTask(TaskStatusDto? task)
+        {
+            if (task == null) return false;
+            if (task.State != TaskState.Failed && task.State != TaskState.Cancelled) return false;
+            if (string.Equals(task.TaskType, "MediaInbox", StringComparison.OrdinalIgnoreCase)) return true;
+            if (string.IsNullOrWhiteSpace(task.GameId)) return false;
+            if (string.Equals(task.TaskType, "CloudUpload", StringComparison.OrdinalIgnoreCase)) return true;
+            if (string.Equals(task.ErrorCode, "RCLONE_COPY_FAILED", StringComparison.OrdinalIgnoreCase)) return true;
+            return string.Equals(task.TaskType, "Backup", StringComparison.OrdinalIgnoreCase)
+                   || string.Equals(task.TaskType, "MediaSync", StringComparison.OrdinalIgnoreCase);
         }
 
         private async Task RetrySelectedTaskAsync()

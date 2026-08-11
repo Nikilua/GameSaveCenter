@@ -411,6 +411,26 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void TaskSummaryMatchesDemoStateBreakdownWithRealCounts()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var taskPath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml");
+        var task = File.ReadAllText(taskPath);
+        var taskCode = File.ReadAllText(taskPath + ".cs");
+        var viewModel = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
+
+        Assert.Contains("x:Name=\"TaskSummaryPanel\" Grid.Row=\"0\" Grid.ColumnSpan=\"3\" Columns=\"4\"", task);
+        Assert.Contains("{Binding RunningTaskCount, Mode=OneWay}", task);
+        Assert.Contains("{Binding RetryableTaskCount, Mode=OneWay}", task);
+        Assert.Contains("{Binding CompletedTaskCount, Mode=OneWay}", task);
+        Assert.Contains("TaskSummaryPanel.Columns = width >= 1120 ? 4 : width >= 760 ? 2 : 1", taskCode);
+        Assert.Contains("public int RunningTaskCount => Tasks.Count", viewModel);
+        Assert.Contains("public int RetryableTaskCount => Tasks.Count(CanRetryTask)", viewModel);
+        Assert.Contains("public int CompletedTaskCount => Tasks.Count", viewModel);
+        Assert.Contains("OnPropertyChanged(nameof(RetryableTaskCount))", viewModel);
+    }
+
+    [Fact]
     public void GlobalWorkspaceViewsHaveOneVisibleMigrationEntryAndKeepVirtualization()
     {
         var repositoryRoot = FindRepositoryRoot();

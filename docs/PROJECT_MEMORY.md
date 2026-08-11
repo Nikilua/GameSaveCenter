@@ -8,6 +8,8 @@
 
 > UI-185（2026-08-11）：SaveCenter 的候选路径页按 Demo 工作区语义收口为“路径与校验”，但不复制 Dashboard 已提供的全局游戏上下文和操作栏。页内新增独立的“当前存档规则”阅读卡，真实绑定 `SelectedGame.LudusaviName`、`MatchStateDisplay`、`HealthStateDisplay`，并保留 `DetectPathsCommand`、`ValidateCommand`、`LoadDetailsCommand`；下方仍使用 `SaveCandidateLayout` 的左侧虚拟化候选表与右侧 `SaveCandidateInspectorScrollViewer`，`SelectedCandidate`、接受/忽略候选、判断依据和窄屏堆叠逻辑不变。校验状态只展示真实当前游戏健康状态，不伪造 Demo 的固定成功结果；本轮未新增 Worker/IPC/数据库或 ViewModel 业务逻辑。源码验证、Release 构建 0 错误、Playnite 145 项测试通过；真实 Playnite 宿主、主题、DPI 和连续缩放流畅性仍未验证。
 
+> UI-186（2026-08-11）：TaskCenter 顶部摘要必须保持 Demo 的四项任务状态节奏：任务总数、运行中、需要重试、已完成。后三项绑定 `DashboardViewModel` 从真实 `Tasks` 集合计算的 `RunningTaskCount`、`RetryableTaskCount`、`CompletedTaskCount`；`RetryableTaskCount` 与原 `RetryTaskCommand.CanExecute` 共用同一可重试判定，不能把不可重试的失败伪报为可重试。宽屏四列、760–1119 DIP 两列、窄屏单列；任务队列筛选、DataGrid 行列虚拟化/Recycling、全局视角、详情 Inspector 和复制/重试/取消命令保持不变。计数在 Dashboard 刷新真实任务快照后主动通知更新；未增加 Worker/IPC 请求。真实 Playnite 宿主、主题、DPI 和连续缩放流畅性仍未验证。
+
 > UI-183：维护中心“诊断”页顶部必须保持 Demo 式的 `MaintenanceDiagnosticsActionCard` 阅读卡：标题/说明与“刷新诊断”主操作位于首行，复制诊断、打开数据目录、打开存档目录、打开媒体目录和 Worker 日志位于第二行可换行操作带。六个真实 Command 必须保留，操作区不能退回裸 `WrapPanel` 或被挪入 DataGrid/其滚动表面；诊断指标、有限表格滚动、选中项 Inspector、完整摘要和空态不因本轮布局调整消失。共享按钮模板继续负责 38 DIP 高度和文字对齐，不新增业务逻辑。
 
 > UI-182：维护中心“进程映射”编辑器必须保持 Demo 对齐的 Grid 结构：宽屏由 EXE 输入框占据 `*` 剩余空间，目标游戏下拉框保持 240 DIP，控件之间使用共享 8 DIP 节奏，绑定按钮继续使用共享按钮模板和 38 DIP 高度；宽度 `<720` DIP 时目标游戏与绑定按钮移动到第二行。`ProcessMappingExecutable`、`ProcessMappingTargetGame`、`Games`、`SaveProcessMappingCommand` 的真实绑定/命令必须保留；不要用运行时视觉树扫描或业务层改动解决布局问题。动态目标游戏 ComboBox 的空值仍表示等待真实上下文，不能为了显示效果强行选择第一项。

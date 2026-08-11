@@ -26,7 +26,7 @@ namespace GameSaveCenter.Playnite.Views
 
         public void ApplyResponsiveLayout(double width, double height)
         {
-            TaskSummaryPanel.Columns = width >= 1120 ? 3 : width >= 760 ? 2 : 1;
+            TaskSummaryPanel.Columns = width >= 1120 ? 4 : width >= 760 ? 2 : 1;
             // Keep task summary metrics available at every height; the table and inspector
             // own their finite scroll surfaces instead of scrolling the whole workspace.
             TaskSummaryPanel.Visibility = Visibility.Visible;
