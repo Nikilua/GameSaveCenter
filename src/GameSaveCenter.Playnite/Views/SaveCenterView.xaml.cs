@@ -28,6 +28,13 @@ namespace GameSaveCenter.Playnite.Views
         {
             responsiveWidth = width;
             responsiveHeight = height;
+            // Keep the primary table readable when the selected-version inspector is
+            // stacked below it.  The table still owns its internal virtualized scroll;
+            // this floor only prevents the inspector's Auto row from reducing it to a
+            // one-row strip during a short window resize.
+            const double tableMinHeight = 236d;
+            SaveHistoryGrid.MinHeight = tableMinHeight;
+            SaveCandidateGrid.MinHeight = tableMinHeight;
             var compact = height < 760 || width < 1080;
             var inspectorWidth = SaveHistoryLayout.TryFindResource("GscInspectorWidth") is GridLength gl ? gl : new GridLength(360);
             // The demo keeps the history table and the selected-version inspector
@@ -43,7 +50,9 @@ namespace GameSaveCenter.Playnite.Views
             Grid.SetColumnSpan(SaveHistoryActionsScrollViewer, compact ? 3 : 1);
             Grid.SetRow(SaveHistoryActionsScrollViewer, compact ? 1 : 0);
             SaveHistoryActionsScrollViewer.Margin = showHistoryInspector && compact ? new Thickness(0, 10, 0, 0) : new Thickness(0);
-            SaveHistoryActionsScrollViewer.MaxHeight = showHistoryInspector && compact ? Math.Max(150, Math.Min(360, height * 0.42)) : double.PositiveInfinity;
+            var historyHeight = SaveHistoryLayout.ActualHeight > 0 ? SaveHistoryLayout.ActualHeight : Math.Max(320, height - 200);
+            var historyInspectorHeight = Math.Max(96, Math.Min(360, historyHeight - tableMinHeight - 10));
+            SaveHistoryActionsScrollViewer.MaxHeight = showHistoryInspector && compact ? historyInspectorHeight : double.PositiveInfinity;
             var showCandidateInspector = SaveCandidateInspectorScrollViewer.Visibility == Visibility.Visible;
             var candidateSideBySide = showCandidateInspector && !compact;
             SaveCandidateLayout.ColumnDefinitions[1].Width = candidateSideBySide ? new GridLength(14) : new GridLength(0);
@@ -53,7 +62,9 @@ namespace GameSaveCenter.Playnite.Views
             Grid.SetColumnSpan(SaveCandidateInspectorScrollViewer, compact ? 3 : 1);
             Grid.SetRow(SaveCandidateInspectorScrollViewer, compact ? 1 : 0);
             SaveCandidateInspectorScrollViewer.Margin = showCandidateInspector && compact ? new Thickness(0, 10, 0, 0) : new Thickness(0);
-            SaveCandidateInspectorScrollViewer.MaxHeight = showCandidateInspector && compact ? Math.Max(150, Math.Min(360, height * 0.42)) : double.PositiveInfinity;
+            var candidateHeight = SaveCandidateLayout.ActualHeight > 0 ? SaveCandidateLayout.ActualHeight : Math.Max(320, height - 200);
+            var candidateInspectorHeight = Math.Max(96, Math.Min(360, candidateHeight - tableMinHeight - 10));
+            SaveCandidateInspectorScrollViewer.MaxHeight = showCandidateInspector && compact ? candidateInspectorHeight : double.PositiveInfinity;
             var stackPolicy = width < 1080;
             // The policy page is a left-aligned form capped by the shared
             // GscFormMaxWidth token (1120). Give the StackPanel an explicit

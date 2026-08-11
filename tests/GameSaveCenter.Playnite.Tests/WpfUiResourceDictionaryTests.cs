@@ -757,6 +757,36 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void SaveAndTrainerStackedInspectorsReserveAReadableListViewport()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var viewDirectory = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views");
+        var save = File.ReadAllText(Path.Combine(viewDirectory, "SaveCenterView.xaml"));
+        var saveCode = File.ReadAllText(Path.Combine(viewDirectory, "SaveCenterView.xaml.cs"));
+        var trainer = File.ReadAllText(Path.Combine(viewDirectory, "TrainerCenterView.xaml"));
+        var trainerCode = File.ReadAllText(Path.Combine(viewDirectory, "TrainerCenterView.xaml.cs"));
+
+        Assert.Contains("x:Name=\"SaveHistoryGrid\"", save);
+        Assert.Contains("x:Name=\"SaveCandidateGrid\"", save);
+        Assert.Contains("const double tableMinHeight = 236d", saveCode);
+        Assert.Contains("SaveHistoryGrid.MinHeight = tableMinHeight", saveCode);
+        Assert.Contains("SaveCandidateGrid.MinHeight = tableMinHeight", saveCode);
+        Assert.Contains("historyHeight - tableMinHeight - 10", saveCode);
+        Assert.Contains("candidateHeight - tableMinHeight - 10", saveCode);
+
+        Assert.Contains("x:Name=\"TrainerToolsTable\"", trainer);
+        Assert.Contains("x:Name=\"TrainerCatalogResultsPanel\"", trainer);
+        Assert.Contains("x:Name=\"TrainerCatalogReleasesPanel\"", trainer);
+        Assert.Contains("MinHeight=\"236\"", trainer);
+        Assert.Contains("const double tableMinHeight = 236d", trainerCode);
+        Assert.Contains("TrainerToolsTable.MinHeight = tableMinHeight", trainerCode);
+        Assert.Contains("TrainerCatalogReleasesPanel.MinHeight = tableMinHeight", trainerCode);
+        Assert.Contains("installedHeight - tableMinHeight - 72", trainerCode);
+        Assert.Contains("releasesHeight - tableMinHeight - 10", trainerCode);
+        Assert.Contains("VirtualizingPanel.VirtualizationMode=\"Recycling\"", trainer);
+    }
+
+    [Fact]
     public void SettingsAndSidebarUseTheSharedPageScrollChannel()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -1086,7 +1116,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Null(scrollViewer.Attribute("MaxHeight"));
         Assert.Contains("TrainerToolsSettingsScrollViewer.MaxHeight = double.PositiveInfinity", trainerCode);
         Assert.Contains("TrainerToolsSettingsScrollViewer.MaxHeight = showInspector && stackInstalled", trainerCode);
-        Assert.Contains("Math.Min(420, height * 0.56)", trainerCode);
+        Assert.Contains("var installedInspectorHeight = Math.Max(96, Math.Min(420, installedHeight - tableMinHeight - 72))", trainerCode);
         Assert.Contains("VerticalContentAlignment=\"Stretch\"", trainerText);
         Assert.Contains("Style=\"{DynamicResource GscRedesignSectionCard}\"", trainerText);
         Assert.Contains("ScrollViewer.VerticalScrollBarVisibility\" Value=\"Auto\"", trainerText);
@@ -1184,8 +1214,8 @@ public sealed class WpfUiResourceDictionaryTests
             Assert.Equal("{StaticResource GscInspectorScrollViewer}", inspectorStyle.Attribute("BasedOn")?.Value);
         }
 
-        Assert.Contains("SaveHistoryActionsScrollViewer.MaxHeight = showHistoryInspector && compact ? Math.Max(150, Math.Min(360, height * 0.42)) : double.PositiveInfinity;", saveCode);
-        Assert.Contains("SaveCandidateInspectorScrollViewer.MaxHeight = showCandidateInspector && compact ? Math.Max(150, Math.Min(360, height * 0.42)) : double.PositiveInfinity;", saveCode);
+        Assert.Contains("SaveHistoryActionsScrollViewer.MaxHeight = showHistoryInspector && compact ? historyInspectorHeight : double.PositiveInfinity;", saveCode);
+        Assert.Contains("SaveCandidateInspectorScrollViewer.MaxHeight = showCandidateInspector && compact ? candidateInspectorHeight : double.PositiveInfinity;", saveCode);
         Assert.Contains("Grid.SetRow(SaveCandidateInspectorScrollViewer, compact ? 1 : 0)", saveCode);
         Assert.Contains("SaveCandidateInspectorScrollViewer", saveText);
         Assert.Contains("<DataTrigger Binding=\"{Binding SelectedBackup}\" Value=\"{x:Null}\">", saveText);
@@ -1839,7 +1869,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Grid.SetRow(TrainerReleaseInfoPanel, stackReleases ? 1 : 0)", codeBehind);
         Assert.Contains("x:Name=\"TrainerReleaseInfoScrollViewer\"", trainer);
         Assert.Contains("TrainerReleaseInfoScrollViewer.MaxHeight = stackReleases", codeBehind);
-        Assert.Contains("Math.Min(420, height * 0.42)", codeBehind);
+        Assert.Contains("var releaseInspectorHeight = Math.Max(96, Math.Min(420, releasesHeight - tableMinHeight - 10))", codeBehind);
     }
 
     [Fact]

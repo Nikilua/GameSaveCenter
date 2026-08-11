@@ -37,6 +37,13 @@ namespace GameSaveCenter.Playnite.Views
         {
             responsiveWidth = width;
             responsiveHeight = height;
+            // A stacked inspector must not consume the installed-tool list's entire
+            // star row.  Keep roughly four readable rows in the virtualized list and
+            // give the inspector the remaining finite budget for its own scroll bar.
+            const double tableMinHeight = 236d;
+            TrainerToolsTable.MinHeight = tableMinHeight;
+            TrainerCatalogResultsPanel.MinHeight = tableMinHeight;
+            TrainerCatalogReleasesPanel.MinHeight = tableMinHeight;
             InstalledToolsLayout.HorizontalAlignment = HorizontalAlignment.Stretch;
             InstalledToolsLayout.VerticalAlignment = VerticalAlignment.Stretch;
             TrainerReleasesLayout.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -69,8 +76,10 @@ namespace GameSaveCenter.Playnite.Views
             Grid.SetColumn(TrainerToolsSettingsScrollViewer, stackInstalled ? 0 : 2);
             Grid.SetRow(TrainerToolsSettingsScrollViewer, stackInstalled ? 3 : 0);
             Grid.SetRowSpan(TrainerToolsSettingsScrollViewer, stackInstalled ? 1 : 4);
+            var installedHeight = InstalledToolsLayout.ActualHeight > 0 ? InstalledToolsLayout.ActualHeight : Math.Max(320, height - 200);
+            var installedInspectorHeight = Math.Max(96, Math.Min(420, installedHeight - tableMinHeight - 72));
             TrainerToolsSettingsScrollViewer.MaxHeight = showInspector && stackInstalled
-                ? Math.Max(190, Math.Min(420, height * 0.56))
+                ? installedInspectorHeight
                 : double.PositiveInfinity;
             TrainerToolsSettingsScrollViewer.Margin = stackInstalled
                 ? showInspector ? new Thickness(0, 10, 0, 0) : new Thickness(0)
@@ -93,8 +102,10 @@ namespace GameSaveCenter.Playnite.Views
             Grid.SetColumn(TrainerReleaseInfoPanel, stackReleases ? 0 : 2);
             Grid.SetColumnSpan(TrainerReleaseInfoPanel, stackReleases ? 3 : 1);
             TrainerCatalogReleasesPanel.Margin = new Thickness(0);
+            var releasesHeight = TrainerReleasesLayout.ActualHeight > 0 ? TrainerReleasesLayout.ActualHeight : Math.Max(320, height - 200);
+            var releaseInspectorHeight = Math.Max(96, Math.Min(420, releasesHeight - tableMinHeight - 10));
             TrainerReleaseInfoScrollViewer.MaxHeight = stackReleases
-                ? Math.Max(180, Math.Min(420, height * 0.42))
+                ? releaseInspectorHeight
                 : double.PositiveInfinity;
             TrainerReleaseInfoPanel.Margin = stackReleases
                 ? new Thickness(0, 10, 0, 0)
