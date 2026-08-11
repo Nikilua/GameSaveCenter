@@ -148,6 +148,7 @@ namespace GameSaveCenter.Playnite.Views
         private void OnGamePickerPlatformOptionsChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             BeginUiSafely(RestoreGamePickerFilterDefaults, DispatcherPriority.DataBind);
+            BeginUiSafely(RestoreGamePickerFilterDefaults, DispatcherPriority.Loaded);
         }
 
         private void RestoreGamePickerFilterDefaults()
@@ -397,7 +398,10 @@ namespace GameSaveCenter.Playnite.Views
             GameBrowserPanel.Visibility = gameBrowserVisibility;
             GameBrowserScrim.Visibility = gameBrowserVisibility;
             if (gameBrowserVisibility == Visibility.Visible)
+            {
                 RestoreGamePickerFilterDefaults();
+                BeginUiSafely(RestoreGamePickerFilterDefaults, DispatcherPriority.Loaded);
+            }
             WorkspaceCompactBrowserRow.Height = new GridLength(0);
             WorkspaceDetailRow.Height = new GridLength(1, GridUnitType.Star);
             WorkspaceGutterColumn.Width = new GridLength(0);

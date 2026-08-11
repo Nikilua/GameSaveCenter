@@ -18,12 +18,26 @@ namespace GameSaveCenter.Playnite.Views
             TaskDetailScrollViewer.IsVisibleChanged += OnTaskDetailScrollViewerIsVisibleChanged;
             DataContextChanged += OnDataContextChanged;
             Loaded += OnTaskCenterLoaded;
+            Unloaded += OnTaskCenterUnloaded;
+            filterRestoreTimer = new DispatcherTimer(DispatcherPriority.Background)
+            {
+                Interval = TimeSpan.FromMilliseconds(200)
+            };
+            filterRestoreTimer.Tick += OnFilterRestoreTimerTick;
         }
 
         private DashboardViewModel? boundViewModel;
+        private readonly DispatcherTimer filterRestoreTimer;
+        private int filterRestorePasses;
 
         private void OnTaskCenterLoaded(object sender, RoutedEventArgs e)
-            => EnsureTaskFilterDefaults();
+        {
+            StartFilterRestoreTimer();
+            EnsureTaskFilterDefaults();
+        }
+
+        private void OnTaskCenterUnloaded(object sender, RoutedEventArgs e)
+            => filterRestoreTimer.Stop();
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -40,6 +54,7 @@ namespace GameSaveCenter.Playnite.Views
                 viewModel.TaskGameFilterOptions.CollectionChanged += OnTaskFilterOptionsChanged;
                 viewModel.TaskTypeFilterOptions.CollectionChanged += OnTaskFilterOptionsChanged;
                 EnsureTaskFilterDefaults();
+                StartFilterRestoreTimer();
             }
         }
 
@@ -47,7 +62,30 @@ namespace GameSaveCenter.Playnite.Views
         {
             // The game/type option collections are rebuilt on Worker snapshots. Restore the
             // default selection after WPF has re-materialized the new items.
+            StartFilterRestoreTimer();
             Dispatcher.BeginInvoke(DispatcherPriority.DataBind, new Action(EnsureTaskFilterDefaults));
+        }
+
+        private void StartFilterRestoreTimer()
+        {
+            if (filterRestoreTimer.IsEnabled)
+                return;
+            filterRestorePasses = 0;
+            filterRestoreTimer.Start();
+        }
+
+        private void OnFilterRestoreTimerTick(object? sender, EventArgs e)
+        {
+            filterRestorePasses++;
+            EnsureTaskFilterDefaults();
+            if (filterRestorePasses >= 25
+                || (TaskStatusFilterComboBox.SelectedItem != null
+                    && TaskGameFilterComboBox.SelectedItem != null
+                    && TaskTypeFilterComboBox.SelectedItem != null))
+            {
+                filterRestoreTimer.Stop();
+                filterRestorePasses = 0;
+            }
         }
 
         private void EnsureTaskFilterDefaults()

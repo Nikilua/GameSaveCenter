@@ -20,6 +20,8 @@
 
 - [x] UI-204（2026-08-11）：新增共享 `UiFilterSelection.RestoreDefault`，任务中心 状态/游戏/类型 与 GamePicker 状态/平台/排序 下拉框在集合重建、页面加载、选择器打开时恢复默认“全部”，只在空选择时生效，不覆盖用户选择。render-qa 新增 ComboBox 空选择 PROBLEM 门禁并全绿；Playnite 151/151 通过。
 
+- [x] UI-205（2026-08-11）：TaskCenter 动态筛选下拉框增加 200ms 短周期重试（最多 25 次）恢复默认选中，解决 Items 物化晚于 DataBind 导致游戏/类型仍为空；GamePicker 增加 Loaded 优先级二次恢复。render-qa 与 Playnite 152/152 通过。
+
 - [x] UI-200（代码提交 `f11e9b7`）：按 Demo `MainWindow` 的 `1040×700 DIP` 最小常用窗口修正响应式外壳：Dashboard 在 `>=1040` 保留带文字侧栏和单行顶栏，低于该值才切换紧凑图标壳；同时按扣除侧栏后的约 700 DIP 内容区校准 Media `>=700` 四列、Task `>=900` 四列/`>=680` 两列、Maintenance `>=980` 三列/`>=680` 两列。1040×700 离屏复核中媒体摘要保持四卡并露出两行主表，任务摘要为 2×2 且露出队列，维护健康卡为两列；1366×768 恢复完整多列。没有改变页面滚动所有权、表格/列表有限视口、内部滚动、虚拟化、键盘/Automation、真实命令、Binding 或业务层。同步更新 `scripts/validate-source.py` 和 WPF 结构断言；源码验证通过，生产插件 Release 构建 0 警告/0 错误，隔离测试 151/151，生产离屏 render harness 覆盖 1600/1366/1280/1100/1040/980 DIP 与 900/768/720/700/640 DIP 并返回 `render-prod OK`。真实 Playnite 宿主、主题、DPI 和连续缩放流畅性仍需手工验收。
 
 - [x] UI-199（代码提交 `5cbd512`）：修复工作区由程序化导航、恢复状态或离屏渲染直接切换时 Dashboard 顶栏仍显示“首页”的语义不同步；`UpdateWorkspacePresentation()` 与侧栏点击共同调用 `UpdateWorkspaceHeader`，媒体/维护/任务等页面标题和副标题跟随当前可见工作区。MediaCenter 摘要卡改为逻辑 DIP 响应式断点：`>=760` 四列、`>=520` 两列、其余单列，常用 1080p/2K/4K 窗口保持 Demo 四卡横排并为媒体主表保留可见行；表格有限视口、内部滚动、虚拟化、Inspector、真实命令和 Binding 未改变。源码验证通过，生产插件 Release 构建 0 警告/0 错误，隔离 WPF 测试 150/150，生产离屏 render harness 覆盖 1600/1366/1280/1100/980 DIP 与 900/768/720/700/640 DIP 并返回 `render-prod OK`；真实 Playnite 宿主、主题、DPI 和连续缩放流畅性仍需手工验收。
