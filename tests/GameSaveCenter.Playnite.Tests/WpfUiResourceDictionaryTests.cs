@@ -1284,7 +1284,7 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
-    public void TrainerCatalogSearchRowKeepsSearchBoxAndActionsTogetherAndWrapsNarrow()
+    public void TrainerCatalogSearchRowKeepsSearchBoxAndActionsTogetherOnOneRow()
     {
         var repositoryRoot = FindRepositoryRoot();
         var trainer = XDocument.Parse(File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml")));
@@ -1295,22 +1295,29 @@ public sealed class WpfUiResourceDictionaryTests
             && element.Ancestors().Any(ancestor => ancestor.Attribute("Header")?.Value == "FLiNG 在线库"));
         Assert.Equal("Stretch", searchCard.Attribute("HorizontalAlignment")?.Value);
 
-        // The search box and its action buttons live in one WrapPanel so they
-        // stay on the same row at normal widths and wrap on narrow windows
-        // instead of clipping (UI-178).
+        // The search box and its action buttons live in one Grid so they stay
+        // on the same row; the star column lets the box shrink on narrow
+        // windows instead of clipping (UI-178, Demo TrainersView alignment).
         var searchPanel = searchCard.Descendants().Single(element =>
-            element.Name.LocalName == "WrapPanel"
+            element.Name.LocalName == "Grid"
             && element.Descendants().Any(descendant => descendant.Name.LocalName == "TextBox")
             && element.Descendants().Count(descendant => descendant.Name.LocalName == "Button") == 2);
+        var columnDefinitions = searchPanel.Elements().Single(element => element.Name.LocalName == "Grid.ColumnDefinitions");
+        var columns = columnDefinitions.Elements().Where(element => element.Name.LocalName == "ColumnDefinition").ToList();
+        Assert.Equal(3, columns.Count);
+        Assert.Equal("*", columns[0].Attribute("Width")?.Value);
+        Assert.Equal("Auto", columns[1].Attribute("Width")?.Value);
+        Assert.Equal("Auto", columns[2].Attribute("Width")?.Value);
 
         var searchBox = searchPanel.Descendants().Single(element => element.Name.LocalName == "TextBox");
-        Assert.Equal("620", searchBox.Attribute("MinWidth")?.Value);
+        Assert.Null(searchBox.Attribute("MinWidth"));
         Assert.Equal("680", searchBox.Attribute("MaxWidth")?.Value);
         Assert.Contains("TrainerSearchText", searchBox.Attribute("Text")?.Value ?? string.Empty);
 
         var buttons = searchPanel.Descendants().Where(element => element.Name.LocalName == "Button").ToList();
         Assert.Contains(buttons, button => (button.Attribute("Command")?.Value ?? string.Empty).Contains("SearchTrainerCatalogCommand"));
         Assert.Contains(buttons, button => (button.Attribute("Command")?.Value ?? string.Empty).Contains("SyncTrainerCatalogCommand"));
+        Assert.All(buttons, button => Assert.Equal("9,0,0,0", button.Attribute("Margin")?.Value));
     }
 
     [Fact]

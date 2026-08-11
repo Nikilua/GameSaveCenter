@@ -849,7 +849,7 @@
                 BorderBrush="{DynamicResource GscGlassStrokeBrush}"
                 BorderThickness="1"
                 CornerRadius="20"
-                Padding="16,7"
+                Padding="20,10"
                 ClipToBounds="True"
                 SnapsToDevicePixels="True">
             <Grid x:Name="HeaderGrid" Margin="16,0,16,0" MinWidth="0">
