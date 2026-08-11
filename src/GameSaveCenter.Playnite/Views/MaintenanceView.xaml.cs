@@ -72,6 +72,10 @@ namespace GameSaveCenter.Playnite.Views
             // Health cards remain useful context even in compact windows. Grid star rows keep
             // diagnostics tables finite while their own controls handle overflow.
             DiagnosticHealthPanel.Visibility = Visibility.Visible;
+            // Keep a predictable findings viewport instead of allowing the action cards,
+            // health cards and diagnostic summary to squeeze the table down to one row.
+            // MaintenanceDiagnosticsScrollSurface owns overflow outside this finite table.
+            FindingsGrid.Height = Math.Max(236d, Math.Min(460d, height * 0.50));
             var compact = height < 760 || width < 980;
             // The retention page is a left-aligned reading form capped at 1050.
             // Give the StackPanel an explicit viewport width so the cards fill

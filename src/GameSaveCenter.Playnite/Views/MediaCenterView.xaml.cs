@@ -36,11 +36,27 @@ namespace GameSaveCenter.Playnite.Views
         {
             responsiveWidth = width;
             responsiveHeight = height;
-            MediaSummaryPanel.Columns = width >= 1180 ? 4 : width >= 820 ? 2 : 1;
+            // At normal windowed heights, a four-column metric strip preserves the
+            // primary table viewport when the workspace is around 960–1179 DIP wide.
+            // 4K at high DPI can land in this same logical range, so physical pixels
+            // must not be used as the breakpoint signal.
+            var compactHeight = height < 760;
+            MediaSummaryPanel.Columns = width >= 1180 || (compactHeight && width >= 960)
+                ? 4
+                : width >= 820 ? 2 : 1;
             // Do not discard summary information at short heights. Local list/inspector
             // surfaces own overflow so the whole workspace does not become a scroll canvas.
             MediaSummaryPanel.Visibility = Visibility.Visible;
             MediaSourceFields.Columns = width >= 820 ? 2 : 1;
+
+            // Both media tables retain a bounded, readable viewport. The surrounding tab
+            // surface scrolls the page-level info/actions when this viewport cannot fit
+            // below the summary cards; the DataGrid/ListBox still own row virtualization
+            // and their own internal scrolling.
+            var tableViewportHeight = Math.Max(236d, Math.Min(460d, height * 0.50));
+            MediaInboxGrid.Height = tableViewportHeight;
+            MediaGrid.Height = tableViewportHeight;
+
             // Match the demo: the media table and its inspector share the main
             // work area on wide hosts; on compact hosts the inspector moves
             // below the table instead of becoming a narrow strip.

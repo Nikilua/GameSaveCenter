@@ -621,7 +621,8 @@ public sealed class WpfUiResourceDictionaryTests
         var document = XDocument.Parse(File.ReadAllText(mediaPath));
         var tabItem = document.Descendants()
             .Single(element => element.Name.LocalName == "TabItem" && element.Attribute("Header")?.Value == "待归类");
-        var tabGrid = tabItem.Elements().First();
+        var tabGrid = tabItem.Descendants().Single(element => element.Name.LocalName == "Grid"
+            && element.Descendants().Count(descendant => descendant.Name.LocalName == "RowDefinition") == 3);
         Assert.Equal("Grid", tabGrid.Name.LocalName);
 
         var rowHeights = tabGrid.Descendants()
@@ -711,6 +712,48 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.DoesNotContain("MaintenanceDeviceDecisionScrollViewer", maintenance);
         Assert.DoesNotContain("MaintenanceRemoteRestoreScrollViewer", maintenance);
         Assert.DoesNotContain("x:Name=\"MaintenanceAuditScrollViewer\"", maintenance);
+    }
+
+    [Fact]
+    public void CommonWindowSizesKeepPrimaryOverviewAndTableContentReachable()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var viewDirectory = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views");
+        var overviewPath = Path.Combine(viewDirectory, "OverviewView.xaml");
+        var overview = File.ReadAllText(overviewPath);
+        var overviewCode = File.ReadAllText(overviewPath + ".cs");
+        var media = File.ReadAllText(Path.Combine(viewDirectory, "MediaCenterView.xaml"));
+        var mediaCode = File.ReadAllText(Path.Combine(viewDirectory, "MediaCenterView.xaml.cs"));
+        var maintenance = File.ReadAllText(Path.Combine(viewDirectory, "MaintenanceView.xaml"));
+        var maintenanceCode = File.ReadAllText(Path.Combine(viewDirectory, "MaintenanceView.xaml.cs"));
+        var gate = File.ReadAllText(Path.Combine(repositoryRoot, "docs", "design", "UI_CHANGE_GATE.md"));
+        var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
+
+        Assert.Contains("x:Name=\"OverviewPrimaryScrollSurface\"", overview);
+        Assert.Contains("OverviewPrimaryScrollSurface.VerticalScrollBarVisibility = ScrollBarVisibility.Auto", overviewCode);
+        Assert.Contains("OverviewActivityList.MaxHeight = Math.Max(180, Math.Min(320, height * 0.42))", overviewCode);
+
+        var overviewDocument = XDocument.Parse(overview);
+        var activity = overviewDocument.Descendants().Single(element =>
+            element.Name.LocalName == "ListBox" && element.Attribute(xamlName)?.Value == "OverviewActivityList");
+        Assert.DoesNotContain(activity.Ancestors(), ancestor =>
+            ancestor.Attribute(xamlName)?.Value == "OverviewPrimaryScrollSurface");
+
+        Assert.Contains("x:Name=\"MediaInboxScrollSurface\"", media);
+        Assert.Contains("x:Name=\"MediaCurrentScrollSurface\"", media);
+        Assert.Contains("Tag=\"FiniteViewport\"", media);
+        Assert.Contains("var tableViewportHeight = Math.Max(236d, Math.Min(460d, height * 0.50))", mediaCode);
+        Assert.Contains("MediaInboxGrid.Height = tableViewportHeight", mediaCode);
+        Assert.Contains("MediaGrid.Height = tableViewportHeight", mediaCode);
+
+        Assert.Contains("x:Name=\"MaintenanceDiagnosticsScrollSurface\"", maintenance);
+        Assert.Contains("FindingsGrid.Height = Math.Max(236d, Math.Min(460d, height * 0.50))", maintenanceCode);
+        Assert.Contains("MaintenanceDiagnosticsScrollSurface", maintenanceCode + maintenance);
+
+        Assert.Contains("1080p", gate);
+        Assert.Contains("2K/1440p", gate);
+        Assert.Contains("4K/2160p", gate);
+        Assert.Contains("约四行可读内容", gate);
     }
 
     [Fact]
@@ -2094,10 +2137,10 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Equal("0", currentGame.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
         Assert.Equal("0.75*", heroGameRow.Descendants().Single(element => element.Name.LocalName == "ColumnDefinition" && element.Attribute(xamlName)?.Value == "OverviewCurrentGameColumn").Attribute("Width")?.Value);
         Assert.Equal("2", metrics.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
-        var activityFrame = activity.Ancestors().Single(element => element.Name.LocalName == "Border"
+        var activityFrame = activity.Ancestors().First(element => element.Name.LocalName == "Border"
             && element.Attributes().Any(attribute => attribute.Name.LocalName == "Grid.Row")
-            && element.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value == "3");
-        Assert.Equal("3", activityFrame.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
+            && element.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value == "1");
+        Assert.Equal("1", activityFrame.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
         Assert.Equal("{Binding OverviewTasks}", activity.Attribute("ItemsSource")?.Value);
         Assert.Equal("{Binding SelectedTask}", activity.Attribute("SelectedItem")?.Value);
 

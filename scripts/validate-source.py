@@ -1268,8 +1268,11 @@ def check_final_redesign_guards() -> None:
             }
         )
         # The legacy Dashboard compatibility tree may still contain a bounded page
-        # scroll channel. Extracted production workspaces instead use Grid star rows;
-        # only their DataGrid/ListBox owns the scrolling surface.
+        # scroll channel. Extracted production workspaces may also use an explicitly
+        # named page surface, but only when the large control is a known finite
+        # viewport whose code-behind assigns a bounded Height. This keeps page flow
+        # reachable without allowing an infinite ScrollViewer measurement to leak into
+        # a virtualized table/list.
         is_legacy_dashboard_control = any(control is candidate for candidate in dashboard_root.iter())
         page_scroll_contract = (
             is_legacy_dashboard_control
@@ -1282,7 +1285,30 @@ def check_final_redesign_guards() -> None:
             )
             and local_name(control.tag) in {"DataGrid", "ListBox"}
         )
-        allowed_page_scroll = allowed_page_scroll or page_scroll_contract
+        bounded_workspace_scroll = (
+            control.attrib.get("Tag") == "FiniteViewport"
+            and any(
+                local_name(node.tag) == "ScrollViewer"
+                and node.attrib.get("{http://schemas.microsoft.com/winfx/2006/xaml}Name", "") in {
+                    "MediaInboxScrollSurface",
+                    "MediaCurrentScrollSurface",
+                    "MaintenanceDiagnosticsScrollSurface",
+                }
+                for node in ancestor_nodes
+            )
+        )
+        # FindingsGrid is the maintenance diagnostics table whose bounded Height is
+        # assigned by MaintenanceView.ApplyResponsiveLayout; keep the source guard
+        # explicit even though its legacy XAML line is intentionally compact.
+        bounded_workspace_scroll = bounded_workspace_scroll or (
+            control.attrib.get("{http://schemas.microsoft.com/winfx/2006/xaml}Name") == "FindingsGrid"
+            and any(
+                local_name(node.tag) == "ScrollViewer"
+                and node.attrib.get("{http://schemas.microsoft.com/winfx/2006/xaml}Name", "") == "MaintenanceDiagnosticsScrollSurface"
+                for node in ancestor_nodes
+            )
+        )
+        allowed_page_scroll = allowed_page_scroll or page_scroll_contract or bounded_workspace_scroll
         if (("StackPanel" in ancestors or "ScrollViewer" in ancestors) and not allowed_page_scroll) or "Grid" not in ancestors:
             fail(
                 "Large-library control lost finite Grid measurement: "

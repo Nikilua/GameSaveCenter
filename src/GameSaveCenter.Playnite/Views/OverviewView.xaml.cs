@@ -153,6 +153,12 @@ namespace GameSaveCenter.Playnite.Views
 
         public void ApplyResponsiveHeight(double height, bool stack)
         {
+            // The Demo keeps the complete overview page reachable through one outer
+            // scroll channel. Keep recent activity finite so the nested ListBox remains
+            // virtualized and cannot make the page measure infinitely tall.
+            OverviewPrimaryScrollSurface.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            OverviewActivityList.MaxHeight = Math.Max(180, Math.Min(320, height * 0.42));
+
             // Keep exactly one vertical scroll owner for the secondary column at each
             // breakpoint. On a wide layout the risk card owns its finite viewport so the
             // summary remains anchored. Once the secondary column stacks below the main
