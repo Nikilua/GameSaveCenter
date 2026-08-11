@@ -26,6 +26,11 @@ namespace GameSaveCenter.Playnite.Views
 
         public void ApplyResponsiveLayout(double width, double height)
         {
+            // The queue is the primary Demo-aligned surface.  When the detail
+            // inspector stacks below it, reserve a readable table viewport and
+            // let only the inspector consume the remaining finite height.
+            const double tableMinHeight = 236d;
+            TaskGrid.MinHeight = tableMinHeight;
             TaskSummaryPanel.Columns = width >= 1120 ? 4 : width >= 760 ? 2 : 1;
             // Keep task summary metrics available at every height; the table and inspector
             // own their finite scroll surfaces instead of scrolling the whole workspace.
@@ -47,8 +52,14 @@ namespace GameSaveCenter.Playnite.Views
             Grid.SetColumnSpan(TaskDetailScrollViewer, stack ? 3 : 1);
             Grid.SetRow(TaskDetailScrollViewer, stack ? 3 : 2);
             TaskDetailScrollViewer.Margin = showInspector && stack ? new Thickness(0, 10, 0, 0) : new Thickness(0);
+            var workspaceHeight = TaskWorkspaceLayout.ActualHeight > 0
+                ? TaskWorkspaceLayout.ActualHeight
+                    - TaskSummaryPanel.ActualHeight
+                    - TaskQueuePanel.ActualHeight
+                : Math.Max(320, height - 200);
+            var inspectorHeight = Math.Max(96, Math.Min(420, workspaceHeight - tableMinHeight - 10));
             TaskDetailScrollViewer.MaxHeight = showInspector && stack
-                ? Math.Max(180, height * 0.42)
+                ? inspectorHeight
                 : double.PositiveInfinity;
         }
     }

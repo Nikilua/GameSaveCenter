@@ -787,6 +787,26 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void TaskStackedInspectorReservesTheDemoQueueViewport()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var viewDirectory = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views");
+        var task = File.ReadAllText(Path.Combine(viewDirectory, "TaskCenterView.xaml"));
+        var taskCode = File.ReadAllText(Path.Combine(viewDirectory, "TaskCenterView.xaml.cs"));
+
+        Assert.Contains("x:Name=\"TaskQueuePanel\"", task);
+        Assert.Contains("x:Name=\"TaskGrid\"", task);
+        Assert.Contains("const double tableMinHeight = 236d", taskCode);
+        Assert.Contains("TaskGrid.MinHeight = tableMinHeight", taskCode);
+        Assert.Contains("TaskWorkspaceLayout.ActualHeight", taskCode);
+        Assert.Contains("- TaskSummaryPanel.ActualHeight", taskCode);
+        Assert.Contains("- TaskQueuePanel.ActualHeight", taskCode);
+        Assert.Contains("var inspectorHeight = Math.Max(96, Math.Min(420, workspaceHeight - tableMinHeight - 10))", taskCode);
+        Assert.Contains("TaskDetailScrollViewer.MaxHeight = showInspector && stack", taskCode);
+        Assert.Contains("EnableRowVirtualization\" Value=\"True\"", task);
+    }
+
+    [Fact]
     public void SettingsAndSidebarUseTheSharedPageScrollChannel()
     {
         var repositoryRoot = FindRepositoryRoot();
