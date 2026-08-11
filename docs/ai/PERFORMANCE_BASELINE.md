@@ -34,6 +34,11 @@
 | H | Media Detail Loading | 待补充（LoadDetailsAsync Media 分支） |
 | I | Thumbnail Decode | `[PERF] Thumbnail decode` 已埋点 |
 
+## 已落地的性能优化
+
+- PERF-005：Snapshot 内容未变化时 0 次 CollectionChanged。`BatchObservableCollection.ReplaceAll` + `SnapshotComparers` 内容比较已覆盖 Games/Tasks/Findings/Audit/Backups/SaveCandidates/Media/MediaSources/GameTools/ProcessMappings/DeviceComparisons；GamePicker 相同内容跳过重建。测试：Playnite 156/156，render-qa 全绿。
+- 下一项：PERF-006 Task/Media 搜索防抖（目标：连续输入 `abcdef` 只执行约 1 次最终 Refresh）。
+
 ## 离屏渲染基线（2026-08-11，render-qa 报告）
 
 环境：本机，隔离生产插件，假数据，无 Worker/IPC；数字来自 `artifacts/ui-qa/render/render-qa-report.txt` 的 `render_ms`（PNG 保存 + 单帧渲染，包含布局成本）。

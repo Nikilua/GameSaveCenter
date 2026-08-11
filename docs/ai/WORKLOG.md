@@ -71,3 +71,42 @@ NEXT: PERF-004 性能基线设施（`[PERF]` 日志 + `docs/ai/PERFORMANCE_BASEL
 **下一步：**
 
 NEXT: PERF-005 Snapshot 无变化 0 Reset。
+
+## 2026-08-11 PERF-005 Snapshot 无变化 0 Reset
+
+**做了什么：**
+
+- `BatchObservableCollection.ReplaceAll` 支持内容比较器（`Func<T,T,bool>`）并返回是否实际替换；内容未变化时不再发任何 `CollectionChanged`（从“1 次 Reset”降到“0 次”）。
+- 新增 `SnapshotComparers`：为 Games/Tasks/Findings/Audit/Backups/SaveCandidates/Media/MediaSources/GameTools/ProcessMappings/DeviceComparisons 提供覆盖 UI 字段的内容比较，Task 覆盖 Progress/State/Message/Error 等高频变化字段。
+- `DashboardViewModel.Replace` 透传比较器；Media 只在集合变化时才 `MediaView.Refresh()`；GamePicker `SetItems` 在内容未变化时跳过 Clear/Add/Refresh，避免整表重建。
+
+**为什么这样做：**
+
+Snapshot 每次返回全新 DTO，即使内容相同，旧的引用比较也会触发 Reset 并让 WPF 重建 CollectionView/ItemContainer；这是大库高频刷新的主要浪费。
+
+**修改文件：**
+
+- 新增 `src/GameSaveCenter.Playnite/Infrastructure/SnapshotComparers.cs`
+- `src/GameSaveCenter.Playnite/Infrastructure/BatchObservableCollection.cs`
+- `src/GameSaveCenter.Playnite/ViewModels/DashboardViewModel.cs`
+- `src/GameSaveCenter.Playnite/ViewModels/GamePickerViewModel.cs`
+- 新增测试 `tests/GameSaveCenter.Playnite.Tests/BatchObservableCollectionTests.cs`
+- `tests/GameSaveCenter.Playnite.Tests/GamePickerViewModelTests.cs`
+
+**测试结果：**
+
+- Core 13/13、Worker 23/23、Playnite 156/156（新增 4 个 0 通知/变化检测测试）通过。
+- `scripts/render-qa.ps1` 全绿（7 页面 × 5 尺寸，无 `PROBLEM`）。
+
+**性能变化：**
+
+- 内容相同的 Snapshot：Games/Tasks/Findings/Media/GameTools 等集合 0 次 CollectionChanged（测试覆盖）。
+- GamePicker：相同内容跳过重建，不再每次快照发 Reset。
+
+**仍需验证内容：**
+
+真实 Playnite 大库下高频刷新/任务进度事件的实际 UI 卡顿改善。
+
+**下一步：**
+
+NEXT: PERF-006 Task/Media 搜索防抖。

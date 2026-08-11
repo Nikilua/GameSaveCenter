@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -35,24 +36,27 @@ public sealed class BatchObservableCollection<T> : ObservableCollection<T>
             base.OnPropertyChanged(e);
     }
 
-    public void ReplaceAll(IEnumerable<T> items)
+    public bool ReplaceAll(IEnumerable<T> items, Func<T, T, bool>? areSame = null)
     {
         var incoming = items is IList<T> list ? list : new List<T>(items);
         if (Count == 0 && incoming.Count == 0)
-            return;
+            return false;
         if (Count == incoming.Count)
         {
             var same = true;
             for (var i = 0; i < Count; i++)
             {
-                if (!EqualityComparer<T>.Default.Equals(this[i], incoming[i]))
+                var contentSame = areSame != null
+                    ? areSame(this[i], incoming[i])
+                    : EqualityComparer<T>.Default.Equals(this[i], incoming[i]);
+                if (!contentSame)
                 {
                     same = false;
                     break;
                 }
             }
             if (same)
-                return;
+                return false;
         }
 
         suppressNotifications = true;
@@ -70,5 +74,6 @@ public sealed class BatchObservableCollection<T> : ObservableCollection<T>
         OnPropertyChanged(new PropertyChangedEventArgs(nameof(Count)));
         OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
         OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+        return true;
     }
 }

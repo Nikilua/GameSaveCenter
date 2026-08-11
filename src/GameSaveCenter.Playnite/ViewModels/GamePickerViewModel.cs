@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using GameSaveCenter.Contracts;
+using GameSaveCenter.Playnite.Infrastructure;
 using Playnite.SDK;
 
 namespace GameSaveCenter.Playnite.ViewModels
@@ -147,52 +148,68 @@ namespace GameSaveCenter.Playnite.ViewModels
             RefreshNow();
         }
 
-        public void SetItems(IEnumerable<GameStatusDto> games, string? preferredGameId = null)
+        public bool SetItems(IEnumerable<GameStatusDto> games, string? preferredGameId = null)
         {
-            if (disposed) return;
+            if (disposed) return false;
             var timer = Stopwatch.StartNew();
             var previousId = preferredGameId ?? SelectedGame?.PlayniteId;
-            rebuildingItems = true;
-            try
+            var gameList = (games ?? Enumerable.Empty<GameStatusDto>()).ToList();
+            var unchanged = Items.Count == gameList.Count;
+            if (unchanged)
             {
-                // A dashboard refresh can replace hundreds or thousands of lightweight
-                // summaries. Batch the collection notifications so WPF does not repeatedly
-                // measure and filter the same list for every item. A ListCollectionView cannot
-                // safely process ObservableCollection changes while DeferRefresh is active, so
-                // the collection itself suppresses intermediate notifications and emits one
-                // Reset after the replacement is complete.
-                var batch = Items as BatchObservableCollection<GamePickerItem>;
-                batch?.BeginUpdate();
+                for (var i = 0; i < Items.Count; i++)
+                {
+                    if (!SnapshotComparers.Game(Items[i].Game, gameList[i]))
+                    {
+                        unchanged = false;
+                        break;
+                    }
+                }
+            }
+            if (!unchanged)
+            {
+                rebuildingItems = true;
                 try
                 {
-                    var gameList = (games ?? Enumerable.Empty<GameStatusDto>()).ToList();
-                    if (itemCache.Count > Math.Max(1024, gameList.Count * 2 + 100))
-                        itemCache.Clear();
-                    Items.Clear();
-                    foreach (var game in gameList)
+                    // A dashboard refresh can replace hundreds or thousands of lightweight
+                    // summaries. Batch the collection notifications so WPF does not repeatedly
+                    // measure and filter the same list for every item. A ListCollectionView cannot
+                    // safely process ObservableCollection changes while DeferRefresh is active, so
+                    // the collection itself suppresses intermediate notifications and emits one
+                    // Reset after the replacement is complete.
+                    var batch = Items as BatchObservableCollection<GamePickerItem>;
+                    batch?.BeginUpdate();
+                    try
                     {
-                        var item = itemCache.TryGetValue(game.PlayniteId, out var cached)
-                            ? cached
-                            : new GamePickerItem(game);
-                        item.UpdateGame(game);
-                        itemCache[game.PlayniteId] = item;
-                        Items.Add(item);
+                        if (itemCache.Count > Math.Max(1024, gameList.Count * 2 + 100))
+                            itemCache.Clear();
+                        Items.Clear();
+                        foreach (var game in gameList)
+                        {
+                            var item = itemCache.TryGetValue(game.PlayniteId, out var cached)
+                                ? cached
+                                : new GamePickerItem(game);
+                            item.UpdateGame(game);
+                            itemCache[game.PlayniteId] = item;
+                            Items.Add(item);
+                        }
+                        RebuildPlatformOptions();
                     }
-                    RebuildPlatformOptions();
+                    finally
+                    {
+                        batch?.EndUpdate();
+                    }
+                    RefreshNow();
                 }
-                finally
-                {
-                    batch?.EndUpdate();
-                }
-                RefreshNow();
+                finally { rebuildingItems = false; }
             }
-            finally { rebuildingItems = false; }
             timer.Stop();
             Logger.Debug($"[PERF] GamePicker setItems={timer.ElapsedMilliseconds}ms games={Items.Count}");
             var candidate = Items.FirstOrDefault(x => string.Equals(x.PlayniteId, previousId, StringComparison.OrdinalIgnoreCase) && ItemsView.Contains(x))
                             ?? ItemsView.Cast<GamePickerItem>().FirstOrDefault()
                             ?? null;
             SelectedItem = candidate;
+            return !unchanged;
         }
 
         public void SelectGame(GameStatusDto? game)

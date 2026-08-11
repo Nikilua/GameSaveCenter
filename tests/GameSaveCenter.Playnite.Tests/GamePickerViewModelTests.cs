@@ -138,6 +138,25 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Equal(250, picker.Items.Count);
         }
 
+        [Fact]
+        public void UnchangedSetEmitsNoCollectionNotification()
+        {
+            using var picker = new GamePickerViewModel();
+            var notificationCount = 0;
+            picker.Items.CollectionChanged += (_, _) => notificationCount++;
+
+            var games = Enumerable.Range(0, 50).Select(i => Game("Game " + i)).ToArray();
+            picker.SetItems(games);
+            Assert.Equal(1, notificationCount);
+
+            // Fresh DTO instances with identical visible content must not reset the picker.
+            picker.SetItems(Enumerable.Range(0, 50).Select(i => Game("Game " + i)).ToArray());
+            Assert.Equal(1, notificationCount);
+
+            picker.SetItems(Enumerable.Range(0, 50).Select(i => Game("Game " + i, health: i == 7 ? "Attention" : "Ready")).ToArray());
+            Assert.Equal(2, notificationCount);
+        }
+
         private static GameStatusDto Game(string name, bool installed = true, bool matched = true,
             int backups = 0, string health = "Ready", GamePlatformKind platform = GamePlatformKind.Other,
             DateTime? backup = null, DateTime? played = null)

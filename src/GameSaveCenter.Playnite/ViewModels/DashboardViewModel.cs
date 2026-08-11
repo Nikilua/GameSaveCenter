@@ -678,7 +678,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             ApplyOnUi(() =>
             {
                 MergeTaskChange(Tasks, change.Task);
-                Replace(OverviewTasks, Tasks.OrderByDescending(x => x.CreatedUtc).Take(8));
+                Replace(OverviewTasks, Tasks.OrderByDescending(x => x.CreatedUtc).Take(8), SnapshotComparers.Task);
                 knownTaskStates[change.Task.TaskId] = change.Task.State;
                 taskSnapshotInitialized = true;
                 if (SelectedTask == null || string.Equals(SelectedTask.TaskId, change.Task.TaskId, StringComparison.OrdinalIgnoreCase))
@@ -906,9 +906,10 @@ namespace GameSaveCenter.Playnite.ViewModels
                 suppressSelectionLoad = true;
                 try
                 {
-                    Replace(Games, data.Games);
-                    gamePicker.SetItems(Games, selectedGameId ?? plugin.Settings.GamePickerSelectedGameId);
-                    RefreshGameView(false);
+                    var gamesChanged = Replace(Games, data.Games, SnapshotComparers.Game);
+                    var pickerChanged = gamePicker.SetItems(Games, selectedGameId ?? plugin.Settings.GamePickerSelectedGameId);
+                    if (gamesChanged || pickerChanged)
+                        RefreshGameView(false);
                     SelectedGame = gamePicker.SelectedGame
                         ?? Games.FirstOrDefault(x => x.PlayniteId == selectedGameId && GamesView.Contains(x))
                         ?? GamesView.Cast<GameStatusDto>().FirstOrDefault();
@@ -917,16 +918,16 @@ namespace GameSaveCenter.Playnite.ViewModels
                                       ?? Games.FirstOrDefault();
                 }
                 finally { suppressSelectionLoad = false; }
-                Replace(Tasks, data.RecentTasks);
+                Replace(Tasks, data.RecentTasks, SnapshotComparers.Task);
                 OnPropertyChanged(nameof(RunningTaskCount));
                 OnPropertyChanged(nameof(RetryableTaskCount));
                 OnPropertyChanged(nameof(CompletedTaskCount));
-                Replace(OverviewTasks, data.RecentTasks.Take(8));
+                Replace(OverviewTasks, data.RecentTasks.Take(8), SnapshotComparers.Task);
                 RebuildTaskFilters();
                 SelectedTask = Tasks.FirstOrDefault(x => x.TaskId == selectedTaskId) ?? Tasks.FirstOrDefault();
-                Replace(Findings, data.Findings);
-                Replace(AttentionFindings, data.Findings.Where(x => x.Severity >= FindingSeverity.Warning).Take(4));
-                Replace(Audit, data.RecentAudit);
+                Replace(Findings, data.Findings, SnapshotComparers.Finding);
+                Replace(AttentionFindings, data.Findings.Where(x => x.Severity >= FindingSeverity.Warning).Take(4), SnapshotComparers.Finding);
+                Replace(Audit, data.RecentAudit, SnapshotComparers.Audit);
                 StatusMessage = data.WorkerHealthy
                     ? data.LudusaviAvailable ? "Worker 与 Ludusavi 均正常" : "Worker 正常，Ludusavi 尚未配置"
                     : "Worker 不可用";
@@ -946,7 +947,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 EffectiveSettings = settings;
                 DiagnosticSummary = BuildDiagnosticSummary(settings);
-                Replace(ProcessMappings,mappings);
+                Replace(ProcessMappings,mappings, SnapshotComparers.ProcessMapping);
                 if(ProcessMappingTargetGame==null) ProcessMappingTargetGame=SelectedGame??Games.FirstOrDefault();
             });
         }
@@ -975,7 +976,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             var result=await plugin.RequestAsync<DeviceStateSyncResultDto>(MessageTypes.SyncDeviceStates,new { },TimeSpan.FromMinutes(5));
             ApplyOnUi(()=>
             {
-                Replace(DeviceComparisons,result.Comparisons);
+                Replace(DeviceComparisons,result.Comparisons, SnapshotComparers.DeviceComparison);
                 DeviceStateMessage=result.StatusMessage;
             });
             StatusMessage=result.StatusMessage;
@@ -1050,8 +1051,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                     ApplyOnUi(() =>
                     {
                         if (!IsCurrentDetailsLoad(id, cancellationToken, expectedGeneration)) return;
-                        Replace(Backups, backupsTask.Result);
-                        Replace(SaveCandidates, candidatesTask.Result);
+                        Replace(Backups, backupsTask.Result, SnapshotComparers.Backup);
+                        Replace(SaveCandidates, candidatesTask.Result, SnapshotComparers.SaveCandidate);
                         SelectedBackup = Backups.FirstOrDefault();
                         SelectedCandidate = SaveCandidates.FirstOrDefault(x => string.Equals(x.Status, "Pending", StringComparison.OrdinalIgnoreCase))
                                             ?? SaveCandidates.FirstOrDefault();
@@ -1072,9 +1073,9 @@ namespace GameSaveCenter.Playnite.ViewModels
                     ApplyOnUi(() =>
                     {
                         if (!IsCurrentDetailsLoad(id, cancellationToken, expectedGeneration)) return;
-                        Replace(Media, mediaTask.Result);
-                        MediaView.Refresh();
-                        Replace(MediaSources, sourcesTask.Result);
+                        if (Replace(Media, mediaTask.Result, SnapshotComparers.Media))
+                            MediaView.Refresh();
+                        Replace(MediaSources, sourcesTask.Result, SnapshotComparers.MediaSource);
                         MediaSummary=summaryTask.Result;
                         SelectedMedia=Media.FirstOrDefault();
                         MediaTargetGame = Games.FirstOrDefault(x => string.Equals(x.PlayniteId, MediaTargetGame?.PlayniteId, StringComparison.OrdinalIgnoreCase))
@@ -1094,7 +1095,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                     {
                         if (!IsCurrentDetailsLoad(id, cancellationToken, expectedGeneration)) return;
                         var selectedToolId = SelectedGameTool?.ToolId;
-                        Replace(GameTools, gameTools);
+                        Replace(GameTools, gameTools, SnapshotComparers.GameTool);
                         SelectedGameTool = GameTools.FirstOrDefault(x => string.Equals(x.ToolId, selectedToolId, StringComparison.OrdinalIgnoreCase))
                                            ?? GameTools.FirstOrDefault();
                         RaiseCommandStates();
@@ -1931,24 +1932,24 @@ namespace GameSaveCenter.Playnite.ViewModels
                 Logger.Error(ex, "GameSaveCenter skipped a Dashboard UI collection update because the callback failed or the dispatcher is unavailable.");
             }
         }
-        private static void Replace<T>(ObservableCollection<T> target, IEnumerable<T> source)
+        private static bool Replace<T>(ObservableCollection<T> target, IEnumerable<T> source, Func<T, T, bool>? areSame = null)
         {
             if (target is BatchObservableCollection<T> batch)
             {
-                batch.ReplaceAll(source);
-                return;
+                return batch.ReplaceAll(source, areSame);
             }
 
             var incoming = (source ?? Enumerable.Empty<T>()).ToList();
             var existing = target.ToList();
             if (existing.SequenceEqual(incoming))
-                return;
+                return false;
 
             // Avoid Clear()+Add for large virtualized DataGrids. Replacing the backing
             // collection in one Reset keeps WPF's item extent and recycled row range in sync.
             target.Clear();
             foreach (var item in incoming)
                 target.Add(item);
+            return true;
         }
         private static string EmptyAsUnset(string value) => string.IsNullOrWhiteSpace(value) ? "（未配置）" : value;
     }
