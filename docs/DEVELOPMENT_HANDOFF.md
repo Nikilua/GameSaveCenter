@@ -26,6 +26,21 @@
 
 如果附件路径发生变化，先在当前对话的附件中找到同一份完整提示词；不能因为附件不可用而跳过仓库内的规则和约束。
 
+## Codex 2026-08-11/12 阶段补充（性能与自定义启动项）
+
+新的 AI/Codex 长期记忆入口已建立：先读 `docs/ai/PROJECT_MEMORY.md` 与 `docs/ai/WORKLOG.md`，再读本文件。
+
+本轮已完成并推送：
+
+- PERF-004：`[PERF]` 性能基线日志 + `docs/ai/PERFORMANCE_BASELINE.md`。
+- PERF-005：Snapshot 无变化 0 CollectionChanged（`SnapshotComparers` + `BatchObservableCollection.ReplaceAll`）。
+- PERF-006：Task/Media 搜索 180ms 防抖（`DebouncedRefresh`）。
+- GAME-TOOL-001/002：自定义启动项 EXE/LNK/BAT/CMD/PS1，外部路径引用不复制文件；`GameToolLauncher` 按类型启动；`GameToolSessionTracker` 只按 Session/PID/StartTime 关闭本会话进程。
+- PERF-007：媒体缩略图异步化（`AsyncThumbnailLoader` 3 并发 + LRU + Freeze，`AsyncThumbnailImage`）。
+- UI-QA-REAL-001：隔离 Playnite 真机冒烟通过，截图在 `artifacts/ui-qa/real/playnite-real.png`；主题/DPI/键盘/缩放与自定义启动项真机流程仍待用户复核。
+
+当前测试基线：Core 13、Worker 45、Playnite 163；render-qa 全绿；源码验证与技能静态审查通过。后续新会话不要重复实现以上内容；下一个可选方向是 PERF-008/009/010，但应先拿到真实 Playnite profiling 证据。
+
 ## 项目目标
 
 这是已有的 Playnite 插件项目 GameSaveCenter 的持续 UI 重构，不是新建功能，也不是只改某一个 `Margin` 或颜色。
