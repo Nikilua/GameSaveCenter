@@ -1293,6 +1293,9 @@ def check_final_redesign_guards() -> None:
                     "MediaInboxScrollSurface",
                     "MediaCurrentScrollSurface",
                     "MaintenanceDiagnosticsScrollSurface",
+                    "MaintenanceDeviceScrollSurface",
+                    "MaintenanceAuditScrollSurface",
+                    "MaintenanceProcessScrollSurface",
                 }
                 for node in ancestor_nodes
             )
@@ -1305,6 +1308,22 @@ def check_final_redesign_guards() -> None:
             and any(
                 local_name(node.tag) == "ScrollViewer"
                 and node.attrib.get("{http://schemas.microsoft.com/winfx/2006/xaml}Name", "") == "MaintenanceDiagnosticsScrollSurface"
+                for node in ancestor_nodes
+            )
+        )
+        bounded_workspace_scroll = bounded_workspace_scroll or (
+            control.attrib.get("{http://schemas.microsoft.com/winfx/2006/xaml}Name") in {
+                "MaintenanceDeviceGrid",
+                "MaintenanceAuditFindingsGrid",
+                "MaintenanceProcessGrid",
+            }
+            and any(
+                local_name(node.tag) == "ScrollViewer"
+                and node.attrib.get("{http://schemas.microsoft.com/winfx/2006/xaml}Name", "") in {
+                    "MaintenanceDeviceScrollSurface",
+                    "MaintenanceAuditScrollSurface",
+                    "MaintenanceProcessScrollSurface",
+                }
                 for node in ancestor_nodes
             )
         )

@@ -77,11 +77,15 @@ namespace GameSaveCenter.Playnite.Views
             // health cards and diagnostic summary to squeeze the table down to one row.
             // MaintenanceDiagnosticsScrollSurface owns overflow outside this finite table.
             const double tableMinHeight = 236d;
+            var tableViewportHeight = Math.Max(tableMinHeight, Math.Min(460d, height * 0.50));
             FindingsGrid.MinHeight = tableMinHeight;
-            FindingsGrid.Height = Math.Max(tableMinHeight, Math.Min(460d, height * 0.50));
+            FindingsGrid.Height = tableViewportHeight;
             MaintenanceDeviceGrid.MinHeight = tableMinHeight;
+            MaintenanceDeviceGrid.Height = tableViewportHeight;
             MaintenanceAuditFindingsGrid.MinHeight = tableMinHeight;
+            MaintenanceAuditFindingsGrid.Height = tableViewportHeight;
             MaintenanceProcessGrid.MinHeight = tableMinHeight;
+            MaintenanceProcessGrid.Height = tableViewportHeight;
             var compact = height < 760 || width < 980;
             // The retention page is a left-aligned reading form capped at 1050.
             // Give the StackPanel an explicit viewport width so the cards fill

@@ -709,9 +709,11 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.DoesNotContain("MediaSourceRulesPageScroller", media);
         Assert.DoesNotContain("Grid.Row=\"0\" MaxHeight=\"190\"", media);
         Assert.Contains("x:Name=\"MaintenanceDeviceInspectorScrollViewer\" Grid.Row=\"2\" Grid.Column=\"2\" Style=\"{DynamicResource GscInspectorScrollViewer}\"", maintenance);
+        Assert.Contains("x:Name=\"MaintenanceDeviceScrollSurface\"", maintenance);
+        Assert.Contains("x:Name=\"MaintenanceAuditScrollSurface\"", maintenance);
+        Assert.Contains("x:Name=\"MaintenanceProcessScrollSurface\"", maintenance);
         Assert.DoesNotContain("MaintenanceDeviceDecisionScrollViewer", maintenance);
         Assert.DoesNotContain("MaintenanceRemoteRestoreScrollViewer", maintenance);
-        Assert.DoesNotContain("x:Name=\"MaintenanceAuditScrollViewer\"", maintenance);
     }
 
     [Fact]
@@ -747,8 +749,15 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("MediaGrid.Height = tableViewportHeight", mediaCode);
 
         Assert.Contains("x:Name=\"MaintenanceDiagnosticsScrollSurface\"", maintenance);
+        Assert.Contains("x:Name=\"MaintenanceDeviceScrollSurface\"", maintenance);
+        Assert.Contains("x:Name=\"MaintenanceAuditScrollSurface\"", maintenance);
+        Assert.Contains("x:Name=\"MaintenanceProcessScrollSurface\"", maintenance);
         Assert.Contains("const double tableMinHeight = 236d", maintenanceCode);
-        Assert.Contains("FindingsGrid.Height = Math.Max(tableMinHeight, Math.Min(460d, height * 0.50))", maintenanceCode);
+        Assert.Contains("var tableViewportHeight = Math.Max(tableMinHeight, Math.Min(460d, height * 0.50))", maintenanceCode);
+        Assert.Contains("FindingsGrid.Height = tableViewportHeight", maintenanceCode);
+        Assert.Contains("MaintenanceDeviceGrid.Height = tableViewportHeight", maintenanceCode);
+        Assert.Contains("MaintenanceAuditFindingsGrid.Height = tableViewportHeight", maintenanceCode);
+        Assert.Contains("MaintenanceProcessGrid.Height = tableViewportHeight", maintenanceCode);
         Assert.Contains("MaintenanceDiagnosticsScrollSurface", maintenanceCode + maintenance);
 
         Assert.Contains("1080p", gate);
@@ -921,9 +930,12 @@ public sealed class WpfUiResourceDictionaryTests
         var maintenancePath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml");
         var maintenanceText = File.ReadAllText(maintenancePath);
         var maintenance = XDocument.Parse(maintenanceText);
-        Assert.DoesNotContain(maintenance.Descendants(), element =>
+        var auditPageScroller = maintenance.Descendants().Single(element =>
             element.Name.LocalName == "ScrollViewer" &&
-            element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "MaintenanceAuditScrollViewer");
+            element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "MaintenanceAuditScrollSurface");
+        Assert.Equal("Auto", auditPageScroller.Attribute("VerticalScrollBarVisibility")?.Value);
+        Assert.Equal("Disabled", auditPageScroller.Attribute("HorizontalScrollBarVisibility")?.Value);
+        Assert.Equal("False", auditPageScroller.Attribute("CanContentScroll")?.Value);
         Assert.Contains("x:Name=\"MaintenanceAuditLayout\"", maintenanceText);
         Assert.Contains("x:Name=\"MaintenanceAuditInspector\"", maintenanceText);
         Assert.Contains("x:Name=\"MaintenanceAuditFindingsGrid\" Style=\"{StaticResource MaintenanceDataGrid}\"", maintenanceText);
@@ -936,6 +948,7 @@ public sealed class WpfUiResourceDictionaryTests
         var maintenanceCode = File.ReadAllText(maintenancePath + ".cs");
         Assert.Contains("const double tableMinHeight = 236d", maintenanceCode);
         Assert.Contains("MaintenanceAuditFindingsGrid.MinHeight = tableMinHeight", maintenanceCode);
+        Assert.Contains("MaintenanceAuditFindingsGrid.Height = tableViewportHeight", maintenanceCode);
         Assert.Contains("var auditAvailableHeight", maintenanceCode);
         Assert.Contains("MaintenanceAuditLayout.RowDefinitions[2].ActualHeight", maintenanceCode);
         Assert.Contains("var auditInspectorHeight", maintenanceCode);
@@ -1121,12 +1134,16 @@ public sealed class WpfUiResourceDictionaryTests
         var maintenancePath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml");
         var maintenanceText = File.ReadAllText(maintenancePath);
         var maintenance = XDocument.Parse(maintenanceText);
-        Assert.DoesNotContain(maintenance.Descendants(), element =>
+        var devicePageScroller = maintenance.Descendants().Single(element =>
             element.Name.LocalName == "ScrollViewer" &&
-            element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "MaintenanceDeviceScrollViewer");
+            element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "MaintenanceDeviceScrollSurface");
+        Assert.Equal("Auto", devicePageScroller.Attribute("VerticalScrollBarVisibility")?.Value);
+        Assert.Equal("Disabled", devicePageScroller.Attribute("HorizontalScrollBarVisibility")?.Value);
+        Assert.Equal("False", devicePageScroller.Attribute("CanContentScroll")?.Value);
         Assert.Contains("<RowDefinition Height=\"Auto\"/><RowDefinition Height=\"Auto\"/><RowDefinition Height=\"*\"/>", maintenanceText);
         Assert.Contains("x:Name=\"MaintenanceDeviceGrid\" Style=\"{StaticResource MaintenanceDataGrid}\"", maintenanceText);
         Assert.DoesNotContain("x:Name=\"MaintenanceDeviceGrid\" Height=\"{DynamicResource GscTableViewportHeight}\"", maintenanceText);
+        Assert.Contains("MaintenanceDeviceGrid.Height = tableViewportHeight", File.ReadAllText(maintenancePath + ".cs"));
         Assert.Contains("ItemsSource=\"{Binding DeviceComparisons}\"", maintenanceText);
     }
 
