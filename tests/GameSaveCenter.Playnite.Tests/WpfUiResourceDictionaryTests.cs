@@ -1514,6 +1514,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("TaskSummaryPanel.Columns", taskCode);
         var taskView = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml"));
         Assert.Contains("x:Name=\"TaskDetailScrollViewer\"", taskView);
+        Assert.Contains("Text=\"{Binding TaskSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}\"", taskView);
+        Assert.Contains("ToolTip=\"搜索任务、游戏或错误\"", taskView);
         Assert.Contains("SelectedIndex=\"0\"", taskView);
         Assert.Contains("TaskGameFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部", taskView);
         Assert.Contains("TaskTypeFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部", taskView);

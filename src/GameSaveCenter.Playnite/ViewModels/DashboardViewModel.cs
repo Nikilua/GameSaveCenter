@@ -80,6 +80,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string taskStatusFilter = "全部";
         private string taskGameFilter = "全部";
         private string taskTypeFilter = "全部";
+        private string taskSearchText = string.Empty;
         private string deviceStateMessage = "尚未刷新多设备状态。该功能只比较摘要，绝不自动恢复或覆盖存档。";
         private DeviceConflictStatusDto selectedDeviceComparison = null!;
         private string deviceDecision = "稍后处理";
@@ -278,6 +279,15 @@ namespace GameSaveCenter.Playnite.ViewModels
         public int RunningTaskCount => Tasks.Count(task => task.State == TaskState.Running);
         public int RetryableTaskCount => Tasks.Count(CanRetryTask);
         public int CompletedTaskCount => Tasks.Count(task => task.State == TaskState.Succeeded);
+        public string TaskSearchText
+        {
+            get => taskSearchText;
+            set
+            {
+                SetValue(ref taskSearchText, value ?? string.Empty);
+                TasksView.Refresh();
+            }
+        }
         public string TaskStatusFilter
         {
             get => taskStatusFilter;
@@ -1630,6 +1640,13 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             var task = item as TaskStatusDto;
             if (task == null) return false;
+            var search = TaskSearchText.Trim();
+            if (search.Length > 0
+                && !ContainsTaskSearchValue(task.TaskId, search)
+                && !ContainsTaskSearchValue(task.TaskTypeDisplay, search)
+                && !ContainsTaskSearchValue(task.GameName, search)
+                && !ContainsTaskSearchValue(task.DetailMessage, search)
+                && !ContainsTaskSearchValue(task.ErrorMessage, search)) return false;
             if (TaskGameFilter != "全部" && !string.Equals(task.GameName, TaskGameFilter, StringComparison.OrdinalIgnoreCase)) return false;
             if (TaskTypeFilter != "全部" && !string.Equals(task.TaskTypeDisplay, TaskTypeFilter, StringComparison.OrdinalIgnoreCase)) return false;
             return TaskStatusFilter switch
@@ -1640,6 +1657,12 @@ namespace GameSaveCenter.Playnite.ViewModels
                 "已完成" => task.State == TaskState.Succeeded || task.State == TaskState.Cancelled,
                 _ => true
             };
+        }
+
+        private static bool ContainsTaskSearchValue(string? value, string search)
+        {
+            return !string.IsNullOrWhiteSpace(value)
+                && value!.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         private void RebuildTaskFilters()
