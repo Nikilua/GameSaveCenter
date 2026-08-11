@@ -1,0 +1,23 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+  <SolidColorBrush x:Key="WpfApple.WindowBackgroundBrush" Color="#0E1428"/>
+  <SolidColorBrush x:Key="WpfApple.CardBackgroundBrush" Color="#1C243A"/>
+  <SolidColorBrush x:Key="WpfApple.SecondarySurfaceBrush" Color="#232C44"/>
+  <SolidColorBrush x:Key="WpfApple.FloatingSurfaceBrush" Color="#283249"/>
+  <SolidColorBrush x:Key="WpfApple.PrimaryTextBrush" Color="#F6F7FC"/>
+  <SolidColorBrush x:Key="WpfApple.SecondaryTextBrush" Color="#A9B1C5"/>
+  <SolidColorBrush x:Key="WpfApple.DividerBrush" Color="#18FFFFFF"/>
+  <SolidColorBrush x:Key="WpfApple.AccentBrush" Color="#7B61FF"/>
+  <SolidColorBrush x:Key="WpfApple.AccentSoftBrush" Color="#267B61FF"/>
+  <SolidColorBrush x:Key="WpfApple.SuccessBrush" Color="#34C759"/>
+  <SolidColorBrush x:Key="WpfApple.WarningBrush" Color="#FF9F0A"/>
+  <SolidColorBrush x:Key="WpfApple.ErrorBrush" Color="#FF5F57"/>
+  <SolidColorBrush x:Key="WpfApple.FocusRingBrush" Color="#B39DFF"/>
+  <CornerRadius x:Key="WpfApple.CornerRadiusMedium">12</CornerRadius>
+  <CornerRadius x:Key="WpfApple.CornerRadiusLarge">18</CornerRadius>
+  <sys:Double x:Key="WpfApple.ControlHeight">42</sys:Double>
+  <sys:Double x:Key="WpfApple.DataGridRowHeight">46</sys:Double>
+  <sys:Double x:Key="WpfApple.DataGridHeaderHeight">42</sys:Double>
+  <sys:Double x:Key="WpfApple.PageTopSafeRight">108</sys:Double>
+</ResourceDictionary>

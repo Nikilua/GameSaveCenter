@@ -1,0 +1,41 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Style x:Key="WpfApple.Button.Secondary" TargetType="{x:Type Button}">
+    <Setter Property="MinHeight" Value="{DynamicResource WpfApple.ControlHeight}"/>
+    <Setter Property="Padding" Value="14,0"/>
+    <Setter Property="Foreground" Value="{DynamicResource WpfApple.PrimaryTextBrush}"/>
+    <Setter Property="Background" Value="{DynamicResource WpfApple.SecondarySurfaceBrush}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource WpfApple.DividerBrush}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type Button}">
+          <Grid>
+            <Border x:Name="Surface" Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="{DynamicResource WpfApple.CornerRadiusMedium}">
+              <ContentPresenter Margin="{TemplateBinding Padding}"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </Border>
+            <Border x:Name="FocusRing" Margin="0" BorderThickness="2"
+                    BorderBrush="{DynamicResource WpfApple.FocusRingBrush}"
+                    CornerRadius="14" Opacity="0" IsHitTestVisible="False"/>
+          </Grid>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Surface" Property="Opacity" Value="0.92"/></Trigger>
+            <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="FocusRing" Property="Opacity" Value="1"/></Trigger>
+            <Trigger Property="IsEnabled" Value="False"><Setter TargetName="Surface" Property="Opacity" Value="0.45"/></Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+  <Style x:Key="WpfApple.Button.Primary" TargetType="{x:Type Button}" BasedOn="{StaticResource WpfApple.Button.Secondary}">
+    <Setter Property="Background" Value="{DynamicResource WpfApple.AccentBrush}"/>
+    <Setter Property="BorderBrush" Value="Transparent"/>
+  </Style>
+</ResourceDictionary>

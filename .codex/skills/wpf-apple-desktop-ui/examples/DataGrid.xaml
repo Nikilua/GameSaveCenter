@@ -1,0 +1,34 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Style x:Key="WpfApple.DataGrid" TargetType="{x:Type DataGrid}">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Foreground" Value="{DynamicResource WpfApple.PrimaryTextBrush}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource WpfApple.DividerBrush}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="HeadersVisibility" Value="Column"/>
+    <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+    <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource WpfApple.DividerBrush}"/>
+    <Setter Property="VerticalGridLinesBrush" Value="Transparent"/>
+    <Setter Property="RowHeight" Value="{DynamicResource WpfApple.DataGridRowHeight}"/>
+    <Setter Property="ColumnHeaderHeight" Value="{DynamicResource WpfApple.DataGridHeaderHeight}"/>
+    <Setter Property="CanUserResizeColumns" Value="True"/>
+    <Setter Property="CanUserSortColumns" Value="True"/>
+    <Setter Property="EnableRowVirtualization" Value="True"/>
+    <Setter Property="EnableColumnVirtualization" Value="True"/>
+    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+  </Style>
+  <Style x:Key="WpfApple.DataGridCell" TargetType="{x:Type DataGridCell}">
+    <Setter Property="Padding" Value="12,0"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="BorderThickness" Value="0"/>
+  </Style>
+  <DataTemplate x:Key="WpfApple.ProgressCell">
+    <Grid VerticalAlignment="Center">
+      <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="44"/></Grid.ColumnDefinitions>
+      <ProgressBar Grid.Column="0" MinWidth="64" Height="8" Minimum="0" Maximum="100" Value="{Binding Progress}"/>
+      <TextBlock Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Text="{Binding Progress, StringFormat={}{0}%}"/>
+    </Grid>
+  </DataTemplate>
+</ResourceDictionary>

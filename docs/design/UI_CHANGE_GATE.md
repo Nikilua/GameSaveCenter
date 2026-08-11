@@ -4,6 +4,7 @@
 
 所有新增或修改 GameSaveCenter UI 的提交，必须先阅读：
 
+- `.codex/skills/wpf-apple-desktop-ui/SKILL.md`（随仓库提交；本机同时安装于 `%USERPROFILE%\.codex\skills\wpf-apple-desktop-ui`），并按任务需要读取其 `references/` 中对应的响应式、Playnite、控件、可访问性或回归清单文档
 - `docs/design/APPLE_WPF_IMPLEMENTATION_PROMPT.md`
 - `docs/design/APPLE_UI_GUIDE.md`
 - `docs/KNOWN_ISSUES.md` 中与主题、DPI、动画和安装有关的条目
@@ -26,6 +27,7 @@
 14. 新增按钮必须有正常、Hover、Pressed、Disabled、Keyboard Focus 状态。
 15. 大型游戏库列表必须保持虚拟化，不能让动画和容器模板关闭虚拟化。
 16. 修改 XAML 后必须运行 `scripts/validate-source.py`；Windows 上还必须通过 `GameSaveCenter-Run.cmd` 的真实构建、安装和版本核验。
+17. 修改 WPF/XAML 后应运行技能静态审查 `python .codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py .`，处理其中 error 级发现；warning/info 按上下文说明保留原因。
 
 ## 常用显示尺寸与内容可见性门禁
 
@@ -59,5 +61,6 @@
 - [ ] 动画是否只改变渲染属性，且关闭页面后停止计时器和订阅？
 - [ ] 是否保留真实命令、错误传播、取消和业务状态？
 - [ ] `extension.yaml`、程序集版本、安装包名和已安装 DLL 是否一致？
+- [ ] 是否运行了 `python .codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py .` 并处理 error 级发现？
 
 违反本门禁的 UI 改动不应进入 `main`。

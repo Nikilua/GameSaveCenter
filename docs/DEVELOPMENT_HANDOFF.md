@@ -20,8 +20,9 @@
 4. `docs/DEVELOPMENT_PROGRESS.md`：按 UI 编号排列的实施历史和下一步线索
 5. `docs/design/APPLE_WPF_IMPLEMENTATION_PROMPT.md`：总体设计方向
 6. `docs/design/UI_CHANGE_GATE.md`：每次 UI 变更的门禁与验收标准
-7. `C:\Users\lopmatuse\.codex\attachments\1b6b382f-30ed-44c7-a9ce-6c580fefbe83\pasted-text.txt`：用户提供的完整任务提示词附件；如果新电脑不存在该路径，以本文件和仓库内文档为准
-8. `D:\workplace\Github\GameSaveCenter.WpfUiDemo.v3.1`：WPF Demo 模板，比较布局层级、节奏、控件尺寸和交互表面，不复制 Demo 假数据或业务实现；当前本机实际可用副本为 `D:\workplace\VSCode\GameSaveCenter.WpfUiDemo.v3.1`
+7. `.codex/skills/wpf-apple-desktop-ui/SKILL.md`：WPF/Playnite UI 专项技能，随仓库提交；本机同时安装于 `%USERPROFILE%\.codex\skills\wpf-apple-desktop-ui`。做任何 WPF/XAML 改动前先完整读取，并按任务需要读取 `references/` 中的对应文档
+8. `C:\Users\lopmatuse\.codex\attachments\1b6b382f-30ed-44c7-a9ce-6c580fefbe83\pasted-text.txt`：用户提供的完整任务提示词附件；如果新电脑不存在该路径，以本文件和仓库内文档为准
+9. `D:\workplace\Github\GameSaveCenter.WpfUiDemo.v3.1`：WPF Demo 模板，比较布局层级、节奏、控件尺寸和交互表面，不复制 Demo 假数据或业务实现；当前本机实际可用副本为 `D:\workplace\VSCode\GameSaveCenter.WpfUiDemo.v3.1`
 
 如果附件路径发生变化，先在当前对话的附件中找到同一份完整提示词；不能因为附件不可用而跳过仓库内的规则和约束。
 
@@ -56,7 +57,7 @@
 2. 读取本文件、`PROJECT_MEMORY.md`、`DEVELOPMENT_PROGRESS.md` 中与目标页面相关的最新条目。
 3. 搜索目标控件的全部共享样式、模板、资源和调用点，先判断根因属于信息架构、布局测量、模板状态、可读性、可访问性、性能还是宿主兼容性。
 4. 按 UI Change Gate 实施小范围、可验证的 UI 改动；优先共享资源和结构修复，保持业务合同不变。
-5. 至少运行适用的静态校验、`git diff --check`、源码验证、WPF 结构测试、Debug/Release 构建和相关单元测试。
+5. 至少运行适用的静态校验（含 `python .codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py .`）、`git diff --check`、源码验证、WPF 结构测试、Debug/Release 构建和相关单元测试。
 6. 真实 Playnite、主题、DPI、键盘或宿主渲染没有实际运行时，必须明确写“尚未验证”，不能声称已经验证。
 7. 完成一轮后同步更新：
    - `docs/PROJECT_MEMORY.md`：新增不可丢失的结构/行为约束
@@ -88,6 +89,8 @@
 - UI-198 已修复 Overview 在常用窗口和窄窗口下的主工作区被 sibling 行挤压问题：工作台、Hero/当前游戏、六项指标和最近活动统一进入 `OverviewPrimaryScrollSurface`，窄布局再由 `OverviewStackScrollSurface` 统一承载主列与右侧摘要，避免 980 DIP 下主列高度变成 0；宽布局仍保留主列/摘要列独立有限滚动。`OverviewActivityList` 继续使用有限高度、ListBox Recycling 和自身滚动，真实命令、Binding、SelectedTask、键盘访问和 Automation 未改变。已按 1600/1366/1280/1100/980 DIP 与 900/768/720/700/640 DIP 运行隔离生产离屏渲染，源码验证通过，生产插件 Release 构建 0 警告/0 错误，隔离测试 149/149 通过；未运行真实 Playnite 宿主、主题切换、DPI 真机和连续缩放流畅性验证。
 - UI-199（代码提交 `5cbd512`）已修复工作区由程序化导航、恢复状态或离屏渲染直接切换时顶栏仍显示“首页”的语义不同步：`DashboardView.UpdateWorkspacePresentation()` 与侧栏点击共同调用 `UpdateWorkspaceHeader`，媒体/维护/任务等页面标题和副标题始终跟随当前可见工作区。MediaCenter 的摘要卡响应式断点改为逻辑 DIP 的 `>=760` 四列、`>=520` 两列、其余单列，使 Dashboard 在常用 1080p/2K/4K 窗口下保持 Demo 四卡横排并为主表保留可见行；表格有限视口、内部滚动、虚拟化、Inspector、真实命令和 Binding 未改变。源码验证通过；生产插件 Release 构建 0 警告/0 错误；隔离 WPF 测试 150/150 通过；生产离屏渲染覆盖 1600/1366/1280/1100/980 DIP 与 900/768/720/700/640 DIP 并返回 `render-prod OK`。Render harness 自身仍有 3 个 FakeApi 未使用事件警告；真实 Playnite 宿主、主题切换、DPI 真机和连续缩放流畅性尚未验证。
 - UI-200（代码提交 `f11e9b7`）已将 Demo 的 `MinWidth=1040`、`MinHeight=700` DIP 固化为生产外壳的常用最小窗口：Dashboard `>=1040` 保留带文字侧栏和单行顶栏，低于该值才进入图标紧凑壳；同时按外壳扣除侧栏后的约 700 DIP 页面宽度校准 Media `>=700` 四列、Task `>=900` 四列/`>=680` 两列、Maintenance `>=980` 三列/`>=680` 两列。1040×700 离屏结果为 Media 四卡并显示两行表格、Task 2×2 摘要并显示队列、Maintenance 两列健康卡；1366×768 仍为完整多列，页面级滚动、表格/列表有限视口、内部滚动、虚拟化、真实命令/Binding 和业务层未改。源码验证通过；生产插件 Release 构建 0 警告/0 错误；隔离 WPF 测试 151/151 通过；生产离屏渲染覆盖 1600/1366/1280/1100/1040/980 DIP 与 900/768/720/700/640 DIP 并返回 `render-prod OK`。Render harness 自身仍有 3 个 FakeApi 未使用事件警告；真实 Playnite 宿主、主题切换、DPI 真机和连续缩放流畅性尚未验证。
+- SKILL-001（本轮）：`wpf-apple-desktop-ui` 技能已随仓库提交到 `.codex/skills/wpf-apple-desktop-ui/`，并安装到本机 `%USERPROFILE%\.codex\skills\wpf-apple-desktop-ui`；AGENTS.md、DEVELOPMENT_HANDOFF.md、UI_CHANGE_GATE.md、PROJECT_MEMORY.md 与 DEVELOPMENT_PROGRESS.md 已同步仓库内技能路径，UI 门禁新增 `python .codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py .` 静态审查。
+- QA-001（本轮）：新增可复用的离屏渲染 QA：`tests/GameSaveCenter.RenderHarness`（假数据，不启动 Worker/IPC）与 `scripts/render-qa.ps1`，覆盖 1040×700、1280×720、1366×768、1600×900、1920×1080 逻辑窗口，输出 PNG 与 `artifacts/ui-qa/render/render-qa-report.txt`（页面滚动面、DataGrid/ListBox 有限视口尺寸、可滚动性）。1040×700 复核结果：Media 待归类/当前游戏媒体主表 350 DIP 高、6 行；Task 队列 350 DIP 高、8 行；Maintenance 各主表 350 DIP 高、8 行；所有页面滚动面为 `Auto` 且内容超限时 `scrollable=True`；Overview 堆叠模式由页面滚动承载，风险区内容完整（496 DIP）。本机系统 SDK 9.0.302 在多节点构建时会因 SDK locator 目录缺失在 `GetTargetFrameworks` 静默失败，`render-qa.ps1` 已固化 `-m:1 -nodeReuse:false -p:NuGetAudit=false`。真实 Playnite 宿主、主题、DPI 和连续缩放流畅性仍未验证。
 - 新增的响应式门禁要求：1080p、2K、4K 不能只按物理分辨率判断，必须按 DPI 换算后的逻辑 DIP 尺寸检查全屏、窗口化和最大化；常用窗口下首屏下方真实内容不得被页脚或工作区边界遮住，主表/主列表应保留约四行可读视口，页面滚动与列表内部虚拟化滚动必须分工明确。具体门禁见 `docs/design/UI_CHANGE_GATE.md`。
 - 本轮工作区：合并提交完成时干净；后续 agent 仍须先运行 `git status`、`git log -5 --oneline --decorate` 和 `git branch --show-current`。
 - 验证：源码验证通过；生产插件隔离 Release 构建 0 警告/0 错误；隔离测试输出 151/151 通过；生产离屏 render harness 返回 `render-prod OK`，自身有 3 个 FakeApi 未使用事件警告。覆盖尺寸包含 1600/1366/1280/1100/1040/980 DIP 与 900/768/720/700/640 DIP。由于本机只有 .NET 9 SDK 且仓库 `global.json` 以 .NET 8 为基线，测试使用隔离输出验证，未覆盖真实 Playnite 宿主、主题、DPI、窗口化截图和连续缩放运行时渲染。

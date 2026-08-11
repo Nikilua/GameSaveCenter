@@ -1,0 +1,33 @@
+{
+  "name": "wpf-apple-desktop-ui",
+  "version": "1.0.0",
+  "entry": "SKILL.md",
+  "language": "zh-CN",
+  "files": [
+    "AGENTS_SNIPPET.md",
+    "LICENSE",
+    "README.md",
+    "SKILL.md",
+    "examples/AdaptiveLayout.cs",
+    "examples/Button.xaml",
+    "examples/CheckBox.xaml",
+    "examples/DataGrid.xaml",
+    "examples/DesignTokens.xaml",
+    "examples/PillTabs.xaml",
+    "examples/ScrollBar.xaml",
+    "references/ACCESSIBILITY.md",
+    "references/COLOR_MATERIALS_AND_THEMES.md",
+    "references/CONTROL_CATALOG.md",
+    "references/DATA_DENSE_UI.md",
+    "references/DESIGN_PRINCIPLES.md",
+    "references/LAYOUT_AND_RESPONSIVENESS.md",
+    "references/MOTION_AND_FEEDBACK.md",
+    "references/PLAYNITE_AND_GAMESAVECENTER.md",
+    "references/SOURCES.md",
+    "references/TYPOGRAPHY_AND_READABILITY.md",
+    "references/UI_REVIEW_CHECKLIST.md",
+    "references/WPF_ENGINEERING.md",
+    "scripts/install_skill.ps1",
+    "scripts/validate_wpf_ui.py"
+  ]
+}

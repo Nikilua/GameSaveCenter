@@ -5,7 +5,7 @@
 For any WPF, XAML, Playnite UI, theming, layout, controls, animation, dialog, toast,
 DataGrid, ScrollBar, TabControl, responsive sizing, DPI, accessibility, or visual-regression work:
 
-1. Use the `wpf-apple-desktop-ui` skill and inspect the shared resources before editing.
+1. Use the `wpf-apple-desktop-ui` skill and inspect the shared resources before editing. The skill is committed in the repository at `.codex/skills/wpf-apple-desktop-ui/SKILL.md`; read that file (and any task-relevant `references/`) first. On this machine it is also installed at `%USERPROFILE%\.codex\skills\wpf-apple-desktop-ui`.
 2. Read `docs/design/APPLE_WPF_IMPLEMENTATION_PROMPT.md` and `docs/design/UI_CHANGE_GATE.md`.
 3. Repair shared styles/templates rather than a single visual instance.
 4. Preserve commands, bindings, business behavior, virtualization, keyboard access, UI Automation, and Playnite compatibility.
