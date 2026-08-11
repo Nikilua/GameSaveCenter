@@ -20,6 +20,8 @@
 
 > UI-191（2026-08-11，提交 `a7fe8c9`）：SaveCenter/TrainerCenter 的窄宽度堆叠布局必须同时保护主列表视口。存档历史与候选路径的 `SaveHistoryGrid`/`SaveCandidateGrid` 保留 236 DIP 最小高度；修改器已安装工具、FLiNG 搜索结果和可下载版本区域同样保留 236 DIP 最小列表区域，并继续使用 ListBox/DataGrid 内部滚动与虚拟化/Recycling。堆叠 Inspector 的 `MaxHeight` 不再直接按整页高度计算，而是依据实际布局高度扣除列表最小高度和间距，把剩余空间交给 Inspector 自身滚动，避免窗口化或低高度状态下主表被压成一行。真实命令、Binding、选中项、导入确认和业务层均未改变；源码验证通过，隔离 Release 构建 0 警告/0 错误，Playnite 148/148 通过。真实 Playnite 宿主、主题、DPI、窗口化截图和连续缩放流畅性仍未验证。
 
+> UI-192（2026-08-11，提交 `f8fa7c3`）：TaskCenter 必须保持 Demo 的“任务队列主表 + 详情 Inspector”关系，同时防止窄宽度堆叠 Inspector 抢占主表高度。`TaskGrid` 保留 236 DIP 最小视口，`TaskQueuePanel` 与实际 `TaskWorkspaceLayout` 高度共同参与剩余空间计算；堆叠时详情 `TaskDetailScrollViewer` 只使用扣除摘要、筛选区、主表最小高度和间距后的有限高度，内容继续由 Inspector 内部滚动访问。任务搜索、状态/游戏/类型筛选、真实状态计数、取消/重试/复制命令、DataGrid 行列虚拟化和全局任务视角均未改变；源码验证通过，隔离 Release 构建 0 警告/0 错误，Playnite 149/149 通过。真实 Playnite 宿主、主题、DPI、窗口化截图和连续缩放流畅性仍未验证。
+
 > RESP-001（2026-08-11）：“4K 已适配”不能代替 1080p 验收。WPF 按 DIP 排版，4K 在 150%/175%/200% DPI 下可能落入与 2K/1080p 相同或更小的逻辑工作区，1080p 窗口化也可能只剩 1280–1600 DIP。每轮 UI 修改必须按 1080p、2K、4K 的全屏/窗口化/最大化逻辑尺寸检查首屏内容、页脚遮挡、卡片堆叠和滚动；看不到的真实内容必须能通过明确的页面级滚动访问，DataGrid/ListBox 仍使用有限视口、内部滚动和虚拟化。以表格/列表为主的区域常用高度下目标约四行可读内容，不能被上方 Auto 行挤成一行；极端小窗口不要求不变形，但不得用裁切、负 Margin、隐藏滚动条或全页缩放伪装适配。该规则已同步到 `docs/design/UI_CHANGE_GATE.md`，并作为后续每轮 UI 的固定验收项。
 
 > UI-183：维护中心“诊断”页顶部必须保持 Demo 式的 `MaintenanceDiagnosticsActionCard` 阅读卡：标题/说明与“刷新诊断”主操作位于首行，复制诊断、打开数据目录、打开存档目录、打开媒体目录和 Worker 日志位于第二行可换行操作带。六个真实 Command 必须保留，操作区不能退回裸 `WrapPanel` 或被挪入 DataGrid/其滚动表面；诊断指标、有限表格滚动、选中项 Inspector、完整摘要和空态不因本轮布局调整消失。共享按钮模板继续负责 38 DIP 高度和文字对齐，不新增业务逻辑。
