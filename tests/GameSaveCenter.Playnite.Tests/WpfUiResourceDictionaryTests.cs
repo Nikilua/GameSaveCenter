@@ -677,7 +677,12 @@ public sealed class WpfUiResourceDictionaryTests
             var directScrollViewers = root.Root?.Elements()
                 .Where(element => element.Name.LocalName == "ScrollViewer")
                 .ToList() ?? new List<XElement>();
-            if (file == "TaskCenterView.xaml")
+            if (file == "OverviewView.xaml")
+            {
+                Assert.Single(directScrollViewers);
+                Assert.Equal("OverviewStackScrollSurface", directScrollViewers[0].Attribute(xamlName)?.Value);
+            }
+            else if (file == "TaskCenterView.xaml")
             {
                 Assert.Single(directScrollViewers);
                 Assert.Equal("TaskPageScrollSurface", directScrollViewers[0].Attribute(xamlName)?.Value);
@@ -717,7 +722,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"OverviewSecondaryScrollViewer\"\n                      Style=\"{DynamicResource GscPageScrollViewer}\"", overview);
         Assert.Contains("x:Name=\"OverviewRiskScrollViewer\" Style=\"{DynamicResource GscPageScrollViewer}\"", overview);
         var overviewCode = File.ReadAllText(Path.Combine(viewDirectory, "OverviewView.xaml.cs"));
-        Assert.Contains("OverviewSecondaryScrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto", overviewCode);
+        Assert.Contains("OverviewSecondaryScrollViewer.VerticalScrollBarVisibility = stack", overviewCode);
+        Assert.Contains(": ScrollBarVisibility.Auto", overviewCode);
         Assert.Contains("OverviewRiskScrollViewer.VerticalScrollBarVisibility = stack", overviewCode);
         Assert.Contains("<ScrollViewer Style=\"{DynamicResource GscPageScrollViewer}\" VerticalScrollBarVisibility=\"Auto\"", save);
         Assert.Contains("x:Name=\"MediaSourceRulesFrame\"", media);
@@ -747,13 +753,17 @@ public sealed class WpfUiResourceDictionaryTests
         var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
 
         Assert.Contains("x:Name=\"OverviewPrimaryScrollSurface\"", overview);
-        Assert.Contains("OverviewPrimaryScrollSurface.VerticalScrollBarVisibility = ScrollBarVisibility.Auto", overviewCode);
+        Assert.Contains("x:Name=\"OverviewStackScrollSurface\"", overview);
+        Assert.Contains("x:Name=\"OverviewPrimaryLayoutRow\"", overview);
+        Assert.Contains("OverviewPrimaryScrollSurface.VerticalScrollBarVisibility = stack", overviewCode);
+        Assert.Contains("OverviewStackScrollSurface.VerticalScrollBarVisibility = stack", overviewCode);
+        Assert.Contains("OverviewPrimaryLayoutRow.Height = stack", overviewCode);
         Assert.Contains("OverviewActivityList.MaxHeight = Math.Max(180, Math.Min(320, height * 0.42))", overviewCode);
 
         var overviewDocument = XDocument.Parse(overview);
         var activity = overviewDocument.Descendants().Single(element =>
             element.Name.LocalName == "ListBox" && element.Attribute(xamlName)?.Value == "OverviewActivityList");
-        Assert.DoesNotContain(activity.Ancestors(), ancestor =>
+        Assert.Contains(activity.Ancestors(), ancestor =>
             ancestor.Attribute(xamlName)?.Value == "OverviewPrimaryScrollSurface");
 
         Assert.Contains("x:Name=\"MediaInboxScrollSurface\"", media);
@@ -2564,7 +2574,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"OverviewSecondaryScrollViewer\"", File.ReadAllText(overviewPath));
         Assert.Contains("OverviewSecondaryScrollViewer.MaxHeight = stack", File.ReadAllText(overviewPath + ".cs"));
         Assert.DoesNotContain("OverviewSecondaryScrollViewer.MaxHeight = stack || compactHeight", File.ReadAllText(overviewPath + ".cs"));
-        Assert.Contains("OverviewSecondaryScrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto", File.ReadAllText(overviewPath + ".cs"));
+        Assert.Contains("OverviewSecondaryScrollViewer.VerticalScrollBarVisibility = stack", File.ReadAllText(overviewPath + ".cs"));
         Assert.Contains("OverviewHomeToolbarActions.Orientation = Orientation.Horizontal", File.ReadAllText(overviewPath + ".cs"));
         Assert.Contains("Math.Max(180, Math.Min(360, height * 0.42))", File.ReadAllText(overviewPath + ".cs"));
         Assert.Contains("OverviewRiskScrollViewer.VerticalScrollBarVisibility = stack", File.ReadAllText(overviewPath + ".cs"));

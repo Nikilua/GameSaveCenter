@@ -1336,6 +1336,14 @@ def check_final_redesign_guards() -> None:
                 for node in ancestor_nodes
             )
         )
+        bounded_workspace_scroll = bounded_workspace_scroll or (
+            control.attrib.get("{http://schemas.microsoft.com/winfx/2006/xaml}Name") == "OverviewActivityList"
+            and any(
+                local_name(node.tag) == "ScrollViewer"
+                and node.attrib.get("{http://schemas.microsoft.com/winfx/2006/xaml}Name", "") == "OverviewPrimaryScrollSurface"
+                for node in ancestor_nodes
+            )
+        )
         allowed_page_scroll = allowed_page_scroll or page_scroll_contract or bounded_workspace_scroll
         if (("StackPanel" in ancestors or "ScrollViewer" in ancestors) and not allowed_page_scroll) or "Grid" not in ancestors:
             fail(

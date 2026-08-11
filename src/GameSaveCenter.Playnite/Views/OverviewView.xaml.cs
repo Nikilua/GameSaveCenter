@@ -77,6 +77,9 @@ namespace GameSaveCenter.Playnite.Views
 
         public void ApplyResponsiveColumns(bool stack)
         {
+            OverviewPrimaryLayoutRow.Height = stack
+                ? GridLength.Auto
+                : new GridLength(1, GridUnitType.Star);
             OverviewPrimaryColumn.Width = new GridLength(1.2, GridUnitType.Star);
             OverviewGutterColumn.Width = new GridLength(stack ? 0 : 14);
             OverviewSecondaryColumn.Width = stack
@@ -152,10 +155,16 @@ namespace GameSaveCenter.Playnite.Views
 
         public void ApplyResponsiveHeight(double height, bool stack)
         {
-            // The Demo keeps the complete overview page reachable through one outer
-            // scroll channel. Keep recent activity finite so the nested ListBox remains
-            // virtualized and cannot make the page measure infinitely tall.
-            OverviewPrimaryScrollSurface.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            // On a stacked compact layout the page itself owns the single vertical scroll
+            // channel. This keeps the primary workbench from collapsing to zero when the
+            // secondary column's summary/risk card is taller than the remaining viewport.
+            // Wide layouts retain independent finite columns so the summary stays anchored.
+            OverviewStackScrollSurface.VerticalScrollBarVisibility = stack
+                ? ScrollBarVisibility.Auto
+                : ScrollBarVisibility.Disabled;
+            OverviewPrimaryScrollSurface.VerticalScrollBarVisibility = stack
+                ? ScrollBarVisibility.Disabled
+                : ScrollBarVisibility.Auto;
             OverviewActivityList.MaxHeight = Math.Max(180, Math.Min(320, height * 0.42));
 
             // Keep exactly one vertical scroll owner for the secondary column at each
@@ -168,9 +177,11 @@ namespace GameSaveCenter.Playnite.Views
             // this viewer unbounded while disabling its scrollbar clips the last action
             // at common 1080p/2K logical heights.
             OverviewSecondaryScrollViewer.MaxHeight = stack
-                ? Math.Max(260, Math.Min(480, height * 0.58))
+                ? double.PositiveInfinity
                 : Math.Max(300, Math.Min(760, Math.Max(300, height - 24)));
-            OverviewSecondaryScrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            OverviewSecondaryScrollViewer.VerticalScrollBarVisibility = stack
+                ? ScrollBarVisibility.Disabled
+                : ScrollBarVisibility.Auto;
             OverviewRiskScrollViewer.MaxHeight = stack
                 ? double.PositiveInfinity
                 : Math.Max(180, Math.Min(360, height * 0.42));

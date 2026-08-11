@@ -49,9 +49,15 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
+    <ScrollViewer x:Name="OverviewStackScrollSurface"
+                  Style="{DynamicResource GscPageScrollViewer}"
+                  VerticalScrollBarVisibility="Disabled"
+                  HorizontalScrollBarVisibility="Disabled"
+                  CanContentScroll="False"
+                  Focusable="False">
     <Grid x:Name="OverviewLayoutGrid" Margin="0,4,0,8" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition x:Name="OverviewPrimaryLayoutRow" Height="*"/>
             <RowDefinition x:Name="OverviewCompactSecondaryRow" Height="0"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -62,18 +68,20 @@
 
         <Grid x:Name="OverviewPrimaryPanel" Grid.Row="0" Grid.Column="0" MinWidth="0">
             <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-            <!-- Only the page-level overview content scrolls here. The recent-activity
-                 ListBox remains outside this ScrollViewer so its Grid star measurement,
-                 Recycling virtualization and local row scrolling stay intact. -->
+            <!-- Keep the complete left workbench in one page-level scroll channel. This
+                 prevents the hero, second metric row, or activity section from being
+                 measured into a clipped sibling row at common window heights. The list
+                 still owns its finite local viewport and Recycling virtualization. -->
             <ScrollViewer x:Name="OverviewPrimaryScrollSurface"
                           Grid.Row="0"
+                          Grid.RowSpan="2"
                           Style="{DynamicResource GscPageScrollViewer}"
                           VerticalScrollBarVisibility="Auto"
                           HorizontalScrollBarVisibility="Disabled"
                           CanContentScroll="False"
                           Focusable="False">
             <Grid x:Name="OverviewPrimaryFlow" VerticalAlignment="Top">
-            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
             <!-- Demo HomeView keeps global batch commands in a quiet, separate
                  workbench surface instead of making the page header carry every
                  action.  The commands remain the existing real Dashboard commands. -->
@@ -211,11 +219,9 @@
                 </Border>
                 <Border Style="{StaticResource OverviewStatCard}" Margin="0,0,8,0"><StackPanel><TextBlock Text="云端队列" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11"/><TextBlock Text="{Binding Snapshot.PendingCloudTasks, Mode=OneWay}" Foreground="{DynamicResource GscInfoBrush}" FontSize="30" FontWeight="SemiBold" Margin="0,8,0,0"/><TextBlock Text="失败不会撤销本地备份" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,8,0,0" TextWrapping="Wrap"/></StackPanel></Border>
                 <Border Style="{StaticResource OverviewStatCard}" Margin="0"><StackPanel><TextBlock Text="待归类媒体" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11"/><TextBlock Text="{Binding Snapshot.UnassignedMediaCount, Mode=OneWay}" Foreground="{DynamicResource GscWarningBrush}" FontSize="30" FontWeight="SemiBold" Margin="0,8,0,0"/><TextBlock Text="来自共享截图目录" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,8,0,0" TextWrapping="Wrap"/></StackPanel></Border>
-            </UniformGrid>
-            </Grid>
-            </ScrollViewer>
+             </UniformGrid>
 
-            <Border Grid.Row="1" Style="{DynamicResource GscRedesignSectionCard}" Margin="0,14,0,0" MinHeight="0">
+             <Border Grid.Row="3" Style="{DynamicResource GscRedesignSectionCard}" Margin="0,0,0,14" MinHeight="0">
                 <Grid>
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
                     <Grid Margin="0,0,0,12">
@@ -278,10 +284,12 @@
                                 </TextBlock.Style>
                             </TextBlock>
                         </Grid>
-                    </Border>
-                </Grid>
-            </Border>
-        </Grid>
+             </Border>
+             </Grid>
+             </Border>
+             </Grid>
+             </ScrollViewer>
+         </Grid>
 
         <ScrollViewer x:Name="OverviewSecondaryScrollViewer"
                       Style="{DynamicResource GscPageScrollViewer}"
@@ -341,5 +349,6 @@
             </Border>
         </Grid>
         </ScrollViewer>
-    </Grid>
+        </Grid>
+    </ScrollViewer>
 </UserControl>
