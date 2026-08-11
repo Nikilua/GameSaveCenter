@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Threading;
+using GameSaveCenter.Playnite.Infrastructure;
+using GameSaveCenter.Playnite.ViewModels;
 
 namespace GameSaveCenter.Playnite.Views
 {
@@ -13,6 +16,47 @@ namespace GameSaveCenter.Playnite.Views
         {
             InitializeComponent();
             TaskDetailScrollViewer.IsVisibleChanged += OnTaskDetailScrollViewerIsVisibleChanged;
+            DataContextChanged += OnDataContextChanged;
+            Loaded += OnTaskCenterLoaded;
+        }
+
+        private DashboardViewModel? boundViewModel;
+
+        private void OnTaskCenterLoaded(object sender, RoutedEventArgs e)
+            => EnsureTaskFilterDefaults();
+
+        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (boundViewModel != null)
+            {
+                boundViewModel.TaskGameFilterOptions.CollectionChanged -= OnTaskFilterOptionsChanged;
+                boundViewModel.TaskTypeFilterOptions.CollectionChanged -= OnTaskFilterOptionsChanged;
+                boundViewModel = null;
+            }
+
+            if (DataContext is DashboardViewModel viewModel)
+            {
+                boundViewModel = viewModel;
+                viewModel.TaskGameFilterOptions.CollectionChanged += OnTaskFilterOptionsChanged;
+                viewModel.TaskTypeFilterOptions.CollectionChanged += OnTaskFilterOptionsChanged;
+                EnsureTaskFilterDefaults();
+            }
+        }
+
+        private void OnTaskFilterOptionsChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            // The game/type option collections are rebuilt on Worker snapshots. Restore the
+            // default selection after WPF has re-materialized the new items.
+            Dispatcher.BeginInvoke(DispatcherPriority.DataBind, new Action(EnsureTaskFilterDefaults));
+        }
+
+        private void EnsureTaskFilterDefaults()
+        {
+            if (DataContext is not DashboardViewModel viewModel)
+                return;
+            UiFilterSelection.RestoreDefault(TaskStatusFilterComboBox, viewModel.TaskStatusFilter);
+            UiFilterSelection.RestoreDefault(TaskGameFilterComboBox, viewModel.TaskGameFilter);
+            UiFilterSelection.RestoreDefault(TaskTypeFilterComboBox, viewModel.TaskTypeFilter);
         }
 
         private void OnTaskFilterSelectionChanged(object sender, SelectionChangedEventArgs e)

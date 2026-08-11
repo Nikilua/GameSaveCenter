@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
@@ -131,6 +132,7 @@ namespace GameSaveCenter.Playnite.Views
             if (viewModelSubscribed) return;
             viewModel.PropertyChanged += OnViewModelPropertyChanged;
             viewModel.AttentionCenterRequested += OnAttentionCenterRequested;
+            viewModel.GamePicker.PlatformFilterOptions.CollectionChanged += OnGamePickerPlatformOptionsChanged;
             viewModelSubscribed = true;
         }
 
@@ -139,7 +141,22 @@ namespace GameSaveCenter.Playnite.Views
             if (!viewModelSubscribed) return;
             viewModel.PropertyChanged -= OnViewModelPropertyChanged;
             viewModel.AttentionCenterRequested -= OnAttentionCenterRequested;
+            viewModel.GamePicker.PlatformFilterOptions.CollectionChanged -= OnGamePickerPlatformOptionsChanged;
             viewModelSubscribed = false;
+        }
+
+        private void OnGamePickerPlatformOptionsChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            BeginUiSafely(RestoreGamePickerFilterDefaults, DispatcherPriority.DataBind);
+        }
+
+        private void RestoreGamePickerFilterDefaults()
+        {
+            if (viewModel?.GamePicker == null)
+                return;
+            UiFilterSelection.RestoreDefault(GamePickerStatusComboBox, viewModel.GamePicker.StatusFilter);
+            UiFilterSelection.RestoreDefault(GamePickerPlatformComboBox, viewModel.GamePicker.PlatformFilter);
+            UiFilterSelection.RestoreDefault(GamePickerSortComboBox, viewModel.GamePicker.SortMode);
         }
 
         private void OnAttentionCenterRequested(object? sender, EventArgs e)
@@ -379,6 +396,8 @@ namespace GameSaveCenter.Playnite.Views
                 : Visibility.Collapsed;
             GameBrowserPanel.Visibility = gameBrowserVisibility;
             GameBrowserScrim.Visibility = gameBrowserVisibility;
+            if (gameBrowserVisibility == Visibility.Visible)
+                RestoreGamePickerFilterDefaults();
             WorkspaceCompactBrowserRow.Height = new GridLength(0);
             WorkspaceDetailRow.Height = new GridLength(1, GridUnitType.Star);
             WorkspaceGutterColumn.Width = new GridLength(0);

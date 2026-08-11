@@ -312,6 +312,18 @@ public static class Program
             }
         }
 
+        foreach (var combo in FindVisualChildren<ComboBox>(host))
+        {
+            if (string.IsNullOrEmpty(combo.Name))
+                continue;
+            report.AppendLine(
+                $"  {label} {combo.Name}: selected={combo.SelectedItem ?? "(null)"}, index={combo.SelectedIndex}, items={combo.Items.Count}");
+            if (combo.Items.Count > 0 && combo.SelectedItem == null)
+            {
+                s_problems.Add($"{label} {combo.Name} has no default selection ({combo.Items.Count} items available)");
+            }
+        }
+
         if (label.StartsWith("Overview", StringComparison.OrdinalIgnoreCase))
         {
             foreach (var elementName in new[]
