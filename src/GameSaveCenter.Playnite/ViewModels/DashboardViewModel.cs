@@ -28,6 +28,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private readonly GamePickerViewModel gamePicker;
         private readonly SynchronizationContext? uiSynchronizationContext = SynchronizationContext.Current;
         private readonly Dictionary<string, TaskState> knownTaskStates = new Dictionary<string, TaskState>(StringComparer.OrdinalIgnoreCase);
+        private readonly TaskIndexedCollection taskIndex = new TaskIndexedCollection();
         private readonly DateTime dashboardOpenedUtc = DateTime.UtcNow;
         private bool isBusy;
         private bool isBackgroundRefreshing;
@@ -41,6 +42,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private long deferredUiWorkGeneration;
         private long detailsLoadGeneration;
         private Task? taskEventListener;
+        private bool commandRefreshScheduled;
         private readonly DebouncedRefresh taskSearchRefresh;
         private readonly DebouncedRefresh mediaSearchRefresh;
         private DateTime lastFullDashboardRefreshUtc=DateTime.MinValue;
@@ -679,7 +681,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             if (change == null || change.Task == null) return;
             ApplyOnUi(() =>
             {
-                MergeTaskChange(Tasks, change.Task);
+                taskIndex.Merge(Tasks, change.Task);
                 Replace(OverviewTasks, Tasks.OrderByDescending(x => x.CreatedUtc).Take(8), SnapshotComparers.Task);
                 knownTaskStates[change.Task.TaskId] = change.Task.State;
                 taskSnapshotInitialized = true;
@@ -694,14 +696,6 @@ namespace GameSaveCenter.Playnite.ViewModels
                 // cached snapshot refresh; the event itself only updates the task rows immediately.
                 await RequestBackgroundRefreshAsync();
             }
-        }
-
-        private static void MergeTaskChange(ObservableCollection<TaskStatusDto> target, TaskStatusDto change)
-        {
-            var index = target.ToList().FindIndex(x => string.Equals(x.TaskId, change.TaskId, StringComparison.OrdinalIgnoreCase));
-            if (index >= 0) target[index] = change;
-            else target.Insert(0, change);
-            while (target.Count > 200) target.RemoveAt(target.Count - 1);
         }
 
         private async Task InitializeAsync()
@@ -920,7 +914,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                                       ?? Games.FirstOrDefault();
                 }
                 finally { suppressSelectionLoad = false; }
-                Replace(Tasks, data.RecentTasks, SnapshotComparers.Task);
+                var tasksChanged = Replace(Tasks, data.RecentTasks, SnapshotComparers.Task);
+                if (tasksChanged) taskIndex.Rebuild(Tasks);
                 OnPropertyChanged(nameof(RunningTaskCount));
                 OnPropertyChanged(nameof(RetryableTaskCount));
                 OnPropertyChanged(nameof(CompletedTaskCount));
@@ -1932,6 +1927,26 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private void RaiseCommandStates()
         {
+            if (commandRefreshScheduled) return;
+            commandRefreshScheduled = true;
+            try
+            {
+                plugin.PlayniteApi.MainView.UIDispatcher.BeginInvoke(
+                    DispatcherPriority.DataBind,
+                    new Action(RaiseCommandStatesCore));
+            }
+            catch (Exception)
+            {
+                // A closing Playnite dispatcher must not leave commands stale; fall back to
+                // an immediate refresh so the view can still evaluate CanExecute locally.
+                commandRefreshScheduled = false;
+                RaiseCommandStatesCore();
+            }
+        }
+
+        private void RaiseCommandStatesCore()
+        {
+            commandRefreshScheduled = false;
             foreach (var command in new[]
             {
                 RefreshCommand, BackupSelectedCommand, BackupAllCommand, SyncMediaCommand,
