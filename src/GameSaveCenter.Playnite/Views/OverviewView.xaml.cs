@@ -115,15 +115,23 @@ namespace GameSaveCenter.Playnite.Views
 
         public void ApplyResponsiveHeight(double height, bool stack)
         {
-            // Keep the risk card on a bounded scroll channel in every layout. On wide
-            // short windows the outer column also stays a finite scroll owner, so the
-            // right column never gets clipped by the row's hidden outer scrollbar.
+            // Keep exactly one vertical scroll owner for the secondary column at each
+            // breakpoint. On a wide layout the risk card owns its finite viewport so the
+            // summary remains anchored. Once the secondary column stacks below the main
+            // workspace, the whole right column owns the scroll channel; the risk card
+            // then expands naturally and does not compete with its parent for the wheel.
             OverviewSecondaryScrollViewer.MaxHeight = stack
                 ? Math.Max(260, Math.Min(480, height * 0.58))
                 : double.PositiveInfinity;
-            OverviewSecondaryScrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Hidden;
-            OverviewRiskScrollViewer.MaxHeight = Math.Max(180, Math.Min(360, height * 0.42));
-            OverviewRiskScrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Hidden;
+            OverviewSecondaryScrollViewer.VerticalScrollBarVisibility = stack
+                ? ScrollBarVisibility.Auto
+                : ScrollBarVisibility.Disabled;
+            OverviewRiskScrollViewer.MaxHeight = stack
+                ? double.PositiveInfinity
+                : Math.Max(180, Math.Min(360, height * 0.42));
+            OverviewRiskScrollViewer.VerticalScrollBarVisibility = stack
+                ? ScrollBarVisibility.Disabled
+                : ScrollBarVisibility.Auto;
         }
     }
 }

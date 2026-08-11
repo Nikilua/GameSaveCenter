@@ -1,7 +1,11 @@
 # 开发实现进度
 
-更新时间：2026-08-09
+更新时间：2026-08-11
 当前版本：`0.6.70-development-preview`
+
+> MERGE-001：本机分支与 `origin/main` 均从 `9cdd975` 分叉；本机 UI-173～UI-181 记录与远端 UI-181～UI-183/交接记录均保留。重复编号按分支上下文理解，不删除任一方的实现历史。
+
+## 本机分支（共同基线后的独有记录）
 
 - [x] UI-181：首页工作台 Hero 对齐 Demo 标题字号并补三色环境光：`OverviewView` 今日工作台 Hero 标题 `FontSize` 由 26 提升到 35（demo HomeView 首页标题同字号，Margin `0,4,0,0` → `0,8,0,8` 保持三行节奏），内联 Style 的「存在需要处理的项目 / 整体状态安全 / Worker 异常」DataTrigger 全部保留；Hero 区装饰环境光由单颗扩展为三颗：左上 accent（`GscAccentShadowColor`）、右上 info（`GscInfoShadowColor`）、右下 success（`GscSuccessShadowColor`），全部为 `RadialGradientBrush` 由语义色渐隐到 Transparent（230×230、`Opacity=0.85`、`IsHitTestVisible=False`、负 Margin 让光晕主体落在卡片外只留柔边），对应 demo 卡片内蓝色模糊椭圆与窗口三色环境光；生产工作区坚持大库性能护栏不用 `BlurEffect`，以主题自适应径向渐变模拟。`DesignTokens.xaml` 新增 `GscInfoShadowColor`/`GscSuccessShadowColor` 两个装饰渐变中心令牌（静态低 alpha 语义色，不新增散落硬编码主题色）。新增 `OverviewHeroMatchesDemoHeadlineScaleWithRadialAmbientGlow` 结构回归测试锁定 35px 标题、三颗径向渐变光晕、无 `BlurEffect`、DataTrigger 文案保留与令牌单源。源码校验、Release 构建与全部测试通过，仍需 Playnite 宿主验证。
 
@@ -22,6 +26,36 @@
 - [x] UI-172：首页「今日概览」六枚胶囊统一字体与字重：`OverviewView` 今日概览 `UniformGrid` 补 `TextElement.FontFamily="Segoe UI Variable Text, Segoe UI"` + `TextElement.FontWeight="SemiBold"`，消除宿主/按钮模板继承差异导致的需关注按钮与其它胶囊文字度量不一致。源码校验、Release 构建与全部测试通过，仍需 Playnite 宿主验证。
 
 - [x] UI-173：媒体中心「来源规则」页列表按内容自然高度收口，空状态不再显示巨大空框：来源规则列表 `MediaSourceRulesFrame` 此前 `MinHeight=220` 且在星号行默认拉伸，无来源时也渲染 220+ 高的空 Border、来源较多时撑满整行；现改为 `MinHeight=0` + `MaxHeight=520` + `VerticalAlignment=Top`（仍 `Grid.Row=1`，表单行 Auto 与两行 Auto/* 布局不变），列表随内容自然高度回落、来源很多时封顶 520 由 ListBox 内部 Auto 滚动接管、无来源时只剩紧凑空态提示，多余空间由星号行吸收；`MediaSourceFields` 表单、添加/更新/删除来源命令、ListBox Recycling 虚拟化与空态数据触发器原样保留。回归测试重写为 `MediaSourceRulesTabUsesOneNaturalHeightPageChannel`，锁定两行 Auto/*、MinHeight 0/MaxHeight 520/Top、无 MinHeight=220 填充与 ListBox 虚拟化契约。源码校验、Release 构建与 Playnite 131 项测试全部通过；离屏 render-prod 复核 1600×900 列表底部落点与 980×640 无裁切、空态区像素扫描无玻璃蓝残留，仍需 Playnite 宿主验证。
+## 远端 `origin/main` 交接线
+
+更新时间：2026-08-10
+当前版本：`0.6.70-development-preview`
+
+- [x] UI-183：维护中心“诊断”页顶部操作区按 Demo 的“诊断操作”阅读卡重排：新增带标题/说明的 `MaintenanceDiagnosticsActionCard`，将“刷新诊断”提升为右上主操作，其余复制诊断、打开数据目录、打开存档目录、打开媒体目录和 Worker 日志放入第二行可换行操作带；六个真实 Command、诊断指标、表格、Inspector 和空态均保留，未修改业务层、Worker、IPC 或持久化。新增 XAML 结构回归测试确认六个命令完整存在且操作带位于卡片第二行；源码验证、Debug/Release 构建与测试通过（Core 13、Worker 23、Playnite 142）。真实 Playnite 宿主、主题、DPI 运行时渲染验收仍需完成。
+
+- [x] UI-182：维护中心“进程映射”编辑器按 Demo 的完整编辑行重构：用 Grid 替换按内容宽度排列的 WrapPanel，让 EXE 输入框在宽屏占据剩余 `*` 宽度，目标游戏下拉框固定 240 DIP，绑定按钮继续使用共享 38 DIP 按钮节奏；宽度小于 720 DIP 时把目标游戏和绑定按钮移到第二行，避免三个控件被压缩成不可读的一条。保留 `ProcessMappingExecutable`、`ProcessMappingTargetGame`、`Games`、`SaveProcessMappingCommand` 的真实绑定/命令和原有目标游戏模板，未修改业务层、Worker、IPC 或持久化。新增宽屏/窄屏 STA 几何回归测试；源码验证、全量 Debug 测试通过（Core 13、Worker 23、Playnite 141）。Release 构建和真实 Playnite 宿主、主题、DPI 运行时渲染验收仍需完成。
+
+- [x] UI-181：维护中心五张真实 `DataGrid` 的首列显式声明 `MaintenanceFirstColumnHeader`，与已有的 `MaintenanceLastColumnHeader`/`GscLastColumnHeader` 共同锁定 Demo 对齐所需的首尾圆角、主题前景和背景所有权，避免首列继续依赖宿主默认表头样式。保留 `MaintenanceDataGrid` 的 `ItemsSource`、选中项绑定、`Standard` 行虚拟化、键盘/Automation 入口以及 `DataGridLoaded` 的一次性资源兜底；未修改业务层、Worker、IPC 或持久化。新增 XAML 结构回归测试，确认五张维护表的真实列顺序都声明首尾表头样式。源码验证通过；Debug/Release 编译与测试通过（Core 13、Worker 23、Playnite 140）。尚未在真实 Playnite 宿主、Light/Dark/高对比度和多 DPI 环境完成运行时渲染验收。
+
+- [x] DOC-001：新增 `docs/DEVELOPMENT_HANDOFF.md` 作为跨电脑、跨模型的持续维护入口，固化必读资料、Demo 路径、用户原话、UI 约束、验证流程、commit 要求、当前基线和下一步方向；`PROJECT_MEMORY.md` 已增加入口链接。未修改生产代码或业务行为。
+
+- [x] UI-180：首页 Overview 按 Demo HomeView 的阅读顺序重排真实内容：工作台/今日状态之后先展示“当前游戏”上下文卡，再展示六项 `Snapshot.*` 指标，最后进入最近活动列表；原布局把六项指标放在当前游戏卡之前，导致页面层级与 Demo 相反。仅调整 `Grid.Row` 与当前游戏卡的自然间隔，保留 `OverviewMetricPanel`、立即备份/刷新详情/查看需关注项命令、真实 `SelectedGame`/`OverviewTasks` 绑定、ListBox Recycling 虚拟化和右侧风险滚动通道；新增结构回归断言锁定“上下文 → 指标 → 活动”顺序。未修改业务层。仍需 Playnite 宿主、主题和 DPI 真机验证。
+
+- [x] UI-179：设置页窄屏标题区与默认下拉态收口：`SettingsHeaderGrid` 在宽屏保持标题、说明和“由 Playnite 的保存按钮提交”提示同排；紧凑宽度（与设置分类切到顶部相同断点）将保存提示移动到标题第二行并跨两列，避免约 720 DIP 以下标题与提示互相挤压，同时保留提示可见。备份格式、压缩方式和主题模式三个真实设置 ComboBox 继续保留 `SelectedIndex=0`，并为 null/失效绑定分别补 ZIP、Zstandard、跟随 Playnite 的 `TargetNullValue`/`FallbackValue`，保证初始值与显示文字一致；未改变 Playnite `ISettings` 保存生命周期、主题事件、字段绑定或业务设置模型。回归断言覆盖标题行切换和三个安全默认值；源码校验、Playnite WPF 138 项测试通过，仍需 Playnite 宿主、主题和 DPI 真机验证。
+
+- [x] UI-177：修改器中心“已绑定工具”页在 `SelectedGameTool` 为空时释放右侧 Inspector：设置滚动容器改为基于共享 `GscInspectorScrollViewer` 的条件样式，无选择时自然收起 `* + 14 + GscInspectorWidth` 的分隔列/Inspector 列，工具选中后恢复 Demo 对齐的主列表 + 右侧设置栏，窄屏仍按原有堆叠策略保留有限滚动通道。`GameTools` ListBox 的 ItemsSource/SelectedItem、Recycling 虚拟化、导入确认区、启动/保存/打开目录/解除绑定命令均未改动；新增 STA WPF 几何回归测试。仍需 Playnite 宿主、主题和 DPI 真机验证。
+
+- [x] UI-178：媒体中心“当前游戏媒体”页在 `SelectedMedia` 为空时释放右侧 Inspector：详情滚动容器改为共享 `GscInspectorScrollViewer` 条件样式，无选择时释放 `14 + GscInspectorWidth` 与窄屏堆叠行，选中媒体后恢复 Demo 对齐的媒体列表 + 详情预览布局；媒体预览、元数据、收藏、备注、打开、重新归类和批量命令均未改动，`MediaInboxGrid` 的稳定行样式、Standard 虚拟化和显式表头契约未触碰。新增宽屏/窄屏 STA WPF 几何回归测试。仍需 Playnite 宿主、主题和 DPI 真机验证。
+
+- [x] UI-173：维护中心“保留策略”详情窄屏改为自然单列：原“预计保留明细/候选清理明细”始终保持两列，在工作区变窄时会把长版本 ID 压缩成狭窄卡片；现保留宽屏 `* + 14 + *` 双列，`width < 720` 时改为两行、每张卡跨三列并由页面滚动器承载自然高度，同时指标摘要在 720/480 DIP 阈值下切换为 3/2/1 列。真实 `PreviewRetentionCommand`、`LastRetentionPreview` 绑定、空状态和只读安全边界均未改变；新增响应式结构回归断言，仍需 Playnite 宿主、主题和 DPI 真机验证。
+
+- [x] UI-174：任务中心无选中任务时释放空 Inspector 列：原任务详情卡片虽然通过 `SelectedTask=null` 隐藏，但 `* + 14 + GscInspectorWidth` 仍固定占用右侧空间，空任务表无法使用完整主区域；现让详情滚动容器与真实 `SelectedTask` 绑定，无详情时同时释放分隔列、Inspector 列和堆叠行，选中任务后恢复 Demo 对齐的主表 + Inspector 布局。任务表虚拟化、详情命令、绑定和失败状态均未改变；新增 STA WPF 几何回归测试，仍需 Playnite 宿主、主题和 DPI 真机验证。
+
+- [x] UI-175：维护中心无选中项时释放空 Inspector 列：诊断、异常审计和进程映射页此前只折叠详情控件，宽屏仍保留 `* + 14 + GscInspectorWidth`，导致全宽表格右侧出现不可用空白；现根据真实选中项同时释放分隔列、Inspector 列和窄屏堆叠行，选中后恢复 Demo 对齐的列表 + Inspector 布局。诊断摘要、审计日志、显式表头样式、命令绑定和设备页单滚动通道均未改变；新增 STA WPF 几何回归测试，仍需 Playnite 宿主、主题和 DPI 真机验证。
+
+- [x] UI-176：存档中心无选中版本/候选时释放空 Inspector 列：历史版本与候选路径页此前在 `SelectedBackup`/`SelectedCandidate` 为空时仍固定保留 `* + 14 + GscInspectorWidth`，空表无法使用完整主区域；现让两个详情滚动容器跟随真实选择折叠，无详情时释放分隔列、Inspector 列和堆叠行，选中后恢复 Demo 对齐的列表 + Inspector，窄屏仍按原断点堆叠。比较与保留面板仍保留真实的只读预览入口；所有存档命令、绑定、选择回退、虚拟化和安全恢复链路均未改变；新增 STA WPF 几何回归测试，仍需 Playnite 宿主、主题和 DPI 真机验证。
+
+- [x] UI-172：统一共享下拉框选中文本的对齐与主题前景：生产 `GscWpfUiComboBoxTemplate` 与 `DesignTokens.xaml` 回退模板此前把选中项垂直位置固定为 `Center`，并将前景色固定到主文本令牌，未完整遵循控件自身的 `VerticalContentAlignment`/`Foreground`；现改为绑定控件契约，ComboBoxItem 也绑定自身前景，保证按钮与下拉框的文字位置、选中态和禁用态颜色由同一套属性驱动。保留筛选器 `SelectedIndex=0`、动态选择框初始空值、所有 ItemsSource/SelectedItem 绑定与命令不变。新增共享样式结构回归断言；源码校验、WPF 资源测试与 Release 构建通过后提交，仍需 Playnite 宿主、主题和 DPI 真机验证。
 
 - [x] UI-171：FLiNG 在线库搜索卡窄屏按钮换行，避免裁剪：搜索卡原为三列 Grid（`*/Auto/Auto`，TextBox `MinWidth=620` 常驻首行，两个按钮被钉在右侧），窗口收窄到约 850–1000 DIP 时按钮被裁剪出卡外；现改为两行 Grid（Auto/Auto），第一行 TextBox（`MinWidth=620`/`MaxWidth=680`/`TrainerSearchText` 绑定与 `ToolTip` 原样保留），第二行 `WrapPanel`（`Grid.Row=1`，Margin `0,12,0,0`）承载「搜索目录」「刷新目录」两个按钮，窄窗自动换行、宽窗两按钮并排，卡片 `HorizontalAlignment` 改为 `Stretch`、`VerticalAlignment=Top`（`MaxWidth=1080` 保留）。搜索/刷新命令、TextBox 绑定与输入逻辑均未改动。新增结构回归断言锁定两行布局/两按钮命令。源码校验、Release 构建与全部测试通过，仍需 Playnite 宿主验证。
 

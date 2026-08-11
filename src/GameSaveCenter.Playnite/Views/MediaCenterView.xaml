@@ -78,6 +78,9 @@
                 <Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}"/>
             </Style>
             <Style x:Key="MediaTableFrame" TargetType="Border" BasedOn="{StaticResource GscRedesignTableFrame}"/>
+            <Style x:Key="MediaSummaryCard" TargetType="Border" BasedOn="{StaticResource GscRedesignMetricBorder}">
+                <Setter Property="Padding" Value="12"/>
+            </Style>
             <Style x:Key="MediaEmptyText" TargetType="TextBlock"><Setter Property="HorizontalAlignment" Value="Center"/><Setter Property="VerticalAlignment" Value="Center"/><Setter Property="TextAlignment" Value="Center"/><Setter Property="Foreground" Value="{DynamicResource GscMutedTextBrush}"/><Setter Property="TextWrapping" Value="Wrap"/><Setter Property="Margin" Value="22"/></Style>
             <Style x:Key="MediaStatusPill" TargetType="Border"><Setter Property="MinWidth" Value="48"/><Setter Property="Padding" Value="12,8"/><Setter Property="CornerRadius" Value="12"/><Setter Property="Background" Value="{DynamicResource GscGlassStrongBrush}"/><Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/><Setter Property="BorderThickness" Value="1"/><Setter Property="HorizontalAlignment" Value="Right"/></Style>
             <Style x:Key="MediaFirstColumnHeader" TargetType="DataGridColumnHeader" BasedOn="{StaticResource MediaInboxColumnHeaderStyle}"><Setter Property="Tag"><Setter.Value><CornerRadius>11,0,0,0</CornerRadius></Setter.Value></Setter></Style>
@@ -178,7 +181,7 @@
                     <Border Grid.Row="1" Grid.ColumnSpan="3" Style="{DynamicResource GscSurface}" Padding="8" Margin="0,0,0,10" ClipToBounds="True">
                         <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="150"/></Grid.ColumnDefinitions>
                             <TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding MediaSearchText, UpdateSourceTrigger=PropertyChanged}" ToolTip="按文件名、备注或来源搜索当前游戏媒体"/>
-                            <ComboBox Grid.Column="1" Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding MediaFilterOptions}" SelectedIndex="0" SelectedItem="{Binding MediaFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="8,0,0,0" ToolTip="媒体类型筛选"/>
+                            <ComboBox Grid.Column="1" Style="{DynamicResource GscWpfUiFilterComboBox}" SelectedIndex="0" ItemsSource="{Binding MediaFilterOptions}" SelectedItem="{Binding MediaFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" Margin="8,0,0,0" ToolTip="媒体类型筛选"/>
                         </Grid>
                     </Border>
                     <Border Grid.Row="2" Grid.Column="0" Style="{StaticResource MediaTableFrame}" MinHeight="{DynamicResource GscWorkspaceTableMinHeight}">
@@ -213,7 +216,17 @@
                         </Grid>
                     </Border>
                     <Border x:Name="MediaInspectorFrame" Grid.Row="2" Grid.Column="2" Background="Transparent" BorderThickness="0" ClipToBounds="True" Padding="0">
-                    <ScrollViewer x:Name="MediaInspectorScrollViewer" Style="{DynamicResource GscPageScrollViewer}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0">
+                    <ScrollViewer x:Name="MediaInspectorScrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0">
+                        <ScrollViewer.Style>
+                            <Style TargetType="ScrollViewer" BasedOn="{StaticResource GscInspectorScrollViewer}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedMedia}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ScrollViewer.Style>
                     <Border x:Name="MediaInspectorPanel" Style="{DynamicResource GscReadingCardStyle}" Padding="14">
                         <StackPanel x:Name="MediaMetadataPanel">
                                 <TextBlock Text="媒体详情" Style="{DynamicResource GscSectionTitleStyle}"/>

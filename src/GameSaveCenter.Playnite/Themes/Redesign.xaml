@@ -133,7 +133,7 @@
     </Style>
 
     <Style x:Key="GscRedesignHeaderButton" TargetType="{x:Type ui:Button}" BasedOn="{StaticResource GscWpfUiSecondaryButton}">
-        <Setter Property="MinHeight" Value="42"/>
+        <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
         <Setter Property="MinWidth" Value="42"/>
         <Setter Property="Padding" Value="12,8"/>
         <Setter Property="Margin" Value="0,0,8,0"/>
@@ -141,7 +141,7 @@
     </Style>
 
     <Style x:Key="GscRedesignPrimaryHeaderButton" TargetType="{x:Type ui:Button}" BasedOn="{StaticResource GscWpfUiPrimaryButton}">
-        <Setter Property="MinHeight" Value="42"/>
+        <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
         <Setter Property="MinWidth" Value="42"/>
         <Setter Property="Padding" Value="12,8"/>
         <Setter Property="Margin" Value="0,0,8,0"/>
@@ -488,8 +488,10 @@
         <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="MinHeight" Value="38"/>
+        <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
         <Setter Property="Padding" Value="12,8"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
         <Setter Property="Template">
             <Setter.Value>

@@ -86,7 +86,7 @@
             <Setter Property="BorderBrush" Value="{DynamicResource GscDividerBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="15,8"/>
-            <Setter Property="MinHeight" Value="38"/>
+            <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
             <Setter Property="Margin" Value="0,0,8,8"/>
             <Setter Property="FontFamily" Value="Segoe UI Variable Text, Segoe UI"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
@@ -176,7 +176,7 @@
              measured height and vertical center. Spacing is owned by the parent layout. -->
         <Style x:Key="GscToolbarButton" TargetType="Button" BasedOn="{StaticResource GscButtonBase}">
             <Setter Property="Margin" Value="0"/>
-            <Setter Property="MinHeight" Value="38"/>
+            <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -184,7 +184,7 @@
 
         <Style x:Key="GscToolbarPrimaryButton" TargetType="Button" BasedOn="{StaticResource GscPrimaryButton}">
             <Setter Property="Margin" Value="0"/>
-            <Setter Property="MinHeight" Value="38"/>
+            <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -1046,9 +1046,9 @@
                             </Button>
                         </Grid>
                         <UniformGrid Grid.Row="1" Columns="3">
-                            <ComboBox Style="{StaticResource GscWpfUiComboBox}" SelectedIndex="0" ItemsSource="{Binding GamePicker.StatusFilterOptions}" SelectedItem="{Binding GamePicker.StatusFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" Margin="0,0,4,0" ToolTip="状态筛选"/>
-                            <ComboBox Style="{StaticResource GscWpfUiComboBox}" SelectedIndex="0" ItemsSource="{Binding GamePicker.PlatformFilterOptions}" SelectedItem="{Binding GamePicker.PlatformFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" Margin="4,0,4,0" ToolTip="平台筛选"/>
-                            <ComboBox Style="{StaticResource GscWpfUiComboBox}" SelectedIndex="0" ItemsSource="{Binding GamePicker.SortOptions}" SelectedItem="{Binding GamePicker.SortMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=名称, FallbackValue=名称}" Margin="4,0,0,0" ToolTip="排序"/>
+                            <ComboBox Style="{StaticResource GscWpfUiFilterComboBox}" SelectedIndex="0" ItemsSource="{Binding GamePicker.StatusFilterOptions}" SelectedItem="{Binding GamePicker.StatusFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" Margin="0,0,4,0" ToolTip="状态筛选"/>
+                            <ComboBox Style="{StaticResource GscWpfUiFilterComboBox}" SelectedIndex="0" ItemsSource="{Binding GamePicker.PlatformFilterOptions}" SelectedItem="{Binding GamePicker.PlatformFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" Margin="4,0,4,0" ToolTip="平台筛选"/>
+                            <ComboBox Style="{StaticResource GscWpfUiFilterComboBox}" SelectedIndex="0" ItemsSource="{Binding GamePicker.SortOptions}" SelectedItem="{Binding GamePicker.SortMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=名称, FallbackValue=名称}" Margin="4,0,0,0" ToolTip="排序"/>
                         </UniformGrid>
                     </Grid>
                     <Grid Grid.Row="2">

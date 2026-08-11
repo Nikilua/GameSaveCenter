@@ -564,6 +564,36 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void MaintenanceDataGridsDeclareExplicitFirstAndLastHeaderStyles()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var maintenancePath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml");
+        var document = XDocument.Parse(File.ReadAllText(maintenancePath));
+        var dataGrids = document.Descendants()
+            .Where(element => element.Name.LocalName == "DataGrid")
+            .ToList();
+
+        Assert.Equal(5, dataGrids.Count);
+
+        foreach (var dataGrid in dataGrids)
+        {
+            var columns = dataGrid.Descendants()
+                .Where(element => element.Name.LocalName is "DataGridTextColumn" or "DataGridTemplateColumn")
+                .ToList();
+
+            Assert.NotEmpty(columns);
+            Assert.Equal("{StaticResource MaintenanceFirstColumnHeader}", columns[0].Attribute("HeaderStyle")?.Value);
+
+            var lastHeaderStyle = columns[columns.Count - 1].Attribute("HeaderStyle")?.Value;
+            Assert.Contains(lastHeaderStyle, new[]
+            {
+                "{StaticResource MaintenanceLastColumnHeader}",
+                "{DynamicResource GscLastColumnHeader}"
+            });
+        }
+    }
+
+    [Fact]
     public void MediaInboxActionsStayOutsideTheGridScrollSurface()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -650,6 +680,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"OverviewSecondaryScrollViewer\"", overview);
         Assert.Contains("x:Name=\"OverviewSecondaryScrollViewer\"\n                      Style=\"{DynamicResource GscPageScrollViewer}\"", overview);
         Assert.Contains("x:Name=\"OverviewRiskScrollViewer\" Style=\"{DynamicResource GscPageScrollViewer}\"", overview);
+        var overviewCode = File.ReadAllText(Path.Combine(viewDirectory, "OverviewView.xaml.cs"));
+        Assert.Contains("OverviewSecondaryScrollViewer.VerticalScrollBarVisibility = stack", overviewCode);
+        Assert.Contains("OverviewRiskScrollViewer.VerticalScrollBarVisibility = stack", overviewCode);
         Assert.Contains("<ScrollViewer Style=\"{DynamicResource GscPageScrollViewer}\" VerticalScrollBarVisibility=\"Hidden\"", save);
         Assert.Contains("x:Name=\"MediaSourceRulesFrame\"", media);
         Assert.DoesNotContain("MediaSourceRulesPageScroller", media);
@@ -786,7 +819,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Equal("Auto", auditInspector.Attribute("VerticalScrollBarVisibility")?.Value);
         Assert.Equal("Disabled", auditInspector.Attribute("HorizontalScrollBarVisibility")?.Value);
         Assert.Null(auditInspector.Attribute("MaxHeight"));
-        Assert.Contains("MaintenanceAuditInspector.MaxHeight = stackAudit ? Math.Max(150, height * 0.34) : double.PositiveInfinity", File.ReadAllText(maintenancePath + ".cs"));
+        Assert.Contains("MaintenanceAuditInspector.MaxHeight = showAuditInspector && stackAudit ? Math.Max(150, height * 0.34) : double.PositiveInfinity", File.ReadAllText(maintenancePath + ".cs"));
         Assert.DoesNotContain("Height=\"{DynamicResource GscTableViewportHeight}\"", maintenanceText);
     }
 
@@ -842,7 +875,105 @@ public sealed class WpfUiResourceDictionaryTests
             element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "MaintenanceDiagnosticSummaryGrid");
         Assert.Equal("1", summary.Attribute("Grid.Row")?.Value);
         Assert.Equal("3", summary.Attribute("Grid.ColumnSpan")?.Value);
-        Assert.Contains("MaintenanceDiagnosticsInspector.MaxHeight = stackDiagnostics ? Math.Max(150, height * 0.34) : double.PositiveInfinity", File.ReadAllText(maintenancePath + ".cs"));
+        Assert.Contains("MaintenanceDiagnosticsInspector.MaxHeight = showDiagnosticsInspector && stackDiagnostics ? Math.Max(150, height * 0.34) : double.PositiveInfinity", File.ReadAllText(maintenancePath + ".cs"));
+    }
+
+    [Fact]
+    public void MaintenanceReleasesEmptyInspectorColumns()
+    {
+        Exception? exception = null;
+        var emptyDiagnosticsGutter = -1d;
+        var emptyDiagnosticsInspector = -1d;
+        var emptyDiagnosticsStackRow = GridUnitType.Auto;
+        var emptyAuditGutter = -1d;
+        var emptyAuditInspector = -1d;
+        var emptyAuditStackRow = GridUnitType.Auto;
+        var emptyProcessGutter = -1d;
+        var emptyProcessInspector = -1d;
+        var emptyProcessStackRow = GridUnitType.Auto;
+        var selectedDiagnosticsGutter = -1d;
+        var selectedDiagnosticsInspector = -1d;
+        var selectedAuditGutter = -1d;
+        var selectedAuditInspector = -1d;
+        var selectedProcessGutter = -1d;
+        var selectedProcessInspector = -1d;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var view = new MaintenanceView();
+                var viewType = typeof(MaintenanceView);
+                var diagnosticsLayout = (Grid)viewType
+                    .GetField("MaintenanceDiagnosticsLayout", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var auditLayout = (Grid)viewType
+                    .GetField("MaintenanceAuditLayout", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var processLayout = (Grid)viewType
+                    .GetField("MaintenanceProcessLayout", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var diagnosticsInspector = (ScrollViewer)viewType
+                    .GetField("MaintenanceDiagnosticsInspector", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var auditInspector = (ScrollViewer)viewType
+                    .GetField("MaintenanceAuditInspector", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var processInspector = (Border)viewType
+                    .GetField("MaintenanceProcessInspector", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+
+                diagnosticsInspector.Visibility = Visibility.Collapsed;
+                auditInspector.Visibility = Visibility.Collapsed;
+                processInspector.Visibility = Visibility.Collapsed;
+                view.ApplyResponsiveLayout(1280, 720);
+                emptyDiagnosticsGutter = diagnosticsLayout.ColumnDefinitions[1].Width.Value;
+                emptyDiagnosticsInspector = diagnosticsLayout.ColumnDefinitions[2].Width.Value;
+                emptyDiagnosticsStackRow = diagnosticsLayout.RowDefinitions[2].Height.GridUnitType;
+                emptyAuditGutter = auditLayout.ColumnDefinitions[1].Width.Value;
+                emptyAuditInspector = auditLayout.ColumnDefinitions[2].Width.Value;
+                emptyAuditStackRow = auditLayout.RowDefinitions[1].Height.GridUnitType;
+                emptyProcessGutter = processLayout.ColumnDefinitions[1].Width.Value;
+                emptyProcessInspector = processLayout.ColumnDefinitions[2].Width.Value;
+                emptyProcessStackRow = processLayout.RowDefinitions[2].Height.GridUnitType;
+
+                diagnosticsInspector.Visibility = Visibility.Visible;
+                auditInspector.Visibility = Visibility.Visible;
+                processInspector.Visibility = Visibility.Visible;
+                view.ApplyResponsiveLayout(1280, 720);
+                selectedDiagnosticsGutter = diagnosticsLayout.ColumnDefinitions[1].Width.Value;
+                selectedDiagnosticsInspector = diagnosticsLayout.ColumnDefinitions[2].Width.Value;
+                selectedAuditGutter = auditLayout.ColumnDefinitions[1].Width.Value;
+                selectedAuditInspector = auditLayout.ColumnDefinitions[2].Width.Value;
+                selectedProcessGutter = processLayout.ColumnDefinitions[1].Width.Value;
+                selectedProcessInspector = processLayout.ColumnDefinitions[2].Width.Value;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.Equal(0, emptyDiagnosticsGutter);
+        Assert.Equal(0, emptyDiagnosticsInspector);
+        Assert.Equal(GridUnitType.Pixel, emptyDiagnosticsStackRow);
+        Assert.Equal(0, emptyAuditGutter);
+        Assert.Equal(0, emptyAuditInspector);
+        Assert.Equal(GridUnitType.Pixel, emptyAuditStackRow);
+        Assert.Equal(0, emptyProcessGutter);
+        Assert.Equal(0, emptyProcessInspector);
+        Assert.Equal(GridUnitType.Pixel, emptyProcessStackRow);
+        Assert.Equal(14, selectedDiagnosticsGutter);
+        Assert.True(selectedDiagnosticsInspector > 0);
+        Assert.Equal(14, selectedAuditGutter);
+        Assert.True(selectedAuditInspector > 0);
+        Assert.Equal(14, selectedProcessGutter);
+        Assert.True(selectedProcessInspector > 0);
     }
 
     [Fact]
@@ -891,12 +1022,80 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Equal("Disabled", scrollViewer.Attribute("HorizontalScrollBarVisibility")?.Value);
         Assert.Null(scrollViewer.Attribute("MaxHeight"));
         Assert.Contains("TrainerToolsSettingsScrollViewer.MaxHeight = double.PositiveInfinity", trainerCode);
-        Assert.Contains("TrainerToolsSettingsScrollViewer.MaxHeight = stackInstalled", trainerCode);
+        Assert.Contains("TrainerToolsSettingsScrollViewer.MaxHeight = showInspector && stackInstalled", trainerCode);
         Assert.Contains("Math.Min(420, height * 0.56)", trainerCode);
         Assert.Contains("VerticalContentAlignment=\"Stretch\"", trainerText);
         Assert.Contains("Style=\"{DynamicResource GscRedesignSectionCard}\"", trainerText);
         Assert.Contains("ScrollViewer.VerticalScrollBarVisibility\" Value=\"Auto\"", trainerText);
         Assert.Contains("ScrollViewer.HorizontalScrollBarVisibility\" Value=\"Disabled\"", trainerText);
+        Assert.Contains("BasedOn=\"{StaticResource GscInspectorScrollViewer}\"", trainerText);
+        Assert.Contains("<DataTrigger Binding=\"{Binding SelectedGameTool}\" Value=\"{x:Null}\">", trainerText);
+    }
+
+    [Fact]
+    public void TrainerInspectorReleasesEmptyRightColumn()
+    {
+        Exception? exception = null;
+        var emptyGutterWidth = -1d;
+        var emptyInspectorWidth = -1d;
+        var emptyStackedRowType = GridUnitType.Auto;
+        var selectedGutterWidth = -1d;
+        var selectedInspectorWidth = -1d;
+        var selectedInspectorUnitType = GridUnitType.Auto;
+        var emptyCompactRowType = GridUnitType.Auto;
+        var selectedCompactRowType = GridUnitType.Pixel;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var view = new TrainerCenterView();
+                var layout = (Grid)typeof(TrainerCenterView)
+                    .GetField("InstalledToolsLayout", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var inspector = (ScrollViewer)typeof(TrainerCenterView)
+                    .GetField("TrainerToolsSettingsScrollViewer", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+
+                inspector.Visibility = Visibility.Collapsed;
+                view.ApplyResponsiveLayout(1280, 720);
+                emptyGutterWidth = layout.ColumnDefinitions[1].Width.Value;
+                emptyInspectorWidth = layout.ColumnDefinitions[2].Width.Value;
+                emptyStackedRowType = layout.RowDefinitions[3].Height.GridUnitType;
+
+                inspector.Visibility = Visibility.Visible;
+                view.ApplyResponsiveLayout(1280, 720);
+                selectedGutterWidth = layout.ColumnDefinitions[1].Width.Value;
+                selectedInspectorWidth = layout.ColumnDefinitions[2].Width.Value;
+                selectedInspectorUnitType = layout.ColumnDefinitions[2].Width.GridUnitType;
+
+                inspector.Visibility = Visibility.Collapsed;
+                view.ApplyResponsiveLayout(1024, 640);
+                emptyCompactRowType = layout.RowDefinitions[3].Height.GridUnitType;
+
+                inspector.Visibility = Visibility.Visible;
+                view.ApplyResponsiveLayout(1024, 640);
+                selectedCompactRowType = layout.RowDefinitions[3].Height.GridUnitType;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.Equal(0, emptyGutterWidth);
+        Assert.Equal(0, emptyInspectorWidth);
+        Assert.Equal(GridUnitType.Pixel, emptyStackedRowType);
+        Assert.Equal(14, selectedGutterWidth);
+        Assert.True(selectedInspectorWidth > 0);
+        Assert.Equal(GridUnitType.Pixel, selectedInspectorUnitType);
+        Assert.Equal(GridUnitType.Pixel, emptyCompactRowType);
+        Assert.Equal(GridUnitType.Auto, selectedCompactRowType);
     }
 
     [Fact]
@@ -916,16 +1115,104 @@ public sealed class WpfUiResourceDictionaryTests
                 element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == name);
             Assert.Equal("Auto", viewer.Attribute("VerticalScrollBarVisibility")?.Value);
             Assert.Equal("Disabled", viewer.Attribute("HorizontalScrollBarVisibility")?.Value);
-            Assert.Equal("{DynamicResource GscInspectorScrollViewer}", viewer.Attribute("Style")?.Value);
+            Assert.Null(viewer.Attribute("Style"));
+            var inspectorStyle = viewer.Descendants().Single(element =>
+                element.Name.LocalName == "Style" && element.Attribute("BasedOn") != null);
+            Assert.Equal("{StaticResource GscInspectorScrollViewer}", inspectorStyle.Attribute("BasedOn")?.Value);
         }
 
-        Assert.Contains("SaveHistoryActionsScrollViewer.MaxHeight = compact ? Math.Max(150, Math.Min(360, height * 0.42)) : double.PositiveInfinity;", saveCode);
-        Assert.Contains("SaveCandidateInspectorScrollViewer.MaxHeight = compact ? Math.Max(150, Math.Min(360, height * 0.42)) : double.PositiveInfinity;", saveCode);
+        Assert.Contains("SaveHistoryActionsScrollViewer.MaxHeight = showHistoryInspector && compact ? Math.Max(150, Math.Min(360, height * 0.42)) : double.PositiveInfinity;", saveCode);
+        Assert.Contains("SaveCandidateInspectorScrollViewer.MaxHeight = showCandidateInspector && compact ? Math.Max(150, Math.Min(360, height * 0.42)) : double.PositiveInfinity;", saveCode);
         Assert.Contains("Grid.SetRow(SaveCandidateInspectorScrollViewer, compact ? 1 : 0)", saveCode);
         Assert.Contains("SaveCandidateInspectorScrollViewer", saveText);
+        Assert.Contains("<DataTrigger Binding=\"{Binding SelectedBackup}\" Value=\"{x:Null}\">", saveText);
+        Assert.Contains("<DataTrigger Binding=\"{Binding SelectedCandidate}\" Value=\"{x:Null}\">", saveText);
         Assert.DoesNotContain("SaveCandidateReasonScrollViewer", saveText);
         Assert.DoesNotContain("SaveCandidateActionsScrollViewer", saveText);
         Assert.DoesNotContain("<Border Grid.Row=\"1\" Style=\"{DynamicResource GscSurface}\"", saveText);
+    }
+
+    [Fact]
+    public void SaveCenterReleasesEmptyHistoryAndCandidateInspectors()
+    {
+        Exception? exception = null;
+        var emptyHistoryGutter = -1d;
+        var emptyHistoryInspector = -1d;
+        var emptyHistoryStackRow = GridUnitType.Auto;
+        var emptyCandidateGutter = -1d;
+        var emptyCandidateInspector = -1d;
+        var emptyCandidateStackRow = GridUnitType.Auto;
+        var selectedHistoryGutter = -1d;
+        var selectedHistoryInspector = -1d;
+        var selectedCandidateGutter = -1d;
+        var selectedCandidateInspector = -1d;
+        var compactHistoryStackRow = GridUnitType.Pixel;
+        var compactCandidateStackRow = GridUnitType.Pixel;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var view = new SaveCenterView();
+                var viewType = typeof(SaveCenterView);
+                var historyLayout = (Grid)viewType
+                    .GetField("SaveHistoryLayout", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var candidateLayout = (Grid)viewType
+                    .GetField("SaveCandidateLayout", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var historyInspector = (ScrollViewer)viewType
+                    .GetField("SaveHistoryActionsScrollViewer", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var candidateInspector = (ScrollViewer)viewType
+                    .GetField("SaveCandidateInspectorScrollViewer", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+
+                historyInspector.Visibility = Visibility.Collapsed;
+                candidateInspector.Visibility = Visibility.Collapsed;
+                view.ApplyResponsiveLayout(1280, 800);
+                emptyHistoryGutter = historyLayout.ColumnDefinitions[1].Width.Value;
+                emptyHistoryInspector = historyLayout.ColumnDefinitions[2].Width.Value;
+                emptyHistoryStackRow = historyLayout.RowDefinitions[1].Height.GridUnitType;
+                emptyCandidateGutter = candidateLayout.ColumnDefinitions[1].Width.Value;
+                emptyCandidateInspector = candidateLayout.ColumnDefinitions[2].Width.Value;
+                emptyCandidateStackRow = candidateLayout.RowDefinitions[1].Height.GridUnitType;
+
+                historyInspector.Visibility = Visibility.Visible;
+                candidateInspector.Visibility = Visibility.Visible;
+                view.ApplyResponsiveLayout(1280, 800);
+                selectedHistoryGutter = historyLayout.ColumnDefinitions[1].Width.Value;
+                selectedHistoryInspector = historyLayout.ColumnDefinitions[2].Width.Value;
+                selectedCandidateGutter = candidateLayout.ColumnDefinitions[1].Width.Value;
+                selectedCandidateInspector = candidateLayout.ColumnDefinitions[2].Width.Value;
+
+                view.ApplyResponsiveLayout(1024, 640);
+                compactHistoryStackRow = historyLayout.RowDefinitions[1].Height.GridUnitType;
+                compactCandidateStackRow = candidateLayout.RowDefinitions[1].Height.GridUnitType;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.Equal(0, emptyHistoryGutter);
+        Assert.Equal(0, emptyHistoryInspector);
+        Assert.Equal(GridUnitType.Pixel, emptyHistoryStackRow);
+        Assert.Equal(0, emptyCandidateGutter);
+        Assert.Equal(0, emptyCandidateInspector);
+        Assert.Equal(GridUnitType.Pixel, emptyCandidateStackRow);
+        Assert.Equal(14, selectedHistoryGutter);
+        Assert.True(selectedHistoryInspector > 0);
+        Assert.Equal(14, selectedCandidateGutter);
+        Assert.True(selectedCandidateInspector > 0);
+        Assert.Equal(GridUnitType.Auto, compactHistoryStackRow);
+        Assert.Equal(GridUnitType.Auto, compactCandidateStackRow);
     }
 
     [Fact]
@@ -944,7 +1231,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("{Binding LastRetentionPreview.KeepBackupIds.Count", saveText);
         Assert.Contains("Command=\"{Binding CompareBackupCommand}\"", saveText);
         Assert.Contains("Command=\"{Binding PreviewRetentionCommand}\"", saveText);
-        Assert.Contains("var stackCompare = width < 980 || height < 760;", saveCode);
+        Assert.Contains("var stackCompare = width < 1080 || height < 760;", saveCode);
         Assert.Contains("SaveCompareRetentionScrollViewer.MaxHeight = stackCompare ? Math.Max(180, Math.Min(420, height * 0.42)) : double.PositiveInfinity;", saveCode);
         Assert.Contains("SaveCompareLayout.RowDefinitions[1].Height = stackCompare ? new GridLength(1, GridUnitType.Auto) : new GridLength(0);", saveCode);
         Assert.Contains("Grid.SetRow(SaveCompareRetentionScrollViewer, stackCompare ? 1 : 0);", saveCode);
@@ -987,6 +1274,7 @@ public sealed class WpfUiResourceDictionaryTests
         var repositoryRoot = FindRepositoryRoot();
         var maintenancePath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml");
         var maintenanceText = File.ReadAllText(maintenancePath);
+        var maintenanceCode = File.ReadAllText(maintenancePath + ".cs");
 
         Assert.Contains("<TabItem Header=\"保留策略\">", maintenanceText);
         Assert.Contains("Command=\"{Binding PreviewRetentionCommand}\"", maintenanceText);
@@ -996,6 +1284,82 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("ItemsSource=\"{Binding LastRetentionPreview.DeleteCandidateIds}\"", maintenanceText);
         Assert.Contains("Style=\"{DynamicResource GscPageScrollViewer}\"", maintenanceText);
         Assert.Contains("不会自动删除", maintenanceText);
+        Assert.Contains("x:Name=\"MaintenanceRetentionMetrics\"", maintenanceText);
+        Assert.Contains("x:Name=\"MaintenanceRetentionDetailsLayout\"", maintenanceText);
+        Assert.Contains("x:Name=\"MaintenanceRetentionKeepCard\"", maintenanceText);
+        Assert.Contains("x:Name=\"MaintenanceRetentionDeleteCard\"", maintenanceText);
+        Assert.Contains("MaintenanceRetentionMetrics.Columns = width >= 720 ? 3 : width >= 480 ? 2 : 1", maintenanceCode);
+        Assert.Contains("var stackRetentionDetails = width < 720", maintenanceCode);
+        Assert.Contains("Grid.SetRow(MaintenanceRetentionDeleteCard, stackRetentionDetails ? 1 : 0)", maintenanceCode);
+        Assert.Contains("MaintenanceRetentionDeleteCard.Margin = stackRetentionDetails", maintenanceCode);
+    }
+
+    [Fact]
+    public void MaintenanceRetentionPreviewReflowsDetailsAtNarrowWidth()
+    {
+        Exception? exception = null;
+        var narrowMetricsColumns = 0;
+        var narrowDeleteRow = -1;
+        var narrowDeleteColumnSpan = 0;
+        var narrowDeleteMargin = new Thickness();
+        var narrowSecondRowType = GridUnitType.Pixel;
+        var wideMetricsColumns = 0;
+        var wideDeleteColumn = -1;
+        var wideDeleteColumnSpan = 0;
+        var wideDeleteRow = -1;
+        var wideSecondRowType = GridUnitType.Auto;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var view = new MaintenanceView();
+                var viewType = typeof(MaintenanceView);
+                var metrics = (UniformGrid)viewType
+                    .GetField("MaintenanceRetentionMetrics", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var details = (Grid)viewType
+                    .GetField("MaintenanceRetentionDetailsLayout", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var deleteCard = (Border)viewType
+                    .GetField("MaintenanceRetentionDeleteCard", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+
+                view.ApplyResponsiveLayout(640, 640);
+                narrowMetricsColumns = metrics.Columns;
+                narrowDeleteRow = Grid.GetRow(deleteCard);
+                narrowDeleteColumnSpan = Grid.GetColumnSpan(deleteCard);
+                narrowDeleteMargin = deleteCard.Margin;
+                narrowSecondRowType = details.RowDefinitions[1].Height.GridUnitType;
+
+                view.ApplyResponsiveLayout(820, 640);
+                wideMetricsColumns = metrics.Columns;
+                wideDeleteColumn = Grid.GetColumn(deleteCard);
+                wideDeleteColumnSpan = Grid.GetColumnSpan(deleteCard);
+                wideDeleteRow = Grid.GetRow(deleteCard);
+                wideSecondRowType = details.RowDefinitions[1].Height.GridUnitType;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.Equal(2, narrowMetricsColumns);
+        Assert.Equal(1, narrowDeleteRow);
+        Assert.Equal(3, narrowDeleteColumnSpan);
+        Assert.Equal(14, narrowDeleteMargin.Top);
+        Assert.Equal(GridUnitType.Auto, narrowSecondRowType);
+        Assert.Equal(3, wideMetricsColumns);
+        Assert.Equal(2, wideDeleteColumn);
+        Assert.Equal(1, wideDeleteColumnSpan);
+        Assert.Equal(0, wideDeleteRow);
+        Assert.Equal(GridUnitType.Pixel, wideSecondRowType);
     }
 
     [Fact]
@@ -1099,7 +1463,10 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("MinHeight=\"0\" ItemsSource=\"{Binding UnassignedMedia}\"", media);
         Assert.Contains("OverridesDefaultStyle\" Value=\"True\"", maintenance);
         Assert.DoesNotContain("FindVisualChildren", maintenanceCode);
-        Assert.Contains("MediaInspectorScrollViewer.MaxHeight = width >= 1080", mediaCode);
+        Assert.Contains("MediaInspectorScrollViewer.MaxHeight = showInspector && stack", mediaCode);
+        Assert.Contains("MediaInspectorScrollViewer.IsVisibleChanged += OnMediaInspectorIsVisibleChanged", mediaCode);
+        Assert.Contains("BasedOn=\"{StaticResource GscInspectorScrollViewer}\"", media);
+        Assert.Contains("<DataTrigger Binding=\"{Binding SelectedMedia}\" Value=\"{x:Null}\">", media);
         Assert.Contains("MinHeight=\"96\" MaxHeight=\"160\"", maintenance);
         Assert.Contains("TaskSummaryPanel.Columns", taskCode);
         var taskView = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml"));
@@ -1107,12 +1474,14 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("SelectedIndex=\"0\"", taskView);
         Assert.Contains("TaskGameFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部", taskView);
         Assert.Contains("TaskTypeFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部", taskView);
-        Assert.Contains("TaskDetailScrollViewer.MaxHeight = stack ? Math.Max(180, height * 0.42) : double.PositiveInfinity", taskCode);
+        Assert.Contains("TaskDetailScrollViewer.MaxHeight = showInspector && stack", taskCode);
         Assert.Contains("VerticalScrollBarVisibility=\"Auto\" HorizontalScrollBarVisibility=\"Disabled\"", taskView);
-        Assert.Contains("TaskWorkspaceView.ApplyResponsiveLayout(width, height)", workspaceCode);
-        Assert.Contains("SaveWorkspaceView.ApplyResponsiveLayout(width, height)", workspaceCode);
-        Assert.Contains("TrainerWorkspaceView.ApplyResponsiveLayout(width, height)", workspaceCode);
-        Assert.Contains("MaintenanceWorkspaceView.ApplyResponsiveLayout(width, height)", workspaceCode);
+        Assert.Contains("var workspaceContentWidth = DetailsTabControl.ActualWidth > 0", workspaceCode);
+        Assert.Contains("var stackGameHeaderActions = workspaceContentWidth < 1180", workspaceCode);
+        Assert.Contains("TaskWorkspaceView.ApplyResponsiveLayout(workspaceContentWidth, height)", workspaceCode);
+        Assert.Contains("SaveWorkspaceView.ApplyResponsiveLayout(workspaceContentWidth, height)", workspaceCode);
+        Assert.Contains("TrainerWorkspaceView.ApplyResponsiveLayout(workspaceContentWidth, height)", workspaceCode);
+        Assert.Contains("MaintenanceWorkspaceView.ApplyResponsiveLayout(workspaceContentWidth, height)", workspaceCode);
         Assert.Contains("x:Key=\"GscRedesignWorkspaceTabControl\"", redesign);
         Assert.Contains("HorizontalScrollBarVisibility=\"Auto\"", redesign);
         Assert.Contains("x:Key=\"GscRedesignWorkspaceTabItem\"", redesign);
@@ -1172,11 +1541,105 @@ public sealed class WpfUiResourceDictionaryTests
         var maintenance = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
         var maintenanceCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml.cs"));
 
+        Assert.Contains("x:Name=\"MaintenanceDiagnosticsActionCard\"", maintenance);
+        Assert.Contains("Text=\"诊断操作\"", maintenance);
         Assert.Contains("x:Name=\"DiagnosticHealthPanel\"", maintenance);
         Assert.Contains("x:Name=\"ProcessMappingEditor\"", maintenance);
-        Assert.Contains("MinWidth=\"220\"", maintenance);
+        Assert.Contains("x:Name=\"ProcessMappingExecutableTextBox\"", maintenance);
+        Assert.Contains("x:Name=\"ProcessMappingTargetGameComboBox\"", maintenance);
+        Assert.Contains("Width=\"240\"", maintenance);
         Assert.Contains("Command=\"{Binding SaveProcessMappingCommand}\"", maintenance);
         Assert.Contains("DiagnosticHealthPanel.Columns = width >= 1320 ? 4 : width >= 980 ? 2 : 1", maintenanceCode);
+        Assert.Contains("var stackProcessEditor = width < 720", maintenanceCode);
+        Assert.Contains("ProcessMappingEditorCompactRow.Height = stackProcessEditor", maintenanceCode);
+    }
+
+    [Fact]
+    public void MaintenanceDiagnosticsActionsUseDemoCardWithoutDroppingCommands()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var maintenancePath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml");
+        var document = XDocument.Parse(File.ReadAllText(maintenancePath));
+        var xamlNamespace = XNamespace.Get("http://schemas.microsoft.com/winfx/2006/xaml");
+        var actionCard = document.Descendants()
+            .Single(element => element.Attribute(xamlNamespace + "Name")?.Value == "MaintenanceDiagnosticsActionCard");
+
+        Assert.Equal("Border", actionCard.Name.LocalName);
+        Assert.Contains(actionCard.Descendants().Where(element => element.Name.LocalName == "TextBlock"),
+            element => element.Attribute("Text")?.Value == "诊断操作");
+
+        var actionRow = actionCard.Descendants()
+            .Single(element => element.Name.LocalName == "WrapPanel" && element.Attribute("Grid.Row")?.Value == "1");
+        var commands = actionCard.Descendants()
+            .Where(element => element.Name.LocalName == "Button")
+            .Select(element => element.Attribute("Command")?.Value)
+            .ToArray();
+
+        Assert.Equal(6, commands.Length);
+        Assert.Contains("{Binding RefreshDiagnosticsCommand}", commands);
+        Assert.Contains("{Binding CopyDiagnosticsCommand}", commands);
+        Assert.Contains("{Binding OpenDataDirectoryCommand}", commands);
+        Assert.Contains("{Binding OpenBackupDirectoryCommand}", commands);
+        Assert.Contains("{Binding OpenMediaDirectoryCommand}", commands);
+        Assert.Contains("{Binding OpenWorkerLogCommand}", commands);
+        Assert.Equal(5, actionRow.Descendants().Count(element => element.Name.LocalName == "Button"));
+    }
+
+    [Fact]
+    public void MaintenanceProcessMappingEditorUsesDemoWidthAndStacksAtNarrowWidth()
+    {
+        Exception? exception = null;
+        var wideTargetWidth = -1d;
+        var wideTargetRow = -1;
+        var wideTargetColumn = -1;
+        var wideCompactRowType = GridUnitType.Auto;
+        var narrowTargetUnitType = GridUnitType.Pixel;
+        var narrowTargetRow = -1;
+        var narrowTargetSpan = -1;
+        var narrowActionRow = -1;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var view = new MaintenanceView();
+                var viewType = typeof(MaintenanceView);
+                var editor = (Grid)viewType.GetField("ProcessMappingEditor", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var targetColumn = (ColumnDefinition)viewType.GetField("ProcessMappingTargetColumn", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var target = (ComboBox)viewType.GetField("ProcessMappingTargetGameComboBox", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var action = (GameSaveCenter.Playnite.Controls.Button)viewType.GetField("ProcessMappingSaveButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+
+                view.ApplyResponsiveLayout(1100, 700);
+                wideTargetWidth = targetColumn.Width.Value;
+                wideTargetRow = Grid.GetRow(target);
+                wideTargetColumn = Grid.GetColumn(target);
+                wideCompactRowType = editor.RowDefinitions[1].Height.GridUnitType;
+
+                view.ApplyResponsiveLayout(650, 700);
+                narrowTargetUnitType = targetColumn.Width.GridUnitType;
+                narrowTargetRow = Grid.GetRow(target);
+                narrowTargetSpan = Grid.GetColumnSpan(target);
+                narrowActionRow = Grid.GetRow(action);
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.Equal(240, wideTargetWidth);
+        Assert.Equal(0, wideTargetRow);
+        Assert.Equal(2, wideTargetColumn);
+        Assert.Equal(GridUnitType.Pixel, wideCompactRowType);
+        Assert.Equal(GridUnitType.Star, narrowTargetUnitType);
+        Assert.Equal(1, narrowTargetRow);
+        Assert.Equal(3, narrowTargetSpan);
+        Assert.Equal(1, narrowActionRow);
     }
 
     [Fact]
@@ -1256,7 +1719,7 @@ public sealed class WpfUiResourceDictionaryTests
         // width (capped at 980) instead of shrinking to its natural width.
         Assert.Contains("MaxWidth=\"980\" HorizontalAlignment=\"Stretch\" VerticalAlignment=\"Top\"", trainers);
         Assert.Contains("MaxWidth=\"1050\" HorizontalAlignment=\"Left\"", maintenance);
-        Assert.Contains("var stackOverview = width < 1040", dashboardCode);
+        Assert.Contains("var stackOverview = workspaceContentWidth < 900", dashboardCode);
         Assert.Contains("var stackDiagnostics = width < 1120", maintenanceCode);
         Assert.Contains("var stackDevice = width < 1180", maintenanceCode);
         Assert.DoesNotContain("width < 1360", maintenanceCode);
@@ -1275,7 +1738,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"TrainerCatalogReleasesPanel\"", trainer);
         Assert.Contains("x:Name=\"TrainerReleasesLayout\"", trainer);
         Assert.Contains("x:Name=\"TrainerReleaseInfoPanel\"", trainer);
-        Assert.Contains("var stackReleases = width < 980", codeBehind);
+        Assert.Contains("var stackReleases = width < 1080", codeBehind);
         Assert.Contains("Grid.SetColumnSpan(TrainerCatalogReleasesPanel, stackReleases ? 3 : 1)", codeBehind);
         Assert.Contains("Grid.SetRow(TrainerReleaseInfoPanel, stackReleases ? 1 : 0)", codeBehind);
         Assert.Contains("x:Name=\"TrainerReleaseInfoScrollViewer\"", trainer);
@@ -1284,7 +1747,7 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
-    public void TrainerCatalogSearchRowKeepsSearchBoxAndActionsTogetherOnOneRow()
+    public void TrainerCatalogSearchRowStacksButtonsBelowTheSearchBoxSoNarrowWindowsDoNotClip()
     {
         var repositoryRoot = FindRepositoryRoot();
         var trainer = XDocument.Parse(File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml")));
@@ -1295,29 +1758,24 @@ public sealed class WpfUiResourceDictionaryTests
             && element.Ancestors().Any(ancestor => ancestor.Attribute("Header")?.Value == "FLiNG 在线库"));
         Assert.Equal("Stretch", searchCard.Attribute("HorizontalAlignment")?.Value);
 
-        // The search box and its action buttons live in one Grid so they stay
-        // on the same row; the star column lets the box shrink on narrow
-        // windows instead of clipping (UI-178, Demo TrainersView alignment).
-        var searchPanel = searchCard.Descendants().Single(element =>
-            element.Name.LocalName == "Grid"
-            && element.Descendants().Any(descendant => descendant.Name.LocalName == "TextBox")
-            && element.Descendants().Count(descendant => descendant.Name.LocalName == "Button") == 2);
-        var columnDefinitions = searchPanel.Elements().Single(element => element.Name.LocalName == "Grid.ColumnDefinitions");
-        var columns = columnDefinitions.Elements().Where(element => element.Name.LocalName == "ColumnDefinition").ToList();
-        Assert.Equal(3, columns.Count);
-        Assert.Equal("*", columns[0].Attribute("Width")?.Value);
-        Assert.Equal("Auto", columns[1].Attribute("Width")?.Value);
-        Assert.Equal("Auto", columns[2].Attribute("Width")?.Value);
+        var searchGrid = searchCard.Descendants().First(element => element.Name.LocalName == "Grid");
+        var rows = searchGrid.Descendants().Where(element => element.Name.LocalName == "RowDefinition").ToList();
+        Assert.Equal(2, rows.Count);
+        Assert.All(rows, row => Assert.Equal("Auto", row.Attribute("Height")?.Value));
 
-        var searchBox = searchPanel.Descendants().Single(element => element.Name.LocalName == "TextBox");
-        Assert.Null(searchBox.Attribute("MinWidth"));
+        var searchBox = searchGrid.Descendants().Single(element => element.Name.LocalName == "TextBox");
+        Assert.Equal("TrainerSearchTextBox", searchBox.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value);
+        Assert.Equal("680", searchBox.Attribute("Width")?.Value);
+        Assert.Equal("0", searchBox.Attribute("MinWidth")?.Value);
         Assert.Equal("680", searchBox.Attribute("MaxWidth")?.Value);
         Assert.Contains("TrainerSearchText", searchBox.Attribute("Text")?.Value ?? string.Empty);
 
-        var buttons = searchPanel.Descendants().Where(element => element.Name.LocalName == "Button").ToList();
+        var buttonRow = searchGrid.Descendants().Single(element =>
+            element.Name.LocalName == "WrapPanel" && element.Attribute("Grid.Row")?.Value == "1");
+        var buttons = buttonRow.Descendants().Where(element => element.Name.LocalName == "Button").ToList();
+        Assert.Equal(2, buttons.Count);
         Assert.Contains(buttons, button => (button.Attribute("Command")?.Value ?? string.Empty).Contains("SearchTrainerCatalogCommand"));
         Assert.Contains(buttons, button => (button.Attribute("Command")?.Value ?? string.Empty).Contains("SyncTrainerCatalogCommand"));
-        Assert.All(buttons, button => Assert.Equal("9,0,0,0", button.Attribute("Margin")?.Value));
     }
 
     [Fact]
@@ -1560,6 +2018,28 @@ public sealed class WpfUiResourceDictionaryTests
         var designTokens = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml"));
         Assert.Contains("x:Key=\"GscInfoShadowColor\"", designTokens);
         Assert.Contains("x:Key=\"GscSuccessShadowColor\"", designTokens);
+    }
+
+    [Fact]
+    public void OverviewFollowsDemoContextThenMetricsThenActivityOrder()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var overview = XDocument.Parse(File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml")));
+        var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
+        var currentGame = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewCurrentGameCard");
+        var metrics = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewStatStrip");
+        var activity = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewActivityList");
+
+        // The production page keeps the Demo's reading order while retaining the
+        // real Dashboard context and task list: context, metrics, recent activity.
+        Assert.Equal("1", currentGame.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
+        Assert.Equal("2", metrics.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
+        var activityFrame = activity.Ancestors().Single(element => element.Name.LocalName == "Border"
+            && element.Attributes().Any(attribute => attribute.Name.LocalName == "Grid.Row")
+            && element.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value == "3");
+        Assert.Equal("3", activityFrame.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
+        Assert.Equal("{Binding OverviewTasks}", activity.Attribute("ItemsSource")?.Value);
+        Assert.Equal("{Binding SelectedTask}", activity.Attribute("SelectedItem")?.Value);
     }
 
     [Fact]
@@ -1870,8 +2350,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"OverviewSecondaryScrollViewer\"", File.ReadAllText(overviewPath));
         Assert.Contains("OverviewSecondaryScrollViewer.MaxHeight = stack", File.ReadAllText(overviewPath + ".cs"));
         Assert.DoesNotContain("OverviewSecondaryScrollViewer.MaxHeight = stack || compactHeight", File.ReadAllText(overviewPath + ".cs"));
-        Assert.Contains("OverviewSecondaryScrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Hidden", File.ReadAllText(overviewPath + ".cs"));
-        Assert.Contains("OverviewRiskScrollViewer.MaxHeight = Math.Max(180, Math.Min(360, height * 0.42))", File.ReadAllText(overviewPath + ".cs"));
+        Assert.Contains("OverviewSecondaryScrollViewer.VerticalScrollBarVisibility = stack", File.ReadAllText(overviewPath + ".cs"));
+        Assert.Contains("Math.Max(180, Math.Min(360, height * 0.42))", File.ReadAllText(overviewPath + ".cs"));
+        Assert.Contains("OverviewRiskScrollViewer.VerticalScrollBarVisibility = stack", File.ReadAllText(overviewPath + ".cs"));
         Assert.Contains("RowDefinition x:Name=\"OverviewSummaryRow\" Height=\"Auto\"", File.ReadAllText(overviewPath));
         Assert.Contains("GscRedesignSectionCard}\" VerticalAlignment=\"Top\">", File.ReadAllText(overviewPath));
         Assert.Contains("VerticalAlignment=\"Top\">", File.ReadAllText(overviewPath));
@@ -1905,20 +2386,136 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("<views:TaskCenterView x:Name=\"TaskWorkspaceView\"/>", dashboard);
         Assert.DoesNotContain("SetVisibility(TaskTab, false);", dashboardCode);
         Assert.DoesNotContain("TaskTab", dashboard);
-        Assert.Contains("TaskWorkspaceView.ApplyResponsiveLayout(width, height)", dashboardCode);
+        Assert.Contains("TaskWorkspaceView.ApplyResponsiveLayout(workspaceContentWidth, height)", dashboardCode);
         Assert.Contains("TaskWorkspaceView.TaskDetailCardElement", dashboardCode);
         Assert.DoesNotContain("GamePicker", File.ReadAllText(taskPath));
 
         var dataGrid = task.Descendants().Single(element => element.Name.LocalName == "DataGrid");
         Assert.DoesNotContain(dataGrid.Ancestors(), ancestor => ancestor.Name.LocalName == "StackPanel");
         Assert.Contains("<Setter Property=\"EnableRowVirtualization\" Value=\"True\"/>", File.ReadAllText(taskPath));
+        Assert.Contains("BasedOn=\"{StaticResource GscInspectorScrollViewer}\"", File.ReadAllText(taskPath));
+        Assert.Contains("<DataTrigger Binding=\"{Binding SelectedTask}\" Value=\"{x:Null}\">", File.ReadAllText(taskPath));
         Assert.Contains("CopyTaskErrorCommand", File.ReadAllText(taskPath));
         Assert.Contains("RetryTaskCommand", File.ReadAllText(taskPath));
         Assert.Contains("CancelTaskCommand", File.ReadAllText(taskPath));
     }
 
     [Fact]
-    public void MediaSourceRulesTabUsesOneNaturalHeightPageChannel()
+    public void TaskInspectorReleasesEmptyRightColumn()
+    {
+        Exception? exception = null;
+        var emptyGutterWidth = -1d;
+        var emptyInspectorWidth = -1d;
+        var emptyStackedRowType = GridUnitType.Auto;
+        var selectedGutterWidth = -1d;
+        var selectedInspectorWidth = -1d;
+        var selectedInspectorUnitType = GridUnitType.Auto;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var view = new TaskCenterView();
+                var layout = (Grid)typeof(TaskCenterView)
+                    .GetField("TaskWorkspaceLayout", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+
+                view.TaskDetailScrollViewerElement.Visibility = Visibility.Collapsed;
+                view.ApplyResponsiveLayout(1280, 720);
+                emptyGutterWidth = layout.ColumnDefinitions[1].Width.Value;
+                emptyInspectorWidth = layout.ColumnDefinitions[2].Width.Value;
+                emptyStackedRowType = layout.RowDefinitions[3].Height.GridUnitType;
+
+                view.TaskDetailScrollViewerElement.Visibility = Visibility.Visible;
+                view.ApplyResponsiveLayout(1280, 720);
+                selectedGutterWidth = layout.ColumnDefinitions[1].Width.Value;
+                selectedInspectorWidth = layout.ColumnDefinitions[2].Width.Value;
+                selectedInspectorUnitType = layout.ColumnDefinitions[2].Width.GridUnitType;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.Equal(0, emptyGutterWidth);
+        Assert.Equal(0, emptyInspectorWidth);
+        Assert.Equal(GridUnitType.Pixel, emptyStackedRowType);
+        Assert.Equal(14, selectedGutterWidth);
+        Assert.True(selectedInspectorWidth > 0);
+        Assert.Equal(GridUnitType.Pixel, selectedInspectorUnitType);
+    }
+
+    [Fact]
+    public void MediaInspectorReleasesEmptyRightColumn()
+    {
+        Exception? exception = null;
+        var emptyGutterWidth = -1d;
+        var emptyInspectorWidth = -1d;
+        var emptyStackedRowType = GridUnitType.Auto;
+        var selectedGutterWidth = -1d;
+        var selectedInspectorWidth = -1d;
+        var selectedInspectorUnitType = GridUnitType.Auto;
+        var emptyCompactRowType = GridUnitType.Auto;
+        var selectedCompactRowType = GridUnitType.Pixel;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var view = new MediaCenterView();
+                var layout = (Grid)typeof(MediaCenterView)
+                    .GetField("MediaCurrentLayout", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+
+                view.MediaInspectorScrollViewerElement.Visibility = Visibility.Collapsed;
+                view.ApplyResponsiveLayout(1280, 720);
+                emptyGutterWidth = layout.ColumnDefinitions[1].Width.Value;
+                emptyInspectorWidth = layout.ColumnDefinitions[2].Width.Value;
+                emptyStackedRowType = layout.RowDefinitions[3].Height.GridUnitType;
+
+                view.MediaInspectorScrollViewerElement.Visibility = Visibility.Visible;
+                view.ApplyResponsiveLayout(1280, 720);
+                selectedGutterWidth = layout.ColumnDefinitions[1].Width.Value;
+                selectedInspectorWidth = layout.ColumnDefinitions[2].Width.Value;
+                selectedInspectorUnitType = layout.ColumnDefinitions[2].Width.GridUnitType;
+
+                view.MediaInspectorScrollViewerElement.Visibility = Visibility.Collapsed;
+                view.ApplyResponsiveLayout(1024, 640);
+                emptyCompactRowType = layout.RowDefinitions[3].Height.GridUnitType;
+
+                view.MediaInspectorScrollViewerElement.Visibility = Visibility.Visible;
+                view.ApplyResponsiveLayout(1024, 640);
+                selectedCompactRowType = layout.RowDefinitions[3].Height.GridUnitType;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.Equal(0, emptyGutterWidth);
+        Assert.Equal(0, emptyInspectorWidth);
+        Assert.Equal(GridUnitType.Pixel, emptyStackedRowType);
+        Assert.Equal(14, selectedGutterWidth);
+        Assert.True(selectedInspectorWidth > 0);
+        Assert.Equal(GridUnitType.Pixel, selectedInspectorUnitType);
+        Assert.Equal(GridUnitType.Pixel, emptyCompactRowType);
+        Assert.Equal(GridUnitType.Auto, selectedCompactRowType);
+    }
+
+    [Fact]
+    public void MediaSourceRulesKeepTheTableInAStarRowWithAFormOnlyScroller()
     {
         var repositoryRoot = FindRepositoryRoot();
         var mediaPath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml");
@@ -2259,7 +2856,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Path=\"ProcessPollingSeconds\" UpdateSourceTrigger=\"LostFocus\"", settings);
         Assert.Contains("Path=\"DashboardRefreshSeconds\" UpdateSourceTrigger=\"LostFocus\"", settings);
         Assert.Contains("AppearanceFields.Columns = twoColumns ? 2 : 1", settingsCode);
-        Assert.Contains("var contentWidth = Math.Max(320, width - horizontalMargin * 2 - 40);", settingsCode);
+        Assert.Contains("var layoutWidth = SettingsShell.ActualWidth > 0", settingsCode);
+        Assert.Contains("var contentWidth = Math.Max(320, layoutWidth - horizontalMargin * 2 - 40);", settingsCode);
         Assert.Contains("AutomationIntervalFields.Columns = expanded && formWidth >= 930 ? 3 : formWidth >= 650 ? 2 : 1", settingsCode);
         // 核心工具路径字段保持单列全宽行（路径可读性），不再参与两列网格切换。
         Assert.Contains("x:Name=\"CoreToolFields\"", settings);
@@ -2714,9 +3312,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"HeaderGamePickerColumn\"", dashboard);
         Assert.Contains("x:Name=\"CompactGameSelector\"", dashboard);
         Assert.Contains("x:Name=\"ToggleGameBrowserButton\"", dashboard);
-        Assert.Contains("width >= 1260 ? LayoutMode.Expanded", dashboardCode);
-        Assert.Contains("width >= 980 ? LayoutMode.Standard", dashboardCode);
-        Assert.Contains("width >= 760 ? LayoutMode.Compact", dashboardCode);
+        Assert.Contains("width >= 1280 ? LayoutMode.Expanded", dashboardCode);
+        Assert.Contains("width >= 1080 ? LayoutMode.Standard", dashboardCode);
+        Assert.Contains("width >= 960 ? LayoutMode.Compact", dashboardCode);
         Assert.Contains("Grid.SetRow(TopActionsScroller, 2)", dashboardCode);
         Assert.Contains("Grid.SetColumnSpan(TopActionsScroller, 3)", dashboardCode);
         Assert.Contains("var pickerOnTopBar = gameScopedWorkspace", dashboardCode);
@@ -2759,14 +3357,25 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Style=\"{StaticResource GscRedesignSettingsTabControl}\"", settings);
         Assert.Contains("x:Name=\"SettingsHeader\" Style=\"{DynamicResource GscRedesignWorkspaceHeroCard}\"", settings);
         Assert.Contains("Style=\"{DynamicResource GscRedesignHeroEyebrow}\"", settings);
+        Assert.Contains("Text=\"常规与目录\"", settings);
+        Assert.Contains("Text=\"备份与恢复\"", settings);
+        Assert.Contains("Text=\"外观与可访问性\"", settings);
+        Assert.Contains("Text=\"自动化与媒体\"", settings);
         Assert.Contains("由 Playnite 的保存按钮提交", settings);
+        Assert.Contains("x:Name=\"SettingsHeaderGrid\"", settings);
+        Assert.Contains("x:Name=\"SettingsHeaderHintRow\" Height=\"0\"", settings);
         Assert.Contains("Text=\"{Binding WorkerExecutable, UpdateSourceTrigger=PropertyChanged}\"", settings);
-        Assert.Contains("SelectedValue=\"{Binding BackupFormat}\"", settings);
+        Assert.Contains("SelectedIndex=\"0\" SelectedValue=\"{Binding BackupFormat, Mode=TwoWay, TargetNullValue={x:Static contracts:BackupStorageFormat.Zip}, FallbackValue={x:Static contracts:BackupStorageFormat.Zip}}\"", settings);
+        Assert.Contains("SelectedIndex=\"0\" SelectedValue=\"{Binding Compression, Mode=TwoWay, TargetNullValue=zstd, FallbackValue=zstd}\"", settings);
+        Assert.Contains("SelectedIndex=\"0\" SelectedValue=\"{Binding ThemeMode, Mode=TwoWay, TargetNullValue={x:Static settings:GameSaveCenterThemeMode.FollowPlaynite}, FallbackValue={x:Static settings:GameSaveCenterThemeMode.FollowPlaynite}}\"", settings);
         Assert.Contains("IsChecked=\"{Binding EnableUiAnimations}\"", settings);
         Assert.Contains("IsChecked=\"{Binding EnableCloudUpload}\"", settings);
         Assert.Contains("Click=\"OnExportSettingsClick\"", settings);
         Assert.Contains("Click=\"OnImportSettingsClick\"", settings);
         Assert.Contains("SettingsSectionTabs.TabStripPlacement = compact ? Dock.Top : Dock.Left", settingsCode);
+        Assert.Contains("SettingsHeaderHintRow.Height = stackHeaderHint ? GridLength.Auto : new GridLength(0)", settingsCode);
+        Assert.Contains("Grid.SetColumnSpan(SettingsSaveHint, stackHeaderHint ? 2 : 1)", settingsCode);
+        Assert.Contains("SettingsSaveHint.Margin = stackHeaderHint", settingsCode);
         Assert.Contains("SettingsShell.HorizontalAlignment = HorizontalAlignment.Stretch", settingsCode);
         Assert.Contains("SettingsShell.MaxWidth = 1360", settingsCode);
         Assert.Contains("tab.MinWidth = compact ? (narrow ? 132 : 158) : 218", settingsCode);
@@ -2820,6 +3429,137 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("CornerRadius\" Value=\"16\"", section);
         Assert.Contains("Padding\" Value=\"16\"", section);
         Assert.Contains("Effect\" Value=\"{x:Null}\"", section);
+    }
+
+    [Fact]
+    public void SharedActionAndFilterStylesKeepButtonAlignmentAndVisibleAllDefault()
+    {
+        Exception? exception = null;
+        double actionMinHeight = 0;
+        double textBoxMinHeight = 0;
+        double comboBoxMinHeight = 0;
+        HorizontalAlignment actionHorizontalAlignment = HorizontalAlignment.Left;
+        VerticalAlignment actionVerticalAlignment = VerticalAlignment.Top;
+        int filterSelectedIndex = -1;
+        object? filterSelectedItem = null;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var resources = (ResourceDictionary)XamlReader.Parse(@"
+<ResourceDictionary xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""
+                    xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml"">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source=""/GameSaveCenter.Playnite;component/Themes/DesignTokens.xaml""/>
+        <ResourceDictionary Source=""/GameSaveCenter.Playnite;component/Themes/WpfUiProduction.xaml""/>
+        <ResourceDictionary Source=""/GameSaveCenter.Playnite;component/Themes/Redesign.xaml""/>
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>");
+
+                var host = new UserControl { Resources = resources };
+                var panel = new StackPanel();
+                var action = new GameSaveCenter.Playnite.Controls.Button
+                {
+                    Style = Assert.IsType<Style>(resources["GscWpfUiPrimaryButton"]),
+                    Content = "测试操作"
+                };
+                var filter = new ComboBox
+                {
+                    Style = Assert.IsType<Style>(resources["GscWpfUiFilterComboBox"]),
+                    ItemsSource = new[] { "全部", "失败" }
+                };
+                var textBox = new TextBox
+                {
+                    Style = Assert.IsType<Style>(resources["GscWpfUiTextBox"])
+                };
+                panel.Children.Add(action);
+                panel.Children.Add(filter);
+                panel.Children.Add(textBox);
+                host.Content = panel;
+                host.Measure(new Size(420, 120));
+                host.Arrange(new Rect(0, 0, 420, 120));
+                host.UpdateLayout();
+                actionMinHeight = action.MinHeight;
+                textBoxMinHeight = textBox.MinHeight;
+                comboBoxMinHeight = filter.MinHeight;
+                actionHorizontalAlignment = action.HorizontalContentAlignment;
+                actionVerticalAlignment = action.VerticalContentAlignment;
+                filterSelectedIndex = filter.SelectedIndex;
+                filterSelectedItem = filter.SelectedItem;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.Equal(HorizontalAlignment.Center, actionHorizontalAlignment);
+        Assert.Equal(VerticalAlignment.Center, actionVerticalAlignment);
+        Assert.Equal(38, actionMinHeight);
+        Assert.Equal(actionMinHeight, textBoxMinHeight);
+        Assert.Equal(actionMinHeight, comboBoxMinHeight);
+        Assert.Equal(0, filterSelectedIndex);
+        Assert.Equal("全部", filterSelectedItem);
+
+        var repositoryRoot = FindRepositoryRoot();
+        var tokens = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml"));
+        var production = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml"));
+        var redesign = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "Redesign.xaml"));
+        var dashboard = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml"));
+        var trainer = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml"));
+        var trainerCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml.cs"));
+        var media = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
+        var maintenance = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+        var tasks = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml"));
+        var overview = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml"));
+
+        Assert.Contains("x:Key=\"GscButtonHeight\">38", tokens);
+        Assert.Contains("<Style x:Key=\"GscButtonBase\"", tokens);
+        Assert.Contains("<Setter Property=\"MinHeight\" Value=\"{DynamicResource GscButtonHeight}\"/>", tokens);
+        Assert.Contains("<Setter Property=\"MinHeight\" Value=\"{DynamicResource GscButtonHeight}\"/>", production);
+        Assert.Contains("<Setter Property=\"MinHeight\" Value=\"{DynamicResource GscButtonHeight}\"/>", redesign);
+        Assert.Contains("<Setter Property=\"HorizontalContentAlignment\" Value=\"Center\"/>", redesign);
+        Assert.Contains("<Setter Property=\"VerticalContentAlignment\" Value=\"Center\"/>", redesign);
+        Assert.Contains("<Style x:Key=\"GscButtonBase\"", dashboard);
+        Assert.Contains("<Setter Property=\"MinHeight\" Value=\"{DynamicResource GscButtonHeight}\"/>", dashboard);
+        Assert.DoesNotContain("MinHeight=\"38\"", trainer);
+        Assert.Contains("x:Name=\"TrainerSearchTextBox\"", trainer);
+        Assert.Contains("x:Name=\"TrainerImportEntryComboBox\"", trainer);
+        Assert.Contains("var searchWidth = Math.Max(260, Math.Min(680", trainerCode);
+        Assert.Contains("var importWidth = Math.Max(240, Math.Min(520", trainerCode);
+        Assert.Contains("x:Key=\"GscWpfUiFilterComboBox\"", production);
+        Assert.Contains("<Setter Property=\"SelectedIndex\" Value=\"0\"/>", production);
+        Assert.Contains("MinHeight\" Value=\"{DynamicResource GscButtonHeight}\"", redesign);
+        Assert.Contains("Style=\"{StaticResource GscWpfUiFilterComboBox}\" SelectedIndex=\"0\"", dashboard);
+        Assert.Contains("Style=\"{DynamicResource GscWpfUiFilterComboBox}\" SelectedIndex=\"0\"", media);
+        Assert.Contains("SelectedItem=\"{Binding MediaFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}\"", media);
+        // The merged UI keeps the remote alias contract compatible, while the local
+        // branch may use the shared metric style directly for the same four cards.
+        var hasMediaSummaryAlias = media.Contains("x:Key=\"MediaSummaryCard\" TargetType=\"Border\" BasedOn=\"{StaticResource GscRedesignMetricBorder}\"");
+        var directMetricCards = Regex.Matches(media, "Style=\"\\{DynamicResource GscRedesignMetricBorder\\}\"").Count;
+        var aliasedMetricCards = Regex.Matches(media, "Style=\"\\{StaticResource MediaSummaryCard\\}\"").Count;
+        Assert.True((hasMediaSummaryAlias && aliasedMetricCards == 4) || directMetricCards == 4);
+        Assert.Equal(3, Regex.Matches(tasks, "Style=\"\\{DynamicResource GscWpfUiFilterComboBox\\}\" SelectedIndex=\"0\"").Count);
+        Assert.Contains("Style=\"{DynamicResource GscWpfUiComboBox}\" SelectedIndex=\"0\" ItemsSource=\"{Binding DeviceDecisionOptions}\" SelectedItem=\"{Binding DeviceDecision, TargetNullValue=稍后处理, FallbackValue=稍后处理}\"", maintenance);
+        Assert.Contains("<Setter Property=\"VerticalContentAlignment\" Value=\"Stretch\"/>", overview);
+        Assert.DoesNotContain("ScrollViewer.VerticalContentAlignment\" Value=\"Center\"", overview);
+
+        // ComboBox selection text follows the same content-alignment and foreground
+        // contract as shared buttons; the DesignTokens template must remain a safe
+        // fallback when the production adapter is not present.
+        Assert.Contains("VerticalAlignment=\"{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType=ComboBox}}\"", production);
+        Assert.Contains("TextElement.Foreground=\"{Binding Foreground, RelativeSource={RelativeSource AncestorType=ComboBox}}\"", production);
+        Assert.Contains("TextElement.Foreground=\"{TemplateBinding Foreground}\"", production);
+        Assert.Contains("HorizontalAlignment=\"{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType=ComboBox}}\"", tokens);
+        Assert.Contains("VerticalAlignment=\"{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType=ComboBox}}\"", tokens);
+        Assert.Contains("TextElement.Foreground=\"{Binding Foreground, RelativeSource={RelativeSource AncestorType=ComboBox}}\"", tokens);
+        Assert.Contains("TextElement.Foreground=\"{TemplateBinding Foreground}\"", tokens);
     }
 
     [Fact]

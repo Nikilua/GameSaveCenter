@@ -106,8 +106,9 @@
                                 <ContentPresenter Content="{Binding SelectionBoxItem, RelativeSource={RelativeSource AncestorType=ComboBox}}"
                                                   ContentTemplate="{Binding SelectionBoxItemTemplate, RelativeSource={RelativeSource AncestorType=ComboBox}}"
                                                   ContentStringFormat="{Binding SelectionBoxItemStringFormat, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                                  VerticalAlignment="Center"
-                                                  TextElement.Foreground="{DynamicResource GscPrimaryTextBrush}"/>
+                                                  HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType=ComboBox}}"
+                                                  VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType=ComboBox}}"
+                                                  TextElement.Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ComboBox}}"/>
                                 <Path x:Name="Chevron"
                                       Grid.Column="1"
                                       Data="M 1 2 L 5 6 L 9 2"
@@ -189,7 +190,8 @@
                             CornerRadius="8"
                             Padding="{TemplateBinding Padding}">
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          VerticalAlignment="Center"/>
+                                          VerticalAlignment="Center"
+                                          TextElement.Foreground="{TemplateBinding Foreground}"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsHighlighted" Value="True">
@@ -234,7 +236,7 @@
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Padding" Value="10,8"/>
         <Setter Property="Margin" Value="0,0,0,4"/>
-        <Setter Property="MinHeight" Value="38"/>
+        <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Template">
@@ -485,7 +487,7 @@
     <Style x:Key="GscWpfUiButton"
            TargetType="{x:Type ui:Button}">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
-        <Setter Property="MinHeight" Value="38"/>
+        <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
         <Setter Property="MinWidth" Value="42"/>
         <Setter Property="Padding" Value="14,7"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
@@ -552,7 +554,7 @@
     <Style x:Key="GscWpfUiCompactButton"
            TargetType="{x:Type ui:Button}"
            BasedOn="{StaticResource GscWpfUiSecondaryButton}">
-        <Setter Property="MinHeight" Value="38"/>
+        <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
         <Setter Property="Padding" Value="10,5"/>
     </Style>
 
@@ -572,14 +574,14 @@
            TargetType="{x:Type ui:Button}"
            BasedOn="{StaticResource GscWpfUiSecondaryButton}">
         <Setter Property="Margin" Value="0"/>
-        <Setter Property="MinHeight" Value="38"/>
+        <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
     </Style>
 
     <Style x:Key="GscWpfUiToolbarPrimaryButton"
            TargetType="{x:Type ui:Button}"
            BasedOn="{StaticResource GscWpfUiPrimaryButton}">
         <Setter Property="Margin" Value="0"/>
-        <Setter Property="MinHeight" Value="38"/>
+        <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
     </Style>
 
     <Style x:Key="GscWpfUiContextButton"
@@ -644,7 +646,7 @@
            TargetType="TextBox"
            BasedOn="{StaticResource {x:Type TextBox}}">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
-        <Setter Property="MinHeight" Value="38"/>
+        <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
@@ -662,7 +664,7 @@
            TargetType="ComboBox"
            BasedOn="{StaticResource {x:Type ComboBox}}">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
-        <Setter Property="MinHeight" Value="38"/>
+        <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
@@ -673,5 +675,18 @@
         <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
         <Setter Property="ToolTipService.ShowDuration" Value="12000"/>
         <Setter Property="Template" Value="{StaticResource GscWpfUiComboBoxTemplate}"/>
+    </Style>
+
+    <!-- Filter selectors always begin with the first, human-readable "全部" option.
+         This style is intentionally opt-in: game/version/path selectors must be allowed
+         to start empty until the real selection is loaded. It is declared after the base
+         ComboBox adapter so StaticResource resolution remains valid in WPF. -->
+    <Style x:Key="GscWpfUiFilterComboBox"
+           TargetType="ComboBox"
+           BasedOn="{StaticResource GscWpfUiComboBox}">
+        <Setter Property="SelectedIndex" Value="0"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
     </Style>
 </ResourceDictionary>

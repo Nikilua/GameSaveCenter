@@ -208,10 +208,10 @@
                 </Grid>
             </Border>
 
-            <!-- Demo HomeView's first screen is a row of six equal-height metric
-                 cards.  Production keeps the same six real Snapshot counters and a
-                 static one-line explanation per card; no demo placeholder numbers. -->
-            <UniformGrid x:Name="OverviewStatStrip" Grid.Row="1" Columns="3" Margin="0,0,0,14">
+            <!-- Keep the Demo HomeView reading order: current context first, then the
+                 six equal-height metrics. Production keeps real Snapshot counters and
+                 a static one-line explanation per card; no demo placeholder numbers. -->
+            <UniformGrid x:Name="OverviewStatStrip" Grid.Row="2" Columns="3" Margin="0,0,0,14">
                 <Border Style="{StaticResource OverviewStatCard}" Margin="0,0,8,8"><StackPanel><TextBlock Text="已管理游戏" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11"/><TextBlock Text="{Binding Snapshot.ManagedGames, Mode=OneWay}" Foreground="{DynamicResource GscInfoBrush}" FontSize="30" FontWeight="SemiBold" Margin="0,8,0,0"/><TextBlock Text="来自 Playnite 游戏库" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,8,0,0" TextWrapping="Wrap"/></StackPanel></Border>
                 <Border Style="{StaticResource OverviewStatCard}" Margin="0,0,8,8">
                     <StackPanel>
@@ -254,7 +254,7 @@
                 <Border Style="{StaticResource OverviewStatCard}" Margin="0"><StackPanel><TextBlock Text="待归类媒体" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11"/><TextBlock Text="{Binding Snapshot.UnassignedMediaCount, Mode=OneWay}" Foreground="{DynamicResource GscWarningBrush}" FontSize="30" FontWeight="SemiBold" Margin="0,8,0,0"/><TextBlock Text="来自共享截图目录" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,8,0,0" TextWrapping="Wrap"/></StackPanel></Border>
             </UniformGrid>
 
-            <Border Grid.Row="2" Style="{DynamicResource GscRedesignSectionCard}" Padding="16" MinHeight="150">
+            <Border x:Name="OverviewCurrentGameCard" Grid.Row="1" Style="{DynamicResource GscRedesignSectionCard}" Padding="16" MinHeight="150" Margin="0,0,0,14">
                 <Grid>
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                     <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>

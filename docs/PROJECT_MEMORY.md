@@ -1,7 +1,36 @@
 # 项目记忆与不可丢失约束
 
-更新时间：2026-08-07
+> 跨电脑或跨模型接手请先读取 [`docs/DEVELOPMENT_HANDOFF.md`](DEVELOPMENT_HANDOFF.md)，其中包含资料读取顺序、用户原话、持续开发流程、当前基线和下一步方向。
+
+> MERGE-001（2026-08-11）：本机 `main` 在共同基线 `9cdd975` 后的本地 UI 提交（UI-173～UI-181，另含合并前本机 WIP）已保留并与 `origin/main` 的 UI-181～UI-183/交接文档线合并。以下本机独有的视觉约束不可丢失：Overview Hero 标题保持 Demo 的 35px，并使用共享 `GscAccentShadowColor`/`GscInfoShadowColor`/`GscSuccessShadowColor` 的三颗不可命中径向环境光；Media 顶部四卡保持“标题 → 30px 真实数值 → 副文案”的三行节奏；维护设备摘要保留标题、真实刷新命令和 `GscRedesignInfoBand` 信息带。上述均为 WPF 表层调整，不改变命令、Binding、Worker、IPC、数据库、持久化和大型列表虚拟化。远端已有记忆条目优先保留，后续新增本机约束追加在本记录之后，不覆盖其原文。
+
+> UI-183：维护中心“诊断”页顶部必须保持 Demo 式的 `MaintenanceDiagnosticsActionCard` 阅读卡：标题/说明与“刷新诊断”主操作位于首行，复制诊断、打开数据目录、打开存档目录、打开媒体目录和 Worker 日志位于第二行可换行操作带。六个真实 Command 必须保留，操作区不能退回裸 `WrapPanel` 或被挪入 DataGrid/其滚动表面；诊断指标、有限表格滚动、选中项 Inspector、完整摘要和空态不因本轮布局调整消失。共享按钮模板继续负责 38 DIP 高度和文字对齐，不新增业务逻辑。
+
+> UI-182：维护中心“进程映射”编辑器必须保持 Demo 对齐的 Grid 结构：宽屏由 EXE 输入框占据 `*` 剩余空间，目标游戏下拉框保持 240 DIP，控件之间使用共享 8 DIP 节奏，绑定按钮继续使用共享按钮模板和 38 DIP 高度；宽度 `<720` DIP 时目标游戏与绑定按钮移动到第二行。`ProcessMappingExecutable`、`ProcessMappingTargetGame`、`Games`、`SaveProcessMappingCommand` 的真实绑定/命令必须保留；不要用运行时视觉树扫描或业务层改动解决布局问题。动态目标游戏 ComboBox 的空值仍表示等待真实上下文，不能为了显示效果强行选择第一项。
+
+> UI-181：维护中心五张真实 `DataGrid`（诊断、设备、审计发现、审计日志、进程映射）必须在 XAML 列声明中显式使用 `MaintenanceFirstColumnHeader` 作为首列表头样式，并继续使用 `MaintenanceLastColumnHeader` 或 `GscLastColumnHeader` 作为末列样式。这样首列左上角圆角、首尾主题背景/前景和宿主默认样式隔离由声明式资源负责，不依赖运行时才能补齐。`MaintenanceDataGrid` 的真实 `ItemsSource`、选中项绑定、`Standard`/Recycling 虚拟化、键盘/Automation 和 `DataGridLoaded` 一次性资源兜底必须保持；禁止通过视觉树周期扫描修复表头，也不得把本轮 UI 调整扩展到业务层、Worker、IPC 或持久化。新增结构测试锁定五张表的真实首尾列样式。静态源码、Debug/Release 编译及 Core 13、Worker 23、Playnite 140 测试已通过；真实 Playnite 宿主、主题和 DPI 渲染仍须后续手工验收。
+
+> UI-180：首页 Overview 的生产阅读顺序必须保持 Demo 对齐：`OverviewHomeToolbar`/TODAY 状态之后是 `OverviewCurrentGameCard`（`Grid.Row=1`），再是 `OverviewStatStrip`（`Grid.Row=2`），最近活动列表继续位于第 3 行。当前游戏卡仍只绑定真实 `SelectedGame` 和既有备份/详情/关注命令；指标仍只绑定真实 `Snapshot.*`；`OverviewActivityList` 的 `OverviewTasks`/`SelectedTask`、Recycling 虚拟化和右侧风险/关注滚动器不能因后续视觉调整被移除或重新包进无界 StackPanel。该轮只重排 XAML 行，不改业务层或顶部唯一 GamePicker。
+
+> UI-179：设置页窄屏标题区必须保持信息完整：`SettingsHeaderGrid` 宽屏使用单行标题/说明/Playnite 保存提示；`SettingsHeaderHintRow` 在 `compact` 断点切为 `Auto`，`SettingsSaveHint` 移到第 2 行并跨两列，不能通过隐藏保存语义来换取宽度。设置页备份格式、压缩方式和主题模式下拉框必须同时保留 `SelectedIndex="0"` 与绑定的安全默认值（ZIP / zstd / FollowPlaynite）；不要把动态选择的游戏、工具版本、目标游戏下拉框强行改成默认第一项，它们的空值仍表示“等待真实上下文”。本轮未修改 `ISettings` 生命周期、主题事件、业务设置模型或任何 Worker 设置字段。
+
+> UI-177：修改器中心空 Inspector 释放（2026-08-10）
+
+- 当前 HEAD 在 `TrainerCenterView` 的“已绑定工具”页，对 `TrainerToolsSettingsScrollViewer` 增加了基于共享 `GscInspectorScrollViewer` 的条件样式：`SelectedGameTool == null` 时折叠整个设置 Inspector，避免空的 `GscInspectorWidth` 固定右栏；选中工具后恢复真实设置内容和所有原有命令。
+- `TrainerCenterView.xaml.cs` 记录最近一次响应式尺寸，并在 Inspector 可见性变化时重新应用布局。宽屏无选择时释放分隔列与右栏，选中时恢复 `14 + GscInspectorWidth`；窄屏仍把真实 Inspector 放到工具列表下方并使用有限 `MaxHeight`。
+- 新增 `TrainerInspectorReleasesEmptyRightColumn` STA WPF 几何回归测试；工具列表 `GameTools`、Recycling 虚拟化、导入确认和全部绑定未改动。验证时不要把静态/STA 测试等同于 Playnite 宿主或 DPI 真机渲染验证。
+- 跨电脑继续维护时，以该 commit 为基线；不要覆盖本地已有提交。Media 空 Inspector 已在 UI-178 完成，下一步按同一证据标准继续审计 Overview，再处理 Settings 的页面级层次与宽度问题。
+
+> UI-178：媒体中心空 Inspector 释放（2026-08-10）
+
+- 当前 HEAD 在 `MediaCenterView` 的“当前游戏媒体”页，对 `MediaInspectorScrollViewer` 增加基于共享 `GscInspectorScrollViewer` 的条件样式：`SelectedMedia == null` 时折叠详情 Inspector，避免空的 `GscInspectorWidth` 固定右栏；选中媒体后恢复真实预览、元数据和操作命令。
+- `MediaCenterView.xaml.cs` 记录最近一次响应式尺寸，并在 Inspector 可见性变化时重新应用布局。宽屏无选择时释放分隔列与右栏；窄屏无选择时释放堆叠行，选中后才恢复下方有限滚动通道。没有修改 `MediaInboxGrid`、`MediaInboxStableRowStyle`、Standard 虚拟化、Item ScrollUnit、显式 Media 表头或集合生命周期。
+- 新增 `MediaInspectorReleasesEmptyRightColumn` STA WPF 几何回归测试，覆盖 1280×720 与 1024×640 的空/选中状态。验证时不要把静态/STA 测试等同于 Playnite 宿主或 DPI 真机渲染验证。
+
+更新时间：2026-08-10
 当前版本：`0.6.70-development-preview`
+
+> UI-176：存档中心历史版本与候选路径的 Inspector 必须跟随真实 `SelectedBackup`/`SelectedCandidate`。无选中项时释放 `14 + GscInspectorWidth` 分隔列与堆叠行，让空表使用完整主区域；选中后恢复列表 + Inspector，窄屏仍按既有响应式断点堆叠。比较与保留页的只读预览入口不因无比较结果而隐藏。不得修改存档 Command、Binding、选择回退、虚拟化或安全恢复链路；跨机器继续任务时先读取 `DEVELOPMENT_PROGRESS.md` 的 UI-176 记录。
 
 > UI-155：900+ 游戏库的性能保护是不可丢失约束：`LargeLibraryThreshold=100`/`VeryLargeLibraryThreshold=500` 双阈值、`ConfigureLargeLibraryStartupGate` 25 秒静默窗、Dashboard 未打开时跳过自动目录同步、500+ 库 Dashboard 首次打开缓存优先（显式刷新才整库匹配）、`observedGameCount` 只增不减、500+ 库 Worker 健康检查不 Kill/重启、`GameCatalogService` 后台匹配（30 秒初始延迟、每轮 4 个、批间 180ms、500+ 库预算 64/超大库 12、只优先已安装/90 天内游玩）、任务通知长轮询 60 秒延迟 + 指数退避、Worker 单实例 Mutex。任何重构不得把这些闸门换成同步整库匹配或循环拉起 Ludusavi 进程；否则 900+ 游戏库会复现 0.6.22 的 967 次 `findTitle` 风暴与管道超时。
 

@@ -43,17 +43,18 @@
             <Grid x:Name="SettingsShell" Opacity="0" Margin="0" MaxWidth="1360" HorizontalAlignment="Stretch">
                 <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                 <Border x:Name="SettingsHeader" Style="{DynamicResource GscRedesignWorkspaceHeroCard}">
-                <Grid>
+                <Grid x:Name="SettingsHeaderGrid">
+                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition x:Name="SettingsHeaderHintRow" Height="0"/></Grid.RowDefinitions>
                     <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                    <Border x:Name="SettingsHeaderIcon" Width="46" Height="46" CornerRadius="15" Background="{DynamicResource GscAccentBrush}" Margin="0,0,12,0">
+                    <Border x:Name="SettingsHeaderIcon" Grid.Row="0" Width="46" Height="46" CornerRadius="15" Background="{DynamicResource GscAccentBrush}" Margin="0,0,12,0">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE713;" Foreground="{DynamicResource GscOnAccentTextBrush}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
-                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center">
                         <TextBlock Text="SETTINGS" Style="{DynamicResource GscRedesignHeroEyebrow}"/>
                         <TextBlock Text="GameSaveCenter 设置" Style="{DynamicResource GscRedesignHeroTitle}"/>
                         <TextBlock x:Name="SettingsHeaderSubtitle" Text="工具路径、版本策略、外观效果与自动化安全" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,3,0,0" TextWrapping="Wrap"/>
                     </StackPanel>
-                    <Border x:Name="SettingsSaveHint" Grid.Column="2" Style="{StaticResource GscRedesignContextPill}" VerticalAlignment="Center" Margin="14,0,0,0">
+                    <Border x:Name="SettingsSaveHint" Grid.Row="0" Grid.Column="2" Style="{StaticResource GscRedesignContextPill}" VerticalAlignment="Center" Margin="14,0,0,0">
                         <TextBlock Text="由 Playnite 的保存按钮提交" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
                     </Border>
                 </Grid>
@@ -65,7 +66,7 @@
                         <TabItem.Header>
                             <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="36"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                 <Border Width="28" Height="28" CornerRadius="9" Background="{DynamicResource GscAccentIconFillBrush}" VerticalAlignment="Center"><TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE90F;" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
-                                <StackPanel Grid.Column="1" Margin="10,0,0,0"><TextBlock Text="核心工具" FontWeight="SemiBold"/><TextBlock Text="工具路径与基础目录" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextTrimming="CharacterEllipsis" ToolTip="工具路径与基础目录" Margin="0,3,0,0"/></StackPanel>
+                                <StackPanel Grid.Column="1" Margin="10,0,0,0"><TextBlock Text="常规与目录" FontWeight="SemiBold"/><TextBlock Text="工具路径与基础目录" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextTrimming="CharacterEllipsis" ToolTip="工具路径与基础目录" Margin="0,3,0,0"/></StackPanel>
                             </Grid>
                         </TabItem.Header>
                         <ui:Card Style="{StaticResource SettingsCard}">
@@ -87,7 +88,7 @@
                         <TabItem.Header>
                             <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="36"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                 <Border Width="28" Height="28" CornerRadius="9" Background="{DynamicResource GscAccentIconFillBrush}" VerticalAlignment="Center"><TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE8B7;" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
-                                <StackPanel Grid.Column="1" Margin="10,0,0,0"><TextBlock Text="存档格式与历史版本" FontWeight="SemiBold"/><TextBlock Text="备份格式、压缩与版本策略" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextTrimming="CharacterEllipsis" ToolTip="备份格式、压缩与版本策略" Margin="0,3,0,0"/></StackPanel>
+                                <StackPanel Grid.Column="1" Margin="10,0,0,0"><TextBlock Text="备份与恢复" FontWeight="SemiBold"/><TextBlock Text="备份格式、压缩与版本策略" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextTrimming="CharacterEllipsis" ToolTip="备份格式、压缩与版本策略" Margin="0,3,0,0"/></StackPanel>
                             </Grid>
                         </TabItem.Header>
                         <ui:Card Style="{StaticResource SettingsCard}">
@@ -97,14 +98,14 @@
                     <UniformGrid x:Name="StorageFormatFields" Columns="2" Margin="0,0,0,12">
                         <StackPanel Margin="0,0,12,0">
                         <TextBlock Text="备份格式" VerticalAlignment="Center" Margin="0,0,0,4"/>
-                        <ComboBox Style="{StaticResource GscWpfUiComboBox}" SelectedValue="{Binding BackupFormat}" SelectedValuePath="Tag">
+                        <ComboBox Style="{StaticResource GscWpfUiComboBox}" SelectedIndex="0" SelectedValue="{Binding BackupFormat, Mode=TwoWay, TargetNullValue={x:Static contracts:BackupStorageFormat.Zip}, FallbackValue={x:Static contracts:BackupStorageFormat.Zip}}" SelectedValuePath="Tag">
                             <ComboBoxItem Content="ZIP（多版本）" Tag="{x:Static contracts:BackupStorageFormat.Zip}"/>
                             <ComboBoxItem Content="Simple（单副本）" Tag="{x:Static contracts:BackupStorageFormat.Simple}"/>
                         </ComboBox>
                         </StackPanel>
                         <StackPanel Margin="0,0,0,0">
                         <TextBlock Text="压缩方式" VerticalAlignment="Center" Margin="0,0,0,4"/>
-                        <ComboBox Style="{StaticResource GscWpfUiComboBox}" SelectedValue="{Binding Compression}" SelectedValuePath="Tag">
+                        <ComboBox Style="{StaticResource GscWpfUiComboBox}" SelectedIndex="0" SelectedValue="{Binding Compression, Mode=TwoWay, TargetNullValue=zstd, FallbackValue=zstd}" SelectedValuePath="Tag">
                             <ComboBoxItem Content="Zstandard" Tag="zstd"/><ComboBoxItem Content="Deflate" Tag="deflate"/>
                             <ComboBoxItem Content="Bzip2" Tag="bzip2"/><ComboBoxItem Content="不压缩" Tag="none"/>
                         </ComboBox>
@@ -131,7 +132,7 @@
                         <TabItem.Header>
                             <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="36"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                 <Border Width="28" Height="28" CornerRadius="9" Background="{DynamicResource GscAccentIconFillBrush}" VerticalAlignment="Center"><TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE790;" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
-                                <StackPanel Grid.Column="1" Margin="10,0,0,0"><TextBlock Text="外观与动态效果" FontWeight="SemiBold"/><TextBlock Text="主题、玻璃强度与辅助功能" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextTrimming="CharacterEllipsis" ToolTip="主题、玻璃强度与辅助功能" Margin="0,3,0,0"/></StackPanel>
+                                <StackPanel Grid.Column="1" Margin="10,0,0,0"><TextBlock Text="外观与可访问性" FontWeight="SemiBold"/><TextBlock Text="主题、玻璃强度与辅助功能" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextTrimming="CharacterEllipsis" ToolTip="主题、玻璃强度与辅助功能" Margin="0,3,0,0"/></StackPanel>
                             </Grid>
                         </TabItem.Header>
                         <ui:Card Style="{StaticResource SettingsCard}">
@@ -144,7 +145,7 @@
                     <UniformGrid x:Name="AppearanceFields" Columns="2" Margin="0,0,0,12">
                         <StackPanel Margin="0,0,12,10">
                         <TextBlock Text="界面主题" Margin="0,0,0,4"/>
-                        <ComboBox Style="{StaticResource GscWpfUiComboBox}" SelectedValue="{Binding ThemeMode, Mode=TwoWay}" SelectedValuePath="Tag" SelectionChanged="OnThemeModeChanged">
+                        <ComboBox Style="{StaticResource GscWpfUiComboBox}" SelectedIndex="0" SelectedValue="{Binding ThemeMode, Mode=TwoWay, TargetNullValue={x:Static settings:GameSaveCenterThemeMode.FollowPlaynite}, FallbackValue={x:Static settings:GameSaveCenterThemeMode.FollowPlaynite}}" SelectedValuePath="Tag" SelectionChanged="OnThemeModeChanged">
                             <ComboBoxItem Content="跟随 Playnite" Tag="{x:Static settings:GameSaveCenterThemeMode.FollowPlaynite}"/>
                             <ComboBoxItem Content="浅色" Tag="{x:Static settings:GameSaveCenterThemeMode.Light}"/>
                             <ComboBoxItem Content="深色" Tag="{x:Static settings:GameSaveCenterThemeMode.Dark}"/>
@@ -180,7 +181,7 @@
                         <TabItem.Header>
                             <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="36"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                 <Border Width="28" Height="28" CornerRadius="9" Background="{DynamicResource GscAccentIconFillBrush}" VerticalAlignment="Center"><TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE72E;" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
-                                <StackPanel Grid.Column="1" Margin="10,0,0,0"><TextBlock Text="自动化与安全" FontWeight="SemiBold"/><TextBlock Text="自动任务、媒体来源与安全边界" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextTrimming="CharacterEllipsis" ToolTip="自动任务、媒体来源与安全边界" Margin="0,3,0,0"/></StackPanel>
+                                <StackPanel Grid.Column="1" Margin="10,0,0,0"><TextBlock Text="自动化与媒体" FontWeight="SemiBold"/><TextBlock Text="自动任务、媒体来源与安全边界" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextTrimming="CharacterEllipsis" ToolTip="自动任务、媒体来源与安全边界" Margin="0,3,0,0"/></StackPanel>
                             </Grid>
                         </TabItem.Header>
                         <ui:Card Style="{StaticResource SettingsCard}">
@@ -254,8 +255,8 @@
                     <TextBlock Text="导出文件包含非敏感插件设置、本地路径和云端目标名称，不包含 Rclone 密码。导入后先显示缺失路径报告，点击 Playnite 的保存按钮后才会生效。"
                                Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,0,0,12"/>
                     <WrapPanel VerticalAlignment="Center">
-                        <ui:Button Style="{StaticResource GscWpfUiSecondaryButton}" MinHeight="40" MinWidth="112" Content="导出设置" Click="OnExportSettingsClick" Margin="0,0,10,0"/>
-                        <ui:Button Style="{StaticResource GscWpfUiPrimaryButton}" MinHeight="40" MinWidth="112" Content="导入设置" Click="OnImportSettingsClick"/>
+                        <ui:Button Style="{StaticResource GscWpfUiSecondaryButton}" MinWidth="112" Content="导出设置" Click="OnExportSettingsClick" Margin="0,0,10,0"/>
+                        <ui:Button Style="{StaticResource GscWpfUiPrimaryButton}" MinWidth="112" Content="导入设置" Click="OnImportSettingsClick"/>
                     </WrapPanel>
                 </StackPanel>
             </ui:Card>

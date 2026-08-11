@@ -386,7 +386,7 @@ def check_dashboard_regressions() -> None:
         if token not in (dashboard + "\n" + workspace_ui):
             fail(f"Dashboard design-system guard is missing: {token}")
     responsive = (ROOT / "src/GameSaveCenter.Playnite/Views/DashboardView.xaml.cs").read_text(encoding="utf-8")
-    for boundary in ("width >= 1260", "width >= 980", "width >= 760", "height >= 760"):
+    for boundary in ("width >= 1280", "width >= 1080", "width >= 960", "height >= 760"):
         if boundary not in responsive:
             fail(f"Unified responsive breakpoint is missing: {boundary}")
     tokens = (ROOT / "src/GameSaveCenter.Playnite/Themes/DesignTokens.xaml").read_text(encoding="utf-8")
@@ -1046,7 +1046,7 @@ def check_responsive_ui_layout_guards() -> None:
         if token not in settings:
             fail(f"Settings responsive layout guard missing: {token}")
     for token in ("SizeChanged += OnSizeChanged", "ApplyResponsiveLayout(ActualWidth, ActualHeight)",
-                  "SettingsHeaderSubtitle.Visibility", "width < 720"):
+                  "SettingsHeaderSubtitle.Visibility", "layoutWidth < 720"):
         if token not in settings_code:
             fail(f"Settings responsive behavior guard missing: {token}")
     for token in ("SetToolbarLabelsVisible(mode == LayoutMode.Expanded)", "TopRefreshLabel.Visibility"):
@@ -1127,8 +1127,8 @@ def check_final_redesign_guards() -> None:
           'x:Name="MediaSummaryPanel"', 'x:Name="TaskSummaryPanel"',
          'x:Name="DiagnosticHealthPanel"', 'x:Name="SaveCandidateLayout"', '暂无判断依据')),
         (dashboard_code, "Dashboard final responsive behavior",
-         ('width >= 1260 ? LayoutMode.Expanded', 'width >= 980 ? LayoutMode.Standard',
-          'width >= 760 ? LayoutMode.Compact', 'Grid.SetRow(TopActionsScroller, 2)',
+         ('width >= 1280 ? LayoutMode.Expanded', 'width >= 1080 ? LayoutMode.Standard',
+          'width >= 960 ? LayoutMode.Compact', 'Grid.SetRow(TopActionsScroller, 2)',
           'Grid.SetColumnSpan(TopActionsScroller, 3)',
           'item.Width = visible ? double.NaN : 48', 'item.Height = visible ? double.NaN : 48',
           'card.Width = expanded ? double.NaN : 48', 'card.Height = expanded ? double.NaN : 50',
@@ -1145,7 +1145,7 @@ def check_final_redesign_guards() -> None:
           'x:Name="AppearanceFields"', 'x:Name="AutomationIntervalFields"',
           'Click="OnExportSettingsClick"', 'Click="OnImportSettingsClick"')),
         (settings_code, "Settings final responsive behavior",
-         ('var compact = width < 920', 'var narrow = width < 720',
+         ('var compact = layoutWidth < 920', 'var narrow = layoutWidth < 720',
           'SettingsSectionTabs.TabStripPlacement = compact ? Dock.Top : Dock.Left',
           'tab.MinWidth = compact ? (narrow ? 132 : 158) : 218',
           'SettingsDemoShell.Margin = new Thickness(horizontalMargin)',

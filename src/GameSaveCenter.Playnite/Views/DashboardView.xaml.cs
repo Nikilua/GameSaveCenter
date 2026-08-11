@@ -233,9 +233,9 @@ namespace GameSaveCenter.Playnite.Views
         {
             if (SidebarColumn == null || GameListColumn == null) return;
 
-            var mode = width >= 1260 ? LayoutMode.Expanded
-                : width >= 980 ? LayoutMode.Standard
-                : width >= 760 ? LayoutMode.Compact
+            var mode = width >= 1280 ? LayoutMode.Expanded
+                : width >= 1080 ? LayoutMode.Standard
+                : width >= 960 ? LayoutMode.Compact
                 : LayoutMode.Narrow;
             viewModel.LayoutMode = mode;
 
@@ -305,7 +305,7 @@ namespace GameSaveCenter.Playnite.Views
                 : 72);
             SidebarGutterColumn.Width = new GridLength(iconSidebar ? 10 : 16);
             TopChromeSafetyColumn.Width = new GridLength(0);
-            ToastHost.Margin = new Thickness(0, height < 760 ? 66 : 78, width < 980 ? 12 : 22, 0);
+            ToastHost.Margin = new Thickness(0, height < 760 ? 66 : 78, width < 1080 ? 12 : 22, 0);
             SetSidebarLabelsVisible(!iconSidebar);
             SetToolbarLabelsVisible(mode == LayoutMode.Expanded);
 
@@ -402,6 +402,30 @@ namespace GameSaveCenter.Playnite.Views
             Grid.SetColumnSpan(GameDetailCard, 3);
             GameDetailCard.Margin = new Thickness(0);
 
+            // The shell breakpoint is based on the complete Playnite page, but every
+            // extracted workspace must make its inspector decision from the width it can
+            // actually arrange. Passing the window width here made a 1280-DIP page behave
+            // as if the table had 1280 DIP available even though the sidebar, gutter and
+            // shell padding had already consumed several hundred DIP. Use the measured tab
+            // host when available and a deterministic shell-aware fallback during the first
+            // measure pass so the shared * + 14 + 360 layout remains truthful at every DPI.
+            var sidebarWidth = SidebarColumn.ActualWidth > 0
+                ? SidebarColumn.ActualWidth
+                : SidebarColumn.Width.Value;
+            var sidebarGutterWidth = SidebarGutterColumn.ActualWidth > 0
+                ? SidebarGutterColumn.ActualWidth
+                : SidebarGutterColumn.Width.Value;
+            var shellHorizontalInset = DashboardDemoShell.Margin.Left
+                + DashboardDemoShell.Margin.Right
+                + DashboardDemoShell.Padding.Left
+                + DashboardDemoShell.Padding.Right;
+            var measuredWorkspaceWidth = WorkspaceGrid.ActualWidth > 0
+                ? WorkspaceGrid.ActualWidth
+                : Math.Max(320d, width - shellHorizontalInset - sidebarWidth - sidebarGutterWidth);
+            var workspaceContentWidth = DetailsTabControl.ActualWidth > 0
+                ? DetailsTabControl.ActualWidth
+                : Math.Max(320d, measuredWorkspaceWidth - GameDetailCard.Padding.Left - GameDetailCard.Padding.Right);
+
             // Trainers and media have a local pill row below the selected-game header. Keep
             // that breathing room, but reclaim a few DIP in compact windows so the table's
             // star row remains the first thing that scrolls instead of disappearing below the
@@ -429,10 +453,10 @@ namespace GameSaveCenter.Playnite.Views
             }
             if (OverviewWorkspaceView != null)
             {
-                var stackOverview = width < 1040;
+                var stackOverview = workspaceContentWidth < 900;
                 OverviewWorkspaceView.OverviewCompactSecondaryRowHeight = stackOverview ? GridLength.Auto : new GridLength(0);
                 OverviewWorkspaceView.ApplyResponsiveColumns(stackOverview);
-                OverviewWorkspaceView.ApplyResponsiveWidth(width);
+                OverviewWorkspaceView.ApplyResponsiveWidth(workspaceContentWidth);
                 OverviewWorkspaceView.ApplyResponsiveHeight(height, stackOverview);
             }
 
@@ -442,7 +466,12 @@ namespace GameSaveCenter.Playnite.Views
                 // Do not restore the legacy metric strip here: UpdateWorkspacePresentation
                 // intentionally collapses it so the page header does not duplicate the
                 // picker and consume the table viewport.
-                var stackGameHeaderActions = width < 1180;
+                // The selected-game header lives inside the measured workspace, not the
+                // complete Playnite page. Using the shell width here kept five actions on
+                // one row after the sidebar had already consumed 200+ DIP, which compressed
+                // the identity and metric columns instead of following the Demo's readable
+                // context-header rhythm.
+                var stackGameHeaderActions = workspaceContentWidth < 1180;
                 Grid.SetRow(GameHeaderActions, stackGameHeaderActions ? 1 : 0);
                 Grid.SetColumn(GameHeaderActions, stackGameHeaderActions ? 0 : 1);
                 Grid.SetColumnSpan(GameHeaderActions, stackGameHeaderActions ? 2 : 1);
@@ -456,12 +485,12 @@ namespace GameSaveCenter.Playnite.Views
 
             if (MediaWorkspaceView != null)
             {
-                MediaWorkspaceView.ApplyResponsiveLayout(width, height);
+                MediaWorkspaceView.ApplyResponsiveLayout(workspaceContentWidth, height);
             }
 
             if (TaskWorkspaceView != null)
             {
-                TaskWorkspaceView.ApplyResponsiveLayout(width, height);
+                TaskWorkspaceView.ApplyResponsiveLayout(workspaceContentWidth, height);
             }
 
             // Every extracted workspace owns its wrapped action/inspector channels.  Keeping
@@ -469,17 +498,17 @@ namespace GameSaveCenter.Playnite.Views
             // from silently retaining their desktop-sized MaxHeight values after a resize.
             if (SaveWorkspaceView != null)
             {
-                SaveWorkspaceView.ApplyResponsiveLayout(width, height);
+                SaveWorkspaceView.ApplyResponsiveLayout(workspaceContentWidth, height);
             }
 
             if (TrainerWorkspaceView != null)
             {
-                TrainerWorkspaceView.ApplyResponsiveLayout(width, height);
+                TrainerWorkspaceView.ApplyResponsiveLayout(workspaceContentWidth, height);
             }
 
             if (MaintenanceWorkspaceView != null)
             {
-                MaintenanceWorkspaceView.ApplyResponsiveLayout(width, height);
+                MaintenanceWorkspaceView.ApplyResponsiveLayout(workspaceContentWidth, height);
             }
 
             // Responsive behavior now belongs to each extracted workspace view.

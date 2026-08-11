@@ -335,16 +335,27 @@ namespace GameSaveCenter.Playnite.Settings
 
         private void ApplyResponsiveLayout(double width, double height)
         {
-            if (SettingsShell == null || SettingsHeaderSubtitle == null || SettingsSectionTabs == null) return;
+            if (SettingsShell == null || SettingsHeaderGrid == null || SettingsHeaderHintRow == null
+                || SettingsHeaderSubtitle == null || SettingsSaveHint == null || SettingsSectionTabs == null) return;
+
+            // SettingsShell is the real layout surface.  The Playnite settings host can be
+            // wider than this shell because the shell is capped at 1360 DIP and inset by the
+            // product frame.  Using the outer UserControl width here made the form keep two
+            // or three columns after its actual content had already crossed the readable
+            // threshold, squeezing ComboBox/TextBox rows instead of following the Demo's
+            // content-width breakpoints.
+            var layoutWidth = SettingsShell.ActualWidth > 0
+                ? SettingsShell.ActualWidth
+                : Math.Max(320, width - 2 * 18 - 2 * 20);
 
             // Settings uses the same four product breakpoints as Dashboard.  The category
             // rail moves above the content before it can squeeze forms or create horizontal
             // scrolling; fields then collapse independently according to their readable width.
-            var expanded = width >= 1180;
-            var compact = width < 920;
-            var narrow = width < 720;
+            var expanded = layoutWidth >= 1180;
+            var compact = layoutWidth < 920;
+            var narrow = layoutWidth < 720;
             var horizontalMargin = narrow ? 10 : 18;
-            var contentWidth = Math.Max(320, width - horizontalMargin * 2 - 40);
+            var contentWidth = Math.Max(320, layoutWidth - horizontalMargin * 2 - 40);
             var formWidth = compact ? contentWidth : Math.Max(320, contentWidth - 248);
 
             // The outer SettingsDemoShell owns the product-level 18-DIP breathing room.
@@ -361,7 +372,21 @@ namespace GameSaveCenter.Playnite.Settings
             SettingsHeaderSubtitle.Visibility = Visibility.Visible;
             SettingsHeaderSubtitle.MaxWidth = narrow ? 300 : double.PositiveInfinity;
             SettingsSaveHint.Visibility = Visibility.Visible;
-            SettingsSaveHint.MaxWidth = width >= 1040 ? 320 : narrow ? 180 : 230;
+            SettingsSaveHint.MaxWidth = layoutWidth >= 1040 ? 320 : narrow ? 180 : 230;
+            var stackHeaderHint = compact;
+            SettingsHeaderHintRow.Height = stackHeaderHint ? GridLength.Auto : new GridLength(0);
+            Grid.SetRow(SettingsSaveHint, stackHeaderHint ? 1 : 0);
+            Grid.SetColumn(SettingsSaveHint, stackHeaderHint ? 1 : 2);
+            Grid.SetColumnSpan(SettingsSaveHint, stackHeaderHint ? 2 : 1);
+            SettingsSaveHint.HorizontalAlignment = stackHeaderHint
+                ? HorizontalAlignment.Left
+                : HorizontalAlignment.Stretch;
+            SettingsSaveHint.VerticalAlignment = stackHeaderHint
+                ? VerticalAlignment.Top
+                : VerticalAlignment.Center;
+            SettingsSaveHint.Margin = stackHeaderHint
+                ? new Thickness(0, 12, 0, 0)
+                : new Thickness(14, 0, 0, 0);
             SettingsSectionTabs.TabStripPlacement = compact ? Dock.Top : Dock.Left;
 
             foreach (var item in SettingsSectionTabs.Items)

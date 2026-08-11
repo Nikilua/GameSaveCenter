@@ -7,7 +7,22 @@ namespace GameSaveCenter.Playnite.Views
 {
     public partial class MediaCenterView : UserControl
     {
-        public MediaCenterView() => InitializeComponent();
+        private double responsiveWidth;
+        private double responsiveHeight;
+
+        public MediaCenterView()
+        {
+            InitializeComponent();
+            MediaInspectorScrollViewer.IsVisibleChanged += OnMediaInspectorIsVisibleChanged;
+        }
+
+        private void OnMediaInspectorIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (!IsLoaded || responsiveWidth <= 0 || responsiveHeight <= 0)
+                return;
+
+            ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
+        }
 
         public UniformGrid MediaSummaryPanelElement => MediaSummaryPanel;
         public UniformGrid MediaSourceFieldsElement => MediaSourceFields;
@@ -19,14 +34,8 @@ namespace GameSaveCenter.Playnite.Views
 
         public void ApplyResponsiveLayout(double width, double height)
         {
-            // The inspector contains wrapping controls and media metadata. Give it its own
-            // finite scroll channel at low heights so the media table above remains reachable.
-            // On wide layouts the inspector is a peer of the media list and must stretch to
-            // the same finite Grid row. A hard 300-DIP cap made its border appear to float
-            // outside the table frame and left unused space below it.
-            MediaInspectorScrollViewer.MaxHeight = width >= 1080
-                ? double.PositiveInfinity
-                : Math.Max(220, Math.Min(420, height * 0.56));
+            responsiveWidth = width;
+            responsiveHeight = height;
             MediaSummaryPanel.Columns = width >= 1180 ? 4 : width >= 820 ? 2 : 1;
             // Do not discard summary information at short heights. Local list/inspector
             // surfaces own overflow so the whole workspace does not become a scroll canvas.
@@ -36,18 +45,26 @@ namespace GameSaveCenter.Playnite.Views
             // work area on wide hosts; on compact hosts the inspector moves
             // below the table instead of becoming a narrow strip.
             var stack = width < 1080;
+            var showInspector = MediaInspectorScrollViewer.Visibility == Visibility.Visible;
             var inspectorWidth = MediaCurrentLayout.TryFindResource("GscInspectorWidth") is GridLength gl ? gl : new GridLength(360);
-            MediaCurrentLayout.ColumnDefinitions[1].Width = stack ? new GridLength(0) : new GridLength(14);
-            MediaCurrentLayout.ColumnDefinitions[2].Width = stack ? new GridLength(0) : inspectorWidth;
-            MediaCurrentLayout.RowDefinitions[3].Height = stack ? new GridLength(1, GridUnitType.Auto) : new GridLength(0);
+            MediaCurrentLayout.ColumnDefinitions[1].Width = showInspector && !stack ? new GridLength(14) : new GridLength(0);
+            MediaCurrentLayout.ColumnDefinitions[2].Width = showInspector && !stack ? inspectorWidth : new GridLength(0);
+            MediaCurrentLayout.RowDefinitions[3].Height = showInspector && stack
+                ? new GridLength(1, GridUnitType.Auto)
+                : new GridLength(0);
             Grid.SetColumn(MediaInspectorFrame, stack ? 0 : 2);
             Grid.SetColumnSpan(MediaInspectorFrame, stack ? 3 : 1);
             Grid.SetRow(MediaInspectorFrame, stack ? 3 : 2);
-            MediaInspectorFrame.Margin = stack ? new Thickness(0, 10, 0, 0) : new Thickness(0);
+            MediaInspectorFrame.Margin = showInspector && stack ? new Thickness(0, 10, 0, 0) : new Thickness(0);
             // The inspector itself always uses the demo's details-first layout:
             // 媒体详情 -> 文件名/路径 -> 预览 -> 收藏/备注/保存/打开.
             // Responsive work only moves that complete inspector beside/below the media list;
             // it never rewrites the inspector's internal visual tree during a resize.
+            // Give a real inspector its own finite scroll channel only when it is stacked;
+            // an empty selection must not retain a hidden capped surface.
+            MediaInspectorScrollViewer.MaxHeight = showInspector && stack
+                ? Math.Max(220, Math.Min(420, height * 0.56))
+                : double.PositiveInfinity;
             MediaPreviewPanel.Margin = new Thickness(0, 14, 0, 14);
         }
     }
