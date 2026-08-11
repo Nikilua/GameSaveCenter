@@ -704,7 +704,7 @@ public sealed class WpfUiResourceDictionaryTests
         var overviewCode = File.ReadAllText(Path.Combine(viewDirectory, "OverviewView.xaml.cs"));
         Assert.Contains("OverviewSecondaryScrollViewer.VerticalScrollBarVisibility = stack", overviewCode);
         Assert.Contains("OverviewRiskScrollViewer.VerticalScrollBarVisibility = stack", overviewCode);
-        Assert.Contains("<ScrollViewer Style=\"{DynamicResource GscPageScrollViewer}\" VerticalScrollBarVisibility=\"Hidden\"", save);
+        Assert.Contains("<ScrollViewer Style=\"{DynamicResource GscPageScrollViewer}\" VerticalScrollBarVisibility=\"Auto\"", save);
         Assert.Contains("x:Name=\"MediaSourceRulesFrame\"", media);
         Assert.DoesNotContain("MediaSourceRulesPageScroller", media);
         Assert.DoesNotContain("Grid.Row=\"0\" MaxHeight=\"190\"", media);
@@ -817,7 +817,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"SettingsScroller\" Style=\"{DynamicResource GscPageScrollViewer}\"", settings);
         Assert.Contains("x:Name=\"SidebarNavigationScrollViewer\"", dashboard);
         Assert.Contains("Style=\"{DynamicResource GscPageScrollViewer}\"", dashboard);
-        Assert.DoesNotContain("SettingsScroller\" VerticalScrollBarVisibility=\"Auto\" HorizontalScrollBarVisibility=\"Disabled\" KeyboardNavigation", settings);
+        Assert.Contains("x:Name=\"SettingsScroller\" Style=\"{DynamicResource GscPageScrollViewer}\" VerticalScrollBarVisibility=\"Auto\" HorizontalScrollBarVisibility=\"Disabled\"", settings);
     }
 
     [Fact]
@@ -1648,7 +1648,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Stroke=\"{DynamicResource GscOnAccentTextBrush}\"", tokens);
         Assert.Contains("ScrollViewer.VerticalScrollBarVisibility=\"Auto\"", dashboard);
         Assert.Contains("Property=\"ScrollViewer.VerticalScrollBarVisibility\" Value=\"Auto\"", trainer);
-        Assert.Contains("VerticalScrollBarVisibility=\"Hidden\"", overview);
+        Assert.Contains("VerticalScrollBarVisibility=\"Auto\"", overview);
         Assert.Contains("BasedOn=\"{StaticResource GscRedesignWorkspaceTabControl}\"", saves);
         Assert.Contains("BasedOn=\"{StaticResource GscRedesignWorkspaceTabControl}\"", media);
         Assert.Contains("BasedOn=\"{StaticResource GscRedesignWorkspaceTabControl}\"", maintenance);
@@ -2251,6 +2251,7 @@ public sealed class WpfUiResourceDictionaryTests
         var designTokens = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml"));
 
         Assert.Contains("x:Key=\"GscPageScrollViewer\"", designTokens);
+        Assert.Contains("<Setter Property=\"VerticalScrollBarVisibility\" Value=\"Auto\"/>", designTokens);
         Assert.Contains("<Setter Property=\"HorizontalContentAlignment\" Value=\"Stretch\"/>", designTokens);
         Assert.Contains("<Setter Property=\"VerticalContentAlignment\" Value=\"Top\"/>", designTokens);
         Assert.Contains("<Setter Property=\"Padding\" Value=\"0,0,4,6\"/>", designTokens);
@@ -3024,7 +3025,7 @@ public sealed class WpfUiResourceDictionaryTests
 
         Assert.Contains("x:Name=\"AppearanceFields\" Columns=\"2\"", settings);
         Assert.Contains("x:Name=\"AutomationIntervalFields\" Columns=\"3\"", settings);
-        Assert.Contains("x:Name=\"SettingsScroller\" Style=\"{DynamicResource GscPageScrollViewer}\" VerticalScrollBarVisibility=\"Hidden\" HorizontalScrollBarVisibility=\"Disabled\"", settings);
+        Assert.Contains("x:Name=\"SettingsScroller\" Style=\"{DynamicResource GscPageScrollViewer}\" VerticalScrollBarVisibility=\"Auto\" HorizontalScrollBarVisibility=\"Disabled\"", settings);
         Assert.Contains("Path=\"DefaultBackupIntervalMinutes\" UpdateSourceTrigger=\"LostFocus\"", settings);
         Assert.Contains("Path=\"ProcessPollingSeconds\" UpdateSourceTrigger=\"LostFocus\"", settings);
         Assert.Contains("Path=\"DashboardRefreshSeconds\" UpdateSourceTrigger=\"LostFocus\"", settings);
