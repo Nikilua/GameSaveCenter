@@ -21,6 +21,7 @@ namespace GameSaveCenter.Playnite.Views
             MaintenanceDeviceGrid.Loaded += DataGridLoaded;
             MaintenanceAuditFindingsGrid.Loaded += DataGridLoaded;
             MaintenanceAuditLogGrid.Loaded += DataGridLoaded;
+            MaintenanceProcessGrid.Loaded += DataGridLoaded;
             MaintenanceDiagnosticsInspector.IsVisibleChanged += InspectorIsVisibleChanged;
             MaintenanceAuditInspector.IsVisibleChanged += InspectorIsVisibleChanged;
             MaintenanceProcessInspector.IsVisibleChanged += InspectorIsVisibleChanged;
@@ -75,7 +76,12 @@ namespace GameSaveCenter.Playnite.Views
             // Keep a predictable findings viewport instead of allowing the action cards,
             // health cards and diagnostic summary to squeeze the table down to one row.
             // MaintenanceDiagnosticsScrollSurface owns overflow outside this finite table.
-            FindingsGrid.Height = Math.Max(236d, Math.Min(460d, height * 0.50));
+            const double tableMinHeight = 236d;
+            FindingsGrid.MinHeight = tableMinHeight;
+            FindingsGrid.Height = Math.Max(tableMinHeight, Math.Min(460d, height * 0.50));
+            MaintenanceDeviceGrid.MinHeight = tableMinHeight;
+            MaintenanceAuditFindingsGrid.MinHeight = tableMinHeight;
+            MaintenanceProcessGrid.MinHeight = tableMinHeight;
             var compact = height < 760 || width < 980;
             // The retention page is a left-aligned reading form capped at 1050.
             // Give the StackPanel an explicit viewport width so the cards fill
@@ -172,9 +178,16 @@ namespace GameSaveCenter.Playnite.Views
             MaintenanceDeviceInspectorScrollViewer.Margin = new Thickness(0, 10, 0, 0);
             // Single inspector scroll owner owns both the manual decision and the
             // protected remote restore. It fills the table row on wide screens with
-            // its own internal scroll and only gets a finite budget when stacking
-            // below the table on compact windows.
-            MaintenanceDeviceInspectorScrollViewer.MaxHeight = stackDevice ? Math.Max(180, Math.Min(420, height * 0.42)) : double.PositiveInfinity;
+            // its own internal scroll and only gets the measured remaining budget when
+            // stacking below the table on compact windows. This reserves a readable
+            // table viewport at common windowed and high-DPI logical heights.
+            var deviceAvailableHeight = MaintenanceDeviceLayout.ActualHeight > 0
+                ? MaintenanceDeviceLayout.ActualHeight
+                    - MaintenanceDeviceLayout.RowDefinitions[0].ActualHeight
+                    - MaintenanceDeviceLayout.RowDefinitions[1].ActualHeight
+                : Math.Max(320, height - 250);
+            var deviceInspectorHeight = Math.Max(96, Math.Min(420, deviceAvailableHeight - tableMinHeight - 10));
+            MaintenanceDeviceInspectorScrollViewer.MaxHeight = stackDevice ? deviceInspectorHeight : double.PositiveInfinity;
 
             var stackAudit = width < 1120 || height < 700;
             var showAuditInspector = MaintenanceAuditInspector.Visibility == Visibility.Visible;
@@ -187,9 +200,13 @@ namespace GameSaveCenter.Playnite.Views
             Grid.SetRow(MaintenanceAuditInspector, stackAudit ? 1 : 0);
             MaintenanceAuditInspector.Margin = showAuditInspector && stackAudit ? new Thickness(0, 10, 0, 0) : new Thickness(0);
             // The detail inspector owns only the selected finding; the recent audit log
-            // lives in its own full-width strip. In stacked mode both share a finite
-            // vertical budget so the findings table keeps the remaining rows.
-            MaintenanceAuditInspector.MaxHeight = showAuditInspector && stackAudit ? Math.Max(150, height * 0.34) : double.PositiveInfinity;
+            // lives in its own full-width strip. In stacked mode both share the measured
+            // vertical budget so the findings table keeps a readable viewport.
+            var auditAvailableHeight = MaintenanceAuditLayout.ActualHeight > 0
+                ? MaintenanceAuditLayout.ActualHeight - MaintenanceAuditLayout.RowDefinitions[2].ActualHeight
+                : Math.Max(320, height - 200);
+            var auditInspectorHeight = Math.Max(96, Math.Min(420, auditAvailableHeight - tableMinHeight - 10));
+            MaintenanceAuditInspector.MaxHeight = showAuditInspector && stackAudit ? auditInspectorHeight : double.PositiveInfinity;
             MaintenanceAuditLogGrid.MinHeight = stackAudit ? 96 : 140;
             MaintenanceAuditLogGrid.MaxHeight = stackAudit ? Math.Max(120, height * 0.20) : 280;
         }

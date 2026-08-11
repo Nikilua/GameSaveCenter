@@ -747,7 +747,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("MediaGrid.Height = tableViewportHeight", mediaCode);
 
         Assert.Contains("x:Name=\"MaintenanceDiagnosticsScrollSurface\"", maintenance);
-        Assert.Contains("FindingsGrid.Height = Math.Max(236d, Math.Min(460d, height * 0.50))", maintenanceCode);
+        Assert.Contains("const double tableMinHeight = 236d", maintenanceCode);
+        Assert.Contains("FindingsGrid.Height = Math.Max(tableMinHeight, Math.Min(460d, height * 0.50))", maintenanceCode);
         Assert.Contains("MaintenanceDiagnosticsScrollSurface", maintenanceCode + maintenance);
 
         Assert.Contains("1080p", gate);
@@ -932,7 +933,13 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Equal("Auto", auditInspector.Attribute("VerticalScrollBarVisibility")?.Value);
         Assert.Equal("Disabled", auditInspector.Attribute("HorizontalScrollBarVisibility")?.Value);
         Assert.Null(auditInspector.Attribute("MaxHeight"));
-        Assert.Contains("MaintenanceAuditInspector.MaxHeight = showAuditInspector && stackAudit ? Math.Max(150, height * 0.34) : double.PositiveInfinity", File.ReadAllText(maintenancePath + ".cs"));
+        var maintenanceCode = File.ReadAllText(maintenancePath + ".cs");
+        Assert.Contains("const double tableMinHeight = 236d", maintenanceCode);
+        Assert.Contains("MaintenanceAuditFindingsGrid.MinHeight = tableMinHeight", maintenanceCode);
+        Assert.Contains("var auditAvailableHeight", maintenanceCode);
+        Assert.Contains("MaintenanceAuditLayout.RowDefinitions[2].ActualHeight", maintenanceCode);
+        Assert.Contains("var auditInspectorHeight", maintenanceCode);
+        Assert.Contains("MaintenanceAuditInspector.MaxHeight = showAuditInspector && stackAudit ? auditInspectorHeight : double.PositiveInfinity", maintenanceCode);
         Assert.DoesNotContain("Height=\"{DynamicResource GscTableViewportHeight}\"", maintenanceText);
     }
 
@@ -1093,10 +1100,14 @@ public sealed class WpfUiResourceDictionaryTests
     public void MaintenanceProcessTableSpansFullWidthUntilAMappingIsSelected()
     {
         var repositoryRoot = FindRepositoryRoot();
-        var maintenanceText = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+        var maintenancePath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml");
+        var maintenanceText = File.ReadAllText(maintenancePath);
+        var maintenanceCode = File.ReadAllText(maintenancePath + ".cs");
 
         Assert.Contains("x:Name=\"MaintenanceProcessTable\"", maintenanceText);
+        Assert.Contains("x:Name=\"MaintenanceProcessGrid\" Style=\"{StaticResource MaintenanceDataGrid}\"", maintenanceText);
         Assert.Contains("x:Name=\"MaintenanceProcessInspector\"", maintenanceText);
+        Assert.Contains("MaintenanceProcessGrid.MinHeight = tableMinHeight", maintenanceCode);
         Assert.Contains("<DataTrigger Binding=\"{Binding SelectedProcessMapping}\" Value=\"{x:Null}\">", maintenanceText);
         Assert.Contains("Command=\"{Binding DeleteProcessMappingCommand}\" CommandParameter=\"{Binding SelectedProcessMapping}\"", maintenanceText);
         Assert.Contains("Command=\"{Binding SaveProcessMappingCommand}\"", maintenanceText);
@@ -1398,7 +1409,11 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Equal("Stretch", viewer.Attribute("VerticalContentAlignment")?.Value);
         Assert.Null(viewer.Attribute("MaxHeight"));
 
-        Assert.Contains("MaintenanceDeviceInspectorScrollViewer.MaxHeight = stackDevice ? Math.Max(180, Math.Min(420, height * 0.42)) : double.PositiveInfinity;", maintenanceCode);
+        Assert.Contains("MaintenanceDeviceGrid.MinHeight = tableMinHeight", maintenanceCode);
+        Assert.Contains("var deviceAvailableHeight", maintenanceCode);
+        Assert.Contains("MaintenanceDeviceLayout.RowDefinitions[0].ActualHeight", maintenanceCode);
+        Assert.Contains("var deviceInspectorHeight", maintenanceCode);
+        Assert.Contains("MaintenanceDeviceInspectorScrollViewer.MaxHeight = stackDevice ? deviceInspectorHeight : double.PositiveInfinity;", maintenanceCode);
         Assert.Contains("Command=\"{Binding SaveDeviceDecisionCommand}\"", maintenanceText);
         Assert.Contains("Command=\"{Binding StageRemoteBackupCommand}\"", maintenanceText);
         Assert.Contains("Command=\"{Binding RestoreStagedRemoteBackupCommand}\"", maintenanceText);
