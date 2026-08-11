@@ -1,4 +1,3 @@
-using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.IO.Compression;
 using System.Security.Cryptography;
@@ -21,11 +20,11 @@ public sealed class GameToolService
     private readonly ITrainerCatalogSource _catalog;
     private readonly TaskCoordinator _tasks;
     private readonly ILogger<GameToolService> _logger;
-    private readonly ConcurrentDictionary<string,List<LaunchedTool>> _sessionProcesses=new(StringComparer.OrdinalIgnoreCase);
-    private readonly ConcurrentDictionary<string,CancellationTokenSource> _sessionDelays=new(StringComparer.OrdinalIgnoreCase);
+    private readonly GameToolSessionTracker _sessionTracker=new();
+    private readonly IShortcutResolver _shortcutResolver;
 
-    public GameToolService(WorkerOptions options,SqliteStateStore store,ITrainerCatalogSource catalog,TaskCoordinator tasks,ILogger<GameToolService> logger)
-    {_options=options;_store=store;_catalog=catalog;_tasks=tasks;_logger=logger;}
+    public GameToolService(WorkerOptions options,SqliteStateStore store,ITrainerCatalogSource catalog,TaskCoordinator tasks,ILogger<GameToolService> logger,IShortcutResolver? shortcutResolver=null)
+    {_options=options;_store=store;_catalog=catalog;_tasks=tasks;_logger=logger;_shortcutResolver=shortcutResolver??new WindowsShortcutResolver();}
 
     public Task<List<GameToolDto>> ListAsync(string gameId,CancellationToken token)=>_store.GetGameToolsAsync(gameId,token);
 
@@ -33,7 +32,12 @@ public sealed class GameToolService
     {
         var source=Path.GetFullPath(Environment.ExpandEnvironmentVariables(request.SourcePath??string.Empty));
         if(!File.Exists(source)&&!Directory.Exists(source))throw new FileNotFoundException("导入源不存在。",source);
-        var extension=request.ToolType==GameToolType.CheatTable?".ct":".exe";
+        var extension=request.ToolType switch
+        {
+            GameToolType.CheatTable=>".ct",
+            GameToolType.CustomExecutable=>null,
+            _=>".exe"
+        };
         var candidates=new List<GameToolEntryCandidateDto>();
         if(Directory.Exists(source))
         {
@@ -44,7 +48,7 @@ public sealed class GameToolService
                 candidates.Add(new GameToolEntryCandidateDto{RelativePath=Path.GetRelativePath(source,path),SizeBytes=new FileInfo(path).Length});
             }
         }
-        else if(source.EndsWith(".zip",StringComparison.OrdinalIgnoreCase))
+        else if(source.EndsWith(".zip",StringComparison.OrdinalIgnoreCase)&&request.ToolType!=GameToolType.CustomExecutable)
         {
             using var zip=ZipFile.OpenRead(source);
             ValidateArchiveShape(zip);
@@ -62,7 +66,7 @@ public sealed class GameToolService
 
         candidates=candidates.OrderByDescending(x=>IsLikelyPrimaryEntry(x.RelativePath))
             .ThenByDescending(x=>x.SizeBytes).ThenBy(x=>x.RelativePath,StringComparer.OrdinalIgnoreCase).ToList();
-        if(candidates.Count==0)throw new InvalidDataException($"未在导入内容中找到 {extension}。");
+        if(candidates.Count==0)throw new InvalidDataException($"未在导入内容中找到 {(extension??"可启动文件")}。");
         return Task.FromResult(new GameToolImportInspectionDto{SourcePath=source,ToolType=request.ToolType,Candidates=candidates});
     }
 
@@ -78,7 +82,7 @@ public sealed class GameToolService
         var root=Path.Combine(_options.GameToolsDirectory,SafeSegment(request.PlayniteId),toolId,versionId);
         Directory.CreateDirectory(root);
         string entry;
-        if(File.Exists(source)&&source.EndsWith(".zip",StringComparison.OrdinalIgnoreCase))
+        if(File.Exists(source)&&source.EndsWith(".zip",StringComparison.OrdinalIgnoreCase)&&request.ToolType!=GameToolType.CustomExecutable)
         {
             ExtractZipSafely(source,root);
             entry=SelectEntry(root,request.EntryFileName,request.ToolType);
@@ -129,7 +133,7 @@ public sealed class GameToolService
     public async Task<object> LaunchAsync(string toolId,CancellationToken token)
     {
         var tool=await _store.GetGameToolAsync(toolId,token).ConfigureAwait(false)??throw new KeyNotFoundException("游戏工具不存在。");
-        var process=Launch(tool);return new{started=true,processId=process.Id};
+        var (process,_)=LaunchWithPlan(tool);return new{started=true,processId=process.Id};
     }
 
     public async Task<object> OpenDirectoryAsync(string toolId,CancellationToken token)
@@ -152,26 +156,13 @@ public sealed class GameToolService
         }
         var tools=(await _store.GetGameToolsAsync(session.PlayniteId,token).ConfigureAwait(false)).Where(x=>x.Enabled&&x.AutoStart).ToList();
         if(tools.Count==0)return;
-        var linked=CancellationTokenSource.CreateLinkedTokenSource(token);_sessionDelays[session.SessionId]=linked;
+        var linked=CancellationTokenSource.CreateLinkedTokenSource(token);_sessionTracker.RegisterDelay(session.SessionId,linked);
         foreach(var tool in tools)_=LaunchAfterDelayAsync(session,tool,linked.Token);
     }
 
     public async Task StopAutomaticAsync(string sessionId,CancellationToken token)
     {
-        if(_sessionDelays.TryRemove(sessionId,out var delay)){delay.Cancel();delay.Dispose();}
-        if(!_sessionProcesses.TryRemove(sessionId,out var launched))return;
-        foreach(var item in launched.Where(x=>x.CloseOnExit))
-        {
-            try
-            {
-                using var process=Process.GetProcessById(item.ProcessId);
-                if(process.StartTime.ToUniversalTime()<item.StartedUtc.AddSeconds(-3))continue;
-                process.CloseMainWindow();
-                if(!process.WaitForExit(2500))process.Kill();
-            }
-            catch(Exception ex){_logger.LogWarning(ex,"Could not close game tool PID {Pid}",item.ProcessId);}
-        }
-        await Task.CompletedTask;
+        await _sessionTracker.CloseSessionAsync(sessionId,TimeSpan.FromSeconds(2.5),_logger,token).ConfigureAwait(false);
     }
 
     public async Task<TaskStatusDto> DownloadAsync(DownloadTrainerRequestDto request,CancellationToken token)
@@ -250,9 +241,9 @@ public sealed class GameToolService
         {
             var delay=tool.LaunchTiming==GameToolLaunchTiming.Delayed?Math.Clamp(tool.LaunchDelaySeconds,0,300):0;
             if(delay>0)await Task.Delay(TimeSpan.FromSeconds(delay),token).ConfigureAwait(false);
-            var process=Launch(tool);
-            var list=_sessionProcesses.GetOrAdd(session.SessionId,_=>new List<LaunchedTool>());
-            lock(list)list.Add(new LaunchedTool(process.Id,DateTime.UtcNow,tool.CloseOnGameExit));
+            var (process,trackable)=LaunchWithPlan(tool);
+            var closeOnExit=tool.CloseOnGameExit&&trackable;
+            _sessionTracker.Track(session.SessionId,process.Id,DateTime.UtcNow,closeOnExit);
             await _store.AppendAuditAsync("GameTool","已随游戏启动工具",
                 System.Text.Json.JsonSerializer.Serialize(new{session.SessionId,tool.ToolId,tool.DisplayName,processId=process.Id}),CancellationToken.None).ConfigureAwait(false);
         }
@@ -265,17 +256,11 @@ public sealed class GameToolService
         }
     }
 
-    private static Process Launch(GameToolDto tool)
+    private (Process Process,bool Trackable) LaunchWithPlan(GameToolDto tool)
     {
-        var version=tool.ActiveVersion;
-        if(!File.Exists(version.EntryPath))throw new FileNotFoundException("工具文件不存在，可能已被移动或安全软件隔离。",version.EntryPath);
-        if(tool.ToolType!=GameToolType.CheatTable&&!version.EntryPath.EndsWith(".exe",StringComparison.OrdinalIgnoreCase))
-            throw new InvalidOperationException("修改器启动文件必须是 EXE。");
-        var start=new ProcessStartInfo{FileName=version.EntryPath,Arguments=version.Arguments??string.Empty,
-            WorkingDirectory=Directory.Exists(version.WorkingDirectory)?version.WorkingDirectory:Path.GetDirectoryName(version.EntryPath)??string.Empty,
-            UseShellExecute=true};
-        if(tool.RequiresAdmin)start.Verb="runas";
-        return Process.Start(start)??throw new InvalidOperationException("Windows 未返回工具进程。");
+        var plan=GameToolLauncher.Build(tool,_shortcutResolver);
+        var process=Process.Start(plan.StartInfo)??throw new InvalidOperationException("Windows 未返回工具进程。");
+        return (process,plan.Trackable);
     }
 
     private static void ExtractZipSafely(string archive,string destination)
@@ -314,6 +299,13 @@ public sealed class GameToolService
             var selected=Path.GetFullPath(Path.Combine(root,requested));
             if(selected.StartsWith(Path.GetFullPath(root)+Path.DirectorySeparatorChar,StringComparison.OrdinalIgnoreCase)&&File.Exists(selected))return selected;
         }
+        if(type==GameToolType.CustomExecutable)
+        {
+            var files=Directory.GetFiles(root,"*",SearchOption.AllDirectories)
+                .OrderByDescending(x=>new FileInfo(x).Length).ToList();
+            if(files.Count==0)throw new InvalidDataException("未在导入内容中找到可启动文件。");
+            return files[0];
+        }
         var extension=type==GameToolType.CheatTable?"*.ct":"*.exe";
         var candidates=Directory.GetFiles(root,extension,SearchOption.AllDirectories)
             .Where(x=>!Path.GetFileName(x).Contains("unins",StringComparison.OrdinalIgnoreCase)&&!Path.GetFileName(x).Contains("update",StringComparison.OrdinalIgnoreCase))
@@ -322,10 +314,13 @@ public sealed class GameToolService
         return candidates[0];
     }
 
-    private static bool IsEntryCandidate(string path,string extension)
-        =>path.EndsWith(extension,StringComparison.OrdinalIgnoreCase)
-          &&!Path.GetFileName(path).Contains("unins",StringComparison.OrdinalIgnoreCase)
-          &&!Path.GetFileName(path).Contains("update",StringComparison.OrdinalIgnoreCase);
+    private static bool IsEntryCandidate(string path,string? extension)
+    {
+        if(extension!=null&&!path.EndsWith(extension,StringComparison.OrdinalIgnoreCase))return false;
+        return extension==null
+            ||(!Path.GetFileName(path).Contains("unins",StringComparison.OrdinalIgnoreCase)
+               &&!Path.GetFileName(path).Contains("update",StringComparison.OrdinalIgnoreCase));
+    }
 
     private static bool IsLikelyPrimaryEntry(string path)
     {
@@ -371,5 +366,4 @@ public sealed class GameToolService
         return string.IsNullOrWhiteSpace(clean)?"unnamed":clean.Length>80?clean[..80]:clean;
     }
 
-    private sealed record LaunchedTool(int ProcessId,DateTime StartedUtc,bool CloseOnExit);
 }
