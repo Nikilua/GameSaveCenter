@@ -25,6 +25,8 @@
 
 - [x] UI-195（`a97698d`）：补齐 Maintenance“设备状态 / 异常与审计 / 进程映射”三个 Tab 的页面级纵向滚动面，解决诊断/保留策略已有滚动而其他维护页底部仍可能被窗口边界裁掉的问题。新增三个命名 `GscPageScrollViewer`，表格由 `MaintenanceView.ApplyResponsiveLayout` 统一设置 236–460 DIP 有限 Height，页面滚动只负责到达下方 Inspector、审计条带和操作区，DataGrid 内部滚动、虚拟化、键盘和真实命令/Binding 保持；同步扩展源码大库门禁与结构回归断言。`python scripts/validate-source.py` 通过，隔离 Release 构建 0 警告/0 错误，Playnite 149/149 通过。真实 Playnite 宿主、Light/Dark/Follow、高对比度、100%–200% DPI、窗口化截图和连续缩放流畅性仍需手工验收。
 
+- [x] UI-196（`6a622ea`）：补齐 TaskCenter 的页面级可达性契约。`TaskPageScrollSurface` 使用共享 `GscPageScrollViewer` 承载摘要、筛选、任务表和堆叠详情，`TaskGrid` 按窗口高度维持 236–460 DIP 有限视口，DataGrid 内部滚动/虚拟化与详情 Inspector 内部滚动不变；堆叠详情高度依据页面实际视口计算，避免外层 ScrollViewer 的无限内容测量把底部复制/重试/取消操作裁掉。同步更新大库源码门禁与 XAML 结构测试，保留所有真实搜索、筛选、计数、Binding、SelectedTask 和命令。`python scripts/validate-source.py` 通过，生产插件隔离 Release 构建 0 警告/0 错误，隔离测试输出 149/149 通过（构建阶段仅有 NU1900 漏洞源不可访问警告）。真实 Playnite 宿主、Light/Dark/Follow、高对比度、100%–200% DPI、窗口化截图和连续缩放流畅性仍需手工验收。
+
 - [x] UI-187：维护中心诊断页顶部摘要按 Demo 六项健康卡收口：Worker、Ludusavi、Rclone、数据与备份目录、媒体目录、设备状态改为六张真实绑定卡，Rclone 状态使用真实可用/配置触发器，媒体待归类数和设备比较数不使用 Demo 假数据；宽屏/中屏/窄屏列数改为 3/2/1。保留诊断操作卡、诊断/审计表格、Inspector、完整摘要、空态、命令/绑定/IPC/持久化及有限滚动；版本策略与需关注信息仍可从完整诊断摘要、Finding/审计区域和设置页获得。新增/更新结构回归断言；`python scripts/validate-source.py` 通过，隔离 Release 构建 0 警告/0 错误，Playnite 146/146 通过。真实 Playnite 宿主、主题、DPI 和运行时连续缩放流畅性仍需手工验收。
 
 - [x] UI-188：任务中心队列按 Demo 补齐搜索层：在状态/游戏/类型三个真实筛选前新增“搜索任务、游戏或错误”输入框，`TaskSearchText` 通过 `UpdateSourceTrigger=PropertyChanged` 实时刷新 `TasksView`，匹配任务 ID、任务类型、游戏名、详情与错误信息；原筛选、任务计数、详情 Inspector、取消/重试/复制命令、DataGrid 虚拟化和全局视角均保留，未增加 Worker/IPC 请求。新增结构回归断言；`python scripts/validate-source.py` 通过，隔离 Release 构建 0 警告/0 错误，Playnite 146/146 通过。真实 Playnite 宿主、主题、DPI 和运行时连续缩放流畅性仍需手工验收。
