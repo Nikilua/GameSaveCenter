@@ -2026,13 +2026,20 @@ public sealed class WpfUiResourceDictionaryTests
         var repositoryRoot = FindRepositoryRoot();
         var overview = XDocument.Parse(File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml")));
         var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
+        var heroGameRow = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewHeroAndGameRow");
+        var hero = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewTodayHeroCard");
         var currentGame = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewCurrentGameCard");
         var metrics = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewStatStrip");
         var activity = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewActivityList");
 
-        // The production page keeps the Demo's reading order while retaining the
-        // real Dashboard context and task list: context, metrics, recent activity.
-        Assert.Equal("1", currentGame.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
+        // The production page follows Demo HomeView's hierarchy: a separate action
+        // surface, then a TODAY/current-game row, then metrics and recent activity.
+        Assert.Equal("1", heroGameRow.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
+        Assert.Same(heroGameRow, hero.Parent);
+        Assert.Same(heroGameRow, currentGame.Parent);
+        Assert.Equal("0", hero.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
+        Assert.Equal("0", currentGame.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
+        Assert.Equal("0.75*", heroGameRow.Descendants().Single(element => element.Name.LocalName == "ColumnDefinition" && element.Attribute(xamlName)?.Value == "OverviewCurrentGameColumn").Attribute("Width")?.Value);
         Assert.Equal("2", metrics.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
         var activityFrame = activity.Ancestors().Single(element => element.Name.LocalName == "Border"
             && element.Attributes().Any(attribute => attribute.Name.LocalName == "Grid.Row")
@@ -2040,6 +2047,11 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Equal("3", activityFrame.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
         Assert.Equal("{Binding OverviewTasks}", activity.Attribute("ItemsSource")?.Value);
         Assert.Equal("{Binding SelectedTask}", activity.Attribute("SelectedItem")?.Value);
+
+        var overviewCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml.cs"));
+        Assert.Contains("var stackHeroAndGame = primaryWidth < 760", overviewCode);
+        Assert.Contains("OverviewHeroGameCompactRow.Height", overviewCode);
+        Assert.Contains("Grid.SetColumnSpan(OverviewCurrentGameCard, stackHeroAndGame ? 3 : 1)", overviewCode);
     }
 
     [Fact]

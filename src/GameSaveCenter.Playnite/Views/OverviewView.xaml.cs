@@ -97,19 +97,57 @@ namespace GameSaveCenter.Playnite.Views
         {
             // The metric pills size to their content and wrap naturally, so a compact
             // window no longer needs to force fixed column counts that clip the values.
+            // Use the measured primary column when available: the Overview page may have
+            // a secondary risk column, so the full Dashboard width overstates the space
+            // available to the workbench and would let the toolbar/current-game row clip.
+            var primaryWidth = OverviewPrimaryPanel?.ActualWidth > 0
+                ? OverviewPrimaryPanel.ActualWidth
+                : Math.Max(320d, width);
 
             // The Demo keeps the Home workbench actions in the card header.  At the
             // narrowest widths let that action group become a vertical stack instead of
             // allowing the buttons to push the title column out of the viewport.
             if (OverviewHomeToolbarActions != null)
             {
-                var stackActions = width < 720;
+                var stackActions = primaryWidth < 720;
                 OverviewHomeToolbarActions.Orientation = stackActions
                     ? Orientation.Vertical
                     : Orientation.Horizontal;
                 OverviewHomeToolbarActions.HorizontalAlignment = stackActions
                     ? HorizontalAlignment.Left
                     : HorizontalAlignment.Right;
+                OverviewHomeToolbarActionsRow.Height = stackActions
+                    ? GridLength.Auto
+                    : new GridLength(0);
+                Grid.SetRow(OverviewHomeToolbarActions, stackActions ? 1 : 0);
+                Grid.SetColumn(OverviewHomeToolbarActions, stackActions ? 0 : 1);
+                Grid.SetColumnSpan(OverviewHomeToolbarActions, stackActions ? 2 : 1);
+                OverviewHomeToolbarActions.Margin = stackActions
+                    ? new Thickness(0, 12, 0, 0)
+                    : new Thickness(12, 0, 0, 0);
+            }
+
+            // HomeView places TODAY and the selected-game context in a two-column row.
+            // Keep that relationship whenever the primary workspace can support it; when
+            // the real secondary risk column leaves less than 760 DIP, stack the two cards
+            // as a single readable flow instead of compressing the context pills.
+            if (OverviewHeroAndGameRow != null)
+            {
+                var stackHeroAndGame = primaryWidth < 760;
+                OverviewHeroGameCompactRow.Height = stackHeroAndGame
+                    ? GridLength.Auto
+                    : new GridLength(0);
+                OverviewHeroGameGutterColumn.Width = new GridLength(stackHeroAndGame ? 0 : 14);
+
+                Grid.SetRow(OverviewTodayHeroCard, 0);
+                Grid.SetColumn(OverviewTodayHeroCard, 0);
+                Grid.SetColumnSpan(OverviewTodayHeroCard, stackHeroAndGame ? 3 : 1);
+                Grid.SetRow(OverviewCurrentGameCard, stackHeroAndGame ? 1 : 0);
+                Grid.SetColumn(OverviewCurrentGameCard, stackHeroAndGame ? 0 : 2);
+                Grid.SetColumnSpan(OverviewCurrentGameCard, stackHeroAndGame ? 3 : 1);
+                OverviewCurrentGameCard.Margin = stackHeroAndGame
+                    ? new Thickness(0, 14, 0, 0)
+                    : new Thickness(0);
             }
         }
 

@@ -4,6 +4,8 @@
 
 > MERGE-001（2026-08-11）：本机 `main` 在共同基线 `9cdd975` 后的本地 UI 提交（UI-173～UI-181，另含合并前本机 WIP）已保留并与 `origin/main` 的 UI-181～UI-183/交接文档线合并。以下本机独有的视觉约束不可丢失：Overview Hero 标题保持 Demo 的 35px，并使用共享 `GscAccentShadowColor`/`GscInfoShadowColor`/`GscSuccessShadowColor` 的三颗不可命中径向环境光；Media 顶部四卡保持“标题 → 30px 真实数值 → 副文案”的三行节奏；维护设备摘要保留标题、真实刷新命令和 `GscRedesignInfoBand` 信息带。上述均为 WPF 表层调整，不改变命令、Binding、Worker、IPC、数据库、持久化和大型列表虚拟化。远端已有记忆条目优先保留，后续新增本机约束追加在本记录之后，不覆盖其原文。
 
+> UI-184（2026-08-11）：Overview 首页必须保持 Demo `HomeView` 的阅读骨架：独立的 `OverviewHomeToolbar` 动作卡 → `OverviewHeroAndGameRow`（`OverviewTodayHeroCard` 与 `OverviewCurrentGameCard` 同行）→ `OverviewStatStrip` 六项真实指标 → `OverviewActivityList` 最近活动。宽屏主列使用 `1.25* / 14 / 0.75*`；`OverviewPrimaryPanel.ActualWidth < 760` 时把 Hero 与当前游戏堆叠为两行，`<720` 时工作台按钮移到第二行，不能使用 Dashboard 总宽代替实际可用主列宽度。当前游戏的版本/媒体/云端/最新备份胶囊必须在独立可换行行中，避免窄列 Auto 测量导致裁切；真实命令、`SelectedGame`/`OverviewTasks`/`SelectedTask` Binding、ListBox Recycling 和右侧风险有限滚动保持不变。此轮不增加业务逻辑、数据库/Worker/IPC 访问或滚动区域 BlurEffect；真实 Playnite 宿主、主题、DPI 和连续缩放流畅性仍未验证。
+
 > UI-183：维护中心“诊断”页顶部必须保持 Demo 式的 `MaintenanceDiagnosticsActionCard` 阅读卡：标题/说明与“刷新诊断”主操作位于首行，复制诊断、打开数据目录、打开存档目录、打开媒体目录和 Worker 日志位于第二行可换行操作带。六个真实 Command 必须保留，操作区不能退回裸 `WrapPanel` 或被挪入 DataGrid/其滚动表面；诊断指标、有限表格滚动、选中项 Inspector、完整摘要和空态不因本轮布局调整消失。共享按钮模板继续负责 38 DIP 高度和文字对齐，不新增业务逻辑。
 
 > UI-182：维护中心“进程映射”编辑器必须保持 Demo 对齐的 Grid 结构：宽屏由 EXE 输入框占据 `*` 剩余空间，目标游戏下拉框保持 240 DIP，控件之间使用共享 8 DIP 节奏，绑定按钮继续使用共享按钮模板和 38 DIP 高度；宽度 `<720` DIP 时目标游戏与绑定按钮移动到第二行。`ProcessMappingExecutable`、`ProcessMappingTargetGame`、`Games`、`SaveProcessMappingCommand` 的真实绑定/命令必须保留；不要用运行时视觉树扫描或业务层改动解决布局问题。动态目标游戏 ComboBox 的空值仍表示等待真实上下文，不能为了显示效果强行选择第一项。
