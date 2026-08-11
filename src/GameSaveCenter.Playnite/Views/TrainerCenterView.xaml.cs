@@ -77,7 +77,7 @@ namespace GameSaveCenter.Playnite.Views
             Grid.SetRow(TrainerToolsSettingsScrollViewer, stackInstalled ? 3 : 0);
             Grid.SetRowSpan(TrainerToolsSettingsScrollViewer, stackInstalled ? 1 : 4);
             var installedHeight = InstalledToolsLayout.ActualHeight > 0 ? InstalledToolsLayout.ActualHeight : Math.Max(320, height - 200);
-            var installedInspectorHeight = Math.Max(96, Math.Min(420, installedHeight - tableMinHeight - 72));
+            var installedInspectorHeight = Math.Max(160, Math.Min(420, installedHeight - tableMinHeight - 72));
             TrainerToolsSettingsScrollViewer.MaxHeight = showInspector && stackInstalled
                 ? installedInspectorHeight
                 : double.PositiveInfinity;
@@ -103,7 +103,7 @@ namespace GameSaveCenter.Playnite.Views
             Grid.SetColumnSpan(TrainerReleaseInfoPanel, stackReleases ? 3 : 1);
             TrainerCatalogReleasesPanel.Margin = new Thickness(0);
             var releasesHeight = TrainerReleasesLayout.ActualHeight > 0 ? TrainerReleasesLayout.ActualHeight : Math.Max(320, height - 200);
-            var releaseInspectorHeight = Math.Max(96, Math.Min(420, releasesHeight - tableMinHeight - 10));
+            var releaseInspectorHeight = Math.Max(160, Math.Min(420, releasesHeight - tableMinHeight - 10));
             TrainerReleaseInfoScrollViewer.MaxHeight = stackReleases
                 ? releaseInspectorHeight
                 : double.PositiveInfinity;

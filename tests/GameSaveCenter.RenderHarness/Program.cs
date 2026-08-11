@@ -58,6 +58,8 @@ public static class Program
                 report.AppendLine($"Window {windowW}x{windowH} -> workspace {contentW:0}x{contentH:0} DIP");
 
                 RenderOverview(outputRoot, windowW, windowH, contentW, contentH, report);
+                RenderSave(outputRoot, windowW, windowH, contentW, contentH, report);
+                RenderTrainer(outputRoot, windowW, windowH, contentW, contentH, report);
                 RenderMedia(outputRoot, windowW, windowH, contentW, contentH, report);
                 RenderMaintenance(outputRoot, windowW, windowH, contentW, contentH, report);
                 RenderTasks(outputRoot, windowW, windowH, contentW, contentH, report);
@@ -122,6 +124,18 @@ public static class Program
     {
         var view = new MediaCenterView { DataContext = new FakeDashboardData() };
         RenderTabs(view, outputRoot, "Media", windowW, windowH, contentW, contentH, report, () => view.ApplyResponsiveLayout(contentW, windowH));
+    }
+
+    private static void RenderSave(string outputRoot, int windowW, int windowH, double contentW, double contentH, StringBuilder report)
+    {
+        var view = new SaveCenterView { DataContext = new FakeDashboardData() };
+        RenderTabs(view, outputRoot, "Save", windowW, windowH, contentW, contentH, report, () => view.ApplyResponsiveLayout(contentW, windowH));
+    }
+
+    private static void RenderTrainer(string outputRoot, int windowW, int windowH, double contentW, double contentH, StringBuilder report)
+    {
+        var view = new TrainerCenterView { DataContext = new FakeDashboardData() };
+        RenderTabs(view, outputRoot, "Trainer", windowW, windowH, contentW, contentH, report, () => view.ApplyResponsiveLayout(contentW, windowH));
     }
 
     private static void RenderMaintenance(string outputRoot, int windowW, int windowH, double contentW, double contentH, StringBuilder report)

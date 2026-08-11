@@ -40,7 +40,8 @@ public sealed class FakeDashboardData
             MediaCount = 32,
             LastBackupUtc = DateTime.UtcNow.AddHours(-2),
             CloudState = "Uploaded",
-            HealthState = "Ready"
+            HealthState = "Ready",
+            LudusaviName = "BG3"
         };
 
         for (var i = 1; i <= 8; i++)
@@ -211,15 +212,127 @@ public sealed class FakeDashboardData
             if (i % 4 == 0) LastRetentionPreview.DeleteCandidateIds.Add("candidate-" + i);
         }
 
+        for (var i = 1; i <= 8; i++)
+        {
+            Backups.Add(new BackupVersionDto
+            {
+                BackupId = "B-" + i.ToString("D4"),
+                PlayniteId = SelectedGame.PlayniteId,
+                LudusaviName = SelectedGame.Name,
+                CreatedUtc = DateTime.UtcNow.AddDays(-i),
+                TotalBytes = 24_800_000L + i * 1_000_000L,
+                FileCount = 120 + i,
+                IsLocked = i % 4 == 0,
+                Comment = i % 3 == 0 ? "周末手动备份" : string.Empty,
+                SourceDevice = i % 2 == 0 ? "LAPTOP-02" : "DESKTOP-01",
+                OperatingSystem = "Windows 11",
+                IsPreRestore = i == 1
+            });
+            SaveCandidates.Add(new SavePathCandidateDto
+            {
+                PlayniteId = SelectedGame.PlayniteId,
+                Path = $@"D:\Games\{SelectedGame.Name}\Save\{i}\Slot{i}",
+                Score = 0.82 + i * 0.01,
+                Reasons = new System.Collections.Generic.List<string> { "包含存档扩展名", "最近写入时间匹配" },
+                Status = "Pending"
+            });
+            GameTools.Add(new GameToolDto
+            {
+                ToolId = "T-" + i,
+                PlayniteId = SelectedGame.PlayniteId,
+                ToolType = i % 2 == 0 ? GameToolType.CheatTable : GameToolType.Trainer,
+                SourceType = i % 2 == 0 ? GameToolSourceType.Manual : GameToolSourceType.Fling,
+                DisplayName = i == 1 ? "风灵月影修改器" : $"演示工具 {i}",
+                Enabled = true,
+                AutoStart = i % 2 == 0,
+                LaunchDelaySeconds = 8,
+                CloseOnGameExit = i % 3 == 0,
+                RequiresAdmin = i % 4 == 0,
+                ActiveVersionId = "v1",
+                CreatedUtc = DateTime.UtcNow.AddDays(-i),
+                UpdatedUtc = DateTime.UtcNow.AddDays(-i)
+            });
+            var tool = GameTools[i - 1];
+            tool.Versions.Add(new GameToolVersionDto
+            {
+                VersionId = "v1",
+                ToolId = tool.ToolId,
+                VersionName = "v1.0",
+                EntryPath = $@"D:\Tools\{tool.DisplayName}\trainer.exe",
+                WorkingDirectory = $@"D:\Tools\{tool.DisplayName}",
+                IsAvailable = true,
+                CreatedUtc = DateTime.UtcNow.AddDays(-i)
+            });
+            if (i % 2 == 0)
+            {
+                tool.Versions.Add(new GameToolVersionDto
+                {
+                    VersionId = "v2",
+                    ToolId = tool.ToolId,
+                    VersionName = "v1.1",
+                    EntryPath = $@"D:\Tools\{tool.DisplayName}\trainer_v11.exe",
+                    IsAvailable = true,
+                    CreatedUtc = DateTime.UtcNow.AddDays(-i + 1)
+                });
+            }
+            TrainerCatalogResults.Add(new TrainerCatalogItemDto
+            {
+                CatalogId = "C-" + i,
+                Title = i == 1 ? "Baldur's Gate 3 Trainer" : $"演示 Trainer {i}",
+                NormalizedTitle = i == 1 ? "baldurs gate 3 trainer" : $"demo trainer {i}",
+                PageUrl = "https://example.com/trainer",
+                GameVersion = "1.0",
+                OptionCount = 12 + i,
+                LastUpdatedUtc = DateTime.UtcNow.AddDays(-i),
+                LastSyncedUtc = DateTime.UtcNow.AddDays(-i)
+            });
+            TrainerReleases.Add(new TrainerReleaseDto
+            {
+                ReleaseId = "R-" + i,
+                CatalogId = "C-" + i,
+                DisplayName = i == 1 ? "Baldur's Gate 3 v1.0 Plus 20 Trainer" : $"Trainer v1.{i} Plus {i + 10}",
+                DownloadUrl = "https://example.com/download",
+                SizeBytes = 1_800_000L + i * 100_000L,
+                PublishedUtc = DateTime.UtcNow.AddDays(-i)
+            });
+        }
+
+        for (var i = 1; i <= 4; i++)
+        {
+            ImportEntryCandidates.Add(new GameToolEntryCandidateDto
+            {
+                RelativePath = $@"trainer_win64\{i}\trainer.exe",
+                SizeBytes = 800_000L + i * 10_000L
+            });
+        }
+
         SelectedTask = Tasks[0];
         SelectedMedia = Media.Count > 0 ? Media[0] : null;
         SelectedInboxMedia = UnassignedMedia.Count > 0 ? UnassignedMedia[0] : null;
         SelectedFinding = Findings.Count > 0 ? Findings[0] : null;
         SelectedDeviceComparison = DeviceComparisons.Count > 0 ? DeviceComparisons[0] : null;
         SelectedProcessMapping = ProcessMappings.Count > 0 ? ProcessMappings[0] : null;
+        SelectedBackup = Backups[0];
+        SelectedCandidate = SaveCandidates[0];
+        SelectedGameTool = GameTools[0];
+        SelectedGameToolVersion = SelectedGameTool.ActiveVersion;
+        SelectedTrainerCatalogItem = TrainerCatalogResults[0];
+        SelectedTrainerRelease = TrainerReleases[0];
+        SelectedImportEntryCandidate = ImportEntryCandidates[0];
         MediaTargetGame = Games[0];
         InboxTargetGame = Games[0];
         ProcessMappingTargetGame = Games[0];
+        LastBackupDiff = new BackupDiffDto
+        {
+            LeftBackupId = Backups[0].BackupId,
+            RightBackupId = Backups[1].BackupId,
+            Added = new System.Collections.Generic.List<string> { "Data/Save.bin" },
+            Removed = new System.Collections.Generic.List<string> { "Data/OldSave.bin" },
+            Modified = new System.Collections.Generic.List<string> { "Settings.ini" },
+            UnchangedCount = 180,
+            Summary = "新备份新增 1 个文件、修改 1 个文件、删除 1 个文件。"
+        };
+        DiffSummary = "差异摘要：新备份较旧备份有 1 个新增、1 个修改、1 个删除。";
 
         MediaView = CollectionViewSource.GetDefaultView(Media);
         TasksView = CollectionViewSource.GetDefaultView(Tasks);
@@ -240,6 +353,12 @@ public sealed class FakeDashboardData
     public ObservableCollection<AuditLogEntryDto> Audit { get; } = new ObservableCollection<AuditLogEntryDto>();
     public ObservableCollection<DeviceConflictStatusDto> DeviceComparisons { get; } = new ObservableCollection<DeviceConflictStatusDto>();
     public ObservableCollection<ProcessMappingDto> ProcessMappings { get; } = new ObservableCollection<ProcessMappingDto>();
+    public ObservableCollection<BackupVersionDto> Backups { get; } = new ObservableCollection<BackupVersionDto>();
+    public ObservableCollection<SavePathCandidateDto> SaveCandidates { get; } = new ObservableCollection<SavePathCandidateDto>();
+    public ObservableCollection<GameToolDto> GameTools { get; } = new ObservableCollection<GameToolDto>();
+    public ObservableCollection<TrainerCatalogItemDto> TrainerCatalogResults { get; } = new ObservableCollection<TrainerCatalogItemDto>();
+    public ObservableCollection<TrainerReleaseDto> TrainerReleases { get; } = new ObservableCollection<TrainerReleaseDto>();
+    public ObservableCollection<GameToolEntryCandidateDto> ImportEntryCandidates { get; } = new ObservableCollection<GameToolEntryCandidateDto>();
     public ObservableCollection<string> TaskStatusFilterOptions { get; } = new ObservableCollection<string> { "全部", "等待中", "执行中", "成功", "失败", "已取消" };
     public ObservableCollection<string> TaskGameFilterOptions { get; } = new ObservableCollection<string> { "全部" };
     public ObservableCollection<string> TaskTypeFilterOptions { get; } = new ObservableCollection<string> { "全部", "存档备份", "媒体同步", "云端上传" };
@@ -259,6 +378,14 @@ public sealed class FakeDashboardData
     public int RetryableTaskCount { get; }
     public int CompletedTaskCount { get; }
     public TaskStatusDto SelectedTask { get; set; } = null!;
+    public BackupVersionDto SelectedBackup { get; set; } = null!;
+    public SavePathCandidateDto SelectedCandidate { get; set; } = null!;
+    public GameToolDto SelectedGameTool { get; set; } = null!;
+    public GameToolVersionDto SelectedGameToolVersion { get; set; } = null!;
+    public TrainerCatalogItemDto SelectedTrainerCatalogItem { get; set; } = null!;
+    public TrainerReleaseDto SelectedTrainerRelease { get; set; } = null!;
+    public GameToolEntryCandidateDto SelectedImportEntryCandidate { get; set; } = null!;
+    public BackupDiffDto LastBackupDiff { get; set; } = new BackupDiffDto();
     public MediaItemDto? SelectedMedia { get; set; }
     public MediaItemDto? SelectedInboxMedia { get; set; }
     public ValidationFindingDto? SelectedFinding { get; set; }
@@ -286,6 +413,11 @@ public sealed class FakeDashboardData
     public string DeviceDecision { get; set; } = "稍后处理";
     public string DeviceDecisionComment { get; set; } = string.Empty;
     public string ProcessMappingExecutable { get; set; } = "skse64.exe";
+    public string DiffSummary { get; set; } = string.Empty;
+    public bool LockSelectedBackup { get; set; }
+    public string BackupComment { get; set; } = string.Empty;
+    public string TrainerSearchText { get; set; } = string.Empty;
+    public bool HasPendingGameToolEntrySelection { get; set; } = true;
     public string DiagnosticSummary { get; } = "09:31:12 SUCCESS Worker IPC health check passed.\n09:30:58 INFO Media scan started.\n09:18:06 ERROR Rclone remote unavailable; local source retained.";
     public string RetentionSummary { get; } = "全局保留策略只读预览：当前建议保留 12 个版本，候选清理 3 个版本。";
     public string DeviceStateMessage { get; } = "最近一次设备摘要对比完成：2 个游戏需要人工决定，其余一致。";

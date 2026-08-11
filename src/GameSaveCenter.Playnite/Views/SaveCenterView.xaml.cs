@@ -51,7 +51,7 @@ namespace GameSaveCenter.Playnite.Views
             Grid.SetRow(SaveHistoryActionsScrollViewer, compact ? 1 : 0);
             SaveHistoryActionsScrollViewer.Margin = showHistoryInspector && compact ? new Thickness(0, 10, 0, 0) : new Thickness(0);
             var historyHeight = SaveHistoryLayout.ActualHeight > 0 ? SaveHistoryLayout.ActualHeight : Math.Max(320, height - 200);
-            var historyInspectorHeight = Math.Max(96, Math.Min(360, historyHeight - tableMinHeight - 10));
+            var historyInspectorHeight = Math.Max(160, Math.Min(360, historyHeight - tableMinHeight - 10));
             SaveHistoryActionsScrollViewer.MaxHeight = showHistoryInspector && compact ? historyInspectorHeight : double.PositiveInfinity;
             var showCandidateInspector = SaveCandidateInspectorScrollViewer.Visibility == Visibility.Visible;
             var candidateSideBySide = showCandidateInspector && !compact;
@@ -63,7 +63,7 @@ namespace GameSaveCenter.Playnite.Views
             Grid.SetRow(SaveCandidateInspectorScrollViewer, compact ? 1 : 0);
             SaveCandidateInspectorScrollViewer.Margin = showCandidateInspector && compact ? new Thickness(0, 10, 0, 0) : new Thickness(0);
             var candidateHeight = SaveCandidateLayout.ActualHeight > 0 ? SaveCandidateLayout.ActualHeight : Math.Max(320, height - 200);
-            var candidateInspectorHeight = Math.Max(96, Math.Min(360, candidateHeight - tableMinHeight - 10));
+            var candidateInspectorHeight = Math.Max(160, Math.Min(360, candidateHeight - tableMinHeight - 10));
             SaveCandidateInspectorScrollViewer.MaxHeight = showCandidateInspector && compact ? candidateInspectorHeight : double.PositiveInfinity;
             var stackPolicy = width < 1080;
             // The policy page is a left-aligned form capped by the shared
