@@ -233,8 +233,11 @@ namespace GameSaveCenter.Playnite.Views
         {
             if (SidebarColumn == null || GameListColumn == null) return;
 
+            // The companion demo starts at 1040x700 DIP. Keep its labeled sidebar and
+            // one-row header at that common minimum; switching to the icon shell at 1080
+            // made a normal window look like an undersized emergency layout.
             var mode = width >= 1280 ? LayoutMode.Expanded
-                : width >= 1080 ? LayoutMode.Standard
+                : width >= 1040 ? LayoutMode.Standard
                 : width >= 960 ? LayoutMode.Compact
                 : LayoutMode.Narrow;
             viewModel.LayoutMode = mode;

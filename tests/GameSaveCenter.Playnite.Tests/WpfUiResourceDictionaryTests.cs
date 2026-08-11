@@ -423,7 +423,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("{Binding RunningTaskCount, Mode=OneWay}", task);
         Assert.Contains("{Binding RetryableTaskCount, Mode=OneWay}", task);
         Assert.Contains("{Binding CompletedTaskCount, Mode=OneWay}", task);
-        Assert.Contains("TaskSummaryPanel.Columns = width >= 1120 ? 4 : width >= 760 ? 2 : 1", taskCode);
+        Assert.Contains("TaskSummaryPanel.Columns = width >= 900 ? 4 : width >= 680 ? 2 : 1", taskCode);
         Assert.Contains("public int RunningTaskCount => Tasks.Count", viewModel);
         Assert.Contains("public int RetryableTaskCount => Tasks.Count(CanRetryTask)", viewModel);
         Assert.Contains("public int CompletedTaskCount => Tasks.Count", viewModel);
@@ -1756,7 +1756,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"ProcessMappingTargetGameComboBox\"", maintenance);
         Assert.Contains("Width=\"240\"", maintenance);
         Assert.Contains("Command=\"{Binding SaveProcessMappingCommand}\"", maintenance);
-        Assert.Contains("DiagnosticHealthPanel.Columns = width >= 1320 ? 3 : width >= 760 ? 2 : 1", maintenanceCode);
+        Assert.Contains("DiagnosticHealthPanel.Columns = width >= 980 ? 3 : width >= 680 ? 2 : 1", maintenanceCode);
         Assert.Contains("Text=\"Rclone\"", maintenance);
         Assert.Contains("Text=\"数据与备份目录\"", maintenance);
         Assert.Contains("Text=\"媒体目录\"", maintenance);
@@ -1867,7 +1867,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Property=\"EnableRowVirtualization\" Value=\"True\"", media);
         Assert.Contains("Text=\"{Binding MediaSummary.TotalSizeDisplay, Mode=OneWay}\"", media);
         Assert.DoesNotContain("MediaSummary.TotalSizeDisplay, Mode=TwoWay", media);
-        Assert.Contains("var metricColumns = width >= 760 ? 4 : width >= 520 ? 2 : 1", mediaCode);
+        Assert.Contains("var metricColumns = width >= 700 ? 4 : width >= 520 ? 2 : 1", mediaCode);
         Assert.Contains("MediaSummaryPanel.Columns = metricColumns", mediaCode);
         Assert.DoesNotContain("var compactHeight = height < 760", mediaCode);
         Assert.Contains("var stack = width < 1080", mediaCode);
@@ -3362,6 +3362,20 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void DashboardKeepsTheDemoShellAtItsCommonMinimumWidth()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var dashboardCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml.cs"));
+
+        // The demo shell declares 1040x700 DIP as its minimum common window. At that
+        // width the production shell must retain readable labels and the single-row header.
+        Assert.Contains("var mode = width >= 1280 ? LayoutMode.Expanded", dashboardCode);
+        Assert.Contains(": width >= 1040 ? LayoutMode.Standard", dashboardCode);
+        Assert.Contains(": width >= 960 ? LayoutMode.Compact", dashboardCode);
+        Assert.Contains("var iconSidebar = mode == LayoutMode.Compact || mode == LayoutMode.Narrow;", dashboardCode);
+    }
+
+    [Fact]
     public void DashboardViewModelEventsFollowTheLoadedViewLifecycle()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -3568,7 +3582,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"CompactGameSelector\"", dashboard);
         Assert.Contains("x:Name=\"ToggleGameBrowserButton\"", dashboard);
         Assert.Contains("width >= 1280 ? LayoutMode.Expanded", dashboardCode);
-        Assert.Contains("width >= 1080 ? LayoutMode.Standard", dashboardCode);
+        Assert.Contains("width >= 1040 ? LayoutMode.Standard", dashboardCode);
         Assert.Contains("width >= 960 ? LayoutMode.Compact", dashboardCode);
         Assert.Contains("Grid.SetRow(TopActionsScroller, 2)", dashboardCode);
         Assert.Contains("Grid.SetColumnSpan(TopActionsScroller, 3)", dashboardCode);

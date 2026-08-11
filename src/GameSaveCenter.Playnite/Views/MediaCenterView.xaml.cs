@@ -42,7 +42,7 @@ namespace GameSaveCenter.Playnite.Views
             // breakpoint incorrectly collapsed the cards to two or one column and
             // pushed the media table below the fold. These are logical-DIP thresholds:
             // 1080p, 2K and 4K at ordinary DPI all keep the primary table reachable.
-            var metricColumns = width >= 760 ? 4 : width >= 520 ? 2 : 1;
+            var metricColumns = width >= 700 ? 4 : width >= 520 ? 2 : 1;
             MediaSummaryPanel.Columns = metricColumns;
             // Do not discard summary information at short heights. Local list/inspector
             // surfaces own overflow so the whole workspace does not become a scroll canvas.

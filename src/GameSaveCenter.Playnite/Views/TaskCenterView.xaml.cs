@@ -52,7 +52,10 @@ namespace GameSaveCenter.Playnite.Views
             var tableViewportHeight = Math.Max(tableMinHeight, Math.Min(460d, height * 0.50));
             TaskGrid.MinHeight = tableMinHeight;
             TaskGrid.Height = tableViewportHeight;
-            TaskSummaryPanel.Columns = width >= 1120 ? 4 : width >= 760 ? 2 : 1;
+            // The 1040-DIP demo minimum leaves roughly 700 DIP for the workspace after
+            // the labeled shell. Keep the summary cards in two columns there so they do
+            // not consume the entire first viewport before the queue becomes reachable.
+            TaskSummaryPanel.Columns = width >= 900 ? 4 : width >= 680 ? 2 : 1;
             // Keep task summary metrics available at every height; the table and inspector
             // own their finite scroll surfaces instead of scrolling the whole workspace.
             TaskSummaryPanel.Visibility = Visibility.Visible;

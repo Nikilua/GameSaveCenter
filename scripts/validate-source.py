@@ -386,7 +386,7 @@ def check_dashboard_regressions() -> None:
         if token not in (dashboard + "\n" + workspace_ui):
             fail(f"Dashboard design-system guard is missing: {token}")
     responsive = (ROOT / "src/GameSaveCenter.Playnite/Views/DashboardView.xaml.cs").read_text(encoding="utf-8")
-    for boundary in ("width >= 1280", "width >= 1080", "width >= 960", "height >= 760"):
+    for boundary in ("width >= 1280", "width >= 1040", "width >= 960", "height >= 760"):
         if boundary not in responsive:
             fail(f"Unified responsive breakpoint is missing: {boundary}")
     tokens = (ROOT / "src/GameSaveCenter.Playnite/Themes/DesignTokens.xaml").read_text(encoding="utf-8")
@@ -1127,7 +1127,7 @@ def check_final_redesign_guards() -> None:
           'x:Name="MediaSummaryPanel"', 'x:Name="TaskSummaryPanel"',
          'x:Name="DiagnosticHealthPanel"', 'x:Name="SaveCandidateLayout"', '暂无判断依据')),
         (dashboard_code, "Dashboard final responsive behavior",
-         ('width >= 1280 ? LayoutMode.Expanded', 'width >= 1080 ? LayoutMode.Standard',
+         ('width >= 1280 ? LayoutMode.Expanded', 'width >= 1040 ? LayoutMode.Standard',
           'width >= 960 ? LayoutMode.Compact', 'Grid.SetRow(TopActionsScroller, 2)',
           'Grid.SetColumnSpan(TopActionsScroller, 3)',
           'item.Width = visible ? double.NaN : 48', 'item.Height = visible ? double.NaN : 48',
