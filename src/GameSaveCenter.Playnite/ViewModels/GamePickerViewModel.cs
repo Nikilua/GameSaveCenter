@@ -238,6 +238,11 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private void RebuildPlatformOptions()
         {
+            var fingerprint = ComputePlatformFingerprint(Items);
+            if (fingerprint == lastPlatformFingerprint)
+                return;
+            lastPlatformFingerprint = fingerprint;
+
             var current = PlatformFilter;
             PlatformFilterOptions.Clear();
             PlatformFilterOptions.Add("全部");
@@ -245,6 +250,23 @@ namespace GameSaveCenter.Playnite.ViewModels
                 PlatformFilterOptions.Add(platform);
             if (!PlatformFilterOptions.Contains(current)) platformFilter = "全部";
             OnPropertyChanged(nameof(PlatformFilter));
+        }
+
+        private long lastPlatformFingerprint;
+
+        private static long ComputePlatformFingerprint(IEnumerable<GamePickerItem> items)
+        {
+            unchecked
+            {
+                long hash = 17;
+                var count = 0;
+                foreach (var item in items)
+                {
+                    count++;
+                    hash = hash * 31 + (item.PlatformDisplay?.GetHashCode() ?? 0);
+                }
+                return hash * 31 + count;
+            }
         }
 
         private void ScheduleRefresh()
