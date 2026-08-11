@@ -64,7 +64,18 @@
    - 本文件的“当前交接基线”和“下一步方向”
 8. 每次有实际开发改动都必须创建一个清晰的 Git commit。提交前确认工作区没有意外文件。
 
-## 当前交接基线（2026-08-10）
+## 合并后当前交接基线（2026-08-11）
+
+- 分支：`main`
+- 当前合并提交：`e87e2af`（`merge: reconcile local and cross-machine UI migration`）
+- 合并共同基线：`9cdd975`；本机 UI-173～UI-181 与 `origin/main` 的 UI-181～UI-183、交接文档线均已保留，没有删除任一方共同基线后的提交。
+- 本机额外 WIP 已先由 `e61d0fc` 固化后纳入合并；本机的长期约束已追加到 `docs/PROJECT_MEMORY.md` 的 `MERGE-001`，远端既有记忆条目保持原文。
+- 本轮工作区：合并提交完成时干净；后续 agent 仍须先运行 `git status`、`git log -5 --oneline --decorate` 和 `git branch --show-current`。
+- 验证：源码验证通过；隔离 Release 构建 0 错误；Playnite 测试 144/144 通过。真实 Playnite 宿主、主题、DPI 和运行时渲染仍未验证。
+
+以下原有的远端交接基线保留为历史记录，便于追溯另一台机器的 UI-183 上下文：
+
+## 原远端交接基线（2026-08-10）
 
 - 分支：`main`
 - 当前 UI 基线：`2db4336`（`重构：维护中心诊断操作区对齐 Demo`，UI-183）
