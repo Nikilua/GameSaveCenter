@@ -110,3 +110,37 @@ Snapshot 每次返回全新 DTO，即使内容相同，旧的引用比较也会�
 **下一步：**
 
 NEXT: PERF-006 Task/Media 搜索防抖。
+
+## 2026-08-11 PERF-006 Task/Media 搜索防抖
+
+**做了什么：**
+
+- 新增轻量 `DebouncedRefresh`（180ms）：快速连续输入只保留最后一次 Refresh；清空搜索框立即刷新；`Cancel()` 在页面/ViewModel 卸载时取消，避免 Timer 泄漏。
+- `TaskSearchText` / `MediaSearchText` 改用防抖；原来的 `[PERF] TaskSearch/MediaSearch refresh` 日志保留在最终刷新动作中。
+- 新增 4 个防抖单元测试：空查询立即刷新、快速输入只刷一次、取消阻止待执行刷新、清空会取消待执行刷新并立即刷新。
+
+**为什么这样做：**
+
+每次按键都执行 `ICollectionView.Refresh()` 会让大列表在输入过程中反复重新过滤/布局；防抖后连续输入 `abcdef` 只执行约 1 次最终 Refresh。
+
+**修改文件：**
+
+- 新增 `src/GameSaveCenter.Playnite/Infrastructure/DebouncedRefresh.cs`
+- `src/GameSaveCenter.Playnite/ViewModels/DashboardViewModel.cs`
+- 新增测试 `tests/GameSaveCenter.Playnite.Tests/DebouncedRefreshTests.cs`
+
+**测试结果：**
+
+- Core 13/13、Worker 23/23、Playnite 160/160 通过。
+
+**性能变化：**
+
+- 连续输入场景：Task/Media 搜索从 N 次 Refresh 降为约 1 次（测试覆盖）。
+
+**仍需验证内容：**
+
+真实 Playnite 大列表输入体验与滚动流畅性。
+
+**下一步：**
+
+NEXT: GAME-TOOL-001 自定义游戏启动项（EXE/LNK/BAT/CMD/PS1）。

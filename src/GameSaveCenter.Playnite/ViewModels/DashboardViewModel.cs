@@ -41,6 +41,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         private long deferredUiWorkGeneration;
         private long detailsLoadGeneration;
         private Task? taskEventListener;
+        private readonly DebouncedRefresh taskSearchRefresh;
+        private readonly DebouncedRefresh mediaSearchRefresh;
         private DateTime lastFullDashboardRefreshUtc=DateTime.MinValue;
         private string statusMessage = "准备就绪";
         private BackupVersionDto selectedBackup = null!;
@@ -112,6 +114,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             TasksView.Filter = FilterTask;
             MediaView = CollectionViewSource.GetDefaultView(Media);
             MediaView.Filter = FilterMedia;
+            taskSearchRefresh = new DebouncedRefresh(() => ApplyOnUi(RefreshTasksView), TimeSpan.FromMilliseconds(180));
+            mediaSearchRefresh = new DebouncedRefresh(() => ApplyOnUi(RefreshMediaView), TimeSpan.FromMilliseconds(180));
             ApplyGameSort();
             RefreshCommand = new RelayCommand(_ => Run(RefreshAsync), _ => !IsBusy);
             BackupSelectedCommand = new RelayCommand(_ => Run(BackupSelectedAsync), _ => !IsBusy && SelectedGame != null && SelectedGame.LudusaviMatched && Snapshot.LudusaviAvailable);
@@ -286,10 +290,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             set
             {
                 SetValue(ref taskSearchText, value ?? string.Empty);
-                var timer = Stopwatch.StartNew();
-                TasksView.Refresh();
-                timer.Stop();
-                Logger.Debug($"[PERF] TaskSearch refresh={timer.ElapsedMilliseconds}ms tasks={Tasks.Count}");
+                taskSearchRefresh.Schedule(value);
             }
         }
         public string TaskStatusFilter
@@ -418,10 +419,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             set
             {
                 SetValue(ref mediaSearchText,value??string.Empty);
-                var timer = Stopwatch.StartNew();
-                MediaView.Refresh();
-                timer.Stop();
-                Logger.Debug($"[PERF] MediaSearch refresh={timer.ElapsedMilliseconds}ms media={Media.Count}");
+                mediaSearchRefresh.Schedule(value);
             }
         }
         public string MediaFilter
@@ -651,6 +649,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         public void CancelDeferredUiWork()
         {
             gamePicker.CancelPendingRefresh();
+            taskSearchRefresh.Cancel();
+            mediaSearchRefresh.Cancel();
             CancelDetailsLoad();
             CancelInitialSynchronization();
             var persistence = gamePickerPersistenceCancellation;
@@ -1685,6 +1685,22 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             return !string.IsNullOrWhiteSpace(value)
                 && value!.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        private void RefreshTasksView()
+        {
+            var timer = Stopwatch.StartNew();
+            TasksView.Refresh();
+            timer.Stop();
+            Logger.Debug($"[PERF] TaskSearch refresh={timer.ElapsedMilliseconds}ms tasks={Tasks.Count}");
+        }
+
+        private void RefreshMediaView()
+        {
+            var timer = Stopwatch.StartNew();
+            MediaView.Refresh();
+            timer.Stop();
+            Logger.Debug($"[PERF] MediaSearch refresh={timer.ElapsedMilliseconds}ms media={Media.Count}");
         }
 
         private void RebuildTaskFilters()
