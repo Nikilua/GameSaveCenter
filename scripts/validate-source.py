@@ -1296,6 +1296,7 @@ def check_final_redesign_guards() -> None:
                     "MaintenanceDeviceScrollSurface",
                     "MaintenanceAuditScrollSurface",
                     "MaintenanceProcessScrollSurface",
+                    "TaskPageScrollSurface",
                 }
                 for node in ancestor_nodes
             )
@@ -1324,6 +1325,14 @@ def check_final_redesign_guards() -> None:
                     "MaintenanceAuditScrollSurface",
                     "MaintenanceProcessScrollSurface",
                 }
+                for node in ancestor_nodes
+            )
+        )
+        bounded_workspace_scroll = bounded_workspace_scroll or (
+            control.attrib.get("{http://schemas.microsoft.com/winfx/2006/xaml}Name") == "TaskGrid"
+            and any(
+                local_name(node.tag) == "ScrollViewer"
+                and node.attrib.get("{http://schemas.microsoft.com/winfx/2006/xaml}Name", "") == "TaskPageScrollSurface"
                 for node in ancestor_nodes
             )
         )

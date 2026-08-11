@@ -655,6 +655,7 @@ public sealed class WpfUiResourceDictionaryTests
     {
         var repositoryRoot = FindRepositoryRoot();
         var viewDirectory = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views");
+        var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
         foreach (var file in new[]
         {
             "OverviewView.xaml",
@@ -670,8 +671,16 @@ public sealed class WpfUiResourceDictionaryTests
             var directScrollViewers = root.Root?.Elements()
                 .Where(element => element.Name.LocalName == "ScrollViewer")
                 .ToList() ?? new List<XElement>();
-            Assert.Empty(directScrollViewers);
-            Assert.True(root.Root?.Elements().Any(element => element.Name.LocalName == "Grid") == true, $"{file} must expose a Grid root instead of a page ScrollViewer.");
+            if (file == "TaskCenterView.xaml")
+            {
+                Assert.Single(directScrollViewers);
+                Assert.Equal("TaskPageScrollSurface", directScrollViewers[0].Attribute(xamlName)?.Value);
+            }
+            else
+            {
+                Assert.Empty(directScrollViewers);
+            }
+            Assert.True(root.Descendants().Any(element => element.Name.LocalName == "Grid"), $"{file} must expose a Grid workspace.");
             Assert.DoesNotContain("PageScrollViewer\" Style=\"{DynamicResource GscPageScrollViewer}", text);
         }
 
@@ -806,12 +815,15 @@ public sealed class WpfUiResourceDictionaryTests
 
         Assert.Contains("x:Name=\"TaskQueuePanel\"", task);
         Assert.Contains("x:Name=\"TaskGrid\"", task);
+        Assert.Contains("x:Name=\"TaskPageScrollSurface\"", task);
+        Assert.Contains("Style=\"{DynamicResource GscPageScrollViewer}\"", task);
         Assert.Contains("const double tableMinHeight = 236d", taskCode);
+        Assert.Contains("var tableViewportHeight = Math.Max(tableMinHeight, Math.Min(460d, height * 0.50))", taskCode);
         Assert.Contains("TaskGrid.MinHeight = tableMinHeight", taskCode);
-        Assert.Contains("TaskWorkspaceLayout.ActualHeight", taskCode);
+        Assert.Contains("TaskPageScrollSurface.ActualHeight", taskCode);
         Assert.Contains("- TaskSummaryPanel.ActualHeight", taskCode);
         Assert.Contains("- TaskQueuePanel.ActualHeight", taskCode);
-        Assert.Contains("var inspectorHeight = Math.Max(96, Math.Min(420, workspaceHeight - tableMinHeight - 10))", taskCode);
+        Assert.Contains("var inspectorHeight = Math.Max(96, Math.Min(420, workspaceHeight - tableViewportHeight - 10))", taskCode);
         Assert.Contains("TaskDetailScrollViewer.MaxHeight = showInspector && stack", taskCode);
         Assert.Contains("EnableRowVirtualization\" Value=\"True\"", task);
     }
@@ -2584,11 +2596,22 @@ public sealed class WpfUiResourceDictionaryTests
         var dataGrid = task.Descendants().Single(element => element.Name.LocalName == "DataGrid");
         Assert.DoesNotContain(dataGrid.Ancestors(), ancestor => ancestor.Name.LocalName == "StackPanel");
         Assert.Contains("<Setter Property=\"EnableRowVirtualization\" Value=\"True\"/>", File.ReadAllText(taskPath));
+        Assert.Contains("x:Name=\"TaskPageScrollSurface\"", File.ReadAllText(taskPath));
+        Assert.Contains("Style=\"{DynamicResource GscPageScrollViewer}\"", File.ReadAllText(taskPath));
+        Assert.Contains("VerticalScrollBarVisibility=\"Auto\"", File.ReadAllText(taskPath));
+        Assert.Contains("HorizontalScrollBarVisibility=\"Disabled\"", File.ReadAllText(taskPath));
+        Assert.Contains("CanContentScroll=\"False\"", File.ReadAllText(taskPath));
         Assert.Contains("BasedOn=\"{StaticResource GscInspectorScrollViewer}\"", File.ReadAllText(taskPath));
         Assert.Contains("<DataTrigger Binding=\"{Binding SelectedTask}\" Value=\"{x:Null}\">", File.ReadAllText(taskPath));
         Assert.Contains("CopyTaskErrorCommand", File.ReadAllText(taskPath));
         Assert.Contains("RetryTaskCommand", File.ReadAllText(taskPath));
         Assert.Contains("CancelTaskCommand", File.ReadAllText(taskPath));
+
+        var taskCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml.cs"));
+        Assert.Contains("var tableViewportHeight = Math.Max(tableMinHeight, Math.Min(460d, height * 0.50));", taskCode);
+        Assert.Contains("TaskGrid.Height = tableViewportHeight;", taskCode);
+        Assert.Contains("TaskPageScrollSurface.ActualHeight", taskCode);
+        Assert.Contains("workspaceHeight - tableViewportHeight - 10", taskCode);
     }
 
     [Fact]

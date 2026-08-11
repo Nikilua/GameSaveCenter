@@ -17,7 +17,9 @@ namespace GameSaveCenter.Playnite.Views
         private void OnTaskDetailScrollViewerIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (!IsLoaded) return;
-            ApplyResponsiveLayout(TaskWorkspaceLayout.ActualWidth, TaskWorkspaceLayout.ActualHeight);
+            ApplyResponsiveLayout(
+                TaskPageScrollSurface.ActualWidth > 0 ? TaskPageScrollSurface.ActualWidth : TaskWorkspaceLayout.ActualWidth,
+                TaskPageScrollSurface.ActualHeight > 0 ? TaskPageScrollSurface.ActualHeight : TaskWorkspaceLayout.ActualHeight);
         }
 
         public UniformGrid TaskSummaryPanelElement => TaskSummaryPanel;
@@ -30,7 +32,9 @@ namespace GameSaveCenter.Playnite.Views
             // inspector stacks below it, reserve a readable table viewport and
             // let only the inspector consume the remaining finite height.
             const double tableMinHeight = 236d;
+            var tableViewportHeight = Math.Max(tableMinHeight, Math.Min(460d, height * 0.50));
             TaskGrid.MinHeight = tableMinHeight;
+            TaskGrid.Height = tableViewportHeight;
             TaskSummaryPanel.Columns = width >= 1120 ? 4 : width >= 760 ? 2 : 1;
             // Keep task summary metrics available at every height; the table and inspector
             // own their finite scroll surfaces instead of scrolling the whole workspace.
@@ -52,12 +56,15 @@ namespace GameSaveCenter.Playnite.Views
             Grid.SetColumnSpan(TaskDetailScrollViewer, stack ? 3 : 1);
             Grid.SetRow(TaskDetailScrollViewer, stack ? 3 : 2);
             TaskDetailScrollViewer.Margin = showInspector && stack ? new Thickness(0, 10, 0, 0) : new Thickness(0);
-            var workspaceHeight = TaskWorkspaceLayout.ActualHeight > 0
-                ? TaskWorkspaceLayout.ActualHeight
+            var viewportHeight = TaskPageScrollSurface.ActualHeight > 0
+                ? TaskPageScrollSurface.ActualHeight
+                : Math.Max(320, height);
+            var workspaceHeight = viewportHeight > 0
+                ? viewportHeight
                     - TaskSummaryPanel.ActualHeight
                     - TaskQueuePanel.ActualHeight
                 : Math.Max(320, height - 200);
-            var inspectorHeight = Math.Max(96, Math.Min(420, workspaceHeight - tableMinHeight - 10));
+            var inspectorHeight = Math.Max(96, Math.Min(420, workspaceHeight - tableViewportHeight - 10));
             TaskDetailScrollViewer.MaxHeight = showInspector && stack
                 ? inspectorHeight
                 : double.PositiveInfinity;
