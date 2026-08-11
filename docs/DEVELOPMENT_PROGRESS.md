@@ -1,5 +1,7 @@
 # 开发实现进度
 
+- [x] UI-198（`0b985a3`）：修复 Overview 主工作区在常用窗口和窄窗口下被固定 sibling 行挤压的问题。工作台、Hero/当前游戏、六项指标和最近活动统一进入 `OverviewPrimaryScrollSurface`；窄布局使用 `OverviewStackScrollSurface` 作为唯一页面级纵向滚动面，避免 980 DIP 下主列高度为 0；宽布局仍维持主列与摘要列的有限独立滚动。`OverviewActivityList` 保留有限高度、ListBox Recycling、内部滚动、真实 `OverviewTasks`/`SelectedTask` 绑定和键盘/Automation 契约；同步更新大库源码门禁与结构测试。源码验证、生产插件隔离 Release 构建 0 警告/0 错误、隔离测试 149/149 和 1600/1366/1280/1100/980 DIP 隔离生产离屏回归通过；真实 Playnite 宿主、主题、DPI 和连续缩放流畅性仍需手工验收。
+
 更新时间：2026-08-11
 当前版本：`0.6.70-development-preview`
 

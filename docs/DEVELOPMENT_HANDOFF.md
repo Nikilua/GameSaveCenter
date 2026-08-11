@@ -67,7 +67,7 @@
 ## 合并后当前交接基线（2026-08-11）
 
 - 分支：`main`
-- 当前 UI 交接基线：`7e55be7`（`修复常用窗口下工作区可见性`）；TaskCenter 页面级滚动、动态筛选默认值、MediaGrid 顶部测量和 Overview 短窗口操作可达性均已固化，记忆与进度文档随后单独提交
+- 当前 UI 交接基线：`0b985a3`（`ui: keep overview workbench reachable in compact windows`）；TaskCenter 页面级滚动、动态筛选默认值、MediaGrid 顶部测量和 Overview 常用/窄窗口工作区可达性均已固化，记忆与进度文档随后单独提交
 - 上一合并提交：`e87e2af`（`merge: reconcile local and cross-machine UI migration`）
 - 合并共同基线：`9cdd975`；本机 UI-173～UI-181 与 `origin/main` 的 UI-181～UI-183、交接文档线均已保留，没有删除任一方共同基线后的提交。
 - 本机额外 WIP 已先由 `e61d0fc` 固化后纳入合并；本机的长期约束已追加到 `docs/PROJECT_MEMORY.md` 的 `MERGE-001`，远端既有记忆条目保持原文。
@@ -85,6 +85,7 @@
 - UI-195 已补齐 Maintenance“设备状态 / 异常与审计 / 进程映射”三个 Tab 的命名页面滚动面；对应三张主表由 code-behind 使用 236–460 DIP 有限 Height，继续保留 DataGrid 内部滚动、虚拟化、Inspector 滚动、真实命令和 Binding，源码门禁同步识别该结构。
 - UI-196 已补齐 TaskCenter 的命名页面滚动面 `TaskPageScrollSurface`；任务表由 code-behind 使用 236–460 DIP 有限 Height，堆叠 Inspector 按页面实际视口计算剩余高度，摘要、筛选、任务表、详情和底部恢复操作在短高度常用窗口下均可通过明确滚动访问，真实搜索/筛选/计数/Binding/命令/虚拟化未改变。
 - UI-197 已修复截图暴露的常用窗口可见性问题：TaskCenter 动态游戏/类型筛选的 WPF 集合刷新空选中在 DataBind 优先级恢复为 `全部`，MediaGrid 通过共享 ListBox 顶部内容契约避免少量媒体卡沉到有限视口底部，Overview 工作台按钮在窄主列第二行横向自动换行，宽屏右侧摘要/风险列保留有限 Auto 滚动以确保“打开维护中心”可达；真实命令、Binding、Worker、IPC、数据库、持久化、虚拟化、键盘访问和 Automation 未改变。
+- UI-198 已修复 Overview 在常用窗口和窄窗口下的主工作区被 sibling 行挤压问题：工作台、Hero/当前游戏、六项指标和最近活动统一进入 `OverviewPrimaryScrollSurface`，窄布局再由 `OverviewStackScrollSurface` 统一承载主列与右侧摘要，避免 980 DIP 下主列高度变成 0；宽布局仍保留主列/摘要列独立有限滚动。`OverviewActivityList` 继续使用有限高度、ListBox Recycling 和自身滚动，真实命令、Binding、SelectedTask、键盘访问和 Automation 未改变。已按 1600/1366/1280/1100/980 DIP 与 900/768/720/700/640 DIP 运行隔离生产离屏渲染，源码验证通过，生产插件 Release 构建 0 警告/0 错误，隔离测试 149/149 通过；未运行真实 Playnite 宿主、主题切换、DPI 真机和连续缩放流畅性验证。
 - 新增的响应式门禁要求：1080p、2K、4K 不能只按物理分辨率判断，必须按 DPI 换算后的逻辑 DIP 尺寸检查全屏、窗口化和最大化；常用窗口下首屏下方真实内容不得被页脚或工作区边界遮住，主表/主列表应保留约四行可读视口，页面滚动与列表内部虚拟化滚动必须分工明确。具体门禁见 `docs/design/UI_CHANGE_GATE.md`。
 - 本轮工作区：合并提交完成时干净；后续 agent 仍须先运行 `git status`、`git log -5 --oneline --decorate` 和 `git branch --show-current`。
 - 验证：源码验证通过；生产插件隔离 Release 构建 0 警告/0 错误；隔离测试输出 149/149 通过，测试构建仅有 NuGet 漏洞源审计的 NU1900 警告。由于本机只有 .NET 9 SDK 且仓库 `global.json` 以 .NET 8 为基线，测试使用隔离输出验证，未覆盖真实 Playnite 宿主、主题、DPI、窗口化截图和连续缩放运行时渲染。

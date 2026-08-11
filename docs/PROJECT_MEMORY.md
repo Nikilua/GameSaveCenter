@@ -1,5 +1,7 @@
 # 项目记忆与不可丢失约束
 
+> UI-198（2026-08-11，提交 `0b985a3`）：Overview 的滚动所有权按常用窗口重新收口。工作台、Hero/当前游戏、六项指标和最近活动都在 `OverviewPrimaryScrollSurface` 的同一主列流中，避免最近活动固定在外层 sibling 行后把 Hero/当前游戏或第二排指标挤出有限视口；窄布局额外由 `OverviewStackScrollSurface` 承载主列与右侧摘要，使 980 DIP 下主列不再因摘要 Auto 行测量而变成 0 高度。宽布局仍保持主列与摘要列的有限独立滚动，`OverviewActivityList` 继续使用有限高度、ListBox Recycling 和本地内部滚动。没有修改真实 Command、Binding、Worker、IPC、数据库、持久化、SelectedTask、键盘或 Automation；同步扩展 `scripts/validate-source.py` 与 WPF 结构断言。源码验证、生产插件隔离 Release 构建 0 警告/0 错误、隔离测试 149/149 和 1600/1366/1280/1100/980 DIP 隔离生产离屏渲染均已通过；真实 Playnite 宿主、主题、DPI 和连续缩放流畅性仍未验证。
+
 > 跨电脑或跨模型接手请先读取 [`docs/DEVELOPMENT_HANDOFF.md`](DEVELOPMENT_HANDOFF.md)，其中包含资料读取顺序、用户原话、持续开发流程、当前基线和下一步方向。
 
 > MERGE-001（2026-08-11）：本机 `main` 在共同基线 `9cdd975` 后的本地 UI 提交（UI-173～UI-181，另含合并前本机 WIP）已保留并与 `origin/main` 的 UI-181～UI-183/交接文档线合并。以下本机独有的视觉约束不可丢失：Overview Hero 标题保持 Demo 的 35px，并使用共享 `GscAccentShadowColor`/`GscInfoShadowColor`/`GscSuccessShadowColor` 的三颗不可命中径向环境光；Media 顶部四卡保持“标题 → 30px 真实数值 → 副文案”的三行节奏；维护设备摘要保留标题、真实刷新命令和 `GscRedesignInfoBand` 信息带。上述均为 WPF 表层调整，不改变命令、Binding、Worker、IPC、数据库、持久化和大型列表虚拟化。远端已有记忆条目优先保留，后续新增本机约束追加在本记录之后，不覆盖其原文。
