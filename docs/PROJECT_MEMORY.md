@@ -1,5 +1,7 @@
 # 项目记忆与不可丢失约束
 
+> UI-199（2026-08-11，代码提交 `5cbd512`）：Dashboard 工作区标题不能只依赖侧栏 RadioButton 点击事件；程序化导航、恢复状态和离屏渲染直接调用 `UpdateWorkspacePresentation()` 时，也必须先由 `UpdateWorkspaceHeader` 同步页面标题/副标题，避免媒体、维护、任务等内容与顶栏仍显示“首页”。MediaCenter 的四张真实摘要卡在常用窗口保持 Demo 的横向四卡节奏，响应式断点使用逻辑 DIP：可用宽度 `>=760` 为四列、`>=520` 为两列、再窄才单列；不要用完整物理屏幕宽度或高度判断，因为 Dashboard 侧栏和 shell 内边距已消耗窗口宽度。该调整的目的，是在 1080p、2K、4K 的窗口化/最大化常用尺寸下为主表留下可见行；Media 表格的有限视口、内部滚动、ListBox/DataGrid 虚拟化、Inspector、真实命令和 Binding 必须保持。未修改 Worker、IPC、数据库、持久化、业务状态或 Demo 假数据。源码验证、生产插件 Release 构建 0 警告/0 错误、隔离 WPF 测试 150/150 和多尺寸生产离屏 `render-prod OK` 已通过；render harness 自身的 3 个 FakeApi 未使用事件警告不属于生产插件。真实 Playnite 宿主、主题、DPI 真机和连续缩放流畅性仍未验证。
+
 > UI-198（2026-08-11，提交 `0b985a3`）：Overview 的滚动所有权按常用窗口重新收口。工作台、Hero/当前游戏、六项指标和最近活动都在 `OverviewPrimaryScrollSurface` 的同一主列流中，避免最近活动固定在外层 sibling 行后把 Hero/当前游戏或第二排指标挤出有限视口；窄布局额外由 `OverviewStackScrollSurface` 承载主列与右侧摘要，使 980 DIP 下主列不再因摘要 Auto 行测量而变成 0 高度。宽布局仍保持主列与摘要列的有限独立滚动，`OverviewActivityList` 继续使用有限高度、ListBox Recycling 和本地内部滚动。没有修改真实 Command、Binding、Worker、IPC、数据库、持久化、SelectedTask、键盘或 Automation；同步扩展 `scripts/validate-source.py` 与 WPF 结构断言。源码验证、生产插件隔离 Release 构建 0 警告/0 错误、隔离测试 149/149 和 1600/1366/1280/1100/980 DIP 隔离生产离屏渲染均已通过；真实 Playnite 宿主、主题、DPI 和连续缩放流畅性仍未验证。
 
 > 跨电脑或跨模型接手请先读取 [`docs/DEVELOPMENT_HANDOFF.md`](DEVELOPMENT_HANDOFF.md)，其中包含资料读取顺序、用户原话、持续开发流程、当前基线和下一步方向。
