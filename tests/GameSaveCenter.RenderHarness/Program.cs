@@ -21,6 +21,8 @@ namespace GameSaveCenter.RenderHarness;
 /// </summary>
 public static class Program
 {
+    private static readonly List<string> s_problems = new List<string>();
+
     private static readonly (int Width, int Height)[] WindowSizes =
     {
         (1040, 700),
@@ -51,6 +53,7 @@ public static class Program
         report.AppendLine("GameSaveCenter render QA report");
         report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
         report.AppendLine();
+        s_problems.Clear();
 
         try
         {
@@ -75,6 +78,17 @@ public static class Program
                 report.AppendLine();
             }
 
+            if (s_problems.Count > 0)
+            {
+                report.AppendLine("render-qa FAILED");
+                foreach (var problem in s_problems)
+                    report.AppendLine("  PROBLEM " + problem);
+                File.WriteAllText(Path.Combine(outputRoot, "render-qa-report.txt"), report.ToString());
+                Console.WriteLine(report.ToString());
+                return 1;
+            }
+
+            report.AppendLine("render-qa OK");
             File.WriteAllText(Path.Combine(outputRoot, "render-qa-report.txt"), report.ToString());
             Console.WriteLine(report.ToString());
             Console.WriteLine("render-qa OK");
@@ -248,6 +262,12 @@ public static class Program
             report.AppendLine(
                 $"  {label} {visibleName}: size={scroller.ActualWidth:0}x{scroller.ActualHeight:0}, viewport={scroller.ViewportHeight:0}, extent={scroller.ExtentHeight:0}, " +
                 $"vbar={scroller.VerticalScrollBarVisibility}, scrollable={scrollable}");
+            if ((visibleName.Contains("ScrollSurface") || visibleName == "SettingsScroller")
+                && scroller.VerticalScrollBarVisibility == ScrollBarVisibility.Hidden
+                && scrollable)
+            {
+                s_problems.Add($"{label} {visibleName} hides overflow behind a Hidden scrollbar (viewport={scroller.ViewportHeight:0}, extent={scroller.ExtentHeight:0})");
+            }
             if (visibleName == "OverviewRiskScrollViewer" && scroller.Content is FrameworkElement riskContent)
             {
                 report.AppendLine(
@@ -271,6 +291,12 @@ public static class Program
             if (string.IsNullOrEmpty(grid.Name))
                 continue;
             report.AppendLine($"  {label} {grid.Name}: size={grid.ActualWidth:0}x{grid.ActualHeight:0}, rows={grid.Items.Count}");
+            if (grid.ActualHeight > 0
+                && grid.ActualHeight < 236
+                && grid.Name != "MaintenanceAuditLogGrid")
+            {
+                s_problems.Add($"{label} {grid.Name} table viewport is only {grid.ActualHeight:0} DIP (< 236)");
+            }
         }
 
         foreach (var list in FindVisualChildren<ListBox>(host))
@@ -278,6 +304,12 @@ public static class Program
             if (string.IsNullOrEmpty(list.Name))
                 continue;
             report.AppendLine($"  {label} {list.Name}: size={list.ActualWidth:0}x{list.ActualHeight:0}, items={list.Items.Count}");
+            if (list.ActualHeight > 0
+                && list.ActualHeight < 236
+                && list.Name != "OverviewActivityList")
+            {
+                s_problems.Add($"{label} {list.Name} list viewport is only {list.ActualHeight:0} DIP (< 236)");
+            }
         }
 
         if (label.StartsWith("Overview", StringComparison.OrdinalIgnoreCase))
