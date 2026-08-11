@@ -1867,6 +1867,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Property=\"EnableRowVirtualization\" Value=\"True\"", media);
         Assert.Contains("Text=\"{Binding MediaSummary.TotalSizeDisplay, Mode=OneWay}\"", media);
         Assert.DoesNotContain("MediaSummary.TotalSizeDisplay, Mode=TwoWay", media);
+        Assert.Contains("var metricColumns = width >= 760 ? 4 : width >= 520 ? 2 : 1", mediaCode);
+        Assert.Contains("MediaSummaryPanel.Columns = metricColumns", mediaCode);
+        Assert.DoesNotContain("var compactHeight = height < 760", mediaCode);
         Assert.Contains("var stack = width < 1080", mediaCode);
         Assert.Contains("MediaPreviewPanel.Margin = new Thickness(0, 14, 0, 14)", mediaCode);
         // Task book section 11: the current-game media inspector must keep the demo
@@ -2596,6 +2599,22 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.DoesNotContain("x:Name=\"MetricsPanel\"", dashboard);
         Assert.DoesNotContain("MetricsPanel", dashboardCode);
         Assert.Contains("<views:OverviewView x:Name=\"OverviewWorkspaceView\"/>", dashboard);
+    }
+
+    [Fact]
+    public void DashboardWorkspacePresentationKeepsHeaderContextInSync()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var dashboardCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml.cs"));
+
+        // Workspace tabs can be selected by attention-center navigation, restored state,
+        // or an isolated render harness without raising the sidebar RadioButton event.
+        // The Demo's page title must follow the visible workspace in all of those paths.
+        Assert.Contains("private void UpdateWorkspaceHeader(WorkspaceKind workspace)", dashboardCode);
+        Assert.Equal(2, Regex.Matches(dashboardCode, "UpdateWorkspaceHeader\\(workspace\\);").Count);
+        Assert.Contains("PageTitleText.Text = \"媒体中心\"", dashboardCode);
+        Assert.Contains("PageTitleText.Text = \"维护中心\"", dashboardCode);
+        Assert.Contains("PageTitleText.Text = \"任务中心\"", dashboardCode);
     }
 
     [Fact]

@@ -36,14 +36,14 @@ namespace GameSaveCenter.Playnite.Views
         {
             responsiveWidth = width;
             responsiveHeight = height;
-            // At normal windowed heights, a four-column metric strip preserves the
-            // primary table viewport when the workspace is around 960–1179 DIP wide.
-            // 4K at high DPI can land in this same logical range, so physical pixels
-            // must not be used as the breakpoint signal.
-            var compactHeight = height < 760;
-            MediaSummaryPanel.Columns = width >= 1180 || (compactHeight && width >= 960)
-                ? 4
-                : width >= 820 ? 2 : 1;
+            // Keep the demo's four-card metric strip throughout normal windowed
+            // workspaces. The Dashboard's content width is already smaller than the
+            // complete window after the sidebar and shell insets, so a 1180-DIP
+            // breakpoint incorrectly collapsed the cards to two or one column and
+            // pushed the media table below the fold. These are logical-DIP thresholds:
+            // 1080p, 2K and 4K at ordinary DPI all keep the primary table reachable.
+            var metricColumns = width >= 760 ? 4 : width >= 520 ? 2 : 1;
+            MediaSummaryPanel.Columns = metricColumns;
             // Do not discard summary information at short heights. Local list/inspector
             // surfaces own overflow so the whole workspace does not become a scroll canvas.
             MediaSummaryPanel.Visibility = Visibility.Visible;

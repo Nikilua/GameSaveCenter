@@ -583,21 +583,7 @@ namespace GameSaveCenter.Playnite.Views
             if (item == null || item.Tag == null) return;
             if (!Enum.TryParse(item.Tag.ToString(), out WorkspaceKind workspace)) return;
             viewModel.CurrentWorkspace = workspace;
-            switch (workspace)
-            {
-                case WorkspaceKind.Saves:
-                    PageTitleText.Text = "存档中心"; PageSubtitleText.Text = "历史版本、路径校验、游戏策略、比较与安全恢复"; break;
-                case WorkspaceKind.Trainers:
-                    PageTitleText.Text = "修改器中心"; PageSubtitleText.Text = "本地工具、导入确认、FLiNG 在线目录和下载版本"; break;
-                case WorkspaceKind.Media:
-                    PageTitleText.Text = "媒体中心"; PageSubtitleText.Text = "待归类、媒体库、批量操作与来源规则"; break;
-                case WorkspaceKind.Tasks:
-                    PageTitleText.Text = "任务中心"; PageSubtitleText.Text = "全局任务、真实阶段、失败详情、取消与安全重试"; break;
-                case WorkspaceKind.Maintenance:
-                    PageTitleText.Text = "维护中心"; PageSubtitleText.Text = "关注项、诊断日志、进程映射、设备恢复与保留预览"; break;
-                default:
-                    PageTitleText.Text = "首页"; PageSubtitleText.Text = "今日整体状态、需处理关注项与全局批量操作"; break;
-            }
+            UpdateWorkspaceHeader(workspace);
             if (compactGameBrowserOpen)
             {
                 compactGameBrowserOpen = false;
@@ -609,9 +595,41 @@ namespace GameSaveCenter.Playnite.Views
             AnimateElement(DetailsTabControl, 10, 0, 0.2);
         }
 
+        private void UpdateWorkspaceHeader(WorkspaceKind workspace)
+        {
+            switch (workspace)
+            {
+                case WorkspaceKind.Saves:
+                    PageTitleText.Text = "存档中心";
+                    PageSubtitleText.Text = "历史版本、路径校验、游戏策略、比较与安全恢复";
+                    break;
+                case WorkspaceKind.Trainers:
+                    PageTitleText.Text = "修改器中心";
+                    PageSubtitleText.Text = "本地工具、导入确认、FLiNG 在线目录和下载版本";
+                    break;
+                case WorkspaceKind.Media:
+                    PageTitleText.Text = "媒体中心";
+                    PageSubtitleText.Text = "待归类、媒体库、批量操作与来源规则";
+                    break;
+                case WorkspaceKind.Tasks:
+                    PageTitleText.Text = "任务中心";
+                    PageSubtitleText.Text = "全局任务、真实阶段、失败详情、取消与安全重试";
+                    break;
+                case WorkspaceKind.Maintenance:
+                    PageTitleText.Text = "维护中心";
+                    PageSubtitleText.Text = "关注项、诊断日志、进程映射、设备恢复与保留预览";
+                    break;
+                default:
+                    PageTitleText.Text = "首页";
+                    PageSubtitleText.Text = "今日整体状态、需处理关注项与全局批量操作";
+                    break;
+            }
+        }
+
         private void UpdateWorkspacePresentation()
         {
             var workspace = viewModel.CurrentWorkspace;
+            UpdateWorkspaceHeader(workspace);
             // Each workspace is now rendered by its extracted physical view. The shell only
             // coordinates which workspace tab is visible and delegates local layout to it.
             SetVisibility(OverviewWorkspaceTab, workspace == WorkspaceKind.Overview);
