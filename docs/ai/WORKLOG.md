@@ -144,3 +144,59 @@ NEXT: PERF-006 Task/Media 搜索防抖。
 **下一步：**
 
 NEXT: GAME-TOOL-001 自定义游戏启动项（EXE/LNK/BAT/CMD/PS1）。
+
+## 2026-08-11 GAME-TOOL-001 自定义游戏启动项基础能力
+
+**做了什么：**
+
+- 新增 `GameToolLaunchKind` 与 `GameToolLaunchKinds`：按扩展名分类 EXE / LNK / BAT / CMD / PS1 / 系统默认程序，并明确只有 EXE（含可解析快捷方式目标）可安全跟踪进程。
+- 新增 `GameToolLauncher`：EXE 支持 Arguments / WorkingDirectory / RunAsAdministrator；LNK 通过 WScript.Shell 解析 TargetPath/Arguments/WorkingDirectory 后优先运行真实目标；BAT/CMD 通过 `cmd.exe /d /s /c`，PS1 通过 `powershell.exe -NoProfile -ExecutionPolicy Bypass -File`；其他文件用 `UseShellExecute` 交给系统默认程序。
+- 修改器中心新增“+ 添加启动项”入口，文件选择器覆盖 EXE/LNK/脚本/所有文件；导入默认 `CopyIntoLibrary=false`，保留外部路径引用，不复制文件。
+- 工具卡片类型显示改为“自定义启动项”，Inspector 显示外部引用提示；`CloseOnGameExit` 对不可跟踪类型禁用。
+
+**为什么这样做：**
+
+复用现有 GameTool 模型与字段，不新建第二套数据库；不同文件类型必须采用不同启动策略，不能统一 `Process.Start(path)`。
+
+**修改文件：**
+
+- `src/GameSaveCenter.Contracts/Enums.cs`
+- `src/GameSaveCenter.Contracts/TrainerDtos.cs`
+- 新增 `src/GameSaveCenter.Worker/Services/GameToolLauncher.cs`
+- `src/GameSaveCenter.Playnite/ViewModels/DashboardViewModel.cs`
+- `src/GameSaveCenter.Playnite/Views/TrainerCenterView.xaml`
+- 新增测试 `GameToolLaunchKindsTests.cs`、`GameToolLauncherTests.cs`
+
+**测试结果：**
+
+- 启动策略单测覆盖 EXE/LNK→EXE/LNK→文档/BAT/CMD/PS1/普通文件/缺失文件/管理员参数。
+
+## 2026-08-11 GAME-TOOL-002 自定义启动项生命周期与安全关闭
+
+**做了什么：**
+
+- 新增 `GameToolSessionTracker`：按 SessionId 记录 GameSaveCenter 自己启动的 PID + 启动时间 + CloseOnExit；游戏退出时只关闭本 Session 且 CloseOnExit 的进程，不按进程名杀、不跨 Session。
+- `GameToolService` 自动启动流程接入 tracker：延迟取消、启动记录、退出关闭；只有可跟踪类型且用户开启时才实际关闭。
+- 自定义导入支持单文件/任意类型并保持外部路径；`SaveSelectedGameToolAsync` 保存时自动纠正“不可跟踪类型开启退出后关闭”与“系统默认程序开启管理员”。
+
+**为什么这样做：**
+
+CloseOnGameExit 的安全边界必须按 PID + StartTime + Session 确认，避免误杀用户游戏前已打开的同名工具。
+
+**修改文件：**
+
+- 新增 `src/GameSaveCenter.Worker/Services/GameToolSessionTracker.cs`
+- `src/GameSaveCenter.Worker/Services/GameToolService.cs`
+- 新增测试 `GameToolServiceImportTests.cs`、`GameToolSessionTrackerTests.cs`
+
+**测试结果：**
+
+- Worker 45/45、Playnite 160/160、Core 13/13 通过；render-qa 全绿；技能静态审查 0 error。
+
+**仍需验证内容：**
+
+真实 Playnite 中导入 LNK/BAT/PS1、自动随游戏启动、延迟与退出关闭的真机流程。
+
+**下一步：**
+
+NEXT: PERF-007 媒体缩略图异步化。

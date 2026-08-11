@@ -82,6 +82,8 @@
 - PERF-001：`BatchObservableCollection` 批量 Reset。
 - PERF-002/003：Task 筛选与 GamePicker 平台指纹短路。
 - PERF-004（旧编号）：GamePickerItem 缓存复用（新任务编号体系中 PERF-004 是性能基线设施，不要混淆）。
+- PERF-004/005/006（新编号）：`[PERF]` 基线日志、Snapshot 无变化 0 Reset、Task/Media 搜索防抖。
+- GAME-TOOL-001/002：自定义启动项正式支持 EXE/LNK/BAT/CMD/PS1，外部路径引用不复制文件；Session 级 PID 追踪与 CloseOnGameExit 安全关闭。
 - UI-204/205：TaskCenter 与 GamePicker 下拉框默认值恢复（含真实 Playnite 异步物化重试）。
 
 ## 当前技术债
@@ -96,8 +98,8 @@
 ## 当前开发优先级
 
 - P0：性能基础设施与真实热点优化（PERF-004 基线 → PERF-005 0 Reset → PERF-006 搜索防抖）。
-- P0：自定义游戏启动项（GAME-TOOL-001 导入/启动策略；GAME-TOOL-002 生命周期/CloseOnGameExit）。
-- P1：媒体性能（PERF-007 异步缩略图）。
+- P0：自定义游戏启动项（已完成，GAME-TOOL-001/002）。
+- P1：媒体性能（PERF-007 异步缩略图，当前进行中）。
 - P1：真实 Playnite / DPI / 大型游戏库 QA（UI-QA-REAL-001）。
 - P2：架构进一步拆分（不主动做）。
 
@@ -112,6 +114,7 @@
 - Worker 是独立进程：Playnite 启动早期 IPC 可能超时，要用失败快速降级 + 后台重试。
 - 修改器/CT/自定义工具启动一律走 Worker；禁止在 Playnite UI 进程直接 Process.Start 外部程序。
 - CloseOnGameExit 只能关闭本 Session 由 GameSaveCenter 启动且能确认 PID/StartTime 的进程；LNK/BAT/CMD/PS1/普通文件不可靠，UI 应禁用该开关。
+- 自定义启动项支持 EXE/LNK/BAT/CMD/PS1/普通文件：EXE 与可解析 LNK 目标可跟踪；脚本和系统默认程序启动时 Trackable=false。
 - 磁盘 IO、图片解码不要放 UI 线程；图片解码要限制并发并 freeze。
 - 表格/列表虚拟化很容易被外层 ScrollViewer 或 DataGrid 嵌套破坏，改 XAML 后必须跑 render-qa。
 - `git push` 前确认没有 bin/obj、用户本地配置、密钥、测试临时文件和大压缩包（如 `GameSaveCenter.7z` 不要提交）。
