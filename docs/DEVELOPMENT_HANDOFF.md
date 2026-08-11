@@ -67,7 +67,7 @@
 ## 合并后当前交接基线（2026-08-11）
 
 - 分支：`main`
-- 当前 UI 交接基线：`be9c273`（`ui: align task metrics with demo rhythm`）；本文件的同步说明随后单独提交
+- 当前 UI 交接基线：`c4a3478`（`ui: restore common-window workspace scrolling`）；本文件的同步说明随后单独提交
 - 上一合并提交：`e87e2af`（`merge: reconcile local and cross-machine UI migration`）
 - 合并共同基线：`9cdd975`；本机 UI-173～UI-181 与 `origin/main` 的 UI-181～UI-183、交接文档线均已保留，没有删除任一方共同基线后的提交。
 - 本机额外 WIP 已先由 `e61d0fc` 固化后纳入合并；本机的长期约束已追加到 `docs/PROJECT_MEMORY.md` 的 `MERGE-001`，远端既有记忆条目保持原文。
@@ -77,8 +77,10 @@
 - UI-187 已将 Maintenance 诊断页顶部摘要改为 Demo 的六项真实健康卡（Worker、Ludusavi、Rclone、数据与备份目录、媒体目录、设备状态），并将响应式列数收口为宽屏 3 列、中屏 2 列、窄屏 1 列；诊断操作、表格、Inspector、审计、完整摘要和原有命令/绑定均保留。
 - UI-188 已将 TaskCenter 任务队列补齐 Demo 的搜索输入框，真实搜索任务 ID、类型、游戏、详情和错误，并与状态/游戏/类型筛选叠加；未新增 Worker/IPC 请求，任务计数、Inspector、恢复命令和虚拟化保持不变。
 - UI-189 已将 TaskCenter 顶部四项任务摘要改为 Demo 的“标题 → 30px 数值 → 副文案”三行阅读卡，仍绑定真实任务计数并保持四列/两列/单列响应式逻辑；搜索、筛选、Inspector、命令和虚拟化未改变。
+- UI-190 已修复常用窗口尺寸下 Overview 底部内容被截断、Media 表格只剩一行和 Maintenance 诊断下方内容不可达的问题：Overview 只滚动上方工作台内容并让最近活动保持有限 Grid/ListBox 视口；Media 与 Maintenance 使用明确命名的页面滚动面承载下方内容，主表/主列表由 code-behind 保持 236–460 DIP 有限高度和内部虚拟化滚动。真实命令、Binding、Inspector 和业务层未改变。
+- 新增的响应式门禁要求：1080p、2K、4K 不能只按物理分辨率判断，必须按 DPI 换算后的逻辑 DIP 尺寸检查全屏、窗口化和最大化；常用窗口下首屏下方真实内容不得被页脚或工作区边界遮住，主表/主列表应保留约四行可读视口，页面滚动与列表内部虚拟化滚动必须分工明确。具体门禁见 `docs/design/UI_CHANGE_GATE.md`。
 - 本轮工作区：合并提交完成时干净；后续 agent 仍须先运行 `git status`、`git log -5 --oneline --decorate` 和 `git branch --show-current`。
-- 验证：源码验证通过；TaskCenter 页面隔离 Release 构建 0 警告/0 错误；Playnite 测试 146/146 通过。真实 Playnite 宿主、主题、DPI 和运行时渲染仍未验证。
+- 验证：源码验证通过；响应式 UI Release 构建 0 警告/0 错误；Playnite 测试 147/147 通过。真实 Playnite 宿主、主题、DPI、窗口化截图和连续缩放运行时渲染仍未验证。
 
 以下原有的远端交接基线保留为历史记录，便于追溯另一台机器的 UI-183 上下文：
 
@@ -105,7 +107,7 @@
 
 1. 逐页检查 Overview、SaveCenter、TrainerCenter、TaskCenter、Maintenance、MediaCenter、Settings 的层级、按钮尺寸、文字对齐、默认选择和空状态。
 2. 检查共享 `Button`、`ComboBox`、`TextBox`、`ListBox`、`DataGrid`、Tab 和 Inspector 资源，发现同类问题时修共享模板。
-3. 按 980/1100/1280/1366/1600 DIP 宽度和 100%/125%/150%/200% DPI 复核窄屏堆叠、有限滚动和长文本。
+3. 按 980/1100/1280/1366/1600 DIP 宽度、640/720/900/1080 DIP 高，以及 1080p/2K/4K 在 100%/125%/150%/175%/200% DPI 下的常用窗口化逻辑尺寸，复核窄屏堆叠、首屏内容可见性、有限滚动和长文本；不把 4K 通过当作 1080p 通过。
 4. 在可用环境中运行 Playnite 宿主，验证 Light/Dark/Follow Playnite/高对比度、键盘焦点、真实数据加载和窗口关闭生命周期；若环境不可用，保留明确的手工验收清单。
 5. 发现问题后继续使用新的 UI 编号记录，不要删除历史记录或把未验证事项标成完成。
 

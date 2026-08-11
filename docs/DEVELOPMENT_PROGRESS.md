@@ -13,6 +13,8 @@
 
 - [x] UI-189：任务中心顶部四张摘要卡按 Demo 三行阅读节奏收口：标题 → 30px SemiBold 真实数值 → 副文案，依次展示任务总数、运行中、需要重试、已完成；统一使用 `GscRedesignMetricBorder`、14/12 内边距与 10 DIP 间距，删除旧的带图标两行局部样式。真实计数绑定和宽屏四列/中屏两列/窄屏单列响应式逻辑保持；任务搜索、状态/游戏/类型筛选、详情 Inspector、取消/重试/复制命令、DataGrid 虚拟化和全局视角未改动。新增结构回归断言；`python scripts/validate-source.py` 通过，隔离 Release 构建 0 警告/0 错误，Playnite 146/146 通过。真实 Playnite 宿主、主题、DPI 和运行时连续缩放流畅性仍需手工验收。
 
+- [x] UI-190（`c4a3478`）：修复 1080p、2K、4K 常用窗口化/最大化下的内容被截断问题，并将其固化为后续门禁。Overview 把工作台、Hero/当前游戏和六项指标放进 `OverviewPrimaryScrollSurface`，最近活动 ListBox 留在外层有限 Grid 行中，避免页面滚动破坏列表虚拟化；Media 待归类/当前游戏媒体页使用命名页面滚动面承载下方内容，`MediaInboxGrid`/`MediaGrid` 由 code-behind 设置 236–460 DIP 有限视口，高度不足时 960–1179 DIP 摘要卡切四列以恢复主表空间；Maintenance 诊断页同样保留有限 `FindingsGrid` 视口并允许完整诊断摘要向下滚动。真实命令、Binding、DataGrid/ListBox 虚拟化、Inspector 和业务层均未改变。新增响应式结构回归断言，并扩展源码大库门禁以识别“明确命名的页面滚动 + 有限视口”组合；源码验证通过，Release 构建 0 警告/0 错误，Playnite 147/147 通过。真实 Playnite 宿主、Light/Dark/Follow、高对比度、100%–200% DPI 和连续缩放流畅性仍需手工验收。
+
 - [x] UI-187：维护中心诊断页顶部摘要按 Demo 六项健康卡收口：Worker、Ludusavi、Rclone、数据与备份目录、媒体目录、设备状态改为六张真实绑定卡，Rclone 状态使用真实可用/配置触发器，媒体待归类数和设备比较数不使用 Demo 假数据；宽屏/中屏/窄屏列数改为 3/2/1。保留诊断操作卡、诊断/审计表格、Inspector、完整摘要、空态、命令/绑定/IPC/持久化及有限滚动；版本策略与需关注信息仍可从完整诊断摘要、Finding/审计区域和设置页获得。新增/更新结构回归断言；`python scripts/validate-source.py` 通过，隔离 Release 构建 0 警告/0 错误，Playnite 146/146 通过。真实 Playnite 宿主、主题、DPI 和运行时连续缩放流畅性仍需手工验收。
 
 - [x] UI-188：任务中心队列按 Demo 补齐搜索层：在状态/游戏/类型三个真实筛选前新增“搜索任务、游戏或错误”输入框，`TaskSearchText` 通过 `UpdateSourceTrigger=PropertyChanged` 实时刷新 `TasksView`，匹配任务 ID、任务类型、游戏名、详情与错误信息；原筛选、任务计数、详情 Inspector、取消/重试/复制命令、DataGrid 虚拟化和全局视角均保留，未增加 Worker/IPC 请求。新增结构回归断言；`python scripts/validate-source.py` 通过，隔离 Release 构建 0 警告/0 错误，Playnite 146/146 通过。真实 Playnite 宿主、主题、DPI 和运行时连续缩放流畅性仍需手工验收。

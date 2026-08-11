@@ -16,6 +16,10 @@
 
 > UI-189（2026-08-11）：TaskCenter 顶部四张摘要卡必须同时满足 Demo 的三行阅读节奏和真实任务状态：标题 → 30px SemiBold 数值 → 副文案；依次为任务总数、运行中、需要重试、已完成，绑定 `Tasks.Count`、`RunningTaskCount`、`RetryableTaskCount`、`CompletedTaskCount`，不可用 Demo 固定数字。卡片统一使用共享 `GscRedesignMetricBorder`、14/12 内边距和 10 DIP 间距；宽屏四列、760–1119 DIP 两列、窄屏单列的响应式契约不变，任务搜索/筛选、Inspector、命令、虚拟化和全局视角保持不变。源码验证通过，隔离 Release 构建 0 警告/0 错误，Playnite 146/146 通过；真实 Playnite 宿主、主题、DPI 和连续缩放流畅性仍未验证。
 
+> UI-190（2026-08-11）：常用窗口尺寸下的内容可见性按 Demo 重新收口。Overview 将工作台、Hero/当前游戏和六项指标放入独立 `OverviewPrimaryScrollSurface`，最近活动 `OverviewActivityList` 保持在外层有限 Grid 行中，继续使用 Recycling 和自身滚动，避免整页滚动对大型列表造成无限测量；当前游戏及其下方指标不再被工作区底部截断。Media 的待归类与当前游戏媒体页增加明确的页面滚动面，但 `MediaInboxGrid`/`MediaGrid` 都通过 `MediaCenterView.ApplyResponsiveLayout` 使用 236–460 DIP 的有限视口，表格/列表内部滚动和虚拟化保持；高度不足时 960–1179 DIP 的摘要卡切为四列，优先为主表保留可读行数。Maintenance 诊断页增加页面滚动面，`FindingsGrid` 使用同样的有限视口，诊断操作、六项健康卡、Inspector、完整摘要和真实命令/绑定均保留。未修改 Worker、IPC、数据库、持久化或业务状态；`scripts/validate-source.py`、Release 构建 0 警告/0 错误、Playnite 147/147 通过。真实 Playnite 宿主、主题、DPI、窗口化截图和连续缩放流畅性仍未验证。
+
+> RESP-001（2026-08-11）：“4K 已适配”不能代替 1080p 验收。WPF 按 DIP 排版，4K 在 150%/175%/200% DPI 下可能落入与 2K/1080p 相同或更小的逻辑工作区，1080p 窗口化也可能只剩 1280–1600 DIP。每轮 UI 修改必须按 1080p、2K、4K 的全屏/窗口化/最大化逻辑尺寸检查首屏内容、页脚遮挡、卡片堆叠和滚动；看不到的真实内容必须能通过明确的页面级滚动访问，DataGrid/ListBox 仍使用有限视口、内部滚动和虚拟化。以表格/列表为主的区域常用高度下目标约四行可读内容，不能被上方 Auto 行挤成一行；极端小窗口不要求不变形，但不得用裁切、负 Margin、隐藏滚动条或全页缩放伪装适配。该规则已同步到 `docs/design/UI_CHANGE_GATE.md`，并作为后续每轮 UI 的固定验收项。
+
 > UI-183：维护中心“诊断”页顶部必须保持 Demo 式的 `MaintenanceDiagnosticsActionCard` 阅读卡：标题/说明与“刷新诊断”主操作位于首行，复制诊断、打开数据目录、打开存档目录、打开媒体目录和 Worker 日志位于第二行可换行操作带。六个真实 Command 必须保留，操作区不能退回裸 `WrapPanel` 或被挪入 DataGrid/其滚动表面；诊断指标、有限表格滚动、选中项 Inspector、完整摘要和空态不因本轮布局调整消失。共享按钮模板继续负责 38 DIP 高度和文字对齐，不新增业务逻辑。
 
 > UI-182：维护中心“进程映射”编辑器必须保持 Demo 对齐的 Grid 结构：宽屏由 EXE 输入框占据 `*` 剩余空间，目标游戏下拉框保持 240 DIP，控件之间使用共享 8 DIP 节奏，绑定按钮继续使用共享按钮模板和 38 DIP 高度；宽度 `<720` DIP 时目标游戏与绑定按钮移动到第二行。`ProcessMappingExecutable`、`ProcessMappingTargetGame`、`Games`、`SaveProcessMappingCommand` 的真实绑定/命令必须保留；不要用运行时视觉树扫描或业务层改动解决布局问题。动态目标游戏 ComboBox 的空值仍表示等待真实上下文，不能为了显示效果强行选择第一项。
