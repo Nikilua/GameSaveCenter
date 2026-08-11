@@ -1,5 +1,16 @@
 # GameSaveCenter agent rules
 
+## AI/Codex 长期记忆
+
+开始任何开发前，先依次阅读：
+
+1. `docs/ai/PROJECT_MEMORY.md`
+2. `docs/ai/WORKLOG.md`
+3. `docs/DEVELOPMENT_HANDOFF.md`
+4. 最近的 Git log 与 `git status`
+
+然后按 `docs/ai/PROJECT_MEMORY.md` 的启动协议继续；每完成一个独立阶段，编译、跑测试、更新 `docs/ai/WORKLOG.md` 与项目记忆，并单独 commit。
+
 ## WPF / XAML UI changes
 
 For any WPF, XAML, Playnite UI, theming, layout, controls, animation, dialog, toast,
