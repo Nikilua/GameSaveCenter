@@ -11,6 +11,8 @@
 
 - [x] UI-186：任务中心摘要卡按 Demo 四项状态节奏收口：由“任务总数 / 云端待处理 / 当前选中”改为“任务总数 / 运行中 / 需要重试 / 已完成”，后三项来自真实 `Tasks` 集合的 `RunningTaskCount`、`RetryableTaskCount`、`CompletedTaskCount`，可重试计数与原 `RetryTaskCommand` 的 CanExecute 判定复用同一方法；宽屏四列、760–1119 DIP 两列、窄屏单列。任务筛选、详情 Inspector、复制/重试/取消命令、全局任务视角和表格虚拟化均保留，未新增 Worker/IPC 请求。新增结构回归测试；源码验证通过，隔离 Release 构建 0 错误（2 个 NU1900 仅因 NuGet 漏洞源不可访问），Playnite 146/146 通过。真实 Playnite 宿主、主题、DPI 和运行时连续缩放流畅性仍需手工验收。
 
+- [x] UI-189：任务中心顶部四张摘要卡按 Demo 三行阅读节奏收口：标题 → 30px SemiBold 真实数值 → 副文案，依次展示任务总数、运行中、需要重试、已完成；统一使用 `GscRedesignMetricBorder`、14/12 内边距与 10 DIP 间距，删除旧的带图标两行局部样式。真实计数绑定和宽屏四列/中屏两列/窄屏单列响应式逻辑保持；任务搜索、状态/游戏/类型筛选、详情 Inspector、取消/重试/复制命令、DataGrid 虚拟化和全局视角未改动。新增结构回归断言；`python scripts/validate-source.py` 通过，隔离 Release 构建 0 警告/0 错误，Playnite 146/146 通过。真实 Playnite 宿主、主题、DPI 和运行时连续缩放流畅性仍需手工验收。
+
 - [x] UI-187：维护中心诊断页顶部摘要按 Demo 六项健康卡收口：Worker、Ludusavi、Rclone、数据与备份目录、媒体目录、设备状态改为六张真实绑定卡，Rclone 状态使用真实可用/配置触发器，媒体待归类数和设备比较数不使用 Demo 假数据；宽屏/中屏/窄屏列数改为 3/2/1。保留诊断操作卡、诊断/审计表格、Inspector、完整摘要、空态、命令/绑定/IPC/持久化及有限滚动；版本策略与需关注信息仍可从完整诊断摘要、Finding/审计区域和设置页获得。新增/更新结构回归断言；`python scripts/validate-source.py` 通过，隔离 Release 构建 0 警告/0 错误，Playnite 146/146 通过。真实 Playnite 宿主、主题、DPI 和运行时连续缩放流畅性仍需手工验收。
 
 - [x] UI-188：任务中心队列按 Demo 补齐搜索层：在状态/游戏/类型三个真实筛选前新增“搜索任务、游戏或错误”输入框，`TaskSearchText` 通过 `UpdateSourceTrigger=PropertyChanged` 实时刷新 `TasksView`，匹配任务 ID、任务类型、游戏名、详情与错误信息；原筛选、任务计数、详情 Inspector、取消/重试/复制命令、DataGrid 虚拟化和全局视角均保留，未增加 Worker/IPC 请求。新增结构回归断言；`python scripts/validate-source.py` 通过，隔离 Release 构建 0 警告/0 错误，Playnite 146/146 通过。真实 Playnite 宿主、主题、DPI 和运行时连续缩放流畅性仍需手工验收。

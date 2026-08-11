@@ -67,7 +67,7 @@
 ## 合并后当前交接基线（2026-08-11）
 
 - 分支：`main`
-- 当前 UI 交接基线：`5e850c9`（`ui: add task center demo search filter`）；本文件的同步说明随后单独提交
+- 当前 UI 交接基线：`be9c273`（`ui: align task metrics with demo rhythm`）；本文件的同步说明随后单独提交
 - 上一合并提交：`e87e2af`（`merge: reconcile local and cross-machine UI migration`）
 - 合并共同基线：`9cdd975`；本机 UI-173～UI-181 与 `origin/main` 的 UI-181～UI-183、交接文档线均已保留，没有删除任一方共同基线后的提交。
 - 本机额外 WIP 已先由 `e61d0fc` 固化后纳入合并；本机的长期约束已追加到 `docs/PROJECT_MEMORY.md` 的 `MERGE-001`，远端既有记忆条目保持原文。
@@ -76,6 +76,7 @@
 - UI-186 已将 TaskCenter 摘要卡改为 Demo 的“任务总数 / 运行中 / 需要重试 / 已完成”四项真实任务状态计数，宽屏四列、窄屏按两列/单列收缩；任务筛选、全局视角、详情 Inspector 和恢复命令未改变。
 - UI-187 已将 Maintenance 诊断页顶部摘要改为 Demo 的六项真实健康卡（Worker、Ludusavi、Rclone、数据与备份目录、媒体目录、设备状态），并将响应式列数收口为宽屏 3 列、中屏 2 列、窄屏 1 列；诊断操作、表格、Inspector、审计、完整摘要和原有命令/绑定均保留。
 - UI-188 已将 TaskCenter 任务队列补齐 Demo 的搜索输入框，真实搜索任务 ID、类型、游戏、详情和错误，并与状态/游戏/类型筛选叠加；未新增 Worker/IPC 请求，任务计数、Inspector、恢复命令和虚拟化保持不变。
+- UI-189 已将 TaskCenter 顶部四项任务摘要改为 Demo 的“标题 → 30px 数值 → 副文案”三行阅读卡，仍绑定真实任务计数并保持四列/两列/单列响应式逻辑；搜索、筛选、Inspector、命令和虚拟化未改变。
 - 本轮工作区：合并提交完成时干净；后续 agent 仍须先运行 `git status`、`git log -5 --oneline --decorate` 和 `git branch --show-current`。
 - 验证：源码验证通过；TaskCenter 页面隔离 Release 构建 0 警告/0 错误；Playnite 测试 146/146 通过。真实 Playnite 宿主、主题、DPI 和运行时渲染仍未验证。
 

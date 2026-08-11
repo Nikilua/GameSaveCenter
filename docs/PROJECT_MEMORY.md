@@ -14,6 +14,8 @@
 
 > UI-188（2026-08-11）：TaskCenter 的任务队列必须保持 Demo 的“搜索任务、游戏或错误”输入框 + 状态/游戏/类型筛选结构。新增 `TaskSearchText` 实时绑定 `TasksView`，搜索真实覆盖 `TaskId`、任务类型、游戏名、详情和错误信息，并与原有三个筛选条件叠加；清空搜索仍恢复原任务视图。未新增 Worker/IPC 请求，任务摘要计数、详情 Inspector、取消/重试/复制命令、DataGrid 虚拟化和全局任务视角保持不变。源码验证通过，隔离 Release 构建 0 警告/0 错误，Playnite 146/146 通过；真实 Playnite 宿主、主题、DPI 和连续缩放流畅性仍未验证。
 
+> UI-189（2026-08-11）：TaskCenter 顶部四张摘要卡必须同时满足 Demo 的三行阅读节奏和真实任务状态：标题 → 30px SemiBold 数值 → 副文案；依次为任务总数、运行中、需要重试、已完成，绑定 `Tasks.Count`、`RunningTaskCount`、`RetryableTaskCount`、`CompletedTaskCount`，不可用 Demo 固定数字。卡片统一使用共享 `GscRedesignMetricBorder`、14/12 内边距和 10 DIP 间距；宽屏四列、760–1119 DIP 两列、窄屏单列的响应式契约不变，任务搜索/筛选、Inspector、命令、虚拟化和全局视角保持不变。源码验证通过，隔离 Release 构建 0 警告/0 错误，Playnite 146/146 通过；真实 Playnite 宿主、主题、DPI 和连续缩放流畅性仍未验证。
+
 > UI-183：维护中心“诊断”页顶部必须保持 Demo 式的 `MaintenanceDiagnosticsActionCard` 阅读卡：标题/说明与“刷新诊断”主操作位于首行，复制诊断、打开数据目录、打开存档目录、打开媒体目录和 Worker 日志位于第二行可换行操作带。六个真实 Command 必须保留，操作区不能退回裸 `WrapPanel` 或被挪入 DataGrid/其滚动表面；诊断指标、有限表格滚动、选中项 Inspector、完整摘要和空态不因本轮布局调整消失。共享按钮模板继续负责 38 DIP 高度和文字对齐，不新增业务逻辑。
 
 > UI-182：维护中心“进程映射”编辑器必须保持 Demo 对齐的 Grid 结构：宽屏由 EXE 输入框占据 `*` 剩余空间，目标游戏下拉框保持 240 DIP，控件之间使用共享 8 DIP 节奏，绑定按钮继续使用共享按钮模板和 38 DIP 高度；宽度 `<720` DIP 时目标游戏与绑定按钮移动到第二行。`ProcessMappingExecutable`、`ProcessMappingTargetGame`、`Games`、`SaveProcessMappingCommand` 的真实绑定/命令必须保留；不要用运行时视觉树扫描或业务层改动解决布局问题。动态目标游戏 ComboBox 的空值仍表示等待真实上下文，不能为了显示效果强行选择第一项。
