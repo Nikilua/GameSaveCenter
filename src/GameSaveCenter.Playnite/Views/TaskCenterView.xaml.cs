@@ -2,6 +2,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Threading;
 
 namespace GameSaveCenter.Playnite.Views
 {
@@ -12,6 +13,22 @@ namespace GameSaveCenter.Playnite.Views
         {
             InitializeComponent();
             TaskDetailScrollViewer.IsVisibleChanged += OnTaskDetailScrollViewerIsVisibleChanged;
+        }
+
+        private void OnTaskFilterSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // RebuildTaskFilters replaces the dynamic game/type collections. WPF clears
+            // SelectedItem while the collection is repopulated, and that transient state
+            // can win the binding race even though the ViewModel has already restored
+            // “全部”. Restore only an actually empty selection, preserving real choices.
+            if (sender is not ComboBox combo || combo.Items.Count == 0 || combo.SelectedIndex >= 0)
+                return;
+
+            Dispatcher.BeginInvoke(DispatcherPriority.DataBind, new Action(() =>
+            {
+                if (combo.Items.Count > 0 && combo.SelectedIndex < 0)
+                    combo.SelectedIndex = 0;
+            }));
         }
 
         private void OnTaskDetailScrollViewerIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)

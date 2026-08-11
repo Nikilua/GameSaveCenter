@@ -220,6 +220,12 @@
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
         <Setter Property="ScrollViewer.PanningMode" Value="VerticalOnly"/>
+        <!-- A finite list with only a few realized items must measure from its
+             leading edge. Some host/theme templates otherwise center the ItemsPresenter
+             in the viewport and expose a misleading blank area below the table header. -->
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Top"/>
+        <Setter Property="ScrollViewer.VerticalContentAlignment" Value="Top"/>
         <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True"/>
         <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling"/>
         <Setter Property="KeyboardNavigation.TabNavigation" Value="Local"/>

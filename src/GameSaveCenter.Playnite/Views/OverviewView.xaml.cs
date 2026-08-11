@@ -104,17 +104,16 @@ namespace GameSaveCenter.Playnite.Views
                 ? OverviewPrimaryPanel.ActualWidth
                 : Math.Max(320d, width);
 
-            // The Demo keeps the Home workbench actions in the card header.  At the
-            // narrowest widths let that action group become a vertical stack instead of
-            // allowing the buttons to push the title column out of the viewport.
+            // The Demo keeps the Home workbench actions in the card header. At compact
+            // widths move them to a second row, but keep a horizontal WrapPanel so the
+            // four commands use the available width before wrapping. A forced vertical
+            // stack consumed most of the workbench viewport on normal windowed laptops.
             if (OverviewHomeToolbarActions != null)
             {
                 var stackActions = primaryWidth < 720;
-                OverviewHomeToolbarActions.Orientation = stackActions
-                    ? Orientation.Vertical
-                    : Orientation.Horizontal;
+                OverviewHomeToolbarActions.Orientation = Orientation.Horizontal;
                 OverviewHomeToolbarActions.HorizontalAlignment = stackActions
-                    ? HorizontalAlignment.Left
+                    ? HorizontalAlignment.Stretch
                     : HorizontalAlignment.Right;
                 OverviewHomeToolbarActionsRow.Height = stackActions
                     ? GridLength.Auto
@@ -164,12 +163,14 @@ namespace GameSaveCenter.Playnite.Views
             // summary remains anchored. Once the secondary column stacks below the main
             // workspace, the whole right column owns the scroll channel; the risk card
             // then expands naturally and does not compete with its parent for the wheel.
+            // The wide right column still needs a finite escape hatch: the summary,
+            // findings and “打开维护中心” action may exceed a short window. Leaving
+            // this viewer unbounded while disabling its scrollbar clips the last action
+            // at common 1080p/2K logical heights.
             OverviewSecondaryScrollViewer.MaxHeight = stack
                 ? Math.Max(260, Math.Min(480, height * 0.58))
-                : double.PositiveInfinity;
-            OverviewSecondaryScrollViewer.VerticalScrollBarVisibility = stack
-                ? ScrollBarVisibility.Auto
-                : ScrollBarVisibility.Disabled;
+                : Math.Max(300, Math.Min(760, Math.Max(300, height - 24)));
+            OverviewSecondaryScrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
             OverviewRiskScrollViewer.MaxHeight = stack
                 ? double.PositiveInfinity
                 : Math.Max(180, Math.Min(360, height * 0.42));
