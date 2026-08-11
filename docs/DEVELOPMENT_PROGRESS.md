@@ -21,6 +21,8 @@
 
 - [x] UI-193（`477c332`）：修复 Maintenance 设备状态、异常审计和进程映射页在窄宽度/低高度堆叠 Inspector 时主表被压缩的问题。`FindingsGrid`、`MaintenanceDeviceGrid`、`MaintenanceAuditFindingsGrid`、`MaintenanceProcessGrid` 统一保留 236 DIP 最小表格视口；设备/审计 Inspector 的堆叠高度按实际布局扣除表格最低高度、上方 Auto 行或审计日志行和间距后的剩余空间计算，Inspector 内部滚动继续承载长内容；进程映射表补显式名称并接入共享表头主题加载。真实维护命令、Binding、选中项、DataGrid 虚拟化、审计日志有限高度与业务层未改变。新增/更新结构回归断言；`python scripts/validate-source.py` 通过，隔离 Release 构建 0 警告/0 错误，Playnite 149/149 通过。真实 Playnite 宿主、Light/Dark/Follow、高对比度、100%–200% DPI、窗口化截图和连续缩放流畅性仍需手工验收。
 
+- [x] UI-194（`00157c5`）：修复页面级滚动条隐藏导致常用窗口下底部内容不可发现的问题。共享 `GscPageScrollViewer` 默认垂直滚动改为 `Auto`，设置页、存档策略、维护保留策略、侧栏导航和 Overview 辅助页面移除 `Hidden` 覆盖；Overview 仍由响应式代码在宽屏禁用不需要的内部列滚动、堆叠时启用 Auto，表格/列表内部虚拟化滚动保持。未修改命令、Binding、业务层和持久化；新增/更新滚动契约断言，`python scripts/validate-source.py` 通过，隔离 Release 构建 0 警告/0 错误，Playnite 149/149 通过。真实 Playnite 宿主、Light/Dark/Follow、高对比度、100%–200% DPI、窗口化截图和连续缩放流畅性仍需手工验收。
+
 - [x] UI-187：维护中心诊断页顶部摘要按 Demo 六项健康卡收口：Worker、Ludusavi、Rclone、数据与备份目录、媒体目录、设备状态改为六张真实绑定卡，Rclone 状态使用真实可用/配置触发器，媒体待归类数和设备比较数不使用 Demo 假数据；宽屏/中屏/窄屏列数改为 3/2/1。保留诊断操作卡、诊断/审计表格、Inspector、完整摘要、空态、命令/绑定/IPC/持久化及有限滚动；版本策略与需关注信息仍可从完整诊断摘要、Finding/审计区域和设置页获得。新增/更新结构回归断言；`python scripts/validate-source.py` 通过，隔离 Release 构建 0 警告/0 错误，Playnite 146/146 通过。真实 Playnite 宿主、主题、DPI 和运行时连续缩放流畅性仍需手工验收。
 
 - [x] UI-188：任务中心队列按 Demo 补齐搜索层：在状态/游戏/类型三个真实筛选前新增“搜索任务、游戏或错误”输入框，`TaskSearchText` 通过 `UpdateSourceTrigger=PropertyChanged` 实时刷新 `TasksView`，匹配任务 ID、任务类型、游戏名、详情与错误信息；原筛选、任务计数、详情 Inspector、取消/重试/复制命令、DataGrid 虚拟化和全局视角均保留，未增加 Worker/IPC 请求。新增结构回归断言；`python scripts/validate-source.py` 通过，隔离 Release 构建 0 警告/0 错误，Playnite 146/146 通过。真实 Playnite 宿主、主题、DPI 和运行时连续缩放流畅性仍需手工验收。
