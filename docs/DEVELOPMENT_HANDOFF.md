@@ -67,7 +67,7 @@
 ## 合并后当前交接基线（2026-08-11）
 
 - 分支：`main`
-- 当前 UI 交接基线：`5cbd512`（`ui: align workspace headers and media summary flow`）；Overview 常用/窄窗口工作区可达性、工作区顶栏语义同步和 Media 四卡摘要/主表响应式节奏均已固化，记忆与进度文档随后单独提交
+- 当前 UI 交接基线：`f11e9b7`（`ui: keep demo shell at common minimum width`）；Demo 最小常用窗口 1040×700 DIP 的带文字侧栏/单行顶栏、Media 四卡、Task 2×2 摘要和 Maintenance 两列健康卡响应式节奏已固化，记忆与进度文档随后单独提交
 - 上一合并提交：`e87e2af`（`merge: reconcile local and cross-machine UI migration`）
 - 合并共同基线：`9cdd975`；本机 UI-173～UI-181 与 `origin/main` 的 UI-181～UI-183、交接文档线均已保留，没有删除任一方共同基线后的提交。
 - 本机额外 WIP 已先由 `e61d0fc` 固化后纳入合并；本机的长期约束已追加到 `docs/PROJECT_MEMORY.md` 的 `MERGE-001`，远端既有记忆条目保持原文。
@@ -87,9 +87,10 @@
 - UI-197 已修复截图暴露的常用窗口可见性问题：TaskCenter 动态游戏/类型筛选的 WPF 集合刷新空选中在 DataBind 优先级恢复为 `全部`，MediaGrid 通过共享 ListBox 顶部内容契约避免少量媒体卡沉到有限视口底部，Overview 工作台按钮在窄主列第二行横向自动换行，宽屏右侧摘要/风险列保留有限 Auto 滚动以确保“打开维护中心”可达；真实命令、Binding、Worker、IPC、数据库、持久化、虚拟化、键盘访问和 Automation 未改变。
 - UI-198 已修复 Overview 在常用窗口和窄窗口下的主工作区被 sibling 行挤压问题：工作台、Hero/当前游戏、六项指标和最近活动统一进入 `OverviewPrimaryScrollSurface`，窄布局再由 `OverviewStackScrollSurface` 统一承载主列与右侧摘要，避免 980 DIP 下主列高度变成 0；宽布局仍保留主列/摘要列独立有限滚动。`OverviewActivityList` 继续使用有限高度、ListBox Recycling 和自身滚动，真实命令、Binding、SelectedTask、键盘访问和 Automation 未改变。已按 1600/1366/1280/1100/980 DIP 与 900/768/720/700/640 DIP 运行隔离生产离屏渲染，源码验证通过，生产插件 Release 构建 0 警告/0 错误，隔离测试 149/149 通过；未运行真实 Playnite 宿主、主题切换、DPI 真机和连续缩放流畅性验证。
 - UI-199（代码提交 `5cbd512`）已修复工作区由程序化导航、恢复状态或离屏渲染直接切换时顶栏仍显示“首页”的语义不同步：`DashboardView.UpdateWorkspacePresentation()` 与侧栏点击共同调用 `UpdateWorkspaceHeader`，媒体/维护/任务等页面标题和副标题始终跟随当前可见工作区。MediaCenter 的摘要卡响应式断点改为逻辑 DIP 的 `>=760` 四列、`>=520` 两列、其余单列，使 Dashboard 在常用 1080p/2K/4K 窗口下保持 Demo 四卡横排并为主表保留可见行；表格有限视口、内部滚动、虚拟化、Inspector、真实命令和 Binding 未改变。源码验证通过；生产插件 Release 构建 0 警告/0 错误；隔离 WPF 测试 150/150 通过；生产离屏渲染覆盖 1600/1366/1280/1100/980 DIP 与 900/768/720/700/640 DIP 并返回 `render-prod OK`。Render harness 自身仍有 3 个 FakeApi 未使用事件警告；真实 Playnite 宿主、主题切换、DPI 真机和连续缩放流畅性尚未验证。
+- UI-200（代码提交 `f11e9b7`）已将 Demo 的 `MinWidth=1040`、`MinHeight=700` DIP 固化为生产外壳的常用最小窗口：Dashboard `>=1040` 保留带文字侧栏和单行顶栏，低于该值才进入图标紧凑壳；同时按外壳扣除侧栏后的约 700 DIP 页面宽度校准 Media `>=700` 四列、Task `>=900` 四列/`>=680` 两列、Maintenance `>=980` 三列/`>=680` 两列。1040×700 离屏结果为 Media 四卡并显示两行表格、Task 2×2 摘要并显示队列、Maintenance 两列健康卡；1366×768 仍为完整多列，页面级滚动、表格/列表有限视口、内部滚动、虚拟化、真实命令/Binding 和业务层未改。源码验证通过；生产插件 Release 构建 0 警告/0 错误；隔离 WPF 测试 151/151 通过；生产离屏渲染覆盖 1600/1366/1280/1100/1040/980 DIP 与 900/768/720/700/640 DIP 并返回 `render-prod OK`。Render harness 自身仍有 3 个 FakeApi 未使用事件警告；真实 Playnite 宿主、主题切换、DPI 真机和连续缩放流畅性尚未验证。
 - 新增的响应式门禁要求：1080p、2K、4K 不能只按物理分辨率判断，必须按 DPI 换算后的逻辑 DIP 尺寸检查全屏、窗口化和最大化；常用窗口下首屏下方真实内容不得被页脚或工作区边界遮住，主表/主列表应保留约四行可读视口，页面滚动与列表内部虚拟化滚动必须分工明确。具体门禁见 `docs/design/UI_CHANGE_GATE.md`。
 - 本轮工作区：合并提交完成时干净；后续 agent 仍须先运行 `git status`、`git log -5 --oneline --decorate` 和 `git branch --show-current`。
-- 验证：源码验证通过；生产插件隔离 Release 构建 0 警告/0 错误；隔离测试输出 150/150 通过；生产离屏 render harness 返回 `render-prod OK`，自身有 3 个 FakeApi 未使用事件警告。由于本机只有 .NET 9 SDK 且仓库 `global.json` 以 .NET 8 为基线，测试使用隔离输出验证，未覆盖真实 Playnite 宿主、主题、DPI、窗口化截图和连续缩放运行时渲染。
+- 验证：源码验证通过；生产插件隔离 Release 构建 0 警告/0 错误；隔离测试输出 151/151 通过；生产离屏 render harness 返回 `render-prod OK`，自身有 3 个 FakeApi 未使用事件警告。覆盖尺寸包含 1600/1366/1280/1100/1040/980 DIP 与 900/768/720/700/640 DIP。由于本机只有 .NET 9 SDK 且仓库 `global.json` 以 .NET 8 为基线，测试使用隔离输出验证，未覆盖真实 Playnite 宿主、主题、DPI、窗口化截图和连续缩放运行时渲染。
 
 以下原有的远端交接基线保留为历史记录，便于追溯另一台机器的 UI-183 上下文：
 
@@ -116,7 +117,7 @@
 
 1. 逐页检查 Overview、SaveCenter、TrainerCenter、TaskCenter、Maintenance、MediaCenter、Settings 的层级、按钮尺寸、文字对齐、默认选择和空状态。
 2. 检查共享 `Button`、`ComboBox`、`TextBox`、`ListBox`、`DataGrid`、Tab 和 Inspector 资源，发现同类问题时修共享模板。
-3. 按 980/1100/1280/1366/1600 DIP 宽度、640/720/900/1080 DIP 高，以及 1080p/2K/4K 在 100%/125%/150%/175%/200% DPI 下的常用窗口化逻辑尺寸，复核窄屏堆叠、首屏内容可见性、有限滚动和长文本；不把 4K 通过当作 1080p 通过。
+3. 按 980/1040/1100/1280/1366/1600 DIP 宽度、640/720/900/1080 DIP 高，以及 1080p/2K/4K 在 100%/125%/150%/175%/200% DPI 下的常用窗口化逻辑尺寸，复核窄屏堆叠、首屏内容可见性、有限滚动和长文本；不把 4K 通过当作 1080p 通过。
 4. 在可用环境中运行 Playnite 宿主，验证 Light/Dark/Follow Playnite/高对比度、键盘焦点、真实数据加载和窗口关闭生命周期；若环境不可用，保留明确的手工验收清单。
 5. 发现问题后继续使用新的 UI 编号记录，不要删除历史记录或把未验证事项标成完成。
 
