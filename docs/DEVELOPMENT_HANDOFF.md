@@ -96,9 +96,10 @@
 - UI-203（本轮）：存档中心与修改器中心的堆叠 Inspector 最小高度统一从 96 提高到 160 DIP（`SaveHistoryActionsScrollViewer`、`SaveCandidateInspectorScrollViewer`、`TrainerToolsSettingsScrollViewer`、`TrainerReleaseInfoScrollViewer`），与 UI-201 的 Task 规则一致；`SaveHistoryGrid`/`SaveCandidateGrid`、修改器主表与可下载版本面板仍保持 236 DIP 最小视口、内部滚动和虚拟化。离屏 QA 已扩展覆盖 SaveCenterView/TrainerCenterView（含假数据）：1040×700/1280×720/1366×768 下四个堆叠 Inspector 均为 160 DIP 且内部 Auto 滚动，主表 236 DIP 高、8 行；1600×900/1920×1080 保持右栏 360 宽。源码验证通过；真实 Playnite 宿主、主题、DPI 和连续缩放流畅性仍未验证。
 - QA-002（本轮）：离屏渲染 QA 覆盖补齐全部工作区与设置页：Overview、Save、Trainer、Media、Maintenance、Task、Settings 均在 1040×700/1280×720/1366×768/1600×900/1920×1080 渲染并输出 PNG/报告。设置页依赖 Playnite 宿主 `BaseTextBlockStyle`，harness 在 Application.Resources 预置中性 fallback 后可在无宿主环境解析；1040×700 下 Settings 四个 Tab 的 `SettingsScroller` 均为 Auto 且内容超限时 `scrollable=True`。
 - QA-003（本轮）：`render-qa.ps1` 增加自动失败门禁：任何命名工作区主表/主列表（排除 `MaintenanceAuditLogGrid` 审计条带与 `OverviewActivityList` 最近活动）在任一常用窗口下的有限视口 `<236` DIP，或命名页面滚动面（`*ScrollSurface`/`SettingsScroller`）内容超限却使用 Hidden 滚动条，render-qa 将以退出码 1 失败并在报告中列出 `PROBLEM`。当前 7 页面 × 5 尺寸全绿。
+- QA-004（本轮）：在 C 盘恢复可用空间并重定向 `TEMP/TMP` 到 `.tmp/qa-temp`、测试输出隔离到 `artifacts/ui-qa/*-tests` 后，完整隔离测试重跑通过：Core 13/13、Worker 23/23、Playnite 151/151。Playnite 源码结构断言同步更新为 UI-201/202/203 的新阈值（`Math.Max(160, ...)`、`workspaceContentWidth < 1200`、`primaryWidth < 700`）。
 - 新增的响应式门禁要求：1080p、2K、4K 不能只按物理分辨率判断，必须按 DPI 换算后的逻辑 DIP 尺寸检查全屏、窗口化和最大化；常用窗口下首屏下方真实内容不得被页脚或工作区边界遮住，主表/主列表应保留约四行可读视口，页面滚动与列表内部虚拟化滚动必须分工明确。具体门禁见 `docs/design/UI_CHANGE_GATE.md`。
 - 本轮工作区：`40bc4ab` 提交后干净；后续 agent 仍须先运行 `git status`、`git log -5 --oneline --decorate` 和 `git branch --show-current`。
-- 验证：`python scripts/validate-source.py` 通过；`scripts/render-qa.ps1` 覆盖 Overview/Save/Trainer/Media/Maintenance/Task/Settings × 1040×700/1280×720/1366×768/1600×900/1920×1080 全部通过；技能静态审查 0 error。完整 Release 构建与隔离测试本轮未重跑：测试输出 DLL 被残留句柄占用且 C 盘 0 可用导致 VSTest shadow copy 失败；真实 Playnite 宿主、主题、DPI、窗口化截图和连续缩放运行时渲染尚未验证。
+- 验证：`python scripts/validate-source.py` 通过；`scripts/render-qa.ps1` 覆盖 Overview/Save/Trainer/Media/Maintenance/Task/Settings × 1040×700/1280×720/1366×768/1600×900/1920×1080 全部通过（含自动失败门禁）；技能静态审查 0 error；隔离测试 Core 13/13、Worker 23/23、Playnite 151/151 全部通过。完整解决方案原位 Release 构建仍受测试输出 DLL 残留句柄占用影响，验证使用隔离输出完成；真实 Playnite 宿主、主题、DPI、窗口化截图和连续缩放运行时渲染尚未验证。
 
 以下原有的远端交接基线保留为历史记录，便于追溯另一台机器的 UI-183 上下文：
 

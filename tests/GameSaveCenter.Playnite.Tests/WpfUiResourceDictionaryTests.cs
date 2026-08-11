@@ -839,7 +839,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("TaskPageScrollSurface.ActualHeight", taskCode);
         Assert.Contains("- TaskSummaryPanel.ActualHeight", taskCode);
         Assert.Contains("- TaskQueuePanel.ActualHeight", taskCode);
-        Assert.Contains("var inspectorHeight = Math.Max(96, Math.Min(420, workspaceHeight - tableViewportHeight - 10))", taskCode);
+        Assert.Contains("var inspectorHeight = Math.Max(160, Math.Min(420, workspaceHeight - tableViewportHeight - 10))", taskCode);
         Assert.Contains("TaskDetailScrollViewer.MaxHeight = showInspector && stack", taskCode);
         Assert.Contains("EnableRowVirtualization\" Value=\"True\"", task);
     }
@@ -1192,7 +1192,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Null(scrollViewer.Attribute("MaxHeight"));
         Assert.Contains("TrainerToolsSettingsScrollViewer.MaxHeight = double.PositiveInfinity", trainerCode);
         Assert.Contains("TrainerToolsSettingsScrollViewer.MaxHeight = showInspector && stackInstalled", trainerCode);
-        Assert.Contains("var installedInspectorHeight = Math.Max(96, Math.Min(420, installedHeight - tableMinHeight - 72))", trainerCode);
+        Assert.Contains("var installedInspectorHeight = Math.Max(160, Math.Min(420, installedHeight - tableMinHeight - 72))", trainerCode);
         Assert.Contains("VerticalContentAlignment=\"Stretch\"", trainerText);
         Assert.Contains("Style=\"{DynamicResource GscRedesignSectionCard}\"", trainerText);
         Assert.Contains("ScrollViewer.VerticalScrollBarVisibility\" Value=\"Auto\"", trainerText);
@@ -1933,7 +1933,7 @@ public sealed class WpfUiResourceDictionaryTests
         // width (capped at 980) instead of shrinking to its natural width.
         Assert.Contains("MaxWidth=\"980\" HorizontalAlignment=\"Stretch\" VerticalAlignment=\"Top\"", trainers);
         Assert.Contains("MaxWidth=\"1050\" HorizontalAlignment=\"Left\"", maintenance);
-        Assert.Contains("var stackOverview = workspaceContentWidth < 900", dashboardCode);
+        Assert.Contains("var stackOverview = workspaceContentWidth < 1200", dashboardCode);
         Assert.Contains("var stackDiagnostics = width < 1120", maintenanceCode);
         Assert.Contains("var stackDevice = width < 1180", maintenanceCode);
         Assert.DoesNotContain("width < 1360", maintenanceCode);
@@ -1957,7 +1957,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Grid.SetRow(TrainerReleaseInfoPanel, stackReleases ? 1 : 0)", codeBehind);
         Assert.Contains("x:Name=\"TrainerReleaseInfoScrollViewer\"", trainer);
         Assert.Contains("TrainerReleaseInfoScrollViewer.MaxHeight = stackReleases", codeBehind);
-        Assert.Contains("var releaseInspectorHeight = Math.Max(96, Math.Min(420, releasesHeight - tableMinHeight - 10))", codeBehind);
+        Assert.Contains("var releaseInspectorHeight = Math.Max(160, Math.Min(420, releasesHeight - tableMinHeight - 10))", codeBehind);
     }
 
     [Fact]
@@ -2263,7 +2263,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Equal("{Binding SelectedTask}", activity.Attribute("SelectedItem")?.Value);
 
         var overviewCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml.cs"));
-        Assert.Contains("var stackHeroAndGame = primaryWidth < 760", overviewCode);
+        Assert.Contains("var stackHeroAndGame = primaryWidth < 700", overviewCode);
         Assert.Contains("OverviewHeroGameCompactRow.Height", overviewCode);
         Assert.Contains("Grid.SetColumnSpan(OverviewCurrentGameCard, stackHeroAndGame ? 3 : 1)", overviewCode);
     }
