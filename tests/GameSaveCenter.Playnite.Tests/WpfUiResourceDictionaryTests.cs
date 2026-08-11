@@ -1592,7 +1592,11 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"ProcessMappingTargetGameComboBox\"", maintenance);
         Assert.Contains("Width=\"240\"", maintenance);
         Assert.Contains("Command=\"{Binding SaveProcessMappingCommand}\"", maintenance);
-        Assert.Contains("DiagnosticHealthPanel.Columns = width >= 1320 ? 4 : width >= 980 ? 2 : 1", maintenanceCode);
+        Assert.Contains("DiagnosticHealthPanel.Columns = width >= 1320 ? 3 : width >= 760 ? 2 : 1", maintenanceCode);
+        Assert.Contains("Text=\"Rclone\"", maintenance);
+        Assert.Contains("Text=\"数据与备份目录\"", maintenance);
+        Assert.Contains("Text=\"媒体目录\"", maintenance);
+        Assert.Contains("Text=\"设备状态\"", maintenance);
         Assert.Contains("var stackProcessEditor = width < 720", maintenanceCode);
         Assert.Contains("ProcessMappingEditorCompactRow.Height = stackProcessEditor", maintenanceCode);
     }

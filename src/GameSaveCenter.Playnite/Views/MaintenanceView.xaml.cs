@@ -67,7 +67,7 @@ namespace GameSaveCenter.Playnite.Views
         {
             responsiveWidth = width;
             responsiveHeight = height;
-            DiagnosticHealthPanel.Columns = width >= 1320 ? 4 : width >= 980 ? 2 : 1;
+            DiagnosticHealthPanel.Columns = width >= 1320 ? 3 : width >= 760 ? 2 : 1;
             var inspectorWidth = MaintenanceDiagnosticsLayout.TryFindResource("GscInspectorWidth") is GridLength gl ? gl : new GridLength(360);
             // Health cards remain useful context even in compact windows. Grid star rows keep
             // diagnostics tables finite while their own controls handle overflow.
