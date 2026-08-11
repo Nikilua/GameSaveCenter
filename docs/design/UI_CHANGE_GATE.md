@@ -28,6 +28,7 @@
 15. 大型游戏库列表必须保持虚拟化，不能让动画和容器模板关闭虚拟化。
 16. 修改 XAML 后必须运行 `scripts/validate-source.py`；Windows 上还必须通过 `GameSaveCenter-Run.cmd` 的真实构建、安装和版本核验。
 17. 修改 WPF/XAML 后应运行技能静态审查 `python .codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py .`，处理其中 error 级发现；warning/info 按上下文说明保留原因。
+18. 页面级布局/响应式改动必须运行 `scripts/render-qa.ps1`（C 盘满时先设 `TEMP/TMP` 到仓库 `.tmp/qa-temp`），报告不得出现 `PROBLEM`。
 
 ## 常用显示尺寸与内容可见性门禁
 
@@ -62,5 +63,6 @@
 - [ ] 是否保留真实命令、错误传播、取消和业务状态？
 - [ ] `extension.yaml`、程序集版本、安装包名和已安装 DLL 是否一致？
 - [ ] 是否运行了 `python .codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py .` 并处理 error 级发现？
+- [ ] 是否运行了 `scripts/render-qa.ps1`（7 页面 × 5 种常用窗口）且报告无 `PROBLEM`？
 
 违反本门禁的 UI 改动不应进入 `main`。
