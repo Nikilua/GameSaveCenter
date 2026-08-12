@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using GameSaveCenter.Playnite.Settings;
@@ -417,7 +418,9 @@ public static class Program
                 s_problems.Add($"{label} scroll probe: {gridName} not found at height {height:0}");
                 return;
             }
-            var scroller = FindVisualChildren<ScrollViewer>(grid).FirstOrDefault();
+            var scroller = FindVisualChildren<ScrollViewer>(grid)
+                .OrderByDescending(candidate => candidate.ViewportHeight)
+                .FirstOrDefault();
             if (scroller == null)
             {
                 s_problems.Add($"{label} scroll probe: {gridName} has no internal ScrollViewer at height {height:0}");
@@ -431,13 +434,65 @@ public static class Program
 
             grid.ScrollIntoView(grid.Items[grid.Items.Count - 1]);
             host.UpdateLayout();
-            scroller.ScrollToEnd();
-            host.UpdateLayout();
+
+            foreach (var fraction in new[] { 0.0, 0.25, 0.5, 0.75, 1.0 })
+            {
+                scroller.ScrollToVerticalOffset(scroller.ScrollableHeight * fraction);
+                host.UpdateLayout();
+                var rows = FindVisualChildren<DataGridRow>(grid)
+                    .Select(row => new RowProbe(
+                        row.GetIndex(),
+                        row.ActualHeight,
+                        row.TransformToAncestor(scroller).Transform(new Point(0, 0)).Y))
+                    .OrderBy(row => row.Y)
+                    .ToList();
+                var presenter = FindVisualChildren<DataGridRowsPresenter>(grid).FirstOrDefault();
+                var positionLabel = (int)(fraction * 100);
+                report.AppendLine(
+                    $"  {label} {gridName} h={height:0} pos={positionLabel} offset={scroller.VerticalOffset:0.##} " +
+                    $"scrollable={scroller.ScrollableHeight:0.##} rows={rows.Count} " +
+                    $"firstY={(rows.Count > 0 ? rows[0].Y : double.NaN):0.##} presenterH={(presenter?.ActualHeight ?? double.NaN):0.##} gridH={grid.ActualHeight:0.##}");
+
+                if (rows.Count == 0 && grid.Items.Count > 0)
+                {
+                    s_problems.Add($"{label} {gridName} h={height:0} pos={positionLabel} realized no rows");
+                    continue;
+                }
+                if (fraction > 0 && rows.Count > 0 && rows[0].Y > 64)
+                    s_problems.Add($"{label} {gridName} h={height:0} pos={positionLabel} blank under header (firstY={rows[0].Y:0.##})");
+                if (fraction >= 1.0)
+                {
+                    var lastRow = rows.FirstOrDefault(row => row.Index == grid.Items.Count - 1);
+                    if (lastRow == null)
+                    {
+                        s_problems.Add($"{label} {gridName} h={height:0} bottom last row not realized");
+                    }
+                    else
+                    {
+                        var bottom = lastRow.Y + lastRow.Height;
+                        if (bottom > grid.ActualHeight + 1)
+                            s_problems.Add($"{label} {gridName} h={height:0} bottom last row clipped (bottom={bottom:0.##} gridH={grid.ActualHeight:0.##})");
+                    }
+                    if (rows.Count > 0 && rows[0].Y > 64)
+                        s_problems.Add($"{label} {gridName} h={height:0} bottom blank under header (firstY={rows[0].Y:0.##})");
+
+                    var before = rows.Select(row => row.Y).ToArray();
+                    host.UpdateLayout();
+                    var after = FindVisualChildren<DataGridRow>(grid)
+                        .Select(row => row.TransformToAncestor(scroller).Transform(new Point(0, 0)).Y)
+                        .OrderBy(value => value)
+                        .ToArray();
+                    if (before.Length > 0 && after.Length == before.Length)
+                    {
+                        var maxDelta = before.Zip(after, (left, right) => Math.Abs(left - right)).DefaultIfEmpty(0).Max();
+                        if (maxDelta > 0.5)
+                            s_problems.Add($"{label} {gridName} h={height:0} bottom rows jumped after UpdateLayout (delta={maxDelta:0.##})");
+                    }
+                }
+            }
 
             var scrollable = scroller.ScrollableHeight;
             var offset = scroller.VerticalOffset;
-            report.AppendLine(
-                $"  {label} {gridName} h={height:0} rows={grid.Items.Count} offset={offset:0.##} scrollable={scrollable:0.##}");
             if (scrollable < 0 || offset > scrollable + 1 || offset < scrollable - 1)
                 s_problems.Add($"{label} {gridName} h={height:0} scroll bottom invalid (offset={offset:0.##} scrollable={scrollable:0.##})");
         }
@@ -445,6 +500,20 @@ public static class Program
         {
             s_problems.Add($"{label} scroll probe failed at height {height:0}: {ex.Message}");
         }
+    }
+
+    private sealed class RowProbe
+    {
+        public RowProbe(int index, double height, double y)
+        {
+            Index = index;
+            Height = height;
+            Y = y;
+        }
+
+        public int Index { get; }
+        public double Height { get; }
+        public double Y { get; }
     }
 
     private static void SavePng(Visual visual, string path)

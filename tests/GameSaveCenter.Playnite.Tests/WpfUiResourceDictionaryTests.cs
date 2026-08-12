@@ -800,7 +800,7 @@ public sealed class WpfUiResourceDictionaryTests
     {
         var repositoryRoot = FindRepositoryRoot();
         var theme = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml"));
-        Assert.Contains("VirtualizingPanel.ScrollUnit\" Value=\"Pixel\"", theme);
+        Assert.Contains("VirtualizingPanel.ScrollUnit\" Value=\"Item\"", theme);
         Assert.Contains("VirtualizingPanel.IsVirtualizing\" Value=\"True\"", theme);
         Assert.Contains("VirtualizingPanel.VirtualizationMode\" Value=\"Recycling\"", theme);
         Assert.Contains("EnableRowVirtualization\" Value=\"True\"", theme);
@@ -810,9 +810,9 @@ public sealed class WpfUiResourceDictionaryTests
         var save = File.ReadAllText(Path.Combine(viewDirectory, "SaveCenterView.xaml"));
         var task = File.ReadAllText(Path.Combine(viewDirectory, "TaskCenterView.xaml"));
         var maintenance = File.ReadAllText(Path.Combine(viewDirectory, "MaintenanceView.xaml"));
-        Assert.Contains("VirtualizingPanel.ScrollUnit\" Value=\"Pixel\"", save);
-        Assert.Contains("VirtualizingPanel.ScrollUnit\" Value=\"Pixel\"", task);
-        Assert.Contains("VirtualizingPanel.ScrollUnit\" Value=\"Pixel\"", maintenance);
+        Assert.Contains("VirtualizingPanel.ScrollUnit\" Value=\"Item\"", save);
+        Assert.Contains("VirtualizingPanel.ScrollUnit\" Value=\"Item\"", task);
+        Assert.Contains("VirtualizingPanel.ScrollUnit\" Value=\"Item\"", maintenance);
 
         var maintenanceCode = File.ReadAllText(Path.Combine(viewDirectory, "MaintenanceView.xaml.cs"));
         var taskCode = File.ReadAllText(Path.Combine(viewDirectory, "TaskCenterView.xaml.cs"));
@@ -1741,12 +1741,12 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"TaskDetailScrollViewer\"", taskView);
         Assert.Contains("Text=\"{Binding TaskSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}\"", taskView);
         Assert.Contains("ToolTip=\"搜索任务、游戏或错误\"", taskView);
-        Assert.Contains("SelectedIndex=\"0\"", taskView);
+        Assert.DoesNotContain("SelectedIndex=\"0\"", taskView);
         Assert.Contains("x:Name=\"TaskStatusFilterComboBox\"", taskView);
         Assert.Contains("x:Name=\"TaskGameFilterComboBox\"", taskView);
         Assert.Contains("x:Name=\"TaskTypeFilterComboBox\"", taskView);
-        Assert.Contains("SelectionChanged=\"OnTaskFilterSelectionChanged\"", taskView);
-        Assert.Contains("Dispatcher.BeginInvoke(DispatcherPriority.DataBind", taskCode);
+        Assert.DoesNotContain("SelectionChanged=\"OnTaskFilterSelectionChanged\"", taskView);
+        Assert.DoesNotContain("Dispatcher.BeginInvoke(DispatcherPriority.DataBind", taskCode);
         Assert.Contains("TaskGameFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部", taskView);
         Assert.Contains("TaskTypeFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部", taskView);
         Assert.Contains("TaskDetailScrollViewer.MaxHeight = showInspector && stack", taskCode);
@@ -3883,7 +3883,10 @@ public sealed class WpfUiResourceDictionaryTests
         var directMetricCards = Regex.Matches(media, "Style=\"\\{DynamicResource GscRedesignMetricBorder\\}\"").Count;
         var aliasedMetricCards = Regex.Matches(media, "Style=\"\\{StaticResource MediaSummaryCard\\}\"").Count;
         Assert.True((hasMediaSummaryAlias && aliasedMetricCards == 4) || directMetricCards == 4);
-        Assert.Equal(3, Regex.Matches(tasks, "Style=\"\\{DynamicResource GscWpfUiFilterComboBox\\}\" SelectedIndex=\"0\"").Count);
+        Assert.Equal(3, Regex.Matches(tasks, "Style=\"\\{DynamicResource GscWpfUiFilterComboBox\\}\"").Count);
+        Assert.Contains("TaskStatusFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部", tasks);
+        Assert.Contains("TaskGameFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部", tasks);
+        Assert.Contains("TaskTypeFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部", tasks);
         Assert.Contains("Style=\"{DynamicResource GscWpfUiComboBox}\" SelectedIndex=\"0\" ItemsSource=\"{Binding DeviceDecisionOptions}\" SelectedItem=\"{Binding DeviceDecision, TargetNullValue=稍后处理, FallbackValue=稍后处理}\"", maintenance);
         Assert.Contains("<Setter Property=\"VerticalContentAlignment\" Value=\"Stretch\"/>", overview);
         Assert.DoesNotContain("ScrollViewer.VerticalContentAlignment\" Value=\"Center\"", overview);
