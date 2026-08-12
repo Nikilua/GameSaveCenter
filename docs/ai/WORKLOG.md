@@ -2,6 +2,31 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-13 ONBOARDING-001 环境准备与首次使用入口
+
+**实现内容：**
+
+- 在现有维护中心诊断页顶部增加“环境准备”卡片；首次打开 Dashboard 会定位到维护中心，检查结果可随时重新运行，也可以持久化跳过首次检查。
+- 新增 Worker IPC `environment.check` 与 `EnvironmentCheckService`：检查 Worker/IPC、数据/存档/媒体目录读写、SQLite 临时表读写、Playnite 游戏缓存、Ludusavi 版本与只读备份列表调用、Rclone 版本与只读远端探测、磁盘可用空间。
+- Rclone 未配置时显示“跳过”（可选能力），不会误报为基础环境失败；环境检查不自动备份、不上传、不删除、不覆盖真实存档。测试备份按钮只有用户明确点击且当前游戏已匹配时才可执行。
+- 维护中心沿用既有页面滚动与有限 DataGrid 视口，没有新增主导航页或改变现有表格虚拟化骨架；首次使用状态加入 Playnite 持久设置。
+
+**验证结果：**
+
+- Worker Release 构建：0 警告、0 错误；新增环境检查测试与现有 Worker 测试合计 70/70 通过（隔离输出目录，规避用户 Worker PID 3896 的文件锁）。
+- Playnite Release 构建：0 警告、0 错误；Playnite 测试 198/198 通过。
+- `scripts/validate-source.py`、WPF UI 静态校验、`git diff --check`、`scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/onboarding-render` 全部通过；render QA 覆盖 1040x700、1280x720 等窗口尺寸。
+- `scripts/package.ps1 -Configuration Release -SkipBuild` 成功，生成 `artifacts/GameSaveCenter-0.6.70.pext` 与 zip，并通过 self-contained Worker 包内容断言。
+
+**验证边界：**
+
+- 隔离 Playnite 进程可启动到应用层，但当前会话无法获取桌面句柄，且该隔离数据目录没有进入真实扩展加载阶段；没有据此宣称 Playnite 宿主加载成功。
+- 真实用户 Worker `GameSaveCenter.Worker [3896]` 的路径/所有权不可读且当前会话无权终止，真实覆盖安装和最终 IPC/UI 人工验收仍需用户在管理员任务管理器结束该 PID 或重启后执行。
+
+**提交：**待代码、文档分别提交。
+
+**下一项：**按附件顺序继续 GAME-TOOL-003/004/SMART；保持每阶段独立构建、测试、打包、宿主加载日志核对。
+
 ## 2026-08-12 POLICY-001 策略模板与 Playnite 包部署验证
 
 **实现内容：**
