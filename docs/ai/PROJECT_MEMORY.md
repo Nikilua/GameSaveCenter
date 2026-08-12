@@ -34,7 +34,7 @@
 - Solution：`GameSaveCenter.sln`，版本 `0.6.70-development-preview`（`Directory.Build.props` 0.6.70）。
 - 插件入口：`src/GameSaveCenter.Playnite/GameSaveCenterPlugin.cs`，扩展 ID `66e9f2d7-67bb-43ef-b62a-b8e60734fcec`。
 - Worker 入口：`src/GameSaveCenter.Worker`，IPC dispatcher 为 `IpcRequestDispatcher`。
-- 测试：Core 27、Worker 67、Playnite 197（RELIABILITY-RESTORE-001，2026-08-12 当前基线；测试输出需必要时使用隔离目录避免本机旧目标文件锁）。
+- 测试：Core 29、Worker 69、Playnite 197（POLICY-001，2026-08-12 当前基线；测试输出需必要时使用显式 `OutDir` / `IntermediateOutputPath` 隔离目录，避免本机旧 Worker 锁住标准输出）。
 
 ### Dashboard / Workspace
 - `DashboardViewModel` 是大型聚合 ViewModel（技术债，暂不拆分），持有所有 Workspace 数据与命令。
@@ -142,6 +142,16 @@
 - 最近保护窗口设置默认 30 天，接受 7/30/90，便携设置导入会校验非法值，旧 JSON 缺少字段时保持默认值。
 - 本阶段验证基线为 Core 27、Worker 59、Playnite 197；Worker/Playnite Release 构建、源码/XAML/WPF 门禁和 render-qa 均通过。真实 Playnite 主题/DPI/键盘/连续缩放验收仍待用户环境。
 - 下一项按附件顺序为 `POLICY-001`；不要重做 `HEALTH-001` 或本阶段保护摘要。
+
+## 2026-08-12 POLICY-001 阶段补充
+
+- 策略模板复用 `BackupPolicyDto`，内置模板 ID 固定为 `default`、`important`、`high-frequency`、`exit-only`、`manual-only`；用户模板 ID 必须以 `custom-` 开头。模板应用是一次性复制，不建立继承关系。
+- `BackupPolicyTemplateCatalog.ClonePolicy` 是模板的安全边界：周期间隔限制在 1–1440 分钟，保留值不小于 0，所有模板都强制关闭自动恢复。内置模板由 Worker 初始化幂等播种，禁止通过 IPC 修改/删除。
+- Save Center 的模板区位于既有策略页滚动内容内，未新增页面、未改变 DataGrid/虚拟化骨架；创建副本时先保存当前选择再清空选择，避免名称丢失。
+- Playnite 包必须同时包含 `GameSaveCenter.Core.dll` 与 Worker 的 self-contained Windows runtime；`scripts/package.ps1` 会验证 Core、hostfxr/hostpolicy/coreclr/System.Private.CoreLib 和 `includedFrameworks`，Worker 项目保持 `RuntimeIdentifiers=win-x64`，发布使用单节点/无 node reuse 参数。
+- 当前自动验证：Core 29/29、Worker 69/69、Playnite 197/197；Worker/Playnite Release 隔离构建 0 警告/0 错误；source/XAML/WPF 门禁与 render-qa 通过；最终 `.pext` 打包成功。真实 Playnite 日志曾确认插件加载，但旧 Worker PID 3896 仍锁住用户安装目录，完整 Worker/IPC/UI 仍标记为 `MANUAL QA REQUIRED`，不能以隔离首启未进入扩展阶段冒充真实宿主通过。
+- 以后每个代码阶段的验收顺序固定为：`dotnet test/build` → 源码/XAML/WPF/render-qa → `scripts/package.ps1` → 安装包内容断言 → 启动 Playnite 并检查 `ExtensionFactory`/扩展日志；若宿主被单实例或权限环境阻断，必须记录为人工验收，不得宣称加载成功。
+- 本阶段完成后的下一项为 `ONBOARDING-001`；不要重做 Restore Readiness、Health、Protection 或本阶段策略模板。
 
 已完成：见 WORKLOG.md 与 Git log；不要重复实现已完成的 UI/性能工作。
 

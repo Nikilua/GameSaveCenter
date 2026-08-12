@@ -2,6 +2,34 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-12 POLICY-001 策略模板与 Playnite 包部署验证
+
+**实现内容：**
+
+- 在现有 per-game policy 之上增加可复用策略模板：默认、重要游戏、高频游玩、仅退出后、仅手动五个稳定内置模板；内置模板不可编辑/删除。
+- 增加用户模板的 SQLite 持久化、创建/更新/删除/应用 IPC，以及现有 Save Center 策略页中的模板编辑区；应用模板只复制当前值，不建立继承关系。
+- 模板统一做数值归一化，并强制 `AllowAutomaticRestore=false`，避免模板功能绕过恢复安全边界；应用和删除操作写入既有审计日志。
+- 修复“新建模板副本”先清空选择再读取名称的问题；副本现在会正确使用“原名称（副本）”。
+- 修复 Playnite 包部署：安装包显式包含 `GameSaveCenter.Core.dll`；Worker 按 `win-x64` 还原/自包含发布，并检查 `runtimeconfig.json` 的 `includedFrameworks` 与 host/runtime 文件，避免把 framework-dependent Worker 混入安装包。
+- 开发安装脚本启动 Playnite 时使用其安装目录作为工作目录，减少宿主启动环境差异。
+
+**验证结果：**
+
+- Core 测试：29/29 通过；Worker 测试：69/69 通过；Playnite 测试：197/197 通过。
+- Worker 与 Playnite Release 隔离构建：0 警告、0 错误。
+- `scripts/package.ps1 -Configuration Release -SkipBuild` 成功；`.zip/.pext` 均通过包内容断言，包含 Core DLL 与 self-contained Worker runtime。
+- `validate-source.py`、`check-xaml.ps1`、WPF 静态校验无错误；`render-qa.ps1` 全部通过，现有页面/DataGrid/Settings 断点几何保持门禁结果。
+- 已有真实 Playnite 日志在 22:12:06 记录 `ExtensionFactory:Loaded plugin: GameSaveCenter, version 0.6.70`，说明包含 Core DLL 的插件本体可以被宿主发现并加载。
+
+**验证边界：**
+
+- `AUTO VERIFIED`：源码、测试、构建、包内容、自包含 runtimeconfig、隔离渲染和既有真实宿主的插件加载日志。
+- `MANUAL QA REQUIRED`：清理仍持有旧 Worker 文件锁的 PID 3896 后，在用户真实 Playnite 目录重新安装最终 `.pext`，验证 Worker 启动、IPC、模板创建/保存/应用/删除及主题/DPI/键盘操作。当前旧 Worker 无法由本会话取得终止权限；干净 Playnite 首次初始化在本机权限环境下未进入扩展加载阶段，因此不宣称完整真实 UI/Worker 已通过。
+
+**提交：** 待提交（代码、部署修复、文档分阶段提交）。
+
+**下一项：** `ONBOARDING-001`，继续按附件顺序小阶段推进；每个阶段完成后先构建/测试/打包，再启动 Playnite并检查加载日志。
+
 ## 2026-08-12 RELIABILITY-RESTORE-001-FOLLOWUP 恢复可用性安全闭环与灾难演练
 
 **实现内容：**
