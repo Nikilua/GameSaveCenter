@@ -99,6 +99,7 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.InspectGameToolImport=>await _gameTools.InspectImportAsync(Read<InspectGameToolImportRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ImportGameTool=>await _gameTools.ImportAsync(Read<ImportGameToolRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.UpdateGameTool=>await _gameTools.UpdateAsync(Read<UpdateGameToolRequestDto>(request),token).ConfigureAwait(false),
+                MessageTypes.RelocateGameTool=>await _gameTools.RelocateAsync(Read<RelocateGameToolRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.DeleteGameTool=>await _gameTools.DeleteAsync(Read<GameToolCommandRequestDto>(request).ToolId,token).ConfigureAwait(false),
                 MessageTypes.LaunchGameTool=>await _gameTools.LaunchAsync(Read<GameToolCommandRequestDto>(request).ToolId,token).ConfigureAwait(false),
                 MessageTypes.OpenGameToolDirectory=>await _gameTools.OpenDirectoryAsync(Read<GameToolCommandRequestDto>(request).ToolId,token).ConfigureAwait(false),

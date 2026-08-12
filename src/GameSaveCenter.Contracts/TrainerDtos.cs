@@ -26,15 +26,18 @@ namespace GameSaveCenter.Contracts
                                                        ?? (Versions.Count > 0 ? Versions[0] : new GameToolVersionDto());
         public string TypeDisplay => ToolType == GameToolType.CheatTable ? "Cheat Table"
             : ToolType == GameToolType.Trainer ? "修改器" : "自定义启动项";
+        private string TrackTargetPath => string.IsNullOrWhiteSpace(ActiveVersion.ResolvedTargetPath)
+            ? ActiveVersion.EntryPath
+            : ActiveVersion.ResolvedTargetPath;
         public GameToolLaunchKind LaunchKind => ToolType == GameToolType.CustomExecutable
-            ? GameToolLaunchKinds.FromPath(ActiveVersion.EntryPath)
+            ? GameToolLaunchKinds.FromPath(TrackTargetPath)
             : GameToolLaunchKind.Executable;
         /// <summary>Whether GameSaveCenter can reliably close the launched process on game exit.</summary>
         public bool CanTrackProcess => ToolType == GameToolType.CustomExecutable
-            ? GameToolLaunchKinds.CanTrackProcess(ActiveVersion.EntryPath)
+            ? GameToolLaunchKinds.CanTrackProcess(TrackTargetPath)
             : true;
         public bool IsExternalReference => ToolType == GameToolType.CustomExecutable;
-        public string LaunchKindDisplay => GameToolLaunchKinds.DisplayName(ActiveVersion.EntryPath);
+        public string LaunchKindDisplay => GameToolLaunchKinds.DisplayName(TrackTargetPath);
         public string ExternalReferenceHint => IsExternalReference
             ? "外部路径引用，不会复制文件；路径缺失时请重新定位、禁用或解除绑定。"
             : string.Empty;
@@ -57,6 +60,7 @@ namespace GameSaveCenter.Contracts
         public string Arguments { get; set; } = string.Empty;
         public string SourceUrl { get; set; } = string.Empty;
         public string FileSha256 { get; set; } = string.Empty;
+        public string ResolvedTargetPath { get; set; } = string.Empty;
         public DateTime? DownloadUtc { get; set; }
         public DateTime CreatedUtc { get; set; }
         public bool IsAvailable { get; set; }
@@ -109,6 +113,15 @@ namespace GameSaveCenter.Contracts
         public bool CloseOnGameExit { get; set; }
         public bool RequiresAdmin { get; set; }
         public string ActiveVersionId { get; set; } = string.Empty;
+        public string DisplayName { get; set; } = string.Empty;
+        public string WorkingDirectory { get; set; } = string.Empty;
+        public string Arguments { get; set; } = string.Empty;
+    }
+
+    public sealed class RelocateGameToolRequestDto
+    {
+        public string ToolId { get; set; } = string.Empty;
+        public string SourcePath { get; set; } = string.Empty;
     }
 
     public sealed class GameToolCommandRequestDto

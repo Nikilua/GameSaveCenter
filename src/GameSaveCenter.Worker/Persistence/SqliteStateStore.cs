@@ -42,6 +42,7 @@ public sealed partial class SqliteStateStore
         await EnsureColumnAsync(connection, "media", "classification_reason", "TEXT", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "games", "match_input_hash", "TEXT", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "games", "last_match_attempt_utc", "TEXT", token).ConfigureAwait(false);
+        await EnsureColumnAsync(connection, "game_tool_versions", "resolved_target_path", "TEXT", token).ConfigureAwait(false);
         var normalizeMedia = connection.CreateCommand();
         normalizeMedia.CommandText = @"
 UPDATE media
@@ -88,7 +89,7 @@ FROM game_tools WHERE playnite_id=$game ORDER BY tool_type,display_name COLLATE 
         {
             var versions = connection.CreateCommand();
             versions.CommandText = @"SELECT version_id,version_name,entry_path,working_directory,arguments,source_url,
-file_sha256,download_utc,created_utc FROM game_tool_versions WHERE tool_id=$tool ORDER BY created_utc DESC;";
+file_sha256,resolved_target_path,download_utc,created_utc FROM game_tool_versions WHERE tool_id=$tool ORDER BY created_utc DESC;";
             versions.Parameters.AddWithValue("$tool", tool.ToolId);
             await using var reader = await versions.ExecuteReaderAsync(token).ConfigureAwait(false);
             while (await reader.ReadAsync(token).ConfigureAwait(false))
@@ -100,8 +101,9 @@ file_sha256,download_utc,created_utc FROM game_tool_versions WHERE tool_id=$tool
                     EntryPath=path,WorkingDirectory=reader.IsDBNull(3)?Path.GetDirectoryName(path)??"":reader.GetString(3),
                     Arguments=reader.IsDBNull(4)?"":reader.GetString(4),SourceUrl=reader.IsDBNull(5)?"":reader.GetString(5),
                     FileSha256=reader.IsDBNull(6)?"":reader.GetString(6),
-                    DownloadUtc=reader.IsDBNull(7)?null:DateTime.Parse(reader.GetString(7)).ToUniversalTime(),
-                    CreatedUtc=DateTime.Parse(reader.GetString(8)).ToUniversalTime(),IsAvailable=File.Exists(path)
+                    ResolvedTargetPath=reader.IsDBNull(7)?"":reader.GetString(7),
+                    DownloadUtc=reader.IsDBNull(8)?null:DateTime.Parse(reader.GetString(8)).ToUniversalTime(),
+                    CreatedUtc=DateTime.Parse(reader.GetString(9)).ToUniversalTime(),IsAvailable=File.Exists(path)
                 });
             }
         }
@@ -125,9 +127,9 @@ INSERT INTO game_tools(tool_id,playnite_id,tool_type,source_type,display_name,en
 launch_delay_seconds,close_on_game_exit,requires_admin,active_version_id,created_utc,updated_utc)
 VALUES($id,$game,$type,$source,$name,$enabled,$auto,$timing,$delay,$close,$admin,$version,$created,$updated)
 ON CONFLICT(tool_id) DO UPDATE SET display_name=excluded.display_name,active_version_id=excluded.active_version_id,updated_utc=excluded.updated_utc;
-INSERT INTO game_tool_versions(version_id,tool_id,version_name,entry_path,working_directory,arguments,source_url,file_sha256,download_utc,created_utc)
-VALUES($version,$id,$versionName,$path,$working,$arguments,$url,$hash,$download,$created)
-ON CONFLICT(version_id) DO UPDATE SET entry_path=excluded.entry_path,file_sha256=excluded.file_sha256;",
+INSERT INTO game_tool_versions(version_id,tool_id,version_name,entry_path,working_directory,arguments,source_url,file_sha256,resolved_target_path,download_utc,created_utc)
+VALUES($version,$id,$versionName,$path,$working,$arguments,$url,$hash,$resolved,$download,$created)
+ON CONFLICT(version_id) DO UPDATE SET entry_path=excluded.entry_path,file_sha256=excluded.file_sha256,resolved_target_path=excluded.resolved_target_path;",
         new Dictionary<string,object?>
         {
             ["$id"]=tool.ToolId,["$game"]=tool.PlayniteId,["$type"]=(int)tool.ToolType,["$source"]=(int)tool.SourceType,
@@ -135,21 +137,35 @@ ON CONFLICT(version_id) DO UPDATE SET entry_path=excluded.entry_path,file_sha256
             ["$delay"]=tool.LaunchDelaySeconds,["$close"]=tool.CloseOnGameExit?1:0,["$admin"]=tool.RequiresAdmin?1:0,
             ["$version"]=version.VersionId,["$versionName"]=version.VersionName,["$path"]=version.EntryPath,
             ["$working"]=version.WorkingDirectory,["$arguments"]=version.Arguments,["$url"]=version.SourceUrl,
-            ["$hash"]=version.FileSha256,["$download"]=version.DownloadUtc?.ToString("O"),["$created"]=tool.CreatedUtc.ToString("O"),
+            ["$hash"]=version.FileSha256,["$resolved"]=version.ResolvedTargetPath,["$download"]=version.DownloadUtc?.ToString("O"),["$created"]=tool.CreatedUtc.ToString("O"),
             ["$updated"]=tool.UpdatedUtc.ToString("O")
         }, token);
 
     public Task UpdateGameToolAsync(UpdateGameToolRequestDto update, CancellationToken token) => ExecuteAsync(@"
 UPDATE game_tools SET enabled=$enabled,auto_start=$auto,launch_timing=$timing,launch_delay_seconds=$delay,
 close_on_game_exit=$close,requires_admin=$admin,
+display_name=CASE WHEN COALESCE($name,'')='' THEN display_name ELSE $name END,
 active_version_id=CASE WHEN COALESCE($version,'')='' THEN active_version_id ELSE $version END,updated_utc=$utc
-WHERE tool_id=$id;",
+WHERE tool_id=$id;
+UPDATE game_tool_versions SET working_directory=$working,arguments=$args
+WHERE version_id=CASE WHEN COALESCE($version,'')='' THEN (SELECT active_version_id FROM game_tools WHERE tool_id=$id) ELSE $version END;",
         new Dictionary<string,object?>
         {
             ["$id"]=update.ToolId,["$enabled"]=update.Enabled?1:0,["$auto"]=update.AutoStart?1:0,
             ["$timing"]=(int)update.LaunchTiming,["$delay"]=Math.Clamp(update.LaunchDelaySeconds,0,300),
             ["$close"]=update.CloseOnGameExit?1:0,["$admin"]=update.RequiresAdmin?1:0,
+            ["$name"]=update.DisplayName,["$working"]=update.WorkingDirectory,["$args"]=update.Arguments,
             ["$version"]=update.ActiveVersionId,["$utc"]=DateTime.UtcNow.ToString("O")
+        }, token);
+
+    public Task RelocateGameToolAsync(string toolId,string entryPath,string workingDirectory,string resolvedTargetPath,string fileSha256,CancellationToken token) => ExecuteAsync(@"
+UPDATE game_tool_versions SET entry_path=$path,working_directory=$working,resolved_target_path=$resolved,file_sha256=$hash
+WHERE version_id=(SELECT active_version_id FROM game_tools WHERE tool_id=$id);
+UPDATE game_tools SET updated_utc=$utc WHERE tool_id=$id;",
+        new Dictionary<string,object?>
+        {
+            ["$id"]=toolId,["$path"]=entryPath,["$working"]=workingDirectory,
+            ["$resolved"]=resolvedTargetPath,["$hash"]=fileSha256,["$utc"]=DateTime.UtcNow.ToString("O")
         }, token);
 
     public Task DeleteGameToolAsync(string toolId, CancellationToken token) => ExecuteAsync(

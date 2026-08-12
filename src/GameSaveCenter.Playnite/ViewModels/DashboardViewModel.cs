@@ -173,6 +173,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             LaunchGameToolCommand = new RelayCommand(_ => Run(LaunchSelectedGameToolAsync), _ => !IsBusy && SelectedGameTool != null && SelectedGameTool.ActiveVersion.IsAvailable);
             OpenGameToolDirectoryCommand = new RelayCommand(_ => Run(OpenSelectedGameToolDirectoryAsync), _ => !IsBusy && SelectedGameTool != null);
             DeleteGameToolCommand = new RelayCommand(_ => Run(DeleteSelectedGameToolAsync), _ => !IsBusy && SelectedGameTool != null);
+            RelocateGameToolCommand = new RelayCommand(_ => Run(RelocateSelectedGameToolAsync), _ => !IsBusy && SelectedGameTool != null && SelectedGameTool.IsExternalReference);
             SyncTrainerCatalogCommand = new RelayCommand(_ => Run(SyncTrainerCatalogAsync), _ => !IsBusy);
             SearchTrainerCatalogCommand = new RelayCommand(_ => Run(SearchTrainerCatalogAsync), _ => !IsBusy);
             LoadTrainerReleasesCommand = new RelayCommand(_ => Run(LoadTrainerReleasesAsync), _ => !IsBusy && SelectedTrainerCatalogItem != null);
@@ -568,6 +569,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand LaunchGameToolCommand { get; }
         public ICommand OpenGameToolDirectoryCommand { get; }
         public ICommand DeleteGameToolCommand { get; }
+        public ICommand RelocateGameToolCommand { get; }
         public ICommand SyncTrainerCatalogCommand { get; }
         public ICommand SearchTrainerCatalogCommand { get; }
         public ICommand LoadTrainerReleasesCommand { get; }
@@ -1223,7 +1225,10 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 ToolId=tool.ToolId,Enabled=tool.Enabled,AutoStart=tool.AutoStart,LaunchTiming=tool.LaunchTiming,
                 LaunchDelaySeconds=Math.Max(0,Math.Min(300,tool.LaunchDelaySeconds)),CloseOnGameExit=closeOnExit,
-                RequiresAdmin=requiresAdmin,ActiveVersionId=tool.ActiveVersionId
+                RequiresAdmin=requiresAdmin,ActiveVersionId=tool.ActiveVersionId,
+                DisplayName=tool.DisplayName?.Trim()??string.Empty,
+                WorkingDirectory=tool.ActiveVersion.WorkingDirectory??string.Empty,
+                Arguments=tool.ActiveVersion.Arguments??string.Empty
             });
             await LoadDetailsAsync();
             ConfirmSuccess(closeWasUnsafe
@@ -1231,6 +1236,23 @@ namespace GameSaveCenter.Playnite.ViewModels
                 : adminWasUnsupported
                     ? "设置已保存；系统默认程序打开的类型不支持管理员运行"
                     : "游戏工具设置已保存");
+        }
+
+        private async Task RelocateSelectedGameToolAsync()
+        {
+            var tool=SelectedGameTool;
+            var dialog=new OpenFileDialog
+            {
+                Title="重新定位外部启动项",
+                Filter="可执行文件 (*.exe)|*.exe|快捷方式 (*.lnk)|*.lnk|脚本 (*.bat;*.cmd;*.ps1)|*.bat;*.cmd;*.ps1|所有文件 (*.*)|*.*",
+                Multiselect=false,CheckFileExists=true
+            };
+            if(dialog.ShowDialog()!=true)return;
+            var relocated=await plugin.RequestAsync<GameToolDto>(MessageTypes.RelocateGameTool,
+                new RelocateGameToolRequestDto{ToolId=tool.ToolId,SourcePath=dialog.FileName},TimeSpan.FromMinutes(2));
+            await LoadDetailsAsync();
+            SelectedGameTool=GameTools.FirstOrDefault(x=>x.ToolId==relocated.ToolId)??GameTools.FirstOrDefault();
+            ConfirmSuccess("已重新定位外部启动项："+relocated.DisplayName);
         }
 
         private async Task LaunchSelectedGameToolAsync()
@@ -1962,7 +1984,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 OpenDataDirectoryCommand, OpenBackupDirectoryCommand, OpenMediaDirectoryCommand, OpenWorkerLogCommand
                 ,ImportTrainerCommand,ImportCheatTableCommand,ImportCustomLaunchItemCommand,ImportToolFolderCommand,SaveGameToolCommand,LaunchGameToolCommand,
                 ConfirmGameToolImportCommand,CancelGameToolImportCommand,
-                OpenGameToolDirectoryCommand,DeleteGameToolCommand,SyncTrainerCatalogCommand,SearchTrainerCatalogCommand,
+                OpenGameToolDirectoryCommand,DeleteGameToolCommand,RelocateGameToolCommand,SyncTrainerCatalogCommand,SearchTrainerCatalogCommand,
                 LoadTrainerReleasesCommand,DownloadTrainerCommand
             }.OfType<RelayCommand>())
             {

@@ -108,7 +108,9 @@ public sealed class GameToolService
         var version=new GameToolVersionDto
         {
             VersionId=versionId,ToolId=toolId,VersionName=string.IsNullOrWhiteSpace(request.VersionName)?"本地版本":request.VersionName.Trim(),
-            EntryPath=entry,WorkingDirectory=Path.GetDirectoryName(entry)??root,FileSha256=await HashAsync(entry,token).ConfigureAwait(false),
+            EntryPath=entry,WorkingDirectory=Path.GetDirectoryName(entry)??root,
+            ResolvedTargetPath=request.ToolType==GameToolType.CustomExecutable?ResolveTrackTargetPath(entry):string.Empty,
+            FileSha256=await HashAsync(entry,token).ConfigureAwait(false),
             CreatedUtc=now,IsAvailable=true
         };
         await _store.UpsertGameToolAsync(tool,version,token).ConfigureAwait(false);
@@ -120,6 +122,24 @@ public sealed class GameToolService
     {
         if(await _store.GetGameToolAsync(request.ToolId,token).ConfigureAwait(false)==null)throw new KeyNotFoundException("游戏工具不存在。");
         await _store.UpdateGameToolAsync(request,token).ConfigureAwait(false);return new{updated=true};
+    }
+
+    public async Task<GameToolDto> RelocateAsync(RelocateGameToolRequestDto request,CancellationToken token)
+    {
+        if(string.IsNullOrWhiteSpace(request.SourcePath))throw new ArgumentException("必须选择新的文件路径。");
+        var tool=await _store.GetGameToolAsync(request.ToolId,token).ConfigureAwait(false)??throw new KeyNotFoundException("游戏工具不存在。");
+        var source=Path.GetFullPath(Environment.ExpandEnvironmentVariables(request.SourcePath));
+        if(!File.Exists(source))throw new FileNotFoundException("重定位文件不存在。",source);
+        var currentWorking=tool.ActiveVersion.WorkingDirectory;
+        var workingDirectory=Directory.Exists(currentWorking)
+            ? currentWorking
+            : Path.GetDirectoryName(source)??string.Empty;
+        var resolved=ResolveTrackTargetPath(source);
+        var hash=await HashAsync(source,token).ConfigureAwait(false);
+        await _store.RelocateGameToolAsync(tool.ToolId,source,workingDirectory,resolved,hash,token).ConfigureAwait(false);
+        await _store.AppendAuditAsync("GameTool","已重新定位游戏工具",
+            System.Text.Json.JsonSerializer.Serialize(new{toolId=tool.ToolId,displayName=tool.DisplayName,path=source}),token).ConfigureAwait(false);
+        return (await _store.GetGameToolAsync(tool.ToolId,token).ConfigureAwait(false))!;
     }
 
     public async Task<object> DeleteAsync(string toolId,CancellationToken token)
@@ -243,7 +263,7 @@ public sealed class GameToolService
             if(delay>0)await Task.Delay(TimeSpan.FromSeconds(delay),token).ConfigureAwait(false);
             var (process,trackable)=LaunchWithPlan(tool);
             var closeOnExit=tool.CloseOnGameExit&&trackable;
-            _sessionTracker.Track(session.SessionId,process.Id,DateTime.UtcNow,closeOnExit);
+            _sessionTracker.Track(session.SessionId,process.Id,process.StartTime.ToUniversalTime(),closeOnExit);
             await _store.AppendAuditAsync("GameTool","已随游戏启动工具",
                 System.Text.Json.JsonSerializer.Serialize(new{session.SessionId,tool.ToolId,tool.DisplayName,processId=process.Id}),CancellationToken.None).ConfigureAwait(false);
         }
@@ -352,6 +372,15 @@ public sealed class GameToolService
         return values.Any(x=>!string.IsNullOrWhiteSpace(x)&&(x.Contains("easyanticheat",StringComparison.OrdinalIgnoreCase)||
             x.Contains("easy anti-cheat",StringComparison.OrdinalIgnoreCase)||x.Contains("battleye",StringComparison.OrdinalIgnoreCase)||
             x.Contains("ricochet",StringComparison.OrdinalIgnoreCase)||x.Contains("vanguard",StringComparison.OrdinalIgnoreCase)));
+    }
+
+    private string ResolveTrackTargetPath(string entryPath)
+    {
+        if(GameToolLaunchKinds.FromPath(entryPath)!=GameToolLaunchKind.Shortcut)return entryPath;
+        var target=_shortcutResolver.Resolve(entryPath);
+        if(string.IsNullOrWhiteSpace(target.TargetPath))
+            throw new InvalidOperationException("快捷方式目标为空，无法解析，请重新定位或删除。");
+        return target.TargetPath;
     }
 
     private static bool HasSignature(string path,byte first,byte second)

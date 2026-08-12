@@ -14,6 +14,7 @@ public sealed class GameToolServiceImportTests : IDisposable
     private readonly SqliteStateStore store;
     private readonly WorkerOptions options;
     private readonly GameToolService service;
+    private ShortcutTarget shortcutTarget = new(string.Empty, string.Empty, string.Empty);
 
     public GameToolServiceImportTests()
     {
@@ -30,7 +31,7 @@ public sealed class GameToolServiceImportTests : IDisposable
         store.InitializeAsync(CancellationToken.None).GetAwaiter().GetResult();
         var broadcaster = new TaskEventBroadcaster();
         var tasks = new TaskCoordinator(store, broadcaster, NullLogger<TaskCoordinator>.Instance);
-        service = new GameToolService(options, store, new FakeCatalog(), tasks, NullLogger<GameToolService>.Instance);
+        service = new GameToolService(options, store, new FakeCatalog(), tasks, NullLogger<GameToolService>.Instance, new ConfigurableShortcutResolver(this));
     }
 
     [Fact]
@@ -80,6 +81,56 @@ public sealed class GameToolServiceImportTests : IDisposable
     }
 
     [Fact]
+    public async Task CustomShortcut_StoresResolvedTargetAndAllowsTracking()
+    {
+        var shortcut = Path.Combine(root, "launch.lnk");
+        File.WriteAllText(shortcut, "lnk");
+        var target = Path.Combine(root, "app.exe");
+        File.WriteAllText(target, "exe");
+        shortcutTarget = new ShortcutTarget(target, "--windowed", root);
+
+        var imported = await service.ImportAsync(new ImportGameToolRequestDto
+        {
+            PlayniteId = "game",
+            ToolType = GameToolType.CustomExecutable,
+            SourcePath = shortcut,
+            EntryFileName = "launch.lnk",
+            CopyIntoLibrary = false
+        }, CancellationToken.None);
+
+        Assert.Equal(target, imported.ActiveVersion.ResolvedTargetPath);
+        Assert.True(imported.CanTrackProcess);
+        Assert.Equal("外部 EXE", imported.LaunchKindDisplay);
+    }
+
+    [Fact]
+    public async Task RelocateAsync_UpdatesExternalExecutablePath()
+    {
+        var first = Path.Combine(root, "old.exe");
+        File.WriteAllText(first, "old");
+        var imported = await service.ImportAsync(new ImportGameToolRequestDto
+        {
+            PlayniteId = "game",
+            ToolType = GameToolType.CustomExecutable,
+            SourcePath = first,
+            EntryFileName = "old.exe",
+            CopyIntoLibrary = false
+        }, CancellationToken.None);
+
+        var second = Path.Combine(root, "new.exe");
+        File.WriteAllText(second, "new");
+        var relocated = await service.RelocateAsync(new RelocateGameToolRequestDto
+        {
+            ToolId = imported.ToolId,
+            SourcePath = second
+        }, CancellationToken.None);
+
+        Assert.Equal(second, relocated.ActiveVersion.EntryPath);
+        Assert.True(relocated.ActiveVersion.IsAvailable);
+        Assert.True(relocated.CanTrackProcess);
+    }
+
+    [Fact]
     public async Task ImportMissingFile_ThrowsFileNotFoundException()
     {
         await Assert.ThrowsAsync<FileNotFoundException>(() => service.ImportAsync(new ImportGameToolRequestDto
@@ -103,5 +154,17 @@ public sealed class GameToolServiceImportTests : IDisposable
         public Task<List<TrainerCatalogItemDto>> SearchAsync(string query, int limit, CancellationToken token) => throw new NotSupportedException();
         public Task<List<TrainerReleaseDto>> GetReleasesAsync(string catalogId, CancellationToken token) => throw new NotSupportedException();
         public Task DownloadAsync(string releaseId, string targetPath, IProgress<(long Received, long? Total)>? progress, CancellationToken token) => throw new NotSupportedException();
+    }
+
+    private sealed class ConfigurableShortcutResolver : IShortcutResolver
+    {
+        private readonly GameToolServiceImportTests owner;
+
+        public ConfigurableShortcutResolver(GameToolServiceImportTests owner)
+        {
+            this.owner = owner;
+        }
+
+        public ShortcutTarget Resolve(string shortcutPath) => owner.shortcutTarget;
     }
 }

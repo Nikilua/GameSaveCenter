@@ -58,6 +58,7 @@ namespace GameSaveCenter.Contracts
         public const string InspectGameToolImport = "tools.import.inspect";
         public const string ImportGameTool = "tools.import";
         public const string UpdateGameTool = "tools.update";
+        public const string RelocateGameTool = "tools.relocate";
         public const string DeleteGameTool = "tools.delete";
         public const string LaunchGameTool = "tools.launch";
         public const string OpenGameToolDirectory = "tools.directory.open";
