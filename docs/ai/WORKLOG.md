@@ -326,3 +326,34 @@ NEXT: 仅剩 PERF-008（按 Workspace 按需刷新）未实施；目标文件要
 **下一步：**
 
 NEXT: PERF-008 仍待真实 profiling；当前按 Workspace 按需刷新已有基础（详情只在激活 Workspace 加载），暂不追加重构。
+
+## 2026-08-12 2000 规模合成 profiling 基准
+
+**做了什么：**
+
+- `LargeLibraryPerformanceTests` 增加合成 profiling：测量 2000 游戏 GamePicker 首次/未变化/单变化 SetItems、搜索输入到防抖刷新完成，以及 2000 任务首次/未变化 ReplaceAll；结果写入 `artifacts/ui-qa/benchmarks/large-library.txt`。
+
+**实测结果（本机）：**
+
+- 首次 SetItems 27ms；未变化 0ms；单游戏变化 25ms；搜索端到端 402ms（含 180ms 防抖）；任务 ReplaceAll 均 <1ms。
+
+**结论：**
+
+- 大库集合路径没有明显 O(n^2)；PERF-008 不因 GamePicker/任务集合压力而紧迫，保留按真实 Playnite 渲染 profiling 再评估。
+
+**修改文件：**
+
+- `tests/GameSaveCenter.Playnite.Tests/LargeLibraryPerformanceTests.cs`
+- `docs/ai/PERFORMANCE_BASELINE.md`
+
+**测试结果：**
+
+- Playnite 171/171 通过。
+
+**仍需验证内容：**
+
+真实 Playnite 1000+ 游戏库的 IPC/渲染帧率。
+
+**下一步：**
+
+NEXT: 待用户提供真实 Playnite 大库反馈或人工验收结果。

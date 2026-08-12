@@ -80,6 +80,19 @@
 - 2000 游戏中单游戏状态变化：1 次 Reset、0 次逐项 Add。
 - 2000 任务相同 Snapshot：`BatchObservableCollection` 第二次 ReplaceAll 0 次 CollectionChanged。
 
+## 2000 规模合成 profiling（本机，2026-08-12）
+
+由 `LargeLibraryPerformanceTests.GamePicker2000_Benchmark_WritesMeasuredTimings` 输出（Playnite 171/171 通过，文件在 `artifacts/ui-qa/bench-tests/playnite/artifacts/ui-qa/benchmarks/large-library.txt`）：
+
+- 2000 游戏首次 `SetItems`：27ms
+- 2000 游戏未变化 `SetItems`：0ms
+- 2000 游戏单游戏变化 `SetItems`：25ms
+- 2000 游戏搜索输入到防抖刷新完成（含 180ms 防抖）：402ms
+- 2000 任务首次 `ReplaceAll`：<1ms（0ms）
+- 2000 任务未变化 `ReplaceAll`：<1ms（0ms）
+
+说明：这是合成数据 + 本机无渲染负载的数字，只用于证明大库集合路径没有明显 O(n^2)；真实 Playnite 渲染帧率仍待 UI-QA-REAL-001。
+
 ## 待真机验证
 
 - 真实 Playnite 宿主下 Dashboard 初次加载与各 Workspace 切换耗时。
