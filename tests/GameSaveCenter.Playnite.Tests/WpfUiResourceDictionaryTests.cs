@@ -492,11 +492,18 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("CornerRadius=\"10\"", production);
         Assert.Contains("Property=\"MinHeight\" Value=\"{DynamicResource GscTableRowHeight}\"", production);
         Assert.Contains("Text columns read naturally from the leading edge", production);
-        Assert.Contains("<SelectiveScrollingGrid>", production);
-        Assert.Contains("x:Name=\"PART_CellsPresenter\"", production);
-        Assert.Contains("<DataGridDetailsPresenter", production);
-        Assert.Contains("SelectiveScrollingGrid.SelectiveScrollingOrientation=\"Horizontal\"", production);
-        Assert.Contains("SelectiveScrollingGrid.SelectiveScrollingOrientation=\"Vertical\"", production);
+        Assert.Contains("x:Key=\"GscStableDataGridRow\"", production);
+        Assert.Contains("TargetType=\"DataGridRow\">", production);
+        var stableRow = XDocument.Parse(production).Descendants().Single(element =>
+            element.Name.LocalName == "Style"
+            && element.Attribute(XName.Get("Key", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "GscStableDataGridRow");
+        Assert.DoesNotContain(stableRow.Descendants(), element =>
+            element.Name.LocalName == "Setter" && element.Attribute("Property")?.Value == "Template");
+        foreach (var viewFile in new[] { "SaveCenterView.xaml", "TaskCenterView.xaml", "MaintenanceView.xaml" })
+        {
+            var viewText = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", viewFile));
+            Assert.Contains("RowStyle=\"{StaticResource GscStableDataGridRow}\"", viewText);
+        }
         Assert.Contains("<Style TargetType=\"DataGridCell\">", production);
         Assert.Contains("<Setter Property=\"HorizontalContentAlignment\" Value=\"Left\"/>", production);
         Assert.Contains("x:Name=\"SortGlyph\"", production);

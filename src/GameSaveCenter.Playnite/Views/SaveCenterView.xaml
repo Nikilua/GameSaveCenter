@@ -32,7 +32,7 @@
                     <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="0"/></Grid.RowDefinitions>
                     <Border Grid.Column="0" Grid.Row="0" Style="{StaticResource SaveTableFrame}">
                         <Grid>
-                            <DataGrid x:Name="SaveHistoryGrid" Style="{StaticResource SaveDataGrid}" ItemsSource="{Binding Backups}" SelectedItem="{Binding SelectedBackup}">
+                            <DataGrid x:Name="SaveHistoryGrid" Style="{StaticResource SaveDataGrid}" RowStyle="{StaticResource GscStableDataGridRow}" ItemsSource="{Binding Backups}" SelectedItem="{Binding SelectedBackup}">
                             <DataGrid.Columns>
                                 <DataGridTextColumn HeaderStyle="{StaticResource SaveFirstHeader}" Header="时间" Binding="{Binding CreatedLocal, Mode=OneWay, StringFormat={}{0:yyyy-MM-dd HH:mm}}" Width="150"/>
                                 <DataGridTemplateColumn Header="类型" Width="110">

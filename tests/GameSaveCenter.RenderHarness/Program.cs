@@ -431,6 +431,8 @@ public static class Program
                 s_problems.Add($"{label} scroll probe: {gridName} needs >=50 rows, got {grid.Items.Count}");
                 return;
             }
+            if (!VirtualizingPanel.GetIsVirtualizing(grid) || VirtualizingPanel.GetVirtualizationMode(grid) != VirtualizationMode.Recycling)
+                s_problems.Add($"{label} {gridName} h={height:0} virtualization/recycling is disabled");
 
             grid.ScrollIntoView(grid.Items[grid.Items.Count - 1]);
             host.UpdateLayout();
@@ -443,23 +445,27 @@ public static class Program
                     .Select(row => new RowProbe(
                         row.GetIndex(),
                         row.ActualHeight,
-                        row.TransformToAncestor(scroller).Transform(new Point(0, 0)).Y))
+                        row.TransformToAncestor(scroller).Transform(new Point(0, 0)).Y,
+                        row.DataContext == null))
                     .OrderBy(row => row.Y)
                     .ToList();
                 var presenter = FindVisualChildren<DataGridRowsPresenter>(grid).FirstOrDefault();
                 var positionLabel = (int)(fraction * 100);
+                var headerGap = rows.Count > 0 ? rows[0].Y - grid.ColumnHeaderHeight : 0;
                 report.AppendLine(
                     $"  {label} {gridName} h={height:0} pos={positionLabel} offset={scroller.VerticalOffset:0.##} " +
                     $"scrollable={scroller.ScrollableHeight:0.##} rows={rows.Count} " +
-                    $"firstY={(rows.Count > 0 ? rows[0].Y : double.NaN):0.##} presenterH={(presenter?.ActualHeight ?? double.NaN):0.##} gridH={grid.ActualHeight:0.##}");
+                    $"firstY={(rows.Count > 0 ? rows[0].Y : double.NaN):0.##} gap={headerGap:0.##} presenterH={(presenter?.ActualHeight ?? double.NaN):0.##} gridH={grid.ActualHeight:0.##}");
 
                 if (rows.Count == 0 && grid.Items.Count > 0)
                 {
                     s_problems.Add($"{label} {gridName} h={height:0} pos={positionLabel} realized no rows");
                     continue;
                 }
-                if (fraction > 0 && rows.Count > 0 && rows[0].Y > 64)
-                    s_problems.Add($"{label} {gridName} h={height:0} pos={positionLabel} blank under header (firstY={rows[0].Y:0.##})");
+                if (rows.Any(row => row.Index < 0 || row.DataContextNull))
+                    s_problems.Add($"{label} {gridName} h={height:0} pos={positionLabel} realized row has invalid index or null DataContext");
+                if (rows.Count > 0 && headerGap > 4)
+                    s_problems.Add($"{label} {gridName} h={height:0} pos={positionLabel} phantom gap under header (gap={headerGap:0.##})");
                 if (fraction >= 1.0)
                 {
                     var lastRow = rows.FirstOrDefault(row => row.Index == grid.Items.Count - 1);
@@ -473,8 +479,8 @@ public static class Program
                         if (bottom > grid.ActualHeight + 1)
                             s_problems.Add($"{label} {gridName} h={height:0} bottom last row clipped (bottom={bottom:0.##} gridH={grid.ActualHeight:0.##})");
                     }
-                    if (rows.Count > 0 && rows[0].Y > 64)
-                        s_problems.Add($"{label} {gridName} h={height:0} bottom blank under header (firstY={rows[0].Y:0.##})");
+                    if (rows.Count > 0 && headerGap > 4)
+                        s_problems.Add($"{label} {gridName} h={height:0} bottom phantom gap under header (gap={headerGap:0.##})");
 
                     var before = rows.Select(row => row.Y).ToArray();
                     host.UpdateLayout();
@@ -504,16 +510,18 @@ public static class Program
 
     private sealed class RowProbe
     {
-        public RowProbe(int index, double height, double y)
+        public RowProbe(int index, double height, double y, bool dataContextNull)
         {
             Index = index;
             Height = height;
             Y = y;
+            DataContextNull = dataContextNull;
         }
 
         public int Index { get; }
         public double Height { get; }
         public double Y { get; }
+        public bool DataContextNull { get; }
     }
 
     private static void SavePng(Visual visual, string path)
