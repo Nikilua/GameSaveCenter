@@ -34,6 +34,16 @@ ONBOARDING-001 已在既有 Maintenance 诊断页加入首次环境准备入口�
 
 GameTool 的安全边界不可丢失：不能按进程名直接关闭程序；只在完整 EXE 路径一致且重新确认 PID 路径后执行 Restart；无法读取路径时保守拒绝。反作弊风险游戏中只允许 `GeneralUtility` 自定义工具自动启动，Unknown/Trainer/CT/GameModification 必须阻止并审计。真实 Playnite 覆盖安装、扩展扫描和 Worker/IPC 加载仍受 PID 3896 文件锁限制，清理 PID 后需要重新执行一键安装并检查 `playnite.log` 与 `extensions.log`。
 
+## Codex 2026-08-13 阶段补充（SMART-PROTECT-001/002）
+
+SMART-PROTECT 已完成第一版智能保护闭环：游戏停止请求等待现有存档识别，识别到候选/接受候选/Ludusavi 匹配后在既有 Dashboard 对话框显示“启用推荐策略 / 以后再说 / 不再提醒”三选一；没有识别到存档只写审计，不打扰用户。提示状态与最近识别结果保存在 SQLite，`Deferred` 冷却 7 天，`Enabled` 和 `Dismissed` 不再重复提示。因为识别最长约 2 分钟，Playnite 的 `session.stopped` 请求使用 3 分钟专用超时。
+
+Overview 既有最近保护卡已扩展为最近窗口游戏状态列表：`已保护`、`未匹配`、`存档未保护`、`风险`。已保护项不可选，其余项可多选，通过 `protection.recommended.apply` 批量启用退出后与游玩中自动保护，并写入审计后刷新快照。不要把这个能力移到新主导航页，也不能把“启用推荐”实现成自动恢复或删除操作。
+
+本阶段验证：Core 29/29、Worker 76/76、Playnite 202/202；Worker/Playnite Release 构建 0 警告、0 错误；`validate-source.py`、`check-xaml.ps1`、WPF UI 契约测试与 `render-qa.ps1` 全部通过。测试使用 `artifacts/smart-test/final-*` 隔离输出；标准测试目录仍被早先宿主锁住时，不要删除或强杀不属于本次任务的进程。
+
+验证边界不变：当前会话无法完成真实最终包的 Playnite 扩展扫描；PID 3896 仍需要管理员任务管理器结束或重启后才能执行真实覆盖安装。隔离启动/离屏渲染只能证明应用层启动和布局，不得写成“真实宿主加载成功”。
+
 新的 AI/Codex 长期记忆入口已建立：先读 `docs/ai/PROJECT_MEMORY.md` 与 `docs/ai/WORKLOG.md`，再读本文件。
 
 本轮已完成并推送：

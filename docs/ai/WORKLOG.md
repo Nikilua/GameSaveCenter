@@ -2,6 +2,28 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-13 SMART-PROTECT-001/002 智能保护提示与最近游戏批量策略
+
+**实现内容：**
+
+- 游戏完整停止流程现在等待现有存档识别/匹配结果；识别到候选路径、已接受候选或 Ludusavi 匹配时，首次完整退出可在既有 Dashboard 对话框中选择“启用推荐策略 / 以后再说 / 不再提醒”。识别不到存档时只记录“暂未发现存档”审计，不打扰用户；后续识别到存档仍可触发提示。
+- SQLite 持久化 `NeverShown/Deferred/Enabled/Dismissed` 提示状态、最近识别结果和提示时间；“以后再说”按 7 天冷却；启用推荐策略同时打开游戏结束自动保护。停止请求的 Playnite IPC 超时单独延长到 3 分钟，覆盖最多约 2 分钟的存档扫描。
+- Overview 既有“最近 30 天游戏”卡片现在显示“已保护 / 未匹配 / 存档未保护 / 风险”状态；已保护项不可选，其他项可多选并通过一个 Worker 请求批量启用推荐保护（游玩中与退出后），操作写入审计并刷新快照。未新增主导航页，保留现有滚动、键盘和列表结构。
+
+**验证结果：**
+
+- Core Release 构建 0 警告、0 错误；Core 测试 29/29；Worker Release 构建 0 警告、0 错误，Worker 测试 76/76；Playnite Release 构建 0 警告、0 错误，Playnite 测试 202/202。测试编译使用隔离 `artifacts/smart-test/final-*` 输出，避开旧测试宿主对标准目录的句柄锁。
+- `scripts/validate-source.py`、`scripts/check-xaml.ps1`、`git diff --check` 通过；`render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/smart-protection-final` 通过所有窗口尺寸、页面滚动与表格视口门禁。
+
+**验证边界：**
+
+- 隔离 RenderHarness 和隔离 Playnite 可用于编译/离屏布局验证；当前会话没有取得桌面句柄，也没有在真实最终包上完成扩展扫描，不能据此宣称真实宿主加载已验证。
+- `GameSaveCenter.Worker [3896]` 仍由外部管理员会话持有且当前会话无权读取/终止；真实覆盖安装仍需管理员任务管理器结束该 PID 或重启后执行。
+
+**提交：**代码与测试、文档分别提交；push 到共享 `main` 受安全策略拦截，未声称 push 成功。
+
+**下一项：**BACKUP-001，继续复用既有存档中心与 Worker 备份流程，先补可恢复性/一致性门禁，再扩展多设备与 Rclone。
+
 ## 2026-08-13 GAME-TOOL-003/004 重复实例策略与风险分类
 
 **实现内容：**
