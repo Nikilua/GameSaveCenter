@@ -43,6 +43,8 @@ public sealed partial class SqliteStateStore
         await EnsureColumnAsync(connection, "media", "classification_reason", "TEXT", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "games", "match_input_hash", "TEXT", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "games", "last_match_attempt_utc", "TEXT", token).ConfigureAwait(false);
+        await EnsureColumnAsync(connection, "game_tools", "if_already_running", "INTEGER NOT NULL DEFAULT 0", token).ConfigureAwait(false);
+        await EnsureColumnAsync(connection, "game_tools", "risk_category", "INTEGER NOT NULL DEFAULT 0", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "game_tool_versions", "resolved_target_path", "TEXT", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "backup_versions", "archive_path", "TEXT", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "backup_versions", "restore_readiness_json", "TEXT", token).ConfigureAwait(false);
@@ -68,7 +70,7 @@ WHERE COALESCE(classification_state,'')='' OR classification_state='Assigned';";
         await connection.OpenAsync(token).ConfigureAwait(false);
         var command = connection.CreateCommand();
         command.CommandText = @"SELECT tool_id,playnite_id,tool_type,source_type,display_name,enabled,auto_start,
-launch_timing,launch_delay_seconds,close_on_game_exit,requires_admin,active_version_id,created_utc,updated_utc
+launch_timing,launch_delay_seconds,close_on_game_exit,requires_admin,if_already_running,risk_category,active_version_id,created_utc,updated_utc
 FROM game_tools WHERE playnite_id=$game ORDER BY tool_type,display_name COLLATE NOCASE;";
         command.Parameters.AddWithValue("$game", playniteId);
         await using (var reader = await command.ExecuteReaderAsync(token).ConfigureAwait(false))
@@ -82,9 +84,10 @@ FROM game_tools WHERE playnite_id=$game ORDER BY tool_type,display_name COLLATE 
                     Enabled=reader.GetInt32(5)==1,AutoStart=reader.GetInt32(6)==1,
                     LaunchTiming=(GameToolLaunchTiming)reader.GetInt32(7),LaunchDelaySeconds=reader.GetInt32(8),
                     CloseOnGameExit=reader.GetInt32(9)==1,RequiresAdmin=reader.GetInt32(10)==1,
-                    ActiveVersionId=reader.IsDBNull(11)?string.Empty:reader.GetString(11),
-                    CreatedUtc=DateTime.Parse(reader.GetString(12)).ToUniversalTime(),
-                    UpdatedUtc=DateTime.Parse(reader.GetString(13)).ToUniversalTime()
+                    IfAlreadyRunning=(GameToolIfAlreadyRunning)reader.GetInt32(11),RiskCategory=(GameToolRiskCategory)reader.GetInt32(12),
+                    ActiveVersionId=reader.IsDBNull(13)?string.Empty:reader.GetString(13),
+                    CreatedUtc=DateTime.Parse(reader.GetString(14)).ToUniversalTime(),
+                    UpdatedUtc=DateTime.Parse(reader.GetString(15)).ToUniversalTime()
                 });
             }
         }
@@ -127,8 +130,8 @@ file_sha256,resolved_target_path,download_utc,created_utc FROM game_tool_version
 
     public Task UpsertGameToolAsync(GameToolDto tool, GameToolVersionDto version, CancellationToken token) => ExecuteAsync(@"
 INSERT INTO game_tools(tool_id,playnite_id,tool_type,source_type,display_name,enabled,auto_start,launch_timing,
-launch_delay_seconds,close_on_game_exit,requires_admin,active_version_id,created_utc,updated_utc)
-VALUES($id,$game,$type,$source,$name,$enabled,$auto,$timing,$delay,$close,$admin,$version,$created,$updated)
+launch_delay_seconds,close_on_game_exit,requires_admin,if_already_running,risk_category,active_version_id,created_utc,updated_utc)
+VALUES($id,$game,$type,$source,$name,$enabled,$auto,$timing,$delay,$close,$admin,$running,$risk,$version,$created,$updated)
 ON CONFLICT(tool_id) DO UPDATE SET display_name=excluded.display_name,active_version_id=excluded.active_version_id,updated_utc=excluded.updated_utc;
 INSERT INTO game_tool_versions(version_id,tool_id,version_name,entry_path,working_directory,arguments,source_url,file_sha256,resolved_target_path,download_utc,created_utc)
 VALUES($version,$id,$versionName,$path,$working,$arguments,$url,$hash,$resolved,$download,$created)
@@ -138,6 +141,7 @@ ON CONFLICT(version_id) DO UPDATE SET entry_path=excluded.entry_path,file_sha256
             ["$id"]=tool.ToolId,["$game"]=tool.PlayniteId,["$type"]=(int)tool.ToolType,["$source"]=(int)tool.SourceType,
             ["$name"]=tool.DisplayName,["$enabled"]=tool.Enabled?1:0,["$auto"]=tool.AutoStart?1:0,["$timing"]=(int)tool.LaunchTiming,
             ["$delay"]=tool.LaunchDelaySeconds,["$close"]=tool.CloseOnGameExit?1:0,["$admin"]=tool.RequiresAdmin?1:0,
+            ["$running"]=(int)tool.IfAlreadyRunning,["$risk"]=(int)tool.RiskCategory,
             ["$version"]=version.VersionId,["$versionName"]=version.VersionName,["$path"]=version.EntryPath,
             ["$working"]=version.WorkingDirectory,["$arguments"]=version.Arguments,["$url"]=version.SourceUrl,
             ["$hash"]=version.FileSha256,["$resolved"]=version.ResolvedTargetPath,["$download"]=version.DownloadUtc?.ToString("O"),["$created"]=tool.CreatedUtc.ToString("O"),
@@ -146,7 +150,7 @@ ON CONFLICT(version_id) DO UPDATE SET entry_path=excluded.entry_path,file_sha256
 
     public Task UpdateGameToolAsync(UpdateGameToolRequestDto update, CancellationToken token) => ExecuteAsync(@"
 UPDATE game_tools SET enabled=$enabled,auto_start=$auto,launch_timing=$timing,launch_delay_seconds=$delay,
-close_on_game_exit=$close,requires_admin=$admin,
+close_on_game_exit=$close,requires_admin=$admin,if_already_running=$running,risk_category=$risk,
 display_name=CASE WHEN COALESCE($name,'')='' THEN display_name ELSE $name END,
 active_version_id=CASE WHEN COALESCE($version,'')='' THEN active_version_id ELSE $version END,updated_utc=$utc
 WHERE tool_id=$id;
@@ -157,6 +161,7 @@ WHERE version_id=CASE WHEN COALESCE($version,'')='' THEN (SELECT active_version_
             ["$id"]=update.ToolId,["$enabled"]=update.Enabled?1:0,["$auto"]=update.AutoStart?1:0,
             ["$timing"]=(int)update.LaunchTiming,["$delay"]=Math.Clamp(update.LaunchDelaySeconds,0,300),
             ["$close"]=update.CloseOnGameExit?1:0,["$admin"]=update.RequiresAdmin?1:0,
+            ["$running"]=(int)update.IfAlreadyRunning,["$risk"]=(int)update.RiskCategory,
             ["$name"]=update.DisplayName,["$working"]=update.WorkingDirectory,["$args"]=update.Arguments,
             ["$version"]=update.ActiveVersionId,["$utc"]=DateTime.UtcNow.ToString("O")
         }, token);
@@ -984,7 +989,7 @@ CREATE TABLE IF NOT EXISTS media(media_id TEXT PRIMARY KEY,playnite_id TEXT,kind
 CREATE TABLE IF NOT EXISTS media_sources(source_id TEXT PRIMARY KEY,playnite_id TEXT,source_kind INTEGER NOT NULL,root_path TEXT NOT NULL,include_pattern TEXT,enabled INTEGER NOT NULL DEFAULT 1,shared_directory INTEGER NOT NULL DEFAULT 0);
 CREATE TABLE IF NOT EXISTS save_candidates(candidate_id TEXT PRIMARY KEY,playnite_id TEXT NOT NULL,path TEXT NOT NULL,score REAL NOT NULL,reasons_json TEXT,status TEXT NOT NULL,created_utc TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS audit_log(audit_id TEXT PRIMARY KEY,category TEXT NOT NULL,message TEXT NOT NULL,detail_json TEXT,created_utc TEXT NOT NULL);
-CREATE TABLE IF NOT EXISTS game_tools(tool_id TEXT PRIMARY KEY,playnite_id TEXT NOT NULL,tool_type INTEGER NOT NULL,source_type INTEGER NOT NULL,display_name TEXT NOT NULL,enabled INTEGER NOT NULL DEFAULT 1,auto_start INTEGER NOT NULL DEFAULT 0,launch_timing INTEGER NOT NULL DEFAULT 1,launch_delay_seconds INTEGER NOT NULL DEFAULT 8,close_on_game_exit INTEGER NOT NULL DEFAULT 0,requires_admin INTEGER NOT NULL DEFAULT 0,active_version_id TEXT,created_utc TEXT NOT NULL,updated_utc TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS game_tools(tool_id TEXT PRIMARY KEY,playnite_id TEXT NOT NULL,tool_type INTEGER NOT NULL,source_type INTEGER NOT NULL,display_name TEXT NOT NULL,enabled INTEGER NOT NULL DEFAULT 1,auto_start INTEGER NOT NULL DEFAULT 0,launch_timing INTEGER NOT NULL DEFAULT 1,launch_delay_seconds INTEGER NOT NULL DEFAULT 8,close_on_game_exit INTEGER NOT NULL DEFAULT 0,requires_admin INTEGER NOT NULL DEFAULT 0,if_already_running INTEGER NOT NULL DEFAULT 0,risk_category INTEGER NOT NULL DEFAULT 0,active_version_id TEXT,created_utc TEXT NOT NULL,updated_utc TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS game_tool_versions(version_id TEXT PRIMARY KEY,tool_id TEXT NOT NULL REFERENCES game_tools(tool_id) ON DELETE CASCADE,version_name TEXT,entry_path TEXT NOT NULL,working_directory TEXT,arguments TEXT,source_url TEXT,file_sha256 TEXT,download_utc TEXT,created_utc TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS trainer_catalog(catalog_id TEXT PRIMARY KEY,title TEXT NOT NULL,normalized_title TEXT NOT NULL,page_url TEXT NOT NULL,game_version TEXT,option_count INTEGER NOT NULL DEFAULT 0,last_updated_utc TEXT,last_synced_utc TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS trainer_releases(release_id TEXT PRIMARY KEY,catalog_id TEXT NOT NULL REFERENCES trainer_catalog(catalog_id) ON DELETE CASCADE,display_name TEXT NOT NULL,download_url TEXT NOT NULL,size_bytes INTEGER NOT NULL DEFAULT 0,published_utc TEXT,last_synced_utc TEXT NOT NULL);

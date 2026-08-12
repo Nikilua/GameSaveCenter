@@ -134,6 +134,22 @@ namespace GameSaveCenter.Contracts
         Delayed = 1
     }
 
+    /// <summary>What to do when the same custom executable is already running.</summary>
+    public enum GameToolIfAlreadyRunning
+    {
+        Skip = 0,
+        Restart = 1,
+        AllowAnotherInstance = 2
+    }
+
+    /// <summary>Risk classification used to decide whether a custom tool may auto-start.</summary>
+    public enum GameToolRiskCategory
+    {
+        Unknown = 0,
+        GeneralUtility = 1,
+        GameModification = 2
+    }
+
     /// <summary>How a custom launch item should be started on Windows.</summary>
     public enum GameToolLaunchKind
     {

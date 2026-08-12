@@ -2420,6 +2420,22 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void CustomToolSettingsExposeConservativeProcessAndRiskPolicies()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var trainer = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml"));
+        var contract = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Contracts", "TrainerDtos.cs"));
+
+        Assert.Contains("GameToolIfAlreadyRunningOptions", trainer);
+        Assert.Contains("GameToolRiskCategoryOptions", trainer);
+        Assert.Contains("SelectedGameTool.IfAlreadyRunning", trainer);
+        Assert.Contains("SelectedGameTool.RiskCategory", trainer);
+        Assert.Contains("GAME_TOOL_PROCESS_UNREADABLE", File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Worker", "Services", "GameToolService.cs")));
+        Assert.Contains("GameToolIfAlreadyRunning IfAlreadyRunning", contract);
+        Assert.Contains("GameToolRiskCategory RiskCategory", contract);
+    }
+
+    [Fact]
     public void TaskAndMaintenanceTablesUseReadableSemanticStatusTemplates()
     {
         var repositoryRoot = FindRepositoryRoot();

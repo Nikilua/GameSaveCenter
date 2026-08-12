@@ -244,6 +244,18 @@ namespace GameSaveCenter.Playnite.ViewModels
         public BatchObservableCollection<GameToolEntryCandidateDto> ImportEntryCandidates { get; } = new BatchObservableCollection<GameToolEntryCandidateDto>();
         public BatchObservableCollection<TrainerCatalogItemDto> TrainerCatalogResults { get; } = new BatchObservableCollection<TrainerCatalogItemDto>();
         public BatchObservableCollection<TrainerReleaseDto> TrainerReleases { get; } = new BatchObservableCollection<TrainerReleaseDto>();
+        public IReadOnlyList<GameToolRunningOption> GameToolIfAlreadyRunningOptions { get; } = new[]
+        {
+            new GameToolRunningOption(GameToolIfAlreadyRunning.Skip, "已有实例：跳过启动"),
+            new GameToolRunningOption(GameToolIfAlreadyRunning.Restart, "已有实例：关闭后重启"),
+            new GameToolRunningOption(GameToolIfAlreadyRunning.AllowAnotherInstance, "已有实例：允许多开")
+        };
+        public IReadOnlyList<GameToolRiskOption> GameToolRiskCategoryOptions { get; } = new[]
+        {
+            new GameToolRiskOption(GameToolRiskCategory.Unknown, "未分类（自动启动将暂缓）"),
+            new GameToolRiskOption(GameToolRiskCategory.GeneralUtility, "通用工具"),
+            new GameToolRiskOption(GameToolRiskCategory.GameModification, "游戏修改工具")
+        };
         public ICollectionView GamesView { get; }
         public ICollectionView TasksView { get; }
         public ICollectionView MediaView { get; }
@@ -1383,6 +1395,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 ToolId=tool.ToolId,Enabled=tool.Enabled,AutoStart=tool.AutoStart,LaunchTiming=tool.LaunchTiming,
                 LaunchDelaySeconds=Math.Max(0,Math.Min(300,tool.LaunchDelaySeconds)),CloseOnGameExit=closeOnExit,
                 RequiresAdmin=requiresAdmin,ActiveVersionId=tool.ActiveVersionId,
+                IfAlreadyRunning=tool.IfAlreadyRunning,RiskCategory=tool.RiskCategory,
                 DisplayName=tool.DisplayName?.Trim()??string.Empty,
                 WorkingDirectory=tool.ActiveVersion.WorkingDirectory??string.Empty,
                 Arguments=tool.ActiveVersion.Arguments??string.Empty
@@ -1414,8 +1427,10 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task LaunchSelectedGameToolAsync()
         {
-            await plugin.RequestAsync<object>(MessageTypes.LaunchGameTool,new GameToolCommandRequestDto{ToolId=SelectedGameTool.ToolId});
-            ConfirmSuccess("已启动 "+SelectedGameTool.DisplayName);
+            var result=await plugin.RequestAsync<GameToolLaunchResultDto>(MessageTypes.LaunchGameTool,new GameToolCommandRequestDto{ToolId=SelectedGameTool.ToolId});
+            ConfirmSuccess(result.Skipped
+                ? "已有同一路径实例，已跳过启动"
+                : "已启动 "+SelectedGameTool.DisplayName);
         }
 
         private async Task OpenSelectedGameToolDirectoryAsync()
@@ -2310,5 +2325,21 @@ namespace GameSaveCenter.Playnite.ViewModels
             return true;
         }
         private static string EmptyAsUnset(string value) => string.IsNullOrWhiteSpace(value) ? "（未配置）" : value;
+    }
+}
+
+namespace GameSaveCenter.Playnite.ViewModels
+{
+    public sealed class GameToolRunningOption
+    {
+        public GameToolIfAlreadyRunning Value { get; }
+        public string Display { get; }
+        public GameToolRunningOption(GameToolIfAlreadyRunning value, string display) { Value=value; Display=display; }
+    }
+    public sealed class GameToolRiskOption
+    {
+        public GameToolRiskCategory Value { get; }
+        public string Display { get; }
+        public GameToolRiskOption(GameToolRiskCategory value, string display) { Value=value; Display=display; }
     }
 }

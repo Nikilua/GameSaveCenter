@@ -18,6 +18,8 @@ namespace GameSaveCenter.Contracts
         public int LaunchDelaySeconds { get; set; } = 8;
         public bool CloseOnGameExit { get; set; }
         public bool RequiresAdmin { get; set; }
+        public GameToolIfAlreadyRunning IfAlreadyRunning { get; set; } = GameToolIfAlreadyRunning.Skip;
+        public GameToolRiskCategory RiskCategory { get; set; } = GameToolRiskCategory.Unknown;
         public string ActiveVersionId { get; set; } = string.Empty;
         public DateTime CreatedUtc { get; set; }
         public DateTime UpdatedUtc { get; set; }
@@ -43,6 +45,22 @@ namespace GameSaveCenter.Contracts
             : string.Empty;
         public string SourceDisplay => SourceType == GameToolSourceType.Fling ? "FLiNG"
             : SourceType == GameToolSourceType.Manual ? "手动导入" : "其他来源";
+        public bool IsCustomExecutable => ToolType == GameToolType.CustomExecutable;
+        public string IfAlreadyRunningDisplay => IfAlreadyRunning switch
+        {
+            GameToolIfAlreadyRunning.Restart => "已有实例：关闭后重启",
+            GameToolIfAlreadyRunning.AllowAnotherInstance => "已有实例：允许多开",
+            _ => "已有实例：跳过启动"
+        };
+        public string RiskCategoryDisplay => RiskCategory switch
+        {
+            GameToolRiskCategory.GeneralUtility => "通用工具",
+            GameToolRiskCategory.GameModification => "游戏修改工具",
+            _ => "未分类"
+        };
+        public string AutoStartRiskHint => IsCustomExecutable && AutoStart && RiskCategory == GameToolRiskCategory.Unknown
+            ? "自动启动已暂缓：请先将工具分类为通用工具或游戏修改工具。"
+            : string.Empty;
         public string FileStateDisplay => ActiveVersion.IsAvailable ? "已就绪" : "文件缺失";
         /// <summary>Readable compact-card status; do not expose the raw AutoStart Boolean.</summary>
         public string AutoStartDisplay => AutoStart
@@ -112,6 +130,8 @@ namespace GameSaveCenter.Contracts
         public int LaunchDelaySeconds { get; set; } = 8;
         public bool CloseOnGameExit { get; set; }
         public bool RequiresAdmin { get; set; }
+        public GameToolIfAlreadyRunning IfAlreadyRunning { get; set; } = GameToolIfAlreadyRunning.Skip;
+        public GameToolRiskCategory RiskCategory { get; set; } = GameToolRiskCategory.Unknown;
         public string ActiveVersionId { get; set; } = string.Empty;
         public string DisplayName { get; set; } = string.Empty;
         public string WorkingDirectory { get; set; } = string.Empty;
@@ -127,6 +147,14 @@ namespace GameSaveCenter.Contracts
     public sealed class GameToolCommandRequestDto
     {
         public string ToolId { get; set; } = string.Empty;
+    }
+
+    public sealed class GameToolLaunchResultDto
+    {
+        public bool Started { get; set; }
+        public bool Skipped { get; set; }
+        public int ProcessId { get; set; }
+        public List<int> ExistingProcessIds { get; set; } = new List<int>();
     }
 
     public sealed class TrainerCatalogItemDto

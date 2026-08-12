@@ -125,7 +125,12 @@ public sealed class GameToolService
 
     public async Task<object> UpdateAsync(UpdateGameToolRequestDto request,CancellationToken token)
     {
-        if(await _store.GetGameToolAsync(request.ToolId,token).ConfigureAwait(false)==null)throw new KeyNotFoundException("游戏工具不存在。");
+        var tool=await _store.GetGameToolAsync(request.ToolId,token).ConfigureAwait(false)??throw new KeyNotFoundException("游戏工具不存在。");
+        if(tool.ToolType!=GameToolType.CustomExecutable)
+        {
+            request.IfAlreadyRunning=GameToolIfAlreadyRunning.Skip;
+            request.RiskCategory=GameToolRiskCategory.Unknown;
+        }
         await _store.UpdateGameToolAsync(request,token).ConfigureAwait(false);return new{updated=true};
     }
 
@@ -163,6 +168,9 @@ public sealed class GameToolService
     public async Task<object> LaunchAsync(string toolId,CancellationToken token)
     {
         var tool=await _store.GetGameToolAsync(toolId,token).ConfigureAwait(false)??throw new KeyNotFoundException("游戏工具不存在。");
+        var decision=PrepareLaunch(tool);
+        if(decision.Skipped)
+            return new{started=false,skipped=true,processId=0,existingProcessIds=decision.ExistingProcessIds};
         var (process,_)=LaunchWithPlan(tool);return new{started=true,processId=process.Id};
     }
 
@@ -178,13 +186,24 @@ public sealed class GameToolService
     {
         if(string.IsNullOrWhiteSpace(session.SessionId))return;
         var descriptor=await _store.GetGameAsync(session.PlayniteId,token).ConfigureAwait(false);
-        if(HasAntiCheat(descriptor))
-        {
-            await _store.AppendAuditAsync("GameTool","检测到常见反作弊，已阻止自动启动游戏工具",
-                System.Text.Json.JsonSerializer.Serialize(new{session.PlayniteId,session.GameName}),token).ConfigureAwait(false);
-            return;
-        }
         var tools=(await _store.GetGameToolsAsync(session.PlayniteId,token).ConfigureAwait(false)).Where(x=>x.Enabled&&x.AutoStart).ToList();
+        var antiCheat=HasAntiCheat(descriptor);
+        var allowed=new List<GameToolDto>();
+        foreach(var tool in tools)
+        {
+            if(tool.ToolType==GameToolType.CustomExecutable&&tool.RiskCategory==GameToolRiskCategory.Unknown)
+            {
+                await RecordAutoStartBlockedAsync(tool,session,"工具尚未分类，自动启动已暂缓",token).ConfigureAwait(false);
+                continue;
+            }
+            if(antiCheat&&(tool.ToolType!=GameToolType.CustomExecutable||tool.RiskCategory==GameToolRiskCategory.GameModification))
+            {
+                await RecordAutoStartBlockedAsync(tool,session,"当前游戏存在反作弊风险，该工具类别不允许自动启动",token).ConfigureAwait(false);
+                continue;
+            }
+            allowed.Add(tool);
+        }
+        tools=allowed;
         if(tools.Count==0)return;
         var linked=CancellationTokenSource.CreateLinkedTokenSource(token);_sessionTracker.RegisterDelay(session.SessionId,linked);
         foreach(var tool in tools)_=LaunchAfterDelayAsync(session,tool,linked.Token);
@@ -271,6 +290,13 @@ public sealed class GameToolService
         {
             var delay=tool.LaunchTiming==GameToolLaunchTiming.Delayed?Math.Clamp(tool.LaunchDelaySeconds,0,300):0;
             if(delay>0)await Task.Delay(TimeSpan.FromSeconds(delay),token).ConfigureAwait(false);
+            var decision=PrepareLaunch(tool);
+            if(decision.Skipped)
+            {
+                await _store.AppendAuditAsync("GameTool","已有同一路径实例，已跳过自动启动",
+                    System.Text.Json.JsonSerializer.Serialize(new{session.SessionId,tool.ToolId,tool.DisplayName,existingProcessIds=decision.ExistingProcessIds}),CancellationToken.None).ConfigureAwait(false);
+                return;
+            }
             var (process,trackable)=LaunchWithPlan(tool);
             var closeOnExit=tool.CloseOnGameExit&&trackable;
             _sessionTracker.Track(session.SessionId,process.Id,process.StartTime.ToUniversalTime(),closeOnExit);
@@ -291,6 +317,35 @@ public sealed class GameToolService
         var plan=GameToolLauncher.Build(tool,_shortcutResolver);
         var process=Process.Start(plan.StartInfo)??throw new InvalidOperationException("Windows 未返回工具进程。");
         return (process,plan.Trackable);
+    }
+
+    private LaunchDecision PrepareLaunch(GameToolDto tool)
+    {
+        if(tool.ToolType!=GameToolType.CustomExecutable||tool.IfAlreadyRunning==GameToolIfAlreadyRunning.AllowAnotherInstance)
+            return LaunchDecision.Start;
+        var target=GameToolProcessGuard.ResolveExecutableTarget(tool,_shortcutResolver);
+        if(string.IsNullOrWhiteSpace(target))
+            throw new WorkerOperationException("GAME_TOOL_TARGET_UNKNOWN","无法安全判断自定义启动项的目标进程；请选择“允许多开”或改用可解析的 EXE。",tool.ActiveVersion.EntryPath);
+        var scan=GameToolProcessGuard.Scan(target);
+        if(scan.HasUnreadableCandidate)
+            throw new WorkerOperationException("GAME_TOOL_PROCESS_UNREADABLE","发现同名进程但当前会话无法读取其程序路径；为避免误操作，已停止启动。请使用管理员权限检查进程，或选择“允许多开”。",target);
+        if(scan.MatchingProcessIds.Count==0)
+            return LaunchDecision.Start;
+        if(tool.IfAlreadyRunning==GameToolIfAlreadyRunning.Skip)
+            return new LaunchDecision(true,scan.MatchingProcessIds);
+        GameToolProcessGuard.RestartExact(target,scan,TimeSpan.FromSeconds(2.5));
+        return LaunchDecision.Start;
+    }
+
+    private async Task RecordAutoStartBlockedAsync(GameToolDto tool,GameSessionEventDto session,string reason,CancellationToken token)
+    {
+        await _store.AppendAuditAsync("GameTool",reason,
+            System.Text.Json.JsonSerializer.Serialize(new{session.PlayniteId,session.GameName,tool.ToolId,tool.DisplayName,tool.RiskCategory}),token).ConfigureAwait(false);
+    }
+
+    private sealed record LaunchDecision(bool Skipped,IReadOnlyList<int> ExistingProcessIds)
+    {
+        public static LaunchDecision Start { get; }=new(false,Array.Empty<int>());
     }
 
     private static void ExtractZipSafely(string archive,string destination)
