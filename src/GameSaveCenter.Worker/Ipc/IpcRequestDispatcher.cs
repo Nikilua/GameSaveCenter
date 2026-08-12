@@ -82,6 +82,10 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.ValidateGame=>await ValidateAsync(Read<ValidateGameRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.GetGamePolicy=>await _store.GetPolicyAsync(Read<GameQueryDto>(request).PlayniteId,token).ConfigureAwait(false),
                 MessageTypes.UpdateGamePolicy=>await UpdatePolicyAsync(Read<GamePolicyUpdateDto>(request),token).ConfigureAwait(false),
+                MessageTypes.ListPolicyTemplates=>await _store.GetPolicyTemplatesAsync(token).ConfigureAwait(false),
+                MessageTypes.SavePolicyTemplate=>await SavePolicyTemplateAsync(Read<PolicyTemplateSaveDto>(request),token).ConfigureAwait(false),
+                MessageTypes.DeletePolicyTemplate=>await DeletePolicyTemplateAsync(Read<PolicyTemplateDeleteDto>(request),token).ConfigureAwait(false),
+                MessageTypes.ApplyPolicyTemplate=>await ApplyPolicyTemplateAsync(Read<ApplyPolicyTemplateDto>(request),token).ConfigureAwait(false),
                 MessageTypes.GetTasks=>await _store.GetRecentTasksAsync(200,token).ConfigureAwait(false),
                 MessageTypes.GetTaskChanges=>GetTaskChanges(Read<TaskChangeRequestDto>(request)),
                 MessageTypes.WaitForTaskChanges=>await WaitForTaskChangesAsync(Read<TaskChangeRequestDto>(request),token).ConfigureAwait(false),
@@ -242,6 +246,59 @@ public sealed class IpcRequestDispatcher
         await _store.SetPolicyAsync(update.PlayniteId,update.Policy,token).ConfigureAwait(false);
         await _store.AppendAuditAsync("Policy","Updated game policy",JsonSerializer.Serialize(new{update.PlayniteId,update.Policy}),token).ConfigureAwait(false);
         return new{updated=true};
+    }
+
+    private async Task<object> SavePolicyTemplateAsync(PolicyTemplateSaveDto request, CancellationToken token)
+    {
+        var template = request?.Template ?? new BackupPolicyTemplateDto();
+        template.TemplateId = (template.TemplateId ?? string.Empty).Trim();
+        template.Name = (template.Name ?? string.Empty).Trim();
+        if (template.Name.Length == 0 || template.Name.Length > 80)
+            throw new ArgumentException("策略模板名称必须为 1–80 个字符。");
+        if (BackupPolicyTemplateCatalog.IsBuiltInId(template.TemplateId) || template.IsBuiltIn)
+            throw new InvalidOperationException("内置策略模板不可修改。");
+        if (template.TemplateId.Length == 0)
+            template.TemplateId = "custom-" + Guid.NewGuid().ToString("N");
+        if (!template.TemplateId.StartsWith("custom-", StringComparison.OrdinalIgnoreCase))
+            throw new ArgumentException("用户模板 ID 无效。");
+
+        template.IsBuiltIn = false;
+        template.Policy = BackupPolicyTemplateCatalog.ClonePolicy(template.Policy);
+        await _store.UpsertPolicyTemplateAsync(template,token).ConfigureAwait(false);
+        await _store.AppendAuditAsync("PolicyTemplate", "Saved user policy template",
+            JsonSerializer.Serialize(new { template.TemplateId, template.Name, template.Policy }), token).ConfigureAwait(false);
+        return template;
+    }
+
+    private async Task<object> DeletePolicyTemplateAsync(PolicyTemplateDeleteDto request, CancellationToken token)
+    {
+        var templateId = (request?.TemplateId ?? string.Empty).Trim();
+        if (string.IsNullOrWhiteSpace(templateId)) throw new ArgumentException("策略模板 ID 不能为空。");
+        var template = await _store.GetPolicyTemplateAsync(templateId,token).ConfigureAwait(false)
+                       ?? throw new KeyNotFoundException("策略模板不存在。");
+        if (template.IsBuiltIn || BackupPolicyTemplateCatalog.IsBuiltInId(template.TemplateId))
+            throw new InvalidOperationException("内置策略模板不可删除。");
+        await _store.DeletePolicyTemplateAsync(template.TemplateId,token).ConfigureAwait(false);
+        await _store.AppendAuditAsync("PolicyTemplate", "Deleted user policy template",
+            JsonSerializer.Serialize(new { template.TemplateId, template.Name }), token).ConfigureAwait(false);
+        return new { deleted = true, templateId = template.TemplateId };
+    }
+
+    private async Task<object> ApplyPolicyTemplateAsync(ApplyPolicyTemplateDto request, CancellationToken token)
+    {
+        var playniteId = (request?.PlayniteId ?? string.Empty).Trim();
+        var templateId = (request?.TemplateId ?? string.Empty).Trim();
+        if (string.IsNullOrWhiteSpace(playniteId)) throw new ArgumentException("游戏 ID 不能为空。");
+        if (string.IsNullOrWhiteSpace(templateId)) throw new ArgumentException("策略模板 ID 不能为空。");
+        var game = await _catalog.GetGameAsync(playniteId,token).ConfigureAwait(false)
+                   ?? throw new KeyNotFoundException("目标游戏不存在。");
+        var template = await _store.GetPolicyTemplateAsync(templateId,token).ConfigureAwait(false)
+                       ?? throw new KeyNotFoundException("策略模板不存在。");
+        var policy = BackupPolicyTemplateCatalog.ClonePolicy(template.Policy);
+        await _store.SetPolicyAsync(game.PlayniteId,policy,token).ConfigureAwait(false);
+        await _store.AppendAuditAsync("PolicyTemplate", "Applied policy template to game",
+            JsonSerializer.Serialize(new { game.PlayniteId, template.TemplateId, template.Name, policy }), token).ConfigureAwait(false);
+        return new { applied = true, template = BackupPolicyTemplateCatalog.Clone(template) };
     }
 
     private async Task<object> AddMediaSourceAsync(MediaSourceRuleDto source,CancellationToken token)

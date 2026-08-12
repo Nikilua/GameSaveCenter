@@ -21,6 +21,10 @@ namespace GameSaveCenter.Contracts
         public const string ValidateGame = "validation.game";
         public const string GetGamePolicy = "policy.get";
         public const string UpdateGamePolicy = "policy.update";
+        public const string ListPolicyTemplates = "policy.templates.list";
+        public const string SavePolicyTemplate = "policy.template.save";
+        public const string DeletePolicyTemplate = "policy.template.delete";
+        public const string ApplyPolicyTemplate = "policy.template.apply";
         public const string RestorePreview = "restore.preview";
         public const string RestoreExecute = "restore.execute";
         public const string UndoRestore = "restore.undo";

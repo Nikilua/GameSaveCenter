@@ -75,6 +75,10 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string diagnosticSummary = "诊断信息尚未加载。";
         private string diffSummary = string.Empty;
         private string retentionSummary = string.Empty;
+        private BackupPolicyTemplateDto selectedPolicyTemplate = null!;
+        private BackupPolicyTemplateDto policyTemplateDraft = new BackupPolicyTemplateDto();
+        private string policyTemplateNameDraft = string.Empty;
+        private bool policyTemplatesLoaded;
         private BackupDiffDto? lastBackupDiff;
         private RetentionPreviewDto? lastRetentionPreview;
         private bool suppressSelectionLoad;
@@ -141,6 +145,10 @@ namespace GameSaveCenter.Playnite.ViewModels
             UndoRestoreCommand = new RelayCommand(_ => Run(UndoRestoreAsync), _ => !IsBusy && SelectedGame != null && Backups.Any(x => x.IsPreRestore));
             LoadDetailsCommand = new RelayCommand(_ => Run(() => LoadDetailsAsync(true)), _ => !IsBusy && SelectedGame != null);
             SavePolicyCommand = new RelayCommand(_ => Run(SavePolicyAsync), _ => !IsBusy && SelectedGame != null);
+            CreatePolicyTemplateCommand = new RelayCommand(_ => CreatePolicyTemplate(), _ => !IsBusy);
+            SavePolicyTemplateCommand = new RelayCommand(_ => Run(SavePolicyTemplateAsync), _ => !IsBusy && PolicyTemplateDraft != null && !PolicyTemplateDraft.IsBuiltIn && !string.IsNullOrWhiteSpace(PolicyTemplateNameDraft));
+            ApplyPolicyTemplateCommand = new RelayCommand(_ => Run(ApplyPolicyTemplateAsync), _ => !IsBusy && SelectedGame != null && SelectedPolicyTemplate != null && !string.IsNullOrWhiteSpace(SelectedPolicyTemplate.TemplateId));
+            DeletePolicyTemplateCommand = new RelayCommand(_ => Run(DeletePolicyTemplateAsync), _ => !IsBusy && PolicyTemplateDraft != null && !PolicyTemplateDraft.IsBuiltIn && !string.IsNullOrWhiteSpace(PolicyTemplateDraft.TemplateId));
             UpdateBackupMetadataCommand = new RelayCommand(_ => Run(UpdateBackupMetadataAsync), _ => !IsBusy && SelectedGame != null && SelectedBackup != null);
             CompareBackupCommand = new RelayCommand(_ => Run(CompareBackupAsync), _ => !IsBusy && SelectedGame != null && SelectedBackup != null && Backups.IndexOf(SelectedBackup) >= 0 && Backups.IndexOf(SelectedBackup) + 1 < Backups.Count);
             PreviewRetentionCommand = new RelayCommand(_ => Run(PreviewRetentionAsync), _ => !IsBusy && SelectedGame != null && Backups.Count > 0);
@@ -214,6 +222,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public IReadOnlyList<string> DeviceDecisionOptions { get; } = new[] { "稍后处理", "保留两者", "以本机为准", "以远端为准" };
         public BatchObservableCollection<ProcessMappingDto> ProcessMappings { get; } = new BatchObservableCollection<ProcessMappingDto>();
         public BatchObservableCollection<BackupVersionDto> Backups { get; } = new BatchObservableCollection<BackupVersionDto>();
+        public BatchObservableCollection<BackupPolicyTemplateDto> PolicyTemplates { get; } = new BatchObservableCollection<BackupPolicyTemplateDto>();
         public BatchObservableCollection<MediaItemDto> Media { get; } = new BatchObservableCollection<MediaItemDto>();
         private BatchObservableCollection<MediaItemDto> unassignedMedia = new BatchObservableCollection<MediaItemDto>();
         public BatchObservableCollection<MediaItemDto> UnassignedMedia
@@ -482,6 +491,35 @@ namespace GameSaveCenter.Playnite.ViewModels
         public string RetentionSummary { get => retentionSummary; private set => SetValue(ref retentionSummary, value); }
         public BackupDiffDto? LastBackupDiff { get => lastBackupDiff; private set => SetValue(ref lastBackupDiff, value); }
         public RetentionPreviewDto? LastRetentionPreview { get => lastRetentionPreview; private set => SetValue(ref lastRetentionPreview, value); }
+        public BackupPolicyTemplateDto SelectedPolicyTemplate
+        {
+            get => selectedPolicyTemplate;
+            set
+            {
+                if (ReferenceEquals(selectedPolicyTemplate, value)) return;
+                SetValue(ref selectedPolicyTemplate, value);
+                PolicyTemplateDraft = value == null
+                    ? new BackupPolicyTemplateDto()
+                    : GameSaveCenter.Core.Services.BackupPolicyTemplateCatalog.Clone(value);
+                PolicyTemplateNameDraft = PolicyTemplateDraft.Name;
+                RaiseCommandStates();
+            }
+        }
+        public BackupPolicyTemplateDto PolicyTemplateDraft
+        {
+            get => policyTemplateDraft;
+            private set
+            {
+                SetValue(ref policyTemplateDraft, value ?? new BackupPolicyTemplateDto());
+                OnPropertyChanged(nameof(CanEditPolicyTemplate));
+            }
+        }
+        public bool CanEditPolicyTemplate => PolicyTemplateDraft != null && !PolicyTemplateDraft.IsBuiltIn;
+        public string PolicyTemplateNameDraft
+        {
+            get => policyTemplateNameDraft;
+            set { SetValue(ref policyTemplateNameDraft, value ?? string.Empty); RaiseCommandStates(); }
+        }
 
         public ICommand RefreshCommand { get; }
         public ICommand BackupSelectedCommand { get; }
@@ -494,6 +532,10 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand UndoRestoreCommand { get; }
         public ICommand LoadDetailsCommand { get; }
         public ICommand SavePolicyCommand { get; }
+        public ICommand CreatePolicyTemplateCommand { get; }
+        public ICommand SavePolicyTemplateCommand { get; }
+        public ICommand ApplyPolicyTemplateCommand { get; }
+        public ICommand DeletePolicyTemplateCommand { get; }
         public ICommand UpdateBackupMetadataCommand { get; }
         public ICommand CompareBackupCommand { get; }
         public ICommand PreviewRetentionCommand { get; }
@@ -914,6 +956,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             StatusMessage = synchronize ? "正在同步设置与游戏库…" : "正在读取本地状态…";
             await RefreshDashboardAsync(synchronize, false, snapshotTimeout);
+            if (!policyTemplatesLoaded) await LoadPolicyTemplatesAsync();
             if (CurrentWorkspace == WorkspaceKind.Media) await LoadInboxAsync();
             if (CurrentWorkspace == WorkspaceKind.Maintenance) await LoadDiagnosticsAsync();
             if (SelectedGame != null && IsGameScopedWorkspace(CurrentWorkspace)) await LoadDetailsAsync();
@@ -1412,6 +1455,71 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             await plugin.RequestAsync<object>(MessageTypes.UpdateGamePolicy, new GamePolicyUpdateDto { PlayniteId = SelectedGame.PlayniteId, Policy = SelectedGame.Policy });
             ConfirmSuccess($"已保存 {SelectedGame.Name} 的游戏策略");
+        }
+
+        private void CreatePolicyTemplate()
+        {
+            var selected = SelectedPolicyTemplate;
+            var source = selected?.Policy ?? SelectedGame?.Policy ?? new BackupPolicyDto();
+            var name = selected == null || string.IsNullOrWhiteSpace(selected.Name)
+                ? "新策略模板"
+                : selected.Name + "（副本）";
+            SelectedPolicyTemplate = null!;
+            PolicyTemplateDraft = new BackupPolicyTemplateDto
+            {
+                Name = name,
+                Policy = GameSaveCenter.Core.Services.BackupPolicyTemplateCatalog.ClonePolicy(source)
+            };
+            PolicyTemplateNameDraft = PolicyTemplateDraft.Name;
+            OnPropertyChanged(nameof(PolicyTemplateDraft));
+            OnPropertyChanged(nameof(CanEditPolicyTemplate));
+            RaiseCommandStates();
+        }
+
+        private async Task LoadPolicyTemplatesAsync()
+        {
+            var templates = await plugin.RequestAsync<BackupPolicyTemplateDto[]>(MessageTypes.ListPolicyTemplates, new { });
+            var selectedId = SelectedPolicyTemplate?.TemplateId;
+            ApplyOnUi(() =>
+            {
+                PolicyTemplates.ReplaceAll(templates ?? Array.Empty<BackupPolicyTemplateDto>(),
+                    (left, right) => string.Equals(left.TemplateId, right.TemplateId, StringComparison.OrdinalIgnoreCase)
+                        && string.Equals(left.Name, right.Name, StringComparison.Ordinal)
+                        && left.IsBuiltIn == right.IsBuiltIn);
+                policyTemplatesLoaded = true;
+                SelectedPolicyTemplate = PolicyTemplates.FirstOrDefault(x => string.Equals(x.TemplateId, selectedId, StringComparison.OrdinalIgnoreCase))
+                    ?? PolicyTemplates.FirstOrDefault();
+            });
+        }
+
+        private async Task SavePolicyTemplateAsync()
+        {
+            var draft = GameSaveCenter.Core.Services.BackupPolicyTemplateCatalog.Clone(PolicyTemplateDraft);
+            draft.Name = PolicyTemplateNameDraft.Trim();
+            var saved = await plugin.RequestAsync<BackupPolicyTemplateDto>(MessageTypes.SavePolicyTemplate,
+                new PolicyTemplateSaveDto { Template = draft });
+            policyTemplatesLoaded = false;
+            await LoadPolicyTemplatesAsync();
+            SelectedPolicyTemplate = PolicyTemplates.FirstOrDefault(x => string.Equals(x.TemplateId, saved.TemplateId, StringComparison.OrdinalIgnoreCase));
+            ConfirmSuccess($"已保存策略模板“{saved.Name}”");
+        }
+
+        private async Task ApplyPolicyTemplateAsync()
+        {
+            await plugin.RequestAsync<object>(MessageTypes.ApplyPolicyTemplate,
+                new ApplyPolicyTemplateDto { PlayniteId = SelectedGame.PlayniteId, TemplateId = SelectedPolicyTemplate.TemplateId });
+            await RefreshDashboardAsync(false, false);
+            ConfirmSuccess($"已将策略模板“{SelectedPolicyTemplate.Name}”复制到 {SelectedGame.Name}；后续修改模板不会影响该游戏");
+        }
+
+        private async Task DeletePolicyTemplateAsync()
+        {
+            var name = PolicyTemplateDraft.Name;
+            await plugin.RequestAsync<object>(MessageTypes.DeletePolicyTemplate,
+                new PolicyTemplateDeleteDto { TemplateId = PolicyTemplateDraft.TemplateId });
+            policyTemplatesLoaded = false;
+            await LoadPolicyTemplatesAsync();
+            ConfirmSuccess($"已删除自定义策略模板“{name}”");
         }
 
         private async Task UpdateBackupMetadataAsync()
@@ -2084,6 +2192,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 RefreshCommand, BackupSelectedCommand, BackupAllCommand, SyncMediaCommand,
                 DetectPathsCommand, ValidateCommand, RestoreCommand,
                 ValidateRestoreReadinessCommand, UndoRestoreCommand, LoadDetailsCommand, SavePolicyCommand,
+                CreatePolicyTemplateCommand, SavePolicyTemplateCommand, ApplyPolicyTemplateCommand, DeletePolicyTemplateCommand,
                 UpdateBackupMetadataCommand, CompareBackupCommand, PreviewRetentionCommand,
                 AddMediaSourceCommand, AcceptCandidateCommand, RejectCandidateCommand, ReassignMediaCommand,
                 UpdateMediaMetadataCommand,OpenSelectedMediaCommand,RevealSelectedMediaCommand,

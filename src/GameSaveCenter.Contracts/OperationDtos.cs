@@ -177,6 +177,37 @@ namespace GameSaveCenter.Contracts
         public BackupPolicyDto Policy { get; set; } = new BackupPolicyDto();
     }
 
+    /// <summary>
+    /// A reusable policy snapshot. Applying a template copies its current values to a
+    /// game; it never creates a live inheritance relationship.
+    /// </summary>
+    public sealed class BackupPolicyTemplateDto
+    {
+        public string TemplateId { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        public bool IsBuiltIn { get; set; }
+        public BackupPolicyDto Policy { get; set; } = new BackupPolicyDto();
+    }
+
+    /// <summary>Creates or updates one user-owned policy template.</summary>
+    public sealed class PolicyTemplateSaveDto
+    {
+        public BackupPolicyTemplateDto Template { get; set; } = new BackupPolicyTemplateDto();
+    }
+
+    /// <summary>Deletes one user-owned policy template.</summary>
+    public sealed class PolicyTemplateDeleteDto
+    {
+        public string TemplateId { get; set; } = string.Empty;
+    }
+
+    /// <summary>Copies a template snapshot to one game's independent policy.</summary>
+    public sealed class ApplyPolicyTemplateDto
+    {
+        public string PlayniteId { get; set; } = string.Empty;
+        public string TemplateId { get; set; } = string.Empty;
+    }
+
     /// <summary>Compares two indexed backup manifests.</summary>
     public sealed class BackupCompareRequestDto
     {
