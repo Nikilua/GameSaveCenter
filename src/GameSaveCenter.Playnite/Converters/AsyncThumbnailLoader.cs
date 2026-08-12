@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
+using Playnite.SDK;
 
 namespace GameSaveCenter.Playnite.Converters
 {
@@ -15,6 +17,7 @@ namespace GameSaveCenter.Playnite.Converters
     /// </summary>
     public static class AsyncThumbnailLoader
     {
+        private static readonly ILogger Logger = LogManager.GetLogger();
         private const int MaxConcurrency = 3;
         private const int CacheLimit = 96;
         private static readonly SemaphoreSlim Gate = new SemaphoreSlim(MaxConcurrency, MaxConcurrency);
@@ -24,44 +27,62 @@ namespace GameSaveCenter.Playnite.Converters
 
         public static async Task<BitmapSource?> LoadAsync(string path, int width, CancellationToken token)
         {
-            if (string.IsNullOrWhiteSpace(path) || !File.Exists(path) || !IsImage(path)) return null;
-            var info = new FileInfo(path);
-            var key = string.Concat(path, "|", width.ToString(CultureInfo.InvariantCulture), "|",
-                info.Length.ToString(CultureInfo.InvariantCulture), "|",
-                info.LastWriteTimeUtc.Ticks.ToString(CultureInfo.InvariantCulture));
-
-            lock (CacheLock)
-            {
-                if (Cache.TryGetValue(key, out var cached))
-                {
-                    Recency.Remove(key);
-                    Recency.AddFirst(key);
-                    return cached;
-                }
-            }
+            // Task.Run guarantees the file metadata probe never runs on the caller's thread
+            // (normally the WPF Dispatcher), even when the semaphore is immediately available.
+            var request = await Task.Run(() => PrepareRequest(path, width), token).ConfigureAwait(false);
+            if (request == null) return null;
+            if (request.Cached != null) return request.Cached;
 
             await Gate.WaitAsync(token).ConfigureAwait(false);
             try
             {
-                lock (CacheLock)
-                {
-                    if (Cache.TryGetValue(key, out var cached)) return cached;
-                }
-                using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
-                var image = new BitmapImage();
-                image.BeginInit();
-                image.CacheOption = BitmapCacheOption.OnLoad;
-                image.DecodePixelWidth = Math.Max(48, Math.Min(width, 480));
-                image.StreamSource = stream;
-                image.EndInit();
-                image.Freeze();
-                AddToCache(key, image);
-                return image;
+                var cached = await Task.Run(() => TryGetCached(request.Key), token).ConfigureAwait(false);
+                if (cached != null) return cached;
+                return await Task.Run(() => Decode(request.Path, request.Width, request.Key, token), token).ConfigureAwait(false);
             }
             finally
             {
                 Gate.Release();
             }
+        }
+
+        private static LoadRequest? PrepareRequest(string path, int width)
+        {
+            if (string.IsNullOrWhiteSpace(path) || !File.Exists(path) || !IsImage(path)) return null;
+            var info = new FileInfo(path);
+            var key = string.Concat(path, "|", width.ToString(CultureInfo.InvariantCulture), "|",
+                info.Length.ToString(CultureInfo.InvariantCulture), "|",
+                info.LastWriteTimeUtc.Ticks.ToString(CultureInfo.InvariantCulture));
+            return new LoadRequest(path, Math.Max(48, Math.Min(width, 480)), key, TryGetCached(key));
+        }
+
+        private static BitmapSource? TryGetCached(string key)
+        {
+            lock (CacheLock)
+            {
+                if (!Cache.TryGetValue(key, out var cached)) return null;
+                Recency.Remove(key);
+                Recency.AddFirst(key);
+                return cached;
+            }
+        }
+
+        private static BitmapSource Decode(string path, int width, string key, CancellationToken token)
+        {
+            token.ThrowIfCancellationRequested();
+            var timer = Stopwatch.StartNew();
+            using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+            var image = new BitmapImage();
+            image.BeginInit();
+            image.CacheOption = BitmapCacheOption.OnLoad;
+            image.DecodePixelWidth = width;
+            image.StreamSource = stream;
+            image.EndInit();
+            timer.Stop();
+            Logger.Debug($"[PERF] Thumbnail decode={timer.ElapsedMilliseconds}ms width={width} path={path}");
+            image.Freeze();
+            AddToCache(key, image);
+            return image;
         }
 
         public static void ClearCache()
@@ -98,6 +119,22 @@ namespace GameSaveCenter.Playnite.Converters
                 || string.Equals(extension, ".bmp", StringComparison.OrdinalIgnoreCase)
                 || string.Equals(extension, ".gif", StringComparison.OrdinalIgnoreCase)
                 || string.Equals(extension, ".webp", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private sealed class LoadRequest
+        {
+            public LoadRequest(string path, int width, string key, BitmapSource? cached)
+            {
+                Path = path;
+                Width = width;
+                Key = key;
+                Cached = cached;
+            }
+
+            public string Path { get; }
+            public int Width { get; }
+            public string Key { get; }
+            public BitmapSource? Cached { get; }
         }
     }
 }

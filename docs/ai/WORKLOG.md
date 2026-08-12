@@ -383,3 +383,47 @@ PERF-008 维持现状，不追加按 Workspace 重构；等真实 Playnite 大�
 **下一步：**
 
 NEXT: 全部可自主完成项已收口；剩余为真实 Playnite 人工验收。
+
+## 2026-08-12 验收缺口修复（评审反馈）
+
+按评审意见修复以下语义问题，全部先改实现再跑测试：
+
+### PID 身份安全
+
+- 启动后立即记录 `Process.StartTime`（真实值），不再用 `DateTime.UtcNow` 近似。
+- 关闭时要求 PID 相同且实际 StartTime 与记录值在 5 秒容差内双向匹配（`ProcessIdentityGuard`），避免 PID 被复用后误杀新进程。
+- 新增真实双进程测试：Session A 关闭、Session B 存活；新增 PID 复用拒绝测试。
+
+### 缩略图真正后台化
+
+- `AsyncThumbnailLoader.LoadAsync` 用 `Task.Run` 强制 File.Exists/FileInfo/FileStream/Decode 全部离开调用线程，即使 Semaphore 立即放行也不会在 UI 线程同步执行。
+- `AsyncThumbnailImage` 注册 `Unloaded` 取消待处理加载，`Loaded` 时若占位为空自动重新加载。
+- 主路径 `AsyncThumbnailLoader.Decode` 增加 `[PERF] Thumbnail decode` 埋点。
+
+### 自定义启动项管理
+
+- Inspector 新增名称、工作目录、启动参数编辑框；保存时把 `DisplayName/WorkingDirectory/Arguments` 一起提交 Worker。
+- 新增“重新定位”命令（仅外部启动项显示），Worker 新增 `tools.relocate` 消息与存储更新。
+- LNK 导入/重定位时解析并持久化 `ResolvedTargetPath`；UI 的 `CanTrackProcess/LaunchKindDisplay` 改用解析后目标，LNK→EXE 不再被 UI 误判为不可追踪。
+- `game_tool_versions` 增加兼容列 `resolved_target_path`。
+
+### Benchmark 与记忆清理
+
+- 搜索 benchmark 改为轮询 `FilteredCount` 等待真实刷新完成，不再固定睡 400ms；新增清空搜索测量。
+- 修正 `PROJECT_MEMORY.md` 里 PERF-005/006 的过期技术债、测试数量与优先级描述。
+
+**测试结果：**
+
+- Worker 49/49、Playnite 171/171 通过；新 benchmark：搜索到刷新完成 208ms、清空 199ms。
+
+**修改文件：**
+
+- `GameToolSessionTracker.cs`、`GameToolService.cs`
+- `AsyncThumbnailLoader.cs`、`AsyncThumbnailImage.cs`
+- Contracts/Store/Dispatcher/`DashboardViewModel.cs`/`TrainerCenterView.xaml`
+- `GameToolSessionTrackerTests.cs`、`GameToolServiceImportTests.cs`、`LargeLibraryPerformanceTests.cs`
+- `docs/ai/PROJECT_MEMORY.md`、`docs/ai/PERFORMANCE_BASELINE.md`
+
+**仍需验证内容：**
+
+真实 Playnite 人工验收（主题/DPI/窗口化/自定义启动项真机流程/大库渲染帧率）。

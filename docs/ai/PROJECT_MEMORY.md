@@ -34,7 +34,7 @@
 - Solution：`GameSaveCenter.sln`，版本 `0.6.70-development-preview`（`Directory.Build.props` 0.6.70）。
 - 插件入口：`src/GameSaveCenter.Playnite/GameSaveCenterPlugin.cs`，扩展 ID `66e9f2d7-67bb-43ef-b62a-b8e60734fcec`。
 - Worker 入口：`src/GameSaveCenter.Worker`，IPC dispatcher 为 `IpcRequestDispatcher`。
-- 测试：Core 13、Worker 23、Playnite 152（2026-08-11 基线）。
+- 测试：Core 13、Worker 49、Playnite 171（2026-08-12 基线）。
 
 ### Dashboard / Workspace
 - `DashboardViewModel` 是大型聚合 ViewModel（技术债，暂不拆分），持有所有 Workspace 数据与命令。
@@ -49,16 +49,16 @@
 
 ### GameTool 模型
 - `GameToolType`：Trainer / CheatTable / CustomExecutable（自定义启动项）。
-- `GameToolDto` + `GameToolVersionDto`：DisplayName、Enabled、AutoStart、LaunchTiming、LaunchDelaySeconds、CloseOnGameExit、RequiresAdmin、ActiveVersionId、EntryPath、WorkingDirectory、Arguments 等，字段已齐，无需改 schema。
+- `GameToolDto` + `GameToolVersionDto`：DisplayName、Enabled、AutoStart、LaunchTiming、LaunchDelaySeconds、CloseOnGameExit、RequiresAdmin、ActiveVersionId、EntryPath、WorkingDirectory、Arguments、ResolvedTargetPath 等；`game_tool_versions` 已补 `resolved_target_path` 兼容列。
 - Worker `GameToolService`：导入（Trainer/CT 复制进 GameTools 目录；自定义启动项默认保留外部路径引用）、更新、删除、启动、随游戏自动启动/延迟/关闭追踪。
-- Session 追踪：`_sessionProcesses`（SessionId → PID + 启动时间 + CloseOnExit），只关闭本 Session 启动的进程，禁止按进程名杀。
+- Session 追踪：`GameToolSessionTracker`（SessionId → PID + 实际 StartTime + CloseOnExit），关闭时要求 PID 与实际 StartTime 双向匹配，禁止按进程名杀。
 
 ### 任务系统
 - `TaskCoordinator` 统一编排；`TaskStatusDto` 有 Progress/Message/ErrorCode/ErrorMessage/State/时间戳。
-- Dashboard `MergeTaskChange` 增量合并；`knownTaskStates` 去重通知。
+- Dashboard `TaskIndexedCollection` 按 TaskId 索引增量合并；`knownTaskStates` 去重通知。
 
 ### 媒体系统
-- `MediaItemDto` 由 Worker 索引；列表与详情预览已改为 `AsyncThumbnailImage` 异步加载（后台解码、3 并发、LRU 96、Freeze 后回 UI）；`MediaThumbnailConverter` 保留为兼容实现。
+- `MediaItemDto` 由 Worker 索引；列表与详情预览已改为 `AsyncThumbnailImage` 异步加载（`Task.Run` 强制后台、3 并发、LRU 96、Freeze 后回 UI、Unloaded 取消）；`MediaThumbnailConverter` 保留为兼容实现。
 - Media 列表使用 ListBox + Recycling 虚拟化；页面滚动面与列表滚动分工明确。
 
 ### 缓存与性能机制
@@ -83,7 +83,7 @@
 - PERF-002/003：Task 筛选与 GamePicker 平台指纹短路。
 - PERF-004（旧编号）：GamePickerItem 缓存复用（新任务编号体系中 PERF-004 是性能基线设施，不要混淆）。
 - PERF-004/005/006（新编号）：`[PERF]` 基线日志、Snapshot 无变化 0 Reset、Task/Media 搜索防抖。
-- PERF-007：媒体缩略图异步化（`AsyncThumbnailLoader` 3 并发 + LRU + Freeze，`AsyncThumbnailImage` 占位加载）。
+- PERF-007：媒体缩略图异步化（`AsyncThumbnailLoader` Task.Run 后台解码 + 3 并发 + LRU + Freeze + `[PERF]` 埋点，`AsyncThumbnailImage` 占位加载并 Unloaded 取消）。
 - PERF-009/010：任务事件合并 TaskId 索引 O(1) 更新；命令状态刷新 Dispatcher 合帧。
 - GAME-TOOL-001/002：自定义启动项正式支持 EXE/LNK/BAT/CMD/PS1，外部路径引用不复制文件；Session 级 PID 追踪与 CloseOnGameExit 安全关闭。
 - UI-204/205：TaskCenter 与 GamePicker 下拉框默认值恢复（含真实 Playnite 异步物化重试）。
@@ -93,16 +93,14 @@
 - `DashboardViewModel` 仍很大，包含命令、筛选、导入、诊断、设备状态等职责；只有性能实现被严重阻碍或 GAME-TOOL 无法接入时才拆（独立 `ARCH-xxx` 任务）。
 - `DashboardView.xaml.cs` 仍承担部分响应式协调。
 - 媒体列表/详情缩略图已异步化；真实大量截图滚动下的帧率仍需真机验证。
-- Task/Media 搜索目前每次按键都 `ICollectionView.Refresh()`，PERF-006 计划防抖。
-- Snapshot 内容未变化时部分集合仍会 Reset，PERF-005 计划 0 CollectionChanged。
-- 真实 Playnite 宿主、主题切换、DPI 真机、连续缩放流畅性尚未验证（UI-QA-REAL-001）。
+- 真实 Playnite 宿主、主题切换、DPI 真机、连续缩放流畅性尚未完整人工验收（UI-QA-REAL-001 仅完成冒烟）。
 
 ## 当前开发优先级
 
-- P0：性能基础设施与真实热点优化（PERF-004 基线 → PERF-005 0 Reset → PERF-006 搜索防抖）。
+- P0：性能基础设施与真实热点优化（PERF-004～007、009/010 已完成）。
 - P0：自定义游戏启动项（已完成，GAME-TOOL-001/002）。
 - P1：媒体性能（PERF-007 异步缩略图，已完成）。
-- P1：真实 Playnite / DPI / 大型游戏库 QA（UI-QA-REAL-001，当前进行中）。
+- P1：真实 Playnite / DPI / 大型游戏库 QA（UI-QA-REAL-001 冒烟已完成，完整人工验收待用户）。
 - P2：架构进一步拆分（不主动做）。
 - PERF-008：已评估收口，维持现状。详情已按激活 Workspace 分支加载，全量快照仅用于全局摘要且后台有 1 分钟 TTL；2000 规模合成 profiling 无 O(n^2)，待真实大库渲染 profiling 证明瓶颈后再评估。
 

@@ -25,6 +25,12 @@ namespace GameSaveCenter.Playnite.Controls
         private int generation;
         private CancellationTokenSource? pending;
 
+        public AsyncThumbnailImage()
+        {
+            Loaded += OnLoaded;
+            Unloaded += OnUnloaded;
+        }
+
         public string? SourcePath
         {
             get => (string?)GetValue(SourcePathProperty);
@@ -42,6 +48,24 @@ namespace GameSaveCenter.Playnite.Controls
 
         private static void OnPreviewWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
             => ((AsyncThumbnailImage)d).StartLoad();
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            if (Source == null && !string.IsNullOrWhiteSpace(SourcePath))
+                StartLoad();
+        }
+
+        private void OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            Interlocked.Increment(ref generation);
+            var previous = pending;
+            pending = null;
+            if (previous != null)
+            {
+                previous.Cancel();
+                previous.Dispose();
+            }
+        }
 
         private void StartLoad()
         {

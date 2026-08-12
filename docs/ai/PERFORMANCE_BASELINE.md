@@ -1,6 +1,6 @@
 # GameSaveCenter 性能基线
 
-> 维护时间：2026-08-11
+> 维护时间：2026-08-12
 > 本文件记录性能测量方法、当前基线数字与待真机验证项。不要伪造数字；没有实测的写“待验证”。
 
 ## 测量设施（PERF-004）
@@ -12,7 +12,7 @@
 - Playnite `DashboardViewModel` Task/Media 搜索：`[PERF] TaskSearch refresh=...ms tasks=...` / `[PERF] MediaSearch refresh=...ms media=...`
 - Playnite `GamePickerViewModel`：`[PERF] GamePicker setItems=...ms games=...` / `[PERF] GamePicker refresh=...ms filtered=... games=...`
 - Playnite `DashboardView.OnNavigationChecked`：`[PERF] WorkspaceSwitch workspace=... layout=...ms`
-- Playnite `MediaThumbnailConverter`：`[PERF] Thumbnail decode=...ms width=... path=...`
+- Playnite `MediaThumbnailConverter`（兼容路径）与 `AsyncThumbnailLoader`（主路径）：`[PERF] Thumbnail decode=...ms width=... path=...`
 
 规则：
 
@@ -31,14 +31,14 @@
 | E | GamePicker 打开/首次加载/输入/筛选/排序 | `[PERF] GamePicker setItems/refresh` 已埋点 |
 | F | Task Search Refresh | `[PERF] TaskSearch refresh` 已埋点 |
 | G | Media Search Refresh | `[PERF] MediaSearch refresh` 已埋点 |
-| H | Media Detail Loading | 待补充（LoadDetailsAsync Media 分支） |
-| I | Thumbnail Decode | `[PERF] Thumbnail decode` 已埋点 |
+| H | Media Detail Loading | `[PERF] MediaDetails load/apply` 已埋点 |
+| I | Thumbnail Decode | `AsyncThumbnailLoader` 主路径 `[PERF] Thumbnail decode` 已埋点 |
 
 ## 已落地的性能优化
 
 - PERF-005：Snapshot 内容未变化时 0 次 CollectionChanged。`BatchObservableCollection.ReplaceAll` + `SnapshotComparers` 内容比较已覆盖 Games/Tasks/Findings/Audit/Backups/SaveCandidates/Media/MediaSources/GameTools/ProcessMappings/DeviceComparisons；GamePicker 相同内容跳过重建。测试：Playnite 156/156，render-qa 全绿。
 - PERF-006：Task/Media 搜索 180ms 防抖已实现（`DebouncedRefresh`），连续输入只执行约 1 次最终 Refresh，清空立即刷新，卸载时取消。测试：Playnite 160/160。
-- PERF-007：媒体缩略图异步化已实现（`AsyncThumbnailLoader`：后台解码、3 并发、LRU 96、Freeze；`AsyncThumbnailImage` 占位加载）。测试：Playnite 163/163，render-qa 全绿。
+- PERF-007：媒体缩略图异步化已实现（`AsyncThumbnailLoader` 用 `Task.Run` 强制 File IO/Decode 离开调用线程、3 并发、LRU 96、Freeze、`[PERF]` 埋点；`AsyncThumbnailImage` 占位加载并在 Unloaded 时取消）。测试：Playnite 171/171，render-qa 全绿。
 - PERF-009/010：任务事件合并改为 TaskId 索引 O(1) 更新；命令状态刷新改为 Dispatcher 合帧（一次业务操作内约 1 次 `RaiseCanExecuteChanged`）。测试：Playnite 167/167。
 - 下一项：UI-QA-REAL-001 真机回归。
 
@@ -74,7 +74,7 @@
 - Snapshot 数据未变化时，目标为 0 次 CollectionChanged（PERF-005）。
 - 连续输入 `abcdef` 时 Task/Media 搜索目标约 1 次最终刷新（PERF-006）。
 
-已实现证据（Playnite 170/170）：
+已实现证据（Playnite 171/171）：
 
 - 2000 游戏相同 Snapshot：GamePicker 第二次 SetItems 0 次集合通知。
 - 2000 游戏中单游戏状态变化：1 次 Reset、0 次逐项 Add。
@@ -82,12 +82,13 @@
 
 ## 2000 规模合成 profiling（本机，2026-08-12）
 
-由 `LargeLibraryPerformanceTests.GamePicker2000_Benchmark_WritesMeasuredTimings` 输出（Playnite 171/171 通过，文件在 `artifacts/ui-qa/bench-tests/playnite/artifacts/ui-qa/benchmarks/large-library.txt`）：
+由 `LargeLibraryPerformanceTests.GamePicker2000_Benchmark_WritesMeasuredTimings` 输出（Playnite 171/171 通过，文件在 `artifacts/ui-qa/fixup-tests/playnite/artifacts/ui-qa/benchmarks/large-library.txt`）：
 
-- 2000 游戏首次 `SetItems`：27ms
+- 2000 游戏首次 `SetItems`：30ms
 - 2000 游戏未变化 `SetItems`：0ms
-- 2000 游戏单游戏变化 `SetItems`：25ms
-- 2000 游戏搜索输入到防抖刷新完成（含 180ms 防抖）：402ms
+- 2000 游戏单游戏变化 `SetItems`：23ms
+- 2000 游戏搜索输入到防抖刷新完成（轮询 FilteredCount 等待实际刷新，含 180ms 防抖）：208ms
+- 2000 游戏清空搜索到刷新完成：199ms
 - 2000 任务首次 `ReplaceAll`：<1ms（0ms）
 - 2000 任务未变化 `ReplaceAll`：<1ms（0ms）
 

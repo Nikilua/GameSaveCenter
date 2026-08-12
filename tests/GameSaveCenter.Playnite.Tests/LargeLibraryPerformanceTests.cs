@@ -92,10 +92,16 @@ namespace GameSaveCenter.Playnite.Tests
             var changedSetMs = timer.ElapsedMilliseconds;
 
             timer.Restart();
-            picker.SearchText = "Game 1";
-            await Task.Delay(400);
+            picker.SearchText = "Game 1999";
+            await WaitForFilteredCountAsync(picker, 1, timer);
             timer.Stop();
             var searchRefreshMs = timer.ElapsedMilliseconds;
+
+            timer.Restart();
+            picker.SearchText = "";
+            await WaitForFilteredCountAsync(picker, 2000, timer);
+            timer.Stop();
+            var searchClearMs = timer.ElapsedMilliseconds;
 
             var tasks = Enumerable.Range(0, 2000).Select(i => TaskStatus("task-" + i, i % 100)).ToArray();
             var collection = new BatchObservableCollection<TaskStatusDto>();
@@ -115,8 +121,15 @@ namespace GameSaveCenter.Playnite.Tests
                 $"unchanged_set_ms={unchangedSetMs}\n" +
                 $"changed_set_ms={changedSetMs}\n" +
                 $"search_refresh_ms={searchRefreshMs}\n" +
+                $"search_clear_ms={searchClearMs}\n" +
                 $"task_first_replace_ms={taskFirstReplaceMs}\n" +
                 $"task_unchanged_replace_ms={taskUnchangedReplaceMs}\n");
+        }
+
+        private static async Task WaitForFilteredCountAsync(GamePickerViewModel picker, int expected, Stopwatch timer)
+        {
+            while (picker.FilteredCount != expected && timer.ElapsedMilliseconds < 5000)
+                await Task.Delay(10);
         }
 
         private static GameStatusDto Game(string name)
