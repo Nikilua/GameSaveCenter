@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 namespace GameSaveCenter.Worker.Services;
 
 /// <summary>Combines Playnite events and process detection into one deduplicated game session.</summary>
-public sealed class GameSessionCoordinator : BackgroundService
+public sealed class GameSessionCoordinator : BackgroundService, IRestoreSessionState
 {
     private readonly SqliteStateStore _store;
     private readonly BackupOrchestrator _backup;

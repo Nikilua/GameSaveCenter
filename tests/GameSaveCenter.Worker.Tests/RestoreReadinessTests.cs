@@ -84,6 +84,72 @@ public sealed class RestoreReadinessTests : IDisposable
     }
 
     [Fact]
+    public async Task MissingManifestEntry_IsCorrupted_EvenWhenCountsMatch()
+    {
+        var archive = CreateArchive(("other.dat", "data"));
+
+        var result = await service.ValidateAsync(Version(archive, 1, 4), Manifest("profile.dat", 4), Path.Combine(root, "staging"), CancellationToken.None);
+
+        Assert.Equal(RestoreReadinessStatus.Corrupted, result.Status);
+        Assert.False(result.ExtractSucceeded);
+        Assert.Contains("缺少", result.Summary);
+    }
+
+    [Fact]
+    public async Task HashMismatch_IsCorrupted()
+    {
+        var archive = CreateArchive(("profile.dat", "save"));
+        var manifest = JsonSerializer.Serialize(new[]
+        {
+            new FileManifestEntry { RelativePath = "profile.dat", SizeBytes = 4, Sha256 = new string('0', 64) }
+        });
+
+        var result = await service.ValidateAsync(Version(archive, 1, 4), manifest, Path.Combine(root, "staging"), CancellationToken.None);
+
+        Assert.Equal(RestoreReadinessStatus.Corrupted, result.Status);
+        Assert.Equal("Failed", result.HashValidation);
+        Assert.True(result.ErrorCount > 0);
+    }
+
+    [Fact]
+    public async Task InvalidManifest_IsFailed_AndDoesNotExtract()
+    {
+        var archive = CreateArchive(("profile.dat", "save"));
+
+        var result = await service.ValidateAsync(Version(archive, 1, 4), "{not-json", Path.Combine(root, "staging"), CancellationToken.None);
+
+        Assert.Equal(RestoreReadinessStatus.Failed, result.Status);
+        Assert.False(result.ArchiveReadable);
+        Assert.True(!Directory.Exists(Path.Combine(root, "staging")) || !Directory.EnumerateFileSystemEntries(Path.Combine(root, "staging")).Any());
+    }
+
+    [Fact]
+    public async Task Cancellation_IsObserved_AndIsolationIsCleaned()
+    {
+        var archive = CreateArchive(("profile.dat", "save"));
+        using var cancellation = new CancellationTokenSource();
+        cancellation.Cancel();
+
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(() =>
+            service.ValidateAsync(Version(archive, 1, 4), Manifest("profile.dat", 4), Path.Combine(root, "staging"), cancellation.Token));
+
+        Assert.True(!Directory.Exists(Path.Combine(root, "staging")) || !Directory.EnumerateFileSystemEntries(Path.Combine(root, "staging")).Any());
+    }
+
+    [Fact]
+    public async Task UnreadableStagingRoot_IsFailedWithoutTouchingLivePath()
+    {
+        var archive = CreateArchive(("profile.dat", "save"));
+        var stagingFile = Path.Combine(root, "staging-file");
+        await File.WriteAllTextAsync(stagingFile, "not a directory");
+
+        var result = await service.ValidateAsync(Version(archive, 1, 4), Manifest("profile.dat", 4), stagingFile, CancellationToken.None);
+
+        Assert.Equal(RestoreReadinessStatus.Failed, result.Status);
+        Assert.False(File.Exists(Path.Combine(root, "real-save-data", "profile.dat")));
+    }
+
+    [Fact]
     public async Task SimpleOrMissingArchivePath_IsUnsupported()
     {
         var result = await service.ValidateAsync(new BackupVersionDto { BackupId = "simple", ArchivePath = "" }, "[]", Path.Combine(root, "staging"), CancellationToken.None);

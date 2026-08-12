@@ -40,11 +40,14 @@ internal static class Program
         builder.Services.AddSingleton<SqliteStateStore>();
         builder.Services.AddSingleton<ExternalProcessRunner>();
         builder.Services.AddSingleton<LudusaviClient>();
+        builder.Services.AddSingleton<IRestoreClient>(provider => provider.GetRequiredService<LudusaviClient>());
         builder.Services.AddSingleton<RcloneClient>();
         builder.Services.AddSingleton<CloudTransferCoordinator>();
         builder.Services.AddSingleton<DeviceStateService>();
         builder.Services.AddSingleton<RemoteBackupStagingService>();
+        builder.Services.AddSingleton<IRemoteBackupStageProvider>(provider => provider.GetRequiredService<RemoteBackupStagingService>());
         builder.Services.AddSingleton<GameCatalogService>();
+        builder.Services.AddSingleton<IRestoreCatalog>(provider => provider.GetRequiredService<GameCatalogService>());
         builder.Services.AddSingleton<TaskEventBroadcaster>();
         builder.Services.AddSingleton<TaskCoordinator>();
         builder.Services.AddSingleton<BackupOrchestrator>();
@@ -62,6 +65,7 @@ internal static class Program
         builder.Services.AddHostedService<TaskEventPipeServerService>();
         builder.Services.AddSingleton<GameSessionCoordinator>();
         builder.Services.AddHostedService(provider => provider.GetRequiredService<GameSessionCoordinator>());
+        builder.Services.AddSingleton<IRestoreSessionState>(provider => provider.GetRequiredService<GameSessionCoordinator>());
         builder.Services.AddHostedService<ExternalGameProcessDetector>();
 
         try

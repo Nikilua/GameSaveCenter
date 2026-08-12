@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 namespace GameSaveCenter.Worker.Services;
 
 /// <summary>Maintains Playnite descriptors and resolves them to Ludusavi manifest titles.</summary>
-public sealed class GameCatalogService
+public sealed class GameCatalogService : IRestoreCatalog
 {
     // A full Playnite library can contain hundreds or thousands of entries. Matching every
     // changed descriptor synchronously inside the IPC request makes the Worker look dead to

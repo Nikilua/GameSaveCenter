@@ -8,16 +8,16 @@ namespace GameSaveCenter.Worker.Services;
 /// <summary>Implements an explicit, auditable restore state machine with a mandatory PreRestore backup.</summary>
 public sealed class RestoreOrchestrator
 {
-    private readonly GameCatalogService _catalog;
+    private readonly IRestoreCatalog _catalog;
     private readonly SqliteStateStore _store;
-    private readonly LudusaviClient _ludusavi;
+    private readonly IRestoreClient _ludusavi;
     private readonly TaskCoordinator _tasks;
-    private readonly GameSessionCoordinator _sessions;
+    private readonly IRestoreSessionState _sessions;
     private readonly CloudTransferCoordinator _cloudTransfers;
-    private readonly RemoteBackupStagingService _remoteBackups;
+    private readonly IRemoteBackupStageProvider _remoteBackups;
 
-    public RestoreOrchestrator(GameCatalogService catalog,SqliteStateStore store,LudusaviClient ludusavi,TaskCoordinator tasks,
-        GameSessionCoordinator sessions,CloudTransferCoordinator cloudTransfers,RemoteBackupStagingService remoteBackups)
+    public RestoreOrchestrator(IRestoreCatalog catalog,SqliteStateStore store,IRestoreClient ludusavi,TaskCoordinator tasks,
+        IRestoreSessionState sessions,CloudTransferCoordinator cloudTransfers,IRemoteBackupStageProvider remoteBackups)
     { _catalog=catalog;_store=store;_ludusavi=ludusavi;_tasks=tasks;_sessions=sessions;_cloudTransfers=cloudTransfers;_remoteBackups=remoteBackups; }
 
     public async Task<LudusaviCommandResult> PreviewAsync(RestoreRequestDto request,CancellationToken token)

@@ -10,7 +10,7 @@ namespace GameSaveCenter.Worker.Services;
 /// Downloads a remote Ludusavi vault to an isolated directory and verifies both the
 /// transfer and requested backup before it can be used by the restore orchestrator.
 /// </summary>
-public sealed class RemoteBackupStagingService
+public sealed class RemoteBackupStagingService : IRemoteBackupStageProvider
 {
     private static readonly TimeSpan Lifetime = TimeSpan.FromDays(7);
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web) { WriteIndented = true };

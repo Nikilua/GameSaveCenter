@@ -50,15 +50,28 @@ public sealed class RestoreReadinessService
             return Task.FromResult(result);
         }
 
-        var stagingDirectory = Path.Combine(stagingRoot, "restore-readiness-" + Guid.NewGuid().ToString("N"));
-        Directory.CreateDirectory(stagingDirectory);
+        var manifestState = TryReadManifest(manifestJson, result, out var expected);
+        if (manifestState == ManifestReadState.Invalid)
+        {
+            result.Status = RestoreReadinessStatus.Failed;
+            result.ErrorCount++;
+            result.Summary = "Manifest 无法读取，不能确认该版本的恢复内容。";
+            return Task.FromResult(result);
+        }
+
+        var stagingDirectory = string.Empty;
         try
         {
-            var expected = TryReadManifest(manifestJson, result);
+            stagingDirectory = Path.Combine(stagingRoot, "restore-readiness-" + Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(stagingDirectory);
             if (expected.Count > 0)
             {
                 result.ExpectedFileCount = expected.Count;
                 result.ExpectedTotalSize = expected.Sum(x => Math.Max(0, x.SizeBytes));
+            }
+            else if (manifestState == ManifestReadState.Missing)
+            {
+                result.WarningCount++;
             }
 
             token.ThrowIfCancellationRequested();
@@ -75,15 +88,21 @@ public sealed class RestoreReadinessService
 
             long totalBytes = 0;
             var expectedByPath = expected
-                .Where(x => !string.IsNullOrWhiteSpace(x.RelativePath))
-                .GroupBy(x => x.RelativePath, StringComparer.OrdinalIgnoreCase)
-                .ToDictionary(x => x.Key, x => x.First(), StringComparer.OrdinalIgnoreCase);
+                .ToDictionary(x => NormalizeManifestPath(x.RelativePath), x => x, StringComparer.OrdinalIgnoreCase);
+            var actualByPath = new Dictionary<string, ZipArchiveEntry>(StringComparer.OrdinalIgnoreCase);
             var hashChecked = 0;
             var hashFailed = 0;
+            var sizeMismatches = 0;
             foreach (var entry in files)
             {
                 token.ThrowIfCancellationRequested();
-                if (!TryGetSafeTarget(stagingDirectory, entry.FullName, out var target))
+                if (!TryGetSafeTarget(stagingDirectory, entry.FullName, out var target, out var normalizedPath))
+                {
+                    result.ErrorCount++;
+                    continue;
+                }
+
+                if (!actualByPath.TryAdd(normalizedPath, entry))
                 {
                     result.ErrorCount++;
                     continue;
@@ -106,16 +125,21 @@ public sealed class RestoreReadinessService
                     entry.ExtractToFile(target, overwrite: false);
                     var extractedLength = new FileInfo(target).Length;
                     if (extractedLength != entry.Length) result.ErrorCount++;
-                    if (expectedByPath.TryGetValue(entry.FullName, out var expectedEntry)
-                        && !string.IsNullOrWhiteSpace(expectedEntry.Sha256))
+                    if (expectedByPath.TryGetValue(normalizedPath, out var expectedEntry))
                     {
-                        hashChecked++;
-                        using var stream = File.OpenRead(target);
-                        var actualHash = Convert.ToHexString(SHA256.HashData(stream));
-                        if (!string.Equals(actualHash, expectedEntry.Sha256, StringComparison.OrdinalIgnoreCase))
+                        if (expectedEntry.SizeBytes >= 0 && expectedEntry.SizeBytes != entry.Length)
+                            sizeMismatches++;
+
+                        if (!string.IsNullOrWhiteSpace(expectedEntry.Sha256))
                         {
-                            hashFailed++;
-                            result.ErrorCount++;
+                            hashChecked++;
+                            using var stream = File.OpenRead(target);
+                            var actualHash = Convert.ToHexString(SHA256.HashData(stream));
+                            if (!string.Equals(actualHash, expectedEntry.Sha256, StringComparison.OrdinalIgnoreCase))
+                            {
+                                hashFailed++;
+                                result.ErrorCount++;
+                            }
                         }
                     }
                 }
@@ -125,6 +149,16 @@ public sealed class RestoreReadinessService
                     result.ErrorCount++;
                 }
             }
+
+            var missingExpected = expectedByPath.Keys
+                .Except(actualByPath.Keys, StringComparer.OrdinalIgnoreCase)
+                .Count();
+            var unexpectedActual = manifestState == ManifestReadState.Valid
+                ? actualByPath.Keys.Except(expectedByPath.Keys, StringComparer.OrdinalIgnoreCase).Count()
+                : 0;
+            if (missingExpected > 0) result.ErrorCount += missingExpected;
+            if (sizeMismatches > 0) result.WarningCount += sizeMismatches;
+            if (unexpectedActual > 0) result.WarningCount += unexpectedActual;
 
             result.HashValidation = hashChecked == 0
                 ? "NotAvailable"
@@ -138,12 +172,20 @@ public sealed class RestoreReadinessService
             if (result.ErrorCount > 0)
             {
                 result.Status = RestoreReadinessStatus.Corrupted;
-                result.Summary = "归档可以打开，但有条目无法安全提取。";
+                result.Summary = missingExpected > 0
+                    ? $"归档可以打开，但缺少 Manifest 中记录的 {missingExpected} 个文件。"
+                    : "归档可以打开，但有条目无法安全提取或校验失败。";
             }
             else if (metricMismatch || result.WarningCount > 0)
             {
                 result.Status = RestoreReadinessStatus.Warning;
-                result.Summary = metricMismatch
+                result.Summary = sizeMismatches > 0
+                    ? $"归档可以解压，但有 {sizeMismatches} 个文件与 Manifest 大小不同。"
+                    : !string.Equals(manifestState, ManifestReadState.Valid)
+                        ? "归档可以解压，但缺少 Manifest，无法完成逐文件恢复校验。"
+                        : unexpectedActual > 0
+                            ? $"归档可以解压，但包含 {unexpectedActual} 个 Manifest 未记录的额外文件。"
+                            : metricMismatch
                     ? "归档可读取；条目统计与索引不完全一致，差分版本可能只包含变化项。"
                     : "归档可读取并已提取到隔离目录，但包含需要留意的条目。";
             }
@@ -173,35 +215,67 @@ public sealed class RestoreReadinessService
             result.ErrorCount++;
             result.Summary = "读取归档时发生文件系统错误。";
         }
+        catch (UnauthorizedAccessException ex)
+        {
+            _logger.LogWarning(ex, "Restore-readiness staging directory is not accessible for {BackupId}", version.BackupId);
+            result.Status = RestoreReadinessStatus.Failed;
+            result.ErrorCount++;
+            result.Summary = "无法访问恢复校验隔离目录。";
+        }
         finally
         {
-            TryDeleteStagingDirectory(stagingDirectory);
+            if (stagingDirectory.Length > 0) TryDeleteStagingDirectory(stagingDirectory);
         }
 
         return Task.FromResult(result);
     }
 
-    private static List<FileManifestEntry> TryReadManifest(string json, RestoreReadinessDto result)
+    private enum ManifestReadState
     {
-        if (string.IsNullOrWhiteSpace(json) || json == "[]" || json == "{}") return new List<FileManifestEntry>();
+        Missing,
+        Valid,
+        Invalid
+    }
+
+    private static ManifestReadState TryReadManifest(string json, RestoreReadinessDto result, out List<FileManifestEntry> entries)
+    {
+        entries = new List<FileManifestEntry>();
+        if (string.IsNullOrWhiteSpace(json) || json.Trim() is "[]" or "{}") return ManifestReadState.Missing;
         try
         {
-            return JsonSerializer.Deserialize<List<FileManifestEntry>>(json, new JsonSerializerOptions(JsonSerializerDefaults.Web))
-                   ?? new List<FileManifestEntry>();
+            entries = JsonSerializer.Deserialize<List<FileManifestEntry>>(json, new JsonSerializerOptions(JsonSerializerDefaults.Web))
+                ?? new List<FileManifestEntry>();
+            var normalized = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var entry in entries)
+            {
+                var path = NormalizeManifestPath(entry.RelativePath);
+                if (path.Length == 0 || entry.SizeBytes < 0 || !normalized.Add(path)) return ManifestReadState.Invalid;
+                entry.RelativePath = path;
+            }
+            return ManifestReadState.Valid;
         }
         catch (JsonException)
         {
-            result.WarningCount++;
-            return new List<FileManifestEntry>();
+            return ManifestReadState.Invalid;
         }
     }
 
-    private static bool TryGetSafeTarget(string stagingDirectory, string entryName, out string target)
+    private static string NormalizeManifestPath(string path)
+    {
+        if (string.IsNullOrWhiteSpace(path)) return string.Empty;
+        var normalized = path.Replace('\\', '/').Trim();
+        if (normalized.StartsWith('/') || normalized.Contains(':', StringComparison.Ordinal)) return string.Empty;
+        var segments = normalized.Split('/', StringSplitOptions.RemoveEmptyEntries);
+        if (segments.Any(x => x is "." or "..")) return string.Empty;
+        return string.Join('/', segments);
+    }
+
+    private static bool TryGetSafeTarget(string stagingDirectory, string entryName, out string target, out string normalizedPath)
     {
         target = string.Empty;
-        if (string.IsNullOrWhiteSpace(entryName)) return false;
-        var normalized = entryName.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar);
-        if (Path.IsPathRooted(normalized) || normalized.Contains(":", StringComparison.Ordinal)) return false;
+        normalizedPath = NormalizeManifestPath(entryName);
+        if (normalizedPath.Length == 0) return false;
+        var normalized = normalizedPath.Replace('/', Path.DirectorySeparatorChar);
         var root = Path.GetFullPath(stagingDirectory).TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
         target = Path.GetFullPath(Path.Combine(root, normalized));
         return target.StartsWith(root, StringComparison.OrdinalIgnoreCase);

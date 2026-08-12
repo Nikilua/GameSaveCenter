@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 namespace GameSaveCenter.Worker.Infrastructure;
 
 /// <summary>Thin adapter over Ludusavi's stable command-line and JSON API output.</summary>
-public sealed class LudusaviClient
+public sealed class LudusaviClient : IRestoreClient
 {
     private readonly WorkerOptions _options;
     private readonly ExternalProcessRunner _runner;
