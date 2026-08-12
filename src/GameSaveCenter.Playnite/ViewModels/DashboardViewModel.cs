@@ -16,6 +16,7 @@ using System.Windows.Data;
 using System.Windows.Threading;
 using Microsoft.Win32;
 using GameSaveCenter.Contracts;
+using GameSaveCenter.Core.Services;
 using GameSaveCenter.Playnite.Infrastructure;
 using Playnite.SDK;
 
@@ -55,6 +56,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string statusMessage = "准备就绪";
         private BackupVersionDto selectedBackup = null!;
         private DashboardSnapshotDto snapshot = new DashboardSnapshotDto();
+        private RecentProtectionSummary recentProtection = new RecentProtectionSummary(30, 0, 0, 0, 0, Array.Empty<RecentProtectionItem>());
         private SavePathCandidateDto selectedCandidate = null!;
         private string backupComment = string.Empty;
         private bool lockSelectedBackup;
@@ -105,6 +107,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string pendingGameToolImportSource = string.Empty;
         private GameToolType pendingGameToolImportType = GameToolType.Trainer;
         private bool hasPendingGameToolEntrySelection;
+        private readonly RecentProtectionAssessmentService recentProtectionAssessment = new RecentProtectionAssessmentService();
 
         public DashboardViewModel(GameSaveCenterPlugin plugin)
         {
@@ -160,6 +163,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             CopyTaskErrorCommand = new RelayCommand(_ => RunLocal(CopySelectedTaskError), _ => SelectedTask != null && !string.IsNullOrWhiteSpace(SelectedTask.DetailMessage));
             OpenAttentionCenterCommand = new RelayCommand(_ => OpenAttentionCenter());
             OpenAttentionFindingCommand = new RelayCommand(value => OpenAttentionFinding(value as ValidationFindingDto));
+            OpenProtectionGamesCommand = new RelayCommand(_ => OpenProtectionGames());
+            OpenProtectionItemCommand = new RelayCommand(value => OpenProtectionItem(value as RecentProtectionItem));
             RefreshDiagnosticsCommand = new RelayCommand(_ => Run(RefreshDiagnosticsAsync), _ => !IsBusy);
             SyncDeviceStatesCommand = new RelayCommand(_ => Run(SyncDeviceStatesAsync), _ => !IsBusy);
             SaveDeviceDecisionCommand = new RelayCommand(_ => Run(SaveDeviceDecisionAsync), _ => !IsBusy && SelectedDeviceComparison != null);
@@ -231,6 +236,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public IReadOnlyList<string> GameSortOptions { get; } = new[] { "名称", "运行优先", "匹配优先", "最近备份" };
 
         public DashboardSnapshotDto Snapshot { get => snapshot; private set => SetValue(ref snapshot, value); }
+        public RecentProtectionSummary RecentProtection { get => recentProtection; private set => SetValue(ref recentProtection, value); }
         public WorkerSettingsSnapshotDto EffectiveSettings
         {
             get => effectiveSettings;
@@ -510,6 +516,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand CopyTaskErrorCommand { get; }
         public ICommand OpenAttentionCenterCommand { get; }
         public ICommand OpenAttentionFindingCommand { get; }
+        public ICommand OpenProtectionGamesCommand { get; }
+        public ICommand OpenProtectionItemCommand { get; }
         public ICommand RefreshDiagnosticsCommand { get; }
         public ICommand SyncDeviceStatesCommand { get; }
         public ICommand SaveDeviceDecisionCommand { get; }
@@ -620,6 +628,32 @@ namespace GameSaveCenter.Playnite.ViewModels
             SelectedFinding = finding;
             CurrentWorkspace = WorkspaceKind.Maintenance;
             AttentionCenterRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OpenProtectionGames()
+        {
+            var first = RecentProtection.Items.FirstOrDefault();
+            if (first == null)
+            {
+                StatusMessage = "最近保护窗口内没有需要处理的游戏。";
+                return;
+            }
+
+            OpenProtectionItem(first);
+        }
+
+        private void OpenProtectionItem(RecentProtectionItem? item)
+        {
+            if (item == null) return;
+            var game = Games.FirstOrDefault(candidate => string.Equals(candidate.PlayniteId, item.PlayniteId, StringComparison.OrdinalIgnoreCase));
+            if (game == null)
+            {
+                StatusMessage = "该游戏已不在当前快照中，请先刷新面板。";
+                return;
+            }
+
+            SelectedGame = game;
+            StatusMessage = $"已选择“{game.Name}”，请确认后再执行备份或校验。";
         }
 
         public event EventHandler? AttentionCenterRequested;
@@ -935,6 +969,10 @@ namespace GameSaveCenter.Playnite.ViewModels
                     RefreshSelectedGameIcon();
                 }
                 finally { suppressSelectionLoad = false; }
+                // Cache-first snapshots can be older than the current wall clock. The protection
+                // window is a user-facing "recent" promise, so anchor it to now rather than to
+                // the snapshot's generation time when Worker data is temporarily unavailable.
+                RecentProtection = recentProtectionAssessment.Assess(data.Games, plugin.Settings.RecentProtectionWindowDays, DateTime.UtcNow);
                 var tasksChanged = Replace(Tasks, data.RecentTasks, SnapshotComparers.Task);
                 if (tasksChanged) taskIndex.Rebuild(Tasks);
                 OnPropertyChanged(nameof(RunningTaskCount));

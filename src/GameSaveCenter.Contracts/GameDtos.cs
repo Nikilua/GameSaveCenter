@@ -68,6 +68,7 @@ namespace GameSaveCenter.Contracts
         public string HealthState { get; set; } = "Unknown";
         public string HealthSummary { get; set; } = string.Empty;
         public List<string> HealthReasons { get; set; } = new List<string>();
+        public RestoreReadinessStatus? LatestRestoreReadinessStatus { get; set; }
         public BackupPolicyDto Policy { get; set; } = new BackupPolicyDto();
         public string PlatformDisplay => Platform switch
         {

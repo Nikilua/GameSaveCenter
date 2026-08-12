@@ -109,7 +109,7 @@
                             <ComboBoxItem Content="Bzip2" Tag="bzip2"/><ComboBoxItem Content="不压缩" Tag="none"/>
                         </ComboBox>
                         </StackPanel>
-                    </UniformGrid>
+                     </UniformGrid>
                     <UniformGrid x:Name="StorageNumericFields" Columns="3">
                         <StackPanel Margin="0,0,12,0">
                         <TextBlock Text="完整版本数" VerticalAlignment="Center" Margin="0,0,0,4"/>
@@ -230,6 +230,20 @@
                         <StackPanel Margin="0,0,12,10"><TextBlock Text="进程检测间隔（秒）" Margin="0,0,0,4"/><TextBox Style="{StaticResource GscNumericTextBox}" infra:SelectAllOnKeyboardFocus.Enabled="True" ToolTip="允许 2–60 秒；离开输入框后提交。"><TextBox.Text><Binding Path="ProcessPollingSeconds" UpdateSourceTrigger="LostFocus" ValidatesOnExceptions="True" NotifyOnValidationError="True"><Binding.ValidationRules><infra:IntegerRangeValidationRule Minimum="2" Maximum="60"/></Binding.ValidationRules></Binding></TextBox.Text></TextBox></StackPanel>
                         <StackPanel Margin="0,0,12,10"><TextBlock Text="管理面板刷新间隔（秒）" Margin="0,0,0,4"/><TextBox Style="{StaticResource GscNumericTextBox}" infra:SelectAllOnKeyboardFocus.Enabled="True" ToolTip="允许 5–300 秒；离开输入框后提交。"><TextBox.Text><Binding Path="DashboardRefreshSeconds" UpdateSourceTrigger="LostFocus" ValidatesOnExceptions="True" NotifyOnValidationError="True"><Binding.ValidationRules><infra:IntegerRangeValidationRule Minimum="5" Maximum="300"/></Binding.ValidationRules></Binding></TextBox.Text></TextBox></StackPanel>
                     </UniformGrid>
+                    <Border Style="{DynamicResource GscRedesignSubCard}" Padding="12" Margin="0,2,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                            <StackPanel Margin="0,0,14,0">
+                                <TextBlock Text="最近保护统计窗口" FontWeight="SemiBold"/>
+                                <TextBlock Text="首页按最近游玩记录统计需要处理的游戏" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                            </StackPanel>
+                            <ComboBox Grid.Column="1" MinWidth="160" Style="{StaticResource GscWpfUiComboBox}" SelectedValue="{Binding RecentProtectionWindowDays, Mode=TwoWay}" SelectedValuePath="Tag" ToolTip="选择首页保护摘要的最近游玩时间范围。" AutomationProperties.Name="最近保护统计窗口">
+                                <ComboBoxItem Content="最近 7 天" Tag="7"/>
+                                <ComboBoxItem Content="最近 30 天" Tag="30"/>
+                                <ComboBoxItem Content="最近 90 天" Tag="90"/>
+                            </ComboBox>
+                        </Grid>
+                    </Border>
                     <Border Background="{DynamicResource GscSafetyFillBrush}" BorderBrush="{DynamicResource GscSafetyStrokeBrush}" BorderThickness="1" CornerRadius="10" Padding="12" Margin="0,12,0,0">
                         <TextBlock Text="自动恢复始终关闭。恢复必须经过当前快照、游戏关闭确认、预览、恢复后校验和可撤销快照。" TextWrapping="Wrap"/>
                     </Border>

@@ -2,6 +2,41 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-12 PROTECTION-001 最近游玩保护摘要
+
+**做了什么：**
+
+- 在 Core 新增纯计算 `RecentProtectionAssessmentService`，以 Dashboard 已缓存的 `GameStatusDto` 和可配置时间窗口（7/30/90 天）计算“最近游玩 / 已保护 / 需处理 / 未识别存档”，不执行匹配、备份、恢复、磁盘、数据库或云端操作。
+- 保护提醒覆盖未识别存档、已识别但从未备份、自动保护关闭、最近游玩发生在最新备份之后、云同步失败，以及最新恢复点损坏/失败/不支持/尚未确认等情况；每个游戏只投影一条最高优先级、可解释原因。
+- Dashboard 游戏快照新增最新恢复可用性状态；Playnite 在现有 Overview“风险与提醒”滚动面中增加统计卡、最多 6 条可处理项和“选择”操作。操作只切换当前游戏上下文，不自动执行备份或恢复，也不新增页面或修改 DataGrid。
+- Settings 的“自动化与媒体”分类增加最近保护统计窗口，沿用现有 ComboBox、主题资源、响应式断点和设置迁移校验；旧设置缺少该字段时默认 30 天。
+
+**修改文件：**
+
+- `src/GameSaveCenter.Core/Services/RecentProtectionAssessmentService.cs`
+- `src/GameSaveCenter.Contracts/GameDtos.cs`
+- `src/GameSaveCenter.Worker/Services/DashboardService.cs`
+- `src/GameSaveCenter.Playnite/GameSaveCenter.Playnite.csproj`
+- `src/GameSaveCenter.Playnite/Infrastructure/SnapshotComparers.cs`
+- `src/GameSaveCenter.Playnite/Settings/GameSaveCenterSettings.cs`
+- `src/GameSaveCenter.Playnite/Settings/GameSaveCenterSettingsView.xaml`
+- `src/GameSaveCenter.Playnite/ViewModels/DashboardViewModel.cs`
+- `src/GameSaveCenter.Playnite/Views/OverviewView.xaml`
+- `tests/GameSaveCenter.Core.Tests/RecentProtectionAssessmentTests.cs`
+- `tests/GameSaveCenter.Playnite.Tests/PortableSettingsTests.cs`
+- `tests/GameSaveCenter.Playnite.Tests/SettingsAndAutoSelectSourceTests.cs`
+
+**测试结果：**
+
+- Core 27/27、Worker 59/59、Playnite 197/197 通过；Playnite/Worker 测试使用显式隔离 `OutputPath` 和 `IntermediateOutputPath`，避开本机旧 net472 输出锁。
+- Worker 与 Playnite Release 构建 0 警告/0 错误；`python scripts/validate-source.py`、`git diff --check`、`scripts/check-xaml.ps1` 通过。
+- WPF 静态门禁 0 errors（仓库既有 warnings）；`scripts/render-qa.ps1` 全绿，覆盖首页、设置页 760/880/920/1100/1400 × 560/700/900 断点及现有表格滚动探针。
+- 未在真实 Playnite 宿主内完成主题切换、DPI、键盘和连续缩放人工验收，继续标记 `BLOCKED_ENVIRONMENT`。
+
+**下一步：**
+
+`POLICY-001`：把保护策略状态与用户可理解的策略建议继续接入现有游戏上下文；保持小阶段、独立测试、文档、commit 和 push。
+
 ## 2026-08-12 HEALTH-001 每游戏备份健康摘要
 
 **做了什么：**

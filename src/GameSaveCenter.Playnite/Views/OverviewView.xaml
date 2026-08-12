@@ -335,6 +335,42 @@
                             <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="28"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE946;" Foreground="{DynamicResource GscWarningBrush}" FontSize="17"/><StackPanel Grid.Column="1"><TextBlock Text="安全恢复提示" FontWeight="SemiBold"/><TextBlock Text="恢复始终需要人工确认，并会先创建当前快照。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,4,0,0"/></StackPanel></Grid>
                         </Border>
                         <Border Style="{DynamicResource GscRedesignSubCard}" Margin="0,0,0,10">
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="28"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE7BA;" Foreground="{DynamicResource GscWarningBrush}" FontSize="17"/>
+                                <StackPanel Grid.Column="1">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="SemiBold"><Run Text="{Binding RecentProtection.WindowLabel, Mode=OneWay}"/><Run Text="玩过的游戏"/></TextBlock>
+                                            <TextBlock Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0"><Run Text="共 "/><Run Text="{Binding RecentProtection.RecentlyPlayedGames, Mode=OneWay}"/><Run Text=" 个 · 已保护 "/><Run Text="{Binding RecentProtection.ProtectedGames, Mode=OneWay}"/><Run Text=" 个 · 需处理 "/><Run Text="{Binding RecentProtection.AttentionGames, Mode=OneWay}"/><Run Text=" 个"/></TextBlock>
+                                        </StackPanel>
+                                        <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding OpenProtectionGamesCommand}" Content="查看需要处理的游戏" Margin="10,0,0,0" VerticalAlignment="Top" AutomationProperties.Name="查看最近游玩但未受保护的游戏"/>
+                                    </Grid>
+                                    <WrapPanel Margin="0,9,0,0">
+                                        <Border Style="{DynamicResource GscRedesignContextPill}" Margin="0,0,6,6"><TextBlock><Run Text="未识别存档 "/><Run Text="{Binding RecentProtection.UnrecognizedSaveGames, Mode=OneWay}"/></TextBlock></Border>
+                                        <Border Style="{DynamicResource GscRedesignContextPill}" Margin="0,0,6,6"><TextBlock><Run Text="需要处理 "/><Run Text="{Binding RecentProtection.AttentionGames, Mode=OneWay}"/></TextBlock></Border>
+                                    </WrapPanel>
+                                    <ItemsControl ItemsSource="{Binding RecentProtection.Items}" Margin="0,3,0,0">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="0,0,0,7">
+                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="34"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                    <Border Width="30" Height="30" CornerRadius="9" Background="{DynamicResource GscWarningIconFillBrush}" HorizontalAlignment="Left" VerticalAlignment="Top"><TextBlock Text="!" FontWeight="Bold" Foreground="{DynamicResource GscWarningBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+                                                    <StackPanel Grid.Column="1" Margin="0,0,8,0" VerticalAlignment="Center">
+                                                        <TextBlock Text="{Binding GameName}" FontWeight="SemiBold" TextWrapping="Wrap" ToolTip="{Binding GameName}"/>
+                                                        <TextBlock Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap" Margin="0,2,0,0"><Run Text="{Binding Title, Mode=OneWay}"/><Run Text="："/><Run Text="{Binding Detail, Mode=OneWay}"/></TextBlock>
+                                                    </StackPanel>
+                                                    <ui:Button Grid.Column="2" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding DataContext.OpenProtectionItemCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Content="选择" VerticalAlignment="Center" AutomationProperties.Name="选择需要处理的游戏"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                    <TextBlock Text="列表仅展示前 6 项；选择游戏不会自动执行备份或恢复。" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap" Margin="0,2,0,0"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                        <Border Style="{DynamicResource GscRedesignSubCard}" Margin="0,0,0,10">
                             <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="28"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE7BA;" Foreground="{DynamicResource GscWarningBrush}" FontSize="17"/><StackPanel Grid.Column="1"><TextBlock FontWeight="SemiBold"><Run Text="{Binding Snapshot.WarningGames, Mode=OneWay}"/><Run Text=" 个游戏需要关注"/></TextBlock><TextBlock Text="以下是当前缓存中的具体原因：" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,4,0,0"/><ItemsControl ItemsSource="{Binding AttentionFindings}" Margin="0,7,0,0"><ItemsControl.ItemTemplate><DataTemplate><Grid Margin="0,0,0,6"><Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><Border x:Name="AttentionFindingIcon" Width="34" Height="34" CornerRadius="10" Background="{DynamicResource GscWarningIconFillBrush}" HorizontalAlignment="Left" VerticalAlignment="Top"><TextBlock x:Name="AttentionFindingGlyph" Text="!" FontWeight="Bold" Foreground="{DynamicResource GscWarningBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><StackPanel Grid.Column="1" Margin="0,0,8,0" VerticalAlignment="Center"><TextBlock Text="{Binding GameName, Mode=OneWay}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/><TextBlock Text="{Binding Title, Mode=OneWay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding Detail}"/></StackPanel><ui:Button Grid.Column="2" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding DataContext.OpenAttentionFindingCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Content="查看原因" VerticalAlignment="Center" AutomationProperties.Name="查看关注原因"/></Grid><DataTemplate.Triggers><DataTrigger Binding="{Binding Severity}" Value="Error"><Setter TargetName="AttentionFindingIcon" Property="Background" Value="{DynamicResource GscErrorIconFillBrush}"/><Setter TargetName="AttentionFindingGlyph" Property="Foreground" Value="{DynamicResource GscErrorBrush}"/></DataTrigger><DataTrigger Binding="{Binding Severity}" Value="Critical"><Setter TargetName="AttentionFindingIcon" Property="Background" Value="{DynamicResource GscErrorIconFillBrush}"/><Setter TargetName="AttentionFindingGlyph" Property="Foreground" Value="{DynamicResource GscErrorBrush}"/></DataTrigger></DataTemplate.Triggers></DataTemplate></ItemsControl.ItemTemplate></ItemsControl><TextBlock Text="点击“打开维护中心”查看完整详情与建议处理方式。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,6,0,0"/></StackPanel></Grid>
                         </Border>
                         <Border Style="{DynamicResource GscRedesignSubCard}">

@@ -132,6 +132,15 @@
 - 当前测试基线为 Core 19、Worker 59、Playnite 197；源码门禁、XAML 门禁、WPF 静态门禁、隔离 Release 构建和 render-qa 已通过。真实 Playnite 宿主、主题/DPI 人工验收仍待用户环境确认。
 - 下一项按附件顺序为 `PROTECTION-001`；不要重做恢复可用性或健康摘要，不新增主页面，继续采用小阶段、独立 commit、文档和 push。
 
+## 2026-08-12 PROTECTION-001 阶段补充
+
+- `RecentProtectionAssessmentService` 已在 Core 实现为无副作用纯计算：以 `GameStatusDto.LastPlayedUtc` 过滤最近 7/30/90 天，按未识别存档、从未备份、恢复点不可用、自动保护关闭、云同步异常、游玩后备份过旧和备份健康异常分类；每个游戏只显示一条最高优先级原因。
+- `GameStatusDto` 现在带有 `LatestRestoreReadinessStatus`，由 Worker Dashboard 从已有聚合记录投影；Playnite 不增加 IPC、扫描或数据库查询，Overview 只从现有快照计算摘要。
+- UI 复用现有 Overview 风险滚动面与 Settings 自动化分类。保护摘要最多展示 6 条；选择条目只改变当前游戏选择并提示用户确认，绝不因筛选/选择自动备份或恢复；没有新增页面，也没有修改 DataGrid、虚拟化或滚动骨架。
+- 最近保护窗口设置默认 30 天，接受 7/30/90，便携设置导入会校验非法值，旧 JSON 缺少字段时保持默认值。
+- 本阶段验证基线为 Core 27、Worker 59、Playnite 197；Worker/Playnite Release 构建、源码/XAML/WPF 门禁和 render-qa 均通过。真实 Playnite 主题/DPI/键盘/连续缩放验收仍待用户环境。
+- 下一项按附件顺序为 `POLICY-001`；不要重做 `HEALTH-001` 或本阶段保护摘要。
+
 已完成：见 WORKLOG.md 与 Git log；不要重复实现已完成的 UI/性能工作。
 
 ## 已知坑

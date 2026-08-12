@@ -30,6 +30,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Equal(source.BackupFormat, imported.BackupFormat);
             Assert.Equal(source.CompressionLevel, imported.CompressionLevel);
             Assert.Equal(source.DifferentialBackupLimit, imported.DifferentialBackupLimit);
+            Assert.Equal(source.RecentProtectionWindowDays, imported.RecentProtectionWindowDays);
             Assert.Equal(source.EnableXboxGameBarMedia, imported.EnableXboxGameBarMedia);
             Assert.Equal(source.EnableCustomMedia, imported.EnableCustomMedia);
         }
@@ -54,6 +55,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.True(imported.EnableGlassEffects);
             Assert.Equal(78, imported.GlassEffectStrength);
             Assert.Equal(10, imported.DashboardRefreshSeconds);
+            Assert.Equal(30, imported.RecentProtectionWindowDays);
             Assert.Equal(BackupStorageFormat.Zip, imported.BackupFormat);
             Assert.Equal("zstd", imported.Compression);
             Assert.True(imported.EnableSteamMedia);
@@ -135,6 +137,7 @@ namespace GameSaveCenter.Playnite.Tests
             EnableGlassEffects = false,
             GlassEffectStrength = 64,
             DashboardRefreshSeconds = 30,
+            RecentProtectionWindowDays = 90,
             ProcessPollingSeconds = 9,
             DefaultBackupIntervalMinutes = 45,
             BackupFormat = BackupStorageFormat.Zip,

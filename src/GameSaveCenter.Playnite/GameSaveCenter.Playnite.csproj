@@ -8,6 +8,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameSaveCenter.Contracts\GameSaveCenter.Contracts.csproj" />
+    <ProjectReference Include="..\GameSaveCenter.Core\GameSaveCenter.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net462" PrivateAssets="all" />

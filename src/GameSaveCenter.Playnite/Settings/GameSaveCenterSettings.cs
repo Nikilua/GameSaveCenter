@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using GameSaveCenter.Contracts;
+using GameSaveCenter.Core.Services;
 using Newtonsoft.Json;
 using Playnite.SDK;
 using Playnite.SDK.Data;
@@ -49,6 +50,7 @@ namespace GameSaveCenter.Playnite.Settings
         public bool EnableGlassEffects { get; set; } = true;
         public int GlassEffectStrength { get; set; } = 78;
         public int DashboardRefreshSeconds { get; set; } = 10;
+        public int RecentProtectionWindowDays { get; set; } = 30;
         public int ProcessPollingSeconds { get; set; } = 5;
         public int DefaultBackupIntervalMinutes { get; set; } = 30;
         public BackupStorageFormat BackupFormat { get; set; } = BackupStorageFormat.Zip;
@@ -128,6 +130,8 @@ namespace GameSaveCenter.Playnite.Settings
                 errors.Add("进程检测间隔必须为 2–60 秒。");
             if (DashboardRefreshSeconds < 5 || DashboardRefreshSeconds > 300)
                 errors.Add("管理面板自动刷新间隔必须为 5–300 秒。");
+            if (!RecentProtectionAssessmentService.IsSupportedWindowDays(RecentProtectionWindowDays))
+                errors.Add("最近保护统计窗口必须为 7、30 或 90 天。");
             if (GlassEffectStrength < 20 || GlassEffectStrength > 100)
                 errors.Add("毛玻璃强度必须为 20–100。");
             if (FullBackupLimit < 1 || FullBackupLimit > 255)
@@ -225,6 +229,7 @@ namespace GameSaveCenter.Playnite.Settings
             EnableGlassEffects = other.EnableGlassEffects;
             GlassEffectStrength = other.GlassEffectStrength <= 0 ? 78 : other.GlassEffectStrength;
             DashboardRefreshSeconds = other.DashboardRefreshSeconds;
+            RecentProtectionWindowDays = RecentProtectionAssessmentService.NormalizeWindowDays(other.RecentProtectionWindowDays);
             ProcessPollingSeconds = other.ProcessPollingSeconds;
             DefaultBackupIntervalMinutes = other.DefaultBackupIntervalMinutes;
             BackupFormat = other.BackupFormat;
@@ -245,6 +250,7 @@ namespace GameSaveCenter.Playnite.Settings
             if (value.DefaultBackupIntervalMinutes < 1 || value.DefaultBackupIntervalMinutes > 1440) errors.Add("备份间隔超出 1–1440");
             if (value.ProcessPollingSeconds < 2 || value.ProcessPollingSeconds > 60) errors.Add("进程检测间隔超出 2–60");
             if (value.DashboardRefreshSeconds < 5 || value.DashboardRefreshSeconds > 300) errors.Add("面板刷新间隔超出 5–300");
+            if (!RecentProtectionAssessmentService.IsSupportedWindowDays(value.RecentProtectionWindowDays)) errors.Add("最近保护窗口必须为 7、30 或 90");
             if (value.GlassEffectStrength < 20 || value.GlassEffectStrength > 100) errors.Add("毛玻璃强度超出 20–100");
             if (value.FullBackupLimit < 1 || value.FullBackupLimit > 255) errors.Add("完整版本数超出 1–255");
             if (value.DifferentialBackupLimit < 0 || value.DifferentialBackupLimit > 255) errors.Add("差异版本数超出 0–255");

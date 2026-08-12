@@ -79,6 +79,7 @@ public sealed class DashboardService
                 HealthState=assessment.State.ToString(),
                 HealthSummary=assessment.Summary,
                 HealthReasons=assessment.Reasons.ToList(),
+                LatestRestoreReadinessStatus=record.LatestRestoreReadiness?.Status,
                 Policy=record.Policy
             });
         }

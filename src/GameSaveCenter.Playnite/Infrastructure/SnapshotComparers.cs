@@ -29,6 +29,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             && string.Equals(a.HealthState, b.HealthState, StringComparison.Ordinal)
             && string.Equals(a.HealthSummary, b.HealthSummary, StringComparison.Ordinal)
             && SequenceEquals(a.HealthReasons, b.HealthReasons, string.Equals)
+            && a.LatestRestoreReadinessStatus == b.LatestRestoreReadinessStatus
             && PolicyEquals(a.Policy, b.Policy);
 
         public static readonly Func<TaskStatusDto, TaskStatusDto, bool> Task = (a, b) =>
