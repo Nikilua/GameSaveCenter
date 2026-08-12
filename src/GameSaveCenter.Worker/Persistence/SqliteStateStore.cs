@@ -185,7 +185,7 @@ UPDATE game_tools SET updated_utc=$utc WHERE tool_id=$id;",
         {
             await using var connection = Open();
             await connection.OpenAsync(token).ConfigureAwait(false);
-            await using var transaction = await connection.BeginTransactionAsync(token).ConfigureAwait(false);
+            await using var transaction = (SqliteTransaction)await connection.BeginTransactionAsync(token).ConfigureAwait(false);
             foreach (var item in items)
             {
                 var command = connection.CreateCommand();
@@ -365,7 +365,7 @@ CREATE INDEX IF NOT EXISTS ix_backup_versions_game_time ON backup_versions(playn
         {
             await using var connection = Open();
             await connection.OpenAsync(token).ConfigureAwait(false);
-            await using var transaction = await connection.BeginTransactionAsync(token).ConfigureAwait(false);
+            await using var transaction = (SqliteTransaction)await connection.BeginTransactionAsync(token).ConfigureAwait(false);
             foreach (var game in games)
             {
                 var command = connection.CreateCommand();
@@ -875,6 +875,33 @@ LIMIT 100;";
         await using var connection=Open(); await connection.OpenAsync(token).ConfigureAwait(false);
         async Task<int> Scalar(string sql){var c=connection.CreateCommand();c.CommandText=sql;return Convert.ToInt32(await c.ExecuteScalarAsync(token).ConfigureAwait(false));}
         return (await Scalar("SELECT COUNT(*) FROM games;"),await Scalar("SELECT COUNT(*) FROM games WHERE COALESCE(ludusavi_name,'')<>'';"),await Scalar("SELECT COUNT(*) FROM media WHERE classification_state='Assigned';"),await Scalar("SELECT COUNT(*) FROM media WHERE classification_state='Inbox';"));
+    }
+
+    /// <summary>Runs a temporary-table round trip to verify the configured database is writable.</summary>
+    public async Task ProbeReadWriteAsync(CancellationToken token)
+    {
+        await _writeGate.WaitAsync(token).ConfigureAwait(false);
+        try
+        {
+            await using var connection = Open();
+            await connection.OpenAsync(token).ConfigureAwait(false);
+            await using var transaction = (SqliteTransaction)await connection.BeginTransactionAsync(token).ConfigureAwait(false);
+            var command = connection.CreateCommand();
+            command.Transaction = transaction;
+            command.CommandText = "CREATE TEMP TABLE gsc_environment_probe(value TEXT NOT NULL); INSERT INTO gsc_environment_probe(value) VALUES('ok'); SELECT value FROM gsc_environment_probe; DROP TABLE gsc_environment_probe;";
+            var value = Convert.ToString(await command.ExecuteScalarAsync(token).ConfigureAwait(false));
+            if (!string.Equals(value, "ok", StringComparison.Ordinal)) throw new InvalidOperationException("SQLite temporary write probe returned an unexpected value.");
+            await transaction.CommitAsync(token).ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "SQLite read/write probe failed");
+            throw;
+        }
+        finally
+        {
+            _writeGate.Release();
+        }
     }
 
     public Task AppendAuditAsync(string category, string message, string detailJson, CancellationToken token) => ExecuteAsync(

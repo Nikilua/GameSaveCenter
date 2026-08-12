@@ -71,6 +71,26 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.DoesNotContain("SelectedGameIcon", dashboard.Substring(pickerStart, pickerEnd - pickerStart));
         }
 
+        [Fact]
+        public void OnboardingUsesMaintenanceWorkspaceAndExplicitCommands()
+        {
+            var root = FindRepositoryRoot();
+            var viewModel = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
+            var dashboardCode = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml.cs"));
+            var maintenance = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+            var contracts = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Contracts", "MessageTypes.cs"));
+
+            Assert.Contains("currentWorkspace = WorkspaceKind.Maintenance", viewModel);
+            Assert.Contains("MessageTypes.CheckEnvironment", viewModel);
+            Assert.Contains("OnboardingTestBackupCommand", viewModel);
+            Assert.Contains("OnboardingCompleted", viewModel);
+            Assert.Contains("NavMaintenance.IsChecked = true", dashboardCode);
+            Assert.Contains("EnvironmentCheckCard", maintenance);
+            Assert.Contains("Command=\"{Binding RunEnvironmentCheckCommand}\"", maintenance);
+            Assert.Contains("Command=\"{Binding OnboardingTestBackupCommand}\"", maintenance);
+            Assert.Contains("CheckEnvironment", contracts);
+        }
+
         private static string FindRepositoryRoot()
         {
             var directory = new DirectoryInfo(AppContext.BaseDirectory);

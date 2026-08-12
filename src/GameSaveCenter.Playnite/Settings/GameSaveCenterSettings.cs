@@ -34,6 +34,8 @@ namespace GameSaveCenter.Playnite.Settings
         public string RcloneDestination { get; set; } = string.Empty;
         public string MediaArchiveDirectory { get; set; } = string.Empty;
         public bool AutoStartWorker { get; set; } = true;
+        /// <summary>Whether the first-use environment preparation card was completed or skipped.</summary>
+        public bool OnboardingCompleted { get; set; }
         public bool EnableProcessDetection { get; set; } = true;
         public bool EnableSessionSavePathDetection { get; set; } = true;
         public bool EnableMediaSync { get; set; } = true;
@@ -213,6 +215,7 @@ namespace GameSaveCenter.Playnite.Settings
             RcloneDestination = other.RcloneDestination;
             MediaArchiveDirectory = other.MediaArchiveDirectory;
             AutoStartWorker = other.AutoStartWorker;
+            OnboardingCompleted = other.OnboardingCompleted;
             EnableProcessDetection = other.EnableProcessDetection;
             EnableSessionSavePathDetection = other.EnableSessionSavePathDetection;
             EnableMediaSync = other.EnableMediaSync;

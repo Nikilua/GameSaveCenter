@@ -30,13 +30,14 @@ public sealed class IpcRequestDispatcher
     private readonly DeviceStateService _deviceStates;
     private readonly RemoteBackupStagingService _remoteBackups;
     private readonly RestoreReadinessService _restoreReadiness;
+    private readonly EnvironmentCheckService _environment;
     private readonly ILogger<IpcRequestDispatcher> _logger;
 
     public IpcRequestDispatcher(GameCatalogService catalog,GameSessionCoordinator sessions,BackupOrchestrator backup,RestoreOrchestrator restore,
         MediaSyncService media,SavePathDetectionService detection,DashboardService dashboard,SqliteStateStore store,TaskCoordinator tasks,
         LudusaviClient ludusavi,WorkerOptions options,GameToolService gameTools,ITrainerCatalogSource trainerCatalog,
-        DeviceStateService deviceStates,RemoteBackupStagingService remoteBackups,RestoreReadinessService restoreReadiness,ILogger<IpcRequestDispatcher> logger)
-    { _catalog=catalog;_sessions=sessions;_backup=backup;_restore=restore;_media=media;_detection=detection;_dashboard=dashboard;_store=store;_tasks=tasks;_ludusavi=ludusavi;_options=options;_gameTools=gameTools;_trainerCatalog=trainerCatalog;_deviceStates=deviceStates;_remoteBackups=remoteBackups;_restoreReadiness=restoreReadiness;_logger=logger; }
+        DeviceStateService deviceStates,RemoteBackupStagingService remoteBackups,RestoreReadinessService restoreReadiness,EnvironmentCheckService environment,ILogger<IpcRequestDispatcher> logger)
+    { _catalog=catalog;_sessions=sessions;_backup=backup;_restore=restore;_media=media;_detection=detection;_dashboard=dashboard;_store=store;_tasks=tasks;_ludusavi=ludusavi;_options=options;_gameTools=gameTools;_trainerCatalog=trainerCatalog;_deviceStates=deviceStates;_remoteBackups=remoteBackups;_restoreReadiness=restoreReadiness;_environment=environment;_logger=logger; }
 
     public async Task<IpcEnvelope> DispatchAsync(IpcEnvelope request,CancellationToken token)
     {
@@ -100,6 +101,7 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.GetLogs=>await _store.GetAuditAsync(500,token).ConfigureAwait(false),
                 MessageTypes.GetSettings=>SanitizedSettings(),
                 MessageTypes.UpdateSettings=>await UpdateSettingsAsync(Read<WorkerSettingsDto>(request),token).ConfigureAwait(false),
+                MessageTypes.CheckEnvironment=>await _environment.RunAsync(Read<EnvironmentCheckRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.CancelTask=>new CancelTaskResultDto{Cancelled=_tasks.Cancel(Read<CancelTaskRequestDto>(request).TaskId)},
                 MessageTypes.ListGameTools=>await _gameTools.ListAsync(Read<GameQueryDto>(request).PlayniteId,token).ConfigureAwait(false),
                 MessageTypes.InspectGameToolImport=>await _gameTools.InspectImportAsync(Read<InspectGameToolImportRequestDto>(request),token).ConfigureAwait(false),

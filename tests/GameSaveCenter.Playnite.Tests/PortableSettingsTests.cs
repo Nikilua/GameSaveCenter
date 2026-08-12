@@ -33,6 +33,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Equal(source.RecentProtectionWindowDays, imported.RecentProtectionWindowDays);
             Assert.Equal(source.EnableXboxGameBarMedia, imported.EnableXboxGameBarMedia);
             Assert.Equal(source.EnableCustomMedia, imported.EnableCustomMedia);
+            Assert.Equal(source.OnboardingCompleted, imported.OnboardingCompleted);
         }
 
         [Fact]
@@ -132,6 +133,7 @@ namespace GameSaveCenter.Playnite.Tests
             EnableCloudUpload = true,
             EnableDashboardAutoRefresh = false,
             EnableTaskNotifications = true,
+            OnboardingCompleted = true,
             ThemeMode = GameSaveCenterThemeMode.Dark,
             EnableUiAnimations = false,
             EnableGlassEffects = false,

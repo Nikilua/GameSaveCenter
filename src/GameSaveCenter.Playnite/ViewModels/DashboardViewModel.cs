@@ -56,6 +56,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string statusMessage = "准备就绪";
         private BackupVersionDto selectedBackup = null!;
         private DashboardSnapshotDto snapshot = new DashboardSnapshotDto();
+        private EnvironmentCheckReportDto environmentCheck = new EnvironmentCheckReportDto();
+        private bool environmentCheckLoaded;
         private RecentProtectionSummary recentProtection = new RecentProtectionSummary(30, 0, 0, 0, 0, Array.Empty<RecentProtectionItem>());
         private SavePathCandidateDto selectedCandidate = null!;
         private string backupComment = string.Empty;
@@ -116,6 +118,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public DashboardViewModel(GameSaveCenterPlugin plugin)
         {
             this.plugin = plugin;
+            if (!plugin.Settings.OnboardingCompleted) currentWorkspace = WorkspaceKind.Maintenance;
             gamePicker = new GamePickerViewModel();
             gamePicker.ApplyPersistedState(plugin.Settings.GamePickerSearchText, plugin.Settings.GamePickerStatusFilter, plugin.Settings.GamePickerPlatformFilter, plugin.Settings.GamePickerSortMode);
             gamePicker.StateChanged += OnGamePickerStateChanged;
@@ -174,6 +177,10 @@ namespace GameSaveCenter.Playnite.ViewModels
             OpenProtectionGamesCommand = new RelayCommand(_ => OpenProtectionGames());
             OpenProtectionItemCommand = new RelayCommand(value => OpenProtectionItem(value as RecentProtectionItem));
             RefreshDiagnosticsCommand = new RelayCommand(_ => Run(RefreshDiagnosticsAsync), _ => !IsBusy);
+            RunEnvironmentCheckCommand = new RelayCommand(_ => Run(RunEnvironmentCheckAsync), _ => !IsBusy);
+            SkipOnboardingCommand = new RelayCommand(_ => SkipOnboarding(), _ => !IsBusy && IsOnboardingPending);
+            CompleteOnboardingCommand = new RelayCommand(_ => CompleteOnboarding(), _ => !IsBusy && IsOnboardingPending && EnvironmentCheck.IsReady && EnvironmentCheck.CheckedUtc != default(DateTime));
+            OnboardingTestBackupCommand = new RelayCommand(_ => Run(BackupSelectedAsync), _ => !IsBusy && IsOnboardingPending && SelectedGame != null && SelectedGame.LudusaviMatched && Snapshot.LudusaviAvailable);
             SyncDeviceStatesCommand = new RelayCommand(_ => Run(SyncDeviceStatesAsync), _ => !IsBusy);
             SaveDeviceDecisionCommand = new RelayCommand(_ => Run(SaveDeviceDecisionAsync), _ => !IsBusy && SelectedDeviceComparison != null);
             StageRemoteBackupCommand = new RelayCommand(_ => Run(StageRemoteBackupAsync), _ => !IsBusy && SelectedDeviceComparison != null && !string.IsNullOrWhiteSpace(SelectedDeviceComparison.RemoteBackupId));
@@ -245,6 +252,12 @@ namespace GameSaveCenter.Playnite.ViewModels
         public IReadOnlyList<string> GameSortOptions { get; } = new[] { "名称", "运行优先", "匹配优先", "最近备份" };
 
         public DashboardSnapshotDto Snapshot { get => snapshot; private set => SetValue(ref snapshot, value); }
+        public EnvironmentCheckReportDto EnvironmentCheck { get => environmentCheck; private set { SetValue(ref environmentCheck, value ?? new EnvironmentCheckReportDto()); RaiseCommandStates(); } }
+        public bool IsOnboardingPending => !plugin.Settings.OnboardingCompleted;
+        public string OnboardingTitle => IsOnboardingPending ? "首次使用：准备环境" : "环境检查";
+        public string OnboardingDescription => IsOnboardingPending
+            ? "先确认 Worker、目录、SQLite 与备份工具可用。所有检查都是非破坏性的；你可以跳过，之后随时在维护中心重新运行。"
+            : "重新运行非破坏性环境检查，确认备份链路仍然可用。";
         public RecentProtectionSummary RecentProtection { get => recentProtection; private set => SetValue(ref recentProtection, value); }
         public WorkerSettingsSnapshotDto EffectiveSettings
         {
@@ -561,6 +574,10 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand OpenProtectionGamesCommand { get; }
         public ICommand OpenProtectionItemCommand { get; }
         public ICommand RefreshDiagnosticsCommand { get; }
+        public ICommand RunEnvironmentCheckCommand { get; }
+        public ICommand SkipOnboardingCommand { get; }
+        public ICommand CompleteOnboardingCommand { get; }
+        public ICommand OnboardingTestBackupCommand { get; }
         public ICommand SyncDeviceStatesCommand { get; }
         public ICommand SaveDeviceDecisionCommand { get; }
         public ICommand StageRemoteBackupCommand { get; }
@@ -1049,6 +1066,46 @@ namespace GameSaveCenter.Playnite.ViewModels
                 Replace(ProcessMappings,mappings, SnapshotComparers.ProcessMapping);
                 if(ProcessMappingTargetGame==null) ProcessMappingTargetGame=SelectedGame??Games.FirstOrDefault();
             });
+            if (IsOnboardingPending && !environmentCheckLoaded)
+                await RunEnvironmentCheckAsync();
+        }
+
+        private async Task RunEnvironmentCheckAsync()
+        {
+            var report = await plugin.RequestAsync<EnvironmentCheckReportDto>(MessageTypes.CheckEnvironment, new EnvironmentCheckRequestDto(), TimeSpan.FromMinutes(3));
+            ApplyOnUi(() =>
+            {
+                EnvironmentCheck = report;
+                environmentCheckLoaded = true;
+                StatusMessage = report.Summary;
+            });
+        }
+
+        private void SkipOnboarding()
+        {
+            plugin.Settings.OnboardingCompleted = true;
+            plugin.SavePluginSettings(plugin.Settings);
+            OnPropertyChanged(nameof(IsOnboardingPending));
+            OnPropertyChanged(nameof(OnboardingTitle));
+            OnPropertyChanged(nameof(OnboardingDescription));
+            StatusMessage = "已跳过首次环境检查；之后可在维护中心重新运行。";
+            RaiseCommandStates();
+        }
+
+        private void CompleteOnboarding()
+        {
+            if (!EnvironmentCheck.IsReady || EnvironmentCheck.CheckedUtc == default(DateTime))
+            {
+                StatusMessage = "请先运行环境检查；失败项处理后才能完成设置。";
+                return;
+            }
+            plugin.Settings.OnboardingCompleted = true;
+            plugin.SavePluginSettings(plugin.Settings);
+            OnPropertyChanged(nameof(IsOnboardingPending));
+            OnPropertyChanged(nameof(OnboardingTitle));
+            OnPropertyChanged(nameof(OnboardingDescription));
+            StatusMessage = "环境检查已完成。测试备份仍需由你明确点击执行。";
+            RaiseCommandStates();
         }
 
         private async Task SaveProcessMappingAsync()
@@ -2199,7 +2256,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 AssignInboxMediaCommand, IgnoreInboxMediaCommand,
                 CancelTaskCommand, RetryTaskCommand, CopyTaskErrorCommand, RefreshDiagnosticsCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand,
                 StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,
-                SaveProcessMappingCommand,DeleteProcessMappingCommand,
+                SaveProcessMappingCommand,DeleteProcessMappingCommand,RunEnvironmentCheckCommand,SkipOnboardingCommand,CompleteOnboardingCommand,OnboardingTestBackupCommand,
                 OpenDataDirectoryCommand, OpenBackupDirectoryCommand, OpenMediaDirectoryCommand, OpenWorkerLogCommand
                 ,ImportTrainerCommand,ImportCheatTableCommand,ImportCustomLaunchItemCommand,ImportToolFolderCommand,SaveGameToolCommand,LaunchGameToolCommand,
                 ConfirmGameToolImportCommand,CancelGameToolImportCommand,

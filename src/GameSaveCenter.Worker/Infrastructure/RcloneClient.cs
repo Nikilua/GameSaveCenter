@@ -65,6 +65,15 @@ public sealed class RcloneClient
             .Select(x=>x.Trim()).Where(x=>x.Length>0).Take(64).ToList();
     }
 
+    /// <summary>Performs a bounded read-only remote probe without uploading or changing files.</summary>
+    public Task<ProcessResult> ProbeRemoteAsync(CancellationToken token)
+    {
+        if (!IsConfigured) return Task.FromResult(ProcessResult.Failed(-1, string.Empty, "Rclone is not configured."));
+        return _runner.RunAsync(_options.RcloneExecutable,
+            new[] { "lsf", _options.RcloneDestination, "--max-depth", "1", "--files-only" },
+            null, TimeSpan.FromMinutes(2), token);
+    }
+
     /// <summary>Reads a small JSON sidecar; callers enforce their own schema and size limits.</summary>
     public async Task<string> ReadRemoteTextAsync(string remoteRelativePath,CancellationToken token)
     {

@@ -75,6 +75,8 @@ namespace GameSaveCenter.Playnite.Views
             var version = typeof(DashboardView).Assembly.GetName().Version;
             SidebarVersionText.Text = version == null ? "开发预览" : "v" + version.ToString(3);
             ApplyAdaptiveTheme();
+            if (viewModel.IsOnboardingPending)
+                NavMaintenance.IsChecked = true;
             UpdateWorkspacePresentation();
             ApplyResponsiveLayout(ActualWidth, ActualHeight);
             refreshTimer.Interval = TimeSpan.FromSeconds(Math.Max(5, Math.Min(300, plugin.Settings.DashboardRefreshSeconds)));
