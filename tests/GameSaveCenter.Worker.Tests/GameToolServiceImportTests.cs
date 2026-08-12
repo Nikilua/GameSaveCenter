@@ -56,6 +56,7 @@ public sealed class GameToolServiceImportTests : IDisposable
         Assert.True(imported.ActiveVersion.IsAvailable);
         var copiedFiles = Directory.EnumerateFiles(options.GameToolsDirectory, "*", SearchOption.AllDirectories).Select(Path.GetFileName).ToList();
         Assert.DoesNotContain(copiedFiles, name => name != null && name.EndsWith("LosslessScaling.exe", StringComparison.OrdinalIgnoreCase));
+        Assert.False(Directory.EnumerateDirectories(options.GameToolsDirectory).Any(), "external custom import must not leave an empty GameTools directory");
     }
 
     [Theory]
@@ -128,6 +129,70 @@ public sealed class GameToolServiceImportTests : IDisposable
         Assert.Equal(second, relocated.ActiveVersion.EntryPath);
         Assert.True(relocated.ActiveVersion.IsAvailable);
         Assert.True(relocated.CanTrackProcess);
+    }
+
+    [Fact]
+    public async Task RelocateAsync_FollowsNewDirectoryWhenWorkingDirectoryWasAutoDerived()
+    {
+        var oldDirectory = Path.Combine(root, "old");
+        Directory.CreateDirectory(oldDirectory);
+        var oldExecutable = Path.Combine(oldDirectory, "app.exe");
+        File.WriteAllText(oldExecutable, "old");
+        var imported = await service.ImportAsync(new ImportGameToolRequestDto
+        {
+            PlayniteId = "game",
+            ToolType = GameToolType.CustomExecutable,
+            SourcePath = oldExecutable,
+            EntryFileName = "app.exe",
+            CopyIntoLibrary = false
+        }, CancellationToken.None);
+
+        var newDirectory = Path.Combine(root, "new");
+        Directory.CreateDirectory(newDirectory);
+        var newExecutable = Path.Combine(newDirectory, "app.exe");
+        File.WriteAllText(newExecutable, "new");
+        var relocated = await service.RelocateAsync(new RelocateGameToolRequestDto
+        {
+            ToolId = imported.ToolId,
+            SourcePath = newExecutable
+        }, CancellationToken.None);
+
+        Assert.Equal(newDirectory, relocated.ActiveVersion.WorkingDirectory);
+    }
+
+    [Fact]
+    public async Task RelocateAsync_PreservesExplicitCustomWorkingDirectory()
+    {
+        var source = Path.Combine(root, "app.exe");
+        File.WriteAllText(source, "app");
+        var imported = await service.ImportAsync(new ImportGameToolRequestDto
+        {
+            PlayniteId = "game",
+            ToolType = GameToolType.CustomExecutable,
+            SourcePath = source,
+            EntryFileName = "app.exe",
+            CopyIntoLibrary = false
+        }, CancellationToken.None);
+
+        var customWorkingDirectory = Path.Combine(root, "custom");
+        Directory.CreateDirectory(customWorkingDirectory);
+        await service.UpdateAsync(new UpdateGameToolRequestDto
+        {
+            ToolId = imported.ToolId,
+            DisplayName = imported.DisplayName,
+            WorkingDirectory = customWorkingDirectory,
+            Arguments = "--flag"
+        }, CancellationToken.None);
+
+        var newExecutable = Path.Combine(root, "moved.exe");
+        File.WriteAllText(newExecutable, "moved");
+        var relocated = await service.RelocateAsync(new RelocateGameToolRequestDto
+        {
+            ToolId = imported.ToolId,
+            SourcePath = newExecutable
+        }, CancellationToken.None);
+
+        Assert.Equal(customWorkingDirectory, relocated.ActiveVersion.WorkingDirectory);
     }
 
     [Fact]

@@ -457,3 +457,34 @@ NEXT: 全部可自主完成项已收口；剩余为真实 Playnite 人工验收�
 **仍需验证内容：**
 
 真实 Playnite 2K 窗口化/最大化的视觉确认；1080p/4K 环境标记 BLOCKED_ENVIRONMENT（本机暂无法验证）。
+
+## 2026-08-12 QA-HARDENING 收口清理
+
+**做了什么：**
+
+- 修复 `RelocateAsync` WorkingDirectory 语义：WorkingDirectory 如果只是导入时自动等于旧 EntryPath 父目录，重新定位时跟随新文件目录；用户显式自定义的目录保留；旧目录已不存在时回退新文件目录。
+- 自定义外部文件导入成功后清理无意义空 GameTools 目录。
+- `LargeLibraryPerformanceTests` 等待 helper 超时后现在直接 `Assert.Equal(expected, FilteredCount)`，搜索坏了会测试失败，不再把 5 秒当成“耗时”放行。
+- GitHub Actions Windows CI 新增 `scripts/render-qa.ps1` 与 WPF UI validator 步骤，离屏几何 QA 真正进入 CI 门禁。
+- 同步 `PROJECT_MEMORY / WORKLOG / README` 到最终状态；删除“DataGrid 必须 Pixel”的过期结论，明确记录 Pixel 经真机验证会回归，当前采用 `Item + GscStableDataGridRow + geometry probe`。
+- 测试方法改名：`DataGridsUsePixelScrollUnit...` → `DataGridsUseItemScrollUnitAndStableRowWithoutDiagnosticClip`。
+
+**为什么这样做：**
+
+收口评审指出长期记忆与源码已经漂移（Pixel/Item 相反），继续让未来 Codex 接力会把刚修好的 UI bug 改回去；同时把最有价值的离屏几何 QA 放进 CI，避免本地忘记跑。
+
+**修改文件：**
+
+- `src/GameSaveCenter.Worker/Services/GameToolService.cs`
+- `tests/GameSaveCenter.Playnite.Tests/LargeLibraryPerformanceTests.cs`
+- `tests/GameSaveCenter.Playnite.Tests/WpfUiResourceDictionaryTests.cs`
+- `.github/workflows/windows-build.yml`
+- `README.md`、`docs/ai/PROJECT_MEMORY.md`、`docs/ai/WORKLOG.md`
+
+**测试结果：**
+
+- 本地 Playnite 179/179、render-qa 全绿；源码验证与技能静态审查通过。
+
+**最终结论：**
+
+PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在源码层已经经历回滚与再修复，当前方案为 Item + 稳定行样式 + geometry probe。剩余完整主题/DPI/大库/启动项真机验收仍需用户真实使用反馈，不宣称已完成。

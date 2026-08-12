@@ -34,7 +34,7 @@
 - Solution：`GameSaveCenter.sln`，版本 `0.6.70-development-preview`（`Directory.Build.props` 0.6.70）。
 - 插件入口：`src/GameSaveCenter.Playnite/GameSaveCenterPlugin.cs`，扩展 ID `66e9f2d7-67bb-43ef-b62a-b8e60734fcec`。
 - Worker 入口：`src/GameSaveCenter.Worker`，IPC dispatcher 为 `IpcRequestDispatcher`。
-- 测试：Core 13、Worker 49、Playnite 171（2026-08-12 基线）。
+- 测试：Core 13、Worker 49、Playnite 179（2026-08-12 基线）。
 
 ### Dashboard / Workspace
 - `DashboardViewModel` 是大型聚合 ViewModel（技术债，暂不拆分），持有所有 Workspace 数据与命令。
@@ -87,7 +87,7 @@
 - PERF-009/010：任务事件合并 TaskId 索引 O(1) 更新；命令状态刷新 Dispatcher 合帧。
 - GAME-TOOL-001/002：自定义启动项正式支持 EXE/LNK/BAT/CMD/PS1，外部路径引用不复制文件；Session 级 PID 追踪与 CloseOnGameExit 安全关闭。
 - UI-204/205：TaskCenter 与 GamePicker 下拉框默认值恢复（含真实 Playnite 异步物化重试）。
-- UI-206：DataGrid 滚动几何修复（Pixel ScrollUnit + 有限 MaxHeight + 诊断摘要取消外层裁剪；render-qa 新增非整行高度滚动探针）。
+- UI-206（含回滚）：DataGrid 滚动几何修复。初版 `Pixel ScrollUnit` 经真实 Playnite A/B 验证会严重恶化空白，已撤回；最终采用 `Item` + `GscStableDataGridRow` 稳定行样式 + geometry probe（60 行 × 非整行高度，gap ≤4 DIP、末行完整、无跳变、Recycling 保持）；诊断摘要取消外层裁剪并由页面滚动负责可达性。
 
 ## 当前技术债
 
@@ -119,7 +119,7 @@
 - 自定义启动项支持 EXE/LNK/BAT/CMD/PS1/普通文件：EXE 与可解析 LNK 目标可跟踪；脚本和系统默认程序启动时 Trackable=false。
 - 磁盘 IO、图片解码不要放 UI 线程；图片解码要限制并发并 freeze。
 - 表格/列表虚拟化很容易被外层 ScrollViewer 或 DataGrid 嵌套破坏，改 XAML 后必须跑 render-qa。
-- DataGrid 不要写死运行时 `Height`，用 `MinHeight/MaxHeight` 保持有限 viewport；滚动单位必须显式 `VirtualizingPanel.ScrollUnit=Pixel`，否则非整行高度/高 DPI 窗口化下滚到底会出现表头大空白和末行裁切。
+- DataGrid 不要写死运行时 `Height`，用 `MinHeight/MaxHeight` 保持有限 viewport；`Pixel ScrollUnit` 已在真实 Playnite 验证会回归（轻微滚动即大空白），当前必须保持 `Item` + 稳定行样式，禁止重新改回 Pixel。
 - `git push` 前确认没有 bin/obj、用户本地配置、密钥、测试临时文件和大压缩包（如 `GameSaveCenter.7z` 不要提交）。
 
 ## 文档导航

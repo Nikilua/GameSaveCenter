@@ -130,6 +130,7 @@ namespace GameSaveCenter.Playnite.Tests
         {
             while (picker.FilteredCount != expected && timer.ElapsedMilliseconds < 5000)
                 await Task.Delay(10);
+            Assert.Equal(expected, picker.FilteredCount);
         }
 
         private static GameStatusDto Game(string name)

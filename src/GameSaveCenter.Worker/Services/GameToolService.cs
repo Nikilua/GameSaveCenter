@@ -114,6 +114,11 @@ public sealed class GameToolService
             CreatedUtc=now,IsAvailable=true
         };
         await _store.UpsertGameToolAsync(tool,version,token).ConfigureAwait(false);
+        if(request.ToolType==GameToolType.CustomExecutable
+           && !request.CopyIntoLibrary
+           && Directory.Exists(root)
+           && !Directory.EnumerateFileSystemEntries(root).Any())
+            CleanupEmptyGameToolPath(root,_options.GameToolsDirectory);
         await _store.AppendAuditAsync("GameTool","已导入游戏工具",System.Text.Json.JsonSerializer.Serialize(new{tool.ToolId,tool.PlayniteId,tool.DisplayName,tool.ToolType}),token).ConfigureAwait(false);
         return (await _store.GetGameToolAsync(toolId,token).ConfigureAwait(false))!;
     }
@@ -131,9 +136,14 @@ public sealed class GameToolService
         var source=Path.GetFullPath(Environment.ExpandEnvironmentVariables(request.SourcePath));
         if(!File.Exists(source))throw new FileNotFoundException("重定位文件不存在。",source);
         var currentWorking=tool.ActiveVersion.WorkingDirectory;
-        var workingDirectory=Directory.Exists(currentWorking)
-            ? currentWorking
-            : Path.GetDirectoryName(source)??string.Empty;
+        var oldEntryDirectory=Path.GetDirectoryName(tool.ActiveVersion.EntryPath)??string.Empty;
+        var workingIsAutoDerived=string.Equals(
+            NormalizeDirectory(currentWorking),
+            NormalizeDirectory(oldEntryDirectory),
+            StringComparison.OrdinalIgnoreCase);
+        var workingDirectory=workingIsAutoDerived||!Directory.Exists(currentWorking)
+            ? Path.GetDirectoryName(source)??string.Empty
+            : currentWorking;
         var resolved=ResolveTrackTargetPath(source);
         var hash=await HashAsync(source,token).ConfigureAwait(false);
         await _store.RelocateGameToolAsync(tool.ToolId,source,workingDirectory,resolved,hash,token).ConfigureAwait(false);
@@ -381,6 +391,25 @@ public sealed class GameToolService
         if(string.IsNullOrWhiteSpace(target.TargetPath))
             throw new InvalidOperationException("快捷方式目标为空，无法解析，请重新定位或删除。");
         return target.TargetPath;
+    }
+
+    private static string NormalizeDirectory(string path)
+    {
+        if(string.IsNullOrWhiteSpace(path))return string.Empty;
+        return Path.GetFullPath(path).TrimEnd(Path.DirectorySeparatorChar,Path.AltDirectorySeparatorChar);
+    }
+
+    private static void CleanupEmptyGameToolPath(string root,string stopAt)
+    {
+        var current=root;
+        var stop=NormalizeDirectory(stopAt);
+        while(Directory.Exists(current)
+              &&!string.Equals(NormalizeDirectory(current),stop,StringComparison.OrdinalIgnoreCase)
+              &&!Directory.EnumerateFileSystemEntries(current).Any())
+        {
+            Directory.Delete(current);
+            current=Path.GetDirectoryName(current)??string.Empty;
+        }
     }
 
     private static bool HasSignature(string path,byte first,byte second)

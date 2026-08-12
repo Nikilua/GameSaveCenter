@@ -803,7 +803,7 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
-    public void DataGridsUsePixelScrollUnitAndFiniteMaxHeightWithoutDiagnosticClip()
+    public void DataGridsUseItemScrollUnitAndStableRowWithoutDiagnosticClip()
     {
         var repositoryRoot = FindRepositoryRoot();
         var theme = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml"));

@@ -30,6 +30,17 @@ jobs:
         shell: pwsh
         run: ./scripts/build.ps1 -Configuration Release
 
+      - name: 离屏渲染 QA
+        shell: pwsh
+        run: |
+          $env:TEMP="$env:RUNNER_TEMP\qa-temp"
+          $env:TMP="$env:RUNNER_TEMP\qa-temp"
+          New-Item -ItemType Directory -Force $env:TEMP | Out-Null
+          ./scripts/render-qa.ps1
+
+      - name: WPF UI 静态审查
+        run: python .codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py .
+
       - name: 生成 Playnite 扩展包
         shell: pwsh
         run: ./scripts/package.ps1 -Configuration Release
