@@ -2,6 +2,24 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-12 UI-207 设置布局响应式与当前游戏上下文
+
+**做了什么：**
+
+- Settings 设置页：`SettingsHeader` 显式 `ClipToBounds=False`；宽/窄布局断点统一为 920 DIP；宽布局 5 个分类 `MinHeight=72`、窄布局 `MinHeight=44`；`GscRedesignSettingsTabControl` 分类栏改为 ScrollViewer（宽时垂直 Auto、窄时水平 Auto），选中 Tab 自动 `BringIntoView()`，5 个分类在常用尺寸下完整可达；设置项与保存行为不变。
+- 当前游戏自动定位：新增 `GameSelectionResolver`，打开 Dashboard 时按“运行中优先（持久化 id → 最近 GameStarted → 最近活动）→ 上次选择 → 首个已安装 → 空库 null”选择；`GameSaveCenterPlugin` 新增 `PlayniteGameStarted` 事件，`DashboardViewModel` 只在首次打开或新 GameStarted 时切换，普通刷新不抢回用户手动选择；游戏停止后保持当前选择并继续复用 `GamePickerSelectedGameId` 持久化。
+- GamePicker 新用户默认筛选改为“已安装”，空值/未知值归一到“已安装”，已有明确配置值保留。
+- 当前选中游戏显示真实 Playnite Icon：新增 UI-only `PlayniteGameIconProvider`（48 max decode、OnLoad、Freeze、LRU 48、远程/缺失/异常 fallback 到手柄 glyph），Dashboard 顶部选择器、展开头部与 Overview 当前游戏卡复用同一 `SelectedGameIcon`；GamePicker 列表不加载真实图标。
+- 不新增 Timer/进程扫描/IPC/网络 IO；未触碰 DataGrid 滚动相关代码。
+
+**测试结果：**
+
+- `python scripts/validate-source.py`、`git diff --check`、`git fsck --full` 通过。
+- Core 13/13、Worker 51/51、Playnite 195/195 通过；解决方案 Release 构建 0 警告/0 错误。
+- render-qa 全绿，含 15 组 SettingsLayout 探针（760/880/920/1100/1400 × 560/700/900 DIP，5 个分类全部可见可测）。
+- `scripts/dev-install-run.ps1 -Configuration Release -NoStart` 一键构建安装成功，安装到 `%APPDATA%\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec`（0.6.70）。
+- 真实 Playnite 冒烟：启动后 GameSaveCenter 0.6.70.0 正常加载，无异常日志；设置页视觉、自动定位场景、真实 Icon、1080p/4K 与 DPI 人工验收标记 `BLOCKED_ENVIRONMENT`。
+
 ## 2026-08-11 DEV-AUDIT-001 重新审计当前仓库
 
 **做了什么：**

@@ -25,7 +25,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private CancellationTokenSource? refreshCancellation;
         private GamePickerItem? selectedItem;
         private string searchText = string.Empty;
-        private string statusFilter = "全部";
+        private string statusFilter = "已安装";
         private string platformFilter = "全部";
         private string sortMode = "名称";
         private int filteredCount;
@@ -82,7 +82,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             get => statusFilter;
             set
             {
-                value = string.IsNullOrWhiteSpace(value) ? "全部" : value;
+                value = string.IsNullOrWhiteSpace(value) ? "已安装" : value;
+                if (!StatusFilterOptions.Contains(value)) value = "已安装";
                 if (string.Equals(statusFilter, value, StringComparison.Ordinal)) return;
                 statusFilter = value;
                 OnPropertyChanged(nameof(StatusFilter));
@@ -137,7 +138,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public void ApplyPersistedState(string? search, string? status, string? platform, string? sort)
         {
             searchText = search ?? string.Empty;
-            statusFilter = string.IsNullOrWhiteSpace(status) ? "全部" : status!;
+            statusFilter = string.IsNullOrWhiteSpace(status) || !StatusFilterOptions.Contains(status) ? "已安装" : status!;
             platformFilter = string.IsNullOrWhiteSpace(platform) ? "全部" : platform!;
             sortMode = string.IsNullOrWhiteSpace(sort) ? "名称" : sort!;
             OnPropertyChanged(nameof(SearchText));

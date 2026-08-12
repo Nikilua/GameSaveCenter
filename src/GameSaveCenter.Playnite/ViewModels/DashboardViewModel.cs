@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Input;
 using System.Windows.Data;
 using System.Windows.Threading;
@@ -26,6 +27,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private static readonly ILogger Logger = LogManager.GetLogger();
         private readonly GameSaveCenterPlugin plugin;
         private readonly GamePickerViewModel gamePicker;
+        private readonly PlayniteGameIconProvider gameIconProvider;
         private readonly SynchronizationContext? uiSynchronizationContext = SynchronizationContext.Current;
         private readonly Dictionary<string, TaskState> knownTaskStates = new Dictionary<string, TaskState>(StringComparer.OrdinalIgnoreCase);
         private readonly TaskIndexedCollection taskIndex = new TaskIndexedCollection();
@@ -34,6 +36,10 @@ namespace GameSaveCenter.Playnite.ViewModels
         private bool isBackgroundRefreshing;
         private bool isCancellingTask;
         private bool taskSnapshotInitialized;
+        private bool initialSelectionApplied;
+        private string? pendingAutoSelectPlayniteId;
+        private string? lastStartedPlayniteId;
+        private ImageSource selectedGameIcon = null!;
         private long lastTaskEventSequence;
         private CancellationTokenSource? taskEventSubscription;
         private CancellationTokenSource? gamePickerPersistenceCancellation;
@@ -107,6 +113,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             gamePicker.ApplyPersistedState(plugin.Settings.GamePickerSearchText, plugin.Settings.GamePickerStatusFilter, plugin.Settings.GamePickerPlatformFilter, plugin.Settings.GamePickerSortMode);
             gamePicker.StateChanged += OnGamePickerStateChanged;
             gamePicker.PropertyChanged += OnGamePickerPropertyChanged;
+            gameIconProvider = new PlayniteGameIconProvider(plugin.PlayniteApi);
+            plugin.PlayniteGameStarted += OnPlayniteGameStarted;
             gameSearchText = gamePicker.SearchText;
             gameStatusFilter = gamePicker.StatusFilter;
             gameSortMode = gamePicker.SortMode;
@@ -363,6 +371,11 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             get => gamePicker.SelectedGame!;
             set => gamePicker.SelectGame(value);
+        }
+        public ImageSource SelectedGameIcon
+        {
+            get => selectedGameIcon;
+            private set => SetValue(ref selectedGameIcon, value);
         }
         public BackupVersionDto SelectedBackup
         {
@@ -654,6 +667,7 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         public void CancelDeferredUiWork()
         {
+            plugin.PlayniteGameStarted -= OnPlayniteGameStarted;
             gamePicker.CancelPendingRefresh();
             taskSearchRefresh.Cancel();
             mediaSearchRefresh.Cancel();
@@ -914,6 +928,9 @@ namespace GameSaveCenter.Playnite.ViewModels
                     MediaTargetGame = Games.FirstOrDefault(x => string.Equals(x.PlayniteId, mediaTargetId, StringComparison.OrdinalIgnoreCase))
                                       ?? SelectedGame
                                       ?? Games.FirstOrDefault();
+                    TryApplyPendingAutoSelection();
+                    ApplyInitialSelectionIfNeeded();
+                    RefreshSelectedGameIcon();
                 }
                 finally { suppressSelectionLoad = false; }
                 var tasksChanged = Replace(Tasks, data.RecentTasks, SnapshotComparers.Task);
@@ -1848,12 +1865,57 @@ namespace GameSaveCenter.Playnite.ViewModels
             if (!string.Equals(e.PropertyName, nameof(GamePickerViewModel.SelectedItem), StringComparison.Ordinal)) return;
             var selected = gamePicker.SelectedGame;
             OnPropertyChanged(nameof(SelectedGame));
+            if (!suppressSelectionLoad) RefreshSelectedGameIcon();
             RaiseCommandStates();
             if (suppressSelectionLoad) return;
             ClearSelectedGameDetails();
             CancelDetailsLoad();
             if (selected != null && IsGameScopedWorkspace(CurrentWorkspace))
                 Observe(LoadSelectionDetailsAsync(selected.PlayniteId));
+        }
+
+        private void OnPlayniteGameStarted(Guid playniteId)
+        {
+            ApplyOnUi(() =>
+            {
+                lastStartedPlayniteId = playniteId.ToString("D");
+                pendingAutoSelectPlayniteId = playniteId.ToString("D");
+                TryApplyPendingAutoSelection();
+            });
+        }
+
+        private void TryApplyPendingAutoSelection()
+        {
+            if (pendingAutoSelectPlayniteId == null) return;
+            var game = Games.FirstOrDefault(x =>
+                string.Equals(x.PlayniteId, pendingAutoSelectPlayniteId, StringComparison.OrdinalIgnoreCase));
+            if (game == null) return;
+            pendingAutoSelectPlayniteId = null;
+            initialSelectionApplied = true;
+            gamePicker.SelectGame(game);
+        }
+
+        private void ApplyInitialSelectionIfNeeded()
+        {
+            if (initialSelectionApplied) return;
+            initialSelectionApplied = true;
+            var selected = GameSelectionResolver.ResolveInitial(
+                Games,
+                plugin.Settings.GamePickerSelectedGameId,
+                lastStartedPlayniteId);
+            if (selected != null)
+            {
+                gamePicker.SelectGame(selected);
+            }
+        }
+
+        private void RefreshSelectedGameIcon()
+        {
+            ImageSource? icon = null;
+            var selected = gamePicker.SelectedGame;
+            if (selected != null && Guid.TryParse(selected.PlayniteId, out var playniteId))
+                icon = gameIconProvider.Load(playniteId);
+            SelectedGameIcon = icon!;
         }
 
         /// <summary>

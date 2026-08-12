@@ -42,7 +42,7 @@
         <ScrollViewer x:Name="SettingsScroller" Style="{DynamicResource GscPageScrollViewer}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" KeyboardNavigation.TabNavigation="Continue">
             <Grid x:Name="SettingsShell" Opacity="0" Margin="0" MaxWidth="1360" HorizontalAlignment="Stretch">
                 <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-                <Border x:Name="SettingsHeader" Style="{DynamicResource GscRedesignWorkspaceHeroCard}">
+                <Border x:Name="SettingsHeader" Style="{DynamicResource GscRedesignWorkspaceHeroCard}" ClipToBounds="False">
                 <Grid x:Name="SettingsHeaderGrid">
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition x:Name="SettingsHeaderHintRow" Height="0"/></Grid.RowDefinitions>
                     <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>

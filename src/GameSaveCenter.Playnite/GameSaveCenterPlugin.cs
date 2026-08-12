@@ -76,6 +76,7 @@ namespace GameSaveCenter.Playnite
         public event EventHandler? VisualSettingsChanged;
         public event EventHandler<UiNotificationEventArgs>? UiNotificationRequested;
         public event EventHandler<UiConfirmationEventArgs>? UiConfirmationRequested;
+        internal event Action<Guid>? PlayniteGameStarted;
 
         public override void OnApplicationStarted(OnApplicationStartedEventArgs args)
         {
@@ -130,6 +131,7 @@ namespace GameSaveCenter.Playnite
 
         public override void OnGameStarted(OnGameStartedEventArgs args)
         {
+            PlayniteGameStarted?.Invoke(args.Game.Id);
             FireAndForget(async () =>
             {
                 await EnsureWorkerAsync();

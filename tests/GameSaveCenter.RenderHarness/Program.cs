@@ -81,6 +81,7 @@ public static class Program
             }
 
             RunDataGridScrollProbes(report);
+            RunSettingsLayoutProbes(report);
 
             if (s_problems.Count > 0)
             {
@@ -375,6 +376,62 @@ public static class Program
             ProbeGrid(report, "Maintenance-AuditLog", "MaintenanceAuditLogGrid", 3, height,
                 () => new MaintenanceView { DataContext = new FakeDashboardData(60) },
                 view => ((MaintenanceView)view).ApplyResponsiveLayout(900, height));
+        }
+    }
+
+    private static void RunSettingsLayoutProbes(StringBuilder report)
+    {
+        var apply = typeof(GameSaveCenterSettingsView).GetMethod(
+            "ApplyResponsiveLayout",
+            BindingFlags.Instance | BindingFlags.NonPublic);
+        if (apply == null)
+            throw new InvalidOperationException("GameSaveCenterSettingsView.ApplyResponsiveLayout not found.");
+
+        foreach (var width in new[] { 760d, 880d, 920d, 1100d, 1400d })
+        {
+            foreach (var height in new[] { 560d, 700d, 900d })
+            {
+                try
+                {
+                    var view = new GameSaveCenterSettingsView { DataContext = new GameSaveCenterSettings() };
+                    var host = new Grid
+                    {
+                        Width = width,
+                        Height = height,
+                        Background = new SolidColorBrush(Color.FromRgb(24, 30, 43)),
+                        ClipToBounds = true
+                    };
+                    host.Children.Add(view);
+                    apply.Invoke(view, new object[] { width, height });
+                    host.Measure(new Size(width, height));
+                    host.Arrange(new Rect(0, 0, width, height));
+                    host.UpdateLayout();
+                    apply.Invoke(view, new object[] { width, height });
+                    host.UpdateLayout();
+
+                    var header = FindVisualChildren<FrameworkElement>(host).FirstOrDefault(element => element.Name == "SettingsHeader");
+                    var tabs = FindVisualChildren<TabControl>(host).FirstOrDefault();
+                    var tabItems = FindVisualChildren<TabItem>(host).Where(item => item.Parent != null).ToList();
+                    var headerScroller = FindVisualChildren<ScrollViewer>(host).FirstOrDefault(scroller => scroller.Name == "SettingsHeaderScroller");
+                    var visibleTabs = tabItems.Count(item => item.Visibility == Visibility.Visible);
+                    var minTabWidth = tabItems.Count == 0 ? 0 : tabItems.Min(item => item.ActualWidth);
+                    var minTabHeight = tabItems.Count == 0 ? 0 : tabItems.Min(item => item.ActualHeight);
+                    report.AppendLine(
+                        $"  SettingsLayout w={width:0} h={height:0} headerH={(header?.ActualHeight ?? double.NaN):0.##} tabs={(tabs == null ? -1 : tabs.Items.Count)} tabItems={tabItems.Count} visible={visibleTabs} minW={minTabWidth:0.##} minH={minTabHeight:0.##} scroller={(headerScroller == null ? "missing" : headerScroller.GetType().Name)}");
+                    if (header == null || header.ActualHeight <= 0)
+                        s_problems.Add($"SettingsLayout w={width:0} h={height:0} header is not visible");
+                    if (tabs == null || tabs.Items.Count != 5)
+                        s_problems.Add($"SettingsLayout w={width:0} h={height:0} expected 5 categories, got {(tabs == null ? 0 : tabs.Items.Count)}");
+                    if (tabItems.Count < 5 || tabItems.Any(item => item.Visibility != Visibility.Visible || item.ActualWidth <= 0 || item.ActualHeight <= 0))
+                        s_problems.Add($"SettingsLayout w={width:0} h={height:0} not all category tabs are visible and measurable");
+                    if (headerScroller == null)
+                        s_problems.Add($"SettingsLayout w={width:0} h={height:0} category rail has no scroll access");
+                }
+                catch (Exception ex)
+                {
+                    s_problems.Add($"SettingsLayout w={width:0} h={height:0} failed: {ex.Message}");
+                }
+            }
         }
     }
 

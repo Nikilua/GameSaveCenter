@@ -41,7 +41,9 @@
 - UI-206 初始方案（SUPERSEDED）：提交 `962a6b0` 曾把共享与关键 DataGrid Style 改为 `VirtualizingPanel.ScrollUnit=Pixel`，并把 Maintenance/Task 表格由强制 `Height` 改为 `Height=double.NaN + MaxHeight`；该 Pixel 方案已由真实 Playnite A/B 验证为回归并撤回，仅保留历史记录，不作为当前方案。
 - DataGrid 最终结论（`d9cd82f`/`0ce3388`/`4564c8f`）：Pixel ScrollUnit 经真实 Playnite A/B 验证会回归，已撤回；当前采用 `Item` + `GscStableDataGridRow` 稳定行样式 + geometry probe（gap ≤4 DIP、末行完整、Recycling 保持）。不要重新改回 Pixel。
 
-当前测试基线：Core 13、Worker 51、Playnite 179；render-qa 全绿；源码验证与技能静态审查通过。PERF-004～010 与 GAME-TOOL-001/002 已收口，不要重新打开。
+本机最近一个本地提交（未推送）：`界面：完善设置布局与当前游戏上下文`，完成设置页分类滚动/Header 不裁剪、运行中游戏自动定位、上次选择恢复、GamePicker 新用户默认“已安装”与当前游戏真实 Icon。
+
+当前测试基线：Core 13、Worker 51、Playnite 195；render-qa 全绿；源码验证与技能静态审查通过。PERF-004～010 与 GAME-TOOL-001/002 已收口，不要重新打开。
 
 ## 项目目标
 
@@ -85,7 +87,8 @@
 ## 合并后当前交接基线（2026-08-11）
 
 - 分支：`main`
-- 当前 UI 交接基线：`0c6f143`（`文档：进度表补充 QA 收口最终结论`）；生产 UI 最近相关提交 `0ce3388`（DataGrid 稳定行样式 + geometry probe）与 `4564c8f`（诊断摘要非裁剪）。DataGrid 最终采用 `Item + GscStableDataGridRow`，Pixel 已真机验证并撤回。
+- 当前 UI 交接基线：本轮本地提交 `界面：完善设置布局与当前游戏上下文`（hash 以 `git log -1` 为准；本任务不 push）；生产 UI 最近相关提交 `0ce3388`（DataGrid 稳定行样式 + geometry probe）与 `4564c8f`（诊断摘要非裁剪）。DataGrid 最终采用 `Item + GscStableDataGridRow`，Pixel 已真机验证并撤回。
+- UI-207（本轮）：设置页 Header 不裁剪、分类栏宽/窄滚动与选中 BringIntoView；打开 Dashboard 自动定位运行中游戏（否则恢复上次选择/首个已安装），GameStarted 事件驱动、普通刷新不抢回；GamePicker 新用户默认“已安装”；当前游戏显示真实 Playnite Icon（UI-only provider，LRU 48，失败 fallback 手柄 glyph）。Core 13 / Worker 51 / Playnite 195、render-qa 全绿、一键构建安装成功；真实设置页/自动定位/Icon 与 1080p/4K/DPI 人工验收标记 BLOCKED_ENVIRONMENT。
 - 上一合并提交：`e87e2af`（`merge: reconcile local and cross-machine UI migration`）
 - 合并共同基线：`9cdd975`；本机 UI-173～UI-181 与 `origin/main` 的 UI-181～UI-183、交接文档线均已保留，没有删除任一方共同基线后的提交。
 - 本机额外 WIP 已先由 `e61d0fc` 固化后纳入合并；本机的长期约束已追加到 `docs/PROJECT_MEMORY.md` 的 `MERGE-001`，远端既有记忆条目保持原文。

@@ -369,17 +369,26 @@
             <Setter.Value>
                 <ControlTemplate TargetType="TabControl">
                     <DockPanel KeyboardNavigation.TabNavigation="Local" LastChildFill="True">
-                        <TabPanel x:Name="HeaderPanel" IsItemsHost="True"
-                                  DockPanel.Dock="Left"
-                                  Margin="0,0,16,0" KeyboardNavigation.TabIndex="1"/>
+                        <ScrollViewer x:Name="SettingsHeaderScroller"
+                                      DockPanel.Dock="Left"
+                                      Margin="0,0,16,0"
+                                      HorizontalScrollBarVisibility="Disabled"
+                                      VerticalScrollBarVisibility="Auto"
+                                      CanContentScroll="False"
+                                      Focusable="False"
+                                      KeyboardNavigation.TabNavigation="Local">
+                            <TabPanel x:Name="HeaderPanel" IsItemsHost="True" KeyboardNavigation.TabIndex="1"/>
+                        </ScrollViewer>
                         <ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent"
                                           HorizontalAlignment="Stretch" VerticalAlignment="Top"
                                           SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                     </DockPanel>
                     <ControlTemplate.Triggers>
                         <Trigger Property="TabStripPlacement" Value="Top">
-                            <Setter TargetName="HeaderPanel" Property="Margin" Value="0,0,0,12"/>
-                            <Setter TargetName="HeaderPanel" Property="DockPanel.Dock" Value="Top"/>
+                            <Setter TargetName="SettingsHeaderScroller" Property="Margin" Value="0,0,0,12"/>
+                            <Setter TargetName="SettingsHeaderScroller" Property="DockPanel.Dock" Value="Top"/>
+                            <Setter TargetName="SettingsHeaderScroller" Property="HorizontalScrollBarVisibility" Value="Auto"/>
+                            <Setter TargetName="SettingsHeaderScroller" Property="VerticalScrollBarVisibility" Value="Disabled"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

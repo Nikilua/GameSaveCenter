@@ -1459,6 +1459,54 @@ def check_wpf_ui_production_scope_guards() -> None:
     if "async void" in settings_code:
         fail("Settings WPF-UI event boundary must not introduce async void handlers")
 
+def check_settings_autoselect_guards() -> None:
+    """Gate the current-game auto-select, default filter and UI-only icon work."""
+    playnite = ROOT / "src/GameSaveCenter.Playnite"
+    settings = (playnite / "Settings/GameSaveCenterSettings.cs").read_text(encoding="utf-8")
+    picker = (playnite / "ViewModels/GamePickerViewModel.cs").read_text(encoding="utf-8")
+    resolver = (playnite / "Infrastructure/GameSelectionResolver.cs").read_text(encoding="utf-8")
+    icon = (playnite / "Infrastructure/PlayniteGameIconProvider.cs").read_text(encoding="utf-8")
+    view_model = (playnite / "ViewModels/DashboardViewModel.cs").read_text(encoding="utf-8")
+    plugin = (playnite / "GameSaveCenterPlugin.cs").read_text(encoding="utf-8")
+    dashboard = (playnite / "Views/DashboardView.xaml").read_text(encoding="utf-8")
+    settings_view = (playnite / "Settings/GameSaveCenterSettingsView.xaml").read_text(encoding="utf-8")
+    settings_code = (playnite / "Settings/GameSaveCenterSettingsView.xaml.cs").read_text(encoding="utf-8")
+    redesign = (playnite / "Themes/Redesign.xaml").read_text(encoding="utf-8")
+
+    if 'private string statusFilter = "已安装";' not in picker:
+        fail("GamePicker fresh filter must default to 已安装")
+    if 'public string GamePickerStatusFilter { get; set; } = "已安装";' not in settings:
+        fail("Settings GamePickerStatusFilter must default to 已安装")
+    if "PlayniteGameStarted?.Invoke(args.Game.Id);" not in plugin:
+        fail("Plugin must publish PlayniteGameStarted")
+    if "plugin.PlayniteGameStarted += OnPlayniteGameStarted;" not in view_model:
+        fail("DashboardViewModel must subscribe to PlayniteGameStarted")
+    if "plugin.PlayniteGameStarted -= OnPlayniteGameStarted;" not in view_model:
+        fail("DashboardViewModel must unsubscribe PlayniteGameStarted")
+    for forbidden in ("DispatcherTimer", "System.Threading.Timer", "Process.GetProcesses"):
+        if forbidden in resolver:
+            fail(f"Auto-select resolver must not poll or scan processes: {forbidden}")
+    for forbidden in ("HttpClient", "WebClient", "WebRequest"):
+        if forbidden in icon:
+            fail(f"Icon provider must not perform network IO: {forbidden}")
+    if 'ClipToBounds="False"' not in settings_view:
+        fail("Settings header must not clip its title/icon/subtitle")
+    if 'x:Name="SettingsHeaderScroller"' not in redesign:
+        fail("Settings category rail must expose a scroll surface")
+    if "HorizontalScrollBarVisibility=\"Auto\"" not in redesign:
+        fail("Settings compact category rail must allow horizontal scrolling")
+    if "VerticalScrollBarVisibility=\"Auto\"" not in redesign:
+        fail("Settings expanded category rail must allow vertical scrolling")
+    if "SettingsSectionTabs.SelectionChanged += OnSettingsTabSelectionChanged;" not in settings_code:
+        fail("Settings must keep the selected category visible")
+    if "selected.BringIntoView()" not in settings_code:
+        fail("Settings selected category must call BringIntoView")
+    marker = 'ItemsSource="{Binding GamePicker.ItemsView}"'
+    if marker in dashboard:
+        tail = dashboard[dashboard.index(marker):dashboard.index(marker) + 2000]
+        if "SelectedGameIcon" in tail:
+            fail("GamePicker rows must not load real icons")
+
 def main() -> int:
     check_structured_files()
     check_csharp_delimiters()
@@ -1490,6 +1538,7 @@ def main() -> int:
     check_final_redesign_guards()
     check_wpf_ui_production_scope_guards()
     check_wpf_ui_probe_guards()
+    check_settings_autoselect_guards()
     if ERRORS:
         print("Source validation failed:")
         for item in ERRORS:

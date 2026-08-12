@@ -1,5 +1,7 @@
 # 开发实现进度
 
+- [x] UI-207（2026-08-12）：设置页 Header `ClipToBounds=False`，分类栏宽/窄两种布局都走 ScrollViewer（宽 920+ DIP 左栏垂直 Auto、窄 920- 顶栏水平 Auto），选中分类自动 `BringIntoView()`，5 个分类完整可达；Dashboard 打开时按 `GameSelectionResolver` 自动定位运行中游戏，无运行时恢复 `GamePickerSelectedGameId`，否则首个已安装；`PlayniteGameStarted` 事件驱动切换且普通刷新不抢回用户手动选择；GamePicker 新用户默认“已安装”；当前游戏显示真实 Playnite Icon（UI-only provider，48 decode/Freeze/LRU 48/无网络，失败 fallback 手柄 glyph）。没有新增 Timer/进程扫描/IPC/网络，未改 DataGrid 滚动代码与 Worker 业务。验证：源码门禁、Core 13/13、Worker 51/51、Playnite 195/195、Release 构建 0 警告/0 错误、render-qa 全绿（含 15 组 SettingsLayout 探针）、一键构建安装成功；真实设置页/自动定位/Icon/1080p/4K/DPI 人工验收待用户环境（BLOCKED_ENVIRONMENT）。
+
 - [x] SKILL-001（2026-08-11）：`wpf-apple-desktop-ui` 技能接入仓库 `.codex/skills/wpf-apple-desktop-ui/`（随仓库提交），并安装到本机 `%USERPROFILE%\.codex\skills\wpf-apple-desktop-ui`；AGENTS.md、DEVELOPMENT_HANDOFF.md、UI_CHANGE_GATE.md 与 PROJECT_MEMORY.md 已同步仓库内技能路径，UI 门禁新增 `python .codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py .` 静态审查。该技能用于所有后续 WPF/XAML/Playnite UI 工作。
 
 - [x] QA-001（2026-08-11）：新增可复用离屏渲染 QA：`tests/GameSaveCenter.RenderHarness`（假数据、不启动 Worker/IPC）+ `scripts/render-qa.ps1`，覆盖 1040×700/1280×720/1366×768/1600×900/1920×1080 逻辑窗口，输出 PNG 与 `artifacts/ui-qa/render/render-qa-report.txt`。1040×700 复核：Media 主表 350 DIP 高 6 行、Task 队列 350 DIP 高 8 行、Maintenance 主表 350 DIP 高 8 行，页面滚动面 `Auto` 且内容超限可滚动，Overview 堆叠由页面滚动承载、风险区内容 496 DIP 完整；技能静态审查 0 error。脚本固化 `-m:1 -nodeReuse:false -p:NuGetAudit=false`，规避本机 SDK 9.0.302 多节点 `GetTargetFrameworks` 静默失败。真实 Playnite 宿主、主题、DPI 与连续缩放仍需手工验收。

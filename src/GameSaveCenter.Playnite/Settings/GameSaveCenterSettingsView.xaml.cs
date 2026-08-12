@@ -25,6 +25,7 @@ namespace GameSaveCenter.Playnite.Settings
         public GameSaveCenterSettingsView()
         {
             InitializeComponent();
+            SettingsSectionTabs.SelectionChanged += OnSettingsTabSelectionChanged;
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
             IsVisibleChanged += OnIsVisibleChanged;
@@ -103,6 +104,12 @@ namespace GameSaveCenter.Playnite.Settings
         private void OnThemeModeChanged(object sender, SelectionChangedEventArgs e)
         {
             QueueAdaptiveThemeUpdate();
+        }
+
+        private void OnSettingsTabSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (SettingsSectionTabs.SelectedItem is FrameworkElement selected)
+                BeginUiSafely(() => selected.BringIntoView(), DispatcherPriority.Loaded);
         }
 
         private void OnVisualSettingChanged(object sender, RoutedEventArgs e)
@@ -351,7 +358,7 @@ namespace GameSaveCenter.Playnite.Settings
             // Settings uses the same four product breakpoints as Dashboard.  The category
             // rail moves above the content before it can squeeze forms or create horizontal
             // scrolling; fields then collapse independently according to their readable width.
-            var expanded = layoutWidth >= 1180;
+            var expanded = layoutWidth >= 920;
             var compact = layoutWidth < 920;
             var narrow = layoutWidth < 720;
             var horizontalMargin = narrow ? 10 : 18;
@@ -393,6 +400,8 @@ namespace GameSaveCenter.Playnite.Settings
             {
                 if (!(item is TabItem tab)) continue;
                 tab.MinWidth = compact ? (narrow ? 132 : 158) : 218;
+                tab.MinHeight = compact ? 44 : 72;
+                tab.HorizontalContentAlignment = HorizontalAlignment.Stretch;
                 tab.Margin = compact ? new Thickness(0, 0, 8, 8) : new Thickness(0, 0, 0, 10);
             }
 

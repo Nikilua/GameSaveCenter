@@ -22,6 +22,8 @@
 
 > UI-205（2026-08-11）：动态筛选下拉框的 Items 物化可能晚于 DataBind，因此恢复默认不能只做一次。TaskCenter 必须保留 200ms `DispatcherTimer` 短周期重试（最多 25 次），并停止于三个下拉框均有选中值或页面卸载；GamePicker 在平台选项重建与面板打开时用 `DataBind` + `Loaded` 两级恢复。新增恢复逻辑不得覆盖用户真实选择。
 
+> UI-207（2026-08-12）：当前游戏上下文与设置页布局收口为不可丢失约束。设置页 `SettingsHeader` 必须保持 `ClipToBounds=False`；`GscRedesignSettingsTabControl` 分类栏必须是 ScrollViewer（宽布局垂直 Auto、窄布局水平 Auto），选中 Tab 必须 `BringIntoView()`，5 个分类不能消失。Dashboard 打开时游戏选择按 `GameSelectionResolver` 顺序执行：运行中优先（持久化 id → 最近 `GameStarted` → 最近活动），否则恢复 `GamePickerSelectedGameId`，否则首个已安装，空库为 null；只有首次打开或新 `PlayniteGameStarted` 事件可以自动切换，普通刷新不得抢回用户手动选择。GamePicker 新用户默认状态筛选为“已安装”，空值/未知值归一，已有明确配置保留。当前选中游戏 Icon 只能通过 UI-only `PlayniteGameIconProvider` 加载（48 max decode、Freeze、LRU 48、无网络、失败 fallback 手柄 glyph），GamePicker 列表禁止加载真实 Icon；不新增 Timer、进程扫描或 IPC 轮询。
+
 > PERF-001（2026-08-11）：Dashboard 所有大列表必须使用 `BatchObservableCollection<T>` 并通过 `ReplaceAll` 批量替换，禁止用 `Clear()+Add()` 逐条通知 WPF；`DashboardViewModel.Replace` 已自动路由。后续新增 UI 绑定集合时优先使用批量集合；render-qa 的 `render_ms` 是页面渲染耗时基线，性能改动前后都要记录。
 
 > PERF-002（2026-08-11）：`RebuildTaskFilters` 必须保留任务指纹短路：`ComputeTaskFilterFingerprint`（TaskId 顺序 + 数量）未变化时跳过游戏/类型选项重建，避免完整快照每轮做 O(n log n) 的 Distinct+OrderBy。用户筛选变化仍由 `TaskStatusFilter/TaskGameFilter/TaskTypeFilter` setter 直接 `TasksView.Refresh()`。

@@ -13,7 +13,7 @@ namespace GameSaveCenter.Playnite.Tests
         {
             using var picker = new GamePickerViewModel();
 
-            Assert.Equal("全部", picker.StatusFilter);
+            Assert.Equal("已安装", picker.StatusFilter);
             Assert.Equal("全部", picker.PlatformFilter);
             Assert.Equal("名称", picker.SortMode);
             Assert.Equal("全部", picker.StatusFilterOptions[0]);
@@ -103,6 +103,29 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Equal("全部", picker.StatusFilter);
             Assert.Equal("Steam", picker.PlatformFilter);
             Assert.Equal("最近游玩", picker.SortMode);
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("未知值")]
+        public void FreshOrUnknownStatusDefaultsToInstalled(string? persistedStatus)
+        {
+            using var picker = new GamePickerViewModel();
+
+            picker.ApplyPersistedState(null, persistedStatus, null, null);
+
+            Assert.Equal("已安装", picker.StatusFilter);
+        }
+
+        [Fact]
+        public void ExplicitPersistedStatusIsPreserved()
+        {
+            using var picker = new GamePickerViewModel();
+
+            picker.ApplyPersistedState(null, "有备份", null, null);
+
+            Assert.Equal("有备份", picker.StatusFilter);
         }
 
         [Fact]
