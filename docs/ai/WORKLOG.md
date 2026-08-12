@@ -2,6 +2,33 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-12 RELIABILITY-RESTORE-001-FOLLOWUP 恢复可用性安全闭环与灾难演练
+
+**实现内容：**
+
+- 复用已有 Restore Readiness，不重写恢复体系；严格解析 Manifest，拒绝非法/重复/越界路径，逐文件比对归档路径集合、大小和可用 SHA-256，Manifest 缺失文件不再误判为 `Ready`。
+- Manifest 损坏返回 `Failed`；隔离目录创建/访问失败返回 `Failed`；取消继续由 `CancellationToken` 传播；所有提取仍只进入应用自有临时目录并在完成后清理。
+- 为现有 RestoreOrchestrator 抽出最小测试接口，生产仍注入现有 concrete service；新增临时 SQLite + 内存假 Ludusavi 灾难演练，覆盖恢复失败自动回滚、成功恢复后 Undo、游戏运行时阻止恢复。
+
+**主要修改文件：**
+
+- `src/GameSaveCenter.Worker/Services/RestoreReadinessService.cs`
+- `src/GameSaveCenter.Worker/Services/RestoreOrchestrator.cs`
+- `src/GameSaveCenter.Worker/Infrastructure/IRestoreClient.cs`
+- `src/GameSaveCenter.Worker/Services/RestoreDependencies.cs`
+- `tests/GameSaveCenter.Worker.Tests/RestoreReadinessTests.cs`
+- `tests/GameSaveCenter.Worker.Tests/RestoreOrchestratorTests.cs`
+
+**验证结果：**
+
+- Worker Release 构建：0 警告、0 错误。
+- Worker 测试：67/67 通过；包括正常/损坏/缺失 Manifest/Hash 不匹配/取消/隔离目录失败及恢复演练。
+- 自动化演练只使用临时目录、临时 SQLite 和内存假客户端；真实 Playnite、Ludusavi、游戏目录和真实 Restore/Undo 尚未验证（MANUAL QA REQUIRED）。
+
+**提交：** `d45f65c feat: harden restore readiness and recovery drills`
+
+**下一项：** `POLICY-001`，继续复用现有 per-game policy，不新增主页面。
+
 ## 2026-08-12 UI-207-FOLLOWUP-REVALIDATION 当前游戏上下文与设置布局复验
 
 **复验结论：**

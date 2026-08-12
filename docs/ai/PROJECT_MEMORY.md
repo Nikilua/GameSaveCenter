@@ -34,7 +34,7 @@
 - Solution：`GameSaveCenter.sln`，版本 `0.6.70-development-preview`（`Directory.Build.props` 0.6.70）。
 - 插件入口：`src/GameSaveCenter.Playnite/GameSaveCenterPlugin.cs`，扩展 ID `66e9f2d7-67bb-43ef-b62a-b8e60734fcec`。
 - Worker 入口：`src/GameSaveCenter.Worker`，IPC dispatcher 为 `IpcRequestDispatcher`。
-- 测试：Core 27、Worker 59、Playnite 197（PROTECTION-001，2026-08-12 当前基线；测试输出需必要时使用隔离目录避免本机旧目标文件锁）。
+- 测试：Core 27、Worker 67、Playnite 197（RELIABILITY-RESTORE-001，2026-08-12 当前基线；测试输出需必要时使用隔离目录避免本机旧目标文件锁）。
 
 ### Dashboard / Workspace
 - `DashboardViewModel` 是大型聚合 ViewModel（技术债，暂不拆分），持有所有 Workspace 数据与命令。
@@ -48,7 +48,7 @@
 - `GscSelectedGameIconControl` 只用于当前游戏上下文表面（Dashboard、Overview、Save、Trainer、Media），GamePicker 虚拟化列表不得加载真实 Icon。
 - GamePicker 选择可被当前筛选隐藏但不能静默丢失；必须保留 `SelectedItem`、显示恢复语义并保持 `GamePickerSelectedGameId` 持久化。默认筛选只对新用户/未知值归一为“已安装”。
 - 事件驱动的 `PlayniteGameStarted` 自动定位优先于普通刷新；游戏停止不改变当前选择。不得为此新增轮询、进程扫描、IPC 或网络请求，也不得改动 DataGrid 滚动/虚拟化契约。
-- 当前自动化结果：源码门禁、WPF 静态门禁、Release 构建、Core 27/27、Worker 59/59、Playnite 197/197、render-qa 均通过；真实 Playnite 宿主/DPI/主题人工验证仍待环境。
+- 当前自动化结果：本阶段 Worker 相关 Release 构建 0 警告/0 错误，Worker 67/67 通过；上一阶段 Core 27/27、Playnite 197/197、render-qa 通过。真实 Playnite 宿主/DPI/主题人工验证仍待环境。
 
 ### 数据流
 - Playnite → Worker：Named Pipe 请求（`GameSaveCenter.Playnite/Ipc`、`GameSaveCenter.Worker/Ipc`）。
@@ -118,9 +118,11 @@
 ## 2026-08-12 可靠性阶段补充
 
 - `RELIABILITY-RESTORE-001` 已实现：备份历史版本支持非破坏性的恢复可用性检查，结果持久化在 `backup_versions.restore_readiness_json`，检查过程只在应用数据目录隔离提取，不接触真实存档目录。
+- `d45f65c` 已补齐恢复校验安全闭环：Manifest 非法、重复/越界路径、Manifest 缺失文件现在不能得到 `Ready`；逐文件路径集合、大小、可用 Hash 和提取结果均纳入判定，验证目录创建失败返回 `Failed`，取消仍由调用方观察。
+- `d45f65c` 为恢复编排增加窄接口测试边界，并用临时 SQLite + 内存假 Ludusavi 完成 A→PreRestore→B→失败回滚、成功恢复→Undo、运行中拒绝恢复等灾难演练；未启动 Playnite、未调用真实 Ludusavi、未接触真实存档。
 - Ludusavi 备份版本的 `backupPath + backup ID` 已持久化为 `backup_versions.archive_path`；Simple 归档、缺失/损坏 ZIP、路径穿越、超大展开量、不一致统计与不支持压缩方式必须返回明确状态。
 - 恢复可用性入口位于现有 Save Center 历史 Inspector，不能新建页面或改变 `SaveHistoryGrid` 的滚动/虚拟化骨架；新增内容必须留在 `SaveHistoryActionsScrollViewer` 内，并继续通过 `render-qa` 验证 1040×700 等窗口。
-- 当前测试基线为 Core 13、Worker 58、Playnite 197；本阶段源码门禁、WPF 静态门禁、隔离渲染 QA 和 Release 构建均已通过。真实 Playnite 宿主、主题/DPI 人工验收仍待用户环境确认。
+- 初始实现的历史基线为 Core 13、Worker 58、Playnite 197；当前阶段增量基线为 Worker 67/67，生产 Worker Release 构建 0 警告/0 错误。真实 Playnite 宿主、主题/DPI 人工验收仍待用户环境确认。
 - 该恢复可用性阶段的下一项已在后续 `HEALTH-001` 完成；历史记录保留原阶段编号，当前开发顺序见下方 HEALTH-001 补充。
 
 ## 2026-08-12 HEALTH-001 阶段补充
@@ -130,7 +132,7 @@
 - Worker 的 `GetDashboardGameRecordsAsync` 一次聚合最新备份可用性、任务失败、finding 和媒体/策略数据；`DashboardService` 只在内存中计算四态和理由，并把 `WarningGames = AttentionGames + RiskGames`，`UnknownGames` 不误计入需处理数。
 - UI 改动只复用首页统计卡、Dashboard 游戏列表/选中头部和 Save Center 校验区；四态在有限宽度下不新增列或固定宽度，理由使用已有 Tooltip，旧 `Ready` 夹具继续显示绿色。Snapshot comparer 已比较健康摘要与理由列表。
 - 当前测试基线为 Core 19、Worker 59、Playnite 197；源码门禁、XAML 门禁、WPF 静态门禁、隔离 Release 构建和 render-qa 已通过。真实 Playnite 宿主、主题/DPI 人工验收仍待用户环境确认。
-- 下一项按附件顺序为 `PROTECTION-001`；不要重做恢复可用性或健康摘要，不新增主页面，继续采用小阶段、独立 commit、文档和 push。
+- 当前已完成 Restore Readiness、Health、Protection 三项；下一项按附件顺序为 `POLICY-001`，不要重做上述功能，不新增主页面，继续采用小阶段、独立 commit、文档和 push。
 
 ## 2026-08-12 PROTECTION-001 阶段补充
 

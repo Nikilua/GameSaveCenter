@@ -41,9 +41,9 @@
 - UI-206 初始方案（SUPERSEDED）：提交 `962a6b0` 曾把共享与关键 DataGrid Style 改为 `VirtualizingPanel.ScrollUnit=Pixel`，并把 Maintenance/Task 表格由强制 `Height` 改为 `Height=double.NaN + MaxHeight`；该 Pixel 方案已由真实 Playnite A/B 验证为回归并撤回，仅保留历史记录，不作为当前方案。
 - DataGrid 最终结论（`d9cd82f`/`0ce3388`/`4564c8f`）：Pixel ScrollUnit 经真实 Playnite A/B 验证会回归，已撤回；当前采用 `Item` + `GscStableDataGridRow` 稳定行样式 + geometry probe（gap ≤4 DIP、末行完整、Recycling 保持）。不要重新改回 Pixel。
 
-本机最近一个本地提交（未推送）：`c205c74 feat: add recent protection summary`。UI-207 的设置布局、运行中游戏自动定位、上次选择恢复、GamePicker 新用户默认“已安装”和当前游戏真实 Icon 已由 `d2662e3` 收口。
+本机最近两个本地提交（未推送）：`e86e461 docs: record UI-207 revalidation baseline`、`d45f65c feat: harden restore readiness and recovery drills`。UI-207 的设置布局、运行中游戏自动定位、上次选择恢复、GamePicker 新用户默认“已安装”和当前游戏真实 Icon 已由 `d2662e3` 收口；Restore Readiness 的严格 Manifest 校验与恢复灾难演练已由 `d45f65c` 收口。
 
-当前测试基线：Core 27、Worker 59、Playnite 197；render-qa 全绿；源码验证与技能静态审查通过。PROTECTION-001 已收口，下一阶段为 POLICY-001；不要重复打开已完成的 UI-207、PERF-004～010 与 GAME-TOOL-001/002。
+当前测试基线：Core 27、Worker 67、Playnite 197；本阶段 Worker Release 构建 0 警告/0 错误，Restore Readiness/恢复演练 67/67；上一阶段 render-qa 全绿，源码验证与技能静态审查通过。下一阶段为 POLICY-001；不要重复打开已完成的 UI-207、RELIABILITY-RESTORE-001、HEALTH-001、PROTECTION-001、PERF-004～010 与 GAME-TOOL-001/002。
 
 ## 项目目标
 
