@@ -2,6 +2,38 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-13 NOTIFY-001 / MULTI-DEVICE-001 / RCLONE-RELIABILITY-001 会话摘要、设备分叉与云端可靠性
+
+**实现内容：**
+
+- 退出备份与媒体任务现在携带同一 `SessionId`，任务数据库和事件广播保留该字段；Playnite 对同一游戏会话的终态任务做一次聚合通知，避免“备份完成 / 媒体完成 / 云同步完成”连续弹出。摘要直接基于 Task Center 使用的 `TaskStatusDto` 终态生成：本地备份成功、云端失败、媒体失败和取消状态分别可见；Rclone 云端失败仍明确显示本地备份已保留。
+- 多设备摘要增加 `ParentBackupId` 共同基线。两台设备从同一父版本产生不同子版本时标记 `DivergedFromCommonBase`，已知父子线性关系不误报冲突；仍然只记录人工决策，不自动选择、合并、覆盖或删除任何一方。旧 SQLite 通过既有 `EnsureColumnAsync` 与备份版本迁移安全补列。
+- Rclone 错误分类为网络、不完整传输、凭据、权限、远端不存在和未知错误。只有网络/不完整传输进入既有有限退避；凭据、权限和远端配置错误显示明确可行动错误并停止自动重试。本地备份不会因云端失败被删除，命令白名单仍为 `copy/check/lsf/cat/version`，没有 `sync/delete/purge/move`。
+
+**主要修改文件：**
+
+- `src/GameSaveCenter.Contracts/GameDtos.cs`、`OperationDtos.cs`、`DashboardDtos.cs`、`DeviceStateDtos.cs`
+- `src/GameSaveCenter.Core/Services/GameSessionSummaryBuilder.cs`、`DeviceConflictDetector.cs`、`Models/DomainModels.cs`
+- `src/GameSaveCenter.Worker/Services/GameSessionCoordinator.cs`、`TaskCoordinator.cs`、`BackupOrchestrator.cs`、`MediaSyncService.cs`、`CloudRetryService.cs`、`RcloneFailureClassifier.cs`
+- `src/GameSaveCenter.Worker/Persistence/SqliteStateStore.cs`、`Ipc/TaskEventBroadcaster.cs`
+- `src/GameSaveCenter.Playnite/GameSaveCenterPlugin.cs`、`ViewModels/DashboardViewModel.cs`、`Infrastructure/SnapshotComparers.cs`
+- `tests/GameSaveCenter.Core.Tests/GameSessionSummaryBuilderTests.cs`、`DeviceConflictDetectorTests.cs`、`tests/GameSaveCenter.Worker.Tests/CloudRetryPersistenceTests.cs`、`DashboardHealthPersistenceTests.cs`
+
+**验证结果：**
+
+- Core Release：0 警告、0 错误；Core 测试 35/35。
+- Worker Release：0 警告、0 错误；Worker 测试 81/81。
+- Playnite Release：0 警告、0 错误；Playnite 测试 202/202。
+- `git diff --check`、`scripts/check-xaml.ps1`、`scripts/validate-source.py`、WPF 静态校验通过；WPF 校验仍报告仓库既有 33 条 warning、153 条 info，无 error。
+
+**AUTO VERIFIED：**任务 SessionId/SQLite 往返、退出摘要纯逻辑、共同基线冲突判定、Rclone 错误分类与有限重试策略、代码构建和测试、XAML/WPF/source 门禁。
+
+**MANUAL QA REQUIRED：**真实 Rclone 断网/凭据过期/远端部分上传；真实两台设备分叉与隔离恢复；真实 Playnite 最终包扩展扫描、主题/DPI/键盘和退出通知；PID 3896 仍由外部管理员会话持有，当前会话无法终止，因此一键覆盖安装仍需管理员任务管理器结束进程或重启后复验。
+
+**提交：**代码提交 `304054a feat: harden session device and cloud reliability`；冲突赢家必须显式选择的安全修正提交 `3a39853 fix: require explicit device conflict winner`；本条文档随后单独提交。push 到共享 `main` 仍受安全策略阻止，未声称 push 成功。
+
+**最终交接：**Release self-contained 包 `artifacts/GameSaveCenter-0.6.70.pext` 已生成并通过包内容断言；隔离 Playnite 记录到 `Application started`，但截图步骤因当前会话无桌面句柄失败，不能视为真实扩展加载。只剩真实宿主、Rclone、多设备和恢复手工 QA，不新增第 15 项功能。
+
 ## 2026-08-13 SMART-PROTECT-001/002 智能保护提示与最近游戏批量策略
 
 **实现内容：**

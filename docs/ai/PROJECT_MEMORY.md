@@ -34,10 +34,11 @@
 - Solution：`GameSaveCenter.sln`，版本 `0.6.70-development-preview`（`Directory.Build.props` 0.6.70）。
 - 插件入口：`src/GameSaveCenter.Playnite/GameSaveCenterPlugin.cs`，扩展 ID `66e9f2d7-67bb-43ef-b62a-b8e60734fcec`。
 - Worker 入口：`src/GameSaveCenter.Worker`，IPC dispatcher 为 `IpcRequestDispatcher`。
-- 测试：Core 29、Worker 76、Playnite 202（SMART-PROTECT-001/002，2026-08-13 当前基线；测试输出需必要时使用显式 `OutputPath` / `IntermediateOutputPath` 隔离目录，避免本机旧 Worker/测试宿主锁住标准输出）。
+- 测试：Core 35、Worker 81、Playnite 202（2026-08-13 当前基线；测试输出需必要时使用显式 `OutputPath` / `IntermediateOutputPath` 隔离目录，避免本机旧 Worker/测试宿主锁住标准输出）。
 - ONBOARDING-001（2026-08-13）新增 `environment.check`：检查服务驻留 Worker，使用临时 SQLite 表和目录临时文件做可逆探针；Rclone 未配置为 `Skipped`，不把可选云端能力误计为基础失败。当前基线为 Worker 70、Playnite 198；UI 仍复用 Maintenance 诊断页的单一外层滚动与有限表格视口。
 - GAME-TOOL-003/004（2026-08-13）新增 `GameToolIfAlreadyRunning` 与 `GameToolRiskCategory` 持久化列。CustomExecutable 的已有实例策略只允许按解析后的 EXE 完整路径匹配；Skip 为默认，Restart 只重启再次确认过的同路径 PID，路径读取不完整时必须保守停止。反作弊游戏仅允许已分类为 `GeneralUtility` 的自定义工具自动启动；Unknown 与 `GameModification` 自动启动必须阻止并写审计，用户需在 TrainerCenter Inspector 明确分类后保存。
 - SMART-PROTECT-001/002（2026-08-13）：完整游戏停止请求等待存档识别并以持久化提示状态驱动三选一保护提示；只在识别到候选/匹配存档时提示，未识别时写审计并等待后续识别。`Deferred` 有 7 天冷却，`Enabled`/`Dismissed` 不再弹出；停止 IPC 使用 3 分钟专用超时。Overview 最近游戏列表显示已保护、未匹配、存档未保护和风险，已保护项不可选，其余项可批量启用游戏中/退出后推荐保护并写审计。不要新增主导航页或绕过既有恢复安全边界。
+- NOTIFY-001 / MULTI-DEVICE-001 / RCLONE-RELIABILITY-001（2026-08-13）：退出备份与媒体任务使用同一 SessionId，Playnite 依据 Task Center 的终态任务聚合为一条退出摘要；本地备份成功但云端失败时必须同时显示本地成功和云端可重试失败。设备摘要携带 `ParentBackupId`，同一父版本分叉只标记冲突并要求人工决策，禁止自动合并/覆盖/删除；下载远端仍必须进入隔离 staging、校验、归档检查后才能走既有安全恢复链。Rclone 仅允许 copy/check/lsf/cat/version；网络或不完整传输有限重试，凭据/权限/远端不存在明确失败并停止自动重试。
 
 ### Dashboard / Workspace
 - `DashboardViewModel` 是大型聚合 ViewModel（技术债，暂不拆分），持有所有 Workspace 数据与命令。

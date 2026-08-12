@@ -44,6 +44,16 @@ Overview 既有最近保护卡已扩展为最近窗口游戏状态列表：`已�
 
 验证边界不变：当前会话无法完成真实最终包的 Playnite 扩展扫描；PID 3896 仍需要管理员任务管理器结束或重启后才能执行真实覆盖安装。隔离启动/离屏渲染只能证明应用层启动和布局，不得写成“真实宿主加载成功”。
 
+## Codex 2026-08-13 阶段补充（NOTIFY-001 / MULTI-DEVICE-001 / RCLONE-RELIABILITY-001）
+
+退出任务的 `TaskStatusDto.SessionId` 是通知聚合的唯一业务关联；备份与媒体任务必须使用退出会话的 SessionId，Playnite 只在该会话预期任务全部进入终态后发一条摘要。摘要不能另造成功判断，必须复用任务中心终态；云端失败时保留“本地备份完成”事实并给出重试提示。
+
+多设备摘要的 `ParentBackupId` 用于识别共同基线：同父版本的两个不同子版本标记 `DivergedFromCommonBase`，线性父子关系不标记冲突。`PreferLocal`、`PreferRemote`、`KeepBoth` 只持久化用户决定；不得自动合并、自动选择、删除远端或绕过 PreRestore → Restore → Validate → Rollback。
+
+Rclone 可靠性仍是单向安全适配器，只允许 `copy`、`check`、`lsf`、`cat`、`version`。`RcloneFailureClassifier` 将认证、权限、远端不存在、网络和不完整传输转换为稳定错误码；只有网络/不完整传输进入有限退避，凭据/权限类错误不能无限重试。本地历史不得因远端缺失而删除。
+
+当前自动验证基线：Core 35/35、Worker 81/81、Playnite 202/202；三者 Release 构建均 0 警告/0 错误；source、XAML、WPF 静态门禁通过。真实 Rclone、两台设备、真实恢复和最终 Playnite 宿主加载仍为 `MANUAL QA REQUIRED`。PID 3896 的一键覆盖安装阻塞仍需管理员任务管理器结束或重启后处理。
+
 新的 AI/Codex 长期记忆入口已建立：先读 `docs/ai/PROJECT_MEMORY.md` 与 `docs/ai/WORKLOG.md`，再读本文件。
 
 本轮已完成并推送：
