@@ -130,7 +130,10 @@ function Stop-ProcessReliably {
         $processes = @(Get-Process -Name $name -ErrorAction SilentlyContinue)
         foreach ($process in $processes) {
             Write-Host "停止进程：$($process.ProcessName) [$($process.Id)]" -ForegroundColor DarkYellow
-            Stop-Process -Id $process.Id -Force -ErrorAction Stop
+            # The Worker can exit between Get-Process and Stop-Process (for example when
+            # its owning Playnite host is already closing). Treat that race as a successful
+            # stop; the verification loop below still fails if the process remains alive.
+            Stop-Process -Id $process.Id -Force -ErrorAction SilentlyContinue
         }
     }
 
@@ -141,7 +144,7 @@ function Stop-ProcessReliably {
         Start-Sleep -Milliseconds 250
     } while ([DateTime]::UtcNow -lt $deadline)
 
-    throw "无法停止以下进程：$($remaining.ProcessName -join ', ')。请手工关闭后重试。"
+    throw "无法停止以下进程：$($remaining.ProcessName -join ', ')。进程仍在运行且当前会话无权终止；请在管理员任务管理器中结束对应进程，或重启后重试。为避免覆盖正在使用的扩展，安装已停止。"
 }
 
 function Install-ExtensionAtomically {
