@@ -508,4 +508,4 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 
 **测试结果：**
 
-- 待重跑：Worker（预计 51）与 Playnite（179）。
+- Worker 51/51、Playnite 179/179；源码验证通过；远端 `main` 已推送（`bc83562`）。

@@ -7,7 +7,7 @@
 以后可以直接对新的 agent 说：
 
 ```text
-请先读取 GameSaveCenter 项目的 docs/DEVELOPMENT_HANDOFF.md，按照其中的读取顺序、不可丢失约束、开发流程和验证要求继续维护，不要重置或覆盖已有改动。先检查 git status，再根据文件中的当前基线继续下一项 UI 工作；完成后更新项目记忆、开发进度并提交 commit。
+请先读取 GameSaveCenter 项目的 docs/DEVELOPMENT_HANDOFF.md，按照其中的读取顺序、不可丢失约束和验证要求恢复项目上下文。当前代码侧已收口：除非用户提供新的真实问题、日志或明确新需求，否则不要主动开启新的 UI 重构或性能优化；不要重置或覆盖已有改动，先检查 `git status`，完成后更新项目记忆与工作日志并提交 commit。
 ```
 
 ## 必须读取的资料
@@ -38,7 +38,7 @@
 - GAME-TOOL-001/002：自定义启动项 EXE/LNK/BAT/CMD/PS1，外部路径引用不复制文件；`GameToolLauncher` 按类型启动；`GameToolSessionTracker` 只按 Session/PID/StartTime 关闭本会话进程。
 - PERF-007：媒体缩略图异步化（`AsyncThumbnailLoader` 3 并发 + LRU + Freeze，`AsyncThumbnailImage`）。
 - UI-QA-REAL-001：隔离 Playnite 真机冒烟通过，截图在 `artifacts/ui-qa/real/playnite-real.png`；主题/DPI/键盘/缩放与自定义启动项真机流程仍待用户复核。
-- UI-206（提交 `962a6b0`）：DataGrid 滚动几何修复。共享与关键 DataGrid Style 显式 `VirtualizingPanel.ScrollUnit=Pixel`；Maintenance/Task 表格由强制 `Height` 改为 `Height=double.NaN + MaxHeight`；完整诊断摘要移除外层 `ClipToBounds` 与动态高度限制；render-qa 新增 60 行 × 287/311/337/353/419 DIP 滚动探针，滚到底 `offset==scrollable`。2K 窗口化仍待用户真机复核，1080p/4K 标记 BLOCKED_ENVIRONMENT。
+- UI-206 初始方案（SUPERSEDED）：提交 `962a6b0` 曾把共享与关键 DataGrid Style 改为 `VirtualizingPanel.ScrollUnit=Pixel`，并把 Maintenance/Task 表格由强制 `Height` 改为 `Height=double.NaN + MaxHeight`；该 Pixel 方案已由真实 Playnite A/B 验证为回归并撤回，仅保留历史记录，不作为当前方案。
 - DataGrid 最终结论（`d9cd82f`/`0ce3388`/`4564c8f`）：Pixel ScrollUnit 经真实 Playnite A/B 验证会回归，已撤回；当前采用 `Item` + `GscStableDataGridRow` 稳定行样式 + geometry probe（gap ≤4 DIP、末行完整、Recycling 保持）。不要重新改回 Pixel。
 
 当前测试基线：Core 13、Worker 51、Playnite 179；render-qa 全绿；源码验证与技能静态审查通过。PERF-004～010 与 GAME-TOOL-001/002 已收口，不要重新打开。
