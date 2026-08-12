@@ -400,6 +400,7 @@ namespace GameSaveCenter.Playnite.Settings
             {
                 if (!(item is TabItem tab)) continue;
                 tab.MinWidth = compact ? (narrow ? 132 : 158) : 218;
+                tab.Width = compact ? double.NaN : 232;
                 tab.MinHeight = compact ? 44 : 72;
                 tab.HorizontalContentAlignment = HorizontalAlignment.Stretch;
                 tab.Margin = compact ? new Thickness(0, 0, 8, 8) : new Thickness(0, 0, 0, 10);

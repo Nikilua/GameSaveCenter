@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Windows.Data;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Infrastructure;
@@ -30,7 +31,6 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string sortMode = "名称";
         private int filteredCount;
         private bool disposed;
-        private bool rebuildingItems;
         private readonly Dictionary<string, GamePickerItem> itemCache = new Dictionary<string, GamePickerItem>(StringComparer.OrdinalIgnoreCase);
 
         public GamePickerViewModel()
@@ -40,6 +40,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             ItemsView.Filter = FilterItem;
             Items.CollectionChanged += OnItemsChanged;
             RebuildSortDescriptions();
+            ClearSearchCommand = new RelayCommand(_ => SearchText = string.Empty);
+            ShowSelectedGameCommand = new RelayCommand(_ => ShowSelectedGame());
         }
 
         public ObservableCollection<GamePickerItem> Items { get; } = new BatchObservableCollection<GamePickerItem>();
@@ -47,6 +49,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         public IReadOnlyList<string> StatusFilterOptions { get; } = new[] { "全部", "已安装", "已匹配", "有备份", "需处理", "未匹配" };
         public IReadOnlyList<string> SortOptions { get; } = new[] { "名称", "最近游玩", "最近备份" };
         public ObservableCollection<string> PlatformFilterOptions { get; } = new ObservableCollection<string> { "全部" };
+        public ICommand ClearSearchCommand { get; }
+        public ICommand ShowSelectedGameCommand { get; }
 
         public GamePickerItem? SelectedItem
         {
@@ -57,11 +61,13 @@ namespace GameSaveCenter.Playnite.ViewModels
                 selectedItem = value;
                 OnPropertyChanged(nameof(SelectedItem));
                 OnPropertyChanged(nameof(SelectedGame));
+                OnPropertyChanged(nameof(SelectedGameHiddenByFilter));
                 StateChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
         public GameStatusDto? SelectedGame => SelectedItem?.Game;
+        public bool SelectedGameHiddenByFilter => SelectedItem != null && !ItemsView.Contains(SelectedItem);
 
         public string SearchText
         {
@@ -88,6 +94,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 statusFilter = value;
                 OnPropertyChanged(nameof(StatusFilter));
                 RefreshNow();
+                OnPropertyChanged(nameof(SelectedGameHiddenByFilter));
                 StateChanged?.Invoke(this, EventArgs.Empty);
             }
         }
@@ -102,6 +109,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 platformFilter = value;
                 OnPropertyChanged(nameof(PlatformFilter));
                 RefreshNow();
+                OnPropertyChanged(nameof(SelectedGameHiddenByFilter));
                 StateChanged?.Invoke(this, EventArgs.Empty);
             }
         }
@@ -147,6 +155,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             OnPropertyChanged(nameof(SortMode));
             RebuildSortDescriptions();
             RefreshNow();
+            OnPropertyChanged(nameof(SelectedGameHiddenByFilter));
         }
 
         public bool SetItems(IEnumerable<GameStatusDto> games, string? preferredGameId = null)
@@ -169,47 +178,45 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
             if (!unchanged)
             {
-                rebuildingItems = true;
+                // A dashboard refresh can replace hundreds or thousands of lightweight
+                // summaries. Batch the collection notifications so WPF does not repeatedly
+                // measure and filter the same list for every item. A ListCollectionView cannot
+                // safely process ObservableCollection changes while DeferRefresh is active, so
+                // the collection itself suppresses intermediate notifications and emits one
+                // Reset after the replacement is complete.
+                var batch = Items as BatchObservableCollection<GamePickerItem>;
+                batch?.BeginUpdate();
                 try
                 {
-                    // A dashboard refresh can replace hundreds or thousands of lightweight
-                    // summaries. Batch the collection notifications so WPF does not repeatedly
-                    // measure and filter the same list for every item. A ListCollectionView cannot
-                    // safely process ObservableCollection changes while DeferRefresh is active, so
-                    // the collection itself suppresses intermediate notifications and emits one
-                    // Reset after the replacement is complete.
-                    var batch = Items as BatchObservableCollection<GamePickerItem>;
-                    batch?.BeginUpdate();
-                    try
+                    if (itemCache.Count > Math.Max(1024, gameList.Count * 2 + 100))
+                        itemCache.Clear();
+                    Items.Clear();
+                    foreach (var game in gameList)
                     {
-                        if (itemCache.Count > Math.Max(1024, gameList.Count * 2 + 100))
-                            itemCache.Clear();
-                        Items.Clear();
-                        foreach (var game in gameList)
-                        {
-                            var item = itemCache.TryGetValue(game.PlayniteId, out var cached)
-                                ? cached
-                                : new GamePickerItem(game);
-                            item.UpdateGame(game);
-                            itemCache[game.PlayniteId] = item;
-                            Items.Add(item);
-                        }
-                        RebuildPlatformOptions();
+                        var item = itemCache.TryGetValue(game.PlayniteId, out var cached)
+                            ? cached
+                            : new GamePickerItem(game);
+                        item.UpdateGame(game);
+                        itemCache[game.PlayniteId] = item;
+                        Items.Add(item);
                     }
-                    finally
-                    {
-                        batch?.EndUpdate();
-                    }
-                    RefreshNow();
+                    RebuildPlatformOptions();
                 }
-                finally { rebuildingItems = false; }
+                finally
+                {
+                    batch?.EndUpdate();
+                }
+                RefreshNow();
             }
             timer.Stop();
             Logger.Debug($"[PERF] GamePicker setItems={timer.ElapsedMilliseconds}ms games={Items.Count}");
-            var candidate = Items.FirstOrDefault(x => string.Equals(x.PlayniteId, previousId, StringComparison.OrdinalIgnoreCase) && ItemsView.Contains(x))
+            // Keep the selected game even when a filter hides it. The picker presents a
+            // recovery affordance instead of silently replacing the user's context.
+            var candidate = Items.FirstOrDefault(x => string.Equals(x.PlayniteId, previousId, StringComparison.OrdinalIgnoreCase))
                             ?? ItemsView.Cast<GamePickerItem>().FirstOrDefault()
                             ?? null;
             SelectedItem = candidate;
+            OnPropertyChanged(nameof(SelectedGameHiddenByFilter));
             return !unchanged;
         }
 
@@ -217,6 +224,15 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             var item = game == null ? null : Items.FirstOrDefault(x => string.Equals(x.PlayniteId, game.PlayniteId, StringComparison.OrdinalIgnoreCase));
             SelectedItem = item;
+        }
+
+        private void ShowSelectedGame()
+        {
+            if (SelectedItem == null) return;
+            SearchText = string.Empty;
+            StatusFilter = "全部";
+            PlatformFilter = "全部";
+            RefreshNow();
         }
 
         public void RefreshNow()
@@ -335,10 +351,9 @@ namespace GameSaveCenter.Playnite.ViewModels
             var timer = Stopwatch.StartNew();
             ItemsView.Refresh();
             FilteredCount = ItemsView.Cast<object>().Count();
+            OnPropertyChanged(nameof(SelectedGameHiddenByFilter));
             timer.Stop();
             Logger.Debug($"[PERF] GamePicker refresh={timer.ElapsedMilliseconds}ms filtered={FilteredCount} games={Items.Count}");
-            if (!rebuildingItems && SelectedItem != null && !ItemsView.Contains(SelectedItem))
-                SelectedItem = ItemsView.Cast<GamePickerItem>().FirstOrDefault();
         }
 
         private void OnItemsChanged(object? sender, NotifyCollectionChangedEventArgs e) { }

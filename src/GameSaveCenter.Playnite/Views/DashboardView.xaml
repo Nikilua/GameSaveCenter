@@ -913,12 +913,7 @@
                         ToolTip="打开游戏搜索、状态筛选和排序">
                     <Grid MinWidth="0" Margin="2">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="24"/></Grid.ColumnDefinitions>
-                        <Border Width="32" Height="32" CornerRadius="10" Background="{DynamicResource GscAccentTintBrush}" VerticalAlignment="Center">
-                            <Grid>
-                                <Image Source="{Binding SelectedGameIcon}" Width="24" Height="24" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE7FC;" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"><TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding SelectedGameIcon}" Value="{x:Null}"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
-                            </Grid>
-                        </Border>
+                        <ContentControl Style="{StaticResource GscSelectedGameIconControl}" Width="32" Height="32" Content="{Binding SelectedGameIcon}"/>
                         <StackPanel Grid.Column="1" Margin="8,0,12,0" MinWidth="0">
                             <TextBlock Style="{StaticResource GscComboBoxLongText}" Text="{Binding SelectedGame.Name, TargetNullValue=请选择游戏}" FontWeight="SemiBold"/>
                             <TextBlock Style="{StaticResource GscComboBoxLongText}" FontSize="11" Foreground="{DynamicResource GscSecondaryTextBrush}">
@@ -1134,8 +1129,27 @@
                                 </DataTemplate.Triggers>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
-                    </ListBox>
-                    <TextBlock Text="没有符合条件的游戏&#x0a;请调整搜索或筛选条件。" IsHitTestVisible="False">
+                     </ListBox>
+                     <Border Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,8,0"
+                             Background="{DynamicResource GscControlFillBrush}" BorderBrush="{DynamicResource GscDividerBrush}"
+                             BorderThickness="1" CornerRadius="10" Padding="10,7" Panel.ZIndex="2">
+                         <Border.Style>
+                             <Style TargetType="Border">
+                                 <Setter Property="Visibility" Value="Collapsed"/>
+                                 <Style.Triggers>
+                                     <DataTrigger Binding="{Binding GamePicker.SelectedGameHiddenByFilter}" Value="True">
+                                         <Setter Property="Visibility" Value="Visible"/>
+                                     </DataTrigger>
+                                 </Style.Triggers>
+                             </Style>
+                         </Border.Style>
+                         <WrapPanel>
+                             <TextBlock Text="当前选择不在当前筛选结果中" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                             <Button Style="{StaticResource GscButtonBase}" Content="清除搜索" Command="{Binding GamePicker.ClearSearchCommand}" Margin="0,0,6,0"/>
+                             <Button Style="{StaticResource GscButtonBase}" Content="显示当前游戏" Command="{Binding GamePicker.ShowSelectedGameCommand}"/>
+                         </WrapPanel>
+                     </Border>
+                     <TextBlock Text="没有符合条件的游戏&#x0a;请调整搜索或筛选条件。" IsHitTestVisible="False">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyText}">
                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -1156,12 +1170,7 @@
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                             <Grid x:Name="SelectedGameIdentityPanel" Grid.Row="0" Grid.Column="0" MinWidth="0">
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="54"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                                <Border Width="42" Height="42" CornerRadius="13" Background="{DynamicResource GscAccentTintBrush}" VerticalAlignment="Center">
-                                    <Grid>
-                                        <Image Source="{Binding SelectedGameIcon}" Width="30" Height="30" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE7FC;" FontSize="18" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"><TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding SelectedGameIcon}" Value="{x:Null}"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
-                                    </Grid>
-                                </Border>
+                                <ContentControl Style="{StaticResource GscSelectedGameIconControl}" Width="42" Height="42" Content="{Binding SelectedGameIcon}"/>
                                 <StackPanel Grid.Column="1" MinWidth="0" VerticalAlignment="Center">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{Binding SelectedGame.Name, TargetNullValue=请选择游戏}" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedGame.Name}"/>

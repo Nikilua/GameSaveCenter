@@ -190,6 +190,7 @@
                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscInspectorWidth}"/></Grid.ColumnDefinitions>
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="0"/></Grid.RowDefinitions>
                     <WrapPanel Grid.ColumnSpan="3" Margin="0,0,0,10">
+                        <ContentControl Style="{StaticResource GscSelectedGameIconControl}" Width="36" Height="36" Content="{Binding SelectedGameIcon}" Margin="0,0,10,8"/>
                         <Border Style="{DynamicResource GscRedesignCounterPill}" Margin="0,0,8,8"><TextBlock><Run Text="媒体 "/><Run Text="{Binding MediaSummary.TotalCount, Mode=OneWay}" FontWeight="SemiBold"/></TextBlock></Border>
                         <Border Style="{DynamicResource GscRedesignCounterPill}" Margin="0,0,8,8"><TextBlock><Run Text="截图 "/><Run Text="{Binding MediaSummary.ScreenshotCount, Mode=OneWay}" FontWeight="SemiBold"/></TextBlock></Border>
                         <Border Style="{DynamicResource GscRedesignCounterPill}" Margin="0,0,8,8"><TextBlock><Run Text="录像 "/><Run Text="{Binding MediaSummary.VideoCount, Mode=OneWay}" FontWeight="SemiBold"/></TextBlock></Border>

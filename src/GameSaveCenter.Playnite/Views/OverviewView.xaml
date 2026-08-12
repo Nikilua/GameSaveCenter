@@ -149,12 +149,7 @@
                     <Grid>
                         <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                         <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                        <Border Grid.Row="0" Grid.Column="0" Width="44" Height="44" CornerRadius="13" Background="{DynamicResource GscAccentTintBrush}" VerticalAlignment="Center" HorizontalAlignment="Left">
-                            <Grid>
-                                <Image Source="{Binding SelectedGameIcon}" Width="30" Height="30" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE7FC;" FontSize="22" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"><TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding SelectedGameIcon}" Value="{x:Null}"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
-                            </Grid>
-                        </Border>
+                        <ContentControl Grid.Row="0" Grid.Column="0" Style="{StaticResource GscSelectedGameIconControl}" Content="{Binding SelectedGameIcon}"/>
                         <Grid Grid.Row="0" Grid.Column="1" Margin="11,0,0,0" MinWidth="0">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                             <StackPanel MinWidth="0" VerticalAlignment="Center">

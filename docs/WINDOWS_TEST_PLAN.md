@@ -83,6 +83,13 @@
 - [ ] 确认 SettingsScroller、SidebarNavigationScrollViewer 与六个工作区页面滚动条使用同一套圆角动态主题资源；浅色、深色、跟随 Playnite、蓝色宿主、高对比度和关闭透明均无白色系统滚动条。
 - [ ] 确认表格在 700 DIP 和 125%/150% DPI 下仍显示多个完整行，行内滚动与外层页面滚动不互相吞掉输入焦点。
 
+### UI-207 当前游戏上下文与设置页回归
+
+- [ ] 在宽屏 Settings 确认 5 个分类位于约 232 DIP 的左侧有限导航区，内容表单在独立 `SettingsScroller` 内滚动；在窄窗口确认分类改为顶部横向滚动，标题说明和保存提示仍可见。
+- [ ] 启动/切换一个真实 Playnite 游戏，确认 Dashboard 当前游戏随 `GameStarted` 事件定位；手动选择另一游戏后普通刷新不抢回，停止游戏后仍保持选择；重新打开页面确认 `GamePickerSelectedGameId` 恢复。
+- [ ] 在 GamePicker 中使用“已安装”、搜索、平台和状态筛选，确认当前选择被隐藏时出现恢复提示；“清除搜索”和“显示当前游戏”能恢复可见；列表不因加载真实 Icon 出现明显卡顿。
+- [ ] 在 Dashboard、Overview、Save、Trainer、Media 的当前游戏表面确认真实 Playnite Icon 可见；缺失/远程 Icon 确认回退为手柄 glyph。重复执行 Light/Dark/Follow Playnite/高对比度、125%/150% DPI、键盘 Tab/Enter 与连续缩放。
+
 ## 0.6.38 大型游戏库、Worker 冷启动与主题令牌最终 UI 回归
 
 ### GSC-012 900+ 游戏库启动隔离（0.6.38）

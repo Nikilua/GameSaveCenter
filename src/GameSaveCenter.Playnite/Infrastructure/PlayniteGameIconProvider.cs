@@ -63,6 +63,21 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 var path = ResolveLocalPath(reference, api.Database.GetFullFilePath);
                 if (path == null) return null;
 
+                return DecodeLocalImage(path);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public static BitmapImage? DecodeLocalImage(string path)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(path) || !File.Exists(path)
+                    || path.StartsWith("http://", StringComparison.OrdinalIgnoreCase)
+                    || path.StartsWith("https://", StringComparison.OrdinalIgnoreCase)) return null;
                 var image = new BitmapImage();
                 image.BeginInit();
                 image.CacheOption = BitmapCacheOption.OnLoad;

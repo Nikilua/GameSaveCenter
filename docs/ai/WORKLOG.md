@@ -2,6 +2,22 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-12 UI-207-FOLLOWUP 设置滚动所有权与当前游戏上下文收口
+
+**做了什么：**
+
+- 设置页把页面级滚动从 UserControl 根节点收回到共享 `GscRedesignSettingsTabControl` 模板：宽屏分类栏固定 232 DIP、有限高度下垂直 `Auto`，紧凑布局切换为顶部水平 `Auto`；选中项仍自动 `BringIntoView()`，内容区拥有独立 `SettingsScroller`，5 个分类和所有表单字段均可达。
+- 新增共享 `GscSelectedGameIconControl`，当前真实 Playnite Icon 只在 Dashboard 顶部/选中头部、Overview、Save、Trainer、Media 的当前游戏上下文表面加载；GamePicker 虚拟化列表保持 initials，Provider 仍为本地优先、48 DIP 解码、OnLoad/Freeze、LRU 48、失败 glyph fallback、无网络。
+- GamePicker 默认“已安装”与已有筛选/排序/搜索保持不变；当前选择即使被筛选隐藏也不被静默替换，显示恢复提示并提供“清除搜索 / 显示当前游戏”命令。事件驱动的 `PlayniteGameStarted` 自动定位、持久化选择和停止后保持选择逻辑不变。
+- 没有修改任何 DataGrid、命令、Binding、Worker、IPC 或 Playnite 业务数据流；性能基准改为写入临时/显式 `GSC_TEST_ARTIFACT_ROOT`，避免污染测试 bin 输出树。
+
+**测试结果：**
+
+- `python scripts/validate-source.py` 通过；`python .codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py .` 0 errors（仓库既有 33 warnings）。
+- Playnite Release 构建隔离输出 0 警告/0 错误；Core 13/13、Worker 51/51、Playnite 197/197 通过；`git diff --check` 通过。
+- `scripts/render-qa.ps1 -Configuration Release` 全绿；Settings 760/880/920/1100/1400 × 560/700/900 共 15 组探针，5 个分类可见，宽屏导航最小宽度 232 DIP，内容滚动超限时 `Auto` 可滚动。
+- 未运行真实 Playnite 宿主内的主题切换、DPI、键盘和连续缩放人工验收；这些仍标记为 `BLOCKED_ENVIRONMENT`。
+
 ## 2026-08-12 UI-207 设置布局响应式与当前游戏上下文
 
 **做了什么：**

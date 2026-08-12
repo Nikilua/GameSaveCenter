@@ -370,6 +370,7 @@
                 <ControlTemplate TargetType="TabControl">
                     <DockPanel KeyboardNavigation.TabNavigation="Local" LastChildFill="True">
                         <ScrollViewer x:Name="SettingsHeaderScroller"
+                                      Width="232"
                                       DockPanel.Dock="Left"
                                       Margin="0,0,16,0"
                                       HorizontalScrollBarVisibility="Disabled"
@@ -379,9 +380,17 @@
                                       KeyboardNavigation.TabNavigation="Local">
                             <TabPanel x:Name="HeaderPanel" IsItemsHost="True" KeyboardNavigation.TabIndex="1"/>
                         </ScrollViewer>
-                        <ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent"
-                                          HorizontalAlignment="Stretch" VerticalAlignment="Top"
-                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        <ScrollViewer x:Name="SettingsScroller"
+                                      Style="{DynamicResource GscPageScrollViewer}"
+                                      VerticalScrollBarVisibility="Auto"
+                                      HorizontalScrollBarVisibility="Disabled"
+                                      CanContentScroll="False"
+                                      Focusable="False"
+                                      KeyboardNavigation.TabNavigation="Continue">
+                            <ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent"
+                                              HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        </ScrollViewer>
                     </DockPanel>
                     <ControlTemplate.Triggers>
                         <Trigger Property="TabStripPlacement" Value="Top">
@@ -389,6 +398,7 @@
                             <Setter TargetName="SettingsHeaderScroller" Property="DockPanel.Dock" Value="Top"/>
                             <Setter TargetName="SettingsHeaderScroller" Property="HorizontalScrollBarVisibility" Value="Auto"/>
                             <Setter TargetName="SettingsHeaderScroller" Property="VerticalScrollBarVisibility" Value="Disabled"/>
+                            <Setter TargetName="SettingsHeaderScroller" Property="Width" Value="NaN"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -419,6 +429,37 @@
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="Chrome" Property="Opacity" Value="0.45"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="GscSelectedGameIconControl" TargetType="ContentControl">
+        <Setter Property="Width" Value="44"/>
+        <Setter Property="Height" Value="44"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ContentControl">
+                    <Border x:Name="IconTile" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" CornerRadius="13"
+                            Background="{DynamicResource GscAccentTintBrush}">
+                        <Grid>
+                            <Image Source="{TemplateBinding Content}"
+                                   Width="30" Height="30" Stretch="Uniform"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <TextBlock x:Name="IconFallback"
+                                       FontFamily="Segoe MDL2 Assets" Text="&#xE7FC;" FontSize="22"
+                                       Foreground="{DynamicResource GscAccentBrush}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       Visibility="Collapsed"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Content" Value="{x:Null}">
+                            <Setter TargetName="IconFallback" Property="Visibility" Value="Visible"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

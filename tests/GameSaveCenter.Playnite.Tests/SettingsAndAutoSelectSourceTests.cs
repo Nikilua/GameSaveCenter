@@ -24,6 +24,9 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("SettingsSectionTabs.TabStripPlacement = compact ? Dock.Top : Dock.Left;", code);
             Assert.Contains("SettingsSectionTabs.SelectionChanged += OnSettingsTabSelectionChanged;", code);
             Assert.Contains("selected.BringIntoView()", code);
+            Assert.Contains("tab.Width = compact ? double.NaN : 232;", code);
+            Assert.Contains("x:Name=\"SettingsScroller\"", redesign);
+            Assert.DoesNotContain("x:Name=\"SettingsScroller\"", xaml);
             Assert.Contains("x:Name=\"SettingsHeaderScroller\"", redesign);
             Assert.Contains("HorizontalScrollBarVisibility=\"Auto\"", redesign);
             Assert.Contains("VerticalScrollBarVisibility=\"Auto\"", redesign);
@@ -38,6 +41,10 @@ namespace GameSaveCenter.Playnite.Tests
             var resolver = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Infrastructure", "GameSelectionResolver.cs"));
             var iconProvider = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Infrastructure", "PlayniteGameIconProvider.cs"));
             var dashboard = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml"));
+            var overview = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml"));
+            var saves = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "SaveCenterView.xaml"));
+            var trainers = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml"));
+            var media = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
 
             Assert.Contains("internal event Action<Guid>? PlayniteGameStarted;", plugin);
             Assert.Contains("plugin.PlayniteGameStarted += OnPlayniteGameStarted;", viewModel);
@@ -48,6 +55,16 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.DoesNotContain("HttpClient", iconProvider);
             Assert.DoesNotContain("WebClient", iconProvider);
             Assert.DoesNotContain("WebRequest", iconProvider);
+            Assert.Contains("SelectedGameIcon", dashboard);
+            Assert.Contains("SelectedGameIcon", overview);
+            Assert.Contains("SelectedGameIcon", saves);
+            Assert.Contains("SelectedGameIcon", trainers);
+            Assert.Contains("SelectedGameIcon", media);
+            Assert.Contains("SelectedGameHiddenByFilter", dashboard);
+            var pickerStart = dashboard.IndexOf("ItemsSource=\"{Binding GamePicker.ItemsView}\"", StringComparison.Ordinal);
+            var pickerEnd = dashboard.IndexOf("</ListBox>", pickerStart, StringComparison.Ordinal);
+            Assert.True(pickerStart >= 0 && pickerEnd > pickerStart);
+            Assert.DoesNotContain("SelectedGameIcon", dashboard.Substring(pickerStart, pickerEnd - pickerStart));
         }
 
         private static string FindRepositoryRoot()

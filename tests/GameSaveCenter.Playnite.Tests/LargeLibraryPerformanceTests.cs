@@ -114,7 +114,10 @@ namespace GameSaveCenter.Playnite.Tests
             timer.Stop();
             var taskUnchangedReplaceMs = timer.ElapsedMilliseconds;
 
-            var benchmarkDirectory = Path.Combine(Environment.CurrentDirectory, "artifacts", "ui-qa", "benchmarks");
+            var artifactRoot = Environment.GetEnvironmentVariable("GSC_TEST_ARTIFACT_ROOT");
+            var benchmarkDirectory = string.IsNullOrWhiteSpace(artifactRoot)
+                ? Path.Combine(Path.GetTempPath(), "GameSaveCenter", "ui-qa", "benchmarks")
+                : Path.Combine(artifactRoot, "ui-qa", "benchmarks");
             Directory.CreateDirectory(benchmarkDirectory);
             File.WriteAllText(Path.Combine(benchmarkDirectory, "large-library.txt"),
                 $"first_set_ms={firstSetMs}\n" +

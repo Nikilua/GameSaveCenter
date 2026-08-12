@@ -63,7 +63,7 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         [Fact]
-        public void SelectionFallsBackWhenSelectedGameIsRemovedOrFilteredOut()
+        public void SelectionFallsBackWhenSelectedGameIsRemovedAndPreservesHiddenSelection()
         {
             using var picker = new GamePickerViewModel();
             picker.StatusFilter = "全部";
@@ -74,7 +74,25 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Equal("A", picker.SelectedGame!.Name);
 
             picker.StatusFilter = "需处理";
-            Assert.Null(picker.SelectedGame);
+            Assert.Equal("A", picker.SelectedGame!.Name);
+            Assert.True(picker.SelectedGameHiddenByFilter);
+        }
+
+        [Fact]
+        public void SelectionIsPreservedWhenCurrentFiltersHideIt()
+        {
+            using var picker = new GamePickerViewModel();
+            picker.StatusFilter = "全部";
+            picker.SetItems(new[] { Game("A"), Game("B", installed: false) }, "B");
+
+            picker.StatusFilter = "已安装";
+
+            Assert.Equal("B", picker.SelectedGame!.Name);
+            Assert.True(picker.SelectedGameHiddenByFilter);
+            picker.ShowSelectedGameCommand.Execute(null);
+            Assert.Equal("B", picker.SelectedGame!.Name);
+            Assert.False(picker.SelectedGameHiddenByFilter);
+            Assert.Equal("全部", picker.StatusFilter);
         }
 
         [Fact]

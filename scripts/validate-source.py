@@ -903,6 +903,7 @@ def check_0621_cloud_retry_and_numeric_ui_guards() -> None:
     backup = (ROOT / "src/GameSaveCenter.Worker/Services/BackupOrchestrator.cs").read_text(encoding="utf-8")
     dashboard = (ROOT / "src/GameSaveCenter.Playnite/Views/DashboardView.xaml").read_text(encoding="utf-8")
     settings = (ROOT / "src/GameSaveCenter.Playnite/Settings/GameSaveCenterSettingsView.xaml").read_text(encoding="utf-8")
+    redesign = (ROOT / "src/GameSaveCenter.Playnite/Themes/Redesign.xaml").read_text(encoding="utf-8")
     tokens = (ROOT / "src/GameSaveCenter.Playnite/Themes/DesignTokens.xaml").read_text(encoding="utf-8")
     agents = ROOT / "AGENTS.md"
 
@@ -1043,17 +1044,21 @@ def check_responsive_ui_layout_guards() -> None:
     dashboard_code = (ROOT / "src/GameSaveCenter.Playnite/Views/DashboardView.xaml.cs").read_text(encoding="utf-8")
     settings = (ROOT / "src/GameSaveCenter.Playnite/Settings/GameSaveCenterSettingsView.xaml").read_text(encoding="utf-8")
     settings_code = (ROOT / "src/GameSaveCenter.Playnite/Settings/GameSaveCenterSettingsView.xaml.cs").read_text(encoding="utf-8")
+    redesign = (ROOT / "src/GameSaveCenter.Playnite/Themes/Redesign.xaml").read_text(encoding="utf-8")
     for token in ("VerticalScrollBarVisibility=\"Auto\"", "KeyboardNavigation.TabNavigation=\"Local\"",
                   "<Ellipse.RenderTransform><TranslateTransform X=\"-95\" Y=\"-130\"/>",
                   "<Ellipse.RenderTransform><TranslateTransform X=\"105\" Y=\"0\"/>",
                   "AutomationProperties.Name=\"刷新全部状态\"", "x:Name=\"TopRefreshLabel\""):
         if token not in dashboard:
             fail(f"Dashboard responsive layout guard missing: {token}")
-    for token in ("x:Name=\"SettingsScroller\"", "HorizontalScrollBarVisibility=\"Disabled\"",
-                  "x:Name=\"SettingsHeaderSubtitle\"", "AutomationProperties.Name=\"毛玻璃强度\"",
+    for token in ("x:Name=\"SettingsHeaderSubtitle\"", "AutomationProperties.Name=\"毛玻璃强度\"",
                   "<Ellipse.RenderTransform><TranslateTransform X=\"-95\" Y=\"-120\"/>"):
         if token not in settings:
             fail(f"Settings responsive layout guard missing: {token}")
+    for token in ("x:Name=\"SettingsScroller\"", "x:Name=\"SettingsHeaderScroller\"",
+                  "HorizontalScrollBarVisibility=\"Auto\"", "VerticalScrollBarVisibility=\"Auto\""):
+        if token not in redesign:
+            fail(f"Settings shared scroll template guard missing: {token}")
     for token in ("SizeChanged += OnSizeChanged", "ApplyResponsiveLayout(ActualWidth, ActualHeight)",
                   "SettingsHeaderSubtitle.Visibility", "layoutWidth < 720"):
         if token not in settings_code:

@@ -924,10 +924,14 @@ public sealed class WpfUiResourceDictionaryTests
         var settings = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml"));
         var dashboard = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml"));
 
-        Assert.Contains("x:Name=\"SettingsScroller\" Style=\"{DynamicResource GscPageScrollViewer}\"", settings);
+        Assert.Contains("x:Name=\"SettingsSectionTabs\"", settings);
         Assert.Contains("x:Name=\"SidebarNavigationScrollViewer\"", dashboard);
         Assert.Contains("Style=\"{DynamicResource GscPageScrollViewer}\"", dashboard);
-        Assert.Contains("x:Name=\"SettingsScroller\" Style=\"{DynamicResource GscPageScrollViewer}\" VerticalScrollBarVisibility=\"Auto\" HorizontalScrollBarVisibility=\"Disabled\"", settings);
+        var redesign = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "Redesign.xaml"));
+        Assert.Contains("x:Name=\"SettingsScroller\"", redesign);
+        Assert.Contains("Style=\"{DynamicResource GscPageScrollViewer}\"", redesign);
+        Assert.Contains("VerticalScrollBarVisibility=\"Auto\"", redesign);
+        Assert.Contains("HorizontalScrollBarVisibility=\"Disabled\"", redesign);
     }
 
     [Fact]
@@ -3182,7 +3186,11 @@ public sealed class WpfUiResourceDictionaryTests
 
         Assert.Contains("x:Name=\"AppearanceFields\" Columns=\"2\"", settings);
         Assert.Contains("x:Name=\"AutomationIntervalFields\" Columns=\"3\"", settings);
-        Assert.Contains("x:Name=\"SettingsScroller\" Style=\"{DynamicResource GscPageScrollViewer}\" VerticalScrollBarVisibility=\"Auto\" HorizontalScrollBarVisibility=\"Disabled\"", settings);
+        var redesign = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "Redesign.xaml"));
+        Assert.Contains("x:Name=\"SettingsScroller\"", redesign);
+        Assert.Contains("Style=\"{DynamicResource GscPageScrollViewer}\"", redesign);
+        Assert.Contains("VerticalScrollBarVisibility=\"Auto\"", redesign);
+        Assert.Contains("HorizontalScrollBarVisibility=\"Disabled\"", redesign);
         Assert.Contains("Path=\"DefaultBackupIntervalMinutes\" UpdateSourceTrigger=\"LostFocus\"", settings);
         Assert.Contains("Path=\"ProcessPollingSeconds\" UpdateSourceTrigger=\"LostFocus\"", settings);
         Assert.Contains("Path=\"DashboardRefreshSeconds\" UpdateSourceTrigger=\"LostFocus\"", settings);
