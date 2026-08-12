@@ -133,7 +133,8 @@ namespace GameSaveCenter.Playnite.Views
             const double tableMinHeight = 236d;
             var tableViewportHeight = Math.Max(tableMinHeight, Math.Min(460d, height * 0.50));
             TaskGrid.MinHeight = tableMinHeight;
-            TaskGrid.Height = tableViewportHeight;
+            TaskGrid.Height = double.NaN;
+            TaskGrid.MaxHeight = tableViewportHeight;
             // The 1040-DIP demo minimum leaves roughly 700 DIP for the workspace after
             // the labeled shell. Keep the summary cards in two columns there so they do
             // not consume the entire first viewport before the queue becomes reachable.

@@ -12,8 +12,9 @@ namespace GameSaveCenter.RenderHarness;
 /// </summary>
 public sealed class FakeDashboardData
 {
-    public FakeDashboardData()
+    public FakeDashboardData(int rowCount = 8)
     {
+        rowCount = Math.Max(8, rowCount);
         Snapshot = new DashboardSnapshotDto
         {
             WorkerHealthy = true,
@@ -44,7 +45,7 @@ public sealed class FakeDashboardData
             LudusaviName = "BG3"
         };
 
-        for (var i = 1; i <= 8; i++)
+        for (var i = 1; i <= rowCount; i++)
         {
             Games.Add(new GameStatusDto
             {
@@ -60,7 +61,7 @@ public sealed class FakeDashboardData
             });
         }
 
-        for (var i = 1; i <= 8; i++)
+        for (var i = 1; i <= rowCount; i++)
         {
             var state = i % 4 == 0 ? TaskState.Failed
                 : i % 4 == 1 ? TaskState.Running
@@ -163,7 +164,7 @@ public sealed class FakeDashboardData
             SharedDirectory = true
         });
 
-        for (var i = 1; i <= 8; i++)
+        for (var i = 1; i <= rowCount; i++)
         {
             Findings.Add(new ValidationFindingDto
             {
@@ -212,7 +213,7 @@ public sealed class FakeDashboardData
             if (i % 4 == 0) LastRetentionPreview.DeleteCandidateIds.Add("candidate-" + i);
         }
 
-        for (var i = 1; i <= 8; i++)
+        for (var i = 1; i <= rowCount; i++)
         {
             Backups.Add(new BackupVersionDto
             {

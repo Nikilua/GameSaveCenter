@@ -79,6 +79,8 @@ public static class Program
                 report.AppendLine();
             }
 
+            RunDataGridScrollProbes(report);
+
             if (s_problems.Count > 0)
             {
                 report.AppendLine("render-qa FAILED");
@@ -349,6 +351,99 @@ public static class Program
                 report.AppendLine(
                     $"  {label} {elementName}: x={origin.X:0}, y={origin.Y:0}, size={element.ActualWidth:0}x{element.ActualHeight:0}, vis={element.Visibility}");
             }
+        }
+    }
+
+    private static void RunDataGridScrollProbes(StringBuilder report)
+    {
+        var heights = new[] { 287d, 311d, 337d, 353d, 419d };
+        foreach (var height in heights)
+        {
+            ProbeGrid(report, "Save", "SaveHistoryGrid", 0, height,
+                () => new SaveCenterView { DataContext = new FakeDashboardData(60) },
+                view => ((SaveCenterView)view).ApplyResponsiveLayout(900, height));
+            ProbeGrid(report, "Task", "TaskGrid", -1, height,
+                () => new TaskCenterView { DataContext = new FakeDashboardData(60) },
+                view => ((TaskCenterView)view).ApplyResponsiveLayout(900, height));
+            ProbeGrid(report, "Maintenance-Diagnostics", "FindingsGrid", 0, height,
+                () => new MaintenanceView { DataContext = new FakeDashboardData(60) },
+                view => ((MaintenanceView)view).ApplyResponsiveLayout(900, height));
+            ProbeGrid(report, "Maintenance-Audit", "MaintenanceAuditFindingsGrid", 3, height,
+                () => new MaintenanceView { DataContext = new FakeDashboardData(60) },
+                view => ((MaintenanceView)view).ApplyResponsiveLayout(900, height));
+            ProbeGrid(report, "Maintenance-AuditLog", "MaintenanceAuditLogGrid", 3, height,
+                () => new MaintenanceView { DataContext = new FakeDashboardData(60) },
+                view => ((MaintenanceView)view).ApplyResponsiveLayout(900, height));
+        }
+    }
+
+    private static void ProbeGrid(
+        StringBuilder report,
+        string label,
+        string gridName,
+        int tabIndex,
+        double height,
+        Func<UserControl> createView,
+        Action<UserControl> applyLayout)
+    {
+        try
+        {
+            var view = createView();
+            var host = new Grid
+            {
+                Width = 900,
+                Height = height,
+                Background = new SolidColorBrush(Color.FromRgb(24, 30, 43)),
+                ClipToBounds = true
+            };
+            host.Children.Add(view);
+            applyLayout(view);
+            host.Measure(new Size(900, height));
+            host.Arrange(new Rect(0, 0, 900, height));
+            host.UpdateLayout();
+            if (tabIndex >= 0)
+            {
+                var tabs = FindVisualChildren<TabControl>(host).FirstOrDefault();
+                if (tabs != null && tabIndex < tabs.Items.Count)
+                    tabs.SelectedIndex = tabIndex;
+                host.UpdateLayout();
+                applyLayout(view);
+                host.UpdateLayout();
+            }
+
+            var grid = FindVisualChildren<DataGrid>(host).FirstOrDefault(x => x.Name == gridName);
+            if (grid == null)
+            {
+                s_problems.Add($"{label} scroll probe: {gridName} not found at height {height:0}");
+                return;
+            }
+            var scroller = FindVisualChildren<ScrollViewer>(grid).FirstOrDefault();
+            if (scroller == null)
+            {
+                s_problems.Add($"{label} scroll probe: {gridName} has no internal ScrollViewer at height {height:0}");
+                return;
+            }
+            if (grid.Items.Count < 50)
+            {
+                s_problems.Add($"{label} scroll probe: {gridName} needs >=50 rows, got {grid.Items.Count}");
+                return;
+            }
+
+            grid.ScrollIntoView(grid.Items[grid.Items.Count - 1]);
+            host.UpdateLayout();
+            scroller.ScrollToEnd();
+            host.UpdateLayout();
+
+            var scrollable = scroller.ScrollableHeight;
+            var offset = scroller.VerticalOffset;
+            report.AppendLine(
+                $"  {label} {gridName} h={height:0} rows={grid.Items.Count} offset={offset:0.##} scrollable={scrollable:0.##}");
+            if (scrollable < 0 || offset > scrollable + 1 || offset < scrollable - 1)
+                s_problems.Add($"{label} {gridName} h={height:0} scroll bottom invalid (offset={offset:0.##} scrollable={scrollable:0.##})");
+        }
+        catch (Exception ex)
+        {
+            s_problems.Add($"{label} scroll probe failed at height {height:0}: {ex.Message}");
         }
     }
 

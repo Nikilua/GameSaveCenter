@@ -779,16 +779,51 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"MaintenanceProcessScrollSurface\"", maintenance);
         Assert.Contains("const double tableMinHeight = 236d", maintenanceCode);
         Assert.Contains("var tableViewportHeight = Math.Max(tableMinHeight, Math.Min(460d, height * 0.50))", maintenanceCode);
-        Assert.Contains("FindingsGrid.Height = tableViewportHeight", maintenanceCode);
-        Assert.Contains("MaintenanceDeviceGrid.Height = tableViewportHeight", maintenanceCode);
-        Assert.Contains("MaintenanceAuditFindingsGrid.Height = tableViewportHeight", maintenanceCode);
-        Assert.Contains("MaintenanceProcessGrid.Height = tableViewportHeight", maintenanceCode);
+        Assert.Contains("FindingsGrid.Height = double.NaN", maintenanceCode);
+        Assert.Contains("FindingsGrid.MaxHeight = tableViewportHeight", maintenanceCode);
+        Assert.Contains("MaintenanceDeviceGrid.Height = double.NaN", maintenanceCode);
+        Assert.Contains("MaintenanceDeviceGrid.MaxHeight = tableViewportHeight", maintenanceCode);
+        Assert.Contains("MaintenanceAuditFindingsGrid.Height = double.NaN", maintenanceCode);
+        Assert.Contains("MaintenanceAuditFindingsGrid.MaxHeight = tableViewportHeight", maintenanceCode);
+        Assert.Contains("MaintenanceProcessGrid.Height = double.NaN", maintenanceCode);
+        Assert.Contains("MaintenanceProcessGrid.MaxHeight = tableViewportHeight", maintenanceCode);
         Assert.Contains("MaintenanceDiagnosticsScrollSurface", maintenanceCode + maintenance);
 
         Assert.Contains("1080p", gate);
         Assert.Contains("2K/1440p", gate);
         Assert.Contains("4K/2160p", gate);
         Assert.Contains("约四行可读内容", gate);
+    }
+
+    [Fact]
+    public void DataGridsUsePixelScrollUnitAndFiniteMaxHeightWithoutDiagnosticClip()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var theme = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml"));
+        Assert.Contains("VirtualizingPanel.ScrollUnit\" Value=\"Pixel\"", theme);
+        Assert.Contains("VirtualizingPanel.IsVirtualizing\" Value=\"True\"", theme);
+        Assert.Contains("VirtualizingPanel.VirtualizationMode\" Value=\"Recycling\"", theme);
+        Assert.Contains("EnableRowVirtualization\" Value=\"True\"", theme);
+        Assert.Contains("EnableColumnVirtualization\" Value=\"True\"", theme);
+
+        var viewDirectory = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views");
+        var save = File.ReadAllText(Path.Combine(viewDirectory, "SaveCenterView.xaml"));
+        var task = File.ReadAllText(Path.Combine(viewDirectory, "TaskCenterView.xaml"));
+        var maintenance = File.ReadAllText(Path.Combine(viewDirectory, "MaintenanceView.xaml"));
+        Assert.Contains("VirtualizingPanel.ScrollUnit\" Value=\"Pixel\"", save);
+        Assert.Contains("VirtualizingPanel.ScrollUnit\" Value=\"Pixel\"", task);
+        Assert.Contains("VirtualizingPanel.ScrollUnit\" Value=\"Pixel\"", maintenance);
+
+        var maintenanceCode = File.ReadAllText(Path.Combine(viewDirectory, "MaintenanceView.xaml.cs"));
+        var taskCode = File.ReadAllText(Path.Combine(viewDirectory, "TaskCenterView.xaml.cs"));
+        Assert.Contains("FindingsGrid.Height = double.NaN;", maintenanceCode);
+        Assert.Contains("MaintenanceDeviceGrid.Height = double.NaN;", maintenanceCode);
+        Assert.Contains("MaintenanceAuditFindingsGrid.Height = double.NaN;", maintenanceCode);
+        Assert.Contains("MaintenanceProcessGrid.Height = double.NaN;", maintenanceCode);
+        Assert.Contains("TaskGrid.Height = double.NaN;", taskCode);
+        Assert.DoesNotContain("MaintenanceDiagnosticSummaryGrid.MinHeight =", maintenanceCode);
+        Assert.DoesNotContain("MaintenanceDiagnosticSummaryGrid.MaxHeight =", maintenanceCode);
+        Assert.DoesNotContain("MaintenanceDiagnosticSummaryGrid\" Grid.Row=\"1\" Grid.Column=\"0\" Grid.ColumnSpan=\"3\" Style=\"{DynamicResource GscRedesignSubCard}\" Padding=\"12\" Margin=\"0,10,0,0\" ClipToBounds=\"True\"", maintenance);
     }
 
     [Fact]
@@ -1007,7 +1042,8 @@ public sealed class WpfUiResourceDictionaryTests
         var maintenanceCode = File.ReadAllText(maintenancePath + ".cs");
         Assert.Contains("const double tableMinHeight = 236d", maintenanceCode);
         Assert.Contains("MaintenanceAuditFindingsGrid.MinHeight = tableMinHeight", maintenanceCode);
-        Assert.Contains("MaintenanceAuditFindingsGrid.Height = tableViewportHeight", maintenanceCode);
+        Assert.Contains("MaintenanceAuditFindingsGrid.Height = double.NaN", maintenanceCode);
+        Assert.Contains("MaintenanceAuditFindingsGrid.MaxHeight = tableViewportHeight", maintenanceCode);
         Assert.Contains("var auditAvailableHeight", maintenanceCode);
         Assert.Contains("MaintenanceAuditLayout.RowDefinitions[2].ActualHeight", maintenanceCode);
         Assert.Contains("var auditInspectorHeight", maintenanceCode);
@@ -1202,7 +1238,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("<RowDefinition Height=\"Auto\"/><RowDefinition Height=\"Auto\"/><RowDefinition Height=\"*\"/>", maintenanceText);
         Assert.Contains("x:Name=\"MaintenanceDeviceGrid\" Style=\"{StaticResource MaintenanceDataGrid}\"", maintenanceText);
         Assert.DoesNotContain("x:Name=\"MaintenanceDeviceGrid\" Height=\"{DynamicResource GscTableViewportHeight}\"", maintenanceText);
-        Assert.Contains("MaintenanceDeviceGrid.Height = tableViewportHeight", File.ReadAllText(maintenancePath + ".cs"));
+        Assert.Contains("MaintenanceDeviceGrid.Height = double.NaN", File.ReadAllText(maintenancePath + ".cs"));
+        Assert.Contains("MaintenanceDeviceGrid.MaxHeight = tableViewportHeight", File.ReadAllText(maintenancePath + ".cs"));
         Assert.Contains("ItemsSource=\"{Binding DeviceComparisons}\"", maintenanceText);
     }
 
@@ -2681,7 +2718,8 @@ public sealed class WpfUiResourceDictionaryTests
 
         var taskCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml.cs"));
         Assert.Contains("var tableViewportHeight = Math.Max(tableMinHeight, Math.Min(460d, height * 0.50));", taskCode);
-        Assert.Contains("TaskGrid.Height = tableViewportHeight;", taskCode);
+        Assert.Contains("TaskGrid.Height = double.NaN;", taskCode);
+        Assert.Contains("TaskGrid.MaxHeight = tableViewportHeight;", taskCode);
         Assert.Contains("TaskPageScrollSurface.ActualHeight", taskCode);
         Assert.Contains("workspaceHeight - tableViewportHeight - 10", taskCode);
     }

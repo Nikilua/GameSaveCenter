@@ -82,13 +82,17 @@ namespace GameSaveCenter.Playnite.Views
             const double tableMinHeight = 236d;
             var tableViewportHeight = Math.Max(tableMinHeight, Math.Min(460d, height * 0.50));
             FindingsGrid.MinHeight = tableMinHeight;
-            FindingsGrid.Height = tableViewportHeight;
+            FindingsGrid.Height = double.NaN;
+            FindingsGrid.MaxHeight = tableViewportHeight;
             MaintenanceDeviceGrid.MinHeight = tableMinHeight;
-            MaintenanceDeviceGrid.Height = tableViewportHeight;
+            MaintenanceDeviceGrid.Height = double.NaN;
+            MaintenanceDeviceGrid.MaxHeight = tableViewportHeight;
             MaintenanceAuditFindingsGrid.MinHeight = tableMinHeight;
-            MaintenanceAuditFindingsGrid.Height = tableViewportHeight;
+            MaintenanceAuditFindingsGrid.Height = double.NaN;
+            MaintenanceAuditFindingsGrid.MaxHeight = tableViewportHeight;
             MaintenanceProcessGrid.MinHeight = tableMinHeight;
-            MaintenanceProcessGrid.Height = tableViewportHeight;
+            MaintenanceProcessGrid.Height = double.NaN;
+            MaintenanceProcessGrid.MaxHeight = tableViewportHeight;
             var compact = height < 760 || width < 980;
             // The retention page is a left-aligned reading form capped at 1050.
             // Give the StackPanel an explicit viewport width so the cards fill
@@ -142,8 +146,6 @@ namespace GameSaveCenter.Playnite.Views
             // summary strip stays below the table. In stacked mode both share a finite
             // vertical budget so the findings table keeps the remaining rows.
             MaintenanceDiagnosticsInspector.MaxHeight = showDiagnosticsInspector && stackDiagnostics ? Math.Max(150, height * 0.34) : double.PositiveInfinity;
-            MaintenanceDiagnosticSummaryGrid.MinHeight = stackDiagnostics ? 96 : 140;
-            MaintenanceDiagnosticSummaryGrid.MaxHeight = stackDiagnostics ? Math.Max(120, height * 0.20) : 280;
             var stackProcess = width < 1040;
             var showProcessInspector = MaintenanceProcessInspector.Visibility == Visibility.Visible;
             var processSideBySide = showProcessInspector && !stackProcess;

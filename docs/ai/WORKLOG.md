@@ -427,3 +427,33 @@ NEXT: 全部可自主完成项已收口；剩余为真实 Playnite 人工验收�
 **仍需验证内容：**
 
 真实 Playnite 人工验收（主题/DPI/窗口化/自定义启动项真机流程/大库渲染帧率）。
+
+## 2026-08-12 UI-206 DataGrid 滚动几何修复
+
+**做了什么：**
+
+- 共享 `DataGrid` Style 与 `SaveDataGrid` / `TaskDataGrid` / `MaintenanceDataGrid` 显式设置 `VirtualizingPanel.ScrollUnit=Pixel`，保留 `CanContentScroll=True`、虚拟化与 Recycling，不关闭任何性能机制。
+- Maintenance/Task 响应式代码不再给 DataGrid 写死运行时 `Height`，改为 `Height=double.NaN` + 有限 `MaxHeight`（保留 MinHeight）。
+- 完整诊断摘要：移除外层 `ClipToBounds=True`，删除 code-behind 对外层 Border 的 MinHeight/MaxHeight 动态限制；由页面滚动面负责短窗口可达性，TextBox 保留自身 160 DIP 上限与内部滚动。
+- 新增 offscreen 滚动回归探针：`SaveHistoryGrid` / `TaskGrid` / `FindingsGrid` / `MaintenanceAuditFindingsGrid` / `MaintenanceAuditLogGrid`，60 行假数据 × 287/311/337/353/419 DIP 非整行高度，滚到底后断言 `VerticalOffset ≈ ScrollableHeight`，不越界。
+- 更新 `WpfUiResourceDictionaryTests`：断言 Pixel ScrollUnit、MaxHeight + Height=NaN、诊断摘要不再被外层裁剪。
+
+**为什么这样做：**
+
+真实 Playnite 2K 窗口化下，DataGrid 按 Item 逻辑滚动与固定 Height 在非整行/高 DPI viewport 上产生“表头大空白 + 末行只露一点”的滚动几何错误；Pixel 滚动 + 有限 MaxHeight 让滚到底的偏移与 ScrollableHeight 一致。
+
+**修改文件：**
+
+- `Themes/WpfUiProduction.xaml`
+- `Views/SaveCenterView.xaml`、`Views/TaskCenterView.xaml`、`Views/MaintenanceView.xaml`
+- `Views/MaintenanceView.xaml.cs`、`Views/TaskCenterView.xaml.cs`
+- `tests/GameSaveCenter.Playnite.Tests/WpfUiResourceDictionaryTests.cs`
+- `tests/GameSaveCenter.RenderHarness/Program.cs`、`tests/GameSaveCenter.RenderHarness/FakeDashboardData.cs`
+
+**测试结果：**
+
+- Playnite 172/172、render-qa 全绿（含新增滚动探针，offset==scrollable）、源码验证与技能静态审查通过。
+
+**仍需验证内容：**
+
+真实 Playnite 2K 窗口化/最大化的视觉确认；1080p/4K 环境标记 BLOCKED_ENVIRONMENT（本机暂无法验证）。

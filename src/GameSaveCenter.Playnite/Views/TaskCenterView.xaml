@@ -45,6 +45,7 @@
                 <Setter Property="AutoGenerateColumns" Value="False"/>
                 <Setter Property="EnableRowVirtualization" Value="True"/>
                 <Setter Property="EnableColumnVirtualization" Value="True"/>
+                <Setter Property="VirtualizingPanel.ScrollUnit" Value="Pixel"/>
                 <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
                 <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
                 <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>

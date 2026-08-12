@@ -306,6 +306,7 @@
         <Setter Property="ColumnHeaderStyle" Value="{DynamicResource GscDataGridColumnHeaderStyle}"/>
         <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True"/>
         <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling"/>
+        <Setter Property="VirtualizingPanel.ScrollUnit" Value="Pixel"/>
         <Setter Property="EnableRowVirtualization" Value="True"/>
         <Setter Property="EnableColumnVirtualization" Value="True"/>
         <Setter Property="CanUserResizeRows" Value="False"/>

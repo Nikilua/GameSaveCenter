@@ -87,6 +87,7 @@
 - PERF-009/010：任务事件合并 TaskId 索引 O(1) 更新；命令状态刷新 Dispatcher 合帧。
 - GAME-TOOL-001/002：自定义启动项正式支持 EXE/LNK/BAT/CMD/PS1，外部路径引用不复制文件；Session 级 PID 追踪与 CloseOnGameExit 安全关闭。
 - UI-204/205：TaskCenter 与 GamePicker 下拉框默认值恢复（含真实 Playnite 异步物化重试）。
+- UI-206：DataGrid 滚动几何修复（Pixel ScrollUnit + 有限 MaxHeight + 诊断摘要取消外层裁剪；render-qa 新增非整行高度滚动探针）。
 
 ## 当前技术债
 
@@ -118,6 +119,7 @@
 - 自定义启动项支持 EXE/LNK/BAT/CMD/PS1/普通文件：EXE 与可解析 LNK 目标可跟踪；脚本和系统默认程序启动时 Trackable=false。
 - 磁盘 IO、图片解码不要放 UI 线程；图片解码要限制并发并 freeze。
 - 表格/列表虚拟化很容易被外层 ScrollViewer 或 DataGrid 嵌套破坏，改 XAML 后必须跑 render-qa。
+- DataGrid 不要写死运行时 `Height`，用 `MinHeight/MaxHeight` 保持有限 viewport；滚动单位必须显式 `VirtualizingPanel.ScrollUnit=Pixel`，否则非整行高度/高 DPI 窗口化下滚到底会出现表头大空白和末行裁切。
 - `git push` 前确认没有 bin/obj、用户本地配置、密钥、测试临时文件和大压缩包（如 `GameSaveCenter.7z` 不要提交）。
 
 ## 文档导航
