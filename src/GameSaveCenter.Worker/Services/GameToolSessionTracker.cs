@@ -8,6 +8,16 @@ namespace GameSaveCenter.Worker.Services;
 public sealed record TrackedToolProcess(int ProcessId, DateTime StartedUtc, bool CloseOnExit);
 
 /// <summary>
+/// Identity guard for PID reuse: a process may only be closed when both the PID and the
+/// actual StartTime match the session record within a small tolerance.
+/// </summary>
+public static class ProcessIdentityGuard
+{
+    public static bool IsSameProcess(DateTime trackedStartUtc, DateTime actualStartUtc, TimeSpan tolerance)
+        => Math.Abs((actualStartUtc - trackedStartUtc).TotalMilliseconds) <= tolerance.TotalMilliseconds;
+}
+
+/// <summary>
 /// Tracks only processes started by GameSaveCenter for a specific game session. Closing a
 /// session never touches processes by name and never crosses into another session.
 /// </summary>
@@ -58,7 +68,7 @@ public sealed class GameToolSessionTracker
             try
             {
                 using var process = Process.GetProcessById(item.ProcessId);
-                if (process.StartTime.ToUniversalTime() < item.StartedUtc.AddSeconds(-3)) continue;
+                if (!ProcessIdentityGuard.IsSameProcess(item.StartedUtc, process.StartTime.ToUniversalTime(), TimeSpan.FromSeconds(5))) continue;
                 process.CloseMainWindow();
                 if (!process.WaitForExit((int)gracefulCloseTimeout.TotalMilliseconds)) process.Kill();
             }

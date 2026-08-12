@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using GameSaveCenter.Worker.Services;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
@@ -43,5 +44,51 @@ public sealed class GameToolSessionTrackerTests
 
         Assert.Empty(tracker.GetTracked("session-a"));
         Assert.Single(tracker.GetTracked("session-b"));
+    }
+
+    [Fact]
+    public void ProcessIdentityGuard_RejectsPidReuseWithLaterStartTime()
+    {
+        var tracked = DateTime.UtcNow;
+        var reused = tracked.AddSeconds(30);
+
+        Assert.True(ProcessIdentityGuard.IsSameProcess(tracked, tracked.AddMilliseconds(200), TimeSpan.FromSeconds(5)));
+        Assert.False(ProcessIdentityGuard.IsSameProcess(tracked, reused, TimeSpan.FromSeconds(5)));
+        Assert.False(ProcessIdentityGuard.IsSameProcess(tracked, tracked.AddSeconds(-10), TimeSpan.FromSeconds(5)));
+    }
+
+    [Fact]
+    public async Task CloseSessionAsync_ClosesOnlyTheMatchingLiveProcess()
+    {
+        var tracker = new GameToolSessionTracker();
+        using var first = Process.Start(new ProcessStartInfo("cmd.exe", "/c ping -n 8 127.0.0.1")
+        {
+            UseShellExecute = false,
+            CreateNoWindow = true
+        });
+        using var second = Process.Start(new ProcessStartInfo("cmd.exe", "/c ping -n 8 127.0.0.1")
+        {
+            UseShellExecute = false,
+            CreateNoWindow = true
+        });
+        Assert.NotNull(first);
+        Assert.NotNull(second);
+
+        try
+        {
+            tracker.Track("session-a", first!.Id, first.StartTime.ToUniversalTime(), true);
+            tracker.Track("session-b", second!.Id, second.StartTime.ToUniversalTime(), false);
+
+            await tracker.CloseSessionAsync("session-a", TimeSpan.FromMilliseconds(1500), NullLogger.Instance, CancellationToken.None);
+
+            first.WaitForExit(3000);
+            Assert.True(first.HasExited, "Session A process should be closed.");
+            Assert.False(second.HasExited, "Session B process must not be touched.");
+        }
+        finally
+        {
+            if (!first!.HasExited) first.Kill();
+            if (!second!.HasExited) second.Kill();
+        }
     }
 }
