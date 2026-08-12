@@ -2,6 +2,49 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-12 HEALTH-001 每游戏备份健康摘要
+
+**做了什么：**
+
+- 在 Contracts 增加稳定的 `Healthy / Attention / Risk / Unknown` 四态和可解释的健康摘要/理由；保留旧 `Ready / Warning` UI 状态兼容，避免缓存和旧渲染夹具变成错误状态。
+- 在 Core 新增纯函数 `GameHealthAssessmentService`：只消费最近游玩、最新备份时间/版本数、备份任务失败、恢复可用性、未解决 finding、云端状态等证据，不读磁盘、不打开 ZIP、不访问网络。
+- Worker Dashboard 的 SQLite 聚合一次读取每个游戏的最新恢复可用性 JSON、备份任务失败次数/最近状态、未解决 warning/error 和最新理由；加入 `(game_id, task_type, created_utc)` 索引，避免在每个游戏循环内做 N+1 查询。
+- 首页沿用已有六张统计卡，增加四态计数明细；Dashboard 游戏选择器、选中游戏头部和 Save Center 校验区复用现有布局显示四态与理由 Tooltip。`Risk` 使用错误色、`Attention` 使用警告色、`Unknown` 使用中性色；未新增页面、命令、导航或扫描体系。
+- Snapshot comparer 纳入健康摘要与理由列表，健康理由变化时才触发既有集合更新。
+
+**为什么这样做：**
+
+健康状态必须回答“最近是否玩过、是否真的成功备份、最新恢复点是否可用、是否有失败/云端异常”，不能继续只用“匹配成功/有 finding”做粗粒度投影。证据先由 SQLite 聚合提供，再由 Core 纯计算判定，便于测试、解释和后续策略阶段复用。
+
+**修改文件：**
+
+- `src/GameSaveCenter.Contracts/Enums.cs`
+- `src/GameSaveCenter.Contracts/GameDtos.cs`
+- `src/GameSaveCenter.Contracts/DashboardDtos.cs`
+- `src/GameSaveCenter.Core/Services/GameHealthAssessmentService.cs`
+- `src/GameSaveCenter.Worker/Persistence/SqliteStateStore.cs`
+- `src/GameSaveCenter.Worker/Services/DashboardService.cs`
+- `src/GameSaveCenter.Playnite/Infrastructure/SnapshotComparers.cs`
+- `src/GameSaveCenter.Playnite/ViewModels/GamePickerItem.cs`
+- `src/GameSaveCenter.Playnite/ViewModels/DashboardViewModel.cs`
+- `src/GameSaveCenter.Playnite/Views/DashboardView.xaml`
+- `src/GameSaveCenter.Playnite/Views/OverviewView.xaml`
+- `src/GameSaveCenter.Playnite/Views/SaveCenterView.xaml`
+- `tests/GameSaveCenter.Core.Tests/GameHealthAssessmentTests.cs`
+- `tests/GameSaveCenter.Worker.Tests/DashboardHealthPersistenceTests.cs`
+- `tests/GameSaveCenter.Playnite.Tests/WpfUiResourceDictionaryTests.cs`
+
+**测试结果：**
+
+- Core 19/19、Worker 59/59、Playnite 197/197 通过；Worker/Playnite 使用隔离输出验证，绕开本机旧 net8/net472 测试输出文件锁。
+- Worker 与 Playnite Release 构建 0 警告/0 错误；`git diff --check`、`scripts/validate-source.py`、`scripts/check-xaml.ps1` 通过。
+- WPF 静态门禁 0 errors（仓库既有 warnings）；`scripts/render-qa.ps1` 全绿，覆盖 1040×700、1280×720、1366×768 及既有响应式滚动探针。
+- 未运行真实 Playnite 宿主内的主题切换、DPI、键盘和连续缩放人工验收；仍标记为 `BLOCKED_ENVIRONMENT`。
+
+**下一步：**
+
+`PROTECTION-001`：备份保护状态与策略联动；继续小阶段、独立测试、记忆文档、commit 和 push。
+
 ## 2026-08-12 UI-207-FOLLOWUP 设置滚动所有权与当前游戏上下文收口
 
 **做了什么：**

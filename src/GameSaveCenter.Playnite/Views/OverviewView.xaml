@@ -155,7 +155,7 @@
                             <StackPanel MinWidth="0" VerticalAlignment="Center">
                                 <TextBlock Text="当前游戏" Foreground="{DynamicResource GscAccentBrush}" FontWeight="SemiBold" FontSize="11"/>
                                 <TextBlock Text="{Binding SelectedGame.Name, Mode=OneWay, TargetNullValue=请选择游戏}" FontSize="20" FontWeight="SemiBold" Margin="0,4,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedGame.Name, Mode=OneWay}"/>
-                                <TextBlock FontSize="12" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,4,0,0" TextTrimming="CharacterEllipsis"><Run Text="{Binding SelectedGame.PlatformDisplay, Mode=OneWay}"/><Run Text=" · "/><Run Text="{Binding SelectedGame.HealthStateDisplay, Mode=OneWay}"/></TextBlock>
+                                <TextBlock FontSize="12" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,4,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedGame.HealthReasonDisplay, Mode=OneWay}"><Run Text="{Binding SelectedGame.PlatformDisplay, Mode=OneWay}"/><Run Text=" · "/><Run Text="{Binding SelectedGame.HealthStateDisplay, Mode=OneWay}"/></TextBlock>
                             </StackPanel>
                         </Grid>
                         <WrapPanel x:Name="OverviewMetricPanel" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,12,0,0" HorizontalAlignment="Left">
@@ -212,7 +212,7 @@
                                 </Style>
                             </ProgressBar.Style>
                         </ProgressBar>
-                        <TextBlock Text="原因与建议见维护中心" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,8,0,0" TextWrapping="Wrap"/>
+                        <TextBlock Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,8,0,0" TextWrapping="Wrap"><Run Text="健康 "/><Run Text="{Binding Snapshot.HealthyGames, Mode=OneWay}"/><Run Text=" · 注意 "/><Run Text="{Binding Snapshot.AttentionGames, Mode=OneWay}"/><Run Text=" · 风险 "/><Run Text="{Binding Snapshot.RiskGames, Mode=OneWay}"/><Run Text=" · 未知 "/><Run Text="{Binding Snapshot.UnknownGames, Mode=OneWay}"/></TextBlock>
                     </StackPanel>
                 </Border>
                 <Border Style="{StaticResource OverviewStatCard}" Margin="0,0,8,0"><StackPanel><TextBlock Text="云端队列" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11"/><TextBlock Text="{Binding Snapshot.PendingCloudTasks, Mode=OneWay}" Foreground="{DynamicResource GscInfoBrush}" FontSize="30" FontWeight="SemiBold" Margin="0,8,0,0"/><TextBlock Text="失败不会撤销本地备份" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,8,0,0" TextWrapping="Wrap"/></StackPanel></Border>

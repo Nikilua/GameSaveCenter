@@ -21,6 +21,10 @@ namespace GameSaveCenter.Contracts
         public int MatchedGames { get; set; }
         public int RunningGames { get; set; }
         public int WarningGames { get; set; }
+        public int HealthyGames { get; set; }
+        public int AttentionGames { get; set; }
+        public int RiskGames { get; set; }
+        public int UnknownGames { get; set; }
         public int PendingCloudTasks { get; set; }
         public int UnassignedMediaCount { get; set; }
         public List<GameStatusDto> Games { get; set; } = new List<GameStatusDto>();

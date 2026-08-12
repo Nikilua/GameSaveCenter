@@ -2238,8 +2238,10 @@ public sealed class WpfUiResourceDictionaryTests
         // read-only snapshot cannot accidentally be written back from a template.
         Assert.Contains("Text=\"{Binding Snapshot.RunningGames, Mode=OneWay}\"", overview);
         Assert.Contains("Text=\"{Binding Snapshot.WarningGames, Mode=OneWay}\"", overview);
-        Assert.Contains(".Where(x=>x.Severity>=FindingSeverity.Warning)", dashboardService);
-        Assert.Contains("WarningGames=findings.Where(x=>x.Severity>=FindingSeverity.Warning)", dashboardService);
+        Assert.Contains("snapshot.HealthyGames = snapshot.Games.Count", dashboardService);
+        Assert.Contains("snapshot.AttentionGames = snapshot.Games.Count", dashboardService);
+        Assert.Contains("snapshot.RiskGames = snapshot.Games.Count", dashboardService);
+        Assert.Contains("snapshot.WarningGames = snapshot.AttentionGames + snapshot.RiskGames", dashboardService);
     }
 
     [Fact]

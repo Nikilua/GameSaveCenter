@@ -3,6 +3,7 @@ using GameSaveCenter.Contracts;
 using GameSaveCenter.Worker.Infrastructure;
 using GameSaveCenter.Worker.Persistence;
 using GameSaveCenter.Worker.Configuration;
+using GameSaveCenter.Core.Services;
 using Microsoft.Extensions.Logging;
 
 namespace GameSaveCenter.Worker.Services;
@@ -16,6 +17,7 @@ public sealed class DashboardService
     private readonly RcloneClient _rclone;
     private readonly WorkerOptions _options;
     private readonly ILogger<DashboardService> _logger;
+    private readonly GameHealthAssessmentService _health = new();
     private readonly SemaphoreSlim _versionGate=new(1,1);
     private string _cachedLudusaviVersion=string.Empty;
     private DateTime _versionCachedUtc=DateTime.MinValue;
@@ -33,14 +35,6 @@ public sealed class DashboardService
         var counts=await _store.GetCountsAsync(token).ConfigureAwait(false);
         var audit=await _store.GetAuditAsync(100,token).ConfigureAwait(false);
         var ludusaviVersion = await GetLudusaviVersionAsync(token).ConfigureAwait(false);
-        // The dashboard exposes WarningGames as the set of games that need attention.
-        // Keep the per-game health projection on the same threshold; otherwise a warning
-        // can increment the overview counter while the corresponding game still appears
-        // "Ready" in the picker and detail header.
-        var attentionGames=findings
-            .Where(x=>x.Severity>=FindingSeverity.Warning)
-            .Select(x=>x.PlayniteId)
-            .ToHashSet(StringComparer.OrdinalIgnoreCase);
         var gameNames=games.ToDictionary(x=>x.Descriptor.PlayniteId,x=>x.Descriptor.Name,StringComparer.OrdinalIgnoreCase);
         foreach(var finding in findings)
         {
@@ -55,22 +49,44 @@ public sealed class DashboardService
             LudusaviAvailable=_ludusavi.IsAvailable,RcloneAvailable=_rclone.IsAvailable,LudusaviVersion=ludusaviVersion,
             LudusaviExecutable=_options.LudusaviExecutable,LudusaviBackupDirectory=_options.LudusaviBackupDirectory,BackupFormat=_options.BackupFormat,
             ManagedGames=counts.Games,MatchedGames=counts.Matched,
-            RunningGames=active.Count,WarningGames=findings.Where(x=>x.Severity>=FindingSeverity.Warning).Select(x=>x.PlayniteId).Distinct(StringComparer.OrdinalIgnoreCase).Count(),PendingCloudTasks=tasks.Count(x=>x.TaskType.Contains("Cloud",StringComparison.OrdinalIgnoreCase)&&x.State is TaskState.Queued or TaskState.Running),
+            RunningGames=active.Count,PendingCloudTasks=tasks.Count(x=>x.TaskType.Contains("Cloud",StringComparison.OrdinalIgnoreCase)&&x.State is TaskState.Queued or TaskState.Running),
             UnassignedMediaCount=counts.Unassigned,RecentTasks=tasks,Findings=findings,RecentAudit=audit
         };
         foreach(var record in games)
         {
             var game=record.Descriptor;
             var matched=!string.IsNullOrWhiteSpace(record.LudusaviName);
+            var assessment = _health.Assess(new GameHealthInput
+            {
+                LudusaviMatched = matched,
+                LastPlayedUtc = game.LastPlayedUtc,
+                LastBackupUtc = record.LastBackupUtc,
+                BackupVersionCount = record.BackupVersionCount,
+                LastBackupTaskState = record.LastBackupTaskState,
+                RecentBackupFailureCount = record.RecentBackupFailureCount,
+                LatestRestoreReadinessStatus = record.LatestRestoreReadiness?.Status,
+                OpenFindingWarningCount = record.OpenFindingWarningCount,
+                OpenFindingErrorCount = record.OpenFindingErrorCount,
+                LatestFindingTitle = record.LatestFindingTitle,
+                CloudState = record.CloudState,
+                CloudEnabled = _options.EnableCloudUpload && record.Policy.UploadAfterBackup && _rclone.IsConfigured
+            }, DateTime.UtcNow);
             snapshot.Games.Add(new GameStatusDto
             {
                 PlayniteId=game.PlayniteId,Name=game.Name,Platform=game.Platform,IsInstalled=game.IsInstalled,LastPlayedUtc=game.LastPlayedUtc,IsRunning=active.Contains(game.PlayniteId),LudusaviMatched=matched,
                 LudusaviName=record.LudusaviName,LastBackupUtc=record.LastBackupUtc,BackupVersionCount=record.BackupVersionCount,
                 LastMediaSyncUtc=record.LastMediaUtc,MediaCount=record.MediaCount,CloudState=record.CloudState,
-                HealthState=!_ludusavi.IsAvailable?"LudusaviUnavailable":attentionGames.Contains(game.PlayniteId)?"Attention":matched?"Ready":"Unmatched",
+                HealthState=assessment.State.ToString(),
+                HealthSummary=assessment.Summary,
+                HealthReasons=assessment.Reasons.ToList(),
                 Policy=record.Policy
             });
         }
+        snapshot.HealthyGames = snapshot.Games.Count(x => x.HealthState == GameHealthState.Healthy.ToString());
+        snapshot.AttentionGames = snapshot.Games.Count(x => x.HealthState == GameHealthState.Attention.ToString());
+        snapshot.RiskGames = snapshot.Games.Count(x => x.HealthState == GameHealthState.Risk.ToString());
+        snapshot.UnknownGames = snapshot.Games.Count(x => x.HealthState == GameHealthState.Unknown.ToString());
+        snapshot.WarningGames = snapshot.AttentionGames + snapshot.RiskGames;
         stopwatch.Stop();
         _logger.LogDebug("[PERF] DashboardSnapshot fetch={FetchMs}ms games={Games} tasks={Tasks} findings={Findings} audit={Audit}",
             stopwatch.ElapsedMilliseconds,snapshot.Games.Count,snapshot.RecentTasks.Count,snapshot.Findings.Count,snapshot.RecentAudit.Count);

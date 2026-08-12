@@ -89,6 +89,15 @@ namespace GameSaveCenter.Contracts
         Failed = 6
     }
 
+    /// <summary>Small user-facing health vocabulary for one game's backup state.</summary>
+    public enum GameHealthState
+    {
+        Healthy = 0,
+        Attention = 1,
+        Risk = 2,
+        Unknown = 3
+    }
+
     /// <summary>Restore workflow state.</summary>
     public enum RestoreState
     {

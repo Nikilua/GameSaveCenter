@@ -27,6 +27,8 @@ namespace GameSaveCenter.Playnite.Infrastructure
             && a.MediaCount == b.MediaCount
             && string.Equals(a.CloudState, b.CloudState, StringComparison.Ordinal)
             && string.Equals(a.HealthState, b.HealthState, StringComparison.Ordinal)
+            && string.Equals(a.HealthSummary, b.HealthSummary, StringComparison.Ordinal)
+            && SequenceEquals(a.HealthReasons, b.HealthReasons, string.Equals)
             && PolicyEquals(a.Policy, b.Policy);
 
         public static readonly Func<TaskStatusDto, TaskStatusDto, bool> Task = (a, b) =>

@@ -66,6 +66,8 @@ namespace GameSaveCenter.Contracts
         public int MediaCount { get; set; }
         public string CloudState { get; set; } = "Disabled";
         public string HealthState { get; set; } = "Unknown";
+        public string HealthSummary { get; set; } = string.Empty;
+        public List<string> HealthReasons { get; set; } = new List<string>();
         public BackupPolicyDto Policy { get; set; } = new BackupPolicyDto();
         public string PlatformDisplay => Platform switch
         {
@@ -82,14 +84,20 @@ namespace GameSaveCenter.Contracts
         public string MatchStateDisplay => LudusaviMatched ? "已匹配" : "未匹配";
         public string HealthStateDisplay => HealthState switch
         {
+            "Healthy" => "健康",
+            "Attention" => "注意",
+            "Risk" => "风险",
+            "Unknown" => "未知",
             "Ready" => "已就绪",
             "Unmatched" => "未匹配",
             "Running" => "运行中",
             "Warning" => "需关注",
-            "Attention" => "需关注",
             "LudusaviUnavailable" => "Ludusavi 未配置",
             _ => HealthState
         };
+        public string HealthReasonDisplay => HealthReasons != null && HealthReasons.Count > 0
+            ? string.Join("；", HealthReasons)
+            : HealthSummary;
         public string CloudStateDisplay => CloudState switch
         {
             "Uploaded" => "已上传",

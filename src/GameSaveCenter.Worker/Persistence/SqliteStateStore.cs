@@ -491,19 +491,39 @@ WHERE playnite_id=$id;",
         var command = connection.CreateCommand();
         command.CommandText = @"
 SELECT g.descriptor_json,g.ludusavi_name,g.match_confidence,g.cloud_state,
-       COALESCE(b.version_count,0),b.last_backup_utc,
-       COALESCE(m.media_count,0),m.last_media_utc,p.policy_json
+       COALESCE(b.version_count,0),b.last_backup_utc,b.latest_readiness_json,
+       COALESCE(bt.recent_backup_failures,0),bt.last_backup_attempt_utc,bt.latest_backup_state,
+       COALESCE(m.media_count,0),m.last_media_utc,p.policy_json,
+       COALESCE(f.warning_count,0),COALESCE(f.error_count,0),f.latest_title
 FROM games g
 LEFT JOIN (
-    SELECT playnite_id,COUNT(*) AS version_count,MAX(created_utc) AS last_backup_utc
-    FROM backup_versions GROUP BY playnite_id
+    SELECT bv.playnite_id,COUNT(*) AS version_count,MAX(bv.created_utc) AS last_backup_utc,
+           (SELECT b2.restore_readiness_json FROM backup_versions b2
+            WHERE b2.playnite_id=bv.playnite_id ORDER BY b2.created_utc DESC LIMIT 1) AS latest_readiness_json
+    FROM backup_versions bv GROUP BY bv.playnite_id
 ) b ON b.playnite_id=g.playnite_id
+LEFT JOIN (
+    SELECT t.game_id,MAX(t.created_utc) AS last_backup_attempt_utc,
+           (SELECT t2.state FROM tasks t2 WHERE t2.game_id=t.game_id AND t2.task_type='Backup'
+            ORDER BY t2.created_utc DESC LIMIT 1) AS latest_backup_state,
+           SUM(CASE WHEN t.state=3 AND t.created_utc >= $backupFailureCutoff THEN 1 ELSE 0 END) AS recent_backup_failures
+    FROM tasks t WHERE t.task_type='Backup' AND COALESCE(t.game_id,'')<>'' GROUP BY t.game_id
+) bt ON bt.game_id=g.playnite_id
+LEFT JOIN (
+    SELECT f0.playnite_id,
+           SUM(CASE WHEN f0.severity >= 1 THEN 1 ELSE 0 END) AS warning_count,
+           SUM(CASE WHEN f0.severity >= 2 THEN 1 ELSE 0 END) AS error_count,
+            (SELECT f2.title FROM findings f2 WHERE f2.playnite_id=f0.playnite_id AND f2.resolved=0 AND f2.severity >= 1
+            ORDER BY f2.created_utc DESC LIMIT 1) AS latest_title
+    FROM findings f0 WHERE f0.resolved=0 AND COALESCE(f0.playnite_id,'')<>'' GROUP BY f0.playnite_id
+) f ON f.playnite_id=g.playnite_id
 LEFT JOIN (
     SELECT playnite_id,COUNT(*) AS media_count,MAX(captured_utc) AS last_media_utc
     FROM media WHERE classification_state='Assigned' GROUP BY playnite_id
 ) m ON m.playnite_id=g.playnite_id
 LEFT JOIN game_policies p ON p.playnite_id=g.playnite_id
 ORDER BY g.name COLLATE NOCASE;";
+        command.Parameters.AddWithValue("$backupFailureCutoff", DateTime.UtcNow.AddDays(-30).ToString("O"));
         await using var reader = await command.ExecuteReaderAsync(token).ConfigureAwait(false);
         while (await reader.ReadAsync(token).ConfigureAwait(false))
         {
@@ -517,11 +537,18 @@ ORDER BY g.name COLLATE NOCASE;";
                 CloudState = reader.IsDBNull(3) ? "Disabled" : reader.GetString(3),
                 BackupVersionCount = reader.GetInt32(4),
                 LastBackupUtc = reader.IsDBNull(5) ? null : DateTime.Parse(reader.GetString(5)).ToUniversalTime(),
-                MediaCount = reader.GetInt32(6),
-                LastMediaUtc = reader.IsDBNull(7) ? null : DateTime.Parse(reader.GetString(7)).ToUniversalTime(),
-                Policy = reader.IsDBNull(8)
+                LatestRestoreReadiness = reader.IsDBNull(6) ? null : TryDeserializeRestoreReadiness(reader.GetString(6)),
+                RecentBackupFailureCount = reader.IsDBNull(7) ? 0 : reader.GetInt32(7),
+                LastBackupAttemptUtc = reader.IsDBNull(8) ? null : DateTime.Parse(reader.GetString(8)).ToUniversalTime(),
+                LastBackupTaskState = reader.IsDBNull(9) ? null : (TaskState?)reader.GetInt32(9),
+                MediaCount = reader.GetInt32(10),
+                LastMediaUtc = reader.IsDBNull(11) ? null : DateTime.Parse(reader.GetString(11)).ToUniversalTime(),
+                Policy = reader.IsDBNull(12)
                     ? new BackupPolicyDto()
-                    : JsonSerializer.Deserialize<BackupPolicyDto>(reader.GetString(8), _json) ?? new BackupPolicyDto()
+                    : JsonSerializer.Deserialize<BackupPolicyDto>(reader.GetString(12), _json) ?? new BackupPolicyDto(),
+                OpenFindingWarningCount = reader.IsDBNull(13) ? 0 : reader.GetInt32(13),
+                OpenFindingErrorCount = reader.IsDBNull(14) ? 0 : reader.GetInt32(14),
+                LatestFindingTitle = reader.IsDBNull(15) ? string.Empty : reader.GetString(15)
             });
         }
         return result;
@@ -781,6 +808,7 @@ ORDER BY g.name COLLATE NOCASE;";
 
     private RestoreReadinessDto? TryDeserializeRestoreReadiness(string json)
     {
+        if (string.IsNullOrWhiteSpace(json) || json == "{}") return null;
         try { return JsonSerializer.Deserialize<RestoreReadinessDto>(json, _json); }
         catch (JsonException ex)
         {
@@ -934,7 +962,8 @@ CREATE TABLE IF NOT EXISTS trainer_releases(release_id TEXT PRIMARY KEY,catalog_
 CREATE TABLE IF NOT EXISTS process_mappings(executable_name TEXT PRIMARY KEY,playnite_id TEXT NOT NULL,game_name TEXT NOT NULL,enabled INTEGER NOT NULL DEFAULT 1,created_utc TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS device_conflict_decisions(playnite_id TEXT NOT NULL,remote_device TEXT NOT NULL,local_backup_id TEXT,remote_backup_id TEXT,decision TEXT NOT NULL,comment TEXT,decided_utc TEXT NOT NULL,PRIMARY KEY(playnite_id,remote_device));
 CREATE TABLE IF NOT EXISTS cloud_retry_queue(playnite_id TEXT PRIMARY KEY,attempt_count INTEGER NOT NULL,next_attempt_utc TEXT NOT NULL,last_error TEXT,created_utc TEXT NOT NULL,updated_utc TEXT NOT NULL);
-CREATE INDEX IF NOT EXISTS ix_tasks_created ON tasks(created_utc DESC);
+ CREATE INDEX IF NOT EXISTS ix_tasks_created ON tasks(created_utc DESC);
+ CREATE INDEX IF NOT EXISTS ix_tasks_game_type_created ON tasks(game_id,task_type,created_utc DESC);
 CREATE INDEX IF NOT EXISTS ix_backup_versions_game_time ON backup_versions(playnite_id,created_utc DESC);
 CREATE INDEX IF NOT EXISTS ix_media_game ON media(playnite_id,captured_utc DESC);
 CREATE INDEX IF NOT EXISTS ix_sessions_open ON sessions(stopped_utc);
@@ -963,7 +992,14 @@ public sealed class DashboardGameRecord
     public string CloudState { get; set; } = "Disabled";
     public int BackupVersionCount { get; set; }
     public DateTime? LastBackupUtc { get; set; }
+    public RestoreReadinessDto? LatestRestoreReadiness { get; set; }
+    public int RecentBackupFailureCount { get; set; }
+    public DateTime? LastBackupAttemptUtc { get; set; }
+    public TaskState? LastBackupTaskState { get; set; }
     public int MediaCount { get; set; }
     public DateTime? LastMediaUtc { get; set; }
     public BackupPolicyDto Policy { get; set; } = new();
+    public int OpenFindingWarningCount { get; set; }
+    public int OpenFindingErrorCount { get; set; }
+    public string LatestFindingTitle { get; set; } = string.Empty;
 }

@@ -76,6 +76,7 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         public static bool IsAttention(GameStatusDto game)
             => string.Equals(game.HealthState, "Attention", StringComparison.OrdinalIgnoreCase)
+               || string.Equals(game.HealthState, "Risk", StringComparison.OrdinalIgnoreCase)
                || string.Equals(game.HealthState, "Warning", StringComparison.OrdinalIgnoreCase)
                || string.Equals(game.HealthState, "LudusaviUnavailable", StringComparison.OrdinalIgnoreCase);
     }

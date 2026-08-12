@@ -1108,6 +1108,12 @@
                                     </StackPanel>
                                 </Grid>
                                 <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding HealthState}" Value="Healthy">
+                                        <Setter TargetName="StateDot" Property="Background" Value="{DynamicResource GscSuccessBrush}"/>
+                                        <Setter TargetName="HealthPill" Property="Background" Value="{DynamicResource GscSuccessIconFillBrush}"/>
+                                        <Setter TargetName="HealthPill" Property="BorderBrush" Value="{DynamicResource GscSuccessBrush}"/>
+                                        <Setter TargetName="HealthLabel" Property="Foreground" Value="{DynamicResource GscSuccessBrush}"/>
+                                    </DataTrigger>
                                     <DataTrigger Binding="{Binding HealthState}" Value="Ready">
                                         <Setter TargetName="StateDot" Property="Background" Value="{DynamicResource GscSuccessBrush}"/>
                                         <Setter TargetName="HealthPill" Property="Background" Value="{DynamicResource GscSuccessIconFillBrush}"/>
@@ -1115,10 +1121,22 @@
                                         <Setter TargetName="HealthLabel" Property="Foreground" Value="{DynamicResource GscSuccessBrush}"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding HealthState}" Value="Attention">
+                                        <Setter TargetName="StateDot" Property="Background" Value="{DynamicResource GscWarningBrush}"/>
+                                        <Setter TargetName="HealthPill" Property="Background" Value="{DynamicResource GscWarningIconFillBrush}"/>
+                                        <Setter TargetName="HealthPill" Property="BorderBrush" Value="{DynamicResource GscWarningBrush}"/>
+                                        <Setter TargetName="HealthLabel" Property="Foreground" Value="{DynamicResource GscWarningBrush}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding HealthState}" Value="Risk">
                                         <Setter TargetName="StateDot" Property="Background" Value="{DynamicResource GscErrorBrush}"/>
                                         <Setter TargetName="HealthPill" Property="Background" Value="{DynamicResource GscErrorIconFillBrush}"/>
                                         <Setter TargetName="HealthPill" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/>
                                         <Setter TargetName="HealthLabel" Property="Foreground" Value="{DynamicResource GscErrorBrush}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding HealthState}" Value="Unknown">
+                                        <Setter TargetName="StateDot" Property="Background" Value="{DynamicResource GscMutedStatusBrush}"/>
+                                        <Setter TargetName="HealthPill" Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
+                                        <Setter TargetName="HealthPill" Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
+                                        <Setter TargetName="HealthLabel" Property="Foreground" Value="{DynamicResource GscSecondaryTextBrush}"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding HealthState}" Value="LudusaviUnavailable">
                                         <Setter TargetName="StateDot" Property="Background" Value="{DynamicResource GscErrorBrush}"/>
@@ -1181,8 +1199,11 @@
                                                         <Style TargetType="Border">
                                                             <Setter Property="Background" Value="{DynamicResource GscWarningBrush}"/>
                                                             <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding SelectedGame.HealthState}" Value="Healthy"><Setter Property="Background" Value="{DynamicResource GscSuccessBrush}"/></DataTrigger>
                                                                 <DataTrigger Binding="{Binding SelectedGame.HealthState}" Value="Ready"><Setter Property="Background" Value="{DynamicResource GscSuccessBrush}"/></DataTrigger>
-                                                                <DataTrigger Binding="{Binding SelectedGame.HealthState}" Value="Attention"><Setter Property="Background" Value="{DynamicResource GscErrorBrush}"/></DataTrigger>
+                                                                <DataTrigger Binding="{Binding SelectedGame.HealthState}" Value="Attention"><Setter Property="Background" Value="{DynamicResource GscWarningBrush}"/></DataTrigger>
+                                                                <DataTrigger Binding="{Binding SelectedGame.HealthState}" Value="Risk"><Setter Property="Background" Value="{DynamicResource GscErrorBrush}"/></DataTrigger>
+                                                                <DataTrigger Binding="{Binding SelectedGame.HealthState}" Value="Unknown"><Setter Property="Background" Value="{DynamicResource GscMutedStatusBrush}"/></DataTrigger>
                                                                 <DataTrigger Binding="{Binding SelectedGame.HealthState}" Value="LudusaviUnavailable"><Setter Property="Background" Value="{DynamicResource GscErrorBrush}"/></DataTrigger>
                                                             </Style.Triggers>
                                                         </Style>

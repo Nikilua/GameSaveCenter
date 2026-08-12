@@ -34,7 +34,7 @@
 - Solution：`GameSaveCenter.sln`，版本 `0.6.70-development-preview`（`Directory.Build.props` 0.6.70）。
 - 插件入口：`src/GameSaveCenter.Playnite/GameSaveCenterPlugin.cs`，扩展 ID `66e9f2d7-67bb-43ef-b62a-b8e60734fcec`。
 - Worker 入口：`src/GameSaveCenter.Worker`，IPC dispatcher 为 `IpcRequestDispatcher`。
-- 测试：Core 13、Worker 51、Playnite 197（2026-08-12 基线）。
+- 测试：Core 19、Worker 59、Playnite 197（HEALTH-001，2026-08-12 当前基线；测试输出需必要时使用隔离目录避免本机旧目标文件锁）。
 
 ### Dashboard / Workspace
 - `DashboardViewModel` 是大型聚合 ViewModel（技术债，暂不拆分），持有所有 Workspace 数据与命令。
@@ -121,7 +121,16 @@
 - Ludusavi 备份版本的 `backupPath + backup ID` 已持久化为 `backup_versions.archive_path`；Simple 归档、缺失/损坏 ZIP、路径穿越、超大展开量、不一致统计与不支持压缩方式必须返回明确状态。
 - 恢复可用性入口位于现有 Save Center 历史 Inspector，不能新建页面或改变 `SaveHistoryGrid` 的滚动/虚拟化骨架；新增内容必须留在 `SaveHistoryActionsScrollViewer` 内，并继续通过 `render-qa` 验证 1040×700 等窗口。
 - 当前测试基线为 Core 13、Worker 58、Playnite 197；本阶段源码门禁、WPF 静态门禁、隔离渲染 QA 和 Release 构建均已通过。真实 Playnite 宿主、主题/DPI 人工验收仍待用户环境确认。
-- 下一项按附件顺序为 `RELIABILITY-HEALTH-001`；继续采用小阶段、独立测试、更新记忆/工作日志、独立 commit，并 push 到 `origin/main`。
+- 该恢复可用性阶段的下一项已在后续 `HEALTH-001` 完成；历史记录保留原阶段编号，当前开发顺序见下方 HEALTH-001 补充。
+
+## 2026-08-12 HEALTH-001 阶段补充
+
+- 每游戏健康状态已统一为四态：`Healthy`（健康）、`Attention`（注意）、`Risk`（风险）、`Unknown`（未知）。旧 `Ready / Warning / LudusaviUnavailable` 仅作为 UI/历史缓存兼容输入保留；新 Dashboard 快照输出四态。
+- `GameHealthAssessmentService` 是 Core 纯计算服务，证据包括最近游玩、备份版本/时间、最近 30 天失败任务数、最近任务状态、最新 `RestoreReadinessStatus`、未解决 finding 严重度、按游戏策略启用的云端状态；不做磁盘、ZIP、网络或数据库访问。
+- Worker 的 `GetDashboardGameRecordsAsync` 一次聚合最新备份可用性、任务失败、finding 和媒体/策略数据；`DashboardService` 只在内存中计算四态和理由，并把 `WarningGames = AttentionGames + RiskGames`，`UnknownGames` 不误计入需处理数。
+- UI 改动只复用首页统计卡、Dashboard 游戏列表/选中头部和 Save Center 校验区；四态在有限宽度下不新增列或固定宽度，理由使用已有 Tooltip，旧 `Ready` 夹具继续显示绿色。Snapshot comparer 已比较健康摘要与理由列表。
+- 当前测试基线为 Core 19、Worker 59、Playnite 197；源码门禁、XAML 门禁、WPF 静态门禁、隔离 Release 构建和 render-qa 已通过。真实 Playnite 宿主、主题/DPI 人工验收仍待用户环境确认。
+- 下一项按附件顺序为 `PROTECTION-001`；不要重做恢复可用性或健康摘要，不新增主页面，继续采用小阶段、独立 commit、文档和 push。
 
 已完成：见 WORKLOG.md 与 Git log；不要重复实现已完成的 UI/性能工作。
 

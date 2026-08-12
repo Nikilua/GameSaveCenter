@@ -145,13 +145,13 @@
                                     <StackPanel Grid.Column="1" MinWidth="0">
                                     <TextBlock Text="当前存档规则" Style="{DynamicResource GscSectionTitleStyle}"/>
                                     <TextBlock Text="{Binding SelectedGame.LudusaviName, Mode=OneWay, TargetNullValue=尚未匹配 Ludusavi 规则}" Style="{DynamicResource GscBodyStyle}" Margin="0,4,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedGame.LudusaviName}"/>
-                                    <TextBlock Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0" TextTrimming="CharacterEllipsis"><Run Text="{Binding SelectedGame.MatchStateDisplay, Mode=OneWay, TargetNullValue=未匹配}"/><Run Text=" · "/><Run Text="{Binding SelectedGame.HealthStateDisplay, Mode=OneWay, TargetNullValue=尚未校验}"/></TextBlock>
+                                    <TextBlock Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedGame.HealthReasonDisplay, Mode=OneWay}"><Run Text="{Binding SelectedGame.MatchStateDisplay, Mode=OneWay, TargetNullValue=未匹配}"/><Run Text=" · "/><Run Text="{Binding SelectedGame.HealthStateDisplay, Mode=OneWay, TargetNullValue=尚未校验}"/></TextBlock>
                                     </StackPanel>
                                 </Grid>
                                 <Border Grid.Column="1" Style="{DynamicResource GscRedesignInfoBand}" Padding="10,8" Margin="14,0,0,0" VerticalAlignment="Center">
                                     <StackPanel>
                                         <TextBlock Text="校验状态" Style="{DynamicResource GscCaptionStyle}"/>
-                                        <TextBlock Text="{Binding SelectedGame.HealthStateDisplay, Mode=OneWay, TargetNullValue=尚未校验}" FontWeight="SemiBold" Margin="0,3,0,0" TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock Text="{Binding SelectedGame.HealthStateDisplay, Mode=OneWay, TargetNullValue=尚未校验}" FontWeight="SemiBold" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedGame.HealthReasonDisplay, Mode=OneWay}"/>
                                     </StackPanel>
                                 </Border>
                             </Grid>
