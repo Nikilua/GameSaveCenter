@@ -159,6 +159,12 @@
 - 若 Worker 仍存活且当前会话无权终止，安装器必须拒绝继续覆盖安装目录，并提示用户用管理员任务管理器结束对应 PID 或重启；不能为了自动化验证使用广泛/强制性的破坏性进程操作。
 - `53399ef fix: make dev installer process stop idempotent` 已验证脚本语法与差异；在真实 PID 3896 仍受权限保护时，安装器能给出清晰阻塞提示。释放该 PID 后必须重新执行一键安装，并核对 Playnite 的 `ExtensionFactory` 与扩展日志，才能标记真实宿主验证通过。
 
+## 2026-08-12 Worker 生命周期清理补充
+
+- Playnite 插件退出必须调用 `WorkerLauncher.StopOwnedWorker()`；Launcher 只允许停止当前实例记录的 `runningWorker`，不能按名称终止任意 `GameSaveCenter.Worker`。`shutdownRequested` 防止退出竞态重新启动子进程。
+- 本阶段 `3f05e16 fix: stop owned worker on Playnite shutdown` 已通过 Playnite Release 全量 198/198、源码校验、Release 编译和 Release self-contained 包验证。
+- 隔离 Playnite 的 `--userdatadir` 首次启动会停在 `FirstTimeStartupWindowFactory`，不能据此宣称扩展加载；真实宿主验证仍必须看 `ExtensionFactory:Loaded plugin: GameSaveCenter` 与扩展日志，并记录 `MANUAL QA REQUIRED` 直到用户环境实际通过。
+
 已完成：见 WORKLOG.md 与 Git log；不要重复实现已完成的 UI/性能工作。
 
 ## 已知坑

@@ -47,6 +47,25 @@
 
 **下一项：** 释放 PID 3896 后重新完成真实安装验证；随后继续 `ONBOARDING-001`。
 
+## 2026-08-12 WORKER-LIFECYCLE-001 Playnite 退出清理自有 Worker
+
+**问题与修复：**
+
+- `GameSaveCenterPlugin.OnApplicationStopped` 原先只取消任务和定时器，没有停止 `WorkerLauncher` 自己启动的子进程；Playnite 退出后可能遗留 Worker，下一次一键安装就会遇到扩展目录文件锁。
+- `WorkerLauncher` 现在只记录并停止当前插件实例通过 `Process.Start` 创建的 Worker，不按进程名误杀其他实例；退出竞态由 `shutdownRequested` 和原子引用交换覆盖。
+- Worker 停止失败只写入 Worker 启动日志，不让 Playnite 退出流程因清理异常再次崩溃；新的启动竞态也会在 Playnite 已退出时立即清理刚启动的子进程。
+
+**验证结果：**
+
+- 源码校验通过；Playnite Release 编译 0 警告、0 错误；新增生命周期回归测试 1/1；Playnite Release 全量测试 198/198 通过。
+- `scripts/package.ps1 -Configuration Release` 成功，生成 `.pext/.zip`，包内含 Core DLL 和 self-contained Worker runtime。
+- 隔离 Playnite 以独立 `--userdatadir` 启动后进入首次启动向导，日志停在 `FirstTimeStartupWindowFactory`，未进入扩展扫描；因此仍标记 `MANUAL QA REQUIRED`，不宣称隔离宿主加载成功。验证结束后已关闭本次隔离 Playnite。
+- 真实用户目录的 `GameSaveCenter.Worker [3896]` 仍存活；PowerShell、提升权限 `Stop-Process` 以及单 PID `taskkill /PID 3896 /F /T` 均返回拒绝访问。真实一键安装和最终 `ExtensionFactory` 加载验证需用户在管理员任务管理器结束该 PID 或重启后重跑。
+
+**提交：** `3f05e16 fix: stop owned worker on Playnite shutdown`
+
+**下一项：** 释放 PID 3896 后重跑真实一键安装并核对 `playnite.log`、`extensions.log`、`worker-launch.log`；随后继续 `ONBOARDING-001`。
+
 ## 2026-08-12 RELIABILITY-RESTORE-001-FOLLOWUP 恢复可用性安全闭环与灾难演练
 
 **实现内容：**
