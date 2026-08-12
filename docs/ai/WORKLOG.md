@@ -26,9 +26,26 @@
 - `AUTO VERIFIED`：源码、测试、构建、包内容、自包含 runtimeconfig、隔离渲染和既有真实宿主的插件加载日志。
 - `MANUAL QA REQUIRED`：清理仍持有旧 Worker 文件锁的 PID 3896 后，在用户真实 Playnite 目录重新安装最终 `.pext`，验证 Worker 启动、IPC、模板创建/保存/应用/删除及主题/DPI/键盘操作。当前旧 Worker 无法由本会话取得终止权限；干净 Playnite 首次初始化在本机权限环境下未进入扩展加载阶段，因此不宣称完整真实 UI/Worker 已通过。
 
-**提交：** 待提交（代码、部署修复、文档分阶段提交）。
+**提交：** `e0c123d docs: record policy and package verification`；后续一键安装器修复见 `53399ef`。
 
 **下一项：** `ONBOARDING-001`，继续按附件顺序小阶段推进；每个阶段完成后先构建/测试/打包，再启动 Playnite并检查加载日志。
+
+## 2026-08-12 DEV-INSTALL-RUN 一键安装器进程停止竞态修复
+
+**问题：**
+
+- 一键安装器在 `Get-Process` 找到 `GameSaveCenter.Worker [3896]` 后，进程可能已在退出，原来的 `Stop-Process -ErrorAction Stop` 会把“进程已自行退出”误报为安装失败。
+- 修复后将这类停止竞态视为成功，并继续由后续轮询确认进程是否真的消失；如果进程仍存活，则明确停止安装，避免覆盖被占用的 Playnite 扩展文件。
+
+**验证结果：**
+
+- PowerShell AST 语法检查通过，`git diff --check` 通过。
+- 实际运行安装器时不再出现“Cannot find a process with the process identifier 3896”；当前会话仍无权终止该存活进程，安装器按安全策略停止，并提示使用管理员任务管理器结束进程或重启后重试。
+- 因 PID 3896 仍被占用，本次不能宣称真实 Playnite 目录的完整构建、替换、Worker/IPC 与扩展加载验证已完成；清理进程后需重新运行一键安装并检查 `playnite.log`/`extensions.log`。
+
+**提交：** `53399ef fix: make dev installer process stop idempotent`
+
+**下一项：** 释放 PID 3896 后重新完成真实安装验证；随后继续 `ONBOARDING-001`。
 
 ## 2026-08-12 RELIABILITY-RESTORE-001-FOLLOWUP 恢复可用性安全闭环与灾难演练
 

@@ -153,6 +153,12 @@
 - 以后每个代码阶段的验收顺序固定为：`dotnet test/build` → 源码/XAML/WPF/render-qa → `scripts/package.ps1` → 安装包内容断言 → 启动 Playnite 并检查 `ExtensionFactory`/扩展日志；若宿主被单实例或权限环境阻断，必须记录为人工验收，不得宣称加载成功。
 - 本阶段完成后的下一项为 `ONBOARDING-001`；不要重做 Restore Readiness、Health、Protection 或本阶段策略模板。
 
+## 2026-08-12 一键安装器进程停止竞态补充
+
+- `scripts/dev-install-run.ps1` 的 `Stop-ProcessReliably` 必须允许 `Get-Process` 与 `Stop-Process` 之间的进程退出竞态；停止命令使用非终止错误处理，随后仍以轮询确认进程确实退出。
+- 若 Worker 仍存活且当前会话无权终止，安装器必须拒绝继续覆盖安装目录，并提示用户用管理员任务管理器结束对应 PID 或重启；不能为了自动化验证使用广泛/强制性的破坏性进程操作。
+- `53399ef fix: make dev installer process stop idempotent` 已验证脚本语法与差异；在真实 PID 3896 仍受权限保护时，安装器能给出清晰阻塞提示。释放该 PID 后必须重新执行一键安装，并核对 Playnite 的 `ExtensionFactory` 与扩展日志，才能标记真实宿主验证通过。
+
 已完成：见 WORKLOG.md 与 Git log；不要重复实现已完成的 UI/性能工作。
 
 ## 已知坑
