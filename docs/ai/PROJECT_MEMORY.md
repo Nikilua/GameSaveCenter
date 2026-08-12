@@ -104,7 +104,7 @@
 - P1：媒体性能（PERF-007 异步缩略图，已完成）。
 - P1：真实 Playnite / DPI / 大型游戏库 QA（UI-QA-REAL-001，当前进行中）。
 - P2：架构进一步拆分（不主动做）。
-- P2：PERF-008 按 Workspace 按需刷新（待真实 profiling 证据再决定，当前不做无收益重构）。
+- PERF-008：已评估收口，维持现状。详情已按激活 Workspace 分支加载，全量快照仅用于全局摘要且后台有 1 分钟 TTL；2000 规模合成 profiling 无 O(n^2)，待真实大库渲染 profiling 证明瓶颈后再评估。
 
 已完成：见 WORKLOG.md 与 Git log；不要重复实现已完成的 UI/性能工作。
 

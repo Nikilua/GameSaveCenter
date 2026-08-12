@@ -357,3 +357,29 @@ NEXT: PERF-008 仍待真实 profiling；当前按 Workspace 按需刷新已有�
 **下一步：**
 
 NEXT: 待用户提供真实 Playnite 大库反馈或人工验收结果。
+
+## 2026-08-12 PERF-008 评估收口
+
+**做了什么：**
+
+- 基于 2000 规模合成 profiling 与源码审计，正式评估 PERF-008（按 Workspace 按需刷新）：
+  - 详情数据已经在 `RefreshCoreAsync` / `RequestWorkspaceLoad` / `LoadDetailsAsync` 中按当前 Workspace 分支加载（Saves/Trainers/Media 只在激活时请求，Tasks/Maintenance 只加载各自独立数据）。
+  - 全量 `DashboardSnapshot` 仅用于全局摘要与任务轮询，后台轮询已有 1 分钟全量 TTL，任务变化走 `GetTaskChanges` 增量。
+  - 2000 规模合成 profiling 显示 GamePicker/Tasks 集合路径无 O(n^2)（首次 27ms、未变化 0ms、任务 ReplaceAll <1ms）。
+
+**结论：**
+
+PERF-008 维持现状，不追加按 Workspace 重构；等真实 Playnite 大库渲染 profiling 显示全量快照成为瓶颈时再单独评估。
+
+**修改文件：**
+
+- `docs/ai/WORKLOG.md`
+- `docs/ai/PROJECT_MEMORY.md`
+
+**仍需验证内容：**
+
+真实 Playnite 大库 IPC 与渲染帧率（外部环境）。
+
+**下一步：**
+
+NEXT: 全部可自主完成项已收口；剩余为真实 Playnite 人工验收。
