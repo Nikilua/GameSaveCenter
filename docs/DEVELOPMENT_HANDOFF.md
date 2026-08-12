@@ -28,6 +28,12 @@
 
 ## Codex 2026-08-11/12 阶段补充（性能与自定义启动项）
 
+## Codex 2026-08-13 阶段补充（环境准备与 GameTool 安全策略）
+
+ONBOARDING-001 已在既有 Maintenance 诊断页加入首次环境准备入口；GAME-TOOL-003/004 已在既有 TrainerCenter Inspector 加入 CustomExecutable 的已有实例策略和风险分类。当前测试基线为 Worker 74/74、Playnite 200/200；Worker/Playnite Release 构建均为 0 警告、0 错误，WPF 静态校验与离屏 render QA 通过。
+
+GameTool 的安全边界不可丢失：不能按进程名直接关闭程序；只在完整 EXE 路径一致且重新确认 PID 路径后执行 Restart；无法读取路径时保守拒绝。反作弊风险游戏中只允许 `GeneralUtility` 自定义工具自动启动，Unknown/Trainer/CT/GameModification 必须阻止并审计。真实 Playnite 覆盖安装、扩展扫描和 Worker/IPC 加载仍受 PID 3896 文件锁限制，清理 PID 后需要重新执行一键安装并检查 `playnite.log` 与 `extensions.log`。
+
 新的 AI/Codex 长期记忆入口已建立：先读 `docs/ai/PROJECT_MEMORY.md` 与 `docs/ai/WORKLOG.md`，再读本文件。
 
 本轮已完成并推送：

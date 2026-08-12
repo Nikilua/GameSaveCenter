@@ -34,8 +34,9 @@
 - Solution：`GameSaveCenter.sln`，版本 `0.6.70-development-preview`（`Directory.Build.props` 0.6.70）。
 - 插件入口：`src/GameSaveCenter.Playnite/GameSaveCenterPlugin.cs`，扩展 ID `66e9f2d7-67bb-43ef-b62a-b8e60734fcec`。
 - Worker 入口：`src/GameSaveCenter.Worker`，IPC dispatcher 为 `IpcRequestDispatcher`。
-- 测试：Core 29、Worker 69、Playnite 197（POLICY-001，2026-08-12 当前基线；测试输出需必要时使用显式 `OutDir` / `IntermediateOutputPath` 隔离目录，避免本机旧 Worker 锁住标准输出）。
+- 测试：Core 29、Worker 74、Playnite 200（GAME-TOOL-003/004，2026-08-13 当前基线；测试输出需必要时使用显式 `OutDir` / `IntermediateOutputPath` 隔离目录，避免本机旧 Worker 锁住标准输出）。
 - ONBOARDING-001（2026-08-13）新增 `environment.check`：检查服务驻留 Worker，使用临时 SQLite 表和目录临时文件做可逆探针；Rclone 未配置为 `Skipped`，不把可选云端能力误计为基础失败。当前基线为 Worker 70、Playnite 198；UI 仍复用 Maintenance 诊断页的单一外层滚动与有限表格视口。
+- GAME-TOOL-003/004（2026-08-13）新增 `GameToolIfAlreadyRunning` 与 `GameToolRiskCategory` 持久化列。CustomExecutable 的已有实例策略只允许按解析后的 EXE 完整路径匹配；Skip 为默认，Restart 只重启再次确认过的同路径 PID，路径读取不完整时必须保守停止。反作弊游戏仅允许已分类为 `GeneralUtility` 的自定义工具自动启动；Unknown 与 `GameModification` 自动启动必须阻止并写审计，用户需在 TrainerCenter Inspector 明确分类后保存。
 
 ### Dashboard / Workspace
 - `DashboardViewModel` 是大型聚合 ViewModel（技术债，暂不拆分），持有所有 Workspace 数据与命令。

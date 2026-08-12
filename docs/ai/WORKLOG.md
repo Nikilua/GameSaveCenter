@@ -2,6 +2,30 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-13 GAME-TOOL-003/004 重复实例策略与风险分类
+
+**实现内容：**
+
+- 为自定义启动项增加 `Skip`（默认）、`Restart`、`AllowAnotherInstance` 三种已有实例策略；只对解析后的自定义 EXE 完整路径做匹配，不按进程名直接关闭其他程序。无法读取同名进程路径时保守停止，Restart 在关闭/强制结束前再次确认 PID 对应的完整路径。
+- 为 CustomExecutable 增加 `Unknown`（默认）、`GeneralUtility`、`GameModification` 风险分类，并写入 SQLite。反作弊风险游戏中，修改器/CT 与游戏修改工具不会自动启动；通用工具仍可自动启动；未分类自定义工具的自动启动先暂缓，需用户在既有工具设置页明确分类并保存。
+- 在 TrainerCenter 既有设置 Inspector 中增加“已有实例时”和“工具类别”下拉框；保留既有导入、启动、延迟、退出跟踪、管理员权限及滚动/虚拟化结构。手动启动遇到已有同路径实例时会显示已跳过，而不是重复拉起。
+
+**验证结果：**
+
+- Worker Release 构建：0 警告、0 错误；Worker 测试 74/74 通过（独立 `artifacts/test-bin` 输出，避免 PID 3896 文件锁）。
+- Playnite Release 构建：0 警告、0 错误；Playnite 测试 200/200 通过。
+- `validate_wpf_ui.py` 通过（0 errors；33 个既有 warning、153 个既有 info）；`render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/game-tool-policy-render` 通过，包含 Trainer Inspector 在窄窗口的滚动几何。
+- 追加路径比较、默认策略、SQLite 策略往返和 UI 契约测试；`git diff --check` 通过。
+
+**验证边界：**
+
+- 隔离 Playnite/RenderHarness 已验证编译和离屏布局，但当前会话仍无法取得桌面句柄或完成真实扩展扫描；不能据此宣称真实宿主已加载本阶段包。
+- PID 3896 仍是当前会话无权读取/终止的外部 Worker；真实覆盖安装和宿主加载仍需管理员任务管理器结束该 PID 或重启后执行。
+
+**提交：**代码与测试待提交；文档单独提交。
+
+**下一项：**SMART-PROTECT-001/002，复用现有游戏停止、存档识别和策略页，不新增主导航页。
+
 ## 2026-08-13 ONBOARDING-001 环境准备与首次使用入口
 
 **实现内容：**
