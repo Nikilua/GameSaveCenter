@@ -34,7 +34,7 @@
 - Solution：`GameSaveCenter.sln`，版本 `0.6.70-development-preview`（`Directory.Build.props` 0.6.70）。
 - 插件入口：`src/GameSaveCenter.Playnite/GameSaveCenterPlugin.cs`，扩展 ID `66e9f2d7-67bb-43ef-b62a-b8e60734fcec`。
 - Worker 入口：`src/GameSaveCenter.Worker`，IPC dispatcher 为 `IpcRequestDispatcher`。
-- 测试：Core 19、Worker 59、Playnite 197（HEALTH-001，2026-08-12 当前基线；测试输出需必要时使用隔离目录避免本机旧目标文件锁）。
+- 测试：Core 27、Worker 59、Playnite 197（PROTECTION-001，2026-08-12 当前基线；测试输出需必要时使用隔离目录避免本机旧目标文件锁）。
 
 ### Dashboard / Workspace
 - `DashboardViewModel` 是大型聚合 ViewModel（技术债，暂不拆分），持有所有 Workspace 数据与命令。
@@ -48,7 +48,7 @@
 - `GscSelectedGameIconControl` 只用于当前游戏上下文表面（Dashboard、Overview、Save、Trainer、Media），GamePicker 虚拟化列表不得加载真实 Icon。
 - GamePicker 选择可被当前筛选隐藏但不能静默丢失；必须保留 `SelectedItem`、显示恢复语义并保持 `GamePickerSelectedGameId` 持久化。默认筛选只对新用户/未知值归一为“已安装”。
 - 事件驱动的 `PlayniteGameStarted` 自动定位优先于普通刷新；游戏停止不改变当前选择。不得为此新增轮询、进程扫描、IPC 或网络请求，也不得改动 DataGrid 滚动/虚拟化契约。
-- 本轮自动化结果：源码门禁、WPF 静态门禁、隔离 Release 构建、Core 13/13、Worker 51/51、Playnite 197/197、render-qa 均通过；真实 Playnite 宿主/DPI/主题人工验证仍待环境。
+- 当前自动化结果：源码门禁、WPF 静态门禁、Release 构建、Core 27/27、Worker 59/59、Playnite 197/197、render-qa 均通过；真实 Playnite 宿主/DPI/主题人工验证仍待环境。
 
 ### 数据流
 - Playnite → Worker：Named Pipe 请求（`GameSaveCenter.Playnite/Ipc`、`GameSaveCenter.Worker/Ipc`）。

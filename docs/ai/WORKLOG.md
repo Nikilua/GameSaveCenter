@@ -2,6 +2,26 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-12 UI-207-FOLLOWUP-REVALIDATION 当前游戏上下文与设置布局复验
+
+**复验结论：**
+
+- UI-207 实现已存在于 `d2662e3`，本次没有重复修改代码；复核确认未触碰 DataGrid、Worker、IPC、备份链路或新增轮询。
+- 设置页仍由共享 TabControl 模板负责滚动：宽屏 232 DIP 左侧垂直导航，紧凑布局顶部水平导航，内容区独立 `SettingsScroller`；5 个分类在全部探针中可达。
+- 运行中游戏仍按持久化选择 → 最近启动事件 → 最近活动优先；无运行游戏时恢复 `GamePickerSelectedGameId`，游戏停止不改变选择。真实 Icon 仍为 UI-only、本地优先、48 像素解码、Freeze、LRU 48、失败手柄 fallback，GamePicker 列表不加载真实 Icon。
+
+**本次验证：**
+
+- `python scripts/validate-source.py`、`scripts/check-xaml.ps1`、`git diff --check` 通过；`git fsck --full` 仅报告仓库既有 dangling 对象。
+- WPF 静态门禁 0 errors（33 条既有 warnings）；Playnite/Worker Release 项目构建 0 警告/0 错误。
+- Core 27/27、Worker 59/59、Playnite 197/197 通过；Playnite/Worker 测试使用 `.tmp/ui207-*` 隔离输出，避免默认 bin 目录文件锁竞争。
+- `scripts/render-qa.ps1` 全绿；Settings 覆盖 760/880/920/1100/1400 × 560/700/900，共 15 组探针，5 个分类全部可见，滚动职责正确。
+- 离屏 Settings PNG 只验证结构/测量，具体宿主内容不在假数据 harness 中；真实 Playnite 设置页、主题、DPI、键盘、连续缩放和自动定位/Icon 流程仍为 `BLOCKED_ENVIRONMENT`。
+
+**下一步：**
+
+继续附件顺序中的 `POLICY-001`，不要重复实现 UI-207。
+
 ## 2026-08-12 PROTECTION-001 最近游玩保护摘要
 
 **做了什么：**
