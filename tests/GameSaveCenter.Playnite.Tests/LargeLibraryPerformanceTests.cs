@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Specialized;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.ViewModels;
@@ -52,7 +55,7 @@ namespace GameSaveCenter.Playnite.Tests
         [Fact]
         public void UnchangedTasksWith2000Rows_EmitsNoSecondCollectionChanged()
         {
-            var tasks = Enumerable.Range(0, 2000).Select(i => Task("task-" + i, i % 100)).ToArray();
+            var tasks = Enumerable.Range(0, 2000).Select(i => TaskStatus("task-" + i, i % 100)).ToArray();
             var collection = new BatchObservableCollection<TaskStatusDto>();
             var notifications = 0;
             collection.CollectionChanged += (_, _) => notifications++;
@@ -63,6 +66,57 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.False(collection.ReplaceAll(tasks, SnapshotComparers.Task));
             Assert.Equal(1, notifications);
             Assert.Equal(2000, collection.Count);
+        }
+
+        [Fact]
+        public async Task GamePicker2000_Benchmark_WritesMeasuredTimings()
+        {
+            using var picker = new GamePickerViewModel();
+            var games = Enumerable.Range(0, 2000).Select(i => Game("Game " + i)).ToArray();
+
+            var timer = Stopwatch.StartNew();
+            picker.SetItems(games);
+            timer.Stop();
+            var firstSetMs = timer.ElapsedMilliseconds;
+
+            timer.Restart();
+            picker.SetItems(Enumerable.Range(0, 2000).Select(i => Game("Game " + i)).ToArray());
+            timer.Stop();
+            var unchangedSetMs = timer.ElapsedMilliseconds;
+
+            var changed = Enumerable.Range(0, 2000).Select(i => Game("Game " + i)).ToArray();
+            changed[1500].HealthState = "Attention";
+            timer.Restart();
+            picker.SetItems(changed);
+            timer.Stop();
+            var changedSetMs = timer.ElapsedMilliseconds;
+
+            timer.Restart();
+            picker.SearchText = "Game 1";
+            await Task.Delay(400);
+            timer.Stop();
+            var searchRefreshMs = timer.ElapsedMilliseconds;
+
+            var tasks = Enumerable.Range(0, 2000).Select(i => TaskStatus("task-" + i, i % 100)).ToArray();
+            var collection = new BatchObservableCollection<TaskStatusDto>();
+            timer.Restart();
+            collection.ReplaceAll(tasks, SnapshotComparers.Task);
+            timer.Stop();
+            var taskFirstReplaceMs = timer.ElapsedMilliseconds;
+            timer.Restart();
+            collection.ReplaceAll(tasks, SnapshotComparers.Task);
+            timer.Stop();
+            var taskUnchangedReplaceMs = timer.ElapsedMilliseconds;
+
+            var benchmarkDirectory = Path.Combine(Environment.CurrentDirectory, "artifacts", "ui-qa", "benchmarks");
+            Directory.CreateDirectory(benchmarkDirectory);
+            File.WriteAllText(Path.Combine(benchmarkDirectory, "large-library.txt"),
+                $"first_set_ms={firstSetMs}\n" +
+                $"unchanged_set_ms={unchangedSetMs}\n" +
+                $"changed_set_ms={changedSetMs}\n" +
+                $"search_refresh_ms={searchRefreshMs}\n" +
+                $"task_first_replace_ms={taskFirstReplaceMs}\n" +
+                $"task_unchanged_replace_ms={taskUnchangedReplaceMs}\n");
         }
 
         private static GameStatusDto Game(string name)
@@ -76,7 +130,7 @@ namespace GameSaveCenter.Playnite.Tests
                 HealthState = "Ready"
             };
 
-        private static TaskStatusDto Task(string id, int progress)
+        private static TaskStatusDto TaskStatus(string id, int progress)
             => new TaskStatusDto
             {
                 TaskId = id,
