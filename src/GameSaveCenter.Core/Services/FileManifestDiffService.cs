@@ -14,7 +14,12 @@ namespace GameSaveCenter.Core.Services
                 .ToDictionary(x => NormalizePath(x.RelativePath), StringComparer.OrdinalIgnoreCase);
             var newMap = (after ?? Enumerable.Empty<FileManifestEntry>())
                 .ToDictionary(x => NormalizePath(x.RelativePath), StringComparer.OrdinalIgnoreCase);
-            var result = new FileManifestDiff();
+            var result = new FileManifestDiff
+            {
+                BeforeTotalBytes = oldMap.Values.Sum(x => Math.Max(0, x.SizeBytes)),
+                AfterTotalBytes = newMap.Values.Sum(x => Math.Max(0, x.SizeBytes)),
+                IsExactComparison = oldMap.Values.Concat(newMap.Values).All(x => !string.IsNullOrWhiteSpace(x.Sha256))
+            };
 
             foreach (var item in newMap)
             {

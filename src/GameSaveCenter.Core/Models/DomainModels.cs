@@ -61,6 +61,9 @@ namespace GameSaveCenter.Core.Models
         public bool IsPreRestore { get; set; }
         public string Comment { get; set; } = string.Empty;
         public string SourceDevice { get; set; } = string.Empty;
+        public RestoreReadinessStatus? ReadinessStatus { get; set; }
+        public bool HasSevereAnomaly { get; set; }
+        public bool IsHealthyRestorePoint => !HasSevereAnomaly && ReadinessStatus == RestoreReadinessStatus.Ready;
         public List<FileManifestEntry> Files { get; set; } = new List<FileManifestEntry>();
     }
 
@@ -104,5 +107,8 @@ namespace GameSaveCenter.Core.Models
         public List<FileManifestEntry> Removed { get; set; } = new List<FileManifestEntry>();
         public List<FileManifestEntry> Modified { get; set; } = new List<FileManifestEntry>();
         public List<FileManifestEntry> Unchanged { get; set; } = new List<FileManifestEntry>();
+        public bool IsExactComparison { get; set; }
+        public long BeforeTotalBytes { get; set; }
+        public long AfterTotalBytes { get; set; }
     }
 }

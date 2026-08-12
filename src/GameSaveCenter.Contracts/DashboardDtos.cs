@@ -47,6 +47,7 @@ namespace GameSaveCenter.Contracts
         public string SourceDevice { get; set; } = string.Empty;
         public string OperatingSystem { get; set; } = string.Empty;
         public bool IsPreRestore { get; set; }
+        public bool IsHealthProtected => RestoreReadiness?.Status == RestoreReadinessStatus.Ready;
         /// <summary>Resolved Ludusavi game backup directory plus this version's file name.</summary>
         public string ArchivePath { get; set; } = string.Empty;
         public RestoreReadinessDto? RestoreReadiness { get; set; }
@@ -108,6 +109,9 @@ namespace GameSaveCenter.Contracts
         public List<string> Removed { get; set; } = new List<string>();
         public List<string> Modified { get; set; } = new List<string>();
         public int UnchangedCount { get; set; }
+        public long TotalBytesDelta { get; set; }
+        public string ComparisonQuality { get; set; } = "Estimated";
+        public string ComparisonQualityDisplay => string.Equals(ComparisonQuality, "Exact", StringComparison.OrdinalIgnoreCase) ? "精确比较" : "估算比较（缺少完整 Hash）";
         public string Summary { get; set; } = string.Empty;
     }
 
@@ -115,6 +119,7 @@ namespace GameSaveCenter.Contracts
     public sealed class RetentionPreviewDto
     {
         public List<string> KeepBackupIds { get; set; } = new List<string>();
+        public List<string> ProtectedHealthBackupIds { get; set; } = new List<string>();
         public List<string> DeleteCandidateIds { get; set; } = new List<string>();
         public string Summary { get; set; } = string.Empty;
     }

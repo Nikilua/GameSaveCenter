@@ -376,7 +376,9 @@ public sealed class IpcRequestDispatcher
         {
             LeftBackupId=request.LeftBackupId,RightBackupId=request.RightBackupId,Added=diff.Added.Select(x=>x.RelativePath).ToList(),Removed=diff.Removed.Select(x=>x.RelativePath).ToList(),
             Modified=diff.Modified.Select(x=>x.RelativePath).ToList(),UnchangedCount=diff.Unchanged.Count,
-            Summary=$"新增 {diff.Added.Count}，删除 {diff.Removed.Count}，修改 {diff.Modified.Count}，未变化 {diff.Unchanged.Count}"
+            TotalBytesDelta=diff.AfterTotalBytes-diff.BeforeTotalBytes,
+            ComparisonQuality=diff.IsExactComparison?"Exact":"Estimated",
+            Summary=$"新增 {diff.Added.Count}，删除 {diff.Removed.Count}，修改 {diff.Modified.Count}，未变化 {diff.Unchanged.Count}；大小变化 {FormatBytes(diff.AfterTotalBytes-diff.BeforeTotalBytes)}（{(diff.IsExactComparison?"精确":"估算")}）"
         };
     }
 
@@ -384,9 +386,19 @@ public sealed class IpcRequestDispatcher
     {
         var versions=await _store.GetBackupVersionsAsync(query.PlayniteId,token).ConfigureAwait(false);
         var policy=await _store.GetPolicyAsync(query.PlayniteId,token).ConfigureAwait(false);
-        var snapshots=versions.Select(x=>new BackupSnapshot{BackupId=x.BackupId,CreatedUtc=x.CreatedUtc,TotalBytes=x.TotalBytes,FileCount=x.FileCount,IsLocked=x.IsLocked,IsPreRestore=x.IsPreRestore,Comment=x.Comment,SourceDevice=x.SourceDevice}).ToList();
+        var snapshots=versions.Select(x=>new BackupSnapshot{BackupId=x.BackupId,CreatedUtc=x.CreatedUtc,TotalBytes=x.TotalBytes,FileCount=x.FileCount,IsLocked=x.IsLocked,IsPreRestore=x.IsPreRestore,Comment=x.Comment,SourceDevice=x.SourceDevice,ReadinessStatus=x.RestoreReadiness?.Status,HasSevereAnomaly=x.FileCount==0||x.TotalBytes<=0||x.RestoreReadiness?.Status is RestoreReadinessStatus.Corrupted or RestoreReadinessStatus.Failed}).ToList();
         var plan=new RetentionPlanner().CreatePlan(snapshots,new RetentionPolicy{KeepAllFor=TimeSpan.FromHours(policy.KeepRecentAllHours),KeepDailyDays=policy.KeepDailyDays,KeepWeeklyWeeks=policy.KeepWeeklyWeeks,KeepMonthlyMonths=policy.KeepMonthlyMonths},DateTime.UtcNow);
-        return new RetentionPreviewDto{KeepBackupIds=plan.Keep.Select(x=>x.BackupId).ToList(),DeleteCandidateIds=plan.DeleteCandidates.Select(x=>x.BackupId).ToList(),Summary=$"建议保留 {plan.Keep.Count} 个版本；{plan.DeleteCandidates.Count} 个版本可由用户审核后清理。自动删除未启用。"};
+        return new RetentionPreviewDto{KeepBackupIds=plan.Keep.Select(x=>x.BackupId).ToList(),ProtectedHealthBackupIds=plan.HealthProtected.Select(x=>x.BackupId).ToList(),DeleteCandidateIds=plan.DeleteCandidates.Select(x=>x.BackupId).ToList(),Summary=$"建议保留 {plan.Keep.Count} 个版本；其中 {plan.HealthProtected.Count} 个健康恢复点受保护；{plan.DeleteCandidates.Count} 个版本可由用户审核后清理。自动删除未启用。"};
+    }
+
+    private static string FormatBytes(long bytes)
+    {
+        var sign = bytes < 0 ? "-" : "+";
+        var value = Math.Abs((double)bytes);
+        if (value < 1024) return $"{sign}{value:0} B";
+        if (value < 1024 * 1024) return $"{sign}{value / 1024:0.##} KiB";
+        if (value < 1024 * 1024 * 1024) return $"{sign}{value / 1024 / 1024:0.##} MiB";
+        return $"{sign}{value / 1024 / 1024 / 1024:0.##} GiB";
     }
 
     private async Task<object> ValidateAsync(ValidateGameRequestDto request,CancellationToken token)

@@ -24,6 +24,13 @@ namespace GameSaveCenter.Core.Services
                 keep.Add(snapshot.BackupId);
             }
 
+            // A validated healthy restore point is a safety floor. It remains kept even
+            // when newer anomalous versions would otherwise fill every retention bucket.
+            foreach (var snapshot in ordered.Where(x => x.IsHealthyRestorePoint))
+            {
+                keep.Add(snapshot.BackupId);
+            }
+
             foreach (var snapshot in ordered.Where(x => nowUtc - x.CreatedUtc <= policy.KeepAllFor))
             {
                 keep.Add(snapshot.BackupId);
@@ -44,7 +51,8 @@ namespace GameSaveCenter.Core.Services
             return new RetentionPlan
             {
                 Keep = ordered.Where(x => keep.Contains(x.BackupId)).ToList(),
-                DeleteCandidates = ordered.Where(x => !keep.Contains(x.BackupId)).ToList()
+                DeleteCandidates = ordered.Where(x => !keep.Contains(x.BackupId)).ToList(),
+                HealthProtected = ordered.Where(x => x.IsHealthyRestorePoint).ToList()
             };
         }
 
@@ -78,5 +86,6 @@ namespace GameSaveCenter.Core.Services
     {
         public List<BackupSnapshot> Keep { get; set; } = new List<BackupSnapshot>();
         public List<BackupSnapshot> DeleteCandidates { get; set; } = new List<BackupSnapshot>();
+        public List<BackupSnapshot> HealthProtected { get; set; } = new List<BackupSnapshot>();
     }
 }
