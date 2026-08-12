@@ -1,11 +1,7 @@
 using System;
-using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Threading;
-using GameSaveCenter.Playnite.Infrastructure;
-using GameSaveCenter.Playnite.ViewModels;
 
 namespace GameSaveCenter.Playnite.Views
 {
@@ -16,101 +12,6 @@ namespace GameSaveCenter.Playnite.Views
         {
             InitializeComponent();
             TaskDetailScrollViewer.IsVisibleChanged += OnTaskDetailScrollViewerIsVisibleChanged;
-            DataContextChanged += OnDataContextChanged;
-            Loaded += OnTaskCenterLoaded;
-            Unloaded += OnTaskCenterUnloaded;
-            filterRestoreTimer = new DispatcherTimer(DispatcherPriority.Background)
-            {
-                Interval = TimeSpan.FromMilliseconds(200)
-            };
-            filterRestoreTimer.Tick += OnFilterRestoreTimerTick;
-        }
-
-        private DashboardViewModel? boundViewModel;
-        private readonly DispatcherTimer filterRestoreTimer;
-        private int filterRestorePasses;
-
-        private void OnTaskCenterLoaded(object sender, RoutedEventArgs e)
-        {
-            StartFilterRestoreTimer();
-            EnsureTaskFilterDefaults();
-        }
-
-        private void OnTaskCenterUnloaded(object sender, RoutedEventArgs e)
-            => filterRestoreTimer.Stop();
-
-        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (boundViewModel != null)
-            {
-                boundViewModel.TaskGameFilterOptions.CollectionChanged -= OnTaskFilterOptionsChanged;
-                boundViewModel.TaskTypeFilterOptions.CollectionChanged -= OnTaskFilterOptionsChanged;
-                boundViewModel = null;
-            }
-
-            if (DataContext is DashboardViewModel viewModel)
-            {
-                boundViewModel = viewModel;
-                viewModel.TaskGameFilterOptions.CollectionChanged += OnTaskFilterOptionsChanged;
-                viewModel.TaskTypeFilterOptions.CollectionChanged += OnTaskFilterOptionsChanged;
-                EnsureTaskFilterDefaults();
-                StartFilterRestoreTimer();
-            }
-        }
-
-        private void OnTaskFilterOptionsChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            // The game/type option collections are rebuilt on Worker snapshots. Restore the
-            // default selection after WPF has re-materialized the new items.
-            StartFilterRestoreTimer();
-            Dispatcher.BeginInvoke(DispatcherPriority.DataBind, new Action(EnsureTaskFilterDefaults));
-        }
-
-        private void StartFilterRestoreTimer()
-        {
-            if (filterRestoreTimer.IsEnabled)
-                return;
-            filterRestorePasses = 0;
-            filterRestoreTimer.Start();
-        }
-
-        private void OnFilterRestoreTimerTick(object? sender, EventArgs e)
-        {
-            filterRestorePasses++;
-            EnsureTaskFilterDefaults();
-            if (filterRestorePasses >= 25
-                || (TaskStatusFilterComboBox.SelectedItem != null
-                    && TaskGameFilterComboBox.SelectedItem != null
-                    && TaskTypeFilterComboBox.SelectedItem != null))
-            {
-                filterRestoreTimer.Stop();
-                filterRestorePasses = 0;
-            }
-        }
-
-        private void EnsureTaskFilterDefaults()
-        {
-            if (DataContext is not DashboardViewModel viewModel)
-                return;
-            UiFilterSelection.RestoreDefault(TaskStatusFilterComboBox, viewModel.TaskStatusFilter);
-            UiFilterSelection.RestoreDefault(TaskGameFilterComboBox, viewModel.TaskGameFilter);
-            UiFilterSelection.RestoreDefault(TaskTypeFilterComboBox, viewModel.TaskTypeFilter);
-        }
-
-        private void OnTaskFilterSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            // RebuildTaskFilters replaces the dynamic game/type collections. WPF clears
-            // SelectedItem while the collection is repopulated, and that transient state
-            // can win the binding race even though the ViewModel has already restored
-            // “全部”. Restore only an actually empty selection, preserving real choices.
-            if (sender is not ComboBox combo || combo.Items.Count == 0 || combo.SelectedIndex >= 0)
-                return;
-
-            Dispatcher.BeginInvoke(DispatcherPriority.DataBind, new Action(() =>
-            {
-                if (combo.Items.Count > 0 && combo.SelectedIndex < 0)
-                    combo.SelectedIndex = 0;
-            }));
         }
 
         private void OnTaskDetailScrollViewerIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)

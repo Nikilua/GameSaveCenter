@@ -1761,18 +1761,15 @@ namespace GameSaveCenter.Playnite.ViewModels
 
             var selectedGame = TaskGameFilter;
             var selectedType = TaskTypeFilter;
-            Replace(TaskGameFilterOptions, new[] { "全部" }.Concat(Tasks.Select(x => x.GameName).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct(StringComparer.OrdinalIgnoreCase).OrderBy(x => x)));
-            Replace(TaskTypeFilterOptions, new[] { "全部" }.Concat(Tasks.Select(x => x.TaskTypeDisplay).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct(StringComparer.OrdinalIgnoreCase).OrderBy(x => x)));
+            TaskFilterOptionsSync.Sync(TaskGameFilterOptions, Tasks.Select(x => x.GameName));
+            TaskFilterOptionsSync.Sync(TaskTypeFilterOptions, Tasks.Select(x => x.TaskTypeDisplay));
 
-            // Replacing ObservableCollection contents makes WPF clear ComboBox.SelectedItem.
-            // Force a real property notification even when the logical value remains “全部”,
-            // otherwise the two dynamic filters render as empty until the user selects them.
-            var nextGame = TaskGameFilterOptions.Contains(selectedGame) ? selectedGame : "全部";
-            var nextType = TaskTypeFilterOptions.Contains(selectedType) ? selectedType : "全部";
-            taskGameFilter = string.Empty;
-            taskTypeFilter = string.Empty;
-            TaskGameFilter = nextGame;
-            TaskTypeFilter = nextType;
+            // Only touch the selection when it actually disappeared; the incremental sync
+            // above never Clear()s the option collections, so an existing selection survives.
+            if (string.IsNullOrEmpty(selectedGame) || !TaskGameFilterOptions.Contains(selectedGame))
+                TaskGameFilter = "全部";
+            if (string.IsNullOrEmpty(selectedType) || !TaskTypeFilterOptions.Contains(selectedType))
+                TaskTypeFilter = "全部";
             TasksView.Refresh();
         }
 
