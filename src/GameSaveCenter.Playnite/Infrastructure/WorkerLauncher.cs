@@ -20,14 +20,18 @@ namespace GameSaveCenter.Playnite.Infrastructure
         private readonly WorkerIpcClient client;
         private readonly SemaphoreSlim startupGate = new SemaphoreSlim(1, 1);
         private Process? runningWorker;
+        private string? workerLogPath;
+        private volatile bool shutdownRequested;
         public WorkerLauncher(WorkerIpcClient client) { this.client = client; }
 
         public async Task EnsureStartedAsync(string executable, bool terminateUnhealthyProcess = true, string? expectedVersion = null)
         {
+            if (shutdownRequested) return;
             if (await IsHealthyAsync(expectedVersion: expectedVersion).ConfigureAwait(false)) return;
             await startupGate.WaitAsync().ConfigureAwait(false);
             try
             {
+                if (shutdownRequested) return;
                 if (await IsHealthyAsync(expectedVersion: expectedVersion).ConfigureAwait(false)) return;
                 if (string.IsNullOrWhiteSpace(executable) || !File.Exists(executable))
                     throw new FileNotFoundException("未找到 GameSaveCenter Worker。", executable);
@@ -97,6 +101,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 var logPath = Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                     "GameSaveCenter", "Logs", "worker-launch.log");
+                workerLogPath = logPath;
                 Directory.CreateDirectory(Path.GetDirectoryName(logPath));
                 var expectedVersionLabel = string.IsNullOrWhiteSpace(expectedVersion) ? "unknown" : expectedVersion;
                 AppendLog(logPath, $"Starting Worker: {fullExecutable} (expected GameSaveCenter Worker version {expectedVersionLabel})");
@@ -124,7 +129,12 @@ namespace GameSaveCenter.Playnite.Infrastructure
                     catch { AppendLog(logPath, "Worker exited before its exit code could be read."); }
                 };
                 if (!worker.Start()) throw new InvalidOperationException("Worker 进程启动失败。");
-                runningWorker = worker;
+                Interlocked.Exchange(ref runningWorker, worker);
+                if (shutdownRequested)
+                {
+                    StopProcess(worker, "Playnite 正在退出");
+                    return;
+                }
                 worker.BeginOutputReadLine();
                 worker.BeginErrorReadLine();
 
@@ -145,6 +155,41 @@ namespace GameSaveCenter.Playnite.Infrastructure
             finally
             {
                 startupGate.Release();
+            }
+        }
+
+        /// <summary>
+        /// Stops only the Worker process created by this plugin instance. Playnite does not
+        /// provide a console/window for the self-contained Worker, so normal host shutdown
+        /// must release the child explicitly or the next development install can inherit an
+        /// orphaned file lock.
+        /// </summary>
+        public void StopOwnedWorker()
+        {
+            shutdownRequested = true;
+            var worker = Interlocked.Exchange(ref runningWorker, null);
+            if (worker == null) return;
+            StopProcess(worker, "Playnite 正在退出");
+        }
+
+        private void StopProcess(Process worker, string reason)
+        {
+            try
+            {
+                if (!worker.HasExited)
+                {
+                    AppendLog(workerLogPath, $"Stopping owned Worker: {reason}.");
+                    worker.Kill();
+                    worker.WaitForExit(5000);
+                }
+            }
+            catch (Exception ex)
+            {
+                AppendLog(workerLogPath, $"Unable to stop owned Worker: {ex.Message}");
+            }
+            finally
+            {
+                worker.Dispose();
             }
         }
 
@@ -189,11 +234,12 @@ namespace GameSaveCenter.Playnite.Infrastructure
             catch { return HealthProbe.Unavailable; }
         }
 
-        private static void AppendLog(string path, string? message)
+        private static void AppendLog(string? path, string? message)
         {
-            if (string.IsNullOrWhiteSpace(message)) return;
+            if (string.IsNullOrWhiteSpace(path) || string.IsNullOrWhiteSpace(message)) return;
             lock (logGate)
             {
+                Directory.CreateDirectory(Path.GetDirectoryName(path));
                 File.AppendAllText(path, $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} {message}{Environment.NewLine}");
             }
         }

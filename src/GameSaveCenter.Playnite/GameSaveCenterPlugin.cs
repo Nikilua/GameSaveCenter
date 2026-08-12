@@ -120,6 +120,7 @@ namespace GameSaveCenter.Playnite
         public override void OnApplicationStopped(OnApplicationStoppedEventArgs args)
         {
             lifetimeCancellation.Cancel();
+            launcher.StopOwnedWorker();
             taskNotificationTimer?.Dispose();
             taskNotificationTimer = null;
             taskNotificationMonitorDeferred = false;

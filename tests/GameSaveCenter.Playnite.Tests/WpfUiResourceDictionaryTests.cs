@@ -3140,6 +3140,20 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void PlayniteShutdownStopsOnlyTheWorkerOwnedByThisPluginInstance()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var launcherCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Infrastructure", "WorkerLauncher.cs"));
+        var pluginCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "GameSaveCenterPlugin.cs"));
+
+        Assert.Contains("private volatile bool shutdownRequested;", launcherCode);
+        Assert.Contains("Interlocked.Exchange(ref runningWorker, null)", launcherCode);
+        Assert.Contains("public void StopOwnedWorker()", launcherCode);
+        Assert.Contains("worker.Kill();", launcherCode);
+        Assert.Contains("launcher.StopOwnedWorker();", pluginCode);
+    }
+
+    [Fact]
     public void LargeLibraryDashboardDelaysInitialFullSynchronization()
     {
         var repositoryRoot = FindRepositoryRoot();
