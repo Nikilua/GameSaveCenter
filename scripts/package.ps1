@@ -36,7 +36,8 @@ function Invoke-DotNet {
 function Assert-PackageContents {
     param(
         [Parameter(Mandatory = $true)][string]$PackagePath,
-        [Parameter(Mandatory = $true)][string]$ExpectedVersion
+        [Parameter(Mandatory = $true)][string]$ExpectedVersion,
+        [Parameter(Mandatory = $true)][bool]$ExpectedSelfContained
     )
 
     Add-Type -AssemblyName System.IO.Compression.FileSystem
@@ -49,9 +50,18 @@ function Assert-PackageContents {
             'extension.yaml',
             'GameSaveCenter.Playnite.dll',
             'GameSaveCenter.Contracts.dll',
+            'GameSaveCenter.Core.dll',
             'Worker/GameSaveCenter.Worker.dll',
             'Worker/GameSaveCenter.Worker.runtimeconfig.json'
         )
+        if ($ExpectedSelfContained) {
+            $requiredEntries += @(
+                'Worker/hostfxr.dll',
+                'Worker/hostpolicy.dll',
+                'Worker/coreclr.dll',
+                'Worker/System.Private.CoreLib.dll'
+            )
+        }
         $missing = @($requiredEntries | Where-Object { $_ -notin $entries })
         if ($missing.Count -gt 0) {
             throw "安装包缺少必需文件：$($missing -join ', ')"
@@ -69,6 +79,24 @@ function Assert-PackageContents {
         if ($manifestContent -notmatch '(?m)^Version\s*:\s*(.+?)\s*$' -or $Matches[1].Trim() -ne $ExpectedVersion) {
             throw "安装包 extension.yaml 版本与预期不一致：预期 $ExpectedVersion。"
         }
+
+        $runtimeConfigEntry = $archive.Entries |
+            Where-Object { $_.FullName.Replace('\', '/') -eq 'Worker/GameSaveCenter.Worker.runtimeconfig.json' } |
+            Select-Object -First 1
+        $runtimeReader = [System.IO.StreamReader]::new($runtimeConfigEntry.Open())
+        try {
+            $runtimeConfigContent = $runtimeReader.ReadToEnd()
+        }
+        finally {
+            $runtimeReader.Dispose()
+        }
+
+        if ($ExpectedSelfContained -and $runtimeConfigContent -notmatch '"includedFrameworks"') {
+            throw 'Worker 安装包不是 self-contained 发布：runtimeconfig.json 缺少 includedFrameworks。'
+        }
+        if (-not $ExpectedSelfContained -and $runtimeConfigContent -match '"includedFrameworks"') {
+            throw 'Worker 安装包标记为 framework-dependent，但 runtimeconfig.json 包含 includedFrameworks。'
+        }
     }
     finally {
         $archive.Dispose()
@@ -84,7 +112,15 @@ if (-not $SkipBuild) {
 # assets needed by a self-contained Worker publish. Restore this target here
 # so package.ps1 remains reproducible after either build path.
 $workerProject = Join-Path $root 'src\GameSaveCenter.Worker\GameSaveCenter.Worker.csproj'
-Invoke-DotNet -StepName "还原 Worker 发布运行时（$Runtime）" -Arguments @('restore', $workerProject, '-r', $Runtime)
+Invoke-DotNet -StepName "还原 Worker 发布运行时（$Runtime）" -Arguments @(
+    'restore', $workerProject, '-r', $Runtime,
+    "-p:RuntimeIdentifier=$Runtime",
+    "-p:RuntimeIdentifiers=$Runtime",
+    '-p:RestoreUseStaticGraphEvaluation=true',
+    '-p:NuGetAudit=false',
+    '-m:1',
+    '-nodeReuse:false'
+)
 
 Remove-Item $stage -Recurse -Force -ErrorAction SilentlyContinue
 New-Item $workerStage -ItemType Directory -Force | Out-Null
@@ -96,7 +132,11 @@ $publishArgs = @(
     '-r', $Runtime,
     '-o', $workerStage,
     '--no-restore',
-    '--self-contained', $(if ($SelfContainedWorker) { 'true' } else { 'false' })
+    '--self-contained', $(if ($SelfContainedWorker) { 'true' } else { 'false' }),
+    "-p:RuntimeIdentifier=$Runtime",
+    "-p:RuntimeIdentifiers=$Runtime",
+    '-m:1',
+    '-nodeReuse:false'
 )
 Invoke-DotNet -StepName "发布 Worker（$Runtime）" -Arguments $publishArgs
 
@@ -112,6 +152,7 @@ if ($pluginFileVersion -and -not $pluginFileVersion.StartsWith("$sourceVersion."
 $required = @(
     'GameSaveCenter.Playnite.dll',
     'GameSaveCenter.Contracts.dll',
+    'GameSaveCenter.Core.dll',
     'Newtonsoft.Json.dll',
     'extension.yaml',
     'icon.png'
@@ -174,7 +215,7 @@ Get-ChildItem $artifacts -File -ErrorAction SilentlyContinue |
 Remove-Item $zip,$pext -Force -ErrorAction SilentlyContinue
 Compress-Archive -Path (Join-Path $stage '*') -DestinationPath $zip -CompressionLevel Optimal
 Copy-Item $zip $pext
-Assert-PackageContents -PackagePath $pext -ExpectedVersion $packageVersion
+Assert-PackageContents -PackagePath $pext -ExpectedVersion $packageVersion -ExpectedSelfContained $SelfContainedWorker
 
 Write-Host "`n打包成功：$zip" -ForegroundColor Green
 Write-Host "Playnite 安装包：$pext" -ForegroundColor Green

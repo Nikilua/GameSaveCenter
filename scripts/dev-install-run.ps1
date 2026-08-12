@@ -280,7 +280,7 @@ try {
         $playniteExe = $playniteExecutables | Select-Object -First 1
         if ($playniteExe) {
             Write-Host "`n启动 Playnite：$playniteExe" -ForegroundColor Cyan
-            Start-Process -FilePath $playniteExe
+            Start-Process -FilePath $playniteExe -WorkingDirectory (Split-Path -Parent $playniteExe)
         }
         else {
             Write-Host "`n未自动找到 Playnite.DesktopApp.exe，请手工启动 Playnite。" -ForegroundColor Yellow

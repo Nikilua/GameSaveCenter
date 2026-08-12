@@ -2,6 +2,9 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <!-- Keep package restores RID-aware so self-contained Windows publishes
+         cannot silently reuse framework-dependent assets. -->
+    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
     <RootNamespace>GameSaveCenter.Worker</RootNamespace>
     <AssemblyName>GameSaveCenter.Worker</AssemblyName>
     <UseWindowsForms>false</UseWindowsForms>
