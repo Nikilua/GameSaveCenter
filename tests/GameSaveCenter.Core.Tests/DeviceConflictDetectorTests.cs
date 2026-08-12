@@ -20,4 +20,29 @@ public sealed class DeviceConflictDetectorTests
         var conflict=new DeviceConflictDetector().Detect(left,right);
         Assert.True(conflict.HasConflict);Assert.True(string.IsNullOrEmpty(conflict.PreferredBackupId));
     }
+
+    [Fact]
+    public void BranchesFromTheSameBaseAreMarkedConflictWithoutChoosingWinner()
+    {
+        var left = new BackupSnapshot { BackupId = "A2", ParentBackupId = "V1", SourceDevice = "A", TotalBytes = 100, FileCount = 2 };
+        var right = new BackupSnapshot { BackupId = "B2", ParentBackupId = "V1", SourceDevice = "B", TotalBytes = 110, FileCount = 3 };
+
+        var conflict = new DeviceConflictDetector().Detect(left, right);
+
+        Assert.True(conflict.HasConflict);
+        Assert.Equal("DivergedFromCommonBase", conflict.Reason);
+        Assert.True(string.IsNullOrWhiteSpace(conflict.PreferredBackupId));
+    }
+
+    [Fact]
+    public void AChildOfTheKnownOtherVersionIsLinearNotConflict()
+    {
+        var local = new BackupSnapshot { BackupId = "A3", ParentBackupId = "A2", SourceDevice = "A", TotalBytes = 110, FileCount = 3 };
+        var remote = new BackupSnapshot { BackupId = "A2", SourceDevice = "B", TotalBytes = 100, FileCount = 2 };
+
+        var conflict = new DeviceConflictDetector().Detect(local, remote);
+
+        Assert.False(conflict.HasConflict);
+        Assert.Equal("LinearFromKnownBase", conflict.Reason);
+    }
 }

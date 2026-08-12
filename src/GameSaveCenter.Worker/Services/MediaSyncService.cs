@@ -120,7 +120,7 @@ public sealed class MediaSyncService
                 await _store.UpdateMediaCloudStateAsync(game.PlayniteId,"Synced",ct).ConfigureAwait(false);
             }
             await progress.ReportAsync(100,$"媒体同步完成，新增 {copied} 个文件").ConfigureAwait(false);
-        },token);
+        },token,request.NotificationSessionId);
 
     private Task<TaskStatusDto> SyncSharedSourcesAsync(IReadOnlyList<GameDescriptorDto> games,MediaSyncRequestDto request,CancellationToken token)=>
         _tasks.RunAsync("MediaInbox",string.Empty,"公共媒体收件箱",async(progress,ct)=>
@@ -177,7 +177,7 @@ public sealed class MediaSyncService
                 }
             }
             await progress.ReportAsync(100,$"公共媒体扫描完成，自动归类 {assigned} 个，待人工归类 {inbox} 个").ConfigureAwait(false);
-        },token);
+        },token,request.NotificationSessionId);
 
     private async Task<bool> ArchiveCandidateAsync(string path,MediaSourceKind source,GameDescriptorDto? game,string classificationReason,CancellationToken token)
     {

@@ -27,6 +27,7 @@ namespace GameSaveCenter.Contracts
         public bool Force { get; set; }
         public string Reason { get; set; } = "Manual";
         public string SessionId { get; set; } = string.Empty;
+        public string NotificationSessionId { get; set; } = string.Empty;
     }
 
     /// <summary>Request to synchronize screenshot and video sources.</summary>
@@ -34,6 +35,7 @@ namespace GameSaveCenter.Contracts
     {
         public List<string> PlayniteIds { get; set; } = new List<string>();
         public string SessionId { get; set; } = string.Empty;
+        public string NotificationSessionId { get; set; } = string.Empty;
         public bool IncludeUnassignedInbox { get; set; } = true;
         public bool SharedOnly { get; set; }
         public bool UploadAfterSync { get; set; }
@@ -69,6 +71,8 @@ namespace GameSaveCenter.Contracts
     public sealed class TaskStatusDto
     {
         public string TaskId { get; set; } = string.Empty;
+        /// <summary>Groups tasks launched by one game session for a single exit summary.</summary>
+        public string SessionId { get; set; } = string.Empty;
         public string TaskType { get; set; } = string.Empty;
         public string GameId { get; set; } = string.Empty;
         public string GameName { get; set; } = string.Empty;

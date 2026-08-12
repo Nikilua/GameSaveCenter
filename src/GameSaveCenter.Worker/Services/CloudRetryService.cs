@@ -41,7 +41,14 @@ public sealed class CloudRetryService : BackgroundService
                                 await _store.RemoveCloudRetryAsync(entry.PlayniteId, stoppingToken).ConfigureAwait(false);
                                 await _store.AppendAuditAsync("CloudRetry", "已移除不存在游戏的云端重试任务", entry.PlayniteId, stoppingToken).ConfigureAwait(false);
                             }
-                            else if (!string.Equals(task.ErrorCode, "RCLONE_COPY_FAILED", StringComparison.Ordinal))
+                            else if (task.ErrorCode.StartsWith("RCLONE_", StringComparison.OrdinalIgnoreCase)
+                                && !RcloneFailureClassifier.IsRetryable(task.ErrorCode))
+                            {
+                                await _store.RemoveCloudRetryAsync(entry.PlayniteId, stoppingToken).ConfigureAwait(false);
+                                await _store.UpdateGameCloudStateAsync(entry.PlayniteId, "Failed", stoppingToken).ConfigureAwait(false);
+                                await _store.AppendAuditAsync("CloudRetry", $"云端重试已停止（{task.ErrorCode}）", task.ErrorMessage, stoppingToken).ConfigureAwait(false);
+                            }
+                            else if (!RcloneFailureClassifier.IsRetryable(task.ErrorCode))
                             {
                                 await _store.DeferCloudRetryAsync(entry.PlayniteId, DateTime.UtcNow.AddMinutes(5),
                                     task.ErrorMessage ?? "云端上传暂不可用", stoppingToken).ConfigureAwait(false);

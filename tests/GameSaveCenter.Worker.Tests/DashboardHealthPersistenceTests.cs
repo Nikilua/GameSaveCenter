@@ -47,6 +47,7 @@ public sealed class DashboardHealthPersistenceTests : IDisposable
             CreatedUtc = now.AddDays(-1),
             TotalBytes = 12,
             FileCount = 1,
+            ParentBackupId = "older-health-backup",
             RestoreReadiness = new RestoreReadinessDto
             {
                 Status = RestoreReadinessStatus.Ready,
@@ -56,9 +57,12 @@ public sealed class DashboardHealthPersistenceTests : IDisposable
                 ExpectedFileCount = 1
             }
         }, "[]", CancellationToken.None);
+        var storedVersion = Assert.Single(await store.GetBackupVersionsAsync("health-game", CancellationToken.None));
+        Assert.Equal("older-health-backup", storedVersion.ParentBackupId);
         await store.AddOrUpdateTaskAsync(new TaskStatusDto
         {
             TaskId = "health-task",
+            SessionId = "health-session",
             TaskType = "Backup",
             GameId = "health-game",
             GameName = "Health Game",
@@ -85,6 +89,7 @@ public sealed class DashboardHealthPersistenceTests : IDisposable
         Assert.Equal(1, record.OpenFindingWarningCount);
         Assert.Equal(0, record.OpenFindingErrorCount);
         Assert.Equal("测试警告", record.LatestFindingTitle);
+        Assert.Equal("health-session", Assert.Single(await store.GetRecentTasksAsync(10, CancellationToken.None)).SessionId);
     }
 
     public void Dispose()

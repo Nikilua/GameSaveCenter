@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Worker.Persistence;
+using GameSaveCenter.Worker.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -14,11 +15,12 @@ public sealed class GameSessionCoordinator : BackgroundService, IRestoreSessionS
     private readonly MediaSyncService _media;
     private readonly SavePathDetectionService _detection;
     private readonly GameToolService _gameTools;
+    private readonly WorkerOptions _options;
     private readonly ILogger<GameSessionCoordinator> _logger;
     private readonly ConcurrentDictionary<string,ActiveSession> _active=new(StringComparer.OrdinalIgnoreCase);
 
-    public GameSessionCoordinator(SqliteStateStore store,BackupOrchestrator backup,MediaSyncService media,SavePathDetectionService detection,GameToolService gameTools,ILogger<GameSessionCoordinator> logger)
-    { _store=store;_backup=backup;_media=media;_detection=detection;_gameTools=gameTools;_logger=logger; }
+    public GameSessionCoordinator(SqliteStateStore store,BackupOrchestrator backup,MediaSyncService media,SavePathDetectionService detection,GameToolService gameTools,WorkerOptions options,ILogger<GameSessionCoordinator> logger)
+    { _store=store;_backup=backup;_media=media;_detection=detection;_gameTools=gameTools;_options=options;_logger=logger; }
 
     public IReadOnlyCollection<GameSessionEventDto> ActiveSessions=>_active.Values.Select(x=>x.Event).ToList();
 
@@ -45,18 +47,26 @@ public sealed class GameSessionCoordinator : BackgroundService, IRestoreSessionS
         _logger.LogInformation("Session started for {Game} from {Source}; timed backup is scheduled every {IntervalMinutes} minute(s)",incoming.GameName,incoming.Source,intervalMinutes);return incoming;
     }
 
-    public async Task<ProtectionPromptDto?> StopAsync(GameSessionEventDto incoming,CancellationToken token)
+    public async Task<GameSessionStopResultDto> StopAsync(GameSessionEventDto incoming,CancellationToken token)
     {
-        if(!_active.TryRemove(incoming.PlayniteId,out var active))return null;
+        if(!_active.TryRemove(incoming.PlayniteId,out var active))
+            return new GameSessionStopResultDto { Stopped=false, SessionId=incoming.SessionId, GameName=incoming.GameName };
         active.Event.StoppedUtc=incoming.StoppedUtc??DateTime.UtcNow;
         active.Event.ElapsedSeconds=incoming.ElapsedSeconds>0?incoming.ElapsedSeconds:(long)(active.Event.StoppedUtc.Value-active.Event.StartedUtc).TotalSeconds;
         await _store.AddSessionAsync(active.Event,token).ConfigureAwait(false);
         await _gameTools.StopAutomaticAsync(active.Event.SessionId,token).ConfigureAwait(false);
         var policy=await _store.GetPolicyAsync(active.Event.PlayniteId,token).ConfigureAwait(false);
+        var expectedTaskCount=0;
         if(policy.Enabled&&policy.BackupOnGameStop)
-            _=RunSafeAsync(()=>_backup.BackupAsync(new BackupRequestDto{PlayniteIds=new(){active.Event.PlayniteId},Force=true,Reason="GameStopped",SessionId=active.Event.SessionId},CancellationToken.None),"exit backup",active.Event.GameName);
+        {
+            expectedTaskCount++;
+            _=RunSafeAsync(()=>_backup.BackupAsync(new BackupRequestDto{PlayniteIds=new(){active.Event.PlayniteId},Force=true,Reason="GameStopped",SessionId=active.Event.SessionId,NotificationSessionId=active.Event.SessionId},CancellationToken.None),"exit backup",active.Event.GameName);
+        }
         if(policy.Enabled&&policy.SyncMediaOnGameStop)
-            _=RunSafeAsync(()=>_media.SyncAsync(new MediaSyncRequestDto{PlayniteIds=new(){active.Event.PlayniteId},SessionId=active.Event.SessionId,UploadAfterSync=policy.UploadAfterBackup},CancellationToken.None),"exit media sync",active.Event.GameName);
+        {
+            if(_options.EnableMediaSync) expectedTaskCount += 2; // game media task + shared inbox task (the request keeps its existing default)
+            _=RunSafeAsync(()=>_media.SyncAsync(new MediaSyncRequestDto{PlayniteIds=new(){active.Event.PlayniteId},SessionId=active.Event.SessionId,NotificationSessionId=active.Event.SessionId,UploadAfterSync=policy.UploadAfterBackup},CancellationToken.None),"exit media sync",active.Event.GameName);
+        }
         var detectedCandidates=0;
         try
         {
@@ -68,7 +78,11 @@ public sealed class GameSessionCoordinator : BackgroundService, IRestoreSessionS
         }
         var prompt=await BuildProtectionPromptAsync(active.Event,detectedCandidates,token).ConfigureAwait(false);
         _logger.LogInformation("Session stopped for {Game}",active.Event.GameName);
-        return prompt;
+        return new GameSessionStopResultDto
+        {
+            Stopped=true, SessionId=active.Event.SessionId, GameName=active.Event.GameName,
+            ExpectedTaskCount=expectedTaskCount, ProtectionPrompt=prompt
+        };
     }
 
     private async Task<ProtectionPromptDto?> BuildProtectionPromptAsync(GameSessionEventDto session,int detectedCandidates,CancellationToken token)

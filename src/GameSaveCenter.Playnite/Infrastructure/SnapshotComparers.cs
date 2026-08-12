@@ -34,6 +34,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
         public static readonly Func<TaskStatusDto, TaskStatusDto, bool> Task = (a, b) =>
             string.Equals(a.TaskId, b.TaskId, StringComparison.Ordinal)
+            && string.Equals(a.SessionId, b.SessionId, StringComparison.Ordinal)
             && string.Equals(a.TaskType, b.TaskType, StringComparison.Ordinal)
             && string.Equals(a.GameId, b.GameId, StringComparison.Ordinal)
             && string.Equals(a.GameName, b.GameName, StringComparison.Ordinal)
@@ -73,6 +74,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             && string.Equals(a.SourceDevice, b.SourceDevice, StringComparison.Ordinal)
             && string.Equals(a.OperatingSystem, b.OperatingSystem, StringComparison.Ordinal)
             && a.IsPreRestore == b.IsPreRestore
+            && string.Equals(a.ParentBackupId, b.ParentBackupId, StringComparison.Ordinal)
             && string.Equals(a.ArchivePath, b.ArchivePath, StringComparison.Ordinal)
             && string.Equals(a.RestoreReadiness?.Summary, b.RestoreReadiness?.Summary, StringComparison.Ordinal)
             && a.RestoreReadiness?.Status == b.RestoreReadiness?.Status

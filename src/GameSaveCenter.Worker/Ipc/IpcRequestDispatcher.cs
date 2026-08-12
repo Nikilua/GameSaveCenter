@@ -159,8 +159,8 @@ public sealed class IpcRequestDispatcher
         await _store.AppendAuditAsync("DeviceConflict","已记录人工冲突决策",JsonSerializer.Serialize(decision),token).ConfigureAwait(false);
         return decision;
     }
-    private async Task<GameSessionStopResultDto> StopAsync(GameSessionEventDto value,CancellationToken token)
-        =>new(){Stopped=true,ProtectionPrompt=await _sessions.StopAsync(value,token).ConfigureAwait(false)};
+    private Task<GameSessionStopResultDto> StopAsync(GameSessionEventDto value,CancellationToken token)
+        =>_sessions.StopAsync(value,token);
     private async Task<List<BackupVersionDto>> ListBackupsAsync(GameQueryDto query,CancellationToken token)
     {
         if (string.IsNullOrWhiteSpace(query.PlayniteId)) return new List<BackupVersionDto>();

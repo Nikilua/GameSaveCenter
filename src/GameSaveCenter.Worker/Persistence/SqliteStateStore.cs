@@ -52,6 +52,8 @@ public sealed partial class SqliteStateStore
         await EnsureColumnAsync(connection, "game_tool_versions", "resolved_target_path", "TEXT", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "backup_versions", "archive_path", "TEXT", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "backup_versions", "restore_readiness_json", "TEXT", token).ConfigureAwait(false);
+        await EnsureColumnAsync(connection, "backup_versions", "parent_backup_id", "TEXT", token).ConfigureAwait(false);
+        await EnsureColumnAsync(connection, "tasks", "session_id", "TEXT NOT NULL DEFAULT ''", token).ConfigureAwait(false);
         var normalizeMedia = connection.CreateCommand();
         normalizeMedia.CommandText = @"
 UPDATE media
@@ -356,10 +358,10 @@ DROP TABLE IF EXISTS backup_versions_v2;
 CREATE TABLE backup_versions_v2(
     backup_id TEXT NOT NULL,playnite_id TEXT NOT NULL,ludusavi_name TEXT NOT NULL,created_utc TEXT NOT NULL,
     total_bytes INTEGER NOT NULL,file_count INTEGER NOT NULL,is_locked INTEGER NOT NULL DEFAULT 0,comment TEXT,
-    source_device TEXT,operating_system TEXT,is_pre_restore INTEGER NOT NULL DEFAULT 0,manifest_json TEXT,archive_path TEXT,restore_readiness_json TEXT,
+    source_device TEXT,operating_system TEXT,is_pre_restore INTEGER NOT NULL DEFAULT 0,manifest_json TEXT,archive_path TEXT,restore_readiness_json TEXT,parent_backup_id TEXT,
     PRIMARY KEY(playnite_id,backup_id));
-INSERT OR REPLACE INTO backup_versions_v2(backup_id,playnite_id,ludusavi_name,created_utc,total_bytes,file_count,is_locked,comment,source_device,operating_system,is_pre_restore,manifest_json,archive_path,restore_readiness_json)
-SELECT backup_id,playnite_id,ludusavi_name,created_utc,total_bytes,file_count,is_locked,comment,source_device,operating_system,is_pre_restore,manifest_json,{archivePathSelect},{readinessSelect} FROM backup_versions;
+INSERT OR REPLACE INTO backup_versions_v2(backup_id,playnite_id,ludusavi_name,created_utc,total_bytes,file_count,is_locked,comment,source_device,operating_system,is_pre_restore,manifest_json,archive_path,restore_readiness_json,parent_backup_id)
+SELECT backup_id,playnite_id,ludusavi_name,created_utc,total_bytes,file_count,is_locked,comment,source_device,operating_system,is_pre_restore,manifest_json,{archivePathSelect},{readinessSelect},parent_backup_id FROM backup_versions;
 DROP TABLE backup_versions;
 ALTER TABLE backup_versions_v2 RENAME TO backup_versions;
 CREATE INDEX IF NOT EXISTS ix_backup_versions_game_time ON backup_versions(playnite_id,created_utc DESC);";
@@ -658,13 +660,13 @@ WHERE state IN ($queued,$running);",
         },token);
 
     public Task AddOrUpdateTaskAsync(TaskStatusDto task, CancellationToken token) => ExecuteAsync(@"
-INSERT INTO tasks(task_id,task_type,game_id,game_name,state,progress,message,created_utc,started_utc,finished_utc,error_code,error_message)
-VALUES($id,$type,$game,$name,$state,$progress,$message,$created,$started,$finished,$errorCode,$errorMessage)
+INSERT INTO tasks(task_id,session_id,task_type,game_id,game_name,state,progress,message,created_utc,started_utc,finished_utc,error_code,error_message)
+VALUES($id,$session,$type,$game,$name,$state,$progress,$message,$created,$started,$finished,$errorCode,$errorMessage)
 ON CONFLICT(task_id) DO UPDATE SET state=excluded.state,progress=excluded.progress,message=excluded.message,
  started_utc=excluded.started_utc,finished_utc=excluded.finished_utc,error_code=excluded.error_code,error_message=excluded.error_message;",
         new Dictionary<string, object?>
         {
-            ["$id"] = task.TaskId, ["$type"] = task.TaskType, ["$game"] = task.GameId, ["$name"] = task.GameName,
+            ["$id"] = task.TaskId, ["$session"] = task.SessionId, ["$type"] = task.TaskType, ["$game"] = task.GameId, ["$name"] = task.GameName,
             ["$state"] = (int)task.State, ["$progress"] = task.ProgressPercent, ["$message"] = task.Message,
             ["$created"] = task.CreatedUtc.ToString("O"), ["$started"] = task.StartedUtc?.ToString("O"), ["$finished"] = task.FinishedUtc?.ToString("O"),
             ["$errorCode"] = task.ErrorCode, ["$errorMessage"] = task.ErrorMessage
@@ -676,19 +678,19 @@ ON CONFLICT(task_id) DO UPDATE SET state=excluded.state,progress=excluded.progre
         await using var connection = Open();
         await connection.OpenAsync(token).ConfigureAwait(false);
         var command = connection.CreateCommand();
-        command.CommandText = "SELECT task_id,task_type,game_id,game_name,state,progress,message,created_utc,started_utc,finished_utc,error_code,error_message FROM tasks ORDER BY created_utc DESC LIMIT $limit;";
+        command.CommandText = "SELECT task_id,session_id,task_type,game_id,game_name,state,progress,message,created_utc,started_utc,finished_utc,error_code,error_message FROM tasks ORDER BY created_utc DESC LIMIT $limit;";
         command.Parameters.AddWithValue("$limit", Math.Clamp(limit, 1, 500));
         await using var reader = await command.ExecuteReaderAsync(token).ConfigureAwait(false);
         while (await reader.ReadAsync(token).ConfigureAwait(false))
         {
             result.Add(new TaskStatusDto
             {
-                TaskId=reader.GetString(0), TaskType=reader.GetString(1), GameId=reader.IsDBNull(2)?string.Empty:reader.GetString(2),
-                GameName=reader.IsDBNull(3)?string.Empty:reader.GetString(3), State=(TaskState)reader.GetInt32(4), ProgressPercent=reader.GetInt32(5),
-                Message=reader.IsDBNull(6)?string.Empty:reader.GetString(6), CreatedUtc=DateTime.Parse(reader.GetString(7)).ToUniversalTime(),
-                StartedUtc=reader.IsDBNull(8)?null:DateTime.Parse(reader.GetString(8)).ToUniversalTime(),
-                FinishedUtc=reader.IsDBNull(9)?null:DateTime.Parse(reader.GetString(9)).ToUniversalTime(),
-                ErrorCode=reader.IsDBNull(10)?string.Empty:reader.GetString(10), ErrorMessage=reader.IsDBNull(11)?string.Empty:reader.GetString(11)
+                TaskId=reader.GetString(0), SessionId=reader.IsDBNull(1)?string.Empty:reader.GetString(1), TaskType=reader.GetString(2), GameId=reader.IsDBNull(3)?string.Empty:reader.GetString(3),
+                GameName=reader.IsDBNull(4)?string.Empty:reader.GetString(4), State=(TaskState)reader.GetInt32(5), ProgressPercent=reader.GetInt32(6),
+                Message=reader.IsDBNull(7)?string.Empty:reader.GetString(7), CreatedUtc=DateTime.Parse(reader.GetString(8)).ToUniversalTime(),
+                StartedUtc=reader.IsDBNull(9)?null:DateTime.Parse(reader.GetString(9)).ToUniversalTime(),
+                FinishedUtc=reader.IsDBNull(10)?null:DateTime.Parse(reader.GetString(10)).ToUniversalTime(),
+                ErrorCode=reader.IsDBNull(11)?string.Empty:reader.GetString(11), ErrorMessage=reader.IsDBNull(12)?string.Empty:reader.GetString(12)
             });
         }
         return result;
@@ -717,12 +719,12 @@ VALUES($id,$game,$severity,$code,$title,$detail,$action,$utc,0);",
     }
 
     public Task AddBackupVersionAsync(BackupVersionDto version, string manifestJson, CancellationToken token) => ExecuteAsync(@"
-INSERT INTO backup_versions(backup_id,playnite_id,ludusavi_name,created_utc,total_bytes,file_count,is_locked,comment,source_device,operating_system,is_pre_restore,manifest_json,archive_path,restore_readiness_json)
-VALUES($id,$game,$ludusavi,$created,$bytes,$count,$locked,$comment,$device,$os,$pre,$manifest,$archive,$readiness)
-ON CONFLICT(playnite_id,backup_id) DO UPDATE SET ludusavi_name=excluded.ludusavi_name,created_utc=excluded.created_utc,total_bytes=CASE WHEN excluded.total_bytes=0 AND backup_versions.total_bytes>0 THEN backup_versions.total_bytes ELSE excluded.total_bytes END,file_count=CASE WHEN excluded.file_count=0 AND backup_versions.file_count>0 THEN backup_versions.file_count ELSE excluded.file_count END,is_locked=excluded.is_locked,comment=excluded.comment,source_device=excluded.source_device,operating_system=excluded.operating_system,is_pre_restore=excluded.is_pre_restore,manifest_json=CASE WHEN excluded.manifest_json='{}' THEN backup_versions.manifest_json ELSE excluded.manifest_json END,archive_path=CASE WHEN COALESCE(excluded.archive_path,'')='' THEN backup_versions.archive_path ELSE excluded.archive_path END,restore_readiness_json=CASE WHEN excluded.restore_readiness_json='{}' THEN backup_versions.restore_readiness_json ELSE excluded.restore_readiness_json END;",
+INSERT INTO backup_versions(backup_id,playnite_id,ludusavi_name,created_utc,total_bytes,file_count,is_locked,comment,source_device,operating_system,is_pre_restore,manifest_json,archive_path,restore_readiness_json,parent_backup_id)
+VALUES($id,$game,$ludusavi,$created,$bytes,$count,$locked,$comment,$device,$os,$pre,$manifest,$archive,$readiness,$parent)
+ON CONFLICT(playnite_id,backup_id) DO UPDATE SET ludusavi_name=excluded.ludusavi_name,created_utc=excluded.created_utc,total_bytes=CASE WHEN excluded.total_bytes=0 AND backup_versions.total_bytes>0 THEN backup_versions.total_bytes ELSE excluded.total_bytes END,file_count=CASE WHEN excluded.file_count=0 AND backup_versions.file_count>0 THEN backup_versions.file_count ELSE excluded.file_count END,is_locked=excluded.is_locked,comment=excluded.comment,source_device=excluded.source_device,operating_system=excluded.operating_system,is_pre_restore=excluded.is_pre_restore,manifest_json=CASE WHEN excluded.manifest_json='{}' THEN backup_versions.manifest_json ELSE excluded.manifest_json END,archive_path=CASE WHEN COALESCE(excluded.archive_path,'')='' THEN backup_versions.archive_path ELSE excluded.archive_path END,restore_readiness_json=CASE WHEN excluded.restore_readiness_json='{}' THEN backup_versions.restore_readiness_json ELSE excluded.restore_readiness_json END,parent_backup_id=CASE WHEN COALESCE(excluded.parent_backup_id,'')='' THEN backup_versions.parent_backup_id ELSE excluded.parent_backup_id END;",
         new Dictionary<string, object?> { ["$id"]=version.BackupId,["$game"]=version.PlayniteId,["$ludusavi"]=version.LudusaviName,["$created"]=version.CreatedUtc.ToString("O"),
             ["$bytes"]=version.TotalBytes,["$count"]=version.FileCount,["$locked"]=version.IsLocked?1:0,["$comment"]=version.Comment,["$device"]=version.SourceDevice,
-            ["$os"]=version.OperatingSystem,["$pre"]=version.IsPreRestore?1:0,["$manifest"]=manifestJson,["$archive"]=version.ArchivePath,
+            ["$os"]=version.OperatingSystem,["$pre"]=version.IsPreRestore?1:0,["$manifest"]=manifestJson,["$archive"]=version.ArchivePath,["$parent"]=version.ParentBackupId,
             ["$readiness"]=version.RestoreReadiness == null ? "{}" : JsonSerializer.Serialize(version.RestoreReadiness, _json) }, token);
 
     public Task SaveRestoreReadinessAsync(string playniteId, string backupId, RestoreReadinessDto readiness, CancellationToken token)
@@ -734,7 +736,7 @@ ON CONFLICT(playnite_id,backup_id) DO UPDATE SET ludusavi_name=excluded.ludusavi
         var result = new List<BackupVersionDto>();
         await using var connection=Open(); await connection.OpenAsync(token).ConfigureAwait(false);
         var command=connection.CreateCommand();
-        command.CommandText="SELECT backup_id,ludusavi_name,created_utc,total_bytes,file_count,is_locked,comment,source_device,operating_system,is_pre_restore,archive_path,restore_readiness_json FROM backup_versions WHERE playnite_id=$id ORDER BY created_utc DESC;";
+        command.CommandText="SELECT backup_id,ludusavi_name,created_utc,total_bytes,file_count,is_locked,comment,source_device,operating_system,is_pre_restore,archive_path,restore_readiness_json,parent_backup_id FROM backup_versions WHERE playnite_id=$id ORDER BY created_utc DESC;";
         command.Parameters.AddWithValue("$id",playniteId);
         await using var reader=await command.ExecuteReaderAsync(token).ConfigureAwait(false);
         while(await reader.ReadAsync(token).ConfigureAwait(false)) result.Add(new BackupVersionDto
@@ -745,6 +747,7 @@ ON CONFLICT(playnite_id,backup_id) DO UPDATE SET ludusavi_name=excluded.ludusavi
             ArchivePath=reader.IsDBNull(10)?string.Empty:reader.GetString(10),
             RestoreReadiness=reader.IsDBNull(11)||string.IsNullOrWhiteSpace(reader.GetString(11))||reader.GetString(11)=="{}"
                 ? null : TryDeserializeRestoreReadiness(reader.GetString(11))
+            ,ParentBackupId=reader.IsDBNull(12)?string.Empty:reader.GetString(12)
         });
         return result;
     }
@@ -756,7 +759,7 @@ ON CONFLICT(playnite_id,backup_id) DO UPDATE SET ludusavi_name=excluded.ludusavi
         await using var connection = Open(); await connection.OpenAsync(token).ConfigureAwait(false);
         var command = connection.CreateCommand();
         command.CommandText = @"
-SELECT b.playnite_id,g.name,b.backup_id,b.created_utc,b.total_bytes,b.file_count
+SELECT b.playnite_id,g.name,b.backup_id,b.created_utc,b.total_bytes,b.file_count,b.parent_backup_id
 FROM backup_versions b
 JOIN games g ON g.playnite_id=b.playnite_id
 JOIN (SELECT playnite_id,MAX(created_utc) AS newest FROM backup_versions GROUP BY playnite_id) latest
@@ -766,7 +769,7 @@ ORDER BY g.name COLLATE NOCASE;";
         while (await reader.ReadAsync(token).ConfigureAwait(false)) result.Add(new DeviceBackupSummaryDto
         {
             PlayniteId=reader.GetString(0),GameName=reader.GetString(1),BackupId=reader.GetString(2),
-            CreatedUtc=DateTime.Parse(reader.GetString(3)).ToUniversalTime(),TotalBytes=reader.GetInt64(4),FileCount=reader.GetInt32(5)
+            CreatedUtc=DateTime.Parse(reader.GetString(3)).ToUniversalTime(),TotalBytes=reader.GetInt64(4),FileCount=reader.GetInt32(5),ParentBackupId=reader.IsDBNull(6)?string.Empty:reader.GetString(6)
         });
         return result;
     }
@@ -1023,9 +1026,9 @@ CREATE TABLE IF NOT EXISTS games(playnite_id TEXT PRIMARY KEY,name TEXT NOT NULL
 CREATE TABLE IF NOT EXISTS game_policies(playnite_id TEXT PRIMARY KEY,policy_json TEXT NOT NULL,updated_utc TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS backup_policy_templates(template_id TEXT PRIMARY KEY,name TEXT NOT NULL,is_built_in INTEGER NOT NULL,policy_json TEXT NOT NULL,created_utc TEXT NOT NULL,updated_utc TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS sessions(session_id TEXT PRIMARY KEY,playnite_id TEXT NOT NULL,source INTEGER NOT NULL,process_id INTEGER,process_name TEXT,launch_profile TEXT,started_utc TEXT NOT NULL,stopped_utc TEXT,elapsed_seconds INTEGER DEFAULT 0);
-CREATE TABLE IF NOT EXISTS tasks(task_id TEXT PRIMARY KEY,task_type TEXT NOT NULL,game_id TEXT,game_name TEXT,state INTEGER NOT NULL,progress INTEGER NOT NULL,message TEXT,created_utc TEXT NOT NULL,started_utc TEXT,finished_utc TEXT,error_code TEXT,error_message TEXT);
+CREATE TABLE IF NOT EXISTS tasks(task_id TEXT PRIMARY KEY,session_id TEXT NOT NULL DEFAULT '',task_type TEXT NOT NULL,game_id TEXT,game_name TEXT,state INTEGER NOT NULL,progress INTEGER NOT NULL,message TEXT,created_utc TEXT NOT NULL,started_utc TEXT,finished_utc TEXT,error_code TEXT,error_message TEXT);
 CREATE TABLE IF NOT EXISTS findings(finding_id TEXT PRIMARY KEY,playnite_id TEXT,severity INTEGER NOT NULL,code TEXT NOT NULL,title TEXT NOT NULL,detail TEXT,suggested_action TEXT,created_utc TEXT NOT NULL,resolved INTEGER NOT NULL DEFAULT 0);
-CREATE TABLE IF NOT EXISTS backup_versions(backup_id TEXT NOT NULL,playnite_id TEXT NOT NULL,ludusavi_name TEXT NOT NULL,created_utc TEXT NOT NULL,total_bytes INTEGER NOT NULL,file_count INTEGER NOT NULL,is_locked INTEGER NOT NULL DEFAULT 0,comment TEXT,source_device TEXT,operating_system TEXT,is_pre_restore INTEGER NOT NULL DEFAULT 0,manifest_json TEXT,archive_path TEXT,restore_readiness_json TEXT,PRIMARY KEY(playnite_id,backup_id));
+CREATE TABLE IF NOT EXISTS backup_versions(backup_id TEXT NOT NULL,playnite_id TEXT NOT NULL,ludusavi_name TEXT NOT NULL,created_utc TEXT NOT NULL,total_bytes INTEGER NOT NULL,file_count INTEGER NOT NULL,is_locked INTEGER NOT NULL DEFAULT 0,comment TEXT,source_device TEXT,operating_system TEXT,is_pre_restore INTEGER NOT NULL DEFAULT 0,manifest_json TEXT,archive_path TEXT,restore_readiness_json TEXT,parent_backup_id TEXT,PRIMARY KEY(playnite_id,backup_id));
 CREATE TABLE IF NOT EXISTS media(media_id TEXT PRIMARY KEY,playnite_id TEXT,kind INTEGER NOT NULL,source INTEGER NOT NULL,archive_path TEXT NOT NULL,original_path TEXT NOT NULL,captured_utc TEXT NOT NULL,size_bytes INTEGER NOT NULL,sha256 TEXT NOT NULL UNIQUE,is_favorite INTEGER NOT NULL DEFAULT 0,comment TEXT,cloud_state TEXT NOT NULL DEFAULT 'Pending',classification_state TEXT NOT NULL DEFAULT 'Assigned',classification_reason TEXT);
 CREATE TABLE IF NOT EXISTS media_sources(source_id TEXT PRIMARY KEY,playnite_id TEXT,source_kind INTEGER NOT NULL,root_path TEXT NOT NULL,include_pattern TEXT,enabled INTEGER NOT NULL DEFAULT 1,shared_directory INTEGER NOT NULL DEFAULT 0);
 CREATE TABLE IF NOT EXISTS save_candidates(candidate_id TEXT PRIMARY KEY,playnite_id TEXT NOT NULL,path TEXT NOT NULL,score REAL NOT NULL,reasons_json TEXT,status TEXT NOT NULL,created_utc TEXT NOT NULL);

@@ -54,6 +54,7 @@ namespace GameSaveCenter.Core.Models
     public sealed class BackupSnapshot
     {
         public string BackupId { get; set; } = string.Empty;
+        public string ParentBackupId { get; set; } = string.Empty;
         public DateTime CreatedUtc { get; set; }
         public long TotalBytes { get; set; }
         public int FileCount { get; set; }

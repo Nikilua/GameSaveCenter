@@ -18,6 +18,25 @@ namespace GameSaveCenter.Core.Services
                 return new DeviceConflict { HasConflict = false, Reason = "SameDevice", Confidence = 0.9 };
             }
 
+            if (string.Equals(local.BackupId, remote.BackupId, StringComparison.OrdinalIgnoreCase))
+            {
+                return new DeviceConflict { HasConflict = false, Reason = "SameBackupId", Confidence = 1 };
+            }
+
+            if ((!string.IsNullOrWhiteSpace(local.ParentBackupId)
+                && string.Equals(local.ParentBackupId, remote.BackupId, StringComparison.OrdinalIgnoreCase))
+                || (!string.IsNullOrWhiteSpace(remote.ParentBackupId)
+                && string.Equals(remote.ParentBackupId, local.BackupId, StringComparison.OrdinalIgnoreCase)))
+            {
+                return new DeviceConflict { HasConflict = false, Reason = "LinearFromKnownBase", Confidence = 0.9 };
+            }
+
+            if (!string.IsNullOrWhiteSpace(local.ParentBackupId)
+                && string.Equals(local.ParentBackupId, remote.ParentBackupId, StringComparison.OrdinalIgnoreCase))
+            {
+                return new DeviceConflict { HasConflict = true, Reason = "DivergedFromCommonBase", Confidence = 0.99 };
+            }
+
             var sameContent = local.TotalBytes == remote.TotalBytes && local.FileCount == remote.FileCount;
             if (sameContent)
             {

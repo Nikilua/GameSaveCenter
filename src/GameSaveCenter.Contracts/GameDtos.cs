@@ -51,7 +51,18 @@ namespace GameSaveCenter.Contracts
     public sealed class GameSessionStopResultDto
     {
         public bool Stopped { get; set; }
+        public string SessionId { get; set; } = string.Empty;
+        public string GameName { get; set; } = string.Empty;
+        public int ExpectedTaskCount { get; set; }
         public ProtectionPromptDto? ProtectionPrompt { get; set; }
+    }
+
+    public sealed class GameSessionSummaryDto
+    {
+        public string GameName { get; set; } = string.Empty;
+        public bool IsWarning { get; set; }
+        public bool IsFailure { get; set; }
+        public string Message { get; set; } = string.Empty;
     }
 
     public sealed class ProtectionPromptDto

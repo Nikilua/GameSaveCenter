@@ -28,11 +28,12 @@ public sealed class TaskCoordinator
         string gameId,
         string gameName,
         Func<TaskProgress, CancellationToken, Task> operation,
-        CancellationToken outerToken)
+        CancellationToken outerToken,
+        string sessionId = "")
     {
         var task = new TaskStatusDto
         {
-            TaskId=Guid.NewGuid().ToString("N"), TaskType=taskType, GameId=gameId, GameName=gameName,
+            TaskId=Guid.NewGuid().ToString("N"), SessionId=sessionId ?? string.Empty, TaskType=taskType, GameId=gameId, GameName=gameName,
             State=TaskState.Queued, ProgressPercent=0, Message="等待执行", CreatedUtc=DateTime.UtcNow
         };
         await PersistAndPublishAsync(task, outerToken).ConfigureAwait(false);
@@ -147,7 +148,7 @@ public sealed class TaskCoordinator
 
     private static TaskStatusDto Clone(TaskStatusDto task)=>new()
     {
-        TaskId=task.TaskId,TaskType=task.TaskType,GameId=task.GameId,GameName=task.GameName,State=task.State,
+        TaskId=task.TaskId,SessionId=task.SessionId,TaskType=task.TaskType,GameId=task.GameId,GameName=task.GameName,State=task.State,
         ProgressPercent=task.ProgressPercent,Message=task.Message,CreatedUtc=task.CreatedUtc,StartedUtc=task.StartedUtc,
         FinishedUtc=task.FinishedUtc,ErrorCode=task.ErrorCode,ErrorMessage=task.ErrorMessage
     };

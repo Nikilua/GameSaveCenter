@@ -37,6 +37,7 @@ namespace GameSaveCenter.Contracts
     public sealed class BackupVersionDto
     {
         public string BackupId { get; set; } = string.Empty;
+        public string ParentBackupId { get; set; } = string.Empty;
         public string PlayniteId { get; set; } = string.Empty;
         public string LudusaviName { get; set; } = string.Empty;
         public DateTime CreatedUtc { get; set; }

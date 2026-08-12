@@ -33,6 +33,8 @@ namespace GameSaveCenter.Playnite
         private readonly object synchronizationRequestGate = new object();
         private readonly SemaphoreSlim taskNotificationPollGate = new SemaphoreSlim(1, 1);
         private readonly ConcurrentDictionary<string, byte> notifiedTaskIds = new ConcurrentDictionary<string, byte>(StringComparer.OrdinalIgnoreCase);
+        private readonly ConcurrentDictionary<string, SessionNotificationAccumulator> sessionNotifications = new ConcurrentDictionary<string, SessionNotificationAccumulator>(StringComparer.OrdinalIgnoreCase);
+        private readonly ConcurrentDictionary<string, ConcurrentDictionary<string, TaskStatusDto>> pendingSessionTasks = new ConcurrentDictionary<string, ConcurrentDictionary<string, TaskStatusDto>>(StringComparer.OrdinalIgnoreCase);
         private Timer? taskNotificationTimer;
         private DateTime taskNotificationMonitorStartedUtc;
         private DateTime taskNotificationRetryAfterUtc = DateTime.MinValue;
@@ -157,12 +159,21 @@ namespace GameSaveCenter.Playnite
                 await EnsureWorkerAsync();
                 await ApplySettingsCoreAsync();
                 var descriptor = adapter.Convert(args.Game);
-                var result = await RequestAsync<GameSessionStopResultDto>(MessageTypes.GameSessionStopped, new GameSessionEventDto
+                var stopEvent = new GameSessionEventDto
                 {
                     PlayniteId = descriptor.PlayniteId, GameName = descriptor.Name, Source = SessionSourceKind.Playnite,
                     StoppedUtc = DateTime.UtcNow, ElapsedSeconds = checked((long)Math.Min(args.ElapsedSeconds, (ulong)long.MaxValue))
-                }, TimeSpan.FromMinutes(3));
+                };
+                var result = await RequestAsync<GameSessionStopResultDto>(MessageTypes.GameSessionStopped, stopEvent, TimeSpan.FromMinutes(3));
                 var prompt = result?.ProtectionPrompt;
+                if (result != null && result.ExpectedTaskCount > 0 && !string.IsNullOrWhiteSpace(result.SessionId))
+                {
+                    var session = sessionNotifications.GetOrAdd(result.SessionId, _ => new SessionNotificationAccumulator(result.GameName));
+                    session.SetExpectedTaskCount(result.ExpectedTaskCount);
+                    if (pendingSessionTasks.TryRemove(result.SessionId, out var pending))
+                        foreach (var task in pending.Values) session.Add(task);
+                    TryEmitSessionSummary(result.SessionId, session);
+                }
                 if (prompt?.ShouldPrompt == true)
                 {
                     var choice = await ChooseAsync(
@@ -542,7 +553,7 @@ namespace GameSaveCenter.Playnite
                         if (!terminal) continue;
                         if (task.CreatedUtc < taskNotificationMonitorStartedUtc.AddSeconds(-5))
                             notifiedTaskIds.TryAdd(task.TaskId, 0);
-                        else if (Settings.EnableTaskNotifications) ShowTaskNotification(task);
+                        else if (Settings.EnableTaskNotifications) HandleTerminalTaskNotification(task);
                         else notifiedTaskIds.TryAdd(task.TaskId, 0);
                     }
                     taskNotificationSnapshotInitialized = true;
@@ -559,7 +570,7 @@ namespace GameSaveCenter.Playnite
                     var terminal=task.State==TaskState.Succeeded||task.State==TaskState.Failed||task.State==TaskState.Cancelled;
                     if (terminal)
                     {
-                        if (Settings.EnableTaskNotifications) ShowTaskNotification(task);
+                        if (Settings.EnableTaskNotifications) HandleTerminalTaskNotification(task);
                         else notifiedTaskIds.TryAdd(task.TaskId,0);
                     }
                     lastTaskNotificationSequence=Math.Max(lastTaskNotificationSequence,change.Sequence);
@@ -592,6 +603,64 @@ namespace GameSaveCenter.Playnite
             if (string.IsNullOrWhiteSpace(text)) return "未知错误";
             const int maximumLength = 320;
             return text.Length <= maximumLength ? text : text.Substring(0, maximumLength) + "…";
+        }
+
+        private void HandleTerminalTaskNotification(TaskStatusDto task)
+        {
+            if (notifiedTaskIds.ContainsKey(task.TaskId)) return;
+            if (!string.IsNullOrWhiteSpace(task.SessionId))
+            {
+                var session = sessionNotifications.GetOrAdd(task.SessionId, _ => new SessionNotificationAccumulator(task.GameName));
+                session.Add(task);
+                if (!session.HasExpectedTaskCount)
+                    pendingSessionTasks.GetOrAdd(task.SessionId, _ => new ConcurrentDictionary<string, TaskStatusDto>(StringComparer.OrdinalIgnoreCase))[task.TaskId] = task;
+                TryEmitSessionSummary(task.SessionId, session);
+                return;
+            }
+            ShowTaskNotification(task);
+        }
+
+        private void TryEmitSessionSummary(string sessionId, SessionNotificationAccumulator session)
+        {
+            if (!session.IsComplete || !session.TryMarkEmitted()) return;
+            sessionNotifications.TryRemove(sessionId, out _);
+            pendingSessionTasks.TryRemove(sessionId, out _);
+            var summary = GameSaveCenter.Core.Services.GameSessionSummaryBuilder.Build(session.GameName, session.Tasks);
+            var kind = summary.IsFailure ? UiNotificationKind.Error
+                : summary.IsWarning ? UiNotificationKind.Warning : UiNotificationKind.Success;
+            if (!RaiseUiNotification("退出备份摘要", summary.Message, kind))
+                AddNotification("Session." + sessionId, summary.Message, summary.IsFailure ? NotificationType.Error : NotificationType.Info);
+            foreach (var completed in session.Tasks) notifiedTaskIds.TryAdd(completed.TaskId, 0);
+        }
+
+        private sealed class SessionNotificationAccumulator
+        {
+            private readonly object sync = new object();
+            private int expectedTaskCount;
+            private int emitted;
+            private readonly Dictionary<string, TaskStatusDto> tasks = new Dictionary<string, TaskStatusDto>(StringComparer.OrdinalIgnoreCase);
+
+            public SessionNotificationAccumulator(string gameName)
+            {
+                GameName = gameName ?? string.Empty;
+            }
+
+            public string GameName { get; }
+            public IReadOnlyCollection<TaskStatusDto> Tasks
+            {
+                get { lock (sync) return tasks.Values.ToList(); }
+            }
+            public bool IsComplete
+            {
+                get { lock (sync) return expectedTaskCount > 0 && tasks.Count >= expectedTaskCount; }
+            }
+            public bool HasExpectedTaskCount => expectedTaskCount > 0;
+            public void SetExpectedTaskCount(int count) { lock (sync) expectedTaskCount = Math.Max(1, count); }
+            public bool TryMarkEmitted() => Interlocked.Exchange(ref emitted, 1) == 0;
+            public void Add(TaskStatusDto task)
+            {
+                lock (sync) tasks[task.TaskId] = task;
+            }
         }
 
         private async Task ApplySettingsCoreAsync() => await RequestAsync<object>(MessageTypes.UpdateSettings, Settings.ToWorkerSettings());

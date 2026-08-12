@@ -62,7 +62,7 @@ public sealed class BackupOrchestrator
                         "LUDUSAVI_NOT_CONFIGURED",
                         "Ludusavi 尚未配置或可执行文件不存在。",
                         _options.LudusaviExecutable)),
-                    token).ConfigureAwait(false));
+                    token, request.NotificationSessionId).ConfigureAwait(false));
                 continue;
             }
 
@@ -78,7 +78,7 @@ public sealed class BackupOrchestrator
                             "LUDUSAVI_GAME_UNMATCHED",
                             "该游戏尚未匹配到 Ludusavi 存档规则。",
                             game.Name)),
-                        token).ConfigureAwait(false));
+                        token, request.NotificationSessionId).ConfigureAwait(false));
                 }
                 continue;
             }
@@ -184,6 +184,10 @@ public sealed class BackupOrchestrator
 
                     indexed.TotalBytes = snapshot.TotalBytes;
                     indexed.FileCount = snapshot.FileCount;
+                    indexed.ParentBackupId = previous != null
+                        && !string.Equals(indexed.BackupId, previous.BackupId, StringComparison.OrdinalIgnoreCase)
+                        ? previous.BackupId
+                        : indexed.ParentBackupId;
                     await _store.AddBackupVersionAsync(indexed, JsonSerializer.Serialize(snapshot.Files), ct)
                         .ConfigureAwait(false);
 
@@ -197,10 +201,12 @@ public sealed class BackupOrchestrator
                             .ConfigureAwait(false);
                         if (!cloud.Success)
                         {
-                            await ScheduleCloudRetryAsync(game.PlayniteId, cloud.StandardError, ct).ConfigureAwait(false);
+                            var failure = RcloneFailureClassifier.Classify(cloud.StandardError);
+                            var errorCode = RcloneFailureClassifier.GetErrorCode(failure);
+                            await ScheduleCloudRetryAsync(game.PlayniteId, errorCode, cloud.StandardError, ct).ConfigureAwait(false);
                             throw new WorkerOperationException(
-                                "RCLONE_COPY_FAILED",
-                                "本地备份成功，但云端复制失败。",
+                                errorCode,
+                                $"本地备份成功，但云端复制失败：{RcloneFailureClassifier.GetUserMessage(failure)}",
                                 cloud.StandardError);
                         }
                         await _store.RemoveCloudRetryAsync(game.PlayniteId,ct).ConfigureAwait(false);
@@ -218,7 +224,7 @@ public sealed class BackupOrchestrator
                     };
                     await progress.ReportAsync(100, $"{requestLabel}：{completion}").ConfigureAwait(false);
                 },
-                token).ConfigureAwait(false));
+                token, request.NotificationSessionId).ConfigureAwait(false));
         }
 
         if (request.PlayniteIds.Count > 0 && results.Count == 0)
@@ -253,8 +259,10 @@ public sealed class BackupOrchestrator
                 _options.LudusaviBackupDirectory,Path.Combine(Environment.MachineName,"Saves"),transferToken),ct).ConfigureAwait(false);
             if(!cloud.Success)
             {
-                await ScheduleCloudRetryAsync(game.PlayniteId,cloud.StandardError,ct).ConfigureAwait(false);
-                throw new WorkerOperationException("RCLONE_COPY_FAILED","云端复制重试失败。",cloud.StandardError);
+                var failure = RcloneFailureClassifier.Classify(cloud.StandardError);
+                var errorCode = RcloneFailureClassifier.GetErrorCode(failure);
+                await ScheduleCloudRetryAsync(game.PlayniteId,errorCode,cloud.StandardError,ct).ConfigureAwait(false);
+                throw new WorkerOperationException(errorCode,$"云端复制重试失败：{RcloneFailureClassifier.GetUserMessage(failure)}",cloud.StandardError);
             }
             await _store.RemoveCloudRetryAsync(game.PlayniteId,ct).ConfigureAwait(false);
             await _store.UpdateGameCloudStateAsync(game.PlayniteId,"Uploaded",ct).ConfigureAwait(false);
@@ -263,9 +271,16 @@ public sealed class BackupOrchestrator
         return result;
     }
 
-    private async Task ScheduleCloudRetryAsync(string playniteId, string error, CancellationToken token)
+    private async Task ScheduleCloudRetryAsync(string playniteId, string errorCode, string error, CancellationToken token)
     {
         var now = DateTime.UtcNow;
+        if (!RcloneFailureClassifier.IsRetryable(errorCode))
+        {
+            await _store.RemoveCloudRetryAsync(playniteId, token).ConfigureAwait(false);
+            await _store.UpdateGameCloudStateAsync(playniteId, "Failed", token).ConfigureAwait(false);
+            await _store.AppendAuditAsync("CloudRetry", $"云端复制失败（{errorCode}），未安排自动重试", error, token).ConfigureAwait(false);
+            return;
+        }
         var existing = await _store.GetCloudRetryAsync(playniteId, token).ConfigureAwait(false);
         var completedAutomaticRetries = existing?.RetryCount ?? 0;
         if (CloudRetryPolicy.IsAutomaticRetryLimitReached(completedAutomaticRetries))

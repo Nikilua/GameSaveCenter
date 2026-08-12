@@ -1,6 +1,7 @@
 using GameSaveCenter.Worker.Configuration;
 using GameSaveCenter.Worker.Persistence;
 using GameSaveCenter.Worker.Services;
+using GameSaveCenter.Worker.Infrastructure;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
@@ -41,6 +42,19 @@ public sealed class CloudRetryPersistenceTests : IDisposable
         Assert.False(CloudRetryPolicy.IsAutomaticRetryLimitReached(expectedMinutes.Length - 1));
         Assert.True(CloudRetryPolicy.IsAutomaticRetryLimitReached(expectedMinutes.Length));
         Assert.True(CloudRetryPolicy.IsAutomaticRetryLimitReached(expectedMinutes.Length + 1));
+    }
+
+    [Theory]
+    [InlineData("authentication failed", RcloneFailureKind.Authentication, "RCLONE_AUTH_FAILED")]
+    [InlineData("permission denied", RcloneFailureKind.Permission, "RCLONE_PERMISSION_DENIED")]
+    [InlineData("remote not found", RcloneFailureKind.RemoteNotFound, "RCLONE_REMOTE_NOT_FOUND")]
+    [InlineData("network timeout", RcloneFailureKind.Network, "RCLONE_NETWORK_FAILED")]
+    [InlineData("partial transfer; incomplete", RcloneFailureKind.Incomplete, "RCLONE_TRANSFER_INCOMPLETE")]
+    public void RcloneFailuresBecomeActionableBoundedCodes(string text, RcloneFailureKind expected, string code)
+    {
+        Assert.Equal(expected, RcloneFailureClassifier.Classify(text));
+        Assert.Equal(code, RcloneFailureClassifier.GetErrorCode(expected));
+        Assert.Equal(expected is RcloneFailureKind.Network or RcloneFailureKind.Incomplete, RcloneFailureClassifier.IsRetryable(code));
     }
 
     [Fact]
