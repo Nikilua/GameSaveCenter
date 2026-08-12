@@ -205,6 +205,7 @@ public sealed class GameToolServiceImportTests : IDisposable
             SourcePath = Path.Combine(root, "missing.exe"),
             CopyIntoLibrary = false
         }, CancellationToken.None));
+        Assert.False(Directory.EnumerateDirectories(options.GameToolsDirectory).Any(), "failed external import must not leave an empty GameTools directory");
     }
 
     public void Dispose()

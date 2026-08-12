@@ -79,8 +79,13 @@ public sealed class GameToolService
             throw new InvalidOperationException("Cheat Table 必须是 .ct 文件。");
 
         var toolId=Guid.NewGuid().ToString("N");var versionId=Guid.NewGuid().ToString("N");
-        var root=Path.Combine(_options.GameToolsDirectory,SafeSegment(request.PlayniteId),toolId,versionId);
-        Directory.CreateDirectory(root);
+        var requiresStorage=(File.Exists(source)&&source.EndsWith(".zip",StringComparison.OrdinalIgnoreCase)&&request.ToolType!=GameToolType.CustomExecutable)
+                            ||Directory.Exists(source)
+                            ||request.CopyIntoLibrary;
+        var root=requiresStorage
+            ? Path.Combine(_options.GameToolsDirectory,SafeSegment(request.PlayniteId),toolId,versionId)
+            : string.Empty;
+        if(requiresStorage)Directory.CreateDirectory(root);
         string entry;
         if(File.Exists(source)&&source.EndsWith(".zip",StringComparison.OrdinalIgnoreCase)&&request.ToolType!=GameToolType.CustomExecutable)
         {
@@ -114,11 +119,6 @@ public sealed class GameToolService
             CreatedUtc=now,IsAvailable=true
         };
         await _store.UpsertGameToolAsync(tool,version,token).ConfigureAwait(false);
-        if(request.ToolType==GameToolType.CustomExecutable
-           && !request.CopyIntoLibrary
-           && Directory.Exists(root)
-           && !Directory.EnumerateFileSystemEntries(root).Any())
-            CleanupEmptyGameToolPath(root,_options.GameToolsDirectory);
         await _store.AppendAuditAsync("GameTool","已导入游戏工具",System.Text.Json.JsonSerializer.Serialize(new{tool.ToolId,tool.PlayniteId,tool.DisplayName,tool.ToolType}),token).ConfigureAwait(false);
         return (await _store.GetGameToolAsync(toolId,token).ConfigureAwait(false))!;
     }
@@ -399,18 +399,6 @@ public sealed class GameToolService
         return Path.GetFullPath(path).TrimEnd(Path.DirectorySeparatorChar,Path.AltDirectorySeparatorChar);
     }
 
-    private static void CleanupEmptyGameToolPath(string root,string stopAt)
-    {
-        var current=root;
-        var stop=NormalizeDirectory(stopAt);
-        while(Directory.Exists(current)
-              &&!string.Equals(NormalizeDirectory(current),stop,StringComparison.OrdinalIgnoreCase)
-              &&!Directory.EnumerateFileSystemEntries(current).Any())
-        {
-            Directory.Delete(current);
-            current=Path.GetDirectoryName(current)??string.Empty;
-        }
-    }
 
     private static bool HasSignature(string path,byte first,byte second)
     {

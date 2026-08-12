@@ -41,7 +41,7 @@
 - UI-206（提交 `962a6b0`）：DataGrid 滚动几何修复。共享与关键 DataGrid Style 显式 `VirtualizingPanel.ScrollUnit=Pixel`；Maintenance/Task 表格由强制 `Height` 改为 `Height=double.NaN + MaxHeight`；完整诊断摘要移除外层 `ClipToBounds` 与动态高度限制；render-qa 新增 60 行 × 287/311/337/353/419 DIP 滚动探针，滚到底 `offset==scrollable`。2K 窗口化仍待用户真机复核，1080p/4K 标记 BLOCKED_ENVIRONMENT。
 - DataGrid 最终结论（`d9cd82f`/`0ce3388`/`4564c8f`）：Pixel ScrollUnit 经真实 Playnite A/B 验证会回归，已撤回；当前采用 `Item` + `GscStableDataGridRow` 稳定行样式 + geometry probe（gap ≤4 DIP、末行完整、Recycling 保持）。不要重新改回 Pixel。
 
-当前测试基线：Core 13、Worker 45、Playnite 163；render-qa 全绿；源码验证与技能静态审查通过。后续新会话不要重复实现以上内容；下一个可选方向是 PERF-008/009/010，但应先拿到真实 Playnite profiling 证据。
+当前测试基线：Core 13、Worker 51、Playnite 179；render-qa 全绿；源码验证与技能静态审查通过。PERF-004～010 与 GAME-TOOL-001/002 已收口，不要重新打开。
 
 ## 项目目标
 
@@ -85,7 +85,7 @@
 ## 合并后当前交接基线（2026-08-11）
 
 - 分支：`main`
-- 当前 UI 交接基线：`40bc4ab`（`qa: cover settings page in offscreen render harness`）；生产 UI 最近提交 `ffd3d21`（UI-203）。UI-201/202/203 已把 Task/Save/Trainer 堆叠 Inspector 统一为 160 DIP 下限，并把 Overview 在常用 1040/1280/1366 窗口恢复为“Hero + 当前游戏”同行；QA-001/002 已提供 7 页面 × 5 种常用逻辑窗口的离屏渲染回归。
+- 当前 UI 交接基线：`0c6f143`（`文档：进度表补充 QA 收口最终结论`）；生产 UI 最近相关提交 `0ce3388`（DataGrid 稳定行样式 + geometry probe）与 `4564c8f`（诊断摘要非裁剪）。DataGrid 最终采用 `Item + GscStableDataGridRow`，Pixel 已真机验证并撤回。
 - 上一合并提交：`e87e2af`（`merge: reconcile local and cross-machine UI migration`）
 - 合并共同基线：`9cdd975`；本机 UI-173～UI-181 与 `origin/main` 的 UI-181～UI-183、交接文档线均已保留，没有删除任一方共同基线后的提交。
 - 本机额外 WIP 已先由 `e61d0fc` 固化后纳入合并；本机的长期约束已追加到 `docs/PROJECT_MEMORY.md` 的 `MERGE-001`，远端既有记忆条目保持原文。
@@ -122,7 +122,7 @@
 - PERF-003（本轮）：GamePicker 每次快照都会 `Distinct+OrderBy` 重建平台筛选选项。新增 `ComputePlatformFingerprint`（平台名顺序 + 数量），`Items` 未变化时跳过 `RebuildPlatformOptions`；render-qa 全绿，Playnite 152/152 通过。
 - PERF-004（本轮）：GamePicker 每次快照都为整库新建 `GamePickerItem`，大库下分配多且选中引用会漂移。改为按 `PlayniteId` 缓存复用 `GamePickerItem`，快照时只 `UpdateGame` 更新内部 `GameStatusDto` 引用（缓存超过 `max(1024, 2*游戏数+100)` 才清空重建）；减少大库分配并让选中对象身份跨快照稳定。render-qa 全绿，Playnite 152/152 通过。
 - 新增的响应式门禁要求：1080p、2K、4K 不能只按物理分辨率判断，必须按 DPI 换算后的逻辑 DIP 尺寸检查全屏、窗口化和最大化；常用窗口下首屏下方真实内容不得被页脚或工作区边界遮住，主表/主列表应保留约四行可读视口，页面滚动与列表内部虚拟化滚动必须分工明确。具体门禁见 `docs/design/UI_CHANGE_GATE.md`。
-- 本轮工作区：`40bc4ab` 提交后干净；后续 agent 仍须先运行 `git status`、`git log -5 --oneline --decorate` 和 `git branch --show-current`。
+- 本轮工作区：`0c6f143` 提交后干净；后续 agent 仍须先运行 `git status`、`git log -5 --oneline --decorate` 和 `git branch --show-current`。
 - 验证：`python scripts/validate-source.py` 通过；`scripts/render-qa.ps1` 覆盖 Overview/Save/Trainer/Media/Maintenance/Task/Settings × 1040×700/1280×720/1366×768/1600×900/1920×1080 全部通过（含自动失败门禁）；技能静态审查 0 error；`scripts/dev-install-run.ps1 -NoStart` 一键构建安装成功（解决方案 Release 0 警告/0 错误，Core 13/13、Worker 23/23、Playnite 151/151），最新扩展已安装到本机 Playnite Extensions，未自动启动。真实 Playnite 宿主、主题、DPI、窗口化截图和连续缩放运行时渲染仍需用户在 Playnite 内手工验收。
 
 以下原有的远端交接基线保留为历史记录，便于追溯另一台机器的 UI-183 上下文：

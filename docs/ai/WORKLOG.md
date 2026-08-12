@@ -428,7 +428,9 @@ NEXT: 全部可自主完成项已收口；剩余为真实 Playnite 人工验收�
 
 真实 Playnite 人工验收（主题/DPI/窗口化/自定义启动项真机流程/大库渲染帧率）。
 
-## 2026-08-12 UI-206 DataGrid 滚动几何修复
+## 2026-08-12 UI-206 DataGrid 滚动几何修复（SUPERSEDED）
+
+> 历史记录保留。该条目的 Pixel 方案已由真实 Playnite A/B 验证为严重回归并撤回；当前最终方案是 `Item` + `GscStableDataGridRow` + geometry probe，见后续条目与 PROJECT_MEMORY。
 
 **做了什么：**
 
@@ -488,3 +490,22 @@ NEXT: 全部可自主完成项已收口；剩余为真实 Playnite 人工验收�
 **最终结论：**
 
 PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在源码层已经经历回滚与再修复，当前方案为 Item + 稳定行样式 + geometry probe。剩余完整主题/DPI/大库/启动项真机验收仍需用户真实使用反馈，不宣称已完成。
+
+## 2026-08-12 QA-HARDENING-2 文档与边缘清理
+
+**做了什么：**
+
+- `PROJECT_MEMORY.md` 测试基线更新为 Worker 51；TaskFilter 描述改为 `TaskFilterOptionsSync`（不再提 200ms timer）；LNK 可追踪描述与“脚本/普通文件不可靠”分开写清。
+- `DEVELOPMENT_HANDOFF.md` 顶部当前基线更新到 `0c6f143`，测试基线更新为 Core 13/Worker 51/Playnite 179；删除“下一步 PERF-008/009/010”过期指示。
+- WORKLOG 旧 UI-206 条目标注 SUPERSEDED，避免未来 Codex 误以为 Pixel 是当前方案。
+- 外部 CustomExecutable 导入不再预先创建 GameTools root（只有 ZIP/目录/复制需要存储时才创建），失败路径也不会留下空目录；补充“导入失败不留下空目录”测试。
+
+**修改文件：**
+
+- `src/GameSaveCenter.Worker/Services/GameToolService.cs`
+- `tests/GameSaveCenter.Worker.Tests/GameToolServiceImportTests.cs`
+- `docs/ai/PROJECT_MEMORY.md`、`docs/ai/WORKLOG.md`、`docs/DEVELOPMENT_HANDOFF.md`
+
+**测试结果：**
+
+- 待重跑：Worker（预计 51）与 Playnite（179）。
