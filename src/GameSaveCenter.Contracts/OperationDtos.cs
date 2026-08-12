@@ -177,6 +177,11 @@ namespace GameSaveCenter.Contracts
         public BackupPolicyDto Policy { get; set; } = new BackupPolicyDto();
     }
 
+    public sealed class ApplyRecommendedProtectionDto
+    {
+        public List<string> PlayniteIds { get; set; } = new List<string>();
+    }
+
     /// <summary>
     /// A reusable policy snapshot. Applying a template copies its current values to a
     /// game; it never creates a live inheritance relationship.

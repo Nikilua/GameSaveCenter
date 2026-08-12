@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using GameSaveCenter.Contracts;
 
 namespace GameSaveCenter.Playnite.Infrastructure
 {
@@ -45,5 +46,26 @@ namespace GameSaveCenter.Playnite.Infrastructure
         public bool IsDangerous { get; }
         public bool Handled { get; set; }
         public TaskCompletionSource<bool> Completion { get; }
+    }
+
+    public sealed class UiChoiceEventArgs : EventArgs
+    {
+        public UiChoiceEventArgs(string title, string message, string primaryText, string laterText, string neverText)
+        {
+            Title = title ?? string.Empty;
+            Message = message ?? string.Empty;
+            PrimaryText = string.IsNullOrWhiteSpace(primaryText) ? "启用" : primaryText;
+            LaterText = string.IsNullOrWhiteSpace(laterText) ? "以后再说" : laterText;
+            NeverText = string.IsNullOrWhiteSpace(neverText) ? "不再提醒" : neverText;
+            Completion = new TaskCompletionSource<ProtectionPromptChoice?>();
+        }
+
+        public string Title { get; }
+        public string Message { get; }
+        public string PrimaryText { get; }
+        public string LaterText { get; }
+        public string NeverText { get; }
+        public bool Handled { get; set; }
+        public TaskCompletionSource<ProtectionPromptChoice?> Completion { get; }
     }
 }

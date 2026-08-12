@@ -21,6 +21,8 @@ namespace GameSaveCenter.Contracts
         public const string ValidateGame = "validation.game";
         public const string GetGamePolicy = "policy.get";
         public const string UpdateGamePolicy = "policy.update";
+        public const string ProtectionPromptDecision = "protection.prompt.decision";
+        public const string ApplyRecommendedProtection = "protection.recommended.apply";
         public const string ListPolicyTemplates = "policy.templates.list";
         public const string SavePolicyTemplate = "policy.template.save";
         public const string DeletePolicyTemplate = "policy.template.delete";

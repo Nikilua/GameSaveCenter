@@ -48,6 +48,28 @@ namespace GameSaveCenter.Contracts
         public long ElapsedSeconds { get; set; }
     }
 
+    public sealed class GameSessionStopResultDto
+    {
+        public bool Stopped { get; set; }
+        public ProtectionPromptDto? ProtectionPrompt { get; set; }
+    }
+
+    public sealed class ProtectionPromptDto
+    {
+        public bool ShouldPrompt { get; set; }
+        public bool SaveRecognized { get; set; }
+        public string PlayniteId { get; set; } = string.Empty;
+        public string GameName { get; set; } = string.Empty;
+        public ProtectionPromptState State { get; set; } = ProtectionPromptState.NeverShown;
+        public string Message { get; set; } = string.Empty;
+    }
+
+    public sealed class ProtectionPromptDecisionDto
+    {
+        public string PlayniteId { get; set; } = string.Empty;
+        public ProtectionPromptChoice Choice { get; set; }
+    }
+
     /// <summary>Summarized game state displayed by the dashboard.</summary>
     public sealed class GameStatusDto
     {

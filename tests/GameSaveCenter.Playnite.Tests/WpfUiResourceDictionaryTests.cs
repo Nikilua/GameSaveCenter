@@ -2436,6 +2436,34 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void ProtectionPromptUsesThreeExplicitChoices()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var view = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml"));
+        var code = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml.cs"));
+
+        Assert.Contains("DialogNeverButton", view);
+        Assert.Contains("DialogLaterButton", view);
+        Assert.Contains("OnDialogNeverClick", code);
+        Assert.Contains("OnDialogLaterClick", code);
+        Assert.Contains("EnableRecommended", code);
+    }
+
+    [Fact]
+    public void RecentProtectionCardSupportsSelectionAndRecommendedBatchAction()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var view = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml"));
+        var contract = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Core", "Services", "RecentProtectionAssessmentService.cs"));
+
+        Assert.Contains("ApplyRecommendedProtectionCommand", view);
+        Assert.Contains("IsSelected, Mode=TwoWay", view);
+        Assert.Contains("StatusDisplay", view);
+        Assert.Contains("public bool IsSelected", contract);
+        Assert.Contains("public string StatusDisplay", contract);
+    }
+
+    [Fact]
     public void TaskAndMaintenanceTablesUseReadableSemanticStatusTemplates()
     {
         var repositoryRoot = FindRepositoryRoot();

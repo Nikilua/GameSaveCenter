@@ -45,9 +45,9 @@ public sealed class GameSessionCoordinator : BackgroundService, IRestoreSessionS
         _logger.LogInformation("Session started for {Game} from {Source}; timed backup is scheduled every {IntervalMinutes} minute(s)",incoming.GameName,incoming.Source,intervalMinutes);return incoming;
     }
 
-    public async Task StopAsync(GameSessionEventDto incoming,CancellationToken token)
+    public async Task<ProtectionPromptDto?> StopAsync(GameSessionEventDto incoming,CancellationToken token)
     {
-        if(!_active.TryRemove(incoming.PlayniteId,out var active))return;
+        if(!_active.TryRemove(incoming.PlayniteId,out var active))return null;
         active.Event.StoppedUtc=incoming.StoppedUtc??DateTime.UtcNow;
         active.Event.ElapsedSeconds=incoming.ElapsedSeconds>0?incoming.ElapsedSeconds:(long)(active.Event.StoppedUtc.Value-active.Event.StartedUtc).TotalSeconds;
         await _store.AddSessionAsync(active.Event,token).ConfigureAwait(false);
@@ -57,8 +57,53 @@ public sealed class GameSessionCoordinator : BackgroundService, IRestoreSessionS
             _=RunSafeAsync(()=>_backup.BackupAsync(new BackupRequestDto{PlayniteIds=new(){active.Event.PlayniteId},Force=true,Reason="GameStopped",SessionId=active.Event.SessionId},CancellationToken.None),"exit backup",active.Event.GameName);
         if(policy.Enabled&&policy.SyncMediaOnGameStop)
             _=RunSafeAsync(()=>_media.SyncAsync(new MediaSyncRequestDto{PlayniteIds=new(){active.Event.PlayniteId},SessionId=active.Event.SessionId,UploadAfterSync=policy.UploadAfterBackup},CancellationToken.None),"exit media sync",active.Event.GameName);
-        _=RunSafeAsync(()=>_detection.AnalyzeSessionStopAsync(active.Event,CancellationToken.None),"session save-path analysis",active.Event.GameName);
+        var detectedCandidates=0;
+        try
+        {
+            detectedCandidates=await _detection.AnalyzeSessionStopAsync(active.Event,token).ConfigureAwait(false);
+        }
+        catch(Exception ex)
+        {
+            _logger.LogWarning(ex,"Session save-path analysis failed for {Game}; protection prompt will remain deferred",active.Event.GameName);
+        }
+        var prompt=await BuildProtectionPromptAsync(active.Event,detectedCandidates,token).ConfigureAwait(false);
         _logger.LogInformation("Session stopped for {Game}",active.Event.GameName);
+        return prompt;
+    }
+
+    private async Task<ProtectionPromptDto?> BuildProtectionPromptAsync(GameSessionEventDto session,int detectedCandidates,CancellationToken token)
+    {
+        var existing=await _store.GetSaveCandidatesAsync(session.PlayniteId,token).ConfigureAwait(false);
+        var matches=await _store.GetGameMatchesAsync(token).ConfigureAwait(false);
+        var recognized=detectedCandidates>0
+            ||existing.Any(x=>string.Equals(x.Status,"Accepted",StringComparison.OrdinalIgnoreCase))
+            ||(matches.TryGetValue(session.PlayniteId,out var match)&&!string.IsNullOrWhiteSpace(match.Name));
+        var state=await _store.GetProtectionPromptRecordAsync(session.PlayniteId,token).ConfigureAwait(false);
+        if(state.State==ProtectionPromptState.Enabled||state.State==ProtectionPromptState.Dismissed)
+        {
+            await _store.RecordProtectionPromptObservationAsync(session.PlayniteId,recognized,false,token).ConfigureAwait(false);
+            return null;
+        }
+
+        // Keep a deferred decision quiet until a later session observes a newly recognized save.
+        // Never issue a prompt for an unchanged "no save found" observation.
+        var shouldPrompt=recognized&&(
+            !state.LastSaveRecognized
+            ||state.State==ProtectionPromptState.NeverShown
+            ||(state.State==ProtectionPromptState.Deferred && (!state.LastPromptUtc.HasValue || DateTime.UtcNow-state.LastPromptUtc.Value>=TimeSpan.FromDays(7))));
+        if(!recognized)
+        {
+            await _store.AppendAuditAsync("Protection","暂未发现存档",System.Text.Json.JsonSerializer.Serialize(new{session.PlayniteId,session.SessionId}),token).ConfigureAwait(false);
+        }
+        await _store.RecordProtectionPromptObservationAsync(session.PlayniteId,recognized,shouldPrompt,token).ConfigureAwait(false);
+        return new ProtectionPromptDto
+        {
+            ShouldPrompt=shouldPrompt,SaveRecognized=recognized,PlayniteId=session.PlayniteId,GameName=session.GameName,
+            State=state.State,
+            Message=recognized
+                ? $"已发现“{session.GameName}”的存档路径，是否启用自动保护？"
+                : $"本次退出暂未发现“{session.GameName}”的存档路径；如果之后出现存档，可以在存档中心再次确认。"
+        };
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)

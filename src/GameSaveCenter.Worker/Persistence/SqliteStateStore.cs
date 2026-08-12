@@ -45,6 +45,10 @@ public sealed partial class SqliteStateStore
         await EnsureColumnAsync(connection, "games", "last_match_attempt_utc", "TEXT", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "game_tools", "if_already_running", "INTEGER NOT NULL DEFAULT 0", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "game_tools", "risk_category", "INTEGER NOT NULL DEFAULT 0", token).ConfigureAwait(false);
+        await EnsureColumnAsync(connection, "protection_prompt_states", "state", "INTEGER NOT NULL DEFAULT 0", token).ConfigureAwait(false);
+        await EnsureColumnAsync(connection, "protection_prompt_states", "last_save_recognized", "INTEGER NOT NULL DEFAULT 0", token).ConfigureAwait(false);
+        await EnsureColumnAsync(connection, "protection_prompt_states", "last_observed_utc", "TEXT", token).ConfigureAwait(false);
+        await EnsureColumnAsync(connection, "protection_prompt_states", "last_prompt_utc", "TEXT", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "game_tool_versions", "resolved_target_path", "TEXT", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "backup_versions", "archive_path", "TEXT", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "backup_versions", "restore_readiness_json", "TEXT", token).ConfigureAwait(false);
@@ -875,6 +879,43 @@ LIMIT 100;";
         "UPDATE save_candidates SET status=$status WHERE playnite_id=$game AND path=$path;",
         new Dictionary<string, object?> { ["$game"]=playniteId,["$path"]=path,["$status"]=status },token);
 
+    public async Task<ProtectionPromptRecord> GetProtectionPromptRecordAsync(string playniteId, CancellationToken token)
+    {
+        await using var connection=Open(); await connection.OpenAsync(token).ConfigureAwait(false);
+        var command=connection.CreateCommand();
+        command.CommandText="SELECT state,last_save_recognized,last_observed_utc,last_prompt_utc,updated_utc FROM protection_prompt_states WHERE playnite_id=$game;";
+        command.Parameters.AddWithValue("$game",playniteId);
+        await using var reader=await command.ExecuteReaderAsync(token).ConfigureAwait(false);
+        if(!await reader.ReadAsync(token).ConfigureAwait(false))return new ProtectionPromptRecord();
+        return new ProtectionPromptRecord
+        {
+            State=(ProtectionPromptState)reader.GetInt32(0),
+            LastSaveRecognized=reader.GetInt32(1)==1,
+            LastObservedUtc=reader.IsDBNull(2)?null:DateTime.Parse(reader.GetString(2)).ToUniversalTime(),
+            LastPromptUtc=reader.IsDBNull(3)?null:DateTime.Parse(reader.GetString(3)).ToUniversalTime(),
+            UpdatedUtc=DateTime.Parse(reader.GetString(4)).ToUniversalTime()
+        };
+    }
+
+    public Task SetProtectionPromptStateAsync(string playniteId, ProtectionPromptState state, CancellationToken token)
+        => ExecuteAsync(@"UPDATE protection_prompt_states SET state=$state,updated_utc=$utc WHERE playnite_id=$game;
+INSERT INTO protection_prompt_states(playnite_id,state,last_save_recognized,last_observed_utc,last_prompt_utc,updated_utc)
+SELECT $game,$state,0,NULL,NULL,$utc
+WHERE changes()=0;",
+            new Dictionary<string,object?> { ["$game"]=playniteId,["$state"]=(int)state,["$utc"]=DateTime.UtcNow.ToString("O") },token);
+
+    public Task RecordProtectionPromptObservationAsync(string playniteId, bool saveRecognized, bool promptIssued, CancellationToken token)
+        => ExecuteAsync(@"INSERT INTO protection_prompt_states(playnite_id,state,last_save_recognized,last_observed_utc,last_prompt_utc,updated_utc)
+VALUES($game,0,$recognized,$observed,$prompt,$utc)
+ON CONFLICT(playnite_id) DO UPDATE SET
+last_save_recognized=$recognized,last_observed_utc=$observed,
+last_prompt_utc=CASE WHEN $prompt IS NULL THEN last_prompt_utc ELSE $prompt END,updated_utc=$utc;",
+            new Dictionary<string,object?>
+            {
+                ["$game"]=playniteId,["$recognized"]=saveRecognized?1:0,["$observed"]=DateTime.UtcNow.ToString("O"),
+                ["$prompt"]=promptIssued?DateTime.UtcNow.ToString("O"):null,["$utc"]=DateTime.UtcNow.ToString("O")
+            },token);
+
     public async Task<(int Games,int Matched,int Media,int Unassigned)> GetCountsAsync(CancellationToken token)
     {
         await using var connection=Open(); await connection.OpenAsync(token).ConfigureAwait(false);
@@ -990,6 +1031,7 @@ CREATE TABLE IF NOT EXISTS media_sources(source_id TEXT PRIMARY KEY,playnite_id 
 CREATE TABLE IF NOT EXISTS save_candidates(candidate_id TEXT PRIMARY KEY,playnite_id TEXT NOT NULL,path TEXT NOT NULL,score REAL NOT NULL,reasons_json TEXT,status TEXT NOT NULL,created_utc TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS audit_log(audit_id TEXT PRIMARY KEY,category TEXT NOT NULL,message TEXT NOT NULL,detail_json TEXT,created_utc TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS game_tools(tool_id TEXT PRIMARY KEY,playnite_id TEXT NOT NULL,tool_type INTEGER NOT NULL,source_type INTEGER NOT NULL,display_name TEXT NOT NULL,enabled INTEGER NOT NULL DEFAULT 1,auto_start INTEGER NOT NULL DEFAULT 0,launch_timing INTEGER NOT NULL DEFAULT 1,launch_delay_seconds INTEGER NOT NULL DEFAULT 8,close_on_game_exit INTEGER NOT NULL DEFAULT 0,requires_admin INTEGER NOT NULL DEFAULT 0,if_already_running INTEGER NOT NULL DEFAULT 0,risk_category INTEGER NOT NULL DEFAULT 0,active_version_id TEXT,created_utc TEXT NOT NULL,updated_utc TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS protection_prompt_states(playnite_id TEXT PRIMARY KEY,state INTEGER NOT NULL DEFAULT 0,last_save_recognized INTEGER NOT NULL DEFAULT 0,last_observed_utc TEXT,last_prompt_utc TEXT,updated_utc TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS game_tool_versions(version_id TEXT PRIMARY KEY,tool_id TEXT NOT NULL REFERENCES game_tools(tool_id) ON DELETE CASCADE,version_name TEXT,entry_path TEXT NOT NULL,working_directory TEXT,arguments TEXT,source_url TEXT,file_sha256 TEXT,download_utc TEXT,created_utc TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS trainer_catalog(catalog_id TEXT PRIMARY KEY,title TEXT NOT NULL,normalized_title TEXT NOT NULL,page_url TEXT NOT NULL,game_version TEXT,option_count INTEGER NOT NULL DEFAULT 0,last_updated_utc TEXT,last_synced_utc TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS trainer_releases(release_id TEXT PRIMARY KEY,catalog_id TEXT NOT NULL REFERENCES trainer_catalog(catalog_id) ON DELETE CASCADE,display_name TEXT NOT NULL,download_url TEXT NOT NULL,size_bytes INTEGER NOT NULL DEFAULT 0,published_utc TEXT,last_synced_utc TEXT NOT NULL);
@@ -1036,4 +1078,13 @@ public sealed class DashboardGameRecord
     public int OpenFindingWarningCount { get; set; }
     public int OpenFindingErrorCount { get; set; }
     public string LatestFindingTitle { get; set; } = string.Empty;
+}
+
+public sealed class ProtectionPromptRecord
+{
+    public ProtectionPromptState State { get; set; } = ProtectionPromptState.NeverShown;
+    public bool LastSaveRecognized { get; set; }
+    public DateTime? LastObservedUtc { get; set; }
+    public DateTime? LastPromptUtc { get; set; }
+    public DateTime? UpdatedUtc { get; set; }
 }

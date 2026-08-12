@@ -76,6 +76,7 @@ namespace GameSaveCenter.Playnite
         public event EventHandler? VisualSettingsChanged;
         public event EventHandler<UiNotificationEventArgs>? UiNotificationRequested;
         public event EventHandler<UiConfirmationEventArgs>? UiConfirmationRequested;
+        public event EventHandler<UiChoiceEventArgs>? UiChoiceRequested;
         internal event Action<Guid>? PlayniteGameStarted;
 
         public override void OnApplicationStarted(OnApplicationStartedEventArgs args)
@@ -156,11 +157,26 @@ namespace GameSaveCenter.Playnite
                 await EnsureWorkerAsync();
                 await ApplySettingsCoreAsync();
                 var descriptor = adapter.Convert(args.Game);
-                await RequestAsync<object>(MessageTypes.GameSessionStopped, new GameSessionEventDto
+                var result = await RequestAsync<GameSessionStopResultDto>(MessageTypes.GameSessionStopped, new GameSessionEventDto
                 {
                     PlayniteId = descriptor.PlayniteId, GameName = descriptor.Name, Source = SessionSourceKind.Playnite,
                     StoppedUtc = DateTime.UtcNow, ElapsedSeconds = checked((long)Math.Min(args.ElapsedSeconds, (ulong)long.MaxValue))
-                });
+                }, TimeSpan.FromMinutes(3));
+                var prompt = result?.ProtectionPrompt;
+                if (prompt?.ShouldPrompt == true)
+                {
+                    var choice = await ChooseAsync(
+                        "发现可保护的存档",
+                        prompt.Message,
+                        "启用推荐策略",
+                        "以后再说",
+                        "不再提醒").ConfigureAwait(false);
+                    if (choice.HasValue)
+                    {
+                        await RequestAsync<object>(MessageTypes.ProtectionPromptDecision,
+                            new ProtectionPromptDecisionDto { PlayniteId = prompt.PlayniteId, Choice = choice.Value }).ConfigureAwait(false);
+                    }
+                }
             });
         }
 
@@ -376,6 +392,17 @@ namespace GameSaveCenter.Playnite
 
             var result = PlayniteApi.Dialogs.ShowMessage(message, title, System.Windows.MessageBoxButton.YesNo);
             return result == System.Windows.MessageBoxResult.Yes;
+        }
+
+        public async Task<ProtectionPromptChoice?> ChooseAsync(string title, string message, string primaryText, string laterText, string neverText)
+        {
+            var args = new UiChoiceEventArgs(title, message, primaryText, laterText, neverText);
+            if (!TryInvokeUi(() => UiChoiceRequested?.Invoke(this, args), "choice request"))
+                return ProtectionPromptChoice.Later;
+            if (args.Handled) return await args.Completion.Task.ConfigureAwait(false);
+            // A three-way choice cannot be represented by Playnite's native Yes/No dialog.
+            // Conservatively defer when the embedded dashboard is not available.
+            return ProtectionPromptChoice.Later;
         }
 
         public void ShowTaskNotification(TaskStatusDto task)

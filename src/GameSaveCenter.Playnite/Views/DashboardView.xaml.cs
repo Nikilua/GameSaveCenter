@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.ViewModels;
 using Playnite.SDK;
@@ -28,7 +29,9 @@ namespace GameSaveCenter.Playnite.Views
         private bool systemParametersSubscribed;
         private bool uiFeedbackSubscribed;
         private UiConfirmationEventArgs? activeConfirmation;
+        private UiChoiceEventArgs? activeChoice;
         private bool dialogShowsResult;
+        private bool choiceDialog;
         private bool confirmationOpen;
         private bool responsiveLayoutPending;
         private bool compactGameBrowserOpen;
@@ -70,6 +73,7 @@ namespace GameSaveCenter.Playnite.Views
             {
                 plugin.UiNotificationRequested += OnUiNotificationRequested;
                 plugin.UiConfirmationRequested += OnUiConfirmationRequested;
+                plugin.UiChoiceRequested += OnUiChoiceRequested;
                 uiFeedbackSubscribed = true;
             }
             var version = typeof(DashboardView).Assembly.GetName().Version;
@@ -119,10 +123,13 @@ namespace GameSaveCenter.Playnite.Views
             {
                 plugin.UiNotificationRequested -= OnUiNotificationRequested;
                 plugin.UiConfirmationRequested -= OnUiConfirmationRequested;
+                plugin.UiChoiceRequested -= OnUiChoiceRequested;
                 uiFeedbackSubscribed = false;
             }
             activeConfirmation?.Completion.TrySetResult(false);
             activeConfirmation = null;
+            activeChoice?.Completion.TrySetResult(ProtectionPromptChoice.Later);
+            activeChoice = null;
             confirmationOpen = false;
             responsiveLayoutPending = false;
             DialogOverlay.Visibility = Visibility.Collapsed;
@@ -1079,6 +1086,18 @@ namespace GameSaveCenter.Playnite.Views
             _ = ShowFrameworkConfirmationAsync(e);
         }
 
+        private void OnUiChoiceRequested(object? sender, UiChoiceEventArgs e)
+        {
+            if (!IsLoaded || !IsVisible) return;
+            e.Handled = true;
+            if (confirmationOpen)
+            {
+                e.Completion.TrySetResult(ProtectionPromptChoice.Later);
+                return;
+            }
+            _ = ShowFrameworkChoiceAsync(e);
+        }
+
         private Task ShowFrameworkConfirmationAsync(UiConfirmationEventArgs request)
         {
             confirmationOpen = true;
@@ -1102,9 +1121,31 @@ namespace GameSaveCenter.Playnite.Views
             return Task.CompletedTask;
         }
 
+        private Task ShowFrameworkChoiceAsync(UiChoiceEventArgs request)
+        {
+            confirmationOpen = true;
+            activeChoice?.Completion.TrySetResult(ProtectionPromptChoice.Later);
+            activeChoice = request;
+            try
+            {
+                ShowFallbackChoice(request);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "GameSaveCenter embedded choice dialog failed.");
+                activeChoice = null;
+                confirmationOpen = false;
+                request.Completion.TrySetResult(ProtectionPromptChoice.Later);
+            }
+            return Task.CompletedTask;
+        }
+
         private void ShowFallbackConfirmation(UiConfirmationEventArgs request)
         {
             activeConfirmation = request;
+            choiceDialog = false;
+            DialogNeverButton.Visibility = Visibility.Collapsed;
+            DialogLaterButton.Visibility = Visibility.Collapsed;
             dialogShowsResult = false;
             DialogTitleText.Text = request.Title;
             DialogMessageText.Text = request.Message;
@@ -1116,6 +1157,24 @@ namespace GameSaveCenter.Playnite.Views
             OpenDialog(request.IsDangerous ? DialogCancelButton : DialogConfirmButton);
         }
 
+        private void ShowFallbackChoice(UiChoiceEventArgs request)
+        {
+            activeChoice = request;
+            dialogShowsResult = false;
+            choiceDialog = true;
+            DialogTitleText.Text = request.Title;
+            DialogMessageText.Text = request.Message;
+            DialogCancelButton.Visibility = Visibility.Collapsed;
+            DialogLaterButton.Content = request.LaterText;
+            DialogLaterButton.Visibility = Visibility.Visible;
+            DialogNeverButton.Content = request.NeverText;
+            DialogNeverButton.Visibility = Visibility.Visible;
+            DialogConfirmButton.Content = request.PrimaryText;
+            DialogConfirmButton.SetResourceReference(Control.BackgroundProperty, "GscAccentBrush");
+            DialogConfirmButton.SetResourceReference(Control.BorderBrushProperty, "GscAccentBrush");
+            OpenDialog(DialogConfirmButton);
+        }
+
         private void ShowResultDialog(string title, string message)
         {
             activeConfirmation?.Completion.TrySetResult(false);
@@ -1125,6 +1184,8 @@ namespace GameSaveCenter.Playnite.Views
             DialogTitleText.Text = title;
             DialogMessageText.Text = message;
             DialogCancelButton.Visibility = Visibility.Collapsed;
+            DialogLaterButton.Visibility = Visibility.Collapsed;
+            DialogNeverButton.Visibility = Visibility.Collapsed;
             DialogConfirmButton.Content = "关闭";
             DialogConfirmButton.SetResourceReference(Control.BackgroundProperty, "GscAccentBrush");
             DialogConfirmButton.SetResourceReference(Control.BorderBrushProperty, "GscAccentBrush");
@@ -1152,11 +1213,20 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnDialogCancelClick(object sender, RoutedEventArgs e) => CompleteDialog(false);
 
+        private void OnDialogLaterClick(object sender, RoutedEventArgs e) => CompleteChoice(ProtectionPromptChoice.Later);
+
+        private void OnDialogNeverClick(object sender, RoutedEventArgs e) => CompleteChoice(ProtectionPromptChoice.NeverRemind);
+
         private void OnDialogConfirmClick(object sender, RoutedEventArgs e)
         {
             if (dialogShowsResult)
             {
                 CloseDialog();
+                return;
+            }
+            if (choiceDialog)
+            {
+                CompleteChoice(ProtectionPromptChoice.EnableRecommended);
                 return;
             }
             CompleteDialog(true);
@@ -1170,10 +1240,19 @@ namespace GameSaveCenter.Playnite.Views
             completion?.TrySetResult(result);
         }
 
+        private void CompleteChoice(ProtectionPromptChoice choice)
+        {
+            var completion = activeChoice?.Completion;
+            activeChoice = null;
+            CloseDialog();
+            completion?.TrySetResult(choice);
+        }
+
         private void CloseDialog()
         {
             confirmationOpen = false;
             dialogShowsResult = false;
+            choiceDialog = false;
             DialogOverlay.Visibility = Visibility.Collapsed;
             DialogCard.BeginAnimation(OpacityProperty, null);
             DialogCard.Opacity = 0;

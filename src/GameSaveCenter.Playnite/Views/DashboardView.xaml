@@ -1390,6 +1390,8 @@
                     </StackPanel>
                     <Border Grid.Row="1" Height="1" Background="{DynamicResource GscDividerBrush}" Margin="0,18,0,16"/>
                     <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button x:Name="DialogNeverButton" Style="{StaticResource GscButtonBase}" Click="OnDialogNeverClick" Content="不再提醒" Visibility="Collapsed"/>
+                        <Button x:Name="DialogLaterButton" Style="{StaticResource GscButtonBase}" Click="OnDialogLaterClick" Content="以后再说" Visibility="Collapsed"/>
                         <Button x:Name="DialogCancelButton" Style="{StaticResource GscButtonBase}" Click="OnDialogCancelClick" Content="取消"/>
                         <Button x:Name="DialogConfirmButton" Style="{StaticResource GscPrimaryButton}" Click="OnDialogConfirmClick" Content="确认" Margin="0,0,0,8"/>
                     </StackPanel>

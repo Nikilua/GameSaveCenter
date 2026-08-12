@@ -150,6 +150,21 @@ namespace GameSaveCenter.Contracts
         GameModification = 2
     }
 
+    public enum ProtectionPromptState
+    {
+        NeverShown = 0,
+        Deferred = 1,
+        Enabled = 2,
+        Dismissed = 3
+    }
+
+    public enum ProtectionPromptChoice
+    {
+        EnableRecommended = 0,
+        Later = 1,
+        NeverRemind = 2
+    }
+
     /// <summary>How a custom launch item should be started on Windows.</summary>
     public enum GameToolLaunchKind
     {

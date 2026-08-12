@@ -1,5 +1,4 @@
 using System;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using GameSaveCenter.Contracts;
@@ -24,16 +23,22 @@ public sealed class RecentProtectionAssessmentService
         var recentGames = games
             .Where(game => IsRecentlyPlayed(game, currentUtc, normalizedWindow))
             .ToList();
-        var items = new List<RecentProtectionItem>();
+        var attentionItems = new List<RecentProtectionItem>();
 
         foreach (var game in recentGames)
         {
             var issue = Classify(game);
-            if (issue != null) items.Add(issue);
+            if (issue != null) attentionItems.Add(issue);
         }
 
-        var orderedItems = items
+        var orderedAttentionItems = attentionItems
             .OrderBy(item => item.Priority)
+            .ThenByDescending(item => item.LastPlayedUtc)
+            .ThenBy(item => item.GameName, StringComparer.OrdinalIgnoreCase)
+            .ToList();
+        var orderedItems = recentGames
+            .Select(game => Classify(game) ?? CreateProtected(game))
+            .OrderBy(item => item.IsProtected ? 1000 : item.Priority)
             .ThenByDescending(item => item.LastPlayedUtc)
             .ThenBy(item => item.GameName, StringComparer.OrdinalIgnoreCase)
             .ToList();
@@ -41,10 +46,11 @@ public sealed class RecentProtectionAssessmentService
         return new RecentProtectionSummary(
             normalizedWindow,
             recentGames.Count,
-            recentGames.Count - orderedItems.Count,
-            orderedItems.Count,
-            orderedItems.Count(item => item.IssueKind == RecentProtectionIssueKind.UnrecognizedSave),
-            orderedItems);
+            recentGames.Count - orderedAttentionItems.Count,
+            orderedAttentionItems.Count,
+            orderedAttentionItems.Count(item => item.IssueKind == RecentProtectionIssueKind.UnrecognizedSave),
+            orderedItems,
+            orderedAttentionItems);
     }
 
     public static bool IsSupportedWindowDays(int value)
@@ -141,6 +147,10 @@ public sealed class RecentProtectionAssessmentService
             Detail = detail
         };
 
+    private static RecentProtectionItem CreateProtected(GameStatusDto game)
+        => Create(game, RecentProtectionIssueKind.Protected, 1000,
+            "已保护", "最近备份已完成恢复可用性检查，且自动保护策略已开启。");
+
     private static bool IsCloudFailure(string? state)
         => string.Equals(state, "Failed", StringComparison.OrdinalIgnoreCase)
            || string.Equals(state, "RetryScheduled", StringComparison.OrdinalIgnoreCase);
@@ -159,6 +169,7 @@ public sealed class RecentProtectionAssessmentService
 
 public enum RecentProtectionIssueKind
 {
+    Protected,
     UnrecognizedSave,
     NeverBackedUp,
     RestorePointUnavailable,
@@ -177,9 +188,20 @@ public sealed class RecentProtectionItem
     public int Priority { get; set; }
     public string Title { get; set; } = string.Empty;
     public string Detail { get; set; } = string.Empty;
+    public bool IsSelected { get; set; }
+    public bool IsProtected => IssueKind == RecentProtectionIssueKind.Protected;
+    public bool IsSelectable => !IsProtected;
+    public string StatusDisplay => IssueKind switch
+    {
+        RecentProtectionIssueKind.Protected => "已保护",
+        RecentProtectionIssueKind.UnrecognizedSave => "未匹配",
+        RecentProtectionIssueKind.NeverBackedUp => "存档未保护",
+        _ => "风险"
+    };
 
     public string IssueKindDisplay => IssueKind switch
     {
+        RecentProtectionIssueKind.Protected => "已保护",
         RecentProtectionIssueKind.UnrecognizedSave => "未识别存档",
         RecentProtectionIssueKind.NeverBackedUp => "从未备份",
         RecentProtectionIssueKind.RestorePointUnavailable => "恢复点不可用",
@@ -200,6 +222,18 @@ public sealed class RecentProtectionSummary
         int attentionGames,
         int unrecognizedSaveGames,
         IReadOnlyList<RecentProtectionItem> items)
+        : this(windowDays, recentlyPlayedGames, protectedGames, attentionGames, unrecognizedSaveGames, items, items)
+    {
+    }
+
+    public RecentProtectionSummary(
+        int windowDays,
+        int recentlyPlayedGames,
+        int protectedGames,
+        int attentionGames,
+        int unrecognizedSaveGames,
+        IReadOnlyList<RecentProtectionItem> items,
+        IReadOnlyList<RecentProtectionItem> attentionItems)
     {
         WindowDays = windowDays;
         RecentlyPlayedGames = recentlyPlayedGames;
@@ -208,7 +242,8 @@ public sealed class RecentProtectionSummary
         UnrecognizedSaveGames = unrecognizedSaveGames;
         var ordered = items ?? Array.Empty<RecentProtectionItem>();
         Items = ordered.Take(MaxVisibleItems).ToList();
-        HiddenAttentionGames = Math.Max(0, attentionGames - Items.Count);
+        AttentionItems = (attentionItems ?? Array.Empty<RecentProtectionItem>()).Take(MaxVisibleItems).ToList();
+        HiddenAttentionGames = Math.Max(0, attentionGames - AttentionItems.Count);
     }
 
     public int WindowDays { get; }
@@ -217,6 +252,7 @@ public sealed class RecentProtectionSummary
     public int AttentionGames { get; }
     public int UnrecognizedSaveGames { get; }
     public IReadOnlyList<RecentProtectionItem> Items { get; }
+    public IReadOnlyList<RecentProtectionItem> AttentionItems { get; }
     public int HiddenAttentionGames { get; }
     public bool HasMoreItems => HiddenAttentionGames > 0;
     public string WindowLabel => $"最近 {WindowDays} 天";

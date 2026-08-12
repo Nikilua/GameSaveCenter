@@ -83,6 +83,8 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.ValidateGame=>await ValidateAsync(Read<ValidateGameRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.GetGamePolicy=>await _store.GetPolicyAsync(Read<GameQueryDto>(request).PlayniteId,token).ConfigureAwait(false),
                 MessageTypes.UpdateGamePolicy=>await UpdatePolicyAsync(Read<GamePolicyUpdateDto>(request),token).ConfigureAwait(false),
+                MessageTypes.ProtectionPromptDecision=>await SaveProtectionPromptDecisionAsync(Read<ProtectionPromptDecisionDto>(request),token).ConfigureAwait(false),
+                MessageTypes.ApplyRecommendedProtection=>await ApplyRecommendedProtectionAsync(Read<ApplyRecommendedProtectionDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ListPolicyTemplates=>await _store.GetPolicyTemplatesAsync(token).ConfigureAwait(false),
                 MessageTypes.SavePolicyTemplate=>await SavePolicyTemplateAsync(Read<PolicyTemplateSaveDto>(request),token).ConfigureAwait(false),
                 MessageTypes.DeletePolicyTemplate=>await DeletePolicyTemplateAsync(Read<PolicyTemplateDeleteDto>(request),token).ConfigureAwait(false),
@@ -157,7 +159,8 @@ public sealed class IpcRequestDispatcher
         await _store.AppendAuditAsync("DeviceConflict","已记录人工冲突决策",JsonSerializer.Serialize(decision),token).ConfigureAwait(false);
         return decision;
     }
-    private async Task<object> StopAsync(GameSessionEventDto value,CancellationToken token){await _sessions.StopAsync(value,token).ConfigureAwait(false);return new{stopped=true};}
+    private async Task<GameSessionStopResultDto> StopAsync(GameSessionEventDto value,CancellationToken token)
+        =>new(){Stopped=true,ProtectionPrompt=await _sessions.StopAsync(value,token).ConfigureAwait(false)};
     private async Task<List<BackupVersionDto>> ListBackupsAsync(GameQueryDto query,CancellationToken token)
     {
         if (string.IsNullOrWhiteSpace(query.PlayniteId)) return new List<BackupVersionDto>();
@@ -248,6 +251,44 @@ public sealed class IpcRequestDispatcher
         await _store.SetPolicyAsync(update.PlayniteId,update.Policy,token).ConfigureAwait(false);
         await _store.AppendAuditAsync("Policy","Updated game policy",JsonSerializer.Serialize(new{update.PlayniteId,update.Policy}),token).ConfigureAwait(false);
         return new{updated=true};
+    }
+
+    private async Task<object> SaveProtectionPromptDecisionAsync(ProtectionPromptDecisionDto request,CancellationToken token)
+    {
+        if(string.IsNullOrWhiteSpace(request.PlayniteId))throw new ArgumentException("PlayniteId is required.");
+        var state=request.Choice switch
+        {
+            ProtectionPromptChoice.EnableRecommended=>ProtectionPromptState.Enabled,
+            ProtectionPromptChoice.NeverRemind=>ProtectionPromptState.Dismissed,
+            _=>ProtectionPromptState.Deferred
+        };
+        if(request.Choice==ProtectionPromptChoice.EnableRecommended)
+        {
+            var policy=await _store.GetPolicyAsync(request.PlayniteId,token).ConfigureAwait(false);
+            policy.Enabled=true;
+            policy.BackupOnGameStop=true;
+            await _store.SetPolicyAsync(request.PlayniteId,policy,token).ConfigureAwait(false);
+            await _store.AppendAuditAsync("Protection","已从首次保护提示启用推荐策略",JsonSerializer.Serialize(new{request.PlayniteId}),token).ConfigureAwait(false);
+        }
+        await _store.SetProtectionPromptStateAsync(request.PlayniteId,state,token).ConfigureAwait(false);
+        return new{updated=true,state};
+    }
+
+    private async Task<object> ApplyRecommendedProtectionAsync(ApplyRecommendedProtectionDto request,CancellationToken token)
+    {
+        var ids=(request?.PlayniteIds??new List<string>()).Where(x=>!string.IsNullOrWhiteSpace(x)).Distinct(StringComparer.OrdinalIgnoreCase).Take(100).ToList();
+        foreach(var id in ids)
+        {
+            var policy=await _store.GetPolicyAsync(id,token).ConfigureAwait(false);
+            policy.Enabled=true;
+            policy.BackupOnGameStop=true;
+            policy.BackupDuringPlay=true;
+            await _store.SetPolicyAsync(id,policy,token).ConfigureAwait(false);
+            await _store.SetProtectionPromptStateAsync(id,ProtectionPromptState.Enabled,token).ConfigureAwait(false);
+        }
+        if(ids.Count>0)
+            await _store.AppendAuditAsync("Protection","已批量启用推荐自动保护策略",JsonSerializer.Serialize(new{playniteIds=ids}),token).ConfigureAwait(false);
+        return new{updated=true,count=ids.Count};
     }
 
     private async Task<object> SavePolicyTemplateAsync(PolicyTemplateSaveDto request, CancellationToken token)

@@ -176,6 +176,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             OpenAttentionFindingCommand = new RelayCommand(value => OpenAttentionFinding(value as ValidationFindingDto));
             OpenProtectionGamesCommand = new RelayCommand(_ => OpenProtectionGames());
             OpenProtectionItemCommand = new RelayCommand(value => OpenProtectionItem(value as RecentProtectionItem));
+            ApplyRecommendedProtectionCommand = new RelayCommand(_ => Run(ApplyRecommendedProtectionAsync), _ => !IsBusy);
             RefreshDiagnosticsCommand = new RelayCommand(_ => Run(RefreshDiagnosticsAsync), _ => !IsBusy);
             RunEnvironmentCheckCommand = new RelayCommand(_ => Run(RunEnvironmentCheckAsync), _ => !IsBusy);
             SkipOnboardingCommand = new RelayCommand(_ => SkipOnboarding(), _ => !IsBusy && IsOnboardingPending);
@@ -585,6 +586,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand OpenAttentionFindingCommand { get; }
         public ICommand OpenProtectionGamesCommand { get; }
         public ICommand OpenProtectionItemCommand { get; }
+        public ICommand ApplyRecommendedProtectionCommand { get; }
         public ICommand RefreshDiagnosticsCommand { get; }
         public ICommand RunEnvironmentCheckCommand { get; }
         public ICommand SkipOnboardingCommand { get; }
@@ -703,7 +705,7 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private void OpenProtectionGames()
         {
-            var first = RecentProtection.Items.FirstOrDefault();
+            var first = RecentProtection.AttentionItems.FirstOrDefault();
             if (first == null)
             {
                 StatusMessage = "最近保护窗口内没有需要处理的游戏。";
@@ -711,6 +713,20 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
 
             OpenProtectionItem(first);
+        }
+
+        private async Task ApplyRecommendedProtectionAsync()
+        {
+            var selected=RecentProtection.Items.Where(x=>x.IsSelectable && x.IsSelected).Select(x=>x.PlayniteId).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+            if(selected.Count==0)
+            {
+                StatusMessage="请先选择需要启用自动保护的游戏。";
+                return;
+            }
+            await plugin.RequestAsync<object>(MessageTypes.ApplyRecommendedProtection,new ApplyRecommendedProtectionDto{PlayniteIds=selected});
+            foreach(var item in RecentProtection.Items.Where(x=>selected.Contains(x.PlayniteId,StringComparer.OrdinalIgnoreCase))) item.IsSelected=false;
+            ConfirmSuccess($"已为 {selected.Count} 个游戏启用推荐自动保护策略");
+            await RefreshAsync();
         }
 
         private void OpenProtectionItem(RecentProtectionItem? item)
@@ -2275,7 +2291,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 OpenDataDirectoryCommand, OpenBackupDirectoryCommand, OpenMediaDirectoryCommand, OpenWorkerLogCommand
                 ,ImportTrainerCommand,ImportCheatTableCommand,ImportCustomLaunchItemCommand,ImportToolFolderCommand,SaveGameToolCommand,LaunchGameToolCommand,
                 ConfirmGameToolImportCommand,CancelGameToolImportCommand,
-                OpenGameToolDirectoryCommand,DeleteGameToolCommand,RelocateGameToolCommand,SyncTrainerCatalogCommand,SearchTrainerCatalogCommand,
+                OpenGameToolDirectoryCommand,DeleteGameToolCommand,RelocateGameToolCommand,SyncTrainerCatalogCommand,SearchTrainerCatalogCommand,ApplyRecommendedProtectionCommand,
                 LoadTrainerReleasesCommand,DownloadTrainerCommand
             }.OfType<RelayCommand>())
             {
