@@ -8,6 +8,36 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+
+function Test-IsAdministrator {
+    $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
+    $principal = [Security.Principal.WindowsPrincipal]::new($identity)
+    return $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+}
+
+if (-not (Test-IsAdministrator)) {
+    Write-Host '一键安装需要管理员权限，正在请求 UAC...' -ForegroundColor Yellow
+    $hostPath = Join-Path $PSHOME ($(if ($PSVersionTable.PSEdition -eq 'Core') { 'pwsh.exe' } else { 'powershell.exe' }))
+    $forwardedArguments = @(
+        '-NoLogo',
+        '-NoProfile',
+        '-ExecutionPolicy', 'Bypass',
+        '-File', $PSCommandPath,
+        '-Configuration', $Configuration
+    )
+    if ($PlayniteExtensionsPath) { $forwardedArguments += @('-PlayniteExtensionsPath', $PlayniteExtensionsPath) }
+    if ($PlayniteExecutable) { $forwardedArguments += @('-PlayniteExecutable', $PlayniteExecutable) }
+    if ($NoStart) { $forwardedArguments += '-NoStart' }
+    if ($SkipClean) { $forwardedArguments += '-SkipClean' }
+    try {
+        $elevatedRun = Start-Process -FilePath $hostPath -Verb RunAs -Wait -PassThru -ArgumentList $forwardedArguments -ErrorAction Stop
+        exit $elevatedRun.ExitCode
+    }
+    catch {
+        throw "无法以管理员身份启动一键安装：$($_.Exception.Message)。请右键选择以管理员身份运行，或在 UAC 对话框中允许本次操作。"
+    }
+}
+
 $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 try {
     [Console]::InputEncoding = $utf8NoBom
@@ -123,28 +153,96 @@ function Get-ExtensionRoots {
     return @((Join-Path $env:APPDATA 'Playnite\Extensions'))
 }
 
+function Invoke-ElevatedProcessStop {
+    param(
+        [Parameter(Mandatory = $true)][int]$ProcessId,
+        [Parameter(Mandatory = $true)][string]$ExpectedName
+    )
+
+    # The normal entry point is already elevated. Keep this fallback narrow: elevate
+    # only the exact PID that the current session could not terminate, and re-check
+    # its name after UAC approval to avoid killing a process that reused the PID.
+    $escapedName = $ExpectedName.Replace("'", "''")
+    $stopCommand = @"
+`$ErrorActionPreference = 'Stop'
+`$target = Get-Process -Id $ProcessId -ErrorAction SilentlyContinue
+if (`$null -eq `$target) { exit 0 }
+if (-not [string]::Equals(`$target.ProcessName, '$escapedName', [System.StringComparison]::OrdinalIgnoreCase)) { exit 3 }
+try {
+    Stop-Process -Id $ProcessId -Force -ErrorAction Stop
+    exit 0
+}
+catch {
+    [Console]::Error.WriteLine(`$_.Exception.Message)
+    exit 1
+}
+"@
+
+    $encodedCommand = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($stopCommand))
+    $powershellPath = (Get-Command powershell.exe -CommandType Application -ErrorAction Stop).Source
+    try {
+        $elevated = Start-Process -FilePath $powershellPath -Verb RunAs -Wait -PassThru -ArgumentList @(
+            '-NoLogo',
+            '-NoProfile',
+            '-ExecutionPolicy', 'Bypass',
+            '-EncodedCommand', $encodedCommand
+        ) -ErrorAction Stop
+    }
+    catch {
+        Write-Warning "管理员权限请求未完成：$($_.Exception.Message)"
+        return $false
+    }
+
+    if ($elevated.ExitCode -eq 0) { return $true }
+    if ($elevated.ExitCode -eq 3) {
+        throw "停止进程失败：PID $ProcessId 在管理员确认期间已变成其他进程，已中止以避免误杀。"
+    }
+
+    return $false
+}
+
 function Stop-ProcessReliably {
     param([string[]]$Names)
 
-    foreach ($name in $Names) {
-        $processes = @(Get-Process -Name $name -ErrorAction SilentlyContinue)
-        foreach ($process in $processes) {
-            Write-Host "停止进程：$($process.ProcessName) [$($process.Id)]" -ForegroundColor DarkYellow
-            # The Worker can exit between Get-Process and Stop-Process (for example when
-            # its owning Playnite host is already closing). Treat that race as a successful
-            # stop; the verification loop below still fails if the process remains alive.
-            Stop-Process -Id $process.Id -Force -ErrorAction SilentlyContinue
-        }
-    }
-
+    $elevationAttempted = @{}
     $deadline = [DateTime]::UtcNow.AddSeconds(15)
     do {
         $remaining = @($Names | ForEach-Object { Get-Process -Name $_ -ErrorAction SilentlyContinue })
         if ($remaining.Count -eq 0) { return }
+
+        foreach ($process in $remaining) {
+            $processId = [int]$process.Id
+            $processName = [string]$process.ProcessName
+            if ($elevationAttempted.ContainsKey($processId)) { continue }
+            Write-Host "停止进程：$processName [$processId]" -ForegroundColor DarkYellow
+            try {
+                # A process can exit between discovery and termination. The next
+                # discovery pass treats that normal race as a successful stop.
+                $currentProcess = Get-Process -Id $processId -ErrorAction SilentlyContinue
+                if ($null -eq $currentProcess) { continue }
+                if (-not [string]::Equals($currentProcess.ProcessName, $processName, [System.StringComparison]::OrdinalIgnoreCase)) {
+                    throw "停止进程失败：PID $processId 已被 $($currentProcess.ProcessName) 复用，已中止以避免误杀。"
+                }
+                Stop-Process -Id $processId -Force -ErrorAction Stop
+            }
+            catch {
+                if (-not $elevationAttempted.ContainsKey($processId)) {
+                    $elevationAttempted[$processId] = $true
+                    Write-Host "当前会话无权停止 $processName [$processId]，请求管理员权限..." -ForegroundColor Yellow
+                    if (-not (Invoke-ElevatedProcessStop -ProcessId $processId -ExpectedName $processName)) {
+                        Write-Warning "管理员权限也未能停止 $processName [$processId]。"
+                    }
+                }
+            }
+        }
+
         Start-Sleep -Milliseconds 250
     } while ([DateTime]::UtcNow -lt $deadline)
 
-    throw "无法停止以下进程：$($remaining.ProcessName -join ', ')。进程仍在运行且当前会话无权终止；请在管理员任务管理器中结束对应进程，或重启后重试。为避免覆盖正在使用的扩展，安装已停止。"
+    $remaining = @($Names | ForEach-Object { Get-Process -Name $_ -ErrorAction SilentlyContinue })
+    if ($remaining.Count -eq 0) { return }
+    $remainingNames = @($remaining | ForEach-Object { $_.ProcessName } | Select-Object -Unique)
+    throw "无法停止以下进程：$($remainingNames -join ', ')。已尝试当前会话和管理员权限，但进程仍在运行；为避免覆盖正在使用的扩展，安装已停止。"
 }
 
 function Install-ExtensionAtomically {

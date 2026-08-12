@@ -2,6 +2,25 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-13 DEV-INSTALL-002 一键安装自动提权与停止竞态修复
+
+**实现内容：**
+
+- `scripts/dev-install-run.ps1` 在构建前检查当前 PowerShell 是否为管理员；普通会话自动通过 UAC 重启自身，并原样转发配置、安装路径、`-NoStart` 与 `-SkipClean` 参数。
+- 停止进程时先尝试当前会话；权限不足时只对已确认的 PID 请求管理员停止，并在提权进程中再次核对进程名，避免 UAC 等待期间 PID 被复用后误杀其他进程。
+- 保留 `Get-Process` 与 `Stop-Process` 之间的退出竞态处理，并在超时抛错前增加最后一次进程确认；已经退出的 Worker 不再阻塞安装，也不再重复刷屏重试。
+
+**验证结果：**
+
+- PowerShell AST 解析通过；`git diff --check` 通过。
+- 重新执行 `scripts/package.ps1 -Configuration Release -SkipBuild` 成功；`.pext` 必需内容断言通过，包根目录包含 `GameSaveCenter.Core.dll`。附件中的旧 Playnite 失败日志发生在 21:50/21:53，而当前安装目录的 Core DLL 时间为 22:04，旧失败原因是旧包缺失 Core，不代表当前包仍缺文件。
+- 在当前 Codex 无桌面/中完整性会话中真实执行一键安装时，UAC 启动返回 Windows `0xc0000142`；随后对已确认的 `GameSaveCenter.Worker [3896]` 的精确管理员停止仍返回“拒绝访问”。这属于当前执行会话没有可交互高完整性令牌，不能替代用户桌面 UAC 验收。
+- 因 PID 3896 仍被外部会话持有，本轮未覆盖真实 Playnite 安装目录，也未宣称扩展已由真实宿主加载。用户在桌面双击 `GameSaveCenter-一键构建安装运行.cmd` 并允许 UAC 后，需要继续核对 `playnite.log` 的 `ExtensionFactory:Loaded plugin: GameSaveCenter` 与 `extensions.log`。
+
+**下一步：**
+
+- 在用户桌面完成一次 UAC 允许后的真实一键安装；若 Worker 仍是更高权限/受保护进程，则先退出其所属 Playnite 或重启系统，再复验包覆盖和扩展加载。
+
 ## 2026-08-13 NOTIFY-001 / MULTI-DEVICE-001 / RCLONE-RELIABILITY-001 会话摘要、设备分叉与云端可靠性
 
 **实现内容：**

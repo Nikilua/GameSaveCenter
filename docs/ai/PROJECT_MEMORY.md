@@ -160,8 +160,8 @@
 ## 2026-08-12 一键安装器进程停止竞态补充
 
 - `scripts/dev-install-run.ps1` 的 `Stop-ProcessReliably` 必须允许 `Get-Process` 与 `Stop-Process` 之间的进程退出竞态；停止命令使用非终止错误处理，随后仍以轮询确认进程确实退出。
-- 若 Worker 仍存活且当前会话无权终止，安装器必须拒绝继续覆盖安装目录，并提示用户用管理员任务管理器结束对应 PID 或重启；不能为了自动化验证使用广泛/强制性的破坏性进程操作。
-- `53399ef fix: make dev installer process stop idempotent` 已验证脚本语法与差异；在真实 PID 3896 仍受权限保护时，安装器能给出清晰阻塞提示。释放该 PID 后必须重新执行一键安装，并核对 Playnite 的 `ExtensionFactory` 与扩展日志，才能标记真实宿主验证通过。
+- 若 Worker 仍存活且当前会话无权终止，安装器先在启动阶段通过 UAC 自动重启为管理员，再只对已确认的精确 PID 执行停止；提权后会再次核对进程名，不能为了自动化验证使用广泛/强制性的破坏性进程操作。
+- `53399ef fix: make dev installer process stop idempotent` 与 `DEV-INSTALL-002` 已验证脚本语法与差异；在真实 PID 3896 仍受当前执行会话权限保护时，安装器会清晰报告阻塞。用户桌面允许 UAC 或释放该 PID 后必须重新执行一键安装，并核对 Playnite 的 `ExtensionFactory` 与扩展日志，才能标记真实宿主验证通过。
 
 ## 2026-08-12 Worker 生命周期清理补充
 
@@ -190,7 +190,7 @@
 
 - 首次使用状态由 Playnite `GameSaveCenterSettings.OnboardingCompleted` 持久化；未完成时 Dashboard 首次打开定位 Maintenance，用户可“跳过首次检查”，之后仍可手动重新运行环境检查。
 - 环境检查只允许读取、创建/删除自身临时探针和只读远端列举；禁止自动备份、上传、同步、删除或覆盖真实存档。测试备份必须由用户明确点击，并且要求当前游戏已匹配且 Ludusavi 可用。
-- 真实宿主验收必须看到 `ExtensionFactory:Loaded plugin: GameSaveCenter` 与扩展日志；隔离 Playnite 只能证明进程启动，不可替代真实安装验证。PID 3896 仍是人工管理员处理项。
+- 真实宿主验收必须看到 `ExtensionFactory:Loaded plugin: GameSaveCenter` 与扩展日志；隔离 Playnite 只能证明进程启动，不可替代真实安装验证。`scripts/dev-install-run.ps1` 现在会在普通会话先请求 UAC 重启自身，并对停止失败的精确 PID 做二次名称核对；PID 3896 仍需用户桌面允许 UAC 后完成人工复验。
 
 ## 文档导航
 
