@@ -54,14 +54,12 @@ namespace GameSaveCenter.Core.Services
                 };
             }
 
-            // A newer timestamp alone is not enough to choose a winner. We only suggest
-            // the newer version with modest confidence and still require user review.
-            var preferred = local.CreatedUtc > remote.CreatedUtc ? local.BackupId : remote.BackupId;
+            // A newer timestamp alone is not enough to choose a winner. Never populate a
+            // preferred version for a conflict; the UI must require an explicit decision.
             return new DeviceConflict
             {
                 HasConflict = true,
                 Reason = "DivergentDeviceSummaries",
-                PreferredBackupId = preferred,
                 Confidence = 0.65
             };
         }

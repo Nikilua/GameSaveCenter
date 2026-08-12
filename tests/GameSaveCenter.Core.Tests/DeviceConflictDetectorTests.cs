@@ -45,4 +45,16 @@ public sealed class DeviceConflictDetectorTests
         Assert.False(conflict.HasConflict);
         Assert.Equal("LinearFromKnownBase", conflict.Reason);
     }
+
+    [Fact]
+    public void TimestampOnlyConflictNeverSuggestsAWinner()
+    {
+        var left = new BackupSnapshot { BackupId = "newer", SourceDevice = "A", CreatedUtc = DateTime.UtcNow, TotalBytes = 10, FileCount = 1 };
+        var right = new BackupSnapshot { BackupId = "older", SourceDevice = "B", CreatedUtc = DateTime.UtcNow.AddHours(-1), TotalBytes = 12, FileCount = 2 };
+
+        var conflict = new DeviceConflictDetector().Detect(left, right);
+
+        Assert.True(conflict.HasConflict);
+        Assert.True(string.IsNullOrWhiteSpace(conflict.PreferredBackupId));
+    }
 }

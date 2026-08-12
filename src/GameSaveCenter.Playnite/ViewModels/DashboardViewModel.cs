@@ -1690,7 +1690,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             if (string.Equals(task.TaskType, "MediaInbox", StringComparison.OrdinalIgnoreCase)) return true;
             if (string.IsNullOrWhiteSpace(task.GameId)) return false;
             if (string.Equals(task.TaskType, "CloudUpload", StringComparison.OrdinalIgnoreCase)) return true;
-            if (task.ErrorCode.StartsWith("RCLONE_", StringComparison.OrdinalIgnoreCase)) return true;
+            if (task.ErrorCode?.StartsWith("RCLONE_", StringComparison.OrdinalIgnoreCase) == true) return true;
             return string.Equals(task.TaskType, "Backup", StringComparison.OrdinalIgnoreCase)
                    || string.Equals(task.TaskType, "MediaSync", StringComparison.OrdinalIgnoreCase);
         }
@@ -1699,7 +1699,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             var task = SelectedTask ?? throw new InvalidOperationException("请先选择失败或已取消的任务。");
             if (string.Equals(task.TaskType, "CloudUpload", StringComparison.OrdinalIgnoreCase)
-                || task.ErrorCode.StartsWith("RCLONE_", StringComparison.OrdinalIgnoreCase))
+                || task.ErrorCode?.StartsWith("RCLONE_", StringComparison.OrdinalIgnoreCase) == true)
             {
                 var result=await plugin.RequestAsync<TaskStatusDto>(
                     MessageTypes.RetryCloudUpload,
