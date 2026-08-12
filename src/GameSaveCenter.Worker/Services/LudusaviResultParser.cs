@@ -49,6 +49,9 @@ internal static class LudusaviResultParser
             game=found.Value;
         }
         if(game.ValueKind!=JsonValueKind.Object || !game.TryGetProperty("backups",out var backups) || backups.ValueKind!=JsonValueKind.Array) return output;
+        var backupPath = game.TryGetProperty("backupPath", out var pathProperty) && pathProperty.ValueKind == JsonValueKind.String
+            ? pathProperty.GetString() ?? string.Empty
+            : string.Empty;
         foreach(var item in backups.EnumerateArray())
         {
             var id=item.TryGetProperty("name",out var name)?name.GetString()??string.Empty:string.Empty;
@@ -59,10 +62,18 @@ internal static class LudusaviResultParser
                 BackupId=id,PlayniteId=playniteId,LudusaviName=gameName,CreatedUtc=when,IsLocked=item.TryGetProperty("locked",out var locked)&&locked.GetBoolean(),
                 Comment=item.TryGetProperty("comment",out var comment)&&comment.ValueKind==JsonValueKind.String?comment.GetString()??string.Empty:string.Empty,
                 SourceDevice=Environment.MachineName,OperatingSystem=item.TryGetProperty("os",out var os)&&os.ValueKind==JsonValueKind.String?os.GetString()??string.Empty:string.Empty,
+                ArchivePath=ResolveArchivePath(backupPath,id),
                 IsPreRestore=(item.TryGetProperty("comment",out comment)&&comment.ValueKind==JsonValueKind.String&&(comment.GetString()??string.Empty).StartsWith("PreRestore",StringComparison.OrdinalIgnoreCase))
             });
         }
         return output;
+    }
+
+    private static string ResolveArchivePath(string backupPath, string backupId)
+    {
+        if (string.IsNullOrWhiteSpace(backupPath) || string.IsNullOrWhiteSpace(backupId)) return string.Empty;
+        try { return Path.Combine(backupPath, backupId); }
+        catch (ArgumentException) { return string.Empty; }
     }
 
 

@@ -69,7 +69,11 @@ namespace GameSaveCenter.Playnite.Infrastructure
             && string.Equals(a.Comment, b.Comment, StringComparison.Ordinal)
             && string.Equals(a.SourceDevice, b.SourceDevice, StringComparison.Ordinal)
             && string.Equals(a.OperatingSystem, b.OperatingSystem, StringComparison.Ordinal)
-            && a.IsPreRestore == b.IsPreRestore;
+            && a.IsPreRestore == b.IsPreRestore
+            && string.Equals(a.ArchivePath, b.ArchivePath, StringComparison.Ordinal)
+            && string.Equals(a.RestoreReadiness?.Summary, b.RestoreReadiness?.Summary, StringComparison.Ordinal)
+            && a.RestoreReadiness?.Status == b.RestoreReadiness?.Status
+            && a.RestoreReadiness?.CheckedUtc == b.RestoreReadiness?.CheckedUtc;
 
         public static readonly Func<SavePathCandidateDto, SavePathCandidateDto, bool> SaveCandidate = (a, b) =>
             string.Equals(a.PlayniteId, b.PlayniteId, StringComparison.Ordinal)

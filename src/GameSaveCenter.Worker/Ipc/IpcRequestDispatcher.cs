@@ -29,13 +29,14 @@ public sealed class IpcRequestDispatcher
     private readonly ITrainerCatalogSource _trainerCatalog;
     private readonly DeviceStateService _deviceStates;
     private readonly RemoteBackupStagingService _remoteBackups;
+    private readonly RestoreReadinessService _restoreReadiness;
     private readonly ILogger<IpcRequestDispatcher> _logger;
 
     public IpcRequestDispatcher(GameCatalogService catalog,GameSessionCoordinator sessions,BackupOrchestrator backup,RestoreOrchestrator restore,
         MediaSyncService media,SavePathDetectionService detection,DashboardService dashboard,SqliteStateStore store,TaskCoordinator tasks,
         LudusaviClient ludusavi,WorkerOptions options,GameToolService gameTools,ITrainerCatalogSource trainerCatalog,
-        DeviceStateService deviceStates,RemoteBackupStagingService remoteBackups,ILogger<IpcRequestDispatcher> logger)
-    { _catalog=catalog;_sessions=sessions;_backup=backup;_restore=restore;_media=media;_detection=detection;_dashboard=dashboard;_store=store;_tasks=tasks;_ludusavi=ludusavi;_options=options;_gameTools=gameTools;_trainerCatalog=trainerCatalog;_deviceStates=deviceStates;_remoteBackups=remoteBackups;_logger=logger; }
+        DeviceStateService deviceStates,RemoteBackupStagingService remoteBackups,RestoreReadinessService restoreReadiness,ILogger<IpcRequestDispatcher> logger)
+    { _catalog=catalog;_sessions=sessions;_backup=backup;_restore=restore;_media=media;_detection=detection;_dashboard=dashboard;_store=store;_tasks=tasks;_ludusavi=ludusavi;_options=options;_gameTools=gameTools;_trainerCatalog=trainerCatalog;_deviceStates=deviceStates;_remoteBackups=remoteBackups;_restoreReadiness=restoreReadiness;_logger=logger; }
 
     public async Task<IpcEnvelope> DispatchAsync(IpcEnvelope request,CancellationToken token)
     {
@@ -58,6 +59,7 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.CompareBackups=>await CompareBackupsAsync(Read<BackupCompareRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.PreviewRetention=>await PreviewRetentionAsync(Read<GameQueryDto>(request),token).ConfigureAwait(false),
                 MessageTypes.UpdateBackupMetadata=>await UpdateMetadataAsync(Read<BackupMetadataUpdateDto>(request),token).ConfigureAwait(false),
+                MessageTypes.ValidateRestoreReadiness=>await ValidateRestoreReadinessAsync(Read<RestoreReadinessRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.RestorePreview=>ToPortable(await _restore.PreviewAsync(Read<RestoreRequestDto>(request),token).ConfigureAwait(false)),
                 MessageTypes.RestoreExecute=>await _restore.ExecuteAsync(Read<RestoreRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.UndoRestore=>await _restore.UndoAsync(Read<GameQueryDto>(request).PlayniteId,token).ConfigureAwait(false),
@@ -299,6 +301,27 @@ public sealed class IpcRequestDispatcher
             Detail=$"文件数 {latest.FileCount}，体积 {latest.TotalBytes} 字节。",SuggestedAction="重新运行备份并核对 Ludusavi 匹配与存档路径。"
         },token).ConfigureAwait(false);
         return new{valid,latest.BackupId,latest.FileCount,latest.TotalBytes};
+    }
+
+    private async Task<RestoreReadinessDto> ValidateRestoreReadinessAsync(RestoreReadinessRequestDto request, CancellationToken token)
+    {
+        var version = (await _store.GetBackupVersionsAsync(request.PlayniteId, token).ConfigureAwait(false))
+            .FirstOrDefault(x => string.Equals(x.BackupId, request.BackupId, StringComparison.OrdinalIgnoreCase));
+        if (version == null) throw new InvalidOperationException("找不到需要验证的备份版本。");
+
+        var manifest = await _store.GetBackupManifestAsync(request.PlayniteId, request.BackupId, token).ConfigureAwait(false);
+        var readiness = await _restoreReadiness.ValidateAsync(
+            version,
+            manifest,
+            Path.Combine(_options.DataDirectory, "RestoreReadiness"),
+            token).ConfigureAwait(false);
+        await _store.SaveRestoreReadinessAsync(request.PlayniteId, request.BackupId, readiness, token).ConfigureAwait(false);
+        await _store.AppendAuditAsync(
+            "RestoreReadiness",
+            $"已验证备份版本 {request.BackupId}：{readiness.StatusDisplay}",
+            JsonSerializer.Serialize(readiness, _json),
+            token).ConfigureAwait(false);
+        return readiness;
     }
 
     private async Task<object> UpdateMetadataAsync(BackupMetadataUpdateDto update,CancellationToken token)

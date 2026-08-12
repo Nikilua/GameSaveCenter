@@ -49,6 +49,7 @@ internal static class Program
         builder.Services.AddSingleton<TaskCoordinator>();
         builder.Services.AddSingleton<BackupOrchestrator>();
         builder.Services.AddSingleton<RestoreOrchestrator>();
+        builder.Services.AddSingleton<RestoreReadinessService>();
         builder.Services.AddSingleton<MediaSyncService>();
         builder.Services.AddSingleton<SavePathDetectionService>();
         builder.Services.AddSingleton<DashboardService>();

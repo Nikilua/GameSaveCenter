@@ -17,6 +17,7 @@ namespace GameSaveCenter.Contracts
         public const string CompareBackups = "backup.compare";
         public const string PreviewRetention = "backup.retention.preview";
         public const string UpdateBackupMetadata = "backup.metadata.update";
+        public const string ValidateRestoreReadiness = "restore.readiness.validate";
         public const string ValidateGame = "validation.game";
         public const string GetGamePolicy = "policy.get";
         public const string UpdateGamePolicy = "policy.update";

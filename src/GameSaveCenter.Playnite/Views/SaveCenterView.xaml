@@ -116,6 +116,12 @@
                                 <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding UpdateBackupMetadataCommand}" Content="保存备注与锁定" Margin="0,16,0,0"/>
                                 <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding CompareBackupCommand}" Content="与上一版本比较" Margin="0,8,0,0"/>
                                 <Separator Margin="0,16,0,12"/>
+                                <TextBlock Text="恢复可用性" FontWeight="SemiBold"/>
+                                <TextBlock Text="{Binding SelectedBackup.RestoreReadinessStatusDisplay, Mode=OneWay}" Foreground="{DynamicResource GscAccentBrush}" Margin="0,5,0,0"/>
+                                <TextBlock Text="{Binding SelectedBackup.RestoreReadinessSummaryDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                <TextBlock Text="{Binding SelectedBackup.RestoreReadinessMetricsDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding ValidateRestoreReadinessCommand}" Content="验证可恢复性" Margin="0,10,0,0"/>
+                                <Separator Margin="0,16,0,12"/>
                                 <TextBlock Text="恢复操作" FontWeight="SemiBold"/>
                                 <TextBlock Text="恢复前会创建并锁定当前快照，完成后可校验并撤销。" Style="{DynamicResource GscCaptionStyle}" Margin="0,5,0,0" TextWrapping="Wrap"/>
                                 <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding RestoreCommand}" Content="安全恢复" Margin="0,12,0,0"/>

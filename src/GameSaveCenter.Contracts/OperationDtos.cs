@@ -49,6 +49,13 @@ namespace GameSaveCenter.Contracts
         public string UserComment { get; set; } = string.Empty;
     }
 
+    /// <summary>Request to validate one indexed backup without touching live save files.</summary>
+    public sealed class RestoreReadinessRequestDto
+    {
+        public string PlayniteId { get; set; } = string.Empty;
+        public string BackupId { get; set; } = string.Empty;
+    }
+
     /// <summary>Request for save path candidate analysis.</summary>
     public sealed class DetectionRequestDto
     {

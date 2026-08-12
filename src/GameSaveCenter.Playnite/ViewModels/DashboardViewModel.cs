@@ -134,6 +134,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             DetectPathsCommand = new RelayCommand(_ => Run(DetectPathsAsync), _ => !IsBusy && SelectedGame != null);
             ValidateCommand = new RelayCommand(_ => Run(ValidateAsync), _ => !IsBusy && SelectedGame != null && SelectedGame.LudusaviMatched);
             RestoreCommand = new RelayCommand(_ => Run(RestoreAsync), _ => !IsBusy && SelectedGame != null && SelectedBackup != null && Snapshot.LudusaviAvailable);
+            ValidateRestoreReadinessCommand = new RelayCommand(_ => Run(ValidateRestoreReadinessAsync), _ => !IsBusy && SelectedGame != null && SelectedBackup != null);
             UndoRestoreCommand = new RelayCommand(_ => Run(UndoRestoreAsync), _ => !IsBusy && SelectedGame != null && Backups.Any(x => x.IsPreRestore));
             LoadDetailsCommand = new RelayCommand(_ => Run(() => LoadDetailsAsync(true)), _ => !IsBusy && SelectedGame != null);
             SavePolicyCommand = new RelayCommand(_ => Run(SavePolicyAsync), _ => !IsBusy && SelectedGame != null);
@@ -483,6 +484,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand DetectPathsCommand { get; }
         public ICommand ValidateCommand { get; }
         public ICommand RestoreCommand { get; }
+        public ICommand ValidateRestoreReadinessCommand { get; }
         public ICommand UndoRestoreCommand { get; }
         public ICommand LoadDetailsCommand { get; }
         public ICommand SavePolicyCommand { get; }
@@ -1358,6 +1360,16 @@ namespace GameSaveCenter.Playnite.ViewModels
             ConfirmSuccess($"{SelectedGame.Name} 的存档校验已完成");
         }
 
+        private async Task ValidateRestoreReadinessAsync()
+        {
+            var selectedId = SelectedBackup.BackupId;
+            var result = await plugin.RequestAsync<RestoreReadinessDto>(MessageTypes.ValidateRestoreReadiness,
+                new RestoreReadinessRequestDto { PlayniteId = SelectedGame.PlayniteId, BackupId = selectedId },
+                TimeSpan.FromMinutes(15));
+            await LoadDetailsAsync(true);
+            ConfirmSuccess($"{SelectedGame.Name} / {selectedId}：{result.StatusDisplay}。{result.Summary}");
+        }
+
         private async Task SavePolicyAsync()
         {
             await plugin.RequestAsync<object>(MessageTypes.UpdateGamePolicy, new GamePolicyUpdateDto { PlayniteId = SelectedGame.PlayniteId, Policy = SelectedGame.Policy });
@@ -2032,7 +2044,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 RefreshCommand, BackupSelectedCommand, BackupAllCommand, SyncMediaCommand,
                 DetectPathsCommand, ValidateCommand, RestoreCommand,
-                UndoRestoreCommand, LoadDetailsCommand, SavePolicyCommand,
+                ValidateRestoreReadinessCommand, UndoRestoreCommand, LoadDetailsCommand, SavePolicyCommand,
                 UpdateBackupMetadataCommand, CompareBackupCommand, PreviewRetentionCommand,
                 AddMediaSourceCommand, AcceptCandidateCommand, RejectCandidateCommand, ReassignMediaCommand,
                 UpdateMediaMetadataCommand,OpenSelectedMediaCommand,RevealSelectedMediaCommand,

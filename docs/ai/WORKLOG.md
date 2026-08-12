@@ -543,3 +543,43 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 **测试结果：**
 
 - Worker 51/51、Playnite 179/179；源码验证通过；远端 `main` 已推送（`bc83562`）。
+
+## 2026-08-12 RELIABILITY-RESTORE-001 恢复可用性验证
+
+**做了什么：**
+
+- 为备份版本增加恢复可用性状态、检查时间、归档可读性、隔离提取结果、条目/大小统计、哈希校验摘要与错误/警告计数。
+- 从 Ludusavi `backups --api` 的 `backupPath` 与版本 ID 持久化归档路径；恢复检查只读取该版本 ZIP，不扫描真实存档目录。
+- 新增 Worker IPC `restore.readiness.validate`，在应用数据目录下创建唯一隔离目录，完成后清理；拒绝路径穿越、超大条目/总展开体积和超大条目数量。
+- 支持有效、损坏、缺失、统计不一致、空文件、路径穿越与不支持格式等结果；预留清单 SHA-256 校验，并将不支持的 ZIP 压缩方式显示为 `Unsupported`。
+- 在既有存档历史 Inspector 内增加“恢复可用性”摘要与“验证可恢复性”按钮；没有新页面、没有改变历史表格的尺寸/滚动/虚拟化结构。
+- 修复 `artifacts` 隔离输出目录被 SDK 默认 glob 编译导致的重复程序集属性问题。
+
+**为什么这样做：**
+
+恢复前需要验证“选定历史版本本身可读、可提取”，而不是只验证恢复后的 live save。隔离提取避免验证过程写入真实存档路径，持久化结果则让用户能看到上次检查证据并在需要时重新检查。
+
+**修改文件：**
+
+- Contracts：`DashboardDtos.cs`、`Enums.cs`、`MessageTypes.cs`、`OperationDtos.cs`
+- Worker：`RestoreReadinessService.cs`、`LudusaviResultParser.cs`、`SqliteStateStore.cs`、`IpcRequestDispatcher.cs`、`Program.cs`
+- Playnite：`DashboardViewModel.cs`、`SaveCenterView.xaml`、`SnapshotComparers.cs`
+- Tests：`RestoreReadinessTests.cs`
+- Build：`Directory.Build.props`
+- 文档：`PROJECT_MEMORY.md`、`WORKLOG.md`
+
+**测试结果：**
+
+- Worker 58/58、Core 13/13、Playnite 197/197 通过。
+- Worker 与 Playnite Release 构建均为 0 警告/0 错误。
+- `validate-source.py`、`check-xaml.ps1`、WPF UI 静态校验、`render-qa.ps1` 全部通过；多窗口渲染中历史表格几何保持不变，新增 Inspector 内容在既有滚动区域内。
+- 真实 Playnite 宿主、主题切换与多 DPI 的人工验收仍需用户环境复核；本阶段未宣称已完成该人工验收。
+
+**提交：**
+
+
+- `RELIABILITY-RESTORE-001`（本阶段独立提交）
+
+**下一步：**
+
+- 按用户附件继续 `RELIABILITY-HEALTH-001`：建立按游戏的备份健康摘要，复用当前历史版本与诊断数据，不新增重复页面。

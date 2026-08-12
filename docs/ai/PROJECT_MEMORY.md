@@ -115,6 +115,14 @@
 - P2：架构进一步拆分（不主动做）。
 - PERF-008：已评估收口，维持现状。详情已按激活 Workspace 分支加载，全量快照仅用于全局摘要且后台有 1 分钟 TTL；2000 规模合成 profiling 无 O(n^2)，待真实大库渲染 profiling 证明瓶颈后再评估。
 
+## 2026-08-12 可靠性阶段补充
+
+- `RELIABILITY-RESTORE-001` 已实现：备份历史版本支持非破坏性的恢复可用性检查，结果持久化在 `backup_versions.restore_readiness_json`，检查过程只在应用数据目录隔离提取，不接触真实存档目录。
+- Ludusavi 备份版本的 `backupPath + backup ID` 已持久化为 `backup_versions.archive_path`；Simple 归档、缺失/损坏 ZIP、路径穿越、超大展开量、不一致统计与不支持压缩方式必须返回明确状态。
+- 恢复可用性入口位于现有 Save Center 历史 Inspector，不能新建页面或改变 `SaveHistoryGrid` 的滚动/虚拟化骨架；新增内容必须留在 `SaveHistoryActionsScrollViewer` 内，并继续通过 `render-qa` 验证 1040×700 等窗口。
+- 当前测试基线为 Core 13、Worker 58、Playnite 197；本阶段源码门禁、WPF 静态门禁、隔离渲染 QA 和 Release 构建均已通过。真实 Playnite 宿主、主题/DPI 人工验收仍待用户环境确认。
+- 下一项按附件顺序为 `RELIABILITY-HEALTH-001`；继续采用小阶段、独立测试、更新记忆/工作日志、独立 commit，并 push 到 `origin/main`。
+
 已完成：见 WORKLOG.md 与 Git log；不要重复实现已完成的 UI/性能工作。
 
 ## 已知坑

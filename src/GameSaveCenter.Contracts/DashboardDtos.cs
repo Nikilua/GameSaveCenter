@@ -43,10 +43,18 @@ namespace GameSaveCenter.Contracts
         public string SourceDevice { get; set; } = string.Empty;
         public string OperatingSystem { get; set; } = string.Empty;
         public bool IsPreRestore { get; set; }
+        /// <summary>Resolved Ludusavi game backup directory plus this version's file name.</summary>
+        public string ArchivePath { get; set; } = string.Empty;
+        public RestoreReadinessDto? RestoreReadiness { get; set; }
         public DateTime CreatedLocal => CreatedUtc.ToLocalTime();
         public string SizeDisplay => FormatBytes(TotalBytes);
         public string BackupTypeDisplay => IsPreRestore ? "恢复前快照" : "普通备份";
         public string LockStateDisplay => IsLocked ? "已锁定" : "未锁定";
+        public string RestoreReadinessStatusDisplay => RestoreReadiness?.StatusDisplay ?? "未验证";
+        public string RestoreReadinessSummaryDisplay => RestoreReadiness?.Summary ?? "尚未验证该版本的可恢复性。";
+        public string RestoreReadinessMetricsDisplay => RestoreReadiness == null
+            ? string.Empty
+            : $"文件 {RestoreReadiness.ActualFileCount}/{RestoreReadiness.ExpectedFileCount} · 大小 {FormatBytes(RestoreReadiness.ActualTotalSize)}/{FormatBytes(RestoreReadiness.ExpectedTotalSize)}";
 
         private static string FormatBytes(long bytes)
         {
@@ -55,6 +63,36 @@ namespace GameSaveCenter.Contracts
             if (bytes < 1024L * 1024 * 1024) return $"{bytes / 1024d / 1024d:0.##} MiB";
             return $"{bytes / 1024d / 1024d / 1024d:0.##} GiB";
         }
+    }
+
+    /// <summary>Persisted evidence from a non-destructive restore-readiness check.</summary>
+    public sealed class RestoreReadinessDto
+    {
+        public RestoreReadinessStatus Status { get; set; } = RestoreReadinessStatus.Unknown;
+        public DateTime? CheckedUtc { get; set; }
+        public string BackupVersionId { get; set; } = string.Empty;
+        public bool ArchiveReadable { get; set; }
+        public bool ExtractSucceeded { get; set; }
+        public int ExpectedFileCount { get; set; }
+        public int ActualFileCount { get; set; }
+        public long ExpectedTotalSize { get; set; }
+        public long ActualTotalSize { get; set; }
+        public string HashValidation { get; set; } = "NotAvailable";
+        public int WarningCount { get; set; }
+        public int ErrorCount { get; set; }
+        public string Summary { get; set; } = string.Empty;
+
+        public string StatusDisplay => Status switch
+        {
+            RestoreReadinessStatus.Unknown => "未验证",
+            RestoreReadinessStatus.Checking => "检查中",
+            RestoreReadinessStatus.Ready => "可恢复",
+            RestoreReadinessStatus.Warning => "有警告",
+            RestoreReadinessStatus.Corrupted => "疑似损坏",
+            RestoreReadinessStatus.Unsupported => "格式不支持",
+            RestoreReadinessStatus.Failed => "检查失败",
+            _ => Status.ToString()
+        };
     }
 
     /// <summary>Human-readable manifest difference between two backups.</summary>

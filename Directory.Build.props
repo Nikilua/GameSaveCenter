@@ -5,6 +5,8 @@
     <Nullable>enable</Nullable>
     <Deterministic>true</Deterministic>
     <DebugType>portable</DebugType>
+    <!-- Render/build QA artifacts can live below a project directory; never compile their generated sources. -->
+    <DefaultItemExcludes>$(DefaultItemExcludes);**/artifacts/**;**/artifacts/**/*</DefaultItemExcludes>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <VersionPrefix>0.6.70</VersionPrefix>
     <AssemblyVersion>0.6.70.0</AssemblyVersion>

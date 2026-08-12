@@ -77,6 +77,18 @@ namespace GameSaveCenter.Contracts
         Zip = 1
     }
 
+    /// <summary>Result of checking whether one indexed backup can be safely read and staged.</summary>
+    public enum RestoreReadinessStatus
+    {
+        Unknown = 0,
+        Checking = 1,
+        Ready = 2,
+        Warning = 3,
+        Corrupted = 4,
+        Unsupported = 5,
+        Failed = 6
+    }
+
     /// <summary>Restore workflow state.</summary>
     public enum RestoreState
     {
