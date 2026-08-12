@@ -1569,6 +1569,13 @@
 - 顶部操作区在统一四列 HeaderGrid 中保持独立安全列；任务中心和维护中心继续保持全局视角，不显示游戏选择器。
 - 更新源代码门禁以匹配新的三列窄模式操作区；未改变游戏选择、命令绑定或 Worker 业务逻辑。
 
+### QA-HARDENING（2026-08-12）最终收口
+
+- DataGrid 滚动最终结论：`Pixel ScrollUnit` 经真实 Playnite A/B 验证会回归，已撤回；当前采用 `Item` + `GscStableDataGridRow` 稳定行样式 + geometry probe（60 行 × 287/311/337/353/419 DIP，gap ≤4 DIP、末行完整、Recycling 保持）。禁止重新改回 Pixel。
+- 任务筛选根治：`TaskFilterOptionsSync` 增量同步，移除 DispatcherTimer/SelectionChanged workaround；三个下拉框默认“全部”。
+- QA 收口：Relocate WorkingDirectory 区分自动派生/显式自定义；外部导入清理空 GameTools 目录；benchmark 超时断言失败；render-qa 与 WPF validator 进入 Windows CI。
+- 记忆与 README 已同步到最终状态；测试基线：Core 13、Worker 51、Playnite 179。完整主题/DPI/大库/启动项真机验收仍待用户真实使用反馈。
+
 ### UI-094：修改器中心按 demo 拆分 FLiNG 工作流
 
 - `FLiNG 在线库` 现在使用完整宽度呈现搜索框和目录结果，不再与版本列表争抢半屏宽度。
