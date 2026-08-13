@@ -19,7 +19,7 @@ public sealed class RestoreReadinessService
 
     public RestoreReadinessService(ILogger<RestoreReadinessService> logger) => _logger = logger;
 
-    public Task<RestoreReadinessDto> ValidateAsync(
+    public async Task<RestoreReadinessDto> ValidateAsync(
         BackupVersionDto version,
         string manifestJson,
         string stagingRoot,
@@ -39,7 +39,7 @@ public sealed class RestoreReadinessService
         {
             result.Status = RestoreReadinessStatus.Unsupported;
             result.Summary = "当前版本不是可独立校验的 ZIP 归档。";
-            return Task.FromResult(result);
+            return result;
         }
 
         if (!File.Exists(version.ArchivePath))
@@ -47,7 +47,7 @@ public sealed class RestoreReadinessService
             result.Status = RestoreReadinessStatus.Corrupted;
             result.ErrorCount = 1;
             result.Summary = "归档文件不存在，无法验证可恢复性。";
-            return Task.FromResult(result);
+            return result;
         }
 
         var manifestState = TryReadManifest(manifestJson, result, out var expected);
@@ -56,7 +56,7 @@ public sealed class RestoreReadinessService
             result.Status = RestoreReadinessStatus.Failed;
             result.ErrorCount++;
             result.Summary = "Manifest 无法读取，不能确认该版本的恢复内容。";
-            return Task.FromResult(result);
+            return result;
         }
 
         var stagingDirectory = string.Empty;
@@ -83,7 +83,7 @@ public sealed class RestoreReadinessService
                 result.Status = RestoreReadinessStatus.Corrupted;
                 result.ErrorCount++;
                 result.Summary = $"归档条目数 {files.Count} 超过安全上限。";
-                return Task.FromResult(result);
+                return result;
             }
 
             long totalBytes = 0;
@@ -122,8 +122,8 @@ public sealed class RestoreReadinessService
                 try
                 {
                     Directory.CreateDirectory(Path.GetDirectoryName(target)!);
-                    entry.ExtractToFile(target, overwrite: false);
-                    var extractedLength = new FileInfo(target).Length;
+                    var extraction = await ExtractEntryAsync(entry, target, expectedByPath.TryGetValue(normalizedPath, out var hashEntry) && !string.IsNullOrWhiteSpace(hashEntry.Sha256), token).ConfigureAwait(false);
+                    var extractedLength = extraction.Length;
                     if (extractedLength != entry.Length) result.ErrorCount++;
                     if (expectedByPath.TryGetValue(normalizedPath, out var expectedEntry))
                     {
@@ -133,13 +133,11 @@ public sealed class RestoreReadinessService
                         if (!string.IsNullOrWhiteSpace(expectedEntry.Sha256))
                         {
                             hashChecked++;
-                            using var stream = File.OpenRead(target);
-                            var actualHash = Convert.ToHexString(SHA256.HashData(stream));
+                            // ExtractEntryAsync hashes while copying so cancellation remains
+                            // responsive and large files are not read twice.
+                            var actualHash = extraction.Sha256;
                             if (!string.Equals(actualHash, expectedEntry.Sha256, StringComparison.OrdinalIgnoreCase))
-                            {
-                                hashFailed++;
-                                result.ErrorCount++;
-                            }
+                            { hashFailed++; result.ErrorCount++; }
                         }
                     }
                 }
@@ -227,7 +225,26 @@ public sealed class RestoreReadinessService
             if (stagingDirectory.Length > 0) TryDeleteStagingDirectory(stagingDirectory);
         }
 
-        return Task.FromResult(result);
+        return result;
+    }
+
+    private static async Task<(long Length, string Sha256)> ExtractEntryAsync(ZipArchiveEntry entry, string target, bool hashContent, CancellationToken token)
+    {
+        long total = 0;
+        using var hash = hashContent ? IncrementalHash.CreateHash(HashAlgorithmName.SHA256) : null;
+        using var input = entry.Open();
+        await using var output = new FileStream(target, FileMode.CreateNew, FileAccess.Write, FileShare.None, 128 * 1024, FileOptions.Asynchronous | FileOptions.SequentialScan);
+        var buffer = new byte[128 * 1024];
+        while (true)
+        {
+            var read = await input.ReadAsync(buffer.AsMemory(0, buffer.Length), token).ConfigureAwait(false);
+            if (read == 0) break;
+            await output.WriteAsync(buffer.AsMemory(0, read), token).ConfigureAwait(false);
+            hash?.AppendData(buffer, 0, read);
+            total += read;
+        }
+        await output.FlushAsync(token).ConfigureAwait(false);
+        return (total, hash == null ? string.Empty : Convert.ToHexString(hash.GetHashAndReset()));
     }
 
     private enum ManifestReadState

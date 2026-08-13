@@ -27,4 +27,20 @@ public sealed class FileManifestDiffTests
         Assert.Equal(10, diff.BeforeTotalBytes);
         Assert.Equal(18, diff.AfterTotalBytes);
     }
+
+    [Fact]
+    public void DuplicateNormalizedPathsReturnInvalidResultInsteadOfThrowing()
+    {
+        var diff = new FileManifestDiffService().Compare(
+            new[]
+            {
+                new FileManifestEntry { RelativePath = "Save\\slot.dat", SizeBytes = 1 },
+                new FileManifestEntry { RelativePath = "Save/slot.dat", SizeBytes = 2 }
+            },
+            Array.Empty<FileManifestEntry>());
+
+        Assert.False(diff.IsValid);
+        Assert.NotEmpty(diff.Warnings);
+        Assert.False(diff.IsExactComparison);
+    }
 }

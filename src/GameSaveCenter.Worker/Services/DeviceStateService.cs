@@ -27,7 +27,7 @@ public sealed class DeviceStateService
     {
         var device=Environment.MachineName;
         var deviceId=_options.DeviceId;
-        var sidecar=new DeviceStateSidecarDto{DeviceId=deviceId,DeviceName=device,GeneratedUtc=DateTime.UtcNow,
+        var sidecar=new DeviceStateSidecarDto{SchemaVersion=3,DeviceId=deviceId,DeviceName=device,GeneratedUtc=DateTime.UtcNow,
             Backups=await _store.GetLatestBackupSummariesAsync(token).ConfigureAwait(false)};
         var directory=Path.Combine(_options.DataDirectory,"DeviceState");Directory.CreateDirectory(directory);
         var localPath=Path.Combine(directory,deviceId+".json");
@@ -54,7 +54,7 @@ public sealed class DeviceStateService
             try
             {
                 var remote=JsonSerializer.Deserialize<DeviceStateSidecarDto>(text,JsonOptions);
-                if(remote==null||remote.SchemaVersion is <1 or >2||string.IsNullOrWhiteSpace(remote.DeviceName))continue;
+                if(remote==null||remote.SchemaVersion is <1 or >3||string.IsNullOrWhiteSpace(remote.DeviceName))continue;
                 var remoteDeviceId=WorkerOptions.IsValidDeviceId(remote.DeviceId)
                     ? remote.DeviceId.ToLowerInvariant()
                     : remote.DeviceName;
@@ -93,5 +93,5 @@ public sealed class DeviceStateService
     }
 
     private static BackupSnapshot? ToSnapshot(DeviceBackupSummaryDto? value,string device)=>value==null?null:new BackupSnapshot
-    { BackupId=value.BackupId,ParentBackupId=value.ParentBackupId,SourceDevice=device,CreatedUtc=value.CreatedUtc,TotalBytes=value.TotalBytes,FileCount=value.FileCount };
+    { BackupId=value.BackupId,ParentBackupId=value.ParentBackupId,SourceDevice=device,CreatedUtc=value.CreatedUtc,TotalBytes=value.TotalBytes,FileCount=value.FileCount,ContentFingerprint=value.ContentFingerprint };
 }

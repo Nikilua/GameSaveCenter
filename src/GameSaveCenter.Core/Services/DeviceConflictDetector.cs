@@ -31,16 +31,22 @@ namespace GameSaveCenter.Core.Services
                 return new DeviceConflict { HasConflict = false, Reason = "LinearFromKnownBase", Confidence = 0.9 };
             }
 
+            if (!string.IsNullOrWhiteSpace(local.ContentFingerprint)
+                && string.Equals(local.ContentFingerprint, remote.ContentFingerprint, StringComparison.OrdinalIgnoreCase))
+            {
+                return new DeviceConflict { HasConflict = false, Reason = "EquivalentContent", Confidence = 1 };
+            }
+
             if (!string.IsNullOrWhiteSpace(local.ParentBackupId)
                 && string.Equals(local.ParentBackupId, remote.ParentBackupId, StringComparison.OrdinalIgnoreCase))
             {
                 return new DeviceConflict { HasConflict = true, Reason = "DivergedFromCommonBase", Confidence = 0.99 };
             }
 
-            var sameContent = local.TotalBytes == remote.TotalBytes && local.FileCount == remote.FileCount;
-            if (sameContent)
+            var sameSummary = local.TotalBytes == remote.TotalBytes && local.FileCount == remote.FileCount;
+            if (sameSummary)
             {
-                return new DeviceConflict { HasConflict = false, Reason = "EquivalentSummary", Confidence = 0.75 };
+                return new DeviceConflict { HasConflict = true, Reason = "UnknownDivergence", Confidence = 0.8 };
             }
 
             var timeDifference = (local.CreatedUtc - remote.CreatedUtc).Duration();

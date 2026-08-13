@@ -112,7 +112,8 @@ namespace GameSaveCenter.Contracts
         public int UnchangedCount { get; set; }
         public long TotalBytesDelta { get; set; }
         public string ComparisonQuality { get; set; } = "Estimated";
-        public string ComparisonQualityDisplay => string.Equals(ComparisonQuality, "Exact", StringComparison.OrdinalIgnoreCase) ? "精确比较" : "估算比较（缺少完整 Hash）";
+        public string ComparisonQualityDisplay => string.Equals(ComparisonQuality, "Exact", StringComparison.OrdinalIgnoreCase) ? "精确比较" :
+            string.Equals(ComparisonQuality, "InvalidManifest", StringComparison.OrdinalIgnoreCase) ? "Manifest 无效" : "估算比较（缺少完整 Hash）";
         public string Summary { get; set; } = string.Empty;
     }
 

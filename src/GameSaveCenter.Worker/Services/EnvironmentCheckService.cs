@@ -39,7 +39,7 @@ public sealed class EnvironmentCheckService
         Add(report, await CheckLibraryAsync(token).ConfigureAwait(false));
         Add(report, await CheckLudusaviAsync(token).ConfigureAwait(false));
         Add(report, await CheckRcloneAsync(request.IncludeRemoteProbe, token).ConfigureAwait(false));
-        Add(report, CheckDiskSpace());
+        foreach (var disk in CheckDiskSpace()) Add(report, disk);
 
         report.PassedCount = report.Items.Count(x => x.State == EnvironmentCheckState.Passed);
         report.WarningCount = report.Items.Count(x => x.State == EnvironmentCheckState.Warning);
@@ -143,21 +143,46 @@ public sealed class EnvironmentCheckService
         }
     }
 
-    private EnvironmentCheckItemDto CheckDiskSpace()
+    private IEnumerable<EnvironmentCheckItemDto> CheckDiskSpace()
     {
-        try
+        var locations = new[]
         {
-            var root = Path.GetPathRoot(_options.DataDirectory);
-            if (string.IsNullOrWhiteSpace(root)) return Warning("disk", "磁盘空间", "无法识别数据目录所在磁盘。", _options.DataDirectory);
-            var drive = new DriveInfo(root);
-            var free = FormatBytes(drive.AvailableFreeSpace);
-            return drive.AvailableFreeSpace < 512L * 1024 * 1024
-                ? Warning("disk", "磁盘空间", $"可用空间约 {free}，低于建议阈值 512 MiB。", drive.Name)
-                : Passed("disk", "磁盘空间", $"可用空间约 {free}。", drive.Name);
-        }
-        catch (Exception ex)
+            ("data", "数据目录", _options.DataDirectory, false),
+            ("backup", "存档目录", _options.LudusaviBackupDirectory, false),
+            ("media", "媒体目录", _options.MediaArchiveDirectory, true)
+        };
+        foreach (var location in locations)
         {
-            return Warning("disk", "磁盘空间", "无法读取可用空间。", ex.Message);
+            if (string.IsNullOrWhiteSpace(location.Item3))
+            {
+                if (location.Item4) yield return Skipped("disk:" + location.Item1, "磁盘空间 · " + location.Item2, "未配置可选目录。", string.Empty, true);
+                else yield return Warning("disk:" + location.Item1, "磁盘空间 · " + location.Item2, "目录路径为空，无法检查所在磁盘。", string.Empty);
+                continue;
+            }
+
+            EnvironmentCheckItemDto item;
+            try
+            {
+                var fullPath = Path.GetFullPath(Environment.ExpandEnvironmentVariables(location.Item3));
+                var root = Path.GetPathRoot(fullPath);
+                if (string.IsNullOrWhiteSpace(root))
+                {
+                    item = Warning("disk:" + location.Item1, "磁盘空间 · " + location.Item2, "无法识别目录所在磁盘。", fullPath);
+                }
+                else
+                {
+                    var drive = new DriveInfo(root);
+                    var free = FormatBytes(drive.AvailableFreeSpace);
+                    item = drive.AvailableFreeSpace < 512L * 1024 * 1024
+                        ? Warning("disk:" + location.Item1, "磁盘空间 · " + location.Item2, $"可用空间约 {free}，低于建议阈值 512 MiB。", $"{drive.Name} · {fullPath}")
+                        : Passed("disk:" + location.Item1, "磁盘空间 · " + location.Item2, $"可用空间约 {free}。", $"{drive.Name} · {fullPath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                item = Warning("disk:" + location.Item1, "磁盘空间 · " + location.Item2, "无法读取可用空间。", ex.Message);
+            }
+            yield return item;
         }
     }
 

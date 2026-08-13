@@ -1,5 +1,7 @@
 using System.Text.Json;
 using GameSaveCenter.Contracts;
+using GameSaveCenter.Core.Models;
+using GameSaveCenter.Core.Services;
 using GameSaveCenter.Worker.Configuration;
 using GameSaveCenter.Worker.Services;
 using Microsoft.Data.Sqlite;
@@ -759,7 +761,7 @@ ON CONFLICT(playnite_id,backup_id) DO UPDATE SET ludusavi_name=excluded.ludusavi
         await using var connection = Open(); await connection.OpenAsync(token).ConfigureAwait(false);
         var command = connection.CreateCommand();
         command.CommandText = @"
-SELECT b.playnite_id,g.name,b.backup_id,b.created_utc,b.total_bytes,b.file_count,b.parent_backup_id
+SELECT b.playnite_id,g.name,b.backup_id,b.created_utc,b.total_bytes,b.file_count,b.parent_backup_id,b.manifest_json
 FROM backup_versions b
 JOIN games g ON g.playnite_id=b.playnite_id
 JOIN (SELECT playnite_id,MAX(created_utc) AS newest FROM backup_versions GROUP BY playnite_id) latest
@@ -769,9 +771,24 @@ ORDER BY g.name COLLATE NOCASE;";
         while (await reader.ReadAsync(token).ConfigureAwait(false)) result.Add(new DeviceBackupSummaryDto
         {
             PlayniteId=reader.GetString(0),GameName=reader.GetString(1),BackupId=reader.GetString(2),
-            CreatedUtc=DateTime.Parse(reader.GetString(3)).ToUniversalTime(),TotalBytes=reader.GetInt64(4),FileCount=reader.GetInt32(5),ParentBackupId=reader.IsDBNull(6)?string.Empty:reader.GetString(6)
+            CreatedUtc=DateTime.Parse(reader.GetString(3)).ToUniversalTime(),TotalBytes=reader.GetInt64(4),FileCount=reader.GetInt32(5),ParentBackupId=reader.IsDBNull(6)?string.Empty:reader.GetString(6),
+            ContentFingerprint=ComputeContentFingerprint(reader.IsDBNull(7)?string.Empty:reader.GetString(7))
         });
         return result;
+    }
+
+    private static string ComputeContentFingerprint(string manifestJson)
+    {
+        if (string.IsNullOrWhiteSpace(manifestJson) || manifestJson == "{}") return string.Empty;
+        try
+        {
+            var entries = JsonSerializer.Deserialize<List<FileManifestEntry>>(manifestJson, new JsonSerializerOptions(JsonSerializerDefaults.Web));
+            return BackupContentFingerprint.Compute(entries ?? new List<FileManifestEntry>());
+        }
+        catch (JsonException)
+        {
+            return string.Empty;
+        }
     }
 
     public async Task<List<ProcessMappingDto>> GetProcessMappingsAsync(CancellationToken token)

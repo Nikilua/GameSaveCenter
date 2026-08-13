@@ -41,6 +41,9 @@ public sealed class EnvironmentCheckServiceTests
             Assert.Equal(EnvironmentCheckState.Skipped, report.Items.Single(x => x.Key == "rclone").State);
             Assert.Equal(EnvironmentCheckState.Warning, report.Items.Single(x => x.Key == "library").State);
             Assert.Equal(EnvironmentCheckState.Failed, report.Items.Single(x => x.Key == "ludusavi").State);
+            Assert.Contains(report.Items, x => x.Key == "disk:data");
+            Assert.Contains(report.Items, x => x.Key == "disk:backup");
+            Assert.Contains(report.Items, x => x.Key == "disk:media");
             Assert.Equal(report.Items.Count(x => x.State == EnvironmentCheckState.Failed), report.FailedCount);
             Assert.False(report.IsReady);
         }

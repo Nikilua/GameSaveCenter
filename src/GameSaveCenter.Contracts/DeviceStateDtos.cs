@@ -13,12 +13,13 @@ namespace GameSaveCenter.Contracts
         public DateTime CreatedUtc { get; set; }
         public long TotalBytes { get; set; }
         public int FileCount { get; set; }
+        public string ContentFingerprint { get; set; } = string.Empty;
     }
 
     /// <summary>Small JSON sidecar shared between devices. It deliberately contains no save files or credentials.</summary>
     public sealed class DeviceStateSidecarDto
     {
-        public int SchemaVersion { get; set; } = 2;
+        public int SchemaVersion { get; set; } = 3;
         public string DeviceId { get; set; } = string.Empty;
         public string DeviceName { get; set; } = string.Empty;
         public DateTime GeneratedUtc { get; set; } = DateTime.UtcNow;
@@ -56,7 +57,9 @@ namespace GameSaveCenter.Contracts
         {
             "DifferentDevicesChangedWithinTenMinutes" => "两台设备在十分钟内产生不同备份",
             "DivergentDeviceSummaries" => "两台设备的最新备份摘要不同",
-            "EquivalentSummary" => "摘要相同",
+            "EquivalentContent" => "Manifest 内容指纹相同",
+            "EquivalentSummary" => "摘要相同（旧版本证据）",
+            "UnknownDivergence" => "摘要相同但没有足够内容证据，需人工确认",
             "OnlyOneSideAvailable" => "仅一台设备存在该备份摘要",
             _ => string.IsNullOrWhiteSpace(Reason) ? "未知状态" : Reason
         };

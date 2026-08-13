@@ -64,6 +64,8 @@ namespace GameSaveCenter.Core.Models
         public string SourceDevice { get; set; } = string.Empty;
         public RestoreReadinessStatus? ReadinessStatus { get; set; }
         public bool HasSevereAnomaly { get; set; }
+        /// <summary>Strong content evidence derived from a complete hashed manifest.</summary>
+        public string ContentFingerprint { get; set; } = string.Empty;
         public bool IsHealthyRestorePoint => !HasSevereAnomaly && ReadinessStatus == RestoreReadinessStatus.Ready;
         public List<FileManifestEntry> Files { get; set; } = new List<FileManifestEntry>();
     }
@@ -109,6 +111,8 @@ namespace GameSaveCenter.Core.Models
         public List<FileManifestEntry> Modified { get; set; } = new List<FileManifestEntry>();
         public List<FileManifestEntry> Unchanged { get; set; } = new List<FileManifestEntry>();
         public bool IsExactComparison { get; set; }
+        public bool IsValid { get; set; } = true;
+        public List<string> Warnings { get; set; } = new List<string>();
         public long BeforeTotalBytes { get; set; }
         public long AfterTotalBytes { get; set; }
     }

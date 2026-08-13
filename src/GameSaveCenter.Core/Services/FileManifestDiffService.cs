@@ -10,16 +10,16 @@ namespace GameSaveCenter.Core.Services
     {
         public FileManifestDiff Compare(IEnumerable<FileManifestEntry> before, IEnumerable<FileManifestEntry> after)
         {
-            var oldMap = (before ?? Enumerable.Empty<FileManifestEntry>())
-                .ToDictionary(x => NormalizePath(x.RelativePath), StringComparer.OrdinalIgnoreCase);
-            var newMap = (after ?? Enumerable.Empty<FileManifestEntry>())
-                .ToDictionary(x => NormalizePath(x.RelativePath), StringComparer.OrdinalIgnoreCase);
             var result = new FileManifestDiff
             {
-                BeforeTotalBytes = oldMap.Values.Sum(x => Math.Max(0, x.SizeBytes)),
-                AfterTotalBytes = newMap.Values.Sum(x => Math.Max(0, x.SizeBytes)),
-                IsExactComparison = oldMap.Values.Concat(newMap.Values).All(x => !string.IsNullOrWhiteSpace(x.Sha256))
+                IsExactComparison = true
             };
+            var oldMap = BuildMap(before, "旧版本", result);
+            var newMap = BuildMap(after, "新版本", result);
+            result.BeforeTotalBytes = oldMap.Values.Sum(x => Math.Max(0, x.SizeBytes));
+            result.AfterTotalBytes = newMap.Values.Sum(x => Math.Max(0, x.SizeBytes));
+            result.IsExactComparison = result.IsValid
+                && oldMap.Values.Concat(newMap.Values).All(x => !string.IsNullOrWhiteSpace(x.Sha256));
 
             foreach (var item in newMap)
             {
@@ -39,6 +39,29 @@ namespace GameSaveCenter.Core.Services
             }
 
             return result;
+        }
+
+        private static Dictionary<string, FileManifestEntry> BuildMap(IEnumerable<FileManifestEntry> entries, string label, FileManifestDiff result)
+        {
+            var map = new Dictionary<string, FileManifestEntry>(StringComparer.OrdinalIgnoreCase);
+            foreach (var entry in entries ?? Enumerable.Empty<FileManifestEntry>())
+            {
+                var path = NormalizePath(entry.RelativePath);
+                if (string.IsNullOrWhiteSpace(path))
+                {
+                    result.IsValid = false;
+                    result.Warnings.Add($"{label}包含空路径条目。");
+                    continue;
+                }
+                if (map.ContainsKey(path))
+                {
+                    result.IsValid = false;
+                    result.Warnings.Add($"{label}包含重复路径：{path}。");
+                    continue;
+                }
+                map[path] = entry;
+            }
+            return map;
         }
 
         private static bool IsEquivalent(FileManifestEntry left, FileManifestEntry right)
