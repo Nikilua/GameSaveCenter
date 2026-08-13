@@ -1,3 +1,4 @@
+using System.IO.Compression;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Worker.Configuration;
 using GameSaveCenter.Worker.Infrastructure;
@@ -58,6 +59,8 @@ public sealed class FaultInjectionHarness : IDisposable
         await RunStepAsync("atomic-missing-source", () => InjectMissingSourceCopyAsync(token)).ConfigureAwait(false);
         await RunStepAsync("atomic-occupied-destination", () => InjectOccupiedDestinationCopyAsync(token)).ConfigureAwait(false);
         await RunStepAsync("atomic-canceled-write", () => InjectCanceledWriteAsync(token)).ConfigureAwait(false);
+        await RunStepAsync("corrupted-zip", () => InjectCorruptedZipAsync(token)).ConfigureAwait(false);
+        await RunStepAsync("corrupted-database", () => InjectCorruptedDatabaseAsync(token)).ConfigureAwait(false);
         await RunStepAsync("process-missing-executable", () => InjectMissingExecutableAsync(token)).ConfigureAwait(false);
         await RunStepAsync("process-timeout", () => InjectProcessTimeoutAsync(token)).ConfigureAwait(false);
         await RunStepAsync("process-cancellation", () => InjectProcessCancellationAsync(token)).ConfigureAwait(false);
@@ -145,6 +148,54 @@ public sealed class FaultInjectionHarness : IDisposable
             errors.Add($"canceled write threw {ex.GetType().Name}: {ex.Message}");
         }
         VerifyNoTemporaryFiles();
+    }
+
+    private async Task InjectCorruptedZipAsync(CancellationToken token)
+    {
+        var path = Path.Combine(root, "corrupt.zip");
+        await File.WriteAllBytesAsync(path, new byte[] { 1, 2, 3 }, token).ConfigureAwait(false);
+        try
+        {
+            using var archive = ZipFile.OpenRead(path);
+            errors.Add("corrupted zip opened successfully");
+        }
+        catch (InvalidDataException)
+        {
+        }
+        catch (Exception ex)
+        {
+            errors.Add($"corrupted zip threw {ex.GetType().Name}: {ex.Message}");
+        }
+        finally
+        {
+            try { if (File.Exists(path)) File.Delete(path); } catch { }
+        }
+        await Task.Yield();
+    }
+
+    private async Task InjectCorruptedDatabaseAsync(CancellationToken token)
+    {
+        var dbRoot = Path.Combine(root, "CorruptDb");
+        Directory.CreateDirectory(dbRoot);
+        var corruptPath = Path.Combine(dbRoot, "gamesavecenter.db");
+        await File.WriteAllBytesAsync(corruptPath, new byte[] { 1, 2, 3 }, token).ConfigureAwait(false);
+        var corruptOptions = new WorkerOptions
+        {
+            DataDirectory = dbRoot,
+            LudusaviBackupDirectory = Path.Combine(dbRoot, "Saves"),
+            MediaArchiveDirectory = Path.Combine(dbRoot, "Media")
+        };
+        try
+        {
+            var corruptStore = new SqliteStateStore(corruptOptions, NullLogger<SqliteStateStore>.Instance);
+            await corruptStore.InitializeAsync(token).ConfigureAwait(false);
+            errors.Add("corrupted database initialized unexpectedly");
+        }
+        catch
+        {
+        }
+        if (!File.Exists(corruptPath))
+            errors.Add("corrupted database was deleted by failure injection");
     }
 
     private async Task InjectMissingExecutableAsync(CancellationToken token)

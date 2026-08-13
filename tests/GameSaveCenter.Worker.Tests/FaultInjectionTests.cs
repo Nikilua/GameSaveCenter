@@ -14,6 +14,6 @@ public sealed class FaultInjectionTests
 
         Assert.Empty(harness.Errors);
         Assert.Equal(harness.Attempted, harness.Recovered);
-        Assert.True(harness.Attempted >= 13, $"Expected at least 13 injected faults, got {harness.Attempted}");
+        Assert.True(harness.Attempted >= 15, $"Expected at least 15 injected faults, got {harness.Attempted}");
     }
 }
