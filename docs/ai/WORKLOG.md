@@ -2,6 +2,18 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-13 REPOSITORY-REBUILD-001 备份仓库索引重建
+
+- Task ID：`REPOSITORY-REBUILD-001`。
+- 实现内容：新增 `repository.rebuild` IPC 与 `RepositoryRebuildService`。遍历已匹配游戏，通过既有 `RefreshBackupHistoryAsync` 从 Ludusavi 磁盘实际备份列表重建 SQLite `backup_versions` 索引；单个游戏失败不中断其余游戏，结果汇总成功/失败/索引版本数并写审计。维护中心诊断页新增“重建备份索引”按钮和结果摘要。
+- 核心设计选择：抽出窄接口 `IBackupHistoryRebuilder`，让重建服务可单测且不依赖真实 Ludusavi；重建只读取磁盘并协调索引，不删除、不上传、不修改真实归档；失败游戏保留原索引。
+- 主要修改文件：Contracts `RepositoryRebuildDtos.cs`/`MessageTypes`、`RestoreDependencies`、`BackupOrchestrator`、`RepositoryRebuildService`、`Program`、`IpcRequestDispatcher`、`DashboardViewModel`、`MaintenanceView`，以及 Worker/Playnite 测试。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `51/51`、Worker `128/128`、Playnite `211/211`；`validate-source.py`、XAML 结构、WPF 静态门禁 0 errors / 33 warnings / 153 info、五种窗口 `render-qa OK`。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 记录 `Loaded plugin: GameSaveCenter, version 0.6.70`，插件日志记录 `0.6.70.0 loaded`，`worker-launch.log` 记录存储初始化与 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实 Ludusavi 备份目录下点击重建后，与磁盘文件逐一核对版本数量和归档路径。
+- Commit：`7845a53`。
+- 下一项：继续 Layer B，从 `PATH-REMAP-001` 批量路径迁移开始。
+
 ## 2026-08-13 METADATA-BACKUP-001 GameSaveCenter 自身元数据灾备
 
 - Task ID：`METADATA-BACKUP-001`。
