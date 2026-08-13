@@ -119,6 +119,8 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.CheckEnvironment=>await _environment.RunAsync(Read<EnvironmentCheckRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.CheckIntegrity=>await _integrityCheck.RunAsync(token).ConfigureAwait(false),
                 MessageTypes.CreateMetadataBackup=>await _metadataBackup.CreateAsync(token).ConfigureAwait(false),
+                MessageTypes.PreviewMetadataRestore=>await _metadataBackup.PreviewAsync(Read<MetadataRestoreRequestDto>(request).PackagePath,token).ConfigureAwait(false),
+                MessageTypes.ExecuteMetadataRestore=>await _metadataBackup.RestoreAsync(Read<MetadataRestoreRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.RebuildRepository=>await _repositoryRebuild.RebuildAsync(token).ConfigureAwait(false),
                 MessageTypes.PathRemap=>await _pathRemap.RemapAsync(Read<PathRemapRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ReconcileTasks=>await _taskReconcile.ReconcileAsync(token).ConfigureAwait(false),

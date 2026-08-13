@@ -135,6 +135,8 @@ public sealed class WorkerOptions
         try { if (File.Exists(StartupFailureCountPath)) File.Delete(StartupFailureCountPath); } catch { }
     }
 
+    public void PersistNow() => Persist();
+
     private void Normalize()
     {
         if (!IsValidDeviceId(DeviceId)) DeviceId = Guid.NewGuid().ToString("N");

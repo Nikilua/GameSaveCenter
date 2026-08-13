@@ -1,4 +1,6 @@
 using System.IO.Compression;
+using System.Text;
+using GameSaveCenter.Contracts;
 using GameSaveCenter.Worker.Configuration;
 using GameSaveCenter.Worker.Persistence;
 using GameSaveCenter.Worker.Services;
@@ -63,6 +65,83 @@ public sealed class MetadataBackupServiceTests : IDisposable
         var command = connection.CreateCommand();
         command.CommandText = "SELECT COUNT(*) FROM audit_log;";
         Assert.Equal(1L, Convert.ToInt64(await command.ExecuteScalarAsync()));
+    }
+
+    [Fact]
+    public async Task MetadataRestoreReplacesDatabaseAndKeepsPreRestore()
+    {
+        await store.AppendAuditAsync("Test", "before package", "{}", CancellationToken.None);
+        Directory.CreateDirectory(Path.GetDirectoryName(options.RuntimeSettingsPath)!);
+        await File.WriteAllTextAsync(options.RuntimeSettingsPath, "LudusaviExecutable=C:\\tools\\ludusavi.exe\n");
+        var service = new MetadataBackupService(options, store, NullLogger<MetadataBackupService>.Instance);
+        var backup = await service.CreateAsync(CancellationToken.None);
+        await store.AppendAuditAsync("Test", "after package", "{}", CancellationToken.None);
+
+        var preview = await service.PreviewAsync(backup.PackagePath, CancellationToken.None);
+        Assert.True(preview.Valid);
+        var restored = await service.RestoreAsync(new MetadataRestoreRequestDto
+        {
+            PackagePath = backup.PackagePath,
+            Confirmed = true
+        }, CancellationToken.None);
+
+        Assert.True(restored.Restored);
+        Assert.True(Directory.Exists(restored.PreRestorePath));
+        Assert.True(File.Exists(Path.Combine(restored.PreRestorePath, "gamesavecenter.db")));
+        await using var connection = new SqliteConnection($"Data Source={options.DatabasePath};Mode=ReadOnly;Cache=Shared");
+        await connection.OpenAsync();
+        var command = connection.CreateCommand();
+        command.CommandText = "SELECT COUNT(*) FROM audit_log;";
+        Assert.Equal(2L, Convert.ToInt64(await command.ExecuteScalarAsync()));
+    }
+
+    [Fact]
+    public async Task MetadataRestoreRequiresConfirmation()
+    {
+        var service = new MetadataBackupService(options, store, NullLogger<MetadataBackupService>.Instance);
+        var backup = await service.CreateAsync(CancellationToken.None);
+
+        var ex = await Assert.ThrowsAsync<WorkerOperationException>(() => service.RestoreAsync(
+            new MetadataRestoreRequestDto { PackagePath = backup.PackagePath, Confirmed = false },
+            CancellationToken.None));
+        Assert.Equal("METADATA_RESTORE_NOT_CONFIRMED", ex.Code);
+    }
+
+    [Fact]
+    public async Task MetadataRestoreRejectsHashMismatchAndTraversal()
+    {
+        var service = new MetadataBackupService(options, store, NullLogger<MetadataBackupService>.Instance);
+        var hashBad = Path.Combine(root, "bad-hash.zip");
+        CreatePackage(hashBad, new Dictionary<string, byte[]>
+        {
+            ["manifest.json"] = Encoding.UTF8.GetBytes("{\"SchemaVersion\":1,\"DatabaseSha256\":\"00\"}"),
+            ["database/gamesavecenter.db"] = new byte[] { 1, 2, 3 }
+        });
+        var preview = await service.PreviewAsync(hashBad, CancellationToken.None);
+        Assert.False(preview.Valid);
+        Assert.Contains("哈希", preview.Summary, StringComparison.OrdinalIgnoreCase);
+
+        var traversal = Path.Combine(root, "traversal.zip");
+        CreatePackage(traversal, new Dictionary<string, byte[]>
+        {
+            ["manifest.json"] = Encoding.UTF8.GetBytes("{\"SchemaVersion\":1,\"DatabaseSha256\":\"00\"}"),
+            ["database/gamesavecenter.db"] = new byte[] { 1, 2, 3 },
+            ["../evil"] = Encoding.UTF8.GetBytes("x")
+        });
+        var traversalPreview = await service.PreviewAsync(traversal, CancellationToken.None);
+        Assert.False(traversalPreview.Valid);
+        Assert.Contains("越界", traversalPreview.Summary, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static void CreatePackage(string path, IReadOnlyDictionary<string, byte[]> entries)
+    {
+        using var archive = ZipFile.Open(path, ZipArchiveMode.Create);
+        foreach (var pair in entries)
+        {
+            var entry = archive.CreateEntry(pair.Key);
+            using var stream = entry.Open();
+            stream.Write(pair.Value, 0, pair.Value.Length);
+        }
     }
 
     public void Dispose()

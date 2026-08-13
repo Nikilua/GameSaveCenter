@@ -64,6 +64,8 @@ namespace GameSaveCenter.Contracts
         public const string CheckEnvironment = "environment.check";
         public const string CheckIntegrity = "integrity.check";
         public const string CreateMetadataBackup = "metadata.backup.create";
+        public const string PreviewMetadataRestore = "metadata.restore.preview";
+        public const string ExecuteMetadataRestore = "metadata.restore.execute";
         public const string RebuildRepository = "repository.rebuild";
         public const string PathRemap = "path.remap";
         public const string ReconcileTasks = "tasks.reconcile";

@@ -120,6 +120,196 @@ public sealed class MetadataBackupService
         }
     }
 
+    public async Task<MetadataRestorePreviewDto> PreviewAsync(string packagePath, CancellationToken token)
+    {
+        var temporary = Path.Combine(Path.GetTempPath(), "GscMetadataPreview", Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(temporary);
+        try
+        {
+            var extracted = await ValidateAndExtractAsync(packagePath, temporary, token).ConfigureAwait(false);
+            return new MetadataRestorePreviewDto
+            {
+                Valid = true,
+                PackagePath = packagePath,
+                SchemaVersion = extracted.SchemaVersion,
+                DatabaseSha256 = extracted.DatabaseSha256,
+                SettingsSha256 = extracted.SettingsSha256,
+                Entries = extracted.Entries,
+                Summary = $"元数据包有效：schema {extracted.SchemaVersion}，包含 {extracted.Entries.Count} 个文件，数据库与设置哈希校验通过。"
+            };
+        }
+        catch (Exception ex)
+        {
+            return new MetadataRestorePreviewDto
+            {
+                Valid = false,
+                PackagePath = packagePath,
+                Summary = "元数据包校验失败：" + ex.Message
+            };
+        }
+        finally
+        {
+            TryDeleteDirectory(temporary);
+        }
+    }
+
+    public async Task<MetadataRestoreResultDto> RestoreAsync(MetadataRestoreRequestDto request, CancellationToken token)
+    {
+        if (!request.Confirmed)
+            throw new WorkerOperationException("METADATA_RESTORE_NOT_CONFIRMED", "请先确认元数据恢复操作。");
+
+        var temporary = Path.Combine(Path.GetTempPath(), "GscMetadataRestore", Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(temporary);
+        try
+        {
+            var extracted = await ValidateAndExtractAsync(request.PackagePath, temporary, token).ConfigureAwait(false);
+            var backupRoot = Path.Combine(_options.DataDirectory, "MetadataBackups");
+            Directory.CreateDirectory(backupRoot);
+            var preRestore = Path.Combine(backupRoot, "PreRestore-" + Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(preRestore);
+            if (File.Exists(_options.DatabasePath))
+                File.Copy(_options.DatabasePath, Path.Combine(preRestore, "gamesavecenter.db"), true);
+            if (File.Exists(_options.RuntimeSettingsPath))
+                File.Copy(_options.RuntimeSettingsPath, Path.Combine(preRestore, "worker-settings.json"), true);
+
+            var previousSafeMode = _options.SafeModeEnabled;
+            _options.SafeModeEnabled = true;
+            _options.PersistNow();
+            try
+            {
+                SqliteConnection.ClearAllPools();
+                DeleteSidecars(_options.DatabasePath);
+                var extractedDatabase = Path.Combine(temporary, "database", "gamesavecenter.db");
+                File.SetAttributes(extractedDatabase, FileAttributes.Normal);
+                await AtomicFileWriter.ReplaceFileAsync(
+                    extractedDatabase,
+                    _options.DatabasePath,
+                    token).ConfigureAwait(false);
+                File.SetAttributes(_options.DatabasePath, FileAttributes.Normal);
+                DeleteSidecars(_options.DatabasePath);
+                var settingsExtracted = Path.Combine(temporary, "settings", "worker-settings.json");
+                if (File.Exists(settingsExtracted))
+                {
+                    File.SetAttributes(settingsExtracted, FileAttributes.Normal);
+                    await AtomicFileWriter.ReplaceFileAsync(settingsExtracted, _options.RuntimeSettingsPath, token).ConfigureAwait(false);
+                    File.SetAttributes(_options.RuntimeSettingsPath, FileAttributes.Normal);
+                }
+
+                await ValidateDatabaseAsync(_options.DatabasePath, token).ConfigureAwait(false);
+                SqliteConnection.ClearAllPools();
+                await _store.AppendAuditAsync("MetadataRestore", "元数据灾备已恢复",
+                    JsonSerializer.Serialize(new
+                    {
+                        preRestore,
+                        schemaVersion = extracted.SchemaVersion,
+                        databaseSha256 = extracted.DatabaseSha256
+                    }), token).ConfigureAwait(false);
+                return new MetadataRestoreResultDto
+                {
+                    Restored = true,
+                    PreRestorePath = preRestore,
+                    Summary = "元数据恢复完成：数据库与设置已替换并通过完整性校验；恢复前副本保留在 " + preRestore + "。"
+                };
+            }
+            catch
+            {
+                try
+                {
+                    SqliteConnection.ClearAllPools();
+                    DeleteSidecars(_options.DatabasePath);
+                    var preDatabase = Path.Combine(preRestore, "gamesavecenter.db");
+                    var preSettings = Path.Combine(preRestore, "worker-settings.json");
+                    if (File.Exists(preDatabase))
+                        await AtomicFileWriter.ReplaceFileAsync(preDatabase, _options.DatabasePath, token).ConfigureAwait(false);
+                    DeleteSidecars(_options.DatabasePath);
+                    if (File.Exists(preSettings))
+                        await AtomicFileWriter.ReplaceFileAsync(preSettings, _options.RuntimeSettingsPath, token).ConfigureAwait(false);
+                }
+                catch (Exception rollbackEx)
+                {
+                    throw new WorkerOperationException(
+                        "METADATA_RESTORE_ROLLBACK_FAILED",
+                        "元数据恢复失败，且回滚恢复前副本失败，需要人工介入。",
+                        rollbackEx.Message);
+                }
+                throw;
+            }
+            finally
+            {
+                _options.SafeModeEnabled = previousSafeMode;
+                _options.PersistNow();
+            }
+        }
+        finally
+        {
+            TryDeleteDirectory(temporary);
+        }
+    }
+
+    private async Task<ExtractedMetadata> ValidateAndExtractAsync(string packagePath, string temporary, CancellationToken token)
+    {
+        if (string.IsNullOrWhiteSpace(packagePath) || !File.Exists(packagePath))
+            throw new WorkerOperationException("METADATA_PACKAGE_MISSING", "元数据灾备包不存在。", packagePath);
+
+        using var archive = ZipFile.OpenRead(packagePath);
+        var manifestEntry = archive.GetEntry("manifest.json")
+            ?? throw new WorkerOperationException("METADATA_PACKAGE_INVALID", "灾备包缺少 manifest.json。");
+        var manifest = JsonSerializer.Deserialize<MetadataManifestInfo>(
+                await ReadEntryTextAsync(manifestEntry, token).ConfigureAwait(false),
+                JsonOptions)
+            ?? throw new WorkerOperationException("METADATA_PACKAGE_INVALID", "manifest.json 无法解析。");
+        if (manifest.SchemaVersion != 1)
+            throw new WorkerOperationException("METADATA_PACKAGE_UNSUPPORTED", $"不支持的元数据包 schema：{manifest.SchemaVersion}。");
+        if (archive.GetEntry("database/gamesavecenter.db") == null)
+            throw new WorkerOperationException("METADATA_PACKAGE_INVALID", "灾备包缺少数据库快照。");
+
+        var entries = new List<string>();
+        foreach (var entry in archive.Entries)
+        {
+            token.ThrowIfCancellationRequested();
+            var target = Path.GetFullPath(Path.Combine(temporary, entry.FullName));
+            if (!target.StartsWith(Path.GetFullPath(temporary) + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
+                throw new WorkerOperationException("METADATA_PACKAGE_TRAVERSAL", "灾备包包含越界路径，已拒绝。", entry.FullName);
+            var directory = Path.GetDirectoryName(target);
+            if (!string.IsNullOrWhiteSpace(directory)) Directory.CreateDirectory(directory);
+            entry.ExtractToFile(target, true);
+            entries.Add(entry.FullName);
+        }
+
+        var databasePath = Path.Combine(temporary, "database", "gamesavecenter.db");
+        var databaseSha256 = await ComputeSha256Async(databasePath, token).ConfigureAwait(false);
+        if (!string.Equals(databaseSha256, manifest.DatabaseSha256, StringComparison.OrdinalIgnoreCase))
+            throw new WorkerOperationException("METADATA_PACKAGE_HASH_MISMATCH", "数据库快照哈希与清单不一致，已拒绝恢复。");
+
+        var settingsSha256 = string.Empty;
+        var settingsPath = Path.Combine(temporary, "settings", "worker-settings.json");
+        if (File.Exists(settingsPath))
+        {
+            settingsSha256 = await ComputeSha256Async(settingsPath, token).ConfigureAwait(false);
+            if (!string.Equals(settingsSha256, manifest.SettingsSha256, StringComparison.OrdinalIgnoreCase))
+                throw new WorkerOperationException("METADATA_PACKAGE_HASH_MISMATCH", "设置文件哈希与清单不一致，已拒绝恢复。");
+        }
+
+        return new ExtractedMetadata(manifest.SchemaVersion, databaseSha256, settingsSha256, entries);
+    }
+
+    private static async Task<string> ReadEntryTextAsync(ZipArchiveEntry entry, CancellationToken token)
+    {
+        using var reader = new StreamReader(entry.Open());
+        return await reader.ReadToEndAsync(token).ConfigureAwait(false);
+    }
+
+    private static async Task ValidateDatabaseAsync(string path, CancellationToken token)
+    {
+        await using var connection = new SqliteConnection($"Data Source={path};Mode=ReadOnly;Cache=Shared;Foreign Keys=True");
+        await connection.OpenAsync(token).ConfigureAwait(false);
+        var command = connection.CreateCommand();
+        command.CommandText = "PRAGMA integrity_check;";
+        var value = Convert.ToString(await command.ExecuteScalarAsync(token).ConfigureAwait(false));
+        if (!string.Equals(value, "ok", StringComparison.OrdinalIgnoreCase))
+            throw new InvalidOperationException("恢复后的数据库完整性检查失败：" + value);
+    }
+
     private async Task CreateDatabaseSnapshotAsync(string destination, CancellationToken token)
     {
         await using var connection = new SqliteConnection($"Data Source={_options.DatabasePath};Mode=ReadWriteCreate;Cache=Shared;Foreign Keys=True");
@@ -162,8 +352,23 @@ public sealed class MetadataBackupService
         try { if (File.Exists(path)) File.Delete(path); } catch { }
     }
 
+    private static void DeleteSidecars(string path)
+    {
+        TryDeleteFile(path + "-wal");
+        TryDeleteFile(path + "-shm");
+    }
+
     private static void TryDeleteDirectory(string path)
     {
         try { if (Directory.Exists(path)) Directory.Delete(path, true); } catch { }
+    }
+
+    private sealed record ExtractedMetadata(int SchemaVersion, string DatabaseSha256, string SettingsSha256, List<string> Entries);
+
+    private sealed class MetadataManifestInfo
+    {
+        public int SchemaVersion { get; set; }
+        public string DatabaseSha256 { get; set; } = string.Empty;
+        public string SettingsSha256 { get; set; } = string.Empty;
     }
 }

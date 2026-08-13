@@ -50,6 +50,27 @@ public static class AtomicFileWriter
         }
     }
 
+    public static async Task ReplaceFileAsync(string source, string destination, CancellationToken token)
+    {
+        var fullSource = Path.GetFullPath(source);
+        var fullDestination = Path.GetFullPath(destination);
+        var directory = Path.GetDirectoryName(fullDestination) ?? Directory.GetCurrentDirectory();
+        Directory.CreateDirectory(directory);
+        var temporary = TemporaryPath(directory, Path.GetFileName(fullDestination), ".replace");
+        try
+        {
+            await using (var input = new FileStream(fullSource, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 1024 * 128, true))
+            await using (var output = new FileStream(temporary, FileMode.CreateNew, FileAccess.Write, FileShare.None, 1024 * 128, true))
+                await input.CopyToAsync(output, token).ConfigureAwait(false);
+            File.Move(temporary, fullDestination, true);
+        }
+        catch
+        {
+            TryDelete(temporary);
+            throw;
+        }
+    }
+
     private static string TemporaryPath(string directory, string fileName, string suffix)
         => Path.Combine(directory, "." + fileName + "." + Guid.NewGuid().ToString("N") + suffix);
 

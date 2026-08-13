@@ -78,6 +78,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string diagnosticSummary = "诊断信息尚未加载。";
         private string integritySummary = "尚未运行完整性自检。";
         private string metadataBackupSummary = "尚未生成元数据灾备包。";
+        private string metadataRestoreSummary = "尚未预览元数据恢复。";
         private string repositoryRebuildSummary = "尚未重建备份索引。";
         private string pathRemapOldRoot = string.Empty;
         private string pathRemapNewRoot = string.Empty;
@@ -188,6 +189,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             RefreshDiagnosticsCommand = new RelayCommand(_ => Run(RefreshDiagnosticsAsync), _ => !IsBusy);
             RunIntegrityCheckCommand = new RelayCommand(_ => Run(RunIntegrityCheckAsync), _ => !IsBusy);
             CreateMetadataBackupCommand = new RelayCommand(_ => Run(CreateMetadataBackupAsync), _ => !IsBusy && !string.IsNullOrWhiteSpace(EffectiveSettings.DataDirectory));
+            RestoreMetadataBackupCommand = new RelayCommand(_ => Run(RestoreMetadataBackupAsync), _ => !IsBusy && !string.IsNullOrWhiteSpace(EffectiveSettings.DataDirectory));
             RebuildRepositoryCommand = new RelayCommand(_ => Run(RebuildRepositoryAsync), _ => !IsBusy && Snapshot.LudusaviAvailable);
             RunPathRemapCommand = new RelayCommand(_ => Run(RunPathRemapAsync), _ => !IsBusy && !string.IsNullOrWhiteSpace(PathRemapOldRoot) && !string.IsNullOrWhiteSpace(PathRemapNewRoot));
             ReconcileTasksCommand = new RelayCommand(_ => Run(ReconcileTasksAsync), _ => !IsBusy);
@@ -325,6 +327,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public string DiagnosticSummary { get => diagnosticSummary; private set => SetValue(ref diagnosticSummary, value); }
         public string IntegritySummary { get => integritySummary; private set => SetValue(ref integritySummary, value); }
         public string MetadataBackupSummary { get => metadataBackupSummary; private set => SetValue(ref metadataBackupSummary, value); }
+        public string MetadataRestoreSummary { get => metadataRestoreSummary; private set => SetValue(ref metadataRestoreSummary, value); }
         public string RepositoryRebuildSummary { get => repositoryRebuildSummary; private set => SetValue(ref repositoryRebuildSummary, value); }
         public string PathRemapOldRoot
         {
@@ -634,6 +637,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand RefreshDiagnosticsCommand { get; }
         public ICommand RunIntegrityCheckCommand { get; }
         public ICommand CreateMetadataBackupCommand { get; }
+        public ICommand RestoreMetadataBackupCommand { get; }
         public ICommand RebuildRepositoryCommand { get; }
         public ICommand RunPathRemapCommand { get; }
         public ICommand ReconcileTasksCommand { get; }
@@ -1215,6 +1219,44 @@ namespace GameSaveCenter.Playnite.ViewModels
                 MetadataBackupSummary = $"元数据灾备包已生成：{result.PackagePath}（{result.PackageBytes / 1024d / 1024d:0.#} MiB）";
                 StatusMessage = result.Summary;
             });
+        }
+
+        private async Task RestoreMetadataBackupAsync()
+        {
+            var dialog = new OpenFileDialog
+            {
+                Title = "选择元数据灾备包",
+                Filter = "ZIP 灾备包 (*.zip)|*.zip",
+                CheckFileExists = true
+            };
+            if (dialog.ShowDialog() != true) return;
+
+            var preview = await plugin.RequestAsync<MetadataRestorePreviewDto>(
+                MessageTypes.PreviewMetadataRestore,
+                new MetadataRestoreRequestDto { PackagePath = dialog.FileName },
+                TimeSpan.FromMinutes(2));
+            ApplyOnUi(() => MetadataRestoreSummary = preview.Summary);
+            if (!preview.Valid)
+            {
+                plugin.ShowInfo(preview.Summary);
+                return;
+            }
+
+            var confirmed = await plugin.ConfirmAsync(
+                "恢复元数据",
+                preview.Summary + "\n\n恢复会替换数据库与 Worker 设置，并保留恢复前副本。是否继续？",
+                "恢复",
+                "取消",
+                isDangerous: true);
+            if (!confirmed) return;
+
+            var result = await plugin.RequestAsync<MetadataRestoreResultDto>(
+                MessageTypes.ExecuteMetadataRestore,
+                new MetadataRestoreRequestDto { PackagePath = dialog.FileName, Confirmed = true },
+                TimeSpan.FromMinutes(10));
+            ApplyOnUi(() => MetadataRestoreSummary = result.Summary);
+            StatusMessage = result.Summary;
+            await LoadDiagnosticsAsync();
         }
 
         private async Task RebuildRepositoryAsync()
@@ -2473,7 +2515,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 UpdateMediaMetadataCommand,OpenSelectedMediaCommand,RevealSelectedMediaCommand,
                 AssignInboxMediaCommand, IgnoreInboxMediaCommand,
                 CancelTaskCommand, RetryTaskCommand, CopyTaskErrorCommand, RefreshDiagnosticsCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
-                StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,CreateMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,
+                StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,
                 SaveProcessMappingCommand,DeleteProcessMappingCommand,RunEnvironmentCheckCommand,SkipOnboardingCommand,CompleteOnboardingCommand,OnboardingTestBackupCommand,
                 OpenDataDirectoryCommand, OpenBackupDirectoryCommand, OpenMediaDirectoryCommand, OpenWorkerLogCommand
                 ,ImportTrainerCommand,ImportCheatTableCommand,ImportCustomLaunchItemCommand,ImportToolFolderCommand,SaveGameToolCommand,LaunchGameToolCommand,

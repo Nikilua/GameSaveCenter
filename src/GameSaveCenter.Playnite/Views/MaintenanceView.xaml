@@ -123,6 +123,7 @@
                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenWorkerLogCommand}" Content="Worker 日志" Margin="0,0,8,8"/>
                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RunIntegrityCheckCommand}" Content="完整性自检" Margin="0,0,0,8"/>
                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CreateMetadataBackupCommand}" Content="导出元数据灾备" Margin="0,0,0,8" ToolTip="生成 SQLite 快照、Worker 设置和版本清单，不包含存档/媒体/凭据"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RestoreMetadataBackupCommand}" Content="恢复元数据灾备" Margin="0,0,0,8" ToolTip="预览并恢复 SQLite 快照与 Worker 设置，保留恢复前副本"/>
                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RebuildRepositoryCommand}" Content="重建备份索引" Margin="0,0,0,8" ToolTip="按 Ludusavi 磁盘实际备份列表重建 SQLite 索引"/>
                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding ReconcileTasksCommand}" Content="协调中断任务" Margin="0,0,0,8" ToolTip="把 Worker 重启后遗留的排队/运行中任务标记为 WORKER_RESTARTED"/>
                             </WrapPanel>
@@ -143,7 +144,10 @@
                                 <TextBlock Text="{Binding IntegritySummary, TargetNullValue=尚未运行完整性自检。}" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap"/>
                             </Border>
                             <Border Grid.Row="4" Grid.ColumnSpan="2" Style="{DynamicResource GscRedesignInfoBand}" Padding="12" Margin="0,8,0,0">
-                                <TextBlock Text="{Binding MetadataBackupSummary, TargetNullValue=尚未生成元数据灾备包。}" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap"/>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding MetadataBackupSummary, TargetNullValue=尚未生成元数据灾备包。}" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding MetadataRestoreSummary, TargetNullValue=尚未预览元数据恢复。}" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap" Margin="0,6,0,0"/>
+                                </StackPanel>
                             </Border>
                             <Border Grid.Row="5" Grid.ColumnSpan="2" Style="{DynamicResource GscRedesignInfoBand}" Padding="12" Margin="0,8,0,0">
                                 <TextBlock Text="{Binding RepositoryRebuildSummary, TargetNullValue=尚未重建备份索引。}" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap"/>
