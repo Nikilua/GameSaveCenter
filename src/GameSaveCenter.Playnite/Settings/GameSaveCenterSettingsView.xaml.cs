@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
@@ -30,6 +31,9 @@ namespace GameSaveCenter.Playnite.Settings
             Unloaded += OnUnloaded;
             IsVisibleChanged += OnIsVisibleChanged;
             SizeChanged += OnSizeChanged;
+            AddHandler(TextBox.TextChangedEvent, new TextChangedEventHandler(OnSettingsFieldChanged));
+            AddHandler(ComboBox.SelectionChangedEvent, new SelectionChangedEventHandler(OnSettingsFieldChanged));
+            AddHandler(CheckBox.ClickEvent, new RoutedEventHandler(OnSettingsFieldChanged));
         }
 
         private GameSaveCenterSettings? CurrentSettings => DataContext as GameSaveCenterSettings;
@@ -45,6 +49,7 @@ namespace GameSaveCenter.Playnite.Settings
             }
             ApplyAdaptiveTheme();
             ApplyResponsiveLayout(ActualWidth, ActualHeight);
+            RefreshValidationSummary();
             if (entrancePlayed)
             {
                 SettingsShell.Opacity = 1;
@@ -64,6 +69,23 @@ namespace GameSaveCenter.Playnite.Settings
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
             => QueueResponsiveLayout(e.NewSize);
+
+        private void OnSettingsFieldChanged(object sender, RoutedEventArgs e) => RefreshValidationSummary();
+
+        private void RefreshValidationSummary()
+        {
+            var settings = CurrentSettings;
+            if (settings == null || SettingsValidationSummary == null) return;
+            var errors = new List<string>();
+            settings.VerifySettings(out errors);
+            if (errors.Count == 0)
+            {
+                SettingsValidationSummary.Visibility = Visibility.Collapsed;
+                return;
+            }
+            SettingsValidationSummary.Text = "设置需要修正：" + string.Join("；", errors.Take(4));
+            SettingsValidationSummary.Visibility = Visibility.Visible;
+        }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
