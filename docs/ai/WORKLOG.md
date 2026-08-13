@@ -2,6 +2,17 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 RETENTION-SIM-001 全局保留策略模拟器与安全清理
+
+- Task ID：`RETENTION-SIM-001`。
+- 实现内容：维护中心“保留策略”页新增全局保留策略模拟器：按每游戏持久化策略复用 `RetentionPlanner`，汇总现有版本、建议保留、候选清理、预计释放，以及用户锁定/健康保护/PreRestore 计数；展示最多 200 条候选明细。`retention.simulation.apply` 要求二次确认，执行时重新计算并逐条复核，只删除备份根目录下的 ZIP 候选并同步移除 SQLite 索引；锁定、PreRestore、健康恢复点和根目录外/非 ZIP 路径自动跳过，失败明细写入审计。
+- 主要修改文件：`RetentionSimulationDtos.cs`、`RetentionSimulationService.cs`、`SqliteStateStore.cs`、`MessageTypes.cs`、`IpcRequestDispatcher.cs`、`DashboardViewModel.cs`、`MaintenanceView.xaml`、`MaintenanceView.xaml.cs`、`RetentionSimulationServiceTests.cs`、`UiLayoutRegressionTests.cs`、`FakeDashboardData.cs`。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `55/55`、Worker `178/178`、Playnite `219/219`；`validate-source.py`、XAML/WPF 静态门禁与五种窗口 `render-qa` 全绿。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 02:10:44 记录插件加载，`worker-launch.log` 02:10:50 记录 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实备份仓库下人工预览并确认清理，核对保护版本未被删除、审计记录完整。
+- Commit：`a27f430`。
+- 下一项：Layer C `LOCAL-MIRROR-001` 第二本地镜像。
+
 ## 2026-08-14 STORAGE-001 备份存储分析与增长趋势预估
 
 - Task ID：`STORAGE-001`。
