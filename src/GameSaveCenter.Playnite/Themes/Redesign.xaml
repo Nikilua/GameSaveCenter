@@ -370,10 +370,10 @@
                 <ControlTemplate TargetType="TabControl">
                     <DockPanel KeyboardNavigation.TabNavigation="Local" LastChildFill="True">
                         <ScrollViewer x:Name="SettingsHeaderScroller"
-                                      Width="232"
+                                      Width="248"
                                       DockPanel.Dock="Left"
                                       Margin="0,0,16,0"
-                                      Padding="0,0,0,4"
+                                      Padding="0,0,0,12"
                                       HorizontalScrollBarVisibility="Disabled"
                                       VerticalScrollBarVisibility="Auto"
                                       CanContentScroll="False"
@@ -386,6 +386,7 @@
                                       VerticalScrollBarVisibility="Auto"
                                       HorizontalScrollBarVisibility="Disabled"
                                       CanContentScroll="False"
+                                      Padding="0,0,4,18"
                                       Focusable="False"
                                       KeyboardNavigation.TabNavigation="Continue">
                             <ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent"
@@ -400,7 +401,7 @@
                             <Setter TargetName="SettingsHeaderScroller" Property="HorizontalScrollBarVisibility" Value="Auto"/>
                             <Setter TargetName="SettingsHeaderScroller" Property="VerticalScrollBarVisibility" Value="Disabled"/>
                             <Setter TargetName="SettingsHeaderScroller" Property="Width" Value="NaN"/>
-                            <Setter TargetName="SettingsHeaderScroller" Property="Padding" Value="0"/>
+                            <Setter TargetName="SettingsHeaderScroller" Property="Padding" Value="0,0,0,12"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -417,7 +418,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TabItem">
-                    <Border x:Name="Chrome" MinHeight="66" Padding="14,11" CornerRadius="14"
+                    <Border x:Name="Chrome" MinHeight="0" Padding="14,8" CornerRadius="14" ClipToBounds="True"
                             Background="{DynamicResource GscControlFillBrush}" BorderBrush="{DynamicResource GscGlassStrokeBrush}" BorderThickness="1">
                         <ContentPresenter ContentSource="Header" VerticalAlignment="Center"/>
                     </Border>

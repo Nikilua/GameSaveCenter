@@ -24,7 +24,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("最近 30 天", xaml);
             Assert.Contains("最近 90 天", xaml);
             Assert.Contains("设置迁移", xaml);
-            Assert.Contains("tab.MinHeight = compact ? 44 : 72;", code);
+            Assert.Contains("tab.MinHeight = compact ? 50 : shortHeight ? 60 : 72;", code);
             Assert.Contains("SettingsSectionTabs.TabStripPlacement = compact ? Dock.Top : Dock.Left;", code);
             Assert.Contains("SettingsSectionTabs.SelectionChanged += OnSettingsTabSelectionChanged;", code);
             Assert.Contains("selected.BringIntoView()", code);

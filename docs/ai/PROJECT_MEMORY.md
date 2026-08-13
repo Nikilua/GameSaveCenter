@@ -234,3 +234,13 @@
 - 2026-08-13 一键开发安装完成，Playnite 扩展日志确认 `GameSaveCenter 0.6.70.0` 加载，Worker 进程从当前扩展目录运行。
 - `AUTO VERIFIED` 仅覆盖自动化、渲染、安装和真实宿主日志；用户实际 2K 最大化、主题/DPI、连续缩放及真实媒体数据滚动仍为 `MANUAL QA REQUIRED`。
 - 本阶段只补充用户反馈的三个布局问题，不新增主导航页面，不改变业务绑定或 Worker/恢复体系；下一步等待人工反馈。
+
+## 2026-08-13 UI-QA-REAL-004 当前事实
+
+- 设置页左侧分类卡的“底部/边缘圆角被削掉”根因已确认是 `SettingsHeaderScroller` 的滚动条占用内容宽度，固定 232 DIP 的 `TabItem` 被 viewport 裁切，不是 CornerRadius 数值失效。
+- `SettingsHeaderScroller` 已扩展到 248 DIP，分类 `TabItem` 仍保持 232 DIP 内容宽度；滚动条出现时为卡片边缘预留安全区，分类卡继续使用 14 DIP 圆角并开启自身边界裁剪。
+- 设置页在可用高度低于 760 DIP 时使用更紧凑的 60 DIP 分类卡和 8 DIP 间距；左右设置滚动面保留底部安全留白，避免最后一项在宿主 viewport 边缘被直接截断。
+- 当前自动化基线为 Core 42/42、Worker 117/117、Playnite 210/210；Release 构建无警告/错误，五种窗口尺寸的 `render-qa` 通过。
+- 2026-08-13 一键开发安装完成，真实 Playnite 扩展日志确认 `GameSaveCenter 0.6.70.0` 加载，Worker 进程从当前扩展目录运行。
+- `AUTO VERIFIED` 仅覆盖自动化、渲染、安装和真实宿主日志；用户实际 2K/DPI 设置页最终视觉仍为 `MANUAL QA REQUIRED`。
+- 本阶段只修复设置页现有分类卡和滚动 viewport 的裁切，不新增页面、不改变设置字段、绑定、保存语义或 Worker/恢复体系；下一步等待人工反馈。

@@ -1071,3 +1071,39 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 **提交：**`3657145`（代码、回归测试与长期记忆）；本条 hash 回填由随后独立的文档提交完成。
 
 **下一步：**等待用户人工视觉反馈；不引入本轮范围外功能。
+
+## 2026-08-13 UI-QA-REAL-004 设置页分类卡圆角裁切修复
+
+**问题根因：**
+
+- 设置页左侧分类卡并不是圆角值失效，而是固定 232 DIP 的 `SettingsHeaderScroller` 在启用纵向滚动条后，实际内容 viewport 变窄；`TabItem` 仍占满原宽度，卡片右侧圆角被滚动区域直接裁掉，视觉上像底部或边缘被削平。
+
+**实现内容：**
+
+- 左侧分类滚动槽从 232 DIP 扩展到 248 DIP，为滚动条和卡片圆角保留安全宽度；分类卡自身继续使用共享 14 DIP 圆角。
+- 分类卡增加短高度响应式：可用高度低于 760 DIP 时收紧高度和底部间距，避免五个分类卡在设置宿主 viewport 中被挤压。
+- 左右设置滚动面增加明确的底部安全留白，顶部布局和现有设置内容不变；卡片 Chrome 开启自身边界裁剪，避免内容越界破坏圆角。
+- 新增设置页圆角/短高度布局回归测试，并更新已有设置布局断言。
+
+**主要修改文件：**
+
+- `src/GameSaveCenter.Playnite/Themes/Redesign.xaml`
+- `src/GameSaveCenter.Playnite/Settings/GameSaveCenterSettingsView.xaml.cs`
+- `tests/GameSaveCenter.Playnite.Tests/SettingsAndAutoSelectSourceTests.cs`
+- `tests/GameSaveCenter.Playnite.Tests/UiLayoutRegressionTests.cs`
+
+**测试结果：**
+
+- `check-xaml.ps1` 通过（13 个 XAML 文件）。
+- Release 构建 0 warning / 0 error；Core 42/42、Worker 117/117、Playnite 210/210。
+- `render-qa.ps1` 在 1040×700、1280×720、1366×768、1600×900、1920×1080 全部通过；设置布局探针确认左侧滚动槽为 248 DIP，短高度分类卡进入 60 DIP 档位，页面滚动仍为 Auto。
+- `dev-install-run.ps1 -Configuration Release` 构建、打包、安装校验成功并启动 Playnite；真实扩展日志确认 `GameSaveCenter 0.6.70.0` 加载，Worker 从当前安装目录正常运行。
+
+**验证边界：**
+
+- `AUTO VERIFIED`：源码/XAML、Release 构建、Core/Worker/Playnite 测试、五种窗口尺寸渲染、开发安装、真实宿主扩展日志和 Worker 进程。
+- `MANUAL QA REQUIRED`：用户实际 Playnite 设置页在 2K/DPI 缩放下的最终视觉确认，以及不同主题下滚动条与圆角之间的观感；本阶段不把离屏探针冒充为人工点击验收。
+
+**提交：**待本阶段代码提交完成后回填准确 hash。
+
+**下一项：**等待用户人工视觉反馈；不引入本轮范围外功能。

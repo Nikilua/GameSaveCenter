@@ -361,6 +361,7 @@ namespace GameSaveCenter.Playnite.Settings
             var expanded = layoutWidth >= 920;
             var compact = layoutWidth < 920;
             var narrow = layoutWidth < 720;
+            var shortHeight = height > 0 && height < 760;
             var horizontalMargin = narrow ? 10 : 18;
             var contentWidth = Math.Max(320, layoutWidth - horizontalMargin * 2 - 40);
             var formWidth = compact ? contentWidth : Math.Max(320, contentWidth - 248);
@@ -401,9 +402,9 @@ namespace GameSaveCenter.Playnite.Settings
                 if (!(item is TabItem tab)) continue;
                 tab.MinWidth = compact ? (narrow ? 132 : 158) : 218;
                 tab.Width = compact ? double.NaN : 232;
-                tab.MinHeight = compact ? 44 : 72;
+                tab.MinHeight = compact ? 50 : shortHeight ? 60 : 72;
                 tab.HorizontalContentAlignment = HorizontalAlignment.Stretch;
-                tab.Margin = compact ? new Thickness(0, 0, 8, 8) : new Thickness(0, 0, 0, 10);
+                tab.Margin = compact ? new Thickness(0, 0, 8, 8) : new Thickness(0, 0, 0, shortHeight ? 8 : 10);
             }
 
             var twoColumns = formWidth >= 720;
