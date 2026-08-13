@@ -2,6 +2,18 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-13 INTEGRITY-001 完整性自检补齐
+
+- Task ID：`INTEGRITY-001`。
+- 实现内容：在既有 SQLite/表结构/目录/已索引文件检查基础上补齐：磁盘上未被数据库索引的孤儿归档（`ORPHAN_ARCHIVE`）、备份 Manifest 无法解析或重复路径（`MANIFEST_INVALID`/`MANIFEST_DUPLICATE_PATH`）、数据/存档/媒体所在卷剩余空间不足（`LOW_DISK_SPACE`）、未配置依赖的状态收敛为 `Warning`（Ludusavi）或 `Skipped`（Rclone 可选）。
+- 结果模型：`IntegrityCheckResultDto` 现在使用 `Healthy/Warning/Error/Skipped` 四态并返回 `SkippedCount`；自检仍完全只读，不自动删除或修复。
+- 主要修改文件：`IntegrityCheckService.cs`、`SqliteStateStore.Integrity.cs`、`IntegrityDtos.cs`、`IntegrityCheckServiceTests.cs`。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `54/54`、Worker `151/151`、Playnite `217/217`；`validate-source.py` 与 XAML 结构门禁通过（本阶段无 UI 改动，不重跑 render-qa）。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 23:27 记录插件加载，`worker-launch.log` 23:27:07 记录 Worker 启动与 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实磁盘不足、孤儿 ZIP、损坏 Manifest 场景下人工复核自检结果；修复动作仍未实现自动应用，只提供建议。
+- Commit：`a064108`。
+- 下一项：继续 Layer B，从 `DB-MIGRATION-001` 历史数据库 Fixture 补齐开始。
+
 ## 2026-08-13 DIAGNOSTICS-001 一键诊断包结构化升级
 
 - Task ID：`DIAGNOSTICS-001`。
