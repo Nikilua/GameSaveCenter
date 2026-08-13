@@ -1,3 +1,4 @@
+using System.IO.Compression;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Worker.Configuration;
 using GameSaveCenter.Worker.Persistence;
@@ -35,8 +36,8 @@ public sealed class RepositoryRebuildServiceTests : IDisposable
         var rebuilder = new FakeRebuilder(store);
         rebuilder.FailGames.Add("g2");
 
-        var service = new RepositoryRebuildService(catalog, rebuilder, store, NullLogger<RepositoryRebuildService>.Instance);
-        var result = await service.RebuildAsync(CancellationToken.None);
+        var service = new RepositoryRebuildService(catalog, rebuilder, store, options, NullLogger<RepositoryRebuildService>.Instance);
+        var result = await service.RebuildAsync(new RepositoryRebuildRequestDto { Confirmed = true }, CancellationToken.None);
 
         Assert.Equal(1, result.RebuiltGameCount);
         Assert.Equal(1, result.FailedGameCount);
@@ -46,6 +47,46 @@ public sealed class RepositoryRebuildServiceTests : IDisposable
         Assert.Equal(2, rebuilder.Calls);
         var audit = await store.GetAuditAsync(20, CancellationToken.None);
         Assert.Contains(audit, x => x.Category == "RepositoryRebuild");
+    }
+
+    [Fact]
+    public async Task RebuildRequiresConfirmation()
+    {
+        var service = new RepositoryRebuildService(
+            new FakeCatalog(),
+            new FakeRebuilder(store),
+            store,
+            options,
+            NullLogger<RepositoryRebuildService>.Instance);
+
+        var ex = await Assert.ThrowsAsync<WorkerOperationException>(() => service.RebuildAsync(
+            new RepositoryRebuildRequestDto { Confirmed = false },
+            CancellationToken.None));
+        Assert.Equal("REPOSITORY_REBUILD_NOT_CONFIRMED", ex.Code);
+    }
+
+    [Fact]
+    public async Task PreviewScansArchivesWithoutWriting()
+    {
+        Directory.CreateDirectory(options.LudusaviBackupDirectory);
+        var empty = Path.Combine(options.LudusaviBackupDirectory, "empty.zip");
+        using (ZipFile.Open(empty, ZipArchiveMode.Create)) { }
+        var corrupt = Path.Combine(options.LudusaviBackupDirectory, "corrupt.zip");
+        await File.WriteAllBytesAsync(corrupt, new byte[] { 1, 2, 3 });
+        var service = new RepositoryRebuildService(
+            new FakeCatalog(),
+            new FakeRebuilder(store),
+            store,
+            options,
+            NullLogger<RepositoryRebuildService>.Instance);
+
+        var preview = await service.PreviewAsync(CancellationToken.None);
+
+        Assert.Equal(2, preview.FoundArchives);
+        Assert.Equal(2, preview.UnassignedArchives);
+        Assert.Equal(1, preview.PartialMetadataArchives);
+        Assert.Equal(1, preview.CorruptArchives);
+        Assert.Equal(0, preview.ConfirmableArchives);
     }
 
     public void Dispose()

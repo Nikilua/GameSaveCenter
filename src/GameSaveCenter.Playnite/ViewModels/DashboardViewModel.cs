@@ -1261,7 +1261,22 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task RebuildRepositoryAsync()
         {
-            var result = await plugin.RequestAsync<RepositoryRebuildResultDto>(MessageTypes.RebuildRepository, new { }, TimeSpan.FromMinutes(10));
+            var preview = await plugin.RequestAsync<RepositoryRebuildPreviewDto>(
+                MessageTypes.PreviewRepositoryRebuild,
+                new { },
+                TimeSpan.FromMinutes(10));
+            ApplyOnUi(() => RepositoryRebuildSummary = preview.Summary);
+            var confirmed = await plugin.ConfirmAsync(
+                "确认重建备份索引",
+                preview.Summary + "\n\n仅重建 SQLite 索引，不会删除或上传归档。是否继续？",
+                "重建索引",
+                "取消");
+            if (!confirmed) return;
+
+            var result = await plugin.RequestAsync<RepositoryRebuildResultDto>(
+                MessageTypes.RebuildRepository,
+                new RepositoryRebuildRequestDto { Confirmed = true },
+                TimeSpan.FromMinutes(10));
             ApplyOnUi(() =>
             {
                 RepositoryRebuildSummary = $"备份索引重建：{result.RebuiltGameCount} 个游戏成功，{result.FailedGameCount} 个失败，共索引 {result.IndexedVersionCount} 个版本";

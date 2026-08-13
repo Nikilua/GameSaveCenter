@@ -67,6 +67,7 @@ namespace GameSaveCenter.Contracts
         public const string PreviewMetadataRestore = "metadata.restore.preview";
         public const string ExecuteMetadataRestore = "metadata.restore.execute";
         public const string RebuildRepository = "repository.rebuild";
+        public const string PreviewRepositoryRebuild = "repository.rebuild.preview";
         public const string PathRemap = "path.remap";
         public const string ReconcileTasks = "tasks.reconcile";
         public const string CreateDiagnosticsPackage = "diagnostics.package.create";
