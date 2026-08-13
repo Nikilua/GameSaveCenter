@@ -2,6 +2,18 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-13 SAFE-MODE-001 安全模式
+
+- Task ID：`SAFE-MODE-001`。
+- 实现内容：新增全局“安全模式”设置并持久化到插件与 Worker 设置。开启后暂停自动退出备份、游玩中定时备份、自动媒体同步、自动工具启动、会话存档快照与保护提示、云端自动上传和云端自动重试；手动备份、手动媒体同步、手动工具启动、诊断与恢复仍可用。设置页新增开关，维护中心诊断页在开启时显示醒目提示，诊断摘要包含安全模式状态。
+- 核心设计选择：安全模式只关闭“自动产生副作用”的路径，不封锁用户明确点击的手动操作；Worker 侧在 `GameSessionCoordinator`、`GameToolService`、`BackupOrchestrator`、`MediaSyncService` 和 `CloudRetryService` 同时设门禁，避免绕过 Playnite 事件的进程检测路径重新触发自动化。旧设置 JSON 缺字段时保持关闭。
+- 主要修改文件：Contracts `WorkerSettingsDto`/`WorkerSettingsSnapshotDto`/`DashboardSnapshotDto`、`WorkerOptions`、`GameSessionCoordinator`、`GameToolService`、`BackupOrchestrator`、`MediaSyncService`、`CloudRetryService`、`DashboardService`、`IpcRequestDispatcher`、Playnite 设置与维护视图、诊断摘要，以及 Worker/Playnite 测试。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `51/51`、Worker `120/120`、Playnite `211/211`；`validate-source.py`、XAML 结构、WPF 静态门禁 0 errors / 33 warnings / 153 info、五种窗口 `render-qa OK`。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 记录 `Loaded plugin: GameSaveCenter, version 0.6.70`，插件日志记录 `0.6.70.0 loaded`，`worker-launch.log` 记录存储初始化与 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实游戏中开启/关闭安全模式后验证不再触发自动备份与工具启动，以及设置页/维护提示在主题与 DPI 下的人工观感。
+- Commit：`a70d73f`。
+- 下一项：继续 Layer B，从 `INTEGRITY-001` 全局完整性自检开始。
+
 ## 2026-08-13 NOTIFY-LEVELS-001 通知级别收口
 
 - Task ID：`NOTIFY-LEVELS-001`。
