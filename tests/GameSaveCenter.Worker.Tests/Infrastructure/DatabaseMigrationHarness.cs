@@ -30,6 +30,15 @@ public sealed class DatabaseMigrationHarness : IDisposable
 
     public string DatabasePath => options.DatabasePath;
 
+    public string? ReadScalar(string sql)
+    {
+        using var connection = new SqliteConnection($"Data Source={DatabasePath};Mode=ReadWriteCreate;Cache=Shared;Foreign Keys=True");
+        connection.Open();
+        var command = connection.CreateCommand();
+        command.CommandText = sql;
+        return command.ExecuteScalar()?.ToString();
+    }
+
     public async Task CreateLegacyFixtureAsync(string schemaSql, string dataSql, CancellationToken token)
     {
         await using var connection = new SqliteConnection($"Data Source={DatabasePath};Mode=ReadWriteCreate;Cache=Shared;Foreign Keys=True");
