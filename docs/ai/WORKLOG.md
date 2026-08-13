@@ -2,6 +2,17 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 MAINTENANCE-REPORT-001 用户可读维护健康报告
+
+- Task ID：`MAINTENANCE-REPORT-001`。
+- 实现内容：新增 IPC `maintenance.report.get` 与 Worker `MaintenanceReportService`，从 SQLite 计数、完整性自检、存储分析、本地镜像状态聚合用户可读健康文本；维护中心“诊断”操作带新增“复制健康报告/导出健康报告”，导出支持 TXT/Markdown。报告与开发者诊断 ZIP 明确区分，不包含日志、原始数据库或凭据。
+- 主要修改文件：`MaintenanceReportDtos.cs`、`MaintenanceReportService.cs`、`MessageTypes.cs`、`WorkerDtos.cs`、`IpcRequestDispatcher.cs`、`Program.cs`、`DashboardViewModel.cs`、`MaintenanceView.xaml`、`MaintenanceReportServiceTests.cs`、`MaintenanceReportSourceTests.cs`、`ProtocolCompatibilityTests.cs`、`WpfUiResourceDictionaryTests.cs`。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `59/59`、Worker `183/183`、Playnite `231/231`；`validate-source.py`、XAML/WPF 静态门禁与五种窗口 `render-qa` 全绿。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 03:43:26 记录插件加载，`worker-launch.log` 03:43:32 记录 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实维护中心点击复制/导出健康报告、长文本显示与内容完整性复核。
+- Commit：`9d465d2`。
+- 下一项：生成 Layer C Audit，随后生成最终 Epic Audit。
+
 ## 2026-08-14 SETTINGS-VALIDATION-001 设置即时验证摘要
 
 - Task ID：`SETTINGS-VALIDATION-001`。
