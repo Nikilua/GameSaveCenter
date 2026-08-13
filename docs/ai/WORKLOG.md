@@ -2,6 +2,18 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-13 A-HARDEN-003 Onboarding 测试备份闭环审计
+
+- Task ID：`A-HARDEN-003`。
+- 实现内容：审计确认 ONBOARDING-001 已具备真实“测试备份”入口：维护中心首次使用卡片上的 `OnboardingTestBackupCommand` 直接调用 `BackupSelectedAsync`，而 `BackupSelectedAsync` 走真实 `MessageTypes.BackupGame` 生产备份管道（`Reason="Manual"`、`Force=true`），没有独立的 `TestBackupService` 或假服务。按钮仅在存在已匹配当前游戏且 Ludusavi 可用时可用。
+- 本阶段补齐：无可用测试游戏时的明确文案改为“若当前没有可用于测试的已识别存档游戏，可稍后在存档中心手动执行备份。”，并新增回归测试锁定“OnboardingTestBackupCommand → BackupSelectedAsync → MessageTypes.BackupGame/Manual”链路。
+- 主要修改文件：`MaintenanceView.xaml`、`tests/GameSaveCenter.Playnite.Tests/SettingsAndAutoSelectSourceTests.cs`。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `54/54`、Worker `145/145`、Playnite `216/216`；`validate-source.py`、XAML 结构、WPF 静态门禁 0 errors / 33 warnings / 153 info、五种窗口 `render-qa OK`。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 22:58 记录 `Loaded plugin: GameSaveCenter, version 0.6.70`，插件日志记录 `0.6.70.0 loaded`，`worker-launch.log` 22:58:47 记录 Worker 启动、存储初始化和 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实首次使用流程中点击“对当前游戏做测试备份”，确认任务中心显示真实 Manual Backup 结果和“测试备份成功”反馈。
+- Commit：`5666944`。
+- 下一项：STEP 7 Layer A Hardening Gate（Release/Core/Worker/Playnite/source/XAML/render-qa 全量复跑），随后生成 Layer B 逐项审计。
+
 ## 2026-08-13 A-HARDEN-002 未分类自定义启动项反作弊自动启动语义
 
 - Task ID：`A-HARDEN-002`。
