@@ -2,6 +2,17 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 UI-STATES-001 统一页面状态控件
+
+- Task ID：`UI-STATES-001`。
+- 实现内容：新增共享 `WorkspaceStatePresenter`，统一 Loading/Empty/Error/Degraded/Offline/Disabled 六种状态；共享模板展示状态图标、状态文案、标题、说明和可选重试按钮（无命令时自动隐藏）。Overview 全局活动与 Task 空状态已接入共享控件，页面空状态回归测试同时接受 `GscEmptyStateText` 与 `GscWorkspaceStatePresenter`。
+- 主要修改文件：`WorkspaceStatePresenter.cs`、`Redesign.xaml`、`OverviewView.xaml`、`TaskCenterView.xaml`、`WorkspaceStateSourceTests.cs`、`WpfUiResourceDictionaryTests.cs`。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `59/59`、Worker `182/182`、Playnite `229/229`；`validate-source.py`、XAML/WPF 静态门禁与五种窗口 `render-qa` 全绿。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 03:36:34 记录插件加载，`worker-launch.log` 03:36:40 记录 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实 Loading/Error/Degraded/Offline/Disabled 状态人工切换与重试按钮复核。
+- Commit：`f21cba4`。
+- 下一项：Layer C `SETTINGS-VALIDATION-001` 设置即时验证。
+
 ## 2026-08-14 ACCESSIBILITY-001 键盘快捷搜索、焦点与自动化名称
 
 - Task ID：`ACCESSIBILITY-001`。
