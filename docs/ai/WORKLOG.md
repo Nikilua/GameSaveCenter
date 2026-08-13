@@ -2,6 +2,19 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 METADATA-BACKUP-001 元数据灾备恢复流程
+
+- Task ID：`METADATA-BACKUP-001`。
+- 实现内容：在既有元数据灾备导出基础上补齐安全恢复：`metadata.restore.preview` 校验 ZIP 内的 manifest、数据库/设置 SHA-256、条目路径越界；`metadata.restore.execute` 要求确认，执行前复制当前数据库与 Worker 设置到 `MetadataBackups/PreRestore-*`，临时暂停后台自动操作，使用 `AtomicFileWriter.ReplaceFileAsync` 原子替换，随后执行 SQLite `integrity_check`；失败时回滚恢复前副本，回滚失败返回 `METADATA_RESTORE_ROLLBACK_FAILED`。
+- UI：维护中心新增“恢复元数据灾备”按钮，流程为选择 ZIP → 预览 → 危险操作确认 → 执行 → 显示恢复摘要与恢复前副本路径。
+- 核心设计选择：恢复包不会被直接解压覆盖；替换前清理 WAL/SHM 侧车文件并确保文件属性可写；`SqliteConnection.ClearAllPools` 用于释放 SQLite 池锁。Worker.Tests 增加 `DisableTestParallelization`，避免全局池清理干扰并行测试。
+- 主要修改文件：`MetadataBackupService.cs`、`MetadataBackupDtos.cs`、`MessageTypes.cs`、`IpcRequestDispatcher.cs`、`AtomicFileWriter.cs`、`WorkerOptions.cs`、`DashboardViewModel.cs`、`MaintenanceView.xaml`、`MetadataBackupServiceTests.cs`、`AssemblyInfo.cs`。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `54/54`、Worker `155/155`、Playnite `217/217`；`validate-source.py`、XAML 结构、WPF 静态门禁 0 errors / 33 warnings / 153 info、五种窗口 `render-qa OK`。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 00:15 记录插件加载，`worker-launch.log` 00:15:20 记录 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实选择元数据包执行恢复、核对恢复前副本与恢复后数据库，以及恢复失败回滚的人工复核。
+- Commit：`97b06b5`。
+- 下一项：继续 Layer B，从 `REPOSITORY-REBUILD-001` 备份仓库索引重建预览/确认补齐开始。
+
 ## 2026-08-13 DB-MIGRATION-001 历史数据库 Fixture 补齐
 
 - Task ID：`DB-MIGRATION-001`。

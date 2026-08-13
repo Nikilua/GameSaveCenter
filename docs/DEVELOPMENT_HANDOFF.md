@@ -4,10 +4,10 @@
 
 ## 2026-08-13 Layer A 收口与 A-HARDEN-001/002/003、DIAGNOSTICS、SAFE-MODE、INTEGRITY、DB-MIGRATION、METADATA-BACKUP、REPOSITORY-REBUILD、PATH-REMAP、TASK-RECONCILE、GAME-OP-LOCK、IPC-COMPAT、ATOMIC-IO、SOAK 与 FAULT-INJECTION 当前状态
 
-- 当前基线：Core `54/54`、Worker `152/152`、Playnite `217/217`；Release 构建 0 warnings / 0 errors；source、WPF 静态门禁和 `render-qa` 通过。
-- 已交付：多设备强内容指纹/保守分歧判断、可取消的流式 Restore Readiness、按实际目录分盘检查、重复 Manifest 防护、结构化且集中脱敏的诊断包、`ImportantOnly/Summary/Verbose` 通知级别、带启动失败自动请求与恢复正常按钮的安全模式、覆盖孤儿归档/Manifest/磁盘空间/四态结果的完整性自检、旧版数据库 Fixture 升级 Harness、自身元数据灾备 ZIP、备份仓库索引重建、批量路径迁移、中断任务协调、单游戏操作锁、IPC protocol handshake、共享原子写入器、长时间稳定性测试 Harness、关键 I/O 故障注入 Harness、通知级别正式收口与同 Session 去重测试、未分类自定义启动项反作弊授权语义，以及 Onboarding 测试备份真实生产链路审计。
+- 当前基线：Core `54/54`、Worker `155/155`、Playnite `217/217`；Release 构建 0 warnings / 0 errors；source、WPF 静态门禁和 `render-qa` 通过。
+- 已交付：多设备强内容指纹/保守分歧判断、可取消的流式 Restore Readiness、按实际目录分盘检查、重复 Manifest 防护、结构化且集中脱敏的诊断包、`ImportantOnly/Summary/Verbose` 通知级别、带启动失败自动请求与恢复正常按钮的安全模式、覆盖孤儿归档/Manifest/磁盘空间/四态结果的完整性自检、旧版数据库 Fixture 升级 Harness、自身元数据灾备 ZIP 与安全恢复流程、备份仓库索引重建、批量路径迁移、中断任务协调、单游戏操作锁、IPC protocol handshake、共享原子写入器、长时间稳定性测试 Harness、关键 I/O 故障注入 Harness、通知级别正式收口与同 Session 去重测试、未分类自定义启动项反作弊授权语义，以及 Onboarding 测试备份真实生产链路审计。
 - 真实开发安装已通过：Playnite 扩展 `0.6.70` 加载，Worker 从当前扩展目录启动并记录 `Application started`。安装器仍默认不请求管理员权限；沙箱无法写入 Playnite 扩展目录时，需在正常用户环境或获授权外部环境运行安装器。
-- 当前阶段 commit：`cbd0cdb`、`c6bfda2`、通知级别/安全模式/完整性自检/迁移 Harness/元数据灾备/索引重建/路径迁移/任务协调/操作锁/握手提交见紧随其后的 commit；原子写入提交为 `f1eda41`，稳定性测试提交为 `8132419`，故障注入提交为 `f91992e`，A-HARDEN 提交为 `fbbdb90/8d6c36c/5666944`，B01+B02 升级提交为 `17e88b6`，B03 提交为 `a064108`，B04 提交为 `55f532f`。完整 38 项 Epic 尚未完成；下一步继续 Layer B 逐项审计，当前为 `METADATA-BACKUP-001`。
+- 当前阶段 commit：`cbd0cdb`、`c6bfda2`、通知级别/安全模式/完整性自检/迁移 Harness/元数据灾备/索引重建/路径迁移/任务协调/操作锁/握手提交见紧随其后的 commit；原子写入提交为 `f1eda41`，稳定性测试提交为 `8132419`，故障注入提交为 `f91992e`，A-HARDEN 提交为 `fbbdb90/8d6c36c/5666944`，B01+B02 升级提交为 `17e88b6`，B03 提交为 `a064108`，B04 提交为 `55f532f`，B05 提交为 `97b06b5`。完整 38 项 Epic 尚未完成；下一步继续 Layer B 逐项审计，当前为 `REPOSITORY-REBUILD-001`。
 - `AUTO VERIFIED` 与 `MANUAL QA REQUIRED` 必须分开记录。真实 Restore/Undo、Rclone 断网、双设备、EXE/LNK/BAT/PS1、1000+ 游戏库、主题/DPI/连续缩放仍需人工验收。
 
 ## 2026-08-13 UI-QA-REAL-006 设置分类 Tab 实际裁切修复
