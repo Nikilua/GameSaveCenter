@@ -18,6 +18,7 @@ using GameSaveCenter.Playnite.Settings;
 using GameSaveCenter.Playnite.Views;
 using Playnite.SDK;
 using Playnite.SDK.Events;
+using Playnite.SDK.Models;
 using Playnite.SDK.Plugins;
 
 namespace GameSaveCenter.Playnite
@@ -204,6 +205,111 @@ namespace GameSaveCenter.Playnite
                 // extension log instead of letting Playnite show its generic crash dialog.
                 Opened = CreateDashboardViewSafely
             };
+        }
+
+        public override IEnumerable<GameMenuItem> GetGameMenuItems(GetGameMenuItemsArgs args)
+        {
+            var games = (args?.Games ?? new List<Game>()).Where(x => x != null).ToList();
+            if (games.Count == 0) yield break;
+
+            yield return new GameMenuItem
+            {
+                Description = "立即备份",
+                MenuSection = "GameSaveCenter",
+                Action = _ => FireAndForget(() => BackupFromQuickActionAsync(games))
+            };
+            yield return new GameMenuItem
+            {
+                Description = "查看备份历史",
+                MenuSection = "GameSaveCenter",
+                Action = _ => FireAndForget(() => ShowBackupHistoryQuickActionAsync(games[0]))
+            };
+            yield return new GameMenuItem
+            {
+                Description = "验证最新恢复点",
+                MenuSection = "GameSaveCenter",
+                Action = _ => FireAndForget(() => ValidateLatestReadinessQuickActionAsync(games[0]))
+            };
+            yield return new GameMenuItem
+            {
+                Description = "游戏工具",
+                MenuSection = "GameSaveCenter",
+                Action = _ => FireAndForget(() => ShowGameToolsQuickActionAsync(games[0]))
+            };
+            yield return new GameMenuItem
+            {
+                Description = "打开设置",
+                MenuSection = "GameSaveCenter",
+                Action = _ => PlayniteApi.MainView.OpenPluginSettings(Id)
+            };
+        }
+
+        private async Task BackupFromQuickActionAsync(IReadOnlyList<Game> games)
+        {
+            await EnsureWorkerAsync().ConfigureAwait(false);
+            await ApplySettingsCoreAsync().ConfigureAwait(false);
+            var descriptors = games.Select(adapter.Convert).ToList();
+            await RequestAsync<object>(MessageTypes.UpsertGames, descriptors).ConfigureAwait(false);
+            await RequestAsync<object>(MessageTypes.BackupGame, new BackupRequestDto
+            {
+                PlayniteIds = descriptors.Select(x => x.PlayniteId).ToList(),
+                Force = true,
+                Reason = "ContextMenu"
+            }).ConfigureAwait(false);
+            ShowInfo($"已提交 {descriptors.Count} 个游戏的备份任务。");
+        }
+
+        private async Task ShowBackupHistoryQuickActionAsync(Game game)
+        {
+            await EnsureWorkerAsync().ConfigureAwait(false);
+            var descriptor = adapter.Convert(game);
+            await RequestAsync<object>(MessageTypes.UpsertGames, new[] { descriptor }).ConfigureAwait(false);
+            var versions = await RequestAsync<List<BackupVersionDto>>(
+                MessageTypes.ListBackups,
+                new GameQueryDto { PlayniteId = descriptor.PlayniteId, ForceRefresh = true }).ConfigureAwait(false);
+            if (versions.Count == 0)
+            {
+                ShowInfo($"{game.Name} 暂无备份历史。");
+                return;
+            }
+            var lines = versions.Take(20).Select(x => $"{x.CreatedLocal:yyyy-MM-dd HH:mm} · {x.SizeDisplay} · {x.RestoreReadinessStatusDisplay}");
+            ShowInfo($"{game.Name} 共 {versions.Count} 个备份版本：\n" + string.Join("\n", lines));
+        }
+
+        private async Task ValidateLatestReadinessQuickActionAsync(Game game)
+        {
+            await EnsureWorkerAsync().ConfigureAwait(false);
+            var descriptor = adapter.Convert(game);
+            await RequestAsync<object>(MessageTypes.UpsertGames, new[] { descriptor }).ConfigureAwait(false);
+            var versions = await RequestAsync<List<BackupVersionDto>>(
+                MessageTypes.ListBackups,
+                new GameQueryDto { PlayniteId = descriptor.PlayniteId, ForceRefresh = false }).ConfigureAwait(false);
+            var latest = versions.FirstOrDefault();
+            if (latest == null)
+            {
+                ShowInfo($"{game.Name} 暂无备份版本可验证。");
+                return;
+            }
+            var readiness = await RequestAsync<RestoreReadinessDto>(
+                MessageTypes.ValidateRestoreReadiness,
+                new RestoreReadinessRequestDto { PlayniteId = descriptor.PlayniteId, BackupId = latest.BackupId }).ConfigureAwait(false);
+            ShowInfo($"{game.Name} 最新恢复点：{readiness.StatusDisplay}\n{readiness.Summary}");
+        }
+
+        private async Task ShowGameToolsQuickActionAsync(Game game)
+        {
+            await EnsureWorkerAsync().ConfigureAwait(false);
+            var descriptor = adapter.Convert(game);
+            var tools = await RequestAsync<List<GameToolDto>>(
+                MessageTypes.ListGameTools,
+                new GameQueryDto { PlayniteId = descriptor.PlayniteId }).ConfigureAwait(false);
+            if (tools.Count == 0)
+            {
+                ShowInfo($"{game.Name} 暂无已安装游戏工具。");
+                return;
+            }
+            var lines = tools.Select(x => $"{x.DisplayName} · {x.TypeDisplay} · {(x.Enabled ? "已启用" : "已禁用")}");
+            ShowInfo($"{game.Name} 共 {tools.Count} 个工具：\n" + string.Join("\n", lines));
         }
 
         public override ISettings GetSettings(bool firstRunSettings) => Settings;
