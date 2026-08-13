@@ -478,6 +478,30 @@ public sealed class FakeDashboardData
     public bool HasPendingGameToolEntrySelection { get; set; } = true;
     public string DiagnosticSummary { get; } = "09:31:12 SUCCESS Worker IPC health check passed.\n09:30:58 INFO Media scan started.\n09:18:06 ERROR Rclone remote unavailable; local source retained.";
     public string RetentionSummary { get; } = "全局保留策略只读预览：当前建议保留 12 个版本，候选清理 3 个版本。";
+    public StorageAnalysisDto StorageAnalysis { get; } = new StorageAnalysisDto
+    {
+        BackupDirectoryAvailable = true,
+        VolumeRoot = "D:",
+        VolumeTotalBytes = 1024L * 1024 * 1024 * 1024,
+        VolumeFreeBytes = 512L * 1024 * 1024 * 1024,
+        RepositoryBytes = 128L * 1024 * 1024 * 1024,
+        IndexedBackupBytes = 96L * 1024 * 1024 * 1024,
+        BackupVersionCount = 184,
+        Summary = "卷 D: 剩余 512 GiB / 共 1 TiB；索引 184 个版本，索引体积 96 GiB，目录实测 128 GiB。近 30 天新增 12 GiB（估算）",
+        PredictionSummary = "按最近 30 天新增速度估算，约 14 个月后达到磁盘 90% 用量。",
+        Trends =
+        {
+            new StorageTrendDto { Days = 7, AddedBytes = 2L * 1024 * 1024 * 1024, AddedVersionCount = 9 },
+            new StorageTrendDto { Days = 30, AddedBytes = 12L * 1024 * 1024 * 1024, AddedVersionCount = 31 },
+            new StorageTrendDto { Days = 90, AddedBytes = 30L * 1024 * 1024 * 1024, AddedVersionCount = 74 }
+        },
+        TopGames =
+        {
+            new StorageGameRankDto { GameName = "Cyberpunk 2077", BackupCount = 12, BackupBytes = 20L * 1024 * 1024 * 1024, LatestBackupUtc = DateTime.UtcNow.AddHours(-3) },
+            new StorageGameRankDto { GameName = "Baldur's Gate 3", BackupCount = 18, BackupBytes = 16L * 1024 * 1024 * 1024, LatestBackupUtc = DateTime.UtcNow.AddDays(-1) },
+            new StorageGameRankDto { GameName = "Elden Ring", BackupCount = 8, BackupBytes = 9L * 1024 * 1024 * 1024, LatestBackupUtc = DateTime.UtcNow.AddDays(-2) }
+        }
+    };
     public string DeviceStateMessage { get; } = "最近一次设备摘要对比完成：2 个游戏需要人工决定，其余一致。";
     public string StagedRemoteBackupStatus { get; } = "尚未下载远端存档。下载只会写入本机隔离区，不会覆盖当前存档。";
 }

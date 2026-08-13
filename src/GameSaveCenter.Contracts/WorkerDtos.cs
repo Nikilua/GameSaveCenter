@@ -36,7 +36,8 @@ namespace GameSaveCenter.Contracts
             "PathRemap",
             "TaskReconcile",
             "GameOperationLock",
-            "AtomicIo"
+            "AtomicIo",
+            "StorageAnalysis"
         };
     }
 }

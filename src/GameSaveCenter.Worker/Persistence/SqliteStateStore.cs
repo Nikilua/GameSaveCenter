@@ -768,6 +768,21 @@ ON CONFLICT(playnite_id,backup_id) DO UPDATE SET ludusavi_name=excluded.ludusavi
         return result;
     }
 
+    /// <summary>Returns indexed backup rows needed for read-only storage analysis.</summary>
+    public async Task<List<BackupVersionDto>> GetStorageAnalysisRowsAsync(CancellationToken token)
+    {
+        var result = new List<BackupVersionDto>();
+        await using var connection=Open(); await connection.OpenAsync(token).ConfigureAwait(false);
+        var command=connection.CreateCommand();
+        command.CommandText="SELECT playnite_id,ludusavi_name,created_utc,total_bytes FROM backup_versions ORDER BY created_utc ASC;";
+        await using var reader=await command.ExecuteReaderAsync(token).ConfigureAwait(false);
+        while(await reader.ReadAsync(token).ConfigureAwait(false)) result.Add(new BackupVersionDto
+        {
+            PlayniteId=reader.GetString(0),LudusaviName=reader.GetString(1),CreatedUtc=DateTime.Parse(reader.GetString(2)).ToUniversalTime(),TotalBytes=reader.GetInt64(3)
+        });
+        return result;
+    }
+
     /// <summary>Returns one newest indexed backup per game for a content-free device sidecar.</summary>
     public async Task<List<DeviceBackupSummaryDto>> GetLatestBackupSummariesAsync(CancellationToken token)
     {

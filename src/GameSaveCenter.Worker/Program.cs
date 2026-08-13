@@ -67,6 +67,7 @@ internal static class Program
         builder.Services.AddSingleton<RepositoryRebuildService>();
         builder.Services.AddSingleton<PathRemapService>();
         builder.Services.AddSingleton<TaskReconcileService>();
+        builder.Services.AddSingleton<StorageAnalysisService>();
         builder.Services.AddSingleton<IpcRequestDispatcher>();
         builder.Services.AddHostedService<WorkerInitializationService>();
         builder.Services.AddHostedService<CloudRetryService>();

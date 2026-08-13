@@ -42,6 +42,22 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         [Fact]
+        public void MaintenanceStorageAnalysisUsesResponsiveMetricsAndRealCommand()
+        {
+            var root = FindRepositoryRoot();
+            var maintenance = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+            var code = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml.cs"));
+
+            Assert.Contains("x:Name=\"MaintenanceStorageMetrics\"", maintenance);
+            Assert.Contains("x:Name=\"MaintenanceStorageTrendPanel\"", maintenance);
+            Assert.Contains("Command=\"{Binding RefreshStorageAnalysisCommand}\"", maintenance);
+            Assert.Contains("StorageAnalysis.Summary", maintenance);
+            Assert.Contains("StorageAnalysis.TopGames", maintenance);
+            Assert.Contains("MaintenanceStorageMetrics.Columns = width >= 900 ? 4 : width >= 620 ? 2 : 1", code);
+            Assert.Contains("MaintenanceStorageTrendPanel.Columns = width >= 720 ? 3 : 1", code);
+        }
+
+        [Fact]
         public void SharedInputChromeKeepsRoundedBoundsAndCenteredContent()
         {
             var root = FindRepositoryRoot();

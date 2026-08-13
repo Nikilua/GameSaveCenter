@@ -30,5 +30,6 @@ public sealed class ProtocolCompatibilityTests
         Assert.Contains("TaskReconcile", WorkerCapabilities.Current);
         Assert.Contains("GameOperationLock", WorkerCapabilities.Current);
         Assert.Contains("AtomicIo", WorkerCapabilities.Current);
+        Assert.Contains("StorageAnalysis", WorkerCapabilities.Current);
     }
 }
