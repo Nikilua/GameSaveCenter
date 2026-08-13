@@ -1828,6 +1828,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             builder.AppendLine("生成时间：" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss zzz"));
             builder.AppendLine("插件版本：" + (typeof(DashboardViewModel).Assembly.GetName().Version?.ToString() ?? "dev"));
             builder.AppendLine("Worker：" + (Snapshot.WorkerHealthy ? "正常" : "不可用") + " / " + Snapshot.WorkerVersion);
+            builder.AppendLine("安全模式：" + (settings.SafeModeEnabled || Snapshot.SafeModeEnabled ? "已开启（自动操作已暂停）" : "未开启"));
             builder.AppendLine("Ludusavi：" + (Snapshot.LudusaviAvailable ? "可用" : "不可用") + " / " + Snapshot.LudusaviVersion);
             builder.AppendLine("Ludusavi 路径：" + EmptyAsUnset(settings.LudusaviExecutable));
             builder.AppendLine("存档目录：" + EmptyAsUnset(settings.LudusaviBackupDirectory));

@@ -106,7 +106,7 @@ public sealed class MediaSyncService
             }
 
             var policy=await _store.GetPolicyAsync(game.PlayniteId,ct).ConfigureAwait(false);
-            if(_options.EnableCloudUpload&&(request.UploadAfterSync||policy.UploadAfterBackup)&&copied>0&&_rclone.IsConfigured)
+            if(!_options.SafeModeEnabled&&_options.EnableCloudUpload&&(request.UploadAfterSync||policy.UploadAfterBackup)&&copied>0&&_rclone.IsConfigured)
             {
                 await progress.ReportAsync(90,"正在复制媒体到云端").ConfigureAwait(false);
                 var gameDirectory=Path.Combine(_options.MediaArchiveDirectory,Sanitize(game.Name));
@@ -157,7 +157,7 @@ public sealed class MediaSyncService
                     break;
                 }
             }
-            if(_options.EnableCloudUpload&&_rclone.IsConfigured&&assignedGameIds.Count>0)
+            if(!_options.SafeModeEnabled&&_options.EnableCloudUpload&&_rclone.IsConfigured&&assignedGameIds.Count>0)
             {
                 foreach(var gameId in assignedGameIds)
                 {

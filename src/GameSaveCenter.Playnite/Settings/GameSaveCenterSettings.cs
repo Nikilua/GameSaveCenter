@@ -61,6 +61,7 @@ namespace GameSaveCenter.Playnite.Settings
         public bool EnableDashboardAutoRefresh { get; set; } = true;
         public bool EnableTaskNotifications { get; set; } = true;
         public NotificationLevel NotificationLevel { get; set; } = NotificationLevel.Summary;
+        public bool SafeModeEnabled { get; set; }
         public GameSaveCenterThemeMode ThemeMode { get; set; } = GameSaveCenterThemeMode.FollowPlaynite;
         public bool EnableUiAnimations { get; set; } = true;
         public bool EnableGlassEffects { get; set; } = true;
@@ -166,6 +167,7 @@ namespace GameSaveCenter.Playnite.Settings
         public WorkerSettingsDto ToWorkerSettings() => new WorkerSettingsDto
         {
             DeviceId = DeviceId,
+            SafeModeEnabled = SafeModeEnabled,
             LudusaviExecutable = Expand(LudusaviExecutable),
             LudusaviBackupDirectory = Expand(LudusaviBackupDirectory),
             RcloneExecutable = Expand(RcloneExecutable),
@@ -256,6 +258,7 @@ namespace GameSaveCenter.Playnite.Settings
             NotificationLevel = Enum.IsDefined(typeof(NotificationLevel), other.NotificationLevel)
                 ? other.NotificationLevel
                 : NotificationLevel.Summary;
+            SafeModeEnabled = other.SafeModeEnabled;
             ThemeMode = other.ThemeMode;
             EnableUiAnimations = other.EnableUiAnimations;
             EnableGlassEffects = other.EnableGlassEffects;

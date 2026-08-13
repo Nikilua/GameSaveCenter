@@ -105,6 +105,47 @@ public sealed class GameToolServiceImportTests : IDisposable
     }
 
     [Fact]
+    public async Task StartAutomaticAsync_SafeModeDoesNotLaunchTool()
+    {
+        var source = Path.Combine(root, "tool.exe");
+        File.WriteAllText(source, "fake exe");
+        var imported = await service.ImportAsync(new ImportGameToolRequestDto
+        {
+            PlayniteId = "game",
+            ToolType = GameToolType.CustomExecutable,
+            SourcePath = source,
+            EntryFileName = Path.GetFileName(source),
+            DisplayName = "Safe Tool",
+            CopyIntoLibrary = false
+        }, CancellationToken.None);
+        await service.UpdateAsync(new UpdateGameToolRequestDto
+        {
+            ToolId = imported.ToolId,
+            DisplayName = imported.DisplayName,
+            Enabled = true,
+            AutoStart = true,
+            LaunchTiming = GameToolLaunchTiming.Delayed,
+            LaunchDelaySeconds = 0,
+            CloseOnGameExit = false,
+            RequiresAdmin = false,
+            IfAlreadyRunning = GameToolIfAlreadyRunning.Skip,
+            RiskCategory = GameToolRiskCategory.GeneralUtility,
+            ActiveVersionId = imported.ActiveVersionId
+        }, CancellationToken.None);
+
+        options.SafeModeEnabled = true;
+        await service.StartAutomaticAsync(new GameSessionEventDto
+        {
+            SessionId = "safe-session",
+            PlayniteId = "game",
+            GameName = "Demo"
+        }, CancellationToken.None);
+
+        var audit = await store.GetAuditAsync(100, CancellationToken.None);
+        Assert.DoesNotContain(audit, x => x.Message.Contains("随游戏启动工具", StringComparison.Ordinal));
+    }
+
+    [Fact]
     public async Task RelocateAsync_UpdatesExternalExecutablePath()
     {
         var first = Path.Combine(root, "old.exe");

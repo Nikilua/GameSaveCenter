@@ -26,7 +26,7 @@ public sealed class CloudRetryService : BackgroundService
         {
             try
             {
-                if (_options.EnableCloudUpload && _rclone.IsConfigured && Directory.Exists(_options.LudusaviBackupDirectory))
+                if (!_options.SafeModeEnabled && _options.EnableCloudUpload && _rclone.IsConfigured && Directory.Exists(_options.LudusaviBackupDirectory))
                 {
                     var due = await _store.GetDueCloudRetriesAsync(DateTime.UtcNow, 10, stoppingToken).ConfigureAwait(false);
                     foreach (var entry in due)

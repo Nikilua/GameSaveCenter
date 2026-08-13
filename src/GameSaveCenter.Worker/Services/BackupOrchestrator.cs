@@ -193,7 +193,7 @@ public sealed class BackupOrchestrator
                     await _store.AddBackupVersionAsync(indexed, JsonSerializer.Serialize(snapshot.Files), ct)
                         .ConfigureAwait(false);
 
-                    if (_options.EnableCloudUpload && policy.UploadAfterBackup && _rclone.IsConfigured)
+                    if (!_options.SafeModeEnabled && _options.EnableCloudUpload && policy.UploadAfterBackup && _rclone.IsConfigured)
                     {
                         await _store.UpdateGameCloudStateAsync(game.PlayniteId,"Pending",ct).ConfigureAwait(false);
                         await progress.ReportAsync(82, $"{requestLabel}：正在复制到云端").ConfigureAwait(false);
@@ -258,6 +258,8 @@ public sealed class BackupOrchestrator
     /// </summary>
     public async Task<TaskStatusDto> RetryCloudUploadAsync(string playniteId,CancellationToken token)
     {
+        if(_options.SafeModeEnabled)
+            throw new WorkerOperationException("SAFE_MODE_ENABLED","安全模式已开启，云端上传已暂停。请先关闭安全模式。","SafeMode");
         var game=await _catalog.GetGameAsync(playniteId,token).ConfigureAwait(false)
                  ??throw new WorkerOperationException("CLOUD_GAME_NOT_FOUND","找不到需要重试云端上传的游戏。",playniteId);
         var result = await _tasks.RunAsync("CloudUpload",game.PlayniteId,game.Name,async(progress,ct)=>

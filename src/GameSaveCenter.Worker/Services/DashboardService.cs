@@ -45,7 +45,7 @@ public sealed class DashboardService
         }
         var snapshot=new DashboardSnapshotDto
         {
-            GeneratedUtc=DateTime.UtcNow,WorkerHealthy=true,WorkerVersion=typeof(DashboardService).Assembly.GetName().Version?.ToString()??"dev",
+            GeneratedUtc=DateTime.UtcNow,WorkerHealthy=true,SafeModeEnabled=_options.SafeModeEnabled,WorkerVersion=typeof(DashboardService).Assembly.GetName().Version?.ToString()??"dev",
             LudusaviAvailable=_ludusavi.IsAvailable,RcloneAvailable=_rclone.IsAvailable,LudusaviVersion=ludusaviVersion,
             LudusaviExecutable=_options.LudusaviExecutable,LudusaviBackupDirectory=_options.LudusaviBackupDirectory,BackupFormat=_options.BackupFormat,
             ManagedGames=counts.Games,MatchedGames=counts.Matched,

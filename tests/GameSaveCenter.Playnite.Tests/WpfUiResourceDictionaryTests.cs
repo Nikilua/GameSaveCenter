@@ -3314,7 +3314,19 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("IsChecked=\"{Binding EnableSessionSavePathDetection}\"", settings);
         Assert.Contains("IsChecked=\"{Binding EnableMediaSync}\"", settings);
         Assert.Contains("IsChecked=\"{Binding EnableTaskNotifications}\"", settings);
+        Assert.Contains("IsChecked=\"{Binding SafeModeEnabled}\"", settings);
+        Assert.Contains("暂停自动备份、自动媒体同步、云端上传和工具自动启动；手动操作仍可用", settings);
         Assert.Contains("Checked=\"OnVisualSettingChanged\" Unchecked=\"OnVisualSettingChanged\"", settings);
+    }
+
+    [Fact]
+    public void MaintenanceShowsSafeModeBannerBoundToSnapshot()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var maintenance = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+
+        Assert.Contains("Snapshot.SafeModeEnabled", maintenance);
+        Assert.Contains("安全模式已开启：自动备份、自动媒体同步、云端上传和工具自动启动已暂停；手动操作仍可用。", maintenance);
     }
 
     [Fact]

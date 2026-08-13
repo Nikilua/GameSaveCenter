@@ -485,6 +485,7 @@ public sealed class IpcRequestDispatcher
     private WorkerSettingsSnapshotDto SanitizedSettings()=>new()
     {
         DataDirectory=_options.DataDirectory,
+        SafeModeEnabled=_options.SafeModeEnabled,
         LudusaviExecutable=_options.LudusaviExecutable,
         LudusaviBackupDirectory=_options.LudusaviBackupDirectory,
         RcloneExecutable=_options.RcloneExecutable,

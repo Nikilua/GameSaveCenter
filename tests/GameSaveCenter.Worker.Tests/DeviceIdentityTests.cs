@@ -34,4 +34,18 @@ public sealed class DeviceIdentityTests
         Assert.Equal(original, options.DeviceId);
         Assert.True(WorkerOptions.IsValidDeviceId(options.DeviceStorageKey));
     }
+
+    [Fact]
+    public void SafeModeEnabledSurvivesWorkerSettingsRoundTrip()
+    {
+        var options = new WorkerOptions();
+
+        options.Apply(new WorkerSettingsDto { SafeModeEnabled = true });
+
+        Assert.True(options.SafeModeEnabled);
+        Assert.True(options.ToDto().SafeModeEnabled);
+
+        options.Apply(new WorkerSettingsDto { SafeModeEnabled = false });
+        Assert.False(options.SafeModeEnabled);
+    }
 }

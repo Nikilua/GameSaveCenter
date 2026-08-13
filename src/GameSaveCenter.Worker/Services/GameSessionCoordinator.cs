@@ -39,12 +39,12 @@ public sealed class GameSessionCoordinator : BackgroundService, IRestoreSessionS
         incoming.StartedUtc=incoming.StartedUtc==default?DateTime.UtcNow:incoming.StartedUtc.ToUniversalTime();
         var policy=await _store.GetPolicyAsync(incoming.PlayniteId,token).ConfigureAwait(false);
         var intervalMinutes = Math.Max(1, policy.DuringPlayIntervalMinutes);
-        var timedAutomationEnabled=policy.Enabled&&(policy.BackupDuringPlay||policy.SyncMediaDuringPlay);
+        var timedAutomationEnabled=!_options.SafeModeEnabled&&policy.Enabled&&(policy.BackupDuringPlay||policy.SyncMediaDuringPlay);
         var active=new ActiveSession(incoming,DateTime.UtcNow.AddMinutes(intervalMinutes),intervalMinutes,timedAutomationEnabled);
         _active[incoming.PlayniteId]=active;await _store.AddSessionAsync(incoming,token).ConfigureAwait(false);
-        _detection.BeginSessionCapture(incoming);
+        if(!_options.SafeModeEnabled)_detection.BeginSessionCapture(incoming);
         _=RunSafeAsync(()=>_gameTools.StartAutomaticAsync(incoming,CancellationToken.None),"automatic game tools",incoming.GameName);
-        _logger.LogInformation("Session started for {Game} from {Source}; timed backup is scheduled every {IntervalMinutes} minute(s)",incoming.GameName,incoming.Source,intervalMinutes);return incoming;
+        _logger.LogInformation("Session started for {Game} from {Source}; timed backup is scheduled every {IntervalMinutes} minute(s) (safe mode: {SafeMode})",incoming.GameName,incoming.Source,intervalMinutes,_options.SafeModeEnabled);return incoming;
     }
 
     public async Task<GameSessionStopResultDto> StopAsync(GameSessionEventDto incoming,CancellationToken token)
@@ -57,27 +57,32 @@ public sealed class GameSessionCoordinator : BackgroundService, IRestoreSessionS
         await _gameTools.StopAutomaticAsync(active.Event.SessionId,token).ConfigureAwait(false);
         var policy=await _store.GetPolicyAsync(active.Event.PlayniteId,token).ConfigureAwait(false);
         var expectedTaskCount=0;
-        if(policy.Enabled&&policy.BackupOnGameStop)
+        if(!_options.SafeModeEnabled&&policy.Enabled&&policy.BackupOnGameStop)
         {
             expectedTaskCount++;
             _=RunSafeAsync(()=>_backup.BackupAsync(new BackupRequestDto{PlayniteIds=new(){active.Event.PlayniteId},Force=true,Reason="GameStopped",SessionId=active.Event.SessionId,NotificationSessionId=active.Event.SessionId},CancellationToken.None),"exit backup",active.Event.GameName);
         }
-        if(policy.Enabled&&policy.SyncMediaOnGameStop)
+        if(!_options.SafeModeEnabled&&policy.Enabled&&policy.SyncMediaOnGameStop)
         {
             if(_options.EnableMediaSync) expectedTaskCount += 2; // game media task + shared inbox task (the request keeps its existing default)
             _=RunSafeAsync(()=>_media.SyncAsync(new MediaSyncRequestDto{PlayniteIds=new(){active.Event.PlayniteId},SessionId=active.Event.SessionId,NotificationSessionId=active.Event.SessionId,UploadAfterSync=policy.UploadAfterBackup},CancellationToken.None),"exit media sync",active.Event.GameName);
         }
         var detectedCandidates=0;
-        try
+        if(!_options.SafeModeEnabled)
         {
-            detectedCandidates=await _detection.AnalyzeSessionStopAsync(active.Event,token).ConfigureAwait(false);
+            try
+            {
+                detectedCandidates=await _detection.AnalyzeSessionStopAsync(active.Event,token).ConfigureAwait(false);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogWarning(ex,"Session save-path analysis failed for {Game}; protection prompt will remain deferred",active.Event.GameName);
+            }
         }
-        catch(Exception ex)
-        {
-            _logger.LogWarning(ex,"Session save-path analysis failed for {Game}; protection prompt will remain deferred",active.Event.GameName);
-        }
-        var prompt=await BuildProtectionPromptAsync(active.Event,detectedCandidates,token).ConfigureAwait(false);
-        _logger.LogInformation("Session stopped for {Game}",active.Event.GameName);
+        var prompt=_options.SafeModeEnabled
+            ? null
+            : await BuildProtectionPromptAsync(active.Event,detectedCandidates,token).ConfigureAwait(false);
+        _logger.LogInformation("Session stopped for {Game} (safe mode: {SafeMode})",active.Event.GameName,_options.SafeModeEnabled);
         return new GameSessionStopResultDto
         {
             Stopped=true, SessionId=active.Event.SessionId, GameName=active.Event.GameName,
@@ -128,8 +133,8 @@ public sealed class GameSessionCoordinator : BackgroundService, IRestoreSessionS
             {
                 var policy=await _store.GetPolicyAsync(pair.Key,stoppingToken).ConfigureAwait(false);
                 var intervalMinutes = Math.Max(1, policy.DuringPlayIntervalMinutes);
-                var timedBackupEnabled=policy.Enabled&&policy.BackupDuringPlay;
-                var timedMediaEnabled=policy.Enabled&&policy.SyncMediaDuringPlay;
+                var timedBackupEnabled=!_options.SafeModeEnabled&&policy.Enabled&&policy.BackupDuringPlay;
+                var timedMediaEnabled=!_options.SafeModeEnabled&&policy.Enabled&&policy.SyncMediaDuringPlay;
                 var timedAutomationEnabled=timedBackupEnabled||timedMediaEnabled;
                 if(pair.Value.IntervalMinutes!=intervalMinutes)
                 {

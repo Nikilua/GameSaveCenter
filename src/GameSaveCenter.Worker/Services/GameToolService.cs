@@ -185,6 +185,11 @@ public sealed class GameToolService
     public async Task StartAutomaticAsync(GameSessionEventDto session,CancellationToken token)
     {
         if(string.IsNullOrWhiteSpace(session.SessionId))return;
+        if(_options.SafeModeEnabled)
+        {
+            _logger.LogInformation("Safe mode is enabled; automatic game tools are paused for {Game}",session.GameName);
+            return;
+        }
         var descriptor=await _store.GetGameAsync(session.PlayniteId,token).ConfigureAwait(false);
         var tools=(await _store.GetGameToolsAsync(session.PlayniteId,token).ConfigureAwait(false)).Where(x=>x.Enabled&&x.AutoStart).ToList();
         var antiCheat=HasAntiCheat(descriptor);

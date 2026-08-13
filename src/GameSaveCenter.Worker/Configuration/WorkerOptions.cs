@@ -16,6 +16,7 @@ public sealed class WorkerOptions
 
     public string DataDirectory { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "GameSaveCenter");
     public string DeviceId { get; set; } = Guid.NewGuid().ToString("N");
+    public bool SafeModeEnabled { get; set; }
     public string LudusaviExecutable { get; set; } = string.Empty;
     public string LudusaviBackupDirectory { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "GameSaveCenter", "Saves");
     public string RcloneExecutable { get; set; } = string.Empty;
@@ -57,6 +58,7 @@ public sealed class WorkerOptions
     public void Apply(WorkerSettingsDto settings, bool persist = false)
     {
         if (IsValidDeviceId(settings.DeviceId)) DeviceId = settings.DeviceId.ToLowerInvariant();
+        SafeModeEnabled = settings.SafeModeEnabled;
         LudusaviExecutable = Expand(settings.LudusaviExecutable);
         LudusaviBackupDirectory = Expand(settings.LudusaviBackupDirectory);
         RcloneExecutable = Expand(settings.RcloneExecutable);
@@ -85,6 +87,7 @@ public sealed class WorkerOptions
     public WorkerSettingsDto ToDto() => new()
     {
         DeviceId = DeviceId,
+        SafeModeEnabled = SafeModeEnabled,
         LudusaviExecutable = LudusaviExecutable,
         LudusaviBackupDirectory = LudusaviBackupDirectory,
         RcloneExecutable = RcloneExecutable,

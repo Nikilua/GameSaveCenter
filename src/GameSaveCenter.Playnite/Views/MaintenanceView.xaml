@@ -107,7 +107,7 @@
                     </Border>
                     <Border x:Name="MaintenanceDiagnosticsActionCard" Grid.Row="1" Style="{DynamicResource GscReadingCardStyle}" Padding="16" Margin="0,0,0,10">
                         <Grid>
-                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                             <StackPanel MinWidth="0" VerticalAlignment="Center">
                                 <TextBlock Text="诊断操作" Style="{DynamicResource GscSectionTitleStyle}"/>
@@ -122,6 +122,19 @@
                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenMediaDirectoryCommand}" Content="打开媒体目录" Margin="0,0,8,8"/>
                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenWorkerLogCommand}" Content="Worker 日志" Margin="0,0,0,8"/>
                             </WrapPanel>
+                            <Border Grid.Row="2" Grid.ColumnSpan="2" Margin="0,14,0,0" Padding="12" Background="{DynamicResource GscSafetyFillBrush}" BorderBrush="{DynamicResource GscWarningBrush}" BorderThickness="1" CornerRadius="10">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Snapshot.SafeModeEnabled}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <TextBlock Text="安全模式已开启：自动备份、自动媒体同步、云端上传和工具自动启动已暂停；手动操作仍可用。" Foreground="{DynamicResource GscWarningBrush}" TextWrapping="Wrap"/>
+                            </Border>
                         </Grid>
                     </Border>
                     <UniformGrid x:Name="DiagnosticHealthPanel" Grid.Row="2" Columns="3" Margin="0,4,0,10">
