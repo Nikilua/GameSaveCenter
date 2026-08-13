@@ -76,6 +76,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private WorkerSettingsSnapshotDto effectiveSettings = new WorkerSettingsSnapshotDto();
         private string diagnosticSummary = "诊断信息尚未加载。";
         private string integritySummary = "尚未运行完整性自检。";
+        private string metadataBackupSummary = "尚未生成元数据灾备包。";
         private string diffSummary = string.Empty;
         private string retentionSummary = string.Empty;
         private BackupPolicyTemplateDto selectedPolicyTemplate = null!;
@@ -180,6 +181,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             ApplyRecommendedProtectionCommand = new RelayCommand(_ => Run(ApplyRecommendedProtectionAsync), _ => !IsBusy);
             RefreshDiagnosticsCommand = new RelayCommand(_ => Run(RefreshDiagnosticsAsync), _ => !IsBusy);
             RunIntegrityCheckCommand = new RelayCommand(_ => Run(RunIntegrityCheckAsync), _ => !IsBusy);
+            CreateMetadataBackupCommand = new RelayCommand(_ => Run(CreateMetadataBackupAsync), _ => !IsBusy && !string.IsNullOrWhiteSpace(EffectiveSettings.DataDirectory));
             RunEnvironmentCheckCommand = new RelayCommand(_ => Run(RunEnvironmentCheckAsync), _ => !IsBusy);
             SkipOnboardingCommand = new RelayCommand(_ => SkipOnboarding(), _ => !IsBusy && IsOnboardingPending);
             CompleteOnboardingCommand = new RelayCommand(_ => CompleteOnboarding(), _ => !IsBusy && IsOnboardingPending && EnvironmentCheck.IsReady && EnvironmentCheck.CheckedUtc != default(DateTime));
@@ -312,6 +314,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public string StatusMessage { get => statusMessage; private set => SetValue(ref statusMessage, value); }
         public string DiagnosticSummary { get => diagnosticSummary; private set => SetValue(ref diagnosticSummary, value); }
         public string IntegritySummary { get => integritySummary; private set => SetValue(ref integritySummary, value); }
+        public string MetadataBackupSummary { get => metadataBackupSummary; private set => SetValue(ref metadataBackupSummary, value); }
         public string GameSearchText
         {
             get => gameSearchText;
@@ -599,6 +602,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand ApplyRecommendedProtectionCommand { get; }
         public ICommand RefreshDiagnosticsCommand { get; }
         public ICommand RunIntegrityCheckCommand { get; }
+        public ICommand CreateMetadataBackupCommand { get; }
         public ICommand RunEnvironmentCheckCommand { get; }
         public ICommand SkipOnboardingCommand { get; }
         public ICommand CompleteOnboardingCommand { get; }
@@ -1140,6 +1144,16 @@ namespace GameSaveCenter.Playnite.ViewModels
             ApplyOnUi(() =>
             {
                 IntegritySummary = $"完整性自检：{result.StateDisplay}（错误 {result.ErrorCount} / 警告 {result.WarningCount}）\n{result.Summary}";
+                StatusMessage = result.Summary;
+            });
+        }
+
+        private async Task CreateMetadataBackupAsync()
+        {
+            var result = await plugin.RequestAsync<MetadataBackupResultDto>(MessageTypes.CreateMetadataBackup, new { }, TimeSpan.FromMinutes(5));
+            ApplyOnUi(() =>
+            {
+                MetadataBackupSummary = $"元数据灾备包已生成：{result.PackagePath}（{result.PackageBytes / 1024d / 1024d:0.#} MiB）";
                 StatusMessage = result.Summary;
             });
         }
@@ -2334,7 +2348,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 UpdateMediaMetadataCommand,OpenSelectedMediaCommand,RevealSelectedMediaCommand,
                 AssignInboxMediaCommand, IgnoreInboxMediaCommand,
                 CancelTaskCommand, RetryTaskCommand, CopyTaskErrorCommand, RefreshDiagnosticsCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand,
-                StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,
+                StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,CreateMetadataBackupCommand,
                 SaveProcessMappingCommand,DeleteProcessMappingCommand,RunEnvironmentCheckCommand,SkipOnboardingCommand,CompleteOnboardingCommand,OnboardingTestBackupCommand,
                 OpenDataDirectoryCommand, OpenBackupDirectoryCommand, OpenMediaDirectoryCommand, OpenWorkerLogCommand
                 ,ImportTrainerCommand,ImportCheatTableCommand,ImportCustomLaunchItemCommand,ImportToolFolderCommand,SaveGameToolCommand,LaunchGameToolCommand,

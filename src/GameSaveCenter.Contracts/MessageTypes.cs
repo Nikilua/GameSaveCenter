@@ -62,6 +62,7 @@ namespace GameSaveCenter.Contracts
         public const string GetSettings = "settings.get";
         public const string CheckEnvironment = "environment.check";
         public const string CheckIntegrity = "integrity.check";
+        public const string CreateMetadataBackup = "metadata.backup.create";
         public const string CreateDiagnosticsPackage = "diagnostics.package.create";
         public const string CancelTask = "task.cancel";
         public const string ListGameTools = "tools.list";
