@@ -20,3 +20,9 @@ public interface IRemoteBackupStageProvider
 {
     Task<RemoteBackupStage> RevalidateAsync(string stagingId, CancellationToken token);
 }
+
+/// <summary>Read-only history refresh surface used by repository rebuild.</summary>
+public interface IBackupHistoryRebuilder
+{
+    Task RefreshBackupHistoryAsync(string playniteId, string ludusaviName, CancellationToken token);
+}

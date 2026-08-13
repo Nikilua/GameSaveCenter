@@ -51,6 +51,7 @@ internal static class Program
         builder.Services.AddSingleton<TaskEventBroadcaster>();
         builder.Services.AddSingleton<TaskCoordinator>();
         builder.Services.AddSingleton<BackupOrchestrator>();
+        builder.Services.AddSingleton<IBackupHistoryRebuilder>(provider => provider.GetRequiredService<BackupOrchestrator>());
         builder.Services.AddSingleton<RestoreOrchestrator>();
         builder.Services.AddSingleton<RestoreReadinessService>();
         builder.Services.AddSingleton<MediaSyncService>();
@@ -62,6 +63,7 @@ internal static class Program
         builder.Services.AddSingleton<DiagnosticsPackageService>();
         builder.Services.AddSingleton<IntegrityCheckService>();
         builder.Services.AddSingleton<MetadataBackupService>();
+        builder.Services.AddSingleton<RepositoryRebuildService>();
         builder.Services.AddSingleton<IpcRequestDispatcher>();
         builder.Services.AddHostedService<WorkerInitializationService>();
         builder.Services.AddHostedService<CloudRetryService>();

@@ -8,7 +8,7 @@ using GameSaveCenter.Worker.Persistence;
 namespace GameSaveCenter.Worker.Services;
 
 /// <summary>Coordinates safe Ludusavi backups, validation, history indexing and optional upload.</summary>
-public sealed class BackupOrchestrator
+public sealed class BackupOrchestrator : IBackupHistoryRebuilder
 {
     private readonly GameCatalogService _catalog;
     private readonly SqliteStateStore _store;

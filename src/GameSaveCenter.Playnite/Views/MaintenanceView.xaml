@@ -69,7 +69,7 @@
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
                     <Border x:Name="EnvironmentCheckCard" Grid.Row="0" Style="{DynamicResource GscReadingCardStyle}" Padding="16" Margin="0,0,0,10">
                         <Grid>
-                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                             <StackPanel MinWidth="0">
                                 <TextBlock Text="{Binding OnboardingTitle}" Style="{DynamicResource GscSectionTitleStyle}"/>
@@ -123,6 +123,7 @@
                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenWorkerLogCommand}" Content="Worker 日志" Margin="0,0,8,8"/>
                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RunIntegrityCheckCommand}" Content="完整性自检" Margin="0,0,0,8"/>
                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CreateMetadataBackupCommand}" Content="导出元数据灾备" Margin="0,0,0,8" ToolTip="生成 SQLite 快照、Worker 设置和版本清单，不包含存档/媒体/凭据"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RebuildRepositoryCommand}" Content="重建备份索引" Margin="0,0,0,8" ToolTip="按 Ludusavi 磁盘实际备份列表重建 SQLite 索引"/>
                             </WrapPanel>
                             <Border Grid.Row="2" Grid.ColumnSpan="2" Margin="0,14,0,0" Padding="12" Background="{DynamicResource GscSafetyFillBrush}" BorderBrush="{DynamicResource GscWarningBrush}" BorderThickness="1" CornerRadius="10">
                                 <Border.Style>
@@ -142,6 +143,9 @@
                             </Border>
                             <Border Grid.Row="4" Grid.ColumnSpan="2" Style="{DynamicResource GscRedesignInfoBand}" Padding="12" Margin="0,8,0,0">
                                 <TextBlock Text="{Binding MetadataBackupSummary, TargetNullValue=尚未生成元数据灾备包。}" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap"/>
+                            </Border>
+                            <Border Grid.Row="5" Grid.ColumnSpan="2" Style="{DynamicResource GscRedesignInfoBand}" Padding="12" Margin="0,8,0,0">
+                                <TextBlock Text="{Binding RepositoryRebuildSummary, TargetNullValue=尚未重建备份索引。}" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap"/>
                             </Border>
                         </Grid>
                     </Border>
