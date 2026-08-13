@@ -2,6 +2,17 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 ACCESSIBILITY-001 键盘快捷搜索、焦点与自动化名称
+
+- Task ID：`ACCESSIBILITY-001`。
+- 实现内容：Dashboard 全局 `PreviewKeyDown` 增加 `Ctrl+F`：首页/存档聚焦游戏搜索框，修改器聚焦 FLiNG 搜索框，任务聚焦任务搜索框，媒体聚焦媒体搜索框，维护聚焦进程映射输入框，并自动全选当前内容。任务、媒体、FLiNG 与游戏搜索框补充 `AutomationProperties.Name`；既有共享 `GscSharedFocusVisual` 与 `SystemParameters.HighContrast` 玻璃降级保持生效。
+- 主要修改文件：`DashboardView.xaml.cs`、`DashboardView.xaml`、`TaskCenterView.xaml`、`MediaCenterView.xaml`、`TrainerCenterView.xaml`、`AccessibilitySourceTests.cs`。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `59/59`、Worker `182/182`、Playnite `227/227`；`validate-source.py`、XAML/WPF 静态门禁与五种窗口 `render-qa` 全绿。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 03:25:12 记录插件加载，`worker-launch.log` 03:25:18 记录 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实 Playnite 中键盘-only 使用 `Ctrl+F`、Tab/方向键、Esc，以及 Narrator/Accessibility Insights、高对比度与 200% DPI 复核。
+- Commit：`c907983`。
+- 下一项：Layer C `UI-STATES-001` 统一 Loading/Empty/Error/Degraded/Offline/Disabled 页面状态。
+
 ## 2026-08-14 UI-STATE-001 合理 UI 状态持久化
 
 - Task ID：`UI-STATE-001`。
