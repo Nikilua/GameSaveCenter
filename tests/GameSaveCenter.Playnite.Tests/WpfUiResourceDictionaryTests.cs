@@ -1865,7 +1865,7 @@ public sealed class WpfUiResourceDictionaryTests
             .Select(element => element.Attribute("Command")?.Value)
             .ToArray();
 
-        Assert.Equal(7, commands.Length);
+        Assert.Equal(8, commands.Length);
         Assert.Contains("{Binding RefreshDiagnosticsCommand}", commands);
         Assert.Contains("{Binding CopyDiagnosticsCommand}", commands);
         Assert.Contains("{Binding CreateDiagnosticsPackageCommand}", commands);
@@ -1873,7 +1873,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("{Binding OpenBackupDirectoryCommand}", commands);
         Assert.Contains("{Binding OpenMediaDirectoryCommand}", commands);
         Assert.Contains("{Binding OpenWorkerLogCommand}", commands);
-        Assert.Equal(6, actionRow.Descendants().Count(element => element.Name.LocalName == "Button"));
+        Assert.Contains("{Binding RunIntegrityCheckCommand}", commands);
+        Assert.Equal(7, actionRow.Descendants().Count(element => element.Name.LocalName == "Button"));
     }
 
     [Fact]
@@ -3327,6 +3328,8 @@ public sealed class WpfUiResourceDictionaryTests
 
         Assert.Contains("Snapshot.SafeModeEnabled", maintenance);
         Assert.Contains("安全模式已开启：自动备份、自动媒体同步、云端上传和工具自动启动已暂停；手动操作仍可用。", maintenance);
+        Assert.Contains("RunIntegrityCheckCommand", maintenance);
+        Assert.Contains("Binding IntegritySummary", maintenance);
     }
 
     [Fact]

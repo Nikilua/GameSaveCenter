@@ -75,6 +75,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private ValidationFindingDto selectedFinding = null!;
         private WorkerSettingsSnapshotDto effectiveSettings = new WorkerSettingsSnapshotDto();
         private string diagnosticSummary = "诊断信息尚未加载。";
+        private string integritySummary = "尚未运行完整性自检。";
         private string diffSummary = string.Empty;
         private string retentionSummary = string.Empty;
         private BackupPolicyTemplateDto selectedPolicyTemplate = null!;
@@ -178,6 +179,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             OpenProtectionItemCommand = new RelayCommand(value => OpenProtectionItem(value as RecentProtectionItem));
             ApplyRecommendedProtectionCommand = new RelayCommand(_ => Run(ApplyRecommendedProtectionAsync), _ => !IsBusy);
             RefreshDiagnosticsCommand = new RelayCommand(_ => Run(RefreshDiagnosticsAsync), _ => !IsBusy);
+            RunIntegrityCheckCommand = new RelayCommand(_ => Run(RunIntegrityCheckAsync), _ => !IsBusy);
             RunEnvironmentCheckCommand = new RelayCommand(_ => Run(RunEnvironmentCheckAsync), _ => !IsBusy);
             SkipOnboardingCommand = new RelayCommand(_ => SkipOnboarding(), _ => !IsBusy && IsOnboardingPending);
             CompleteOnboardingCommand = new RelayCommand(_ => CompleteOnboarding(), _ => !IsBusy && IsOnboardingPending && EnvironmentCheck.IsReady && EnvironmentCheck.CheckedUtc != default(DateTime));
@@ -309,6 +311,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         }
         public string StatusMessage { get => statusMessage; private set => SetValue(ref statusMessage, value); }
         public string DiagnosticSummary { get => diagnosticSummary; private set => SetValue(ref diagnosticSummary, value); }
+        public string IntegritySummary { get => integritySummary; private set => SetValue(ref integritySummary, value); }
         public string GameSearchText
         {
             get => gameSearchText;
@@ -595,6 +598,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand OpenProtectionItemCommand { get; }
         public ICommand ApplyRecommendedProtectionCommand { get; }
         public ICommand RefreshDiagnosticsCommand { get; }
+        public ICommand RunIntegrityCheckCommand { get; }
         public ICommand RunEnvironmentCheckCommand { get; }
         public ICommand SkipOnboardingCommand { get; }
         public ICommand CompleteOnboardingCommand { get; }
@@ -1127,6 +1131,16 @@ namespace GameSaveCenter.Playnite.ViewModels
                 EnvironmentCheck = report;
                 environmentCheckLoaded = true;
                 StatusMessage = report.Summary;
+            });
+        }
+
+        private async Task RunIntegrityCheckAsync()
+        {
+            var result = await plugin.RequestAsync<IntegrityCheckResultDto>(MessageTypes.CheckIntegrity, new { }, TimeSpan.FromMinutes(3));
+            ApplyOnUi(() =>
+            {
+                IntegritySummary = $"完整性自检：{result.StateDisplay}（错误 {result.ErrorCount} / 警告 {result.WarningCount}）\n{result.Summary}";
+                StatusMessage = result.Summary;
             });
         }
 

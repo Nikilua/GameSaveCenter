@@ -69,7 +69,7 @@
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
                     <Border x:Name="EnvironmentCheckCard" Grid.Row="0" Style="{DynamicResource GscReadingCardStyle}" Padding="16" Margin="0,0,0,10">
                         <Grid>
-                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                             <StackPanel MinWidth="0">
                                 <TextBlock Text="{Binding OnboardingTitle}" Style="{DynamicResource GscSectionTitleStyle}"/>
@@ -120,7 +120,8 @@
                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenDataDirectoryCommand}" Content="打开数据目录" Margin="0,0,8,8"/>
                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenBackupDirectoryCommand}" Content="打开存档目录" Margin="0,0,8,8"/>
                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenMediaDirectoryCommand}" Content="打开媒体目录" Margin="0,0,8,8"/>
-                                <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenWorkerLogCommand}" Content="Worker 日志" Margin="0,0,0,8"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenWorkerLogCommand}" Content="Worker 日志" Margin="0,0,8,8"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RunIntegrityCheckCommand}" Content="完整性自检" Margin="0,0,0,8"/>
                             </WrapPanel>
                             <Border Grid.Row="2" Grid.ColumnSpan="2" Margin="0,14,0,0" Padding="12" Background="{DynamicResource GscSafetyFillBrush}" BorderBrush="{DynamicResource GscWarningBrush}" BorderThickness="1" CornerRadius="10">
                                 <Border.Style>
@@ -134,6 +135,9 @@
                                     </Style>
                                 </Border.Style>
                                 <TextBlock Text="安全模式已开启：自动备份、自动媒体同步、云端上传和工具自动启动已暂停；手动操作仍可用。" Foreground="{DynamicResource GscWarningBrush}" TextWrapping="Wrap"/>
+                            </Border>
+                            <Border Grid.Row="3" Grid.ColumnSpan="2" Style="{DynamicResource GscRedesignInfoBand}" Padding="12" Margin="0,14,0,0">
+                                <TextBlock Text="{Binding IntegritySummary, TargetNullValue=尚未运行完整性自检。}" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap"/>
                             </Border>
                         </Grid>
                     </Border>

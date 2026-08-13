@@ -60,6 +60,7 @@ internal static class Program
         builder.Services.AddSingleton<GameToolService>();
         builder.Services.AddSingleton<EnvironmentCheckService>();
         builder.Services.AddSingleton<DiagnosticsPackageService>();
+        builder.Services.AddSingleton<IntegrityCheckService>();
         builder.Services.AddSingleton<IpcRequestDispatcher>();
         builder.Services.AddHostedService<WorkerInitializationService>();
         builder.Services.AddHostedService<CloudRetryService>();
