@@ -8,7 +8,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-$installerRevision = 'DEV-INSTALL-004'
+$installerRevision = 'DEV-INSTALL-005'
 
 $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 try {
@@ -23,6 +23,7 @@ catch {
 $root = Split-Path -Parent $PSScriptRoot
 $artifactsPath = Join-Path $root 'artifacts'
 New-Item $artifactsPath -ItemType Directory -Force | Out-Null
+$buildOutputRoot = Join-Path $artifactsPath ("dev-build\{0}\{1}" -f $Configuration, ([Guid]::NewGuid().ToString('N')))
 $runLogPath = Join-Path $artifactsPath 'one-click-install.log'
 $transcriptStarted = $false
 try {
@@ -211,9 +212,12 @@ function Install-ExtensionAtomically {
 
     New-Item $ExtensionsRoot -ItemType Directory -Force | Out-Null
     $target = Join-Path $ExtensionsRoot $extensionId
-    $temporary = "$target.__new"
+    # Never reuse a fixed staging directory. Older elevated/aborted installers may
+    # have left `<extension>.__new` with an ACL that the current user cannot open;
+    # a unique staging path lets a normal user continue without taking ownership or
+    # requesting UAC. The old directory is harmless and is not touched.
+    $temporary = "$target.__new-$([Guid]::NewGuid().ToString('N'))"
 
-    Remove-Item $temporary -Recurse -Force -ErrorAction SilentlyContinue
     Copy-Item $Source $temporary -Recurse -Force
 
     $temporaryManifest = Join-Path $temporary 'extension.yaml'
@@ -278,26 +282,13 @@ try {
 
     Stop-PlayniteAndOwnedWorkerReliably -ExtensionRoots $extensionRoots
 
-    # A source archive can contain obj/project.assets.json created on another machine.
-    # `dotnet clean` resolves package assets before deleting them, so clean must never
-    # run before restore has rewritten those machine-specific package paths.
-    Write-Host "`n==> 预先恢复 NuGet 依赖" -ForegroundColor Cyan
-    & dotnet restore '.\GameSaveCenter.sln' '--force-evaluate'
-    if ($LASTEXITCODE -ne 0) {
-        throw "NuGet 依赖恢复失败，dotnet 退出码：$LASTEXITCODE。请检查网络、NuGet 源和磁盘空间后重试。"
-    }
-
     if (-not $SkipClean) {
-        Write-Host "`n==> 清理旧构建和旧打包产物" -ForegroundColor Cyan
-        & dotnet clean '.\GameSaveCenter.sln' -c $Configuration
-        if ($LASTEXITCODE -ne 0) {
-            throw "清理解决方案失败，dotnet 退出码：$LASTEXITCODE"
-        }
+        Write-Host "`n==> 使用新的隔离构建目录：无需清理正在使用的标准 bin/obj" -ForegroundColor DarkCyan
         Remove-Item (Join-Path $root 'artifacts\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec') -Recurse -Force -ErrorAction SilentlyContinue
     }
 
-    & (Join-Path $PSScriptRoot 'build.ps1') -Configuration $Configuration
-    & (Join-Path $PSScriptRoot 'package.ps1') -Configuration $Configuration -SkipBuild
+    & (Join-Path $PSScriptRoot 'build.ps1') -Configuration $Configuration -OutputRoot $buildOutputRoot
+    & (Join-Path $PSScriptRoot 'package.ps1') -Configuration $Configuration -SkipBuild -BuildOutputRoot $buildOutputRoot
 
     $stage = Join-Path $root 'artifacts\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec'
     # package.ps1 recreates this directory. Keep a second, explicit check here

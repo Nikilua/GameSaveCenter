@@ -2455,12 +2455,16 @@ public sealed class WpfUiResourceDictionaryTests
         var repositoryRoot = FindRepositoryRoot();
         var view = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml"));
         var contract = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Core", "Services", "RecentProtectionAssessmentService.cs"));
+        var viewModel = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
 
         Assert.Contains("ApplyRecommendedProtectionCommand", view);
         Assert.Contains("IsSelected, Mode=TwoWay", view);
         Assert.Contains("StatusDisplay", view);
         Assert.Contains("public bool IsSelected", contract);
         Assert.Contains("public string StatusDisplay", contract);
+        Assert.Contains("ProtectionRecommendationPreview.Build", viewModel);
+        Assert.Contains("ConfirmAsync", viewModel);
+        Assert.Contains("确认应用", viewModel);
     }
 
     [Fact]

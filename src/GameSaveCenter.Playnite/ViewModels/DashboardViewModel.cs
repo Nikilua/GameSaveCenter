@@ -717,12 +717,25 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task ApplyRecommendedProtectionAsync()
         {
-            var selected=RecentProtection.Items.Where(x=>x.IsSelectable && x.IsSelected).Select(x=>x.PlayniteId).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+            var selectedItems = ProtectionRecommendationPreview.Select(RecentProtection.Items);
+            var selected = selectedItems.Select(x => x.PlayniteId).ToList();
             if(selected.Count==0)
             {
                 StatusMessage="请先选择需要启用自动保护的游戏。";
                 return;
             }
+
+            var confirmed = await plugin.ConfirmAsync(
+                "确认启用自动保护",
+                ProtectionRecommendationPreview.Build(selectedItems),
+                "确认应用",
+                "取消").ConfigureAwait(true);
+            if (!confirmed)
+            {
+                StatusMessage = "已取消批量启用自动保护。";
+                return;
+            }
+
             await plugin.RequestAsync<object>(MessageTypes.ApplyRecommendedProtection,new ApplyRecommendedProtectionDto{PlayniteIds=selected});
             foreach(var item in RecentProtection.Items.Where(x=>selected.Contains(x.PlayniteId,StringComparer.OrdinalIgnoreCase))) item.IsSelected=false;
             ConfirmSuccess($"已为 {selected.Count} 个游戏启用推荐自动保护策略");

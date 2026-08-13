@@ -10,6 +10,13 @@
 请先读取 GameSaveCenter 项目的 docs/DEVELOPMENT_HANDOFF.md，按照其中的读取顺序、不可丢失约束和验证要求恢复项目上下文。当前代码侧已收口：除非用户提供新的真实问题、日志或明确新需求，否则不要主动开启新的 UI 重构或性能优化；不要重置或覆盖已有改动，先检查 `git status`，完成后更新项目记忆与工作日志并提交 commit。
 ```
 
+## 2026-08-13 DEV-INSTALL-005：构建隔离与真实宿主验证
+
+- 用户日志中的 Contracts 编译成功；失败发生在后续测试覆盖标准 `bin\Release` 时，原因是旧 `dotnet/testhost` 或 Worker 文件锁。当前一键入口 `GameSaveCenter-Run.cmd` 对应 `DEV-INSTALL-005`，每次构建使用唯一 `artifacts\dev-build\<Configuration>\<guid>`，不清理标准输出，也不默认请求 UAC。
+- `scripts/dev-install-run.ps1 -Configuration Release -NoStart -SkipClean` 已在正常桌面文件权限下完整通过；当前受限 Codex 沙箱对 Playnite 用户扩展目录的写入失败不代表脚本失败。遇到旧残留时应先正常关闭 Playnite，让插件回收其所属 Worker；不要按进程名强杀，也不要把管理员提权作为默认修复。
+- 真实启动证据：`C:\Users\lopmatu\AppData\Roaming\Playnite\playnite.log` 记录 `Loaded plugin: GameSaveCenter, version 0.6.70`；插件自身日志记录 `GameSaveCenter.Playnite 0.6.70.0`；`C:\Users\lopmatu\AppData\Local\GameSaveCenter\Logs\worker-launch.log` 记录 Worker 存储初始化后进入 `Application started`。安装报告为 `artifacts\last-dev-install.txt`。
+- 当前自动化基线：Core `37/37`、Worker `81/81`、Playnite `202/202`，Release 构建 0 warnings / 0 errors。真实主题/DPI/键盘、Rclone/多设备、游戏恢复/撤销、EXE/LNK/BAT/PS1 和 900+ 游戏库仍需人工 QA。
+
 ## 必须读取的资料
 
 按以下顺序读取：

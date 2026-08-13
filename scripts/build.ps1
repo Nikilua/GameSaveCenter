@@ -1,7 +1,8 @@
 ﻿[CmdletBinding()]
 param(
     [ValidateSet('Debug','Release')][string]$Configuration = 'Release',
-    [switch]$SkipTests
+    [switch]$SkipTests,
+    [string]$OutputRoot = ''
 )
 
 $ErrorActionPreference = 'Stop'
@@ -47,32 +48,45 @@ try {
     Write-Host '当前可用 SDK：' -ForegroundColor DarkCyan
     $sdkLines | ForEach-Object { Write-Host "  $_" }
 
+    $msbuildArguments = @('-m:1', '-nodeReuse:false', '-p:NuGetAudit=false')
+    if ($OutputRoot) {
+        $isolatedOutputRoot = [System.IO.Path]::GetFullPath($OutputRoot)
+        New-Item -ItemType Directory -Path $isolatedOutputRoot -Force | Out-Null
+        # Keep each project's output separate. A single shared BaseOutputPath would make
+        # net8 projects overwrite one another; MSBuildProjectName keeps references intact
+        # while isolating this run from old testhost/Worker file locks in repository bin/.
+        $msbuildArguments += @(
+            ('-p:GscBuildOutputRoot=' + $isolatedOutputRoot)
+        )
+        Write-Host "隔离构建输出：$isolatedOutputRoot" -ForegroundColor DarkCyan
+    }
+
     Write-Host "`n==> 检查 XAML 结构" -ForegroundColor Cyan
     & (Join-Path $PSScriptRoot 'check-xaml.ps1') -ProjectRoot $root
 
     Invoke-DotNet -StepName '显示当前 SDK 信息' -Arguments @('--info')
-    Invoke-DotNet -StepName '还原 NuGet 依赖' -Arguments @('restore', '.\GameSaveCenter.sln')
-    Invoke-DotNet -StepName "编译解决方案（$Configuration）" -Arguments @('build', '.\GameSaveCenter.sln', '-c', $Configuration, '--no-restore')
+    Invoke-DotNet -StepName '还原 NuGet 依赖' -Arguments (@('restore', '.\GameSaveCenter.sln') + $msbuildArguments)
+    Invoke-DotNet -StepName "编译解决方案（$Configuration）" -Arguments (@('build', '.\GameSaveCenter.sln', '-c', $Configuration, '--no-restore') + $msbuildArguments)
 
     if (-not $SkipTests) {
-        Invoke-DotNet -StepName '运行核心单元测试' -Arguments @(
+        Invoke-DotNet -StepName '运行核心单元测试' -Arguments (@(
             'test',
             '.\tests\GameSaveCenter.Core.Tests\GameSaveCenter.Core.Tests.csproj',
             '-c', $Configuration,
             '--no-build'
-        )
-        Invoke-DotNet -StepName '运行 Worker 集成测试' -Arguments @(
+        ) + $msbuildArguments)
+        Invoke-DotNet -StepName '运行 Worker 集成测试' -Arguments (@(
             'test',
             '.\tests\GameSaveCenter.Worker.Tests\GameSaveCenter.Worker.Tests.csproj',
             '-c', $Configuration,
             '--no-build'
-        )
-        Invoke-DotNet -StepName '运行 Playnite 设置迁移测试' -Arguments @(
+        ) + $msbuildArguments)
+        Invoke-DotNet -StepName '运行 Playnite 设置迁移测试' -Arguments (@(
             'test',
             '.\tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj',
             '-c', $Configuration,
             '--no-build'
-        )
+        ) + $msbuildArguments)
     }
 
     Write-Host "`n构建与测试全部成功。下一步可运行 scripts/package.ps1" -ForegroundColor Green

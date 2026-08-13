@@ -102,6 +102,25 @@ public sealed class RecentProtectionAssessmentTests
         Assert.Equal(1, result.RecentlyPlayedGames);
     }
 
+    [Fact]
+    public void BatchProtectionPreviewListsOnlySelectedGamesAndPreservesOtherSettings()
+    {
+        var selected = Game(Now.AddDays(-1), "Selected", ready: false);
+        selected.Policy.UploadAfterBackup = true;
+        var protectedGame = Game(Now.AddDays(-1), "Already protected", ready: true);
+
+        var summary = Assess(selected, protectedGame);
+        var item = Assert.Single(summary.Items, x => x.GameName == "Selected");
+        item.IsSelected = true;
+
+        var preview = ProtectionRecommendationPreview.Build(summary.Items);
+
+        Assert.Contains("将修改 1 个游戏", preview);
+        Assert.Contains("Selected → 推荐自动保护（游戏中 + 游戏退出后）", preview);
+        Assert.DoesNotContain("Already protected", preview);
+        Assert.Contains("不会执行备份、恢复或覆盖现有其他策略设置", preview);
+    }
+
     private static RecentProtectionSummary Assess(params GameStatusDto[] games)
         => new RecentProtectionAssessmentService().Assess(games, 7, Now);
 

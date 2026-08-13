@@ -6,11 +6,16 @@
     <Deterministic>true</Deterministic>
     <DebugType>portable</DebugType>
     <!-- Render/build QA artifacts can live below a project directory; never compile their generated sources. -->
-    <DefaultItemExcludes>$(DefaultItemExcludes);**/artifacts/**;**/artifacts/**/*</DefaultItemExcludes>
+    <DefaultItemExcludes>$(DefaultItemExcludes);**/artifacts/**;**/artifacts/**/*;**/bin/**;**/bin/**/*;**/obj/**;**/obj/**/*</DefaultItemExcludes>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <VersionPrefix>0.6.70</VersionPrefix>
     <AssemblyVersion>0.6.70.0</AssemblyVersion>
     <FileVersion>0.6.70.0</FileVersion>
     <NoWarn>$(NoWarn);1591</NoWarn>
+    <!-- Optional per-run isolation for builds/tests while another testhost or Worker
+         still holds files in the repository's normal bin/obj tree. This is intentionally
+         opt-in so regular IDE and CI output locations remain unchanged. -->
+    <BaseOutputPath Condition="'$(GscBuildOutputRoot)' != ''">$(GscBuildOutputRoot)\bin\$(MSBuildProjectName)\</BaseOutputPath>
+    <BaseIntermediateOutputPath Condition="'$(GscBuildOutputRoot)' != ''">$(GscBuildOutputRoot)\obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
   </PropertyGroup>
 </Project>

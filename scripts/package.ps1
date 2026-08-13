@@ -3,7 +3,8 @@ param(
     [ValidateSet('Debug','Release')][string]$Configuration = 'Release',
     [bool]$SelfContainedWorker = $true,
     [string]$Runtime = 'win-x64',
-    [switch]$SkipBuild
+    [switch]$SkipBuild,
+    [string]$BuildOutputRoot = ''
 )
 
 $ErrorActionPreference = 'Stop'
@@ -105,17 +106,24 @@ function Assert-PackageContents {
 
 # 默认先完整构建；一键开发安装已单独完成构建时可显式跳过，避免重复编译。
 if (-not $SkipBuild) {
-    & (Join-Path $PSScriptRoot 'build.ps1') -Configuration $Configuration
+    $buildArguments = @{ Configuration = $Configuration }
+    if ($BuildOutputRoot) { $buildArguments.OutputRoot = $BuildOutputRoot }
+    & (Join-Path $PSScriptRoot 'build.ps1') @buildArguments
 }
 
 # A normal solution restore does not necessarily contain the runtime-specific
 # assets needed by a self-contained Worker publish. Restore this target here
 # so package.ps1 remains reproducible after either build path.
 $workerProject = Join-Path $root 'src\GameSaveCenter.Worker\GameSaveCenter.Worker.csproj'
+$workerBuildProperties = @()
+if ($BuildOutputRoot) {
+    $workerBuildProperties = @('-p:GscBuildOutputRoot=' + [System.IO.Path]::GetFullPath($BuildOutputRoot))
+}
 Invoke-DotNet -StepName "还原 Worker 发布运行时（$Runtime）" -Arguments @(
     'restore', $workerProject, '-r', $Runtime,
     "-p:RuntimeIdentifier=$Runtime",
     "-p:RuntimeIdentifiers=$Runtime",
+    $workerBuildProperties,
     '-p:RestoreUseStaticGraphEvaluation=true',
     '-p:NuGetAudit=false',
     '-m:1',
@@ -135,12 +143,18 @@ $publishArgs = @(
     '--self-contained', $(if ($SelfContainedWorker) { 'true' } else { 'false' }),
     "-p:RuntimeIdentifier=$Runtime",
     "-p:RuntimeIdentifiers=$Runtime",
+    $workerBuildProperties,
     '-m:1',
     '-nodeReuse:false'
 )
 Invoke-DotNet -StepName "发布 Worker（$Runtime）" -Arguments $publishArgs
 
-$pluginOutput = Join-Path $root "src\GameSaveCenter.Playnite\bin\$Configuration\net462"
+$pluginOutput = if ($BuildOutputRoot) {
+    Join-Path (Join-Path (Join-Path (Join-Path ([System.IO.Path]::GetFullPath($BuildOutputRoot)) 'bin') 'GameSaveCenter.Playnite') $Configuration) 'net462'
+}
+else {
+    Join-Path $root "src\GameSaveCenter.Playnite\bin\$Configuration\net462"
+}
 $pluginDllPath = Join-Path $pluginOutput 'GameSaveCenter.Playnite.dll'
 if (-not (Test-Path $pluginDllPath)) {
     throw "找不到已编译插件：$pluginDllPath"

@@ -2,6 +2,32 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-13 DEV-INSTALL-005 构建输出隔离、安装暂存隔离与批量保护确认
+
+**问题根因：**
+
+- 用户提供的日志中 Contracts/Core/Worker/Playnite 编译均已成功；真正失败的是 Playnite.Tests 与 Worker.Tests 覆盖标准 `bin\Release` 输出时被拒绝访问。
+- 当前机器仍有旧的 `dotnet/testhost` 或 Worker 持有仓库标准 `bin/obj` 文件。该类文件锁不应通过默认 UAC 或按进程名强杀解决。
+
+**实现内容：**
+
+- `scripts/build.ps1` 增加可选 `-OutputRoot`，通过 `GscBuildOutputRoot` 为每个项目生成独立的 `bin/obj`，并关闭 MSBuild 节点复用；普通 IDE/CI 未传参数时仍使用原路径。
+- `scripts/dev-install-run.ps1` 每次使用 `artifacts\dev-build\<Configuration>\<guid>`，不再清理正在使用的标准输出；安装临时目录改为唯一 GUID 路径。安装器修订号为 `DEV-INSTALL-005`，默认不请求管理员权限。
+- `scripts/package.ps1` 支持从隔离输出打包，并让 Worker 的运行时恢复/发布也使用同一隔离根目录。
+- Overview 的批量“启用推荐自动保护”增加修改前预览确认；只提交已选且可选游戏，不执行备份/恢复、不覆盖其他策略设置。
+
+**验证结果：**
+
+- Release 隔离构建：0 warnings / 0 errors；Core `37/37`、Worker `81/81`、Playnite `202/202`。
+- `validate-source.py`、XAML 结构检查、WPF 静态校验与 `git diff --check` 通过；WPF 静态校验为 0 errors，剩余 warnings 是既有布局审查提示。
+- `scripts/package.ps1 -SkipBuild -BuildOutputRoot ...` 成功生成 `artifacts\GameSaveCenter-0.6.70.pext`。
+- 使用正常桌面文件权限执行 `scripts/dev-install-run.ps1 -Configuration Release -NoStart -SkipClean` 成功，无 UAC；安装报告确认版本 `0.6.70`、插件 DLL `0.6.70.0`。
+- 真实 Playnite 启动验证成功：`playnite.log` 记录 `Loaded plugin: GameSaveCenter, version 0.6.70`，插件日志记录加载 `GameSaveCenter.Playnite 0.6.70.0`；`worker-launch.log` 记录 Worker 初始化完成并进入 `Application started`。
+
+**未替代的人工验收：**
+
+- 真实用户交互、主题/DPI/键盘焦点、连续缩放，以及真实 Rclone、多设备冲突、游戏恢复/撤销、EXE/LNK/BAT/PS1 启动项、900+ 游戏库仍需人工验收；本阶段不把静态测试或一次宿主启动写成全部产品验收完成。
+
 ## 2026-08-13 DEV-INSTALL-004 回退默认提权并按归属回收 Worker
 
 **实现内容：**
