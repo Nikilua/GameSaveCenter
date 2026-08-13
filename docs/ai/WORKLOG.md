@@ -2,6 +2,18 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-13 ATOMIC-IO-001 原子写入审计与共享原子写入器
+
+- Task ID：`ATOMIC-IO-001`。
+- 实现内容：新增 Worker 共享 `AtomicFileWriter`，统一设置持久化与媒体复制两处“临时文件 + 原子替换”逻辑。`WriteAllTextAsync` 在目标同目录写唯一 `.tmp` 后 `File.Move(..., true)`；`CopyAtomicallyAsync` 在目标同目录写唯一 `.partial` 后 `File.Move(..., false)`。任何失败都会先清理残留临时文件再重新抛出。
+- 核心设计选择：临时文件与目标同盘同目录，避免跨卷 `Move` 退化成非原子复制；`WorkerOptions.Persist()` 与 `MediaSyncService` 的私有复制逻辑改为委托共享实现，保证以后所有 Worker 原子写入都走同一套清理与替换契约。
+- 主要修改文件：`src/GameSaveCenter.Worker/Infrastructure/AtomicFileWriter.cs`、`WorkerOptions.cs`、`MediaSyncService.cs`，以及 `tests/GameSaveCenter.Worker.Tests/AtomicFileWriterTests.cs`。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `53/53`、Worker `136/136`、Playnite `211/211`；`validate-source.py`、XAML 结构、WPF 静态门禁 0 errors / 33 warnings / 153 info、五种窗口 `render-qa OK`。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 22:04 记录 `Loaded plugin: GameSaveCenter, version 0.6.70`，插件日志记录 `0.6.70.0 loaded`，`worker-launch.log` 记录存储初始化与 `Application started`；安装后无新增插件异常，Playnite 与 Worker 均从当前扩展目录运行。
+- MANUAL QA REQUIRED：真实进程在写入中途被终止/断电后确认目标文件不出现截断半成品且临时文件被清理；以及高并发读取方在覆盖替换瞬间始终看到完整旧值或完整新值。
+- Commit：`f1eda41`。
+- 下一项：继续 Layer B，从 `SOAK-001` 长时间稳定性测试开始。
+
 ## 2026-08-13 IPC-COMPAT-001 IPC protocol handshake
 
 - Task ID：`IPC-COMPAT-001`。
