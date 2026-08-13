@@ -2,6 +2,18 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-13 DB-MIGRATION-001 历史数据库 Fixture 升级 Harness
+
+- Task ID：`DB-MIGRATION-001`。
+- 实现内容：新增可复用的 Worker 测试 Harness `DatabaseMigrationHarness`，在临时目录创建旧版 SQLite Fixture，然后运行当前 `SqliteStateStore.InitializeAsync` 完整迁移，并报告首次/重复初始化、缺失表、缺失列、各表行数和明确错误。覆盖旧库升级保留数据、全新数据库创建、非法旧 schema 失败报告三个场景。
+- 核心设计选择：Harness 只操作临时数据库，绝不接触用户数据；旧 Fixture 覆盖历史上后加的列（`match_input_hash`、`session_id`、`archive_path`、`classification_state`、`shared_directory`、`if_already_running`、`risk_category`、`resolved_target_path` 等）和旧版 `backup_versions` 主键，验证真实迁移路径而非只测 `CREATE TABLE`。
+- 主要修改文件：`tests/GameSaveCenter.Worker.Tests/Infrastructure/DatabaseMigrationHarness.cs`、`tests/GameSaveCenter.Worker.Tests/DatabaseMigrationHarnessTests.cs`。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `51/51`、Worker `126/126`、Playnite `211/211`；`validate-source.py`、XAML 结构、WPF 静态门禁 0 errors / 33 warnings / 153 info、五种窗口 `render-qa OK`。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 记录 `Loaded plugin: GameSaveCenter, version 0.6.70`，插件日志记录 `0.6.70.0 loaded`，`worker-launch.log` 记录存储初始化与 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实旧版本用户数据库升级后的功能回归，以及大量历史数据迁移时长的人工复核。
+- Commit：`187744b`。
+- 下一项：继续 Layer B，从 `METADATA-BACKUP-001` GameSaveCenter 自身元数据灾备开始。
+
 ## 2026-08-13 INTEGRITY-001 全局完整性自检
 
 - Task ID：`INTEGRITY-001`。

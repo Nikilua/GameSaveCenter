@@ -3,18 +3,19 @@
 > 维护时间：2026-08-13
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
-## 当前事实覆盖（2026-08-13 Layer A 收口、DIAGNOSTICS、SAFE-MODE 与 INTEGRITY）
+## 当前事实覆盖（2026-08-13 Layer A 收口、DIAGNOSTICS、SAFE-MODE、INTEGRITY 与 DB-MIGRATION）
 
 - 用户日志中的“编译解决方案”失败根因是旧 `dotnet/testhost` 或 Worker 锁住标准 `bin\Release` 输出，随后测试项目无法覆盖 DLL/PDB/XML；不是 `GameSaveCenter.Contracts` 编译失败。
 - 一键开发安装器现在默认不请求管理员权限。`scripts/build.ps1`、`scripts/package.ps1` 和 `scripts/dev-install-run.ps1` 支持按运行生成 `artifacts\dev-build\<Configuration>\<guid>` 隔离的 bin/obj、Worker 发布和安装暂存目录，入口修订号为 `DEV-INSTALL-007`。Playnite 发现增加运行中进程、常见目录、卸载信息、App Paths 和 PATH；未发现 Playnite 且没有运行中的 Playnite 时允许继续构建/安装并提示无法自动启动。Playnite 正常退出超时后，仅当进程属于当前会话、可执行文件路径与本次发现结果完全一致且已经没有主窗口时，才结束该无窗口残留；路径不可确认、跨会话或仍有主窗口时继续停止安装。
 - 真实宿主已验证：安装报告为 0.6.70 / DLL 0.6.70.0；Playnite `playnite.log` 记录插件加载，插件日志记录 0.6.70.0，`worker-launch.log` 记录存储初始化、过期任务整理和 `Application started`。不要再用 2026-08-12 的 PID 3896 历史日志判断当前安装器行为。
-- 当前自动化基线为 Core `51/51`、Worker `123/123`、Playnite `211/211`，Release 构建 0 warnings / 0 errors；source、XAML、WPF 静态门禁与 `render-qa` 通过。真实开发安装已成功，Playnite 与 Worker 启动日志正常。
+- 当前自动化基线为 Core `51/51`、Worker `126/126`、Playnite `211/211`，Release 构建 0 warnings / 0 errors；source、XAML、WPF 静态门禁与 `render-qa` 通过。真实开发安装已成功，Playnite 与 Worker 启动日志正常。
 - 本轮已修复 Layer A 审计缺口：多设备只有 Manifest 内容指纹相同才可判定等价；仅文件数/总大小相同改为保守的未知分歧；Restore Readiness 使用可取消的流式解压与增量 Hash；环境检查分别验证数据、存档和媒体所在磁盘；Manifest 重复路径不会抛异常或产生强指纹。
 - `DIAGNOSTICS-001` 已完成：维护中心可导出有上限、只读、脱敏的 ZIP 诊断包；包含环境/任务/审计/Worker 日志摘要，不包含数据库、存档、媒体或凭据；新增 IPC 请求和 Worker 测试覆盖敏感字段与大小边界。
-- Layer A 14 项与本轮审计补缺、`DIAGNOSTICS-001`、通知级别 `ImportantOnly/Summary/Verbose`、`SAFE-MODE-001`、`INTEGRITY-001` 已交付；完整 38 项 Epic **尚未完成**。Layer B 的 DB-MIGRATION、OBSERVABILITY、CONFIG-RECOVERY 等，以及全部 Layer C 任务仍未实现或未完成验收，不能宣称全部任务完成。
+- Layer A 14 项与本轮审计补缺、`DIAGNOSTICS-001`、通知级别 `ImportantOnly/Summary/Verbose`、`SAFE-MODE-001`、`INTEGRITY-001`、`DB-MIGRATION-001` 已交付；完整 38 项 Epic **尚未完成**。Layer B 的 OBSERVABILITY、CONFIG-RECOVERY 等，以及全部 Layer C 任务仍未实现或未完成验收，不能宣称全部任务完成。
 - 通知级别已收口：`ImportantOnly` 只显示失败/取消任务与警告/失败摘要，`Summary` 保持一次退出摘要，`Verbose` 在最终摘要外逐任务显示；设置页新增通知级别选择，旧设置缺省归一为 `Summary`。
 - 安全模式已交付：全局开关持久化到插件与 Worker 设置；开启后暂停自动退出/定时备份、自动媒体同步、自动工具启动、会话存档快照与保护提示、云端自动上传与自动重试，手动操作和恢复仍可用。维护中心诊断页与诊断摘要会显示当前状态。
 - 完整性自检已交付：维护中心“完整性自检”通过 IPC 检查 SQLite 完整性/外键/表结构、目录可写性、配置程序存在性和索引文件引用；只报告不修复，数据库问题为 Critical，文件缺失为 Warning。
+- 数据库迁移 Harness 已交付：`DatabaseMigrationHarness` 在临时目录创建旧版 Fixture 后执行当前 `SqliteStateStore.InitializeAsync`，覆盖旧库升级、全新库创建、重复初始化和失败报告；只操作临时数据库，不触碰用户数据。
 - Restore 在实际写入开始后的失败、异常或后校验失败必须尝试恢复锁定的 PreRestore；回滚本身失败才进入 `ManualInterventionRequired`。灾难演练现覆盖 A/B/Undo、部分写入、写后异常、权限、只读、目录缺失和回滚失败。
 - 多设备云目录使用持久化 32 位不透明 `DeviceId`，机器名只用于显示与旧 sidecar 兼容；便携设置导入不得复制设备身份。远端恢复继续要求隔离下载、Rclone check、Ludusavi 版本确认和既有 PreRestore 恢复链。
 - 每游戏策略新增 `BackupAnomalyProtectionLevel`（Off/Normal/Strict）；重要游戏模板默认 Strict。Manifest 大量删除参与异常检测，最后健康恢复点与用户 Lock 都不能成为 retention 候选。
