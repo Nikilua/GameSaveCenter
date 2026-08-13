@@ -2,6 +2,18 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-13 DB-MIGRATION-001 历史数据库 Fixture 补齐
+
+- Task ID：`DB-MIGRATION-001`。
+- 实现内容：`DatabaseMigrationHarness` 增加 `ReadScalar`，两代旧库 Fixture 覆盖 `game_policies`、`backup_policy_templates`、`sessions`、`device_conflict_decisions`、备份历史、任务、媒体来源、GameTool 与版本表；第二个 Fixture 模拟缺少 `session_id/archive_path/shared_directory/risk_category/resolved_target_path` 等新列的更老 schema，验证升级补列且数据不丢。
+- 数据值断言：不再只断言“表能打开”，而是直接验证冲突决策、策略 JSON、模板名称、会话启动配置、任务类型、锁定状态、媒体来源匹配模式和工具路径等真实值；内置策略模板种子使用 `INSERT OR IGNORE`，旧 `important` 模板保留。
+- 主要修改文件：`tests/GameSaveCenter.Worker.Tests/Infrastructure/DatabaseMigrationHarness.cs`、`DatabaseMigrationHarnessTests.cs`。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `54/54`、Worker `152/152`、Playnite `217/217`；`validate-source.py` 与 XAML 结构门禁通过（测试-only 改动，不重跑 render-qa）。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 23:42 记录插件加载，`worker-launch.log` 23:42:43 记录 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实历史用户数据库升级后的功能回归，以及大量历史数据迁移时长的人工复核。
+- Commit：`55f532f`。
+- 下一项：继续 Layer B，从 `METADATA-BACKUP-001` 元数据灾备恢复流程审计开始。
+
 ## 2026-08-13 INTEGRITY-001 完整性自检补齐
 
 - Task ID：`INTEGRITY-001`。
