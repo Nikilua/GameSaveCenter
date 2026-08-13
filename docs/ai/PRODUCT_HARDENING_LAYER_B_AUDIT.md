@@ -111,6 +111,7 @@
 - `scripts/validate-source.py`：通过。
 - XAML 结构门禁：通过；涉及 XAML 的提交均通过 `render-qa`；B11 之后为测试-only 阶段，未重跑 `render-qa`。
 - 每个任务提交后均执行 `scripts/dev-install-run.ps1 -Configuration Release` 真实开发安装；B13 安装后 `playnite.log` 01:28:48 记录插件加载，`worker-launch.log` 01:28:54 记录 `Application started`。
+- 2026-08-14 最终复核：`scripts/fault-injection-test.ps1 -Configuration Release` 通过（1/1）；`scripts/soak-test.ps1 -Configuration Release -Iterations 1000` 通过（1/1，约 1m20s）。
 
 ## 结论
 

@@ -7,9 +7,10 @@
 - 已生成 `docs/ai/PRODUCT_HARDENING_LAYER_C_AUDIT.md`：11 项逐项列出生产代码、测试、AUTO VERIFIED、MANUAL QA REQUIRED 与 Commit；结论为 Layer C 11/11 交付。
 - 已生成 `docs/ai/PRODUCT_HARDENING_EPIC_FINAL_AUDIT.md`：Layer A 14 项、A-HARDEN-001/002/003、Layer B 13 项、Layer C 11 项逐项表格，包含状态、代码/测试/CI 证据、人工验收和 Commit。
 - 最终 Gate：Release 0 warnings / 0 errors；Core `59/59`、Worker `183/183`、Playnite `231/231`；`validate-source.py`、XAML/WPF 静态门禁与五种窗口 `render-qa` 全绿。
+- 独立复核：`scripts/fault-injection-test.ps1 -Configuration Release` 通过；`scripts/soak-test.ps1 -Configuration Release -Iterations 1000` 通过。
 - 真实宿主验证：`dev-install-run.ps1 -Configuration Release` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 04:02:36 记录插件加载，`extensions.log` 04:02:37 记录 `GameSaveCenter 0.6.70.0 loaded`，`worker-launch.log` 04:02:42 记录 `Application started`。
 - 整体状态：`PARTIALLY COMPLETED / MANUAL QA REQUIRED`；真实 Restore/Undo、Rclone、双设备、外置镜像、启动项、反作弊、主题/DPI/连续缩放与 1000+ 游戏库仍未人工验收。
-- Commit：`039bc68`。
+- Commit：`039bc68`（Layer C/Epic 审计）；故障注入与 Soak 独立复核补记随后续文档提交。
 - 下一项：等待真实场景人工验收；不再主动扩张新功能。
 
 ## 2026-08-14 MAINTENANCE-REPORT-001 用户可读维护健康报告

@@ -15,6 +15,7 @@
 - `.codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py .`：0 errors。
 - `scripts/render-qa.ps1`：五种窗口全部通过。
 - `scripts/dev-install-run.ps1 -Configuration Release`：构建、测试、打包、普通权限安装并启动真实 Playnite 通过；`playnite.log` 04:02:36 记录插件加载，`extensions.log` 04:02:37 记录 `GameSaveCenter 0.6.70.0 loaded`，`worker-launch.log` 04:02:42 记录 `Application started`。
+- 2026-08-14 独立复核：`scripts/fault-injection-test.ps1 -Configuration Release` 通过；`scripts/soak-test.ps1 -Configuration Release -Iterations 1000` 通过。
 
 ## Layer A 14 项
 
