@@ -2,6 +2,17 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 FAULT-INJECTION-001 ZIP/数据库故障注入补齐
+
+- Task ID：`FAULT-INJECTION-001`。
+- 实现内容：`FaultInjectionHarness` 新增 `corrupted-zip` 与 `corrupted-database` 两类边界故障：损坏 ZIP 必须按 `InvalidDataException` 失败且测试临时归档被清理；损坏 SQLite 文件初始化必须失败且原始数据库文件不得被失败注入删除。总注入故障从 13 类提升到 15 类，仍断言 `Attempted == Recovered`、无意外错误、无残留锁/订阅/临时文件。
+- 主要修改文件：`tests/GameSaveCenter.Worker.Tests/Infrastructure/FaultInjectionHarness.cs`、`FaultInjectionTests.cs`。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `55/55`、Worker `170/170`、Playnite `217/217`；`validate-source.py` 与 XAML 结构门禁通过（测试-only 改动，不重跑 render-qa）。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 01:28:48 记录插件加载，`worker-launch.log` 01:28:54 记录 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实磁盘满/权限拒绝/进程强杀/断电时对备份、恢复与元数据操作的人工复核。
+- Commit：`738f339`。
+- 下一项：生成 Layer B Audit，随后进入 Layer C 11 项。
+
 ## 2026-08-14 SOAK-001 数据规模与资源监控 Soak
 
 - Task ID：`SOAK-001`。
