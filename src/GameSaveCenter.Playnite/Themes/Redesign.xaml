@@ -612,4 +612,54 @@
     <Style x:Key="GscComboBoxStyle" TargetType="ComboBox" BasedOn="{StaticResource GscWpfUiComboBox}"/>
     <Style x:Key="GscTabControlStyle" TargetType="TabControl" BasedOn="{StaticResource GscRedesignWorkspaceTabControl}"/>
     <Style x:Key="GscTabItemStyle" TargetType="TabItem" BasedOn="{StaticResource GscRedesignWorkspaceTabItem}"/>
+    <Style x:Key="GscWorkspaceStatePresenter" TargetType="ui:WorkspaceStatePresenter">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ui:WorkspaceStatePresenter">
+                    <Border Style="{DynamicResource GscRedesignSubCard}" Padding="18" MinHeight="96">
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="440">
+                            <Border Width="40" Height="40" CornerRadius="12" Background="{DynamicResource GscAccentIconFillBrush}" HorizontalAlignment="Center">
+                                <TextBlock x:Name="StateGlyphText" Text="&#xE7BA;" FontFamily="Segoe MDL2 Assets" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock x:Name="StateDisplayText" Text="空" FontSize="11" Foreground="{DynamicResource GscSecondaryTextBrush}" HorizontalAlignment="Center" Margin="0,8,0,0"/>
+                            <TextBlock Text="{TemplateBinding Title}" FontWeight="SemiBold" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" Margin="0,4,0,0"/>
+                            <TextBlock Text="{TemplateBinding Message}" Foreground="{DynamicResource GscSecondaryTextBrush}" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" Margin="0,4,0,0"/>
+                            <TextBlock Text="{TemplateBinding Detail}" Foreground="{DynamicResource GscMutedTextBrush}" FontSize="11" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" Margin="0,4,0,0"/>
+                            <Button x:Name="RetryButton" Content="{TemplateBinding RetryText}" Command="{TemplateBinding RetryCommand}" Style="{DynamicResource GscWpfUiActionButton}" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                        </StackPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding RetryCommand, RelativeSource={RelativeSource TemplatedParent}}" Value="{x:Null}">
+                            <Setter TargetName="RetryButton" Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <Trigger Property="State" Value="Loading">
+                            <Setter TargetName="StateGlyphText" Property="Text" Value="&#xE823;"/>
+                            <Setter TargetName="StateGlyphText" Property="Foreground" Value="{DynamicResource GscInfoBrush}"/>
+                            <Setter TargetName="StateDisplayText" Property="Text" Value="加载中"/>
+                        </Trigger>
+                        <Trigger Property="State" Value="Error">
+                            <Setter TargetName="StateGlyphText" Property="Text" Value="&#xE711;"/>
+                            <Setter TargetName="StateGlyphText" Property="Foreground" Value="{DynamicResource GscErrorBrush}"/>
+                            <Setter TargetName="StateDisplayText" Property="Text" Value="错误"/>
+                        </Trigger>
+                        <Trigger Property="State" Value="Degraded">
+                            <Setter TargetName="StateGlyphText" Property="Text" Value="&#xE7BA;"/>
+                            <Setter TargetName="StateGlyphText" Property="Foreground" Value="{DynamicResource GscWarningBrush}"/>
+                            <Setter TargetName="StateDisplayText" Property="Text" Value="降级"/>
+                        </Trigger>
+                        <Trigger Property="State" Value="Offline">
+                            <Setter TargetName="StateGlyphText" Property="Text" Value="&#xE774;"/>
+                            <Setter TargetName="StateGlyphText" Property="Foreground" Value="{DynamicResource GscMutedStatusBrush}"/>
+                            <Setter TargetName="StateDisplayText" Property="Text" Value="离线"/>
+                        </Trigger>
+                        <Trigger Property="State" Value="Disabled">
+                            <Setter TargetName="StateGlyphText" Property="Text" Value="&#xE7B3;"/>
+                            <Setter TargetName="StateGlyphText" Property="Foreground" Value="{DynamicResource GscMutedStatusBrush}"/>
+                            <Setter TargetName="StateDisplayText" Property="Text" Value="已禁用"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

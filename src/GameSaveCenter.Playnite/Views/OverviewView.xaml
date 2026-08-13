@@ -340,9 +340,9 @@
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
-                            <TextBlock Text="暂无全局活动&#x0a;备份、同步、维护或健康事件完成后会显示在这里。" IsHitTestVisible="False">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock" BasedOn="{StaticResource OverviewEmptyText}">
+                            <ui:WorkspaceStatePresenter State="Empty" Title="暂无全局活动" Message="备份、同步、维护或健康事件完成后会显示在这里。" IsHitTestVisible="False">
+                                <ui:WorkspaceStatePresenter.Style>
+                                    <Style TargetType="ui:WorkspaceStatePresenter" BasedOn="{StaticResource GscWorkspaceStatePresenter}">
                                         <Setter Property="Visibility" Value="Collapsed"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Activities.Count}" Value="0">
@@ -350,8 +350,8 @@
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
+                                </ui:WorkspaceStatePresenter.Style>
+                            </ui:WorkspaceStatePresenter>
                         </Grid>
                     </Border>
                 </Grid>

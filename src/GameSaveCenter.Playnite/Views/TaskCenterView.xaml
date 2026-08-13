@@ -108,10 +108,9 @@
                     <DataGridTextColumn HeaderStyle="{StaticResource TaskLastColumnHeader}" Header="详情" Binding="{Binding DetailMessage, Mode=OneWay}" Width="1.6*" MinWidth="240" ElementStyle="{StaticResource TaskLongTextCell}"/>
                 </DataGrid.Columns>
             </DataGrid>
-                <TextBlock Text="暂无任务记录&#xA;完成备份、媒体同步或维护操作后，任务会显示在这里。"
-                           IsHitTestVisible="False">
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyStateText}">
+                <ui:WorkspaceStatePresenter State="Empty" Title="暂无任务记录" Message="完成备份、媒体同步或维护操作后，任务会显示在这里。" IsHitTestVisible="False">
+                    <ui:WorkspaceStatePresenter.Style>
+                        <Style TargetType="ui:WorkspaceStatePresenter" BasedOn="{StaticResource GscWorkspaceStatePresenter}">
                             <Setter Property="Visibility" Value="Collapsed"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding TasksView.IsEmpty}" Value="True">
@@ -119,8 +118,8 @@
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </TextBlock.Style>
-                </TextBlock>
+                    </ui:WorkspaceStatePresenter.Style>
+                </ui:WorkspaceStatePresenter>
             </Grid>
         </Border>
         <ScrollViewer x:Name="TaskDetailScrollViewer" Grid.Row="2" Grid.Column="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0">

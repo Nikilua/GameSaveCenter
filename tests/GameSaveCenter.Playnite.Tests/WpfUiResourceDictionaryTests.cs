@@ -2984,7 +2984,10 @@ public sealed class WpfUiResourceDictionaryTests
         foreach (var (file, trigger) in views)
         {
             var text = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", file));
-            Assert.Contains("BasedOn=\"{StaticResource GscEmptyStateText}\"", text);
+            Assert.True(
+                text.Contains("BasedOn=\"{StaticResource GscEmptyStateText}\"") ||
+                text.Contains("BasedOn=\"{StaticResource GscWorkspaceStatePresenter}\""),
+                $"{file} must use a shared empty/state presenter.");
             Assert.Contains(trigger, text);
             Assert.Contains("IsHitTestVisible=\"False\"", text);
         }
