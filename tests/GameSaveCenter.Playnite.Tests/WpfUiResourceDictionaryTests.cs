@@ -1865,7 +1865,7 @@ public sealed class WpfUiResourceDictionaryTests
             .Select(element => element.Attribute("Command")?.Value)
             .ToArray();
 
-        Assert.Equal(10, commands.Length);
+        Assert.Equal(11, commands.Length);
         Assert.Contains("{Binding RefreshDiagnosticsCommand}", commands);
         Assert.Contains("{Binding CopyDiagnosticsCommand}", commands);
         Assert.Contains("{Binding CreateDiagnosticsPackageCommand}", commands);
@@ -1876,6 +1876,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("{Binding RunIntegrityCheckCommand}", commands);
         Assert.Contains("{Binding CreateMetadataBackupCommand}", commands);
         Assert.Contains("{Binding RebuildRepositoryCommand}", commands);
+        Assert.Contains("{Binding RunPathRemapCommand}", commands);
         Assert.Equal(9, actionRow.Descendants().Count(element => element.Name.LocalName == "Button"));
     }
 
@@ -3336,6 +3337,10 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Binding MetadataBackupSummary", maintenance);
         Assert.Contains("RebuildRepositoryCommand", maintenance);
         Assert.Contains("Binding RepositoryRebuildSummary", maintenance);
+        Assert.Contains("RunPathRemapCommand", maintenance);
+        Assert.Contains("Binding PathRemapOldRoot", maintenance);
+        Assert.Contains("Binding PathRemapNewRoot", maintenance);
+        Assert.Contains("Binding PathRemapSummary", maintenance);
     }
 
     [Fact]

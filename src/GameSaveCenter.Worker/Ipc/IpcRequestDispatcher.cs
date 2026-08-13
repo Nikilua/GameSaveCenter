@@ -35,13 +35,14 @@ public sealed class IpcRequestDispatcher
     private readonly IntegrityCheckService _integrityCheck;
     private readonly MetadataBackupService _metadataBackup;
     private readonly RepositoryRebuildService _repositoryRebuild;
+    private readonly PathRemapService _pathRemap;
     private readonly ILogger<IpcRequestDispatcher> _logger;
 
     public IpcRequestDispatcher(GameCatalogService catalog,GameSessionCoordinator sessions,BackupOrchestrator backup,RestoreOrchestrator restore,
         MediaSyncService media,SavePathDetectionService detection,DashboardService dashboard,SqliteStateStore store,TaskCoordinator tasks,
         LudusaviClient ludusavi,WorkerOptions options,GameToolService gameTools,ITrainerCatalogSource trainerCatalog,
-        DeviceStateService deviceStates,RemoteBackupStagingService remoteBackups,RestoreReadinessService restoreReadiness,EnvironmentCheckService environment,DiagnosticsPackageService diagnostics,IntegrityCheckService integrityCheck,MetadataBackupService metadataBackup,RepositoryRebuildService repositoryRebuild,ILogger<IpcRequestDispatcher> logger)
-    { _catalog=catalog;_sessions=sessions;_backup=backup;_restore=restore;_media=media;_detection=detection;_dashboard=dashboard;_store=store;_tasks=tasks;_ludusavi=ludusavi;_options=options;_gameTools=gameTools;_trainerCatalog=trainerCatalog;_deviceStates=deviceStates;_remoteBackups=remoteBackups;_restoreReadiness=restoreReadiness;_environment=environment;_diagnostics=diagnostics;_integrityCheck=integrityCheck;_metadataBackup=metadataBackup;_repositoryRebuild=repositoryRebuild;_logger=logger; }
+        DeviceStateService deviceStates,RemoteBackupStagingService remoteBackups,RestoreReadinessService restoreReadiness,EnvironmentCheckService environment,DiagnosticsPackageService diagnostics,IntegrityCheckService integrityCheck,MetadataBackupService metadataBackup,RepositoryRebuildService repositoryRebuild,PathRemapService pathRemap,ILogger<IpcRequestDispatcher> logger)
+    { _catalog=catalog;_sessions=sessions;_backup=backup;_restore=restore;_media=media;_detection=detection;_dashboard=dashboard;_store=store;_tasks=tasks;_ludusavi=ludusavi;_options=options;_gameTools=gameTools;_trainerCatalog=trainerCatalog;_deviceStates=deviceStates;_remoteBackups=remoteBackups;_restoreReadiness=restoreReadiness;_environment=environment;_diagnostics=diagnostics;_integrityCheck=integrityCheck;_metadataBackup=metadataBackup;_repositoryRebuild=repositoryRebuild;_pathRemap=pathRemap;_logger=logger; }
 
     public async Task<IpcEnvelope> DispatchAsync(IpcEnvelope request,CancellationToken token)
     {
@@ -111,6 +112,7 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.CheckIntegrity=>await _integrityCheck.RunAsync(token).ConfigureAwait(false),
                 MessageTypes.CreateMetadataBackup=>await _metadataBackup.CreateAsync(token).ConfigureAwait(false),
                 MessageTypes.RebuildRepository=>await _repositoryRebuild.RebuildAsync(token).ConfigureAwait(false),
+                MessageTypes.PathRemap=>await _pathRemap.RemapAsync(Read<PathRemapRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.CreateDiagnosticsPackage=>await _diagnostics.CreateAsync(Read<CreateDiagnosticsPackageRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.CancelTask=>new CancelTaskResultDto{Cancelled=_tasks.Cancel(Read<CancelTaskRequestDto>(request).TaskId)},
                 MessageTypes.ListGameTools=>await _gameTools.ListAsync(Read<GameQueryDto>(request).PlayniteId,token).ConfigureAwait(false),

@@ -78,6 +78,9 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string integritySummary = "尚未运行完整性自检。";
         private string metadataBackupSummary = "尚未生成元数据灾备包。";
         private string repositoryRebuildSummary = "尚未重建备份索引。";
+        private string pathRemapOldRoot = string.Empty;
+        private string pathRemapNewRoot = string.Empty;
+        private string pathRemapSummary = "尚未执行路径迁移。";
         private string diffSummary = string.Empty;
         private string retentionSummary = string.Empty;
         private BackupPolicyTemplateDto selectedPolicyTemplate = null!;
@@ -184,6 +187,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             RunIntegrityCheckCommand = new RelayCommand(_ => Run(RunIntegrityCheckAsync), _ => !IsBusy);
             CreateMetadataBackupCommand = new RelayCommand(_ => Run(CreateMetadataBackupAsync), _ => !IsBusy && !string.IsNullOrWhiteSpace(EffectiveSettings.DataDirectory));
             RebuildRepositoryCommand = new RelayCommand(_ => Run(RebuildRepositoryAsync), _ => !IsBusy && Snapshot.LudusaviAvailable);
+            RunPathRemapCommand = new RelayCommand(_ => Run(RunPathRemapAsync), _ => !IsBusy && !string.IsNullOrWhiteSpace(PathRemapOldRoot) && !string.IsNullOrWhiteSpace(PathRemapNewRoot));
             RunEnvironmentCheckCommand = new RelayCommand(_ => Run(RunEnvironmentCheckAsync), _ => !IsBusy);
             SkipOnboardingCommand = new RelayCommand(_ => SkipOnboarding(), _ => !IsBusy && IsOnboardingPending);
             CompleteOnboardingCommand = new RelayCommand(_ => CompleteOnboarding(), _ => !IsBusy && IsOnboardingPending && EnvironmentCheck.IsReady && EnvironmentCheck.CheckedUtc != default(DateTime));
@@ -318,6 +322,25 @@ namespace GameSaveCenter.Playnite.ViewModels
         public string IntegritySummary { get => integritySummary; private set => SetValue(ref integritySummary, value); }
         public string MetadataBackupSummary { get => metadataBackupSummary; private set => SetValue(ref metadataBackupSummary, value); }
         public string RepositoryRebuildSummary { get => repositoryRebuildSummary; private set => SetValue(ref repositoryRebuildSummary, value); }
+        public string PathRemapOldRoot
+        {
+            get => pathRemapOldRoot;
+            set
+            {
+                SetValue(ref pathRemapOldRoot, value ?? string.Empty);
+                RaiseCommandStates();
+            }
+        }
+        public string PathRemapNewRoot
+        {
+            get => pathRemapNewRoot;
+            set
+            {
+                SetValue(ref pathRemapNewRoot, value ?? string.Empty);
+                RaiseCommandStates();
+            }
+        }
+        public string PathRemapSummary { get => pathRemapSummary; private set => SetValue(ref pathRemapSummary, value); }
         public string GameSearchText
         {
             get => gameSearchText;
@@ -607,6 +630,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand RunIntegrityCheckCommand { get; }
         public ICommand CreateMetadataBackupCommand { get; }
         public ICommand RebuildRepositoryCommand { get; }
+        public ICommand RunPathRemapCommand { get; }
         public ICommand RunEnvironmentCheckCommand { get; }
         public ICommand SkipOnboardingCommand { get; }
         public ICommand CompleteOnboardingCommand { get; }
@@ -1168,6 +1192,29 @@ namespace GameSaveCenter.Playnite.ViewModels
             ApplyOnUi(() =>
             {
                 RepositoryRebuildSummary = $"备份索引重建：{result.RebuiltGameCount} 个游戏成功，{result.FailedGameCount} 个失败，共索引 {result.IndexedVersionCount} 个版本";
+                StatusMessage = result.Summary;
+            });
+        }
+
+        private async Task RunPathRemapAsync()
+        {
+            var confirmed = await plugin.ConfirmAsync(
+                "确认路径迁移",
+                $"将把“{PathRemapOldRoot}”下所有已索引路径迁移到“{PathRemapNewRoot}”。\n\n此操作会更新数据库与 Worker 设置，但不会移动任何文件。是否继续？",
+                "继续迁移",
+                "取消",
+                true);
+            if (!confirmed) return;
+            var result = await plugin.RequestAsync<PathRemapResultDto>(MessageTypes.PathRemap, new PathRemapRequestDto
+            {
+                OldRoot = PathRemapOldRoot,
+                NewRoot = PathRemapNewRoot,
+                Confirmed = true
+            }, TimeSpan.FromMinutes(5));
+            ApplyOnUi(() =>
+            {
+                PathRemapSummary = $"路径迁移完成：更新 {result.AffectedRows} 条数据库路径" +
+                                   (result.UpdatedSettings.Count > 0 ? "，同步 " + string.Join("、", result.UpdatedSettings) : "");
                 StatusMessage = result.Summary;
             });
         }
@@ -2362,7 +2409,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 UpdateMediaMetadataCommand,OpenSelectedMediaCommand,RevealSelectedMediaCommand,
                 AssignInboxMediaCommand, IgnoreInboxMediaCommand,
                 CancelTaskCommand, RetryTaskCommand, CopyTaskErrorCommand, RefreshDiagnosticsCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand,
-                StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,CreateMetadataBackupCommand,RebuildRepositoryCommand,
+                StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,CreateMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,
                 SaveProcessMappingCommand,DeleteProcessMappingCommand,RunEnvironmentCheckCommand,SkipOnboardingCommand,CompleteOnboardingCommand,OnboardingTestBackupCommand,
                 OpenDataDirectoryCommand, OpenBackupDirectoryCommand, OpenMediaDirectoryCommand, OpenWorkerLogCommand
                 ,ImportTrainerCommand,ImportCheatTableCommand,ImportCustomLaunchItemCommand,ImportToolFolderCommand,SaveGameToolCommand,LaunchGameToolCommand,
