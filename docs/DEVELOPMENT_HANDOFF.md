@@ -2,12 +2,13 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
-## 2026-08-14 Layer A 收口、Layer B 13 项与 Layer C 11 项当前状态
+## 2026-08-14 Layer A/B/C 审计收口与最终 Epic 状态
 
 - 当前基线：Core `59/59`、Worker `183/183`、Playnite `231/231`；Release 构建 0 warnings / 0 errors；source、WPF 静态门禁和 `render-qa` 通过。
 - 已交付：多设备强内容指纹/保守分歧判断、可取消的流式 Restore Readiness、按实际目录分盘检查、重复 Manifest 防护、结构化且集中脱敏的诊断包、`ImportantOnly/Summary/Verbose` 通知级别、带启动失败自动请求与恢复正常按钮的安全模式、覆盖孤儿归档/Manifest/磁盘空间/四态结果的完整性自检、旧版数据库 Fixture 升级 Harness、自身元数据灾备 ZIP 与安全恢复流程、带只读预览与确认的备份仓库索引重建、带预览/目标缺失策略/自动灾备的批量路径迁移、按 Worker 会话与任务类型分类的中断任务协调、带显式兼容矩阵的单游戏操作锁、带 AppVersion 与能力列表的 IPC protocol handshake、覆盖设置/媒体/元数据恢复/启动计数且旧文件完整保留的共享原子写入器、数据规模与资源监控 Soak Harness、覆盖 ZIP/数据库/原子写/外部进程/任务/广播/锁的 15 类故障注入 Harness、通知级别正式收口与同 Session 去重测试、未分类自定义启动项反作弊授权语义、Onboarding 测试备份真实生产链路审计、只读备份存储分析、全局保留策略模拟器、第二本地镜像、首页全局活动时间线、Playnite 游戏右键快捷操作、修改器中心拖拽导入、合理 UI 状态持久化、键盘快捷搜索与自动化名称、统一页面状态控件、设置即时验证摘要，以及用户可读维护健康报告（复制/导出 TXT/Markdown）。
 - 真实开发安装已通过：Playnite 扩展 `0.6.70` 加载，Worker 从当前扩展目录启动并记录 `Application started`。安装器仍默认不请求管理员权限；沙箱无法写入 Playnite 扩展目录时，需在正常用户环境或获授权外部环境运行安装器。
-- 当前阶段 commit：`cbd0cdb`、`c6bfda2`、通知级别/安全模式/完整性自检/迁移 Harness/元数据灾备/索引重建/路径迁移/任务协调/操作锁/握手提交见紧随其后的 commit；原子写入提交为 `f1eda41`，稳定性测试提交为 `8132419`，故障注入提交为 `f91992e`，A-HARDEN 提交为 `fbbdb90/8d6c36c/5666944`，B01+B02 升级提交为 `17e88b6`，B03 提交为 `a064108`，B04 提交为 `55f532f`，B05 提交为 `97b06b5`，B06 提交为 `dff0cf4`，B07 提交为 `bddcfdd`，B08 提交为 `47685bd`，B09 提交为 `7dba09c`，B10 提交为 `7ee738d`，B11 提交为 `eed946c`，B12 提交为 `c9e053a`，B13 提交为 `738f339`，Layer B Audit 提交为 `25b191f`，C01 提交为 `2ef8f13`，C02 提交为 `a27f430`，C03 提交为 `387149f`，C04 提交为 `7f38b15`，C05 提交为 `15ab1d7`，C06 提交为 `5d113c3`，C07 提交为 `e4513cb`，C08 提交为 `c907983`，C09 提交为 `f21cba4`，C10 提交为 `4614bb8`，C11 提交为 `9d465d2`。Layer B 13 项与 Layer C 11 项已全部交付；下一步生成 Layer C Audit 与最终 Epic Audit。
+- 当前阶段 commit：`cbd0cdb`、`c6bfda2`、通知级别/安全模式/完整性自检/迁移 Harness/元数据灾备/索引重建/路径迁移/任务协调/操作锁/握手提交见紧随其后的 commit；原子写入提交为 `f1eda41`，稳定性测试提交为 `8132419`，故障注入提交为 `f91992e`，A-HARDEN 提交为 `fbbdb90/8d6c36c/5666944`，B01+B02 升级提交为 `17e88b6`，B03 提交为 `a064108`，B04 提交为 `55f532f`，B05 提交为 `97b06b5`，B06 提交为 `dff0cf4`，B07 提交为 `bddcfdd`，B08 提交为 `47685bd`，B09 提交为 `7dba09c`，B10 提交为 `7ee738d`，B11 提交为 `eed946c`，B12 提交为 `c9e053a`，B13 提交为 `738f339`，Layer B Audit 提交为 `25b191f`，C01 提交为 `2ef8f13`，C02 提交为 `a27f430`，C03 提交为 `387149f`，C04 提交为 `7f38b15`，C05 提交为 `15ab1d7`，C06 提交为 `5d113c3`，C07 提交为 `e4513cb`，C08 提交为 `c907983`，C09 提交为 `f21cba4`，C10 提交为 `4614bb8`，C11 提交为 `9d465d2`。Layer B 13 项与 Layer C 11 项已全部交付；`PRODUCT_HARDENING_LAYER_C_AUDIT.md` 与 `PRODUCT_HARDENING_EPIC_FINAL_AUDIT.md` 已生成。
+- 整体 Epic 状态：`PARTIALLY COMPLETED / MANUAL QA REQUIRED`；真实 Restore/Undo、Rclone、双设备、外置镜像、启动项、反作弊、主题/DPI/连续缩放与 1000+ 游戏库等待人工验收。
 - `AUTO VERIFIED` 与 `MANUAL QA REQUIRED` 必须分开记录。真实 Restore/Undo、Rclone 断网、双设备、EXE/LNK/BAT/PS1、1000+ 游戏库、主题/DPI/连续缩放仍需人工验收。
 
 ## 2026-08-13 UI-QA-REAL-006 设置分类 Tab 实际裁切修复

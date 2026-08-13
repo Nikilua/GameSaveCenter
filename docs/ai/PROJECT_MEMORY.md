@@ -40,7 +40,7 @@
 - `MAINTENANCE-REPORT-001` 已交付：新增 IPC `maintenance.report.get` 与 Worker `MaintenanceReportService`，从 SQLite 计数、完整性自检、存储分析与本地镜像状态聚合用户可读健康报告；维护中心诊断操作带新增“复制健康报告/导出健康报告”，支持 TXT/Markdown；报告不含日志、原始数据库或凭据，与开发者诊断 ZIP 明确区分。
 - 本轮已修复 Layer A 审计缺口：多设备只有 Manifest 内容指纹相同才可判定等价；仅文件数/总大小相同改为保守的未知分歧；Restore Readiness 使用可取消的流式解压与增量 Hash；环境检查分别验证数据、存档和媒体所在磁盘；Manifest 重复路径不会抛异常或产生强指纹。
 - `DIAGNOSTICS-001` 已完成：维护中心可导出有上限、只读、脱敏的 ZIP 诊断包；包含环境/任务/审计/Worker 日志摘要，不包含数据库、存档、媒体或凭据；新增 IPC 请求和 Worker 测试覆盖敏感字段与大小边界。
-- Layer A 14 项、本轮审计补缺、A-HARDEN-001/002/003、Layer B 13 项（DIAGNOSTICS/SAFE-MODE/INTEGRITY/DB-MIGRATION/METADATA-BACKUP/REPOSITORY-REBUILD/PATH-REMAP/TASK-RECONCILE/GAME-OP-LOCK/IPC-COMPAT/ATOMIC-IO/SOAK/FAULT-INJECTION）与 Layer C 11 项已交付；完整 38 项 Epic 的最终逐项审计尚未生成，不能宣称全部任务完成。Layer B 逐项验收见 `docs/ai/PRODUCT_HARDENING_LAYER_B_AUDIT.md`。
+- Layer A 14 项、本轮审计补缺、A-HARDEN-001/002/003、Layer B 13 项（DIAGNOSTICS/SAFE-MODE/INTEGRITY/DB-MIGRATION/METADATA-BACKUP/REPOSITORY-REBUILD/PATH-REMAP/TASK-RECONCILE/GAME-OP-LOCK/IPC-COMPAT/ATOMIC-IO/SOAK/FAULT-INJECTION）与 Layer C 11 项已交付；逐项验收见 `docs/ai/PRODUCT_HARDENING_LAYER_B_AUDIT.md` 与 `docs/ai/PRODUCT_HARDENING_LAYER_C_AUDIT.md`，最终逐项审计见 `docs/ai/PRODUCT_HARDENING_EPIC_FINAL_AUDIT.md`。由于真实场景人工验收未全部完成，整体 Epic 状态为 `PARTIALLY COMPLETED / MANUAL QA REQUIRED`，不能宣称全部任务完成。
 - 通知级别已收口：`ImportantOnly` 只显示失败/取消任务与警告/失败摘要，`Summary` 保持一次退出摘要，`Verbose` 在最终摘要外逐任务显示；设置页新增通知级别选择，旧设置缺省归一为 `Summary`。
 - 安全模式已交付：全局开关持久化到插件与 Worker 设置；开启后暂停自动退出/定时备份、自动媒体同步、自动工具启动、会话存档快照与保护提示、云端自动上传与自动重试，手动操作和恢复仍可用。维护中心诊断页与诊断摘要会显示当前状态。
 - 完整性自检已交付：维护中心“完整性自检”通过 IPC 检查 SQLite 完整性/外键/表结构、目录可写性、配置程序存在性和索引文件引用；只报告不修复，数据库问题为 Critical，文件缺失为 Warning。
