@@ -8,7 +8,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-$installerRevision = 'DEV-INSTALL-006'
+$installerRevision = 'DEV-INSTALL-007'
 
 $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 try {
@@ -71,6 +71,36 @@ function Get-PlayniteExecutableCandidates {
         $candidates.Add((Join-Path ${env:ProgramFiles(x86)} 'Playnite\Playnite.DesktopApp.exe'))
     }
 
+    # Portable/custom Playnite installations may not use the standard folders or
+    # register an uninstall entry. App Paths and PATH are cheap additional sources
+    # that work without scanning whole drives.
+    foreach ($appPathRegistry in @(
+        'HKCU:\Software\Microsoft\Windows\CurrentVersion\App Paths\Playnite.DesktopApp.exe',
+        'HKLM:\Software\Microsoft\Windows\CurrentVersion\App Paths\Playnite.DesktopApp.exe',
+        'HKLM:\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\App Paths\Playnite.DesktopApp.exe'
+    )) {
+        try {
+            $appPathEntry = Get-ItemProperty -LiteralPath $appPathRegistry -ErrorAction SilentlyContinue
+            if ($appPathEntry -and $appPathEntry.'(default)') {
+                $candidates.Add([string]$appPathEntry.'(default)')
+            }
+        }
+        catch {
+            # Optional discovery source; registry access must not block installation.
+        }
+    }
+
+    try {
+        $pathCommand = Get-Command 'Playnite.DesktopApp.exe' -CommandType Application -ErrorAction SilentlyContinue |
+            Select-Object -First 1
+        if ($pathCommand -and $pathCommand.Source) {
+            $candidates.Add([string]$pathCommand.Source)
+        }
+    }
+    catch {
+        # PATH discovery is optional.
+    }
+
     foreach ($registryPath in @(
         'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*',
         'HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*',
@@ -95,7 +125,10 @@ function Get-PlayniteExecutableCandidates {
     }
 
     return $candidates |
-        Where-Object { $_ -and (Test-Path $_) } |
+        Where-Object { $_ -and (Test-Path -LiteralPath $_ -PathType Leaf) } |
+        ForEach-Object {
+            try { (Resolve-Path -LiteralPath $_ -ErrorAction Stop).Path } catch { }
+        } |
         Select-Object -Unique
 }
 
@@ -132,7 +165,7 @@ function Get-ExtensionRoots {
 function Stop-PlayniteAndOwnedWorkerReliably {
     param(
         [Parameter(Mandatory = $true)][string[]]$ExtensionRoots,
-        [Parameter(Mandatory = $true)][string[]]$TrustedPlayniteExecutables
+        [AllowEmptyCollection()][string[]]$TrustedPlayniteExecutables
     )
 
     $playniteNames = @('Playnite.DesktopApp', 'Playnite.FullscreenApp')
@@ -185,6 +218,12 @@ function Stop-PlayniteAndOwnedWorkerReliably {
             }
 
             $fullProcessPath = [System.IO.Path]::GetFullPath($processPath)
+            if ($trustedPaths.Count -eq 0) {
+                # The initial discovery can race with process startup or fail to
+                # read a path transiently. A path read from this exact process is
+                # sufficient to establish the identity needed by the guards below.
+                $trustedPaths = @($fullProcessPath)
+            }
             if (-not ($trustedPaths | Where-Object { [string]::Equals($_, $fullProcessPath, [StringComparison]::OrdinalIgnoreCase) })) {
                 throw "Playnite [$($process.Id)] 正常退出超时，但路径不属于本次发现的 Playnite：$fullProcessPath。为避免误杀，安装已停止。"
             }
@@ -326,10 +365,24 @@ try {
         }
     }
 
+    if ($PlayniteExecutable -and -not (Test-Path -LiteralPath $PlayniteExecutable -PathType Leaf)) {
+        throw "指定的 Playnite 可执行文件不存在：$PlayniteExecutable"
+    }
+
     $playniteExecutables = @(Get-PlayniteExecutableCandidates -PreferredPath $PlayniteExecutable -RunningPaths $runningPlaynitePaths)
+    if ($playniteExecutables.Count -eq 0) {
+        Write-Warning '未自动发现 Playnite.DesktopApp.exe。将继续构建和安装；安装完成后无法自动启动 Playnite。若 Playnite 使用便携版或自定义目录，请使用 -PlayniteExecutable 指定其路径。'
+    }
+    else {
+        Write-Host "发现 Playnite：$($playniteExecutables -join ', ')" -ForegroundColor DarkCyan
+    }
     $extensionRoots = @(Get-ExtensionRoots -ExplicitPath $PlayniteExtensionsPath -PlayniteExecutables $playniteExecutables)
 
-    Stop-PlayniteAndOwnedWorkerReliably -ExtensionRoots $extensionRoots -TrustedPlayniteExecutables $playniteExecutables
+    $stopArguments = @{ ExtensionRoots = $extensionRoots }
+    if ($playniteExecutables.Count -gt 0) {
+        $stopArguments.TrustedPlayniteExecutables = $playniteExecutables
+    }
+    Stop-PlayniteAndOwnedWorkerReliably @stopArguments
 
     if (-not $SkipClean) {
         Write-Host "`n==> 使用新的隔离构建目录：无需清理正在使用的标准 bin/obj" -ForegroundColor DarkCyan

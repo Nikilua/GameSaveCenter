@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-13 DEV-INSTALL-007 兼容未发现 Playnite 路径
+
+- 用户反馈另一台机器在 Playnite 使用自定义/便携安装路径时，一键入口在构建前报 `TrustedPlayniteExecutables` 空数组绑定错误；实际失败点是安装前进程处理，不是项目编译失败。
+- `scripts/dev-install-run.ps1` 现在增加 App Paths、PATH 和规范化路径发现，并允许可信 Playnite 候选为空；没有运行中的 Playnite 时继续构建、打包和安装，仅提示安装后无法自动启动。指定了不存在的 `-PlayniteExecutable` 时给出直接错误。
+- 如果 Playnite 仍在运行但没有任何可确认的可信路径，仍然停止安装并要求用户退出 Playnite 或显式指定路径，保留防止误杀未知进程的安全边界。
+- 根目录 `GameSaveCenter-Run.cmd` 与源码门禁同步到 `DEV-INSTALL-007`。
+- 验证要求：PowerShell AST、`scripts/validate-source.py`、`git diff --check`；真实另一台机器的自定义 Playnite 路径和无 Playnite 进程场景仍需用户手工执行一键入口确认。
+
 ## 2026-08-13 DEV-INSTALL-006 无窗口 Playnite 残留回收
 
 - 真实复现一键安装失败：Playnite PID 48188 收到正常退出请求后 20 秒仍未退出；该进程属于当前会话、路径为已发现的 `D:\software\Playnite\Playnite.DesktopApp.exe`，且 `MainWindowHandle=0`，因此没有窗口可供 `CloseMainWindow()` 再次关闭，并非管理员权限问题。

@@ -350,8 +350,10 @@ def check_delivery_guards() -> None:
     if "打包目录不存在：$stage" not in dev_install:
         fail("Development installation must reject a missing staging directory")
     for token in (
-        "DEV-INSTALL-006",
+        "DEV-INSTALL-007",
         "TrustedPlayniteExecutables",
+        "AllowEmptyCollection",
+        "playniteExecutables.Count -eq 0",
         "[StringComparison]::OrdinalIgnoreCase",
         "process.MainWindowHandle -ne [IntPtr]::Zero",
         "process.SessionId -ne $currentSessionId",

@@ -10,6 +10,13 @@
 请先读取 GameSaveCenter 项目的 docs/DEVELOPMENT_HANDOFF.md，按照其中的读取顺序、不可丢失约束和验证要求恢复项目上下文。当前代码侧已收口：除非用户提供新的真实问题、日志或明确新需求，否则不要主动开启新的 UI 重构或性能优化；不要重置或覆盖已有改动，先检查 `git status`，完成后更新项目记忆与工作日志并提交 commit。
 ```
 
+## 2026-08-13 DEV-INSTALL-007：兼容未发现 Playnite 路径
+
+- 另一台机器的一键安装日志显示，失败发生在构建前：Playnite 使用自定义/便携安装路径时没有发现任何 `Playnite.DesktopApp.exe`，空候选数组绑定到 `TrustedPlayniteExecutables` 后被 PowerShell 拒绝；不是编译失败。
+- 当前安装器增加 App Paths、PATH 和规范化路径发现，并允许可信 Playnite 候选为空。没有运行中的 Playnite 时继续构建、打包和安装；安装完成后只提示无法自动启动 Playnite。可使用 `-PlayniteExecutable "D:\\实际路径\\Playnite.DesktopApp.exe"` 支持自定义路径。
+- 如果 Playnite 仍在运行但路径不可确认，安装器仍安全停止并要求手动退出或显式指定路径，不按进程名强杀未知进程。
+- 根目录入口修订号为 `DEV-INSTALL-007`；真实另一台机器的便携版、自定义路径和完全未启动 Playnite 场景仍需用户手工验证。
+
 ## 2026-08-13 DEV-INSTALL-006：无窗口 Playnite 残留回收
 
 - 真实复现 PID 48188：Playnite 已无主窗口但进程残留，`CloseMainWindow()` 无法请求退出，旧安装器等待 20 秒后中止。这不是管理员权限问题。
