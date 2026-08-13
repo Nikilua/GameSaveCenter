@@ -191,14 +191,9 @@ public sealed class GameToolService
         var allowed=new List<GameToolDto>();
         foreach(var tool in tools)
         {
-            if(tool.ToolType==GameToolType.CustomExecutable&&tool.RiskCategory==GameToolRiskCategory.Unknown)
+            if(!GameToolAutoStartPolicy.IsAllowed(tool,antiCheat,out var blockedReason))
             {
-                await RecordAutoStartBlockedAsync(tool,session,"工具尚未分类，自动启动已暂缓",token).ConfigureAwait(false);
-                continue;
-            }
-            if(antiCheat&&(tool.ToolType!=GameToolType.CustomExecutable||tool.RiskCategory==GameToolRiskCategory.GameModification))
-            {
-                await RecordAutoStartBlockedAsync(tool,session,"当前游戏存在反作弊风险，该工具类别不允许自动启动",token).ConfigureAwait(false);
+                await RecordAutoStartBlockedAsync(tool,session,blockedReason,token).ConfigureAwait(false);
                 continue;
             }
             allowed.Add(tool);
@@ -327,11 +322,12 @@ public sealed class GameToolService
         if(string.IsNullOrWhiteSpace(target))
             throw new WorkerOperationException("GAME_TOOL_TARGET_UNKNOWN","无法安全判断自定义启动项的目标进程；请选择“允许多开”或改用可解析的 EXE。",tool.ActiveVersion.EntryPath);
         var scan=GameToolProcessGuard.Scan(target);
-        if(scan.HasUnreadableCandidate)
+        var action=GameToolProcessGuard.Decide(tool.IfAlreadyRunning,scan);
+        if(action==GameToolProcessGuard.ExistingProcessAction.BlockUnreadable)
             throw new WorkerOperationException("GAME_TOOL_PROCESS_UNREADABLE","发现同名进程但当前会话无法读取其程序路径；为避免误操作，已停止启动。请使用管理员权限检查进程，或选择“允许多开”。",target);
-        if(scan.MatchingProcessIds.Count==0)
+        if(action==GameToolProcessGuard.ExistingProcessAction.Start)
             return LaunchDecision.Start;
-        if(tool.IfAlreadyRunning==GameToolIfAlreadyRunning.Skip)
+        if(action==GameToolProcessGuard.ExistingProcessAction.Skip)
             return new LaunchDecision(true,scan.MatchingProcessIds);
         GameToolProcessGuard.RestartExact(target,scan,TimeSpan.FromSeconds(2.5));
         return LaunchDecision.Start;

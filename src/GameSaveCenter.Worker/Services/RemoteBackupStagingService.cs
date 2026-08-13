@@ -44,7 +44,8 @@ public sealed class RemoteBackupStagingService : IRemoteBackupStageProvider
         var stagingRoot=ResolveStagingRoot(stagingId);
         var vaultPath=Path.Combine(stagingRoot,"Vault");
         Directory.CreateDirectory(vaultPath);
-        var remoteSubPath=Path.Combine(request.RemoteDevice,"Saves");
+        var remoteStorageKey=ResolveRemoteStorageKey(request.RemoteDeviceId,request.RemoteDevice);
+        var remoteSubPath=Path.Combine(remoteStorageKey,"Saves");
         try
         {
             var transfer=await cloudTransfers.RunUploadAsync("remote backup download",async ct=>
@@ -66,7 +67,7 @@ public sealed class RemoteBackupStagingService : IRemoteBackupStageProvider
             var now=DateTime.UtcNow;
             var result=new RemoteBackupStageResultDto
             {
-                StagingId=stagingId,PlayniteId=request.PlayniteId,GameName=game.Name,RemoteDevice=request.RemoteDevice,
+                StagingId=stagingId,PlayniteId=request.PlayniteId,GameName=game.Name,RemoteDevice=request.RemoteDevice,RemoteDeviceId=remoteStorageKey,
                 BackupId=request.BackupId,StagedUtc=now,ExpiresUtc=now+Lifetime,Verified=true,
                 StatusMessage="远端备份已下载到隔离区并通过一致性与 Ludusavi 版本校验。"
             };
@@ -101,7 +102,7 @@ public sealed class RemoteBackupStagingService : IRemoteBackupStageProvider
     public async Task<RemoteBackupStage> RevalidateAsync(string stagingId,CancellationToken token)
     {
         var stage=OpenVerified(stagingId);
-        var remoteSubPath=Path.Combine(stage.Manifest.RemoteDevice,"Saves");
+        var remoteSubPath=Path.Combine(ResolveRemoteStorageKey(stage.Manifest.RemoteDeviceId,stage.Manifest.RemoteDevice),"Saves");
         var check=await cloudTransfers.RunUploadAsync("remote backup restore revalidation",
             ct=>rclone.ChecksumCheckAsync(stage.VaultPath,remoteSubPath,ct),token).ConfigureAwait(false);
         if(!check.Success)
@@ -130,7 +131,12 @@ public sealed class RemoteBackupStagingService : IRemoteBackupStageProvider
         if(string.IsNullOrWhiteSpace(request.PlayniteId)||string.IsNullOrWhiteSpace(request.BackupId))
             throw new ArgumentException("必须选择包含远端备份版本的设备记录。");
         if(!IsSafeDeviceName(request.RemoteDevice))throw new ArgumentException("远端设备名称包含不安全字符。");
+        if(!string.IsNullOrWhiteSpace(request.RemoteDeviceId)&&!WorkerOptions.IsValidDeviceId(request.RemoteDeviceId))
+            throw new ArgumentException("远端设备标识无效。");
     }
+
+    private static string ResolveRemoteStorageKey(string? deviceId,string deviceName)
+        => WorkerOptions.IsValidDeviceId(deviceId) ? deviceId!.ToLowerInvariant() : deviceName;
 
     private string ResolveStagingRoot(string stagingId)
     {

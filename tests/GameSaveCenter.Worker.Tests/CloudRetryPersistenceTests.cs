@@ -2,6 +2,7 @@ using GameSaveCenter.Worker.Configuration;
 using GameSaveCenter.Worker.Persistence;
 using GameSaveCenter.Worker.Services;
 using GameSaveCenter.Worker.Infrastructure;
+using GameSaveCenter.Contracts;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
@@ -136,6 +137,23 @@ public sealed class CloudRetryPersistenceTests : IDisposable
 
         await store.DeferCloudRetryAsync("due", now.AddMinutes(5), "configuration unavailable", CancellationToken.None);
         Assert.Empty(await store.GetDueCloudRetriesAsync(now, 10, CancellationToken.None));
+    }
+
+    [Fact]
+    public async Task WorkerRestartTurnsInterruptedTransferIntoVisibleRetryableFailure()
+    {
+        await store.AddOrUpdateTaskAsync(new TaskStatusDto
+        {
+            TaskId = "upload-1", TaskType = "CloudUpload", State = TaskState.Running,
+            ProgressPercent = 42, Message = "uploading", CreatedUtc = DateTime.UtcNow, StartedUtc = DateTime.UtcNow
+        }, CancellationToken.None);
+
+        await store.MarkInterruptedTasksAsync(CancellationToken.None);
+        var task = Assert.Single(await store.GetRecentTasksAsync(10, CancellationToken.None), x => x.TaskId == "upload-1");
+
+        Assert.Equal(TaskState.Failed, task.State);
+        Assert.Equal("WORKER_RESTARTED", task.ErrorCode);
+        Assert.True(task.ProgressPercent < 100);
     }
 
     public void Dispose()

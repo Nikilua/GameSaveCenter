@@ -84,6 +84,116 @@ public sealed class RestoreOrchestratorTests : IDisposable
     }
 
     [Fact]
+    public async Task RestoreA_FromCurrentB_CompletesAtoBackupBtoRestoreASequence()
+    {
+        await SeedGameAsync();
+        client.SetCurrentSave("B");
+        client.Backups.Add("A", "A");
+
+        var result = await CreateOrchestrator().ExecuteAsync(Request("A"), CancellationToken.None);
+
+        Assert.Equal(TaskState.Succeeded, result.State);
+        Assert.Equal("A", client.CurrentSave);
+        Assert.Equal("A", await File.ReadAllTextAsync(client.LiveSavePath));
+    }
+
+    [Fact]
+    public async Task PartialWriteFailure_RollsBackFilesToPreRestoreState()
+    {
+        await SeedGameAsync();
+        client.SetCurrentSave("B");
+        client.Backups.Add("A", "A");
+        client.PartialFailRestoreFor.Add("A");
+
+        var result = await CreateOrchestrator().ExecuteAsync(Request("A"), CancellationToken.None);
+
+        Assert.Equal(TaskState.Failed, result.State);
+        Assert.Equal("RESTORE_FAILED_ROLLED_BACK", result.ErrorCode);
+        Assert.Equal("B", client.CurrentSave);
+        Assert.Equal("B", await File.ReadAllTextAsync(client.LiveSavePath));
+    }
+
+    [Fact]
+    public async Task WriteExceptionAfterPartialMutation_RollsBackFiles()
+    {
+        await SeedGameAsync();
+        client.SetCurrentSave("B");
+        client.Backups.Add("A", "A");
+        client.ThrowAfterWriteFor.Add("A");
+
+        var result = await CreateOrchestrator().ExecuteAsync(Request("A"), CancellationToken.None);
+
+        Assert.Equal(TaskState.Failed, result.State);
+        Assert.Equal("RESTORE_FAILED_ROLLED_BACK", result.ErrorCode);
+        Assert.Equal("B", await File.ReadAllTextAsync(client.LiveSavePath));
+    }
+
+    [Fact]
+    public async Task PostRestoreValidationFailure_RollsBackFiles()
+    {
+        await SeedGameAsync();
+        client.SetCurrentSave("B");
+        client.Backups.Add("A", "A");
+        client.FailPostValidationFor.Add("A");
+
+        var result = await CreateOrchestrator().ExecuteAsync(Request("A"), CancellationToken.None);
+
+        Assert.Equal(TaskState.Failed, result.State);
+        Assert.Equal("RESTORE_FAILED_ROLLED_BACK", result.ErrorCode);
+        Assert.Equal("B", await File.ReadAllTextAsync(client.LiveSavePath));
+    }
+
+    [Fact]
+    public async Task PermissionDeniedAndReadOnlyFailures_RollBackWithoutLosingCurrentState()
+    {
+        await SeedGameAsync();
+        client.SetCurrentSave("B");
+        client.Backups.Add("permission", "A");
+        client.Backups.Add("readonly", "A");
+        client.ThrowUnauthorizedFor.Add("permission");
+        client.ThrowReadOnlyFor.Add("readonly");
+
+        var permission = await CreateOrchestrator().ExecuteAsync(Request("permission"), CancellationToken.None);
+        var readOnly = await CreateOrchestrator().ExecuteAsync(Request("readonly"), CancellationToken.None);
+
+        Assert.Equal("RESTORE_FAILED_ROLLED_BACK", permission.ErrorCode);
+        Assert.Equal("RESTORE_FAILED_ROLLED_BACK", readOnly.ErrorCode);
+        Assert.Equal("B", await File.ReadAllTextAsync(client.LiveSavePath));
+    }
+
+    [Fact]
+    public async Task MissingLiveSaveDirectory_IsCreatedByRestoreAndRemainsUndoable()
+    {
+        await SeedGameAsync();
+        client.SetCurrentSave("B");
+        client.Backups.Add("A", "A");
+        Directory.Delete(client.LiveDirectory, true);
+
+        var result = await CreateOrchestrator().ExecuteAsync(Request("A"), CancellationToken.None);
+        var undo = await CreateOrchestrator().UndoAsync("game-1", CancellationToken.None);
+
+        Assert.Equal(TaskState.Succeeded, result.State);
+        Assert.Equal(TaskState.Succeeded, undo.State);
+        Assert.Equal("B", await File.ReadAllTextAsync(client.LiveSavePath));
+    }
+
+    [Fact]
+    public async Task RollbackFailure_IsMarkedForManualIntervention()
+    {
+        await SeedGameAsync();
+        client.SetCurrentSave("B");
+        client.Backups.Add("A", "A");
+        client.PartialFailRestoreFor.Add("A");
+        client.FailRollback = true;
+
+        var result = await CreateOrchestrator().ExecuteAsync(Request("A"), CancellationToken.None);
+
+        Assert.Equal(TaskState.Failed, result.State);
+        Assert.Equal("RESTORE_ROLLBACK_FAILED", result.ErrorCode);
+        Assert.Contains(RestoreState.ManualInterventionRequired, await ReadRestoreStatesAsync());
+    }
+
+    [Fact]
     public async Task RestoreIsRejectedWhileSessionIsActive()
     {
         await SeedGameAsync();
@@ -124,6 +234,7 @@ public sealed class RestoreOrchestratorTests : IDisposable
     {
         SqliteConnection.ClearAllPools();
         if (Directory.Exists(root)) Directory.Delete(root, recursive: true);
+        client.Dispose();
     }
 
     private sealed class FakeRestoreCatalog : IRestoreCatalog
@@ -148,13 +259,34 @@ public sealed class RestoreOrchestratorTests : IDisposable
             => throw new NotSupportedException();
     }
 
-    private sealed class FakeRestoreClient : IRestoreClient
+    private sealed class FakeRestoreClient : IRestoreClient, IDisposable
     {
         public Dictionary<string, string> Backups { get; } = new(StringComparer.OrdinalIgnoreCase);
         public HashSet<string> FailRestoreFor { get; } = new(StringComparer.OrdinalIgnoreCase);
+        public HashSet<string> PartialFailRestoreFor { get; } = new(StringComparer.OrdinalIgnoreCase);
+        public HashSet<string> ThrowAfterWriteFor { get; } = new(StringComparer.OrdinalIgnoreCase);
+        public HashSet<string> ThrowUnauthorizedFor { get; } = new(StringComparer.OrdinalIgnoreCase);
+        public HashSet<string> ThrowReadOnlyFor { get; } = new(StringComparer.OrdinalIgnoreCase);
+        public HashSet<string> FailPostValidationFor { get; } = new(StringComparer.OrdinalIgnoreCase);
         public List<string> RestoreCalls { get; } = new();
         public List<(string BackupId, bool? Locked)> EditedBackups { get; } = new();
+        public bool FailRollback { get; set; }
+        public string LiveDirectory { get; }
+        public string LiveSavePath => Path.Combine(LiveDirectory, "profile.dat");
         public string CurrentSave { get; private set; } = "A";
+
+        public FakeRestoreClient()
+        {
+            LiveDirectory = Path.Combine(Path.GetTempPath(), "GameSaveCenter.Tests", Guid.NewGuid().ToString("N"), "live");
+            SetCurrentSave("A");
+        }
+
+        public void SetCurrentSave(string value)
+        {
+            CurrentSave = value;
+            Directory.CreateDirectory(LiveDirectory);
+            File.WriteAllText(LiveSavePath, value);
+        }
 
         public Task<LudusaviCommandResult> BackupAsync(IEnumerable<string> games, bool force, bool preview, CancellationToken token)
         {
@@ -169,8 +301,33 @@ public sealed class RestoreOrchestratorTests : IDisposable
         public Task<LudusaviCommandResult> RestoreAsync(string game, string backupId, bool preview, CancellationToken token)
         {
             RestoreCalls.Add(backupId);
-            if (!preview && !FailRestoreFor.Contains(backupId)) CurrentSave = Backups.TryGetValue(backupId, out var value) ? value : backupId;
-            return Task.FromResult(!preview && FailRestoreFor.Contains(backupId) ? Failure("restore failed") : Success(BackupJson(backupId)));
+            if (preview)
+            {
+                var postValidation = string.Equals(CurrentSave, Backups.TryGetValue(backupId, out var expected) ? expected : backupId, StringComparison.Ordinal);
+                return Task.FromResult(postValidation && FailPostValidationFor.Contains(backupId)
+                    ? Failure("post validation failed")
+                    : Success(BackupJson(backupId)));
+            }
+            if (backupId.StartsWith("pre-", StringComparison.OrdinalIgnoreCase) && FailRollback)
+                return Task.FromResult(Failure("rollback failed"));
+            var value = Backups.TryGetValue(backupId, out var saved) ? saved : backupId;
+            if (ThrowUnauthorizedFor.Contains(backupId))
+                throw new UnauthorizedAccessException(LiveSavePath);
+            if (ThrowReadOnlyFor.Contains(backupId))
+                throw new IOException("The target file is read-only.");
+            if (PartialFailRestoreFor.Contains(backupId))
+            {
+                SetCurrentSave("PARTIAL:" + value);
+                return Task.FromResult(Failure("restore partially failed"));
+            }
+            if (ThrowAfterWriteFor.Contains(backupId))
+            {
+                SetCurrentSave("PARTIAL:" + value);
+                throw new IOException("write failed after partial mutation");
+            }
+            if (FailRestoreFor.Contains(backupId)) return Task.FromResult(Failure("restore failed"));
+            SetCurrentSave(value);
+            return Task.FromResult(Success(BackupJson(backupId)));
         }
 
         public Task<LudusaviCommandResult> RestoreFromPathAsync(string backupPath, string game, string backupId, bool preview, CancellationToken token)
@@ -196,5 +353,12 @@ public sealed class RestoreOrchestratorTests : IDisposable
         }
 
         private static LudusaviCommandResult Failure(string message) => LudusaviCommandResult.Failure("FAKE_FAILURE", message);
+
+        public void Dispose()
+        {
+            var testRoot = Directory.GetParent(LiveDirectory)?.FullName;
+            if (!string.IsNullOrWhiteSpace(testRoot) && Directory.Exists(testRoot))
+                Directory.Delete(testRoot, recursive: true);
+        }
     }
 }

@@ -21,6 +21,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Null(package.SelectToken("Settings.RclonePassword"));
 
             var imported = new GameSaveCenterSettings();
+            var destinationDeviceId = imported.DeviceId;
             var report = imported.ImportPortableJson(json);
 
             Assert.Equal(1, report.SchemaVersion);
@@ -34,6 +35,8 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Equal(source.EnableXboxGameBarMedia, imported.EnableXboxGameBarMedia);
             Assert.Equal(source.EnableCustomMedia, imported.EnableCustomMedia);
             Assert.Equal(source.OnboardingCompleted, imported.OnboardingCompleted);
+            Assert.Equal(destinationDeviceId, imported.DeviceId);
+            Assert.NotEqual(source.DeviceId, imported.DeviceId);
         }
 
         [Fact]
@@ -50,6 +53,7 @@ namespace GameSaveCenter.Playnite.Tests
 }";
 
             var imported = new GameSaveCenterSettings();
+            var destinationDeviceId = imported.DeviceId;
             imported.ImportPortableJson(json);
 
             Assert.True(imported.EnableUiAnimations);
@@ -64,6 +68,22 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.True(imported.EnableWindowsScreenshotMedia);
             Assert.True(imported.EnablePlatformAdjacentMedia);
             Assert.True(imported.EnableCustomMedia);
+            Assert.Equal(destinationDeviceId, imported.DeviceId);
+        }
+
+        [Fact]
+        public void DeviceIdentityRoundTripsInInstalledSettingsButNotPortableTransfer()
+        {
+            var source = CreateSettings();
+            var installedJson = Newtonsoft.Json.JsonConvert.SerializeObject(source);
+            var reloaded = Newtonsoft.Json.JsonConvert.DeserializeObject<GameSaveCenterSettings>(installedJson)!;
+
+            Assert.Equal(source.DeviceId, reloaded.DeviceId);
+
+            var destination = new GameSaveCenterSettings();
+            var destinationId = destination.DeviceId;
+            destination.ImportPortableJson(source.ExportPortableJson());
+            Assert.Equal(destinationId, destination.DeviceId);
         }
 
         [Fact]

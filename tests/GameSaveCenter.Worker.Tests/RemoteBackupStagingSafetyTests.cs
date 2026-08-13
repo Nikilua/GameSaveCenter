@@ -7,6 +7,19 @@ namespace GameSaveCenter.Worker.Tests;
 public sealed class RemoteBackupStagingSafetyTests
 {
     [Theory]
+    [InlineData("copy", true)]
+    [InlineData("check", true)]
+    [InlineData("lsf", true)]
+    [InlineData("cat", true)]
+    [InlineData("version", true)]
+    [InlineData("sync", false)]
+    [InlineData("move", false)]
+    [InlineData("delete", false)]
+    [InlineData("purge", false)]
+    public void RcloneSafetyAllowlistRejectsDestructiveCommands(string command, bool expected)
+        => Assert.Equal(expected, RcloneClient.IsAllowedCommand(new[] { command, "source", "target" }));
+
+    [Theory]
     [InlineData("DESKTOP-ABC")]
     [InlineData("SteamDeck")]
     [InlineData("客厅电脑")]

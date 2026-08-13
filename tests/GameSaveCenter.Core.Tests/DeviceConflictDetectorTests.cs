@@ -57,4 +57,17 @@ public sealed class DeviceConflictDetectorTests
         Assert.True(conflict.HasConflict);
         Assert.True(string.IsNullOrWhiteSpace(conflict.PreferredBackupId));
     }
+
+    [Fact]
+    public void ContinuedIndependentA3AndB3RemainDivergedWithoutAutomaticWinner()
+    {
+        var detector = new DeviceConflictDetector();
+        var a3 = new BackupSnapshot { BackupId = "A3", ParentBackupId = "A2", SourceDevice = "device-a", TotalBytes = 130, FileCount = 4 };
+        var b3 = new BackupSnapshot { BackupId = "B3", ParentBackupId = "B2", SourceDevice = "device-b", TotalBytes = 150, FileCount = 5 };
+
+        var conflict = detector.Detect(a3, b3);
+
+        Assert.True(conflict.HasConflict);
+        Assert.True(string.IsNullOrWhiteSpace(conflict.PreferredBackupId));
+    }
 }

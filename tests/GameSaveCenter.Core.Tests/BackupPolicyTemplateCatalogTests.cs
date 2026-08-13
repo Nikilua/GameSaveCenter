@@ -1,4 +1,5 @@
 using System.Linq;
+using GameSaveCenter.Contracts;
 using GameSaveCenter.Core.Services;
 using Xunit;
 
@@ -27,6 +28,7 @@ public sealed class BackupPolicyTemplateCatalogTests
         });
         Assert.False(templates.Single(x => x.TemplateId == BackupPolicyTemplateCatalog.ManualOnlyId).Policy.Enabled);
         Assert.False(templates.Single(x => x.TemplateId == BackupPolicyTemplateCatalog.ExitOnlyId).Policy.BackupDuringPlay);
+        Assert.Equal(BackupAnomalyProtectionLevel.Strict, templates.Single(x => x.TemplateId == BackupPolicyTemplateCatalog.ImportantId).Policy.AnomalyProtectionLevel);
     }
 
     [Fact]

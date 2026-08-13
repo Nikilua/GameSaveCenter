@@ -94,6 +94,38 @@ public sealed class GameHealthAssessmentTests
         Assert.Equal(GameHealthState.Unknown, result.State);
     }
 
+    [Fact]
+    public void CloudFailureOnlyMattersWhenCloudIsEnabled()
+    {
+        var local = new GameHealthInput
+        {
+            LudusaviMatched = true, LastPlayedUtc = Now.AddDays(-1), LastBackupUtc = Now.AddDays(-1),
+            BackupVersionCount = 1, LatestRestoreReadinessStatus = RestoreReadinessStatus.Ready,
+            CloudState = "Failed", CloudEnabled = false
+        };
+        var disabled = Assess(local);
+        local.CloudEnabled = true;
+        var enabled = Assess(local);
+
+        Assert.Equal(GameHealthState.Healthy, disabled.State);
+        Assert.Equal(GameHealthState.Attention, enabled.State);
+        Assert.Contains(enabled.Reasons, x => x.Contains("云端", StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public void OpenBackupAnomalyOverridesOtherwiseHealthyState()
+    {
+        var result = Assess(new GameHealthInput
+        {
+            LudusaviMatched = true, LastPlayedUtc = Now.AddDays(-1), LastBackupUtc = Now.AddDays(-1),
+            BackupVersionCount = 1, LatestRestoreReadinessStatus = RestoreReadinessStatus.Ready,
+            OpenFindingErrorCount = 1
+        });
+
+        Assert.Equal(GameHealthState.Risk, result.State);
+        Assert.Contains(result.Reasons, x => x.Contains("备份错误", StringComparison.Ordinal));
+    }
+
     private static GameHealthAssessment Assess(GameHealthInput input)
         => new GameHealthAssessmentService().Assess(input, Now);
 }

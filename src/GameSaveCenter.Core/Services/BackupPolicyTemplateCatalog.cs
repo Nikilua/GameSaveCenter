@@ -23,6 +23,7 @@ public static class BackupPolicyTemplateCatalog
             Create(ImportantId, "重要游戏", new BackupPolicyDto
             {
                 UploadAfterBackup = true,
+                AnomalyProtectionLevel = BackupAnomalyProtectionLevel.Strict,
                 KeepRecentAllHours = 72,
                 KeepDailyDays = 90,
                 KeepWeeklyWeeks = 26,
@@ -82,6 +83,7 @@ public static class BackupPolicyTemplateCatalog
             SyncMediaOnGameStop = policy.SyncMediaOnGameStop,
             // Automatic restore remains a deliberate safety boundary in every template.
             AllowAutomaticRestore = false,
+            AnomalyProtectionLevel = policy.AnomalyProtectionLevel,
             KeepRecentAllHours = Math.Max(0, policy.KeepRecentAllHours),
             KeepDailyDays = Math.Max(0, policy.KeepDailyDays),
             KeepWeeklyWeeks = Math.Max(0, policy.KeepWeeklyWeeks),

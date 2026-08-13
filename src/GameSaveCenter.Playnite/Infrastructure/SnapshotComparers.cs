@@ -164,6 +164,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 && a.SyncMediaDuringPlay == b.SyncMediaDuringPlay
                 && a.SyncMediaOnGameStop == b.SyncMediaOnGameStop
                 && a.AllowAutomaticRestore == b.AllowAutomaticRestore
+                && a.AnomalyProtectionLevel == b.AnomalyProtectionLevel
                 && a.KeepRecentAllHours == b.KeepRecentAllHours
                 && a.KeepDailyDays == b.KeepDailyDays
                 && a.KeepWeeklyWeeks == b.KeepWeeklyWeeks

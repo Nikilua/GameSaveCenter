@@ -18,7 +18,8 @@ namespace GameSaveCenter.Contracts
     /// <summary>Small JSON sidecar shared between devices. It deliberately contains no save files or credentials.</summary>
     public sealed class DeviceStateSidecarDto
     {
-        public int SchemaVersion { get; set; } = 1;
+        public int SchemaVersion { get; set; } = 2;
+        public string DeviceId { get; set; } = string.Empty;
         public string DeviceName { get; set; } = string.Empty;
         public DateTime GeneratedUtc { get; set; } = DateTime.UtcNow;
         public List<DeviceBackupSummaryDto> Backups { get; set; } = new List<DeviceBackupSummaryDto>();
@@ -30,6 +31,7 @@ namespace GameSaveCenter.Contracts
         public string PlayniteId { get; set; } = string.Empty;
         public string GameName { get; set; } = string.Empty;
         public string RemoteDevice { get; set; } = string.Empty;
+        public string RemoteDeviceId { get; set; } = string.Empty;
         public string LocalBackupId { get; set; } = string.Empty;
         public string RemoteBackupId { get; set; } = string.Empty;
         public bool HasConflict { get; set; }
@@ -87,6 +89,7 @@ namespace GameSaveCenter.Contracts
     {
         public string PlayniteId { get; set; } = string.Empty;
         public string RemoteDevice { get; set; } = string.Empty;
+        public string RemoteDeviceId { get; set; } = string.Empty;
         public string BackupId { get; set; } = string.Empty;
     }
 
@@ -97,6 +100,7 @@ namespace GameSaveCenter.Contracts
         public string PlayniteId { get; set; } = string.Empty;
         public string GameName { get; set; } = string.Empty;
         public string RemoteDevice { get; set; } = string.Empty;
+        public string RemoteDeviceId { get; set; } = string.Empty;
         public string BackupId { get; set; } = string.Empty;
         public DateTime StagedUtc { get; set; }
         public DateTime ExpiresUtc { get; set; }

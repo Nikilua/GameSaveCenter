@@ -143,6 +143,7 @@ public sealed class BackupOrchestrator
 
                     var previous = (await _store.GetBackupVersionsAsync(game.PlayniteId, ct).ConfigureAwait(false))
                         .FirstOrDefault();
+                    var policy = await _store.GetPolicyAsync(game.PlayniteId, ct).ConfigureAwait(false);
                     var previousDomain = previous == null
                         ? null
                         : new GameSaveCenter.Core.Models.BackupSnapshot
@@ -150,10 +151,11 @@ public sealed class BackupOrchestrator
                             BackupId = previous.BackupId,
                             CreatedUtc = previous.CreatedUtc,
                             FileCount = previous.FileCount,
-                            TotalBytes = previous.TotalBytes
+                            TotalBytes = previous.TotalBytes,
+                            Files = DeserializeManifest(await _store.GetBackupManifestAsync(game.PlayniteId, previous.BackupId, ct).ConfigureAwait(false))
                         };
 
-                    foreach (var finding in _validator.Validate(snapshot, previousDomain, null, true))
+                    foreach (var finding in _validator.Validate(snapshot, previousDomain, null, true, policy.AnomalyProtectionLevel))
                     {
                         await _store.AddFindingAsync(
                             game.PlayniteId,
@@ -191,13 +193,12 @@ public sealed class BackupOrchestrator
                     await _store.AddBackupVersionAsync(indexed, JsonSerializer.Serialize(snapshot.Files), ct)
                         .ConfigureAwait(false);
 
-                    var policy = await _store.GetPolicyAsync(game.PlayniteId, ct).ConfigureAwait(false);
                     if (_options.EnableCloudUpload && policy.UploadAfterBackup && _rclone.IsConfigured)
                     {
                         await _store.UpdateGameCloudStateAsync(game.PlayniteId,"Pending",ct).ConfigureAwait(false);
                         await progress.ReportAsync(82, $"{requestLabel}：正在复制到云端").ConfigureAwait(false);
                         var cloud = await _cloudTransfers.RunUploadAsync("backup", transferToken => _rclone
-                            .CopyAsync(_options.LudusaviBackupDirectory, Path.Combine(Environment.MachineName, "Saves"), transferToken), ct)
+                            .CopyAsync(_options.LudusaviBackupDirectory, Path.Combine(_options.DeviceStorageKey, "Saves"), transferToken), ct)
                             .ConfigureAwait(false);
                         if (!cloud.Success)
                         {
@@ -238,6 +239,19 @@ public sealed class BackupOrchestrator
         return results;
     }
 
+    private static List<GameSaveCenter.Core.Models.FileManifestEntry> DeserializeManifest(string json)
+    {
+        try
+        {
+            return JsonSerializer.Deserialize<List<GameSaveCenter.Core.Models.FileManifestEntry>>(json)
+                ?? new List<GameSaveCenter.Core.Models.FileManifestEntry>();
+        }
+        catch (JsonException)
+        {
+            return new List<GameSaveCenter.Core.Models.FileManifestEntry>();
+        }
+    }
+
     /// <summary>
     /// Repeats only the safe one-way cloud copy after a local backup already succeeded.
     /// It deliberately does not create another Ludusavi version.
@@ -256,7 +270,7 @@ public sealed class BackupOrchestrator
             await _store.UpdateGameCloudStateAsync(game.PlayniteId,"Pending",ct).ConfigureAwait(false);
             await progress.ReportAsync(10,"正在重新复制本地备份到云端").ConfigureAwait(false);
             var cloud=await _cloudTransfers.RunUploadAsync("backup retry",transferToken=>_rclone.CopyAsync(
-                _options.LudusaviBackupDirectory,Path.Combine(Environment.MachineName,"Saves"),transferToken),ct).ConfigureAwait(false);
+                _options.LudusaviBackupDirectory,Path.Combine(_options.DeviceStorageKey,"Saves"),transferToken),ct).ConfigureAwait(false);
             if(!cloud.Success)
             {
                 var failure = RcloneFailureClassifier.Classify(cloud.StandardError);

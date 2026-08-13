@@ -231,6 +231,12 @@ namespace GameSaveCenter.Playnite.ViewModels
         public BatchObservableCollection<ProcessMappingDto> ProcessMappings { get; } = new BatchObservableCollection<ProcessMappingDto>();
         public BatchObservableCollection<BackupVersionDto> Backups { get; } = new BatchObservableCollection<BackupVersionDto>();
         public BatchObservableCollection<BackupPolicyTemplateDto> PolicyTemplates { get; } = new BatchObservableCollection<BackupPolicyTemplateDto>();
+        public IReadOnlyList<BackupAnomalyProtectionOption> BackupAnomalyProtectionOptions { get; } = new[]
+        {
+            new BackupAnomalyProtectionOption(BackupAnomalyProtectionLevel.Off, "关闭比较告警"),
+            new BackupAnomalyProtectionOption(BackupAnomalyProtectionLevel.Normal, "标准保护"),
+            new BackupAnomalyProtectionOption(BackupAnomalyProtectionLevel.Strict, "严格保护")
+        };
         public BatchObservableCollection<MediaItemDto> Media { get; } = new BatchObservableCollection<MediaItemDto>();
         private BatchObservableCollection<MediaItemDto> unassignedMedia = new BatchObservableCollection<MediaItemDto>();
         public BatchObservableCollection<MediaItemDto> UnassignedMedia
@@ -1185,7 +1191,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             var code=DeviceDecision switch{"保留两者"=>"KeepBoth","以本机为准"=>"PreferLocal","以远端为准"=>"PreferRemote",_=>"Defer"};
             var saved=await plugin.RequestAsync<DeviceConflictDecisionDto>(MessageTypes.SaveDeviceConflictDecision,new DeviceConflictDecisionDto
             {
-                PlayniteId=selected.PlayniteId,RemoteDevice=selected.RemoteDevice,
+                PlayniteId=selected.PlayniteId,RemoteDevice=selected.RemoteDeviceId,
                 LocalBackupId=selected.LocalBackupId,RemoteBackupId=selected.RemoteBackupId,
                 Decision=code,Comment=DeviceDecisionComment
             });
@@ -1207,7 +1213,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             var staged=await plugin.RequestAsync<RemoteBackupStageResultDto>(MessageTypes.StageRemoteBackup,
                 new RemoteBackupStageRequestDto
                 {
-                    PlayniteId=selected.PlayniteId,RemoteDevice=selected.RemoteDevice,BackupId=selected.RemoteBackupId
+                    PlayniteId=selected.PlayniteId,RemoteDevice=selected.RemoteDevice,
+                    RemoteDeviceId=selected.RemoteDeviceId,BackupId=selected.RemoteBackupId
                 },TimeSpan.FromHours(3));
             StagedRemoteBackup=staged;
             ConfirmSuccess(staged.StatusMessage);
@@ -2370,5 +2377,11 @@ namespace GameSaveCenter.Playnite.ViewModels
         public GameToolRiskCategory Value { get; }
         public string Display { get; }
         public GameToolRiskOption(GameToolRiskCategory value, string display) { Value=value; Display=display; }
+    }
+    public sealed class BackupAnomalyProtectionOption
+    {
+        public BackupAnomalyProtectionLevel Value { get; }
+        public string Display { get; }
+        public BackupAnomalyProtectionOption(BackupAnomalyProtectionLevel value, string display) { Value=value; Display=display; }
     }
 }

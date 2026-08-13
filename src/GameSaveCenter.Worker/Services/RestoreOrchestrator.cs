@@ -77,20 +77,51 @@ public sealed class RestoreOrchestrator
             using var cloudPause=await _cloudTransfers.PauseForRestoreAsync(ct).ConfigureAwait(false);
             state=RestoreState.CloudJobsPaused;await AuditAsync(game.PlayniteId,state,request,ct).ConfigureAwait(false);
             await progress.ReportAsync(60,"正在恢复指定版本").ConfigureAwait(false);
-            var restored=await RestoreTargetAsync(targetBackupPath,match,request.BackupId,false,ct).ConfigureAwait(false);
-            if(!restored.Success||!restored.Json.HasValue||LudusaviResultParser.SomeGamesFailed(restored.Json.Value))
+            try
             {
-                state=RestoreState.RollbackAttempted;await AuditAsync(game.PlayniteId,state,new{request,preVersion.BackupId},ct).ConfigureAwait(false);
-                var rollback=await _ludusavi.RestoreAsync(match,preVersion.BackupId,false,ct).ConfigureAwait(false);
-                state=rollback.Success?RestoreState.RolledBack:RestoreState.ManualInterventionRequired;
-                await AuditAsync(game.PlayniteId,state,new{request,preVersion.BackupId,rollback.ErrorMessage},ct).ConfigureAwait(false);
-                throw new InvalidOperationException(rollback.Success?"Restore failed and the PreRestore snapshot was restored.":"Restore and automatic rollback both failed. Manual intervention is required.");
+                // From this point onward the restore client may have changed a subset of live
+                // files even when it throws or reports failure. Every failure path therefore
+                // goes through the same mandatory PreRestore rollback below.
+                var restored=await RestoreTargetAsync(targetBackupPath,match,request.BackupId,false,ct).ConfigureAwait(false);
+                if(!restored.Success||!restored.Json.HasValue||LudusaviResultParser.SomeGamesFailed(restored.Json.Value))
+                    throw new WorkerOperationException("RESTORE_WRITE_FAILED","恢复未完整写入目标存档。",restored.ErrorMessage);
+                state=RestoreState.RestoreExecuted;await AuditAsync(game.PlayniteId,state,request,ct).ConfigureAwait(false);
+                await progress.ReportAsync(88,"正在执行恢复后校验").ConfigureAwait(false);
+                var post=await RestoreTargetAsync(targetBackupPath,match,request.BackupId,true,ct).ConfigureAwait(false);
+                if(!post.Success||!post.Json.HasValue||LudusaviResultParser.SomeGamesFailed(post.Json.Value))
+                    throw new WorkerOperationException("RESTORE_POST_VALIDATION_FAILED","恢复后校验未通过。",post.ErrorMessage);
+                state=RestoreState.PostRestoreValidated;await AuditAsync(game.PlayniteId,state,request,ct).ConfigureAwait(false);
             }
-            state=RestoreState.RestoreExecuted;await AuditAsync(game.PlayniteId,state,request,ct).ConfigureAwait(false);
-            await progress.ReportAsync(88,"正在执行恢复后校验").ConfigureAwait(false);
-            var post=await RestoreTargetAsync(targetBackupPath,match,request.BackupId,true,ct).ConfigureAwait(false);
-            if(!post.Success||!post.Json.HasValue||LudusaviResultParser.SomeGamesFailed(post.Json.Value)) throw new InvalidOperationException("Restore completed but post-restore validation was inconclusive. PreRestore remains available.");
-            state=RestoreState.PostRestoreValidated;await AuditAsync(game.PlayniteId,state,request,ct).ConfigureAwait(false);
+            catch(Exception restoreError)
+            {
+                // Safety rollback must not inherit a user cancellation token: once live files
+                // may have changed, restoring the locked snapshot is mandatory best effort.
+                state=RestoreState.RollbackAttempted;
+                await AuditAsync(game.PlayniteId,state,new{request,preVersion.BackupId,error=restoreError.Message},CancellationToken.None).ConfigureAwait(false);
+                try
+                {
+                    var rollback=await _ludusavi.RestoreAsync(match,preVersion.BackupId,false,CancellationToken.None).ConfigureAwait(false);
+                    if(!rollback.Success||!rollback.Json.HasValue||LudusaviResultParser.SomeGamesFailed(rollback.Json.Value))
+                    {
+                        state=RestoreState.ManualInterventionRequired;
+                        await AuditAsync(game.PlayniteId,state,new{request,preVersion.BackupId,error=restoreError.Message,rollback=rollback.ErrorMessage},CancellationToken.None).ConfigureAwait(false);
+                        throw new WorkerOperationException("RESTORE_ROLLBACK_FAILED","恢复失败，自动回滚也失败，需要人工检查存档目录。",rollback.ErrorMessage,restoreError);
+                    }
+                    state=RestoreState.RolledBack;
+                    await AuditAsync(game.PlayniteId,state,new{request,preVersion.BackupId,error=restoreError.Message},CancellationToken.None).ConfigureAwait(false);
+                    throw new WorkerOperationException("RESTORE_FAILED_ROLLED_BACK","恢复未完成，已自动恢复到操作前的 PreRestore 快照。",restoreError.Message,restoreError);
+                }
+                catch(WorkerOperationException ex) when(ex.Code is "RESTORE_ROLLBACK_FAILED" or "RESTORE_FAILED_ROLLED_BACK")
+                {
+                    throw;
+                }
+                catch(Exception rollbackError)
+                {
+                    state=RestoreState.ManualInterventionRequired;
+                    await AuditAsync(game.PlayniteId,state,new{request,preVersion.BackupId,error=restoreError.Message,rollback=rollbackError.Message},CancellationToken.None).ConfigureAwait(false);
+                    throw new WorkerOperationException("RESTORE_ROLLBACK_FAILED","恢复失败，自动回滚也发生异常，需要人工检查存档目录。",rollbackError.Message,restoreError);
+                }
+            }
             state=RestoreState.Completed;await AuditAsync(game.PlayniteId,state,new{request,preVersion.BackupId},ct).ConfigureAwait(false);
             await progress.ReportAsync(100,"安全恢复完成").ConfigureAwait(false);
         },token).ConfigureAwait(false);

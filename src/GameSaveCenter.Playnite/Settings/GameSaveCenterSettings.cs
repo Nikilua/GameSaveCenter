@@ -14,6 +14,8 @@ namespace GameSaveCenter.Playnite.Settings
     {
         private readonly GameSaveCenterPlugin? plugin;
         private GameSaveCenterSettings? editingClone;
+        private string deviceId = Guid.NewGuid().ToString("N");
+        private bool deviceIdWasLoaded;
 
         public GameSaveCenterSettings() { }
 
@@ -21,13 +23,24 @@ namespace GameSaveCenter.Playnite.Settings
         {
             this.plugin = plugin;
             var saved = plugin.LoadPluginSettings<GameSaveCenterSettings>();
+            var migrateDeviceIdentity = saved != null && !saved.deviceIdWasLoaded;
             if (saved != null) CopyFrom(saved);
+            if (migrateDeviceIdentity) DeviceId = Guid.NewGuid().ToString("N");
             var pluginInstallPath = Path.GetDirectoryName(typeof(GameSaveCenterPlugin).Assembly.Location) ?? plugin.GetPluginUserDataPath();
-            if (EnsureDefaults(pluginInstallPath))
+            if (EnsureDefaults(pluginInstallPath) || migrateDeviceIdentity)
                 plugin.SavePluginSettings(this);
         }
 
         public string WorkerExecutable { get; set; } = string.Empty;
+        public string DeviceId
+        {
+            get => deviceId;
+            set
+            {
+                deviceId = value ?? string.Empty;
+                deviceIdWasLoaded = true;
+            }
+        }
         public string LudusaviExecutable { get; set; } = string.Empty;
         public string LudusaviBackupDirectory { get; set; } = string.Empty;
         public string RcloneExecutable { get; set; } = string.Empty;
@@ -70,11 +83,15 @@ namespace GameSaveCenter.Playnite.Settings
 
         public string ExportPortableJson()
         {
+            var portable = Clone();
+            // Device identity belongs to this installation. Importing it on another PC
+            // would collapse two independent branches into one cloud namespace.
+            portable.DeviceId = string.Empty;
             var package = new PortableSettingsPackage
             {
                 SchemaVersion = 1,
                 ExportedUtc = DateTime.UtcNow,
-                Settings = Clone()
+                Settings = portable
             };
             return JsonConvert.SerializeObject(package, Formatting.Indented);
         }
@@ -147,6 +164,7 @@ namespace GameSaveCenter.Playnite.Settings
 
         public WorkerSettingsDto ToWorkerSettings() => new WorkerSettingsDto
         {
+            DeviceId = DeviceId,
             LudusaviExecutable = Expand(LudusaviExecutable),
             LudusaviBackupDirectory = Expand(LudusaviBackupDirectory),
             RcloneExecutable = Expand(RcloneExecutable),
@@ -173,6 +191,11 @@ namespace GameSaveCenter.Playnite.Settings
         private bool EnsureDefaults(string pluginInstallPath)
         {
             var changed = false;
+            if (!Guid.TryParseExact(DeviceId, "N", out _))
+            {
+                DeviceId = Guid.NewGuid().ToString("N");
+                changed = true;
+            }
             var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             var pictures = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
             var packagedWorker = Path.Combine(pluginInstallPath, "Worker", "GameSaveCenter.Worker.exe");
@@ -209,6 +232,8 @@ namespace GameSaveCenter.Playnite.Settings
         private void CopyFrom(GameSaveCenterSettings other)
         {
             WorkerExecutable = other.WorkerExecutable;
+            if (other.deviceIdWasLoaded && Guid.TryParseExact(other.DeviceId, "N", out _))
+                DeviceId = other.DeviceId;
             LudusaviExecutable = other.LudusaviExecutable;
             LudusaviBackupDirectory = other.LudusaviBackupDirectory;
             RcloneExecutable = other.RcloneExecutable;

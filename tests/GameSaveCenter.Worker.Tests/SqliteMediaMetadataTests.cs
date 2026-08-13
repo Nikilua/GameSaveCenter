@@ -70,6 +70,27 @@ public sealed class SqliteMediaMetadataTests : IDisposable
         Assert.Equal("manual review",loaded.Comment);
     }
 
+    [Theory]
+    [InlineData("PreferLocal")]
+    [InlineData("PreferRemote")]
+    [InlineData("KeepBoth")]
+    public async Task EveryExplicitConflictChoicePersistsWithoutTouchingEitherBranch(string choice)
+    {
+        var remoteDeviceId = Guid.NewGuid().ToString("N");
+        await store.SaveDeviceConflictDecisionAsync(new DeviceConflictDecisionDto
+        {
+            PlayniteId = "branch-game", RemoteDevice = remoteDeviceId,
+            LocalBackupId = "A3", RemoteBackupId = "B3", Decision = choice,
+            Comment = "explicit user decision", DecidedUtc = DateTime.UtcNow
+        }, CancellationToken.None);
+
+        var loaded = await store.GetDeviceConflictDecisionAsync("branch-game", remoteDeviceId, CancellationToken.None);
+        Assert.NotNull(loaded);
+        Assert.Equal(choice, loaded!.Decision);
+        Assert.Equal("A3", loaded.LocalBackupId);
+        Assert.Equal("B3", loaded.RemoteBackupId);
+    }
+
     [Fact]
     public async Task MediaSourceRule_CanBePausedAndDeletedWithoutTouchingArchivedMedia()
     {

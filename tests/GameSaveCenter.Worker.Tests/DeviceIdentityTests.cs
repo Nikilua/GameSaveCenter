@@ -1,0 +1,37 @@
+using GameSaveCenter.Contracts;
+using GameSaveCenter.Worker.Configuration;
+using Xunit;
+
+namespace GameSaveCenter.Worker.Tests;
+
+public sealed class DeviceIdentityTests
+{
+    [Fact]
+    public void WorkerUsesStableOpaqueIdentityFromPersistedSettings()
+    {
+        var id = Guid.NewGuid().ToString("N");
+        var options = new WorkerOptions();
+
+        options.Apply(new WorkerSettingsDto { DeviceId = id });
+
+        Assert.Equal(id, options.DeviceId);
+        Assert.Equal(id, options.DeviceStorageKey);
+        Assert.Equal(id, options.ToDto().DeviceId);
+        Assert.False(string.Equals(Environment.MachineName, options.DeviceStorageKey, StringComparison.OrdinalIgnoreCase));
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("machine-name")]
+    [InlineData("../../escape")]
+    public void InvalidIncomingIdentityCannotReplaceCurrentInstallationId(string invalid)
+    {
+        var options = new WorkerOptions();
+        var original = options.DeviceId;
+
+        options.Apply(new WorkerSettingsDto { DeviceId = invalid });
+
+        Assert.Equal(original, options.DeviceId);
+        Assert.True(WorkerOptions.IsValidDeviceId(options.DeviceStorageKey));
+    }
+}

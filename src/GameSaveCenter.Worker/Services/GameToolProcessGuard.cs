@@ -6,7 +6,16 @@ namespace GameSaveCenter.Worker.Services;
 /// <summary>Path-based process guard for custom tools. It never kills by name alone.</summary>
 public static class GameToolProcessGuard
 {
+    public enum ExistingProcessAction { Start, Skip, Restart, BlockUnreadable }
     public sealed record ScanResult(IReadOnlyList<int> MatchingProcessIds, bool HasUnreadableCandidate);
+
+    public static ExistingProcessAction Decide(GameToolIfAlreadyRunning policy, ScanResult scan)
+    {
+        if (policy == GameToolIfAlreadyRunning.AllowAnotherInstance) return ExistingProcessAction.Start;
+        if (scan.HasUnreadableCandidate) return ExistingProcessAction.BlockUnreadable;
+        if (scan.MatchingProcessIds.Count == 0) return ExistingProcessAction.Start;
+        return policy == GameToolIfAlreadyRunning.Restart ? ExistingProcessAction.Restart : ExistingProcessAction.Skip;
+    }
 
     public static string? ResolveExecutableTarget(GameToolDto tool, IShortcutResolver shortcutResolver)
     {

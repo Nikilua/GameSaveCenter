@@ -15,7 +15,8 @@ namespace GameSaveCenter.Core.Services
             BackupSnapshot current,
             BackupSnapshot? previous,
             TimeSpan? playedDuration,
-            bool sourcePathExists)
+            bool sourcePathExists,
+            BackupAnomalyProtectionLevel protectionLevel = BackupAnomalyProtectionLevel.Normal)
         {
             if (current == null) throw new ArgumentNullException(nameof(current));
             var findings = new List<ValidationFinding>();
@@ -44,12 +45,14 @@ namespace GameSaveCenter.Core.Services
                 }
             }
 
-            if (previous != null && previous.FileCount > 0)
+            if (previous != null && previous.FileCount > 0 && protectionLevel != BackupAnomalyProtectionLevel.Off)
             {
                 var fileRatio = (double)current.FileCount / previous.FileCount;
                 var sizeRatio = previous.TotalBytes == 0 ? 1 : (double)current.TotalBytes / previous.TotalBytes;
+                var fileCountThreshold = protectionLevel == BackupAnomalyProtectionLevel.Strict ? 0.75 : 0.5;
+                var sizeThreshold = protectionLevel == BackupAnomalyProtectionLevel.Strict ? 0.6 : 0.35;
 
-                if (fileRatio < 0.5)
+                if (fileRatio < fileCountThreshold)
                 {
                     findings.Add(Finding(FindingSeverity.Error, "FILE_COUNT_DROP",
                         "存档文件数量异常下降",
@@ -57,12 +60,26 @@ namespace GameSaveCenter.Core.Services
                         "检查游戏是否切换了存档槽、账号或路径。"));
                 }
 
-                if (sizeRatio < 0.35)
+                if (sizeRatio < sizeThreshold)
                 {
                     findings.Add(Finding(FindingSeverity.Error, "BACKUP_SIZE_DROP",
                         "存档总体积异常下降",
                         $"当前体积仅为上个版本的 {sizeRatio:P0}。",
                         "优先保留并锁定上一个版本，确认当前存档可正常读取。"));
+                }
+
+                if (previous.Files.Count > 0)
+                {
+                    var diff = new FileManifestDiffService().Compare(previous.Files, current.Files);
+                    var removalRatio = (double)diff.Removed.Count / previous.Files.Count;
+                    var removalThreshold = protectionLevel == BackupAnomalyProtectionLevel.Strict ? 0.4 : 0.75;
+                    if (removalRatio >= removalThreshold)
+                    {
+                        findings.Add(Finding(FindingSeverity.Error, "BACKUP_FILE_REMOVAL_SPIKE",
+                            "大量存档文件从备份中消失",
+                            $"与上个版本相比移除了 {diff.Removed.Count}/{previous.Files.Count} 个文件（{removalRatio:P0}）。",
+                            "保留并锁定上一个健康版本，确认账号、存档槽和扫描路径后再继续。"));
+                    }
                 }
 
                 if (current.TotalBytes == previous.TotalBytes && current.FileCount == previous.FileCount &&

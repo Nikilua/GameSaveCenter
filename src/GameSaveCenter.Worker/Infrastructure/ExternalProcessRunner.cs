@@ -35,7 +35,9 @@ public sealed class ExternalProcessRunner
         foreach (var argument in arguments) start.ArgumentList.Add(argument);
 
         using var process = new Process { StartInfo = start, EnableRaisingEvents = true };
-        _logger.LogInformation("Starting {Executable} {Arguments}", Path.GetFileName(executable), string.Join(" ", start.ArgumentList));
+        // Arguments can contain local profile paths, remote names or provider-specific
+        // options. Keep operational logs useful without persisting the full command line.
+        _logger.LogInformation("Starting {Executable} with {ArgumentCount} argument(s)", Path.GetFileName(executable), start.ArgumentList.Count);
         process.Start();
 
         if (standardInput != null)

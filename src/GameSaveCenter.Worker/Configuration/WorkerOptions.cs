@@ -15,6 +15,7 @@ public sealed class WorkerOptions
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web) { WriteIndented = true };
 
     public string DataDirectory { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "GameSaveCenter");
+    public string DeviceId { get; set; } = Guid.NewGuid().ToString("N");
     public string LudusaviExecutable { get; set; } = string.Empty;
     public string LudusaviBackupDirectory { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "GameSaveCenter", "Saves");
     public string RcloneExecutable { get; set; } = string.Empty;
@@ -55,6 +56,7 @@ public sealed class WorkerOptions
 
     public void Apply(WorkerSettingsDto settings, bool persist = false)
     {
+        if (IsValidDeviceId(settings.DeviceId)) DeviceId = settings.DeviceId.ToLowerInvariant();
         LudusaviExecutable = Expand(settings.LudusaviExecutable);
         LudusaviBackupDirectory = Expand(settings.LudusaviBackupDirectory);
         RcloneExecutable = Expand(settings.RcloneExecutable);
@@ -82,6 +84,7 @@ public sealed class WorkerOptions
 
     public WorkerSettingsDto ToDto() => new()
     {
+        DeviceId = DeviceId,
         LudusaviExecutable = LudusaviExecutable,
         LudusaviBackupDirectory = LudusaviBackupDirectory,
         RcloneExecutable = RcloneExecutable,
@@ -107,6 +110,7 @@ public sealed class WorkerOptions
 
     private void Normalize()
     {
+        if (!IsValidDeviceId(DeviceId)) DeviceId = Guid.NewGuid().ToString("N");
         DataDirectory = Expand(DataDirectory);
         LudusaviExecutable = Expand(LudusaviExecutable);
         LudusaviBackupDirectory = Expand(LudusaviBackupDirectory);
@@ -163,4 +167,9 @@ public sealed class WorkerOptions
         if (string.IsNullOrWhiteSpace(value)) return string.Empty;
         return Path.GetFullPath(Environment.ExpandEnvironmentVariables(value));
     }
+
+    public string DeviceStorageKey => DeviceId;
+
+    public static bool IsValidDeviceId(string? value)
+        => value?.Length == 32 && value.All(c => c is >= '0' and <= '9' or >= 'a' and <= 'f' or >= 'A' and <= 'F');
 }

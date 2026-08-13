@@ -26,10 +26,11 @@ public sealed class DeviceStateService
     public async Task<DeviceStateSyncResultDto> SyncAsync(CancellationToken token)
     {
         var device=Environment.MachineName;
-        var sidecar=new DeviceStateSidecarDto{DeviceName=device,GeneratedUtc=DateTime.UtcNow,
+        var deviceId=_options.DeviceId;
+        var sidecar=new DeviceStateSidecarDto{DeviceId=deviceId,DeviceName=device,GeneratedUtc=DateTime.UtcNow,
             Backups=await _store.GetLatestBackupSummariesAsync(token).ConfigureAwait(false)};
         var directory=Path.Combine(_options.DataDirectory,"DeviceState");Directory.CreateDirectory(directory);
-        var localPath=Path.Combine(directory,SafeSegment(device)+".json");
+        var localPath=Path.Combine(directory,deviceId+".json");
         var temporary=localPath+".tmp";
         await File.WriteAllTextAsync(temporary,JsonSerializer.Serialize(sidecar,JsonOptions),token).ConfigureAwait(false);
         File.Move(temporary,localPath,true);
@@ -38,7 +39,7 @@ public sealed class DeviceStateService
             StatusMessage="本地设备摘要已更新；尚未配置云端，未读取其他设备。"};
         if(!_options.EnableCloudUpload||!_rclone.IsConfigured)return result;
 
-        var upload=await _cloudTransfers.RunUploadAsync("device state",ct=>_rclone.CopyAsync(directory,Path.Combine(device,"DeviceState"),ct),token).ConfigureAwait(false);
+        var upload=await _cloudTransfers.RunUploadAsync("device state",ct=>_rclone.CopyAsync(directory,Path.Combine(deviceId,"DeviceState"),ct),token).ConfigureAwait(false);
         if(!upload.Success)
         {
             result.StatusMessage="本地设备摘要已更新，但上传失败："+upload.StandardError;
@@ -53,16 +54,19 @@ public sealed class DeviceStateService
             try
             {
                 var remote=JsonSerializer.Deserialize<DeviceStateSidecarDto>(text,JsonOptions);
-                if(remote==null||remote.SchemaVersion!=1||string.IsNullOrWhiteSpace(remote.DeviceName)||
-                    string.Equals(remote.DeviceName,device,StringComparison.OrdinalIgnoreCase))continue;
+                if(remote==null||remote.SchemaVersion is <1 or >2||string.IsNullOrWhiteSpace(remote.DeviceName))continue;
+                var remoteDeviceId=WorkerOptions.IsValidDeviceId(remote.DeviceId)
+                    ? remote.DeviceId.ToLowerInvariant()
+                    : remote.DeviceName;
+                if(string.Equals(remoteDeviceId,deviceId,StringComparison.OrdinalIgnoreCase))continue;
                 result.RemoteSidecarsRead++;
                 foreach(var item in remote.Backups.Take(500))
                 {
                     localByGame.TryGetValue(item.PlayniteId,out var local);
-                    var conflict=_detector.Detect(ToSnapshot(local,device),ToSnapshot(item,remote.DeviceName));
+                    var conflict=_detector.Detect(ToSnapshot(local,deviceId),ToSnapshot(item,remoteDeviceId));
                     result.Comparisons.Add(new DeviceConflictStatusDto
                     {
-                        PlayniteId=item.PlayniteId,GameName=local?.GameName??item.GameName,RemoteDevice=remote.DeviceName,
+                        PlayniteId=item.PlayniteId,GameName=local?.GameName??item.GameName,RemoteDevice=remote.DeviceName,RemoteDeviceId=remoteDeviceId,
                         LocalBackupId=local?.BackupId??string.Empty,RemoteBackupId=item.BackupId,HasConflict=conflict.HasConflict,
                         Reason=conflict.Reason,SuggestedBackupId=conflict.PreferredBackupId,Confidence=conflict.Confidence,
                         LocalCreatedUtc=local?.CreatedUtc??default,RemoteCreatedUtc=item.CreatedUtc
@@ -74,7 +78,10 @@ public sealed class DeviceStateService
         result.Comparisons=result.Comparisons.OrderByDescending(x=>x.HasConflict).ThenBy(x=>x.GameName,StringComparer.OrdinalIgnoreCase).ToList();
         foreach(var comparison in result.Comparisons)
         {
-            var decision=await _store.GetDeviceConflictDecisionAsync(comparison.PlayniteId,comparison.RemoteDevice,token).ConfigureAwait(false);
+            var decision=await _store.GetDeviceConflictDecisionAsync(comparison.PlayniteId,comparison.RemoteDeviceId,token).ConfigureAwait(false);
+            // 0.6.x stored decisions by the display machine name. Keep those decisions
+            // visible after migrating sidecars to stable opaque device identities.
+            decision??=await _store.GetDeviceConflictDecisionAsync(comparison.PlayniteId,comparison.RemoteDevice,token).ConfigureAwait(false);
             if(decision==null)continue;
             comparison.Decision=decision.Decision;
             comparison.DecisionComment=decision.Comment;
@@ -87,5 +94,4 @@ public sealed class DeviceStateService
 
     private static BackupSnapshot? ToSnapshot(DeviceBackupSummaryDto? value,string device)=>value==null?null:new BackupSnapshot
     { BackupId=value.BackupId,ParentBackupId=value.ParentBackupId,SourceDevice=device,CreatedUtc=value.CreatedUtc,TotalBytes=value.TotalBytes,FileCount=value.FileCount };
-    private static string SafeSegment(string value)=>string.Concat(value.Select(c=>Path.GetInvalidFileNameChars().Contains(c)?'_':c));
 }

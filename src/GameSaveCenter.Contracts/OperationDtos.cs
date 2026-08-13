@@ -3,6 +3,13 @@ using System.Collections.Generic;
 
 namespace GameSaveCenter.Contracts
 {
+    public enum BackupAnomalyProtectionLevel
+    {
+        Off,
+        Normal,
+        Strict
+    }
+
     /// <summary>Per-game backup and synchronization policy.</summary>
     public sealed class BackupPolicyDto
     {
@@ -14,6 +21,7 @@ namespace GameSaveCenter.Contracts
         public bool SyncMediaDuringPlay { get; set; } = true;
         public bool SyncMediaOnGameStop { get; set; } = true;
         public bool AllowAutomaticRestore { get; set; }
+        public BackupAnomalyProtectionLevel AnomalyProtectionLevel { get; set; } = BackupAnomalyProtectionLevel.Normal;
         public int KeepRecentAllHours { get; set; } = 24;
         public int KeepDailyDays { get; set; } = 30;
         public int KeepWeeklyWeeks { get; set; } = 12;
@@ -356,6 +364,8 @@ namespace GameSaveCenter.Contracts
     /// <summary>Non-secret runtime settings supplied by the Playnite plugin.</summary>
     public sealed class WorkerSettingsDto
     {
+        /// <summary>Stable opaque identity for this GameSaveCenter installation. The machine name is display-only.</summary>
+        public string DeviceId { get; set; } = string.Empty;
         public string LudusaviExecutable { get; set; } = string.Empty;
         public string LudusaviBackupDirectory { get; set; } = string.Empty;
         public string RcloneExecutable { get; set; } = string.Empty;
