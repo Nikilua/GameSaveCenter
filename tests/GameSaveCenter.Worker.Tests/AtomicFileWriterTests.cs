@@ -61,6 +61,35 @@ public sealed class AtomicFileWriterTests : IDisposable
         Assert.DoesNotContain(Directory.EnumerateFiles(root), x => x.EndsWith(".partial", StringComparison.OrdinalIgnoreCase));
     }
 
+    [Fact]
+    public async Task CanceledWriteLeavesExistingFileIntact()
+    {
+        var path = Path.Combine(root, "settings.json");
+        await File.WriteAllTextAsync(path, "old");
+        using var canceled = new CancellationTokenSource();
+        canceled.Cancel();
+
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(() =>
+            AtomicFileWriter.WriteAllTextAsync(path, "new", canceled.Token));
+
+        Assert.Equal("old", await File.ReadAllTextAsync(path));
+        Assert.DoesNotContain(Directory.EnumerateFiles(Path.GetDirectoryName(path)!), x => x.EndsWith(".tmp", StringComparison.OrdinalIgnoreCase));
+    }
+
+    [Fact]
+    public async Task FailedReplacePreservesExistingDestination()
+    {
+        var missingSource = Path.Combine(root, "missing-source.bin");
+        var destination = Path.Combine(root, "settings.json");
+        await File.WriteAllTextAsync(destination, "old");
+
+        await Assert.ThrowsAnyAsync<FileNotFoundException>(() =>
+            AtomicFileWriter.ReplaceFileAsync(missingSource, destination, CancellationToken.None));
+
+        Assert.Equal("old", await File.ReadAllTextAsync(destination));
+        Assert.DoesNotContain(Directory.EnumerateFiles(root), x => x.EndsWith(".replace", StringComparison.OrdinalIgnoreCase));
+    }
+
     public void Dispose()
     {
         try { if (Directory.Exists(root)) Directory.Delete(root, true); } catch { }
