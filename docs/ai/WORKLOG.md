@@ -2,6 +2,18 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-13 PATH-REMAP-001 批量路径迁移
+
+- Task ID：`PATH-REMAP-001`。
+- 实现内容：新增 `path.remap` IPC 与 `PathRemapService`。维护中心诊断页新增“批量路径迁移”卡片：输入旧根路径和新根路径并确认后，Worker 批量改写 SQLite 中 `backup_versions.archive_path`、`media`、`media_sources`、`game_tool_versions`、`save_candidates` 等已索引路径，并同步 Worker 设置的存档/媒体目录。只改路径引用，不移动或删除文件。
+- 核心设计选择：SQLite 更新使用“前缀 + 目录边界”匹配，避免 `C:\Saves` 误改 `C:\Saves2`；服务端强制 `Confirmed=true`，Playnite 侧先弹危险操作确认框；失败/空/相同/相对路径均明确拒绝。
+- 主要修改文件：Contracts `PathRemapDtos.cs`/`MessageTypes`、`SqliteStateStore.PathRemap.cs`、`PathRemapService`、`Program`、`IpcRequestDispatcher`、`DashboardViewModel`、`MaintenanceView`，以及 Worker/Playnite 测试。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `51/51`、Worker `130/130`、Playnite `211/211`；`validate-source.py`、XAML 结构、WPF 静态门禁 0 errors / 33 warnings / 153 info、五种窗口 `render-qa OK`。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 记录 `Loaded plugin: GameSaveCenter, version 0.6.70`，插件日志记录 `0.6.70.0 loaded`，`worker-launch.log` 记录存储初始化与 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实移动备份/媒体目录后执行迁移，并核对 Worker 重启后路径与磁盘归档仍然一致。
+- Commit：`a521281`。
+- 下一项：继续 Layer B，从 `TASK-RECONCILE-001` Worker 中断任务恢复体系开始。
+
 ## 2026-08-13 REPOSITORY-REBUILD-001 备份仓库索引重建
 
 - Task ID：`REPOSITORY-REBUILD-001`。
