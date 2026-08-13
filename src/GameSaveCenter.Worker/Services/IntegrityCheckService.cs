@@ -1,5 +1,7 @@
 using System.Text;
+using System.Text.Json;
 using GameSaveCenter.Contracts;
+using GameSaveCenter.Core.Models;
 using GameSaveCenter.Worker.Configuration;
 using GameSaveCenter.Worker.Persistence;
 using Microsoft.Extensions.Logging;
@@ -8,7 +10,8 @@ namespace GameSaveCenter.Worker.Services;
 
 /// <summary>
 /// Read-only global integrity check: SQLite health, schema, directories, configured
-/// executables and indexed file references. It never deletes or repairs data.
+/// executables, indexed file references, orphan archives, manifests and storage free
+/// space. It never deletes or repairs data.
 /// </summary>
 public sealed class IntegrityCheckService
 {
@@ -21,6 +24,7 @@ public sealed class IntegrityCheckService
     };
 
     private const int MaxPathExamplesPerFinding = 20;
+    private const long MinimumFreeBytes = 512L * 1024 * 1024;
     private readonly WorkerOptions _options;
     private readonly SqliteStateStore _store;
     private readonly ILogger<IntegrityCheckService> _logger;
@@ -41,7 +45,7 @@ public sealed class IntegrityCheckService
         CheckDirectory("GameTools 目录", _options.GameToolsDirectory, false, findings);
         CheckDirectory("下载目录", _options.DownloadDirectory, false, findings);
         CheckConfiguredExecutable("Ludusavi", _options.LudusaviExecutable, findings);
-        CheckConfiguredExecutable("Rclone", _options.RcloneExecutable, findings);
+        CheckOptionalExecutable("Rclone", _options.RcloneExecutable, findings);
 
         DatabaseIntegrityProbeDto probe;
         try
@@ -75,6 +79,11 @@ public sealed class IntegrityCheckService
         AddMissingFileFindings(findings, "MEDIA_ARCHIVE_MISSING", "媒体归档文件缺失",
             probe.MediaArchivePaths, "媒体索引指向的归档副本不存在。请检查媒体目录或重新同步。");
 
+        CheckOrphanArchives(probe.BackupArchivePaths, findings, token);
+        await CheckManifestIntegrityAsync(findings, token).ConfigureAwait(false);
+        CheckStorageSpace("数据目录", _options.DataDirectory, findings);
+        CheckStorageSpace("存档目录", _options.LudusaviBackupDirectory, findings);
+        CheckStorageSpace("媒体归档目录", _options.MediaArchiveDirectory, findings);
         return BuildResult(findings);
     }
 
@@ -82,11 +91,13 @@ public sealed class IntegrityCheckService
     {
         var errors = findings.Count(x => x.Severity == "Error");
         var warnings = findings.Count(x => x.Severity == "Warning");
-        var state = errors > 0 ? "Critical" : warnings > 0 ? "Warning" : "Healthy";
+        var skipped = findings.Count(x => x.Severity == "Skipped");
+        var state = errors > 0 ? "Error" : warnings > 0 ? "Warning" : skipped > 0 ? "Skipped" : "Healthy";
         var summary = state switch
         {
-            "Critical" => $"完整性自检发现 {errors} 个严重问题和 {warnings} 个警告，请先处理数据库/目录问题。",
+            "Error" => $"完整性自检发现 {errors} 个严重问题和 {warnings} 个警告，请先处理数据库/目录问题。",
             "Warning" => $"完整性自检发现 {warnings} 个警告；核心数据库和目录正常。",
+            "Skipped" => $"完整性自检通过，{skipped} 个可选依赖已跳过（未配置）。",
             _ => "完整性自检通过：数据库、表结构、目录和已索引文件均正常。"
         };
         return new IntegrityCheckResultDto
@@ -95,6 +106,7 @@ public sealed class IntegrityCheckService
             State = state,
             ErrorCount = errors,
             WarningCount = warnings,
+            SkippedCount = skipped,
             Findings = findings,
             Summary = summary
         };
@@ -132,7 +144,18 @@ public sealed class IntegrityCheckService
 
     private static void CheckConfiguredExecutable(string label, string path, List<IntegrityFindingDto> findings)
     {
-        if (string.IsNullOrWhiteSpace(path)) return;
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            findings.Add(new IntegrityFindingDto
+            {
+                Code = label.ToUpperInvariant() + "_NOT_CONFIGURED",
+                Severity = "Warning",
+                Title = label + " 未配置",
+                Detail = "路径为空，完整性无法确认。",
+                SuggestedAction = "在设置中选择 " + label + " 路径。"
+            });
+            return;
+        }
         if (!File.Exists(path))
         {
             findings.Add(new IntegrityFindingDto
@@ -142,6 +165,21 @@ public sealed class IntegrityCheckService
                 Title = label + " 可执行文件缺失",
                 Detail = path,
                 SuggestedAction = "在设置中重新选择 " + label + " 路径。"
+            });
+        }
+    }
+
+    private static void CheckOptionalExecutable(string label, string path, List<IntegrityFindingDto> findings)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            findings.Add(new IntegrityFindingDto
+            {
+                Code = label.ToUpperInvariant() + "_SKIPPED",
+                Severity = "Skipped",
+                Title = label + " 未配置",
+                Detail = "可选依赖未配置，本次自检跳过。",
+                SuggestedAction = "如需云端功能，请在设置中配置 " + label + "。"
             });
         }
     }
@@ -163,6 +201,116 @@ public sealed class IntegrityCheckService
             Detail = detail.ToString(),
             SuggestedAction = suggestedAction
         });
+    }
+
+    private void CheckOrphanArchives(
+        IReadOnlyCollection<string> dbArchivePaths,
+        List<IntegrityFindingDto> findings,
+        CancellationToken token)
+    {
+        if (string.IsNullOrWhiteSpace(_options.LudusaviBackupDirectory) || !Directory.Exists(_options.LudusaviBackupDirectory))
+            return;
+        var known = new HashSet<string>(
+            dbArchivePaths.Where(x => !string.IsNullOrWhiteSpace(x)).Select(Path.GetFullPath),
+            StringComparer.OrdinalIgnoreCase);
+        var orphans = new List<string>();
+        foreach (var file in Directory.EnumerateFiles(_options.LudusaviBackupDirectory, "*.zip", SearchOption.AllDirectories))
+        {
+            token.ThrowIfCancellationRequested();
+            if (!known.Contains(Path.GetFullPath(file)))
+                orphans.Add(file);
+            if (orphans.Count >= 100) break;
+        }
+        if (orphans.Count == 0) return;
+        var detail = new StringBuilder($"发现 {orphans.Count} 个未被数据库索引的归档");
+        foreach (var path in orphans.Take(MaxPathExamplesPerFinding))
+            detail.AppendLine().Append(path);
+        findings.Add(new IntegrityFindingDto
+        {
+            Code = "ORPHAN_ARCHIVE",
+            Severity = "Warning",
+            Title = "存在未索引的备份归档",
+            Detail = detail.ToString(),
+            SuggestedAction = "请确认来源后使用“重建备份索引”进行只读扫描；不要直接删除。"
+        });
+    }
+
+    private async Task CheckManifestIntegrityAsync(List<IntegrityFindingDto> findings, CancellationToken token)
+    {
+        var keys = await _store.GetBackupManifestKeysAsync(token).ConfigureAwait(false);
+        var invalidExamples = new List<string>();
+        var duplicateExamples = new List<string>();
+        foreach (var key in keys)
+        {
+            token.ThrowIfCancellationRequested();
+            var json = await _store.GetBackupManifestAsync(key.PlayniteId, key.BackupId, token).ConfigureAwait(false);
+            try
+            {
+                var entries = JsonSerializer.Deserialize<List<FileManifestEntry>>(json) ?? new List<FileManifestEntry>();
+                var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                foreach (var entry in entries)
+                {
+                    var path = (entry.RelativePath ?? string.Empty).Trim();
+                    if (string.IsNullOrWhiteSpace(path))
+                    {
+                        invalidExamples.Add($"{key.PlayniteId}/{key.BackupId}: 空路径");
+                        break;
+                    }
+                    if (!seen.Add(path))
+                    {
+                        duplicateExamples.Add($"{key.PlayniteId}/{key.BackupId}: {path}");
+                        break;
+                    }
+                }
+            }
+            catch
+            {
+                invalidExamples.Add($"{key.PlayniteId}/{key.BackupId}: 无法解析");
+            }
+            if (invalidExamples.Count + duplicateExamples.Count >= MaxPathExamplesPerFinding) break;
+        }
+
+        if (invalidExamples.Count > 0)
+            findings.Add(new IntegrityFindingDto
+            {
+                Code = "MANIFEST_INVALID",
+                Severity = "Warning",
+                Title = "存在无效备份 Manifest",
+                Detail = string.Join(Environment.NewLine, invalidExamples.Take(MaxPathExamplesPerFinding)),
+                SuggestedAction = "该版本无法可靠恢复，请重新备份或删除损坏版本。"
+            });
+        if (duplicateExamples.Count > 0)
+            findings.Add(new IntegrityFindingDto
+            {
+                Code = "MANIFEST_DUPLICATE_PATH",
+                Severity = "Warning",
+                Title = "备份 Manifest 存在重复路径",
+                Detail = string.Join(Environment.NewLine, duplicateExamples.Take(MaxPathExamplesPerFinding)),
+                SuggestedAction = "该版本差异与恢复校验不可靠，请重新备份。"
+            });
+    }
+
+    private static void CheckStorageSpace(string label, string path, List<IntegrityFindingDto> findings)
+    {
+        if (string.IsNullOrWhiteSpace(path) || !Directory.Exists(path)) return;
+        try
+        {
+            var root = Path.GetPathRoot(Path.GetFullPath(path));
+            if (string.IsNullOrWhiteSpace(root)) return;
+            var drive = new DriveInfo(root);
+            if (drive.AvailableFreeSpace >= MinimumFreeBytes) return;
+            findings.Add(new IntegrityFindingDto
+            {
+                Code = "LOW_DISK_SPACE",
+                Severity = "Warning",
+                Title = $"{label}所在磁盘空间不足",
+                Detail = $"{root} 剩余 {drive.AvailableFreeSpace / 1024d / 1024d:0.#} MiB",
+                SuggestedAction = "清理磁盘或迁移目录，避免备份写入失败。"
+            });
+        }
+        catch
+        {
+        }
     }
 
     private static IntegrityFindingDto CriticalOrWarning(bool critical, string code, string title, string detail, string action)

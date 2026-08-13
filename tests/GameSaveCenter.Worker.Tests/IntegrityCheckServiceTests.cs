@@ -17,11 +17,18 @@ public sealed class IntegrityCheckServiceTests : IDisposable
 
     public IntegrityCheckServiceTests()
     {
+        Directory.CreateDirectory(root);
+        var ludusavi = Path.Combine(root, "ludusavi.exe");
+        var rclone = Path.Combine(root, "rclone.exe");
+        File.WriteAllText(ludusavi, "x");
+        File.WriteAllText(rclone, "x");
         options = new WorkerOptions
         {
             DataDirectory = Path.Combine(root, "Data"),
             LudusaviBackupDirectory = Path.Combine(root, "Saves"),
-            MediaArchiveDirectory = Path.Combine(root, "Media")
+            MediaArchiveDirectory = Path.Combine(root, "Media"),
+            LudusaviExecutable = ludusavi,
+            RcloneExecutable = rclone
         };
         store = new SqliteStateStore(options, NullLogger<SqliteStateStore>.Instance);
         store.InitializeAsync(CancellationToken.None).GetAwaiter().GetResult();
@@ -72,9 +79,53 @@ public sealed class IntegrityCheckServiceTests : IDisposable
 
         var result = await service.RunAsync(CancellationToken.None);
 
-        Assert.Equal("Critical", result.State);
+        Assert.Equal("Error", result.State);
         Assert.Contains(result.Findings, x => x.Code == "DATABASE_TABLE_MISSING");
         Assert.Contains(result.Findings, x => x.Detail.Contains("cloud_retry_queue", StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public async Task OrphanArchiveProducesWarning()
+    {
+        var orphan = Path.Combine(options.LudusaviBackupDirectory, "orphan.zip");
+        await File.WriteAllBytesAsync(orphan, new byte[] { 1 });
+
+        var result = await service.RunAsync(CancellationToken.None);
+
+        Assert.Equal("Warning", result.State);
+        Assert.Contains(result.Findings, x => x.Code == "ORPHAN_ARCHIVE");
+    }
+
+    [Fact]
+    public async Task InvalidManifestProducesWarning()
+    {
+        var archive = Path.Combine(options.LudusaviBackupDirectory, "bad.zip");
+        await File.WriteAllBytesAsync(archive, new byte[] { 1 });
+        await store.AddBackupVersionAsync(new BackupVersionDto
+        {
+            PlayniteId = "game",
+            BackupId = "bad-manifest",
+            LudusaviName = "game",
+            CreatedUtc = DateTime.UtcNow,
+            ArchivePath = archive
+        }, "not-json", CancellationToken.None);
+
+        var result = await service.RunAsync(CancellationToken.None);
+
+        Assert.Equal("Warning", result.State);
+        Assert.Contains(result.Findings, x => x.Code == "MANIFEST_INVALID");
+    }
+
+    [Fact]
+    public async Task OptionalDependencyNotConfiguredReportsSkipped()
+    {
+        options.RcloneExecutable = string.Empty;
+
+        var result = await service.RunAsync(CancellationToken.None);
+
+        Assert.Equal("Skipped", result.State);
+        Assert.Equal(1, result.SkippedCount);
+        Assert.Contains(result.Findings, x => x.Code == "RCLONE_SKIPPED");
     }
 
     public void Dispose()

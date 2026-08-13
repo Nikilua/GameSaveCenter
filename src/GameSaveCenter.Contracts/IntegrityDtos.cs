@@ -32,12 +32,14 @@ namespace GameSaveCenter.Contracts
         public string State { get; set; } = "Healthy";
         public int ErrorCount { get; set; }
         public int WarningCount { get; set; }
+        public int SkippedCount { get; set; }
         public List<IntegrityFindingDto> Findings { get; set; } = new List<IntegrityFindingDto>();
         public string Summary { get; set; } = string.Empty;
         public string StateDisplay => State switch
         {
-            "Critical" => "严重",
+            "Error" => "错误",
             "Warning" => "需关注",
+            "Skipped" => "已跳过",
             _ => "正常"
         };
     }

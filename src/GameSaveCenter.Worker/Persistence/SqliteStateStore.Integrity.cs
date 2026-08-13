@@ -59,6 +59,19 @@ public sealed partial class SqliteStateStore
         return probe;
     }
 
+    public async Task<List<(string PlayniteId, string BackupId)>> GetBackupManifestKeysAsync(CancellationToken token)
+    {
+        var keys = new List<(string PlayniteId, string BackupId)>();
+        await using var connection = Open();
+        await connection.OpenAsync(token).ConfigureAwait(false);
+        var command = connection.CreateCommand();
+        command.CommandText = "SELECT playnite_id, backup_id FROM backup_versions ORDER BY created_utc DESC;";
+        await using var reader = await command.ExecuteReaderAsync(token).ConfigureAwait(false);
+        while (await reader.ReadAsync(token).ConfigureAwait(false))
+            keys.Add((reader.GetString(0), reader.GetString(1)));
+        return keys;
+    }
+
     private static async Task<List<string>> ReadStringColumnAsync(SqliteConnection connection, string sql, CancellationToken token)
     {
         var output = new List<string>();
