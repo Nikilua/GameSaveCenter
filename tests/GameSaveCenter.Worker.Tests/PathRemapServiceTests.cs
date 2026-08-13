@@ -50,12 +50,13 @@ public sealed class PathRemapServiceTests : IDisposable
             ArchivePath = archive
         }, "{}", CancellationToken.None);
 
-        var service = new PathRemapService(options, store, NullLogger<PathRemapService>.Instance);
+        var service = new PathRemapService(options, store, new MetadataBackupService(options, store, NullLogger<MetadataBackupService>.Instance), NullLogger<PathRemapService>.Instance);
         var result = await service.RemapAsync(new PathRemapRequestDto
         {
             OldRoot = oldRoot,
             NewRoot = newRoot,
-            Confirmed = true
+            Confirmed = true,
+            ApplyMissingTargets = true
         }, CancellationToken.None);
 
         Assert.True(result.AffectedRows >= 1);
@@ -73,7 +74,7 @@ public sealed class PathRemapServiceTests : IDisposable
     [Fact]
     public async Task UnconfirmedRemapIsRejected()
     {
-        var service = new PathRemapService(options, store, NullLogger<PathRemapService>.Instance);
+        var service = new PathRemapService(options, store, new MetadataBackupService(options, store, NullLogger<MetadataBackupService>.Instance), NullLogger<PathRemapService>.Instance);
         var ex = await Assert.ThrowsAsync<WorkerOperationException>(() => service.RemapAsync(new PathRemapRequestDto
         {
             OldRoot = oldRoot,
@@ -81,6 +82,42 @@ public sealed class PathRemapServiceTests : IDisposable
             Confirmed = false
         }, CancellationToken.None));
         Assert.Equal("PATH_REMAP_NOT_CONFIRMED", ex.Code);
+    }
+
+    [Fact]
+    public async Task PreviewFlagsMissingTargetsAndDefaultPolicySkips()
+    {
+        var archive = Path.Combine(oldRoot, "game", "missing.zip");
+        await store.AddBackupVersionAsync(new BackupVersionDto
+        {
+            PlayniteId = "g1",
+            BackupId = "missing",
+            LudusaviName = "game",
+            CreatedUtc = DateTime.UtcNow,
+            TotalBytes = 1,
+            FileCount = 1,
+            ArchivePath = archive
+        }, "{}", CancellationToken.None);
+        var metadata = new MetadataBackupService(options, store, NullLogger<MetadataBackupService>.Instance);
+        var service = new PathRemapService(options, store, metadata, NullLogger<PathRemapService>.Instance);
+
+        var preview = await service.PreviewAsync(new PathRemapRequestDto
+        {
+            OldRoot = oldRoot,
+            NewRoot = newRoot
+        }, CancellationToken.None);
+        Assert.True(preview.AffectedRowCount >= 1);
+        Assert.True(preview.MissingTargetCount >= 1);
+
+        var ex = await Assert.ThrowsAsync<WorkerOperationException>(() => service.RemapAsync(
+            new PathRemapRequestDto { OldRoot = oldRoot, NewRoot = newRoot, Confirmed = true },
+            CancellationToken.None));
+        Assert.Equal("PATH_REMAP_TARGET_MISSING", ex.Code);
+
+        var applied = await service.RemapAsync(
+            new PathRemapRequestDto { OldRoot = oldRoot, NewRoot = newRoot, Confirmed = true, ApplyMissingTargets = true },
+            CancellationToken.None);
+        Assert.True(applied.AffectedRows >= 1);
     }
 
     public void Dispose()

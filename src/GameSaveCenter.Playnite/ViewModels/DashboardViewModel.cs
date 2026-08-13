@@ -1286,9 +1286,21 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task RunPathRemapAsync()
         {
+            var preview = await plugin.RequestAsync<PathRemapPreviewDto>(
+                MessageTypes.PreviewPathRemap,
+                new PathRemapRequestDto
+                {
+                    OldRoot = PathRemapOldRoot,
+                    NewRoot = PathRemapNewRoot
+                },
+                TimeSpan.FromMinutes(2));
+            ApplyOnUi(() => PathRemapSummary = preview.Summary);
+            var message = $"预览到 {preview.AffectedRowCount} 条路径需要迁移。\n\n此操作会更新数据库与 Worker 设置，但不会移动任何文件。";
+            if (preview.MissingTargetCount > 0)
+                message += $"\n\n其中 {preview.MissingTargetCount} 条目标路径当前不存在；继续将仍应用迁移，取消则按默认策略跳过本次迁移。";
             var confirmed = await plugin.ConfirmAsync(
                 "确认路径迁移",
-                $"将把“{PathRemapOldRoot}”下所有已索引路径迁移到“{PathRemapNewRoot}”。\n\n此操作会更新数据库与 Worker 设置，但不会移动任何文件。是否继续？",
+                message,
                 "继续迁移",
                 "取消",
                 true);
@@ -1297,7 +1309,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 OldRoot = PathRemapOldRoot,
                 NewRoot = PathRemapNewRoot,
-                Confirmed = true
+                Confirmed = true,
+                ApplyMissingTargets = preview.MissingTargetCount > 0
             }, TimeSpan.FromMinutes(5));
             ApplyOnUi(() =>
             {

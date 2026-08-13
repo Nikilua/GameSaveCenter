@@ -69,6 +69,7 @@ namespace GameSaveCenter.Contracts
         public const string RebuildRepository = "repository.rebuild";
         public const string PreviewRepositoryRebuild = "repository.rebuild.preview";
         public const string PathRemap = "path.remap";
+        public const string PreviewPathRemap = "path.remap.preview";
         public const string ReconcileTasks = "tasks.reconcile";
         public const string CreateDiagnosticsPackage = "diagnostics.package.create";
         public const string CancelTask = "task.cancel";

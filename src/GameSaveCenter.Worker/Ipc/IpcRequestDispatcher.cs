@@ -124,6 +124,7 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.RebuildRepository=>await _repositoryRebuild.RebuildAsync(Read<RepositoryRebuildRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.PreviewRepositoryRebuild=>await _repositoryRebuild.PreviewAsync(token).ConfigureAwait(false),
                 MessageTypes.PathRemap=>await _pathRemap.RemapAsync(Read<PathRemapRequestDto>(request),token).ConfigureAwait(false),
+                MessageTypes.PreviewPathRemap=>await _pathRemap.PreviewAsync(Read<PathRemapRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ReconcileTasks=>await _taskReconcile.ReconcileAsync(token).ConfigureAwait(false),
                 MessageTypes.CreateDiagnosticsPackage=>await _diagnostics.CreateAsync(Read<CreateDiagnosticsPackageRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.CancelTask=>new CancelTaskResultDto{Cancelled=_tasks.Cancel(Read<CancelTaskRequestDto>(request).TaskId)},

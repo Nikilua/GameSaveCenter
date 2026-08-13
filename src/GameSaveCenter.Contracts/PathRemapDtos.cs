@@ -8,6 +8,23 @@ namespace GameSaveCenter.Contracts
         public string OldRoot { get; set; } = string.Empty;
         public string NewRoot { get; set; } = string.Empty;
         public bool Confirmed { get; set; }
+        public bool ApplyMissingTargets { get; set; }
+    }
+
+    public sealed class PathRemapPreviewItemDto
+    {
+        public string Category { get; set; } = string.Empty;
+        public string OldPath { get; set; } = string.Empty;
+        public string NewPath { get; set; } = string.Empty;
+        public bool TargetExists { get; set; }
+    }
+
+    public sealed class PathRemapPreviewDto
+    {
+        public List<PathRemapPreviewItemDto> Items { get; set; } = new List<PathRemapPreviewItemDto>();
+        public int AffectedRowCount { get; set; }
+        public int MissingTargetCount { get; set; }
+        public string Summary { get; set; } = string.Empty;
     }
 
     /// <summary>Result of a batch path migration.</summary>
