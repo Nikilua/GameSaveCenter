@@ -19,4 +19,16 @@ public sealed class ProtocolCompatibilityTests
         Assert.False(ProtocolCompatibility.IsCompatible(1, 1, 2));
         Assert.False(ProtocolCompatibility.IsCompatible(2, 1, 1));
     }
+
+    [Fact]
+    public void WorkerCapabilitiesExposeHardeningFeatures()
+    {
+        Assert.Contains("RestoreReadiness", WorkerCapabilities.Current);
+        Assert.Contains("MetadataBackup", WorkerCapabilities.Current);
+        Assert.Contains("RepositoryRebuild", WorkerCapabilities.Current);
+        Assert.Contains("PathRemap", WorkerCapabilities.Current);
+        Assert.Contains("TaskReconcile", WorkerCapabilities.Current);
+        Assert.Contains("GameOperationLock", WorkerCapabilities.Current);
+        Assert.Contains("AtomicIo", WorkerCapabilities.Current);
+    }
 }

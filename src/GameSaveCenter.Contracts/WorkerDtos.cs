@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace GameSaveCenter.Contracts
 {
@@ -19,6 +20,23 @@ namespace GameSaveCenter.Contracts
         public int ProtocolVersion { get; set; } = ProtocolConstants.ProtocolVersion;
         public int MinimumSupportedProtocolVersion { get; set; } = ProtocolConstants.ProtocolVersion;
         public string WorkerVersion { get; set; } = string.Empty;
+        public string AppVersion { get; set; } = string.Empty;
+        public List<string> Capabilities { get; set; } = new List<string>();
         public DateTime Utc { get; set; }
+    }
+
+    /// <summary>Worker capabilities exposed through the handshake for progressive upgrades.</summary>
+    public static class WorkerCapabilities
+    {
+        public static readonly string[] Current =
+        {
+            "RestoreReadiness",
+            "MetadataBackup",
+            "RepositoryRebuild",
+            "PathRemap",
+            "TaskReconcile",
+            "GameOperationLock",
+            "AtomicIo"
+        };
     }
 }

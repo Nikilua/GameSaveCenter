@@ -62,6 +62,8 @@ public sealed class IpcRequestDispatcher
                     ProtocolVersion = ProtocolConstants.ProtocolVersion,
                     MinimumSupportedProtocolVersion = ProtocolConstants.ProtocolVersion,
                     WorkerVersion = typeof(IpcRequestDispatcher).Assembly.GetName().Version?.ToString() ?? "dev",
+                    AppVersion = typeof(IpcRequestDispatcher).Assembly.GetName().Version?.ToString() ?? "dev",
+                    Capabilities = new List<string>(WorkerCapabilities.Current),
                     Utc = DateTime.UtcNow
                 },
                 MessageTypes.GetDashboard=>await _dashboard.GetAsync(token).ConfigureAwait(false),
