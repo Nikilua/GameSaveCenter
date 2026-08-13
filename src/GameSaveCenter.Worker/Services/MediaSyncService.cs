@@ -24,10 +24,11 @@ public sealed class MediaSyncService
     private readonly RcloneClient _rclone;
     private readonly CloudTransferCoordinator _cloudTransfers;
     private readonly TaskCoordinator _tasks;
+    private readonly GameOperationLock _gameLock;
     private readonly ILogger<MediaSyncService> _logger;
 
-    public MediaSyncService(WorkerOptions options,GameCatalogService catalog,SqliteStateStore store,RcloneClient rclone,CloudTransferCoordinator cloudTransfers,TaskCoordinator tasks,ILogger<MediaSyncService> logger)
-    { _options=options;_catalog=catalog;_store=store;_rclone=rclone;_cloudTransfers=cloudTransfers;_tasks=tasks;_logger=logger; }
+    public MediaSyncService(WorkerOptions options,GameCatalogService catalog,SqliteStateStore store,RcloneClient rclone,CloudTransferCoordinator cloudTransfers,TaskCoordinator tasks,GameOperationLock gameLock,ILogger<MediaSyncService> logger)
+    { _options=options;_catalog=catalog;_store=store;_rclone=rclone;_cloudTransfers=cloudTransfers;_tasks=tasks;_gameLock=gameLock;_logger=logger; }
 
     public async Task<List<TaskStatusDto>> SyncAsync(MediaSyncRequestDto request,CancellationToken token)
     {
@@ -40,7 +41,17 @@ public sealed class MediaSyncService
         var output=new List<TaskStatusDto>();
         if(!request.SharedOnly)
             foreach(var game in selectedGames)
+            {
+                using var lease = await _gameLock.AcquireAsync(game.PlayniteId, TimeSpan.FromSeconds(10), token).ConfigureAwait(false);
+                if (lease == null)
+                {
+                    output.Add(await _tasks.RunAsync("MediaSync",game.PlayniteId,game.Name,
+                        (_, _) => Task.FromException(new WorkerOperationException("GAME_OPERATION_BUSY","该游戏已有备份、恢复或媒体操作正在执行，已跳过本次媒体同步。",game.PlayniteId)),
+                        token,request.NotificationSessionId).ConfigureAwait(false));
+                    continue;
+                }
                 output.Add(await SyncGameSourcesAsync(game,request,token).ConfigureAwait(false));
+            }
 
         if(request.IncludeUnassignedInbox)
             output.Add(await SyncSharedSourcesAsync(allGames,request,token).ConfigureAwait(false));

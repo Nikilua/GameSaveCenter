@@ -15,14 +15,18 @@ public sealed class RestoreOrchestrator
     private readonly IRestoreSessionState _sessions;
     private readonly CloudTransferCoordinator _cloudTransfers;
     private readonly IRemoteBackupStageProvider _remoteBackups;
+    private readonly GameOperationLock _gameLock;
 
     public RestoreOrchestrator(IRestoreCatalog catalog,SqliteStateStore store,IRestoreClient ludusavi,TaskCoordinator tasks,
-        IRestoreSessionState sessions,CloudTransferCoordinator cloudTransfers,IRemoteBackupStageProvider remoteBackups)
-    { _catalog=catalog;_store=store;_ludusavi=ludusavi;_tasks=tasks;_sessions=sessions;_cloudTransfers=cloudTransfers;_remoteBackups=remoteBackups; }
+        IRestoreSessionState sessions,CloudTransferCoordinator cloudTransfers,IRemoteBackupStageProvider remoteBackups,GameOperationLock gameLock)
+    { _catalog=catalog;_store=store;_ludusavi=ludusavi;_tasks=tasks;_sessions=sessions;_cloudTransfers=cloudTransfers;_remoteBackups=remoteBackups;_gameLock=gameLock; }
 
     public async Task<LudusaviCommandResult> PreviewAsync(RestoreRequestDto request,CancellationToken token)
     {
         var match=await ResolveAsync(request.PlayniteId,token).ConfigureAwait(false);
+        using var lease = await _gameLock.AcquireAsync(request.PlayniteId, TimeSpan.FromSeconds(10), token).ConfigureAwait(false);
+        if (lease == null)
+            throw new WorkerOperationException("GAME_OPERATION_BUSY","该游戏已有备份、恢复或媒体操作正在执行，已跳过恢复预览。",request.PlayniteId);
         return await _ludusavi.RestoreAsync(match,request.BackupId,true,token).ConfigureAwait(false);
     }
 
@@ -46,6 +50,9 @@ public sealed class RestoreOrchestrator
             throw new InvalidOperationException("Restore requires explicit confirmation that the game is closed and the current state may be snapshotted.");
         var game=await _catalog.GetGameAsync(request.PlayniteId,token).ConfigureAwait(false)??throw new InvalidOperationException("Game not found.");
         var match=await ResolveAsync(request.PlayniteId,token).ConfigureAwait(false);
+        using var lease = await _gameLock.AcquireAsync(request.PlayniteId, TimeSpan.FromSeconds(10), token).ConfigureAwait(false);
+        if (lease == null)
+            throw new WorkerOperationException("GAME_OPERATION_BUSY","该游戏已有备份、恢复或媒体操作正在执行，已阻止恢复。",request.PlayniteId);
         return await _tasks.RunAsync("Restore",game.PlayniteId,game.Name,async(progress,ct)=>
         {
             var state=RestoreState.Requested;

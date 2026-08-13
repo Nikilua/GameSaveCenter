@@ -207,7 +207,7 @@ public sealed class RestoreOrchestratorTests : IDisposable
     }
 
     private RestoreOrchestrator CreateOrchestrator()
-        => new(catalog, store, client, tasks, sessions, cloud, new FakeRemoteStageProvider());
+        => new(catalog, store, client, tasks, sessions, cloud, new FakeRemoteStageProvider(), new GameOperationLock());
 
     private static RestoreRequestDto Request(string backupId) => new()
     {

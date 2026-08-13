@@ -17,6 +17,7 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
     private readonly CloudTransferCoordinator _cloudTransfers;
     private readonly TaskCoordinator _tasks;
     private readonly WorkerOptions _options;
+    private readonly GameOperationLock _gameLock;
     private readonly BackupValidationService _validator = new();
 
     public BackupOrchestrator(
@@ -26,7 +27,8 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
         RcloneClient rclone,
         CloudTransferCoordinator cloudTransfers,
         TaskCoordinator tasks,
-        WorkerOptions options)
+        WorkerOptions options,
+        GameOperationLock gameLock)
     {
         _catalog = catalog;
         _store = store;
@@ -35,6 +37,7 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
         _cloudTransfers = cloudTransfers;
         _tasks = tasks;
         _options = options;
+        _gameLock = gameLock;
     }
 
     public async Task<List<TaskStatusDto>> BackupAsync(BackupRequestDto request, CancellationToken token)
@@ -80,6 +83,21 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
                             game.Name)),
                         token, request.NotificationSessionId).ConfigureAwait(false));
                 }
+                continue;
+            }
+
+            using var lease = await _gameLock.AcquireAsync(game.PlayniteId, TimeSpan.FromSeconds(10), token).ConfigureAwait(false);
+            if (lease == null)
+            {
+                results.Add(await _tasks.RunAsync(
+                    "Backup",
+                    game.PlayniteId,
+                    game.Name,
+                    (_, _) => Task.FromException(new WorkerOperationException(
+                        "GAME_OPERATION_BUSY",
+                        "该游戏已有备份、恢复或媒体操作正在执行，已跳过本次备份。",
+                        game.PlayniteId)),
+                    token, request.NotificationSessionId).ConfigureAwait(false));
                 continue;
             }
 
@@ -262,6 +280,9 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
             throw new WorkerOperationException("SAFE_MODE_ENABLED","安全模式已开启，云端上传已暂停。请先关闭安全模式。","SafeMode");
         var game=await _catalog.GetGameAsync(playniteId,token).ConfigureAwait(false)
                  ??throw new WorkerOperationException("CLOUD_GAME_NOT_FOUND","找不到需要重试云端上传的游戏。",playniteId);
+        using var lease = await _gameLock.AcquireAsync(playniteId, TimeSpan.FromSeconds(10), token).ConfigureAwait(false);
+        if (lease == null)
+            throw new WorkerOperationException("GAME_OPERATION_BUSY","该游戏已有操作正在执行，已跳过云端上传重试。",playniteId);
         var result = await _tasks.RunAsync("CloudUpload",game.PlayniteId,game.Name,async(progress,ct)=>
         {
             if(!_options.EnableCloudUpload||!_rclone.IsConfigured)

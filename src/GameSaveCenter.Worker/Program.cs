@@ -50,6 +50,7 @@ internal static class Program
         builder.Services.AddSingleton<IRestoreCatalog>(provider => provider.GetRequiredService<GameCatalogService>());
         builder.Services.AddSingleton<TaskEventBroadcaster>();
         builder.Services.AddSingleton<TaskCoordinator>();
+        builder.Services.AddSingleton<GameOperationLock>();
         builder.Services.AddSingleton<BackupOrchestrator>();
         builder.Services.AddSingleton<IBackupHistoryRebuilder>(provider => provider.GetRequiredService<BackupOrchestrator>());
         builder.Services.AddSingleton<RestoreOrchestrator>();
