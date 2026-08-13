@@ -2,6 +2,17 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 PLAYNITE-QUICK-001 Playnite 游戏右键快捷操作
+
+- Task ID：`PLAYNITE-QUICK-001`。
+- 实现内容：`GameSaveCenterPlugin.GetGameMenuItems` 为游戏右键菜单提供“立即备份 / 查看备份历史 / 验证最新恢复点 / 游戏工具 / 打开设置”五个快捷操作，全部使用当前所选游戏 ID，并复用 Worker 的 `backup.game`、`backup.list`、`restore.readiness.validate`、`tools.list` 生产 IPC 链路；菜单统一分组到 `GameSaveCenter`。
+- 主要修改文件：`GameSaveCenterPlugin.cs`、`QuickActionSourceTests.cs`。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `59/59`、Worker `182/182`、Playnite `222/222`；`validate-source.py` 与源码门禁通过（本阶段无 XAML 改动，不重跑 render-qa）。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 02:50:33 记录插件加载，`worker-launch.log` 02:50:39 记录 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实 Playnite 游戏库中右键逐项点击五个快捷操作，核对备份提交、历史/恢复点/工具摘要与设置页打开。
+- Commit：`15ab1d7`。
+- 下一项：Layer C `DRAGDROP-001` 修改器中心拖拽导入。
+
 ## 2026-08-14 ACTIVITY-001 首页全局活动时间线
 
 - Task ID：`ACTIVITY-001`。
