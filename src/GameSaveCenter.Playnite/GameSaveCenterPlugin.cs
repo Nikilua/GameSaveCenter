@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Threading;
 using System.Windows.Controls;
 using GameSaveCenter.Contracts;
+using GameSaveCenter.Core.Services;
 using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.Ipc;
 using GameSaveCenter.Playnite.Settings;
@@ -612,12 +613,18 @@ namespace GameSaveCenter.Playnite
             {
                 var session = sessionNotifications.GetOrAdd(task.SessionId, _ => new SessionNotificationAccumulator(task.GameName));
                 session.Add(task);
+                if (Settings.NotificationLevel == NotificationLevel.Verbose
+                    && NotificationLevelPolicy.ShouldEmitTask(Settings.NotificationLevel, task))
+                    ShowTaskNotification(task);
                 if (!session.HasExpectedTaskCount)
                     pendingSessionTasks.GetOrAdd(task.SessionId, _ => new ConcurrentDictionary<string, TaskStatusDto>(StringComparer.OrdinalIgnoreCase))[task.TaskId] = task;
                 TryEmitSessionSummary(task.SessionId, session);
                 return;
             }
-            ShowTaskNotification(task);
+            if (NotificationLevelPolicy.ShouldEmitTask(Settings.NotificationLevel, task))
+                ShowTaskNotification(task);
+            else
+                notifiedTaskIds.TryAdd(task.TaskId, 0);
         }
 
         private void TryEmitSessionSummary(string sessionId, SessionNotificationAccumulator session)
@@ -626,10 +633,13 @@ namespace GameSaveCenter.Playnite
             sessionNotifications.TryRemove(sessionId, out _);
             pendingSessionTasks.TryRemove(sessionId, out _);
             var summary = GameSaveCenter.Core.Services.GameSessionSummaryBuilder.Build(session.GameName, session.Tasks);
-            var kind = summary.IsFailure ? UiNotificationKind.Error
-                : summary.IsWarning ? UiNotificationKind.Warning : UiNotificationKind.Success;
-            if (!RaiseUiNotification("退出备份摘要", summary.Message, kind))
-                AddNotification("Session." + sessionId, summary.Message, summary.IsFailure ? NotificationType.Error : NotificationType.Info);
+            if (NotificationLevelPolicy.ShouldEmitSessionSummary(Settings.NotificationLevel, summary))
+            {
+                var kind = summary.IsFailure ? UiNotificationKind.Error
+                    : summary.IsWarning ? UiNotificationKind.Warning : UiNotificationKind.Success;
+                if (!RaiseUiNotification("退出备份摘要", summary.Message, kind))
+                    AddNotification("Session." + sessionId, summary.Message, summary.IsFailure ? NotificationType.Error : NotificationType.Info);
+            }
             foreach (var completed in session.Tasks) notifiedTaskIds.TryAdd(completed.TaskId, 0);
         }
 

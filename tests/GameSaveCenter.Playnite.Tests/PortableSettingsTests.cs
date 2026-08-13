@@ -35,6 +35,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Equal(source.EnableXboxGameBarMedia, imported.EnableXboxGameBarMedia);
             Assert.Equal(source.EnableCustomMedia, imported.EnableCustomMedia);
             Assert.Equal(source.OnboardingCompleted, imported.OnboardingCompleted);
+            Assert.Equal(source.NotificationLevel, imported.NotificationLevel);
             Assert.Equal(destinationDeviceId, imported.DeviceId);
             Assert.NotEqual(source.DeviceId, imported.DeviceId);
         }
@@ -62,6 +63,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Equal(10, imported.DashboardRefreshSeconds);
             Assert.Equal(30, imported.RecentProtectionWindowDays);
             Assert.Equal(BackupStorageFormat.Zip, imported.BackupFormat);
+            Assert.Equal(NotificationLevel.Summary, imported.NotificationLevel);
             Assert.Equal("zstd", imported.Compression);
             Assert.True(imported.EnableSteamMedia);
             Assert.True(imported.EnableXboxGameBarMedia);
@@ -153,6 +155,7 @@ namespace GameSaveCenter.Playnite.Tests
             EnableCloudUpload = true,
             EnableDashboardAutoRefresh = false,
             EnableTaskNotifications = true,
+            NotificationLevel = NotificationLevel.Verbose,
             OnboardingCompleted = true,
             ThemeMode = GameSaveCenterThemeMode.Dark,
             EnableUiAnimations = false,

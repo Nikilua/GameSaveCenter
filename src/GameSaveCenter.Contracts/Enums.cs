@@ -165,6 +165,17 @@ namespace GameSaveCenter.Contracts
         NeverRemind = 2
     }
 
+    /// <summary>
+    /// Controls how much task and session notification detail reaches the user.
+    /// Values start at 1 so a legacy settings file without this field normalizes to Summary.
+    /// </summary>
+    public enum NotificationLevel
+    {
+        ImportantOnly = 1,
+        Summary = 2,
+        Verbose = 3
+    }
+
     /// <summary>How a custom launch item should be started on Windows.</summary>
     public enum GameToolLaunchKind
     {

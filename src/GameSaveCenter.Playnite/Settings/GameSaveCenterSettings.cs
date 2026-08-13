@@ -60,6 +60,7 @@ namespace GameSaveCenter.Playnite.Settings
         public bool EnableCloudUpload { get; set; }
         public bool EnableDashboardAutoRefresh { get; set; } = true;
         public bool EnableTaskNotifications { get; set; } = true;
+        public NotificationLevel NotificationLevel { get; set; } = NotificationLevel.Summary;
         public GameSaveCenterThemeMode ThemeMode { get; set; } = GameSaveCenterThemeMode.FollowPlaynite;
         public bool EnableUiAnimations { get; set; } = true;
         public bool EnableGlassEffects { get; set; } = true;
@@ -252,6 +253,9 @@ namespace GameSaveCenter.Playnite.Settings
             EnableCloudUpload = other.EnableCloudUpload;
             EnableDashboardAutoRefresh = other.EnableDashboardAutoRefresh;
             EnableTaskNotifications = other.EnableTaskNotifications;
+            NotificationLevel = Enum.IsDefined(typeof(NotificationLevel), other.NotificationLevel)
+                ? other.NotificationLevel
+                : NotificationLevel.Summary;
             ThemeMode = other.ThemeMode;
             EnableUiAnimations = other.EnableUiAnimations;
             EnableGlassEffects = other.EnableGlassEffects;
@@ -285,6 +289,7 @@ namespace GameSaveCenter.Playnite.Settings
             if (value.CompressionLevel < -7 || value.CompressionLevel > 22) errors.Add("压缩等级超出 -7–22");
             if (!Enum.IsDefined(typeof(GameSaveCenterThemeMode), value.ThemeMode)) errors.Add("未知主题模式");
             if (!Enum.IsDefined(typeof(BackupStorageFormat), value.BackupFormat)) errors.Add("未知备份格式");
+            if (!Enum.IsDefined(typeof(NotificationLevel), value.NotificationLevel)) errors.Add("未知通知级别");
             return errors;
         }
 

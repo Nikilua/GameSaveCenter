@@ -225,6 +225,20 @@
                             <TextBlock Text="管理面板关闭时也会监测" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0"/>
                         </StackPanel>
                     </ui:ToggleSwitch>
+                    <Border Style="{DynamicResource GscRedesignSubCard}" Padding="12" Margin="0,2,0,0" IsEnabled="{Binding EnableTaskNotifications}">
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                            <StackPanel Margin="0,0,14,0">
+                                <TextBlock Text="通知级别" FontWeight="SemiBold"/>
+                                <TextBlock Text="仅重要通知、退出摘要或包含每个任务的详细通知" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                            </StackPanel>
+                            <ComboBox Grid.Column="1" MinWidth="160" Style="{StaticResource GscWpfUiComboBox}" SelectedValue="{Binding NotificationLevel, Mode=TwoWay, TargetNullValue={x:Static contracts:NotificationLevel.Summary}, FallbackValue={x:Static contracts:NotificationLevel.Summary}}" SelectedValuePath="Tag" AutomationProperties.Name="通知级别">
+                                <ComboBoxItem Content="仅重要通知" Tag="{x:Static contracts:NotificationLevel.ImportantOnly}"/>
+                                <ComboBoxItem Content="退出摘要" Tag="{x:Static contracts:NotificationLevel.Summary}"/>
+                                <ComboBoxItem Content="详细任务通知" Tag="{x:Static contracts:NotificationLevel.Verbose}"/>
+                            </ComboBox>
+                        </Grid>
+                    </Border>
                     <UniformGrid x:Name="AutomationIntervalFields" Columns="3" Margin="0,10,0,0">
                         <StackPanel Margin="0,0,12,10"><TextBlock Text="默认游玩中备份间隔（分钟）" Margin="0,0,0,4"/><TextBox Style="{StaticResource GscNumericTextBox}" infra:SelectAllOnKeyboardFocus.Enabled="True" ToolTip="允许 1–1440 分钟；离开输入框后提交。"><TextBox.Text><Binding Path="DefaultBackupIntervalMinutes" UpdateSourceTrigger="LostFocus" ValidatesOnExceptions="True" NotifyOnValidationError="True"><Binding.ValidationRules><infra:IntegerRangeValidationRule Minimum="1" Maximum="1440"/></Binding.ValidationRules></Binding></TextBox.Text></TextBox></StackPanel>
                         <StackPanel Margin="0,0,12,10"><TextBlock Text="进程检测间隔（秒）" Margin="0,0,0,4"/><TextBox Style="{StaticResource GscNumericTextBox}" infra:SelectAllOnKeyboardFocus.Enabled="True" ToolTip="允许 2–60 秒；离开输入框后提交。"><TextBox.Text><Binding Path="ProcessPollingSeconds" UpdateSourceTrigger="LostFocus" ValidatesOnExceptions="True" NotifyOnValidationError="True"><Binding.ValidationRules><infra:IntegerRangeValidationRule Minimum="2" Maximum="60"/></Binding.ValidationRules></Binding></TextBox.Text></TextBox></StackPanel>
