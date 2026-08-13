@@ -1034,3 +1034,40 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 **提交：** `a2c0f8d`（UI 修复、回归测试与长期记忆更新）。本条 hash 回填由随后独立的文档提交完成。
 
 **下一项：**等待用户人工 QA 反馈；不新增本轮范围外功能。
+
+## 2026-08-13 UI-QA-REAL-003 首页、工具设置与媒体列表布局补充
+
+**实现内容：**
+
+- 首页“最近 30 天玩过的游戏”卡片将两个操作按钮移到摘要下方的独立响应式行，避免右侧窄栏与标题/统计文字争抢空间。
+- 修改器中心为启动延迟字段补充“启动延迟 / 秒”标签，保留原有 `LaunchDelaySeconds` 绑定，并使用 34 DIP 紧凑输入框，消除单独显示数字 `8` 的歧义和过大的输入框观感。
+- 媒体中心当前媒体列表显式设置内容水平/垂直拉伸、顶部对齐，并使用顶部对齐的虚拟化面板，修复表头下方到第一行之间的大段空白。
+- 补充三项 UI 布局回归测试，覆盖首页操作行、媒体列表首行定位和启动延迟单位/紧凑高度。
+
+**核心设计选择：**
+
+- 只调整既有卡片内部布局与共享控件尺寸，不新增页面，不改变命令、绑定、业务流程或媒体列表虚拟化骨架。
+- 媒体列表仍使用 `ListBox` 与 `VirtualizingStackPanel`，只修正内容对齐，避免以固定高度或外层嵌套滚动器掩盖布局问题。
+
+**主要修改文件：**
+
+- `src/GameSaveCenter.Playnite/Views/OverviewView.xaml`
+- `src/GameSaveCenter.Playnite/Views/MediaCenterView.xaml`
+- `src/GameSaveCenter.Playnite/Views/TrainerCenterView.xaml`
+- `tests/GameSaveCenter.Playnite.Tests/UiLayoutRegressionTests.cs`
+
+**测试结果：**
+
+- `check-xaml.ps1` 通过（13 个 XAML 文件）。
+- Release 构建 0 warning / 0 error；Core 42/42、Worker 117/117、Playnite 209/209。
+- `render-qa.ps1` 在 1040×700、1280×720、1366×768、1600×900、1920×1080 全部通过；渲染证据确认首页操作区不再拥挤、媒体首行紧贴列表顶部、工具设置显示带单位的紧凑延迟字段。
+- `dev-install-run.ps1 -Configuration Release` 普通权限完成构建、打包、安装校验并启动 Playnite；扩展日志确认 `GameSaveCenter 0.6.70.0` 加载，Worker 从当前安装目录正常运行。
+
+**验证边界：**
+
+- `AUTO VERIFIED`：源码/XAML、Release 构建、Core/Worker/Playnite 测试、五种窗口尺寸渲染、开发安装、真实宿主扩展日志和 Worker 进程。
+- `MANUAL QA REQUIRED`：用户实际 2K 最大化窗口、主题/DPI 切换、Settings 全页连续缩放，以及真实媒体数据量下的滚动体验；未将自动渲染冒充为人工验收。
+
+**提交：**待本阶段代码提交完成后回填准确 hash。
+
+**下一步：**等待用户人工视觉反馈；不引入本轮范围外功能。

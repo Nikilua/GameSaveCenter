@@ -58,6 +58,47 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("CornerRadius=\"14\"", redesign);
         }
 
+        [Fact]
+        public void OverviewProtectionActionsHaveTheirOwnResponsiveRow()
+        {
+            var root = FindRepositoryRoot();
+            var overview = XDocument.Parse(File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml")));
+            var protection = overview.Descendants().Single(element => element.Name.LocalName == "ItemsControl" && element.Attribute("ItemsSource")?.Value == "{Binding RecentProtection.Items}");
+            var actions = overview.Descendants()
+                .Single(element => element.Name.LocalName == "WrapPanel"
+                    && element.Attribute("Grid.Row")?.Value == "1"
+                    && element.Descendants().Any(descendant => descendant.Attribute("Command")?.Value == "{Binding OpenProtectionGamesCommand}")
+                    && element.Descendants().Any(descendant => descendant.Attribute("Command")?.Value == "{Binding ApplyRecommendedProtectionCommand}"));
+
+            Assert.Equal("1", actions.Attribute("Grid.Row")?.Value);
+        }
+
+        [Fact]
+        public void MediaCurrentListStartsAtTheTopOfItsVirtualizedViewport()
+        {
+            var root = FindRepositoryRoot();
+            var media = XDocument.Parse(File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml")));
+            var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
+            var list = media.Descendants().Single(element => element.Name.LocalName == "ListBox" && element.Attribute(xamlName)?.Value == "MediaGrid");
+            var itemsPanel = list.Descendants().Single(element => element.Name.LocalName == "VirtualizingStackPanel");
+
+            Assert.Equal("Stretch", list.Attribute("HorizontalContentAlignment")?.Value);
+            Assert.Equal("Top", list.Attribute("VerticalContentAlignment")?.Value);
+            Assert.Equal("Top", itemsPanel.Attribute("VerticalAlignment")?.Value);
+        }
+
+        [Fact]
+        public void LaunchDelayEditorExplainsItsUnitAndUsesCompactHeight()
+        {
+            var root = FindRepositoryRoot();
+            var trainer = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml"));
+
+            Assert.Contains("x:Key=\"TrainerCompactNumericTextBox\"", trainer);
+            Assert.Contains("Text=\"启动延迟\"", trainer);
+            Assert.Contains("Text=\"秒\"", trainer);
+            Assert.Contains("Style=\"{StaticResource TrainerCompactNumericTextBox}\"", trainer);
+        }
+
         private static string FindRepositoryRoot()
         {
             var directory = new DirectoryInfo(AppContext.BaseDirectory);
