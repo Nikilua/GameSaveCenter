@@ -2,6 +2,18 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-13 IPC-COMPAT-001 IPC protocol handshake
+
+- Task ID：`IPC-COMPAT-001`。
+- 实现内容：新增显式 `system.handshake` IPC 与 `WorkerHandshakeDto`（协议版本、最低支持版本、Worker 版本、UTC 时间）。`WorkerIpcClient.HandshakeAsync` 先校验 `ProtocolCompatibility.IsCompatible`，不兼容时抛出 `PROTOCOL_MISMATCH`；`WorkerLauncher.ProbeHealthAsync` 优先握手，旧 Worker 不支持握手时回退 Ping，版本不匹配仍标记 `Incompatible`。
+- 核心设计选择：兼容规则放在 Contracts 纯静态类，客户端/服务端/测试共用；显式握手与既有逐请求协议版本检查共存，避免新插件静默复用旧 Worker。
+- 主要修改文件：Contracts `WorkerDtos.cs`/`ProtocolCompatibility.cs`/`MessageTypes`、`IpcRequestDispatcher`、`WorkerIpcClient`、`WorkerLauncher`，以及 Core/Playnite 测试。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `53/53`、Worker `132/132`、Playnite `211/211`；`validate-source.py`、XAML 结构、WPF 静态门禁 0 errors / 33 warnings / 153 info、五种窗口 `render-qa OK`。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 记录 `Loaded plugin: GameSaveCenter, version 0.6.70`，插件日志记录 `0.6.70.0 loaded`，`worker-launch.log` 记录存储初始化与 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：保留旧版 Worker 进程后启动新插件，确认握手拒绝并替换旧进程；以及协议版本变更时的真实兼容验证。
+- Commit：`6454027`。
+- 下一项：继续 Layer B，从 `ATOMIC-IO-001` 原子写入审计开始。
+
 ## 2026-08-13 GAME-OP-LOCK-001 单游戏操作兼容锁
 
 - Task ID：`GAME-OP-LOCK-001`。
