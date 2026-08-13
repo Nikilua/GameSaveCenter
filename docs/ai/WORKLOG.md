@@ -2,6 +2,18 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 TASK-RECONCILE-001 Worker 中断任务分类协调
+
+- Task ID：`TASK-RECONCILE-001`。
+- 实现内容：为每个 Worker 进程生命周期生成 `WorkerSessionId`，`TaskStatusDto` 与 `tasks.worker_session_id` 持久化任务所属 Worker。Worker 启动时只协调“不属于当前 Worker 会话”的遗留 `Queued/Running` 任务，并分类：`Backup/MediaSync/MediaInbox/CloudUpload` 标记 `WORKER_RESTARTED_RETRYABLE`，`Integrity` 标记 `WORKER_RESTARTED`，`Restore` 标记 `MANUAL_INTERVENTION_REQUIRED` 且错误信息提示检查 PreRestore 快照，绝不自动重试恢复。
+- UI/语义：任务中心可见“Worker 意外退出，任务中断”的错误信息；手动“协调中断任务”复用同一分类逻辑。
+- 主要修改文件：`OperationDtos.cs`、`WorkerOptions.cs`、`SqliteStateStore.cs`、`TaskCoordinator.cs`、`TaskReconcileService.cs`、`WorkerInitializationService.cs`、`TaskEventBroadcaster.cs`、`SnapshotComparers.cs` 及相关 Worker 测试。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `54/54`、Worker `158/158`、Playnite `217/217`；`validate-source.py` 与 XAML 结构门禁通过（本阶段无 XAML 改动，不重跑 render-qa）。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 00:44 记录插件加载，`worker-launch.log` 00:44:18 记录 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实中断恢复任务后人工核对 `MANUAL_INTERVENTION_REQUIRED` 与 PreRestore 快照；以及中断上传/备份后从任务中心重试的真实流程。
+- Commit：`47685bd`。
+- 下一项：继续 Layer B，从 `GAME-OP-LOCK-001` 单游戏操作兼容矩阵补齐开始。
+
 ## 2026-08-14 PATH-REMAP-001 批量路径迁移预览与目标缺失策略
 
 - Task ID：`PATH-REMAP-001`。

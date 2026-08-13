@@ -22,6 +22,7 @@
 - `METADATA-BACKUP-001` 已补齐恢复流程：预览校验 manifest/哈希/路径越界，确认后备份当前元数据、原子替换数据库与设置、完整性校验并在失败时回滚；维护中心提供“恢复元数据灾备”入口。
 - `REPOSITORY-REBUILD-001` 已补齐：只读扫描预览统计已确认/未归属/部分缺失/损坏归档，执行重建必须用户确认，未确认不写库。
 - `PATH-REMAP-001` 已补齐：只读预览按类型列出受影响路径和目标存在状态；目标缺失默认跳过，可显式授权仍应用；执行前自动创建元数据灾备。
+- `TASK-RECONCILE-001` 已补齐：任务持久化 `WorkerSessionId`，启动协调只处理旧 Worker 会话遗留任务；Backup/Media/Cloud 标记可重试中断，Integrity 标记普通中断，Restore 标记人工介入且不自动重试。
 - 本轮已修复 Layer A 审计缺口：多设备只有 Manifest 内容指纹相同才可判定等价；仅文件数/总大小相同改为保守的未知分歧；Restore Readiness 使用可取消的流式解压与增量 Hash；环境检查分别验证数据、存档和媒体所在磁盘；Manifest 重复路径不会抛异常或产生强指纹。
 - `DIAGNOSTICS-001` 已完成：维护中心可导出有上限、只读、脱敏的 ZIP 诊断包；包含环境/任务/审计/Worker 日志摘要，不包含数据库、存档、媒体或凭据；新增 IPC 请求和 Worker 测试覆盖敏感字段与大小边界。
 - Layer A 14 项与本轮审计补缺、`DIAGNOSTICS-001`、通知级别 `ImportantOnly/Summary/Verbose`、`SAFE-MODE-001`、`INTEGRITY-001`、`DB-MIGRATION-001`、`METADATA-BACKUP-001`、`REPOSITORY-REBUILD-001`、`PATH-REMAP-001`、`TASK-RECONCILE-001`、`GAME-OP-LOCK-001`、`IPC-COMPAT-001` 已交付；完整 38 项 Epic **尚未完成**。Layer B 的 OBSERVABILITY、CONFIG-RECOVERY 等，以及全部 Layer C 任务仍未实现或未完成验收，不能宣称全部任务完成。
