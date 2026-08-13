@@ -2,6 +2,17 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 ATOMIC-IO-001 原子写入旧文件完整保留审计
+
+- Task ID：`ATOMIC-IO-001`。
+- 实现内容：审计确认共享 `AtomicFileWriter` 已覆盖 Worker 设置持久化、媒体复制、元数据恢复替换和启动失败计数；本阶段补充“取消写入时旧文件完整保留”“替换失败时旧文件完整保留且无 `.replace` 残留”两项审计测试。
+- 主要修改文件：`AtomicFileWriterTests.cs`。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `55/55`、Worker `169/169`、Playnite `217/217`；`validate-source.py` 与 XAML 结构门禁通过（测试-only 改动，不重跑 render-qa）。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 01:09 记录插件加载，`worker-launch.log` 01:09:28 记录 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实进程在写入中途被终止/断电后确认目标文件不出现截断半成品且临时文件被清理。
+- Commit：`eed946c`。
+- 下一项：继续 Layer B，从 `SOAK-001` 数据规模与监控补齐开始。
+
 ## 2026-08-14 IPC-COMPAT-001 IPC 握手能力列表
 
 - Task ID：`IPC-COMPAT-001`。

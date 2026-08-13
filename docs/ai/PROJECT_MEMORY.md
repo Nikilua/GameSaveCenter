@@ -8,7 +8,7 @@
 - 用户日志中的“编译解决方案”失败根因是旧 `dotnet/testhost` 或 Worker 锁住标准 `bin\Release` 输出，随后测试项目无法覆盖 DLL/PDB/XML；不是 `GameSaveCenter.Contracts` 编译失败。
 - 一键开发安装器现在默认不请求管理员权限。`scripts/build.ps1`、`scripts/package.ps1` 和 `scripts/dev-install-run.ps1` 支持按运行生成 `artifacts\dev-build\<Configuration>\<guid>` 隔离的 bin/obj、Worker 发布和安装暂存目录，入口修订号为 `DEV-INSTALL-007`。Playnite 发现增加运行中进程、常见目录、卸载信息、App Paths 和 PATH；未发现 Playnite 且没有运行中的 Playnite 时允许继续构建/安装并提示无法自动启动。Playnite 正常退出超时后，仅当进程属于当前会话、可执行文件路径与本次发现结果完全一致且已经没有主窗口时，才结束该无窗口残留；路径不可确认、跨会话或仍有主窗口时继续停止安装。
 - 真实宿主已验证：安装报告为 0.6.70 / DLL 0.6.70.0；Playnite `playnite.log` 记录插件加载，插件日志记录 0.6.70.0，`worker-launch.log` 记录存储初始化、过期任务整理和 `Application started`。不要再用 2026-08-12 的 PID 3896 历史日志判断当前安装器行为。
-- 当前自动化基线为 Core `55/55`、Worker `167/167`、Playnite `217/217`，Release 构建 0 warnings / 0 errors；source、XAML、WPF 静态门禁与 `render-qa` 通过。真实开发安装已成功，Playnite 与 Worker 启动日志正常。
+- 当前自动化基线为 Core `55/55`、Worker `169/169`、Playnite `217/217`，Release 构建 0 warnings / 0 errors；source、XAML、WPF 静态门禁与 `render-qa` 通过。真实开发安装已成功，Playnite 与 Worker 启动日志正常。
 - `ATOMIC-IO-001` 已交付：新增共享 `AtomicFileWriter`，Worker 设置持久化与媒体复制统一使用“目标同目录临时文件 + 原子 Move”，失败自动清理 `.tmp/.partial` 后再抛出；`WorkerOptions.Persist()` 与 `MediaSyncService` 私有复制逻辑已委托给共享实现。
 - `SOAK-001` 已交付：`SoakStabilityHarness` 加速压测任务协调、事件扇出、单游戏锁、原子写入和 SQLite 探针；`TaskEventBroadcaster.SubscriberCount` 与 `GameOperationLock.TrackedGameCount` 提供只读稳定性计数，`scripts/soak-test.ps1` 支持用 `GSC_SOAK_ITERATIONS` 扩展到最多 5000 轮长跑。
 - `FAULT-INJECTION-001` 已交付：`FaultInjectionHarness` 注入原子写、外部进程、任务协调、事件广播和操作锁共 13 类边界故障，断言无残留、稳定终态与锁/订阅回收；`scripts/fault-injection-test.ps1` 可独立运行。
@@ -25,6 +25,7 @@
 - `TASK-RECONCILE-001` 已补齐：任务持久化 `WorkerSessionId`，启动协调只处理旧 Worker 会话遗留任务；Backup/Media/Cloud 标记可重试中断，Integrity 标记普通中断，Restore 标记人工介入且不自动重试。
 - `GAME-OP-LOCK-001` 已补齐：`GameOperationKind` 与显式兼容矩阵写入代码，备份/恢复/媒体/云端使用类型化锁；Restore 不与其他操作并发，同游戏双 Backup 禁止。
 - `IPC-COMPAT-001` 已补齐：握手返回 `AppVersion` 与能力列表，协议版本独立于应用版本，能力包括 RestoreReadiness/MetadataBackup/RepositoryRebuild/PathRemap/TaskReconcile/GameOperationLock/AtomicIo。
+- `ATOMIC-IO-001` 已审计补齐：共享原子写入覆盖设置/媒体/元数据恢复/启动失败计数，取消写入或替换失败时旧文件保持完整且无残留。
 - 本轮已修复 Layer A 审计缺口：多设备只有 Manifest 内容指纹相同才可判定等价；仅文件数/总大小相同改为保守的未知分歧；Restore Readiness 使用可取消的流式解压与增量 Hash；环境检查分别验证数据、存档和媒体所在磁盘；Manifest 重复路径不会抛异常或产生强指纹。
 - `DIAGNOSTICS-001` 已完成：维护中心可导出有上限、只读、脱敏的 ZIP 诊断包；包含环境/任务/审计/Worker 日志摘要，不包含数据库、存档、媒体或凭据；新增 IPC 请求和 Worker 测试覆盖敏感字段与大小边界。
 - Layer A 14 项与本轮审计补缺、`DIAGNOSTICS-001`、通知级别 `ImportantOnly/Summary/Verbose`、`SAFE-MODE-001`、`INTEGRITY-001`、`DB-MIGRATION-001`、`METADATA-BACKUP-001`、`REPOSITORY-REBUILD-001`、`PATH-REMAP-001`、`TASK-RECONCILE-001`、`GAME-OP-LOCK-001`、`IPC-COMPAT-001` 已交付；完整 38 项 Epic **尚未完成**。Layer B 的 OBSERVABILITY、CONFIG-RECOVERY 等，以及全部 Layer C 任务仍未实现或未完成验收，不能宣称全部任务完成。
