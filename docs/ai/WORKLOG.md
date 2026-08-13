@@ -2,6 +2,18 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-13 INTEGRITY-001 全局完整性自检
+
+- Task ID：`INTEGRITY-001`。
+- 实现内容：新增 Worker 全局完整性自检与 IPC `integrity.check`。检查 SQLite `integrity_check`、外键、必需表、关键目录可写性、已配置的 Ludusavi/Rclone 可执行文件，以及备份归档、游戏工具和媒体索引指向的文件是否存在。维护中心诊断页新增“完整性自检”按钮和结果摘要。
+- 核心设计选择：自检只读，不自动删除或修复任何数据；数据库问题标记为 Critical，文件/可执行文件缺失标记为 Warning；缺失路径只展示最多 20 个示例，避免大量记录刷屏。
+- 主要修改文件：Contracts `IntegrityDtos.cs`/`MessageTypes`、`SqliteStateStore.Integrity.cs`、`IntegrityCheckService`、`Program`、`IpcRequestDispatcher`、`DashboardViewModel`、`MaintenanceView`，以及 Worker/Playnite 测试。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `51/51`、Worker `123/123`、Playnite `211/211`；`validate-source.py`、XAML 结构、WPF 静态门禁 0 errors / 33 warnings / 153 info、五种窗口 `render-qa OK`。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 记录 `Loaded plugin: GameSaveCenter, version 0.6.70`，插件日志记录 `0.6.70.0 loaded`，`worker-launch.log` 记录存储初始化与 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实维护中心点击完整性自检后的结果展示，以及缺失文件/数据库异常场景的人工复核。
+- Commit：`85cb884`。
+- 下一项：继续 Layer B，从 `DB-MIGRATION-001` 历史数据库 Fixture 升级 Harness 开始。
+
 ## 2026-08-13 SAFE-MODE-001 安全模式
 
 - Task ID：`SAFE-MODE-001`。
