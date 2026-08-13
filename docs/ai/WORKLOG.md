@@ -2,6 +2,18 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-13 FAULT-INJECTION-001 关键 I/O 故障注入
+
+- Task ID：`FAULT-INJECTION-001`。
+- 实现内容：新增 `FaultInjectionHarness` 与 `FaultInjectionTests`，只服务自动测试，不在生产代码中加入 `TestMode` 分支。注入 13 类确定性边界故障：原子写源缺失、目标已占用、取消写入、外部进程缺失/超时/取消/非零退出、TaskCoordinator 业务异常/通用异常/取消、订阅释放后发布、单游戏锁争用超时和双重 Dispose。
+- 核心设计选择：Harness 使用临时数据目录，故障后断言 `.tmp/.partial` 无残留、任务进入稳定终态、取消令牌被移除、锁可重新获取、订阅计数归零；故障注入不触碰真实存档、媒体、数据库或 Worker 设置。
+- 主要修改文件：`tests/GameSaveCenter.Worker.Tests/Infrastructure/FaultInjectionHarness.cs`、`FaultInjectionTests.cs`、`scripts/fault-injection-test.ps1`。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `53/53`、Worker `141/141`、Playnite `211/211`；`validate-source.py` 与 XAML 结构门禁通过（本阶段无 UI 改动，不重跑 render-qa 与 WPF 静态门禁）。`scripts/fault-injection-test.ps1` 独立跑通，0 失败。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 22:27 记录 `Loaded plugin: GameSaveCenter, version 0.6.70`，插件日志记录 `0.6.70.0 loaded`，`worker-launch.log` 22:27:34 记录 Worker 启动、存储初始化和 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实磁盘满/权限移除/外部进程崩溃场景下的人工复核，确认任务中心显示稳定错误码且原数据完整。
+- Commit：`f91992e`。
+- 下一项：按最终总任务顺序回到 STEP 4，从 `A-HARDEN-001` 正式实现通知级别开始，随后 `A-HARDEN-002/003`、Layer A Hardening Gate，再对已交付的 Layer B/C 逐项审计补齐。
+
 ## 2026-08-13 SOAK-001 长时间稳定性测试
 
 - Task ID：`SOAK-001`。
