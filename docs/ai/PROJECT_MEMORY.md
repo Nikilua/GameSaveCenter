@@ -8,13 +8,15 @@
 - 用户日志中的“编译解决方案”失败根因是旧 `dotnet/testhost` 或 Worker 锁住标准 `bin\Release` 输出，随后测试项目无法覆盖 DLL/PDB/XML；不是 `GameSaveCenter.Contracts` 编译失败。
 - 一键开发安装器现在默认不请求管理员权限。`scripts/build.ps1`、`scripts/package.ps1` 和 `scripts/dev-install-run.ps1` 支持按运行生成 `artifacts\dev-build\<Configuration>\<guid>` 隔离的 bin/obj、Worker 发布和安装暂存目录，入口修订号为 `DEV-INSTALL-007`。Playnite 发现增加运行中进程、常见目录、卸载信息、App Paths 和 PATH；未发现 Playnite 且没有运行中的 Playnite 时允许继续构建/安装并提示无法自动启动。Playnite 正常退出超时后，仅当进程属于当前会话、可执行文件路径与本次发现结果完全一致且已经没有主窗口时，才结束该无窗口残留；路径不可确认、跨会话或仍有主窗口时继续停止安装。
 - 真实宿主已验证：安装报告为 0.6.70 / DLL 0.6.70.0；Playnite `playnite.log` 记录插件加载，插件日志记录 0.6.70.0，`worker-launch.log` 记录存储初始化、过期任务整理和 `Application started`。不要再用 2026-08-12 的 PID 3896 历史日志判断当前安装器行为。
-- 当前自动化基线为 Core `54/54`、Worker `145/145`、Playnite `216/216`，Release 构建 0 warnings / 0 errors；source、XAML、WPF 静态门禁与 `render-qa` 通过。真实开发安装已成功，Playnite 与 Worker 启动日志正常。
+- 当前自动化基线为 Core `54/54`、Worker `148/148`、Playnite `217/217`，Release 构建 0 warnings / 0 errors；source、XAML、WPF 静态门禁与 `render-qa` 通过。真实开发安装已成功，Playnite 与 Worker 启动日志正常。
 - `ATOMIC-IO-001` 已交付：新增共享 `AtomicFileWriter`，Worker 设置持久化与媒体复制统一使用“目标同目录临时文件 + 原子 Move”，失败自动清理 `.tmp/.partial` 后再抛出；`WorkerOptions.Persist()` 与 `MediaSyncService` 私有复制逻辑已委托给共享实现。
 - `SOAK-001` 已交付：`SoakStabilityHarness` 加速压测任务协调、事件扇出、单游戏锁、原子写入和 SQLite 探针；`TaskEventBroadcaster.SubscriberCount` 与 `GameOperationLock.TrackedGameCount` 提供只读稳定性计数，`scripts/soak-test.ps1` 支持用 `GSC_SOAK_ITERATIONS` 扩展到最多 5000 轮长跑。
 - `FAULT-INJECTION-001` 已交付：`FaultInjectionHarness` 注入原子写、外部进程、任务协调、事件广播和操作锁共 13 类边界故障，断言无残留、稳定终态与锁/订阅回收；`scripts/fault-injection-test.ps1` 可独立运行。
 - `A-HARDEN-001` 通知级别主体已收口：`NotificationLevel` 持久化默认 `Summary`，`NotificationLevelPolicy` 控制仅重要事件/退出摘要/详细任务；`SessionNotificationAccumulator` 已抽出并覆盖同 Session 单次 final、期望任务数、重复投递等测试。非任务型重要事件（健康风险/冲突/完整性严重）仍由 Dashboard Findings 承载，未单独 toast。
 - `A-HARDEN-002` 已交付：未分类 `CustomExecutable` 在普通游戏下按 AutoStart 正常启动；反作弊游戏下必须持久化 `AllowUnknownToolWithAntiCheat` 授权后才允许，Trainer/CT/GameModification 继续禁止；`game_tools` 新增授权列并纳入旧库升级测试。
 - `A-HARDEN-003` 已审计收口：首次使用“测试备份”按钮复用真实 `MessageTypes.BackupGame` 生产链路，无独立假服务；无可用测试游戏时显示“可稍后在存档中心手动执行备份”，并有回归测试锁定命令链路。
+- `DIAGNOSTICS-001` 已升级：诊断包包含 `system/worker/dependencies/database/recent-tasks/health/settings` JSON、审计与受限日志；`DiagnosticRedactor` 集中脱敏密码、Token、API Key、Authorization、URL query、UNC 凭据、邮箱和用户路径。
+- `SAFE-MODE-001` 已升级：Worker 连续 3 次启动失败后请求安全模式，Playnite 询问确认；设置页支持“下次以安全模式启动”，维护中心安全模式提示条提供“恢复正常模式”。
 - 本轮已修复 Layer A 审计缺口：多设备只有 Manifest 内容指纹相同才可判定等价；仅文件数/总大小相同改为保守的未知分歧；Restore Readiness 使用可取消的流式解压与增量 Hash；环境检查分别验证数据、存档和媒体所在磁盘；Manifest 重复路径不会抛异常或产生强指纹。
 - `DIAGNOSTICS-001` 已完成：维护中心可导出有上限、只读、脱敏的 ZIP 诊断包；包含环境/任务/审计/Worker 日志摘要，不包含数据库、存档、媒体或凭据；新增 IPC 请求和 Worker 测试覆盖敏感字段与大小边界。
 - Layer A 14 项与本轮审计补缺、`DIAGNOSTICS-001`、通知级别 `ImportantOnly/Summary/Verbose`、`SAFE-MODE-001`、`INTEGRITY-001`、`DB-MIGRATION-001`、`METADATA-BACKUP-001`、`REPOSITORY-REBUILD-001`、`PATH-REMAP-001`、`TASK-RECONCILE-001`、`GAME-OP-LOCK-001`、`IPC-COMPAT-001` 已交付；完整 38 项 Epic **尚未完成**。Layer B 的 OBSERVABILITY、CONFIG-RECOVERY 等，以及全部 Layer C 任务仍未实现或未完成验收，不能宣称全部任务完成。

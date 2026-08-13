@@ -2,6 +2,30 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-13 DIAGNOSTICS-001 一键诊断包结构化升级
+
+- Task ID：`DIAGNOSTICS-001`。
+- 实现内容：诊断包从纯文本摘要升级为结构化 JSON：`system.json`、`worker.json`、`dependencies.json`、`database.json`、`recent-tasks.json`、`health.json`、`settings.json`，外加 README、审计与受限日志尾部。新增集中式 `DiagnosticRedactor`，统一脱敏密码/Token/API Key/Authorization/Bearer、URL query secret、UNC 凭据、邮箱和 `C:\Users\<USER>` 用户路径。
+- 核心设计选择：所有写入包内的字符串都先经过 `DiagnosticRedactor`；数据库只做只读探针，不打包 SQLite；日志/包大小保持上限；Playnite 侧传入插件版本、Playnite 版本、主题、工作区与 DPI 信息，Worker 补 PID/启动时间/Uptime/协议版本。
+- 主要修改文件：`DiagnosticsPackageService.cs`、`DiagnosticRedactor.cs`、`DiagnosticsDtos.cs`、`SqliteStateStore.cs`、`DashboardViewModel.cs`、`DiagnosticsPackageServiceTests.cs`。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `54/54`、Worker `148/148`、Playnite `217/217`；`validate-source.py`、XAML 结构、WPF 静态门禁 0 errors / 33 warnings / 153 info、五种窗口 `render-qa OK`。禁止泄密测试覆盖 `abc123/token123/secret123/JohnDoe/querysecret`。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 23:18 记录插件加载，`worker-launch.log` 23:18:24 记录 Worker 启动与 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实 Playnite 中导出诊断包后人工检查 ZIP 内 JSON 字段与脱敏结果。
+- Commit：`17e88b6`（与 SAFE-MODE-001 同组提交）。
+- 下一项：`SAFE-MODE-001` 启动恢复（同一提交）后继续 `INTEGRITY-001` 补齐。
+
+## 2026-08-13 SAFE-MODE-001 安全模式启动恢复
+
+- Task ID：`SAFE-MODE-001`。
+- 实现内容：在既有安全模式门禁基础上补齐启动恢复：`WorkerOptions` 新增持久化 `SafeModeRequested` 与启动失败计数文件；连续 3 次 Worker 初始化失败后自动请求安全模式，Playnite 打开维护中心时用 `ConfirmAsync` 询问“是否使用安全模式打开”，确认后启用并清除请求。设置页新增“下次以安全模式启动”开关，维护中心安全模式提示条新增“恢复正常模式”按钮。
+- 核心设计选择：安全模式请求不自动永久启用，必须由用户确认；启动成功只清失败计数、保留待确认请求；手动退出安全模式走真实 `UpdateSettings` 管道并立即刷新诊断。
+- 主要修改文件：`WorkerOptions.cs`、`WorkerInitializationService.cs`、`OperationDtos.cs`、`IpcRequestDispatcher.cs`、`GameSaveCenterSettings.cs`、`GameSaveCenterSettingsView.xaml`、`MaintenanceView.xaml`、`DashboardViewModel.cs`、`SafeModeStartupTests.cs`。
+- 测试结果：与 DIAGNOSTICS-001 同批：Core `54/54`、Worker `148/148`、Playnite `217/217`；安全模式三次失败请求、成功清计数、请求清除、设置持久化与 UI 绑定均有测试。
+- 真实宿主验证：与 DIAGNOSTICS-001 同批通过；插件与 Worker 正常加载。
+- MANUAL QA REQUIRED：真实连续启动失败 3 次后人工确认提示与安全模式自动暂停效果；以及“恢复正常模式”按钮的真实行为。
+- Commit：`17e88b6`。
+- 下一项：继续 Layer B，从 `INTEGRITY-001` 全局完整性自检补齐开始。
+
 ## 2026-08-13 A-HARDEN-003 Onboarding 测试备份闭环审计
 
 - Task ID：`A-HARDEN-003`。
