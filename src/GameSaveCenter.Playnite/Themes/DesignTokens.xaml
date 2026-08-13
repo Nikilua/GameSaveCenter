@@ -567,6 +567,7 @@
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Padding" Value="11,7"/>
         <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
+        <Setter Property="Height" Value="42"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="CaretBrush" Value="{DynamicResource GscAccentBrush}"/>
         <Setter Property="SelectionBrush" Value="{DynamicResource GscAccentTintStrongBrush}"/>
@@ -581,7 +582,9 @@
                             SnapsToDevicePixels="True">
                         <ScrollViewer x:Name="PART_ContentHost"
                                       Margin="{TemplateBinding Padding}"
-                                      VerticalAlignment="Stretch"
+                                      VerticalAlignment="Center"
+                                      HorizontalAlignment="Stretch"
+                                      Focusable="False"
                                       HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}"
                                       VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}"
                                       CanContentScroll="True"/>

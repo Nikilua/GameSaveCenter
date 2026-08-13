@@ -150,6 +150,17 @@ namespace GameSaveCenter.Playnite.Views
                 OverviewCurrentGameCard.Margin = stackHeroAndGame
                     ? new Thickness(0, 14, 0, 0)
                     : new Thickness(0);
+
+                // The hero owns a full-width title row and a full-width status row.
+                // Keep the status row horizontal until the card is genuinely narrow;
+                // this prevents status dots from being squeezed into an empty-looking
+                // vertical strip at maximized 2K logical widths.
+                var heroWidth = OverviewTodayHeroCard.ActualWidth > 0
+                    ? OverviewTodayHeroCard.ActualWidth
+                    : Math.Max(320d, primaryWidth * (stackHeroAndGame ? 1d : 0.56d));
+                OverviewTodayHeroCard.Padding = heroWidth < 560
+                    ? new Thickness(16, 16, 16, 14)
+                    : new Thickness(22, 18, 22, 16);
             }
         }
 

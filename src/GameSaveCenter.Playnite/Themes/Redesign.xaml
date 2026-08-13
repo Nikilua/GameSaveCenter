@@ -373,6 +373,7 @@
                                       Width="232"
                                       DockPanel.Dock="Left"
                                       Margin="0,0,16,0"
+                                      Padding="0,0,0,4"
                                       HorizontalScrollBarVisibility="Disabled"
                                       VerticalScrollBarVisibility="Auto"
                                       CanContentScroll="False"
@@ -399,6 +400,7 @@
                             <Setter TargetName="SettingsHeaderScroller" Property="HorizontalScrollBarVisibility" Value="Auto"/>
                             <Setter TargetName="SettingsHeaderScroller" Property="VerticalScrollBarVisibility" Value="Disabled"/>
                             <Setter TargetName="SettingsHeaderScroller" Property="Width" Value="NaN"/>
+                            <Setter TargetName="SettingsHeaderScroller" Property="Padding" Value="0"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -410,12 +412,12 @@
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-        <Setter Property="Margin" Value="0,0,0,10"/>
+        <Setter Property="Margin" Value="0,0,0,8"/>
         <Setter Property="MinWidth" Value="218"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TabItem">
-                    <Border x:Name="Chrome" MinHeight="66" Padding="14,11" CornerRadius="17"
+                    <Border x:Name="Chrome" MinHeight="66" Padding="14,11" CornerRadius="14"
                             Background="{DynamicResource GscControlFillBrush}" BorderBrush="{DynamicResource GscGlassStrokeBrush}" BorderThickness="1">
                         <ContentPresenter ContentSource="Header" VerticalAlignment="Center"/>
                     </Border>

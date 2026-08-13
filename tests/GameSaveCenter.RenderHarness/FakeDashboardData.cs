@@ -12,6 +12,9 @@ namespace GameSaveCenter.RenderHarness;
 /// </summary>
 public sealed class FakeDashboardData
 {
+    public string OnboardingTitle => "首次使用：准备环境";
+    public string OnboardingDescription => "先确认 Worker、目录、SQLite 与备份工具可用。所有检查都是非破坏性的；你可以跳过，之后随时在维护中心重新运行。";
+
     public FakeDashboardData(int rowCount = 8)
     {
         rowCount = Math.Max(8, rowCount);
@@ -29,6 +32,59 @@ public sealed class FakeDashboardData
             PendingCloudTasks = 2,
             UnassignedMediaCount = 7
         };
+
+        EnvironmentCheck = new EnvironmentCheckReportDto
+        {
+            CheckedUtc = DateTime.UtcNow,
+            PassedCount = 8,
+            SkippedCount = 1,
+            Summary = "检查完成：环境已准备好，可以手动执行一次测试备份。"
+        };
+        EnvironmentCheck.Items.Add(new EnvironmentCheckItemDto
+        {
+            Key = "worker", Title = "Worker 服务", State = EnvironmentCheckState.Passed,
+            Summary = "IPC 请求已成功到达 Worker。", Detail = "0.6.70.0"
+        });
+        EnvironmentCheck.Items.Add(new EnvironmentCheckItemDto
+        {
+            Key = "data", Title = "数据目录", State = EnvironmentCheckState.Passed,
+            Summary = "目录可创建、写入和删除临时探针。", Detail = @"C:\GameSaveCenterData"
+        });
+        EnvironmentCheck.Items.Add(new EnvironmentCheckItemDto
+        {
+            Key = "backup", Title = "存档目录", State = EnvironmentCheckState.Passed,
+            Summary = "目录可创建、写入和删除临时探针。", Detail = @"D:\GameSaveCenterData\Saves"
+        });
+        EnvironmentCheck.Items.Add(new EnvironmentCheckItemDto
+        {
+            Key = "media", Title = "媒体目录", State = EnvironmentCheckState.Passed,
+            Summary = "目录可创建、写入和删除临时探针。", Detail = @"D:\GameSaveCenterData\Media"
+        });
+        EnvironmentCheck.Items.Add(new EnvironmentCheckItemDto
+        {
+            Key = "database", Title = "SQLite 数据库", State = EnvironmentCheckState.Passed,
+            Summary = "数据库可读取和写入临时探针。", Detail = @"C:\GameSaveCenterData\gamesavecenter.db"
+        });
+        EnvironmentCheck.Items.Add(new EnvironmentCheckItemDto
+        {
+            Key = "library", Title = "Playnite 游戏库", State = EnvironmentCheckState.Passed,
+            Summary = "已读取 300 个游戏。", Detail = string.Empty
+        });
+        EnvironmentCheck.Items.Add(new EnvironmentCheckItemDto
+        {
+            Key = "ludusavi", Title = "Ludusavi", State = EnvironmentCheckState.Passed,
+            Summary = "版本检查和只读备份列表调用均成功。", Detail = @"D:\Tools\ludusavi.exe"
+        });
+        EnvironmentCheck.Items.Add(new EnvironmentCheckItemDto
+        {
+            Key = "rclone", Title = "Rclone 与云端", State = EnvironmentCheckState.Skipped,
+            Summary = "未配置可选的 Rclone 远端。", Detail = "可在设置中配置，之后重新运行检查。", IsOptional = true
+        });
+        EnvironmentCheck.Items.Add(new EnvironmentCheckItemDto
+        {
+            Key = "disk", Title = "磁盘空间", State = EnvironmentCheckState.Passed,
+            Summary = "可用空间约 128 GiB。", Detail = "C:"
+        });
 
         SelectedGame = new GameStatusDto
         {
@@ -340,6 +396,7 @@ public sealed class FakeDashboardData
     }
 
     public DashboardSnapshotDto Snapshot { get; }
+    public EnvironmentCheckReportDto EnvironmentCheck { get; }
     public GameStatusDto SelectedGame { get; }
     public ObservableCollection<GameStatusDto> Games { get; } = new ObservableCollection<GameStatusDto>();
     public ObservableCollection<TaskStatusDto> Tasks { get; } = new ObservableCollection<TaskStatusDto>();

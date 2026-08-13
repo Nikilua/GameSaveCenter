@@ -61,7 +61,9 @@
                 SnapsToDevicePixels="True">
             <ScrollViewer x:Name="PART_ContentHost"
                           Margin="{TemplateBinding Padding}"
-                          VerticalAlignment="Stretch"
+                          VerticalAlignment="Center"
+                          HorizontalAlignment="Stretch"
+                          Focusable="False"
                           HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}"
                           VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}"
                           CanContentScroll="True"/>
@@ -685,6 +687,7 @@
         <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Padding" Value="12,5"/>
+        <Setter Property="Height" Value="42"/>
         <Setter Property="CaretBrush" Value="{DynamicResource GscAccentBrush}"/>
         <Setter Property="SelectionBrush" Value="{DynamicResource GscAccentTintStrongBrush}"/>
         <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>

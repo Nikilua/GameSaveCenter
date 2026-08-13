@@ -995,3 +995,42 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 **提交：** `dd39229`（可靠性安全缺口）；本审计文档提交见紧随其后的 docs commit。
 
 **下一项：** 本轮无第 15 项；只接受人工 QA 反馈或明确的新任务。
+
+## 2026-08-13 UI-QA-REAL-002 2K 首页状态区与设置/维护布局修复
+
+**实现内容：**
+
+- 修复首页“今日工作台”在 2K 最大化宽度下状态灯被挤到窄列、只剩竖向圆点的问题；状态胶囊改为标题下方的全宽第二行，并保留响应式内边距。
+- 维护中心首次使用环境检查改为响应式 `UniformGrid`：宽窗口 3 列、中等窗口 2 列、窄窗口 1 列；统一卡片高度和横向拉伸，消除最后一行参差不齐的胶囊排列。
+- 修复共享文本框内容宿主的垂直对齐和高度，统一为居中、42 DIP；设置页分类卡片增加底部安全间距并收敛圆角，避免窗口底部裁切和“被削掉”的视觉效果。
+- 补充渲染夹具中的环境检查样例数据，并新增 UI 布局回归测试，确保后续修改不会复现这三类问题。
+
+**核心设计选择：**
+
+- 只修复现有共享布局和模板，不新增页面、不改变绑定/命令、滚动骨架或 DataGrid 虚拟化。
+- 首页状态区使用显式 Grid 行而非依赖窄列 WrapPanel；维护卡片使用可随可用宽度变化的 UniformGrid；设置输入框继续复用现有共享模板。
+
+**主要修改文件：**
+
+- `src/GameSaveCenter.Playnite/Views/OverviewView.xaml`、`OverviewView.xaml.cs`
+- `src/GameSaveCenter.Playnite/Views/MaintenanceView.xaml`、`MaintenanceView.xaml.cs`
+- `src/GameSaveCenter.Playnite/Themes/WpfUiProduction.xaml`、`DesignTokens.xaml`、`Redesign.xaml`
+- `tests/GameSaveCenter.RenderHarness/FakeDashboardData.cs`
+- `tests/GameSaveCenter.Playnite.Tests/UiLayoutRegressionTests.cs`
+- `docs/ai/PROJECT_MEMORY.md`、`docs/ai/WORKLOG.md`
+
+**测试结果：**
+
+- XAML 结构校验通过；Release 构建 0 warning / 0 error。
+- Core 42/42、Worker 117/117、Playnite 206/206。
+- `render-qa.ps1` 在 1040×700、1280×720、1366×768、1600×900、1920×1080 全部通过，包含首页与维护中心首次使用样例渲染。
+- `dev-install-run.ps1 -Configuration Release` 构建、打包、安装校验成功；真实 Playnite 扩展日志确认 `GameSaveCenter 0.6.70.0` 加载，Worker 进程正常运行。
+
+**验证边界：**
+
+- `AUTO VERIFIED`：源码/XAML、Release 构建、Core/Worker/Playnite 测试、五种窗口尺寸渲染、开发安装、真实宿主插件日志和 Worker 启动。
+- `MANUAL QA REQUIRED`：用户实际 2K 最大化窗口的视觉确认、Settings 全页滚动、主题/DPI 切换和连续缩放；本阶段没有伪造“已完成人工点击验收”。
+
+**提交：** `0cb1593`（UI 修复、回归测试与长期记忆更新）。
+
+**下一项：**等待用户人工 QA 反馈；不新增本轮范围外功能。

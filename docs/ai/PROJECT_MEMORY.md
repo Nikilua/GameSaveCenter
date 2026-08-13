@@ -214,3 +214,13 @@
 - `.codex/skills/wpf-apple-desktop-ui/SKILL.md`：WPF/Playnite UI 专项技能。
 - `docs/ai/WORKLOG.md`：每阶段开发流水记录。
 - `docs/ai/PERFORMANCE_BASELINE.md`：性能基线与测量方法。
+
+## 2026-08-13 UI-QA-REAL-002 当前事实
+
+- 首页“今日工作台”状态区已改为标题下方全宽第二行，避免 2K 最大化时原窄列 `WrapPanel` 将状态胶囊挤成不可见/竖向圆点；`OverviewView.xaml.cs` 会根据实际或估算宽度调整英雄卡内边距。
+- 维护中心首次使用环境检查复用现有检查项，采用响应式 `UniformGrid`：可用宽度 ≥ 900 DIP 为 3 列，620–899 DIP 为 2 列，更窄为 1 列；检查卡统一拉伸并设置最小高度，避免胶囊乱序和不规则空洞。
+- 设置页共享文本框内容宿主已垂直居中，默认高度 42 DIP；设置分类卡片的共享模板增加底部安全间距并使用一致圆角，避免窗口底部裁切。
+- 本阶段没有新增主导航页面，没有改动业务命令、绑定、DataGrid 虚拟化或 Worker/恢复体系；渲染夹具仅补充首次使用卡片的演示数据。
+- 当前自动化基线为 Core 42/42、Worker 117/117、Playnite 206/206；Release 构建无警告/错误，五种窗口尺寸的 `render-qa` 通过。
+- 2026-08-13 真实开发安装完成，Playnite 扩展日志确认 `GameSaveCenter 0.6.70.0` 加载，Worker 正常运行。真实宿主日志/进程证明已记录；用户实际 2K 最大化、主题/DPI、Settings 连续缩放仍标记 `MANUAL QA REQUIRED`。
+- 本阶段只完成用户反馈的三类 UI 修复，不引入第 15 个功能；下一步等待人工视觉反馈。

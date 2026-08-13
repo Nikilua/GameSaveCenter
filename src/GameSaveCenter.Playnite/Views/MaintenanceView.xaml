@@ -83,11 +83,11 @@
                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CompleteOnboardingCommand}" Content="完成设置" Margin="0,0,8,8"/>
                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding SkipOnboardingCommand}" Content="跳过首次检查" Margin="0,0,0,8"/>
                             </WrapPanel>
-                            <ItemsControl Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding EnvironmentCheck.Items}" Margin="0,10,0,0">
-                                <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                            <ItemsControl x:Name="EnvironmentCheckItems" Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding EnvironmentCheck.Items}" HorizontalContentAlignment="Stretch" Margin="0,10,0,0">
+                                <ItemsControl.ItemsPanel><ItemsPanelTemplate><UniformGrid Columns="3"/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Border Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,0,8,8" MinWidth="250" MaxWidth="560">
+                                        <Border Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,0,8,8" MinHeight="86" HorizontalAlignment="Stretch">
                                             <Grid>
                                                 <Grid.ColumnDefinitions><ColumnDefinition Width="28"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                                 <TextBlock Text="{Binding StateGlyph}" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource GscInfoBrush}" VerticalAlignment="Top" HorizontalAlignment="Center"/>

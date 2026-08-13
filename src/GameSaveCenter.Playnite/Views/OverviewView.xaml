@@ -107,20 +107,26 @@
                 <Grid.ColumnDefinitions><ColumnDefinition x:Name="OverviewHeroColumn" Width="1.25*"/><ColumnDefinition x:Name="OverviewHeroGameGutterColumn" Width="14"/><ColumnDefinition x:Name="OverviewCurrentGameColumn" Width="0.75*"/></Grid.ColumnDefinitions>
                 <Border x:Name="OverviewTodayHeroCard" Grid.Row="0" Grid.Column="0" Style="{DynamicResource GscRedesignSectionCard}" MinHeight="205">
                     <Grid>
-                        <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
                         <!-- Demo HomeView hero carries a soft ambient glow behind the
                              TODAY headline; production uses theme-adaptive radial gradients
                              so the glow stays cheap while scrolling large libraries. -->
-                        <Ellipse Width="230" Height="230" IsHitTestVisible="False" Opacity="0.85" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-112,-112,0,0">
+                        <Ellipse Width="230" Height="230" IsHitTestVisible="False" Opacity="0.85" Grid.RowSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-112,-112,0,0">
                             <Ellipse.Fill><RadialGradientBrush><GradientStop Offset="0" Color="{DynamicResource GscAccentShadowColor}"/><GradientStop Offset="1" Color="Transparent"/></RadialGradientBrush></Ellipse.Fill>
                         </Ellipse>
-                        <Ellipse Width="230" Height="230" IsHitTestVisible="False" Opacity="0.85" Grid.ColumnSpan="2" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-112,-86,0">
+                        <Ellipse Width="230" Height="230" IsHitTestVisible="False" Opacity="0.85" Grid.RowSpan="2" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-112,-86,0">
                             <Ellipse.Fill><RadialGradientBrush><GradientStop Offset="0" Color="{DynamicResource GscInfoShadowColor}"/><GradientStop Offset="1" Color="Transparent"/></RadialGradientBrush></Ellipse.Fill>
                         </Ellipse>
-                        <Ellipse Width="230" Height="230" IsHitTestVisible="False" Opacity="0.85" Grid.ColumnSpan="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,-86,-112">
+                        <Ellipse Width="230" Height="230" IsHitTestVisible="False" Opacity="0.85" Grid.RowSpan="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,-86,-112">
                             <Ellipse.Fill><RadialGradientBrush><GradientStop Offset="0" Color="{DynamicResource GscSuccessShadowColor}"/><GradientStop Offset="1" Color="Transparent"/></RadialGradientBrush></Ellipse.Fill>
                         </Ellipse>
-                        <StackPanel MinWidth="0" VerticalAlignment="Center" Margin="0,0,20,0">
+                        <StackPanel Grid.Row="0" MinWidth="0" VerticalAlignment="Center" Margin="0,0,0,14">
                             <TextBlock Style="{DynamicResource GscRedesignHeroEyebrow}" Text="TODAY"/>
                             <TextBlock FontSize="35" FontWeight="SemiBold" Margin="0,8,0,8" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}">
                                 <TextBlock.Style>
@@ -135,7 +141,7 @@
                             </TextBlock>
                             <TextBlock Text="本地备份始终是主副本；下方胶囊显示 Worker、云端与媒体的实时状态。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" FontSize="12" Margin="0,5,0,0"/>
                         </StackPanel>
-                        <WrapPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <WrapPanel Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0">
                             <Border Style="{DynamicResource GscRedesignContextPill}" Margin="0,0,8,8"><StackPanel Orientation="Horizontal"><Ellipse Width="8" Height="8" Margin="0,0,7,0" VerticalAlignment="Center"><Ellipse.Style><Style TargetType="Ellipse"><Setter Property="Fill" Value="{DynamicResource GscErrorBrush}"/><Style.Triggers><DataTrigger Binding="{Binding Snapshot.WorkerHealthy}" Value="True"><Setter Property="Fill" Value="{DynamicResource GscSuccessBrush}"/></DataTrigger></Style.Triggers></Style></Ellipse.Style></Ellipse><TextBlock FontSize="11"><TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Text" Value="Worker 异常"/><Setter Property="Foreground" Value="{DynamicResource GscErrorBrush}"/><Style.Triggers><DataTrigger Binding="{Binding Snapshot.WorkerHealthy}" Value="True"><Setter Property="Text" Value="Worker 正常"/><Setter Property="Foreground" Value="{DynamicResource GscSuccessBrush}"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock></StackPanel></Border>
                             <Border Style="{DynamicResource GscRedesignContextPill}" Margin="0,0,8,8"><StackPanel Orientation="Horizontal"><Ellipse Width="8" Height="8" Margin="0,0,7,0" VerticalAlignment="Center"><Ellipse.Style><Style TargetType="Ellipse"><Setter Property="Fill" Value="{DynamicResource GscMutedStatusBrush}"/><Style.Triggers><DataTrigger Binding="{Binding Snapshot.LudusaviAvailable}" Value="True"><Setter Property="Fill" Value="{DynamicResource GscSuccessBrush}"/></DataTrigger></Style.Triggers></Style></Ellipse.Style></Ellipse><TextBlock FontSize="11"><TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Text" Value="Ludusavi 不可用"/><Setter Property="Foreground" Value="{DynamicResource GscSecondaryTextBrush}"/><Style.Triggers><DataTrigger Binding="{Binding Snapshot.LudusaviAvailable}" Value="True"><Setter Property="Text" Value="Ludusavi 可用"/><Setter Property="Foreground" Value="{DynamicResource GscSuccessBrush}"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock></StackPanel></Border>
                             <!-- 单胶囊承载“无需处理/N 项需处理”两种状态，避免互斥双胶囊产生空边框。 -->

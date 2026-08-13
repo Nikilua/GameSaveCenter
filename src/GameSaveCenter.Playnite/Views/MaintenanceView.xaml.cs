@@ -1,7 +1,8 @@
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System;
+using System.Windows.Media;
 
 namespace GameSaveCenter.Playnite.Views
 {
@@ -76,6 +77,13 @@ namespace GameSaveCenter.Playnite.Views
             // Health cards remain useful context even in compact windows. Grid star rows keep
             // diagnostics tables finite while their own controls handle overflow.
             DiagnosticHealthPanel.Visibility = Visibility.Visible;
+            // Environment checks are a fixed set of peer states. A UniformGrid keeps
+            // every card aligned to a predictable column rhythm instead of letting a
+            // WrapPanel create a ragged final row at different maximized/DPI widths.
+            var environmentColumns = width >= 900 ? 3 : width >= 620 ? 2 : 1;
+            var environmentPanel = FindVisualChild<UniformGrid>(EnvironmentCheckItems);
+            if (environmentPanel != null)
+                environmentPanel.Columns = environmentColumns;
             // Keep a predictable findings viewport instead of allowing the action cards,
             // health cards and diagnostic summary to squeeze the table down to one row.
             // MaintenanceDiagnosticsScrollSurface owns overflow outside this finite table.
@@ -218,6 +226,19 @@ namespace GameSaveCenter.Playnite.Views
             MaintenanceAuditInspector.MaxHeight = showAuditInspector && stackAudit ? auditInspectorHeight : double.PositiveInfinity;
             MaintenanceAuditLogGrid.MinHeight = stackAudit ? 96 : 140;
             MaintenanceAuditLogGrid.MaxHeight = stackAudit ? Math.Max(120, height * 0.20) : 280;
+        }
+
+        private static T? FindVisualChild<T>(DependencyObject? parent) where T : DependencyObject
+        {
+            if (parent == null) return null;
+            for (var index = 0; index < VisualTreeHelper.GetChildrenCount(parent); index++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, index);
+                if (child is T match) return match;
+                var nested = FindVisualChild<T>(child);
+                if (nested != null) return nested;
+            }
+            return null;
         }
     }
 }
