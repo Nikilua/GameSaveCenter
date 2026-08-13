@@ -1678,6 +1678,62 @@ namespace GameSaveCenter.Playnite.ViewModels
             await PrepareGameToolImportAsync(dialog.FileName,type);
         }
 
+        public void ImportDroppedGameTool(string? path)
+        {
+            if (SelectedGame == null)
+            {
+                StatusMessage = "请先选择游戏，再拖入工具文件。";
+                return;
+            }
+            Run(() => ImportDroppedGameToolCoreAsync(path));
+        }
+
+        private async Task ImportDroppedGameToolCoreAsync(string? path)
+        {
+            var source = path ?? string.Empty;
+            if (string.IsNullOrWhiteSpace(source))
+            {
+                StatusMessage = "拖入的文件路径为空。";
+                return;
+            }
+            if (Directory.Exists(source))
+            {
+                await PrepareGameToolImportAsync(source, GameToolType.Trainer).ConfigureAwait(false);
+                return;
+            }
+            var extension = Path.GetExtension(source).ToLowerInvariant();
+            switch (extension)
+            {
+                case ".ct":
+                    await PrepareGameToolImportAsync(source, GameToolType.CheatTable).ConfigureAwait(false);
+                    break;
+                case ".lnk":
+                case ".bat":
+                case ".cmd":
+                case ".ps1":
+                    await ExecuteGameToolImportAsync(source, GameToolType.CustomExecutable, Path.GetFileName(source), false).ConfigureAwait(false);
+                    break;
+                case ".exe":
+                    var asTrainer = await plugin.ConfirmAsync(
+                        "拖入的 EXE",
+                        "这是一个修改器，还是普通启动项？\n\n修改器会在游戏启动时按策略运行；普通启动项属于自定义工具，需要额外分类。",
+                        "修改器",
+                        "普通启动项",
+                        false).ConfigureAwait(false);
+                    if (asTrainer)
+                        await PrepareGameToolImportAsync(source, GameToolType.Trainer).ConfigureAwait(false);
+                    else
+                        await ExecuteGameToolImportAsync(source, GameToolType.CustomExecutable, Path.GetFileName(source), false).ConfigureAwait(false);
+                    break;
+                case ".zip":
+                    await PrepareGameToolImportAsync(source, GameToolType.Trainer).ConfigureAwait(false);
+                    break;
+                default:
+                    StatusMessage = "拖入的文件类型不支持；请使用 EXE、CT、LNK、BAT、CMD、PS1、ZIP 或目录。";
+                    break;
+            }
+        }
+
         private async Task ImportGameToolFolderAsync()
         {
             var folder=plugin.PlayniteApi.Dialogs.SelectFolder();

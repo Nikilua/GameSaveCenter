@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using GameSaveCenter.Playnite.ViewModels;
@@ -31,6 +32,31 @@ namespace GameSaveCenter.Playnite.Views
 
             if (viewModel.LoadTrainerReleasesCommand.CanExecute(null))
                 viewModel.LoadTrainerReleasesCommand.Execute(null);
+        }
+
+        private void OnToolDragOver(object sender, DragEventArgs e)
+        {
+            e.Effects = CanDropTool(e.Data) ? DragDropEffects.Copy : DragDropEffects.None;
+            e.Handled = true;
+        }
+
+        private void OnToolDrop(object sender, DragEventArgs e)
+        {
+            if (!CanDropTool(e.Data) || DataContext is not DashboardViewModel viewModel)
+                return;
+            var files = (string[])e.Data.GetData(DataFormats.FileDrop)!;
+            var path = files[0];
+            viewModel.ImportDroppedGameTool(path);
+            e.Handled = true;
+        }
+
+        private static bool CanDropTool(IDataObject data)
+        {
+            if (!data.GetDataPresent(DataFormats.FileDrop)) return false;
+            var files = data.GetData(DataFormats.FileDrop) as string[];
+            if (files == null || files.Length != 1) return false;
+            var path = files[0];
+            return File.Exists(path) || Directory.Exists(path);
         }
 
         public void ApplyResponsiveLayout(double width, double height)
