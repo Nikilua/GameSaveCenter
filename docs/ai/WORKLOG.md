@@ -2,6 +2,18 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-13 LAYER-A-AUDIT-001 / DIAGNOSTICS-001
+
+- Task ID：`LAYER-A-AUDIT-001`、`DIAGNOSTICS-001`。
+- 实现内容：修复多设备等价判断、Restore Readiness 大文件取消/Hash、分磁盘环境检查和重复 Manifest 防护；新增维护中心脱敏诊断包导出入口与 IPC。
+- 核心设计选择：只有完整 Manifest 内容指纹相同才判定跨设备内容等价；仅大小/文件数相同保守标记未知分歧；诊断包限制日志/任务/审计数量和总大小，拒绝打包数据库、存档、媒体与凭据。
+- 主要修改文件：`BackupContentFingerprint`、`DeviceConflictDetector`、`RestoreReadinessService`、`EnvironmentCheckService`、`FileManifestDiffService`、`DiagnosticsPackageService`、Contracts IPC DTO、`DashboardViewModel`、`MaintenanceView` 及对应 Core/Worker/Playnite 测试。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `47/47`、Worker `118/118`、Playnite `210/210`；`validate-source.py` 通过；WPF 静态门禁 0 errors / 33 warnings / 153 info（均为既有布局提示）；五种窗口 `render-qa OK`；一键开发安装与 Playnite 启动成功，日志确认插件 `0.6.70` 加载、Worker 初始化并进入 `Application started`。
+- AUTO VERIFIED：上限/脱敏/排除敏感文件测试、指纹与恢复校验单测、源码/XAML/WPF/render-qa、真实构建/安装/启动。
+- MANUAL QA REQUIRED：真实游戏 Restore/Undo、真实 Rclone 断网与凭据失效、真实双设备、多种 EXE/LNK/BAT/PS1、1000+ 游戏库、主题/DPI/连续缩放；未把自动化结果冒充这些验收。
+- Commit：`cbd0cdb`（Layer A 审计修复）、`c6bfda2`（诊断包）。
+- 下一项：继续 Layer B/C 任务；完整 38 项 Epic 尚未完成，通知级别 `ImportantOnly/Summary/Verbose` 也未完整实现。
+
 ## 2026-08-13 UI-QA-REAL-006 设置分类 Tab 实际裁切修复
 
 - 用户反馈上一轮“底部安全区域”没有视觉变化；复核截图后确认不是安全区数值太小，而是 `TabItem` 的圆角 `Border` 直接作为模板根并开启 `ClipToBounds=True`，圆角 Chrome 被 `TabPanel` 的布局槽贴底裁平。
