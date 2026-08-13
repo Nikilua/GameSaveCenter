@@ -2,6 +2,18 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-13 TASK-RECONCILE-001 Worker 中断任务恢复体系
+
+- Task ID：`TASK-RECONCILE-001`。
+- 实现内容：在既有启动自动协调基础上新增 `tasks.reconcile` IPC 与 `TaskReconcileService`。维护中心诊断页新增“协调中断任务”按钮和结果摘要；手动执行会把遗留的 `Queued/Running` 任务幂等标记为 `WORKER_RESTARTED`，保留任务中心和通知统一状态，并写审计。
+- 核心设计选择：`MarkInterruptedTasksAsync` 改为返回受影响行数，让手动协调可报告数量；已成功/失败/取消/等待任务不受影响，重复协调不会重复改写。
+- 主要修改文件：Contracts `TaskReconcileDtos.cs`/`MessageTypes`、`SqliteStateStore`、`TaskReconcileService`、`Program`、`IpcRequestDispatcher`、`DashboardViewModel`、`MaintenanceView`，以及 Worker/Playnite 测试。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `51/51`、Worker `131/131`、Playnite `211/211`；`validate-source.py`、XAML 结构、WPF 静态门禁 0 errors / 33 warnings / 153 info、五种窗口 `render-qa OK`。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 记录 `Loaded plugin: GameSaveCenter, version 0.6.70`，插件日志记录 `0.6.70.0 loaded`，`worker-launch.log` 记录存储初始化与 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实中断上传/备份后点击协调，并在任务中心核对 `WORKER_RESTARTED` 状态与重试入口。
+- Commit：`2724209`。
+- 下一项：继续 Layer B，从 `GAME-OP-LOCK-001` 单游戏操作兼容锁开始。
+
 ## 2026-08-13 PATH-REMAP-001 批量路径迁移
 
 - Task ID：`PATH-REMAP-001`。
