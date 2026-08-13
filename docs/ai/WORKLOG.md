@@ -2,6 +2,18 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-13 GAME-OP-LOCK-001 单游戏操作兼容锁
+
+- Task ID：`GAME-OP-LOCK-001`。
+- 实现内容：新增 `GameOperationLock` 单游戏信号量锁，并接入备份、云端上传重试、媒体同步、恢复预览与恢复执行。同一游戏的备份/恢复/媒体操作在同一时间只允许一个执行；不同游戏仍可并行。锁获取超时返回 `GAME_OPERATION_BUSY`，不会排队积压或静默覆盖。
+- 核心设计选择：锁以 PlayniteId 为粒度、大小写不敏感；恢复执行在进入任务前获取锁，预览也持锁，避免与真实写入交错；不清理字典以避免并发竞态，锁对象数量与游戏数有界。
+- 主要修改文件：`GameOperationLock`、`BackupOrchestrator`、`MediaSyncService`、`RestoreOrchestrator`、`Program`，以及 Worker 测试。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `51/51`、Worker `132/132`、Playnite `211/211`；`validate-source.py`、XAML 结构、WPF 静态门禁 0 errors / 33 warnings / 153 info、五种窗口 `render-qa OK`。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 记录 `Loaded plugin: GameSaveCenter, version 0.6.70`，插件日志记录 `0.6.70.0 loaded`，`worker-launch.log` 记录存储初始化与 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实长时间备份期间对同一游戏发起恢复/媒体同步，确认显示 `GAME_OPERATION_BUSY` 且不同游戏仍并行。
+- Commit：`dc8a5e6`。
+- 下一项：继续 Layer B，从 `IPC-COMPAT-001` IPC protocol handshake 开始。
+
 ## 2026-08-13 TASK-RECONCILE-001 Worker 中断任务恢复体系
 
 - Task ID：`TASK-RECONCILE-001`。
