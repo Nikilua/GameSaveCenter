@@ -37,6 +37,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Equal(source.OnboardingCompleted, imported.OnboardingCompleted);
             Assert.Equal(source.NotificationLevel, imported.NotificationLevel);
             Assert.Equal(source.SafeModeEnabled, imported.SafeModeEnabled);
+            Assert.Equal(source.SafeModeRequested, imported.SafeModeRequested);
             Assert.Equal(destinationDeviceId, imported.DeviceId);
             Assert.NotEqual(source.DeviceId, imported.DeviceId);
         }
@@ -159,6 +160,7 @@ namespace GameSaveCenter.Playnite.Tests
             EnableTaskNotifications = true,
             NotificationLevel = NotificationLevel.Verbose,
             SafeModeEnabled = true,
+            SafeModeRequested = true,
             OnboardingCompleted = true,
             ThemeMode = GameSaveCenterThemeMode.Dark,
             EnableUiAnimations = false,

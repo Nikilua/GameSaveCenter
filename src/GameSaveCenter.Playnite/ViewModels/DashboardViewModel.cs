@@ -58,6 +58,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private DashboardSnapshotDto snapshot = new DashboardSnapshotDto();
         private EnvironmentCheckReportDto environmentCheck = new EnvironmentCheckReportDto();
         private bool environmentCheckLoaded;
+        private bool safeModePromptShown;
         private RecentProtectionSummary recentProtection = new RecentProtectionSummary(30, 0, 0, 0, 0, Array.Empty<RecentProtectionItem>());
         private SavePathCandidateDto selectedCandidate = null!;
         private string backupComment = string.Empty;
@@ -190,6 +191,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             RebuildRepositoryCommand = new RelayCommand(_ => Run(RebuildRepositoryAsync), _ => !IsBusy && Snapshot.LudusaviAvailable);
             RunPathRemapCommand = new RelayCommand(_ => Run(RunPathRemapAsync), _ => !IsBusy && !string.IsNullOrWhiteSpace(PathRemapOldRoot) && !string.IsNullOrWhiteSpace(PathRemapNewRoot));
             ReconcileTasksCommand = new RelayCommand(_ => Run(ReconcileTasksAsync), _ => !IsBusy);
+            ExitSafeModeCommand = new RelayCommand(_ => Run(ExitSafeModeAsync), _ => !IsBusy);
             RunEnvironmentCheckCommand = new RelayCommand(_ => Run(RunEnvironmentCheckAsync), _ => !IsBusy);
             SkipOnboardingCommand = new RelayCommand(_ => SkipOnboarding(), _ => !IsBusy && IsOnboardingPending);
             CompleteOnboardingCommand = new RelayCommand(_ => CompleteOnboarding(), _ => !IsBusy && IsOnboardingPending && EnvironmentCheck.IsReady && EnvironmentCheck.CheckedUtc != default(DateTime));
@@ -635,6 +637,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand RebuildRepositoryCommand { get; }
         public ICommand RunPathRemapCommand { get; }
         public ICommand ReconcileTasksCommand { get; }
+        public ICommand ExitSafeModeCommand { get; }
         public ICommand RunEnvironmentCheckCommand { get; }
         public ICommand SkipOnboardingCommand { get; }
         public ICommand CompleteOnboardingCommand { get; }
@@ -1155,8 +1158,32 @@ namespace GameSaveCenter.Playnite.ViewModels
                 Replace(ProcessMappings,mappings, SnapshotComparers.ProcessMapping);
                 if(ProcessMappingTargetGame==null) ProcessMappingTargetGame=SelectedGame??Games.FirstOrDefault();
             });
+            if (settings.SafeModeRequested && !safeModePromptShown)
+            {
+                safeModePromptShown = true;
+                var useSafe = await plugin.ConfirmAsync(
+                    "安全模式",
+                    "GameSaveCenter 最近连续启动失败。是否使用安全模式打开？",
+                    "使用安全模式",
+                    "暂不");
+                plugin.Settings.SafeModeEnabled = useSafe;
+                plugin.Settings.SafeModeRequested = false;
+                plugin.SavePluginSettings(plugin.Settings);
+                await plugin.RequestAsync<object>(MessageTypes.UpdateSettings, plugin.Settings.ToWorkerSettings());
+                await LoadDiagnosticsAsync();
+            }
             if (IsOnboardingPending && !environmentCheckLoaded)
                 await RunEnvironmentCheckAsync();
+        }
+
+        private async Task ExitSafeModeAsync()
+        {
+            plugin.Settings.SafeModeEnabled = false;
+            plugin.Settings.SafeModeRequested = false;
+            plugin.SavePluginSettings(plugin.Settings);
+            await plugin.RequestAsync<object>(MessageTypes.UpdateSettings, plugin.Settings.ToWorkerSettings());
+            await LoadDiagnosticsAsync();
+            StatusMessage = "已恢复正常模式";
         }
 
         private async Task RunEnvironmentCheckAsync()
@@ -1283,11 +1310,33 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             var result = await plugin.RequestAsync<DiagnosticsPackageResultDto>(
                 MessageTypes.CreateDiagnosticsPackage,
-                new CreateDiagnosticsPackageRequestDto(),
+                new CreateDiagnosticsPackageRequestDto
+                {
+                    PluginVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "dev",
+                    PlayniteVersion = plugin.PlayniteApi.GetType().Assembly.GetName().Version?.ToString() ?? "unknown",
+                    ThemeMode = plugin.Settings.ThemeMode.ToString(),
+                    CurrentWorkspace = CurrentWorkspace.ToString(),
+                    DpiScale = TryGetDpiScale(),
+                    ScreenCount = 1
+                },
                 TimeSpan.FromMinutes(3));
             StatusMessage = result.Summary;
             plugin.ShowInfo($"诊断包已生成：{Path.GetFileName(result.PackagePath)}");
             OpenPath(result.PackagePath);
+        }
+
+        private static double TryGetDpiScale()
+        {
+            try
+            {
+                var width = SystemParameters.PrimaryScreenWidth;
+                var work = SystemParameters.WorkArea.Width;
+                return work > 0 ? Math.Round(width / work, 2) : 1;
+            }
+            catch
+            {
+                return 1;
+            }
         }
 
         private async Task SyncDeviceStatesAsync()
@@ -2423,7 +2472,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 AddMediaSourceCommand, AcceptCandidateCommand, RejectCandidateCommand, ReassignMediaCommand,
                 UpdateMediaMetadataCommand,OpenSelectedMediaCommand,RevealSelectedMediaCommand,
                 AssignInboxMediaCommand, IgnoreInboxMediaCommand,
-                CancelTaskCommand, RetryTaskCommand, CopyTaskErrorCommand, RefreshDiagnosticsCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand,
+                CancelTaskCommand, RetryTaskCommand, CopyTaskErrorCommand, RefreshDiagnosticsCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
                 StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,CreateMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,
                 SaveProcessMappingCommand,DeleteProcessMappingCommand,RunEnvironmentCheckCommand,SkipOnboardingCommand,CompleteOnboardingCommand,OnboardingTestBackupCommand,
                 OpenDataDirectoryCommand, OpenBackupDirectoryCommand, OpenMediaDirectoryCommand, OpenWorkerLogCommand

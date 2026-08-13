@@ -109,6 +109,22 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("若当前没有可用于测试的已识别存档游戏", maintenance);
         }
 
+        [Fact]
+        public void SafeModeNextStartRequestAndRecoveryButtonAreExposed()
+        {
+            var root = FindRepositoryRoot();
+            var settings = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml"));
+            var maintenance = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+            var viewModel = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
+
+            Assert.Contains("SafeModeRequested", settings);
+            Assert.Contains("下次以安全模式启动", settings);
+            Assert.Contains("ExitSafeModeCommand", maintenance);
+            Assert.Contains("ExitSafeModeCommand = new RelayCommand(_ => Run(ExitSafeModeAsync)", viewModel);
+            Assert.Contains("SafeModeRequested && !safeModePromptShown", viewModel);
+            Assert.Contains("连续启动失败", viewModel);
+        }
+
         private static string FindRepositoryRoot()
         {
             var directory = new DirectoryInfo(AppContext.BaseDirectory);

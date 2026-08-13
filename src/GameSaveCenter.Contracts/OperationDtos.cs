@@ -312,6 +312,7 @@ namespace GameSaveCenter.Contracts
     {
         public string DataDirectory { get; set; } = string.Empty;
         public bool SafeModeEnabled { get; set; }
+        public bool SafeModeRequested { get; set; }
         public string LudusaviExecutable { get; set; } = string.Empty;
         public string LudusaviBackupDirectory { get; set; } = string.Empty;
         public string RcloneExecutable { get; set; } = string.Empty;
@@ -368,6 +369,7 @@ namespace GameSaveCenter.Contracts
         /// <summary>Stable opaque identity for this GameSaveCenter installation. The machine name is display-only.</summary>
         public string DeviceId { get; set; } = string.Empty;
         public bool SafeModeEnabled { get; set; }
+        public bool SafeModeRequested { get; set; }
         public string LudusaviExecutable { get; set; } = string.Empty;
         public string LudusaviBackupDirectory { get; set; } = string.Empty;
         public string RcloneExecutable { get; set; } = string.Empty;

@@ -62,6 +62,7 @@ namespace GameSaveCenter.Playnite.Settings
         public bool EnableTaskNotifications { get; set; } = true;
         public NotificationLevel NotificationLevel { get; set; } = NotificationLevel.Summary;
         public bool SafeModeEnabled { get; set; }
+        public bool SafeModeRequested { get; set; }
         public GameSaveCenterThemeMode ThemeMode { get; set; } = GameSaveCenterThemeMode.FollowPlaynite;
         public bool EnableUiAnimations { get; set; } = true;
         public bool EnableGlassEffects { get; set; } = true;
@@ -168,6 +169,7 @@ namespace GameSaveCenter.Playnite.Settings
         {
             DeviceId = DeviceId,
             SafeModeEnabled = SafeModeEnabled,
+            SafeModeRequested = SafeModeRequested,
             LudusaviExecutable = Expand(LudusaviExecutable),
             LudusaviBackupDirectory = Expand(LudusaviBackupDirectory),
             RcloneExecutable = Expand(RcloneExecutable),
@@ -259,6 +261,7 @@ namespace GameSaveCenter.Playnite.Settings
                 ? other.NotificationLevel
                 : NotificationLevel.Summary;
             SafeModeEnabled = other.SafeModeEnabled;
+            SafeModeRequested = other.SafeModeRequested;
             ThemeMode = other.ThemeMode;
             EnableUiAnimations = other.EnableUiAnimations;
             EnableGlassEffects = other.EnableGlassEffects;

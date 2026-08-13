@@ -1865,7 +1865,7 @@ public sealed class WpfUiResourceDictionaryTests
             .Select(element => element.Attribute("Command")?.Value)
             .ToArray();
 
-        Assert.Equal(12, commands.Length);
+        Assert.Equal(13, commands.Length);
         Assert.Contains("{Binding RefreshDiagnosticsCommand}", commands);
         Assert.Contains("{Binding CopyDiagnosticsCommand}", commands);
         Assert.Contains("{Binding CreateDiagnosticsPackageCommand}", commands);
@@ -1878,6 +1878,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("{Binding RebuildRepositoryCommand}", commands);
         Assert.Contains("{Binding RunPathRemapCommand}", commands);
         Assert.Contains("{Binding ReconcileTasksCommand}", commands);
+        Assert.Contains("{Binding ExitSafeModeCommand}", commands);
         Assert.Equal(10, actionRow.Descendants().Count(element => element.Name.LocalName == "Button"));
     }
 

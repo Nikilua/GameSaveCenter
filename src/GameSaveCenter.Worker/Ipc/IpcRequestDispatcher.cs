@@ -503,6 +503,7 @@ public sealed class IpcRequestDispatcher
     {
         DataDirectory=_options.DataDirectory,
         SafeModeEnabled=_options.SafeModeEnabled,
+        SafeModeRequested=_options.SafeModeRequested,
         LudusaviExecutable=_options.LudusaviExecutable,
         LudusaviBackupDirectory=_options.LudusaviBackupDirectory,
         RcloneExecutable=_options.RcloneExecutable,

@@ -18,6 +18,7 @@ public sealed class WorkerOptions
     public string DataDirectory { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "GameSaveCenter");
     public string DeviceId { get; set; } = Guid.NewGuid().ToString("N");
     public bool SafeModeEnabled { get; set; }
+    public bool SafeModeRequested { get; set; }
     public string LudusaviExecutable { get; set; } = string.Empty;
     public string LudusaviBackupDirectory { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "GameSaveCenter", "Saves");
     public string RcloneExecutable { get; set; } = string.Empty;
@@ -47,6 +48,7 @@ public sealed class WorkerOptions
     public string DownloadDirectory => Path.Combine(DataDirectory, "Downloads");
     public string RemoteBackupStagingDirectory => Path.Combine(DataDirectory, "RemoteBackups");
     public string RuntimeSettingsPath => Path.Combine(DataDirectory, "worker-settings.json");
+    public string StartupFailureCountPath => Path.Combine(DataDirectory, "startup-failure-count");
 
     public static WorkerOptions Load(IConfiguration configuration)
     {
@@ -60,6 +62,7 @@ public sealed class WorkerOptions
     {
         if (IsValidDeviceId(settings.DeviceId)) DeviceId = settings.DeviceId.ToLowerInvariant();
         SafeModeEnabled = settings.SafeModeEnabled;
+        SafeModeRequested = settings.SafeModeRequested;
         LudusaviExecutable = Expand(settings.LudusaviExecutable);
         LudusaviBackupDirectory = Expand(settings.LudusaviBackupDirectory);
         RcloneExecutable = Expand(settings.RcloneExecutable);
@@ -89,6 +92,7 @@ public sealed class WorkerOptions
     {
         DeviceId = DeviceId,
         SafeModeEnabled = SafeModeEnabled,
+        SafeModeRequested = SafeModeRequested,
         LudusaviExecutable = LudusaviExecutable,
         LudusaviBackupDirectory = LudusaviBackupDirectory,
         RcloneExecutable = RcloneExecutable,
@@ -111,6 +115,25 @@ public sealed class WorkerOptions
         FullBackupLimit = FullBackupLimit,
         DifferentialBackupLimit = DifferentialBackupLimit
     };
+
+    public void RecordStartupFailure()
+    {
+        var count = 0;
+        if (File.Exists(StartupFailureCountPath) && int.TryParse(File.ReadAllText(StartupFailureCountPath), out var parsed))
+            count = parsed;
+        count = Math.Min(10, count + 1);
+        AtomicFileWriter.WriteAllText(StartupFailureCountPath, count.ToString(System.Globalization.CultureInfo.InvariantCulture));
+        if (count >= 3)
+        {
+            SafeModeRequested = true;
+            Persist();
+        }
+    }
+
+    public void RecordStartupSuccess()
+    {
+        try { if (File.Exists(StartupFailureCountPath)) File.Delete(StartupFailureCountPath); } catch { }
+    }
 
     private void Normalize()
     {

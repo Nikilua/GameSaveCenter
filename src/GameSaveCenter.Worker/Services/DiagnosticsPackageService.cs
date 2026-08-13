@@ -1,24 +1,25 @@
+using System.Diagnostics;
 using System.IO.Compression;
 using System.Text;
-using System.Text.RegularExpressions;
+using System.Text.Json;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Worker.Configuration;
+using GameSaveCenter.Worker.Infrastructure;
 using GameSaveCenter.Worker.Persistence;
 using Microsoft.Extensions.Logging;
 
 namespace GameSaveCenter.Worker.Services;
 
 /// <summary>
-/// Creates a bounded, read-only support package. It deliberately excludes save/media
-/// archives, database files, credentials and full configuration files.
+/// Creates a bounded, read-only support package with structured system, worker,
+/// dependency, database, task, health and sanitized settings files plus bounded logs.
+/// Every string that leaves this service passes through <see cref="DiagnosticRedactor"/>.
 /// </summary>
 public sealed class DiagnosticsPackageService
 {
     private const int MaxLogBytes = 256 * 1024;
     private const int MaxTotalBytes = 2 * 1024 * 1024;
-    private static readonly Regex SecretPattern = new(
-        @"(?i)(password|passwd|token|secret|api[_-]?key|access[_-]?token)[""']?\s*([=:])\s*[""']?([^""'\s,;}]+)",
-        RegexOptions.Compiled | RegexOptions.CultureInvariant);
+    private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web) { WriteIndented = true };
     private readonly WorkerOptions _options;
     private readonly SqliteStateStore _store;
     private readonly ILogger<DiagnosticsPackageService> _logger;
@@ -35,6 +36,11 @@ public sealed class DiagnosticsPackageService
         var createdUtc = DateTime.UtcNow;
         var audit = await _store.GetAuditAsync(Math.Clamp(request?.AuditLimit ?? 300, 1, 300), token).ConfigureAwait(false);
         var tasks = await _store.GetRecentTasksAsync(Math.Clamp(request?.TaskLimit ?? 200, 1, 200), token).ConfigureAwait(false);
+        var findings = await _store.GetOpenFindingsAsync(100, token).ConfigureAwait(false);
+        var counts = await _store.GetCountsAsync(token).ConfigureAwait(false);
+        var healthCounts = await _store.GetHealthStateCountsAsync(token).ConfigureAwait(false);
+        var dbProbe = await ProbeDatabaseAsync(token).ConfigureAwait(false);
+
         var packageDirectory = Path.Combine(_options.DataDirectory, "Diagnostics");
         Directory.CreateDirectory(packageDirectory);
         var stem = "gsc-diagnostics-" + createdUtc.ToString("yyyyMMdd-HHmmss") + "-" + Guid.NewGuid().ToString("N");
@@ -46,8 +52,13 @@ public sealed class DiagnosticsPackageService
             using (var archive = ZipFile.Open(temporaryPath, ZipArchiveMode.Create))
             {
                 included += AddText(archive, "README.txt", BuildReadme(createdUtc));
-                included += AddText(archive, "environment.txt", BuildEnvironmentSummary(createdUtc));
-                included += AddText(archive, "tasks.txt", BuildTasks(tasks));
+                included += AddText(archive, "system.json", JsonSerializer.Serialize(BuildSystem(request, createdUtc), JsonOptions));
+                included += AddText(archive, "worker.json", JsonSerializer.Serialize(BuildWorker(createdUtc), JsonOptions));
+                included += AddText(archive, "dependencies.json", JsonSerializer.Serialize(BuildDependencies(), JsonOptions));
+                included += AddText(archive, "database.json", JsonSerializer.Serialize(BuildDatabase(dbProbe), JsonOptions));
+                included += AddText(archive, "recent-tasks.json", JsonSerializer.Serialize(BuildTasks(tasks), JsonOptions));
+                included += AddText(archive, "health.json", JsonSerializer.Serialize(BuildHealth(counts, healthCounts, findings), JsonOptions));
+                included += AddText(archive, "settings.json", JsonSerializer.Serialize(_options.ToDto(), JsonOptions));
                 included += AddText(archive, "audit.txt", BuildAudit(audit));
                 included += AddTailLogs(archive);
             }
@@ -64,11 +75,10 @@ public sealed class DiagnosticsPackageService
                 IncludedFileCount = included,
                 Summary = $"已生成诊断包，包含 {included} 个脱敏诊断文件；未包含存档、媒体或凭据。"
             };
-            await _store.AppendAuditAsync("Diagnostics", "已生成脱敏诊断包", System.Text.Json.JsonSerializer.Serialize(new
+            await _store.AppendAuditAsync("Diagnostics", "已生成脱敏诊断包", JsonSerializer.Serialize(new
             {
                 result.IncludedFileCount,
                 result.PackageBytes,
-                // Do not put the absolute package path in the audit record.
                 fileName = Path.GetFileName(packagePath)
             }), token).ConfigureAwait(false);
             return result;
@@ -84,40 +94,95 @@ public sealed class DiagnosticsPackageService
     private string BuildReadme(DateTime createdUtc) =>
         "GameSaveCenter 诊断包\n"
         + "生成时间（UTC）：" + createdUtc.ToString("O") + "\n"
-        + "\n此包仅包含有限的运行摘要、任务、审计和日志尾部。\n"
+        + "\n此包仅包含有限的运行摘要、结构化状态、任务、审计和日志尾部。\n"
         + "未包含真实存档、媒体文件、SQLite 数据库、Rclone 配置或凭据。\n";
 
-    private string BuildEnvironmentSummary(DateTime createdUtc)
+    private static object BuildSystem(CreateDiagnosticsPackageRequestDto? request, DateTime createdUtc) => new
     {
-        var builder = new StringBuilder();
-        builder.AppendLine("GameSaveCenter 环境摘要");
-        builder.AppendLine("生成时间（UTC）：" + createdUtc.ToString("O"));
-        builder.AppendLine("Worker 版本：" + (typeof(DiagnosticsPackageService).Assembly.GetName().Version?.ToString() ?? "dev"));
-        builder.AppendLine("系统：" + Environment.OSVersion);
-        builder.AppendLine("64 位进程：" + Environment.Is64BitProcess);
-        builder.AppendLine("数据目录已配置：" + (!string.IsNullOrWhiteSpace(_options.DataDirectory)));
-        builder.AppendLine("存档目录已配置：" + (!string.IsNullOrWhiteSpace(_options.LudusaviBackupDirectory)));
-        builder.AppendLine("媒体目录已配置：" + (!string.IsNullOrWhiteSpace(_options.MediaArchiveDirectory)));
-        builder.AppendLine("Ludusavi 已配置：" + (!string.IsNullOrWhiteSpace(_options.LudusaviExecutable)));
-        builder.AppendLine("Rclone 已配置：" + (!string.IsNullOrWhiteSpace(_options.RcloneExecutable) && !string.IsNullOrWhiteSpace(_options.RcloneDestination)));
-        builder.AppendLine("设备身份：已省略");
-        return builder.ToString();
+        createdUtc,
+        pluginVersion = request?.PluginVersion ?? string.Empty,
+        playniteVersion = request?.PlayniteVersion ?? string.Empty,
+        workerVersion = typeof(DiagnosticsPackageService).Assembly.GetName().Version?.ToString() ?? "dev",
+        windowsVersion = Environment.OSVersion.ToString(),
+        dotNetRuntime = Environment.Version.ToString(),
+        machineArchitecture = Environment.Is64BitProcess ? "x64" : "x86",
+        dpiScale = request?.DpiScale ?? 1,
+        screenCount = request?.ScreenCount ?? 1,
+        theme = request?.ThemeMode ?? string.Empty,
+        currentWorkspace = request?.CurrentWorkspace ?? string.Empty
+    };
+
+    private static object BuildWorker(DateTime createdUtc)
+    {
+        using var process = Process.GetCurrentProcess();
+        return new
+        {
+            running = true,
+            pid = process.Id,
+            startTimeUtc = process.StartTime.ToUniversalTime().ToString("O"),
+            uptimeSeconds = Math.Max(0, (long)(createdUtc - process.StartTime.ToUniversalTime()).TotalSeconds),
+            ipcProtocol = GameSaveCenter.Contracts.ProtocolConstants.ProtocolVersion,
+            ipcState = "Ready",
+            lastHealthProbe = "见 worker-launch.log"
+        };
     }
 
-    private static string BuildTasks(IEnumerable<TaskStatusDto> tasks)
+    private object BuildDependencies() => new
     {
-        var builder = new StringBuilder("最近任务（最多 200 条）\n");
-        foreach (var task in tasks)
+        ludusaviConfigured = !string.IsNullOrWhiteSpace(_options.LudusaviExecutable),
+        ludusaviPath = DiagnosticRedactor.Redact(_options.LudusaviExecutable),
+        ludusaviVersion = "未探测",
+        rcloneConfigured = !string.IsNullOrWhiteSpace(_options.RcloneExecutable) && !string.IsNullOrWhiteSpace(_options.RcloneDestination),
+        rclonePath = DiagnosticRedactor.Redact(_options.RcloneExecutable),
+        rcloneVersion = "未探测",
+        rcloneDestination = DiagnosticRedactor.Redact(_options.RcloneDestination),
+        workerAvailable = true
+    };
+
+    private object BuildDatabase(string dbProbe) => new
+    {
+        schemaVersion = "current",
+        databasePath = DiagnosticRedactor.Redact(_options.DatabasePath),
+        databaseSizeBytes = File.Exists(_options.DatabasePath) ? new FileInfo(_options.DatabasePath).Length : 0,
+        lastMigration = "由 DatabaseMigrationHarness 验证",
+        integrityProbe = dbProbe
+    };
+
+    private static object BuildTasks(IEnumerable<TaskStatusDto> tasks) => tasks.Select(task => new
+    {
+        task.TaskId,
+        task.TaskType,
+        task.GameId,
+        task.State,
+        durationSeconds = task.StartedUtc.HasValue && task.FinishedUtc.HasValue
+            ? Math.Max(0, (task.FinishedUtc.Value - task.StartedUtc.Value).TotalSeconds)
+            : (double?)null,
+        task.ErrorCode,
+        errorMessage = DiagnosticRedactor.Redact(task.ErrorMessage)
+    });
+
+    private static object BuildHealth(
+        (int Games, int Matched, int Media, int Unassigned) counts,
+        IReadOnlyDictionary<string,int> healthCounts,
+        IReadOnlyList<ValidationFindingDto> findings) => new
+    {
+        totalGames = counts.Games,
+        matchedGames = counts.Matched,
+        mediaCount = counts.Media,
+        unassignedMedia = counts.Unassigned,
+        healthStateCounts = healthCounts,
+        attentionGames = healthCounts.TryGetValue("Attention", out var attention) ? attention : 0,
+        riskGames = healthCounts.TryGetValue("Risk", out var risk) ? risk : 0,
+        recentFindings = findings.Select(finding => new
         {
-            builder.Append(task.CreatedLocal.ToString("O")).Append(" | ")
-                .Append(Sanitize(task.TaskType)).Append(" | ")
-                .Append(Sanitize(task.GameName)).Append(" | ")
-                .Append(task.State).Append(" | ")
-                .Append(Sanitize(task.ErrorCode)).Append(" | ")
-                .AppendLine(Sanitize(task.DetailMessage));
-        }
-        return builder.ToString();
-    }
+            finding.PlayniteId,
+            finding.Severity,
+            finding.Code,
+            title = DiagnosticRedactor.Redact(finding.Title),
+            detail = DiagnosticRedactor.Redact(finding.Detail),
+            finding.SuggestedAction
+        })
+    };
 
     private static string BuildAudit(IEnumerable<AuditLogEntryDto> entries)
     {
@@ -125,9 +190,9 @@ public sealed class DiagnosticsPackageService
         foreach (var entry in entries)
         {
             builder.Append(entry.CreatedLocal.ToString("O")).Append(" | ")
-                .Append(Sanitize(entry.Category)).Append(" | ")
-                .Append(Sanitize(entry.Message)).Append(" | ")
-                .AppendLine(Sanitize(entry.DetailJson));
+                .Append(DiagnosticRedactor.Redact(entry.Category)).Append(" | ")
+                .Append(DiagnosticRedactor.Redact(entry.Message)).Append(" | ")
+                .AppendLine(DiagnosticRedactor.Redact(entry.DetailJson));
         }
         return builder.ToString();
     }
@@ -155,8 +220,22 @@ public sealed class DiagnosticsPackageService
     {
         var entry = archive.CreateEntry(name, CompressionLevel.Fastest);
         using var writer = new StreamWriter(entry.Open(), new UTF8Encoding(false));
-        writer.Write(Sanitize(content));
+        writer.Write(DiagnosticRedactor.Redact(content));
         return 1;
+    }
+
+    private async Task<string> ProbeDatabaseAsync(CancellationToken token)
+    {
+        try
+        {
+            await _store.ProbeReadWriteAsync(token).ConfigureAwait(false);
+            return "ok";
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Diagnostics database probe failed");
+            return "failed: " + ex.GetType().Name;
+        }
     }
 
     private static string ReadTail(string path, int maxBytes)
@@ -181,8 +260,6 @@ public sealed class DiagnosticsPackageService
             return "无法读取日志尾部：" + ex.GetType().Name;
         }
     }
-
-    private static string Sanitize(string? value) => SecretPattern.Replace(value ?? string.Empty, "$1$2[REDACTED]");
 
     private static void TryDelete(string path)
     {

@@ -137,7 +137,7 @@
                                         </Style.Triggers>
                                     </Style>
                                 </Border.Style>
-                                <TextBlock Text="安全模式已开启：自动备份、自动媒体同步、云端上传和工具自动启动已暂停；手动操作仍可用。" Foreground="{DynamicResource GscWarningBrush}" TextWrapping="Wrap"/>
+                                <StackPanel Orientation="Horizontal"><TextBlock Text="安全模式已开启：自动备份、自动媒体同步、云端上传和工具自动启动已暂停；手动操作仍可用。" Foreground="{DynamicResource GscWarningBrush}" TextWrapping="Wrap" VerticalAlignment="Center"/><ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding ExitSafeModeCommand}" Content="恢复正常模式" Margin="12,0,0,0"/></StackPanel>
                             </Border>
                             <Border Grid.Row="3" Grid.ColumnSpan="2" Style="{DynamicResource GscRedesignInfoBand}" Padding="12" Margin="0,14,0,0">
                                 <TextBlock Text="{Binding IntegritySummary, TargetNullValue=尚未运行完整性自检。}" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap"/>

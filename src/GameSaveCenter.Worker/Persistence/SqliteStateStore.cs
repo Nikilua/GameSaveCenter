@@ -951,6 +951,18 @@ last_prompt_utc=CASE WHEN $prompt IS NULL THEN last_prompt_utc ELSE $prompt END,
         return (await Scalar("SELECT COUNT(*) FROM games;"),await Scalar("SELECT COUNT(*) FROM games WHERE COALESCE(ludusavi_name,'')<>'';"),await Scalar("SELECT COUNT(*) FROM media WHERE classification_state='Assigned';"),await Scalar("SELECT COUNT(*) FROM media WHERE classification_state='Inbox';"));
     }
 
+    public async Task<Dictionary<string,int>> GetHealthStateCountsAsync(CancellationToken token)
+    {
+        await using var connection=Open(); await connection.OpenAsync(token).ConfigureAwait(false);
+        var command=connection.CreateCommand();
+        command.CommandText="SELECT health_state,COUNT(*) FROM games GROUP BY health_state;";
+        var counts=new Dictionary<string,int>(StringComparer.OrdinalIgnoreCase);
+        await using var reader=await command.ExecuteReaderAsync(token).ConfigureAwait(false);
+        while(await reader.ReadAsync(token).ConfigureAwait(false))
+            counts[reader.GetString(0)]=reader.GetInt32(1);
+        return counts;
+    }
+
     /// <summary>Runs a temporary-table round trip to verify the configured database is writable.</summary>
     public async Task ProbeReadWriteAsync(CancellationToken token)
     {
