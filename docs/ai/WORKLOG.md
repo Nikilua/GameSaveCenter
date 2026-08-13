@@ -2,6 +2,18 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 REPOSITORY-REBUILD-001 备份索引重建预览与确认
+
+- Task ID：`REPOSITORY-REBUILD-001`。
+- 实现内容：备份索引重建拆成“只读扫描预览 → 用户确认 → 写库”三个阶段。`repository.rebuild.preview` 扫描存档目录 ZIP，统计已确认归属/未归属/元数据部分缺失/损坏归档并返回摘要；`repository.rebuild` 现在要求 `Confirmed=true`，未确认返回 `REPOSITORY_REBUILD_NOT_CONFIRMED`。
+- UI：维护中心“重建备份索引”先调用预览并显示摘要，再弹出确认框，确认后才执行真实重建；失败游戏仍保留原索引，重复重建不会产生额外版本（沿用既有幂等刷新路径）。
+- 主要修改文件：`RepositoryRebuildService.cs`、`RepositoryRebuildDtos.cs`、`MessageTypes.cs`、`IpcRequestDispatcher.cs`、`DashboardViewModel.cs`、`RepositoryRebuildServiceTests.cs`。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `54/54`、Worker `157/157`、Playnite `217/217`；`validate-source.py` 与 XAML 结构门禁通过（本阶段无 XAML 改动，不重跑 render-qa）。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 00:23 记录插件加载，`worker-launch.log` 00:23:37 记录 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实 Ludusavi 备份目录下预览后执行重建，并核对版本数量和归档路径。
+- Commit：`dff0cf4`。
+- 下一项：继续 Layer B，从 `PATH-REMAP-001` 批量路径迁移预览/目标缺失处理补齐开始。
+
 ## 2026-08-14 METADATA-BACKUP-001 元数据灾备恢复流程
 
 - Task ID：`METADATA-BACKUP-001`。
