@@ -953,3 +953,37 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 **下一步：**
 
 - 按用户附件继续 `RELIABILITY-HEALTH-001`：建立按游戏的备份健康摘要，复用当前历史版本与诊断数据，不新增重复页面。
+# 2026-08-13 可靠性闭环最终验收与缺口修复
+
+**Task IDs：** RELIABILITY-RESTORE-001、HEALTH-001、PROTECTION-001、POLICY-001、ONBOARDING-001、GAME-TOOL-003/004、SMART-PROTECT-001/002、BACKUP-DIFF-001、BACKUP-GUARD-001、NOTIFY-001、MULTI-DEVICE-001、RCLONE-RELIABILITY-001
+
+**实现与修复：**
+
+- 恢复编排在部分写入、写后异常和 post-validation 失败时都恢复锁定 PreRestore；回滚失败输出稳定错误并进入人工介入状态。灾难演练增至 10 个临时目录用例。
+- 多设备从机器名迁移到稳定不透明 DeviceId；保留旧 sidecar/旧决策兼容，便携设置不会复制设备身份，旧设置首次加载会生成并保存新身份。
+- 备份异常保护加入 Off/Normal/Strict，重要游戏模板默认为 Strict；持久化 Manifest 的大量文件删除参与保护判定。
+- GameTool 将已有实例决策抽成纯策略并补真实测试自有 EXE 演练；反作弊自动启动分类独立可测。
+- Rclone 增加执行级白名单，完整命令行不再进入日志；补中断任务、取消子进程和禁止危险命令测试。
+- 补健康云开关/异常、A3/B3 分叉、三种人工冲突决策、设置设备身份迁移等验收测试。
+- 新增 `docs/ai/RELIABILITY_CLOSURE_AUDIT.md`，逐项列出 AUTO VERIFIED 与 MANUAL QA REQUIRED。
+
+**核心设计选择：**
+
+- 不新增第 15 项功能，不重写 Worker/恢复/GameTool；所有修补沿用现有 DTO、SQLite、Task Center 和恢复链。
+- 云端目录身份与展示机器名分离；用户可迁移显示名，但同一安装保持稳定 ID。
+- 异常备份允许保存，Retention 保护用户 Lock、PreRestore 和已验证健康点；仍不自动执行删除。
+- UI 只在既有 Save Center 策略区加入共享样式 ComboBox，并保留 Automation 名称、键盘访问与响应式滚动结构。
+
+**自动验证：**
+
+- Core 42/42、Worker 117/117、Playnite 203/203。
+- Release build 0 warnings / 0 errors；source、XAML、diff、WPF render-qa 全通过。
+- 一键脚本普通权限完成构建、测试、打包、安装、版本校验并启动 Playnite；宿主日志确认 0.6.70 加载，Worker 运行并完成 IPC。
+
+**MANUAL QA REQUIRED：**
+
+真实游戏 Restore/Undo、真实 Rclone 断网/凭据/部分上传、真实两台设备、真实启动项、1000+ 游戏库、完整主题/DPI/键盘/连续缩放。详见最终审计文档。
+
+**提交：** `dd39229`（可靠性安全缺口）；本审计文档提交见紧随其后的 docs commit。
+
+**下一项：** 本轮无第 15 项；只接受人工 QA 反馈或明确的新任务。
