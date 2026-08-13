@@ -41,4 +41,51 @@ public sealed class TaskEventBroadcasterTests
         broadcaster.Publish(new TaskChangeEventDto { Sequence = 1, Task = new TaskStatusDto { TaskId = "still-active" } });
         Assert.Equal("still-active", (await active.Reader.ReadAsync()).Task.TaskId);
     }
+
+    [Fact]
+    public void RepeatedSubscribeDisposeLeavesNoSubscriberResidue()
+    {
+        var broadcaster = new TaskEventBroadcaster();
+        for (var i = 0; i < 200; i++)
+        {
+            using (var subscription = broadcaster.Subscribe())
+            {
+                Assert.Equal(1, broadcaster.SubscriberCount);
+                broadcaster.Publish(new TaskChangeEventDto
+                {
+                    Sequence = i,
+                    Task = new TaskStatusDto { TaskId = $"subscriber-{i}" }
+                });
+            }
+
+            Assert.Equal(0, broadcaster.SubscriberCount);
+        }
+    }
+
+    [Fact]
+    public void SlowSubscriberSeesOnlyBoundedDropOldestWindow()
+    {
+        var broadcaster = new TaskEventBroadcaster();
+        List<TaskChangeEventDto> received;
+        using (var subscription = broadcaster.Subscribe())
+        {
+            for (var i = 0; i < 200; i++)
+            {
+                broadcaster.Publish(new TaskChangeEventDto
+                {
+                    Sequence = i,
+                    Task = new TaskStatusDto { TaskId = $"event-{i}" }
+                });
+            }
+
+            received = new List<TaskChangeEventDto>();
+            while (subscription.Reader.TryRead(out var change))
+                received.Add(change);
+        }
+
+        Assert.Equal(128, received.Count);
+        Assert.Equal(72, received[0].Sequence);
+        Assert.Equal(199, received[^1].Sequence);
+        Assert.Equal(0, broadcaster.SubscriberCount);
+    }
 }

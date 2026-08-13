@@ -22,4 +22,17 @@ public sealed class GameOperationLockTests
         Assert.NotNull(afterRelease);
         afterRelease!.Dispose();
     }
+
+    [Fact]
+    public async Task RepeatedDistinctGameAcquisitionsStayBounded()
+    {
+        var lockService = new GameOperationLock();
+        for (var i = 0; i < 1000; i++)
+        {
+            using var lease = await lockService.AcquireAsync($"game-{i % 16}", TimeSpan.FromMilliseconds(500), CancellationToken.None);
+            Assert.NotNull(lease);
+        }
+
+        Assert.Equal(16, lockService.TrackedGameCount);
+    }
 }

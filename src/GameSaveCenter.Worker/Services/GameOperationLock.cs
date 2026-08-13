@@ -10,6 +10,9 @@ public sealed class GameOperationLock
 {
     private readonly ConcurrentDictionary<string, SemaphoreSlim> _locks = new(StringComparer.OrdinalIgnoreCase);
 
+    /// <summary>Number of distinct games currently tracked by the lock table.</summary>
+    public int TrackedGameCount => _locks.Count;
+
     public async Task<GameOperationLease?> AcquireAsync(string playniteId, TimeSpan timeout, CancellationToken token)
     {
         if (string.IsNullOrWhiteSpace(playniteId)) return null;

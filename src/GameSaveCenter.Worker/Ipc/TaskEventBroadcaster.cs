@@ -16,6 +16,9 @@ public sealed class TaskEventBroadcaster
     private const int PerSubscriberCapacity = 128;
     private readonly ConcurrentDictionary<Guid, Channel<TaskChangeEventDto>> subscribers = new();
 
+    /// <summary>Current live subscriber count, useful for stability probes and diagnostics.</summary>
+    public int SubscriberCount => subscribers.Count;
+
     public TaskEventSubscription Subscribe()
     {
         var id = Guid.NewGuid();
