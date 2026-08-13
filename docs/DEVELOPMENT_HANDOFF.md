@@ -2,12 +2,12 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
-## 2026-08-13 Layer A 收口、DIAGNOSTICS、SAFE-MODE、INTEGRITY、DB-MIGRATION、METADATA-BACKUP、REPOSITORY-REBUILD、PATH-REMAP、TASK-RECONCILE、GAME-OP-LOCK、IPC-COMPAT 与 ATOMIC-IO 当前状态
+## 2026-08-13 Layer A 收口、DIAGNOSTICS、SAFE-MODE、INTEGRITY、DB-MIGRATION、METADATA-BACKUP、REPOSITORY-REBUILD、PATH-REMAP、TASK-RECONCILE、GAME-OP-LOCK、IPC-COMPAT、ATOMIC-IO 与 SOAK 当前状态
 
-- 当前基线：Core `53/53`、Worker `136/136`、Playnite `211/211`；Release 构建 0 warnings / 0 errors；source、WPF 静态门禁和 `render-qa` 通过。
-- 已交付：多设备强内容指纹/保守分歧判断、可取消的流式 Restore Readiness、按实际目录分盘检查、重复 Manifest 防护、维护中心有上限且脱敏的诊断包导出、`ImportantOnly/Summary/Verbose` 通知级别、暂停自动备份/媒体/云端/工具启动的安全模式、SQLite/目录/索引文件全局完整性自检、旧版数据库 Fixture 升级 Harness、自身元数据灾备 ZIP、备份仓库索引重建、批量路径迁移、中断任务协调、单游戏操作锁、IPC protocol handshake，以及共享原子写入器。
+- 当前基线：Core `53/53`、Worker `140/140`、Playnite `211/211`；Release 构建 0 warnings / 0 errors；source、WPF 静态门禁和 `render-qa` 通过。
+- 已交付：多设备强内容指纹/保守分歧判断、可取消的流式 Restore Readiness、按实际目录分盘检查、重复 Manifest 防护、维护中心有上限且脱敏的诊断包导出、`ImportantOnly/Summary/Verbose` 通知级别、暂停自动备份/媒体/云端/工具启动的安全模式、SQLite/目录/索引文件全局完整性自检、旧版数据库 Fixture 升级 Harness、自身元数据灾备 ZIP、备份仓库索引重建、批量路径迁移、中断任务协调、单游戏操作锁、IPC protocol handshake、共享原子写入器，以及长时间稳定性测试 Harness。
 - 真实开发安装已通过：Playnite 扩展 `0.6.70` 加载，Worker 从当前扩展目录启动并记录 `Application started`。安装器仍默认不请求管理员权限；沙箱无法写入 Playnite 扩展目录时，需在正常用户环境或获授权外部环境运行安装器。
-- 当前阶段 commit：`cbd0cdb`、`c6bfda2`、通知级别/安全模式/完整性自检/迁移 Harness/元数据灾备/索引重建/路径迁移/任务协调/操作锁/握手提交见紧随其后的 commit；原子写入提交为 `f1eda41`。完整 38 项 Epic 尚未完成；Layer B 下一块为 `SOAK-001`。
+- 当前阶段 commit：`cbd0cdb`、`c6bfda2`、通知级别/安全模式/完整性自检/迁移 Harness/元数据灾备/索引重建/路径迁移/任务协调/操作锁/握手提交见紧随其后的 commit；原子写入提交为 `f1eda41`，稳定性测试提交为 `8132419`。完整 38 项 Epic 尚未完成；Layer B 下一块为 `FAULT-INJECTION-001`。
 - `AUTO VERIFIED` 与 `MANUAL QA REQUIRED` 必须分开记录。真实 Restore/Undo、Rclone 断网、双设备、EXE/LNK/BAT/PS1、1000+ 游戏库、主题/DPI/连续缩放仍需人工验收。
 
 ## 2026-08-13 UI-QA-REAL-006 设置分类 Tab 实际裁切修复

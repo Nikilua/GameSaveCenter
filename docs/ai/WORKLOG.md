@@ -2,6 +2,18 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-13 SOAK-001 长时间稳定性测试
+
+- Task ID：`SOAK-001`。
+- 实现内容：新增可复用 `SoakStabilityHarness` 与 `SoakStabilityTests`，以加速轮次反复压测 Worker 最容易长期退化/泄漏的表面：`TaskCoordinator` 任务持久化与变更 Feed、`TaskEventBroadcaster` 订阅/发布/释放、`GameOperationLock` 单游戏互斥、`AtomicFileWriter` 原子写与失败清理、SQLite 临时表读写探针和审计写入。新增 `scripts/soak-test.ps1` 长跑入口，可通过 `GSC_SOAK_ITERATIONS` 把默认 100 轮扩展到最多 5000 轮。
+- 核心设计选择：Harness 只使用临时数据目录，不触碰真实存档、媒体、数据库或 Worker 设置；为稳定性断言补充 `TaskEventBroadcaster.SubscriberCount` 与 `GameOperationLock.TrackedGameCount` 两个只读计数，不改任何并发行为。变更 Feed 的保留上限仍为 500 条，慢订阅者容量仍为 128 条 Drop-Oldest。
+- 主要修改文件：`tests/GameSaveCenter.Worker.Tests/Infrastructure/SoakStabilityHarness.cs`、`SoakStabilityTests.cs`、`TaskEventBroadcasterTests.cs`、`GameOperationLockTests.cs`、`TaskEventBroadcaster.cs`、`GameOperationLock.cs`、`scripts/soak-test.ps1`。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `53/53`、Worker `140/140`、Playnite `211/211`；`validate-source.py` 与 XAML 结构门禁通过（本阶段无 UI 改动，不重跑 render-qa 与 WPF 静态门禁）。`scripts/soak-test.ps1 -Iterations 60` 独立跑通，0 失败。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 22:18 记录 `Loaded plugin: GameSaveCenter, version 0.6.70`，插件日志记录 `0.6.70.0 loaded`，`worker-launch.log` 22:18:53 记录 Worker 启动、存储初始化和 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实 24/48 小时宿主持续运行、内存/句柄趋势、大游戏库与真实备份/媒体任务混跑，以及长时间挂机后任务中心/通知仍可用的观察。
+- Commit：`8132419`。
+- 下一项：继续 Layer B，从 `FAULT-INJECTION-001` 故障注入开始。
+
 ## 2026-08-13 ATOMIC-IO-001 原子写入审计与共享原子写入器
 
 - Task ID：`ATOMIC-IO-001`。
