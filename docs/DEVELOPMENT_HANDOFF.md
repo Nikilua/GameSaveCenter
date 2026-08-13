@@ -2,12 +2,12 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
-## 2026-08-13 Layer A 审计补缺与 DIAGNOSTICS-001 当前状态
+## 2026-08-13 Layer A 审计补缺、DIAGNOSTICS-001 与通知级别当前状态
 
-- 当前基线：Core `47/47`、Worker `118/118`、Playnite `210/210`；Release 构建 0 warnings / 0 errors；source、WPF 静态门禁和 `render-qa` 通过。
-- 已交付：多设备强内容指纹/保守分歧判断、可取消的流式 Restore Readiness、按实际目录分盘检查、重复 Manifest 防护，以及维护中心有上限且脱敏的诊断包导出。
+- 当前基线：Core `51/51`、Worker `118/118`、Playnite `210/210`；Release 构建 0 warnings / 0 errors；source、WPF 静态门禁和 `render-qa` 通过。
+- 已交付：多设备强内容指纹/保守分歧判断、可取消的流式 Restore Readiness、按实际目录分盘检查、重复 Manifest 防护、维护中心有上限且脱敏的诊断包导出，以及 `ImportantOnly/Summary/Verbose` 通知级别。
 - 真实开发安装已通过：Playnite 扩展 `0.6.70` 加载，Worker 从当前扩展目录启动并记录 `Application started`。安装器仍默认不请求管理员权限；沙箱无法写入 Playnite 扩展目录时，需在正常用户环境或获授权外部环境运行安装器。
-- 当前阶段 commit：`cbd0cdb`、`c6bfda2`。完整 38 项 Epic 尚未完成；Layer B/C 仍需继续，通知级别 `ImportantOnly/Summary/Verbose` 未完整实现。
+- 当前阶段 commit：`cbd0cdb`、`c6bfda2`，通知级别提交见紧随其后的 commit。完整 38 项 Epic 尚未完成；Layer B/C 仍需继续。
 - `AUTO VERIFIED` 与 `MANUAL QA REQUIRED` 必须分开记录。真实 Restore/Undo、Rclone 断网、双设备、EXE/LNK/BAT/PS1、1000+ 游戏库、主题/DPI/连续缩放仍需人工验收。
 
 ## 2026-08-13 UI-QA-REAL-006 设置分类 Tab 实际裁切修复

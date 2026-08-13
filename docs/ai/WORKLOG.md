@@ -2,6 +2,18 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-13 NOTIFY-LEVELS-001 通知级别收口
+
+- Task ID：`NOTIFY-LEVELS-001`。
+- 实现内容：补齐 `ImportantOnly/Summary/Verbose` 三级通知语义：`ImportantOnly` 仅显示失败/取消任务及警告/失败退出摘要；`Summary` 保持当前每次游戏退出只发一条聚合摘要；`Verbose` 在最终摘要之外逐条显示终态任务。设置页新增“通知级别”ComboBox，旧设置 JSON 缺字段时归一为 `Summary`。
+- 核心设计选择：把级别决策抽成 Core 纯逻辑 `NotificationLevelPolicy`，插件只消费该决策；Session 任务无论级别都继续进入统一聚合器，避免破坏一次 Session 一条摘要的去重契约。枚举值从 1 开始，避免旧 JSON 缺字段时误解析成 `ImportantOnly`。
+- 主要修改文件：`Contracts/Enums.cs`、`Core/Services/NotificationLevelPolicy.cs`、`Playnite/GameSaveCenterPlugin.cs`、`Playnite/Settings/GameSaveCenterSettings.cs`、`GameSaveCenterSettingsView.xaml`、Core 与 Playnite 测试、项目记忆与交接文档。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `51/51`、Worker `118/118`、Playnite `210/210`；`validate-source.py`、XAML 结构、WPF 静态门禁 0 errors / 33 warnings / 153 info、五种窗口 `render-qa OK`。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 记录 `Loaded plugin: GameSaveCenter, version 0.6.70`，插件日志记录 `0.6.70.0 loaded`，`worker-launch.log` 记录存储初始化与 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实游戏退出触发三种级别时的实际通知观感，以及设置页主题/DPI/连续缩放人工复核。
+- Commit：`d99b8ef`。
+- 下一项：继续 Layer B，从 `SAFE-MODE-001` 安全模式开始。
+
 ## 2026-08-13 LAYER-A-AUDIT-001 / DIAGNOSTICS-001
 
 - Task ID：`LAYER-A-AUDIT-001`、`DIAGNOSTICS-001`。
@@ -12,7 +24,7 @@
 - AUTO VERIFIED：上限/脱敏/排除敏感文件测试、指纹与恢复校验单测、源码/XAML/WPF/render-qa、真实构建/安装/启动。
 - MANUAL QA REQUIRED：真实游戏 Restore/Undo、真实 Rclone 断网与凭据失效、真实双设备、多种 EXE/LNK/BAT/PS1、1000+ 游戏库、主题/DPI/连续缩放；未把自动化结果冒充这些验收。
 - Commit：`cbd0cdb`（Layer A 审计修复）、`c6bfda2`（诊断包）。
-- 下一项：继续 Layer B/C 任务；完整 38 项 Epic 尚未完成，通知级别 `ImportantOnly/Summary/Verbose` 也未完整实现。
+- 下一项：继续 Layer B/C 任务；完整 38 项 Epic 尚未完成，通知级别随后已由 `NOTIFY-LEVELS-001` 收口。
 
 ## 2026-08-13 UI-QA-REAL-006 设置分类 Tab 实际裁切修复
 
