@@ -1865,14 +1865,15 @@ public sealed class WpfUiResourceDictionaryTests
             .Select(element => element.Attribute("Command")?.Value)
             .ToArray();
 
-        Assert.Equal(6, commands.Length);
+        Assert.Equal(7, commands.Length);
         Assert.Contains("{Binding RefreshDiagnosticsCommand}", commands);
         Assert.Contains("{Binding CopyDiagnosticsCommand}", commands);
+        Assert.Contains("{Binding CreateDiagnosticsPackageCommand}", commands);
         Assert.Contains("{Binding OpenDataDirectoryCommand}", commands);
         Assert.Contains("{Binding OpenBackupDirectoryCommand}", commands);
         Assert.Contains("{Binding OpenMediaDirectoryCommand}", commands);
         Assert.Contains("{Binding OpenWorkerLogCommand}", commands);
-        Assert.Equal(5, actionRow.Descendants().Count(element => element.Name.LocalName == "Button"));
+        Assert.Equal(6, actionRow.Descendants().Count(element => element.Name.LocalName == "Button"));
     }
 
     [Fact]

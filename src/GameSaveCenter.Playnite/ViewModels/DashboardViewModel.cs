@@ -189,6 +189,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             SaveProcessMappingCommand = new RelayCommand(_ => Run(SaveProcessMappingAsync), _ => !IsBusy && !string.IsNullOrWhiteSpace(ProcessMappingExecutable) && ProcessMappingTargetGame != null);
             DeleteProcessMappingCommand = new RelayCommand(_ => Run(DeleteProcessMappingAsync), _ => !IsBusy && SelectedProcessMapping != null);
             CopyDiagnosticsCommand = new RelayCommand(_ => RunLocal(CopyDiagnostics), _ => !string.IsNullOrWhiteSpace(DiagnosticSummary));
+            CreateDiagnosticsPackageCommand = new RelayCommand(_ => Run(CreateDiagnosticsPackageAsync), _ => !IsBusy && !string.IsNullOrWhiteSpace(EffectiveSettings.DataDirectory));
             OpenDataDirectoryCommand = new RelayCommand(_ => RunLocal(() => OpenPath(EffectiveSettings.DataDirectory)), _ => !string.IsNullOrWhiteSpace(EffectiveSettings.DataDirectory));
             OpenBackupDirectoryCommand = new RelayCommand(_ => RunLocal(() => OpenPath(EffectiveSettings.LudusaviBackupDirectory)), _ => !string.IsNullOrWhiteSpace(EffectiveSettings.LudusaviBackupDirectory));
             OpenMediaDirectoryCommand = new RelayCommand(_ => RunLocal(() => OpenPath(EffectiveSettings.MediaArchiveDirectory)), _ => !string.IsNullOrWhiteSpace(EffectiveSettings.MediaArchiveDirectory));
@@ -605,6 +606,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand SaveProcessMappingCommand { get; }
         public ICommand DeleteProcessMappingCommand { get; }
         public ICommand CopyDiagnosticsCommand { get; }
+        public ICommand CreateDiagnosticsPackageCommand { get; }
         public ICommand OpenDataDirectoryCommand { get; }
         public ICommand OpenBackupDirectoryCommand { get; }
         public ICommand OpenMediaDirectoryCommand { get; }
@@ -1172,6 +1174,17 @@ namespace GameSaveCenter.Playnite.ViewModels
             await RefreshDashboardAsync(false, false);
             await LoadDiagnosticsAsync();
             StatusMessage = "诊断信息已更新";
+        }
+
+        private async Task CreateDiagnosticsPackageAsync()
+        {
+            var result = await plugin.RequestAsync<DiagnosticsPackageResultDto>(
+                MessageTypes.CreateDiagnosticsPackage,
+                new CreateDiagnosticsPackageRequestDto(),
+                TimeSpan.FromMinutes(3));
+            StatusMessage = result.Summary;
+            plugin.ShowInfo($"诊断包已生成：{Path.GetFileName(result.PackagePath)}");
+            OpenPath(result.PackagePath);
         }
 
         private async Task SyncDeviceStatesAsync()
@@ -2306,7 +2319,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 UpdateMediaMetadataCommand,OpenSelectedMediaCommand,RevealSelectedMediaCommand,
                 AssignInboxMediaCommand, IgnoreInboxMediaCommand,
                 CancelTaskCommand, RetryTaskCommand, CopyTaskErrorCommand, RefreshDiagnosticsCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand,
-                StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,
+                StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,
                 SaveProcessMappingCommand,DeleteProcessMappingCommand,RunEnvironmentCheckCommand,SkipOnboardingCommand,CompleteOnboardingCommand,OnboardingTestBackupCommand,
                 OpenDataDirectoryCommand, OpenBackupDirectoryCommand, OpenMediaDirectoryCommand, OpenWorkerLogCommand
                 ,ImportTrainerCommand,ImportCheatTableCommand,ImportCustomLaunchItemCommand,ImportToolFolderCommand,SaveGameToolCommand,LaunchGameToolCommand,

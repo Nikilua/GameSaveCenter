@@ -116,6 +116,7 @@
                             <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiToolbarPrimaryButton}" Command="{Binding RefreshDiagnosticsCommand}" Content="刷新诊断"/>
                             <WrapPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="0,16,0,0">
                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CopyDiagnosticsCommand}" Content="复制诊断" Margin="0,0,8,8"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CreateDiagnosticsPackageCommand}" Content="导出诊断包" Margin="0,0,8,8" ToolTip="生成不包含存档、媒体和凭据的脱敏 ZIP"/>
                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenDataDirectoryCommand}" Content="打开数据目录" Margin="0,0,8,8"/>
                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenBackupDirectoryCommand}" Content="打开存档目录" Margin="0,0,8,8"/>
                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenMediaDirectoryCommand}" Content="打开媒体目录" Margin="0,0,8,8"/>

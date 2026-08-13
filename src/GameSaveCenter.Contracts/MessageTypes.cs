@@ -61,6 +61,7 @@ namespace GameSaveCenter.Contracts
         public const string UpdateSettings = "settings.update";
         public const string GetSettings = "settings.get";
         public const string CheckEnvironment = "environment.check";
+        public const string CreateDiagnosticsPackage = "diagnostics.package.create";
         public const string CancelTask = "task.cancel";
         public const string ListGameTools = "tools.list";
         public const string InspectGameToolImport = "tools.import.inspect";
