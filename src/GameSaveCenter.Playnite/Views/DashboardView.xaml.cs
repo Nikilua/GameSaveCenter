@@ -1260,6 +1260,12 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
+            if (e.Key == Key.F && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                FocusWorkspaceSearch();
+                e.Handled = true;
+                return;
+            }
             if (e.Key == Key.Escape && compactGameBrowserOpen)
             {
                 CloseGameBrowser();
@@ -1272,6 +1278,22 @@ namespace GameSaveCenter.Playnite.Views
                 e.Handled = true;
                 if (dialogShowsResult) CloseDialog(); else CompleteDialog(false);
             }
+        }
+
+        private void FocusWorkspaceSearch()
+        {
+            if (DataContext is not DashboardViewModel viewModel) return;
+            FrameworkElement? target = viewModel.CurrentWorkspace switch
+            {
+                WorkspaceKind.Trainers => TrainerWorkspaceView.FindName("TrainerSearchTextBox") as FrameworkElement,
+                WorkspaceKind.Tasks => TaskWorkspaceView.FindName("TaskSearchTextBox") as FrameworkElement,
+                WorkspaceKind.Media => MediaWorkspaceView.FindName("MediaSearchTextBox") as FrameworkElement,
+                WorkspaceKind.Maintenance => MaintenanceWorkspaceView.FindName("ProcessMappingExecutableTextBox") as FrameworkElement,
+                _ => GameSearchTextBox
+            };
+            if (target == null) target = GameSearchTextBox;
+            target.Focus();
+            if (target is TextBox textBox) textBox.SelectAll();
         }
 
         private void ShowToast(string title, string message, UiNotificationKind kind)
