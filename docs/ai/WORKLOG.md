@@ -1031,6 +1031,6 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `AUTO VERIFIED`：源码/XAML、Release 构建、Core/Worker/Playnite 测试、五种窗口尺寸渲染、开发安装、真实宿主插件日志和 Worker 启动。
 - `MANUAL QA REQUIRED`：用户实际 2K 最大化窗口的视觉确认、Settings 全页滚动、主题/DPI 切换和连续缩放；本阶段没有伪造“已完成人工点击验收”。
 
-**提交：** `0cb1593`（UI 修复、回归测试与长期记忆更新）。
+**提交：** `a2c0f8d`（UI 修复、回归测试与长期记忆更新）。本条 hash 回填由随后独立的文档提交完成。
 
 **下一项：**等待用户人工 QA 反馈；不新增本轮范围外功能。
