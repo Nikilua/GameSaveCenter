@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-13 DEV-INSTALL-006 无窗口 Playnite 残留回收
+
+- 真实复现一键安装失败：Playnite PID 48188 收到正常退出请求后 20 秒仍未退出；该进程属于当前会话、路径为已发现的 `D:\software\Playnite\Playnite.DesktopApp.exe`，且 `MainWindowHandle=0`，因此没有窗口可供 `CloseMainWindow()` 再次关闭，并非管理员权限问题。
+- 安装器继续优先正常退出；超时后仅结束当前会话、路径与本次 Playnite 候选完全一致、且已无主窗口的残留实例。路径不可读、路径不可信、跨会话或仍有主窗口时停止安装，禁止按名称广泛终止。
+- 停止操作处理 PID 在检查与终止之间自然退出的竞态，不再把已退出进程误报为失败。根目录入口同步要求 `DEV-INSTALL-006`，源码门禁锁定上述安全条件。
+- 验证：PowerShell 语法与 `scripts/validate-source.py` 通过；同一 PID 48188 场景下 `DEV-INSTALL-006` 自动识别并结束无窗口残留，随后完整 Release 构建 0 警告/0 错误，Core 42/42、Worker 117/117、Playnite 203/203，全量打包、普通用户安装和启动成功。
+- 安装 DLL 产品版本为 `0.6.70+4125a5448b1d903c1122d6ba596b8ca31597a714`，证明安装的是执行本阶段前的当前 HEAD 而非旧 `c01e9d5` 包；11:14:33 的 Playnite 日志确认插件从用户扩展目录加载，11:14:38 的 Worker 日志确认存储初始化、过期任务整理与 `Application started`，Playnite/Worker 进程持续运行。
+
 ## 2026-08-13 DEV-INSTALL-005 构建输出隔离、安装暂存隔离与批量保护确认
 
 **问题根因：**

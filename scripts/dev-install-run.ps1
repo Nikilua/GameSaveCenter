@@ -8,7 +8,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-$installerRevision = 'DEV-INSTALL-005'
+$installerRevision = 'DEV-INSTALL-006'
 
 $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 try {
@@ -131,7 +131,8 @@ function Get-ExtensionRoots {
 
 function Stop-PlayniteAndOwnedWorkerReliably {
     param(
-        [Parameter(Mandatory = $true)][string[]]$ExtensionRoots
+        [Parameter(Mandatory = $true)][string[]]$ExtensionRoots,
+        [Parameter(Mandatory = $true)][string[]]$TrustedPlayniteExecutables
     )
 
     $playniteNames = @('Playnite.DesktopApp', 'Playnite.FullscreenApp')
@@ -162,7 +163,55 @@ function Stop-PlayniteAndOwnedWorkerReliably {
 
     $runningPlaynite = @($playniteNames | ForEach-Object { Get-Process -Name $_ -ErrorAction SilentlyContinue })
     if ($runningPlaynite.Count -gt 0) {
-        throw "Playnite 仍在运行：$($runningPlaynite.ProcessName -join ', ')。安装器不会强制结束 Playnite，请先正常退出后重试。"
+        $trustedPaths = @($TrustedPlayniteExecutables |
+                Where-Object { $_ } |
+                ForEach-Object { [System.IO.Path]::GetFullPath($_) } |
+                Select-Object -Unique)
+        $currentSessionId = (Get-Process -Id $PID).SessionId
+
+        foreach ($process in $runningPlaynite) {
+            try {
+                $process.Refresh()
+                if ($process.HasExited) { continue }
+            }
+            catch {
+                if (-not (Get-Process -Id $process.Id -ErrorAction SilentlyContinue)) { continue }
+            }
+
+            $processPath = $null
+            try { $processPath = $process.Path } catch { }
+            if ([string]::IsNullOrWhiteSpace($processPath)) {
+                throw "Playnite [$($process.Id)] 正常退出超时，且无法确认可执行文件路径；为避免误杀未知进程，安装已停止。"
+            }
+
+            $fullProcessPath = [System.IO.Path]::GetFullPath($processPath)
+            if (-not ($trustedPaths | Where-Object { [string]::Equals($_, $fullProcessPath, [StringComparison]::OrdinalIgnoreCase) })) {
+                throw "Playnite [$($process.Id)] 正常退出超时，但路径不属于本次发现的 Playnite：$fullProcessPath。为避免误杀，安装已停止。"
+            }
+            if ($process.SessionId -ne $currentSessionId) {
+                throw "Playnite [$($process.Id)] 正常退出超时，但不属于当前用户会话；安装已停止。"
+            }
+            if ($process.MainWindowHandle -ne [IntPtr]::Zero) {
+                throw "Playnite [$($process.Id)] 仍有主窗口且正常退出超时。请先保存操作并手动退出 Playnite 后重试。"
+            }
+
+            try {
+                Write-Host "结束无窗口的 Playnite 残留进程：$($process.ProcessName) [$($process.Id)]" -ForegroundColor DarkYellow
+                Stop-Process -Id $process.Id -Force -ErrorAction Stop
+            }
+            catch {
+                # 进程可能在 Refresh 与 Stop-Process 之间自行退出；这不是安装失败。
+                if (Get-Process -Id $process.Id -ErrorAction SilentlyContinue) {
+                    throw "无法结束无窗口的 Playnite 残留进程 [$($process.Id)]：$($_.Exception.Message)"
+                }
+            }
+        }
+
+        Start-Sleep -Milliseconds 500
+        $remainingPlaynite = @($playniteNames | ForEach-Object { Get-Process -Name $_ -ErrorAction SilentlyContinue })
+        if ($remainingPlaynite.Count -gt 0) {
+            throw "Playnite 残留进程仍在运行：$($remainingPlaynite.Id -join ', ')。安装已停止。"
+        }
     }
 
     Write-Host 'Playnite 已退出，等待插件回收 Worker...' -ForegroundColor DarkYellow
@@ -280,7 +329,7 @@ try {
     $playniteExecutables = @(Get-PlayniteExecutableCandidates -PreferredPath $PlayniteExecutable -RunningPaths $runningPlaynitePaths)
     $extensionRoots = @(Get-ExtensionRoots -ExplicitPath $PlayniteExtensionsPath -PlayniteExecutables $playniteExecutables)
 
-    Stop-PlayniteAndOwnedWorkerReliably -ExtensionRoots $extensionRoots
+    Stop-PlayniteAndOwnedWorkerReliably -ExtensionRoots $extensionRoots -TrustedPlayniteExecutables $playniteExecutables
 
     if (-not $SkipClean) {
         Write-Host "`n==> 使用新的隔离构建目录：无需清理正在使用的标准 bin/obj" -ForegroundColor DarkCyan

@@ -10,6 +10,12 @@
 请先读取 GameSaveCenter 项目的 docs/DEVELOPMENT_HANDOFF.md，按照其中的读取顺序、不可丢失约束和验证要求恢复项目上下文。当前代码侧已收口：除非用户提供新的真实问题、日志或明确新需求，否则不要主动开启新的 UI 重构或性能优化；不要重置或覆盖已有改动，先检查 `git status`，完成后更新项目记忆与工作日志并提交 commit。
 ```
 
+## 2026-08-13 DEV-INSTALL-006：无窗口 Playnite 残留回收
+
+- 真实复现 PID 48188：Playnite 已无主窗口但进程残留，`CloseMainWindow()` 无法请求退出，旧安装器等待 20 秒后中止。这不是管理员权限问题。
+- 当前安装器仍先请求正常退出；超时后仅当进程属于当前会话、路径与本次发现的 Playnite 可执行文件完全一致且 `MainWindowHandle=0` 时，才结束该残留实例。路径不可确认、跨会话或仍有主窗口时继续拒绝强制结束；PID 自然退出竞态不再误报。
+- `DEV-INSTALL-006` 已在原失败场景完整通过：Release 0 警告/0 错误，Core 42/42、Worker 117/117、Playnite 203/203，普通用户安装并启动；当前安装 DLL 标识 `0.6.70+4125a5448b1d903c1122d6ba596b8ca31597a714`。Playnite 11:14:33 日志确认插件加载，Worker 11:14:38 日志确认初始化并启动。
+
 ## 2026-08-13 DEV-INSTALL-005：构建隔离与真实宿主验证
 
 - 用户日志中的 Contracts 编译成功；失败发生在后续测试覆盖标准 `bin\Release` 时，原因是旧 `dotnet/testhost` 或 Worker 文件锁。当前一键入口 `GameSaveCenter-Run.cmd` 对应 `DEV-INSTALL-005`，每次构建使用唯一 `artifacts\dev-build\<Configuration>\<guid>`，不清理标准输出，也不默认请求 UAC。

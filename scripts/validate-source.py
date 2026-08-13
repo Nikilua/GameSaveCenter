@@ -349,6 +349,15 @@ def check_delivery_guards() -> None:
         fail("Packaging must recreate the staging directory before copying files")
     if "打包目录不存在：$stage" not in dev_install:
         fail("Development installation must reject a missing staging directory")
+    for token in (
+        "DEV-INSTALL-006",
+        "TrustedPlayniteExecutables",
+        "[StringComparison]::OrdinalIgnoreCase",
+        "process.MainWindowHandle -ne [IntPtr]::Zero",
+        "process.SessionId -ne $currentSessionId",
+    ):
+        if token not in dev_install:
+            fail(f"Development installation stale-process safety guard is missing: {token}")
 
 
 
