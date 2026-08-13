@@ -2,6 +2,18 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 GAME-OP-LOCK-001 单游戏操作兼容矩阵
+
+- Task ID：`GAME-OP-LOCK-001`。
+- 实现内容：新增 `GameOperationKind`（Backup/Restore/Retention/CloudUpload/CloudDownload/Media/RestoreReadiness/RepositoryRepair）与 `GameOperationPolicy.IsCompatible` 显式兼容矩阵：Restore 与所有操作不兼容，同游戏两个 Backup 不兼容，Retention 与 Backup/Restore 不兼容；Backup+Media、CloudUpload+Media、RestoreReadiness+Backup 标记兼容。
+- 锁入口：`GameOperationLock.AcquireAsync` 新增带操作类型的重载，备份、云端重试、媒体同步、恢复预览/执行均已接入类型化调用；底层仍按 GameId 串行化（安全超集），不同游戏可并行。
+- 主要修改文件：`GameOperationLock.cs`、`BackupOrchestrator.cs`、`RestoreOrchestrator.cs`、`MediaSyncService.cs`、`GameOperationLockTests.cs`。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `54/54`、Worker `167/167`、Playnite `217/217`；`validate-source.py` 与 XAML 结构门禁通过（本阶段无 UI 改动，不重跑 render-qa）。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 00:52 记录插件加载，`worker-launch.log` 00:52:47 记录 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实长时间备份期间对同一游戏发起恢复/媒体同步，确认 `GAME_OPERATION_BUSY` 且不同游戏仍并行。
+- Commit：`7dba09c`。
+- 下一项：继续 Layer B，从 `IPC-COMPAT-001` 能力列表补齐开始。
+
 ## 2026-08-14 TASK-RECONCILE-001 Worker 中断任务分类协调
 
 - Task ID：`TASK-RECONCILE-001`。
