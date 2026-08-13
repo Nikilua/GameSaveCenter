@@ -2,6 +2,18 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-13 METADATA-BACKUP-001 GameSaveCenter 自身元数据灾备
+
+- Task ID：`METADATA-BACKUP-001`。
+- 实现内容：新增 `metadata.backup.create` IPC 与 `MetadataBackupService`，在数据目录 `MetadataBackups` 生成有上限、自描述的 ZIP 灾备包。包含 SQLite 一致性快照（`VACUUM INTO`）、脱敏的 Worker 设置、版本与校验清单、README；明确不包含存档、媒体、Rclone 配置或凭据。维护中心诊断页新增“导出元数据灾备”按钮和结果摘要。
+- 核心设计选择：数据库快照使用 SQLite `VACUUM INTO` 获取一致副本，避免直接复制 WAL 状态；设置文件先脱敏再入包；ZIP 超过 512 MiB 直接失败并清理临时文件，防止灾备目录膨胀。
+- 主要修改文件：Contracts `MetadataBackupDtos.cs`/`MessageTypes`、`MetadataBackupService`、`Program`、`IpcRequestDispatcher`、`DashboardViewModel`、`MaintenanceView`，以及 Worker/Playnite 测试。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `51/51`、Worker `127/127`、Playnite `211/211`；`validate-source.py`、XAML 结构、WPF 静态门禁 0 errors / 33 warnings / 153 info、五种窗口 `render-qa OK`。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 记录 `Loaded plugin: GameSaveCenter, version 0.6.70`，插件日志记录 `0.6.70.0 loaded`，`worker-launch.log` 记录存储初始化与 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实维护中心点击导出后的包内容人工复核，以及从灾备包恢复数据库的演练。
+- Commit：`e7e8fb2`。
+- 下一项：继续 Layer B，从 `REPOSITORY-REBUILD-001` 备份仓库索引重建开始。
+
 ## 2026-08-13 DB-MIGRATION-001 历史数据库 Fixture 升级 Harness
 
 - Task ID：`DB-MIGRATION-001`。
