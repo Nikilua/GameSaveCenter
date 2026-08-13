@@ -77,6 +77,7 @@ namespace GameSaveCenter.Contracts
         public const string ApplyRetentionSimulation = "retention.simulation.apply";
         public const string MirrorLocalStatus = "mirror.local.status";
         public const string MirrorLocalSync = "mirror.local.sync";
+        public const string GetMaintenanceReport = "maintenance.report.get";
         public const string CancelTask = "task.cancel";
         public const string ListGameTools = "tools.list";
         public const string InspectGameToolImport = "tools.import.inspect";

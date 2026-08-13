@@ -213,6 +213,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             ApplyRetentionSimulationCommand = new RelayCommand(_ => Run(ApplyRetentionSimulationAsync), _ => !IsBusy && RetentionSimulation.DeleteCandidateCount > 0);
             RefreshLocalMirrorStatusCommand = new RelayCommand(_ => Run(RefreshLocalMirrorStatusAsync), _ => !IsBusy);
             SyncLocalMirrorCommand = new RelayCommand(_ => Run(SyncLocalMirrorAsync), _ => !IsBusy && EffectiveSettings.EnableLocalMirror);
+            CopyMaintenanceReportCommand = new RelayCommand(_ => Run(CopyMaintenanceReportAsync), _ => !IsBusy);
+            ExportMaintenanceReportCommand = new RelayCommand(_ => Run(ExportMaintenanceReportAsync), _ => !IsBusy);
             ExitSafeModeCommand = new RelayCommand(_ => Run(ExitSafeModeAsync), _ => !IsBusy);
             RunEnvironmentCheckCommand = new RelayCommand(_ => Run(RunEnvironmentCheckAsync), _ => !IsBusy);
             SkipOnboardingCommand = new RelayCommand(_ => SkipOnboarding(), _ => !IsBusy && IsOnboardingPending);
@@ -689,6 +691,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand ApplyRetentionSimulationCommand { get; }
         public ICommand RefreshLocalMirrorStatusCommand { get; }
         public ICommand SyncLocalMirrorCommand { get; }
+        public ICommand CopyMaintenanceReportCommand { get; }
+        public ICommand ExportMaintenanceReportCommand { get; }
         public ICommand ExitSafeModeCommand { get; }
         public ICommand RunEnvironmentCheckCommand { get; }
         public ICommand SkipOnboardingCommand { get; }
@@ -1449,6 +1453,31 @@ namespace GameSaveCenter.Playnite.ViewModels
                 plugin.ShowInfo(result.Message);
             });
             await RefreshLocalMirrorStatusAsync();
+        }
+
+        private async Task CopyMaintenanceReportAsync()
+        {
+            var report = await plugin.RequestAsync<MaintenanceReportDto>(MessageTypes.GetMaintenanceReport, new { }, TimeSpan.FromMinutes(3));
+            Clipboard.SetText(report.ReportText);
+            StatusMessage = "健康报告已复制";
+            plugin.ShowInfo("健康报告已复制到剪贴板。");
+        }
+
+        private async Task ExportMaintenanceReportAsync()
+        {
+            var report = await plugin.RequestAsync<MaintenanceReportDto>(MessageTypes.GetMaintenanceReport, new { }, TimeSpan.FromMinutes(3));
+            var dialog = new SaveFileDialog
+            {
+                Title = "导出健康报告",
+                Filter = "文本文件 (*.txt)|*.txt|Markdown (*.md)|*.md",
+                FileName = $"GameSaveCenter-Health-{DateTime.Now:yyyyMMdd-HHmm}.txt",
+                AddExtension = true,
+                DefaultExt = ".txt"
+            };
+            if (dialog.ShowDialog() != true) return;
+            File.WriteAllText(dialog.FileName, report.ReportText);
+            StatusMessage = $"健康报告已导出：{dialog.FileName}";
+            plugin.ShowInfo(StatusMessage);
         }
 
         private void SkipOnboarding()
@@ -2742,7 +2771,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 UpdateMediaMetadataCommand,OpenSelectedMediaCommand,RevealSelectedMediaCommand,
                 AssignInboxMediaCommand, IgnoreInboxMediaCommand,
                 CancelTaskCommand, RetryTaskCommand, CopyTaskErrorCommand, RefreshDiagnosticsCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
-                StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,RefreshRetentionSimulationCommand,ApplyRetentionSimulationCommand,RefreshLocalMirrorStatusCommand,SyncLocalMirrorCommand,
+                StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,RefreshRetentionSimulationCommand,ApplyRetentionSimulationCommand,RefreshLocalMirrorStatusCommand,SyncLocalMirrorCommand,CopyMaintenanceReportCommand,ExportMaintenanceReportCommand,
                 SaveProcessMappingCommand,DeleteProcessMappingCommand,RunEnvironmentCheckCommand,SkipOnboardingCommand,CompleteOnboardingCommand,OnboardingTestBackupCommand,
                 OpenDataDirectoryCommand, OpenBackupDirectoryCommand, OpenMediaDirectoryCommand, OpenWorkerLogCommand
                 ,ImportTrainerCommand,ImportCheatTableCommand,ImportCustomLaunchItemCommand,ImportToolFolderCommand,SaveGameToolCommand,LaunchGameToolCommand,

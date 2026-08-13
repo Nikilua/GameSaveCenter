@@ -39,7 +39,8 @@ namespace GameSaveCenter.Contracts
             "AtomicIo",
             "StorageAnalysis",
             "RetentionSimulation",
-            "LocalMirror"
+            "LocalMirror",
+            "MaintenanceReport"
         };
     }
 }
