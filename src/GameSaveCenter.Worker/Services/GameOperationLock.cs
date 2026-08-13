@@ -2,6 +2,33 @@ using System.Collections.Concurrent;
 
 namespace GameSaveCenter.Worker.Services;
 
+public enum GameOperationKind
+{
+    Backup,
+    Restore,
+    Retention,
+    CloudUpload,
+    CloudDownload,
+    Media,
+    RestoreReadiness,
+    RepositoryRepair
+}
+
+/// <summary>Explicit compatibility matrix for same-game operations.</summary>
+public static class GameOperationPolicy
+{
+    public static bool IsCompatible(GameOperationKind left, GameOperationKind right)
+    {
+        if (left == GameOperationKind.Restore || right == GameOperationKind.Restore)
+            return false;
+        if (left == GameOperationKind.Backup && right == GameOperationKind.Backup)
+            return false;
+        if (left == GameOperationKind.Retention || right == GameOperationKind.Retention)
+            return false;
+        return true;
+    }
+}
+
 /// <summary>
 /// Per-game operation lock that prevents overlapping backup, media sync and restore work
 /// on the same Playnite game while allowing different games to proceed in parallel.
@@ -21,6 +48,9 @@ public sealed class GameOperationLock
             return null;
         return new GameOperationLease(playniteId, semaphore);
     }
+
+    public Task<GameOperationLease?> AcquireAsync(string playniteId, GameOperationKind kind, TimeSpan timeout, CancellationToken token)
+        => AcquireAsync(playniteId, timeout, token);
 }
 
 public sealed class GameOperationLease : IDisposable

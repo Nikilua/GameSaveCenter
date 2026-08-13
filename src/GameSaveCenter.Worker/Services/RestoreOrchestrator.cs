@@ -24,7 +24,7 @@ public sealed class RestoreOrchestrator
     public async Task<LudusaviCommandResult> PreviewAsync(RestoreRequestDto request,CancellationToken token)
     {
         var match=await ResolveAsync(request.PlayniteId,token).ConfigureAwait(false);
-        using var lease = await _gameLock.AcquireAsync(request.PlayniteId, TimeSpan.FromSeconds(10), token).ConfigureAwait(false);
+        using var lease = await _gameLock.AcquireAsync(request.PlayniteId, GameOperationKind.Restore, TimeSpan.FromSeconds(10), token).ConfigureAwait(false);
         if (lease == null)
             throw new WorkerOperationException("GAME_OPERATION_BUSY","该游戏已有备份、恢复或媒体操作正在执行，已跳过恢复预览。",request.PlayniteId);
         return await _ludusavi.RestoreAsync(match,request.BackupId,true,token).ConfigureAwait(false);
@@ -50,7 +50,7 @@ public sealed class RestoreOrchestrator
             throw new InvalidOperationException("Restore requires explicit confirmation that the game is closed and the current state may be snapshotted.");
         var game=await _catalog.GetGameAsync(request.PlayniteId,token).ConfigureAwait(false)??throw new InvalidOperationException("Game not found.");
         var match=await ResolveAsync(request.PlayniteId,token).ConfigureAwait(false);
-        using var lease = await _gameLock.AcquireAsync(request.PlayniteId, TimeSpan.FromSeconds(10), token).ConfigureAwait(false);
+        using var lease = await _gameLock.AcquireAsync(request.PlayniteId, GameOperationKind.Restore, TimeSpan.FromSeconds(10), token).ConfigureAwait(false);
         if (lease == null)
             throw new WorkerOperationException("GAME_OPERATION_BUSY","该游戏已有备份、恢复或媒体操作正在执行，已阻止恢复。",request.PlayniteId);
         return await _tasks.RunAsync("Restore",game.PlayniteId,game.Name,async(progress,ct)=>

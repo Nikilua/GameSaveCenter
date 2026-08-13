@@ -86,7 +86,7 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
                 continue;
             }
 
-            using var lease = await _gameLock.AcquireAsync(game.PlayniteId, TimeSpan.FromSeconds(10), token).ConfigureAwait(false);
+            using var lease = await _gameLock.AcquireAsync(game.PlayniteId, GameOperationKind.Backup, TimeSpan.FromSeconds(10), token).ConfigureAwait(false);
             if (lease == null)
             {
                 results.Add(await _tasks.RunAsync(
@@ -280,7 +280,7 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
             throw new WorkerOperationException("SAFE_MODE_ENABLED","安全模式已开启，云端上传已暂停。请先关闭安全模式。","SafeMode");
         var game=await _catalog.GetGameAsync(playniteId,token).ConfigureAwait(false)
                  ??throw new WorkerOperationException("CLOUD_GAME_NOT_FOUND","找不到需要重试云端上传的游戏。",playniteId);
-        using var lease = await _gameLock.AcquireAsync(playniteId, TimeSpan.FromSeconds(10), token).ConfigureAwait(false);
+        using var lease = await _gameLock.AcquireAsync(playniteId, GameOperationKind.CloudUpload, TimeSpan.FromSeconds(10), token).ConfigureAwait(false);
         if (lease == null)
             throw new WorkerOperationException("GAME_OPERATION_BUSY","该游戏已有操作正在执行，已跳过云端上传重试。",playniteId);
         var result = await _tasks.RunAsync("CloudUpload",game.PlayniteId,game.Name,async(progress,ct)=>

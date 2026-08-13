@@ -35,4 +35,26 @@ public sealed class GameOperationLockTests
 
         Assert.Equal(16, lockService.TrackedGameCount);
     }
+
+    [Theory]
+    [InlineData(GameOperationKind.Backup, GameOperationKind.Media, true)]
+    [InlineData(GameOperationKind.CloudUpload, GameOperationKind.Media, true)]
+    [InlineData(GameOperationKind.RestoreReadiness, GameOperationKind.Backup, true)]
+    [InlineData(GameOperationKind.Backup, GameOperationKind.Backup, false)]
+    [InlineData(GameOperationKind.Restore, GameOperationKind.Backup, false)]
+    [InlineData(GameOperationKind.Restore, GameOperationKind.Restore, false)]
+    [InlineData(GameOperationKind.Restore, GameOperationKind.Retention, false)]
+    [InlineData(GameOperationKind.Retention, GameOperationKind.Backup, false)]
+    public void OperationCompatibilityMatrixIsExplicit(GameOperationKind left, GameOperationKind right, bool expected)
+        => Assert.Equal(expected, GameOperationPolicy.IsCompatible(left, right));
+
+    [Fact]
+    public async Task TypedAcquireStillSerializesSameGame()
+    {
+        var lockService = new GameOperationLock();
+        using var first = await lockService.AcquireAsync("game-a", GameOperationKind.Backup, TimeSpan.FromSeconds(1), CancellationToken.None);
+        Assert.NotNull(first);
+        using var second = await lockService.AcquireAsync("game-a", GameOperationKind.Media, TimeSpan.FromMilliseconds(50), CancellationToken.None);
+        Assert.Null(second);
+    }
 }

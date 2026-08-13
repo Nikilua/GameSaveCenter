@@ -42,7 +42,7 @@ public sealed class MediaSyncService
         if(!request.SharedOnly)
             foreach(var game in selectedGames)
             {
-                using var lease = await _gameLock.AcquireAsync(game.PlayniteId, TimeSpan.FromSeconds(10), token).ConfigureAwait(false);
+                using var lease = await _gameLock.AcquireAsync(game.PlayniteId, GameOperationKind.Media, TimeSpan.FromSeconds(10), token).ConfigureAwait(false);
                 if (lease == null)
                 {
                     output.Add(await _tasks.RunAsync("MediaSync",game.PlayniteId,game.Name,
