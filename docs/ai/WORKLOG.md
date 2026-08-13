@@ -2,6 +2,19 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-13 A-HARDEN-002 未分类自定义启动项反作弊自动启动语义
+
+- Task ID：`A-HARDEN-002`。
+- 实现内容：修正 `GameToolAutoStartPolicy`：`CustomExecutable + Unknown` 在普通游戏下按用户 AutoStart 正常启动，不再因未分类一律暂缓；遇到反作弊游戏时，只有该工具显式持久化授权 `AllowUnknownToolWithAntiCheat` 后才允许。`GeneralUtility` 在反作弊游戏下继续允许，`GameModification`/`Trainer`/`CheatTable` 在反作弊游戏下继续禁止。
+- 数据模型：`GameToolDto` 与 `UpdateGameToolRequestDto` 新增 `AllowUnknownToolWithAntiCheat`；`game_tools` 新增 `allow_unknown_anticheat_autostart INTEGER NOT NULL DEFAULT 0`，`EnsureColumnAsync` 与 CREATE TABLE 同步，旧库升级由迁移 Harness 校验。
+- UI：TrainerCenter 工具类别区域新增“反作弊授权”开关，仅当自定义启动项且类别为未分类时显示；未分类选项文案从“自动启动将暂缓”改为“未分类（反作弊游戏需授权）”。`SnapshotComparers` 现在同时比较 IfAlreadyRunning/RiskCategory/AllowUnknownToolWithAntiCheat。
+- 主要修改文件：`GameToolAutoStartPolicy.cs`、`SqliteStateStore.cs`、`TrainerDtos.cs`、`TrainerCenterView.xaml`、`DashboardViewModel.cs`、`SnapshotComparers.cs`，以及 Worker/Playnite 相关测试。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `54/54`、Worker `145/145`、Playnite `215/215`；`validate-source.py`、XAML 结构、WPF 静态门禁 0 errors / 33 warnings / 153 info、五种窗口 `render-qa OK`。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 22:53 记录 `Loaded plugin: GameSaveCenter, version 0.6.70`，插件日志记录 `0.6.70.0 loaded`，`worker-launch.log` 22:53:09 记录 Worker 启动、存储初始化和 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实反作弊游戏与未分类自定义工具组合下的人工复核，确认授权开关持久化且不会每次启动重复询问；普通游戏下未分类工具按 AutoStart 正常启动。
+- Commit：`8d6c36c`。
+- 下一项：`A-HARDEN-003` Onboarding 测试备份闭环审计。
+
 ## 2026-08-13 A-HARDEN-001 通知级别正式实现与回归补齐
 
 - Task ID：`A-HARDEN-001`。
