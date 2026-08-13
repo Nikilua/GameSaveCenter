@@ -2,6 +2,17 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 STORAGE-001 备份存储分析与增长趋势预估
+
+- Task ID：`STORAGE-001`。
+- 实现内容：维护中心“保留策略”页新增只读“备份存储分析”卡：显示备份目录所在卷总容量/剩余空间、目录实测大小、SQLite 索引体积与版本数、近 7/30/90 天新增索引体积、Top 5 游戏占用排行，并按近 30 天增速给出标注“估算”的容量耗尽预测。所有统计在 Worker 侧执行，支持取消，不删除或移动任何文件。
+- 主要修改文件：`StorageAnalysisDtos.cs`、`StorageAnalysisService.cs`、`SqliteStateStore.cs`、`MessageTypes.cs`、`IpcRequestDispatcher.cs`、`DashboardViewModel.cs`、`MaintenanceView.xaml`、`MaintenanceView.xaml.cs`、`StorageAnalysisServiceTests.cs`、`UiLayoutRegressionTests.cs`、`FakeDashboardData.cs`。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `55/55`、Worker `174/174`、Playnite `218/218`；`validate-source.py`、XAML/WPF 静态门禁与五种窗口 `render-qa` 全绿。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 01:45:42 记录插件加载，`worker-launch.log` 01:45:48 记录 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实备份仓库下人工核对磁盘数字、增长趋势与预测合理性。
+- Commit：`2ef8f13`。
+- 下一项：Layer C `RETENTION-SIM-001` 全局保留策略模拟器。
+
 ## 2026-08-14 FAULT-INJECTION-001 ZIP/数据库故障注入补齐
 
 - Task ID：`FAULT-INJECTION-001`。
