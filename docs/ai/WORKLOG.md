@@ -9,7 +9,7 @@
 - 最终 Gate：Release 0 warnings / 0 errors；Core `59/59`、Worker `183/183`、Playnite `231/231`；`validate-source.py`、XAML/WPF 静态门禁与五种窗口 `render-qa` 全绿。
 - 真实宿主验证：`dev-install-run.ps1 -Configuration Release` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 04:02:36 记录插件加载，`extensions.log` 04:02:37 记录 `GameSaveCenter 0.6.70.0 loaded`，`worker-launch.log` 04:02:42 记录 `Application started`。
 - 整体状态：`PARTIALLY COMPLETED / MANUAL QA REQUIRED`；真实 Restore/Undo、Rclone、双设备、外置镜像、启动项、反作弊、主题/DPI/连续缩放与 1000+ 游戏库仍未人工验收。
-- Commit：待本阶段文档提交后回填。
+- Commit：`039bc68`。
 - 下一项：等待真实场景人工验收；不再主动扩张新功能。
 
 ## 2026-08-14 MAINTENANCE-REPORT-001 用户可读维护健康报告
