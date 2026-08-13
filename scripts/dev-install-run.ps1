@@ -8,38 +8,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-$installerRevision = 'DEV-INSTALL-003'
-
-function Test-IsAdministrator {
-    $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
-    $principal = [Security.Principal.WindowsPrincipal]::new($identity)
-    return $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-}
-
-if (-not (Test-IsAdministrator)) {
-    Write-Host "一键安装器：$installerRevision" -ForegroundColor DarkCyan
-    Write-Host "安装脚本：$PSCommandPath" -ForegroundColor DarkCyan
-    Write-Host '一键安装需要管理员权限，正在请求 UAC...' -ForegroundColor Yellow
-    $hostPath = Join-Path $PSHOME ($(if ($PSVersionTable.PSEdition -eq 'Core') { 'pwsh.exe' } else { 'powershell.exe' }))
-    $forwardedArguments = @(
-        '-NoLogo',
-        '-NoProfile',
-        '-ExecutionPolicy', 'Bypass',
-        '-File', $PSCommandPath,
-        '-Configuration', $Configuration
-    )
-    if ($PlayniteExtensionsPath) { $forwardedArguments += @('-PlayniteExtensionsPath', $PlayniteExtensionsPath) }
-    if ($PlayniteExecutable) { $forwardedArguments += @('-PlayniteExecutable', $PlayniteExecutable) }
-    if ($NoStart) { $forwardedArguments += '-NoStart' }
-    if ($SkipClean) { $forwardedArguments += '-SkipClean' }
-    try {
-        $elevatedRun = Start-Process -FilePath $hostPath -Verb RunAs -Wait -PassThru -ArgumentList $forwardedArguments -ErrorAction Stop
-        exit $elevatedRun.ExitCode
-    }
-    catch {
-        throw "无法以管理员身份启动一键安装：$($_.Exception.Message)。请右键选择以管理员身份运行，或在 UAC 对话框中允许本次操作。"
-    }
-}
+$installerRevision = 'DEV-INSTALL-004'
 
 $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 try {
@@ -159,96 +128,78 @@ function Get-ExtensionRoots {
     return @((Join-Path $env:APPDATA 'Playnite\Extensions'))
 }
 
-function Invoke-ElevatedProcessStop {
+function Stop-PlayniteAndOwnedWorkerReliably {
     param(
-        [Parameter(Mandatory = $true)][int]$ProcessId,
-        [Parameter(Mandatory = $true)][string]$ExpectedName
+        [Parameter(Mandatory = $true)][string[]]$ExtensionRoots
     )
 
-    # The normal entry point is already elevated. Keep this fallback narrow: elevate
-    # only the exact PID that the current session could not terminate, and re-check
-    # its name after UAC approval to avoid killing a process that reused the PID.
-    $escapedName = $ExpectedName.Replace("'", "''")
-    $stopCommand = @"
-`$ErrorActionPreference = 'Stop'
-`$target = Get-Process -Id $ProcessId -ErrorAction SilentlyContinue
-if (`$null -eq `$target) { exit 0 }
-if (-not [string]::Equals(`$target.ProcessName, '$escapedName', [System.StringComparison]::OrdinalIgnoreCase)) { exit 3 }
-try {
-    Stop-Process -Id $ProcessId -Force -ErrorAction Stop
-    exit 0
-}
-catch {
-    [Console]::Error.WriteLine(`$_.Exception.Message)
-    exit 1
-}
-"@
-
-    $encodedCommand = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($stopCommand))
-    $powershellPath = (Get-Command powershell.exe -CommandType Application -ErrorAction Stop).Source
-    try {
-        $elevated = Start-Process -FilePath $powershellPath -Verb RunAs -Wait -PassThru -ArgumentList @(
-            '-NoLogo',
-            '-NoProfile',
-            '-ExecutionPolicy', 'Bypass',
-            '-EncodedCommand', $encodedCommand
-        ) -ErrorAction Stop
-    }
-    catch {
-        Write-Warning "管理员权限请求未完成：$($_.Exception.Message)"
-        return $false
-    }
-
-    if ($elevated.ExitCode -eq 0) { return $true }
-    if ($elevated.ExitCode -eq 3) {
-        throw "停止进程失败：PID $ProcessId 在管理员确认期间已变成其他进程，已中止以避免误杀。"
-    }
-
-    return $false
-}
-
-function Stop-ProcessReliably {
-    param([string[]]$Names)
-
-    $elevationAttempted = @{}
-    $deadline = [DateTime]::UtcNow.AddSeconds(15)
+    $playniteNames = @('Playnite.DesktopApp', 'Playnite.FullscreenApp')
+    $requestedShutdown = @{}
+    $playniteDeadline = [DateTime]::UtcNow.AddSeconds(20)
     do {
-        $remaining = @($Names | ForEach-Object { Get-Process -Name $_ -ErrorAction SilentlyContinue })
-        if ($remaining.Count -eq 0) { return }
-
-        foreach ($process in $remaining) {
-            $processId = [int]$process.Id
-            $processName = [string]$process.ProcessName
-            if ($elevationAttempted.ContainsKey($processId)) { continue }
-            Write-Host "停止进程：$processName [$processId]" -ForegroundColor DarkYellow
+        $runningPlaynite = @($playniteNames | ForEach-Object { Get-Process -Name $_ -ErrorAction SilentlyContinue })
+        foreach ($process in $runningPlaynite) {
+            if ($requestedShutdown.ContainsKey($process.Id)) { continue }
+            $requestedShutdown[$process.Id] = $true
             try {
-                # A process can exit between discovery and termination. The next
-                # discovery pass treats that normal race as a successful stop.
-                $currentProcess = Get-Process -Id $processId -ErrorAction SilentlyContinue
-                if ($null -eq $currentProcess) { continue }
-                if (-not [string]::Equals($currentProcess.ProcessName, $processName, [System.StringComparison]::OrdinalIgnoreCase)) {
-                    throw "停止进程失败：PID $processId 已被 $($currentProcess.ProcessName) 复用，已中止以避免误杀。"
+                if ($process.HasExited) { continue }
+                if ($process.CloseMainWindow()) {
+                    Write-Host "请求 Playnite 正常退出：$($process.ProcessName) [$($process.Id)]" -ForegroundColor DarkYellow
                 }
-                Stop-Process -Id $processId -Force -ErrorAction Stop
+                else {
+                    Write-Warning "无法请求 Playnite 正常退出：$($process.ProcessName) [$($process.Id)]。请先手动退出 Playnite。"
+                }
             }
             catch {
-                if (-not $elevationAttempted.ContainsKey($processId)) {
-                    $elevationAttempted[$processId] = $true
-                    Write-Host "当前会话无权停止 $processName [$processId]，请求管理员权限..." -ForegroundColor Yellow
-                    if (-not (Invoke-ElevatedProcessStop -ProcessId $processId -ExpectedName $processName)) {
-                        Write-Warning "管理员权限也未能停止 $processName [$processId]。"
-                    }
-                }
+                Write-Warning "请求 Playnite 退出失败：$($process.ProcessName) [$($process.Id)]：$($_.Exception.Message)"
             }
         }
 
+        if ($runningPlaynite.Count -eq 0) { break }
         Start-Sleep -Milliseconds 250
-    } while ([DateTime]::UtcNow -lt $deadline)
+    } while ([DateTime]::UtcNow -lt $playniteDeadline)
 
-    $remaining = @($Names | ForEach-Object { Get-Process -Name $_ -ErrorAction SilentlyContinue })
-    if ($remaining.Count -eq 0) { return }
-    $remainingNames = @($remaining | ForEach-Object { $_.ProcessName } | Select-Object -Unique)
-    throw "无法停止以下进程：$($remainingNames -join ', ')。已尝试当前会话和管理员权限，但进程仍在运行；为避免覆盖正在使用的扩展，安装已停止。"
+    $runningPlaynite = @($playniteNames | ForEach-Object { Get-Process -Name $_ -ErrorAction SilentlyContinue })
+    if ($runningPlaynite.Count -gt 0) {
+        throw "Playnite 仍在运行：$($runningPlaynite.ProcessName -join ', ')。安装器不会强制结束 Playnite，请先正常退出后重试。"
+    }
+
+    Write-Host 'Playnite 已退出，等待插件回收 Worker...' -ForegroundColor DarkYellow
+    $workerNames = @('GameSaveCenter.Worker')
+    $workerDeadline = [DateTime]::UtcNow.AddSeconds(10)
+    do {
+        $workers = @($workerNames | ForEach-Object { Get-Process -Name $_ -ErrorAction SilentlyContinue })
+        if ($workers.Count -eq 0) { return }
+        Start-Sleep -Milliseconds 250
+    } while ([DateTime]::UtcNow -lt $workerDeadline)
+
+    $workerPaths = @($ExtensionRoots | ForEach-Object {
+            Join-Path (Join-Path $_ $extensionId) 'Worker\GameSaveCenter.Worker.exe'
+        } | ForEach-Object { [System.IO.Path]::GetFullPath($_) })
+    foreach ($worker in $workers) {
+        $workerPath = $null
+        try { $workerPath = $worker.MainModule.FileName } catch { }
+        if ([string]::IsNullOrWhiteSpace($workerPath)) {
+            throw "Playnite 已退出，但无法确认 Worker [$($worker.Id)] 的文件路径；为避免误杀未知进程，安装已停止。请手动结束该 Worker 后重试。"
+        }
+        if ($workerPaths -notcontains ([System.IO.Path]::GetFullPath($workerPath))) {
+            throw "Playnite 已退出，但发现路径不属于当前扩展目录的 Worker [$($worker.Id)]：$workerPath。为避免误杀其他 Worker，安装已停止。"
+        }
+
+        try {
+            Write-Host "停止扩展残留 Worker：$($worker.Id)" -ForegroundColor DarkYellow
+            Stop-Process -Id $worker.Id -Force -ErrorAction Stop
+        }
+        catch {
+            throw "Playnite 已退出，但无法停止当前扩展的 Worker [$($worker.Id)]：$($_.Exception.Message)。安装器不会自动请求管理员权限，请使用与 Playnite 相同的用户权限结束它后重试。"
+        }
+    }
+
+    Start-Sleep -Milliseconds 500
+    $remainingWorkers = @($workerNames | ForEach-Object { Get-Process -Name $_ -ErrorAction SilentlyContinue })
+    if ($remainingWorkers.Count -gt 0) {
+        throw "扩展 Worker 仍在运行：$($remainingWorkers.Id -join ', ')。安装已停止以避免覆盖正在使用的文件。"
+    }
 }
 
 function Install-ExtensionAtomically {
@@ -325,7 +276,7 @@ try {
     $playniteExecutables = @(Get-PlayniteExecutableCandidates -PreferredPath $PlayniteExecutable -RunningPaths $runningPlaynitePaths)
     $extensionRoots = @(Get-ExtensionRoots -ExplicitPath $PlayniteExtensionsPath -PlayniteExecutables $playniteExecutables)
 
-    Stop-ProcessReliably -Names @('Playnite.DesktopApp', 'Playnite.FullscreenApp', 'GameSaveCenter.Worker')
+    Stop-PlayniteAndOwnedWorkerReliably -ExtensionRoots $extensionRoots
 
     # A source archive can contain obj/project.assets.json created on another machine.
     # `dotnet clean` resolves package assets before deleting them, so clean must never

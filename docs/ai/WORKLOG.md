@@ -2,6 +2,25 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-13 DEV-INSTALL-004 回退默认提权并按归属回收 Worker
+
+**实现内容：**
+
+- 移除一键安装器启动时的管理员检测、UAC 自重启和安装过程中的管理员停止逻辑；普通用户运行 `.cmd` 不再被强制要求授权。
+- 安装前先对现有 Playnite 窗口调用 `CloseMainWindow()`，等待 Playnite 的 `OnApplicationStopped` 执行既有 `WorkerLauncher.StopOwnedWorker()`，再继续覆盖安装。
+- Playnite 退出后若仍有 Worker，只允许处理路径明确位于当前扩展目录 `Worker\GameSaveCenter.Worker.exe` 的残留进程；路径不可读取或属于其他扩展时直接停止安装，避免按进程名误杀。
+- 安装器修订号更新为 `DEV-INSTALL-004`，根目录入口同步检查该版本，防止旧入口继续运行已废弃的提权代码。
+
+**验证结果：**
+
+- PowerShell AST 解析、`git diff --check` 通过。
+- 当前会话真实执行 `DEV-INSTALL-004` 时没有出现 UAC；日志确认先完成“Playnite 已退出，等待插件回收 Worker”，随后才进入 NuGet 恢复。
+- 本次执行后 Playnite 与 Worker 均已退出；后续 NuGet 恢复因当前机器 SDK 缺失 `Microsoft.NET.SDK.Workload*Locator` 目录而退出码为 1，与进程处理无关。用户重启后的上一轮构建/测试/安装已成功。
+
+**结论：**
+
+- `GameSaveCenter.Worker` 不是用户手动启动的陌生进程；`worker-launch.log` 记录它由已安装的 GameSaveCenter 插件从扩展目录启动。残留通常来自 Playnite 异常退出或旧权限上下文，安装器现在先走正常退出回收链路，不再把整个安装提权。
+
 ## 2026-08-13 DEV-INSTALL-003 安装入口版本识别
 
 **实现内容：**
@@ -14,7 +33,7 @@
 
 - 当前仓库 `scripts/dev-install-run.ps1` 第 147 行是扩展路径筛选，不是用户日志中的旧权限异常；旧错误文本不再存在于当前脚本。
 - PowerShell AST 解析与 `git diff --check` 通过；入口校验已加入。
-- 当前 Codex 无桌面会话运行 UAC 仍返回 `0xc0000142`，用户桌面必须重新双击当前仓库入口并确认输出包含 `DEV-INSTALL-003` 与 `D:\workplace\github\GameSaveCenter\scripts\dev-install-run.ps1`。
+- 该阶段已被 DEV-INSTALL-004 的正常退出方案取代；保留旧日志证据，不能作为当前安装器行为判断依据。
 
 ## 2026-08-13 DEV-INSTALL-002 一键安装自动提权与停止竞态修复
 

@@ -42,7 +42,7 @@ Overview 既有最近保护卡已扩展为最近窗口游戏状态列表：`已�
 
 本阶段验证：Core 29/29、Worker 76/76、Playnite 202/202；Worker/Playnite Release 构建 0 警告、0 错误；`validate-source.py`、`check-xaml.ps1`、WPF UI 契约测试与 `render-qa.ps1` 全部通过。测试使用 `artifacts/smart-test/final-*` 隔离输出；标准测试目录仍被早先宿主锁住时，不要删除或强杀不属于本次任务的进程。
 
-验证边界不变：当前会话无法完成真实最终包的 Playnite 扩展扫描；PID 3896 仍需要管理员任务管理器结束或重启后才能执行真实覆盖安装。隔离启动/离屏渲染只能证明应用层启动和布局，不得写成“真实宿主加载成功”。
+验证边界不变：当前会话无法完成真实最终包的 Playnite 扩展扫描；真实宿主日志仍需用户复核。开发安装器不默认请求管理员权限，而是先正常关闭 Playnite、等待插件回收其 Worker，再按扩展路径处理残留。隔离启动/离屏渲染只能证明应用层启动和布局，不得写成“真实宿主加载成功”。
 
 ## Codex 2026-08-13 阶段补充（NOTIFY-001 / MULTI-DEVICE-001 / RCLONE-RELIABILITY-001）
 
@@ -52,7 +52,7 @@ Overview 既有最近保护卡已扩展为最近窗口游戏状态列表：`已�
 
 Rclone 可靠性仍是单向安全适配器，只允许 `copy`、`check`、`lsf`、`cat`、`version`。`RcloneFailureClassifier` 将认证、权限、远端不存在、网络和不完整传输转换为稳定错误码；只有网络/不完整传输进入有限退避，凭据/权限类错误不能无限重试。本地历史不得因远端缺失而删除。
 
-当前自动验证基线：Core 35/35、Worker 81/81、Playnite 202/202；三者 Release 构建均 0 警告/0 错误；source、XAML、WPF 静态门禁通过。真实 Rclone、两台设备、真实恢复和最终 Playnite 宿主加载仍为 `MANUAL QA REQUIRED`。PID 3896 的一键覆盖安装阻塞仍需管理员任务管理器结束或重启后处理。
+当前自动验证基线：Core 35/35、Worker 81/81、Playnite 202/202；三者 Release 构建均 0 警告/0 错误；source、XAML、WPF 静态门禁通过。真实 Rclone、两台设备、真实恢复和最终 Playnite 宿主加载仍为 `MANUAL QA REQUIRED`。开发安装的 Playnite/Worker 回收链路已改为普通权限正常关闭优先。
 
 新的 AI/Codex 长期记忆入口已建立：先读 `docs/ai/PROJECT_MEMORY.md` 与 `docs/ai/WORKLOG.md`，再读本文件。
 

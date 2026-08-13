@@ -157,11 +157,11 @@
 - 以后每个代码阶段的验收顺序固定为：`dotnet test/build` → 源码/XAML/WPF/render-qa → `scripts/package.ps1` → 安装包内容断言 → 启动 Playnite 并检查 `ExtensionFactory`/扩展日志；若宿主被单实例或权限环境阻断，必须记录为人工验收，不得宣称加载成功。
 - 本阶段完成后的下一项为 `ONBOARDING-001`；不要重做 Restore Readiness、Health、Protection 或本阶段策略模板。
 
-## 2026-08-12 一键安装器进程停止竞态补充
+## 一键安装器进程停止与权限约束
 
-- `scripts/dev-install-run.ps1` 的 `Stop-ProcessReliably` 必须允许 `Get-Process` 与 `Stop-Process` 之间的进程退出竞态；停止命令使用非终止错误处理，随后仍以轮询确认进程确实退出。
-- 若 Worker 仍存活且当前会话无权终止，安装器先在启动阶段通过 UAC 自动重启为管理员，再只对已确认的精确 PID 执行停止；提权后会再次核对进程名，不能为了自动化验证使用广泛/强制性的破坏性进程操作。
-- `53399ef fix: make dev installer process stop idempotent`、`DEV-INSTALL-002` 与 `DEV-INSTALL-003` 已验证脚本语法与差异；入口现在会检查安装器修订号并打印绝对脚本路径，避免旧副本继续运行。用户桌面允许 UAC 或释放该 PID 后必须重新执行一键安装，并核对 Playnite 的 `ExtensionFactory` 与扩展日志，才能标记真实宿主验证通过。
+- `scripts/dev-install-run.ps1` 的 `Stop-PlayniteAndOwnedWorkerReliably` 必须先允许 Playnite 正常退出并等待插件回收 Worker，再处理残留；不能把 `Get-Process` 与停止之间的退出竞态误报为失败。
+- 安装器不应默认请求管理员权限，也不应按进程名广泛终止 Worker。`DEV-INSTALL-004` 先调用 Playnite 的正常窗口关闭，让插件既有 `OnApplicationStopped`/`WorkerLauncher.StopOwnedWorker()` 回收自己创建的 Worker；只有 Playnite 已退出后仍存在、且路径明确属于当前扩展目录的残留 Worker 才可处理。
+- 路径不可读取或残留 Worker 属于其他扩展时必须停止安装并要求用户手动处理，不能为了自动化验证提权或误杀其他用户进程。根目录入口同步检查 `DEV-INSTALL-004`，避免旧副本继续运行已经废弃的提权逻辑。
 
 ## 2026-08-12 Worker 生命周期清理补充
 
@@ -190,7 +190,7 @@
 
 - 首次使用状态由 Playnite `GameSaveCenterSettings.OnboardingCompleted` 持久化；未完成时 Dashboard 首次打开定位 Maintenance，用户可“跳过首次检查”，之后仍可手动重新运行环境检查。
 - 环境检查只允许读取、创建/删除自身临时探针和只读远端列举；禁止自动备份、上传、同步、删除或覆盖真实存档。测试备份必须由用户明确点击，并且要求当前游戏已匹配且 Ludusavi 可用。
-- 真实宿主验收必须看到 `ExtensionFactory:Loaded plugin: GameSaveCenter` 与扩展日志；隔离 Playnite 只能证明进程启动，不可替代真实安装验证。`scripts/dev-install-run.ps1` 现在会在普通会话先请求 UAC 重启自身，并对停止失败的精确 PID 做二次名称核对；PID 3896 仍需用户桌面允许 UAC 后完成人工复验。
+- 真实宿主验收必须看到 `ExtensionFactory:Loaded plugin: GameSaveCenter` 与扩展日志；隔离 Playnite 只能证明进程启动，不可替代真实安装验证。当前安装器不再默认请求 UAC；用户桌面应确认普通双击入口即可完成“关闭 Playnite → 回收 Worker → 构建安装 → 启动 Playnite”链路。
 
 ## 文档导航
 
