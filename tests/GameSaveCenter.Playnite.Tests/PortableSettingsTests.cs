@@ -36,6 +36,13 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Equal(source.EnableCustomMedia, imported.EnableCustomMedia);
             Assert.Equal(source.EnableLocalMirror, imported.EnableLocalMirror);
             Assert.Equal(source.LocalMirrorPath, imported.LocalMirrorPath);
+            Assert.Equal(source.LastWorkspace, imported.LastWorkspace);
+            Assert.Equal(source.TaskStatusFilterState, imported.TaskStatusFilterState);
+            Assert.Equal(source.TaskGameFilterState, imported.TaskGameFilterState);
+            Assert.Equal(source.TaskTypeFilterState, imported.TaskTypeFilterState);
+            Assert.Equal(source.TaskSearchTextState, imported.TaskSearchTextState);
+            Assert.Equal(source.MediaFilterState, imported.MediaFilterState);
+            Assert.Equal(source.MediaSearchTextState, imported.MediaSearchTextState);
             Assert.Equal(source.OnboardingCompleted, imported.OnboardingCompleted);
             Assert.Equal(source.NotificationLevel, imported.NotificationLevel);
             Assert.Equal(source.SafeModeEnabled, imported.SafeModeEnabled);
@@ -77,6 +84,13 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.True(imported.EnableCustomMedia);
             Assert.False(imported.EnableLocalMirror);
             Assert.Equal(string.Empty, imported.LocalMirrorPath);
+            Assert.Equal("Overview", imported.LastWorkspace);
+            Assert.Equal("全部", imported.TaskStatusFilterState);
+            Assert.Equal("全部", imported.TaskGameFilterState);
+            Assert.Equal("全部", imported.TaskTypeFilterState);
+            Assert.Equal(string.Empty, imported.TaskSearchTextState);
+            Assert.Equal("全部", imported.MediaFilterState);
+            Assert.Equal(string.Empty, imported.MediaSearchTextState);
             Assert.Equal(destinationDeviceId, imported.DeviceId);
         }
 
@@ -154,6 +168,13 @@ namespace GameSaveCenter.Playnite.Tests
             MediaArchiveDirectory = @"D:\Backups\Media",
             EnableLocalMirror = true,
             LocalMirrorPath = @"H:\GameSaveCenter-Mirror",
+            LastWorkspace = "Saves",
+            TaskStatusFilterState = "失败",
+            TaskGameFilterState = "Game One",
+            TaskTypeFilterState = "存档备份",
+            TaskSearchTextState = "ff",
+            MediaFilterState = "收藏",
+            MediaSearchTextState = "shot",
             AutoStartWorker = false,
             EnableProcessDetection = true,
             EnableSessionSavePathDetection = false,

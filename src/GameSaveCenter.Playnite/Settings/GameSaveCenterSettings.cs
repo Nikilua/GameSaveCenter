@@ -85,6 +85,13 @@ namespace GameSaveCenter.Playnite.Settings
         public string GamePickerPlatformFilter { get; set; } = "全部";
         public string GamePickerSortMode { get; set; } = "名称";
         public string GamePickerSelectedGameId { get; set; } = string.Empty;
+        public string LastWorkspace { get; set; } = "Overview";
+        public string TaskStatusFilterState { get; set; } = "全部";
+        public string TaskGameFilterState { get; set; } = "全部";
+        public string TaskTypeFilterState { get; set; } = "全部";
+        public string TaskSearchTextState { get; set; } = string.Empty;
+        public string MediaFilterState { get; set; } = "全部";
+        public string MediaSearchTextState { get; set; } = string.Empty;
 
         public string ExportPortableJson()
         {
@@ -289,6 +296,13 @@ namespace GameSaveCenter.Playnite.Settings
             GamePickerPlatformFilter = string.IsNullOrWhiteSpace(other.GamePickerPlatformFilter) ? "全部" : other.GamePickerPlatformFilter;
             GamePickerSortMode = string.IsNullOrWhiteSpace(other.GamePickerSortMode) ? "名称" : other.GamePickerSortMode;
             GamePickerSelectedGameId = other.GamePickerSelectedGameId ?? string.Empty;
+            LastWorkspace = string.IsNullOrWhiteSpace(other.LastWorkspace) ? "Overview" : other.LastWorkspace;
+            TaskStatusFilterState = string.IsNullOrWhiteSpace(other.TaskStatusFilterState) ? "全部" : other.TaskStatusFilterState;
+            TaskGameFilterState = string.IsNullOrWhiteSpace(other.TaskGameFilterState) ? "全部" : other.TaskGameFilterState;
+            TaskTypeFilterState = string.IsNullOrWhiteSpace(other.TaskTypeFilterState) ? "全部" : other.TaskTypeFilterState;
+            TaskSearchTextState = other.TaskSearchTextState ?? string.Empty;
+            MediaFilterState = string.IsNullOrWhiteSpace(other.MediaFilterState) ? "全部" : other.MediaFilterState;
+            MediaSearchTextState = other.MediaSearchTextState ?? string.Empty;
         }
 
         private static List<string> ValidateValueRanges(GameSaveCenterSettings value)

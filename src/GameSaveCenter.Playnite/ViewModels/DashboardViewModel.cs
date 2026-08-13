@@ -52,6 +52,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private bool commandRefreshScheduled;
         private readonly DebouncedRefresh taskSearchRefresh;
         private readonly DebouncedRefresh mediaSearchRefresh;
+        private readonly DebouncedRefresh uiStateSave;
         private DateTime lastFullDashboardRefreshUtc=DateTime.MinValue;
         private string statusMessage = "准备就绪";
         private BackupVersionDto selectedBackup = null!;
@@ -130,7 +131,11 @@ namespace GameSaveCenter.Playnite.ViewModels
         public DashboardViewModel(GameSaveCenterPlugin plugin)
         {
             this.plugin = plugin;
-            if (!plugin.Settings.OnboardingCompleted) currentWorkspace = WorkspaceKind.Maintenance;
+            if (!plugin.Settings.OnboardingCompleted)
+                currentWorkspace = WorkspaceKind.Maintenance;
+            else if (Enum.TryParse(plugin.Settings.LastWorkspace, out WorkspaceKind lastWorkspace) &&
+                     Enum.IsDefined(typeof(WorkspaceKind), lastWorkspace))
+                currentWorkspace = lastWorkspace;
             gamePicker = new GamePickerViewModel();
             gamePicker.ApplyPersistedState(plugin.Settings.GamePickerSearchText, plugin.Settings.GamePickerStatusFilter, plugin.Settings.GamePickerPlatformFilter, plugin.Settings.GamePickerSortMode);
             gamePicker.StateChanged += OnGamePickerStateChanged;
@@ -148,6 +153,13 @@ namespace GameSaveCenter.Playnite.ViewModels
             MediaView.Filter = FilterMedia;
             taskSearchRefresh = new DebouncedRefresh(() => ApplyOnUi(RefreshTasksView), TimeSpan.FromMilliseconds(180));
             mediaSearchRefresh = new DebouncedRefresh(() => ApplyOnUi(RefreshMediaView), TimeSpan.FromMilliseconds(180));
+            uiStateSave = new DebouncedRefresh(SaveUiStateSettings, TimeSpan.FromMilliseconds(500));
+            taskStatusFilter = TaskStatusFilterOptions.Contains(plugin.Settings.TaskStatusFilterState) ? plugin.Settings.TaskStatusFilterState : "全部";
+            taskGameFilter = "全部";
+            taskTypeFilter = "全部";
+            taskSearchText = plugin.Settings.TaskSearchTextState ?? string.Empty;
+            mediaFilter = MediaFilterOptions.Contains(plugin.Settings.MediaFilterState) ? plugin.Settings.MediaFilterState : "全部";
+            mediaSearchText = plugin.Settings.MediaSearchTextState ?? string.Empty;
             ApplyGameSort();
             RefreshCommand = new RelayCommand(_ => Run(RefreshAsync), _ => !IsBusy);
             BackupSelectedCommand = new RelayCommand(_ => Run(BackupSelectedAsync), _ => !IsBusy && SelectedGame != null && SelectedGame.LudusaviMatched && Snapshot.LudusaviAvailable);
@@ -404,6 +416,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 SetValue(ref taskSearchText, value ?? string.Empty);
                 taskSearchRefresh.Schedule(value);
+                uiStateSave?.Schedule();
             }
         }
         public string TaskStatusFilter
@@ -413,6 +426,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 SetValue(ref taskStatusFilter, string.IsNullOrWhiteSpace(value) ? "全部" : value);
                 TasksView.Refresh();
+                uiStateSave?.Schedule();
             }
         }
         public string TaskGameFilter
@@ -422,6 +436,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 SetValue(ref taskGameFilter, string.IsNullOrWhiteSpace(value) ? "全部" : value);
                 TasksView.Refresh();
+                uiStateSave?.Schedule();
             }
         }
         public string TaskTypeFilter
@@ -431,10 +446,20 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 SetValue(ref taskTypeFilter, string.IsNullOrWhiteSpace(value) ? "全部" : value);
                 TasksView.Refresh();
+                uiStateSave?.Schedule();
             }
         }
         public int FilteredGameCount { get => filteredGameCount; private set => SetValue(ref filteredGameCount, value); }
-        public WorkspaceKind CurrentWorkspace { get => currentWorkspace; set => SetValue(ref currentWorkspace, value); }
+        public WorkspaceKind CurrentWorkspace
+        {
+            get => currentWorkspace;
+            set
+            {
+                SetValue(ref currentWorkspace, value);
+                plugin.Settings.LastWorkspace = value.ToString();
+                uiStateSave?.Schedule();
+            }
+        }
         public LayoutMode LayoutMode { get => layoutMode; set => SetValue(ref layoutMode, value); }
         public bool ShowTrainerLibrary { get => showTrainerLibrary; set => SetValue(ref showTrainerLibrary, value); }
         public string TrainerSearchText { get => trainerSearchText; set => SetValue(ref trainerSearchText, value ?? string.Empty); }
@@ -538,12 +563,18 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 SetValue(ref mediaSearchText,value??string.Empty);
                 mediaSearchRefresh.Schedule(value);
+                uiStateSave?.Schedule();
             }
         }
         public string MediaFilter
         {
             get => mediaFilter;
-            set { SetValue(ref mediaFilter,string.IsNullOrWhiteSpace(value)?"全部":value); MediaView.Refresh(); }
+            set
+            {
+                SetValue(ref mediaFilter,string.IsNullOrWhiteSpace(value)?"全部":value);
+                MediaView.Refresh();
+                uiStateSave?.Schedule();
+            }
         }
         public GameStatusDto MediaTargetGame
         {
@@ -2630,6 +2661,25 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             try { plugin.SavePluginSettings(plugin.Settings); }
             catch (Exception ex) { Logger.Error(ex, "GameSaveCenter could not save global game picker settings on the UI dispatcher."); }
+        }
+
+        private void SaveUiStateSettings()
+        {
+            try
+            {
+                plugin.Settings.LastWorkspace = CurrentWorkspace.ToString();
+                plugin.Settings.TaskStatusFilterState = TaskStatusFilter;
+                plugin.Settings.TaskGameFilterState = TaskGameFilter;
+                plugin.Settings.TaskTypeFilterState = TaskTypeFilter;
+                plugin.Settings.TaskSearchTextState = TaskSearchText;
+                plugin.Settings.MediaFilterState = MediaFilter;
+                plugin.Settings.MediaSearchTextState = MediaSearchText;
+                plugin.SavePluginSettings(plugin.Settings);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "GameSaveCenter could not save UI state settings.");
+            }
         }
 
         private static bool Contains(string value, string query)

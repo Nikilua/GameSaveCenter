@@ -36,6 +36,14 @@ namespace GameSaveCenter.Playnite.Infrastructure
             _ = RunAsync(cancellation.Token);
         }
 
+        public void Schedule()
+        {
+            CancelPending();
+            var cancellation = new CancellationTokenSource();
+            pending = cancellation;
+            _ = RunAsync(cancellation.Token);
+        }
+
         public void Cancel()
         {
             CancelPending();
