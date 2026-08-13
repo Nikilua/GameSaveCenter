@@ -272,7 +272,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         };
         public IReadOnlyList<GameToolRiskOption> GameToolRiskCategoryOptions { get; } = new[]
         {
-            new GameToolRiskOption(GameToolRiskCategory.Unknown, "未分类（自动启动将暂缓）"),
+            new GameToolRiskOption(GameToolRiskCategory.Unknown, "未分类（反作弊游戏需授权）"),
             new GameToolRiskOption(GameToolRiskCategory.GeneralUtility, "通用工具"),
             new GameToolRiskOption(GameToolRiskCategory.GameModification, "游戏修改工具")
         };
@@ -1548,6 +1548,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 LaunchDelaySeconds=Math.Max(0,Math.Min(300,tool.LaunchDelaySeconds)),CloseOnGameExit=closeOnExit,
                 RequiresAdmin=requiresAdmin,ActiveVersionId=tool.ActiveVersionId,
                 IfAlreadyRunning=tool.IfAlreadyRunning,RiskCategory=tool.RiskCategory,
+                AllowUnknownToolWithAntiCheat=tool.AllowUnknownToolWithAntiCheat,
                 DisplayName=tool.DisplayName?.Trim()??string.Empty,
                 WorkingDirectory=tool.ActiveVersion.WorkingDirectory??string.Empty,
                 Arguments=tool.ActiveVersion.Arguments??string.Empty

@@ -20,6 +20,7 @@ namespace GameSaveCenter.Contracts
         public bool RequiresAdmin { get; set; }
         public GameToolIfAlreadyRunning IfAlreadyRunning { get; set; } = GameToolIfAlreadyRunning.Skip;
         public GameToolRiskCategory RiskCategory { get; set; } = GameToolRiskCategory.Unknown;
+        public bool AllowUnknownToolWithAntiCheat { get; set; }
         public string ActiveVersionId { get; set; } = string.Empty;
         public DateTime CreatedUtc { get; set; }
         public DateTime UpdatedUtc { get; set; }
@@ -59,7 +60,7 @@ namespace GameSaveCenter.Contracts
             _ => "未分类"
         };
         public string AutoStartRiskHint => IsCustomExecutable && AutoStart && RiskCategory == GameToolRiskCategory.Unknown
-            ? "自动启动已暂缓：请先将工具分类为通用工具或游戏修改工具。"
+            ? "未分类工具：普通游戏可自动启动；反作弊游戏需在下方显式授权。"
             : string.Empty;
         public string FileStateDisplay => ActiveVersion.IsAvailable ? "已就绪" : "文件缺失";
         /// <summary>Readable compact-card status; do not expose the raw AutoStart Boolean.</summary>
@@ -132,6 +133,7 @@ namespace GameSaveCenter.Contracts
         public bool RequiresAdmin { get; set; }
         public GameToolIfAlreadyRunning IfAlreadyRunning { get; set; } = GameToolIfAlreadyRunning.Skip;
         public GameToolRiskCategory RiskCategory { get; set; } = GameToolRiskCategory.Unknown;
+        public bool AllowUnknownToolWithAntiCheat { get; set; }
         public string ActiveVersionId { get; set; } = string.Empty;
         public string DisplayName { get; set; } = string.Empty;
         public string WorkingDirectory { get; set; } = string.Empty;

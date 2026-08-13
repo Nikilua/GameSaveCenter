@@ -2433,14 +2433,20 @@ public sealed class WpfUiResourceDictionaryTests
         var repositoryRoot = FindRepositoryRoot();
         var trainer = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml"));
         var contract = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Contracts", "TrainerDtos.cs"));
+        var viewModel = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
 
         Assert.Contains("GameToolIfAlreadyRunningOptions", trainer);
         Assert.Contains("GameToolRiskCategoryOptions", trainer);
         Assert.Contains("SelectedGameTool.IfAlreadyRunning", trainer);
         Assert.Contains("SelectedGameTool.RiskCategory", trainer);
+        Assert.Contains("SelectedGameTool.AllowUnknownToolWithAntiCheat", trainer);
+        Assert.Contains("反作弊游戏中允许此未分类工具自动启动", trainer);
+        Assert.Contains("未分类（反作弊游戏需授权）", viewModel);
+        Assert.DoesNotContain("自动启动将暂缓", viewModel);
         Assert.Contains("GAME_TOOL_PROCESS_UNREADABLE", File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Worker", "Services", "GameToolService.cs")));
         Assert.Contains("GameToolIfAlreadyRunning IfAlreadyRunning", contract);
         Assert.Contains("GameToolRiskCategory RiskCategory", contract);
+        Assert.Contains("AllowUnknownToolWithAntiCheat", contract);
     }
 
     [Fact]

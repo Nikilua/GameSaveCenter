@@ -38,6 +38,7 @@ public sealed class GameToolPolicyPersistenceTests : IDisposable
             DisplayName = "Utility",
             IfAlreadyRunning = GameToolIfAlreadyRunning.Restart,
             RiskCategory = GameToolRiskCategory.GeneralUtility,
+            AllowUnknownToolWithAntiCheat = true,
             ActiveVersionId = "version",
             CreatedUtc = now,
             UpdatedUtc = now
@@ -55,6 +56,7 @@ public sealed class GameToolPolicyPersistenceTests : IDisposable
 
         Assert.Equal(GameToolIfAlreadyRunning.Restart, saved.IfAlreadyRunning);
         Assert.Equal(GameToolRiskCategory.GeneralUtility, saved.RiskCategory);
+        Assert.True(saved.AllowUnknownToolWithAntiCheat);
     }
 
     public void Dispose()

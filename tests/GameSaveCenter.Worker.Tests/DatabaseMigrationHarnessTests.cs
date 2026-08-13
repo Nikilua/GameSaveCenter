@@ -42,7 +42,7 @@ VALUES ('m1','g1',0,0,'C:\\archive\\x.png','C:\\source\\x.png','2026-01-01T00:00
                 ["backup_versions"] = new[] { "archive_path", "restore_readiness_json" },
                 ["media"] = new[] { "classification_state", "classification_reason" },
                 ["media_sources"] = new[] { "shared_directory" },
-                ["game_tools"] = new[] { "if_already_running", "risk_category" },
+                ["game_tools"] = new[] { "if_already_running", "risk_category", "allow_unknown_anticheat_autostart" },
                 ["game_tool_versions"] = new[] { "resolved_target_path" },
                 ["protection_prompt_states"] = new[] { "state", "last_save_recognized", "last_observed_utc", "last_prompt_utc" }
             },

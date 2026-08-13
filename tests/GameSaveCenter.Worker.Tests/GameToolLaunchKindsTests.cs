@@ -70,14 +70,28 @@ public sealed class GameToolLaunchKindsTests
     }
 
     [Theory]
-    [InlineData(GameToolType.CustomExecutable, GameToolRiskCategory.GeneralUtility, true, true)]
-    [InlineData(GameToolType.CustomExecutable, GameToolRiskCategory.GameModification, true, false)]
-    [InlineData(GameToolType.CustomExecutable, GameToolRiskCategory.Unknown, false, false)]
-    [InlineData(GameToolType.Trainer, GameToolRiskCategory.Unknown, true, false)]
-    [InlineData(GameToolType.CheatTable, GameToolRiskCategory.Unknown, true, false)]
-    public void AntiCheatAutoStartUsesRiskCategory(GameToolType type, GameToolRiskCategory risk, bool antiCheat, bool expected)
+    [InlineData(GameToolType.CustomExecutable, GameToolRiskCategory.GeneralUtility, true, false, true)]
+    [InlineData(GameToolType.CustomExecutable, GameToolRiskCategory.GeneralUtility, false, false, true)]
+    [InlineData(GameToolType.CustomExecutable, GameToolRiskCategory.GameModification, true, false, false)]
+    [InlineData(GameToolType.CustomExecutable, GameToolRiskCategory.GameModification, false, false, true)]
+    [InlineData(GameToolType.CustomExecutable, GameToolRiskCategory.Unknown, false, false, true)]
+    [InlineData(GameToolType.CustomExecutable, GameToolRiskCategory.Unknown, true, false, false)]
+    [InlineData(GameToolType.CustomExecutable, GameToolRiskCategory.Unknown, true, true, true)]
+    [InlineData(GameToolType.Trainer, GameToolRiskCategory.Unknown, true, false, false)]
+    [InlineData(GameToolType.CheatTable, GameToolRiskCategory.Unknown, true, false, false)]
+    public void AntiCheatAutoStartUsesRiskCategoryAndExplicitUnknownApproval(
+        GameToolType type,
+        GameToolRiskCategory risk,
+        bool antiCheat,
+        bool approved,
+        bool expected)
     {
-        var tool = new GameToolDto { ToolType = type, RiskCategory = risk };
+        var tool = new GameToolDto
+        {
+            ToolType = type,
+            RiskCategory = risk,
+            AllowUnknownToolWithAntiCheat = approved
+        };
         Assert.Equal(expected, GameToolAutoStartPolicy.IsAllowed(tool, antiCheat, out _));
     }
 

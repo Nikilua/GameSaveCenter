@@ -124,6 +124,9 @@ namespace GameSaveCenter.Playnite.Infrastructure
             && a.LaunchDelaySeconds == b.LaunchDelaySeconds
             && a.CloseOnGameExit == b.CloseOnGameExit
             && a.RequiresAdmin == b.RequiresAdmin
+            && a.IfAlreadyRunning == b.IfAlreadyRunning
+            && a.RiskCategory == b.RiskCategory
+            && a.AllowUnknownToolWithAntiCheat == b.AllowUnknownToolWithAntiCheat
             && string.Equals(a.ActiveVersionId, b.ActiveVersionId, StringComparison.Ordinal)
             && a.CreatedUtc == b.CreatedUtc
             && a.UpdatedUtc == b.UpdatedUtc
