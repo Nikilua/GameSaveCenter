@@ -431,6 +431,20 @@ public sealed class FakeDashboardData
         RcloneExecutable = @"D:\Tools\rclone.exe",
         RcloneDestinationConfigured = true,
         MediaArchiveDirectory = @"D:\GameSaveCenter\media"
+        ,
+        EnableLocalMirror = true,
+        LocalMirrorPath = @"H:\GameSaveCenter-Mirror"
+    };
+    public LocalMirrorStatusDto LocalMirrorStatus { get; } = new LocalMirrorStatusDto
+    {
+        Enabled = true,
+        Available = true,
+        MirrorPath = @"H:\GameSaveCenter-Mirror",
+        LastSyncUtc = DateTime.UtcNow.AddHours(-2),
+        CopiedCount = 184,
+        VerifiedCount = 184,
+        TotalBytes = 128L * 1024 * 1024 * 1024,
+        Message = "镜像可用：184 个文件，共 128 GiB；最近同步 2026-08-14 00:00。"
     };
     public int RunningTaskCount { get; }
     public int RetryableTaskCount { get; }

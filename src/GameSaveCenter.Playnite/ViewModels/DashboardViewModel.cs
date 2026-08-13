@@ -86,6 +86,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string taskReconcileSummary = "尚未协调中断任务。";
         private StorageAnalysisDto storageAnalysis = new StorageAnalysisDto { Summary = "尚未分析备份存储。" };
         private RetentionSimulationPreviewDto retentionSimulation = new RetentionSimulationPreviewDto { Summary = "尚未生成全局保留预览。" };
+        private LocalMirrorStatusDto localMirrorStatus = new LocalMirrorStatusDto { Message = "尚未检查本地镜像。" };
         private string diffSummary = string.Empty;
         private string retentionSummary = string.Empty;
         private BackupPolicyTemplateDto selectedPolicyTemplate = null!;
@@ -198,6 +199,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             RefreshStorageAnalysisCommand = new RelayCommand(_ => Run(RefreshStorageAnalysisAsync), _ => !IsBusy);
             RefreshRetentionSimulationCommand = new RelayCommand(_ => Run(RefreshRetentionSimulationAsync), _ => !IsBusy);
             ApplyRetentionSimulationCommand = new RelayCommand(_ => Run(ApplyRetentionSimulationAsync), _ => !IsBusy && RetentionSimulation.DeleteCandidateCount > 0);
+            RefreshLocalMirrorStatusCommand = new RelayCommand(_ => Run(RefreshLocalMirrorStatusAsync), _ => !IsBusy);
+            SyncLocalMirrorCommand = new RelayCommand(_ => Run(SyncLocalMirrorAsync), _ => !IsBusy && EffectiveSettings.EnableLocalMirror);
             ExitSafeModeCommand = new RelayCommand(_ => Run(ExitSafeModeAsync), _ => !IsBusy);
             RunEnvironmentCheckCommand = new RelayCommand(_ => Run(RunEnvironmentCheckAsync), _ => !IsBusy);
             SkipOnboardingCommand = new RelayCommand(_ => SkipOnboarding(), _ => !IsBusy && IsOnboardingPending);
@@ -356,6 +359,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public string TaskReconcileSummary { get => taskReconcileSummary; private set => SetValue(ref taskReconcileSummary, value); }
         public StorageAnalysisDto StorageAnalysis { get => storageAnalysis; private set => SetValue(ref storageAnalysis, value ?? new StorageAnalysisDto()); }
         public RetentionSimulationPreviewDto RetentionSimulation { get => retentionSimulation; private set => SetValue(ref retentionSimulation, value ?? new RetentionSimulationPreviewDto()); }
+        public LocalMirrorStatusDto LocalMirrorStatus { get => localMirrorStatus; private set => SetValue(ref localMirrorStatus, value ?? new LocalMirrorStatusDto()); }
         public string GameSearchText
         {
             get => gameSearchText;
@@ -651,6 +655,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand RefreshStorageAnalysisCommand { get; }
         public ICommand RefreshRetentionSimulationCommand { get; }
         public ICommand ApplyRetentionSimulationCommand { get; }
+        public ICommand RefreshLocalMirrorStatusCommand { get; }
+        public ICommand SyncLocalMirrorCommand { get; }
         public ICommand ExitSafeModeCommand { get; }
         public ICommand RunEnvironmentCheckCommand { get; }
         public ICommand SkipOnboardingCommand { get; }
@@ -1390,6 +1396,28 @@ namespace GameSaveCenter.Playnite.ViewModels
             await RefreshDashboardAsync(false, false);
         }
 
+        private async Task RefreshLocalMirrorStatusAsync()
+        {
+            var result = await plugin.RequestAsync<LocalMirrorStatusDto>(MessageTypes.MirrorLocalStatus, new { }, TimeSpan.FromMinutes(2));
+            ApplyOnUi(() =>
+            {
+                LocalMirrorStatus = result;
+                StatusMessage = result.Message;
+                RaiseCommandStates();
+            });
+        }
+
+        private async Task SyncLocalMirrorAsync()
+        {
+            var result = await plugin.RequestAsync<LocalMirrorSyncResultDto>(MessageTypes.MirrorLocalSync, new { }, TimeSpan.FromMinutes(30));
+            ApplyOnUi(() =>
+            {
+                StatusMessage = result.Message;
+                plugin.ShowInfo(result.Message);
+            });
+            await RefreshLocalMirrorStatusAsync();
+        }
+
         private void SkipOnboarding()
         {
             plugin.Settings.OnboardingCompleted = true;
@@ -1435,6 +1463,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             await LoadDiagnosticsAsync();
             await RefreshStorageAnalysisAsync();
             await RefreshRetentionSimulationAsync();
+            await RefreshLocalMirrorStatusAsync();
             StatusMessage = "诊断信息已更新";
         }
 
@@ -2605,7 +2634,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 UpdateMediaMetadataCommand,OpenSelectedMediaCommand,RevealSelectedMediaCommand,
                 AssignInboxMediaCommand, IgnoreInboxMediaCommand,
                 CancelTaskCommand, RetryTaskCommand, CopyTaskErrorCommand, RefreshDiagnosticsCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
-                StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,RefreshRetentionSimulationCommand,ApplyRetentionSimulationCommand,
+                StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,RefreshRetentionSimulationCommand,ApplyRetentionSimulationCommand,RefreshLocalMirrorStatusCommand,SyncLocalMirrorCommand,
                 SaveProcessMappingCommand,DeleteProcessMappingCommand,RunEnvironmentCheckCommand,SkipOnboardingCommand,CompleteOnboardingCommand,OnboardingTestBackupCommand,
                 OpenDataDirectoryCommand, OpenBackupDirectoryCommand, OpenMediaDirectoryCommand, OpenWorkerLogCommand
                 ,ImportTrainerCommand,ImportCheatTableCommand,ImportCustomLaunchItemCommand,ImportToolFolderCommand,SaveGameToolCommand,LaunchGameToolCommand,

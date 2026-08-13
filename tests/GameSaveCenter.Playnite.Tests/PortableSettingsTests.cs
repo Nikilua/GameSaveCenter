@@ -34,6 +34,8 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Equal(source.RecentProtectionWindowDays, imported.RecentProtectionWindowDays);
             Assert.Equal(source.EnableXboxGameBarMedia, imported.EnableXboxGameBarMedia);
             Assert.Equal(source.EnableCustomMedia, imported.EnableCustomMedia);
+            Assert.Equal(source.EnableLocalMirror, imported.EnableLocalMirror);
+            Assert.Equal(source.LocalMirrorPath, imported.LocalMirrorPath);
             Assert.Equal(source.OnboardingCompleted, imported.OnboardingCompleted);
             Assert.Equal(source.NotificationLevel, imported.NotificationLevel);
             Assert.Equal(source.SafeModeEnabled, imported.SafeModeEnabled);
@@ -73,6 +75,8 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.True(imported.EnableWindowsScreenshotMedia);
             Assert.True(imported.EnablePlatformAdjacentMedia);
             Assert.True(imported.EnableCustomMedia);
+            Assert.False(imported.EnableLocalMirror);
+            Assert.Equal(string.Empty, imported.LocalMirrorPath);
             Assert.Equal(destinationDeviceId, imported.DeviceId);
         }
 
@@ -130,11 +134,13 @@ namespace GameSaveCenter.Playnite.Tests
             settings.RcloneExecutable = Path.Combine(root, "rclone.exe");
             settings.LudusaviBackupDirectory = Path.Combine(root, "Saves");
             settings.MediaArchiveDirectory = Path.Combine(root, "Media");
+            settings.EnableLocalMirror = true;
+            settings.LocalMirrorPath = Path.Combine(root, "Mirror");
 
             var imported = new GameSaveCenterSettings();
             var report = imported.ImportPortableJson(settings.ExportPortableJson());
 
-            Assert.Equal(5, report.MissingPaths.Count);
+            Assert.Equal(6, report.MissingPaths.Count);
             Assert.False(Directory.Exists(root));
         }
 
@@ -146,6 +152,8 @@ namespace GameSaveCenter.Playnite.Tests
             RcloneExecutable = @"C:\Tools\rclone.exe",
             RcloneDestination = "encrypted-remote:GameSaveCenter",
             MediaArchiveDirectory = @"D:\Backups\Media",
+            EnableLocalMirror = true,
+            LocalMirrorPath = @"H:\GameSaveCenter-Mirror",
             AutoStartWorker = false,
             EnableProcessDetection = true,
             EnableSessionSavePathDetection = false,

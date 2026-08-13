@@ -25,6 +25,8 @@ public sealed class WorkerOptions
     public string RcloneExecutable { get; set; } = string.Empty;
     public string RcloneDestination { get; set; } = string.Empty;
     public string MediaArchiveDirectory { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "GameSaveCenter");
+    public bool EnableLocalMirror { get; set; }
+    public string LocalMirrorPath { get; set; } = string.Empty;
     public int ProcessPollingSeconds { get; set; } = 5;
     public int DefaultBackupIntervalMinutes { get; set; } = 30;
     public bool EnableProcessDetection { get; set; } = true;
@@ -69,6 +71,8 @@ public sealed class WorkerOptions
         RcloneExecutable = Expand(settings.RcloneExecutable);
         RcloneDestination = settings.RcloneDestination ?? string.Empty;
         MediaArchiveDirectory = Expand(settings.MediaArchiveDirectory);
+        EnableLocalMirror = settings.EnableLocalMirror;
+        LocalMirrorPath = Expand(settings.LocalMirrorPath);
         ProcessPollingSeconds = Math.Clamp(settings.ProcessPollingSeconds, 2, 60);
         DefaultBackupIntervalMinutes = Math.Clamp(settings.DefaultBackupIntervalMinutes, 1, 1440);
         EnableProcessDetection = settings.EnableProcessDetection;
@@ -99,6 +103,8 @@ public sealed class WorkerOptions
         RcloneExecutable = RcloneExecutable,
         RcloneDestination = RcloneDestination,
         MediaArchiveDirectory = MediaArchiveDirectory,
+        EnableLocalMirror = EnableLocalMirror,
+        LocalMirrorPath = LocalMirrorPath,
         ProcessPollingSeconds = ProcessPollingSeconds,
         DefaultBackupIntervalMinutes = DefaultBackupIntervalMinutes,
         EnableProcessDetection = EnableProcessDetection,
@@ -147,6 +153,7 @@ public sealed class WorkerOptions
         RcloneExecutable = Expand(RcloneExecutable);
         RcloneDestination = Environment.ExpandEnvironmentVariables(RcloneDestination ?? string.Empty);
         MediaArchiveDirectory = Expand(MediaArchiveDirectory);
+        LocalMirrorPath = Expand(LocalMirrorPath);
         ProcessPollingSeconds = Math.Clamp(ProcessPollingSeconds, 2, 60);
         DefaultBackupIntervalMinutes = Math.Clamp(DefaultBackupIntervalMinutes, 1, 1440);
         Compression = NormalizeCompression(Compression);

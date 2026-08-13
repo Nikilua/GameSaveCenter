@@ -39,13 +39,14 @@ public sealed class IpcRequestDispatcher
     private readonly TaskReconcileService _taskReconcile;
     private readonly StorageAnalysisService _storageAnalysis;
     private readonly RetentionSimulationService _retentionSimulation;
+    private readonly LocalMirrorService _localMirror;
     private readonly ILogger<IpcRequestDispatcher> _logger;
 
     public IpcRequestDispatcher(GameCatalogService catalog,GameSessionCoordinator sessions,BackupOrchestrator backup,RestoreOrchestrator restore,
         MediaSyncService media,SavePathDetectionService detection,DashboardService dashboard,SqliteStateStore store,TaskCoordinator tasks,
         LudusaviClient ludusavi,WorkerOptions options,GameToolService gameTools,ITrainerCatalogSource trainerCatalog,
-        DeviceStateService deviceStates,RemoteBackupStagingService remoteBackups,RestoreReadinessService restoreReadiness,EnvironmentCheckService environment,DiagnosticsPackageService diagnostics,IntegrityCheckService integrityCheck,MetadataBackupService metadataBackup,RepositoryRebuildService repositoryRebuild,PathRemapService pathRemap,TaskReconcileService taskReconcile,StorageAnalysisService storageAnalysis,RetentionSimulationService retentionSimulation,ILogger<IpcRequestDispatcher> logger)
-    { _catalog=catalog;_sessions=sessions;_backup=backup;_restore=restore;_media=media;_detection=detection;_dashboard=dashboard;_store=store;_tasks=tasks;_ludusavi=ludusavi;_options=options;_gameTools=gameTools;_trainerCatalog=trainerCatalog;_deviceStates=deviceStates;_remoteBackups=remoteBackups;_restoreReadiness=restoreReadiness;_environment=environment;_diagnostics=diagnostics;_integrityCheck=integrityCheck;_metadataBackup=metadataBackup;_repositoryRebuild=repositoryRebuild;_pathRemap=pathRemap;_taskReconcile=taskReconcile;_storageAnalysis=storageAnalysis;_retentionSimulation=retentionSimulation;_logger=logger; }
+        DeviceStateService deviceStates,RemoteBackupStagingService remoteBackups,RestoreReadinessService restoreReadiness,EnvironmentCheckService environment,DiagnosticsPackageService diagnostics,IntegrityCheckService integrityCheck,MetadataBackupService metadataBackup,RepositoryRebuildService repositoryRebuild,PathRemapService pathRemap,TaskReconcileService taskReconcile,StorageAnalysisService storageAnalysis,RetentionSimulationService retentionSimulation,LocalMirrorService localMirror,ILogger<IpcRequestDispatcher> logger)
+    { _catalog=catalog;_sessions=sessions;_backup=backup;_restore=restore;_media=media;_detection=detection;_dashboard=dashboard;_store=store;_tasks=tasks;_ludusavi=ludusavi;_options=options;_gameTools=gameTools;_trainerCatalog=trainerCatalog;_deviceStates=deviceStates;_remoteBackups=remoteBackups;_restoreReadiness=restoreReadiness;_environment=environment;_diagnostics=diagnostics;_integrityCheck=integrityCheck;_metadataBackup=metadataBackup;_repositoryRebuild=repositoryRebuild;_pathRemap=pathRemap;_taskReconcile=taskReconcile;_storageAnalysis=storageAnalysis;_retentionSimulation=retentionSimulation;_localMirror=localMirror;_logger=logger; }
 
     public async Task<IpcEnvelope> DispatchAsync(IpcEnvelope request,CancellationToken token)
     {
@@ -134,6 +135,8 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.StorageAnalysis=>await _storageAnalysis.AnalyzeAsync(token).ConfigureAwait(false),
                 MessageTypes.PreviewRetentionSimulation=>await _retentionSimulation.PreviewAsync(token).ConfigureAwait(false),
                 MessageTypes.ApplyRetentionSimulation=>await _retentionSimulation.ApplyAsync(Read<RetentionSimulationApplyRequestDto>(request),token).ConfigureAwait(false),
+                MessageTypes.MirrorLocalStatus=>await _localMirror.StatusAsync(token).ConfigureAwait(false),
+                MessageTypes.MirrorLocalSync=>await _localMirror.SyncAsync(token).ConfigureAwait(false),
                 MessageTypes.CancelTask=>new CancelTaskResultDto{Cancelled=_tasks.Cancel(Read<CancelTaskRequestDto>(request).TaskId)},
                 MessageTypes.ListGameTools=>await _gameTools.ListAsync(Read<GameQueryDto>(request).PlayniteId,token).ConfigureAwait(false),
                 MessageTypes.InspectGameToolImport=>await _gameTools.InspectImportAsync(Read<InspectGameToolImportRequestDto>(request),token).ConfigureAwait(false),
@@ -520,6 +523,8 @@ public sealed class IpcRequestDispatcher
         RcloneExecutable=_options.RcloneExecutable,
         RcloneDestinationConfigured=!string.IsNullOrWhiteSpace(_options.RcloneDestination),
         MediaArchiveDirectory=_options.MediaArchiveDirectory,
+        EnableLocalMirror=_options.EnableLocalMirror,
+        LocalMirrorPath=_options.LocalMirrorPath,
         ProcessPollingSeconds=_options.ProcessPollingSeconds,
         DefaultBackupIntervalMinutes=_options.DefaultBackupIntervalMinutes,
         EnableProcessDetection=_options.EnableProcessDetection,

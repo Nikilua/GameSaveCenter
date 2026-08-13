@@ -75,6 +75,22 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         [Fact]
+        public void SettingsAndMaintenanceExposeLocalMirrorConfiguration()
+        {
+            var root = FindRepositoryRoot();
+            var settings = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml"));
+            var maintenance = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+            var code = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml.cs"));
+
+            Assert.Contains("IsChecked=\"{Binding EnableLocalMirror}\"", settings);
+            Assert.Contains("Text=\"{Binding LocalMirrorPath", settings);
+            Assert.Contains("Command=\"{Binding RefreshLocalMirrorStatusCommand}\"", maintenance);
+            Assert.Contains("Command=\"{Binding SyncLocalMirrorCommand}\"", maintenance);
+            Assert.Contains("x:Name=\"MaintenanceLocalMirrorMetrics\"", maintenance);
+            Assert.Contains("MaintenanceLocalMirrorMetrics.Columns = width >= 720 ? 3 : 1", code);
+        }
+
+        [Fact]
         public void SharedInputChromeKeepsRoundedBoundsAndCenteredContent()
         {
             var root = FindRepositoryRoot();

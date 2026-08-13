@@ -46,6 +46,8 @@ namespace GameSaveCenter.Playnite.Settings
         public string RcloneExecutable { get; set; } = string.Empty;
         public string RcloneDestination { get; set; } = string.Empty;
         public string MediaArchiveDirectory { get; set; } = string.Empty;
+        public bool EnableLocalMirror { get; set; }
+        public string LocalMirrorPath { get; set; } = string.Empty;
         public bool AutoStartWorker { get; set; } = true;
         /// <summary>Whether the first-use environment preparation card was completed or skipped.</summary>
         public bool OnboardingCompleted { get; set; }
@@ -117,6 +119,7 @@ namespace GameSaveCenter.Playnite.Settings
             AddMissingFile(report, "Rclone", RcloneExecutable);
             AddMissingDirectory(report, "存档目录", LudusaviBackupDirectory);
             AddMissingDirectory(report, "媒体目录", MediaArchiveDirectory);
+            if (EnableLocalMirror) AddMissingDirectory(report, "本地镜像", LocalMirrorPath);
             return report;
         }
 
@@ -142,6 +145,8 @@ namespace GameSaveCenter.Playnite.Settings
                 errors.Add("未找到 GameSaveCenter Worker。请先运行打包脚本，或选择正确的 Worker 可执行文件。");
             else if (!IsWorkerExecutable(WorkerExecutable))
                 errors.Add("Worker 路径必须指向 GameSaveCenter.Worker.exe，不能选择 Ludusavi 或其他程序。");
+            if (EnableLocalMirror && string.IsNullOrWhiteSpace(LocalMirrorPath))
+                errors.Add("启用本地镜像时必须填写镜像目录。");
             if (!string.IsNullOrWhiteSpace(LudusaviExecutable) && !File.Exists(Environment.ExpandEnvironmentVariables(LudusaviExecutable)))
                 errors.Add("Ludusavi 路径不存在。");
             if (!string.IsNullOrWhiteSpace(RcloneExecutable) && !File.Exists(Environment.ExpandEnvironmentVariables(RcloneExecutable)))
@@ -175,6 +180,8 @@ namespace GameSaveCenter.Playnite.Settings
             RcloneExecutable = Expand(RcloneExecutable),
             RcloneDestination = RcloneDestination ?? string.Empty,
             MediaArchiveDirectory = Expand(MediaArchiveDirectory),
+            EnableLocalMirror = EnableLocalMirror,
+            LocalMirrorPath = Expand(LocalMirrorPath),
             ProcessPollingSeconds = ProcessPollingSeconds,
             DefaultBackupIntervalMinutes = DefaultBackupIntervalMinutes,
             EnableProcessDetection = EnableProcessDetection,
@@ -244,6 +251,8 @@ namespace GameSaveCenter.Playnite.Settings
             RcloneExecutable = other.RcloneExecutable;
             RcloneDestination = other.RcloneDestination;
             MediaArchiveDirectory = other.MediaArchiveDirectory;
+            EnableLocalMirror = other.EnableLocalMirror;
+            LocalMirrorPath = other.LocalMirrorPath;
             AutoStartWorker = other.AutoStartWorker;
             OnboardingCompleted = other.OnboardingCompleted;
             EnableProcessDetection = other.EnableProcessDetection;

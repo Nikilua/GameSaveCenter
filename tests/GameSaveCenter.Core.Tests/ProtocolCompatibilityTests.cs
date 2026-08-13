@@ -32,5 +32,6 @@ public sealed class ProtocolCompatibilityTests
         Assert.Contains("AtomicIo", WorkerCapabilities.Current);
         Assert.Contains("StorageAnalysis", WorkerCapabilities.Current);
         Assert.Contains("RetentionSimulation", WorkerCapabilities.Current);
+        Assert.Contains("LocalMirror", WorkerCapabilities.Current);
     }
 }

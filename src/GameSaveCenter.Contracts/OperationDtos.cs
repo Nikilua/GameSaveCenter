@@ -320,6 +320,8 @@ namespace GameSaveCenter.Contracts
         public string RcloneExecutable { get; set; } = string.Empty;
         public bool RcloneDestinationConfigured { get; set; }
         public string MediaArchiveDirectory { get; set; } = string.Empty;
+        public bool EnableLocalMirror { get; set; }
+        public string LocalMirrorPath { get; set; } = string.Empty;
         public int ProcessPollingSeconds { get; set; } = 5;
         public int DefaultBackupIntervalMinutes { get; set; } = 30;
         public bool EnableProcessDetection { get; set; } = true;
@@ -377,6 +379,8 @@ namespace GameSaveCenter.Contracts
         public string RcloneExecutable { get; set; } = string.Empty;
         public string RcloneDestination { get; set; } = string.Empty;
         public string MediaArchiveDirectory { get; set; } = string.Empty;
+        public bool EnableLocalMirror { get; set; }
+        public string LocalMirrorPath { get; set; } = string.Empty;
         public int ProcessPollingSeconds { get; set; } = 5;
         public int DefaultBackupIntervalMinutes { get; set; } = 30;
         public bool EnableProcessDetection { get; set; } = true;

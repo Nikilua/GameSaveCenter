@@ -402,6 +402,32 @@
                                 </TextBlock>
                             </StackPanel>
                         </Border>
+                        <Border Style="{DynamicResource GscReadingCardStyle}" Padding="18" Margin="0,14,0,0">
+                            <StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                    <StackPanel MinWidth="0">
+                                        <TextBlock Text="第二本地镜像" Style="{DynamicResource GscSectionTitleStyle}"/>
+                                        <TextBlock Text="只复制和校验；主仓库删除后不会自动删除镜像历史，外置硬盘未连接时显示不可用。" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                        <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RefreshLocalMirrorStatusCommand}" Content="刷新状态" Margin="0,0,8,0"/>
+                                        <ui:Button Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding SyncLocalMirrorCommand}" Content="同步镜像" ToolTip="把存档目录复制到本地镜像并校验大小；不会删除镜像中多余文件"/>
+                                    </StackPanel>
+                                </Grid>
+                                <Border Style="{DynamicResource GscRedesignInfoBand}" Padding="12" Margin="0,12,0,0">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding LocalMirrorStatus.Message}" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap"/>
+                                        <TextBlock Text="{Binding EffectiveSettings.LocalMirrorPath, TargetNullValue=尚未设置镜像目录}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextTrimming="CharacterEllipsis" ToolTip="{Binding EffectiveSettings.LocalMirrorPath}" Margin="0,6,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                                <UniformGrid x:Name="MaintenanceLocalMirrorMetrics" Columns="3" Margin="0,14,0,0">
+                                    <Border Style="{DynamicResource GscRedesignMetricBorder}" Margin="0,0,8,0"><StackPanel><TextBlock Text="状态" Style="{DynamicResource GscCaptionStyle}"/><TextBlock Text="{Binding LocalMirrorStatus.AvailableDisplay, FallbackValue=不可用}" FontSize="22" FontWeight="SemiBold" Margin="0,8,0,0"/><TextBlock Text="外置盘在线" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/></StackPanel></Border>
+                                    <Border Style="{DynamicResource GscRedesignMetricBorder}" Margin="0,0,8,0"><StackPanel><TextBlock Text="已同步文件" Style="{DynamicResource GscCaptionStyle}"/><TextBlock Text="{Binding LocalMirrorStatus.CopiedCount, FallbackValue=0}" FontSize="22" FontWeight="SemiBold" Margin="0,8,0,0"/><TextBlock Text="镜像内文件" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/></StackPanel></Border>
+                                    <Border Style="{DynamicResource GscRedesignMetricBorder}"><StackPanel><TextBlock Text="镜像体积" Style="{DynamicResource GscCaptionStyle}"/><TextBlock Text="{Binding LocalMirrorStatus.TotalBytesDisplay, FallbackValue=—}" FontSize="22" FontWeight="SemiBold" Margin="0,8,0,0"/><TextBlock Text="{Binding LocalMirrorStatus.LastSyncDisplay, StringFormat=最近同步：{0}}" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/></StackPanel></Border>
+                                </UniformGrid>
+                            </StackPanel>
+                        </Border>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
