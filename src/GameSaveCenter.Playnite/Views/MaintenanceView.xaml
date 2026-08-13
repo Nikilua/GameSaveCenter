@@ -69,7 +69,7 @@
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
                     <Border x:Name="EnvironmentCheckCard" Grid.Row="0" Style="{DynamicResource GscReadingCardStyle}" Padding="16" Margin="0,0,0,10">
                         <Grid>
-                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                             <StackPanel MinWidth="0">
                                 <TextBlock Text="{Binding OnboardingTitle}" Style="{DynamicResource GscSectionTitleStyle}"/>
@@ -124,6 +124,7 @@
                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RunIntegrityCheckCommand}" Content="完整性自检" Margin="0,0,0,8"/>
                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CreateMetadataBackupCommand}" Content="导出元数据灾备" Margin="0,0,0,8" ToolTip="生成 SQLite 快照、Worker 设置和版本清单，不包含存档/媒体/凭据"/>
                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RebuildRepositoryCommand}" Content="重建备份索引" Margin="0,0,0,8" ToolTip="按 Ludusavi 磁盘实际备份列表重建 SQLite 索引"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding ReconcileTasksCommand}" Content="协调中断任务" Margin="0,0,0,8" ToolTip="把 Worker 重启后遗留的排队/运行中任务标记为 WORKER_RESTARTED"/>
                             </WrapPanel>
                             <Border Grid.Row="2" Grid.ColumnSpan="2" Margin="0,14,0,0" Padding="12" Background="{DynamicResource GscSafetyFillBrush}" BorderBrush="{DynamicResource GscWarningBrush}" BorderThickness="1" CornerRadius="10">
                                 <Border.Style>
@@ -158,6 +159,9 @@
                                     <ui:Button Style="{StaticResource GscWpfUiActionButton}" Command="{Binding RunPathRemapCommand}" Content="执行路径迁移" HorizontalAlignment="Left"/>
                                     <TextBlock Text="{Binding PathRemapSummary, TargetNullValue=尚未执行路径迁移。}" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap" Margin="0,10,0,0"/>
                                 </StackPanel>
+                            </Border>
+                            <Border Grid.Row="7" Grid.ColumnSpan="2" Style="{DynamicResource GscRedesignInfoBand}" Padding="12" Margin="0,8,0,0">
+                                <TextBlock Text="{Binding TaskReconcileSummary, TargetNullValue=尚未协调中断任务。}" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap"/>
                             </Border>
                         </Grid>
                     </Border>

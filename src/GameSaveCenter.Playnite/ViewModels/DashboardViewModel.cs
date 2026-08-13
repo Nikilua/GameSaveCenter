@@ -81,6 +81,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string pathRemapOldRoot = string.Empty;
         private string pathRemapNewRoot = string.Empty;
         private string pathRemapSummary = "尚未执行路径迁移。";
+        private string taskReconcileSummary = "尚未协调中断任务。";
         private string diffSummary = string.Empty;
         private string retentionSummary = string.Empty;
         private BackupPolicyTemplateDto selectedPolicyTemplate = null!;
@@ -188,6 +189,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             CreateMetadataBackupCommand = new RelayCommand(_ => Run(CreateMetadataBackupAsync), _ => !IsBusy && !string.IsNullOrWhiteSpace(EffectiveSettings.DataDirectory));
             RebuildRepositoryCommand = new RelayCommand(_ => Run(RebuildRepositoryAsync), _ => !IsBusy && Snapshot.LudusaviAvailable);
             RunPathRemapCommand = new RelayCommand(_ => Run(RunPathRemapAsync), _ => !IsBusy && !string.IsNullOrWhiteSpace(PathRemapOldRoot) && !string.IsNullOrWhiteSpace(PathRemapNewRoot));
+            ReconcileTasksCommand = new RelayCommand(_ => Run(ReconcileTasksAsync), _ => !IsBusy);
             RunEnvironmentCheckCommand = new RelayCommand(_ => Run(RunEnvironmentCheckAsync), _ => !IsBusy);
             SkipOnboardingCommand = new RelayCommand(_ => SkipOnboarding(), _ => !IsBusy && IsOnboardingPending);
             CompleteOnboardingCommand = new RelayCommand(_ => CompleteOnboarding(), _ => !IsBusy && IsOnboardingPending && EnvironmentCheck.IsReady && EnvironmentCheck.CheckedUtc != default(DateTime));
@@ -341,6 +343,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
         }
         public string PathRemapSummary { get => pathRemapSummary; private set => SetValue(ref pathRemapSummary, value); }
+        public string TaskReconcileSummary { get => taskReconcileSummary; private set => SetValue(ref taskReconcileSummary, value); }
         public string GameSearchText
         {
             get => gameSearchText;
@@ -631,6 +634,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand CreateMetadataBackupCommand { get; }
         public ICommand RebuildRepositoryCommand { get; }
         public ICommand RunPathRemapCommand { get; }
+        public ICommand ReconcileTasksCommand { get; }
         public ICommand RunEnvironmentCheckCommand { get; }
         public ICommand SkipOnboardingCommand { get; }
         public ICommand CompleteOnboardingCommand { get; }
@@ -1215,6 +1219,16 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 PathRemapSummary = $"路径迁移完成：更新 {result.AffectedRows} 条数据库路径" +
                                    (result.UpdatedSettings.Count > 0 ? "，同步 " + string.Join("、", result.UpdatedSettings) : "");
+                StatusMessage = result.Summary;
+            });
+        }
+
+        private async Task ReconcileTasksAsync()
+        {
+            var result = await plugin.RequestAsync<TaskReconcileResultDto>(MessageTypes.ReconcileTasks, new { }, TimeSpan.FromMinutes(3));
+            ApplyOnUi(() =>
+            {
+                TaskReconcileSummary = $"任务协调：{result.InterruptedTaskCount} 个中断任务已标记为 WORKER_RESTARTED";
                 StatusMessage = result.Summary;
             });
         }
@@ -2409,7 +2423,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 UpdateMediaMetadataCommand,OpenSelectedMediaCommand,RevealSelectedMediaCommand,
                 AssignInboxMediaCommand, IgnoreInboxMediaCommand,
                 CancelTaskCommand, RetryTaskCommand, CopyTaskErrorCommand, RefreshDiagnosticsCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand,
-                StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,CreateMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,
+                StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,CreateMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,
                 SaveProcessMappingCommand,DeleteProcessMappingCommand,RunEnvironmentCheckCommand,SkipOnboardingCommand,CompleteOnboardingCommand,OnboardingTestBackupCommand,
                 OpenDataDirectoryCommand, OpenBackupDirectoryCommand, OpenMediaDirectoryCommand, OpenWorkerLogCommand
                 ,ImportTrainerCommand,ImportCheatTableCommand,ImportCustomLaunchItemCommand,ImportToolFolderCommand,SaveGameToolCommand,LaunchGameToolCommand,

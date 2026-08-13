@@ -645,21 +645,24 @@ WHERE playnite_id<>$game
         return Convert.ToInt32(await command.ExecuteScalarAsync(token).ConfigureAwait(false)) > 0;
     }
 
-    public Task MarkInterruptedTasksAsync(CancellationToken token) => ExecuteAsync(@"
-UPDATE tasks
+    public async Task<int> MarkInterruptedTasksAsync(CancellationToken token)
+    {
+        await using var connection = Open();
+        await connection.OpenAsync(token).ConfigureAwait(false);
+        var command = connection.CreateCommand();
+        command.CommandText = @"UPDATE tasks
 SET state=$failed, progress=CASE WHEN progress>99 THEN 99 ELSE progress END, message=$message,
     finished_utc=$finished, error_code=$errorCode, error_message=$errorMessage
-WHERE state IN ($queued,$running);",
-        new Dictionary<string, object?>
-        {
-            ["$failed"]=(int)TaskState.Failed,
-            ["$queued"]=(int)TaskState.Queued,
-            ["$running"]=(int)TaskState.Running,
-            ["$message"]="Worker 重启前任务未完成",
-            ["$finished"]=DateTime.UtcNow.ToString("O"),
-            ["$errorCode"]="WORKER_RESTARTED",
-            ["$errorMessage"]="Worker 在任务完成前退出或重启；请确认目标文件状态后重新执行。"
-        },token);
+WHERE state IN ($queued,$running);";
+        command.Parameters.AddWithValue("$failed", (int)TaskState.Failed);
+        command.Parameters.AddWithValue("$queued", (int)TaskState.Queued);
+        command.Parameters.AddWithValue("$running", (int)TaskState.Running);
+        command.Parameters.AddWithValue("$message", "Worker 重启前任务未完成");
+        command.Parameters.AddWithValue("$finished", DateTime.UtcNow.ToString("O"));
+        command.Parameters.AddWithValue("$errorCode", "WORKER_RESTARTED");
+        command.Parameters.AddWithValue("$errorMessage", "Worker 在任务完成前退出或重启；请确认目标文件状态后重新执行。");
+        return await command.ExecuteNonQueryAsync(token).ConfigureAwait(false);
+    }
 
     public Task AddOrUpdateTaskAsync(TaskStatusDto task, CancellationToken token) => ExecuteAsync(@"
 INSERT INTO tasks(task_id,session_id,task_type,game_id,game_name,state,progress,message,created_utc,started_utc,finished_utc,error_code,error_message)
