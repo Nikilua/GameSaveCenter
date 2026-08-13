@@ -36,6 +36,7 @@ public sealed class DashboardService
         var audit=await _store.GetAuditAsync(100,token).ConfigureAwait(false);
         var ludusaviVersion = await GetLudusaviVersionAsync(token).ConfigureAwait(false);
         var gameNames=games.ToDictionary(x=>x.Descriptor.PlayniteId,x=>x.Descriptor.Name,StringComparer.OrdinalIgnoreCase);
+        var activities = audit.Select(x => ActivityTimelineMapper.Map(x, gameNames)).ToList();
         foreach(var finding in findings)
         {
             if(!string.IsNullOrWhiteSpace(finding.PlayniteId) && gameNames.TryGetValue(finding.PlayniteId,out var gameName))
@@ -50,7 +51,7 @@ public sealed class DashboardService
             LudusaviExecutable=_options.LudusaviExecutable,LudusaviBackupDirectory=_options.LudusaviBackupDirectory,BackupFormat=_options.BackupFormat,
             ManagedGames=counts.Games,MatchedGames=counts.Matched,
             RunningGames=active.Count,PendingCloudTasks=tasks.Count(x=>x.TaskType.Contains("Cloud",StringComparison.OrdinalIgnoreCase)&&x.State is TaskState.Queued or TaskState.Running),
-            UnassignedMediaCount=counts.Unassigned,RecentTasks=tasks,Findings=findings,RecentAudit=audit
+            UnassignedMediaCount=counts.Unassigned,RecentTasks=tasks,Findings=findings,RecentAudit=audit,RecentActivities=activities
         };
         foreach(var record in games)
         {

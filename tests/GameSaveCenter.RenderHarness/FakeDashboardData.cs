@@ -148,6 +148,31 @@ public sealed class FakeDashboardData
             if (task.State == TaskState.Succeeded) CompletedTaskCount++;
         }
 
+        Activities.Add(new ActivityEntryDto
+        {
+            Kind = "Backup",
+            Result = "Succeeded",
+            GameName = Games[0].Name,
+            Summary = "Ludusavi 备份结果：新增 1 个文件",
+            CreatedUtc = DateTime.UtcNow.AddMinutes(-8)
+        });
+        Activities.Add(new ActivityEntryDto
+        {
+            Kind = "Cloud",
+            Result = "Failed",
+            GameName = Games[1].Name,
+            Summary = "云端复制失败，本地版本已保留",
+            CreatedUtc = DateTime.UtcNow.AddMinutes(-20)
+        });
+        Activities.Add(new ActivityEntryDto
+        {
+            Kind = "Integrity",
+            Result = "Succeeded",
+            GameName = "全局",
+            Summary = "完整性自检通过：数据库、目录和已索引文件正常",
+            CreatedUtc = DateTime.UtcNow.AddMinutes(-35)
+        });
+
         for (var i = 1; i <= 6; i++)
         {
             AttentionFindings.Add(new ValidationFindingDto
@@ -402,6 +427,7 @@ public sealed class FakeDashboardData
     public ObservableCollection<TaskStatusDto> Tasks { get; } = new ObservableCollection<TaskStatusDto>();
     public ICollectionView TasksView { get; }
     public ObservableCollection<TaskStatusDto> OverviewTasks { get; } = new ObservableCollection<TaskStatusDto>();
+    public ObservableCollection<ActivityEntryDto> Activities { get; } = new ObservableCollection<ActivityEntryDto>();
     public ObservableCollection<ValidationFindingDto> AttentionFindings { get; } = new ObservableCollection<ValidationFindingDto>();
     public ObservableCollection<MediaItemDto> Media { get; } = new ObservableCollection<MediaItemDto>();
     public ICollectionView MediaView { get; }

@@ -32,6 +32,55 @@ namespace GameSaveCenter.Contracts
         public List<TaskStatusDto> RecentTasks { get; set; } = new List<TaskStatusDto>();
         public List<ValidationFindingDto> Findings { get; set; } = new List<ValidationFindingDto>();
         public List<AuditLogEntryDto> RecentAudit { get; set; } = new List<AuditLogEntryDto>();
+        public List<ActivityEntryDto> RecentActivities { get; set; } = new List<ActivityEntryDto>();
+    }
+
+    /// <summary>One curated business activity shown in the Overview timeline.</summary>
+    public sealed class ActivityEntryDto
+    {
+        public string Kind { get; set; } = "Maintenance";
+        public string Result { get; set; } = "Info";
+        public string GameName { get; set; } = "全局";
+        public string Summary { get; set; } = string.Empty;
+        public DateTime CreatedUtc { get; set; }
+
+        public string KindDisplay => Kind switch
+        {
+            "Backup" => "备份",
+            "Restore" => "恢复",
+            "Cloud" => "云端",
+            "Media" => "媒体",
+            "GameTool" => "游戏工具",
+            "Health" => "健康",
+            "Conflict" => "冲突",
+            "Integrity" => "完整性",
+            "RepositoryRepair" => "仓库修复",
+            _ => "维护"
+        };
+
+        public string ResultDisplay => Result switch
+        {
+            "Succeeded" => "成功",
+            "Failed" => "失败",
+            "Warning" => "需关注",
+            _ => "信息"
+        };
+
+        public string CreatedDisplay => CreatedUtc.ToLocalTime().ToString("MM-dd HH:mm");
+
+        public string Glyph => Kind switch
+        {
+            "Backup" => "\uE8B7",
+            "Restore" => "\uE777",
+            "Cloud" => "\uE753",
+            "Media" => "\uEB9F",
+            "GameTool" => "\uE8F1",
+            "Health" => "\uE946",
+            "Conflict" => "\uEA39",
+            "Integrity" => "\uE9D9",
+            "RepositoryRepair" => "\uE74D",
+            _ => "\uE713"
+        };
     }
 
     /// <summary>Backup metadata presented in the timeline and restore wizard.</summary>

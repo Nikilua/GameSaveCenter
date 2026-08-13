@@ -81,7 +81,7 @@
                           CanContentScroll="False"
                           Focusable="False">
             <Grid x:Name="OverviewPrimaryFlow" VerticalAlignment="Top">
-            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
             <!-- Demo HomeView keeps global batch commands in a quiet, separate
                  workbench surface instead of making the page header carry every
                  action.  The commands remain the existing real Dashboard commands. -->
@@ -227,7 +227,7 @@
 
              <Border Grid.Row="3" Style="{DynamicResource GscRedesignSectionCard}" Margin="0,0,0,14" MinHeight="0">
                 <Grid>
-                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="240"/></Grid.RowDefinitions>
                     <Grid Margin="0,0,0,12">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                         <StackPanel><TextBlock Style="{DynamicResource GscRedesignSectionTitle}" Text="最近活动"/><TextBlock Style="{DynamicResource GscRedesignSectionSubtitle}" Text="最多显示最近 8 条真实任务记录" Margin="0,4,0,0"/></StackPanel>
@@ -290,6 +290,71 @@
                         </Grid>
              </Border>
              </Grid>
+             </Border>
+             <Border Grid.Row="4" Style="{DynamicResource GscRedesignSectionCard}" Margin="0,0,0,14" MinHeight="0">
+                <Grid>
+                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                        <StackPanel><TextBlock Style="{DynamicResource GscRedesignSectionTitle}" Text="全局活动"/><TextBlock Style="{DynamicResource GscRedesignSectionSubtitle}" Text="备份、恢复、云端、媒体、工具、健康、冲突、完整性与仓库修复事件" Margin="0,4,0,0"/></StackPanel>
+                        <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding RefreshCommand}" Content="刷新"/>
+                    </Grid>
+                    <Border Grid.Row="1" Style="{StaticResource OverviewTableFrame}">
+                        <Grid>
+                            <ItemsControl x:Name="OverviewActivityTimelineList" ItemsSource="{Binding Activities}" MaxHeight="240" HorizontalContentAlignment="Stretch" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" ScrollViewer.CanContentScroll="True">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,2,0,2">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <Border x:Name="ActivityKindPill" Width="34" Height="34" CornerRadius="10" Background="{DynamicResource GscInfoIconFillBrush}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                                <TextBlock x:Name="ActivityGlyph" FontFamily="Segoe MDL2 Assets" Text="{Binding Glyph}" FontSize="14" Foreground="{DynamicResource GscInfoBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                            <StackPanel Grid.Column="1" Margin="0,0,10,0" VerticalAlignment="Center" MinWidth="0">
+                                                <TextBlock Text="{Binding GameName, Mode=OneWay, TargetNullValue=全局}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/>
+                                                <TextBlock FontSize="11" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding Summary}" Text="{Binding Summary, Mode=OneWay}"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                                <TextBlock FontSize="11" Foreground="{DynamicResource GscSecondaryTextBrush}" HorizontalAlignment="Right"><Run Text="{Binding KindDisplay, Mode=OneWay}"/><Run Text=" · "/><Run Text="{Binding ResultDisplay, Mode=OneWay}"/></TextBlock>
+                                                <TextBlock Text="{Binding CreatedDisplay, Mode=OneWay}" FontSize="11" Foreground="{DynamicResource GscSecondaryTextBrush}" HorizontalAlignment="Right" Margin="0,3,0,0"/>
+                                            </StackPanel>
+                                        </Grid>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding Result}" Value="Failed">
+                                                <Setter TargetName="ActivityKindPill" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/>
+                                                <Setter TargetName="ActivityGlyph" Property="Foreground" Value="{DynamicResource GscErrorBrush}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Result}" Value="Warning">
+                                                <Setter TargetName="ActivityKindPill" Property="Background" Value="{DynamicResource GscSafetyFillBrush}"/>
+                                                <Setter TargetName="ActivityGlyph" Property="Foreground" Value="{DynamicResource GscWarningBrush}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Result}" Value="Succeeded">
+                                                <Setter TargetName="ActivityKindPill" Property="Background" Value="{DynamicResource GscSuccessIconFillBrush}"/>
+                                                <Setter TargetName="ActivityGlyph" Property="Foreground" Value="{DynamicResource GscSuccessBrush}"/>
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <TextBlock Text="暂无全局活动&#x0a;备份、同步、维护或健康事件完成后会显示在这里。" IsHitTestVisible="False">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource OverviewEmptyText}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Activities.Count}" Value="0">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </Border>
+                </Grid>
              </Border>
              </Grid>
              </ScrollViewer>

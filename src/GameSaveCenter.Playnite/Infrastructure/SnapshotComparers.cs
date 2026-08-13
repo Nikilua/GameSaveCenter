@@ -48,6 +48,13 @@ namespace GameSaveCenter.Playnite.Infrastructure
             && string.Equals(a.ErrorCode, b.ErrorCode, StringComparison.Ordinal)
             && string.Equals(a.ErrorMessage, b.ErrorMessage, StringComparison.Ordinal);
 
+        public static readonly Func<ActivityEntryDto, ActivityEntryDto, bool> Activity = (a, b) =>
+            string.Equals(a.Kind, b.Kind, StringComparison.Ordinal)
+            && string.Equals(a.Result, b.Result, StringComparison.Ordinal)
+            && string.Equals(a.GameName, b.GameName, StringComparison.Ordinal)
+            && string.Equals(a.Summary, b.Summary, StringComparison.Ordinal)
+            && a.CreatedUtc == b.CreatedUtc;
+
         public static readonly Func<ValidationFindingDto, ValidationFindingDto, bool> Finding = (a, b) =>
             string.Equals(a.PlayniteId, b.PlayniteId, StringComparison.Ordinal)
             && string.Equals(a.GameName, b.GameName, StringComparison.Ordinal)

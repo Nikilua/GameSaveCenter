@@ -137,6 +137,20 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         [Fact]
+        public void OverviewGlobalActivityTimelineUsesCuratedBusinessEvents()
+        {
+            var root = FindRepositoryRoot();
+            var overview = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml"));
+
+            Assert.Contains("x:Name=\"OverviewActivityTimelineList\"", overview);
+            Assert.Contains("ItemsSource=\"{Binding Activities}\"", overview);
+            Assert.Contains("Text=\"全局活动\"", overview);
+            Assert.Contains("{Binding KindDisplay, Mode=OneWay}", overview);
+            Assert.Contains("{Binding ResultDisplay, Mode=OneWay}", overview);
+            Assert.Contains("MaxHeight=\"240\"", overview);
+        }
+
+        [Fact]
         public void LaunchDelayEditorExplainsItsUnitAndUsesCompactHeight()
         {
             var root = FindRepositoryRoot();

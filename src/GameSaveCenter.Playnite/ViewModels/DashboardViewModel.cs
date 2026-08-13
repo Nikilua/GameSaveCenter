@@ -246,6 +246,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public GamePickerViewModel GamePicker => gamePicker;
         public BatchObservableCollection<TaskStatusDto> Tasks { get; } = new BatchObservableCollection<TaskStatusDto>();
         public BatchObservableCollection<TaskStatusDto> OverviewTasks { get; } = new BatchObservableCollection<TaskStatusDto>();
+        public BatchObservableCollection<ActivityEntryDto> Activities { get; } = new BatchObservableCollection<ActivityEntryDto>();
         public ObservableCollection<string> TaskGameFilterOptions { get; } = new ObservableCollection<string> { "全部" };
         public ObservableCollection<string> TaskTypeFilterOptions { get; } = new ObservableCollection<string> { "全部" };
         public BatchObservableCollection<ValidationFindingDto> Findings { get; } = new BatchObservableCollection<ValidationFindingDto>();
@@ -1151,6 +1152,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 OnPropertyChanged(nameof(RetryableTaskCount));
                 OnPropertyChanged(nameof(CompletedTaskCount));
                 Replace(OverviewTasks, data.RecentTasks.Take(8), SnapshotComparers.Task);
+                Replace(Activities, data.RecentActivities.Take(12), SnapshotComparers.Activity);
                 RebuildTaskFilters();
                 SelectedTask = Tasks.FirstOrDefault(x => x.TaskId == selectedTaskId) ?? Tasks.FirstOrDefault();
                 Replace(Findings, data.Findings, SnapshotComparers.Finding);
