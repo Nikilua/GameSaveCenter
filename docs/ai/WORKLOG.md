@@ -2,6 +2,17 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 UI-STATE-001 合理 UI 状态持久化
+
+- Task ID：`UI-STATE-001`。
+- 实现内容：设置新增 `LastWorkspace`、任务状态/游戏/类型筛选、任务搜索、媒体筛选与媒体搜索持久化字段；DashboardViewModel 启动时恢复上次 Workspace 与筛选，变更通过新增的 `DebouncedRefresh.Schedule()` 500ms 防抖保存。运行中游戏优先与上次选择恢复继续使用既有 GamePicker 持久化；不保存 Loading/Busy/Error 等瞬态。
+- 主要修改文件：`GameSaveCenterSettings.cs`、`DashboardViewModel.cs`、`DebouncedRefresh.cs`、`PortableSettingsTests.cs`、`UiStatePersistenceSourceTests.cs`。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `59/59`、Worker `182/182`、Playnite `225/225`；`validate-source.py` 与源码门禁通过（本阶段无 XAML 改动，不重跑 render-qa）。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 03:16:07 记录插件加载，`worker-launch.log` 03:16:13 记录 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实切换 Workspace、修改任务/媒体筛选与搜索后重启 Playnite，核对恢复结果；运行中游戏优先语义人工复核。
+- Commit：`e4513cb`。
+- 下一项：Layer C `ACCESSIBILITY-001` 键盘、高对比度与焦点统一。
+
 ## 2026-08-14 DRAGDROP-001 修改器中心拖拽导入
 
 - Task ID：`DRAGDROP-001`。
