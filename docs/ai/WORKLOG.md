@@ -2,6 +2,17 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 SETTINGS-VALIDATION-001 设置即时验证摘要
+
+- Task ID：`SETTINGS-VALIDATION-001`。
+- 实现内容：设置页标题区新增 `SettingsValidationSummary`，在文本框、下拉框与复选框变化时调用既有 `VerifySettings` 并内联展示最多 4 条错误；错误清除后自动隐藏，补充 `AutomationProperties.Name="设置验证错误"`。验证结果仍然与 Playnite 保存流程共用同一套规则。
+- 主要修改文件：`GameSaveCenterSettingsView.xaml`、`GameSaveCenterSettingsView.xaml.cs`、`SettingsValidationSourceTests.cs`。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `59/59`、Worker `182/182`、Playnite `230/230`；`validate-source.py`、XAML/WPF 静态门禁与五种窗口 `render-qa` 全绿。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 03:43:26 记录插件加载，`worker-launch.log` 03:43:32 记录 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实修改路径/数值后立即查看内联错误、修正后消失，以及保存时仍能阻止严重错误。
+- Commit：`4614bb8`。
+- 下一项：Layer C `MAINTENANCE-REPORT-001` 用户可读健康报告。
+
 ## 2026-08-14 UI-STATES-001 统一页面状态控件
 
 - Task ID：`UI-STATES-001`。
