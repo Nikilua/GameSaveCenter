@@ -1,5 +1,7 @@
 # 开发实现进度
 
+- [x] UI-QA-REAL-005（2026-08-13）：修复 4K/宽屏首页右侧“今日概览”未贴顶和“当前游戏”卡空间紧张问题；共享 Overview 右栏显式 Top 对齐，Hero/当前游戏列调整为 `1.1* + 0.9*`。修复设置页共享分类 Tab 的底部圆角裁切：在 `TabPanel` 外增加独立底部安全 host，并启用像素对齐/布局取整。RenderHarness 增加入口动画可见性处理、右栏 top delta、当前游戏宽度比和最后分类底部几何检查。保留命令、绑定、Tab 导航、滚动和虚拟化；`validate-source.py`、WPF 静态门禁、render-qa、Core 42/42、Worker 117/117、Playnite 210/210 通过。真实 Playnite 宿主主题/DPI/连续缩放仍需人工验收。
+
 - [x] RELIABILITY-RESTORE-001（2026-08-12）：在已有恢复可用性检查上补齐严格 Manifest 路径集合/大小/Hash 判定、非法 Manifest/隔离目录失败处理、取消与清理测试；为现有 Restore/PreRestore/Rollback/Undo 编排增加临时 SQLite + 内存假客户端灾难演练，覆盖失败回滚、成功恢复后 Undo、游戏运行中阻止恢复。验证：Worker Release 构建 0 警告/0 错误、Worker 67/67；未运行真实 Playnite/Ludusavi/游戏存档，真实 Restore/Undo 仍需人工 QA。
 
 - [x] UI-207（2026-08-12）：设置页 Header `ClipToBounds=False`；共享 TabControl 模板把宽屏分类栏固定为 232 DIP 左侧有限垂直 `Auto`、紧凑布局切为顶部水平 `Auto`，内容区使用独立 `SettingsScroller`，5 个分类完整可达且保留 `BringIntoView()`；Dashboard 按 `GameSelectionResolver`/`PlayniteGameStarted` 事件定位运行中游戏，普通刷新不抢回手动选择，停止后保持选择；GamePicker 新用户默认“已安装”，当前选择被筛选隐藏时保留并显示恢复操作；当前游戏真实 Icon 只出现在 Dashboard/Overview/Save/Trainer/Media 上下文表面，列表不加载 Icon。没有新增轮询/进程扫描/IPC/网络，未改 DataGrid 滚动代码与 Worker 业务。验证：源码门禁、WPF 静态门禁 0 error、Core 27/27、Worker 59/59、Playnite 197/197、隔离 Release 构建 0 警告/0 错误、render-qa 全绿（含 15 组 SettingsLayout 探针）；真实设置页/自动定位/Icon/1080p/4K/DPI 人工验收待宿主环境（BLOCKED_ENVIRONMENT）。

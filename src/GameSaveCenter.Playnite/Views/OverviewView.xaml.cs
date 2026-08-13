@@ -85,6 +85,13 @@ namespace GameSaveCenter.Playnite.Views
             OverviewSecondaryColumn.Width = stack
                 ? new GridLength(0)
                 : new GridLength(0.8, GridUnitType.Star);
+            // The secondary column is a top-anchored inspector, not a vertically
+            // centered companion to the primary flow. Set this in code as well as XAML
+            // because a Playnite host theme can replace inherited ScrollViewer alignment
+            // defaults during a live template refresh.
+            OverviewSecondaryScrollViewer.VerticalAlignment = VerticalAlignment.Top;
+            OverviewSecondaryScrollViewer.VerticalContentAlignment = VerticalAlignment.Top;
+            OverviewSecondaryPanel.VerticalAlignment = VerticalAlignment.Top;
             Grid.SetRow(OverviewPrimaryPanel, 0);
             Grid.SetColumn(OverviewPrimaryPanel, 0);
             Grid.SetColumnSpan(OverviewPrimaryPanel, stack ? 3 : 1);
@@ -140,6 +147,8 @@ namespace GameSaveCenter.Playnite.Views
                     ? GridLength.Auto
                     : new GridLength(0);
                 OverviewHeroGameGutterColumn.Width = new GridLength(stackHeroAndGame ? 0 : 14);
+                OverviewHeroColumn.Width = new GridLength(1.1, GridUnitType.Star);
+                OverviewCurrentGameColumn.Width = new GridLength(0.9, GridUnitType.Star);
 
                 Grid.SetRow(OverviewTodayHeroCard, 0);
                 Grid.SetColumn(OverviewTodayHeroCard, 0);

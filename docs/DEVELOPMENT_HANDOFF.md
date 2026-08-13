@@ -17,6 +17,14 @@
 - 如果 Playnite 仍在运行但路径不可确认，安装器仍安全停止并要求手动退出或显式指定路径，不按进程名强杀未知进程。
 - 根目录入口修订号为 `DEV-INSTALL-007`；真实另一台机器的便携版、自定义路径和完全未启动 Playnite 场景仍需用户手工验证。
 
+## 2026-08-13 UI-QA-REAL-005：首页与设置页几何兼容性修复
+
+- 首页宽屏右侧 `今日概览` 已在 XAML 与响应式代码双重设为顶端对齐；离屏几何探针在 1600/1920 DIP 宽屏下 `OverviewSecondaryTopDelta=0`。
+- Hero/当前游戏宽屏比例调整为 `1.1* + 0.9*`，离屏报告当前游戏卡相对 Hero 约 `0.82`，改善 4K/大窗口下按钮与指标的拥挤；没有改变业务命令、Binding 或窄屏堆叠阈值。
+- 设置分类共享模板增加 `SettingsHeaderItemsHost` 底部安全区，且分类 Chrome 使用像素对齐和布局取整；末项滚动到底部后仍完整落在 viewport 内，五个分类都保持可见/可滚动。
+- RenderHarness 在捕获设置图前将 `SettingsShell.Opacity` 设为 1，避免入口动画未由真实宿主触发时生成空白图；新增三类几何门禁。
+- 当前验证基线：Release 隔离构建 0 warnings/0 errors；Core `42/42`、Worker `117/117`、Playnite `210/210`；五种常用窗口的 `render-qa` 全绿。真实 Playnite 宿主 Light/Dark/Follow、高对比度、100%–200% DPI 和连续缩放仍需人工验收。
+
 ## 2026-08-13 DEV-INSTALL-006：无窗口 Playnite 残留回收
 
 - 真实复现 PID 48188：Playnite 已无主窗口但进程残留，`CloseMainWindow()` 无法请求退出，旧安装器等待 20 秒后中止。这不是管理员权限问题。

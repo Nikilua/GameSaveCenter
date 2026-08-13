@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-13 UI-QA-REAL-005 首页与设置页几何兼容性修复
+
+- 用户在 4K 全屏反馈首页“今日概览”没有贴在内容顶端、当前游戏卡空间紧张，以及设置页分类卡底部圆角仍像被切掉。
+- `OverviewView` 将宽屏右侧摘要滚动面和内容面显式锚定顶部；Hero/当前游戏宽屏列从 `1.25* + 0.75*` 调整为 `1.1* + 0.9*`，保留原有堆叠断点、命令和绑定。
+- `GscRedesignSettingsTabControl` 在共享 `TabPanel` 外增加 `SettingsHeaderItemsHost` 底部安全区，设置顶部对齐、像素对齐和布局取整，避免 `ScrollViewer` viewport 在最后一张分类卡底部裁剪圆角。
+- RenderHarness 修复设置页入口动画导致的空白截图，并加入 Overview secondary top delta、当前游戏宽度比、Settings 最后一张 Tab 底部几何门禁。
+- 验证：`python scripts/validate-source.py`、WPF 静态门禁、`git diff --check`、`render-qa` 全绿；隔离 Release 全量测试 Core `42/42`、Worker `117/117`、Playnite `210/210`。真实 Playnite 宿主主题/DPI/连续缩放仍需用户复核。
+
 ## 2026-08-13 DEV-INSTALL-007 兼容未发现 Playnite 路径
 
 - 用户反馈另一台机器在 Playnite 使用自定义/便携安装路径时，一键入口在构建前报 `TrustedPlayniteExecutables` 空数组绑定错误；实际失败点是安装前进程处理，不是项目编译失败。

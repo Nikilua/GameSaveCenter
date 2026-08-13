@@ -377,9 +377,21 @@
                                       HorizontalScrollBarVisibility="Disabled"
                                       VerticalScrollBarVisibility="Auto"
                                       CanContentScroll="False"
+                                      HorizontalContentAlignment="Stretch"
+                                      VerticalContentAlignment="Top"
                                       Focusable="False"
                                       KeyboardNavigation.TabNavigation="Local">
-                            <TabPanel x:Name="HeaderPanel" IsItemsHost="True" KeyboardNavigation.TabIndex="1"/>
+                            <!-- Keep the trailing inset outside the TabItem template. A
+                                 ScrollViewer may clip its ItemsHost at the viewport edge;
+                                 this explicit host gives the last category card room to
+                                 paint all four rounded corners when the rail is scrolled
+                                 to its end. -->
+                            <Grid x:Name="SettingsHeaderItemsHost"
+                                  Margin="0,0,0,12"
+                                  VerticalAlignment="Top"
+                                  ClipToBounds="False">
+                                <TabPanel x:Name="HeaderPanel" IsItemsHost="True" KeyboardNavigation.TabIndex="1"/>
+                            </Grid>
                         </ScrollViewer>
                         <ScrollViewer x:Name="SettingsScroller"
                                       Style="{DynamicResource GscPageScrollViewer}"
@@ -419,6 +431,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="TabItem">
                     <Border x:Name="Chrome" MinHeight="0" Padding="14,8" CornerRadius="14" ClipToBounds="True"
+                            SnapsToDevicePixels="True" UseLayoutRounding="True"
                             Background="{DynamicResource GscControlFillBrush}" BorderBrush="{DynamicResource GscGlassStrokeBrush}" BorderThickness="1">
                         <ContentPresenter ContentSource="Header" VerticalAlignment="Center"/>
                     </Border>

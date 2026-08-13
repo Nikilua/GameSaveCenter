@@ -3,17 +3,25 @@
 > 维护时间：2026-08-13
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
-## 当前事实覆盖（2026-08-13 可靠性闭环最终审计）
+## 当前事实覆盖（2026-08-13 可靠性/UI 回归最终审计）
 
 - 用户日志中的“编译解决方案”失败根因是旧 `dotnet/testhost` 或 Worker 锁住标准 `bin\Release` 输出，随后测试项目无法覆盖 DLL/PDB/XML；不是 `GameSaveCenter.Contracts` 编译失败。
 - 一键开发安装器现在默认不请求管理员权限。`scripts/build.ps1`、`scripts/package.ps1` 和 `scripts/dev-install-run.ps1` 支持按运行生成 `artifacts\dev-build\<Configuration>\<guid>` 隔离的 bin/obj、Worker 发布和安装暂存目录，入口修订号为 `DEV-INSTALL-007`。Playnite 发现增加运行中进程、常见目录、卸载信息、App Paths 和 PATH；未发现 Playnite 且没有运行中的 Playnite 时允许继续构建/安装并提示无法自动启动。Playnite 正常退出超时后，仅当进程属于当前会话、可执行文件路径与本次发现结果完全一致且已经没有主窗口时，才结束该无窗口残留；路径不可确认、跨会话或仍有主窗口时继续停止安装。
 - 真实宿主已验证：安装报告为 0.6.70 / DLL 0.6.70.0；Playnite `playnite.log` 记录插件加载，插件日志记录 0.6.70.0，`worker-launch.log` 记录存储初始化、过期任务整理和 `Application started`。不要再用 2026-08-12 的 PID 3896 历史日志判断当前安装器行为。
-- 当前自动化基线为 Core `42/42`、Worker `117/117`、Playnite `203/203`，Release 构建 0 warnings / 0 errors；source、XAML、WPF 静态门禁与 `render-qa` 通过。最终逐项证据见 `docs/ai/RELIABILITY_CLOSURE_AUDIT.md`。
+- 当前自动化基线为 Core `42/42`、Worker `117/117`、Playnite `210/210`，Release 构建 0 warnings / 0 errors；source、XAML、WPF 静态门禁与 `render-qa` 通过。最终逐项证据见 `docs/ai/RELIABILITY_CLOSURE_AUDIT.md`。
 - Restore 在实际写入开始后的失败、异常或后校验失败必须尝试恢复锁定的 PreRestore；回滚本身失败才进入 `ManualInterventionRequired`。灾难演练现覆盖 A/B/Undo、部分写入、写后异常、权限、只读、目录缺失和回滚失败。
 - 多设备云目录使用持久化 32 位不透明 `DeviceId`，机器名只用于显示与旧 sidecar 兼容；便携设置导入不得复制设备身份。远端恢复继续要求隔离下载、Rclone check、Ludusavi 版本确认和既有 PreRestore 恢复链。
 - 每游戏策略新增 `BackupAnomalyProtectionLevel`（Off/Normal/Strict）；重要游戏模板默认 Strict。Manifest 大量删除参与异常检测，最后健康恢复点与用户 Lock 都不能成为 retention 候选。
 - Rclone 每次执行都经过命令白名单 `copy/check/lsf/cat/version`，禁止 `sync/move/delete/purge`；外部进程日志不再记录完整参数。Worker 重启会把未完成任务转为 `WORKER_RESTARTED`，取消会终止子进程。
 - 真实 Rclone 断网、真实两台设备、真实游戏 Restore/Undo、真实 EXE/LNK/BAT/PS1、1000+ 游戏库和完整主题/DPI 连续缩放仍为 `MANUAL QA REQUIRED`，不得由自动化结果冒充。
+
+## 2026-08-13 UI-QA-REAL-005 首页顶端对齐、当前游戏空间与设置圆角回归
+
+- 首页宽屏 `OverviewSecondaryScrollViewer` 与其内容面显式使用 `VerticalAlignment/VerticalContentAlignment=Top`，并在响应式代码中重复设定，避免 Playnite 宿主模板刷新后“今日概览”落到工作区中部。
+- 首页 Hero/当前游戏宽屏列由 `1.25* + 0.75*` 调整为 `1.1* + 0.9*`；离屏报告中的当前游戏/Hero 宽度比约 `0.82`，原约 `0.60`，没有改变 Hero/当前游戏的堆叠断点、命令或绑定。
+- 设置共享分类栏模板在 `TabPanel` 外增加命名的底部安全 host，并设置顶部内容对齐、像素对齐和布局取整；滚动到末端时最后一个分类的底部仍落在 viewport 内，避免圆角被横向直线裁掉。
+- RenderHarness 现在在截图前显式解除设置页入口动画的 `Opacity=0`，并检查 Overview 右栏 top delta、当前游戏宽度比和 Settings 最后一张 Tab 的底部几何，避免“空白 PNG/只测到布局没有测到可见性”。
+- 验证：`python scripts/validate-source.py`、WPF 静态门禁、`git diff --check`、五种窗口尺寸 `render-qa` 全绿；Core `42/42`、Worker `117/117`、Playnite `210/210` 通过。真实 Playnite 主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`。
 
 ## AI/Codex 启动协议
 

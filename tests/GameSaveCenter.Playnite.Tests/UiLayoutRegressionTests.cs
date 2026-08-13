@@ -109,6 +109,7 @@ namespace GameSaveCenter.Playnite.Tests
 
             Assert.Contains("SettingsCard", settings);
             Assert.Contains("x:Name=\"SettingsHeaderScroller\"", redesign);
+            Assert.Contains("x:Name=\"SettingsHeaderItemsHost\"", redesign);
             Assert.Contains("Width=\"248\"", redesign);
             Assert.Contains("Padding=\"0,0,0,12\"", redesign);
             Assert.Contains("Padding=\"0,0,4,18\"", redesign);

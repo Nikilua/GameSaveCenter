@@ -229,6 +229,17 @@ public static class Program
             host.UpdateLayout();
             applyLayout();
             host.UpdateLayout();
+            // The production settings view starts at Opacity=0 until Playnite raises
+            // IsVisibleChanged and plays its entrance animation. The offscreen harness
+            // has no host lifecycle, so expose the shell before capturing it; otherwise
+            // a layout regression can pass with a blank PNG.
+            if (name.Equals("Settings", StringComparison.OrdinalIgnoreCase))
+            {
+                var settingsShell = FindVisualChildren<FrameworkElement>(host)
+                    .FirstOrDefault(element => element.Name == "SettingsShell");
+                if (settingsShell != null)
+                    settingsShell.Opacity = 1;
+            }
             var sw = Stopwatch.StartNew();
             SavePng(host, Path.Combine(outputRoot, $"{name}-{windowW}x{windowH}-tab{i}.png"));
             sw.Stop();
@@ -353,6 +364,33 @@ public static class Program
                 report.AppendLine(
                     $"  {label} {elementName}: x={origin.X:0}, y={origin.Y:0}, size={element.ActualWidth:0}x{element.ActualHeight:0}, vis={element.Visibility}");
             }
+
+            var overviewLayout = FindVisualChildren<FrameworkElement>(host)
+                .FirstOrDefault(candidate => candidate.Name == "OverviewLayoutGrid");
+            var secondary = FindVisualChildren<FrameworkElement>(host)
+                .FirstOrDefault(candidate => candidate.Name == "OverviewSecondaryScrollViewer");
+            if (overviewLayout != null && secondary != null && Grid.GetColumn(secondary) == 2)
+            {
+                var layoutOrigin = overviewLayout.TransformToAncestor(host).Transform(new Point(0, 0));
+                var secondaryOrigin = secondary.TransformToAncestor(host).Transform(new Point(0, 0));
+                var topDelta = secondaryOrigin.Y - layoutOrigin.Y;
+                report.AppendLine($"  {label} OverviewSecondaryTopDelta: {topDelta:0.##} DIP");
+                if (topDelta > 8)
+                    s_problems.Add($"{label} secondary overview is not top anchored (delta={topDelta:0.##} DIP)");
+            }
+
+            var hero = FindVisualChildren<FrameworkElement>(host)
+                .FirstOrDefault(candidate => candidate.Name == "OverviewTodayHeroCard");
+            var currentGame = FindVisualChildren<FrameworkElement>(host)
+                .FirstOrDefault(candidate => candidate.Name == "OverviewCurrentGameCard");
+            if (hero != null && currentGame != null && Grid.GetColumn(currentGame) == 2
+                && hero.ActualWidth > 0 && currentGame.ActualWidth > 0)
+            {
+                var widthRatio = currentGame.ActualWidth / hero.ActualWidth;
+                report.AppendLine($"  {label} OverviewCurrentGameWidthRatio: {widthRatio:0.##}");
+                if (widthRatio < 0.8)
+                    s_problems.Add($"{label} current-game card remains cramped (width ratio={widthRatio:0.##})");
+            }
         }
     }
 
@@ -426,6 +464,20 @@ public static class Program
                         s_problems.Add($"SettingsLayout w={width:0} h={height:0} not all category tabs are visible and measurable");
                     if (headerScroller == null)
                         s_problems.Add($"SettingsLayout w={width:0} h={height:0} category rail has no scroll access");
+                    else if (tabItems.Count > 0)
+                    {
+                        headerScroller.ScrollToVerticalOffset(headerScroller.ScrollableHeight);
+                        host.UpdateLayout();
+                        var lastTab = tabItems.OrderBy(item => tabs!.Items.IndexOf(item)).Last();
+                        var lastTabOrigin = lastTab.TransformToAncestor(headerScroller).Transform(new Point(0, 0));
+                        var lastTabBottom = lastTabOrigin.Y + lastTab.ActualHeight;
+                        report.AppendLine(
+                            $"  SettingsLayout w={width:0} h={height:0} lastTabBottom={lastTabBottom:0.##} viewport={headerScroller.ViewportHeight:0.##} scrollable={headerScroller.ScrollableHeight:0.##}");
+                        if (lastTabBottom > headerScroller.ViewportHeight + 1)
+                        {
+                            s_problems.Add($"SettingsLayout w={width:0} h={height:0} last category tab is clipped at bottom ({lastTabBottom:0.##}>{headerScroller.ViewportHeight:0.##})");
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
