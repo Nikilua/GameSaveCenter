@@ -93,6 +93,22 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("CheckEnvironment", contracts);
         }
 
+        [Fact]
+        public void OnboardingTestBackupReusesProductionBackupPipeline()
+        {
+            var root = FindRepositoryRoot();
+            var viewModel = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
+            var maintenance = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+
+            Assert.Contains("OnboardingTestBackupCommand = new RelayCommand(_ => Run(BackupSelectedAsync)", viewModel);
+            Assert.Contains("private async Task BackupSelectedAsync()", viewModel);
+            Assert.Contains("MessageTypes.BackupGame", viewModel);
+            Assert.Contains("Reason = \"Manual\"", viewModel);
+            Assert.DoesNotContain("TestBackupService", viewModel);
+            Assert.Contains("Command=\"{Binding OnboardingTestBackupCommand}\"", maintenance);
+            Assert.Contains("若当前没有可用于测试的已识别存档游戏", maintenance);
+        }
+
         private static string FindRepositoryRoot()
         {
             var directory = new DirectoryInfo(AppContext.BaseDirectory);

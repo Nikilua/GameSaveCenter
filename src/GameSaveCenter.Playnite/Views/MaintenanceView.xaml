@@ -102,7 +102,7 @@
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
-                            <TextBlock Grid.Row="2" Grid.ColumnSpan="2" Text="测试备份不会自动执行；请先在存档中心选择一个已匹配的当前游戏，再点击上方按钮。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,2,0,0"/>
+                            <TextBlock Grid.Row="2" Grid.ColumnSpan="2" Text="测试备份不会自动执行；请先选择一个已匹配的当前游戏。若当前没有可用于测试的已识别存档游戏，可稍后在存档中心手动执行备份。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,2,0,0"/>
                         </Grid>
                     </Border>
                     <Border x:Name="MaintenanceDiagnosticsActionCard" Grid.Row="1" Style="{DynamicResource GscReadingCardStyle}" Padding="16" Margin="0,0,0,10">
