@@ -1,5 +1,6 @@
 using System.Text.Json;
 using GameSaveCenter.Contracts;
+using GameSaveCenter.Worker.Infrastructure;
 using Microsoft.Extensions.Configuration;
 
 namespace GameSaveCenter.Worker.Configuration;
@@ -152,10 +153,7 @@ public sealed class WorkerOptions
     {
         lock (_persistenceGate)
         {
-            Directory.CreateDirectory(DataDirectory);
-            var temporary = RuntimeSettingsPath + ".tmp";
-            File.WriteAllText(temporary, JsonSerializer.Serialize(ToDto(), JsonOptions));
-            File.Move(temporary, RuntimeSettingsPath, true);
+            AtomicFileWriter.WriteAllText(RuntimeSettingsPath, JsonSerializer.Serialize(ToDto(), JsonOptions));
         }
     }
 

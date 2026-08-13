@@ -451,13 +451,7 @@ public sealed class MediaSyncService
     }
 
     private static async Task CopyAtomicallyAsync(string source,string destination,CancellationToken token)
-    {
-        var temp=destination+".partial";if(File.Exists(temp))File.Delete(temp);
-        await using(var input=new FileStream(source,FileMode.Open,FileAccess.Read,FileShare.ReadWrite,1024*128,true))
-        await using(var output=new FileStream(temp,FileMode.CreateNew,FileAccess.Write,FileShare.None,1024*128,true))
-            await input.CopyToAsync(output,token).ConfigureAwait(false);
-        File.Move(temp,destination,false);
-    }
+        => await AtomicFileWriter.CopyAtomicallyAsync(source,destination,token).ConfigureAwait(false);
 
     private static string Sanitize(string value)
     {
