@@ -39,6 +39,16 @@ public sealed class NotificationLevelPolicyTests
     }
 
     [Fact]
+    public void Verbose_EmitsSubEventsAndFinalSummary()
+    {
+        var success = new TaskStatusDto { State = TaskState.Succeeded };
+        var summary = new GameSessionSummaryDto { IsWarning = false, IsFailure = false };
+
+        Assert.True(NotificationLevelPolicy.ShouldEmitTask(NotificationLevel.Verbose, success));
+        Assert.True(NotificationLevelPolicy.ShouldEmitSessionSummary(NotificationLevel.Verbose, summary));
+    }
+
+    [Fact]
     public void UnknownLevelFallsBackToSummaryBehavior()
     {
         var success = new TaskStatusDto { State = TaskState.Succeeded };

@@ -19,4 +19,7 @@
     <None Include="extension.yaml" CopyToOutputDirectory="PreserveNewest" />
     <None Include="icon.png" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="GameSaveCenter.Playnite.Tests" />
+  </ItemGroup>
 </Project>
