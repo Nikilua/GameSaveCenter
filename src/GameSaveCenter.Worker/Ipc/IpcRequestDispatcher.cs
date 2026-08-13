@@ -57,6 +57,13 @@ public sealed class IpcRequestDispatcher
                     Utc = DateTime.UtcNow,
                     Version = typeof(IpcRequestDispatcher).Assembly.GetName().Version?.ToString() ?? "dev"
                 },
+                MessageTypes.Handshake=>new WorkerHandshakeDto
+                {
+                    ProtocolVersion = ProtocolConstants.ProtocolVersion,
+                    MinimumSupportedProtocolVersion = ProtocolConstants.ProtocolVersion,
+                    WorkerVersion = typeof(IpcRequestDispatcher).Assembly.GetName().Version?.ToString() ?? "dev",
+                    Utc = DateTime.UtcNow
+                },
                 MessageTypes.GetDashboard=>await _dashboard.GetAsync(token).ConfigureAwait(false),
                 MessageTypes.UpsertGames=>await UpsertAsync(Read<List<GameDescriptorDto>>(request),token).ConfigureAwait(false),
                 MessageTypes.GameSessionStarted=>await _sessions.StartAsync(Read<GameSessionEventDto>(request),token).ConfigureAwait(false),

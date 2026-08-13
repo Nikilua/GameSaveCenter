@@ -7,6 +7,7 @@ namespace GameSaveCenter.Contracts
     public static class MessageTypes
     {
         public const string Ping = "system.ping";
+        public const string Handshake = "system.handshake";
         public const string GetDashboard = "dashboard.get";
         public const string UpsertGames = "games.upsert";
         public const string GameSessionStarted = "session.started";

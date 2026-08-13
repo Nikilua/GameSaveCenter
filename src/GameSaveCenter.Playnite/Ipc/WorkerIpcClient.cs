@@ -18,6 +18,21 @@ namespace GameSaveCenter.Playnite.Ipc
             NullValueHandling = NullValueHandling.Include
         };
 
+        public async Task<WorkerHandshakeDto> HandshakeAsync(TimeSpan? timeout = null)
+        {
+            var handshake = await RequestAsync<WorkerHandshakeDto>(MessageTypes.Handshake, new { }, timeout).ConfigureAwait(false);
+            if (!ProtocolCompatibility.IsCompatible(
+                    ProtocolConstants.ProtocolVersion,
+                    handshake.ProtocolVersion,
+                    handshake.MinimumSupportedProtocolVersion))
+            {
+                throw new WorkerRequestException(
+                    "PROTOCOL_MISMATCH",
+                    $"Worker 协议不兼容：客户端 {ProtocolConstants.ProtocolVersion}，服务端 {handshake.ProtocolVersion}（最低支持 {handshake.MinimumSupportedProtocolVersion}）。");
+            }
+            return handshake;
+        }
+
         public async Task<TResponse> RequestAsync<TResponse>(string type, object payload, TimeSpan? timeout = null)
         {
             var request = new IpcEnvelope

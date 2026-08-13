@@ -3173,8 +3173,16 @@ public sealed class WpfUiResourceDictionaryTests
         var pluginCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "GameSaveCenterPlugin.cs"));
         var dispatcherCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Worker", "Ipc", "IpcRequestDispatcher.cs"));
         var dtoPath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Contracts", "WorkerDtos.cs");
+        var clientPath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Ipc", "WorkerIpcClient.cs");
+        var compatibilityPath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Contracts", "ProtocolCompatibility.cs");
 
         Assert.True(File.Exists(dtoPath));
+        Assert.True(File.Exists(compatibilityPath));
+        Assert.Contains("WorkerHandshakeDto", File.ReadAllText(dtoPath));
+        Assert.Contains("MinimumSupportedProtocolVersion", File.ReadAllText(dtoPath));
+        Assert.Contains("HandshakeAsync", File.ReadAllText(clientPath));
+        Assert.Contains("ProtocolCompatibility.IsCompatible", File.ReadAllText(clientPath));
+        Assert.Contains("MessageTypes.Handshake", dispatcherCode);
         Assert.Contains("WorkerPingDto", dispatcherCode);
         Assert.Contains("expectedVersion", launcherCode);
         Assert.Contains("ProbeHealthAsync", launcherCode);

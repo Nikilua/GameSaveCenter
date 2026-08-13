@@ -225,11 +225,31 @@ namespace GameSaveCenter.Playnite.Infrastructure
         {
             try
             {
-                var ping = await client.RequestAsync<WorkerPingDto>(MessageTypes.Ping, new { }, timeout).ConfigureAwait(false);
+                var handshake = await client.HandshakeAsync(timeout).ConfigureAwait(false);
                 if (!string.IsNullOrWhiteSpace(expectedVersion) &&
-                    !string.Equals(ping.Version, expectedVersion, StringComparison.OrdinalIgnoreCase))
+                    !string.Equals(handshake.WorkerVersion, expectedVersion, StringComparison.OrdinalIgnoreCase))
                     return HealthProbe.Incompatible;
                 return HealthProbe.Healthy;
+            }
+            catch (WorkerRequestException ex) when (string.Equals(ex.Code, "PROTOCOL_MISMATCH", StringComparison.Ordinal))
+            {
+                return HealthProbe.Incompatible;
+            }
+            catch (WorkerRequestException)
+            {
+                // Older Worker builds without the explicit handshake still answer Ping.
+                try
+                {
+                    var ping = await client.RequestAsync<WorkerPingDto>(MessageTypes.Ping, new { }, timeout).ConfigureAwait(false);
+                    if (!string.IsNullOrWhiteSpace(expectedVersion) &&
+                        !string.Equals(ping.Version, expectedVersion, StringComparison.OrdinalIgnoreCase))
+                        return HealthProbe.Incompatible;
+                    return HealthProbe.Healthy;
+                }
+                catch
+                {
+                    return HealthProbe.Unavailable;
+                }
             }
             catch { return HealthProbe.Unavailable; }
         }
