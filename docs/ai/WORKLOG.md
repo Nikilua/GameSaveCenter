@@ -2,6 +2,18 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-13 A-HARDEN-001 通知级别正式实现与回归补齐
+
+- Task ID：`A-HARDEN-001`。
+- 实现内容：在既有 `NOTIFY-LEVELS-001` 基础上正式收口通知级别：`NotificationLevel`（`ImportantOnly/Summary/Verbose`）持久化到 Settings，默认 `Summary`；`NotificationLevelPolicy` 纯策略控制会话摘要与任务事件；设置页提供“仅重要通知/退出摘要/详细任务通知”和说明文本。本阶段把 `SessionNotificationAccumulator` 从插件私有嵌套类抽出为 `Infrastructure` 内部类，并给 Playnite.Tests 开放 InternalsVisibleTo，补齐“同一 Session 只发一次最终摘要”“期望任务数未到不提前汇总”“重复投递只替换终态不重复”和“Verbose 子事件 + 最终摘要”等回归测试。
+- 核心设计选择：通知状态继续复用 Task Center 的同一批终态任务，不另造成功判断；Summary 对 Session 任务只发一条退出摘要，Verbose 才额外逐任务显示；同一 Session 由 `TryMarkEmitted` 保证不重复 final。
+- 主要修改文件：`src/GameSaveCenter.Playnite/Infrastructure/SessionNotificationAccumulator.cs`、`GameSaveCenterPlugin.cs`、`GameSaveCenter.Playnite.csproj`、`tests/GameSaveCenter.Playnite.Tests/SessionNotificationAccumulatorTests.cs`、`tests/GameSaveCenter.Core.Tests/NotificationLevelPolicyTests.cs`。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `54/54`、Worker `141/141`、Playnite `215/215`；`validate-source.py` 与 XAML 结构门禁通过（本阶段未改 XAML，不重跑 render-qa 与 WPF 静态门禁）。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 22:34 记录 `Loaded plugin: GameSaveCenter, version 0.6.70`，插件日志记录 `0.6.70.0 loaded`，`worker-launch.log` 22:34:39 记录 Worker 启动、存储初始化和 `Application started`；安装后无新增插件异常。
+- 验证边界：非任务型重要事件（Health Risk、Backup anomaly、Multi-device conflict、Integrity serious error）目前由维护中心 Findings/Dashboard 承载，尚未单独生成 Playnite toast；真实宿主下三种通知级别的实际观感仍需人工复核。
+- Commit：`fbbdb90`。
+- 下一项：`A-HARDEN-002` CustomExecutable Unknown AutoStart 语义修正。
+
 ## 2026-08-13 FAULT-INJECTION-001 关键 I/O 故障注入
 
 - Task ID：`FAULT-INJECTION-001`。
