@@ -2,6 +2,17 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 LOCAL-MIRROR-001 第二本地镜像复制与校验
+
+- Task ID：`LOCAL-MIRROR-001`。
+- 实现内容：设置页新增“启用第二本地镜像”与镜像目录；维护中心“保留策略”页新增镜像状态卡与“刷新状态/同步镜像”入口。Worker `LocalMirrorService` 从存档目录按相对路径复制到镜像并校验文件大小，跳过大小相同的现有文件，从不删除镜像中多余文件；外置硬盘未连接时状态为 `Unavailable` 而不是系统错误，同步完成写入 `.gsc-mirror-sync.json` 标记。
+- 主要修改文件：`LocalMirrorDtos.cs`、`LocalMirrorService.cs`、`WorkerOptions.cs`、`OperationDtos.cs`、`MessageTypes.cs`、`IpcRequestDispatcher.cs`、`GameSaveCenterSettings.cs`、`GameSaveCenterSettingsView.xaml`、`DashboardViewModel.cs`、`MaintenanceView.xaml`、`MaintenanceView.xaml.cs`、`LocalMirrorServiceTests.cs`、`PortableSettingsTests.cs`、`UiLayoutRegressionTests.cs`。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `55/55`、Worker `182/182`、Playnite `220/220`；`validate-source.py`、XAML/WPF 静态门禁与五种窗口 `render-qa` 全绿。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 02:24:22 记录插件加载，`worker-launch.log` 02:24:28 记录 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实外置硬盘插入/拔出、镜像同步后人工核对文件数量与大小，以及主仓库删除后镜像历史不被删除。
+- Commit：`387149f`。
+- 下一项：Layer C `ACTIVITY-001` 全局活动时间线。
+
 ## 2026-08-14 RETENTION-SIM-001 全局保留策略模拟器与安全清理
 
 - Task ID：`RETENTION-SIM-001`。
