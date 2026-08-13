@@ -2,6 +2,18 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 PATH-REMAP-001 批量路径迁移预览与目标缺失策略
+
+- Task ID：`PATH-REMAP-001`。
+- 实现内容：路径迁移增加只读预览 `path.remap.preview`，按“备份归档/媒体归档/媒体原始路径/媒体来源/游戏工具入口/工作目录/解析目标/存档候选”列出受影响旧/新路径并标记目标是否存在；执行前自动调用 `MetadataBackupService.CreateAsync` 生成元数据灾备，再写库。
+- 目标缺失策略：`PathRemapRequestDto.ApplyMissingTargets` 默认 `false`；存在缺失目标且未授权应用时返回 `PATH_REMAP_TARGET_MISSING` 并整体跳过（默认安全跳过）；用户确认后可以 `ApplyMissingTargets=true` 仍应用。UI 先预览并显示缺失数量，再二次确认。
+- 主要修改文件：`PathRemapService.cs`、`PathRemapDtos.cs`、`SqliteStateStore.PathRemap.cs`、`MessageTypes.cs`、`IpcRequestDispatcher.cs`、`DashboardViewModel.cs`、`PathRemapServiceTests.cs`。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `54/54`、Worker `158/158`、Playnite `217/217`；`validate-source.py` 与 XAML 结构门禁通过（本阶段无 XAML 改动，不重跑 render-qa）。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 00:32 记录插件加载，`worker-launch.log` 00:32:16 记录 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实移动目录后预览并执行迁移，核对数据库路径、Worker 设置与自动生成的元数据灾备包。
+- Commit：`bddcfdd`。
+- 下一项：继续 Layer B，从 `TASK-RECONCILE-001` Worker 中断任务分类恢复补齐开始。
+
 ## 2026-08-14 REPOSITORY-REBUILD-001 备份索引重建预览与确认
 
 - Task ID：`REPOSITORY-REBUILD-001`。
