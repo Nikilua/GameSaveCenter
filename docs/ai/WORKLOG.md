@@ -2,6 +2,20 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-13 DEV-INSTALL-003 安装入口版本识别
+
+**实现内容：**
+
+- 一键安装 PowerShell 脚本输出自身的绝对路径和安装器修订号 `DEV-INSTALL-003`，避免旧日志/旧脚本错误地被当作当前修复结果。
+- `GameSaveCenter-Run.cmd` 启动前检查脚本是否包含当前修订号；从旧副本或错误目录启动时立即停止并显示期望路径，不再执行旧的进程停止逻辑。
+- 重新确认 PID 3896 是无父进程的孤儿 Worker；当前执行会话对 `Stop-Process`、`taskkill /F` 和命名管道请求均无权/无响应，不能把当前环境的强制结束结果伪造为成功。
+
+**验证结果：**
+
+- 当前仓库 `scripts/dev-install-run.ps1` 第 147 行是扩展路径筛选，不是用户日志中的旧权限异常；旧错误文本不再存在于当前脚本。
+- PowerShell AST 解析与 `git diff --check` 通过；入口校验已加入。
+- 当前 Codex 无桌面会话运行 UAC 仍返回 `0xc0000142`，用户桌面必须重新双击当前仓库入口并确认输出包含 `DEV-INSTALL-003` 与 `D:\workplace\github\GameSaveCenter\scripts\dev-install-run.ps1`。
+
 ## 2026-08-13 DEV-INSTALL-002 一键安装自动提权与停止竞态修复
 
 **实现内容：**

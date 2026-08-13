@@ -161,7 +161,7 @@
 
 - `scripts/dev-install-run.ps1` 的 `Stop-ProcessReliably` 必须允许 `Get-Process` 与 `Stop-Process` 之间的进程退出竞态；停止命令使用非终止错误处理，随后仍以轮询确认进程确实退出。
 - 若 Worker 仍存活且当前会话无权终止，安装器先在启动阶段通过 UAC 自动重启为管理员，再只对已确认的精确 PID 执行停止；提权后会再次核对进程名，不能为了自动化验证使用广泛/强制性的破坏性进程操作。
-- `53399ef fix: make dev installer process stop idempotent` 与 `DEV-INSTALL-002` 已验证脚本语法与差异；在真实 PID 3896 仍受当前执行会话权限保护时，安装器会清晰报告阻塞。用户桌面允许 UAC 或释放该 PID 后必须重新执行一键安装，并核对 Playnite 的 `ExtensionFactory` 与扩展日志，才能标记真实宿主验证通过。
+- `53399ef fix: make dev installer process stop idempotent`、`DEV-INSTALL-002` 与 `DEV-INSTALL-003` 已验证脚本语法与差异；入口现在会检查安装器修订号并打印绝对脚本路径，避免旧副本继续运行。用户桌面允许 UAC 或释放该 PID 后必须重新执行一键安装，并核对 Playnite 的 `ExtensionFactory` 与扩展日志，才能标记真实宿主验证通过。
 
 ## 2026-08-12 Worker 生命周期清理补充
 

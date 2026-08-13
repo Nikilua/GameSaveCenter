@@ -14,6 +14,15 @@ if not exist "%~dp0scripts\dev-install-run.ps1" (
     exit /b 2
 )
 
+findstr /c:"DEV-INSTALL-003" "%~dp0scripts\dev-install-run.ps1" >nul 2>nul
+if errorlevel 1 (
+    echo [FAILED] The installer script is stale or this is not the source checkout.
+    echo Expected: %~dp0scripts\dev-install-run.ps1
+    echo Please run this file from the current GameSaveCenter source directory.
+    pause
+    exit /b 3
+)
+
 echo ==============================================
 echo   GameSaveCenter build, install and run
 echo ==============================================

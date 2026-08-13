@@ -8,6 +8,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+$installerRevision = 'DEV-INSTALL-003'
 
 function Test-IsAdministrator {
     $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
@@ -16,6 +17,8 @@ function Test-IsAdministrator {
 }
 
 if (-not (Test-IsAdministrator)) {
+    Write-Host "一键安装器：$installerRevision" -ForegroundColor DarkCyan
+    Write-Host "安装脚本：$PSCommandPath" -ForegroundColor DarkCyan
     Write-Host '一键安装需要管理员权限，正在请求 UAC...' -ForegroundColor Yellow
     $hostPath = Join-Path $PSHOME ($(if ($PSVersionTable.PSEdition -eq 'Core') { 'pwsh.exe' } else { 'powershell.exe' }))
     $forwardedArguments = @(
@@ -60,6 +63,9 @@ try {
 catch {
     Write-Warning "无法启动安装日志记录：$($_.Exception.Message)"
 }
+
+Write-Host "一键安装器：$installerRevision" -ForegroundColor DarkCyan
+Write-Host "安装脚本：$PSCommandPath" -ForegroundColor DarkCyan
 
 $extensionId = 'GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec'
 $reportPath = Join-Path $root 'artifacts\last-dev-install.txt'
