@@ -502,6 +502,32 @@ public sealed class FakeDashboardData
             new StorageGameRankDto { GameName = "Elden Ring", BackupCount = 8, BackupBytes = 9L * 1024 * 1024 * 1024, LatestBackupUtc = DateTime.UtcNow.AddDays(-2) }
         }
     };
+    public RetentionSimulationPreviewDto RetentionSimulation { get; } = new RetentionSimulationPreviewDto
+    {
+        ExistingVersionCount = 520,
+        KeepVersionCount = 320,
+        DeleteCandidateCount = 200,
+        UserLockedCount = 18,
+        HealthProtectedCount = 12,
+        PreRestoreCount = 4,
+        EstimatedReleaseBytes = 43L * 1024 * 1024 * 1024,
+        Summary = "现有 520 个版本，建议保留 320 个，候选清理 200 个（预计释放 43 GiB）；用户锁定 18，健康恢复点保护 12，PreRestore 4。预览只读，清理不会自动执行。",
+        Items =
+        {
+            new RetentionSimulationItemDto
+            {
+                PlayniteId = "g1", GameName = "Cyberpunk 2077", BackupId = "old-1",
+                CreatedUtc = DateTime.UtcNow.AddDays(-300), TotalBytes = 4L * 1024 * 1024 * 1024,
+                ArchivePath = @"D:\GameSaveCenterData\Saves\Cyberpunk 2077\old-1.zip", Reason = "超出保留窗口或桶位"
+            },
+            new RetentionSimulationItemDto
+            {
+                PlayniteId = "g2", GameName = "Baldur's Gate 3", BackupId = "old-2",
+                CreatedUtc = DateTime.UtcNow.AddDays(-260), TotalBytes = 3L * 1024 * 1024 * 1024,
+                ArchivePath = @"D:\GameSaveCenterData\Saves\Baldur's Gate 3\old-2.zip", Reason = "超出保留窗口或桶位"
+            }
+        }
+    };
     public string DeviceStateMessage { get; } = "最近一次设备摘要对比完成：2 个游戏需要人工决定，其余一致。";
     public string StagedRemoteBackupStatus { get; } = "尚未下载远端存档。下载只会写入本机隔离区，不会覆盖当前存档。";
 }

@@ -58,6 +58,23 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         [Fact]
+        public void MaintenanceRetentionSimulationUsesResponsiveMetricsAndConfirmedApply()
+        {
+            var root = FindRepositoryRoot();
+            var maintenance = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+            var code = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml.cs"));
+
+            Assert.Contains("x:Name=\"MaintenanceRetentionSimulationMetrics\"", maintenance);
+            Assert.Contains("x:Name=\"MaintenanceRetentionSimulationProtectionMetrics\"", maintenance);
+            Assert.Contains("Command=\"{Binding RefreshRetentionSimulationCommand}\"", maintenance);
+            Assert.Contains("Command=\"{Binding ApplyRetentionSimulationCommand}\"", maintenance);
+            Assert.Contains("RetentionSimulation.Summary", maintenance);
+            Assert.Contains("RetentionSimulation.Items", maintenance);
+            Assert.Contains("MaintenanceRetentionSimulationMetrics.Columns = width >= 900 ? 4 : width >= 620 ? 2 : 1", code);
+            Assert.Contains("MaintenanceRetentionSimulationProtectionMetrics.Columns = width >= 720 ? 3 : 1", code);
+        }
+
+        [Fact]
         public void SharedInputChromeKeepsRoundedBoundsAndCenteredContent()
         {
             var root = FindRepositoryRoot();

@@ -111,6 +111,8 @@ namespace GameSaveCenter.Playnite.Views
             MaintenanceRetentionMetrics.Columns = width >= 720 ? 3 : width >= 480 ? 2 : 1;
             MaintenanceStorageMetrics.Columns = width >= 900 ? 4 : width >= 620 ? 2 : 1;
             MaintenanceStorageTrendPanel.Columns = width >= 720 ? 3 : 1;
+            MaintenanceRetentionSimulationMetrics.Columns = width >= 900 ? 4 : width >= 620 ? 2 : 1;
+            MaintenanceRetentionSimulationProtectionMetrics.Columns = width >= 720 ? 3 : 1;
             // The two detail cards read well as peers on a wide form, but squeezing
             // long backup IDs into two narrow columns makes the preview look like a
             // clipped table. Stack them as natural-height sections in the narrow form;

@@ -503,6 +503,24 @@ WHERE playnite_id=$id;",
         return string.IsNullOrWhiteSpace(value) ? new BackupPolicyDto() : JsonSerializer.Deserialize<BackupPolicyDto>(value, _json) ?? new BackupPolicyDto();
     }
 
+    public async Task<Dictionary<string, BackupPolicyDto>> GetAllPoliciesAsync(CancellationToken token)
+    {
+        var result = new Dictionary<string, BackupPolicyDto>(StringComparer.OrdinalIgnoreCase);
+        await using var connection = Open();
+        await connection.OpenAsync(token).ConfigureAwait(false);
+        var command = connection.CreateCommand();
+        command.CommandText = "SELECT playnite_id,policy_json FROM game_policies;";
+        await using var reader = await command.ExecuteReaderAsync(token).ConfigureAwait(false);
+        while (await reader.ReadAsync(token).ConfigureAwait(false))
+        {
+            var json = reader.IsDBNull(1) ? string.Empty : reader.GetString(1);
+            result[reader.GetString(0)] = string.IsNullOrWhiteSpace(json)
+                ? new BackupPolicyDto()
+                : JsonSerializer.Deserialize<BackupPolicyDto>(json, _json) ?? new BackupPolicyDto();
+        }
+        return result;
+    }
+
     public async Task<List<DashboardGameRecord>> GetDashboardGameRecordsAsync(CancellationToken token)
     {
         var result = new List<DashboardGameRecord>();
@@ -743,6 +761,10 @@ ON CONFLICT(playnite_id,backup_id) DO UPDATE SET ludusavi_name=excluded.ludusavi
             ["$os"]=version.OperatingSystem,["$pre"]=version.IsPreRestore?1:0,["$manifest"]=manifestJson,["$archive"]=version.ArchivePath,["$parent"]=version.ParentBackupId,
             ["$readiness"]=version.RestoreReadiness == null ? "{}" : JsonSerializer.Serialize(version.RestoreReadiness, _json) }, token);
 
+    public Task DeleteBackupVersionAsync(string playniteId, string backupId, CancellationToken token)
+        => ExecuteAsync("DELETE FROM backup_versions WHERE playnite_id=$game AND backup_id=$backup;",
+            new Dictionary<string, object?> { ["$game"] = playniteId, ["$backup"] = backupId }, token);
+
     public Task SaveRestoreReadinessAsync(string playniteId, string backupId, RestoreReadinessDto readiness, CancellationToken token)
         => ExecuteAsync("UPDATE backup_versions SET restore_readiness_json=$json WHERE playnite_id=$game AND backup_id=$backup;",
             new Dictionary<string, object?> { ["$game"] = playniteId, ["$backup"] = backupId, ["$json"] = JsonSerializer.Serialize(readiness, _json) }, token);
@@ -774,11 +796,15 @@ ON CONFLICT(playnite_id,backup_id) DO UPDATE SET ludusavi_name=excluded.ludusavi
         var result = new List<BackupVersionDto>();
         await using var connection=Open(); await connection.OpenAsync(token).ConfigureAwait(false);
         var command=connection.CreateCommand();
-        command.CommandText="SELECT playnite_id,ludusavi_name,created_utc,total_bytes FROM backup_versions ORDER BY created_utc ASC;";
+        command.CommandText="SELECT backup_id,playnite_id,ludusavi_name,created_utc,total_bytes,file_count,is_locked,is_pre_restore,archive_path,restore_readiness_json FROM backup_versions ORDER BY created_utc ASC;";
         await using var reader=await command.ExecuteReaderAsync(token).ConfigureAwait(false);
         while(await reader.ReadAsync(token).ConfigureAwait(false)) result.Add(new BackupVersionDto
         {
-            PlayniteId=reader.GetString(0),LudusaviName=reader.GetString(1),CreatedUtc=DateTime.Parse(reader.GetString(2)).ToUniversalTime(),TotalBytes=reader.GetInt64(3)
+            BackupId=reader.GetString(0),PlayniteId=reader.GetString(1),LudusaviName=reader.GetString(2),CreatedUtc=DateTime.Parse(reader.GetString(3)).ToUniversalTime(),
+            TotalBytes=reader.GetInt64(4),FileCount=reader.GetInt32(5),IsLocked=reader.GetInt32(6)==1,IsPreRestore=reader.GetInt32(7)==1,
+            ArchivePath=reader.IsDBNull(8)?string.Empty:reader.GetString(8),
+            RestoreReadiness=reader.IsDBNull(9)||string.IsNullOrWhiteSpace(reader.GetString(9))||reader.GetString(9)=="{}"
+                ? null : TryDeserializeRestoreReadiness(reader.GetString(9))
         });
         return result;
     }

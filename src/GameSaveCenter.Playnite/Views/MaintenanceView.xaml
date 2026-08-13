@@ -340,6 +340,68 @@
                                 </TextBlock>
                             </StackPanel>
                         </Border>
+                        <Border Style="{DynamicResource GscReadingCardStyle}" Padding="18" Margin="0,14,0,0">
+                            <StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                    <StackPanel MinWidth="0">
+                                        <TextBlock Text="全局保留策略模拟器" Style="{DynamicResource GscSectionTitleStyle}"/>
+                                        <TextBlock Text="只读预览；应用清理需要二次确认，并自动跳过锁定、PreRestore 与健康恢复点。" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                        <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RefreshRetentionSimulationCommand}" Content="刷新全局预览" Margin="0,0,8,0"/>
+                                        <ui:Button Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding ApplyRetentionSimulationCommand}" Content="应用清理" ToolTip="删除候选 ZIP 归档与对应索引；保护版本自动跳过"/>
+                                    </StackPanel>
+                                </Grid>
+                                <Border Style="{DynamicResource GscRedesignInfoBand}" Padding="12" Margin="0,12,0,0">
+                                    <TextBlock Text="{Binding RetentionSimulation.Summary}" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap"/>
+                                </Border>
+                                <UniformGrid x:Name="MaintenanceRetentionSimulationMetrics" Columns="4" Margin="0,14,0,0">
+                                    <Border Style="{DynamicResource GscRedesignMetricBorder}" Margin="0,0,8,0"><StackPanel><TextBlock Text="现有版本" Style="{DynamicResource GscCaptionStyle}"/><TextBlock Text="{Binding RetentionSimulation.ExistingVersionCount, FallbackValue=0}" FontSize="22" FontWeight="SemiBold" Margin="0,8,0,0"/><TextBlock Text="全部游戏" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/></StackPanel></Border>
+                                    <Border Style="{DynamicResource GscRedesignMetricBorder}" Margin="0,0,8,0"><StackPanel><TextBlock Text="建议保留" Style="{DynamicResource GscCaptionStyle}"/><TextBlock Text="{Binding RetentionSimulation.KeepVersionCount, FallbackValue=0}" FontSize="22" FontWeight="SemiBold" Margin="0,8,0,0"/><TextBlock Text="按各游戏策略" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/></StackPanel></Border>
+                                    <Border Style="{DynamicResource GscRedesignMetricBorder}" Margin="0,0,8,0"><StackPanel><TextBlock Text="候选清理" Style="{DynamicResource GscCaptionStyle}"/><TextBlock Text="{Binding RetentionSimulation.DeleteCandidateCount, FallbackValue=0}" FontSize="22" FontWeight="SemiBold" Margin="0,8,0,0"/><TextBlock Text="需用户确认" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/></StackPanel></Border>
+                                    <Border Style="{DynamicResource GscRedesignMetricBorder}"><StackPanel><TextBlock Text="预计释放" Style="{DynamicResource GscCaptionStyle}"/><TextBlock Text="{Binding RetentionSimulation.EstimatedReleaseDisplay, FallbackValue=—}" FontSize="22" FontWeight="SemiBold" Margin="0,8,0,0"/><TextBlock Text="按索引体积估算" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/></StackPanel></Border>
+                                </UniformGrid>
+                                <UniformGrid x:Name="MaintenanceRetentionSimulationProtectionMetrics" Columns="3" Margin="0,8,0,0">
+                                    <Border Style="{DynamicResource GscRedesignMetricBorder}" Margin="0,0,8,0"><StackPanel><TextBlock Text="用户锁定" Style="{DynamicResource GscCaptionStyle}"/><TextBlock Text="{Binding RetentionSimulation.UserLockedCount, FallbackValue=0}" FontSize="18" FontWeight="SemiBold" Margin="0,6,0,0"/><TextBlock Text="永不清理" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel></Border>
+                                    <Border Style="{DynamicResource GscRedesignMetricBorder}" Margin="0,0,8,0"><StackPanel><TextBlock Text="健康保护" Style="{DynamicResource GscCaptionStyle}"/><TextBlock Text="{Binding RetentionSimulation.HealthProtectedCount, FallbackValue=0}" FontSize="18" FontWeight="SemiBold" Margin="0,6,0,0"/><TextBlock Text="恢复点保护" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel></Border>
+                                    <Border Style="{DynamicResource GscRedesignMetricBorder}"><StackPanel><TextBlock Text="PreRestore" Style="{DynamicResource GscCaptionStyle}"/><TextBlock Text="{Binding RetentionSimulation.PreRestoreCount, FallbackValue=0}" FontSize="18" FontWeight="SemiBold" Margin="0,6,0,0"/><TextBlock Text="恢复快照保护" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel></Border>
+                                </UniformGrid>
+                                <TextBlock Text="候选明细" Style="{DynamicResource GscSectionTitleStyle}" Margin="0,16,0,0"/>
+                                <ScrollViewer MaxHeight="240" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,8,0,0">
+                                    <ItemsControl ItemsSource="{Binding RetentionSimulation.Items}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,0,0,6">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="150"/><ColumnDefinition Width="80"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                        <StackPanel MinWidth="0">
+                                                            <TextBlock Text="{Binding GameName}" TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/>
+                                                            <TextBlock Text="{Binding ArchivePath}" TextTrimming="CharacterEllipsis" ToolTip="{Binding ArchivePath}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,2,0,0"/>
+                                                        </StackPanel>
+                                                        <TextBlock Grid.Column="1" Text="{Binding CreatedDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" VerticalAlignment="Center" Margin="8,0"/>
+                                                        <TextBlock Grid.Column="2" Text="{Binding TotalBytesDisplay}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                                        <TextBlock Grid.Column="3" Text="{Binding Reason}" Foreground="{DynamicResource GscWarningBrush}" VerticalAlignment="Center" Margin="8,0,0,0"/>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </ScrollViewer>
+                                <TextBlock Text="暂无候选明细。点击“刷新全局预览”生成。" Margin="0,8,0,0">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource GscCaptionStyle}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding RetentionSimulation.Items.Count}" Value="0">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>

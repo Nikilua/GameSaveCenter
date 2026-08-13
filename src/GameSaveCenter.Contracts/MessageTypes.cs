@@ -73,6 +73,8 @@ namespace GameSaveCenter.Contracts
         public const string ReconcileTasks = "tasks.reconcile";
         public const string CreateDiagnosticsPackage = "diagnostics.package.create";
         public const string StorageAnalysis = "storage.analysis";
+        public const string PreviewRetentionSimulation = "retention.simulation.preview";
+        public const string ApplyRetentionSimulation = "retention.simulation.apply";
         public const string CancelTask = "task.cancel";
         public const string ListGameTools = "tools.list";
         public const string InspectGameToolImport = "tools.import.inspect";

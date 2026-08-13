@@ -37,7 +37,8 @@ namespace GameSaveCenter.Contracts
             "TaskReconcile",
             "GameOperationLock",
             "AtomicIo",
-            "StorageAnalysis"
+            "StorageAnalysis",
+            "RetentionSimulation"
         };
     }
 }

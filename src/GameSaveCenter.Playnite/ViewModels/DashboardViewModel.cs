@@ -85,6 +85,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string pathRemapSummary = "尚未执行路径迁移。";
         private string taskReconcileSummary = "尚未协调中断任务。";
         private StorageAnalysisDto storageAnalysis = new StorageAnalysisDto { Summary = "尚未分析备份存储。" };
+        private RetentionSimulationPreviewDto retentionSimulation = new RetentionSimulationPreviewDto { Summary = "尚未生成全局保留预览。" };
         private string diffSummary = string.Empty;
         private string retentionSummary = string.Empty;
         private BackupPolicyTemplateDto selectedPolicyTemplate = null!;
@@ -195,6 +196,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             RunPathRemapCommand = new RelayCommand(_ => Run(RunPathRemapAsync), _ => !IsBusy && !string.IsNullOrWhiteSpace(PathRemapOldRoot) && !string.IsNullOrWhiteSpace(PathRemapNewRoot));
             ReconcileTasksCommand = new RelayCommand(_ => Run(ReconcileTasksAsync), _ => !IsBusy);
             RefreshStorageAnalysisCommand = new RelayCommand(_ => Run(RefreshStorageAnalysisAsync), _ => !IsBusy);
+            RefreshRetentionSimulationCommand = new RelayCommand(_ => Run(RefreshRetentionSimulationAsync), _ => !IsBusy);
+            ApplyRetentionSimulationCommand = new RelayCommand(_ => Run(ApplyRetentionSimulationAsync), _ => !IsBusy && RetentionSimulation.DeleteCandidateCount > 0);
             ExitSafeModeCommand = new RelayCommand(_ => Run(ExitSafeModeAsync), _ => !IsBusy);
             RunEnvironmentCheckCommand = new RelayCommand(_ => Run(RunEnvironmentCheckAsync), _ => !IsBusy);
             SkipOnboardingCommand = new RelayCommand(_ => SkipOnboarding(), _ => !IsBusy && IsOnboardingPending);
@@ -352,6 +355,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public string PathRemapSummary { get => pathRemapSummary; private set => SetValue(ref pathRemapSummary, value); }
         public string TaskReconcileSummary { get => taskReconcileSummary; private set => SetValue(ref taskReconcileSummary, value); }
         public StorageAnalysisDto StorageAnalysis { get => storageAnalysis; private set => SetValue(ref storageAnalysis, value ?? new StorageAnalysisDto()); }
+        public RetentionSimulationPreviewDto RetentionSimulation { get => retentionSimulation; private set => SetValue(ref retentionSimulation, value ?? new RetentionSimulationPreviewDto()); }
         public string GameSearchText
         {
             get => gameSearchText;
@@ -645,6 +649,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand RunPathRemapCommand { get; }
         public ICommand ReconcileTasksCommand { get; }
         public ICommand RefreshStorageAnalysisCommand { get; }
+        public ICommand RefreshRetentionSimulationCommand { get; }
+        public ICommand ApplyRetentionSimulationCommand { get; }
         public ICommand ExitSafeModeCommand { get; }
         public ICommand RunEnvironmentCheckCommand { get; }
         public ICommand SkipOnboardingCommand { get; }
@@ -1344,6 +1350,46 @@ namespace GameSaveCenter.Playnite.ViewModels
             });
         }
 
+        private async Task RefreshRetentionSimulationAsync()
+        {
+            var result = await plugin.RequestAsync<RetentionSimulationPreviewDto>(MessageTypes.PreviewRetentionSimulation, new { }, TimeSpan.FromMinutes(3));
+            ApplyOnUi(() =>
+            {
+                RetentionSimulation = result;
+                StatusMessage = result.Summary;
+                RaiseCommandStates();
+            });
+        }
+
+        private async Task ApplyRetentionSimulationAsync()
+        {
+            var preview = RetentionSimulation;
+            if (preview.DeleteCandidateCount <= 0)
+            {
+                StatusMessage = "当前没有可清理的候选版本。";
+                return;
+            }
+            var confirmed = await plugin.ConfirmAsync(
+                "应用保留策略清理",
+                $"{preview.Summary}\n\n清理会删除候选 ZIP 归档并移除对应 SQLite 索引；用户锁定、PreRestore 与健康恢复点会被自动跳过。是否继续？",
+                "清理候选版本",
+                "取消",
+                isDangerous: true);
+            if (!confirmed) return;
+
+            var result = await plugin.RequestAsync<RetentionSimulationResultDto>(
+                MessageTypes.ApplyRetentionSimulation,
+                new RetentionSimulationApplyRequestDto { Confirmed = true },
+                TimeSpan.FromMinutes(10));
+            ApplyOnUi(() =>
+            {
+                StatusMessage = result.Summary;
+                plugin.ShowInfo(result.Summary);
+            });
+            await RefreshRetentionSimulationAsync();
+            await RefreshDashboardAsync(false, false);
+        }
+
         private void SkipOnboarding()
         {
             plugin.Settings.OnboardingCompleted = true;
@@ -1388,6 +1434,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             await RefreshDashboardAsync(false, false);
             await LoadDiagnosticsAsync();
             await RefreshStorageAnalysisAsync();
+            await RefreshRetentionSimulationAsync();
             StatusMessage = "诊断信息已更新";
         }
 
@@ -2558,7 +2605,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 UpdateMediaMetadataCommand,OpenSelectedMediaCommand,RevealSelectedMediaCommand,
                 AssignInboxMediaCommand, IgnoreInboxMediaCommand,
                 CancelTaskCommand, RetryTaskCommand, CopyTaskErrorCommand, RefreshDiagnosticsCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
-                StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,
+                StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,RefreshRetentionSimulationCommand,ApplyRetentionSimulationCommand,
                 SaveProcessMappingCommand,DeleteProcessMappingCommand,RunEnvironmentCheckCommand,SkipOnboardingCommand,CompleteOnboardingCommand,OnboardingTestBackupCommand,
                 OpenDataDirectoryCommand, OpenBackupDirectoryCommand, OpenMediaDirectoryCommand, OpenWorkerLogCommand
                 ,ImportTrainerCommand,ImportCheatTableCommand,ImportCustomLaunchItemCommand,ImportToolFolderCommand,SaveGameToolCommand,LaunchGameToolCommand,
