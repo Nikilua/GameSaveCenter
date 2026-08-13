@@ -2,6 +2,17 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 ACTIVITY-001 首页全局活动时间线
+
+- Task ID：`ACTIVITY-001`。
+- 实现内容：首页新增“全局活动”卡片，通过 `ActivityTimelineMapper` 把最近 100 条审计记录映射为备份/恢复/云端/媒体/游戏工具/健康/冲突/完整性/仓库修复等业务事件；每条只保留时间、游戏、分类、结果与摘要，不暴露原始日志或堆栈。Dashboard 快照新增 `RecentActivities`，UI 最多显示 12 条，使用有限 240 DIP 视口、虚拟化与 Recycling。
+- 主要修改文件：`DashboardDtos.cs`、`ActivityTimelineMapper.cs`、`DashboardService.cs`、`SnapshotComparers.cs`、`DashboardViewModel.cs`、`OverviewView.xaml`、`ActivityTimelineMapperTests.cs`、`UiLayoutRegressionTests.cs`、`FakeDashboardData.cs`。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `59/59`、Worker `182/182`、Playnite `221/221`；`validate-source.py`、XAML/WPF 静态门禁与五种窗口 `render-qa` 全绿。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 02:41:38 记录插件加载，`worker-launch.log` 02:41:44 记录 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实备份/恢复/云端/媒体/工具操作后人工核对时间线分类、结果与摘要可读性。
+- Commit：`7f38b15`。
+- 下一项：Layer C `PLAYNITE-QUICK-001` Playnite 游戏右键快捷操作。
+
 ## 2026-08-14 LOCAL-MIRROR-001 第二本地镜像复制与校验
 
 - Task ID：`LOCAL-MIRROR-001`。
