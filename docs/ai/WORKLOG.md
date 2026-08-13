@@ -2,6 +2,17 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 IPC-COMPAT-001 IPC 握手能力列表
+
+- Task ID：`IPC-COMPAT-001`。
+- 实现内容：`WorkerHandshakeDto` 增加 `AppVersion` 与 `Capabilities`，握手返回 `RestoreReadiness/MetadataBackup/RepositoryRebuild/PathRemap/TaskReconcile/GameOperationLock/AtomicIo` 能力列表；插件/Worker 仍使用独立 `ProtocolVersion`，不直接用 0.6.70 判断兼容。
+- 主要修改文件：`WorkerDtos.cs`、`IpcRequestDispatcher.cs`、`ProtocolCompatibilityTests.cs`。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `55/55`、Worker `167/167`、Playnite `217/217`；`validate-source.py` 与 XAML 结构门禁通过（本阶段无 UI 改动，不重跑 render-qa）。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 01:01 记录插件加载，`worker-launch.log` 01:01:23 记录 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：保留旧版 Worker 后启动新插件，确认握手拒绝并替换旧进程。
+- Commit：`7ee738d`。
+- 下一项：继续 Layer B，从 `ATOMIC-IO-001` 重要状态文件原子写入审计补齐开始。
+
 ## 2026-08-14 GAME-OP-LOCK-001 单游戏操作兼容矩阵
 
 - Task ID：`GAME-OP-LOCK-001`。
