@@ -81,6 +81,8 @@ namespace GameSaveCenter.Contracts
         public string TaskId { get; set; } = string.Empty;
         /// <summary>Groups tasks launched by one game session for a single exit summary.</summary>
         public string SessionId { get; set; } = string.Empty;
+        /// <summary>Identifies the Worker process/lifecycle that owned this task.</summary>
+        public string WorkerSessionId { get; set; } = string.Empty;
         public string TaskType { get; set; } = string.Empty;
         public string GameId { get; set; } = string.Empty;
         public string GameName { get; set; } = string.Empty;

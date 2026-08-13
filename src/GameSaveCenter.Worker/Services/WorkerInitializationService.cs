@@ -21,7 +21,7 @@ public sealed class WorkerInitializationService : IHostedService
         try
         {
             await _store.InitializeAsync(cancellationToken).ConfigureAwait(false);
-            await _store.MarkInterruptedTasksAsync(cancellationToken).ConfigureAwait(false);
+            await _store.MarkInterruptedTasksAsync(_options.WorkerSessionId, cancellationToken).ConfigureAwait(false);
             await _detection.CleanupExpiredSnapshotsAsync(cancellationToken).ConfigureAwait(false);
             _options.RecordStartupSuccess();
             var version = typeof(WorkerInitializationService).Assembly.GetName().Version?.ToString() ?? "unknown";

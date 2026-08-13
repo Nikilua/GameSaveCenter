@@ -12,10 +12,11 @@ public sealed class TaskReconcileServiceTests : IDisposable
 {
     private readonly string root = Path.Combine(Path.GetTempPath(), "GameSaveCenter.Tests", Guid.NewGuid().ToString("N"));
     private readonly SqliteStateStore store;
+    private readonly WorkerOptions options;
 
     public TaskReconcileServiceTests()
     {
-        var options = new WorkerOptions
+        options = new WorkerOptions
         {
             DataDirectory = Path.Combine(root, "Data"),
             LudusaviBackupDirectory = Path.Combine(root, "Saves"),
@@ -33,6 +34,7 @@ public sealed class TaskReconcileServiceTests : IDisposable
         {
             TaskId = "queued",
             TaskType = "Backup",
+            WorkerSessionId = "old-session",
             State = TaskState.Queued,
             CreatedUtc = now
         }, CancellationToken.None);
@@ -40,6 +42,25 @@ public sealed class TaskReconcileServiceTests : IDisposable
         {
             TaskId = "running",
             TaskType = "CloudUpload",
+            WorkerSessionId = "old-session",
+            State = TaskState.Running,
+            CreatedUtc = now,
+            StartedUtc = now
+        }, CancellationToken.None);
+        await store.AddOrUpdateTaskAsync(new TaskStatusDto
+        {
+            TaskId = "restore",
+            TaskType = "Restore",
+            WorkerSessionId = "old-session",
+            State = TaskState.Running,
+            CreatedUtc = now,
+            StartedUtc = now
+        }, CancellationToken.None);
+        await store.AddOrUpdateTaskAsync(new TaskStatusDto
+        {
+            TaskId = "integrity",
+            TaskType = "Integrity",
+            WorkerSessionId = "old-session",
             State = TaskState.Running,
             CreatedUtc = now,
             StartedUtc = now
@@ -53,17 +74,19 @@ public sealed class TaskReconcileServiceTests : IDisposable
             FinishedUtc = now
         }, CancellationToken.None);
 
-        var service = new TaskReconcileService(store, NullLogger<TaskReconcileService>.Instance);
+        var service = new TaskReconcileService(store, options, NullLogger<TaskReconcileService>.Instance);
         var first = await service.ReconcileAsync(CancellationToken.None);
         var second = await service.ReconcileAsync(CancellationToken.None);
 
-        Assert.Equal(2, first.InterruptedTaskCount);
+        Assert.Equal(4, first.InterruptedTaskCount);
         Assert.Equal(0, second.InterruptedTaskCount);
         var tasks = await store.GetRecentTasksAsync(10, CancellationToken.None);
         Assert.Equal(TaskState.Failed, tasks.Single(x => x.TaskId == "queued").State);
-        Assert.Equal("WORKER_RESTARTED", tasks.Single(x => x.TaskId == "queued").ErrorCode);
+        Assert.Equal("WORKER_RESTARTED_RETRYABLE", tasks.Single(x => x.TaskId == "queued").ErrorCode);
         Assert.Equal(TaskState.Failed, tasks.Single(x => x.TaskId == "running").State);
-        Assert.Equal("WORKER_RESTARTED", tasks.Single(x => x.TaskId == "running").ErrorCode);
+        Assert.Equal("WORKER_RESTARTED_RETRYABLE", tasks.Single(x => x.TaskId == "running").ErrorCode);
+        Assert.Equal("MANUAL_INTERVENTION_REQUIRED", tasks.Single(x => x.TaskId == "restore").ErrorCode);
+        Assert.Equal("WORKER_RESTARTED", tasks.Single(x => x.TaskId == "integrity").ErrorCode);
         Assert.Equal(TaskState.Succeeded, tasks.Single(x => x.TaskId == "done").State);
     }
 

@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using GameSaveCenter.Contracts;
+using GameSaveCenter.Worker.Configuration;
 using GameSaveCenter.Worker.Ipc;
 using GameSaveCenter.Worker.Persistence;
 using Microsoft.Extensions.Logging;
@@ -12,6 +13,7 @@ public sealed class TaskCoordinator
     private readonly SqliteStateStore _store;
     private readonly ILogger<TaskCoordinator> _logger;
     private readonly TaskEventBroadcaster _events;
+    private readonly string workerSessionId;
     private readonly ConcurrentDictionary<string, SemaphoreSlim> _gameLocks = new(StringComparer.OrdinalIgnoreCase);
     private readonly ConcurrentDictionary<string, CancellationTokenSource> _taskTokens = new(StringComparer.OrdinalIgnoreCase);
     private readonly ConcurrentQueue<TaskChangeEventDto> _changes = new();
@@ -20,8 +22,8 @@ public sealed class TaskCoordinator
     private long _changeSequence;
     private const int ChangeRetention = 500;
 
-    public TaskCoordinator(SqliteStateStore store, TaskEventBroadcaster events, ILogger<TaskCoordinator> logger)
-    { _store=store; _events=events; _logger=logger; }
+    public TaskCoordinator(SqliteStateStore store, TaskEventBroadcaster events, ILogger<TaskCoordinator> logger, WorkerOptions? options = null)
+    { _store=store; _events=events; _logger=logger; workerSessionId=options?.WorkerSessionId ?? Guid.NewGuid().ToString("N"); }
 
     public async Task<TaskStatusDto> RunAsync(
         string taskType,
@@ -33,7 +35,7 @@ public sealed class TaskCoordinator
     {
         var task = new TaskStatusDto
         {
-            TaskId=Guid.NewGuid().ToString("N"), SessionId=sessionId ?? string.Empty, TaskType=taskType, GameId=gameId, GameName=gameName,
+            TaskId=Guid.NewGuid().ToString("N"), SessionId=sessionId ?? string.Empty, WorkerSessionId=workerSessionId, TaskType=taskType, GameId=gameId, GameName=gameName,
             State=TaskState.Queued, ProgressPercent=0, Message="等待执行", CreatedUtc=DateTime.UtcNow
         };
         await PersistAndPublishAsync(task, outerToken).ConfigureAwait(false);
@@ -148,7 +150,7 @@ public sealed class TaskCoordinator
 
     private static TaskStatusDto Clone(TaskStatusDto task)=>new()
     {
-        TaskId=task.TaskId,SessionId=task.SessionId,TaskType=task.TaskType,GameId=task.GameId,GameName=task.GameName,State=task.State,
+            TaskId=task.TaskId,SessionId=task.SessionId,WorkerSessionId=task.WorkerSessionId,TaskType=task.TaskType,GameId=task.GameId,GameName=task.GameName,State=task.State,
         ProgressPercent=task.ProgressPercent,Message=task.Message,CreatedUtc=task.CreatedUtc,StartedUtc=task.StartedUtc,
         FinishedUtc=task.FinishedUtc,ErrorCode=task.ErrorCode,ErrorMessage=task.ErrorMessage
     };

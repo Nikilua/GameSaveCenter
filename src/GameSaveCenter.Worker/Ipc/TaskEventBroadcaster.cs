@@ -52,6 +52,7 @@ public sealed class TaskEventBroadcaster
         {
             TaskId = change.Task.TaskId,
             SessionId = change.Task.SessionId,
+            WorkerSessionId = change.Task.WorkerSessionId,
             TaskType = change.Task.TaskType,
             GameId = change.Task.GameId,
             GameName = change.Task.GameName,

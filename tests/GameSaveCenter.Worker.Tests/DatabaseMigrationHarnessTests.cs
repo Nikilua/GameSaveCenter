@@ -67,7 +67,7 @@ VALUES ('v9','tool9','1.0','C:\Tools\u.exe','C:\Tools','','','','2025-01-01T00:0
             new Dictionary<string, IReadOnlyCollection<string>>
             {
                 ["games"] = new[] { "match_input_hash", "last_match_attempt_utc" },
-                ["tasks"] = new[] { "session_id" },
+                ["tasks"] = new[] { "session_id", "worker_session_id" },
                 ["backup_versions"] = new[] { "archive_path", "restore_readiness_json" },
                 ["media"] = new[] { "classification_state", "classification_reason" },
                 ["media_sources"] = new[] { "shared_directory" },
@@ -106,7 +106,7 @@ VALUES ('v9','tool9','1.0','C:\Tools\u.exe','C:\Tools','','','','2025-01-01T00:0
             new[] { "games", "tasks", "backup_versions", "media_sources", "game_tools", "game_tool_versions", "legacy_marker" },
             new Dictionary<string, IReadOnlyCollection<string>>
             {
-                ["tasks"] = new[] { "session_id" },
+                ["tasks"] = new[] { "session_id", "worker_session_id" },
                 ["backup_versions"] = new[] { "archive_path", "restore_readiness_json" },
                 ["media_sources"] = new[] { "shared_directory" },
                 ["game_tools"] = new[] { "if_already_running", "risk_category", "allow_unknown_anticheat_autostart" },

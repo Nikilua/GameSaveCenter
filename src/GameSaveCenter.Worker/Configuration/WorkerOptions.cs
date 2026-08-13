@@ -17,6 +17,7 @@ public sealed class WorkerOptions
 
     public string DataDirectory { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "GameSaveCenter");
     public string DeviceId { get; set; } = Guid.NewGuid().ToString("N");
+    public string WorkerSessionId { get; set; } = Guid.NewGuid().ToString("N");
     public bool SafeModeEnabled { get; set; }
     public bool SafeModeRequested { get; set; }
     public string LudusaviExecutable { get; set; } = string.Empty;

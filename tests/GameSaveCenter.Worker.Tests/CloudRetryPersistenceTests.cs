@@ -148,11 +148,11 @@ public sealed class CloudRetryPersistenceTests : IDisposable
             ProgressPercent = 42, Message = "uploading", CreatedUtc = DateTime.UtcNow, StartedUtc = DateTime.UtcNow
         }, CancellationToken.None);
 
-        await store.MarkInterruptedTasksAsync(CancellationToken.None);
+        await store.MarkInterruptedTasksAsync(string.Empty, CancellationToken.None);
         var task = Assert.Single(await store.GetRecentTasksAsync(10, CancellationToken.None), x => x.TaskId == "upload-1");
 
         Assert.Equal(TaskState.Failed, task.State);
-        Assert.Equal("WORKER_RESTARTED", task.ErrorCode);
+        Assert.Equal("WORKER_RESTARTED_RETRYABLE", task.ErrorCode);
         Assert.True(task.ProgressPercent < 100);
     }
 

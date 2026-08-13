@@ -35,6 +35,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
         public static readonly Func<TaskStatusDto, TaskStatusDto, bool> Task = (a, b) =>
             string.Equals(a.TaskId, b.TaskId, StringComparison.Ordinal)
             && string.Equals(a.SessionId, b.SessionId, StringComparison.Ordinal)
+            && string.Equals(a.WorkerSessionId, b.WorkerSessionId, StringComparison.Ordinal)
             && string.Equals(a.TaskType, b.TaskType, StringComparison.Ordinal)
             && string.Equals(a.GameId, b.GameId, StringComparison.Ordinal)
             && string.Equals(a.GameName, b.GameName, StringComparison.Ordinal)
