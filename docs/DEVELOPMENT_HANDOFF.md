@@ -2,6 +2,13 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-13 UI-QA-REAL-006 设置分类 Tab 实际裁切修复
+
+- 上一轮分类栏底部安全区只改变了外层 extent，未改变 `TabItem` Chrome 贴住 `TabPanel` 布局槽的问题；真实截图中的每张分类卡底边仍像被一条水平边界切平。
+- 共享 `GscRedesignSettingsTabItem` 现使用不裁切的 `TabItemRoot` + 独立圆角 Chrome，Chrome 顶部对齐并留出 2 DIP 底部安全距离，移除 Chrome 的 `ClipToBounds=True`。
+- `GscRedesignSettingsTabControl` 现用 `SettingsHeaderBottomSafetyZone` 真实占位元素增加分类滚动内容 extent；顶部横向模式折叠占位元素。RenderHarness 会检查最后 Tab 与 Chrome 的底部几何及安全距离。
+- 已验证：XAML/source 门禁、Playnite `210/210`、设置页五种窗口 `render-qa OK`；仍需真实 Playnite 宿主主题/DPI/连续缩放人工验收。
+
 ## 接手时的最短指令
 
 以后可以直接对新的 agent 说：

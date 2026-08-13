@@ -471,11 +471,21 @@ public static class Program
                         var lastTab = tabItems.OrderBy(item => tabs!.Items.IndexOf(item)).Last();
                         var lastTabOrigin = lastTab.TransformToAncestor(headerScroller).Transform(new Point(0, 0));
                         var lastTabBottom = lastTabOrigin.Y + lastTab.ActualHeight;
-                        report.AppendLine(
-                            $"  SettingsLayout w={width:0} h={height:0} lastTabBottom={lastTabBottom:0.##} viewport={headerScroller.ViewportHeight:0.##} scrollable={headerScroller.ScrollableHeight:0.##}");
-                        if (lastTabBottom > headerScroller.ViewportHeight + 1)
+                        var chrome = FindVisualChildren<FrameworkElement>(lastTab)
+                            .FirstOrDefault(element => element.Name == "Chrome");
+                        var chromeBottom = double.NaN;
+                        var chromeSafety = double.NaN;
+                        if (chrome != null)
                         {
-                            s_problems.Add($"SettingsLayout w={width:0} h={height:0} last category tab is clipped at bottom ({lastTabBottom:0.##}>{headerScroller.ViewportHeight:0.##})");
+                            var chromeOrigin = chrome.TransformToAncestor(headerScroller).Transform(new Point(0, 0));
+                            chromeBottom = chromeOrigin.Y + chrome.ActualHeight;
+                            chromeSafety = lastTab.ActualHeight - chrome.ActualHeight;
+                        }
+                        report.AppendLine(
+                            $"  SettingsLayout w={width:0} h={height:0} lastTabBottom={lastTabBottom:0.##} chromeBottom={chromeBottom:0.##} chromeSafety={chromeSafety:0.##} viewport={headerScroller.ViewportHeight:0.##} scrollable={headerScroller.ScrollableHeight:0.##}");
+                        if (lastTabBottom > headerScroller.ViewportHeight + 1 || chromeBottom > headerScroller.ViewportHeight + 1 || chromeSafety < 1)
+                        {
+                            s_problems.Add($"SettingsLayout w={width:0} h={height:0} last category chrome lacks bottom safety (tab={lastTabBottom:0.##}, chrome={chromeBottom:0.##}, safety={chromeSafety:0.##}, viewport={headerScroller.ViewportHeight:0.##})");
                         }
                     }
                 }

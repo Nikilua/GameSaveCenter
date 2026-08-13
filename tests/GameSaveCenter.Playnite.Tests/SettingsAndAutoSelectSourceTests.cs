@@ -33,6 +33,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.DoesNotContain("x:Name=\"SettingsScroller\"", xaml);
             Assert.Contains("x:Name=\"SettingsHeaderScroller\"", redesign);
             Assert.Contains("x:Name=\"SettingsHeaderItemsHost\"", redesign);
+            Assert.Contains("x:Name=\"SettingsHeaderBottomSafetyZone\"", redesign);
             Assert.Contains("HorizontalScrollBarVisibility=\"Auto\"", redesign);
             Assert.Contains("VerticalScrollBarVisibility=\"Auto\"", redesign);
         }

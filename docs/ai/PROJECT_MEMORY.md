@@ -15,6 +15,13 @@
 - Rclone 每次执行都经过命令白名单 `copy/check/lsf/cat/version`，禁止 `sync/move/delete/purge`；外部进程日志不再记录完整参数。Worker 重启会把未完成任务转为 `WORKER_RESTARTED`，取消会终止子进程。
 - 真实 Rclone 断网、真实两台设备、真实游戏 Restore/Undo、真实 EXE/LNK/BAT/PS1、1000+ 游戏库和完整主题/DPI 连续缩放仍为 `MANUAL QA REQUIRED`，不得由自动化结果冒充。
 
+## UI-QA-REAL-006 设置分类 Tab 实际裁切修复（2026-08-13）
+
+- 上一轮仅在 `TabPanel` 外增加底部留白没有解决用户截图中的直线底边。实际根因是 `GscRedesignSettingsTabItem` 让圆角 Border 直接充满 `TabItem` 模板布局槽，并开启 `ClipToBounds=True`；`TabPanel`/宿主布局取整后会把 Chrome 的底部圆角贴槽裁平。
+- 当前共享模板使用不裁切的 `TabItemRoot` 包裹独立 Chrome；Chrome `VerticalAlignment=Top`、`Margin=0,0,0,2`，因此始终保留底部安全距离并移除 Chrome 的 `ClipToBounds=True`。
+- 分类滚动内容使用真实 `SettingsHeaderBottomSafetyZone` 元素放在 `TabPanel` 后面形成内容 extent；顶部横向模式折叠该元素。RenderHarness 同时检查最后一项 `TabItem`、Chrome 的底部位置和 `chromeSafety >= 1`。
+- 当前验证：5 种窗口渲染图通过，设置几何探针和 Playnite `210/210` 通过；真实 Playnite 主机的 DPI/主题/连续缩放依旧只能由人工验收确认。
+
 ## 2026-08-13 UI-QA-REAL-005 首页顶端对齐、当前游戏空间与设置圆角回归
 
 - 首页宽屏 `OverviewSecondaryScrollViewer` 与其内容面显式使用 `VerticalAlignment/VerticalContentAlignment=Top`，并在响应式代码中重复设定，避免 Playnite 宿主模板刷新后“今日概览”落到工作区中部。

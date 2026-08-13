@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-13 UI-QA-REAL-006 设置分类 Tab 实际裁切修复
+
+- 用户反馈上一轮“底部安全区域”没有视觉变化；复核截图后确认不是安全区数值太小，而是 `TabItem` 的圆角 `Border` 直接作为模板根并开启 `ClipToBounds=True`，圆角 Chrome 被 `TabPanel` 的布局槽贴底裁平。
+- `GscRedesignSettingsTabControl` 改为 `StackPanel` 承载 `TabPanel` 与真实的 `SettingsHeaderBottomSafetyZone` 占位元素；紧凑顶部横向模式隐藏该占位元素，保留原有滚动方向、选中逻辑和键盘导航。
+- `GscRedesignSettingsTabItem` 改为不裁切的 `TabItemRoot` + 独立 Chrome；Chrome 顶部对齐并保留 2 DIP 底部安全边距，移除会放大边界裁切的 `ClipToBounds=True`，不改变 Header、Binding、FocusVisualStyle 或业务行为。
+- RenderHarness 增加 `chromeBottom` / `chromeSafety` 几何门禁；最终 5 种窗口尺寸渲染通过，短窗口/滚动探针全部通过，设置页视觉复核确认卡片底部圆角不再被直线切平。
+- 验证：XAML/source 门禁、`git diff --check`、Playnite `210/210`、`render-qa OK`。真实 Playnite 宿主的主题、DPI 和连续缩放仍需人工复核。
+
 ## 2026-08-13 UI-QA-REAL-005 首页与设置页几何兼容性修复
 
 - 用户在 4K 全屏反馈首页“今日概览”没有贴在内容顶端、当前游戏卡空间紧张，以及设置页分类卡底部圆角仍像被切掉。

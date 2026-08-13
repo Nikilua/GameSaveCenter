@@ -373,7 +373,7 @@
                                       Width="248"
                                       DockPanel.Dock="Left"
                                       Margin="0,0,16,0"
-                                      Padding="0,0,0,12"
+                                      Padding="0"
                                       HorizontalScrollBarVisibility="Disabled"
                                       VerticalScrollBarVisibility="Auto"
                                       CanContentScroll="False"
@@ -381,17 +381,20 @@
                                       VerticalContentAlignment="Top"
                                       Focusable="False"
                                       KeyboardNavigation.TabNavigation="Local">
-                            <!-- Keep the trailing inset outside the TabItem template. A
-                                 ScrollViewer may clip its ItemsHost at the viewport edge;
-                                 this explicit host gives the last category card room to
-                                 paint all four rounded corners when the rail is scrolled
-                                 to its end. -->
-                            <Grid x:Name="SettingsHeaderItemsHost"
-                                  Margin="0,0,0,12"
-                                  VerticalAlignment="Top"
-                                  ClipToBounds="False">
+                            <!-- TabPanel is measured with an infinite vertical extent by the
+                                 ScrollViewer. Keep the safety zone as a real child after the
+                                 panel, rather than as Padding/Margin: WPF can otherwise
+                                 arrange the last TabItem flush with the viewport and clip
+                                 the lower anti-aliased corner pixels. -->
+                            <StackPanel x:Name="SettingsHeaderItemsHost"
+                                        VerticalAlignment="Top"
+                                        ClipToBounds="False">
                                 <TabPanel x:Name="HeaderPanel" IsItemsHost="True" KeyboardNavigation.TabIndex="1"/>
-                            </Grid>
+                                <Border x:Name="SettingsHeaderBottomSafetyZone"
+                                        Height="16"
+                                        Background="Transparent"
+                                        IsHitTestVisible="False"/>
+                            </StackPanel>
                         </ScrollViewer>
                         <ScrollViewer x:Name="SettingsScroller"
                                       Style="{DynamicResource GscPageScrollViewer}"
@@ -413,7 +416,7 @@
                             <Setter TargetName="SettingsHeaderScroller" Property="HorizontalScrollBarVisibility" Value="Auto"/>
                             <Setter TargetName="SettingsHeaderScroller" Property="VerticalScrollBarVisibility" Value="Disabled"/>
                             <Setter TargetName="SettingsHeaderScroller" Property="Width" Value="NaN"/>
-                            <Setter TargetName="SettingsHeaderScroller" Property="Padding" Value="0,0,0,12"/>
+                            <Setter TargetName="SettingsHeaderBottomSafetyZone" Property="Visibility" Value="Collapsed"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -430,11 +433,33 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TabItem">
-                    <Border x:Name="Chrome" MinHeight="0" Padding="14,8" CornerRadius="14" ClipToBounds="True"
-                            SnapsToDevicePixels="True" UseLayoutRounding="True"
-                            Background="{DynamicResource GscControlFillBrush}" BorderBrush="{DynamicResource GscGlassStrokeBrush}" BorderThickness="1">
-                        <ContentPresenter ContentSource="Header" VerticalAlignment="Center"/>
-                    </Border>
+                    <!-- TabPanel owns the TabItem layout slot. A Border as the template
+                         root can be clipped at that slot's edge, which turns the lower
+                         rounded corners into a straight line. The non-clipping root keeps
+                         the visual chrome independent from the TabItem slot. -->
+                    <Grid x:Name="TabItemRoot"
+                          ClipToBounds="False"
+                          SnapsToDevicePixels="True"
+                          UseLayoutRounding="True">
+                        <Border x:Name="Chrome"
+                                MinHeight="0"
+                                Padding="14,8"
+                                CornerRadius="14"
+                                ClipToBounds="False"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Top"
+                                Margin="0,0,0,2"
+                                SnapsToDevicePixels="True"
+                                UseLayoutRounding="True"
+                                Background="{DynamicResource GscControlFillBrush}"
+                                BorderBrush="{DynamicResource GscGlassStrokeBrush}"
+                                BorderThickness="1">
+                            <ContentPresenter ContentSource="Header"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        </Border>
+                    </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="Chrome" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>

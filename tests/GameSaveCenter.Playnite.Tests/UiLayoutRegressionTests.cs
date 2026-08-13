@@ -54,7 +54,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("<Setter Property=\"Height\" Value=\"42\"/>", production);
             Assert.Contains("VerticalAlignment=\"Center\"", tokens);
             Assert.Contains("<Setter Property=\"Height\" Value=\"42\"/>", tokens);
-            Assert.Contains("Padding=\"0,0,0,12\"", redesign);
+            Assert.Contains("Padding=\"0\"", redesign);
             Assert.Contains("CornerRadius=\"14\"", redesign);
         }
 
@@ -111,10 +111,15 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("x:Name=\"SettingsHeaderScroller\"", redesign);
             Assert.Contains("x:Name=\"SettingsHeaderItemsHost\"", redesign);
             Assert.Contains("Width=\"248\"", redesign);
-            Assert.Contains("Padding=\"0,0,0,12\"", redesign);
+            Assert.Contains("Padding=\"0\"", redesign);
             Assert.Contains("Padding=\"0,0,4,18\"", redesign);
             Assert.Contains("CornerRadius=\"14\"", redesign);
-            Assert.Contains("ClipToBounds=\"True\"", redesign);
+            Assert.Contains("x:Name=\"SettingsHeaderBottomSafetyZone\"", redesign);
+            Assert.Contains("x:Name=\"TabItemRoot\"", redesign);
+            Assert.Contains("VerticalAlignment=\"Top\"", redesign);
+            Assert.Contains("Margin=\"0,0,0,2\"", redesign);
+            Assert.Contains("ClipToBounds=\"False\"", redesign);
+            Assert.DoesNotContain("CornerRadius=\"14\" ClipToBounds=\"True\"", redesign);
             Assert.Contains("var shortHeight = height > 0 && height < 760;", code);
             Assert.Contains("tab.MinHeight = compact ? 50 : shortHeight ? 60 : 72;", code);
         }
