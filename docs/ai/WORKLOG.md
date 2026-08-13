@@ -2,6 +2,17 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 DRAGDROP-001 修改器中心拖拽导入
+
+- Task ID：`DRAGDROP-001`。
+- 实现内容：修改器中心“已绑定工具”页支持从资源管理器拖入单个文件或目录；`.ct` 自动进入 CheatTable 导入，`.lnk/.bat/.cmd/.ps1` 自动按自定义启动项（外部引用不复制），`.exe` 弹出“修改器 / 普通启动项”二选一，`.zip` 与目录复用既有主程序选择流程；未选择游戏时拒绝导入并提示。导入后 AutoStart 仍保持默认关闭。
+- 主要修改文件：`DashboardViewModel.cs`、`TrainerCenterView.xaml`、`TrainerCenterView.xaml.cs`、`DragDropImportSourceTests.cs`。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `59/59`、Worker `182/182`、Playnite `224/224`；`validate-source.py`、XAML/WPF 静态门禁与五种窗口 `render-qa` 全绿。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 03:06:22 记录插件加载，`worker-launch.log` 03:06:28 记录 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实拖入 EXE/CT/LNK/BAT/CMD/PS1/ZIP/目录，并人工确认 EXE 二选一、多 EXE 选择和 AutoStart 默认关闭。
+- Commit：`5d113c3`。
+- 下一项：Layer C `UI-STATE-001` 合理 UI 状态持久化。
+
 ## 2026-08-14 PLAYNITE-QUICK-001 Playnite 游戏右键快捷操作
 
 - Task ID：`PLAYNITE-QUICK-001`。
