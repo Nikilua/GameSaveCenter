@@ -2,6 +2,18 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 SOAK-001 数据规模与资源监控 Soak
+
+- Task ID：`SOAK-001`。
+- 实现内容：新增 `SoakDataScaleHarness`：默认测试用小规模（200 游戏/2000 备份/1000 任务/3000 媒体/50 工具），设置 `GSC_SOAK_DATA_SCALE=1` 运行完整规模（2000/20000/10000/30000/500）；循环模拟 Dashboard 读取、任务/媒体/工具查询、事件扇出、原子写入和操作锁。
+- 监控与断言：记录 Managed Memory、Handle Count、Thread Count、订阅残留、临时文件残留，并做有界增长断言（内存 < 256 MiB 增量、句柄 +256、线程 +32）；失败会记录错误而非只输出日志。
+- 主要修改文件：`tests/GameSaveCenter.Worker.Tests/Infrastructure/SoakDataScaleHarness.cs`、`SoakDataScaleTests.cs`。
+- 测试结果：隔离 Release 构建 0 warnings / 0 errors；Core `55/55`、Worker `170/170`、Playnite `217/217`；`validate-source.py` 与 XAML 结构门禁通过（测试-only 改动，不重跑 render-qa）。
+- 真实宿主验证：`dev-install-run.ps1` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 01:20 记录插件加载，`worker-launch.log` 01:20:05 记录 `Application started`；安装后无新增插件异常。
+- MANUAL QA REQUIRED：真实 24/48 小时宿主持续运行、真实大库与长时间挂机后的内存/句柄趋势观察。
+- Commit：`c9e053a`。
+- 下一项：继续 Layer B，从 `FAULT-INJECTION-001` ZIP/数据库故障注入补齐开始。
+
 ## 2026-08-14 ATOMIC-IO-001 原子写入旧文件完整保留审计
 
 - Task ID：`ATOMIC-IO-001`。
