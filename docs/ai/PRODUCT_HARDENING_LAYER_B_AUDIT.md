@@ -106,8 +106,8 @@
 
 - Release 解决方案构建：0 warnings / 0 errors。
 - Core：59/59。
-- Worker：188/188。
-- Playnite：232/232。
+- Worker：190/190。
+- Playnite：235/235。
 - `scripts/validate-source.py`：通过。
 - XAML 结构门禁：通过；涉及 XAML 的提交均通过 `render-qa`；B11 之后为测试-only 阶段，未重跑 `render-qa`。
 - 每个任务提交后均执行 `scripts/dev-install-run.ps1 -Configuration Release` 真实开发安装；B13 安装后 `playnite.log` 01:28:48 记录插件加载，`worker-launch.log` 01:28:54 记录 `Application started`。

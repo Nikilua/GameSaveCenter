@@ -8,7 +8,7 @@
 - 用户日志中的“编译解决方案”失败根因是旧 `dotnet/testhost` 或 Worker 锁住标准 `bin\Release` 输出，随后测试项目无法覆盖 DLL/PDB/XML；不是 `GameSaveCenter.Contracts` 编译失败。
 - 一键开发安装器现在默认不请求管理员权限。`scripts/build.ps1`、`scripts/package.ps1` 和 `scripts/dev-install-run.ps1` 支持按运行生成 `artifacts\dev-build\<Configuration>\<guid>` 隔离的 bin/obj、Worker 发布和安装暂存目录，入口修订号为 `DEV-INSTALL-007`。Playnite 发现增加运行中进程、常见目录、卸载信息、App Paths 和 PATH；未发现 Playnite 且没有运行中的 Playnite 时允许继续构建/安装并提示无法自动启动。Playnite 正常退出超时后，仅当进程属于当前会话、可执行文件路径与本次发现结果完全一致且已经没有主窗口时，才结束该无窗口残留；路径不可确认、跨会话或仍有主窗口时继续停止安装。
 - 真实宿主已验证：安装报告为 0.6.70 / DLL 0.6.70.0；Playnite `playnite.log` 记录插件加载，插件日志记录 0.6.70.0，`worker-launch.log` 记录存储初始化、过期任务整理和 `Application started`。不要再用 2026-08-12 的 PID 3896 历史日志判断当前安装器行为。
-- 当前自动化基线为 Core `59/59`、Worker `188/188`、Playnite `232/232`，Release 构建 0 warnings / 0 errors；source、XAML、WPF 静态门禁与 `render-qa` 通过。真实开发安装已成功，Playnite 与 Worker 启动日志正常。
+- 当前自动化基线为 Core `59/59`、Worker `190/190`、Playnite `235/235`，Release 构建 0 warnings / 0 errors；source、XAML、WPF 静态门禁与 `render-qa` 通过。真实开发安装已成功，Playnite 与 Worker 启动日志正常。
 - `ATOMIC-IO-001` 已交付：新增共享 `AtomicFileWriter`，Worker 设置持久化与媒体复制统一使用“目标同目录临时文件 + 原子 Move”，失败自动清理 `.tmp/.partial` 后再抛出；`WorkerOptions.Persist()` 与 `MediaSyncService` 私有复制逻辑已委托给共享实现。
 - `SOAK-001` 已交付：`SoakStabilityHarness` 加速压测任务协调、事件扇出、单游戏锁、原子写入和 SQLite 探针；`TaskEventBroadcaster.SubscriberCount` 与 `GameOperationLock.TrackedGameCount` 提供只读稳定性计数，`scripts/soak-test.ps1` 支持用 `GSC_SOAK_ITERATIONS` 扩展到最多 5000 轮长跑。
 - `FAULT-INJECTION-001` 已交付：`FaultInjectionHarness` 注入原子写、外部进程、任务协调、事件广播、操作锁、损坏 ZIP 与损坏 SQLite 共 15 类边界故障，断言无残留、稳定终态、原始文件不被失败注入删除，且锁/订阅全部回收；`scripts/fault-injection-test.ps1` 可独立运行。
@@ -39,6 +39,8 @@
 - `SETTINGS-VALIDATION-001` 已交付：设置页在标题区显示即时验证摘要，文本框、下拉框与复选框变化时复用 `VerifySettings` 校验并内联展示最多 4 条错误；验证错误不再只等 Playnite 保存时出现。
 - `MAINTENANCE-REPORT-001` 已交付：新增 IPC `maintenance.report.get` 与 Worker `MaintenanceReportService`，从 SQLite 计数、完整性自检、存储分析与本地镜像状态聚合用户可读健康报告；维护中心诊断操作带新增“复制健康报告/导出健康报告”，支持 TXT/Markdown；报告不含日志、原始数据库或凭据，与开发者诊断 ZIP 明确区分。
 - 最终代码缺口已闭合：`RepositoryRebuildService` 现在可从空/新 SQLite 按磁盘 ZIP 与 Manifest 重建历史，按 Ludusavi 目录名创建 `recovered-*` 占位游戏，不猜 Parent，二次重建幂等；`MetadataBackupService` 灾备包新增 `settings/plugin-settings.json`，恢复后由 Playnite 侧导入插件设置并回滚；`WorkspaceStatePresenter` 已覆盖存档历史 Loading、修改器工具 Loading/Empty、媒体 Worker Offline、维护云端 Degraded；`LocalMirrorService` 同步改为 SHA256 内容校验，同大小但内容不同会重新复制。
+- 崩溃修复：`GscWorkspaceStatePresenter` 模板内重试按钮从普通 `Button` 改为 `ui:Button`，修复真实 Playnite 切换存档页时 `“Button”TargetType 与元素“Button”的类型不匹配` 的 XamlParseException；已增加源码回归断言并在真实宿主复测。
+- Metadata 原子回滚：恢复前用 `VACUUM INTO` 生成一致性 DB 快照（不再直接复制可能缺 WAL 的活库）；Worker 新增 `metadata.restore.rollback`，Playnite 侧新增 `MetadataRestoreCoordinator`，Plugin 设置导入/保存/应用任一步失败时先恢复旧插件设置，再调用 Worker 从 PreRestorePath 回滚 DB 与 Worker 设置，失败才进入人工介入。
 - 本轮已修复 Layer A 审计缺口：多设备只有 Manifest 内容指纹相同才可判定等价；仅文件数/总大小相同改为保守的未知分歧；Restore Readiness 使用可取消的流式解压与增量 Hash；环境检查分别验证数据、存档和媒体所在磁盘；Manifest 重复路径不会抛异常或产生强指纹。
 - `DIAGNOSTICS-001` 已完成：维护中心可导出有上限、只读、脱敏的 ZIP 诊断包；包含环境/任务/审计/Worker 日志摘要，不包含数据库、存档、媒体或凭据；新增 IPC 请求和 Worker 测试覆盖敏感字段与大小边界。
 - Layer A 14 项、本轮审计补缺、A-HARDEN-001/002/003、Layer B 13 项（DIAGNOSTICS/SAFE-MODE/INTEGRITY/DB-MIGRATION/METADATA-BACKUP/REPOSITORY-REBUILD/PATH-REMAP/TASK-RECONCILE/GAME-OP-LOCK/IPC-COMPAT/ATOMIC-IO/SOAK/FAULT-INJECTION）与 Layer C 11 项已交付；逐项验收见 `docs/ai/PRODUCT_HARDENING_LAYER_B_AUDIT.md` 与 `docs/ai/PRODUCT_HARDENING_LAYER_C_AUDIT.md`，最终逐项审计见 `docs/ai/PRODUCT_HARDENING_EPIC_FINAL_AUDIT.md`，人工验收清单见 `docs/ai/FINAL_MANUAL_QA_CHECKLIST.md`。由于真实场景人工验收未全部完成，整体 Epic 状态为 `PARTIALLY COMPLETED / MANUAL QA REQUIRED`，不能宣称全部任务完成。

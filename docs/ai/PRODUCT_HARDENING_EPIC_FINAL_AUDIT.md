@@ -8,13 +8,13 @@
 
 - Release 解决方案构建：0 warnings / 0 errors。
 - Core：59/59。
-- Worker：188/188。
-- Playnite：232/232。
+- Worker：190/190。
+- Playnite：235/235。
 - `scripts/validate-source.py`：通过。
 - `scripts/check-xaml.ps1`：13 个 XAML 通过。
 - `.codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py .`：0 errors。
 - `scripts/render-qa.ps1`：五种窗口全部通过。
-- `scripts/dev-install-run.ps1 -Configuration Release`：构建、测试、打包、普通权限安装并启动真实 Playnite 通过；Final Code Gap Closure 后 `playnite.log` 09:43:56 记录插件加载，`extensions.log` 09:43:58 记录 `GameSaveCenter 0.6.70.0 loaded`，`worker-launch.log` 09:44:03 记录 `Application started`。
+- `scripts/dev-install-run.ps1 -Configuration Release`：构建、测试、打包、普通权限安装并启动真实 Playnite 通过；崩溃修复与 Metadata 原子回滚后 `playnite.log` 10:18:34 记录插件加载，`extensions.log` 10:18:36 记录 `GameSaveCenter 0.6.70.0 loaded`，`worker-launch.log` 10:18:40 记录 `Application started`，10:18 后无新崩溃日志。
 - 2026-08-14 Final Code Gap Closure：`fault-injection-test.ps1` 与 `soak-test.ps1 -Iterations 1000` 通过；Release 0 warnings / 0 errors；source、XAML、WPF 静态门禁与 `render-qa` 全绿。
 - 2026-08-14 独立复核：`scripts/fault-injection-test.ps1 -Configuration Release` 通过；`scripts/soak-test.ps1 -Configuration Release -Iterations 1000` 通过。
 
@@ -53,7 +53,7 @@
 | SAFE-MODE-001 | COMPLETED | `WorkerOptions`、`WorkerInitializationService`、安全模式 UI | `SafeModeStartupTests` | 当前最终 Gate | 连续 3 次失败提示与恢复 | `17e88b6` |
 | INTEGRITY-001 | COMPLETED | `IntegrityCheckService`、`SqliteStateStore.Integrity` | `IntegrityCheckServiceTests` | 当前最终 Gate | 真实孤儿/损坏/磁盘不足 | `a064108` |
 | DB-MIGRATION-001 | COMPLETED | `DatabaseMigrationHarness` | `DatabaseMigrationHarnessTests` | 当前最终 Gate | 真实历史用户库升级 | `55f532f` |
-| METADATA-BACKUP-001 | COMPLETED | `MetadataBackupService`（含 `settings/plugin-settings.json`）、`AtomicFileWriter`、Playnite 侧导入/回滚 | `MetadataBackupServiceTests`、`MetadataBackupSourceTests` | 当前最终 Gate | 真实恢复与失败回滚 | `97b06b5`、`0bcdce2` |
+| METADATA-BACKUP-001 | COMPLETED | `MetadataBackupService`（含 `settings/plugin-settings.json`、`VACUUM INTO` 快照、`metadata.restore.rollback`）、`MetadataRestoreCoordinator`、Playnite 侧预校验/导入/整体回滚 | `MetadataBackupServiceTests`、`MetadataRestoreCoordinatorTests`、`MetadataBackupSourceTests` | 当前最终 Gate | 真实恢复与失败回滚 | `97b06b5`、`0bcdce2`、`13f21a5` |
 | REPOSITORY-REBUILD-001 | COMPLETED | `RepositoryRebuildService`（空库扫描、`recovered-*` 占位游戏、不猜 Parent） | `RepositoryRebuildServiceTests`（artifact→empty DB→rebuild 幂等） | 当前最终 Gate | 真实仓库预览/确认/幂等 | `dff0cf4`、`e58714c` |
 | PATH-REMAP-001 | COMPLETED | `PathRemapService`、`SqliteStateStore.PathRemap` | `PathRemapServiceTests` | 当前最终 Gate | 真实目录迁移与缺失目标 | `bddcfdd` |
 | TASK-RECONCILE-001 | COMPLETED | `TaskReconcileService`、`TaskCoordinator`、`WorkerOptions` | `TaskReconcileServiceTests` | 当前最终 Gate | 真实中断后分类与 PreRestore | `47685bd` |

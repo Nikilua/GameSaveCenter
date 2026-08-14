@@ -92,13 +92,13 @@
 
 - Release 解决方案构建：0 warnings / 0 errors。
 - Core：59/59。
-- Worker：188/188。
-- Playnite：232/232。
+- Worker：190/190。
+- Playnite：235/235。
 - `scripts/validate-source.py`：通过。
 - `scripts/check-xaml.ps1`：13 个 XAML 通过。
 - `.codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py .`：0 errors。
 - `scripts/render-qa.ps1`：五种窗口全部通过。
-- 每个 C 阶段提交后均执行 `scripts/dev-install-run.ps1 -Configuration Release` 真实开发安装；Final Code Gap Closure 后 `playnite.log` 09:43:56 记录插件加载，`extensions.log` 09:43:58 记录 `GameSaveCenter 0.6.70.0 loaded`，`worker-launch.log` 09:44:03 记录 `Application started`。
+- 每个 C 阶段提交后均执行 `scripts/dev-install-run.ps1 -Configuration Release` 真实开发安装；崩溃修复与 Metadata 原子回滚后 `playnite.log` 10:18:34 记录插件加载，`extensions.log` 10:18:36 记录 `GameSaveCenter 0.6.70.0 loaded`，`worker-launch.log` 10:18:40 记录 `Application started`。
 
 ## 结论
 

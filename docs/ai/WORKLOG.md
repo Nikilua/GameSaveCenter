@@ -2,13 +2,23 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 崩溃修复与 Metadata 原子回滚
+
+- 真实 Playnite 09:58:04 崩溃根因：`GscWorkspaceStatePresenter` 模板中重试按钮使用普通 `Button`，却应用 `GscWpfUiActionButton`（TargetType 为 `ui:Button`），切换存档页渲染状态控件时抛 `XamlParseException: “Button”TargetType 与元素“Button”的类型不匹配`。已改为 `ui:Button` 并增加源码回归断言。
+- `MetadataRestoreCoordinator`：Playnite 侧在 Worker 恢复前用 detached `GameSaveCenterSettings.ValidatePortableJson` 预校验插件设置；恢复后导入/保存/应用任一失败时，先恢复旧插件设置，再调用 `metadata.restore.rollback` 回滚 DB 与 Worker 设置，失败才进入 `MANUAL_INTERVENTION_REQUIRED`。
+- Worker `MetadataBackupService`：恢复前副本改为 `VACUUM INTO` 一致性快照（不再直接复制可能缺 WAL 的活库）；恢复/回滚后调用 `WorkerOptions.ReloadPersistedSettings()`，避免旧内存选项覆盖刚恢复的 worker-settings.json。
+- 故障注入覆盖：Worker 测试验证 B 恢复成功后调用 rollback 可回到 A（DB + Worker settings）；Playnite 协调器测试验证 Plugin 保存故意失败后旧 Plugin settings 被恢复、Worker rollback 被调用、失败时进入人工介入。
+- 最终 Gate：Release 0 warnings / 0 errors；Core `59/59`、Worker `190/190`、Playnite `235/235`；source/XAML/WPF 静态门禁、五种窗口 `render-qa`、fault-injection 与 1000 轮 soak 全绿。
+- 真实宿主验证：`dev-install-run.ps1` 后 `playnite.log` 10:18:34 记录插件加载，`extensions.log` 10:18:36 记录 `GameSaveCenter 0.6.70.0 loaded`，`worker-launch.log` 10:18:40 记录 `Application started`；10:18 后无新崩溃日志。
+- Commit：`a417b7c`（崩溃修复）、`13f21a5`（Metadata 原子回滚）。
+
 ## 2026-08-14 Final Code Gap Closure 四项缺口闭合
 
 - P0 `REPOSITORY-REBUILD-001` 升级：`RepositoryRebuildService` 改为从磁盘 ZIP/Manifest 扫描，空/新 SQLite 也能按 Ludusavi 目录重建 `recovered-*` 占位游戏与备份历史；不依赖原 Game Match，不猜 Parent，保留 Locked/PreRestore 旧索引，二次重建幂等。
 - P1 `METADATA-BACKUP-001` 升级：灾备包新增 `settings/plugin-settings.json`（复用 `ExportPortableJson/ImportPortableJson`），预览返回插件设置哈希与 JSON，恢复后由 Playnite 侧导入、保存并同步 Worker；导入失败时回滚恢复前插件设置。
 - P1/P2 `UI-STATES-001` 覆盖扩展：存档历史 Loading、修改器工具 Loading/Empty、媒体 Worker Offline、维护云端 Degraded 均接入共享 `WorkspaceStatePresenter`；状态来自真实快照与集合，不模拟业务成功。
 - P1 `LOCAL-MIRROR-001` 升级：Local Mirror 从“同大小即跳过”改为 SHA256 内容校验；已存在文件同大小但内容不同会重新复制并在复制后再次校验。
-- 最终 Gate：Release 0 warnings / 0 errors；Core `59/59`、Worker `188/188`、Playnite `232/232`；`validate-source.py`、XAML/WPF 静态门禁与五种窗口 `render-qa` 全绿；`fault-injection-test.ps1` 与 `soak-test.ps1 -Iterations 1000` 通过。
+- 最终 Gate：Release 0 warnings / 0 errors；Core `59/59`、Worker `190/190`、Playnite `235/235`；`validate-source.py`、XAML/WPF 静态门禁与五种窗口 `render-qa` 全绿；`fault-injection-test.ps1` 与 `soak-test.ps1 -Iterations 1000` 通过。
 - 真实宿主验证：`dev-install-run.ps1 -Configuration Release` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 09:43:56 记录插件加载，`extensions.log` 09:43:58 记录 `GameSaveCenter 0.6.70.0 loaded`，`worker-launch.log` 09:44:03 记录 `Application started`。
 - Commit：`e58714c`、`0bcdce2`、`84f74fc`、`5a12d1e`。
 - 下一项：按 `docs/ai/FINAL_MANUAL_QA_CHECKLIST.md` 执行真实场景人工验收；整体 Epic 仍为 `PARTIALLY COMPLETED / MANUAL QA REQUIRED`。
