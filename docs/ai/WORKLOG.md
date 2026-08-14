@@ -11,7 +11,7 @@
 - 最终 Gate：Release 0 warnings / 0 errors；Core `59/59`、Worker `188/188`、Playnite `232/232`；`validate-source.py`、XAML/WPF 静态门禁与五种窗口 `render-qa` 全绿；`fault-injection-test.ps1` 与 `soak-test.ps1 -Iterations 1000` 通过。
 - 真实宿主验证：`dev-install-run.ps1 -Configuration Release` 构建、打包、普通权限安装并启动 Playnite；`playnite.log` 09:43:56 记录插件加载，`extensions.log` 09:43:58 记录 `GameSaveCenter 0.6.70.0 loaded`，`worker-launch.log` 09:44:03 记录 `Application started`。
 - Commit：`e58714c`、`0bcdce2`、`84f74fc`、`5a12d1e`。
-- 下一项：真实场景人工验收；整体 Epic 仍为 `PARTIALLY COMPLETED / MANUAL QA REQUIRED`。
+- 下一项：按 `docs/ai/FINAL_MANUAL_QA_CHECKLIST.md` 执行真实场景人工验收；整体 Epic 仍为 `PARTIALLY COMPLETED / MANUAL QA REQUIRED`。
 
 ## 2026-08-14 Layer C 与最终 Epic 审计收口
 

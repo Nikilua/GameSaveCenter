@@ -84,6 +84,7 @@
 - Layer A：`docs/ai/RELIABILITY_CLOSURE_AUDIT.md`
 - Layer B：`docs/ai/PRODUCT_HARDENING_LAYER_B_AUDIT.md`
 - Layer C：`docs/ai/PRODUCT_HARDENING_LAYER_C_AUDIT.md`
+- 人工验收清单：`docs/ai/FINAL_MANUAL_QA_CHECKLIST.md`
 - 长期记忆与工作日志：`docs/ai/PROJECT_MEMORY.md`、`docs/ai/WORKLOG.md`
 
 ## MANUAL QA REQUIRED（Epic 不能据此标记 COMPLETED）
