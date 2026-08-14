@@ -118,6 +118,9 @@ namespace GameSaveCenter.Playnite.Views
                 else
                 {
                     TrainerToolsCompactDetailsButton.Visibility = Visibility.Collapsed;
+                    TrainerToolsSettingsScrollViewer.Visibility = TrainerToolsList.SelectedItem != null
+                        ? Visibility.Visible
+                        : Visibility.Collapsed;
                 }
             // The inspector is a full-height secondary pane in the normal two-column layout.
             // Only the stacked compact layout receives a finite scroll channel; otherwise the

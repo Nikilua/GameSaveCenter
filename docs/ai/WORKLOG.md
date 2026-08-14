@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 UI-REFACTOR-V1 Resize 恢复探针与 Inspector 恢复修复
+
+- `render-qa` 新增 Resize transition QA：同一视图实例按 2560×1440 → 1100×720 → 2560×1440 依次布局，快照 DataGrid/ListBox/命名 ScrollViewer 的尺寸、可见性与滚动条，断言回到大窗后几何恢复。
+- 探针抓到并修复真实缺陷：Save/Task/Trainer 的 Inspector 在宽→窄→宽后停留在窄窗收起状态；现在非 compact 分支会按当前选择显式恢复 Inspector 可见性。
+- 新增 3 条回归测试（Save/Task/Trainer `InspectorRestoresAfterCompactResize`），并让旧“列释放”测试在验证宽窗时设置真实选中项、在 compact 验证 Auto 行前走真实详情切换。
+- `render-qa` 10 档尺寸 + 56 主题场景 + 7 视图 Resize 恢复全部通过；Core `59/59`、Worker `190/190`、Playnite `250/250`。
+
 ## 2026-08-14 UI-REFACTOR-V1 页面级横向溢出门禁
 
 - render-qa 与主题 QA 现在都会检查页面级 `*ScrollSurface` 与 `SettingsScroller`：`hbar` 必须为 `Disabled` 且无横向溢出；DataGrid 内部 `hbar=Auto` 的列滚动仍被允许。

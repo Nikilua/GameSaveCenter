@@ -88,6 +88,12 @@ namespace GameSaveCenter.Playnite.Views
                 {
                     SaveHistoryCompactDetailsButton.Visibility = Visibility.Collapsed;
                     SaveCandidateCompactDetailsButton.Visibility = Visibility.Collapsed;
+                    SaveHistoryActionsScrollViewer.Visibility = SaveHistoryGrid.SelectedItem != null
+                        ? Visibility.Visible
+                        : Visibility.Collapsed;
+                    SaveCandidateInspectorScrollViewer.Visibility = SaveCandidateGrid.SelectedItem != null
+                        ? Visibility.Visible
+                        : Visibility.Collapsed;
                 }
             // The demo keeps the history table and the selected-version inspector
             // side by side when there is room. On a compact host, stack the

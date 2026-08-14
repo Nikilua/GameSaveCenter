@@ -114,6 +114,9 @@ namespace GameSaveCenter.Playnite.Views
                 else
                 {
                     TaskCompactDetailsButton.Visibility = Visibility.Collapsed;
+                    TaskDetailScrollViewer.Visibility = TaskGrid.SelectedItem != null
+                        ? Visibility.Visible
+                        : Visibility.Collapsed;
                 }
                 var showInspector = TaskDetailScrollViewer.Visibility == Visibility.Visible;
                 var inspectorWidth = TaskWorkspaceLayout.TryFindResource("GscInspectorWidth") is GridLength gl ? gl : new GridLength(360);

@@ -7,7 +7,7 @@
 - 一条命令：`.\scripts\capture-ui-audit.ps1` 或双击 `GameSaveCenter-UI-Audit.cmd`。
 - 输出：`artifacts/ui-audit/`（README、UI_MANIFEST、UI_ROUTE_MAP、UI_FIDELITY_MATRIX、LAYOUT_REPORT、AUDIT_SUMMARY、visual-tree、layout、screenshots）与 `artifacts/GameSaveCenter-ui-audit.zip`。
 - 静态盘点自动发现未来新增页面/Tab/控件；运行时整页截图覆盖页面级滚动容器，DataGrid/ListBox 内部滚动也从头到底拼接。
-- 当前基线：Core `59/59`、Worker `190/190`、Playnite `247/247`；source/XAML/WPF 门禁与 10 档 render-qa 通过；扩档审计 161 快照、0 HIGH/0 MEDIUM/0 失败路由。
+- 当前基线：Core `59/59`、Worker `190/190`、Playnite `250/250`；source/XAML/WPF 门禁与 10 档 render-qa 通过；扩档审计 161 快照、0 HIGH/0 MEDIUM/0 失败路由。
 - Commit：见当前 `git log -1`。
 
 ## 2026-08-14 UI-REFACTOR-V1 扩档验证与 Audit 高度对齐
@@ -22,6 +22,7 @@
 - `GameSaveCenter.Playnite.csproj` 仅向 RenderHarness 开放 `InternalsVisibleTo`，生产 UI 与业务未改。
 - 像素采样确认主题切换有效：Light 背景约 `239,240,243`，Dark 约 `54,57,67`。真实 Playnite 宿主主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`。
 - render-qa 与主题 QA 同时加入页面级横向溢出门禁：`*ScrollSurface` / `SettingsScroller` 必须 `hbar=Disabled` 且无横向溢出；DataGrid 内部列滚动允许。10 档尺寸与 56 主题场景全部通过。
+- `render-qa` 新增 Resize 恢复探针（2560×1440 → 1100×720 → 2560×1440 同实例布局快照对比），修复 Save/Task/Trainer Inspector 宽窗不恢复缺陷，并新增 3 条回归测试。
 
 ## 2026-08-14 Final Code Gap Closure 与最终 Epic 状态
 

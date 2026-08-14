@@ -1304,6 +1304,12 @@ public sealed class WpfUiResourceDictionaryTests
                 var inspector = (ScrollViewer)typeof(TrainerCenterView)
                     .GetField("TrainerToolsSettingsScrollViewer", BindingFlags.Instance | BindingFlags.NonPublic)!
                     .GetValue(view)!;
+                var list = (ListBox)typeof(TrainerCenterView)
+                    .GetField("TrainerToolsList", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var button = (GameSaveCenter.Playnite.Controls.Button)typeof(TrainerCenterView)
+                    .GetField("TrainerToolsCompactDetailsButton", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
 
                 inspector.Visibility = Visibility.Collapsed;
                 view.ApplyResponsiveLayout(1280, 720);
@@ -1311,6 +1317,9 @@ public sealed class WpfUiResourceDictionaryTests
                 emptyInspectorWidth = layout.ColumnDefinitions[2].Width.Value;
                 emptyStackedRowType = layout.RowDefinitions[3].Height.GridUnitType;
 
+                var selected = new object();
+                list.ItemsSource = new[] { selected };
+                list.SelectedItem = selected;
                 inspector.Visibility = Visibility.Visible;
                 view.ApplyResponsiveLayout(1280, 720);
                 selectedGutterWidth = layout.ColumnDefinitions[1].Width.Value;
@@ -1321,8 +1330,9 @@ public sealed class WpfUiResourceDictionaryTests
                 view.ApplyResponsiveLayout(1024, 640);
                 emptyCompactRowType = layout.RowDefinitions[3].Height.GridUnitType;
 
-                inspector.Visibility = Visibility.Visible;
-                view.ApplyResponsiveLayout(1024, 640);
+                typeof(TrainerCenterView)
+                    .GetMethod("OnTrainerToolsCompactDetailsClick", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .Invoke(view, new object[] { button, new RoutedEventArgs() });
                 selectedCompactRowType = layout.RowDefinitions[3].Height.GridUnitType;
             }
             catch (Exception caught)
@@ -1443,6 +1453,64 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void SaveCenterInspectorsRestoreAfterCompactResize()
+    {
+        Exception? exception = null;
+        var wideVisible = false;
+        var compactCollapsed = false;
+        var restoredVisible = false;
+        var restoredButtonsHidden = false;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var view = new SaveCenterView();
+                var viewType = typeof(SaveCenterView);
+                var historyGrid = (DataGrid)viewType.GetField("SaveHistoryGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var candidateGrid = (DataGrid)viewType.GetField("SaveCandidateGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var historyInspector = (ScrollViewer)viewType.GetField("SaveHistoryActionsScrollViewer", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var candidateInspector = (ScrollViewer)viewType.GetField("SaveCandidateInspectorScrollViewer", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var historyButton = (GameSaveCenter.Playnite.Controls.Button)viewType.GetField("SaveHistoryCompactDetailsButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var candidateButton = (GameSaveCenter.Playnite.Controls.Button)viewType.GetField("SaveCandidateCompactDetailsButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var selected = new object();
+                historyGrid.ItemsSource = new[] { selected };
+                historyGrid.SelectedItem = selected;
+                candidateGrid.ItemsSource = new[] { selected };
+                candidateGrid.SelectedItem = selected;
+
+                view.ApplyResponsiveLayout(1280, 800);
+                wideVisible = historyInspector.Visibility == Visibility.Visible
+                    && candidateInspector.Visibility == Visibility.Visible;
+
+                view.ApplyResponsiveLayout(1024, 640);
+                compactCollapsed = historyInspector.Visibility == Visibility.Collapsed
+                    && candidateInspector.Visibility == Visibility.Collapsed;
+
+                view.ApplyResponsiveLayout(1280, 800);
+                restoredVisible = historyInspector.Visibility == Visibility.Visible
+                    && candidateInspector.Visibility == Visibility.Visible;
+                restoredButtonsHidden = historyButton.Visibility == Visibility.Collapsed
+                    && candidateButton.Visibility == Visibility.Collapsed;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.True(wideVisible);
+        Assert.True(compactCollapsed);
+        Assert.True(restoredVisible);
+        Assert.True(restoredButtonsHidden);
+    }
+
+    [Fact]
     public void SaveCenterReleasesEmptyHistoryAndCandidateInspectors()
     {
         Exception? exception = null;
@@ -1477,6 +1545,18 @@ public sealed class WpfUiResourceDictionaryTests
                 var candidateInspector = (ScrollViewer)viewType
                     .GetField("SaveCandidateInspectorScrollViewer", BindingFlags.Instance | BindingFlags.NonPublic)!
                     .GetValue(view)!;
+                var historyGrid = (DataGrid)viewType
+                    .GetField("SaveHistoryGrid", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var candidateGrid = (DataGrid)viewType
+                    .GetField("SaveCandidateGrid", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var historyButton = (GameSaveCenter.Playnite.Controls.Button)viewType
+                    .GetField("SaveHistoryCompactDetailsButton", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var candidateButton = (GameSaveCenter.Playnite.Controls.Button)viewType
+                    .GetField("SaveCandidateCompactDetailsButton", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
 
                 historyInspector.Visibility = Visibility.Collapsed;
                 candidateInspector.Visibility = Visibility.Collapsed;
@@ -1488,6 +1568,11 @@ public sealed class WpfUiResourceDictionaryTests
                 emptyCandidateInspector = candidateLayout.ColumnDefinitions[2].Width.Value;
                 emptyCandidateStackRow = candidateLayout.RowDefinitions[1].Height.GridUnitType;
 
+                var selected = new object();
+                historyGrid.ItemsSource = new[] { selected };
+                historyGrid.SelectedItem = selected;
+                candidateGrid.ItemsSource = new[] { selected };
+                candidateGrid.SelectedItem = selected;
                 historyInspector.Visibility = Visibility.Visible;
                 candidateInspector.Visibility = Visibility.Visible;
                 view.ApplyResponsiveLayout(1280, 800);
@@ -1496,6 +1581,10 @@ public sealed class WpfUiResourceDictionaryTests
                 selectedCandidateGutter = candidateLayout.ColumnDefinitions[1].Width.Value;
                 selectedCandidateInspector = candidateLayout.ColumnDefinitions[2].Width.Value;
 
+                viewType.GetMethod("OnSaveHistoryCompactDetailsClick", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .Invoke(view, new object[] { historyButton, new RoutedEventArgs() });
+                viewType.GetMethod("OnSaveCandidateCompactDetailsClick", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .Invoke(view, new object[] { candidateButton, new RoutedEventArgs() });
                 view.ApplyResponsiveLayout(1024, 640);
                 compactHistoryStackRow = historyLayout.RowDefinitions[1].Height.GridUnitType;
                 compactCandidateStackRow = candidateLayout.RowDefinitions[1].Height.GridUnitType;
@@ -2157,6 +2246,55 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.True(inspectorCollapsed);
         Assert.True(buttonVisible);
         Assert.True(opened);
+    }
+
+    [Fact]
+    public void TrainerInspectorRestoresAfterCompactResize()
+    {
+        Exception? exception = null;
+        var wideVisible = false;
+        var compactCollapsed = false;
+        var restoredVisible = false;
+        var restoredButtonHidden = false;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var view = new TrainerCenterView();
+                var viewType = typeof(TrainerCenterView);
+                var list = (ListBox)viewType.GetField("TrainerToolsList", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var inspector = (ScrollViewer)viewType.GetField("TrainerToolsSettingsScrollViewer", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var button = (GameSaveCenter.Playnite.Controls.Button)viewType.GetField("TrainerToolsCompactDetailsButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var selected = new object();
+                list.ItemsSource = new[] { selected };
+                list.SelectedItem = selected;
+
+                view.ApplyResponsiveLayout(1280, 800);
+                wideVisible = inspector.Visibility == Visibility.Visible;
+
+                view.ApplyResponsiveLayout(1024, 640);
+                compactCollapsed = inspector.Visibility == Visibility.Collapsed;
+
+                view.ApplyResponsiveLayout(1280, 800);
+                restoredVisible = inspector.Visibility == Visibility.Visible;
+                restoredButtonHidden = button.Visibility == Visibility.Collapsed;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.True(wideVisible);
+        Assert.True(compactCollapsed);
+        Assert.True(restoredVisible);
+        Assert.True(restoredButtonHidden);
     }
 
     [Fact]
@@ -2932,6 +3070,9 @@ public sealed class WpfUiResourceDictionaryTests
                 var layout = (Grid)typeof(TaskCenterView)
                     .GetField("TaskWorkspaceLayout", BindingFlags.Instance | BindingFlags.NonPublic)!
                     .GetValue(view)!;
+                var grid = (DataGrid)typeof(TaskCenterView)
+                    .GetField("TaskGrid", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
 
                 view.TaskDetailScrollViewerElement.Visibility = Visibility.Collapsed;
                 view.ApplyResponsiveLayout(1280, 720);
@@ -2939,6 +3080,9 @@ public sealed class WpfUiResourceDictionaryTests
                 emptyInspectorWidth = layout.ColumnDefinitions[2].Width.Value;
                 emptyStackedRowType = layout.RowDefinitions[3].Height.GridUnitType;
 
+                var selected = new object();
+                grid.ItemsSource = new[] { selected };
+                grid.SelectedItem = selected;
                 view.TaskDetailScrollViewerElement.Visibility = Visibility.Visible;
                 view.ApplyResponsiveLayout(1280, 720);
                 selectedGutterWidth = layout.ColumnDefinitions[1].Width.Value;
@@ -3007,6 +3151,55 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.True(inspectorCollapsed);
         Assert.True(buttonVisible);
         Assert.True(opened);
+    }
+
+    [Fact]
+    public void TaskInspectorRestoresAfterCompactResize()
+    {
+        Exception? exception = null;
+        var wideVisible = false;
+        var compactCollapsed = false;
+        var restoredVisible = false;
+        var restoredButtonHidden = false;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var view = new TaskCenterView();
+                var viewType = typeof(TaskCenterView);
+                var grid = (DataGrid)viewType.GetField("TaskGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var inspector = view.TaskDetailScrollViewerElement;
+                var button = (GameSaveCenter.Playnite.Controls.Button)viewType.GetField("TaskCompactDetailsButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var selected = new object();
+                grid.ItemsSource = new[] { selected };
+                grid.SelectedItem = selected;
+
+                view.ApplyResponsiveLayout(1280, 800);
+                wideVisible = inspector.Visibility == Visibility.Visible;
+
+                view.ApplyResponsiveLayout(1024, 640);
+                compactCollapsed = inspector.Visibility == Visibility.Collapsed;
+
+                view.ApplyResponsiveLayout(1280, 800);
+                restoredVisible = inspector.Visibility == Visibility.Visible;
+                restoredButtonHidden = button.Visibility == Visibility.Collapsed;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.True(wideVisible);
+        Assert.True(compactCollapsed);
+        Assert.True(restoredVisible);
+        Assert.True(restoredButtonHidden);
     }
 
     [Fact]

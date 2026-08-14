@@ -55,6 +55,13 @@ public static class Program
         ("dark", GameSaveCenterThemeMode.Dark)
     };
 
+    private static readonly (int Width, int Height)[] ResizeSequence =
+    {
+        (2560, 1440),
+        (1100, 720),
+        (2560, 1440)
+    };
+
     public static int Main(string[] args)
     {
         if (args.Length > 0
@@ -119,6 +126,7 @@ public static class Program
             RunDataGridScrollProbes(report);
             RunSettingsLayoutProbes(report);
             RunThemeQa(outputRoot, report);
+            RunResizeTransitionProbes(report);
 
             if (s_problems.Count > 0)
             {
@@ -698,6 +706,144 @@ public static class Program
         report.AppendLine($"  {label} viewport probe done");
     }
 
+    private static void RunResizeTransitionProbes(StringBuilder report)
+    {
+        report.AppendLine();
+        report.AppendLine("Resize transition QA (2560x1440 -> 1100x720 -> 2560x1440)");
+        var cases = new (string Name, UserControl View)[]
+        {
+            ("Overview", CreateThemeView("Overview")),
+            ("Save", CreateThemeView("Save")),
+            ("Trainer", CreateThemeView("Trainer")),
+            ("Media", CreateThemeView("Media")),
+            ("Maintenance", CreateThemeView("Maintenance")),
+            ("Task", CreateThemeView("Task")),
+            ("Settings", CreateThemeView("Settings"))
+        };
+
+        foreach (var (name, view) in cases)
+        {
+            try
+            {
+                var host = new Grid
+                {
+                    Background = new SolidColorBrush(Color.FromRgb(24, 30, 43)),
+                    ClipToBounds = true
+                };
+                host.Children.Add(view);
+                List<ElementMetric>? initial = null;
+                for (var step = 0; step < ResizeSequence.Length; step++)
+                {
+                    var (windowW, windowH) = ResizeSequence[step];
+                    var (contentW, contentH) = ContentSize(windowW, windowH);
+                    host.Width = contentW;
+                    host.Height = contentH;
+                    ApplyThemeResponsive(view, contentW, windowH);
+                    host.Measure(new Size(contentW, contentH));
+                    host.Arrange(new Rect(0, 0, contentW, contentH));
+                    host.UpdateLayout();
+                    ApplyThemeResponsive(view, contentW, windowH);
+                    host.UpdateLayout();
+
+                    var snapshot = SnapshotLayoutMetrics(host);
+                    var label = $"{name}/step{step}:{windowW}x{windowH}";
+                    if (step == 1)
+                        VerifyThemeViewport(host, label, report);
+                    if (step == 0)
+                        initial = snapshot;
+                    else if (step == ResizeSequence.Length - 1)
+                        CompareLayoutMetrics(initial!, snapshot, name, report);
+                }
+            }
+            catch (Exception ex)
+            {
+                s_problems.Add($"{name} resize transition failed: {ex.Message}");
+                report.AppendLine($"  {name} RESIZE FAILED {ex.Message}");
+            }
+        }
+    }
+
+    private static List<ElementMetric> SnapshotLayoutMetrics(Grid host)
+    {
+        var metrics = new List<ElementMetric>();
+        foreach (var grid in FindVisualChildren<DataGrid>(host))
+        {
+            AddMetric(metrics, "G", grid.Name, grid.ActualWidth, grid.ActualHeight, grid.Visibility, string.Empty, string.Empty, false);
+        }
+        foreach (var list in FindVisualChildren<ListBox>(host))
+        {
+            AddMetric(metrics, "L", list.Name, list.ActualWidth, list.ActualHeight, list.Visibility, string.Empty, string.Empty, false);
+        }
+        foreach (var scroller in FindVisualChildren<ScrollViewer>(host))
+        {
+            if (string.IsNullOrEmpty(scroller.Name) || scroller.Name.StartsWith("PART_", StringComparison.Ordinal))
+                continue;
+            AddMetric(
+                metrics,
+                "S",
+                scroller.Name,
+                scroller.ActualWidth,
+                scroller.ActualHeight,
+                scroller.Visibility,
+                scroller.VerticalScrollBarVisibility.ToString(),
+                scroller.HorizontalScrollBarVisibility.ToString(),
+                scroller.ExtentWidth > scroller.ViewportWidth + 0.5);
+        }
+        return metrics;
+    }
+
+    private static void AddMetric(
+        List<ElementMetric> metrics,
+        string kind,
+        string name,
+        double width,
+        double height,
+        Visibility visibility,
+        string vbar,
+        string hbar,
+        bool horizontalOverflow)
+    {
+        if (string.IsNullOrEmpty(name))
+            return;
+        metrics.Add(new ElementMetric
+        {
+            Key = kind + "|" + name,
+            Width = width,
+            Height = height,
+            Visibility = visibility,
+            VBar = vbar,
+            HBar = hbar,
+            HorizontalOverflow = horizontalOverflow
+        });
+    }
+
+    private static void CompareLayoutMetrics(List<ElementMetric> initial, List<ElementMetric> after, string name, StringBuilder report)
+    {
+        var afterByKey = after.ToDictionary(metric => metric.Key);
+        foreach (var metric in initial)
+        {
+            if (!afterByKey.TryGetValue(metric.Key, out var recovered))
+            {
+                s_problems.Add($"{name} resize transition lost element {metric.Key}");
+                continue;
+            }
+
+            if (Math.Abs(recovered.Width - metric.Width) > 1
+                || Math.Abs(recovered.Height - metric.Height) > 1
+                || recovered.Visibility != metric.Visibility
+                || recovered.VBar != metric.VBar
+                || recovered.HBar != metric.HBar
+                || recovered.HorizontalOverflow != metric.HorizontalOverflow)
+            {
+                s_problems.Add(
+                    $"{name} resize transition did not recover {metric.Key} " +
+                    $"(before {metric.Width:0}x{metric.Height:0}/{metric.Visibility}/{metric.VBar}/{metric.HBar}/{metric.HorizontalOverflow}, " +
+                    $"after {recovered.Width:0}x{recovered.Height:0}/{recovered.Visibility}/{recovered.VBar}/{recovered.HBar}/{recovered.HorizontalOverflow})");
+            }
+        }
+        report.AppendLine($"  {name} resize transition recovered {initial.Count} metrics");
+    }
+
     private static void ProbeGrid(
         StringBuilder report,
         string label,
@@ -842,6 +988,17 @@ public static class Program
         public double Height { get; }
         public double Y { get; }
         public bool DataContextNull { get; }
+    }
+
+    private sealed class ElementMetric
+    {
+        public string Key { get; set; } = string.Empty;
+        public double Width { get; set; }
+        public double Height { get; set; }
+        public Visibility Visibility { get; set; }
+        public string VBar { get; set; } = string.Empty;
+        public string HBar { get; set; } = string.Empty;
+        public bool HorizontalOverflow { get; set; }
     }
 
     private static void SavePng(Visual visual, string path)
