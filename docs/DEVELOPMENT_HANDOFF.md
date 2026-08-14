@@ -21,6 +21,7 @@
 - RenderHarness 新增 `RunThemeQa`，复用生产 `AdaptiveThemePaletteFactory` 对 7 个工作区 × 1040×700 / 1100×720 / 1366×768 / 2560×1440 × Light/Dark 渲染，共 56 个离屏场景；调色板、主表视口和页面滚动面断言全部通过。
 - `GameSaveCenter.Playnite.csproj` 仅向 RenderHarness 开放 `InternalsVisibleTo`，生产 UI 与业务未改。
 - 像素采样确认主题切换有效：Light 背景约 `239,240,243`，Dark 约 `54,57,67`。真实 Playnite 宿主主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`。
+- render-qa 与主题 QA 同时加入页面级横向溢出门禁：`*ScrollSurface` / `SettingsScroller` 必须 `hbar=Disabled` 且无横向溢出；DataGrid 内部列滚动允许。10 档尺寸与 56 主题场景全部通过。
 
 ## 2026-08-14 Final Code Gap Closure 与最终 Epic 状态
 

@@ -318,14 +318,21 @@ public static class Program
             if (string.IsNullOrEmpty(visibleName))
                 continue;
             var scrollable = scroller.ExtentHeight > scroller.ViewportHeight + 0.5;
+            var horizontalOverflow = scroller.ExtentWidth > scroller.ViewportWidth + 0.5;
             report.AppendLine(
                 $"  {label} {visibleName}: size={scroller.ActualWidth:0}x{scroller.ActualHeight:0}, viewport={scroller.ViewportHeight:0}, extent={scroller.ExtentHeight:0}, " +
-                $"vbar={scroller.VerticalScrollBarVisibility}, scrollable={scrollable}");
+                $"vbar={scroller.VerticalScrollBarVisibility}, hbar={scroller.HorizontalScrollBarVisibility}, scrollable={scrollable}, hscrollable={horizontalOverflow}");
             if ((visibleName.Contains("ScrollSurface") || visibleName == "SettingsScroller")
                 && scroller.VerticalScrollBarVisibility == ScrollBarVisibility.Hidden
                 && scrollable)
             {
                 s_problems.Add($"{label} {visibleName} hides overflow behind a Hidden scrollbar (viewport={scroller.ViewportHeight:0}, extent={scroller.ExtentHeight:0})");
+            }
+            if ((visibleName.Contains("ScrollSurface") || visibleName == "SettingsScroller")
+                && scroller.HorizontalScrollBarVisibility != ScrollBarVisibility.Disabled
+                && horizontalOverflow)
+            {
+                s_problems.Add($"{label} {visibleName} has page-level horizontal overflow (viewport={scroller.ViewportWidth:0}, extent={scroller.ExtentWidth:0})");
             }
             if (visibleName == "OverviewRiskScrollViewer" && scroller.Content is FrameworkElement riskContent)
             {
@@ -682,6 +689,10 @@ public static class Program
                 && scroller.VerticalScrollBarVisibility == ScrollBarVisibility.Hidden
                 && scrollable)
                 s_problems.Add($"{label} {scroller.Name} hides overflow behind a Hidden scrollbar");
+            if ((scroller.Name.Contains("ScrollSurface") || scroller.Name == "SettingsScroller")
+                && scroller.HorizontalScrollBarVisibility != ScrollBarVisibility.Disabled
+                && scroller.ExtentWidth > scroller.ViewportWidth + 0.5)
+                s_problems.Add($"{label} {scroller.Name} has page-level horizontal overflow");
         }
 
         report.AppendLine($"  {label} viewport probe done");

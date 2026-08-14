@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 UI-REFACTOR-V1 页面级横向溢出门禁
+
+- render-qa 与主题 QA 现在都会检查页面级 `*ScrollSurface` 与 `SettingsScroller`：`hbar` 必须为 `Disabled` 且无横向溢出；DataGrid 内部 `hbar=Auto` 的列滚动仍被允许。
+- 报告行新增 `hbar` 与 `hscrollable` 探针；10 档尺寸矩阵 + 56 个 Light/Dark 主题场景全部通过，页面级横向溢出为 0。
+- Release 0 警告/0 错误；Core `59/59`、Worker `190/190`、Playnite `247/247`；source/XAML/WPF 门禁通过。
+- 真实 Playnite 宿主主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`。
+
 ## 2026-08-14 UI-REFACTOR-V1 强制 Light/Dark 主题 QA
 
 - RenderHarness 新增 `RunThemeQa`：对 7 个工作区 × 1040×700 / 1100×720 / 1366×768 / 2560×1440 × Light/Dark 强制主题渲染，共 56 个离屏场景。
