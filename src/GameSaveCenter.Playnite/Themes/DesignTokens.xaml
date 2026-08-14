@@ -100,6 +100,7 @@
     <sys:Double x:Key="GscButtonHeight">38</sys:Double>
     <!-- Vertical rhythm between section cards inside a page scroll channel. -->
     <sys:Double x:Key="GscSectionSpacing">14</sys:Double>
+    <GridLength x:Key="GscSettingsFieldColumnWidth">150</GridLength>
     <!-- Demo-aligned side navigation and workspace inspector channels. The dashboard
          consumes the sidebar width at each breakpoint; workspace inspectors share one
          width so the right-hand detail column stays consistent across pages. -->

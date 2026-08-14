@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 UI-REFACTOR-V1 Phase 7 设置轻量统一
+
+- `DesignTokens.xaml` 新增共享 `GscSettingsFieldColumnWidth`（150 DIP），Settings 常规与目录页 8 个字段行全部改为引用该 token，消除页面级硬编码列宽。
+- 未改设置分区、字段、绑定、保存语义、响应式断点或主题桥接；五个 Tab 与所有业务设置保持原状。
+- 新增资源字典回归断言：`GscSettingsFieldColumnWidth` 必须可解析为 `GridLength`。
+- Gate：Release 0 警告/0 错误，Core `59/59`、Worker `190/190`、Playnite `247/247`，source/XAML/WPF/render-qa 全绿。
+
 ## 2026-08-14 UI-REFACTOR-V1 Phase 6 维护中心 Maintenance
 
 - 诊断操作卡主行收敛为 5 个常用按钮（复制/导出诊断、复制/导出健康报告、完整性自检）；目录与日志、完整性/自愈/协调、元数据灾备进入 3 个共享 Expander，安全模式、批量路径迁移、重建/协调等 16 个命令全部保留。

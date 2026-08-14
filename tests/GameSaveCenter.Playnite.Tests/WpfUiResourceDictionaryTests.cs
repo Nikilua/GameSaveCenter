@@ -4361,6 +4361,7 @@ public sealed class WpfUiResourceDictionaryTests
                 Assert.IsType<Style>(resources["GscInternalTabItem"]);
                 Assert.IsType<Style>(resources["GscToolbarActionRow"]);
                 Assert.IsType<Style>(resources["GscToolbarOverflowButton"]);
+                Assert.IsType<GridLength>(resources["GscSettingsFieldColumnWidth"]);
             }
             catch (Exception caught)
             {
