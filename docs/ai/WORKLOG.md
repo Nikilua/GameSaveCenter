@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 UI-REFACTOR-V1 Phase 8 收口（Overview 92 DIP 清零）
+
+- 定位到 After Audit 剩余 MEDIUM 的实际对象是“当前游戏”卡片内 3 个操作按钮的未命名 `WrapPanel`（按钮 38 DIP + 底部 8 DIP，换行两行后总高 92 DIP），不是顶部 `OverviewHomeToolbar` Border。
+- `OverviewView.xaml` 将该行 3 个按钮底部边距从 8 收到 4 DIP（`RESTYLE`，命令/Binding/可达性不变）；同时保留顶部工作台工具栏 `Padding="14,10"` 收口，render-qa 实测工具栏 1040×700 91→79 DIP、1280×720 75→63 DIP。
+- 最终 UI Audit：HIGH `0`、MEDIUM `0`、运行时警告 42→40、失败路由 `0`；render-qa 五种窗口全绿；Core `59/59`、Worker `190/190`、Playnite `247/247`；source/XAML/WPF 门禁 0 errors。
+- 真实 Playnite 宿主主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`；本轮没有 REMOVE，GamePicker 与 Dashboard 锁定区域未改。
+
 ## 2026-08-14 UI-REFACTOR-V1 Phase 8 最终回归
 
 - 最终 Release 隔离构建 0 警告/0 错误；Core `59/59`、Worker `190/190`、Playnite `247/247`；source/XAML/WPF/render-qa 全绿。

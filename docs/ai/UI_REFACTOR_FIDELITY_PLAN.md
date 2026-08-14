@@ -309,6 +309,6 @@ Audit 基线共有 143 个条件 UI、38 个 TextBox/PasswordBox、25 个 ComboB
 
 - 静态 View 9、Tab 30、Button/ToggleButton 131、DataGrid 9、ScrollViewer 30、条件 UI 143、运行时快照 115、失败路由 0。
 - HIGH：Before 10 项（候选表、审计日志、设备、进程等）→ After **0 项**。
-- MEDIUM：Before 4 项 → After 2 项（Overview 工具栏高度 92 DIP，属于首页次要提示；后续可用真机视觉反馈收口）。
-- 运行时警告：Before 62 → After 42。
+- MEDIUM：Before 4 项 → After **0 项**（最后一项为 Overview“当前游戏”操作行未命名 WrapPanel 92 DIP，已通过按钮底部间距 8→4 DIP 收口）。
+- 运行时警告：Before 62 → After 40。
 - 已知 INFO：仍有语义明确的 Master/Detail 与页面滚动并存，但不构成 HIGH；DataGrid 虚拟化与内部滚动全部保留。
