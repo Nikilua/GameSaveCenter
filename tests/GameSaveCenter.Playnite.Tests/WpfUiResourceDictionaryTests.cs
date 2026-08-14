@@ -2112,6 +2112,51 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void TrainerCompactInspectorDefaultsToDetailsButtonAndToggleOpen()
+    {
+        Exception? exception = null;
+        var inspectorCollapsed = false;
+        var buttonVisible = false;
+        var opened = false;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var view = new TrainerCenterView();
+                var viewType = typeof(TrainerCenterView);
+                var list = (ListBox)viewType.GetField("TrainerToolsList", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var inspector = (ScrollViewer)viewType.GetField("TrainerToolsSettingsScrollViewer", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var button = (GameSaveCenter.Playnite.Controls.Button)viewType.GetField("TrainerToolsCompactDetailsButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var selected = new object();
+                list.ItemsSource = new[] { selected };
+                list.SelectedItem = selected;
+
+                view.ApplyResponsiveLayout(1024, 640);
+                inspectorCollapsed = inspector.Visibility == Visibility.Collapsed;
+                buttonVisible = button.Visibility == Visibility.Visible;
+
+                viewType.GetMethod("OnTrainerToolsCompactDetailsClick", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .Invoke(view, new object[] { button, new RoutedEventArgs() });
+                opened = inspector.Visibility == Visibility.Visible && ((string)button.Content).Contains("收起");
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.True(inspectorCollapsed);
+        Assert.True(buttonVisible);
+        Assert.True(opened);
+    }
+
+    [Fact]
     public void TrainerCatalogSearchRowStacksButtonsBelowTheSearchBoxSoNarrowWindowsDoNotClip()
     {
         var repositoryRoot = FindRepositoryRoot();

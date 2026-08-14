@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 UI-REFACTOR-V1 Phase 4a 修改器中心 Trainer
+
+- 已绑定工具页在 Compact/Narrow 下默认收起工具设置 Inspector，改为表内“查看工具详情 / 收起工具详情”按钮；启动、保存、打开目录、重新定位、解除绑定与全部编辑字段仍可通过按钮展开访问。
+- `TrainerToolsList` 增加命名与选择事件，代码补防重入协调；虚拟化、Recycling、拖拽导入、FLiNG 搜索、可下载版本与导入确认流程未改。
+- render-qa 实测：1040×700 工具列表视口 236 DIP、1280×720 276 DIP（修复首轮 234 DIP 门禁失败后达标）。
+- 新增 1 条回归测试：窄窗默认收起工具 Inspector、详情按钮可打开/收起。
+- Gate：Release 0 警告/0 错误，Core `59/59`、Worker `190/190`、Playnite `243/243`，source/XAML/WPF/render-qa 全绿。
+
 ## 2026-08-14 UI-REFACTOR-V1 Phase 3 存档中心 Save Center
 
 - 历史版本与路径候选在 Compact/Narrow 下默认收起 Inspector，改为表内“查看版本详情 / 查看候选详情”按钮；点击后展开同一套 Inspector（备注/锁定/恢复/比较/恢复就绪与接受/忽略/重新扫描），功能零损失。

@@ -13,6 +13,7 @@
 - Phase 1（共享布局基础）已交付：`Redesign.xaml` 新增 `GscInternalTabControl`、`GscInternalTabItem`、`GscToolbarActionRow`、`GscToolbarOverflowButton`，并由 `WpfUiResourceDictionaryTests` 锁定；未改任何 View 页面与业务。
 - Phase 2（首页 Overview）已交付：六项 Snapshot 指标改为响应式紧凑 Summary Strip（6/3/2 列），最近 30 天保护明细默认折叠到共享 Expander，全局活动改为稳定四列；`OverviewStatStrip` 响应式列数、保护明细可达性、全局活动四列由新回归测试锁定。GamePicker 与首页锁定结构未改。
 - Phase 3（存档中心）已交付：历史/候选窄窗 Inspector 默认收起为“查看详情”按钮，主表高度在 1040×700 分别提升到约 385/254 DIP；候选页头部压成单行；策略模板区默认折叠但全部命令可达。新增窄窗 Inspector 切换回归测试。
+- Phase 4a（修改器中心 Trainer）已交付：已绑定工具页窄窗默认收起工具设置 Inspector 为详情按钮，1040×700 工具列表视口 236 DIP；新增 Trainer 窄窗切换回归测试。FLiNG/可下载版本/导入流程未改。
 
 ## 当前事实覆盖（2026-08-14 Layer A 收口、Layer B 13 项与 Layer C 11 项）
 
