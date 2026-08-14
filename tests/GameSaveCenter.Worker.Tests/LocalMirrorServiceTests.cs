@@ -74,7 +74,7 @@ public sealed class LocalMirrorServiceTests : IDisposable
         var result = await service.SyncAsync(CancellationToken.None);
 
         Assert.Equal(1, result.CopiedCount);
-        Assert.Equal(1, result.VerifiedCount);
+        Assert.Equal(2, result.VerifiedCount);
         Assert.Equal(1, result.SkippedCount);
         Assert.Equal(3072, result.TotalBytes);
         Assert.True(File.Exists(Path.Combine(mirrorGameDir, "new.zip")));
@@ -83,7 +83,27 @@ public sealed class LocalMirrorServiceTests : IDisposable
 
         var status = await service.StatusAsync(CancellationToken.None);
         Assert.True(status.Available);
+        Assert.Equal(2, status.VerifiedCount);
         Assert.Contains("镜像可用", status.Message);
+    }
+
+    [Fact]
+    public async Task SyncReplacesSameSizeCorruptMirrorWithHashMismatch()
+    {
+        options.EnableLocalMirror = true;
+        Directory.CreateDirectory(options.LocalMirrorPath);
+        var source = Path.Combine(options.LudusaviBackupDirectory, "save.zip");
+        var destination = Path.Combine(options.LocalMirrorPath, "save.zip");
+        await File.WriteAllBytesAsync(source, new byte[] { 1, 2, 3, 4 });
+        await File.WriteAllBytesAsync(destination, new byte[] { 9, 8, 7, 6 });
+        var service = new LocalMirrorService(options, NullLogger<LocalMirrorService>.Instance);
+
+        var result = await service.SyncAsync(CancellationToken.None);
+
+        Assert.Equal(1, result.CopiedCount);
+        Assert.Equal(1, result.VerifiedCount);
+        Assert.Equal(0, result.SkippedCount);
+        Assert.Equal(new byte[] { 1, 2, 3, 4 }, await File.ReadAllBytesAsync(destination));
     }
 
     [Fact]

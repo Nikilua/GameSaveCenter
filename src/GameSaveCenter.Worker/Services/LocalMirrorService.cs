@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Security.Cryptography;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Worker.Configuration;
 using GameSaveCenter.Worker.Infrastructure;
@@ -70,7 +71,7 @@ public sealed class LocalMirrorService
                     .Where(x => !string.Equals(Path.GetFileName(x), MarkerName, StringComparison.OrdinalIgnoreCase))
                     .ToList();
                 status.CopiedCount = files.Count;
-                status.VerifiedCount = files.Count;
+                status.VerifiedCount = 0;
                 status.TotalBytes = files.Sum(x => SafeLength(x));
             }
             catch (Exception ex)
@@ -117,9 +118,11 @@ public sealed class LocalMirrorService
             }
             totalBytes += sourceBytes;
 
-            if (File.Exists(destination) && SafeLength(destination) == sourceBytes)
+            if (File.Exists(destination) && SafeLength(destination) == sourceBytes &&
+                await HashMatchesAsync(file, destination, token).ConfigureAwait(false))
             {
                 result.SkippedCount++;
+                result.VerifiedCount++;
                 continue;
             }
 
@@ -144,10 +147,13 @@ public sealed class LocalMirrorService
                 throw new WorkerOperationException("LOCAL_MIRROR_COPY_FAILED", "镜像复制失败。", ex.Message);
             }
 
-            if (SafeLength(destination) != sourceBytes)
+            var sourceHash = await ComputeSha256Async(file, token).ConfigureAwait(false);
+            var destinationHash = await ComputeSha256Async(destination, token).ConfigureAwait(false);
+            if (SafeLength(destination) != sourceBytes ||
+                !string.Equals(sourceHash, destinationHash, StringComparison.OrdinalIgnoreCase))
             {
                 TryDelete(destination);
-                throw new WorkerOperationException("LOCAL_MIRROR_VERIFY_FAILED", "镜像文件大小校验失败，已清理不完整副本。");
+                throw new WorkerOperationException("LOCAL_MIRROR_VERIFY_FAILED", "镜像文件内容校验失败，已清理不完整副本。");
             }
             result.CopiedCount++;
             result.VerifiedCount++;
@@ -193,6 +199,33 @@ public sealed class LocalMirrorService
         {
             return 0;
         }
+    }
+
+    private static async Task<bool> HashMatchesAsync(string source, string destination, CancellationToken token)
+    {
+        try
+        {
+            var sourceHash = await ComputeSha256Async(source, token).ConfigureAwait(false);
+            var destinationHash = await ComputeSha256Async(destination, token).ConfigureAwait(false);
+            return string.Equals(sourceHash, destinationHash, StringComparison.OrdinalIgnoreCase);
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private static async Task<string> ComputeSha256Async(string path, CancellationToken token)
+    {
+        await using var stream = new FileStream(
+            path,
+            FileMode.Open,
+            FileAccess.Read,
+            FileShare.Read,
+            128 * 1024,
+            FileOptions.Asynchronous | FileOptions.SequentialScan);
+        var hash = await SHA256.HashDataAsync(stream, token).ConfigureAwait(false);
+        return Convert.ToHexString(hash).ToLowerInvariant();
     }
 
     private static void TryDelete(string path)
