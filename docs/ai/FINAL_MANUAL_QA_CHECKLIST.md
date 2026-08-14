@@ -63,6 +63,15 @@
 - [ ] 连续窗口缩放时列表虚拟化、滚动和 Inspector 不回归。
 - [ ] Tab、Enter、Escape、Ctrl+F 键盘路径可用，焦点可见。
 
+### UI Refactor v1 专项
+
+- [ ] 在 2560×1440、1366×768、1100×720、1040×700 四种窗口下逐一打开首页、存档中心、修改器中心、媒体中心、任务中心、维护中心，确认无重叠、裁切、控件伸出窗口。
+- [ ] 每种窗口下确认 Dashboard 顶部 GamePicker 常驻，搜索、筛选、排序、当前运行游戏定位和上次选择持久化不丢。
+- [ ] 将窗口从 2560×1440 缩到 1100×720 再拉回，确认 Save/Task/Trainer Inspector、DataGrid/List 视口和页面滚动布局恢复。
+- [ ] Light / Dark / Follow Playnite / 高对比度下检查 Button Hover/Pressed/Disabled、ComboBox Popup、DataGrid Header/Row/Selection、ScrollBar 与 Warning/Error/Info 对比度。
+- [ ] 使用真实大游戏库检查 Dashboard、GamePicker 和六个工作区的大列表滚动流畅性。
+- [ ] 完成后把结果回填到 `docs/ai/UI_REFACTOR_ACCEPTANCE_AUDIT.md` 第 13 节，并附截图或日志位置。
+
 ## 9. 大库与长时间运行
 
 - [ ] 真实 900～2000 游戏库下 Dashboard 打开、搜索、筛选、切换 Workspace 流畅。
