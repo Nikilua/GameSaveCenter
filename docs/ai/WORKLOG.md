@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 UI-REFACTOR-V1 Phase 0 基线、保真计划与 Gate
+
+- 读取 `GameSaveCenter_UI_Refactor_Implementation_Pack_v1` 全部正文、UI Audit（commit `4ab44fe`）与 WPF Demo v6.1；确认事实来源优先级：生产 main > UI Audit > 实施包 > Demo > 旧布局。
+- 生成 `docs/ai/UI_REFACTOR_FIDELITY_PLAN.md`：锁定 GamePicker、一级导航、首页“今日工作台 / TODAY / 当前游戏”、修改器导入流程、Settings 分区与 dev-probe；覆盖 92 条命令、43 个 DataGrid 列、30 个 ScrollViewer、143 个条件 UI 的保真策略。
+- Phase 0 Gate：隔离 Release 构建 0 警告 / 0 错误；Core `59/59`、Worker `190/190`、Playnite `238/238`；`validate-source.py` 通过；WPF UI validator 0 errors（17 warnings 为现有 StackPanel/滚动上下文提示）；五种窗口 `render-qa OK`；`git diff --check` 通过。
+- 后续 Phase 1～8 按计划逐阶段独立提交并 push，不跨阶段混改；出现 DataGrid 滚动/虚拟化回归先停后续阶段。
+
 ## 2026-08-14 UI-AUDIT-001 开发专用 UI 自动审计与整页滚动快照
 
 - 新增 `scripts/capture-ui-audit.ps1` 与根目录 `GameSaveCenter-UI-Audit.cmd`，一条命令产出 `artifacts/ui-audit/` 与 `artifacts/GameSaveCenter-ui-audit.zip`。
