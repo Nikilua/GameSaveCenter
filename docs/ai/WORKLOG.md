@@ -2,6 +2,16 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 UI-AUDIT-001 开发专用 UI 自动审计与整页滚动快照
+
+- 新增 `scripts/capture-ui-audit.ps1` 与根目录 `GameSaveCenter-UI-Audit.cmd`，一条命令产出 `artifacts/ui-audit/` 与 `artifacts/GameSaveCenter-ui-audit.zip`。
+- 静态盘点自动扫描 `Views/Settings` 下真实 XAML，生成 `UI_ROUTE_MAP.md/json`、`UI_MANIFEST.md/json`、`UI_FIDELITY_MATRIX.md`；Dashboard、Workspace、设置页、未来新增 UserControl/Tab 都会被自动发现。
+- 运行时审计复用 `GameSaveCenter.RenderHarness` 的生产视图与假数据，输出每页每尺寸的 `visual-tree/*.json`、`layout/*.json`、`LAYOUT_REPORT.md`、`AUDIT_SUMMARY.md`。
+- 整页滚动截图覆盖所有有滚动条的区域：页面级 `-full-*.png` 直接渲染完整内容，DataGrid/ListBox 按像素换算逐段滚动拼接成 `-scroll-*.png`，满足“从头到底都能截进去”的要求。
+- 覆盖 `maximized`（实际 WorkArea）、`wide`、`standard`、`compact`、`narrow` 五种逻辑窗口；截图与文本报告统一做用户目录脱敏，并明确提示位图内容需自行复核。
+- 验证：Core `59/59`、Worker `190/190`、Playnite `238/238`；`validate-source.py`、WPF UI validator 0 errors、`render-qa` 全绿；最终审计 `0` 失败路由、`0` 零字节 PNG/JSON；ZIP 约 16.2 MiB。
+- Commit：见当前 `git log -1`。
+
 ## 2026-08-14 文档：README 与旧文档版本号同步到 0.6.70
 
 - README 当前版本显式标注 `0.6.70-development-preview`（extension.yaml / DLL `0.6.70.0`）。

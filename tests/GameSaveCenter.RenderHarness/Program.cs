@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using GameSaveCenter.Playnite.Settings;
 using GameSaveCenter.Playnite.Views;
+using GameSaveCenter.RenderHarness.UiAudit;
 
 namespace GameSaveCenter.RenderHarness;
 
@@ -36,6 +37,21 @@ public static class Program
 
     public static int Main(string[] args)
     {
+        if (args.Length > 0
+            && (args[0].Equals("audit", StringComparison.OrdinalIgnoreCase)
+                || args[0].Equals("--audit", StringComparison.OrdinalIgnoreCase)))
+        {
+            var outputRoot = args.Length > 1
+                ? args[1]
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", "artifacts", "ui-audit");
+            var auditExitCode = 0;
+            var auditThread = new Thread(() => { auditExitCode = UiAuditRunner.Run(outputRoot); });
+            auditThread.SetApartmentState(ApartmentState.STA);
+            auditThread.Start();
+            auditThread.Join();
+            return auditExitCode;
+        }
+
         var exitCode = 0;
         var thread = new Thread(() => { exitCode = Run(args); });
         thread.SetApartmentState(ApartmentState.STA);

@@ -75,6 +75,16 @@ GameSaveCenter-一键构建安装运行.cmd
 
 脚本会自动关闭 Playnite/Worker、清理、构建、测试、打包、替换实际扩展目录、核验版本并重新启动 Playnite。安装报告保存到 `artifacts/last-dev-install.txt`。
 
+## UI 自动审计
+
+开发阶段可运行：
+
+```powershell
+.\scripts\capture-ui-audit.ps1
+```
+
+或双击根目录 `GameSaveCenter-UI-Audit.cmd`。工具会自动盘点当前真实页面/Tab/控件，输出静态 `UI_MANIFEST`、`UI_ROUTE_MAP`、`UI_FIDELITY_MATRIX`，运行时视觉树与布局 JSON，以及所有滚动区域的整页拼接截图，最后打包为 `artifacts/GameSaveCenter-ui-audit.zip`。审计不会执行备份、恢复、删除、迁移或设置保存。
+
 ## Windows 构建
 
 建议环境：

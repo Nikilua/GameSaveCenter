@@ -2,6 +2,14 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-14 UI-AUDIT-001 开发专用 UI 自动审计
+
+- 一条命令：`.\scripts\capture-ui-audit.ps1` 或双击 `GameSaveCenter-UI-Audit.cmd`。
+- 输出：`artifacts/ui-audit/`（README、UI_MANIFEST、UI_ROUTE_MAP、UI_FIDELITY_MATRIX、LAYOUT_REPORT、AUDIT_SUMMARY、visual-tree、layout、screenshots）与 `artifacts/GameSaveCenter-ui-audit.zip`。
+- 静态盘点自动发现未来新增页面/Tab/控件；运行时整页截图覆盖页面级滚动容器，DataGrid/ListBox 内部滚动也从头到底拼接。
+- 当前基线：Core `59/59`、Worker `190/190`、Playnite `238/238`；source/XAML/WPF 门禁与 render-qa 通过；最终审计 0 失败路由。
+- Commit：见当前 `git log -1`。
+
 ## 2026-08-14 Final Code Gap Closure 与最终 Epic 状态
 
 - 当前基线：Core `59/59`、Worker `190/190`、Playnite `235/235`；Release 构建 0 warnings / 0 errors；source、XAML、WPF 静态门禁和 `render-qa` 通过；fault-injection 与 1000 轮 soak 通过。
