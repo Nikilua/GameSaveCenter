@@ -625,7 +625,7 @@
                             <TextBlock Text="{TemplateBinding Title}" FontWeight="SemiBold" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" Margin="0,4,0,0"/>
                             <TextBlock Text="{TemplateBinding Message}" Foreground="{DynamicResource GscSecondaryTextBrush}" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" Margin="0,4,0,0"/>
                             <TextBlock Text="{TemplateBinding Detail}" Foreground="{DynamicResource GscMutedTextBrush}" FontSize="11" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" Margin="0,4,0,0"/>
-                            <Button x:Name="RetryButton" Content="{TemplateBinding RetryText}" Command="{TemplateBinding RetryCommand}" Style="{DynamicResource GscWpfUiActionButton}" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                            <ui:Button x:Name="RetryButton" Content="{TemplateBinding RetryText}" Command="{TemplateBinding RetryCommand}" Style="{DynamicResource GscWpfUiActionButton}" HorizontalAlignment="Center" Margin="0,10,0,0"/>
                         </StackPanel>
                     </Border>
                     <ControlTemplate.Triggers>

@@ -25,6 +25,8 @@ public sealed class WorkspaceStateSourceTests
         Assert.Contains("MessageProperty", control);
         Assert.Contains("RetryCommandProperty", control);
         Assert.Contains("x:Key=\"GscWorkspaceStatePresenter\"", redesign);
+        Assert.Contains("<ui:Button x:Name=\"RetryButton\"", redesign);
+        Assert.DoesNotContain("<Button x:Name=\"RetryButton\"", redesign);
         Assert.Contains("ui:WorkspaceStatePresenter", overview);
         Assert.Contains("ui:WorkspaceStatePresenter", task);
         Assert.Contains("ui:WorkspaceStatePresenter", save);
