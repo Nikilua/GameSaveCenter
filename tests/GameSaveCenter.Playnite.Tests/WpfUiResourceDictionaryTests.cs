@@ -1003,15 +1003,15 @@ public sealed class WpfUiResourceDictionaryTests
         var maintenancePath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml");
         var maintenanceText = File.ReadAllText(maintenancePath);
         var maintenance = XDocument.Parse(maintenanceText);
+        var inspector = maintenance.Descendants().Single(element =>
+            element.Name.LocalName == "ScrollViewer" &&
+            element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "MaintenanceDiagnosticsInspector");
 
         // The diagnostics detail inspector mirrors the approved audit reading card:
         // title / detail / suggested action with an info band, collapsed until a
         // finding is selected so no fixed empty right column remains.
-        Assert.DoesNotContain(maintenance.Descendants(), element => element.Name.LocalName == "Expander");
+        Assert.DoesNotContain(inspector.Descendants(), element => element.Name.LocalName == "Expander");
         Assert.DoesNotContain("x:Name=\"MaintenanceDiagnosticDetails\"", maintenanceText);
-        var inspector = maintenance.Descendants().Single(element =>
-            element.Name.LocalName == "ScrollViewer" &&
-            element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "MaintenanceDiagnosticsInspector");
         Assert.Equal("Auto", inspector.Attribute("VerticalScrollBarVisibility")?.Value);
         Assert.Equal("Disabled", inspector.Attribute("HorizontalScrollBarVisibility")?.Value);
         Assert.Contains("Text=\"诊断详情\" Style=\"{DynamicResource GscSectionTitleStyle}\"", maintenanceText);
@@ -1088,7 +1088,7 @@ public sealed class WpfUiResourceDictionaryTests
             element.Name.LocalName == "DataGrid" && element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "MaintenanceAuditLogGrid");
         Assert.Contains(auditLog.Ancestors(), ancestor =>
             ancestor.Name.LocalName == "Border" && ancestor.Attribute("Grid.Row")?.Value == "2" && ancestor.Attribute("Grid.ColumnSpan")?.Value == "3");
-        Assert.Contains("MaintenanceAuditLogGrid.MinHeight = stackAudit ? 96 : 140", File.ReadAllText(maintenancePath + ".cs"));
+        Assert.Contains("MaintenanceAuditLogGrid.MinHeight = stackAudit ? 236 : 280", File.ReadAllText(maintenancePath + ".cs"));
     }
 
     [Fact]
@@ -1944,7 +1944,10 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("{Binding RunPathRemapCommand}", commands);
         Assert.Contains("{Binding ReconcileTasksCommand}", commands);
         Assert.Contains("{Binding ExitSafeModeCommand}", commands);
-        Assert.Equal(13, actionRow.Descendants().Count(element => element.Name.LocalName == "Button"));
+        // The common row keeps the primary diagnostic actions visible; the low-frequency
+        // directory/integrity/metadata commands live in shared Expanders inside the same
+        // card, so the full 16-command surface remains intact.
+        Assert.Equal(5, actionRow.Descendants().Count(element => element.Name.LocalName == "Button"));
     }
 
     [Fact]

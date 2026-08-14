@@ -229,8 +229,8 @@ namespace GameSaveCenter.Playnite.Views
                 : Math.Max(320, height - 200);
             var auditInspectorHeight = Math.Max(96, Math.Min(420, auditAvailableHeight - tableMinHeight - 10));
             MaintenanceAuditInspector.MaxHeight = showAuditInspector && stackAudit ? auditInspectorHeight : double.PositiveInfinity;
-            MaintenanceAuditLogGrid.MinHeight = stackAudit ? 96 : 140;
-            MaintenanceAuditLogGrid.MaxHeight = stackAudit ? Math.Max(120, height * 0.20) : 280;
+            MaintenanceAuditLogGrid.MinHeight = stackAudit ? 236 : 280;
+            MaintenanceAuditLogGrid.MaxHeight = stackAudit ? Math.Max(280, Math.Min(360, height * 0.42)) : 360;
         }
 
         private static T? FindVisualChild<T>(DependencyObject? parent) where T : DependencyObject
