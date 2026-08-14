@@ -2,6 +2,11 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 UI-REFACTOR-V1 验收审计文档
+
+- 新增 `docs/ai/UI_REFACTOR_ACCEPTANCE_AUDIT.md`，把实施包 `06_ACCEPTANCE_CHECKLIST.md` 逐项映射到仓库证据，并区分 `AUTO VERIFIED` 与 `MANUAL QA REQUIRED`。
+- Inspector 恢复修复后重跑最终 UI Audit：HIGH `0`、MEDIUM `0`、运行时警告 `39`、161 快照、失败路由 `0`。
+
 ## 2026-08-14 UI-REFACTOR-V1 Resize 恢复探针与 Inspector 恢复修复
 
 - `render-qa` 新增 Resize transition QA：同一视图实例按 2560×1440 → 1100×720 → 2560×1440 依次布局，快照 DataGrid/ListBox/命名 ScrollViewer 的尺寸、可见性与滚动条，断言回到大窗后几何恢复。

@@ -24,6 +24,7 @@
 - 主题 QA：RenderHarness 对 7 个工作区 × 4 尺寸 × Light/Dark 共 56 个离屏场景渲染并校验调色板与视口，全部通过；像素采样确认 Light/Dark 背景确实切换。真实 Playnite 宿主主题仍为 MANUAL QA REQUIRED。
 - 页面级横向溢出门禁：render-qa 与主题 QA 要求 `*ScrollSurface` / `SettingsScroller` 的 `hbar=Disabled` 且无横向溢出；DataGrid 内部列滚动允许。10 档尺寸与 56 主题场景均通过。
 - Resize 恢复：render-qa 新增 2560×1440 → 1100×720 → 2560×1440 同实例布局恢复探针，7 个工作区全部恢复；修复 Save/Task/Trainer Inspector 宽窗不恢复的缺陷，新增 3 条回归测试。
+- 验收审计：`docs/ai/UI_REFACTOR_ACCEPTANCE_AUDIT.md` 已落盘，逐项映射实施包验收清单；真实 Playnite 宿主主题/DPI/连续缩放与大数据滚动仍为 MANUAL QA REQUIRED。
 
 ## 当前事实覆盖（2026-08-14 Layer A 收口、Layer B 13 项与 Layer C 11 项）
 

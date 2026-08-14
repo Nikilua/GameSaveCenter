@@ -23,6 +23,7 @@
 - 像素采样确认主题切换有效：Light 背景约 `239,240,243`，Dark 约 `54,57,67`。真实 Playnite 宿主主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`。
 - render-qa 与主题 QA 同时加入页面级横向溢出门禁：`*ScrollSurface` / `SettingsScroller` 必须 `hbar=Disabled` 且无横向溢出；DataGrid 内部列滚动允许。10 档尺寸与 56 主题场景全部通过。
 - `render-qa` 新增 Resize 恢复探针（2560×1440 → 1100×720 → 2560×1440 同实例布局快照对比），修复 Save/Task/Trainer Inspector 宽窗不恢复缺陷，并新增 3 条回归测试。
+- 实施包验收审计已落盘到 `docs/ai/UI_REFACTOR_ACCEPTANCE_AUDIT.md`；真实 Playnite 宿主主题/DPI/连续缩放与大数据滚动仍为 `MANUAL QA REQUIRED`。
 
 ## 2026-08-14 Final Code Gap Closure 与最终 Epic 状态
 
