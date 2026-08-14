@@ -3066,6 +3066,51 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void MediaCompactInspectorDefaultsToDetailsButtonAndToggleOpen()
+    {
+        Exception? exception = null;
+        var inspectorCollapsed = false;
+        var buttonVisible = false;
+        var opened = false;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var view = new MediaCenterView();
+                var viewType = typeof(MediaCenterView);
+                var list = (ListBox)viewType.GetField("MediaGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var inspector = view.MediaInspectorScrollViewerElement;
+                var button = (GameSaveCenter.Playnite.Controls.Button)viewType.GetField("MediaCompactDetailsButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var selected = new object();
+                list.ItemsSource = new[] { selected };
+                list.SelectedItem = selected;
+
+                view.ApplyResponsiveLayout(1024, 640);
+                inspectorCollapsed = inspector.Visibility == Visibility.Collapsed;
+                buttonVisible = button.Visibility == Visibility.Visible;
+
+                viewType.GetMethod("OnMediaCompactDetailsClick", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .Invoke(view, new object[] { button, new RoutedEventArgs() });
+                opened = inspector.Visibility == Visibility.Visible && ((string)button.Content).Contains("收起");
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.True(inspectorCollapsed);
+        Assert.True(buttonVisible);
+        Assert.True(opened);
+    }
+
+    [Fact]
     public void EmptyDataSurfacesExplainNextStepsWithoutBreakingLocalScrolling()
     {
         var repositoryRoot = FindRepositoryRoot();

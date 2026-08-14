@@ -2,6 +2,15 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 UI-REFACTOR-V1 Phase 4b 媒体中心 Media
+
+- 当前游戏媒体页在 Compact/Narrow 下默认收起媒体 Inspector，改为表内“查看媒体详情 / 收起媒体详情”按钮；预览、收藏、备注、保存、打开目录、重新归类与批量操作仍可通过按钮展开访问。
+- 来源规则页“添加截图或录像来源”表单默认折叠到共享 Expander；目录、文件模式、共享开关与添加来源命令仍可展开访问，规则列表继续获得 Auto/* 主行。
+- 待归类 DataGrid、媒体虚拟化/Recycling、缩略图异步加载、搜索/筛选绑定与全部命令未改。
+- render-qa 实测：1040×700 当前媒体列表保持 350 DIP，Inspector 收起后页面 extent 从约 891 降至 489；1280×720 同样保持 360 DIP。
+- 新增 2 条回归测试：Media 窄窗 Inspector 默认收起/可打开、来源表单折叠但字段可达。
+- Gate：Release 0 警告/0 错误，Core `59/59`、Worker `190/190`、Playnite `245/245`，source/XAML/WPF/render-qa 全绿。
+
 ## 2026-08-14 UI-REFACTOR-V1 Phase 4a 修改器中心 Trainer
 
 - 已绑定工具页在 Compact/Narrow 下默认收起工具设置 Inspector，改为表内“查看工具详情 / 收起工具详情”按钮；启动、保存、打开目录、重新定位、解除绑定与全部编辑字段仍可通过按钮展开访问。
