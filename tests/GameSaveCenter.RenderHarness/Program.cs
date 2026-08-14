@@ -92,6 +92,19 @@ public static class Program
             return v3ExitCode;
         }
 
+        if (args.Length > 0 && args[0].Equals("v4shots", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", "artifacts", "ui-qa", "v4-shots");
+            var v4ExitCode = 0;
+            var v4Thread = new Thread(() => { v4ExitCode = RunV4Shots(outputRoot); });
+            v4Thread.SetApartmentState(ApartmentState.STA);
+            v4Thread.Start();
+            v4Thread.Join();
+            return v4ExitCode;
+        }
+
         var exitCode = 0;
         var thread = new Thread(() => { exitCode = Run(args); });
         thread.SetApartmentState(ApartmentState.STA);
@@ -205,6 +218,7 @@ public static class Program
                 view =>
                 {
                     SelectTab(view, 0);
+                    SelectInnerTab(view, "诊断概览");
                     SetExpanderByHeader(view, "首次环境检查", true);
                 });
             CaptureV3Shot(
@@ -219,6 +233,7 @@ public static class Program
                 view =>
                 {
                     SelectTab(view, 0);
+                    SelectInnerTab(view, "诊断概览");
                     SetExpanderByHeader(view, "更多维护操作", true);
                 });
 
@@ -244,6 +259,194 @@ public static class Program
             report.AppendLine("v3-shots FAILED");
             report.AppendLine(ex.ToString());
             File.WriteAllText(Path.Combine(outputRoot, "v3-shots-report.txt"), report.ToString());
+            return 1;
+        }
+    }
+
+    private static int RunV4Shots(string outputRoot)
+    {
+        Directory.CreateDirectory(outputRoot);
+        var report = new StringBuilder();
+        report.AppendLine("GameSaveCenter v4 screenshot evidence");
+        report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+        report.AppendLine();
+        var problems = new List<string>();
+
+        try
+        {
+            var app = new Application();
+            app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+
+            CaptureV3Shot(
+                new OverviewView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v4-overview-current-game-standard.png"),
+                "OverviewCurrentGameCard",
+                1600,
+                900,
+                ApplyOverviewV3,
+                problems,
+                report,
+                cropFromHost: true);
+            CaptureV3Shot(
+                new OverviewView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v4-overview-protection-collapsed.png"),
+                "OverviewRiskCard",
+                1600,
+                900,
+                ApplyOverviewV3,
+                problems,
+                report);
+            CaptureV3Shot(
+                new OverviewView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v4-overview-protection-expanded.png"),
+                "OverviewRiskCard",
+                1600,
+                900,
+                ApplyOverviewV3,
+                problems,
+                report,
+                view => SetExpanderByHeader(view, "展开最近游戏保护明细", true));
+            CaptureV3Shot(
+                new OverviewView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v4-overview-activity-wide.png"),
+                "OverviewActivityList",
+                1600,
+                900,
+                ApplyOverviewV3,
+                problems,
+                report);
+            CaptureV3Shot(
+                new OverviewView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v4-overview-activity-narrow.png"),
+                "OverviewActivityList",
+                1040,
+                700,
+                ApplyOverviewV3,
+                problems,
+                report);
+
+            CaptureV3Shot(
+                new SaveCenterView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v4-save-rule-standard.png"),
+                "SaveCurrentRuleCard",
+                1600,
+                900,
+                ApplySimpleResponsiveV3,
+                problems,
+                report,
+                view => SelectTab(view, 1));
+            CaptureV3Shot(
+                new SaveCenterView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v4-save-automation-standard.png"),
+                "SaveBackupAutomationCard",
+                1600,
+                900,
+                ApplySimpleResponsiveV3,
+                problems,
+                report,
+                view => SelectTab(view, 2));
+            CaptureV3Shot(
+                new SaveCenterView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v4-save-automation-narrow.png"),
+                "SaveBackupAutomationCard",
+                1040,
+                700,
+                ApplySimpleResponsiveV3,
+                problems,
+                report,
+                view => SelectTab(view, 2));
+
+            CaptureV3Shot(
+                new MaintenanceView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v4-maintenance-diagnostics-default.png"),
+                "MaintenanceDiagnosticsScrollSurface",
+                1600,
+                900,
+                ApplySimpleResponsiveV3,
+                problems,
+                report,
+                view => SelectTab(view, 0));
+            CaptureV3Shot(
+                new MaintenanceView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v4-maintenance-problems-tab.png"),
+                "MaintenanceDiagnosticsLayout",
+                1600,
+                900,
+                ApplySimpleResponsiveV3,
+                problems,
+                report,
+                view =>
+                {
+                    SelectTab(view, 0);
+                    SelectInnerTab(view, "问题列表");
+                });
+            CaptureV3Shot(
+                new MaintenanceView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v4-maintenance-overview-tab.png"),
+                "MaintenanceDiagnosticsOverviewScrollSurface",
+                1600,
+                900,
+                ApplySimpleResponsiveV3,
+                problems,
+                report,
+                view =>
+                {
+                    SelectTab(view, 0);
+                    SelectInnerTab(view, "诊断概览");
+                });
+            CaptureV3Shot(
+                new MaintenanceView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v4-maintenance-environment-expanded.png"),
+                "EnvironmentCheckCard",
+                1600,
+                900,
+                ApplySimpleResponsiveV3,
+                problems,
+                report,
+                view =>
+                {
+                    SelectTab(view, 0);
+                    SelectInnerTab(view, "诊断概览");
+                    SetExpanderByHeader(view, "首次环境检查", true);
+                });
+            CaptureV3Shot(
+                new MaintenanceView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v4-maintenance-actions-expanded.png"),
+                "MaintenanceDiagnosticsActionCard",
+                1600,
+                900,
+                ApplySimpleResponsiveV3,
+                problems,
+                report,
+                view =>
+                {
+                    SelectTab(view, 0);
+                    SelectInnerTab(view, "诊断概览");
+                    SetExpanderByHeader(view, "更多维护操作", true);
+                });
+
+            if (problems.Count > 0)
+            {
+                report.AppendLine("v4-shots FAILED");
+                foreach (var problem in problems)
+                    report.AppendLine("  PROBLEM " + problem);
+                File.WriteAllText(Path.Combine(outputRoot, "v4-shots-report.txt"), report.ToString());
+                Console.WriteLine(report.ToString());
+                return 1;
+            }
+
+            report.AppendLine("v4-shots OK");
+            File.WriteAllText(Path.Combine(outputRoot, "v4-shots-report.txt"), report.ToString());
+            Console.WriteLine(report.ToString());
+            Console.WriteLine("v4-shots OK");
+            return 0;
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine(ex);
+            report.AppendLine("v4-shots FAILED");
+            report.AppendLine(ex.ToString());
+            File.WriteAllText(Path.Combine(outputRoot, "v4-shots-report.txt"), report.ToString());
             return 1;
         }
     }
@@ -350,11 +553,27 @@ public static class Program
 
     private static void SetExpanderByHeader(UserControl view, string header, bool isExpanded)
     {
+        view.UpdateLayout();
         var expander = FindVisualChildren<Expander>(view)
             .FirstOrDefault(candidate => candidate.Header?.ToString() == header);
         if (expander == null)
             throw new InvalidOperationException($"Expander not found: {header}");
         expander.IsExpanded = isExpanded;
+    }
+
+    private static void SelectInnerTab(UserControl view, string header)
+    {
+        var tabs = FindVisualChildren<TabControl>(view)
+            .FirstOrDefault(candidate => candidate.Items
+                .Cast<TabItem>()
+                .Any(item => item.Header?.ToString() == header));
+        var item = tabs?.Items
+            .Cast<TabItem>()
+            .FirstOrDefault(candidate => candidate.Header?.ToString() == header);
+        if (tabs == null || item == null)
+            throw new InvalidOperationException($"Inner tab not found: {header}");
+        tabs.SelectedItem = item;
+        view.UpdateLayout();
     }
 
     private static int Run(string[] args)

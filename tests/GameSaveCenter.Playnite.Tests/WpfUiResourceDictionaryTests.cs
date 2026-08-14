@@ -1116,11 +1116,13 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("<Setter Property=\"Visibility\" Value=\"Visible\"/>", maintenanceText);
 
         // The full diagnostic summary left the detail inspector and owns a full-width
-        // strip below the findings table instead of being squeezed into the 360-DIP column.
+        // overview page instead of being squeezed into the 360-DIP column.
         var summary = maintenance.Descendants().Single(element =>
             element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "MaintenanceDiagnosticSummaryGrid");
-        Assert.Equal("1", summary.Attribute("Grid.Row")?.Value);
-        Assert.Equal("3", summary.Attribute("Grid.ColumnSpan")?.Value);
+        Assert.Null(summary.Attribute("Grid.Row"));
+        Assert.Null(summary.Attribute("Grid.ColumnSpan"));
+        Assert.Contains(summary.Ancestors(), ancestor =>
+            ancestor.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "MaintenanceDiagnosticsOverviewScrollSurface");
         Assert.Contains("MaintenanceDiagnosticsInspector.MaxHeight = showDiagnosticsInspector && stackDiagnostics ? Math.Max(150, height * 0.34) : double.PositiveInfinity", File.ReadAllText(maintenancePath + ".cs"));
     }
 

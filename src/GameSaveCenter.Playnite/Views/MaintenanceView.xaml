@@ -56,195 +56,206 @@
         <TabControl Grid.Row="0" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Style="{StaticResource MaintenanceTabControl}">
             <TabControl.Resources><Style TargetType="TabItem" BasedOn="{StaticResource MaintenanceTabItem}"/></TabControl.Resources>
             <TabItem Header="诊断">
-                <!-- Keep the diagnostics table and summary finite while allowing the
-                     action/health cards and lower summary to remain reachable in a
-                     short but normal window. The table itself retains virtualization. -->
-                <Grid x:Name="MaintenanceDiagnosticsScrollSurface" VerticalAlignment="Stretch">
-                <Grid Margin="0,6,0,0">
-                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
-                    <Border x:Name="EnvironmentCheckCard" Grid.Row="0" Style="{DynamicResource GscReadingCardStyle}" Padding="12,10" Margin="0,0,0,6">
-                        <Grid>
-                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0" MinWidth="0" VerticalAlignment="Center">
-                                <TextBlock Text="{Binding OnboardingTitle}" Style="{DynamicResource GscSectionTitleStyle}"/>
-                                <TextBlock Text="{Binding OnboardingDescription}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding OnboardingDescription}"/>
-                            </StackPanel>
-                            <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiToolbarPrimaryButton}" Command="{Binding RunEnvironmentCheckCommand}" Content="运行检查" Margin="12,0,0,0" VerticalAlignment="Center"/>
-                            <Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="0,10,0,0">
-                                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                                <TextBlock Text="{Binding EnvironmentCheck.Summary}" Foreground="{DynamicResource GscInfoBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding EnvironmentCheck.Summary}" VerticalAlignment="Center"/>
-                                <TextBlock Grid.Column="1" Text="{Binding EnvironmentCheck.CheckedLocalDisplay, StringFormat=最近检查：{0}}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="12,0,0,0" VerticalAlignment="Center"/>
+                <!-- Overnight v4: diagnostics is split into a finite problem-list viewport
+                     and a page-scroll overview. Expanders never own inner scrollbars; the
+                     overview page owns the shared scroll context. -->
+                <Grid x:Name="MaintenanceDiagnosticsScrollSurface" Margin="0,6,0,0" VerticalAlignment="Stretch">
+                    <TabControl x:Name="MaintenanceDiagnosticsSubTabs" Style="{StaticResource GscInternalTabControl}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <TabControl.Resources><Style TargetType="TabItem" BasedOn="{StaticResource GscInternalTabItem}"/></TabControl.Resources>
+                        <TabItem Header="问题列表">
+                            <Grid x:Name="MaintenanceDiagnosticsLayout" Margin="0,6,0,0">
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscInspectorWidth}"/></Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                                <Border x:Name="MaintenanceDiagnosticsTable" Grid.Row="0" Grid.Column="0">
+                                    <Border.Style>
+                                        <Style TargetType="Border" BasedOn="{StaticResource GscTableFrame}">
+                                            <Setter Property="Grid.ColumnSpan" Value="1"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding SelectedFinding}" Value="{x:Null}">
+                                                    <Setter Property="Grid.ColumnSpan" Value="3"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <Grid><DataGrid x:Name="FindingsGrid" Style="{StaticResource MaintenanceDataGrid}" RowStyle="{StaticResource GscStableDataGridRow}" ItemsSource="{Binding Findings}" SelectedItem="{Binding SelectedFinding}"><DataGrid.Columns><DataGridTemplateColumn HeaderStyle="{StaticResource MaintenanceFirstColumnHeader}" Header="等级" Width="72"><DataGridTemplateColumn.CellTemplate><DataTemplate><Border x:Name="SeverityPill" Style="{DynamicResource GscRedesignTableStatusPill}"><TextBlock Text="{Binding SeverityDisplay, Mode=OneWay}" Foreground="{DynamicResource GscPrimaryTextBrush}" HorizontalAlignment="Center"/></Border><DataTemplate.Triggers><DataTrigger Binding="{Binding Severity}" Value="Info"><Setter TargetName="SeverityPill" Property="Background" Value="{DynamicResource GscInfoIconFillBrush}"/><Setter TargetName="SeverityPill" Property="BorderBrush" Value="{DynamicResource GscInfoBrush}"/></DataTrigger><DataTrigger Binding="{Binding Severity}" Value="Warning"><Setter TargetName="SeverityPill" Property="Background" Value="{DynamicResource GscSafetyFillBrush}"/><Setter TargetName="SeverityPill" Property="BorderBrush" Value="{DynamicResource GscWarningBrush}"/></DataTrigger><DataTrigger Binding="{Binding Severity}" Value="Error"><Setter TargetName="SeverityPill" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/><Setter TargetName="SeverityPill" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/></DataTrigger><DataTrigger Binding="{Binding Severity}" Value="Critical"><Setter TargetName="SeverityPill" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/><Setter TargetName="SeverityPill" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/></DataTrigger></DataTemplate.Triggers></DataTemplate></DataGridTemplateColumn.CellTemplate></DataGridTemplateColumn><DataGridTextColumn Header="游戏" Binding="{Binding GameName}" Width="120"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn><DataGridTextColumn Header="标题" Binding="{Binding Title}" Width="160"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn><DataGridTextColumn Header="详情" Binding="{Binding Detail}" Width="*" MinWidth="180"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn><DataGridTextColumn HeaderStyle="{StaticResource MaintenanceLastColumnHeader}" Header="建议处理" Binding="{Binding SuggestedAction}" Width="0.75*" MinWidth="140"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn></DataGrid.Columns></DataGrid><TextBlock Text="当前没有需要处理的诊断项。&#xA;Worker、备份和媒体状态正常时，这里会保持为空。" IsHitTestVisible="False"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyStateText}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding Findings.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock></Grid>
+                                </Border>
+                                <ScrollViewer x:Name="MaintenanceDiagnosticsInspector" Grid.Row="0" Grid.Column="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                    <ScrollViewer.Style>
+                                        <Style TargetType="ScrollViewer" BasedOn="{StaticResource GscInspectorScrollViewer}">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding SelectedFinding}" Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ScrollViewer.Style>
+                                    <StackPanel>
+                                        <Border Style="{DynamicResource GscRedesignSectionCard}" Padding="14"><StackPanel><TextBlock Text="诊断详情" Style="{DynamicResource GscSectionTitleStyle}"/><TextBlock Text="{Binding SelectedFinding.Title, TargetNullValue=选择一条诊断项查看详情}" TextWrapping="Wrap" Margin="0,5,0,0"/><TextBlock Text="{Binding SelectedFinding.Detail, TargetNullValue=暂无详细说明}" TextWrapping="Wrap" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,10,0,0"/><Border Style="{DynamicResource GscRedesignInfoBand}" Padding="10" Margin="0,12,0,0"><TextBlock Text="{Binding SelectedFinding.SuggestedAction, TargetNullValue=暂无建议处理方式}" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap"/></Border></StackPanel></Border>
+                                    </StackPanel>
+                                </ScrollViewer>
                             </Grid>
-                            <Expander x:Name="EnvironmentCheckDisclosure" Grid.Row="2" Grid.ColumnSpan="2" Style="{StaticResource GscDisclosureCard}" Header="首次环境检查" Margin="0,10,0,0">
-                                <ScrollViewer x:Name="EnvironmentCheckDisclosureScroller" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" MaxHeight="320">
-                                <StackPanel Margin="0,6,0,0">
-                                    <ItemsControl x:Name="EnvironmentCheckItems" ItemsSource="{Binding EnvironmentCheck.Items}" HorizontalContentAlignment="Stretch">
-                                        <ItemsControl.ItemsPanel><ItemsPanelTemplate><UniformGrid Columns="3"/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <Border Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,0,8,8" MinHeight="86" HorizontalAlignment="Stretch">
-                                                    <Grid>
-                                                        <Grid.ColumnDefinitions><ColumnDefinition Width="28"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                                                        <TextBlock Text="{Binding StateGlyph}" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource GscInfoBrush}" VerticalAlignment="Top" HorizontalAlignment="Center"/>
-                                                        <StackPanel Grid.Column="1" Margin="8,0,8,0">
-                                                            <TextBlock Text="{Binding Title}" FontWeight="SemiBold"/>
-                                                            <TextBlock Text="{Binding Summary}" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,3,0,0"/>
-                                                            <TextBlock Text="{Binding Detail}" Foreground="{DynamicResource GscSecondaryTextBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Detail}" FontSize="11" Margin="0,3,0,0"/>
+                        </TabItem>
+                        <TabItem Header="诊断概览">
+                            <ScrollViewer x:Name="MaintenanceDiagnosticsOverviewScrollSurface" Style="{DynamicResource GscPageScrollViewer}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                <StackPanel Margin="0,6,0,12">
+                                    <Border x:Name="EnvironmentCheckCard" Style="{DynamicResource GscReadingCardStyle}" Padding="12,10" Margin="0,0,0,6">
+                                        <Grid>
+                                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="0" MinWidth="0" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding OnboardingTitle}" Style="{DynamicResource GscSectionTitleStyle}"/>
+                                                <TextBlock Text="{Binding OnboardingDescription}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding OnboardingDescription}"/>
+                                            </StackPanel>
+                                            <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiToolbarPrimaryButton}" Command="{Binding RunEnvironmentCheckCommand}" Content="运行检查" Margin="12,0,0,0" VerticalAlignment="Center"/>
+                                            <Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="0,10,0,0">
+                                                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                <TextBlock Text="{Binding EnvironmentCheck.Summary}" Foreground="{DynamicResource GscInfoBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding EnvironmentCheck.Summary}" VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding EnvironmentCheck.CheckedLocalDisplay, StringFormat=最近检查：{0}}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="12,0,0,0" VerticalAlignment="Center"/>
+                                            </Grid>
+                                            <Expander x:Name="EnvironmentCheckDisclosure" Grid.Row="2" Grid.ColumnSpan="2" Style="{StaticResource GscDisclosureCard}" Header="首次环境检查" Margin="0,10,0,0">
+                                                <StackPanel Margin="0,6,0,0">
+                                                    <ItemsControl x:Name="EnvironmentCheckItems" ItemsSource="{Binding EnvironmentCheck.Items}" HorizontalContentAlignment="Stretch">
+                                                        <ItemsControl.ItemsPanel><ItemsPanelTemplate><UniformGrid Columns="3"/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Border Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,0,8,8" MinHeight="86" HorizontalAlignment="Stretch">
+                                                                    <Grid>
+                                                                        <Grid.ColumnDefinitions><ColumnDefinition Width="28"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                                        <TextBlock Text="{Binding StateGlyph}" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource GscInfoBrush}" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+                                                                        <StackPanel Grid.Column="1" Margin="8,0,8,0">
+                                                                            <TextBlock Text="{Binding Title}" FontWeight="SemiBold"/>
+                                                                            <TextBlock Text="{Binding Summary}" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                                                            <TextBlock Text="{Binding Detail}" Foreground="{DynamicResource GscSecondaryTextBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Detail}" FontSize="11" Margin="0,3,0,0"/>
+                                                                        </StackPanel>
+                                                                        <TextBlock Grid.Column="2" Text="{Binding StateDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" VerticalAlignment="Top"/>
+                                                                    </Grid>
+                                                                </Border>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                    <WrapPanel Margin="0,2,0,0">
+                                                        <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OnboardingTestBackupCommand}" Content="对当前游戏做测试备份" Margin="0,0,8,8"/>
+                                                        <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CompleteOnboardingCommand}" Content="完成设置" Margin="0,0,8,8"/>
+                                                        <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding SkipOnboardingCommand}" Content="跳过首次检查" Margin="0,0,0,8"/>
+                                                    </WrapPanel>
+                                                    <TextBlock Text="测试备份不会自动执行；请先选择一个已匹配的当前游戏。若当前没有可用于测试的已识别存档游戏，可稍后在存档中心手动执行备份。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,2,0,0"/>
+                                                </StackPanel>
+                                            </Expander>
+                                        </Grid>
+                                    </Border>
+                                    <Border x:Name="MaintenanceDiagnosticsActionCard" Style="{DynamicResource GscReadingCardStyle}" Padding="12,10" Margin="0,0,0,6">
+                                        <Grid>
+                                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <StackPanel MinWidth="0" VerticalAlignment="Center">
+                                                <TextBlock Text="诊断操作" Style="{DynamicResource GscSectionTitleStyle}"/>
+                                                <TextBlock Text="打开目录和复制动作均为安全只读入口。" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0" TextWrapping="Wrap"/>
+                                            </StackPanel>
+                                            <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiToolbarPrimaryButton}" Command="{Binding RefreshDiagnosticsCommand}" Content="刷新诊断"/>
+                                            <WrapPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="0,16,0,0">
+                                                <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CopyDiagnosticsCommand}" Content="复制诊断" Margin="0,0,8,8"/>
+                                                <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CreateDiagnosticsPackageCommand}" Content="导出诊断包" Margin="0,0,8,8" ToolTip="生成不包含存档、媒体和凭据的脱敏 ZIP"/>
+                                                <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CopyMaintenanceReportCommand}" Content="复制健康报告" Margin="0,0,8,8" ToolTip="生成用户可读健康报告并复制到剪贴板"/>
+                                                <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding ExportMaintenanceReportCommand}" Content="导出健康报告" Margin="0,0,8,8" ToolTip="导出为 TXT 或 Markdown 用户可读健康报告"/>
+                                                <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RunIntegrityCheckCommand}" Content="完整性自检" Margin="0,0,0,8"/>
+                                            </WrapPanel>
+                                            <Expander x:Name="MaintenanceActionsDisclosure" Grid.Row="2" Grid.ColumnSpan="2" Style="{StaticResource GscDisclosureCard}" Header="更多维护操作" Margin="0,12,0,0">
+                                                <StackPanel Margin="0,6,0,0">
+                                                    <Expander Grid.Row="2" Grid.ColumnSpan="2" Style="{StaticResource GscDisclosureCard}" Header="目录与日志" Margin="0,14,0,0">
+                                                        <WrapPanel Margin="0,8,0,0">
+                                                            <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenDataDirectoryCommand}" Content="打开数据目录" Margin="0,0,8,8"/>
+                                                            <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenBackupDirectoryCommand}" Content="打开存档目录" Margin="0,0,8,8"/>
+                                                            <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenMediaDirectoryCommand}" Content="打开媒体目录" Margin="0,0,8,8"/>
+                                                            <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenWorkerLogCommand}" Content="Worker 日志" Margin="0,0,0,8"/>
+                                                        </WrapPanel>
+                                                    </Expander>
+                                                    <Expander Grid.Row="3" Grid.ColumnSpan="2" Style="{StaticResource GscDisclosureCard}" Header="完整性、自愈与安全模式" Margin="0,10,0,0">
+                                                        <WrapPanel Margin="0,8,0,0">
+                                                            <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RebuildRepositoryCommand}" Content="重建备份索引" Margin="0,0,8,8" ToolTip="按 Ludusavi 磁盘实际备份列表重建 SQLite 索引"/>
+                                                            <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding ReconcileTasksCommand}" Content="协调中断任务" Margin="0,0,0,8" ToolTip="把 Worker 重启后遗留的排队/运行中任务标记为 WORKER_RESTARTED"/>
+                                                        </WrapPanel>
+                                                    </Expander>
+                                                    <Expander Grid.Row="4" Grid.ColumnSpan="2" Style="{StaticResource GscDisclosureCard}" Header="元数据灾备" Margin="0,10,0,0">
+                                                        <WrapPanel Margin="0,8,0,0">
+                                                            <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CreateMetadataBackupCommand}" Content="导出元数据灾备" Margin="0,0,8,8" ToolTip="生成 SQLite 快照、Worker 设置和版本清单，不包含存档/媒体/凭据"/>
+                                                            <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RestoreMetadataBackupCommand}" Content="恢复元数据灾备" Margin="0,0,0,8" ToolTip="预览并恢复 SQLite 快照与 Worker 设置，保留恢复前副本"/>
+                                                        </WrapPanel>
+                                                    </Expander>
+                                                    <Border Grid.Row="5" Grid.ColumnSpan="2" Margin="0,14,0,0" Padding="12" Background="{DynamicResource GscSafetyFillBrush}" BorderBrush="{DynamicResource GscWarningBrush}" BorderThickness="1" CornerRadius="10">
+                                                        <Border.Style>
+                                                            <Style TargetType="Border">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding Snapshot.SafeModeEnabled}" Value="True">
+                                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Border.Style>
+                                                        <StackPanel Orientation="Horizontal"><TextBlock Text="安全模式已开启：自动备份、自动媒体同步、云端上传和工具自动启动已暂停；手动操作仍可用。" Foreground="{DynamicResource GscWarningBrush}" TextWrapping="Wrap" VerticalAlignment="Center"/><ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding ExitSafeModeCommand}" Content="恢复正常模式" Margin="12,0,0,0"/></StackPanel>
+                                                    </Border>
+                                                    <Border Grid.Row="6" Grid.ColumnSpan="2" Style="{DynamicResource GscRedesignInfoBand}" Padding="12" Margin="0,14,0,0">
+                                                        <TextBlock Text="{Binding IntegritySummary, TargetNullValue=尚未运行完整性自检。}" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap"/>
+                                                    </Border>
+                                                    <Border Grid.Row="7" Grid.ColumnSpan="2" Style="{DynamicResource GscRedesignInfoBand}" Padding="12" Margin="0,8,0,0">
+                                                        <StackPanel>
+                                                            <TextBlock Text="{Binding MetadataBackupSummary, TargetNullValue=尚未生成元数据灾备包。}" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap"/>
+                                                            <TextBlock Text="{Binding MetadataRestoreSummary, TargetNullValue=尚未预览元数据恢复。}" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap" Margin="0,6,0,0"/>
                                                         </StackPanel>
-                                                        <TextBlock Grid.Column="2" Text="{Binding StateDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" VerticalAlignment="Top"/>
-                                                    </Grid>
-                                                </Border>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
-                                    <WrapPanel Margin="0,2,0,0">
-                                        <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OnboardingTestBackupCommand}" Content="对当前游戏做测试备份" Margin="0,0,8,8"/>
-                                        <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CompleteOnboardingCommand}" Content="完成设置" Margin="0,0,8,8"/>
-                                        <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding SkipOnboardingCommand}" Content="跳过首次检查" Margin="0,0,0,8"/>
-                                    </WrapPanel>
-                                    <TextBlock Text="测试备份不会自动执行；请先选择一个已匹配的当前游戏。若当前没有可用于测试的已识别存档游戏，可稍后在存档中心手动执行备份。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,2,0,0"/>
+                                                    </Border>
+                                                    <Border Grid.Row="8" Grid.ColumnSpan="2" Style="{DynamicResource GscRedesignInfoBand}" Padding="12" Margin="0,8,0,0">
+                                                        <TextBlock Text="{Binding RepositoryRebuildSummary, TargetNullValue=尚未重建备份索引。}" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap"/>
+                                                    </Border>
+                                                    <Border Grid.Row="9" Grid.ColumnSpan="2" Style="{DynamicResource GscRedesignSubCard}" Padding="12" Margin="0,10,0,0">
+                                                        <StackPanel>
+                                                            <TextBlock Text="批量路径迁移" FontWeight="SemiBold"/>
+                                                            <TextBlock Text="把旧根路径下所有已索引路径改写为新根路径；不会移动文件" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,8"/>
+                                                            <TextBlock Text="旧根路径" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10" Margin="0,0,0,3"/>
+                                                            <TextBox Style="{StaticResource GscWpfUiTextBox}" Text="{Binding PathRemapOldRoot, UpdateSourceTrigger=LostFocus}" Margin="0,0,0,8"/>
+                                                            <TextBlock Text="新根路径" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10" Margin="0,0,0,3"/>
+                                                            <TextBox Style="{StaticResource GscWpfUiTextBox}" Text="{Binding PathRemapNewRoot, UpdateSourceTrigger=LostFocus}" Margin="0,0,0,10"/>
+                                                            <ui:Button Style="{StaticResource GscWpfUiActionButton}" Command="{Binding RunPathRemapCommand}" Content="执行路径迁移" HorizontalAlignment="Left"/>
+                                                            <TextBlock Text="{Binding PathRemapSummary, TargetNullValue=尚未执行路径迁移。}" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap" Margin="0,10,0,0"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                    <Border Grid.Row="10" Grid.ColumnSpan="2" Style="{DynamicResource GscRedesignInfoBand}" Padding="12" Margin="0,8,0,0">
+                                                        <TextBlock Text="{Binding TaskReconcileSummary, TargetNullValue=尚未协调中断任务。}" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap"/>
+                                                    </Border>
+                                                    <ui:WorkspaceStatePresenter Grid.Row="11" Grid.ColumnSpan="2" State="Degraded" Title="云端处于降级状态" Message="已启用云端上传，但 Rclone 当前不可用；本地备份和恢复仍可正常使用。" Margin="0,12,0,0" IsHitTestVisible="False">
+                                                        <ui:WorkspaceStatePresenter.Style>
+                                                            <Style TargetType="ui:WorkspaceStatePresenter" BasedOn="{StaticResource GscWorkspaceStatePresenter}">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding IsCloudDegraded}" Value="True">
+                                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </ui:WorkspaceStatePresenter.Style>
+                                                    </ui:WorkspaceStatePresenter>
+                                                    <UniformGrid x:Name="DiagnosticHealthPanel" Columns="3" Margin="0,6,0,0">
+                                                        <Border Style="{DynamicResource GscRedesignMetricBorder}" Padding="12" Margin="0,0,8,8"><StackPanel><TextBlock Text="Worker" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="12"/><TextBlock Text="{Binding Snapshot.WorkerVersion, TargetNullValue=不可用, FallbackValue=不可用}" FontSize="16" FontWeight="SemiBold" Margin="0,4,0,0"/><TextBlock Text="{Binding EffectiveSettings.DataDirectory}" TextTrimming="CharacterEllipsis" ToolTip="{Binding EffectiveSettings.DataDirectory}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0"/></StackPanel></Border>
+                                                        <Border Style="{DynamicResource GscRedesignMetricBorder}" Padding="12" Margin="0,0,8,8"><StackPanel><TextBlock Text="Ludusavi" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="12"/><TextBlock Text="{Binding Snapshot.LudusaviVersion, TargetNullValue=不可用, FallbackValue=不可用}" FontSize="16" FontWeight="SemiBold" Margin="0,4,0,0"/><TextBlock Text="{Binding EffectiveSettings.LudusaviExecutable}" TextTrimming="CharacterEllipsis" ToolTip="{Binding EffectiveSettings.LudusaviExecutable}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0"/></StackPanel></Border>
+                                                        <Border Style="{DynamicResource GscRedesignMetricBorder}" Padding="12" Margin="0,0,0,8"><StackPanel><TextBlock Text="Rclone" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="12"/><TextBlock FontSize="16" FontWeight="SemiBold" Margin="0,4,0,0"><TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Text" Value="未配置"/><Style.Triggers><DataTrigger Binding="{Binding Snapshot.RcloneAvailable}" Value="True"><Setter Property="Text" Value="可用"/></DataTrigger><DataTrigger Binding="{Binding EffectiveSettings.RcloneDestinationConfigured}" Value="True"><Setter Property="Text" Value="已配置"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock><TextBlock Text="{Binding EffectiveSettings.RcloneExecutable}" TextTrimming="CharacterEllipsis" ToolTip="{Binding EffectiveSettings.RcloneExecutable}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0"/></StackPanel></Border>
+                                                        <Border Style="{DynamicResource GscRedesignMetricBorder}" Padding="12" Margin="0,0,8,8"><StackPanel><TextBlock Text="数据与备份目录" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="12"/><TextBlock Text="可访问" FontSize="16" FontWeight="SemiBold" Margin="0,4,0,0"/><TextBlock Text="{Binding EffectiveSettings.DataDirectory}" TextTrimming="CharacterEllipsis" ToolTip="{Binding EffectiveSettings.DataDirectory}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0"/></StackPanel></Border>
+                                                        <Border Style="{DynamicResource GscRedesignMetricBorder}" Padding="12" Margin="0,0,8,8"><StackPanel><TextBlock Text="媒体目录" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="12"/><TextBlock Text="{Binding Snapshot.UnassignedMediaCount, StringFormat={}{0} 项待归类}" Foreground="{DynamicResource GscWarningBrush}" FontSize="16" FontWeight="SemiBold" Margin="0,4,0,0"/><TextBlock Text="{Binding EffectiveSettings.MediaArchiveDirectory}" TextTrimming="CharacterEllipsis" ToolTip="{Binding EffectiveSettings.MediaArchiveDirectory}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0"/></StackPanel></Border>
+                                                        <Border Style="{DynamicResource GscRedesignMetricBorder}" Padding="12" Margin="0,0,0,8"><StackPanel><TextBlock Text="设备状态" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="12"/><TextBlock Text="{Binding DeviceComparisons.Count, StringFormat={}{0} 项需比较}" FontSize="16" FontWeight="SemiBold" Margin="0,4,0,0"/><TextBlock Text="人工决策，不自动覆盖远端" Foreground="{DynamicResource GscSecondaryTextBrush}" TextTrimming="CharacterEllipsis" FontSize="11" Margin="0,4,0,0"/></StackPanel></Border>
+                                                    </UniformGrid>
+                                                </StackPanel>
+                                            </Expander>
+                                        </Grid>
+                                    </Border>
+                                    <Border x:Name="MaintenanceDiagnosticSummaryGrid" Style="{DynamicResource GscRedesignSubCard}" Padding="12" Margin="0,10,0,0">
+                                        <StackPanel>
+                                            <TextBlock Text="完整诊断摘要" Style="{DynamicResource GscSectionTitleStyle}"/>
+                                            <TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding DiagnosticSummary, Mode=OneWay}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="NoWrap" MinHeight="96" MaxHeight="160" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" FontFamily="Consolas" Margin="0,10,0,0"/>
+                                        </StackPanel>
+                                    </Border>
                                 </StackPanel>
-                                </ScrollViewer>
-                            </Expander>
-                        </Grid>
-                    </Border>
-                    <Border x:Name="MaintenanceDiagnosticsActionCard" Grid.Row="1" Style="{DynamicResource GscReadingCardStyle}" Padding="12,10" Margin="0,0,0,6">
-                        <Grid>
-                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                            <StackPanel MinWidth="0" VerticalAlignment="Center">
-                                <TextBlock Text="诊断操作" Style="{DynamicResource GscSectionTitleStyle}"/>
-                                <TextBlock Text="打开目录和复制动作均为安全只读入口。" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0" TextWrapping="Wrap"/>
-                            </StackPanel>
-                            <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiToolbarPrimaryButton}" Command="{Binding RefreshDiagnosticsCommand}" Content="刷新诊断"/>
-                            <WrapPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="0,16,0,0">
-                                <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CopyDiagnosticsCommand}" Content="复制诊断" Margin="0,0,8,8"/>
-                                <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CreateDiagnosticsPackageCommand}" Content="导出诊断包" Margin="0,0,8,8" ToolTip="生成不包含存档、媒体和凭据的脱敏 ZIP"/>
-                                <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CopyMaintenanceReportCommand}" Content="复制健康报告" Margin="0,0,8,8" ToolTip="生成用户可读健康报告并复制到剪贴板"/>
-                                <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding ExportMaintenanceReportCommand}" Content="导出健康报告" Margin="0,0,8,8" ToolTip="导出为 TXT 或 Markdown 用户可读健康报告"/>
-                                <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RunIntegrityCheckCommand}" Content="完整性自检" Margin="0,0,0,8"/>
-                            </WrapPanel>
-                            <Expander x:Name="MaintenanceActionsDisclosure" Grid.Row="2" Grid.ColumnSpan="2" Style="{StaticResource GscDisclosureCard}" Header="更多维护操作" Margin="0,12,0,0">
-                                <ScrollViewer x:Name="MaintenanceActionsDisclosureScroller" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" MaxHeight="360">
-                                <StackPanel Margin="0,6,0,0">
-                            <Expander Grid.Row="2" Grid.ColumnSpan="2" Style="{StaticResource GscDisclosureCard}" Header="目录与日志" Margin="0,14,0,0">
-                                <WrapPanel Margin="0,8,0,0">
-                                    <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenDataDirectoryCommand}" Content="打开数据目录" Margin="0,0,8,8"/>
-                                    <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenBackupDirectoryCommand}" Content="打开存档目录" Margin="0,0,8,8"/>
-                                    <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenMediaDirectoryCommand}" Content="打开媒体目录" Margin="0,0,8,8"/>
-                                    <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenWorkerLogCommand}" Content="Worker 日志" Margin="0,0,0,8"/>
-                                </WrapPanel>
-                            </Expander>
-                            <Expander Grid.Row="3" Grid.ColumnSpan="2" Style="{StaticResource GscDisclosureCard}" Header="完整性、自愈与安全模式" Margin="0,10,0,0">
-                                <WrapPanel Margin="0,8,0,0">
-                                    <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RebuildRepositoryCommand}" Content="重建备份索引" Margin="0,0,8,8" ToolTip="按 Ludusavi 磁盘实际备份列表重建 SQLite 索引"/>
-                                    <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding ReconcileTasksCommand}" Content="协调中断任务" Margin="0,0,0,8" ToolTip="把 Worker 重启后遗留的排队/运行中任务标记为 WORKER_RESTARTED"/>
-                                </WrapPanel>
-                            </Expander>
-                            <Expander Grid.Row="4" Grid.ColumnSpan="2" Style="{StaticResource GscDisclosureCard}" Header="元数据灾备" Margin="0,10,0,0">
-                                <WrapPanel Margin="0,8,0,0">
-                                    <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CreateMetadataBackupCommand}" Content="导出元数据灾备" Margin="0,0,8,8" ToolTip="生成 SQLite 快照、Worker 设置和版本清单，不包含存档/媒体/凭据"/>
-                                    <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RestoreMetadataBackupCommand}" Content="恢复元数据灾备" Margin="0,0,0,8" ToolTip="预览并恢复 SQLite 快照与 Worker 设置，保留恢复前副本"/>
-                                </WrapPanel>
-                            </Expander>
-                            <Border Grid.Row="5" Grid.ColumnSpan="2" Margin="0,14,0,0" Padding="12" Background="{DynamicResource GscSafetyFillBrush}" BorderBrush="{DynamicResource GscWarningBrush}" BorderThickness="1" CornerRadius="10">
-                                <Border.Style>
-                                    <Style TargetType="Border">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Snapshot.SafeModeEnabled}" Value="True">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Border.Style>
-                                <StackPanel Orientation="Horizontal"><TextBlock Text="安全模式已开启：自动备份、自动媒体同步、云端上传和工具自动启动已暂停；手动操作仍可用。" Foreground="{DynamicResource GscWarningBrush}" TextWrapping="Wrap" VerticalAlignment="Center"/><ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding ExitSafeModeCommand}" Content="恢复正常模式" Margin="12,0,0,0"/></StackPanel>
-                            </Border>
-                            <Border Grid.Row="6" Grid.ColumnSpan="2" Style="{DynamicResource GscRedesignInfoBand}" Padding="12" Margin="0,14,0,0">
-                                <TextBlock Text="{Binding IntegritySummary, TargetNullValue=尚未运行完整性自检。}" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap"/>
-                            </Border>
-                            <Border Grid.Row="7" Grid.ColumnSpan="2" Style="{DynamicResource GscRedesignInfoBand}" Padding="12" Margin="0,8,0,0">
-                                <StackPanel>
-                                    <TextBlock Text="{Binding MetadataBackupSummary, TargetNullValue=尚未生成元数据灾备包。}" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap"/>
-                                    <TextBlock Text="{Binding MetadataRestoreSummary, TargetNullValue=尚未预览元数据恢复。}" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap" Margin="0,6,0,0"/>
-                                </StackPanel>
-                            </Border>
-                            <Border Grid.Row="8" Grid.ColumnSpan="2" Style="{DynamicResource GscRedesignInfoBand}" Padding="12" Margin="0,8,0,0">
-                                <TextBlock Text="{Binding RepositoryRebuildSummary, TargetNullValue=尚未重建备份索引。}" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap"/>
-                            </Border>
-                            <Border Grid.Row="9" Grid.ColumnSpan="2" Style="{DynamicResource GscRedesignSubCard}" Padding="12" Margin="0,10,0,0">
-                                <StackPanel>
-                                    <TextBlock Text="批量路径迁移" FontWeight="SemiBold"/>
-                                    <TextBlock Text="把旧根路径下所有已索引路径改写为新根路径；不会移动文件" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,8"/>
-                                    <TextBlock Text="旧根路径" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10" Margin="0,0,0,3"/>
-                                    <TextBox Style="{StaticResource GscWpfUiTextBox}" Text="{Binding PathRemapOldRoot, UpdateSourceTrigger=LostFocus}" Margin="0,0,0,8"/>
-                                    <TextBlock Text="新根路径" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10" Margin="0,0,0,3"/>
-                                    <TextBox Style="{StaticResource GscWpfUiTextBox}" Text="{Binding PathRemapNewRoot, UpdateSourceTrigger=LostFocus}" Margin="0,0,0,10"/>
-                                    <ui:Button Style="{StaticResource GscWpfUiActionButton}" Command="{Binding RunPathRemapCommand}" Content="执行路径迁移" HorizontalAlignment="Left"/>
-                                    <TextBlock Text="{Binding PathRemapSummary, TargetNullValue=尚未执行路径迁移。}" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap" Margin="0,10,0,0"/>
-                                </StackPanel>
-                            </Border>
-                            <Border Grid.Row="10" Grid.ColumnSpan="2" Style="{DynamicResource GscRedesignInfoBand}" Padding="12" Margin="0,8,0,0">
-                                <TextBlock Text="{Binding TaskReconcileSummary, TargetNullValue=尚未协调中断任务。}" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap"/>
-                            </Border>
-                            <ui:WorkspaceStatePresenter Grid.Row="11" Grid.ColumnSpan="2" State="Degraded" Title="云端处于降级状态" Message="已启用云端上传，但 Rclone 当前不可用；本地备份和恢复仍可正常使用。" Margin="0,12,0,0" IsHitTestVisible="False">
-                                <ui:WorkspaceStatePresenter.Style>
-                                    <Style TargetType="ui:WorkspaceStatePresenter" BasedOn="{StaticResource GscWorkspaceStatePresenter}">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsCloudDegraded}" Value="True">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ui:WorkspaceStatePresenter.Style>
-                            </ui:WorkspaceStatePresenter>
-                            <UniformGrid x:Name="DiagnosticHealthPanel" Columns="3" Margin="0,6,0,0">
-                                <Border Style="{DynamicResource GscRedesignMetricBorder}" Padding="12" Margin="0,0,8,8"><StackPanel><TextBlock Text="Worker" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="12"/><TextBlock Text="{Binding Snapshot.WorkerVersion, TargetNullValue=不可用, FallbackValue=不可用}" FontSize="16" FontWeight="SemiBold" Margin="0,4,0,0"/><TextBlock Text="{Binding EffectiveSettings.DataDirectory}" TextTrimming="CharacterEllipsis" ToolTip="{Binding EffectiveSettings.DataDirectory}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0"/></StackPanel></Border>
-                                <Border Style="{DynamicResource GscRedesignMetricBorder}" Padding="12" Margin="0,0,8,8"><StackPanel><TextBlock Text="Ludusavi" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="12"/><TextBlock Text="{Binding Snapshot.LudusaviVersion, TargetNullValue=不可用, FallbackValue=不可用}" FontSize="16" FontWeight="SemiBold" Margin="0,4,0,0"/><TextBlock Text="{Binding EffectiveSettings.LudusaviExecutable}" TextTrimming="CharacterEllipsis" ToolTip="{Binding EffectiveSettings.LudusaviExecutable}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0"/></StackPanel></Border>
-                                <Border Style="{DynamicResource GscRedesignMetricBorder}" Padding="12" Margin="0,0,0,8"><StackPanel><TextBlock Text="Rclone" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="12"/><TextBlock FontSize="16" FontWeight="SemiBold" Margin="0,4,0,0"><TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Text" Value="未配置"/><Style.Triggers><DataTrigger Binding="{Binding Snapshot.RcloneAvailable}" Value="True"><Setter Property="Text" Value="可用"/></DataTrigger><DataTrigger Binding="{Binding EffectiveSettings.RcloneDestinationConfigured}" Value="True"><Setter Property="Text" Value="已配置"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock><TextBlock Text="{Binding EffectiveSettings.RcloneExecutable}" TextTrimming="CharacterEllipsis" ToolTip="{Binding EffectiveSettings.RcloneExecutable}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0"/></StackPanel></Border>
-                                <Border Style="{DynamicResource GscRedesignMetricBorder}" Padding="12" Margin="0,0,8,8"><StackPanel><TextBlock Text="数据与备份目录" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="12"/><TextBlock Text="可访问" FontSize="16" FontWeight="SemiBold" Margin="0,4,0,0"/><TextBlock Text="{Binding EffectiveSettings.DataDirectory}" TextTrimming="CharacterEllipsis" ToolTip="{Binding EffectiveSettings.DataDirectory}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0"/></StackPanel></Border>
-                                <Border Style="{DynamicResource GscRedesignMetricBorder}" Padding="12" Margin="0,0,8,8"><StackPanel><TextBlock Text="媒体目录" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="12"/><TextBlock Text="{Binding Snapshot.UnassignedMediaCount, StringFormat={}{0} 项待归类}" Foreground="{DynamicResource GscWarningBrush}" FontSize="16" FontWeight="SemiBold" Margin="0,4,0,0"/><TextBlock Text="{Binding EffectiveSettings.MediaArchiveDirectory}" TextTrimming="CharacterEllipsis" ToolTip="{Binding EffectiveSettings.MediaArchiveDirectory}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0"/></StackPanel></Border>
-                                <Border Style="{DynamicResource GscRedesignMetricBorder}" Padding="12" Margin="0,0,0,8"><StackPanel><TextBlock Text="设备状态" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="12"/><TextBlock Text="{Binding DeviceComparisons.Count, StringFormat={}{0} 项需比较}" FontSize="16" FontWeight="SemiBold" Margin="0,4,0,0"/><TextBlock Text="人工决策，不自动覆盖远端" Foreground="{DynamicResource GscSecondaryTextBrush}" TextTrimming="CharacterEllipsis" FontSize="11" Margin="0,4,0,0"/></StackPanel></Border>
-                            </UniformGrid>
-                                </StackPanel>
-                                </ScrollViewer>
-                            </Expander>
-                        </Grid>
-                    </Border>
-                    <Grid x:Name="MaintenanceDiagnosticsLayout" Grid.Row="3"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscInspectorWidth}"/></Grid.ColumnDefinitions><Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-                        <Border x:Name="MaintenanceDiagnosticsTable" Grid.Row="0" Grid.Column="0">
-                            <Border.Style>
-                                <Style TargetType="Border" BasedOn="{StaticResource GscTableFrame}">
-                                    <Setter Property="Grid.ColumnSpan" Value="1"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding SelectedFinding}" Value="{x:Null}">
-                                            <Setter Property="Grid.ColumnSpan" Value="3"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
-                            <Grid><DataGrid x:Name="FindingsGrid" Style="{StaticResource MaintenanceDataGrid}" RowStyle="{StaticResource GscStableDataGridRow}" ItemsSource="{Binding Findings}" SelectedItem="{Binding SelectedFinding}"><DataGrid.Columns><DataGridTemplateColumn HeaderStyle="{StaticResource MaintenanceFirstColumnHeader}" Header="等级" Width="72"><DataGridTemplateColumn.CellTemplate><DataTemplate><Border x:Name="SeverityPill" Style="{DynamicResource GscRedesignTableStatusPill}"><TextBlock Text="{Binding SeverityDisplay, Mode=OneWay}" Foreground="{DynamicResource GscPrimaryTextBrush}" HorizontalAlignment="Center"/></Border><DataTemplate.Triggers><DataTrigger Binding="{Binding Severity}" Value="Info"><Setter TargetName="SeverityPill" Property="Background" Value="{DynamicResource GscInfoIconFillBrush}"/><Setter TargetName="SeverityPill" Property="BorderBrush" Value="{DynamicResource GscInfoBrush}"/></DataTrigger><DataTrigger Binding="{Binding Severity}" Value="Warning"><Setter TargetName="SeverityPill" Property="Background" Value="{DynamicResource GscSafetyFillBrush}"/><Setter TargetName="SeverityPill" Property="BorderBrush" Value="{DynamicResource GscWarningBrush}"/></DataTrigger><DataTrigger Binding="{Binding Severity}" Value="Error"><Setter TargetName="SeverityPill" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/><Setter TargetName="SeverityPill" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/></DataTrigger><DataTrigger Binding="{Binding Severity}" Value="Critical"><Setter TargetName="SeverityPill" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/><Setter TargetName="SeverityPill" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/></DataTrigger></DataTemplate.Triggers></DataTemplate></DataGridTemplateColumn.CellTemplate></DataGridTemplateColumn><DataGridTextColumn Header="游戏" Binding="{Binding GameName}" Width="120"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn><DataGridTextColumn Header="标题" Binding="{Binding Title}" Width="160"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn><DataGridTextColumn Header="详情" Binding="{Binding Detail}" Width="*" MinWidth="180"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn><DataGridTextColumn HeaderStyle="{StaticResource MaintenanceLastColumnHeader}" Header="建议处理" Binding="{Binding SuggestedAction}" Width="0.75*" MinWidth="140"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn></DataGrid.Columns></DataGrid><TextBlock Text="当前没有需要处理的诊断项。&#xA;Worker、备份和媒体状态正常时，这里会保持为空。" IsHitTestVisible="False"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyStateText}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding Findings.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock></Grid>
-                        </Border>
-                        <ScrollViewer x:Name="MaintenanceDiagnosticsInspector" Grid.Row="0" Grid.Column="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                            <ScrollViewer.Style>
-                                <Style TargetType="ScrollViewer" BasedOn="{StaticResource GscInspectorScrollViewer}">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding SelectedFinding}" Value="{x:Null}">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </ScrollViewer.Style>
-                            <StackPanel>
-                                <Border Style="{DynamicResource GscRedesignSectionCard}" Padding="14"><StackPanel><TextBlock Text="诊断详情" Style="{DynamicResource GscSectionTitleStyle}"/><TextBlock Text="{Binding SelectedFinding.Title, TargetNullValue=选择一条诊断项查看详情}" TextWrapping="Wrap" Margin="0,5,0,0"/><TextBlock Text="{Binding SelectedFinding.Detail, TargetNullValue=暂无详细说明}" TextWrapping="Wrap" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,10,0,0"/><Border Style="{DynamicResource GscRedesignInfoBand}" Padding="10" Margin="0,12,0,0"><TextBlock Text="{Binding SelectedFinding.SuggestedAction, TargetNullValue=暂无建议处理方式}" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap"/></Border></StackPanel></Border>
-                            </StackPanel>
-                        </ScrollViewer>
-                        <Border x:Name="MaintenanceDiagnosticSummaryGrid" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Style="{DynamicResource GscRedesignSubCard}" Padding="12" Margin="0,10,0,0"><StackPanel><TextBlock Text="完整诊断摘要" Style="{DynamicResource GscSectionTitleStyle}"/><TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding DiagnosticSummary, Mode=OneWay}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="NoWrap" MinHeight="96" MaxHeight="160" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" FontFamily="Consolas" Margin="0,10,0,0"/></StackPanel></Border>
-                    </Grid>
-                </Grid>
+                            </ScrollViewer>
+                        </TabItem>
+                    </TabControl>
                 </Grid>
             </TabItem>
             <TabItem Header="设备状态">

@@ -73,9 +73,6 @@ namespace GameSaveCenter.Playnite.Views
             // cards per row preserve the six-card summary without pushing diagnostics
             // below an unnecessarily tall single-column block.
             DiagnosticHealthPanel.Columns = width >= 980 ? 3 : width >= 680 ? 2 : 1;
-            var disclosureMaxHeight = Math.Max(240, Math.Min(440, height * 0.52));
-            EnvironmentCheckDisclosureScroller.MaxHeight = disclosureMaxHeight;
-            MaintenanceActionsDisclosureScroller.MaxHeight = disclosureMaxHeight;
             var inspectorWidth = MaintenanceDiagnosticsLayout.TryFindResource("GscInspectorWidth") is GridLength gl ? gl : new GridLength(360);
             // Health cards remain useful context even in compact windows. Grid star rows keep
             // diagnostics tables finite while their own controls handle overflow.
