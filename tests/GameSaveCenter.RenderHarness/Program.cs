@@ -79,12 +79,282 @@ public static class Program
             return auditExitCode;
         }
 
+        if (args.Length > 0 && args[0].Equals("v3shots", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", "artifacts", "ui-qa", "v3-shots");
+            var v3ExitCode = 0;
+            var v3Thread = new Thread(() => { v3ExitCode = RunV3Shots(outputRoot); });
+            v3Thread.SetApartmentState(ApartmentState.STA);
+            v3Thread.Start();
+            v3Thread.Join();
+            return v3ExitCode;
+        }
+
         var exitCode = 0;
         var thread = new Thread(() => { exitCode = Run(args); });
         thread.SetApartmentState(ApartmentState.STA);
         thread.Start();
         thread.Join();
         return exitCode;
+    }
+
+    private static int RunV3Shots(string outputRoot)
+    {
+        Directory.CreateDirectory(outputRoot);
+        var report = new StringBuilder();
+        report.AppendLine("GameSaveCenter v3 screenshot evidence");
+        report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+        report.AppendLine();
+        var problems = new List<string>();
+
+        try
+        {
+            var app = new Application();
+            app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+
+            CaptureV3Shot(
+                new OverviewView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v3-overview-current-game-wide.png"),
+                "OverviewCurrentGameCard",
+                1600,
+                900,
+                ApplyOverviewV3,
+                problems,
+                report,
+                cropFromHost: true);
+            CaptureV3Shot(
+                new OverviewView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v3-overview-protection-collapsed.png"),
+                "OverviewRiskCard",
+                1600,
+                900,
+                ApplyOverviewV3,
+                problems,
+                report);
+            CaptureV3Shot(
+                new OverviewView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v3-overview-protection-expanded.png"),
+                "OverviewRiskCard",
+                1600,
+                900,
+                ApplyOverviewV3,
+                problems,
+                report,
+                view => SetExpanderByHeader(view, "展开最近游戏保护明细", true));
+            CaptureV3Shot(
+                new OverviewView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v3-overview-activity-wide.png"),
+                "OverviewActivityList",
+                1600,
+                900,
+                ApplyOverviewV3,
+                problems,
+                report);
+            CaptureV3Shot(
+                new OverviewView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v3-overview-activity-narrow.png"),
+                "OverviewActivityList",
+                1040,
+                700,
+                ApplyOverviewV3,
+                problems,
+                report);
+
+            CaptureV3Shot(
+                new SaveCenterView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v3-save-rule-standard.png"),
+                "SaveCurrentRuleCard",
+                1600,
+                900,
+                ApplySimpleResponsiveV3,
+                problems,
+                report,
+                view => SelectTab(view, 1));
+            CaptureV3Shot(
+                new SaveCenterView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v3-save-rule-narrow.png"),
+                "SaveCurrentRuleCard",
+                1040,
+                700,
+                ApplySimpleResponsiveV3,
+                problems,
+                report,
+                view => SelectTab(view, 1));
+
+            CaptureV3Shot(
+                new MaintenanceView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v3-maintenance-diagnostics-initial.png"),
+                "MaintenanceDiagnosticsScrollSurface",
+                1600,
+                900,
+                ApplySimpleResponsiveV3,
+                problems,
+                report,
+                view => SelectTab(view, 0));
+            CaptureV3Shot(
+                new MaintenanceView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v3-maintenance-environment-expanded.png"),
+                "EnvironmentCheckCard",
+                1600,
+                900,
+                ApplySimpleResponsiveV3,
+                problems,
+                report,
+                view =>
+                {
+                    SelectTab(view, 0);
+                    SetExpanderByHeader(view, "首次环境检查", true);
+                });
+            CaptureV3Shot(
+                new MaintenanceView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v3-maintenance-actions-expanded.png"),
+                "MaintenanceDiagnosticsActionCard",
+                1600,
+                900,
+                ApplySimpleResponsiveV3,
+                problems,
+                report,
+                view =>
+                {
+                    SelectTab(view, 0);
+                    SetExpanderByHeader(view, "更多维护操作", true);
+                });
+
+            if (problems.Count > 0)
+            {
+                report.AppendLine("v3-shots FAILED");
+                foreach (var problem in problems)
+                    report.AppendLine("  PROBLEM " + problem);
+                File.WriteAllText(Path.Combine(outputRoot, "v3-shots-report.txt"), report.ToString());
+                Console.WriteLine(report.ToString());
+                return 1;
+            }
+
+            report.AppendLine("v3-shots OK");
+            File.WriteAllText(Path.Combine(outputRoot, "v3-shots-report.txt"), report.ToString());
+            Console.WriteLine(report.ToString());
+            Console.WriteLine("v3-shots OK");
+            return 0;
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine(ex);
+            report.AppendLine("v3-shots FAILED");
+            report.AppendLine(ex.ToString());
+            File.WriteAllText(Path.Combine(outputRoot, "v3-shots-report.txt"), report.ToString());
+            return 1;
+        }
+    }
+
+    private static void CaptureV3Shot(
+        UserControl view,
+        string path,
+        string elementName,
+        int windowW,
+        int windowH,
+        Action<UserControl, int, int> applyLayout,
+        List<string> problems,
+        StringBuilder report,
+        Action<UserControl>? beforeCapture = null,
+        bool cropFromHost = false)
+    {
+        var (contentW, contentH) = ContentSize(windowW, windowH);
+        var host = new Grid
+        {
+            Width = contentW,
+            Height = contentH,
+            Background = new SolidColorBrush(Color.FromRgb(24, 30, 43)),
+            ClipToBounds = true
+        };
+        host.Children.Add(view);
+
+        applyLayout(view, windowW, windowH);
+        host.Measure(new Size(contentW, contentH));
+        host.Arrange(new Rect(0, 0, contentW, contentH));
+        host.UpdateLayout();
+        applyLayout(view, windowW, windowH);
+        host.UpdateLayout();
+        beforeCapture?.Invoke(view);
+        applyLayout(view, windowW, windowH);
+        host.UpdateLayout();
+
+        var target = FindVisualChildren<FrameworkElement>(host)
+            .FirstOrDefault(element => element.Name == elementName);
+        if (target == null || target.ActualWidth <= 0 || target.ActualHeight <= 0)
+            throw new InvalidOperationException($"V3 shot target not rendered: {elementName} at {windowW}x{windowH}");
+
+        if (cropFromHost)
+            SaveCropped(host, target, path);
+        else
+            SavePng(target, path);
+        var size = new FileInfo(path).Length;
+        report.AppendLine($"  {Path.GetFileName(path)}: {target.ActualWidth:0}x{target.ActualHeight:0} DIP, {size} bytes");
+        if (size < 2048)
+            problems.Add($"{path} looks blank ({size} bytes)");
+    }
+
+    private static void SaveCropped(Grid host, FrameworkElement target, string path)
+    {
+        var origin = target.TransformToAncestor(host).Transform(new Point(0, 0));
+        var bitmap = new RenderTargetBitmap(
+            (int)Math.Ceiling(host.ActualWidth),
+            (int)Math.Ceiling(host.ActualHeight),
+            96,
+            96,
+            PixelFormats.Pbgra32);
+        bitmap.Render(host);
+
+        var left = Math.Max(0, (int)Math.Floor(origin.X));
+        var top = Math.Max(0, (int)Math.Floor(origin.Y));
+        var width = Math.Min((int)Math.Ceiling(target.ActualWidth), bitmap.PixelWidth - left);
+        var height = Math.Min((int)Math.Ceiling(target.ActualHeight), bitmap.PixelHeight - top);
+        if (width <= 0 || height <= 0)
+            throw new InvalidOperationException($"Cannot crop {path}: {width}x{height}");
+
+        var cropped = new CroppedBitmap(bitmap, new Int32Rect(left, top, width, height));
+        var encoder = new PngBitmapEncoder();
+        encoder.Frames.Add(BitmapFrame.Create(cropped));
+        using var stream = File.Create(path);
+        encoder.Save(stream);
+    }
+
+    private static void ApplyOverviewV3(UserControl view, int windowW, int windowH)
+    {
+        var overview = (OverviewView)view;
+        var (contentW, _) = ContentSize(windowW, windowH);
+        var stack = contentW < 1200;
+        overview.OverviewCompactSecondaryRowHeight = stack ? GridLength.Auto : new GridLength(0);
+        overview.ApplyResponsiveColumns(stack);
+        overview.ApplyResponsiveWidth(contentW);
+        overview.ApplyResponsiveHeight(windowH, stack);
+    }
+
+    private static void ApplySimpleResponsiveV3(UserControl view, int windowW, int windowH)
+    {
+        var (contentW, _) = ContentSize(windowW, windowH);
+        var method = view.GetType().GetMethod(
+            "ApplyResponsiveLayout",
+            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        method?.Invoke(view, new object[] { contentW, windowH });
+    }
+
+    private static void SelectTab(UserControl view, int index)
+    {
+        var tabs = FindVisualChildren<TabControl>(view).FirstOrDefault();
+        if (tabs == null || index < 0 || index >= tabs.Items.Count)
+            throw new InvalidOperationException($"Cannot select tab {index} for {view.GetType().Name}");
+        tabs.SelectedIndex = index;
+    }
+
+    private static void SetExpanderByHeader(UserControl view, string header, bool isExpanded)
+    {
+        var expander = FindVisualChildren<Expander>(view)
+            .FirstOrDefault(candidate => candidate.Header?.ToString() == header);
+        if (expander == null)
+            throw new InvalidOperationException($"Expander not found: {header}");
+        expander.IsExpanded = isExpanded;
     }
 
     private static int Run(string[] args)

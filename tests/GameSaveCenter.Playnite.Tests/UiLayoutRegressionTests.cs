@@ -270,6 +270,27 @@ namespace GameSaveCenter.Playnite.Tests
                 Assert.Contains("GscDisclosureCard", expander.Attribute("Style")?.Value);
                 Assert.DoesNotContain(">", expander.Attribute("Header")?.Value ?? string.Empty);
             });
+            Assert.Contains("x:Name=\"EnvironmentCheckDisclosureScroller\"", maintenance.ToString());
+            Assert.Contains("x:Name=\"MaintenanceActionsDisclosureScroller\"", maintenance.ToString());
+        }
+
+        [Fact]
+        public void ViewsUseUnifiedDisclosureCardChrome()
+        {
+            var root = FindRepositoryRoot();
+            var views = new[]
+            {
+                Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml"),
+                Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "SaveCenterView.xaml"),
+                Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml"),
+                Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"),
+                Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"),
+                Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml"),
+                Path.Combine(root, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml")
+            };
+
+            foreach (var view in views)
+                Assert.DoesNotContain("GscExpander", File.ReadAllText(view));
         }
 
         [Fact]

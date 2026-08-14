@@ -264,7 +264,7 @@
                 <ScrollViewer Style="{DynamicResource GscPageScrollViewer}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,12,0,0">
                     <StackPanel x:Name="SavePolicyStack" MaxWidth="{StaticResource GscFormMaxWidth}" HorizontalAlignment="Left">
                         <Grid Margin="0,0,0,14"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><StackPanel><TextBlock Text="当前游戏自动策略" Style="{DynamicResource GscSectionTitleStyle}"/><TextBlock Text="存档与媒体自动化可以按当前游戏独立关闭；手动备份、恢复和媒体同步仍可使用。" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0" TextWrapping="Wrap"/></StackPanel><ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding SavePolicyCommand}" Content="保存策略"/></Grid>
-                        <Expander Style="{StaticResource GscExpander}" Header="策略模板 · 新建 / 保存 / 应用 / 删除" IsExpanded="False" Margin="0,0,0,14">
+                        <Expander Style="{StaticResource GscDisclosureCard}" Header="策略模板 · 新建 / 保存 / 应用 / 删除" IsExpanded="False" Margin="0,0,0,14">
                         <Border x:Name="SavePolicyTemplatesCard" Style="{DynamicResource GscReadingCardStyle}" Padding="18">
                             <StackPanel>
                                 <TextBlock Text="策略模板" Style="{DynamicResource GscSectionTitleStyle}"/>
