@@ -3,6 +3,18 @@
 > 维护时间：2026-08-14
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-14 UI-VISUAL-REWORK-V3 当前事实
+
+- 来源：`GameSaveCenter_UI_Design_and_Prompt_Pack_v3.zip`，计划在 `docs/ai/UI_VISUAL_REWORK_PLAN_V3.md`。
+- Overview：当前游戏卡三按钮同排同几何；最近 30 天动作/统计/折叠三层分离；全局活动为轻量表四列，Time 固定 112 DIP，窄窗 chips 下移。
+- Save：当前存档规则状态一行 badge 并按 `SelectedGame.HealthState` 着色，三按钮统一紧凑几何，卡片压高。
+- Maintenance：环境卡摘要化，首次环境检查/更多维护操作统一 `GscDisclosureCard`（去尾部 `>`），FindingsGrid 五列最小宽度收敛为 72/120/160/*180/140。
+- Disclosure 统一入口：`GscDisclosureCard`（别名 `GscDisclosureCardExpander` 保留），Chevron 独立图标区、整行可点、Hover/Expanded 主题态。
+- 颜色分层全部使用 DynamicResource/Design Token：正常绿、信息蓝、警告橙、错误红、中性灰蓝；未写死前景/背景。
+- 功能保真：REMOVE=0；命令、绑定、DataGrid 5 列、EnvironmentCheckItems、虚拟化和 GamePicker HARD LOCK 均未改。
+- 当前自动化基线：Release 0 warning/0 error；Core `59/59`、Worker `190/190`、Playnite `252/252`；render-qa 10 档 + 56 主题 + 7 Resize 全绿；UI Audit 0 HIGH/0 MEDIUM/33 INFO/0 失败路由。
+- 提交：`5c3bdae`（v3 计划）、`9ee3660`（Overview）、`e8b8c31`（Save/Maintenance）。真实 Playnite 宿主主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`。
+
 ## 2026-08-14 UI-REFACTOR-V1（实施包 v1）当前事实
 
 - 本轮是严格受控 WPF UI 重构，不是业务重写。事实来源优先级：当前生产 main > UI Audit（commit `4ab44fe`）> 实施包 v1 锁定/范围 > WPF Demo v6.1 > 旧布局。

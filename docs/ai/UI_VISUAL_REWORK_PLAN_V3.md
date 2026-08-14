@@ -93,3 +93,13 @@
 - UI Audit：0 HIGH / 0 MEDIUM。
 - 功能保真：REMOVE=0、old command missing=0、old grid missing=0、old column missing=0。
 - 提交：每个功能块独立 commit 并 push。
+
+## 完成状态（2026-08-14）
+
+- 图一~图五均已实施并关闭：Overview 三按钮同排同几何、保护动作/统计/折叠三层分离、活动轻量表四列；Save 状态一行 Badge 与三按钮对齐；Maintenance 环境摘要卡 + `GscDisclosureCard` + FindingsGrid 五列收敛。
+- `GscDisclosureCard` 已在 `DesignTokens.xaml` 统一；旧 `GscDisclosureCardExpander` 保留为别名，不再用于页面。
+- 功能保真：REMOVE=0；`DetectPathsCommand`、`ValidateCommand`、`LoadDetailsCommand`、FindingsGrid 5 列、EnvironmentCheckItems 与全部维护命令保留；GamePicker HARD LOCK 未改。
+- 验证：Release 0 warning/0 error；Core `59/59`、Worker `190/190`、Playnite `252/252`；`check-xaml.ps1`、`validate-source.py`、WPF 静态审查（0 error）通过；render-qa 10 档 + 56 主题 + 7 Resize 全绿；UI Audit 0 HIGH/0 MEDIUM/33 INFO/0 失败路由。
+- 截图与证据：`artifacts/ui-qa/v3-save-maintenance/`；`artifacts/ui-audit/v3-final/AUDIT_SUMMARY.md`。
+- 提交：`5c3bdae`（计划）、`9ee3660`（Overview）、`e8b8c31`（Save/Maintenance），均已 push 到 `origin/main`。
+- 未验证项：真实 Playnite 宿主主题、DPI 与连续缩放的最终视觉仍为 `MANUAL QA REQUIRED`。

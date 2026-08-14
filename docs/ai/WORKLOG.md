@@ -2,6 +2,18 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 UI-VISUAL-REWORK-V3 实施完成
+
+- 图一：Overview 当前游戏卡三个按钮统一 `GscWpfUiCompactButton` 几何（38/88 DIP），Primary 只改 `Appearance`，标准宽度同排、窄窗自然 2+1。
+- 图二：最近 30 天动作按钮与统计 chips 分层；统计 chips 中性/警告配色；所有 Expander/Disclosure 统一到 `GscDisclosureCard`，去掉尾部 `>`，Chevron 独立图标区并居中。
+- 图三：全局活动改为轻量表四列（Icon / Main / Chips / Time 112 DIP），行高 64 DIP、hover 分隔线；窄窗 chips 移到摘要下方。
+- 图四：Save 当前存档规则状态合并为一行 badge，按 `SelectedGame.HealthState` 着色（风险=橙、正常=绿、待确认/中性=灰蓝、运行=蓝），三按钮统一 38/100 DIP 紧凑几何；卡片 padding 收敛为 12/10。
+- 图五：Maintenance Diagnostics 环境卡压缩为摘要行，首次环境检查与低频维护进入 `GscDisclosureCard`；FindingsGrid 五列收敛为 72/120/160/*180/140，1040×700 下五列表头完整且首屏可见。
+- 功能保真：REMOVE=0；`DetectPathsCommand/ValidateCommand/LoadDetailsCommand`、全部诊断/维护命令、FindingsGrid 5 列与 EnvironmentCheckItems 均保留；GamePicker HARD LOCK 未改。
+- 验证：Release 构建 0 warning/0 error；Core `59/59`、Worker `190/190`、Playnite `252/252`；`check-xaml.ps1`、`validate-source.py`、WPF 静态审查（0 error）通过；render-qa 10 档 + 56 主题场景 + 7 Resize 全绿；UI Audit 0 HIGH / 0 MEDIUM / 33 INFO / 0 失败路由。
+- 截图证据：`artifacts/ui-qa/v3-save-maintenance/`；Audit 汇总：`artifacts/ui-audit/v3-final/AUDIT_SUMMARY.md`。
+- 提交：`5c3bdae`（计划）、`9ee3660`（Overview）、`e8b8c31`（Save/Maintenance）。真实 Playnite 宿主主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`。
+
 ## 2026-08-14 UI-VISUAL-REWORK-V3 计划
 
 - 用户提供 `GameSaveCenter_UI_Design_and_Prompt_Pack_v3.zip`，要求按 5 张截图定向重构，不继续泛化优化。
