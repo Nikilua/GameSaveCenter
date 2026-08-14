@@ -8,6 +8,9 @@ namespace GameSaveCenter.Playnite.Views
     {
         private double responsiveWidth;
         private double responsiveHeight;
+        private bool isApplyingLayout;
+        private bool historyInspectorOpen;
+        private bool candidateInspectorOpen;
 
         public SaveCenterView()
         {
@@ -18,7 +21,7 @@ namespace GameSaveCenter.Playnite.Views
 
         private void InspectorIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (!IsLoaded || responsiveWidth <= 0 || responsiveHeight <= 0)
+            if (isApplyingLayout || !IsLoaded || responsiveWidth <= 0 || responsiveHeight <= 0)
                 return;
 
             ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
@@ -26,17 +29,66 @@ namespace GameSaveCenter.Playnite.Views
 
         public void ApplyResponsiveLayout(double width, double height)
         {
-            responsiveWidth = width;
-            responsiveHeight = height;
-            // Keep the primary table readable when the selected-version inspector is
-            // stacked below it.  The table still owns its internal virtualized scroll;
-            // this floor only prevents the inspector's Auto row from reducing it to a
-            // one-row strip during a short window resize.
-            const double tableMinHeight = 236d;
-            SaveHistoryGrid.MinHeight = tableMinHeight;
-            SaveCandidateGrid.MinHeight = tableMinHeight;
-            var compact = height < 760 || width < 1080;
-            var inspectorWidth = SaveHistoryLayout.TryFindResource("GscInspectorWidth") is GridLength gl ? gl : new GridLength(360);
+            if (isApplyingLayout) return;
+            isApplyingLayout = true;
+            try
+            {
+                responsiveWidth = width;
+                responsiveHeight = height;
+                // Keep the primary table readable when the selected-version inspector is
+                // stacked below it.  The table still owns its internal virtualized scroll;
+                // this floor only prevents the inspector's Auto row from reducing it to a
+                // one-row strip during a short window resize.
+                const double tableMinHeight = 236d;
+                SaveHistoryGrid.MinHeight = tableMinHeight;
+                SaveCandidateGrid.MinHeight = tableMinHeight;
+                var compact = height < 760 || width < 1080;
+                var inspectorWidth = SaveHistoryLayout.TryFindResource("GscInspectorWidth") is GridLength gl ? gl : new GridLength(360);
+
+                // On compact hosts the selected-version inspector is a drawer, not a
+                // permanent second row. The table keeps the finite star row by default;
+                // every action remains one click away through the compact details button.
+                if (compact)
+                {
+                    var hasHistorySelection = SaveHistoryGrid.SelectedItem != null;
+                    if (hasHistorySelection)
+                    {
+                        SaveHistoryActionsScrollViewer.Visibility = historyInspectorOpen
+                            ? Visibility.Visible
+                            : Visibility.Collapsed;
+                        SaveHistoryCompactDetailsButton.Content = historyInspectorOpen
+                            ? "收起版本详情 ›"
+                            : "查看版本详情 ›";
+                        SaveHistoryCompactDetailsButton.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        SaveHistoryCompactDetailsButton.Visibility = Visibility.Collapsed;
+                        historyInspectorOpen = false;
+                    }
+
+                    var hasCandidateSelection = SaveCandidateGrid.SelectedItem != null;
+                    if (hasCandidateSelection)
+                    {
+                        SaveCandidateInspectorScrollViewer.Visibility = candidateInspectorOpen
+                            ? Visibility.Visible
+                            : Visibility.Collapsed;
+                        SaveCandidateCompactDetailsButton.Content = candidateInspectorOpen
+                            ? "收起候选详情 ›"
+                            : "查看候选详情 ›";
+                        SaveCandidateCompactDetailsButton.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        SaveCandidateCompactDetailsButton.Visibility = Visibility.Collapsed;
+                        candidateInspectorOpen = false;
+                    }
+                }
+                else
+                {
+                    SaveHistoryCompactDetailsButton.Visibility = Visibility.Collapsed;
+                    SaveCandidateCompactDetailsButton.Visibility = Visibility.Collapsed;
+                }
             // The demo keeps the history table and the selected-version inspector
             // side by side when there is room. On a compact host, stack the
             // inspector below the table so actions remain reachable without a
@@ -94,6 +146,39 @@ namespace GameSaveCenter.Playnite.Views
             SaveCompareRetentionScrollViewer.Margin = stackCompare ? new Thickness(0, 14, 0, 0) : new Thickness(0);
             SaveCompareRetentionScrollViewer.MaxHeight = stackCompare ? Math.Max(180, Math.Min(420, height * 0.42)) : double.PositiveInfinity;
             SaveCompareMainScrollViewer.MaxHeight = stackCompare ? Math.Max(220, Math.Min(420, height * 0.45)) : double.PositiveInfinity;
+            }
+            finally
+            {
+                isApplyingLayout = false;
+            }
+        }
+
+        private void OnSaveHistorySelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            historyInspectorOpen = false;
+            if (IsLoaded && responsiveWidth > 0 && responsiveHeight > 0)
+                ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
+        }
+
+        private void OnSaveCandidateSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            candidateInspectorOpen = false;
+            if (IsLoaded && responsiveWidth > 0 && responsiveHeight > 0)
+                ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
+        }
+
+        private void OnSaveHistoryCompactDetailsClick(object sender, RoutedEventArgs e)
+        {
+            if (SaveHistoryGrid.SelectedItem == null) return;
+            historyInspectorOpen = !historyInspectorOpen;
+            ApplyResponsiveLayout(responsiveWidth > 0 ? responsiveWidth : ActualWidth, responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+        }
+
+        private void OnSaveCandidateCompactDetailsClick(object sender, RoutedEventArgs e)
+        {
+            if (SaveCandidateGrid.SelectedItem == null) return;
+            candidateInspectorOpen = !candidateInspectorOpen;
+            ApplyResponsiveLayout(responsiveWidth > 0 ? responsiveWidth : ActualWidth, responsiveHeight > 0 ? responsiveHeight : ActualHeight);
         }
     }
 }

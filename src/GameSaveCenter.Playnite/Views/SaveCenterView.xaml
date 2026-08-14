@@ -32,7 +32,7 @@
                     <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="0"/></Grid.RowDefinitions>
                     <Border Grid.Column="0" Grid.Row="0" Style="{StaticResource SaveTableFrame}">
                         <Grid>
-                            <DataGrid x:Name="SaveHistoryGrid" Style="{StaticResource SaveDataGrid}" RowStyle="{StaticResource GscStableDataGridRow}" ItemsSource="{Binding Backups}" SelectedItem="{Binding SelectedBackup}">
+                            <DataGrid x:Name="SaveHistoryGrid" Style="{StaticResource SaveDataGrid}" RowStyle="{StaticResource GscStableDataGridRow}" ItemsSource="{Binding Backups}" SelectedItem="{Binding SelectedBackup}" SelectionChanged="OnSaveHistorySelectionChanged">
                             <DataGrid.Columns>
                                 <DataGridTextColumn HeaderStyle="{StaticResource SaveFirstHeader}" Header="时间" Binding="{Binding CreatedLocal, Mode=OneWay, StringFormat={}{0:yyyy-MM-dd HH:mm}}" Width="150"/>
                                 <DataGridTemplateColumn Header="类型" Width="110">
@@ -98,6 +98,15 @@
                                     </Style>
                                 </ui:WorkspaceStatePresenter.Style>
                             </ui:WorkspaceStatePresenter>
+                            <ui:Button x:Name="SaveHistoryCompactDetailsButton"
+                                       Style="{DynamicResource GscWpfUiSecondaryButton}"
+                                       Content="查看版本详情 ›"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Top"
+                                       Margin="8"
+                                       Visibility="Collapsed"
+                                       Click="OnSaveHistoryCompactDetailsClick"
+                                       AutomationProperties.Name="查看或收起所选版本详情"/>
                         </Grid>
                     </Border>
                     <ScrollViewer x:Name="SaveHistoryActionsScrollViewer" Grid.Column="2" Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
@@ -149,36 +158,35 @@
             <TabItem Header="路径与校验">
                 <Grid>
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="14"/><RowDefinition Height="*"/></Grid.RowDefinitions>
-                    <Border Grid.Row="0" Style="{DynamicResource GscReadingCardStyle}" Padding="16">
+                    <Border Grid.Row="0" Style="{DynamicResource GscReadingCardStyle}" Padding="14,12">
                         <Grid>
-                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-                            <Grid>
-                                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                                <Grid MinWidth="0">
-                                    <Grid.ColumnDefinitions><ColumnDefinition Width="54"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                                    <ContentControl Style="{StaticResource GscSelectedGameIconControl}" Content="{Binding SelectedGameIcon}"/>
-                                    <StackPanel Grid.Column="1" MinWidth="0">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                            <Grid MinWidth="0">
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="54"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <ContentControl Style="{StaticResource GscSelectedGameIconControl}" Content="{Binding SelectedGameIcon}"/>
+                                <StackPanel Grid.Column="1" MinWidth="0">
                                     <TextBlock Text="当前存档规则" Style="{DynamicResource GscSectionTitleStyle}"/>
                                     <TextBlock Text="{Binding SelectedGame.LudusaviName, Mode=OneWay, TargetNullValue=尚未匹配 Ludusavi 规则}" Style="{DynamicResource GscBodyStyle}" Margin="0,4,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedGame.LudusaviName}"/>
                                     <TextBlock Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedGame.HealthReasonDisplay, Mode=OneWay}"><Run Text="{Binding SelectedGame.MatchStateDisplay, Mode=OneWay, TargetNullValue=未匹配}"/><Run Text=" · "/><Run Text="{Binding SelectedGame.HealthStateDisplay, Mode=OneWay, TargetNullValue=尚未校验}"/></TextBlock>
-                                    </StackPanel>
-                                </Grid>
-                                <Border Grid.Column="1" Style="{DynamicResource GscRedesignInfoBand}" Padding="10,8" Margin="14,0,0,0" VerticalAlignment="Center">
+                                </StackPanel>
+                            </Grid>
+                            <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
+                                <Border Style="{DynamicResource GscRedesignInfoBand}" Padding="10,6" VerticalAlignment="Center">
                                     <StackPanel>
                                         <TextBlock Text="校验状态" Style="{DynamicResource GscCaptionStyle}"/>
                                         <TextBlock Text="{Binding SelectedGame.HealthStateDisplay, Mode=OneWay, TargetNullValue=尚未校验}" FontWeight="SemiBold" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedGame.HealthReasonDisplay, Mode=OneWay}"/>
                                     </StackPanel>
                                 </Border>
-                            </Grid>
-                            <WrapPanel Grid.Row="1" Margin="0,14,0,0">
-                                <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding DetectPathsCommand}" Content="立即扫描" Margin="0,0,8,0"/>
-                                <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding ValidateCommand}" Content="重新校验" Margin="0,0,8,0"/>
-                                <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding LoadDetailsCommand}" Content="刷新详情"/>
-                            </WrapPanel>
+                                <WrapPanel Margin="0,8,0,0" HorizontalAlignment="Right">
+                                    <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding DetectPathsCommand}" Content="立即扫描" Margin="0,0,8,0"/>
+                                    <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding ValidateCommand}" Content="重新校验" Margin="0,0,8,0"/>
+                                    <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding LoadDetailsCommand}" Content="刷新详情"/>
+                                </WrapPanel>
+                            </StackPanel>
                         </Grid>
                     </Border>
                     <Grid x:Name="SaveCandidateLayout" Grid.Row="2" Margin="0,0,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscInspectorWidth}"/></Grid.ColumnDefinitions><Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="0"/></Grid.RowDefinitions>
-                <Border Grid.Column="0" Grid.Row="0" Style="{StaticResource SaveTableFrame}"><Grid><DataGrid x:Name="SaveCandidateGrid" Style="{StaticResource SaveDataGrid}" ItemsSource="{Binding SaveCandidates}" SelectedItem="{Binding SelectedCandidate}"><DataGrid.Columns><DataGridTextColumn HeaderStyle="{StaticResource SaveFirstHeader}" Header="可信度" Binding="{Binding Score, Mode=OneWay, StringFormat=P0}" Width="78"/><DataGridTextColumn Header="状态" Binding="{Binding StatusDisplay, Mode=OneWay}" Width="90"/><DataGridTextColumn Header="路径" Binding="{Binding Path, Mode=OneWay}" Width="*" MinWidth="300"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource SaveLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn><DataGridTextColumn HeaderStyle="{StaticResource SaveLastHeader}" Header="依据" Binding="{Binding ReasonsDisplay, Mode=OneWay}" Width="1.2*" MinWidth="250"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource SaveLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn></DataGrid.Columns></DataGrid><TextBlock Text="暂无待处理的存档路径候选&#xA;可以点击“立即扫描”重新检测候选目录。" IsHitTestVisible="False"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyStateText}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding SaveCandidates.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock></Grid></Border>
+                <Border Grid.Column="0" Grid.Row="0" Style="{StaticResource SaveTableFrame}"><Grid><DataGrid x:Name="SaveCandidateGrid" Style="{StaticResource SaveDataGrid}" ItemsSource="{Binding SaveCandidates}" SelectedItem="{Binding SelectedCandidate}" SelectionChanged="OnSaveCandidateSelectionChanged"><DataGrid.Columns><DataGridTextColumn HeaderStyle="{StaticResource SaveFirstHeader}" Header="可信度" Binding="{Binding Score, Mode=OneWay, StringFormat=P0}" Width="78"/><DataGridTextColumn Header="状态" Binding="{Binding StatusDisplay, Mode=OneWay}" Width="90"/><DataGridTextColumn Header="路径" Binding="{Binding Path, Mode=OneWay}" Width="*" MinWidth="300"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource SaveLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn><DataGridTextColumn HeaderStyle="{StaticResource SaveLastHeader}" Header="依据" Binding="{Binding ReasonsDisplay, Mode=OneWay}" Width="1.2*" MinWidth="250"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource SaveLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn></DataGrid.Columns></DataGrid><TextBlock Text="暂无待处理的存档路径候选&#xA;可以点击“立即扫描”重新检测候选目录。" IsHitTestVisible="False"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyStateText}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding SaveCandidates.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock><ui:Button x:Name="SaveCandidateCompactDetailsButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="查看候选详情 ›" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="8" Visibility="Collapsed" Click="OnSaveCandidateCompactDetailsClick" AutomationProperties.Name="查看或收起所选候选详情"/></Grid></Border>
                 <ScrollViewer x:Name="SaveCandidateInspectorScrollViewer" Grid.Column="2" Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0">
                     <ScrollViewer.Style>
                         <Style TargetType="ScrollViewer" BasedOn="{StaticResource GscInspectorScrollViewer}">
@@ -199,7 +207,8 @@
                 <ScrollViewer Style="{DynamicResource GscPageScrollViewer}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,12,0,0">
                     <StackPanel x:Name="SavePolicyStack" MaxWidth="{StaticResource GscFormMaxWidth}" HorizontalAlignment="Left">
                         <Grid Margin="0,0,0,14"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><StackPanel><TextBlock Text="当前游戏自动策略" Style="{DynamicResource GscSectionTitleStyle}"/><TextBlock Text="存档与媒体自动化可以按当前游戏独立关闭；手动备份、恢复和媒体同步仍可使用。" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0" TextWrapping="Wrap"/></StackPanel><ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding SavePolicyCommand}" Content="保存策略"/></Grid>
-                        <Border x:Name="SavePolicyTemplatesCard" Style="{DynamicResource GscReadingCardStyle}" Padding="18" Margin="0,0,0,14">
+                        <Expander Style="{StaticResource GscExpander}" Header="策略模板 · 新建 / 保存 / 应用 / 删除" IsExpanded="False" Margin="0,0,0,14">
+                        <Border x:Name="SavePolicyTemplatesCard" Style="{DynamicResource GscReadingCardStyle}" Padding="18">
                             <StackPanel>
                                 <TextBlock Text="策略模板" Style="{DynamicResource GscSectionTitleStyle}"/>
                                 <TextBlock Text="模板是可复用的策略快照。先保存修改，再明确应用到当前游戏；应用后不会建立实时继承关系。" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,12" TextWrapping="Wrap"/>
@@ -246,6 +255,7 @@
                                 </WrapPanel>
                             </StackPanel>
                         </Border>
+                        </Expander>
                         <Grid x:Name="SavePolicyCardsLayout"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="0"/></Grid.RowDefinitions>
                             <Border Grid.Column="0" Style="{DynamicResource GscReadingCardStyle}" Padding="18"><StackPanel><TextBlock Text="备份自动化" Style="{DynamicResource GscSectionTitleStyle}"/><TextBlock Text="与存档版本有关的开关放在同一张阅读卡中。" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,10"/><ui:ToggleSwitch Style="{DynamicResource GscWpfUiToggleSwitch}" Content="启用当前游戏自动任务" IsChecked="{Binding SelectedGame.Policy.Enabled}" Margin="0,0,0,8"/><ui:ToggleSwitch Style="{DynamicResource GscWpfUiToggleSwitch}" Content="退出游戏后备份" IsChecked="{Binding SelectedGame.Policy.BackupOnGameStop}" Margin="0,0,0,8"/><ui:ToggleSwitch Style="{DynamicResource GscWpfUiToggleSwitch}" Content="游玩中周期备份" IsChecked="{Binding SelectedGame.Policy.BackupDuringPlay}" Margin="0,0,0,8"/><Grid Margin="0,8,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="150"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBox Grid.Column="0" Style="{DynamicResource GscNumericTextBox}" Text="{Binding SelectedGame.Policy.DuringPlayIntervalMinutes, UpdateSourceTrigger=LostFocus}" ToolTip="允许 1–1440 分钟"/><TextBlock Grid.Column="1" Text="分钟" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="10,0,0,0"/><TextBlock Grid.Column="2" Text="允许 1–1440" Style="{DynamicResource GscCaptionStyle}" HorizontalAlignment="Right" VerticalAlignment="Center"/></Grid><StackPanel Orientation="Horizontal" Margin="0,10,0,0"><TextBlock Text="异常保护" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,10,0"/><ComboBox Width="180" Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding BackupAnomalyProtectionOptions}" SelectedValuePath="Value" SelectedValue="{Binding SelectedGame.Policy.AnomalyProtectionLevel}" AutomationProperties.Name="当前游戏备份异常保护等级"><ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Display}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Display}"/></DataTemplate></ComboBox.ItemTemplate></ComboBox></StackPanel></StackPanel></Border>
                             <Border x:Name="SavePolicyMediaCard" Grid.Column="2" Style="{DynamicResource GscReadingCardStyle}" Padding="18"><StackPanel><TextBlock Text="媒体与云端" Style="{DynamicResource GscSectionTitleStyle}"/><TextBlock Text="与当前游戏关联的媒体归档和单向云端复制策略。" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,10"/><ui:ToggleSwitch Style="{DynamicResource GscWpfUiToggleSwitch}" Content="上传备份到云端" IsChecked="{Binding SelectedGame.Policy.UploadAfterBackup}" Margin="0,0,0,8"/><Border Style="{DynamicResource GscRedesignInfoBand}" Padding="12" Margin="0,8,0,0"><TextBlock Text="云端失败不会撤销本地成功的备份；重试和完整错误统一进入任务中心。" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap"/></Border><TextBlock Text="{Binding RetentionSummary, TargetNullValue=保留策略尚未生成}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,12,0,0"/><ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding PreviewRetentionCommand}" Content="预览保留策略" Margin="0,12,0,0" HorizontalAlignment="Left"/></StackPanel></Border>

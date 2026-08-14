@@ -2,6 +2,16 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 UI-REFACTOR-V1 Phase 3 存档中心 Save Center
+
+- 历史版本与路径候选在 Compact/Narrow 下默认收起 Inspector，改为表内“查看版本详情 / 查看候选详情”按钮；点击后展开同一套 Inspector（备注/锁定/恢复/比较/恢复就绪与接受/忽略/重新扫描），功能零损失。
+- 路径与校验页头部从两行压成单行：当前规则/校验状态在左，扫描/校验/刷新在右，为主表让出高度。
+- 备份策略页模板区放入共享 `GscExpander`（默认折叠），模板新建/保存/应用/删除命令与全部参数仍可展开访问。
+- 比较与保留继续保留并排/堆叠双区，`CompareBackup`、`PreviewRetention` 与所有差异/保留信息未改。
+- 未改 GamePicker、ViewModel、Worker、IPC、DataGrid 列/虚拟化/稳定滚动策略；无 REMOVE。
+- render-qa 实测：1040×700 历史表高度 385 DIP（原 236）、候选表 254 DIP（原 236）；1280×720 历史 405 DIP、候选 274 DIP；Inspector 收起时主表内部滚动保持 Auto + Item ScrollUnit。
+- 新增 1 条回归测试：窄窗默认收起 Inspector、详情按钮可打开/收起；Gate：Release 0 警告/0 错误，Core `59/59`、Worker `190/190`、Playnite `242/242`，source/XAML/WPF/render-qa 全绿。
+
 ## 2026-08-14 UI-REFACTOR-V1 Phase 2 首页 Overview
 
 - 六项 Snapshot 指标由 3×2 等权大卡改为响应式紧凑 Summary Strip：宽工作区 6 列、中等 3 列、窄 2 列；卡内 Padding/圆角/数字字号收紧，六个真实计数、比例条与说明全部保留。

@@ -1381,6 +1381,68 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void SaveCenterCompactInspectorsDefaultToDetailsButtonAndToggleOpen()
+    {
+        Exception? exception = null;
+        var historyInspectorCollapsed = false;
+        var candidateInspectorCollapsed = false;
+        var historyButtonVisible = false;
+        var candidateButtonVisible = false;
+        var historyOpened = false;
+        var candidateOpened = false;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var view = new SaveCenterView();
+                var viewType = typeof(SaveCenterView);
+                var historyGrid = (DataGrid)viewType.GetField("SaveHistoryGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var candidateGrid = (DataGrid)viewType.GetField("SaveCandidateGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var historyInspector = (ScrollViewer)viewType.GetField("SaveHistoryActionsScrollViewer", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var candidateInspector = (ScrollViewer)viewType.GetField("SaveCandidateInspectorScrollViewer", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var historyButton = (GameSaveCenter.Playnite.Controls.Button)viewType.GetField("SaveHistoryCompactDetailsButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var candidateButton = (GameSaveCenter.Playnite.Controls.Button)viewType.GetField("SaveCandidateCompactDetailsButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+
+                var selected = new object();
+                historyGrid.ItemsSource = new[] { selected };
+                historyGrid.SelectedItem = selected;
+                candidateGrid.ItemsSource = new[] { selected };
+                candidateGrid.SelectedItem = selected;
+
+                view.ApplyResponsiveLayout(1024, 640);
+                historyInspectorCollapsed = historyInspector.Visibility == Visibility.Collapsed;
+                candidateInspectorCollapsed = candidateInspector.Visibility == Visibility.Collapsed;
+                historyButtonVisible = historyButton.Visibility == Visibility.Visible;
+                candidateButtonVisible = candidateButton.Visibility == Visibility.Visible;
+
+                viewType.GetMethod("OnSaveHistoryCompactDetailsClick", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .Invoke(view, new object[] { historyButton, new RoutedEventArgs() });
+                viewType.GetMethod("OnSaveCandidateCompactDetailsClick", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .Invoke(view, new object[] { candidateButton, new RoutedEventArgs() });
+                historyOpened = historyInspector.Visibility == Visibility.Visible && ((string)historyButton.Content).Contains("收起");
+                candidateOpened = candidateInspector.Visibility == Visibility.Visible && ((string)candidateButton.Content).Contains("收起");
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.True(historyInspectorCollapsed);
+        Assert.True(candidateInspectorCollapsed);
+        Assert.True(historyButtonVisible);
+        Assert.True(candidateButtonVisible);
+        Assert.True(historyOpened);
+        Assert.True(candidateOpened);
+    }
+
+    [Fact]
     public void SaveCenterReleasesEmptyHistoryAndCandidateInspectors()
     {
         Exception? exception = null;
