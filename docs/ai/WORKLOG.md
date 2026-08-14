@@ -2,6 +2,15 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 UI-REFACTOR-V1 Phase 2 首页 Overview
+
+- 六项 Snapshot 指标由 3×2 等权大卡改为响应式紧凑 Summary Strip：宽工作区 6 列、中等 3 列、窄 2 列；卡内 Padding/圆角/数字字号收紧，六个真实计数、比例条与说明全部保留。
+- 最近 30 天保护明细放入共享 `GscExpander`（默认折叠），汇总、未识别/需处理胶囊、查看与启用所选保护命令保持常驻；`RecentProtection.Items` 与选择语义不变。
+- 全局活动时间线从 3 列 Auto 挤压改为稳定 4 列：图标 / 内容（MinWidth 220）/ 分类 / 结果 / 时间分离；`KindDisplay / ResultDisplay / CreatedDisplay` 全部保留。
+- 未改 Dashboard GamePicker、首页“今日工作台 / TODAY / 当前游戏”结构、任何 ViewModel/命令/Binding、DataGrid/ListBox 虚拟化策略；无 REMOVE。
+- 新增 3 条回归测试：摘要条响应式列数、保护明细可折叠且项不丢失、全局活动稳定四列。
+- Gate：隔离 Release 构建 0 警告/0 错误；Core `59/59`、Worker `190/190`、Playnite `241/241`；`validate-source.py`、WPF UI validator 0 errors、五种窗口 `render-qa OK`；`git diff --check` 通过。
+
 ## 2026-08-14 UI-REFACTOR-V1 Phase 1 共享布局基础
 
 - 在 `Themes/Redesign.xaml` 新增共享基础件：`GscInternalTabControl` / `GscInternalTabItem`（内部二级 Tab，供保留策略、异常审计、比较保留使用）、`GscToolbarActionRow`（工具栏动作行）、`GscToolbarOverflowButton`（溢出/更多按钮）。

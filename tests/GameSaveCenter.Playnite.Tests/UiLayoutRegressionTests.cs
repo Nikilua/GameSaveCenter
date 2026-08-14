@@ -151,6 +151,58 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         [Fact]
+        public void OverviewStatStripUsesResponsiveCompactSummaryColumns()
+        {
+            var root = FindRepositoryRoot();
+            var overview = XDocument.Parse(File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml")));
+            var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
+            var strip = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewStatStrip");
+            var code = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml.cs"));
+
+            Assert.Equal("6", strip.Attribute("Columns")?.Value);
+            Assert.Equal(6, strip.Elements().Count(element => element.Name.LocalName == "Border"));
+            Assert.Contains("OverviewStatStrip.Columns = primaryWidth >= 1100 ? 6 : primaryWidth >= 620 ? 3 : 2", code);
+        }
+
+        [Fact]
+        public void OverviewRecentProtectionDetailsAreCollapsibleWithoutLosingItems()
+        {
+            var root = FindRepositoryRoot();
+            var overview = XDocument.Parse(File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml")));
+            var expander = overview.Descendants().Single(element => element.Name.LocalName == "Expander"
+                && element.Attribute("Header")?.Value == "展开最近游戏保护明细");
+
+            Assert.NotNull(expander.Descendants().SingleOrDefault(element => element.Name.LocalName == "ItemsControl"
+                && element.Attribute("ItemsSource")?.Value == "{Binding RecentProtection.Items}"));
+            Assert.NotNull(expander.Descendants().SingleOrDefault(element => element.Name.LocalName == "TextBlock"
+                && (element.Attribute("Text")?.Value ?? "").Contains("选择游戏不会自动执行备份或恢复")));
+        }
+
+        [Fact]
+        public void OverviewGlobalActivityUsesStableFourColumnRow()
+        {
+            var root = FindRepositoryRoot();
+            var overview = XDocument.Parse(File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml")));
+            var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
+            var timeline = overview.Descendants().Single(element => element.Name.LocalName == "ItemsControl"
+                && element.Attribute(xamlName)?.Value == "OverviewActivityTimelineList");
+            var template = timeline.Descendants().Single(element => element.Name.LocalName == "DataTemplate");
+            var grid = template.Elements().Single(element => element.Name.LocalName == "Grid");
+            var widths = grid.Elements().Single(element => element.Name.LocalName == "Grid.ColumnDefinitions")
+                .Elements().Select(element => element.Attribute("Width")?.Value).ToArray();
+
+            Assert.Equal(new[] { "38", "*", "110", "92" }, widths);
+            Assert.Equal("220", grid.Elements().Single(element => element.Name.LocalName == "Grid.ColumnDefinitions")
+                .Elements().ElementAt(1).Attribute("MinWidth")?.Value);
+            Assert.Contains(template.Descendants(), element => element.Name.LocalName == "TextBlock"
+                && element.Attribute("Text")?.Value == "{Binding KindDisplay, Mode=OneWay}");
+            Assert.Contains(template.Descendants(), element => element.Name.LocalName == "TextBlock"
+                && element.Attribute("Text")?.Value == "{Binding ResultDisplay, Mode=OneWay}");
+            Assert.Contains(template.Descendants(), element => element.Name.LocalName == "TextBlock"
+                && element.Attribute("Text")?.Value == "{Binding CreatedDisplay, Mode=OneWay}");
+        }
+
+        [Fact]
         public void LaunchDelayEditorExplainsItsUnitAndUsesCompactHeight()
         {
             var root = FindRepositoryRoot();
