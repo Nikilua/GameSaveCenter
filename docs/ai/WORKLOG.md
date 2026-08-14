@@ -10,6 +10,7 @@
 - 图四：Save 当前存档规则状态合并为一行 badge，按 `SelectedGame.HealthState` 着色（风险=橙、正常=绿、待确认/中性=灰蓝、运行=蓝），三按钮统一 38/100 DIP 紧凑几何；卡片 padding 收敛为 12/10。
 - 图五：Maintenance Diagnostics 环境卡压缩为摘要行，首次环境检查与低频维护进入 `GscDisclosureCard`；FindingsGrid 五列收敛为 72/120/160/*180/140，1040×700 下五列表头完整且首屏可见。
 - 补强：Media 来源表单、Save 策略模板、Task 更多筛选也统一到 `GscDisclosureCard`，`GscExpander` 不再被页面引用；Maintenance 两个主 Disclosure 内容改为内部有限滚动（`EnvironmentCheckDisclosureScroller` / `MaintenanceActionsDisclosureScroller`），展开后不会挤压 FindingsGrid。
+- 按钮对齐探针：render-qa 新增 Overview/Save 三按钮 Y 坐标与高度差检查；探针抓到 1536×864 下“查看需关注项”换行，已将 Hero/当前游戏列从 1.1:0.9 调整为 1:1，10 档尺寸全部同排同高。
 - 功能保真：REMOVE=0；`DetectPathsCommand/ValidateCommand/LoadDetailsCommand`、全部诊断/维护命令、FindingsGrid 5 列与 EnvironmentCheckItems 均保留；GamePicker HARD LOCK 未改。
 - 验证：Release 构建 0 warning/0 error；Core `59/59`、Worker `190/190`、Playnite `253/253`；`check-xaml.ps1`、`validate-source.py`、WPF 静态审查（0 error）通过；render-qa 10 档 + 56 主题场景 + 7 Resize 全绿；UI Audit 0 HIGH / 0 MEDIUM / 33 INFO / 0 失败路由。
 - 截图证据：`artifacts/ui-qa/v3-shots/`（10 张标准/窄窗/展开态）、`artifacts/ui-qa/v3-final/`；Audit 汇总：`artifacts/ui-audit/v3-final/AUDIT_SUMMARY.md`。截图命令：`scripts/capture-v3-shots.ps1`。

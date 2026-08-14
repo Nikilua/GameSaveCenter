@@ -99,6 +99,7 @@
 - 图一~图五均已实施并关闭：Overview 三按钮同排同几何、保护动作/统计/折叠三层分离、活动轻量表四列；Save 状态一行 Badge 与三按钮对齐；Maintenance 环境摘要卡 + `GscDisclosureCard` + FindingsGrid 五列收敛。
 - `GscDisclosureCard` 已在 `DesignTokens.xaml` 统一；旧 `GscDisclosureCardExpander` 保留为别名，不再用于页面；Media/Save/Task 的旧 `GscExpander` 引用也已替换，页面不再引用旧样式。
 - Maintenance 两个主 Disclosure（首次环境检查 / 更多维护操作）内容使用内部有限滚动，展开后滚动条出现在折叠卡内部，FindingsGrid 首屏和主表视口不被挤掉。
+- render-qa 新增三按钮对齐探针；为修复 1536×864 下“查看需关注项”换行，Overview Hero/当前游戏列改为 1:1，10 档尺寸均同排同高。
 - 功能保真：REMOVE=0；`DetectPathsCommand`、`ValidateCommand`、`LoadDetailsCommand`、FindingsGrid 5 列、EnvironmentCheckItems 与全部维护命令保留；GamePicker HARD LOCK 未改。
 - 验证：Release 0 warning/0 error；Core `59/59`、Worker `190/190`、Playnite `253/253`；`check-xaml.ps1`、`validate-source.py`、WPF 静态审查（0 error）通过；render-qa 10 档 + 56 主题 + 7 Resize 全绿；UI Audit 0 HIGH/0 MEDIUM/33 INFO/0 失败路由。
 - 截图与证据：`artifacts/ui-qa/v3-shots/`（10 张，脚本 `scripts/capture-v3-shots.ps1`）、`artifacts/ui-qa/v3-final/`；`artifacts/ui-audit/v3-final/AUDIT_SUMMARY.md`。
