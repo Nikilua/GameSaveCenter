@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 UI-VISUAL-REWORK-V3 计划
+
+- 用户提供 `GameSaveCenter_UI_Design_and_Prompt_Pack_v3.zip`，要求按 5 张截图定向重构，不继续泛化优化。
+- 已生成 `docs/ai/UI_VISUAL_REWORK_PLAN_V3.md`：逐图列出问题、受影响 x:Name、当前结构、拟改结构、KEEP/MOVE/RESTYLE、保留 Binding、预期标准/窄窗样式与验收方法。
+- 按 v3 要求先提交计划，随后按 图一 → 图二/Disclosure → 图三 → 图四 → 图五 → 颜色/Audit → 文档 的顺序实施。
+
 ## 2026-08-14 UI-VISUAL-CORRECTION-V2 真实宿主 reload 验证
 
 - `scripts/dev-install-run.ps1 -Configuration Release` 一键构建安装成功并启动 Playnite：Release 0 warning / 0 error，Core `59/59`、Worker `190/190`、Playnite `250/250`。
