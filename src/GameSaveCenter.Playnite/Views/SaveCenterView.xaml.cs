@@ -43,6 +43,24 @@ namespace GameSaveCenter.Playnite.Views
                 SaveHistoryGrid.MinHeight = tableMinHeight;
                 SaveCandidateGrid.MinHeight = tableMinHeight;
                 var compact = height < 760 || width < 1080;
+                if (SaveCurrentRuleActions != null)
+                {
+                    SaveCurrentRuleActionsRow.Height = compact
+                        ? GridLength.Auto
+                        : new GridLength(0);
+                    SaveCurrentRuleActionsColumn.Width = compact
+                        ? new GridLength(0)
+                        : GridLength.Auto;
+                    Grid.SetRow(SaveCurrentRuleActions, compact ? 1 : 0);
+                    Grid.SetColumn(SaveCurrentRuleActions, compact ? 0 : 3);
+                    Grid.SetColumnSpan(SaveCurrentRuleActions, compact ? 4 : 1);
+                    SaveCurrentRuleActions.Margin = compact
+                        ? new Thickness(0, 12, 0, 0)
+                        : new Thickness(14, 0, 0, 0);
+                    SaveCurrentRuleActions.HorizontalAlignment = compact
+                        ? HorizontalAlignment.Stretch
+                        : HorizontalAlignment.Right;
+                }
                 var inspectorWidth = SaveHistoryLayout.TryFindResource("GscInspectorWidth") is GridLength gl ? gl : new GridLength(360);
 
                 // On compact hosts the selected-version inspector is a drawer, not a
