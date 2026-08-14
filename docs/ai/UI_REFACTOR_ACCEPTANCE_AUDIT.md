@@ -6,7 +6,7 @@
 
 ## 1. 结论摘要
 
-- 自动化验收：功能保真、GamePicker 锁定、窗口/DPI 等效尺寸、滚动契约、表格视口、Light/Dark 主题渲染、Resize 恢复、测试与审计门禁均通过。
+- 自动化验收：功能保真、GamePicker 锁定、窗口/DPI 等效尺寸、滚动契约、表格视口、Light/Dark 主题渲染、Resize 恢复、测试与审计门禁、真实宿主 reload 与无新 crash log 均通过。
 - 人工验收：真实 Playnite 宿主内的主题切换、100%–200% DPI、最大化/窗口化连续拖拽缩放，以及真实游戏库数据量下的滚动体验仍未在用户环境完成，不能声称已验收。
 - 本轮没有 `REMOVE`；生产命令、Binding、ViewModel 业务语义、Worker/IPC、Ludusavi/Rclone/备份恢复安全机制和既有虚拟化策略未改。
 
@@ -81,7 +81,8 @@
 - `AUTO VERIFIED`：Release 构建 0 warning / 0 error；`scripts/validate-source.py`、WPF UI validator、`scripts/render-qa.ps1` 全部通过。
 - `AUTO VERIFIED`：UI Audit before/after：HIGH 10→0、MEDIUM 4→0、运行时警告 62→39、失败路由 0。
 - `AUTO VERIFIED`：工作树干净，`origin/main` 已推送。
-- `MANUAL QA REQUIRED`：真实 Playnite reload 后的视觉与 crash log 检查需在用户环境执行。
+- `AUTO VERIFIED`：真实宿主 reload 已完成；`playnite.log` 记录 `Loaded plugin: GameSaveCenter, version 0.6.70`，扩展日志记录 `0.6.70.0 loaded`，Worker 从当前扩展目录运行，`18:10` 后无 ERROR/Exception/crash。
+- `MANUAL QA REQUIRED`：真实宿主内的主题视觉、DPI 与连续缩放仍由用户人工验收。
 
 ## 12. 最终报告字段
 
@@ -98,8 +99,7 @@
 
 ## 13. 未完成项
 
-- 真实 Playnite 宿主 Light/Dark/Follow/高对比度。
+- 真实 Playnite 宿主 Light/Dark/Follow/高对比度的视觉验收。
 - 真实 DPI 100%–200% 与连续拖拽缩放。
 - 最大化/窗口化切换后的真实视觉验收。
 - 真实游戏库数据量下的大列表滚动流畅性。
-- 真实 Playnite reload 后无新 crash log 的人工确认。

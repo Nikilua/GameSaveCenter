@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 UI-REFACTOR-V1 真实宿主 reload 验证
+
+- `scripts/dev-install-run.ps1 -Configuration Release` 一键构建安装成功：Release 0 warning / 0 error，Core `59/59`、Worker `190/190`、Playnite `250/250`，扩展安装到 `C:\Users\lopmatu\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec` 并启动 Playnite。
+- 真实宿主证据：`playnite.log` `18:15:48` 记录 `Loaded plugin: GameSaveCenter, version 0.6.70`；`extensions.log` `18:15:50` 记录 `GameSaveCenter 0.6.70.0 loaded`；Worker PID `11056` 从当前扩展目录运行；`18:10` 后 `playnite.log` 与 `extensions.log` 无 ERROR/Exception/crash。
+- 真实 Playnite 主题视觉、DPI 与连续缩放仍为 `MANUAL QA REQUIRED`。
+
 ## 2026-08-14 UI-REFACTOR-V1 验收审计文档
 
 - 新增 `docs/ai/UI_REFACTOR_ACCEPTANCE_AUDIT.md`，把实施包 `06_ACCEPTANCE_CHECKLIST.md` 逐项映射到仓库证据，并区分 `AUTO VERIFIED` 与 `MANUAL QA REQUIRED`。
