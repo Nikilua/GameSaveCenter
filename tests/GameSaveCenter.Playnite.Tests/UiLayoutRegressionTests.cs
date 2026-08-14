@@ -160,7 +160,8 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("Text=\"全局活动\"", overview);
             Assert.Contains("{Binding KindDisplay, Mode=OneWay}", overview);
             Assert.Contains("{Binding ResultDisplay, Mode=OneWay}", overview);
-            Assert.Contains("MaxHeight=\"240\"", overview);
+            Assert.DoesNotContain("MaxHeight=\"240\"", overview);
+            Assert.Contains("ScrollViewer.VerticalScrollBarVisibility=\"Disabled\"", overview);
         }
 
         [Fact]
@@ -205,7 +206,7 @@ namespace GameSaveCenter.Playnite.Tests
                 .Elements().Select(element => element.Attribute("Width")?.Value).ToArray();
 
             Assert.Equal(new[] { "38", "*", "110", "92" }, widths);
-            Assert.Equal("220", grid.Elements().Single(element => element.Name.LocalName == "Grid.ColumnDefinitions")
+            Assert.Equal("120", grid.Elements().Single(element => element.Name.LocalName == "Grid.ColumnDefinitions")
                 .Elements().ElementAt(1).Attribute("MinWidth")?.Value);
             Assert.Contains(template.Descendants(), element => element.Name.LocalName == "TextBlock"
                 && element.Attribute("Text")?.Value == "{Binding KindDisplay, Mode=OneWay}");

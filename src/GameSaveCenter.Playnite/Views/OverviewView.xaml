@@ -53,7 +53,7 @@
 
     <ScrollViewer x:Name="OverviewStackScrollSurface"
                   Style="{DynamicResource GscPageScrollViewer}"
-                  VerticalScrollBarVisibility="Disabled"
+                  VerticalScrollBarVisibility="Auto"
                   HorizontalScrollBarVisibility="Disabled"
                   CanContentScroll="False"
                   Focusable="False">
@@ -78,9 +78,10 @@
                           Grid.Row="0"
                           Grid.RowSpan="2"
                           Style="{DynamicResource GscPageScrollViewer}"
-                          VerticalScrollBarVisibility="Auto"
+                          VerticalScrollBarVisibility="Disabled"
                           HorizontalScrollBarVisibility="Disabled"
                           CanContentScroll="False"
+                          VerticalContentAlignment="Top"
                           Focusable="False">
             <Grid x:Name="OverviewPrimaryFlow" VerticalAlignment="Top">
             <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
@@ -243,7 +244,7 @@
                                  existing SelectedTask cross-page detail linkage is intact.
                                  The shared ListBox contract keeps local scrolling and
                                  Recycling virtualization on the capped 8-row list. -->
-                            <ListBox x:Name="OverviewActivityList" ItemsSource="{Binding OverviewTasks}" SelectedItem="{Binding SelectedTask}" HorizontalContentAlignment="Stretch" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" ScrollViewer.CanContentScroll="True">
+                            <ListBox x:Name="OverviewActivityList" ItemsSource="{Binding OverviewTasks}" SelectedItem="{Binding SelectedTask}" HorizontalContentAlignment="Stretch" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <Grid Margin="0,2,0,2">
@@ -303,7 +304,7 @@
                     </Grid>
                     <Border Grid.Row="1" Style="{StaticResource OverviewTableFrame}">
                         <Grid>
-                            <ItemsControl x:Name="OverviewActivityTimelineList" ItemsSource="{Binding Activities}" MaxHeight="240" HorizontalContentAlignment="Stretch" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" ScrollViewer.CanContentScroll="True">
+                            <ItemsControl x:Name="OverviewActivityTimelineList" ItemsSource="{Binding Activities}" HorizontalContentAlignment="Stretch" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <VirtualizingStackPanel/>
@@ -312,21 +313,36 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <Grid Margin="0,2,0,2">
-                                            <Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*" MinWidth="220"/><ColumnDefinition Width="110"/><ColumnDefinition Width="92"/></Grid.ColumnDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="38"/>
+                                                <ColumnDefinition x:Name="ActivityMainColumn" Width="*" MinWidth="120"/>
+                                                <ColumnDefinition x:Name="ActivityMetaColumn" Width="110"/>
+                                                <ColumnDefinition x:Name="ActivityTimeColumn" Width="92"/>
+                                            </Grid.ColumnDefinitions>
                                             <Border x:Name="ActivityKindPill" Width="34" Height="34" CornerRadius="10" Background="{DynamicResource GscInfoIconFillBrush}" HorizontalAlignment="Left" VerticalAlignment="Top">
                                                 <TextBlock x:Name="ActivityGlyph" FontFamily="Segoe MDL2 Assets" Text="{Binding Glyph}" FontSize="14" Foreground="{DynamicResource GscInfoBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                             </Border>
                                             <StackPanel Grid.Column="1" Margin="0,0,12,0" VerticalAlignment="Center" MinWidth="0">
                                                 <TextBlock Text="{Binding GameName, Mode=OneWay, TargetNullValue=全局}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/>
                                                 <TextBlock FontSize="11" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding Summary}" Text="{Binding Summary, Mode=OneWay}"/>
+                                                <StackPanel x:Name="ActivityMetaCompact" Orientation="Horizontal" Margin="0,3,0,0" Visibility="Collapsed">
+                                                    <Border Style="{DynamicResource GscRedesignContextPill}" Margin="0,0,6,0" Padding="6,1"><TextBlock Text="{Binding KindDisplay, Mode=OneWay}" FontSize="10" TextTrimming="CharacterEllipsis" ToolTip="{Binding KindDisplay, Mode=OneWay}"/></Border>
+                                                    <Border Style="{DynamicResource GscRedesignContextPill}" Padding="6,1"><TextBlock Text="{Binding ResultDisplay, Mode=OneWay}" FontSize="10" TextTrimming="CharacterEllipsis" ToolTip="{Binding ResultDisplay, Mode=OneWay}"/></Border>
+                                                </StackPanel>
                                             </StackPanel>
-                                            <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                            <StackPanel x:Name="ActivityMetaWide" Grid.Column="2" VerticalAlignment="Center">
                                                 <TextBlock Text="{Binding KindDisplay, Mode=OneWay}" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource GscPrimaryTextBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding KindDisplay, Mode=OneWay}"/>
-                                                <TextBlock Text="{Binding ResultDisplay, Mode=OneWay}" FontSize="11" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,3,0,0"/>
+                                                <TextBlock Text="{Binding ResultDisplay, Mode=OneWay}" FontSize="11" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding ResultDisplay, Mode=OneWay}"/>
                                             </StackPanel>
                                             <TextBlock Grid.Column="3" Text="{Binding CreatedDisplay, Mode=OneWay}" FontSize="11" Foreground="{DynamicResource GscSecondaryTextBrush}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                                         </Grid>
                                         <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="Compact">
+                                                <Setter TargetName="ActivityMetaColumn" Property="Width" Value="0"/>
+                                                <Setter TargetName="ActivityMetaWide" Property="Visibility" Value="Collapsed"/>
+                                                <Setter TargetName="ActivityMetaCompact" Property="Visibility" Value="Visible"/>
+                                                <Setter TargetName="ActivityTimeColumn" Property="Width" Value="96"/>
+                                            </DataTrigger>
                                             <DataTrigger Binding="{Binding Result}" Value="Failed">
                                                 <Setter TargetName="ActivityKindPill" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/>
                                                 <Setter TargetName="ActivityGlyph" Property="Foreground" Value="{DynamicResource GscErrorBrush}"/>
@@ -370,7 +386,7 @@
                       HorizontalContentAlignment="Stretch"
                       VerticalAlignment="Top"
                       VerticalContentAlignment="Top"
-                      VerticalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Disabled"
                       HorizontalScrollBarVisibility="Disabled"
                       CanContentScroll="False"
                       MinHeight="0">
@@ -402,12 +418,11 @@
                 </StackPanel>
             </Border>
 
-            <Border Grid.Row="1" Style="{DynamicResource GscRedesignSectionCard}" Margin="0,14,0,0">
+            <Border x:Name="OverviewRiskCard" Grid.Row="1" Style="{DynamicResource GscRedesignSectionCard}" Margin="0,14,0,0" VerticalAlignment="Top">
                 <Grid>
-                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                     <TextBlock Style="{DynamicResource GscRedesignSectionTitle}" Text="风险与提醒"/>
-                    <ScrollViewer x:Name="OverviewRiskScrollViewer" Style="{DynamicResource GscPageScrollViewer}" Grid.Row="1" Margin="0,12,0,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" CanContentScroll="True">
-                        <StackPanel>
+                    <StackPanel x:Name="OverviewRiskScrollViewer" Grid.Row="1" Margin="0,12,0,0">
                         <Border Background="{DynamicResource GscSafetyFillBrush}" BorderBrush="{DynamicResource GscSafetyStrokeBrush}" BorderThickness="1" CornerRadius="14" Padding="12" Margin="0,0,0,10">
                             <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="28"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE946;" Foreground="{DynamicResource GscWarningBrush}" FontSize="17"/><StackPanel Grid.Column="1"><TextBlock Text="安全恢复提示" FontWeight="SemiBold"/><TextBlock Text="恢复始终需要人工确认，并会先创建当前快照。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,4,0,0"/></StackPanel></Grid>
                         </Border>
@@ -431,7 +446,7 @@
                                         <Border Style="{DynamicResource GscRedesignContextPill}" Margin="0,0,6,6"><TextBlock><Run Text="未识别存档 "/><Run Text="{Binding RecentProtection.UnrecognizedSaveGames, Mode=OneWay}"/></TextBlock></Border>
                                         <Border Style="{DynamicResource GscRedesignContextPill}" Margin="0,0,6,6"><TextBlock><Run Text="需要处理 "/><Run Text="{Binding RecentProtection.AttentionGames, Mode=OneWay}"/></TextBlock></Border>
                                     </WrapPanel>
-                                    <Expander Style="{StaticResource GscExpander}" Header="展开最近游戏保护明细" Margin="0,8,0,0">
+                                    <Expander Style="{StaticResource GscDisclosureCardExpander}" Header="展开最近游戏保护明细" Margin="0,8,0,0">
                                         <StackPanel Margin="0,4,0,0">
                                             <ItemsControl ItemsSource="{Binding RecentProtection.Items}" Margin="0,0,0,6">
                                                 <ItemsControl.ItemTemplate>
@@ -461,8 +476,7 @@
                             <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="28"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE753;" Foreground="{DynamicResource GscInfoBrush}" FontSize="17"/><StackPanel Grid.Column="1"><TextBlock Text="云端失败不会撤销本地备份" FontWeight="SemiBold"/><TextBlock Text="本地副本始终为主副本，失败任务可在任务中心诊断和重试。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,4,0,0"/></StackPanel></Grid>
                         </Border>
                         </StackPanel>
-                    </ScrollViewer>
-                    <ui:Button Grid.Row="2" Style="{DynamicResource GscWpfUiPrimaryButton}" AutomationProperties.Name="打开维护中心查看完整关注详情" Command="{Binding OpenAttentionCenterCommand}" Content="打开维护中心" HorizontalAlignment="Stretch" Margin="0,10,0,0"/>
+                    <ui:Button Grid.Row="2" Style="{DynamicResource GscWpfUiPrimaryButton}" AutomationProperties.Name="打开维护中心查看完整关注详情" Command="{Binding OpenAttentionCenterCommand}" Content="打开维护中心" HorizontalAlignment="Right" MinWidth="140" Margin="0,12,0,0"/>
                 </Grid>
             </Border>
         </Grid>

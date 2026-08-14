@@ -72,7 +72,7 @@ namespace GameSaveCenter.Playnite.Views
         public UIElement OverviewPrimaryPanelElement => OverviewPrimaryPanel;
         public UIElement OverviewSecondaryPanelElement => OverviewSecondaryPanel;
         public ScrollViewer OverviewSecondaryScrollViewerElement => OverviewSecondaryScrollViewer;
-        public ScrollViewer OverviewRiskScrollViewerElement => OverviewRiskScrollViewer;
+        public Panel OverviewRiskScrollViewerElement => OverviewRiskScrollViewer;
         public Panel OverviewMetricPanelElement => OverviewMetricPanel;
 
         public void ApplyResponsiveColumns(bool stack)
@@ -145,6 +145,11 @@ namespace GameSaveCenter.Playnite.Views
                 OverviewStatStrip.Columns = primaryWidth >= 1100 ? 6 : primaryWidth >= 620 ? 3 : 2;
             }
 
+            if (OverviewActivityTimelineList != null)
+            {
+                OverviewActivityTimelineList.Tag = primaryWidth < 900 ? "Compact" : "Wide";
+            }
+
             // HomeView places TODAY and the selected-game context in a two-column row.
             // Keep that relationship whenever the primary workspace can support it; when
             // the real secondary risk column leaves less than 760 DIP, stack the two cards
@@ -184,39 +189,12 @@ namespace GameSaveCenter.Playnite.Views
 
         public void ApplyResponsiveHeight(double height, bool stack)
         {
-            // On a stacked compact layout the page itself owns the single vertical scroll
-            // channel. This keeps the primary workbench from collapsing to zero when the
-            // secondary column's summary/risk card is taller than the remaining viewport.
-            // Wide layouts retain independent finite columns so the summary stays anchored.
-            OverviewStackScrollSurface.VerticalScrollBarVisibility = stack
-                ? ScrollBarVisibility.Auto
-                : ScrollBarVisibility.Disabled;
-            OverviewPrimaryScrollSurface.VerticalScrollBarVisibility = stack
-                ? ScrollBarVisibility.Disabled
-                : ScrollBarVisibility.Auto;
-            OverviewActivityList.MaxHeight = Math.Max(180, Math.Min(320, height * 0.42));
-
-            // Keep exactly one vertical scroll owner for the secondary column at each
-            // breakpoint. On a wide layout the risk card owns its finite viewport so the
-            // summary remains anchored. Once the secondary column stacks below the main
-            // workspace, the whole right column owns the scroll channel; the risk card
-            // then expands naturally and does not compete with its parent for the wheel.
-            // The wide right column still needs a finite escape hatch: the summary,
-            // findings and “打开维护中心” action may exceed a short window. Leaving
-            // this viewer unbounded while disabling its scrollbar clips the last action
-            // at common 1080p/2K logical heights.
-            OverviewSecondaryScrollViewer.MaxHeight = stack
-                ? double.PositiveInfinity
-                : Math.Max(300, Math.Min(760, Math.Max(300, height - 24)));
-            OverviewSecondaryScrollViewer.VerticalScrollBarVisibility = stack
-                ? ScrollBarVisibility.Disabled
-                : ScrollBarVisibility.Auto;
-            OverviewRiskScrollViewer.MaxHeight = stack
-                ? double.PositiveInfinity
-                : Math.Max(180, Math.Min(360, height * 0.42));
-            OverviewRiskScrollViewer.VerticalScrollBarVisibility = stack
-                ? ScrollBarVisibility.Disabled
-                : ScrollBarVisibility.Auto;
+            // Visual Correction v2: the root page scroll surface is the only vertical
+            // scroll owner in every layout. Primary/secondary columns and the risk card
+            // grow naturally; none of them may create a competing wheel context.
+            OverviewStackScrollSurface.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            OverviewPrimaryScrollSurface.VerticalScrollBarVisibility = ScrollBarVisibility.Disabled;
+            OverviewSecondaryScrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Disabled;
         }
     }
 }

@@ -121,7 +121,7 @@
                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding ExportMaintenanceReportCommand}" Content="导出健康报告" Margin="0,0,8,8" ToolTip="导出为 TXT 或 Markdown 用户可读健康报告"/>
                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RunIntegrityCheckCommand}" Content="完整性自检" Margin="0,0,0,8"/>
                             </WrapPanel>
-                            <Expander Grid.Row="2" Grid.ColumnSpan="2" Style="{StaticResource GscExpander}" Header="目录与日志" Margin="0,14,0,0">
+                            <Expander Grid.Row="2" Grid.ColumnSpan="2" Style="{StaticResource GscDisclosureCardExpander}" Header="目录与日志" Margin="0,14,0,0">
                                 <WrapPanel Margin="0,8,0,0">
                                     <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenDataDirectoryCommand}" Content="打开数据目录" Margin="0,0,8,8"/>
                                     <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenBackupDirectoryCommand}" Content="打开存档目录" Margin="0,0,8,8"/>
@@ -129,13 +129,13 @@
                                     <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenWorkerLogCommand}" Content="Worker 日志" Margin="0,0,0,8"/>
                                 </WrapPanel>
                             </Expander>
-                            <Expander Grid.Row="3" Grid.ColumnSpan="2" Style="{StaticResource GscExpander}" Header="完整性、自愈与安全模式" Margin="0,10,0,0">
+                            <Expander Grid.Row="3" Grid.ColumnSpan="2" Style="{StaticResource GscDisclosureCardExpander}" Header="完整性、自愈与安全模式" Margin="0,10,0,0">
                                 <WrapPanel Margin="0,8,0,0">
                                     <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RebuildRepositoryCommand}" Content="重建备份索引" Margin="0,0,8,8" ToolTip="按 Ludusavi 磁盘实际备份列表重建 SQLite 索引"/>
                                     <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding ReconcileTasksCommand}" Content="协调中断任务" Margin="0,0,0,8" ToolTip="把 Worker 重启后遗留的排队/运行中任务标记为 WORKER_RESTARTED"/>
                                 </WrapPanel>
                             </Expander>
-                            <Expander Grid.Row="4" Grid.ColumnSpan="2" Style="{StaticResource GscExpander}" Header="元数据灾备" Margin="0,10,0,0">
+                            <Expander Grid.Row="4" Grid.ColumnSpan="2" Style="{StaticResource GscDisclosureCardExpander}" Header="元数据灾备" Margin="0,10,0,0">
                                 <WrapPanel Margin="0,8,0,0">
                                     <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CreateMetadataBackupCommand}" Content="导出元数据灾备" Margin="0,0,8,8" ToolTip="生成 SQLite 快照、Worker 设置和版本清单，不包含存档/媒体/凭据"/>
                                     <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RestoreMetadataBackupCommand}" Content="恢复元数据灾备" Margin="0,0,0,8" ToolTip="预览并恢复 SQLite 快照与 Worker 设置，保留恢复前副本"/>
