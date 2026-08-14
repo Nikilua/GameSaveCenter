@@ -161,8 +161,8 @@ namespace GameSaveCenter.Playnite.Views
                     ? GridLength.Auto
                     : new GridLength(0);
                 OverviewHeroGameGutterColumn.Width = new GridLength(stackHeroAndGame ? 0 : 14);
-                OverviewHeroColumn.Width = new GridLength(1.1, GridUnitType.Star);
-                OverviewCurrentGameColumn.Width = new GridLength(0.9, GridUnitType.Star);
+                OverviewHeroColumn.Width = new GridLength(1.0, GridUnitType.Star);
+                OverviewCurrentGameColumn.Width = new GridLength(1.0, GridUnitType.Star);
 
                 Grid.SetRow(OverviewTodayHeroCard, 0);
                 Grid.SetColumn(OverviewTodayHeroCard, 0);
@@ -180,7 +180,7 @@ namespace GameSaveCenter.Playnite.Views
                 // vertical strip at maximized 2K logical widths.
                 var heroWidth = OverviewTodayHeroCard.ActualWidth > 0
                     ? OverviewTodayHeroCard.ActualWidth
-                    : Math.Max(320d, primaryWidth * (stackHeroAndGame ? 1d : 0.56d));
+                    : Math.Max(320d, primaryWidth * (stackHeroAndGame ? 1d : 0.5d));
                 OverviewTodayHeroCard.Padding = heroWidth < 560
                     ? new Thickness(16, 16, 16, 14)
                     : new Thickness(22, 18, 22, 16);

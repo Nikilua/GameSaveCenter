@@ -118,7 +118,7 @@
 
             <Grid x:Name="OverviewHeroAndGameRow" Grid.Row="1" Margin="0,0,0,14">
                 <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition x:Name="OverviewHeroGameCompactRow" Height="0"/></Grid.RowDefinitions>
-                <Grid.ColumnDefinitions><ColumnDefinition x:Name="OverviewHeroColumn" Width="1.1*"/><ColumnDefinition x:Name="OverviewHeroGameGutterColumn" Width="14"/><ColumnDefinition x:Name="OverviewCurrentGameColumn" Width="0.9*"/></Grid.ColumnDefinitions>
+                <Grid.ColumnDefinitions><ColumnDefinition x:Name="OverviewHeroColumn" Width="1*"/><ColumnDefinition x:Name="OverviewHeroGameGutterColumn" Width="14"/><ColumnDefinition x:Name="OverviewCurrentGameColumn" Width="1*"/></Grid.ColumnDefinitions>
                 <Border x:Name="OverviewTodayHeroCard" Grid.Row="0" Grid.Column="0" Style="{DynamicResource GscRedesignSectionCard}" MinHeight="205">
                     <Grid>
                         <Grid.RowDefinitions>

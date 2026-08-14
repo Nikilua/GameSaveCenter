@@ -2599,7 +2599,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Same(heroGameRow, currentGame.Parent);
         Assert.Equal("0", hero.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
         Assert.Equal("0", currentGame.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
-        Assert.Equal("0.9*", heroGameRow.Descendants().Single(element => element.Name.LocalName == "ColumnDefinition" && element.Attribute(xamlName)?.Value == "OverviewCurrentGameColumn").Attribute("Width")?.Value);
+        Assert.Equal("1*", heroGameRow.Descendants().Single(element => element.Name.LocalName == "ColumnDefinition" && element.Attribute(xamlName)?.Value == "OverviewCurrentGameColumn").Attribute("Width")?.Value);
         Assert.Equal("2", metrics.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
         var activityFrame = activity.Ancestors().First(element => element.Name.LocalName == "Border"
             && element.Attributes().Any(attribute => attribute.Name.LocalName == "Grid.Row")
@@ -2611,8 +2611,8 @@ public sealed class WpfUiResourceDictionaryTests
         var overviewCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml.cs"));
         Assert.Contains("var stackHeroAndGame = primaryWidth < 700", overviewCode);
         Assert.Contains("OverviewHeroGameCompactRow.Height", overviewCode);
-        Assert.Contains("OverviewHeroColumn.Width = new GridLength(1.1, GridUnitType.Star);", overviewCode);
-        Assert.Contains("OverviewCurrentGameColumn.Width = new GridLength(0.9, GridUnitType.Star);", overviewCode);
+        Assert.Contains("OverviewHeroColumn.Width = new GridLength(1.0, GridUnitType.Star);", overviewCode);
+        Assert.Contains("OverviewCurrentGameColumn.Width = new GridLength(1.0, GridUnitType.Star);", overviewCode);
         Assert.Contains("Grid.SetColumnSpan(OverviewCurrentGameCard, stackHeroAndGame ? 3 : 1)", overviewCode);
     }
 

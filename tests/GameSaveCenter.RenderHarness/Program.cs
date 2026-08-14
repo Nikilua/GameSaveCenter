@@ -668,6 +668,30 @@ public static class Program
             }
         }
 
+        if (label.StartsWith("Save tab1", StringComparison.OrdinalIgnoreCase))
+        {
+            var buttonNames = new[] { "SaveDetectPathsButton", "SaveValidateButton", "SaveLoadDetailsButton" };
+            var buttons = buttonNames
+                .Select(name => FindVisualChildren<FrameworkElement>(host)
+                    .FirstOrDefault(candidate => candidate.Name == name))
+                .Where(button => button != null)
+                .ToList();
+            if (buttons.Count == 3)
+            {
+                var yPositions = buttons
+                    .Select(button => button.TransformToAncestor(host).Transform(new Point(0, 0)).Y)
+                    .ToList();
+                var heights = buttons.Select(button => button.ActualHeight).ToList();
+                report.AppendLine(
+                    $"  {label} SaveCurrentRuleButtons: y={string.Join(",", yPositions.Select(value => value.ToString("0.##")))} heights={string.Join(",", heights.Select(value => value.ToString("0.##")))}");
+                if (yPositions.Max() - yPositions.Min() > 2 || heights.Max() - heights.Min() > 2)
+                {
+                    s_problems.Add(
+                        $"{label} Save current rule buttons are not aligned (y={string.Join(",", yPositions.Select(value => value.ToString("0.##")))}, heights={string.Join(",", heights.Select(value => value.ToString("0.##")))})");
+                }
+            }
+        }
+
         if (label.StartsWith("Overview", StringComparison.OrdinalIgnoreCase))
         {
             foreach (var elementName in new[]
@@ -712,6 +736,27 @@ public static class Program
                 report.AppendLine($"  {label} OverviewCurrentGameWidthRatio: {widthRatio:0.##}");
                 if (widthRatio < 0.8)
                     s_problems.Add($"{label} current-game card remains cramped (width ratio={widthRatio:0.##})");
+            }
+
+            if (currentGame != null)
+            {
+                var buttons = FindVisualChildren<Button>(currentGame)
+                    .Cast<FrameworkElement>()
+                    .ToList();
+                if (buttons.Count == 3)
+                {
+                    var yPositions = buttons
+                        .Select(button => button.TransformToAncestor(host).Transform(new Point(0, 0)).Y)
+                        .ToList();
+                    var heights = buttons.Select(button => button.ActualHeight).ToList();
+                    report.AppendLine(
+                        $"  {label} OverviewCurrentGameButtons: y={string.Join(",", yPositions.Select(value => value.ToString("0.##")))} heights={string.Join(",", heights.Select(value => value.ToString("0.##")))}");
+                    if (yPositions.Max() - yPositions.Min() > 2 || heights.Max() - heights.Min() > 2)
+                    {
+                        s_problems.Add(
+                            $"{label} Overview current game buttons are not aligned (y={string.Join(",", yPositions.Select(value => value.ToString("0.##")))}, heights={string.Join(",", heights.Select(value => value.ToString("0.##")))})");
+                    }
+                }
             }
         }
     }
