@@ -66,6 +66,7 @@ namespace GameSaveCenter.Contracts
         public const string CreateMetadataBackup = "metadata.backup.create";
         public const string PreviewMetadataRestore = "metadata.restore.preview";
         public const string ExecuteMetadataRestore = "metadata.restore.execute";
+        public const string RollbackMetadataRestore = "metadata.restore.rollback";
         public const string RebuildRepository = "repository.rebuild";
         public const string PreviewRepositoryRebuild = "repository.rebuild.preview";
         public const string PathRemap = "path.remap";

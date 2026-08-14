@@ -45,4 +45,16 @@ public sealed class MetadataRestoreResultDto
     public string PluginSettingsJson { get; set; } = string.Empty;
     public string Summary { get; set; } = string.Empty;
 }
+
+public sealed class MetadataRestoreRollbackRequestDto
+{
+    public string PreRestorePath { get; set; } = string.Empty;
+    public bool Confirmed { get; set; }
+}
+
+public sealed class MetadataRestoreRollbackResultDto
+{
+    public bool RolledBack { get; set; }
+    public string Summary { get; set; } = string.Empty;
+}
 }

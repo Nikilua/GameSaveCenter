@@ -18,6 +18,8 @@ using Microsoft.Win32;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Core.Services;
 using GameSaveCenter.Playnite.Infrastructure;
+using GameSaveCenter.Playnite.Services;
+using GameSaveCenter.Playnite.Settings;
 using Playnite.SDK;
 
 namespace GameSaveCenter.Playnite.ViewModels
@@ -1314,6 +1316,20 @@ namespace GameSaveCenter.Playnite.ViewModels
                 return;
             }
 
+            if (!string.IsNullOrWhiteSpace(preview.PluginSettingsJson))
+            {
+                try
+                {
+                    GameSaveCenterSettings.ValidatePortableJson(preview.PluginSettingsJson);
+                }
+                catch (Exception ex)
+                {
+                    ApplyOnUi(() => MetadataRestoreSummary = "插件设置校验失败，已取消恢复：" + ex.Message);
+                    plugin.ShowInfo(MetadataRestoreSummary);
+                    return;
+                }
+            }
+
             var confirmed = await plugin.ConfirmAsync(
                 "恢复元数据",
                 preview.Summary + "\n\n恢复会替换数据库与 Worker/Playnite 设置，并保留恢复前副本。是否继续？",
@@ -1328,28 +1344,22 @@ namespace GameSaveCenter.Playnite.ViewModels
                 TimeSpan.FromMinutes(10));
             if (!string.IsNullOrWhiteSpace(result.PluginSettingsJson))
             {
-                try
-                {
-                    var importReport = plugin.Settings.ImportPortableJson(result.PluginSettingsJson);
-                    plugin.SavePluginSettings(plugin.Settings);
-                    plugin.NotifyVisualSettingsChanged();
-                    plugin.ApplySettingsAsync();
-                    ApplyOnUi(() => MetadataRestoreSummary = result.Summary + "\n" + importReport.Summary);
-                }
-                catch (Exception ex)
-                {
-                    try
-                    {
-                        plugin.Settings.ImportPortableJson(preRestorePluginJson);
-                        plugin.SavePluginSettings(plugin.Settings);
-                        plugin.NotifyVisualSettingsChanged();
-                    }
-                    catch
-                    {
-                        // Preserve the original failure; plugin settings rollback is best effort.
-                    }
-                    throw new InvalidOperationException("元数据已恢复，但 Playnite 插件设置应用失败，已回滚插件设置：" + ex.Message, ex);
-                }
+                var importReport = await MetadataRestoreCoordinator.ApplyPluginSettingsAsync(
+                    plugin.Settings,
+                    () => plugin.SavePluginSettings(plugin.Settings),
+                    () => plugin.NotifyVisualSettingsChanged(),
+                    () => plugin.ApplySettingsAndAwaitAsync(),
+                    result.PluginSettingsJson,
+                    preRestorePluginJson,
+                    () => plugin.RequestAsync<MetadataRestoreRollbackResultDto>(
+                        MessageTypes.RollbackMetadataRestore,
+                        new MetadataRestoreRollbackRequestDto
+                        {
+                            PreRestorePath = result.PreRestorePath,
+                            Confirmed = true
+                        },
+                        TimeSpan.FromMinutes(10)));
+                ApplyOnUi(() => MetadataRestoreSummary = result.Summary + "\n" + importReport.Summary);
             }
             else
             {

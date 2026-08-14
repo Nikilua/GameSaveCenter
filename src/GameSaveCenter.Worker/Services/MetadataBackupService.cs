@@ -198,12 +198,10 @@ public sealed class MetadataBackupService
             Directory.CreateDirectory(backupRoot);
             var preRestore = Path.Combine(backupRoot, "PreRestore-" + Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(preRestore);
-            if (File.Exists(_options.DatabasePath))
-                File.Copy(_options.DatabasePath, Path.Combine(preRestore, "gamesavecenter.db"), true);
+            await CreateDatabaseSnapshotAsync(Path.Combine(preRestore, "gamesavecenter.db"), token).ConfigureAwait(false);
             if (File.Exists(_options.RuntimeSettingsPath))
                 File.Copy(_options.RuntimeSettingsPath, Path.Combine(preRestore, "worker-settings.json"), true);
 
-            var previousSafeMode = _options.SafeModeEnabled;
             _options.SafeModeEnabled = true;
             _options.PersistNow();
             try
@@ -225,6 +223,13 @@ public sealed class MetadataBackupService
                     await AtomicFileWriter.ReplaceFileAsync(settingsExtracted, _options.RuntimeSettingsPath, token).ConfigureAwait(false);
                     File.SetAttributes(_options.RuntimeSettingsPath, FileAttributes.Normal);
                 }
+                else
+                {
+                    var preSettings = Path.Combine(preRestore, "worker-settings.json");
+                    if (File.Exists(preSettings))
+                        await AtomicFileWriter.ReplaceFileAsync(preSettings, _options.RuntimeSettingsPath, token).ConfigureAwait(false);
+                }
+                _options.ReloadPersistedSettings();
 
                 await ValidateDatabaseAsync(_options.DatabasePath, token).ConfigureAwait(false);
                 SqliteConnection.ClearAllPools();
@@ -258,6 +263,7 @@ public sealed class MetadataBackupService
                     DeleteSidecars(_options.DatabasePath);
                     if (File.Exists(preSettings))
                         await AtomicFileWriter.ReplaceFileAsync(preSettings, _options.RuntimeSettingsPath, token).ConfigureAwait(false);
+                    _options.ReloadPersistedSettings();
                 }
                 catch (Exception rollbackEx)
                 {
@@ -268,15 +274,61 @@ public sealed class MetadataBackupService
                 }
                 throw;
             }
-            finally
-            {
-                _options.SafeModeEnabled = previousSafeMode;
-                _options.PersistNow();
-            }
         }
         finally
         {
             TryDeleteDirectory(temporary);
+        }
+    }
+
+    public async Task<MetadataRestoreRollbackResultDto> RollbackAsync(MetadataRestoreRollbackRequestDto request, CancellationToken token)
+    {
+        if (!request.Confirmed)
+            throw new WorkerOperationException("METADATA_ROLLBACK_NOT_CONFIRMED", "元数据整体回滚需要确认。");
+        if (string.IsNullOrWhiteSpace(request.PreRestorePath))
+            throw new WorkerOperationException("METADATA_ROLLBACK_PATH_MISSING", "缺少恢复前副本路径。");
+
+        var backupRoot = Path.GetFullPath(Path.Combine(_options.DataDirectory, "MetadataBackups"));
+        var preRestore = Path.GetFullPath(request.PreRestorePath);
+        if (!preRestore.StartsWith(backupRoot + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
+            throw new WorkerOperationException("METADATA_ROLLBACK_PATH_INVALID", "回滚目录不在元数据灾备目录内，已拒绝。", request.PreRestorePath);
+        var preDatabase = Path.Combine(preRestore, "gamesavecenter.db");
+        if (!File.Exists(preDatabase))
+            throw new WorkerOperationException("METADATA_ROLLBACK_PRE_RESTORE_MISSING", "恢复前数据库副本不存在，无法整体回滚。", preDatabase);
+
+        _options.SafeModeEnabled = true;
+        _options.PersistNow();
+        try
+        {
+            SqliteConnection.ClearAllPools();
+            DeleteSidecars(_options.DatabasePath);
+            await AtomicFileWriter.ReplaceFileAsync(preDatabase, _options.DatabasePath, token).ConfigureAwait(false);
+            File.SetAttributes(_options.DatabasePath, FileAttributes.Normal);
+            DeleteSidecars(_options.DatabasePath);
+
+            var preSettings = Path.Combine(preRestore, "worker-settings.json");
+            if (File.Exists(preSettings))
+            {
+                await AtomicFileWriter.ReplaceFileAsync(preSettings, _options.RuntimeSettingsPath, token).ConfigureAwait(false);
+                File.SetAttributes(_options.RuntimeSettingsPath, FileAttributes.Normal);
+            }
+            _options.ReloadPersistedSettings();
+
+            await ValidateDatabaseAsync(_options.DatabasePath, token).ConfigureAwait(false);
+            SqliteConnection.ClearAllPools();
+            _logger.LogInformation("Metadata restore rolled back to pre-restore state: {PreRestore}", preRestore);
+            return new MetadataRestoreRollbackResultDto
+            {
+                RolledBack = true,
+                Summary = "元数据已整体回滚到恢复前状态；数据库与 Worker 设置已恢复并通过完整性校验。"
+            };
+        }
+        catch (Exception ex)
+        {
+            throw new WorkerOperationException(
+                "METADATA_ROLLBACK_MANUAL_INTERVENTION_REQUIRED",
+                "元数据整体回滚失败，需要人工介入。",
+                ex.Message);
         }
     }
 

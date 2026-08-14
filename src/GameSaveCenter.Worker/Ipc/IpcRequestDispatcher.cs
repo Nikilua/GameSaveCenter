@@ -127,6 +127,7 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.CreateMetadataBackup=>await _metadataBackup.CreateAsync(Read<MetadataBackupCreateRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.PreviewMetadataRestore=>await _metadataBackup.PreviewAsync(Read<MetadataRestoreRequestDto>(request).PackagePath,token).ConfigureAwait(false),
                 MessageTypes.ExecuteMetadataRestore=>await _metadataBackup.RestoreAsync(Read<MetadataRestoreRequestDto>(request),token).ConfigureAwait(false),
+                MessageTypes.RollbackMetadataRestore=>await _metadataBackup.RollbackAsync(Read<MetadataRestoreRollbackRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.RebuildRepository=>await _repositoryRebuild.RebuildAsync(Read<RepositoryRebuildRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.PreviewRepositoryRebuild=>await _repositoryRebuild.PreviewAsync(token).ConfigureAwait(false),
                 MessageTypes.PathRemap=>await _pathRemap.RemapAsync(Read<PathRemapRequestDto>(request),token).ConfigureAwait(false),

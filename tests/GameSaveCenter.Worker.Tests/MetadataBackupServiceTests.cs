@@ -148,6 +148,73 @@ public sealed class MetadataBackupServiceTests : IDisposable
         Assert.Equal("METADATA_PLUGIN_SETTINGS_INVALID", ex.Code);
     }
 
+    [Fact]
+    public async Task MetadataRollbackAfterSuccessfulRestoreReturnsOriginalDatabaseAndWorkerSettings()
+    {
+        Directory.CreateDirectory(Path.GetDirectoryName(options.RuntimeSettingsPath)!);
+        await store.AppendAuditAsync("Test", "B", "{}", CancellationToken.None);
+        await File.WriteAllTextAsync(options.RuntimeSettingsPath, "Worker=B\n");
+        var service = new MetadataBackupService(options, store, NullLogger<MetadataBackupService>.Instance);
+        var backup = await service.CreateAsync(new MetadataBackupCreateRequestDto(), CancellationToken.None);
+
+        await using (var clearConnection = new SqliteConnection($"Data Source={options.DatabasePath}"))
+        {
+            await clearConnection.OpenAsync();
+            var clear = clearConnection.CreateCommand();
+            clear.CommandText = "DELETE FROM audit_log;";
+            await clear.ExecuteNonQueryAsync();
+        }
+        await store.AppendAuditAsync("Test", "A", "{}", CancellationToken.None);
+        await File.WriteAllTextAsync(options.RuntimeSettingsPath, "Worker=A\n");
+        var restored = await service.RestoreAsync(new MetadataRestoreRequestDto
+        {
+            PackagePath = backup.PackagePath,
+            Confirmed = true
+        }, CancellationToken.None);
+        Assert.True(restored.Restored);
+        Assert.Equal(2L, await CountAuditRowsAsync());
+        Assert.Contains("Worker=B", await File.ReadAllTextAsync(options.RuntimeSettingsPath));
+        Assert.True(new FileInfo(Path.Combine(restored.PreRestorePath, "gamesavecenter.db")).Length > 0);
+
+        var rollback = await service.RollbackAsync(new MetadataRestoreRollbackRequestDto
+        {
+            PreRestorePath = restored.PreRestorePath,
+            Confirmed = true
+        }, CancellationToken.None);
+        Assert.True(rollback.RolledBack);
+        Assert.True(new FileInfo(options.DatabasePath).Length > 0);
+        Assert.Equal(1L, await CountAuditRowsAsync());
+        Assert.Contains("Worker=A", await File.ReadAllTextAsync(options.RuntimeSettingsPath));
+    }
+
+    [Fact]
+    public async Task MetadataRollbackRequiresConfirmationAndRejectsOutsidePath()
+    {
+        var service = new MetadataBackupService(options, store, NullLogger<MetadataBackupService>.Instance);
+        var notConfirmed = await Assert.ThrowsAsync<WorkerOperationException>(() => service.RollbackAsync(
+            new MetadataRestoreRollbackRequestDto { PreRestorePath = Path.Combine(root, "missing"), Confirmed = false },
+            CancellationToken.None));
+        Assert.Equal("METADATA_ROLLBACK_NOT_CONFIRMED", notConfirmed.Code);
+
+        var outside = await Assert.ThrowsAsync<WorkerOperationException>(() => service.RollbackAsync(
+            new MetadataRestoreRollbackRequestDto
+            {
+                PreRestorePath = Path.Combine(Path.GetTempPath(), "GscOutside-" + Guid.NewGuid().ToString("N")),
+                Confirmed = true
+            },
+            CancellationToken.None));
+        Assert.Equal("METADATA_ROLLBACK_PATH_INVALID", outside.Code);
+    }
+
+    private async Task<long> CountAuditRowsAsync()
+    {
+        await using var connection = new SqliteConnection($"Data Source={options.DatabasePath};Mode=ReadOnly;Cache=Shared");
+        await connection.OpenAsync();
+        var command = connection.CreateCommand();
+        command.CommandText = "SELECT COUNT(*) FROM audit_log;";
+        return Convert.ToInt64(await command.ExecuteScalarAsync());
+    }
+
     private static void CreatePackage(string path, IReadOnlyDictionary<string, byte[]> entries)
     {
         using var archive = ZipFile.Open(path, ZipArchiveMode.Create);

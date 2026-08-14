@@ -382,11 +382,18 @@ namespace GameSaveCenter.Playnite
             // settings directly avoids turning every settings save into a 900-game Ludusavi
             // catalog refresh. Library callbacks and the explicit Dashboard refresh remain the
             // only paths that request catalog synchronization.
-            FireAndForget(async () =>
-            {
-                await EnsureWorkerAsync().ConfigureAwait(false);
-                await ApplySettingsCoreAsync().ConfigureAwait(false);
-            });
+            FireAndForget(ApplySettingsAndAwaitAsync);
+        }
+
+        public Task ApplySettingsAndAwaitAsync()
+        {
+            return ApplySettingsAndAwaitCoreAsync();
+        }
+
+        private async Task ApplySettingsAndAwaitCoreAsync()
+        {
+            await EnsureWorkerAsync().ConfigureAwait(false);
+            await ApplySettingsCoreAsync().ConfigureAwait(false);
         }
 
         private void RequestLibrarySynchronization(string reason)

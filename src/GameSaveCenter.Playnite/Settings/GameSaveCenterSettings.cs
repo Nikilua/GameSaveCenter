@@ -130,6 +130,16 @@ namespace GameSaveCenter.Playnite.Settings
             return report;
         }
 
+        /// <summary>
+        /// Validates a portable settings package on a detached instance so metadata restore
+        /// can reject bad plugin settings before the Worker replaces the database.
+        /// </summary>
+        public static void ValidatePortableJson(string json)
+        {
+            var validator = new GameSaveCenterSettings();
+            validator.ImportPortableJson(json);
+        }
+
         public void BeginEdit() => editingClone = Clone();
 
         public void CancelEdit()

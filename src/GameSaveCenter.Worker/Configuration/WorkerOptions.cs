@@ -144,6 +144,8 @@ public sealed class WorkerOptions
 
     public void PersistNow() => Persist();
 
+    public void ReloadPersistedSettings() => LoadPersistedSettings();
+
     private void Normalize()
     {
         if (!IsValidDeviceId(DeviceId)) DeviceId = Guid.NewGuid().ToString("N");
