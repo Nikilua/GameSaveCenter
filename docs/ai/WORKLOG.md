@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 UI-VISUAL-CORRECTION-V2 计划
+
+- 用户提供 `GameSaveCenter_UI_Visual_Correction_Pack_v2.zip`，本轮不推翻上一轮重构，只关闭截图/Audit 仍暴露的问题。
+- 已生成 `docs/ai/UI_VISUAL_CORRECTION_PLAN_V2.md`，覆盖 Overview 单滚动、风险卡去内滚/去空白、Disclosure 视觉、全局活动响应式行、Save 当前存档规则卡、Maintenance Diagnostics 去双滚动、Audit 二级切换与新增 Audit 断言。
+- 按包要求先提交计划，随后按 P2 → P0/P1/P3 → P4 → P5 → P6 → P7 顺序实施。
+
 ## 2026-08-14 UI-REFACTOR-V1 真实宿主 reload 验证
 
 - `scripts/dev-install-run.ps1 -Configuration Release` 一键构建安装成功：Release 0 warning / 0 error，Core `59/59`、Worker `190/190`、Playnite `250/250`，扩展安装到 `C:\Users\lopmatu\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec` 并启动 Playnite。
