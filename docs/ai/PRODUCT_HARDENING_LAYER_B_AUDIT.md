@@ -13,7 +13,7 @@
 | INTEGRITY-001 | COMPLETED | `IntegrityCheckService.cs`、`SqliteStateStore.Integrity.cs` | `IntegrityCheckServiceTests.cs` | 是 | 真实孤儿 ZIP/损坏 Manifest/磁盘不足 | `a064108` |
 | DB-MIGRATION-001 | COMPLETED | `DatabaseMigrationHarness.cs` | `DatabaseMigrationHarnessTests.cs` | 是 | 真实历史用户库升级回归 | `55f532f` |
 | METADATA-BACKUP-001 | COMPLETED | `MetadataBackupService.cs`、`AtomicFileWriter.cs` | `MetadataBackupServiceTests.cs` | 是 | 真实恢复与失败回滚 | `97b06b5` |
-| REPOSITORY-REBUILD-001 | COMPLETED | `RepositoryRebuildService.cs` | `RepositoryRebuildServiceTests.cs` | 是 | 真实仓库预览/确认/幂等 | `dff0cf4` |
+| REPOSITORY-REBUILD-001 | COMPLETED | `RepositoryRebuildService.cs`（空库扫描、`recovered-*` 占位游戏、不猜 Parent） | `RepositoryRebuildServiceTests.cs`（artifact→empty DB→rebuild 幂等） | 是 | 真实仓库预览/确认/幂等 | `dff0cf4`、`e58714c` |
 | PATH-REMAP-001 | COMPLETED | `PathRemapService.cs`、`SqliteStateStore.PathRemap.cs` | `PathRemapServiceTests.cs` | 是 | 真实目录迁移与缺失目标策略 | `bddcfdd` |
 | TASK-RECONCILE-001 | COMPLETED | `TaskReconcileService.cs`、`TaskCoordinator.cs`、`WorkerOptions.cs` | `TaskReconcileServiceTests.cs` | 是 | 真实中断后核对分类与 PreRestore | `47685bd` |
 | GAME-OP-LOCK-001 | COMPLETED | `GameOperationLock.cs`、`BackupOrchestrator.cs`、`RestoreOrchestrator.cs`、`MediaSyncService.cs` | `GameOperationLockTests.cs` | 是 | 真实长备份期间并发操作 | `7dba09c` |
@@ -56,8 +56,8 @@
 
 ### REPOSITORY-REBUILD-001
 
-- 生产证据：只读扫描预览统计已确认/未归属/部分缺失/损坏归档；写库必须确认；失败游戏保留原索引且重复重建幂等。
-- 自动验证：`RepositoryRebuildServiceTests` 覆盖预览、未确认拒绝、确认执行与幂等。
+- 生产证据：只读扫描预览统计已确认/未归属/部分缺失/损坏归档；写库必须确认；空/新 SQLite 也能按磁盘 ZIP/Manifest 重建 `recovered-*` 占位游戏，不依赖原 Game Match，不猜 Parent，保留 Locked/PreRestore 旧索引且重复重建幂等。
+- 自动验证：`RepositoryRebuildServiceTests` 覆盖预览、未确认拒绝、artifact→empty DB→rebuild、占位游戏、已有 Match 复用、不猜 Parent、Locked/PreRestore 保留、损坏归档与幂等。
 - 人工验收：真实 Ludusavi 仓库预览后执行重建并核对版本数量。
 
 ### PATH-REMAP-001
@@ -105,9 +105,9 @@
 ## Layer B 最终门禁
 
 - Release 解决方案构建：0 warnings / 0 errors。
-- Core：55/55。
-- Worker：170/170。
-- Playnite：217/217。
+- Core：59/59。
+- Worker：188/188。
+- Playnite：232/232。
 - `scripts/validate-source.py`：通过。
 - XAML 结构门禁：通过；涉及 XAML 的提交均通过 `render-qa`；B11 之后为测试-only 阶段，未重跑 `render-qa`。
 - 每个任务提交后均执行 `scripts/dev-install-run.ps1 -Configuration Release` 真实开发安装；B13 安装后 `playnite.log` 01:28:48 记录插件加载，`worker-launch.log` 01:28:54 记录 `Application started`。

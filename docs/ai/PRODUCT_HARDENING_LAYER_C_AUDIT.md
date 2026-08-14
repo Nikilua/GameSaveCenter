@@ -10,13 +10,13 @@
 |---|---|---|---|---|---|---|
 | STORAGE-001 | COMPLETED | `StorageAnalysisService.cs`、`StorageAnalysisDtos.cs`、维护中心保留策略页 | `StorageAnalysisServiceTests.cs` | 是 | 真实大仓库下容量趋势与 Top 排行 | `2ef8f13` |
 | RETENTION-SIM-001 | COMPLETED | `RetentionSimulationService.cs`、`RetentionSimulationDtos.cs`、维护中心保留策略页 | `RetentionSimulationServiceTests.cs` | 是 | 真实策略组合下候选明细与二次确认 | `a27f430` |
-| LOCAL-MIRROR-001 | COMPLETED | `LocalMirrorService.cs`、`LocalMirrorDtos.cs`、`WorkerOptions.cs`、设置/维护 UI | `LocalMirrorServiceTests.cs` | 是 | 真实外置盘拔插与断盘状态 | `387149f` |
+| LOCAL-MIRROR-001 | COMPLETED | `LocalMirrorService.cs`（SHA256 内容校验）、`LocalMirrorDtos.cs`、`WorkerOptions.cs`、设置/维护 UI | `LocalMirrorServiceTests.cs`（同大小内容不同重拷） | 是 | 真实外置盘拔插与断盘状态 | `387149f`、`5a12d1e` |
 | ACTIVITY-001 | COMPLETED | `ActivityTimelineMapper.cs`、`DashboardDtos.cs`、`OverviewView.xaml` | `ActivityTimelineMapperTests.cs` | 是 | 真实业务事件顺序与时间线可读性 | `7f38b15` |
 | PLAYNITE-QUICK-001 | COMPLETED | `GameSaveCenterPlugin.cs` `GetGameMenuItems` | `QuickActionSourceTests.cs` | 是 | 真实 Playnite 游戏右键菜单与 GameId 绑定 | `15ab1d7` |
 | DRAGDROP-001 | COMPLETED | `DashboardViewModel.cs`、`TrainerCenterView.xaml/.cs` | `DragDropImportSourceTests.cs` | 是 | 真实 EXE/CT/LNK/BAT/CMD/PS1 拖拽 | `5d113c3` |
 | UI-STATE-001 | COMPLETED | `GameSaveCenterSettings.cs`、`DashboardViewModel.cs`、`DebouncedRefresh.cs` | `UiStatePersistenceSourceTests.cs`、`PortableSettingsTests.cs` | 是 | 真实重启后筛选/Workspace/媒体状态恢复 | `e4513cb` |
 | ACCESSIBILITY-001 | COMPLETED | `DashboardView.xaml/.cs`、Task/Media/Trainer 搜索框 | `AccessibilitySourceTests.cs` | 是 | 真实键盘焦点、高对比度与 200% DPI | `c907983` |
-| UI-STATES-001 | COMPLETED | `WorkspaceStatePresenter.cs`、`Redesign.xaml`、Overview/Task 页面 | `WorkspaceStateSourceTests.cs`、`WpfUiResourceDictionaryTests.cs` | 是 | 真实 Loading/Empty/Error/Degraded/Offline/Disabled | `f21cba4` |
+| UI-STATES-001 | COMPLETED | `WorkspaceStatePresenter.cs`、`Redesign.xaml`、Overview/Task/Save/Trainer/Media/Maintenance 页面 | `WorkspaceStateSourceTests.cs`、`WpfUiResourceDictionaryTests.cs` | 是 | 真实 Loading/Empty/Error/Degraded/Offline/Disabled | `f21cba4`、`84f74fc` |
 | SETTINGS-VALIDATION-001 | COMPLETED | `GameSaveCenterSettingsView.xaml/.cs` | `SettingsValidationSourceTests.cs` | 是 | 真实输入错误即时展示与严重错误禁止保存 | `4614bb8` |
 | MAINTENANCE-REPORT-001 | COMPLETED | `MaintenanceReportService.cs`、`MaintenanceReportDtos.cs`、维护中心复制/导出命令 | `MaintenanceReportServiceTests.cs`、`MaintenanceReportSourceTests.cs` | 是 | 真实健康报告复制/导出 TXT/Markdown | `9d465d2` |
 
@@ -36,8 +36,8 @@
 
 ### LOCAL-MIRROR-001
 
-- 生产证据：设置页新增“启用第二本地镜像”与镜像目录；维护中心“保留策略”页新增镜像状态与“同步镜像”入口。Worker `LocalMirrorService` 只复制和按大小校验，绝不删除镜像中多余文件；外置硬盘未连接时状态为 `Unavailable`；同步完成后写入镜像标记文件。
-- 自动验证：`LocalMirrorServiceTests` 覆盖复制、校验、Unavailable、不删除多余文件与标记文件。
+- 生产证据：设置页新增“启用第二本地镜像”与镜像目录；维护中心“保留策略”页新增镜像状态与“同步镜像”入口。Worker `LocalMirrorService` 只复制，绝不删除镜像中多余文件；外置硬盘未连接时状态为 `Unavailable`；已存在文件必须 SHA256 与源一致才跳过，同大小但内容不同会重新复制并再次校验，同步完成后写入镜像标记文件。
+- 自动验证：`LocalMirrorServiceTests` 覆盖复制、SHA256 校验、同大小损坏镜像重拷、Unavailable、不删除多余文件、标记文件与取消。
 - 人工验收：真实外置盘拔插、断盘状态和同步结果。
 
 ### ACTIVITY-001
@@ -72,8 +72,8 @@
 
 ### UI-STATES-001
 
-- 生产证据：新增共享 `WorkspaceStatePresenter`，统一 Loading/Empty/Error/Degraded/Offline/Disabled 六种状态；Overview 全局活动与 Task 空状态已接入共享控件，其余页面继续复用 `GscEmptyStateText`。
-- 自动验证：`WorkspaceStateSourceTests` 与 `WpfUiResourceDictionaryTests` 覆盖共享控件与页面接入。
+- 生产证据：新增共享 `WorkspaceStatePresenter`，统一 Loading/Empty/Error/Degraded/Offline/Disabled 六种状态；Overview 全局活动、Task 空状态、存档历史 Loading、修改器工具 Loading/Empty、媒体 Worker Offline、维护云端 Degraded 均已接入共享控件。
+- 自动验证：`WorkspaceStateSourceTests` 与 `WpfUiResourceDictionaryTests` 覆盖共享控件、六种状态与页面接入。
 - 人工验收：真实状态切换与重试按钮复核。
 
 ### SETTINGS-VALIDATION-001
@@ -92,13 +92,13 @@
 
 - Release 解决方案构建：0 warnings / 0 errors。
 - Core：59/59。
-- Worker：183/183。
-- Playnite：231/231。
+- Worker：188/188。
+- Playnite：232/232。
 - `scripts/validate-source.py`：通过。
 - `scripts/check-xaml.ps1`：13 个 XAML 通过。
 - `.codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py .`：0 errors。
 - `scripts/render-qa.ps1`：五种窗口全部通过。
-- 每个 C 阶段提交后均执行 `scripts/dev-install-run.ps1 -Configuration Release` 真实开发安装；Layer C 收尾后最新一次 `playnite.log` 04:02:36 记录插件加载，`extensions.log` 04:02:37 记录 `GameSaveCenter 0.6.70.0 loaded`，`worker-launch.log` 04:02:42 记录 `Application started`。
+- 每个 C 阶段提交后均执行 `scripts/dev-install-run.ps1 -Configuration Release` 真实开发安装；Final Code Gap Closure 后 `playnite.log` 09:43:56 记录插件加载，`extensions.log` 09:43:58 记录 `GameSaveCenter 0.6.70.0 loaded`，`worker-launch.log` 09:44:03 记录 `Application started`。
 
 ## 结论
 
