@@ -2962,6 +2962,96 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void TaskCompactInspectorDefaultsToDetailsButtonAndToggleOpen()
+    {
+        Exception? exception = null;
+        var inspectorCollapsed = false;
+        var buttonVisible = false;
+        var opened = false;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var view = new TaskCenterView();
+                var viewType = typeof(TaskCenterView);
+                var grid = (DataGrid)viewType.GetField("TaskGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var inspector = view.TaskDetailScrollViewerElement;
+                var button = (GameSaveCenter.Playnite.Controls.Button)viewType.GetField("TaskCompactDetailsButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var selected = new object();
+                grid.ItemsSource = new[] { selected };
+                grid.SelectedItem = selected;
+
+                view.ApplyResponsiveLayout(1024, 640);
+                inspectorCollapsed = inspector.Visibility == Visibility.Collapsed;
+                buttonVisible = button.Visibility == Visibility.Visible;
+
+                viewType.GetMethod("OnTaskCompactDetailsClick", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .Invoke(view, new object[] { button, new RoutedEventArgs() });
+                opened = inspector.Visibility == Visibility.Visible && ((string)button.Content).Contains("收起");
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.True(inspectorCollapsed);
+        Assert.True(buttonVisible);
+        Assert.True(opened);
+    }
+
+    [Fact]
+    public void TaskGameFilterMovesIntoMoreFiltersOnCompactPanes()
+    {
+        Exception? exception = null;
+        var compactInMore = false;
+        var compactExpanderVisible = false;
+        var wideInMain = false;
+        var wideExpanderCollapsed = false;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var view = new TaskCenterView();
+                var viewType = typeof(TaskCenterView);
+                var filters = (WrapPanel)viewType.GetField("TaskFiltersPanel", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var moreHost = (StackPanel)viewType.GetField("TaskMoreFiltersHost", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var moreExpander = (Expander)viewType.GetField("TaskMoreFiltersExpander", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var gameFilter = (ComboBox)viewType.GetField("TaskGameFilterComboBox", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+
+                view.ApplyResponsiveLayout(700, 640);
+                compactInMore = moreHost.Children.Contains(gameFilter);
+                compactExpanderVisible = moreExpander.Visibility == Visibility.Visible;
+
+                view.ApplyResponsiveLayout(1280, 720);
+                wideInMain = filters.Children.Contains(gameFilter);
+                wideExpanderCollapsed = moreExpander.Visibility == Visibility.Collapsed;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.True(compactInMore);
+        Assert.True(compactExpanderVisible);
+        Assert.True(wideInMain);
+        Assert.True(wideExpanderCollapsed);
+    }
+
+    [Fact]
     public void MediaInspectorReleasesEmptyRightColumn()
     {
         Exception? exception = null;

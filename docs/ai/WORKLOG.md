@@ -2,6 +2,16 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 UI-REFACTOR-V1 Phase 5 任务中心 Task
+
+- 紧凑面板下“游戏筛选”响应式移入“更多筛选”Expander（宽屏自动回到主筛选行），搜索/状态/类型筛选保持主行；四筛选全部可达。
+- 任务详情 Inspector 在 Compact/Narrow 默认收起为“查看任务详情 / 收起任务详情”按钮；复制详情、安全重试、取消任务仍可展开访问。
+- 操作行不再在 1040×700 竖向膨胀：仅 <520 DIP 才竖向堆叠；常见窄窗保持横向。
+- 任务摘要卡在 520–899 DIP 使用 4 列紧凑单行，任务表 1040×700 视口 252 DIP、1280×720 259 DIP；页面 extent 从约 867 降到 536（1040）。
+- 未改 ViewModel、Worker、IPC、任务筛选语义、DataGrid 六列/Item ScrollUnit/虚拟化；无 REMOVE。
+- 新增 2 条回归测试：Task 窄窗 Inspector 默认收起/可打开；游戏筛选在 compact 进入更多筛选、wide 回到主行。
+- Gate：Release 0 警告/0 错误，Core `59/59`、Worker `190/190`、Playnite `247/247`，source/XAML/WPF/render-qa 全绿。
+
 ## 2026-08-14 UI-REFACTOR-V1 Phase 4b 媒体中心 Media
 
 - 当前游戏媒体页在 Compact/Narrow 下默认收起媒体 Inspector，改为表内“查看媒体详情 / 收起媒体详情”按钮；预览、收藏、备注、保存、打开目录、重新归类与批量操作仍可通过按钮展开访问。
