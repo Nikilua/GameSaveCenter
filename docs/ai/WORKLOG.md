@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 UI-REFACTOR-V1 Phase 1 共享布局基础
+
+- 在 `Themes/Redesign.xaml` 新增共享基础件：`GscInternalTabControl` / `GscInternalTabItem`（内部二级 Tab，供保留策略、异常审计、比较保留使用）、`GscToolbarActionRow`（工具栏动作行）、`GscToolbarOverflowButton`（溢出/更多按钮）。
+- 在 `WpfUiResourceDictionaryTests` 增加四个新资源 key 的解析断言，确保后续页面使用这些共享样式时不会静默回退。
+- 未修改任何 View 页面、GamePicker、ViewModel、Worker、IPC 或业务逻辑；本轮只建立后续 Phase 2～8 可复用的共享样式。
+- Gate：隔离 Release 构建 0 警告/0 错误；Core `59/59`、Worker `190/190`、Playnite `238/238`；`validate-source.py`、WPF UI validator 0 errors、五种窗口 `render-qa OK`；`git diff --check` 通过。
+
 ## 2026-08-14 UI-REFACTOR-V1 Phase 0 基线、保真计划与 Gate
 
 - 读取 `GameSaveCenter_UI_Refactor_Implementation_Pack_v1` 全部正文、UI Audit（commit `4ab44fe`）与 WPF Demo v6.1；确认事实来源优先级：生产 main > UI Audit > 实施包 > Demo > 旧布局。

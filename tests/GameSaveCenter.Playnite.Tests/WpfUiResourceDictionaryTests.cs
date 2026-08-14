@@ -4112,6 +4112,10 @@ public sealed class WpfUiResourceDictionaryTests
                 Assert.IsType<Style>(resources["GscRedesignCounterPill"]);
                 Assert.IsType<Style>(resources["GscRedesignSettingsTabControl"]);
                 Assert.IsType<Style>(resources["GscRedesignSettingsTabItem"]);
+                Assert.IsType<Style>(resources["GscInternalTabControl"]);
+                Assert.IsType<Style>(resources["GscInternalTabItem"]);
+                Assert.IsType<Style>(resources["GscToolbarActionRow"]);
+                Assert.IsType<Style>(resources["GscToolbarOverflowButton"]);
             }
             catch (Exception caught)
             {

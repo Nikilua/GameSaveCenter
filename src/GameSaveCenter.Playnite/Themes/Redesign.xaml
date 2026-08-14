@@ -360,6 +360,18 @@
         </Setter>
     </Style>
 
+    <!-- Internal secondary tabs (retention/audit/compare) reuse the workspace pill
+         language, but with a tighter rhythm so a nested tab strip does not consume
+         the main table viewport. The content host still owns the finite star row. -->
+    <Style x:Key="GscInternalTabControl" TargetType="TabControl" BasedOn="{StaticResource GscRedesignWorkspaceTabControl}">
+        <Setter Property="Padding" Value="0"/>
+    </Style>
+
+    <Style x:Key="GscInternalTabItem" TargetType="TabItem" BasedOn="{StaticResource GscRedesignWorkspaceTabItem}">
+        <Setter Property="Padding" Value="12,7"/>
+        <Setter Property="MinHeight" Value="34"/>
+    </Style>
+
     <Style x:Key="GscRedesignSettingsTabControl" TargetType="TabControl">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
@@ -612,6 +624,17 @@
     <Style x:Key="GscComboBoxStyle" TargetType="ComboBox" BasedOn="{StaticResource GscWpfUiComboBox}"/>
     <Style x:Key="GscTabControlStyle" TargetType="TabControl" BasedOn="{StaticResource GscRedesignWorkspaceTabControl}"/>
     <Style x:Key="GscTabItemStyle" TargetType="TabItem" BasedOn="{StaticResource GscRedesignWorkspaceTabItem}"/>
+    <Style x:Key="GscToolbarActionRow" TargetType="WrapPanel">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="0"/>
+    </Style>
+    <Style x:Key="GscToolbarOverflowButton" TargetType="{x:Type ui:Button}" BasedOn="{StaticResource GscWpfUiToolbarButton}">
+        <Setter Property="Padding" Value="10,6"/>
+        <Setter Property="MinWidth" Value="0"/>
+        <Setter Property="Margin" Value="0"/>
+    </Style>
     <Style x:Key="GscWorkspaceStatePresenter" TargetType="ui:WorkspaceStatePresenter">
         <Setter Property="Template">
             <Setter.Value>
