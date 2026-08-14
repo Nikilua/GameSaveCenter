@@ -217,6 +217,62 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         [Fact]
+        public void SaveCurrentRuleStatusIsOneLineBadgeWithAlignedActions()
+        {
+            var root = FindRepositoryRoot();
+            var save = XDocument.Parse(File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "SaveCenterView.xaml")));
+            var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
+
+            var badge = save.Descendants().Single(element => element.Attribute(xamlName)?.Value == "SaveHealthBadge");
+            var badgeText = badge.Descendants().Single(element => element.Name.LocalName == "TextBlock");
+            var runs = badgeText.Elements().Where(element => element.Name.LocalName == "Run").ToList();
+
+            Assert.Equal(2, runs.Count);
+            Assert.Equal("校验状态：", runs[0].Attribute("Text")?.Value);
+            Assert.Contains("SelectedGame.HealthStateDisplay", runs[1].Attribute("Text")?.Value);
+            var xamlKey = XName.Get("Key", "http://schemas.microsoft.com/winfx/2006/xaml");
+            Assert.Contains("Value=\"Risk\"", save.Descendants()
+                .Single(element => element.Name.LocalName == "Style" && element.Attribute(xamlKey)?.Value == "SaveHealthStateBadge")
+                .ToString());
+
+            var actions = save.Descendants().Single(element => element.Attribute(xamlName)?.Value == "SaveCurrentRuleActions");
+            var buttons = actions.Elements().Where(element => element.Name.LocalName == "Button").ToList();
+            Assert.Equal(3, buttons.Count);
+            Assert.All(buttons, button =>
+            {
+                Assert.Contains("GscWpfUiCompactButton", button.Attribute("Style")?.Value);
+                Assert.Equal("38", button.Attribute("MinHeight")?.Value);
+                Assert.Equal("100", button.Attribute("MinWidth")?.Value);
+            });
+        }
+
+        [Fact]
+        public void MaintenanceDiagnosticsUseUnifiedDisclosureCardAndFiveReadableColumns()
+        {
+            var root = FindRepositoryRoot();
+            var maintenance = XDocument.Parse(File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml")));
+            var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
+
+            var findings = maintenance.Descendants().Single(element => element.Attribute(xamlName)?.Value == "FindingsGrid");
+            var columns = findings.Elements().Single(element => element.Name.LocalName == "DataGrid.Columns").Elements().ToList();
+            Assert.Equal(5, columns.Count);
+            Assert.Contains("Width=\"72\"", columns[0].ToString());
+            Assert.Contains("Width=\"120\"", columns[1].ToString());
+            Assert.Contains("Width=\"160\"", columns[2].ToString());
+            Assert.Contains("MinWidth=\"180\"", columns[3].ToString());
+            Assert.Contains("Width=\"0.75*\"", columns[4].ToString());
+            Assert.Contains("MinWidth=\"140\"", columns[4].ToString());
+
+            var expanders = maintenance.Descendants().Where(element => element.Name.LocalName == "Expander").ToList();
+            Assert.NotEmpty(expanders);
+            Assert.All(expanders, expander =>
+            {
+                Assert.Contains("GscDisclosureCard", expander.Attribute("Style")?.Value);
+                Assert.DoesNotContain(">", expander.Attribute("Header")?.Value ?? string.Empty);
+            });
+        }
+
+        [Fact]
         public void LaunchDelayEditorExplainsItsUnitAndUsesCompactHeight()
         {
             var root = FindRepositoryRoot();

@@ -10,6 +10,62 @@
             <Style x:Key="SaveDataGrid" TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}"><Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/><Setter Property="Background" Value="Transparent"/><Setter Property="BorderThickness" Value="0"/><Setter Property="GridLinesVisibility" Value="None"/><Setter Property="HeadersVisibility" Value="Column"/><Setter Property="RowBackground" Value="Transparent"/><Setter Property="AlternatingRowBackground" Value="{DynamicResource GscTableAlternateRowBrush}"/><Setter Property="RowHeight" Value="{DynamicResource GscTableRowHeight}"/><Setter Property="MinHeight" Value="{DynamicResource GscWorkspaceTableMinHeight}"/><Setter Property="ColumnHeaderHeight" Value="{DynamicResource GscTableHeaderHeight}"/><Setter Property="RowHeaderWidth" Value="0"/><Setter Property="SelectionUnit" Value="FullRow"/><Setter Property="CanUserAddRows" Value="False"/><Setter Property="CanUserResizeColumns" Value="True"/><Setter Property="CanUserSortColumns" Value="True"/><Setter Property="IsReadOnly" Value="True"/><Setter Property="AutoGenerateColumns" Value="False"/><Setter Property="EnableRowVirtualization" Value="True"/><Setter Property="EnableColumnVirtualization" Value="True"/><Setter Property="VirtualizingPanel.ScrollUnit" Value="Item"/><Setter Property="ScrollViewer.CanContentScroll" Value="True"/><Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/><Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/><Setter Property="HorizontalContentAlignment" Value="Stretch"/><Setter Property="VerticalContentAlignment" Value="Top"/><Setter Property="ScrollViewer.VerticalContentAlignment" Value="Top"/></Style>
             <Style x:Key="SaveTableFrame" TargetType="Border" BasedOn="{StaticResource GscRedesignTableFrame}"/>
             <Style x:Key="SaveLongText" TargetType="TextBlock"><Setter Property="TextTrimming" Value="CharacterEllipsis"/><Setter Property="TextWrapping" Value="NoWrap"/><Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}"/></Style>
+            <Style x:Key="SaveHealthStateBadge" TargetType="Border" BasedOn="{StaticResource GscRedesignContextPill}">
+                <Setter Property="Padding" Value="10,5"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding SelectedGame.HealthState}" Value="Healthy">
+                        <Setter Property="Background" Value="{DynamicResource GscSuccessIconFillBrush}"/>
+                        <Setter Property="BorderBrush" Value="{DynamicResource GscSuccessBrush}"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding SelectedGame.HealthState}" Value="Ready">
+                        <Setter Property="Background" Value="{DynamicResource GscSuccessIconFillBrush}"/>
+                        <Setter Property="BorderBrush" Value="{DynamicResource GscSuccessBrush}"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding SelectedGame.HealthState}" Value="Risk">
+                        <Setter Property="Background" Value="{DynamicResource GscSafetyFillBrush}"/>
+                        <Setter Property="BorderBrush" Value="{DynamicResource GscWarningBrush}"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding SelectedGame.HealthState}" Value="Warning">
+                        <Setter Property="Background" Value="{DynamicResource GscSafetyFillBrush}"/>
+                        <Setter Property="BorderBrush" Value="{DynamicResource GscWarningBrush}"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding SelectedGame.HealthState}" Value="Attention">
+                        <Setter Property="Background" Value="{DynamicResource GscSafetyFillBrush}"/>
+                        <Setter Property="BorderBrush" Value="{DynamicResource GscWarningBrush}"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding SelectedGame.HealthState}" Value="Running">
+                        <Setter Property="Background" Value="{DynamicResource GscInfoIconFillBrush}"/>
+                        <Setter Property="BorderBrush" Value="{DynamicResource GscInfoBrush}"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="SaveHealthStateText" TargetType="TextBlock">
+                <Setter Property="Foreground" Value="{DynamicResource GscSecondaryTextBrush}"/>
+                <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding SelectedGame.HealthState}" Value="Healthy">
+                        <Setter Property="Foreground" Value="{DynamicResource GscSuccessBrush}"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding SelectedGame.HealthState}" Value="Ready">
+                        <Setter Property="Foreground" Value="{DynamicResource GscSuccessBrush}"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding SelectedGame.HealthState}" Value="Risk">
+                        <Setter Property="Foreground" Value="{DynamicResource GscWarningBrush}"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding SelectedGame.HealthState}" Value="Warning">
+                        <Setter Property="Foreground" Value="{DynamicResource GscWarningBrush}"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding SelectedGame.HealthState}" Value="Attention">
+                        <Setter Property="Foreground" Value="{DynamicResource GscWarningBrush}"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding SelectedGame.HealthState}" Value="Running">
+                        <Setter Property="Foreground" Value="{DynamicResource GscInfoBrush}"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
             <Style x:Key="SaveFirstHeader" TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}"><Setter Property="Tag"><Setter.Value><CornerRadius>11,0,0,0</CornerRadius></Setter.Value></Setter></Style>
             <Style x:Key="SaveLastHeader" TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}"><Setter Property="Tag"><Setter.Value><CornerRadius>0,11,0,0</CornerRadius></Setter.Value></Setter></Style>
             <Style x:Key="SaveTabControl" TargetType="TabControl" BasedOn="{StaticResource GscRedesignWorkspaceTabControl}">
@@ -158,14 +214,14 @@
             <TabItem Header="路径与校验">
                 <Grid>
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="14"/><RowDefinition Height="*"/></Grid.RowDefinitions>
-                    <Border x:Name="SaveCurrentRuleCard" Grid.Row="0" Style="{DynamicResource GscReadingCardStyle}" Padding="14,12" VerticalAlignment="Top">
+                    <Border x:Name="SaveCurrentRuleCard" Grid.Row="0" Style="{DynamicResource GscReadingCardStyle}" Padding="12,10" VerticalAlignment="Top">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition x:Name="SaveCurrentRuleActionsRow" Height="0"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="54"/>
+                                <ColumnDefinition Width="46"/>
                                 <ColumnDefinition Width="*" MinWidth="0"/>
                                 <ColumnDefinition x:Name="SaveCurrentRuleStatusColumn" Width="Auto"/>
                                 <ColumnDefinition x:Name="SaveCurrentRuleActionsColumn" Width="Auto"/>
@@ -173,19 +229,16 @@
                             <ContentControl Style="{StaticResource GscSelectedGameIconControl}" Content="{Binding SelectedGameIcon}" VerticalAlignment="Center"/>
                             <StackPanel Grid.Column="1" MinWidth="0" VerticalAlignment="Center" Margin="10,0,0,0">
                                 <TextBlock Text="当前存档规则" Style="{DynamicResource GscSectionTitleStyle}"/>
-                                <TextBlock Text="{Binding SelectedGame.LudusaviName, Mode=OneWay, TargetNullValue=尚未匹配 Ludusavi 规则}" Style="{DynamicResource GscBodyStyle}" Margin="0,4,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedGame.LudusaviName}"/>
-                                <TextBlock Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedGame.HealthReasonDisplay, Mode=OneWay}"><Run Text="{Binding SelectedGame.MatchStateDisplay, Mode=OneWay, TargetNullValue=未匹配}"/><Run Text=" · "/><Run Text="{Binding SelectedGame.HealthStateDisplay, Mode=OneWay, TargetNullValue=尚未校验}"/></TextBlock>
+                                <TextBlock Text="{Binding SelectedGame.LudusaviName, Mode=OneWay, TargetNullValue=尚未匹配 Ludusavi 规则}" Style="{DynamicResource GscBodyStyle}" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedGame.LudusaviName}"/>
+                                <TextBlock Style="{DynamicResource GscCaptionStyle}" Margin="0,2,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedGame.HealthReasonDisplay, Mode=OneWay}"><Run Text="{Binding SelectedGame.MatchStateDisplay, Mode=OneWay, TargetNullValue=未匹配}"/><Run Text=" · "/><Run Text="{Binding SelectedGame.HealthStateDisplay, Mode=OneWay, TargetNullValue=尚未校验}"/></TextBlock>
                             </StackPanel>
-                            <Border Grid.Column="2" Style="{DynamicResource GscRedesignContextPill}" Padding="10,6" Margin="14,0,0,0" VerticalAlignment="Center">
-                                <StackPanel>
-                                    <TextBlock Text="校验状态" Style="{DynamicResource GscCaptionStyle}"/>
-                                    <TextBlock Text="{Binding SelectedGame.HealthStateDisplay, Mode=OneWay, TargetNullValue=尚未校验}" FontWeight="SemiBold" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedGame.HealthReasonDisplay, Mode=OneWay}"/>
-                                </StackPanel>
+                            <Border x:Name="SaveHealthBadge" Grid.Column="2" Style="{StaticResource SaveHealthStateBadge}" Margin="14,0,0,0" ToolTip="{Binding SelectedGame.HealthReasonDisplay, Mode=OneWay}">
+                                <TextBlock Style="{StaticResource SaveHealthStateText}" HorizontalAlignment="Center"><Run Text="校验状态："/><Run Text="{Binding SelectedGame.HealthStateDisplay, Mode=OneWay, TargetNullValue=尚未校验}" FontWeight="SemiBold"/></TextBlock>
                             </Border>
                             <WrapPanel x:Name="SaveCurrentRuleActions" Grid.Column="3" Margin="14,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Right">
-                                <ui:Button x:Name="SaveDetectPathsButton" Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding DetectPathsCommand}" Content="立即扫描" MinHeight="38" MinWidth="104" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                                <ui:Button x:Name="SaveValidateButton" Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding ValidateCommand}" Content="重新校验" MinHeight="38" MinWidth="104" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                                <ui:Button x:Name="SaveLoadDetailsButton" Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding LoadDetailsCommand}" Content="刷新详情" MinHeight="38" MinWidth="104" VerticalAlignment="Center"/>
+                                <ui:Button x:Name="SaveDetectPathsButton" Style="{DynamicResource GscWpfUiCompactButton}" Appearance="Primary" Command="{Binding DetectPathsCommand}" Content="立即扫描" MinHeight="38" MinWidth="100" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                <ui:Button x:Name="SaveValidateButton" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding ValidateCommand}" Content="重新校验" MinHeight="38" MinWidth="100" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                <ui:Button x:Name="SaveLoadDetailsButton" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding LoadDetailsCommand}" Content="刷新详情" MinHeight="38" MinWidth="100" VerticalAlignment="Center"/>
                             </WrapPanel>
                         </Grid>
                     </Border>
