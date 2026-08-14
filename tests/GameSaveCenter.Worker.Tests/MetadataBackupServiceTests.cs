@@ -36,7 +36,7 @@ public sealed class MetadataBackupServiceTests : IDisposable
         await File.WriteAllTextAsync(options.RuntimeSettingsPath, "token=super-secret\nLudusaviExecutable=C:\\tools\\ludusavi.exe\n");
 
         var service = new MetadataBackupService(options, store, NullLogger<MetadataBackupService>.Instance);
-        var result = await service.CreateAsync(CancellationToken.None);
+        var result = await service.CreateAsync(new MetadataBackupCreateRequestDto(), CancellationToken.None);
 
         Assert.True(File.Exists(result.PackagePath));
         Assert.True(result.PackageBytes > 0);
@@ -46,6 +46,7 @@ public sealed class MetadataBackupServiceTests : IDisposable
         Assert.Contains("settings/worker-settings.json", names);
         Assert.Contains("manifest.json", names);
         Assert.Contains("README.txt", names);
+        Assert.DoesNotContain("settings/plugin-settings.json", names);
         Assert.DoesNotContain(names, x => x.Contains("Saves", StringComparison.OrdinalIgnoreCase));
         Assert.DoesNotContain(names, x => x.Contains("Media", StringComparison.OrdinalIgnoreCase));
 
@@ -73,12 +74,15 @@ public sealed class MetadataBackupServiceTests : IDisposable
         await store.AppendAuditAsync("Test", "before package", "{}", CancellationToken.None);
         Directory.CreateDirectory(Path.GetDirectoryName(options.RuntimeSettingsPath)!);
         await File.WriteAllTextAsync(options.RuntimeSettingsPath, "LudusaviExecutable=C:\\tools\\ludusavi.exe\n");
+        const string pluginSettings = "{\"Settings\":{\"WorkerExecutable\":\"C:\\\\tools\\\\worker.exe\",\"ThemeMode\":2}}";
         var service = new MetadataBackupService(options, store, NullLogger<MetadataBackupService>.Instance);
-        var backup = await service.CreateAsync(CancellationToken.None);
+        var backup = await service.CreateAsync(new MetadataBackupCreateRequestDto { PluginSettingsJson = pluginSettings }, CancellationToken.None);
         await store.AppendAuditAsync("Test", "after package", "{}", CancellationToken.None);
 
         var preview = await service.PreviewAsync(backup.PackagePath, CancellationToken.None);
         Assert.True(preview.Valid);
+        Assert.Contains("plugin-settings.json", preview.Summary);
+        Assert.Contains("worker.exe", preview.PluginSettingsJson);
         var restored = await service.RestoreAsync(new MetadataRestoreRequestDto
         {
             PackagePath = backup.PackagePath,
@@ -86,6 +90,7 @@ public sealed class MetadataBackupServiceTests : IDisposable
         }, CancellationToken.None);
 
         Assert.True(restored.Restored);
+        Assert.Contains("worker.exe", restored.PluginSettingsJson);
         Assert.True(Directory.Exists(restored.PreRestorePath));
         Assert.True(File.Exists(Path.Combine(restored.PreRestorePath, "gamesavecenter.db")));
         await using var connection = new SqliteConnection($"Data Source={options.DatabasePath};Mode=ReadOnly;Cache=Shared");
@@ -99,7 +104,7 @@ public sealed class MetadataBackupServiceTests : IDisposable
     public async Task MetadataRestoreRequiresConfirmation()
     {
         var service = new MetadataBackupService(options, store, NullLogger<MetadataBackupService>.Instance);
-        var backup = await service.CreateAsync(CancellationToken.None);
+        var backup = await service.CreateAsync(new MetadataBackupCreateRequestDto(), CancellationToken.None);
 
         var ex = await Assert.ThrowsAsync<WorkerOperationException>(() => service.RestoreAsync(
             new MetadataRestoreRequestDto { PackagePath = backup.PackagePath, Confirmed = false },
@@ -131,6 +136,16 @@ public sealed class MetadataBackupServiceTests : IDisposable
         var traversalPreview = await service.PreviewAsync(traversal, CancellationToken.None);
         Assert.False(traversalPreview.Valid);
         Assert.Contains("越界", traversalPreview.Summary, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public async Task MetadataBackupRejectsInvalidPluginSettings()
+    {
+        var service = new MetadataBackupService(options, store, NullLogger<MetadataBackupService>.Instance);
+        var ex = await Assert.ThrowsAsync<WorkerOperationException>(() => service.CreateAsync(
+            new MetadataBackupCreateRequestDto { PluginSettingsJson = "{not-json" },
+            CancellationToken.None));
+        Assert.Equal("METADATA_PLUGIN_SETTINGS_INVALID", ex.Code);
     }
 
     private static void CreatePackage(string path, IReadOnlyDictionary<string, byte[]> entries)

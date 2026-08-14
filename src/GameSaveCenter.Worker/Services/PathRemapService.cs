@@ -63,7 +63,7 @@ public sealed class PathRemapService
                 $"存在 {preview.MissingTargetCount} 条目标路径不存在，已按默认策略跳过本次迁移。",
                 string.Join("；", preview.Items.Where(x => !x.TargetExists).Take(20).Select(x => x.NewPath)));
 
-        var metadataBackup = await _metadataBackup.CreateAsync(token).ConfigureAwait(false);
+        var metadataBackup = await _metadataBackup.CreateAsync(new MetadataBackupCreateRequestDto(), token).ConfigureAwait(false);
         _logger.LogInformation("Path remap created metadata backup before apply: {PackagePath}", metadataBackup.PackagePath);
 
         var affectedRows = await _store.RemapStoredPathsAsync(oldRoot, newRoot, token).ConfigureAwait(false);

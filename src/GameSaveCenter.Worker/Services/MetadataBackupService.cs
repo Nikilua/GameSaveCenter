@@ -36,10 +36,12 @@ public sealed class MetadataBackupService
         _logger = logger;
     }
 
-    public async Task<MetadataBackupResultDto> CreateAsync(CancellationToken token)
+    public async Task<MetadataBackupResultDto> CreateAsync(MetadataBackupCreateRequestDto request, CancellationToken token)
     {
         if (!File.Exists(_options.DatabasePath))
             throw new WorkerOperationException("METADATA_DATABASE_MISSING", "GameSaveCenter 数据库不存在，无法生成元数据灾备包。", _options.DatabasePath);
+        if (request == null)
+            throw new WorkerOperationException("METADATA_REQUEST_INVALID", "元数据灾备请求无效。");
 
         var createdUtc = DateTime.UtcNow;
         var backupRoot = Path.Combine(_options.DataDirectory, "MetadataBackups");
@@ -65,6 +67,28 @@ public sealed class MetadataBackupService
                 settingsSha256 = await ComputeSha256Async(settingsPath, token).ConfigureAwait(false);
             }
 
+            var hasPluginSettings = !string.IsNullOrWhiteSpace(request.PluginSettingsJson);
+            string? pluginSettingsSha256 = null;
+            string? pluginSettingsPath = null;
+            if (hasPluginSettings)
+            {
+                if (request.PluginSettingsJson.Length > 1024 * 1024)
+                    throw new WorkerOperationException("METADATA_PLUGIN_SETTINGS_TOO_LARGE", "Playnite 插件设置超过 1 MiB 安全上限，已拒绝生成灾备包。");
+                try
+                {
+                    using var document = JsonDocument.Parse(request.PluginSettingsJson);
+                    if (document.RootElement.ValueKind != JsonValueKind.Object)
+                        throw new JsonException("settings root is not an object");
+                }
+                catch (JsonException ex)
+                {
+                    throw new WorkerOperationException("METADATA_PLUGIN_SETTINGS_INVALID", "Playnite 插件设置不是有效 JSON，已拒绝生成灾备包。", ex.Message);
+                }
+                pluginSettingsPath = Path.Combine(temporaryDirectory, "plugin-settings.json");
+                await File.WriteAllTextAsync(pluginSettingsPath, Sanitize(request.PluginSettingsJson), new UTF8Encoding(false), token).ConfigureAwait(false);
+                pluginSettingsSha256 = await ComputeSha256Async(pluginSettingsPath, token).ConfigureAwait(false);
+            }
+
             var manifest = new
             {
                 schemaVersion = 1,
@@ -74,6 +98,8 @@ public sealed class MetadataBackupService
                 databaseSha256,
                 settingsFile = hasSettings ? "settings/worker-settings.json" : null,
                 settingsSha256,
+                pluginSettingsFile = hasPluginSettings ? "settings/plugin-settings.json" : null,
+                pluginSettingsSha256,
                 excludes = new[] { "存档", "媒体", "Rclone 凭据" }
             };
 
@@ -84,6 +110,8 @@ public sealed class MetadataBackupService
                 archive.CreateEntryFromFile(databaseSnapshot, "database/gamesavecenter.db", CompressionLevel.Fastest);
                 if (hasSettings)
                     archive.CreateEntryFromFile(settingsPath, "settings/worker-settings.json", CompressionLevel.Fastest);
+                if (hasPluginSettings && pluginSettingsPath != null)
+                    archive.CreateEntryFromFile(pluginSettingsPath, "settings/plugin-settings.json", CompressionLevel.Fastest);
             }
 
             var packageInfo = new FileInfo(temporaryZip);
@@ -96,8 +124,9 @@ public sealed class MetadataBackupService
                 PackagePath = packagePath,
                 CreatedUtc = createdUtc,
                 PackageBytes = new FileInfo(packagePath).Length,
-                IncludedFileCount = hasSettings ? 4 : 3,
-                Summary = $"元数据灾备包已生成：SQLite 快照、Worker 设置和版本清单；未包含存档、媒体或凭据。"
+                IncludedFileCount = 3 + (hasSettings ? 1 : 0) + (hasPluginSettings ? 1 : 0),
+                PluginSettingsIncluded = hasPluginSettings,
+                Summary = $"元数据灾备包已生成：SQLite 快照、Worker 设置{(hasPluginSettings ? "、Playnite 插件设置" : string.Empty)}和版本清单；未包含存档、媒体或凭据。"
             };
             await _store.AppendAuditAsync("MetadataBackup", "已生成 GameSaveCenter 元数据灾备包",
                 JsonSerializer.Serialize(new
@@ -134,8 +163,10 @@ public sealed class MetadataBackupService
                 SchemaVersion = extracted.SchemaVersion,
                 DatabaseSha256 = extracted.DatabaseSha256,
                 SettingsSha256 = extracted.SettingsSha256,
+                PluginSettingsSha256 = extracted.PluginSettingsSha256,
+                PluginSettingsJson = extracted.PluginSettingsJson,
                 Entries = extracted.Entries,
-                Summary = $"元数据包有效：schema {extracted.SchemaVersion}，包含 {extracted.Entries.Count} 个文件，数据库与设置哈希校验通过。"
+                Summary = $"元数据包有效：schema {extracted.SchemaVersion}，包含 {extracted.Entries.Count} 个文件，数据库与设置哈希校验通过{(extracted.PluginSettingsSha256.Length > 0 ? "，包含 settings/plugin-settings.json" : string.Empty)}。"
             };
         }
         catch (Exception ex)
@@ -208,7 +239,10 @@ public sealed class MetadataBackupService
                 {
                     Restored = true,
                     PreRestorePath = preRestore,
-                    Summary = "元数据恢复完成：数据库与设置已替换并通过完整性校验；恢复前副本保留在 " + preRestore + "。"
+                    PluginSettingsJson = extracted.PluginSettingsJson,
+                    Summary = "元数据恢复完成：数据库与设置已替换并通过完整性校验" +
+                        (extracted.PluginSettingsJson.Length > 0 ? "，Playnite 插件设置将由插件侧导入" : string.Empty) +
+                        "；恢复前副本保留在 " + preRestore + "。"
                 };
             }
             catch
@@ -290,7 +324,18 @@ public sealed class MetadataBackupService
                 throw new WorkerOperationException("METADATA_PACKAGE_HASH_MISMATCH", "设置文件哈希与清单不一致，已拒绝恢复。");
         }
 
-        return new ExtractedMetadata(manifest.SchemaVersion, databaseSha256, settingsSha256, entries);
+        var pluginSettingsSha256 = string.Empty;
+        var pluginSettingsJson = string.Empty;
+        var pluginSettingsPath = Path.Combine(temporary, "settings", "plugin-settings.json");
+        if (File.Exists(pluginSettingsPath))
+        {
+            pluginSettingsJson = await File.ReadAllTextAsync(pluginSettingsPath, token).ConfigureAwait(false);
+            pluginSettingsSha256 = await ComputeSha256Async(pluginSettingsPath, token).ConfigureAwait(false);
+            if (!string.Equals(pluginSettingsSha256, manifest.PluginSettingsSha256, StringComparison.OrdinalIgnoreCase))
+                throw new WorkerOperationException("METADATA_PACKAGE_HASH_MISMATCH", "Playnite 插件设置哈希与清单不一致，已拒绝恢复。");
+        }
+
+        return new ExtractedMetadata(manifest.SchemaVersion, databaseSha256, settingsSha256, pluginSettingsSha256, pluginSettingsJson, entries);
     }
 
     private static async Task<string> ReadEntryTextAsync(ZipArchiveEntry entry, CancellationToken token)
@@ -325,6 +370,7 @@ public sealed class MetadataBackupService
         + "\n包含：\n"
         + "- SQLite 数据库一致性快照（database/gamesavecenter.db）\n"
         + "- Worker 设置（settings/worker-settings.json，敏感字段已脱敏）\n"
+        + "- Playnite 插件设置（settings/plugin-settings.json，设备身份不包含）\n"
         + "- 版本与校验清单（manifest.json）\n"
         + "\n不包含真实存档、媒体文件、Rclone 配置或凭据。\n";
 
@@ -363,12 +409,19 @@ public sealed class MetadataBackupService
         try { if (Directory.Exists(path)) Directory.Delete(path, true); } catch { }
     }
 
-    private sealed record ExtractedMetadata(int SchemaVersion, string DatabaseSha256, string SettingsSha256, List<string> Entries);
+    private sealed record ExtractedMetadata(
+        int SchemaVersion,
+        string DatabaseSha256,
+        string SettingsSha256,
+        string PluginSettingsSha256,
+        string PluginSettingsJson,
+        List<string> Entries);
 
     private sealed class MetadataManifestInfo
     {
         public int SchemaVersion { get; set; }
         public string DatabaseSha256 { get; set; } = string.Empty;
         public string SettingsSha256 { get; set; } = string.Empty;
+        public string PluginSettingsSha256 { get; set; } = string.Empty;
     }
 }

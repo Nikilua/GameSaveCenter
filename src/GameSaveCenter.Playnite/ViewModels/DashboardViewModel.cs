@@ -25,6 +25,9 @@ namespace GameSaveCenter.Playnite.ViewModels
     /// <summary>Apple-inspired dashboard state; all file operations remain in the Worker.</summary>
     public sealed partial class DashboardViewModel : ObservableObject
     {
+        partial void OnWorkspaceStateInitialize();
+        partial void OnWorkspaceStateInputsChanged();
+
         private static readonly ILogger Logger = LogManager.GetLogger();
         private readonly GameSaveCenterPlugin plugin;
         private readonly GamePickerViewModel gamePicker;
@@ -140,6 +143,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             gamePicker.ApplyPersistedState(plugin.Settings.GamePickerSearchText, plugin.Settings.GamePickerStatusFilter, plugin.Settings.GamePickerPlatformFilter, plugin.Settings.GamePickerSortMode);
             gamePicker.StateChanged += OnGamePickerStateChanged;
             gamePicker.PropertyChanged += OnGamePickerPropertyChanged;
+            OnWorkspaceStateInitialize();
             gameIconProvider = new PlayniteGameIconProvider(plugin.PlayniteApi);
             plugin.PlayniteGameStarted += OnPlayniteGameStarted;
             gameSearchText = gamePicker.SearchText;
@@ -310,7 +314,15 @@ namespace GameSaveCenter.Playnite.ViewModels
         public IReadOnlyList<string> GameStatusFilterOptions { get; } = new[] { "全部", "已就绪", "未匹配", "运行中", "需关注", "有历史" };
         public IReadOnlyList<string> GameSortOptions { get; } = new[] { "名称", "运行优先", "匹配优先", "最近备份" };
 
-        public DashboardSnapshotDto Snapshot { get => snapshot; private set => SetValue(ref snapshot, value); }
+        public DashboardSnapshotDto Snapshot
+        {
+            get => snapshot;
+            private set
+            {
+                SetValue(ref snapshot, value);
+                OnWorkspaceStateInputsChanged();
+            }
+        }
         public EnvironmentCheckReportDto EnvironmentCheck { get => environmentCheck; private set { SetValue(ref environmentCheck, value ?? new EnvironmentCheckReportDto()); RaiseCommandStates(); } }
         public bool IsOnboardingPending => !plugin.Settings.OnboardingCompleted;
         public string OnboardingTitle => IsOnboardingPending ? "首次使用：准备环境" : "环境检查";
@@ -324,6 +336,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             private set
             {
                 SetValue(ref effectiveSettings, value);
+                OnWorkspaceStateInputsChanged();
                 RaiseCommandStates();
             }
         }
@@ -333,6 +346,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             private set
             {
                 SetValue(ref isBusy, value);
+                OnWorkspaceStateInputsChanged();
                 RaiseCommandStates();
             }
         }
@@ -1266,10 +1280,14 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task CreateMetadataBackupAsync()
         {
-            var result = await plugin.RequestAsync<MetadataBackupResultDto>(MessageTypes.CreateMetadataBackup, new { }, TimeSpan.FromMinutes(5));
+            var result = await plugin.RequestAsync<MetadataBackupResultDto>(
+                MessageTypes.CreateMetadataBackup,
+                new MetadataBackupCreateRequestDto { PluginSettingsJson = plugin.Settings.ExportPortableJson() },
+                TimeSpan.FromMinutes(5));
             ApplyOnUi(() =>
             {
-                MetadataBackupSummary = $"元数据灾备包已生成：{result.PackagePath}（{result.PackageBytes / 1024d / 1024d:0.#} MiB）";
+                MetadataBackupSummary = $"元数据灾备包已生成：{result.PackagePath}（{result.PackageBytes / 1024d / 1024d:0.#} MiB）" +
+                    (result.PluginSettingsIncluded ? "，已包含 Playnite 插件设置。" : string.Empty);
                 StatusMessage = result.Summary;
             });
         }
@@ -1284,6 +1302,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             };
             if (dialog.ShowDialog() != true) return;
 
+            var preRestorePluginJson = plugin.Settings.ExportPortableJson();
             var preview = await plugin.RequestAsync<MetadataRestorePreviewDto>(
                 MessageTypes.PreviewMetadataRestore,
                 new MetadataRestoreRequestDto { PackagePath = dialog.FileName },
@@ -1297,7 +1316,7 @@ namespace GameSaveCenter.Playnite.ViewModels
 
             var confirmed = await plugin.ConfirmAsync(
                 "恢复元数据",
-                preview.Summary + "\n\n恢复会替换数据库与 Worker 设置，并保留恢复前副本。是否继续？",
+                preview.Summary + "\n\n恢复会替换数据库与 Worker/Playnite 设置，并保留恢复前副本。是否继续？",
                 "恢复",
                 "取消",
                 isDangerous: true);
@@ -1307,7 +1326,35 @@ namespace GameSaveCenter.Playnite.ViewModels
                 MessageTypes.ExecuteMetadataRestore,
                 new MetadataRestoreRequestDto { PackagePath = dialog.FileName, Confirmed = true },
                 TimeSpan.FromMinutes(10));
-            ApplyOnUi(() => MetadataRestoreSummary = result.Summary);
+            if (!string.IsNullOrWhiteSpace(result.PluginSettingsJson))
+            {
+                try
+                {
+                    var importReport = plugin.Settings.ImportPortableJson(result.PluginSettingsJson);
+                    plugin.SavePluginSettings(plugin.Settings);
+                    plugin.NotifyVisualSettingsChanged();
+                    plugin.ApplySettingsAsync();
+                    ApplyOnUi(() => MetadataRestoreSummary = result.Summary + "\n" + importReport.Summary);
+                }
+                catch (Exception ex)
+                {
+                    try
+                    {
+                        plugin.Settings.ImportPortableJson(preRestorePluginJson);
+                        plugin.SavePluginSettings(plugin.Settings);
+                        plugin.NotifyVisualSettingsChanged();
+                    }
+                    catch
+                    {
+                        // Preserve the original failure; plugin settings rollback is best effort.
+                    }
+                    throw new InvalidOperationException("元数据已恢复，但 Playnite 插件设置应用失败，已回滚插件设置：" + ex.Message, ex);
+                }
+            }
+            else
+            {
+                ApplyOnUi(() => MetadataRestoreSummary = result.Summary);
+            }
             StatusMessage = result.Summary;
             await LoadDiagnosticsAsync();
         }
