@@ -2,6 +2,11 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 文档：README 与旧文档版本号同步到 0.6.70
+
+- README 当前版本显式标注 `0.6.70-development-preview`（extension.yaml / DLL `0.6.70.0`）。
+- 同步 `docs/design/APPLE_UI_GUIDE.md`、`docs/KNOWN_ISSUES.md`、`docs/CODEX_FULL_HANDOFF.md` 中仍停留在 0.6.22/0.6.46/0.6.55 的版本号。
+
 ## 2026-08-14 崩溃修复与 Metadata 原子回滚
 
 - 真实 Playnite 09:58:04 崩溃根因：`GscWorkspaceStatePresenter` 模板中重试按钮使用普通 `Button`，却应用 `GscWpfUiActionButton`（TargetType 为 `ui:Button`），切换存档页渲染状态控件时抛 `XamlParseException: “Button”TargetType 与元素“Button”的类型不匹配`。已改为 `ui:Button` 并增加源码回归断言。
