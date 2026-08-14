@@ -8,12 +8,13 @@
 - 来源：`GameSaveCenter_UI_Design_and_Prompt_Pack_v3.zip`，计划在 `docs/ai/UI_VISUAL_REWORK_PLAN_V3.md`。
 - Overview：当前游戏卡三按钮同排同几何；最近 30 天动作/统计/折叠三层分离；全局活动为轻量表四列，Time 固定 112 DIP，窄窗 chips 下移。
 - Save：当前存档规则状态一行 badge 并按 `SelectedGame.HealthState` 着色，三按钮统一紧凑几何，卡片压高。
-- Maintenance：环境卡摘要化，首次环境检查/更多维护操作统一 `GscDisclosureCard`（去尾部 `>`），FindingsGrid 五列最小宽度收敛为 72/120/160/*180/140。
-- Disclosure 统一入口：`GscDisclosureCard`（别名 `GscDisclosureCardExpander` 保留），Chevron 独立图标区、整行可点、Hover/Expanded 主题态。
+- Maintenance：环境卡摘要化，首次环境检查/更多维护操作统一 `GscDisclosureCard`（去尾部 `>`），FindingsGrid 五列最小宽度收敛为 72/120/160/*180/140；两个主 Disclosure 内容使用内部有限滚动，展开不挤压主表。
+- Disclosure 统一入口：`GscDisclosureCard`（别名 `GscDisclosureCardExpander` 保留），Chevron 独立图标区、整行可点、Hover/Expanded 主题态；Media/Save/Task 的旧 `GscExpander` 引用已全部替换，页面不再引用旧样式。
 - 颜色分层全部使用 DynamicResource/Design Token：正常绿、信息蓝、警告橙、错误红、中性灰蓝；未写死前景/背景。
 - 功能保真：REMOVE=0；命令、绑定、DataGrid 5 列、EnvironmentCheckItems、虚拟化和 GamePicker HARD LOCK 均未改。
-- 当前自动化基线：Release 0 warning/0 error；Core `59/59`、Worker `190/190`、Playnite `252/252`；render-qa 10 档 + 56 主题 + 7 Resize 全绿；UI Audit 0 HIGH/0 MEDIUM/33 INFO/0 失败路由。
-- 提交：`5c3bdae`（v3 计划）、`9ee3660`（Overview）、`e8b8c31`（Save/Maintenance）。真实 Playnite 宿主主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`。
+- 当前自动化基线：Release 0 warning/0 error；Core `59/59`、Worker `190/190`、Playnite `253/253`；render-qa 10 档 + 56 主题 + 7 Resize 全绿；UI Audit 0 HIGH/0 MEDIUM/33 INFO/0 失败路由。
+- 截图证据：`artifacts/ui-qa/v3-shots/` 10 张（当前游戏卡、保护折叠/展开、活动宽/窄、Save 标准/窄、Maintenance 初始/两个展开态），生成命令 `scripts/capture-v3-shots.ps1`。
+- 提交：`5c3bdae`（v3 计划）、`9ee3660`（Overview）、`e8b8c31`（Save/Maintenance），最终补强与文档提交见 `git log`。真实 Playnite 宿主主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`。
 
 ## 2026-08-14 UI-REFACTOR-V1（实施包 v1）当前事实
 
