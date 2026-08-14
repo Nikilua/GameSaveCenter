@@ -311,4 +311,5 @@ Audit 基线共有 143 个条件 UI、38 个 TextBox/PasswordBox、25 个 ComboB
 - HIGH：Before 10 项（候选表、审计日志、设备、进程等）→ After **0 项**。
 - MEDIUM：Before 4 项 → After **0 项**（最后一项为 Overview“当前游戏”操作行未命名 WrapPanel 92 DIP，已通过按钮底部间距 8→4 DIP 收口）。
 - 运行时警告：Before 62 → After 39；Audit 的工作区高度参数已与生产 Dashboard 和 render-qa 对齐（传窗口高度而非内容高度），避免在 1100×720 等尺寸下误报维护表过矮。
+- 主题覆盖：render-qa 新增 56 个强制 Light/Dark 离屏场景（7 工作区 × 4 尺寸 × 2 主题），调色板与主表/滚动面视口断言全部通过；真实 Playnite 宿主主题仍为 MANUAL QA REQUIRED。
 - 已知 INFO：仍有语义明确的 Master/Detail 与页面滚动并存，但不构成 HIGH；DataGrid 虚拟化与内部滚动全部保留。

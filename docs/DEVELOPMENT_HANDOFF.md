@@ -16,6 +16,12 @@
 - UI Audit 新增 `2k` 与 `narrow-1100` 尺寸；工作区 `ApplyResponsiveLayout` 现在接收窗口高度（与生产 Dashboard 和 render-qa 一致），不再使用内容高度造成 1100×720 维护设备/进程表 240 DIP 的误报。
 - 扩档后最终审计：HIGH `0`、MEDIUM `0`、运行时警告 39、失败路由 `0`。真实 Playnite 宿主主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`。
 
+## 2026-08-14 UI-REFACTOR-V1 强制 Light/Dark 主题 QA
+
+- RenderHarness 新增 `RunThemeQa`，复用生产 `AdaptiveThemePaletteFactory` 对 7 个工作区 × 1040×700 / 1100×720 / 1366×768 / 2560×1440 × Light/Dark 渲染，共 56 个离屏场景；调色板、主表视口和页面滚动面断言全部通过。
+- `GameSaveCenter.Playnite.csproj` 仅向 RenderHarness 开放 `InternalsVisibleTo`，生产 UI 与业务未改。
+- 像素采样确认主题切换有效：Light 背景约 `239,240,243`，Dark 约 `54,57,67`。真实 Playnite 宿主主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`。
+
 ## 2026-08-14 Final Code Gap Closure 与最终 Epic 状态
 
 - 当前基线：Core `59/59`、Worker `190/190`、Playnite `235/235`；Release 构建 0 warnings / 0 errors；source、XAML、WPF 静态门禁和 `render-qa` 通过；fault-injection 与 1000 轮 soak 通过。

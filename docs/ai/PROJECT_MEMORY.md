@@ -21,6 +21,7 @@
 - Phase 8（最终回归）已交付：Audit HIGH 从 10 清零、MEDIUM 从 4 降到 0，失败路由 0；最终测试基线 Core 59/Worker 190/Playnite 247；真实宿主主题/DPI/连续缩放仍为 MANUAL QA REQUIRED。
 - Phase 8 收口：`OverviewView.xaml` 把“当前游戏”卡片 3 个操作按钮底部边距从 8 收到 4 DIP，消除最后一个 Audit MEDIUM（未命名 WrapPanel 92 DIP）；顶部工作台工具栏使用 `Padding="14,10"`，1040×700 下由 91 降到 79 DIP。无 REMOVE，GamePicker 与 Dashboard 锁定区域未改。
 - 扩档验证：render-qa 覆盖 10 档逻辑尺寸（1040×700 / 1100×720 / 1280×720 / 1366×768 / 1536×864 / 1600×900 / 1707×960 / 1920×1080 / 2048×1152 / 2560×1440）；UI Audit 新增 2K 与 1100×720 尺寸，快照 161，HIGH/MEDIUM 均 0，运行时警告 39。Audit 工作区高度已改为窗口高度，与生产 Dashboard 和 render-qa 一致。
+- 主题 QA：RenderHarness 对 7 个工作区 × 4 尺寸 × Light/Dark 共 56 个离屏场景渲染并校验调色板与视口，全部通过；像素采样确认 Light/Dark 背景确实切换。真实 Playnite 宿主主题仍为 MANUAL QA REQUIRED。
 
 ## 当前事实覆盖（2026-08-14 Layer A 收口、Layer B 13 项与 Layer C 11 项）
 

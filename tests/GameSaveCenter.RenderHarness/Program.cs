@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.Settings;
 using GameSaveCenter.Playnite.Views;
 using GameSaveCenter.RenderHarness.UiAudit;
@@ -38,6 +39,20 @@ public static class Program
         (1920, 1080),
         (2048, 1152),
         (2560, 1440)
+    };
+
+    private static readonly (int Width, int Height)[] ThemeWindowSizes =
+    {
+        (1040, 700),
+        (1100, 720),
+        (1366, 768),
+        (2560, 1440)
+    };
+
+    private static readonly (string Name, GameSaveCenterThemeMode Mode)[] ThemeModes =
+    {
+        ("light", GameSaveCenterThemeMode.Light),
+        ("dark", GameSaveCenterThemeMode.Dark)
     };
 
     public static int Main(string[] args)
@@ -103,6 +118,7 @@ public static class Program
 
             RunDataGridScrollProbes(report);
             RunSettingsLayoutProbes(report);
+            RunThemeQa(outputRoot, report);
 
             if (s_problems.Count > 0)
             {
@@ -516,6 +532,159 @@ public static class Program
                 }
             }
         }
+    }
+
+    private static void RunThemeQa(string outputRoot, StringBuilder report)
+    {
+        report.AppendLine();
+        report.AppendLine("Theme QA (forced Light/Dark palettes, default tab)");
+        foreach (var (themeName, themeMode) in ThemeModes)
+        {
+            var themeDir = Path.Combine(outputRoot, "theme", themeName);
+            Directory.CreateDirectory(themeDir);
+            foreach (var (windowW, windowH) in ThemeWindowSizes)
+            {
+                var (contentW, contentH) = ContentSize(windowW, windowH);
+                var cases = new (string Name, UserControl View)[]
+                {
+                    ("Overview", CreateThemeView("Overview")),
+                    ("Save", CreateThemeView("Save")),
+                    ("Trainer", CreateThemeView("Trainer")),
+                    ("Media", CreateThemeView("Media")),
+                    ("Maintenance", CreateThemeView("Maintenance")),
+                    ("Task", CreateThemeView("Task")),
+                    ("Settings", CreateThemeView("Settings"))
+                };
+                foreach (var (name, view) in cases)
+                {
+                    var label = $"{themeName}/{name}/{windowW}x{windowH}";
+                    try
+                    {
+                        ApplyThemePalette(view, themeMode);
+                        var host = new Grid
+                        {
+                            Width = contentW,
+                            Height = contentH,
+                            Background = new SolidColorBrush(Color.FromRgb(24, 30, 43)),
+                            ClipToBounds = true
+                        };
+                        host.Children.Add(view);
+                        ApplyThemeResponsive(view, contentW, windowH);
+                        host.Measure(new Size(contentW, contentH));
+                        host.Arrange(new Rect(0, 0, contentW, contentH));
+                        host.UpdateLayout();
+                        ApplyThemeResponsive(view, contentW, windowH);
+                        if (name == "Settings")
+                            ApplyThemePalette(view, themeMode);
+                        host.UpdateLayout();
+                        SavePng(host, Path.Combine(themeDir, $"{name}-{windowW}x{windowH}.png"));
+                        VerifyThemePalette(view, label, themeMode);
+                        VerifyThemeViewport(host, label, report);
+                        report.AppendLine($"  {label} OK");
+                    }
+                    catch (Exception ex)
+                    {
+                        s_problems.Add($"{label} failed: {ex.Message}");
+                        report.AppendLine($"  {label} FAILED {ex.Message}");
+                    }
+                }
+            }
+        }
+    }
+
+    private static UserControl CreateThemeView(string name)
+    {
+        switch (name)
+        {
+            case "Overview":
+                return new OverviewView { DataContext = new FakeDashboardData() };
+            case "Save":
+                return new SaveCenterView { DataContext = new FakeDashboardData() };
+            case "Trainer":
+                return new TrainerCenterView { DataContext = new FakeDashboardData() };
+            case "Media":
+                return new MediaCenterView { DataContext = new FakeDashboardData() };
+            case "Maintenance":
+                return new MaintenanceView { DataContext = new FakeDashboardData() };
+            case "Task":
+                return new TaskCenterView { DataContext = new FakeDashboardData() };
+            case "Settings":
+                return new GameSaveCenterSettingsView { DataContext = new GameSaveCenterSettings() };
+            default:
+                throw new InvalidOperationException("Unknown theme view " + name);
+        }
+    }
+
+    private static void ApplyThemePalette(UserControl view, GameSaveCenterThemeMode mode)
+    {
+        var palette = AdaptiveThemePaletteFactory.Create(view, false, 50, mode);
+        AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(view.Resources, palette, false, false);
+    }
+
+    private static void ApplyThemeResponsive(UserControl view, double width, double height)
+    {
+        if (view is OverviewView overview)
+        {
+            var stack = width < 1200;
+            overview.OverviewCompactSecondaryRowHeight = stack ? GridLength.Auto : new GridLength(0);
+            overview.ApplyResponsiveColumns(stack);
+            overview.ApplyResponsiveWidth(width);
+            overview.ApplyResponsiveHeight(height, stack);
+            return;
+        }
+
+        var method = view.GetType().GetMethod(
+            "ApplyResponsiveLayout",
+            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        method?.Invoke(view, new object[] { width, height });
+    }
+
+    private static void VerifyThemePalette(UserControl view, string label, GameSaveCenterThemeMode mode)
+    {
+        var primary = view.TryFindResource("GscPrimaryTextBrush") as SolidColorBrush;
+        if (primary == null)
+        {
+            s_problems.Add($"{label} missing GscPrimaryTextBrush");
+            return;
+        }
+
+        var luminance = (0.2126 * primary.Color.R + 0.7152 * primary.Color.G + 0.0722 * primary.Color.B) / 255d;
+        var dark = luminance < 0.5;
+        var expectedDarkText = mode == GameSaveCenterThemeMode.Light;
+        if (dark != expectedDarkText)
+            s_problems.Add($"{label} palette mismatch (luminance={luminance:0.##}, dark={dark})");
+    }
+
+    private static void VerifyThemeViewport(Grid host, string label, StringBuilder report)
+    {
+        foreach (var grid in FindVisualChildren<DataGrid>(host))
+        {
+            if (string.IsNullOrEmpty(grid.Name) || grid.ActualHeight <= 0)
+                continue;
+            if (grid.ActualHeight < 236 && grid.Name != "MaintenanceAuditLogGrid")
+                s_problems.Add($"{label} {grid.Name} viewport {grid.ActualHeight:0} DIP (<236)");
+        }
+
+        foreach (var list in FindVisualChildren<ListBox>(host))
+        {
+            if (string.IsNullOrEmpty(list.Name) || list.ActualHeight <= 0)
+                continue;
+            if (list.ActualHeight < 236 && list.Name != "OverviewActivityList")
+                s_problems.Add($"{label} {list.Name} viewport {list.ActualHeight:0} DIP (<236)");
+        }
+
+        foreach (var scroller in FindVisualChildren<ScrollViewer>(host))
+        {
+            if (string.IsNullOrEmpty(scroller.Name))
+                continue;
+            var scrollable = scroller.ExtentHeight > scroller.ViewportHeight + 0.5;
+            if ((scroller.Name.Contains("ScrollSurface") || scroller.Name == "SettingsScroller")
+                && scroller.VerticalScrollBarVisibility == ScrollBarVisibility.Hidden
+                && scrollable)
+                s_problems.Add($"{label} {scroller.Name} hides overflow behind a Hidden scrollbar");
+        }
+
+        report.AppendLine($"  {label} viewport probe done");
     }
 
     private static void ProbeGrid(

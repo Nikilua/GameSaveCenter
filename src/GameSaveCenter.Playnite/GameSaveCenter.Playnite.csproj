@@ -21,5 +21,6 @@
   </ItemGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="GameSaveCenter.Playnite.Tests" />
+    <InternalsVisibleTo Include="GameSaveCenter.RenderHarness" />
   </ItemGroup>
 </Project>
