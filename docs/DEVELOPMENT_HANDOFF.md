@@ -8,7 +8,7 @@
 - 所有 Expander/Disclosure 统一到 `GscDisclosureCard`，Chevron 独立、整行可点、无尾部 `>`；Media/Save/Task 旧 `GscExpander` 引用已全部替换；Maintenance 主 Disclosure 使用内部有限滚动。
 - 功能保真：REMOVE=0，命令/绑定/DataGrid 列/虚拟化/GamePicker HARD LOCK 未改。
 - render-qa 新增按钮对齐探针；Overview Hero/当前游戏列按 1:1 布局，1536×864 下三按钮仍同排同高。
-- 自动化基线：Release 0 warning/0 error；Core `59/59`、Worker `190/190`、Playnite `253/253`；render-qa 10 档 + 56 主题 + 7 Resize 全绿；UI Audit 0 HIGH/0 MEDIUM/33 INFO/0 失败路由。
+- 自动化基线：Release 0 warning/0 error；Core `59/59`、Worker `190/190`、Playnite `253/253`；render-qa 10 档 + 56 主题 + 7 Resize 全绿；UI Audit 0 HIGH/0 MEDIUM/32 INFO/0 失败路由。
 - 提交：`5c3bdae`（计划）、`9ee3660`（Overview）、`e8b8c31`（Save/Maintenance），最终补强提交见 `git log`；v3 截图 `artifacts/ui-qa/v3-shots/`（脚本 `scripts/capture-v3-shots.ps1`），Audit `artifacts/ui-audit/v3-final/AUDIT_SUMMARY.md`。
 - 真实 Playnite 宿主主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`，不得冒充已人工验收。
 

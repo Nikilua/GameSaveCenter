@@ -101,7 +101,7 @@
 - Maintenance 两个主 Disclosure（首次环境检查 / 更多维护操作）内容使用内部有限滚动，展开后滚动条出现在折叠卡内部，FindingsGrid 首屏和主表视口不被挤掉。
 - render-qa 新增三按钮对齐探针；为修复 1536×864 下“查看需关注项”换行，Overview Hero/当前游戏列改为 1:1，10 档尺寸均同排同高。
 - 功能保真：REMOVE=0；`DetectPathsCommand`、`ValidateCommand`、`LoadDetailsCommand`、FindingsGrid 5 列、EnvironmentCheckItems 与全部维护命令保留；GamePicker HARD LOCK 未改。
-- 验证：Release 0 warning/0 error；Core `59/59`、Worker `190/190`、Playnite `253/253`；`check-xaml.ps1`、`validate-source.py`、WPF 静态审查（0 error）通过；render-qa 10 档 + 56 主题 + 7 Resize 全绿；UI Audit 0 HIGH/0 MEDIUM/33 INFO/0 失败路由。
+- 验证：Release 0 warning/0 error；Core `59/59`、Worker `190/190`、Playnite `253/253`；`check-xaml.ps1`、`validate-source.py`、WPF 静态审查（0 error）通过；render-qa 10 档 + 56 主题 + 7 Resize 全绿；UI Audit 0 HIGH/0 MEDIUM/32 INFO/0 失败路由。
 - 截图与证据：`artifacts/ui-qa/v3-shots/`（10 张，脚本 `scripts/capture-v3-shots.ps1`）、`artifacts/ui-qa/v3-final/`；`artifacts/ui-audit/v3-final/AUDIT_SUMMARY.md`。
 - 提交：`5c3bdae`（计划）、`9ee3660`（Overview）、`e8b8c31`（Save/Maintenance）及最终补强/文档提交，均已 push 到 `origin/main`。
 - 未验证项：真实 Playnite 宿主主题、DPI 与连续缩放的最终视觉仍为 `MANUAL QA REQUIRED`。
