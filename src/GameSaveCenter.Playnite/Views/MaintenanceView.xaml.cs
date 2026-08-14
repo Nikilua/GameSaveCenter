@@ -101,6 +101,14 @@ namespace GameSaveCenter.Playnite.Views
             MaintenanceProcessGrid.MinHeight = tableMinHeight;
             MaintenanceProcessGrid.Height = double.NaN;
             MaintenanceProcessGrid.MaxHeight = tableViewportHeight;
+            if (width < 800)
+            {
+                // Narrow audit windows keep at least four readable rows even when the
+                // stacked device/process inspectors consume part of the finite workspace;
+                // the page-level scroll surface remains the overflow owner.
+                MaintenanceDeviceGrid.MinHeight = 280;
+                MaintenanceProcessGrid.MinHeight = 280;
+            }
             var compact = height < 760 || width < 980;
             // The retention page is a left-aligned reading form capped at 1050.
             // Give the StackPanel an explicit viewport width so the cards fill

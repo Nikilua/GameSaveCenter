@@ -289,3 +289,26 @@ Audit 基线共有 143 个条件 UI、38 个 TextBox/PasswordBox、25 个 ComboB
 - 不确定是否可折叠：先 `COLLAPSE` 但保持 1～2 次操作可达。
 - 不确定是否可合并：不合并业务语义。
 - 所有不确定项记录到 `docs/ai/UI_REFACTOR_OPEN_QUESTIONS.md`，不自行做不可逆信息架构决定。
+
+## 11. Phase 状态与 After Audit
+
+| Phase | 范围 | 状态 | Commit |
+|---|---|---|---|
+| 0 | 基线 + 保真计划 | 完成 | `85e3d71` |
+| 1 | 共享布局基础 | 完成 | `a4deb1e` |
+| 2 | Overview | 完成 | `283342f` |
+| 3 | Save Center | 完成 | `c7bc847` |
+| 4a | Trainer Center | 完成 | `258c67b` |
+| 4b | Media Center | 完成 | `e84c904` |
+| 5 | Task Center | 完成 | `d6701cf` |
+| 6 | Maintenance Center | 完成 | `c29d831` |
+| 7 | Settings | 完成 | `5f9fca5` |
+| 8 | 最终回归 | 完成 | 当前提交 |
+
+### After Audit（commit `5f9fca5` 后的最终基线）
+
+- 静态 View 9、Tab 30、Button/ToggleButton 131、DataGrid 9、ScrollViewer 30、条件 UI 143、运行时快照 115、失败路由 0。
+- HIGH：Before 10 项（候选表、审计日志、设备、进程等）→ After **0 项**。
+- MEDIUM：Before 4 项 → After 2 项（Overview 工具栏高度 92 DIP，属于首页次要提示；后续可用真机视觉反馈收口）。
+- 运行时警告：Before 62 → After 42。
+- 已知 INFO：仍有语义明确的 Master/Detail 与页面滚动并存，但不构成 HIGH；DataGrid 虚拟化与内部滚动全部保留。

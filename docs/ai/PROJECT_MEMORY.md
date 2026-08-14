@@ -18,6 +18,7 @@
 - Phase 5（任务中心 Task）已交付：游戏筛选在 compact 进入“更多筛选”Expander、wide 回到主行；任务详情 Inspector 窄窗默认收起为详情按钮；操作行保持横向；任务表 1040×700 视口 252 DIP。新增 Task 窄窗切换与更多筛选移动回归测试。
 - Phase 6（维护中心 Maintenance）已交付：诊断常用按钮收敛为主行 5 个，低频命令进入共享 Expander；审计日志表视口提升到 280 DIP（约 6 行）；设备/进程/Findings 主表保持 350 DIP。保留策略与全部维护命令未改。
 - Phase 7（设置轻量统一）已交付：设置字段标签列宽 token 化为 `GscSettingsFieldColumnWidth`；五个设置分区与保存语义未改。
+- Phase 8（最终回归）已交付：Audit HIGH 从 10 清零、MEDIUM 从 4 降到 2，失败路由 0；最终测试基线 Core 59/Worker 190/Playnite 247；真实宿主主题/DPI/连续缩放仍为 MANUAL QA REQUIRED。
 
 ## 当前事实覆盖（2026-08-14 Layer A 收口、Layer B 13 项与 Layer C 11 项）
 

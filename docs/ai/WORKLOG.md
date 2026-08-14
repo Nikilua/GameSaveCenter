@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 UI-REFACTOR-V1 Phase 8 最终回归
+
+- 最终 Release 隔离构建 0 警告/0 错误；Core `59/59`、Worker `190/190`、Playnite `247/247`；source/XAML/WPF/render-qa 全绿。
+- 重跑 `scripts/capture-ui-audit.ps1`：HIGH 从 10 项清零，MEDIUM 从 4 项降到 2 项（Overview 工具栏高度 92 DIP），运行时警告 62 → 42，失败路由 0。
+- 最后补修 Maintenance 设备/进程 narrow 表最小视口到 280 DIP，使 Audit HIGH 归零。
+- `UI_REFACTOR_FIDELITY_PLAN.md` 已回填 Phase 0～8 状态与 After Audit。
+- 真实 Playnite 宿主主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`；离屏 Audit 与 render-qa 不代表真实宿主人工验收。
+
 ## 2026-08-14 UI-REFACTOR-V1 Phase 7 设置轻量统一
 
 - `DesignTokens.xaml` 新增共享 `GscSettingsFieldColumnWidth`（150 DIP），Settings 常规与目录页 8 个字段行全部改为引用该 token，消除页面级硬编码列宽。
