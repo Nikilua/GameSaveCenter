@@ -229,16 +229,16 @@ namespace GameSaveCenter.Playnite.Views
             Grid.SetColumnSpan(MaintenanceAuditInspector, stackAudit ? 3 : 1);
             Grid.SetRow(MaintenanceAuditInspector, stackAudit ? 1 : 0);
             MaintenanceAuditInspector.Margin = showAuditInspector && stackAudit ? new Thickness(0, 10, 0, 0) : new Thickness(0);
-            // The detail inspector owns only the selected finding; the recent audit log
-            // lives in its own full-width strip. In stacked mode both share the measured
-            // vertical budget so the findings table keeps a readable viewport.
+            // The detail inspector owns only the selected finding. The audit log now
+            // lives on its own secondary tab and fills that tab's star row.
             var auditAvailableHeight = MaintenanceAuditLayout.ActualHeight > 0
-                ? MaintenanceAuditLayout.ActualHeight - MaintenanceAuditLayout.RowDefinitions[2].ActualHeight
+                ? MaintenanceAuditLayout.ActualHeight
                 : Math.Max(320, height - 200);
             var auditInspectorHeight = Math.Max(96, Math.Min(420, auditAvailableHeight - tableMinHeight - 10));
             MaintenanceAuditInspector.MaxHeight = showAuditInspector && stackAudit ? auditInspectorHeight : double.PositiveInfinity;
-            MaintenanceAuditLogGrid.MinHeight = stackAudit ? 236 : 280;
-            MaintenanceAuditLogGrid.MaxHeight = stackAudit ? Math.Max(280, Math.Min(360, height * 0.42)) : 360;
+            MaintenanceAuditLogGrid.MinHeight = tableMinHeight;
+            MaintenanceAuditLogGrid.Height = double.NaN;
+            MaintenanceAuditLogGrid.MaxHeight = double.PositiveInfinity;
         }
 
         private static T? FindVisualChild<T>(DependencyObject? parent) where T : DependencyObject

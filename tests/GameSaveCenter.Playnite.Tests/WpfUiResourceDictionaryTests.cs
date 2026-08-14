@@ -1037,12 +1037,13 @@ public sealed class WpfUiResourceDictionaryTests
         var maintenancePath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml");
         var maintenanceText = File.ReadAllText(maintenancePath);
         var maintenance = XDocument.Parse(maintenanceText);
-        var auditPageScroller = maintenance.Descendants().Single(element =>
-            element.Name.LocalName == "ScrollViewer" &&
+        var auditSurface = maintenance.Descendants().Single(element =>
+            element.Name.LocalName == "Grid" &&
             element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "MaintenanceAuditScrollSurface");
-        Assert.Equal("Auto", auditPageScroller.Attribute("VerticalScrollBarVisibility")?.Value);
-        Assert.Equal("Disabled", auditPageScroller.Attribute("HorizontalScrollBarVisibility")?.Value);
-        Assert.Equal("False", auditPageScroller.Attribute("CanContentScroll")?.Value);
+        Assert.NotNull(auditSurface);
+        Assert.Contains("Header=\"发现的问题\"", maintenanceText);
+        Assert.Contains("Header=\"审计记录\"", maintenanceText);
+        Assert.Contains("Style=\"{StaticResource GscInternalTabControl}\"", maintenanceText);
         Assert.Contains("x:Name=\"MaintenanceAuditLayout\"", maintenanceText);
         Assert.Contains("x:Name=\"MaintenanceAuditInspector\"", maintenanceText);
         Assert.Contains("x:Name=\"MaintenanceAuditFindingsGrid\" Style=\"{StaticResource MaintenanceDataGrid}\"", maintenanceText);
@@ -1058,9 +1059,11 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("MaintenanceAuditFindingsGrid.Height = double.NaN", maintenanceCode);
         Assert.Contains("MaintenanceAuditFindingsGrid.MaxHeight = tableViewportHeight", maintenanceCode);
         Assert.Contains("var auditAvailableHeight", maintenanceCode);
-        Assert.Contains("MaintenanceAuditLayout.RowDefinitions[2].ActualHeight", maintenanceCode);
+        Assert.DoesNotContain("MaintenanceAuditLayout.RowDefinitions[2].ActualHeight", maintenanceCode);
         Assert.Contains("var auditInspectorHeight", maintenanceCode);
         Assert.Contains("MaintenanceAuditInspector.MaxHeight = showAuditInspector && stackAudit ? auditInspectorHeight : double.PositiveInfinity", maintenanceCode);
+        Assert.Contains("MaintenanceAuditLogGrid.MinHeight = tableMinHeight", maintenanceCode);
+        Assert.Contains("MaintenanceAuditLogGrid.MaxHeight = double.PositiveInfinity", maintenanceCode);
         Assert.DoesNotContain("Height=\"{DynamicResource GscTableViewportHeight}\"", maintenanceText);
     }
 
@@ -1080,8 +1083,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("<Setter Property=\"Visibility\" Value=\"Collapsed\"/>", maintenanceText);
         Assert.Contains("<Setter Property=\"Visibility\" Value=\"Visible\"/>", maintenanceText);
 
-        // The recent audit log left the detail inspector and owns a full-width strip
-        // below the findings table instead of being squeezed into the 360-DIP column.
+        // The audit log now lives on its own secondary tab and is the only main grid
+        // visible when that tab is selected.
         var auditInspector = maintenance.Descendants().Single(element =>
             element.Name.LocalName == "ScrollViewer" && element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "MaintenanceAuditInspector");
         Assert.DoesNotContain(auditInspector.Descendants(), element =>
@@ -1089,8 +1092,10 @@ public sealed class WpfUiResourceDictionaryTests
         var auditLog = maintenance.Descendants().Single(element =>
             element.Name.LocalName == "DataGrid" && element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "MaintenanceAuditLogGrid");
         Assert.Contains(auditLog.Ancestors(), ancestor =>
-            ancestor.Name.LocalName == "Border" && ancestor.Attribute("Grid.Row")?.Value == "2" && ancestor.Attribute("Grid.ColumnSpan")?.Value == "3");
-        Assert.Contains("MaintenanceAuditLogGrid.MinHeight = stackAudit ? 236 : 280", File.ReadAllText(maintenancePath + ".cs"));
+            ancestor.Name.LocalName == "TabItem" && ancestor.Attribute("Header")?.Value == "审计记录");
+        Assert.DoesNotContain(auditLog.Ancestors(), ancestor =>
+            ancestor.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "MaintenanceAuditLayout");
+        Assert.Contains("MaintenanceAuditLogGrid.MinHeight = tableMinHeight", File.ReadAllText(maintenancePath + ".cs"));
     }
 
     [Fact]

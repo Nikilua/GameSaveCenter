@@ -462,10 +462,12 @@ public static class Program
                 view => ((MaintenanceView)view).ApplyResponsiveLayout(900, height));
             ProbeGrid(report, "Maintenance-Audit", "MaintenanceAuditFindingsGrid", 3, height,
                 () => new MaintenanceView { DataContext = new FakeDashboardData(60) },
-                view => ((MaintenanceView)view).ApplyResponsiveLayout(900, height));
+                view => ((MaintenanceView)view).ApplyResponsiveLayout(900, height),
+                "发现的问题");
             ProbeGrid(report, "Maintenance-AuditLog", "MaintenanceAuditLogGrid", 3, height,
                 () => new MaintenanceView { DataContext = new FakeDashboardData(60) },
-                view => ((MaintenanceView)view).ApplyResponsiveLayout(900, height));
+                view => ((MaintenanceView)view).ApplyResponsiveLayout(900, height),
+                "审计记录");
         }
     }
 
@@ -851,7 +853,8 @@ public static class Program
         int tabIndex,
         double height,
         Func<UserControl> createView,
-        Action<UserControl> applyLayout)
+        Action<UserControl> applyLayout,
+        string? innerTabHeader = null)
     {
         try
         {
@@ -874,6 +877,19 @@ public static class Program
                 if (tabs != null && tabIndex < tabs.Items.Count)
                     tabs.SelectedIndex = tabIndex;
                 host.UpdateLayout();
+                if (!string.IsNullOrEmpty(innerTabHeader))
+                {
+                    var innerTabs = FindVisualChildren<TabControl>(host)
+                        .FirstOrDefault(candidate => candidate.Items
+                            .Cast<TabItem>()
+                            .Any(item => item.Header?.ToString() == innerTabHeader));
+                    var innerItem = innerTabs?.Items
+                        .Cast<TabItem>()
+                        .FirstOrDefault(item => item.Header?.ToString() == innerTabHeader);
+                    if (innerTabs != null && innerItem != null)
+                        innerTabs.SelectedItem = innerItem;
+                    host.UpdateLayout();
+                }
                 applyLayout(view);
                 host.UpdateLayout();
             }
