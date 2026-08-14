@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 UI-VISUAL-CORRECTION-V2 实施完成
+
+- Overview：根页成为唯一纵向滚动；主列/右列/风险卡取消滚动职责；风险卡去内滚与死空间；最近保护明细使用 `GscDisclosureCardExpander`；全局活动按 Tag 切换宽/紧凑行。
+- Save：`SaveCurrentRuleCard` 压成紧凑四列，三按钮等高/等宽，窄窗动作移到第二行；`SaveCandidateGrid` 最小视口提到 252 DIP。
+- Maintenance：Diagnostics 外层改 Grid，去掉 `Outer Scroll > FindingsGrid` 父子双滚动；环境明细、低频维护、运行状态收进 Disclosure；Audit 改为“发现的问题 / 审计记录”二级切换，同一时刻只显示一张主表。
+- Audit 新增 v2 断言：OV-001/002/003/005、SAVE-001/002、MAINT-001/002/003；最终 UI Audit HIGH `0`、MEDIUM `0`、运行时警告 `33`、161 快照、失败路由 `0`。
+- render-qa 10 档尺寸 + 56 主题场景 + 7 Resize 恢复全部通过；Core `59/59`、Worker `190/190`、Playnite `250/250`。
+
 ## 2026-08-14 UI-VISUAL-CORRECTION-V2 计划
 
 - 用户提供 `GameSaveCenter_UI_Visual_Correction_Pack_v2.zip`，本轮不推翻上一轮重构，只关闭截图/Audit 仍暴露的问题。

@@ -26,6 +26,7 @@
 - Resize 恢复：render-qa 新增 2560×1440 → 1100×720 → 2560×1440 同实例布局恢复探针，7 个工作区全部恢复；修复 Save/Task/Trainer Inspector 宽窗不恢复的缺陷，新增 3 条回归测试。
 - 验收审计：`docs/ai/UI_REFACTOR_ACCEPTANCE_AUDIT.md` 已落盘，逐项映射实施包验收清单；真实 Playnite 宿主主题/DPI/连续缩放与大数据滚动仍为 MANUAL QA REQUIRED。
 - 真实宿主 reload 已验证：`dev-install-run.ps1 -Configuration Release` 成功安装并启动 Playnite；`playnite.log` 记录 `Loaded plugin: GameSaveCenter, version 0.6.70`，扩展日志记录 `0.6.70.0 loaded`，Worker 从当前扩展目录运行，`18:10` 后无 ERROR/Exception/crash。
+- Visual Correction v2 已完成：Overview 单滚动、风险卡去内滚、Disclosure、活动行响应式、Save 卡片、Diagnostics 去父子双滚动、Audit 二级切换；新增 OV/SAVE/MAINT 断言，最终 Audit HIGH 0、MEDIUM 0、运行时警告 33。
 
 ## 当前事实覆盖（2026-08-14 Layer A 收口、Layer B 13 项与 Layer C 11 项）
 

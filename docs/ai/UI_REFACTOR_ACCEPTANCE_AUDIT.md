@@ -79,10 +79,18 @@
 
 - `AUTO VERIFIED`：Core `59/59`、Worker `190/190`、Playnite `250/250`。
 - `AUTO VERIFIED`：Release 构建 0 warning / 0 error；`scripts/validate-source.py`、WPF UI validator、`scripts/render-qa.ps1` 全部通过。
-- `AUTO VERIFIED`：UI Audit before/after：HIGH 10→0、MEDIUM 4→0、运行时警告 62→39、失败路由 0。
+- `AUTO VERIFIED`：UI Audit before/after：HIGH 10→0、MEDIUM 4→0、运行时警告 62→33（v1 收口 39，v2 收口 33）、失败路由 0。
 - `AUTO VERIFIED`：工作树干净，`origin/main` 已推送。
 - `AUTO VERIFIED`：真实宿主 reload 已完成；`playnite.log` 记录 `Loaded plugin: GameSaveCenter, version 0.6.70`，扩展日志记录 `0.6.70.0 loaded`，Worker 从当前扩展目录运行，`18:10` 后无 ERROR/Exception/crash。
 - `MANUAL QA REQUIRED`：真实宿主内的主题视觉、DPI 与连续缩放仍由用户人工验收。
+
+## UI Visual Correction v2 收口
+
+- Overview：根页唯一纵向滚动；主列/右列/风险卡无滚动职责；风险卡无内滚与死空间；保护明细使用 Disclosure；全局活动响应式行。
+- Save：`SaveCurrentRuleCard` 紧凑化，三按钮统一规格；`SaveCandidateGrid` 1040×700 视口 252 DIP。
+- Maintenance：Diagnostics 无外层页滚动包 FindingsGrid；环境明细/低频维护/运行状态收进 Disclosure；Audit 二级切换“发现的问题 / 审计记录”，同一时刻一张主表。
+- 新增 Audit 断言：OV-001/002/003/005、SAVE-001/002、MAINT-001/002/003；最终 Audit 0 HIGH、0 MEDIUM、33 运行时警告。
+- 相关提交：`3c186b4`（Overview/Disclosure）、`c0bad20`（Save/Diagnostics）、`84ff2ca`（Audit 二级）、`beb27b3`（v2 断言与视口修复）。
 
 ## 阶段最终报告（Phase 0～8 + 收口）
 

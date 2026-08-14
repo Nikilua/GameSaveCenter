@@ -25,6 +25,7 @@
 - `render-qa` 新增 Resize 恢复探针（2560×1440 → 1100×720 → 2560×1440 同实例布局快照对比），修复 Save/Task/Trainer Inspector 宽窗不恢复缺陷，并新增 3 条回归测试。
 - 实施包验收审计已落盘到 `docs/ai/UI_REFACTOR_ACCEPTANCE_AUDIT.md`；真实 Playnite 宿主主题/DPI/连续缩放与大数据滚动仍为 `MANUAL QA REQUIRED`。
 - 真实宿主 reload 已验证：`dev-install-run.ps1 -Configuration Release` 成功，Playnite 加载 `GameSaveCenter 0.6.70`，扩展日志确认 `0.6.70.0 loaded`，Worker 从当前扩展目录运行，`18:10` 后无 ERROR/Exception/crash。
+- Visual Correction v2 已实施：Overview 单滚动、风险卡去内滚、Disclosure、活动行响应式、Save 卡片、Diagnostics 单滚动、Audit 二级切换；新增 OV/SAVE/MAINT 断言，最终 Audit 0 HIGH/0 MEDIUM/33 运行时警告。
 
 ## 2026-08-14 Final Code Gap Closure 与最终 Epic 状态
 

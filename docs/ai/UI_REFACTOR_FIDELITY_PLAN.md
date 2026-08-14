@@ -314,4 +314,5 @@ Audit 基线共有 143 个条件 UI、38 个 TextBox/PasswordBox、25 个 ComboB
 - 主题覆盖：render-qa 新增 56 个强制 Light/Dark 离屏场景（7 工作区 × 4 尺寸 × 2 主题），调色板与主表/滚动面视口断言全部通过；真实 Playnite 宿主主题仍为 MANUAL QA REQUIRED。
 - 页面级横向溢出：render-qa 与主题 QA 门禁要求 `*ScrollSurface` / `SettingsScroller` 的 `hbar=Disabled` 且无横向溢出；DataGrid 内部列滚动允许。10 档尺寸与 56 主题场景全部通过。
 - Resize 恢复：render-qa 新增 2560×1440 → 1100×720 → 2560×1440 同实例恢复探针，7 个工作区全部恢复；Save/Task/Trainer Inspector 宽窗恢复缺陷已修复并补 3 条回归测试。
+- Visual Correction v2：Overview 单滚动、风险卡去内滚、Disclosure、活动行响应式、Save 卡片、Diagnostics 单滚动、Audit 二级切换已完成；新增 OV/SAVE/MAINT 断言，最终 Audit HIGH 0、MEDIUM 0、运行时警告 33。
 - 已知 INFO：仍有语义明确的 Master/Detail 与页面滚动并存，但不构成 HIGH；DataGrid 虚拟化与内部滚动全部保留。
