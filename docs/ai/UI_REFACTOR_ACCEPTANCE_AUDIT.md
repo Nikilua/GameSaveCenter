@@ -84,6 +84,25 @@
 - `AUTO VERIFIED`：真实宿主 reload 已完成；`playnite.log` 记录 `Loaded plugin: GameSaveCenter, version 0.6.70`，扩展日志记录 `0.6.70.0 loaded`，Worker 从当前扩展目录运行，`18:10` 后无 ERROR/Exception/crash。
 - `MANUAL QA REQUIRED`：真实宿主内的主题视觉、DPI 与连续缩放仍由用户人工验收。
 
+## 阶段最终报告（Phase 0～8 + 收口）
+
+| Phase | 主要修改文件 | MOVE/RESTYLE/COLLAPSE | REMOVE | GamePicker | Commit |
+|---|---|---|---|---|---|
+| 0 | 基线 + `UI_REFACTOR_FIDELITY_PLAN.md` | 无 | 0 | 未改 | `85e3d71` |
+| 1 | `Redesign.xaml` 共享内部 Tab/工具栏基础件 | 新增共享模板，无页面改动 | 0 | 未改 | `a4deb1e` |
+| 2 | `OverviewView.xaml/.cs` | 指标 6/3/2 列；保护明细折叠；活动四列 | 0 | 未改 | `283342f` |
+| 3 | `SaveCenterView.xaml/.cs` | 历史/候选 Inspector 窄窗收起；表格加高；策略模板折叠 | 0 | 未改 | `c7bc847` |
+| 4a | `TrainerCenterView.xaml/.cs` | 工具 Inspector 窄窗收起；列表最小视口 | 0 | 未改 | `258c67b` |
+| 4b | `MediaCenterView.xaml/.cs` | 媒体 Inspector 窄窗收起；来源表单折叠 | 0 | 未改 | `e84c904` |
+| 5 | `TaskCenterView.xaml/.cs` | 游戏筛选进“更多筛选”；任务 Inspector 收起；操作行响应式 | 0 | 未改 | `d6701cf` |
+| 6 | `MaintenanceView.xaml/.cs` | 诊断常用 5 按钮 + 低频 Expander；审计日志加高；窄表最小视口 | 0 | 未改 | `c29d831` |
+| 7 | `GameSaveCenterSettingsView.xaml/.cs`、`DesignTokens.xaml` | 设置字段列宽 token 化 | 0 | 未改 | `5f9fca5` |
+| 8 | 最终回归 + `MaintenanceView.xaml.cs` | 窄表最小视口 280 DIP；Audit 清零 | 0 | 未改 | `5db5032` |
+| 收口 | `OverviewView.xaml` | 当前游戏操作行底部边距 8→4；顶部工具栏 Padding | 0 | 未改 | `3ec6c9f` |
+| QA | `RenderHarness`、UI Audit 工具、`Save/Task/Trainer` code-behind、回归测试 | 2K/1100 矩阵、主题 QA、横向门禁、Resize 恢复、Inspector 宽窗恢复 | 0 | 未改 | `845b2d7`、`cbfe3dc`、`a4a4ec2`、`17ac57d` |
+
+每个 Phase 的 Gate 均为：Release 构建 0 warning / 0 error；source/XAML/WPF 门禁通过；相关测试通过；render-qa/UI Audit 通过；`REMOVE = 0`；GamePicker 未改。
+
 ## 12. 最终报告字段
 
 - 修改页面/文件：OverviewView、SaveCenterView、TrainerCenterView、MediaCenterView、MaintenanceView、TaskCenterView、Settings 相关 XAML/code-behind、Redesign/DesignTokens/WpfUiProduction 共享资源、RenderHarness/Audit 工具、回归测试与文档。
