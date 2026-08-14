@@ -79,10 +79,25 @@
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyStateText}">
                                         <Setter Property="Visibility" Value="Collapsed"/>
-                                        <Style.Triggers><DataTrigger Binding="{Binding Backups.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Backups.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                                            <DataTrigger Binding="{Binding IsSaveHistoryLoading}" Value="True"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger>
+                                        </Style.Triggers>
                                     </Style>
                                 </TextBlock.Style>
                             </TextBlock>
+                            <ui:WorkspaceStatePresenter State="Loading" Title="正在读取存档历史" Message="Worker 正在读取当前游戏的历史版本。" IsHitTestVisible="False">
+                                <ui:WorkspaceStatePresenter.Style>
+                                    <Style TargetType="ui:WorkspaceStatePresenter" BasedOn="{StaticResource GscWorkspaceStatePresenter}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsSaveHistoryLoading}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ui:WorkspaceStatePresenter.Style>
+                            </ui:WorkspaceStatePresenter>
                         </Grid>
                     </Border>
                     <ScrollViewer x:Name="SaveHistoryActionsScrollViewer" Grid.Column="2" Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">

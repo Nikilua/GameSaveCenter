@@ -107,7 +107,7 @@
                     </Border>
                     <Border x:Name="MaintenanceDiagnosticsActionCard" Grid.Row="1" Style="{DynamicResource GscReadingCardStyle}" Padding="16" Margin="0,0,0,10">
                         <Grid>
-                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                             <StackPanel MinWidth="0" VerticalAlignment="Center">
                                 <TextBlock Text="诊断操作" Style="{DynamicResource GscSectionTitleStyle}"/>
@@ -169,6 +169,18 @@
                             <Border Grid.Row="7" Grid.ColumnSpan="2" Style="{DynamicResource GscRedesignInfoBand}" Padding="12" Margin="0,8,0,0">
                                 <TextBlock Text="{Binding TaskReconcileSummary, TargetNullValue=尚未协调中断任务。}" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap"/>
                             </Border>
+                            <ui:WorkspaceStatePresenter Grid.Row="8" Grid.ColumnSpan="2" State="Degraded" Title="云端处于降级状态" Message="已启用云端上传，但 Rclone 当前不可用；本地备份和恢复仍可正常使用。" Margin="0,12,0,0" IsHitTestVisible="False">
+                                <ui:WorkspaceStatePresenter.Style>
+                                    <Style TargetType="ui:WorkspaceStatePresenter" BasedOn="{StaticResource GscWorkspaceStatePresenter}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsCloudDegraded}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ui:WorkspaceStatePresenter.Style>
+                            </ui:WorkspaceStatePresenter>
                         </Grid>
                     </Border>
                     <UniformGrid x:Name="DiagnosticHealthPanel" Grid.Row="2" Columns="3" Margin="0,4,0,10">
