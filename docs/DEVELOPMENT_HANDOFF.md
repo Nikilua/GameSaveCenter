@@ -7,8 +7,14 @@
 - 一条命令：`.\scripts\capture-ui-audit.ps1` 或双击 `GameSaveCenter-UI-Audit.cmd`。
 - 输出：`artifacts/ui-audit/`（README、UI_MANIFEST、UI_ROUTE_MAP、UI_FIDELITY_MATRIX、LAYOUT_REPORT、AUDIT_SUMMARY、visual-tree、layout、screenshots）与 `artifacts/GameSaveCenter-ui-audit.zip`。
 - 静态盘点自动发现未来新增页面/Tab/控件；运行时整页截图覆盖页面级滚动容器，DataGrid/ListBox 内部滚动也从头到底拼接。
-- 当前基线：Core `59/59`、Worker `190/190`、Playnite `238/238`；source/XAML/WPF 门禁与 render-qa 通过；最终审计 0 失败路由。
+- 当前基线：Core `59/59`、Worker `190/190`、Playnite `247/247`；source/XAML/WPF 门禁与 10 档 render-qa 通过；扩档审计 161 快照、0 HIGH/0 MEDIUM/0 失败路由。
 - Commit：见当前 `git log -1`。
+
+## 2026-08-14 UI-REFACTOR-V1 扩档验证与 Audit 高度对齐
+
+- `render-qa` 矩阵已覆盖 1040×700、1100×720、1280×720、1366×768、1536×864、1600×900、1707×960、1920×1080、2048×1152、2560×1440，10 档全部通过。
+- UI Audit 新增 `2k` 与 `narrow-1100` 尺寸；工作区 `ApplyResponsiveLayout` 现在接收窗口高度（与生产 Dashboard 和 render-qa 一致），不再使用内容高度造成 1100×720 维护设备/进程表 240 DIP 的误报。
+- 扩档后最终审计：HIGH `0`、MEDIUM `0`、运行时警告 39、失败路由 `0`。真实 Playnite 宿主主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`。
 
 ## 2026-08-14 Final Code Gap Closure 与最终 Epic 状态
 

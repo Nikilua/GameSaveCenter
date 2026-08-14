@@ -122,9 +122,11 @@ public static class UiAuditRunner
         sizes.Add(maximized);
         sizes.AddRange(new[]
         {
+            NewSize("2k", 2560, 1440),
             NewSize("wide", 1920, 1080),
             NewSize("standard", 1440, 900),
             NewSize("compact", 1200, 760),
+            NewSize("narrow-1100", 1100, 720),
             NewSize("narrow", 1040, 700)
         });
         foreach (var size in sizes)
@@ -191,7 +193,11 @@ public static class UiAuditRunner
         };
         host.Children.Add(view);
 
-        Action applyLayout = () => ApplyLayout(view, route, size.ContentWidth, size.ContentHeight);
+        // Dashboard and its workspace views receive the full shell height (not the
+        // reduced workspace content height) when they apply responsive layout. Keep
+        // the audit consistent with production and render-qa, otherwise stacked
+        // inspector/table budgets are computed against a shorter synthetic height.
+        Action applyLayout = () => ApplyLayout(view, route, size.ContentWidth, size.ActualHeight);
         applyLayout();
         host.Measure(new Size(size.ContentWidth, size.ContentHeight));
         host.Arrange(new Rect(0, 0, size.ContentWidth, size.ContentHeight));

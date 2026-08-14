@@ -29,10 +29,15 @@ public static class Program
     private static readonly (int Width, int Height)[] WindowSizes =
     {
         (1040, 700),
+        (1100, 720),
         (1280, 720),
         (1366, 768),
+        (1536, 864),
         (1600, 900),
-        (1920, 1080)
+        (1707, 960),
+        (1920, 1080),
+        (2048, 1152),
+        (2560, 1440)
     };
 
     public static int Main(string[] args)

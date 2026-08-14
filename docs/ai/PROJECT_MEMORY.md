@@ -20,14 +20,15 @@
 - Phase 7（设置轻量统一）已交付：设置字段标签列宽 token 化为 `GscSettingsFieldColumnWidth`；五个设置分区与保存语义未改。
 - Phase 8（最终回归）已交付：Audit HIGH 从 10 清零、MEDIUM 从 4 降到 0，失败路由 0；最终测试基线 Core 59/Worker 190/Playnite 247；真实宿主主题/DPI/连续缩放仍为 MANUAL QA REQUIRED。
 - Phase 8 收口：`OverviewView.xaml` 把“当前游戏”卡片 3 个操作按钮底部边距从 8 收到 4 DIP，消除最后一个 Audit MEDIUM（未命名 WrapPanel 92 DIP）；顶部工作台工具栏使用 `Padding="14,10"`，1040×700 下由 91 降到 79 DIP。无 REMOVE，GamePicker 与 Dashboard 锁定区域未改。
+- 扩档验证：render-qa 覆盖 10 档逻辑尺寸（1040×700 / 1100×720 / 1280×720 / 1366×768 / 1536×864 / 1600×900 / 1707×960 / 1920×1080 / 2048×1152 / 2560×1440）；UI Audit 新增 2K 与 1100×720 尺寸，快照 161，HIGH/MEDIUM 均 0，运行时警告 39。Audit 工作区高度已改为窗口高度，与生产 Dashboard 和 render-qa 一致。
 
 ## 当前事实覆盖（2026-08-14 Layer A 收口、Layer B 13 项与 Layer C 11 项）
 
-- `UI-AUDIT-001` 已交付（提交见 `git log -1`）：开发专用 UI 自动审计工具由 `scripts/capture-ui-audit.ps1` / `GameSaveCenter-UI-Audit.cmd` 启动，复用 RenderHarness 渲染真实生产视图；自动扫描 XAML 生成路由/Manifest/保真矩阵，输出视觉树与布局 JSON；页面级滚动容器直接渲染完整内容，DataGrid/ListBox 逐段滚动拼接 `-scroll-*.png`；覆盖 maximized/wide/standard/compact/narrow，最终 ZIP 在 `artifacts/GameSaveCenter-ui-audit.zip`。后续新增页面只要放入 Dashboard 或 `Views` 目录并保持无参构造，静态盘点与运行时路由会自动纳入。
+- `UI-AUDIT-001` 已交付（提交见 `git log -1`）：开发专用 UI 自动审计工具由 `scripts/capture-ui-audit.ps1` / `GameSaveCenter-UI-Audit.cmd` 启动，复用 RenderHarness 渲染真实生产视图；自动扫描 XAML 生成路由/Manifest/保真矩阵，输出视觉树与布局 JSON；页面级滚动容器直接渲染完整内容，DataGrid/ListBox 逐段滚动拼接 `-scroll-*.png`；覆盖 maximized/2k/wide/standard/compact/narrow-1100/narrow，最终 ZIP 在 `artifacts/GameSaveCenter-ui-audit.zip`。后续新增页面只要放入 Dashboard 或 `Views` 目录并保持无参构造，静态盘点与运行时路由会自动纳入。
 - 用户日志中的“编译解决方案”失败根因是旧 `dotnet/testhost` 或 Worker 锁住标准 `bin\Release` 输出，随后测试项目无法覆盖 DLL/PDB/XML；不是 `GameSaveCenter.Contracts` 编译失败。
 - 一键开发安装器现在默认不请求管理员权限。`scripts/build.ps1`、`scripts/package.ps1` 和 `scripts/dev-install-run.ps1` 支持按运行生成 `artifacts\dev-build\<Configuration>\<guid>` 隔离的 bin/obj、Worker 发布和安装暂存目录，入口修订号为 `DEV-INSTALL-007`。Playnite 发现增加运行中进程、常见目录、卸载信息、App Paths 和 PATH；未发现 Playnite 且没有运行中的 Playnite 时允许继续构建/安装并提示无法自动启动。Playnite 正常退出超时后，仅当进程属于当前会话、可执行文件路径与本次发现结果完全一致且已经没有主窗口时，才结束该无窗口残留；路径不可确认、跨会话或仍有主窗口时继续停止安装。
 - 真实宿主已验证：安装报告为 0.6.70 / DLL 0.6.70.0；Playnite `playnite.log` 记录插件加载，插件日志记录 0.6.70.0，`worker-launch.log` 记录存储初始化、过期任务整理和 `Application started`。不要再用 2026-08-12 的 PID 3896 历史日志判断当前安装器行为。
-- 当前自动化基线为 Core `59/59`、Worker `190/190`、Playnite `247/247`，Release 构建 0 warnings / 0 errors；source、XAML、WPF 静态门禁与 `render-qa` 通过。真实开发安装已成功，Playnite 与 Worker 启动日志正常。
+- 当前自动化基线为 Core `59/59`、Worker `190/190`、Playnite `247/247`，Release 构建 0 warnings / 0 errors；source、XAML、WPF 静态门禁与 10 档 `render-qa` 通过；扩档 UI Audit 161 快照、0 HIGH/0 MEDIUM/0 失败路由。真实开发安装已成功，Playnite 与 Worker 启动日志正常。
 - `ATOMIC-IO-001` 已交付：新增共享 `AtomicFileWriter`，Worker 设置持久化与媒体复制统一使用“目标同目录临时文件 + 原子 Move”，失败自动清理 `.tmp/.partial` 后再抛出；`WorkerOptions.Persist()` 与 `MediaSyncService` 私有复制逻辑已委托给共享实现。
 - `SOAK-001` 已交付：`SoakStabilityHarness` 加速压测任务协调、事件扇出、单游戏锁、原子写入和 SQLite 探针；`TaskEventBroadcaster.SubscriberCount` 与 `GameOperationLock.TrackedGameCount` 提供只读稳定性计数，`scripts/soak-test.ps1` 支持用 `GSC_SOAK_ITERATIONS` 扩展到最多 5000 轮长跑。
 - `FAULT-INJECTION-001` 已交付：`FaultInjectionHarness` 注入原子写、外部进程、任务协调、事件广播、操作锁、损坏 ZIP 与损坏 SQLite 共 15 类边界故障，断言无残留、稳定终态、原始文件不被失败注入删除，且锁/订阅全部回收；`scripts/fault-injection-test.ps1` 可独立运行。
