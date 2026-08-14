@@ -3,6 +3,17 @@
 > 维护时间：2026-08-14
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-15 UI-OVERNIGHT-FIX-V4 当前事实
+
+- 来源：`GameSaveCenter_UI_Overnight_Fix_Pack_v4.zip`，计划在 `docs/ai/UI_OVERNIGHT_FIX_PLAN_V4.md`，报告在 `docs/ai/UI_OVERNIGHT_FIX_REPORT_V4.md`。
+- `GscDisclosureCard` 已升级：独立 chevron 图标区、垂直居中、无尾部 `>`；所有页面 Expander 统一引用且折叠体内不再内滚。
+- 维护中心诊断页已拆成二级 Tab：默认 `问题列表`（FindingsGrid 独占），次项 `诊断概览`（环境/操作/摘要共用页面滚动）。旧内部 ScrollViewer 已删除。
+- 存档备份自动化与策略模板的数值输入全部补齐 label/unit/helper；共享样式 `GscFormFieldLabel`、`GscFormFieldHelper`、`GscNumericFieldInput`。
+- 首页全局活动行高 60 DIP、图标居中、列 `40/*/Auto(180)/112`。
+- 当前基线：Release 0 warning/0 error；Core `59/59`、Worker `190/190`、Playnite `255/255`；render-qa 10 档 + 56 主题 + 7 Resize 全绿；UI Audit 0 HIGH/0 MEDIUM/39 INFO/0 失败路由。
+- v4 截图：`artifacts/ui-qa/v4-shots/`；命令 `scripts/capture-v4-shots.ps1`。
+- 提交：`3015182`、`5131e4d`、`0201615`、`5196f4a`。真实 Playnite 宿主主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`。
+
 ## 2026-08-14 UI-VISUAL-REWORK-V3 当前事实
 
 - 来源：`GameSaveCenter_UI_Design_and_Prompt_Pack_v3.zip`，计划在 `docs/ai/UI_VISUAL_REWORK_PLAN_V3.md`。

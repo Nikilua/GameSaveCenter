@@ -2,6 +2,15 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-15 UI-OVERNIGHT-FIX-V4 实施完成
+
+- 计划：`docs/ai/UI_OVERNIGHT_FIX_PLAN_V4.md`；报告：`docs/ai/UI_OVERNIGHT_FIX_REPORT_V4.md`。
+- `GscDisclosureCard` 模板升级为独立 chevron 图标区，全项目 Expander 统一且无内部滚动；维护中心诊断页拆成 `问题列表 / 诊断概览` 二级 Tab，FindingsGrid 独占主工作区。
+- 首页全局活动行收敛为 60 DIP，图标垂直居中，时间列 112 DIP；存档备份自动化所有数值输入补齐 label/unit/helper。
+- 新增 `OvernightV4SharedTests`、`OvernightV4SaveFormTests`、`OvernightV4MaintenanceTests`；Playnite `255/255`，render-qa 10 档 + 56 主题 + 7 Resize 全绿，UI Audit 0 HIGH/0 MEDIUM/39 INFO/0 失败路由。
+- v4 截图：`artifacts/ui-qa/v4-shots/`，命令 `scripts/capture-v4-shots.ps1`。
+- 提交：`3015182`（计划）、`5131e4d`（共享样式+首页）、`0201615`（存档表单）、`5196f4a`（维护中心）。真实 Playnite 宿主主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`。
+
 ## 2026-08-14 UI-VISUAL-REWORK-V3 实施完成
 
 - 图一：Overview 当前游戏卡三个按钮统一 `GscWpfUiCompactButton` 几何（38/88 DIP），Primary 只改 `Appearance`，标准宽度同排、窄窗自然 2+1。

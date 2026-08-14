@@ -85,3 +85,15 @@
 - 新 UI audit zip
 - before/after 问题闭环对照
 - 每个功能块独立 commit SHA
+
+## 完成状态（2026-08-15）
+
+- 全项目折叠统一：`GscDisclosureCard` 独立 chevron 图标区，无旧 `GscExpander`、无尾部 `>`、无折叠体内滚动。
+- 首页全局活动：行高 60 DIP，图标垂直居中，时间列 112 DIP，chips 紧跟主内容。
+- 存档备份自动化：当前游戏与策略模板所有数值输入补齐 label/unit/helper；深色主题数字使用共享主文字色。
+- 维护中心：诊断页二级 Tab（默认 `问题列表` / 次项 `诊断概览`），FindingsGrid 独占主工作区，完整摘要移入概览页。
+- 功能保真：REMOVE=0；old command missing=0；old grid missing=0；old column missing=0；GamePicker 未改。
+- 验证：Release 0 warning/0 error；Playnite `255/255`；render-qa 10 档 + 56 主题 + 7 Resize 全绿；UI Audit 0 HIGH/0 MEDIUM/39 INFO/0 失败路由。
+- 截图：`artifacts/ui-qa/v4-shots/`；命令 `scripts/capture-v4-shots.ps1`。
+- 提交：`3015182`、`5131e4d`、`0201615`、`5196f4a`，均已 push。
+- 未验证项：真实 Playnite 宿主主题、DPI 与连续缩放最终视觉仍为 `MANUAL QA REQUIRED`。

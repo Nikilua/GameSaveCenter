@@ -2,6 +2,16 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-15 UI-OVERNIGHT-FIX-V4 实施完成
+
+- v4 计划：`docs/ai/UI_OVERNIGHT_FIX_PLAN_V4.md`；报告：`docs/ai/UI_OVERNIGHT_FIX_REPORT_V4.md`。
+- 折叠统一：`GscDisclosureCard` 独立 chevron 图标区，全项目无旧 `GscExpander`、无尾部 `>`、无折叠体内滚动。
+- 维护中心：诊断页二级 Tab（默认 `问题列表`，次项 `诊断概览`），FindingsGrid 独占主工作区。
+- 存档中心：备份自动化与模板数值输入全部带 label/unit/helper；首页活动行紧凑化。
+- 基线：Core `59/59`、Worker `190/190`、Playnite `255/255`；render-qa 全绿；UI Audit 0 HIGH/0 MEDIUM。
+- 截图：`artifacts/ui-qa/v4-shots/`；命令 `scripts/capture-v4-shots.ps1`。
+- 提交：`3015182`、`5131e4d`、`0201615`、`5196f4a`。真实 Playnite 宿主主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`。
+
 ## 2026-08-14 UI-VISUAL-REWORK-V3 实施完成
 
 - v3 计划：`docs/ai/UI_VISUAL_REWORK_PLAN_V3.md`；五张用户截图对应问题已全部关闭（Overview 三按钮/保护三层/活动轻量表、Save 状态 Badge、Maintenance 折叠与五列表头）。
