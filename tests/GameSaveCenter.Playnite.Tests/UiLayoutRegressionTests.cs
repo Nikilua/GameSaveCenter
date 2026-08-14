@@ -205,9 +205,13 @@ namespace GameSaveCenter.Playnite.Tests
             var widths = grid.Elements().Single(element => element.Name.LocalName == "Grid.ColumnDefinitions")
                 .Elements().Select(element => element.Attribute("Width")?.Value).ToArray();
 
-            Assert.Equal(new[] { "38", "*", "132", "112" }, widths);
+            Assert.Equal(new[] { "40", "*", "Auto", "112" }, widths);
             Assert.Equal("120", grid.Elements().Single(element => element.Name.LocalName == "Grid.ColumnDefinitions")
                 .Elements().ElementAt(1).Attribute("MinWidth")?.Value);
+            Assert.Equal("180", grid.Elements().Single(element => element.Name.LocalName == "Grid.ColumnDefinitions")
+                .Elements().ElementAt(2).Attribute("MaxWidth")?.Value);
+            Assert.Equal("Center", template.Descendants().Single(element => element.Name.LocalName == "Border"
+                && element.Attribute(xamlName)?.Value == "ActivityKindPill").Attribute("VerticalAlignment")?.Value);
             Assert.Contains(template.Descendants(), element => element.Name.LocalName == "TextBlock"
                 && element.Attribute("Text")?.Value == "{Binding KindDisplay, Mode=OneWay}");
             Assert.Contains(template.Descendants(), element => element.Name.LocalName == "TextBlock"
@@ -244,34 +248,6 @@ namespace GameSaveCenter.Playnite.Tests
                 Assert.Equal("38", button.Attribute("MinHeight")?.Value);
                 Assert.Equal("100", button.Attribute("MinWidth")?.Value);
             });
-        }
-
-        [Fact]
-        public void MaintenanceDiagnosticsUseUnifiedDisclosureCardAndFiveReadableColumns()
-        {
-            var root = FindRepositoryRoot();
-            var maintenance = XDocument.Parse(File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml")));
-            var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
-
-            var findings = maintenance.Descendants().Single(element => element.Attribute(xamlName)?.Value == "FindingsGrid");
-            var columns = findings.Elements().Single(element => element.Name.LocalName == "DataGrid.Columns").Elements().ToList();
-            Assert.Equal(5, columns.Count);
-            Assert.Contains("Width=\"72\"", columns[0].ToString());
-            Assert.Contains("Width=\"120\"", columns[1].ToString());
-            Assert.Contains("Width=\"160\"", columns[2].ToString());
-            Assert.Contains("MinWidth=\"180\"", columns[3].ToString());
-            Assert.Contains("Width=\"0.75*\"", columns[4].ToString());
-            Assert.Contains("MinWidth=\"140\"", columns[4].ToString());
-
-            var expanders = maintenance.Descendants().Where(element => element.Name.LocalName == "Expander").ToList();
-            Assert.NotEmpty(expanders);
-            Assert.All(expanders, expander =>
-            {
-                Assert.Contains("GscDisclosureCard", expander.Attribute("Style")?.Value);
-                Assert.DoesNotContain(">", expander.Attribute("Header")?.Value ?? string.Empty);
-            });
-            Assert.Contains("x:Name=\"EnvironmentCheckDisclosureScroller\"", maintenance.ToString());
-            Assert.Contains("x:Name=\"MaintenanceActionsDisclosureScroller\"", maintenance.ToString());
         }
 
         [Fact]

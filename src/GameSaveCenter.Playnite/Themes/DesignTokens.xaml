@@ -346,8 +346,8 @@
                                       Foreground="{TemplateBinding Foreground}"
                                       HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                       VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                      Padding="12,7"
-                                      MinHeight="40"
+                                      Padding="12,6"
+                                      MinHeight="42"
                                       Background="{TemplateBinding Background}"
                                       BorderBrush="{TemplateBinding BorderBrush}"
                                       BorderThickness="{TemplateBinding BorderThickness}"
@@ -365,24 +365,34 @@
                                             SnapsToDevicePixels="True">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="26"/>
+                                                <ColumnDefinition Width="34"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Path x:Name="Chevron"
-                                                  Grid.Column="0"
-                                                  Data="M 2 1 L 7 6 L 12 1"
-                                                  Stretch="None"
-                                                  Stroke="{DynamicResource GscSecondaryTextBrush}"
-                                                  StrokeThickness="1.7"
-                                                  StrokeStartLineCap="Round"
-                                                  StrokeEndLineCap="Round"
-                                                  RenderTransformOrigin="0.5,0.5"
-                                                  HorizontalAlignment="Center"
-                                                  VerticalAlignment="Center">
-                                                <Path.RenderTransform>
-                                                    <RotateTransform Angle="90"/>
-                                                </Path.RenderTransform>
-                                            </Path>
+                                            <Border x:Name="ChevronChrome"
+                                                    Grid.Column="0"
+                                                    Width="26"
+                                                    Height="26"
+                                                    CornerRadius="8"
+                                                    Background="{DynamicResource GscControlFillBrush}"
+                                                    BorderBrush="{DynamicResource GscControlStrokeBrush}"
+                                                    BorderThickness="1"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center">
+                                                <Path x:Name="Chevron"
+                                                      Data="M 2 1 L 7 6 L 12 1"
+                                                      Stretch="None"
+                                                      Stroke="{DynamicResource GscSecondaryTextBrush}"
+                                                      StrokeThickness="1.7"
+                                                      StrokeStartLineCap="Round"
+                                                      StrokeEndLineCap="Round"
+                                                      RenderTransformOrigin="0.5,0.5"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center">
+                                                    <Path.RenderTransform>
+                                                        <RotateTransform Angle="90"/>
+                                                    </Path.RenderTransform>
+                                                </Path>
+                                            </Border>
                                             <ContentPresenter Grid.Column="1"
                                                               Content="{TemplateBinding Content}"
                                                               ContentTemplate="{TemplateBinding ContentTemplate}"
@@ -391,6 +401,7 @@
                                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                                               TextElement.Foreground="{TemplateBinding Foreground}"
                                                               TextElement.FontWeight="SemiBold"
+                                                              TextElement.FontSize="13"
                                                               RecognizesAccessKey="True"/>
                                         </Grid>
                                     </Border>
@@ -398,10 +409,14 @@
                                         <Trigger Property="IsMouseOver" Value="True">
                                             <Setter TargetName="HeaderChrome" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
                                             <Setter TargetName="HeaderChrome" Property="BorderBrush" Value="{DynamicResource GscAccentTintStrongBrush}"/>
+                                            <Setter TargetName="ChevronChrome" Property="Background" Value="{DynamicResource GscAccentTintStrongBrush}"/>
+                                            <Setter TargetName="ChevronChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
                                         </Trigger>
                                         <Trigger Property="IsChecked" Value="True">
                                             <Setter TargetName="HeaderChrome" Property="Background" Value="{DynamicResource GscAccentTintStrongBrush}"/>
                                             <Setter TargetName="HeaderChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
+                                            <Setter TargetName="ChevronChrome" Property="Background" Value="{DynamicResource GscAccentTintStrongBrush}"/>
+                                            <Setter TargetName="ChevronChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
                                             <Setter TargetName="Chevron" Property="RenderTransform">
                                                 <Setter.Value><RotateTransform Angle="180"/></Setter.Value>
                                             </Setter>
@@ -755,6 +770,25 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <!-- Overnight v4 form rows: every numeric input gets a semantic label, unit suffix
+         and helper text. These are shared primitives so pages do not invent a different
+         label/helper rhythm per form. -->
+    <Style x:Key="GscFormFieldLabel" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource GscSecondaryTextBrush}"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Margin" Value="0,0,0,4"/>
+    </Style>
+    <Style x:Key="GscFormFieldHelper" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource GscSecondaryTextBrush}"/>
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="Margin" Value="0,4,0,0"/>
+    </Style>
+    <Style x:Key="GscNumericFieldInput" TargetType="TextBox" BasedOn="{StaticResource GscNumericTextBox}">
+        <Setter Property="Width" Value="112"/>
     </Style>
 
     <Style x:Key="GscSearchClearButton" TargetType="Button">
