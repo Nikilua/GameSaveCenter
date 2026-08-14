@@ -32,7 +32,183 @@ public static class UiLayoutAnalyzer
         AnalyzeListBoxes(root, report);
         AnalyzeToolbars(root, report);
         AnalyzeClipping(root, report);
+        AnalyzeVisualCorrectionV2(root, report);
         return report;
+    }
+
+    private static void AnalyzeVisualCorrectionV2(DependencyObject root, UiLayoutReport report)
+    {
+        var visualRoot = root as Visual;
+        if (report.RouteId == "overview")
+        {
+            var forbidden = new[] { "OverviewPrimaryScrollSurface", "OverviewSecondaryScrollViewer", "OverviewRiskScrollViewer" };
+            foreach (var scroller in FindVisualChildren<ScrollViewer>(root))
+            {
+                if (forbidden.Contains(scroller.Name)
+                    && scroller.ScrollableHeight > 0.5
+                    && scroller.VerticalScrollBarVisibility != ScrollBarVisibility.Disabled)
+                {
+                    report.Warnings.Add(new UiAuditWarning
+                    {
+                        Severity = "HIGH",
+                        Code = "OV-001 SINGLE_PAGE_SCROLL",
+                        RouteId = report.RouteId,
+                        Tab = report.TabHeader,
+                        SizeKey = report.SizeKey,
+                        Message = $"{scroller.Name} 仍作为 Overview 内部纵向滚动上下文"
+                    });
+                }
+            }
+
+            var riskScroller = FindVisualChildren<ScrollViewer>(root).FirstOrDefault(s => s.Name == "OverviewRiskScrollViewer");
+            if (riskScroller != null
+                && riskScroller.ScrollableHeight > 0.5
+                && riskScroller.VerticalScrollBarVisibility != ScrollBarVisibility.Disabled)
+            {
+                report.Warnings.Add(new UiAuditWarning
+                {
+                    Severity = "HIGH",
+                    Code = "OV-002 RISK_NO_INTERNAL_SCROLL",
+                    RouteId = report.RouteId,
+                    Tab = report.TabHeader,
+                    SizeKey = report.SizeKey,
+                    Message = "风险与提醒内部仍存在纵向滚动"
+                });
+            }
+
+            foreach (var name in new[] { "OverviewActivityList", "OverviewActivityTimelineList" })
+            {
+                var container = FindVisualChildren<FrameworkElement>(root).FirstOrDefault(e => e.Name == name);
+                if (container == null) continue;
+                var internalScroll = FindVisualChildren<ScrollViewer>(container)
+                    .Any(s => s.ScrollableHeight > 0.5
+                        && s.VerticalScrollBarVisibility != ScrollBarVisibility.Disabled);
+                if (internalScroll)
+                {
+                    report.Warnings.Add(new UiAuditWarning
+                    {
+                        Severity = "HIGH",
+                        Code = "OV-003 ACTIVITY_NO_NESTED_SCROLL",
+                        RouteId = report.RouteId,
+                        Tab = report.TabHeader,
+                        SizeKey = report.SizeKey,
+                        Message = $"{name} 与页面滚动产生竞争"
+                    });
+                }
+            }
+
+            var riskCard = FindVisualChildren<FrameworkElement>(root).FirstOrDefault(e => e.Name == "OverviewRiskCard");
+            if (riskCard != null)
+            {
+                report.Warnings.Add(new UiAuditWarning
+                {
+                    Severity = "INFO",
+                    Code = "OV-005 RISK_DEAD_SPACE",
+                    RouteId = report.RouteId,
+                    Tab = report.TabHeader,
+                    SizeKey = report.SizeKey,
+                    Message = $"风险卡 ActualHeight={riskCard.ActualHeight:0} DIP"
+                });
+            }
+        }
+
+        if (report.RouteId == "save-center")
+        {
+            var card = FindVisualChildren<FrameworkElement>(root).FirstOrDefault(e => e.Name == "SaveCurrentRuleCard");
+            if (card != null && card.ActualHeight > 190)
+            {
+                report.Warnings.Add(new UiAuditWarning
+                {
+                    Severity = "HIGH",
+                    Code = "SAVE-001 CURRENT_RULE_CARD",
+                    RouteId = report.RouteId,
+                    Tab = report.TabHeader,
+                    SizeKey = report.SizeKey,
+                    Message = $"当前存档规则卡过高：{card.ActualHeight:0} DIP"
+                });
+            }
+
+            var buttonNames = new[] { "SaveDetectPathsButton", "SaveValidateButton", "SaveLoadDetailsButton" };
+            var buttons = buttonNames
+                .Select(name => FindVisualChildren<FrameworkElement>(root).FirstOrDefault(e => e.Name == name))
+                .Where(e => e != null)
+                .ToList();
+            if (buttons.Count == 3)
+            {
+                var minHeight = buttons.Min(b => b.ActualHeight);
+                var maxHeight = buttons.Max(b => b.ActualHeight);
+                if (maxHeight - minHeight > 2)
+                {
+                    report.Warnings.Add(new UiAuditWarning
+                    {
+                        Severity = "HIGH",
+                        Code = "SAVE-002 ACTION_GEOMETRY",
+                        RouteId = report.RouteId,
+                        Tab = report.TabHeader,
+                        SizeKey = report.SizeKey,
+                        Message = $"三个按钮高度不一致：{minHeight:0}..{maxHeight:0} DIP"
+                    });
+                }
+            }
+        }
+
+        if (report.RouteId == "maintenance")
+        {
+            if (report.TabHeader == "诊断")
+            {
+                var diagnosticsSurface = FindVisualChildren<FrameworkElement>(root).FirstOrDefault(e => e.Name == "MaintenanceDiagnosticsScrollSurface");
+                if (diagnosticsSurface is ScrollViewer diagScroller
+                    && diagScroller.ExtentHeight > diagScroller.ViewportHeight + 0.5)
+                {
+                    report.Warnings.Add(new UiAuditWarning
+                    {
+                        Severity = "HIGH",
+                        Code = "MAINT-001 NO_PARENT_SCROLL",
+                        RouteId = report.RouteId,
+                        Tab = report.TabHeader,
+                        SizeKey = report.SizeKey,
+                        Message = "Diagnostics 外层仍作为 FindingsGrid 的可滚 parent"
+                    });
+                }
+
+                var findings = FindVisualChildren<DataGrid>(root).FirstOrDefault(g => g.Name == "FindingsGrid");
+                if (findings != null && visualRoot != null)
+                {
+                    var top = findings.TransformToAncestor(visualRoot).Transform(new Point(0, 0)).Y;
+                    if (top > report.Height + 0.5)
+                    {
+                        report.Warnings.Add(new UiAuditWarning
+                        {
+                            Severity = "HIGH",
+                            Code = "MAINT-002 FINDINGS_FIRST_VIEWPORT",
+                            RouteId = report.RouteId,
+                            Tab = report.TabHeader,
+                            SizeKey = report.SizeKey,
+                            Message = $"FindingsGrid Header 不在初始 viewport：top={top:0} DIP"
+                        });
+                    }
+                }
+            }
+
+            if (report.TabHeader == "异常与审计")
+            {
+                var visibleGrids = FindVisualChildren<DataGrid>(root)
+                    .Where(g => g.IsVisible && g.ActualHeight > 0)
+                    .ToList();
+                if (visibleGrids.Count > 1)
+                {
+                    report.Warnings.Add(new UiAuditWarning
+                    {
+                        Severity = "HIGH",
+                        Code = "MAINT-003 AUDIT_SINGLE_GRID",
+                        RouteId = report.RouteId,
+                        Tab = report.TabHeader,
+                        SizeKey = report.SizeKey,
+                        Message = $"Audit 页同一时刻可见主 DataGrid {visibleGrids.Count} 张"
+                    });
+                }
+            }
+        }
     }
 
     private static void AnalyzeScrollViewers(DependencyObject root, UiLayoutReport report)

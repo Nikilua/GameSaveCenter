@@ -849,7 +849,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"SaveCandidateGrid\"", save);
         Assert.Contains("const double tableMinHeight = 236d", saveCode);
         Assert.Contains("SaveHistoryGrid.MinHeight = tableMinHeight", saveCode);
-        Assert.Contains("SaveCandidateGrid.MinHeight = tableMinHeight", saveCode);
+        Assert.Contains("SaveCandidateGrid.MinHeight = Math.Max(tableMinHeight, 252d)", saveCode);
         Assert.Contains("historyHeight - tableMinHeight - 10", saveCode);
         Assert.Contains("candidateHeight - tableMinHeight - 10", saveCode);
 
