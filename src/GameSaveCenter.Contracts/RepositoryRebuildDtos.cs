@@ -23,6 +23,7 @@ namespace GameSaveCenter.Contracts
         public int RebuiltGameCount { get; set; }
         public int IndexedVersionCount { get; set; }
         public int FailedGameCount { get; set; }
+        public int RecoveredGameCount { get; set; }
         public string Summary { get; set; } = string.Empty;
     }
 }

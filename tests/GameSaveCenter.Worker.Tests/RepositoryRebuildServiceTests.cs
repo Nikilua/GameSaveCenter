@@ -28,37 +28,9 @@ public sealed class RepositoryRebuildServiceTests : IDisposable
     }
 
     [Fact]
-    public async Task RebuildContinuesAfterGameFailureAndReportsCounts()
-    {
-        var catalog = new FakeCatalog();
-        catalog.Matches["g1"] = ("Demo One", 1.0);
-        catalog.Matches["g2"] = ("Demo Two", 0.9);
-        var rebuilder = new FakeRebuilder(store);
-        rebuilder.FailGames.Add("g2");
-
-        var service = new RepositoryRebuildService(catalog, rebuilder, store, options, NullLogger<RepositoryRebuildService>.Instance);
-        var result = await service.RebuildAsync(new RepositoryRebuildRequestDto { Confirmed = true }, CancellationToken.None);
-
-        Assert.Equal(1, result.RebuiltGameCount);
-        Assert.Equal(1, result.FailedGameCount);
-        Assert.Equal(1, result.IndexedVersionCount);
-        Assert.Contains("1 个游戏成功", result.Summary);
-        Assert.Contains("1 个失败", result.Summary);
-        Assert.Equal(2, rebuilder.Calls);
-        var audit = await store.GetAuditAsync(20, CancellationToken.None);
-        Assert.Contains(audit, x => x.Category == "RepositoryRebuild");
-    }
-
-    [Fact]
     public async Task RebuildRequiresConfirmation()
     {
-        var service = new RepositoryRebuildService(
-            new FakeCatalog(),
-            new FakeRebuilder(store),
-            store,
-            options,
-            NullLogger<RepositoryRebuildService>.Instance);
-
+        var service = CreateService();
         var ex = await Assert.ThrowsAsync<WorkerOperationException>(() => service.RebuildAsync(
             new RepositoryRebuildRequestDto { Confirmed = false },
             CancellationToken.None));
@@ -69,69 +41,165 @@ public sealed class RepositoryRebuildServiceTests : IDisposable
     public async Task PreviewScansArchivesWithoutWriting()
     {
         Directory.CreateDirectory(options.LudusaviBackupDirectory);
-        var empty = Path.Combine(options.LudusaviBackupDirectory, "empty.zip");
-        using (ZipFile.Open(empty, ZipArchiveMode.Create)) { }
-        var corrupt = Path.Combine(options.LudusaviBackupDirectory, "corrupt.zip");
-        await File.WriteAllBytesAsync(corrupt, new byte[] { 1, 2, 3 });
-        var service = new RepositoryRebuildService(
-            new FakeCatalog(),
-            new FakeRebuilder(store),
-            store,
-            options,
-            NullLogger<RepositoryRebuildService>.Instance);
+        CreateZip(Path.Combine(options.LudusaviBackupDirectory, "empty.zip"), new Dictionary<string, byte[]>());
+        await File.WriteAllBytesAsync(Path.Combine(options.LudusaviBackupDirectory, "corrupt.zip"), new byte[] { 1, 2, 3 });
+        var service = CreateService();
 
         var preview = await service.PreviewAsync(CancellationToken.None);
 
         Assert.Equal(2, preview.FoundArchives);
-        Assert.Equal(2, preview.UnassignedArchives);
+        Assert.Equal(1, preview.ConfirmableArchives);
+        Assert.Equal(1, preview.UnassignedArchives);
         Assert.Equal(1, preview.PartialMetadataArchives);
         Assert.Equal(1, preview.CorruptArchives);
-        Assert.Equal(0, preview.ConfirmableArchives);
+    }
+
+    [Fact]
+    public async Task RebuildRecoversHistoryFromFreshDatabaseAndRepositoryArtifacts()
+    {
+        var gameDir = Path.Combine(options.LudusaviBackupDirectory, "Demo One");
+        Directory.CreateDirectory(gameDir);
+        CreateZip(Path.Combine(gameDir, "2026-08-14 12-00-00.zip"), new Dictionary<string, byte[]>
+        {
+            ["save.dat"] = new byte[] { 1, 2, 3 },
+            ["settings.ini"] = new byte[] { 4, 5 }
+        });
+        var service = CreateService();
+
+        var preview = await service.PreviewAsync(CancellationToken.None);
+        Assert.Equal(1, preview.FoundArchives);
+        Assert.Equal(1, preview.ConfirmableArchives);
+        Assert.Equal(1, preview.UnassignedArchives);
+
+        var result = await service.RebuildAsync(new RepositoryRebuildRequestDto { Confirmed = true }, CancellationToken.None);
+
+        Assert.Equal(1, result.RebuiltGameCount);
+        Assert.Equal(1, result.RecoveredGameCount);
+        Assert.Equal(1, result.IndexedVersionCount);
+        Assert.Equal(0, result.FailedGameCount);
+
+        var games = await store.GetGamesAsync(CancellationToken.None);
+        var game = Assert.Single(games);
+        Assert.Equal("Demo One", game.Name);
+        Assert.StartsWith("recovered-", game.PlayniteId);
+
+        var versions = await store.GetBackupVersionsAsync(game.PlayniteId, CancellationToken.None);
+        var version = Assert.Single(versions);
+        Assert.Equal("2026-08-14 12-00-00", version.BackupId);
+        Assert.Equal(2, version.FileCount);
+        Assert.True(version.TotalBytes > 0);
+        Assert.Equal(string.Empty, version.ParentBackupId);
+        Assert.EndsWith(".zip", version.ArchivePath);
+        var manifest = await store.GetBackupManifestAsync(game.PlayniteId, version.BackupId, CancellationToken.None);
+        Assert.Contains("save.dat", manifest);
+
+        var second = await service.RebuildAsync(new RepositoryRebuildRequestDto { Confirmed = true }, CancellationToken.None);
+        Assert.Equal(1, second.RebuiltGameCount);
+        Assert.Equal(0, second.RecoveredGameCount);
+        Assert.Equal(1, second.IndexedVersionCount);
+        Assert.Single(await store.GetGamesAsync(CancellationToken.None));
+        Assert.Single(await store.GetBackupVersionsAsync(game.PlayniteId, CancellationToken.None));
+    }
+
+    [Fact]
+    public async Task RebuildReusesExistingMatchWhenAvailable()
+    {
+        var descriptor = new GameDescriptorDto
+        {
+            PlayniteId = "g1",
+            Name = "Demo One",
+            Platform = GamePlatformKind.Other
+        };
+        await store.UpsertGamesAsync(new[] { descriptor }, CancellationToken.None);
+        await store.SetGameMatchAsync("g1", "Demo One", 1.0, GameMatchInput.CreateHash(descriptor), CancellationToken.None);
+        var gameDir = Path.Combine(options.LudusaviBackupDirectory, "Demo One");
+        Directory.CreateDirectory(gameDir);
+        CreateZip(Path.Combine(gameDir, "v1.zip"), new Dictionary<string, byte[]>
+        {
+            ["save.dat"] = new byte[] { 1 }
+        });
+        var service = CreateService();
+
+        var result = await service.RebuildAsync(new RepositoryRebuildRequestDto { Confirmed = true }, CancellationToken.None);
+
+        Assert.Equal(1, result.RebuiltGameCount);
+        Assert.Equal(0, result.RecoveredGameCount);
+        Assert.Equal(1, result.IndexedVersionCount);
+        var versions = await store.GetBackupVersionsAsync("g1", CancellationToken.None);
+        Assert.Equal("v1", Assert.Single(versions).BackupId);
+        Assert.DoesNotContain(await store.GetGamesAsync(CancellationToken.None), x => x.PlayniteId.StartsWith("recovered-", StringComparison.OrdinalIgnoreCase));
+    }
+
+    [Fact]
+    public async Task RebuildDoesNotGuessParentAndPreservesLockedMissingVersions()
+    {
+        var descriptor = new GameDescriptorDto
+        {
+            PlayniteId = "g1",
+            Name = "Demo One",
+            Platform = GamePlatformKind.Other
+        };
+        await store.UpsertGamesAsync(new[] { descriptor }, CancellationToken.None);
+        await store.SetGameMatchAsync("g1", "Demo One", 1.0, GameMatchInput.CreateHash(descriptor), CancellationToken.None);
+        await store.AddBackupVersionAsync(new BackupVersionDto
+        {
+            PlayniteId = "g1",
+            BackupId = "locked-missing",
+            LudusaviName = "Demo One",
+            CreatedUtc = DateTime.UtcNow.AddDays(-1),
+            TotalBytes = 1,
+            FileCount = 1,
+            IsLocked = true
+        }, "{}", CancellationToken.None);
+        var gameDir = Path.Combine(options.LudusaviBackupDirectory, "Demo One");
+        Directory.CreateDirectory(gameDir);
+        CreateZip(Path.Combine(gameDir, "v1.zip"), new Dictionary<string, byte[]> { ["save.dat"] = new byte[] { 1 } });
+        CreateZip(Path.Combine(gameDir, "v2.zip"), new Dictionary<string, byte[]> { ["save.dat"] = new byte[] { 2 } });
+        var service = CreateService();
+
+        var result = await service.RebuildAsync(new RepositoryRebuildRequestDto { Confirmed = true }, CancellationToken.None);
+
+        Assert.Equal(1, result.RebuiltGameCount);
+        Assert.Equal(3, result.IndexedVersionCount);
+        var versions = (await store.GetBackupVersionsAsync("g1", CancellationToken.None)).OrderBy(x => x.BackupId).ToList();
+        Assert.Contains(versions, x => x.BackupId == "locked-missing" && x.IsLocked);
+        Assert.Equal(2, versions.Count(x => x.BackupId != "locked-missing"));
+        Assert.All(versions.Where(x => x.BackupId != "locked-missing"), x => Assert.Equal(string.Empty, x.ParentBackupId));
+    }
+
+    [Fact]
+    public async Task RebuildSkipsCorruptArchivesWithoutCrashing()
+    {
+        Directory.CreateDirectory(options.LudusaviBackupDirectory);
+        await File.WriteAllBytesAsync(Path.Combine(options.LudusaviBackupDirectory, "corrupt.zip"), new byte[] { 1, 2, 3 });
+        var service = CreateService();
+
+        var result = await service.RebuildAsync(new RepositoryRebuildRequestDto { Confirmed = true }, CancellationToken.None);
+
+        Assert.Equal(0, result.RebuiltGameCount);
+        Assert.Equal(0, result.IndexedVersionCount);
+        Assert.Equal(0, result.FailedGameCount);
+        var audit = await store.GetAuditAsync(20, CancellationToken.None);
+        Assert.Contains(audit, x => x.Category == "RepositoryRebuild");
+    }
+
+    private RepositoryRebuildService CreateService()
+        => new(store, options, NullLogger<RepositoryRebuildService>.Instance);
+
+    private static void CreateZip(string path, IReadOnlyDictionary<string, byte[]> entries)
+    {
+        using var archive = ZipFile.Open(path, ZipArchiveMode.Create);
+        foreach (var pair in entries)
+        {
+            var entry = archive.CreateEntry(pair.Key);
+            using var stream = entry.Open();
+            stream.Write(pair.Value, 0, pair.Value.Length);
+        }
     }
 
     public void Dispose()
     {
         SqliteConnection.ClearAllPools();
         try { if (Directory.Exists(root)) Directory.Delete(root, true); } catch { }
-    }
-
-    private sealed class FakeCatalog : IRestoreCatalog
-    {
-        public Dictionary<string, (string Name, double Confidence)> Matches { get; } = new(StringComparer.OrdinalIgnoreCase);
-
-        public Task<GameDescriptorDto?> GetGameAsync(string playniteId, CancellationToken token)
-            => Task.FromResult<GameDescriptorDto?>(null);
-
-        public Task<Dictionary<string, (string Name, double Confidence)>> GetMatchesAsync(CancellationToken token)
-            => Task.FromResult(Matches);
-    }
-
-    private sealed class FakeRebuilder : IBackupHistoryRebuilder
-    {
-        private readonly SqliteStateStore store;
-
-        public FakeRebuilder(SqliteStateStore store)
-        {
-            this.store = store;
-        }
-
-        public int Calls { get; private set; }
-        public HashSet<string> FailGames { get; } = new(StringComparer.OrdinalIgnoreCase);
-
-        public async Task RefreshBackupHistoryAsync(string playniteId, string ludusaviName, CancellationToken token)
-        {
-            Calls++;
-            if (FailGames.Contains(playniteId))
-                throw new InvalidOperationException("rebuild failed");
-            await store.AddBackupVersionAsync(new BackupVersionDto
-            {
-                PlayniteId = playniteId,
-                BackupId = "b-" + playniteId,
-                LudusaviName = ludusaviName,
-                CreatedUtc = DateTime.UtcNow,
-                TotalBytes = 1,
-                FileCount = 1
-            }, "{}", token).ConfigureAwait(false);
-        }
     }
 }
