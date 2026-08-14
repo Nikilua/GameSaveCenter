@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-14 UI-VISUAL-CORRECTION-V2 真实宿主 reload 验证
+
+- `scripts/dev-install-run.ps1 -Configuration Release` 一键构建安装成功并启动 Playnite：Release 0 warning / 0 error，Core `59/59`、Worker `190/190`、Playnite `250/250`。
+- 真实宿主证据：`playnite.log` `20:39:57` 记录 `Loaded plugin: GameSaveCenter, version 0.6.70`；`extensions.log` `20:39:59` 记录 `GameSaveCenter 0.6.70.0 loaded`；Worker PID `36980` 从当前扩展目录运行；`20:39` 后无 ERROR/Exception/crash。
+- 真实 Playnite 主题视觉、DPI 与连续缩放仍为 `MANUAL QA REQUIRED`。
+
 ## 2026-08-14 UI-VISUAL-CORRECTION-V2 实施完成
 
 - Overview：根页成为唯一纵向滚动；主列/右列/风险卡取消滚动职责；风险卡去内滚与死空间；最近保护明细使用 `GscDisclosureCardExpander`；全局活动按 Tag 切换宽/紧凑行。

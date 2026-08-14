@@ -90,6 +90,7 @@
 - Save：`SaveCurrentRuleCard` 紧凑化，三按钮统一规格；`SaveCandidateGrid` 1040×700 视口 252 DIP。
 - Maintenance：Diagnostics 无外层页滚动包 FindingsGrid；环境明细/低频维护/运行状态收进 Disclosure；Audit 二级切换“发现的问题 / 审计记录”，同一时刻一张主表。
 - 新增 Audit 断言：OV-001/002/003/005、SAVE-001/002、MAINT-001/002/003；最终 Audit 0 HIGH、0 MEDIUM、33 运行时警告。
+- 真实宿主 reload：`20:39:57` Playnite 加载 `GameSaveCenter 0.6.70`，`20:39:59` 扩展日志确认 `0.6.70.0 loaded`，Worker 从当前扩展目录运行，之后无 ERROR/Exception/crash。
 - 相关提交：`3c186b4`（Overview/Disclosure）、`c0bad20`（Save/Diagnostics）、`84ff2ca`（Audit 二级）、`beb27b3`（v2 断言与视口修复）。
 
 ## 阶段最终报告（Phase 0～8 + 收口）
