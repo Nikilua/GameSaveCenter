@@ -48,6 +48,17 @@
                 <EventSetter Event="MouseLeave" Handler="OnStatCardMouseLeave"/>
             </Style>
             <Style x:Key="OverviewTableFrame" TargetType="Border" BasedOn="{StaticResource GscRedesignTableFrame}"/>
+            <Style x:Key="GscActivityRowBorder" TargetType="Border">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource GscTableDividerBrush}"/>
+                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                <Setter Property="Margin" Value="0,2"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="{DynamicResource GscRowHoverBrush}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -174,9 +185,9 @@
                             <Border Style="{DynamicResource GscRedesignContextPill}" Margin="0,0,0,6"><StackPanel><TextBlock Text="最新备份" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10"/><TextBlock Text="{Binding SelectedGame.LastBackupLocal, Mode=OneWay, StringFormat={}{0:MM-dd HH:mm}, TargetNullValue=暂无}" FontWeight="SemiBold" Margin="0,2,0,0" FontSize="12"/></StackPanel></Border>
                         </WrapPanel>
                         <WrapPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="0,10,0,0">
-                            <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding BackupSelectedCommand}" Content="立即备份" MinWidth="92" Margin="0,0,8,4"/>
-                            <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding LoadDetailsCommand}" Content="刷新详情" MinWidth="92" Margin="0,0,8,4"/>
-                            <ui:Button Style="{DynamicResource GscWpfUiActionButton}" AutomationProperties.Name="查看需要关注的游戏、原因和建议处理方式" Command="{Binding OpenAttentionCenterCommand}" Content="查看需关注项" MinWidth="116" Margin="0,0,8,4"/>
+                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Appearance="Primary" Command="{Binding BackupSelectedCommand}" Content="立即备份" MinHeight="38" MinWidth="88" Margin="0,0,4,4" VerticalAlignment="Center"/>
+                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding LoadDetailsCommand}" Content="刷新详情" MinHeight="38" MinWidth="88" Margin="0,0,4,4" VerticalAlignment="Center"/>
+                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" AutomationProperties.Name="查看需要关注的游戏、原因和建议处理方式" Command="{Binding OpenAttentionCenterCommand}" Content="查看需关注项" MinHeight="38" MinWidth="88" Margin="0,0,4,4" VerticalAlignment="Center"/>
                         </WrapPanel>
                     </Grid>
                 </Border>
@@ -312,12 +323,13 @@
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Grid Margin="0,2,0,2">
+                                        <Border Style="{StaticResource GscActivityRowBorder}">
+                                        <Grid MinHeight="64">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="38"/>
                                                 <ColumnDefinition x:Name="ActivityMainColumn" Width="*" MinWidth="120"/>
-                                                <ColumnDefinition x:Name="ActivityMetaColumn" Width="110"/>
-                                                <ColumnDefinition x:Name="ActivityTimeColumn" Width="92"/>
+                                                <ColumnDefinition x:Name="ActivityMetaColumn" Width="132"/>
+                                                <ColumnDefinition x:Name="ActivityTimeColumn" Width="112"/>
                                             </Grid.ColumnDefinitions>
                                             <Border x:Name="ActivityKindPill" Width="34" Height="34" CornerRadius="10" Background="{DynamicResource GscInfoIconFillBrush}" HorizontalAlignment="Left" VerticalAlignment="Top">
                                                 <TextBlock x:Name="ActivityGlyph" FontFamily="Segoe MDL2 Assets" Text="{Binding Glyph}" FontSize="14" Foreground="{DynamicResource GscInfoBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -326,22 +338,23 @@
                                                 <TextBlock Text="{Binding GameName, Mode=OneWay, TargetNullValue=全局}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/>
                                                 <TextBlock FontSize="11" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding Summary}" Text="{Binding Summary, Mode=OneWay}"/>
                                                 <StackPanel x:Name="ActivityMetaCompact" Orientation="Horizontal" Margin="0,3,0,0" Visibility="Collapsed">
-                                                    <Border Style="{DynamicResource GscRedesignContextPill}" Margin="0,0,6,0" Padding="6,1"><TextBlock Text="{Binding KindDisplay, Mode=OneWay}" FontSize="10" TextTrimming="CharacterEllipsis" ToolTip="{Binding KindDisplay, Mode=OneWay}"/></Border>
-                                                    <Border Style="{DynamicResource GscRedesignContextPill}" Padding="6,1"><TextBlock Text="{Binding ResultDisplay, Mode=OneWay}" FontSize="10" TextTrimming="CharacterEllipsis" ToolTip="{Binding ResultDisplay, Mode=OneWay}"/></Border>
+                                                    <Border Style="{DynamicResource GscRedesignContextPill}" Background="{DynamicResource GscInfoIconFillBrush}" BorderBrush="{DynamicResource GscInfoBrush}" Margin="0,0,6,0" Padding="6,1"><TextBlock Text="{Binding KindDisplay, Mode=OneWay}" FontSize="10" TextTrimming="CharacterEllipsis" ToolTip="{Binding KindDisplay, Mode=OneWay}"/></Border>
+                                                    <Border Style="{DynamicResource GscRedesignContextPill}" Background="{DynamicResource GscControlFillBrush}" BorderBrush="{DynamicResource GscControlStrokeBrush}" Padding="6,1"><TextBlock Text="{Binding ResultDisplay, Mode=OneWay}" FontSize="10" TextTrimming="CharacterEllipsis" ToolTip="{Binding ResultDisplay, Mode=OneWay}"/></Border>
                                                 </StackPanel>
                                             </StackPanel>
-                                            <StackPanel x:Name="ActivityMetaWide" Grid.Column="2" VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding KindDisplay, Mode=OneWay}" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource GscPrimaryTextBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding KindDisplay, Mode=OneWay}"/>
-                                                <TextBlock Text="{Binding ResultDisplay, Mode=OneWay}" FontSize="11" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding ResultDisplay, Mode=OneWay}"/>
-                                            </StackPanel>
+                                            <WrapPanel x:Name="ActivityMetaWide" Grid.Column="2" VerticalAlignment="Center">
+                                                <Border Style="{DynamicResource GscRedesignContextPill}" Background="{DynamicResource GscInfoIconFillBrush}" BorderBrush="{DynamicResource GscInfoBrush}" Margin="0,0,6,4" Padding="6,1"><TextBlock Text="{Binding KindDisplay, Mode=OneWay}" FontSize="10" TextTrimming="CharacterEllipsis" ToolTip="{Binding KindDisplay, Mode=OneWay}"/></Border>
+                                                <Border Style="{DynamicResource GscRedesignContextPill}" Background="{DynamicResource GscControlFillBrush}" BorderBrush="{DynamicResource GscControlStrokeBrush}" Padding="6,1"><TextBlock Text="{Binding ResultDisplay, Mode=OneWay}" FontSize="10" TextTrimming="CharacterEllipsis" ToolTip="{Binding ResultDisplay, Mode=OneWay}"/></Border>
+                                            </WrapPanel>
                                             <TextBlock Grid.Column="3" Text="{Binding CreatedDisplay, Mode=OneWay}" FontSize="11" Foreground="{DynamicResource GscSecondaryTextBrush}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                                         </Grid>
+                                        </Border>
                                         <DataTemplate.Triggers>
                                             <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="Compact">
                                                 <Setter TargetName="ActivityMetaColumn" Property="Width" Value="0"/>
                                                 <Setter TargetName="ActivityMetaWide" Property="Visibility" Value="Collapsed"/>
                                                 <Setter TargetName="ActivityMetaCompact" Property="Visibility" Value="Visible"/>
-                                                <Setter TargetName="ActivityTimeColumn" Property="Width" Value="96"/>
+                                                <Setter TargetName="ActivityTimeColumn" Property="Width" Value="112"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding Result}" Value="Failed">
                                                 <Setter TargetName="ActivityKindPill" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/>
@@ -438,15 +451,15 @@
                                             <TextBlock Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0"><Run Text="共 "/><Run Text="{Binding RecentProtection.RecentlyPlayedGames, Mode=OneWay}"/><Run Text=" 个 · 已保护 "/><Run Text="{Binding RecentProtection.ProtectedGames, Mode=OneWay}"/><Run Text=" 个 · 需处理 "/><Run Text="{Binding RecentProtection.AttentionGames, Mode=OneWay}"/><Run Text=" 个"/></TextBlock>
                                         </StackPanel>
                                         <WrapPanel Grid.Row="1" Margin="0,10,0,0">
-                                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding OpenProtectionGamesCommand}" Content="查看需要处理的游戏" VerticalAlignment="Top" AutomationProperties.Name="查看最近游玩但未受保护的游戏"/>
-                                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding ApplyRecommendedProtectionCommand}" Content="启用所选自动保护" Margin="6,0,0,0" VerticalAlignment="Top" AutomationProperties.Name="为所选最近游玩游戏启用推荐自动保护"/>
+                                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding OpenProtectionGamesCommand}" Content="查看需要处理的游戏" MinHeight="38" MinWidth="128" Margin="0,0,6,6" VerticalAlignment="Center" AutomationProperties.Name="查看最近游玩但未受保护的游戏"/>
+                                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding ApplyRecommendedProtectionCommand}" Content="启用所选自动保护" MinHeight="38" MinWidth="128" Margin="0,0,0,6" VerticalAlignment="Center" AutomationProperties.Name="为所选最近游玩游戏启用推荐自动保护"/>
                                         </WrapPanel>
                                     </Grid>
                                     <WrapPanel Margin="0,9,0,0">
-                                        <Border Style="{DynamicResource GscRedesignContextPill}" Margin="0,0,6,6"><TextBlock><Run Text="未识别存档 "/><Run Text="{Binding RecentProtection.UnrecognizedSaveGames, Mode=OneWay}"/></TextBlock></Border>
-                                        <Border Style="{DynamicResource GscRedesignContextPill}" Margin="0,0,6,6"><TextBlock><Run Text="需要处理 "/><Run Text="{Binding RecentProtection.AttentionGames, Mode=OneWay}"/></TextBlock></Border>
+                                        <Border Style="{DynamicResource GscRedesignContextPill}" Background="{DynamicResource GscControlFillBrush}" BorderBrush="{DynamicResource GscControlStrokeBrush}" Margin="0,0,6,6" Padding="8,3"><TextBlock Foreground="{DynamicResource GscSecondaryTextBrush}"><Run Text="未识别存档 "/><Run Text="{Binding RecentProtection.UnrecognizedSaveGames, Mode=OneWay}"/></TextBlock></Border>
+                                        <Border Style="{DynamicResource GscRedesignContextPill}" Background="{DynamicResource GscSafetyFillBrush}" BorderBrush="{DynamicResource GscWarningBrush}" Margin="0,0,6,6" Padding="8,3"><TextBlock Foreground="{DynamicResource GscWarningBrush}"><Run Text="需要处理 "/><Run Text="{Binding RecentProtection.AttentionGames, Mode=OneWay}"/></TextBlock></Border>
                                     </WrapPanel>
-                                    <Expander Style="{StaticResource GscDisclosureCardExpander}" Header="展开最近游戏保护明细" Margin="0,8,0,0">
+                                    <Expander Style="{StaticResource GscDisclosureCard}" Header="展开最近游戏保护明细" Margin="0,8,0,0">
                                         <StackPanel Margin="0,4,0,0">
                                             <ItemsControl ItemsSource="{Binding RecentProtection.Items}" Margin="0,0,0,6">
                                                 <ItemsControl.ItemTemplate>

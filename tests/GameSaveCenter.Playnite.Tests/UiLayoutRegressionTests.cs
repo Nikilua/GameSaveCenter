@@ -201,11 +201,11 @@ namespace GameSaveCenter.Playnite.Tests
             var timeline = overview.Descendants().Single(element => element.Name.LocalName == "ItemsControl"
                 && element.Attribute(xamlName)?.Value == "OverviewActivityTimelineList");
             var template = timeline.Descendants().Single(element => element.Name.LocalName == "DataTemplate");
-            var grid = template.Elements().Single(element => element.Name.LocalName == "Grid");
+            var grid = template.Descendants().Single(element => element.Name.LocalName == "Grid");
             var widths = grid.Elements().Single(element => element.Name.LocalName == "Grid.ColumnDefinitions")
                 .Elements().Select(element => element.Attribute("Width")?.Value).ToArray();
 
-            Assert.Equal(new[] { "38", "*", "110", "92" }, widths);
+            Assert.Equal(new[] { "38", "*", "132", "112" }, widths);
             Assert.Equal("120", grid.Elements().Single(element => element.Name.LocalName == "Grid.ColumnDefinitions")
                 .Elements().ElementAt(1).Attribute("MinWidth")?.Value);
             Assert.Contains(template.Descendants(), element => element.Name.LocalName == "TextBlock"

@@ -442,6 +442,10 @@
         </Setter>
     </Style>
 
+    <!-- v3 unified name: all disclosure/expander chrome uses this single visual
+         language; the Expander-suffixed key remains as an implementation alias. -->
+    <Style x:Key="GscDisclosureCard" TargetType="Expander" BasedOn="{StaticResource GscDisclosureCardExpander}"/>
+
     <Style x:Key="GscSharedFocusVisual" TargetType="Control">
         <Setter Property="Template">
             <Setter.Value>
