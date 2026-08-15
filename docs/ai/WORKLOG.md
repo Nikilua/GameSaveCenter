@@ -2,6 +2,17 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-16 UI-HOST-AUDIT-TRUTHFULNESS-FIX 实施完成
+
+- 来源：`GameSaveCenter_HostAudit_Truthfulness_Fix_Prompt.zip`；目标是让 Real Host Audit 的 origin、scroll semantics、manifest 与 success state 全部可信。
+- Sidebar View 语义：删除 `SidebarItem.Activated` 调用（View 由 Playnite 在用户点击时走 `Opened`），审计就绪时发通知等待真实 Dashboard OnLoaded；fallback 专用窗口显式标记 `AuditHostKind.ControlledAuditWindow`，Dashboard 默认 `EmbeddedPlaynite`。
+- Origin 显式化：不再用 `auditDashboardWindow == null` 猜 origin；`CompletedRoots` 按 `kind-dashboard` / `settings` 拆分，Controlled fallback 不阻断 Embedded capture。
+- Manifest session 化：`AuditCaptureSession` 独立保存 EmbeddedDashboard/ControlledDashboard/Settings entries；settings manifest 只含 Settings，重复运行不串数据。
+- Scroll 语义：`DG_ScrollViewer`/DataGrid 逻辑 item 滚动器不再生成像素长图，标记 `SkippedVirtualized`；`PART_ContentHost` 排除；`CaptureStatus/Reason/OutputWidthPx/OutputHeightPx/ViewportHeight/ExtentHeight/SegmentCount` 真实写入；CompletenessValidated 只在真实校验后为 true。
+- 新增 `summary.json` 硬门禁与 `CHILD_LAYOUT_OVERFLOW` gate；`real-host-audit.ps1` 在 Embedded 未捕获时输出 PARTIAL 并以退出码 2 结束。
+- 证据：summary `EmbeddedDashboardCaptured=false`（headless 无人工点击，诚实标注）、Settings embedded 10 条、Controlled 363 条、滚动面 86 条 validated；zip `artifacts/GameSaveCenter-ui-host-audit.zip`。
+- 回归：Playnite 294/294、Worker 191/191、Core 59/59；报告 `docs/ai/HOST_AUDIT_TRUTHFULNESS_FIX_REPORT.md`。
+
 ## 2026-08-16 UI-REAL-HOST-CAPTURE-COMPLETENESS-FIX 实施完成
 
 - 来源：`GameSaveCenter_RealHost_Capture_Completeness_Fix_Prompt.zip`；根因是截图语义模型错误，不是 UI 本身。

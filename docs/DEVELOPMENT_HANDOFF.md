@@ -2,6 +2,12 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-16 UI-HOST-AUDIT-TRUTHFULNESS-FIX 实施完成
+
+- Real Host Audit 已可信化：Sidebar View 不再调用 `Activated`，等待用户真实打开；origin 显式（EmbeddedPlaynite/ControlledAuditWindow）；manifest 按 session/scope 隔离；DataGrid 逻辑滚动器不生成像素长图；`summary.json` 硬门禁 + `CHILD_LAYOUT_OVERFLOW` gate。
+- 报告：`docs/ai/HOST_AUDIT_TRUTHFULNESS_FIX_REPORT.md`。
+- 基线：Playnite 294/294、Worker 191/191、Core 59/59；Release 0 warning/0 error。
+
 ## 2026-08-16 UI-REAL-HOST-CAPTURE-COMPLETENESS-FIX 实施完成
 
 - Real Host Audit 已按 Capture Contract 重构：embedded-current / controlled-host-window / ScrollSurfaceFull 三类输出，`capture-manifest.json` + gates + 完整性断言。

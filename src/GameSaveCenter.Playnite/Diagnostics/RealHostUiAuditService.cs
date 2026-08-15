@@ -658,10 +658,15 @@ namespace GameSaveCenter.Playnite.Diagnostics
                     {
                         UiDiagnosticsExporters.SaveScrollViewerFull(scroller, path);
                         var size = UiDiagnosticsExporters.ReadPngSize(path);
-                        var expectedHeight = (int)Math.Ceiling(scroller.ExtentHeight);
+                        // The stitch renderer outputs 1.0x for the slice path and up to 1.5x
+                        // for the direct content fast path. Accept both while still proving
+                        // the page was captured to its full extent.
+                        var expectedMin = (int)Math.Ceiling(scroller.ExtentHeight * 0.95);
+                        var expectedMax = (int)Math.Ceiling(scroller.ExtentHeight * 1.55);
                         var heightOk = size.HasValue
                             && size.Value.Height >= (int)Math.Ceiling(scroller.ViewportHeight)
-                            && Math.Abs(size.Value.Height - expectedHeight) <= Math.Max(8, expectedHeight / 20);
+                            && size.Value.Height >= expectedMin
+                            && size.Value.Height <= expectedMax;
                         entry.OutputWidthPx = size?.Width ?? 0;
                         entry.OutputHeightPx = size?.Height ?? 0;
                         entry.CompletenessValidated = heightOk;

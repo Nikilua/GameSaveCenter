@@ -3,6 +3,15 @@
 > 维护时间：2026-08-14
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-16 UI-HOST-AUDIT-TRUTHFULNESS-FIX 当前事实
+
+- Real Host Audit 的 origin 必须显式：`DashboardView.AuditHostKind`（默认 EmbeddedPlaynite，fallback 专用窗口设 ControlledAuditWindow）；不要用 `auditDashboardWindow==null` 推断。
+- Sidebar View 不能调用 `Activated`；真实 embedded Dashboard 只能由用户在 Playnite 点击侧栏后经 `Opened` 加载，`OnLoaded` 触发捕获。无人点击时输出必须写 `EmbeddedDashboardCaptured=false`。
+- `AuditCaptureSession` 隔离三类 manifest：EmbeddedDashboard / ControlledDashboard / Settings；settings manifest 不允许混入 Dashboard entries。
+- DataGrid（`CanContentScroll=true`/`ScrollUnit=Item`）是逻辑 item 单位，禁止复用像素 stitch；`DG_ScrollViewer`/`PART_ContentHost` 默认排除。
+- `summary.json` 是硬门禁：`EmbeddedDashboardCaptured` / `EmbeddedSettingsCaptured` / `ControlledDashboardCaptured` / `VisualSourceOfTruthAvailable`。
+- 基线：Playnite 294/294、Worker 191/191、Core 59/59；Release 0 warning/0 error。
+
 ## 2026-08-16 UI-REAL-HOST-CAPTURE-COMPLETENESS-FIX 当前事实
 
 - Real Host Audit 输出语义已重构为三类，不再用“最大 ScrollViewer”冒充整页：
