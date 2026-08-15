@@ -2,6 +2,17 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-15 UI-OVERNIGHT-CLOSURE-V6 实施完成
+
+- 计划：`docs/ai/UI_OVERNIGHT_CLOSURE_PLAN_V6.md`；报告：`docs/ai/UI_OVERNIGHT_CLOSURE_REPORT_V6.md`。
+- 页面历史改为 Playnite 会话级：首次打开 Overview，同会话恢复，Playnite 重启回 Overview；不再使用持久化 LastWorkspace；Onboarding 首页显示 CTA 显式进入 Maintenance。
+- `GscNumericFieldInput` 根修：`PART_ContentHost` 绑定 `VerticalContentAlignment`，数字 1/5/30/120/1440 完整居中显示。
+- 全局活动改为轻量六列表格并加 header；Overview 主列/次列 disabled ScrollViewer 改为 Grid；Maintenance Device/Process 与 Media Current 外层 ScrollViewer 改为有限 Grid。
+- Task/Media 筛选补语义前缀；Device/Process 主表最小视口 252 DIP；UI Audit 0 HIGH/0 MEDIUM/8 INFO、TRUE_PARENT_CHILD_SCROLL_CONFLICT=0。
+- 验证：Release 0 warning/0 error；Playnite `260/260`；render-qa 10 档 + 56 主题 + 7 Resize 全绿；source/XAML/WPF 静态门禁通过。
+- v6 截图：`artifacts/ui-qa/v6-shots/`，命令 `scripts/capture-v6-shots.ps1`。
+- 提交：`baa8f72`（计划）及实施/文档提交见 `git log`。真实 Playnite 宿主主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`。
+
 ## 2026-08-15 UI-OVERNIGHT-FIX-V4 实施完成
 
 - 计划：`docs/ai/UI_OVERNIGHT_FIX_PLAN_V4.md`；报告：`docs/ai/UI_OVERNIGHT_FIX_REPORT_V4.md`。

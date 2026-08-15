@@ -3,6 +3,16 @@
 > 维护时间：2026-08-14
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-15 UI-OVERNIGHT-CLOSURE-V6 当前事实
+
+- 页面历史已改为 Playnite 会话级：`GameSaveCenterPlugin.SessionLastWorkspace`；首次打开 Overview、同会话恢复、重启回 Overview；`Settings.LastWorkspace` 保留但不再作为启动依据。
+- `GscNumericFieldInput` 根模板已修：`PART_ContentHost` 绑定垂直内容对齐；数字 1/5/30/120/1440 完整居中。
+- 全局活动为轻量六列表格（40/150/*/88/76/112）+ header；Overview 主列/次列 disabled ScrollViewer 已改为 Grid；Maintenance Device/Process 与 Media Current 外层 ScrollViewer 已改为有限 Grid。
+- Task/Media 筛选带语义前缀；Device/Process 主表最小视口 252 DIP。
+- 基线：Release 0 warning/0 error；Playnite `260/260`；render-qa 10 档 + 56 主题 + 7 Resize 全绿；UI Audit 0 HIGH/0 MEDIUM/8 INFO/0 TRUE_PARENT_CHILD_SCROLL_CONFLICT。
+- v6 截图：`artifacts/ui-qa/v6-shots/`；命令 `scripts/capture-v6-shots.ps1`。
+- 提交：`baa8f72` 计划及后续实施/文档提交见 `git log`。真实 Playnite 宿主主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`。
+
 ## 2026-08-15 UI-OVERNIGHT-FIX-V4 当前事实
 
 - 来源：`GameSaveCenter_UI_Overnight_Fix_Pack_v4.zip`，计划在 `docs/ai/UI_OVERNIGHT_FIX_PLAN_V4.md`，报告在 `docs/ai/UI_OVERNIGHT_FIX_REPORT_V4.md`。

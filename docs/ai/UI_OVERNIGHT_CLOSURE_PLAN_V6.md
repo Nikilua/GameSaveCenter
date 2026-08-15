@@ -145,3 +145,15 @@
 ## 11. 基线证据
 
 - 最新 `GameSaveCenter-ui-audit(4).zip` 未在 `D:\Download\Brave` 与工作区发现；以仓库最新 `artifacts/ui-audit/v4-final/AUDIT_SUMMARY.md` 作为基线，实施结束后重新生成 v6 audit。
+
+## 12. 完成状态（2026-08-15）
+
+- 页面历史：Playnite 会话级已完成，首次 Overview、同会话恢复、重启回 Overview；Onboarding 首页 CTA 显式进入 Maintenance。
+- 数字输入：`GscNumericFieldInput` 根模板修复，1/5/30/120/1440 完整居中。
+- 存档表单：当前游戏与策略模板均带 label/unit/helper，间隔字段从属 `游玩中周期备份`。
+- 全局活动：轻量六列表格 + header，标准/窄窗截图完成。
+- 风险卡与 Overview 滚动：风险卡内容收紧；Primary/Secondary 改为 Grid，根页唯一滚动。
+- Maintenance/Media：Device/Process/Media Current 外层 ScrollViewer 改为有限 Grid，`TRUE_PARENT_CHILD_SCROLL_CONFLICT=0`。
+- 筛选：Task/Media 语义前缀已补齐。
+- Audit：0 HIGH / 0 MEDIUM / 8 INFO；render-qa 全绿；Playnite `260/260`。
+- 截图：`artifacts/ui-qa/v6-shots/`；报告：`docs/ai/UI_OVERNIGHT_CLOSURE_REPORT_V6.md`。
