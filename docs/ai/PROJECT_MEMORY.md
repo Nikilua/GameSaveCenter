@@ -3,6 +3,14 @@
 > 维护时间：2026-08-14
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-15 UI-FINAL-POLISH-V7.1 当前事实
+
+- 来源：`GameSaveCenter_UI_Final_Polish_Pack_v7_1.zip`，计划 `docs/ai/UI_FINAL_POLISH_PLAN_V7_1.md`，报告 `docs/ai/UI_FINAL_POLISH_REPORT_V7_1.md`。
+- 首页活动行五列：Icon/Scope/Message(*)/MetaChip/Time；chip 独立横向列组，Time 右留白 20 DIP。
+- `POSSIBLE_CLIPPING=0`；Audit 消息含元素名/父元素/文本，且按 Margin 修正误报。
+- 基线：Playnite `263/263`；render-qa 11 档 + 56 主题 + 7 Resize 全绿；最终 Audit 0 HIGH/0 MEDIUM/0 失败路由。
+- 最终 Audit ZIP：`artifacts/GameSaveCenter-ui-audit.zip`（Commit `f6f17a8`）；提交 `702b0d5`、`f6f17a8`。
+
 ## 2026-08-15 UI-FINAL-CLOSURE-V7 当前事实
 
 - 来源：`GameSaveCenter_UI_Final_Closure_Pack_v7.zip`，计划 `docs/ai/UI_FINAL_CLOSURE_PLAN_V7.md`，报告 `docs/ai/UI_FINAL_CLOSURE_REPORT_V7.md`。

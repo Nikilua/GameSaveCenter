@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-15 UI-FINAL-POLISH-V7.1 实施完成
+
+- 计划：`docs/ai/UI_FINAL_POLISH_PLAN_V7_1.md`；报告：`docs/ai/UI_FINAL_POLISH_REPORT_V7_1.md`。
+- 首页活动行改为五列：Icon / Scope / Message(*) / MetaChip / Time；chip 独立横向列组，不再与 scope 上下堆叠；Time 右留白 20 DIP。
+- Maintenance 六个指定 clipping 与全量 `POSSIBLE_CLIPPING` 清零；Audit 消息带元素名/父元素/文本片段，并扣除 Margin 误报。
+- 验证：Playnite `263/263`；render-qa 11 档 + 56 主题 + 7 Resize 全绿；最终 Audit 0 HIGH/0 MEDIUM/0 失败路由。
+- 提交：`702b0d5`、`f6f17a8`。真实 Playnite 主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`。
+
 ## 2026-08-15 UI-FINAL-CLOSURE-V7 实施完成
 
 - 计划：`docs/ai/UI_FINAL_CLOSURE_PLAN_V7.md`；报告：`docs/ai/UI_FINAL_CLOSURE_REPORT_V7.md`。

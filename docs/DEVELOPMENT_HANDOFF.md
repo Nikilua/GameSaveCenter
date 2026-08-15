@@ -2,6 +2,13 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-15 UI-FINAL-POLISH-V7.1 实施完成
+
+- v7.1 计划：`docs/ai/UI_FINAL_POLISH_PLAN_V7_1.md`；报告：`docs/ai/UI_FINAL_POLISH_REPORT_V7_1.md`。
+- 首页活动行五列、chip 独立列组、Time 右留白；全量 `POSSIBLE_CLIPPING=0`。
+- 基线：Playnite `263/263`；render-qa 11 档 + 56 主题 + 7 Resize 全绿；最终 Audit 0 HIGH/0 MEDIUM/0 失败路由。
+- 提交：`702b0d5`、`f6f17a8`；Audit ZIP `artifacts/GameSaveCenter-ui-audit.zip`。
+
 ## 2026-08-15 UI-FINAL-CLOSURE-V7 实施完成
 
 - v7 计划：`docs/ai/UI_FINAL_CLOSURE_PLAN_V7.md`；报告：`docs/ai/UI_FINAL_CLOSURE_REPORT_V7.md`。

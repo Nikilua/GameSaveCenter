@@ -98,3 +98,10 @@ audit7 持续出现 INFO `POSSIBLE_CLIPPING`，期望宽度普遍比实际宽 4~
 - 不删除功能/列/页面块；
 - 不为对齐引入新的嵌套滚动；
 - 不写死主题色，全部走 DynamicResource/Design Token。
+
+## 5. 完成状态（2026-08-15）
+
+- Phase 1：活动行五列重构完成，chip 独立 MetaChip 列，Message 主伸缩，Time 右留白 20 DIP。
+- Phase 2：Maintenance 六个指定 clipping 清零，全量 `POSSIBLE_CLIPPING=0`；Audit 消息带元素名并修正 Margin 误报。
+- Phase 3：Playnite `263/263`；render-qa 11 档 + 56 主题 + 7 Resize 全绿；最终 Audit 0 HIGH/0 MEDIUM/0 失败路由。
+- 报告：`docs/ai/UI_FINAL_POLISH_REPORT_V7_1.md`；实现提交 `702b0d5`、`f6f17a8`。
