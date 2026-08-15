@@ -205,10 +205,26 @@ public static class UiAuditRunner
         applyLayout();
         host.UpdateLayout();
 
-        var tabControls = FindVisualChildren<TabControl>(host).ToList();
+        var tabControls = FindVisualChildren<TabControl>(host)
+            .Where(tabControl => !HasTabControlAncestor(tabControl, host))
+            .ToList();
         if (tabControls.Count == 0)
         {
-            RenderTab(result, route, view, host, null, -1, "页面", size, outputRoot, applyLayout, log);
+            RenderTab(
+                result,
+                route,
+                view,
+                host,
+                null,
+                -1,
+                -1,
+                "页面",
+                MakeSlug(route.RouteId, "page"),
+                GetExpectedPrimary(route.RouteId, "页面", null),
+                size,
+                outputRoot,
+                applyLayout,
+                log);
             return;
         }
 
@@ -218,14 +234,68 @@ public static class UiAuditRunner
             for (var i = 0; i < tabCount; i++)
             {
                 var tabItem = tabControl.Items[i] as TabItem;
-                var header = tabItem?.Header?.ToString() ?? "Tab " + i;
+                var header = ResolveTabHeader(tabItem, i);
                 tabControl.SelectedIndex = i;
                 host.UpdateLayout();
                 applyLayout();
                 host.UpdateLayout();
                 if (route.IsSettings)
                     RevealSettingsShell(host);
-                RenderTab(result, route, view, host, tabControl, i, header, size, outputRoot, applyLayout, log);
+
+                var selectedContent = tabItem?.Content as FrameworkElement ?? view;
+                var nestedTabControls = FindVisualChildren<TabControl>(selectedContent)
+                    .Where(nested => IsDescendantOf(nested, selectedContent))
+                    .ToList();
+                if (nestedTabControls.Count == 0)
+                {
+                    RenderTab(
+                        result,
+                        route,
+                        view,
+                        host,
+                        tabControl,
+                        i,
+                        -1,
+                        header,
+                        MakeSlug(route.RouteId, header),
+                        GetExpectedPrimary(route.RouteId, header, null),
+                        size,
+                        outputRoot,
+                        applyLayout,
+                        log);
+                    continue;
+                }
+
+                foreach (var nestedTabControl in nestedTabControls)
+                {
+                    var nestedCount = nestedTabControl.Items.Count;
+                    for (var inner = 0; inner < nestedCount; inner++)
+                    {
+                        var nestedItem = nestedTabControl.Items[inner] as TabItem;
+                        var nestedHeader = ResolveTabHeader(nestedItem, inner);
+                        nestedTabControl.SelectedIndex = inner;
+                        host.UpdateLayout();
+                        applyLayout();
+                        host.UpdateLayout();
+                        if (route.IsSettings)
+                            RevealSettingsShell(host);
+                        RenderTab(
+                            result,
+                            route,
+                            view,
+                            host,
+                            nestedTabControl,
+                            i,
+                            inner,
+                            header + " / " + nestedHeader,
+                            MakeSlug(route.RouteId, header, nestedHeader),
+                            GetExpectedPrimary(route.RouteId, header, nestedHeader),
+                            size,
+                            outputRoot,
+                            applyLayout,
+                            log);
+                    }
+                }
             }
         }
     }
@@ -237,21 +307,32 @@ public static class UiAuditRunner
         Grid host,
         TabControl? tabControl,
         int tabIndex,
+        int innerTabIndex,
         string tabHeader,
+        string routeSlug,
+        string expectedPrimaryElement,
         UiSizeRecord size,
         string outputRoot,
         Action applyLayout,
         StringBuilder log)
     {
-        var safeRoute = SafeFileName(route.RouteId);
-        var safeTab = tabIndex < 0 ? "page" : "tab" + tabIndex;
-        var prefix = safeRoute + "-" + safeTab;
+        var prefix = SafeFileName(routeSlug);
         var screenshotsDir = Path.Combine(outputRoot, "screenshots", size.Key);
         var visualTreeDir = Path.Combine(outputRoot, "visual-tree", size.Key);
         var layoutDir = Path.Combine(outputRoot, "layout", size.Key);
         Directory.CreateDirectory(screenshotsDir);
         Directory.CreateDirectory(visualTreeDir);
         Directory.CreateDirectory(layoutDir);
+
+        var actualPrimary = ResolveActualPrimaryElement(host, expectedPrimaryElement);
+        if (!string.IsNullOrEmpty(expectedPrimaryElement)
+            && !string.Equals(actualPrimary, expectedPrimaryElement, StringComparison.OrdinalIgnoreCase))
+        {
+            var message = $"{routeSlug} expected primary {expectedPrimaryElement}, actual {actualPrimary}";
+            result.FailedRoutes.Add(message);
+            log.AppendLine("FAILED ROUTE " + message);
+            return;
+        }
 
         var snapshot = new UiRuntimeSnapshot
         {
@@ -269,7 +350,16 @@ public static class UiAuditRunner
         File.WriteAllText(visualTreeJson, UiAuditSanitizer.SanitizeJson(JsonConvert.SerializeObject(visualTree, Formatting.Indented)));
         snapshot.VisualTreeJson = RelativeToOutput(outputRoot, visualTreeJson);
 
-        var layout = UiLayoutAnalyzer.Analyze(host, route.RouteId, tabHeader, size.Key, size.ContentWidth, size.ContentHeight);
+        var layout = UiLayoutAnalyzer.Analyze(
+            host,
+            route.RouteId,
+            tabHeader,
+            size.Key,
+            size.ContentWidth,
+            size.ContentHeight,
+            routeSlug,
+            expectedPrimaryElement,
+            actualPrimary);
         var layoutJson = Path.Combine(layoutDir, prefix + ".json");
         File.WriteAllText(layoutJson, UiAuditSanitizer.SanitizeJson(JsonConvert.SerializeObject(layout, Formatting.Indented)));
         snapshot.LayoutJson = RelativeToOutput(outputRoot, layoutJson);
@@ -379,6 +469,122 @@ public static class UiAuditRunner
             .FirstOrDefault(element => element.Name == "SettingsShell");
         if (shell != null)
             shell.Opacity = 1;
+    }
+
+    private static bool HasTabControlAncestor(TabControl tabControl, DependencyObject root)
+    {
+        var parent = VisualTreeHelper.GetParent(tabControl);
+        while (parent != null && !ReferenceEquals(parent, root))
+        {
+            if (parent is TabControl)
+                return true;
+            parent = VisualTreeHelper.GetParent(parent);
+        }
+        return false;
+    }
+
+    private static bool IsDescendantOf(DependencyObject current, DependencyObject ancestor)
+    {
+        var parent = VisualTreeHelper.GetParent(current);
+        while (parent != null)
+        {
+            if (ReferenceEquals(parent, ancestor))
+                return true;
+            parent = VisualTreeHelper.GetParent(parent);
+        }
+        return false;
+    }
+
+    private static string ResolveTabHeader(TabItem? tabItem, int index)
+    {
+        if (tabItem == null)
+            return "Tab " + index;
+        if (tabItem.Header is string text && !string.IsNullOrWhiteSpace(text))
+            return text;
+        if (tabItem.Header is FrameworkElement headerElement)
+        {
+            var candidates = FindVisualChildren<TextBlock>(headerElement)
+                .Where(tb => !string.IsNullOrWhiteSpace(tb.Text))
+                .OrderByDescending(tb => tb.Text.Length)
+                .ToList();
+            var textBlock = candidates.FirstOrDefault(tb =>
+                    tb.Text.Any(ch => ch >= 0x4E00 && ch <= 0x9FFF))
+                ?? candidates.FirstOrDefault(tb =>
+                    !tb.Text.All(ch => ch >= 0xE000 && ch <= 0xF8FF));
+            if (textBlock != null)
+                return textBlock.Text.Trim();
+        }
+        return "Tab " + index;
+    }
+
+    private static string MakeSlug(params string[] parts)
+    {
+        var slug = string.Join(
+            "-",
+            parts
+                .Select(part => SafeFileName((part ?? string.Empty).Trim().Replace(' ', '-')))
+                .Where(part => !string.IsNullOrWhiteSpace(part)));
+        return string.IsNullOrWhiteSpace(slug) ? "page" : slug;
+    }
+
+    private static string GetExpectedPrimary(string routeId, string outerHeader, string? innerHeader)
+    {
+        switch (routeId)
+        {
+            case "maintenance":
+                if (outerHeader == "诊断")
+                    return innerHeader == "问题列表" ? "FindingsGrid" : string.Empty;
+                if (outerHeader == "设备状态")
+                    return "MaintenanceDeviceGrid";
+                if (outerHeader == "异常与审计")
+                    return innerHeader == "发现的问题"
+                        ? "MaintenanceAuditFindingsGrid"
+                        : innerHeader == "审计记录"
+                            ? "MaintenanceAuditLogGrid"
+                            : string.Empty;
+                if (outerHeader == "进程映射")
+                    return "MaintenanceProcessGrid";
+                return string.Empty;
+            case "save-center":
+                if (outerHeader == "历史版本")
+                    return "SaveHistoryGrid";
+                if (outerHeader == "路径与校验")
+                    return "SaveCandidateGrid";
+                return string.Empty;
+            case "media-center":
+                if (outerHeader == "待归类")
+                    return "MediaInboxGrid";
+                if (outerHeader == "当前游戏媒体")
+                    return "MediaGrid";
+                return string.Empty;
+            case "task-center":
+                return "TaskGrid";
+            case "trainer-center":
+                return outerHeader == "已绑定工具" ? "TrainerToolsList" : string.Empty;
+            default:
+                return string.Empty;
+        }
+    }
+
+    private static string ResolveActualPrimaryElement(DependencyObject root, string expected)
+    {
+        if (!string.IsNullOrEmpty(expected))
+        {
+            var expectedElement = FindVisualChildren<FrameworkElement>(root)
+                .FirstOrDefault(element =>
+                    element.Name == expected
+                    && element.Visibility == Visibility.Visible
+                    && element.ActualHeight > 0
+                    && (element is DataGrid || element is ListBox));
+            return expectedElement?.Name ?? string.Empty;
+        }
+
+        var first = FindVisualChildren<FrameworkElement>(root)
+            .FirstOrDefault(element =>
+                element.Visibility == Visibility.Visible
+                && element.ActualHeight > 0
+                && (element is DataGrid || element is ListBox));
+        return first?.Name ?? string.Empty;
     }
 
     private static string RelativeToOutput(string outputRoot, string path)

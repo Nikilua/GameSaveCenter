@@ -16,12 +16,18 @@ public static class UiLayoutAnalyzer
         string tabHeader,
         string sizeKey,
         double width,
-        double height)
+        double height,
+        string routeSlug,
+        string expectedPrimaryElement,
+        string actualPrimaryElement)
     {
         var report = new UiLayoutReport
         {
             RouteId = routeId,
+            RouteSlug = routeSlug,
             TabHeader = tabHeader,
+            ExpectedPrimaryElement = expectedPrimaryElement,
+            ActualPrimaryElement = actualPrimaryElement,
             SizeKey = sizeKey,
             Width = Math.Round(width, 2),
             Height = Math.Round(height, 2)
@@ -33,6 +39,7 @@ public static class UiLayoutAnalyzer
         AnalyzeToolbars(root, report);
         AnalyzeClipping(root, report);
         AnalyzeVisualCorrectionV2(root, report);
+        AnalyzeVerticalFill(root, report);
         return report;
     }
 
@@ -193,7 +200,7 @@ public static class UiLayoutAnalyzer
             if (report.TabHeader == "异常与审计")
             {
                 var visibleGrids = FindVisualChildren<DataGrid>(root)
-                    .Where(g => g.IsVisible && g.ActualHeight > 0)
+                    .Where(g => g.Visibility == Visibility.Visible && g.ActualHeight > 0)
                     .ToList();
                 if (visibleGrids.Count > 1)
                 {
@@ -245,32 +252,88 @@ public static class UiLayoutAnalyzer
 
             if (scroller.ExtentHeight > scroller.ViewportHeight + 0.5
                 && scroller.ActualHeight >= 20
-                && !IsInside(scroller, root, typeof(TextBox), typeof(PasswordBox), typeof(ComboBox))
-                && HasScrollableScrollViewerAncestor(scroller, root, isVertical: true))
+                && !IsInside(scroller, root, typeof(TextBox), typeof(PasswordBox), typeof(ComboBox)))
             {
                 var trueParentChild = containsList
                     && !isInternal
                     && scroller.VerticalScrollBarVisibility != ScrollBarVisibility.Disabled
-                    && scroller.VerticalScrollBarVisibility != ScrollBarVisibility.Hidden;
-                var severity = trueParentChild ? "HIGH" : "INFO";
-                var code = trueParentChild
-                    ? "TRUE_PARENT_CHILD_SCROLL_CONFLICT"
-                    : isInternal || containsList
-                        ? "EXPECTED_SIBLING_SCROLL"
-                        : "NESTED_VERTICAL_SCROLL";
-                report.Warnings.Add(new UiAuditWarning
+                    && scroller.VerticalScrollBarVisibility != ScrollBarVisibility.Hidden
+                    && HasContainedListWithOwnVerticalScroll(scroller);
+                if (trueParentChild)
                 {
-                    Severity = severity,
-                    Code = code,
-                    RouteId = report.RouteId,
-                    Tab = report.TabHeader,
-                    SizeKey = report.SizeKey,
-                    Message = trueParentChild
-                        ? $"真实父子滚动冲突：{scroller.Name} (chain={parentChain})"
-                        : $"嵌套纵向滚动上下文：{scroller.Name} (chain={parentChain})"
-                });
+                    report.Warnings.Add(new UiAuditWarning
+                    {
+                        Severity = "HIGH",
+                        Code = "TRUE_PARENT_CHILD_SCROLL_CONFLICT",
+                        RouteId = report.RouteId,
+                        Tab = report.TabHeader,
+                        SizeKey = report.SizeKey,
+                        Message = $"真实父子滚动冲突：{scroller.Name} (chain={parentChain})"
+                    });
+                }
+                else if (HasScrollableScrollViewerAncestor(scroller, root, isVertical: true))
+                {
+                    report.Warnings.Add(new UiAuditWarning
+                    {
+                        Severity = "INFO",
+                        Code = isInternal ? "EXPECTED_SIBLING_SCROLL" : "NESTED_VERTICAL_SCROLL",
+                        RouteId = report.RouteId,
+                        Tab = report.TabHeader,
+                        SizeKey = report.SizeKey,
+                        Message = $"嵌套纵向滚动上下文：{scroller.Name} (chain={parentChain})"
+                    });
+                }
+                else if (isInternal)
+                {
+                    report.Warnings.Add(new UiAuditWarning
+                    {
+                        Severity = "INFO",
+                        Code = "EXPECTED_INTERNAL_SCROLL",
+                        RouteId = report.RouteId,
+                        Tab = report.TabHeader,
+                        SizeKey = report.SizeKey,
+                        Message = $"控件内部滚动上下文：{scroller.Name} (chain={parentChain})"
+                    });
+                }
             }
         }
+    }
+
+    private static bool HasContainedListWithOwnVerticalScroll(DependencyObject scroller)
+    {
+        foreach (var grid in FindVisualChildren<DataGrid>(scroller))
+        {
+            var visibility = ScrollViewer.GetVerticalScrollBarVisibility(grid);
+            if (visibility == ScrollBarVisibility.Auto || visibility == ScrollBarVisibility.Visible)
+                return true;
+        }
+
+        foreach (var list in FindVisualChildren<ListBox>(scroller))
+        {
+            var visibility = ScrollViewer.GetVerticalScrollBarVisibility(list);
+            if (visibility == ScrollBarVisibility.Auto || visibility == ScrollBarVisibility.Visible)
+                return true;
+        }
+
+        return false;
+    }
+
+    private static void AnalyzeVerticalFill(DependencyObject root, UiLayoutReport report)
+    {
+        report.WorkspaceHeight = report.Height;
+        var primary = FindVisualChildren<FrameworkElement>(root)
+            .FirstOrDefault(element =>
+                (element is DataGrid || element is ListBox)
+                && element.Visibility == Visibility.Visible
+                && element.ActualHeight > 0);
+        report.MainListHeight = primary?.ActualHeight ?? 0;
+        report.VerticalFillRatio = report.WorkspaceHeight > 0
+            ? Math.Round(report.MainListHeight / report.WorkspaceHeight, 2)
+            : 0;
+        report.TopExternalGap = 0;
+        report.BottomExternalGap = report.WorkspaceHeight > report.MainListHeight
+            ? Math.Round(report.WorkspaceHeight - report.MainListHeight, 2)
+            : 0;
     }
 
     private static void AnalyzeDataGrids(DependencyObject root, UiLayoutReport report)
@@ -322,6 +385,46 @@ public static class UiLayoutAnalyzer
                 {
                     record.Warnings.Add("POSSIBLE_COLUMN_PRESSURE");
                 }
+            }
+
+            var columnSum = grid.Columns.Sum(column => column.ActualWidth);
+            var usableWidth = grid.ActualWidth;
+            var dgScroller = FindVisualChildren<ScrollViewer>(grid)
+                .FirstOrDefault(scroller => scroller.Name == "DG_ScrollViewer");
+            if (dgScroller != null
+                && dgScroller.ComputedVerticalScrollBarVisibility == Visibility.Visible)
+            {
+                usableWidth -= SystemParameters.VerticalScrollBarWidth;
+            }
+            record.ColumnFillRatio = usableWidth > 0
+                ? Math.Round(columnSum / usableWidth, 2)
+                : 0;
+
+            if (report.SizeKey is "2k" or "wide" or "maximized"
+                && record.ColumnFillRatio < 0.90)
+            {
+                report.Warnings.Add(new UiAuditWarning
+                {
+                    Severity = "HIGH",
+                    Code = "COLUMN_FILL_TOO_LOW",
+                    RouteId = report.RouteId,
+                    Tab = report.TabHeader,
+                    SizeKey = report.SizeKey,
+                    Message = $"{grid.Name} 列填充率 {record.ColumnFillRatio:0.00}，要求 >=0.90"
+                });
+            }
+            else if (report.SizeKey == "standard"
+                && record.ColumnFillRatio < 0.88)
+            {
+                report.Warnings.Add(new UiAuditWarning
+                {
+                    Severity = "HIGH",
+                    Code = "COLUMN_FILL_TOO_LOW",
+                    RouteId = report.RouteId,
+                    Tab = report.TabHeader,
+                    SizeKey = report.SizeKey,
+                    Message = $"{grid.Name} 列填充率 {record.ColumnFillRatio:0.00}，要求 >=0.88"
+                });
             }
 
             if (grid.ActualHeight > 0 && (visibleRows < 4 || grid.ActualHeight < 236))
@@ -401,7 +504,7 @@ public static class UiLayoutAnalyzer
     {
         foreach (var text in FindVisualChildren<TextBlock>(root))
         {
-            if (!text.IsVisible || text.ActualWidth <= 0 || text.ActualHeight <= 0)
+            if (text.Visibility != Visibility.Visible || text.ActualWidth <= 0 || text.ActualHeight <= 0)
                 continue;
             if (text.TextWrapping == TextWrapping.Wrap || text.TextTrimming != TextTrimming.None)
                 continue;

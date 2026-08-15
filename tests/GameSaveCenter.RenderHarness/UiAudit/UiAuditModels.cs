@@ -168,13 +168,30 @@ public sealed class UiRuntimeRoute
     public string Failure { get; set; } = string.Empty;
 }
 
+public sealed class UiRuntimeTabRoute
+{
+    public string Slug { get; set; } = string.Empty;
+    public string Header { get; set; } = string.Empty;
+    public int OuterTabIndex { get; set; } = -1;
+    public int InnerTabIndex { get; set; } = -1;
+    public string ExpectedPrimaryElement { get; set; } = string.Empty;
+}
+
 public sealed class UiLayoutReport
 {
     public string RouteId { get; set; } = string.Empty;
+    public string RouteSlug { get; set; } = string.Empty;
     public string TabHeader { get; set; } = string.Empty;
+    public string ExpectedPrimaryElement { get; set; } = string.Empty;
+    public string ActualPrimaryElement { get; set; } = string.Empty;
     public string SizeKey { get; set; } = string.Empty;
     public double Width { get; set; }
     public double Height { get; set; }
+    public double WorkspaceHeight { get; set; }
+    public double MainListHeight { get; set; }
+    public double VerticalFillRatio { get; set; }
+    public double TopExternalGap { get; set; }
+    public double BottomExternalGap { get; set; }
     public List<UiRuntimeScrollViewer> ScrollViewers { get; } = new List<UiRuntimeScrollViewer>();
     public List<UiRuntimeDataGrid> DataGrids { get; } = new List<UiRuntimeDataGrid>();
     public List<UiRuntimeListBox> ListBoxes { get; } = new List<UiRuntimeListBox>();
@@ -208,6 +225,7 @@ public sealed class UiRuntimeDataGrid
     public string Name { get; set; } = string.Empty;
     public double ActualWidth { get; set; }
     public double ActualHeight { get; set; }
+    public double ColumnFillRatio { get; set; }
     public int ColumnCount { get; set; }
     public int ItemsCount { get; set; }
     public double ColumnHeaderHeight { get; set; }
