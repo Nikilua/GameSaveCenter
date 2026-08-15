@@ -11,6 +11,8 @@
 
 然后按 `docs/ai/PROJECT_MEMORY.md` 的启动协议继续；每完成一个独立阶段，编译、跑测试、更新 `docs/ai/WORKLOG.md` 与项目记忆，并单独 commit。
 
+所有交付轮次由 Agent 自己完成 commit 并 push 到当前远端分支（默认 `main`），不要等用户每次提醒；commit 前保持工作树可复现、文档同步。
+
 ## WPF / XAML UI changes
 
 For any WPF, XAML, Playnite UI, theming, layout, controls, animation, dialog, toast,

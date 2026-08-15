@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using GameSaveCenter.Playnite.Diagnostics;
 using GameSaveCenter.Playnite.Infrastructure;
 using Microsoft.Win32;
 using Playnite.SDK;
@@ -50,6 +51,7 @@ namespace GameSaveCenter.Playnite.Settings
             }
             ApplyAdaptiveTheme();
             ApplyResponsiveLayout(ActualWidth, ActualHeight);
+            RealHostUiAuditService.TryCaptureSettings(this);
             RefreshValidationSummary();
             if (entrancePlayed)
             {

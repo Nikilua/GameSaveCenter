@@ -85,6 +85,16 @@ GameSaveCenter-一键构建安装运行.cmd
 
 或双击根目录 `GameSaveCenter-UI-Audit.cmd`。工具会自动盘点当前真实页面/Tab/控件，输出静态 `UI_MANIFEST`、`UI_ROUTE_MAP`、`UI_FIDELITY_MATRIX`，运行时视觉树与布局 JSON，以及所有滚动区域的整页拼接截图，最后打包为 `artifacts/GameSaveCenter-ui-audit.zip`。审计不会执行备份、恢复、删除、迁移或设置保存。
 
+说明：`capture-ui-audit` 是 **Offscreen Regression Audit（Tier A）**。它使用 RenderHarness + FakeDashboardData 在独立 WPF Application 中离屏渲染，用于 geometry、clipping、scroll、virtualization 与 fidelity 回归；它不是真实 Playnite 宿主截图，也不代表最终视觉真值。
+
+真实宿主视觉审计（Tier B）：
+
+```powershell
+.\scripts\real-host-audit.ps1
+```
+
+脚本会设置 `GSC_REAL_HOST_AUDIT` 后启动 Playnite；插件在真实 `DashboardView` 已加载、`ApplyAdaptiveTheme` 已执行后，从实际视觉树捕获截图、DPI、bounds、runtime resource snapshot、style fingerprint 与 visual tree，输出到 `artifacts/ui-host-audit/` 并打包为 `GameSaveCenter-ui-host-audit.zip`。Tier B 才是真实 Playnite 视觉的事实来源。
+
 ## Windows 构建
 
 建议环境：

@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using GameSaveCenter.Contracts;
+using GameSaveCenter.Playnite.Diagnostics;
 using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.ViewModels;
 using Playnite.SDK;
@@ -81,6 +82,7 @@ namespace GameSaveCenter.Playnite.Views
             ApplyAdaptiveTheme();
             UpdateWorkspacePresentation();
             ApplyResponsiveLayout(ActualWidth, ActualHeight);
+            RealHostUiAuditService.TryCaptureDashboard(this);
             refreshTimer.Interval = TimeSpan.FromSeconds(Math.Max(5, Math.Min(300, plugin.Settings.DashboardRefreshSeconds)));
             if (plugin.Settings.EnableDashboardAutoRefresh) refreshTimer.Start();
             viewModel.StartTaskEventSubscription();
@@ -132,6 +134,22 @@ namespace GameSaveCenter.Playnite.Views
             responsiveLayoutPending = false;
             DialogOverlay.Visibility = Visibility.Collapsed;
             ClearToasts();
+        }
+
+        internal GameSaveCenterPlugin PluginForAudit => plugin;
+
+        internal DashboardViewModel ViewModelForAudit => viewModel;
+
+        internal TabControl? DetailsTabControlForAudit => DetailsTabControl;
+
+        internal void ApplyWorkspaceForAudit(WorkspaceKind workspace)
+        {
+            if (viewModel == null || DetailsTabControl == null)
+                return;
+            viewModel.CurrentWorkspace = workspace;
+            UpdateWorkspacePresentation();
+            ApplyResponsiveLayout(ActualWidth, ActualHeight);
+            viewModel.RequestWorkspaceLoad();
         }
 
         private void SubscribeViewModel()

@@ -11,6 +11,9 @@
     <ProjectReference Include="..\GameSaveCenter.Core\GameSaveCenter.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="System.IO.Compression.FileSystem" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net462" PrivateAssets="all" />
     <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="PlayniteSDK" PrivateAssets="all" />

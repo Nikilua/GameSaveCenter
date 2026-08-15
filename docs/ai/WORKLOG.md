@@ -2,6 +2,18 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-15 UI-REAL-HOST-PARITY-CLOSURE 实施完成
+
+- 来源：`GameSaveCenter_RealHost_UI_Parity_Audit_Prompt.zip`；计划 `docs/ai/REAL_HOST_UI_PARITY_CLOSURE_PLAN.md`；报告 `docs/ai/REAL_HOST_UI_PARITY_CLOSURE_REPORT.md`。
+- 建立 Tier A（Offscreen Regression Audit）与 Tier B（Real Playnite Host Fidelity Audit）双审计链路；README 已明确离屏截图不是 production pixel truth。
+- 插件新增 `RealHostUiAuditService`：`GSC_REAL_HOST_AUDIT`/sentinel 触发，从真实 Dashboard 捕获截图、visual tree、resource snapshot、style fingerprint、DPI、bounds，并自动打开 Settings 捕获设置页；不触发业务命令。
+- 新增 `UiDiagnosticsExporters` 与 `AdaptiveThemePaletteContrastGuard` 及单测。
+- 本机真实宿主捕获成功：DPI 1.5、Dashboard 1264×868、6 个 workspace 证据；发现离屏“更漂亮”主因是 fallback palette vs runtime adaptive palette + 真实 DPI/host bounds/data。
+- 新增 `docs/HOST_STYLE_DEPENDENCY_REPORT.md` 与 `docs/HOST_VISUAL_PARITY_REPORT.md`。
+- AGENTS.md / DEVELOPMENT_HANDOFF 新增“每轮完成后由 Agent 自己 commit 并 push”项目协定。
+- 验证：Release 0 warning/0 error；Core 59/59、Worker 190/190、Playnite 281/281；render-qa 全绿；Offscreen UI Audit 0 HIGH/0 MEDIUM/0 fidelity/0 failed routes。
+- 剩余：真实 125-200% DPI、第三方主题、连续缩放与 Settings paired evidence 仍需人工/下次脚本运行确认。
+
 ## 2026-08-15 UI-AUDIT11-RESIDUAL-CLOSURE 实施完成
 
 - 来源：`GameSaveCenter_Audit11_Residual_UI_Closure_Prompt.zip`；计划 `docs/ai/UI_AUDIT11_RESIDUAL_UI_CLOSURE_PLAN.md`；报告 `docs/ai/UI_AUDIT11_RESIDUAL_UI_CLOSURE_REPORT.md`。

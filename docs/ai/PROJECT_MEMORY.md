@@ -3,6 +3,18 @@
 > 维护时间：2026-08-14
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-15 UI-REAL-HOST-PARITY-CLOSURE 当前事实
+
+- 来源：`GameSaveCenter_RealHost_UI_Parity_Audit_Prompt.zip`，计划 `docs/ai/REAL_HOST_UI_PARITY_CLOSURE_PLAN.md`，报告 `docs/ai/REAL_HOST_UI_PARITY_CLOSURE_REPORT.md`。
+- Audit 定位：Tier A `capture-ui-audit.ps1` 是 Offscreen Regression Audit（几何/滚动/虚拟化/fidelity 门禁，不是视觉真值）；Tier B `real-host-audit.ps1` 才是真实 Playnite 视觉事实来源。
+- 插件内 `RealHostUiAuditService`：`GSC_REAL_HOST_AUDIT` 或 `%LOCALAPPDATA%\GameSaveCenter\real-host-audit.request` 触发；从真实 Dashboard/Settings 捕获截图、visual tree、resource snapshot、style fingerprint、真实 DPI/bounds；不触发备份/恢复/删除等业务命令。
+- `UiDiagnosticsExporters`：resource snapshot / style fingerprint / visual tree / PNG 导出；`AdaptiveThemePaletteContrastGuard`：palette 对比守卫。
+- 本机证据：`artifacts/ui-host-audit/` + `artifacts/GameSaveCenter-ui-host-audit.zip`；DPI 1.5，Dashboard 1264×868，runtime palette（accent #0379FF、Glass alpha 0.78-0.94 等）。
+- 离屏更漂亮的根因：离屏用 DesignTokens fallback palette；真实宿主用 AdaptiveThemePaletteFactory runtime palette + 真实 DPI/host bounds/data；当前无证据显示 surface hierarchy 被压平，故未改 palette。
+- 协定：AGENTS.md / DEVELOPMENT_HANDOFF 已写明每轮完成后 Agent 自己 commit 并 push。
+- 基线：Playnite `281/281`；render-qa 全绿；Offscreen UI Audit 0 HIGH/0 MEDIUM/0 fidelity/0 failed routes。
+- 真实 125-200% DPI、第三方主题、连续缩放与 Settings paired evidence 仍需人工/下次脚本运行确认。
+
 ## 2026-08-15 UI-AUDIT11-RESIDUAL-CLOSURE 当前事实
 
 - 来源：`GameSaveCenter_Audit11_Residual_UI_Closure_Prompt.zip`，计划 `docs/ai/UI_AUDIT11_RESIDUAL_UI_CLOSURE_PLAN.md`，报告 `docs/ai/UI_AUDIT11_RESIDUAL_UI_CLOSURE_REPORT.md`。

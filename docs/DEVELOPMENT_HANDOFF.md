@@ -2,6 +2,15 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-15 UI-REAL-HOST-PARITY-CLOSURE 实施完成
+
+- 计划：`docs/ai/REAL_HOST_UI_PARITY_CLOSURE_PLAN.md`；报告：`docs/ai/REAL_HOST_UI_PARITY_CLOSURE_REPORT.md`。
+- Tier A 离屏审计与 Tier B 真实宿主审计分层；`scripts/real-host-audit.ps1` 从真实 Dashboard 捕获证据。
+- `RealHostUiAuditService`、`UiDiagnosticsExporters`、`AdaptiveThemePaletteContrastGuard` 已加入。
+- 本机真实宿主证据已生成；离屏更漂亮的根因是 fallback vs runtime adaptive palette 等环境差异。
+- 协定：每轮开发完成后由 Agent 自己 commit 并 push（AGENTS.md 已同步）。
+- 基线：Playnite `281/281`；render-qa 全绿；Offscreen UI Audit 0 HIGH/0 MEDIUM/0 fidelity/0 failed routes。
+
 ## 2026-08-15 UI-AUDIT11-RESIDUAL-CLOSURE 实施完成
 
 - 计划：`docs/ai/UI_AUDIT11_RESIDUAL_UI_CLOSURE_PLAN.md`；报告：`docs/ai/UI_AUDIT11_RESIDUAL_UI_CLOSURE_REPORT.md`。
@@ -347,6 +356,8 @@ Rclone 可靠性仍是单向安全适配器，只允许 `copy`、`check`、`lsf`
 ## 跨电脑、跨模型规则
 
 代码和文档是交接的真实来源，模型记忆不是。切换电脑前应先把当前提交推送到远端：
+
+每一轮开发完成后，由 Agent 自己 commit 并 push 到当前远端分支（默认 `main`），不要等用户提醒；这是项目长期协定，不需要用户每次重复。
 
 ```powershell
 git push origin main
