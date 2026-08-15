@@ -56,6 +56,15 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("MaintenanceLastColumnHeader", maintenance);
         }
 
+        [Fact]
+        public void TasksAndMaintenanceKeepGamePickerHidden()
+        {
+            var dashboard = Read("Views", "DashboardView.xaml.cs");
+            Assert.Contains("viewModel.CurrentWorkspace != WorkspaceKind.Tasks", dashboard);
+            Assert.Contains("viewModel.CurrentWorkspace != WorkspaceKind.Maintenance", dashboard);
+            Assert.Contains("GameSwitcherHost.Visibility = gameScopedWorkspace", dashboard);
+        }
+
         private static string Read(string folder, string file)
         {
             var root = FindRepositoryRoot();

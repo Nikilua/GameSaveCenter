@@ -6,7 +6,7 @@
 
 - v6 计划：`docs/ai/UI_OVERNIGHT_CLOSURE_PLAN_V6.md`；报告：`docs/ai/UI_OVERNIGHT_CLOSURE_REPORT_V6.md`。
 - 页面历史为 Playnite 会话级；Tasks/Maintenance 保持不显示 GamePicker；数字输入根模板修复；全局活动六列表格；Overview/Maintenance/Media 真实父子滚动清零。
-- 基线：Playnite `260/260`；render-qa 全绿；UI Audit 0 HIGH/0 MEDIUM/8 INFO/0 TRUE_PARENT_CHILD_SCROLL_CONFLICT。
+- 基线：Playnite `261/261`；render-qa 全绿；UI Audit 0 HIGH/0 MEDIUM/8 INFO/0 TRUE_PARENT_CHILD_SCROLL_CONFLICT。
 - 截图：`artifacts/ui-qa/v6-shots/`；命令 `scripts/capture-v6-shots.ps1`。
 - 提交：`baa8f72` 及后续提交见 `git log`。真实 Playnite 宿主主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`。
 

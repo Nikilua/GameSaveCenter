@@ -47,7 +47,7 @@
 
 - Root cause：`GscTextBox` 模板的 `PART_ContentHost` 没有绑定 `VerticalContentAlignment`，数字框内文字未真正垂直居中，配合旧 padding 出现裁切。
 - Fix：`PART_ContentHost` 增加 `VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"`；`GscNumericFieldInput` 使用 `Padding="8,4"`、`MinHeight="38"`、`TextAlignment="Center"`、`VerticalContentAlignment="Center"`，外框尺寸保持 112×42。
-- 验收：v6 截图 `v6-numeric-{1,5,30,120,1440}.png` 均非空白且随数值增长；Playnite `260/260`。
+- 验收：v6 截图 `v6-numeric-{1,5,30,120,1440}.png` 均非空白且随数值增长；Playnite `261/261`。
 
 ## 5. Global Activity before/after
 

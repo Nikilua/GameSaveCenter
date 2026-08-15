@@ -155,5 +155,5 @@
 - 风险卡与 Overview 滚动：风险卡内容收紧；Primary/Secondary 改为 Grid，根页唯一滚动。
 - Maintenance/Media：Device/Process/Media Current 外层 ScrollViewer 改为有限 Grid，`TRUE_PARENT_CHILD_SCROLL_CONFLICT=0`。
 - 筛选：Task/Media 语义前缀已补齐。
-- Audit：0 HIGH / 0 MEDIUM / 8 INFO；render-qa 全绿；Playnite `260/260`。
+- Audit：0 HIGH / 0 MEDIUM / 8 INFO；render-qa 全绿；Playnite `261/261`。
 - 截图：`artifacts/ui-qa/v6-shots/`；报告：`docs/ai/UI_OVERNIGHT_CLOSURE_REPORT_V6.md`。
