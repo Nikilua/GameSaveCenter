@@ -53,15 +53,16 @@ namespace GameSaveCenter.Playnite.Diagnostics
                     var dashboard = plugin.CreateDashboardViewForAudit();
                     if (dashboard == null)
                         return;
-                    var workArea = SystemParameters.WorkArea;
+                    var auditBounds = ComputeAuditWindowBounds(dashboard);
                     var window = new Window
                     {
                         Title = "GameSaveCenter Real Host Audit",
-                        Width = Math.Min(1440, workArea.Width),
-                        Height = Math.Min(900, workArea.Height),
-                        Left = workArea.Left,
-                        Top = workArea.Top,
+                        Width = auditBounds.Width,
+                        Height = auditBounds.Height,
+                        Left = auditBounds.Left,
+                        Top = auditBounds.Top,
                         WindowStartupLocation = WindowStartupLocation.Manual,
+                        SizeToContent = SizeToContent.Manual,
                         WindowStyle = WindowStyle.ToolWindow,
                         ResizeMode = ResizeMode.CanResize,
                         ShowInTaskbar = false,
@@ -95,15 +96,16 @@ namespace GameSaveCenter.Playnite.Diagnostics
                 {
                     Logger.Info("Real host audit settings fallback: creating settings view on the UI thread.");
                     var settings = new GameSaveCenterSettingsView();
-                    var workArea = SystemParameters.WorkArea;
+                    var auditBounds = ComputeAuditWindowBounds(settings);
                     var window = new Window
                     {
                         Title = "GameSaveCenter Settings Real Host Audit",
-                        Width = Math.Min(1440, workArea.Width),
-                        Height = Math.Min(900, workArea.Height),
-                        Left = workArea.Left,
-                        Top = workArea.Top,
+                        Width = auditBounds.Width,
+                        Height = auditBounds.Height,
+                        Left = auditBounds.Left,
+                        Top = auditBounds.Top,
                         WindowStartupLocation = WindowStartupLocation.Manual,
+                        SizeToContent = SizeToContent.Manual,
                         WindowStyle = WindowStyle.ToolWindow,
                         ResizeMode = ResizeMode.CanResize,
                         ShowInTaskbar = false,
@@ -236,30 +238,78 @@ namespace GameSaveCenter.Playnite.Diagnostics
                 HighContrast = SystemParameters.HighContrast
             };
 
-            var resources = BuildResourceSnapshot(dashboard);
-            var fingerprints = UiDiagnosticsExporters.BuildStyleFingerprints(dashboard);
-            var visualTree = UiDiagnosticsExporters.BuildVisualTree(dashboard);
+            var maximized = ComputeAuditWindowBounds(dashboard);
+            var sizes = new[]
+            {
+                new AuditWindowSize("maximized", maximized.Width, maximized.Height),
+                new AuditWindowSize("1600x1000", Math.Min(1600d, maximized.Width), Math.Min(1000d, maximized.Height)),
+                new AuditWindowSize("1366x768", Math.Min(1366d, maximized.Width), Math.Min(768d, maximized.Height)),
+                new AuditWindowSize("1280x720", Math.Min(1280d, maximized.Width), Math.Min(720d, maximized.Height)),
+                new AuditWindowSize("1024x768", Math.Min(1024d, maximized.Width), Math.Min(768d, maximized.Height))
+            };
 
-            UiDiagnosticsExporters.WriteJson(metadata, Path.Combine(outputRoot, "metadata.json"));
-            UiDiagnosticsExporters.WriteJson(resources, Path.Combine(outputRoot, "resource-snapshot.json"));
-            UiDiagnosticsExporters.WriteJson(fingerprints, Path.Combine(outputRoot, "style-fingerprints.json"));
-            UiDiagnosticsExporters.WriteJson(visualTree, Path.Combine(outputRoot, "visual-tree-dashboard.json"));
+            foreach (var size in sizes)
+            {
+                await CaptureDashboardAtSizeAsync(dashboard, outputRoot, size, metadata);
+            }
 
-            var screenshots = Path.Combine(outputRoot, "screenshots");
-            Directory.CreateDirectory(screenshots);
-            UiDiagnosticsExporters.SavePng(dashboard, Path.Combine(screenshots, "dashboard-initial.png"));
+            CreateZip(outputRoot);
+            RequestSettingsCapture(dashboard);
+            TryDeleteSentinel();
+        }
 
-            foreach (var workspace in new[] { WorkspaceKind.Overview, WorkspaceKind.Saves, WorkspaceKind.Trainers, WorkspaceKind.Media, WorkspaceKind.Tasks, WorkspaceKind.Maintenance })
+        private static async System.Threading.Tasks.Task CaptureDashboardAtSizeAsync(
+            DashboardView dashboard,
+            string outputRoot,
+            AuditWindowSize size,
+            UiHostMetadata metadata)
+        {
+            var window = auditDashboardWindow;
+            if (window != null)
+            {
+                window.Width = size.Width;
+                window.Height = size.Height;
+                window.Left = 0;
+                window.Top = 0;
+            }
+            dashboard.Width = size.Width;
+            dashboard.Height = size.Height;
+            dashboard.UpdateLayout();
+            dashboard.ApplyWorkspaceForAudit(WorkspaceKind.Overview);
+            await WaitForRenderAsync(dashboard.Dispatcher);
+
+            var sizeDir = Path.Combine(outputRoot, "screenshots", size.Key);
+            Directory.CreateDirectory(sizeDir);
+            var sizeLayoutDir = Path.Combine(outputRoot, "layout", size.Key);
+            Directory.CreateDirectory(sizeLayoutDir);
+
+            metadata.DashboardWidth = Math.Round(dashboard.ActualWidth, 2);
+            metadata.DashboardHeight = Math.Round(dashboard.ActualHeight, 2);
+            metadata.DetailsTabControlWidth = Math.Round(dashboard.DetailsTabControlForAudit?.ActualWidth ?? 0, 2);
+            metadata.DetailsTabControlHeight = Math.Round(dashboard.DetailsTabControlForAudit?.ActualHeight ?? 0, 2);
+            UiDiagnosticsExporters.WriteJson(metadata, Path.Combine(outputRoot, "metadata-" + size.Key + ".json"));
+
+            UiDiagnosticsExporters.SavePng(dashboard, Path.Combine(sizeDir, "dashboard-initial.png"), GetRenderScale(dashboard));
+            SaveWindowScreenshot(dashboard, Path.Combine(sizeDir, "window-dashboard.png"));
+
+            foreach (var workspace in new[]
+            {
+                WorkspaceKind.Overview,
+                WorkspaceKind.Saves,
+                WorkspaceKind.Trainers,
+                WorkspaceKind.Media,
+                WorkspaceKind.Tasks,
+                WorkspaceKind.Maintenance
+            })
             {
                 dashboard.ApplyWorkspaceForAudit(workspace);
                 await WaitForRenderAsync(dashboard.Dispatcher);
                 var safe = workspace.ToString().ToLowerInvariant();
-                UiDiagnosticsExporters.SavePng(dashboard, Path.Combine(screenshots, $"workspace-{safe}.png"));
-                SaveWindowScreenshot(dashboard, Path.Combine(screenshots, $"window-{safe}.png"));
-                CaptureScrollSurfaces(dashboard, outputRoot, "workspace-" + safe);
+                UiDiagnosticsExporters.SavePng(dashboard, Path.Combine(sizeDir, $"workspace-{safe}.png"), GetRenderScale(dashboard));
+                SaveWindowScreenshot(dashboard, Path.Combine(sizeDir, $"window-{safe}.png"));
                 UiDiagnosticsExporters.WriteJson(
                     UiDiagnosticsExporters.BuildVisualTree(dashboard),
-                    Path.Combine(outputRoot, "visual-tree", $"workspace-{safe}.json"));
+                    Path.Combine(outputRoot, "visual-tree", size.Key, $"workspace-{safe}.json"));
                 UiDiagnosticsExporters.WriteJson(
                     new Dictionary<string, double>
                     {
@@ -268,60 +318,53 @@ namespace GameSaveCenter.Playnite.Diagnostics
                         ["detailsTabWidth"] = dashboard.DetailsTabControlForAudit?.ActualWidth ?? 0,
                         ["detailsTabHeight"] = dashboard.DetailsTabControlForAudit?.ActualHeight ?? 0
                     },
-                    Path.Combine(outputRoot, "layout", $"workspace-{safe}.json"));
+                    Path.Combine(sizeLayoutDir, $"workspace-{safe}.json"));
             }
 
-            await CaptureAllInnerTabs(dashboard, outputRoot, screenshots);
-            CreateZip(outputRoot);
-            RequestSettingsCapture(dashboard);
-            TryDeleteSentinel();
+            await CaptureAllInnerTabs(dashboard, sizeDir, size.Key);
         }
 
-        private static async System.Threading.Tasks.Task CaptureAllInnerTabs(DashboardView dashboard, string outputRoot, string screenshots)
+        private static async System.Threading.Tasks.Task CaptureAllInnerTabs(
+            DashboardView dashboard,
+            string screenshots,
+            string sizeKey)
         {
             var outer = dashboard.DetailsTabControlForAudit;
-            var tabControls = FindVisualChildren<TabControl>(dashboard)
-                .Where(tabControl => !ReferenceEquals(tabControl, outer))
-                .ToList();
             var captured = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            foreach (var tabControl in tabControls)
+            foreach (var workspace in new[]
             {
-                for (var index = 0; index < tabControl.Items.Count; index++)
-                {
-                    if (!(tabControl.Items[index] is TabItem tab) || tab.Visibility != Visibility.Visible)
-                        continue;
-                    tabControl.SelectedItem = tab;
-                    await WaitForRenderAsync(dashboard.Dispatcher);
-                    var rawHeader = tab.Header?.ToString() ?? "tab-" + index;
-                    var safe = SafeFileName(rawHeader);
-                    if (!captured.Add(safe))
-                        continue;
-                    var file = $"tab-{index}-{safe}.png";
-                    UiDiagnosticsExporters.SavePng(dashboard, Path.Combine(screenshots, file));
-                    SaveWindowScreenshot(dashboard, Path.Combine(screenshots, $"window-tab-{safe}.png"));
-                    CaptureScrollSurfaces(dashboard, outputRoot, "tab-" + safe);
-                }
-            }
-        }
-
-        private static void CaptureScrollSurfaces(DashboardView dashboard, string outputRoot, string prefix)
-        {
-            var fullDir = Path.Combine(outputRoot, "full-scroll");
-            Directory.CreateDirectory(fullDir);
-            foreach (var scroller in FindVisualChildren<ScrollViewer>(dashboard))
+                WorkspaceKind.Overview,
+                WorkspaceKind.Saves,
+                WorkspaceKind.Trainers,
+                WorkspaceKind.Media,
+                WorkspaceKind.Tasks,
+                WorkspaceKind.Maintenance
+            })
             {
-                if (scroller.Visibility != Visibility.Visible || scroller.ScrollableHeight <= 0.5)
-                    continue;
-                var name = string.IsNullOrWhiteSpace(scroller.Name) ? "scroller" : scroller.Name;
-                try
+                dashboard.ApplyWorkspaceForAudit(workspace);
+                await WaitForRenderAsync(dashboard.Dispatcher);
+                var tabControls = FindVisualChildren<TabControl>(dashboard)
+                    .Where(tabControl => !ReferenceEquals(tabControl, outer))
+                    .Where(tabControl => tabControl.Visibility == Visibility.Visible)
+                    .ToList();
+                var workspacePrefix = workspace.ToString().ToLowerInvariant();
+                foreach (var tabControl in tabControls)
                 {
-                    UiDiagnosticsExporters.SaveScrollViewerFull(
-                        scroller,
-                        Path.Combine(fullDir, $"{prefix}-{name}.png"));
-                }
-                catch (Exception ex)
-                {
-                    Logger.Debug(ex, "Real host audit skipped a scroll surface: " + name);
+                    for (var index = 0; index < tabControl.Items.Count; index++)
+                    {
+                        if (!(tabControl.Items[index] is TabItem tab) || tab.Visibility != Visibility.Visible)
+                            continue;
+                        tabControl.SelectedItem = tab;
+                        await WaitForRenderAsync(dashboard.Dispatcher);
+                        var raw = ResolveTabHeaderName(tab, index);
+                        var safe = SafeFileName(raw);
+                        var dedupeKey = sizeKey + "|" + workspacePrefix + "|" + index + "|" + safe;
+                        if (!captured.Add(dedupeKey))
+                            continue;
+                        var file = $"tab-{workspacePrefix}-{index}-{safe}.png";
+                        UiDiagnosticsExporters.SavePng(dashboard, Path.Combine(screenshots, file), GetRenderScale(dashboard));
+                        SaveWindowScreenshot(dashboard, Path.Combine(screenshots, $"window-tab-{workspacePrefix}-{safe}.png"));
+                    }
                 }
             }
         }
@@ -378,6 +421,45 @@ namespace GameSaveCenter.Playnite.Diagnostics
         {
             Directory.CreateDirectory(outputRoot);
             Logger.Info("Real host settings capture started: " + outputRoot);
+            var maximized = ComputeAuditWindowBounds(settingsView);
+            var sizes = new[]
+            {
+                new AuditWindowSize("maximized", maximized.Width, maximized.Height),
+                new AuditWindowSize("1600x1000", Math.Min(1600d, maximized.Width), Math.Min(1000d, maximized.Height)),
+                new AuditWindowSize("1366x768", Math.Min(1366d, maximized.Width), Math.Min(768d, maximized.Height)),
+                new AuditWindowSize("1280x720", Math.Min(1280d, maximized.Width), Math.Min(720d, maximized.Height)),
+                new AuditWindowSize("1024x768", Math.Min(1024d, maximized.Width), Math.Min(768d, maximized.Height))
+            };
+
+            foreach (var size in sizes)
+            {
+                CaptureSettingsAtSize(settingsView, outputRoot, size);
+            }
+
+            CreateZip(Path.GetDirectoryName(outputRoot)!);
+            Logger.Info("Real host settings capture finished: " + outputRoot);
+            CloseAuditWindow(auditSettingsWindow);
+            TryDeleteSentinel();
+        }
+
+        private static void CaptureSettingsAtSize(
+            GameSaveCenterSettingsView settingsView,
+            string outputRoot,
+            AuditWindowSize size)
+        {
+            var window = auditSettingsWindow;
+            if (window != null)
+            {
+                window.Width = size.Width;
+                window.Height = size.Height;
+                window.Left = 0;
+                window.Top = 0;
+            }
+            settingsView.Width = size.Width;
+            settingsView.Height = size.Height;
+            settingsView.UpdateLayout();
+            settingsView.Dispatcher.Invoke(() => { }, DispatcherPriority.Render);
+
             var dpi = VisualTreeHelper.GetDpi(settingsView);
             var metadata = new UiHostMetadata
             {
@@ -394,47 +476,28 @@ namespace GameSaveCenter.Playnite.Diagnostics
                 DashboardHeight = Math.Round(settingsView.ActualHeight, 2),
                 HighContrast = SystemParameters.HighContrast
             };
-            UiDiagnosticsExporters.WriteJson(metadata, Path.Combine(outputRoot, "metadata.json"));
+            UiDiagnosticsExporters.WriteJson(metadata, Path.Combine(outputRoot, "metadata-" + size.Key + ".json"));
             UiDiagnosticsExporters.WriteJson(
                 UiDiagnosticsExporters.BuildResourceSnapshot(settingsView.Resources, "SettingsView"),
-                Path.Combine(outputRoot, "resource-snapshot.json"));
+                Path.Combine(outputRoot, "resource-snapshot-" + size.Key + ".json"));
             UiDiagnosticsExporters.WriteJson(
                 UiDiagnosticsExporters.BuildStyleFingerprints(settingsView),
-                Path.Combine(outputRoot, "style-fingerprints.json"));
+                Path.Combine(outputRoot, "style-fingerprints-" + size.Key + ".json"));
             UiDiagnosticsExporters.WriteJson(
                 UiDiagnosticsExporters.BuildVisualTree(settingsView),
-                Path.Combine(outputRoot, "visual-tree.json"));
-            var screenshots = Path.Combine(outputRoot, "screenshots");
+                Path.Combine(outputRoot, "visual-tree-" + size.Key + ".json"));
+
+            var screenshots = Path.Combine(outputRoot, "screenshots", size.Key);
             Directory.CreateDirectory(screenshots);
             UiDiagnosticsExporters.SavePng(settingsView, Path.Combine(screenshots, "settings.png"));
             SaveWindowScreenshot(settingsView, Path.Combine(screenshots, "window-settings.png"));
-            CaptureSettingsTabs(settingsView, outputRoot);
-            foreach (var scroller in FindVisualChildren<ScrollViewer>(settingsView))
-            {
-                if (scroller.Visibility != Visibility.Visible || scroller.ScrollableHeight <= 0.5)
-                    continue;
-                var name = string.IsNullOrWhiteSpace(scroller.Name) ? "scroller" : scroller.Name;
-                try
-                {
-                    UiDiagnosticsExporters.SaveScrollViewerFull(
-                        scroller,
-                        Path.Combine(outputRoot, "full-scroll", "settings-" + name + ".png"));
-                }
-                catch (Exception ex)
-                {
-                    Logger.Debug(ex, "Real host settings audit skipped a scroll surface: " + name);
-                }
-            }
-            CreateZip(Path.GetDirectoryName(outputRoot)!);
-            Logger.Info("Real host settings capture finished: " + outputRoot);
-            CloseAuditWindow(auditSettingsWindow);
-            TryDeleteSentinel();
+            CaptureSettingsTabs(settingsView, outputRoot, size.Key);
         }
 
-        private static void CaptureSettingsTabs(GameSaveCenterSettingsView settingsView, string outputRoot)
+        private static void CaptureSettingsTabs(GameSaveCenterSettingsView settingsView, string outputRoot, string sizeKey)
         {
             var tabControls = FindVisualChildren<TabControl>(settingsView).ToList();
-            var screenshots = Path.Combine(outputRoot, "screenshots");
+            var screenshots = Path.Combine(outputRoot, "screenshots", sizeKey);
             var captured = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (var tabControl in tabControls)
             {
@@ -446,27 +509,11 @@ namespace GameSaveCenter.Playnite.Diagnostics
                     settingsView.Dispatcher.Invoke(() => { }, DispatcherPriority.Render);
                     var raw = ResolveTabHeaderName(tab, index);
                     var safe = SafeFileName(raw);
-                    var dedupeKey = index + "|" + safe;
+                    var dedupeKey = sizeKey + "|" + index + "|" + safe;
                     if (!captured.Add(dedupeKey))
                         continue;
                     UiDiagnosticsExporters.SavePng(settingsView, Path.Combine(screenshots, $"settings-{index}-{safe}.png"));
                     SaveWindowScreenshot(settingsView, Path.Combine(screenshots, $"window-settings-{safe}.png"));
-                    foreach (var scroller in FindVisualChildren<ScrollViewer>(settingsView))
-                    {
-                        if (scroller.Visibility != Visibility.Visible || scroller.ScrollableHeight <= 0.5)
-                            continue;
-                        var name = string.IsNullOrWhiteSpace(scroller.Name) ? "scroller" : scroller.Name;
-                        try
-                        {
-                            UiDiagnosticsExporters.SaveScrollViewerFull(
-                                scroller,
-                                Path.Combine(outputRoot, "full-scroll", $"settings-{safe}-{name}.png"));
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.Debug(ex, "Real host settings tab audit skipped a scroll surface: " + name);
-                        }
-                    }
                 }
             }
         }
@@ -511,6 +558,27 @@ namespace GameSaveCenter.Playnite.Diagnostics
             await dispatcher.InvokeAsync(() => { }, DispatcherPriority.Loaded);
             await dispatcher.InvokeAsync(() => { }, DispatcherPriority.Render);
             await System.Threading.Tasks.Task.Delay(90);
+        }
+
+        private static Rect ComputeAuditWindowBounds(FrameworkElement reference)
+        {
+            // Playnite is DPI-unaware in this host, so SystemParameters.WorkArea is already
+            // the correct logical work area (e.g. 1707x912 DIP for a 2560x1440 display).
+            // GetSystemMetrics would return virtualized small metrics here and must not be used.
+            var workArea = SystemParameters.WorkArea;
+            return new Rect(
+                workArea.Left,
+                workArea.Top,
+                Math.Max(640, workArea.Width),
+                Math.Max(480, workArea.Height));
+        }
+
+        private static double GetRenderScale(FrameworkElement reference)
+        {
+            // The multi-size sweep renders many large bitmaps in one 32-bit process. Keep
+            // the export at logical resolution so the full page is captured for every window
+            // size without exhausting memory; DPI evidence is recorded in metadata.json.
+            return 1d;
         }
 
         private static void CreateZip(string outputRoot)
@@ -633,6 +701,20 @@ namespace GameSaveCenter.Playnite.Diagnostics
                 results.AddRange(FindVisualChildren<T>(child));
             }
             return results;
+        }
+
+        private sealed class AuditWindowSize
+        {
+            internal AuditWindowSize(string key, double width, double height)
+            {
+                Key = key;
+                Width = width;
+                Height = height;
+            }
+
+            internal string Key { get; }
+            internal double Width { get; }
+            internal double Height { get; }
         }
 
         internal sealed class UiHostMetadata

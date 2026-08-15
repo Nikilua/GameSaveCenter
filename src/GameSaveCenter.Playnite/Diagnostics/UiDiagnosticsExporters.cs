@@ -75,16 +75,19 @@ namespace GameSaveCenter.Playnite.Diagnostics
             return nodes;
         }
 
-        public static void SavePng(Visual visual, string path)
+        public static void SavePng(Visual visual, string path, double renderScale = 1d)
         {
             if (!(visual is FrameworkElement element) || element.ActualWidth <= 0 || element.ActualHeight <= 0)
                 throw new InvalidOperationException($"Cannot render audit PNG for {path}: empty size.");
             Directory.CreateDirectory(Path.GetDirectoryName(path) ?? ".");
-            var bitmap = RenderBitmap(visual, element.ActualWidth, element.ActualHeight);
+            var bitmap = RenderBitmap(visual, element.ActualWidth, element.ActualHeight, renderScale);
             var encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(bitmap));
             using var stream = File.Create(path);
             encoder.Save(stream);
+            bitmap.Freeze();
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
         }
 
         public static void SaveScrollViewerFull(ScrollViewer scroller, string path)
@@ -116,7 +119,7 @@ namespace GameSaveCenter.Playnite.Diagnostics
                 {
                     scroller.ScrollToVerticalOffset(offset);
                     scroller.UpdateLayout();
-                    var bitmap = RenderBitmap(scroller, width, scroller.ActualHeight);
+                    var bitmap = RenderBitmap(scroller, width, scroller.ActualHeight, 1d);
                     var rangeStart = Math.Max(offset, previousEnd);
                     var rangeEnd = Math.Min(scroller.ExtentHeight, offset + viewportHeight);
                     var cropTop = Math.Max(0, (int)Math.Ceiling(rangeStart - offset));
@@ -134,7 +137,7 @@ namespace GameSaveCenter.Playnite.Diagnostics
                 {
                     scroller.ScrollToVerticalOffset(scrollable);
                     scroller.UpdateLayout();
-                    var bitmap = RenderBitmap(scroller, width, scroller.ActualHeight);
+                    var bitmap = RenderBitmap(scroller, width, scroller.ActualHeight, 1d);
                     var cropTop = Math.Max(0, (int)Math.Ceiling(previousEnd - scrollable));
                     var cropHeight = Math.Max(1, (int)Math.Ceiling(scroller.ExtentHeight - previousEnd));
                     cropHeight = Math.Min(cropHeight, bitmap.PixelHeight - cropTop);
@@ -169,16 +172,34 @@ namespace GameSaveCenter.Playnite.Diagnostics
             }
         }
 
-        private static RenderTargetBitmap RenderBitmap(Visual visual, double width, double height)
+        private static RenderTargetBitmap RenderBitmap(Visual visual, double width, double height, double renderScale)
         {
             var dpi = VisualTreeHelper.GetDpi(visual);
+            var scaleX = renderScale > 0 ? renderScale : 1d;
+            var scaleY = renderScale > 0 ? renderScale : 1d;
             var bitmap = new RenderTargetBitmap(
-                (int)Math.Ceiling(width),
-                (int)Math.Ceiling(height),
+                (int)Math.Ceiling(width * scaleX),
+                (int)Math.Ceiling(height * scaleY),
                 dpi.PixelsPerInchX,
                 dpi.PixelsPerInchY,
                 PixelFormats.Pbgra32);
-            bitmap.Render(visual);
+            if (Math.Abs(scaleX - 1d) > 0.01 || Math.Abs(scaleY - 1d) > 0.01)
+            {
+                var drawing = new DrawingVisual();
+                using (var context = drawing.RenderOpen())
+                {
+                    context.PushTransform(new ScaleTransform(scaleX, scaleY));
+                    context.DrawRectangle(
+                        new VisualBrush(visual),
+                        null,
+                        new Rect(0, 0, width, height));
+                }
+                bitmap.Render(drawing);
+            }
+            else
+            {
+                bitmap.Render(visual);
+            }
             return bitmap;
         }
 

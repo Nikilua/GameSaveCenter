@@ -2,6 +2,12 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-15 UI-REAL-HOST-AUDIT-MULTI-SIZE 实施完成
+
+- 真机审计现覆盖 5 档窗口尺寸（maximized + 1600x1000/1366x768/1280x720/1024x768），每档包含 6 个工作区、全部内层 Tab、窗口截图与 Settings 5 分类；产物在 `artifacts/ui-host-audit/`。
+- 修复要点：Playnite DPI-unaware，窗口尺寸用 `SystemParameters.WorkArea` + `SizeToContent.Manual`；内容按逻辑分辨率输出防 OOM；多尺寸扫描不做全页滚动拼接。
+- 文件清理规则已加入 AGENTS.md 与本文档：每轮完成后清理旧构建/旧审计/旧 zip 与 `.tmp` 一次性目录，只保留当前安装目录和审计证据。
+
 ## 2026-08-15 UI-REAL-HOST-AUDIT-FULL-COVERAGE 实施完成
 
 - 真实宿主审计修复收口：Dashboard 6 个 workspace + 全部内层 Tab + 完整窗口截图 + 整页拼接；Settings 5 个分类全部截图。
@@ -366,6 +372,8 @@ Rclone 可靠性仍是单向安全适配器，只允许 `copy`、`check`、`lsf`
 代码和文档是交接的真实来源，模型记忆不是。切换电脑前应先把当前提交推送到远端：
 
 每一轮开发完成后，由 Agent 自己 commit 并 push 到当前远端分支（默认 `main`），不要等用户提醒；这是项目长期协定，不需要用户每次重复。
+
+每轮开发完成后，还要及时清理不再使用的本地中间产物：`artifacts/` 下的旧 `dev-build`、`ui-audit-build`、`phase*`、`audit*` 目录与旧 zip，以及 `.tmp/` 下的一次性审计目录。只保留当前安装包/打包目录与当前审计证据；删除前确认路径在仓库 `artifacts/` 或 `.tmp/` 内，并用 PowerShell `Remove-Item -LiteralPath` 执行。
 
 ```powershell
 git push origin main

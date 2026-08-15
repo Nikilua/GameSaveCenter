@@ -2,6 +2,18 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-15 UI-REAL-HOST-AUDIT-MULTI-SIZE 实施完成
+
+- 用户复核后补充要求：真机截图要覆盖最大化窗口与多种窗口化尺寸，且项目协作规则要加入“及时清理无用文件”。
+- 多尺寸捕获：`RealHostUiAuditService` 现按 `maximized`（实际 WorkArea 1707×912 DIP）+ `1600x1000`、`1366x768`、`1280x720`、`1024x768` 五档循环，每档重新截取 Dashboard、6 个工作区、全部内层 Tab、窗口截图与 Settings 5 个分类。
+- 关键修复：
+  - Playnite 进程为 DPI-unaware，`GetSystemMetrics` 返回虚拟化小尺寸，导致窗口被内容吸成 640×480；改用 `SystemParameters.WorkArea` 并 `SizeToContent.Manual` + 显式给 Dashboard/Settings 设置宽高，窗口尺寸才与档位一致。
+  - 内容截图按逻辑分辨率输出，避免 32 位进程整窗口 1.5× 渲染 OOM；真实 DPI/尺寸记录在 `metadata-<size>.json`。
+  - 移除了多尺寸扫描中的全页滚动拼接（单张表格拼接可卡十几分钟），保留页面/Tab/窗口截图；滚动证据仍可由单尺寸离屏审计提供。
+- 产物：`artifacts/ui-host-audit/`（5 个尺寸目录 × 6 workspace + 内层 Tab + window + Settings 5 分类）与 `artifacts/GameSaveCenter-ui-host-audit.zip`（约 33MB，379 个文件）。
+- 清理：AGENTS.md 与 DEVELOPMENT_HANDOFF 新增“文件清理规则”；删除 `artifacts/` 旧 `dev-build`（7.4GB）、`ui-audit-build`、`phase*`、`audit*`、旧 zip 与 `.tmp/` 全部旧审计目录，仅保留当前安装目录、`.pext`、当前审计输出与日志。
+- 验证：Release 0 warning/0 error；`validate-source.py`、`check-xaml.ps1` 通过。真实第三方主题/连续缩放仍为 `MANUAL QA REQUIRED`。
+
 ## 2026-08-15 UI-REAL-HOST-AUDIT-FULL-COVERAGE 实施完成
 
 - 用户复核真实宿主截图后指出：脚本运行到 Settings 时停住、只截页面左上部分、未覆盖全部页面；另反馈审计兜底窗口部分超出屏幕且无法关闭。
