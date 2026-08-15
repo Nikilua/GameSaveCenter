@@ -30,7 +30,6 @@ namespace GameSaveCenter.Playnite
     public sealed class GameSaveCenterPlugin : GenericPlugin
     {
         private static readonly Guid PluginId = Guid.Parse("66e9f2d7-67bb-43ef-b62a-b8e60734fcec");
-        private SidebarItem? auditSidebarItem;
         private readonly ILogger logger;
         private readonly WorkerIpcClient client;
         private readonly WorkerLauncher launcher;
@@ -106,33 +105,32 @@ namespace GameSaveCenter.Playnite
             StartTaskNotificationMonitor();
             if (RealHostUiAuditService.ResolveRequestedOutput() != null)
             {
-                logger.Info("Real host audit requested at application start; scheduling GameSaveCenter sidebar activation.");
+                logger.Info("Real host audit requested at application start; waiting for the user to open GameSaveCenter.");
                 var dispatcher = PlayniteApi.MainView.UIDispatcher;
                 FireAndForget(async () =>
                 {
-                    await Task.Delay(2500);
+                    await Task.Delay(2000);
                     _ = dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
                     {
                         try
                         {
-                            logger.Info(auditSidebarItem == null
-                                ? "Real host audit auto-open fired before the sidebar item was registered; invoking no-op."
-                                : "Real host audit auto-open activating GameSaveCenter sidebar.");
-                            auditSidebarItem?.Activated?.Invoke();
-                            // The sidebar activation can be a no-op when Playnite's own
-                            // window is hidden or not attached to an interactive desktop.
-                            // Give the sidebar path a short chance, then host the real
-                            // dashboard directly so the Tier B audit still produces output.
+                            // SidebarItemType.View is opened by Playnite through Opened, not by
+                            // invoking Activated. Ask the user to click the sidebar entry so the
+                            // real embedded DashboardView.OnLoaded can capture production truth.
+                            RealHostUiAuditService.NotifyUserToOpenDashboard(this);
+                            // If the user never opens the sidebar, still produce controlled-host
+                            // evidence after a short grace period. This fallback is explicitly
+                            // marked controlled-host-window and never claims embedded truth.
                             FireAndForget(async () =>
                             {
-                                await Task.Delay(6000);
+                                await Task.Delay(8000);
                                 _ = dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
                                     RealHostUiAuditService.EnsureDashboardCaptured(this)));
                             });
                         }
                         catch (Exception ex)
                         {
-                            logger.Error(ex, "Failed to auto-open GameSaveCenter sidebar for the real host audit.");
+                            logger.Error(ex, "Real host audit startup prompt failed.");
                         }
                     }));
                 });
@@ -244,7 +242,6 @@ namespace GameSaveCenter.Playnite
                 // extension log instead of letting Playnite show its generic crash dialog.
                 Opened = CreateDashboardViewSafely
             };
-            auditSidebarItem = item;
             yield return item;
         }
 
@@ -388,7 +385,10 @@ namespace GameSaveCenter.Playnite
             try
             {
                 var view = CreateDashboardViewSafely();
-                return view as DashboardView;
+                var dashboard = view as DashboardView;
+                if (dashboard != null)
+                    dashboard.AuditHostKind = RealHostUiAuditService.AuditHostKind.ControlledAuditWindow;
+                return dashboard;
             }
             catch (Exception ex)
             {

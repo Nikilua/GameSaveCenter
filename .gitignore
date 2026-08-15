@@ -32,3 +32,6 @@ rclone.conf
 .DS_Store
 Thumbs.db
 Desktop.ini
+
+# Codex local plan/tool state
+.zcode/

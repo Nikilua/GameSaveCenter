@@ -27,12 +27,27 @@ namespace GameSaveCenter.Playnite.Diagnostics
         private static readonly ILogger Logger = LogManager.GetLogger();
         private static readonly HashSet<string> CompletedRoots = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         private static readonly object StateLock = new object();
-        private static readonly List<CaptureManifestEntry> CaptureManifest = new List<CaptureManifestEntry>();
+        private static readonly Dictionary<string, AuditCaptureSession> Sessions =
+            new Dictionary<string, AuditCaptureSession>(StringComparer.OrdinalIgnoreCase);
         private static bool dashboardCaptureStarted;
         private static bool settingsCaptureStarted;
         private static string? requestedOutputRoot;
         private static Window? auditDashboardWindow;
         private static Window? auditSettingsWindow;
+
+        internal static void NotifyUserToOpenDashboard(GameSaveCenterPlugin plugin)
+        {
+            const string message = "UI 审计已准备好，请在 Playnite 左侧点击 GameSaveCenter 打开插件界面。";
+            Logger.Info("Real host audit is waiting for the user to open GameSaveCenter in Playnite.");
+            try
+            {
+                plugin.PlayniteApi.Notifications.Add("GameSaveCenter.UI Audit", message, NotificationType.Info);
+            }
+            catch (Exception ex)
+            {
+                Logger.Debug(ex, "Could not show the Playnite notification for the real host audit prompt.");
+            }
+        }
 
         /// <summary>
         /// Opens the real DashboardView inside a dedicated borderless window when Playnite's
@@ -149,16 +164,19 @@ namespace GameSaveCenter.Playnite.Diagnostics
                 dashboardCaptureStarted = true;
             }
             var root = outputRoot!.Trim();
-            if (!CompletedRoots.Add(root))
+            var kind = dashboard.AuditHostKind;
+            var captureKey = root + "|" + kind.ToString().ToLowerInvariant() + "-dashboard";
+            if (!CompletedRoots.Add(captureKey))
                 return;
-            Logger.Info("Real host audit requested; scheduling Dashboard capture to " + root);
+            var session = ResetSession(root);
+            Logger.Info("Real host audit requested; scheduling " + kind + " Dashboard capture to " + root);
 
             var dispatcher = dashboard.Dispatcher;
             dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(async () =>
             {
                 try
                 {
-                    await CaptureDashboardAsync(dashboard, root);
+                    await CaptureDashboardAsync(dashboard, root, kind, session);
                 }
                 catch (Exception ex)
                 {
@@ -185,15 +203,17 @@ namespace GameSaveCenter.Playnite.Diagnostics
             }
             var root = outputRoot!.Trim();
             var settingsRoot = Path.Combine(root, "settings");
-            if (!CompletedRoots.Add(settingsRoot))
+            var captureKey = settingsRoot + "|settings";
+            if (!CompletedRoots.Add(captureKey))
                 return;
+            var session = GetOrCreateSession(root);
 
             var dispatcher = settingsView.Dispatcher;
             dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
             {
                 try
                 {
-                    CaptureSettings(settingsView, settingsRoot);
+                    CaptureSettings(settingsView, settingsRoot, session);
                 }
                 catch (Exception ex)
                 {
@@ -222,12 +242,16 @@ namespace GameSaveCenter.Playnite.Diagnostics
             return null;
         }
 
-        private static async System.Threading.Tasks.Task CaptureDashboardAsync(DashboardView dashboard, string outputRoot)
+        private static async System.Threading.Tasks.Task CaptureDashboardAsync(
+            DashboardView dashboard,
+            string outputRoot,
+            AuditHostKind kind,
+            AuditCaptureSession session)
         {
             Directory.CreateDirectory(outputRoot);
             Logger.Info("Real host audit capture started: " + outputRoot);
             var dpi = VisualTreeHelper.GetDpi(dashboard);
-            var isEmbedded = auditDashboardWindow == null;
+            var isEmbedded = kind == AuditHostKind.EmbeddedPlaynite;
             var mode = isEmbedded ? CaptureModeKind.EmbeddedCurrent : CaptureModeKind.ControlledHostWindow;
             var metadata = new UiHostMetadata
             {
@@ -267,10 +291,12 @@ namespace GameSaveCenter.Playnite.Diagnostics
 
             if (isEmbedded)
             {
-                await CaptureEmbeddedCurrentAsync(dashboard, outputRoot, metadata);
+                session.EmbeddedDashboardCaptured = true;
+                await CaptureEmbeddedCurrentAsync(dashboard, outputRoot, metadata, session.EmbeddedDashboard);
             }
             else
             {
+                session.ControlledDashboardCaptured = true;
                 var maximized = ComputeAuditWindowBounds(dashboard);
                 var sizes = new[]
                 {
@@ -284,13 +310,12 @@ namespace GameSaveCenter.Playnite.Diagnostics
                 {
                     foreach (var theme in new[] { GameSaveCenterThemeMode.Light, GameSaveCenterThemeMode.Dark })
                     {
-                        await CaptureControlledAtSizeAsync(dashboard, outputRoot, size, theme, metadata);
+                        await CaptureControlledAtSizeAsync(dashboard, outputRoot, size, theme, metadata, session.ControlledDashboard);
                     }
                 }
             }
 
-            UiDiagnosticsExporters.WriteJson(CaptureManifest, Path.Combine(outputRoot, "capture-manifest.json"));
-            CreateZip(outputRoot);
+            ScheduleFinalize(outputRoot, session);
             RequestSettingsCapture(dashboard);
             CloseAuditWindow(auditDashboardWindow);
             TryDeleteSentinel();
@@ -299,12 +324,14 @@ namespace GameSaveCenter.Playnite.Diagnostics
         private static async System.Threading.Tasks.Task CaptureEmbeddedCurrentAsync(
             DashboardView dashboard,
             string outputRoot,
-            UiHostMetadata metadata)
+            UiHostMetadata metadata,
+            List<CaptureManifestEntry> manifest)
         {
             // Embedded contract: capture exactly what Playnite hosts right now. Do not resize
             // the Dashboard, do not override the theme, and do not resize any host window.
-            var viewportDir = Path.Combine(outputRoot, "embedded-current", "viewport");
-            var scrollDir = Path.Combine(outputRoot, "embedded-current", "scroll-surfaces");
+            var baseDir = Path.Combine(outputRoot, "embedded-current", "dashboard");
+            var viewportDir = Path.Combine(baseDir, "viewport");
+            var scrollDir = Path.Combine(baseDir, "scroll-surfaces");
             var layoutDir = Path.Combine(outputRoot, "layout", "embedded-current");
             Directory.CreateDirectory(viewportDir);
             Directory.CreateDirectory(scrollDir);
@@ -324,8 +351,9 @@ namespace GameSaveCenter.Playnite.Diagnostics
                     "workspace-" + safe,
                     workspace.ToString(),
                     string.Empty,
-                    metadata);
-                CaptureScrollSurfaces(dashboard, scrollDir, outputRoot, "workspace-" + safe, workspace.ToString(), string.Empty, metadata.CaptureOrigin);
+                    metadata,
+                    manifest);
+                CaptureScrollSurfaces(dashboard, scrollDir, outputRoot, "workspace-" + safe, workspace.ToString(), string.Empty, metadata.CaptureOrigin, manifest);
                 UiDiagnosticsExporters.WriteJson(
                     new Dictionary<string, double>
                     {
@@ -337,7 +365,7 @@ namespace GameSaveCenter.Playnite.Diagnostics
                     Path.Combine(layoutDir, $"workspace-{safe}.json"));
             }
 
-            await CaptureAllInnerTabs(dashboard, viewportDir, scrollDir, outputRoot, "embedded-current", metadata);
+            await CaptureAllInnerTabs(dashboard, viewportDir, scrollDir, outputRoot, "embedded-current", metadata, manifest);
         }
 
         private static async System.Threading.Tasks.Task CaptureControlledAtSizeAsync(
@@ -345,7 +373,8 @@ namespace GameSaveCenter.Playnite.Diagnostics
             string outputRoot,
             AuditWindowSize size,
             GameSaveCenterThemeMode theme,
-            UiHostMetadata metadata)
+            UiHostMetadata metadata,
+            List<CaptureManifestEntry> manifest)
         {
             var window = auditDashboardWindow;
             if (window != null)
@@ -411,8 +440,9 @@ namespace GameSaveCenter.Playnite.Diagnostics
                     "workspace-" + safe,
                     workspace.ToString(),
                     string.Empty,
-                    metadata);
-                CaptureScrollSurfaces(dashboard, scrollDir, outputRoot, "workspace-" + safe, workspace.ToString(), string.Empty, metadata.CaptureOrigin);
+                    metadata,
+                    manifest);
+                CaptureScrollSurfaces(dashboard, scrollDir, outputRoot, "workspace-" + safe, workspace.ToString(), string.Empty, metadata.CaptureOrigin, manifest);
                 if (window != null)
                 {
                     UiDiagnosticsExporters.SavePng(window, Path.Combine(windowDir, $"controlled-window-{safe}.png"), 1d);
@@ -428,7 +458,7 @@ namespace GameSaveCenter.Playnite.Diagnostics
                     Path.Combine(layoutDir, $"workspace-{safe}.json"));
             }
 
-            await CaptureAllInnerTabs(dashboard, viewportDir, scrollDir, outputRoot, "controlled-" + size.Key + "-" + themeKey, metadata);
+            await CaptureAllInnerTabs(dashboard, viewportDir, scrollDir, outputRoot, "controlled-" + size.Key + "-" + themeKey, metadata, manifest);
         }
 
         private static async System.Threading.Tasks.Task CaptureAllInnerTabs(
@@ -437,7 +467,8 @@ namespace GameSaveCenter.Playnite.Diagnostics
             string scrollDir,
             string outputRoot,
             string routePrefix,
-            UiHostMetadata metadata)
+            UiHostMetadata metadata,
+            List<CaptureManifestEntry> manifest)
         {
             var outer = dashboard.DetailsTabControlForAudit;
             var captured = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -461,7 +492,8 @@ namespace GameSaveCenter.Playnite.Diagnostics
                         routePrefix + "-" + workspacePrefix,
                         workspace.ToString(),
                         captured,
-                        metadata);
+                        metadata,
+                        manifest);
                 }
             }
         }
@@ -475,7 +507,8 @@ namespace GameSaveCenter.Playnite.Diagnostics
             string routePrefix,
             string workspace,
             HashSet<string> captured,
-            UiHostMetadata metadata)
+            UiHostMetadata metadata,
+            List<CaptureManifestEntry> manifest)
         {
             for (var index = 0; index < tabControl.Items.Count; index++)
             {
@@ -499,8 +532,9 @@ namespace GameSaveCenter.Playnite.Diagnostics
                     tabRoute,
                     workspace,
                     safe,
-                    metadata);
-                CaptureScrollSurfaces(dashboard, scrollDir, outputRoot, tabRoute, workspace, safe, metadata.CaptureOrigin);
+                    metadata,
+                    manifest);
+                CaptureScrollSurfaces(dashboard, scrollDir, outputRoot, tabRoute, workspace, safe, metadata.CaptureOrigin, manifest);
 
                 var nested = new List<TabControl>();
                 foreach (var candidate in FindVisualChildren<TabControl>(tab))
@@ -527,7 +561,8 @@ namespace GameSaveCenter.Playnite.Diagnostics
                         tabRoute,
                         workspace,
                         captured,
-                        metadata);
+                        metadata,
+                        manifest);
                 }
             }
         }
@@ -539,10 +574,12 @@ namespace GameSaveCenter.Playnite.Diagnostics
             string route,
             string workspace,
             string tab,
-            UiHostMetadata metadata)
+            UiHostMetadata metadata,
+            List<CaptureManifestEntry> manifest)
         {
             var scale = GetRenderScale(root);
             UiDiagnosticsExporters.SavePng(root, path, scale);
+            CheckChildLayoutOverflow(root, outputRoot);
             var expected = UiDiagnosticsExporters.ExpectedBitmapSize(root, scale);
             var actual = UiDiagnosticsExporters.ReadPngSize(path);
             var validated = actual.HasValue
@@ -560,7 +597,7 @@ namespace GameSaveCenter.Playnite.Diagnostics
                     $"Expected {expected.Width}x{expected.Height}, actual {actual?.Width}x{actual?.Height} for {path}.",
                     outputRoot);
             }
-            CaptureManifest.Add(new CaptureManifestEntry
+            manifest.Add(new CaptureManifestEntry
             {
                 File = RelativeTo(path, outputRoot),
                 CaptureType = "Viewport",
@@ -586,7 +623,8 @@ namespace GameSaveCenter.Playnite.Diagnostics
             string route,
             string workspace,
             string tab,
-            string origin)
+            string origin,
+            List<CaptureManifestEntry> manifest)
         {
             var scrollers = FindMeaningfulScrollSurfaces(root);
             var index = 0;
@@ -595,43 +633,88 @@ namespace GameSaveCenter.Playnite.Diagnostics
                 var name = string.IsNullOrWhiteSpace(scroller.Name) ? "scroller-" + index : scroller.Name;
                 index++;
                 var file = $"{SafeFileName(route)}__{SafeFileName(name)}.png";
+                var path = Path.Combine(outDir, file);
+                var status = DecideScrollSurfaceStatus(scroller, out var reason);
                 var segments = scroller.ViewportHeight > 0
                     ? (int)Math.Ceiling(scroller.ExtentHeight / scroller.ViewportHeight)
                     : 1;
-                // Extremely tall/virtualized surfaces can take many minutes to stitch. Keep
-                // the surface in the manifest and mark it honestly instead of blocking the
-                // whole audit for one table.
-                var captured = segments <= 60;
-                if (captured)
+                var entry = new CaptureManifestEntry
                 {
-                    try
-                    {
-                        UiDiagnosticsExporters.SaveScrollViewerFull(scroller, Path.Combine(outDir, file));
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Debug(ex, "Real host audit scroll surface capture failed: " + file);
-                        captured = false;
-                    }
-                }
-                CaptureManifest.Add(new CaptureManifestEntry
-                {
-                    File = RelativeTo(Path.Combine(outDir, file), outputRoot),
+                    File = RelativeTo(path, outputRoot),
                     CaptureType = "ScrollSurfaceFull",
                     Origin = origin,
                     Route = route,
                     Workspace = workspace,
                     Tab = tab,
-                    DpiScaleX = 1.0,
-                    DpiScaleY = 1.0,
-                    RenderScale = 1.0,
                     ScrollerName = name,
                     ViewportHeight = Math.Round(scroller.ViewportHeight, 2),
                     ExtentHeight = Math.Round(scroller.ExtentHeight, 2),
                     SegmentCount = segments,
-                    CompletenessValidated = captured
-                });
+                    CompletenessValidated = false
+                };
+                if (status == ScrollSurfaceStatus.CapturedAndValidated)
+                {
+                    try
+                    {
+                        UiDiagnosticsExporters.SaveScrollViewerFull(scroller, path);
+                        var size = UiDiagnosticsExporters.ReadPngSize(path);
+                        var expectedHeight = (int)Math.Ceiling(scroller.ExtentHeight);
+                        var heightOk = size.HasValue
+                            && size.Value.Height >= (int)Math.Ceiling(scroller.ViewportHeight)
+                            && Math.Abs(size.Value.Height - expectedHeight) <= Math.Max(8, expectedHeight / 20);
+                        entry.OutputWidthPx = size?.Width ?? 0;
+                        entry.OutputHeightPx = size?.Height ?? 0;
+                        entry.CompletenessValidated = heightOk;
+                        entry.CaptureStatus = heightOk ? "CapturedAndValidated" : "CapturedUnvalidated";
+                        entry.Reason = heightOk ? null : "Output height does not match scroll extent.";
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Debug(ex, "Real host audit scroll surface capture failed: " + file);
+                        entry.CaptureStatus = "Failed";
+                        entry.Reason = ex.Message;
+                    }
+                }
+                else
+                {
+                    entry.CaptureStatus = status.ToString();
+                    entry.Reason = reason;
+                }
+                manifest.Add(entry);
             }
+        }
+
+        internal static ScrollSurfaceStatus DecideScrollSurfaceStatus(ScrollViewer scroller, out string reason)
+        {
+            reason = string.Empty;
+            if (IsVirtualizedDataGridScroller(scroller))
+            {
+                reason = "Virtualized DataGrid with logical item scrolling; use viewport and scroll-regression evidence instead of a pixel stitch.";
+                return ScrollSurfaceStatus.SkippedVirtualized;
+            }
+            var segments = scroller.ViewportHeight > 0
+                ? (int)Math.Ceiling(scroller.ExtentHeight / scroller.ViewportHeight)
+                : 1;
+            if (segments > 60)
+            {
+                reason = "Scroll surface requires more than 60 stitch segments.";
+                return ScrollSurfaceStatus.SkippedTooLarge;
+            }
+            return ScrollSurfaceStatus.CapturedAndValidated;
+        }
+
+        internal static bool IsVirtualizedDataGridScroller(ScrollViewer scroller)
+        {
+            if (string.Equals(scroller.Name, "DG_ScrollViewer", StringComparison.OrdinalIgnoreCase))
+                return true;
+            var parent = VisualTreeHelper.GetParent(scroller);
+            while (parent != null)
+            {
+                if (parent is DataGrid)
+                    return true;
+                parent = VisualTreeHelper.GetParent(parent);
+            }
+            return false;
         }
 
         internal static List<ScrollViewer> FindMeaningfulScrollSurfaces(FrameworkElement root)
@@ -642,6 +725,8 @@ namespace GameSaveCenter.Playnite.Diagnostics
                     && scroller.ActualWidth >= 60
                     && scroller.ActualHeight >= 60
                     && (scroller.ScrollableHeight > 8 || scroller.ScrollableWidth > 8))
+                .Where(scroller => !string.Equals(scroller.Name, "DG_ScrollViewer", StringComparison.OrdinalIgnoreCase))
+                .Where(scroller => !string.Equals(scroller.Name, "PART_ContentHost", StringComparison.OrdinalIgnoreCase))
                 .Distinct()
                 .ToList();
         }
@@ -680,6 +765,127 @@ namespace GameSaveCenter.Playnite.Diagnostics
             }
         }
 
+        internal static void CheckChildLayoutOverflow(FrameworkElement root, string outputRoot)
+        {
+            try
+            {
+                var rootWidth = root.ActualWidth;
+                var rootHeight = root.ActualHeight;
+                if (rootWidth <= 0 || rootHeight <= 0)
+                    return;
+                var offenders = new List<string>();
+                foreach (var child in FindVisualChildren<FrameworkElement>(root))
+                {
+                    if (string.IsNullOrWhiteSpace(child.Name)
+                        || child.Visibility != Visibility.Visible
+                        || child.ActualWidth <= 0
+                        || child.ActualHeight <= 0)
+                    {
+                        continue;
+                    }
+                    var bounds = child.TransformToAncestor(root).TransformBounds(
+                        new Rect(0, 0, child.ActualWidth, child.ActualHeight));
+                    if (bounds.Right > rootWidth + 2d || bounds.Bottom > rootHeight + 2d)
+                    {
+                        offenders.Add(
+                            $"{child.Name}: {bounds.Left:0},{bounds.Top:0}-{bounds.Right:0},{bounds.Bottom:0} (root {rootWidth:0}x{rootHeight:0})");
+                    }
+                }
+                if (offenders.Count > 0)
+                {
+                    WriteGate(
+                        "CHILD_LAYOUT_OVERFLOW",
+                        "Named children exceed Dashboard bounds: " + string.Join("; ", offenders.Take(8)),
+                        outputRoot);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Debug(ex, "Real host audit child layout overflow check failed.");
+            }
+        }
+
+        private static AuditCaptureSession GetOrCreateSession(string root)
+        {
+            lock (StateLock)
+            {
+                if (!Sessions.TryGetValue(root, out var session))
+                {
+                    session = new AuditCaptureSession();
+                    Sessions[root] = session;
+                }
+                return session;
+            }
+        }
+
+        private static AuditCaptureSession ResetSession(string root)
+        {
+            lock (StateLock)
+            {
+                var session = new AuditCaptureSession();
+                Sessions[root] = session;
+                return session;
+            }
+        }
+
+        private static void ScheduleFinalize(string outputRoot, AuditCaptureSession session)
+        {
+            System.Threading.Tasks.Task.Run(async () =>
+            {
+                await System.Threading.Tasks.Task.Delay(TimeSpan.FromSeconds(150));
+                FinalizeSession(outputRoot, session);
+            });
+        }
+
+        private static void FinalizeSession(string outputRoot, AuditCaptureSession session)
+        {
+            lock (session.Sync)
+            {
+                if (session.Finalized)
+                    return;
+                session.Finalized = true;
+            }
+            try
+            {
+                Directory.CreateDirectory(Path.Combine(outputRoot, "embedded-current", "dashboard"));
+                Directory.CreateDirectory(Path.Combine(outputRoot, "controlled"));
+                if (session.EmbeddedDashboard.Count > 0)
+                {
+                    UiDiagnosticsExporters.WriteJson(
+                        session.EmbeddedDashboard,
+                        Path.Combine(outputRoot, "embedded-current", "dashboard", "capture-manifest.json"));
+                }
+                if (session.ControlledDashboard.Count > 0)
+                {
+                    UiDiagnosticsExporters.WriteJson(
+                        session.ControlledDashboard,
+                        Path.Combine(outputRoot, "controlled", "capture-manifest.json"));
+                }
+                UiDiagnosticsExporters.WriteJson(
+                    session.Settings,
+                    Path.Combine(outputRoot, "settings", "capture-manifest.json"));
+                var aggregate = new List<CaptureManifestEntry>();
+                aggregate.AddRange(session.EmbeddedDashboard);
+                aggregate.AddRange(session.ControlledDashboard);
+                aggregate.AddRange(session.Settings);
+                UiDiagnosticsExporters.WriteJson(aggregate, Path.Combine(outputRoot, "capture-manifest.json"));
+                UiDiagnosticsExporters.WriteJson(
+                    new Dictionary<string, bool>
+                    {
+                        ["EmbeddedDashboardCaptured"] = session.EmbeddedDashboardCaptured,
+                        ["EmbeddedSettingsCaptured"] = session.EmbeddedSettingsCaptured,
+                        ["ControlledDashboardCaptured"] = session.ControlledDashboardCaptured,
+                        ["VisualSourceOfTruthAvailable"] = session.EmbeddedDashboardCaptured
+                    },
+                    Path.Combine(outputRoot, "summary.json"));
+                CreateZip(outputRoot);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Real host audit finalize failed.");
+            }
+        }
+
         private static void RequestSettingsCapture(DashboardView dashboard)
         {
             var outputRoot = ResolveRequestedOutput();
@@ -713,11 +919,15 @@ namespace GameSaveCenter.Playnite.Diagnostics
             EnsureSettingsCaptured(outputRoot!, uiDispatcher, pluginSettings);
         }
 
-        private static void CaptureSettings(GameSaveCenterSettingsView settingsView, string outputRoot)
+        private static void CaptureSettings(GameSaveCenterSettingsView settingsView, string outputRoot, AuditCaptureSession session)
         {
             Directory.CreateDirectory(outputRoot);
             Logger.Info("Real host settings capture started: " + outputRoot);
             var settingsEmbedded = auditSettingsWindow == null;
+            if (settingsEmbedded)
+                session.EmbeddedSettingsCaptured = true;
+            else
+                session.ControlledSettingsCaptured = true;
             var maximized = ComputeAuditWindowBounds(settingsView);
             var sizes = new[]
             {
@@ -735,12 +945,11 @@ namespace GameSaveCenter.Playnite.Diagnostics
             {
                 foreach (var theme in themes)
                 {
-                    CaptureSettingsAtSize(settingsView, outputRoot, size, theme);
+                    CaptureSettingsAtSize(settingsView, outputRoot, size, theme, session.Settings);
                 }
             }
 
-            UiDiagnosticsExporters.WriteJson(CaptureManifest, Path.Combine(outputRoot, "capture-manifest.json"));
-            CreateZip(Path.GetDirectoryName(outputRoot)!);
+            FinalizeSession(Path.GetDirectoryName(outputRoot) ?? outputRoot, session);
             Logger.Info("Real host settings capture finished: " + outputRoot);
             CloseAuditWindow(auditSettingsWindow);
             TryDeleteSentinel();
@@ -750,7 +959,8 @@ namespace GameSaveCenter.Playnite.Diagnostics
             GameSaveCenterSettingsView settingsView,
             string outputRoot,
             AuditWindowSize size,
-            GameSaveCenterThemeMode theme)
+            GameSaveCenterThemeMode theme,
+            List<CaptureManifestEntry> manifest)
         {
             var window = auditSettingsWindow;
             var controlled = window != null;
@@ -828,12 +1038,12 @@ namespace GameSaveCenter.Playnite.Diagnostics
             Directory.CreateDirectory(viewportDir);
             Directory.CreateDirectory(scrollDir);
             Directory.CreateDirectory(windowDir);
-            SaveViewport(settingsView, Path.Combine(viewportDir, "settings.png"), outputRoot, "settings", "Settings", string.Empty, metadata);
+            SaveViewport(settingsView, Path.Combine(viewportDir, "settings.png"), outputRoot, "settings", "Settings", string.Empty, metadata, manifest);
             if (window != null)
             {
                 UiDiagnosticsExporters.SavePng(window, Path.Combine(windowDir, "controlled-window-settings.png"), 1d);
             }
-            CaptureSettingsTabs(settingsView, baseDir, outputRoot, size.Key, themeKey, metadata);
+            CaptureSettingsTabs(settingsView, baseDir, outputRoot, size.Key, themeKey, metadata, manifest);
         }
 
         private static void CaptureSettingsTabs(
@@ -842,7 +1052,8 @@ namespace GameSaveCenter.Playnite.Diagnostics
             string outputRoot,
             string sizeKey,
             string themeKey,
-            UiHostMetadata metadata)
+            UiHostMetadata metadata,
+            List<CaptureManifestEntry> manifest)
         {
             var tabControls = FindVisualChildren<TabControl>(settingsView).ToList();
             var viewportDir = Path.Combine(baseDir, "viewport");
@@ -868,8 +1079,9 @@ namespace GameSaveCenter.Playnite.Diagnostics
                         "settings-" + safe,
                         "Settings",
                         safe,
-                        metadata);
-                    CaptureScrollSurfaces(settingsView, scrollDir, outputRoot, "settings-" + safe, "Settings", safe, metadata.CaptureOrigin);
+                        metadata,
+                        manifest);
+                    CaptureScrollSurfaces(settingsView, scrollDir, outputRoot, "settings-" + safe, "Settings", safe, metadata.CaptureOrigin, manifest);
                 }
             }
         }
@@ -1102,6 +1314,34 @@ namespace GameSaveCenter.Playnite.Diagnostics
             ControlledHostWindow
         }
 
+        internal enum AuditHostKind
+        {
+            EmbeddedPlaynite,
+            ControlledAuditWindow
+        }
+
+        internal enum ScrollSurfaceStatus
+        {
+            CapturedAndValidated,
+            CapturedUnvalidated,
+            SkippedVirtualized,
+            SkippedTooLarge,
+            Failed
+        }
+
+        internal sealed class AuditCaptureSession
+        {
+            internal object Sync { get; } = new object();
+            internal bool Finalized { get; set; }
+            internal bool EmbeddedDashboardCaptured { get; set; }
+            internal bool ControlledDashboardCaptured { get; set; }
+            internal bool EmbeddedSettingsCaptured { get; set; }
+            internal bool ControlledSettingsCaptured { get; set; }
+            internal List<CaptureManifestEntry> EmbeddedDashboard { get; } = new List<CaptureManifestEntry>();
+            internal List<CaptureManifestEntry> ControlledDashboard { get; } = new List<CaptureManifestEntry>();
+            internal List<CaptureManifestEntry> Settings { get; } = new List<CaptureManifestEntry>();
+        }
+
         internal sealed class CaptureManifestEntry
         {
             public string File { get; set; } = string.Empty;
@@ -1122,6 +1362,8 @@ namespace GameSaveCenter.Playnite.Diagnostics
             public double? ExtentHeight { get; set; }
             public int? SegmentCount { get; set; }
             public bool CompletenessValidated { get; set; }
+            public string? CaptureStatus { get; set; }
+            public string? Reason { get; set; }
         }
     }
 }

@@ -75,26 +75,33 @@ function Invoke-GameSaveCenterSidebar {
 
 Invoke-GameSaveCenterSidebar
 
-$metadata = Join-Path $Output 'metadata.json'
-$deadline = (Get-Date).AddSeconds(120)
-while (-not (Test-Path -LiteralPath $metadata)) {
+$summary = Join-Path $Output 'summary.json'
+Write-Host "[WAITING] 请在 Playnite 左侧点击 GameSaveCenter。将在检测到真实 DashboardView.Loaded 后继续；超时：90 秒。" -ForegroundColor Yellow
+$deadline = (Get-Date).AddSeconds(90)
+while (-not (Test-Path -LiteralPath $summary)) {
     if ((Get-Date) -gt $deadline) {
-        Write-Warning "Timed out waiting for $metadata. Check Playnite extension logs."
-        exit 1
+        Write-Warning "Timed out waiting for $summary. Check Playnite extension logs."
+        break
     }
     Start-Sleep -Seconds 2
 }
 
 $zip = Join-Path $artifactsRoot 'GameSaveCenter-ui-host-audit.zip'
-$settingsMetadata = Join-Path $Output 'settings\metadata.json'
-$settingsDeadline = (Get-Date).AddSeconds(60)
-while (-not (Test-Path -LiteralPath $settingsMetadata)) {
-    if ((Get-Date) -gt $settingsDeadline) {
-        Write-Warning "Timed out waiting for settings metadata: $settingsMetadata"
-        break
-    }
-    Start-Sleep -Seconds 2
+if (-not (Test-Path -LiteralPath $summary)) {
+    Write-Host "[PARTIAL] 未捕获真实 Embedded Dashboard。已生成 Controlled Host evidence，但它不是实际插件视觉真值。" -ForegroundColor Yellow
+    Write-Host "Output: $Output"
+    exit 2
 }
-Write-Host "Real host audit output: $Output" -ForegroundColor Green
-Write-Host "Metadata: $metadata" -ForegroundColor Green
-Write-Host "ZIP: $zip (after Playnite capture; zip is written by the plugin)" -ForegroundColor Green
+
+$summaryJson = Get-Content -LiteralPath $summary -Raw | ConvertFrom-Json
+if ($summaryJson.EmbeddedDashboardCaptured) {
+    Write-Host "[OK] Embedded Playnite Dashboard captured." -ForegroundColor Green
+    Write-Host "Real host audit output: $Output" -ForegroundColor Green
+    Write-Host "ZIP: $zip"
+    exit 0
+}
+
+Write-Host "[PARTIAL] 未捕获真实 Embedded Dashboard（EmbeddedDashboardCaptured=false）。Controlled Host evidence 已生成，但不是真实插件视觉真值。" -ForegroundColor Yellow
+Write-Host "Output: $Output"
+Write-Host "ZIP: $zip"
+exit 2

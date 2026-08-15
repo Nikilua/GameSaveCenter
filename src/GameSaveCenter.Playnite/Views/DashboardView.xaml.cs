@@ -139,6 +139,13 @@ namespace GameSaveCenter.Playnite.Views
 
         internal GameSaveCenterPlugin PluginForAudit => plugin;
 
+        /// <summary>
+        /// Explicit capture origin for the real host audit. Sidebar-created dashboards are
+        /// EmbeddedPlaynite; the dedicated audit-window fallback marks ControlledAuditWindow.
+        /// </summary>
+        internal RealHostUiAuditService.AuditHostKind AuditHostKind { get; set; } =
+            RealHostUiAuditService.AuditHostKind.EmbeddedPlaynite;
+
         internal DashboardViewModel ViewModelForAudit => viewModel;
 
         internal TabControl? DetailsTabControlForAudit => DetailsTabControl;
