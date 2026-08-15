@@ -96,6 +96,17 @@ public static class UiAuditRunner
                     Console.WriteLine("  " + failed);
                 return 1;
             }
+            var textFitFailures = result.Warnings
+                .Where(warning => warning.Code == "TEXT_FIT")
+                .GroupBy(warning => warning.RouteId + "|" + warning.Tab + "|" + warning.SizeKey + "|" + warning.Message)
+                .Count();
+            if (textFitFailures > 0)
+            {
+                Console.WriteLine("TEXT-FIT FAILURES " + textFitFailures);
+                foreach (var warning in result.Warnings.Where(warning => warning.Code == "TEXT_FIT").Take(40))
+                    Console.WriteLine("  " + warning.RouteId + "/" + warning.Tab + "/" + warning.SizeKey + ": " + warning.Message);
+                return 1;
+            }
             return 0;
         }
         catch (Exception ex)

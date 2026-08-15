@@ -103,6 +103,9 @@
     <!-- Vertical rhythm between section cards inside a page scroll channel. -->
     <sys:Double x:Key="GscSectionSpacing">14</sys:Double>
     <GridLength x:Key="GscSettingsFieldColumnWidth">150</GridLength>
+    <!-- Shared severity column width: 92 DIP is the verified content-fit baseline for
+         two-character Chinese status words (提示/警告/错误/严重) inside table pills. -->
+    <DataGridLength x:Key="GscSeverityColumnWidth">92</DataGridLength>
     <!-- Demo-aligned side navigation and workspace inspector channels. The dashboard
          consumes the sidebar width at each breakpoint; workspace inspectors share one
          width so the right-hand detail column stays consistent across pages. -->

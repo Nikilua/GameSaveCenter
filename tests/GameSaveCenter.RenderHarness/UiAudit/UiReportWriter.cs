@@ -232,6 +232,7 @@ public static class UiReportWriter
         builder.AppendLine($"- 条件 UI：{result.Manifest.Summary.ConditionalUiCount}");
         builder.AppendLine($"- 运行时快照数量：{result.Snapshots.Count}");
         builder.AppendLine($"- 运行时警告数量：{result.Warnings.Count}");
+        builder.AppendLine($"- Text-Fit 警告数量：{result.Warnings.Count(warning => warning.Code == "TEXT_FIT")}");
         builder.AppendLine($"- 失败路由：{result.FailedRoutes.Count}");
         builder.AppendLine();
 

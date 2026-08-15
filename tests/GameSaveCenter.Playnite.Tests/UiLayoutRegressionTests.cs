@@ -402,6 +402,36 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("SettingsHeader.MinHeight = compactHeaderHeight ? 56 : compact ? 68 : 76;", code);
         }
 
+        [Fact]
+        public void MaintenanceSeverityColumnsUseSharedContentFitWidth()
+        {
+            var root = FindRepositoryRoot();
+            var tokens = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml"));
+            var maintenance = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+
+            Assert.Contains("x:Key=\"GscSeverityColumnWidth\"", tokens);
+            Assert.Contains("GscSeverityColumnWidth\">92<", tokens);
+            Assert.Contains("Width=\"{StaticResource GscSeverityColumnWidth}\"", maintenance);
+            Assert.DoesNotContain("Header=\"等级\" Width=\"72\"", maintenance);
+            Assert.DoesNotContain("Header=\"等级\" Width=\"92\"", maintenance);
+        }
+
+        [Fact]
+        public void AuditTextFitDetectionCoversShortLabels()
+        {
+            var root = FindRepositoryRoot();
+            var harnessRoot = Path.Combine(root, "tests", "GameSaveCenter.RenderHarness", "UiAudit");
+            var analyzer = File.ReadAllText(Path.Combine(harnessRoot, "UiLayoutAnalyzer.cs"));
+            var runner = File.ReadAllText(Path.Combine(harnessRoot, "UiAuditRunner.cs"));
+            var inspector = File.ReadAllText(Path.Combine(harnessRoot, "UiVisualTreeInspector.cs"));
+
+            Assert.Contains("ComputeUnconstrainedTextWidth", analyzer);
+            Assert.Contains("Severity = isTextFit ? \"MEDIUM\" : \"INFO\",", analyzer);
+            Assert.Contains("Code = isTextFit ? \"TEXT_FIT\" : \"POSSIBLE_CLIPPING\",", analyzer);
+            Assert.Contains("Code == \"TEXT_FIT\"", runner);
+            Assert.Contains("element.Visibility == Visibility.Visible", inspector);
+        }
+
         private static string FindRepositoryRoot()
         {
             var directory = new DirectoryInfo(AppContext.BaseDirectory);

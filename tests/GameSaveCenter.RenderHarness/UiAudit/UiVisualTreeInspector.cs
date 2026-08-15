@@ -23,7 +23,10 @@ public static class UiVisualTreeInspector
         if (nodes.Count >= MaxNodes)
             return;
 
-        if (current is FrameworkElement element && element.IsVisible && element.ActualWidth > 0 && element.ActualHeight > 0)
+        if (current is FrameworkElement element
+            && element.Visibility == Visibility.Visible
+            && element.ActualWidth > 0
+            && element.ActualHeight > 0)
         {
             nodes.Add(new UiVisualNode
             {
@@ -31,7 +34,7 @@ public static class UiVisualTreeInspector
                 Name = element.Name,
                 AutomationName = AutomationProperties.GetName(element),
                 Visibility = element.Visibility.ToString(),
-                IsVisible = element.IsVisible,
+                IsVisible = element.Visibility == Visibility.Visible,
                 IsEnabled = element.IsEnabled,
                 ActualWidth = Math.Round(element.ActualWidth, 2),
                 ActualHeight = Math.Round(element.ActualHeight, 2),

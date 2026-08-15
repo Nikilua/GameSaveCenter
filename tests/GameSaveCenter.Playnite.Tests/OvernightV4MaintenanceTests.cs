@@ -18,7 +18,7 @@ namespace GameSaveCenter.Playnite.Tests
             var findings = maintenance.Descendants().Single(element => element.Attribute(xamlName)?.Value == "FindingsGrid");
             var columns = findings.Elements().Single(element => element.Name.LocalName == "DataGrid.Columns").Elements().ToList();
             Assert.Equal(5, columns.Count);
-            Assert.Contains("Width=\"72\"", columns[0].ToString());
+            Assert.Contains("Width=\"{StaticResource GscSeverityColumnWidth}\"", columns[0].ToString());
             Assert.Contains("Width=\"120\"", columns[1].ToString());
             Assert.Contains("Width=\"160\"", columns[2].ToString());
             Assert.Contains("MinWidth=\"180\"", columns[3].ToString());

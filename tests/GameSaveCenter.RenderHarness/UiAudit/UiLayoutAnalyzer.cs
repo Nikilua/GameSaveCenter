@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -636,25 +637,44 @@ public static class UiLayoutAnalyzer
             if (text.TextWrapping == TextWrapping.Wrap || text.TextTrimming != TextTrimming.None)
                 continue;
             var desiredWidth = Math.Max(0, text.DesiredSize.Width - text.Margin.Left - text.Margin.Right);
-            if (desiredWidth > text.ActualWidth + 2)
+            var textWidth = ComputeUnconstrainedTextWidth(text);
+            var availableWidth = text.ActualWidth;
+            if (desiredWidth <= availableWidth + 2 && textWidth <= availableWidth + 2)
+                continue;
+
+            var textSnippet = string.IsNullOrEmpty(text.Text)
+                ? string.Empty
+                : " 文本=" + (text.Text.Length > 24 ? text.Text.Substring(0, 24) + "…" : text.Text);
+            var parentName = VisualTreeHelper.GetParent(text) is FrameworkElement parent
+                ? " 父=" + (string.IsNullOrEmpty(parent.Name) ? parent.GetType().Name : parent.Name)
+                : string.Empty;
+            var isTextFit = textWidth > availableWidth + 2;
+            report.Warnings.Add(new UiAuditWarning
             {
-                var textSnippet = string.IsNullOrEmpty(text.Text)
-                    ? string.Empty
-                    : " 文本=" + (text.Text.Length > 24 ? text.Text.Substring(0, 24) + "…" : text.Text);
-                var parentName = VisualTreeHelper.GetParent(text) is FrameworkElement parent
-                    ? " 父=" + (string.IsNullOrEmpty(parent.Name) ? parent.GetType().Name : parent.Name)
-                    : string.Empty;
-                report.Warnings.Add(new UiAuditWarning
-                {
-                    Severity = "INFO",
-                    Code = "POSSIBLE_CLIPPING",
-                    RouteId = report.RouteId,
-                    Tab = report.TabHeader,
-                    SizeKey = report.SizeKey,
-                    Message = $"{text.Name ?? text.GetType().Name} 期望宽度 {desiredWidth:0} DIP 大于实际宽度 {text.ActualWidth:0} DIP{parentName}{textSnippet}"
-                });
-            }
+                Severity = isTextFit ? "MEDIUM" : "INFO",
+                Code = isTextFit ? "TEXT_FIT" : "POSSIBLE_CLIPPING",
+                RouteId = report.RouteId,
+                Tab = report.TabHeader,
+                SizeKey = report.SizeKey,
+                Message = $"{text.Name ?? text.GetType().Name} 文本宽度 {textWidth:0} DIP 大于实际宽度 {availableWidth:0} DIP{parentName}{textSnippet}"
+            });
         }
+    }
+
+    private static double ComputeUnconstrainedTextWidth(TextBlock text)
+    {
+        if (string.IsNullOrEmpty(text.Text))
+            return 0;
+        var typeface = new Typeface(text.FontFamily, text.FontStyle, text.FontWeight, text.FontStretch);
+        var formatted = new FormattedText(
+            text.Text,
+            CultureInfo.CurrentUICulture,
+            text.FlowDirection,
+            typeface,
+            text.FontSize,
+            text.Foreground,
+            VisualTreeHelper.GetDpi(text).PixelsPerDip);
+        return formatted.WidthIncludingTrailingWhitespace;
     }
 
     private static bool HasScrollableScrollViewerAncestor(

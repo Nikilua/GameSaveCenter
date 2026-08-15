@@ -3,6 +3,15 @@
 > 维护时间：2026-08-14
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-15 UI-POST-TYPOGRAPHY-GEOMETRY-CLOSURE 当前事实
+
+- 来源：`GameSaveCenter_PostTypography_Geometry_Audit_Fix_Prompt.zip`，计划 `docs/ai/UI_POST_TYPOGRAPHY_GEOMETRY_CLOSURE_PLAN.md`，报告 `docs/ai/UI_POST_TYPOGRAPHY_GEOMETRY_CLOSURE_REPORT.md`。
+- Maintenance 诊断与异常审计的“等级”列统一使用 `GscSeverityColumnWidth`（DataGridLength 92 DIP），不再有 72 DIP 挤压。
+- UI Audit Text-Fit：`UiLayoutAnalyzer` 用 `FormattedText` 无约束宽度对比 `ActualWidth`；`TEXT_FIT`=MEDIUM 且 `UiAuditRunner` 遇任何 TEXT_FIT 返回失败码；wrap/ellipsis 文本不误报。
+- visual-tree：exporter 不能用 `IsVisible`（离屏 host 无 PresentationSource 恒 false），改用 `Visibility == Visible`；当前 175 个 JSON 非空。
+- 基线：Playnite `268/268`；render-qa 11 档 + 56 主题 + 7 Resize 全绿；UI Audit 0 HIGH/0 MEDIUM/0 failed routes/0 TEXT-FIT。
+- 真实 Playnite 宿主主题/DPI 125%/150%/连续缩放仍为 `MANUAL QA REQUIRED`。
+
 ## 2026-08-15 UI-FINAL-TYPOGRAPHY-RESPONSIVE-CLOSURE 当前事实
 
 - 来源：`GameSaveCenter_Final_UI_Typography_Prompt.zip`，计划 `docs/ai/UI_TYPOGRAPHY_RESPONSIVE_CLOSURE_PLAN.md`，报告 `docs/ai/UI_TYPOGRAPHY_RESPONSIVE_CLOSURE_REPORT.md`。

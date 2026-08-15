@@ -2,6 +2,16 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-15 UI-POST-TYPOGRAPHY-GEOMETRY-CLOSURE 实施完成
+
+- 来源：`GameSaveCenter_PostTypography_Geometry_Audit_Fix_Prompt.zip`；计划 `docs/ai/UI_POST_TYPOGRAPHY_GEOMETRY_CLOSURE_PLAN.md`；报告 `docs/ai/UI_POST_TYPOGRAPHY_GEOMETRY_CLOSURE_REPORT.md`。
+- 修复 Maintenance 诊断“等级”列 72 → 共享 `GscSeverityColumnWidth`（92 DIP），异常审计同列统一引用；`GscRedesignTableStatusPill` 保持内容自适应。
+- 全仓固定几何扫描：仅修改确认挤压的等级列；Task/Save/Media/Audit/Process 短列与按钮 MinWidth 核对后保持不变，未全局增高。
+- UI Audit 新增 Text-Fit 检测：`FormattedText` 无约束宽度 vs `ActualWidth`，排除 wrap/ellipsis；`TEXT_FIT` 为 MEDIUM 且 audit 直接失败。
+- visual-tree exporter 修复：离屏 host `IsVisible` 恒 false → 改用 `Visibility == Visible`；175 个 JSON 全部非空。
+- 验证：Release 0 warning/0 error；Core 59/59、Worker 190/190、Playnite 268/268；render-qa 11 档 + 56 主题 + 7 Resize 全绿；UI Audit 0 HIGH/0 MEDIUM/0 failed routes/0 TEXT-FIT。
+- 提交：见 `git log`。真实 Playnite 宿主/DPI 125%/150%/主题/连续缩放仍为 `MANUAL QA REQUIRED`。
+
 ## 2026-08-15 UI-FINAL-TYPOGRAPHY-RESPONSIVE-CLOSURE 实施完成
 
 - 来源：`GameSaveCenter_Final_UI_Typography_Prompt.zip`；计划 `docs/ai/UI_TYPOGRAPHY_RESPONSIVE_CLOSURE_PLAN.md`；报告 `docs/ai/UI_TYPOGRAPHY_RESPONSIVE_CLOSURE_REPORT.md`。
