@@ -717,6 +717,7 @@ namespace GameSaveCenter.Playnite.Diagnostics
         {
             Directory.CreateDirectory(outputRoot);
             Logger.Info("Real host settings capture started: " + outputRoot);
+            var settingsEmbedded = auditSettingsWindow == null;
             var maximized = ComputeAuditWindowBounds(settingsView);
             var sizes = new[]
             {
@@ -727,9 +728,12 @@ namespace GameSaveCenter.Playnite.Diagnostics
                 new AuditWindowSize("1024x768", Math.Min(1024d, maximized.Width), Math.Min(768d, maximized.Height))
             };
 
-            foreach (var size in sizes)
+            var themes = settingsEmbedded
+                ? new[] { (settingsView.DataContext as GameSaveCenterSettings)?.ThemeMode ?? GameSaveCenterThemeMode.FollowPlaynite }
+                : new[] { GameSaveCenterThemeMode.Light, GameSaveCenterThemeMode.Dark };
+            foreach (var size in settingsEmbedded ? new[] { sizes[0] } : sizes)
             {
-                foreach (var theme in new[] { GameSaveCenterThemeMode.Light, GameSaveCenterThemeMode.Dark })
+                foreach (var theme in themes)
                 {
                     CaptureSettingsAtSize(settingsView, outputRoot, size, theme);
                 }
@@ -749,18 +753,23 @@ namespace GameSaveCenter.Playnite.Diagnostics
             GameSaveCenterThemeMode theme)
         {
             var window = auditSettingsWindow;
+            var controlled = window != null;
             if (window != null)
             {
+                // Borderless controlled host: profile is the client size.
                 window.Width = size.Width;
                 window.Height = size.Height;
                 window.Left = 0;
                 window.Top = 0;
             }
-            settingsView.ClearValue(FrameworkElement.WidthProperty);
-            settingsView.ClearValue(FrameworkElement.HeightProperty);
-            settingsView.HorizontalAlignment = HorizontalAlignment.Stretch;
-            settingsView.VerticalAlignment = VerticalAlignment.Stretch;
-            settingsView.ApplyThemeForAudit(theme);
+            if (controlled)
+            {
+                settingsView.ClearValue(FrameworkElement.WidthProperty);
+                settingsView.ClearValue(FrameworkElement.HeightProperty);
+                settingsView.HorizontalAlignment = HorizontalAlignment.Stretch;
+                settingsView.VerticalAlignment = VerticalAlignment.Stretch;
+                settingsView.ApplyThemeForAudit(theme);
+            }
             settingsView.UpdateLayout();
             settingsView.Dispatcher.Invoke(() => { }, DispatcherPriority.Render);
 
@@ -768,12 +777,12 @@ namespace GameSaveCenter.Playnite.Diagnostics
             var dpi = VisualTreeHelper.GetDpi(settingsView);
             var metadata = new UiHostMetadata
             {
-                Mode = "controlled-host-window-settings",
-                CaptureOrigin = "DedicatedAuditWindow",
-                DashboardWasAlreadyHostedByPlaynite = false,
-                DedicatedAuditWindowUsed = true,
-                ProfileSizeApplied = true,
-                ThemeOverrideApplied = true,
+                Mode = controlled ? "controlled-host-window-settings" : "embedded-current-settings",
+                CaptureOrigin = controlled ? "DedicatedAuditWindow" : "EmbeddedPlaynite",
+                DashboardWasAlreadyHostedByPlaynite = !controlled,
+                DedicatedAuditWindowUsed = controlled,
+                ProfileSizeApplied = controlled,
+                ThemeOverrideApplied = controlled,
                 CommitSha = Environment.GetEnvironmentVariable("GSC_UI_AUDIT_COMMIT") ?? "unknown",
                 PluginVersion = typeof(GameSaveCenterSettingsView).Assembly.GetName().Version?.ToString() ?? "unknown",
                 PlayniteSdkVersion = typeof(global::Playnite.SDK.IPlayniteAPI).Assembly.GetName().Version?.ToString() ?? "unknown",
@@ -788,9 +797,9 @@ namespace GameSaveCenter.Playnite.Diagnostics
                 HighContrast = SystemParameters.HighContrast
             };
 
-            var sizeOk =
-                Math.Abs(settingsView.ActualWidth - size.Width) <= 2d
-                && Math.Abs(settingsView.ActualHeight - size.Height) <= 2d;
+            var sizeOk = !controlled
+                || (Math.Abs(settingsView.ActualWidth - size.Width) <= 2d
+                    && Math.Abs(settingsView.ActualHeight - size.Height) <= 2d);
             if (!sizeOk)
             {
                 WriteGate(
@@ -810,9 +819,12 @@ namespace GameSaveCenter.Playnite.Diagnostics
                 UiDiagnosticsExporters.BuildVisualTree(settingsView),
                 Path.Combine(outputRoot, "visual-tree-" + size.Key + "-" + themeKey + ".json"));
 
-            var viewportDir = Path.Combine(outputRoot, "controlled", size.Key, themeKey, "viewport");
-            var scrollDir = Path.Combine(outputRoot, "controlled", size.Key, themeKey, "scroll-surfaces");
-            var windowDir = Path.Combine(outputRoot, "controlled", size.Key, themeKey, "window");
+            var baseDir = controlled
+                ? Path.Combine(outputRoot, "controlled", size.Key, themeKey)
+                : Path.Combine(outputRoot, "embedded-current");
+            var viewportDir = Path.Combine(baseDir, "viewport");
+            var scrollDir = Path.Combine(baseDir, "scroll-surfaces");
+            var windowDir = Path.Combine(baseDir, "window");
             Directory.CreateDirectory(viewportDir);
             Directory.CreateDirectory(scrollDir);
             Directory.CreateDirectory(windowDir);
@@ -821,19 +833,20 @@ namespace GameSaveCenter.Playnite.Diagnostics
             {
                 UiDiagnosticsExporters.SavePng(window, Path.Combine(windowDir, "controlled-window-settings.png"), 1d);
             }
-            CaptureSettingsTabs(settingsView, outputRoot, size.Key, themeKey, metadata);
+            CaptureSettingsTabs(settingsView, baseDir, outputRoot, size.Key, themeKey, metadata);
         }
 
         private static void CaptureSettingsTabs(
             GameSaveCenterSettingsView settingsView,
+            string baseDir,
             string outputRoot,
             string sizeKey,
             string themeKey,
             UiHostMetadata metadata)
         {
             var tabControls = FindVisualChildren<TabControl>(settingsView).ToList();
-            var viewportDir = Path.Combine(outputRoot, "controlled", sizeKey, themeKey, "viewport");
-            var scrollDir = Path.Combine(outputRoot, "controlled", sizeKey, themeKey, "scroll-surfaces");
+            var viewportDir = Path.Combine(baseDir, "viewport");
+            var scrollDir = Path.Combine(baseDir, "scroll-surfaces");
             var captured = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (var tabControl in tabControls)
             {
