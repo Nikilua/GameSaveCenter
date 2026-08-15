@@ -78,3 +78,13 @@
 - v6.2 截图：Global Activity 标准/窄、含 progress 表格、Maintenance Diagnostics/Device/Audit（2K/4K）
 - 新 UI Audit
 - commit SHA
+
+## 7. 完成状态（2026-08-15）
+
+- Chip 圆角矩形：已完成，共享样式 `GscRedesignContextPill` / `GscRedesignTableStatusPill`。
+- 时间列右留白：已完成，共享 `DataGridCell` 右 Padding 20 DIP，Overview 时间列 `Margin=12,0,20,0`。
+- 列宽协调：已完成，Overview 六列 `40|150|*|96|84|112`。
+- 可视进度条：已完成，SaveCandidate 可信度列 ProgressBar + `P0` 文本。
+- Maintenance 2K/4K 撑满：已完成，取消 460 DIP 上限，Device/Process 布局改 Stretch；2K/4K fill ratio 见报告第 5 节。
+- 验证：Playnite `263/263`；render-qa 11 档 + 主题 + Resize 全绿；UI Audit 0 HIGH/0 MEDIUM；截图 `artifacts/ui-qa/v6-2-shots/`。
+- 实施提交：`c58b359`、`6a68a59`；报告 `docs/ai/UI_TABLE_AND_CHIP_CLOSURE_REPORT_V6_2.md`。

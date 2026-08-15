@@ -2,6 +2,17 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-15 UI-TABLE-AND-CHIP-CLOSURE-V6.2 实施完成
+
+- 计划：`docs/ai/UI_TABLE_AND_CHIP_CLOSURE_PLAN_V6_2.md`；报告：`docs/ai/UI_TABLE_AND_CHIP_CLOSURE_REPORT_V6_2.md`。
+- Chip 从胶囊改圆角矩形：`GscRedesignContextPill` / `GscRedesignTableStatusPill` CornerRadius 统一 7，ContextPill MinHeight 26。
+- 时间列不再贴边：共享 `DataGridCell` Padding `12,8,20,8`，Overview 时间列 `Margin=12,0,20,0`，六列 `40|150|*|96|84|112`。
+- SaveCandidate 可信度列改为真实 ProgressBar（Height 8，Maximum 1）+ `P0` 文本；Task/Overview 原有进度条未重复改。
+- Maintenance 四个主表取消 460 DIP `MaxHeight` 上限，Device/Process 布局 `VerticalAlignment=Stretch`；2K/4K fill ratio：Diagnostics 0.89/0.93、Device 0.82/0.88、Audit 0.88/0.92、Process 0.90/0.93。
+- RenderHarness 新增 `v6-2shots` 模式与 3840×2160 档，脚本 `scripts/capture-v6-2-shots.ps1`，截图 `artifacts/ui-qa/v6-2-shots/`。
+- 验证：Release 0 warning/0 error；Playnite `263/263`；render-qa 11 档 + 56 主题 + 7 Resize 全绿；UI Audit 0 HIGH/0 MEDIUM/8 EXPECTED INFO；source/XAML/WPF 门禁通过。
+- 提交：`c58b359`、`6a68a59`。真实 Playnite 宿主主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`。
+
 ## 2026-08-15 UI-OVERNIGHT-CLOSURE-V6 实施完成
 
 - 计划：`docs/ai/UI_OVERNIGHT_CLOSURE_PLAN_V6.md`；报告：`docs/ai/UI_OVERNIGHT_CLOSURE_REPORT_V6.md`。

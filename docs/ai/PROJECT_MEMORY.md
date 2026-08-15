@@ -3,6 +3,17 @@
 > 维护时间：2026-08-14
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-15 UI-TABLE-AND-CHIP-CLOSURE-V6.2 当前事实
+
+- 来源：`GameSaveCenter_UI_Table_and_Chip_Fix_Pack_v6_2.zip`，计划 `docs/ai/UI_TABLE_AND_CHIP_CLOSURE_PLAN_V6_2.md`，报告 `docs/ai/UI_TABLE_AND_CHIP_CLOSURE_REPORT_V6_2.md`。
+- Chip 已统一为圆角矩形：`GscRedesignContextPill`（CornerRadius 7、MinHeight 26）、`GscRedesignTableStatusPill`（CornerRadius 7）。
+- 共享 `DataGridCell` Padding `12,8,20,8`；Overview 时间列 `Margin=12,0,20,0`，六列 `40|150|*|96|84|112`。
+- SaveCandidate 可信度列是 ProgressBar（Height 8、Maximum 1、`Value={Binding Score}`）+ `P0` 文本；Task/Overview 已有真实进度条，Settings 数值不是业务进度。
+- Maintenance 四个主表 `MaxHeight=PositiveInfinity`；`MaintenanceDeviceLayout` / `MaintenanceProcessLayout` 为 `VerticalAlignment=Stretch`。2K/4K fill ratio：Diagnostics 0.89/0.93、Device 0.82/0.88、Audit 0.88/0.92、Process 0.90/0.93。
+- 当前基线：Release 0 warning/0 error；Playnite `263/263`；render-qa 11 档（含 3840×2160）+ 56 主题 + 7 Resize 全绿；UI Audit 0 HIGH/0 MEDIUM/8 EXPECTED INFO/0 失败路由。
+- v6.2 截图：`artifacts/ui-qa/v6-2-shots/`，命令 `scripts/capture-v6-2-shots.ps1`。
+- 提交：`c58b359`、`6a68a59`。真实 Playnite 宿主主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`。
+
 ## 2026-08-15 UI-OVERNIGHT-CLOSURE-V6 当前事实
 
 - 页面历史已改为 Playnite 会话级：`GameSaveCenterPlugin.SessionLastWorkspace`；首次打开 Overview、同会话恢复、重启回 Overview；`Settings.LastWorkspace` 保留但不再作为启动依据。
