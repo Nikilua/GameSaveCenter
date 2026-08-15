@@ -82,7 +82,7 @@ namespace GameSaveCenter.Playnite.Diagnostics
         /// Opens the settings view in a dedicated window when Playnite cannot show the
         /// plugin settings dialog in the current desktop session.
         /// </summary>
-        internal static void EnsureSettingsCaptured(string outputRoot, Dispatcher uiDispatcher)
+        internal static void EnsureSettingsCaptured(string outputRoot, Dispatcher uiDispatcher, GameSaveCenterSettings pluginSettings)
         {
             lock (StateLock)
             {
@@ -96,6 +96,7 @@ namespace GameSaveCenter.Playnite.Diagnostics
                 {
                     Logger.Info("Real host audit settings fallback: creating settings view on the UI thread.");
                     var settings = new GameSaveCenterSettingsView();
+                    settings.DataContext = pluginSettings;
                     var auditBounds = ComputeAuditWindowBounds(settings);
                     var window = new Window
                     {
@@ -250,7 +251,10 @@ namespace GameSaveCenter.Playnite.Diagnostics
 
             foreach (var size in sizes)
             {
-                await CaptureDashboardAtSizeAsync(dashboard, outputRoot, size, metadata);
+                foreach (var theme in new[] { GameSaveCenterThemeMode.Light, GameSaveCenterThemeMode.Dark })
+                {
+                    await CaptureDashboardAtSizeAsync(dashboard, outputRoot, size, theme, metadata);
+                }
             }
 
             CreateZip(outputRoot);
@@ -262,6 +266,7 @@ namespace GameSaveCenter.Playnite.Diagnostics
             DashboardView dashboard,
             string outputRoot,
             AuditWindowSize size,
+            GameSaveCenterThemeMode theme,
             UiHostMetadata metadata)
         {
             var window = auditDashboardWindow;
@@ -275,21 +280,25 @@ namespace GameSaveCenter.Playnite.Diagnostics
             dashboard.Width = size.Width;
             dashboard.Height = size.Height;
             dashboard.UpdateLayout();
+            dashboard.ApplyThemeForAudit(theme);
             dashboard.ApplyWorkspaceForAudit(WorkspaceKind.Overview);
             await WaitForRenderAsync(dashboard.Dispatcher);
 
-            var sizeDir = Path.Combine(outputRoot, "screenshots", size.Key);
+            var sizeDir = Path.Combine(outputRoot, "screenshots", size.Key, theme.ToString().ToLowerInvariant());
             Directory.CreateDirectory(sizeDir);
-            var sizeLayoutDir = Path.Combine(outputRoot, "layout", size.Key);
+            var sizeLayoutDir = Path.Combine(outputRoot, "layout", size.Key, theme.ToString().ToLowerInvariant());
             Directory.CreateDirectory(sizeLayoutDir);
 
             metadata.DashboardWidth = Math.Round(dashboard.ActualWidth, 2);
             metadata.DashboardHeight = Math.Round(dashboard.ActualHeight, 2);
             metadata.DetailsTabControlWidth = Math.Round(dashboard.DetailsTabControlForAudit?.ActualWidth ?? 0, 2);
             metadata.DetailsTabControlHeight = Math.Round(dashboard.DetailsTabControlForAudit?.ActualHeight ?? 0, 2);
-            UiDiagnosticsExporters.WriteJson(metadata, Path.Combine(outputRoot, "metadata-" + size.Key + ".json"));
+            metadata.ThemeMode = theme.ToString();
+            UiDiagnosticsExporters.WriteJson(
+                metadata,
+                Path.Combine(outputRoot, "metadata-" + size.Key + "-" + theme.ToString().ToLowerInvariant() + ".json"));
 
-            UiDiagnosticsExporters.SavePng(dashboard, Path.Combine(sizeDir, "dashboard-initial.png"), GetRenderScale(dashboard));
+            SaveFullPage(dashboard, Path.Combine(sizeDir, "dashboard-initial.png"));
             SaveWindowScreenshot(dashboard, Path.Combine(sizeDir, "window-dashboard.png"));
 
             foreach (var workspace in new[]
@@ -305,11 +314,11 @@ namespace GameSaveCenter.Playnite.Diagnostics
                 dashboard.ApplyWorkspaceForAudit(workspace);
                 await WaitForRenderAsync(dashboard.Dispatcher);
                 var safe = workspace.ToString().ToLowerInvariant();
-                UiDiagnosticsExporters.SavePng(dashboard, Path.Combine(sizeDir, $"workspace-{safe}.png"), GetRenderScale(dashboard));
+                SaveFullPage(dashboard, Path.Combine(sizeDir, $"workspace-{safe}.png"));
                 SaveWindowScreenshot(dashboard, Path.Combine(sizeDir, $"window-{safe}.png"));
                 UiDiagnosticsExporters.WriteJson(
                     UiDiagnosticsExporters.BuildVisualTree(dashboard),
-                    Path.Combine(outputRoot, "visual-tree", size.Key, $"workspace-{safe}.json"));
+                    Path.Combine(outputRoot, "visual-tree", size.Key, theme.ToString().ToLowerInvariant(), $"workspace-{safe}.json"));
                 UiDiagnosticsExporters.WriteJson(
                     new Dictionary<string, double>
                     {
@@ -321,13 +330,14 @@ namespace GameSaveCenter.Playnite.Diagnostics
                     Path.Combine(sizeLayoutDir, $"workspace-{safe}.json"));
             }
 
-            await CaptureAllInnerTabs(dashboard, sizeDir, size.Key);
+            await CaptureAllInnerTabs(dashboard, sizeDir, size.Key, theme);
         }
 
         private static async System.Threading.Tasks.Task CaptureAllInnerTabs(
             DashboardView dashboard,
             string screenshots,
-            string sizeKey)
+            string sizeKey,
+            GameSaveCenterThemeMode theme)
         {
             var outer = dashboard.DetailsTabControlForAudit;
             var captured = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -350,21 +360,70 @@ namespace GameSaveCenter.Playnite.Diagnostics
                 var workspacePrefix = workspace.ToString().ToLowerInvariant();
                 foreach (var tabControl in tabControls)
                 {
-                    for (var index = 0; index < tabControl.Items.Count; index++)
+                    await CaptureTabControlRecursive(
+                        dashboard,
+                        tabControl,
+                        screenshots,
+                        sizeKey,
+                        theme,
+                        workspacePrefix,
+                        captured);
+                }
+            }
+        }
+
+        private static async System.Threading.Tasks.Task CaptureTabControlRecursive(
+            DashboardView dashboard,
+            TabControl tabControl,
+            string screenshots,
+            string sizeKey,
+            GameSaveCenterThemeMode theme,
+            string pathPrefix,
+            HashSet<string> captured)
+        {
+            for (var index = 0; index < tabControl.Items.Count; index++)
+            {
+                if (!(tabControl.Items[index] is TabItem tab) || tab.Visibility != Visibility.Visible)
+                    continue;
+                tabControl.SelectedItem = tab;
+                tab.UpdateLayout();
+                tabControl.UpdateLayout();
+                await WaitForRenderAsync(dashboard.Dispatcher);
+                await dashboard.Dispatcher.InvokeAsync(() => { }, DispatcherPriority.ApplicationIdle);
+                var raw = ResolveTabHeaderName(tab, index);
+                var safe = SafeFileName(raw);
+                var dedupeKey = sizeKey + "|" + theme + "|" + pathPrefix + "|" + index + "|" + safe;
+                if (!captured.Add(dedupeKey))
+                    continue;
+                var file = $"tab-{pathPrefix}-{safe}.png";
+                SaveFullPage(dashboard, Path.Combine(screenshots, file));
+                SaveWindowScreenshot(dashboard, Path.Combine(screenshots, $"window-tab-{pathPrefix}-{safe}.png"));
+
+                // Capture nested tab pages (tabs inside a tab), e.g. Audit -> Audit Log.
+                var nested = new List<TabControl>();
+                foreach (var candidate in FindVisualChildren<TabControl>(tab))
+                {
+                    if (candidate.Visibility == Visibility.Visible && !nested.Contains(candidate))
+                        nested.Add(candidate);
+                }
+                if (tab.Content is DependencyObject contentRoot)
+                {
+                    foreach (var candidate in FindVisualChildren<TabControl>(contentRoot))
                     {
-                        if (!(tabControl.Items[index] is TabItem tab) || tab.Visibility != Visibility.Visible)
-                            continue;
-                        tabControl.SelectedItem = tab;
-                        await WaitForRenderAsync(dashboard.Dispatcher);
-                        var raw = ResolveTabHeaderName(tab, index);
-                        var safe = SafeFileName(raw);
-                        var dedupeKey = sizeKey + "|" + workspacePrefix + "|" + index + "|" + safe;
-                        if (!captured.Add(dedupeKey))
-                            continue;
-                        var file = $"tab-{workspacePrefix}-{index}-{safe}.png";
-                        UiDiagnosticsExporters.SavePng(dashboard, Path.Combine(screenshots, file), GetRenderScale(dashboard));
-                        SaveWindowScreenshot(dashboard, Path.Combine(screenshots, $"window-tab-{workspacePrefix}-{safe}.png"));
+                        if (candidate.Visibility == Visibility.Visible && !nested.Contains(candidate))
+                            nested.Add(candidate);
                     }
+                }
+                foreach (var nestedControl in nested)
+                {
+                    await CaptureTabControlRecursive(
+                        dashboard,
+                        nestedControl,
+                        screenshots,
+                        sizeKey,
+                        theme,
+                        pathPrefix + "-" + safe,
+                        captured);
                 }
             }
         }
@@ -387,6 +446,54 @@ namespace GameSaveCenter.Playnite.Diagnostics
             }
         }
 
+        private static void SaveFullPage(FrameworkElement root, string path)
+        {
+            var rootWidth = root.ActualWidth > 0 ? root.ActualWidth : 1200d;
+            var contentExtent = FindVisualChildren<ScrollViewer>(root)
+                .Where(scroller =>
+                    scroller.Visibility == Visibility.Visible
+                    && scroller.ActualWidth > 0
+                    && scroller.ViewportHeight > 0
+                    && scroller.ScrollableHeight > 0.5
+                    && scroller.ExtentHeight >= 200)
+                .Where(scroller => !HasAncestor<DataGrid>(scroller))
+                .Where(scroller => scroller.ActualWidth >= rootWidth * 0.45)
+                .Select(scroller => scroller.ExtentHeight)
+                .DefaultIfEmpty(root.ActualHeight)
+                .Max();
+
+            // Some pages have no page-level ScrollViewer (their content is arranged to the
+            // viewport). Render the whole root at its full content extent so the screenshot
+            // is a full page instead of only the visible top portion.
+            var originalHeight = root.Height;
+            var fullHeight = Math.Min(
+                3000d,
+                Math.Max(root.ActualHeight * 1.35d, Math.Max(contentExtent, root.ActualHeight + 240d)));
+            try
+            {
+                root.Height = fullHeight;
+                root.UpdateLayout();
+                UiDiagnosticsExporters.SavePng(root, path, GetRenderScale(root));
+            }
+            finally
+            {
+                root.Height = originalHeight;
+                root.UpdateLayout();
+            }
+        }
+
+        private static bool HasAncestor<T>(DependencyObject current) where T : DependencyObject
+        {
+            var parent = VisualTreeHelper.GetParent(current);
+            while (parent != null)
+            {
+                if (parent is T)
+                    return true;
+                parent = VisualTreeHelper.GetParent(parent);
+            }
+            return false;
+        }
+
         private static void RequestSettingsCapture(DashboardView dashboard)
         {
             var outputRoot = ResolveRequestedOutput();
@@ -401,10 +508,13 @@ namespace GameSaveCenter.Playnite.Diagnostics
                     Logger.Error(ex, "Failed to open GameSaveCenter settings for the real host audit.");
                 }
             }));
-            _ = FireAndForgetSettingsFallback(outputRoot, dashboard.Dispatcher);
+            _ = FireAndForgetSettingsFallback(outputRoot, dashboard.Dispatcher, dashboard.PluginForAudit.Settings);
         }
 
-        private static async System.Threading.Tasks.Task FireAndForgetSettingsFallback(string? outputRoot, Dispatcher uiDispatcher)
+        private static async System.Threading.Tasks.Task FireAndForgetSettingsFallback(
+            string? outputRoot,
+            Dispatcher uiDispatcher,
+            GameSaveCenterSettings pluginSettings)
         {
             await System.Threading.Tasks.Task.Delay(8000);
             if (string.IsNullOrWhiteSpace(outputRoot))
@@ -414,7 +524,7 @@ namespace GameSaveCenter.Playnite.Diagnostics
                 if (settingsCaptureStarted)
                     return;
             }
-            EnsureSettingsCaptured(outputRoot!, uiDispatcher);
+            EnsureSettingsCaptured(outputRoot!, uiDispatcher, pluginSettings);
         }
 
         private static void CaptureSettings(GameSaveCenterSettingsView settingsView, string outputRoot)
@@ -433,7 +543,10 @@ namespace GameSaveCenter.Playnite.Diagnostics
 
             foreach (var size in sizes)
             {
-                CaptureSettingsAtSize(settingsView, outputRoot, size);
+                foreach (var theme in new[] { GameSaveCenterThemeMode.Light, GameSaveCenterThemeMode.Dark })
+                {
+                    CaptureSettingsAtSize(settingsView, outputRoot, size, theme);
+                }
             }
 
             CreateZip(Path.GetDirectoryName(outputRoot)!);
@@ -445,7 +558,8 @@ namespace GameSaveCenter.Playnite.Diagnostics
         private static void CaptureSettingsAtSize(
             GameSaveCenterSettingsView settingsView,
             string outputRoot,
-            AuditWindowSize size)
+            AuditWindowSize size,
+            GameSaveCenterThemeMode theme)
         {
             var window = auditSettingsWindow;
             if (window != null)
@@ -457,6 +571,7 @@ namespace GameSaveCenter.Playnite.Diagnostics
             }
             settingsView.Width = size.Width;
             settingsView.Height = size.Height;
+            settingsView.ApplyThemeForAudit(theme);
             settingsView.UpdateLayout();
             settingsView.Dispatcher.Invoke(() => { }, DispatcherPriority.Render);
 
@@ -476,7 +591,9 @@ namespace GameSaveCenter.Playnite.Diagnostics
                 DashboardHeight = Math.Round(settingsView.ActualHeight, 2),
                 HighContrast = SystemParameters.HighContrast
             };
-            UiDiagnosticsExporters.WriteJson(metadata, Path.Combine(outputRoot, "metadata-" + size.Key + ".json"));
+            UiDiagnosticsExporters.WriteJson(
+                metadata,
+                Path.Combine(outputRoot, "metadata-" + size.Key + "-" + theme.ToString().ToLowerInvariant() + ".json"));
             UiDiagnosticsExporters.WriteJson(
                 UiDiagnosticsExporters.BuildResourceSnapshot(settingsView.Resources, "SettingsView"),
                 Path.Combine(outputRoot, "resource-snapshot-" + size.Key + ".json"));
@@ -487,17 +604,21 @@ namespace GameSaveCenter.Playnite.Diagnostics
                 UiDiagnosticsExporters.BuildVisualTree(settingsView),
                 Path.Combine(outputRoot, "visual-tree-" + size.Key + ".json"));
 
-            var screenshots = Path.Combine(outputRoot, "screenshots", size.Key);
+            var screenshots = Path.Combine(outputRoot, "screenshots", size.Key, theme.ToString().ToLowerInvariant());
             Directory.CreateDirectory(screenshots);
-            UiDiagnosticsExporters.SavePng(settingsView, Path.Combine(screenshots, "settings.png"));
+            SaveFullPage(settingsView, Path.Combine(screenshots, "settings.png"));
             SaveWindowScreenshot(settingsView, Path.Combine(screenshots, "window-settings.png"));
-            CaptureSettingsTabs(settingsView, outputRoot, size.Key);
+            CaptureSettingsTabs(settingsView, outputRoot, size.Key, theme);
         }
 
-        private static void CaptureSettingsTabs(GameSaveCenterSettingsView settingsView, string outputRoot, string sizeKey)
+        private static void CaptureSettingsTabs(
+            GameSaveCenterSettingsView settingsView,
+            string outputRoot,
+            string sizeKey,
+            GameSaveCenterThemeMode theme)
         {
             var tabControls = FindVisualChildren<TabControl>(settingsView).ToList();
-            var screenshots = Path.Combine(outputRoot, "screenshots", sizeKey);
+            var screenshots = Path.Combine(outputRoot, "screenshots", sizeKey, theme.ToString().ToLowerInvariant());
             var captured = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (var tabControl in tabControls)
             {
@@ -509,10 +630,10 @@ namespace GameSaveCenter.Playnite.Diagnostics
                     settingsView.Dispatcher.Invoke(() => { }, DispatcherPriority.Render);
                     var raw = ResolveTabHeaderName(tab, index);
                     var safe = SafeFileName(raw);
-                    var dedupeKey = sizeKey + "|" + index + "|" + safe;
+                    var dedupeKey = sizeKey + "|" + theme + "|" + index + "|" + safe;
                     if (!captured.Add(dedupeKey))
                         continue;
-                    UiDiagnosticsExporters.SavePng(settingsView, Path.Combine(screenshots, $"settings-{index}-{safe}.png"));
+                    SaveFullPage(settingsView, Path.Combine(screenshots, $"settings-{index}-{safe}.png"));
                     SaveWindowScreenshot(settingsView, Path.Combine(screenshots, $"window-settings-{safe}.png"));
                 }
             }

@@ -3,6 +3,15 @@
 > 维护时间：2026-08-14
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-15 UI-REAL-HOST-AUDIT-NESTED-TABS-THEMES 当前事实
+
+- 真机审计现在按 5 档窗口尺寸 × `Light`/`Dark` 双主题捕获；每个尺寸/主题目录含 Dashboard、6 个工作区、全部顶层 Tab 与嵌套 Tab（如“异常与审计”→“审计记录”）。
+- 嵌套 Tab 捕获要点：选择父 Tab 后等待 `ApplicationIdle`，分别从 TabItem 视觉树和 `tab.Content` 两个路径找子 TabControl，再递归；单纯视觉树遍历会漏掉部分嵌套页。
+- 整页截图统一渲染 Dashboard/Settings 根元素（含侧栏和外壳），高度按内容最大滚动范围撑高（maximized 下工作区 1707×1232、Overview 1707×1717）；不要改成只渲染内部滚动器内容，否则会缺左右外壳。
+- 设置页兜底窗口必须注入 `GameSaveCenterSettings` 作为 DataContext，否则主题/玻璃设置是默认值。
+- 产物：`artifacts/ui-host-audit/screenshots/<size>/<light|dark>/`，zip `artifacts/GameSaveCenter-ui-host-audit.zip`。
+- 基线：Release 0 warning/0 error；`validate-source.py`、`check-xaml.ps1` 通过。真实第三方主题/Playnite 窗口内观感仍为 `MANUAL QA REQUIRED`。
+
 ## 2026-08-15 UI-REAL-HOST-AUDIT-MULTI-SIZE 当前事实
 
 - 真机审计按 5 档窗口尺寸捕获：`maximized`（WorkArea 1707×912 DIP）、`1600x1000`、`1366x768`、`1280x720`、`1024x768`；每档包含 Dashboard、6 个工作区、全部内层 Tab、窗口截图与 Settings 5 分类。

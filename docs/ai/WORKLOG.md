@@ -2,6 +2,16 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-15 UI-REAL-HOST-AUDIT-NESTED-TABS-THEMES 实施完成
+
+- 用户复核继续反馈：Tab 下的嵌套 Tab（如“异常与审计”→“审计记录”）缺失；需要浅色/深色两套截图；截图仍只显示页面局部。
+- 修复：
+  - `CaptureAllInnerTabs` 改为递归捕获嵌套 TabControl（选择父 Tab 后等待 ApplicationIdle，再从视觉树与 Content 双路径找子 TabControl），已产出 `tab-maintenance-异-常-与-审-计-审-计-记-录.png` 等嵌套页。
+  - 真机审计按 `Light`/`Dark` 双主题各跑一遍；Dashboard/Settings 新增 `ApplyThemeForAudit`，设置页兜底窗口现在注入真实 `GameSaveCenterSettings` 作为 DataContext。
+  - 整页截图改为始终渲染 Dashboard/Settings 根元素（含侧栏/外壳）并按内容最大滚动高度撑高后输出，不再只截内部滚动器或窗口可视区；maximized 工作区截图现为 1707×1232（Overview 1707×1717）。
+- 产物：`artifacts/ui-host-audit/screenshots/<size>/<light|dark>/`，嵌套 Tab、双主题、整页长图齐全；最终 zip `artifacts/GameSaveCenter-ui-host-audit.zip`（约 86MB）。
+- 验证：Release 0 warning/0 error；`validate-source.py`、`check-xaml.ps1` 通过。第三方主题/真实 Playnite 窗口内观感仍为 `MANUAL QA REQUIRED`。
+
 ## 2026-08-15 UI-REAL-HOST-AUDIT-MULTI-SIZE 实施完成
 
 - 用户复核后补充要求：真机截图要覆盖最大化窗口与多种窗口化尺寸，且项目协作规则要加入“及时清理无用文件”。

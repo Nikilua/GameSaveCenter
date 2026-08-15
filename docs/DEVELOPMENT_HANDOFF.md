@@ -2,6 +2,12 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-15 UI-REAL-HOST-AUDIT-NESTED-TABS-THEMES 实施完成
+
+- 真机审计已覆盖嵌套 Tab（如“异常与审计”→“审计记录”）、浅色/深色双主题、5 档窗口尺寸；整页截图渲染完整 Dashboard 外壳并按内容高度撑高。
+- 关键实现：递归捕获嵌套 TabControl（ApplicationIdle 等待 + 视觉树/Content 双路径）；`DashboardView`/`GameSaveCenterSettingsView` 提供 `ApplyThemeForAudit`；设置兜底注入真实 Settings DataContext。
+- 最新产物：`artifacts/ui-host-audit/screenshots/<size>/<light|dark>/` 与 `artifacts/GameSaveCenter-ui-host-audit.zip`。
+
 ## 2026-08-15 UI-REAL-HOST-AUDIT-MULTI-SIZE 实施完成
 
 - 真机审计现覆盖 5 档窗口尺寸（maximized + 1600x1000/1366x768/1280x720/1024x768），每档包含 6 个工作区、全部内层 Tab、窗口截图与 Settings 5 分类；产物在 `artifacts/ui-host-audit/`。

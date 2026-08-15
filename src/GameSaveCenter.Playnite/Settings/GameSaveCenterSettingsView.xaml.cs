@@ -430,6 +430,15 @@ namespace GameSaveCenter.Playnite.Settings
                 : 0;
         }
 
+        internal void ApplyThemeForAudit(GameSaveCenterThemeMode mode)
+        {
+            if (CurrentSettings != null)
+                CurrentSettings.ThemeMode = mode;
+            ApplyAdaptiveTheme();
+            ApplyResponsiveLayout(ActualWidth, ActualHeight);
+            UpdateLayout();
+        }
+
         private void ApplyResponsiveLayout(double width, double height)
         {
             if (SettingsShell == null || SettingsHeaderGrid == null || SettingsHeaderHintRow == null

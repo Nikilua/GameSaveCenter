@@ -12,6 +12,7 @@ using System.Windows.Threading;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Diagnostics;
 using GameSaveCenter.Playnite.Infrastructure;
+using GameSaveCenter.Playnite.Settings;
 using GameSaveCenter.Playnite.ViewModels;
 using Playnite.SDK;
 
@@ -1465,6 +1466,15 @@ namespace GameSaveCenter.Playnite.Views
             AmbientGlowLayer.Opacity = glassEnabled
                 ? (palette.IsDark ? 0.46 : 0.56) * Math.Max(0.2, Math.Min(1, plugin.Settings.GlassEffectStrength / 100d))
                 : 0;
+        }
+
+        internal void ApplyThemeForAudit(GameSaveCenterThemeMode mode)
+        {
+            plugin.Settings.ThemeMode = mode;
+            ApplyAdaptiveTheme();
+            UpdateWorkspacePresentation();
+            ApplyResponsiveLayout(ActualWidth, ActualHeight);
+            UpdateLayout();
         }
 
         private IEnumerable<UserControl> GetWorkspaceViews()

@@ -112,6 +112,19 @@ namespace GameSaveCenter.Playnite.Diagnostics
                     return;
                 }
 
+                // Non-virtualized page content is already arranged to its full extent by WPF.
+                // Rendering that content directly gives a clean top-to-bottom page image and
+                // avoids the slow viewport-slice path for ordinary page scrollers.
+                if (scroller.Content is FrameworkElement content
+                    && !(content is DataGrid)
+                    && !(content is ItemsControl)
+                    && content.ActualHeight + content.Margin.Top + content.Margin.Bottom >= scroller.ExtentHeight - 2
+                    && content.ActualHeight > viewportHeight + 0.5)
+                {
+                    SavePng(content, path, GetContentScale(content));
+                    return;
+                }
+
                 var slices = new List<BitmapSource>();
                 double previousEnd = 0;
                 var offset = 0d;
@@ -170,6 +183,13 @@ namespace GameSaveCenter.Playnite.Diagnostics
                 scroller.ScrollToHorizontalOffset(originalHorizontal);
                 scroller.UpdateLayout();
             }
+        }
+
+        private static double GetContentScale(FrameworkElement element)
+        {
+            var dpi = VisualTreeHelper.GetDpi(element);
+            var scale = Math.Max(dpi.DpiScaleX, dpi.DpiScaleY);
+            return scale > 0 ? Math.Min(1.5d, scale) : 1d;
         }
 
         private static RenderTargetBitmap RenderBitmap(Visual visual, double width, double height, double renderScale)
