@@ -450,49 +450,31 @@ namespace GameSaveCenter.Playnite.Diagnostics
         private static void SaveFullPage(FrameworkElement root, string path)
         {
             var rootWidth = root.ActualWidth > 0 ? root.ActualWidth : 1200d;
-            var contentExtent = FindVisualChildren<ScrollViewer>(root)
+            var mainScroller = FindVisualChildren<ScrollViewer>(root)
                 .Where(scroller =>
                     scroller.Visibility == Visibility.Visible
                     && scroller.ActualWidth > 0
                     && scroller.ViewportHeight > 0
                     && scroller.ScrollableHeight > 0.5
-                    && scroller.ExtentHeight >= 200)
-                .Where(scroller => !HasAncestor<DataGrid>(scroller))
-                .Where(scroller => scroller.ActualWidth >= rootWidth * 0.45)
-                .Select(scroller => scroller.ExtentHeight)
-                .DefaultIfEmpty(root.ActualHeight)
-                .Max();
-
-            // Some pages have no page-level ScrollViewer (their content is arranged to the
-            // viewport). Render the whole root at its full content extent so the screenshot
-            // is a full page instead of only the visible top portion.
-            var originalHeight = root.Height;
-            var fullHeight = Math.Min(
-                3000d,
-                Math.Max(root.ActualHeight * 1.35d, Math.Max(contentExtent, root.ActualHeight + 240d)));
+                    && scroller.ExtentHeight >= 200
+                    && scroller.ActualWidth >= rootWidth * 0.45)
+                .OrderByDescending(scroller => scroller.ExtentHeight)
+                .FirstOrDefault();
             try
             {
-                root.Height = fullHeight;
-                root.UpdateLayout();
+                if (mainScroller != null
+                    && mainScroller.ExtentHeight / mainScroller.ViewportHeight <= 80d)
+                {
+                    UiDiagnosticsExporters.SaveScrollViewerFull(mainScroller, path);
+                    return;
+                }
                 UiDiagnosticsExporters.SavePng(root, path, GetRenderScale(root));
             }
-            finally
+            catch (Exception ex)
             {
-                root.Height = originalHeight;
-                root.UpdateLayout();
+                Logger.Debug(ex, "Real host audit full-page capture fell back to viewport: " + path);
+                UiDiagnosticsExporters.SavePng(root, path, GetRenderScale(root));
             }
-        }
-
-        private static bool HasAncestor<T>(DependencyObject current) where T : DependencyObject
-        {
-            var parent = VisualTreeHelper.GetParent(current);
-            while (parent != null)
-            {
-                if (parent is T)
-                    return true;
-                parent = VisualTreeHelper.GetParent(parent);
-            }
-            return false;
         }
 
         private static void RequestSettingsCapture(DashboardView dashboard)
@@ -697,10 +679,12 @@ namespace GameSaveCenter.Playnite.Diagnostics
 
         private static double GetRenderScale(FrameworkElement reference)
         {
-            // The multi-size sweep renders many large bitmaps in one 32-bit process. Keep
-            // the export at logical resolution so the full page is captured for every window
-            // size without exhausting memory; DPI evidence is recorded in metadata.json.
-            return 1d;
+            var dpi = VisualTreeHelper.GetDpi(reference);
+            var scale = Math.Max(dpi.DpiScaleX, dpi.DpiScaleY);
+            // Match the physical display resolution (e.g. 1.5x for 2560x1440) so the
+            // screenshots line up with the user's real interface. Window viewport shots
+            // stay at 1x to keep the 32-bit process inside a safe memory envelope.
+            return scale > 0 ? Math.Min(1.5d, scale) : 1d;
         }
 
         private static void CreateZip(string outputRoot)
