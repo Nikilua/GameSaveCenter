@@ -2,6 +2,14 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-15 UI-FINAL-TYPOGRAPHY-RESPONSIVE-CLOSURE 实施完成
+
+- 计划：`docs/ai/UI_TYPOGRAPHY_RESPONSIVE_CLOSURE_PLAN.md`；报告：`docs/ai/UI_TYPOGRAPHY_RESPONSIVE_CLOSURE_REPORT.md`。
+- 字体链统一：`GscUiFontFamily`（含 Microsoft YaHei UI fallback）；普通 UI 不再硬编码 Segoe 组合；图标/代码字体保留；按钮默认字重 Medium，Primary SemiBold。
+- Settings Compact/Narrow header 收紧，正文 viewport 不再只剩几十 DIP；Save Compare Narrow 主比较区直接可见；Compact Inspector 详情按钮独立操作行；Media 待归类底栏对齐并保留换行。
+- 基线：Playnite `266/266`；render-qa 11 档 + 56 主题 + 7 Resize 全绿；UI Audit 0 HIGH/0 MEDIUM/0 失败路由。
+- 真实 Playnite 宿主主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`。
+
 ## 2026-08-15 UI-FINAL-POLISH-V7.1 实施完成
 
 - v7.1 计划：`docs/ai/UI_FINAL_POLISH_PLAN_V7_1.md`；报告：`docs/ai/UI_FINAL_POLISH_REPORT_V7_1.md`。

@@ -365,7 +365,8 @@ namespace GameSaveCenter.Playnite.Settings
         private void ApplyResponsiveLayout(double width, double height)
         {
             if (SettingsShell == null || SettingsHeaderGrid == null || SettingsHeaderHintRow == null
-                || SettingsHeaderSubtitle == null || SettingsSaveHint == null || SettingsSectionTabs == null) return;
+                || SettingsHeaderSubtitle == null || SettingsSaveHint == null || SettingsSectionTabs == null
+                || SettingsIntroDescription == null || SettingsHeaderIcon == null || SettingsHeader == null) return;
 
             // SettingsShell is the real layout surface.  The Playnite settings host can be
             // wider than this shell because the shell is capped at 1360 DIP and inset by the
@@ -388,6 +389,21 @@ namespace GameSaveCenter.Playnite.Settings
             var contentWidth = Math.Max(320, layoutWidth - horizontalMargin * 2 - 40);
             var formWidth = compact ? contentWidth : Math.Max(320, contentWidth - 248);
 
+            // Compact/short headers stop competing with the settings body: the long
+            // description and secondary hero text reduce to the essential title, and
+            // the category rail keeps its own readable strip below the header.
+            SettingsIntroDescription.Visibility = compact ? Visibility.Collapsed : Visibility.Visible;
+            var compactHeaderHeight = compact && shortHeight;
+            SettingsHeader.Padding = compactHeaderHeight
+                ? new Thickness(12, 8, 12, 8)
+                : compact ? new Thickness(14, 10, 14, 10) : new Thickness(16);
+            SettingsHeader.MinHeight = compactHeaderHeight ? 56 : compact ? 68 : 76;
+            SettingsHeader.Margin = compact ? new Thickness(0, 0, 0, 8) : new Thickness(0, 0, 0, 12);
+            var headerIconSize = narrow || shortHeight ? 34d : compact ? 40d : 46d;
+            SettingsHeaderIcon.Width = headerIconSize;
+            SettingsHeaderIcon.Height = headerIconSize;
+            SettingsHeaderIcon.Margin = compact ? new Thickness(0, 0, 10, 0) : new Thickness(0, 0, 12, 0);
+
             // The outer SettingsDemoShell owns the product-level 18-DIP breathing room.
             // Keep the inner content stretch-only so the demo shell does not regress into
             // a narrow, left-aligned island when the Playnite settings host is wide.
@@ -399,9 +415,9 @@ namespace GameSaveCenter.Playnite.Settings
             // SettingsScroller is the overflow channel. Keep context and save semantics
             // visible at every height; only constrain their width so compact headers wrap
             // instead of silently removing information.
-            SettingsHeaderSubtitle.Visibility = Visibility.Visible;
+            SettingsHeaderSubtitle.Visibility = narrow || shortHeight ? Visibility.Collapsed : Visibility.Visible;
             SettingsHeaderSubtitle.MaxWidth = narrow ? 300 : double.PositiveInfinity;
-            SettingsSaveHint.Visibility = Visibility.Visible;
+            SettingsSaveHint.Visibility = narrow || shortHeight ? Visibility.Collapsed : Visibility.Visible;
             SettingsSaveHint.MaxWidth = layoutWidth >= 1040 ? 320 : narrow ? 180 : 230;
             var stackHeaderHint = compact;
             SettingsHeaderHintRow.Height = stackHeaderHint ? GridLength.Auto : new GridLength(0);

@@ -168,8 +168,9 @@ namespace GameSaveCenter.Playnite.Views
             Grid.SetColumnSpan(SaveCompareRetentionScrollViewer, stackCompare ? 3 : 1);
             Grid.SetRow(SaveCompareRetentionScrollViewer, stackCompare ? 1 : 0);
             SaveCompareRetentionScrollViewer.Margin = stackCompare ? new Thickness(0, 14, 0, 0) : new Thickness(0);
-            SaveCompareRetentionScrollViewer.MaxHeight = stackCompare ? Math.Max(180, Math.Min(420, height * 0.42)) : double.PositiveInfinity;
-            SaveCompareMainScrollViewer.MaxHeight = stackCompare ? Math.Max(220, Math.Min(420, height * 0.45)) : double.PositiveInfinity;
+            SaveCompareRetentionScrollViewer.MaxHeight = stackCompare ? Math.Max(200, Math.Min(380, height * 0.36)) : double.PositiveInfinity;
+            SaveCompareMainScrollViewer.MaxHeight = stackCompare ? Math.Max(300, Math.Min(520, height * 0.52)) : double.PositiveInfinity;
+            SaveCompareMainScrollViewer.MinHeight = stackCompare ? 240 : 0;
             }
             finally
             {

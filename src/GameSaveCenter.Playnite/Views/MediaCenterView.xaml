@@ -165,7 +165,7 @@
                             </TextBlock>
                         </Grid>
                     </Border>
-                    <WrapPanel Grid.Row="2" Margin="0,10,0,0">
+                    <WrapPanel Grid.Row="2" Margin="12,10,12,0">
                         <TextBlock Text="归类到：" VerticalAlignment="Center"/>
                         <ComboBox Style="{DynamicResource GscWpfUiComboBox}" MinWidth="180" MaxWidth="320" ItemsSource="{Binding Games}" SelectedItem="{Binding InboxTargetGame}" Margin="7,0,8,8"><ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/></DataTemplate></ComboBox.ItemTemplate></ComboBox>
                         <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding AssignInboxMediaCommand}" Content="确认归类"/>
@@ -197,6 +197,7 @@
                     </Border>
                     <Border Grid.Row="2" Grid.Column="0" Style="{StaticResource MediaTableFrame}" MinHeight="{DynamicResource GscWorkspaceTableMinHeight}">
                         <Grid>
+                        <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                         <ListBox x:Name="MediaGrid" Tag="FiniteViewport" ItemsSource="{Binding MediaView}" SelectedItem="{Binding SelectedMedia}" SelectionChanged="OnMediaSelectionChanged" SelectionMode="Extended" BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
                             <ListBox.ItemsPanel><ItemsPanelTemplate><VirtualizingStackPanel VerticalAlignment="Top"/></ItemsPanelTemplate></ListBox.ItemsPanel>
                             <ListBox.ItemContainerStyle>
@@ -237,11 +238,12 @@
                             </ui:WorkspaceStatePresenter.Style>
                         </ui:WorkspaceStatePresenter>
                         <ui:Button x:Name="MediaCompactDetailsButton"
+                                   Grid.Row="1"
                                    Style="{DynamicResource GscWpfUiSecondaryButton}"
                                    Content="查看媒体详情 ›"
                                    HorizontalAlignment="Right"
-                                   VerticalAlignment="Top"
-                                   Margin="8"
+                                   VerticalAlignment="Center"
+                                   Margin="0,8,8,0"
                                    Visibility="Collapsed"
                                    Click="OnMediaCompactDetailsClick"
                                    AutomationProperties.Name="查看或收起所选媒体详情"/>

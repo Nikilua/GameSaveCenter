@@ -2,6 +2,17 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-15 UI-FINAL-TYPOGRAPHY-RESPONSIVE-CLOSURE 实施完成
+
+- 来源：`GameSaveCenter_Final_UI_Typography_Prompt.zip`；计划 `docs/ai/UI_TYPOGRAPHY_RESPONSIVE_CLOSURE_PLAN.md`；报告 `docs/ai/UI_TYPOGRAPHY_RESPONSIVE_CLOSURE_REPORT.md`。
+- 字体：新增 `GscUiFontFamily`（含 Microsoft YaHei UI fallback）与 `GscCodeFontFamily`；普通 UI 不再硬编码 `Segoe UI Variable Text, Segoe UI`；`Segoe MDL2 Assets` 与 `Consolas` 保留；通用按钮默认 SemiBold → Medium，Primary 保留 SemiBold。
+- Settings：Compact/Narrow header 收紧（隐藏长说明/副标题/保存提示、缩小 icon 与 padding）；760×560 正文 viewport 300 DIP。
+- Save Compare：窄窗主比较区 MinHeight 240、MaxHeight `max(300, height*0.52)`；1040×700 viewport 234 DIP。
+- Compact Inspector：Save/Trainer/Media/Task 五个详情按钮移入表格下方独立操作行，不再覆盖状态文字。
+- Media 待归类底栏：`Margin="12,10,12,0"`，与表格内容左边缘对齐并保留窄窗换行。
+- 验证：Release 0 warning/0 error；Core 59/59、Worker 190/190、Playnite 266/266；render-qa 11 档 + 56 主题 + 7 Resize 全绿；UI Audit 0 HIGH/0 MEDIUM/0 失败路由。
+- 提交：见 `git log`。真实 Playnite 宿主主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`。
+
 ## 2026-08-15 UI-FINAL-POLISH-V7.1 实施完成
 
 - 计划：`docs/ai/UI_FINAL_POLISH_PLAN_V7_1.md`；报告：`docs/ai/UI_FINAL_POLISH_REPORT_V7_1.md`。

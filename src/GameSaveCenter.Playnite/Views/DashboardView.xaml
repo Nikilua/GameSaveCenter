@@ -7,7 +7,7 @@
              xmlns:views="clr-namespace:GameSaveCenter.Playnite.Views"
              xmlns:ui="clr-namespace:GameSaveCenter.Playnite.Controls"
              Foreground="{DynamicResource GscPrimaryTextBrush}" TextElement.Foreground="{DynamicResource GscPrimaryTextBrush}" Background="Transparent"
-             TextElement.FontFamily="Segoe UI Variable Text, Segoe UI"
+             TextElement.FontFamily="{DynamicResource GscUiFontFamily}"
              UseLayoutRounding="True" SnapsToDevicePixels="True"
              TextOptions.TextFormattingMode="Display" TextOptions.TextRenderingMode="ClearType"
              TextOptions.TextHintingMode="Fixed" RenderOptions.ClearTypeHint="Enabled"
@@ -29,7 +29,7 @@
 
         <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockStyle}">
             <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
-            <Setter Property="FontFamily" Value="Segoe UI Variable Text, Segoe UI"/>
+            <Setter Property="FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
             <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
             <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
             <Setter Property="TextOptions.TextHintingMode" Value="Fixed"/>
@@ -88,8 +88,8 @@
             <Setter Property="Padding" Value="15,8"/>
             <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
             <Setter Property="Margin" Value="0,0,8,8"/>
-            <Setter Property="FontFamily" Value="Segoe UI Variable Text, Segoe UI"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
+            <Setter Property="FontWeight" Value="Medium"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>

@@ -327,6 +327,81 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("tab.MinHeight = compact ? 50 : shortHeight ? 60 : 72;", code);
         }
 
+        [Fact]
+        public void TypographyUsesCentralizedChineseAwareFontChain()
+        {
+            var root = FindRepositoryRoot();
+            var playniteRoot = Path.Combine(root, "src", "GameSaveCenter.Playnite");
+            var xamlFiles = Directory.GetFiles(playniteRoot, "*.xaml", SearchOption.AllDirectories);
+            var tokens = File.ReadAllText(Path.Combine(playniteRoot, "Themes", "DesignTokens.xaml"));
+            var production = File.ReadAllText(Path.Combine(playniteRoot, "Themes", "WpfUiProduction.xaml"));
+
+            Assert.Contains("x:Key=\"GscUiFontFamily\"", tokens);
+            Assert.Contains("x:Key=\"GscCodeFontFamily\"", tokens);
+            Assert.Contains("Microsoft YaHei UI", tokens);
+            foreach (var file in xamlFiles)
+            {
+                var text = File.ReadAllText(file);
+                Assert.DoesNotContain("FontFamily=\"Segoe UI Variable Text, Segoe UI\"", text);
+                Assert.DoesNotContain("TextElement.FontFamily=\"Segoe UI Variable Text, Segoe UI\"", text);
+                Assert.DoesNotContain("Value=\"Segoe UI Variable Text, Segoe UI\"", text);
+            }
+
+            var dashboard = File.ReadAllText(Path.Combine(playniteRoot, "Views", "DashboardView.xaml"));
+            var overview = File.ReadAllText(Path.Combine(playniteRoot, "Views", "OverviewView.xaml"));
+            var maintenance = File.ReadAllText(Path.Combine(playniteRoot, "Views", "MaintenanceView.xaml"));
+            Assert.Contains("FontFamily=\"Segoe MDL2 Assets\"", dashboard);
+            Assert.Contains("FontFamily=\"Segoe MDL2 Assets\"", overview);
+            Assert.Contains("FontFamily=\"Consolas\"", maintenance);
+
+            Assert.Contains("<Setter Property=\"FontWeight\" Value=\"Medium\"/>", production);
+            var primaryStyle = production.IndexOf("x:Key=\"GscWpfUiPrimaryButton\"", StringComparison.Ordinal);
+            Assert.True(primaryStyle >= 0);
+            Assert.Contains("<Setter Property=\"FontWeight\" Value=\"SemiBold\"/>", production.Substring(primaryStyle));
+        }
+
+        [Fact]
+        public void CompactDetailsButtonsOwnADedicatedActionRow()
+        {
+            var root = FindRepositoryRoot();
+            var playniteRoot = Path.Combine(root, "src", "GameSaveCenter.Playnite");
+            var cases = new[]
+            {
+                ("Views\\SaveCenterView.xaml", "SaveHistoryCompactDetailsButton"),
+                ("Views\\SaveCenterView.xaml", "SaveCandidateCompactDetailsButton"),
+                ("Views\\TrainerCenterView.xaml", "TrainerToolsCompactDetailsButton"),
+                ("Views\\MediaCenterView.xaml", "MediaCompactDetailsButton"),
+                ("Views\\TaskCenterView.xaml", "TaskCompactDetailsButton")
+            };
+
+            foreach (var (file, name) in cases)
+            {
+                var text = File.ReadAllText(Path.Combine(playniteRoot, file));
+                var segment = text.Substring(text.IndexOf(name, StringComparison.Ordinal));
+                if (segment.Length > 700)
+                    segment = segment.Substring(0, 700);
+                Assert.Contains("Grid.Row=\"1\"", segment);
+                Assert.DoesNotContain("VerticalAlignment=\"Top\"", segment);
+            }
+
+            var media = File.ReadAllText(Path.Combine(playniteRoot, "Views", "MediaCenterView.xaml"));
+            Assert.Contains("<WrapPanel Grid.Row=\"2\" Margin=\"12,10,12,0\">", media);
+        }
+
+        [Fact]
+        public void SettingsCompactHeaderKeepsBodyViewportBudget()
+        {
+            var root = FindRepositoryRoot();
+            var settings = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml"));
+            var code = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml.cs"));
+
+            Assert.Contains("x:Name=\"SettingsIntroDescription\"", settings);
+            Assert.Contains("SettingsIntroDescription.Visibility = compact ? Visibility.Collapsed : Visibility.Visible;", code);
+            Assert.Contains("SettingsHeaderSubtitle.Visibility = narrow || shortHeight ? Visibility.Collapsed : Visibility.Visible;", code);
+            Assert.Contains("SettingsSaveHint.Visibility = narrow || shortHeight ? Visibility.Collapsed : Visibility.Visible;", code);
+            Assert.Contains("SettingsHeader.MinHeight = compactHeaderHeight ? 56 : compact ? 68 : 76;", code);
+        }
+
         private static string FindRepositoryRoot()
         {
             var directory = new DirectoryInfo(AppContext.BaseDirectory);

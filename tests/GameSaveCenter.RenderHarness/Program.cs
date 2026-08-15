@@ -1621,6 +1621,15 @@ public static class Program
                             s_problems.Add($"SettingsLayout w={width:0} h={height:0} last category chrome lacks bottom safety (tab={lastTabBottom:0.##}, chrome={chromeBottom:0.##}, safety={chromeSafety:0.##}, viewport={headerScroller.ViewportHeight:0.##})");
                         }
                     }
+                    var contentScroller = FindVisualChildren<ScrollViewer>(host).FirstOrDefault(scroller => scroller.Name == "SettingsScroller");
+                    if (contentScroller != null)
+                    {
+                        report.AppendLine($"  SettingsLayout w={width:0} h={height:0} contentViewport={contentScroller.ViewportHeight:0.##}");
+                        if (width <= 920 && contentScroller.ViewportHeight > 0 && contentScroller.ViewportHeight < 160)
+                        {
+                            s_problems.Add($"SettingsLayout w={width:0} h={height:0} body viewport is too small ({contentScroller.ViewportHeight:0} DIP)");
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {

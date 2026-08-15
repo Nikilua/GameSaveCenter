@@ -114,6 +114,12 @@
     <!-- Form pages keep a readable content column instead of stretching across the host. -->
     <sys:Double x:Key="GscFormMaxWidth">1120</sys:Double>
 
+    <!-- Unified font family. Latin text stays on Segoe UI Variable, Simplified Chinese
+         falls back to Microsoft YaHei UI so mixed strings share one visual system instead
+         of WPF picking an arbitrary CJK fallback per glyph. -->
+    <FontFamily x:Key="GscUiFontFamily">Segoe UI Variable Text, Segoe UI, Microsoft YaHei UI</FontFamily>
+    <FontFamily x:Key="GscCodeFontFamily">Consolas, Microsoft YaHei UI</FontFamily>
+
     <!-- Shared table geometry. Each workspace keeps its DataGrid in a finite Grid row, while
          these tokens provide one readable density across light, dark and host themes. -->
     <!-- Keep rows comfortably readable instead of collapsing a table to two or three lines.
@@ -489,8 +495,8 @@
         <Setter Property="Padding" Value="15,8"/>
         <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
         <Setter Property="Margin" Value="0,0,8,8"/>
-        <Setter Property="FontFamily" Value="Segoe UI Variable Text, Segoe UI"/>
-        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
+        <Setter Property="FontWeight" Value="Medium"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Template">
             <Setter.Value>

@@ -59,7 +59,7 @@
                     </Border>
                 </Grid>
                 </Border>
-                <TextBlock Grid.Row="1" Text="Playnite 管理游戏入口，Worker 执行存档、媒体与云端任务。切换左侧分类只改变显示内容，不会立即保存或执行任何业务操作。"
+                <TextBlock x:Name="SettingsIntroDescription" Grid.Row="1" Text="Playnite 管理游戏入口，Worker 执行存档、媒体与云端任务。切换左侧分类只改变显示内容，不会立即保存或执行任何业务操作。"
                            Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,5,0,18" TextWrapping="Wrap"/>
                 <TabControl x:Name="SettingsSectionTabs" Grid.Row="2" Style="{StaticResource GscRedesignSettingsTabControl}" ItemContainerStyle="{StaticResource GscRedesignSettingsTabItem}" SelectedIndex="0">
                     <TabItem Style="{StaticResource GscRedesignSettingsTabItem}">

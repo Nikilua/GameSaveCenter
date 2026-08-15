@@ -975,8 +975,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("TaskSummaryPanel.Visibility = Visibility.Visible", tasksCode);
         Assert.Contains("DiagnosticHealthPanel.Visibility = Visibility.Visible", maintenanceCode);
         var settingsCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml.cs"));
-        Assert.Contains("SettingsHeaderSubtitle.Visibility = Visibility.Visible", settingsCode);
-        Assert.Contains("SettingsSaveHint.Visibility = Visibility.Visible", settingsCode);
+        Assert.Contains("SettingsHeaderSubtitle.Visibility = narrow || shortHeight ? Visibility.Collapsed : Visibility.Visible;", settingsCode);
+        Assert.Contains("SettingsSaveHint.Visibility = narrow || shortHeight ? Visibility.Collapsed : Visibility.Visible;", settingsCode);
         Assert.Contains("RestoreSafetyBanner.Visibility = viewModel.CurrentWorkspace == WorkspaceKind.Saves", dashboardCode);
     }
 
@@ -1647,10 +1647,11 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Command=\"{Binding CompareBackupCommand}\"", saveText);
         Assert.Contains("Command=\"{Binding PreviewRetentionCommand}\"", saveText);
         Assert.Contains("var stackCompare = width < 1080 || height < 760;", saveCode);
-        Assert.Contains("SaveCompareRetentionScrollViewer.MaxHeight = stackCompare ? Math.Max(180, Math.Min(420, height * 0.42)) : double.PositiveInfinity;", saveCode);
+        Assert.Contains("SaveCompareRetentionScrollViewer.MaxHeight = stackCompare ? Math.Max(200, Math.Min(380, height * 0.36)) : double.PositiveInfinity;", saveCode);
         Assert.Contains("SaveCompareLayout.RowDefinitions[1].Height = stackCompare ? new GridLength(1, GridUnitType.Auto) : new GridLength(0);", saveCode);
         Assert.Contains("Grid.SetRow(SaveCompareRetentionScrollViewer, stackCompare ? 1 : 0);", saveCode);
-        Assert.Contains("SaveCompareMainScrollViewer.MaxHeight = stackCompare ? Math.Max(220, Math.Min(420, height * 0.45)) : double.PositiveInfinity;", saveCode);
+        Assert.Contains("SaveCompareMainScrollViewer.MaxHeight = stackCompare ? Math.Max(300, Math.Min(520, height * 0.52)) : double.PositiveInfinity;", saveCode);
+        Assert.Contains("SaveCompareMainScrollViewer.MinHeight = stackCompare ? 240 : 0;", saveCode);
         Assert.DoesNotContain("MaxHeight=\"260\"", saveText);
     }
 

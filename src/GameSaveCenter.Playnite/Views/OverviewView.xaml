@@ -437,7 +437,7 @@
                     <!-- 六枚胶囊共享同一字体与字重，避免宿主/按钮模板继承差异导致
                          需关注按钮与其它胶囊的文字度量不一致（UI-172）。 -->
                     <UniformGrid Columns="2" Margin="0,8,0,0"
-                                 TextElement.FontFamily="Segoe UI Variable Text, Segoe UI"
+                                 TextElement.FontFamily="{DynamicResource GscUiFontFamily}"
                                  TextElement.FontWeight="SemiBold">
                         <Border Style="{DynamicResource GscRedesignContextPill}" Margin="0,0,6,6"><StackPanel><TextBlock Text="管理游戏" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10"/><TextBlock Text="{Binding Snapshot.ManagedGames, Mode=OneWay}" Foreground="{DynamicResource GscInfoBrush}" FontSize="18" FontWeight="SemiBold" Margin="0,3,0,0"/></StackPanel></Border>
                         <Border Style="{DynamicResource GscRedesignContextPill}" Margin="0,0,0,6"><StackPanel><TextBlock Text="已匹配存档" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10"/><TextBlock Text="{Binding Snapshot.MatchedGames, Mode=OneWay}" Foreground="{DynamicResource GscAccentBrush}" FontSize="18" FontWeight="SemiBold" Margin="0,3,0,0"/></StackPanel></Border>

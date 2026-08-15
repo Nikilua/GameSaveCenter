@@ -3,6 +3,17 @@
 > 维护时间：2026-08-14
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-15 UI-FINAL-TYPOGRAPHY-RESPONSIVE-CLOSURE 当前事实
+
+- 来源：`GameSaveCenter_Final_UI_Typography_Prompt.zip`，计划 `docs/ai/UI_TYPOGRAPHY_RESPONSIVE_CLOSURE_PLAN.md`，报告 `docs/ai/UI_TYPOGRAPHY_RESPONSIVE_CLOSURE_REPORT.md`。
+- 字体 token：`GscUiFontFamily = Segoe UI Variable Text, Segoe UI, Microsoft YaHei UI`，`GscCodeFontFamily = Consolas, Microsoft YaHei UI`；普通 UI 无硬编码 UI 字体；图标字体 `Segoe MDL2 Assets` 与代码字体 `Consolas` 保留；通用按钮默认 Medium，Primary 保留 SemiBold。
+- Settings Compact/Narrow：长说明/副标题/保存提示按断点隐藏，header 最小高度 56-76 DIP；render-qa 760×560 正文 viewport 300 DIP、880×560 285 DIP。
+- Save Compare Narrow：主比较区 MinHeight 240、MaxHeight `max(300, height*0.52)`；1040×700 主比较 viewport 234 DIP，保留策略 246 DIP。
+- Compact Inspector：Save/Trainer/Media/Task 五个详情按钮均为表格下方独立 `Grid.Row=1` 操作行，无 overlay。
+- Media 待归类底栏与表格内容左边缘统一 12 DIP padding。
+- 基线：Playnite `266/266`；render-qa 11 档 + 56 主题 + 7 Resize 全绿；UI Audit 0 HIGH/0 MEDIUM/0 失败路由。
+- 真实 Playnite 宿主主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`。
+
 ## 2026-08-15 UI-FINAL-POLISH-V7.1 当前事实
 
 - 来源：`GameSaveCenter_UI_Final_Polish_Pack_v7_1.zip`，计划 `docs/ai/UI_FINAL_POLISH_PLAN_V7_1.md`，报告 `docs/ai/UI_FINAL_POLISH_REPORT_V7_1.md`。
