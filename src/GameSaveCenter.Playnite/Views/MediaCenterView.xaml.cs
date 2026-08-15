@@ -59,9 +59,12 @@ namespace GameSaveCenter.Playnite.Views
                 // surface scrolls the page-level info/actions when this viewport cannot fit
                 // below the summary cards; the DataGrid/ListBox still own row virtualization
                 // and their own internal scrolling.
-                var tableViewportHeight = Math.Max(236d, Math.Min(460d, height * 0.50));
-                MediaInboxGrid.Height = tableViewportHeight;
-                MediaGrid.Height = tableViewportHeight;
+                MediaInboxGrid.MinHeight = 236d;
+                MediaInboxGrid.Height = double.NaN;
+                MediaInboxGrid.MaxHeight = double.PositiveInfinity;
+                MediaGrid.MinHeight = 236d;
+                MediaGrid.Height = double.NaN;
+                MediaGrid.MaxHeight = double.PositiveInfinity;
 
                 // Match the demo: the media table and its inspector share the main
                 // work area on wide hosts; on compact hosts the inspector is a drawer

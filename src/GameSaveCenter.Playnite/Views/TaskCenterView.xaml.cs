@@ -40,16 +40,9 @@ namespace GameSaveCenter.Playnite.Views
                 // let only the inspector consume the remaining finite height.
                 const double tableMinHeight = 236d;
                 var stack = width < 1200;
-                var tableViewportHeight = Math.Max(tableMinHeight, Math.Min(460d, height * 0.50));
-                if (stack)
-                {
-                    // Compact panes keep a readable four-row floor while letting the
-                    // queue and summary stay inside the finite workspace viewport.
-                    tableViewportHeight = Math.Max(tableMinHeight, Math.Min(280d, height * 0.36));
-                }
                 TaskGrid.MinHeight = tableMinHeight;
                 TaskGrid.Height = double.NaN;
-                TaskGrid.MaxHeight = tableViewportHeight;
+                TaskGrid.MaxHeight = double.PositiveInfinity;
                 // The 1040-DIP demo minimum leaves roughly 700 DIP for the workspace after
                 // the labeled shell. Keep the summary cards in two columns there so they do
                 // not consume the entire first viewport before the queue becomes reachable.
@@ -140,7 +133,7 @@ namespace GameSaveCenter.Playnite.Views
                 // A 96-DIP strip below the queue was too small to read task details at the
                 // demo-minimum and common 1366-DIP windows. Keep the finite cap so the
                 // inspector owns its own scroll, but give stacked mode a readable floor.
-                var inspectorHeight = Math.Max(160, Math.Min(420, workspaceHeight - tableViewportHeight - 10));
+                var inspectorHeight = Math.Max(160, Math.Min(420, workspaceHeight - tableMinHeight - 10));
                 TaskDetailScrollViewer.MaxHeight = showInspector && stack
                     ? inspectorHeight
                     : double.PositiveInfinity;

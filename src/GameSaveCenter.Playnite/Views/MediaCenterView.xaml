@@ -124,13 +124,8 @@
                      info/actions remain reachable when summary cards consume the normal
                      window height. This mirrors Demo's page flow without giving the
                      virtualized table an infinite measure. -->
-                <ScrollViewer x:Name="MediaInboxScrollSurface"
-                              Style="{DynamicResource GscPageScrollViewer}"
-                              VerticalScrollBarVisibility="Auto"
-                              HorizontalScrollBarVisibility="Disabled"
-                              CanContentScroll="False"
-                              Focusable="False">
-                <Grid Margin="0,12,0,0" VerticalAlignment="Top">
+                <Grid x:Name="MediaInboxScrollSurface" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ClipToBounds="True">
+                <Grid Margin="0,12,0,0" VerticalAlignment="Stretch">
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                     <Border Style="{DynamicResource GscRedesignInfoBand}" Margin="0,0,0,10">
                         <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
@@ -140,7 +135,7 @@
                     </Border>
                     <Border Grid.Row="1" Style="{StaticResource MediaTableFrame}" MinHeight="0" ClipToBounds="True">
                         <Grid>
-                            <DataGrid x:Name="MediaInboxGrid" Tag="FiniteViewport" Style="{StaticResource MediaDataGrid}" MinHeight="0" ItemsSource="{Binding UnassignedMedia}" SelectedItem="{Binding SelectedInboxMedia}"
+                            <DataGrid x:Name="MediaInboxGrid" Tag="FiniteViewport" Style="{StaticResource MediaDataGrid}" MinHeight="236" ItemsSource="{Binding UnassignedMedia}" SelectedItem="{Binding SelectedInboxMedia}"
                                       RowStyle="{StaticResource MediaInboxStableRowStyle}"
                                       EnableRowVirtualization="True"
                                       VirtualizingPanel.IsVirtualizing="True"
@@ -177,13 +172,13 @@
                         <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding IgnoreInboxMediaCommand}" Content="忽略并保留副本"/>
                     </WrapPanel>
                 </Grid>
-                </ScrollViewer>
+                </Grid>
             </TabItem>
             <TabItem Header="当前游戏媒体">
                 <Grid x:Name="MediaCurrentScrollSurface"
                       HorizontalAlignment="Stretch"
                       VerticalAlignment="Stretch">
-                <Grid x:Name="MediaCurrentLayout" Margin="0,12,0,0" VerticalAlignment="Top" ClipToBounds="True">
+                <Grid x:Name="MediaCurrentLayout" Margin="0,12,0,0" VerticalAlignment="Stretch" ClipToBounds="True">
                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscInspectorWidth}"/></Grid.ColumnDefinitions>
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="0"/></Grid.RowDefinitions>
                     <WrapPanel Grid.ColumnSpan="3" Margin="0,0,0,10">
@@ -202,7 +197,7 @@
                     </Border>
                     <Border Grid.Row="2" Grid.Column="0" Style="{StaticResource MediaTableFrame}" MinHeight="{DynamicResource GscWorkspaceTableMinHeight}">
                         <Grid>
-                        <ListBox x:Name="MediaGrid" Tag="FiniteViewport" ItemsSource="{Binding MediaView}" SelectedItem="{Binding SelectedMedia}" SelectionChanged="OnMediaSelectionChanged" SelectionMode="Extended" BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Top" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
+                        <ListBox x:Name="MediaGrid" Tag="FiniteViewport" ItemsSource="{Binding MediaView}" SelectedItem="{Binding SelectedMedia}" SelectionChanged="OnMediaSelectionChanged" SelectionMode="Extended" BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
                             <ListBox.ItemsPanel><ItemsPanelTemplate><VirtualizingStackPanel VerticalAlignment="Top"/></ItemsPanelTemplate></ListBox.ItemsPanel>
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="ListBoxItem">

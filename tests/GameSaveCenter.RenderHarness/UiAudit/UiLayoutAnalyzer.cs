@@ -321,20 +321,106 @@ public static class UiLayoutAnalyzer
 
     private static void AnalyzeVerticalFill(DependencyObject root, UiLayoutReport report)
     {
-        report.WorkspaceHeight = report.Height;
-        var primary = FindVisualChildren<FrameworkElement>(root)
-            .FirstOrDefault(element =>
-                (element is DataGrid || element is ListBox)
-                && element.Visibility == Visibility.Visible
-                && element.ActualHeight > 0);
+        FrameworkElement? workspace = null;
+        FrameworkElement? primary = null;
+
+        if (report.RouteId == "task-center")
+        {
+            workspace = FindVisualChildren<FrameworkElement>(root)
+                .FirstOrDefault(element => element.Name == "TaskWorkspaceLayout");
+            primary = FindVisualChildren<FrameworkElement>(root)
+                .FirstOrDefault(element => element.Name == "TaskGrid");
+        }
+        else if (report.RouteId == "media-center")
+        {
+            if (report.TabHeader == "待归类")
+            {
+                workspace = FindVisualChildren<FrameworkElement>(root)
+                    .FirstOrDefault(element => element.Name == "MediaInboxScrollSurface");
+                primary = FindVisualChildren<FrameworkElement>(root)
+                    .FirstOrDefault(element => element.Name == "MediaInboxGrid");
+            }
+            else if (report.TabHeader == "当前游戏媒体")
+            {
+                workspace = FindVisualChildren<FrameworkElement>(root)
+                    .FirstOrDefault(element => element.Name == "MediaCurrentLayout");
+                primary = FindVisualChildren<FrameworkElement>(root)
+                    .FirstOrDefault(element => element.Name == "MediaGrid");
+            }
+        }
+
+        if (primary == null)
+        {
+            primary = FindVisualChildren<FrameworkElement>(root)
+                .FirstOrDefault(element =>
+                    (element is DataGrid || element is ListBox)
+                    && element.Visibility == Visibility.Visible
+                    && element.ActualHeight > 0);
+        }
+
+        double? workspaceHeight = null;
+        if (workspace is Grid workspaceGrid)
+        {
+            if (report.RouteId == "task-center"
+                && workspaceGrid.RowDefinitions.Count > 2)
+            {
+                workspaceHeight = workspaceGrid.RowDefinitions[2].ActualHeight;
+            }
+            else if (report.RouteId == "media-center"
+                && report.TabHeader == "待归类")
+            {
+                var inner = FindVisualChildren<Grid>(workspaceGrid)
+                    .FirstOrDefault(grid => grid.RowDefinitions.Count == 3);
+                if (inner != null)
+                    workspaceHeight = inner.RowDefinitions[1].ActualHeight;
+            }
+            else if (report.RouteId == "media-center"
+                && report.TabHeader == "当前游戏媒体"
+                && workspaceGrid.RowDefinitions.Count > 2)
+            {
+                workspaceHeight = workspaceGrid.RowDefinitions[2].ActualHeight;
+            }
+        }
+        report.WorkspaceHeight = workspaceHeight.HasValue && workspaceHeight.Value > 0
+            ? workspaceHeight.Value
+            : workspace != null && workspace.ActualHeight > 0
+                ? workspace.ActualHeight
+                : report.Height;
         report.MainListHeight = primary?.ActualHeight ?? 0;
         report.VerticalFillRatio = report.WorkspaceHeight > 0
             ? Math.Round(report.MainListHeight / report.WorkspaceHeight, 2)
             : 0;
         report.TopExternalGap = 0;
-        report.BottomExternalGap = report.WorkspaceHeight > report.MainListHeight
-            ? Math.Round(report.WorkspaceHeight - report.MainListHeight, 2)
-            : 0;
+        report.BottomExternalGap = 0;
+        if (workspace != null
+            && primary != null
+            && workspace.ActualHeight > 0
+            && primary.ActualHeight > 0)
+        {
+            report.TopExternalGap = 0;
+            report.BottomExternalGap = Math.Max(
+                0,
+                Math.Round(report.WorkspaceHeight - primary.ActualHeight, 2));
+        }
+
+        var tracked = report.RouteId == "task-center"
+            || (report.RouteId == "media-center"
+                && (report.TabHeader == "待归类" || report.TabHeader == "当前游戏媒体"));
+        if (tracked
+            && report.SizeKey is "2k" or "wide" or "maximized"
+            && report.VerticalFillRatio > 0
+            && report.VerticalFillRatio < 0.92)
+        {
+            report.Warnings.Add(new UiAuditWarning
+            {
+                Severity = "HIGH",
+                Code = "VERTICAL_FILL_TOO_LOW",
+                RouteId = report.RouteId,
+                Tab = report.TabHeader,
+                SizeKey = report.SizeKey,
+                Message = $"主表纵向填充率 {report.VerticalFillRatio:0.00}，要求 >=0.92"
+            });
+        }
     }
 
     private static void AnalyzeDataGrids(DependencyObject root, UiLayoutReport report)
