@@ -11,6 +11,7 @@ namespace GameSaveCenter.Playnite.Tests
         {
             var root = FindRepositoryRoot();
             var save = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "SaveCenterView.xaml"));
+            var tokens = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml"));
 
             Assert.Contains("x:Name=\"SaveBackupAutomationCard\"", save);
             Assert.Contains("Text=\"游玩中周期备份间隔\" Style=\"{StaticResource GscFormFieldLabel}\"", save);
@@ -20,6 +21,8 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("Text=\"最近版本保留小时\"", save);
             Assert.Contains("Text=\"每日保留天数\"", save);
             Assert.Contains("Text=\"每周保留周数\"", save);
+            Assert.Contains("<Setter Property=\"TextAlignment\" Value=\"Center\"/>", tokens);
+            Assert.Contains("<Setter Property=\"VerticalContentAlignment\" Value=\"Center\"/>", tokens);
         }
 
         private static string FindRepositoryRoot()

@@ -12,6 +12,9 @@ namespace GameSaveCenter.Playnite.Tests
         public void ExpandableCardsUseUnifiedDisclosureChromeWithoutInnerScroll()
         {
             var root = FindRepositoryRoot();
+            var tokens = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml"));
+            Assert.Contains("VerticalAlignment=\"Center\"", tokens);
+            Assert.Contains("VerticalContentAlignment=\"", tokens);
             var views = new[]
             {
                 Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml"),
