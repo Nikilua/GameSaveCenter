@@ -219,6 +219,16 @@ namespace GameSaveCenter.Playnite.Tests
                 && element.Attribute("Text")?.Value == "{Binding ResultDisplay, Mode=OneWay}");
             Assert.Contains(template.Descendants(), element => element.Name.LocalName == "TextBlock"
                 && element.Attribute("Text")?.Value == "{Binding CreatedDisplay, Mode=OneWay}");
+            Assert.True(template.Descendants()
+                .Where(element => element.Name.LocalName == "TextBlock"
+                    && element.Attribute("Text")?.Value == "{Binding KindDisplay, Mode=OneWay}")
+                .All(element => element.Attribute("HorizontalAlignment")?.Value == "Center"
+                    && element.Attribute("TextAlignment")?.Value == "Center"));
+            Assert.True(template.Descendants()
+                .Where(element => element.Name.LocalName == "TextBlock"
+                    && element.Attribute("Text")?.Value == "{Binding ResultDisplay, Mode=OneWay}")
+                .All(element => element.Attribute("HorizontalAlignment")?.Value == "Center"
+                    && element.Attribute("TextAlignment")?.Value == "Center"));
         }
 
         [Fact]
