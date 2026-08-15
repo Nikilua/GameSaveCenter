@@ -729,6 +729,7 @@
                         <ScrollViewer x:Name="PART_ContentHost"
                                       Margin="{TemplateBinding Padding}"
                                       VerticalAlignment="Center"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                       HorizontalAlignment="Stretch"
                                       Focusable="False"
                                       HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}"
@@ -790,6 +791,8 @@
     </Style>
     <Style x:Key="GscNumericFieldInput" TargetType="TextBox" BasedOn="{StaticResource GscNumericTextBox}">
         <Setter Property="Width" Value="112"/>
+        <Setter Property="Padding" Value="8,4"/>
+        <Setter Property="MinHeight" Value="38"/>
         <Setter Property="TextAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
     </Style>

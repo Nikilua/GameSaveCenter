@@ -80,13 +80,16 @@ namespace GameSaveCenter.Playnite.Tests
             var viewModel = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
             var dashboardCode = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml.cs"));
             var maintenance = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+            var overview = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml"));
             var contracts = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Contracts", "MessageTypes.cs"));
 
-            Assert.Contains("currentWorkspace = WorkspaceKind.Maintenance", viewModel);
+            Assert.Contains("currentWorkspace = plugin.SessionLastWorkspace ?? WorkspaceKind.Overview;", viewModel);
             Assert.Contains("MessageTypes.CheckEnvironment", viewModel);
             Assert.Contains("OnboardingTestBackupCommand", viewModel);
             Assert.Contains("OnboardingCompleted", viewModel);
-            Assert.Contains("NavMaintenance.IsChecked = true", dashboardCode);
+            Assert.DoesNotContain("if (viewModel.IsOnboardingPending)\n                NavMaintenance.IsChecked = true;", dashboardCode);
+            Assert.Contains("OpenMaintenanceCommand", viewModel);
+            Assert.Contains("首次环境检查尚未完成", overview);
             Assert.Contains("EnvironmentCheckCard", maintenance);
             Assert.Contains("Command=\"{Binding RunEnvironmentCheckCommand}\"", maintenance);
             Assert.Contains("Command=\"{Binding OnboardingTestBackupCommand}\"", maintenance);

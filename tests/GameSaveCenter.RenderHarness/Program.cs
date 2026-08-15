@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using System.Windows.Automation;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -103,6 +104,19 @@ public static class Program
             v4Thread.Start();
             v4Thread.Join();
             return v4ExitCode;
+        }
+
+        if (args.Length > 0 && args[0].Equals("v6shots", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", "artifacts", "ui-qa", "v6-shots");
+            var v6ExitCode = 0;
+            var v6Thread = new Thread(() => { v6ExitCode = RunV6Shots(outputRoot); });
+            v6Thread.SetApartmentState(ApartmentState.STA);
+            v6Thread.Start();
+            v6Thread.Join();
+            return v6ExitCode;
         }
 
         var exitCode = 0;
@@ -449,6 +463,216 @@ public static class Program
             File.WriteAllText(Path.Combine(outputRoot, "v4-shots-report.txt"), report.ToString());
             return 1;
         }
+    }
+
+    private static int RunV6Shots(string outputRoot)
+    {
+        Directory.CreateDirectory(outputRoot);
+        var report = new StringBuilder();
+        report.AppendLine("GameSaveCenter v6 screenshot evidence");
+        report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+        report.AppendLine();
+        var problems = new List<string>();
+
+        try
+        {
+            var app = new Application();
+            app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+
+            CaptureV3Shot(
+                new OverviewView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v6-overview-standard.png"),
+                "OverviewStackScrollSurface",
+                1600,
+                900,
+                ApplyOverviewV3,
+                problems,
+                report);
+            CaptureV3Shot(
+                new OverviewView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v6-overview-narrow.png"),
+                "OverviewStackScrollSurface",
+                1040,
+                700,
+                ApplyOverviewV3,
+                problems,
+                report);
+            CaptureV3Shot(
+                new OverviewView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v6-overview-activity-wide.png"),
+                "OverviewActivityTimelineList",
+                1600,
+                900,
+                ApplyOverviewV3,
+                problems,
+                report);
+            CaptureV3Shot(
+                new OverviewView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v6-overview-activity-narrow.png"),
+                "OverviewActivityTimelineList",
+                1040,
+                700,
+                ApplyOverviewV3,
+                problems,
+                report);
+            CaptureV3Shot(
+                new OverviewView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v6-overview-risk-card.png"),
+                "OverviewRiskCard",
+                1600,
+                900,
+                ApplyOverviewV3,
+                problems,
+                report);
+            CaptureV3Shot(
+                new OverviewView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v6-overview-current-game.png"),
+                "OverviewCurrentGameCard",
+                1600,
+                900,
+                ApplyOverviewV3,
+                problems,
+                report,
+                cropFromHost: true);
+
+            CaptureV3Shot(
+                new SaveCenterView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v6-save-automation-current.png"),
+                "SaveBackupAutomationCard",
+                1600,
+                900,
+                ApplySimpleResponsiveV3,
+                problems,
+                report,
+                view => SelectTab(view, 2));
+            CaptureV3Shot(
+                new SaveCenterView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v6-save-automation-template.png"),
+                "SavePolicyTemplatesCard",
+                1600,
+                900,
+                ApplySimpleResponsiveV3,
+                problems,
+                report,
+                view =>
+                {
+                    SelectTab(view, 2);
+                    SetExpanderByHeader(view, "策略模板 · 新建 / 保存 / 应用 / 删除", true);
+                });
+
+            foreach (var value in new[] { "1", "5", "30", "120", "1440" })
+            {
+                CaptureNumericV6(
+                    Path.Combine(outputRoot, $"v6-numeric-{value}.png"),
+                    value,
+                    problems,
+                    report);
+            }
+
+            CaptureV3Shot(
+                new MaintenanceView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v6-maintenance-diagnostics.png"),
+                "MaintenanceDiagnosticsScrollSurface",
+                1600,
+                900,
+                ApplySimpleResponsiveV3,
+                problems,
+                report,
+                view => SelectTab(view, 0));
+            CaptureV3Shot(
+                new MaintenanceView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v6-maintenance-device.png"),
+                "MaintenanceDeviceScrollSurface",
+                1600,
+                900,
+                ApplySimpleResponsiveV3,
+                problems,
+                report,
+                view => SelectTab(view, 1));
+            CaptureV3Shot(
+                new MaintenanceView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v6-maintenance-audit.png"),
+                "MaintenanceAuditFindingsGrid",
+                1600,
+                900,
+                ApplySimpleResponsiveV3,
+                problems,
+                report,
+                view => SelectTab(view, 3));
+            CaptureV3Shot(
+                new MaintenanceView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v6-maintenance-process.png"),
+                "MaintenanceProcessScrollSurface",
+                1600,
+                900,
+                ApplySimpleResponsiveV3,
+                problems,
+                report,
+                view => SelectTab(view, 4));
+
+            report.AppendLine("  session-navigation: covered by SessionNavigationStateTests + UiStatePersistenceSourceTests");
+
+            if (problems.Count > 0)
+            {
+                report.AppendLine("v6-shots FAILED");
+                foreach (var problem in problems)
+                    report.AppendLine("  PROBLEM " + problem);
+                File.WriteAllText(Path.Combine(outputRoot, "v6-shots-report.txt"), report.ToString());
+                Console.WriteLine(report.ToString());
+                return 1;
+            }
+
+            report.AppendLine("v6-shots OK");
+            File.WriteAllText(Path.Combine(outputRoot, "v6-shots-report.txt"), report.ToString());
+            Console.WriteLine(report.ToString());
+            Console.WriteLine("v6-shots OK");
+            return 0;
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine(ex);
+            report.AppendLine("v6-shots FAILED");
+            report.AppendLine(ex.ToString());
+            File.WriteAllText(Path.Combine(outputRoot, "v6-shots-report.txt"), report.ToString());
+            return 1;
+        }
+    }
+
+    private static void CaptureNumericV6(string path, string value, List<string> problems, StringBuilder report)
+    {
+        var view = new SaveCenterView { DataContext = new FakeDashboardData() };
+        var (contentW, contentH) = ContentSize(1600, 900);
+        var host = new Grid
+        {
+            Width = contentW,
+            Height = contentH,
+            Background = new SolidColorBrush(Color.FromRgb(24, 30, 43)),
+            ClipToBounds = true
+        };
+        host.Children.Add(view);
+        ApplySimpleResponsiveV3(view, 1600, 900);
+        host.Measure(new Size(contentW, contentH));
+        host.Arrange(new Rect(0, 0, contentW, contentH));
+        host.UpdateLayout();
+        SelectTab(view, 2);
+        view.UpdateLayout();
+
+        var card = FindVisualChildren<FrameworkElement>(host)
+            .FirstOrDefault(element => element.Name == "SaveBackupAutomationCard");
+        var input = card == null
+            ? null
+            : FindVisualChildren<TextBox>(card)
+                .FirstOrDefault(textBox => AutomationProperties.GetName(textBox) == "游玩中周期备份间隔，分钟");
+        if (input == null)
+            throw new InvalidOperationException("Numeric input not found for v6 shot.");
+
+        input.Text = value;
+        view.UpdateLayout();
+        SaveCropped(host, input, path);
+        var size = new FileInfo(path).Length;
+        report.AppendLine($"  {Path.GetFileName(path)}: {input.ActualWidth:0}x{input.ActualHeight:0} DIP, {size} bytes");
+        if (size < 512)
+            problems.Add($"{path} looks blank ({size} bytes)");
     }
 
     private static void CaptureV3Shot(

@@ -71,7 +71,7 @@ namespace GameSaveCenter.Playnite.Views
         public ColumnDefinition OverviewSecondaryColumnDefinition => OverviewSecondaryColumn;
         public UIElement OverviewPrimaryPanelElement => OverviewPrimaryPanel;
         public UIElement OverviewSecondaryPanelElement => OverviewSecondaryPanel;
-        public ScrollViewer OverviewSecondaryScrollViewerElement => OverviewSecondaryScrollViewer;
+        public Panel OverviewSecondaryScrollViewerElement => OverviewSecondaryScrollViewer;
         public Panel OverviewRiskScrollViewerElement => OverviewRiskScrollViewer;
         public Panel OverviewMetricPanelElement => OverviewMetricPanel;
 
@@ -90,7 +90,6 @@ namespace GameSaveCenter.Playnite.Views
             // because a Playnite host theme can replace inherited ScrollViewer alignment
             // defaults during a live template refresh.
             OverviewSecondaryScrollViewer.VerticalAlignment = VerticalAlignment.Top;
-            OverviewSecondaryScrollViewer.VerticalContentAlignment = VerticalAlignment.Top;
             OverviewSecondaryPanel.VerticalAlignment = VerticalAlignment.Top;
             Grid.SetRow(OverviewPrimaryPanel, 0);
             Grid.SetColumn(OverviewPrimaryPanel, 0);
@@ -147,7 +146,10 @@ namespace GameSaveCenter.Playnite.Views
 
             if (OverviewActivityTimelineList != null)
             {
-                OverviewActivityTimelineList.Tag = primaryWidth < 900 ? "Compact" : "Wide";
+                var compactActivity = primaryWidth < 900;
+                OverviewActivityTimelineList.Tag = compactActivity ? "Compact" : "Wide";
+                if (OverviewActivityHeaderRow != null)
+                    OverviewActivityHeaderRow.Visibility = compactActivity ? Visibility.Collapsed : Visibility.Visible;
             }
 
             // HomeView places TODAY and the selected-game context in a two-column row.
@@ -193,8 +195,6 @@ namespace GameSaveCenter.Playnite.Views
             // scroll owner in every layout. Primary/secondary columns and the risk card
             // grow naturally; none of them may create a competing wheel context.
             OverviewStackScrollSurface.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
-            OverviewPrimaryScrollSurface.VerticalScrollBarVisibility = ScrollBarVisibility.Disabled;
-            OverviewSecondaryScrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Disabled;
         }
     }
 }

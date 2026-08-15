@@ -259,12 +259,9 @@
                 </Grid>
             </TabItem>
             <TabItem Header="设备状态">
-                <ScrollViewer x:Name="MaintenanceDeviceScrollSurface"
-                              Style="{DynamicResource GscPageScrollViewer}"
-                              VerticalScrollBarVisibility="Auto"
-                              HorizontalScrollBarVisibility="Disabled"
-                              CanContentScroll="False"
-                              Focusable="False">
+                <Grid x:Name="MaintenanceDeviceScrollSurface"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch">
                 <Grid x:Name="MaintenanceDeviceLayout" Margin="0,12,0,12" VerticalAlignment="Top"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscInspectorWidth}"/></Grid.ColumnDefinitions><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="0"/></Grid.RowDefinitions>
                     <Border Grid.ColumnSpan="3" Style="{DynamicResource GscRedesignSubCard}" Margin="0,0,0,10">
                         <StackPanel>
@@ -284,7 +281,7 @@
                     <Border Grid.Row="2" Grid.Column="0" Style="{DynamicResource GscTableFrame}" Margin="0,10,0,0"><Grid><DataGrid x:Name="MaintenanceDeviceGrid" Style="{StaticResource MaintenanceDataGrid}" ItemsSource="{Binding DeviceComparisons}" SelectedItem="{Binding SelectedDeviceComparison}"><DataGrid.Columns><DataGridTextColumn HeaderStyle="{StaticResource MaintenanceFirstColumnHeader}" Header="状态" Binding="{Binding StateDisplay}" Width="150"/><DataGridTextColumn Header="游戏" Binding="{Binding GameName}" Width="*" MinWidth="180"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn><DataGridTextColumn Header="其他设备" Binding="{Binding RemoteDevice}" Width="130"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn><DataGridTextColumn Header="原因" Binding="{Binding ReasonDisplay}" Width="260"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn><DataGridTextColumn Header="人工决策" Binding="{Binding DecisionDisplay}" Width="130"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn><DataGridTextColumn HeaderStyle="{StaticResource MaintenanceLastColumnHeader}" Header="建议" Binding="{Binding SuggestedBackupId}" Width="200"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn></DataGrid.Columns></DataGrid><TextBlock Text="暂无设备冲突记录。&#xA;同步设备摘要后，有差异的游戏会显示在这里。" IsHitTestVisible="False"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyStateText}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding DeviceComparisons.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock></Grid></Border>
                     <ScrollViewer x:Name="MaintenanceDeviceInspectorScrollViewer" Grid.Row="2" Grid.Column="2" Style="{DynamicResource GscInspectorScrollViewer}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" VerticalContentAlignment="Stretch" Margin="0,10,0,0"><Border Style="{DynamicResource GscRedesignSectionCard}" Padding="14"><StackPanel><TextBlock Text="人工决策与受保护恢复" Style="{DynamicResource GscSectionTitleStyle}"/><TextBlock Text="先比较，再由用户记录人工决策；恢复分两步且不会直接覆盖或删除远端。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/><TextBlock Text="人工决策" Style="{DynamicResource GscCaptionStyle}" Margin="0,14,0,6"/><ComboBox Style="{DynamicResource GscWpfUiComboBox}" SelectedIndex="0" ItemsSource="{Binding DeviceDecisionOptions}" SelectedItem="{Binding DeviceDecision, TargetNullValue=稍后处理, FallbackValue=稍后处理}"/><TextBlock Text="判断依据" Style="{DynamicResource GscCaptionStyle}" Margin="0,14,0,6"/><TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding DeviceDecisionComment, UpdateSourceTrigger=PropertyChanged}" MinHeight="64" MaxHeight="120" AcceptsReturn="True" TextWrapping="Wrap" ToolTip="仅记录判断依据"/><ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding SaveDeviceDecisionCommand}" Content="保存决策" Margin="0,12,0,0" HorizontalAlignment="Left"/><Separator Margin="0,14,0,12"/><TextBlock Text="受保护的远端恢复" Style="{DynamicResource GscSectionTitleStyle}"/><TextBlock Text="{Binding StagedRemoteBackupStatus}" TextWrapping="Wrap" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,4,0,0"/><Border Style="{DynamicResource GscRedesignInfoBand}" Padding="10" Margin="0,12,0,0"><TextBlock Text="先下载并校验，再创建当前快照并恢复；不会直接覆盖或删除远端。" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap"/></Border><ui:Button Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding StageRemoteBackupCommand}" Content="1. 下载并校验" Margin="0,12,0,0" HorizontalAlignment="Left"/><ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding RestoreStagedRemoteBackupCommand}" Content="2. 创建快照并恢复" Margin="0,8,0,0" HorizontalAlignment="Left"/></StackPanel></Border></ScrollViewer>
                 </Grid>
-                </ScrollViewer>
+                </Grid>
             </TabItem>
             <TabItem Header="保留策略">
                 <ScrollViewer Style="{DynamicResource GscPageScrollViewer}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,12,0,0">
@@ -536,12 +533,9 @@
                 </Grid>
             </TabItem>
             <TabItem Header="进程映射">
-                <ScrollViewer x:Name="MaintenanceProcessScrollSurface"
-                              Style="{DynamicResource GscPageScrollViewer}"
-                              VerticalScrollBarVisibility="Auto"
-                              HorizontalScrollBarVisibility="Disabled"
-                              CanContentScroll="False"
-                              Focusable="False">
+                <Grid x:Name="MaintenanceProcessScrollSurface"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch">
                 <Grid x:Name="MaintenanceProcessLayout" Margin="0,12,0,0" VerticalAlignment="Top"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscInspectorWidth}"/></Grid.ColumnDefinitions><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="0"/></Grid.RowDefinitions>
                     <Grid x:Name="ProcessMappingEditor" Grid.ColumnSpan="3"><Grid.RowDefinitions><RowDefinition x:Name="ProcessMappingEditorPrimaryRow" Height="Auto"/><RowDefinition x:Name="ProcessMappingEditorCompactRow" Height="0"/></Grid.RowDefinitions><Grid.ColumnDefinitions><ColumnDefinition x:Name="ProcessMappingExecutableColumn" Width="*"/><ColumnDefinition x:Name="ProcessMappingEditorGutterColumn" Width="8"/><ColumnDefinition x:Name="ProcessMappingTargetColumn" Width="240"/><ColumnDefinition x:Name="ProcessMappingActionGutterColumn" Width="8"/><ColumnDefinition x:Name="ProcessMappingActionColumn" Width="Auto"/></Grid.ColumnDefinitions><TextBox x:Name="ProcessMappingExecutableTextBox" Grid.Column="0" Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding ProcessMappingExecutable, UpdateSourceTrigger=PropertyChanged}" ToolTip="输入 EXE 文件名，例如 skse64.exe" Margin="0,0,0,8"/><ComboBox x:Name="ProcessMappingTargetGameComboBox" Grid.Column="2" Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding Games}" SelectedItem="{Binding ProcessMappingTargetGame}" Margin="0,0,0,8"><ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/></DataTemplate></ComboBox.ItemTemplate></ComboBox><ui:Button x:Name="ProcessMappingSaveButton" Grid.Column="4" Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding SaveProcessMappingCommand}" Content="绑定" Margin="0,0,0,8"/></Grid>
                     <Border x:Name="MaintenanceProcessTable" Grid.Row="1" Grid.Column="0">
@@ -571,7 +565,7 @@
                         <StackPanel><TextBlock Text="映射详情" Style="{DynamicResource GscSectionTitleStyle}"/><TextBlock Text="进程映射只用于识别未知进程或 MOD 启动器，不会通过 UI 误杀游戏进程。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/><Separator Margin="0,14,0,12"/><TextBlock Text="EXE 文件名" Style="{DynamicResource GscCaptionStyle}"/><TextBlock Text="{Binding SelectedProcessMapping.ExecutableName, TargetNullValue=尚未选择映射}" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedProcessMapping.ExecutableName}" Margin="0,4,0,0"/><TextBlock Text="目标游戏" Style="{DynamicResource GscCaptionStyle}" Margin="0,14,0,0"/><TextBlock Text="{Binding SelectedProcessMapping.GameName, TargetNullValue=尚未选择游戏}" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedProcessMapping.GameName}" Margin="0,4,0,0"/><ui:Button Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding DeleteProcessMappingCommand}" CommandParameter="{Binding SelectedProcessMapping}" Content="删除选中映射" Margin="0,18,0,0" HorizontalAlignment="Left"/></StackPanel>
                     </Border>
                 </Grid>
-                </ScrollViewer>
+                </Grid>
             </TabItem>
         </TabControl>
     </Grid>

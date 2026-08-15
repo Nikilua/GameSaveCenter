@@ -92,13 +92,13 @@ namespace GameSaveCenter.Playnite.Views
             FindingsGrid.MinHeight = tableMinHeight;
             FindingsGrid.Height = double.NaN;
             FindingsGrid.MaxHeight = tableViewportHeight;
-            MaintenanceDeviceGrid.MinHeight = tableMinHeight;
+            MaintenanceDeviceGrid.MinHeight = Math.Max(tableMinHeight, 252d);
             MaintenanceDeviceGrid.Height = double.NaN;
             MaintenanceDeviceGrid.MaxHeight = tableViewportHeight;
             MaintenanceAuditFindingsGrid.MinHeight = tableMinHeight;
             MaintenanceAuditFindingsGrid.Height = double.NaN;
             MaintenanceAuditFindingsGrid.MaxHeight = tableViewportHeight;
-            MaintenanceProcessGrid.MinHeight = tableMinHeight;
+            MaintenanceProcessGrid.MinHeight = Math.Max(tableMinHeight, 252d);
             MaintenanceProcessGrid.Height = double.NaN;
             MaintenanceProcessGrid.MaxHeight = tableViewportHeight;
             if (width < 800)

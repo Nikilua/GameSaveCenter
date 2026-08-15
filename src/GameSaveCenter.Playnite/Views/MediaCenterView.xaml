@@ -180,12 +180,9 @@
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="当前游戏媒体">
-                <ScrollViewer x:Name="MediaCurrentScrollSurface"
-                              Style="{DynamicResource GscPageScrollViewer}"
-                              VerticalScrollBarVisibility="Auto"
-                              HorizontalScrollBarVisibility="Disabled"
-                              CanContentScroll="False"
-                              Focusable="False">
+                <Grid x:Name="MediaCurrentScrollSurface"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch">
                 <Grid x:Name="MediaCurrentLayout" Margin="0,12,0,0" VerticalAlignment="Top" ClipToBounds="True">
                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscInspectorWidth}"/></Grid.ColumnDefinitions>
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="0"/></Grid.RowDefinitions>
@@ -197,9 +194,10 @@
                         <Border Style="{DynamicResource GscRedesignCounterPill}" Margin="0,0,0,8"><TextBlock><Run Text="占用 "/><Run Text="{Binding MediaSummary.TotalSizeDisplay, Mode=OneWay}" FontWeight="SemiBold"/></TextBlock></Border>
                     </WrapPanel>
                     <Border Grid.Row="1" Grid.ColumnSpan="3" Style="{DynamicResource GscSurface}" Padding="8" Margin="0,0,0,10" ClipToBounds="True">
-                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="150"/></Grid.ColumnDefinitions>
-                            <TextBox x:Name="MediaSearchTextBox" Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding MediaSearchText, UpdateSourceTrigger=PropertyChanged}" ToolTip="按文件名、备注或来源搜索当前游戏媒体" AutomationProperties.Name="搜索当前游戏媒体"/>
-                            <ComboBox Grid.Column="1" Style="{DynamicResource GscWpfUiFilterComboBox}" SelectedIndex="0" ItemsSource="{Binding MediaFilterOptions}" SelectedItem="{Binding MediaFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" Margin="8,0,0,0" ToolTip="媒体类型筛选"/>
+                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="150"/></Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center"><TextBlock Text="搜索当前游戏媒体…" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,4,0"/><TextBox x:Name="MediaSearchTextBox" Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding MediaSearchText, UpdateSourceTrigger=PropertyChanged}" ToolTip="按文件名、备注或来源搜索当前游戏媒体" AutomationProperties.Name="搜索当前游戏媒体"/></StackPanel>
+                            <TextBlock Grid.Column="1" Text="类型:" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="12,0,4,0"/>
+                            <ComboBox Grid.Column="2" Style="{DynamicResource GscWpfUiFilterComboBox}" SelectedIndex="0" ItemsSource="{Binding MediaFilterOptions}" SelectedItem="{Binding MediaFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" Margin="0,0,0,0" ToolTip="媒体类型筛选"/>
                         </Grid>
                     </Border>
                     <Border Grid.Row="2" Grid.Column="0" Style="{StaticResource MediaTableFrame}" MinHeight="{DynamicResource GscWorkspaceTableMinHeight}">
@@ -295,7 +293,7 @@
                     </ScrollViewer>
                     </Border>
                 </Grid>
-                </ScrollViewer>
+                </Grid>
             </TabItem>
             <TabItem Header="来源规则">
                 <Grid Margin="0,12,0,0">

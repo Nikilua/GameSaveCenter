@@ -15,6 +15,7 @@ using GameSaveCenter.Core.Services;
 using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.Ipc;
 using GameSaveCenter.Playnite.Settings;
+using GameSaveCenter.Playnite.ViewModels;
 using GameSaveCenter.Playnite.Views;
 using Playnite.SDK;
 using Playnite.SDK.Events;
@@ -77,6 +78,8 @@ namespace GameSaveCenter.Playnite
 
         public override Guid Id => PluginId;
         public GameSaveCenterSettings Settings { get; }
+        /// <summary>Session-only workspace memory for the current Playnite process.</summary>
+        public WorkspaceKind? SessionLastWorkspace { get; set; }
         public event EventHandler? VisualSettingsChanged;
         public event EventHandler<UiNotificationEventArgs>? UiNotificationRequested;
         public event EventHandler<UiConfirmationEventArgs>? UiConfirmationRequested;

@@ -12,6 +12,7 @@ public sealed class UiStatePersistenceSourceTests
         var root = FindRepositoryRoot();
         var settings = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettings.cs"));
         var viewModel = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
+        var plugin = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "GameSaveCenterPlugin.cs"));
 
         Assert.Contains("public string LastWorkspace", settings);
         Assert.Contains("public string TaskStatusFilterState", settings);
@@ -20,7 +21,11 @@ public sealed class UiStatePersistenceSourceTests
         Assert.Contains("public string TaskSearchTextState", settings);
         Assert.Contains("public string MediaFilterState", settings);
         Assert.Contains("public string MediaSearchTextState", settings);
-        Assert.Contains("Enum.TryParse(plugin.Settings.LastWorkspace", viewModel);
+        Assert.Contains("public WorkspaceKind? SessionLastWorkspace", plugin);
+        Assert.Contains("plugin.SessionLastWorkspace ?? WorkspaceKind.Overview", viewModel);
+        Assert.Contains("plugin.SessionLastWorkspace = value", viewModel);
+        Assert.DoesNotContain("plugin.Settings.LastWorkspace = value.ToString()", viewModel);
+        Assert.DoesNotContain("plugin.Settings.LastWorkspace = CurrentWorkspace.ToString()", viewModel);
         Assert.Contains("private void SaveUiStateSettings()", viewModel);
         Assert.Contains("uiStateSave?.Schedule()", viewModel);
     }

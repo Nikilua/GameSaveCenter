@@ -21,8 +21,11 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("Text=\"最近版本保留小时\"", save);
             Assert.Contains("Text=\"每日保留天数\"", save);
             Assert.Contains("Text=\"每周保留周数\"", save);
+            Assert.Contains("Margin=\"24,10,0,0\"", save);
             Assert.Contains("<Setter Property=\"TextAlignment\" Value=\"Center\"/>", tokens);
             Assert.Contains("<Setter Property=\"VerticalContentAlignment\" Value=\"Center\"/>", tokens);
+            Assert.Contains("VerticalContentAlignment=\"{TemplateBinding VerticalContentAlignment}\"", tokens);
+            Assert.Contains("<Setter Property=\"Padding\" Value=\"8,4\"/>", tokens);
         }
 
         private static string FindRepositoryRoot()

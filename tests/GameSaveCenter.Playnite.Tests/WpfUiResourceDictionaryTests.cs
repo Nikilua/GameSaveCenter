@@ -726,11 +726,11 @@ public sealed class WpfUiResourceDictionaryTests
         var maintenance = File.ReadAllText(Path.Combine(viewDirectory, "MaintenanceView.xaml"));
 
         Assert.Contains("x:Name=\"OverviewSecondaryScrollViewer\"", overview);
-        Assert.Contains("x:Name=\"OverviewSecondaryScrollViewer\"\n                      Style=\"{DynamicResource GscPageScrollViewer}\"", overview);
+        Assert.DoesNotContain("ScrollViewer x:Name=\"OverviewSecondaryScrollViewer\"", overview);
         Assert.Contains("x:Name=\"OverviewRiskScrollViewer\"", overview);
         Assert.DoesNotContain("ScrollViewer x:Name=\"OverviewRiskScrollViewer\"", overview);
         var overviewCode = File.ReadAllText(Path.Combine(viewDirectory, "OverviewView.xaml.cs"));
-        Assert.Contains("OverviewSecondaryScrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Disabled", overviewCode);
+        Assert.DoesNotContain("OverviewSecondaryScrollViewer.VerticalScrollBarVisibility", overviewCode);
         Assert.Contains("OverviewStackScrollSurface.VerticalScrollBarVisibility = ScrollBarVisibility.Auto", overviewCode);
         Assert.DoesNotContain("OverviewRiskScrollViewer.VerticalScrollBarVisibility", overviewCode);
         Assert.Contains("<ScrollViewer Style=\"{DynamicResource GscPageScrollViewer}\" VerticalScrollBarVisibility=\"Auto\"", save);
@@ -763,11 +763,13 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"OverviewPrimaryScrollSurface\"", overview);
         Assert.Contains("x:Name=\"OverviewStackScrollSurface\"", overview);
         Assert.Contains("x:Name=\"OverviewPrimaryLayoutRow\"", overview);
-        Assert.Contains("OverviewPrimaryScrollSurface.VerticalScrollBarVisibility = ScrollBarVisibility.Disabled", overviewCode);
+        Assert.DoesNotContain("OverviewPrimaryScrollSurface.VerticalScrollBarVisibility", overviewCode);
+        Assert.DoesNotContain("ScrollViewer x:Name=\"OverviewPrimaryScrollSurface\"", overview);
         Assert.Contains("OverviewStackScrollSurface.VerticalScrollBarVisibility = ScrollBarVisibility.Auto", overviewCode);
         Assert.Contains("OverviewPrimaryLayoutRow.Height = stack", overviewCode);
         Assert.DoesNotContain("OverviewActivityList.MaxHeight", overviewCode);
-        Assert.Contains("OverviewActivityTimelineList.Tag = primaryWidth < 900 ? \"Compact\" : \"Wide\"", overviewCode);
+        Assert.Contains("OverviewActivityTimelineList.Tag = compactActivity ? \"Compact\" : \"Wide\"", overviewCode);
+        Assert.Contains("OverviewActivityHeaderRow.Visibility = compactActivity ? Visibility.Collapsed : Visibility.Visible", overviewCode);
 
         var overviewDocument = XDocument.Parse(overview);
         var activity = overviewDocument.Descendants().Single(element =>
@@ -1235,7 +1237,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"MaintenanceProcessTable\"", maintenanceText);
         Assert.Contains("x:Name=\"MaintenanceProcessGrid\" Style=\"{StaticResource MaintenanceDataGrid}\"", maintenanceText);
         Assert.Contains("x:Name=\"MaintenanceProcessInspector\"", maintenanceText);
-        Assert.Contains("MaintenanceProcessGrid.MinHeight = tableMinHeight", maintenanceCode);
+        Assert.Contains("MaintenanceProcessGrid.MinHeight = Math.Max(tableMinHeight, 252d)", maintenanceCode);
         Assert.Contains("<DataTrigger Binding=\"{Binding SelectedProcessMapping}\" Value=\"{x:Null}\">", maintenanceText);
         Assert.Contains("Command=\"{Binding DeleteProcessMappingCommand}\" CommandParameter=\"{Binding SelectedProcessMapping}\"", maintenanceText);
         Assert.Contains("Command=\"{Binding SaveProcessMappingCommand}\"", maintenanceText);
@@ -1250,11 +1252,11 @@ public sealed class WpfUiResourceDictionaryTests
         var maintenanceText = File.ReadAllText(maintenancePath);
         var maintenance = XDocument.Parse(maintenanceText);
         var devicePageScroller = maintenance.Descendants().Single(element =>
-            element.Name.LocalName == "ScrollViewer" &&
+            element.Name.LocalName == "Grid" &&
             element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "MaintenanceDeviceScrollSurface");
-        Assert.Equal("Auto", devicePageScroller.Attribute("VerticalScrollBarVisibility")?.Value);
-        Assert.Equal("Disabled", devicePageScroller.Attribute("HorizontalScrollBarVisibility")?.Value);
-        Assert.Equal("False", devicePageScroller.Attribute("CanContentScroll")?.Value);
+        Assert.Null(devicePageScroller.Attribute("VerticalScrollBarVisibility"));
+        Assert.Null(devicePageScroller.Attribute("HorizontalScrollBarVisibility"));
+        Assert.Contains("x:Name=\"MaintenanceDeviceInspectorScrollViewer\"", maintenanceText);
         Assert.Contains("<RowDefinition Height=\"Auto\"/><RowDefinition Height=\"Auto\"/><RowDefinition Height=\"*\"/>", maintenanceText);
         Assert.Contains("x:Name=\"MaintenanceDeviceGrid\" Style=\"{StaticResource MaintenanceDataGrid}\"", maintenanceText);
         Assert.DoesNotContain("x:Name=\"MaintenanceDeviceGrid\" Height=\"{DynamicResource GscTableViewportHeight}\"", maintenanceText);
@@ -1693,7 +1695,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Equal("Stretch", viewer.Attribute("VerticalContentAlignment")?.Value);
         Assert.Null(viewer.Attribute("MaxHeight"));
 
-        Assert.Contains("MaintenanceDeviceGrid.MinHeight = tableMinHeight", maintenanceCode);
+        Assert.Contains("MaintenanceDeviceGrid.MinHeight = Math.Max(tableMinHeight, 252d)", maintenanceCode);
         Assert.Contains("var deviceAvailableHeight", maintenanceCode);
         Assert.Contains("MaintenanceDeviceLayout.RowDefinitions[0].ActualHeight", maintenanceCode);
         Assert.Contains("var deviceInspectorHeight", maintenanceCode);
@@ -2980,7 +2982,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"OverviewRiskScrollViewer\"", File.ReadAllText(overviewPath));
         Assert.Contains("x:Name=\"OverviewSecondaryScrollViewer\"", File.ReadAllText(overviewPath));
         Assert.DoesNotContain("OverviewSecondaryScrollViewer.MaxHeight", File.ReadAllText(overviewPath + ".cs"));
-        Assert.Contains("OverviewSecondaryScrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Disabled", File.ReadAllText(overviewPath + ".cs"));
+        Assert.DoesNotContain("OverviewSecondaryScrollViewer.VerticalScrollBarVisibility", File.ReadAllText(overviewPath + ".cs"));
         Assert.Contains("OverviewHomeToolbarActions.Orientation = Orientation.Horizontal", File.ReadAllText(overviewPath + ".cs"));
         Assert.DoesNotContain("OverviewRiskScrollViewer.MaxHeight", File.ReadAllText(overviewPath + ".cs"));
         Assert.DoesNotContain("OverviewRiskScrollViewer.VerticalScrollBarVisibility", File.ReadAllText(overviewPath + ".cs"));

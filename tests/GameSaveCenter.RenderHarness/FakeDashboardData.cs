@@ -2,6 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Data;
+using System.Windows.Input;
 using GameSaveCenter.Contracts;
 
 namespace GameSaveCenter.RenderHarness;
@@ -14,6 +15,8 @@ public sealed class FakeDashboardData
 {
     public string OnboardingTitle => "首次使用：准备环境";
     public string OnboardingDescription => "先确认 Worker、目录、SQLite 与备份工具可用。所有检查都是非破坏性的；你可以跳过，之后随时在维护中心重新运行。";
+    public bool IsOnboardingPending => false;
+    public ICommand OpenMaintenanceCommand { get; } = new NoopCommand();
 
     public FakeDashboardData(int rowCount = 8)
     {
@@ -173,7 +176,7 @@ public sealed class FakeDashboardData
             CreatedUtc = DateTime.UtcNow.AddMinutes(-35)
         });
 
-        for (var i = 1; i <= 6; i++)
+        for (var i = 1; i <= 4; i++)
         {
             AttentionFindings.Add(new ValidationFindingDto
             {
@@ -570,4 +573,15 @@ public sealed class FakeDashboardData
     };
     public string DeviceStateMessage { get; } = "最近一次设备摘要对比完成：2 个游戏需要人工决定，其余一致。";
     public string StagedRemoteBackupStatus { get; } = "尚未下载远端存档。下载只会写入本机隔离区，不会覆盖当前存档。";
+}
+
+internal sealed class NoopCommand : ICommand
+{
+    public event EventHandler? CanExecuteChanged { add { } remove { } }
+
+    public bool CanExecute(object? parameter) => true;
+
+    public void Execute(object? parameter)
+    {
+    }
 }

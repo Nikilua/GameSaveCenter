@@ -98,16 +98,16 @@ public static class UiLayoutAnalyzer
             }
 
             var riskCard = FindVisualChildren<FrameworkElement>(root).FirstOrDefault(e => e.Name == "OverviewRiskCard");
-            if (riskCard != null)
+            if (riskCard != null && riskCard.ActualHeight > 1000)
             {
                 report.Warnings.Add(new UiAuditWarning
                 {
-                    Severity = "INFO",
+                    Severity = "HIGH",
                     Code = "OV-005 RISK_DEAD_SPACE",
                     RouteId = report.RouteId,
                     Tab = report.TabHeader,
                     SizeKey = report.SizeKey,
-                    Message = $"风险卡 ActualHeight={riskCard.ActualHeight:0} DIP"
+                    Message = $"风险卡异常过高 ActualHeight={riskCard.ActualHeight:0} DIP"
                 });
             }
         }
@@ -248,14 +248,26 @@ public static class UiLayoutAnalyzer
                 && !IsInside(scroller, root, typeof(TextBox), typeof(PasswordBox), typeof(ComboBox))
                 && HasScrollableScrollViewerAncestor(scroller, root, isVertical: true))
             {
+                var trueParentChild = containsList
+                    && !isInternal
+                    && scroller.VerticalScrollBarVisibility != ScrollBarVisibility.Disabled
+                    && scroller.VerticalScrollBarVisibility != ScrollBarVisibility.Hidden;
+                var severity = trueParentChild ? "HIGH" : "INFO";
+                var code = trueParentChild
+                    ? "TRUE_PARENT_CHILD_SCROLL_CONFLICT"
+                    : isInternal || containsList
+                        ? "EXPECTED_SIBLING_SCROLL"
+                        : "NESTED_VERTICAL_SCROLL";
                 report.Warnings.Add(new UiAuditWarning
                 {
-                    Severity = "INFO",
-                    Code = "NESTED_VERTICAL_SCROLL",
+                    Severity = severity,
+                    Code = code,
                     RouteId = report.RouteId,
                     Tab = report.TabHeader,
                     SizeKey = report.SizeKey,
-                    Message = $"嵌套纵向滚动上下文：{scroller.Name} (chain={parentChain})"
+                    Message = trueParentChild
+                        ? $"真实父子滚动冲突：{scroller.Name} (chain={parentChain})"
+                        : $"嵌套纵向滚动上下文：{scroller.Name} (chain={parentChain})"
                 });
             }
         }

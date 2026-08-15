@@ -136,11 +136,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public DashboardViewModel(GameSaveCenterPlugin plugin)
         {
             this.plugin = plugin;
-            if (!plugin.Settings.OnboardingCompleted)
-                currentWorkspace = WorkspaceKind.Maintenance;
-            else if (Enum.TryParse(plugin.Settings.LastWorkspace, out WorkspaceKind lastWorkspace) &&
-                     Enum.IsDefined(typeof(WorkspaceKind), lastWorkspace))
-                currentWorkspace = lastWorkspace;
+            currentWorkspace = plugin.SessionLastWorkspace ?? WorkspaceKind.Overview;
             gamePicker = new GamePickerViewModel();
             gamePicker.ApplyPersistedState(plugin.Settings.GamePickerSearchText, plugin.Settings.GamePickerStatusFilter, plugin.Settings.GamePickerPlatformFilter, plugin.Settings.GamePickerSortMode);
             gamePicker.StateChanged += OnGamePickerStateChanged;
@@ -203,6 +199,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             RetryTaskCommand = new RelayCommand(_ => Run(RetrySelectedTaskAsync), _ => !IsBusy && CanRetrySelectedTask());
             CopyTaskErrorCommand = new RelayCommand(_ => RunLocal(CopySelectedTaskError), _ => SelectedTask != null && !string.IsNullOrWhiteSpace(SelectedTask.DetailMessage));
             OpenAttentionCenterCommand = new RelayCommand(_ => OpenAttentionCenter());
+            OpenMaintenanceCommand = new RelayCommand(_ => OpenMaintenance());
             OpenAttentionFindingCommand = new RelayCommand(value => OpenAttentionFinding(value as ValidationFindingDto));
             OpenProtectionGamesCommand = new RelayCommand(_ => OpenProtectionGames());
             OpenProtectionItemCommand = new RelayCommand(value => OpenProtectionItem(value as RecentProtectionItem));
@@ -474,7 +471,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             set
             {
                 SetValue(ref currentWorkspace, value);
-                plugin.Settings.LastWorkspace = value.ToString();
+                plugin.SessionLastWorkspace = value;
                 uiStateSave?.Schedule();
             }
         }
@@ -691,6 +688,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand RetryTaskCommand { get; }
         public ICommand CopyTaskErrorCommand { get; }
         public ICommand OpenAttentionCenterCommand { get; }
+        public ICommand OpenMaintenanceCommand { get; }
         public ICommand OpenAttentionFindingCommand { get; }
         public ICommand OpenProtectionGamesCommand { get; }
         public ICommand OpenProtectionItemCommand { get; }
@@ -804,6 +802,12 @@ namespace GameSaveCenter.Playnite.ViewModels
         }
 
         /// <summary>Turns the overview warning count into a route to its concrete reasons.</summary>
+        private void OpenMaintenance()
+        {
+            CurrentWorkspace = WorkspaceKind.Maintenance;
+            AttentionCenterRequested?.Invoke(this, EventArgs.Empty);
+        }
+
         private void OpenAttentionCenter()
         {
             var finding=Findings.FirstOrDefault(x=>x.Severity>=FindingSeverity.Warning);
@@ -2753,7 +2757,6 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             try
             {
-                plugin.Settings.LastWorkspace = CurrentWorkspace.ToString();
                 plugin.Settings.TaskStatusFilterState = TaskStatusFilter;
                 plugin.Settings.TaskGameFilterState = TaskGameFilter;
                 plugin.Settings.TaskTypeFilterState = TaskTypeFilter;
