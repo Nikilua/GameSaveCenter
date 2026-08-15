@@ -2,6 +2,12 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-15 LUDUSAVI-DIAGNOSTICS-FIX 实施完成
+
+- 已修复：外部进程输出 UTF-8 解码；Ludusavi 失败时保留 `RawOutput`；剪贴板复制重试与失败降级（`CopyTextWithRetry`）。
+- 备份失败根因常为 Ludusavi manifest 下载超时，重试即可；插件保留原始输出便于诊断。
+- 基线：Worker 191/191、Playnite 281/281；Release 0 warning/0 error。
+
 ## 2026-08-15 UI-REAL-HOST-AUDIT-NESTED-TABS-THEMES 实施完成
 
 - 真机审计已覆盖嵌套 Tab（如“异常与审计”→“审计记录”）、浅色/深色双主题、5 档窗口尺寸；整页截图渲染完整 Dashboard 外壳并按内容高度撑高。

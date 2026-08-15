@@ -2,6 +2,16 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-15 LUDUSAVI-DIAGNOSTICS-FIX 实施完成
+
+- 用户诊断：备份失败直接原因是 Ludusavi 联网更新 `raw.githubusercontent.com/.../manifest.yaml` 超时（22:08/22:12 失败，网络恢复后重试成功），不是存档路径或 ZIP 写入问题。
+- 三个放大问题的修复：
+  - `ExternalProcessRunner` 为 stdout/stderr 显式设置 `Encoding.UTF8`，避免中文错误按系统代码页解码成乱码。
+  - `LudusaviClient.ExecuteJsonAsync` 失败分支现在把原始 stdout（stdout 为空时用 stderr）写入 `RawOutput`，任务详情不再显示空 RawOutput。
+  - `DashboardViewModel` 新增 `CopyTextWithRetry`：复制详情/健康报告/诊断信息时对剪贴板占用（`CLIPBRD_E_CANT_OPEN`/COMException）重试 3 次，最终失败显示明确提示而不是弹出异常。
+- 测试：新增 UTF-8 解码回归测试；Worker 191/191、Playnite 281/281；Release 0 warning/0 error；`validate-source.py`、`check-xaml.ps1` 通过。
+- 备注：Ludusavi manifest 网络问题属外部环境，插件侧不重试 manifest 下载；失败时保留原始输出便于用户按 `raw.githubusercontent.com` 超时定位。
+
 ## 2026-08-15 UI-REAL-HOST-AUDIT-NESTED-TABS-THEMES 实施完成
 
 - 用户复核继续反馈：Tab 下的嵌套 Tab（如“异常与审计”→“审计记录”）缺失；需要浅色/深色两套截图；截图仍只显示页面局部。

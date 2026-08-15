@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -1519,9 +1520,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private async Task CopyMaintenanceReportAsync()
         {
             var report = await plugin.RequestAsync<MaintenanceReportDto>(MessageTypes.GetMaintenanceReport, new { }, TimeSpan.FromMinutes(3));
-            Clipboard.SetText(report.ReportText);
-            StatusMessage = "健康报告已复制";
-            plugin.ShowInfo("健康报告已复制到剪贴板。");
+            CopyTextWithRetry(report.ReportText, "健康报告已复制", "健康报告已复制到剪贴板。");
         }
 
         private async Task ExportMaintenanceReportAsync()
@@ -2270,8 +2269,33 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             if (SelectedTask == null) return;
             var text = $"{SelectedTask.GameName} · {SelectedTask.TaskType}\r\n{SelectedTask.DetailMessage}\r\n任务 ID：{SelectedTask.TaskId}";
-            Clipboard.SetText(text);
-            StatusMessage = "任务详情已复制";
+            CopyTextWithRetry(text, "任务详情已复制", "任务详情已复制到剪贴板。");
+        }
+
+        private void CopyTextWithRetry(string text, string statusMessage, string infoMessage)
+        {
+            for (var attempt = 0; attempt < 4; attempt++)
+            {
+                try
+                {
+                    Clipboard.SetText(text);
+                    StatusMessage = statusMessage;
+                    plugin.ShowInfo(infoMessage);
+                    return;
+                }
+                catch (COMException) when (attempt < 3)
+                {
+                    // CLIPBRD_E_CANT_OPEN / COM exceptions mean another process owns the
+                    // clipboard at this instant. A short retry usually succeeds.
+                    Thread.Sleep(150 + attempt * 100);
+                }
+                catch (Exception)
+                {
+                    break;
+                }
+            }
+            StatusMessage = "复制失败：剪贴板暂时被其他程序占用，请稍后重试";
+            plugin.ShowError("无法复制到剪贴板：剪贴板暂时被其他程序占用。请稍后重试。");
         }
 
         private async Task CancelSelectedTaskAsync()
@@ -2309,9 +2333,7 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private void CopyDiagnostics()
         {
-            Clipboard.SetText(DiagnosticSummary ?? string.Empty);
-            StatusMessage = "诊断信息已复制到剪贴板";
-            plugin.ShowInfo("GameSaveCenter 诊断信息已复制");
+            CopyTextWithRetry(DiagnosticSummary ?? string.Empty, "诊断信息已复制到剪贴板", "GameSaveCenter 诊断信息已复制");
         }
 
         private string BuildDiagnosticSummary(WorkerSettingsSnapshotDto settings)

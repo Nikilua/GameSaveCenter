@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Text;
 using Microsoft.Extensions.Logging;
 
 namespace GameSaveCenter.Worker.Infrastructure;
@@ -29,6 +30,8 @@ public sealed class ExternalProcessRunner
             RedirectStandardOutput = true,
             RedirectStandardError = true,
             RedirectStandardInput = standardInput != null,
+            StandardOutputEncoding = Encoding.UTF8,
+            StandardErrorEncoding = Encoding.UTF8,
             CreateNoWindow = true,
             WorkingDirectory = Path.GetDirectoryName(executable) ?? Environment.CurrentDirectory
         };

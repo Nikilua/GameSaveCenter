@@ -119,12 +119,23 @@ public sealed class LudusaviClient : IRestoreClient
         var result = await _runner.RunAsync(_options.LudusaviExecutable, arguments, null, TimeSpan.FromMinutes(15), token).ConfigureAwait(false);
         if (!result.Success)
         {
-            return LudusaviCommandResult.Failure("LUDUSAVI_EXIT", string.IsNullOrWhiteSpace(result.StandardError) ? result.StandardOutput : result.StandardError, result.ExitCode);
+            var raw = string.IsNullOrWhiteSpace(result.StandardOutput)
+                ? result.StandardError
+                : result.StandardOutput;
+            return LudusaviCommandResult.Failure(
+                "LUDUSAVI_EXIT",
+                string.IsNullOrWhiteSpace(result.StandardError) ? result.StandardOutput : result.StandardError,
+                result.ExitCode,
+                raw);
         }
 
         if (string.IsNullOrWhiteSpace(result.StandardOutput))
         {
-            return LudusaviCommandResult.Failure("LUDUSAVI_EMPTY_OUTPUT", "Ludusavi returned no JSON output.", result.ExitCode);
+            return LudusaviCommandResult.Failure(
+                "LUDUSAVI_EMPTY_OUTPUT",
+                "Ludusavi returned no JSON output.",
+                result.ExitCode,
+                result.StandardError);
         }
 
         try

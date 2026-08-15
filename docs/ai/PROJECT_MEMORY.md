@@ -3,6 +3,13 @@
 > 维护时间：2026-08-14
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-15 LUDUSAVI-DIAGNOSTICS-FIX 当前事实
+
+- 备份失败常见根因之一是 Ludusavi 联网更新 manifest 超时（`raw.githubusercontent.com/.../manifest.yaml`）；这不是存档路径/ZIP 写入问题，网络恢复后重试即成功。
+- 插件侧已修复三项放大问题：外部进程 stdout/stderr 按 UTF-8 解码；`LudusaviCommandResult.RawOutput` 在失败时保留原始输出；剪贴板复制带重试与失败降级（`CopyTextWithRetry`）。
+- 相关代码：`ExternalProcessRunner.cs`、`LudusaviClient.cs`、`DashboardViewModel.CopyTextWithRetry`。
+- 基线：Worker 191/191、Playnite 281/281；Release 0 warning/0 error。
+
 ## 2026-08-15 UI-REAL-HOST-AUDIT-NESTED-TABS-THEMES 当前事实
 
 - 真机审计现在按 5 档窗口尺寸 × `Light`/`Dark` 双主题捕获；每个尺寸/主题目录含 Dashboard、6 个工作区、全部顶层 Tab 与嵌套 Tab（如“异常与审计”→“审计记录”）。
