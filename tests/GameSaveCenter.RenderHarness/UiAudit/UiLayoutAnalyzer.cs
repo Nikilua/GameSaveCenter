@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
+using GameSaveCenter.Playnite.Infrastructure;
 
 namespace GameSaveCenter.RenderHarness.UiAudit;
 
@@ -358,6 +359,8 @@ public static class UiLayoutAnalyzer
                 Name = grid.Name,
                 ActualWidth = Math.Round(grid.ActualWidth, 2),
                 ActualHeight = Math.Round(grid.ActualHeight, 2),
+                StarFillEnabled = DataGridStarFill.GetEnabled(grid),
+                StarFillApplied = DataGridStarFill.GetApplied(grid),
                 ColumnCount = grid.Columns.Count,
                 ItemsCount = grid.Items.Count,
                 ColumnHeaderHeight = Math.Round(headerHeight, 2),

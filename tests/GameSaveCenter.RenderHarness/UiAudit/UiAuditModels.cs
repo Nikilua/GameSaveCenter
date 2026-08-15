@@ -226,6 +226,8 @@ public sealed class UiRuntimeDataGrid
     public double ActualWidth { get; set; }
     public double ActualHeight { get; set; }
     public double ColumnFillRatio { get; set; }
+    public bool StarFillEnabled { get; set; }
+    public bool StarFillApplied { get; set; }
     public int ColumnCount { get; set; }
     public int ItemsCount { get; set; }
     public double ColumnHeaderHeight { get; set; }

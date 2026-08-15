@@ -47,7 +47,7 @@
                 <Setter Property="EnableColumnVirtualization" Value="True"/>
                 <Setter Property="VirtualizingPanel.ScrollUnit" Value="Item"/>
                 <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
-                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
                 <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                 <Setter Property="VerticalContentAlignment" Value="Top"/>

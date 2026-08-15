@@ -505,6 +505,7 @@ public sealed class WpfUiResourceDictionaryTests
             Assert.Contains("RowStyle=\"{StaticResource GscStableDataGridRow}\"", viewText);
         }
         Assert.Contains("<Style TargetType=\"DataGridCell\">", production);
+        Assert.Contains("infra:DataGridStarFill.Enabled\" Value=\"True\"", production);
         Assert.Contains("<Setter Property=\"HorizontalContentAlignment\" Value=\"Left\"/>", production);
         Assert.Contains("x:Name=\"SortGlyph\"", production);
         Assert.Contains("Property=\"SortDirection\" Value=\"Ascending\"", production);
@@ -539,7 +540,7 @@ public sealed class WpfUiResourceDictionaryTests
         {
             var text = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", workspace));
             Assert.Contains("BasedOn=\"{StaticResource {x:Type DataGrid}}\"", text);
-            Assert.Contains("ScrollViewer.HorizontalScrollBarVisibility\" Value=\"Auto\"", text);
+            Assert.Contains("ScrollViewer.HorizontalScrollBarVisibility\" Value=\"Disabled\"", text);
             Assert.Contains("ScrollViewer.VerticalScrollBarVisibility\" Value=\"Auto\"", text);
             Assert.Contains("EnableRowVirtualization\" Value=\"True\"", text);
             Assert.Contains("EnableColumnVirtualization\" Value=\"True\"", text);

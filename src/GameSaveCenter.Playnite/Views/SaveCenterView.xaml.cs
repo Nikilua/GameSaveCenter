@@ -42,7 +42,7 @@ namespace GameSaveCenter.Playnite.Views
                 const double tableMinHeight = 236d;
                 SaveHistoryGrid.MinHeight = tableMinHeight;
                 SaveCandidateGrid.MinHeight = Math.Max(tableMinHeight, 252d);
-                var compact = height < 760 || width < 1080;
+                var compact = height < 760 || width < 1200;
                 if (SaveCurrentRuleActions != null)
                 {
                     SaveCurrentRuleActionsRow.Height = compact

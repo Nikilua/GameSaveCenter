@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.Settings;
 using GameSaveCenter.Playnite.Views;
 using Newtonsoft.Json;
@@ -203,6 +204,7 @@ public static class UiAuditRunner
         host.Arrange(new Rect(0, 0, size.ContentWidth, size.ContentHeight));
         host.UpdateLayout();
         applyLayout();
+        host.UpdateLayout();
         host.UpdateLayout();
 
         var tabControls = FindVisualChildren<TabControl>(host)
@@ -453,14 +455,18 @@ public static class UiAuditRunner
             overview.ApplyResponsiveColumns(stack);
             overview.ApplyResponsiveWidth(width);
             overview.ApplyResponsiveHeight(height, stack);
-            return;
+        }
+        else
+        {
+            var method = view.GetType().GetMethod(
+                "ApplyResponsiveLayout",
+                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            if (method != null)
+                method.Invoke(view, new object[] { width, height });
         }
 
-        var method = view.GetType().GetMethod(
-            "ApplyResponsiveLayout",
-            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-        if (method != null)
-            method.Invoke(view, new object[] { width, height });
+        foreach (var grid in FindVisualChildren<DataGrid>(view))
+            DataGridStarFill.Redistribute(grid);
     }
 
     private static void RevealSettingsShell(DependencyObject root)

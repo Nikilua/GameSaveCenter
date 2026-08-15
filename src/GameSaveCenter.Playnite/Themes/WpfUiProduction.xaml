@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:ui="clr-namespace:GameSaveCenter.Playnite.Controls">
+                    xmlns:ui="clr-namespace:GameSaveCenter.Playnite.Controls"
+                    xmlns:infra="clr-namespace:GameSaveCenter.Playnite.Infrastructure">
     <ResourceDictionary.MergedDictionaries>
         <!-- StaticResource resolution happens while this dictionary is parsed. Keep WPF-UI's
              type-keyed defaults in the same resource scope as the production adapters; a
@@ -296,12 +297,13 @@
         <Setter Property="VerticalGridLinesBrush" Value="Transparent"/>
         <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
-        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
         <!-- Keep the virtualized rows anchored at the top of a short viewport.  Stretching
              the DataGrid content vertically lets some host templates arrange a small item
              set at the bottom and exposes phantom empty space after scrolling. -->
         <Setter Property="VerticalContentAlignment" Value="Top"/>
         <Setter Property="ScrollViewer.VerticalContentAlignment" Value="Top"/>
+        <Setter Property="infra:DataGridStarFill.Enabled" Value="True"/>
         <!-- WPF creates a filler header when the visible columns do not consume the
              viewport.  Give that generated header the same theme as real columns; otherwise
              Playnite's host theme can paint the far-right strip white. -->

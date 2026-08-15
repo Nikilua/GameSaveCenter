@@ -57,7 +57,7 @@
                 <Setter Property="EnableRowVirtualization" Value="True"/>
                 <Setter Property="EnableColumnVirtualization" Value="True"/>
                 <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
-                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
                 <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
                 <!-- The inbox is the only remaining DataGrid that combines a large,
                      recycled item set with star-sized text columns.  Keep scrolling on

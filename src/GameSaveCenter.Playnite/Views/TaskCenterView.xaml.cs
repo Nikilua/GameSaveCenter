@@ -39,7 +39,7 @@ namespace GameSaveCenter.Playnite.Views
                 // inspector stacks below it, reserve a readable table viewport and
                 // let only the inspector consume the remaining finite height.
                 const double tableMinHeight = 236d;
-                var stack = width < 1080;
+                var stack = width < 1200;
                 var tableViewportHeight = Math.Max(tableMinHeight, Math.Min(460d, height * 0.50));
                 if (stack)
                 {
