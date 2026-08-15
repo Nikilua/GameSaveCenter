@@ -10,7 +10,7 @@
 - 存档中心：备份自动化与模板数值输入全部带 label/unit/helper；首页活动行紧凑化。
 - 基线：Core `59/59`、Worker `190/190`、Playnite `255/255`；render-qa 全绿；UI Audit 0 HIGH/0 MEDIUM。
 - 截图：`artifacts/ui-qa/v4-shots/`；命令 `scripts/capture-v4-shots.ps1`。
-- 提交：`3015182`、`5131e4d`、`0201615`、`5196f4a`。真实 Playnite 宿主主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`。
+- 提交：`3015182`、`5131e4d`、`0201615`、`5196f4a`、`fc86ecc`。真实 Playnite 宿主主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`。
 
 ## 2026-08-14 UI-VISUAL-REWORK-V3 实施完成
 
