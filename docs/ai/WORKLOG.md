@@ -11,6 +11,7 @@
 - 新增完整性断言：viewport 输出尺寸必须等于 `Actual*DpiScale`（`CAPTURE_VIEWPORT_CLIPPED` gate）、边界 sentinel 几何、Controlled client size 断言、所有 meaningful ScrollViewer 枚举。
 - 元数据改为真实值：`Mode=embedded-current|controlled-host-window`、`CaptureOrigin`、`DedicatedAuditWindowUsed`、`ProfileSizeApplied`、`ThemeOverrideApplied`；PlayniteDesktopVersion 不再回退成假精确的 1.0.0.0。
 - 测试：新增 `UiAuditCaptureContractTests`（6 项：controlled 不改 Dashboard 尺寸、embedded 不 resize/不改主题、DPI 像素契约、多 ScrollViewer 枚举、右下 sentinel 几何、manifest 字段）；Playnite 287/287、Worker 191/191、Core 59/59。
+- 最终端到端运行：603 个文件，无 CAPTURE gates；controlled 尺寸 1024/1280/1366 精确命中，1600 受工作区限制为 1600x912；scroll-surfaces 197 张；Settings 由 Playnite 托管时如实标记 `embedded-current-settings`；zip `artifacts/GameSaveCenter-ui-host-audit.zip`。
 - 报告：`docs/ai/REAL_HOST_CAPTURE_COMPLETENESS_FIX_REPORT.md`。
 
 ## 2026-08-15 LUDUSAVI-DIAGNOSTICS-FIX 实施完成

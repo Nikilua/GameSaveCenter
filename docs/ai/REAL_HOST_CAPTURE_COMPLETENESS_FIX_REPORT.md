@@ -37,5 +37,9 @@
 ## 本轮证据
 
 - 回归测试：`UiAuditCaptureContractTests` 6 项；Playnite 287/287、Worker 191/191、Core 59/59。
-- 端到端产物：`artifacts/ui-host-audit/`（controlled viewport + scroll-surfaces + window + manifest + metadata + gates）与对应 zip。
-- 环境说明：本机 headless 会话无法提供真实 embedded viewport，embedded-current 目录仅当 Playnite 直接托管 Dashboard 时生成；controlled 产物为确定性回归证据。
+- 端到端产物：`artifacts/ui-host-audit/`，共 603 个文件，zip `artifacts/GameSaveCenter-ui-host-audit.zip`（约 140MB）。
+- 最终运行无 `CAPTURE_VIEWPORT_CLIPPED`、`CAPTURE_PROFILE_SIZE_MISMATCH` gate（无 gates 目录）。
+- Controlled 尺寸实测：1024x768、1280x720、1366x768 全部精确命中；1600x1000 受工作区高度限制为 1600x912、maximized 1706.67x912；viewport 像素 = DIP × 1.5（如 1024x768 → 1536x1152，maximized → 2560x1368），metadata `ProfileSizeApplied=True`。
+- 滚动面：`scroll-surfaces/*__<name>.png` 共 197 张，覆盖各工作区/Tab 的具名或自动编号 ScrollViewer，manifest 记录 viewport/extent/segment/completeness；超过 60 段的超大虚拟化表诚实标记 `CompletenessValidated=false` 且不阻塞整轮。
+- Settings 托管区分：本次设置页由 Playnite 托管，metadata `mode=embedded-current-settings`、`origin=EmbeddedPlaynite`、`ThemeOverrideApplied=false`，不再误报 controlled profile 断言。
+- 环境说明：Dashboard 本轮使用 Dedicated Audit Window fallback（headless 会话），因此 Dashboard 输出为 `controlled-host-window`；真实 embedded-current 仅当 Playnite 直接托管 Dashboard 时生成，metadata 会如实区分，绝不冒充。
