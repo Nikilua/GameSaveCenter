@@ -1144,7 +1144,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ProgressBar">
-                    <Border CornerRadius="4" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                    <Border x:Name="PART_Track" CornerRadius="4" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
                         <Grid ClipToBounds="True">
                             <Border x:Name="PART_Indicator" Background="{TemplateBinding Foreground}" CornerRadius="4" HorizontalAlignment="Left">
                                 <Border.RenderTransform>

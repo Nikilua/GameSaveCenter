@@ -133,6 +133,19 @@ public static class Program
             return v62ExitCode;
         }
 
+        if (args.Length > 0 && args[0].Equals("v7progress", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", "artifacts", "ui-qa", "v7-progress");
+            var v7ExitCode = 0;
+            var v7Thread = new Thread(() => { v7ExitCode = RunV7ProgressProbe(outputRoot); });
+            v7Thread.SetApartmentState(ApartmentState.STA);
+            v7Thread.Start();
+            v7Thread.Join();
+            return v7ExitCode;
+        }
+
         var exitCode = 0;
         var thread = new Thread(() => { exitCode = Run(args); });
         thread.SetApartmentState(ApartmentState.STA);
@@ -776,6 +789,164 @@ public static class Program
             report.AppendLine("v6-2-shots FAILED");
             report.AppendLine(ex.ToString());
             File.WriteAllText(Path.Combine(outputRoot, "v6-2-shots-report.txt"), report.ToString());
+            return 1;
+        }
+    }
+
+    private static int RunV7ProgressProbe(string outputRoot)
+    {
+        Directory.CreateDirectory(outputRoot);
+        var report = new StringBuilder();
+        report.AppendLine("GameSaveCenter v7 progress probe");
+        report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+        report.AppendLine();
+        var problems = new List<string>();
+
+        try
+        {
+            var app = new Application();
+            app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+            app.Resources.MergedDictionaries.Add(new ResourceDictionary
+            {
+                Source = new Uri("/GameSaveCenter.Playnite;component/Themes/DesignTokens.xaml", UriKind.Relative)
+            });
+
+            var values = new[] { 0d, 5d, 25d, 50d, 75d, 100d };
+            var host = new Grid
+            {
+                Width = 900,
+                Height = values.Length * 34,
+                Background = new SolidColorBrush(Color.FromRgb(24, 30, 43)),
+                ClipToBounds = true
+            };
+            for (var i = 0; i < values.Length; i++)
+                host.RowDefinitions.Add(new RowDefinition { Height = new GridLength(34) });
+
+            for (var i = 0; i < values.Length; i++)
+            {
+                var value = values[i];
+                var row = new Grid();
+                row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(70) });
+                row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(230) });
+                row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(60) });
+                var label = new TextBlock
+                {
+                    Text = $"{value:0}%",
+                    FontSize = 12,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Foreground = new SolidColorBrush(Color.FromRgb(220, 224, 235))
+                };
+                var bar = new ProgressBar
+                {
+                    Height = 8,
+                    Width = 200,
+                    Minimum = 0,
+                    Maximum = 100,
+                    Value = value,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Left
+                };
+                var percent = new TextBlock
+                {
+                    Text = $"{value:0}%",
+                    FontSize = 11,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    Foreground = new SolidColorBrush(Color.FromRgb(190, 196, 210))
+                };
+                Grid.SetColumn(label, 0);
+                Grid.SetColumn(bar, 1);
+                Grid.SetColumn(percent, 2);
+                row.Children.Add(label);
+                row.Children.Add(bar);
+                row.Children.Add(percent);
+                Grid.SetRow(row, i);
+                host.Children.Add(row);
+            }
+
+            host.Measure(new Size(host.Width, host.Height));
+            host.Arrange(new Rect(0, 0, host.Width, host.Height));
+            host.UpdateLayout();
+
+            var path = Path.Combine(outputRoot, "v7-progress-probe.png");
+            SavePng(host, path);
+
+            var bars = FindVisualChildren<ProgressBar>(host)
+                .OrderBy(bar => Grid.GetRow((FrameworkElement)bar.Parent ?? bar))
+                .ToList();
+            var hostBitmap = new RenderTargetBitmap(
+                (int)Math.Ceiling(host.ActualWidth),
+                (int)Math.Ceiling(host.ActualHeight),
+                96,
+                96,
+                PixelFormats.Pbgra32);
+            hostBitmap.Render(host);
+            var hostWidth = hostBitmap.PixelWidth;
+            var hostStride = hostWidth * 4;
+            var hostPixels = new byte[hostStride * hostBitmap.PixelHeight];
+            hostBitmap.CopyPixels(hostPixels, hostStride, 0);
+
+            foreach (var bar in bars)
+            {
+                var origin = bar.TransformToAncestor(host).Transform(new Point(0, 0));
+                var left = Math.Max(0, (int)Math.Floor(origin.X));
+                var top = Math.Max(0, (int)Math.Floor(origin.Y));
+                var right = Math.Min(hostWidth, (int)Math.Ceiling(origin.X + bar.ActualWidth));
+                var bottom = Math.Min(hostBitmap.PixelHeight, (int)Math.Ceiling(origin.Y + bar.ActualHeight));
+
+                var fillPixels = 0;
+                var trackPixels = 0;
+                for (var y = top; y < bottom; y++)
+                {
+                    for (var x = left; x < right; x++)
+                    {
+                        var offset = y * hostStride + x * 4;
+                        var b = hostPixels[offset];
+                        var g = hostPixels[offset + 1];
+                        var r = hostPixels[offset + 2];
+                        var a = hostPixels[offset + 3];
+                        if (a < 200)
+                            continue;
+                        if (r > 100 && g > 120 && b > 200)
+                            fillPixels++;
+                        else if (r < 90 && g < 100 && b < 130)
+                            trackPixels++;
+                    }
+                }
+
+                var expectedRatio = (bar.Maximum > 0 ? bar.Value / bar.Maximum : 0);
+                var total = fillPixels + trackPixels;
+                var actualRatio = total > 0
+                    ? fillPixels / (double)total
+                    : 0;
+                report.AppendLine(
+                    $"  {bar.Value:0}% expected={expectedRatio:0.00} actual={actualRatio:0.00} fillPx={fillPixels} trackPx={trackPixels}");
+                if (actualRatio < expectedRatio - 0.12)
+                    problems.Add($"{bar.Value:0}% fill too short: expected {expectedRatio:0.00}, actual {actualRatio:0.00}");
+            }
+
+            if (problems.Count > 0)
+            {
+                report.AppendLine("v7-progress FAILED");
+                foreach (var problem in problems)
+                    report.AppendLine("  PROBLEM " + problem);
+                File.WriteAllText(Path.Combine(outputRoot, "v7-progress-report.txt"), report.ToString());
+                Console.WriteLine(report.ToString());
+                return 1;
+            }
+
+            report.AppendLine("v7-progress OK");
+            File.WriteAllText(Path.Combine(outputRoot, "v7-progress-report.txt"), report.ToString());
+            Console.WriteLine(report.ToString());
+            Console.WriteLine("v7-progress OK");
+            return 0;
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine(ex);
+            report.AppendLine("v7-progress FAILED");
+            report.AppendLine(ex.ToString());
+            File.WriteAllText(Path.Combine(outputRoot, "v7-progress-report.txt"), report.ToString());
             return 1;
         }
     }
