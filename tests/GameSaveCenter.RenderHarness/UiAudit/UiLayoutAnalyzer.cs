@@ -635,8 +635,15 @@ public static class UiLayoutAnalyzer
                 continue;
             if (text.TextWrapping == TextWrapping.Wrap || text.TextTrimming != TextTrimming.None)
                 continue;
-            if (text.DesiredSize.Width > text.ActualWidth + 2)
+            var desiredWidth = Math.Max(0, text.DesiredSize.Width - text.Margin.Left - text.Margin.Right);
+            if (desiredWidth > text.ActualWidth + 2)
             {
+                var textSnippet = string.IsNullOrEmpty(text.Text)
+                    ? string.Empty
+                    : " 文本=" + (text.Text.Length > 24 ? text.Text.Substring(0, 24) + "…" : text.Text);
+                var parentName = VisualTreeHelper.GetParent(text) is FrameworkElement parent
+                    ? " 父=" + (string.IsNullOrEmpty(parent.Name) ? parent.GetType().Name : parent.Name)
+                    : string.Empty;
                 report.Warnings.Add(new UiAuditWarning
                 {
                     Severity = "INFO",
@@ -644,7 +651,7 @@ public static class UiLayoutAnalyzer
                     RouteId = report.RouteId,
                     Tab = report.TabHeader,
                     SizeKey = report.SizeKey,
-                    Message = $"{text.Name ?? text.GetType().Name} 期望宽度 {text.DesiredSize.Width:0} DIP 大于实际宽度 {text.ActualWidth:0} DIP"
+                    Message = $"{text.Name ?? text.GetType().Name} 期望宽度 {desiredWidth:0} DIP 大于实际宽度 {text.ActualWidth:0} DIP{parentName}{textSnippet}"
                 });
             }
         }

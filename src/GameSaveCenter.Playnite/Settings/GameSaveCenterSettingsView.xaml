@@ -157,7 +157,7 @@
                         <StackPanel Margin="0,0,12,10">
                             <TextBlock Text="毛玻璃强度" Margin="0,0,0,4"/>
                             <DockPanel>
-                                <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center" Margin="10,0,0,0"><Run Text="{Binding ElementName=GlassStrengthSlider, Path=Value, StringFormat={}{0:0}, Mode=OneWay}"/><Run Text="%"/></TextBlock>
+                                <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center" Margin="10,0,0,0" MinWidth="80" TextAlignment="Right"><Run Text="{Binding ElementName=GlassStrengthSlider, Path=Value, StringFormat={}{0:0}, Mode=OneWay}"/><Run Text="%"/></TextBlock>
                                 <Slider x:Name="GlassStrengthSlider" Style="{StaticResource GscSlider}" AutomationProperties.Name="毛玻璃强度" Minimum="20" Maximum="100" TickFrequency="10" IsSnapToTickEnabled="False" Value="{Binding GlassEffectStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ValueChanged="OnGlassStrengthChanged" VerticalAlignment="Center"/>
                             </DockPanel>
                         </StackPanel>
