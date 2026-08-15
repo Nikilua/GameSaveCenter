@@ -3,6 +3,16 @@
 > 维护时间：2026-08-14
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-15 UI-REAL-HOST-AUDIT-FULL-COVERAGE 当前事实
+
+- 真实宿主审计已覆盖 Dashboard 全部页面/Tab 与 Settings 全部 5 个分类；`artifacts/ui-host-audit/` 是最新证据，zip 为 `artifacts/GameSaveCenter-ui-host-audit.zip`。
+- 无交互桌面（Playnite 主窗口不可见）时，审计通过专用窗口兜底：Dashboard 1440×900、Settings 同样 1440×900、左上锚定、ToolWindow 可关闭；不再出现越界不可关窗口。
+- 设置页兜底的关键约定：输出根在 Dashboard 完成前缓存并传给 Settings 兜底，且窗口创建必须使用 Dashboard 的 UI Dispatcher（线程池 Dispatcher 不会显示窗口）。
+- 设置分类 Header 为复杂 Grid，文件命名须从 Header 视觉树提取中文文本，不能用 `Header.ToString()`（会全部同名）。
+- 默认 zip 被其他进程占用时审计会写 `GameSaveCenter-ui-host-audit-<时间戳>.zip`，不会中断 Settings 捕获。
+- 基线：Release 0 warning/0 error；Playnite 281/281；`validate-source.py`、`check-xaml.ps1`、WPF UI 校验 0 errors。
+- 真实第三方主题、连续缩放、用户实际 Playnite 窗口尺寸仍为 `MANUAL QA REQUIRED`；无交互桌面证据不能冒充真实窗口像素。
+
 ## 2026-08-15 UI-REAL-HOST-PARITY-CLOSURE 当前事实
 
 - 来源：`GameSaveCenter_RealHost_UI_Parity_Audit_Prompt.zip`，计划 `docs/ai/REAL_HOST_UI_PARITY_CLOSURE_PLAN.md`，报告 `docs/ai/REAL_HOST_UI_PARITY_CLOSURE_REPORT.md`。

@@ -2,6 +2,19 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-15 UI-REAL-HOST-AUDIT-FULL-COVERAGE 实施完成
+
+- 用户复核真实宿主截图后指出：脚本运行到 Settings 时停住、只截页面左上部分、未覆盖全部页面；另反馈审计兜底窗口部分超出屏幕且无法关闭。
+- 根因与修复：
+  - Playnite 主窗口在无交互桌面会话中不可见，UIA 侧栏点击不可靠；插件启动时若存在 `GSC_REAL_HOST_AUDIT`/sentinel，延迟自动激活侧栏项。
+  - 侧栏激活仍不落地时，`RealHostUiAuditService.EnsureDashboardCaptured` 在专用窗口（1440×900、左上锚定、ToolWindow 可关闭）内创建真实 `DashboardView` 并触发同一套 Tier B 捕获；Settings 通过 UI 线程专用窗口兜底捕获。
+  - Settings 兜底此前失败的两个原因：Dashboard 完成后先删 sentinel，兜底再读 sentinel 得到空路径；以及兜底窗口创建曾调度到线程池 Dispatcher。现改为 `RequestSettingsCapture` 时缓存输出根并直接传入 Dashboard 的 UI Dispatcher。
+  - 设置页分类 Header 是复杂 Grid，`Header.ToString()` 全部同名导致去重只截第 1 类；改为从 Header 视觉树提取中文标题，并按索引去重，5 个分类全部截图。
+  - `CreateZip` 遇到默认 zip 被占用时改写入带时间戳的独立 zip，不再中断后续 Settings 捕获。
+- 产物（`artifacts/ui-host-audit/` + `GameSaveCenter-ui-host-audit.zip`）：Dashboard 6 个 workspace 截图/完整窗口截图、全部内层 Tab、`full-scroll/` 整页拼接（Overview 1099×2579 等）、真实 DPI 1.5 metadata、resource/style/visual-tree；Settings 5 个分类截图 + 完整窗口截图 + SettingsScroller 整页拼接 + metadata。
+- 验证：Release 0 warning/0 error；`validate-source.py`、`check-xaml.ps1`、WPF UI 校验 0 errors；Core 59/59、Worker 190/190、Playnite 281/281（dev-install-run 已跑）。
+- 说明：无交互桌面下捕获的是“真实 DashboardView + 真实 adaptive palette + 真实 DPI”的专用窗口证据；有可见 Playnite 窗口时会走真实窗口截图路径。真实第三方主题/连续缩放仍为 `MANUAL QA REQUIRED`。
+
 ## 2026-08-15 UI-REAL-HOST-PARITY-CLOSURE 实施完成
 
 - 来源：`GameSaveCenter_RealHost_UI_Parity_Audit_Prompt.zip`；计划 `docs/ai/REAL_HOST_UI_PARITY_CLOSURE_PLAN.md`；报告 `docs/ai/REAL_HOST_UI_PARITY_CLOSURE_REPORT.md`。

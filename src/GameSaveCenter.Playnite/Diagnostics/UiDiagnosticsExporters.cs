@@ -80,18 +80,106 @@ namespace GameSaveCenter.Playnite.Diagnostics
             if (!(visual is FrameworkElement element) || element.ActualWidth <= 0 || element.ActualHeight <= 0)
                 throw new InvalidOperationException($"Cannot render audit PNG for {path}: empty size.");
             Directory.CreateDirectory(Path.GetDirectoryName(path) ?? ".");
-            var dpi = VisualTreeHelper.GetDpi(visual);
-            var bitmap = new RenderTargetBitmap(
-                (int)Math.Ceiling(element.ActualWidth),
-                (int)Math.Ceiling(element.ActualHeight),
-                dpi.PixelsPerInchX,
-                dpi.PixelsPerInchY,
-                PixelFormats.Pbgra32);
-            bitmap.Render(visual);
+            var bitmap = RenderBitmap(visual, element.ActualWidth, element.ActualHeight);
             var encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(bitmap));
             using var stream = File.Create(path);
             encoder.Save(stream);
+        }
+
+        public static void SaveScrollViewerFull(ScrollViewer scroller, string path)
+        {
+            if (scroller.Visibility != Visibility.Visible || scroller.ActualWidth <= 0 || scroller.ViewportHeight <= 0)
+                return;
+            var originalVertical = scroller.VerticalOffset;
+            var originalHorizontal = scroller.HorizontalOffset;
+            var originalVBar = scroller.VerticalScrollBarVisibility;
+            var originalHBar = scroller.HorizontalScrollBarVisibility;
+            try
+            {
+                scroller.VerticalScrollBarVisibility = ScrollBarVisibility.Hidden;
+                scroller.HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden;
+                scroller.UpdateLayout();
+                var width = scroller.ActualWidth;
+                var viewportHeight = scroller.ViewportHeight;
+                var scrollable = scroller.ScrollableHeight;
+                if (scrollable <= 0.5)
+                {
+                    SavePng(scroller, path);
+                    return;
+                }
+
+                var slices = new List<BitmapSource>();
+                double previousEnd = 0;
+                var offset = 0d;
+                while (offset < scrollable - 0.5)
+                {
+                    scroller.ScrollToVerticalOffset(offset);
+                    scroller.UpdateLayout();
+                    var bitmap = RenderBitmap(scroller, width, scroller.ActualHeight);
+                    var rangeStart = Math.Max(offset, previousEnd);
+                    var rangeEnd = Math.Min(scroller.ExtentHeight, offset + viewportHeight);
+                    var cropTop = Math.Max(0, (int)Math.Ceiling(rangeStart - offset));
+                    var cropHeight = Math.Max(1, (int)Math.Ceiling(rangeEnd - rangeStart));
+                    cropHeight = Math.Min(cropHeight, bitmap.PixelHeight - cropTop);
+                    slices.Add(new CroppedBitmap(bitmap, new Int32Rect(0, cropTop, bitmap.PixelWidth, cropHeight)));
+                    previousEnd = rangeEnd;
+                    var next = Math.Min(scrollable, offset + viewportHeight);
+                    if (next <= offset + 0.5)
+                        break;
+                    offset = next;
+                }
+
+                if (previousEnd < scroller.ExtentHeight - 0.5)
+                {
+                    scroller.ScrollToVerticalOffset(scrollable);
+                    scroller.UpdateLayout();
+                    var bitmap = RenderBitmap(scroller, width, scroller.ActualHeight);
+                    var cropTop = Math.Max(0, (int)Math.Ceiling(previousEnd - scrollable));
+                    var cropHeight = Math.Max(1, (int)Math.Ceiling(scroller.ExtentHeight - previousEnd));
+                    cropHeight = Math.Min(cropHeight, bitmap.PixelHeight - cropTop);
+                    slices.Add(new CroppedBitmap(bitmap, new Int32Rect(0, cropTop, bitmap.PixelWidth, cropHeight)));
+                }
+
+                var totalWidth = slices.Max(slice => slice.PixelWidth);
+                var totalHeight = slices.Sum(slice => slice.PixelHeight);
+                var stitched = new WriteableBitmap(totalWidth, totalHeight, 96, 96, PixelFormats.Pbgra32, null);
+                var y = 0;
+                foreach (var slice in slices)
+                {
+                    var stride = slice.PixelWidth * 4;
+                    var pixels = new byte[stride * slice.PixelHeight];
+                    slice.CopyPixels(pixels, stride, 0);
+                    stitched.WritePixels(new Int32Rect(0, y, slice.PixelWidth, slice.PixelHeight), pixels, stride, 0);
+                    y += slice.PixelHeight;
+                }
+                Directory.CreateDirectory(Path.GetDirectoryName(path) ?? ".");
+                var encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(stitched));
+                using var stream = File.Create(path);
+                encoder.Save(stream);
+            }
+            finally
+            {
+                scroller.VerticalScrollBarVisibility = originalVBar;
+                scroller.HorizontalScrollBarVisibility = originalHBar;
+                scroller.ScrollToVerticalOffset(originalVertical);
+                scroller.ScrollToHorizontalOffset(originalHorizontal);
+                scroller.UpdateLayout();
+            }
+        }
+
+        private static RenderTargetBitmap RenderBitmap(Visual visual, double width, double height)
+        {
+            var dpi = VisualTreeHelper.GetDpi(visual);
+            var bitmap = new RenderTargetBitmap(
+                (int)Math.Ceiling(width),
+                (int)Math.Ceiling(height),
+                dpi.PixelsPerInchX,
+                dpi.PixelsPerInchY,
+                PixelFormats.Pbgra32);
+            bitmap.Render(visual);
+            return bitmap;
         }
 
         private static void Traverse(

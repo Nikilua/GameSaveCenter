@@ -2,6 +2,14 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-15 UI-REAL-HOST-AUDIT-FULL-COVERAGE 实施完成
+
+- 真实宿主审计修复收口：Dashboard 6 个 workspace + 全部内层 Tab + 完整窗口截图 + 整页拼接；Settings 5 个分类全部截图。
+- 修复要点：无窗口会话使用专用 1440×900 兜底窗口；Settings 兜底使用缓存输出根 + Dashboard UI Dispatcher；设置分类名从 Header 视觉树提取；zip 占用时写唯一文件名。
+- 最新证据：`artifacts/ui-host-audit/` 与 `artifacts/GameSaveCenter-ui-host-audit.zip`；DPI 1.5。
+- 回归：Release 0 warning/0 error；`validate-source.py`、`check-xaml.ps1`、WPF UI 校验 0 errors；Core 59/59、Worker 190/190、Playnite 281/281。
+- 剩余人工项：用户实际 Playnite 窗口、第三方主题、连续缩放下的最终视觉确认。
+
 ## 2026-08-15 UI-REAL-HOST-PARITY-CLOSURE 实施完成
 
 - 计划：`docs/ai/REAL_HOST_UI_PARITY_CLOSURE_PLAN.md`；报告：`docs/ai/REAL_HOST_UI_PARITY_CLOSURE_REPORT.md`。

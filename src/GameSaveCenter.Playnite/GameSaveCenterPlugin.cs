@@ -8,10 +8,12 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Threading;
 using System.Windows.Controls;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Core.Services;
+using GameSaveCenter.Playnite.Diagnostics;
 using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.Ipc;
 using GameSaveCenter.Playnite.Settings;
@@ -28,6 +30,7 @@ namespace GameSaveCenter.Playnite
     public sealed class GameSaveCenterPlugin : GenericPlugin
     {
         private static readonly Guid PluginId = Guid.Parse("66e9f2d7-67bb-43ef-b62a-b8e60734fcec");
+        private SidebarItem? auditSidebarItem;
         private readonly ILogger logger;
         private readonly WorkerIpcClient client;
         private readonly WorkerLauncher launcher;
@@ -101,6 +104,39 @@ namespace GameSaveCenter.Playnite
             // Playnite is still importing the library and provides no data that SQLite cannot
             // already provide.
             StartTaskNotificationMonitor();
+            if (RealHostUiAuditService.ResolveRequestedOutput() != null)
+            {
+                logger.Info("Real host audit requested at application start; scheduling GameSaveCenter sidebar activation.");
+                var dispatcher = PlayniteApi.MainView.UIDispatcher;
+                FireAndForget(async () =>
+                {
+                    await Task.Delay(2500);
+                    _ = dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+                    {
+                        try
+                        {
+                            logger.Info(auditSidebarItem == null
+                                ? "Real host audit auto-open fired before the sidebar item was registered; invoking no-op."
+                                : "Real host audit auto-open activating GameSaveCenter sidebar.");
+                            auditSidebarItem?.Activated?.Invoke();
+                            // The sidebar activation can be a no-op when Playnite's own
+                            // window is hidden or not attached to an interactive desktop.
+                            // Give the sidebar path a short chance, then host the real
+                            // dashboard directly so the Tier B audit still produces output.
+                            FireAndForget(async () =>
+                            {
+                                await Task.Delay(6000);
+                                _ = dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+                                    RealHostUiAuditService.EnsureDashboardCaptured(this)));
+                            });
+                        }
+                        catch (Exception ex)
+                        {
+                            logger.Error(ex, "Failed to auto-open GameSaveCenter sidebar for the real host audit.");
+                        }
+                    }));
+                });
+            }
             if (Settings.AutoStartWorker)
             {
                 // Playnite can invoke OnApplicationStarted before its library import has
@@ -198,7 +234,7 @@ namespace GameSaveCenter.Playnite
 
         public override IEnumerable<SidebarItem> GetSidebarItems()
         {
-            yield return new SidebarItem
+            var item = new SidebarItem
             {
                 Title = "GameSaveCenter",
                 Type = SiderbarItemType.View,
@@ -208,6 +244,8 @@ namespace GameSaveCenter.Playnite
                 // extension log instead of letting Playnite show its generic crash dialog.
                 Opened = CreateDashboardViewSafely
             };
+            auditSidebarItem = item;
+            yield return item;
         }
 
         public override IEnumerable<GameMenuItem> GetGameMenuItems(GetGameMenuItemsArgs args)
@@ -342,6 +380,20 @@ namespace GameSaveCenter.Playnite
                     "GameSaveCenter 界面暂时无法加载",
                     "插件已阻止这次界面异常向 Playnite 冒泡。请查看 extensions.log 中的 GameSaveCenter 错误，并确认已安装最新版本。",
                     ex);
+            }
+        }
+
+        internal DashboardView? CreateDashboardViewForAudit()
+        {
+            try
+            {
+                var view = CreateDashboardViewSafely();
+                return view as DashboardView;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Failed to create the dashboard for the real host audit.");
+                return null;
             }
         }
 
