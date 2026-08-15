@@ -90,4 +90,4 @@
 - `87d0553` feat: v7 maintenance header, progress contrast and single-line textbox closure
 - `7eaaacd` feat: v7 progress track contract and progress probe
 
-最终 Audit ZIP：`artifacts/GameSaveCenter-ui-audit.zip`（`artifacts/ui-audit/v7-final/`，Commit `7eaaacd`）。
+最终 Audit ZIP：`artifacts/GameSaveCenter-ui-audit.zip`（`artifacts/ui-audit/v7-final/`，Commit `90738b7`）。

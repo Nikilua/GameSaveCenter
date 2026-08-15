@@ -11,7 +11,7 @@
 - Task 根改为有限 Grid；Media Inbox/Current 取消 460 上限；Task/Media 主行 VerticalFillRatio=1.00。
 - Maintenance 表头白块清零；Progress 模板补 `PART_Track` 并新增专用 track/fill token；单行 TextBox `PART_ContentHost` Stretch + Padding 收口。
 - 基线：Playnite `263/263`；render-qa 11 档 + 56 主题 + 7 Resize 全绿；最终 Audit 0 HIGH/0 MEDIUM/0 失败路由。
-- 最终 Audit ZIP：`artifacts/GameSaveCenter-ui-audit.zip`（Commit `7eaaacd`）；Progress probe：`artifacts/ui-qa/v7-progress/`。
+- 最终 Audit ZIP：`artifacts/GameSaveCenter-ui-audit.zip`（Commit `90738b7`）；Progress probe：`artifacts/ui-qa/v7-progress/`。
 - 提交：`5cd0226`、`58191d5`、`494b402`、`87d0553`、`7eaaacd`。真实 Playnite 主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`。
 
 ## 2026-08-15 UI-FEEDBACK-GLOBAL-ACTIVITY-CHIP-CENTER
