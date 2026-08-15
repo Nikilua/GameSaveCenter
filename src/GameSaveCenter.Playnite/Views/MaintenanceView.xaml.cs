@@ -38,7 +38,7 @@ namespace GameSaveCenter.Playnite.Views
         {
             var normalStyle = TryFindResource("GscDataGridColumnHeaderStyle") as Style;
             var firstStyle = TryFindResource("MaintenanceFirstColumnHeader") as Style;
-            var lastStyle = TryFindResource("GscLastColumnHeader") as Style;
+            var lastStyle = TryFindResource("MaintenanceLastColumnHeader") as Style;
 
             if (normalStyle != null)
                 grid.ColumnHeaderStyle = normalStyle;

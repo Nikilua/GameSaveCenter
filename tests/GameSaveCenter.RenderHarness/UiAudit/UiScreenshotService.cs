@@ -23,6 +23,43 @@ public static class UiScreenshotService
         SaveBitmap(bitmap, path);
     }
 
+    public static double ProbeHeaderWhiteRatio(DataGrid grid)
+    {
+        if (grid.ActualWidth <= 0 || grid.ActualHeight <= 0)
+            return 0;
+
+        var bitmap = RenderVisual(grid, grid.ActualWidth, grid.ActualHeight);
+        var headerHeight = grid.ColumnHeaderHeight > 0
+            ? Math.Min((int)Math.Ceiling(grid.ColumnHeaderHeight), bitmap.PixelHeight)
+            : Math.Min(42, bitmap.PixelHeight);
+        if (headerHeight <= 0 || bitmap.PixelWidth <= 0)
+            return 0;
+
+        var width = bitmap.PixelWidth;
+        var stride = width * 4;
+        var pixels = new byte[stride * bitmap.PixelHeight];
+        bitmap.CopyPixels(pixels, stride, 0);
+
+        var white = 0;
+        var total = 0;
+        for (var y = 0; y < headerHeight; y += 2)
+        {
+            for (var x = 0; x < width; x += 4)
+            {
+                var offset = y * stride + x * 4;
+                var b = pixels[offset];
+                var g = pixels[offset + 1];
+                var r = pixels[offset + 2];
+                var a = pixels[offset + 3];
+                if (a > 200 && r > 245 && g > 245 && b > 245)
+                    white++;
+                total++;
+            }
+        }
+
+        return total > 0 ? white / (double)total : 0;
+    }
+
     /// <summary>
     /// Captures a ScrollViewer from its top to its bottom by scrolling the real control
     /// through every viewport position and stitching the slices into one long PNG.

@@ -63,6 +63,7 @@
             <ScrollViewer x:Name="PART_ContentHost"
                           Margin="{TemplateBinding Padding}"
                           VerticalAlignment="Center"
+                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                           HorizontalAlignment="Stretch"
                           Focusable="False"
                           HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}"

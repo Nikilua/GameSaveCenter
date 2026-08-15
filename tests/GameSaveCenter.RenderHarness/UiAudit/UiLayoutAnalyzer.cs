@@ -35,6 +35,7 @@ public static class UiLayoutAnalyzer
         };
 
         AnalyzeScrollViewers(root, report);
+        AnalyzeSingleLineTextBoxes(root, report);
         AnalyzeDataGrids(root, report);
         AnalyzeListBoxes(root, report);
         AnalyzeToolbars(root, report);
@@ -423,6 +424,29 @@ public static class UiLayoutAnalyzer
         }
     }
 
+    private static void AnalyzeSingleLineTextBoxes(DependencyObject root, UiLayoutReport report)
+    {
+        foreach (var textBox in FindVisualChildren<TextBox>(root))
+        {
+            if (textBox.AcceptsReturn)
+                continue;
+            var contentHost = FindVisualChildren<ScrollViewer>(textBox)
+                .FirstOrDefault(scroller => scroller.Name == "PART_ContentHost");
+            if (contentHost == null || contentHost.ScrollableHeight <= 0.5)
+                continue;
+
+            report.Warnings.Add(new UiAuditWarning
+            {
+                Severity = "MEDIUM",
+                Code = "SINGLE_LINE_CONTENTHOST_VERTICAL_SCROLL",
+                RouteId = report.RouteId,
+                Tab = report.TabHeader,
+                SizeKey = report.SizeKey,
+                Message = $"{textBox.Name} PART_ContentHost ScrollableHeight={contentHost.ScrollableHeight:0.00} DIP"
+            });
+        }
+    }
+
     private static void AnalyzeDataGrids(DependencyObject root, UiLayoutReport report)
     {
         foreach (var grid in FindVisualChildren<DataGrid>(root))
@@ -513,6 +537,20 @@ public static class UiLayoutAnalyzer
                     Tab = report.TabHeader,
                     SizeKey = report.SizeKey,
                     Message = $"{grid.Name} 列填充率 {record.ColumnFillRatio:0.00}，要求 >=0.88"
+                });
+            }
+
+            var headerWhiteRatio = UiScreenshotService.ProbeHeaderWhiteRatio(grid);
+            if (headerWhiteRatio > 0.10)
+            {
+                report.Warnings.Add(new UiAuditWarning
+                {
+                    Severity = "HIGH",
+                    Code = "HEADER_WHITE_BLOCK",
+                    RouteId = report.RouteId,
+                    Tab = report.TabHeader,
+                    SizeKey = report.SizeKey,
+                    Message = $"{grid.Name} 表头白色像素占比 {headerWhiteRatio:0.00}"
                 });
             }
 

@@ -304,6 +304,10 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscMutedTextBrush"] = Brush(palette.MutedText);
             resources["GscDisabledTextBrush"] = Brush(palette.DisabledText);
             resources["GscControlFillBrush"] = Brush(palette.ControlFill);
+            resources["GscProgressTrackBrush"] = Brush(palette.IsDark
+                ? Color.FromRgb(54, 62, 78)
+                : Color.FromRgb(214, 220, 232));
+            resources["GscProgressFillBrush"] = Brush(palette.Accent);
             resources["GscControlStrokeBrush"] = Brush(palette.ControlStroke);
             resources["GscDividerBrush"] = Brush(palette.Divider);
             resources["GscTableDividerBrush"] = Brush(Color.FromArgb(

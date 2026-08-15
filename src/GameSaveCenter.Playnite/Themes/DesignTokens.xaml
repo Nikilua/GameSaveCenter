@@ -67,6 +67,8 @@
     <SolidColorBrush x:Key="GscMutedTextBrush" Color="#FF7D8EAA"/>
     <SolidColorBrush x:Key="GscDisabledTextBrush" Color="#FF59677F"/>
     <SolidColorBrush x:Key="GscControlFillBrush" Color="#F5222D3E"/>
+    <SolidColorBrush x:Key="GscProgressTrackBrush" Color="#363E4E"/>
+    <SolidColorBrush x:Key="GscProgressFillBrush" Color="#7897FF"/>
     <SolidColorBrush x:Key="GscControlStrokeBrush" Color="#3A34445B"/>
     <SolidColorBrush x:Key="GscDividerBrush" Color="#3A2A3850"/>
     <SolidColorBrush x:Key="GscTableDividerBrush" Color="#302A3850"/>
@@ -728,7 +730,7 @@
                             SnapsToDevicePixels="True">
                         <ScrollViewer x:Name="PART_ContentHost"
                                       Margin="{TemplateBinding Padding}"
-                                      VerticalAlignment="Center"
+                                      VerticalAlignment="Stretch"
                                       VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                       HorizontalAlignment="Stretch"
                                       Focusable="False"
@@ -760,7 +762,7 @@
     <!-- Numeric editors commit after a complete value is entered, avoiding per-keystroke Int32 conversion. -->
     <Style x:Key="GscNumericTextBox" TargetType="TextBox" BasedOn="{StaticResource GscTextBox}">
         <Setter Property="MinWidth" Value="84"/>
-        <Setter Property="Padding" Value="9,7"/>
+        <Setter Property="Padding" Value="9,4"/>
         <Setter Property="TextAlignment" Value="Right"/>
         <Setter Property="ToolTipService.ShowDuration" Value="12000"/>
         <Setter Property="Validation.ErrorTemplate">
@@ -1136,8 +1138,8 @@
 
     <Style TargetType="ProgressBar">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
-        <Setter Property="Foreground" Value="{DynamicResource GscAccentBrush}"/>
-        <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource GscProgressFillBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource GscProgressTrackBrush}"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Template">
             <Setter.Value>
