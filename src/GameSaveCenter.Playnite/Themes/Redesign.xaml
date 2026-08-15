@@ -208,8 +208,9 @@
     </Style>
 
     <Style x:Key="GscRedesignContextPill" TargetType="Border">
-        <Setter Property="Padding" Value="10,5"/>
-        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="Padding" Value="11,5"/>
+        <Setter Property="MinHeight" Value="26"/>
+        <Setter Property="CornerRadius" Value="7"/>
         <!-- Context/stat cards are reading surfaces, not primary actions.  Keep their
              default neutral and let status-specific cards opt into a semantic tint. -->
         <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
@@ -248,8 +249,8 @@
     <!-- Small semantic pills used inside dense tables. Keeping these shared prevents each
          DataGrid cell template from inventing a different radius, padding or theme fallback. -->
     <Style x:Key="GscRedesignTableStatusPill" TargetType="Border" BasedOn="{StaticResource GscRedesignContextPill}">
-        <Setter Property="Padding" Value="8,3"/>
-        <Setter Property="CornerRadius" Value="9"/>
+        <Setter Property="Padding" Value="10,3"/>
+        <Setter Property="CornerRadius" Value="7"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
     </Style>
 

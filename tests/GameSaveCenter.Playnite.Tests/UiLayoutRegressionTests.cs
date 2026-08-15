@@ -205,12 +205,14 @@ namespace GameSaveCenter.Playnite.Tests
             var widths = grid.Elements().Single(element => element.Name.LocalName == "Grid.ColumnDefinitions")
                 .Elements().Select(element => element.Attribute("Width")?.Value).ToArray();
 
-            Assert.Equal(new[] { "40", "150", "*", "88", "76", "112" }, widths);
+            Assert.Equal(new[] { "40", "150", "*", "96", "84", "112" }, widths);
             Assert.Equal("120", grid.Elements().Single(element => element.Name.LocalName == "Grid.ColumnDefinitions")
                 .Elements().ElementAt(2).Attribute("MinWidth")?.Value);
             Assert.Equal("Center", template.Descendants().Single(element => element.Name.LocalName == "Border"
                 && element.Attribute(xamlName)?.Value == "ActivityKindPill").Attribute("VerticalAlignment")?.Value);
             Assert.Contains("OverviewActivityHeaderRow", overview.ToString());
+            Assert.Contains("Margin=\"12,0,20,0\"", template.Descendants().Single(element =>
+                element.Name.LocalName == "TextBlock" && element.Attribute("Text")?.Value == "{Binding CreatedDisplay, Mode=OneWay}").ToString());
             Assert.Contains(template.Descendants(), element => element.Name.LocalName == "TextBlock"
                 && element.Attribute("Text")?.Value == "{Binding KindDisplay, Mode=OneWay}");
             Assert.Contains(template.Descendants(), element => element.Name.LocalName == "TextBlock"

@@ -65,6 +65,28 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("GameSwitcherHost.Visibility = gameScopedWorkspace", dashboard);
         }
 
+        [Fact]
+        public void ChipAndCellSpacingUseSharedTokens()
+        {
+            var redesign = Read("Themes", "Redesign.xaml");
+            var production = Read("Themes", "WpfUiProduction.xaml");
+            var overview = Read("Views", "OverviewView.xaml");
+            Assert.Contains("<Setter Property=\"CornerRadius\" Value=\"7\"/>", redesign);
+            Assert.Contains("<Setter Property=\"MinHeight\" Value=\"26\"/>", redesign);
+            Assert.Contains("Property=\"Padding\" Value=\"12,8,20,8\"", production);
+            Assert.Contains("Margin=\"12,0,20,0\"", overview);
+        }
+
+        [Fact]
+        public void SaveCandidateScoreUsesVisualProgressBar()
+        {
+            var save = Read("Views", "SaveCenterView.xaml");
+            Assert.Contains("Header=\"可信度\" Width=\"130\"", save);
+            Assert.Contains("<ProgressBar Height=\"8\"", save);
+            Assert.Contains("Value=\"{Binding Score, Mode=OneWay}\"", save);
+            Assert.Contains("StringFormat=P0", save);
+        }
+
         private static string Read(string folder, string file)
         {
             var root = FindRepositoryRoot();
