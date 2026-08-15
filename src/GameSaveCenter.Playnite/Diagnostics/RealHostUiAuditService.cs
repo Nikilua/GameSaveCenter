@@ -259,6 +259,7 @@ namespace GameSaveCenter.Playnite.Diagnostics
 
             CreateZip(outputRoot);
             RequestSettingsCapture(dashboard);
+            CloseAuditWindow(auditDashboardWindow);
             TryDeleteSentinel();
         }
 
