@@ -2,6 +2,19 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-15 UI-FINAL-CLOSURE-V7 实施完成
+
+- 计划：`docs/ai/UI_FINAL_CLOSURE_PLAN_V7.md`；报告：`docs/ai/UI_FINAL_CLOSURE_REPORT_V7.md`。
+- Audit 6 的路由错误已根修：维护中心按 `OuterTab + InnerTab + ExpectedPrimaryElement` 生成独立子路由，截图前断言 expected==actual，失败路由 0。
+- 宽屏列 Fill：新增共享 `DataGridStarFill`（记录星号权重并按剩余宽度分配），六张 2K 表 ColumnFillRatio 0.18~0.48 → 1.00；MaintenanceProcess 目标游戏 20 → 1549 DIP。
+- 纵向 Stretch：Task 根 ScrollViewer 改有限 Grid，Media Inbox/Current 取消 460 上限，Task/Media 主行 fill 1.00。
+- Maintenance 表头白块：`GscLastColumnHeader` 去掉 `OverridesDefaultStyle`，统一 `MaintenanceLastColumnHeader`，`HEADER_WHITE_BLOCK=0`。
+- Progress：新增 `GscProgressTrackBrush/GscProgressFillBrush`，模板补 `PART_Track`；0/5/25/50/75/100 探针 fill 占比 0.00/0.04/0.24/0.49/0.74/0.99。
+- 单行 TextBox：`PART_ContentHost` Stretch + Padding 收口，`SINGLE_LINE_CONTENTHOST_VERTICAL_SCROLL=0`。
+- Task narrow：1040×700 outer scroll=0、4.04 行、父子滚动冲突 0。
+- 验证：Playnite `263/263`；render-qa 11 档 + 56 主题 + 7 Resize 全绿；最终 Audit 0 HIGH/0 MEDIUM/0 失败路由。
+- 提交：`5cd0226`、`58191d5`、`494b402`、`87d0553`、`7eaaacd`。真实 Playnite 主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`。
+
 ## 2026-08-15 UI-FEEDBACK-GLOBAL-ACTIVITY-CHIP-CENTER
 
 - 用户反馈首页“全局活动”中“备份成功”等结果气泡文字不是居中。

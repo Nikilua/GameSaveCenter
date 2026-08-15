@@ -2,6 +2,14 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-15 UI-FINAL-CLOSURE-V7 实施完成
+
+- v7 计划：`docs/ai/UI_FINAL_CLOSURE_PLAN_V7.md`；报告：`docs/ai/UI_FINAL_CLOSURE_REPORT_V7.md`。
+- Audit 子路由可信、六张表 2K 列填率 1.00、Task/Media 纵向 fill 1.00、Maintenance 表头白块清零、Progress 对比与单行 TextBox 指标清零、Task 1040 outer scroll=0。
+- 基线：Playnite `263/263`；render-qa 11 档 + 56 主题 + 7 Resize 全绿；最终 Audit 0 HIGH/0 MEDIUM/0 失败路由。
+- 最终 Audit ZIP：`artifacts/GameSaveCenter-ui-audit.zip`；提交 `5cd0226`、`58191d5`、`494b402`、`87d0553`、`7eaaacd`。
+- 真实 Playnite 主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`。
+
 ## 2026-08-15 UI-FEEDBACK-GLOBAL-ACTIVITY-CHIP-CENTER
 
 - 首页“全局活动”的“备份成功”等结果气泡文字已居中；宽/窄两套 Kind/Result chip 的 TextBlock 统一三向居中，回归断言已锁定。

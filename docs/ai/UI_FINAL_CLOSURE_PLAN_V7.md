@@ -177,3 +177,13 @@ Summary 卡、筛选/操作行、Inspector 堆叠逻辑、全部命令绑定、�
 Phase 1 Audit 路由 → Phase 2 列 Fill → Phase 3 纵向 Stretch → Phase 4 blockers → Phase 5 Task narrow → Phase 6 全量回归/截图/Audit/文档。
 
 每个 Phase 独立 commit；每个 Phase 后跑 XAML/source/WPF 门禁 + Playnite 测试 + render-qa，再进入下一 Phase。
+
+## 9. 完成状态（2026-08-15）
+
+- Phase 1：Audit 嵌套子路由 + expected/actual 断言 + 滚动分类完成。
+- Phase 2：`DataGridStarFill` 共享行为落地，6 张表 2K ColumnFillRatio 全部 1.00，MaintenanceProcess 目标游戏 1549 DIP。
+- Phase 3：Task / Media Inbox / Media Current 纵向主行 fill 1.00。
+- Phase 4：Maintenance 表头白块、Progress token、单行 TextBox 指标全部清零。
+- Phase 5：Task 1040×700 外层滚动 0，4.04 行，父子滚动冲突 0。
+- Phase 6：Playnite 263/263；render-qa 11 档 + 56 主题 + 7 Resize 全绿；最终 Audit 0 HIGH/0 MEDIUM/0 失败路由；`artifacts/GameSaveCenter-ui-audit.zip` 已重建。
+- 报告：`docs/ai/UI_FINAL_CLOSURE_REPORT_V7.md`；实现提交 `5cd0226`、`58191d5`、`494b402`、`87d0553`、`7eaaacd`。

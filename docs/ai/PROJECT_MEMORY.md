@@ -3,6 +3,17 @@
 > 维护时间：2026-08-14
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-15 UI-FINAL-CLOSURE-V7 当前事实
+
+- 来源：`GameSaveCenter_UI_Final_Closure_Pack_v7.zip`，计划 `docs/ai/UI_FINAL_CLOSURE_PLAN_V7.md`，报告 `docs/ai/UI_FINAL_CLOSURE_REPORT_V7.md`。
+- Audit 工具已支持嵌套子路由与 expected/actual 主表断言；Settings 标题解析为真实分类名。
+- 共享 `DataGridStarFill` 附加行为修复宽屏星号列：2K 六张表 ColumnFillRatio=1.00，MaintenanceProcess 目标游戏 1549 DIP；横向滚动 Disabled，Save/Task <1200 DIP 时 Inspector 收起。
+- Task 根改为有限 Grid；Media Inbox/Current 取消 460 上限；Task/Media 主行 VerticalFillRatio=1.00。
+- Maintenance 表头白块清零；Progress 模板补 `PART_Track` 并新增专用 track/fill token；单行 TextBox `PART_ContentHost` Stretch + Padding 收口。
+- 基线：Playnite `263/263`；render-qa 11 档 + 56 主题 + 7 Resize 全绿；最终 Audit 0 HIGH/0 MEDIUM/0 失败路由。
+- 最终 Audit ZIP：`artifacts/GameSaveCenter-ui-audit.zip`（Commit `7eaaacd`）；Progress probe：`artifacts/ui-qa/v7-progress/`。
+- 提交：`5cd0226`、`58191d5`、`494b402`、`87d0553`、`7eaaacd`。真实 Playnite 主题/DPI/连续缩放仍为 `MANUAL QA REQUIRED`。
+
 ## 2026-08-15 UI-FEEDBACK-GLOBAL-ACTIVITY-CHIP-CENTER
 
 - 首页“全局活动”的 Kind/Result chip 文字已强制水平/垂直/文本三向居中（`OverviewView.xaml` 宽窄两套共 4 个 TextBlock），并有 `UiLayoutRegressionTests` 回归断言锁定。
