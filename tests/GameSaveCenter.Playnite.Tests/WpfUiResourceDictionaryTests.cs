@@ -1904,7 +1904,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("VerticalScrollBarVisibility=\"Auto\" HorizontalScrollBarVisibility=\"Disabled\"", media);
         Assert.Contains("MinHeight=\"0\" ClipToBounds=\"True\"", media);
         Assert.Contains("MinHeight=\"236\" ItemsSource=\"{Binding UnassignedMedia}\"", media);
-        Assert.Contains("OverridesDefaultStyle\" Value=\"True\"", maintenance);
+        Assert.Contains("Setter Property=\"ColumnHeaderStyle\" Value=\"{StaticResource GscDataGridColumnHeaderStyle}\"", maintenance);
         Assert.DoesNotContain("FindVisualChildren", maintenanceCode);
         Assert.Contains("MediaInspectorScrollViewer.MaxHeight = showInspector && stack", mediaCode);
         Assert.Contains("MediaInspectorScrollViewer.IsVisibleChanged += OnMediaInspectorIsVisibleChanged", mediaCode);

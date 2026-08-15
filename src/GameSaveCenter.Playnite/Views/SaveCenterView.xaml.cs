@@ -42,6 +42,17 @@ namespace GameSaveCenter.Playnite.Views
                 const double tableMinHeight = 236d;
                 SaveHistoryGrid.MinHeight = tableMinHeight;
                 SaveCandidateGrid.MinHeight = Math.Max(tableMinHeight, 252d);
+                // On narrow hosts the lock status is the essential per-row summary; the
+                // note column can be read in full inside the version details inspector.
+                // Hiding it keeps 状态 inside the viewport without enabling a horizontal bar.
+                if (SaveHistoryNoteColumn != null)
+                {
+                    var narrowHistory = width < 1100;
+                    SaveHistoryNoteColumn.Width = narrowHistory
+                        ? new DataGridLength(0)
+                        : new DataGridLength(1, DataGridLengthUnitType.Star);
+                    SaveHistoryNoteColumn.MinWidth = narrowHistory ? 0 : 180;
+                }
                 var compact = height < 760 || width < 1200;
                 if (SaveCurrentRuleActions != null)
                 {

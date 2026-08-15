@@ -428,8 +428,69 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("ComputeUnconstrainedTextWidth", analyzer);
             Assert.Contains("Severity = isTextFit ? \"MEDIUM\" : \"INFO\",", analyzer);
             Assert.Contains("Code = isTextFit ? \"TEXT_FIT\" : \"POSSIBLE_CLIPPING\",", analyzer);
-            Assert.Contains("Code == \"TEXT_FIT\"", runner);
+            Assert.Contains("fidelityCodes.Contains(warning.Code)", runner);
             Assert.Contains("element.Visibility == Visibility.Visible", inspector);
+        }
+
+        [Fact]
+        public void MaintenanceMiddleHeadersRenderThroughSharedStyle()
+        {
+            var root = FindRepositoryRoot();
+            var maintenance = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+
+            Assert.DoesNotContain("Style TargetType=\"DataGridColumnHeader\" BasedOn=\"{StaticResource {x:Type DataGridColumnHeader}}\"", maintenance);
+            Assert.Contains("Setter Property=\"ColumnHeaderStyle\" Value=\"{StaticResource GscDataGridColumnHeaderStyle}\"", maintenance);
+        }
+
+        [Fact]
+        public void MediaSearchBoxUsesStretchableColumn()
+        {
+            var root = FindRepositoryRoot();
+            var media = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
+
+            Assert.Contains("x:Name=\"MediaSearchTextBox\" Grid.Column=\"1\" MinWidth=\"160\"", media);
+            Assert.Contains("<ColumnDefinition Width=\"*\" MinWidth=\"160\"/>", media);
+            Assert.DoesNotContain("<StackPanel Grid.Column=\"0\" Orientation=\"Horizontal\"", media);
+        }
+
+        [Fact]
+        public void SettingsSelectedCategoryScrollsIntoView()
+        {
+            var root = FindRepositoryRoot();
+            var code = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml.cs"));
+
+            Assert.Contains("ScrollSelectedCategoryIntoView();", code);
+            Assert.Contains("ScheduleScrollSelectedCategoryIntoView();", code);
+            Assert.Contains("FindVisualChild<ScrollViewer>(SettingsSectionTabs)", code);
+            Assert.Contains("scroller.ScrollToHorizontalOffset(target);", code);
+        }
+
+        [Fact]
+        public void SaveHistoryStatusStaysInNarrowViewport()
+        {
+            var root = FindRepositoryRoot();
+            var xaml = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "SaveCenterView.xaml"));
+            var code = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "SaveCenterView.xaml.cs"));
+
+            Assert.Contains("x:Name=\"SaveHistoryNoteColumn\"", xaml);
+            Assert.Contains("SaveHistoryNoteColumn.Width = narrowHistory", code);
+            Assert.Contains("new DataGridLength(0)", code);
+            Assert.Contains("SaveHistoryNoteColumn.MinWidth = narrowHistory ? 0 : 180;", code);
+        }
+
+        [Fact]
+        public void AuditFidelityDetectionsCoverAudit10BlindSpots()
+        {
+            var root = FindRepositoryRoot();
+            var harnessRoot = Path.Combine(root, "tests", "GameSaveCenter.RenderHarness", "UiAudit");
+            var analyzer = File.ReadAllText(Path.Combine(harnessRoot, "UiLayoutAnalyzer.cs"));
+            var runner = File.ReadAllText(Path.Combine(harnessRoot, "UiAuditRunner.cs"));
+
+            foreach (var code in new[] { "HEADER_CONTENT_FIDELITY", "ACTIVE_TAB_VISIBILITY", "CONTROL_USABILITY_GEOMETRY", "ESSENTIAL_COLUMN_VISIBILITY" })
+            {
+                Assert.Contains(code, analyzer);
+                Assert.Contains(code, runner);
+            }
         }
 
         private static string FindRepositoryRoot()

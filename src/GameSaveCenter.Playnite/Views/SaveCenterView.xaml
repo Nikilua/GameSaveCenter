@@ -104,7 +104,7 @@
                                 <DataGridTextColumn Header="文件数" Binding="{Binding FileCount, Mode=OneWay}" Width="82"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource SaveLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
                                 <DataGridTextColumn Header="大小" Binding="{Binding SizeDisplay, Mode=OneWay}" Width="90"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource SaveLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
                                 <DataGridTextColumn Header="设备" Binding="{Binding SourceDevice, Mode=OneWay}" Width="120"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource SaveLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
-                                <DataGridTextColumn Header="备注" Binding="{Binding Comment, Mode=OneWay}" Width="*" MinWidth="180">
+                                <DataGridTextColumn x:Name="SaveHistoryNoteColumn" Header="备注" Binding="{Binding Comment, Mode=OneWay}" Width="*" MinWidth="180">
                                     <DataGridTextColumn.ElementStyle>
                                         <Style TargetType="TextBlock" BasedOn="{StaticResource SaveLongText}"/>
                                     </DataGridTextColumn.ElementStyle>

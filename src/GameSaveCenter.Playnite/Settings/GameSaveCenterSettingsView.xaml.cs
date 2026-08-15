@@ -21,6 +21,7 @@ namespace GameSaveCenter.Playnite.Settings
         private bool responsiveLayoutPending;
         private bool adaptiveThemePending;
         private bool systemParametersSubscribed;
+        private bool scrollSelectionPending;
         private Size pendingResponsiveSize;
 
         public GameSaveCenterSettingsView()
@@ -130,8 +131,73 @@ namespace GameSaveCenter.Playnite.Settings
 
         private void OnSettingsTabSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (SettingsSectionTabs.SelectedItem is FrameworkElement selected)
-                BeginUiSafely(() => selected.BringIntoView(), DispatcherPriority.Loaded);
+            ScrollSelectedCategoryIntoView();
+            ScheduleScrollSelectedCategoryIntoView();
+        }
+
+        private void ScheduleScrollSelectedCategoryIntoView()
+        {
+            if (scrollSelectionPending) return;
+            scrollSelectionPending = true;
+            BeginUiSafely(() =>
+            {
+                scrollSelectionPending = false;
+                ScrollSelectedCategoryIntoView();
+            }, DispatcherPriority.Loaded);
+        }
+
+        private void ScrollSelectedCategoryIntoView()
+        {
+            if (SettingsSectionTabs?.SelectedItem is not TabItem selected)
+                return;
+            var scroller = FindVisualChild<ScrollViewer>(SettingsSectionTabs);
+            if (scroller == null || scroller.ScrollableWidth <= 0.5 || scroller.ViewportWidth <= 0)
+                return;
+            if (selected.Visibility != Visibility.Visible || selected.ActualWidth <= 0)
+                return;
+
+            selected.BringIntoView();
+            try
+            {
+                const double breathing = 8;
+                for (var iteration = 0; iteration < 3; iteration++)
+                {
+                    var origin = selected.TransformToAncestor(scroller).Transform(new Point(0, 0));
+                    var left = origin.X;
+                    var right = left + selected.ActualWidth;
+                    var delta = 0d;
+                    if (left < breathing)
+                        delta = left - breathing;
+                    else if (right > scroller.ViewportWidth - breathing)
+                        delta = right - scroller.ViewportWidth + breathing;
+                    if (Math.Abs(delta) <= 0.5)
+                        return;
+                    var target = Math.Max(0, Math.Min(scroller.HorizontalOffset + delta, scroller.ScrollableWidth));
+                    if (Math.Abs(target - scroller.HorizontalOffset) <= 0.5)
+                        return;
+                    scroller.ScrollToHorizontalOffset(target);
+                    scroller.UpdateLayout();
+                }
+            }
+            catch (InvalidOperationException)
+            {
+                // Selected TabItem can be disconnected from the template during startup.
+            }
+        }
+
+        private static T? FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
+        {
+            var childCount = VisualTreeHelper.GetChildrenCount(parent);
+            for (var i = 0; i < childCount; i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                if (child is T typed)
+                    return typed;
+                var nested = FindVisualChild<T>(child);
+                if (nested != null)
+                    return nested;
+            }
+            return null;
         }
 
         private void OnVisualSettingChanged(object sender, RoutedEventArgs e)
@@ -462,6 +528,8 @@ namespace GameSaveCenter.Playnite.Settings
             {
                 AutomationIntervalFields.Columns = expanded && formWidth >= 930 ? 3 : formWidth >= 650 ? 2 : 1;
             }
+
+            ScrollSelectedCategoryIntoView();
         }
     }
 }

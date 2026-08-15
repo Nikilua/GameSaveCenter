@@ -2,6 +2,17 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-15 UI-FIDELITY-CLOSURE-AUDIT10 实施完成
+
+- 来源：`GameSaveCenter_UI_Fidelity_Closure_Audit10_Prompt.zip`；计划 `docs/ai/UI_FIDELITY_CLOSURE_AUDIT10_PLAN.md`；报告 `docs/ai/UI_FIDELITY_CLOSURE_AUDIT10_REPORT.md`。
+- Maintenance：移除局部 implicit `DataGridColumnHeader` style，中间列表头恢复渲染（Diagnostics/Device/Audit Findings/Audit Log/Process 共 11 个 header）；filler header 继续由共享模板主题化。
+- Media：搜索框改为 `Auto/*(MinWidth=160)/Auto/150` Grid，不再 54.67 DIP；narrow 内容宽约 390 DIP。
+- Settings：选中分类在 SelectionChanged/ApplyResponsiveLayout 后同步 scroll-into-view，保留 BringIntoView 回退并用增量 delta 收敛；最后分类 HorizontalOffset=359.33。
+- Save History：narrow 收起备注 summary 列，状态列留在视口内；完整备注仍在 Inspector。
+- Audit：新增 `HEADER_CONTENT_FIDELITY`、`ACTIVE_TAB_VISIBILITY`、`CONTROL_USABILITY_GEOMETRY`、`ESSENTIAL_COLUMN_VISIBILITY`，全部 MEDIUM + 失败门禁；修复前可复现 92 个失败，修复后 0。
+- 验证：Release 0 warning/0 error；Core 59/59、Worker 190/190、Playnite 273/273；render-qa 11 档 + 56 主题 + 7 Resize 全绿；UI Audit 0 HIGH/0 MEDIUM/0 failed routes/0 fidelity。
+- 提交：见 `git log`。真实 Playnite 宿主/DPI 125%/150%/主题/连续缩放仍为 `MANUAL QA REQUIRED`。
+
 ## 2026-08-15 UI-POST-TYPOGRAPHY-GEOMETRY-CLOSURE 实施完成
 
 - 来源：`GameSaveCenter_PostTypography_Geometry_Audit_Fix_Prompt.zip`；计划 `docs/ai/UI_POST_TYPOGRAPHY_GEOMETRY_CLOSURE_PLAN.md`；报告 `docs/ai/UI_POST_TYPOGRAPHY_GEOMETRY_CLOSURE_REPORT.md`。

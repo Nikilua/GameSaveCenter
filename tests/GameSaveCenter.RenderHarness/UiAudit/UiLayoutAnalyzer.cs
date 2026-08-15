@@ -41,6 +41,10 @@ public static class UiLayoutAnalyzer
         AnalyzeListBoxes(root, report);
         AnalyzeToolbars(root, report);
         AnalyzeClipping(root, report);
+        AnalyzeHeaderContentFidelity(root, report);
+        AnalyzeActiveTabVisibility(root, report);
+        AnalyzeControlUsabilityGeometry(root, report);
+        AnalyzeEssentialColumnVisibility(root, report);
         AnalyzeVisualCorrectionV2(root, report);
         AnalyzeVerticalFill(root, report);
         return report;
@@ -675,6 +679,153 @@ public static class UiLayoutAnalyzer
             text.Foreground,
             VisualTreeHelper.GetDpi(text).PixelsPerDip);
         return formatted.WidthIncludingTrailingWhitespace;
+    }
+
+    private static void AnalyzeHeaderContentFidelity(DependencyObject root, UiLayoutReport report)
+    {
+        foreach (var header in FindVisualChildren<DataGridColumnHeader>(root))
+        {
+            if (header.Visibility != Visibility.Visible || header.ActualWidth <= 0 || header.ActualHeight <= 0)
+                continue;
+            // WPF's generated filler header has no backing column and must stay exempt.
+            if (header.Column == null || header.Content == null)
+                continue;
+
+            var hasRenderedContent = HasRenderedHeaderContent(header);
+            if (!hasRenderedContent)
+            {
+                var headerText = header.Content.ToString() ?? string.Empty;
+                report.Warnings.Add(new UiAuditWarning
+                {
+                    Severity = "MEDIUM",
+                    Code = "HEADER_CONTENT_FIDELITY",
+                    RouteId = report.RouteId,
+                    Tab = report.TabHeader,
+                    SizeKey = report.SizeKey,
+                    Message = $"DataGridColumnHeader 元数据存在但未渲染内容：文本=\"{headerText}\" 列宽={header.ActualWidth:0} DIP"
+                });
+            }
+        }
+    }
+
+    private static bool HasRenderedHeaderContent(DependencyObject node)
+    {
+        if (node is TextBlock textBlock && textBlock.Visibility == Visibility.Visible && textBlock.ActualWidth > 0)
+            return true;
+        if (node is ContentPresenter presenter && presenter.Visibility == Visibility.Visible)
+            return true;
+        var childCount = VisualTreeHelper.GetChildrenCount(node);
+        for (var i = 0; i < childCount; i++)
+        {
+            var child = VisualTreeHelper.GetChild(node, i);
+            if (HasRenderedHeaderContent(child))
+                return true;
+        }
+        return false;
+    }
+
+    private static void AnalyzeActiveTabVisibility(DependencyObject root, UiLayoutReport report)
+    {
+        foreach (var scroller in FindVisualChildren<ScrollViewer>(root))
+        {
+            if (scroller.ScrollableWidth <= 0.5
+                || scroller.HorizontalScrollBarVisibility == ScrollBarVisibility.Disabled
+                || scroller.ViewportWidth <= 0)
+                continue;
+
+            foreach (var tab in FindVisualChildren<TabItem>(root))
+            {
+                if (!tab.IsSelected || tab.Visibility != Visibility.Visible || tab.ActualWidth <= 0)
+                    continue;
+                if (!IsDescendantOf(tab, scroller))
+                    continue;
+
+                var origin = tab.TransformToAncestor(scroller).Transform(new Point(0, 0));
+                var left = origin.X;
+                var right = left + tab.ActualWidth;
+                const double tolerance = 2;
+                if (left < -tolerance || right > scroller.ViewportWidth + tolerance)
+                {
+                    report.Warnings.Add(new UiAuditWarning
+                    {
+                        Severity = "MEDIUM",
+                        Code = "ACTIVE_TAB_VISIBILITY",
+                        RouteId = report.RouteId,
+                        Tab = report.TabHeader,
+                        SizeKey = report.SizeKey,
+                        Message = $"选中分类不在横向 viewport 内：left={left:0.##} right={right:0.##} viewport={scroller.ViewportWidth:0.##}"
+                    });
+                }
+            }
+        }
+    }
+
+    private static void AnalyzeControlUsabilityGeometry(DependencyObject root, UiLayoutReport report)
+    {
+        if (report.RouteId != "media-center" || report.TabHeader != "当前游戏媒体")
+            return;
+        var search = FindVisualChildren<TextBox>(root)
+            .FirstOrDefault(textBox => textBox.Name == "MediaSearchTextBox");
+        if (search == null || search.Visibility != Visibility.Visible || search.ActualWidth <= 0)
+            return;
+        if (search.ActualWidth < 160)
+        {
+            report.Warnings.Add(new UiAuditWarning
+            {
+                Severity = "MEDIUM",
+                Code = "CONTROL_USABILITY_GEOMETRY",
+                RouteId = report.RouteId,
+                Tab = report.TabHeader,
+                SizeKey = report.SizeKey,
+                Message = $"MediaSearchTextBox 宽度 {search.ActualWidth:0} DIP 低于 160 DIP 可用下限"
+            });
+        }
+    }
+
+    private static void AnalyzeEssentialColumnVisibility(DependencyObject root, UiLayoutReport report)
+    {
+        if (report.RouteId != "save-center" || report.TabHeader != "历史版本")
+            return;
+        var grid = FindVisualChildren<DataGrid>(root)
+            .FirstOrDefault(candidate => candidate.Name == "SaveHistoryGrid");
+        if (grid == null || grid.ActualWidth <= 0)
+            return;
+
+        var ordered = grid.Columns
+            .OrderBy(column => column.DisplayIndex)
+            .ToList();
+        var rightEdge = 0d;
+        foreach (var column in ordered)
+        {
+            var width = column.ActualWidth > 0 ? column.ActualWidth : 0;
+            rightEdge += width;
+            if (string.Equals(column.Header as string, "状态", StringComparison.Ordinal)
+                && rightEdge > grid.ActualWidth + 1)
+            {
+                report.Warnings.Add(new UiAuditWarning
+                {
+                    Severity = "MEDIUM",
+                    Code = "ESSENTIAL_COLUMN_VISIBILITY",
+                    RouteId = report.RouteId,
+                    Tab = report.TabHeader,
+                    SizeKey = report.SizeKey,
+                    Message = $"SaveHistory 状态列右缘 {rightEdge:0} DIP 超出视口 {grid.ActualWidth:0} DIP，且横向滚动已禁用"
+                });
+                break;
+            }
+        }
+    }
+
+    private static bool IsDescendantOf(DependencyObject current, DependencyObject ancestor)
+    {
+        var parent = VisualTreeHelper.GetParent(current);
+        while (parent != null)
+        {
+            if (ReferenceEquals(parent, ancestor))
+                return true;
+            parent = VisualTreeHelper.GetParent(parent);
+        }
+        return false;
     }
 
     private static bool HasScrollableScrollViewerAncestor(

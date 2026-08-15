@@ -96,14 +96,22 @@ public static class UiAuditRunner
                     Console.WriteLine("  " + failed);
                 return 1;
             }
-            var textFitFailures = result.Warnings
-                .Where(warning => warning.Code == "TEXT_FIT")
-                .GroupBy(warning => warning.RouteId + "|" + warning.Tab + "|" + warning.SizeKey + "|" + warning.Message)
-                .Count();
-            if (textFitFailures > 0)
+            var fidelityCodes = new[]
             {
-                Console.WriteLine("TEXT-FIT FAILURES " + textFitFailures);
-                foreach (var warning in result.Warnings.Where(warning => warning.Code == "TEXT_FIT").Take(40))
+                "TEXT_FIT",
+                "HEADER_CONTENT_FIDELITY",
+                "ACTIVE_TAB_VISIBILITY",
+                "CONTROL_USABILITY_GEOMETRY",
+                "ESSENTIAL_COLUMN_VISIBILITY"
+            };
+            var fidelityFailures = result.Warnings
+                .Where(warning => fidelityCodes.Contains(warning.Code))
+                .GroupBy(warning => warning.Code + "|" + warning.RouteId + "|" + warning.Tab + "|" + warning.SizeKey + "|" + warning.Message)
+                .Count();
+            if (fidelityFailures > 0)
+            {
+                Console.WriteLine("FIDELITY FAILURES " + fidelityFailures);
+                foreach (var warning in result.Warnings.Where(warning => fidelityCodes.Contains(warning.Code)).Take(60))
                     Console.WriteLine("  " + warning.RouteId + "/" + warning.Tab + "/" + warning.SizeKey + ": " + warning.Message);
                 return 1;
             }
