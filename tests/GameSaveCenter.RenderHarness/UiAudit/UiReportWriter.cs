@@ -232,7 +232,7 @@ public static class UiReportWriter
         builder.AppendLine($"- 条件 UI：{result.Manifest.Summary.ConditionalUiCount}");
         builder.AppendLine($"- 运行时快照数量：{result.Snapshots.Count}");
         builder.AppendLine($"- 运行时警告数量：{result.Warnings.Count}");
-        var fidelityCodes = new[] { "TEXT_FIT", "HEADER_CONTENT_FIDELITY", "ACTIVE_TAB_VISIBILITY", "CONTROL_USABILITY_GEOMETRY", "ESSENTIAL_COLUMN_VISIBILITY" };
+        var fidelityCodes = new[] { "TEXT_FIT", "HEADER_CONTENT_FIDELITY", "ACTIVE_TAB_VISIBILITY", "CONTROL_USABILITY_GEOMETRY", "ESSENTIAL_COLUMN_VISIBILITY", "SHORT_SEMANTIC_VALUE_TRIMMING", "INTERACTIVE_INSPECTOR_USABILITY" };
         builder.AppendLine($"- Fidelity 警告数量：{result.Warnings.Count(warning => fidelityCodes.Contains(warning.Code))}");
         builder.AppendLine($"- 失败路由：{result.FailedRoutes.Count}");
         builder.AppendLine();

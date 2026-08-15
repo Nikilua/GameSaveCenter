@@ -493,6 +493,33 @@ namespace GameSaveCenter.Playnite.Tests
             }
         }
 
+        [Fact]
+        public void SaveHistorySizeUsesNoTrimSemanticStyle()
+        {
+            var root = FindRepositoryRoot();
+            var xaml = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "SaveCenterView.xaml"));
+
+            Assert.Contains("x:Key=\"SaveSizeValue\"", xaml);
+            Assert.Contains("Property=\"TextTrimming\" Value=\"None\"", xaml);
+            Assert.Contains("Property=\"Tag\" Value=\"SaveHistorySize\"", xaml);
+            Assert.Contains("Header=\"大小\" Binding=\"{Binding SizeDisplay, Mode=OneWay}\" Width=\"116\"", xaml);
+            Assert.Contains("BasedOn=\"{StaticResource SaveSizeValue}\"", xaml);
+        }
+
+        [Fact]
+        public void AuditFidelityDetectionsCoverAudit11BlindSpots()
+        {
+            var root = FindRepositoryRoot();
+            var harnessRoot = Path.Combine(root, "tests", "GameSaveCenter.RenderHarness", "UiAudit");
+            var analyzer = File.ReadAllText(Path.Combine(harnessRoot, "UiLayoutAnalyzer.cs"));
+            var runner = File.ReadAllText(Path.Combine(harnessRoot, "UiAuditRunner.cs"));
+
+            Assert.Contains("SHORT_SEMANTIC_VALUE_TRIMMING", analyzer);
+            Assert.Contains("INTERACTIVE_INSPECTOR_USABILITY", analyzer);
+            Assert.Contains("SHORT_SEMANTIC_VALUE_TRIMMING", runner);
+            Assert.Contains("INTERACTIVE_INSPECTOR_USABILITY", runner);
+        }
+
         private static string FindRepositoryRoot()
         {
             var directory = new DirectoryInfo(AppContext.BaseDirectory);

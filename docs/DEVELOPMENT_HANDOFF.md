@@ -2,6 +2,14 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-15 UI-AUDIT11-RESIDUAL-CLOSURE 实施完成
+
+- 计划：`docs/ai/UI_AUDIT11_RESIDUAL_UI_CLOSURE_PLAN.md`；报告：`docs/ai/UI_AUDIT11_RESIDUAL_UI_CLOSURE_REPORT.md`。
+- SaveHistory 大小列不再 ellipsis（116 DIP + `SaveSizeValue`）；Device Inspector 改为 Compact/Narrow 详情切换，展开 viewport >= 180 DIP。
+- Audit 新增 `SHORT_SEMANTIC_VALUE_TRIMMING` / `INTERACTIVE_INSPECTOR_USABILITY` 失败门禁。
+- 基线：Playnite `276/276`；render-qa 11 档 + 56 主题 + 7 Resize 全绿；UI Audit 0 HIGH/0 MEDIUM/0 fidelity/0 failed routes。
+- 真实 Playnite 宿主主题/DPI 125%/150%/连续缩放仍为 `MANUAL QA REQUIRED`。
+
 ## 2026-08-15 UI-FIDELITY-CLOSURE-AUDIT10 实施完成
 
 - 计划：`docs/ai/UI_FIDELITY_CLOSURE_AUDIT10_PLAN.md`；报告：`docs/ai/UI_FIDELITY_CLOSURE_AUDIT10_REPORT.md`。

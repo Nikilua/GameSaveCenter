@@ -102,7 +102,9 @@ public static class UiAuditRunner
                 "HEADER_CONTENT_FIDELITY",
                 "ACTIVE_TAB_VISIBILITY",
                 "CONTROL_USABILITY_GEOMETRY",
-                "ESSENTIAL_COLUMN_VISIBILITY"
+                "ESSENTIAL_COLUMN_VISIBILITY",
+                "SHORT_SEMANTIC_VALUE_TRIMMING",
+                "INTERACTIVE_INSPECTOR_USABILITY"
             };
             var fidelityFailures = result.Warnings
                 .Where(warning => fidelityCodes.Contains(warning.Code))

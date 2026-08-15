@@ -10,6 +10,8 @@ namespace GameSaveCenter.Playnite.Views
     {
         private double responsiveWidth;
         private double responsiveHeight;
+        private bool isApplyingLayout;
+        private bool deviceInspectorOpen;
 
         public MaintenanceView()
         {
@@ -26,6 +28,8 @@ namespace GameSaveCenter.Playnite.Views
             MaintenanceDiagnosticsInspector.IsVisibleChanged += InspectorIsVisibleChanged;
             MaintenanceAuditInspector.IsVisibleChanged += InspectorIsVisibleChanged;
             MaintenanceProcessInspector.IsVisibleChanged += InspectorIsVisibleChanged;
+            MaintenanceDeviceInspectorScrollViewer.IsVisibleChanged += InspectorIsVisibleChanged;
+            MaintenanceDeviceGrid.SelectionChanged += OnMaintenanceDeviceSelectionChanged;
         }
 
         private void DataGridLoaded(object sender, RoutedEventArgs e)
@@ -62,11 +66,31 @@ namespace GameSaveCenter.Playnite.Views
             ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
         }
 
+        private void OnMaintenanceDeviceSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            deviceInspectorOpen = false;
+            if (IsLoaded && responsiveWidth > 0 && responsiveHeight > 0)
+                ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
+        }
+
+        private void OnMaintenanceDeviceCompactDetailsClick(object sender, RoutedEventArgs e)
+        {
+            if (MaintenanceDeviceGrid.SelectedItem == null) return;
+            deviceInspectorOpen = !deviceInspectorOpen;
+            ApplyResponsiveLayout(
+                responsiveWidth > 0 ? responsiveWidth : ActualWidth,
+                responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+        }
+
         public UniformGrid DiagnosticHealthPanelElement => DiagnosticHealthPanel;
         public DataGrid FindingsGridElement => FindingsGrid;
 
         public void ApplyResponsiveLayout(double width, double height)
         {
+            if (isApplyingLayout) return;
+            isApplyingLayout = true;
+            try
+            {
             responsiveWidth = width;
             responsiveHeight = height;
             // At the demo minimum the measured workspace is about 700 DIP. Two health
@@ -195,25 +219,58 @@ namespace GameSaveCenter.Playnite.Views
             Grid.SetColumn(ProcessMappingSaveButton, 4);
             Grid.SetRow(ProcessMappingSaveButton, stackProcessEditor ? 1 : 0);
             var stackDevice = width < 1180;
-            MaintenanceDeviceLayout.ColumnDefinitions[1].Width = stackDevice ? new GridLength(0) : new GridLength(14);
-            MaintenanceDeviceLayout.ColumnDefinitions[2].Width = stackDevice ? new GridLength(0) : inspectorWidth;
+            if (stackDevice)
+            {
+                var hasDeviceSelection = MaintenanceDeviceGrid.SelectedItem != null;
+                if (hasDeviceSelection)
+                {
+                    MaintenanceDeviceInspectorScrollViewer.Visibility = deviceInspectorOpen
+                        ? Visibility.Visible
+                        : Visibility.Collapsed;
+                    MaintenanceDeviceCompactDetailsButton.Content = deviceInspectorOpen
+                        ? "收起设备详情 ›"
+                        : "查看设备详情 ›";
+                    MaintenanceDeviceCompactDetailsButton.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    MaintenanceDeviceCompactDetailsButton.Visibility = Visibility.Collapsed;
+                    deviceInspectorOpen = false;
+                }
+            }
+            else
+            {
+                MaintenanceDeviceCompactDetailsButton.Visibility = Visibility.Collapsed;
+                MaintenanceDeviceInspectorScrollViewer.Visibility = MaintenanceDeviceGrid.SelectedItem != null
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
+            }
+            var showDeviceInspector = MaintenanceDeviceInspectorScrollViewer.Visibility == Visibility.Visible;
+            MaintenanceDeviceLayout.ColumnDefinitions[1].Width = showDeviceInspector && !stackDevice ? new GridLength(14) : new GridLength(0);
+            MaintenanceDeviceLayout.ColumnDefinitions[2].Width = showDeviceInspector && !stackDevice ? inspectorWidth : new GridLength(0);
             MaintenanceDeviceLayout.RowDefinitions[3].Height = stackDevice ? new GridLength(1, GridUnitType.Auto) : new GridLength(0);
             Grid.SetColumn(MaintenanceDeviceInspectorScrollViewer, stackDevice ? 0 : 2);
             Grid.SetColumnSpan(MaintenanceDeviceInspectorScrollViewer, stackDevice ? 3 : 1);
             Grid.SetRow(MaintenanceDeviceInspectorScrollViewer, stackDevice ? 3 : 2);
-            MaintenanceDeviceInspectorScrollViewer.Margin = new Thickness(0, 10, 0, 0);
-            // Single inspector scroll owner owns both the manual decision and the
-            // protected remote restore. It fills the table row on wide screens with
-            // its own internal scroll and only gets the measured remaining budget when
-            // stacking below the table on compact windows. This reserves a readable
-            // table viewport at common windowed and high-DPI logical heights.
+            MaintenanceDeviceInspectorScrollViewer.Margin = showDeviceInspector && stackDevice
+                ? new Thickness(0, 10, 0, 0)
+                : new Thickness(0);
             var deviceAvailableHeight = MaintenanceDeviceLayout.ActualHeight > 0
                 ? MaintenanceDeviceLayout.ActualHeight
                     - MaintenanceDeviceLayout.RowDefinitions[0].ActualHeight
                     - MaintenanceDeviceLayout.RowDefinitions[1].ActualHeight
                 : Math.Max(320, height - 250);
-            var deviceInspectorHeight = Math.Max(96, Math.Min(420, deviceAvailableHeight - tableMinHeight - 10));
-            MaintenanceDeviceInspectorScrollViewer.MaxHeight = stackDevice ? deviceInspectorHeight : double.PositiveInfinity;
+            // A stacked device inspector is an interactive drawer, not a permanent
+            // 90-DIP slit. When open it gets a real usable viewport and the table keeps
+            // at least the header plus two full rows; closing it restores the table.
+            var deviceTableMinHeight = showDeviceInspector && stackDevice
+                ? 150
+                : width < 800 ? 280 : Math.Max(tableMinHeight, 252d);
+            MaintenanceDeviceGrid.MinHeight = deviceTableMinHeight;
+            var deviceInspectorHeight = Math.Max(180, Math.Min(420, deviceAvailableHeight - deviceTableMinHeight - 10));
+            MaintenanceDeviceInspectorScrollViewer.MaxHeight = showDeviceInspector && stackDevice
+                ? deviceInspectorHeight
+                : double.PositiveInfinity;
 
             var stackAudit = width < 1120 || height < 700;
             var showAuditInspector = MaintenanceAuditInspector.Visibility == Visibility.Visible;
@@ -235,6 +292,11 @@ namespace GameSaveCenter.Playnite.Views
             MaintenanceAuditLogGrid.MinHeight = tableMinHeight;
             MaintenanceAuditLogGrid.Height = double.NaN;
             MaintenanceAuditLogGrid.MaxHeight = double.PositiveInfinity;
+            }
+            finally
+            {
+                isApplyingLayout = false;
+            }
         }
 
         private static T? FindVisualChild<T>(DependencyObject? parent) where T : DependencyObject

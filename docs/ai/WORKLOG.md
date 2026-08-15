@@ -2,6 +2,16 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-15 UI-AUDIT11-RESIDUAL-CLOSURE 实施完成
+
+- 来源：`GameSaveCenter_Audit11_Residual_UI_Closure_Prompt.zip`；计划 `docs/ai/UI_AUDIT11_RESIDUAL_UI_CLOSURE_PLAN.md`；报告 `docs/ai/UI_AUDIT11_RESIDUAL_UI_CLOSURE_REPORT.md`。
+- SaveHistory 大小列：90 → 116 DIP，`SaveSizeValue` 使用 `TextTrimming=None` + `Tag=SaveHistorySize`；narrow 状态列仍完整。
+- Maintenance Device：Compact/Narrow 改为详情切换（查看设备详情 ›），展开 viewport >= 180 DIP，表格保留 header + 2 行。
+- Audit 新增 `SHORT_SEMANTIC_VALUE_TRIMMING` 与 `INTERACTIVE_INSPECTOR_USABILITY` 失败门禁；Settings 滚动目标整数取整。
+- 验证：Release 0 warning/0 error；Core 59/59、Worker 190/190、Playnite 276/276；render-qa 11 档 + 56 主题 + 7 Resize 全绿；UI Audit 0 HIGH/0 MEDIUM/0 fidelity/0 failed routes。
+- 审计 ZIP 因标准路径被其他进程锁定，输出到 `artifacts/audit11-final/GameSaveCenter-ui-audit.zip`。
+- 真实 Playnite 宿主/DPI 125%/150%/主题/连续缩放仍为 `MANUAL QA REQUIRED`。
+
 ## 2026-08-15 UI-FIDELITY-CLOSURE-AUDIT10 实施完成
 
 - 来源：`GameSaveCenter_UI_Fidelity_Closure_Audit10_Prompt.zip`；计划 `docs/ai/UI_FIDELITY_CLOSURE_AUDIT10_PLAN.md`；报告 `docs/ai/UI_FIDELITY_CLOSURE_AUDIT10_REPORT.md`。

@@ -45,6 +45,8 @@ public static class UiLayoutAnalyzer
         AnalyzeActiveTabVisibility(root, report);
         AnalyzeControlUsabilityGeometry(root, report);
         AnalyzeEssentialColumnVisibility(root, report);
+        AnalyzeShortSemanticValueTrimming(root, report);
+        AnalyzeInteractiveInspectorUsability(root, report);
         AnalyzeVisualCorrectionV2(root, report);
         AnalyzeVerticalFill(root, report);
         return report;
@@ -813,6 +815,60 @@ public static class UiLayoutAnalyzer
                 });
                 break;
             }
+        }
+    }
+
+    private static void AnalyzeShortSemanticValueTrimming(DependencyObject root, UiLayoutReport report)
+    {
+        if (report.RouteId != "save-center" || report.TabHeader != "历史版本")
+            return;
+        foreach (var text in FindVisualChildren<TextBlock>(root))
+        {
+            if (text.Visibility != Visibility.Visible || text.ActualWidth <= 0)
+                continue;
+            if (!string.Equals(text.Tag as string, "SaveHistorySize", StringComparison.Ordinal))
+                continue;
+            var textWidth = ComputeUnconstrainedTextWidth(text);
+            if (textWidth > text.ActualWidth + 2)
+            {
+                report.Warnings.Add(new UiAuditWarning
+                {
+                    Severity = "MEDIUM",
+                    Code = "SHORT_SEMANTIC_VALUE_TRIMMING",
+                    RouteId = report.RouteId,
+                    Tab = report.TabHeader,
+                    SizeKey = report.SizeKey,
+                    Message = $"SaveHistory 大小短值被裁切：文本宽度 {textWidth:0} DIP 大于可用宽度 {text.ActualWidth:0} DIP，文本=\"{text.Text}\""
+                });
+            }
+        }
+    }
+
+    private static void AnalyzeInteractiveInspectorUsability(DependencyObject root, UiLayoutReport report)
+    {
+        var inspector = FindVisualChildren<ScrollViewer>(root)
+            .FirstOrDefault(scroller => scroller.Name == "MaintenanceDeviceInspectorScrollViewer");
+        if (inspector == null || inspector.Visibility != Visibility.Visible || inspector.ViewportHeight <= 0)
+            return;
+        if (inspector.ExtentHeight <= 300)
+            return;
+        var hasInteractiveContent =
+            FindVisualChildren<ComboBox>(inspector).Any()
+            || FindVisualChildren<TextBox>(inspector).Any()
+            || FindVisualChildren<Button>(inspector).Any();
+        if (!hasInteractiveContent)
+            return;
+        if (inspector.ViewportHeight < 150 || inspector.ViewportHeight / inspector.ExtentHeight < 0.3)
+        {
+            report.Warnings.Add(new UiAuditWarning
+            {
+                Severity = "MEDIUM",
+                Code = "INTERACTIVE_INSPECTOR_USABILITY",
+                RouteId = report.RouteId,
+                Tab = report.TabHeader,
+                SizeKey = report.SizeKey,
+                Message = $"MaintenanceDeviceInspector 交互内容 viewport {inspector.ViewportHeight:0} DIP / extent {inspector.ExtentHeight:0} DIP 过小"
+            });
         }
     }
 

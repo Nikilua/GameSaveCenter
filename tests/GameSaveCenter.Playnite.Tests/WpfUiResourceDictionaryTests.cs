@@ -1705,7 +1705,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("var deviceAvailableHeight", maintenanceCode);
         Assert.Contains("MaintenanceDeviceLayout.RowDefinitions[0].ActualHeight", maintenanceCode);
         Assert.Contains("var deviceInspectorHeight", maintenanceCode);
-        Assert.Contains("MaintenanceDeviceInspectorScrollViewer.MaxHeight = stackDevice ? deviceInspectorHeight : double.PositiveInfinity;", maintenanceCode);
+        Assert.Contains("MaintenanceDeviceInspectorScrollViewer.MaxHeight = showDeviceInspector && stackDevice", maintenanceCode);
+        Assert.Contains("x:Name=\"MaintenanceDeviceCompactDetailsButton\"", maintenanceText);
+        Assert.Contains("OnMaintenanceDeviceCompactDetailsClick", maintenanceText);
         Assert.Contains("Command=\"{Binding SaveDeviceDecisionCommand}\"", maintenanceText);
         Assert.Contains("Command=\"{Binding StageRemoteBackupCommand}\"", maintenanceText);
         Assert.Contains("Command=\"{Binding RestoreStagedRemoteBackupCommand}\"", maintenanceText);
@@ -3410,6 +3412,54 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.True(inspectorCollapsed);
         Assert.True(buttonVisible);
         Assert.True(opened);
+    }
+
+    [Fact]
+    public void MaintenanceDeviceCompactInspectorTogglesToUsableHeight()
+    {
+        Exception? exception = null;
+        var inspectorCollapsed = false;
+        var buttonVisible = false;
+        var opened = false;
+        var usableHeight = false;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var view = new MaintenanceView();
+                var viewType = typeof(MaintenanceView);
+                var grid = (DataGrid)viewType.GetField("MaintenanceDeviceGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var inspector = (ScrollViewer)viewType.GetField("MaintenanceDeviceInspectorScrollViewer", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var button = (GameSaveCenter.Playnite.Controls.Button)viewType.GetField("MaintenanceDeviceCompactDetailsButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var selected = new object();
+                grid.ItemsSource = new[] { selected };
+                grid.SelectedItem = selected;
+
+                view.ApplyResponsiveLayout(1024, 640);
+                inspectorCollapsed = inspector.Visibility == Visibility.Collapsed;
+                buttonVisible = button.Visibility == Visibility.Visible;
+
+                viewType.GetMethod("OnMaintenanceDeviceCompactDetailsClick", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .Invoke(view, new object[] { button, new RoutedEventArgs() });
+                opened = inspector.Visibility == Visibility.Visible && ((string)button.Content).Contains("收起");
+                usableHeight = inspector.MaxHeight >= 180;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.True(inspectorCollapsed);
+        Assert.True(buttonVisible);
+        Assert.True(opened);
+        Assert.True(usableHeight);
     }
 
     [Fact]

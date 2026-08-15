@@ -172,7 +172,7 @@ namespace GameSaveCenter.Playnite.Settings
                         delta = right - scroller.ViewportWidth + breathing;
                     if (Math.Abs(delta) <= 0.5)
                         return;
-                    var target = Math.Max(0, Math.Min(scroller.HorizontalOffset + delta, scroller.ScrollableWidth));
+                    var target = Math.Max(0, Math.Min(Math.Round(scroller.HorizontalOffset + delta), scroller.ScrollableWidth));
                     if (Math.Abs(target - scroller.HorizontalOffset) <= 0.5)
                         return;
                     scroller.ScrollToHorizontalOffset(target);
