@@ -84,23 +84,19 @@ namespace GameSaveCenter.Playnite.Views
             var environmentPanel = FindVisualChild<UniformGrid>(EnvironmentCheckItems);
             if (environmentPanel != null)
                 environmentPanel.Columns = environmentColumns;
-            // Keep a predictable findings viewport instead of allowing the action cards,
-            // health cards and diagnostic summary to squeeze the table down to one row.
-            // MaintenanceDiagnosticsScrollSurface owns overflow outside this finite table.
             const double tableMinHeight = 236d;
-            var tableViewportHeight = Math.Max(tableMinHeight, Math.Min(460d, height * 0.50));
             FindingsGrid.MinHeight = tableMinHeight;
             FindingsGrid.Height = double.NaN;
-            FindingsGrid.MaxHeight = tableViewportHeight;
+            FindingsGrid.MaxHeight = double.PositiveInfinity;
             MaintenanceDeviceGrid.MinHeight = Math.Max(tableMinHeight, 252d);
             MaintenanceDeviceGrid.Height = double.NaN;
-            MaintenanceDeviceGrid.MaxHeight = tableViewportHeight;
+            MaintenanceDeviceGrid.MaxHeight = double.PositiveInfinity;
             MaintenanceAuditFindingsGrid.MinHeight = tableMinHeight;
             MaintenanceAuditFindingsGrid.Height = double.NaN;
-            MaintenanceAuditFindingsGrid.MaxHeight = tableViewportHeight;
+            MaintenanceAuditFindingsGrid.MaxHeight = double.PositiveInfinity;
             MaintenanceProcessGrid.MinHeight = Math.Max(tableMinHeight, 252d);
             MaintenanceProcessGrid.Height = double.NaN;
-            MaintenanceProcessGrid.MaxHeight = tableViewportHeight;
+            MaintenanceProcessGrid.MaxHeight = double.PositiveInfinity;
             if (width < 800)
             {
                 // Narrow audit windows keep at least four readable rows even when the

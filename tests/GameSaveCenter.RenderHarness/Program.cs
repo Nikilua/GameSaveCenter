@@ -39,7 +39,8 @@ public static class Program
         (1707, 960),
         (1920, 1080),
         (2048, 1152),
-        (2560, 1440)
+        (2560, 1440),
+        (3840, 2160)
     };
 
     private static readonly (int Width, int Height)[] ThemeWindowSizes =
@@ -117,6 +118,19 @@ public static class Program
             v6Thread.Start();
             v6Thread.Join();
             return v6ExitCode;
+        }
+
+        if (args.Length > 0 && args[0].Equals("v6-2shots", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", "artifacts", "ui-qa", "v6-2-shots");
+            var v62ExitCode = 0;
+            var v62Thread = new Thread(() => { v62ExitCode = RunV62Shots(outputRoot); });
+            v62Thread.SetApartmentState(ApartmentState.STA);
+            v62Thread.Start();
+            v62Thread.Join();
+            return v62ExitCode;
         }
 
         var exitCode = 0;
@@ -638,6 +652,134 @@ public static class Program
         }
     }
 
+    private static int RunV62Shots(string outputRoot)
+    {
+        Directory.CreateDirectory(outputRoot);
+        var report = new StringBuilder();
+        report.AppendLine("GameSaveCenter v6.2 table/chip screenshot evidence");
+        report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+        report.AppendLine();
+        var problems = new List<string>();
+
+        try
+        {
+            var app = new Application();
+            app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+
+            CaptureV3Shot(
+                new OverviewView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v6-2-overview-activity-wide.png"),
+                "OverviewActivityTimelineList",
+                1600,
+                900,
+                ApplyOverviewV3,
+                problems,
+                report);
+            CaptureV3Shot(
+                new OverviewView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v6-2-overview-activity-narrow.png"),
+                "OverviewActivityTimelineList",
+                1040,
+                700,
+                ApplyOverviewV3,
+                problems,
+                report);
+            CaptureV3Shot(
+                new SaveCenterView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v6-2-save-candidates-progress.png"),
+                "SaveCandidateGrid",
+                1600,
+                900,
+                ApplySimpleResponsiveV3,
+                problems,
+                report,
+                view => SelectTab(view, 1));
+
+            foreach (var (label, windowW, windowH) in new[]
+                     {
+                         ("2k", 2560, 1440),
+                         ("4k", 3840, 2160)
+                     })
+            {
+                CaptureV3Shot(
+                    new MaintenanceView { DataContext = new FakeDashboardData() },
+                    Path.Combine(outputRoot, $"v6-2-maintenance-diagnostics-{label}.png"),
+                    "FindingsGrid",
+                    windowW,
+                    windowH,
+                    ApplySimpleResponsiveV3,
+                    problems,
+                    report,
+                    view => SelectTab(view, 0),
+                    metrics: (host, target, shotReport) =>
+                    {
+                        var grid = (DataGrid)target;
+                        var fillRatio = host.ActualHeight > 0 ? grid.ActualHeight / host.ActualHeight : 0;
+                        shotReport.AppendLine(
+                            $"  maintenance-diagnostics-{label} fill: hostH={host.ActualHeight:0}, gridH={grid.ActualHeight:0}, ratio={fillRatio:0.00}");
+                    });
+                CaptureV3Shot(
+                    new MaintenanceView { DataContext = new FakeDashboardData() },
+                    Path.Combine(outputRoot, $"v6-2-maintenance-device-{label}.png"),
+                    "MaintenanceDeviceGrid",
+                    windowW,
+                    windowH,
+                    ApplySimpleResponsiveV3,
+                    problems,
+                    report,
+                    view => SelectTab(view, 1),
+                    metrics: (host, target, shotReport) =>
+                    {
+                        var grid = (DataGrid)target;
+                        var fillRatio = host.ActualHeight > 0 ? grid.ActualHeight / host.ActualHeight : 0;
+                        shotReport.AppendLine(
+                            $"  maintenance-device-{label} fill: hostH={host.ActualHeight:0}, gridH={grid.ActualHeight:0}, ratio={fillRatio:0.00}");
+                    });
+                CaptureV3Shot(
+                    new MaintenanceView { DataContext = new FakeDashboardData() },
+                    Path.Combine(outputRoot, $"v6-2-maintenance-audit-{label}.png"),
+                    "MaintenanceAuditFindingsGrid",
+                    windowW,
+                    windowH,
+                    ApplySimpleResponsiveV3,
+                    problems,
+                    report,
+                    view => SelectTab(view, 3),
+                    metrics: (host, target, shotReport) =>
+                    {
+                        var grid = (DataGrid)target;
+                        var fillRatio = host.ActualHeight > 0 ? grid.ActualHeight / host.ActualHeight : 0;
+                        shotReport.AppendLine(
+                            $"  maintenance-audit-{label} fill: hostH={host.ActualHeight:0}, gridH={grid.ActualHeight:0}, ratio={fillRatio:0.00}");
+                    });
+            }
+
+            if (problems.Count > 0)
+            {
+                report.AppendLine("v6-2-shots FAILED");
+                foreach (var problem in problems)
+                    report.AppendLine("  PROBLEM " + problem);
+                File.WriteAllText(Path.Combine(outputRoot, "v6-2-shots-report.txt"), report.ToString());
+                Console.WriteLine(report.ToString());
+                return 1;
+            }
+
+            report.AppendLine("v6-2-shots OK");
+            File.WriteAllText(Path.Combine(outputRoot, "v6-2-shots-report.txt"), report.ToString());
+            Console.WriteLine(report.ToString());
+            Console.WriteLine("v6-2-shots OK");
+            return 0;
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine(ex);
+            report.AppendLine("v6-2-shots FAILED");
+            report.AppendLine(ex.ToString());
+            File.WriteAllText(Path.Combine(outputRoot, "v6-2-shots-report.txt"), report.ToString());
+            return 1;
+        }
+    }
+
     private static void CaptureNumericV6(string path, string value, List<string> problems, StringBuilder report)
     {
         var view = new SaveCenterView { DataContext = new FakeDashboardData() };
@@ -685,7 +827,8 @@ public static class Program
         List<string> problems,
         StringBuilder report,
         Action<UserControl>? beforeCapture = null,
-        bool cropFromHost = false)
+        bool cropFromHost = false,
+        Action<Grid, FrameworkElement, StringBuilder>? metrics = null)
     {
         var (contentW, contentH) = ContentSize(windowW, windowH);
         var host = new Grid
@@ -711,6 +854,8 @@ public static class Program
             .FirstOrDefault(element => element.Name == elementName);
         if (target == null || target.ActualWidth <= 0 || target.ActualHeight <= 0)
             throw new InvalidOperationException($"V3 shot target not rendered: {elementName} at {windowW}x{windowH}");
+
+        metrics?.Invoke(host, target, report);
 
         if (cropFromHost)
             SaveCropped(host, target, path);
@@ -1078,6 +1223,11 @@ public static class Program
             if (string.IsNullOrEmpty(grid.Name))
                 continue;
             report.AppendLine($"  {label} {grid.Name}: size={grid.ActualWidth:0}x{grid.ActualHeight:0}, rows={grid.Items.Count}");
+            if (grid.Name is "FindingsGrid" or "MaintenanceDeviceGrid" or "MaintenanceAuditFindingsGrid" or "MaintenanceProcessGrid")
+            {
+                var fillRatio = host.ActualHeight > 0 ? grid.ActualHeight / host.ActualHeight : 0;
+                report.AppendLine($"  {label} {grid.Name} fill: hostH={host.ActualHeight:0}, gridH={grid.ActualHeight:0}, ratio={fillRatio:0.00}");
+            }
             if (grid.ActualHeight > 0
                 && grid.ActualHeight < 236
                 && grid.Name != "MaintenanceAuditLogGrid")

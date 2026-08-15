@@ -789,15 +789,15 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"MaintenanceAuditScrollSurface\"", maintenance);
         Assert.Contains("x:Name=\"MaintenanceProcessScrollSurface\"", maintenance);
         Assert.Contains("const double tableMinHeight = 236d", maintenanceCode);
-        Assert.Contains("var tableViewportHeight = Math.Max(tableMinHeight, Math.Min(460d, height * 0.50))", maintenanceCode);
+        Assert.DoesNotContain("tableViewportHeight", maintenanceCode);
         Assert.Contains("FindingsGrid.Height = double.NaN", maintenanceCode);
-        Assert.Contains("FindingsGrid.MaxHeight = tableViewportHeight", maintenanceCode);
+        Assert.Contains("FindingsGrid.MaxHeight = double.PositiveInfinity", maintenanceCode);
         Assert.Contains("MaintenanceDeviceGrid.Height = double.NaN", maintenanceCode);
-        Assert.Contains("MaintenanceDeviceGrid.MaxHeight = tableViewportHeight", maintenanceCode);
+        Assert.Contains("MaintenanceDeviceGrid.MaxHeight = double.PositiveInfinity", maintenanceCode);
         Assert.Contains("MaintenanceAuditFindingsGrid.Height = double.NaN", maintenanceCode);
-        Assert.Contains("MaintenanceAuditFindingsGrid.MaxHeight = tableViewportHeight", maintenanceCode);
+        Assert.Contains("MaintenanceAuditFindingsGrid.MaxHeight = double.PositiveInfinity", maintenanceCode);
         Assert.Contains("MaintenanceProcessGrid.Height = double.NaN", maintenanceCode);
-        Assert.Contains("MaintenanceProcessGrid.MaxHeight = tableViewportHeight", maintenanceCode);
+        Assert.Contains("MaintenanceProcessGrid.MaxHeight = double.PositiveInfinity", maintenanceCode);
         Assert.Contains("MaintenanceDiagnosticsScrollSurface", maintenanceCode + maintenance);
 
         Assert.Contains("1080p", gate);
@@ -1059,7 +1059,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("const double tableMinHeight = 236d", maintenanceCode);
         Assert.Contains("MaintenanceAuditFindingsGrid.MinHeight = tableMinHeight", maintenanceCode);
         Assert.Contains("MaintenanceAuditFindingsGrid.Height = double.NaN", maintenanceCode);
-        Assert.Contains("MaintenanceAuditFindingsGrid.MaxHeight = tableViewportHeight", maintenanceCode);
+        Assert.Contains("MaintenanceAuditFindingsGrid.MaxHeight = double.PositiveInfinity", maintenanceCode);
         Assert.Contains("var auditAvailableHeight", maintenanceCode);
         Assert.DoesNotContain("MaintenanceAuditLayout.RowDefinitions[2].ActualHeight", maintenanceCode);
         Assert.Contains("var auditInspectorHeight", maintenanceCode);
@@ -1261,7 +1261,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"MaintenanceDeviceGrid\" Style=\"{StaticResource MaintenanceDataGrid}\"", maintenanceText);
         Assert.DoesNotContain("x:Name=\"MaintenanceDeviceGrid\" Height=\"{DynamicResource GscTableViewportHeight}\"", maintenanceText);
         Assert.Contains("MaintenanceDeviceGrid.Height = double.NaN", File.ReadAllText(maintenancePath + ".cs"));
-        Assert.Contains("MaintenanceDeviceGrid.MaxHeight = tableViewportHeight", File.ReadAllText(maintenancePath + ".cs"));
+        Assert.Contains("MaintenanceDeviceGrid.MaxHeight = double.PositiveInfinity", File.ReadAllText(maintenancePath + ".cs"));
         Assert.Contains("ItemsSource=\"{Binding DeviceComparisons}\"", maintenanceText);
     }
 
