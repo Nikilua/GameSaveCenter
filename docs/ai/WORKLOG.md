@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-15 UI-FEEDBACK-GLOBAL-ACTIVITY-CHIP-CENTER
+
+- 用户反馈首页“全局活动”中“备份成功”等结果气泡文字不是居中。
+- 根因：宽/窄两套 Kind/Result chip 的 TextBlock 未设置水平与文本对齐，Border 被固定列宽撑开后文字默认靠左。
+- 修复：`OverviewView.xaml` 四个 chip TextBlock 统一加 `HorizontalAlignment=Center / VerticalAlignment=Center / TextAlignment=Center`；`UiLayoutRegressionTests` 新增居中回归断言。
+- 验证：XAML/source 门禁通过；Playnite `263/263`；v6.2 截图刷新到 `artifacts/ui-qa/v6-2-shots/`。
+- 提交：`d962b4d`。
+
 ## 2026-08-15 UI-TABLE-AND-CHIP-CLOSURE-V6.2 实施完成
 
 - 计划：`docs/ai/UI_TABLE_AND_CHIP_CLOSURE_PLAN_V6_2.md`；报告：`docs/ai/UI_TABLE_AND_CHIP_CLOSURE_REPORT_V6_2.md`。

@@ -2,6 +2,11 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-15 UI-FEEDBACK-GLOBAL-ACTIVITY-CHIP-CENTER
+
+- 首页“全局活动”的“备份成功”等结果气泡文字已居中；宽/窄两套 Kind/Result chip 的 TextBlock 统一三向居中，回归断言已锁定。
+- 提交：`d962b4d`；Playnite `263/263`、XAML/source 门禁通过，截图 `artifacts/ui-qa/v6-2-shots/`。
+
 ## 2026-08-15 UI-TABLE-AND-CHIP-CLOSURE-V6.2 实施完成
 
 - v6.2 计划：`docs/ai/UI_TABLE_AND_CHIP_CLOSURE_PLAN_V6_2.md`；报告：`docs/ai/UI_TABLE_AND_CHIP_CLOSURE_REPORT_V6_2.md`。

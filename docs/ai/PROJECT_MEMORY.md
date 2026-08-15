@@ -3,6 +3,11 @@
 > 维护时间：2026-08-14
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-15 UI-FEEDBACK-GLOBAL-ACTIVITY-CHIP-CENTER
+
+- 首页“全局活动”的 Kind/Result chip 文字已强制水平/垂直/文本三向居中（`OverviewView.xaml` 宽窄两套共 4 个 TextBlock），并有 `UiLayoutRegressionTests` 回归断言锁定。
+- 该修正属于 v6.2 之后的用户反馈补丁，提交 `d962b4d`；Playnite `263/263`、XAML/source 门禁与截图均通过。
+
 ## 2026-08-15 UI-TABLE-AND-CHIP-CLOSURE-V6.2 当前事实
 
 - 来源：`GameSaveCenter_UI_Table_and_Chip_Fix_Pack_v6_2.zip`，计划 `docs/ai/UI_TABLE_AND_CHIP_CLOSURE_PLAN_V6_2.md`，报告 `docs/ai/UI_TABLE_AND_CHIP_CLOSURE_REPORT_V6_2.md`。
