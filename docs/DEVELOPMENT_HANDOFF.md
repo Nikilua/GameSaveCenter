@@ -2,6 +2,13 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-16 UI-REAL-HOST-CAPTURE-COMPLETENESS-FIX 实施完成
+
+- Real Host Audit 已按 Capture Contract 重构：embedded-current / controlled-host-window / ScrollSurfaceFull 三类输出，`capture-manifest.json` + gates + 完整性断言。
+- Controlled host 用无边框窗口，profile 即 client size，Dashboard Stretch 且不写死 Width/Height；embedded 模式绝不 resize Dashboard 或覆盖主题。
+- 关键文件：`RealHostUiAuditService.cs`、`UiDiagnosticsExporters.cs`、`UiAuditCaptureContractTests.cs`；报告 `docs/ai/REAL_HOST_CAPTURE_COMPLETENESS_FIX_REPORT.md`。
+- 基线：Playnite 287/287、Worker 191/191、Core 59/59；Release 0 warning/0 error。
+
 ## 2026-08-15 LUDUSAVI-DIAGNOSTICS-FIX 实施完成
 
 - 已修复：外部进程输出 UTF-8 解码；Ludusavi 失败时保留 `RawOutput`；剪贴板复制重试与失败降级（`CopyTextWithRetry`）。

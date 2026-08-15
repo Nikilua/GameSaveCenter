@@ -2,6 +2,17 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-16 UI-REAL-HOST-CAPTURE-COMPLETENESS-FIX 实施完成
+
+- 来源：`GameSaveCenter_RealHost_Capture_Completeness_Fix_Prompt.zip`；根因是截图语义模型错误，不是 UI 本身。
+- 已确认两个 P0 根因并修复：
+  - Controlled Host 过去同时把 Window.Width/Height 与 Dashboard.Width/Height 设成 profile，WPF Window 是 outer size，client 更小，导致右/底被 clip；真实 embedded 场景也不能改 Dashboard 尺寸。现改为无边框审计窗口（client == outer == profile），Dashboard `ClearValue(Width/Height)` + Stretch，并加 `CAPTURE_PROFILE_SIZE_MISMATCH` 断言。
+  - `SaveFullPage` 过去只挑 ExtentHeight 最大的一个 ScrollViewer 当作整页，导致 sidebar/header/其他 scroller 缺失。现拆分为三种契约：`embedded-current/viewport`、`controlled/<profile>/<theme>/viewport`、`scroll-surfaces/<route>__<name>.png`，并输出 `capture-manifest.json`。
+- 新增完整性断言：viewport 输出尺寸必须等于 `Actual*DpiScale`（`CAPTURE_VIEWPORT_CLIPPED` gate）、边界 sentinel 几何、Controlled client size 断言、所有 meaningful ScrollViewer 枚举。
+- 元数据改为真实值：`Mode=embedded-current|controlled-host-window`、`CaptureOrigin`、`DedicatedAuditWindowUsed`、`ProfileSizeApplied`、`ThemeOverrideApplied`；PlayniteDesktopVersion 不再回退成假精确的 1.0.0.0。
+- 测试：新增 `UiAuditCaptureContractTests`（6 项：controlled 不改 Dashboard 尺寸、embedded 不 resize/不改主题、DPI 像素契约、多 ScrollViewer 枚举、右下 sentinel 几何、manifest 字段）；Playnite 287/287、Worker 191/191、Core 59/59。
+- 报告：`docs/ai/REAL_HOST_CAPTURE_COMPLETENESS_FIX_REPORT.md`。
+
 ## 2026-08-15 LUDUSAVI-DIAGNOSTICS-FIX 实施完成
 
 - 用户诊断：备份失败直接原因是 Ludusavi 联网更新 `raw.githubusercontent.com/.../manifest.yaml` 超时（22:08/22:12 失败，网络恢复后重试成功），不是存档路径或 ZIP 写入问题。

@@ -3,6 +3,16 @@
 > 维护时间：2026-08-14
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-16 UI-REAL-HOST-CAPTURE-COMPLETENESS-FIX 当前事实
+
+- Real Host Audit 输出语义已重构为三类，不再用“最大 ScrollViewer”冒充整页：
+  - `embedded-current/viewport/`：真实 Playnite 嵌入 Dashboard 的当前视口（production visual truth；本次 headless 会话不可用时会如实标注）。
+  - `controlled/<profile>/<theme>/viewport/`：无边框审计窗口，profile 即 client size，Dashboard Stretch。
+  - `scroll-surfaces/<route>__<name>.png`：每个 meaningful ScrollViewer 的完整 extent。
+- 关键实现：无边框窗口（client == outer）、Dashboard `ClearValue(Width/Height)` + Stretch、`SaveViewport` 校验 `Actual*DpiScale` 输出尺寸、`CAPTURE_VIEWPORT_CLIPPED`/`CAPTURE_PROFILE_SIZE_MISMATCH` gates、`capture-manifest.json`。
+- 元数据：`Mode` 只能是 `embedded-current` 或 `controlled-host-window`；`CaptureOrigin`、`DedicatedAuditWindowUsed`、`ProfileSizeApplied`、`ThemeOverrideApplied` 必填；PlayniteDesktopVersion 取宿主 exe 文件版本，失败写 `unknown`。
+- 基线：Playnite 287/287、Worker 191/191、Core 59/59；Release 0 warning/0 error。
+
 ## 2026-08-15 LUDUSAVI-DIAGNOSTICS-FIX 当前事实
 
 - 备份失败常见根因之一是 Ludusavi 联网更新 manifest 超时（`raw.githubusercontent.com/.../manifest.yaml`）；这不是存档路径/ZIP 写入问题，网络恢复后重试即成功。

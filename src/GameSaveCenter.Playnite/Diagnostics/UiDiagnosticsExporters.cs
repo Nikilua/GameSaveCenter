@@ -90,6 +90,38 @@ namespace GameSaveCenter.Playnite.Diagnostics
             GC.WaitForPendingFinalizers();
         }
 
+        /// <summary>
+        /// Expected bitmap pixel size for a visual rendered at the given scale. The viewport
+        /// capture contract compares this against the actual PNG dimensions.
+        /// </summary>
+        public static (int Width, int Height) ExpectedBitmapSize(FrameworkElement element, double renderScale)
+        {
+            var scale = renderScale > 0 ? renderScale : 1d;
+            return (
+                (int)Math.Ceiling(element.ActualWidth * scale),
+                (int)Math.Ceiling(element.ActualHeight * scale));
+        }
+
+        public static (int Width, int Height)? ReadPngSize(string path)
+        {
+            if (!File.Exists(path))
+                return null;
+            try
+            {
+                using var stream = File.OpenRead(path);
+                var decoder = BitmapDecoder.Create(
+                    stream,
+                    BitmapCreateOptions.DelayCreation,
+                    BitmapCacheOption.OnDemand);
+                var frame = decoder.Frames[0];
+                return (frame.PixelWidth, frame.PixelHeight);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         public static void SaveScrollViewerFull(ScrollViewer scroller, string path)
         {
             if (scroller.Visibility != Visibility.Visible || scroller.ActualWidth <= 0 || scroller.ViewportHeight <= 0)
