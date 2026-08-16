@@ -779,7 +779,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("OverviewPrimaryLayoutRow.Height = stack", overviewCode);
         Assert.DoesNotContain("OverviewActivityList.MaxHeight", overviewCode);
         Assert.Contains("OverviewActivityTimelineList.Tag = compactActivity ? \"Compact\" : \"Wide\"", overviewCode);
-        Assert.Contains("OverviewActivityHeaderRow.Visibility = compactActivity ? Visibility.Collapsed : Visibility.Visible", overviewCode);
+        Assert.DoesNotContain("OverviewActivityHeaderRow.Visibility", overviewCode);
 
         var overviewDocument = XDocument.Parse(overview);
         var activity = overviewDocument.Descendants().Single(element =>

@@ -59,17 +59,7 @@
                 <Setter Property="Padding" Value="6,4"/>
                 <Setter Property="CornerRadius" Value="12"/>
             </Style>
-            <Style x:Key="OverviewHeaderFrame" TargetType="Border">
-                <Setter Property="Background" Value="{DynamicResource GscTableHeaderBrush}"/>
-                <Setter Property="BorderBrush" Value="{DynamicResource GscTableDividerBrush}"/>
-                <Setter Property="BorderThickness" Value="1"/>
-                <Setter Property="CornerRadius" Value="8"/>
-                <Setter Property="Padding" Value="6,2"/>
-                <Setter Property="Margin" Value="6,0,6,8"/>
-                <Setter Property="SnapsToDevicePixels" Value="True"/>
-                <Setter Property="UseLayoutRounding" Value="True"/>
-            </Style>
-            <Style x:Key="GscActivityRowBorder" TargetType="Border">
+             <Style x:Key="GscActivityRowBorder" TargetType="Border">
                 <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="BorderBrush" Value="{DynamicResource GscDividerBrush}"/>
                 <Setter Property="BorderThickness" Value="0,0,0,1"/>
@@ -366,24 +356,9 @@
                         <StackPanel><TextBlock Style="{DynamicResource GscRedesignSectionTitle}" Text="全局活动"/><TextBlock Style="{DynamicResource GscRedesignSectionSubtitle}" Text="备份、恢复、云端、媒体、工具、健康、冲突、完整性与仓库修复事件" Margin="0,4,0,0"/></StackPanel>
                         <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding RefreshCommand}" Content="刷新"/>
                     </Grid>
-                    <Border x:Name="OverviewActivityHeaderRow" Grid.Row="1" Style="{StaticResource OverviewHeaderFrame}">
-                        <Grid Height="28">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="40"/>
-                                <ColumnDefinition Width="150"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="132"/>
-                                <ColumnDefinition Width="112"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="1" Text="对象/范围" Style="{DynamicResource GscCaptionStyle}" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Column="2" Text="事件" Style="{DynamicResource GscCaptionStyle}" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Column="3" Text="分类 / 结果" Style="{DynamicResource GscCaptionStyle}" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Column="4" Text="时间" Style="{DynamicResource GscCaptionStyle}" FontWeight="SemiBold" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                        </Grid>
-                    </Border>
-                    <Border Grid.Row="2" Style="{StaticResource OverviewActivityFrame}">
-                        <Grid>
-                            <ItemsControl x:Name="OverviewActivityTimelineList" ItemsSource="{Binding Activities}" HorizontalContentAlignment="Stretch" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                     <Border Grid.Row="1" Style="{StaticResource OverviewActivityFrame}">
+                         <Grid>
+                             <ItemsControl x:Name="OverviewActivityTimelineList" ItemsSource="{Binding Activities}" HorizontalContentAlignment="Stretch" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <VirtualizingStackPanel/>
@@ -392,54 +367,51 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <Border Style="{StaticResource GscActivityRowBorder}">
-                                        <Grid MinHeight="52">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="40"/>
-                                                <ColumnDefinition x:Name="ActivityScopeColumn" Width="150"/>
-                                                <ColumnDefinition x:Name="ActivitySummaryColumn" Width="*" MinWidth="140"/>
-                                                <ColumnDefinition x:Name="ActivityMetaColumn" Width="132"/>
-                                                <ColumnDefinition x:Name="ActivityTimeColumn" Width="112"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Border x:Name="ActivityKindPill" Width="30" Height="30" CornerRadius="9" Background="{DynamicResource GscInfoIconFillBrush}" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                <TextBlock x:Name="ActivityGlyph" FontFamily="Segoe MDL2 Assets" Text="{Binding Glyph}" FontSize="14" Foreground="{DynamicResource GscInfoBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                            </Border>
-                                            <StackPanel Grid.Column="1" Margin="0,0,12,0" VerticalAlignment="Center" MinWidth="0">
-                                                <TextBlock Text="{Binding GameName, Mode=OneWay, TargetNullValue=全局}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/>
-                                            </StackPanel>
-                                            <TextBlock Grid.Column="2" Text="{Binding Summary, Mode=OneWay}" FontSize="11" Foreground="{DynamicResource GscSecondaryTextBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Summary}" VerticalAlignment="Center" Margin="0,0,12,0"/>
-                                            <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,12,0">
-                                                <Border x:Name="ActivityKindChip" Style="{DynamicResource GscRedesignContextPill}" Background="{DynamicResource GscInfoIconFillBrush}" BorderBrush="{DynamicResource GscInfoBrush}" Margin="0,0,6,0" Padding="6,1" VerticalAlignment="Center"><TextBlock Text="{Binding KindDisplay, Mode=OneWay}" FontSize="10" TextTrimming="CharacterEllipsis" ToolTip="{Binding KindDisplay, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/></Border>
-                                                <Border x:Name="ActivityResultChip" Style="{DynamicResource GscRedesignContextPill}" Background="{DynamicResource GscControlFillBrush}" BorderBrush="{DynamicResource GscControlStrokeBrush}" Padding="6,1" VerticalAlignment="Center"><TextBlock Text="{Binding ResultDisplay, Mode=OneWay}" FontSize="10" TextTrimming="CharacterEllipsis" ToolTip="{Binding ResultDisplay, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/></Border>
-                                            </StackPanel>
-                                            <TextBlock Grid.Column="4" Text="{Binding CreatedDisplay, Mode=OneWay}" FontSize="11" Foreground="{DynamicResource GscSecondaryTextBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="8,0,20,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding CreatedDisplay, Mode=OneWay}"/>
-                                        </Grid>
-                                        </Border>
-                                        <DataTemplate.Triggers>
-                                            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="Compact">
-                                                <Setter TargetName="ActivityScopeColumn" Property="Width" Value="130"/>
-                                                <Setter TargetName="ActivitySummaryColumn" Property="MinWidth" Value="100"/>
-                                                <Setter TargetName="ActivityMetaColumn" Property="Width" Value="112"/>
-                                                <Setter TargetName="ActivityTimeColumn" Property="Width" Value="96"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding Result}" Value="Failed">
-                                                <Setter TargetName="ActivityKindPill" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/>
-                                                <Setter TargetName="ActivityGlyph" Property="Foreground" Value="{DynamicResource GscErrorBrush}"/>
-                                                <Setter TargetName="ActivityResultChip" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/>
-                                                <Setter TargetName="ActivityResultChip" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding Result}" Value="Warning">
-                                                <Setter TargetName="ActivityKindPill" Property="Background" Value="{DynamicResource GscSafetyFillBrush}"/>
-                                                <Setter TargetName="ActivityGlyph" Property="Foreground" Value="{DynamicResource GscWarningBrush}"/>
-                                                <Setter TargetName="ActivityResultChip" Property="Background" Value="{DynamicResource GscSafetyFillBrush}"/>
-                                                <Setter TargetName="ActivityResultChip" Property="BorderBrush" Value="{DynamicResource GscWarningBrush}"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding Result}" Value="Succeeded">
-                                                <Setter TargetName="ActivityKindPill" Property="Background" Value="{DynamicResource GscSuccessIconFillBrush}"/>
-                                                <Setter TargetName="ActivityGlyph" Property="Foreground" Value="{DynamicResource GscSuccessBrush}"/>
-                                                <Setter TargetName="ActivityResultChip" Property="Background" Value="{DynamicResource GscSuccessIconFillBrush}"/>
-                                                <Setter TargetName="ActivityResultChip" Property="BorderBrush" Value="{DynamicResource GscSuccessBrush}"/>
-                                            </DataTrigger>
-                                        </DataTemplate.Triggers>
+                                         <Grid MinHeight="52">
+                                             <Grid.ColumnDefinitions>
+                                                 <ColumnDefinition x:Name="ActivityKindColumn" Width="64"/>
+                                                 <ColumnDefinition x:Name="ActivitySummaryColumn" Width="*" MinWidth="140"/>
+                                                 <ColumnDefinition x:Name="ActivityResultColumn" Width="Auto"/>
+                                                 <ColumnDefinition x:Name="ActivityTimeColumn" Width="84"/>
+                                             </Grid.ColumnDefinitions>
+                                             <Border x:Name="ActivityKindPill" Grid.Column="0" Style="{DynamicResource GscRedesignContextPill}" Background="{DynamicResource GscInfoIconFillBrush}" BorderBrush="{DynamicResource GscInfoBrush}" Padding="7,3" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                                 <TextBlock Text="{Binding KindDisplay, Mode=OneWay}" FontSize="10" TextTrimming="CharacterEllipsis" ToolTip="{Binding KindDisplay, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
+                                             </Border>
+                                             <StackPanel Grid.Column="1" Margin="10,0,12,0" VerticalAlignment="Center" MinWidth="0">
+                                                 <TextBlock Text="{Binding GameName, Mode=OneWay, TargetNullValue=全局}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/>
+                                                 <TextBlock Text="{Binding Summary, Mode=OneWay}" FontSize="11" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,2,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding Summary}"/>
+                                             </StackPanel>
+                                             <Border x:Name="ActivityResultChip" Grid.Column="2" Style="{DynamicResource GscRedesignContextPill}" Background="{DynamicResource GscControlFillBrush}" BorderBrush="{DynamicResource GscControlStrokeBrush}" Padding="7,3" Margin="0,0,12,0" VerticalAlignment="Center">
+                                                 <TextBlock Text="{Binding ResultDisplay, Mode=OneWay}" FontSize="10" TextTrimming="CharacterEllipsis" ToolTip="{Binding ResultDisplay, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
+                                             </Border>
+                                             <TextBlock Grid.Column="3" Text="{Binding CreatedDisplay, Mode=OneWay}" FontSize="11" Foreground="{DynamicResource GscSecondaryTextBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,14,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding CreatedDisplay, Mode=OneWay}"/>
+                                         </Grid>
+                                         </Border>
+                                         <DataTemplate.Triggers>
+                                             <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="Compact">
+                                                 <Setter TargetName="ActivitySummaryColumn" Property="MinWidth" Value="100"/>
+                                                 <Setter TargetName="ActivityKindColumn" Property="Width" Value="58"/>
+                                                 <Setter TargetName="ActivityTimeColumn" Property="Width" Value="76"/>
+                                             </DataTrigger>
+                                             <DataTrigger Binding="{Binding Result}" Value="Failed">
+                                                 <Setter TargetName="ActivityResultChip" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/>
+                                                 <Setter TargetName="ActivityResultChip" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/>
+                                                 <Setter TargetName="ActivityKindPill" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/>
+                                                 <Setter TargetName="ActivityKindPill" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/>
+                                             </DataTrigger>
+                                             <DataTrigger Binding="{Binding Result}" Value="Warning">
+                                                 <Setter TargetName="ActivityResultChip" Property="Background" Value="{DynamicResource GscSafetyFillBrush}"/>
+                                                 <Setter TargetName="ActivityResultChip" Property="BorderBrush" Value="{DynamicResource GscWarningBrush}"/>
+                                                 <Setter TargetName="ActivityKindPill" Property="Background" Value="{DynamicResource GscSafetyFillBrush}"/>
+                                                 <Setter TargetName="ActivityKindPill" Property="BorderBrush" Value="{DynamicResource GscWarningBrush}"/>
+                                             </DataTrigger>
+                                             <DataTrigger Binding="{Binding Result}" Value="Succeeded">
+                                                 <Setter TargetName="ActivityResultChip" Property="Background" Value="{DynamicResource GscSuccessIconFillBrush}"/>
+                                                 <Setter TargetName="ActivityResultChip" Property="BorderBrush" Value="{DynamicResource GscSuccessBrush}"/>
+                                                 <Setter TargetName="ActivityKindPill" Property="Background" Value="{DynamicResource GscSuccessIconFillBrush}"/>
+                                                 <Setter TargetName="ActivityKindPill" Property="BorderBrush" Value="{DynamicResource GscSuccessBrush}"/>
+                                             </DataTrigger>
+                                         </DataTemplate.Triggers>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>

@@ -2092,3 +2092,26 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `MANUAL QA REQUIRED`：真实 Playnite 宿主中的最终 DPI、Follow/高对比度主题、键盘焦点和连续缩放；本阶段未将离屏渲染冒充为人工验收。
 
 **提交：**本阶段代码、测试与文档需由 Agent 独立 commit 并 push 到 `main`。
+
+## 2026-08-16 UI-208 Overview 全局活动业务列表对齐 UiLab
+
+**问题根因：**
+
+- UiLab 的“全局活动”是业务阅读列表：左侧类型胶囊，中间对象/事件两行，右侧结果和时间；生产首页之前仍保留了额外的 DataGrid 式表头和图标列，所以即使卡片外观接近，页面信息层级仍明显不同。
+
+**实现内容：**
+
+- 移除 Overview 全局活动专用表头，改为 UiLab 同款四列业务行；`Activities`、`KindDisplay`、`ResultDisplay`、虚拟化 ItemsControl 和页面级滚动保持不变。
+- 类型与结果胶囊继续按真实 `Result` 使用成功、警告、失败语义色；窄窗口只收紧类型/时间列，不引入 demo 内部滚动条。
+- 更新布局回归测试，确保四列、中文摘要截断、状态胶囊和时间列间距不会回退到旧表格式。
+
+**验证结果：**
+
+- `validate-source.py`、`check-xaml.ps1`、WPF 静态审查通过（无新增错误）。
+- Playnite Release 构建 0 warning / 0 error；Playnite 测试 303/303 通过。
+- RenderHarness v6/v6.2 首页宽/窄截图通过；全局活动业务行无文字重叠，页面滚动和真实绑定未改变。
+
+**验证边界：**
+
+- `AUTO VERIFIED`：源码/XAML、生产编译、Playnite 测试、Overview 宽/窄离屏截图。
+- `MANUAL QA REQUIRED`：真实 Playnite 宿主中的 2K/DPI、Follow/高对比度主题、键盘焦点和连续缩放；本阶段未把离屏截图冒充宿主像素真值。

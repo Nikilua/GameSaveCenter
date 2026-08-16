@@ -3,6 +3,13 @@
 > 维护时间：2026-08-14
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-16 UI-208 Overview 全局活动当前事实
+
+- `OverviewView.xaml` 的全局活动已按 UiLab 业务列表迁移：类型胶囊 → 对象/事件两行 → 结果胶囊 → 时间，不再额外显示 DataGrid 式表头，也不使用图标列。
+- 生产仍绑定真实 `Activities`，保留 `ItemsControl` Recycling、`KindDisplay`/`ResultDisplay`、结果语义色和 `OverviewStackScrollSurface` 页面滚动；demo 的滚动条、演示数据和右上角色板没有迁移。
+- 窄窗口只缩小 `ActivityKindColumn`、`ActivityTimeColumn` 并降低摘要最小宽度；不要重新添加内部滚动或把时间/结果挤进摘要列。
+- UI-208 自动验证：Playnite 303/303，生产 Release 0 warning/0 error，v6/v6.2 Overview 宽/窄截图通过；真实 Playnite 宿主主题/DPI/键盘/连续缩放仍需人工验收。
+
 ## 2026-08-16 UI-205-ACRYLIC-PARITY 当前事实
 
 - 权威视觉来源是 `D:\workplace\github\GameSaveCenter.AcrylicFork`（当前参考提交 `b09cba6`），不是 `GameSaveCenter.UiLab`。生产已迁移其页面层级、颜色/表面层级、圆角尺度、按钮/标题比例、Dashboard 开放式页面头部和 Settings 分类栏；不要回头修复 AcrylicFork 样板自身的布局 bug。

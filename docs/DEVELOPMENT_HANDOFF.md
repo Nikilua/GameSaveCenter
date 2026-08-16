@@ -443,6 +443,14 @@ git branch --show-current
 - 本阶段验证：`validate-source.py`、`check-xaml.ps1`、WPF 静态审查通过；Playnite 测试 303/303；生产 Release 0 warning / 0 error；Overview 多尺寸、Light/Dark 与 resize transition 离屏审计通过。全量 render harness 仍仅剩 Save/Media 窄尺寸 `<236 DIP` 历史表格门禁，不要误称全量通过。
 - 后续人工 QA：真实 Playnite 2K/DPI、Follow/高对比度、键盘焦点、长中文文案和连续缩放；优先检查 Overview 宽屏侧栏与窄屏下移，再继续其他页面的页面级迁移。
 
+## 2026-08-16 UI-208 Overview 全局活动交接
+
+- 首页“全局活动”已从生产旧的表头 + 图标列改为 UiLab 业务列表四列：类型、对象/事件、结果、时间；真实 `Activities` 绑定与虚拟化保持不变。
+- `OverviewActivityTimelineList` 继续使用页面级滚动契约，窄窗通过 `ActivityKindColumn`/`ActivityTimeColumn` 的响应式收紧解决空间问题，不得引入 UiLab 的滚动条模板。
+- 本阶段验证：`validate-source.py`、`check-xaml.ps1`、WPF 静态审查、Playnite 303/303、Release 0 warning/0 error、RenderHarness v6/v6.2 宽/窄首页截图均通过。
+- 下一阶段继续对照 UiLab 的 Saves/Trainer/Media/Tasks/Maintenance/Settings 页面，优先收口共享按钮、Tab、DataGrid 表头和 Inspector 卡片；全量 render harness 仍需单独处理 Save/Media 窄表历史门禁。
+- 真实 Playnite 2K/DPI、Follow/高对比度、键盘焦点与连续缩放仍为 `MANUAL QA REQUIRED`，不能用离屏截图替代。
+
 ## 用户原话（必须保留）
 
 > 在继续之前你最好是能够搞一个文件，能够指引去哪里读取获得开发方向等等。这样我直接说你读取xx文件就可以了，他就知道后续怎么开发了。连我这段话你也要放进去，省得我每次都说了（这样每次开发他们都会维护这个项目）。

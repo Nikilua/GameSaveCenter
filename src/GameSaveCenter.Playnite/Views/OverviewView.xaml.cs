@@ -159,8 +159,6 @@ namespace GameSaveCenter.Playnite.Views
             {
                 var compactActivity = activityWidth < 900;
                 OverviewActivityTimelineList.Tag = compactActivity ? "Compact" : "Wide";
-                if (OverviewActivityHeaderRow != null)
-                    OverviewActivityHeaderRow.Visibility = compactActivity ? Visibility.Collapsed : Visibility.Visible;
             }
 
             // HomeView places TODAY and the selected-game context in a two-column row.
