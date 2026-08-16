@@ -150,6 +150,11 @@
                 <ListBoxItem Content="当前游戏媒体"/>
                 <ListBoxItem Content="来源规则"/>
             </ListBox>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="14,0,0,0">
+                <TextBlock Style="{DynamicResource GscCaptionStyle}" TextTrimming="CharacterEllipsis" ToolTip="截图与录像自动归档 · 增量同步">
+                    <Run Text="待归类 "/><Run Text="{Binding Snapshot.UnassignedMediaCount, Mode=OneWay}"/><Run Text=" · 截图与录像自动归档 · 增量同步"/>
+                </TextBlock>
+            </StackPanel>
         </Grid>
         <Grid Grid.Row="2" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid x:Name="MediaInboxScrollSurface" Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ClipToBounds="True">

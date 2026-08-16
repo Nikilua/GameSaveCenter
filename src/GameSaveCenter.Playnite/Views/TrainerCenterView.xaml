@@ -47,6 +47,11 @@
                 <ListBoxItem Content="FLiNG 在线库"/>
                 <ListBoxItem Content="可下载版本"/>
             </ListBox>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="14,0,0,0">
+                <TextBlock Style="{DynamicResource GscCaptionStyle}" TextTrimming="CharacterEllipsis" ToolTip="修改器 · CT 表 · 自定义启动项 · 拖拽导入">
+                    <Run Text="已绑定工具 "/><Run Text="{Binding GameTools.Count, Mode=OneWay}"/><Run Text=" · 修改器 · CT 表 · 自定义启动项 · 拖拽导入"/>
+                </TextBlock>
+            </StackPanel>
         </Grid>
         <Grid x:Name="TrainerPanels" Grid.Row="1">
         <Grid x:Name="InstalledToolsLayout" Margin="0,0,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscInspectorWidth}"/></Grid.ColumnDefinitions><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>

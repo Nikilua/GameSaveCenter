@@ -4668,6 +4668,27 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Null(exception);
     }
 
+    [Fact]
+    public void AcrylicForkParityCaptionsRemainInWorkspaceHeaders()
+    {
+        var viewsRoot = Path.Combine(FindRepositoryRoot(), "src", "GameSaveCenter.Playnite", "Views");
+        var media = File.ReadAllText(Path.Combine(viewsRoot, "MediaCenterView.xaml"));
+        var trainer = File.ReadAllText(Path.Combine(viewsRoot, "TrainerCenterView.xaml"));
+        var save = File.ReadAllText(Path.Combine(viewsRoot, "SaveCenterView.xaml"));
+        var maintenance = File.ReadAllText(Path.Combine(viewsRoot, "MaintenanceView.xaml"));
+
+        Assert.Contains("待归类 ", media);
+        Assert.Contains("Snapshot.UnassignedMediaCount, Mode=OneWay", media);
+        Assert.Contains("截图与录像自动归档 · 增量同步", media);
+        Assert.Contains("已绑定工具 ", trainer);
+        Assert.Contains("GameTools.Count, Mode=OneWay", trainer);
+        Assert.Contains("修改器 · CT 表 · 自定义启动项 · 拖拽导入", trainer);
+        Assert.Contains("SelectedGame.MatchStateDisplay, Mode=OneWay", save);
+        Assert.Contains("SelectedGame.HealthStateDisplay, Mode=OneWay", save);
+        Assert.Contains("Snapshot.SafeModeEnabled", maintenance);
+        Assert.Contains("IsCloudDegraded", maintenance);
+    }
+
     private static string FindRepositoryRoot()
     {
         foreach (var initialDirectory in new[]

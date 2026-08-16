@@ -51,6 +51,22 @@
                 <ListBoxItem Content="异常与审计"/>
                 <ListBoxItem Content="进程映射"/>
             </ListBox>
+            <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Margin="14,0,0,0"
+                       TextTrimming="CharacterEllipsis" ToolTip="安全模式与云端状态">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource GscCaptionStyle}">
+                        <Setter Property="Text" Value="安全模式未启用 · 云端可用"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Snapshot.SafeModeEnabled}" Value="True">
+                                <Setter Property="Text" Value="安全模式已启用 · 云端可用"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsCloudDegraded}" Value="True">
+                                <Setter Property="Text" Value="安全模式未启用 · 云端降级"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
         </Grid>
         <Grid x:Name="MaintenancePanels" Grid.Row="1">
             <Grid x:Name="MaintenanceDiagnosticsPanel">
