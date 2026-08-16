@@ -3,6 +3,12 @@
 > 维护时间：2026-08-14
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-16 UI-213 真实宿主审计当前事实
+
+- 当前提交 `420483f` 的 Release 包已通过 `scripts/real-host-audit.ps1` 安装并启动 Playnite；人工通过 Computer Use 进入真实 Playnite，确认 GameSaveCenter 实例和 Settings 宿主窗口可见，未出现立即的 XAML 解析崩溃。
+- `artifacts/ui-host-audit/summary.json` 明确记录：`EmbeddedSettingsCaptured=true`、`EmbeddedDashboardCaptured=false`、`ControlledDashboardCaptured=true`、`ProductionVisualSourceOfTruthAvailable=false`。Settings 的真实宿主截图/滚动证据已生成，但 Controlled Dashboard 证据不是生产嵌入像素。
+- 因自动 UIAutomation 仍找不到 Playnite 左侧 GameSaveCenter 入口，本轮不能把 Media 缩略图网格写成“真实宿主已验收”；Media 仍以 `artifacts/ui-qa/media-grid-migration-v3` 的离屏多尺寸/主题结果作为自动证据，真实大媒体库、DPI、键盘和连续缩放继续是 `MANUAL QA REQUIRED`。
+
 ## 2026-08-16 UI-212 Media 网格当前事实
 
 - `MediaCenterView.xaml` 的当前媒体 `MediaGrid` 已按 UiLab 的 164×142 DIP 卡片节奏改为 `ui:VirtualizingWrapPanel`，缩略图高度 96 DIP；卡片包含真实 `ArchivePath` 异步缩略图、录像/收藏标识、文件名、拍摄时间和云端状态。

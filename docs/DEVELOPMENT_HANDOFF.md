@@ -2,6 +2,12 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-16 UI-213 真实宿主审计交接
+
+- 当前 `420483f` 已执行 Release 真实宿主审计：构建、Core 59/59、Worker 191/191、Playnite 303/303、安装与 Playnite 启动通过；人工进入真实 Playnite 后确认 GameSaveCenter Settings 宿主窗口可见。
+- `artifacts/ui-host-audit/summary.json`：`EmbeddedSettingsCaptured=true`、`EmbeddedDashboardCaptured=false`、`ControlledDashboardCaptured=true`、`ProductionVisualSourceOfTruthAvailable=false`。因此 Settings 的 `EmbeddedPlaynite` 截图有效，Controlled Dashboard 截图只能作为辅助布局证据，不能宣称为生产嵌入视觉真值。
+- 自动 UIAutomation 仍未找到 Playnite 左侧 GameSaveCenter 入口；Media 缩略图网格尚未完成真实宿主视觉验收。后续人工 QA 优先进入真实 Media 页检查 164×142 卡片、实际缩略图、滚动和选中/Inspector 行为，再检查 DPI、主题、键盘焦点和连续缩放。
+
 ## 2026-08-16 UI-205-ACRYLIC-PARITY 当前开发基线
 
 - 权威参考是 `D:\workplace\github\GameSaveCenter.AcrylicFork` @ `b09cba6`，不是 UiLab；其页面视觉与结构已迁入生产共享资源。AcrylicFork 演示数据、右上角颜色/主题按钮和样例滚动条明确不迁移，七组顶部色值仅用于主题参考。

@@ -2,6 +2,19 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-16 UI-213 真实宿主审计边界收口
+
+**审计结果：**
+
+- 用当前 `420483f` 执行 `scripts/real-host-audit.ps1 -Configuration Release -Output artifacts/ui-host-audit`；Release 构建、Core 59/59、Worker 191/191、Playnite 303/303、安装和 Playnite 启动均通过。
+- 人工打开真实 Playnite 并进入 GameSaveCenter，确认实际宿主 Settings 窗口可见；`EmbeddedPlaynite` Settings viewport/scroll evidence 已写入 `artifacts/ui-host-audit`。
+- `summary.json` 为 `EmbeddedSettingsCaptured=true`、`EmbeddedDashboardCaptured=false`、`ControlledDashboardCaptured=true`、`ProductionVisualSourceOfTruthAvailable=false`。自动 UIAutomation 未找到侧栏入口，故受控 Dashboard 截图不作为真实生产视觉真值。
+
+**后续边界：**
+
+- 本阶段只完成真实宿主加载与 Settings 抽查；Media 新缩略图网格的真实宿主视觉仍需人工进入 Media 页确认，不能以离屏 RenderHarness 代替。
+- 离屏证据仍为 `artifacts/ui-qa/media-grid-migration-v3`，其 `render-qa OK`、Light/Dark 和多尺寸结果有效；生产滚动条/虚拟化边界继续保持。
+
 ## 2026-08-16 UI-205-REAL-HOST-MIGRATION-FIX AcrylicFork 生产迁移收口
 
 **实现内容：**
