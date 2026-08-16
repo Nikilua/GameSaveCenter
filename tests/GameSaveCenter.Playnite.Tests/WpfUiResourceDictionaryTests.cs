@@ -428,11 +428,14 @@ public sealed class WpfUiResourceDictionaryTests
         var taskCode = File.ReadAllText(taskPath + ".cs");
         var viewModel = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
 
-        Assert.Contains("x:Name=\"TaskSummaryPanel\" Grid.Row=\"0\" Grid.ColumnSpan=\"3\" Columns=\"4\"", task);
+        Assert.Contains("x:Name=\"TaskSummaryPanel\" Grid.Row=\"0\" Grid.ColumnSpan=\"3\" Style=\"{StaticResource TaskSummaryBand}\"", task);
+        Assert.Contains("x:Name=\"TaskSummaryGrid\"", task);
+        Assert.Contains("<ColumnDefinition Width=\"1\"/>", task);
+        Assert.Contains("Fill=\"{DynamicResource GscDividerBrush}\"", task);
         Assert.Contains("{Binding RunningTaskCount, Mode=OneWay}", task);
         Assert.Contains("{Binding RetryableTaskCount, Mode=OneWay}", task);
         Assert.Contains("{Binding CompletedTaskCount, Mode=OneWay}", task);
-        Assert.Contains("TaskSummaryPanel.Columns = width >= 900 ? 4 : width >= 680 ? 2 : 1", taskCode);
+        Assert.DoesNotContain("TaskSummaryPanel.Columns", taskCode);
         Assert.Contains("public int RunningTaskCount => Tasks.Count", viewModel);
         Assert.Contains("public int RetryableTaskCount => Tasks.Count(CanRetryTask)", viewModel);
         Assert.Contains("public int CompletedTaskCount => Tasks.Count", viewModel);
@@ -1923,11 +1926,11 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("BasedOn=\"{StaticResource GscInspectorScrollViewer}\"", media);
         Assert.Contains("<DataTrigger Binding=\"{Binding SelectedMedia}\" Value=\"{x:Null}\">", media);
         Assert.Contains("MinHeight=\"96\" MaxHeight=\"160\"", maintenance);
-        Assert.Contains("TaskSummaryPanel.Columns", taskCode);
+        Assert.DoesNotContain("TaskSummaryPanel.Columns", taskCode);
         var taskView = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml"));
-        Assert.Contains("Style=\"{DynamicResource GscRedesignMetricBorder}\" Padding=\"14,12\"", taskView);
-        Assert.Contains("FontSize=\"30\" FontWeight=\"SemiBold\"", taskView);
-        Assert.Contains("运行、失败、取消和完成", taskView);
+        Assert.Contains("x:Key=\"TaskSummaryBand\" TargetType=\"Border\" BasedOn=\"{StaticResource GscReadingCardStyle}\"", taskView);
+        Assert.Contains("FontSize=\"26\" FontWeight=\"SemiBold\"", taskView);
+        Assert.Contains("Text=\"任务总数\"", taskView);
         Assert.DoesNotContain("x:Key=\"TaskMetricCard\"", taskView);
         Assert.Contains("x:Name=\"TaskDetailScrollViewer\"", taskView);
         Assert.Contains("Text=\"{Binding TaskSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}\"", taskView);
@@ -1935,6 +1938,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.DoesNotContain("SelectedIndex=\"0\"", taskView);
         Assert.Contains("x:Name=\"TaskStatusFilterComboBox\"", taskView);
         Assert.Contains("x:Name=\"TaskGameFilterComboBox\"", taskView);
+        Assert.Contains("x:Name=\"TaskGameFilterHost\"", taskView);
+        Assert.Contains("TaskFiltersPanel.Children.Remove(TaskGameFilterHost)", taskCode);
+        Assert.Contains("TaskMoreFiltersHost.Children.Add(TaskGameFilterHost)", taskCode);
         Assert.Contains("x:Name=\"TaskTypeFilterComboBox\"", taskView);
         Assert.DoesNotContain("SelectionChanged=\"OnTaskFilterSelectionChanged\"", taskView);
         Assert.DoesNotContain("Dispatcher.BeginInvoke(DispatcherPriority.DataBind", taskCode);

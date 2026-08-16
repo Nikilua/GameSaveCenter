@@ -1,7 +1,6 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 
 namespace GameSaveCenter.Playnite.Views
 {
@@ -25,7 +24,7 @@ namespace GameSaveCenter.Playnite.Views
                 TaskPageScrollSurface.ActualHeight > 0 ? TaskPageScrollSurface.ActualHeight : TaskWorkspaceLayout.ActualHeight);
         }
 
-        public UniformGrid TaskSummaryPanelElement => TaskSummaryPanel;
+        public Border TaskSummaryPanelElement => TaskSummaryPanel;
         public Border TaskDetailCardElement => TaskDetailCard;
         public ScrollViewer TaskDetailScrollViewerElement => TaskDetailScrollViewer;
 
@@ -43,18 +42,10 @@ namespace GameSaveCenter.Playnite.Views
                 TaskGrid.MinHeight = tableMinHeight;
                 TaskGrid.Height = double.NaN;
                 TaskGrid.MaxHeight = double.PositiveInfinity;
-                // The 1040-DIP demo minimum leaves roughly 700 DIP for the workspace after
-                // the labeled shell. Keep the summary cards in two columns there so they do
-                // not consume the entire first viewport before the queue becomes reachable.
-                TaskSummaryPanel.Columns = width >= 900 ? 4 : width >= 680 ? 2 : 1;
-                // Compact panes use a single compact four-card strip so the queue and
-                // table can stay inside the finite workspace without a page scrollbar.
-                if (width >= 520 && width < 900)
-                {
-                    TaskSummaryPanel.Columns = 4;
-                }
-                // Keep task summary metrics available at every height; the table and inspector
-                // own their finite scroll surfaces instead of scrolling the whole workspace.
+                // Keep the single Demo-aligned statistics band available at every height;
+                // the table and inspector own their finite scroll surfaces instead of
+                // scrolling the whole workspace. Its four columns wrap their labels on
+                // compact panes without introducing a second card row.
                 TaskSummaryPanel.Visibility = Visibility.Visible;
                 // The action row stays horizontal on all common compact widths; only a
                 // genuinely narrow pane stacks the three commands vertically.
@@ -65,19 +56,19 @@ namespace GameSaveCenter.Playnite.Views
                 var moveGameFilter = width < 760;
                 if (moveGameFilter)
                 {
-                    if (!TaskMoreFiltersHost.Children.Contains(TaskGameFilterComboBox))
+                    if (!TaskMoreFiltersHost.Children.Contains(TaskGameFilterHost))
                     {
-                        TaskFiltersPanel.Children.Remove(TaskGameFilterComboBox);
-                        TaskMoreFiltersHost.Children.Add(TaskGameFilterComboBox);
+                        TaskFiltersPanel.Children.Remove(TaskGameFilterHost);
+                        TaskMoreFiltersHost.Children.Add(TaskGameFilterHost);
                     }
                     TaskMoreFiltersExpander.Visibility = Visibility.Visible;
                 }
                 else
                 {
-                    if (!TaskFiltersPanel.Children.Contains(TaskGameFilterComboBox))
+                    if (!TaskFiltersPanel.Children.Contains(TaskGameFilterHost))
                     {
-                        TaskMoreFiltersHost.Children.Remove(TaskGameFilterComboBox);
-                        TaskFiltersPanel.Children.Add(TaskGameFilterComboBox);
+                        TaskMoreFiltersHost.Children.Remove(TaskGameFilterHost);
+                        TaskFiltersPanel.Children.Add(TaskGameFilterHost);
                     }
                     TaskMoreFiltersExpander.Visibility = Visibility.Collapsed;
                 }

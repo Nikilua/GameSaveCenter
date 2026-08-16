@@ -2,6 +2,12 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-16 UI-215 Task 统计栏当前基线
+
+- 任务中心顶部现在是单一 `TaskSummaryBand`，四个真实计数位于同一圆角阅读面，三条 `GscDividerBrush` 分隔；不要恢复四张独立指标卡或 `TaskSummaryPanel.Columns` 换列逻辑。
+- 生产任务队列的真实筛选、详情 Inspector、DataGrid 表头/滚动条、Item scrolling 和虚拟化均保留。窄于 760 DIP 时，`TaskGameFilterHost` 整体（标签 + 下拉框）进入“更多筛选”，避免孤立标签错位。
+- 当前证据：`artifacts/ui-qa/task-summary-band-v2`，双主题、多尺寸和 resize 均 `render-qa OK`；真实 Playnite Dashboard 仍未自动捕获，离屏证据不能替代宿主视觉验收。
+
 ## 2026-08-16 UI-214 Overview 单卡统计栏当前基线
 
 - 首页 Overview 的六项统计已收敛成 UiLab 风格的单一圆角 `OverviewStatBand`，内部是六个真实 `Snapshot` 指标和五条分隔线；不要恢复六个独立卡片或为指标恢复悬停位移动画。

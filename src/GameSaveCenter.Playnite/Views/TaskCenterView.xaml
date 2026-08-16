@@ -60,8 +60,15 @@
             <Style x:Key="TaskLastColumnHeader" TargetType="DataGridColumnHeader" BasedOn="{StaticResource GscDataGridColumnHeaderStyle}">
                 <Setter Property="Tag"><Setter.Value><CornerRadius>0,11,0,0</CornerRadius></Setter.Value></Setter>
             </Style>
-            <!-- Metric cards follow the Demo's three-line reading rhythm and the shared
-                 10-DIP gap; the queue owns the remaining finite viewport below. -->
+            <!-- UiLab uses one calm statistics band before the queue. Keep the production
+                 counts and explanations in that shared surface instead of four nested
+                 cards; the queue owns the remaining finite viewport below. -->
+            <Style x:Key="TaskSummaryBand" TargetType="Border" BasedOn="{StaticResource GscReadingCardStyle}">
+                <Setter Property="Padding" Value="6,14"/>
+                <Setter Property="CornerRadius" Value="16"/>
+                <Setter Property="MinHeight" Value="84"/>
+                <Setter Property="Effect" Value="{x:Null}"/>
+            </Style>
             <Style x:Key="TaskInspectorStatusPill" TargetType="Border" BasedOn="{StaticResource GscRedesignTableStatusPill}">
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding SelectedTask.State}" Value="Succeeded"><Setter Property="Background" Value="{DynamicResource GscSuccessIconFillBrush}"/><Setter Property="BorderBrush" Value="{DynamicResource GscSuccessBrush}"/></DataTrigger>
@@ -84,13 +91,39 @@
     <Grid x:Name="TaskWorkspaceLayout" Margin="0" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscInspectorWidth}"/></Grid.ColumnDefinitions>
         <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-        <UniformGrid x:Name="TaskSummaryPanel" Grid.Row="0" Grid.ColumnSpan="3" Columns="4" Margin="0,0,0,8">
-            <Border Style="{DynamicResource GscRedesignMetricBorder}" Padding="14,12" Margin="0,0,10,0"><StackPanel><TextBlock Text="任务总数" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11"/><TextBlock Text="{Binding Tasks.Count, Mode=OneWay}" FontSize="30" FontWeight="SemiBold" Margin="0,8,0,0"/><TextBlock Text="运行、失败、取消和完成" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,8,0,0" TextWrapping="Wrap"/></StackPanel></Border>
-            <Border Style="{DynamicResource GscRedesignMetricBorder}" Padding="14,12" Margin="0,0,10,0"><StackPanel><TextBlock Text="运行中" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11"/><TextBlock Text="{Binding RunningTaskCount, Mode=OneWay}" Foreground="{DynamicResource GscInfoBrush}" FontSize="30" FontWeight="SemiBold" Margin="0,8,0,0"/><TextBlock Text="当前执行中的后台任务" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,8,0,0" TextWrapping="Wrap"/></StackPanel></Border>
-            <Border Style="{DynamicResource GscRedesignMetricBorder}" Padding="14,12" Margin="0,0,10,0"><StackPanel><TextBlock Text="需要重试" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11"/><TextBlock Text="{Binding RetryableTaskCount, Mode=OneWay}" Foreground="{DynamicResource GscErrorBrush}" FontSize="30" FontWeight="SemiBold" Margin="0,8,0,0"/><TextBlock Text="失败且允许安全重试" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,8,0,0" TextWrapping="Wrap"/></StackPanel></Border>
-            <Border Style="{DynamicResource GscRedesignMetricBorder}" Padding="14,12"><StackPanel><TextBlock Text="已完成" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11"/><TextBlock Text="{Binding CompletedTaskCount, Mode=OneWay}" Foreground="{DynamicResource GscSuccessBrush}" FontSize="30" FontWeight="SemiBold" Margin="0,8,0,0"/><TextBlock Text="成功完成的任务" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,8,0,0" TextWrapping="Wrap"/></StackPanel></Border>
-        </UniformGrid>
-        <Border x:Name="TaskQueuePanel" Grid.Row="1" Grid.ColumnSpan="3" Style="{DynamicResource GscRedesignSectionCard}" Padding="10,8" Margin="0,0,0,8"><Grid><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions><StackPanel><TextBlock Text="任务队列" FontSize="15" FontWeight="SemiBold"/><TextBlock Text="筛选不会取消、重排或重新执行后台任务；选择一项可查看真实错误与可恢复操作。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,3,0,0" FontSize="11"/></StackPanel><WrapPanel x:Name="TaskFiltersPanel" Grid.Row="1" Margin="0,8,0,0"><TextBlock Text="搜索任务…" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,4,6"/><TextBox x:Name="TaskSearchTextBox" Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding TaskSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="搜索任务、游戏或错误" AutomationProperties.Name="搜索任务" MinWidth="150" MaxWidth="240" Margin="0,0,6,6"/><TextBlock Text="状态:" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,4,6"/><ComboBox x:Name="TaskStatusFilterComboBox" Style="{DynamicResource GscWpfUiFilterComboBox}" MinWidth="112" MaxWidth="160" ItemsSource="{Binding TaskStatusFilterOptions}" SelectedItem="{Binding TaskStatusFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" ToolTip="任务状态" Margin="0,0,6,6"/><TextBlock Text="游戏:" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,4,6"/><ComboBox x:Name="TaskGameFilterComboBox" Style="{DynamicResource GscWpfUiFilterComboBox}" MinWidth="130" MaxWidth="210" ItemsSource="{Binding TaskGameFilterOptions}" SelectedItem="{Binding TaskGameFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" ToolTip="游戏筛选" Margin="0,0,6,6"/><TextBlock Text="类型:" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,4,6"/><ComboBox x:Name="TaskTypeFilterComboBox" Style="{DynamicResource GscWpfUiFilterComboBox}" MinWidth="110" MaxWidth="180" ItemsSource="{Binding TaskTypeFilterOptions}" SelectedItem="{Binding TaskTypeFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" ToolTip="任务类型" Margin="0,0,0,6"/></WrapPanel><Expander x:Name="TaskMoreFiltersExpander" Grid.Row="2" Style="{StaticResource GscDisclosureCard}" Header="更多筛选" Visibility="Collapsed" Margin="0,8,0,0"><StackPanel x:Name="TaskMoreFiltersHost" Margin="0,4,0,0"/></Expander></Grid></Border>
+        <Border x:Name="TaskSummaryPanel" Grid.Row="0" Grid.ColumnSpan="3" Style="{StaticResource TaskSummaryBand}" Margin="0,0,0,8">
+            <Grid x:Name="TaskSummaryGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="1"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="1"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="1"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Margin="14,2,14,0" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Tasks.Count, Mode=OneWay}" FontSize="26" FontWeight="SemiBold"/>
+                    <TextBlock Text="任务总数" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0"/>
+                </StackPanel>
+                <Rectangle Grid.Column="1" Width="1" Fill="{DynamicResource GscDividerBrush}" VerticalAlignment="Stretch" Margin="0,4"/>
+                <StackPanel Grid.Column="2" Margin="14,2,14,0" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding RunningTaskCount, Mode=OneWay}" Foreground="{DynamicResource GscInfoBrush}" FontSize="26" FontWeight="SemiBold"/>
+                    <TextBlock Text="运行中" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0"/>
+                </StackPanel>
+                <Rectangle Grid.Column="3" Width="1" Fill="{DynamicResource GscDividerBrush}" VerticalAlignment="Stretch" Margin="0,4"/>
+                <StackPanel Grid.Column="4" Margin="14,2,14,0" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding RetryableTaskCount, Mode=OneWay}" Foreground="{DynamicResource GscErrorBrush}" FontSize="26" FontWeight="SemiBold"/>
+                    <TextBlock Text="需要重试" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0"/>
+                </StackPanel>
+                <Rectangle Grid.Column="5" Width="1" Fill="{DynamicResource GscDividerBrush}" VerticalAlignment="Stretch" Margin="0,4"/>
+                <StackPanel Grid.Column="6" Margin="14,2,14,0" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding CompletedTaskCount, Mode=OneWay}" Foreground="{DynamicResource GscSuccessBrush}" FontSize="26" FontWeight="SemiBold"/>
+                    <TextBlock Text="已完成" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+        <Border x:Name="TaskQueuePanel" Grid.Row="1" Grid.ColumnSpan="3" Style="{DynamicResource GscRedesignSectionCard}" Padding="10,8" Margin="0,0,0,8"><Grid><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions><StackPanel><TextBlock Text="任务队列" FontSize="15" FontWeight="SemiBold"/><TextBlock Text="筛选不会取消、重排或重新执行后台任务；选择一项可查看真实错误与可恢复操作。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,3,0,0" FontSize="11"/></StackPanel><WrapPanel x:Name="TaskFiltersPanel" Grid.Row="1" Margin="0,8,0,0"><TextBlock Text="搜索任务…" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,4,6"/><TextBox x:Name="TaskSearchTextBox" Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding TaskSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="搜索任务、游戏或错误" AutomationProperties.Name="搜索任务" MinWidth="150" MaxWidth="240" Margin="0,0,6,6"/><TextBlock Text="状态:" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,4,6"/><ComboBox x:Name="TaskStatusFilterComboBox" Style="{DynamicResource GscWpfUiFilterComboBox}" MinWidth="112" MaxWidth="160" ItemsSource="{Binding TaskStatusFilterOptions}" SelectedItem="{Binding TaskStatusFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" ToolTip="任务状态" Margin="0,0,6,6"/><StackPanel x:Name="TaskGameFilterHost" Orientation="Horizontal"><TextBlock Text="游戏:" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,4,6"/><ComboBox x:Name="TaskGameFilterComboBox" Style="{DynamicResource GscWpfUiFilterComboBox}" MinWidth="130" MaxWidth="210" ItemsSource="{Binding TaskGameFilterOptions}" SelectedItem="{Binding TaskGameFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" ToolTip="游戏筛选" Margin="0,0,6,6"/></StackPanel><TextBlock Text="类型:" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,4,6"/><ComboBox x:Name="TaskTypeFilterComboBox" Style="{DynamicResource GscWpfUiFilterComboBox}" MinWidth="110" MaxWidth="180" ItemsSource="{Binding TaskTypeFilterOptions}" SelectedItem="{Binding TaskTypeFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" ToolTip="任务类型" Margin="0,0,0,6"/></WrapPanel><Expander x:Name="TaskMoreFiltersExpander" Grid.Row="2" Style="{StaticResource GscDisclosureCard}" Header="更多筛选" Visibility="Collapsed" Margin="0,8,0,0"><StackPanel x:Name="TaskMoreFiltersHost" Margin="0,4,0,0"/></Expander></Grid></Border>
         <Border Grid.Row="2" Grid.Column="0" Style="{StaticResource TaskTableFrame}">
             <Grid>
             <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>

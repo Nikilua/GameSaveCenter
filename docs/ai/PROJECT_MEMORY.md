@@ -3,6 +3,13 @@
 > 维护时间：2026-08-14
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-16 UI-215 Task 统计栏与窄窗筛选迁移
+
+- `TaskCenterView.xaml` 已把生产任务中心顶部四个独立指标卡改为 UiLab 同款的单一 `TaskSummaryBand`；`Tasks.Count`、`RunningTaskCount`、`RetryableTaskCount`、`CompletedTaskCount` 四个真实 OneWay 绑定保留，内部使用三条 `GscDividerBrush` 分隔线，不迁移 UiLab 的演示数据或滚动条。
+- 指标按 UiLab 的“数值在上、标签在下”阅读节奏收敛到 26 DIP，保留任务队列、详情、筛选、DataGrid 表头/滚动条和虚拟化；任务摘要不再通过 `UniformGrid.Columns` 产生卡片换列。
+- 修复窄宽度筛选迁移的残留标签错位：`TaskGameFilterHost` 将“游戏:”与真实下拉框作为一个控件组一起移入/移出“更多筛选”，避免 1040-DIP 工作区出现“游戏:”孤立在“类型:”前的拥挤布局。
+- 当前自动验证：`validate-source.py`、XAML 检查、Release 0 warning/0 error、Playnite 303/303、RenderHarness 双主题/1040/1100/1366/1600/2560 及 resize 全部 `render-qa OK`；新证据在 `artifacts/ui-qa/task-summary-band-v2`。真实 Playnite Dashboard 仍未重新捕获，不能把离屏截图写成宿主视觉真值。
+
 ## 2026-08-16 UI-214 Overview 统计栏与首页光晕收口
 
 - `OverviewView.xaml` 已把原先六个独立圆角统计卡改为 UiLab 同款的单一 `OverviewStatBand`：六个真实 `Snapshot` 指标保留在同一表面内，使用五条 `GscDividerBrush` 分隔线；两个真实比例条、空库折叠保护和 OneWay 绑定均未改变。
