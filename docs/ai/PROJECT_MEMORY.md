@@ -3,6 +3,14 @@
 > 维护时间：2026-08-14
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-16 UI-218 UiLab 页面骨架迁入生产
+
+- 当前生产页面已按 `D:\workplace\github\GameSaveCenter.UiLab` 的工作区骨架收敛：Dashboard 只保留一套页面头部游戏上下文；`SelectedGameHeader`、`GameHeaderActions`、`RestoreSafetyBanner` 不得在页面外重新显示成重复的第二层。安全说明应放在备份策略/比较表面内。
+- `SaveCenterView.xaml` 的策略页使用三栏 Demo 表面并保留真实 `SelectedGame.Policy`、模板、云端和命令绑定；比较指标使用可换行的固定最小宽度，兼顾用户指定的按钮/指标重叠例外。
+- `TrainerCenterView.xaml` 的当前游戏工具栏和拖入导入区是两行；`TaskCenterView.xaml` 的搜索、状态、类型与游戏筛选是两行，`TaskGameFilterHost` 必须整体移动，不能只移动 ComboBox。
+- 不迁移 UiLab 的演示色板、窗口控制、演示数据和样例滚动条；生产滚动条、DataGrid 虚拟化、键盘/绑定/命令和 Playnite 兼容性优先。窄宿主视口出现策略卡纵向堆叠属于响应式行为，不等于未迁移。
+- 当前验证基线：source/XAML 校验通过，Release 0 warning/0 error，Core 59/59、Worker 191/191、Playnite 303/303；真实 Playnite 人工检查首页、备份中心、修改器中心、任务中心已加载，无重复全局安全横幅。自动审计仍保持 `EmbeddedDashboardCaptured=false`，人工截图不能冒充自动嵌入证据。
+
 ## 2026-08-16 UI-217 真实 Playnite 人工视觉复核
 
 - `81fde54` Release 包在真实 Playnite 内加载成功；人工进入 GameSaveCenter 后确认首页的开放式头部、真实游戏上下文、单一六项指标带、工作区卡片和生产页脚均可见，演示色板/窗口按钮/样例滚动条没有进入生产。

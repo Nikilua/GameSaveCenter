@@ -990,7 +990,7 @@ public sealed class WpfUiResourceDictionaryTests
         var settingsCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml.cs"));
         Assert.Contains("SettingsHeaderSubtitle.Visibility = narrow || shortHeight ? Visibility.Collapsed : Visibility.Visible;", settingsCode);
         Assert.Contains("SettingsSaveHint.Visibility = narrow || shortHeight ? Visibility.Collapsed : Visibility.Visible;", settingsCode);
-        Assert.Contains("RestoreSafetyBanner.Visibility = viewModel.CurrentWorkspace == WorkspaceKind.Saves", dashboardCode);
+        Assert.Contains("RestoreSafetyBanner.Visibility = Visibility.Collapsed", dashboardCode);
     }
 
     [Fact]

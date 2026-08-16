@@ -39,6 +39,12 @@ namespace GameSaveCenter.Playnite.Views
                 // let only the inspector consume the remaining finite height.
                 const double tableMinHeight = 236d;
                 var stack = width < 1200;
+                var filterWidth = TaskQueuePanel.ActualWidth > 0
+                    ? Math.Max(0, TaskQueuePanel.ActualWidth - TaskQueuePanel.Padding.Left - TaskQueuePanel.Padding.Right)
+                    : Math.Max(0, width - 20);
+                TaskFiltersPanel.Width = filterWidth;
+                TaskPrimaryFiltersRow.Width = filterWidth;
+                TaskGameFilterHost.Width = filterWidth;
                 TaskGrid.MinHeight = tableMinHeight;
                 TaskGrid.Height = double.NaN;
                 TaskGrid.MaxHeight = double.PositiveInfinity;

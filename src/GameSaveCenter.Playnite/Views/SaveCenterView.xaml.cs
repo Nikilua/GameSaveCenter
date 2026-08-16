@@ -157,7 +157,10 @@ namespace GameSaveCenter.Playnite.Views
             var candidateHeight = SaveCandidateLayout.ActualHeight > 0 ? SaveCandidateLayout.ActualHeight : Math.Max(320, height - 200);
             var candidateInspectorHeight = Math.Max(160, Math.Min(360, candidateHeight - tableMinHeight - 10));
             SaveCandidateInspectorScrollViewer.MaxHeight = showCandidateInspector && compact ? candidateInspectorHeight : double.PositiveInfinity;
-            var stackPolicy = width < 1080;
+            // Keep the migrated Demo's three-card strategy surface until the page is
+            // genuinely compact. The previous 1080-DIP cutoff stacked the cards in a
+            // normal Playnite content rail and made the page look unlike the reference.
+            var stackPolicy = width < 1000 || height < 680;
             // The policy page is a left-aligned form capped by the shared
             // GscFormMaxWidth token (1120). Give the StackPanel an explicit
             // viewport width so the reading cards fill the form instead of
@@ -165,6 +168,31 @@ namespace GameSaveCenter.Playnite.Views
             // capped form inside the page scroll channel. The 4 is the right
             // padding of GscPageScrollViewer.
             SavePolicyStack.Width = Math.Max(0, Math.Min(width - 4, 1120));
+            SavePolicyDemoLayout.Width = Math.Max(0, Math.Min(width - 4, 1240));
+            SavePolicyDemoLayout.ColumnDefinitions[0].Width = new GridLength(1, GridUnitType.Star);
+            SavePolicyDemoLayout.ColumnDefinitions[1].Width = stackPolicy ? new GridLength(0) : new GridLength(14);
+            SavePolicyDemoLayout.ColumnDefinitions[2].Width = stackPolicy ? new GridLength(0) : new GridLength(1, GridUnitType.Star);
+            SavePolicyDemoLayout.ColumnDefinitions[3].Width = stackPolicy ? new GridLength(0) : new GridLength(14);
+            SavePolicyDemoLayout.ColumnDefinitions[4].Width = stackPolicy ? new GridLength(0) : new GridLength(1, GridUnitType.Star);
+            SavePolicyDemoLayout.RowDefinitions[0].Height = GridLength.Auto;
+            SavePolicyDemoLayout.RowDefinitions[1].Height = stackPolicy ? GridLength.Auto : new GridLength(0);
+            SavePolicyDemoLayout.RowDefinitions[2].Height = stackPolicy ? GridLength.Auto : new GridLength(0);
+            SavePolicyDemoLayout.RowDefinitions[3].Height = stackPolicy ? GridLength.Auto : new GridLength(0);
+            Grid.SetColumn(SavePolicyDemoAutomationCard, 0);
+            Grid.SetRow(SavePolicyDemoAutomationCard, 0);
+            Grid.SetColumnSpan(SavePolicyDemoAutomationCard, stackPolicy ? 5 : 1);
+            Grid.SetColumn(SavePolicyDemoMediaCard, stackPolicy ? 0 : 2);
+            Grid.SetRow(SavePolicyDemoMediaCard, stackPolicy ? 1 : 0);
+            Grid.SetColumnSpan(SavePolicyDemoMediaCard, stackPolicy ? 5 : 1);
+            Grid.SetColumn(SavePolicyDemoTemplateCard, stackPolicy ? 0 : 4);
+            Grid.SetRow(SavePolicyDemoTemplateCard, stackPolicy ? 2 : 0);
+            Grid.SetColumnSpan(SavePolicyDemoTemplateCard, stackPolicy ? 5 : 1);
+            Grid.SetColumn(SavePolicyDemoSafetyCard, 0);
+            Grid.SetRow(SavePolicyDemoSafetyCard, stackPolicy ? 3 : 1);
+            Grid.SetColumnSpan(SavePolicyDemoSafetyCard, 5);
+            SavePolicyDemoMediaCard.Margin = stackPolicy ? new Thickness(0, 14, 0, 0) : new Thickness(0);
+            SavePolicyDemoTemplateCard.Margin = stackPolicy ? new Thickness(0, 14, 0, 0) : new Thickness(0);
+            SavePolicyDemoSafetyCard.Margin = new Thickness(0, 14, 0, 0);
             SavePolicyCardsLayout.ColumnDefinitions[1].Width = stackPolicy ? new GridLength(0) : new GridLength(14);
             SavePolicyCardsLayout.ColumnDefinitions[2].Width = stackPolicy ? new GridLength(0) : new GridLength(1, GridUnitType.Star);
             SavePolicyCardsLayout.RowDefinitions[2].Height = stackPolicy ? new GridLength(1, GridUnitType.Auto) : new GridLength(0);

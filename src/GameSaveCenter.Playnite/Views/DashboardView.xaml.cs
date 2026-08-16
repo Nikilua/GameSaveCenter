@@ -633,12 +633,10 @@ namespace GameSaveCenter.Playnite.Views
                 MaintenanceWorkspaceView.ApplyResponsiveLayout(workspaceContentWidth, height);
             }
 
-            // Responsive behavior now belongs to each extracted workspace view.
-            // The safety banner is actionable context, not decorative chrome. Keep it visible
-            // for the Saves workspace at every height; its extracted Grid layout keeps the
-            // warning and table actions reachable without a page-level scroll channel.
-            RestoreSafetyBanner.Visibility = viewModel.CurrentWorkspace == WorkspaceKind.Saves
-                ? Visibility.Visible : Visibility.Collapsed;
+            // Responsive behavior now belongs to each extracted workspace view. The UiLab
+            // reference carries this safety boundary inside the policy/compare surfaces;
+            // do not reintroduce a second global banner during a resize pass.
+            RestoreSafetyBanner.Visibility = Visibility.Collapsed;
             if (viewModel.CurrentWorkspace != WorkspaceKind.Saves)
             {
                 BackupPolicyPanel.Visibility = Visibility.Collapsed;
@@ -794,7 +792,12 @@ namespace GameSaveCenter.Playnite.Views
             DetailsTabControl.Margin = workspace == WorkspaceKind.Trainers || workspace == WorkspaceKind.Media
                 ? new Thickness(0, 12, 0, 0)
                 : new Thickness(0);
-            SetVisibility(SelectedGameHeader, workspace != WorkspaceKind.Tasks && workspace != WorkspaceKind.Maintenance && workspace != WorkspaceKind.Overview);
+            // The UiLab reference keeps the selected game in the single page-header
+            // context picker. Rendering a second identity card below that header was the
+            // main reason the installed game-scoped pages started several hundred DIP
+            // lower than the demo and appeared to have a different layout. Workspace
+            // pages still expose their real bound actions in their own cards/tabs.
+            SetVisibility(SelectedGameHeader, false);
             SetVisibility(BackupSelectedButton, saves);
             SetVisibility(ValidateButton, saves);
             SetVisibility(DetectPathsButton, saves);
@@ -802,14 +805,17 @@ namespace GameSaveCenter.Playnite.Views
             // Extracted Media/Trainer workspaces expose their own refresh/import actions.
             // Keeping a second action row under the global picker created the oversized
             // “Bongo Cat · ready” band and pushed the real workspace below the fold.
-            SetVisibility(GameHeaderActions, saves);
+            SetVisibility(GameHeaderActions, false);
             // The top GamePicker is the single source of game status and counts. The hero
             // remains for game-scoped workspaces, but do not repeat its health pill and metric
             // tiles directly underneath the picker; those duplicates are what made the second
             // row feel oversized and visually overlap the global context.
             SelectedGameHealthPill.Visibility = Visibility.Collapsed;
             SelectedGameMetricPanel.Visibility = Visibility.Collapsed;
-            SetVisibility(RestoreSafetyBanner, saves);
+            // The safety boundary remains documented inside the save policy/compare
+            // surfaces. It must not consume a second permanent banner row above the
+            // migrated Demo-like page content.
+            SetVisibility(RestoreSafetyBanner, false);
             if (!saves) BackupPolicyPanel.Visibility = Visibility.Collapsed;
 
             SetVisibility(TopRefreshButton, workspace != WorkspaceKind.Trainers && workspace != WorkspaceKind.Maintenance);
