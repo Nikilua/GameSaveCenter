@@ -7,6 +7,7 @@
 - 任务中心顶部现在是单一 `TaskSummaryBand`，四个真实计数位于同一圆角阅读面，三条 `GscDividerBrush` 分隔；不要恢复四张独立指标卡或 `TaskSummaryPanel.Columns` 换列逻辑。
 - 生产任务队列的真实筛选、详情 Inspector、DataGrid 表头/滚动条、Item scrolling 和虚拟化均保留。窄于 760 DIP 时，`TaskGameFilterHost` 整体（标签 + 下拉框）进入“更多筛选”，避免孤立标签错位。
 - 当前证据：`artifacts/ui-qa/task-summary-band-v2`，双主题、多尺寸和 resize 均 `render-qa OK`；真实 Playnite Dashboard 仍未自动捕获，离屏证据不能替代宿主视觉验收。
+- `TaskGameFilterHost` 的父子层级测试已同步更新；如果后续继续把筛选项成组移入“更多筛选”，应验证组容器移动和内部真实 ComboBox，而不是检查 ComboBox 的直接父级。
 
 ## 2026-08-16 UI-214 Overview 单卡统计栏当前基线
 

@@ -3263,14 +3263,15 @@ public sealed class WpfUiResourceDictionaryTests
                 var filters = (WrapPanel)viewType.GetField("TaskFiltersPanel", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var moreHost = (StackPanel)viewType.GetField("TaskMoreFiltersHost", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var moreExpander = (Expander)viewType.GetField("TaskMoreFiltersExpander", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var gameFilterHost = (StackPanel)viewType.GetField("TaskGameFilterHost", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var gameFilter = (ComboBox)viewType.GetField("TaskGameFilterComboBox", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
 
                 view.ApplyResponsiveLayout(700, 640);
-                compactInMore = moreHost.Children.Contains(gameFilter);
+                compactInMore = moreHost.Children.Contains(gameFilterHost) && gameFilterHost.Children.Contains(gameFilter);
                 compactExpanderVisible = moreExpander.Visibility == Visibility.Visible;
 
                 view.ApplyResponsiveLayout(1280, 720);
-                wideInMain = filters.Children.Contains(gameFilter);
+                wideInMain = filters.Children.Contains(gameFilterHost) && gameFilterHost.Children.Contains(gameFilter);
                 wideExpanderCollapsed = moreExpander.Visibility == Visibility.Collapsed;
             }
             catch (Exception caught)

@@ -9,6 +9,7 @@
 - 指标按 UiLab 的“数值在上、标签在下”阅读节奏收敛到 26 DIP，保留任务队列、详情、筛选、DataGrid 表头/滚动条和虚拟化；任务摘要不再通过 `UniformGrid.Columns` 产生卡片换列。
 - 修复窄宽度筛选迁移的残留标签错位：`TaskGameFilterHost` 将“游戏:”与真实下拉框作为一个控件组一起移入/移出“更多筛选”，避免 1040-DIP 工作区出现“游戏:”孤立在“类型:”前的拥挤布局。
 - 当前自动验证：`validate-source.py`、XAML 检查、Release 0 warning/0 error、Playnite 303/303、RenderHarness 双主题/1040/1100/1366/1600/2560 及 resize 全部 `render-qa OK`；新证据在 `artifacts/ui-qa/task-summary-band-v2`。真实 Playnite Dashboard 仍未重新捕获，不能把离屏截图写成宿主视觉真值。
+- 隔离安装构建曾暴露旧的响应式单元测试仍检查 `TaskGameFilterComboBox` 直接挂在筛选容器；测试已同步到新的 `TaskGameFilterHost` 结构，当前 Playnite 测试恢复 303/303。后续移动筛选控件时必须同时更新父容器契约测试。
 
 ## 2026-08-16 UI-214 Overview 统计栏与首页光晕收口
 

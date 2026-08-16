@@ -16,6 +16,12 @@
 - `GameSaveCenter.RenderHarness` 的 `artifacts/ui-qa/task-summary-band-v2` 覆盖 1040×700、1100×720、1366×768、1600×900、2560×1440，多尺寸 resize 和 Light/Dark 均 `render-qa OK`；1040 窄窗截图确认无孤立标签或文字重叠，任务 DataGrid 仍使用生产 Auto 滚动条。
 - RenderHarness 是离屏证据；真实 Playnite 嵌入式 Dashboard 本阶段未重新捕获，宿主主题、DPI、键盘和连续缩放仍需人工确认。
 
+## 2026-08-16 UI-216 Task 窄窗控件组回归防护
+
+- 真实宿主隔离安装阶段发现一条旧测试仍假设 `TaskGameFilterComboBox` 直接位于筛选容器；实现迁移为“标签 + 下拉框”整体移动后，该假设已失效。
+- 测试改为验证 `TaskGameFilterHost` 在紧凑/宽屏之间移动，并确认真实下拉框仍是控件组子项，避免以后为通过旧测试而重新引入孤立标签错位。
+- 修复后 Playnite 303/303 通过；宿主审计需使用这一修订重新构建，当前尚未把上一轮失败的隔离安装结果当作视觉证据。
+
 ## 2026-08-16 UI-214 Overview 单卡统计栏与单色首页晕影
 
 **实现内容：**
