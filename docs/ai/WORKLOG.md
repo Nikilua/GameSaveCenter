@@ -2069,3 +2069,26 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 **提交：**`a9d7e58`（代码、回归测试与长期记忆）；本条 hash 回填由随后独立的文档提交完成。
 
 **下一项：**等待用户人工视觉反馈；不引入本轮范围外功能。
+
+## 2026-08-16 UI-206 Overview UiLab 页面级迁移
+
+**实现内容：**
+
+- 将生产首页重排为 UiLab 的真实阅读层级：顶部 Hero/当前游戏横向区域与六项指标占满工作区，下方才进入“最近活动 + 全局活动 / 风险与提醒 + 需关注事项”双栏。
+- 右侧下栏采用 330 DIP 固定关注栏，窄窗口自动下移；保留生产页真实 Snapshot、Protection、AttentionFindings、命令、绑定和页面级滚动，不引入 UiLab 演示用顶部颜色按钮或演示滚动条。
+- 统一 Overview 阅读卡、活动容器、全局活动圆角表头和低对比度分隔线；共享 `DataGridColumnHeader` 增加圆角和安全内边距，降低宿主截图中的尖锐边框感。
+- 修复新关注行模板的 DataTemplate 触发器层级，并补充页面骨架/固定侧栏的源码回归断言；渲染 harness 改为验证侧栏与下方活动行对齐。
+
+**验证结果：**
+
+- `validate-source.py`、`check-xaml.ps1`、WPF 静态审查：通过，无新增错误。
+- Playnite Release 构建：0 warning / 0 error；Playnite 测试 303/303 通过。
+- 离屏 Overview 在 1040×700 至 3840×2160、多主题 Light/Dark 与 resize transition 下完成渲染；最终报告确认宽屏侧栏相对最近活动行偏移 0 DIP、无 Overview 新问题。
+- 全量 render harness 仍报告 Save/Media 窄尺寸表格视口低于 236 DIP 的既有门禁项；这些问题不属于本阶段 Overview 改动，未伪报为全量通过。
+
+**验证边界：**
+
+- `AUTO VERIFIED`：源码/XAML、生产编译、Playnite 测试、Overview 多尺寸/双主题离屏渲染、布局对齐探针。
+- `MANUAL QA REQUIRED`：真实 Playnite 宿主中的最终 DPI、Follow/高对比度主题、键盘焦点和连续缩放；本阶段未将离屏渲染冒充为人工验收。
+
+**提交：**本阶段代码、测试与文档需由 Agent 独立 commit 并 push 到 `main`。

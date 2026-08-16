@@ -171,8 +171,11 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 MutedText = WithAlpha(primaryText, 0.56),
                 DisabledText = WithAlpha(primaryText, 0.38),
                 ControlFill = WithAlpha(controlFill, glassEnabled ? Math.Max(0.76, 0.9 * strength) : 1),
-                ControlStroke = WithAlpha(primaryText, isDark ? 0.15 : 0.13),
-                Divider = WithAlpha(primaryText, isDark ? 0.13 : 0.11),
+                // UiLab uses a hairline rather than a bright outline. Keep the production
+                // surfaces readable while avoiding the sharp blue/white frame seen in the
+                // host screenshots at 125–150% DPI.
+                ControlStroke = WithAlpha(primaryText, isDark ? 0.10 : 0.09),
+                Divider = WithAlpha(primaryText, isDark ? 0.09 : 0.08),
                 SurfaceTop = surfaceTop,
                 SurfaceBottom = surfaceBottom,
                 StrongSurfaceTop = strongTop,
@@ -314,7 +317,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscControlStrokeBrush"] = Brush(palette.ControlStroke);
             resources["GscDividerBrush"] = Brush(palette.Divider);
             resources["GscTableDividerBrush"] = Brush(Color.FromArgb(
-                palette.IsDark ? (byte)24 : (byte)18, palette.PrimaryText.R, palette.PrimaryText.G, palette.PrimaryText.B));
+                palette.IsDark ? (byte)16 : (byte)13, palette.PrimaryText.R, palette.PrimaryText.G, palette.PrimaryText.B));
             resources["GscPopupBrush"] = Brush(Color.FromArgb(
                 250, palette.StrongSurfaceTop.R, palette.StrongSurfaceTop.G, palette.StrongSurfaceTop.B));
             resources["GscGlassFillBrush"] = Gradient(palette.SurfaceTop, palette.SurfaceBottom);
@@ -325,7 +328,8 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscBackdropBrush"] = Brush(palette.Backdrop);
             // AcrylicFork keeps the header transparent inside one clipped rounded table frame;
             // this avoids a second rectangle fighting the frame's corner geometry.
-            resources["GscTableHeaderBrush"] = Brush(Colors.Transparent);
+            resources["GscTableHeaderBrush"] = Brush(Color.FromArgb(
+                palette.IsDark ? (byte)13 : (byte)9, palette.PrimaryText.R, palette.PrimaryText.G, palette.PrimaryText.B));
             resources["GscTableAlternateRowBrush"] = Brush(Color.FromArgb(
                 SystemParameters.HighContrast ? (byte)0 : (byte)0,
                 palette.PrimaryText.R, palette.PrimaryText.G, palette.PrimaryText.B));

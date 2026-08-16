@@ -341,10 +341,11 @@
                 <ControlTemplate TargetType="DataGridColumnHeader">
                     <!-- Host-generated headers may not have a Tag. Never pass an unset binding
                          result into Border.CornerRadius. -->
-                    <Border Background="{TemplateBinding Background}"
+                    <Border Margin="1,2"
+                            Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="0"
+                            CornerRadius="8"
                             Padding="{TemplateBinding Padding}"
                             SnapsToDevicePixels="True">
                         <Grid>

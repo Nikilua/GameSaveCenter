@@ -1488,12 +1488,15 @@ public static class Program
                 .FirstOrDefault(candidate => candidate.Name == "OverviewSecondaryScrollViewer");
             if (overviewLayout != null && secondary != null && Grid.GetColumn(secondary) == 2)
             {
-                var layoutOrigin = overviewLayout.TransformToAncestor(host).Transform(new Point(0, 0));
+                var lowerActivity = FindVisualChildren<FrameworkElement>(host)
+                    .FirstOrDefault(candidate => candidate.Name == "OverviewRecentActivityCard");
+                var reference = lowerActivity ?? overviewLayout;
+                var layoutOrigin = reference.TransformToAncestor(host).Transform(new Point(0, 0));
                 var secondaryOrigin = secondary.TransformToAncestor(host).Transform(new Point(0, 0));
                 var topDelta = secondaryOrigin.Y - layoutOrigin.Y;
-                report.AppendLine($"  {label} OverviewSecondaryTopDelta: {topDelta:0.##} DIP");
+                report.AppendLine($"  {label} OverviewSecondaryTopDelta: {topDelta:0.##} DIP (relative to lower activity row)");
                 if (topDelta > 8)
-                    s_problems.Add($"{label} secondary overview is not top anchored (delta={topDelta:0.##} DIP)");
+                    s_problems.Add($"{label} secondary overview is not aligned with lower activity row (delta={topDelta:0.##} DIP)");
             }
 
             var hero = FindVisualChildren<FrameworkElement>(host)

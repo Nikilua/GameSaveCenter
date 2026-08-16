@@ -74,9 +74,12 @@
     <SolidColorBrush x:Key="GscProgressFillBrush" Color="#7897FF"/>
     <SolidColorBrush x:Key="GscControlStrokeBrush" Color="#1CFFFFFF"/>
     <SolidColorBrush x:Key="GscDividerBrush" Color="#12FFFFFF"/>
-    <SolidColorBrush x:Key="GscTableDividerBrush" Color="#302A3850"/>
+    <!-- Table separators stay neutral and quiet like the UiLab reading cards. Strong blue
+         strokes make every row look like a boxed admin table, especially under high DPI. -->
+    <SolidColorBrush x:Key="GscTableDividerBrush" Color="#1AFFFFFF"/>
     <SolidColorBrush x:Key="GscPopupBrush" Color="#FC202B3D"/>
-    <SolidColorBrush x:Key="GscTableHeaderBrush" Color="#00000000"/>
+    <!-- A small neutral tint gives rounded headers a readable surface without a bright bar. -->
+    <SolidColorBrush x:Key="GscTableHeaderBrush" Color="#0DFFFFFF"/>
     <SolidColorBrush x:Key="GscTableAlternateRowBrush" Color="#00000000"/>
     <SolidColorBrush x:Key="GscRowHoverBrush" Color="#0CFFFFFF"/>
     <SolidColorBrush x:Key="GscScrollTrackBrush" Color="#24111A29"/>

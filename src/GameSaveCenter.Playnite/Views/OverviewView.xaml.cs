@@ -80,21 +80,29 @@ namespace GameSaveCenter.Playnite.Views
             OverviewPrimaryLayoutRow.Height = stack
                 ? GridLength.Auto
                 : new GridLength(1, GridUnitType.Star);
-            OverviewPrimaryColumn.Width = new GridLength(1.2, GridUnitType.Star);
+            // The top hero/metrics flow spans the complete workspace. The lower
+            // activity/risk arrangement follows the UiLab's readable fixed rail:
+            // flexible primary content plus a 330 DIP inspector column.
+            OverviewPrimaryColumn.Width = new GridLength(1, GridUnitType.Star);
             OverviewGutterColumn.Width = new GridLength(stack ? 0 : 14);
             OverviewSecondaryColumn.Width = stack
                 ? new GridLength(0)
-                : new GridLength(0.8, GridUnitType.Star);
-            // The secondary column is a top-anchored inspector, not a vertically
-            // centered companion to the primary flow. Set this in code as well as XAML
-            // because a Playnite host theme can replace inherited ScrollViewer alignment
-            // defaults during a live template refresh.
+                : new GridLength(330);
+            OverviewFlowPrimaryColumn.Width = new GridLength(1, GridUnitType.Star);
+            OverviewFlowGutterColumn.Width = new GridLength(stack ? 0 : 14);
+            OverviewFlowSecondaryColumn.Width = stack
+                ? new GridLength(0)
+                : new GridLength(330);
+            // The secondary column is a top-anchored inspector for the lower activity
+            // row, not a vertically centered companion to the primary flow. Set this in
+            // code as well as XAML because a Playnite host theme can replace inherited
+            // alignment defaults during a live template refresh.
             OverviewSecondaryScrollViewer.VerticalAlignment = VerticalAlignment.Top;
             OverviewSecondaryPanel.VerticalAlignment = VerticalAlignment.Top;
             Grid.SetRow(OverviewPrimaryPanel, 0);
             Grid.SetColumn(OverviewPrimaryPanel, 0);
-            Grid.SetColumnSpan(OverviewPrimaryPanel, stack ? 3 : 1);
-            Grid.SetRow(OverviewSecondaryScrollViewer, stack ? 1 : 0);
+            Grid.SetColumnSpan(OverviewPrimaryPanel, 3);
+            Grid.SetRow(OverviewSecondaryScrollViewer, stack ? 5 : 3);
             Grid.SetColumn(OverviewSecondaryScrollViewer, stack ? 0 : 2);
             Grid.SetColumnSpan(OverviewSecondaryScrollViewer, stack ? 3 : 1);
             OverviewSecondaryPanel.Margin = stack
@@ -112,6 +120,9 @@ namespace GameSaveCenter.Playnite.Views
             var primaryWidth = OverviewPrimaryPanel?.ActualWidth > 0
                 ? OverviewPrimaryPanel.ActualWidth
                 : Math.Max(320d, width);
+            var activityWidth = OverviewFlowPrimaryColumn?.ActualWidth > 0
+                ? OverviewFlowPrimaryColumn.ActualWidth
+                : primaryWidth;
 
             // The Demo keeps the Home workbench actions in the card header. At compact
             // widths move them to a second row, but keep a horizontal WrapPanel so the
@@ -146,7 +157,7 @@ namespace GameSaveCenter.Playnite.Views
 
             if (OverviewActivityTimelineList != null)
             {
-                var compactActivity = primaryWidth < 900;
+                var compactActivity = activityWidth < 900;
                 OverviewActivityTimelineList.Tag = compactActivity ? "Compact" : "Wide";
                 if (OverviewActivityHeaderRow != null)
                     OverviewActivityHeaderRow.Visibility = compactActivity ? Visibility.Collapsed : Visibility.Visible;

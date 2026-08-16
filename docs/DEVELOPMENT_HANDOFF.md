@@ -435,6 +435,14 @@ git branch --show-current
 
 如果另一台电脑有未 push 的提交或未提交改动，先比较 `git status`、分支和提交历史，再合并；禁止直接覆盖。DeepSeek、Claude 或其他模型可以根据本文件、源码和测试继续工作，但不会自动继承原聊天中的隐含上下文、工具状态或审批状态，因此必须先读取本文件并按流程重新建立上下文。
 
+## 2026-08-16 UI-206 Overview 页面级迁移交接
+
+- 生产首页已按 `GameSaveCenter.UiLab/Pages/OverviewPage.xaml` 的阅读骨架重排：Hero/当前游戏与六项指标占满顶部，最近活动之后才分左主区与右侧风险/关注栏。
+- 宽屏右栏固定 330 DIP，与 `OverviewRecentActivityCard` 同行并且离屏探针偏移 0 DIP；窄窗口由 `OverviewStackScrollSurface` 页面滚动承载，右栏下移。生产滚动条模板保持现有版本，未迁移 demo 滚动条或右上角颜色演示按钮。
+- 真实功能保留：Snapshot、RecentProtection、AttentionFindings、OpenProtection/OpenAttention 命令、选择与虚拟化列表均仍绑定生产 ViewModel；共享活动表头已做 8 DIP 圆角、低对比度填充和安全边距。
+- 本阶段验证：`validate-source.py`、`check-xaml.ps1`、WPF 静态审查通过；Playnite 测试 303/303；生产 Release 0 warning / 0 error；Overview 多尺寸、Light/Dark 与 resize transition 离屏审计通过。全量 render harness 仍仅剩 Save/Media 窄尺寸 `<236 DIP` 历史表格门禁，不要误称全量通过。
+- 后续人工 QA：真实 Playnite 2K/DPI、Follow/高对比度、键盘焦点、长中文文案和连续缩放；优先检查 Overview 宽屏侧栏与窄屏下移，再继续其他页面的页面级迁移。
+
 ## 用户原话（必须保留）
 
 > 在继续之前你最好是能够搞一个文件，能够指引去哪里读取获得开发方向等等。这样我直接说你读取xx文件就可以了，他就知道后续怎么开发了。连我这段话你也要放进去，省得我每次都说了（这样每次开发他们都会维护这个项目）。

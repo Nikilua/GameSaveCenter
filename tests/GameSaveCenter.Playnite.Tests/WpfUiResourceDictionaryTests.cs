@@ -2435,7 +2435,8 @@ public sealed class WpfUiResourceDictionaryTests
         // production row keeps the same rhythm while staying bound to real findings.
         Assert.Equal("DataTemplate", template.Name.LocalName);
         var grid = template.Elements().Single(element => element.Name.LocalName == "Grid");
-        Assert.Equal("38", grid.Elements().Single(element => element.Name.LocalName == "Grid.ColumnDefinitions").Elements().ElementAt(0).Attribute("Width")?.Value);
+        var rowGrid = grid.Descendants().Single(element => element.Name.LocalName == "Grid" && element.Elements().Any(child => child.Name.LocalName == "Grid.ColumnDefinitions"));
+        Assert.Equal("38", rowGrid.Elements().Single(element => element.Name.LocalName == "Grid.ColumnDefinitions").Elements().ElementAt(0).Attribute("Width")?.Value);
         var tile = grid.Descendants().Single(element => element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "AttentionFindingIcon");
         Assert.Equal("34", tile.Attribute("Width")?.Value);
         Assert.Equal("34", tile.Attribute("Height")?.Value);
@@ -2974,6 +2975,7 @@ public sealed class WpfUiResourceDictionaryTests
         var dashboardCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml.cs"));
         var overviewPath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml");
         var overview = XDocument.Parse(File.ReadAllText(overviewPath));
+        var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
 
         Assert.Contains("x:Name=\"OverviewWorkspaceTab\"", dashboard);
         Assert.Contains("<views:OverviewView x:Name=\"OverviewWorkspaceView\"/>", dashboard);
@@ -2992,6 +2994,12 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Equal("{Binding OverviewTasks}", activityList.Attribute("ItemsSource")?.Value);
         Assert.Equal("{Binding SelectedTask}", activityList.Attribute("SelectedItem")?.Value);
         Assert.DoesNotContain(activityList.Ancestors(), ancestor => ancestor.Name.LocalName == "StackPanel");
+        var primaryPanel = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewPrimaryPanel");
+        Assert.Equal("3", primaryPanel.Attribute("Grid.ColumnSpan")?.Value);
+        var flowSecondaryColumn = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewFlowSecondaryColumn");
+        Assert.Equal("330", flowSecondaryColumn.Attribute("Width")?.Value);
+        var secondaryHost = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewSecondaryScrollViewer");
+        Assert.Equal("3", secondaryHost.Attribute("Grid.Row")?.Value);
         var productionTheme = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml"));
         Assert.Contains("<Style TargetType=\"ListBox\">", productionTheme);
         Assert.Contains("VirtualizingPanel.IsVirtualizing\" Value=\"True\"", productionTheme);
@@ -3005,7 +3013,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.DoesNotContain("OverviewRiskScrollViewer.MaxHeight", File.ReadAllText(overviewPath + ".cs"));
         Assert.DoesNotContain("OverviewRiskScrollViewer.VerticalScrollBarVisibility", File.ReadAllText(overviewPath + ".cs"));
         Assert.Contains("RowDefinition x:Name=\"OverviewSummaryRow\" Height=\"Auto\"", File.ReadAllText(overviewPath));
-        Assert.Contains("GscRedesignSectionCard}\" VerticalAlignment=\"Top\">", File.ReadAllText(overviewPath));
+        Assert.Contains("OverviewReadingCard}", File.ReadAllText(overviewPath));
         Assert.Contains("VerticalAlignment=\"Top\">", File.ReadAllText(overviewPath));
     }
 

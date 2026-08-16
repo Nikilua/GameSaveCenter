@@ -395,6 +395,7 @@
         </Style>
 
         <Style TargetType="DataGridColumnHeader">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
             <Setter Property="Foreground" Value="{DynamicResource GscSecondaryTextBrush}"/>
             <Setter Property="Background" Value="{DynamicResource GscTableHeaderBrush}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource GscTableDividerBrush}"/>
@@ -413,6 +414,7 @@
                         <!-- Optional Tag bindings can resolve to UnsetValue and crash Playnite's
                              layout thread. Keep the shared header deterministic. -->
                         <Border x:Name="HeaderChrome"
+                                Margin="1,2"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"

@@ -112,14 +112,13 @@ namespace GameSaveCenter.Playnite.Tests
         {
             var root = FindRepositoryRoot();
             var overview = XDocument.Parse(File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml")));
-            var protection = overview.Descendants().Single(element => element.Name.LocalName == "ItemsControl" && element.Attribute("ItemsSource")?.Value == "{Binding RecentProtection.Items}");
             var actions = overview.Descendants()
                 .Single(element => element.Name.LocalName == "WrapPanel"
-                    && element.Attribute("Grid.Row")?.Value == "1"
+                    && element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "OverviewProtectionActions"
                     && element.Descendants().Any(descendant => descendant.Attribute("Command")?.Value == "{Binding OpenProtectionGamesCommand}")
                     && element.Descendants().Any(descendant => descendant.Attribute("Command")?.Value == "{Binding ApplyRecommendedProtectionCommand}"));
 
-            Assert.Equal("1", actions.Attribute("Grid.Row")?.Value);
+            Assert.DoesNotContain(actions.Ancestors(), ancestor => ancestor.Name.LocalName == "DataGrid");
         }
 
         [Fact]

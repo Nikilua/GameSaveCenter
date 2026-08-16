@@ -541,3 +541,12 @@
 - 2026-08-13 一键开发安装完成，真实 Playnite 扩展日志确认 `GameSaveCenter 0.6.70.0` 加载，Worker 进程从当前扩展目录运行。
 - `AUTO VERIFIED` 仅覆盖自动化、渲染、安装和真实宿主日志；用户实际 2K/DPI 设置页最终视觉仍为 `MANUAL QA REQUIRED`。
 - 本阶段只修复设置页现有分类卡和滚动 viewport 的裁切，不新增页面、不改变设置字段、绑定、保存语义或 Worker/恢复体系；下一步等待人工反馈。
+
+## 2026-08-16 UI-206 Overview 页面级迁移事实
+
+- UiLab 的关键骨架不是“右侧摘要从页面顶部开始”，而是顶部 Hero/当前游戏与六项指标占满整行，最近活动开始后才分成左主区与右侧风险/关注栏；生产 Overview 已按此层级重排。
+- 生产右栏使用 330 DIP 固定宽度，宽屏与最近活动卡同一行起始（离屏探针偏移 0 DIP）；窄窗口由现有页面级 ScrollViewer 承载并把右栏下移。不要恢复成 1.2*/0.8* 的整页比例栏，也不要把 UiLab 演示滚动条迁入生产。
+- 生产数据和行为保持真实：`Snapshot`、`RecentProtection`、`AttentionFindings`、OpenProtection/OpenAttention 命令、选择状态、虚拟化列表和页面滚动都未替换为 demo 假数据；UiLab 右上角颜色按钮没有迁移。
+- 共享表头现在使用低对比度表头填充、8 DIP 圆角和 1/2 DIP 安全边距；普通活动行使用较弱 Divider，避免 DataGrid/活动表头看起来像尖锐矩形。
+- 本阶段自动验证：源码/XAML 门禁通过，Playnite 303/303，生产 Release 0 warning/0 error，Overview 多尺寸与 Light/Dark 离屏渲染通过。全量 render harness 仍有 Save/Media 窄尺寸主表 `<236 DIP` 的历史门禁项，不能写成全量 render-qa 通过。
+- 本阶段尚未完成真实 Playnite 2K/DPI/Follow/高对比度人工验收；后续优先在真实宿主检查页面级滚动、侧栏下移、键盘焦点和长中文文案，再继续迁移其他页面。
