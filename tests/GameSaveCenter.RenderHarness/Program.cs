@@ -1085,6 +1085,16 @@ public static class Program
 
     private static void SelectTab(UserControl view, int index)
     {
+        var segmented = FindVisualChildren<ListBox>(view)
+            .FirstOrDefault(candidate => candidate.Name.EndsWith("SegmentTabs", StringComparison.Ordinal));
+        if (segmented != null)
+        {
+            if (index < 0 || index >= segmented.Items.Count)
+                throw new InvalidOperationException($"Cannot select tab {index} for {view.GetType().Name}");
+            segmented.SelectedIndex = index;
+            return;
+        }
+
         var tabs = FindVisualChildren<TabControl>(view).FirstOrDefault();
         if (tabs == null || index < 0 || index >= tabs.Items.Count)
             throw new InvalidOperationException($"Cannot select tab {index} for {view.GetType().Name}");
@@ -1103,6 +1113,20 @@ public static class Program
 
     private static void SelectInnerTab(UserControl view, string header)
     {
+        var segmented = FindVisualChildren<ListBox>(view)
+            .FirstOrDefault(candidate => candidate.Name == "MaintenanceDiagnosticsSubTabs"
+                && candidate.Items.Cast<object>().Any(item => (item as ListBoxItem)?.Content?.ToString() == header));
+        if (segmented != null)
+        {
+            var index = segmented.Items.Cast<object>()
+                .Select((item, itemIndex) => new { item, itemIndex })
+                .First(candidate => (candidate.item as ListBoxItem)?.Content?.ToString() == header)
+                .itemIndex;
+            segmented.SelectedIndex = index;
+            view.UpdateLayout();
+            return;
+        }
+
         var tabs = FindVisualChildren<TabControl>(view)
             .FirstOrDefault(candidate => candidate.Items
                 .Cast<TabItem>()
@@ -1153,6 +1177,7 @@ public static class Program
             }
 
             RunDataGridScrollProbes(report);
+            RunMediaWrapScrollProbe(report);
             RunSettingsLayoutProbes(report);
             RunThemeQa(outputRoot, report);
             RunResizeTransitionProbes(report);
@@ -1290,16 +1315,25 @@ public static class Program
         applyLayout();
         host.UpdateLayout();
 
+        // The production workspaces now use the UiLab ListBox segmented shell so
+        // the header and content can be measured independently. Keep the harness
+        // compatible with the remaining settings/audit TabControls while choosing
+        // the named top-level segment list for migrated pages.
         var tabs = FindVisualChildren<TabControl>(host).FirstOrDefault();
-        if (tabs == null)
+        var segmentTabs = FindVisualChildren<ListBox>(host)
+            .FirstOrDefault(candidate => candidate.Name.EndsWith("SegmentTabs", StringComparison.Ordinal));
+        if (tabs == null && segmentTabs == null)
         {
-            throw new InvalidOperationException($"{name} has no TabControl to render.");
+            throw new InvalidOperationException($"{name} has no top-level segment control to render.");
         }
 
-        var tabCount = tabs.Items.Count;
+        var tabCount = segmentTabs?.Items.Count ?? tabs!.Items.Count;
         for (var i = 0; i < tabCount; i++)
         {
-            tabs.SelectedIndex = i;
+            if (segmentTabs != null)
+                segmentTabs!.SelectedIndex = i;
+            else
+                tabs!.SelectedIndex = i;
             host.UpdateLayout();
             applyLayout();
             host.UpdateLayout();
@@ -1421,7 +1455,9 @@ public static class Program
             report.AppendLine($"  {label} {list.Name}: size={list.ActualWidth:0}x{list.ActualHeight:0}, items={list.Items.Count}");
             if (list.ActualHeight > 0
                 && list.ActualHeight < 236
-                && list.Name != "OverviewActivityList")
+                && list.Name != "OverviewActivityList"
+                && !list.Name.EndsWith("SegmentTabs", StringComparison.Ordinal)
+                && list.Name != "MaintenanceDiagnosticsSubTabs")
             {
                 s_problems.Add($"{label} {list.Name} list viewport is only {list.ActualHeight:0} DIP (< 236)");
             }
@@ -1508,7 +1544,9 @@ public static class Program
             {
                 var widthRatio = currentGame.ActualWidth / hero.ActualWidth;
                 report.AppendLine($"  {label} OverviewCurrentGameWidthRatio: {widthRatio:0.##}");
-                if (widthRatio < 0.8)
+                // UiLab deliberately uses a 1.35*:1 hero/current-game ratio; the
+                // previous 0.8 threshold described that reference layout as a bug.
+                if (widthRatio < 0.65)
                     s_problems.Add($"{label} current-game card remains cramped (width ratio={widthRatio:0.##})");
             }
 
@@ -1557,6 +1595,58 @@ public static class Program
                 () => new MaintenanceView { DataContext = new FakeDashboardData(60) },
                 view => ((MaintenanceView)view).ApplyResponsiveLayout(900, height),
                 "审计记录");
+        }
+    }
+
+    private static void RunMediaWrapScrollProbe(StringBuilder report)
+    {
+        try
+        {
+            var view = new MediaCenterView { DataContext = new FakeDashboardData(60) };
+            var host = new Grid
+            {
+                Width = 900,
+                Height = 640,
+                Background = new SolidColorBrush(Color.FromRgb(24, 30, 43)),
+                ClipToBounds = true
+            };
+            host.Children.Add(view);
+            view.ApplyResponsiveLayout(900, 640);
+            host.Measure(new Size(900, 640));
+            host.Arrange(new Rect(0, 0, 900, 640));
+            host.UpdateLayout();
+
+            var segments = FindVisualChildren<ListBox>(host)
+                .FirstOrDefault(candidate => candidate.Name == "MediaSegmentTabs");
+            if (segments != null)
+                segments.SelectedIndex = 1;
+            host.UpdateLayout();
+
+            var mediaGrid = FindVisualChildren<ListBox>(host)
+                .FirstOrDefault(candidate => candidate.Name == "MediaGrid");
+            var scroller = mediaGrid == null
+                ? null
+                : FindVisualChildren<ScrollViewer>(mediaGrid)
+                    .OrderByDescending(candidate => candidate.ViewportHeight)
+                    .FirstOrDefault();
+            if (mediaGrid == null || scroller == null)
+            {
+                s_problems.Add("Media wrap scroll probe could not find MediaGrid/ScrollViewer");
+                return;
+            }
+
+            scroller.ScrollToVerticalOffset(scroller.ScrollableHeight);
+            host.UpdateLayout();
+            scroller.ScrollToVerticalOffset(0);
+            host.UpdateLayout();
+            var realized = FindVisualChildren<ListBoxItem>(mediaGrid).Count();
+            report.AppendLine($"  Media wrap scroll-back probe: items={mediaGrid.Items.Count}, realized={realized}, scrollable={scroller.ScrollableHeight:0.##}");
+            if (mediaGrid.Items.Count > 0 && realized == 0)
+                s_problems.Add("Media wrap scroll-back probe realized no cards after returning to offset 0");
+        }
+        catch (Exception ex)
+        {
+            s_problems.Add("Media wrap scroll probe failed: " + ex.GetType().Name + ": " + ex.Message);
         }
     }
 
@@ -1793,7 +1883,10 @@ public static class Program
         {
             if (string.IsNullOrEmpty(list.Name) || list.ActualHeight <= 0)
                 continue;
-            if (list.ActualHeight < 236 && list.Name != "OverviewActivityList")
+            if (list.ActualHeight < 236
+                && list.Name != "OverviewActivityList"
+                && !list.Name.EndsWith("SegmentTabs", StringComparison.Ordinal)
+                && list.Name != "MaintenanceDiagnosticsSubTabs")
                 s_problems.Add($"{label} {list.Name} viewport {list.ActualHeight:0} DIP (<236)");
         }
 
@@ -1981,11 +2074,25 @@ public static class Program
             if (tabIndex >= 0)
             {
                 var tabs = FindVisualChildren<TabControl>(host).FirstOrDefault();
-                if (tabs != null && tabIndex < tabs.Items.Count)
+                var segmentTabs = FindVisualChildren<ListBox>(host)
+                    .FirstOrDefault(candidate => candidate.Name.EndsWith("SegmentTabs", StringComparison.Ordinal));
+                if (segmentTabs != null && tabIndex < segmentTabs.Items.Count)
+                    segmentTabs.SelectedIndex = tabIndex;
+                else if (tabs != null && tabIndex < tabs.Items.Count)
                     tabs.SelectedIndex = tabIndex;
                 host.UpdateLayout();
                 if (!string.IsNullOrEmpty(innerTabHeader))
                 {
+                    var innerSegmented = FindVisualChildren<ListBox>(host)
+                        .FirstOrDefault(candidate => candidate.Name == "MaintenanceDiagnosticsSubTabs"
+                            && candidate.Items.Cast<object>().Any(item => (item as ListBoxItem)?.Content?.ToString() == innerTabHeader));
+                    if (innerSegmented != null)
+                    {
+                        innerSegmented.SelectedIndex = innerSegmented.Items.Cast<object>()
+                            .Select((item, itemIndex) => new { item, itemIndex })
+                            .First(candidate => (candidate.item as ListBoxItem)?.Content?.ToString() == innerTabHeader)
+                            .itemIndex;
+                    }
                     var innerTabs = FindVisualChildren<TabControl>(host)
                         .FirstOrDefault(candidate => candidate.Items
                             .Cast<TabItem>()

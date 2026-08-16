@@ -93,8 +93,8 @@
                 <Setter Property="VerticalContentAlignment" Value="Stretch"/>
             </Style>
             <Style x:Key="MediaTabItem" TargetType="TabItem" BasedOn="{StaticResource GscRedesignWorkspaceTabItem}">
-                <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                <Setter Property="VerticalContentAlignment" Value="Stretch"/>
             </Style>
             <Style x:Key="GscTableFrame" TargetType="Border" BasedOn="{StaticResource MediaTableFrame}"/>
             <Style x:Key="GscFirstColumnHeader" TargetType="DataGridColumnHeader" BasedOn="{StaticResource MediaFirstColumnHeader}"/>

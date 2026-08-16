@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace GameSaveCenter.Playnite.Controls
 {
@@ -35,6 +36,7 @@ namespace GameSaveCenter.Playnite.Controls
         private double verticalOffset;
         private int columnCount = 1;
         private ScrollViewer? scrollOwner;
+        private bool recoveryQueued;
 
         public double ItemWidth
         {
@@ -85,7 +87,13 @@ namespace GameSaveCenter.Playnite.Controls
         protected override Size MeasureOverride(Size availableSize)
         {
             var width = ResolveViewportWidth(availableSize.Width);
-            var height = double.IsInfinity(availableSize.Height) ? 0 : Math.Max(0, availableSize.Height);
+            // A ListBox can make its panel with an infinite height during the first
+            // pass (especially after switching back to the media tab). Returning a
+            // zero viewport here realizes only a partial range and can leave the
+            // recycled visual tree empty after a scroll-back. Prefer the owner's
+            // finite viewport, then the last measured/arranged size, and finally one
+            // real card row so the first pass is always recoverable.
+            var height = ResolveViewportHeight(availableSize.Height);
             var itemCount = ItemsControl.GetItemsOwner(this)?.Items.Count ?? 0;
             var itemWidth = Math.Max(1, ItemWidth);
             var itemHeight = Math.Max(1, ItemHeight);
@@ -101,9 +109,16 @@ namespace GameSaveCenter.Playnite.Controls
             extent = new Size(Math.Max(width, contentWidth), contentHeight);
             verticalOffset = ClampVerticalOffset(verticalOffset);
 
-            var firstIndex = GetFirstVisibleIndex(itemCount, itemHeight + verticalSpacing);
-            var lastIndex = GetLastVisibleIndex(itemCount, height, itemHeight + verticalSpacing);
-            RealizeRange(firstIndex, lastIndex);
+            if (itemCount == 0)
+            {
+                RemoveAllGeneratedChildren();
+            }
+            else
+            {
+                var firstIndex = GetFirstVisibleIndex(itemCount, itemHeight + verticalSpacing);
+                var lastIndex = GetLastVisibleIndex(itemCount, height, itemHeight + verticalSpacing);
+                RealizeRange(firstIndex, lastIndex);
+            }
 
             foreach (UIElement child in InternalChildren)
                 child.Measure(new Size(itemWidth, itemHeight));
@@ -142,7 +157,10 @@ namespace GameSaveCenter.Playnite.Controls
         protected override void OnItemsChanged(object sender, ItemsChangedEventArgs args)
         {
             if (args.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
+            {
                 RemoveAllGeneratedChildren();
+                QueueGenerationRecovery();
+            }
 
             InvalidateMeasure();
             InvalidateArrange();
@@ -224,6 +242,19 @@ namespace GameSaveCenter.Playnite.Controls
             return Math.Max(1, ItemWidth);
         }
 
+        private double ResolveViewportHeight(double availableHeight)
+        {
+            if (!double.IsInfinity(availableHeight) && availableHeight > 1)
+                return availableHeight;
+            if (scrollOwner != null && !double.IsInfinity(scrollOwner.ViewportHeight) && scrollOwner.ViewportHeight > 1)
+                return scrollOwner.ViewportHeight;
+            if (viewport.Height > 1 && !double.IsInfinity(viewport.Height))
+                return viewport.Height;
+            if (ActualHeight > 1 && !double.IsInfinity(ActualHeight))
+                return ActualHeight;
+            return Math.Max(1, ItemHeight + VerticalSpacing);
+        }
+
         private int GetFirstVisibleIndex(int itemCount, double rowStep)
         {
             if (itemCount == 0) return 0;
@@ -298,12 +329,28 @@ namespace GameSaveCenter.Playnite.Controls
             catch (ArgumentOutOfRangeException)
             {
                 // A collection refresh can invalidate the generator between
-                // MeasureOverride and GenerateNext. Recover the visual tree on
-                // the current layout pass and let WPF request a clean measure;
-                // never allow a stale generator index to crash the host.
+                // MeasureOverride and GenerateNext. Clear the stale visual tree and
+                // explicitly request a later generator pass. Without the deferred
+                // pass WPF can keep the panel measured but empty after scrolling
+                // back to the first row.
                 RemoveAllGeneratedChildren();
-                InvalidateMeasure();
+                QueueGenerationRecovery();
             }
+        }
+
+        private void QueueGenerationRecovery()
+        {
+            if (recoveryQueued || !IsInitialized)
+                return;
+
+            recoveryQueued = true;
+            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+            {
+                recoveryQueued = false;
+                InvalidateMeasure();
+                InvalidateArrange();
+                scrollOwner?.InvalidateScrollInfo();
+            }));
         }
 
         private void RemoveAllGeneratedChildren()

@@ -2,6 +2,14 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-16 UI-220 UiLab 几何对齐与媒体回滚修复交接
+
+- `GscRedesignWorkspaceTabItem` 的 `HorizontalContentAlignment`/`VerticalContentAlignment` 必须保持 `Stretch`；标题的居中由模板内的 `HeaderContent` 完成。不要把标题对齐属性重新绑定给页面内容。
+- `MaintenanceDiagnosticsSubTabs` 现在是 `ListBox` segmented control，不是 `TabControl`；内容由 `MaintenanceDiagnosticsFindingsPanel` 和 `MaintenanceDiagnosticsOverviewPanel` 切换。维护二级导航两项文字都必须保持可见。
+- `VirtualizingWrapPanel.ResolveViewportHeight` 和 deferred recovery 是媒体网格滚动回顶的必要保护；继续保留生产虚拟化和滚动条，不要替换成 UiLab 的非虚拟化样例实现。
+- 首页 `OverviewHeroColumn`/`OverviewCurrentGameColumn` 的宽度比例为 `1.35*:1`；744 DIP 左右的紧凑视口由 `ApplyResponsiveWidth` 堆叠，不能用旧的等宽比例恢复。
+- 验证基线：Release 0 warning/0 error；Core 59/59、Worker 191/191、Playnite 303/303；`render-qa OK`（双主题、多尺寸、resize、媒体滚动回顶）。WPF UI 校验无 error，但保留既有布局/主题资源 warnings。当前仍不能声称完成 Playnite 宿主逐页像素验收，因 Computer Use 无法稳定激活窗口。
+
 ## 2026-08-16 UI-219 UiLab 分段页面骨架直迁交接
 
 - 本轮已把媒体、存档、修改器、维护四个生产页的主导航从旧 `TabControl/TabItem` 改成 UiLab 的 segmented navigation + named panel host；真实数据/命令/绑定、Inspector、DataGrid/ListBox 虚拟化和生产滚动条没有被 demo 样例替换。维护诊断/审计中的嵌套页签仍是页面内部层级。

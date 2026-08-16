@@ -3,6 +3,14 @@
 > 维护时间：2026-08-14
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-16 UI-220 UiLab 几何对齐与虚拟媒体回滚修复
+
+- 上一轮迁移留下的关键差异已收口：`GscRedesignWorkspaceTabItem` 的页面内容对齐改为 `Stretch`，模板只把分段标题居中；否则 WPF 会把真实表格/卡片内容按标题对齐方式压缩到中间，造成用户截图中的大面积空白和错位。
+- 维护中心的诊断二级导航已按 UiLab 改为 `GscRedesignSegmented` + 命名面板宿主；“问题列表”和“诊断概览”都可见，原有诊断表格、详情 Inspector、绑定和命令保留。媒体、存档、维护页的本地 TabItem 样式同步改为 Stretch 内容。
+- `VirtualizingWrapPanel` 不再把首次无限高度测量解释为零视口；现在优先使用 ScrollViewer/上一次视口高度，并在生成器刷新越界时排队重新测量，覆盖媒体列表切换、滚动到底后回顶的 WPF 时序。
+- 首页 Hero/当前游戏列恢复 UiLab 的 `1.35*:1` 比例，744 DIP 紧凑视口仍自动堆叠并保持三枚操作按钮可用。RenderHarness 新增媒体 WrapPanel 滚动回顶探针，并支持 segmented 页面和维护二级 segmented 导航。
+- 当前验证：source 校验通过；WPF UI 校验 0 errors（仅既有布局/主题资源提示）；Playnite Release 构建 0 warning/0 error；Core 59/59、Worker 191/191、Playnite 303/303；`render-qa OK`，双主题、多尺寸、resize、维护二级导航和媒体滚动回顶均通过。离屏截图不能替代 Playnite 宿主像素验收；当前 Computer Use 仍无法稳定激活 Playnite，不能把本轮写成完整真机视觉验收。
+
 ## 2026-08-16 UI-219 UiLab 分段页面骨架直迁当前事实
 
 - 当前媒体、存档、修改器、维护四个生产页已按 UiLab 的顶层页面骨架运行：`Grid` 的 Auto 导航行 + `GscRedesignSegmented` + `Grid` 面板宿主；不要再把“共用配色/卡片”当成完成迁移，也不要恢复外层 `TabControl` 作为这四页的主导航。维护诊断和审计内部嵌套页签是 UiLab 本身存在的层级，继续保留。

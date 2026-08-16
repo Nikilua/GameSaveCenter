@@ -84,6 +84,22 @@ namespace GameSaveCenter.Playnite.Views
             MaintenanceProcessPanel.Visibility = selected == 4 ? Visibility.Visible : Visibility.Collapsed;
         }
 
+        private void OnMaintenanceDiagnosticsSubTabChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (MaintenanceDiagnosticsSubTabs == null
+                || MaintenanceDiagnosticsFindingsPanel == null
+                || MaintenanceDiagnosticsOverviewPanel == null)
+                return;
+
+            var selected = MaintenanceDiagnosticsSubTabs.SelectedIndex;
+            MaintenanceDiagnosticsFindingsPanel.Visibility = selected == 0
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+            MaintenanceDiagnosticsOverviewPanel.Visibility = selected == 1
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+        }
+
         private void OnMaintenanceDeviceCompactDetailsClick(object sender, RoutedEventArgs e)
         {
             if (MaintenanceDeviceGrid.SelectedItem == null) return;

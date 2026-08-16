@@ -25,8 +25,8 @@
                 <Setter Property="VerticalContentAlignment" Value="Stretch"/>
             </Style>
             <Style x:Key="MaintenanceTabItem" TargetType="TabItem" BasedOn="{StaticResource GscRedesignWorkspaceTabItem}">
-                <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                <Setter Property="VerticalContentAlignment" Value="Stretch"/>
             </Style>
             <Style x:Key="GscTableFrame" TargetType="Border" BasedOn="{StaticResource MaintenanceTableFrame}"/>
             <!-- Keep the alias explicit: Playnite host dictionaries can otherwise win the
@@ -58,10 +58,18 @@
                      and a page-scroll overview. Expanders never own inner scrollbars; the
                      overview page owns the shared scroll context. -->
                 <Grid x:Name="MaintenanceDiagnosticsScrollSurface" Margin="0,6,0,0" VerticalAlignment="Stretch">
-                    <TabControl x:Name="MaintenanceDiagnosticsSubTabs" Style="{StaticResource GscInternalTabControl}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                        <TabControl.Resources><Style TargetType="TabItem" BasedOn="{StaticResource GscInternalTabItem}"/></TabControl.Resources>
-                        <TabItem Header="问题列表">
-                            <Grid x:Name="MaintenanceDiagnosticsLayout" Margin="0,6,0,0">
+                    <Grid x:Name="MaintenanceDiagnosticsTabsSurface">
+                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                        <!-- UiLab uses a ListBox segmented control for this second-level
+                             switcher as well. It keeps the two labels visible and leaves
+                             the selected page content stretched below the strip. -->
+                        <ListBox x:Name="MaintenanceDiagnosticsSubTabs" Grid.Row="0" Style="{StaticResource GscRedesignSegmented}" SelectionChanged="OnMaintenanceDiagnosticsSubTabChanged" SelectedIndex="0" HorizontalAlignment="Left">
+                            <ListBoxItem Content="问题列表"/>
+                            <ListBoxItem Content="诊断概览"/>
+                        </ListBox>
+                        <Grid x:Name="MaintenanceDiagnosticsPanels" Grid.Row="1" Margin="0,6,0,0">
+                            <Grid x:Name="MaintenanceDiagnosticsFindingsPanel">
+<Grid x:Name="MaintenanceDiagnosticsLayout" Margin="0">
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscInspectorWidth}"/></Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                                 <Border x:Name="MaintenanceDiagnosticsTable" Grid.Row="0" Grid.Column="0">
@@ -93,9 +101,9 @@
                                     </StackPanel>
                                 </ScrollViewer>
                             </Grid>
-                        </TabItem>
-                        <TabItem Header="诊断概览">
-                            <ScrollViewer x:Name="MaintenanceDiagnosticsOverviewScrollSurface" Style="{DynamicResource GscPageScrollViewer}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                            </Grid>
+                            <Grid x:Name="MaintenanceDiagnosticsOverviewPanel" Visibility="Collapsed">
+<ScrollViewer x:Name="MaintenanceDiagnosticsOverviewScrollSurface" Style="{DynamicResource GscPageScrollViewer}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                                 <StackPanel Margin="0,6,0,12">
                                     <Border x:Name="EnvironmentCheckCard" Style="{DynamicResource GscReadingCardStyle}" Padding="12,10" Margin="0,0,0,6">
                                         <Grid>
@@ -252,8 +260,9 @@
                                     </Border>
                                 </StackPanel>
                             </ScrollViewer>
-                        </TabItem>
-                    </TabControl>
+                            </Grid>
+                        </Grid>
+                    </Grid>
                 </Grid>
             </Grid>
             <Grid x:Name="MaintenanceDevicePanel" Visibility="Collapsed">

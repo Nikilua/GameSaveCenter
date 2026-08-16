@@ -120,11 +120,19 @@ namespace GameSaveCenter.Playnite.Views
             if (OverviewHeroAndGameRow != null)
             {
                 var stackHeroAndGame = primaryWidth < 700;
+                // At the compact Playnite content width (~744 DIP) three 88-DIP
+                // actions otherwise wrap inside the selected-game rail. UiLab keeps
+                // that action row intact, so stack the two context cards slightly
+                // earlier to preserve the same rhythm.
+                if (primaryWidth >= 700 && primaryWidth < 800)
+                    stackHeroAndGame = true;
                 OverviewHeroGameCompactRow.Height = stackHeroAndGame
                     ? GridLength.Auto
                     : new GridLength(0);
                 OverviewHeroGameGutterColumn.Width = new GridLength(stackHeroAndGame ? 0 : 14);
                 OverviewHeroColumn.Width = new GridLength(1.0, GridUnitType.Star);
+                if (!stackHeroAndGame)
+                    OverviewHeroColumn.Width = new GridLength(1.35, GridUnitType.Star);
                 OverviewCurrentGameColumn.Width = new GridLength(1.0, GridUnitType.Star);
 
                 Grid.SetRow(OverviewTodayHeroCard, 0);

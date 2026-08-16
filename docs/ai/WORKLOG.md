@@ -2,6 +2,21 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-16 UI-220 UiLab 几何对齐、维护二级导航与媒体回滚修复
+
+**实现内容：**
+
+- 修正共享 `GscRedesignWorkspaceTabItem`：页面内容 Stretch，分段标题在模板内部独立居中；同步修正维护、存档、媒体的本地 TabItem 对齐，避免表格和卡片被居中压缩。
+- 将维护中心诊断内层从旧 `TabControl` 改为 UiLab 风格的 segmented ListBox + named panel host；保留问题列表/诊断概览的原始真实绑定、Inspector、命令和滚动表面，并补充二级切换事件处理。
+- 修复 `VirtualizingWrapPanel` 的无限高度初测和生成器刷新恢复逻辑；在 RenderHarness 中加入媒体列表滚动到底再回顶的回归探针，并更新 segmented 页面选择/维护二级导航探测。
+- 首页 Hero/当前游戏列按 UiLab 恢复 `1.35*:1`，紧凑宽度继续使用响应式堆叠；演示色板、窗口按钮、样例数据和样例滚动条仍未迁移。
+
+**验证结果：**
+
+- source 校验通过；WPF UI 校验 0 errors（既有 StackPanel/主题资源提示保留）；Playnite Release 构建 0 warning / 0 error。
+- Core 59/59、Worker 191/191、Playnite 303/303；RenderHarness 双主题、多尺寸、resize 和媒体滚动回顶探针均 `render-qa OK`。
+- 离屏截图已确认维护页二级标签同时可见、表格/详情分栏恢复、媒体卡片回顶不为空；真实 Playnite 当前仍受窗口自动化激活限制，未将离屏证据冒充宿主像素验收。
+
 ## 2026-08-16 UI-219 UiLab 分段页面骨架直迁与启动崩溃修复
 
 **实现内容：**

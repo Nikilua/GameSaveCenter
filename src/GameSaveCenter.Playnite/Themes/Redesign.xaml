@@ -323,10 +323,11 @@
         <Setter Property="Padding" Value="14,6"/>
         <Setter Property="Margin" Value="2"/>
         <Setter Property="MinHeight" Value="32"/>
-        <!-- UiLab centers the header text inside each segment. The TabControl itself
-             remains Stretch so the selected production page keeps its finite viewport. -->
-        <Setter Property="HorizontalContentAlignment" Value="Center"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <!-- The header is centered by the template below. These properties belong to
+             the selected page content, not to the header presenter: keeping them
+             Stretch lets a DataGrid/card surface occupy the complete page. -->
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
         <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -339,20 +340,24 @@
                             Padding="{TemplateBinding Padding}"
                             Opacity="0"
                             SnapsToDevicePixels="True">
-                        <ContentPresenter ContentSource="Header"
-                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                          TextElement.Foreground="{TemplateBinding Foreground}"
-                                          TextElement.FontSize="12"/>
+                        <ContentPresenter x:Name="HeaderContent"
+                                          ContentSource="Header"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          TextElement.Foreground="{DynamicResource GscSecondaryTextBrush}"
+                                          TextElement.FontSize="12"
+                                          TextElement.FontWeight="Medium"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="Chrome" Property="Opacity" Value="1"/>
                             <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
-                            <Setter Property="FontWeight" Value="SemiBold"/>
+                            <Setter TargetName="HeaderContent" Property="TextElement.Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+                            <Setter TargetName="HeaderContent" Property="TextElement.FontWeight" Value="SemiBold"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+                            <Setter TargetName="HeaderContent" Property="TextElement.Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="Chrome" Property="Opacity" Value="0.42"/>
