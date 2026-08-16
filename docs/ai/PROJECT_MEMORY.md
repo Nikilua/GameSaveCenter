@@ -3,6 +3,16 @@
 > 维护时间：2026-08-14
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-16 UI-REAL-HOST-AUDIT-BLOCKERS-FIX 当前事实
+
+- Audit CommitSha 必须可追踪：脚本设置 `GSC_UI_AUDIT_COMMIT`，unknown 触发 `AUDIT_SOURCE_REVISION_MISSING` HIGH。
+- Embedded 判定用 `IsGenuinelyEmbeddedDashboard`（IsLoaded + PresentationSource + Window 非 fallback）；headless 无人点击时必须诚实 false + HIGH gate。
+- `SafeFileName` 不能再用 `string.Join("-", chars)`；已修复为仅替换非法字符并折叠连续 `-`。
+- Overflow gate 必须分类：fixed/scroll/decorative；ScrollViewer 内容与装饰性越界不误报。
+- Resize 后必须等待 DataBind/Loaded/Render/Idle 且连续两次几何差 ≤0.5 DIP 才截图（最多 3 pass）。
+- Manifest 按 `Scope=Dashboard|Settings` 隔离；内部滚动器（DG_ScrollViewer/PART_ContentHost/TextBox/ComboBox）默认排除。
+- 基线：Playnite 302/302、Worker 191/191、Core 59/59；Release 0 warning/0 error。
+
 ## 2026-08-16 UI-HOST-AUDIT-TRUTHFULNESS-FIX 当前事实
 
 - Real Host Audit 的 origin 必须显式：`DashboardView.AuditHostKind`（默认 EmbeddedPlaynite，fallback 专用窗口设 ControlledAuditWindow）；不要用 `auditDashboardWindow==null` 推断。

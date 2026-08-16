@@ -2,6 +2,18 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-16 UI-REAL-HOST-AUDIT-BLOCKERS-FIX 实施完成
+
+- 来源：`GameSaveCenter_RealHost_Audit_Blockers_Prompt.zip`；只修 Audit 可信度。
+- CommitSha：`real-host-audit.ps1` 启动前写 `GSC_UI_AUDIT_COMMIT`；metadata 优先级 env → AssemblyInformationalVersion → unknown；unknown 写 `AUDIT_SOURCE_REVISION_MISSING` HIGH。
+- Embedded 身份：`IsGenuinelyEmbeddedDashboard`（Loaded + PresentationSource + Window 非 fallback），不再 static null 猜；headless 无人点击时诚实 `EmbeddedDashboardCaptured=false` + `REAL_EMBEDDED_DASHBOARD_NOT_CAPTURED` HIGH。
+- SafeFileName 根因是 `string.Join("-", chars)` 每字符插 `-`；改为仅替换非法字符、折叠连续 `-`、保留中文。
+- Overflow 分类：fixed/scroll/decorative/false-positive；ScrollViewer 内容与装饰性越界不再误报 HIGH，真实 fixed overflow 仍写 gate；分类统计入 `gates/overflow-classification.json`。
+- Resize 稳定：最多 3 pass，等待 DataBind/Loaded/Render/Idle，连续两次几何差 ≤0.5 DIP 才截图，记录 responsive-stable.json。
+- Scroll：排除 DG_ScrollViewer/PART_ContentHost/TextBox/ComboBox 内部 scroller；manifest 写真实尺寸/状态/Reason；`Scope=Dashboard|Settings` 隔离。
+- 证据：summary CommitSha=d7948c9、Settings embedded=true、Controlled=true；ZIP `artifacts/GameSaveCenter-ui-host-audit.zip`。
+- 测试：Playnite 302/302、Worker 191/191、Core 59/59；报告 `docs/ai/REAL_HOST_AUDIT_BLOCKERS_FIX_REPORT.md`。
+
 ## 2026-08-16 UI-HOST-AUDIT-TRUTHFULNESS-FIX 实施完成
 
 - 来源：`GameSaveCenter_HostAudit_Truthfulness_Fix_Prompt.zip`；目标是让 Real Host Audit 的 origin、scroll semantics、manifest 与 success state 全部可信。
