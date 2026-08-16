@@ -370,19 +370,25 @@ namespace GameSaveCenter.Playnite.Views
             GameSwitcherHost.Visibility = gameScopedWorkspace
                 ? Visibility.Visible
                 : Visibility.Collapsed;
-            var pickerOnTopBar = gameScopedWorkspace
-                && (mode == LayoutMode.Expanded || mode == LayoutMode.Standard);
+            // Keep the UiLab header rhythm down to the compact breakpoint. In compact
+            // windows the toolbar labels collapse to glyphs, leaving enough room for a
+            // narrow real game picker on the same row instead of creating a tall second
+            // header band. The narrow mode still stacks it to protect touch/keyboard use.
+            var pickerOnTopBar = gameScopedWorkspace && mode != LayoutMode.Narrow;
             HeaderGamePickerColumn.Width = pickerOnTopBar
                 ? GridLength.Auto
                 : new GridLength(0);
-            Grid.SetColumnSpan(HeaderTitlePanel, pickerOnTopBar ? 1 : mode >= LayoutMode.Compact ? 3 : 2);
+            Grid.SetColumnSpan(HeaderTitlePanel, pickerOnTopBar ? 1 : mode == LayoutMode.Compact ? 3 : 2);
             Grid.SetRow(GameSwitcherHost, pickerOnTopBar ? 0 : 1);
             Grid.SetColumn(GameSwitcherHost, pickerOnTopBar ? 1 : 0);
             Grid.SetColumnSpan(GameSwitcherHost, pickerOnTopBar ? 1 : 3);
-            // The picker lives inside the same bordered header as the title and the
-            // contextual actions.  Give it a finite width so its Auto columns cannot
-            // measure beyond HeaderSurface at normal and high-DPI window sizes.
-            var pickerWidth = mode == LayoutMode.Expanded ? 380d : 330d;
+            // The picker shares the open page-header rail with the title and contextual
+            // actions. Give it a finite width so its Auto columns cannot measure beyond
+            // HeaderSurface at normal and high-DPI window sizes.
+            var pickerWidth = mode == LayoutMode.Expanded ? 360d
+                : mode == LayoutMode.Standard ? 320d
+                : mode == LayoutMode.Compact ? 260d
+                : 300d;
             GameSwitcherHost.Width = pickerOnTopBar ? pickerWidth : double.NaN;
             GameSwitcherHost.MaxWidth = pickerOnTopBar ? pickerWidth : double.PositiveInfinity;
             GameSwitcherHost.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -407,6 +413,15 @@ namespace GameSaveCenter.Playnite.Views
                 Grid.SetColumnSpan(TopActionsScroller, 1);
                 TopActionsScroller.HorizontalAlignment = HorizontalAlignment.Right;
                 TopActionsScroller.Margin = new Thickness(14, 0, 0, 0);
+            }
+            else if (mode == LayoutMode.Compact && pickerOnTopBar)
+            {
+                HeaderCompactActionsRow.Height = new GridLength(0);
+                Grid.SetRow(TopActionsScroller, 0);
+                Grid.SetColumn(TopActionsScroller, 3);
+                Grid.SetColumnSpan(TopActionsScroller, 1);
+                TopActionsScroller.HorizontalAlignment = HorizontalAlignment.Right;
+                TopActionsScroller.Margin = new Thickness(8, 0, 0, 0);
             }
             else
             {

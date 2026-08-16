@@ -2,6 +2,12 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-16 UI-204-UILAB-PARITY 当前开发基线
+
+- UiLab 的页面视觉与结构已迁入生产共享资源；UiLab 演示数据、右上角颜色/主题按钮和 UiLab 滚动条明确不迁移。
+- 生产保留真实命令、绑定、虚拟化和现有滚动条；Overview 普通状态不再显示重复全局命令卡，Settings 常用宽度使用左侧分类栏，低于 700/620 DIP 进入紧凑布局。
+- 自动验证已通过：Core 59/59、Worker 191/191、Playnite 302/302、Release 构建、source/WPF 门禁和 `render-ui-migration-v3`；真实 Playnite 宿主本阶段未重启，仍需人工确认主题/DPI/键盘/连续缩放。
+
 ## 2026-08-16 UI-REAL-HOST-AUDIT-BLOCKERS-FIX 实施完成
 
 - Real Host Audit 阻塞项已收口：CommitSha 可追踪、SafeFileName 修复、overflow 分类 gate、resize 稳定截图、manifest Scope 隔离、内部滚动器过滤、Embedded 身份显式判定。

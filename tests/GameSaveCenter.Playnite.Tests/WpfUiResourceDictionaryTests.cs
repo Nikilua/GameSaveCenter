@@ -1943,7 +1943,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Key=\"GscRedesignWorkspaceTabItem\"", redesign);
         Assert.Contains("HorizontalContentAlignment\" Value=\"Stretch\"", redesign);
         Assert.Contains("VerticalContentAlignment\" Value=\"Stretch\"", redesign);
-        Assert.Contains("CornerRadius=\"12\"", redesign);
+        Assert.Contains("CornerRadius=\"10\"", redesign);
         Assert.Contains("Stroke=\"{DynamicResource GscOnAccentTextBrush}\"", tokens);
         Assert.Contains("ScrollViewer.VerticalScrollBarVisibility=\"Auto\"", dashboard);
         Assert.Contains("Property=\"ScrollViewer.VerticalScrollBarVisibility\" Value=\"Auto\"", trainer);
@@ -4006,9 +4006,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Padding\" Value=\"18\"", redesign);
         Assert.Contains("Effect\" Value=\"{x:Null}\"", redesign);
         Assert.Contains("x:Key=\"GscSubCardStyle\"", redesign);
-        Assert.Contains("CornerRadius\" Value=\"13\"", redesign);
+        Assert.Contains("CornerRadius\" Value=\"12\"", redesign);
         Assert.Contains("x:Key=\"GscFloatingCardStyle\"", redesign);
-        Assert.Contains("CornerRadius\" Value=\"18\"", redesign);
+        Assert.Contains("CornerRadius\" Value=\"16\"", redesign);
         Assert.Contains("CornerRadius=\"10\" Padding=\"{TemplateBinding Padding}\"", redesign);
     }
 

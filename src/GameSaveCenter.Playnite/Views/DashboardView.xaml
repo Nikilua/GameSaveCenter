@@ -40,7 +40,7 @@
 
         <Style x:Key="GscSurface" TargetType="Border">
             <Setter Property="Background" Value="{DynamicResource GscGlassFillBrush}"/>
-            <Setter Property="CornerRadius" Value="18"/>
+            <Setter Property="CornerRadius" Value="16"/>
             <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="SnapsToDevicePixels" Value="True"/>
@@ -94,7 +94,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border x:Name="Chrome" CornerRadius="11" Background="{TemplateBinding Background}"
+                        <Border x:Name="Chrome" CornerRadius="{StaticResource GscCornerControl}" Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
                                 Padding="{TemplateBinding Padding}" RenderTransformOrigin="0.5,0.5">
                             <Border.RenderTransform>
@@ -137,7 +137,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border x:Name="Chrome" CornerRadius="12" Background="{TemplateBinding Background}"
+                        <Border x:Name="Chrome" CornerRadius="{StaticResource GscCornerControl}" Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1"
                                 Padding="{TemplateBinding Padding}" RenderTransformOrigin="0.5,0.5"
                                 Effect="{DynamicResource GscPrimaryButtonEffect}">
@@ -288,7 +288,7 @@
                                     Background="{TemplateBinding Background}"
                                     BorderBrush="{TemplateBinding BorderBrush}"
                                     BorderThickness="{TemplateBinding BorderThickness}"
-                                    CornerRadius="11"
+                                    CornerRadius="8"
                                     Padding="{TemplateBinding Padding}"
                                     SnapsToDevicePixels="False"
                                     UseLayoutRounding="True"
@@ -406,7 +406,7 @@
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="SnapsToDevicePixels" Value="True"/>
             <Setter Property="Tag">
-                <Setter.Value><CornerRadius>0</CornerRadius></Setter.Value>
+                <Setter.Value><CornerRadius>10,10,10,10</CornerRadius></Setter.Value>
             </Setter>
             <Setter Property="Template">
                 <Setter.Value>
@@ -417,7 +417,7 @@
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="0">
+                                CornerRadius="10">
                             <Grid>
                                 <ContentPresenter Margin="{TemplateBinding Padding}"
                                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -457,19 +457,19 @@
 
         <Style x:Key="GscFirstColumnHeader" TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
             <Setter Property="Tag">
-                <Setter.Value><CornerRadius>11,0,0,0</CornerRadius></Setter.Value>
+                <Setter.Value><CornerRadius>10,0,0,0</CornerRadius></Setter.Value>
             </Setter>
         </Style>
 
         <Style x:Key="GscLastColumnHeader" TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
             <Setter Property="Tag">
-                <Setter.Value><CornerRadius>0,11,0,0</CornerRadius></Setter.Value>
+                <Setter.Value><CornerRadius>0,10,0,0</CornerRadius></Setter.Value>
             </Setter>
         </Style>
 
         <Style x:Key="GscOnlyColumnHeader" TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
             <Setter Property="Tag">
-                <Setter.Value><CornerRadius>11,11,0,0</CornerRadius></Setter.Value>
+                <Setter.Value><CornerRadius>10,10,0,0</CornerRadius></Setter.Value>
             </Setter>
         </Style>
 
@@ -656,7 +656,7 @@
         <Style x:Key="GscStatusPill" TargetType="Border">
             <Setter Property="MinWidth" Value="48"/>
             <Setter Property="Padding" Value="12,8"/>
-            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="CornerRadius" Value="10"/>
             <Setter Property="Background" Value="{DynamicResource GscGlassStrongBrush}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
@@ -841,18 +841,18 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Demo top bar: a quiet, lightly separated surface keeps the page title,
-             global GamePicker and contextual actions from visually merging into the
-             workspace cards below. -->
-        <Border x:Name="HeaderSurface" Grid.Row="0" Margin="0,0,0,6"
-                Background="{DynamicResource GscGlassFillBrush}"
-                BorderBrush="{DynamicResource GscGlassStrokeBrush}"
-                BorderThickness="1"
-                CornerRadius="20"
-                Padding="20,10"
-                ClipToBounds="True"
+        <!-- UiLab's page header is an open content rail rather than a second large card.
+             Keep the real game picker and commands, but let the workspace cards define the
+             reading surfaces below it. -->
+        <Border x:Name="HeaderSurface" Grid.Row="0" Margin="0,0,0,10"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                BorderThickness="0"
+                CornerRadius="0"
+                Padding="0"
+                ClipToBounds="False"
                 SnapsToDevicePixels="True">
-            <Grid x:Name="HeaderGrid" Margin="16,0,16,0" MinWidth="0">
+            <Grid x:Name="HeaderGrid" Margin="0" MinWidth="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -865,7 +865,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <StackPanel x:Name="HeaderTitlePanel" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" MinWidth="0">
-                <TextBlock x:Name="PageTitleText" Text="首页" FontSize="26" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                <TextBlock x:Name="PageTitleText" Text="首页" FontSize="20" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
                 <TextBlock x:Name="PageSubtitleText" Text="今日整体状态、需处理关注项与全局批量操作"
                            Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,4,14,0"
                            TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
@@ -906,7 +906,7 @@
                     Height="54" VerticalAlignment="Center"
                     Background="{DynamicResource GscGlassFillBrush}"
                     BorderBrush="Transparent" BorderThickness="0"
-                    CornerRadius="16" Padding="4" Visibility="Collapsed">
+                    CornerRadius="10" Padding="3" Visibility="Collapsed">
                 <Button x:Name="CompactGameSelector" Style="{StaticResource GscRedesignGameContextButton}"
                         HorizontalAlignment="Stretch" Click="OnToggleGameBrowserClick"
                         AutomationProperties.Name="选择当前游戏"

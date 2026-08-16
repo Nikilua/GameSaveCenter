@@ -104,7 +104,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("VerticalAlignment=\"Center\"", tokens);
             Assert.Contains("<Setter Property=\"Height\" Value=\"42\"/>", tokens);
             Assert.Contains("Padding=\"0\"", redesign);
-            Assert.Contains("CornerRadius=\"14\"", redesign);
+            Assert.Contains("CornerRadius=\"10\"", redesign);
         }
 
         [Fact]
@@ -316,7 +316,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("Width=\"248\"", redesign);
             Assert.Contains("Padding=\"0\"", redesign);
             Assert.Contains("Padding=\"0,0,4,18\"", redesign);
-            Assert.Contains("CornerRadius=\"14\"", redesign);
+            Assert.Contains("CornerRadius=\"10\"", redesign);
             Assert.Contains("x:Name=\"SettingsHeaderBottomSafetyZone\"", redesign);
             Assert.Contains("x:Name=\"TabItemRoot\"", redesign);
             Assert.Contains("VerticalAlignment=\"Top\"", redesign);

@@ -9,10 +9,11 @@
 
     <!-- Final redesign geometry.  These values intentionally form a small, reusable scale
          rather than page-specific magic numbers. -->
-    <CornerRadius x:Key="GscRedesignShellCorner">24</CornerRadius>
+    <!-- Migrated from UiLab's Shell 20 / card 16 / control 10 scale. -->
+    <CornerRadius x:Key="GscRedesignShellCorner">20</CornerRadius>
     <CornerRadius x:Key="GscRedesignSidebarCorner">20</CornerRadius>
-    <CornerRadius x:Key="GscRedesignCardCorner">18</CornerRadius>
-    <CornerRadius x:Key="GscRedesignControlCorner">11</CornerRadius>
+    <CornerRadius x:Key="GscRedesignCardCorner">16</CornerRadius>
+    <CornerRadius x:Key="GscRedesignControlCorner">10</CornerRadius>
     <Thickness x:Key="GscRedesignPagePadding">18</Thickness>
     <Thickness x:Key="GscRedesignCardPadding">16</Thickness>
 
@@ -100,14 +101,14 @@
     <Style x:Key="GscRedesignFloatingPickerCard" TargetType="Border" BasedOn="{StaticResource GscRedesignSectionCard}">
         <Setter Property="Background" Value="{DynamicResource GscGlassStrongBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscAccentTintStrongBrush}"/>
-        <Setter Property="CornerRadius" Value="20"/>
+        <Setter Property="CornerRadius" Value="16"/>
         <Setter Property="Effect" Value="{DynamicResource GscDialogEffect}"/>
         <Setter Property="ClipToBounds" Value="True"/>
     </Style>
 
     <Style x:Key="GscRedesignMetricCard" TargetType="{x:Type ui:Card}" BasedOn="{StaticResource GscWpfUiCard}">
         <Setter Property="Padding" Value="16"/>
-        <Setter Property="Border.CornerRadius" Value="18"/>
+        <Setter Property="Border.CornerRadius" Value="16"/>
         <Setter Property="MinHeight" Value="84"/>
         <Setter Property="Margin" Value="0,0,12,0"/>
         <Setter Property="Effect" Value="{x:Null}"/>
@@ -121,7 +122,7 @@
 
     <Style x:Key="GscRedesignMetricBorder" TargetType="Border" BasedOn="{StaticResource GscRedesignSectionCard}">
         <Setter Property="Padding" Value="16"/>
-        <Setter Property="CornerRadius" Value="18"/>
+        <Setter Property="CornerRadius" Value="16"/>
         <Setter Property="MinHeight" Value="84"/>
         <Setter Property="Margin" Value="0,0,12,0"/>
         <Setter Property="Effect" Value="{x:Null}"/>
@@ -178,7 +179,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border x:Name="Chrome" CornerRadius="14" Padding="{TemplateBinding Padding}"
+                    <Border x:Name="Chrome" CornerRadius="10" Padding="{TemplateBinding Padding}"
                             Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}">
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -200,7 +201,7 @@
     <Style x:Key="GscRedesignStatusCard" TargetType="Border">
         <Setter Property="MinHeight" Value="58"/>
         <Setter Property="Padding" Value="12,10"/>
-        <Setter Property="CornerRadius" Value="16"/>
+        <Setter Property="CornerRadius" Value="12"/>
         <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
@@ -224,7 +225,7 @@
         <Setter Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscDividerBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="CornerRadius" Value="14"/>
+        <Setter Property="CornerRadius" Value="12"/>
         <Setter Property="Padding" Value="14,11"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="UseLayoutRounding" Value="True"/>
@@ -234,7 +235,7 @@
         <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="CornerRadius" Value="14"/>
+        <Setter Property="CornerRadius" Value="12"/>
         <Setter Property="Padding" Value="12"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="UseLayoutRounding" Value="True"/>
@@ -242,7 +243,7 @@
 
     <Style x:Key="GscRedesignCounterPill" TargetType="Border" BasedOn="{StaticResource GscRedesignContextPill}">
         <Setter Property="Padding" Value="11,7"/>
-        <Setter Property="CornerRadius" Value="11"/>
+        <Setter Property="CornerRadius" Value="10"/>
         <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
     </Style>
 
@@ -256,7 +257,7 @@
 
 
     <Style x:Key="GscRedesignSectionTitle" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="17"/>
+        <Setter Property="FontSize" Value="15"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
     </Style>
@@ -291,7 +292,7 @@
                                 Background="{DynamicResource GscControlFillBrush}"
                                 BorderBrush="{DynamicResource GscGlassStrokeBrush}"
                                 BorderThickness="1"
-                                CornerRadius="12"
+                                CornerRadius="10"
                                 Padding="5"
                                 Margin="0,0,0,12">
                             <ScrollViewer HorizontalScrollBarVisibility="Auto"
@@ -457,7 +458,7 @@
                         <Border x:Name="Chrome"
                                 MinHeight="0"
                                 Padding="14,8"
-                                CornerRadius="14"
+                                CornerRadius="10"
                                 ClipToBounds="False"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Top"
@@ -498,7 +499,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ContentControl">
-                    <Border x:Name="IconTile" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" CornerRadius="13"
+                    <Border x:Name="IconTile" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" CornerRadius="10"
                             Background="{DynamicResource GscAccentTintBrush}">
                         <Grid>
                             <Image Source="{TemplateBinding Content}"
@@ -536,7 +537,7 @@
         <Setter Property="UseLayoutRounding" Value="True"/>
     </Style>
     <Style x:Key="GscPageTitleStyle" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="26"/>
+        <Setter Property="FontSize" Value="20"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
@@ -571,7 +572,7 @@
         <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="CornerRadius" Value="13"/>
+        <Setter Property="CornerRadius" Value="12"/>
         <Setter Property="Padding" Value="14"/>
         <Setter Property="Effect" Value="{x:Null}"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
@@ -581,7 +582,7 @@
         <Setter Property="Background" Value="{DynamicResource GscPopupBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="CornerRadius" Value="18"/>
+        <Setter Property="CornerRadius" Value="16"/>
         <Setter Property="Padding" Value="16"/>
         <Setter Property="Effect" Value="{DynamicResource GscPopupEffect}"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
@@ -642,7 +643,7 @@
                 <ControlTemplate TargetType="ui:WorkspaceStatePresenter">
                     <Border Style="{DynamicResource GscRedesignSubCard}" Padding="18" MinHeight="96">
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="440">
-                            <Border Width="40" Height="40" CornerRadius="12" Background="{DynamicResource GscAccentIconFillBrush}" HorizontalAlignment="Center">
+                            <Border Width="40" Height="40" CornerRadius="10" Background="{DynamicResource GscAccentIconFillBrush}" HorizontalAlignment="Center">
                                 <TextBlock x:Name="StateGlyphText" Text="&#xE7BA;" FontFamily="Segoe MDL2 Assets" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
                             <TextBlock x:Name="StateDisplayText" Text="空" FontSize="11" Foreground="{DynamicResource GscSecondaryTextBrush}" HorizontalAlignment="Center" Margin="0,8,0,0"/>

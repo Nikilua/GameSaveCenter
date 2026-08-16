@@ -91,10 +91,22 @@
                   VerticalAlignment="Top">
             <Grid x:Name="OverviewPrimaryFlow" VerticalAlignment="Top">
             <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-            <!-- Demo HomeView keeps global batch commands in a quiet, separate
-                 workbench surface instead of making the page header carry every
-                 action.  The commands remain the existing real Dashboard commands. -->
-            <Border x:Name="OverviewHomeToolbar" Style="{DynamicResource GscRedesignSectionCard}" Padding="14,10" Margin="0,0,0,12">
+            <!-- Global commands live in Dashboard's page header. This real command band
+                 remains available only for the onboarding explanation below. -->
+            <Border x:Name="OverviewHomeToolbar" Padding="14,10" Margin="0,0,0,12">
+                <Border.Style>
+                    <Style TargetType="Border" BasedOn="{StaticResource GscRedesignSectionCard}">
+                        <!-- Global commands already live in Dashboard's UiLab-style page
+                             header. Keep this real command surface available only when the
+                             onboarding explanation needs its own actionable band. -->
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsOnboardingPending}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
                 <Grid>
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition x:Name="OverviewHomeToolbarActionsRow" Height="0"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>

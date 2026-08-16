@@ -3,6 +3,16 @@
 > 维护时间：2026-08-14
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-16 UI-204-UILAB-PARITY 当前事实
+
+- `GameSaveCenter.UiLab` 仅作为视觉参考：生产已迁移其页面层级、颜色/表面层级、圆角尺度、按钮/标题比例、Dashboard 开放式页面头部和 Settings 左侧分类栏；不要回头修复 UiLab 样板自身的布局 bug。
+- 明确排除 UiLab 演示数据、右上角颜色/主题按钮和 UiLab 滚动条。生产继续使用真实数据/命令/绑定/虚拟化和现有带 Track 绑定的滚动条。
+- 共享几何：Shell 20、Card 16、Control 10；Settings 实际内容宽度 ≥700 DIP 使用左侧分类栏，<700 DIP 顶部横向分类，<620 DIP 收紧窄屏标题和字段；这三个断点与 `GameSaveCenterSettingsView.xaml.cs` 保持一致。
+- Overview 的全局命令只在 Dashboard 页面头部显示；`OverviewHomeToolbar` 只有 `IsOnboardingPending=True` 时显示，不能重新改成普通状态下的重复命令卡。
+- DataGrid 表头与 Button/Card 已按生产共享模板收敛圆角；不要把 UiLab 的滚动条模板覆盖到生产，也不要给可选 `DataGridColumnHeader.Tag` 增加 `CornerRadius` 绑定，Playnite 生成 filler header 可能得到 `UnsetValue`。
+- 本阶段验证基线：Release 构建成功，Core 59/59、Worker 191/191、Playnite 302/302；`validate-source.py` 通过；WPF 静态检查 0 error、15 条既有 warning；`render-ui-migration-v3` render-qa 全绿。
+- 离屏截图不是真实 Playnite 嵌入式像素真值；本阶段没有重新启动真实宿主，主题/DPI/键盘/连续缩放仍是 `MANUAL QA REQUIRED`。
+
 ## 2026-08-16 UI-REAL-HOST-AUDIT-BLOCKERS-FIX 当前事实
 
 - Audit CommitSha 必须可追踪：脚本设置 `GSC_UI_AUDIT_COMMIT`，unknown 触发 `AUDIT_SOURCE_REVISION_MISSING` HIGH。

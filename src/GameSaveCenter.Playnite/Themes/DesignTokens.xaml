@@ -2,7 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:primitives="clr-namespace:System.Windows.Controls.Primitives;assembly=PresentationFramework">
-    <!-- Shared defaults. Runtime palette adaptation replaces the theme-sensitive brushes locally. -->
+    <!-- Shared defaults. Runtime palette adaptation replaces the theme-sensitive brushes locally.
+         The fallback palette is aligned with the UiLab visual system: near-opaque reading
+         cards, a softer shell, and a restrained navy/graphite canvas. It is intentionally only
+         a parse-safe fallback; Follow Playnite/Light/Dark still come from AdaptiveThemePalette. -->
     <!-- Deterministic fallback values mirror the standalone demo. Runtime Playnite theme
          adaptation may replace these locally, but parsing must never depend on host resources. -->
     <SolidColorBrush x:Key="GscAccentBrush" Color="#7897FF"/>
@@ -56,36 +59,39 @@
     <sys:Boolean x:Key="GscPopupAllowsTransparency">False</sys:Boolean>
     <x:Static x:Key="GscPopupAnimation" Member="primitives:PopupAnimation.None"/>
 
-    <SolidColorBrush x:Key="GscGlassFillBrush" Color="#F0202A3A"/>
-    <SolidColorBrush x:Key="GscGlassStrongBrush" Color="#F820293A"/>
-    <SolidColorBrush x:Key="GscGlassStrokeBrush" Color="#382D3B52"/>
+    <SolidColorBrush x:Key="GscGlassFillBrush" Color="#EE262B36"/>
+    <SolidColorBrush x:Key="GscGlassStrongBrush" Color="#F5262B36"/>
+    <SolidColorBrush x:Key="GscGlassStrokeBrush" Color="#2EFFFFFF"/>
     <SolidColorBrush x:Key="GscGlassHighlightBrush" Color="#182D3B52"/>
-    <SolidColorBrush x:Key="GscSidebarBrush" Color="#FA171F2D"/>
-    <SolidColorBrush x:Key="GscBackdropBrush" Color="#FF0F1724"/>
-    <SolidColorBrush x:Key="GscPrimaryTextBrush" Color="#FFF4F7FF"/>
-    <SolidColorBrush x:Key="GscSecondaryTextBrush" Color="#FFA7B5D0"/>
-    <SolidColorBrush x:Key="GscMutedTextBrush" Color="#FF7D8EAA"/>
+    <SolidColorBrush x:Key="GscSidebarBrush" Color="#8C1B1F2A"/>
+    <SolidColorBrush x:Key="GscBackdropBrush" Color="#FF1D2027"/>
+    <SolidColorBrush x:Key="GscPrimaryTextBrush" Color="#FFF2F4F8"/>
+    <SolidColorBrush x:Key="GscSecondaryTextBrush" Color="#FFB9C0CC"/>
+    <SolidColorBrush x:Key="GscMutedTextBrush" Color="#FF828A99"/>
     <SolidColorBrush x:Key="GscDisabledTextBrush" Color="#FF59677F"/>
-    <SolidColorBrush x:Key="GscControlFillBrush" Color="#F5222D3E"/>
+    <SolidColorBrush x:Key="GscControlFillBrush" Color="#D9202531"/>
     <SolidColorBrush x:Key="GscProgressTrackBrush" Color="#363E4E"/>
     <SolidColorBrush x:Key="GscProgressFillBrush" Color="#7897FF"/>
-    <SolidColorBrush x:Key="GscControlStrokeBrush" Color="#3A34445B"/>
-    <SolidColorBrush x:Key="GscDividerBrush" Color="#3A2A3850"/>
+    <SolidColorBrush x:Key="GscControlStrokeBrush" Color="#1CFFFFFF"/>
+    <SolidColorBrush x:Key="GscDividerBrush" Color="#12FFFFFF"/>
     <SolidColorBrush x:Key="GscTableDividerBrush" Color="#302A3850"/>
     <SolidColorBrush x:Key="GscPopupBrush" Color="#FC202B3D"/>
-    <SolidColorBrush x:Key="GscTableHeaderBrush" Color="#FF202A39"/>
+    <SolidColorBrush x:Key="GscTableHeaderBrush" Color="#0DFFFFFF"/>
     <SolidColorBrush x:Key="GscTableAlternateRowBrush" Color="#18152332"/>
     <SolidColorBrush x:Key="GscRowHoverBrush" Color="#282C4360"/>
     <SolidColorBrush x:Key="GscScrollTrackBrush" Color="#24111A29"/>
+    <!-- Keep the production scrollbar geometry/template; only its fallback color follows the
+         demo. The UiLab scrollbar omitted important Track bindings and is not copied. -->
     <SolidColorBrush x:Key="GscScrollThumbBrush" Color="#995A6A83"/>
-    <SolidColorBrush x:Key="GscScrollThumbHoverBrush" Color="#CC7897FF"/>
+    <SolidColorBrush x:Key="GscScrollThumbHoverBrush" Color="#CC7C8CF8"/>
     <SolidColorBrush x:Key="GscOverlayBrush" Color="#AA060A12"/>
     <SolidColorBrush x:Key="GscPickerScrimBrush" Color="#60060A12"/>
 
-    <CornerRadius x:Key="GscCornerSmall">8</CornerRadius>
-    <CornerRadius x:Key="GscCornerControl">11</CornerRadius>
-    <CornerRadius x:Key="GscCornerCard">18</CornerRadius>
-    <CornerRadius x:Key="GscCornerPanel">22</CornerRadius>
+    <!-- UiLab geometry: XS 6 / control 10 / card 16 / shell-panel 20. -->
+    <CornerRadius x:Key="GscCornerSmall">6</CornerRadius>
+    <CornerRadius x:Key="GscCornerControl">10</CornerRadius>
+    <CornerRadius x:Key="GscCornerCard">16</CornerRadius>
+    <CornerRadius x:Key="GscCornerPanel">20</CornerRadius>
     <Thickness x:Key="GscFocusThickness">2</Thickness>
 
     <!-- Shared layout geometry. One scale replaces page-specific magic numbers across

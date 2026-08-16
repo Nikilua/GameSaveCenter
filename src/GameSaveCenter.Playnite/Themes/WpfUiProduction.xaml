@@ -26,7 +26,7 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             Padding="{TemplateBinding Padding}"
-                            CornerRadius="18"
+                            CornerRadius="16"
                             SnapsToDevicePixels="True">
                         <ContentPresenter Content="{TemplateBinding Content}"
                                           ContentTemplate="{TemplateBinding ContentTemplate}"
@@ -332,7 +332,10 @@
         <Setter Property="Padding" Value="12,9"/>
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="Tag"><Setter.Value><CornerRadius>9,9,9,9</CornerRadius></Setter.Value></Setter>
+        <!-- Keep the legacy Tag values used by page-specific header styles for compatibility,
+             but do not bind an optional Tag into CornerRadius: Playnite can expose UnsetValue
+             while it is materializing a generated filler header. -->
+        <Setter Property="Tag"><Setter.Value><CornerRadius>10,10,10,10</CornerRadius></Setter.Value></Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="DataGridColumnHeader">
@@ -341,7 +344,7 @@
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="9"
+                            CornerRadius="10"
                             Padding="{TemplateBinding Padding}"
                             SnapsToDevicePixels="True">
                         <Grid>
@@ -529,7 +532,7 @@
         <Setter Property="Padding" Value="14,7"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="ui:Button.CornerRadius" Value="11"/>
+        <Setter Property="ui:Button.CornerRadius" Value="10"/>
         <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
@@ -546,7 +549,7 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             Padding="{TemplateBinding Padding}"
-                            CornerRadius="11"
+                            CornerRadius="10"
                             SnapsToDevicePixels="True">
                         <ContentPresenter Content="{TemplateBinding Content}"
                                           ContentTemplate="{TemplateBinding ContentTemplate}"

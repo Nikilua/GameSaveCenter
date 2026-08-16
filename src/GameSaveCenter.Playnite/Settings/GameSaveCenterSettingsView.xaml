@@ -26,7 +26,7 @@
         <Style x:Key="SettingsCard" TargetType="{x:Type ui:Card}" BasedOn="{StaticResource GscWpfUiCard}">
             <Setter Property="Padding" Value="18"/>
             <Setter Property="Margin" Value="0"/>
-            <Setter Property="Border.CornerRadius" Value="20"/>
+            <Setter Property="Border.CornerRadius" Value="16"/>
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
             <Setter Property="Effect" Value="{x:Null}"/>
         </Style>
