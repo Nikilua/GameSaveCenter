@@ -9,6 +9,13 @@
 - `DEV-INSTALL-008` 已修复外来扩展 Worker 误杀：只处理当前生产目录，陌生但可读路径保留运行，无法读取路径仍 fail-closed。
 - 自动验证已通过：Core 59/59、Worker 191/191、Playnite 302/302、Release 0 warning/0 error、source/XAML 门禁和 `render-acrylic-correction`；一键安装已成功启动 Playnite/生产 Worker。真实宿主最终主题/DPI/键盘/连续缩放仍需人工确认。
 
+## 2026-08-16 UI-205-REAL-HOST-MIGRATION-FIX 当前开发基线
+
+- 已修复生产 XAML 对外部 Contracts 程序集的 BAML 直接解析风险：Settings/Media/Trainer 使用 `GameSaveCenter.Playnite.XamlValues` 本地枚举包装，Dashboard 删除未使用的外部 namespace；不要恢复 `assembly=GameSaveCenter.Contracts` 的 XAML 直接引用。
+- Dashboard 选中游戏头部现在以最终实际 viewport 宽度约束，窄屏操作行固定可用宽度并换行；WPF Grid 重排后在 ApplicationIdle 做二次响应式布局，避免 1600/1366/1280/1024 DIP 首次测量残留越界。
+- Real Host 审计在 Render 后等待 ApplicationIdle，干净轮次清理旧 `CHILD_LAYOUT_OVERFLOW`；最终受控矩阵 `RealFixedLayoutOverflow=[]`。自动 UIAutomation 仍找不到真实侧栏，必须保留 `EmbeddedDashboardCaptured=false`，不要把 Controlled Host 截图宣称为生产视觉真值。
+- 当前基线：Core 59/59、Worker 191/191、Playnite 303/303，Release 0 warning/0 error；安装验证 `0.6.70` / DLL `0.6.70.0`，生产日志无新的 XamlParseException。
+
 ## 2026-08-16 UI-REAL-HOST-AUDIT-BLOCKERS-FIX 实施完成
 
 - Real Host Audit 阻塞项已收口：CommitSha 可追踪、SafeFileName 修复、overflow 分类 gate、resize 稳定截图、manifest Scope 隔离、内部滚动器过滤、Embedded 身份显式判定。

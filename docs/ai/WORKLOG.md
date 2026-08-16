@@ -2,6 +2,26 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-16 UI-205-REAL-HOST-MIGRATION-FIX AcrylicFork 生产迁移收口
+
+**实现内容：**
+
+- 将 AcrylicFork 的共享视觉层级继续收口到生产 Dashboard/Settings/Media/Trainer/Save 页面；演示专用右上角颜色按钮、演示数据和样例滚动条没有迁移。
+- 修复 Playnite BAML 在私有扩展加载上下文中偶发找不到 `GameSaveCenter.Contracts` 的问题：生产 XAML 不再直接引用外部 Contracts 程序集，新增 `XamlEnumValues` 本地包装值，保留原始枚举对象以维持绑定和 DataTrigger 语义。
+- 修复 Dashboard 选中游戏标题栏在首次测量/窗口缩放时保留旧 DesiredSize 的问题：标题、身份区和操作行按最终可用宽度约束，操作按钮窄屏换行，ApplicationIdle 再做一次收敛布局；Save/Media 的表格 viewport 使用短窗口可读性下限。
+- Real Host 审计等待 ApplicationIdle 后再截图，并在后续干净轮次清理旧 `CHILD_LAYOUT_OVERFLOW` 门禁，避免把瞬时布局或上一轮证据当成最终失败。
+
+**验证结果：**
+
+- `validate-source.py`、`check-xaml.ps1`、Release 构建通过，0 warning / 0 error；Core 59/59、Worker 191/191、Playnite 303/303。
+- `DEV-INSTALL-008` 重新打包安装成功，安装验证为 `extension.yaml 0.6.70`、DLL `0.6.70.0`；Playnite 扩展日志确认生产插件加载，未出现新的 `XamlParseException` 或 Contracts 缺失记录，外来 Preview Worker 保持运行。
+- Real Host 受控矩阵覆盖 maximized、1600/1366/1280/1024 与 Light/Dark、工作区和内层 Tab；最终 `gates/overflow-classification.json` 的 `RealFixedLayoutOverflow` 为空，旧 `CHILD_LAYOUT_OVERFLOW.json` 已清除。
+
+**验证边界：**
+
+- `AUTO VERIFIED`：源码/XAML、构建、三组测试、受控截图/滚动证据、安装包和生产扩展加载日志。
+- `MANUAL QA REQUIRED`：本机自动 UIAutomation 仍未找到 Playnite 左侧 GameSaveCenter 项，故审计诚实保留 `EmbeddedDashboardCaptured=false`；受控窗口证据不能冒充真实嵌入像素。前一轮人工观察到的真实嵌：首页、存档中心和任务中心在 1280/1024 尺寸下无明显文字重叠或右侧裁切。
+
 ## 2026-08-16 UI-205-ACRYLIC-PARITY AcrylicFork 视觉与页面结构迁移
 
 **实现内容：**

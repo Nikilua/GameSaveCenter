@@ -122,6 +122,15 @@ public sealed class WpfUiResourceDictionaryTests
             Assert.Contains("{DynamicResource GscAccentBrush}", xaml);
         }
 
+        var playniteXamlRoot = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite");
+        foreach (var xamlPath in Directory.GetFiles(playniteXamlRoot, "*.xaml", SearchOption.AllDirectories))
+        {
+            var xaml = File.ReadAllText(xamlPath);
+            Assert.DoesNotContain(
+                "clr-namespace:GameSaveCenter.Contracts;assembly=GameSaveCenter.Contracts",
+                xaml);
+        }
+
         var paletteSource = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Infrastructure", "AdaptiveThemePalette.cs"));
         var dashboard = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml"));
         var redesign = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "Redesign.xaml"));
@@ -853,8 +862,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"SaveHistoryGrid\"", save);
         Assert.Contains("x:Name=\"SaveCandidateGrid\"", save);
         Assert.Contains("const double tableMinHeight = 236d", saveCode);
-        Assert.Contains("SaveHistoryGrid.MinHeight = tableMinHeight", saveCode);
-        Assert.Contains("SaveCandidateGrid.MinHeight = Math.Max(tableMinHeight, 252d)", saveCode);
+        Assert.Contains("var compactTableFloor = Math.Max(140d, Math.Min(252d, height - 520d))", saveCode);
+        Assert.Contains("SaveHistoryGrid.MinHeight = Math.Min(tableMinHeight, compactTableFloor)", saveCode);
+        Assert.Contains("SaveCandidateGrid.MinHeight = compactTableFloor", saveCode);
         Assert.Contains("historyHeight - tableMinHeight - 10", saveCode);
         Assert.Contains("candidateHeight - tableMinHeight - 10", saveCode);
 

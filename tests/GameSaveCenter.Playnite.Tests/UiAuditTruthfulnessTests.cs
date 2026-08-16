@@ -199,6 +199,48 @@ public sealed class UiAuditTruthfulnessTests
         Assert.True(gateExists, "CHILD_LAYOUT_OVERFLOW gate was not written for an overflowing child.");
     }
 
+    [Fact]
+    public void ChildLayoutOverflowClearsStaleGateWhenLayoutIsClean()
+    {
+        Exception? exception = null;
+        var gateExists = true;
+        var tempDir = Path.Combine(Path.GetTempPath(), "gsc-audit-clean-overflow-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(Path.Combine(tempDir, "gates"));
+        File.WriteAllText(Path.Combine(tempDir, "gates", "CHILD_LAYOUT_OVERFLOW.json"), "stale");
+
+        try
+        {
+            var thread = new Thread(() =>
+            {
+                try
+                {
+                    var root = new Grid { Width = 100, Height = 100, Name = "Root" };
+                    var child = new Border { Width = 80, Height = 80, Name = "ContainedChild", Background = Brushes.Red };
+                    root.Children.Add(child);
+                    root.Measure(new Size(100, 100));
+                    root.Arrange(new Rect(0, 0, 100, 100));
+                    root.UpdateLayout();
+                    RealHostUiAuditService.CheckChildLayoutOverflow(root, tempDir);
+                    gateExists = File.Exists(Path.Combine(tempDir, "gates", "CHILD_LAYOUT_OVERFLOW.json"));
+                }
+                catch (Exception caught)
+                {
+                    exception = caught;
+                }
+            });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+            thread.Join();
+        }
+        finally
+        {
+            try { Directory.Delete(tempDir, true); } catch { }
+        }
+
+        Assert.Null(exception);
+        Assert.False(gateExists, "A clean responsive pass must remove a stale overflow gate.");
+    }
+
     private static T? FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
     {
         var count = VisualTreeHelper.GetChildrenCount(parent);

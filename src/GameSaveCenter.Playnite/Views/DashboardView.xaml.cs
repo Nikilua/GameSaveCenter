@@ -36,6 +36,8 @@ namespace GameSaveCenter.Playnite.Views
         private bool choiceDialog;
         private bool confirmationOpen;
         private bool responsiveLayoutPending;
+        private bool responsiveLayoutFinalizationPending;
+        private bool responsiveLayoutFinalizationPass;
         private bool compactGameBrowserOpen;
         private Size pendingResponsiveSize;
 
@@ -133,6 +135,7 @@ namespace GameSaveCenter.Playnite.Views
             activeChoice = null;
             confirmationOpen = false;
             responsiveLayoutPending = false;
+            responsiveLayoutFinalizationPending = false;
             DialogOverlay.Visibility = Visibility.Collapsed;
             ClearToasts();
         }
@@ -560,6 +563,46 @@ namespace GameSaveCenter.Playnite.Views
                 GameHeaderActions.Margin = stackGameHeaderActions
                     ? new Thickness(54, 8, 0, 0)
                     : new Thickness(16, 0, 0, 0);
+
+                // The selected-game card sits inside a Grid that spans the shell's
+                // workspace columns. During WPF's first measure pass, a WrapPanel and
+                // the identity Grid can otherwise be measured with Infinity and keep
+                // their DesiredSize after the host has arranged the card to a narrower
+                // width. Constrain the shared header to the actual card content width so
+                // the title truncates and the action row wraps instead of painting past
+                // the Playnite page at 100%/125%/150% DPI.
+                var detailContentWidth = GameDetailCard.ActualWidth > 0
+                    ? GameDetailCard.ActualWidth - GameDetailCard.Padding.Left - GameDetailCard.Padding.Right
+                    : workspaceContentWidth;
+                var headerContentWidth = Math.Max(0, detailContentWidth
+                    - SelectedGameHeader.BorderThickness.Left - SelectedGameHeader.BorderThickness.Right
+                    - SelectedGameHeader.Padding.Left - SelectedGameHeader.Padding.Right);
+                // The shell can be hosted with a narrower effective viewport than the
+                // DashboardView's nominal measure width. Cap the header from its actual
+                // arranged X coordinate so a spanning Grid cannot extend past the host
+                // edge during the first responsive pass.
+                if (ActualWidth > 0)
+                {
+                    var headerOrigin = SelectedGameHeader.TransformToAncestor(this).Transform(new Point(0, 0));
+                    var pageAvailableWidth = Math.Max(0, ActualWidth - headerOrigin.X - 2d);
+                    detailContentWidth = Math.Min(detailContentWidth, pageAvailableWidth);
+                    headerContentWidth = Math.Max(0, detailContentWidth
+                        - SelectedGameHeader.BorderThickness.Left - SelectedGameHeader.BorderThickness.Right
+                        - SelectedGameHeader.Padding.Left - SelectedGameHeader.Padding.Right);
+                }
+                if (detailContentWidth > 0)
+                {
+                    SelectedGameHeader.HorizontalAlignment = HorizontalAlignment.Left;
+                    SelectedGameHeaderLayout.HorizontalAlignment = HorizontalAlignment.Left;
+                    SelectedGameHeader.Width = detailContentWidth;
+                    SelectedGameHeaderLayout.Width = headerContentWidth;
+                    SelectedGameHeaderLayout.MaxWidth = headerContentWidth;
+                    SelectedGameIdentityPanel.MaxWidth = headerContentWidth;
+                    var actionWidth = Math.Max(0, headerContentWidth
+                        - GameHeaderActions.Margin.Left - GameHeaderActions.Margin.Right);
+                    GameHeaderActions.Width = actionWidth;
+                    GameHeaderActions.MaxWidth = actionWidth;
+                }
             }
 
             if (MediaWorkspaceView != null)
@@ -599,6 +642,30 @@ namespace GameSaveCenter.Playnite.Views
             if (viewModel.CurrentWorkspace != WorkspaceKind.Saves)
             {
                 BackupPolicyPanel.Visibility = Visibility.Collapsed;
+            }
+
+            // Changing Grid rows/columns and explicit widths above invalidates the current
+            // measure. A second pass at ApplicationIdle is required when Playnite first
+            // attaches the view (and when its host changes DPI): otherwise the header width
+            // is calculated from the previous two-column arrangement and can retain a
+            // one-frame DesiredSize past the right edge of the page.
+            if (!responsiveLayoutFinalizationPending && !responsiveLayoutFinalizationPass)
+            {
+                responsiveLayoutFinalizationPending = true;
+                BeginUiSafely(() =>
+                {
+                    responsiveLayoutFinalizationPending = false;
+                    if (!IsLoaded || ActualWidth <= 0) return;
+                    responsiveLayoutFinalizationPass = true;
+                    try
+                    {
+                        ApplyResponsiveLayout(ActualWidth, ActualHeight);
+                    }
+                    finally
+                    {
+                        responsiveLayoutFinalizationPass = false;
+                    }
+                }, DispatcherPriority.ApplicationIdle);
             }
         }
 

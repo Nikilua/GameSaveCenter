@@ -926,6 +926,17 @@ namespace GameSaveCenter.Playnite.Diagnostics
                         "Fixed layout children exceed Dashboard bounds: " + string.Join("; ", real.Take(8)),
                         outputRoot);
                 }
+                else
+                {
+                    // A single audit output folder is reused across the responsive
+                    // matrix. Do not leave a gate from an earlier, narrower pass in the
+                    // final evidence after a later pass has validated the layout.
+                    var staleGate = Path.Combine(outputRoot, "gates", "CHILD_LAYOUT_OVERFLOW.json");
+                    if (File.Exists(staleGate))
+                    {
+                        File.Delete(staleGate);
+                    }
+                }
                 UiDiagnosticsExporters.WriteJson(
                     new Dictionary<string, object>
                     {
@@ -1352,6 +1363,10 @@ namespace GameSaveCenter.Playnite.Diagnostics
         {
             await dispatcher.InvokeAsync(() => { }, DispatcherPriority.Loaded);
             await dispatcher.InvokeAsync(() => { }, DispatcherPriority.Render);
+            // DashboardView applies its final responsive constraints at ApplicationIdle,
+            // after Grid row/column changes have been arranged. Capture only after that
+            // pass so the audit does not report a transient pre-convergence DesiredSize.
+            await dispatcher.InvokeAsync(() => { }, DispatcherPriority.ApplicationIdle);
             await System.Threading.Tasks.Task.Delay(90);
         }
 

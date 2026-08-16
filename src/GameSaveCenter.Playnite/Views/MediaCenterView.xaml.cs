@@ -42,6 +42,13 @@ namespace GameSaveCenter.Playnite.Views
             {
                 responsiveWidth = width;
                 responsiveHeight = height;
+                // UniformGrid can be measured with an unbounded width when it is hosted
+                // inside a TabControl content presenter. Give the metric strip the same
+                // finite viewport as the workspace so its last rounded card cannot be
+                // arranged past the Playnite page edge.
+                var metricViewportWidth = Math.Max(0, width > 0 ? width : ActualWidth);
+                MediaSummaryPanel.Width = metricViewportWidth;
+                MediaSummaryPanel.MaxWidth = metricViewportWidth;
                 // Keep the demo's four-card metric strip throughout normal windowed
                 // workspaces. The Dashboard's content width is already smaller than the
                 // complete window after the sidebar and shell insets, so a 1180-DIP
@@ -59,10 +66,11 @@ namespace GameSaveCenter.Playnite.Views
                 // surface scrolls the page-level info/actions when this viewport cannot fit
                 // below the summary cards; the DataGrid/ListBox still own row virtualization
                 // and their own internal scrolling.
-                MediaInboxGrid.MinHeight = 236d;
+                var compactTableFloor = Math.Max(140d, Math.Min(236d, height - 520d));
+                MediaInboxGrid.MinHeight = compactTableFloor;
                 MediaInboxGrid.Height = double.NaN;
                 MediaInboxGrid.MaxHeight = double.PositiveInfinity;
-                MediaGrid.MinHeight = 236d;
+                MediaGrid.MinHeight = compactTableFloor;
                 MediaGrid.Height = double.NaN;
                 MediaGrid.MaxHeight = double.PositiveInfinity;
 

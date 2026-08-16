@@ -15,6 +15,14 @@
 - 本阶段验证基线：Release 构建 0 warning/0 error，Core 59/59、Worker 191/191、Playnite 302/302；`validate-source.py`、XAML 检查、render-qa（Light/Dark、7 页面、多个尺寸与 resize transition）全绿。
 - 离屏截图不是真实 Playnite 嵌入式像素真值；本阶段已真实安装并启动 Playnite/生产 Worker，但没有把宿主窗口像素冒充为自动视觉证据，主题/DPI/键盘/连续缩放仍需人工确认。
 
+## 2026-08-16 UI-205-REAL-HOST-MIGRATION-FIX 当前事实
+
+- Playnite BAML 不应在生产 XAML 中直接写 `clr-namespace:GameSaveCenter.Contracts;assembly=GameSaveCenter.Contracts`：扩展程序集位于 Playnite 私有目录时，BAML resolver 可能从默认 AppDomain 解析失败，即使安装目录实际包含 Contracts.dll。需要使用生产程序集内的 `GameSaveCenter.Playnite.XamlValues` 包装属性；属性返回真实 Contracts enum object，因此不改变绑定/DataTrigger 语义。
+- Dashboard 选中游戏标题栏必须在 Grid 重排后再次按 `TransformToAncestor` 的实际 X 坐标限制宽度；首次 measure 的旧 DesiredSize 会让 `SelectedGameHeaderLayout` 和按钮短暂超过页面右边界。`ApplicationIdle` 二次布局与审计的 ApplicationIdle 等待是配套约束，不能只修截图审计。
+- `RealHostUiAuditService.CheckChildLayoutOverflow` 复用输出目录时，干净轮次必须删除旧 `CHILD_LAYOUT_OVERFLOW.json`；最终状态以当前 `overflow-classification.json` 为准，不能用旧门禁文件判断本轮。
+- 本轮安装验证：`extension.yaml 0.6.70`、生产 DLL `0.6.70.0`，日志确认 `GameSaveCenter 0.6.70.0 loaded`，没有新的 `XamlParseException`/Contracts 缺失；外来 `GameSaveCenterPreview` Worker 不得结束。
+- 本轮自动基线：Core 59/59、Worker 191/191、Playnite 303/303，Release 0 warning/0 error；受控矩阵的最终 `RealFixedLayoutOverflow=[]`。由于 UIAutomation 未定位到 Playnite 侧栏，`EmbeddedDashboardCaptured=false` 仍是诚实门禁，受控窗口不能替代真实嵌入像素。
+
 ## 2026-08-16 UI-REAL-HOST-AUDIT-BLOCKERS-FIX 当前事实
 
 - Audit CommitSha 必须可追踪：脚本设置 `GSC_UI_AUDIT_COMMIT`，unknown 触发 `AUDIT_SOURCE_REVISION_MISSING` HIGH。
