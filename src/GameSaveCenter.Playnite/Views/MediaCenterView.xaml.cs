@@ -147,6 +147,15 @@ namespace GameSaveCenter.Playnite.Views
                 ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
         }
 
+        private void OnMediaSegmentChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (MediaSegmentTabs == null || MediaInboxScrollSurface == null || MediaCurrentScrollSurface == null || MediaSourcesPanel == null) return;
+            var selected = MediaSegmentTabs.SelectedIndex;
+            MediaInboxScrollSurface.Visibility = selected == 0 ? Visibility.Visible : Visibility.Collapsed;
+            MediaCurrentScrollSurface.Visibility = selected == 1 ? Visibility.Visible : Visibility.Collapsed;
+            MediaSourcesPanel.Visibility = selected == 2 ? Visibility.Visible : Visibility.Collapsed;
+        }
+
         private void OnMediaCompactDetailsClick(object sender, RoutedEventArgs e)
         {
             if (MediaGrid.SelectedItem == null) return;

@@ -645,9 +645,10 @@ public sealed class WpfUiResourceDictionaryTests
         var repositoryRoot = FindRepositoryRoot();
         var mediaPath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml");
         var document = XDocument.Parse(File.ReadAllText(mediaPath));
-        var tabItem = document.Descendants()
-            .Single(element => element.Name.LocalName == "TabItem" && element.Attribute("Header")?.Value == "待归类");
-        var tabGrid = tabItem.Descendants().Single(element => element.Name.LocalName == "Grid"
+        var inboxPanel = document.Descendants()
+            .Single(element => element.Name.LocalName == "Grid"
+                && element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "MediaInboxScrollSurface");
+        var tabGrid = inboxPanel.Descendants().Single(element => element.Name.LocalName == "Grid"
             && element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value != "MediaInboxScrollSurface"
             && element.Descendants().Count(descendant => descendant.Name.LocalName == "RowDefinition") == 3);
         Assert.Equal("Grid", tabGrid.Name.LocalName);
@@ -1651,7 +1652,8 @@ public sealed class WpfUiResourceDictionaryTests
         var saveText = File.ReadAllText(savePath);
         var saveCode = File.ReadAllText(savePath + ".cs");
 
-        Assert.Contains("<TabItem Header=\"比较与保留\">", saveText);
+        Assert.Contains("x:Name=\"SaveComparePanel\"", saveText);
+        Assert.Contains("Content=\"比较与保留\"", saveText);
         Assert.Contains("x:Name=\"SaveCompareLayout\"", saveText);
         Assert.Contains("x:Name=\"SaveCompareRetentionScrollViewer\"", saveText);
         Assert.Contains("x:Name=\"SaveCompareMainScrollViewer\"", saveText);
@@ -1675,7 +1677,7 @@ public sealed class WpfUiResourceDictionaryTests
         var savePath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "SaveCenterView.xaml");
         var save = XDocument.Parse(File.ReadAllText(savePath));
         var pathWorkspace = save.Descendants().Single(element =>
-            element.Name.LocalName == "TabItem" && element.Attribute("Header")?.Value == "路径与校验");
+            element.Name.LocalName == "Grid" && element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "SaveCandidatePanel");
         var pathText = pathWorkspace.ToString();
 
         Assert.Contains("x:Name=\"SaveCandidateLayout\"", pathText);
@@ -1734,7 +1736,8 @@ public sealed class WpfUiResourceDictionaryTests
         var maintenanceText = File.ReadAllText(maintenancePath);
         var maintenanceCode = File.ReadAllText(maintenancePath + ".cs");
 
-        Assert.Contains("<TabItem Header=\"保留策略\">", maintenanceText);
+        Assert.Contains("x:Name=\"MaintenanceRetentionPanel\"", maintenanceText);
+        Assert.Contains("Content=\"保留策略\"", maintenanceText);
         Assert.Contains("Command=\"{Binding PreviewRetentionCommand}\"", maintenanceText);
         Assert.Contains("{Binding LastRetentionPreview.KeepBackupIds.Count", maintenanceText);
         Assert.Contains("{Binding LastRetentionPreview.DeleteCandidateIds.Count", maintenanceText);
@@ -1827,8 +1830,8 @@ public sealed class WpfUiResourceDictionaryTests
         var trainerPath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml");
         var trainerText = File.ReadAllText(trainerPath);
 
-        Assert.Contains("<TabItem Header=\"已绑定工具\">", trainerText);
-        Assert.Contains("<TabItem Header=\"导入确认\">", trainerText);
+        Assert.Contains("Content=\"已绑定工具\"", trainerText);
+        Assert.Contains("Content=\"导入确认\"", trainerText);
         Assert.Contains("ItemsSource=\"{Binding ImportEntryCandidates}\"", trainerText);
         Assert.Contains("Command=\"{Binding ConfirmGameToolImportCommand}\"", trainerText);
         Assert.Contains("Command=\"{Binding CancelGameToolImportCommand}\"", trainerText);
@@ -2194,7 +2197,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Text=\"待归类\"", media);
         Assert.Contains("Text=\"{Binding Snapshot.UnassignedMediaCount, Mode=OneWay}\" Foreground=\"{DynamicResource GscWarningBrush}\"", media);
         Assert.Contains("Text=\"来源文件始终保留\"", media);
-        Assert.Contains("<TabControl Grid.Row=\"1\" SelectedIndex=\"1\"", media);
+        Assert.Contains("x:Name=\"MediaSegmentTabs\"", media);
+        Assert.Contains("SelectedIndex=\"1\"", media);
         Assert.DoesNotContain("MediaSummary.TotalCount, Mode=TwoWay", media);
         Assert.DoesNotContain("MediaSummary.FavoriteCount, Mode=TwoWay", media);
     }
@@ -2344,7 +2348,7 @@ public sealed class WpfUiResourceDictionaryTests
         var searchCard = trainer.Descendants().Single(element =>
             element.Name.LocalName == "Border"
             && element.Attribute("MaxWidth")?.Value == "1080"
-            && element.Ancestors().Any(ancestor => ancestor.Attribute("Header")?.Value == "FLiNG 在线库"));
+            && element.Ancestors().Any(ancestor => ancestor.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "TrainerCatalogPanel"));
         Assert.Equal("Stretch", searchCard.Attribute("HorizontalAlignment")?.Value);
 
         var searchGrid = searchCard.Descendants().First(element => element.Name.LocalName == "Grid");
@@ -2694,7 +2698,8 @@ public sealed class WpfUiResourceDictionaryTests
         var repositoryRoot = FindRepositoryRoot();
         var savePath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "SaveCenterView.xaml");
         var save = XDocument.Parse(File.ReadAllText(savePath));
-        var history = save.Descendants().Single(element => element.Name.LocalName == "TabItem" && element.Attribute("Header")?.Value == "历史版本");
+        var history = save.Descendants().Single(element => element.Name.LocalName == "Grid"
+            && element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "SaveHistoryPanel");
 
         Assert.Contains(history.Descendants(), element => element.Name.LocalName == "DataGridTemplateColumn" && element.Attribute("Header")?.Value == "类型");
         Assert.Contains(history.Descendants(), element => element.Name.LocalName == "DataGridTemplateColumn" && element.Attribute("Header")?.Value == "状态");
@@ -3360,12 +3365,14 @@ public sealed class WpfUiResourceDictionaryTests
         var repositoryRoot = FindRepositoryRoot();
         var mediaPath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml");
         var media = XDocument.Parse(File.ReadAllText(mediaPath));
-        var tabItem = media.Descendants().Single(element => element.Name.LocalName == "TabItem" && element.Attribute("Header")?.Value == "来源规则");
+        var tabItem = media.Descendants().Single(element => element.Name.LocalName == "Grid"
+            && element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "MediaSourcesPanel");
 
         // The tab keeps the page scroll channel for the form and lets the rule list
         // measure naturally in a star row: Auto form row plus a * row that absorbs the
         // leftover page space below the frame.
-        var rows = tabItem.Descendants().Where(element => element.Name.LocalName == "RowDefinition").ToArray();
+        var rows = tabItem.Elements().Single(element => element.Name.LocalName == "Grid.RowDefinitions")
+            .Elements().Where(element => element.Name.LocalName == "RowDefinition").ToArray();
         Assert.Equal(2, rows.Length);
         Assert.Equal("Auto", rows[0].Attribute("Height")?.Value);
         Assert.Equal("*", rows[1].Attribute("Height")?.Value);

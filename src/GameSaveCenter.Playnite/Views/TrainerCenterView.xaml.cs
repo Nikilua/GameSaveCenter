@@ -36,6 +36,16 @@ namespace GameSaveCenter.Playnite.Views
                 viewModel.LoadTrainerReleasesCommand.Execute(null);
         }
 
+        private void OnTrainerSegmentChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (TrainerSegmentTabs == null || InstalledToolsLayout == null || TrainerImportPanel == null || TrainerCatalogPanel == null || TrainerReleasesPanel == null) return;
+            var selected = TrainerSegmentTabs.SelectedIndex;
+            InstalledToolsLayout.Visibility = selected == 0 ? Visibility.Visible : Visibility.Collapsed;
+            TrainerImportPanel.Visibility = selected == 1 ? Visibility.Visible : Visibility.Collapsed;
+            TrainerCatalogPanel.Visibility = selected == 2 ? Visibility.Visible : Visibility.Collapsed;
+            TrainerReleasesPanel.Visibility = selected == 3 ? Visibility.Visible : Visibility.Collapsed;
+        }
+
         private void OnToolDragOver(object sender, DragEventArgs e)
         {
             e.Effects = CanDropTool(e.Data) ? DragDropEffects.Copy : DragDropEffects.None;

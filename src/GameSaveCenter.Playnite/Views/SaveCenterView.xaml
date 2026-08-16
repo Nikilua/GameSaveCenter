@@ -76,15 +76,24 @@
                 <Setter Property="VerticalContentAlignment" Value="Stretch"/>
             </Style>
             <Style x:Key="SaveTabItem" TargetType="TabItem" BasedOn="{StaticResource GscRedesignWorkspaceTabItem}">
-                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid Margin="0" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <TabControl Grid.Row="0" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Style="{StaticResource SaveTabControl}"><TabControl.Resources><Style TargetType="TabItem" BasedOn="{StaticResource SaveTabItem}"/></TabControl.Resources>
-            <TabItem Header="历史版本">
-                <Grid x:Name="SaveHistoryLayout" Margin="0,12,0,0">
+        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+        <Grid Grid.Row="0" Margin="0,0,0,12">
+            <ListBox x:Name="SaveSegmentTabs" Style="{StaticResource GscRedesignSegmented}" SelectionChanged="OnSaveSegmentChanged" SelectedIndex="0" HorizontalAlignment="Left">
+                <ListBoxItem Content="历史版本"/>
+                <ListBoxItem Content="路径与校验"/>
+                <ListBoxItem Content="备份策略"/>
+                <ListBoxItem Content="比较与保留"/>
+            </ListBox>
+        </Grid>
+        <Grid x:Name="SavePanels" Grid.Row="1">
+            <Grid x:Name="SaveHistoryPanel" Visibility="Visible">
+                <Grid x:Name="SaveHistoryLayout" Margin="0">
                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscInspectorWidth}"/></Grid.ColumnDefinitions>
                     <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="0"/></Grid.RowDefinitions>
                     <Border Grid.Column="0" Grid.Row="0" Style="{StaticResource SaveTableFrame}">
@@ -213,8 +222,8 @@
                         </Border>
                     </ScrollViewer>
                 </Grid>
-            </TabItem>
-            <TabItem Header="路径与校验">
+            </Grid>
+            <Grid x:Name="SaveCandidatePanel" Visibility="Collapsed">
                 <Grid>
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="14"/><RowDefinition Height="*"/></Grid.RowDefinitions>
                     <Border x:Name="SaveCurrentRuleCard" Grid.Row="0" Style="{DynamicResource GscReadingCardStyle}" Padding="12,10" VerticalAlignment="Top">
@@ -262,8 +271,8 @@
                 </ScrollViewer>
                     </Grid>
                 </Grid>
-            </TabItem>
-            <TabItem Header="备份策略">
+            </Grid>
+            <Grid x:Name="SavePolicyPanel" Visibility="Collapsed">
                 <ScrollViewer Style="{DynamicResource GscPageScrollViewer}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,12,0,0">
                     <StackPanel>
                     <StackPanel x:Name="SavePolicyStack" MaxWidth="{StaticResource GscFormMaxWidth}" HorizontalAlignment="Left" Visibility="Collapsed">
@@ -445,9 +454,9 @@
                     </Grid>
                     </StackPanel>
                 </ScrollViewer>
-            </TabItem>
-            <TabItem Header="比较与保留">
-                <Grid x:Name="SaveCompareLayout" Margin="0,12,0,0">
+            </Grid>
+            <Grid x:Name="SaveComparePanel" Visibility="Collapsed">
+                <Grid x:Name="SaveCompareLayout" Margin="0">
                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscInspectorWidth}"/></Grid.ColumnDefinitions>
                     <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="0"/></Grid.RowDefinitions>
                     <Border Grid.Column="0" Style="{DynamicResource GscReadingCardStyle}" Padding="18">
@@ -495,7 +504,7 @@
                         </Border>
                     </ScrollViewer>
                 </Grid>
-            </TabItem>
-        </TabControl>
+            </Grid>
+        </Grid>
     </Grid>
 </UserControl>

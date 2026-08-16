@@ -2,6 +2,21 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-16 UI-219 UiLab 分段页面骨架直迁与启动崩溃修复
+
+**实现内容：**
+
+- 不再只复用颜色和卡片样式；按 `D:\workplace\github\GameSaveCenter.UiLab\Pages` 的页面层级，将媒体、存档、修改器、维护四个生产页的顶层 `TabControl/TabItem` 骨架改为 UiLab 同款的两行 `Grid`：分段导航 + 命名面板宿主。生产页面的真实绑定、命令、Inspector、DataGrid/ListBox 虚拟化和生产滚动条保留；维护/诊断和审计内部仍保留 UiLab 对应的嵌套页签。
+- 在 `Redesign.xaml`、`DesignTokens.xaml` 和运行时主题调色板中加入 UiLab 的两级 segmented surface，`GscRedesignSegmented`/`GscRedesignSegmentedItem` 与 UiLab 的圆角、内边距、选中态和透明度节奏对齐。右上角演示色板、窗口演示按钮、样例数据和样例滚动条没有迁移。
+- 修复直接迁移后 WPF 在 `InitializeComponent()` 期间提前触发 `SelectionChanged` 的空引用：四个分段事件处理器在面板字段尚未生成时安全返回。同步修复 `VirtualizingWrapPanel` 的生成器插入索引边界和异常回退，避免之前的 `VisualCollection.Insert` 越界导致 Playnite 崩溃。
+- 将结构测试从旧 `TabItem Header` 契约更新为新 segmented/panel 契约，仍保留对真实命令、绑定、表格有限视口和滚动约束的断言。
+
+**验证结果：**
+
+- `validate-source.py` 通过；WPF UI 校验 0 errors（仅既有布局/主题资源提示）；Release 构建 0 warning / 0 error。
+- Playnite 测试 303/303；一键隔离构建通过 Core 59/59、Worker 191/191、Playnite 303/303；扩展已安装为 `extension.yaml 0.6.70`、DLL `0.6.70.0`。
+- 真实 `extensions.log` 在 22:40:40 记录新 DLL 加载，启动后没有新的 `XamlParseException`、`NullReferenceException` 或 `VirtualizingWrapPanel` 崩溃。Computer Use 当前只能得到黑色截图和 `EmptyWindowAutomationPeer`，窗口激活失败，因此本阶段不把页面级像素截图写成真实宿主视觉验收；真实页面切换/截图仍需用户可交互的 Playnite 窗口后再复核。
+
 ## 2026-08-16 UI-218 UiLab 页面骨架迁入生产
 
 **实现内容：**

@@ -2,6 +2,13 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-16 UI-219 UiLab 分段页面骨架直迁交接
+
+- 本轮已把媒体、存档、修改器、维护四个生产页的主导航从旧 `TabControl/TabItem` 改成 UiLab 的 segmented navigation + named panel host；真实数据/命令/绑定、Inspector、DataGrid/ListBox 虚拟化和生产滚动条没有被 demo 样例替换。维护诊断/审计中的嵌套页签仍是页面内部层级。
+- 新共享资源为 `GscRedesignSegmented`、`GscRedesignSegmentedItem`、`GscSegmentFillBrush`、`GscSegmentItemFillBrush`、`GscSegmentItemStrokeBrush`。继续修复时优先修改共享模板/令牌，不要对单个页面复制另一套圆角参数；UiLab 右上演示色板/窗口按钮/样例滚动条不属于生产迁移范围。
+- 直接迁移后曾出现页面构造期 `SelectionChanged` 空引用，四个 `On*SegmentChanged` 已加入初始化期空保护；媒体虚拟网格的 `VirtualizingWrapPanel` 也已修复 generator 插入索引越界回退。若再次改动 XAML 面板顺序，必须先构造所有页面再运行 Playnite 测试。
+- 证据：`validate-source.py`、WPF UI 校验、Release 构建通过；Core 59/59、Worker 191/191、Playnite 303/303；`DEV-INSTALL-008` 已安装 `0.6.70.0`，`extensions.log` 记录加载且无本轮新增崩溃。当前 Computer Use 只能捕获黑色 Playnite 窗口并返回 `EmptyWindowAutomationPeer`，激活失败；因此真实宿主逐页截图/像素对照仍需用户可交互窗口，不能把此次日志通过写成视觉真机验收。
+
 ## 2026-08-16 UI-218 UiLab 页面骨架迁入交接
 
 - 本阶段把 `GameSaveCenter.UiLab` 的页面层级迁入生产工作区：页面头部保留唯一游戏上下文，取消 Dashboard 外层重复选中游戏卡、全局操作行和恢复安全横幅；安全提示归入策略/比较页面内部。

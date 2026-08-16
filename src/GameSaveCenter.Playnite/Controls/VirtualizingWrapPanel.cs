@@ -265,21 +265,44 @@ namespace GameSaveCenter.Playnite.Controls
             }
 
             var startPosition = generator.GeneratorPositionFromIndex(firstIndex);
-            var insertionIndex = startPosition.Offset == 0 ? startPosition.Index : startPosition.Index + 1;
-            using (generator.StartAt(startPosition, GeneratorDirection.Forward, true))
+            // When the first realized item is not currently represented by a
+            // visual child, WPF returns GeneratorPosition(-1, 0). Passing -1
+            // through to VisualCollection.Insert causes Playnite itself to
+            // terminate with ArgumentOutOfRangeException during a resize or
+            // page switch. Clamp the generator position to the current visual
+            // collection; the generator still owns the item-index mapping.
+            var insertionIndex = startPosition.Offset == 0
+                ? startPosition.Index
+                : startPosition.Index + 1;
+            insertionIndex = Math.Max(0, Math.Min(insertionIndex, InternalChildren.Count));
+
+            try
             {
-                for (var index = firstIndex; index <= lastIndex; index++)
+                using (generator.StartAt(startPosition, GeneratorDirection.Forward, true))
                 {
-                    bool newlyRealized;
-                    var child = generator.GenerateNext(out newlyRealized) as UIElement;
-                    if (child == null) continue;
-                    if (newlyRealized)
+                    for (var index = firstIndex; index <= lastIndex; index++)
                     {
-                        InsertInternalChild(insertionIndex, child);
-                        generator.PrepareItemContainer(child);
+                        bool newlyRealized;
+                        var child = generator.GenerateNext(out newlyRealized) as UIElement;
+                        if (child == null) continue;
+                        if (newlyRealized)
+                        {
+                            insertionIndex = Math.Max(0, Math.Min(insertionIndex, InternalChildren.Count));
+                            InsertInternalChild(insertionIndex, child);
+                            generator.PrepareItemContainer(child);
+                        }
+                        insertionIndex++;
                     }
-                    insertionIndex++;
                 }
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                // A collection refresh can invalidate the generator between
+                // MeasureOverride and GenerateNext. Recover the visual tree on
+                // the current layout pass and let WPF request a clean measure;
+                // never allow a stale generator index to crash the host.
+                RemoveAllGeneratedChildren();
+                InvalidateMeasure();
             }
         }
 
@@ -308,7 +331,7 @@ namespace GameSaveCenter.Playnite.Controls
                 else
                     generator.Remove(position, 1);
             }
-            catch (InvalidOperationException)
+            catch (Exception ex) when (ex is InvalidOperationException || ex is ArgumentOutOfRangeException)
             {
                 // A collection reset can update the generator before the visual
                 // child cleanup reaches this panel; the visual tree is still safe

@@ -310,6 +310,21 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscMutedTextBrush"] = Brush(palette.MutedText);
             resources["GscDisabledTextBrush"] = Brush(palette.DisabledText);
             resources["GscControlFillBrush"] = Brush(palette.ControlFill);
+            resources["GscSegmentFillBrush"] = Brush(Color.FromArgb(
+                palette.IsDark ? (byte)89 : (byte)38,
+                palette.PrimaryText.R,
+                palette.PrimaryText.G,
+                palette.PrimaryText.B));
+            resources["GscSegmentItemFillBrush"] = Brush(Color.FromArgb(
+                palette.IsDark ? (byte)242 : (byte)240,
+                palette.StrongSurfaceTop.R,
+                palette.StrongSurfaceTop.G,
+                palette.StrongSurfaceTop.B));
+            resources["GscSegmentItemStrokeBrush"] = Brush(Color.FromArgb(
+                palette.IsDark ? (byte)28 : (byte)20,
+                palette.PrimaryText.R,
+                palette.PrimaryText.G,
+                palette.PrimaryText.B));
             resources["GscProgressTrackBrush"] = Brush(palette.IsDark
                 ? Color.FromRgb(45, 50, 62)
                 : Color.FromRgb(214, 220, 232));

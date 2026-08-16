@@ -229,6 +229,16 @@ namespace GameSaveCenter.Playnite.Views
                 ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
         }
 
+        private void OnSaveSegmentChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (SaveSegmentTabs == null || SaveHistoryPanel == null || SaveCandidatePanel == null || SavePolicyPanel == null || SaveComparePanel == null) return;
+            var selected = SaveSegmentTabs.SelectedIndex;
+            SaveHistoryPanel.Visibility = selected == 0 ? Visibility.Visible : Visibility.Collapsed;
+            SaveCandidatePanel.Visibility = selected == 1 ? Visibility.Visible : Visibility.Collapsed;
+            SavePolicyPanel.Visibility = selected == 2 ? Visibility.Visible : Visibility.Collapsed;
+            SaveComparePanel.Visibility = selected == 3 ? Visibility.Visible : Visibility.Collapsed;
+        }
+
         private void OnSaveCandidateSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             candidateInspectorOpen = false;

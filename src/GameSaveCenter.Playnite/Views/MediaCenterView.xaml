@@ -93,8 +93,8 @@
                 <Setter Property="VerticalContentAlignment" Value="Stretch"/>
             </Style>
             <Style x:Key="MediaTabItem" TargetType="TabItem" BasedOn="{StaticResource GscRedesignWorkspaceTabItem}">
-                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
             </Style>
             <Style x:Key="GscTableFrame" TargetType="Border" BasedOn="{StaticResource MediaTableFrame}"/>
             <Style x:Key="GscFirstColumnHeader" TargetType="DataGridColumnHeader" BasedOn="{StaticResource MediaFirstColumnHeader}"/>
@@ -108,6 +108,7 @@
 
     <Grid Margin="0" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -143,14 +144,19 @@
                 </Border>
             </UniformGrid>
         </Border>
-        <TabControl Grid.Row="1" SelectedIndex="1" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Style="{StaticResource MediaTabControl}">
-            <TabControl.Resources><Style TargetType="TabItem" BasedOn="{StaticResource MediaTabItem}"/></TabControl.Resources>
-            <TabItem Header="待归类">
+        <Grid Grid.Row="1" Margin="0,0,0,0">
+            <ListBox x:Name="MediaSegmentTabs" Style="{StaticResource GscRedesignSegmented}" SelectionChanged="OnMediaSegmentChanged" SelectedIndex="1" HorizontalAlignment="Left">
+                <ListBoxItem Content="待归类"/>
+                <ListBoxItem Content="当前游戏媒体"/>
+                <ListBoxItem Content="来源规则"/>
+            </ListBox>
+        </Grid>
+        <Grid Grid.Row="2" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid x:Name="MediaInboxScrollSurface" Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ClipToBounds="True">
                 <!-- Keep the real DataGrid in a finite viewport, while the surrounding
                      info/actions remain reachable when summary cards consume the normal
                      window height. This mirrors Demo's page flow without giving the
                      virtualized table an infinite measure. -->
-                <Grid x:Name="MediaInboxScrollSurface" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ClipToBounds="True">
                 <Grid Margin="0,12,0,0" VerticalAlignment="Stretch">
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                     <Border Style="{DynamicResource GscRedesignInfoBand}" Margin="0,0,0,10">
@@ -199,9 +205,7 @@
                     </WrapPanel>
                 </Grid>
                 </Grid>
-            </TabItem>
-            <TabItem Header="当前游戏媒体">
-                <Grid x:Name="MediaCurrentScrollSurface"
+            <Grid x:Name="MediaCurrentScrollSurface" Visibility="Visible"
                       HorizontalAlignment="Stretch"
                       VerticalAlignment="Stretch">
                 <Grid x:Name="MediaCurrentLayout" Margin="0,12,0,0" VerticalAlignment="Stretch" ClipToBounds="True">
@@ -309,9 +313,7 @@
                     </Border>
                 </Grid>
                 </Grid>
-            </TabItem>
-            <TabItem Header="来源规则">
-                <Grid Margin="0,12,0,0">
+            <Grid x:Name="MediaSourcesPanel" Visibility="Collapsed" Margin="0,12,0,0">
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
                     <ScrollViewer Style="{DynamicResource GscPageScrollViewer}" Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                         <Expander Style="{StaticResource GscDisclosureCard}" Header="添加截图或录像来源" IsExpanded="False">
@@ -323,7 +325,6 @@
                     </ScrollViewer>
                     <Border x:Name="MediaSourceRulesFrame" Grid.Row="1" Style="{StaticResource MediaTableFrame}" MinHeight="0" MaxHeight="520" VerticalAlignment="Top" Margin="0,10,0,0"><Grid><ListBox ItemsSource="{Binding MediaSources}" BorderThickness="0" Background="Transparent" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling"><ListBox.ItemContainerStyle><Style TargetType="ListBoxItem"><Setter Property="Padding" Value="0"/><Setter Property="Margin" Value="0,0,0,8"/><Setter Property="HorizontalContentAlignment" Value="Stretch"/><Setter Property="Background" Value="Transparent"/><Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/><Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ListBoxItem"><Border Style="{DynamicResource GscRedesignSubCard}" Padding="12"><ContentPresenter/></Border></ControlTemplate></Setter.Value></Setter></Style></ListBox.ItemContainerStyle><ListBox.ItemTemplate><DataTemplate><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="52"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><Border Width="42" Height="42" CornerRadius="12" Background="{DynamicResource GscAccentTintStrongBrush}"><TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE8B7;" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><StackPanel Grid.Column="1" Margin="11,0,12,0" VerticalAlignment="Center"><TextBlock Text="{Binding SourceKindDisplay}" FontWeight="SemiBold"/><TextBlock Text="{Binding RootPath}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextTrimming="CharacterEllipsis" ToolTip="{Binding RootPath}" Margin="0,4,0,0"/></StackPanel><WrapPanel Grid.Column="2" VerticalAlignment="Center"><ui:ToggleSwitch Style="{DynamicResource GscWpfUiToggleSwitch}" Content="启用" IsChecked="{Binding Enabled, Mode=TwoWay}" Command="{Binding DataContext.UpdateMediaSourceCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Margin="0,0,10,0"/><ui:Button Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding DataContext.DeleteMediaSourceCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Content="移除"/></WrapPanel></Grid></DataTemplate></ListBox.ItemTemplate></ListBox><TextBlock Text="暂无媒体来源规则&#xA;添加公共截图或录像目录后，来源会显示在这里。" IsHitTestVisible="False"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyStateText}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding MediaSources.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock></Grid></Border>
                 </Grid>
-            </TabItem>
-        </TabControl>
-    </Grid>
+            </Grid>
+        </Grid>
 </UserControl>

@@ -70,6 +70,10 @@
     <SolidColorBrush x:Key="GscMutedTextBrush" Color="#FF828A99"/>
     <SolidColorBrush x:Key="GscDisabledTextBrush" Color="#FF59677F"/>
     <SolidColorBrush x:Key="GscControlFillBrush" Color="#D9202531"/>
+    <!-- UiLab's two-level segmented control surfaces. -->
+    <SolidColorBrush x:Key="GscSegmentFillBrush" Color="#592A303B"/>
+    <SolidColorBrush x:Key="GscSegmentItemFillBrush" Color="#F2373D4C"/>
+    <SolidColorBrush x:Key="GscSegmentItemStrokeBrush" Color="#1CFFFFFF"/>
     <SolidColorBrush x:Key="GscProgressTrackBrush" Color="#363E4E"/>
     <SolidColorBrush x:Key="GscProgressFillBrush" Color="#7897FF"/>
     <SolidColorBrush x:Key="GscControlStrokeBrush" Color="#1CFFFFFF"/>

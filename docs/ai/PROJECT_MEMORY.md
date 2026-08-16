@@ -3,6 +3,14 @@
 > 维护时间：2026-08-14
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-16 UI-219 UiLab 分段页面骨架直迁当前事实
+
+- 当前媒体、存档、修改器、维护四个生产页已按 UiLab 的顶层页面骨架运行：`Grid` 的 Auto 导航行 + `GscRedesignSegmented` + `Grid` 面板宿主；不要再把“共用配色/卡片”当成完成迁移，也不要恢复外层 `TabControl` 作为这四页的主导航。维护诊断和审计内部嵌套页签是 UiLab 本身存在的层级，继续保留。
+- 生产面板名称：Media=`MediaInboxScrollSurface`/`MediaCurrentScrollSurface`/`MediaSourcesPanel`；Save=`SaveHistoryPanel`/`SaveCandidatePanel`/`SavePolicyPanel`/`SaveComparePanel`；Trainer=`InstalledToolsLayout`/`TrainerImportPanel`/`TrainerCatalogPanel`/`TrainerReleasesPanel`；Maintenance=`MaintenanceDiagnosticsPanel`/`MaintenanceDevicePanel`/`MaintenanceRetentionPanel`/`MaintenanceAuditPanel`/`MaintenanceProcessPanel`。分段 `SelectionChanged` 在 `InitializeComponent` 未完成时必须容忍空字段。
+- `Redesign.xaml` 的 `GscRedesignSegmented` 对齐 UiLab `LabSegmented` 的 `SegmentFillBrush`、选中项填充/描边、RadiusM=10 和 item 内边距；运行时浅色/深色主题在 `AdaptiveThemePalette` 同步这些资源。演示色板、窗口按钮、样例数据、样例滚动条不迁移。
+- `VirtualizingWrapPanel` 现在对生成器插入位置做边界裁剪，遇到 WPF 生成器时序越界会清空当前生成子项并重新测量；不要改回无边界 `VisualCollection.Insert`，也不要以普通 `WrapPanel` 替换它。
+- 当前自动基线：source/XAML 校验通过，Release 0 warning / 0 error，Core 59/59、Worker 191/191、Playnite 303/303；真实扩展版本为 `0.6.70.0`。启动日志未出现本轮新增崩溃，但 Computer Use 无法激活 Playnite（黑色捕获 + `EmptyWindowAutomationPeer`），所以真实页面像素和逐页切换仍是 `MANUAL QA REQUIRED`，不能写成已验收。
+
 ## 2026-08-16 UI-218 UiLab 页面骨架迁入生产
 
 - 当前生产页面已按 `D:\workplace\github\GameSaveCenter.UiLab` 的工作区骨架收敛：Dashboard 只保留一套页面头部游戏上下文；`SelectedGameHeader`、`GameHeaderActions`、`RestoreSafetyBanner` 不得在页面外重新显示成重复的第二层。安全说明应放在备份策略/比较表面内。
