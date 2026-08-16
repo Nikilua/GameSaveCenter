@@ -21,6 +21,16 @@ if (Test-Path -LiteralPath $Output) {
 New-Item -ItemType Directory -Path $Output -Force | Out-Null
 
 $env:GSC_REAL_HOST_AUDIT = $Output
+try {
+    $commit = (& git -C $root rev-parse HEAD 2>$null | Select-Object -First 1).Trim()
+    if ($LASTEXITCODE -eq 0 -and $commit) {
+        $env:GSC_UI_AUDIT_COMMIT = $commit
+        Write-Host "Audit commit: $commit" -ForegroundColor Cyan
+    }
+}
+catch {
+    $env:GSC_UI_AUDIT_COMMIT = ''
+}
 Write-Host "==> Starting Playnite with GSC_REAL_HOST_AUDIT=$Output" -ForegroundColor Cyan
 
 Push-Location $root
