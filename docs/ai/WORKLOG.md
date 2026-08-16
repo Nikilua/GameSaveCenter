@@ -2,6 +2,22 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-17 UI-221 AcrylicFork 整页视觉迁移收口
+
+**实现内容：**
+
+- 以 `D:\workplace\github\GameSaveCenter.AcrylicFork` @ `b09cba6` 为基准复核生产全部工作区，页面骨架已与样板一致；本轮补齐四类样板头部信息：Media 的“待归类 N · 截图与录像自动归档 · 增量同步”、Trainer 的“已绑定工具 N · 修改器 · CT 表 · 自定义启动项 · 拖拽导入”、Save 的当前规则/校验状态胶囊、Maintenance 的安全模式/云端降级状态。
+- 新增回归测试锁定这些头部说明与真实绑定，避免后续页面重构时把样板信息或计数删除。
+- 尝试独立 `AcrylicParity.xaml` 时发现独立 ResourceDictionary 的 `BasedOn` 不能解析父级合并字典的 Gsc 样式，会直接造成页面构造期 `XamlParseException`；因此放弃别名层，生产页面继续直接使用 `Gsc*` 共享样式。此结论已写入项目记忆，不要重新创建该字典。
+- demo 右上角色板、预览徽标、样例数据和样例滚动条仍未迁移；生产滚动条、圆角表头、DataGrid/ListBox 虚拟化和真实命令/绑定全部保留。
+
+**验证结果：**
+
+- `validate-source.py`、`check-xaml.ps1` 通过；WPF UI 校验 0 errors（16 条既有布局/主题 warning 保留）。
+- Release 构建 0 warning / 0 error；Core 59/59、Worker 191/191、Playnite 304/304。
+- RenderHarness 全量 `render-qa OK`：7 页面 × Light/Dark × 1040×700/1100×720/1366×768/2560×1440 + resize；证据在 `artifacts/ui-qa/acrylic-full-migration-v1`。
+- `DEV-INSTALL-008` 安装成功，Playnite `extensions.log` 确认 `GameSaveCenter 0.6.70.0 loaded`，无新增 `XamlParseException`；real-host-audit 输出在 `artifacts/ui-host-audit-acrylic-v1`，`EmbeddedSettingsCaptured=true`、`ControlledDashboardCaptured=true`、`EmbeddedDashboardCaptured=false`（UIAutomation 无法点击侧栏，需用户手动打开后重跑才能得到真实嵌入像素）。
+
 ## 2026-08-16 UI-220 UiLab 几何对齐、维护二级导航与媒体回滚修复
 
 **实现内容：**

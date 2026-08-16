@@ -2,6 +2,13 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-17 UI-221 AcrylicFork 整页视觉迁移收口交接
+
+- 本轮以 `GameSaveCenter.AcrylicFork` @ `b09cba6` 复核了 Overview/Save/Trainer/Media/Task/Maintenance/Settings 的生产骨架，并补齐 Media、Trainer、Save、Maintenance 分段导航右侧的样板说明与真实状态/计数。这些信息必须继续绑定真实数据，不能写死 demo 数字。
+- 不要创建 `AcrylicParity.xaml` 这类独立 Lab 别名字典：独立 ResourceDictionary 的 `BasedOn` 无法引用父级合并字典的 Gsc 样式，页面构造会直接抛 `StaticResourceHolder` 异常。共享视觉键统一用生产 `Gsc*`。
+- 生产滚动条、圆角表头、Item scrolling/Recycling 虚拟化、真实命令/绑定保持优先；右上角色板、预览徽标、Mock 数据和 demo 滚动条不迁移。
+- 本轮验证：Core 59/59、Worker 191/191、Playnite 304/304；Release 0 warning/0 error；`render-qa OK` 证据在 `artifacts/ui-qa/acrylic-full-migration-v1`；真实宿主 0.6.70 安装加载成功，审计证据在 `artifacts/ui-host-audit-acrylic-v1`，但 `EmbeddedDashboardCaptured=false`，需要用户真实点击 Playnite 侧栏后再重跑 `real-host-audit.ps1` 才能补齐嵌入像素真值。
+
 ## 2026-08-16 UI-220 UiLab 几何对齐与媒体回滚修复交接
 
 - `GscRedesignWorkspaceTabItem` 的 `HorizontalContentAlignment`/`VerticalContentAlignment` 必须保持 `Stretch`；标题的居中由模板内的 `HeaderContent` 完成。不要把标题对齐属性重新绑定给页面内容。

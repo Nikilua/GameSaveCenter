@@ -3,6 +3,14 @@
 > 维护时间：2026-08-14
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-17 UI-221 AcrylicFork 整页视觉迁移收口
+
+- 权威参考仍为 `D:\workplace\github\GameSaveCenter.AcrylicFork` @ `b09cba6`；本轮确认生产 7 页骨架已与其一致，并补齐 Media/Trainer/Save/Maintenance 分段导航右侧说明与真实计数/状态：待归类数、已绑定工具数、当前规则校验状态、安全模式/云端状态。
+- 评估过独立 `AcrylicParity.xaml` 别名层，但独立字典的 `BasedOn` 无法解析父级合并字典里的 Gsc 样式，最终未引入；页面继续直接引用生产 Gsc 共享样式，避免解析风险。不要为了“Lab 键”重新创建该字典。
+- 继续保留生产滚动条、圆角表头、DataGrid/ListBox 虚拟化和真实绑定；demo 右上角色板、演示数据和样例滚动条未迁移。
+- 验证基线：source/XAML 通过；WPF UI 校验 0 errors（16 条既有 warning）；Release 0 warning/0 error；Core 59/59、Worker 191/191、Playnite 304/304；render-qa OK（7 页 × Light/Dark × 1040/1100/1366/2560 + resize）。
+- 真机：0.6.70 安装成功并加载，`extensions.log` 无新增 XamlParseException；real-host-audit 捕获 EmbeddedSettings/Controlled，`EmbeddedDashboardCaptured=false`（自动化无法点击侧栏），不得冒充完整宿主像素验收。
+
 ## 2026-08-16 UI-220 UiLab 几何对齐与虚拟媒体回滚修复
 
 - 上一轮迁移留下的关键差异已收口：`GscRedesignWorkspaceTabItem` 的页面内容对齐改为 `Stretch`，模板只把分段标题居中；否则 WPF 会把真实表格/卡片内容按标题对齐方式压缩到中间，造成用户截图中的大面积空白和错位。
