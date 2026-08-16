@@ -40,7 +40,11 @@ namespace GameSaveCenter.Playnite.Views
                 // this floor only prevents the inspector's Auto row from reducing it to a
                 // one-row strip during a short window resize.
                 const double tableMinHeight = 236d;
-                var compactTableFloor = Math.Max(140d, Math.Min(252d, height - 520d));
+                // Keep the candidate/history viewport readable at normal desktop
+                // heights.  Subtracting 520 DIP made the candidate table collapse to
+                // 205-225 DIP during ordinary 700-720 DIP renders; only genuinely
+                // short hosts should use the compact 180-DIP floor.
+                var compactTableFloor = Math.Max(180d, Math.Min(252d, height - 464d));
                 SaveHistoryGrid.MinHeight = Math.Min(tableMinHeight, compactTableFloor);
                 SaveCandidateGrid.MinHeight = compactTableFloor;
                 // On narrow hosts the lock status is the essential per-row summary; the

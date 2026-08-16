@@ -2163,3 +2163,25 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 
 - `AUTO VERIFIED`：源码/XAML、生产编译、Playnite 测试、Media 多主题/多尺寸离屏渲染。
 - `MANUAL QA REQUIRED`：真实 Playnite 宿主中的最终 DPI、Follow/高对比度主题、键盘焦点、连续缩放和大媒体库滚动。
+
+## 2026-08-16 UI-211 Save 候选表窄窗视口收口
+
+**问题根因：**
+
+- Save 的响应式高度公式沿用了过大的 `height - 520` 扣减，常规 700-720 DIP 窗口把候选表压到 205-225 DIP，触发全量 render-qa 的 `<236 DIP` 门禁。
+
+**实现内容：**
+
+- 将 Save 历史/候选表的常规视口公式收敛到 `Math.Max(180d, Math.Min(252d, height - 464d))`；700-720 DIP 保持 236 DIP，真正短窗才降至 180 DIP。
+- 保留 Save 的生产 DataGrid、Item scrolling、行/列虚拟化、Inspector 抽屉和页面命令，不迁移 UiLab 的滚动条模板。
+
+**验证结果：**
+
+- `validate-source.py`、`check-xaml.ps1` 通过。
+- Playnite Release 构建 0 warning / 0 error；Playnite 测试 303/303 通过。
+- 全量 RenderHarness `render-qa OK`：7 页面、Light/Dark、1040/1100/1366/2560、多尺寸和 2560→1100→2560 resize transition 全部通过。
+
+**验证边界：**
+
+- `AUTO VERIFIED`：源码/XAML、生产编译、Playnite 测试、全量离屏渲染。
+- `MANUAL QA REQUIRED`：真实 Playnite 宿主最终 DPI、Follow/高对比度主题、键盘焦点和连续缩放。

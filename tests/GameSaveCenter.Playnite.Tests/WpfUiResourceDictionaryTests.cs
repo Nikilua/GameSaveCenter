@@ -862,7 +862,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"SaveHistoryGrid\"", save);
         Assert.Contains("x:Name=\"SaveCandidateGrid\"", save);
         Assert.Contains("const double tableMinHeight = 236d", saveCode);
-        Assert.Contains("var compactTableFloor = Math.Max(140d, Math.Min(252d, height - 520d))", saveCode);
+        Assert.Contains("var compactTableFloor = Math.Max(180d, Math.Min(252d, height - 464d))", saveCode);
         Assert.Contains("SaveHistoryGrid.MinHeight = Math.Min(tableMinHeight, compactTableFloor)", saveCode);
         Assert.Contains("SaveCandidateGrid.MinHeight = compactTableFloor", saveCode);
         Assert.Contains("historyHeight - tableMinHeight - 10", saveCode);

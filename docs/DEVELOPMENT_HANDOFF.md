@@ -465,6 +465,12 @@ git branch --show-current
 - 已修复 Media 700-720 DIP 视口过短以及窄→宽 Inspector 不恢复的问题。重建 RenderHarness 后 Media Light/Dark、多尺寸和 resize transition 通过。
 - 全量 render-qa 的剩余门禁仅为 Save 候选表在部分窄尺寸低于 236 DIP；下一阶段优先处理 Save，而不是回退 Media 的布局修复。
 
+## 2026-08-16 UI-211 Save 交接
+
+- Save 表格视口高度公式已从 `height - 520` 调整为 `height - 464`，常规 700-720 DIP 窗口保持 236 DIP；短窗下限为 180 DIP。
+- Save DataGrid、Inspector 抽屉、现有滚动条、虚拟化、命令与绑定均保持生产实现。
+- 全量 RenderHarness 已通过：`render-qa OK`，包含 Light/Dark、7 页面、1040/1100/1366/2560 和 resize transition；真实 Playnite 宿主仍需人工 DPI/主题/键盘验收。
+
 ## 用户原话（必须保留）
 
 > 在继续之前你最好是能够搞一个文件，能够指引去哪里读取获得开发方向等等。这样我直接说你读取xx文件就可以了，他就知道后续怎么开发了。连我这段话你也要放进去，省得我每次都说了（这样每次开发他们都会维护这个项目）。

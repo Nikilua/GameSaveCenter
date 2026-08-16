@@ -23,6 +23,12 @@
 - `ApplyResponsiveLayout` 在 700-720 DIP 常规窗口保持 236 DIP 表格下限；宽屏恢复会把已选择媒体的 Inspector 重新设为 Visible，窄屏继续由 `MediaCompactDetailsButton` 控制 Inspector。
 - UI-210 自动验证：Playnite 303/303，生产 Release 0 warning/0 error，Media Light/Dark 多尺寸和 resize transition 通过；全量 render-qa 仅剩 Save 候选表历史窄视口门禁。
 
+## 2026-08-16 UI-211 Save 当前事实
+
+- `SaveCenterView.ApplyResponsiveLayout` 的表格高度公式为 `Math.Max(180d, Math.Min(252d, height - 464d))`；常规 700-720 DIP 窗口的 SaveCandidateGrid/SaveHistoryGrid 不得回到 236 DIP 以下。
+- Save 历史/候选 DataGrid 仍使用生产共享表头、Item scrolling、行/列虚拟化和现有 Inspector 抽屉；只修复视口下限，没有替换滚动条或绑定。
+- UI-211 自动验证：Playnite 303/303，生产 Release 0 warning/0 error，全量 RenderHarness `render-qa OK`（Light/Dark、7 页面、多尺寸、resize transition）。
+
 ## 2026-08-16 UI-205-ACRYLIC-PARITY 当前事实
 
 - 权威视觉来源是 `D:\workplace\github\GameSaveCenter.AcrylicFork`（当前参考提交 `b09cba6`），不是 `GameSaveCenter.UiLab`。生产已迁移其页面层级、颜色/表面层级、圆角尺度、按钮/标题比例、Dashboard 开放式页面头部和 Settings 分类栏；不要回头修复 AcrylicFork 样板自身的布局 bug。
