@@ -2536,16 +2536,21 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
-    public void OverviewStatStripKeepsSixRealSnapshotCardsWithMotionGatedHover()
+    public void OverviewStatStripKeepsSixRealSnapshotMetricsInOneCalmBand()
     {
         var repositoryRoot = FindRepositoryRoot();
         var overview = XDocument.Parse(File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml")));
         var strip = overview.Descendants().Single(element => element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "OverviewStatStrip");
-        var cards = strip.Elements().Where(element => element.Name.LocalName == "Border").ToList();
+        var grid = strip.Descendants().Single(element => element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "OverviewStatGrid");
+        var metrics = grid.Elements().Where(element => element.Name.LocalName == "StackPanel").ToList();
+        var dividers = grid.Elements().Where(element => element.Name.LocalName == "Rectangle").ToList();
 
-        // The six cards are real Snapshot counters, never demo placeholders.
-        Assert.Equal(6, cards.Count);
-        Assert.All(cards, card => Assert.Equal("{StaticResource OverviewStatCard}", card.Attribute("Style")?.Value));
+        // UiLab uses one rounded summary surface with hairline dividers. The six
+        // counters remain real Snapshot bindings, never demo placeholders.
+        Assert.Equal("{StaticResource OverviewStatBand}", strip.Attribute("Style")?.Value);
+        Assert.Equal(6, metrics.Count);
+        Assert.Equal(5, dividers.Count);
+        Assert.All(dividers, divider => Assert.Equal("{DynamicResource GscDividerBrush}", divider.Attribute("Fill")?.Value));
         Assert.Contains("Binding Snapshot.ManagedGames, Mode=OneWay", strip.ToString());
         Assert.Contains("Binding Snapshot.MatchedGames, Mode=OneWay", strip.ToString());
         Assert.Contains("Binding Snapshot.RunningGames, Mode=OneWay", strip.ToString());
@@ -2553,21 +2558,14 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Binding Snapshot.PendingCloudTasks, Mode=OneWay", strip.ToString());
         Assert.Contains("Binding Snapshot.UnassignedMediaCount, Mode=OneWay", strip.ToString());
 
-        // Hover feedback stays render-only and is wired through EventSetters on the card style.
+        // The summary band is deliberately non-interactive: it is a calm reading
+        // surface, while the dashboard motion gate remains available for other workspaces.
         var overviewText = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml"));
-        Assert.Contains("<EventSetter Event=\"MouseEnter\" Handler=\"OnStatCardMouseEnter\"/>", overviewText);
-        Assert.Contains("<EventSetter Event=\"MouseLeave\" Handler=\"OnStatCardMouseLeave\"/>", overviewText);
-        Assert.Contains("RenderTransformOrigin", overviewText);
-
-        // The dashboard motion gate must reach the overview cards so animations are
-        // disabled when the user turns off animations, enables High Contrast, or the
-        // system disables client-area animation.
-        var dashboardCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml.cs"));
-        Assert.Contains("OverviewWorkspaceView.UiAnimationsEnabled = MotionEnabled;", dashboardCode);
         var overviewCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml.cs"));
-        Assert.Contains("SystemParameters.HighContrast", overviewCode);
-        Assert.Contains("SystemParameters.ClientAreaAnimation", overviewCode);
-        Assert.Contains("AnimateTranslate(sender as FrameworkElement, 0, -3, 160)", overviewCode);
+        Assert.DoesNotContain("OverviewStatCard", overviewText);
+        Assert.DoesNotContain("OnStatCardMouseEnter", overviewText + overviewCode);
+        Assert.DoesNotContain("OnStatCardMouseLeave", overviewText + overviewCode);
+        Assert.Contains("OverviewWorkspaceView.UiAnimationsEnabled = MotionEnabled;", File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml.cs")));
     }
 
     [Fact]

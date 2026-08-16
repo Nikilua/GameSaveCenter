@@ -2,6 +2,20 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-16 UI-214 Overview 单卡统计栏与单色首页晕影
+
+**实现内容：**
+
+- 对照 `GameSaveCenter.UiLab` 的 Overview 截图和源码，将生产首页六个独立统计卡改成一个圆角统计表面，指标之间用细分隔线对齐 UiLab 节奏；真实 `Snapshot` 绑定、比例条和空库保护保持不变。
+- 移除统计指标卡的悬停平移动画，避免非交互信息块出现卡片叠加感；生产页面的动画门控属性和其它交互不变。
+- 将 Dashboard 根层三色环境光改为一个主题自适应的强调色磨玻璃晕影，保留首页氛围但不迁移 UiLab 的演示色板按钮或样例滚动条。
+
+**验证结果：**
+
+- `validate-source.py`、`check-xaml.ps1`、WPF UI 校验通过（0 errors）；Release 构建 0 warning / 0 error；Playnite 303/303。
+- `GameSaveCenter.RenderHarness` 覆盖 1040×700、1100×720、1366×768、1600×900、2560×1440，Light/Dark 和 resize transition 均 `render-qa OK`；截图证实统计栏无文字重叠，生产滚动条未被替换。
+- 证据目录：`artifacts/ui-qa/overview-single-band-v1`。RenderHarness 是离屏证据，不替代真实 Playnite 嵌入式 Dashboard 视觉验收。
+
 ## 2026-08-16 UI-213 真实宿主审计边界收口
 
 **审计结果：**

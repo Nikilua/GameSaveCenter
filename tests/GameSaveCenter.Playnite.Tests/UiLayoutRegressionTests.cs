@@ -167,17 +167,20 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         [Fact]
-        public void OverviewStatStripUsesResponsiveCompactSummaryColumns()
+        public void OverviewStatStripUsesSingleRoundedSummaryBand()
         {
             var root = FindRepositoryRoot();
             var overview = XDocument.Parse(File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml")));
             var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
             var strip = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewStatStrip");
-            var code = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml.cs"));
+            var grid = strip.Elements().Single(element => element.Name.LocalName == "Grid"
+                && element.Attribute(xamlName)?.Value == "OverviewStatGrid");
 
-            Assert.Equal("6", strip.Attribute("Columns")?.Value);
-            Assert.Equal(6, strip.Elements().Count(element => element.Name.LocalName == "Border"));
-            Assert.Contains("OverviewStatStrip.Columns = primaryWidth >= 1100 ? 6 : primaryWidth >= 620 ? 3 : 2", code);
+            Assert.Equal("{StaticResource OverviewStatBand}", strip.Attribute("Style")?.Value);
+            Assert.Equal(6, grid.Elements().Count(element => element.Name.LocalName == "StackPanel"));
+            Assert.Equal(5, grid.Elements().Count(element => element.Name.LocalName == "Rectangle"));
+            Assert.All(grid.Elements().Where(element => element.Name.LocalName == "Rectangle"), divider =>
+                Assert.Equal("{DynamicResource GscDividerBrush}", divider.Attribute("Fill")?.Value));
         }
 
         [Fact]

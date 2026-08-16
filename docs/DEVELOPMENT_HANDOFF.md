@@ -2,6 +2,12 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-16 UI-214 Overview 单卡统计栏当前基线
+
+- 首页 Overview 的六项统计已收敛成 UiLab 风格的单一圆角 `OverviewStatBand`，内部是六个真实 `Snapshot` 指标和五条分隔线；不要恢复六个独立卡片或为指标恢复悬停位移动画。
+- Dashboard 根层只保留一个 `GscAmbientAccentBrush` 磨玻璃晕影；右上角演示色板/窗口控制和 UiLab 滚动条仍明确不迁移，生产滚动条、页面滚动、虚拟化、命令与绑定继续作为事实来源。
+- 当前证据：`artifacts/ui-qa/overview-single-band-v1`，覆盖双主题、多尺寸与 resize transition，`render-qa OK`。真实宿主 Dashboard 仍没有自动捕获到嵌入像素，不能把离屏图当作 Playnite 视觉真值。
+
 ## 2026-08-16 UI-213 真实宿主审计交接
 
 - 当前 `420483f` 已执行 Release 真实宿主审计：构建、Core 59/59、Worker 191/191、Playnite 303/303、安装与 Playnite 启动通过；人工进入真实 Playnite 后确认 GameSaveCenter Settings 宿主窗口可见。

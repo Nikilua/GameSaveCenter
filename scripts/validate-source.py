@@ -1059,8 +1059,7 @@ def check_responsive_ui_layout_guards() -> None:
     settings_code = (ROOT / "src/GameSaveCenter.Playnite/Settings/GameSaveCenterSettingsView.xaml.cs").read_text(encoding="utf-8")
     redesign = (ROOT / "src/GameSaveCenter.Playnite/Themes/Redesign.xaml").read_text(encoding="utf-8")
     for token in ("VerticalScrollBarVisibility=\"Auto\"", "KeyboardNavigation.TabNavigation=\"Local\"",
-                  "<Ellipse.RenderTransform><TranslateTransform X=\"-95\" Y=\"-130\"/>",
-                  "<Ellipse.RenderTransform><TranslateTransform X=\"105\" Y=\"0\"/>",
+                  "x:Name=\"AmbientGlowLayer\"", "{DynamicResource GscAmbientAccentBrush}",
                   "AutomationProperties.Name=\"刷新全部状态\"", "x:Name=\"TopRefreshLabel\""):
         if token not in dashboard:
             fail(f"Dashboard responsive layout guard missing: {token}")

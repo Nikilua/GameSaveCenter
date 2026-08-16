@@ -3,6 +3,14 @@
 > 维护时间：2026-08-14
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-16 UI-214 Overview 统计栏与首页光晕收口
+
+- `OverviewView.xaml` 已把原先六个独立圆角统计卡改为 UiLab 同款的单一 `OverviewStatBand`：六个真实 `Snapshot` 指标保留在同一表面内，使用五条 `GscDividerBrush` 分隔线；两个真实比例条、空库折叠保护和 OneWay 绑定均未改变。
+- 删除统计卡专用的悬停位移动画，避免把非交互指标做成堆叠/错位卡片；Dashboard 的 `UiAnimationsEnabled` 合约仍保留给其它工作区。
+- `DashboardView.xaml` 的根层环境光从三色椭圆收敛为单一 `GscAmbientAccentBrush` 磨玻璃晕影，保留首页喜欢的背景氛围；生产 ScrollBar、页面滚动、虚拟化和真实命令/绑定未迁移 UiLab 演示实现。
+- 当前自动验证：`validate-source.py`、XAML 检查、WPF UI 校验（0 errors）、Release 0 warning/0 error、Playnite 303/303、RenderHarness 双主题/1040/1100/1366/1600/2560 及 resize 全部 `render-qa OK`。新证据在 `artifacts/ui-qa/overview-single-band-v1`。
+- 本阶段未把离屏截图写成真实 Playnite 嵌入真值；真实宿主 Dashboard 仍受 UIAutomation 无法定位侧栏入口限制，必须继续保留 `EmbeddedDashboardCaptured=false` 的诚实边界。
+
 ## 2026-08-16 UI-213 真实宿主审计当前事实
 
 - 当前提交 `420483f` 的 Release 包已通过 `scripts/real-host-audit.ps1` 安装并启动 Playnite；人工通过 Computer Use 进入真实 Playnite，确认 GameSaveCenter 实例和 Settings 宿主窗口可见，未出现立即的 XAML 解析崩溃。

@@ -2,9 +2,6 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
 
 namespace GameSaveCenter.Playnite.Views
 {
@@ -23,42 +20,6 @@ namespace GameSaveCenter.Playnite.Views
         public bool UiAnimationsEnabled { get; set; } = true;
 
         public OverviewView() => InitializeComponent();
-
-        private void OnStatCardMouseEnter(object sender, MouseEventArgs e)
-            => AnimateTranslate(sender as FrameworkElement, 0, -3, 160);
-
-        private void OnStatCardMouseLeave(object sender, MouseEventArgs e)
-            => AnimateTranslate(sender as FrameworkElement, 0, 0, 180);
-
-        private void AnimateTranslate(FrameworkElement? element, double x, double y, int milliseconds)
-        {
-            if (element == null || !UiAnimationsEnabled || SystemParameters.HighContrast || !SystemParameters.ClientAreaAnimation) return;
-            var translate = GetMutableTranslateTransform(element);
-            var easing = new CubicEase { EasingMode = EasingMode.EaseOut };
-            translate.BeginAnimation(TranslateTransform.XProperty, new DoubleAnimation(x, TimeSpan.FromMilliseconds(milliseconds)) { EasingFunction = easing });
-            translate.BeginAnimation(TranslateTransform.YProperty, new DoubleAnimation(y, TimeSpan.FromMilliseconds(milliseconds)) { EasingFunction = easing });
-        }
-
-        private static TranslateTransform GetMutableTranslateTransform(FrameworkElement element)
-        {
-            var translate = element.RenderTransform as TranslateTransform;
-            if (translate == null)
-            {
-                translate = new TranslateTransform();
-                element.RenderTransform = translate;
-                return translate;
-            }
-
-            // Freezables declared in a Style setter are shared and frozen by WPF. They cannot be
-            // animated directly, so every element must receive its own mutable clone first.
-            if (translate.IsFrozen)
-            {
-                translate = (TranslateTransform)translate.CloneCurrentValue();
-                element.RenderTransform = translate;
-            }
-
-            return translate;
-        }
 
         public GridLength OverviewCompactSecondaryRowHeight
         {
@@ -144,15 +105,6 @@ namespace GameSaveCenter.Playnite.Views
                 OverviewHomeToolbarActions.Margin = stackActions
                     ? new Thickness(0, 12, 0, 0)
                     : new Thickness(12, 0, 0, 0);
-            }
-
-            // The six Snapshot metrics are a compact summary strip, not a card wall.
-            // Wide workbenches keep the Demo's single-row rhythm; narrow hosts drop to
-            // 3 then 2 columns so every real counter remains readable without wrapping
-            // the whole page into a giant tile grid.
-            if (OverviewStatStrip != null)
-            {
-                OverviewStatStrip.Columns = primaryWidth >= 1100 ? 6 : primaryWidth >= 620 ? 3 : 2;
             }
 
             if (OverviewActivityTimelineList != null)
