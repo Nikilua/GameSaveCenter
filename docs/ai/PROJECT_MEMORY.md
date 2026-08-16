@@ -3,6 +3,14 @@
 > 维护时间：2026-08-14
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-16 UI-212 Media 网格当前事实
+
+- `MediaCenterView.xaml` 的当前媒体 `MediaGrid` 已按 UiLab 的 164×142 DIP 卡片节奏改为 `ui:VirtualizingWrapPanel`，缩略图高度 96 DIP；卡片包含真实 `ArchivePath` 异步缩略图、录像/收藏标识、文件名、拍摄时间和云端状态。
+- `VirtualizingWrapPanel` 位于 `src/GameSaveCenter.Playnite/Controls/VirtualizingWrapPanel.cs`，实现 `IScrollInfo`，只生成当前视口附近的容器，兼容 Recycling generator；不要替换成普通 `WrapPanel`，也不要迁移 UiLab 的滚动条模板。
+- `MediaGrid` 仍是生产 `ListBox`，保留 `ItemsSource={Binding MediaView}`、Extended selection、`ScrollViewer.CanContentScroll=True`、生产滚动条、Inspector 抽屉和真实批量/编辑命令；窄窗仍使用 `MediaCompactDetailsButton`。
+- 首次挂载时生成器可能尚未就绪，面板已对该 WPF 测量时序做空保护；Reset、窄宽切换、Light/Dark 离屏渲染均已通过。
+- UI-212 自动验证：`validate-source.py`、XAML 检查、Release 0 warning/0 error、Playnite 303/303、RenderHarness 全量 `render-qa OK`；真实 Playnite 大媒体库/DPI/主题/键盘/连续缩放仍需人工验收。
+
 ## 2026-08-16 UI-208 Overview 全局活动当前事实
 
 - `OverviewView.xaml` 的全局活动已按 UiLab 业务列表迁移：类型胶囊 → 对象/事件两行 → 结果胶囊 → 时间，不再额外显示 DataGrid 式表头，也不使用图标列。

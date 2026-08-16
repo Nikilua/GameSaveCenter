@@ -471,6 +471,13 @@ git branch --show-current
 - Save DataGrid、Inspector 抽屉、现有滚动条、虚拟化、命令与绑定均保持生产实现。
 - 全量 RenderHarness 已通过：`render-qa OK`，包含 Light/Dark、7 页面、1040/1100/1366/2560 和 resize transition；真实 Playnite 宿主仍需人工 DPI/主题/键盘验收。
 
+## 2026-08-16 UI-212 Media 网格交接
+
+- Media 当前游戏主体已从生产横向信息行迁移为 UiLab 风格的固定 164×142 DIP 缩略图卡片；`VirtualizingWrapPanel` 负责可见项生成与 `IScrollInfo`，生产 `ListBox` 的 ScrollViewer/ScrollBar 继续负责实际滚动。
+- 卡片只使用真实 MediaItemDto 字段和 `AsyncThumbnailImage`，Inspector、批量操作、Extended selection、窄屏详情抽屉及现有命令/绑定不变；不要直接复制 UiLab 的普通 `WrapPanel` 或演示滚动条。
+- 自动验证完成：`validate-source.py`、`check-xaml.ps1`、WPF 静态审查、Release 构建、Playnite 303/303、全量 RenderHarness `render-qa OK`；证据目录为 `artifacts/ui-qa/media-grid-migration-v3`。
+- 真实宿主中的实际缩略图文件、超大媒体库滚动、最终 DPI、Follow/高对比度、键盘焦点和连续缩放仍是 `MANUAL QA REQUIRED`。
+
 ## 用户原话（必须保留）
 
 > 在继续之前你最好是能够搞一个文件，能够指引去哪里读取获得开发方向等等。这样我直接说你读取xx文件就可以了，他就知道后续怎么开发了。连我这段话你也要放进去，省得我每次都说了（这样每次开发他们都会维护这个项目）。

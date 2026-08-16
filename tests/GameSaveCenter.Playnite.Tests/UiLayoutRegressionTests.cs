@@ -122,17 +122,20 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         [Fact]
-        public void MediaCurrentListStartsAtTheTopOfItsVirtualizedViewport()
+        public void MediaCurrentGridUsesTheDemoCardRhythmInsideAProductionVirtualizedViewport()
         {
             var root = FindRepositoryRoot();
             var media = XDocument.Parse(File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml")));
             var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
             var list = media.Descendants().Single(element => element.Name.LocalName == "ListBox" && element.Attribute(xamlName)?.Value == "MediaGrid");
-            var itemsPanel = list.Descendants().Single(element => element.Name.LocalName == "VirtualizingStackPanel");
+            var itemsPanel = list.Descendants().Single(element => element.Name.LocalName == "VirtualizingWrapPanel");
 
-            Assert.Equal("Stretch", list.Attribute("HorizontalContentAlignment")?.Value);
+            Assert.Equal("Left", list.Attribute("HorizontalContentAlignment")?.Value);
             Assert.Equal("Top", list.Attribute("VerticalContentAlignment")?.Value);
             Assert.Equal("Top", itemsPanel.Attribute("VerticalAlignment")?.Value);
+            Assert.Equal("164", itemsPanel.Attribute("ItemWidth")?.Value);
+            Assert.Equal("142", itemsPanel.Attribute("ItemHeight")?.Value);
+            Assert.Contains("VirtualizingPanel.VirtualizationMode=\"Recycling\"", list.ToString());
         }
 
         [Fact]

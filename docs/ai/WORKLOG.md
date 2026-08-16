@@ -2185,3 +2185,28 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 
 - `AUTO VERIFIED`：源码/XAML、生产编译、Playnite 测试、全量离屏渲染。
 - `MANUAL QA REQUIRED`：真实 Playnite 宿主最终 DPI、Follow/高对比度主题、键盘焦点和连续缩放。
+
+## 2026-08-16 UI-212 Media 缩略图网格迁移并保留生产虚拟化
+
+**问题根因：**
+
+- UiLab 当前媒体页是固定 164 DIP 卡片、96 DIP 缩略图的网格；生产之前是横向三列信息行，因此即使统计带、Inspector 和页签已经接近 Demo，媒体主体仍明显不像样板。
+- Demo 使用普通 `WrapPanel`，直接复制会一次性生成大媒体库的所有缩略图，也会把 Demo 的滚动条模板带入生产，和项目的大列表性能/宿主兼容约束冲突。
+
+**实现内容：**
+
+- 新增 `Controls/VirtualizingWrapPanel`：按固定卡片尺寸计算列/行，只生成可见区附近的 ListBoxItem，实现 `IScrollInfo` 的行、页、鼠标滚轮和 `MakeVisible`，并兼容 Recycling generator。
+- Media 当前游戏列表改为该虚拟化网格；卡片按 Demo 迁移缩略图、底部渐变、录像标识、收藏标识、文件名、拍摄时间、云端状态和圆角选中描边。
+- 继续使用生产 `ListBox`/`ScrollViewer`/`ScrollBar`，保留 `MediaView`、Extended selection、Inspector 抽屉、真实打开/收藏/备注/归类命令和窄窗详情按钮。
+- 为首次挂载时生成器尚未就绪的 WPF 测量时序增加保护；空集合、Reset 和宽窄窗口切换不会抛异常。
+
+**验证结果：**
+
+- `validate-source.py`、`check-xaml.ps1`、WPF 静态审查通过（0 error；已有滚动测量提示和硬编码颜色 info 保持历史基线）。
+- Playnite Release 构建 0 warning / 0 error；Playnite 测试 303/303 通过。
+- RenderHarness 全量 `render-qa OK`：7 页面、Light/Dark、1040/1100/1366/2560、多尺寸和 2560→1100→2560 resize transition 全部通过；Media 网格截图已输出到 `artifacts/ui-qa/media-grid-migration-v3`。
+
+**验证边界：**
+
+- `AUTO VERIFIED`：源码/XAML、生产编译、Playnite 测试、离屏卡片网格、生产滚动条和响应式过渡。
+- `MANUAL QA REQUIRED`：真实 Playnite 宿主中的实际缩略图解码、超大媒体库滚动手感、最终 DPI、Follow/高对比度主题、键盘焦点和连续缩放；本阶段没有把离屏假数据当作真实宿主验收。
