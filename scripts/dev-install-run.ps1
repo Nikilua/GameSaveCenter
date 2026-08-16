@@ -8,7 +8,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-$installerRevision = 'DEV-INSTALL-007'
+$installerRevision = 'DEV-INSTALL-008'
 
 $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 try {
@@ -265,15 +265,29 @@ function Stop-PlayniteAndOwnedWorkerReliably {
     $workerPaths = @($ExtensionRoots | ForEach-Object {
             Join-Path (Join-Path $_ $extensionId) 'Worker\GameSaveCenter.Worker.exe'
         } | ForEach-Object { [System.IO.Path]::GetFullPath($_) })
+    $ownedWorkers = [System.Collections.Generic.List[object]]::new()
     foreach ($worker in $workers) {
         $workerPath = $null
         try { $workerPath = $worker.MainModule.FileName } catch { }
         if ([string]::IsNullOrWhiteSpace($workerPath)) {
             throw "Playnite 已退出，但无法确认 Worker [$($worker.Id)] 的文件路径；为避免误杀未知进程，安装已停止。请手动结束该 Worker 后重试。"
         }
-        if ($workerPaths -notcontains ([System.IO.Path]::GetFullPath($workerPath))) {
-            throw "Playnite 已退出，但发现路径不属于当前扩展目录的 Worker [$($worker.Id)]：$workerPath。为避免误杀其他 Worker，安装已停止。"
+        $fullWorkerPath = [System.IO.Path]::GetFullPath($workerPath)
+        if (-not ($workerPaths | Where-Object {
+                    [string]::Equals($_, $fullWorkerPath, [StringComparison]::OrdinalIgnoreCase)
+                })) {
+            # A different preview/plugin extension can legitimately own the same
+            # executable name. It is unsafe to terminate it, but it also does not
+            # lock the current extension directory, so leave it running and let the
+            # install continue. Unknown paths still fail closed above.
+            Write-Warning "保留其他扩展目录的 Worker [$($worker.Id)]：$fullWorkerPath。安装器不会结束它。"
+            continue
         }
+
+        $ownedWorkers.Add($worker)
+    }
+
+    foreach ($worker in $ownedWorkers) {
 
         try {
             Write-Host "停止扩展残留 Worker：$($worker.Id)" -ForegroundColor DarkYellow
@@ -285,9 +299,27 @@ function Stop-PlayniteAndOwnedWorkerReliably {
     }
 
     Start-Sleep -Milliseconds 500
-    $remainingWorkers = @($workerNames | ForEach-Object { Get-Process -Name $_ -ErrorAction SilentlyContinue })
-    if ($remainingWorkers.Count -gt 0) {
-        throw "扩展 Worker 仍在运行：$($remainingWorkers.Id -join ', ')。安装已停止以避免覆盖正在使用的文件。"
+    $remainingOwnedWorkers = [System.Collections.Generic.List[object]]::new()
+    foreach ($remainingWorker in @($workerNames | ForEach-Object { Get-Process -Name $_ -ErrorAction SilentlyContinue })) {
+        $remainingPath = $null
+        try { $remainingPath = $remainingWorker.MainModule.FileName } catch { }
+        if ([string]::IsNullOrWhiteSpace($remainingPath)) {
+            throw "扩展 Worker [$($remainingWorker.Id)] 仍在运行且无法确认文件路径；安装已停止以避免覆盖正在使用的文件。"
+        }
+
+        $fullRemainingPath = [System.IO.Path]::GetFullPath($remainingPath)
+        if ($workerPaths | Where-Object {
+                    [string]::Equals($_, $fullRemainingPath, [StringComparison]::OrdinalIgnoreCase)
+                }) {
+            $remainingOwnedWorkers.Add($remainingWorker)
+        }
+        else {
+            Write-Warning "其他扩展目录的 Worker 仍在运行 [$($remainingWorker.Id)]：$fullRemainingPath。安装已继续，不会结束它。"
+        }
+    }
+    if ($remainingOwnedWorkers.Count -gt 0) {
+        $remainingOwnedIds = ($remainingOwnedWorkers | ForEach-Object { $_.Id }) -join ', '
+        throw "当前扩展 Worker 仍在运行：$remainingOwnedIds。安装已停止以避免覆盖正在使用的文件。"
     }
 }
 

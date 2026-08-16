@@ -495,7 +495,10 @@ public static class UiAuditRunner
         var shell = FindVisualChildren<FrameworkElement>(root)
             .FirstOrDefault(element => element.Name == "SettingsShell");
         if (shell != null)
+        {
+            shell.BeginAnimation(UIElement.OpacityProperty, null);
             shell.Opacity = 1;
+        }
     }
 
     private static bool HasTabControlAncestor(TabControl tabControl, DependencyObject root)

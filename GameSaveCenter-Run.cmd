@@ -14,7 +14,7 @@ if not exist "%~dp0scripts\dev-install-run.ps1" (
     exit /b 2
 )
 
-findstr /c:"DEV-INSTALL-007" "%~dp0scripts\dev-install-run.ps1" >nul 2>nul
+findstr /c:"DEV-INSTALL-008" "%~dp0scripts\dev-install-run.ps1" >nul 2>nul
 if errorlevel 1 (
     echo [FAILED] The installer script is stale or this is not the source checkout.
     echo Expected: %~dp0scripts\dev-install-run.ps1

@@ -2,11 +2,12 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
-## 2026-08-16 UI-204-UILAB-PARITY 当前开发基线
+## 2026-08-16 UI-205-ACRYLIC-PARITY 当前开发基线
 
-- UiLab 的页面视觉与结构已迁入生产共享资源；UiLab 演示数据、右上角颜色/主题按钮和 UiLab 滚动条明确不迁移。
+- 权威参考是 `D:\workplace\github\GameSaveCenter.AcrylicFork` @ `b09cba6`，不是 UiLab；其页面视觉与结构已迁入生产共享资源。AcrylicFork 演示数据、右上角颜色/主题按钮和样例滚动条明确不迁移，七组顶部色值仅用于主题参考。
 - 生产保留真实命令、绑定、虚拟化和现有滚动条；Overview 普通状态不再显示重复全局命令卡，Settings 常用宽度使用左侧分类栏，低于 700/620 DIP 进入紧凑布局。
-- 自动验证已通过：Core 59/59、Worker 191/191、Playnite 302/302、Release 构建、source/WPF 门禁和 `render-ui-migration-v3`；真实 Playnite 宿主本阶段未重启，仍需人工确认主题/DPI/键盘/连续缩放。
+- `DEV-INSTALL-008` 已修复外来扩展 Worker 误杀：只处理当前生产目录，陌生但可读路径保留运行，无法读取路径仍 fail-closed。
+- 自动验证已通过：Core 59/59、Worker 191/191、Playnite 302/302、Release 0 warning/0 error、source/XAML 门禁和 `render-acrylic-correction`；一键安装已成功启动 Playnite/生产 Worker。真实宿主最终主题/DPI/键盘/连续缩放仍需人工确认。
 
 ## 2026-08-16 UI-REAL-HOST-AUDIT-BLOCKERS-FIX 实施完成
 

@@ -96,7 +96,7 @@
             <Border x:Name="OverviewHomeToolbar" Padding="14,10" Margin="0,0,0,12">
                 <Border.Style>
                     <Style TargetType="Border" BasedOn="{StaticResource GscRedesignSectionCard}">
-                        <!-- Global commands already live in Dashboard's UiLab-style page
+                        <!-- Global commands already live in Dashboard's AcrylicFork-style page
                              header. Keep this real command surface available only when the
                              onboarding explanation needs its own actionable band. -->
                         <Setter Property="Visibility" Value="Collapsed"/>

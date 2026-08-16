@@ -3,50 +3,50 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:primitives="clr-namespace:System.Windows.Controls.Primitives;assembly=PresentationFramework">
     <!-- Shared defaults. Runtime palette adaptation replaces the theme-sensitive brushes locally.
-         The fallback palette is aligned with the UiLab visual system: near-opaque reading
+         The fallback palette is aligned with the AcrylicFork visual system: near-opaque reading
          cards, a softer shell, and a restrained navy/graphite canvas. It is intentionally only
          a parse-safe fallback; Follow Playnite/Light/Dark still come from AdaptiveThemePalette. -->
     <!-- Deterministic fallback values mirror the standalone demo. Runtime Playnite theme
          adaptation may replace these locally, but parsing must never depend on host resources. -->
-    <SolidColorBrush x:Key="GscAccentBrush" Color="#7897FF"/>
-    <SolidColorBrush x:Key="GscAccentHoverBrush" Color="#8CA6FF"/>
-    <SolidColorBrush x:Key="GscAccentPressedBrush" Color="#5F7DE8"/>
-    <SolidColorBrush x:Key="GscAccentTintBrush" Color="#2A7897FF"/>
-    <SolidColorBrush x:Key="GscAccentTintStrongBrush" Color="#3A7897FF"/>
-    <SolidColorBrush x:Key="GscSuccessBrush" Color="#4BD39B"/>
-    <SolidColorBrush x:Key="GscWarningBrush" Color="#F5B24D"/>
-    <SolidColorBrush x:Key="GscErrorBrush" Color="#FF6B80"/>
-    <SolidColorBrush x:Key="GscErrorTintBrush" Color="#24FF6B80"/>
-    <SolidColorBrush x:Key="GscInfoBrush" Color="#78A9FF"/>
+    <SolidColorBrush x:Key="GscAccentBrush" Color="#7C8CF8"/>
+    <SolidColorBrush x:Key="GscAccentHoverBrush" Color="#8F9DFA"/>
+    <SolidColorBrush x:Key="GscAccentPressedBrush" Color="#6876D2"/>
+    <SolidColorBrush x:Key="GscAccentTintBrush" Color="#287C8CF8"/>
+    <SolidColorBrush x:Key="GscAccentTintStrongBrush" Color="#3D7C8CF8"/>
+    <SolidColorBrush x:Key="GscSuccessBrush" Color="#4CDB8E"/>
+    <SolidColorBrush x:Key="GscWarningBrush" Color="#F0B24E"/>
+    <SolidColorBrush x:Key="GscErrorBrush" Color="#F26D7E"/>
+    <SolidColorBrush x:Key="GscErrorTintBrush" Color="#26F26D7E"/>
+    <SolidColorBrush x:Key="GscInfoBrush" Color="#5CAAF0"/>
     <SolidColorBrush x:Key="GscOnAccentTextBrush" Color="#FFFFFFFF"/>
     <SolidColorBrush x:Key="GscSelectionTextBrush" Color="#F2FFFFFF"/>
-    <SolidColorBrush x:Key="GscAccentIconFillBrush" Color="#2A7897FF"/>
-    <SolidColorBrush x:Key="GscInfoIconFillBrush" Color="#2478A9FF"/>
-    <SolidColorBrush x:Key="GscSuccessIconFillBrush" Color="#244BD39B"/>
-    <SolidColorBrush x:Key="GscErrorIconFillBrush" Color="#24FF6B80"/>
-    <SolidColorBrush x:Key="GscWarningIconFillBrush" Color="#24F5B24D"/>
-    <SolidColorBrush x:Key="GscRestoreInfoFillBrush" Color="#2478A9FF"/>
-    <SolidColorBrush x:Key="GscRestoreInfoStrokeBrush" Color="#6678A9FF"/>
-    <SolidColorBrush x:Key="GscSafetyFillBrush" Color="#24F5B24D"/>
-    <SolidColorBrush x:Key="GscSafetyStrokeBrush" Color="#66F5B24D"/>
+    <SolidColorBrush x:Key="GscAccentIconFillBrush" Color="#287C8CF8"/>
+    <SolidColorBrush x:Key="GscInfoIconFillBrush" Color="#225CAAF0"/>
+    <SolidColorBrush x:Key="GscSuccessIconFillBrush" Color="#234CDB8E"/>
+    <SolidColorBrush x:Key="GscErrorIconFillBrush" Color="#26F26D7E"/>
+    <SolidColorBrush x:Key="GscWarningIconFillBrush" Color="#26F0B24E"/>
+    <SolidColorBrush x:Key="GscRestoreInfoFillBrush" Color="#225CAAF0"/>
+    <SolidColorBrush x:Key="GscRestoreInfoStrokeBrush" Color="#755CAAF0"/>
+    <SolidColorBrush x:Key="GscSafetyFillBrush" Color="#26F0B24E"/>
+    <SolidColorBrush x:Key="GscSafetyStrokeBrush" Color="#7AF0B24E"/>
     <SolidColorBrush x:Key="GscRowHoverStrongBrush" Color="#0CFFFFFF"/>
-    <SolidColorBrush x:Key="GscAmbientAccentBrush" Color="#2A7897FF"/>
-    <SolidColorBrush x:Key="GscAmbientInfoBrush" Color="#2478A9FF"/>
-    <SolidColorBrush x:Key="GscAmbientSuccessBrush" Color="#244BD39B"/>
-    <SolidColorBrush x:Key="GscPrimaryButtonBorderBrush" Color="#8CA6FF"/>
-    <SolidColorBrush x:Key="GscMutedStatusBrush" Color="#7D8EAA"/>
+    <SolidColorBrush x:Key="GscAmbientAccentBrush" Color="#287C8CF8"/>
+    <SolidColorBrush x:Key="GscAmbientInfoBrush" Color="#00000000"/>
+    <SolidColorBrush x:Key="GscAmbientSuccessBrush" Color="#00000000"/>
+    <SolidColorBrush x:Key="GscPrimaryButtonBorderBrush" Color="#8F9DFA"/>
+    <SolidColorBrush x:Key="GscMutedStatusBrush" Color="#7C8491"/>
     <LinearGradientBrush x:Key="GscPrimaryButtonBrush" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Color="#7897FF" Offset="0"/>
-        <GradientStop Color="#5F7DE8" Offset="1"/>
+        <GradientStop Color="#7C8CF8" Offset="0"/>
+        <GradientStop Color="#6876D2" Offset="1"/>
     </LinearGradientBrush>
     <Color x:Key="GscSoftShadowColor">#22000000</Color>
     <Color x:Key="GscPopupShadowColor">#52000000</Color>
-    <Color x:Key="GscAccentShadowColor">#507897FF</Color>
+    <Color x:Key="GscAccentShadowColor">#507C8CF8</Color>
     <!-- Decorative radial-glow gradient centers. The runtime palette replaces the accent
          shadow with the current theme accent; info/success stay as static low-alpha
          semantic tints so the hero glow reads as light, never as a solid fill. -->
-    <Color x:Key="GscInfoShadowColor">#5078A9FF</Color>
-    <Color x:Key="GscSuccessShadowColor">#504BD39B</Color>
+    <Color x:Key="GscInfoShadowColor">#505CAAF0</Color>
+    <Color x:Key="GscSuccessShadowColor">#504CDB8E</Color>
 
     <!-- Effects are deliberately null until a page enables its local material palette. This
          keeps initial, high-contrast and reduced-transparency parsing free of effect visuals. -->
@@ -76,18 +76,18 @@
     <SolidColorBrush x:Key="GscDividerBrush" Color="#12FFFFFF"/>
     <SolidColorBrush x:Key="GscTableDividerBrush" Color="#302A3850"/>
     <SolidColorBrush x:Key="GscPopupBrush" Color="#FC202B3D"/>
-    <SolidColorBrush x:Key="GscTableHeaderBrush" Color="#0DFFFFFF"/>
-    <SolidColorBrush x:Key="GscTableAlternateRowBrush" Color="#18152332"/>
-    <SolidColorBrush x:Key="GscRowHoverBrush" Color="#282C4360"/>
+    <SolidColorBrush x:Key="GscTableHeaderBrush" Color="#00000000"/>
+    <SolidColorBrush x:Key="GscTableAlternateRowBrush" Color="#00000000"/>
+    <SolidColorBrush x:Key="GscRowHoverBrush" Color="#0CFFFFFF"/>
     <SolidColorBrush x:Key="GscScrollTrackBrush" Color="#24111A29"/>
     <!-- Keep the production scrollbar geometry/template; only its fallback color follows the
-         demo. The UiLab scrollbar omitted important Track bindings and is not copied. -->
+         demo. The AcrylicFork scrollbar omitted important Track bindings and is not copied. -->
     <SolidColorBrush x:Key="GscScrollThumbBrush" Color="#995A6A83"/>
     <SolidColorBrush x:Key="GscScrollThumbHoverBrush" Color="#CC7C8CF8"/>
     <SolidColorBrush x:Key="GscOverlayBrush" Color="#AA060A12"/>
     <SolidColorBrush x:Key="GscPickerScrimBrush" Color="#60060A12"/>
 
-    <!-- UiLab geometry: XS 6 / control 10 / card 16 / shell-panel 20. -->
+    <!-- AcrylicFork geometry: XS 6 / control 10 / card 16 / shell-panel 20. -->
     <CornerRadius x:Key="GscCornerSmall">6</CornerRadius>
     <CornerRadius x:Key="GscCornerControl">10</CornerRadius>
     <CornerRadius x:Key="GscCornerCard">16</CornerRadius>
@@ -134,7 +134,7 @@
     <!-- Keep rows comfortably readable instead of collapsing a table to two or three lines.
          The surrounding page owns the overflow channel, while the DataGrid keeps its own
          virtualized scrollbar for the remaining rows. -->
-    <sys:Double x:Key="GscTableRowHeight">48</sys:Double>
+    <sys:Double x:Key="GscTableRowHeight">44</sys:Double>
     <!-- A readable table should expose several rows at normal window sizes. Legacy and
          dashboard-hosted tables can still use the large viewport token below; extracted
          workspaces use the adaptive minimum so the page itself does not need a vertical
@@ -151,7 +151,7 @@
          each breakpoint so normal hosts show several readable rows without clipping. -->
     <sys:Double x:Key="GscTableViewportHeight">720</sys:Double>
     <sys:Double x:Key="GscListViewportHeight">720</sys:Double>
-    <sys:Double x:Key="GscTableHeaderHeight">42</sys:Double>
+    <sys:Double x:Key="GscTableHeaderHeight">36</sys:Double>
 
     <!-- Page-level scrolling is deliberately keyed instead of implicit.  A page owns one
          vertical scroll channel; tables and lists own their own internal channels.  Keeping

@@ -2,31 +2,31 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
-## 2026-08-16 UI-204-UILAB-PARITY UiLab 视觉与页面结构迁移
+## 2026-08-16 UI-205-ACRYLIC-PARITY AcrylicFork 视觉与页面结构迁移
 
 **实现内容：**
 
-- 将 `GameSaveCenter.UiLab` 中可复用的页面视觉语言迁入生产共享资源：深色/浅色表面层级、Shell/卡片/控件圆角尺度、按钮与标题尺寸、状态色、页面标题和 Settings 分类栏节奏。
-- Dashboard 顶部改为 UiLab 式开放页面头部，保留生产中的真实游戏选择器、刷新/备份/同步命令和绑定；Overview 普通状态不再重复显示全局命令卡，仅在真实 onboarding 状态保留操作带。
+- 纠正参考源：以 `D:\workplace\github\GameSaveCenter.AcrylicFork` 的 `b09cba6` 为权威视觉样板；迁移深色/浅色表面层级、Shell/卡片/控件圆角尺度、按钮与标题尺寸、状态色、页面标题和 Settings 分类栏节奏。
+- Dashboard 顶部改为 AcrylicFork 式开放页面头部，保留生产中的真实游戏选择器、刷新/备份/同步命令和绑定；Overview 普通状态不再重复显示全局命令卡，仅在真实 onboarding 状态保留操作带。
 - 调整 Dashboard 的游戏选择器/操作区响应式排布，Settings 在常用内容宽度使用左侧分类栏，低于 700 DIP 转为顶部横向分类，低于 620 DIP 进一步收紧标题与输入布局。
-- 修正共享 DataGrid 表头、Button、Card、状态胶囊和页面标题的圆角/尺寸，使迁移后的控件不再依赖 UiLab 的错误布局；滚动条继续使用生产模板和完整 Track 绑定。
+- 修正共享 DataGrid 表头、Button、Card、状态胶囊和页面标题的圆角/尺寸，使迁移后的控件不再依赖样板中的布局问题；滚动条继续使用生产模板和完整 Track 绑定。
 
 **明确不迁移：**
 
-- UiLab 的演示数据、演示专用右上角颜色/主题按钮、UiLab 滚动条均未引入；生产命令、数据绑定、虚拟化、页面滚动骨架和现有滚动条保留。
+- AcrylicFork 的演示数据、演示专用右上角颜色/主题按钮、样例滚动条均未引入；顶部七组色值仅作为生产主题参考，生产命令、数据绑定、虚拟化、页面滚动骨架和现有滚动条保留。
 
 **验证结果：**
 
-- `python scripts/validate-source.py` 通过；WPF 静态检查 0 error（15 条既有布局 warning）。
-- Release 构建成功；Core 59/59、Worker 191/191、Playnite 302/302。
-- `scripts/render-qa.ps1 -Output artifacts/ui-qa/render-ui-migration-v3` 全部通过，覆盖 Light/Dark、7 个工作区、1040×700/1100×720/1366×768/2560×1440 及 resize transition；设置页截图确认 1100×720 使用左侧分类栏，Overview/Save/Maintenance 无文字重叠。
+- `python scripts/validate-source.py`、XAML 检查通过；Release 0 warning/0 error；Core 59/59、Worker 191/191、Playnite 302/302。
+- `scripts/render-qa.ps1 -Output artifacts/ui-qa/render-acrylic-correction` 全部通过，覆盖 Light/Dark、7 个工作区、多个窗口尺寸及 resize transition；修正渲染夹具的 Settings 入口动画时钟后，设置页主题截图不再为空，Overview/Save/Maintenance/Settings 无文字重叠。
+- `DEV-INSTALL-008` 一键安装成功；安装器只处理当前扩展 Worker，外来 AcrylicFork Worker 保持运行，Playnite 与生产 Worker 均成功启动。
 
 **验证边界：**
 
 - `AUTO VERIFIED`：源码/XAML、Release 构建、三组测试、离屏截图和布局探针。
 - `MANUAL QA REQUIRED`：本阶段未重新启动真实 Playnite 宿主；真实 Playnite 主题、DPI、键盘和连续缩放仍需在宿主内确认。
 
-**下一步：**用户在真实 Playnite 中确认嵌入式页面；如无阻塞反馈，不再修 UiLab 演示样本本身。
+**下一步：**用户在真实 Playnite 中确认嵌入式页面；如无阻塞反馈，不再修 AcrylicFork 演示样本本身。
 
 ## 2026-08-16 UI-REAL-HOST-AUDIT-BLOCKERS-FIX 实施完成
 

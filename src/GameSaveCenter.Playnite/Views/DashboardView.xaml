@@ -841,7 +841,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- UiLab's page header is an open content rail rather than a second large card.
+        <!-- AcrylicFork's page header is an open content rail rather than a second large card.
              Keep the real game picker and commands, but let the workspace cards define the
              reading surfaces below it. -->
         <Border x:Name="HeaderSurface" Grid.Row="0" Margin="0,0,0,10"

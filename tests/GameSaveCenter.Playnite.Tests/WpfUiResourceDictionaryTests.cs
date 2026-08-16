@@ -513,10 +513,10 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Key=\"GscTableRowHeight\"", designTokens);
         Assert.Contains("x:Key=\"GscTableMinHeight\"", designTokens);
         Assert.Contains("x:Key=\"GscTableViewportHeight\"", designTokens);
-        Assert.Contains("x:Key=\"GscTableRowHeight\">48</sys:Double>", designTokens);
+        Assert.Contains("x:Key=\"GscTableRowHeight\">44</sys:Double>", designTokens);
         Assert.Contains("x:Key=\"GscTableMinHeight\">0</sys:Double>", designTokens);
         Assert.Contains("x:Key=\"GscTableViewportHeight\">720</sys:Double>", designTokens);
-        Assert.Contains("x:Key=\"GscTableHeaderHeight\">42</sys:Double>", designTokens);
+        Assert.Contains("x:Key=\"GscTableHeaderHeight\">36</sys:Double>", designTokens);
         Assert.Contains("<Setter Property=\"ClipToBounds\" Value=\"True\"/>", redesign);
         Assert.DoesNotContain("Property=\"Height\" Value=\"{DynamicResource GscTableViewportHeight}\"", production);
         Assert.DoesNotContain("Property=\"Height\" Value=\"{DynamicResource GscTableViewportHeight}\"", File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml")));
@@ -526,7 +526,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Key=\"GscInspectorScrollViewer\"", designTokens);
 
         Assert.Contains("x:Key=\"GscRedesignTableFrame\"", redesign);
-        Assert.Contains("CornerRadius\" Value=\"16\"", redesign);
+        Assert.Contains("CornerRadius\" Value=\"12\"", redesign);
 
         // Dashboard keeps a compatibility-scope row style while the extracted workspaces use
         // the shared dictionary. Both templates must retain the same WPF selective-scrolling

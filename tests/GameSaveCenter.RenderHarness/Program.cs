@@ -1312,7 +1312,14 @@ public static class Program
                 var settingsShell = FindVisualChildren<FrameworkElement>(host)
                     .FirstOrDefault(element => element.Name == "SettingsShell");
                 if (settingsShell != null)
+                {
+                    // The real settings view starts an entrance storyboard from its
+                    // Loaded handler. Clearing the clock is required in the offscreen
+                    // harness; setting the base Opacity alone is ignored while the
+                    // animation still owns the property and produces a blank capture.
+                    settingsShell.BeginAnimation(UIElement.OpacityProperty, null);
                     settingsShell.Opacity = 1;
+                }
             }
             var sw = Stopwatch.StartNew();
             SavePng(host, Path.Combine(outputRoot, $"{name}-{windowW}x{windowH}-tab{i}.png"));
@@ -1680,7 +1687,16 @@ public static class Program
                         host.UpdateLayout();
                         ApplyThemeResponsive(view, contentW, windowH);
                         if (name == "Settings")
+                        {
                             ApplyThemePalette(view, themeMode);
+                            var settingsShell = FindVisualChildren<FrameworkElement>(host)
+                                .FirstOrDefault(element => element.Name == "SettingsShell");
+                            if (settingsShell != null)
+                            {
+                                settingsShell.BeginAnimation(UIElement.OpacityProperty, null);
+                                settingsShell.Opacity = 1;
+                            }
+                        }
                         host.UpdateLayout();
                         SavePng(host, Path.Combine(themeDir, $"{name}-{windowW}x{windowH}.png"));
                         VerifyThemePalette(view, label, themeMode);

@@ -80,7 +80,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
                         ? Color.FromRgb(23, 24, 31)
                         : ResolveHostBackground(host)
                             ?? ResolveFirstResourceColor(host, BackgroundResourceKeys)
-                            ?? Color.FromRgb(18, 20, 30);
+                            ?? Color.FromRgb(17, 19, 25);
 
             var text = highContrast ? SystemColors.WindowTextColor : forcedLight ? Colors.Black : forcedDark ? Colors.White : ResolveResourceColor(host, "TextBrush");
             var inverseText = highContrast ? SystemColors.WindowTextColor : forcedLight ? Colors.White : forcedDark ? Colors.Black : ResolveResourceColor(host, "TextBrushDark");
@@ -89,7 +89,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             // required text brushes. Otherwise preserve some of the theme's own color character.
             var initialDark = RelativeLuminance(rawBackground) < 0.48;
             var fallbackBackground = initialDark
-                ? Color.FromRgb(15, 18, 29)
+                ? Color.FromRgb(15, 17, 22)
                 : Color.FromRgb(246, 247, 250);
 
             var primaryText = ChooseBestText(rawBackground, text, inverseText, initialDark);
@@ -100,13 +100,10 @@ namespace GameSaveCenter.Playnite.Infrastructure
             }
 
             var isDark = RelativeLuminance(rawBackground) < 0.5;
-            // Keep the embedded page in the demo's quiet navy family even when the host theme
-            // exposes a vivid blue/black background. We still retain a small amount of the host
-            // character, but do not let a Playnite accent turn every card into saturated blue.
-            // Keep the runtime palette close to the standalone UiLab while retaining the
-            // host's light/dark character. Cards are intentionally near-opaque; translucency
-            // belongs to the sidebar and floating layers, not to every reading surface.
-            var stableBase = Blend(rawBackground, isDark ? Color.FromRgb(29, 32, 39) : Color.FromRgb(239, 239, 244), isDark ? 0.48 : 0.30);
+            // Keep the embedded page in AcrylicFork's neutral graphite family even when the
+            // host theme exposes a vivid blue/black background. We still retain a small amount
+            // of the host's light/dark character, but do not let it tint every reading surface.
+            var stableBase = Blend(rawBackground, isDark ? Color.FromRgb(17, 19, 25) : Color.FromRgb(248, 249, 252), isDark ? 0.56 : 0.34);
             primaryText = ChooseBestText(stableBase, text, inverseText, isDark);
             if (ContrastRatio(primaryText, stableBase) < 7)
                 primaryText = isDark ? Colors.White : Colors.Black;
@@ -119,10 +116,11 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 ? Blend(stableBase, Colors.White, 0.105)
                 : Blend(stableBase, Colors.Black, 0.02);
             // Keep the standalone demo and the embedded Playnite view on the same blue
-            // interaction language. FollowPlaynite still honors a host accent when one is
-            // exposed; these values are the deterministic Light/Dark fallbacks used by the
-            // demo and by themes that do not publish an accent resource.
-            var fallbackAccent = Color.FromRgb(124, 140, 248);
+            // interaction language. AcrylicFork's reference accents are indigo #7C8CF8,
+            // sky #4FA3F0, cyan #35B8C9, mint #4CC08A, violet #A07BF5, amber #E8973C,
+            // and rose #E56E8C. Production keeps indigo as its deterministic fallback while
+            // FollowPlaynite still honors a host accent when one is exposed.
+            var fallbackAccent = isDark ? Color.FromRgb(124, 140, 248) : Color.FromRgb(91, 116, 230);
             var hostAccent = !forcedLight && !forcedDark && !highContrast
                 ? ResolveFirstResourceColor(host, AccentResourceKeys)
                 : null;
@@ -151,20 +149,17 @@ namespace GameSaveCenter.Playnite.Infrastructure
             var warning = highContrast ? primaryText : Color.FromRgb(240, 178, 78);
             var error = highContrast ? primaryText : Color.FromRgb(242, 109, 126);
 
-            var surfaceAlpha = glassEnabled ? 0.88 + 0.08 * strength : 1;
-            var strongSurfaceAlpha = glassEnabled ? 0.92 + 0.06 * strength : 1;
-            var controlAlpha = glassEnabled ? 0.78 + 0.12 * strength : 1;
             var surfaceTop = glassEnabled
-                ? WithAlpha(strongControl, surfaceAlpha)
+                ? WithAlpha(strongControl, 0.92 * strength)
                 : WithAlpha(strongControl, 1);
             var surfaceBottom = glassEnabled
-                ? WithAlpha(controlFill, controlAlpha)
+                ? WithAlpha(controlFill, 0.92 * strength)
                 : WithAlpha(controlFill, 1);
             var strongTop = glassEnabled
-                ? WithAlpha(Blend(strongControl, primaryText, isDark ? 0.018 : 0.006), strongSurfaceAlpha)
+                ? WithAlpha(Blend(strongControl, primaryText, isDark ? 0.018 : 0.006), 0.96 * strength)
                 : WithAlpha(strongControl, 1);
             var strongBottom = glassEnabled
-                ? WithAlpha(controlFill, surfaceAlpha)
+                ? WithAlpha(controlFill, 0.88 * strength)
                 : WithAlpha(controlFill, 1);
 
             return new AdaptiveThemePalette
@@ -175,22 +170,22 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 SecondaryText = WithAlpha(primaryText, 0.74),
                 MutedText = WithAlpha(primaryText, 0.56),
                 DisabledText = WithAlpha(primaryText, 0.38),
-                ControlFill = WithAlpha(controlFill, controlAlpha),
+                ControlFill = WithAlpha(controlFill, glassEnabled ? Math.Max(0.76, 0.9 * strength) : 1),
                 ControlStroke = WithAlpha(primaryText, isDark ? 0.15 : 0.13),
                 Divider = WithAlpha(primaryText, isDark ? 0.13 : 0.11),
                 SurfaceTop = surfaceTop,
                 SurfaceBottom = surfaceBottom,
                 StrongSurfaceTop = strongTop,
                 StrongSurfaceBottom = strongBottom,
-                SidebarTop = glassEnabled ? WithAlpha(strongControl, 0.68 + 0.20 * strength) : WithAlpha(strongControl, 1),
-                SidebarBottom = glassEnabled ? WithAlpha(stableBase, 0.60 + 0.18 * strength) : WithAlpha(stableBase, 1),
-                Backdrop = WithAlpha(stableBase, glassEnabled ? 0.58 + 0.14 * strength : 1),
+                SidebarTop = glassEnabled ? WithAlpha(strongControl, 0.74 * strength) : WithAlpha(strongControl, 1),
+                SidebarBottom = glassEnabled ? WithAlpha(stableBase, 0.64 * strength) : WithAlpha(stableBase, 1),
+                Backdrop = WithAlpha(stableBase, glassEnabled ? 0.26 : 1),
                 Highlight = WithAlpha(primaryText, isDark ? 0.075 : 0.24),
                 Accent = accent,
                 AccentHover = accentHover,
                 AccentPressed = accentPressed,
                 AccentTint = highContrast ? accent : WithAlpha(tintAccent, isDark ? 0.16 : 0.11),
-                AccentTintStrong = highContrast ? accent : WithAlpha(tintAccent, isDark ? 0.24 : 0.18),
+                AccentTintStrong = highContrast ? accent : WithAlpha(tintAccent, isDark ? 0.24 : 0.16),
                 AccentIconFill = highContrast ? accent : WithAlpha(tintAccent, isDark ? 0.16 : 0.11),
                 OnAccentText = onAccentText,
                 Info = info,
@@ -230,8 +225,10 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscRestoreInfoStrokeBrush"] = Brush(SemanticTint(palette.Info, palette.IsDark ? 0.46 : 0.32));
             resources["GscSafetyFillBrush"] = Brush(SemanticTint(palette.Warning, palette.IsDark ? 0.20 : 0.12));
             resources["GscSafetyStrokeBrush"] = Brush(SemanticTint(palette.Warning, palette.IsDark ? 0.48 : 0.34));
-            resources["GscAmbientInfoBrush"] = Brush(SemanticTint(palette.Info, palette.IsDark ? 0.13 : 0.09));
-            resources["GscAmbientSuccessBrush"] = Brush(SemanticTint(palette.Success, palette.IsDark ? 0.12 : 0.08));
+            // AcrylicFork uses one restrained accent wash. The previous semantic ambient
+            // blobs competed with the page hierarchy, so keep those optional layers inert.
+            resources["GscAmbientInfoBrush"] = Brush(Colors.Transparent);
+            resources["GscAmbientSuccessBrush"] = Brush(Colors.Transparent);
             resources["GscMutedStatusBrush"] = Brush(SemanticTint(palette.PrimaryText, palette.IsDark ? 0.54 : 0.46));
             resources["GscInfoIconFillBrush"] = Brush(palette.InfoIconFill);
             resources["GscSuccessIconFillBrush"] = Brush(palette.SuccessIconFill);
@@ -311,7 +308,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscDisabledTextBrush"] = Brush(palette.DisabledText);
             resources["GscControlFillBrush"] = Brush(palette.ControlFill);
             resources["GscProgressTrackBrush"] = Brush(palette.IsDark
-                ? Color.FromRgb(54, 62, 78)
+                ? Color.FromRgb(45, 50, 62)
                 : Color.FromRgb(214, 220, 232));
             resources["GscProgressFillBrush"] = Brush(palette.Accent);
             resources["GscControlStrokeBrush"] = Brush(palette.ControlStroke);
@@ -326,20 +323,14 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscGlassStrokeBrush"] = Brush(palette.ControlStroke);
             resources["GscGlassHighlightBrush"] = Brush(palette.Highlight);
             resources["GscBackdropBrush"] = Brush(palette.Backdrop);
-            // Table headers are a real surface, not a translucent white wash. An opaque
-            // header keeps the last column from falling back to a host white brush and gives
-            // every workspace the same readable demo hierarchy.
-            // UiLab keeps the header as a quiet wash inside the rounded table frame. The
-            // header template still owns a real rounded chrome and the filler presenter is
-            // themed, so this does not reintroduce the host's white strip.
-            resources["GscTableHeaderBrush"] = Brush(Color.FromArgb(
-                palette.IsDark ? (byte)20 : (byte)12,
-                palette.PrimaryText.R, palette.PrimaryText.G, palette.PrimaryText.B));
+            // AcrylicFork keeps the header transparent inside one clipped rounded table frame;
+            // this avoids a second rectangle fighting the frame's corner geometry.
+            resources["GscTableHeaderBrush"] = Brush(Colors.Transparent);
             resources["GscTableAlternateRowBrush"] = Brush(Color.FromArgb(
-                SystemParameters.HighContrast ? (byte)0 : palette.IsDark ? (byte)14 : (byte)7,
+                SystemParameters.HighContrast ? (byte)0 : (byte)0,
                 palette.PrimaryText.R, palette.PrimaryText.G, palette.PrimaryText.B));
             resources["GscRowHoverBrush"] = Brush(Color.FromArgb(
-                palette.IsDark ? (byte)18 : (byte)10, palette.PrimaryText.R, palette.PrimaryText.G, palette.PrimaryText.B));
+                palette.IsDark ? (byte)12 : (byte)8, palette.PrimaryText.R, palette.PrimaryText.G, palette.PrimaryText.B));
             resources["GscRowHoverStrongBrush"] = Brush(Color.FromArgb(
                 SystemParameters.HighContrast ? (byte)0 : palette.IsDark ? (byte)32 : (byte)18,
                 palette.PrimaryText.R, palette.PrimaryText.G, palette.PrimaryText.B));

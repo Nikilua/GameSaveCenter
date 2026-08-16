@@ -370,7 +370,7 @@ namespace GameSaveCenter.Playnite.Views
             GameSwitcherHost.Visibility = gameScopedWorkspace
                 ? Visibility.Visible
                 : Visibility.Collapsed;
-            // Keep the UiLab header rhythm down to the compact breakpoint. In compact
+            // Keep the AcrylicFork header rhythm down to the compact breakpoint. In compact
             // windows the toolbar labels collapse to glyphs, leaving enough room for a
             // narrow real game picker on the same row instead of creating a tall second
             // header band. The narrow mode still stacks it to protect touch/keyboard use.

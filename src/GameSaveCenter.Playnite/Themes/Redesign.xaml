@@ -9,7 +9,7 @@
 
     <!-- Final redesign geometry.  These values intentionally form a small, reusable scale
          rather than page-specific magic numbers. -->
-    <!-- Migrated from UiLab's Shell 20 / card 16 / control 10 scale. -->
+    <!-- Migrated from AcrylicFork's Shell 20 / card 16 / control 10 scale. -->
     <CornerRadius x:Key="GscRedesignShellCorner">20</CornerRadius>
     <CornerRadius x:Key="GscRedesignSidebarCorner">20</CornerRadius>
     <CornerRadius x:Key="GscRedesignCardCorner">16</CornerRadius>
@@ -57,7 +57,7 @@
         <Setter Property="Background" Value="{DynamicResource GscGlassStrongBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="CornerRadius" Value="16"/>
+        <Setter Property="CornerRadius" Value="12"/>
         <Setter Property="Padding" Value="0"/>
         <!-- Clip the DataGrid viewport to the rounded frame so the first/last header and
              scrollbar never leak square pixels over the Apple-style corners. -->

@@ -458,7 +458,7 @@ namespace GameSaveCenter.Playnite.Settings
             // Settings uses the same four product breakpoints as Dashboard.  The category
             // rail moves above the content before it can squeeze forms or create horizontal
             // scrolling; fields then collapse independently according to their readable width.
-            // UiLab keeps the category rail beside the form at the common 700-DIP+
+            // AcrylicFork keeps the category rail beside the form at the common 700-DIP+
             // content width. The form switches its own field grids independently, so
             // moving this breakpoint down does not force narrow inputs into one row.
             var expanded = layoutWidth >= 700;
