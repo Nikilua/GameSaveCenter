@@ -2164,28 +2164,31 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
-    public void MediaSummaryCardsFollowTheDemoThreeLineMetricRhythm()
+    public void MediaSummaryUsesTheDemoSegmentedMetricRhythm()
     {
         var repositoryRoot = FindRepositoryRoot();
         var media = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
 
-        // The media center keeps the demo's four metric cards, each in the same
-        // three-line rhythm as the home overview cards: caption -> 30px value -> subtitle.
-        Assert.Contains("x:Name=\"MediaSummaryPanel\" Grid.Row=\"0\" Columns=\"4\"", media);
-        Assert.Equal(4, Regex.Matches(media, "Style=\"{DynamicResource GscRedesignMetricBorder}\"").Count);
-        Assert.Contains("Text=\"当前游戏媒体\"", media);
+        // The media center follows UiLab's single rounded metric strip: value ->
+        // caption -> supporting line, with subtle separators instead of four
+        // independent rounded cards.
+        Assert.Contains("<Border Grid.Row=\"0\" Style=\"{DynamicResource GscRedesignSectionCard}\"", media);
+        Assert.Contains("x:Name=\"MediaSummaryPanel\" Columns=\"4\"", media);
+        Assert.Equal(3, Regex.Matches(media, "BorderThickness=\"0,0,1,0\"").Count);
+        Assert.Contains("Text=\"媒体文件\"", media);
         Assert.Contains("Text=\"{Binding MediaSummary.TotalCount, Mode=OneWay}\" FontSize=\"30\" FontWeight=\"SemiBold\"", media);
         Assert.Contains("Text=\"{Binding MediaSummary.ScreenshotCount, Mode=OneWay}\"", media);
         Assert.Contains("Text=\"{Binding MediaSummary.VideoCount, Mode=OneWay}\"", media);
-        Assert.Contains("Text=\"媒体占用\"", media);
+        Assert.Contains("Text=\"归档占用\"", media);
         Assert.Contains("Text=\"{Binding MediaSummary.TotalSizeDisplay, Mode=OneWay}\" FontSize=\"30\" FontWeight=\"SemiBold\"", media);
         Assert.Contains("Text=\"归档目录可访问\"", media);
-        Assert.Contains("Text=\"已收藏\"", media);
+        Assert.Contains("Text=\"收藏\"", media);
         Assert.Contains("Text=\"{Binding MediaSummary.FavoriteCount, Mode=OneWay}\" FontSize=\"30\" FontWeight=\"SemiBold\"", media);
         Assert.Contains("Text=\"支持批量收藏与备注\"", media);
         Assert.Contains("Text=\"待归类\"", media);
         Assert.Contains("Text=\"{Binding Snapshot.UnassignedMediaCount, Mode=OneWay}\" Foreground=\"{DynamicResource GscWarningBrush}\"", media);
         Assert.Contains("Text=\"来源文件始终保留\"", media);
+        Assert.Contains("<TabControl Grid.Row=\"1\" SelectedIndex=\"1\"", media);
         Assert.DoesNotContain("MediaSummary.TotalCount, Mode=TwoWay", media);
         Assert.DoesNotContain("MediaSummary.FavoriteCount, Mode=TwoWay", media);
     }
@@ -4531,12 +4534,12 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Style=\"{StaticResource GscWpfUiFilterComboBox}\" SelectedIndex=\"0\"", dashboard);
         Assert.Contains("Style=\"{DynamicResource GscWpfUiFilterComboBox}\" SelectedIndex=\"0\"", media);
         Assert.Contains("SelectedItem=\"{Binding MediaFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}\"", media);
-        // The merged UI keeps the remote alias contract compatible, while the local
-        // branch may use the shared metric style directly for the same four cards.
-        var hasMediaSummaryAlias = media.Contains("x:Key=\"MediaSummaryCard\" TargetType=\"Border\" BasedOn=\"{StaticResource GscRedesignMetricBorder}\"");
-        var directMetricCards = Regex.Matches(media, "Style=\"\\{DynamicResource GscRedesignMetricBorder\\}\"").Count;
-        var aliasedMetricCards = Regex.Matches(media, "Style=\"\\{StaticResource MediaSummaryCard\\}\"").Count;
-        Assert.True((hasMediaSummaryAlias && aliasedMetricCards == 4) || directMetricCards == 4);
+        // Media now follows UiLab's single rounded metric strip instead of four
+        // independent cards; keep the old resource alias available for compatibility,
+        // but assert the rendered structure rather than the unused alias.
+        Assert.Contains("<Border Grid.Row=\"0\" Style=\"{DynamicResource GscRedesignSectionCard}\"", media);
+        Assert.Contains("x:Name=\"MediaSummaryPanel\" Columns=\"4\"", media);
+        Assert.Equal(3, Regex.Matches(media, "BorderThickness=\"0,0,1,0\"").Count);
         Assert.Equal(3, Regex.Matches(tasks, "Style=\"\\{DynamicResource GscWpfUiFilterComboBox\\}\"").Count);
         Assert.Contains("TaskStatusFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部", tasks);
         Assert.Contains("TaskGameFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部", tasks);

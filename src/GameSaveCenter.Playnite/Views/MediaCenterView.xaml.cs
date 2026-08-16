@@ -66,7 +66,12 @@ namespace GameSaveCenter.Playnite.Views
                 // surface scrolls the page-level info/actions when this viewport cannot fit
                 // below the summary cards; the DataGrid/ListBox still own row virtualization
                 // and their own internal scrolling.
-                var compactTableFloor = Math.Max(140d, Math.Min(236d, height - 520d));
+                // Keep the normal desktop heights readable.  The previous 520-DIP
+                // subtraction reduced the real media/inbox viewport to 180-200 DIP
+                // at 700-720 DIP windows, which is visibly cramped and needlessly
+                // diverged from UiLab's table rhythm.  Only genuinely short hosts
+                // fall back to the compact 180-DIP floor.
+                var compactTableFloor = Math.Max(180d, Math.Min(236d, height - 464d));
                 MediaInboxGrid.MinHeight = compactTableFloor;
                 MediaInboxGrid.Height = double.NaN;
                 MediaInboxGrid.MaxHeight = double.PositiveInfinity;
@@ -100,6 +105,12 @@ namespace GameSaveCenter.Playnite.Views
                 else
                 {
                     MediaCompactDetailsButton.Visibility = Visibility.Collapsed;
+                    // A narrow layout may collapse the inspector while the user is
+                    // resizing.  Restore the wide two-column reading layout when the
+                    // viewport grows again; otherwise the inspector stays missing
+                    // until a new media selection is made.
+                    if (MediaGrid.SelectedItem != null)
+                        MediaInspectorScrollViewer.Visibility = Visibility.Visible;
                 }
                 var showInspector = MediaInspectorScrollViewer.Visibility == Visibility.Visible;
                 var inspectorWidth = MediaCurrentLayout.TryFindResource("GscInspectorWidth") is GridLength gl ? gl : new GridLength(360);

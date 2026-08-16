@@ -16,6 +16,13 @@
 - `GscTableHeaderBrush`、`GscTableDividerBrush`、表头高度/内边距、排序 glyph 和页内 DataGrid 虚拟化仍由生产共享模板控制；不要为对齐 UiLab 而迁移 UiLab 滚动条或关闭 `VirtualizingPanel.ScrollUnit=Item`。
 - UI-209 自动验证：Playnite 303/303，生产 Release 0 warning/0 error，v6/v6.2 表格与 Overview 宽/窄离屏截图通过；真实 Playnite 宿主主题/DPI 仍需人工验收。
 
+## 2026-08-16 UI-210 Media 当前事实
+
+- `MediaCenterView.xaml` 顶部统计现在是一个 `GscRedesignSectionCard` 内的四段统计带，`MediaSummaryPanel` 仍是 `UniformGrid`，真实统计绑定未改变；默认 `TabControl.SelectedIndex=1` 展示当前游戏媒体。
+- Media 当前媒体仍使用生产 `ListBox + VirtualizingStackPanel`，不是 UiLab 的非虚拟化 `WrapPanel` 缩略图网格；这是为大媒体库和现有滚动性能保留的生产适配边界，不要为了像素复制而关闭虚拟化或迁移 demo 滚动条。
+- `ApplyResponsiveLayout` 在 700-720 DIP 常规窗口保持 236 DIP 表格下限；宽屏恢复会把已选择媒体的 Inspector 重新设为 Visible，窄屏继续由 `MediaCompactDetailsButton` 控制 Inspector。
+- UI-210 自动验证：Playnite 303/303，生产 Release 0 warning/0 error，Media Light/Dark 多尺寸和 resize transition 通过；全量 render-qa 仅剩 Save 候选表历史窄视口门禁。
+
 ## 2026-08-16 UI-205-ACRYLIC-PARITY 当前事实
 
 - 权威视觉来源是 `D:\workplace\github\GameSaveCenter.AcrylicFork`（当前参考提交 `b09cba6`），不是 `GameSaveCenter.UiLab`。生产已迁移其页面层级、颜色/表面层级、圆角尺度、按钮/标题比例、Dashboard 开放式页面头部和 Settings 分类栏；不要回头修复 AcrylicFork 样板自身的布局 bug。

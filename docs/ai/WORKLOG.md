@@ -2137,3 +2137,29 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 
 - `AUTO VERIFIED`：源码/XAML、生产编译、Playnite 测试、离屏截图。
 - `MANUAL QA REQUIRED`：真实 Playnite 宿主最终 DPI、Follow/高对比度主题、键盘焦点和连续缩放。
+
+## 2026-08-16 UI-210 Media 统计带与响应式布局对齐 UiLab
+
+**问题根因：**
+
+- UiLab Media 顶部是一个连续圆角统计带，默认阅读当前游戏媒体；生产之前是四张分离统计卡且默认落在待归类页，首屏结构差异明显。
+- Media 在短窗/缩放时把列表视口压到 180-200 DIP；从窄窗恢复宽窗后，Inspector 还可能保持折叠状态，造成宽屏右侧详情消失。
+
+**实现内容：**
+
+- 将 Media 四项统计改为单一 `GscRedesignSectionCard` 内的四段 value → caption → supporting line 结构，保留真实 `MediaSummary`/`Snapshot` 绑定。
+- 默认选择“当前游戏媒体”标签，使首屏阅读顺序与 UiLab 一致；待归类表格和归类命令仍可直接切换。
+- 常规 700-720 DIP 窗口将媒体/收件箱视口维持在 236 DIP；极短窗口才使用 180 DIP 紧凑下限。
+- 宽屏恢复时重新显示已选媒体 Inspector；窄屏仍使用现有“查看媒体详情”折叠按钮，未引入 UiLab 滚动条或关闭 ListBox/DataGrid 虚拟化。
+
+**验证结果：**
+
+- `validate-source.py`、`check-xaml.ps1` 通过。
+- Playnite Release 构建 0 warning / 0 error；Playnite 测试 303/303 通过。
+- 重建 RenderHarness 后，Media Light/Dark、1040/1100/1366/2560 多尺寸和 2560→1100→2560 resize transition 通过；Media 不再产生视口不足或 Inspector 恢复失败门禁。
+- 全量 render-qa 仍只剩 Save 候选表窄窗 `<236 DIP` 的既有门禁，未把它误记为本阶段已解决。
+
+**验证边界：**
+
+- `AUTO VERIFIED`：源码/XAML、生产编译、Playnite 测试、Media 多主题/多尺寸离屏渲染。
+- `MANUAL QA REQUIRED`：真实 Playnite 宿主中的最终 DPI、Follow/高对比度主题、键盘焦点、连续缩放和大媒体库滚动。

@@ -458,6 +458,13 @@ git branch --show-current
 - 验证已完成：`validate-source.py`、`check-xaml.ps1`、Release 构建、Playnite 303/303、RenderHarness v6/v6.2。
 - 下一阶段继续对照 UiLab 的 Media/Save/Trainer/Task/Maintenance/Settings 页面，优先处理页面层级和窄窗列宽；真实宿主仍需人工 QA。
 
+## 2026-08-16 UI-210 Media 交接
+
+- Media 统计带已改成 UiLab 的单卡四段结构，默认当前媒体标签；真实媒体、待归类、来源规则绑定和命令保持不变。
+- Media 保留生产 `VirtualizingStackPanel` 行列表与滚动条，不直接复制 UiLab 的 `WrapPanel` 缩略图网格；后续若要进一步做缩略图网格，必须先提供大媒体库虚拟化方案和滚动回归证据。
+- 已修复 Media 700-720 DIP 视口过短以及窄→宽 Inspector 不恢复的问题。重建 RenderHarness 后 Media Light/Dark、多尺寸和 resize transition 通过。
+- 全量 render-qa 的剩余门禁仅为 Save 候选表在部分窄尺寸低于 236 DIP；下一阶段优先处理 Save，而不是回退 Media 的布局修复。
+
 ## 用户原话（必须保留）
 
 > 在继续之前你最好是能够搞一个文件，能够指引去哪里读取获得开发方向等等。这样我直接说你读取xx文件就可以了，他就知道后续怎么开发了。连我这段话你也要放进去，省得我每次都说了（这样每次开发他们都会维护这个项目）。

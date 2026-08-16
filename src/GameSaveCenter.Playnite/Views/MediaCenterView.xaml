@@ -111,13 +111,39 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <UniformGrid x:Name="MediaSummaryPanel" Grid.Row="0" Columns="4" Margin="0,0,0,12">
-            <Border Style="{DynamicResource GscRedesignMetricBorder}" Padding="14,12" Margin="0,0,10,0"><StackPanel><TextBlock Text="当前游戏媒体" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11"/><TextBlock Text="{Binding MediaSummary.TotalCount, Mode=OneWay}" FontSize="30" FontWeight="SemiBold" Margin="0,8,0,0"/><TextBlock Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,8,0,0"><Run Text="截图 "/><Run Text="{Binding MediaSummary.ScreenshotCount, Mode=OneWay}"/><Run Text=" · 录像 "/><Run Text="{Binding MediaSummary.VideoCount, Mode=OneWay}"/></TextBlock></StackPanel></Border>
-            <Border Style="{DynamicResource GscRedesignMetricBorder}" Padding="14,12" Margin="0,0,10,0"><StackPanel><TextBlock Text="媒体占用" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11"/><TextBlock Text="{Binding MediaSummary.TotalSizeDisplay, Mode=OneWay}" FontSize="30" FontWeight="SemiBold" Margin="0,8,0,0"/><TextBlock Text="归档目录可访问" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,8,0,0" TextWrapping="Wrap"/></StackPanel></Border>
-            <Border Style="{DynamicResource GscRedesignMetricBorder}" Padding="14,12" Margin="0,0,10,0"><StackPanel><TextBlock Text="已收藏" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11"/><TextBlock Text="{Binding MediaSummary.FavoriteCount, Mode=OneWay}" FontSize="30" FontWeight="SemiBold" Margin="0,8,0,0"/><TextBlock Text="支持批量收藏与备注" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,8,0,0" TextWrapping="Wrap"/></StackPanel></Border>
-            <Border Style="{DynamicResource GscRedesignMetricBorder}" Padding="14,12"><StackPanel><TextBlock Text="待归类" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11"/><TextBlock Text="{Binding Snapshot.UnassignedMediaCount, Mode=OneWay}" Foreground="{DynamicResource GscWarningBrush}" FontSize="30" FontWeight="SemiBold" Margin="0,8,0,0"/><TextBlock Text="来源文件始终保留" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,8,0,0" TextWrapping="Wrap"/></StackPanel></Border>
-        </UniformGrid>
-        <TabControl Grid.Row="1" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Style="{StaticResource MediaTabControl}">
+        <Border Grid.Row="0" Style="{DynamicResource GscRedesignSectionCard}" Padding="0" Margin="0,0,0,12" ClipToBounds="True">
+            <UniformGrid x:Name="MediaSummaryPanel" Columns="4" Background="Transparent">
+                <Border Padding="14,14" BorderBrush="{DynamicResource GscDividerBrush}" BorderThickness="0,0,1,0">
+                    <StackPanel>
+                        <TextBlock Text="{Binding MediaSummary.TotalCount, Mode=OneWay}" FontSize="30" FontWeight="SemiBold"/>
+                        <TextBlock Text="媒体文件" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0"/>
+                        <TextBlock Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,8,0,0"><Run Text="截图 "/><Run Text="{Binding MediaSummary.ScreenshotCount, Mode=OneWay}"/><Run Text=" · 录像 "/><Run Text="{Binding MediaSummary.VideoCount, Mode=OneWay}"/></TextBlock>
+                    </StackPanel>
+                </Border>
+                <Border Padding="14,14" BorderBrush="{DynamicResource GscDividerBrush}" BorderThickness="0,0,1,0">
+                    <StackPanel>
+                        <TextBlock Text="{Binding MediaSummary.TotalSizeDisplay, Mode=OneWay}" FontSize="30" FontWeight="SemiBold"/>
+                        <TextBlock Text="归档占用" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0"/>
+                        <TextBlock Text="归档目录可访问" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,8,0,0" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+                <Border Padding="14,14" BorderBrush="{DynamicResource GscDividerBrush}" BorderThickness="0,0,1,0">
+                    <StackPanel>
+                        <TextBlock Text="{Binding MediaSummary.FavoriteCount, Mode=OneWay}" FontSize="30" FontWeight="SemiBold"/>
+                        <TextBlock Text="收藏" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0"/>
+                        <TextBlock Text="支持批量收藏与备注" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,8,0,0" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+                <Border Padding="14,14">
+                    <StackPanel>
+                        <TextBlock Text="{Binding Snapshot.UnassignedMediaCount, Mode=OneWay}" Foreground="{DynamicResource GscWarningBrush}" FontSize="30" FontWeight="SemiBold"/>
+                        <TextBlock Text="待归类" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0"/>
+                        <TextBlock Text="来源文件始终保留" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,8,0,0" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+        </Border>
+        <TabControl Grid.Row="1" SelectedIndex="1" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Style="{StaticResource MediaTabControl}">
             <TabControl.Resources><Style TargetType="TabItem" BasedOn="{StaticResource MediaTabItem}"/></TabControl.Resources>
             <TabItem Header="待归类">
                 <!-- Keep the real DataGrid in a finite viewport, while the surrounding
