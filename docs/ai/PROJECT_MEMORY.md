@@ -3,6 +3,12 @@
 > 维护时间：2026-08-14
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-16 UI-217 真实 Playnite 人工视觉复核
+
+- `81fde54` Release 包在真实 Playnite 内加载成功；人工进入 GameSaveCenter 后确认首页的开放式头部、真实游戏上下文、单一六项指标带、工作区卡片和生产页脚均可见，演示色板/窗口按钮/样例滚动条没有进入生产。
+- 真实任务中心 1303×673 宿主视口可见四项统计带、筛选区、圆角表头 DataGrid、真实状态胶囊和进度条；未选中任务时 Inspector 按 `SelectedTask` 为空隐藏，属于生产交互状态，不是页面布局缺失。
+- 自动 `real-host-audit` 仍因 UIAutomation 找不到 Playnite 侧栏而记录 `EmbeddedDashboardCaptured=false`；人工截图只作为本轮观察，不得改写自动审计摘要或冒充完整宿主矩阵。
+
 ## 2026-08-16 UI-215 Task 统计栏与窄窗筛选迁移
 
 - `TaskCenterView.xaml` 已把生产任务中心顶部四个独立指标卡改为 UiLab 同款的单一 `TaskSummaryBand`；`Tasks.Count`、`RunningTaskCount`、`RetryableTaskCount`、`CompletedTaskCount` 四个真实 OneWay 绑定保留，内部使用三条 `GscDividerBrush` 分隔线，不迁移 UiLab 的演示数据或滚动条。

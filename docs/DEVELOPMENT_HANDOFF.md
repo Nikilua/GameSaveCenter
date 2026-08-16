@@ -2,6 +2,12 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-16 UI-217 真实 Playnite 人工视觉复核
+
+- `81fde54` Release 安装包已在真实 Playnite 中加载；人工进入 GameSaveCenter 后确认首页和任务中心的主要 UiLab 层级已出现在实际宿主，且保留真实数据、命令、绑定、虚拟化和生产滚动条。
+- 任务中心在约 1303×673 宿主视口中显示四项统计带、筛选区、圆角表头 DataGrid、状态胶囊和进度条；Inspector 由真实 `SelectedTask` 驱动，默认无选择时隐藏，不能把样板默认选中的失败任务详情当成生产必显内容。
+- 本轮手动观察不改变 `real-host-audit` 的事实边界：自动侧栏定位仍失败，`EmbeddedDashboardCaptured=false` 继续有效；后续如需可复现像素证据，应在用户实际打开侧栏后重跑审计。
+
 ## 2026-08-16 UI-215 Task 统计栏当前基线
 
 - 任务中心顶部现在是单一 `TaskSummaryBand`，四个真实计数位于同一圆角阅读面，三条 `GscDividerBrush` 分隔；不要恢复四张独立指标卡或 `TaskSummaryPanel.Columns` 换列逻辑。
