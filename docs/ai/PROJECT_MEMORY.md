@@ -10,6 +10,12 @@
 - 窄窗口只缩小 `ActivityKindColumn`、`ActivityTimeColumn` 并降低摘要最小宽度；不要重新添加内部滚动或把时间/结果挤进摘要列。
 - UI-208 自动验证：Playnite 303/303，生产 Release 0 warning/0 error，v6/v6.2 Overview 宽/窄截图通过；真实 Playnite 宿主主题/DPI/键盘/连续缩放仍需人工验收。
 
+## 2026-08-16 UI-209 表头共享模板当前事实
+
+- 生产 `DataGridColumnHeader` 已有独立圆角模板；`DataGridColumnHeadersPresenter` 现在必须保持 `Background=Transparent`，否则连续底色会吞掉列头之间的圆角间隙并恢复成硬矩形表头。
+- `GscTableHeaderBrush`、`GscTableDividerBrush`、表头高度/内边距、排序 glyph 和页内 DataGrid 虚拟化仍由生产共享模板控制；不要为对齐 UiLab 而迁移 UiLab 滚动条或关闭 `VirtualizingPanel.ScrollUnit=Item`。
+- UI-209 自动验证：Playnite 303/303，生产 Release 0 warning/0 error，v6/v6.2 表格与 Overview 宽/窄离屏截图通过；真实 Playnite 宿主主题/DPI 仍需人工验收。
+
 ## 2026-08-16 UI-205-ACRYLIC-PARITY 当前事实
 
 - 权威视觉来源是 `D:\workplace\github\GameSaveCenter.AcrylicFork`（当前参考提交 `b09cba6`），不是 `GameSaveCenter.UiLab`。生产已迁移其页面层级、颜色/表面层级、圆角尺度、按钮/标题比例、Dashboard 开放式页面头部和 Settings 分类栏；不要回头修复 AcrylicFork 样板自身的布局 bug。

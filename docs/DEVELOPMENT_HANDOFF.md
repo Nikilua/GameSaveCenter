@@ -451,6 +451,13 @@ git branch --show-current
 - 下一阶段继续对照 UiLab 的 Saves/Trainer/Media/Tasks/Maintenance/Settings 页面，优先收口共享按钮、Tab、DataGrid 表头和 Inspector 卡片；全量 render harness 仍需单独处理 Save/Media 窄表历史门禁。
 - 真实 Playnite 2K/DPI、Follow/高对比度、键盘焦点与连续缩放仍为 `MANUAL QA REQUIRED`，不能用离屏截图替代。
 
+## 2026-08-16 UI-209 共享表头交接
+
+- `WpfUiProduction.xaml` 的 `DataGridColumnHeadersPresenter` 已改为透明；列头圆角由每个 `DataGridColumnHeader` 自己呈现，避免整行连续底色掩盖圆角。
+- 生产滚动条、Item scrolling、行/列虚拟化、绑定和 Playnite 兼容性未改变；后续页面迁移不要直接复制 UiLab 的 `LabScrollViewer`。
+- 验证已完成：`validate-source.py`、`check-xaml.ps1`、Release 构建、Playnite 303/303、RenderHarness v6/v6.2。
+- 下一阶段继续对照 UiLab 的 Media/Save/Trainer/Task/Maintenance/Settings 页面，优先处理页面层级和窄窗列宽；真实宿主仍需人工 QA。
+
 ## 用户原话（必须保留）
 
 > 在继续之前你最好是能够搞一个文件，能够指引去哪里读取获得开发方向等等。这样我直接说你读取xx文件就可以了，他就知道后续怎么开发了。连我这段话你也要放进去，省得我每次都说了（这样每次开发他们都会维护这个项目）。

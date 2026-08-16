@@ -2115,3 +2115,25 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 
 - `AUTO VERIFIED`：源码/XAML、生产编译、Playnite 测试、Overview 宽/窄离屏截图。
 - `MANUAL QA REQUIRED`：真实 Playnite 宿主中的 2K/DPI、Follow/高对比度主题、键盘焦点和连续缩放；本阶段未把离屏截图冒充宿主像素真值。
+
+## 2026-08-16 UI-209 共享 DataGrid 表头对齐 UiLab
+
+**问题根因：**
+
+- UiLab 的 `LabGridColumnHeader` 以透明表头容器承载弱分隔线；生产虽然已有圆角列头模板，但 `DataGridColumnHeadersPresenter` 仍给整行连续铺设表头底色，列头之间的圆角间隙因此不可见，视觉上接近尖锐矩形条。
+
+**实现内容：**
+
+- 将生产共享 `DataGridColumnHeadersPresenter` 背景改为透明，保留每个 `DataGridColumnHeader` 自身的圆角、低对比度填充和分隔线。
+- 不改变表头高度、列宽、排序 glyph、`VirtualizingPanel.ScrollUnit=Item`、行/列虚拟化、页面滚动条或页内真实绑定。
+
+**验证结果：**
+
+- `validate-source.py`、`check-xaml.ps1` 通过。
+- Playnite Release 构建 0 warning / 0 error；Playnite 测试 303/303 通过。
+- RenderHarness v6/v6.2 表格及首页宽/窄截图通过；Maintenance 表头圆角间隙可见，无白块或文字重叠。
+
+**验证边界：**
+
+- `AUTO VERIFIED`：源码/XAML、生产编译、Playnite 测试、离屏截图。
+- `MANUAL QA REQUIRED`：真实 Playnite 宿主最终 DPI、Follow/高对比度主题、键盘焦点和连续缩放。
