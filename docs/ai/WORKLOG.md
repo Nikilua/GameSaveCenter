@@ -2357,4 +2357,32 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 **验证边界：**
 
 - `AUTO VERIFIED`：源码/XAML、生产编译、Playnite 测试、离屏卡片网格、生产滚动条和响应式过渡。
-- `MANUAL QA REQUIRED`：真实 Playnite 宿主中的实际缩略图解码、超大媒体库滚动手感、最终 DPI、Follow/高对比度主题、键盘焦点和连续缩放；本阶段没有把离屏假数据当作真实宿主验收。
+
+## 2026-08-17 UI-213 AcrylicFork 页面级全量结构收口
+
+**问题根因：**
+
+- 之前生产页面仍保留旧的 Dashboard 外壳、旧的页面上下文卡和局部圆角表格模板；它们与 AcrylicFork Demo 的信息架构不是同一棵视觉树，因此局部调色或修 Margin 无法达到 Demo 观感。
+- 维护中心默认进入“问题列表”也让健康概览在首屏不可见，造成用户看到的不是 Demo 结构；RenderHarness 的旧探针同样依赖这个默认值。
+
+**实现内容：**
+
+- Dashboard 外壳收口为共享 Header/GameSwitcher + 单一 PageHost；隐藏重复的 SelectedGameHeader、旧安全提示和旧策略包装，保留真实导航、Command、Binding 和 Playnite 集成。
+- 首页按 Demo 重排为 Hero/当前游戏、六项指标、最近任务、全局活动、风险与提醒、需关注事项；全局活动使用四列业务行，活动字段显式 OneWay，关注入口补充可访问说明，零分母进度条自动折叠。
+- 维护中心诊断概览按 Demo 顺序调整为六项健康卡、环境检查、诊断操作、完整摘要；问题表格仍独立保留并由 RenderHarness 显式选择验证。
+- 共享 DataGrid 表头/单元格/行改为 Demo 的透明表头、底部分隔线和稳定行节奏；继续使用项目自身滚动条和 Recycling/Item 虚拟化，不迁移 Demo 顶部颜色按钮或滚动条。
+- Media 保持真实媒体绑定并继续使用生产虚拟化滚动；RenderHarness 的窄窗问题表探针同步到新的维护默认 Tab。
+
+**验证结果：**
+
+- python scripts/validate-source.py 通过。
+- python .codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py .：0 errors，13 条既有布局提示。
+- 修复 `scripts/package.ps1` 在未指定 `BuildOutputRoot` 时传入空 `dotnet` 参数的问题；无构建输出根目录时已成功生成并校验 `.pext`，安装包包含 `GameSaveCenter.Contracts.dll`。
+- Playnite Debug 构建 0 warning / 0 error；Playnite 测试 303/303 通过。
+- RenderHarness Release 构建 0 warning / 0 error；全量 render-qa OK，覆盖 7 页面、浅色/深色、1040/1100/1366/2560、多尺寸及 2560→1100→2560。
+- Solution 全量测试中 Core 59/59、Playnite 303/303 通过；Worker 仍有 2 个依赖本机可选环境状态的既有失败（健康检查期望 Healthy/Skipped，当前返回 Warning），未由本次 UI 改动触发。
+
+**验证边界：**
+
+- AUTO VERIFIED：源码/XAML、生产编译、回归测试、离屏视觉和布局探针。
+- MANUAL QA REQUIRED：真实 Playnite 宿主安装目录、最终 DPI/Follow/高对比度主题、键盘焦点和真实大库滚动；本轮没有把 RenderHarness 截图冒充真实宿主验收。

@@ -326,23 +326,25 @@
              it with its default (white) DataGrid header style. -->
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="Foreground" Value="{DynamicResource GscSecondaryTextBrush}"/>
-        <Setter Property="Background" Value="{DynamicResource GscTableHeaderBrush}"/>
+        <!-- Demo tables use one quiet header band owned by the rounded frame; individual
+             columns must not become separate rounded pills. -->
+        <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscTableDividerBrush}"/>
         <Setter Property="BorderThickness" Value="0,0,0,1"/>
-        <Setter Property="Padding" Value="12,9"/>
+        <Setter Property="Padding" Value="12,0"/>
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="Tag"><Setter.Value><CornerRadius>9,9,9,9</CornerRadius></Setter.Value></Setter>
+        <Setter Property="Tag"><Setter.Value><CornerRadius>0</CornerRadius></Setter.Value></Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="DataGridColumnHeader">
                     <!-- Host-generated headers may not have a Tag. Never pass an unset binding
                          result into Border.CornerRadius. -->
-                    <Border Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="9"
-                            Padding="{TemplateBinding Padding}"
+                            <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="0"
+                                    Padding="{TemplateBinding Padding}"
                             SnapsToDevicePixels="True">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -409,7 +411,7 @@
         <Setter Property="TextElement.Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Padding" Value="12,8,20,8"/>
+        <Setter Property="Padding" Value="12,0"/>
         <!-- Text columns read naturally from the leading edge; status/progress/action
              templates can still opt into Center/Stretch explicitly.  Centering every
              text cell made long paths and task details look cramped in narrow windows. -->
@@ -442,58 +444,21 @@
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="TextElement.Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource GscTableDividerBrush}"/>
+        <Setter Property="BorderThickness" Value="0,0,0,1"/>
         <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="DataGridRow">
-                    <Border x:Name="RowChrome" Margin="2,2,2,2"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="10"
-                            SnapsToDevicePixels="True">
-                        <!-- Keep the WPF row visual tree's selective scrolling contract. A
-                             cells presenter directly under the chrome looks fine until a table
-                             gains horizontal scrolling, frozen columns, or row details; the
-                             standard grid lets the cells and details move in their own axis
-                             without disabling virtualization. -->
-                        <SelectiveScrollingGrid>
-                            <SelectiveScrollingGrid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </SelectiveScrollingGrid.ColumnDefinitions>
-                            <SelectiveScrollingGrid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="Auto"/>
-                            </SelectiveScrollingGrid.RowDefinitions>
-                            <DataGridRowHeader Grid.RowSpan="2"
-                                               Visibility="Collapsed"
-                                               SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"/>
-                            <DataGridCellsPresenter x:Name="PART_CellsPresenter"
-                                                    Grid.Column="1"
-                                                    ItemsPanel="{TemplateBinding ItemsPanel}"
-                                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                                    SelectiveScrollingGrid.SelectiveScrollingOrientation="Horizontal"/>
-                            <DataGridDetailsPresenter Grid.Row="1"
-                                                      Grid.Column="1"
-                                                      SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"
-                                                      Visibility="{TemplateBinding DetailsVisibility}"/>
-                        </SelectiveScrollingGrid>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="RowChrome" Property="Background" Value="{DynamicResource GscRowHoverBrush}"/>
-                        </Trigger>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="RowChrome" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
-                            <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
-                            <Setter Property="TextElement.Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
+        <!-- Use the stock WPF row template just like Demo's LabGrid. The old rounded
+             row chrome made every table look like a stack of unrelated cards. -->
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource GscRowHoverBrush}"/>
+            </Trigger>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+                <Setter Property="TextElement.Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <!--
@@ -507,7 +472,8 @@
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="TextElement.Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource GscTableDividerBrush}"/>
+        <Setter Property="BorderThickness" Value="0,0,0,1"/>
         <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">

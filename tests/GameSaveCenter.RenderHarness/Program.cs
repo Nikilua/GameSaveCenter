@@ -723,7 +723,11 @@ public static class Program
                     ApplySimpleResponsiveV3,
                     problems,
                     report,
-                    view => SelectTab(view, 0),
+                    view =>
+                    {
+                        SelectTab(view, 0);
+                        SelectInnerTab(view, "问题列表");
+                    },
                     metrics: (host, target, shotReport) =>
                     {
                         var grid = (DataGrid)target;
@@ -1524,13 +1528,17 @@ public static class Program
                 .FirstOrDefault(candidate => candidate.Name == "OverviewSecondaryScrollViewer");
             if (overviewLayout != null && secondary != null && Grid.GetColumn(secondary) == 2)
             {
-                var lowerActivity = FindVisualChildren<FrameworkElement>(host)
-                    .FirstOrDefault(candidate => candidate.Name == "OverviewRecentActivityCard");
-                var reference = lowerActivity ?? overviewLayout;
+                    // The Design page places the risk card beside the recent-task card,
+                    // not beside the lower global-activity card. Compare the two body
+                    // columns at the same measured row so a valid two-column layout is
+                    // not reported as a false overlap/alignment failure.
+                    var bodyPrimary = FindVisualChildren<FrameworkElement>(host)
+                        .FirstOrDefault(candidate => candidate.Name == "OverviewPrimaryScrollSurface");
+                    var reference = bodyPrimary ?? overviewLayout;
                 var layoutOrigin = reference.TransformToAncestor(host).Transform(new Point(0, 0));
                 var secondaryOrigin = secondary.TransformToAncestor(host).Transform(new Point(0, 0));
                 var topDelta = secondaryOrigin.Y - layoutOrigin.Y;
-                report.AppendLine($"  {label} OverviewSecondaryTopDelta: {topDelta:0.##} DIP (relative to lower activity row)");
+                    report.AppendLine($"  {label} OverviewSecondaryTopDelta: {topDelta:0.##} DIP (relative to recent-task row)");
                 if (topDelta > 8)
                     s_problems.Add($"{label} secondary overview is not aligned with lower activity row (delta={topDelta:0.##} DIP)");
             }
@@ -1586,7 +1594,8 @@ public static class Program
                 view => ((TaskCenterView)view).ApplyResponsiveLayout(900, height));
             ProbeGrid(report, "Maintenance-Diagnostics", "FindingsGrid", 0, height,
                 () => new MaintenanceView { DataContext = new FakeDashboardData(60) },
-                view => ((MaintenanceView)view).ApplyResponsiveLayout(900, height));
+                view => ((MaintenanceView)view).ApplyResponsiveLayout(900, height),
+                "问题列表");
             ProbeGrid(report, "Maintenance-Audit", "MaintenanceAuditFindingsGrid", 3, height,
                 () => new MaintenanceView { DataContext = new FakeDashboardData(60) },
                 view => ((MaintenanceView)view).ApplyResponsiveLayout(900, height),

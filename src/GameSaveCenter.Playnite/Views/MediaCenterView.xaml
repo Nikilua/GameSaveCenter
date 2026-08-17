@@ -65,7 +65,7 @@
                      prevents WPF's virtualized presenter from exposing a white phantom
                      viewport after the thumb is dragged. -->
                 <Setter Property="VirtualizingPanel.ScrollUnit" Value="Item"/>
-                <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Standard"/>
+                <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling"/>
                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                 <Setter Property="VerticalContentAlignment" Value="Top"/>
                 <Setter Property="ScrollViewer.VerticalContentAlignment" Value="Top"/>
@@ -143,7 +143,7 @@
                                       VerticalContentAlignment="Top"
                                       HorizontalContentAlignment="Stretch"
                                       VirtualizingPanel.ScrollUnit="Item"
-                                      EnableColumnVirtualization="False"
+                                      EnableColumnVirtualization="True"
                                       ClipToBounds="True">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn HeaderStyle="{StaticResource MediaFirstColumnHeader}" Header="拍摄时间" Binding="{Binding CapturedLocal, Mode=OneWay, StringFormat={}{0:MM-dd HH:mm}}" Width="110"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MediaLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>

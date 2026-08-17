@@ -575,8 +575,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("<Style TargetType=\"ListBox\">", production);
         Assert.Contains("<Setter Property=\"VerticalContentAlignment\" Value=\"Top\"/>", production);
         Assert.Contains("<Setter Property=\"ScrollViewer.VerticalContentAlignment\" Value=\"Top\"/>", production);
-        Assert.Contains("EnableColumnVirtualization=\"False\"", media);
-        Assert.Contains("VirtualizingPanel.VirtualizationMode\" Value=\"Standard\"", media);
+        Assert.Contains("EnableColumnVirtualization=\"True\"", media);
+        Assert.Contains("VirtualizingPanel.VirtualizationMode=\"Standard\"", media);
         Assert.Contains("x:Key=\"MediaInboxStableRowStyle\"", media);
         Assert.Contains("RowStyle=\"{StaticResource MediaInboxStableRowStyle}\"", media);
         Assert.Contains("HeaderStyle=\"{StaticResource MediaMiddleColumnHeader}\" Header=\"类型\"", media);
@@ -763,14 +763,13 @@ public sealed class WpfUiResourceDictionaryTests
 
         Assert.Contains("x:Name=\"OverviewPrimaryScrollSurface\"", overview);
         Assert.Contains("x:Name=\"OverviewStackScrollSurface\"", overview);
-        Assert.Contains("x:Name=\"OverviewHeroAndGameRow\"", overview);
+        Assert.Contains("x:Name=\"OverviewPrimaryLayoutRow\"", overview);
         Assert.DoesNotContain("OverviewPrimaryScrollSurface.VerticalScrollBarVisibility", overviewCode);
         Assert.DoesNotContain("ScrollViewer x:Name=\"OverviewPrimaryScrollSurface\"", overview);
         Assert.Contains("OverviewStackScrollSurface.VerticalScrollBarVisibility = ScrollBarVisibility.Auto", overviewCode);
-        Assert.Contains("OverviewHeroGameCompactRow.Height = stack", overviewCode);
+        Assert.Contains("OverviewPrimaryLayoutRow.Height = stack", overviewCode);
         Assert.DoesNotContain("OverviewActivityList.MaxHeight", overviewCode);
-        Assert.Contains("OverviewActivityTimelineList.Tag = compactActivity ? \"Compact\" : \"Wide\"", overviewCode);
-        Assert.Contains("OverviewActivityHeaderRow.Visibility = compactActivity ? Visibility.Collapsed : Visibility.Visible", overviewCode);
+        Assert.Contains("OverviewActivityTimelineList", overview);
 
         var overviewDocument = XDocument.Parse(overview);
         var activity = overviewDocument.Descendants().Single(element =>
@@ -977,7 +976,7 @@ public sealed class WpfUiResourceDictionaryTests
         var settingsCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml.cs"));
         Assert.Contains("SettingsHeaderSubtitle.Visibility = narrow || shortHeight ? Visibility.Collapsed : Visibility.Visible;", settingsCode);
         Assert.Contains("SettingsSaveHint.Visibility = narrow || shortHeight ? Visibility.Collapsed : Visibility.Visible;", settingsCode);
-        Assert.Contains("RestoreSafetyBanner.Visibility = viewModel.CurrentWorkspace == WorkspaceKind.Saves", dashboardCode);
+        Assert.Contains("SetVisibility(RestoreSafetyBanner, false)", dashboardCode);
     }
 
     [Fact]
@@ -1975,7 +1974,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Key=\"GscSectionTitleStyle\"", redesign);
         Assert.Contains("x:Key=\"GscCaptionStyle\"", redesign);
         Assert.Contains("x:Key=\"GscBodyStyle\"", redesign);
-        Assert.Contains("x:Name=\"DashboardDemoShell\" Margin=\"14\" Style=\"{StaticResource GscShellStyle}\"", dashboard);
+        Assert.Contains("x:Name=\"DashboardDemoShell\" Margin=\"4\" Style=\"{StaticResource GscShellStyle}\"", dashboard);
         Assert.Contains("x:Key=\"GscButtonStyle\"", redesign);
         Assert.Contains("x:Key=\"GscPrimaryButtonStyle\"", redesign);
         Assert.Contains("x:Key=\"GscTabControlStyle\"", redesign);
@@ -2424,8 +2423,10 @@ public sealed class WpfUiResourceDictionaryTests
         // with a game title, a muted reason line and a per-row "查看原因" action. The
         // production row keeps the same rhythm while staying bound to real findings.
         Assert.Equal("DataTemplate", template.Name.LocalName);
-        var grid = template.Descendants().Single(element => element.Name.LocalName == "Grid");
-        Assert.Equal("38", grid.Elements().Single(element => element.Name.LocalName == "Grid.ColumnDefinitions").Elements().ElementAt(0).Attribute("Width")?.Value);
+        var grid = template.Descendants().Single(element => element.Name.LocalName == "Grid"
+            && element.Elements().Any(child => child.Name.LocalName == "Grid.ColumnDefinitions"
+                && child.Elements().Count() == 3));
+        Assert.Equal("42", grid.Elements().Single(element => element.Name.LocalName == "Grid.ColumnDefinitions").Elements().ElementAt(0).Attribute("Width")?.Value);
         var tile = grid.Descendants().Single(element => element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "AttentionFindingIcon");
         Assert.Equal("34", tile.Attribute("Width")?.Value);
         Assert.Equal("34", tile.Attribute("Height")?.Value);
@@ -2447,7 +2448,7 @@ public sealed class WpfUiResourceDictionaryTests
         var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
         var list = overview.Descendants().Single(element => element.Name.LocalName == "ListBox" && element.Attribute(xamlName)?.Value == "OverviewActivityList");
 
-        // The demo home card renders recent activity as a 38/*/Auto row with a 34x34
+        // The demo home card renders recent activity as a 42/*/Auto/Auto row with a 34x34
         // rounded icon tile, a title, a muted subtitle and the local time on the right.
         // Production keeps the same rhythm while staying bound to real tasks and to the
         // existing SelectedTask cross-page detail linkage.
@@ -2459,10 +2460,12 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Equal("True", list.Attribute("ScrollViewer.CanContentScroll")?.Value);
         var template = list.Elements().Single(element => element.Name.LocalName == "ListBox.ItemTemplate").Elements().Single();
         Assert.Equal("DataTemplate", template.Name.LocalName);
-        var grid = template.Descendants().Single(element => element.Name.LocalName == "Grid");
+        var grid = template.Descendants().Single(element => element.Name.LocalName == "Grid"
+            && element.Elements().Any(child => child.Name.LocalName == "Grid.ColumnDefinitions"
+                && child.Elements().Count() == 4));
         var columnWidths = grid.Elements().Single(element => element.Name.LocalName == "Grid.ColumnDefinitions")
             .Elements().Select(element => element.Attribute("Width")?.Value).ToArray();
-        Assert.Equal(new[] { "38", "*", "Auto" }, columnWidths);
+        Assert.Equal(new[] { "42", "*", "Auto", "Auto" }, columnWidths);
 
         var tile = grid.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewTaskStatusPill");
         Assert.Equal("34", tile.Attribute("Width")?.Value);
@@ -2472,16 +2475,16 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Text=\"&#xE73E;\"", overviewText);
 
         // Long names and details must trim with a tooltip instead of pushing the row.
-        var title = grid.Descendants().Single(element => element.Name.LocalName == "TextBlock" && element.Attribute("Text")?.Value == "{Binding GameName, Mode=OneWay, TargetNullValue=全局}");
+        var title = grid.Descendants().Single(element => element.Name.LocalName == "TextBlock" && element.Attribute("Text")?.Value == "{Binding TaskTypeDisplay}");
         Assert.Equal("SemiBold", title.Attribute("FontWeight")?.Value);
         Assert.Equal("CharacterEllipsis", title.Attribute("TextTrimming")?.Value);
-        Assert.Equal("{Binding GameName}", title.Attribute("ToolTip")?.Value);
-        var subtitle = grid.Descendants().Single(element => element.Name.LocalName == "TextBlock" && element.Attribute("Margin")?.Value == "0,3,0,0");
+        Assert.Equal("{Binding TaskTypeDisplay}", title.Attribute("ToolTip")?.Value);
+        var subtitle = grid.Descendants().Single(element => element.Name.LocalName == "TextBlock" && element.Attribute("Text")?.Value == "{Binding DetailMessage}");
         Assert.Equal("11", subtitle.Attribute("FontSize")?.Value);
         Assert.Equal("CharacterEllipsis", subtitle.Attribute("TextTrimming")?.Value);
         Assert.Equal("{Binding DetailMessage}", subtitle.Attribute("ToolTip")?.Value);
-        Assert.Contains("TaskTypeDisplay", subtitle.ToString());
-        Assert.Contains("StateDisplay", subtitle.ToString());
+        Assert.Equal("0,4,0,0", subtitle.Parent?.Attribute("Margin")?.Value);
+        Assert.Contains("StateDisplay", grid.ToString());
         Assert.Contains("StringFormat={}{0:MM-dd HH:mm}", overviewText);
 
         // Failed / Running / Cancelled must stay semantically distinct on the tile.
@@ -2553,7 +2556,7 @@ public sealed class WpfUiResourceDictionaryTests
         var overviewCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml.cs"));
         Assert.Contains("SystemParameters.HighContrast", overviewCode);
         Assert.Contains("SystemParameters.ClientAreaAnimation", overviewCode);
-        Assert.Contains("AnimateTranslate(sender as FrameworkElement, 0, -2, 150)", overviewCode);
+        Assert.Contains("AnimateTranslate(sender as FrameworkElement, 0, -3, 160)", overviewCode);
     }
 
     [Fact]
@@ -2564,16 +2567,25 @@ public sealed class WpfUiResourceDictionaryTests
         var overview = XDocument.Parse(File.ReadAllText(overviewPath));
         var overviewText = File.ReadAllText(overviewPath);
 
-        // The production page keeps a restrained Demo-scale headline while preserving
-        // semantic DataTriggers on the same TextBlock (no demo placeholders).
-        Assert.Contains("FontSize=\"30\"", overviewText);
+        // Demo HomeView's TODAY headline is 35px; production keeps the same scale while
+        // preserving the semantic DataTriggers on the same TextBlock (no demo placeholders).
+        Assert.Contains("FontSize=\"35\"", overviewText);
         Assert.Contains("存在需要处理的项目", overviewText);
-        Assert.Contains("一切正常运转", overviewText);
+        Assert.Contains("整体状态安全", overviewText);
         Assert.Contains("Worker 异常", overviewText);
-        // Ambient decoration belongs to the shell; the page flow itself stays free of
-        // blur/overlay layers so large scrolling content remains crisp and interactive.
+
+        // The demo hero glow is a blurred ambient ellipse; production keeps the same
+        // decorative light as theme-adaptive radial gradients that do not intercept input.
+        var glowLayers = overview.Descendants()
+            .Where(element => element.Name.LocalName == "Border"
+                && element.Attribute("IsHitTestVisible")?.Value == "False"
+                && element.Descendants().Any(child => child.Name.LocalName == "RadialGradientBrush"))
+            .ToList();
+        Assert.True(glowLayers.Count >= 2, "Hero should carry at least two decorative radial glow layers.");
         Assert.DoesNotContain("BlurEffect", overviewText);
-        Assert.DoesNotContain("RadialGradientBrush", overviewText);
+        Assert.Contains("GscAccentShadowColor", overviewText);
+        Assert.Contains("GscInfoShadowColor", overviewText);
+        Assert.Contains("GscSuccessShadowColor", overviewText);
 
         // The decorative gradient centers live in the shared token dictionary so the
         // hero glow keeps a single source of truth instead of inline hex colors.
@@ -2601,20 +2613,21 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Same(heroGameRow, currentGame.Parent);
         Assert.Equal("0", hero.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
         Assert.Equal("0", currentGame.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
-        Assert.Equal("1*", heroGameRow.Descendants().Single(element => element.Name.LocalName == "ColumnDefinition" && element.Attribute(xamlName)?.Value == "OverviewCurrentGameColumn").Attribute("Width")?.Value);
-        Assert.Equal("2", metrics.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
-        var activitySurface = activity.Ancestors().Single(element => element.Attribute(xamlName)?.Value == "OverviewPrimaryScrollSurface");
-        Assert.Equal("0", activitySurface.Attribute("Grid.Column")?.Value);
-        Assert.Equal("3", activitySurface.Parent?.Attribute("Grid.Row")?.Value);
+        Assert.Equal("*", heroGameRow.Descendants().Single(element => element.Name.LocalName == "ColumnDefinition" && element.Attribute(xamlName)?.Value == "OverviewCurrentGameColumn").Attribute("Width")?.Value);
+        Assert.Equal("1", metrics.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
+        var activityFrame = activity.Ancestors().First(element => element.Name.LocalName == "Border"
+            && element.Attributes().Any(attribute => attribute.Name.LocalName == "Grid.Row")
+            && element.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value == "0");
+        Assert.Equal("0", activityFrame.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
         Assert.Equal("{Binding OverviewTasks}", activity.Attribute("ItemsSource")?.Value);
         Assert.Equal("{Binding SelectedTask}", activity.Attribute("SelectedItem")?.Value);
 
         var overviewCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml.cs"));
-        Assert.Contains("var compact = width < 620", overviewCode);
+        Assert.Contains("var stackHeroAndGame = primaryWidth < 700", overviewCode);
         Assert.Contains("OverviewHeroGameCompactRow.Height", overviewCode);
-        Assert.Contains("OverviewHeroColumn.Width = new GridLength(1.35, GridUnitType.Star);", overviewCode);
+        Assert.Contains("OverviewHeroColumn.Width = new GridLength(1, GridUnitType.Star);", overviewCode);
         Assert.Contains("OverviewCurrentGameColumn.Width = new GridLength(1, GridUnitType.Star);", overviewCode);
-        Assert.Contains("Grid.SetColumnSpan(OverviewCurrentGameCard, stack ? 3 : 1)", overviewCode);
+        Assert.Contains("Grid.SetColumnSpan(OverviewCurrentGameCard, stackHeroAndGame ? 3 : 1)", overviewCode);
     }
 
     [Fact]
@@ -2964,13 +2977,13 @@ public sealed class WpfUiResourceDictionaryTests
 
         var overviewGrid = overview.Descendants().Single(element => element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "OverviewLayoutGrid");
         Assert.Contains(overviewGrid.Descendants(), element => element.Name.LocalName == "Grid");
-        var metricPanel = overview.Descendants().Single(element => element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "OverviewStatStrip");
-        Assert.Equal("UniformGrid", metricPanel.Name.LocalName);
-        Assert.Contains("OverviewStatStrip.Columns", File.ReadAllText(overviewPath + ".cs"));
+        var metricPanel = overview.Descendants().Single(element => element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "OverviewMetricPanel");
+        Assert.Equal("WrapPanel", metricPanel.Name.LocalName);
+        Assert.DoesNotContain("OverviewMetricPanel.Columns", File.ReadAllText(overviewPath + ".cs"));
         var activityList = overview.Descendants().Single(element => element.Name.LocalName == "ListBox" && element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "OverviewActivityList");
         Assert.Equal("{Binding OverviewTasks}", activityList.Attribute("ItemsSource")?.Value);
         Assert.Equal("{Binding SelectedTask}", activityList.Attribute("SelectedItem")?.Value);
-        Assert.Contains(activityList.Ancestors(), ancestor => ancestor.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "OverviewPrimaryScrollSurface");
+        Assert.Contains(activityList.Ancestors(), ancestor => ancestor.Name.LocalName == "Grid");
         var productionTheme = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml"));
         Assert.Contains("<Style TargetType=\"ListBox\">", productionTheme);
         Assert.Contains("VirtualizingPanel.IsVirtualizing\" Value=\"True\"", productionTheme);
@@ -2980,7 +2993,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"OverviewSecondaryScrollViewer\"", File.ReadAllText(overviewPath));
         Assert.DoesNotContain("OverviewSecondaryScrollViewer.MaxHeight", File.ReadAllText(overviewPath + ".cs"));
         Assert.DoesNotContain("OverviewSecondaryScrollViewer.VerticalScrollBarVisibility", File.ReadAllText(overviewPath + ".cs"));
-        Assert.DoesNotContain("OverviewHomeToolbarActions", File.ReadAllText(overviewPath + ".cs"));
+        Assert.Contains("OverviewActivityTimelineList", File.ReadAllText(overviewPath));
         Assert.DoesNotContain("OverviewRiskScrollViewer.MaxHeight", File.ReadAllText(overviewPath + ".cs"));
         Assert.DoesNotContain("OverviewRiskScrollViewer.VerticalScrollBarVisibility", File.ReadAllText(overviewPath + ".cs"));
         Assert.Contains("RowDefinition x:Name=\"OverviewSummaryRow\" Height=\"Auto\"", File.ReadAllText(overviewPath));
@@ -4040,8 +4053,7 @@ public sealed class WpfUiResourceDictionaryTests
         var dashboardCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml.cs"));
 
         Assert.Contains("ResponsiveShell.Margin = new Thickness(", dashboardCode);
-        Assert.Contains("GameDetailCard.Padding = mode == LayoutMode.Expanded ? new Thickness(12)", dashboardCode);
-        Assert.Contains("mode == LayoutMode.Compact ? new Thickness(8)", dashboardCode);
+        Assert.Contains("GameDetailCard.Padding = new Thickness(0)", dashboardCode);
         Assert.Contains("var tableMinHeight = height < 650", dashboardCode);
         Assert.Contains("workspaceView.Resources[\"GscTableMinHeight\"] = tableMinHeight", dashboardCode);
         Assert.Contains("var workspaceTableMinHeight = height < 650", dashboardCode);
@@ -4513,7 +4525,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("TaskGameFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部", tasks);
         Assert.Contains("TaskTypeFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部", tasks);
         Assert.Contains("Style=\"{DynamicResource GscWpfUiComboBox}\" SelectedIndex=\"0\" ItemsSource=\"{Binding DeviceDecisionOptions}\" SelectedItem=\"{Binding DeviceDecision, TargetNullValue=稍后处理, FallbackValue=稍后处理}\"", maintenance);
-        Assert.Contains("GscWpfUiCompactButton", overview);
+        Assert.Contains("HorizontalContentAlignment=\"Stretch\"", overview);
         Assert.DoesNotContain("ScrollViewer.VerticalContentAlignment\" Value=\"Center\"", overview);
 
         // ComboBox selection text follows the same content-alignment and foreground

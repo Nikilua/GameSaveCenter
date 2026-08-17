@@ -80,7 +80,6 @@ namespace GameSaveCenter.Playnite.Views
             }
             var version = typeof(DashboardView).Assembly.GetName().Version;
             SidebarVersionText.Text = version == null ? "开发预览" : "v" + version.ToString(3);
-            AcrylicProductionShell.Attach(viewModel);
             ApplyAdaptiveTheme();
             UpdateWorkspacePresentation();
             ApplyResponsiveLayout(ActualWidth, ActualHeight);
@@ -151,14 +150,11 @@ namespace GameSaveCenter.Playnite.Views
 
         internal TabControl? DetailsTabControlForAudit => DetailsTabControl;
 
-        internal FrameworkElement ProductionPageHostForAudit => AcrylicProductionShell.PageHostForAudit;
-
         internal void ApplyWorkspaceForAudit(WorkspaceKind workspace)
         {
             if (viewModel == null || DetailsTabControl == null)
                 return;
             viewModel.CurrentWorkspace = workspace;
-            AcrylicProductionShell.NavigateTo(workspace);
             UpdateWorkspacePresentation();
             ApplyResponsiveLayout(ActualWidth, ActualHeight);
             viewModel.RequestWorkspaceLoad();
@@ -303,10 +299,10 @@ namespace GameSaveCenter.Playnite.Views
             // extracted pages look like narrow centred islands. Keep the shell flush with
             // that inner padding at every breakpoint; workspace views own their local gaps.
             ResponsiveShell.Margin = new Thickness(0);
-            GameDetailCard.Padding = mode == LayoutMode.Expanded ? new Thickness(12)
-                : mode == LayoutMode.Standard ? new Thickness(10)
-                : mode == LayoutMode.Compact ? new Thickness(8)
-                : new Thickness(6);
+            // The selected-game identity, safety banner and policy controls belong to the
+            // shared header/page model now. The workspace host itself must remain a flat
+            // PageHost so each extracted page owns its own cards and scroll viewport.
+            GameDetailCard.Padding = new Thickness(0);
 
             // The normal table viewport is intentionally generous, but a 700-DIP host must
             // not turn that token into a hard minimum that pushes the inspector below the
@@ -358,10 +354,10 @@ namespace GameSaveCenter.Playnite.Views
             var showCompactGameBrowser = gameScopedWorkspace && compactGameBrowserOpen;
 
             SidebarColumn.Width = new GridLength(mode == LayoutMode.Expanded ? 228
-                : mode == LayoutMode.Standard ? 204
+                : mode == LayoutMode.Standard ? 228
                 : mode == LayoutMode.Compact ? 78
                 : 72);
-            SidebarGutterColumn.Width = new GridLength(iconSidebar ? 10 : 16);
+            SidebarGutterColumn.Width = new GridLength(iconSidebar ? 10 : 0);
             TopChromeSafetyColumn.Width = new GridLength(0);
             ToastHost.Margin = new Thickness(0, height < 760 ? 66 : 78, width < 1080 ? 12 : 22, 0);
             SetSidebarLabelsVisible(!iconSidebar);
@@ -487,7 +483,7 @@ namespace GameSaveCenter.Playnite.Views
                 : Math.Max(320d, width - shellHorizontalInset - sidebarWidth - sidebarGutterWidth);
             var workspaceContentWidth = DetailsTabControl.ActualWidth > 0
                 ? DetailsTabControl.ActualWidth
-                : Math.Max(320d, measuredWorkspaceWidth - GameDetailCard.Padding.Left - GameDetailCard.Padding.Right);
+                : Math.Max(320d, measuredWorkspaceWidth);
 
             // Trainers and media have a local pill row below the selected-game header. Keep
             // that breathing room, but reclaim a few DIP in compact windows so the table's
@@ -583,12 +579,8 @@ namespace GameSaveCenter.Playnite.Views
             // The safety banner is actionable context, not decorative chrome. Keep it visible
             // for the Saves workspace at every height; its extracted Grid layout keeps the
             // warning and table actions reachable without a page-level scroll channel.
-            RestoreSafetyBanner.Visibility = viewModel.CurrentWorkspace == WorkspaceKind.Saves
-                ? Visibility.Visible : Visibility.Collapsed;
-            if (viewModel.CurrentWorkspace != WorkspaceKind.Saves)
-            {
-                BackupPolicyPanel.Visibility = Visibility.Collapsed;
-            }
+            RestoreSafetyBanner.Visibility = Visibility.Collapsed;
+            BackupPolicyPanel.Visibility = Visibility.Collapsed;
         }
 
         private void SetToolbarLabelsVisible(bool visible)
@@ -716,7 +708,9 @@ namespace GameSaveCenter.Playnite.Views
             DetailsTabControl.Margin = workspace == WorkspaceKind.Trainers || workspace == WorkspaceKind.Media
                 ? new Thickness(0, 12, 0, 0)
                 : new Thickness(0);
-            SetVisibility(SelectedGameHeader, workspace != WorkspaceKind.Tasks && workspace != WorkspaceKind.Maintenance && workspace != WorkspaceKind.Overview);
+            // Game identity is presented once in the shared header. Keeping the legacy
+            // selected-game card here creates a second title/metric band above every page.
+            SetVisibility(SelectedGameHeader, false);
             SetVisibility(BackupSelectedButton, saves);
             SetVisibility(ValidateButton, saves);
             SetVisibility(DetectPathsButton, saves);
@@ -731,8 +725,8 @@ namespace GameSaveCenter.Playnite.Views
             // row feel oversized and visually overlap the global context.
             SelectedGameHealthPill.Visibility = Visibility.Collapsed;
             SelectedGameMetricPanel.Visibility = Visibility.Collapsed;
-            SetVisibility(RestoreSafetyBanner, saves);
-            if (!saves) BackupPolicyPanel.Visibility = Visibility.Collapsed;
+            SetVisibility(RestoreSafetyBanner, false);
+            BackupPolicyPanel.Visibility = Visibility.Collapsed;
 
             SetVisibility(TopRefreshButton, workspace != WorkspaceKind.Trainers && workspace != WorkspaceKind.Maintenance);
             SetVisibility(TopBackupAllButton, saves);
@@ -1317,9 +1311,9 @@ namespace GameSaveCenter.Playnite.Views
                 WorkspaceKind.Tasks => TaskWorkspaceView.FindName("TaskSearchTextBox") as FrameworkElement,
                 WorkspaceKind.Media => MediaWorkspaceView.FindName("MediaSearchTextBox") as FrameworkElement,
                 WorkspaceKind.Maintenance => MaintenanceWorkspaceView.FindName("ProcessMappingExecutableTextBox") as FrameworkElement,
-                _ => AcrylicProductionShell.GameSearchBoxForFocus
+                _ => GameSearchTextBox
             };
-            if (target == null) target = AcrylicProductionShell.GameSearchBoxForFocus;
+            if (target == null) target = GameSearchTextBox;
             target.Focus();
             if (target is TextBox textBox) textBox.SelectAll();
         }

@@ -119,16 +119,21 @@ $workerBuildProperties = @()
 if ($BuildOutputRoot) {
     $workerBuildProperties = @('-p:GscBuildOutputRoot=' + [System.IO.Path]::GetFullPath($BuildOutputRoot))
 }
-Invoke-DotNet -StepName "还原 Worker 发布运行时（$Runtime）" -Arguments @(
+$restoreArguments = @(
     'restore', $workerProject, '-r', $Runtime,
     "-p:RuntimeIdentifier=$Runtime",
-    "-p:RuntimeIdentifiers=$Runtime",
-    $workerBuildProperties,
+    "-p:RuntimeIdentifiers=$Runtime"
+)
+if ($workerBuildProperties.Count -gt 0) {
+    $restoreArguments += $workerBuildProperties
+}
+$restoreArguments += @(
     '-p:RestoreUseStaticGraphEvaluation=true',
     '-p:NuGetAudit=false',
     '-m:1',
     '-nodeReuse:false'
 )
+Invoke-DotNet -StepName "还原 Worker 发布运行时（$Runtime）" -Arguments $restoreArguments
 
 Remove-Item $stage -Recurse -Force -ErrorAction SilentlyContinue
 New-Item $workerStage -ItemType Directory -Force | Out-Null
@@ -142,8 +147,12 @@ $publishArgs = @(
     '--no-restore',
     '--self-contained', $(if ($SelfContainedWorker) { 'true' } else { 'false' }),
     "-p:RuntimeIdentifier=$Runtime",
-    "-p:RuntimeIdentifiers=$Runtime",
-    $workerBuildProperties,
+    "-p:RuntimeIdentifiers=$Runtime"
+)
+if ($workerBuildProperties.Count -gt 0) {
+    $publishArgs += $workerBuildProperties
+}
+$publishArgs += @(
     '-m:1',
     '-nodeReuse:false'
 )

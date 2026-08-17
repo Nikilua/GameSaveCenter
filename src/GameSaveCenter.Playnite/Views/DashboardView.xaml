@@ -665,16 +665,6 @@
     </UserControl.Resources>
 
     <Grid x:Name="RootShell" Background="{DynamicResource GscBackdropBrush}" ClipToBounds="True">
-        <!-- The visible production surface now uses the actual AcrylicFork Demo shell.
-             The legacy shell below remains only as a temporary compatibility surface for
-             existing audit and dialog code; it is collapsed and never paints over this host. -->
-        <views:AcrylicProductionShellView x:Name="AcrylicProductionShell"
-                                          Panel.ZIndex="100"
-                                          Width="{Binding ActualWidth, ElementName=RootShell}"
-                                          MinWidth="0"
-                                          HorizontalAlignment="Left"
-                                          VerticalAlignment="Stretch"
-                                          ClipToBounds="True"/>
         <Grid x:Name="AmbientGlowLayer" IsHitTestVisible="False" Opacity="0.9">
             <Ellipse Width="360" Height="360" HorizontalAlignment="Left" VerticalAlignment="Top" Fill="{DynamicResource GscAmbientAccentBrush}">
                 <Ellipse.RenderTransform><TranslateTransform X="-95" Y="-130"/></Ellipse.RenderTransform>
@@ -690,14 +680,14 @@
             </Ellipse>
         </Grid>
 
-        <Border x:Name="DashboardDemoShell" Margin="14" Style="{StaticResource GscShellStyle}" Padding="14" Visibility="Collapsed">
+        <Border x:Name="DashboardDemoShell" Margin="4" Style="{StaticResource GscShellStyle}" Padding="8">
         <!-- DashboardDemoShell supplies the complete outer spacing. Keep this inner grid
              flush with the shell padding so ordinary 1024/1280-DIP windows do not waste
              another 18 DIP on each side. -->
         <Grid x:Name="ResponsiveShell" Margin="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition x:Name="SidebarColumn" Width="194"/>
-                <ColumnDefinition x:Name="SidebarGutterColumn" Width="18"/>
+                <ColumnDefinition x:Name="SidebarColumn" Width="228"/>
+                <ColumnDefinition x:Name="SidebarGutterColumn" Width="0"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 

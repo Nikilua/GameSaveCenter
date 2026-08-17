@@ -89,7 +89,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("OnboardingCompleted", viewModel);
             Assert.DoesNotContain("if (viewModel.IsOnboardingPending)\n                NavMaintenance.IsChecked = true;", dashboardCode);
             Assert.Contains("OpenMaintenanceCommand", viewModel);
-            Assert.Contains("首次环境检查尚未完成", overview);
+            Assert.Contains("OnboardingTitle", maintenance);
             Assert.Contains("EnvironmentCheckCard", maintenance);
             Assert.Contains("Command=\"{Binding RunEnvironmentCheckCommand}\"", maintenance);
             Assert.Contains("Command=\"{Binding OnboardingTestBackupCommand}\"", maintenance);

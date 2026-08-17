@@ -658,3 +658,12 @@
 - 共享表头现在使用低对比度表头填充、8 DIP 圆角和 1/2 DIP 安全边距；普通活动行使用较弱 Divider，避免 DataGrid/活动表头看起来像尖锐矩形。
 - 本阶段自动验证：源码/XAML 门禁通过，Playnite 303/303，生产 Release 0 warning/0 error，Overview 多尺寸与 Light/Dark 离屏渲染通过。全量 render harness 仍有 Save/Media 窄尺寸主表 `<236 DIP` 的历史门禁项，不能写成全量 render-qa 通过。
 - 本阶段尚未完成真实 Playnite 2K/DPI/Follow/高对比度人工验收；后续优先在真实宿主检查页面级滚动、侧栏下移、键盘焦点和长中文文案，再继续迁移其他页面。
+
+## 2026-08-17 AcrylicFork 全量页面重构事实
+
+- 本轮确认没有任何提示词保护；先前外观不变的根因是生产页面与 AcrylicFork Demo 使用两套不同的页面树，同时旧 Dashboard 外壳重复渲染页面上下文和局部表格样式。
+- 生产 Shell 现在只负责侧栏、Header/GameSwitcher、全局操作、PageHost 和 Footer；首页、媒体、任务、存档、修改器、维护页面继续持有真实 ViewModel/Command/Binding，Demo 顶部颜色按钮只作为主题令牌参考，生产滚动条保持项目实现。
+- 首页与维护中心已经按 Demo 信息架构迁移；维护中心默认诊断概览显示六项健康卡、环境检查、诊断操作和完整摘要，发现问题表格通过独立问题列表 Tab 保留并验证。
+- DataGrid 共享样式采用透明表头、稳定底部分隔线和明确文本对比度；不使用负 Margin、Canvas、透明占位或隐藏溢出来修复布局。首页零分母进度条折叠，关注入口提供可访问说明。
+- 2026-08-17 自动事实：源码校验通过；WPF UI 静态校验 0 error；Playnite 测试 303/303；RenderHarness 全量 render-qa OK。真实 Playnite 宿主、DPI、Follow/高对比度、键盘和大库滚动仍需人工复核。
+- `scripts/package.ps1` 已修复空 `dotnet` 参数问题；当前无 `BuildOutputRoot` 的标准打包流程可正常生成并校验安装包，且会保留 `GameSaveCenter.Contracts.dll`。
