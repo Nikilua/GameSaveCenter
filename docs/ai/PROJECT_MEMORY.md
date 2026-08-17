@@ -9,6 +9,14 @@
 - 旧阶段条目继续保留用于追溯当时的迁移决策，但它们不应阻止新的页面方案。新设计默认继续保护真实命令、Binding、数据契约、错误/取消/安全语义、可访问性、列表性能和 Playnite 兼容性；如果设计需要改变这些内容，必须在当前任务中明确并验证，而不是因为历史实现而回避布局或控件重构。
 - 本段是当前方向声明，优先于下方 2026-08-17 之前的页面迁移偏好；后续每个独立 UI 阶段都要更新本段对应的当前事实和 `docs/ai/WORKLOG.md`。
 
+## 2026-08-17 UI-222 当前事实：生产入口与 Preview 必须区分
+
+- Playnite 当前可能同时加载两个独立扩展：`GameSaveCenter Preview`（0.6.71，Demo/预览）和生产 `GameSaveCenter`（0.6.70，`AcrylicProductionShellView`）。验证生产 UI 时必须从侧栏的 `GameSaveCenter` 进入，不能把 Preview 入口的画面当作生产页面。
+- 生产 `DashboardView` 的可见层是 `AcrylicProductionShellView`，其 `PageHost` 承载真实 Overview/Save/Trainer/Media/Task/Maintenance 页面；旧 `DashboardDemoShell` 保留字段但必须保持 `Collapsed`。
+- 生产头部标识使用“生产版”，不要恢复 Demo 的“外观预览”文字；Demo 的主题色只进入生产令牌，不迁移 Demo 色板控件。
+- Real Host 审计在 150% DPI 下必须把 `TransformToAncestor` 的设备像素坐标规范化到根元素 DIP，并按 `GetRenderScale(window)` 保存受控窗口截图；否则会产生右侧按钮假溢出和截图被裁剪的假象。
+- 当前验证基线：source/WPF 校验无 error、Release 无 warning/error、Playnite 303/303、RenderHarness `render-qa OK`；嵌入式 Dashboard 仍需用户真实点击 Playnite 侧栏才能取得像素真值。
+
 ## 2026-08-17 UI-221 AcrylicFork 整页视觉迁移收口
 
 - 权威参考仍为 `D:\workplace\github\GameSaveCenter.AcrylicFork` @ `b09cba6`；本轮确认生产 7 页骨架已与其一致，并补齐 Media/Trainer/Save/Maintenance 分段导航右侧说明与真实计数/状态：待归类数、已绑定工具数、当前规则校验状态、安全模式/云端状态。

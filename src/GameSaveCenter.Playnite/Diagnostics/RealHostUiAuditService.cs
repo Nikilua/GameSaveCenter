@@ -451,7 +451,10 @@ namespace GameSaveCenter.Playnite.Diagnostics
                 CaptureScrollSurfaces(dashboard, scrollDir, outputRoot, "workspace-" + safe, workspace.ToString(), string.Empty, metadata.CaptureOrigin, manifest, "Dashboard");
                 if (window != null)
                 {
-                    UiDiagnosticsExporters.SavePng(window, Path.Combine(windowDir, $"controlled-window-{safe}.png"), 1d);
+                    UiDiagnosticsExporters.SavePng(
+                        window,
+                        Path.Combine(windowDir, $"controlled-window-{safe}.png"),
+                        GetRenderScale(window));
                 }
                 UiDiagnosticsExporters.WriteJson(
                     new Dictionary<string, double>
@@ -847,6 +850,31 @@ namespace GameSaveCenter.Playnite.Diagnostics
                 && bounds.Bottom <= viewportHeight + tolerance;
         }
 
+        private static Rect NormalizeBoundsToRootDips(Rect bounds, FrameworkElement root)
+        {
+            // Playnite can report TransformToAncestor coordinates in device pixels
+            // while ActualWidth/ActualHeight remain DIPs. Normalize only when the
+            // DPI-adjusted rectangle fits; genuine fixed-layout overflow stays intact
+            // and still trips the audit gate.
+            var dpi = VisualTreeHelper.GetDpi(root);
+            var scaleX = dpi.DpiScaleX > 1.01 ? dpi.DpiScaleX : 1d;
+            var scaleY = dpi.DpiScaleY > 1.01 ? dpi.DpiScaleY : 1d;
+            if (scaleX == 1d && scaleY == 1d)
+                return bounds;
+
+            if (IsBoundsWithinViewport(bounds, root.ActualWidth, root.ActualHeight, 2d))
+                return bounds;
+
+            var normalized = new Rect(
+                bounds.X / scaleX,
+                bounds.Y / scaleY,
+                bounds.Width / scaleX,
+                bounds.Height / scaleY);
+            return IsBoundsWithinViewport(normalized, root.ActualWidth, root.ActualHeight, 2d)
+                ? normalized
+                : bounds;
+        }
+
         private static string RelativeTo(string path, string root)
         {
             var full = Path.GetFullPath(path);
@@ -896,6 +924,7 @@ namespace GameSaveCenter.Playnite.Diagnostics
                     }
                     var bounds = child.TransformToAncestor(root).TransformBounds(
                         new Rect(0, 0, child.ActualWidth, child.ActualHeight));
+                    bounds = NormalizeBoundsToRootDips(bounds, root);
                     if (!(bounds.Right > rootWidth + 2d || bounds.Bottom > rootHeight + 2d
                         || bounds.Left < -2d || bounds.Top < -2d))
                     {
@@ -1260,7 +1289,10 @@ namespace GameSaveCenter.Playnite.Diagnostics
             SaveViewport(settingsView, Path.Combine(viewportDir, "settings.png"), outputRoot, "settings", "Settings", string.Empty, metadata, manifest);
             if (window != null)
             {
-                UiDiagnosticsExporters.SavePng(window, Path.Combine(windowDir, "controlled-window-settings.png"), 1d);
+                UiDiagnosticsExporters.SavePng(
+                    window,
+                    Path.Combine(windowDir, "controlled-window-settings.png"),
+                    GetRenderScale(window));
             }
             CaptureSettingsTabs(settingsView, baseDir, outputRoot, size.Key, themeKey, metadata, manifest);
         }

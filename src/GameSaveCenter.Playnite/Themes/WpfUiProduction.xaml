@@ -1,4 +1,4 @@
-<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:ui="clr-namespace:GameSaveCenter.Playnite.Controls"
                     xmlns:infra="clr-namespace:GameSaveCenter.Playnite.Infrastructure">
@@ -26,7 +26,7 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             Padding="{TemplateBinding Padding}"
-                            CornerRadius="16"
+                            CornerRadius="18"
                             SnapsToDevicePixels="True">
                         <ContentPresenter Content="{TemplateBinding Content}"
                                           ContentTemplate="{TemplateBinding ContentTemplate}"
@@ -332,20 +332,16 @@
         <Setter Property="Padding" Value="12,9"/>
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <!-- Keep the legacy Tag values used by page-specific header styles for compatibility,
-             but do not bind an optional Tag into CornerRadius: Playnite can expose UnsetValue
-             while it is materializing a generated filler header. -->
-        <Setter Property="Tag"><Setter.Value><CornerRadius>10,10,10,10</CornerRadius></Setter.Value></Setter>
+        <Setter Property="Tag"><Setter.Value><CornerRadius>9,9,9,9</CornerRadius></Setter.Value></Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="DataGridColumnHeader">
                     <!-- Host-generated headers may not have a Tag. Never pass an unset binding
                          result into Border.CornerRadius. -->
-                    <Border Margin="1,2"
-                            Background="{TemplateBinding Background}"
+                    <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="8"
+                            CornerRadius="9"
                             Padding="{TemplateBinding Padding}"
                             SnapsToDevicePixels="True">
                         <Grid>
@@ -404,11 +400,7 @@
          DataGridColumnHeader instances leaves that unused strip to the Playnite host theme,
          which is why the final header could remain white. -->
     <Style TargetType="DataGridColumnHeadersPresenter">
-        <!-- Keep the presenter transparent so the 1-DIP gaps around each rounded
-             header remain visible.  Painting the whole presenter with the header
-             brush turns the row into one sharp rectangular strip, even though the
-             individual header template already has a rounded chrome. -->
-        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Background" Value="{DynamicResource GscTableHeaderBrush}"/>
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
     </Style>
 
@@ -537,7 +529,7 @@
         <Setter Property="Padding" Value="14,7"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="ui:Button.CornerRadius" Value="10"/>
+        <Setter Property="ui:Button.CornerRadius" Value="11"/>
         <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
@@ -554,7 +546,7 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             Padding="{TemplateBinding Padding}"
-                            CornerRadius="10"
+                            CornerRadius="11"
                             SnapsToDevicePixels="True">
                         <ContentPresenter Content="{TemplateBinding Content}"
                                           ContentTemplate="{TemplateBinding ContentTemplate}"

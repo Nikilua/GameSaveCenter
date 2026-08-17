@@ -475,11 +475,11 @@ def check_media_inbox_guards() -> None:
     for token in ("UnassignedMedia", "AssignInboxMediaCommand", "IgnoreInboxMediaCommand"):
         if token not in view_model or token not in media:
             fail(f"Media inbox UI binding missing: {token}")
-    # The production media page now follows UiLab's direct ListBox segmented skeleton;
-    # the labels are Content values rather than TabItem Header values.
-    for label in ('Content="待归类"', 'Content="当前游戏媒体"', 'Content="来源规则"'):
-        if media.count(label) != 1:
-            fail(f"Media workspace sub-page is duplicated or missing: {label}")
+    # AcrylicFork keeps the three media workspaces as real TabItems; their content
+    # is measured independently from the tab strip and retains the production scrollbars.
+    for header in ('Header="待归类"', 'Header="当前游戏媒体"', 'Header="来源规则"'):
+        if media.count(header) != 1:
+            fail(f"Media workspace sub-page is duplicated or missing: {header}")
     if 'KindDisplay, Mode=OneWay' not in media or 'SourceDisplay, Mode=OneWay' not in media:
         fail("Media workspace must show localized kind/source names instead of enum values")
 

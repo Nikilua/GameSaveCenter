@@ -1616,10 +1616,11 @@ public static class Program
             host.Arrange(new Rect(0, 0, 900, 640));
             host.UpdateLayout();
 
-            var segments = FindVisualChildren<ListBox>(host)
-                .FirstOrDefault(candidate => candidate.Name == "MediaSegmentTabs");
-            if (segments != null)
-                segments.SelectedIndex = 1;
+            // MediaCenter uses the production TabControl now; selecting the second tab
+            // explicitly realizes MediaGrid before probing its finite virtualized viewport.
+            var mediaTabs = FindVisualChildren<TabControl>(host).FirstOrDefault();
+            if (mediaTabs != null)
+                mediaTabs.SelectedIndex = 1;
             host.UpdateLayout();
 
             var mediaGrid = FindVisualChildren<ListBox>(host)

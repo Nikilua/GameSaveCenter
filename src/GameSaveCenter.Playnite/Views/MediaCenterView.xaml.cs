@@ -42,13 +42,6 @@ namespace GameSaveCenter.Playnite.Views
             {
                 responsiveWidth = width;
                 responsiveHeight = height;
-                // UniformGrid can be measured with an unbounded width when it is hosted
-                // inside a TabControl content presenter. Give the metric strip the same
-                // finite viewport as the workspace so its last rounded card cannot be
-                // arranged past the Playnite page edge.
-                var metricViewportWidth = Math.Max(0, width > 0 ? width : ActualWidth);
-                MediaSummaryPanel.Width = metricViewportWidth;
-                MediaSummaryPanel.MaxWidth = metricViewportWidth;
                 // Keep the demo's four-card metric strip throughout normal windowed
                 // workspaces. The Dashboard's content width is already smaller than the
                 // complete window after the sidebar and shell insets, so a 1180-DIP
@@ -66,16 +59,10 @@ namespace GameSaveCenter.Playnite.Views
                 // surface scrolls the page-level info/actions when this viewport cannot fit
                 // below the summary cards; the DataGrid/ListBox still own row virtualization
                 // and their own internal scrolling.
-                // Keep the normal desktop heights readable.  The previous 520-DIP
-                // subtraction reduced the real media/inbox viewport to 180-200 DIP
-                // at 700-720 DIP windows, which is visibly cramped and needlessly
-                // diverged from UiLab's table rhythm.  Only genuinely short hosts
-                // fall back to the compact 180-DIP floor.
-                var compactTableFloor = Math.Max(180d, Math.Min(236d, height - 464d));
-                MediaInboxGrid.MinHeight = compactTableFloor;
+                MediaInboxGrid.MinHeight = 236d;
                 MediaInboxGrid.Height = double.NaN;
                 MediaInboxGrid.MaxHeight = double.PositiveInfinity;
-                MediaGrid.MinHeight = compactTableFloor;
+                MediaGrid.MinHeight = 236d;
                 MediaGrid.Height = double.NaN;
                 MediaGrid.MaxHeight = double.PositiveInfinity;
 
@@ -105,12 +92,6 @@ namespace GameSaveCenter.Playnite.Views
                 else
                 {
                     MediaCompactDetailsButton.Visibility = Visibility.Collapsed;
-                    // A narrow layout may collapse the inspector while the user is
-                    // resizing.  Restore the wide two-column reading layout when the
-                    // viewport grows again; otherwise the inspector stays missing
-                    // until a new media selection is made.
-                    if (MediaGrid.SelectedItem != null)
-                        MediaInspectorScrollViewer.Visibility = Visibility.Visible;
                 }
                 var showInspector = MediaInspectorScrollViewer.Visibility == Visibility.Visible;
                 var inspectorWidth = MediaCurrentLayout.TryFindResource("GscInspectorWidth") is GridLength gl ? gl : new GridLength(360);
@@ -145,15 +126,6 @@ namespace GameSaveCenter.Playnite.Views
             mediaInspectorOpen = false;
             if (IsLoaded && responsiveWidth > 0 && responsiveHeight > 0)
                 ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
-        }
-
-        private void OnMediaSegmentChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (MediaSegmentTabs == null || MediaInboxScrollSurface == null || MediaCurrentScrollSurface == null || MediaSourcesPanel == null) return;
-            var selected = MediaSegmentTabs.SelectedIndex;
-            MediaInboxScrollSurface.Visibility = selected == 0 ? Visibility.Visible : Visibility.Collapsed;
-            MediaCurrentScrollSurface.Visibility = selected == 1 ? Visibility.Visible : Visibility.Collapsed;
-            MediaSourcesPanel.Visibility = selected == 2 ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void OnMediaCompactDetailsClick(object sender, RoutedEventArgs e)

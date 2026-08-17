@@ -40,13 +40,8 @@ namespace GameSaveCenter.Playnite.Views
                 // this floor only prevents the inspector's Auto row from reducing it to a
                 // one-row strip during a short window resize.
                 const double tableMinHeight = 236d;
-                // Keep the candidate/history viewport readable at normal desktop
-                // heights.  Subtracting 520 DIP made the candidate table collapse to
-                // 205-225 DIP during ordinary 700-720 DIP renders; only genuinely
-                // short hosts should use the compact 180-DIP floor.
-                var compactTableFloor = Math.Max(180d, Math.Min(252d, height - 464d));
-                SaveHistoryGrid.MinHeight = Math.Min(tableMinHeight, compactTableFloor);
-                SaveCandidateGrid.MinHeight = compactTableFloor;
+                SaveHistoryGrid.MinHeight = tableMinHeight;
+                SaveCandidateGrid.MinHeight = Math.Max(tableMinHeight, 252d);
                 // On narrow hosts the lock status is the essential per-row summary; the
                 // note column can be read in full inside the version details inspector.
                 // Hiding it keeps 状态 inside the viewport without enabling a horizontal bar.
@@ -157,10 +152,7 @@ namespace GameSaveCenter.Playnite.Views
             var candidateHeight = SaveCandidateLayout.ActualHeight > 0 ? SaveCandidateLayout.ActualHeight : Math.Max(320, height - 200);
             var candidateInspectorHeight = Math.Max(160, Math.Min(360, candidateHeight - tableMinHeight - 10));
             SaveCandidateInspectorScrollViewer.MaxHeight = showCandidateInspector && compact ? candidateInspectorHeight : double.PositiveInfinity;
-            // Keep the migrated Demo's three-card strategy surface until the page is
-            // genuinely compact. The previous 1080-DIP cutoff stacked the cards in a
-            // normal Playnite content rail and made the page look unlike the reference.
-            var stackPolicy = width < 1000 || height < 680;
+            var stackPolicy = width < 1080;
             // The policy page is a left-aligned form capped by the shared
             // GscFormMaxWidth token (1120). Give the StackPanel an explicit
             // viewport width so the reading cards fill the form instead of
@@ -168,31 +160,6 @@ namespace GameSaveCenter.Playnite.Views
             // capped form inside the page scroll channel. The 4 is the right
             // padding of GscPageScrollViewer.
             SavePolicyStack.Width = Math.Max(0, Math.Min(width - 4, 1120));
-            SavePolicyDemoLayout.Width = Math.Max(0, Math.Min(width - 4, 1240));
-            SavePolicyDemoLayout.ColumnDefinitions[0].Width = new GridLength(1, GridUnitType.Star);
-            SavePolicyDemoLayout.ColumnDefinitions[1].Width = stackPolicy ? new GridLength(0) : new GridLength(14);
-            SavePolicyDemoLayout.ColumnDefinitions[2].Width = stackPolicy ? new GridLength(0) : new GridLength(1, GridUnitType.Star);
-            SavePolicyDemoLayout.ColumnDefinitions[3].Width = stackPolicy ? new GridLength(0) : new GridLength(14);
-            SavePolicyDemoLayout.ColumnDefinitions[4].Width = stackPolicy ? new GridLength(0) : new GridLength(1, GridUnitType.Star);
-            SavePolicyDemoLayout.RowDefinitions[0].Height = GridLength.Auto;
-            SavePolicyDemoLayout.RowDefinitions[1].Height = stackPolicy ? GridLength.Auto : new GridLength(0);
-            SavePolicyDemoLayout.RowDefinitions[2].Height = stackPolicy ? GridLength.Auto : new GridLength(0);
-            SavePolicyDemoLayout.RowDefinitions[3].Height = stackPolicy ? GridLength.Auto : new GridLength(0);
-            Grid.SetColumn(SavePolicyDemoAutomationCard, 0);
-            Grid.SetRow(SavePolicyDemoAutomationCard, 0);
-            Grid.SetColumnSpan(SavePolicyDemoAutomationCard, stackPolicy ? 5 : 1);
-            Grid.SetColumn(SavePolicyDemoMediaCard, stackPolicy ? 0 : 2);
-            Grid.SetRow(SavePolicyDemoMediaCard, stackPolicy ? 1 : 0);
-            Grid.SetColumnSpan(SavePolicyDemoMediaCard, stackPolicy ? 5 : 1);
-            Grid.SetColumn(SavePolicyDemoTemplateCard, stackPolicy ? 0 : 4);
-            Grid.SetRow(SavePolicyDemoTemplateCard, stackPolicy ? 2 : 0);
-            Grid.SetColumnSpan(SavePolicyDemoTemplateCard, stackPolicy ? 5 : 1);
-            Grid.SetColumn(SavePolicyDemoSafetyCard, 0);
-            Grid.SetRow(SavePolicyDemoSafetyCard, stackPolicy ? 3 : 1);
-            Grid.SetColumnSpan(SavePolicyDemoSafetyCard, 5);
-            SavePolicyDemoMediaCard.Margin = stackPolicy ? new Thickness(0, 14, 0, 0) : new Thickness(0);
-            SavePolicyDemoTemplateCard.Margin = stackPolicy ? new Thickness(0, 14, 0, 0) : new Thickness(0);
-            SavePolicyDemoSafetyCard.Margin = new Thickness(0, 14, 0, 0);
             SavePolicyCardsLayout.ColumnDefinitions[1].Width = stackPolicy ? new GridLength(0) : new GridLength(14);
             SavePolicyCardsLayout.ColumnDefinitions[2].Width = stackPolicy ? new GridLength(0) : new GridLength(1, GridUnitType.Star);
             SavePolicyCardsLayout.RowDefinitions[2].Height = stackPolicy ? new GridLength(1, GridUnitType.Auto) : new GridLength(0);
@@ -227,16 +194,6 @@ namespace GameSaveCenter.Playnite.Views
             historyInspectorOpen = false;
             if (IsLoaded && responsiveWidth > 0 && responsiveHeight > 0)
                 ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
-        }
-
-        private void OnSaveSegmentChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (SaveSegmentTabs == null || SaveHistoryPanel == null || SaveCandidatePanel == null || SavePolicyPanel == null || SaveComparePanel == null) return;
-            var selected = SaveSegmentTabs.SelectedIndex;
-            SaveHistoryPanel.Visibility = selected == 0 ? Visibility.Visible : Visibility.Collapsed;
-            SaveCandidatePanel.Visibility = selected == 1 ? Visibility.Visible : Visibility.Collapsed;
-            SavePolicyPanel.Visibility = selected == 2 ? Visibility.Visible : Visibility.Collapsed;
-            SaveComparePanel.Visibility = selected == 3 ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void OnSaveCandidateSelectionChanged(object sender, SelectionChangedEventArgs e)

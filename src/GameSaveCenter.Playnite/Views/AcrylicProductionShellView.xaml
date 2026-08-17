@@ -1,0 +1,265 @@
+<UserControl x:Class="GameSaveCenter.Playnite.Views.AcrylicProductionShellView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="clr-namespace:GameSaveCenter.Playnite.Controls"
+             Foreground="{DynamicResource GscPrimaryTextBrush}"
+             TextElement.Foreground="{DynamicResource GscPrimaryTextBrush}"
+             Background="{DynamicResource GscBackdropBrush}"
+             UseLayoutRounding="True"
+             SnapsToDevicePixels="True"
+             SizeChanged="OnShellSizeChanged">
+    <UserControl.Resources>
+        <Style x:Key="AcrylicNavItem" TargetType="RadioButton">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="12,10"/>
+            <Setter Property="Margin" Value="0,0,0,5"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="NavChrome" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="12" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="NavChrome" Property="Background" Value="{DynamicResource GscAccentTintStrongBrush}"/>
+                                <Setter TargetName="NavChrome" Property="BorderBrush" Value="{DynamicResource GscAccentTintStrongBrush}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="NavChrome" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Border x:Name="DemoShell" Margin="4"
+            Background="{DynamicResource GscBackdropBrush}"
+            BorderBrush="{DynamicResource GscGlassStrokeBrush}"
+            BorderThickness="1"
+            CornerRadius="16"
+            ClipToBounds="True">
+        <Grid MinWidth="0" ClipToBounds="True">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="28"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="228"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Demo-aligned header. The Demo's theme swatches are intentionally not
+                 copied into production; only the shared palette is used here. -->
+            <Border Grid.Row="0" Grid.Column="0"
+                    Background="{DynamicResource GscSidebarBrush}"
+                    BorderBrush="{DynamicResource GscGlassStrokeBrush}"
+                    BorderThickness="0,0,1,1"
+                    MinHeight="44">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="14,0,0,0">
+                    <Border Width="26" Height="26" CornerRadius="8" Background="{DynamicResource GscAccentBrush}">
+                        <TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" FontSize="12"
+                                   Foreground="{DynamicResource GscOnAccentTextBrush}"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <TextBlock Text="GameSaveCenter" FontSize="12.5" FontWeight="SemiBold"
+                               Margin="9,0,0,0" VerticalAlignment="Center"/>
+                    <Border Background="{DynamicResource GscAccentTintBrush}" CornerRadius="8"
+                            Padding="8,4" Margin="8,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="生产版" FontSize="10.5" Foreground="{DynamicResource GscAccentBrush}"/>
+                    </Border>
+                </StackPanel>
+            </Border>
+
+            <Border x:Name="HeaderSurface" Grid.Row="0" Grid.Column="1"
+                    Background="{DynamicResource GscGlassFillBrush}"
+                    BorderBrush="{DynamicResource GscGlassStrokeBrush}"
+                    BorderThickness="0,0,0,1">
+                <Grid x:Name="HeaderLayoutGrid" Margin="20,8,14,8" MinWidth="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition x:Name="HeaderActionsRow" Height="0"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel x:Name="HeaderTitlePanel" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" MinWidth="0">
+                        <TextBlock x:Name="PageTitleText" Text="首页" FontSize="16" FontWeight="SemiBold"/>
+                        <TextBlock x:Name="PageSubtitleText" Text="今日工作台 · 一切运行正常"
+                                   FontSize="10.5" Foreground="{DynamicResource GscSecondaryTextBrush}"
+                                   Margin="0,2,0,0" TextTrimming="CharacterEllipsis"/>
+                    </StackPanel>
+                    <StackPanel x:Name="HeaderActionsPanel" Grid.Row="0" Grid.Column="1"
+                                Orientation="Horizontal" VerticalAlignment="Center"
+                                HorizontalAlignment="Right" MinWidth="0">
+                        <Button x:Name="GameContextButton" Style="{DynamicResource GscRedesignGameContextButton}"
+                                Width="300" MinWidth="0" MaxWidth="300" Click="OnGameContextClick"
+                                AutomationProperties.Name="选择当前游戏">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="38"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <ContentControl Grid.Column="0" Style="{DynamicResource GscSelectedGameIconControl}"
+                                                Width="32" Height="32" Content="{Binding SelectedGameIcon}"/>
+                                <StackPanel Grid.Column="1" Margin="8,0,8,0" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding SelectedGame.Name, TargetNullValue=请选择游戏}"
+                                               FontSize="12" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock Text="{Binding SelectedGame.PlatformDisplay, TargetNullValue=未选择游戏}"
+                                               FontSize="10" Foreground="{DynamicResource GscSecondaryTextBrush}"
+                                               Margin="0,2,0,0" TextTrimming="CharacterEllipsis"/>
+                                </StackPanel>
+                                <TextBlock Grid.Column="2" Text="&#xE70D;" FontFamily="Segoe MDL2 Assets"
+                                           FontSize="10" Foreground="{DynamicResource GscSecondaryTextBrush}"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+                        </Button>
+                        <ui:Button x:Name="HeaderRefreshButton" Style="{DynamicResource GscRedesignHeaderButton}"
+                                   Command="{Binding RefreshCommand}" Content="&#xE72C;" FontFamily="Segoe MDL2 Assets"
+                                   ToolTip="刷新" AutomationProperties.Name="刷新"/>
+                        <ui:Button x:Name="HeaderMediaButton" Style="{DynamicResource GscRedesignHeaderButton}"
+                                   Command="{Binding SyncMediaCommand}" Content="同步媒体" ToolTip="同步媒体"/>
+                        <ui:Button x:Name="HeaderBackupButton" Style="{DynamicResource GscRedesignPrimaryHeaderButton}"
+                                   Command="{Binding BackupAllCommand}" Content="全部备份" ToolTip="全部备份"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="1" Grid.Column="0"
+                    Background="{DynamicResource GscSidebarBrush}"
+                    BorderBrush="{DynamicResource GscGlassStrokeBrush}"
+                    BorderThickness="0,0,1,0"
+                    Padding="10,10,10,12">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <ScrollViewer x:Name="NavigationScrollViewer"
+                                  Style="{DynamicResource GscPageScrollViewer}"
+                                  VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Disabled">
+                        <StackPanel>
+                            <RadioButton x:Name="NavOverview" GroupName="DemoWorkspaceNavigation"
+                                         Style="{StaticResource AcrylicNavItem}" IsChecked="True"
+                                         Tag="Overview" Checked="OnNavChecked" ToolTip="首页">
+                                <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock Text="首页" FontWeight="SemiBold"/></StackPanel>
+                            </RadioButton>
+                            <RadioButton x:Name="NavSaves" GroupName="DemoWorkspaceNavigation"
+                                         Style="{StaticResource AcrylicNavItem}" Tag="Saves" Checked="OnNavChecked" ToolTip="存档中心">
+                                <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock Text="存档中心"/></StackPanel>
+                            </RadioButton>
+                            <RadioButton x:Name="NavTrainers" GroupName="DemoWorkspaceNavigation"
+                                         Style="{StaticResource AcrylicNavItem}" Tag="Trainers" Checked="OnNavChecked" ToolTip="修改器中心">
+                                <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE90F;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock Text="修改器中心"/></StackPanel>
+                            </RadioButton>
+                            <RadioButton x:Name="NavMedia" GroupName="DemoWorkspaceNavigation"
+                                         Style="{StaticResource AcrylicNavItem}" Tag="Media" Checked="OnNavChecked" ToolTip="媒体中心">
+                                <StackPanel Orientation="Horizontal"><TextBlock Text="&#xEB9F;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock Text="媒体中心"/></StackPanel>
+                            </RadioButton>
+                            <RadioButton x:Name="NavTasks" GroupName="DemoWorkspaceNavigation"
+                                         Style="{StaticResource AcrylicNavItem}" Tag="Tasks" Checked="OnNavChecked" ToolTip="任务中心">
+                                <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE9D5;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock Text="任务中心"/></StackPanel>
+                            </RadioButton>
+                            <RadioButton x:Name="NavMaintenance" GroupName="DemoWorkspaceNavigation"
+                                         Style="{StaticResource AcrylicNavItem}" Tag="Maintenance" Checked="OnNavChecked" ToolTip="维护中心">
+                                <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock Text="维护中心"/></StackPanel>
+                            </RadioButton>
+                            <Border Height="1" Background="{DynamicResource GscDividerBrush}" Margin="8,10"/>
+                            <TextBlock Text="设置" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                       Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="8,8,8,4"
+                                       ToolTip="设置请从 Playnite 插件设置入口打开"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                    <Border Grid.Row="1" Style="{DynamicResource GscRedesignStatusCard}" Margin="0,12,0,0" Padding="10,9">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse Width="7" Height="7" Fill="{DynamicResource GscSuccessBrush}" VerticalAlignment="Center"/>
+                                <TextBlock Text="Worker" FontSize="10.5" Margin="7,0,0,0"/>
+                                <TextBlock Text="{Binding Snapshot.WorkerHealthy, StringFormat= · {0}}" FontSize="10.5"
+                                           Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="4,0,0,0"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                <Ellipse Width="7" Height="7" Fill="{DynamicResource GscInfoBrush}" VerticalAlignment="Center"/>
+                                <TextBlock Text="Ludusavi" FontSize="10.5" Margin="7,0,0,0"/>
+                                <TextBlock Text="{Binding Snapshot.LudusaviAvailable, StringFormat= · {0}}" FontSize="10.5"
+                                           Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="4,0,0,0"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <Grid x:Name="MainPageHost" Grid.Row="1" Grid.Column="1" Margin="20,12,20,8">
+                <Border Background="Transparent">
+                    <ContentControl x:Name="PageHost" Focusable="False"/>
+                </Border>
+                <Grid x:Name="PickerOverlay" Visibility="Collapsed" Panel.ZIndex="40">
+                    <Rectangle Fill="{DynamicResource GscPickerScrimBrush}" MouseLeftButtonDown="OnPickerScrimMouseDown"/>
+                    <Border x:Name="PickerPanel" Style="{DynamicResource GscRedesignFloatingPickerCard}"
+                            Width="460" MaxHeight="500" HorizontalAlignment="Right" VerticalAlignment="Top"
+                            Margin="0,0,4,0" Padding="14">
+                        <Grid>
+                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                            <Grid>
+                                <TextBox x:Name="GameSearchTextBox" Style="{DynamicResource GscWpfUiTextBox}"
+                                         Text="{Binding GamePicker.SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         AutomationProperties.Name="搜索游戏" ToolTip="搜索游戏、平台或状态"/>
+                                <TextBlock Text="搜索游戏" Foreground="{DynamicResource GscMutedTextBrush}"
+                                           IsHitTestVisible="False" Margin="12,0,0,0" VerticalAlignment="Center">
+                                    <TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding Text, ElementName=GameSearchTextBox}" Value=""><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                            <UniformGrid Grid.Row="1" Columns="3" Margin="0,8,0,0">
+                                <ComboBox x:Name="GamePickerStatusComboBox" Style="{DynamicResource GscWpfUiFilterComboBox}"
+                                          ItemsSource="{Binding GamePicker.StatusFilterOptions}" SelectedItem="{Binding GamePicker.StatusFilter, Mode=TwoWay}" Margin="0,0,4,0"/>
+                                <ComboBox x:Name="GamePickerPlatformComboBox" Style="{DynamicResource GscWpfUiFilterComboBox}"
+                                          ItemsSource="{Binding GamePicker.PlatformFilterOptions}" SelectedItem="{Binding GamePicker.PlatformFilter, Mode=TwoWay}" Margin="4,0,4,0"/>
+                                <ComboBox x:Name="GamePickerSortComboBox" Style="{DynamicResource GscWpfUiFilterComboBox}"
+                                          ItemsSource="{Binding GamePicker.SortOptions}" SelectedItem="{Binding GamePicker.SortMode, Mode=TwoWay}" Margin="4,0,0,0"/>
+                            </UniformGrid>
+                            <ListBox x:Name="PickerList" Grid.Row="2" Margin="0,10,0,0"
+                                     ItemsSource="{Binding GamePicker.ItemsView}" SelectedItem="{Binding GamePicker.SelectedItem, Mode=TwoWay}"
+                                     SelectionChanged="OnPickerSelectionChanged" Background="Transparent" BorderThickness="0"
+                                     ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                     VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
+                                <ListBox.ItemContainerStyle><Style TargetType="ListBoxItem"><Setter Property="HorizontalContentAlignment" Value="Stretch"/><Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/><Setter Property="Padding" Value="8"/><Setter Property="Margin" Value="0,0,0,5"/></Style></ListBox.ItemContainerStyle>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <Border Width="32" Height="32" CornerRadius="8" Background="{DynamicResource GscAccentIconFillBrush}"><TextBlock Text="{Binding Initials}" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="SemiBold"/></Border>
+                                            <StackPanel Grid.Column="1" Margin="8,0,8,0" VerticalAlignment="Center"><TextBlock Text="{Binding Name}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/><TextBlock Text="{Binding MetaDisplay}" FontSize="10" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,2,0,0" TextTrimming="CharacterEllipsis"/></StackPanel>
+                                            <TextBlock Grid.Column="2" Text="{Binding HealthStateDisplay}" FontSize="10" Foreground="{DynamicResource GscSecondaryTextBrush}" VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Grid>
+
+            <Border Grid.Row="2" Grid.Column="1" BorderBrush="{DynamicResource GscDividerBrush}" BorderThickness="0,1,0,0">
+                <Grid Margin="20,0">
+                    <TextBlock Text="生产版 · 真实数据由 Worker 提供" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10" VerticalAlignment="Center"/>
+                    <TextBlock Text="GameSaveCenter" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</UserControl>

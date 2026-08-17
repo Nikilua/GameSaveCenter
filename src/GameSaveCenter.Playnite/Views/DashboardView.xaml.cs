@@ -36,8 +36,6 @@ namespace GameSaveCenter.Playnite.Views
         private bool choiceDialog;
         private bool confirmationOpen;
         private bool responsiveLayoutPending;
-        private bool responsiveLayoutFinalizationPending;
-        private bool responsiveLayoutFinalizationPass;
         private bool compactGameBrowserOpen;
         private Size pendingResponsiveSize;
 
@@ -82,6 +80,7 @@ namespace GameSaveCenter.Playnite.Views
             }
             var version = typeof(DashboardView).Assembly.GetName().Version;
             SidebarVersionText.Text = version == null ? "开发预览" : "v" + version.ToString(3);
+            AcrylicProductionShell.Attach(viewModel);
             ApplyAdaptiveTheme();
             UpdateWorkspacePresentation();
             ApplyResponsiveLayout(ActualWidth, ActualHeight);
@@ -135,7 +134,6 @@ namespace GameSaveCenter.Playnite.Views
             activeChoice = null;
             confirmationOpen = false;
             responsiveLayoutPending = false;
-            responsiveLayoutFinalizationPending = false;
             DialogOverlay.Visibility = Visibility.Collapsed;
             ClearToasts();
         }
@@ -153,11 +151,14 @@ namespace GameSaveCenter.Playnite.Views
 
         internal TabControl? DetailsTabControlForAudit => DetailsTabControl;
 
+        internal FrameworkElement ProductionPageHostForAudit => AcrylicProductionShell.PageHostForAudit;
+
         internal void ApplyWorkspaceForAudit(WorkspaceKind workspace)
         {
             if (viewModel == null || DetailsTabControl == null)
                 return;
             viewModel.CurrentWorkspace = workspace;
+            AcrylicProductionShell.NavigateTo(workspace);
             UpdateWorkspacePresentation();
             ApplyResponsiveLayout(ActualWidth, ActualHeight);
             viewModel.RequestWorkspaceLoad();
@@ -373,25 +374,19 @@ namespace GameSaveCenter.Playnite.Views
             GameSwitcherHost.Visibility = gameScopedWorkspace
                 ? Visibility.Visible
                 : Visibility.Collapsed;
-            // Keep the AcrylicFork header rhythm down to the compact breakpoint. In compact
-            // windows the toolbar labels collapse to glyphs, leaving enough room for a
-            // narrow real game picker on the same row instead of creating a tall second
-            // header band. The narrow mode still stacks it to protect touch/keyboard use.
-            var pickerOnTopBar = gameScopedWorkspace && mode != LayoutMode.Narrow;
+            var pickerOnTopBar = gameScopedWorkspace
+                && (mode == LayoutMode.Expanded || mode == LayoutMode.Standard);
             HeaderGamePickerColumn.Width = pickerOnTopBar
                 ? GridLength.Auto
                 : new GridLength(0);
-            Grid.SetColumnSpan(HeaderTitlePanel, pickerOnTopBar ? 1 : mode == LayoutMode.Compact ? 3 : 2);
+            Grid.SetColumnSpan(HeaderTitlePanel, pickerOnTopBar ? 1 : mode >= LayoutMode.Compact ? 3 : 2);
             Grid.SetRow(GameSwitcherHost, pickerOnTopBar ? 0 : 1);
             Grid.SetColumn(GameSwitcherHost, pickerOnTopBar ? 1 : 0);
             Grid.SetColumnSpan(GameSwitcherHost, pickerOnTopBar ? 1 : 3);
-            // The picker shares the open page-header rail with the title and contextual
-            // actions. Give it a finite width so its Auto columns cannot measure beyond
-            // HeaderSurface at normal and high-DPI window sizes.
-            var pickerWidth = mode == LayoutMode.Expanded ? 360d
-                : mode == LayoutMode.Standard ? 320d
-                : mode == LayoutMode.Compact ? 260d
-                : 300d;
+            // The picker lives inside the same bordered header as the title and the
+            // contextual actions.  Give it a finite width so its Auto columns cannot
+            // measure beyond HeaderSurface at normal and high-DPI window sizes.
+            var pickerWidth = mode == LayoutMode.Expanded ? 380d : 330d;
             GameSwitcherHost.Width = pickerOnTopBar ? pickerWidth : double.NaN;
             GameSwitcherHost.MaxWidth = pickerOnTopBar ? pickerWidth : double.PositiveInfinity;
             GameSwitcherHost.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -416,15 +411,6 @@ namespace GameSaveCenter.Playnite.Views
                 Grid.SetColumnSpan(TopActionsScroller, 1);
                 TopActionsScroller.HorizontalAlignment = HorizontalAlignment.Right;
                 TopActionsScroller.Margin = new Thickness(14, 0, 0, 0);
-            }
-            else if (mode == LayoutMode.Compact && pickerOnTopBar)
-            {
-                HeaderCompactActionsRow.Height = new GridLength(0);
-                Grid.SetRow(TopActionsScroller, 0);
-                Grid.SetColumn(TopActionsScroller, 3);
-                Grid.SetColumnSpan(TopActionsScroller, 1);
-                TopActionsScroller.HorizontalAlignment = HorizontalAlignment.Right;
-                TopActionsScroller.Margin = new Thickness(8, 0, 0, 0);
             }
             else
             {
@@ -563,46 +549,6 @@ namespace GameSaveCenter.Playnite.Views
                 GameHeaderActions.Margin = stackGameHeaderActions
                     ? new Thickness(54, 8, 0, 0)
                     : new Thickness(16, 0, 0, 0);
-
-                // The selected-game card sits inside a Grid that spans the shell's
-                // workspace columns. During WPF's first measure pass, a WrapPanel and
-                // the identity Grid can otherwise be measured with Infinity and keep
-                // their DesiredSize after the host has arranged the card to a narrower
-                // width. Constrain the shared header to the actual card content width so
-                // the title truncates and the action row wraps instead of painting past
-                // the Playnite page at 100%/125%/150% DPI.
-                var detailContentWidth = GameDetailCard.ActualWidth > 0
-                    ? GameDetailCard.ActualWidth - GameDetailCard.Padding.Left - GameDetailCard.Padding.Right
-                    : workspaceContentWidth;
-                var headerContentWidth = Math.Max(0, detailContentWidth
-                    - SelectedGameHeader.BorderThickness.Left - SelectedGameHeader.BorderThickness.Right
-                    - SelectedGameHeader.Padding.Left - SelectedGameHeader.Padding.Right);
-                // The shell can be hosted with a narrower effective viewport than the
-                // DashboardView's nominal measure width. Cap the header from its actual
-                // arranged X coordinate so a spanning Grid cannot extend past the host
-                // edge during the first responsive pass.
-                if (ActualWidth > 0)
-                {
-                    var headerOrigin = SelectedGameHeader.TransformToAncestor(this).Transform(new Point(0, 0));
-                    var pageAvailableWidth = Math.Max(0, ActualWidth - headerOrigin.X - 2d);
-                    detailContentWidth = Math.Min(detailContentWidth, pageAvailableWidth);
-                    headerContentWidth = Math.Max(0, detailContentWidth
-                        - SelectedGameHeader.BorderThickness.Left - SelectedGameHeader.BorderThickness.Right
-                        - SelectedGameHeader.Padding.Left - SelectedGameHeader.Padding.Right);
-                }
-                if (detailContentWidth > 0)
-                {
-                    SelectedGameHeader.HorizontalAlignment = HorizontalAlignment.Left;
-                    SelectedGameHeaderLayout.HorizontalAlignment = HorizontalAlignment.Left;
-                    SelectedGameHeader.Width = detailContentWidth;
-                    SelectedGameHeaderLayout.Width = headerContentWidth;
-                    SelectedGameHeaderLayout.MaxWidth = headerContentWidth;
-                    SelectedGameIdentityPanel.MaxWidth = headerContentWidth;
-                    var actionWidth = Math.Max(0, headerContentWidth
-                        - GameHeaderActions.Margin.Left - GameHeaderActions.Margin.Right);
-                    GameHeaderActions.Width = actionWidth;
-                    GameHeaderActions.MaxWidth = actionWidth;
-                }
             }
 
             if (MediaWorkspaceView != null)
@@ -633,37 +579,15 @@ namespace GameSaveCenter.Playnite.Views
                 MaintenanceWorkspaceView.ApplyResponsiveLayout(workspaceContentWidth, height);
             }
 
-            // Responsive behavior now belongs to each extracted workspace view. The UiLab
-            // reference carries this safety boundary inside the policy/compare surfaces;
-            // do not reintroduce a second global banner during a resize pass.
-            RestoreSafetyBanner.Visibility = Visibility.Collapsed;
+            // Responsive behavior now belongs to each extracted workspace view.
+            // The safety banner is actionable context, not decorative chrome. Keep it visible
+            // for the Saves workspace at every height; its extracted Grid layout keeps the
+            // warning and table actions reachable without a page-level scroll channel.
+            RestoreSafetyBanner.Visibility = viewModel.CurrentWorkspace == WorkspaceKind.Saves
+                ? Visibility.Visible : Visibility.Collapsed;
             if (viewModel.CurrentWorkspace != WorkspaceKind.Saves)
             {
                 BackupPolicyPanel.Visibility = Visibility.Collapsed;
-            }
-
-            // Changing Grid rows/columns and explicit widths above invalidates the current
-            // measure. A second pass at ApplicationIdle is required when Playnite first
-            // attaches the view (and when its host changes DPI): otherwise the header width
-            // is calculated from the previous two-column arrangement and can retain a
-            // one-frame DesiredSize past the right edge of the page.
-            if (!responsiveLayoutFinalizationPending && !responsiveLayoutFinalizationPass)
-            {
-                responsiveLayoutFinalizationPending = true;
-                BeginUiSafely(() =>
-                {
-                    responsiveLayoutFinalizationPending = false;
-                    if (!IsLoaded || ActualWidth <= 0) return;
-                    responsiveLayoutFinalizationPass = true;
-                    try
-                    {
-                        ApplyResponsiveLayout(ActualWidth, ActualHeight);
-                    }
-                    finally
-                    {
-                        responsiveLayoutFinalizationPass = false;
-                    }
-                }, DispatcherPriority.ApplicationIdle);
             }
         }
 
@@ -792,12 +716,7 @@ namespace GameSaveCenter.Playnite.Views
             DetailsTabControl.Margin = workspace == WorkspaceKind.Trainers || workspace == WorkspaceKind.Media
                 ? new Thickness(0, 12, 0, 0)
                 : new Thickness(0);
-            // The UiLab reference keeps the selected game in the single page-header
-            // context picker. Rendering a second identity card below that header was the
-            // main reason the installed game-scoped pages started several hundred DIP
-            // lower than the demo and appeared to have a different layout. Workspace
-            // pages still expose their real bound actions in their own cards/tabs.
-            SetVisibility(SelectedGameHeader, false);
+            SetVisibility(SelectedGameHeader, workspace != WorkspaceKind.Tasks && workspace != WorkspaceKind.Maintenance && workspace != WorkspaceKind.Overview);
             SetVisibility(BackupSelectedButton, saves);
             SetVisibility(ValidateButton, saves);
             SetVisibility(DetectPathsButton, saves);
@@ -805,17 +724,14 @@ namespace GameSaveCenter.Playnite.Views
             // Extracted Media/Trainer workspaces expose their own refresh/import actions.
             // Keeping a second action row under the global picker created the oversized
             // “Bongo Cat · ready” band and pushed the real workspace below the fold.
-            SetVisibility(GameHeaderActions, false);
+            SetVisibility(GameHeaderActions, saves);
             // The top GamePicker is the single source of game status and counts. The hero
             // remains for game-scoped workspaces, but do not repeat its health pill and metric
             // tiles directly underneath the picker; those duplicates are what made the second
             // row feel oversized and visually overlap the global context.
             SelectedGameHealthPill.Visibility = Visibility.Collapsed;
             SelectedGameMetricPanel.Visibility = Visibility.Collapsed;
-            // The safety boundary remains documented inside the save policy/compare
-            // surfaces. It must not consume a second permanent banner row above the
-            // migrated Demo-like page content.
-            SetVisibility(RestoreSafetyBanner, false);
+            SetVisibility(RestoreSafetyBanner, saves);
             if (!saves) BackupPolicyPanel.Visibility = Visibility.Collapsed;
 
             SetVisibility(TopRefreshButton, workspace != WorkspaceKind.Trainers && workspace != WorkspaceKind.Maintenance);
@@ -1401,9 +1317,9 @@ namespace GameSaveCenter.Playnite.Views
                 WorkspaceKind.Tasks => TaskWorkspaceView.FindName("TaskSearchTextBox") as FrameworkElement,
                 WorkspaceKind.Media => MediaWorkspaceView.FindName("MediaSearchTextBox") as FrameworkElement,
                 WorkspaceKind.Maintenance => MaintenanceWorkspaceView.FindName("ProcessMappingExecutableTextBox") as FrameworkElement,
-                _ => GameSearchTextBox
+                _ => AcrylicProductionShell.GameSearchBoxForFocus
             };
-            if (target == null) target = GameSearchTextBox;
+            if (target == null) target = AcrylicProductionShell.GameSearchBoxForFocus;
             target.Focus();
             if (target is TextBox textBox) textBox.SelectAll();
         }

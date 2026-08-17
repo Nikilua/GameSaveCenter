@@ -1,4 +1,4 @@
-<UserControl x:Class="GameSaveCenter.Playnite.Views.DashboardView"
+﻿<UserControl x:Class="GameSaveCenter.Playnite.Views.DashboardView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:converters="clr-namespace:GameSaveCenter.Playnite.Converters"
@@ -39,7 +39,7 @@
 
         <Style x:Key="GscSurface" TargetType="Border">
             <Setter Property="Background" Value="{DynamicResource GscGlassFillBrush}"/>
-            <Setter Property="CornerRadius" Value="16"/>
+            <Setter Property="CornerRadius" Value="18"/>
             <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="SnapsToDevicePixels" Value="True"/>
@@ -93,7 +93,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border x:Name="Chrome" CornerRadius="{StaticResource GscCornerControl}" Background="{TemplateBinding Background}"
+                        <Border x:Name="Chrome" CornerRadius="11" Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
                                 Padding="{TemplateBinding Padding}" RenderTransformOrigin="0.5,0.5">
                             <Border.RenderTransform>
@@ -136,7 +136,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border x:Name="Chrome" CornerRadius="{StaticResource GscCornerControl}" Background="{TemplateBinding Background}"
+                        <Border x:Name="Chrome" CornerRadius="12" Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1"
                                 Padding="{TemplateBinding Padding}" RenderTransformOrigin="0.5,0.5"
                                 Effect="{DynamicResource GscPrimaryButtonEffect}">
@@ -212,14 +212,14 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <!-- Keep enough space below the header viewport so the lower two
-                                 rounded corners are never clipped.  The scrollbar is hidden;
-                                 the small number of module tabs does not need a visible track. -->
+                                 rounded corners are never clipped. The project's own
+                                 scrollbar remains available if the workspace tabs overflow. -->
                             <Border Grid.Row="0"
                                     Padding="1,1,1,10"
                                     Background="Transparent"
                                     ClipToBounds="False">
                                 <ScrollViewer x:Name="HeaderScrollViewer"
-                                              HorizontalScrollBarVisibility="Hidden"
+                                              HorizontalScrollBarVisibility="Auto"
                                               VerticalScrollBarVisibility="Disabled"
                                               CanContentScroll="False"
                                               PanningMode="HorizontalOnly"
@@ -287,7 +287,7 @@
                                     Background="{TemplateBinding Background}"
                                     BorderBrush="{TemplateBinding BorderBrush}"
                                     BorderThickness="{TemplateBinding BorderThickness}"
-                                    CornerRadius="8"
+                                    CornerRadius="11"
                                     Padding="{TemplateBinding Padding}"
                                     SnapsToDevicePixels="False"
                                     UseLayoutRounding="True"
@@ -395,7 +395,6 @@
         </Style>
 
         <Style TargetType="DataGridColumnHeader">
-            <Setter Property="OverridesDefaultStyle" Value="True"/>
             <Setter Property="Foreground" Value="{DynamicResource GscSecondaryTextBrush}"/>
             <Setter Property="Background" Value="{DynamicResource GscTableHeaderBrush}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource GscTableDividerBrush}"/>
@@ -406,7 +405,7 @@
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="SnapsToDevicePixels" Value="True"/>
             <Setter Property="Tag">
-                <Setter.Value><CornerRadius>10,10,10,10</CornerRadius></Setter.Value>
+                <Setter.Value><CornerRadius>0</CornerRadius></Setter.Value>
             </Setter>
             <Setter Property="Template">
                 <Setter.Value>
@@ -414,11 +413,10 @@
                         <!-- Optional Tag bindings can resolve to UnsetValue and crash Playnite's
                              layout thread. Keep the shared header deterministic. -->
                         <Border x:Name="HeaderChrome"
-                                Margin="1,2"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="10">
+                                CornerRadius="0">
                             <Grid>
                                 <ContentPresenter Margin="{TemplateBinding Padding}"
                                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -458,19 +456,19 @@
 
         <Style x:Key="GscFirstColumnHeader" TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
             <Setter Property="Tag">
-                <Setter.Value><CornerRadius>10,0,0,0</CornerRadius></Setter.Value>
+                <Setter.Value><CornerRadius>11,0,0,0</CornerRadius></Setter.Value>
             </Setter>
         </Style>
 
         <Style x:Key="GscLastColumnHeader" TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
             <Setter Property="Tag">
-                <Setter.Value><CornerRadius>0,10,0,0</CornerRadius></Setter.Value>
+                <Setter.Value><CornerRadius>0,11,0,0</CornerRadius></Setter.Value>
             </Setter>
         </Style>
 
         <Style x:Key="GscOnlyColumnHeader" TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
             <Setter Property="Tag">
-                <Setter.Value><CornerRadius>10,10,0,0</CornerRadius></Setter.Value>
+                <Setter.Value><CornerRadius>11,11,0,0</CornerRadius></Setter.Value>
             </Setter>
         </Style>
 
@@ -657,7 +655,7 @@
         <Style x:Key="GscStatusPill" TargetType="Border">
             <Setter Property="MinWidth" Value="48"/>
             <Setter Property="Padding" Value="12,8"/>
-            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="CornerRadius" Value="12"/>
             <Setter Property="Background" Value="{DynamicResource GscGlassStrongBrush}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
@@ -667,16 +665,32 @@
     </UserControl.Resources>
 
     <Grid x:Name="RootShell" Background="{DynamicResource GscBackdropBrush}" ClipToBounds="True">
-        <!-- UiLab has one restrained accent wash behind the shell. Keep that halo for the
-             homepage, but avoid the old three-colour glow wall that made the production
-             host look unlike the reference and could visually stack under cards. -->
+        <!-- The visible production surface now uses the actual AcrylicFork Demo shell.
+             The legacy shell below remains only as a temporary compatibility surface for
+             existing audit and dialog code; it is collapsed and never paints over this host. -->
+        <views:AcrylicProductionShellView x:Name="AcrylicProductionShell"
+                                          Panel.ZIndex="100"
+                                          Width="{Binding ActualWidth, ElementName=RootShell}"
+                                          MinWidth="0"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Stretch"
+                                          ClipToBounds="True"/>
         <Grid x:Name="AmbientGlowLayer" IsHitTestVisible="False" Opacity="0.9">
-            <Ellipse Width="620" Height="620" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-250,-120,0" Fill="{DynamicResource GscAmbientAccentBrush}">
-                <Ellipse.Effect><BlurEffect Radius="110"/></Ellipse.Effect>
+            <Ellipse Width="360" Height="360" HorizontalAlignment="Left" VerticalAlignment="Top" Fill="{DynamicResource GscAmbientAccentBrush}">
+                <Ellipse.RenderTransform><TranslateTransform X="-95" Y="-130"/></Ellipse.RenderTransform>
+                <Ellipse.Effect><BlurEffect Radius="82"/></Ellipse.Effect>
+            </Ellipse>
+            <Ellipse Width="320" Height="320" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,35,0,0" Fill="{DynamicResource GscAmbientInfoBrush}">
+                <Ellipse.RenderTransform><TranslateTransform X="105" Y="0"/></Ellipse.RenderTransform>
+                <Ellipse.Effect><BlurEffect Radius="90"/></Ellipse.Effect>
+            </Ellipse>
+            <Ellipse Width="300" Height="300" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,20,0" Fill="{DynamicResource GscAmbientSuccessBrush}">
+                <Ellipse.RenderTransform><TranslateTransform X="0" Y="165"/></Ellipse.RenderTransform>
+                <Ellipse.Effect><BlurEffect Radius="96"/></Ellipse.Effect>
             </Ellipse>
         </Grid>
 
-        <Border x:Name="DashboardDemoShell" Margin="14" Style="{StaticResource GscShellStyle}" Padding="14">
+        <Border x:Name="DashboardDemoShell" Margin="14" Style="{StaticResource GscShellStyle}" Padding="14" Visibility="Collapsed">
         <!-- DashboardDemoShell supplies the complete outer spacing. Keep this inner grid
              flush with the shell padding so ordinary 1024/1280-DIP windows do not waste
              another 18 DIP on each side. -->
@@ -836,18 +850,18 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- AcrylicFork's page header is an open content rail rather than a second large card.
-             Keep the real game picker and commands, but let the workspace cards define the
-             reading surfaces below it. -->
-        <Border x:Name="HeaderSurface" Grid.Row="0" Margin="0,0,0,10"
-                Background="Transparent"
-                BorderBrush="Transparent"
-                BorderThickness="0"
-                CornerRadius="0"
-                Padding="0"
-                ClipToBounds="False"
+        <!-- Demo top bar: a quiet, lightly separated surface keeps the page title,
+             global GamePicker and contextual actions from visually merging into the
+             workspace cards below. -->
+        <Border x:Name="HeaderSurface" Grid.Row="0" Margin="0,0,0,6"
+                Background="{DynamicResource GscGlassFillBrush}"
+                BorderBrush="{DynamicResource GscGlassStrokeBrush}"
+                BorderThickness="1"
+                CornerRadius="20"
+                Padding="20,10"
+                ClipToBounds="True"
                 SnapsToDevicePixels="True">
-            <Grid x:Name="HeaderGrid" Margin="0" MinWidth="0">
+            <Grid x:Name="HeaderGrid" Margin="16,0,16,0" MinWidth="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -860,7 +874,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <StackPanel x:Name="HeaderTitlePanel" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" MinWidth="0">
-                <TextBlock x:Name="PageTitleText" Text="首页" FontSize="20" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                <TextBlock x:Name="PageTitleText" Text="首页" FontSize="26" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
                 <TextBlock x:Name="PageSubtitleText" Text="今日整体状态、需处理关注项与全局批量操作"
                            Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,4,14,0"
                            TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
@@ -901,7 +915,7 @@
                     Height="54" VerticalAlignment="Center"
                     Background="{DynamicResource GscGlassFillBrush}"
                     BorderBrush="Transparent" BorderThickness="0"
-                    CornerRadius="10" Padding="3" Visibility="Collapsed">
+                    CornerRadius="16" Padding="4" Visibility="Collapsed">
                 <Button x:Name="CompactGameSelector" Style="{StaticResource GscRedesignGameContextButton}"
                         HorizontalAlignment="Stretch" Click="OnToggleGameBrowserClick"
                         AutomationProperties.Name="选择当前游戏"

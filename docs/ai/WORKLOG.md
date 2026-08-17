@@ -2,6 +2,22 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-17 UI-222 生产 Shell 入口边界与宿主审计修复
+
+**原因定位：**
+
+- 之前的生产界面同时存在旧 `DashboardDemoShell` 和新页面结构；旧结构虽已隐藏，但其尺寸计算与 Playnite 宿主审计仍会影响判断，造成“源码已改、启动后像没变”的错觉。
+- 当前 Playnite 用户目录同时加载 `GameSaveCenter Preview` 0.6.71 和生产 `GameSaveCenter` 0.6.70。前者是独立的 Demo/预览插件，后者才加载 `AcrylicProductionShellView`；从预览入口进入不会显示生产改造。
+- 生产 Shell 原先还保留 Demo 的“外观预览”徽标，已改为“生产版”，避免把生产入口误认成 Preview。
+
+**实现与验证：**
+
+- 生产 `DashboardView` 的可见层现在明确绑定宿主宽度并裁剪，唯一可见页面宿主为 `AcrylicProductionShellView.PageHost`；旧 `DashboardDemoShell` 仅保留为兼容字段并保持 `Collapsed`。
+- Header 在 980 DIP 以下把游戏选择器和全局操作放入明确的第二行，避免 Playnite 窄宿主中被裁剪或假溢出；页面内部继续使用真实 ViewModel、Binding、Command 和项目滚动条。
+- Real Host 审计已修正 Playnite 150% DPI 下 `TransformToAncestor` 像素/DIP 混用，以及受控窗口截图未按 DPI 输出导致的裁剪误判。
+- `validate-source.py`、WPF UI 校验（0 errors）、Release 构建（0 warning/0 error）、Playnite 303/303 和 `render-qa OK` 已通过；本次真实宿主安装目录为生产 `GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec`，启动日志同时确认 Preview 与生产两个插件均加载。
+- 自动审计仍无法通过 UIAutomation 点击 Playnite 自定义侧栏，因此 `EmbeddedDashboardCaptured=false` 仍是真实边界；Controlled Host/RenderHarness 只能证明生产视图结构和布局，不冒充 Playnite 嵌入像素验收。
+
 ## 2026-08-17 UI-DIRECTION-RESET 页面级重构授权
 
 **方向变更：**

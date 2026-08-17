@@ -35,9 +35,9 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.DoesNotContain("EnvironmentCheckDisclosureScroller", maintenance.ToString());
             Assert.DoesNotContain("MaintenanceActionsDisclosureScroller", maintenance.ToString());
             Assert.Contains("x:Name=\"MaintenanceDiagnosticsSubTabs\"", maintenance.ToString());
-            Assert.Contains("Content=\"问题列表\"", maintenance.ToString());
-            Assert.Contains("Content=\"诊断概览\"", maintenance.ToString());
-            Assert.Contains("OnMaintenanceDiagnosticsSubTabChanged", maintenance.ToString());
+            Assert.Contains("Header=\"问题列表\"", maintenance.ToString());
+            Assert.Contains("Header=\"诊断概览\"", maintenance.ToString());
+            Assert.Contains("x:Name=\"MaintenanceDiagnosticsSubTabs\"", maintenance.ToString());
         }
 
         private static string FindRepositoryRoot()

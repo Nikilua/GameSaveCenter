@@ -15,16 +15,33 @@ namespace GameSaveCenter.Playnite.Tests
             var overview = XDocument.Parse(File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml")));
             var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
             var hero = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewTodayHeroCard");
-            var grid = hero.Elements().Single(element => element.Name.LocalName == "Grid");
-            var rows = grid.Descendants().Where(element => element.Name.LocalName == "RowDefinition")
-                .ToList();
-            var statusRow = grid.Descendants().Single(element => element.Name.LocalName == "WrapPanel" && element.Attribute("Grid.Row")?.Value == "1");
-
-            Assert.Equal(2, rows.Count);
-            Assert.Equal("Left", statusRow.Attribute("HorizontalAlignment")?.Value);
-            Assert.Null(statusRow.Attribute("Grid.Column"));
-            Assert.Null(statusRow.Attribute("Grid.ColumnSpan"));
+            Assert.NotNull(hero.Descendants().SingleOrDefault(element => element.Attribute(xamlName)?.Value == "OverviewHeroStatusText"));
+            var statusPills = hero.Descendants().Single(element => element.Name.LocalName == "WrapPanel");
+            Assert.Null(statusPills.Attribute("Grid.Column"));
+            Assert.Null(statusPills.Attribute("Grid.ColumnSpan"));
+            Assert.True(statusPills.Elements().Count() >= 4);
             Assert.Contains("OverviewTodayHeroCard.Padding", File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml.cs")));
+        }
+
+        [Fact]
+        public void AcrylicProductionShellIsBoundToHostAndMovesActionsToAnExplicitCompactRow()
+        {
+            var root = FindRepositoryRoot();
+            var dashboard = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml"));
+            var shellPath = Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml");
+            var shellCode = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml.cs"));
+            var shell = XDocument.Parse(File.ReadAllText(shellPath));
+            var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
+
+            Assert.Contains("Width=\"{Binding ActualWidth, ElementName=RootShell}\"", dashboard);
+            Assert.Contains("ClipToBounds=\"True\"", dashboard);
+            Assert.Contains("<Grid x:Name=\"HeaderLayoutGrid\"", shell.ToString());
+            Assert.NotNull(shell.Descendants().SingleOrDefault(element => element.Attribute(xamlName)?.Value == "HeaderActionsRow"));
+            Assert.Contains("Text=\"生产版\"", shell.ToString());
+            Assert.DoesNotContain("Text=\"外观预览\"", shell.ToString());
+            Assert.Contains("var compact = width < 980", shellCode);
+            Assert.Contains("Grid.SetRow(HeaderActionsPanel, compact ? 1 : 0)", shellCode);
+            Assert.Contains("GameContextButton.Width = pickerWidth", shellCode);
         }
 
         [Fact]
@@ -104,7 +121,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("VerticalAlignment=\"Center\"", tokens);
             Assert.Contains("<Setter Property=\"Height\" Value=\"42\"/>", tokens);
             Assert.Contains("Padding=\"0\"", redesign);
-            Assert.Contains("CornerRadius=\"10\"", redesign);
+            Assert.Contains("CornerRadius=\"14\"", redesign);
         }
 
         [Fact]
@@ -112,30 +129,24 @@ namespace GameSaveCenter.Playnite.Tests
         {
             var root = FindRepositoryRoot();
             var overview = XDocument.Parse(File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml")));
-            var actions = overview.Descendants()
-                .Single(element => element.Name.LocalName == "WrapPanel"
-                    && element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "OverviewProtectionActions"
-                    && element.Descendants().Any(descendant => descendant.Attribute("Command")?.Value == "{Binding OpenProtectionGamesCommand}")
-                    && element.Descendants().Any(descendant => descendant.Attribute("Command")?.Value == "{Binding ApplyRecommendedProtectionCommand}"));
-
-            Assert.DoesNotContain(actions.Ancestors(), ancestor => ancestor.Name.LocalName == "DataGrid");
+            var protection = overview.Descendants().Single(element => element.Name.LocalName == "ItemsControl" && element.Attribute("ItemsSource")?.Value == "{Binding RecentProtection.Items}");
+            var expander = protection.Ancestors().Single(element => element.Name.LocalName == "Expander");
+            Assert.Contains(expander.Descendants(), element => element.Attribute("Command")?.Value == "{Binding ApplyRecommendedProtectionCommand}");
+            Assert.Contains(overview.Descendants(), element => element.Attribute("Command")?.Value == "{Binding OpenProtectionGamesCommand}");
         }
 
         [Fact]
-        public void MediaCurrentGridUsesTheDemoCardRhythmInsideAProductionVirtualizedViewport()
+        public void MediaCurrentListStartsAtTheTopOfItsVirtualizedViewport()
         {
             var root = FindRepositoryRoot();
             var media = XDocument.Parse(File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml")));
             var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
             var list = media.Descendants().Single(element => element.Name.LocalName == "ListBox" && element.Attribute(xamlName)?.Value == "MediaGrid");
-            var itemsPanel = list.Descendants().Single(element => element.Name.LocalName == "VirtualizingWrapPanel");
+            var itemsPanel = list.Descendants().Single(element => element.Name.LocalName == "VirtualizingStackPanel");
 
-            Assert.Equal("Left", list.Attribute("HorizontalContentAlignment")?.Value);
+            Assert.Equal("Stretch", list.Attribute("HorizontalContentAlignment")?.Value);
             Assert.Equal("Top", list.Attribute("VerticalContentAlignment")?.Value);
             Assert.Equal("Top", itemsPanel.Attribute("VerticalAlignment")?.Value);
-            Assert.Equal("164", itemsPanel.Attribute("ItemWidth")?.Value);
-            Assert.Equal("142", itemsPanel.Attribute("ItemHeight")?.Value);
-            Assert.Contains("VirtualizingPanel.VirtualizationMode=\"Recycling\"", list.ToString());
         }
 
         [Fact]
@@ -160,27 +171,24 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("x:Name=\"OverviewActivityTimelineList\"", overview);
             Assert.Contains("ItemsSource=\"{Binding Activities}\"", overview);
             Assert.Contains("Text=\"全局活动\"", overview);
-            Assert.Contains("{Binding KindDisplay, Mode=OneWay}", overview);
-            Assert.Contains("{Binding ResultDisplay, Mode=OneWay}", overview);
+            Assert.Contains("{Binding Summary}", overview);
+            Assert.Contains("{Binding CreatedDisplay}", overview);
             Assert.DoesNotContain("MaxHeight=\"240\"", overview);
             Assert.Contains("ScrollViewer.VerticalScrollBarVisibility=\"Disabled\"", overview);
         }
 
         [Fact]
-        public void OverviewStatStripUsesSingleRoundedSummaryBand()
+        public void OverviewStatStripUsesResponsiveCompactSummaryColumns()
         {
             var root = FindRepositoryRoot();
             var overview = XDocument.Parse(File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml")));
             var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
             var strip = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewStatStrip");
-            var grid = strip.Elements().Single(element => element.Name.LocalName == "Grid"
-                && element.Attribute(xamlName)?.Value == "OverviewStatGrid");
+            var code = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml.cs"));
 
-            Assert.Equal("{StaticResource OverviewStatBand}", strip.Attribute("Style")?.Value);
-            Assert.Equal(6, grid.Elements().Count(element => element.Name.LocalName == "StackPanel"));
-            Assert.Equal(5, grid.Elements().Count(element => element.Name.LocalName == "Rectangle"));
-            Assert.All(grid.Elements().Where(element => element.Name.LocalName == "Rectangle"), divider =>
-                Assert.Equal("{DynamicResource GscDividerBrush}", divider.Attribute("Fill")?.Value));
+            Assert.Equal("6", strip.Attribute("Columns")?.Value);
+            Assert.Equal(6, strip.Elements().Count(element => element.Name.LocalName == "Border"));
+            Assert.Contains("OverviewStatStrip.Columns = primaryWidth >= 1100 ? 6 : primaryWidth >= 620 ? 3 : 2", code);
         }
 
         [Fact]
@@ -198,7 +206,7 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         [Fact]
-        public void OverviewGlobalActivityUsesDemoBusinessRow()
+        public void OverviewGlobalActivityUsesStableFourColumnRow()
         {
             var root = FindRepositoryRoot();
             var overview = XDocument.Parse(File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml")));
@@ -210,27 +218,10 @@ namespace GameSaveCenter.Playnite.Tests
             var widths = grid.Elements().Single(element => element.Name.LocalName == "Grid.ColumnDefinitions")
                 .Elements().Select(element => element.Attribute("Width")?.Value).ToArray();
 
-            Assert.Equal(new[] { "64", "*", "Auto", "84" }, widths);
-            Assert.Equal("140", grid.Elements().Single(element => element.Name.LocalName == "Grid.ColumnDefinitions")
-                .Elements().ElementAt(1).Attribute("MinWidth")?.Value);
-            Assert.Equal("Center", template.Descendants().Single(element => element.Name.LocalName == "Border"
-                && element.Attribute(xamlName)?.Value == "ActivityKindPill").Attribute("VerticalAlignment")?.Value);
-            Assert.DoesNotContain("OverviewActivityHeaderRow", overview.ToString());
-            Assert.Contains("Margin=\"0,0,14,0\"", template.Descendants().Single(element =>
-                element.Name.LocalName == "TextBlock" && element.Attribute("Text")?.Value == "{Binding CreatedDisplay, Mode=OneWay}").ToString());
-            Assert.DoesNotContain("ActivityMetaCompact", overview.ToString());
-            Assert.NotNull(template.Descendants().SingleOrDefault(element =>
-                element.Name.LocalName == "ColumnDefinition"
-                && element.Attribute(xamlName)?.Value == "ActivityResultColumn"));
-            var scopeStack = template.Descendants().Single(element =>
-                element.Name.LocalName == "StackPanel" && element.Attribute("Grid.Column")?.Value == "1");
-            Assert.DoesNotContain(scopeStack.Descendants(), element => element.Name.LocalName == "Border");
+            Assert.Equal(new[] { "34", "*", "Auto" }, widths);
+            Assert.Contains("OverviewActivityHeaderRow", overview.ToString());
             Assert.Contains(template.Descendants(), element => element.Name.LocalName == "TextBlock"
-                && element.Attribute("Text")?.Value == "{Binding KindDisplay, Mode=OneWay}");
-            Assert.Contains(template.Descendants(), element => element.Name.LocalName == "TextBlock"
-                && element.Attribute("Text")?.Value == "{Binding ResultDisplay, Mode=OneWay}");
-            Assert.Contains(template.Descendants(), element => element.Name.LocalName == "TextBlock"
-                && element.Attribute("Text")?.Value == "{Binding CreatedDisplay, Mode=OneWay}");
+                && element.Attribute("Text")?.Value == "{Binding CreatedDisplay}");
             Assert.True(template.Descendants()
                 .Where(element => element.Name.LocalName == "TextBlock"
                     && element.Attribute("Text")?.Value == "{Binding KindDisplay, Mode=OneWay}")
@@ -318,7 +309,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("Width=\"248\"", redesign);
             Assert.Contains("Padding=\"0\"", redesign);
             Assert.Contains("Padding=\"0,0,4,18\"", redesign);
-            Assert.Contains("CornerRadius=\"10\"", redesign);
+            Assert.Contains("CornerRadius=\"14\"", redesign);
             Assert.Contains("x:Name=\"SettingsHeaderBottomSafetyZone\"", redesign);
             Assert.Contains("x:Name=\"TabItemRoot\"", redesign);
             Assert.Contains("VerticalAlignment=\"Top\"", redesign);

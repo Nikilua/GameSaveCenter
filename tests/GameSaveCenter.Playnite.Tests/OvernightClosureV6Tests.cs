@@ -74,7 +74,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("<Setter Property=\"CornerRadius\" Value=\"7\"/>", redesign);
             Assert.Contains("<Setter Property=\"MinHeight\" Value=\"26\"/>", redesign);
             Assert.Contains("Property=\"Padding\" Value=\"12,8,20,8\"", production);
-            Assert.Contains("Margin=\"0,0,14,0\"", overview);
+            Assert.Contains("<UniformGrid x:Name=\"OverviewStatStrip\" Grid.Row=\"2\" Columns=\"6\"", overview);
         }
 
         [Fact]
