@@ -2,6 +2,8 @@
 
 更新时间：2026-08-11
 
+> 当前方向声明（2026-08-17）：本文件是质量、兼容性和验证门禁，不冻结页面信息架构或控件实现。用户已授权整页 UI 重构，因此页面布局、导航、控件类型、共享模板和滚动模型可以重做；下方门禁用于验证新方案仍然可用、可访问、可扩展且兼容 Playnite。
+
 所有新增或修改 GameSaveCenter UI 的提交，必须先阅读：
 
 - `.codex/skills/wpf-apple-desktop-ui/SKILL.md`（随仓库提交；本机同时安装于 `%USERPROFILE%\.codex\skills\wpf-apple-desktop-ui`），并按任务需要读取其 `references/` 中对应的响应式、Playnite、控件、可访问性或回归清单文档

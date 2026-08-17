@@ -19,7 +19,7 @@
 - WPF `DependencyObject`、`ObservableCollection` 与绑定属性只能在 Dispatcher 规则允许的线程更新；事件回调先检查 Dispatcher，再读取 UI 控件。
 - 不使用假进度、假成功、掩盖异常的 `Task.Delay` 或吞异常逻辑。
 - 行为变化必须配套自动化测试；旧 SQLite 迁移必须保持幂等、数据保留与路径安全。
-- UI 改动必须先阅读 `docs/design/APPLE_WPF_IMPLEMENTATION_PROMPT.md` 和 `docs/design/UI_CHANGE_GATE.md`，并使用 `wpf-apple-desktop-ui` Skill。不得以视觉重构替换真实命令、取消、错误或虚拟化。
+- UI 改动必须先阅读 `docs/design/APPLE_WPF_IMPLEMENTATION_PROMPT.md` 和 `docs/design/UI_CHANGE_GATE.md`，并使用 `wpf-apple-desktop-ui` Skill。视觉重构可以更换页面布局和控件实现，但不得无意删除真实命令、取消、错误或可扩展列表行为；如果新设计有意改变这些能力，必须明确迁移并配套测试。
 
 ## 提交与记录
 

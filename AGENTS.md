@@ -22,6 +22,12 @@
 
 ## WPF / XAML UI changes
 
+### 当前 UI 重构授权（2026-08-17）
+
+用户已明确要求 GameSaveCenter 进入页面级、整页 UI 重构阶段。页面信息架构、布局层级、导航方式（包括 Tab/Segmented）、控件类型、ControlTemplate、共享样式和滚动实现都可以按新设计重新选择；旧交接记录中“不要恢复”“不要替换”“明确不迁移”的表述，均只代表当时的 UiLab/AcrylicFork 迁移阶段，不再是当前的页面冻结规则。
+
+当前仍然有效的是功能与质量底线，而不是旧页面结构：默认保留真实命令、Binding、数据契约、错误/取消/安全语义、可访问性、可扩展列表性能和 Playnite 兼容性。若新设计确实需要改变其中任何一项，应在任务范围中明确迁移方案并补齐对应测试；可以更换控件或滚动模型，但不能因为“保留旧实现”而阻止用户要求的整页改造。
+
 For any WPF, XAML, Playnite UI, theming, layout, controls, animation, dialog, toast,
 DataGrid, ScrollBar, TabControl, responsive sizing, DPI, accessibility, or visual-regression work:
 
