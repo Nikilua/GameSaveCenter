@@ -2386,3 +2386,17 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 
 - AUTO VERIFIED：源码/XAML、生产编译、回归测试、离屏视觉和布局探针。
 - MANUAL QA REQUIRED：真实 Playnite 宿主安装目录、最终 DPI/Follow/高对比度主题、键盘焦点和真实大库滚动；本轮没有把 RenderHarness 截图冒充真实宿主验收。
+
+## 2026-08-17 BUILD-001 一键安装低磁盘测试隔离
+
+**原因定位：**
+
+- 一键安装使用隔离构建目录在 D 盘，但 Worker 完整性测试仍通过系统 `TEMP/TMP` 在 C 盘创建临时根目录。
+- 当前机器 C 盘剩余空间低于完整性检查阈值 512 MiB，`IntegrityCheckService` 正确产生 `LOW_DISK_SPACE` 警告，导致健康和可选依赖测试从 `Healthy/Skipped` 变成 `Warning`。
+
+**实现与验证：**
+
+- `scripts/build.ps1` 在指定 `OutputRoot` 时将测试临时目录切换到该隔离输出根目录，生产完整性检查语义不变。
+- `scripts/dev-install-run.ps1` 将隔离构建根目录缩短为 `artifacts/gsc-b/<guid>`，避免 .NET Framework Playnite 测试适配器在深路径下加载失败。
+- 隔离 Release 构建验证：Core 59/59、Worker 191/191、Playnite 303/303，构建 0 warning / 0 error。
+- 完整一键安装（`-NoStart`）已验证 Worker 发布、`.pext` 打包、安装目录和 `GameSaveCenter.Contracts.dll` 均成功。

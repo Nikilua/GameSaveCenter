@@ -59,6 +59,15 @@ try {
             ('-p:GscBuildOutputRoot=' + $isolatedOutputRoot)
         )
         Write-Host "隔离构建输出：$isolatedOutputRoot" -ForegroundColor DarkCyan
+
+        # IntegrityCheckService deliberately reports low free space. Keep the
+        # test fixture root on the same isolated volume as the build so a full
+        # system TEMP drive cannot turn healthy fixture checks into warnings.
+        $isolatedTestTempRoot = Join-Path $isolatedOutputRoot 'test-temp'
+        New-Item -ItemType Directory -Path $isolatedTestTempRoot -Force | Out-Null
+        $env:TEMP = $isolatedTestTempRoot
+        $env:TMP = $isolatedTestTempRoot
+        Write-Host "测试临时目录：$isolatedTestTempRoot" -ForegroundColor DarkCyan
     }
 
     Write-Host "`n==> 检查 XAML 结构" -ForegroundColor Cyan

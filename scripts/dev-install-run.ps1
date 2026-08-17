@@ -23,7 +23,10 @@ catch {
 $root = Split-Path -Parent $PSScriptRoot
 $artifactsPath = Join-Path $root 'artifacts'
 New-Item $artifactsPath -ItemType Directory -Force | Out-Null
-$buildOutputRoot = Join-Path $artifactsPath ("dev-build\{0}\{1}" -f $Configuration, ([Guid]::NewGuid().ToString('N')))
+# Keep the isolated root short enough for the .NET Framework test adapter.
+# The configuration is already passed to build.ps1, so it does not need to be
+# repeated in the filesystem path.
+$buildOutputRoot = Join-Path $artifactsPath ("gsc-b\{0}" -f ([Guid]::NewGuid().ToString('N')))
 $runLogPath = Join-Path $artifactsPath 'one-click-install.log'
 $transcriptStarted = $false
 try {

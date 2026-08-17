@@ -667,3 +667,5 @@
 - DataGrid 共享样式采用透明表头、稳定底部分隔线和明确文本对比度；不使用负 Margin、Canvas、透明占位或隐藏溢出来修复布局。首页零分母进度条折叠，关注入口提供可访问说明。
 - 2026-08-17 自动事实：源码校验通过；WPF UI 静态校验 0 error；Playnite 测试 303/303；RenderHarness 全量 render-qa OK。真实 Playnite 宿主、DPI、Follow/高对比度、键盘和大库滚动仍需人工复核。
 - `scripts/package.ps1` 已修复空 `dotnet` 参数问题；当前无 `BuildOutputRoot` 的标准打包流程可正常生成并校验安装包，且会保留 `GameSaveCenter.Contracts.dll`。
+- 一键安装的隔离构建还必须把 `TEMP/TMP` 指向隔离输出盘；否则完整性测试会读取系统临时目录所在磁盘的真实剩余空间，在低于 512 MiB 时把健康夹具判为 `Warning`。
+- 一键安装的隔离构建根目录使用短路径 `artifacts/gsc-b/<guid>`；过深的 `artifacts/dev-build/Release/<guid>` 会让 .NET Framework Playnite 测试适配器加载失败。当前完整 `dev-install-run.ps1 -NoStart` 已通过。
