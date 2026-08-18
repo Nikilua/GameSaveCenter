@@ -800,3 +800,10 @@
 - 风险区标题、说明和底部“打开维护中心”按钮位于外层视口之外；展开的最近游戏保护明细仍保留 `OverviewProtectionItemsScrollViewer` 的 `190 DIP` 内部视口。前者限制整个风险提醒栏，后者限制展开明细列表，不是无意义地叠加两个相同滚动条。
 - `OverviewRiskScrollViewer` 仍然是兼容 `Panel` 节点，真实 `AttentionFindings` 与 `RecentProtection.Items` 绑定不变；不要把兼容节点直接改成同名 `ScrollViewer`，否则会破坏响应式代码和源码契约测试。
 - 2026-08-19 已用单节点测试入口完成 Playnite 249/61、Core 59/59、Worker 191/191；RenderHarness 全量 `render-qa OK`，但这些结果仍不能替代可识别 Playnite 窗口的真实宿主截图。
+
+## 2026-08-19 UI-239 媒体中心结构基线事实
+
+- 媒体中心 Demo 的顶部结构是四张独立指标卡，下面是共享紫色分段 Tab；不能把统计数字、模式 RadioButton 和 Tab 再混合到一个横向条带中。
+- 当前生产 `MediaCenterView` 使用 `UniformGrid MediaSummaryPanel` 承载四张 `GscRedesignMetricBorder` 卡片，宽度按 4/2/1 列响应式重排；`MediaTabControl` 基于 `GscRedesignWorkspaceTabControl`，其选中项使用生产紫色强调令牌。
+- `MediaModeStrip`、`MediaModeRadio`、`MediaContentTabs` 和 `OnMediaModeChecked` 已从生产媒体页移除；真实 Tab 内容、Binding、Command、虚拟化列表和项目滚动条保持不变。
+- 2026-08-19 的 Release RenderHarness 已确认媒体三 Tab 在浅色/深色、多尺寸和缩放过渡下可渲染；离屏 PNG 只能证明结构和布局探针通过，不能替代 Playnite 真机截图。

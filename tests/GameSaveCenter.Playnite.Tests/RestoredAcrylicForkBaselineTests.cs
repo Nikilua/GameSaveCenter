@@ -45,13 +45,16 @@ public sealed class RestoredAcrylicForkBaselineTests
     }
 
     [Fact]
-    public void MediaModeStripUsesTheProductionSurfaceAndPurpleSelectedState()
+    public void MediaUsesDemoMetricCardsAndTheSharedPurpleSegmentedTabs()
     {
         var media = ReadSource("Views", "MediaCenterView.xaml");
 
-        Assert.Contains("x:Key=\"MediaModeStrip\"", media);
-        Assert.Contains("Setter Property=\"Background\" Value=\"{DynamicResource GscAccentTintStrongBrush}\"", media);
-        Assert.Contains("Property=\"Foreground\" Value=\"{DynamicResource GscSelectionTextBrush}\"", media);
+        Assert.Contains("x:Name=\"MediaSummaryPanel\" Grid.Row=\"0\" Columns=\"4\"", media);
+        Assert.Contains("Style=\"{StaticResource MediaTabControl}\"", media);
+        Assert.Contains("Header=\"当前游戏媒体\"", media);
+        Assert.Contains("Style=\"{DynamicResource GscRedesignMetricBorder}\"", media);
+        Assert.DoesNotContain("x:Key=\"MediaModeStrip\"", media);
+        Assert.DoesNotContain("x:Key=\"MediaModeRadio\"", media);
     }
 
     [Fact]

@@ -2802,3 +2802,29 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 **验证边界：**
 
 - 本阶段仍未把离屏 RenderHarness 结果冒充 Playnite 真机视觉验收；真实宿主截图需要在可识别的 Playnite 页面窗口中单独复核。
+
+## 2026-08-19 UI-239 媒体中心恢复 Demo 指标卡与分段 Tab
+
+**问题确认：**
+
+- 媒体中心顶部虽然已经不是浅灰透明条，但生产页面仍把统计数字、RadioButton 模式切换和指标混在同一条承载层中；这与 AcrylicFork Demo 的四张独立指标卡、独立分段 Tab 不是同一套页面结构。
+
+**实现内容：**
+
+- `MediaCenterView.xaml` 将顶部统计恢复为四张独立的 `GscRedesignMetricBorder` 指标卡：当前游戏媒体、媒体占用、已收藏、待归类。
+- 主内容改用共享 `MediaTabControl`，其基础样式为 `GscRedesignWorkspaceTabControl`/`GscRedesignWorkspaceTabItem`，选中 Tab 使用生产紫色强调令牌；删除旧的 `MediaModeStrip`、`MediaModeRadio` 和 RadioButton 事件承载层。
+- `MediaCenterView.xaml.cs` 保留真实 Tab 内容、Binding、Command 和项目滚动条，只增加指标卡在 4/2/1 列之间的响应式重排。
+- 更新媒体页面源码契约测试，明确约束 Demo 的指标卡和共享紫色分段 Tab 结构。
+
+**验证结果：**
+
+- `git diff --check`：通过。
+- `scripts/validate-source.py`：通过。
+- `validate_wpf_ui.py`：0 error，20 条已有布局 warning，161 条 info。
+- Playnite 测试：249 通过、61 跳过、0 失败。
+- Release RenderHarness：`render-qa OK`；1040×700、1100×720、1366×768、2560×1440，浅色/深色和缩放过渡均完成，媒体三 Tab 均可渲染。
+- 离屏 PNG 已人工检查：媒体页面显示四张独立指标卡，Tab 选中态为紫色分段样式；这不是 Playnite 真机截图。
+
+**验证边界：**
+
+- 仍需在当前 Release 安装包中用可识别的 Playnite 页面窗口复核媒体页和首页，不能用 RenderHarness 离屏图替代宿主验收。

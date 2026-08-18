@@ -26,7 +26,7 @@ namespace GameSaveCenter.Playnite.Views
             ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
         }
 
-        public Grid MediaSummaryPanelElement => MediaSummaryPanel;
+        public UniformGrid MediaSummaryPanelElement => MediaSummaryPanel;
         public UniformGrid MediaSourceFieldsElement => MediaSourceFields;
         public Border MediaInspectorPanelElement => MediaInspectorPanel;
         public Border MediaPreviewPanelElement => MediaPreviewPanel;
@@ -42,10 +42,12 @@ namespace GameSaveCenter.Playnite.Views
             {
                 responsiveWidth = width;
                 responsiveHeight = height;
-                // The summary band is a bounded Grid: its metric and mode columns follow the
-                // Demo's information architecture instead of being reflowed by a UniformGrid.
+                // Keep the Demo's four metric cards in one row at normal workspace widths,
+                // then reflow only when the available logical width is genuinely narrow.
                 // Do not discard summary information at short heights. Local list/inspector
                 // surfaces own overflow so the whole workspace does not become a scroll canvas.
+                var metricColumns = width >= 700 ? 4 : width >= 520 ? 2 : 1;
+                MediaSummaryPanel.Columns = metricColumns;
                 MediaSummaryPanel.Visibility = Visibility.Visible;
                 MediaSourceFields.Columns = width >= 820 ? 2 : 1;
 
@@ -139,13 +141,5 @@ namespace GameSaveCenter.Playnite.Views
             ApplyResponsiveLayout(responsiveWidth > 0 ? responsiveWidth : ActualWidth, responsiveHeight > 0 ? responsiveHeight : ActualHeight);
         }
 
-        private void OnMediaModeChecked(object sender, RoutedEventArgs e)
-        {
-            if (sender is not RadioButton radio || !int.TryParse(radio.Tag?.ToString(), out var selectedIndex))
-                return;
-
-            if (MediaTabControl != null && selectedIndex >= 0 && selectedIndex < MediaTabControl.Items.Count)
-                MediaTabControl.SelectedIndex = selectedIndex;
-        }
     }
 }
