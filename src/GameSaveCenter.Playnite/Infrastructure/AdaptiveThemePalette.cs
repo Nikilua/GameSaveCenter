@@ -341,10 +341,12 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscGlassStrokeBrush"] = Brush(palette.ControlStroke);
             resources["GscGlassHighlightBrush"] = Brush(palette.Highlight);
             resources["GscBackdropBrush"] = Brush(palette.Backdrop);
-            // AcrylicFork keeps the header transparent inside one clipped rounded table frame;
-            // this avoids a second rectangle fighting the frame's corner geometry.
-            resources["GscTableHeaderBrush"] = Brush(Color.FromArgb(
-                palette.IsDark ? (byte)13 : (byte)9, palette.PrimaryText.R, palette.PrimaryText.G, palette.PrimaryText.B));
+            // The Demo owns a single, readable header band inside each table frame.  A nearly
+            // transparent header is indistinguishable from the rows in Playnite and makes the
+            // column labels look like they are floating over the data, especially in light
+            // themes.  Reuse the opaque strong surface so every DataGrid gets the same band
+            // without adding a second outer rectangle or changing the project's scrollbar.
+            resources["GscTableHeaderBrush"] = Brush(palette.StrongSurfaceTop);
             resources["GscTableAlternateRowBrush"] = Brush(Color.FromArgb(
                 SystemParameters.HighContrast ? (byte)0 : (byte)0,
                 palette.PrimaryText.R, palette.PrimaryText.G, palette.PrimaryText.B));

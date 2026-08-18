@@ -18,8 +18,8 @@
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BoolToVis"/>
             <Style x:Key="OverviewTaskBadge" TargetType="Border" BasedOn="{StaticResource LabSubCard}">
-                <Setter Property="MinWidth" Value="58"/>
-                <Setter Property="Padding" Value="9,5"/>
+                <Setter Property="Width" Value="58"/>
+                <Setter Property="Padding" Value="0"/>
                 <Setter Property="CornerRadius" Value="{StaticResource RadiusS}"/>
                 <Setter Property="Background" Value="{DynamicResource GscInfoIconFillBrush}"/>
                 <Setter Property="BorderBrush" Value="{DynamicResource GscInfoBrush}"/>
@@ -27,16 +27,16 @@
                 <Setter Property="HorizontalAlignment" Value="Center"/>
             </Style>
             <Style x:Key="OverviewActivityKindBadge" TargetType="Border" BasedOn="{StaticResource LabSubCard}">
-                <Setter Property="MinWidth" Value="58"/>
-                <Setter Property="Padding" Value="9,5"/>
+                <Setter Property="Width" Value="58"/>
+                <Setter Property="Padding" Value="0"/>
                 <Setter Property="CornerRadius" Value="{StaticResource RadiusS}"/>
                 <Setter Property="Background" Value="{DynamicResource GscAccentTintStrongBrush}"/>
                 <Setter Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
                 <Setter Property="BorderThickness" Value="1"/>
             </Style>
             <Style x:Key="OverviewActivityResultBadge" TargetType="Border" BasedOn="{StaticResource LabSubCard}">
-                <Setter Property="MinWidth" Value="58"/>
-                <Setter Property="Padding" Value="9,5"/>
+                <Setter Property="Width" Value="58"/>
+                <Setter Property="Padding" Value="0"/>
                 <Setter Property="CornerRadius" Value="{StaticResource RadiusS}"/>
                 <Setter Property="Background" Value="{DynamicResource GscSuccessIconFillBrush}"/>
                 <Setter Property="BorderBrush" Value="{DynamicResource GscSuccessBrush}"/>
@@ -426,8 +426,8 @@
                                                             <StackPanel Orientation="Horizontal">
                                                                 <TextBlock Text="{Binding Name}" FontSize="12.5" FontWeight="Medium"
                                                                            Foreground="{DynamicResource TextPrimaryBrush}"/>
-                                                                <Border x:Name="OverviewRiskBadge" Margin="8,0,0,0" MinWidth="60" Height="24"
-                                                                        Padding="8,2" CornerRadius="{StaticResource RadiusS}"
+                                                                <Border x:Name="OverviewRiskBadge" Margin="8,0,0,0" Width="70" Height="24"
+                                                                        Padding="0" CornerRadius="{StaticResource RadiusS}"
                                                                         Background="{DynamicResource GscErrorIconFillBrush}"
                                                                         BorderBrush="{DynamicResource GscErrorBrush}" BorderThickness="1"
                                                                         VerticalAlignment="Center">

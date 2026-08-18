@@ -2447,3 +2447,28 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 **验证边界：**
 
 - 本轮没有重新启动或控制 Playnite 宿主；上一次屏幕控制已由用户物理 Escape 停止，因此没有把离屏 PNG 冒充真实宿主验收。
+-
+## 2026-08-18 UI-224 首页活动/风险徽标测量修正与真实宿主验证边界
+
+**用户反馈：**
+
+- 首页最近任务和全局活动中的“成功/信息”等气泡文字没有可靠居中。
+- 风险与提醒中的“风险”气泡在实际宿主中有中文裁切风险。
+
+**实现内容：**
+
+- `OverviewView.xaml` 的最近任务、全局活动类型/结果徽标改为固定宽度、零内边距，并让内部 `TextBlock` 使用 `HorizontalAlignment=Center`、`TextAlignment=Center`，避免旧 `LabSubCard` 默认测量影响文字位置。
+- 风险徽标宽度调整为 70 DIP，同样取消内边距并显式居中；继续保留 Tooltip 和各健康状态的背景、边框、文字颜色绑定。
+
+**验证结果：**
+
+- XAML structural validation：18 个文件通过。
+- `scripts/validate-source.py`：通过。
+- `validate_wpf_ui.py`：0 error，19 条已有布局 warning，未新增 XAML 错误。
+- Release 编译：0 warning / 0 error；打包与开发安装成功，安装目录中的生产 DLL 为 `0.6.70.0`。
+- Playnite 日志确认真实宿主加载了 `GameSaveCenter, version 0.6.70`。
+
+**验证边界：**
+
+- 电脑控制工具当前为 Playnite 返回了 `EmptyWindowAutomationPeer`，但截图实际显示的是桌面上的其他窗口，且 Playnite 进程 `MainWindowHandle=0`。因此本轮只能确认“生产 DLL 已被宿主加载”，不能确认“真实 Playnite 页面视觉通过”；该截图不计入视觉验收证据。
+- Worker 集成测试仍有 2 个已有环境状态失败（期望 `Healthy/Skipped`，实际 `Warning`）；全量 RenderHarness 仍有 Media resize recovery 两项失败。两者均未被本轮徽标改动伪装成通过。

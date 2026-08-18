@@ -288,7 +288,7 @@
                         </Grid.RowDefinitions>
                         <Border Grid.Row="0"
                                 HorizontalAlignment="Left"
-                                Background="{DynamicResource SegmentFillBrush}"
+                                Background="{DynamicResource GscControlFillBrush}"
                                 BorderBrush="{DynamicResource GscControlStrokeBrush}"
                                 BorderThickness="1"
                                 CornerRadius="10"

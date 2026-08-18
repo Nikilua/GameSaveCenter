@@ -687,3 +687,10 @@
 - 2026-08-18 Release 构建 0 warning / 0 error；Overview 离屏浅深色多尺寸探针通过。全量 RenderHarness 仍有既有 Media resize recovery 失败，不能标记全量通过。
 - 本轮未重新进行 Playnite 宿主截图；屏幕控制此前已由用户物理 Escape 停止，离屏渲染结果不得替代真实宿主人工验收。
 - 本轮重复的 Playnite 测试命令长时间无输出并被停止，不能据此宣称新增测试通过；保留上一阶段已记录的回归基线。
+-
+## 2026-08-18 UI-224 首页徽标与真实宿主截图核验事实
+
+- 首页活动/任务状态徽标不能依赖 `LabSubCard` 的内边距和默认测量；固定徽标必须使用零内边距、固定宽度、子 `TextBlock` 显式 `HorizontalAlignment=Center` 与 `TextAlignment=Center`。当前生产首页的任务/活动徽标宽度为 58 DIP，风险徽标为 70 DIP。
+- 风险徽标必须保留 Tooltip，中文状态不能用省略号替代；背景、边框和文字颜色继续由真实健康状态触发器驱动。
+- 真实 Playnite 验收的证据要求提高：必须同时有 Playnite 日志中的 `ExtensionFactory:Loaded plugin: GameSaveCenter`、可识别的 Playnite 页面截图和必要时的交互结果。若 Computer Use 返回 `EmptyWindowAutomationPeer`、`MainWindowHandle=0` 或截图是其他桌面窗口，只能记录为“宿主已加载，视觉验证阻塞”，不得写成视觉通过。
+- 2026-08-18 本轮 Release 编译/打包/安装通过，日志确认生产 DLL `0.6.70.0` 加载；但 Computer Use 截图不属于 Playnite 页面，真实宿主视觉验收仍为 `MANUAL QA REQUIRED`。Worker 两项环境状态测试和 Media resize recovery 两项 RenderHarness 失败继续保持公开记录。
