@@ -715,3 +715,9 @@
 - 短键只能写入当前页面的局部 `ResourceDictionary`，不能修改 Playnite 全局资源；这样既能复现 Demo 的强调色层级，又不会污染宿主主题。
 - 2026-08-18 已确认生产页面的实际资源注入缺口：`DashboardView` 之前只更新旧隐藏页面树，现已同时更新 `AcrylicProductionShellView` 及其 `PageHost` 页面实例；离屏深色 RenderHarness PNG 已确认首页最近任务图标/进度条、`全部` 链接、风险主按钮、全局活动分类和信息气泡恢复紫色或对应语义色。
 - Playnite 日志确认新 DLL 已加载，但 Computer Use 返回 `EmptyWindowAutomationPeer`、`MainWindowHandle=0` 且截图不是 Playnite 页面，因此真实宿主视觉验收仍为 `MANUAL QA REQUIRED`，不得把离屏 PNG 写成真实宿主截图通过。全量 RenderHarness 仍有 Media resize recovery 两项失败。
+
+## 2026-08-18 UI-227 媒体中心模式栏事实
+
+- 媒体中心顶部模式栏已从 `SegmentFillBrush` 的灰色透明条切换为生产深色 `MediaModeStrip`，复用 `GscControlFillBrush`、`GscControlStrokeBrush` 和紫色 `GscAccentTintBrush` 选中态。
+- RadioButton 的三种模式、真实数据绑定、命令和项目自身滚动条没有改变；本次只修正页面级 Tab 承载样式。
+- Release 构建与静态检查通过；RenderHarness 的媒体深色截图已确认颜色层级变化，但 Media resize recovery 的两项既有失败仍未解决，真实 Playnite 截图仍待可识别宿主窗口后复核。

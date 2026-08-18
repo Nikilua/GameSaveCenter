@@ -120,7 +120,7 @@
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsChecked" Value="True">
                                     <Setter TargetName="Chrome" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
-                                    <Setter TargetName="Chrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
+                                    <Setter TargetName="Chrome" Property="BorderBrush" Value="{DynamicResource GscAccentTintStrongBrush}"/>
                                     <Setter Property="FontWeight" Value="SemiBold"/>
                                 </Trigger>
                                 <Trigger Property="IsMouseOver" Value="True">
@@ -130,6 +130,17 @@
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
+            </Style>
+            <!-- Media's mode selector is a tab strip, not a translucent demo segment.
+                 Keep the same dark surface and purple selected state used by the other
+                 production workspace tabs. -->
+            <Style x:Key="MediaModeStrip" TargetType="Border">
+                <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="CornerRadius" Value="10"/>
+                <Setter Property="Padding" Value="2"/>
+                <Setter Property="ClipToBounds" Value="True"/>
             </Style>
             <Style x:Key="MediaContentTabs" TargetType="TabControl" BasedOn="{StaticResource MediaTabControl}">
                 <Setter Property="Template">
@@ -157,9 +168,8 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Border Grid.Row="0" Background="{DynamicResource SegmentFillBrush}"
-                BorderBrush="{DynamicResource GscGlassStrokeBrush}" BorderThickness="1"
-                CornerRadius="10" Padding="2" Margin="0,12,0,4" Height="72" ClipToBounds="True">
+        <Border Grid.Row="0" Style="{StaticResource MediaModeStrip}"
+                Margin="0,12,0,4" Height="72">
             <Grid x:Name="MediaSummaryPanel">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="92"/>

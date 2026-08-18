@@ -2551,3 +2551,27 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 
 - 电脑控制工具当前为 Playnite 返回了 `EmptyWindowAutomationPeer`，但截图实际显示的是桌面上的其他窗口，且 Playnite 进程 `MainWindowHandle=0`。因此本轮只能确认“生产 DLL 已被宿主加载”，不能确认“真实 Playnite 页面视觉通过”；该截图不计入视觉验收证据。
 - Worker 集成测试仍有 2 个已有环境状态失败（期望 `Healthy/Skipped`，实际 `Warning`）；全量 RenderHarness 仍有 Media resize recovery 两项失败。两者均未被本轮徽标改动伪装成通过。
+
+## 2026-08-18 UI-227 媒体中心模式栏主题修正
+
+**用户反馈：**
+
+- 媒体中心顶部模式/Tab 卡片栏仍使用 Demo 旧的浅灰透明背景，与其它生产页面的深色 Tab 外壳不一致。
+
+**实现内容：**
+
+- `MediaCenterView.xaml` 新增 `MediaModeStrip`，复用生产 `GscControlFillBrush`、`GscControlStrokeBrush` 和现有圆角/裁剪规则。
+- 当前游戏媒体、待归类、来源规则三个模式仍使用原有 RadioButton、Binding 和命令，仅替换外层承载视觉。
+- 选中项描边改为紫色强调色层级；未迁移 Demo 顶部颜色按钮，也未替换项目滚动条。
+
+**验证结果：**
+
+- `git diff --check`：通过。
+- `scripts/validate-source.py`：通过。
+- `validate_wpf_ui.py`：0 error，19 条既有 warning。
+- Release 隔离构建：0 warning / 0 error。
+- RenderHarness 深色媒体页截图已检查，模式栏为深色容器、选中项为紫色；全量 RenderHarness 仍被既有 Media resize recovery 两项失败拦截，不能记为全量通过。
+
+**验证边界：**
+
+- 本阶段没有把 RenderHarness PNG 当作 Playnite 真机截图；真实宿主视觉仍需在 Computer Use 能识别 Playnite 窗口后复核。
