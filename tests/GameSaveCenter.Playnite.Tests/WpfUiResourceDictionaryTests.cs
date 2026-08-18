@@ -50,6 +50,12 @@ public sealed class WpfUiResourceDictionaryTests
                 factoryType.GetMethod("ApplyAccentResources", BindingFlags.Public | BindingFlags.Static)!.Invoke(
                     null,
                     new object[] { localResources, palette });
+                Assert.Equal(hostAccent, Assert.IsType<SolidColorBrush>(localResources["AccentBrush"]).Color);
+                Assert.Equal(hostAccent, Assert.IsType<Color>(localResources["AccentBrushColor"]));
+                Assert.IsType<SolidColorBrush>(localResources["AccentTintBrush"]);
+                Assert.IsType<SolidColorBrush>(localResources["AccentTintStrongBrush"]);
+                Assert.IsType<SolidColorBrush>(localResources["AccentStrokeBrush"]);
+                Assert.IsType<SolidColorBrush>(localResources["TextOnAccentBrush"]);
                 Assert.IsType<SolidColorBrush>(localResources["GscErrorTintBrush"]);
                 Assert.IsType<SolidColorBrush>(localResources["GscRestoreInfoFillBrush"]);
                 Assert.IsType<SolidColorBrush>(localResources["GscRestoreInfoStrokeBrush"]);
@@ -135,6 +141,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("resources[\"GscAmbientSuccessBrush\"]", paletteSource);
         Assert.Contains("SemanticTint", paletteSource);
         Assert.Contains("resources[\"GscAccentShadowColor\"]", paletteSource);
+        Assert.Contains("resources[\"AccentBrush\"]", paletteSource);
+        Assert.Contains("resources[\"AccentTintBrush\"]", paletteSource);
+        Assert.Contains("resources[\"AccentStrokeBrush\"]", paletteSource);
         Assert.Contains("resources[\"GscSelectionTextBrush\"]", paletteSource);
         Assert.Contains("resources[\"GscSurfaceEffect\"]", paletteSource);
         Assert.Contains("resources[\"GscPrimaryButtonEffect\"]", paletteSource);

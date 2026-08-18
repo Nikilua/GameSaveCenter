@@ -204,6 +204,24 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
         public static void ApplyAccentResources(ResourceDictionary resources, AdaptiveThemePalette palette)
         {
+            // AcrylicReferenceControls.xaml still exposes the same short token names as the
+            // standalone Demo (AccentBrush, AccentTintBrush, ...). The Demo writes these aliases
+            // when its accent changes; production used to update only the Gsc-prefixed tokens.
+            // In a Playnite host the unresolved aliases can come from the host theme and render
+            // icon tiles, chips and primary buttons black/transparent. Keep the aliases local to
+            // this view resource dictionary so we do not mutate Playnite's global palette.
+            resources["AccentBrush"] = Brush(palette.Accent);
+            resources["AccentHoverBrush"] = Brush(palette.AccentHover);
+            resources["AccentPressedBrush"] = Brush(palette.AccentPressed);
+            resources["AccentStrokeBrush"] = Brush(palette.AccentHover);
+            resources["AccentTintBrush"] = Brush(palette.AccentTint);
+            resources["AccentTintStrongBrush"] = Brush(palette.AccentTintStrong);
+            resources["AccentWashBrush"] = Brush(WithAlpha(palette.Accent, palette.IsDark ? 0.16 : 0.12));
+            resources["TextOnAccentBrush"] = Brush(palette.OnAccentText);
+            resources["AccentBrushColor"] = palette.Accent;
+            resources["AccentPressedColor"] = palette.AccentPressed;
+            resources["AccentWashColor"] = WithAlpha(palette.Accent, palette.IsDark ? 0.17 : 0.13);
+
             resources["GscAccentBrush"] = Brush(palette.Accent);
             resources["GscAccentHoverBrush"] = Brush(palette.AccentHover);
             resources["GscAccentPressedBrush"] = Brush(palette.AccentPressed);

@@ -707,3 +707,10 @@
 - 风险徽标必须保留 Tooltip，中文状态不能用省略号替代；背景、边框和文字颜色继续由真实健康状态触发器驱动。
 - 真实 Playnite 验收的证据要求提高：必须同时有 Playnite 日志中的 `ExtensionFactory:Loaded plugin: GameSaveCenter`、可识别的 Playnite 页面截图和必要时的交互结果。若 Computer Use 返回 `EmptyWindowAutomationPeer`、`MainWindowHandle=0` 或截图是其他桌面窗口，只能记录为“宿主已加载，视觉验证阻塞”，不得写成视觉通过。
 - 2026-08-18 本轮 Release 编译/打包/安装通过，日志确认生产 DLL `0.6.70.0` 加载；但 Computer Use 截图不属于 Playnite 页面，真实宿主视觉验收仍为 `MANUAL QA REQUIRED`。Worker 两项环境状态测试和 Media resize recovery 两项 RenderHarness 失败继续保持公开记录。
+
+## 2026-08-18 UI-226 首页短主题别名事实
+
+- 生产 Acrylic 共享控件与 AcrylicFork Demo 共用一组短资源键：`AccentBrush`、`AccentHoverBrush`、`AccentPressedBrush`、`AccentStrokeBrush`、`AccentTintBrush`、`AccentTintStrongBrush`、`AccentWashBrush` 和 `TextOnAccentBrush`。
+- 生产主题适配必须同时写入这些短键和 `Gsc*` 键；只写 `Gsc*` 会让 Playnite 宿主的未解析短键回退为黑色/透明，表现为任务图标、进度条、活动气泡和主按钮与 Demo 色彩不一致。
+- 短键只能写入当前页面的局部 `ResourceDictionary`，不能修改 Playnite 全局资源；这样既能复现 Demo 的强调色层级，又不会污染宿主主题。
+- 2026-08-18 已用真实 Playnite 截图复核：首页最近任务图标/进度条、`全部` 链接、风险主按钮、全局活动分类和信息气泡的颜色层级已生效。RenderHarness 全量和迁移前结构测试仍保留公开失败边界。

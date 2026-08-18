@@ -2459,6 +2459,39 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `scripts/validate-source.py` 仍报告已有媒体缩略图 96px bounded decode 规则缺失；WPF UI 静态扫描无 error，仅保留既有布局提示。
 - 本轮重复执行 Playnite 测试命令后长时间无输出，已停止这批明确由该命令启动的 30 个空闲 `dotnet` 进程；未将这次无结果的运行计为通过，沿用上一阶段已记录的 Playnite 回归基线。
 
+## 2026-08-18 UI-226 首页 Demo 主题别名同步与真实宿主复核
+
+**用户反馈：**
+
+- 首页最近任务的图标和进度条显示为黑色/透明，右上“全部”链接不明显。
+- 全局活动分类和结果气泡没有使用 Demo 的紫色/语义色层级。
+- 风险与提醒中的“启用所选保护”没有呈现为紫色主按钮。
+
+**根因：**
+
+- `AcrylicReferenceControls.xaml` 的共享控件仍读取 Demo 使用的短资源键（`AccentBrush`、`AccentTintBrush`、`AccentStrokeBrush` 等）。
+- 生产 `AdaptiveThemePalette.ApplyAccentResources` 只更新了 `Gsc*` 资源键，没有同步这些短别名；在 Playnite 宿主中，未解析的短键回退到了宿主主题的黑色/透明资源，因此页面结构虽然已改，颜色层级仍与 Demo 不一致。
+
+**实现内容：**
+
+- 在生产页面局部 `ResourceDictionary` 中同步写入 Demo 的短主题别名，同时保留现有 `Gsc*` 资源和项目滚动条实现。
+- 增加资源值和源码映射回归断言，确认别名跟随计算后的 Playnite 宿主强调色，而不是静态捕获某个主题。
+- 未迁移 Demo 顶部彩色主题按钮；只复用其主题色令牌。
+
+**验证结果：**
+
+- `scripts/validate-source.py`：通过。
+- `validate_wpf_ui.py`：0 error，19 条既有 warning。
+- 隔离 Release 构建（XAML、Contracts/Core/Worker、Playnite 插件及测试程序集）：0 warning / 0 error。
+- 针对 `LocalAccentTokensFollowTheHostPaletteWithoutStaticThemeCapture` 的 Playnite 单测：1/1 通过。
+- 全量 `WpfUiResourceDictionaryTests` 仍有 43 个迁移前结构断言失败；这些断言检查旧 WrapPanel、旧列定义和旧字号，未将其记为本轮通过，也未因本次主题资源修复改动业务代码。
+- 新 DLL 已打包并安装到真实 Playnite 扩展目录；重新获取真实 Playnite 页面截图，确认最近任务图标/进度条、全部链接、风险主按钮、全局活动分类和“信息”气泡均恢复紫色或对应语义色，侧栏“设置”也正常显示。
+
+**验证边界：**
+
+- 本阶段没有把 RenderHarness 全量结果写成通过；此前 Media resize recovery 失败仍需后续处理。
+- 本阶段只修正首页共享主题资源别名，不代表存档、媒体、任务、修改器和维护中心的全量 Demo 对照已经完成。
+
 **验证边界：**
 
 - 本轮没有重新启动或控制 Playnite 宿主；上一次屏幕控制已由用户物理 Escape 停止，因此没有把离屏 PNG 冒充真实宿主验收。
