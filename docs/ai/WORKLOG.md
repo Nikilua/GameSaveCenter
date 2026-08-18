@@ -2462,6 +2462,33 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 **验证边界：**
 
 - 本轮没有重新启动或控制 Playnite 宿主；上一次屏幕控制已由用户物理 Escape 停止，因此没有把离屏 PNG 冒充真实宿主验收。
+
+## 2026-08-18 UI-225 首页徽标实际宿主复核
+
+**用户反馈：**
+
+- 首页最近任务中的“成功”状态徽标文字没有可靠居中。
+- 首页全局活动中的“信息/成功”徽标文字没有可靠居中。
+- 风险与提醒中的“风险”徽标文字可能被截断。
+
+**实现内容：**
+
+- `OverviewView.xaml` 新增仅用于纯文本状态徽标的居中 `DataTemplate`，避免修改共享 Chip 模板后破坏 Worker/Ludusavi 等复杂内容徽标。
+- 最近任务、全局活动类型/结果徽标统一设置水平/垂直内容居中、零内边距和足够的最小宽度。
+- 风险徽标从横向 `StackPanel` 改为 `Grid` 的独立 `Auto` 列；游戏名称使用省略和 Tooltip，风险文字使用 72 DIP 最小宽度并保持完整显示。
+
+**验证结果：**
+
+- `scripts/validate-source.py` 通过。
+- `validate_wpf_ui.py`：0 error，19 条既有布局 warning，未新增 XAML 错误。
+- Release 编译：0 warning / 0 error。
+- Worker 集成测试 191 项全部通过；Playnite 旧结构断言仍有 61 项失败，原因是测试仍检查迁移前的 Overview/Media/Maintenance/Task/Saves 结构，未将其误报为本次 UI 修改通过。
+- RenderHarness 首页主题/尺寸检查通过；全量 RenderHarness 仍被既有 Media resize recovery 两项失败拦截。
+- 最新包已安装到 Playnite 扩展目录并重启真实 Playnite。宿主截图确认最近任务“成功”徽标居中、风险徽标完整显示、侧栏末项显示为“设置”。
+
+**验证边界：**
+
+- 本条只确认首页徽标这一独立修复和真实宿主截图，不代表 AcrylicFork 全量页面迁移已经完成。
 -
 ## 2026-08-18 UI-224 首页活动/风险徽标测量修正与真实宿主验证边界
 

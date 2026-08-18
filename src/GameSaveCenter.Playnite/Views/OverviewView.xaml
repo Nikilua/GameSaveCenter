@@ -17,21 +17,33 @@
                 <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/AcrylicReferenceControls.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+            <DataTemplate x:Key="OverviewCenteredChipTextTemplate">
+                <TextBlock Text="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" TextWrapping="NoWrap"/>
+            </DataTemplate>
             <Style x:Key="OverviewTaskBadge" TargetType="ContentControl" BasedOn="{StaticResource ChipBase}">
-                <Setter Property="MinWidth" Value="58"/>
+                <Setter Property="MinWidth" Value="64"/>
                 <Setter Property="Padding" Value="0"/>
                 <Setter Property="Background" Value="{DynamicResource GscInfoIconFillBrush}"/>
                 <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="ContentTemplate" Value="{StaticResource OverviewCenteredChipTextTemplate}"/>
             </Style>
             <Style x:Key="OverviewActivityKindBadge" TargetType="ContentControl" BasedOn="{StaticResource ChipAccent}">
                 <Setter Property="MinWidth" Value="64"/>
                 <Setter Property="Padding" Value="0"/>
                 <Setter Property="Background" Value="{DynamicResource GscAccentTintStrongBrush}"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="ContentTemplate" Value="{StaticResource OverviewCenteredChipTextTemplate}"/>
             </Style>
             <Style x:Key="OverviewActivityResultBadge" TargetType="ContentControl" BasedOn="{StaticResource ChipSuccess}">
                 <Setter Property="MinWidth" Value="64"/>
                 <Setter Property="Padding" Value="0"/>
                 <Setter Property="Background" Value="{DynamicResource GscSuccessIconFillBrush}"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="ContentTemplate" Value="{StaticResource OverviewCenteredChipTextTemplate}"/>
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -413,14 +425,20 @@
                                                             </Ellipse.Style>
                                                         </Ellipse>
                                                         <StackPanel Grid.Column="1" Margin="10,0,0,0">
-                                                            <StackPanel Orientation="Horizontal">
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="*"/>
+                                                                    <ColumnDefinition Width="Auto"/>
+                                                                </Grid.ColumnDefinitions>
                                                                 <TextBlock Text="{Binding Name}" FontSize="12.5" FontWeight="Medium"
-                                                                           Foreground="{DynamicResource TextPrimaryBrush}"/>
-                                                                <ContentControl x:Name="OverviewRiskBadge" Margin="8,0,0,0" MinWidth="64" Height="24"
+                                                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                                                           TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/>
+                                                                <ContentControl x:Name="OverviewRiskBadge" Grid.Column="1" Margin="8,0,0,0" MinWidth="72" Height="24"
                                                                                 Padding="0" Style="{StaticResource ChipError}" Content="{Binding HealthStateDisplay}"
                                                                                 FontSize="11" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                                                                VerticalAlignment="Center" ToolTip="{Binding HealthStateDisplay}"/>
-                                                            </StackPanel>
+                                                                                VerticalAlignment="Center" ToolTip="{Binding HealthStateDisplay}"
+                                                                                ContentTemplate="{StaticResource OverviewCenteredChipTextTemplate}"/>
+                                                            </Grid>
                                                             <TextBlock Text="{Binding HealthSummary}" FontSize="10.5" Margin="0,3,0,0"
                                                                        Foreground="{DynamicResource TextTertiaryBrush}" TextTrimming="CharacterEllipsis"/>
                                                         </StackPanel>

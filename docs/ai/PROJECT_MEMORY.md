@@ -693,6 +693,13 @@
 - 2026-08-18 Release 构建 0 warning / 0 error；Overview 离屏浅深色多尺寸探针通过。全量 RenderHarness 仍有既有 Media resize recovery 失败，不能标记全量通过。
 - 本轮未重新进行 Playnite 宿主截图；屏幕控制此前已由用户物理 Escape 停止，离屏渲染结果不得替代真实宿主人工验收。
 - 本轮重复的 Playnite 测试命令长时间无输出并被停止，不能据此宣称新增测试通过；保留上一阶段已记录的回归基线。
+
+## 2026-08-18 UI-225 首页状态徽标实际宿主事实
+
+- 首页纯文本状态徽标使用页面局部 `DataTemplate` 居中，不修改共享 Chip 的复杂内容承载方式；否则 Worker/Ludusavi 的 StackPanel 内容会被错误显示为控件类型字符串。
+- 风险与提醒徽标位于独立 Grid `Auto` 列，游戏名称允许省略并提供 Tooltip，风险文本保留 72 DIP 最小宽度；这解决了名称挤压徽标和“风险”中文裁切。
+- 最新 v28 生产包已经重新安装并在真实 Playnite 中启动。宿主截图明确显示：最近任务的“成功”徽标文本居中，风险徽标文本完整，侧栏设置项可见。
+- 本阶段的 RenderHarness 与宿主验证只覆盖首页徽标修复；全量 RenderHarness 的 Media resize recovery 失败和 Playnite 迁移前结构测试失败仍是公开的后续工作项。
 -
 ## 2026-08-18 UI-224 首页徽标与真实宿主截图核验事实
 
