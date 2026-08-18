@@ -2710,3 +2710,18 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 **验证边界：**
 
 - 本轮证据来自源码、构建、测试和 RenderHarness 离屏渲染；当前工具上下文没有可用的 Playnite 窗口控制接口，因此没有把离屏 PNG 冒充真实 Playnite 宿主视觉验收。真实宿主仍需在可识别的 Playnite 页面中复核。
+
+## 2026-08-19 UI-234 首页风险列表取消静默截断
+
+**本阶段内容：**
+
+- `DashboardViewModel.AttentionFindings` 不再使用 `.Take(4)` 静默丢弃第 5 条之后的风险；真实严重度筛选结果全部交给首页绑定。
+- 首页仍由 `OverviewAttentionScrollViewer` 和 `OverviewProtectionItemsScrollViewer` 各自承担 190 DIP 的有限视口，超出部分只在项目现有滚动条内滚动，不给整张风险卡片再叠加滚动上下文。
+- “打开维护中心”继续作为完整问题处理入口；首页保留摘要式卡片，不承担无限高度的完整问题列表。
+
+**验证结果：**
+
+- `git diff --check`：通过。
+- `scripts/validate-source.py`：通过。
+- `validate_wpf_ui.py`：0 error，20 条既有 warning，161 条 info。
+- 本轮 Playnite 资源测试命令启动后长时间无输出且子进程低 CPU 空转，未将其记为通过；后续需用可完成的测试入口重新验证。

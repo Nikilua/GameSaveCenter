@@ -1222,7 +1222,10 @@ namespace GameSaveCenter.Playnite.ViewModels
                         && string.Equals(x.Title, previousFindingTitle, StringComparison.Ordinal))
                     ?? Findings.FirstOrDefault(x => x.Severity >= FindingSeverity.Warning)
                     ?? Findings.FirstOrDefault();
-                Replace(AttentionFindings, data.Findings.Where(x => x.Severity >= FindingSeverity.Warning).Take(4), SnapshotComparers.Finding);
+                // OverviewView gives this projection its own finite viewport. Keep the
+                // complete attention set here so additional findings scroll inside the
+                // card instead of being silently discarded before the view can render them.
+                Replace(AttentionFindings, data.Findings.Where(x => x.Severity >= FindingSeverity.Warning), SnapshotComparers.Finding);
                 Replace(Audit, data.RecentAudit, SnapshotComparers.Audit);
                 StatusMessage = data.WorkerHealthy
                     ? data.LudusaviAvailable ? "Worker 与 Ludusavi 均正常" : "Worker 正常，Ludusavi 尚未配置"

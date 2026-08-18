@@ -752,7 +752,7 @@
 
 - 首页风险卡片的两个可能增长列表必须使用独立的生产 `GscPageScrollViewer`：需关注列表与展开后的最近游戏保护明细均限制为 `MaxHeight=190`，垂直滚动 `Auto`，水平滚动 `Disabled`。
 - 页面根滚动与风险列表内部滚动职责分离：普通首页内容由页面滚动承载，风险项超过视口后只在自身区域滚动，不能通过追加列表项把主页面高度无限撑大。
-- 当前 Dashboard ViewModel 的需关注数据仍按真实业务规则只展示前 4 条，保护明细继续使用真实 `RecentProtection.Items`；190 DIP 是 UI 层防护边界，不是业务截断替代品。
+- 当前 Dashboard ViewModel 的需关注数据按真实严重度筛选后完整绑定，首页不再用前 4 条静默截断；保护明细继续使用真实 `RecentProtection.Items`。190 DIP 是 UI 层防护边界，不是业务截断替代品。
 - RenderHarness 默认 fixture 没有使需关注列表溢出，因此其 `scrollable=false` 只说明当前 fixture 未超过 190 DIP；静态契约测试已强制检查滚动边界。不得据此宣称已完成真实 Playnite 滚动条交互验收。
 - 首页清理了已撤销的“今日工作台”旧工具栏及其代码后置响应式引用；媒体中心模式栏继续使用生产控件底色和紫色选中色，不迁移 Demo 顶部彩色按钮或 Demo 滚动条。
 
