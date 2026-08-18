@@ -2725,3 +2725,18 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `scripts/validate-source.py`：通过。
 - `validate_wpf_ui.py`：0 error，20 条既有 warning，161 条 info。
 - 本轮 Playnite 资源测试命令启动后长时间无输出且子进程低 CPU 空转，未将其记为通过；后续需用可完成的测试入口重新验证。
+
+## 2026-08-19 UI-235 首页紫色状态层级增强
+
+**本阶段内容：**
+
+- 首页最近任务图标与全局活动类型徽标由低透明度 `GscAccentTintBrush` 调整为 `GscAccentTintStrongBrush`。
+- 保留成功、失败、警告、信息等结果状态的原有语义色、Binding 和 Command；本次只增强紫色基础表面的可见度，避免与页面背景混成黑色透明层。
+- 首页“启用所选保护”等主要操作继续使用项目现有紫色主按钮资源，未新增 Demo 顶部主题按钮。
+
+**验证结果：**
+
+- `git diff --check`：通过。
+- `scripts/validate-source.py`：通过。
+- `validate_wpf_ui.py`：0 error，20 条既有 warning，161 条 info。
+- `scripts/build.ps1 -Configuration Debug -SkipTests -OutputRoot artifacts/build-check-v235`：解决方案编译通过，0 warning / 0 error。

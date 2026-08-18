@@ -261,7 +261,7 @@
                                     <DataTemplate>
                                         <Grid Margin="0,2,0,2">
                                             <Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="74"/><ColumnDefinition Width="96"/></Grid.ColumnDefinitions>
-                                            <Border x:Name="OverviewTaskStatusPill" Width="34" Height="34" CornerRadius="10" Background="{DynamicResource GscAccentTintBrush}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                            <Border x:Name="OverviewTaskStatusPill" Width="34" Height="34" CornerRadius="10" Background="{DynamicResource GscAccentTintStrongBrush}" HorizontalAlignment="Left" VerticalAlignment="Top">
                                                 <TextBlock x:Name="RecentActivityGlyph" FontFamily="Segoe MDL2 Assets" Text="&#xE73E;" FontSize="14" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                             </Border>
                                             <StackPanel Grid.Column="1" Margin="0,0,8,0" VerticalAlignment="Center" MinWidth="0">
@@ -285,7 +285,7 @@
                                         </Grid>
                                         <DataTemplate.Triggers>
                                             <DataTrigger Binding="{Binding State}" Value="Failed">
-                                                <Setter TargetName="OverviewTaskStatusPill" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
+                                                <Setter TargetName="OverviewTaskStatusPill" Property="Background" Value="{DynamicResource GscAccentTintStrongBrush}"/>
                                                 <Setter TargetName="RecentActivityGlyph" Property="Text" Value="&#xE711;"/>
                                                 <Setter TargetName="RecentActivityGlyph" Property="Foreground" Value="{DynamicResource GscErrorBrush}"/>
                                                 <Setter TargetName="OverviewTaskResultChip" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/>
@@ -293,7 +293,7 @@
                                                 <Setter TargetName="OverviewTaskResultText" Property="Foreground" Value="{DynamicResource GscErrorBrush}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding State}" Value="Running">
-                                                <Setter TargetName="OverviewTaskStatusPill" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
+                                                <Setter TargetName="OverviewTaskStatusPill" Property="Background" Value="{DynamicResource GscAccentTintStrongBrush}"/>
                                                 <Setter TargetName="RecentActivityGlyph" Property="Text" Value="&#xE895;"/>
                                                 <Setter TargetName="RecentActivityGlyph" Property="Foreground" Value="{DynamicResource GscInfoBrush}"/>
                                                 <Setter TargetName="OverviewTaskResultChip" Property="Background" Value="{DynamicResource GscInfoIconFillBrush}"/>
@@ -301,7 +301,7 @@
                                                 <Setter TargetName="OverviewTaskResultText" Property="Foreground" Value="{DynamicResource GscInfoBrush}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding State}" Value="Cancelled">
-                                                <Setter TargetName="OverviewTaskStatusPill" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
+                                                <Setter TargetName="OverviewTaskStatusPill" Property="Background" Value="{DynamicResource GscAccentTintStrongBrush}"/>
                                                 <Setter TargetName="RecentActivityGlyph" Property="Text" Value="&#xE711;"/>
                                                 <Setter TargetName="RecentActivityGlyph" Property="Foreground" Value="{DynamicResource GscMutedStatusBrush}"/>
                                                 <Setter TargetName="OverviewTaskResultChip" Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
@@ -359,7 +359,7 @@
                                                 <ColumnDefinition Width="Auto"/>
                                                 <ColumnDefinition Width="96"/>
                                             </Grid.ColumnDefinitions>
-                                            <Border x:Name="ActivityKindPill" Width="56" MinHeight="22" CornerRadius="9" Background="{DynamicResource GscAccentTintBrush}" BorderBrush="{DynamicResource GscAccentTintStrongBrush}" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="6,1">
+                                            <Border x:Name="ActivityKindPill" Width="56" MinHeight="22" CornerRadius="9" Background="{DynamicResource GscAccentTintStrongBrush}" BorderBrush="{DynamicResource GscAccentTintStrongBrush}" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="6,1">
                                                 <TextBlock x:Name="ActivityKindChipText" Text="{Binding KindDisplay, Mode=OneWay}" Foreground="{DynamicResource GscAccentBrush}" FontSize="10" TextTrimming="CharacterEllipsis" ToolTip="{Binding KindDisplay, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
                                             </Border>
                                             <StackPanel Grid.Column="1" Margin="0,0,12,0" VerticalAlignment="Center" MinWidth="0">
@@ -375,21 +375,21 @@
                                                 <Setter TargetName="ActivityKindPill" Property="Width" Value="52"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding Result}" Value="Failed">
-                                                <Setter TargetName="ActivityKindPill" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
+                                                <Setter TargetName="ActivityKindPill" Property="Background" Value="{DynamicResource GscAccentTintStrongBrush}"/>
                                                 <Setter TargetName="ActivityKindPill" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
                                                 <Setter TargetName="ActivityResultChip" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/>
                                                 <Setter TargetName="ActivityResultChip" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/>
                                                 <Setter TargetName="ActivityResultChipText" Property="Foreground" Value="{DynamicResource GscErrorBrush}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding Result}" Value="Warning">
-                                                <Setter TargetName="ActivityKindPill" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
+                                                <Setter TargetName="ActivityKindPill" Property="Background" Value="{DynamicResource GscAccentTintStrongBrush}"/>
                                                 <Setter TargetName="ActivityKindPill" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
                                                 <Setter TargetName="ActivityResultChip" Property="Background" Value="{DynamicResource GscSafetyFillBrush}"/>
                                                 <Setter TargetName="ActivityResultChip" Property="BorderBrush" Value="{DynamicResource GscWarningBrush}"/>
                                                 <Setter TargetName="ActivityResultChipText" Property="Foreground" Value="{DynamicResource GscWarningBrush}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding Result}" Value="Succeeded">
-                                                <Setter TargetName="ActivityKindPill" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
+                                                <Setter TargetName="ActivityKindPill" Property="Background" Value="{DynamicResource GscAccentTintStrongBrush}"/>
                                                 <Setter TargetName="ActivityKindPill" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
                                                 <Setter TargetName="ActivityResultChip" Property="Background" Value="{DynamicResource GscSuccessIconFillBrush}"/>
                                                 <Setter TargetName="ActivityResultChip" Property="BorderBrush" Value="{DynamicResource GscSuccessBrush}"/>
