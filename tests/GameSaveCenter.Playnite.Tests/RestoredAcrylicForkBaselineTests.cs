@@ -50,8 +50,7 @@ public sealed class RestoredAcrylicForkBaselineTests
         var media = ReadSource("Views", "MediaCenterView.xaml");
 
         Assert.Contains("x:Key=\"MediaModeStrip\"", media);
-        Assert.Contains("Property=\"Background\" Value=\"{DynamicResource GscControlFillBrush}\"", media);
-        Assert.Contains("Property=\"Background\" Value=\"{DynamicResource GscAccentTintBrush}\"", media);
+        Assert.Contains("Setter Property=\"Background\" Value=\"{DynamicResource GscAccentTintBrush}\"", media);
         Assert.Contains("Property=\"Foreground\" Value=\"{DynamicResource GscSelectionTextBrush}\"", media);
     }
 

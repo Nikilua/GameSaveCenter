@@ -755,3 +755,10 @@
 - 当前 Dashboard ViewModel 的需关注数据仍按真实业务规则只展示前 4 条，保护明细继续使用真实 `RecentProtection.Items`；190 DIP 是 UI 层防护边界，不是业务截断替代品。
 - RenderHarness 默认 fixture 没有使需关注列表溢出，因此其 `scrollable=false` 只说明当前 fixture 未超过 190 DIP；静态契约测试已强制检查滚动边界。不得据此宣称已完成真实 Playnite 滚动条交互验收。
 - 首页清理了已撤销的“今日工作台”旧工具栏及其代码后置响应式引用；媒体中心模式栏继续使用生产控件底色和紫色选中色，不迁移 Demo 顶部彩色按钮或 Demo 滚动条。
+
+## 2026-08-19 UI-231 首页风险项数量边界事实
+
+- 首页“风险与提醒”及其关联明细必须采用有限视口：最近游戏保护明细、需关注事项列表分别使用生产 `GscPageScrollViewer`，`MaxHeight=190`、垂直滚动 `Auto`、水平滚动 `Disabled`。
+- 数量很多时，风险明细在卡片内部滚动，不能把 Dashboard 根内容高度无限撑长；风险卡片本身不再包一层整卡滚动，避免双滚动条。
+- 该视口不替代业务数据：真实绑定仍保留，当前展示条数限制只由现有 ViewModel 业务规则和列表视口共同决定。
+- 真实 Playnite 截图验收仍未完成：本轮插件已由日志确认加载，但控制接口返回 `EmptyWindowAutomationPeer` 且截图错指 Codex 窗口；后续不得将 RenderHarness 或错误窗口截图称为宿主视觉通过。

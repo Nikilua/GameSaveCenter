@@ -518,7 +518,11 @@ namespace GameSaveCenter.Playnite.Views
                 // workbench only ~550-600 DIP wide, forcing Hero and 当前游戏 to stack
                 // below the fold. Switch the Overview to its stacked single-column flow
                 // until the content area is wide enough to keep both columns comfortable.
-                var stackOverview = workspaceContentWidth < 1200;
+                // The right rail belongs beside Recent Tasks/Global Activity at the
+                // normal Playnite workspace width. Only compact workspaces below 980 DIP
+                // move it below the primary flow, matching the Demo breakpoint without
+                // turning a normal 1398px host into the old full-width stacked layout.
+                var stackOverview = workspaceContentWidth < 980;
                 OverviewWorkspaceView.OverviewCompactSecondaryRowHeight = stackOverview ? GridLength.Auto : new GridLength(0);
                 OverviewWorkspaceView.ApplyResponsiveColumns(stackOverview);
                 OverviewWorkspaceView.ApplyResponsiveWidth(workspaceContentWidth);
