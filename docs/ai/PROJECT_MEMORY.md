@@ -793,3 +793,10 @@
 - 本轮 Release 验证结果为 Core 59/59、Worker 191/191、Playnite 248 通过/61 跳过/0 失败；安装报告保存在 `artifacts/last-dev-install.txt`。
 - 首页“风险与提醒”按列表级有限视口实现：两个风险列表使用项目 `GscPageScrollViewer`、`MaxHeight=190`、垂直 `Auto`、水平 `Disabled`。风险数量增加时只在列表内部滚动，不会无限增加首页高度。
 - 真实 Playnite 截图验证仍未通过：Computer Use 唯一返回的窗口标题是 Playnite，但截图内容是其他桌面窗口。此类结果只能记为宿主视觉阻塞，绝不能宣称页面已在 Playnite 中 1:1 验收。
+
+## 2026-08-19 UI-238 首页风险与提醒视口事实
+
+- 首页“风险与提醒”现在有独立的 `OverviewRiskViewport`，使用生产 `GscPageScrollViewer`，最大高度为 `330 DIP`，垂直滚动 `Auto`、水平滚动 `Disabled`。风险数量增加时，首页主内容高度不再被风险条目无限撑大。
+- 风险区标题、说明和底部“打开维护中心”按钮位于外层视口之外；展开的最近游戏保护明细仍保留 `OverviewProtectionItemsScrollViewer` 的 `190 DIP` 内部视口。前者限制整个风险提醒栏，后者限制展开明细列表，不是无意义地叠加两个相同滚动条。
+- `OverviewRiskScrollViewer` 仍然是兼容 `Panel` 节点，真实 `AttentionFindings` 与 `RecentProtection.Items` 绑定不变；不要把兼容节点直接改成同名 `ScrollViewer`，否则会破坏响应式代码和源码契约测试。
+- 2026-08-19 已用单节点测试入口完成 Playnite 249/61、Core 59/59、Worker 191/191；RenderHarness 全量 `render-qa OK`，但这些结果仍不能替代可识别 Playnite 窗口的真实宿主截图。

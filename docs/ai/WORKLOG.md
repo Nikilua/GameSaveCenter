@@ -2781,3 +2781,24 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 **验证边界：**
 
 - 本轮尝试启动 Playnite 并选择唯一返回的 Playnite 窗口，但 `get_window_state` 返回的图像内容实际是其他桌面窗口；因此真实 Playnite 页面视觉验收仍记录为“阻塞”，不能用该截图或 RenderHarness 离屏图冒充宿主通过。
+
+## 2026-08-19 UI-238 首页风险与提醒总视口收口
+
+**本阶段内容：**
+
+- 首页风险与提醒区域新增独立的 `OverviewRiskViewport`，使用项目现有 `GscPageScrollViewer`，`MaxHeight=330`、垂直滚动 `Auto`、水平滚动 `Disabled`；风险条目数量很多时只在该区域内部滚动，不再无限增加首页高度。
+- 风险标题、说明和“打开维护中心”操作保持在视口外；展开后的最近游戏保护明细继续使用独立的 `OverviewProtectionItemsScrollViewer`，`MaxHeight=190`，两个滚动层分别承担总风险列表和明细列表的有限视口职责。
+- 保留 `OverviewRiskScrollViewer` 的 `Panel` 兼容节点和真实 `RecentProtection.Items`/`AttentionFindings` 绑定，未改变业务数据、命令或项目滚动条模板。
+- 增加源码契约测试，防止后续误删风险区高度边界或把底部操作重新塞入可增长列表。
+
+**验证结果：**
+
+- Playnite 测试：249 通过、61 跳过、0 失败；Core 59/59；Worker 191/191。
+- `scripts/validate-source.py`：通过。
+- `validate_wpf_ui.py`：0 error，20 条既有 warning，161 条 info。
+- RenderHarness：`render-qa OK`；浅色/深色、1040×700/1100×720/1366×768/2560×1440 和缩放过渡均通过，报告中的 `OverviewRiskViewport` 固定为 330 DIP 且出现 Auto 纵向滚动。
+- `git diff --check`：通过。
+
+**验证边界：**
+
+- 本阶段仍未把离屏 RenderHarness 结果冒充 Playnite 真机视觉验收；真实宿主截图需要在可识别的 Playnite 页面窗口中单独复核。

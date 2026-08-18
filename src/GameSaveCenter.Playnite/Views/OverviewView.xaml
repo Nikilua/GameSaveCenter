@@ -437,7 +437,16 @@
                         <TextBlock Style="{DynamicResource GscRedesignSectionTitle}" Text="风险与提醒"/>
                         <TextBlock Style="{DynamicResource GscRedesignSectionSubtitle}" Text="最近 30 天游玩过的游戏" Margin="0,3,0,0"/>
                     </StackPanel>
-                    <StackPanel x:Name="OverviewRiskScrollViewer" Grid.Row="1" Margin="0,10,0,0">
+                    <ScrollViewer x:Name="OverviewRiskViewport"
+                                  Grid.Row="1"
+                                  Style="{DynamicResource GscPageScrollViewer}"
+                                  MaxHeight="330"
+                                  Margin="0,10,0,0"
+                                  VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Disabled"
+                                  CanContentScroll="False"
+                                  AutomationProperties.Name="风险与提醒列表">
+                      <StackPanel x:Name="OverviewRiskScrollViewer">
                         <Border Background="{DynamicResource GscSafetyFillBrush}" BorderBrush="{DynamicResource GscSafetyStrokeBrush}" BorderThickness="1" CornerRadius="12" Padding="10" Margin="0,0,0,8">
                             <Grid>
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="28"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
@@ -473,7 +482,9 @@
                                                            HorizontalScrollBarVisibility="Disabled"
                                                            CanContentScroll="False"
                                                            AutomationProperties.Name="最近游戏保护明细列表">
-                                             <ItemsControl ItemsSource="{Binding RecentProtection.Items}" Margin="0,0,0,6">
+                                             <ItemsControl x:Name="OverviewProtectionItems"
+                                                           ItemsSource="{Binding RecentProtection.Items}"
+                                                           Margin="0,0,0,6">
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate>
                                                         <Grid Margin="0,0,0,7">
@@ -491,8 +502,8 @@
                                                         </Grid>
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>
-                                            </ItemsControl>
-                                             </ScrollViewer>
+                                             </ItemsControl>
+                                            </ScrollViewer>
                                             <TextBlock Text="条目过多时只在此列表内滚动；选择游戏不会自动执行备份或恢复。" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap"/>
                                         </StackPanel>
                                     </Expander>
@@ -506,7 +517,8 @@
                                 <StackPanel Grid.Column="1"><TextBlock Text="云端失败不会撤销本地备份" FontWeight="SemiBold"/><TextBlock Text="本地副本始终为主副本，失败任务可在任务中心诊断和重试。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,4,0,0"/></StackPanel>
                             </Grid>
                         </Border>
-                    </StackPanel>
+                      </StackPanel>
+                    </ScrollViewer>
                     <ui:Button Grid.Row="2" Style="{DynamicResource GscWpfUiPrimaryButton}" AutomationProperties.Name="打开维护中心查看完整关注详情" ToolTip="点击查看需要关注的游戏、原因和建议处理方式" Command="{Binding OpenAttentionCenterCommand}" Content="打开维护中心" HorizontalAlignment="Right" MinWidth="140" Margin="0,10,0,0"/>
                 </Grid>
             </Border>

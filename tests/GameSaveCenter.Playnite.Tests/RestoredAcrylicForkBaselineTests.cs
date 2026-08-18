@@ -69,6 +69,20 @@ public sealed class RestoredAcrylicForkBaselineTests
         Assert.Contains("ItemsSource=\"{Binding RecentProtection.Items}\"", overview);
     }
 
+    [Fact]
+    public void OverviewRiskRailUsesABoundedScrollSurfaceWithoutMovingItsActions()
+    {
+        var overview = ReadSource("Views", "OverviewView.xaml");
+
+        Assert.Contains("x:Name=\"OverviewRiskViewport\"", overview);
+        Assert.Contains("MaxHeight=\"330\"", overview);
+        Assert.Contains("AutomationProperties.Name=\"风险与提醒列表\"", overview);
+        Assert.Contains("VerticalScrollBarVisibility=\"Auto\"", overview);
+        Assert.Contains("HorizontalScrollBarVisibility=\"Disabled\"", overview);
+        Assert.Contains("x:Name=\"OverviewRiskScrollViewer\"", overview);
+        Assert.Contains("Command=\"{Binding OpenAttentionCenterCommand}\"", overview);
+    }
+
     private static string ReadSource(params string[] relativePath)
     {
         var directory = new DirectoryInfo(Directory.GetCurrentDirectory());
