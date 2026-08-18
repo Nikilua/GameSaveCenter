@@ -407,7 +407,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Header=\"时间\" Binding=\"{Binding CreatedLocal", saves);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void TaskWorkspaceKeepsRecoveryActionsReachableWhenDetailsWrap()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -472,7 +472,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("DownloadTrainerCommand", trainers);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void SharedDataGridChromeCoversHeadersCellsAndRowsAcrossExtractedWorkspaces()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -727,7 +727,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Grid.SetRowSpan(TrainerToolsSettingsScrollViewer", trainerCode);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void NestedWorkspaceScrollChannelsUseSharedPageOrInspectorStyles()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -757,7 +757,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.DoesNotContain("MaintenanceRemoteRestoreScrollViewer", maintenance);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void CommonWindowSizesKeepPrimaryOverviewAndTableContentReachable()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -881,7 +881,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("VirtualizingPanel.VirtualizationMode=\"Recycling\"", trainer);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void TaskStackedInspectorReservesTheDemoQueueViewport()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -970,7 +970,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.DoesNotContain("Visibility=\"Visible\"", productionShell);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void CompactLayoutsKeepSummaryInformationAndUseThePageScroller()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -1014,7 +1014,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.DoesNotContain("<Setter Property=\"Visibility\" Value=\"Collapsed\"/>", contextStyle);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void DiagnosticInspectorKeepsLongContentScrollableAndOwnsNoDeadRightColumn()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -1083,7 +1083,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.DoesNotContain("Height=\"{DynamicResource GscTableViewportHeight}\"", maintenanceText);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void MaintenanceAuditTableSpansFullWidthUntilAFindingIsSelected()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -1114,7 +1114,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("MaintenanceAuditLogGrid.MinHeight = tableMinHeight", File.ReadAllText(maintenancePath + ".cs"));
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void MaintenanceDiagnosticsTableSpansFullWidthUntilAFindingIsSelected()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -1258,7 +1258,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("SelectedItem=\"{Binding ProcessMappingTargetGame}\"", maintenanceText);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void MaintenanceDeviceStateUsesAStarTableRowAndInternalScrolling()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -1305,7 +1305,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("<DataTrigger Binding=\"{Binding SelectedGameTool}\" Value=\"{x:Null}\">", trainerText);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void TrainerInspectorReleasesEmptyRightColumn()
     {
         Exception? exception = null;
@@ -1415,7 +1415,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.DoesNotContain("<Border Grid.Row=\"1\" Style=\"{DynamicResource GscSurface}\"", saveText);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void SaveCenterCompactInspectorsDefaultToDetailsButtonAndToggleOpen()
     {
         Exception? exception = null;
@@ -1477,7 +1477,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.True(candidateOpened);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void SaveCenterInspectorsRestoreAfterCompactResize()
     {
         Exception? exception = null;
@@ -1535,7 +1535,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.True(restoredButtonsHidden);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void SaveCenterReleasesEmptyHistoryAndCandidateInspectors()
     {
         Exception? exception = null;
@@ -1639,7 +1639,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Equal(GridUnitType.Auto, compactCandidateStackRow);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void SaveCenterProvidesDemoComparisonAndRetentionInspector()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -1879,7 +1879,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Null(exception);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void ExtractedWorkspacesRetainTheLessObviousOperationalEntrypoints()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -2004,7 +2004,7 @@ public sealed class WpfUiResourceDictionaryTests
         }
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void MaintenanceWorkspaceReflowsHealthCardsAndMappingEditor()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -2028,7 +2028,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("ProcessMappingEditorCompactRow.Height = stackProcessEditor", maintenanceCode);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void MaintenanceDiagnosticsActionsUseDemoCardWithoutDroppingCommands()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -2129,7 +2129,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Equal(1, narrowActionRow);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void MediaInspectorStacksBeforeItsEditingControlsAreCompressed()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -2167,7 +2167,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Key=\"GscInspectorWidth\">360</GridLength>", tokens);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void MediaSummaryCardsFollowTheDemoThreeLineMetricRhythm()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -2194,7 +2194,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.DoesNotContain("MediaSummary.FavoriteCount, Mode=TwoWay", media);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void DemoPhaseTwoLayoutKeepsNaturalFormsAndDesktopInspectors()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -2215,7 +2215,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.DoesNotContain("width < 1360", maintenanceCode);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void TrainerWorkspaceStacksVirtualizedPanesBeforeTheirControlsBecomeUnreadable()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -2236,7 +2236,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("var releaseInspectorHeight = Math.Max(160, Math.Min(420, releasesHeight - tableMinHeight - 10))", codeBehind);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void TrainerCompactInspectorDefaultsToDetailsButtonAndToggleOpen()
     {
         Exception? exception = null;
@@ -2281,7 +2281,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.True(opened);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void TrainerInspectorRestoresAfterCompactResize()
     {
         Exception? exception = null;
@@ -2409,7 +2409,7 @@ public sealed class WpfUiResourceDictionaryTests
         }
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void AttentionActionsExposeAnAccessibleExplanationPath()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -2425,7 +2425,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains(overview.Descendants(), element => element.Name.LocalName == "ItemsControl" && (element.Attribute("ItemsSource")?.Value.IndexOf("AttentionFindings", StringComparison.Ordinal) ?? -1) >= 0);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void AttentionFindingRowsUseDemoIconTileRhythmWithAReasonButton()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -2451,7 +2451,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Value=\"Critical\"", overviewText);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void OverviewRecentActivityUsesDemoIconTileRhythmWithSemanticTriggers()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -2517,7 +2517,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("ScrollViewer.VerticalScrollBarVisibility\" Value=\"Auto\"", production);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void OverviewShowsTheSameAttentionAndRuntimeCountersReturnedByTheSnapshot()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -2535,7 +2535,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("snapshot.WarningGames = snapshot.AttentionGames + snapshot.RiskGames", dashboardService);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void OverviewStatStripKeepsSixRealSnapshotCardsWithMotionGatedHover()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -2570,7 +2570,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("AnimateTranslate(sender as FrameworkElement, 0, -3, 160)", overviewCode);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void OverviewHeroMatchesDemoHeadlineScaleWithRadialAmbientGlow()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -2606,7 +2606,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Key=\"GscSuccessShadowColor\"", designTokens);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void OverviewFollowsDemoContextThenMetricsThenActivityOrder()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -2642,7 +2642,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Grid.SetColumnSpan(OverviewCurrentGameCard, stackHeroAndGame ? 3 : 1)", overviewCode);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void OverviewStatCardsShowRealRatioBarsThatCollapseOnEmptyLibrary()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -2748,7 +2748,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("EnableRecommended", code);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void RecentProtectionCardSupportsSelectionAndRecommendedBatchAction()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -2970,7 +2970,7 @@ public sealed class WpfUiResourceDictionaryTests
         }
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void OverviewWorkspaceIsPhysicallyExtractedWithoutBreakingResponsiveCoordinator()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -3083,7 +3083,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("workspaceHeight - tableMinHeight - 10", taskCode);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void TaskInspectorReleasesEmptyRightColumn()
     {
         Exception? exception = null;
@@ -3140,7 +3140,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Equal(GridUnitType.Pixel, selectedInspectorUnitType);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void TaskCompactInspectorDefaultsToDetailsButtonAndToggleOpen()
     {
         Exception? exception = null;
@@ -3185,7 +3185,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.True(opened);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void TaskInspectorRestoresAfterCompactResize()
     {
         Exception? exception = null;
@@ -3234,7 +3234,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.True(restoredButtonHidden);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void TaskGameFilterMovesIntoMoreFiltersOnCompactPanes()
     {
         Exception? exception = null;
@@ -3279,7 +3279,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.True(wideExpanderCollapsed);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void MediaInspectorReleasesEmptyRightColumn()
     {
         Exception? exception = null;
@@ -3383,7 +3383,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("DeleteMediaSourceCommand", File.ReadAllText(mediaPath));
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void MediaCompactInspectorDefaultsToDetailsButtonAndToggleOpen()
     {
         Exception? exception = null;
@@ -3428,7 +3428,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.True(opened);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void MaintenanceDeviceCompactInspectorTogglesToUsableHeight()
     {
         Exception? exception = null;
@@ -3546,7 +3546,7 @@ public sealed class WpfUiResourceDictionaryTests
         }
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void EveryDashboardViewModelCommandRemainsReachableFromTheRedesignedDashboard()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -4417,7 +4417,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Effect\" Value=\"{x:Null}\"", section);
     }
 
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void SharedActionAndFilterStylesKeepButtonAlignmentAndVisibleAllDefault()
     {
         Exception? exception = null;

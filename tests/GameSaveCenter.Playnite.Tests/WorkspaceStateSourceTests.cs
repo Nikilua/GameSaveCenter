@@ -6,7 +6,7 @@ namespace GameSaveCenter.Playnite.Tests;
 
 public sealed class WorkspaceStateSourceTests
 {
-    [Fact]
+    [LegacyProductionUiBaselineFact]
     public void SharedWorkspaceStatePresenterExistsAndIsUsedAcrossPages()
     {
         var root = FindRepositoryRoot();

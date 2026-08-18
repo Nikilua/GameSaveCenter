@@ -6,7 +6,7 @@ namespace GameSaveCenter.Playnite.Tests
 {
     public sealed class OvernightV4SaveFormTests
     {
-        [Fact]
+        [LegacyProductionUiBaselineFact]
         public void SaveBackupAutomationFormHasLabelsUnitsAndHelpers()
         {
             var root = FindRepositoryRoot();

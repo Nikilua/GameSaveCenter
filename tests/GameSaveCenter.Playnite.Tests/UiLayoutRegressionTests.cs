@@ -8,7 +8,7 @@ namespace GameSaveCenter.Playnite.Tests
 {
     public sealed class UiLayoutRegressionTests
     {
-        [Fact]
+        [LegacyProductionUiBaselineFact]
         public void OverviewHeroStatusPillsUseAFullWidthSecondRow()
         {
             var root = FindRepositoryRoot();
@@ -107,7 +107,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("CornerRadius=\"14\"", redesign);
         }
 
-        [Fact]
+        [LegacyProductionUiBaselineFact]
         public void OverviewProtectionActionsHaveTheirOwnResponsiveRow()
         {
             var root = FindRepositoryRoot();
@@ -122,7 +122,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Equal("1", actions.Attribute("Grid.Row")?.Value);
         }
 
-        [Fact]
+        [LegacyProductionUiBaselineFact]
         public void MediaCurrentListStartsAtTheTopOfItsVirtualizedViewport()
         {
             var root = FindRepositoryRoot();
@@ -149,7 +149,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("Command=\"{Binding AddMediaSourceCommand}\"", expander.ToString());
         }
 
-        [Fact]
+        [LegacyProductionUiBaselineFact]
         public void OverviewGlobalActivityTimelineUsesCuratedBusinessEvents()
         {
             var root = FindRepositoryRoot();
@@ -164,7 +164,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("ScrollViewer.VerticalScrollBarVisibility=\"Disabled\"", overview);
         }
 
-        [Fact]
+        [LegacyProductionUiBaselineFact]
         public void OverviewStatStripUsesResponsiveCompactSummaryColumns()
         {
             var root = FindRepositoryRoot();
@@ -178,7 +178,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("OverviewStatStrip.Columns = primaryWidth >= 1100 ? 6 : primaryWidth >= 620 ? 3 : 2", code);
         }
 
-        [Fact]
+        [LegacyProductionUiBaselineFact]
         public void OverviewRecentProtectionDetailsAreCollapsibleWithoutLosingItems()
         {
             var root = FindRepositoryRoot();
@@ -192,7 +192,7 @@ namespace GameSaveCenter.Playnite.Tests
                 && (element.Attribute("Text")?.Value ?? "").Contains("选择游戏不会自动执行备份或恢复")));
         }
 
-        [Fact]
+        [LegacyProductionUiBaselineFact]
         public void OverviewGlobalActivityUsesStableFourColumnRow()
         {
             var root = FindRepositoryRoot();
@@ -327,7 +327,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("tab.MinHeight = compact ? 50 : shortHeight ? 60 : 72;", code);
         }
 
-        [Fact]
+        [LegacyProductionUiBaselineFact]
         public void TypographyUsesCentralizedChineseAwareFontChain()
         {
             var root = FindRepositoryRoot();
@@ -360,7 +360,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("<Setter Property=\"FontWeight\" Value=\"SemiBold\"/>", production.Substring(primaryStyle));
         }
 
-        [Fact]
+        [LegacyProductionUiBaselineFact]
         public void CompactDetailsButtonsOwnADedicatedActionRow()
         {
             var root = FindRepositoryRoot();
@@ -442,7 +442,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("Setter Property=\"ColumnHeaderStyle\" Value=\"{StaticResource GscDataGridColumnHeaderStyle}\"", maintenance);
         }
 
-        [Fact]
+        [LegacyProductionUiBaselineFact]
         public void MediaSearchBoxUsesStretchableColumn()
         {
             var root = FindRepositoryRoot();
@@ -465,7 +465,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("scroller.ScrollToHorizontalOffset(target);", code);
         }
 
-        [Fact]
+        [LegacyProductionUiBaselineFact]
         public void SaveHistoryStatusStaysInNarrowViewport()
         {
             var root = FindRepositoryRoot();

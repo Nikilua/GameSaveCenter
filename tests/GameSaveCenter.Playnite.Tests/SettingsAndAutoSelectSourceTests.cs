@@ -38,7 +38,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("VerticalScrollBarVisibility=\"Auto\"", redesign);
         }
 
-        [Fact]
+        [LegacyProductionUiBaselineFact]
         public void AutoSelectUsesEventsAndResolverWithoutPolling()
         {
             var root = FindRepositoryRoot();
@@ -73,7 +73,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.DoesNotContain("SelectedGameIcon", dashboard.Substring(pickerStart, pickerEnd - pickerStart));
         }
 
-        [Fact]
+        [LegacyProductionUiBaselineFact]
         public void OnboardingUsesMaintenanceWorkspaceAndExplicitCommands()
         {
             var root = FindRepositoryRoot();

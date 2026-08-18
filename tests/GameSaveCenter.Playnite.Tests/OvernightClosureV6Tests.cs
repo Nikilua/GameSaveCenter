@@ -6,7 +6,7 @@ namespace GameSaveCenter.Playnite.Tests
 {
     public sealed class OvernightClosureV6Tests
     {
-        [Fact]
+        [LegacyProductionUiBaselineFact]
         public void OverviewUsesOnlyTheRootPageScrollSurface()
         {
             var overview = Read("Views", "OverviewView.xaml");
@@ -30,7 +30,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.DoesNotContain("ScrollViewer x:Name=\"MediaCurrentScrollSurface\"", media);
         }
 
-        [Fact]
+        [LegacyProductionUiBaselineFact]
         public void FiltersAndSearchControlsHaveSemanticPrefixes()
         {
             var tasks = Read("Views", "TaskCenterView.xaml");
@@ -65,7 +65,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("GameSwitcherHost.Visibility = gameScopedWorkspace", dashboard);
         }
 
-        [Fact]
+        [LegacyProductionUiBaselineFact]
         public void ChipAndCellSpacingUseSharedTokens()
         {
             var redesign = Read("Themes", "Redesign.xaml");
