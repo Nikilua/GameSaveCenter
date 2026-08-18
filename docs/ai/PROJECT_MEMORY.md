@@ -778,3 +778,11 @@
 - 媒体模式栏的外层表面使用 `GscAccentTintBrush`，内部选中状态使用更强的紫色令牌；顶部 Demo 彩色按钮、Demo 滚动条仍不迁移。
 - 仅安装裸 .NET SDK 的机器可能缺少 Workload Resolver 目录；`scripts/build.ps1` 和 `scripts/render-qa.ps1` 通过 `MSBuildEnableWorkloadResolver=false` 兼容本项目的 .NET Framework/WPF 构建，不代表项目依赖任何 SDK Workload。
 - 2026-08-19 完成一次可复现验证：Playnite UI 测试 248 通过、61 跳过、0 失败；Playnite 与 RenderHarness Release 编译 0 警告/0 错误；RenderHarness 全量 `render-qa OK`。真实 Playnite 宿主视觉截图仍未完成，离屏证据不能替代宿主验收。
+
+## 2026-08-19 UI-236 风险视口和紫色状态验证事实
+
+- 首页“风险与提醒”必须限制列表视口，而不是限制业务集合：`OverviewAttentionScrollViewer` 与 `OverviewProtectionItemsScrollViewer` 使用 `GscPageScrollViewer`、`MaxHeight=190`、垂直滚动 `Auto`、水平滚动 `Disabled`；数量增加时主页面高度保持稳定，列表内部出现项目现有滚动条。
+- 首页最近任务、媒体来源和可下载版本的长文本使用有限 Grid 测量、`CharacterEllipsis` 和 Tooltip，防止标题挤压状态徽标、按钮或 Inspector。
+- 媒体中心模式栏使用更明确的 `GscAccentTintStrongBrush` 紫色生产资源；该资源变更已同步源码契约测试，Demo 顶部颜色按钮和 Demo 滚动条仍未迁移。
+- 重新编译测试后 Playnite 测试为 248 通过、61 跳过、0 失败；之前 38 项失败来自旧测试二进制，不是当前源码结果。
+- RenderHarness `render-current3` 全量 `render-qa OK`，但仍属于离屏证据；如果屏幕控制返回 `EmptyWindowAutomationPeer` 或错误窗口，必须记录为宿主视觉阻塞，不能写成 Playnite 真机验收通过。

@@ -2740,3 +2740,24 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `scripts/validate-source.py`：通过。
 - `validate_wpf_ui.py`：0 error，20 条既有 warning，161 条 info。
 - `scripts/build.ps1 -Configuration Debug -SkipTests -OutputRoot artifacts/build-check-v235`：解决方案编译通过，0 warning / 0 error。
+
+## 2026-08-19 UI-236 风险视口与媒体紫色状态回归
+
+**本阶段内容：**
+
+- 首页风险与提醒继续采用列表级有限视口，风险数量很多时只在列表内部滚动，不再无限撑高首页；真实 `AttentionFindings` 不做静默截断。
+- 首页最近任务游戏名、修改器下载版本号和媒体来源状态增加有限测量、截断和 Tooltip，避免长文本挤压按钮或破坏行结构。
+- 媒体中心模式栏改为更明确的生产紫色强调表面；未迁移 Demo 顶部颜色按钮，也未替换项目滚动条。
+- 同步更新媒体模式栏的源码契约测试，使测试描述当前的强紫色状态而不是已废弃的旧弱色资源。
+
+**验证结果：**
+
+- Playnite 测试重新编译后：248 通过、61 跳过、0 失败；旧的 38 项失败确认为旧测试二进制造成的假象。
+- `scripts/validate-source.py`：通过。
+- `validate_wpf_ui.py`：0 error，20 条既有 warning，161 条 info。
+- `git diff --check`：通过。
+- RenderHarness `render-current3`：`render-qa OK`；1040×700、1100×720 的风险视口均固定为 190 DIP 并通过溢出滚动探针；浅色/深色、多尺寸和缩放过渡均通过。
+
+**验证边界：**
+
+- RenderHarness 是离屏验证，不是 Playnite 真机截图；真实宿主视觉仍需在可识别的 Playnite 窗口中复核，不能用错误窗口截图替代。

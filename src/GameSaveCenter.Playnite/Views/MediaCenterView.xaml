@@ -135,8 +135,8 @@
             <!-- The mode selector is part of the page's purple segmented surface.
                  The selected radio keeps the stronger purple state inside this strip. -->
             <Style x:Key="MediaModeStrip" TargetType="Border">
-                <Setter Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
-                <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource GscAccentTintStrongBrush}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource GscAccentTintStrongBrush}"/>
                 <Setter Property="BorderThickness" Value="1"/>
                 <Setter Property="CornerRadius" Value="10"/>
                 <Setter Property="Padding" Value="2"/>
@@ -328,7 +328,7 @@
                                             </Grid>
                                         </Border>
                                         <Border Grid.Row="1" Background="{DynamicResource GscControlFillBrush}" Padding="10,7">
-                                            <StackPanel><TextBlock Text="{Binding FileName}" FontSize="10.5" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding FileName}"/><Grid Margin="0,4,0,0"><TextBlock Text="{Binding CapturedLocal, Mode=OneWay, StringFormat={}{0:MM-dd HH:mm}}" FontSize="9.5" Foreground="{DynamicResource GscMutedTextBrush}"/><TextBlock Text="{Binding CloudStateDisplay, Mode=OneWay}" FontSize="9.5" HorizontalAlignment="Right" Foreground="{DynamicResource GscMutedTextBrush}"/></Grid></StackPanel>
+                                            <StackPanel><TextBlock Text="{Binding FileName}" FontSize="10.5" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding FileName}"/><Grid Margin="0,4,0,0"><TextBlock Text="{Binding CapturedLocal, Mode=OneWay, StringFormat={}{0:MM-dd HH:mm}}" FontSize="9.5" Foreground="{DynamicResource GscMutedTextBrush}"/><TextBlock Text="{Binding CloudStateDisplay, Mode=OneWay}" FontSize="9.5" HorizontalAlignment="Right" Foreground="{DynamicResource GscMutedTextBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding CloudStateDisplay}"/></Grid></StackPanel>
                                         </Border>
                                     </Grid>
                                 </DataTemplate>

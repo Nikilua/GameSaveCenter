@@ -267,10 +267,11 @@
                                             <StackPanel Grid.Column="1" Margin="0,0,8,0" VerticalAlignment="Center" MinWidth="0">
                                                 <Grid MinWidth="0">
                                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                                                    <StackPanel Orientation="Horizontal" Grid.Column="0" MinWidth="0">
+                                                    <Grid Grid.Column="0" MinWidth="0">
+                                                        <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                                         <TextBlock Text="{Binding TaskTypeDisplay, Mode=OneWay}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding TaskTypeDisplay, Mode=OneWay}"/>
-                                                        <TextBlock Text="{Binding GameName, Mode=OneWay, TargetNullValue=全局}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="6,0,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/>
-                                                    </StackPanel>
+                                                        <TextBlock Grid.Column="1" Text="{Binding GameName, Mode=OneWay, TargetNullValue=全局}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="6,0,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/>
+                                                    </Grid>
                                                 </Grid>
                                                 <Grid Margin="0,3,0,0" MinWidth="0">
                                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
@@ -492,7 +493,7 @@
                                                 </ItemsControl.ItemTemplate>
                                             </ItemsControl>
                                              </ScrollViewer>
-                                            <TextBlock Text="列表仅展示前 6 项；选择游戏不会自动执行备份或恢复。" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap"/>
+                                            <TextBlock Text="条目过多时只在此列表内滚动；选择游戏不会自动执行备份或恢复。" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap"/>
                                         </StackPanel>
                                     </Expander>
                                 </StackPanel>
