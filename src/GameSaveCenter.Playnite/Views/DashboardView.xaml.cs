@@ -1463,6 +1463,19 @@ namespace GameSaveCenter.Playnite.Views
             {
                 AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(workspaceView.Resources, palette, glassEnabled, MotionEnabled);
             }
+
+            // The production shell owns a second set of extracted page instances in its
+            // PageHost.  The legacy coordinator above is intentionally kept for compatibility,
+            // but it is not the visual tree rendered by Playnite.  Applying the palette only to
+            // the hidden coordinator left AcrylicReferenceControls' short Demo tokens unresolved
+            // in the real pages, so icon tiles, accent chips and primary buttons fell back to
+            // the host's black/transparent defaults.  Keep both trees coherent; this is also
+            // required when the user changes the theme while a production page is open.
+            AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(ProductionShellView.Resources, palette, glassEnabled, MotionEnabled);
+            foreach (var workspaceView in ProductionShellView.WorkspaceViews)
+            {
+                AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(workspaceView.Resources, palette, glassEnabled, MotionEnabled);
+            }
             OverviewWorkspaceView.UiAnimationsEnabled = MotionEnabled;
 
             // The ambient ellipses are the only fixed BlurEffect surfaces in the dashboard.

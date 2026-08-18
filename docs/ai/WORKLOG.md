@@ -2459,7 +2459,7 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `scripts/validate-source.py` 仍报告已有媒体缩略图 96px bounded decode 规则缺失；WPF UI 静态扫描无 error，仅保留既有布局提示。
 - 本轮重复执行 Playnite 测试命令后长时间无输出，已停止这批明确由该命令启动的 30 个空闲 `dotnet` 进程；未将这次无结果的运行计为通过，沿用上一阶段已记录的 Playnite 回归基线。
 
-## 2026-08-18 UI-226 首页 Demo 主题别名同步与真实宿主复核
+## 2026-08-18 UI-226 首页 Demo 主题别名同步与生产页面资源注入
 
 **用户反馈：**
 
@@ -2483,14 +2483,18 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `scripts/validate-source.py`：通过。
 - `validate_wpf_ui.py`：0 error，19 条既有 warning。
 - 隔离 Release 构建（XAML、Contracts/Core/Worker、Playnite 插件及测试程序集）：0 warning / 0 error。
-- 针对 `LocalAccentTokensFollowTheHostPaletteWithoutStaticThemeCapture` 的 Playnite 单测：1/1 通过。
+- 本次补充生产 PageHost 资源注入断言后重跑针对性 Playnite 单测，命令长时间无输出并被停止，未将其记为通过；Release 构建已确认测试程序集可编译。
 - 全量 `WpfUiResourceDictionaryTests` 仍有 43 个迁移前结构断言失败；这些断言检查旧 WrapPanel、旧列定义和旧字号，未将其记为本轮通过，也未因本次主题资源修复改动业务代码。
-- 新 DLL 已打包并安装到真实 Playnite 扩展目录；重新获取真实 Playnite 页面截图，确认最近任务图标/进度条、全部链接、风险主按钮、全局活动分类和“信息”气泡均恢复紫色或对应语义色，侧栏“设置”也正常显示。
+- 发现上一阶段只给旧的隐藏页面树注入了运行时主题资源，生产 `AcrylicProductionShellView.PageHost` 中的真实页面没有收到 Demo 短资源别名；已在 `DashboardView.ApplyAdaptiveTheme()` 同时给生产 Shell 和其实际页面实例注入运行时资源。
+- `scripts/validate-source.py`：通过；`validate_wpf_ui.py`：0 error、19 条既有 warning；隔离 Release 构建、打包和开发安装通过。
+- RenderHarness 的深色首页 PNG 已实际检查：最近任务图标、进度条、`全部` 链接、全局活动分类文字、风险主按钮均呈现紫色或对应语义色；这证明离屏夹具中的实际资源解析已修复。
+- 全量 RenderHarness 仍未通过：已有 Media resize recovery 两项失败（`MediaGrid` 尺寸未恢复、`MediaInspectorScrollViewer` 状态未恢复），不能把本轮写成全量视觉回归通过。
 
 **验证边界：**
 
 - 本阶段没有把 RenderHarness 全量结果写成通过；此前 Media resize recovery 失败仍需后续处理。
-- 本阶段只修正首页共享主题资源别名，不代表存档、媒体、任务、修改器和维护中心的全量 Demo 对照已经完成。
+- Playnite 日志确认新 DLL 已加载，但 Computer Use 返回 `EmptyWindowAutomationPeer`、`MainWindowHandle=0`，截图实际是桌面其他窗口；因此真实宿主视觉仍是 `MANUAL QA REQUIRED`，不能把离屏 PNG 当成 Playnite 截图。
+- 本阶段只修正首页生产页面的主题资源注入，不代表存档、媒体、任务、修改器和维护中心的全量 Demo 对照已经完成。
 
 **验证边界：**
 

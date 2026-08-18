@@ -713,4 +713,5 @@
 - 生产 Acrylic 共享控件与 AcrylicFork Demo 共用一组短资源键：`AccentBrush`、`AccentHoverBrush`、`AccentPressedBrush`、`AccentStrokeBrush`、`AccentTintBrush`、`AccentTintStrongBrush`、`AccentWashBrush` 和 `TextOnAccentBrush`。
 - 生产主题适配必须同时写入这些短键和 `Gsc*` 键；只写 `Gsc*` 会让 Playnite 宿主的未解析短键回退为黑色/透明，表现为任务图标、进度条、活动气泡和主按钮与 Demo 色彩不一致。
 - 短键只能写入当前页面的局部 `ResourceDictionary`，不能修改 Playnite 全局资源；这样既能复现 Demo 的强调色层级，又不会污染宿主主题。
-- 2026-08-18 已用真实 Playnite 截图复核：首页最近任务图标/进度条、`全部` 链接、风险主按钮、全局活动分类和信息气泡的颜色层级已生效。RenderHarness 全量和迁移前结构测试仍保留公开失败边界。
+- 2026-08-18 已确认生产页面的实际资源注入缺口：`DashboardView` 之前只更新旧隐藏页面树，现已同时更新 `AcrylicProductionShellView` 及其 `PageHost` 页面实例；离屏深色 RenderHarness PNG 已确认首页最近任务图标/进度条、`全部` 链接、风险主按钮、全局活动分类和信息气泡恢复紫色或对应语义色。
+- Playnite 日志确认新 DLL 已加载，但 Computer Use 返回 `EmptyWindowAutomationPeer`、`MainWindowHandle=0` 且截图不是 Playnite 页面，因此真实宿主视觉验收仍为 `MANUAL QA REQUIRED`，不得把离屏 PNG 写成真实宿主截图通过。全量 RenderHarness 仍有 Media resize recovery 两项失败。
