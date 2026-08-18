@@ -48,7 +48,10 @@ try {
     Write-Host '当前可用 SDK：' -ForegroundColor DarkCyan
     $sdkLines | ForEach-Object { Write-Host "  $_" }
 
-    $msbuildArguments = @('-m:1', '-nodeReuse:false', '-p:NuGetAudit=false')
+    # This solution targets .NET Framework/WPF and does not consume SDK workloads.
+    # Some machines only have a bare .NET SDK installation whose incomplete workload
+    # resolver fails before MSBuild can evaluate the solution.
+    $msbuildArguments = @('-m:1', '-nodeReuse:false', '-p:NuGetAudit=false', '-p:MSBuildEnableWorkloadResolver=false')
     if ($OutputRoot) {
         $isolatedOutputRoot = [System.IO.Path]::GetFullPath($OutputRoot)
         New-Item -ItemType Directory -Path $isolatedOutputRoot -Force | Out-Null

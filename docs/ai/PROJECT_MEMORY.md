@@ -769,3 +769,12 @@
 - 首页宽布局的右侧风险栏必须与 `OverviewRecentActivityCard` 同行并跨越最近任务/全局活动两行；RenderHarness 现在直接按该卡片比较，避免使用整页滚动面导致错误告警。
 - 2026-08-19 RenderHarness 已确认高数量风险探针在 190 DIP 视口内滚动，宽布局右侧栏偏移为 `0 DIP`；这只是离屏渲染验证，不等于 Playnite 真机视觉验收。
 - 本轮 Playnite 测试命令因长时间无输出和低 CPU 子进程空转被停止，不能写成测试通过；后续需使用可完成的测试入口重新验证。
+
+## 2026-08-19 UI-233 首页风险列表与 Demo 行结构事实
+
+- 首页风险区域的稳定方案是列表级有限视口：`OverviewAttentionScrollViewer` 和 `OverviewProtectionItemsScrollViewer` 使用项目 `GscPageScrollViewer`，`MaxHeight=190`、垂直 `Auto`、水平 `Disabled`。风险数量很多时只滚动列表内部，不能让风险项把首页根高度无限推长；不要再给整张风险卡片叠加一层滚动。
+- RenderHarness 的溢出探针已经确认 190 DIP 视口在 1040×700、1100×720 下保持固定且 `scrollable=True`；普通 fixture 未溢出时的 `scrollable=False` 只能表示当时数据不足，不表示没有滚动配置。
+- 首页最近任务和全局活动已按 Demo 行结构重排：任务的类型/游戏名、详情/进度、结果/时间分别分层；活动不再保留额外表头和图标列，分类徽标文本使用紫色主题令牌并显式居中。
+- 媒体模式栏的外层表面使用 `GscAccentTintBrush`，内部选中状态使用更强的紫色令牌；顶部 Demo 彩色按钮、Demo 滚动条仍不迁移。
+- 仅安装裸 .NET SDK 的机器可能缺少 Workload Resolver 目录；`scripts/build.ps1` 和 `scripts/render-qa.ps1` 通过 `MSBuildEnableWorkloadResolver=false` 兼容本项目的 .NET Framework/WPF 构建，不代表项目依赖任何 SDK Workload。
+- 2026-08-19 完成一次可复现验证：Playnite UI 测试 248 通过、61 跳过、0 失败；Playnite 与 RenderHarness Release 编译 0 警告/0 错误；RenderHarness 全量 `render-qa OK`。真实 Playnite 宿主视觉截图仍未完成，离屏证据不能替代宿主验收。

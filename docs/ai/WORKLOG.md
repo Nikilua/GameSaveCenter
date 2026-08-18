@@ -2685,3 +2685,28 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `validate_wpf_ui.py`：0 error；20 条既有 warning，无新增错误。
 - RenderHarness：`render-qa OK`；1040/1100 DIP 风险列表均为 `MaxHeight=190` 且溢出探针报告 `scrollable=True`；1536/1600/1707 DIP 右侧栏与最近任务卡片 `OverviewSecondaryTopDelta=0 DIP`。
 - 本轮 Playnite 测试命令启动后长时间无输出且子进程低 CPU 空转，已停止；没有把它记为通过。真实 Playnite 宿主视觉截图仍未完成。
+
+## 2026-08-19 UI-233 首页风险视口与首页行结构回归
+
+**本阶段内容：**
+
+- 确认首页“风险与提醒”采用列表级有限视口：`OverviewAttentionScrollViewer` 与 `OverviewProtectionItemsScrollViewer` 均使用 `GscPageScrollViewer`，`MaxHeight=190`，垂直滚动 `Auto`，水平滚动 `Disabled`。风险数量增加时只在列表内部滚动，风险卡片和首页根内容不会无限增长，也没有新增整卡滚动造成双滚动条。
+- 最近任务恢复为 Demo 行节奏：任务类型与游戏名同一标题行，详情与进度条同一副标题行，结果徽标和时间独立对齐；任务图标使用紫色强调底色。
+- 全局活动移除生产页面多余的表头行和图标列，改为分类徽标、游戏/摘要、结果和时间四列，保留真实活动绑定。
+- 修改器中心已安装工具顶部改为显式 Grid 行，导入按钮和拖拽提示不再与列表首行共享 WrapPanel 测量空间。
+- 媒体中心模式栏使用 `GscAccentTintBrush` 紫色主题表面，选中 RadioButton 保留更强的紫色状态；未迁移 Demo 顶部颜色按钮或 Demo 滚动条。
+- `scripts/build.ps1` 与 `scripts/render-qa.ps1` 关闭不必要的 SDK Workload Resolver，兼容仅安装裸 .NET SDK 的构建机；该项目目标为 .NET Framework/WPF，不依赖 SDK Workload。
+
+**验证结果：**
+
+- `scripts/validate-source.py`：通过。
+- `validate_wpf_ui.py`：0 error，20 条既有 warning，161 条 info。
+- `dotnet build` Playnite 与 RenderHarness：0 warning / 0 error。
+- `dotnet test tests/GameSaveCenter.Playnite.Tests/GameSaveCenter.Playnite.Tests.csproj`：248 通过、61 跳过、0 失败。
+- `scripts/build.ps1 -Configuration Release -SkipTests -OutputRoot artifacts/build-check-20260819`：还原和解决方案 Release 编译通过，0 warning / 0 error。
+- RenderHarness：`render-qa OK`；1040×700、1100×720 的首页风险列表视口均为 190 DIP，溢出探针 `scrollable=True`；首页根滚动面保持独立；浅色/深色、多尺寸和缩放过渡探针通过。
+- `git diff --check`：通过。
+
+**验证边界：**
+
+- 本轮证据来自源码、构建、测试和 RenderHarness 离屏渲染；当前工具上下文没有可用的 Playnite 窗口控制接口，因此没有把离屏 PNG 冒充真实 Playnite 宿主视觉验收。真实宿主仍需在可识别的 Playnite 页面中复核。

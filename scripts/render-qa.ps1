@@ -14,7 +14,7 @@ if ([string]::IsNullOrWhiteSpace($Output)) {
 Push-Location $root
 try {
     Write-Host "==> Building render harness ($Configuration)" -ForegroundColor Cyan
-    & dotnet build $harness -c $Configuration -m:1 -nodeReuse:false -p:NuGetAudit=false
+    & dotnet build $harness -c $Configuration -m:1 -nodeReuse:false -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false
     if ($LASTEXITCODE -ne 0) { throw "render harness build failed: $LASTEXITCODE" }
 
     $exe = Join-Path $root "tests\GameSaveCenter.RenderHarness\bin\$Configuration\net472\GameSaveCenter.RenderHarness.exe"

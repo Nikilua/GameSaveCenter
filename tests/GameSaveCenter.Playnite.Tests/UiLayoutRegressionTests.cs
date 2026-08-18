@@ -205,24 +205,21 @@ namespace GameSaveCenter.Playnite.Tests
             var widths = grid.Elements().Single(element => element.Name.LocalName == "Grid.ColumnDefinitions")
                 .Elements().Select(element => element.Attribute("Width")?.Value).ToArray();
 
-            Assert.Equal(new[] { "40", "150", "*", "132", "112" }, widths);
+            Assert.Equal(new[] { "64", "*", "Auto", "96" }, widths);
             Assert.Equal("140", grid.Elements().Single(element => element.Name.LocalName == "Grid.ColumnDefinitions")
-                .Elements().ElementAt(2).Attribute("MinWidth")?.Value);
+                .Elements().ElementAt(1).Attribute("MinWidth")?.Value);
             Assert.Equal("Center", template.Descendants().Single(element => element.Name.LocalName == "Border"
                 && element.Attribute(xamlName)?.Value == "ActivityKindPill").Attribute("VerticalAlignment")?.Value);
-            Assert.Contains("OverviewActivityHeaderRow", overview.ToString());
+            Assert.DoesNotContain("OverviewActivityHeaderRow", overview.ToString());
             Assert.Contains("Margin=\"8,0,20,0\"", template.Descendants().Single(element =>
                 element.Name.LocalName == "TextBlock" && element.Attribute("Text")?.Value == "{Binding CreatedDisplay, Mode=OneWay}").ToString());
             Assert.DoesNotContain("ActivityMetaCompact", overview.ToString());
-            Assert.NotNull(template.Descendants().SingleOrDefault(element =>
-                element.Name.LocalName == "ColumnDefinition"
-                && element.Attribute(xamlName)?.Value == "ActivityMetaColumn"));
-            var scopeStack = template.Descendants().Single(element =>
+            var activityTextStack = template.Descendants().Single(element =>
                 element.Name.LocalName == "StackPanel" && element.Attribute("Grid.Column")?.Value == "1");
-            Assert.DoesNotContain(scopeStack.Descendants(), element =>
-                element.Name.LocalName == "Border"
-                && (element.Attribute(xamlName)?.Value == "ActivityKindChip"
-                    || element.Attribute(xamlName)?.Value == "ActivityResultChip"));
+            Assert.Contains(activityTextStack.Descendants(), element => element.Name.LocalName == "TextBlock"
+                && element.Attribute("Text")?.Value == "{Binding Summary, Mode=OneWay}");
+            Assert.DoesNotContain(template.Descendants(), element => element.Name.LocalName == "Border"
+                && (element.Attribute(xamlName)?.Value == "ActivityKindChip"));
             Assert.Contains(template.Descendants(), element => element.Name.LocalName == "TextBlock"
                 && element.Attribute("Text")?.Value == "{Binding KindDisplay, Mode=OneWay}");
             Assert.Contains(template.Descendants(), element => element.Name.LocalName == "TextBlock"

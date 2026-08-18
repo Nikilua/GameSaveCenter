@@ -781,7 +781,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("OverviewPrimaryLayoutRow.Height = stack", overviewCode);
         Assert.DoesNotContain("OverviewActivityList.MaxHeight", overviewCode);
         Assert.Contains("OverviewActivityTimelineList.Tag = compactActivity ? \"Compact\" : \"Wide\"", overviewCode);
-        Assert.Contains("OverviewActivityHeaderRow.Visibility = compactActivity ? Visibility.Collapsed : Visibility.Visible", overviewCode);
+        Assert.DoesNotContain("OverviewActivityHeaderRow", overview);
+        Assert.DoesNotContain("OverviewActivityHeaderRow", overviewCode);
 
         var overviewDocument = XDocument.Parse(overview);
         var activity = overviewDocument.Descendants().Single(element =>
@@ -2476,26 +2477,27 @@ public sealed class WpfUiResourceDictionaryTests
         var grid = template.Elements().Single(element => element.Name.LocalName == "Grid");
         var columnWidths = grid.Elements().Single(element => element.Name.LocalName == "Grid.ColumnDefinitions")
             .Elements().Select(element => element.Attribute("Width")?.Value).ToArray();
-        Assert.Equal(new[] { "38", "*", "Auto" }, columnWidths);
+        Assert.Equal(new[] { "38", "*", "Auto", "74", "96" }, columnWidths);
 
         var tile = grid.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewTaskStatusPill");
         Assert.Equal("34", tile.Attribute("Width")?.Value);
         Assert.Equal("34", tile.Attribute("Height")?.Value);
         Assert.Equal("10", tile.Attribute("CornerRadius")?.Value);
-        Assert.Equal("{DynamicResource GscSuccessIconFillBrush}", tile.Attribute("Background")?.Value);
+        Assert.Equal("{DynamicResource GscAccentTintBrush}", tile.Attribute("Background")?.Value);
         Assert.Contains("Text=\"&#xE73E;\"", overviewText);
 
         // Long names and details must trim with a tooltip instead of pushing the row.
         var title = grid.Descendants().Single(element => element.Name.LocalName == "TextBlock" && element.Attribute("Text")?.Value == "{Binding GameName, Mode=OneWay, TargetNullValue=全局}");
-        Assert.Equal("SemiBold", title.Attribute("FontWeight")?.Value);
         Assert.Equal("CharacterEllipsis", title.Attribute("TextTrimming")?.Value);
         Assert.Equal("{Binding GameName}", title.Attribute("ToolTip")?.Value);
-        var subtitle = grid.Descendants().Single(element => element.Name.LocalName == "TextBlock" && element.Attribute("Margin")?.Value == "0,3,0,0");
+        var taskType = grid.Descendants().Single(element => element.Name.LocalName == "TextBlock" && element.Attribute("Text")?.Value == "{Binding TaskTypeDisplay, Mode=OneWay}");
+        Assert.Equal("SemiBold", taskType.Attribute("FontWeight")?.Value);
+        var subtitle = grid.Descendants().Single(element => element.Name.LocalName == "TextBlock" && element.Attribute("Text")?.Value == "{Binding DetailMessage, Mode=OneWay}");
         Assert.Equal("11", subtitle.Attribute("FontSize")?.Value);
         Assert.Equal("CharacterEllipsis", subtitle.Attribute("TextTrimming")?.Value);
         Assert.Equal("{Binding DetailMessage}", subtitle.Attribute("ToolTip")?.Value);
-        Assert.Contains("TaskTypeDisplay", subtitle.ToString());
-        Assert.Contains("StateDisplay", subtitle.ToString());
+        Assert.DoesNotContain("TaskTypeDisplay", subtitle.ToString());
+        Assert.DoesNotContain("StateDisplay", subtitle.ToString());
         Assert.Contains("StringFormat={}{0:MM-dd HH:mm}", overviewText);
 
         // Failed / Running / Cancelled must stay semantically distinct on the tile.

@@ -132,11 +132,10 @@
                     </Setter.Value>
                 </Setter>
             </Style>
-            <!-- Media's mode selector is a tab strip, not a translucent demo segment.
-                 Keep the same dark surface and purple selected state used by the other
-                 production workspace tabs. -->
+            <!-- The mode selector is part of the page's purple segmented surface.
+                 The selected radio keeps the stronger purple state inside this strip. -->
             <Style x:Key="MediaModeStrip" TargetType="Border">
-                <Setter Property="Background" Value="{DynamicResource GscGlassFillBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
                 <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
                 <Setter Property="BorderThickness" Value="1"/>
                 <Setter Property="CornerRadius" Value="10"/>
