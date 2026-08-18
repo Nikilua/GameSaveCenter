@@ -9,6 +9,13 @@
 - 旧阶段条目继续保留用于追溯当时的迁移决策，但它们不应阻止新的页面方案。新设计默认继续保护真实命令、Binding、数据契约、错误/取消/安全语义、可访问性、列表性能和 Playnite 兼容性；如果设计需要改变这些内容，必须在当前任务中明确并验证，而不是因为历史实现而回避布局或控件重构。
 - 本段是当前方向声明，优先于下方 2026-08-17 之前的页面迁移偏好；后续每个独立 UI 阶段都要更新本段对应的当前事实和 `docs/ai/WORKLOG.md`。
 
+## 2026-08-19 UI-227 当前事实：媒体 Tab 条与生产按钮文本由共享样式控制
+
+- `GscRedesignWorkspaceTabControl` 的外层 Tab 条必须使用 `TemplateBinding Background`，不能把 `GscControlFillBrush` 写死在模板中；媒体中心通过 `MediaTabControl.Background=GscGlassFillBrush` 使用玻璃材质，其他工作区继续沿用各自样式。
+- `GscWpfUiButtonTextTemplate` 是生产文本按钮的统一边界：`TextAlignment=Center`、`NoWrap`、`CharacterEllipsis`。新增生产操作按钮优先使用已有 `GscWpfUi*Button` 样式，不要重新创建不受边界约束的局部 Button 模板。
+- 这只证明源码与 RenderHarness 的布局契约；必须在 Playnite 生产 `GameSaveCenter` 入口重新安装并人工查看媒体中心，不能把 Preview 入口或离屏截图当成宿主验收。
+- 2026-08-19 已完成生产扩展落盘安装验证（目标目录中的 `extension.yaml` 与 DLL 为 `0.6.70`），但本机屏幕控制两次返回了 Codex/其他窗口而非 Playnite 内容，自动化树为 `EmptyWindowAutomationPeer`；后续不得把该次结果写成 Playnite 视觉通过，需改用能确认窗口内容的宿主截图路径。
+
 ## 2026-08-19 UI-226 当前事实：维护表格需按工作区宽度压缩固定列
 
 - 维护诊断和异常审计页面在右侧 Inspector 可见时，1040 DIP 工作区的主表格只有约 660 DIP，不能直接沿用宽屏的游戏/标题/详情/动作最小宽度。

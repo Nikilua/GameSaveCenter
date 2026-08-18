@@ -487,6 +487,21 @@
         </Style.Triggers>
     </Style>
 
+    <!-- Keep text-only action buttons bounded by their actual chrome.  The production
+         pages intentionally use text content for commands; rendering that content through
+         a shared TextBlock keeps long localized labels and game-derived actions centered
+         and ellipsized instead of expanding past a toolbar or inspector boundary. -->
+    <DataTemplate x:Key="GscWpfUiButtonTextTemplate">
+        <TextBlock Text="{Binding}"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Center"
+                   TextAlignment="Center"
+                   TextWrapping="NoWrap"
+                   TextTrimming="CharacterEllipsis"
+                   ToolTip="{Binding}"
+                   SnapsToDevicePixels="True"/>
+    </DataTemplate>
+
     <Style x:Key="GscWpfUiButton"
            TargetType="{x:Type ui:Button}">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
@@ -495,6 +510,7 @@
         <Setter Property="Padding" Value="14,7"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="ContentTemplate" Value="{StaticResource GscWpfUiButtonTextTemplate}"/>
         <Setter Property="ui:Button.CornerRadius" Value="11"/>
         <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>

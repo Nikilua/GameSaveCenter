@@ -259,6 +259,8 @@
         <Setter Property="FontSize" Value="17"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        <Setter Property="TextWrapping" Value="NoWrap"/>
     </Style>
 
     <Style x:Key="GscRedesignSectionSubtitle" TargetType="TextBlock">
@@ -288,7 +290,7 @@
                         </Grid.RowDefinitions>
                         <Border Grid.Row="0"
                                 HorizontalAlignment="Left"
-                                Background="{DynamicResource GscControlFillBrush}"
+                                Background="{TemplateBinding Background}"
                                 BorderBrush="{DynamicResource GscControlStrokeBrush}"
                                 BorderThickness="1"
                                 CornerRadius="10"

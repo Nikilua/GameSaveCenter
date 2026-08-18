@@ -2,6 +2,22 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-19 UI-227 媒体 Tab 材质与生产按钮文本边界
+
+**问题与修正：**
+
+- 媒体中心沿用共享工作区 Tab 模板，但模板把外层 Tab 条背景硬编码为 `GscControlFillBrush`，导致该页显示成用户指出的浅灰控件条。模板现在绑定 `TabControl.Background`；媒体页单独使用现有 `GscGlassFillBrush`，没有改动 Demo 不要求迁移的滚动条。
+- 共享生产按钮增加文本内容模板：文字在按钮内容区水平/垂直居中、禁止换行并使用字符省略，长本地化标签或长操作名称不会把按钮撑出工具栏/Inspector 边界；命令、Binding 和按钮状态保持不变。
+- 工作区分节标题统一禁止换行并启用字符省略，避免游戏名或页面标题变长时侵入相邻控件。
+
+**验证结果：**
+
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/render-tab-text` 通过：双主题、1040/1100/1366/2560、多页面滚动、resize 和媒体虚拟列表探针均完成，结果为 `render-qa OK`。
+- `python scripts/validate-source.py`、WPF UI 校验（0 errors）和 `git diff --check` 通过。
+- `dotnet test tests/GameSaveCenter.Playnite.Tests/GameSaveCenter.Playnite.Tests.csproj -c Release --no-restore -m:1 -p:MSBuildEnableWorkloadResolver=false --nologo`：249 通过、61 跳过、0 失败。
+- 本条改动仍需通过当前提交的 Playnite 生产入口人工核对；离屏截图不作为宿主视觉真值。
+- 已用 `scripts/dev-install-run.ps1 -Configuration Release -NoStart` 完成真实安装验证：生产扩展目标为 `C:\Users\lopmatu\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec`，`extension.yaml` 与 DLL 均为 `0.6.70`。随后使用屏幕控制两次定位 Playnite，但返回画面实际是 Codex/其他窗口，且自动化树为 `EmptyWindowAutomationPeer`；因此本轮明确不宣称 Playnite 视觉验收通过，已停止屏幕操控。
+
 ## 2026-08-19 UI-226 维护表格中等宽度列布局
 
 **问题与修正：**
