@@ -2761,3 +2761,23 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 **验证边界：**
 
 - RenderHarness 是离屏验证，不是 Playnite 真机截图；真实宿主视觉仍需在可识别的 Playnite 窗口中复核，不能用错误窗口截图替代。
+
+## 2026-08-19 UI-237 Release 安装与宿主截图边界复核
+
+**本阶段内容：**
+
+- 使用当前 `main` 提交 `37ab9a6` 完成 Release 一键安装；安装前保持 Playnite 退出，未修改扩展目录 ACL，也未停止另一套无关的 Preview Worker。
+- 安装目录已替换为 `C:\Users\lopmatu\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec`，`extension.yaml` 为 `0.6.70`，生产 DLL 文件版本为 `0.6.70.0`。
+- 首页风险与提醒继续使用列表级 `MaxHeight=190` 内部滚动；数量很多时不会无限撑高 Dashboard，首页根滚动与风险列表滚动职责分离。
+
+**验证结果：**
+
+- Release 编译通过，0 warning / 0 error。
+- Core 测试：59/59 通过。
+- Worker 集成测试：191/191 通过。
+- Playnite 测试：248 通过、61 跳过、0 失败。
+- 安装报告：`artifacts/last-dev-install.txt`，清单与 DLL 版本核对通过。
+
+**验证边界：**
+
+- 本轮尝试启动 Playnite 并选择唯一返回的 Playnite 窗口，但 `get_window_state` 返回的图像内容实际是其他桌面窗口；因此真实 Playnite 页面视觉验收仍记录为“阻塞”，不能用该截图或 RenderHarness 离屏图冒充宿主通过。

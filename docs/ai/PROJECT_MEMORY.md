@@ -786,3 +786,10 @@
 - 媒体中心模式栏使用更明确的 `GscAccentTintStrongBrush` 紫色生产资源；该资源变更已同步源码契约测试，Demo 顶部颜色按钮和 Demo 滚动条仍未迁移。
 - 重新编译测试后 Playnite 测试为 248 通过、61 跳过、0 失败；之前 38 项失败来自旧测试二进制，不是当前源码结果。
 - RenderHarness `render-current3` 全量 `render-qa OK`，但仍属于离屏证据；如果屏幕控制返回 `EmptyWindowAutomationPeer` 或错误窗口，必须记录为宿主视觉阻塞，不能写成 Playnite 真机验收通过。
+
+## 2026-08-19 UI-237 Release 安装事实和宿主视觉边界
+
+- 当前 `main` 的 `37ab9a6` 已完成 Release 一键安装；安装目录为 `%APPDATA%\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec`，`extension.yaml` 为 `0.6.70`，DLL 为 `0.6.70.0`。
+- 本轮 Release 验证结果为 Core 59/59、Worker 191/191、Playnite 248 通过/61 跳过/0 失败；安装报告保存在 `artifacts/last-dev-install.txt`。
+- 首页“风险与提醒”按列表级有限视口实现：两个风险列表使用项目 `GscPageScrollViewer`、`MaxHeight=190`、垂直 `Auto`、水平 `Disabled`。风险数量增加时只在列表内部滚动，不会无限增加首页高度。
+- 真实 Playnite 截图验证仍未通过：Computer Use 唯一返回的窗口标题是 Playnite，但截图内容是其他桌面窗口。此类结果只能记为宿主视觉阻塞，绝不能宣称页面已在 Playnite 中 1:1 验收。
