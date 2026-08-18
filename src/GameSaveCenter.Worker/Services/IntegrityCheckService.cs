@@ -116,6 +116,12 @@ public sealed class IntegrityCheckService
     {
         if (string.IsNullOrWhiteSpace(path))
         {
+            // Optional directories are intentionally absent on a default install.
+            // They are not a health finding until the user configures a path that
+            // then becomes missing or unwritable. This keeps the global check
+            // healthy while preserving critical-directory failures.
+            if (!critical) return;
+
             findings.Add(CriticalOrWarning(critical, "DIRECTORY_NOT_CONFIGURED", $"{label}未配置",
                 "路径为空，完整性无法确认。", "在设置中选择有效目录。"));
             return;
