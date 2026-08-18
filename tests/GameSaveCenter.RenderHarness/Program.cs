@@ -1507,7 +1507,6 @@ public static class Program
         {
             foreach (var elementName in new[]
                      {
-                         "OverviewHomeToolbar",
                          "OverviewTodayHeroCard",
                          "OverviewCurrentGameCard",
                          "OverviewMetricPanel",

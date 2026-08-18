@@ -741,3 +741,11 @@
 - 一键 Release 构建、Worker 发布和 Playnite 安装已重新通过，安装目录为 `%APPDATA%\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec`，`extension.yaml` 为 `0.6.70`，生产 DLL 为 `0.6.70.0`。
 - RenderHarness 不是 Playnite 真机截图；本轮工具上下文没有可用的 Playnite 鼠标/键盘控制，因此没有把离屏结果冒充真实宿主视觉验收。
 - 当前提交只交付媒体模式栏颜色修正和对应基线断言，不代表首页、存档、修改器、任务、维护等页面已经完成 1:1 视觉迁移；Media resize recovery 两项失败仍是后续阻塞项。
+
+## 2026-08-18 UI-230 首页风险列表滚动边界事实
+
+- 首页风险卡片的两个可能增长列表必须使用独立的生产 `GscPageScrollViewer`：需关注列表与展开后的最近游戏保护明细均限制为 `MaxHeight=190`，垂直滚动 `Auto`，水平滚动 `Disabled`。
+- 页面根滚动与风险列表内部滚动职责分离：普通首页内容由页面滚动承载，风险项超过视口后只在自身区域滚动，不能通过追加列表项把主页面高度无限撑大。
+- 当前 Dashboard ViewModel 的需关注数据仍按真实业务规则只展示前 4 条，保护明细继续使用真实 `RecentProtection.Items`；190 DIP 是 UI 层防护边界，不是业务截断替代品。
+- RenderHarness 默认 fixture 没有使需关注列表溢出，因此其 `scrollable=false` 只说明当前 fixture 未超过 190 DIP；静态契约测试已强制检查滚动边界。不得据此宣称已完成真实 Playnite 滚动条交互验收。
+- 首页清理了已撤销的“今日工作台”旧工具栏及其代码后置响应式引用；媒体中心模式栏继续使用生产控件底色和紫色选中色，不迁移 Demo 顶部彩色按钮或 Demo 滚动条。

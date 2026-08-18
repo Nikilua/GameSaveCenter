@@ -2614,3 +2614,27 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 **验证边界：**
 
 - 本轮没有把离屏 PNG 当作真实 Playnite 宿主截图；真实宿主视觉仍需在可识别的 Playnite 窗口中复核。
+
+## 2026-08-18 UI-230 首页风险明细固定视口与旧工具栏清理
+
+**本阶段内容：**
+
+- 首页“风险与提醒”中的需关注列表、展开后的最近游戏保护明细分别使用独立的项目 `GscPageScrollViewer`。
+- 两个列表均设置 `MaxHeight=190`、垂直滚动 `Auto`、水平滚动 `Disabled`；数据未超出时不显示滚动条，超出时只在风险区域内部滚动，不再无限增加首页高度。
+- 保留页面级滚动负责首页其它内容，未引入 Demo 滚动条，也未改变真实 Binding、Command 或保护业务语义。
+- 清理首页残留的“今日工作台”旧工具栏及对应代码后置响应式逻辑，恢复 Hero、概览指标、最近任务、全局活动的页面阅读顺序。
+- 媒体中心模式栏改用生产深色控件底色和紫色选中底色，避免灰色透明条覆盖页面主题。
+
+**验证结果：**
+
+- `scripts/validate-source.py`：通过。
+- `validate_wpf_ui.py`：0 error，20 条既有 warning。
+- WPF Release 编译：0 warning / 0 error。
+- Playnite 测试：248 通过、61 跳过、0 失败。
+- RenderHarness：`render-qa OK`；1040×700 报告确认风险区域受 190 DIP 上限约束，首页根滚动面仍可滚动。
+- `git diff --check`：通过。
+
+**验证边界：**
+
+- 默认 RenderHarness fixture 的需关注项没有超过 190 DIP，因此报告中该列表为 `scrollable=false` 是“当前数据未溢出”的正常结果，不代表没有配置滚动；超量时由同一 `ScrollViewer` 自动出现滚动条。
+- 本阶段没有把离屏 PNG 当作新的真实 Playnite 宿主截图；真实宿主视觉仍需在可识别的 Playnite 窗口中复核。

@@ -113,28 +113,6 @@ namespace GameSaveCenter.Playnite.Views
                 ? OverviewPrimaryPanel.ActualWidth
                 : Math.Max(320d, width);
 
-            // The Demo keeps the Home workbench actions in the card header. At compact
-            // widths move them to a second row, but keep a horizontal WrapPanel so the
-            // four commands use the available width before wrapping. A forced vertical
-            // stack consumed most of the workbench viewport on normal windowed laptops.
-            if (OverviewHomeToolbarActions != null)
-            {
-                var stackActions = primaryWidth < 720;
-                OverviewHomeToolbarActions.Orientation = Orientation.Horizontal;
-                OverviewHomeToolbarActions.HorizontalAlignment = stackActions
-                    ? HorizontalAlignment.Stretch
-                    : HorizontalAlignment.Right;
-                OverviewHomeToolbarActionsRow.Height = stackActions
-                    ? GridLength.Auto
-                    : new GridLength(0);
-                Grid.SetRow(OverviewHomeToolbarActions, stackActions ? 1 : 0);
-                Grid.SetColumn(OverviewHomeToolbarActions, stackActions ? 0 : 1);
-                Grid.SetColumnSpan(OverviewHomeToolbarActions, stackActions ? 2 : 1);
-                OverviewHomeToolbarActions.Margin = stackActions
-                    ? new Thickness(0, 12, 0, 0)
-                    : new Thickness(12, 0, 0, 0);
-            }
-
             // The six Snapshot metrics are a compact summary strip, not a card wall.
             // Wide workbenches keep the Demo's single-row rhythm; narrow hosts drop to
             // 3 then 2 columns so every real counter remains readable without wrapping

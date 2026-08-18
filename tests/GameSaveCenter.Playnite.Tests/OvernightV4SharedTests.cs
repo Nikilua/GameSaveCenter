@@ -9,7 +9,7 @@ namespace GameSaveCenter.Playnite.Tests
     public sealed class OvernightV4SharedTests
     {
         [Fact]
-        public void ExpandableCardsUseUnifiedDisclosureChromeWithoutInnerScroll()
+        public void ExpandableCardsUseUnifiedDisclosureChromeAndBoundedRiskScroll()
         {
             var root = FindRepositoryRoot();
             var tokens = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml"));
@@ -27,12 +27,28 @@ namespace GameSaveCenter.Playnite.Tests
             foreach (var path in views)
             {
                 var document = XDocument.Parse(File.ReadAllText(path));
+                var isOverview = string.Equals(Path.GetFileName(path), "OverviewView.xaml", StringComparison.OrdinalIgnoreCase);
                 var expanders = document.Descendants().Where(element => element.Name.LocalName == "Expander").ToList();
                 Assert.All(expanders, expander =>
                 {
                     Assert.Contains("GscDisclosureCard", expander.Attribute("Style")?.Value ?? string.Empty);
                     Assert.DoesNotContain(">", expander.Attribute("Header")?.Value ?? string.Empty);
-                    Assert.DoesNotContain(expander.Descendants(), element => element.Name.LocalName == "ScrollViewer");
+                    if (!isOverview)
+                    {
+                        Assert.DoesNotContain(expander.Descendants(), element => element.Name.LocalName == "ScrollViewer");
+                        return;
+                    }
+
+                    var boundedScrollSurfaces = expander.Descendants()
+                        .Where(element => element.Name.LocalName == "ScrollViewer")
+                        .ToList();
+                    Assert.NotEmpty(boundedScrollSurfaces);
+                    Assert.All(boundedScrollSurfaces, scrollViewer =>
+                    {
+                        Assert.Equal("190", scrollViewer.Attribute("MaxHeight")?.Value);
+                        Assert.Equal("Auto", scrollViewer.Attribute("VerticalScrollBarVisibility")?.Value);
+                        Assert.Equal("Disabled", scrollViewer.Attribute("HorizontalScrollBarVisibility")?.Value);
+                    });
                 });
             }
         }

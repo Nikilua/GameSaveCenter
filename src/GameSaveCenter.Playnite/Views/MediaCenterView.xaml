@@ -122,7 +122,7 @@
                                     <Setter TargetName="Chrome" Property="Background" Value="{DynamicResource GscRowHoverBrush}"/>
                                 </Trigger>
                                 <Trigger Property="IsChecked" Value="True">
-                                    <Setter TargetName="Chrome" Property="Background" Value="{DynamicResource GscAccentTintStrongBrush}"/>
+                                    <Setter TargetName="Chrome" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
                                     <Setter TargetName="Chrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
                                     <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
                                     <Setter Property="FontWeight" Value="SemiBold"/>
@@ -136,7 +136,7 @@
                  Keep the same dark surface and purple selected state used by the other
                  production workspace tabs. -->
             <Style x:Key="MediaModeStrip" TargetType="Border">
-                <Setter Property="Background" Value="{DynamicResource GscGlassStrongBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
                 <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
                 <Setter Property="BorderThickness" Value="1"/>
                 <Setter Property="CornerRadius" Value="10"/>

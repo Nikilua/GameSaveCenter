@@ -3005,7 +3005,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"OverviewSecondaryScrollViewer\"", File.ReadAllText(overviewPath));
         Assert.DoesNotContain("OverviewSecondaryScrollViewer.MaxHeight", File.ReadAllText(overviewPath + ".cs"));
         Assert.DoesNotContain("OverviewSecondaryScrollViewer.VerticalScrollBarVisibility", File.ReadAllText(overviewPath + ".cs"));
-        Assert.Contains("OverviewHomeToolbarActions.Orientation = Orientation.Horizontal", File.ReadAllText(overviewPath + ".cs"));
+        Assert.DoesNotContain("OverviewHomeToolbarActions", File.ReadAllText(overviewPath + ".cs"));
         Assert.DoesNotContain("OverviewRiskScrollViewer.MaxHeight", File.ReadAllText(overviewPath + ".cs"));
         Assert.DoesNotContain("OverviewRiskScrollViewer.VerticalScrollBarVisibility", File.ReadAllText(overviewPath + ".cs"));
         Assert.Contains("RowDefinition x:Name=\"OverviewSummaryRow\" Height=\"Auto\"", File.ReadAllText(overviewPath));
