@@ -762,3 +762,10 @@
 - 数量很多时，风险明细在卡片内部滚动，不能把 Dashboard 根内容高度无限撑长；风险卡片本身不再包一层整卡滚动，避免双滚动条。
 - 该视口不替代业务数据：真实绑定仍保留，当前展示条数限制只由现有 ViewModel 业务规则和列表视口共同决定。
 - 真实 Playnite 截图验收仍未完成：本轮插件已由日志确认加载，但控制接口返回 `EmptyWindowAutomationPeer` 且截图错指 Codex 窗口；后续不得将 RenderHarness 或错误窗口截图称为宿主视觉通过。
+
+## 2026-08-19 UI-232 首页风险区域回归事实
+
+- 首页风险列表的正确边界是列表级有限视口，而不是整张风险卡片或首页根容器无限增长：`OverviewAttentionScrollViewer` 与 `OverviewProtectionItemsScrollViewer` 均使用 `GscPageScrollViewer`、`MaxHeight=190`、垂直 `Auto`、水平 `Disabled`。
+- 首页宽布局的右侧风险栏必须与 `OverviewRecentActivityCard` 同行并跨越最近任务/全局活动两行；RenderHarness 现在直接按该卡片比较，避免使用整页滚动面导致错误告警。
+- 2026-08-19 RenderHarness 已确认高数量风险探针在 190 DIP 视口内滚动，宽布局右侧栏偏移为 `0 DIP`；这只是离屏渲染验证，不等于 Playnite 真机视觉验收。
+- 本轮 Playnite 测试命令因长时间无输出和低 CPU 子进程空转被停止，不能写成测试通过；后续需使用可完成的测试入口重新验证。

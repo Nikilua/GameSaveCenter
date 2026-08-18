@@ -1528,16 +1528,16 @@ public static class Program
             if (overviewLayout != null && secondary != null && Grid.GetColumn(secondary) == 2)
             {
                     // The Design page places the risk card beside the recent-task card,
-                    // not beside the lower global-activity card. Compare the two body
-                    // columns at the same measured row so a valid two-column layout is
-                    // not reported as a false overlap/alignment failure.
-                    var bodyPrimary = FindVisualChildren<FrameworkElement>(host)
-                        .FirstOrDefault(candidate => candidate.Name == "OverviewPrimaryScrollSurface");
-                    var reference = bodyPrimary ?? overviewLayout;
+                    // not beside the lower global-activity card. Compare the two cards
+                    // directly so the audit checks the intended measured row rather than
+                    // the top of the whole page scroll surface.
+                    var reference = FindVisualChildren<FrameworkElement>(host)
+                        .FirstOrDefault(candidate => candidate.Name == "OverviewRecentActivityCard")
+                        ?? overviewLayout;
                 var layoutOrigin = reference.TransformToAncestor(host).Transform(new Point(0, 0));
                 var secondaryOrigin = secondary.TransformToAncestor(host).Transform(new Point(0, 0));
                 var topDelta = secondaryOrigin.Y - layoutOrigin.Y;
-                    report.AppendLine($"  {label} OverviewSecondaryTopDelta: {topDelta:0.##} DIP (relative to recent-task row)");
+                    report.AppendLine($"  {label} OverviewSecondaryTopDelta: {topDelta:0.##} DIP (relative to recent-task card)");
                 if (topDelta > 8)
                     s_problems.Add($"{label} secondary overview is not aligned with lower activity row (delta={topDelta:0.##} DIP)");
             }

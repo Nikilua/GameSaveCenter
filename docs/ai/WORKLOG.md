@@ -2668,3 +2668,20 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - Release 编译、核心/Worker/Playnite 测试和安装包生成已通过。
 - 静态契约确认两个风险列表均存在 190 DIP 内部视口。
 - 本轮真实 Playnite 视觉截图未能完成：Playnite 进程日志显示插件已加载，但屏幕控制接口返回 `EmptyWindowAutomationPeer`，截图实际指向 Codex 窗口，因此未将其冒充为视觉验收通过。
+
+## 2026-08-19 UI-232 首页风险区域布局回归
+
+**本阶段内容：**
+
+- 首页“风险与提醒”的需关注列表和展开后的最近游戏保护明细继续使用独立 `GscPageScrollViewer`，`MaxHeight=190`、垂直滚动 `Auto`、水平滚动 `Disabled`；条目增加时只在列表内部滚动，不再无限撑高首页。
+- 修正首页宽布局右侧栏的测量行：风险与提醒现在与最近任务处于同一行，并跨越最近任务/全局活动两行；窄布局则落到同一个显式的整行，不再落入隐式行或与全局活动错位。
+- RenderHarness 的对齐检查改为直接比较右侧栏与 `OverviewRecentActivityCard`，不再拿整页顶部滚动面误判合法布局。
+- 媒体中心模式栏使用生产深色表面，选中项使用明确的紫色强调底色；未迁移 Demo 顶部颜色按钮，也未替换项目滚动条。
+
+**验证结果：**
+
+- `git diff --check`：通过。
+- `scripts/validate-source.py`：通过。
+- `validate_wpf_ui.py`：0 error；20 条既有 warning，无新增错误。
+- RenderHarness：`render-qa OK`；1040/1100 DIP 风险列表均为 `MaxHeight=190` 且溢出探针报告 `scrollable=True`；1536/1600/1707 DIP 右侧栏与最近任务卡片 `OverviewSecondaryTopDelta=0 DIP`。
+- 本轮 Playnite 测试命令启动后长时间无输出且子进程低 CPU 空转，已停止；没有把它记为通过。真实 Playnite 宿主视觉截图仍未完成。

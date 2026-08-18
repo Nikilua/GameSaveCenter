@@ -111,7 +111,7 @@
                   Grid.RowSpan="2"
                   VerticalAlignment="Top">
             <Grid x:Name="OverviewPrimaryFlow" VerticalAlignment="Top">
-            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition x:Name="OverviewStackedSecondaryRow" Height="Auto"/></Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition x:Name="OverviewFlowPrimaryColumn" Width="*"/>
                 <ColumnDefinition x:Name="OverviewFlowGutterColumn" Width="14"/>
@@ -432,7 +432,7 @@
              </Border>
 
         <Grid x:Name="OverviewSecondaryScrollViewer"
-              Grid.Row="3"
+              Grid.Row="2"
               Grid.RowSpan="2"
               Grid.Column="2"
               HorizontalAlignment="Stretch"

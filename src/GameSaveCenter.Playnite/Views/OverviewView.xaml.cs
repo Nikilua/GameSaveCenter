@@ -102,9 +102,14 @@ namespace GameSaveCenter.Playnite.Views
             Grid.SetRow(OverviewPrimaryPanel, 0);
             Grid.SetColumn(OverviewPrimaryPanel, 0);
             Grid.SetColumnSpan(OverviewPrimaryPanel, 3);
-            Grid.SetRow(OverviewSecondaryScrollViewer, stack ? 5 : 3);
+            // In the wide layout the right rail starts beside recent tasks and spans
+            // the recent-task/global-activity rows. In the compact layout it becomes
+            // a single full-width row after the primary flow; keeping this in the same
+            // measured grid prevents it from falling to an implicit/out-of-range row.
+            Grid.SetRow(OverviewSecondaryScrollViewer, stack ? 4 : 2);
             Grid.SetColumn(OverviewSecondaryScrollViewer, stack ? 0 : 2);
             Grid.SetColumnSpan(OverviewSecondaryScrollViewer, stack ? 3 : 1);
+            Grid.SetRowSpan(OverviewSecondaryScrollViewer, stack ? 1 : 2);
             OverviewSecondaryPanel.Margin = stack
                 ? new Thickness(0, 14, 0, 0)
                 : new Thickness(0);
