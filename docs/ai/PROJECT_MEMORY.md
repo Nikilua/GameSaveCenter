@@ -18,6 +18,12 @@
 - 当前验证基线：source 校验通过，隔离 Release 构建通过，包生成/安装通过，WPF 校验 0 error；Worker 仍有 2 个集成测试失败，Render QA 有 2 个媒体 resize 恢复用例待修，不能写成全量验证通过。
 - 真实宿主本阶段只对首页重点区域做了截图复核；其他页面仍需按页面逐一进入 Playnite 对照 Demo，最终交付必须区分“实际宿主复核”和“RenderHarness/源码验证”。
 
+## 2026-08-18 UI-224 当前事实：首页徽标模板与 Demo 行密度
+
+- `ChipBase` 模板必须把 `HorizontalContentAlignment`/`VerticalContentAlignment` 传给内部 `ContentPresenter`；仅给外层控件设置对齐属性不够。
+- 首页最近任务的进度条只属于执行中、等待中和等待确认项；成功/失败/取消项使用独立状态和时间列。全局活动的类型/结果徽标与风险徽标使用共享 Chip，分别保持 64 DIP 最小宽度与 11 DIP 风险字号，避免“信息/成功”偏移和“风险”裁切。
+- 本轮真实 Playnite 只复核首页上述区域；0.6.70 已安装成功且控制已释放。Media resize 两项 RenderHarness 失败、旧 Playnite UI 结构测试失败仍是未清理的验证债务，不得宣称全量 UI 完成。
+
 ## 2026-08-17 UI-222 当前事实：生产入口与 Preview 必须区分
 
 - Playnite 当前可能同时加载两个独立扩展：`GameSaveCenter Preview`（0.6.71，Demo/预览）和生产 `GameSaveCenter`（0.6.70，`AcrylicProductionShellView`）。验证生产 UI 时必须从侧栏的 `GameSaveCenter` 进入，不能把 Preview 入口的画面当作生产页面。

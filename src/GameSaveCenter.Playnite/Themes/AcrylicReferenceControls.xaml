@@ -312,6 +312,8 @@
     <Style x:Key="ChipBase" TargetType="ContentControl">
         <Setter Property="Background" Value="{DynamicResource NeutralChipFillBrush}"/>
         <Setter Property="Foreground" Value="{DynamicResource NeutralChipBrush}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Focusable" Value="False"/>
         <Setter Property="IsTabStop" Value="False"/>
         <Setter Property="Template">
@@ -324,7 +326,9 @@
                             TextElement.FontWeight="Medium"
                             TextElement.FontFamily="{StaticResource UiFont}"
                             VerticalAlignment="Center">
-                        <ContentPresenter VerticalAlignment="Center" RecognizesAccessKey="False"/>
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          RecognizesAccessKey="False"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

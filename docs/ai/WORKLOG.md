@@ -2,6 +2,21 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-18 UI-224 首页徽标模板与 Demo 行密度修正
+
+**本轮修正：**
+
+- 共享 `ChipBase` 的模板现在显式使用 `HorizontalContentAlignment` 和 `VerticalContentAlignment`，不再依赖外层 `Border` 与内部 `TextBlock` 的偶然对齐。
+- 首页最近任务改为 Demo 的图标瓷贴、54 DIP 行高、详情列内嵌进度条、独立状态/时间列；只有运行中、等待中和等待确认任务显示进度。
+- 首页全局活动的类型/结果徽标改用共享 Chip，固定 64 DIP 最小宽度并保持内容居中；风险提醒同样使用共享错误 Chip，字号 11、最小宽度 64 DIP，确保“风险”完整可见。
+
+**验证边界：**
+
+- `validate-source.py`、WPF UI 校验和 `git diff --check` 通过；Release 隔离构建 `phase-overview-badges-v25` 通过（0 warning/0 error，构建时跳过测试）。
+- RenderHarness 的首页尺寸、主题和真实滚动检查通过；整套报告仍被既有 Media resize 恢复问题拦住：`MediaGrid` 与 `MediaInspectorScrollViewer` 两项失败，不能写成全量 Render QA 通过。
+- 0.6.70 包已生成并安装到 Playnite。真实 Playnite 生产入口截图确认最近任务状态气泡居中、全局活动徽标居中、风险文字完整显示；电脑控制已释放。该截图只证明首页本轮区域，不代表所有页面已完成 Demo 逐页验收。
+- Playnite 旧 UI 测试仍包含针对已删除旧页面结构的断言；本轮没有用跳过或删测试的方式掩盖它们。
+
 ## 2026-08-18 UI-223 首页状态徽标与真实宿主复核
 
 **原因定位：**

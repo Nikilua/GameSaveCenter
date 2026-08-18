@@ -17,30 +17,21 @@
                 <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/AcrylicReferenceControls.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BoolToVis"/>
-            <Style x:Key="OverviewTaskBadge" TargetType="Border" BasedOn="{StaticResource LabSubCard}">
-                <Setter Property="Width" Value="58"/>
+            <Style x:Key="OverviewTaskBadge" TargetType="ContentControl" BasedOn="{StaticResource ChipBase}">
+                <Setter Property="MinWidth" Value="58"/>
                 <Setter Property="Padding" Value="0"/>
-                <Setter Property="CornerRadius" Value="{StaticResource RadiusS}"/>
                 <Setter Property="Background" Value="{DynamicResource GscInfoIconFillBrush}"/>
-                <Setter Property="BorderBrush" Value="{DynamicResource GscInfoBrush}"/>
-                <Setter Property="BorderThickness" Value="1"/>
                 <Setter Property="HorizontalAlignment" Value="Center"/>
             </Style>
-            <Style x:Key="OverviewActivityKindBadge" TargetType="Border" BasedOn="{StaticResource LabSubCard}">
-                <Setter Property="Width" Value="58"/>
+            <Style x:Key="OverviewActivityKindBadge" TargetType="ContentControl" BasedOn="{StaticResource ChipAccent}">
+                <Setter Property="MinWidth" Value="64"/>
                 <Setter Property="Padding" Value="0"/>
-                <Setter Property="CornerRadius" Value="{StaticResource RadiusS}"/>
                 <Setter Property="Background" Value="{DynamicResource GscAccentTintStrongBrush}"/>
-                <Setter Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
-                <Setter Property="BorderThickness" Value="1"/>
             </Style>
-            <Style x:Key="OverviewActivityResultBadge" TargetType="Border" BasedOn="{StaticResource LabSubCard}">
-                <Setter Property="Width" Value="58"/>
+            <Style x:Key="OverviewActivityResultBadge" TargetType="ContentControl" BasedOn="{StaticResource ChipSuccess}">
+                <Setter Property="MinWidth" Value="64"/>
                 <Setter Property="Padding" Value="0"/>
-                <Setter Property="CornerRadius" Value="{StaticResource RadiusS}"/>
                 <Setter Property="Background" Value="{DynamicResource GscSuccessIconFillBrush}"/>
-                <Setter Property="BorderBrush" Value="{DynamicResource GscSuccessBrush}"/>
-                <Setter Property="BorderThickness" Value="1"/>
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -229,75 +220,74 @@
                                         </ListBox.ItemContainerStyle>
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
-                                                <Border Padding="10,10" CornerRadius="{StaticResource RadiusS}"
+                                                <Border Padding="8,8" MinHeight="54" CornerRadius="{StaticResource RadiusS}"
                                                         BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1">
                                                     <Grid>
                                                         <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="48"/>
+                                                            <ColumnDefinition Width="Auto"/>
                                                             <ColumnDefinition Width="*"/>
-                                                            <ColumnDefinition Width="180"/>
                                                             <ColumnDefinition Width="Auto"/>
                                                             <ColumnDefinition Width="Auto"/>
                                                         </Grid.ColumnDefinitions>
-                                                        <Border Width="44" Height="44" CornerRadius="13"
-                                                                Background="{DynamicResource GscAccentTintStrongBrush}"
-                                                                HorizontalAlignment="Left" VerticalAlignment="Center">
+                                                        <Border Style="{StaticResource LabIconTile}">
                                                             <TextBlock x:Name="OverviewTaskGlyph" Text="&#xE9D5;"
-                                                                       FontFamily="Segoe MDL2 Assets"
-                                                                       FontSize="17"
-                                                                       Foreground="{DynamicResource GscAccentBrush}"
-                                                                       HorizontalAlignment="Center"
-                                                                       VerticalAlignment="Center"/>
+                                                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                         </Border>
-                                                        <StackPanel Grid.Column="1" Margin="14,0,18,0" VerticalAlignment="Center" MinWidth="0">
+                                                        <StackPanel Grid.Column="1" Margin="12,0,12,0" VerticalAlignment="Center" MinWidth="0">
                                                             <StackPanel Orientation="Horizontal">
-                                                                <TextBlock Text="{Binding TaskTypeDisplay}" FontSize="14" FontWeight="SemiBold"
+                                                                <TextBlock Text="{Binding TaskTypeDisplay}" FontSize="12.5" FontWeight="Medium"
                                                                            Foreground="{DynamicResource TextPrimaryBrush}"/>
-                                                                <TextBlock Text="{Binding GameName}" FontSize="13.5" Margin="8,0,0,0"
+                                                                <TextBlock Text="{Binding GameName}" FontSize="12.5" Margin="6,0,0,0"
                                                                            Foreground="{DynamicResource TextTertiaryBrush}"
                                                                            TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/>
                                                             </StackPanel>
-                                                            <TextBlock Text="{Binding DetailMessage}" FontSize="11.5" Margin="0,5,0,0"
-                                                                       Foreground="{DynamicResource TextTertiaryBrush}" TextTrimming="CharacterEllipsis"/>
+                                                            <Grid Margin="0,4,0,0">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="*"/>
+                                                                    <ColumnDefinition Width="Auto"/>
+                                                                </Grid.ColumnDefinitions>
+                                                                <TextBlock Text="{Binding DetailMessage}" FontSize="10.5"
+                                                                           Foreground="{DynamicResource TextTertiaryBrush}" TextTrimming="CharacterEllipsis"
+                                                                           VerticalAlignment="Center"/>
+                                                                <Grid x:Name="OverviewTaskProgressSurface" Grid.Column="1" Width="120" Margin="10,0,0,0"
+                                                                      VerticalAlignment="Center" Visibility="Collapsed">
+                                                                    <ProgressBar Style="{StaticResource LabProgress}" Value="{Binding ProgressPercent}" Maximum="100"/>
+                                                                </Grid>
+                                                            </Grid>
                                                         </StackPanel>
-                                                        <Grid x:Name="OverviewTaskProgressSurface" Grid.Column="2" Width="180" VerticalAlignment="Center" Margin="0,0,16,0" Visibility="Collapsed">
-                                                            <ProgressBar Style="{StaticResource LabProgress}" Value="{Binding ProgressPercent}" Maximum="100"/>
-                                                        </Grid>
-                                                        <Border x:Name="OverviewTaskStatusPill" Grid.Column="3" Style="{StaticResource OverviewTaskBadge}" VerticalAlignment="Center">
-                                                            <TextBlock Text="{Binding StateDisplay}" Foreground="{DynamicResource TextPrimaryBrush}"
-                                                                       HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" TextWrapping="NoWrap"/>
-                                                        </Border>
-                                                        <TextBlock Grid.Column="4" Text="{Binding CreatedLocal, StringFormat={}{0:MM-dd HH:mm}}" Style="{StaticResource LabCaption}" Margin="16,0,4,0"
+                                                        <ContentControl x:Name="OverviewTaskStatusPill" Grid.Column="2" Style="{StaticResource OverviewTaskBadge}"
+                                                                        Content="{Binding StateDisplay}" Height="22" VerticalAlignment="Center"/>
+                                                        <TextBlock Grid.Column="3" Text="{Binding CreatedLocal, StringFormat={}{0:MM-dd HH:mm}}" Style="{StaticResource LabCaption}" Margin="12,0,4,0"
                                                                    VerticalAlignment="Center"/>
                                                     </Grid>
                                                 </Border>
                                                 <DataTemplate.Triggers>
                                                     <DataTrigger Binding="{Binding StateDisplay}" Value="成功">
                                                         <Setter TargetName="OverviewTaskStatusPill" Property="Background" Value="{DynamicResource GscSuccessIconFillBrush}"/>
-                                                        <Setter TargetName="OverviewTaskStatusPill" Property="BorderBrush" Value="{DynamicResource GscSuccessBrush}"/>
+                                                        <Setter TargetName="OverviewTaskStatusPill" Property="Foreground" Value="{DynamicResource GscSuccessBrush}"/>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding StateDisplay}" Value="失败">
                                                         <Setter TargetName="OverviewTaskStatusPill" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/>
-                                                        <Setter TargetName="OverviewTaskStatusPill" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/>
+                                                        <Setter TargetName="OverviewTaskStatusPill" Property="Foreground" Value="{DynamicResource GscErrorBrush}"/>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding StateDisplay}" Value="执行中">
                                                         <Setter TargetName="OverviewTaskProgressSurface" Property="Visibility" Value="Visible"/>
                                                         <Setter TargetName="OverviewTaskStatusPill" Property="Background" Value="{DynamicResource GscInfoIconFillBrush}"/>
-                                                        <Setter TargetName="OverviewTaskStatusPill" Property="BorderBrush" Value="{DynamicResource GscInfoBrush}"/>
+                                                        <Setter TargetName="OverviewTaskStatusPill" Property="Foreground" Value="{DynamicResource GscInfoBrush}"/>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding StateDisplay}" Value="等待中">
                                                         <Setter TargetName="OverviewTaskProgressSurface" Property="Visibility" Value="Visible"/>
                                                         <Setter TargetName="OverviewTaskStatusPill" Property="Background" Value="{DynamicResource GscInfoIconFillBrush}"/>
-                                                        <Setter TargetName="OverviewTaskStatusPill" Property="BorderBrush" Value="{DynamicResource GscInfoBrush}"/>
+                                                        <Setter TargetName="OverviewTaskStatusPill" Property="Foreground" Value="{DynamicResource GscInfoBrush}"/>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding StateDisplay}" Value="等待确认">
                                                         <Setter TargetName="OverviewTaskProgressSurface" Property="Visibility" Value="Visible"/>
                                                         <Setter TargetName="OverviewTaskStatusPill" Property="Background" Value="{DynamicResource GscWarningIconFillBrush}"/>
-                                                        <Setter TargetName="OverviewTaskStatusPill" Property="BorderBrush" Value="{DynamicResource GscWarningBrush}"/>
+                                                        <Setter TargetName="OverviewTaskStatusPill" Property="Foreground" Value="{DynamicResource GscWarningBrush}"/>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding StateDisplay}" Value="已取消">
                                                         <Setter TargetName="OverviewTaskStatusPill" Property="Background" Value="{DynamicResource GscWarningIconFillBrush}"/>
-                                                        <Setter TargetName="OverviewTaskStatusPill" Property="BorderBrush" Value="{DynamicResource GscWarningBrush}"/>
+                                                        <Setter TargetName="OverviewTaskStatusPill" Property="Foreground" Value="{DynamicResource GscWarningBrush}"/>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding TaskType}" Value="Backup">
                                                         <Setter TargetName="OverviewTaskGlyph" Property="Text" Value="&#xE74E;"/>
@@ -342,21 +332,21 @@
                                                 <Border Padding="2,10" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1">
                                                     <Grid>
                                                         <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="76"/>
+                                                            <ColumnDefinition Width="64"/>
                                                             <ColumnDefinition Width="*"/>
                                                             <ColumnDefinition Width="Auto"/>
-                                                            <ColumnDefinition Width="82"/>
+                                                            <ColumnDefinition Width="64"/>
                                                         </Grid.ColumnDefinitions>
-                                                        <Border Style="{StaticResource OverviewActivityKindBadge}" Height="28" HorizontalAlignment="Left"><TextBlock Text="{Binding KindDisplay}" Foreground="{DynamicResource TextPrimaryBrush}"
-                                                                                                                                                                   HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" TextWrapping="NoWrap"/></Border>
+                                                        <ContentControl Style="{StaticResource OverviewActivityKindBadge}" Content="{Binding KindDisplay}"
+                                                                        Height="22" HorizontalAlignment="Left"/>
                                                         <StackPanel Grid.Column="1" Margin="12,0,14,0" VerticalAlignment="Center" MinWidth="0">
                                                             <TextBlock Text="{Binding GameName}" FontSize="14" FontWeight="SemiBold"
                                                                            Foreground="{DynamicResource TextPrimaryBrush}"/>
                                                             <TextBlock Text="{Binding Summary}" FontSize="11.5" Margin="0,4,0,0"
                                                                        Foreground="{DynamicResource TextTertiaryBrush}" TextTrimming="CharacterEllipsis"/>
                                                         </StackPanel>
-                                                        <Border x:Name="OverviewActivityResultPill" Grid.Column="2" Style="{StaticResource OverviewActivityResultBadge}" Height="28" HorizontalAlignment="Center"><TextBlock Text="{Binding ResultDisplay}" Foreground="{DynamicResource TextPrimaryBrush}"
-                                                                                                                                                                                   HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" TextWrapping="NoWrap"/></Border>
+                                                        <ContentControl x:Name="OverviewActivityResultPill" Grid.Column="2" Style="{StaticResource OverviewActivityResultBadge}"
+                                                                        Content="{Binding ResultDisplay}" Height="22" HorizontalAlignment="Center"/>
                                                         <TextBlock Grid.Column="3" Text="{Binding CreatedDisplay}" Style="{StaticResource LabCaption}"
                                                                    HorizontalAlignment="Right" VerticalAlignment="Center"/>
                                                     </Grid>
@@ -364,19 +354,19 @@
                                                 <DataTemplate.Triggers>
                                                     <DataTrigger Binding="{Binding ResultDisplay}" Value="成功">
                                                         <Setter TargetName="OverviewActivityResultPill" Property="Background" Value="{DynamicResource GscSuccessIconFillBrush}"/>
-                                                        <Setter TargetName="OverviewActivityResultPill" Property="BorderBrush" Value="{DynamicResource GscSuccessBrush}"/>
+                                                        <Setter TargetName="OverviewActivityResultPill" Property="Foreground" Value="{DynamicResource GscSuccessBrush}"/>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding ResultDisplay}" Value="失败">
                                                         <Setter TargetName="OverviewActivityResultPill" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/>
-                                                        <Setter TargetName="OverviewActivityResultPill" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/>
+                                                        <Setter TargetName="OverviewActivityResultPill" Property="Foreground" Value="{DynamicResource GscErrorBrush}"/>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding ResultDisplay}" Value="需关注">
                                                         <Setter TargetName="OverviewActivityResultPill" Property="Background" Value="{DynamicResource GscWarningIconFillBrush}"/>
-                                                        <Setter TargetName="OverviewActivityResultPill" Property="BorderBrush" Value="{DynamicResource GscWarningBrush}"/>
+                                                        <Setter TargetName="OverviewActivityResultPill" Property="Foreground" Value="{DynamicResource GscWarningBrush}"/>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding ResultDisplay}" Value="信息">
                                                         <Setter TargetName="OverviewActivityResultPill" Property="Background" Value="{DynamicResource GscInfoIconFillBrush}"/>
-                                                        <Setter TargetName="OverviewActivityResultPill" Property="BorderBrush" Value="{DynamicResource GscInfoBrush}"/>
+                                                        <Setter TargetName="OverviewActivityResultPill" Property="Foreground" Value="{DynamicResource GscInfoBrush}"/>
                                                     </DataTrigger>
                                                 </DataTemplate.Triggers>
                                             </DataTemplate>
@@ -426,16 +416,10 @@
                                                             <StackPanel Orientation="Horizontal">
                                                                 <TextBlock Text="{Binding Name}" FontSize="12.5" FontWeight="Medium"
                                                                            Foreground="{DynamicResource TextPrimaryBrush}"/>
-                                                                <Border x:Name="OverviewRiskBadge" Margin="8,0,0,0" Width="70" Height="24"
-                                                                        Padding="0" CornerRadius="{StaticResource RadiusS}"
-                                                                        Background="{DynamicResource GscErrorIconFillBrush}"
-                                                                        BorderBrush="{DynamicResource GscErrorBrush}" BorderThickness="1"
-                                                                        VerticalAlignment="Center">
-                                                                    <TextBlock x:Name="OverviewRiskBadgeText" Text="{Binding HealthStateDisplay}" FontSize="10.5"
-                                                                               Foreground="{DynamicResource GscErrorBrush}"
-                                                                               HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" TextWrapping="NoWrap"
-                                                                               ToolTip="{Binding HealthStateDisplay}"/>
-                                                                </Border>
+                                                                <ContentControl x:Name="OverviewRiskBadge" Margin="8,0,0,0" MinWidth="64" Height="24"
+                                                                                Padding="0" Style="{StaticResource ChipError}" Content="{Binding HealthStateDisplay}"
+                                                                                FontSize="11" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                                                                VerticalAlignment="Center" ToolTip="{Binding HealthStateDisplay}"/>
                                                             </StackPanel>
                                                             <TextBlock Text="{Binding HealthSummary}" FontSize="10.5" Margin="0,3,0,0"
                                                                        Foreground="{DynamicResource TextTertiaryBrush}" TextTrimming="CharacterEllipsis"/>
@@ -445,43 +429,35 @@
                                                 <DataTemplate.Triggers>
                                                     <DataTrigger Binding="{Binding HealthState}" Value="Healthy">
                                                         <Setter TargetName="OverviewRiskBadge" Property="Background" Value="{DynamicResource GscSuccessIconFillBrush}"/>
-                                                        <Setter TargetName="OverviewRiskBadge" Property="BorderBrush" Value="{DynamicResource GscSuccessBrush}"/>
-                                                        <Setter TargetName="OverviewRiskBadgeText" Property="Foreground" Value="{DynamicResource GscSuccessBrush}"/>
+                                                        <Setter TargetName="OverviewRiskBadge" Property="Foreground" Value="{DynamicResource GscSuccessBrush}"/>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding HealthState}" Value="Ready">
                                                         <Setter TargetName="OverviewRiskBadge" Property="Background" Value="{DynamicResource GscSuccessIconFillBrush}"/>
-                                                        <Setter TargetName="OverviewRiskBadge" Property="BorderBrush" Value="{DynamicResource GscSuccessBrush}"/>
-                                                        <Setter TargetName="OverviewRiskBadgeText" Property="Foreground" Value="{DynamicResource GscSuccessBrush}"/>
+                                                        <Setter TargetName="OverviewRiskBadge" Property="Foreground" Value="{DynamicResource GscSuccessBrush}"/>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding HealthState}" Value="Running">
                                                         <Setter TargetName="OverviewRiskBadge" Property="Background" Value="{DynamicResource GscSuccessIconFillBrush}"/>
-                                                        <Setter TargetName="OverviewRiskBadge" Property="BorderBrush" Value="{DynamicResource GscSuccessBrush}"/>
-                                                        <Setter TargetName="OverviewRiskBadgeText" Property="Foreground" Value="{DynamicResource GscSuccessBrush}"/>
+                                                        <Setter TargetName="OverviewRiskBadge" Property="Foreground" Value="{DynamicResource GscSuccessBrush}"/>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding HealthState}" Value="Attention">
                                                         <Setter TargetName="OverviewRiskBadge" Property="Background" Value="{DynamicResource GscWarningIconFillBrush}"/>
-                                                        <Setter TargetName="OverviewRiskBadge" Property="BorderBrush" Value="{DynamicResource GscWarningBrush}"/>
-                                                        <Setter TargetName="OverviewRiskBadgeText" Property="Foreground" Value="{DynamicResource GscWarningBrush}"/>
+                                                        <Setter TargetName="OverviewRiskBadge" Property="Foreground" Value="{DynamicResource GscWarningBrush}"/>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding HealthState}" Value="Warning">
                                                         <Setter TargetName="OverviewRiskBadge" Property="Background" Value="{DynamicResource GscWarningIconFillBrush}"/>
-                                                        <Setter TargetName="OverviewRiskBadge" Property="BorderBrush" Value="{DynamicResource GscWarningBrush}"/>
-                                                        <Setter TargetName="OverviewRiskBadgeText" Property="Foreground" Value="{DynamicResource GscWarningBrush}"/>
+                                                        <Setter TargetName="OverviewRiskBadge" Property="Foreground" Value="{DynamicResource GscWarningBrush}"/>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding HealthState}" Value="Risk">
                                                         <Setter TargetName="OverviewRiskBadge" Property="Background" Value="{DynamicResource GscErrorIconFillBrush}"/>
-                                                        <Setter TargetName="OverviewRiskBadge" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/>
-                                                        <Setter TargetName="OverviewRiskBadgeText" Property="Foreground" Value="{DynamicResource GscErrorBrush}"/>
+                                                        <Setter TargetName="OverviewRiskBadge" Property="Foreground" Value="{DynamicResource GscErrorBrush}"/>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding HealthState}" Value="LudusaviUnavailable">
                                                         <Setter TargetName="OverviewRiskBadge" Property="Background" Value="{DynamicResource GscErrorIconFillBrush}"/>
-                                                        <Setter TargetName="OverviewRiskBadge" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/>
-                                                        <Setter TargetName="OverviewRiskBadgeText" Property="Foreground" Value="{DynamicResource GscErrorBrush}"/>
+                                                        <Setter TargetName="OverviewRiskBadge" Property="Foreground" Value="{DynamicResource GscErrorBrush}"/>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding HealthState}" Value="Unknown">
                                                         <Setter TargetName="OverviewRiskBadge" Property="Background" Value="{DynamicResource GscInfoIconFillBrush}"/>
-                                                        <Setter TargetName="OverviewRiskBadge" Property="BorderBrush" Value="{DynamicResource GscInfoBrush}"/>
-                                                        <Setter TargetName="OverviewRiskBadgeText" Property="Foreground" Value="{DynamicResource GscInfoBrush}"/>
+                                                        <Setter TargetName="OverviewRiskBadge" Property="Foreground" Value="{DynamicResource GscInfoBrush}"/>
                                                     </DataTrigger>
                                                 </DataTemplate.Triggers>
                                             </DataTemplate>
