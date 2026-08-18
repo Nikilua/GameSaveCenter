@@ -46,6 +46,7 @@ namespace GameSaveCenter.Playnite.Views
 
             viewModel = new DashboardViewModel(plugin);
             DataContext = viewModel;
+            ProductionShellView.Attach(viewModel);
 
             refreshTimer = new DispatcherTimer(DispatcherPriority.Background);
             refreshTimer.Tick += OnRefreshTimerTick;

@@ -48,12 +48,20 @@ namespace GameSaveCenter.Playnite.Views
                 if (SaveHistoryNoteColumn != null)
                 {
                     var narrowHistory = width < 1100;
-                    SaveHistoryNoteColumn.Width = narrowHistory
-                        ? new DataGridLength(0)
-                        : new DataGridLength(1, DataGridLengthUnitType.Star);
-                    SaveHistoryNoteColumn.MinWidth = narrowHistory ? 0 : 180;
+                    SaveHistoryTimeColumn.Width = new DataGridLength(narrowHistory ? 96 : 150);
+                    SaveHistoryTypeColumn.Width = new DataGridLength(narrowHistory ? 76 : 110);
+                    SaveHistoryFileCountColumn.Width = new DataGridLength(narrowHistory ? 56 : 82);
+                    SaveHistorySizeColumn.Width = new DataGridLength(narrowHistory ? 78 : 116);
+                    SaveHistoryDeviceColumn.Width = new DataGridLength(narrowHistory ? 110 : 120);
+                    SaveHistoryStateColumn.Width = new DataGridLength(narrowHistory ? 76 : 96);
+                    SaveHistoryNoteColumn.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
+                    SaveHistoryNoteColumn.MinWidth = narrowHistory ? 116 : 180;
                 }
-                var compact = height < 760 || width < 1200;
+                // Demo keeps the inspector beside the main surface at the normal
+                // 1040x700 breakpoint.  The previous 1200 DIP cutoff pushed the
+                // Playnite host into the drawer layout even when there was enough
+                // room, which made the production page structurally different.
+                var compact = width < 980;
                 if (SaveCurrentRuleActions != null)
                 {
                     SaveCurrentRuleActionsRow.Height = compact
@@ -152,26 +160,36 @@ namespace GameSaveCenter.Playnite.Views
             var candidateHeight = SaveCandidateLayout.ActualHeight > 0 ? SaveCandidateLayout.ActualHeight : Math.Max(320, height - 200);
             var candidateInspectorHeight = Math.Max(160, Math.Min(360, candidateHeight - tableMinHeight - 10));
             SaveCandidateInspectorScrollViewer.MaxHeight = showCandidateInspector && compact ? candidateInspectorHeight : double.PositiveInfinity;
-            var stackPolicy = width < 1080;
-            // The policy page is a left-aligned form capped by the shared
-            // GscFormMaxWidth token (1120). Give the StackPanel an explicit
-            // viewport width so the reading cards fill the form instead of
-            // collapsing to their content width, and so WPF never centers the
-            // capped form inside the page scroll channel. The 4 is the right
-            // padding of GscPageScrollViewer.
-            SavePolicyStack.Width = Math.Max(0, Math.Min(width - 4, 1120));
+            var stackPolicy = width < 980;
+            // Keep the three Demo cards in one row when there is room. Below
+            // the compact breakpoint, stack the cards into explicit rows so
+            // the template controls never share measure space with the list.
+            SavePolicyStack.Width = Math.Max(0, width - 4);
             SavePolicyCardsLayout.ColumnDefinitions[1].Width = stackPolicy ? new GridLength(0) : new GridLength(14);
             SavePolicyCardsLayout.ColumnDefinitions[2].Width = stackPolicy ? new GridLength(0) : new GridLength(1, GridUnitType.Star);
+            SavePolicyCardsLayout.ColumnDefinitions[3].Width = stackPolicy ? new GridLength(0) : new GridLength(14);
+            SavePolicyCardsLayout.ColumnDefinitions[4].Width = stackPolicy ? new GridLength(0) : new GridLength(1, GridUnitType.Star);
+            SavePolicyCardsLayout.RowDefinitions[0].Height = stackPolicy ? new GridLength(1, GridUnitType.Auto) : new GridLength(1, GridUnitType.Star);
+            SavePolicyCardsLayout.RowDefinitions[1].Height = stackPolicy ? new GridLength(1, GridUnitType.Auto) : new GridLength(0);
             SavePolicyCardsLayout.RowDefinitions[2].Height = stackPolicy ? new GridLength(1, GridUnitType.Auto) : new GridLength(0);
+            SavePolicyCardsLayout.RowDefinitions[3].Height = new GridLength(0);
+
+            Grid.SetColumn(SaveBackupAutomationCard, 0);
+            Grid.SetColumnSpan(SaveBackupAutomationCard, stackPolicy ? 5 : 1);
+            Grid.SetRow(SaveBackupAutomationCard, 0);
+
             Grid.SetColumn(SavePolicyMediaCard, stackPolicy ? 0 : 2);
-            Grid.SetColumnSpan(SavePolicyMediaCard, stackPolicy ? 3 : 1);
+            Grid.SetColumnSpan(SavePolicyMediaCard, stackPolicy ? 5 : 1);
             Grid.SetRow(SavePolicyMediaCard, stackPolicy ? 1 : 0);
-            Grid.SetColumn(SavePolicySafetyCard, 0);
-            Grid.SetColumnSpan(SavePolicySafetyCard, 3);
-            Grid.SetRow(SavePolicySafetyCard, stackPolicy ? 2 : 1);
             SavePolicyMediaCard.Margin = stackPolicy ? new Thickness(0, 14, 0, 0) : new Thickness(0);
 
-            var stackCompare = width < 1080 || height < 760;
+            Grid.SetColumn(SavePolicyTemplatesCard, stackPolicy ? 0 : 4);
+            Grid.SetColumnSpan(SavePolicyTemplatesCard, stackPolicy ? 5 : 1);
+            Grid.SetRow(SavePolicyTemplatesCard, stackPolicy ? 2 : 0);
+            SavePolicyTemplatesCard.Margin = stackPolicy ? new Thickness(0, 14, 0, 0) : new Thickness(0);
+
+
+            var stackCompare = width < 980;
             SaveCompareLayout.ColumnDefinitions[1].Width = stackCompare ? new GridLength(0) : new GridLength(14);
             SaveCompareLayout.ColumnDefinitions[2].Width = stackCompare ? new GridLength(0) : inspectorWidth;
             SaveCompareLayout.RowDefinitions[1].Height = stackCompare ? new GridLength(1, GridUnitType.Auto) : new GridLength(0);

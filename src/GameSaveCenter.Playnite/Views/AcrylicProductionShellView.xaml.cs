@@ -213,7 +213,9 @@ namespace GameSaveCenter.Playnite.Views
             Grid.SetRow(HeaderActionsPanel, compact ? 1 : 0);
             Grid.SetColumn(HeaderActionsPanel, compact ? 0 : 1);
             Grid.SetColumnSpan(HeaderActionsPanel, compact ? 2 : 1);
+            Grid.SetColumn(HeaderTitlePanel, 0);
             Grid.SetColumnSpan(HeaderTitlePanel, compact ? 2 : 1);
+            HeaderTitlePanel.HorizontalAlignment = HorizontalAlignment.Left;
             HeaderActionsRow.Height = compact ? GridLength.Auto : new GridLength(0);
             HeaderActionsPanel.HorizontalAlignment = compact
                 ? HorizontalAlignment.Left

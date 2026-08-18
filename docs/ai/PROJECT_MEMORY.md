@@ -669,3 +669,12 @@
 - `scripts/package.ps1` 已修复空 `dotnet` 参数问题；当前无 `BuildOutputRoot` 的标准打包流程可正常生成并校验安装包，且会保留 `GameSaveCenter.Contracts.dll`。
 - 一键安装的隔离构建还必须把 `TEMP/TMP` 指向隔离输出盘；否则完整性测试会读取系统临时目录所在磁盘的真实剩余空间，在低于 512 MiB 时把健康夹具判为 `Warning`。
 - 一键安装的隔离构建根目录使用短路径 `artifacts/gsc-b/<guid>`；过深的 `artifacts/dev-build/Release/<guid>` 会让 .NET Framework Playnite 测试适配器加载失败。当前完整 `dev-install-run.ps1 -NoStart` 已通过。
+
+## 2026-08-18 UI-214 首页状态徽标事实
+
+- 首页最近任务与全局活动徽标的文本必须显式设置 `HorizontalAlignment=Center` 和 `TextAlignment=Center`，不能依赖旧 Chip/Border 模板的默认测量。
+- 风险与提醒徽标使用独立 `Border + TextBlock`，最小宽度 52 DIP、内边距 8/2，并通过 DataTemplate triggers 同时切换背景、边框和文字颜色；这样“风险/需关注/未知/已就绪”不会被裁切或错误显示为同一种颜色。
+- 任务图标应引用 `GscAccentBrush` 等生产资源键，不能直接引用 Acrylic Demo 的裸 `AccentBrush`。
+- 2026-08-18 Release 构建 0 warning / 0 error；Overview 离屏浅深色多尺寸探针通过。全量 RenderHarness 仍有既有 Media resize recovery 失败，不能标记全量通过。
+- 本轮未重新进行 Playnite 宿主截图；屏幕控制此前已由用户物理 Escape 停止，离屏渲染结果不得替代真实宿主人工验收。
+- 本轮重复的 Playnite 测试命令长时间无输出并被停止，不能据此宣称新增测试通过；保留上一阶段已记录的回归基线。

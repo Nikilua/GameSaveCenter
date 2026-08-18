@@ -18,12 +18,12 @@ namespace GameSaveCenter.Playnite.Tests
             var grid = hero.Elements().Single(element => element.Name.LocalName == "Grid");
             var rows = grid.Descendants().Where(element => element.Name.LocalName == "RowDefinition")
                 .ToList();
-            var statusPills = grid.Descendants().Single(element => element.Name.LocalName == "WrapPanel" && element.Attribute("Grid.Row")?.Value == "1");
+            var statusRow = grid.Descendants().Single(element => element.Name.LocalName == "WrapPanel" && element.Attribute("Grid.Row")?.Value == "1");
 
             Assert.Equal(2, rows.Count);
-            Assert.Null(statusPills.Attribute("HorizontalAlignment"));
-            Assert.Null(statusPills.Attribute("Grid.Column"));
-            Assert.Null(statusPills.Attribute("Grid.ColumnSpan"));
+            Assert.Equal("Left", statusRow.Attribute("HorizontalAlignment")?.Value);
+            Assert.Null(statusRow.Attribute("Grid.Column"));
+            Assert.Null(statusRow.Attribute("Grid.ColumnSpan"));
             Assert.Contains("OverviewTodayHeroCard.Padding", File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml.cs")));
         }
 
@@ -115,11 +115,11 @@ namespace GameSaveCenter.Playnite.Tests
             var protection = overview.Descendants().Single(element => element.Name.LocalName == "ItemsControl" && element.Attribute("ItemsSource")?.Value == "{Binding RecentProtection.Items}");
             var actions = overview.Descendants()
                 .Single(element => element.Name.LocalName == "WrapPanel"
+                    && element.Attribute("Grid.Row")?.Value == "1"
                     && element.Descendants().Any(descendant => descendant.Attribute("Command")?.Value == "{Binding OpenProtectionGamesCommand}")
                     && element.Descendants().Any(descendant => descendant.Attribute("Command")?.Value == "{Binding ApplyRecommendedProtectionCommand}"));
 
-            Assert.NotNull(protection);
-            Assert.Null(actions.Attribute("Grid.Row"));
+            Assert.Equal("1", actions.Attribute("Grid.Row")?.Value);
         }
 
         [Fact]
@@ -175,7 +175,7 @@ namespace GameSaveCenter.Playnite.Tests
 
             Assert.Equal("6", strip.Attribute("Columns")?.Value);
             Assert.Equal(6, strip.Elements().Count(element => element.Name.LocalName == "Border"));
-            Assert.Contains("OverviewStatStrip.Columns = primaryWidth >= 1120 ? 6 : primaryWidth >= 680 ? 3 : 2", code);
+            Assert.Contains("OverviewStatStrip.Columns = primaryWidth >= 1100 ? 6 : primaryWidth >= 620 ? 3 : 2", code);
         }
 
         [Fact]
@@ -189,7 +189,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.NotNull(expander.Descendants().SingleOrDefault(element => element.Name.LocalName == "ItemsControl"
                 && element.Attribute("ItemsSource")?.Value == "{Binding RecentProtection.Items}"));
             Assert.NotNull(expander.Descendants().SingleOrDefault(element => element.Name.LocalName == "TextBlock"
-                && (element.Attribute("Text")?.Value ?? "").Contains("勾选项不会自动执行备份或恢复")));
+                && (element.Attribute("Text")?.Value ?? "").Contains("选择游戏不会自动执行备份或恢复")));
         }
 
         [Fact]
@@ -205,21 +205,40 @@ namespace GameSaveCenter.Playnite.Tests
             var widths = grid.Elements().Single(element => element.Name.LocalName == "Grid.ColumnDefinitions")
                 .Elements().Select(element => element.Attribute("Width")?.Value).ToArray();
 
-            Assert.Equal(new[] { "64", "*", "Auto", "64" }, widths);
+            Assert.Equal(new[] { "40", "150", "*", "132", "112" }, widths);
+            Assert.Equal("140", grid.Elements().Single(element => element.Name.LocalName == "Grid.ColumnDefinitions")
+                .Elements().ElementAt(2).Attribute("MinWidth")?.Value);
             Assert.Equal("Center", template.Descendants().Single(element => element.Name.LocalName == "Border"
                 && element.Attribute(xamlName)?.Value == "ActivityKindPill").Attribute("VerticalAlignment")?.Value);
+            Assert.Contains("OverviewActivityHeaderRow", overview.ToString());
+            Assert.Contains("Margin=\"8,0,20,0\"", template.Descendants().Single(element =>
+                element.Name.LocalName == "TextBlock" && element.Attribute("Text")?.Value == "{Binding CreatedDisplay, Mode=OneWay}").ToString());
+            Assert.DoesNotContain("ActivityMetaCompact", overview.ToString());
             Assert.NotNull(template.Descendants().SingleOrDefault(element =>
+                element.Name.LocalName == "ColumnDefinition"
+                && element.Attribute(xamlName)?.Value == "ActivityMetaColumn"));
+            var scopeStack = template.Descendants().Single(element =>
+                element.Name.LocalName == "StackPanel" && element.Attribute("Grid.Column")?.Value == "1");
+            Assert.DoesNotContain(scopeStack.Descendants(), element =>
                 element.Name.LocalName == "Border"
-                && element.Attribute(xamlName)?.Value == "ActivityKindChip"));
-            Assert.NotNull(template.Descendants().SingleOrDefault(element =>
-                element.Name.LocalName == "Border"
-                && element.Attribute(xamlName)?.Value == "ActivityResultChip"));
+                && (element.Attribute(xamlName)?.Value == "ActivityKindChip"
+                    || element.Attribute(xamlName)?.Value == "ActivityResultChip"));
             Assert.Contains(template.Descendants(), element => element.Name.LocalName == "TextBlock"
                 && element.Attribute("Text")?.Value == "{Binding KindDisplay, Mode=OneWay}");
             Assert.Contains(template.Descendants(), element => element.Name.LocalName == "TextBlock"
                 && element.Attribute("Text")?.Value == "{Binding ResultDisplay, Mode=OneWay}");
             Assert.Contains(template.Descendants(), element => element.Name.LocalName == "TextBlock"
                 && element.Attribute("Text")?.Value == "{Binding CreatedDisplay, Mode=OneWay}");
+            Assert.True(template.Descendants()
+                .Where(element => element.Name.LocalName == "TextBlock"
+                    && element.Attribute("Text")?.Value == "{Binding KindDisplay, Mode=OneWay}")
+                .All(element => element.Attribute("HorizontalAlignment")?.Value == "Center"
+                    && element.Attribute("TextAlignment")?.Value == "Center"));
+            Assert.True(template.Descendants()
+                .Where(element => element.Name.LocalName == "TextBlock"
+                    && element.Attribute("Text")?.Value == "{Binding ResultDisplay, Mode=OneWay}")
+                .All(element => element.Attribute("HorizontalAlignment")?.Value == "Center"
+                    && element.Attribute("TextAlignment")?.Value == "Center"));
         }
 
         [Fact]

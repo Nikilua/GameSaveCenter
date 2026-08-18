@@ -288,12 +288,12 @@
                         </Grid.RowDefinitions>
                         <Border Grid.Row="0"
                                 HorizontalAlignment="Left"
-                                Background="{DynamicResource GscControlFillBrush}"
-                                BorderBrush="{DynamicResource GscGlassStrokeBrush}"
+                                Background="{DynamicResource SegmentFillBrush}"
+                                BorderBrush="{DynamicResource GscControlStrokeBrush}"
                                 BorderThickness="1"
-                                CornerRadius="12"
-                                Padding="5"
-                                Margin="0,0,0,12">
+                                CornerRadius="10"
+                                Padding="2"
+                                Margin="0,0,0,8">
                             <ScrollViewer HorizontalScrollBarVisibility="Auto"
                                           VerticalScrollBarVisibility="Disabled"
                                           CanContentScroll="False"
@@ -319,9 +319,9 @@
 
     <Style x:Key="GscRedesignWorkspaceTabItem" TargetType="TabItem">
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
-        <Setter Property="Padding" Value="14,9"/>
+        <Setter Property="Padding" Value="14,6"/>
         <Setter Property="Margin" Value="0"/>
-        <Setter Property="MinHeight" Value="36"/>
+        <Setter Property="MinHeight" Value="0"/>
         <!-- The header presenter below controls its own centering.  The selected
              workspace content must inherit Stretch so a page never collapses to
              its desired-size island inside the available shell. -->
@@ -369,8 +369,8 @@
     </Style>
 
     <Style x:Key="GscInternalTabItem" TargetType="TabItem" BasedOn="{StaticResource GscRedesignWorkspaceTabItem}">
-        <Setter Property="Padding" Value="12,7"/>
-        <Setter Property="MinHeight" Value="34"/>
+        <Setter Property="Padding" Value="11,5"/>
+        <Setter Property="MinHeight" Value="0"/>
     </Style>
 
     <Style x:Key="GscRedesignSettingsTabControl" TargetType="TabControl">

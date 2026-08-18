@@ -2400,3 +2400,30 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `scripts/dev-install-run.ps1` 将隔离构建根目录缩短为 `artifacts/gsc-b/<guid>`，避免 .NET Framework Playnite 测试适配器在深路径下加载失败。
 - 隔离 Release 构建验证：Core 59/59、Worker 191/191、Playnite 303/303，构建 0 warning / 0 error。
 - 完整一键安装（`-NoStart`）已验证 Worker 发布、`.pext` 打包、安装目录和 `GameSaveCenter.Contracts.dll` 均成功。
+
+## 2026-08-18 UI-214 首页状态徽标可读性收口
+
+**用户反馈：**
+
+- 首页最近任务、全局活动的“成功/信息”等状态气泡文字没有明确居中。
+- 风险与提醒中的“风险”徽标受旧 `ContentControl` 模板约束，存在文字裁切风险。
+- 任务图标仍引用未统一的旧主题资源键。
+
+**实现内容：**
+
+- `OverviewView.xaml` 为最近任务状态、全局活动类型和结果徽标补充明确的水平/垂直居中约束。
+- 风险徽标改为独立 `Border + TextBlock`，设置最小宽度、内边距、文本省略 Tooltip，并按健康/警告/风险/未知状态同步背景、边框和文字颜色。
+- 任务图标统一使用生产 `GscAccentBrush`，避免 Demo 资源键在宿主中回退为黑色。
+
+**验证结果：**
+
+- `git diff --check` 通过。
+- XAML structural validation 通过；Release 构建 `artifacts/phase-overview-v18` 为 0 warning / 0 error。
+- RenderHarness 的首页 Overview 在浅色/深色、1040/1100/1366/2560 尺寸探针通过，生成的 PNG 中风险徽标文字完整且状态颜色正确。
+- 全量 RenderHarness 仍未通过：已有 Media resize recovery 两项失败（`MediaGrid` 尺寸未恢复、`MediaInspectorScrollViewer` 状态未恢复），不能把本轮写成全量视觉回归通过。
+- `scripts/validate-source.py` 仍报告已有媒体缩略图 96px bounded decode 规则缺失；WPF UI 静态扫描无 error，仅保留既有布局提示。
+- 本轮重复执行 Playnite 测试命令后长时间无输出，已停止这批明确由该命令启动的 30 个空闲 `dotnet` 进程；未将这次无结果的运行计为通过，沿用上一阶段已记录的 Playnite 回归基线。
+
+**验证边界：**
+
+- 本轮没有重新启动或控制 Playnite 宿主；上一次屏幕控制已由用户物理 Escape 停止，因此没有把离屏 PNG 冒充真实宿主验收。

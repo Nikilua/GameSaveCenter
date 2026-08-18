@@ -17,6 +17,13 @@
                 <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/DesignTokens.xaml"/>
                 <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/WpfUiProduction.xaml"/>
                 <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/Redesign.xaml"/>
+                <!-- DashboardView is still constructed by the plugin's safe fallback path,
+                     even when the production shell is the visible host. Keep its legacy
+                     resources complete so hidden/initialization-only content cannot abort
+                     Playnite before AcrylicProductionShellView is shown. -->
+                <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/AcrylicReferenceTokens.xaml"/>
+                <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/AcrylicReferenceColorsDark.xaml"/>
+                <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/AcrylicReferenceControls.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         <converters:MediaThumbnailConverter x:Key="MediaThumbnailConverter"/>
         <converters:MediaVideoSourceConverter x:Key="MediaVideoSourceConverter"/>
@@ -680,7 +687,10 @@
             </Ellipse>
         </Grid>
 
-        <Border x:Name="DashboardDemoShell" Margin="4" Style="{StaticResource GscShellStyle}" Padding="8">
+        <!-- The legacy shell remains loaded only as a compatibility surface for the
+             existing feedback and layout code. Playnite renders the actual production
+             page through the same PageHost used by the audited production shell below. -->
+        <Border x:Name="DashboardDemoShell" Margin="4" Style="{StaticResource GscShellStyle}" Padding="8" Visibility="Collapsed">
         <!-- DashboardDemoShell supplies the complete outer spacing. Keep this inner grid
              flush with the shell padding so ordinary 1024/1280-DIP windows do not waste
              another 18 DIP on each side. -->
@@ -832,7 +842,10 @@
                 </Grid>
             </Border>
 
-            <Grid x:Name="MainShell" Grid.Column="2" Opacity="0">
+            <!-- Legacy shell is retained only for compatibility with old code-behind
+                 names. It must never participate in production rendering; the
+                 AcrylicProductionShellView below is the sole visible host. -->
+            <Grid x:Name="MainShell" Grid.Column="2" Opacity="0" Visibility="Collapsed">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -1351,6 +1364,11 @@
             </Grid>
         </Grid>
         </Border>
+
+        <views:AcrylicProductionShellView x:Name="ProductionShellView"
+                                          Panel.ZIndex="10"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch"/>
 
         <!-- Confirmation feedback stays inside the Playnite content host and never steals focus with a new Window. -->
         <StackPanel x:Name="ToastHost"

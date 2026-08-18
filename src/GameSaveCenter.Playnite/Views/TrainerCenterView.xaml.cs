@@ -91,7 +91,12 @@ namespace GameSaveCenter.Playnite.Views
                 var importWidth = Math.Max(240, Math.Min(520, width - 360));
                 TrainerImportEntryComboBox.Width = importWidth;
                 TrainerImportEntryComboBox.MinWidth = 0;
-                var stackInstalled = width < 1080;
+                // Keep the two-column editor at the normal Playnite host size. The
+                // content width is already reduced by the shell sidebar, so 1080 DIP
+                // stacked too early and made the installed/release inspectors appear
+                // as unrelated blocks below the main list. Only the genuinely narrow
+                // layout (below the shared 980 DIP breakpoint) should stack them.
+                var stackInstalled = width < 980;
 
                 // On compact hosts the selected-tool editor is a drawer, not a permanent
                 // second row. The virtualized tool list keeps the star row by default;
@@ -147,7 +152,7 @@ namespace GameSaveCenter.Playnite.Views
             TrainerToolsSettingsScrollViewer.Margin = stackInstalled
                 ? showInspector ? new Thickness(0, 10, 0, 0) : new Thickness(0)
                 : new Thickness(0);
-            var stackReleases = width < 1080;
+                var stackReleases = width < 980;
             TrainerReleasesLayout.RowDefinitions[0].Height = new GridLength(1, GridUnitType.Star);
             TrainerReleasesLayout.RowDefinitions[1].Height = stackReleases
                 ? GridLength.Auto

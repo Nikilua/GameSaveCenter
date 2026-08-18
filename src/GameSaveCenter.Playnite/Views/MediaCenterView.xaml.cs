@@ -26,7 +26,7 @@ namespace GameSaveCenter.Playnite.Views
             ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
         }
 
-        public UniformGrid MediaSummaryPanelElement => MediaSummaryPanel;
+        public Grid MediaSummaryPanelElement => MediaSummaryPanel;
         public UniformGrid MediaSourceFieldsElement => MediaSourceFields;
         public Border MediaInspectorPanelElement => MediaInspectorPanel;
         public Border MediaPreviewPanelElement => MediaPreviewPanel;
@@ -42,14 +42,8 @@ namespace GameSaveCenter.Playnite.Views
             {
                 responsiveWidth = width;
                 responsiveHeight = height;
-                // Keep the demo's four-card metric strip throughout normal windowed
-                // workspaces. The Dashboard's content width is already smaller than the
-                // complete window after the sidebar and shell insets, so a 1180-DIP
-                // breakpoint incorrectly collapsed the cards to two or one column and
-                // pushed the media table below the fold. These are logical-DIP thresholds:
-                // 1080p, 2K and 4K at ordinary DPI all keep the primary table reachable.
-                var metricColumns = width >= 700 ? 4 : width >= 520 ? 2 : 1;
-                MediaSummaryPanel.Columns = metricColumns;
+                // The summary band is a bounded Grid: its metric and mode columns follow the
+                // Demo's information architecture instead of being reflowed by a UniformGrid.
                 // Do not discard summary information at short heights. Local list/inspector
                 // surfaces own overflow so the whole workspace does not become a scroll canvas.
                 MediaSummaryPanel.Visibility = Visibility.Visible;
@@ -69,7 +63,11 @@ namespace GameSaveCenter.Playnite.Views
                 // Match the demo: the media table and its inspector share the main
                 // work area on wide hosts; on compact hosts the inspector is a drawer
                 // behind the compact details button instead of consuming the list row.
-                var stack = width < 1080;
+                // The normal Playnite workspace is narrower than the complete
+                // window because of the sidebar. Keep the Demo's grid and inspector
+                // side by side until the compact breakpoint instead of hiding the
+                // inspector at ordinary 1040 DIP layouts.
+                var stack = width < 980;
                 if (stack)
                 {
                     var hasMediaSelection = MediaGrid.SelectedItem != null;
@@ -97,12 +95,12 @@ namespace GameSaveCenter.Playnite.Views
                 var inspectorWidth = MediaCurrentLayout.TryFindResource("GscInspectorWidth") is GridLength gl ? gl : new GridLength(360);
                 MediaCurrentLayout.ColumnDefinitions[1].Width = showInspector && !stack ? new GridLength(14) : new GridLength(0);
                 MediaCurrentLayout.ColumnDefinitions[2].Width = showInspector && !stack ? inspectorWidth : new GridLength(0);
-                MediaCurrentLayout.RowDefinitions[3].Height = showInspector && stack
+                MediaCurrentLayout.RowDefinitions[1].Height = showInspector && stack
                     ? new GridLength(1, GridUnitType.Auto)
                     : new GridLength(0);
                 Grid.SetColumn(MediaInspectorFrame, stack ? 0 : 2);
                 Grid.SetColumnSpan(MediaInspectorFrame, stack ? 3 : 1);
-                Grid.SetRow(MediaInspectorFrame, stack ? 3 : 2);
+                Grid.SetRow(MediaInspectorFrame, stack ? 1 : 0);
                 MediaInspectorFrame.Margin = showInspector && stack ? new Thickness(0, 10, 0, 0) : new Thickness(0);
                 // The inspector itself always uses the demo's details-first layout:
                 // 媒体详情 -> 文件名/路径 -> 预览 -> 收藏/备注/保存/打开.
@@ -133,6 +131,15 @@ namespace GameSaveCenter.Playnite.Views
             if (MediaGrid.SelectedItem == null) return;
             mediaInspectorOpen = !mediaInspectorOpen;
             ApplyResponsiveLayout(responsiveWidth > 0 ? responsiveWidth : ActualWidth, responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+        }
+
+        private void OnMediaModeChecked(object sender, RoutedEventArgs e)
+        {
+            if (sender is not RadioButton radio || !int.TryParse(radio.Tag?.ToString(), out var selectedIndex))
+                return;
+
+            if (MediaTabControl != null && selectedIndex >= 0 && selectedIndex < MediaTabControl.Items.Count)
+                MediaTabControl.SelectedIndex = selectedIndex;
         }
     }
 }

@@ -1,0 +1,91 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ═══════════════ 深色 · 石墨夜幕 ═══════════════ -->
+
+    <!-- 窗口画布（渐变底 + 强调色晕染在 Shell 中叠加） -->
+    <LinearGradientBrush x:Key="CanvasBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#FF1D2027" Offset="0"/>
+        <GradientStop Color="#FF171A20" Offset="0.55"/>
+        <GradientStop Color="#FF131519" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- 分层材质：卡片近不透明 / 子面 / 侧栏振动 / 悬浮亚克力 -->
+    <SolidColorBrush x:Key="CardFillBrush" Color="#EE262B36"/>
+    <SolidColorBrush x:Key="CardStrokeBrush" Color="#17FFFFFF"/>
+    <SolidColorBrush x:Key="CardHoverStrokeBrush" Color="#2EFFFFFF"/>
+    <SolidColorBrush x:Key="SubFillBrush" Color="#D9202531"/>
+    <SolidColorBrush x:Key="SubStrokeBrush" Color="#10FFFFFF"/>
+    <SolidColorBrush x:Key="SidebarFillBrush" Color="#8C1B1F2A"/>
+    <SolidColorBrush x:Key="SidebarStrokeBrush" Color="#14FFFFFF"/>
+    <SolidColorBrush x:Key="HeaderFillBrush" Color="#A0202430"/>
+    <Color x:Key="SidebarBaseColor">#FF1B1F2A</Color>
+    <Color x:Key="HeaderBaseColor">#FF202430</Color>
+    <SolidColorBrush x:Key="FieldFillBrush" Color="#66131620"/>
+    <SolidColorBrush x:Key="FieldFocusFillBrush" Color="#8C1A1E2B"/>
+    <SolidColorBrush x:Key="FieldStrokeBrush" Color="#1CFFFFFF"/>
+    <SolidColorBrush x:Key="FloatingFillBrush" Color="#F0262C3A"/>
+    <SolidColorBrush x:Key="FloatingStrokeBrush" Color="#33FFFFFF"/>
+    <SolidColorBrush x:Key="ScrimBrush" Color="#660D0F14"/>
+
+    <!-- 文字 -->
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="#F2F4F8"/>
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#B9C0CC"/>
+    <SolidColorBrush x:Key="TextTertiaryBrush" Color="#828A99"/>
+    <SolidColorBrush x:Key="TextOnAccentBrush" Color="#FFFFFF"/>
+
+    <!-- 发丝线 -->
+    <SolidColorBrush x:Key="DividerBrush" Color="#12FFFFFF"/>
+    <SolidColorBrush x:Key="DividerStrongBrush" Color="#20FFFFFF"/>
+
+    <!-- 按钮（非主按钮）：轻填充 -->
+    <SolidColorBrush x:Key="BtnFillBrush" Color="#16FFFFFF"/>
+    <SolidColorBrush x:Key="BtnFillHoverBrush" Color="#24FFFFFF"/>
+    <SolidColorBrush x:Key="BtnFillPressedBrush" Color="#0DFFFFFF"/>
+    <SolidColorBrush x:Key="BtnStrokeBrush" Color="#14FFFFFF"/>
+
+    <!-- 分段控件 -->
+    <SolidColorBrush x:Key="SegmentFillBrush" Color="#59FFFFFF"/>
+    <SolidColorBrush x:Key="SegmentItemFillBrush" Color="#F2373D4C"/>
+    <SolidColorBrush x:Key="SegmentItemStrokeBrush" Color="#1CFFFFFF"/>
+
+    <!-- 表格 -->
+    <SolidColorBrush x:Key="TableHeaderFillBrush" Color="#0DFFFFFF"/>
+    <SolidColorBrush x:Key="RowHoverFillBrush" Color="#0CFFFFFF"/>
+    <SolidColorBrush x:Key="RowSelectedFillBrush" Color="#00FFFFFF"/>
+
+    <!-- 滚动条 -->
+    <SolidColorBrush x:Key="ScrollThumbBrush" Color="#38FFFFFF"/>
+    <SolidColorBrush x:Key="ScrollThumbHoverBrush" Color="#52FFFFFF"/>
+
+    <!-- 语义色：前景 + 软底 chip + 圆点 -->
+    <SolidColorBrush x:Key="SuccessBrush" Color="#4CDB8E"/>
+    <SolidColorBrush x:Key="SuccessFillBrush" Color="#234CDB8E"/>
+    <SolidColorBrush x:Key="WarningBrush" Color="#F0B24E"/>
+    <SolidColorBrush x:Key="WarningFillBrush" Color="#26F0B24E"/>
+    <SolidColorBrush x:Key="ErrorBrush" Color="#F26D7E"/>
+    <SolidColorBrush x:Key="ErrorFillBrush" Color="#26F26D7E"/>
+    <SolidColorBrush x:Key="InfoBrush" Color="#5CAAF0"/>
+    <SolidColorBrush x:Key="InfoFillBrush" Color="#225CAAF0"/>
+    <SolidColorBrush x:Key="NeutralChipBrush" Color="#B9C0CC"/>
+    <SolidColorBrush x:Key="NeutralChipFillBrush" Color="#14FFFFFF"/>
+
+    <!-- 交互选中（内容） -->
+    <SolidColorBrush x:Key="ItemHoverFillBrush" Color="#0AFFFFFF"/>
+    <SolidColorBrush x:Key="ItemHoverStrokeBrush" Color="#22FFFFFF"/>
+
+    <!-- 阴影与光 -->
+    <Color x:Key="ShadowColor">#59000000</Color>
+    <Color x:Key="WindowShadowColor">#6B000000</Color>
+
+    <!-- 窗口红绿灯（独立窗口允许，模拟 macOS） -->
+    <SolidColorBrush x:Key="TrafficCloseBrush" Color="#FF5F57"/>
+    <SolidColorBrush x:Key="TrafficCloseStrokeBrush" Color="#E0443E"/>
+    <SolidColorBrush x:Key="TrafficMinBrush" Color="#FEBC2E"/>
+    <SolidColorBrush x:Key="TrafficMinStrokeBrush" Color="#DEA123"/>
+    <SolidColorBrush x:Key="TrafficMaxBrush" Color="#28C840"/>
+    <SolidColorBrush x:Key="TrafficMaxStrokeBrush" Color="#1BAB29"/>
+
+</ResourceDictionary>
+
+

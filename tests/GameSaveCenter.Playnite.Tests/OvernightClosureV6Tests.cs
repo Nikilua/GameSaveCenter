@@ -73,8 +73,8 @@ namespace GameSaveCenter.Playnite.Tests
             var overview = Read("Views", "OverviewView.xaml");
             Assert.Contains("<Setter Property=\"CornerRadius\" Value=\"7\"/>", redesign);
             Assert.Contains("<Setter Property=\"MinHeight\" Value=\"26\"/>", redesign);
-            Assert.Contains("Property=\"Padding\" Value=\"12,0\"", production);
-            Assert.Contains("<UniformGrid x:Name=\"OverviewStatStrip\" Grid.Row=\"1\" Columns=\"6\"", overview);
+            Assert.Contains("Property=\"Padding\" Value=\"12,8,20,8\"", production);
+            Assert.Contains("Margin=\"8,0,20,0\"", overview);
         }
 
         [Fact]

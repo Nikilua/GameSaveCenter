@@ -1,0 +1,42 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- ═══════════════ 几何标尺（主题无关） ═══════════════ -->
+    <CornerRadius x:Key="RadiusXS">6</CornerRadius>
+    <CornerRadius x:Key="RadiusS">8</CornerRadius>
+    <CornerRadius x:Key="RadiusM">10</CornerRadius>
+    <CornerRadius x:Key="RadiusL">12</CornerRadius>
+    <CornerRadius x:Key="RadiusXL">16</CornerRadius>
+    <CornerRadius x:Key="RadiusShell">20</CornerRadius>
+
+    <sys:Double x:Key="Space1">4</sys:Double>
+    <sys:Double x:Key="Space2">8</sys:Double>
+    <sys:Double x:Key="Space3">12</sys:Double>
+    <sys:Double x:Key="Space4">16</sys:Double>
+    <sys:Double x:Key="Space5">20</sys:Double>
+    <sys:Double x:Key="Space6">24</sys:Double>
+    <sys:Double x:Key="Space8">32</sys:Double>
+
+    <GridLength x:Key="SidebarWidth">236</GridLength>
+    <sys:Double x:Key="TitleBarHeight">48</sys:Double>
+    <GridLength x:Key="InspectorWidth">348</GridLength>
+    <sys:Double x:Key="ControlHeight">36</sys:Double>
+    <sys:Double x:Key="RowHeight">44</sys:Double>
+    <sys:Double x:Key="HeaderRowHeight">36</sys:Double>
+
+    <!-- ═══════════════ 字阶 ═══════════════ -->
+    <FontFamily x:Key="UiFont">Segoe UI Variable Text, Segoe UI, Microsoft YaHei UI</FontFamily>
+    <FontFamily x:Key="DisplayFont">Segoe UI Variable Display, Segoe UI, Microsoft YaHei UI</FontFamily>
+    <FontFamily x:Key="MonoFont">Cascadia Mono, Consolas, Microsoft YaHei UI</FontFamily>
+    <FontFamily x:Key="IconFont">Segoe MDL2 Assets</FontFamily>
+
+    <sys:Double x:Key="SizeDisplay">32</sys:Double>
+    <sys:Double x:Key="SizeTitle">20</sys:Double>
+    <sys:Double x:Key="SizeSection">15</sys:Double>
+    <sys:Double x:Key="SizeBody">13.5</sys:Double>
+    <sys:Double x:Key="SizeCaption">12</sys:Double>
+
+</ResourceDictionary>
+
+

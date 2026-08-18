@@ -140,7 +140,11 @@ namespace GameSaveCenter.Playnite.Controls
             {
                 var child = InternalChildren[childIndex];
                 var itemIndex = IndexFromContainer(child);
-                if (itemIndex < 0) continue;
+                // During a recycled collection reset the generator can report
+                // -1 for a container that has already been inserted into this
+                // panel. Keep the visual order usable for that layout pass;
+                // the next measure will restore the generator mapping.
+                if (itemIndex < 0) itemIndex = childIndex;
 
                 var row = itemIndex / columnCount;
                 var column = itemIndex % columnCount;
@@ -291,7 +295,10 @@ namespace GameSaveCenter.Playnite.Controls
                 var child = InternalChildren[childIndex];
                 var itemIndex = IndexFromContainer(child);
                 if (itemIndex >= firstIndex && itemIndex <= lastIndex) continue;
-                ReleaseGeneratedChild(generator, childIndex);
+                var position = itemIndex >= 0
+                    ? generator.GeneratorPositionFromIndex(itemIndex)
+                    : new GeneratorPosition(childIndex, 0);
+                ReleaseGeneratedChild(generator, position);
                 RemoveInternalChildRange(childIndex, 1);
             }
 
@@ -316,7 +323,13 @@ namespace GameSaveCenter.Playnite.Controls
                         bool newlyRealized;
                         var child = generator.GenerateNext(out newlyRealized) as UIElement;
                         if (child == null) continue;
-                        if (newlyRealized)
+                        // A collection reset can leave the generator aware of a
+                        // recycled container while it is no longer present in
+                        // this panel's visual collection. In that case the
+                        // standard newlyRealized flag is false, but the child
+                        // still has to be inserted or the panel measures as a
+                        // blank viewport after a tab switch.
+                        if (newlyRealized || !InternalChildren.Contains(child))
                         {
                             insertionIndex = Math.Max(0, Math.Min(insertionIndex, InternalChildren.Count));
                             InsertInternalChild(insertionIndex, child);
@@ -363,14 +376,17 @@ namespace GameSaveCenter.Playnite.Controls
             }
             for (var childIndex = InternalChildren.Count - 1; childIndex >= 0; childIndex--)
             {
-                ReleaseGeneratedChild(generator, childIndex);
+                var itemIndex = IndexFromContainer(InternalChildren[childIndex]);
+                var position = itemIndex >= 0
+                    ? generator.GeneratorPositionFromIndex(itemIndex)
+                    : new GeneratorPosition(childIndex, 0);
+                ReleaseGeneratedChild(generator, position);
                 RemoveInternalChildRange(childIndex, 1);
             }
         }
 
-        private static void ReleaseGeneratedChild(IItemContainerGenerator generator, int childIndex)
+        private static void ReleaseGeneratedChild(IItemContainerGenerator generator, GeneratorPosition position)
         {
-            var position = new GeneratorPosition(childIndex, 0);
             try
             {
                 if (generator is IRecyclingItemContainerGenerator recycling)

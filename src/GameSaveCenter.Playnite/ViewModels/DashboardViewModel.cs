@@ -1211,7 +1211,17 @@ namespace GameSaveCenter.Playnite.ViewModels
                 Replace(Activities, data.RecentActivities.Take(12), SnapshotComparers.Activity);
                 RebuildTaskFilters();
                 SelectedTask = Tasks.FirstOrDefault(x => x.TaskId == selectedTaskId) ?? Tasks.FirstOrDefault();
+                var previousFindingPlayniteId = SelectedFinding?.PlayniteId;
+                var previousFindingCode = SelectedFinding?.Code;
+                var previousFindingTitle = SelectedFinding?.Title;
                 Replace(Findings, data.Findings, SnapshotComparers.Finding);
+                SelectedFinding = Findings.FirstOrDefault(x =>
+                        !string.IsNullOrWhiteSpace(previousFindingCode)
+                        && string.Equals(x.PlayniteId, previousFindingPlayniteId, StringComparison.OrdinalIgnoreCase)
+                        && string.Equals(x.Code, previousFindingCode, StringComparison.OrdinalIgnoreCase)
+                        && string.Equals(x.Title, previousFindingTitle, StringComparison.Ordinal))
+                    ?? Findings.FirstOrDefault(x => x.Severity >= FindingSeverity.Warning)
+                    ?? Findings.FirstOrDefault();
                 Replace(AttentionFindings, data.Findings.Where(x => x.Severity >= FindingSeverity.Warning).Take(4), SnapshotComparers.Finding);
                 Replace(Audit, data.RecentAudit, SnapshotComparers.Audit);
                 StatusMessage = data.WorkerHealthy
