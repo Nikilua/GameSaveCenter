@@ -55,6 +55,21 @@ public sealed class RestoredAcrylicForkBaselineTests
         Assert.Contains("Property=\"Foreground\" Value=\"{DynamicResource GscSelectionTextBrush}\"", media);
     }
 
+    [Fact]
+    public void OverviewAttentionFindingsUseASeparateBoundedProjectScrollSurface()
+    {
+        var overview = ReadSource("Views", "OverviewView.xaml");
+
+        Assert.Contains("x:Name=\"OverviewAttentionScrollViewer\"", overview);
+        Assert.Contains("Style=\"{DynamicResource GscPageScrollViewer}\"", overview);
+        Assert.Contains("MaxHeight=\"190\"", overview);
+        Assert.Contains("VerticalScrollBarVisibility=\"Auto\"", overview);
+        Assert.Contains("HorizontalScrollBarVisibility=\"Disabled\"", overview);
+        Assert.Contains("ItemsSource=\"{Binding AttentionFindings}\"", overview);
+        Assert.Contains("x:Name=\"OverviewProtectionItemsScrollViewer\"", overview);
+        Assert.Contains("ItemsSource=\"{Binding RecentProtection.Items}\"", overview);
+    }
+
     private static string ReadSource(params string[] relativePath)
     {
         var directory = new DirectoryInfo(Directory.GetCurrentDirectory());

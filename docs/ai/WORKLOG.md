@@ -2,6 +2,20 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-18 UI-225 首页风险列表有限视口
+
+**实现内容：**
+
+- 首页“风险与提醒”保留标题、安全恢复提示、摘要和操作按钮在外层卡片中；可能随数据增长的风险原因列表改为独立的 `ScrollViewer`，最大高度 190 DIP，竖向自动滚动、横向禁用。
+- 展开的“最近游戏保护明细”也使用独立的 190 DIP 列表视口，避免 `RecentProtection.Items` 把右栏或首页根页面无限撑高。生产数据本身仍按现有 ViewModel/服务上限展示，不改变风险计数、选择、命令和安全语义。
+- 两个列表都继续使用生产 `GscPageScrollViewer`，没有引入 AcrylicFork 演示滚动条；页面根滚动面仍负责跨区内容，列表视口只负责自身溢出。
+
+**验证结果：**
+
+- `validate-source.py`、WPF UI 校验（0 errors）和 `git diff --check` 通过；WPF 校验仅报告项目已有的 StackPanel/主题资源提示。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/overview-risk-bounded-v2` 通过，双主题、多尺寸、响应式缩放和构建均完成，结果为 `render-qa OK`。
+- 相关结构回归测试已加入，测试运行器本轮再次无输出挂起并被中止，因此不把该次定向测试报告为通过；RenderHarness 构建和渲染验证通过。
+
 ## 2026-08-18 UI-224 首页徽标模板与 Demo 行密度修正
 
 **本轮修正：**

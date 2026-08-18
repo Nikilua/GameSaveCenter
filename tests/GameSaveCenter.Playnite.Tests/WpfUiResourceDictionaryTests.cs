@@ -3428,6 +3428,47 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.True(opened);
     }
 
+    [Fact]
+    public void MediaInspectorReturnsWhenWideLayoutIsRestoredAfterCompactResize()
+    {
+        Exception? exception = null;
+        var restored = false;
+        var restoredWidth = 0d;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var view = new MediaCenterView();
+                var viewType = typeof(MediaCenterView);
+                var list = (ListBox)viewType.GetField("MediaGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var layout = (Grid)viewType.GetField("MediaCurrentLayout", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var selected = new object();
+                list.ItemsSource = new[] { selected };
+                list.SelectedItem = selected;
+
+                view.ApplyResponsiveLayout(1200, 720);
+                view.ApplyResponsiveLayout(804, 480);
+                view.ApplyResponsiveLayout(1200, 720);
+
+                restored = view.MediaInspectorScrollViewerElement.Visibility == Visibility.Visible;
+                restoredWidth = layout.ColumnDefinitions[2].Width.Value;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.True(restored);
+        Assert.True(restoredWidth > 0);
+    }
+
     [LegacyProductionUiBaselineFact]
     public void MaintenanceDeviceCompactInspectorTogglesToUsableHeight()
     {

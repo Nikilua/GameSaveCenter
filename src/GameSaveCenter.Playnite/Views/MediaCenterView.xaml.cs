@@ -90,6 +90,12 @@ namespace GameSaveCenter.Playnite.Views
                 else
                 {
                     MediaCompactDetailsButton.Visibility = Visibility.Collapsed;
+                    // A compact layout temporarily collapses the inspector to make room
+                    // for the list. When the host grows back to the wide layout, restore
+                    // the inspector for the still-selected media item instead of leaving
+                    // the right column permanently measured as 0x0.
+                    if (MediaGrid.SelectedItem != null)
+                        MediaInspectorScrollViewer.Visibility = Visibility.Visible;
                 }
                 var showInspector = MediaInspectorScrollViewer.Visibility == Visibility.Visible;
                 var inspectorWidth = MediaCurrentLayout.TryFindResource("GscInspectorWidth") is GridLength gl ? gl : new GridLength(360);

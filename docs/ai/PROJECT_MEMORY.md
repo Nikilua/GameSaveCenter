@@ -18,6 +18,13 @@
 - 当前验证基线：source 校验通过，隔离 Release 构建通过，包生成/安装通过，WPF 校验 0 error；Worker 仍有 2 个集成测试失败，Render QA 有 2 个媒体 resize 恢复用例待修，不能写成全量验证通过。
 - 真实宿主本阶段只对首页重点区域做了截图复核；其他页面仍需按页面逐一进入 Playnite 对照 Demo，最终交付必须区分“实际宿主复核”和“RenderHarness/源码验证”。
 
+## 2026-08-18 UI-225 当前事实：首页风险列表必须使用有限视口
+
+- 首页“风险与提醒”中，`AttentionFindings` 和展开的 `RecentProtection.Items` 都不能直接让右栏 `StackPanel` 无限测量；页面使用两个独立的 190 DIP `ScrollViewer`，分别命名为 `OverviewAttentionScrollViewer` 和 `OverviewProtectionItemsScrollViewer`。
+- 两个内部滚动面均引用生产 `GscPageScrollViewer`，竖向 `Auto`、横向 `Disabled`；风险卡标题、恢复提示、摘要和“打开维护中心”等操作不在内部列表视口内，始终可见。
+- `DashboardViewModel` 仍把首页风险原因限制为前 4 项，`RecentProtectionSummary` 仍把保护明细限制为前 6 项；XAML 的有限视口是防止未来数据契约放宽或展开内容增长时撑高首页的第二道布局保护，不改变业务计数和完整详情入口。
+- 本阶段 RenderHarness 构建、双主题多尺寸及 resize 通过；定向 Playnite 测试运行器再次无输出挂起，不能把该次测试写成通过。真实 Playnite 嵌入像素仍需单独人工验收。
+
 ## 2026-08-18 UI-224 当前事实：首页徽标模板与 Demo 行密度
 
 - `ChipBase` 模板必须把 `HorizontalContentAlignment`/`VerticalContentAlignment` 传给内部 `ContentPresenter`；仅给外层控件设置对齐属性不够。
