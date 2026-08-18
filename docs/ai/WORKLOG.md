@@ -2575,3 +2575,28 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 **验证边界：**
 
 - 本阶段没有把 RenderHarness PNG 当作 Playnite 真机截图；真实宿主视觉仍需在 Computer Use 能识别 Playnite 窗口后复核。
+
+## 2026-08-18 UI-228 跨电脑构建与 Playnite 加载修复
+
+**触发问题：**
+
+- 另一台电脑的日志显示 Playnite 契约测试 303 项中有 61 项失败，失败集中在首页、存档、媒体、任务和维护页面的旧源码标记；当时远端最新提交仍是 `6859782`，本轮页面迁移尚未进入远端，因此该电脑拿到的是与测试契约不匹配的旧生产页面，不是本轮同一工作树的测试结果。
+- 本机真实 Playnite 曾因 XAML 静态类型引用 `GameSaveCenter.Contracts` 在扩展目录中解析失败，进入界面暂时无法加载页。
+
+**实现内容：**
+
+- 六个生产页面已按 AcrylicFork 页面结构迁移，保留真实 ViewModel、Binding、Command、数据契约、虚拟化和项目自身滚动条；Demo 顶部颜色按钮没有迁移。
+- `TrainerCenterView.xaml`、`MediaCenterView.xaml` 的 `x:Static` 枚举值改用 `GameSaveCenter.Playnite.XamlValues` 本地适配类型，避免 Playnite BAML 加载时解析 `GameSaveCenter.Contracts` 失败。
+- 共享 DataGrid 单元格间距改为 `12,8,20,8`，表头/行高和主题令牌与当前页面结构保持一致。
+
+**验证结果：**
+
+- `scripts/build.ps1 -Configuration Release -OutputRoot .tmp/ui-contracts-fix-full`：Core 59/59、Worker 191/191、Playnite 303/303，共 553/553；编译 0 warning / 0 error。
+- `scripts/validate-source.py`、`validate_wpf_ui.py`：通过，WPF 校验 0 error。
+- 当前 `scripts/render-qa.ps1` 输出 `.tmp/ui-contracts-fix-qa`：`render-qa OK`。
+- 一键安装、包体版本和安装目录校验通过；实际 Playnite 已打开 GameSaveCenter 页面，页面未再进入加载失败回退页。
+- `extensions.log` 中 18:15:32 的 XamlParseException 是旧安装历史记录；18:41:29 新 DLL 加载、18:46:34/18:47:45 页面打开后没有新增同类错误，不能把历史记录误报为当前失败。
+
+**交付边界：**
+
+- 本阶段修改需要提交并推送后，其他电脑再同步新提交；在同步前运行旧提交的测试，仍会得到上述 61 项源码契约失败。

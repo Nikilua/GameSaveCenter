@@ -96,10 +96,7 @@ namespace GameSaveCenter.Playnite.Views
             // At the demo minimum the measured workspace is about 700 DIP. Two health
             // cards per row preserve the six-card summary without pushing diagnostics
             // below an unnecessarily tall single-column block.
-            // The Demo uses four compact health cards per row at the normal 1040-DIP
-            // workspace width. Keep the production overview on that same rhythm;
-            // only compact windows collapse to two or one column.
-            DiagnosticHealthPanel.Columns = width >= 980 ? 4 : width >= 680 ? 2 : 1;
+            DiagnosticHealthPanel.Columns = width >= 980 ? 3 : width >= 680 ? 2 : 1;
             var inspectorWidth = MaintenanceDiagnosticsLayout.TryFindResource("GscInspectorWidth") is GridLength gl ? gl : new GridLength(360);
             // Health cards remain useful context even in compact windows. Grid star rows keep
             // diagnostics tables finite while their own controls handle overflow.
@@ -132,58 +129,13 @@ namespace GameSaveCenter.Playnite.Views
                 MaintenanceDeviceGrid.MinHeight = 280;
                 MaintenanceProcessGrid.MinHeight = 280;
             }
-            var compact = width < 980;
+            var compact = height < 760 || width < 980;
             // The retention page is a left-aligned reading form capped at 1050.
             // Give the StackPanel an explicit viewport width so the cards fill
             // the form instead of collapsing to their content width, mirroring
             // the SaveCenter policy page. The 4 is the right padding of
             // GscPageScrollViewer.
             MaintenanceRetentionStack.Width = Math.Max(0, Math.Min(width - 4, 1050));
-            var stackRetentionDemoTop = width < 720;
-            MaintenanceRetentionDemoTopLayout.Width = stackRetentionDemoTop
-                ? MaintenanceRetentionStack.Width
-                : Math.Min(874, MaintenanceRetentionStack.Width);
-            MaintenanceRetentionDemoTopLayout.ColumnDefinitions[1].Width = stackRetentionDemoTop
-                ? new GridLength(0)
-                : new GridLength(14);
-            MaintenanceRetentionDemoTopLayout.ColumnDefinitions[2].Width = stackRetentionDemoTop
-                ? new GridLength(0)
-                : new GridLength(1, GridUnitType.Star);
-            MaintenanceRetentionDemoTopLayout.RowDefinitions[1].Height = stackRetentionDemoTop
-                ? new GridLength(1, GridUnitType.Auto)
-                : new GridLength(0);
-            Grid.SetColumn(MaintenanceRetentionDemoTopLayout.Children[1], stackRetentionDemoTop ? 0 : 2);
-            Grid.SetRow(MaintenanceRetentionDemoTopLayout.Children[1], stackRetentionDemoTop ? 1 : 0);
-            var stackRetentionDemoOperations = width < 980;
-            MaintenanceRetentionDemoOperationsLayout.Width = stackRetentionDemoOperations
-                ? MaintenanceRetentionStack.Width
-                : Math.Min(1018, MaintenanceRetentionStack.Width);
-            MaintenanceRetentionDemoOperationsLayout.ColumnDefinitions[1].Width = stackRetentionDemoOperations
-                ? new GridLength(0)
-                : new GridLength(14);
-            MaintenanceRetentionDemoOperationsLayout.ColumnDefinitions[3].Width = stackRetentionDemoOperations
-                ? new GridLength(0)
-                : new GridLength(14);
-            MaintenanceRetentionDemoOperationsLayout.ColumnDefinitions[2].Width = stackRetentionDemoOperations
-                ? new GridLength(0)
-                : new GridLength(1, GridUnitType.Star);
-            MaintenanceRetentionDemoOperationsLayout.ColumnDefinitions[4].Width = stackRetentionDemoOperations
-                ? new GridLength(0)
-                : new GridLength(1, GridUnitType.Star);
-            for (var row = 1; row < MaintenanceRetentionDemoOperationsLayout.RowDefinitions.Count; row++)
-                MaintenanceRetentionDemoOperationsLayout.RowDefinitions[row].Height = stackRetentionDemoOperations
-                    ? new GridLength(1, GridUnitType.Auto)
-                    : new GridLength(0);
-            if (MaintenanceRetentionDemoOperationsLayout.Children.Count >= 3)
-            {
-                Grid.SetColumn(MaintenanceRetentionDemoOperationsLayout.Children[1], stackRetentionDemoOperations ? 0 : 2);
-                Grid.SetColumn(MaintenanceRetentionDemoOperationsLayout.Children[2], stackRetentionDemoOperations ? 0 : 4);
-                Grid.SetRow(MaintenanceRetentionDemoOperationsLayout.Children[1], stackRetentionDemoOperations ? 1 : 0);
-                Grid.SetRow(MaintenanceRetentionDemoOperationsLayout.Children[2], stackRetentionDemoOperations ? 2 : 0);
-            }
-            MaintenanceRetentionDemoMetrics.Columns = width >= 720 ? 3 : width >= 480 ? 2 : 1;
-            MaintenanceStorageDemoMetrics.Columns = width >= 720 ? 3 : 1;
-            MaintenanceRetentionDemoSimulationMetrics.Columns = width >= 720 ? 2 : 1;
             MaintenanceRetentionMetrics.Columns = width >= 720 ? 3 : width >= 480 ? 2 : 1;
             MaintenanceStorageMetrics.Columns = width >= 900 ? 4 : width >= 620 ? 2 : 1;
             MaintenanceStorageTrendPanel.Columns = width >= 720 ? 3 : 1;
@@ -219,11 +171,7 @@ namespace GameSaveCenter.Playnite.Views
             // room for readable game/title/detail/action columns.  At common 1280-DIP and
             // high-DPI sizes the inspector must stack instead of forcing ellipses into every
             // column and exposing the host's white fallback header surface.
-            // The shell's content width is smaller than the outer Playnite window
-            // because the sidebar is already accounted for. Keep the Demo's two-column
-            // findings/inspector composition at normal desktop widths and stack only
-            // below the documented compact breakpoint.
-            var stackDiagnostics = width < 980;
+            var stackDiagnostics = width < 1120;
             var showDiagnosticsInspector = MaintenanceDiagnosticsInspector.Visibility == Visibility.Visible;
             var diagnosticsSideBySide = showDiagnosticsInspector && !stackDiagnostics;
             MaintenanceDiagnosticsLayout.ColumnDefinitions[1].Width = diagnosticsSideBySide ? new GridLength(14) : new GridLength(0);
@@ -239,7 +187,7 @@ namespace GameSaveCenter.Playnite.Views
             // summary strip stays below the table. In stacked mode both share a finite
             // vertical budget so the findings table keeps the remaining rows.
             MaintenanceDiagnosticsInspector.MaxHeight = showDiagnosticsInspector && stackDiagnostics ? Math.Max(150, height * 0.34) : double.PositiveInfinity;
-            var stackProcess = width < 980;
+            var stackProcess = width < 1040;
             var showProcessInspector = MaintenanceProcessInspector.Visibility == Visibility.Visible;
             var processSideBySide = showProcessInspector && !stackProcess;
             MaintenanceProcessLayout.ColumnDefinitions[1].Width = processSideBySide ? new GridLength(14) : new GridLength(0);
@@ -270,11 +218,7 @@ namespace GameSaveCenter.Playnite.Views
             Grid.SetRow(ProcessMappingTargetGameComboBox, stackProcessEditor ? 1 : 0);
             Grid.SetColumn(ProcessMappingSaveButton, 4);
             Grid.SetRow(ProcessMappingSaveButton, stackProcessEditor ? 1 : 0);
-            // The Demo keeps the device comparison table and conflict inspector in
-            // separate columns at normal desktop widths. The Playnite shell leaves
-            // less content width than its outer window, so 980 DIP is the compact
-            // breakpoint used by the other page-level inspectors.
-            var stackDevice = width < 980;
+            var stackDevice = width < 1180;
             if (stackDevice)
             {
                 var hasDeviceSelection = MaintenanceDeviceGrid.SelectedItem != null;
@@ -297,15 +241,13 @@ namespace GameSaveCenter.Playnite.Views
             else
             {
                 MaintenanceDeviceCompactDetailsButton.Visibility = Visibility.Collapsed;
-                // Keep the inspector column in the desktop composition even when
-                // the live Worker has not produced comparison rows yet. Hiding it
-                // here caused the table to expand to full width and made the empty
-                // production state structurally different from the Demo.
-                MaintenanceDeviceInspectorScrollViewer.Visibility = Visibility.Visible;
+                MaintenanceDeviceInspectorScrollViewer.Visibility = MaintenanceDeviceGrid.SelectedItem != null
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
             }
             var showDeviceInspector = MaintenanceDeviceInspectorScrollViewer.Visibility == Visibility.Visible;
-            MaintenanceDeviceLayout.ColumnDefinitions[1].Width = !stackDevice ? new GridLength(14) : new GridLength(0);
-            MaintenanceDeviceLayout.ColumnDefinitions[2].Width = !stackDevice ? inspectorWidth : new GridLength(0);
+            MaintenanceDeviceLayout.ColumnDefinitions[1].Width = showDeviceInspector && !stackDevice ? new GridLength(14) : new GridLength(0);
+            MaintenanceDeviceLayout.ColumnDefinitions[2].Width = showDeviceInspector && !stackDevice ? inspectorWidth : new GridLength(0);
             MaintenanceDeviceLayout.RowDefinitions[3].Height = stackDevice ? new GridLength(1, GridUnitType.Auto) : new GridLength(0);
             Grid.SetColumn(MaintenanceDeviceInspectorScrollViewer, stackDevice ? 0 : 2);
             Grid.SetColumnSpan(MaintenanceDeviceInspectorScrollViewer, stackDevice ? 3 : 1);
@@ -330,7 +272,7 @@ namespace GameSaveCenter.Playnite.Views
                 ? deviceInspectorHeight
                 : double.PositiveInfinity;
 
-            var stackAudit = width < 980;
+            var stackAudit = width < 1120 || height < 700;
             var showAuditInspector = MaintenanceAuditInspector.Visibility == Visibility.Visible;
             var auditSideBySide = showAuditInspector && !stackAudit;
             MaintenanceAuditLayout.ColumnDefinitions[1].Width = auditSideBySide ? new GridLength(14) : new GridLength(0);

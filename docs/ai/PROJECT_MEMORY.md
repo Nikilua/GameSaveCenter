@@ -721,3 +721,11 @@
 - 媒体中心顶部模式栏已从 `SegmentFillBrush` 的灰色透明条切换为生产深色 `MediaModeStrip`，复用 `GscControlFillBrush`、`GscControlStrokeBrush` 和紫色 `GscAccentTintBrush` 选中态。
 - RadioButton 的三种模式、真实数据绑定、命令和项目自身滚动条没有改变；本次只修正页面级 Tab 承载样式。
 - Release 构建与静态检查通过；RenderHarness 的媒体深色截图已确认颜色层级变化，但 Media resize recovery 的两项既有失败仍未解决，真实 Playnite 截图仍待可识别宿主窗口后复核。
+
+## 2026-08-18 UI-228 跨电脑构建与 Playnite 加载事实
+
+- 另一台电脑的 61 项 Playnite 测试失败来自旧远端提交 `6859782` 与页面源码测试契约不匹配；本轮页面迁移尚未推送前，不能把该结果当成当前工作树的回归结论。当前本机同一工作树的 Playnite 测试为 303/303。
+- 六个生产页面已采用 AcrylicFork 的页面结构，生产 Shell、真实 Binding/Command/ViewModel、项目滚动条和业务安全语义仍保留；Demo 顶部主题圆点按钮不迁移。
+- `TrainerCenterView.xaml` 和 `MediaCenterView.xaml` 的静态枚举引用通过 `GameSaveCenter.Playnite.XamlValues` 本地适配层解析，避免 Playnite 扩展目录中对 `GameSaveCenter.Contracts` 的 BAML 解析错误。
+- 本机标准 Release 构建为 553/553、0 warning/0 error；源码校验和 WPF 校验无 error；当前 RenderHarness 输出为 `render-qa OK`；一键安装后实际 Playnite 页面已成功打开。
+- `extensions.log` 仍保留旧安装的 XamlParseException 历史行，但新 DLL 加载和页面打开之后没有新增同类错误。后续跨电脑验证必须先确认 `git log -1` 已包含本条目对应的新提交，再执行构建和安装。

@@ -39,7 +39,7 @@ namespace GameSaveCenter.Playnite.Views
                 // inspector stacks below it, reserve a readable table viewport and
                 // let only the inspector consume the remaining finite height.
                 const double tableMinHeight = 236d;
-                var stack = width < 980;
+                var stack = width < 1200;
                 TaskGrid.MinHeight = tableMinHeight;
                 TaskGrid.Height = double.NaN;
                 TaskGrid.MaxHeight = double.PositiveInfinity;
@@ -60,47 +60,26 @@ namespace GameSaveCenter.Playnite.Views
                 // genuinely narrow pane stacks the three commands vertically.
                 TaskDetailActions.Orientation = width < 520 ? Orientation.Vertical : Orientation.Horizontal;
 
-                // The primary toolbar is a finite Grid rather than a WrapPanel. The
-                // game selector is intentionally kept in the optional disclosure so
-                // the four primary controls never reflow into each other.
-                var compactFilters = width < 760;
-                TaskMoreFiltersExpander.Visibility = compactFilters ? Visibility.Visible : Visibility.Collapsed;
-                TaskFiltersPanel.RowDefinitions[1].Height = compactFilters
-                    ? new GridLength(1, GridUnitType.Auto)
-                    : new GridLength(0);
-                Grid.SetRow(TaskSearchLabel, 0);
-                Grid.SetColumn(TaskSearchLabel, 0);
-                Grid.SetRow(TaskSearchTextBox, 0);
-                Grid.SetColumn(TaskSearchTextBox, 1);
-                Grid.SetRow(TaskStatusFilterLabel, compactFilters ? 1 : 0);
-                Grid.SetColumn(TaskStatusFilterLabel, compactFilters ? 0 : 2);
-                Grid.SetRow(TaskStatusFilterComboBox, compactFilters ? 1 : 0);
-                Grid.SetColumn(TaskStatusFilterComboBox, compactFilters ? 1 : 3);
-                Grid.SetRow(TaskTypeFilterLabel, compactFilters ? 1 : 0);
-                Grid.SetColumn(TaskTypeFilterLabel, compactFilters ? 2 : 4);
-                Grid.SetRow(TaskTypeFilterComboBox, compactFilters ? 1 : 0);
-                Grid.SetColumn(TaskTypeFilterComboBox, compactFilters ? 3 : 5);
-                Grid.SetRow(TaskRefreshButton, compactFilters ? 1 : 0);
-                Grid.SetColumn(TaskRefreshButton, compactFilters ? 4 : 6);
-
-                // Give the common desktop width a stable rhythm like the Demo's
-                // search/status/type toolbar.  The old WrapPanel relied on each
-                // control's theme default width, which made the search box collapse
-                // to a sliver in the real Playnite host even though no elements
-                // technically overlapped.
-                if (width >= 980)
+                // Responsive move: the game filter is a secondary filter on compact panes.
+                // It lives in "更多筛选" there, and moves back to the primary row on wide hosts.
+                var moveGameFilter = width < 760;
+                if (moveGameFilter)
                 {
-                    TaskSearchTextBox.Width = width >= 1200 ? 260 : 220;
-                    TaskStatusFilterComboBox.Width = 140;
-                    TaskTypeFilterComboBox.Width = 140;
-                    TaskGameFilterComboBox.Width = 180;
+                    if (!TaskMoreFiltersHost.Children.Contains(TaskGameFilterComboBox))
+                    {
+                        TaskFiltersPanel.Children.Remove(TaskGameFilterComboBox);
+                        TaskMoreFiltersHost.Children.Add(TaskGameFilterComboBox);
+                    }
+                    TaskMoreFiltersExpander.Visibility = Visibility.Visible;
                 }
                 else
                 {
-                    TaskSearchTextBox.Width = double.NaN;
-                    TaskStatusFilterComboBox.Width = double.NaN;
-                    TaskTypeFilterComboBox.Width = double.NaN;
-                    TaskGameFilterComboBox.Width = double.NaN;
+                    if (!TaskFiltersPanel.Children.Contains(TaskGameFilterComboBox))
+                    {
+                        TaskMoreFiltersHost.Children.Remove(TaskGameFilterComboBox);
+                        TaskFiltersPanel.Children.Add(TaskGameFilterComboBox);
+                    }
+                    TaskMoreFiltersExpander.Visibility = Visibility.Collapsed;
                 }
 
                 // Match the demo's task workspace: the queue remains the primary
@@ -136,12 +115,12 @@ namespace GameSaveCenter.Playnite.Views
                 var inspectorWidth = TaskWorkspaceLayout.TryFindResource("GscInspectorWidth") is GridLength gl ? gl : new GridLength(360);
                 TaskWorkspaceLayout.ColumnDefinitions[1].Width = showInspector && !stack ? new GridLength(14) : new GridLength(0);
                 TaskWorkspaceLayout.ColumnDefinitions[2].Width = showInspector && !stack ? inspectorWidth : new GridLength(0);
-                TaskWorkspaceLayout.RowDefinitions[4].Height = showInspector && stack
+                TaskWorkspaceLayout.RowDefinitions[3].Height = showInspector && stack
                     ? new GridLength(1, GridUnitType.Auto)
                     : new GridLength(0);
                 Grid.SetColumn(TaskDetailScrollViewer, stack ? 0 : 2);
                 Grid.SetColumnSpan(TaskDetailScrollViewer, stack ? 3 : 1);
-                Grid.SetRow(TaskDetailScrollViewer, stack ? 4 : 3);
+                Grid.SetRow(TaskDetailScrollViewer, stack ? 3 : 2);
                 TaskDetailScrollViewer.Margin = showInspector && stack ? new Thickness(0, 10, 0, 0) : new Thickness(0);
                 var viewportHeight = TaskPageScrollSurface.ActualHeight > 0
                     ? TaskPageScrollSurface.ActualHeight
@@ -149,8 +128,7 @@ namespace GameSaveCenter.Playnite.Views
                 var workspaceHeight = viewportHeight > 0
                     ? viewportHeight
                         - TaskSummaryPanel.ActualHeight
-                        - TaskFilterBar.ActualHeight
-                        - TaskMoreFiltersExpander.ActualHeight
+                        - TaskQueuePanel.ActualHeight
                     : Math.Max(320, height - 200);
                 // A 96-DIP strip below the queue was too small to read task details at the
                 // demo-minimum and common 1366-DIP windows. Keep the finite cap so the
