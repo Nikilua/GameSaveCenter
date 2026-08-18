@@ -226,6 +226,7 @@ namespace GameSaveCenter.Playnite.Views
             var stackDiagnostics = width < 980;
             var showDiagnosticsInspector = MaintenanceDiagnosticsInspector.Visibility == Visibility.Visible;
             var diagnosticsSideBySide = showDiagnosticsInspector && !stackDiagnostics;
+            ApplyFindingsColumnLayout(width);
             MaintenanceDiagnosticsLayout.ColumnDefinitions[1].Width = diagnosticsSideBySide ? new GridLength(14) : new GridLength(0);
             MaintenanceDiagnosticsLayout.ColumnDefinitions[2].Width = diagnosticsSideBySide ? inspectorWidth : new GridLength(0);
             // The full diagnostic summary owns row 1 as an always-visible full-width strip;
@@ -355,6 +356,45 @@ namespace GameSaveCenter.Playnite.Views
             {
                 isApplyingLayout = false;
             }
+        }
+
+        private void ApplyFindingsColumnLayout(double width)
+        {
+            // At 1040 DIP the fixed inspector leaves a compact but usable findings
+            // table. Reduce only the non-essential fixed columns in that range; the
+            // detail/action columns remain star-sized and continue to ellipsize with
+            // a tooltip. Wide windows retain the Demo's more generous proportions.
+            ApplyFindingsColumnLayout(FindingsGrid, width, audit: false);
+            ApplyFindingsColumnLayout(MaintenanceAuditFindingsGrid, width, audit: true);
+        }
+
+        private static void ApplyFindingsColumnLayout(DataGrid grid, double width, bool audit)
+        {
+            if (grid.Columns.Count == 0)
+                return;
+
+            var compact = width < 1180;
+            if (audit)
+            {
+                if (grid.Columns.Count < 4)
+                    return;
+
+                grid.Columns[0].Width = compact ? new DataGridLength(84) : new DataGridLength(92);
+                grid.Columns[1].Width = compact ? new DataGridLength(110) : new DataGridLength(180);
+                grid.Columns[2].Width = compact ? new DataGridLength(128) : new DataGridLength(190);
+                grid.Columns[3].MinWidth = compact ? 160 : 320;
+                return;
+            }
+
+            if (grid.Columns.Count < 5)
+                return;
+
+            grid.Columns[0].Width = compact ? new DataGridLength(84) : new DataGridLength(92);
+            grid.Columns[1].Width = compact ? new DataGridLength(100) : new DataGridLength(120);
+            grid.Columns[2].Width = compact ? new DataGridLength(118) : new DataGridLength(160);
+            grid.Columns[3].MinWidth = compact ? 110 : 180;
+            grid.Columns[4].Width = new DataGridLength(compact ? 1 : 0.75, DataGridLengthUnitType.Star);
+            grid.Columns[4].MinWidth = compact ? 110 : 140;
         }
 
         private static T? FindVisualChild<T>(DependencyObject? parent) where T : DependencyObject

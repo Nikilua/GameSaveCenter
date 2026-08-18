@@ -2,6 +2,20 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-19 UI-226 维护表格中等宽度列布局
+
+**问题与修正：**
+
+- 维护中心在 1040 DIP 工作区保留右侧 Inspector 时，发现问题表格的固定列与最小列宽总和超过剩余宽度，导致“建议处理”列被挤压或只剩不可读的窄条。
+- 新增维护诊断/审计表格的响应式列宽策略：中等宽度收窄游戏、标题和建议处理列，详情与动作列继续使用弹性宽度；宽屏恢复接近 Demo 的列级比例。
+- 所有维护长文本单元格统一左对齐、垂直居中、字符省略，并保留 Tooltip 查看完整内容；没有改变 Binding、选中项、Inspector 或业务命令。
+
+**验证结果：**
+
+- RenderHarness Release 构建通过，`render-qa OK`；1040/1100/1366/2560、浅色/深色、resize、滚动和维护诊断/审计表格探针均通过。
+- `scripts/validate-source.py`、WPF UI 校验（0 errors）和 `git diff --check` 通过；校验中的 StackPanel/主题资源提示为既有提示。
+- 直接执行 `dotnet build --no-restore` 仍受当前机器仅安装 .NET SDK 9.0.302 且缺少 Workload locator 目录影响，出现 MSB4276；本轮采用项目已有 RenderHarness 脚本的 `MSBuildEnableWorkloadResolver=false` 路径完成实际 WPF 构建和渲染验证。
+
 ## 2026-08-18 WORKER-001 完整性检查忽略未配置的可选目录
 
 **问题与修正：**

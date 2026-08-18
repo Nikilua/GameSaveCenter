@@ -183,9 +183,10 @@ namespace GameSaveCenter.Playnite.Views
 
         public void ApplyResponsiveHeight(double height, bool stack)
         {
-            // Visual Correction v2: the root page scroll surface is the only vertical
-            // scroll owner in every layout. Primary/secondary columns and the risk card
-            // grow naturally; none of them may create a competing wheel context.
+            // The root page scroll surface owns cross-section overflow. The risk card
+            // is intentionally bounded, and its long findings/protection lists own
+            // only their local overflow so a large data set cannot grow the homepage
+            // without limit or cover the controls below it.
             OverviewStackScrollSurface.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
         }
     }

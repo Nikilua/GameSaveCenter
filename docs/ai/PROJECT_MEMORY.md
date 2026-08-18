@@ -9,6 +9,13 @@
 - 旧阶段条目继续保留用于追溯当时的迁移决策，但它们不应阻止新的页面方案。新设计默认继续保护真实命令、Binding、数据契约、错误/取消/安全语义、可访问性、列表性能和 Playnite 兼容性；如果设计需要改变这些内容，必须在当前任务中明确并验证，而不是因为历史实现而回避布局或控件重构。
 - 本段是当前方向声明，优先于下方 2026-08-17 之前的页面迁移偏好；后续每个独立 UI 阶段都要更新本段对应的当前事实和 `docs/ai/WORKLOG.md`。
 
+## 2026-08-19 UI-226 当前事实：维护表格需按工作区宽度压缩固定列
+
+- 维护诊断和异常审计页面在右侧 Inspector 可见时，1040 DIP 工作区的主表格只有约 660 DIP，不能直接沿用宽屏的游戏/标题/详情/动作最小宽度。
+- `MaintenanceView.ApplyFindingsColumnLayout` 现在在 1180 DIP 以下压缩非必要固定列，保留详情和建议处理的弹性列；1366 及以上恢复更宽的 Demo 比例。长文本单元格统一字符省略并提供 Tooltip。
+- 这只是视口布局策略，不改变真实 Findings、SelectedFinding、Inspector 或命令；维护表格仍使用项目现有 DataGrid、虚拟化和滚动条。
+- 当前验证：RenderHarness Release `render-qa OK`，source/WPF 校验和 `git diff --check` 通过。直接 `dotnet build --no-restore` 的 MSB4276 是本机 SDK 9.0.302 缺少 Workload locator 的环境限制，后续优先使用仓库脚本的禁用 Workload resolver 构建路径或补齐 SDK 环境。
+
 ## 2026-08-18 当前构建事实：可选目录未配置不应阻断健康检查
 
 - `IntegrityCheckService.CheckDirectory` 对空的可选目录按未启用处理；只有用户配置了路径后，该路径不存在或不可写才报告 Warning。关键目录的空路径仍按原有关键错误语义处理。
