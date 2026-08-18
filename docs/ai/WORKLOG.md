@@ -2560,9 +2560,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 
 **实现内容：**
 
-- `MediaCenterView.xaml` 新增 `MediaModeStrip`，复用生产 `GscControlFillBrush`、`GscControlStrokeBrush` 和现有圆角/裁剪规则。
+- `MediaCenterView.xaml` 的 `MediaModeStrip` 改用生产深色 `GscGlassStrongBrush`、`GscControlStrokeBrush` 和现有圆角/裁剪规则，消除媒体页顶部灰色透明条。
 - 当前游戏媒体、待归类、来源规则三个模式仍使用原有 RadioButton、Binding 和命令，仅替换外层承载视觉。
-- 选中项描边改为紫色强调色层级；未迁移 Demo 顶部颜色按钮，也未替换项目滚动条。
+- 选中项改用 `GscAccentTintStrongBrush`、`GscAccentBrush` 和 `GscSelectionTextBrush`，并让悬停状态不覆盖选中状态；未迁移 Demo 顶部颜色按钮，也未替换项目滚动条。
 
 **验证结果：**
 
@@ -2570,7 +2570,7 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `scripts/validate-source.py`：通过。
 - `validate_wpf_ui.py`：0 error，19 条既有 warning。
 - Release 隔离构建：0 warning / 0 error。
-- RenderHarness 深色媒体页截图已检查，模式栏为深色容器、选中项为紫色；全量 RenderHarness 仍被既有 Media resize recovery 两项失败拦截，不能记为全量通过。
+- RenderHarness 编译成功并输出了各尺寸/主题结果，但全量回归仍被 Media resize recovery 两项失败拦截：`MediaGrid` 在 2560→1100→2560 回弹后尺寸不一致，`MediaInspectorScrollViewer` 在回弹后从可见变为折叠。不能记为全量通过。
 
 **验证边界：**
 
@@ -2595,7 +2595,7 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `validate_wpf_ui.py`：0 error，19 条既有 warning。
 - Release 编译：0 warning / 0 error。
 - Core：59/59 通过；Worker：191/191 通过。
-- Playnite：245 通过、61 跳过、0 失败（跳过项均明确标注为已撤销架构断言）。
+- Playnite：246 通过、61 跳过、0 失败（跳过项均明确标注为已撤销架构断言；新增 1 条媒体模式栏颜色基线断言）。
 
 **验证边界：**
 

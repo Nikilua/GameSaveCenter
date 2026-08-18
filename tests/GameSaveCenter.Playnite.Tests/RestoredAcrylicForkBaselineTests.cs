@@ -44,6 +44,17 @@ public sealed class RestoredAcrylicForkBaselineTests
         Assert.Contains("任务队列", tasks);
     }
 
+    [Fact]
+    public void MediaModeStripUsesTheProductionSurfaceAndPurpleSelectedState()
+    {
+        var media = ReadSource("Views", "MediaCenterView.xaml");
+
+        Assert.Contains("x:Key=\"MediaModeStrip\"", media);
+        Assert.Contains("Property=\"Background\" Value=\"{DynamicResource GscGlassStrongBrush}\"", media);
+        Assert.Contains("Property=\"Background\" Value=\"{DynamicResource GscAccentTintStrongBrush}\"", media);
+        Assert.Contains("Property=\"Foreground\" Value=\"{DynamicResource GscSelectionTextBrush}\"", media);
+    }
+
     private static string ReadSource(params string[] relativePath)
     {
         var directory = new DirectoryInfo(Directory.GetCurrentDirectory());

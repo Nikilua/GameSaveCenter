@@ -718,13 +718,19 @@
 
 ## 2026-08-18 UI-227 媒体中心模式栏事实
 
-- 媒体中心顶部模式栏已从 `SegmentFillBrush` 的灰色透明条切换为生产深色 `MediaModeStrip`，复用 `GscControlFillBrush`、`GscControlStrokeBrush` 和紫色 `GscAccentTintBrush` 选中态。
-- RadioButton 的三种模式、真实数据绑定、命令和项目自身滚动条没有改变；本次只修正页面级 Tab 承载样式。
-- Release 构建与静态检查通过；RenderHarness 的媒体深色截图已确认颜色层级变化，但 Media resize recovery 的两项既有失败仍未解决，真实 Playnite 截图仍待可识别宿主窗口后复核。
+- 媒体中心顶部模式栏已从灰色透明条切换为生产深色 `MediaModeStrip`，外层使用 `GscGlassStrongBrush` 与 `GscControlStrokeBrush`；选中 RadioButton 使用 `GscAccentTintStrongBrush`、`GscAccentBrush` 和 `GscSelectionTextBrush`。
+- RadioButton 的三种模式、真实数据绑定、命令和项目自身滚动条没有改变；本次只修正页面级 Tab 承载样式，并确保悬停不会覆盖选中态。
+- Release 构建与静态检查通过；RenderHarness 编译和主题/尺寸探针完成，但 Media resize recovery 仍有两项失败：回弹后 `MediaGrid` 尺寸不一致、`MediaInspectorScrollViewer` 从可见变为折叠。真实 Playnite 截图仍待可识别宿主窗口后复核。
 
 ## 2026-08-18 UI-228 页面基线回退修复事实
 
 - `be5707d` 是一次页面基线回退：它把生产页面覆盖成“今日工作台 / 最近活动”架构，导致两台同步仓库的电脑同时显示数个版本前的页面。
 - 当前恢复目标是 `be5707d^` 的 AcrylicFork 生产基线，首页必须包含“最近任务 / 全局活动 / 风险与提醒”；顶部 Demo 彩色按钮和 Demo 滚动条仍不迁移。
 - 针对已撤销架构的 61 条 Playnite 源码契约断言必须保持显式跳过，不能用无业务意义的兼容控件让它们假通过；当前基线由 `RestoredAcrylicForkBaselineTests` 覆盖首页、存档、媒体和任务入口。
-- 本轮验证：Release 0 warning / 0 error，Core 59/59，Worker 191/191，Playnite 245 通过、61 跳过、0 失败。真实 Playnite 宿主视觉仍需可识别窗口截图确认。
+- 本轮验证：Release 0 warning / 0 error，Core 59/59，Worker 191/191，Playnite 246 通过、61 跳过、0 失败。真实 Playnite 宿主视觉仍需可识别窗口截图确认。
+
+## 2026-08-18 UI-229 媒体模式栏交付验证边界
+
+- 一键 Release 构建、Worker 发布和 Playnite 安装已重新通过，安装目录为 `%APPDATA%\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec`，`extension.yaml` 为 `0.6.70`，生产 DLL 为 `0.6.70.0`。
+- RenderHarness 不是 Playnite 真机截图；本轮工具上下文没有可用的 Playnite 鼠标/键盘控制，因此没有把离屏结果冒充真实宿主视觉验收。
+- 当前提交只交付媒体模式栏颜色修正和对应基线断言，不代表首页、存档、修改器、任务、维护等页面已经完成 1:1 视觉迁移；Media resize recovery 两项失败仍是后续阻塞项。
