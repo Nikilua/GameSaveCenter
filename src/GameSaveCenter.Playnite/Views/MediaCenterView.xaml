@@ -305,7 +305,7 @@
                                         <Grid.RowDefinitions><RowDefinition Height="96"/><RowDefinition Height="58"/></Grid.RowDefinitions>
                                         <Border Grid.Row="0" Background="{DynamicResource GscControlFillBrush}" ClipToBounds="True" ToolTip="{Binding FileName}">
                                             <Grid>
-                                                <ui:AsyncThumbnailImage SourcePath="{Binding ArchivePath}" PreviewWidth="240" Stretch="UniformToFill"/>
+                                                <ui:AsyncThumbnailImage SourcePath="{Binding ArchivePath}" PreviewWidth="96" Stretch="UniformToFill"/>
                                                 <Border VerticalAlignment="Bottom" Height="42">
                                                     <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="0,1"><GradientStop Color="#00000000" Offset="0"/><GradientStop Color="#59000000" Offset="1"/></LinearGradientBrush></Border.Background>
                                                 </Border>

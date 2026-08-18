@@ -260,12 +260,12 @@
                                                             <TextBlock Text="{Binding DetailMessage}" FontSize="11.5" Margin="0,5,0,0"
                                                                        Foreground="{DynamicResource TextTertiaryBrush}" TextTrimming="CharacterEllipsis"/>
                                                         </StackPanel>
-                                                        <Grid Grid.Column="2" Width="180" VerticalAlignment="Center" Margin="0,0,16,0">
+                                                        <Grid x:Name="OverviewTaskProgressSurface" Grid.Column="2" Width="180" VerticalAlignment="Center" Margin="0,0,16,0" Visibility="Collapsed">
                                                             <ProgressBar Style="{StaticResource LabProgress}" Value="{Binding ProgressPercent}" Maximum="100"/>
                                                         </Grid>
                                                         <Border x:Name="OverviewTaskStatusPill" Grid.Column="3" Style="{StaticResource OverviewTaskBadge}" VerticalAlignment="Center">
                                                             <TextBlock Text="{Binding StateDisplay}" Foreground="{DynamicResource TextPrimaryBrush}"
-                                                                       HorizontalAlignment="Center" TextAlignment="Center"/>
+                                                                       HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" TextWrapping="NoWrap"/>
                                                         </Border>
                                                         <TextBlock Grid.Column="4" Text="{Binding CreatedLocal, StringFormat={}{0:MM-dd HH:mm}}" Style="{StaticResource LabCaption}" Margin="16,0,4,0"
                                                                    VerticalAlignment="Center"/>
@@ -281,14 +281,17 @@
                                                         <Setter TargetName="OverviewTaskStatusPill" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding StateDisplay}" Value="执行中">
+                                                        <Setter TargetName="OverviewTaskProgressSurface" Property="Visibility" Value="Visible"/>
                                                         <Setter TargetName="OverviewTaskStatusPill" Property="Background" Value="{DynamicResource GscInfoIconFillBrush}"/>
                                                         <Setter TargetName="OverviewTaskStatusPill" Property="BorderBrush" Value="{DynamicResource GscInfoBrush}"/>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding StateDisplay}" Value="等待中">
+                                                        <Setter TargetName="OverviewTaskProgressSurface" Property="Visibility" Value="Visible"/>
                                                         <Setter TargetName="OverviewTaskStatusPill" Property="Background" Value="{DynamicResource GscInfoIconFillBrush}"/>
                                                         <Setter TargetName="OverviewTaskStatusPill" Property="BorderBrush" Value="{DynamicResource GscInfoBrush}"/>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding StateDisplay}" Value="等待确认">
+                                                        <Setter TargetName="OverviewTaskProgressSurface" Property="Visibility" Value="Visible"/>
                                                         <Setter TargetName="OverviewTaskStatusPill" Property="Background" Value="{DynamicResource GscWarningIconFillBrush}"/>
                                                         <Setter TargetName="OverviewTaskStatusPill" Property="BorderBrush" Value="{DynamicResource GscWarningBrush}"/>
                                                     </DataTrigger>
@@ -345,15 +348,15 @@
                                                             <ColumnDefinition Width="82"/>
                                                         </Grid.ColumnDefinitions>
                                                         <Border Style="{StaticResource OverviewActivityKindBadge}" Height="28" HorizontalAlignment="Left"><TextBlock Text="{Binding KindDisplay}" Foreground="{DynamicResource TextPrimaryBrush}"
-                                                                                                                                                                   HorizontalAlignment="Center" TextAlignment="Center"/></Border>
+                                                                                                                                                                   HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" TextWrapping="NoWrap"/></Border>
                                                         <StackPanel Grid.Column="1" Margin="12,0,14,0" VerticalAlignment="Center" MinWidth="0">
                                                             <TextBlock Text="{Binding GameName}" FontSize="14" FontWeight="SemiBold"
                                                                            Foreground="{DynamicResource TextPrimaryBrush}"/>
                                                             <TextBlock Text="{Binding Summary}" FontSize="11.5" Margin="0,4,0,0"
                                                                        Foreground="{DynamicResource TextTertiaryBrush}" TextTrimming="CharacterEllipsis"/>
                                                         </StackPanel>
-                                                        <Border x:Name="OverviewActivityResultPill" Grid.Column="2" Style="{StaticResource OverviewActivityResultBadge}" Height="28"><TextBlock Text="{Binding ResultDisplay}" Foreground="{DynamicResource TextPrimaryBrush}"
-                                                                                                                                                                                   HorizontalAlignment="Center" TextAlignment="Center"/></Border>
+                                                        <Border x:Name="OverviewActivityResultPill" Grid.Column="2" Style="{StaticResource OverviewActivityResultBadge}" Height="28" HorizontalAlignment="Center"><TextBlock Text="{Binding ResultDisplay}" Foreground="{DynamicResource TextPrimaryBrush}"
+                                                                                                                                                                                   HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" TextWrapping="NoWrap"/></Border>
                                                         <TextBlock Grid.Column="3" Text="{Binding CreatedDisplay}" Style="{StaticResource LabCaption}"
                                                                    HorizontalAlignment="Right" VerticalAlignment="Center"/>
                                                     </Grid>
@@ -423,15 +426,14 @@
                                                             <StackPanel Orientation="Horizontal">
                                                                 <TextBlock Text="{Binding Name}" FontSize="12.5" FontWeight="Medium"
                                                                            Foreground="{DynamicResource TextPrimaryBrush}"/>
-                                                                <Border x:Name="OverviewRiskBadge" Margin="8,0,0,0" MinWidth="52" Height="24"
+                                                                <Border x:Name="OverviewRiskBadge" Margin="8,0,0,0" MinWidth="60" Height="24"
                                                                         Padding="8,2" CornerRadius="{StaticResource RadiusS}"
                                                                         Background="{DynamicResource GscErrorIconFillBrush}"
                                                                         BorderBrush="{DynamicResource GscErrorBrush}" BorderThickness="1"
                                                                         VerticalAlignment="Center">
-                                                                    <TextBlock x:Name="OverviewRiskBadgeText" Text="{Binding HealthStateDisplay}" FontSize="11"
+                                                                    <TextBlock x:Name="OverviewRiskBadgeText" Text="{Binding HealthStateDisplay}" FontSize="10.5"
                                                                                Foreground="{DynamicResource GscErrorBrush}"
-                                                                               HorizontalAlignment="Center" TextAlignment="Center"
-                                                                               TextTrimming="CharacterEllipsis"
+                                                                               HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" TextWrapping="NoWrap"
                                                                                ToolTip="{Binding HealthStateDisplay}"/>
                                                                 </Border>
                                                             </StackPanel>
