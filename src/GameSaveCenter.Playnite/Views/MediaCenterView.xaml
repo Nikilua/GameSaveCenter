@@ -134,7 +134,7 @@
         <Border x:Name="MediaSummaryTabStrip"
                 Grid.Row="0"
                 Margin="0,0,0,12"
-                Background="{DynamicResource GscControlFillBrush}"
+                Background="{DynamicResource GscAccentTintBrush}"
                 BorderBrush="{DynamicResource GscAccentTintStrongBrush}"
                 BorderThickness="1"
                 CornerRadius="14"

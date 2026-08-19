@@ -63,6 +63,8 @@ public sealed class RestoredAcrylicForkBaselineTests
         Assert.Contains("x:Name=\"MediaSummaryPanel\" Grid.Row=\"0\" Columns=\"4\"", media);
         Assert.Contains("Style=\"{StaticResource MediaTabControl}\"", media);
         Assert.Contains("<Setter Property=\"Background\" Value=\"Transparent\"/>", media);
+        Assert.Contains("x:Name=\"MediaSummaryTabStrip\"", media);
+        Assert.Contains("Background=\"{DynamicResource GscAccentTintBrush}\"", media);
         Assert.Contains("Header=\"当前游戏媒体\"", media);
         Assert.Contains("Style=\"{DynamicResource GscRedesignMetricBorder}\"", media);
         Assert.DoesNotContain("x:Key=\"MediaModeStrip\"", media);

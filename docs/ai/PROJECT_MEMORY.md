@@ -3,6 +3,12 @@
 > 维护时间：2026-08-14
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-19 UI-246 当前事实：媒体摘要标签栏使用紫色强调材质
+
+- `MediaSummaryTabStrip` 不再使用通用 `GscControlFillBrush` 灰色填充，改用共享 `GscAccentTintBrush` 与现有强调边框，媒体页的标签层级与其他生产分段导航保持一致。
+- 该变更只调整材质，不迁移 Demo 顶部彩色主题按钮，也不替换项目自己的 ScrollBar、虚拟化或真实媒体 Binding。
+- 已通过 source/XAML/WPF 校验、Playnite 250/61/0 测试和 `render-qa OK`；当前仍需在可识别的 Playnite 生产窗口中取得宿主像素截图，不能以 RenderHarness 代替最终真机验收。
+
 ## 2026-08-19 UI-245 当前事实：任务搜索输入区宽度
 
 - 任务中心的搜索提示必须属于 `TaskSearchTextBox` 内部内容，不能再用独立标签占用筛选栏列。

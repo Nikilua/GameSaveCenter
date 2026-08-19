@@ -2,6 +2,27 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-19 UI-246 媒体中心摘要标签栏强调材质
+
+**实现内容：**
+
+- 将媒体中心顶部的“待归类 / 当前游戏媒体 / 来源规则”摘要标签栏从通用灰色控件填充改为现有 `GscAccentTintBrush` 紫色强调材质。
+- 保留媒体卡片、真实 Binding、右侧详情 Inspector、项目自有滚动条和虚拟化实现，不迁移 Demo 顶部主题按钮或 Demo 滚动条。
+- 在 Playnite 页面基线测试中增加材质回归断言，避免该标签栏再次退回通用灰色资源。
+
+**验证结果：**
+
+- `scripts/validate-source.py`：通过。
+- `scripts/check-xaml.ps1`：18 个 XAML 文件通过。
+- `validate_wpf_ui.py`：0 error；19 条既有 warning，161 条 info。
+- Playnite 测试：250 通过、61 跳过、0 失败。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/media-purple`：`render-qa OK`；双主题、多尺寸、媒体内部滚动和 resize 探针通过。
+- 更新后的媒体截图：[Media-1366x768-tab1.png](/D:/workplace/github/GameSaveCenter/artifacts/ui-qa/media-purple/Media-1366x768-tab1.png)。
+
+**验证边界：**
+
+- 本阶段已确认离屏渲染结果，但尚未获得可识别的 Playnite 生产窗口像素截图；不能把 RenderHarness 结果写成宿主 1:1 视觉验收完成。
+
 ## 2026-08-19 UI-245 拉长任务中心搜索输入框
 
 **实现内容：**
