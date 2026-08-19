@@ -87,14 +87,30 @@
             <Style x:Key="MediaMiddleColumnHeader" TargetType="DataGridColumnHeader" BasedOn="{StaticResource MediaInboxColumnHeaderStyle}"/>
             <Style x:Key="MediaLastColumnHeader" TargetType="DataGridColumnHeader" BasedOn="{StaticResource MediaInboxColumnHeaderStyle}"><Setter Property="Tag"><Setter.Value><CornerRadius>0,11,0,0</CornerRadius></Setter.Value></Setter></Style>
             <Style x:Key="MediaTabControl" TargetType="TabControl" BasedOn="{StaticResource GscRedesignWorkspaceTabControl}">
-                <!-- Keep the shared purple segmented-tab chrome visible. A glass fill
-                     here paints an opaque gray strip behind the headers and makes the
-                     media page the only workspace with a different tab surface. -->
+                <!-- Header-only host: selected content is rendered below the combined
+                     summary/tab strip, while the production purple tab chrome remains. -->
                 <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                <Setter Property="VerticalAlignment" Value="Stretch"/>
-                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="TabControl">
+                            <Border Background="Transparent" BorderThickness="0" Padding="0">
+                                <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                              VerticalScrollBarVisibility="Disabled"
+                                              CanContentScroll="False"
+                                              Focusable="False">
+                                    <TabPanel x:Name="HeaderPanel"
+                                              IsItemsHost="True"
+                                              KeyboardNavigation.TabIndex="1"
+                                              HorizontalAlignment="Left"/>
+                                </ScrollViewer>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
             </Style>
             <Style x:Key="MediaTabItem" TargetType="TabItem" BasedOn="{StaticResource GscRedesignWorkspaceTabItem}">
                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -115,29 +131,43 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <UniformGrid x:Name="MediaSummaryPanel" Grid.Row="0" Columns="4" Margin="0,0,0,12">
-            <Border Style="{DynamicResource GscRedesignMetricBorder}" Padding="14,12" Margin="0,0,10,0">
+        <Border x:Name="MediaSummaryTabStrip"
+                Grid.Row="0"
+                Margin="0,0,0,12"
+                Background="{DynamicResource GscControlFillBrush}"
+                BorderBrush="{DynamicResource GscAccentTintStrongBrush}"
+                BorderThickness="1"
+                CornerRadius="14"
+                Padding="8"
+                ClipToBounds="True">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+            <UniformGrid x:Name="MediaSummaryPanel" Grid.Row="0" Columns="4" Grid.Column="1" Margin="8,0,0,0" VerticalAlignment="Stretch">
+            <Border Style="{DynamicResource GscRedesignMetricBorder}" Background="Transparent" BorderBrush="{DynamicResource GscControlStrokeBrush}" BorderThickness="0,0,1,0" CornerRadius="0" Margin="0" Padding="14,12">
                 <StackPanel>
                     <TextBlock Text="当前游戏媒体" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextTrimming="CharacterEllipsis"/>
                     <TextBlock Text="{Binding MediaSummary.TotalCount, Mode=OneWay}" FontSize="30" FontWeight="SemiBold" Margin="0,8,0,0"/>
                     <TextBlock Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,8,0,0" TextTrimming="CharacterEllipsis" ToolTip="截图与录像数量"><Run Text="截图 "/><Run Text="{Binding MediaSummary.ScreenshotCount, Mode=OneWay}"/><Run Text=" · 录像 "/><Run Text="{Binding MediaSummary.VideoCount, Mode=OneWay}"/></TextBlock>
                 </StackPanel>
             </Border>
-            <Border Style="{DynamicResource GscRedesignMetricBorder}" Padding="14,12" Margin="0,0,10,0">
+            <Border Style="{DynamicResource GscRedesignMetricBorder}" Background="Transparent" BorderBrush="{DynamicResource GscControlStrokeBrush}" BorderThickness="0,0,1,0" CornerRadius="0" Margin="0" Padding="14,12">
                 <StackPanel>
                     <TextBlock Text="媒体占用" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextTrimming="CharacterEllipsis"/>
                     <TextBlock Text="{Binding MediaSummary.TotalSizeDisplay, Mode=OneWay}" FontSize="30" FontWeight="SemiBold" Margin="0,8,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding MediaSummary.TotalSizeDisplay}"/>
                     <TextBlock Text="归档目录可访问" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,8,0,0" TextTrimming="CharacterEllipsis"/>
                 </StackPanel>
             </Border>
-            <Border Style="{DynamicResource GscRedesignMetricBorder}" Padding="14,12" Margin="0,0,10,0">
+            <Border Style="{DynamicResource GscRedesignMetricBorder}" Background="Transparent" BorderBrush="{DynamicResource GscControlStrokeBrush}" BorderThickness="0,0,1,0" CornerRadius="0" Margin="0" Padding="14,12">
                 <StackPanel>
                     <TextBlock Text="已收藏" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextTrimming="CharacterEllipsis"/>
                     <TextBlock Text="{Binding MediaSummary.FavoriteCount, Mode=OneWay}" FontSize="30" FontWeight="SemiBold" Margin="0,8,0,0"/>
                     <TextBlock Text="支持批量收藏与备注" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,8,0,0" TextTrimming="CharacterEllipsis"/>
                 </StackPanel>
             </Border>
-            <Border Style="{DynamicResource GscRedesignMetricBorder}" Padding="14,12">
+            <Border Style="{DynamicResource GscRedesignMetricBorder}" Background="Transparent" CornerRadius="0" Margin="0" Padding="14,12">
                 <StackPanel>
                     <TextBlock Text="待归类" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextTrimming="CharacterEllipsis"/>
                     <TextBlock Text="{Binding Snapshot.UnassignedMediaCount, Mode=OneWay}" Foreground="{DynamicResource GscWarningBrush}" FontSize="30" FontWeight="SemiBold" Margin="0,8,0,0"/>
@@ -145,7 +175,7 @@
                 </StackPanel>
             </Border>
         </UniformGrid>
-        <TabControl x:Name="MediaTabControl" Grid.Row="1" SelectedIndex="1" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Style="{StaticResource MediaTabControl}">
+                <TabControl x:Name="MediaTabControl" Grid.Column="0" SelectedIndex="1" MinWidth="0" MinHeight="0" HorizontalAlignment="Left" VerticalAlignment="Center" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Style="{StaticResource MediaTabControl}">
             <TabControl.Resources><Style TargetType="TabItem" BasedOn="{StaticResource MediaTabItem}"/></TabControl.Resources>
             <TabItem Header="待归类">
                 <!-- Keep the real DataGrid in a finite viewport, while the surrounding
@@ -378,5 +408,14 @@
                 </Grid>
             </TabItem>
         </TabControl>
+            </Grid>
+        </Border>
+        <ContentControl x:Name="MediaTabContentHost"
+                        Grid.Row="1"
+                        MinWidth="0"
+                        MinHeight="0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Content="{Binding SelectedContent, ElementName=MediaTabControl}"/>
     </Grid>
 </UserControl>
