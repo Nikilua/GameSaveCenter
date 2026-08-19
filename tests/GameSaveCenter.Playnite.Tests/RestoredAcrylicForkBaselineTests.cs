@@ -56,6 +56,20 @@ public sealed class RestoredAcrylicForkBaselineTests
     }
 
     [Fact]
+    public void TaskSearchHintAndInputShareOneStretchableSurface()
+    {
+        var tasks = ReadSource("Views", "TaskCenterView.xaml");
+        var taskCode = ReadSource("Views", "TaskCenterView.xaml.cs");
+
+        Assert.Contains("x:Name=\"TaskSearchBoxHost\"", tasks);
+        Assert.Contains("Text=\"搜索任务…\"", tasks);
+        Assert.Contains("x:Name=\"TaskSearchTextBox\"", tasks);
+        Assert.Contains("HorizontalAlignment=\"Stretch\"", tasks);
+        Assert.Contains("TaskSearchBoxHost.MinWidth = 420", taskCode);
+        Assert.DoesNotContain("x:Name=\"TaskSearchLabel\"", tasks);
+    }
+
+    [Fact]
     public void MediaUsesDemoMetricCardsAndTheSharedPurpleSegmentedTabs()
     {
         var media = ReadSource("Views", "MediaCenterView.xaml");
@@ -64,7 +78,8 @@ public sealed class RestoredAcrylicForkBaselineTests
         Assert.Contains("Style=\"{StaticResource MediaTabControl}\"", media);
         Assert.Contains("<Setter Property=\"Background\" Value=\"Transparent\"/>", media);
         Assert.Contains("x:Name=\"MediaSummaryTabStrip\"", media);
-        Assert.Contains("Background=\"{DynamicResource GscAccentTintBrush}\"", media);
+        Assert.Contains("x:Name=\"MediaTabStrip\"", media);
+        Assert.Contains("Background=\"{DynamicResource GscControlFillBrush}\"", media);
         Assert.Contains("Header=\"当前游戏媒体\"", media);
         Assert.Contains("Style=\"{DynamicResource GscRedesignMetricBorder}\"", media);
         Assert.DoesNotContain("x:Key=\"MediaModeStrip\"", media);
