@@ -90,7 +90,7 @@ public sealed class RestoredAcrylicForkBaselineTests
         var overview = ReadSource("Views", "OverviewView.xaml");
 
         Assert.Contains("x:Name=\"OverviewRiskViewport\"", overview);
-        Assert.Contains("MaxHeight=\"620\"", overview);
+        Assert.Contains("MaxHeight=\"420\"", overview);
         Assert.Contains("AutomationProperties.Name=\"风险与提醒列表\"", overview);
         Assert.Contains("VerticalScrollBarVisibility=\"Auto\"", overview);
         Assert.Contains("HorizontalScrollBarVisibility=\"Disabled\"", overview);

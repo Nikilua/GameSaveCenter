@@ -199,9 +199,16 @@ namespace GameSaveCenter.Playnite.Views
             // protection set turn the whole homepage into an oversized column.
             // The page owns the outer scroll; this viewport owns only the risk
             // list and remains finite in every host height.
-            var riskViewportHeight = Clamp(height - 180d, 460d, 620d);
+            // In the stacked layout the risk card has the full content column and can
+            // afford a taller, bounded viewport. In the side rail keep the shorter
+            // limit so the page's primary content remains visible.
+            var riskViewportHeight = stack
+                ? Clamp(height - 220d, 380d, 520d)
+                : Clamp(height - 360d, 260d, 420d);
             OverviewRiskViewport.MaxHeight = riskViewportHeight;
-            OverviewProtectionItemsScrollViewer.MaxHeight = Clamp(riskViewportHeight - 160d, 300d, 400d);
+            OverviewProtectionItemsScrollViewer.MaxHeight = stack
+                ? Clamp(height - 360d, 300d, 420d)
+                : Clamp(height - 520d, 220d, 340d);
         }
 
         private static double Clamp(double value, double minimum, double maximum)
