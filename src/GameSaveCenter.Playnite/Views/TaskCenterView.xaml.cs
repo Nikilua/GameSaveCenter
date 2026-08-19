@@ -91,12 +91,26 @@ namespace GameSaveCenter.Playnite.Views
                 // technically overlapped.
                 if (width >= 980)
                 {
+                    // Keep the merged search field visibly useful in the real
+                    // Playnite host.  The host can measure the filter Grid with
+                    // a smaller desired width than the available viewport; a
+                    // responsive floor prevents the field from collapsing back
+                    // to the old label-plus-sliver appearance.
+                    TaskSearchBoxHost.MinWidth = 420;
                     TaskStatusFilterComboBox.Width = 140;
                     TaskTypeFilterComboBox.Width = 140;
                     TaskGameFilterComboBox.Width = 180;
                 }
+                else if (width >= 760)
+                {
+                    TaskSearchBoxHost.MinWidth = 300;
+                    TaskStatusFilterComboBox.Width = double.NaN;
+                    TaskTypeFilterComboBox.Width = double.NaN;
+                    TaskGameFilterComboBox.Width = double.NaN;
+                }
                 else
                 {
+                    TaskSearchBoxHost.MinWidth = 180;
                     TaskStatusFilterComboBox.Width = double.NaN;
                     TaskTypeFilterComboBox.Width = double.NaN;
                     TaskGameFilterComboBox.Width = double.NaN;
