@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
@@ -45,7 +46,11 @@ namespace GameSaveCenter.Playnite.Tests
                     Assert.NotEmpty(boundedScrollSurfaces);
                     Assert.All(boundedScrollSurfaces, scrollViewer =>
                     {
-                        Assert.Equal("190", scrollViewer.Attribute("MaxHeight")?.Value);
+                        var maxHeightValue = scrollViewer.Attribute("MaxHeight")?.Value;
+                        Assert.True(
+                            double.TryParse(maxHeightValue, NumberStyles.Float, CultureInfo.InvariantCulture, out var maxHeight),
+                            $"Overview disclosure ScrollViewer must declare a numeric MaxHeight, actual: '{maxHeightValue}'.");
+                        Assert.InRange(maxHeight, 220d, 520d);
                         Assert.Equal("Auto", scrollViewer.Attribute("VerticalScrollBarVisibility")?.Value);
                         Assert.Equal("Disabled", scrollViewer.Attribute("HorizontalScrollBarVisibility")?.Value);
                     });

@@ -94,10 +94,6 @@
                                              Style="{StaticResource AcrylicNavItem}" Tag="Maintenance" Checked="OnNavChecked" ToolTip="维护中心">
                                     <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock Text="维护中心"/></StackPanel>
                                 </RadioButton>
-                                <Border Height="1" Background="{DynamicResource GscDividerBrush}" Margin="8,10"/>
-                                <TextBlock Text="设置" FontSize="12"
-                                           Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="8,8,8,4"
-                                           ToolTip="设置请从 Playnite 插件设置入口打开"/>
                             </StackPanel>
                         </ScrollViewer>
                         <Border Grid.Row="1" Style="{DynamicResource GscRedesignStatusCard}" Margin="0,12,0,0" Padding="10,9">

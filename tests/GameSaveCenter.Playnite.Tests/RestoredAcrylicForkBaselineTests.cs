@@ -17,8 +17,19 @@ public sealed class RestoredAcrylicForkBaselineTests
         Assert.Contains("风险与提醒", overview);
         Assert.Contains("OverviewActivityList", overview);
         Assert.Contains("OverviewActivityTimelineList", overview);
+        Assert.Contains("x:Name=\"OverviewActivityColumn\"", overview);
+        Assert.Contains("Grid.RowSpan=\"2\"", overview);
         Assert.DoesNotContain("今日工作台", overview);
         Assert.DoesNotContain("最近活动", overview);
+    }
+
+    [Fact]
+    public void ProductionSidebarDoesNotExposeAPlaceholderSettingsNavigationItem()
+    {
+        var shell = ReadSource("Views", "AcrylicProductionShellView.xaml");
+
+        Assert.DoesNotContain("Text=\"设置\"", shell);
+        Assert.Contains("NavMaintenance", shell);
     }
 
     [Fact]
@@ -51,6 +62,7 @@ public sealed class RestoredAcrylicForkBaselineTests
 
         Assert.Contains("x:Name=\"MediaSummaryPanel\" Grid.Row=\"0\" Columns=\"4\"", media);
         Assert.Contains("Style=\"{StaticResource MediaTabControl}\"", media);
+        Assert.Contains("<Setter Property=\"Background\" Value=\"Transparent\"/>", media);
         Assert.Contains("Header=\"当前游戏媒体\"", media);
         Assert.Contains("Style=\"{DynamicResource GscRedesignMetricBorder}\"", media);
         Assert.DoesNotContain("x:Key=\"MediaModeStrip\"", media);
@@ -78,7 +90,7 @@ public sealed class RestoredAcrylicForkBaselineTests
         var overview = ReadSource("Views", "OverviewView.xaml");
 
         Assert.Contains("x:Name=\"OverviewRiskViewport\"", overview);
-        Assert.Contains("MaxHeight=\"330\"", overview);
+        Assert.Contains("MaxHeight=\"620\"", overview);
         Assert.Contains("AutomationProperties.Name=\"风险与提醒列表\"", overview);
         Assert.Contains("VerticalScrollBarVisibility=\"Auto\"", overview);
         Assert.Contains("HorizontalScrollBarVisibility=\"Disabled\"", overview);

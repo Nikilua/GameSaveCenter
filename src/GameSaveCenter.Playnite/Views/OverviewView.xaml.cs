@@ -82,17 +82,19 @@ namespace GameSaveCenter.Playnite.Views
                 : new GridLength(1, GridUnitType.Star);
             // The top hero/metrics flow spans the complete workspace. The lower
             // activity/risk arrangement follows the UiLab's readable fixed rail:
-            // flexible primary content plus a 330 DIP inspector column.
+            // flexible primary content plus a readable risk rail. The rail is wider
+            // than the old 330 DIP inspector so the Demo's game-level risk cards do
+            // not collapse their status and action text at maximized size.
             OverviewPrimaryColumn.Width = new GridLength(1, GridUnitType.Star);
             OverviewGutterColumn.Width = new GridLength(stack ? 0 : 14);
             OverviewSecondaryColumn.Width = stack
                 ? new GridLength(0)
-                : new GridLength(330);
+                : new GridLength(410);
             OverviewFlowPrimaryColumn.Width = new GridLength(1, GridUnitType.Star);
             OverviewFlowGutterColumn.Width = new GridLength(stack ? 0 : 14);
             OverviewFlowSecondaryColumn.Width = stack
                 ? new GridLength(0)
-                : new GridLength(330);
+                : new GridLength(410);
             // The secondary column is a top-anchored inspector for the lower activity
             // row, not a vertically centered companion to the primary flow. Set this in
             // code as well as XAML because a Playnite host theme can replace inherited
@@ -188,6 +190,21 @@ namespace GameSaveCenter.Playnite.Views
             // only their local overflow so a large data set cannot grow the homepage
             // without limit or cover the controls below it.
             OverviewStackScrollSurface.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+
+            // Give the risk rail a useful reading window on tall/maximized hosts while
+            // keeping a finite viewport on short windows. The disclosure gets its own
+            // smaller viewport so expanding it never pushes the action buttons out of
+            // the card or makes the page height depend on the number of games.
+            // Keep the rail readable at maximized size without letting a large
+            // protection set turn the whole homepage into an oversized column.
+            // The page owns the outer scroll; this viewport owns only the risk
+            // list and remains finite in every host height.
+            var riskViewportHeight = Clamp(height - 180d, 460d, 620d);
+            OverviewRiskViewport.MaxHeight = riskViewportHeight;
+            OverviewProtectionItemsScrollViewer.MaxHeight = Clamp(riskViewportHeight - 160d, 300d, 400d);
         }
+
+        private static double Clamp(double value, double minimum, double maximum)
+            => value < minimum ? minimum : value > maximum ? maximum : value;
     }
 }

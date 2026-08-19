@@ -87,10 +87,10 @@
             <Style x:Key="MediaMiddleColumnHeader" TargetType="DataGridColumnHeader" BasedOn="{StaticResource MediaInboxColumnHeaderStyle}"/>
             <Style x:Key="MediaLastColumnHeader" TargetType="DataGridColumnHeader" BasedOn="{StaticResource MediaInboxColumnHeaderStyle}"><Setter Property="Tag"><Setter.Value><CornerRadius>0,11,0,0</CornerRadius></Setter.Value></Setter></Style>
             <Style x:Key="MediaTabControl" TargetType="TabControl" BasedOn="{StaticResource GscRedesignWorkspaceTabControl}">
-                <!-- The media workspace is a reading surface like the Demo, not a gray
-                     segmented toolbar. The shared template now honors this brush while
-                     Save/Trainer/Maintenance keep their existing tab treatment. -->
-                <Setter Property="Background" Value="{DynamicResource GscGlassFillBrush}"/>
+                <!-- Keep the shared purple segmented-tab chrome visible. A glass fill
+                     here paints an opaque gray strip behind the headers and makes the
+                     media page the only workspace with a different tab surface. -->
+                <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="HorizontalAlignment" Value="Stretch"/>
                 <Setter Property="VerticalAlignment" Value="Stretch"/>
                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
