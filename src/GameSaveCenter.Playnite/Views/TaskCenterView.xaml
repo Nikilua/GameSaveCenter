@@ -102,7 +102,6 @@
                     <RowDefinition Height="0"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
@@ -110,13 +109,30 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock x:Name="TaskSearchLabel" Grid.Row="0" Grid.Column="0" Text="搜索任务…" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,6,0"/>
-                <TextBox x:Name="TaskSearchTextBox" Grid.Row="0" Grid.Column="1" Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding TaskSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="搜索任务、游戏或错误" AutomationProperties.Name="搜索任务" MinWidth="150" MaxWidth="240" Margin="0,0,10,0"/>
-                <TextBlock x:Name="TaskStatusFilterLabel" Grid.Row="0" Grid.Column="2" Text="状态:" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                <ComboBox x:Name="TaskStatusFilterComboBox" Grid.Row="0" Grid.Column="3" Style="{DynamicResource GscWpfUiFilterComboBox}" MinWidth="112" MaxWidth="160" ItemsSource="{Binding TaskStatusFilterOptions}" SelectedItem="{Binding TaskStatusFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" ToolTip="任务状态" Margin="0,0,10,0"/>
-                <TextBlock x:Name="TaskTypeFilterLabel" Grid.Row="0" Grid.Column="4" Text="类型:" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                <ComboBox x:Name="TaskTypeFilterComboBox" Grid.Row="0" Grid.Column="5" Style="{DynamicResource GscWpfUiFilterComboBox}" MinWidth="110" MaxWidth="180" ItemsSource="{Binding TaskTypeFilterOptions}" SelectedItem="{Binding TaskTypeFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" ToolTip="任务类型" Margin="0,0,10,0"/>
-                <ui:Button x:Name="TaskRefreshButton" Grid.Row="0" Grid.Column="6" Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding RefreshCommand}" Content="刷新" ToolTip="刷新任务列表"/>
+                <!-- The search hint belongs inside the field. Keeping the label as a
+                     separate Auto column made the real host give the input only a
+                     narrow sliver, while the Demo uses one continuous search field. -->
+                <Grid x:Name="TaskSearchBoxHost" Grid.Row="0" Grid.Column="0" MinWidth="180" Margin="0,0,10,0">
+                    <TextBox x:Name="TaskSearchTextBox" Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding TaskSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="搜索任务、游戏或错误" AutomationProperties.Name="搜索任务" HorizontalAlignment="Stretch" Padding="30,7,10,7"/>
+                    <TextBlock Text="&#xE721;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource GscSecondaryTextBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="11,0,0,0" IsHitTestVisible="False"/>
+                    <TextBlock Text="搜索任务…" VerticalAlignment="Center" Margin="30,0,12,0" IsHitTestVisible="False">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource GscCaptionStyle}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Text, ElementName=TaskSearchTextBox}" Value="">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Grid>
+                <TextBlock x:Name="TaskStatusFilterLabel" Grid.Row="0" Grid.Column="1" Text="状态:" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                <ComboBox x:Name="TaskStatusFilterComboBox" Grid.Row="0" Grid.Column="2" Style="{DynamicResource GscWpfUiFilterComboBox}" MinWidth="112" MaxWidth="160" ItemsSource="{Binding TaskStatusFilterOptions}" SelectedItem="{Binding TaskStatusFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" ToolTip="任务状态" Margin="0,0,10,0"/>
+                <TextBlock x:Name="TaskTypeFilterLabel" Grid.Row="0" Grid.Column="3" Text="类型:" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                <ComboBox x:Name="TaskTypeFilterComboBox" Grid.Row="0" Grid.Column="4" Style="{DynamicResource GscWpfUiFilterComboBox}" MinWidth="110" MaxWidth="180" ItemsSource="{Binding TaskTypeFilterOptions}" SelectedItem="{Binding TaskTypeFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" ToolTip="任务类型" Margin="0,0,10,0"/>
+                <ui:Button x:Name="TaskRefreshButton" Grid.Row="0" Grid.Column="5" Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding RefreshCommand}" Content="刷新" ToolTip="刷新任务列表"/>
             </Grid>
         </Border>
         <Expander x:Name="TaskMoreFiltersExpander" Grid.Row="2" Grid.ColumnSpan="3" Style="{StaticResource GscDisclosureCard}" Header="更多筛选" Visibility="Collapsed" Margin="0,0,0,8">

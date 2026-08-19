@@ -828,3 +828,15 @@
 - 当前生产 `MediaCenterView` 使用 `UniformGrid MediaSummaryPanel` 承载四张 `GscRedesignMetricBorder` 卡片，宽度按 4/2/1 列响应式重排；`MediaTabControl` 基于 `GscRedesignWorkspaceTabControl`，其选中项使用生产紫色强调令牌。
 - `MediaModeStrip`、`MediaModeRadio`、`MediaContentTabs` 和 `OnMediaModeChecked` 已从生产媒体页移除；真实 Tab 内容、Binding、Command、虚拟化列表和项目滚动条保持不变。
 - 2026-08-19 的 Release RenderHarness 已确认媒体三 Tab 在浅色/深色、多尺寸和缩放过渡下可渲染；离屏 PNG 只能证明结构和布局探针通过，不能替代 Playnite 真机截图。
+
+## 2026-08-19 UI-240 首页风险展开态验证事实
+
+- 首页风险侧栏固定为 410 DIP 宽；`OverviewRiskViewport` 根据窗口高度在 500–720 DIP 之间限制，风险总列表使用生产滚动条，避免风险数量把首页无限撑高。
+- 展开“最近游戏保护明细”时，隐藏同一数据源的只读预览列表；明细列表使用独立 300–420 DIP 视口。明细卡片按游戏名、状态、换行说明、查看操作纵向布局，原有选择和命令 Binding 不变。
+- 2026-08-19 在新安装的真实 Playnite 窗口 `10621340` 中，展开后重新滚动并获取新截图，确认重复预览已隐藏，完整明细卡片和“查看”操作可见且无重叠。该证据仅覆盖首页风险侧栏，不代表其他页面完成宿主视觉验收。
+
+## 2026-08-19 UI-241 任务中心搜索栏事实
+
+- 任务中心搜索输入区不再使用独立的“搜索任务…”标签列；提示文字与搜索图标在输入框内部，`TaskSearchTextBox` 仍绑定真实 `TaskSearchText`。
+- 桌面布局让搜索区占据筛选栏剩余宽度；紧凑布局时搜索区独占第一行，状态、类型、刷新在第二行，避免再次出现输入框被压成窄条或控件重叠。
+- 2026-08-19 Release 构建、Core 59/59、Worker 191/191、Playnite 250/61/0 通过；安装已成功。但最终宿主截图验证被用户物理 Escape 中止，不能把本轮写成 Playnite 视觉验收完成。

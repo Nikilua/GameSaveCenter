@@ -68,20 +68,21 @@ namespace GameSaveCenter.Playnite.Views
                 TaskFiltersPanel.RowDefinitions[1].Height = compactFilters
                     ? new GridLength(1, GridUnitType.Auto)
                     : new GridLength(0);
-                Grid.SetRow(TaskSearchLabel, 0);
-                Grid.SetColumn(TaskSearchLabel, 0);
-                Grid.SetRow(TaskSearchTextBox, 0);
-                Grid.SetColumn(TaskSearchTextBox, 1);
+                Grid.SetRow(TaskSearchBoxHost, 0);
+                Grid.SetColumn(TaskSearchBoxHost, 0);
                 Grid.SetRow(TaskStatusFilterLabel, compactFilters ? 1 : 0);
-                Grid.SetColumn(TaskStatusFilterLabel, compactFilters ? 0 : 2);
+                Grid.SetColumn(TaskStatusFilterLabel, compactFilters ? 0 : 1);
                 Grid.SetRow(TaskStatusFilterComboBox, compactFilters ? 1 : 0);
-                Grid.SetColumn(TaskStatusFilterComboBox, compactFilters ? 1 : 3);
+                Grid.SetColumn(TaskStatusFilterComboBox, compactFilters ? 1 : 2);
                 Grid.SetRow(TaskTypeFilterLabel, compactFilters ? 1 : 0);
-                Grid.SetColumn(TaskTypeFilterLabel, compactFilters ? 2 : 4);
+                Grid.SetColumn(TaskTypeFilterLabel, compactFilters ? 2 : 3);
                 Grid.SetRow(TaskTypeFilterComboBox, compactFilters ? 1 : 0);
-                Grid.SetColumn(TaskTypeFilterComboBox, compactFilters ? 3 : 5);
+                Grid.SetColumn(TaskTypeFilterComboBox, compactFilters ? 3 : 4);
                 Grid.SetRow(TaskRefreshButton, compactFilters ? 1 : 0);
-                Grid.SetColumn(TaskRefreshButton, compactFilters ? 4 : 6);
+                Grid.SetColumn(TaskRefreshButton, compactFilters ? 4 : 5);
+
+                Grid.SetColumnSpan(TaskSearchBoxHost, compactFilters ? 6 : 1);
+                Grid.SetRow(TaskSearchBoxHost, 0);
 
                 // Give the common desktop width a stable rhythm like the Demo's
                 // search/status/type toolbar.  The old WrapPanel relied on each
@@ -90,14 +91,12 @@ namespace GameSaveCenter.Playnite.Views
                 // technically overlapped.
                 if (width >= 980)
                 {
-                    TaskSearchTextBox.Width = width >= 1200 ? 260 : 220;
                     TaskStatusFilterComboBox.Width = 140;
                     TaskTypeFilterComboBox.Width = 140;
                     TaskGameFilterComboBox.Width = 180;
                 }
                 else
                 {
-                    TaskSearchTextBox.Width = double.NaN;
                     TaskStatusFilterComboBox.Width = double.NaN;
                     TaskTypeFilterComboBox.Width = double.NaN;
                     TaskGameFilterComboBox.Width = double.NaN;
