@@ -1219,9 +1219,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                         !string.IsNullOrWhiteSpace(previousFindingCode)
                         && string.Equals(x.PlayniteId, previousFindingPlayniteId, StringComparison.OrdinalIgnoreCase)
                         && string.Equals(x.Code, previousFindingCode, StringComparison.OrdinalIgnoreCase)
-                        && string.Equals(x.Title, previousFindingTitle, StringComparison.Ordinal))
-                    ?? Findings.FirstOrDefault(x => x.Severity >= FindingSeverity.Warning)
-                    ?? Findings.FirstOrDefault();
+                        && string.Equals(x.Title, previousFindingTitle, StringComparison.Ordinal));
                 // OverviewView gives this projection its own finite viewport. Keep the
                 // complete attention set here so additional findings scroll inside the
                 // card instead of being silently discarded before the view can render them.

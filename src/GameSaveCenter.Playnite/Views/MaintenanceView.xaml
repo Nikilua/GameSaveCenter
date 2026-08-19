@@ -60,6 +60,11 @@
                                     <Border.Style>
                                         <Style TargetType="Border" BasedOn="{StaticResource GscTableFrame}">
                                             <Setter Property="Grid.ColumnSpan" Value="1"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding SelectedFinding}" Value="{x:Null}">
+                                                    <Setter Property="Grid.ColumnSpan" Value="3"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
                                         </Style>
                                     </Border.Style>
                                     <Grid>
@@ -86,6 +91,11 @@
                                     <ScrollViewer.Style>
                                         <Style TargetType="ScrollViewer" BasedOn="{StaticResource GscInspectorScrollViewer}">
                                             <Setter Property="Visibility" Value="Visible"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding SelectedFinding}" Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
                                         </Style>
                                     </ScrollViewer.Style>
                                         <Border Padding="14">
@@ -586,7 +596,17 @@
                 <Grid x:Name="MaintenanceAuditLayout">
                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscInspectorWidth}"/></Grid.ColumnDefinitions>
                     <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-                    <Border x:Name="MaintenanceAuditFindingsTable" Grid.Row="0" Grid.Column="0" Style="{StaticResource GscTableFrame}">
+                    <Border x:Name="MaintenanceAuditFindingsTable" Grid.Row="0" Grid.Column="0">
+                        <Border.Style>
+                            <Style TargetType="Border" BasedOn="{StaticResource GscTableFrame}">
+                                <Setter Property="Grid.ColumnSpan" Value="1"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedFinding}" Value="{x:Null}">
+                                        <Setter Property="Grid.ColumnSpan" Value="3"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
                         <Grid><DataGrid x:Name="MaintenanceAuditFindingsGrid" Style="{StaticResource MaintenanceDataGrid}" RowStyle="{StaticResource GscStableDataGridRow}" ItemsSource="{Binding Findings}" SelectedItem="{Binding SelectedFinding}">
                             <DataGrid.Columns><DataGridTemplateColumn HeaderStyle="{StaticResource MaintenanceFirstColumnHeader}" Header="等级" Width="{StaticResource GscSeverityColumnWidth}"><DataGridTemplateColumn.CellTemplate><DataTemplate><Border x:Name="SeverityPill" Style="{DynamicResource GscRedesignTableStatusPill}"><TextBlock Text="{Binding SeverityDisplay, Mode=OneWay}" Foreground="{DynamicResource GscPrimaryTextBrush}" HorizontalAlignment="Center"/></Border><DataTemplate.Triggers><DataTrigger Binding="{Binding Severity}" Value="Info"><Setter TargetName="SeverityPill" Property="Background" Value="{DynamicResource GscInfoIconFillBrush}"/><Setter TargetName="SeverityPill" Property="BorderBrush" Value="{DynamicResource GscInfoBrush}"/></DataTrigger><DataTrigger Binding="{Binding Severity}" Value="Warning"><Setter TargetName="SeverityPill" Property="Background" Value="{DynamicResource GscSafetyFillBrush}"/><Setter TargetName="SeverityPill" Property="BorderBrush" Value="{DynamicResource GscWarningBrush}"/></DataTrigger><DataTrigger Binding="{Binding Severity}" Value="Error"><Setter TargetName="SeverityPill" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/><Setter TargetName="SeverityPill" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/></DataTrigger><DataTrigger Binding="{Binding Severity}" Value="Critical"><Setter TargetName="SeverityPill" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/><Setter TargetName="SeverityPill" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/></DataTrigger></DataTemplate.Triggers></DataTemplate></DataGridTemplateColumn.CellTemplate></DataGridTemplateColumn><DataGridTextColumn Header="游戏" Binding="{Binding GameName}" Width="180"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn><DataGridTextColumn Header="标题" Binding="{Binding Title}" Width="190"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn><DataGridTextColumn HeaderStyle="{StaticResource MaintenanceLastColumnHeader}" Header="详情" Binding="{Binding Detail}" Width="*" MinWidth="320"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn></DataGrid.Columns>
                         </DataGrid><TextBlock Text="当前没有需要处理的诊断项。&#xA;Worker、备份和媒体状态正常时，这里会保持为空。" IsHitTestVisible="False"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyStateText}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding Findings.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock></Grid>
@@ -595,6 +615,11 @@
                         <ScrollViewer.Style>
                             <Style TargetType="ScrollViewer" BasedOn="{StaticResource GscInspectorScrollViewer}">
                                 <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedFinding}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
                             </Style>
                         </ScrollViewer.Style>
                         <StackPanel>

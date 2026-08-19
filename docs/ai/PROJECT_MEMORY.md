@@ -9,6 +9,13 @@
 - 旧阶段条目继续保留用于追溯当时的迁移决策，但它们不应阻止新的页面方案。新设计默认继续保护真实命令、Binding、数据契约、错误/取消/安全语义、可访问性、列表性能和 Playnite 兼容性；如果设计需要改变这些内容，必须在当前任务中明确并验证，而不是因为历史实现而回避布局或控件重构。
 - 本段是当前方向声明，优先于下方 2026-08-17 之前的页面迁移偏好；后续每个独立 UI 阶段都要更新本段对应的当前事实和 `docs/ai/WORKLOG.md`。
 
+## 2026-08-19 UI-240 当前事实：风险栏有限视口与维护 Inspector 按选中状态出现
+
+- 首页“风险与提醒”使用外层 `OverviewRiskViewport` 的 `330 DIP` 有限视口；列表超出后在自身区域使用项目 `GscPageScrollViewer` 滚动，不能让 Dashboard 根页面无限增高。展开的保护明细仍是独立 `190 DIP` 视口。
+- 维护中心发现问题/审计列表无选中项时释放右侧 Inspector，表格跨满可用宽度；只有用户点击行后才显示详情 Inspector。`DashboardViewModel` 刷新时仅恢复原先仍存在的选中项，不自动选择第一条。
+- 2026-08-19 已在实际 Playnite 生产版重新安装并核对：首页风险栏保持有限高度；维护中心先显示全宽表格，点击问题后显示右侧详情。该次证据来自可识别的 Playnite 宿主窗口，不能与 Preview 入口或 RenderHarness 混淆。
+- 同次一键 Release 验证：Core 59/59、Worker 191/191、Playnite 249 通过/61 跳过/0 失败；source/WPF 校验和安装版本核对均通过。
+
 ## 2026-08-19 UI-227 当前事实：媒体 Tab 条与生产按钮文本由共享样式控制
 
 - `GscRedesignWorkspaceTabControl` 的外层 Tab 条必须使用 `TemplateBinding Background`，不能把 `GscControlFillBrush` 写死在模板中；媒体中心通过 `MediaTabControl.Background=GscGlassFillBrush` 使用玻璃材质，其他工作区继续沿用各自样式。
