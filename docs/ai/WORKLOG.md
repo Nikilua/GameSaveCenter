@@ -2,6 +2,21 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-20 UI-265 维护诊断概览前置环境健康区
+
+**实现内容：**
+
+- 按 Demo `MaintenancePage` 的诊断概览顺序，把六项真实健康状态从“更多维护操作”展开区移到页面首屏的“环境健康”卡；环境检查与诊断操作继续位于其后，生产外层 Tab 和诊断内层 Tab chrome 按用户例外保持当前实现。
+- `DiagnosticHealthPanel` 仍使用真实 `Snapshot.WorkerVersion`、`Snapshot.LudusaviVersion`、Rclone 可用性、数据/媒体目录、`Snapshot.UnassignedMediaCount` 和 `DeviceComparisons.Count`；只调整信息架构，没有加入 Demo 的固定状态或示例数字。
+- 保留环境检查展开项、复制/导出/完整性自检、目录日志、索引重建、任务协调、元数据灾备、路径迁移、安全模式和健康摘要等全部真实命令与安全状态；健康卡继续由 `ApplyResponsiveLayout` 响应式排列。
+- 回归断言新增健康卡位于环境检查和诊断操作之前的结构契约，并同步当前 4/2/1 健康卡列数逻辑。
+
+**验证结果：**
+
+- `scripts/build.ps1 -Configuration Release -OutputRoot artifacts/gsc-b/maintenance-health-order-v1`：XAML 18/18；Release 0 warning、0 error；Core 59/59、Worker 191/191、Playnite 258 通过、62 跳过、0 失败。
+- `python scripts/validate-source.py`：通过；`python .codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py .`：0 error、19 warnings、161 info；`git diff --check`：通过。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/maintenance-health-order-v1`：`render-qa OK`，覆盖七页双主题、多尺寸、滚动探针与 resize transition；已查看维护页截图，Tab chrome、设备/诊断表格和 Inspector 仍可达。离屏证据仍不能替代可识别 Playnite 宿主的逐页像素验收。
+
 ## 2026-08-20 UI-264 首页统计条恢复 Demo 连续结构
 
 **实现内容：**

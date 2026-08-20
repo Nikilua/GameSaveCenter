@@ -14,6 +14,12 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-20 UI-265 维护诊断概览环境健康区交接
+
+- 维护页诊断概览已按 Demo 顺序把六项真实健康卡前置到 `DiagnosticHealthCard`，随后是 `EnvironmentCheckCard` 和 `MaintenanceDiagnosticsActionCard`；不要恢复到“更多维护操作”内部。
+- `DiagnosticHealthPanel` 继续绑定 Worker/Ludusavi/Rclone、数据/媒体目录、待归类媒体和设备状态；环境检查展开项、诊断复制/导出、自检、目录日志、索引重建、任务协调、元数据灾备、路径迁移和安全模式入口均保留。宽屏 4 列、中等 2 列、窄屏 1 列由现有响应式代码管理。
+- 最新验证：XAML 18/18，Release 0 warning/0 error，Core 59/59、Worker 191/191、Playnite 258 通过/62 跳过/0 失败；source/WPF/diff 门禁通过；`artifacts/ui-qa/maintenance-health-order-v1/render-qa-report.txt` 为 `render-qa OK`，覆盖双主题、多尺寸、滚动和 resize。生产 Tab chrome 未动，仍需在可识别的 Playnite 生产宿主中完成逐页像素、DPI、键盘焦点及真实操作验收。
+
 ## 2026-08-20 UI-264 首页统计条连续结构交接
 
 - `OverviewView` 顶部 `OverviewStatStrip` 已按 Demo 恢复为一个连续统计条：六个等宽指标、五条分隔线、26 DIP 数值且数字位于标签上方；不要恢复六张独立 metric card 或旧的列数响应式逻辑。

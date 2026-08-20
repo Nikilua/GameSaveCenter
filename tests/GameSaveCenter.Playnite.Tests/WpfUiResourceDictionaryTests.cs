@@ -2048,6 +2048,7 @@ public sealed class WpfUiResourceDictionaryTests
         var maintenanceCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml.cs"));
 
         Assert.Contains("x:Name=\"MaintenanceDiagnosticsActionCard\"", maintenance);
+        Assert.Contains("x:Name=\"DiagnosticHealthCard\"", maintenance);
         Assert.Contains("Text=\"诊断操作\"", maintenance);
         Assert.Contains("x:Name=\"DiagnosticHealthPanel\"", maintenance);
         Assert.Contains("x:Name=\"ProcessMappingEditor\"", maintenance);
@@ -2055,7 +2056,11 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"ProcessMappingTargetGameComboBox\"", maintenance);
         Assert.Contains("Width=\"240\"", maintenance);
         Assert.Contains("Command=\"{Binding SaveProcessMappingCommand}\"", maintenance);
-        Assert.Contains("DiagnosticHealthPanel.Columns = width >= 980 ? 3 : width >= 680 ? 2 : 1", maintenanceCode);
+        Assert.Contains("DiagnosticHealthPanel.Columns = width >= 980 ? 4 : width >= 680 ? 2 : 1", maintenanceCode);
+        var healthCardIndex = maintenance.IndexOf("x:Name=\"DiagnosticHealthCard\"", StringComparison.Ordinal);
+        var environmentCardIndex = maintenance.IndexOf("x:Name=\"EnvironmentCheckCard\"", StringComparison.Ordinal);
+        var actionCardIndex = maintenance.IndexOf("x:Name=\"MaintenanceDiagnosticsActionCard\"", StringComparison.Ordinal);
+        Assert.True(healthCardIndex >= 0 && healthCardIndex < environmentCardIndex && environmentCardIndex < actionCardIndex);
         Assert.Contains("Text=\"Rclone\"", maintenance);
         Assert.Contains("Text=\"数据与备份目录\"", maintenance);
         Assert.Contains("Text=\"媒体目录\"", maintenance);

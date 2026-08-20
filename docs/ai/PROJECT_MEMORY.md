@@ -10,6 +10,13 @@
 - 当前游戏选框、生产滚动条系统、真实运行时数据和 Demo 未覆盖但目标文件明确要求保留的功能继续保留；Demo Mock 数据、演示色板、窗口按钮和演示行为不得接入生产。
 - 本段覆盖早期“当前生产 main > Demo”或“技能优先”的视觉排序；旧条目只用于历史追溯，不得阻止 Demo-first 的新页面迁移。
 
+## 2026-08-20 UI-265 当前事实：维护诊断概览先显示环境健康
+
+- `MaintenanceView.xaml` 的诊断概览现在按 Demo 顺序先显示 `DiagnosticHealthCard`/`DiagnosticHealthPanel`，再显示 `EnvironmentCheckCard` 与 `MaintenanceDiagnosticsActionCard`；不要把六项健康状态重新藏回“更多维护操作”展开区。
+- 健康卡仍来自真实运行时绑定：Worker/Ludusavi/Rclone 状态、数据与媒体目录、待归类媒体数和设备比较数；环境检查、诊断复制/导出、自检、索引重建、任务协调、元数据灾备、路径迁移与安全模式命令没有改变。
+- `DiagnosticHealthPanel` 的响应式列数仍由 `ApplyResponsiveLayout` 控制为宽屏 4 列、中等 2 列、窄屏 1 列；生产 Tab chrome 是用户明确例外，不迁移为 Demo 的 segmented UI。
+- 当前证据：Release 0 warning/0 error；Core 59/59、Worker 191/191、Playnite 258 通过/62 跳过；XAML/source/WPF/diff 门禁通过；`artifacts/ui-qa/maintenance-health-order-v1` 的双主题、多尺寸、滚动和 resize `render-qa OK`。截图仍属于离屏证据，不能替代可识别 Playnite 宿主的逐页像素验收。
+
 ## 2026-08-20 UI-264 当前事实：首页统计条已恢复 Demo 连续结构
 
 - `OverviewView.xaml` 的 `OverviewStatStrip` 当前是一个 `GscRedesignSectionCard` 连续统计条，六个等宽指标使用五条 `GscTableDividerBrush` 分隔；数字在上、标签在下，不要恢复六张带间隙的独立 metric card 或旧的 `UniformGrid.Columns` 响应式换列。
