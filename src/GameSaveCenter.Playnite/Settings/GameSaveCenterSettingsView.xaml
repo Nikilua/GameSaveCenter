@@ -6,6 +6,7 @@
              xmlns:infra="clr-namespace:GameSaveCenter.Playnite.Infrastructure"
              xmlns:ui="clr-namespace:GameSaveCenter.Playnite.Controls"
              Foreground="{DynamicResource GscPrimaryTextBrush}"
+             TextElement.FontFamily="{DynamicResource GscUiFontFamily}"
              UseLayoutRounding="True" SnapsToDevicePixels="True"
              TextOptions.TextFormattingMode="Display" TextOptions.TextRenderingMode="ClearType"
              TextOptions.TextHintingMode="Fixed" RenderOptions.ClearTypeHint="Enabled">

@@ -3,6 +3,15 @@
 > 维护时间：2026-08-14
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-20 UI-251 当前事实：存档规则卡与诊断概览按 Demo 第三轮收口
+
+- 存档中心当前规则卡在常见工作区宽度下横向排列“当前存档规则 / 游戏名 / 状态 / 立即扫描 / 重新校验 / 刷新详情”；低于 700 DIP 才堆叠操作，避免正常宿主中规则信息和按钮被拉成多行。
+- 维护中心诊断概览以 AcrylicFork 生产页面为结构基线：环境检查卡在前，诊断操作卡在后，健康指标位于“更多维护操作”内；真实检查、修复、导出、取消命令与 Binding 未移除。
+- 共享生产表格排序箭头采用 Demo 的 14 DIP 表头保留列和完整路径几何；列宽拖拽、排序、固定行高和虚拟化契约继续有效。
+- 设置页与生产壳体/工作区统一继承 `GscUiFontFamily`；`DashboardView` 是安全回退页，已有同一字体入口。
+- 当前证据：Playnite 测试 251 通过、61 跳过、0 失败；`validate-source.py`、WPF UI 静态校验（0 error）、`git diff --check` 和 RenderHarness Release `render-qa OK` 均通过。仍无新的可识别 Playnite 生产宿主像素证据，不能把离屏结果写成真实宿主 1:1 验收。
+- 已清理两条旧 AcrylicFork 基线门禁：它们曾要求首页没有“今日工作台”、媒体页必须存在已废弃的 `MediaSummaryTabStrip`/`MediaTabStrip`，与当前 Demo 结构和用户要求相反；现改为保护当前工作台、完整 TabControl、媒体 Inspector 和可预览入口。
+
 ## 2026-08-20 UI-250 当前事实：媒体页已恢复 AcrylicFork Tab 结构
 
 - 媒体中心以 AcrylicFork 实际 `MediaCenterView.xaml` 为结构基线：摘要四卡在顶部，工作区 `TabControl` 负责自己的标题栏和内容，不能再恢复成独立 Tab 标题 + `MediaTabContentHost` 的拼接结构。

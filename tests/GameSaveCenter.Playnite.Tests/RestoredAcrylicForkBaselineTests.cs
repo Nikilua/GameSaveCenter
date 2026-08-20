@@ -8,7 +8,7 @@ namespace GameSaveCenter.Playnite.Tests;
 public sealed class RestoredAcrylicForkBaselineTests
 {
     [Fact]
-    public void OverviewUsesTheRestoredDemoSectionsInsteadOfTheDiscardedWorkbench()
+    public void OverviewKeepsTheDemoSectionsAndTheCurrentWorkbenchActions()
     {
         var overview = ReadSource("Views", "OverviewView.xaml");
 
@@ -19,7 +19,7 @@ public sealed class RestoredAcrylicForkBaselineTests
         Assert.Contains("OverviewActivityTimelineList", overview);
         Assert.Contains("x:Name=\"OverviewActivityColumn\"", overview);
         Assert.Contains("Grid.RowSpan=\"2\"", overview);
-        Assert.DoesNotContain("今日工作台", overview);
+        Assert.Contains("今日工作台", overview);
         Assert.DoesNotContain("最近活动", overview);
     }
 
@@ -70,20 +70,20 @@ public sealed class RestoredAcrylicForkBaselineTests
     }
 
     [Fact]
-    public void MediaUsesDemoMetricCardsAndTheSharedPurpleSegmentedTabs()
+    public void MediaUsesDemoMetricCardsAndTheFullWorkspaceTabs()
     {
         var media = ReadSource("Views", "MediaCenterView.xaml");
 
         Assert.Contains("x:Name=\"MediaSummaryPanel\" Grid.Row=\"0\" Columns=\"4\"", media);
+        Assert.Contains("x:Name=\"MediaTabControl\"", media);
         Assert.Contains("Style=\"{StaticResource MediaTabControl}\"", media);
-        Assert.Contains("<Setter Property=\"Background\" Value=\"Transparent\"/>", media);
-        Assert.Contains("x:Name=\"MediaSummaryTabStrip\"", media);
-        Assert.Contains("x:Name=\"MediaTabStrip\"", media);
-        Assert.Contains("Background=\"{DynamicResource GscControlFillBrush}\"", media);
+        Assert.Contains("x:Name=\"MediaInboxInspectorScrollViewer\"", media);
+        Assert.Contains("x:Name=\"MediaInboxPreviewPanel\"", media);
+        Assert.Contains("SelectedInboxMedia", media);
         Assert.Contains("Header=\"当前游戏媒体\"", media);
         Assert.Contains("Style=\"{DynamicResource GscRedesignMetricBorder}\"", media);
-        Assert.DoesNotContain("x:Key=\"MediaModeStrip\"", media);
-        Assert.DoesNotContain("x:Key=\"MediaModeRadio\"", media);
+        Assert.DoesNotContain("x:Name=\"MediaSummaryTabStrip\"", media);
+        Assert.DoesNotContain("x:Name=\"MediaTabStrip\"", media);
     }
 
     [Fact]

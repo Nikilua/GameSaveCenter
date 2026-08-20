@@ -62,21 +62,22 @@ namespace GameSaveCenter.Playnite.Views
                 // Playnite host into the drawer layout even when there was enough
                 // room, which made the production page structurally different.
                 var compact = width < 980;
+                var ruleCardCompact = width < 700;
                 if (SaveCurrentRuleActions != null)
                 {
-                    SaveCurrentRuleActionsRow.Height = compact
+                    SaveCurrentRuleActionsRow.Height = ruleCardCompact
                         ? GridLength.Auto
                         : new GridLength(0);
-                    SaveCurrentRuleActionsColumn.Width = compact
+                    SaveCurrentRuleActionsColumn.Width = ruleCardCompact
                         ? new GridLength(0)
                         : GridLength.Auto;
-                    Grid.SetRow(SaveCurrentRuleActions, compact ? 1 : 0);
-                    Grid.SetColumn(SaveCurrentRuleActions, compact ? 0 : 3);
-                    Grid.SetColumnSpan(SaveCurrentRuleActions, compact ? 4 : 1);
-                    SaveCurrentRuleActions.Margin = compact
+                    Grid.SetRow(SaveCurrentRuleActions, ruleCardCompact ? 1 : 0);
+                    Grid.SetColumn(SaveCurrentRuleActions, ruleCardCompact ? 0 : 3);
+                    Grid.SetColumnSpan(SaveCurrentRuleActions, ruleCardCompact ? 4 : 1);
+                    SaveCurrentRuleActions.Margin = ruleCardCompact
                         ? new Thickness(0, 12, 0, 0)
                         : new Thickness(14, 0, 0, 0);
-                    SaveCurrentRuleActions.HorizontalAlignment = compact
+                    SaveCurrentRuleActions.HorizontalAlignment = ruleCardCompact
                         ? HorizontalAlignment.Stretch
                         : HorizontalAlignment.Right;
                 }

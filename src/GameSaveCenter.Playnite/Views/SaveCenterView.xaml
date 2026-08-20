@@ -232,8 +232,11 @@
                             </Grid.ColumnDefinitions>
                             <ContentControl Style="{StaticResource GscSelectedGameIconControl}" Content="{Binding SelectedGameIcon}" VerticalAlignment="Center"/>
                             <StackPanel Grid.Column="1" MinWidth="0" VerticalAlignment="Center" Margin="10,0,0,0">
-                                <TextBlock Text="当前存档规则" Style="{DynamicResource GscSectionTitleStyle}"/>
-                                <TextBlock Text="{Binding SelectedGame.LudusaviName, Mode=OneWay, TargetNullValue=尚未匹配 Ludusavi 规则}" Style="{DynamicResource GscBodyStyle}" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedGame.LudusaviName}"/>
+                                <Grid MinWidth="0">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                    <TextBlock Text="当前存档规则" Style="{DynamicResource GscSectionTitleStyle}" VerticalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding SelectedGame.LudusaviName, Mode=OneWay, TargetNullValue=尚未匹配 Ludusavi 规则}" Style="{DynamicResource GscBodyStyle}" Margin="8,0,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedGame.LudusaviName}" VerticalAlignment="Center"/>
+                                </Grid>
                                 <TextBlock Style="{DynamicResource GscCaptionStyle}" Margin="0,2,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedGame.HealthReasonDisplay, Mode=OneWay}"><Run Text="{Binding SelectedGame.MatchStateDisplay, Mode=OneWay, TargetNullValue=未匹配}"/><Run Text=" · "/><Run Text="{Binding SelectedGame.HealthStateDisplay, Mode=OneWay, TargetNullValue=尚未校验}"/></TextBlock>
                             </StackPanel>
                             <Border x:Name="SaveHealthBadge" Grid.Column="2" Style="{StaticResource SaveHealthStateBadge}" Margin="14,0,0,0" ToolTip="{Binding SelectedGame.HealthReasonDisplay, Mode=OneWay}">

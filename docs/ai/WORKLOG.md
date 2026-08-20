@@ -2,6 +2,21 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-20 UI-251 存档规则卡与诊断概览第三轮对齐
+
+**实现内容：**
+
+- 存档中心“当前存档规则”卡将规则标题、游戏名、匹配/风险状态和立即扫描、重新校验、刷新详情操作收束到同一横向区域；只有低于 700 DIP 才进入紧凑堆叠，避免正常宿主宽度下无谓增高。
+- 维护中心“诊断概览”改回 AcrylicFork 生产 Demo 的信息顺序：先显示环境检查与首次环境检查折叠内容，再显示诊断操作；更多维护操作中的健康指标仍保留真实 Binding 与命令。
+- 共享表格排序箭头恢复 Demo 的完整几何和独立表头空间，保留列宽拖拽、排序和虚拟化能力。
+- 设置页补齐全局 `GscUiFontFamily` 入口；旧 Dashboard 回退页原已有字体继承，继续保留。
+
+**验证结果：**
+
+- `dotnet test tests/GameSaveCenter.Playnite.Tests/GameSaveCenter.Playnite.Tests.csproj -c Release --no-restore -m:1 -nodeReuse:false -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false`：251 通过、61 跳过、0 失败；同时修正两条仍要求旧页面结构的 AcrylicFork 基线门禁。
+- `scripts/render-qa.ps1 -Configuration Release -Output .tmp/ui-qa-stage3-final`：`render-qa OK`；双主题、多尺寸和 resize 探针通过，存档规则卡在 1040×700 下保持横向紧凑。
+- `python scripts/validate-source.py`、WPF UI 静态校验（0 error）和 `git diff --check` 均通过；未以 RenderHarness 结果宣称真实 Playnite 宿主视觉验收完成。
+
 ## 2026-08-20 UI-250 AcrylicFork 媒体页结构与全局字体第二轮对齐
 
 **实现内容：**
