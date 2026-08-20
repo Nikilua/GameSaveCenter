@@ -3,6 +3,12 @@
 > 维护时间：2026-08-21
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-21 UI-277 当前事实：共享折叠栏 Header 具有主题表面
+
+- `DesignTokens.xaml` 的 `GscDisclosureCardExpander` 现在以 `GscControlFillBrush` 为默认背景，并把 `Background`/`BorderBrush` 传到 Header ToggleButton 的 `HeaderChrome`；Task 窄宽“更多筛选”不再在浅色主题深色画布上隐去标题。
+- 不要把折叠栏改回透明 Header 或在 Task 页复制局部模板；整行命中、`TaskMoreFiltersExpander` 的 Visibility/响应式切换、Chevron 150ms 动效和真实 `TaskGameFilter` 绑定由共享资源继续负责。
+- UI-277 证据：`artifacts/gsc-b/ui-277-disclosure-surface-v1` Release 0 warning/0 error、Core 59/59、Worker 191/191、Playnite 266 通过/62 跳过/0 失败；`artifacts/ui-qa/ui277-disclosure-surface-v1/render-qa-report.txt` 为 `render-qa OK`，Task 1040×700 双主题截图确认标题可见。真实 Playnite Dashboard 宿主证据仍未补齐。
+
 ## 2026-08-21 UI-276 当前事实：媒体当前页窄宽操作区已拆分
 
 - `MediaCenterView.xaml` 的 `MediaCurrentActionRow` 现在是共享的响应式操作容器：宽屏提示和三个批量操作同一行；窄屏提示独占第一行，批量操作与 `MediaCompactDetailsButton` 分列第二行，不能把两组按钮重新放回同一个 Grid 单元格。

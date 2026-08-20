@@ -4230,6 +4230,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("To=\"0\" Duration=\"0:0:0.15\"", tokens);
         Assert.Contains("To=\"-90\" Duration=\"0:0:0.15\"", tokens);
         Assert.Contains("GscDisclosureCard", tokens);
+        Assert.Contains("<Setter Property=\"Background\" Value=\"{DynamicResource GscControlFillBrush}\"/>", tokens);
+        Assert.Contains("Background=\"{TemplateBinding Background}\"", tokens);
+        Assert.Contains("BorderBrush=\"{TemplateBinding BorderBrush}\"", tokens);
         Assert.Contains("DoubleAnimation Storyboard.TargetName=\"Chevron\"", demoControls);
         Assert.Contains("Duration=\"0:0:0.15\"", demoControls);
     }

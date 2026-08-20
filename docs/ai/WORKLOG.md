@@ -2,6 +2,21 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-21 UI-277 修复共享折叠栏标题对比度
+
+**实现内容：**
+
+- 发现 Task 在 1040×700 窗口的实际 744 DIP 工作区进入“更多筛选”状态时，`GscDisclosureCard` Header 处于透明深色画布上，浅色主题的深色文字与背景对比不足，截图中只剩 Chevron，标题无法可靠识别。
+- 共享 `GscDisclosureCardExpander` 现在使用 `GscControlFillBrush` 作为 Header 表面，并将 Expander 的背景/边框绑定传入 Header ToggleButton 与 `HeaderChrome`；浅/深主题都获得可见的卡片边界和标题对比度。
+- 保留 Demo `LabDisclosure` 的整行命中、主题 tint hover/expanded 状态、150ms Chevron 展开/收起动效、真实 Expander `Header`/`Content` 和 Task `TaskGameFilter` 绑定，没有改动页面滚动或项目 Tab chrome。
+
+**验证结果：**
+
+- `scripts/build.ps1 -Configuration Release -OutputRoot artifacts/gsc-b/ui-277-disclosure-surface-v1`：XAML 18/18；Release 0 warning、0 error；Core 59/59；Worker 191/191；Playnite 266 通过、62 跳过、0 失败。
+- `scripts/validate-source.py`、`validate_wpf_ui.py`（0 error、19 warnings）和 `git diff --check`：通过；共享折叠栏资源契约测试通过。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/ui277-disclosure-surface-v1`：`render-qa OK`，覆盖七页、Light/Dark、1040/1100/1366/2560 DIP、滚动探针和 resize transition；抽查 Task 1040×700 双主题截图，标题和卡片表面均可见。
+- 以上仍是离屏/静态证据，不能替代可识别 Playnite Dashboard 宿主中的折叠栏鼠标、键盘焦点、Escape 与真实筛选绑定验收；真实 Dashboard 嵌入证据仍未补齐。
+
 ## 2026-08-21 UI-276 修复媒体当前页窄宽操作区重叠
 
 **实现内容：**

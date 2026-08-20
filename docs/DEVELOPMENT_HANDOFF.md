@@ -14,6 +14,12 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-21 UI-277 折叠栏表面交接
+
+- 共享 `GscDisclosureCardExpander` 已为 Header 提供 `GscControlFillBrush` 表面，并把 Expander 的背景/边框绑定到 Header ToggleButton 与 `HeaderChrome`；这修复了 Task 1040×700 窄宽下“更多筛选”只剩箭头、标题无法识别的问题。
+- 后续页面继续使用共享 `GscDisclosureCard`，不要通过局部颜色或隐藏 Header 解决对比度；`LabDisclosure` 对应的整行点击、Hover/Expanded tint、Chevron 动效、真实筛选命令和键盘焦点都必须保留。
+- 当前证据：`artifacts/gsc-b/ui-277-disclosure-surface-v1` Release 0 warning/0 error、Core 59/59、Worker 191/191、Playnite 266 通过/62 跳过/0 失败；`artifacts/ui-qa/ui277-disclosure-surface-v1/render-qa-report.txt` 为 `render-qa OK`，已抽查 Task 浅/深主题 1040×700。真实 Playnite Dashboard 的折叠栏命中与键盘行为仍需用户在可见宿主中补验。
+
 ## 2026-08-21 UI-276 媒体当前页操作区交接
 
 - `MediaCenterView` 当前游戏媒体页的批量操作与紧凑 Inspector 入口已拆成 `MediaCurrentActionRow`：宽屏同一行，窄屏提示独占首行、批量操作与“查看媒体详情”分列第二行，避免 Playnite 工作区约 744 DIP 时按钮互相覆盖。
