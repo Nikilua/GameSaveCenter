@@ -3131,3 +3131,29 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `scripts/validate-source.py`：通过；`validate_wpf_ui.py`：0 error；`check-xaml.ps1`：18 个 XAML 文件通过；`git diff --check`：通过。
 - Core：59/59；Playnite：251 通过、61 跳过、0 失败。
 - 最终离屏截图确认最近任务文字和表头可读，媒体四张摘要卡等比例收缩。未把本轮离屏结果写成 Playnite 宿主真机 1:1 验收。
+
+## 2026-08-20 UI-252 存档历史页补回 Demo 操作卡
+
+**问题确认：**
+
+- 存档中心默认“历史版本”页此前只有分段导航和 DataGrid；Demo 中表格上方的“历史版本 / 版本数 / 立即扫描 / 重新校验 / 刷新详情”操作卡缺失，导致真实扫描、校验和详情刷新入口只在“路径与校验”页出现。
+
+**实现内容：**
+
+- 在 `SaveCenterView.xaml` 的历史版本表格上方增加 `SaveHistorySummaryCard`，版本数绑定真实 `Backups.Count`，当前规则与健康状态绑定真实 `SelectedGame`，三个操作绑定现有 `DetectPathsCommand`、`ValidateCommand` 和 `LoadDetailsCommand`。
+- 在 `SaveCenterView.xaml.cs` 增加摘要操作区的响应式行/列重排：700 DIP 以上保持 Demo 式横向布局，低于 700 DIP 时操作区移到第二行并保持按钮可点击。
+- 表格仍使用现有 `SaveDataGrid`、固定最小视口、列宽拖动、排序、虚拟化和项目滚动条；没有把 Demo Mock 数据或 Demo 滚动条接入生产。
+- 增加源码契约测试，锁定摘要卡和三个真实命令入口不会被后续页面收口误删。
+
+**验证结果：**
+
+- `scripts/check-xaml.ps1`：18 个 XAML 文件通过。
+- `scripts/validate-source.py`：通过。
+- Release 构建：0 warning / 0 error。
+- Core：59/59；Worker：191/191；Playnite：251 通过、61 跳过、0 失败。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/save-history-summary-final`：`render-qa OK`；浅色/深色、1040/1100/1366/2560 尺寸和 resize transition 均通过，历史表在门禁中保持至少 236 DIP 有效视口。
+- `validate_wpf_ui.py`：0 error；`git diff --check`：通过。
+
+**验证边界：**
+
+- 本阶段只完成离屏和静态验证，没有新增可识别的 Playnite 生产宿主像素截图；不能把 RenderHarness PNG 当作宿主 1:1 验收。

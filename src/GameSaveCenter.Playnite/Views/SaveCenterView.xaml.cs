@@ -81,6 +81,24 @@ namespace GameSaveCenter.Playnite.Views
                         ? HorizontalAlignment.Stretch
                         : HorizontalAlignment.Right;
                 }
+                if (SaveHistorySummaryActions != null)
+                {
+                    SaveHistorySummaryActionsRow.Height = ruleCardCompact
+                        ? GridLength.Auto
+                        : new GridLength(0);
+                    SaveHistorySummaryActionsColumn.Width = ruleCardCompact
+                        ? new GridLength(0)
+                        : GridLength.Auto;
+                    Grid.SetRow(SaveHistorySummaryActions, ruleCardCompact ? 1 : 0);
+                    Grid.SetColumn(SaveHistorySummaryActions, ruleCardCompact ? 0 : 1);
+                    Grid.SetColumnSpan(SaveHistorySummaryActions, ruleCardCompact ? 2 : 1);
+                    SaveHistorySummaryActions.Margin = ruleCardCompact
+                        ? new Thickness(0, 10, 0, 0)
+                        : new Thickness(14, 0, 0, 0);
+                    SaveHistorySummaryActions.HorizontalAlignment = ruleCardCompact
+                        ? HorizontalAlignment.Stretch
+                        : HorizontalAlignment.Right;
+                }
                 var inspectorWidth = SaveHistoryLayout.TryFindResource("GscInspectorWidth") is GridLength gl ? gl : new GridLength(360);
 
                 // On compact hosts the selected-version inspector is a drawer, not a

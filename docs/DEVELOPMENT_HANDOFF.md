@@ -14,6 +14,12 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-20 UI-252 存档历史页操作卡交接
+
+- 默认“历史版本”页已补回 Demo 的 `SaveHistorySummaryCard`：真实版本数、当前规则/健康摘要，以及“立即扫描 / 重新校验 / 刷新详情”入口均位于历史表上方；对应命令仍是 `DetectPathsCommand`、`ValidateCommand`、`LoadDetailsCommand`。
+- 700 DIP 以下摘要操作区转为第二行，正常宿主保持横向布局；历史 DataGrid 的列宽拖动、排序、虚拟化和现有滚动条未改变。
+- 当前验证：XAML 18 个文件通过，Release 0 warning/0 error，Core 59/59、Worker 191/191、Playnite 251 通过/61 跳过/0 失败，RenderHarness `render-qa OK`。仍需在可识别的 Playnite 生产宿主中逐页核对，不得以离屏 PNG 代替真机像素证据。
+
 ## 2026-08-17 UI-221 AcrylicFork 整页视觉迁移收口交接
 
 - 本轮以 `GameSaveCenter.AcrylicFork` @ `b09cba6` 复核了 Overview/Save/Trainer/Media/Task/Maintenance/Settings 的生产骨架，并补齐 Media、Trainer、Save、Maintenance 分段导航右侧的样板说明与真实状态/计数。这些信息必须继续绑定真实数据，不能写死 demo 数字。

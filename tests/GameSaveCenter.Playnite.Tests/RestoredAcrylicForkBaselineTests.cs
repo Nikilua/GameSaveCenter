@@ -37,6 +37,12 @@ public sealed class RestoredAcrylicForkBaselineTests
     {
         var save = ReadSource("Views", "SaveCenterView.xaml");
 
+        Assert.Contains("x:Name=\"SaveHistorySummaryCard\"", save);
+        Assert.Contains("Text=\"历史版本\"", save);
+        Assert.Contains("Text=\"{Binding Backups.Count, Mode=OneWay, StringFormat={}{0} 个版本}\"", save);
+        Assert.Contains("Command=\"{Binding DetectPathsCommand}\"", save);
+        Assert.Contains("Command=\"{Binding ValidateCommand}\"", save);
+        Assert.Contains("Command=\"{Binding LoadDetailsCommand}\"", save);
         Assert.Contains("备份策略", save);
         Assert.Contains("备份自动化", save);
         Assert.Contains("保留与云端", save);

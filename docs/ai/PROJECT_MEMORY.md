@@ -19,6 +19,12 @@
 - 当前证据：Playnite 测试 251 通过、61 跳过、0 失败；`validate-source.py`、WPF UI 静态校验（0 error）、`git diff --check` 和 RenderHarness Release `render-qa OK` 均通过。仍无新的可识别 Playnite 生产宿主像素证据，不能把离屏结果写成真实宿主 1:1 验收。
 - 已清理两条旧 AcrylicFork 基线门禁：它们曾要求首页没有“今日工作台”、媒体页必须存在已废弃的 `MediaSummaryTabStrip`/`MediaTabStrip`，与当前 Demo 结构和用户要求相反；现改为保护当前工作台、完整 TabControl、媒体 Inspector 和可预览入口。
 
+## 2026-08-20 UI-252 当前事实：存档历史页补回 Demo 操作卡
+
+- 存档中心默认“历史版本”页现在在表格上方显示 `SaveHistorySummaryCard`，包含真实 `Backups.Count` 版本数、当前规则/健康状态摘要以及“立即扫描 / 重新校验 / 刷新详情”三个真实命令入口；不再只有表格和选中后才出现的详情按钮。
+- 摘要卡在 700 DIP 以下把操作区移到第二行，正常工作区保持标题、版本数与操作横向排列；历史表仍保持 DataGrid 的列宽拖动、排序、Item scrolling、行/列虚拟化和项目现有滚动条。
+- 当前证据：XAML structural validation 18 个文件通过；Release 构建 0 warning/0 error；Core 59/59、Worker 191/191、Playnite 251 通过/61 跳过/0 失败；RenderHarness Release `render-qa OK`，双主题、多尺寸和 resize transition 均通过。仍无新增可识别 Playnite 生产宿主像素证据，不能把离屏结果写成真机 1:1 验收。
+
 ## 2026-08-20 UI-250 当前事实：媒体页已恢复 AcrylicFork Tab 结构
 
 - 媒体中心以 AcrylicFork 实际 `MediaCenterView.xaml` 为结构基线：摘要四卡在顶部，工作区 `TabControl` 负责自己的标题栏和内容，不能再恢复成独立 Tab 标题 + `MediaTabContentHost` 的拼接结构。
