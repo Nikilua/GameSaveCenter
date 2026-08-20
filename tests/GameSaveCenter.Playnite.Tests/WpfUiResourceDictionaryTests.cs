@@ -306,6 +306,23 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void SharedSliderKeepsDemoTrackGeometryAndRealValueSurface()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var tokens = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml"));
+        var demoControls = File.ReadAllText(Path.Combine(repositoryRoot, "..", "GameSaveCenter.AcrylicFork", "src", "GameSaveCenter.Playnite", "Design", "DesignControls.xaml"));
+
+        Assert.Contains("x:Key=\"GscSlider\"", tokens);
+        Assert.Contains("<Setter Property=\"Height\" Value=\"22\"/>", tokens);
+        Assert.Contains("<Border Height=\"4\" CornerRadius=\"2\"", tokens);
+        Assert.Contains("<Thumb Width=\"18\" Height=\"18\"", tokens);
+        Assert.Contains("x:Name=\"GlassStrengthSlider\"", File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml")));
+        Assert.Contains("x:Key=\"LabSlider\"", demoControls);
+        Assert.Contains("<Setter Property=\"Height\" Value=\"22\"/>", demoControls);
+        Assert.Contains("<Thumb Width=\"18\" Height=\"18\"", demoControls);
+    }
+
+    [Fact]
     public void ProductionAdaptersResolveGameSaveCenterTokensFromTheUserControlScope()
     {
         Exception? exception = null;

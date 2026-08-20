@@ -15,6 +15,12 @@
 - 隐式 `ComboBoxItem` 现在使用 UI 字体链、`GscBodyFontSize` 和 Hand 光标；悬停/选中使用 `GscAccentTintBrush`，选中项 Medium 字重。不要修改 Popup 的真实滚动、键盘导航、最大高度或选择绑定来追求视觉一致。
 - UI-274 证据：`artifacts/gsc-b/ui-274-input-combo-v1` 构建通过；`artifacts/ui-qa/ui274-input-combo-v1/render-qa-report.txt` 为 `render-qa OK`，七页双主题、多尺寸、滚动和 resize 均通过。真实 Playnite Dashboard 宿主证据仍未补齐。
 
+## 2026-08-21 UI-275 当前事实：共享滑杆几何对齐 Demo
+
+- 唯一使用点 `Settings/GameSaveCenterSettingsView.xaml` 的 `GlassStrengthSlider` 继续使用共享 `GscSlider`；模板现在为 22 DIP 高、4 DIP 轨道、18 DIP 滑块，生产主题自适应的 Thumb 阴影/悬停/拖动状态和真实 `GlassEffectStrength` 双向绑定不变。
+- 不要为 Settings 另写滑杆模板，也不要因为收紧控件几何而移除页面 ScrollViewer、键盘焦点或值变化事件；低高度视口继续通过现有页面滚动到达下方控件。
+- UI-275 证据：`artifacts/gsc-b/ui-275-slider-v1` 构建通过；`artifacts/ui-qa/ui275-slider-v1/render-qa-report.txt` 为 `render-qa OK`，七页双主题、多尺寸、滚动和 resize 均通过。真实 Playnite Dashboard 宿主证据仍未补齐。
+
 ## 2026-08-20 当前总规则：Demo-first 覆盖旧视觉优先级
 
 - 后续所有页面迁移以 `GameSaveCenter.AcrylicFork/src/GameSaveCenter.Playnite/Design/DesignShellView.xaml`、`Pages/*.xaml`、`DesignTokens.xaml`、`DesignColorsLight.xaml`、`DesignColorsDark.xaml` 和 `DesignControls.xaml` 为唯一主要视觉基准；Demo 与旧生产页面、UiLab、历史计划或通用 Apple-inspired 建议冲突时，以 Demo 的整体结构、层级、空间、字体、颜色和控件为准。

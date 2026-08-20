@@ -2,6 +2,20 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-21 UI-275 对齐 Demo 滑杆几何
+
+**实现内容：**
+
+- 唯一生产滑杆 `GscSlider` 对齐 Demo `LabSlider` 的 22 DIP 控件高度、4 DIP 轨道和 18 DIP 滑块，保留生产主题自适应填充、边框、阴影、悬停/拖动状态及 `GlassStrengthSlider` 的真实双向值绑定。
+- 仅调整共享模板测量，不改变设置页布局、低高度页面滚动、键盘焦点、拖动命令或任何页面 Tab/ScrollViewer 实现。
+
+**验证结果：**
+
+- `scripts/build.ps1 -Configuration Release -OutputRoot artifacts/gsc-b/ui-275-slider-v1`：XAML 18/18；Release 0 warning、0 error；Core 59/59；Worker 191/191；Playnite 265 通过、62 跳过、0 失败。
+- `scripts/validate-source.py`、WPF UI 校验（0 error、19 warnings、164 info）和 `git diff --check`：通过。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/ui275-slider-v1`：`render-qa OK`，覆盖七页、Light/Dark、多尺寸、滚动探针和 resize transition；Settings 1040/1100 双主题均通过并抽查 1366 浅/深色截图。
+- 以上仍是离屏证据，不能替代可识别 Playnite 宿主中的 Slider 拖动、键盘调节、DPI 和 Dashboard 逐页真实操作验收；总 Demo-first 目标仍未完成。
+
 ## 2026-08-21 UI-274 对齐 Demo 输入框与下拉选项状态
 
 **实现内容：**

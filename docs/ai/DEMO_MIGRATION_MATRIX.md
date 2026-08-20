@@ -37,6 +37,6 @@
 
 ## 当前交付边界
 
-最近代码阶段：UI-274（输入框与下拉选项状态对齐 Demo，已提交 `c960d00`）；构建证据：`artifacts/gsc-b/ui-274-input-combo-v1`；离屏证据：`artifacts/ui-qa/ui274-input-combo-v1/render-qa-report.txt`；最近宿主证据阶段：`artifacts/ui-host-audit-ui271`（Settings 嵌入证据，Dashboard 未捕获）。
+最近代码阶段：UI-275（滑杆几何对齐 Demo，文档提交后补充 commit hash）；构建证据：`artifacts/gsc-b/ui-275-slider-v1`；离屏证据：`artifacts/ui-qa/ui275-slider-v1/render-qa-report.txt`；最近宿主证据阶段：`artifacts/ui-host-audit-ui271`（Settings 嵌入证据，Dashboard 未捕获）。
 
 现有离屏 RenderHarness 与静态审计只证明生产页面可构建、可渲染且在覆盖尺寸下没有已知高/中等级几何问题；在可识别 Playnite 生产宿主中完成逐页像素、DPI、主题、键盘焦点、命中区域和真实操作前，不得宣布总目标完成。

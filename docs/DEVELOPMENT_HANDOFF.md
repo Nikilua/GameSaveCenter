@@ -14,6 +14,12 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-21 UI-275 滑杆几何交接
+
+- 共享 `GscSlider` 已对齐 Demo `LabSlider` 的 22 DIP 高度、4 DIP 轨道和 18 DIP 滑块；唯一 Settings 使用点、真实值绑定、`ValueChanged` 事件、键盘焦点和生产主题阴影继续保留。
+- 不要在设置页局部复制滑杆模板，也不要用删除滚动内容来解决低高度布局；RenderHarness 已覆盖 Settings 双主题、多尺寸、滚动和 resize，但真实 Playnite 中的拖动/键盘调节仍需验收。
+- 当前证据：`artifacts/gsc-b/ui-275-slider-v1` Release 0 warning/0 error、Core 59/59、Worker 191/191、Playnite 265 通过/62 跳过/0 失败；`artifacts/ui-qa/ui275-slider-v1/render-qa-report.txt` 为 `render-qa OK`。
+
 ## 2026-08-21 UI-274 输入框与下拉状态交接
 
 - 共享 `GscWpfUiTextBoxTemplate` 已对齐 Demo 聚焦填充与 Accent 边框，`GscWpfUiComboBox` 的隐式选项已对齐 Demo 字体、悬停/选中 tint、Medium 字重和 Hand 光标；验证错误、Popup、键盘导航和真实选择绑定均保留。
