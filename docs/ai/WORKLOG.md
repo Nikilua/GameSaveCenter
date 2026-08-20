@@ -2,6 +2,21 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-21 UI-271 统一 Demo 表格字阶
+
+**实现内容：**
+
+- 在生产 `DesignTokens.xaml` 增加 `GscBodyFontSize=13.5` 和 `GscCaptionFontSize=12`，对应 Demo `SizeBody`/`SizeCaption`。
+- 生产共享 `DataGrid` 与 `DataGridColumnHeader` 统一使用 UI 字体链、13.5 DIP 正文、12 DIP 表头和 Medium 表头字重；表格 44 DIP 行高、36 DIP 表头、排序箭头、列宽调整、选中态、滚动和 Recycling 虚拟化保持不变。
+- `SharedDataGridUsesDemoBodyAndCaptionFontTokens` 同时锁定生产令牌与 Demo 参考值，避免宿主默认字号造成页面间表格密度漂移。
+
+**验证结果：**
+
+- `scripts/build.ps1 -Configuration Release -OutputRoot artifacts/gsc-b/ui-271-table-typography-v1`：XAML 18/18；Release 0 warning、0 error；Core 59/59、Worker 191/191、Playnite 262 通过、62 跳过、0 失败。
+- `python scripts/validate-source.py`、WPF UI 校验（0 error、19 warnings、161 info）和 `git diff --check`：通过。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/ui271-table-typography-v1`：`render-qa OK`，覆盖七页双主题、多尺寸、滚动探针和 resize transition；已抽查 Save、Task、Maintenance 表格代表截图。
+- 离屏证据仍不能替代可识别 Playnite 宿主中的真实字号、DPI、键盘焦点和列宽拖动验收，总 Demo-first 迁移保持未完成。
+
 ## 2026-08-21 UI-270 统一 Demo 折叠栏箭头动效
 
 **实现内容：**

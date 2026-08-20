@@ -10,6 +10,12 @@
 - 当前游戏选框、生产滚动条系统、真实运行时数据和 Demo 未覆盖但目标文件明确要求保留的功能继续保留；Demo Mock 数据、演示色板、窗口按钮和演示行为不得接入生产。
 - 本段覆盖早期“当前生产 main > Demo”或“技能优先”的视觉排序；旧条目只用于历史追溯，不得阻止 Demo-first 的新页面迁移。
 
+## 2026-08-21 UI-271 当前事实：共享表格使用 Demo 正文与表头字阶
+
+- `Themes/DesignTokens.xaml` 当前提供 `GscBodyFontSize=13.5`、`GscCaptionFontSize=12`，分别对应 Demo `SizeBody` 和 `SizeCaption`；生产隐式 `DataGrid` 使用 UI 字体链和正文令牌，`DataGridColumnHeader` 使用 UI 字体链、表头令牌和 Medium 字重。
+- 这只统一表格文本密度，不改变 `GscTableRowHeight=44`、`GscTableHeaderHeight=36`、排序箭头、列宽调整、选中态、内部滚动、Recycling 虚拟化或真实表格绑定。
+- 当前证据：`artifacts/gsc-b/ui-271-table-typography-v1` Release 0 warning/0 error，Core 59/59、Worker 191/191、Playnite 262 通过/62 跳过；source/WPF/diff 门禁通过；`artifacts/ui-qa/ui271-table-typography-v1/render-qa-report.txt` 双主题、多尺寸、滚动和 resize 均为 `OK`。真实 Playnite 宿主字号、DPI、键盘和列宽拖动验收仍未收口。
+
 ## 2026-08-21 UI-270 当前事实：共享折叠栏箭头动效对齐 Demo
 
 - `Themes/DesignTokens.xaml` 的 `GscDisclosureCardExpander` 现在在 `IsChecked` 进入/离开时以 150ms 将 Chevron 在 `-90°` 与 `0°` 间旋转，匹配 Demo `LabDisclosure`；`GscDisclosureCard` 继续作为统一别名。

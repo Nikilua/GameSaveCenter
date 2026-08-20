@@ -123,6 +123,8 @@
     <FontFamily x:Key="GscUiFontFamily">Segoe UI Variable Text, Segoe UI, Microsoft YaHei UI</FontFamily>
     <FontFamily x:Key="GscDisplayFontFamily">Segoe UI Variable Display, Segoe UI, Microsoft YaHei UI</FontFamily>
     <FontFamily x:Key="GscCodeFontFamily">Cascadia Mono, Consolas, Microsoft YaHei UI</FontFamily>
+    <sys:Double x:Key="GscBodyFontSize">13.5</sys:Double>
+    <sys:Double x:Key="GscCaptionFontSize">12</sys:Double>
 
     <!-- Shared table geometry. Each workspace keeps its DataGrid in a finite Grid row, while
          these tokens provide one readable density across light, dark and host themes. -->

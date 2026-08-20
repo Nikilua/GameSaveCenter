@@ -14,6 +14,12 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-21 UI-271 共享表格字阶交接
+
+- 生产 `DesignTokens.xaml` 的 `GscBodyFontSize=13.5`、`GscCaptionFontSize=12` 对齐 Demo `SizeBody`/`SizeCaption`；共享 `DataGrid` 和 `DataGridColumnHeader` 使用 UI 字体链、正文/表头字阶和 Medium 表头字重。
+- 不要为解决表格文字大小在页面局部加另一套字号；`44 DIP` 行高、`36 DIP` 表头、排序箭头、列宽调整、选中态、内部滚动和 Recycling 虚拟化继续由共享生产样式负责。
+- 最新验证：`artifacts/gsc-b/ui-271-table-typography-v1` Release 0 warning/0 error，Core 59/59、Worker 191/191、Playnite 262 通过/62 跳过/0 失败；source/WPF/diff 门禁通过；`artifacts/ui-qa/ui271-table-typography-v1/render-qa-report.txt` 为 `render-qa OK`，覆盖七页双主题、多尺寸、滚动和 resize。已抽查 Save/Task/Maintenance 表格截图，但真实 Playnite 宿主的字号、DPI、键盘焦点和列宽拖动仍需验收。
+
 ## 2026-08-21 UI-270 共享折叠栏动效交接
 
 - `Themes/DesignTokens.xaml` 的 `GscDisclosureCardExpander` 已按 Demo `LabDisclosure` 增加 Chevron 150ms 展开/收起旋转，`GscDisclosureCard` 仍是页面统一使用的共享入口；不要在单个页面复制另一套 Expander 模板。

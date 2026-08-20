@@ -287,6 +287,8 @@
          keyed style. This covers future tables and prevents a host/template change from
          silently turning touchpad scrolling into page scrolling or disabling Recycling. -->
     <Style TargetType="DataGrid">
+        <Setter Property="FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
+        <Setter Property="FontSize" Value="{DynamicResource GscBodyFontSize}"/>
         <Setter Property="GridLinesVisibility" Value="None"/>
         <Setter Property="HeadersVisibility" Value="Column"/>
         <Setter Property="RowBackground" Value="Transparent"/>
@@ -330,6 +332,9 @@
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="Foreground" Value="{DynamicResource GscSecondaryTextBrush}"/>
         <Setter Property="TextElement.Foreground" Value="{DynamicResource GscSecondaryTextBrush}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
+        <Setter Property="FontSize" Value="{DynamicResource GscCaptionFontSize}"/>
+        <Setter Property="FontWeight" Value="Medium"/>
         <!-- Demo tables use one quiet header band owned by the rounded frame; individual
              columns must not become separate rounded pills. -->
         <Setter Property="Background" Value="Transparent"/>

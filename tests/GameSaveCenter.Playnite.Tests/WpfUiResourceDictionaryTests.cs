@@ -4103,6 +4103,24 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void SharedDataGridUsesDemoBodyAndCaptionFontTokens()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var tokens = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml"));
+        var production = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml"));
+        var demoTokens = File.ReadAllText(Path.Combine(repositoryRoot, "..", "GameSaveCenter.AcrylicFork", "src", "GameSaveCenter.Playnite", "Design", "DesignTokens.xaml"));
+
+        Assert.Contains("<sys:Double x:Key=\"GscBodyFontSize\">13.5</sys:Double>", tokens);
+        Assert.Contains("<sys:Double x:Key=\"GscCaptionFontSize\">12</sys:Double>", tokens);
+        Assert.Contains("<sys:Double x:Key=\"SizeBody\">13.5</sys:Double>", demoTokens);
+        Assert.Contains("<sys:Double x:Key=\"SizeCaption\">12</sys:Double>", demoTokens);
+        Assert.Contains("<Setter Property=\"FontFamily\" Value=\"{DynamicResource GscUiFontFamily}\"/>", production);
+        Assert.Contains("<Setter Property=\"FontSize\" Value=\"{DynamicResource GscBodyFontSize}\"/>", production);
+        Assert.Contains("<Setter Property=\"FontSize\" Value=\"{DynamicResource GscCaptionFontSize}\"/>", production);
+        Assert.Contains("<Setter Property=\"FontWeight\" Value=\"Medium\"/>", production);
+    }
+
+    [Fact]
     public void SharedListBoxItemsStayRoundedAndKeyboardFocusable()
     {
         var repositoryRoot = FindRepositoryRoot();
