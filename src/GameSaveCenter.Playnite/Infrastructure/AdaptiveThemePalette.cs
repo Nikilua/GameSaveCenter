@@ -302,6 +302,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["ControlFillColorSecondaryBrush"] = Brush(secondaryFill);
             resources["ControlFillColorTertiaryBrush"] = Brush(tertiaryFill);
             resources["ControlFillColorInputActiveBrush"] = Brush(tertiaryFill);
+            resources["GscControlFocusFillBrush"] = Brush(tertiaryFill);
             resources["ControlFillColorDisabledBrush"] = Brush(WithAlpha(palette.ControlFill, 0.5));
             resources["ControlSolidFillColorDefaultBrush"] = Brush(palette.Accent);
             resources["ControlStrokeColorDefaultBrush"] = Brush(palette.ControlStroke);
@@ -440,6 +441,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscMutedTextBrush"] = Brush(tertiaryText);
             resources["GscDisabledTextBrush"] = Brush(tertiaryText);
             resources["GscControlFillBrush"] = Brush(field);
+            resources["GscControlFocusFillBrush"] = Brush(isDark ? Color.FromArgb(0x8C, 0x1A, 0x1E, 0x2B) : Color.FromArgb(0xF9, 0xFF, 0xFF, 0xFF));
             resources["GscControlStrokeBrush"] = Brush(fieldStroke);
             resources["GscDividerBrush"] = Brush(divider);
             resources["GscTableDividerBrush"] = Brush(divider);

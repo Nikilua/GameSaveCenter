@@ -284,6 +284,28 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void SharedTextInputsAndComboItemsKeepDemoFocusAndSelectionLanguage()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var production = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml"));
+        var tokens = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml"));
+        var palette = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Infrastructure", "AdaptiveThemePalette.cs"));
+        var demoControls = File.ReadAllText(Path.Combine(repositoryRoot, "..", "GameSaveCenter.AcrylicFork", "src", "GameSaveCenter.Playnite", "Design", "DesignControls.xaml"));
+
+        Assert.Contains("GscControlFocusFillBrush", production);
+        Assert.Contains("GscControlFocusFillBrush", tokens);
+        Assert.Contains("GscControlFocusFillBrush", palette);
+        Assert.Contains("Width=\"40\" Height=\"23\" CornerRadius=\"11.5\"", production);
+        Assert.Contains("Property=\"Background\" Value=\"{DynamicResource GscControlFocusFillBrush}\"", production);
+        Assert.Contains("<Setter Property=\"Cursor\" Value=\"Hand\"/>", production);
+        Assert.Contains("<Setter Property=\"FontWeight\" Value=\"Medium\"/>", production);
+        Assert.Contains("x:Key=\"LabInput\"", demoControls);
+        Assert.Contains("FieldFocusFillBrush", demoControls);
+        Assert.Contains("x:Key=\"LabComboItem\"", demoControls);
+        Assert.Contains("<Setter Property=\"FontWeight\" Value=\"Medium\"/>", demoControls);
+    }
+
+    [Fact]
     public void ProductionAdaptersResolveGameSaveCenterTokensFromTheUserControlScope()
     {
         Exception? exception = null;

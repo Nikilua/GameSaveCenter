@@ -76,6 +76,7 @@
             </Trigger>
             <Trigger Property="IsKeyboardFocusWithin" Value="True">
                 <Setter TargetName="Chrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
+                <Setter TargetName="Chrome" Property="Background" Value="{DynamicResource GscControlFocusFillBrush}"/>
             </Trigger>
             <Trigger Property="Validation.HasError" Value="True">
                 <Setter TargetName="Chrome" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/>
@@ -183,6 +184,9 @@
         <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
+        <Setter Property="FontSize" Value="{DynamicResource GscBodyFontSize}"/>
+        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Padding" Value="10,8"/>
         <Setter Property="MinHeight" Value="36"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -202,7 +206,8 @@
                             <Setter TargetName="ItemChrome" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="ItemChrome" Property="Background" Value="{DynamicResource GscAccentTintStrongBrush}"/>
+                            <Setter TargetName="ItemChrome" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
+                            <Setter Property="FontWeight" Value="Medium"/>
                             <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">

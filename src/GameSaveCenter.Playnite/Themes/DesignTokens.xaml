@@ -69,6 +69,7 @@
     <SolidColorBrush x:Key="GscMutedTextBrush" Color="#FF828A99"/>
     <SolidColorBrush x:Key="GscDisabledTextBrush" Color="#FF5B6373"/>
     <SolidColorBrush x:Key="GscControlFillBrush" Color="#F5202532"/>
+    <SolidColorBrush x:Key="GscControlFocusFillBrush" Color="#8C1A1E2B"/>
     <SolidColorBrush x:Key="GscProgressTrackBrush" Color="#2E3542"/>
     <SolidColorBrush x:Key="GscProgressFillBrush" Color="#7C8CF8"/>
     <SolidColorBrush x:Key="GscControlStrokeBrush" Color="#2EFFFFFF"/>

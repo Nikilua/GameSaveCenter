@@ -2,6 +2,21 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-21 UI-274 对齐 Demo 输入框与下拉选项状态
+
+**实现内容：**
+
+- 生产共享 TextBox 模板新增 `GscControlFocusFillBrush` 聚焦表面，浅/深色值分别对应 Demo `FieldFocusFillBrush`；键盘焦点仍使用原有共享 FocusVisual，验证错误状态继续覆盖为错误语义色。
+- 生产共享 ComboBoxItem 补齐 Demo 的 UI 字体链、正文令牌和 Hand 光标；悬停/选中使用同一 Demo tint，选中项使用 Medium 字重，Popup 的滚动、键盘导航、最大高度和真实 `ItemsSource`/选择绑定保持不变。
+- `AdaptiveThemePaletteFactory` 同时为高对比度 WPF 路径和普通 Demo 核心色板注入聚焦表面资源，没有改变项目 Tab chrome、当前游戏选框、ScrollViewer 或业务命令。
+
+**验证结果：**
+
+- `scripts/build.ps1 -Configuration Release -OutputRoot artifacts/gsc-b/ui-274-input-combo-v1`：XAML 18/18；Release 0 warning、0 error；Core 59/59；Worker 191/191；Playnite 264 通过、62 跳过、0 失败。
+- `scripts/validate-source.py`、WPF UI 校验（0 error、19 warnings、164 info）和 `git diff --check`：通过。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/ui274-input-combo-v1`：`render-qa OK`，覆盖七页、Light/Dark、多尺寸、滚动探针和 resize transition；已抽查 Settings/Save 浅色与深色 1040×700 截图。
+- 以上仍是离屏证据，不能替代可识别 Playnite 宿主中的 Dashboard 逐页视觉、DPI、键盘焦点、下拉命中和真实操作验收；总 Demo-first 目标仍未完成。
+
 ## 2026-08-21 UI-273 统一 Demo 按钮与开关状态
 
 **实现内容：**

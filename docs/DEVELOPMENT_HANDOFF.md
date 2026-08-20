@@ -14,6 +14,12 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-21 UI-274 输入框与下拉状态交接
+
+- 共享 `GscWpfUiTextBoxTemplate` 已对齐 Demo 聚焦填充与 Accent 边框，`GscWpfUiComboBox` 的隐式选项已对齐 Demo 字体、悬停/选中 tint、Medium 字重和 Hand 光标；验证错误、Popup、键盘导航和真实选择绑定均保留。
+- `GscControlFocusFillBrush` 有默认令牌、普通主题 Demo 核心覆盖和高对比度 WPF 适配路径。后续页面不要局部复制 TextBox/ComboBox 模板，也不要用隐藏下拉项或改变滚动模型来解决布局问题。
+- 当前证据：`artifacts/gsc-b/ui-274-input-combo-v1` Release 0 warning/0 error、Core 59/59、Worker 191/191、Playnite 264 通过/62 跳过/0 失败；`artifacts/ui-qa/ui274-input-combo-v1/render-qa-report.txt` 为 `render-qa OK`。真实 Playnite Dashboard 仍需用户在可见宿主中打开 GameSaveCenter 后补证。
+
 ## 2026-08-21 UI-273 按钮与开关共享状态交接
 
 - `Themes/WpfUiProduction.xaml` 的 `GscWpfUiButton` 已加入 Demo `LabBtn` 的悬停/按下覆盖层和过渡；`GscWpfUiToggleSwitch` 已对齐 Demo `LabToggle` 的 40×23 DIP 几何与 140ms 滑块位移动效。覆盖层不可命中，所有真实内容、命令、绑定和焦点语义保持。

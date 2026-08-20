@@ -9,6 +9,12 @@
 - 共享 `GscWpfUiToggleSwitch` 使用 40×23 DIP 轨道、17 DIP 滑块、46 DIP 内容起始列和 140ms `RenderTransform.(TranslateTransform.X)` 位移动效；真实 `Content`、设置绑定、键盘焦点、禁用态和项目页面滚动保持不变。
 - UI-273 证据：`artifacts/gsc-b/ui-273-shared-button-toggle-v1` 构建通过；`artifacts/ui-qa/ui273-shared-button-toggle-v1/render-qa-report.txt` 为 `render-qa OK`，七页双主题、多尺寸、滚动和 resize 均通过。真实 Playnite Dashboard 宿主证据仍未补齐。
 
+## 2026-08-21 UI-274 当前事实：共享输入框与下拉选项对齐 Demo
+
+- 生产 `GscWpfUiTextBoxTemplate` 的键盘焦点现在同时切换 `GscControlFocusFillBrush` 与 Accent 边框；普通主题由 `ApplyDemoCoreResources` 使用 Demo `FieldFocusFillBrush` 注入，高对比度由 `ApplyWpfUiResources` 提供自适应 fallback，验证错误仍保持错误填充/边框。
+- 隐式 `ComboBoxItem` 现在使用 UI 字体链、`GscBodyFontSize` 和 Hand 光标；悬停/选中使用 `GscAccentTintBrush`，选中项 Medium 字重。不要修改 Popup 的真实滚动、键盘导航、最大高度或选择绑定来追求视觉一致。
+- UI-274 证据：`artifacts/gsc-b/ui-274-input-combo-v1` 构建通过；`artifacts/ui-qa/ui274-input-combo-v1/render-qa-report.txt` 为 `render-qa OK`，七页双主题、多尺寸、滚动和 resize 均通过。真实 Playnite Dashboard 宿主证据仍未补齐。
+
 ## 2026-08-20 当前总规则：Demo-first 覆盖旧视觉优先级
 
 - 后续所有页面迁移以 `GameSaveCenter.AcrylicFork/src/GameSaveCenter.Playnite/Design/DesignShellView.xaml`、`Pages/*.xaml`、`DesignTokens.xaml`、`DesignColorsLight.xaml`、`DesignColorsDark.xaml` 和 `DesignControls.xaml` 为唯一主要视觉基准；Demo 与旧生产页面、UiLab、历史计划或通用 Apple-inspired 建议冲突时，以 Demo 的整体结构、层级、空间、字体、颜色和控件为准。
