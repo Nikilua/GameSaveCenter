@@ -2294,6 +2294,77 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.DoesNotContain("MediaSummary.FavoriteCount, Mode=TwoWay", media);
     }
 
+    [Fact]
+    public void MediaCurrentActionsReserveACompactDetailsLane()
+    {
+        Exception? exception = null;
+        var narrowBatchRow = -1;
+        var narrowBatchColumn = -1;
+        var narrowDetailsRow = -1;
+        var narrowDetailsColumn = -1;
+        var wideBatchRow = -1;
+        var wideBatchColumn = -1;
+        var wideDetailsRow = -1;
+        var wideDetailsColumn = -1;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var view = new MediaCenterView();
+                var viewType = typeof(MediaCenterView);
+                var list = (ListBox)viewType.GetField("MediaGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var batch = (WrapPanel)viewType.GetField("MediaCurrentBatchActions", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var details = (GameSaveCenter.Playnite.Controls.Button)viewType.GetField("MediaCompactDetailsButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var selected = new object();
+                list.ItemsSource = new[] { selected };
+                list.SelectedItem = selected;
+
+                view.ApplyResponsiveLayout(900, 640);
+                narrowBatchRow = Grid.GetRow(batch);
+                narrowBatchColumn = Grid.GetColumn(batch);
+                narrowDetailsRow = Grid.GetRow(details);
+                narrowDetailsColumn = Grid.GetColumn(details);
+
+                view.ApplyResponsiveLayout(1200, 720);
+                wideBatchRow = Grid.GetRow(batch);
+                wideBatchColumn = Grid.GetColumn(batch);
+                wideDetailsRow = Grid.GetRow(details);
+                wideDetailsColumn = Grid.GetColumn(details);
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.Equal(1, narrowBatchRow);
+        Assert.Equal(0, narrowBatchColumn);
+        Assert.Equal(1, narrowDetailsRow);
+        Assert.Equal(1, narrowDetailsColumn);
+        Assert.Equal(0, wideBatchRow);
+        Assert.Equal(1, wideBatchColumn);
+        Assert.Equal(0, wideDetailsRow);
+        Assert.Equal(1, wideDetailsColumn);
+
+        var repositoryRoot = FindRepositoryRoot();
+        var mediaPath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml");
+        var media = XDocument.Parse(File.ReadAllText(mediaPath));
+        var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
+        var actionRow = media.Descendants().Single(element => element.Attribute(xamlName)?.Value == "MediaCurrentActionRow");
+        Assert.Equal(2, actionRow.Descendants().Count(element => element.Name.LocalName == "RowDefinition"));
+        Assert.NotNull(actionRow.Descendants().SingleOrDefault(element => element.Attribute(xamlName)?.Value == "MediaCurrentActionHint"));
+        Assert.NotNull(actionRow.Descendants().SingleOrDefault(element => element.Attribute(xamlName)?.Value == "MediaCurrentBatchActions"));
+        Assert.Contains("FavoriteSelectedMediaCommand", File.ReadAllText(mediaPath));
+        Assert.Contains("UnfavoriteSelectedMediaCommand", File.ReadAllText(mediaPath));
+        Assert.Contains("CommentSelectedMediaCommand", File.ReadAllText(mediaPath));
+    }
+
     [LegacyProductionUiBaselineFact]
     public void DemoPhaseTwoLayoutKeepsNaturalFormsAndDesktopInspectors()
     {

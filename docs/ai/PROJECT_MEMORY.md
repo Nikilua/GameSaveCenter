@@ -3,6 +3,12 @@
 > 维护时间：2026-08-21
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-21 UI-276 当前事实：媒体当前页窄宽操作区已拆分
+
+- `MediaCenterView.xaml` 的 `MediaCurrentActionRow` 现在是共享的响应式操作容器：宽屏提示和三个批量操作同一行；窄屏提示独占第一行，批量操作与 `MediaCompactDetailsButton` 分列第二行，不能把两组按钮重新放回同一个 Grid 单元格。
+- `MediaCenterView.xaml.cs` 只在 `ApplyResponsiveLayout` 中切换操作行的行列位置；媒体 `ListBox` 的 SelectionMode、Recycling、异步缩略图、Inspector 抽屉和 `MediaCompactDetailsButton` 的展开/收起状态保持不变。
+- UI-276 证据：`artifacts/gsc-b/ui-276-media-actions-v1` Release 0 warning/0 error、Core 59/59、Worker 191/191、Playnite 266 通过/62 跳过/0 失败；`artifacts/ui-qa/ui276-media-actions-v1/render-qa-report.txt` 为 `render-qa OK`，媒体 1040×700 双主题截图确认操作区不再重叠。真实 Playnite Dashboard 宿主证据仍未补齐。
+
 ## 2026-08-21 UI-273 当前事实：共享按钮与开关状态对齐 Demo
 
 - `Themes/WpfUiProduction.xaml` 的共享 `GscWpfUiButton` 现在有 Demo `LabBtn` 对应的 `HoverOverlay`/`PressedOverlay` 状态层和透明度动效；主按钮继续使用生产 Demo 核心色板，覆盖层 `IsHitTestVisible=False`，不得在页面局部复制按钮状态模板。

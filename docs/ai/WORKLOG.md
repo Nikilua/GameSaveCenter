@@ -2,6 +2,21 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-21 UI-276 修复媒体当前页窄宽操作区重叠
+
+**实现内容：**
+
+- 修复 `MediaCenterView` 当前游戏媒体页在 Playnite 实际工作区宽度约 744 DIP（窗口 1040 DIP）时的操作区重叠：原批量操作 `WrapPanel` 与紧凑 Inspector 的“查看媒体详情”按钮共享同一 Grid 单元格，导致按钮互相覆盖、命中区不可靠。
+- 新增 `MediaCurrentActionRow` 的双行/双列响应式契约：宽屏保持提示、批量操作同一行；窄屏提示独占第一行，批量操作与媒体详情抽屉按钮分列第二行。`FavoriteSelectedMediaCommand`、`UnfavoriteSelectedMediaCommand`、`CommentSelectedMediaCommand`、`MediaCompactDetailsButton`、Inspector 和媒体选择绑定均保留。
+- 只调整页面操作区的布局测量，没有改变媒体预览、异步缩略图、虚拟化 ListBox、滚动条、Inspector 内容或任何真实命令。
+
+**验证结果：**
+
+- `scripts/build.ps1 -Configuration Release -OutputRoot artifacts/gsc-b/ui-276-media-actions-v1`：XAML 18/18；Release 0 warning、0 error；Core 59/59；Worker 191/191；Playnite 266 通过、62 跳过、0 失败。
+- `scripts/validate-source.py`、`validate_wpf_ui.py`（0 error、19 warnings）和 `git diff --check`：通过；新增媒体响应式断言定向测试 1/1 通过。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/ui276-media-actions-v1`：`render-qa OK`，覆盖七页、Light/Dark、1040/1100/1366/2560 DIP、滚动探针和 resize transition；抽查媒体页 1040×700 双主题及 1366×768 浅色截图，操作按钮已分离且未见覆盖。
+- 以上仍是离屏/静态证据，不能替代可识别 Playnite Dashboard 宿主中的真实媒体选择、批量收藏/备注、Inspector 抽屉键盘焦点和 DPI 验收；真实 Dashboard 嵌入证据仍未补齐。
+
 ## 2026-08-21 UI-275 对齐 Demo 滑杆几何
 
 **实现内容：**

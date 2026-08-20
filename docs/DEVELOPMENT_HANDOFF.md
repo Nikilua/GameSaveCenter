@@ -14,6 +14,12 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-21 UI-276 媒体当前页操作区交接
+
+- `MediaCenterView` 当前游戏媒体页的批量操作与紧凑 Inspector 入口已拆成 `MediaCurrentActionRow`：宽屏同一行，窄屏提示独占首行、批量操作与“查看媒体详情”分列第二行，避免 Playnite 工作区约 744 DIP 时按钮互相覆盖。
+- 真实媒体选择、收藏/取消收藏/应用备注命令、异步预览、Recycling ListBox、Inspector 滚动和紧凑详情抽屉均未迁移；后续不要通过隐藏批量操作或删除详情入口来修复窄宽布局。
+- 当前证据：`artifacts/gsc-b/ui-276-media-actions-v1` Release 0 warning/0 error、Core 59/59、Worker 191/191、Playnite 266 通过/62 跳过/0 失败；`artifacts/ui-qa/ui276-media-actions-v1/render-qa-report.txt` 为 `render-qa OK`，已抽查媒体浅/深主题 1040×700 与浅色 1366×768。真实 Playnite Dashboard 的媒体命中、键盘焦点和 DPI 仍需用户在可见宿主中补验。
+
 ## 2026-08-21 UI-275 滑杆几何交接
 
 - 共享 `GscSlider` 已对齐 Demo `LabSlider` 的 22 DIP 高度、4 DIP 轨道和 18 DIP 滑块；唯一 Settings 使用点、真实值绑定、`ValueChanged` 事件、键盘焦点和生产主题阴影继续保留。

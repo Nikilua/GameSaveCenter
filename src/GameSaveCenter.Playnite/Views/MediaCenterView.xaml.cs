@@ -94,6 +94,18 @@ namespace GameSaveCenter.Playnite.Views
                 var stack = width < 980;
                 if (stack)
                 {
+                    MediaCurrentActionRow.RowDefinitions[1].Height = GridLength.Auto;
+                    Grid.SetRow(MediaCurrentActionHint, 0);
+                    Grid.SetColumn(MediaCurrentActionHint, 0);
+                    Grid.SetColumnSpan(MediaCurrentActionHint, 2);
+                    Grid.SetRow(MediaCurrentBatchActions, 1);
+                    Grid.SetColumn(MediaCurrentBatchActions, 0);
+                    Grid.SetColumnSpan(MediaCurrentBatchActions, 1);
+                    MediaCurrentBatchActions.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    Grid.SetRow(MediaCompactDetailsButton, 1);
+                    Grid.SetColumn(MediaCompactDetailsButton, 1);
+                    MediaCompactDetailsButton.HorizontalAlignment = HorizontalAlignment.Right;
+
                     var hasMediaSelection = MediaGrid.SelectedItem != null;
                     if (hasMediaSelection)
                     {
@@ -113,6 +125,18 @@ namespace GameSaveCenter.Playnite.Views
                 }
                 else
                 {
+                    MediaCurrentActionRow.RowDefinitions[1].Height = new GridLength(0);
+                    Grid.SetRow(MediaCurrentActionHint, 0);
+                    Grid.SetColumn(MediaCurrentActionHint, 0);
+                    Grid.SetColumnSpan(MediaCurrentActionHint, 1);
+                    Grid.SetRow(MediaCurrentBatchActions, 0);
+                    Grid.SetColumn(MediaCurrentBatchActions, 1);
+                    Grid.SetColumnSpan(MediaCurrentBatchActions, 1);
+                    MediaCurrentBatchActions.HorizontalAlignment = HorizontalAlignment.Right;
+                    Grid.SetRow(MediaCompactDetailsButton, 0);
+                    Grid.SetColumn(MediaCompactDetailsButton, 1);
+                    MediaCompactDetailsButton.HorizontalAlignment = HorizontalAlignment.Right;
+
                     MediaCompactDetailsButton.Visibility = Visibility.Collapsed;
                     // A compact layout temporarily collapses the inspector to make room
                     // for the list. When the host grows back to the wide layout, restore
