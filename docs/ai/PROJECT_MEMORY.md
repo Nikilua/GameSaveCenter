@@ -3,6 +3,12 @@
 > 维护时间：2026-08-21
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-21 UI-279 当前事实：Trainer 窄宽导入工具栏改为可用重排
+
+- `TrainerCenterView.xaml` 的“当前游戏工具”标题区现在把导入工具栏、拖放提示和标题分成可重排的独立行；`ApplyResponsiveLayout` 在 `<980 DIP` 时把四个真实导入按钮移到标题下方，避免约 744 DIP 工作区裁掉最右侧按钮。
+- 不得通过隐藏“导入修改器”“导入目录”“导入 CT”“+ 添加启动项”中的任何入口来解决窄宽问题；四个 Command、导入确认、工具列表/Inspector、ScrollViewer 和 Recycling 虚拟化均保持。
+- UI-279 证据：`artifacts/gsc-b/ui279-trainer-toolbar-v1` 构建/测试通过；`artifacts/ui-qa/ui279-trainer-toolbar-v1/render-qa-report.txt` 为 `render-qa OK`，浅/深色 Trainer 1040×700 截图按钮均可见；`artifacts/ui-audit-ui279-trainer-toolbar-v1/AUDIT_SUMMARY.md` 为 Fidelity 0、HIGH 0、失败路由 0。真实 Playnite Dashboard 宿主证据仍未补齐。
+
 ## 2026-08-21 UI-278 当前事实：RenderHarness 使用主题化宿主画布
 
 - RenderHarness 之前在页面宿主 Grid 中写死 `#181E2B`，导致强制浅色 QA 将 Demo 浅色色板页面错误放在深色画布上；这不是生产 Trainer 页面本身的真实主题关系。

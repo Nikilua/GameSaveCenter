@@ -222,6 +222,26 @@ public sealed class RestoredAcrylicForkBaselineTests
     }
 
     [Fact]
+    public void TrainerImportToolbarReflowsBeforeTheCompactViewportCanClipItsCommands()
+    {
+        var trainer = ReadSource("Views", "TrainerCenterView.xaml");
+        var trainerCode = ReadSource("Views", "TrainerCenterView.xaml.cs");
+
+        Assert.Contains("x:Name=\"TrainerToolsToolbar\"", trainer);
+        Assert.Contains("x:Name=\"TrainerToolsDropHint\"", trainer);
+        Assert.Contains("x:Name=\"TrainerToolsToolbarRow\"", trainer);
+        Assert.Contains("x:Name=\"TrainerToolsHintRow\"", trainer);
+        Assert.Contains("var stackInstalled = width < 980", trainerCode);
+        Assert.Contains("Grid.SetRow(TrainerToolsToolbar, stackInstalled ? 1 : 0)", trainerCode);
+        Assert.Contains("Grid.SetColumnSpan(TrainerToolsToolbar, stackInstalled ? 2 : 1)", trainerCode);
+        Assert.Contains("Grid.SetRow(TrainerToolsDropHint, stackInstalled ? 2 : 1)", trainerCode);
+        Assert.Contains("ImportTrainerCommand", trainer);
+        Assert.Contains("ImportToolFolderCommand", trainer);
+        Assert.Contains("ImportCheatTableCommand", trainer);
+        Assert.Contains("ImportCustomLaunchItemCommand", trainer);
+    }
+
+    [Fact]
     public void OverviewAttentionFindingsUseASeparateBoundedProjectScrollSurface()
     {
         var overview = ReadSource("Views", "OverviewView.xaml");

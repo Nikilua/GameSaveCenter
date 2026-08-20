@@ -98,6 +98,23 @@ namespace GameSaveCenter.Playnite.Views
                 // layout (below the shared 980 DIP breakpoint) should stack them.
                 var stackInstalled = width < 980;
 
+                // The four real import commands must remain reachable in the same narrow
+                // host that stacks the inspector. Keeping them in the title row makes the
+                // auto-sized action column extend beyond the viewport and clips the last
+                // button instead of giving it a usable hit target. Move the toolbar below
+                // the title on compact widths; the drop hint follows it so neither row is
+                // covered or made visually invisible.
+                Grid.SetRow(TrainerToolsToolbar, stackInstalled ? 1 : 0);
+                Grid.SetColumn(TrainerToolsToolbar, stackInstalled ? 1 : 2);
+                Grid.SetColumnSpan(TrainerToolsToolbar, stackInstalled ? 2 : 1);
+                TrainerToolsToolbar.HorizontalAlignment = stackInstalled
+                    ? HorizontalAlignment.Left
+                    : HorizontalAlignment.Right;
+                TrainerToolsToolbar.Margin = stackInstalled
+                    ? new Thickness(0, 6, 0, 0)
+                    : new Thickness(0);
+                Grid.SetRow(TrainerToolsDropHint, stackInstalled ? 2 : 1);
+
                 // On compact hosts the selected-tool editor is a drawer, not a permanent
                 // second row. The virtualized tool list keeps the star row by default;
                 // every edit action remains one click away through the compact button.

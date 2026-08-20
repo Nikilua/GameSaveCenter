@@ -2,6 +2,21 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-21 UI-279 修复修改器中心窄宽导入工具栏裁切
+
+**实现内容：**
+
+- 发现 Trainer 在约 744 DIP 工作区（1040×700 RenderHarness）中，四个真实导入按钮仍挤在“当前游戏工具”标题行的自动列，最右侧“+ 添加启动项”超出可视边界，命中区不可靠。
+- `TrainerCenterView.xaml` 为标题、导入工具栏和拖放提示增加独立行；`TrainerCenterView.xaml.cs` 在 `<980 DIP` 时将四个导入命令移到标题下方，并让拖放提示顺延到第三行，宽屏仍保持 Demo 的标题/工具栏同排节奏。
+- 保留 `ImportTrainerCommand`、`ImportToolFolderCommand`、`ImportCheatTableCommand`、`ImportCustomLaunchItemCommand`、导入确认、工具列表、Inspector、ScrollViewer 和 Recycling 虚拟化；新增 `RestoredAcrylicForkBaselineTests.TrainerImportToolbarReflowsBeforeTheCompactViewportCanClipItsCommands` 契约测试。
+
+**验证结果：**
+
+- `scripts/build.ps1 -Configuration Release -OutputRoot artifacts/gsc-b/ui279-trainer-toolbar-v1`：XAML 18/18；Release 0 warning、0 error；Core 59/59；Worker 191/191；Playnite 268 通过、62 跳过、0 失败。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/ui279-trainer-toolbar-v1`：`render-qa OK`，覆盖七页、Light/Dark、1040/1100/1366/2560 DIP、滚动探针和 resize；浅/深色 Trainer 1040×700 截图确认四个导入按钮全部可见。
+- `scripts/capture-ui-audit.ps1 -Configuration Release -Output artifacts/ui-audit-ui279-trainer-toolbar-v1`：Fidelity 0、HIGH 0、失败路由 0；仍有 4 个现有 `TOOLBAR_VERTICAL_EXPANSION` MEDIUM，来源是已选工具 Inspector 内五项开关/启动延迟的必要 WrapPanel 换行，不是导入按钮裁切。
+- `scripts/validate-source.py`、WPF 质量校验（0 error、19 warnings、164 info）和 `git diff --check` 通过。以上仍为离屏/静态证据，真实 Playnite Dashboard 证据未补齐。
+
 ## 2026-08-21 UI-278 修正双主题 RenderHarness 宿主背景
 
 **实现内容：**

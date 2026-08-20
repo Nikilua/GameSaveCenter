@@ -14,6 +14,12 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-21 UI-279 Trainer 导入工具栏窄宽交接
+
+- `TrainerCenterView` 标题区新增 `TrainerToolsToolbar` 与 `TrainerToolsDropHint` 的独立布局行；`ApplyResponsiveLayout` 在 `<980 DIP` 时将四个真实导入命令置于标题下方，拖放提示再下一行，解决 1040×700 / 744 DIP 工作区最后一个按钮被边界裁切的问题。
+- 继续保留项目 `TrainerTabControl` / `TrainerTabItem`，不得用隐藏按钮、横向溢出或 Demo 外层 segmented 解决；工具列表、导入确认、工具编辑 Inspector、真实绑定/命令、ScrollViewer 和回收虚拟化不变。
+- 当前证据：`artifacts/ui-qa/ui279-trainer-toolbar-v1/render-qa-report.txt` 为 `render-qa OK`；Light/Dark Trainer 1040×700 已抽查，四个导入按钮均在可视区域；`artifacts/ui-audit-ui279-trainer-toolbar-v1/AUDIT_SUMMARY.md` 无 HIGH、无 Fidelity、无失败路由。静态审计的 MEDIUM `TOOLBAR_VERTICAL_EXPANSION` 只来自 Inspector 内必要的五项设置换行。
+
 ## 2026-08-21 UI-278 RenderHarness 主题背景交接
 
 - RenderHarness 的页面宿主背景不能写死为深色；`CreateHarnessBackground(view)` 必须优先读取页面当前主题的 `GscBackdropBrush`，否则强制浅色截图会把正确的深色文字错误压到深色画布上，产生假低对比。
