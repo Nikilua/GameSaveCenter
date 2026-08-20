@@ -3218,3 +3218,20 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 **验证边界：**
 
 - 本阶段没有取得新的可识别 Playnite 生产宿主逐页像素截图；RenderHarness、测试和离屏图片不能替代 Playnite 的 Light/Dark/Follow、高对比度、DPI、键盘焦点、真实数据和连续缩放人工验收。总 Demo-first 目标仍未完成。
+
+## 2026-08-20 UI-256 共享按钮与反馈层收口
+
+**实现内容：**
+
+- `Themes/Redesign.xaml` 增加 Demo-first 的共享 Toast/Dialog 资源：Toast 卡片、标题、消息、Dialog 遮罩、Dialog 卡片、标题和消息统一使用浮层材质、圆角、间距和阴影令牌。
+- `DashboardView` 的 Toast 仍由现有 `UiNotificationRequested` 事件、计时器、悬停暂停、最多四条和错误详情入口驱动；Dialog 仍保留确认、取消、以后再说、不再提醒、错误详情、Escape 和单实例取消语义。
+- 删除 Dashboard 内与 `DesignTokens.xaml` 重复的 `GscButtonBase`/`GscPrimaryButton`/工具栏按钮模板，让原生 `Button` 反馈操作复用全局按钮契约；WPF-UI `ui:Button` 页面按钮继续复用 `WpfUiProduction.xaml` 的共享语义样式。
+- 设置页导入报告和错误仍保持可靠的原生 `MessageBox` 模态路径；没有为了视觉统一把 Window-wide ContentDialogHost 或不稳定 Snackbar 强行嵌入 Playnite 页面。
+- 增加源码契约，锁定共享反馈资源、Dashboard 真实通知/确认事件和按钮模板去重不会被后续页面迁移误删。
+
+**验证结果：**
+
+- `scripts/check-xaml.ps1`：18 个 XAML 文件通过；`scripts/validate-source.py`：通过；`git diff --check`：通过。
+- Release 解决方案构建：0 警告、0 错误；Core：59/59；Worker：190/190（排除 Soak）；Playnite：252 通过、61 跳过、0 失败。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/feedback-surfaces-final`：`render-qa OK`，七页、Light/Dark、1040/1100/1366/2560、多分类/多 Tab 和 resize transition 均通过。
+- `validate_wpf_ui.py`：0 error、20 warnings、161 info；未取得新的可识别 Playnite 宿主逐页像素截图，离屏证据不能替代宿主 1:1 验收。

@@ -580,3 +580,11 @@ git branch --show-current
 - 所有业务折叠区仍使用 `GscDisclosureCard`；Mono 文本应使用 `GscCodeFontFamily`，其首选链是 `Cascadia Mono, Consolas, Microsoft YaHei UI`。
 - 新证据目录为 `artifacts/ui-qa/shared-grid-contract-final`，报告为 `render-qa OK`，覆盖七页、多尺寸、双主题和 resize transition。源码/XAML/Release/Playnite 门禁已通过。
 - 下一阶段继续按目标文件检查按钮、辅助界面和真实操作路径，并优先在同一可识别 Playnite 宿主取得逐页截图；不要把上述离屏证据写成 Playnite 1:1 视觉通过。
+
+## 2026-08-20 UI-256 反馈层与按钮契约交接
+
+- `Themes/Redesign.xaml` 已新增共享 `GscRedesignFeedbackToastCard`、`GscRedesignFeedbackDialogCard`、Dialog 遮罩和反馈文字资源；Dashboard 的 Toast/Dialog 必须继续引用这些资源，不要把圆角、背景、阴影、标题字号重新写回 `DashboardView.xaml.cs` 或单页 XAML。
+- Dashboard 的原生 `Button` 已回到 `DesignTokens.xaml` 的 `GscButtonBase`/`GscPrimaryButton`；页面内原有 `ui:Button` 语义样式仍是 WPF-UI 的共享入口。修改按钮时优先修共享资源，保留最小 38 DIP 高度、焦点视觉、禁用态和可读的文本截断。
+- Toast 的真实通知来源仍是 `GameSaveCenterPlugin.UiNotificationRequested`，确认/选择仍由 `UiConfirmationRequested`/`UiChoiceRequested` 和 `TaskCompletionSource` 完成；不要改成只显示静态 Demo 提示或删除错误详情、Escape、计时器清理、重复 Dialog 取消语义。
+- 设置页导出成功、导入报告和错误继续走原生 `MessageBox`，不要在 Playnite 共享 Window 中重新注册 WPF-UI `ContentDialogHost`；如果未来要改成页面内反馈，必须先补充 Window 宿主、焦点、模态、取消和真实操作验证。
+- UI-256 已完成 XAML/source/Release/三组测试/离屏 render-qa；真实 Playnite 宿主 Light/Dark/Follow、高对比度、DPI、键盘焦点、Toast/Dialog 实际触发仍是人工验收边界，总 Demo-first 目标未完成。

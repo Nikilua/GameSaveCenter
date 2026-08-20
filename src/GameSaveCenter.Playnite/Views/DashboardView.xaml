@@ -82,121 +82,6 @@
             <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
         </Style>
 
-        <Style x:Key="GscButtonBase" TargetType="Button">
-            <Setter Property="OverridesDefaultStyle" Value="True"/>
-            <Setter Property="FocusVisualStyle" Value="{StaticResource GscFocusVisual}"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
-            <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
-            <Setter Property="BorderBrush" Value="{DynamicResource GscDividerBrush}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="15,8"/>
-            <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
-            <Setter Property="Margin" Value="0,0,8,8"/>
-            <Setter Property="FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
-            <Setter Property="FontWeight" Value="Medium"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="Chrome" CornerRadius="11" Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
-                                Padding="{TemplateBinding Padding}" RenderTransformOrigin="0.5,0.5">
-                            <Border.RenderTransform>
-                                <ScaleTransform ScaleX="1" ScaleY="1"/>
-                            </Border.RenderTransform>
-                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              RecognizesAccessKey="True"
-                                              SnapsToDevicePixels="True"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Chrome" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
-                                <Setter TargetName="Chrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="Chrome" Property="RenderTransform">
-                                    <Setter.Value>
-                                        <ScaleTransform ScaleX="0.97" ScaleY="0.97"/>
-                                    </Setter.Value>
-                                </Setter>
-                                <Setter TargetName="Chrome" Property="Opacity" Value="0.84"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="Chrome" Property="Opacity" Value="0.4"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
-            <EventSetter Event="MouseEnter" Handler="OnButtonMouseEnter"/>
-            <EventSetter Event="MouseLeave" Handler="OnButtonMouseLeave"/>
-        </Style>
-
-        <Style x:Key="GscPrimaryButton" TargetType="Button" BasedOn="{StaticResource GscButtonBase}">
-            <Setter Property="Foreground" Value="{DynamicResource GscOnAccentTextBrush}"/>
-            <Setter Property="Background" Value="{DynamicResource GscPrimaryButtonBrush}"/>
-            <Setter Property="BorderBrush" Value="{DynamicResource GscPrimaryButtonBorderBrush}"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="Chrome" CornerRadius="12" Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1"
-                                Padding="{TemplateBinding Padding}" RenderTransformOrigin="0.5,0.5"
-                                Effect="{DynamicResource GscPrimaryButtonEffect}">
-                            <Border.RenderTransform>
-                                <ScaleTransform ScaleX="1" ScaleY="1"/>
-                            </Border.RenderTransform>
-                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              RecognizesAccessKey="True"
-                                              SnapsToDevicePixels="True"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Chrome" Property="Opacity" Value="0.9"/></Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="Chrome" Property="RenderTransform">
-                                    <Setter.Value>
-                                        <ScaleTransform ScaleX="0.97" ScaleY="0.97"/>
-                                    </Setter.Value>
-                                </Setter>
-                                <Setter TargetName="Chrome" Property="Opacity" Value="0.78"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="False"><Setter TargetName="Chrome" Property="Opacity" Value="0.38"/></Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="GscContextButton" TargetType="Button" BasedOn="{StaticResource GscButtonBase}">
-            <Style.Triggers>
-                <Trigger Property="IsEnabled" Value="False"><Setter Property="Visibility" Value="Collapsed"/></Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <!-- Button rows use an explicit zero-margin style so every item shares the same
-             measured height and vertical center. Spacing is owned by the parent layout. -->
-        <Style x:Key="GscToolbarButton" TargetType="Button" BasedOn="{StaticResource GscButtonBase}">
-            <Setter Property="Margin" Value="0"/>
-            <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-        </Style>
-
-        <Style x:Key="GscToolbarPrimaryButton" TargetType="Button" BasedOn="{StaticResource GscPrimaryButton}">
-            <Setter Property="Margin" Value="0"/>
-            <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-        </Style>
-
-
         <!-- The header and selected content are deliberately separated.  In 0.5.9 the
              TabItem content-alignment values were set to Center, and those inheritable
              properties pulled complete page layouts into the middle of the available area.
@@ -1382,19 +1267,11 @@
         <Grid x:Name="DialogOverlay"
               Panel.ZIndex="100"
               Visibility="Collapsed"
-              Background="{DynamicResource GscOverlayBrush}">
+              Style="{StaticResource GscRedesignFeedbackDialogOverlay}">
             <Border x:Name="DialogCard"
-                    Width="480"
-                    MaxWidth="640"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Background="{DynamicResource GscGlassStrongBrush}"
-                    BorderBrush="{DynamicResource GscGlassStrokeBrush}"
-                    BorderThickness="1"
-                    CornerRadius="22"
-                    Padding="22"
-                    Opacity="0"
-                    Effect="{DynamicResource GscDialogEffect}">
+                    Style="{StaticResource GscRedesignFeedbackDialogCard}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -1402,9 +1279,8 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <StackPanel>
-                        <TextBlock x:Name="DialogTitleText" FontSize="21" FontWeight="SemiBold" TextWrapping="Wrap"/>
-                        <TextBlock x:Name="DialogMessageText" Margin="0,10,0,0" Foreground="{DynamicResource GscSecondaryTextBrush}"
-                                   TextWrapping="Wrap" LineHeight="22"/>
+                        <TextBlock x:Name="DialogTitleText" Style="{StaticResource GscRedesignFeedbackDialogTitle}"/>
+                        <TextBlock x:Name="DialogMessageText" Style="{StaticResource GscRedesignFeedbackDialogMessage}"/>
                     </StackPanel>
                     <Border Grid.Row="1" Height="1" Background="{DynamicResource GscDividerBrush}" Margin="0,18,0,16"/>
                     <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">

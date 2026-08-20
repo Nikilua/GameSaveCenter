@@ -148,6 +148,65 @@
         <Setter Property="ClipToBounds" Value="True"/>
     </Style>
 
+    <!-- Feedback surfaces use the same quiet floating material as the Demo picker. These
+         styles are consumed by the in-host toast/dialog so transient feedback does not
+         grow a second card, radius or shadow language inside DashboardView. -->
+    <Style x:Key="GscRedesignFeedbackToastCard" TargetType="Border" BasedOn="{StaticResource GscRedesignFloatingPickerCard}">
+        <Setter Property="Width" Value="360"/>
+        <Setter Property="MaxWidth" Value="360"/>
+        <Setter Property="CornerRadius" Value="16"/>
+        <Setter Property="Padding" Value="14,12,10,12"/>
+        <Setter Property="Margin" Value="0,0,0,10"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
+        <Setter Property="Effect" Value="{DynamicResource GscDialogEffect}"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
+    </Style>
+
+    <Style x:Key="GscRedesignFeedbackToastTitle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+
+    <Style x:Key="GscRedesignFeedbackToastMessage" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource GscSecondaryTextBrush}"/>
+        <Setter Property="Margin" Value="0,3,0,0"/>
+        <Setter Property="MaxHeight" Value="72"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+    </Style>
+
+    <Style x:Key="GscRedesignFeedbackDialogOverlay" TargetType="Grid">
+        <Setter Property="Background" Value="{DynamicResource GscOverlayBrush}"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
+    </Style>
+
+    <Style x:Key="GscRedesignFeedbackDialogCard" TargetType="Border" BasedOn="{StaticResource GscRedesignFloatingPickerCard}">
+        <Setter Property="Width" Value="480"/>
+        <Setter Property="MaxWidth" Value="640"/>
+        <Setter Property="CornerRadius" Value="22"/>
+        <Setter Property="Padding" Value="22"/>
+        <Setter Property="Opacity" Value="0"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
+        <Setter Property="Effect" Value="{DynamicResource GscDialogEffect}"/>
+    </Style>
+
+    <Style x:Key="GscRedesignFeedbackDialogTitle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+        <Setter Property="FontSize" Value="21"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+
+    <Style x:Key="GscRedesignFeedbackDialogMessage" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource GscSecondaryTextBrush}"/>
+        <Setter Property="Margin" Value="0,10,0,0"/>
+        <Setter Property="LineHeight" Value="22"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+
     <Style x:Key="GscRedesignMetricCard" TargetType="{x:Type ui:Card}" BasedOn="{StaticResource GscWpfUiCard}">
         <Setter Property="Padding" Value="16"/>
         <Setter Property="Border.CornerRadius" Value="18"/>

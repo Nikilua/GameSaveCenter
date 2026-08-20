@@ -943,12 +943,6 @@ namespace GameSaveCenter.Playnite.Views
         private void OnNavigationMouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
             => AnimateTranslate(sender as FrameworkElement, 0, 0, 160);
 
-        private void OnButtonMouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-            => AnimateTranslate(sender as FrameworkElement, 0, -1, 120);
-
-        private void OnButtonMouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
-            => AnimateTranslate(sender as FrameworkElement, 0, 0, 150);
-
         private void AnimateTranslate(FrameworkElement? element, double x, double y, int milliseconds)
         {
             try
@@ -1332,26 +1326,10 @@ namespace GameSaveCenter.Playnite.Views
 
             var card = new Border
             {
-                CornerRadius = new CornerRadius(16),
-                BorderThickness = new Thickness(1),
-                Padding = new Thickness(14, 12, 10, 12),
-                Margin = new Thickness(0, 0, 0, 10),
-                MaxWidth = 360,
+                Style = (Style)Resources["GscRedesignFeedbackToastCard"],
                 Opacity = MotionEnabled ? 0 : 1,
                 RenderTransform = new TranslateTransform(MotionEnabled ? 18 : 0, 0)
             };
-            card.SetResourceReference(Border.BackgroundProperty, "GscGlassStrongBrush");
-            card.SetResourceReference(Border.BorderBrushProperty, "GscGlassStrokeBrush");
-            if (plugin.Settings.EnableGlassEffects && !SystemParameters.HighContrast)
-            {
-                card.Effect = new System.Windows.Media.Effects.DropShadowEffect
-                {
-                    Color = Colors.Black,
-                    BlurRadius = 22,
-                    ShadowDepth = 5,
-                    Opacity = 0.24
-                };
-            }
 
             var layout = new Grid();
             layout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(12) });
@@ -1364,9 +1342,8 @@ namespace GameSaveCenter.Playnite.Views
 
             var textPanel = new StackPanel { Margin = new Thickness(10, 0, 8, 0) };
             Grid.SetColumn(textPanel, 1);
-            var titleText = new TextBlock { Text = title, FontWeight = FontWeights.SemiBold, TextWrapping = TextWrapping.Wrap };
-            var messageText = new TextBlock { Text = message, Margin = new Thickness(0, 3, 0, 0), TextWrapping = TextWrapping.Wrap, MaxHeight = 72, TextTrimming = TextTrimming.CharacterEllipsis };
-            messageText.SetResourceReference(TextBlock.ForegroundProperty, "GscSecondaryTextBrush");
+            var titleText = new TextBlock { Text = title, Style = (Style)Resources["GscRedesignFeedbackToastTitle"] };
+            var messageText = new TextBlock { Text = message, Style = (Style)Resources["GscRedesignFeedbackToastMessage"] };
             messageText.ToolTip = message;
             textPanel.Children.Add(titleText);
             textPanel.Children.Add(messageText);

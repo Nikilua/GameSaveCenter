@@ -161,9 +161,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("{DynamicResource GscSelectionTextBrush}", tokens);
         Assert.Contains("x:Key=\"GscPickerScrimBrush\"", tokens);
         Assert.Contains("{DynamicResource GscSurfaceEffect}", dashboard);
-        Assert.Contains("{DynamicResource GscPrimaryButtonEffect}", dashboard);
+        Assert.Contains("{DynamicResource GscPrimaryButtonEffect}", tokens);
         Assert.Contains("{DynamicResource GscSidebarEffect}", redesign);
-        Assert.Contains("{DynamicResource GscDialogEffect}", dashboard);
+        Assert.Contains("{DynamicResource GscDialogEffect}", redesign);
         Assert.Contains("{DynamicResource GscPopupEffect}", tokens);
         Assert.Contains("{DynamicResource GscSliderThumbEffect}", tokens);
         Assert.Contains("AllowsTransparency=\"{DynamicResource GscPopupAllowsTransparency}\"", tokens);
@@ -4185,10 +4185,13 @@ public sealed class WpfUiResourceDictionaryTests
     {
         var repositoryRoot = FindRepositoryRoot();
         var dashboardCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml.cs"));
+        var redesign = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "Redesign.xaml"));
 
-        Assert.Contains("if (plugin.Settings.EnableGlassEffects && !SystemParameters.HighContrast)", dashboardCode);
-        Assert.Contains("card.Effect = new System.Windows.Media.Effects.DropShadowEffect", dashboardCode);
-        Assert.Contains("card.SetResourceReference(Border.BackgroundProperty, \"GscGlassStrongBrush\")", dashboardCode);
+        Assert.Contains("x:Key=\"GscRedesignFeedbackToastCard\"", redesign);
+        Assert.Contains("Style = (Style)Resources[\"GscRedesignFeedbackToastCard\"]", dashboardCode);
+        Assert.Contains("x:Key=\"GscRedesignFeedbackToastMessage\"", redesign);
+        Assert.Contains("Style = (Style)Resources[\"GscRedesignFeedbackToastMessage\"]", dashboardCode);
+        Assert.DoesNotContain("new System.Windows.Media.Effects.DropShadowEffect", dashboardCode);
     }
 
     [Fact]
@@ -4589,8 +4592,10 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("<Setter Property=\"MinHeight\" Value=\"{DynamicResource GscButtonHeight}\"/>", redesign);
         Assert.Contains("<Setter Property=\"HorizontalContentAlignment\" Value=\"Center\"/>", redesign);
         Assert.Contains("<Setter Property=\"VerticalContentAlignment\" Value=\"Center\"/>", redesign);
-        Assert.Contains("<Style x:Key=\"GscButtonBase\"", dashboard);
-        Assert.Contains("<Setter Property=\"MinHeight\" Value=\"{DynamicResource GscButtonHeight}\"/>", dashboard);
+        Assert.DoesNotContain("<Style x:Key=\"GscButtonBase\"", dashboard);
+        Assert.DoesNotContain("<Style x:Key=\"GscPrimaryButton\"", dashboard);
+        Assert.Contains("Style=\"{StaticResource GscButtonBase}\"", dashboard);
+        Assert.Contains("Style=\"{StaticResource GscPrimaryButton}\"", dashboard);
         Assert.DoesNotContain("MinHeight=\"38\"", trainer);
         Assert.Contains("x:Name=\"TrainerSearchTextBox\"", trainer);
         Assert.Contains("x:Name=\"TrainerImportEntryComboBox\"", trainer);

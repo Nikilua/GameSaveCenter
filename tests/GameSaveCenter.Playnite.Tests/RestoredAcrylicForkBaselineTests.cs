@@ -112,6 +112,30 @@ public sealed class RestoredAcrylicForkBaselineTests
     }
 
     [Fact]
+    public void DashboardFeedbackUsesTheSharedDemoToastAndDialogSurfaces()
+    {
+        var redesign = ReadSource("Themes", "Redesign.xaml");
+        var dashboard = ReadSource("Views", "DashboardView.xaml");
+        var dashboardCode = ReadSource("Views", "DashboardView.xaml.cs");
+
+        Assert.Contains("x:Key=\"GscRedesignFeedbackToastCard\"", redesign);
+        Assert.Contains("x:Key=\"GscRedesignFeedbackDialogCard\"", redesign);
+        Assert.Contains("x:Key=\"GscRedesignFeedbackDialogOverlay\"", redesign);
+        Assert.Contains("Style=\"{StaticResource GscRedesignFeedbackDialogOverlay}\"", dashboard);
+        Assert.Contains("Style=\"{StaticResource GscRedesignFeedbackDialogCard}\"", dashboard);
+        Assert.Contains("Style=\"{StaticResource GscRedesignFeedbackDialogTitle}\"", dashboard);
+        Assert.Contains("Style=\"{StaticResource GscRedesignFeedbackDialogMessage}\"", dashboard);
+        Assert.Contains("Style = (Style)Resources[\"GscRedesignFeedbackToastCard\"]", dashboardCode);
+        Assert.Contains("Style = (Style)Resources[\"GscRedesignFeedbackToastTitle\"]", dashboardCode);
+        Assert.Contains("Style = (Style)Resources[\"GscRedesignFeedbackToastMessage\"]", dashboardCode);
+        Assert.DoesNotContain("<Style x:Key=\"GscButtonBase\"", dashboard);
+        Assert.DoesNotContain("<Style x:Key=\"GscPrimaryButton\"", dashboard);
+        Assert.Contains("UiNotificationRequested", dashboardCode);
+        Assert.Contains("UiConfirmationRequested", dashboardCode);
+        Assert.Contains("UiChoiceRequested", dashboardCode);
+    }
+
+    [Fact]
     public void WorkspaceDiagnosticTextUsesTheSharedCascadiaMonoFallback()
     {
         var tokens = ReadSource("Themes", "DesignTokens.xaml");

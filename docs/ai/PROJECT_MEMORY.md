@@ -949,3 +949,11 @@
 - `GscCodeFontFamily` 当前为 `Cascadia Mono, Consolas, Microsoft YaHei UI`；维护诊断摘要已使用该 token。业务 Expander 已统一采用 `GscDisclosureCard`，当前没有引入 Demo 滚动条。
 - 新自动证据：`artifacts/ui-qa/shared-grid-contract-final/render-qa-report.txt` 为 `render-qa OK`；Release 0 warning/0 error；Core 59/59；Worker 190/190（排除 Soak）；Playnite 251 通过/61 跳过/0 失败；WPF validator 0 error/20 warnings/161 info。
 - 本阶段仍不能声称真实 Playnite 宿主逐页验收完成；宿主截图、Follow/高对比度、DPI、键盘/UI Automation、真实长文案和大数据量滚动仍是后续人工边界。
+
+## 2026-08-20 UI-256 共享按钮与反馈资源事实
+
+- Dashboard 的 Toast/Dialog 视觉资源现在位于 `Themes/Redesign.xaml`：`GscRedesignFeedbackToastCard`、`GscRedesignFeedbackDialogCard`、对应遮罩和文字样式；页面代码只负责真实事件、状态、动画、计时器和完成结果。
+- Dashboard 不再声明与 `DesignTokens.xaml` 重复的原生 `GscButtonBase`/`GscPrimaryButton` 模板；Toast 关闭/详情按钮和确认 Dialog 按钮复用全局按钮契约。页面级 `ui:Button` 继续使用 `GscWpfUiToolbarButton`、`GscWpfUiActionButton`、`GscWpfUiContextButton` 等共享语义样式，不能新增局部按钮模板解决单页问题。
+- `UiNotificationRequested`、`UiConfirmationRequested`、`UiChoiceRequested` 的事件与安全完成逻辑保持不变；设置页导入报告/错误仍使用原生 `MessageBox`，这是为避免 Playnite 共享 Window 中 Window-wide WPF-UI host 冲突的有意边界。
+- UI-256 自动证据：XAML 18 文件通过，源码门禁通过，Release 0 warning/0 error，Core 59/59，Worker 190/190（排除 Soak），Playnite 252/61/0，`artifacts/ui-qa/feedback-surfaces-final/render-qa-report.txt` 为 `render-qa OK`，WPF validator 0 error/20 warnings/161 info。
+- 仍未完成真实 Playnite 宿主逐页视觉验收；不要把 RenderHarness 的反馈资源加载或 PNG 结果写成 Playnite Light/Dark/Follow、DPI、高对比度和键盘/UI Automation 已验收。
