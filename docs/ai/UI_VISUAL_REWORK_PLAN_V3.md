@@ -2,7 +2,7 @@
 
 > 来源：`GameSaveCenter_UI_Design_and_Prompt_Pack_v3.zip`
 > 生成日期：2026-08-14
-> 原则：最新 main / 生产功能 > 用户 5 张截图 > v3 文档 > 旧 audit/refactor 包 > 旧 demo；`REMOVE = 0`；GamePicker HARD LOCK；不直接改，先按本计划实施。
+> 原则（2026-08-20 已更新）：AcrylicFork Demo 的整体视觉结构 > 真实生产功能的视觉呈现 > 用户截图/旧 audit/refactor 包 > 旧布局；真实生产功能、`REMOVE = 0`、GamePicker HARD LOCK 和安全语义仍然保留。旧版“生产优先于 Demo”的排序已废止。
 
 ## 图一：首页当前游戏卡 —— 三按钮强制一排
 

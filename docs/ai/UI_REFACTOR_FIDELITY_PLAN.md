@@ -2,7 +2,9 @@
 
 > 生成时间：2026-08-14
 > 基线 Commit：`4ab44fe`
-> 事实来源优先级：当前生产 main > UI Audit（`4ab44fe` 产物）> 实施包 v1 锁定/范围 > WPF Demo v6.1 > 旧布局。
+> 事实来源优先级（2026-08-20 已更新）：AcrylicFork Demo（`GameSaveCenter.AcrylicFork/src/GameSaveCenter.Playnite/Design/`）> 当前生产功能与真实数据/命令契约 > UI Audit（`4ab44fe` 产物）> 实施包 v1 > 旧布局。该排序只改变视觉结构优先级，不允许删除真实业务能力。
+
+> 本文件早期的“当前生产优先”和视觉结构锁定条目均为历史计划；后续页面迁移以 Demo 为准。GamePicker、滚动条、真实命令/Binding、错误/取消/安全语义、虚拟化和 Playnite 兼容性仍按当前总目标保留。
 
 ## 1. 绝对锁定区域
 
@@ -285,7 +287,7 @@ Audit 基线共有 143 个条件 UI、38 个 TextBox/PasswordBox、25 个 ComboB
 
 ## 10. Open Questions
 
-- 任何 Audit 有但 Demo 未画的元素：按生产优先，先 `KEEP`。
+- 任何 Audit 有但 Demo 未画的真实功能：继续保留其能力，但按 Demo 的信息层级执行 `MOVE`、`RESTYLE`、`COLLAPSE` 或 `RESPONSIVE_MOVE`；“Demo 未画”不再意味着恢复旧生产布局。
 - 不确定是否可折叠：先 `COLLAPSE` 但保持 1～2 次操作可达。
 - 不确定是否可合并：不合并业务语义。
 - 所有不确定项记录到 `docs/ai/UI_REFACTOR_OPEN_QUESTIONS.md`，不自行做不可逆信息架构决定。

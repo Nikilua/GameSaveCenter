@@ -4,6 +4,25 @@ You are working inside an existing Playnite extension project named **GameSaveCe
 
 Your task is to redesign and implement the plugin UI as a polished Apple-inspired desktop application using the project’s existing C# UI technology.
 
+## 0. Latest authority: Demo-first migration
+
+This section is the current project-specific priority and overrides any generic Apple-inspired recommendation elsewhere in this prompt.
+
+The single visual source of truth is:
+
+- `GameSaveCenter.AcrylicFork/src/GameSaveCenter.Playnite/Design/DesignShellView.xaml`
+- `GameSaveCenter.AcrylicFork/src/GameSaveCenter.Playnite/Design/Pages/*.xaml`
+- `GameSaveCenter.AcrylicFork/src/GameSaveCenter.Playnite/Design/DesignTokens.xaml`
+- `GameSaveCenter.AcrylicFork/src/GameSaveCenter.Playnite/Design/DesignColorsLight.xaml`
+- `GameSaveCenter.AcrylicFork/src/GameSaveCenter.Playnite/Design/DesignColorsDark.xaml`
+- `GameSaveCenter.AcrylicFork/src/GameSaveCenter.Playnite/Design/DesignControls.xaml`
+
+When the Demo conflicts with a current production page, UiLab, an older migration note, or a generic `wpf-apple-desktop-ui` design preference, follow the Demo for page structure, information architecture, navigation, layout proportions, typography, colors, surfaces, controls, states, and content density. Do not reduce this to a color-only restyle.
+
+The `wpf-apple-desktop-ui` skill remains a quality and compatibility checklist only. Use it to protect real bindings, commands, business state, virtualization, keyboard/UI Automation, accessibility, themes, DPI behavior, and Playnite hosting; it must not override the Demo’s visual or structural decisions.
+
+The current game picker and the existing production scrollbar system remain explicit project exceptions. Demo mock data, demo-only controls, and demo-only behavior must not replace real runtime data or commands.
+
 This is not a mockup task.
 
 Do not generate HTML, CSS, JavaScript, screenshots, design images, or a WebView wrapper. Implement the real UI directly in the existing C# project so that it can compile, run, and continue using the plugin’s actual backup, restore, validation, task, cloud, media, and Ludusavi logic.

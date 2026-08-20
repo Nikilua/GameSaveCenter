@@ -8,6 +8,12 @@
 
 新实现仍需以真实业务行为为底线：命令、Binding、数据、安全确认、错误/取消、可访问性、可扩展性能和 Playnite 兼容性不能被无意删除。如果新方案有意改变这些能力，应在当前阶段明确说明并配套测试；不得以“旧实现必须保留”为理由阻止整页重构。
 
+## 最新视觉优先级：Demo-first（2026-08-20）
+
+后续迁移统一以 `GameSaveCenter.AcrylicFork/src/GameSaveCenter.Playnite/Design/` 下的 `DesignShellView.xaml`、`Pages/*.xaml`、`DesignTokens.xaml`、`DesignColorsLight.xaml`、`DesignColorsDark.xaml` 和 `DesignControls.xaml` 为主要且唯一视觉基准。Demo 与旧生产页面、UiLab、历史计划或 `wpf-apple-desktop-ui` 的通用 Apple-inspired 设计建议冲突时，以 Demo 的整体页面结构和视觉层级为准。
+
+`wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
+
 ## 2026-08-17 UI-221 AcrylicFork 整页视觉迁移收口交接
 
 - 本轮以 `GameSaveCenter.AcrylicFork` @ `b09cba6` 复核了 Overview/Save/Trainer/Media/Task/Maintenance/Settings 的生产骨架，并补齐 Media、Trainer、Save、Maintenance 分段导航右侧的样板说明与真实状态/计数。这些信息必须继续绑定真实数据，不能写死 demo 数字。

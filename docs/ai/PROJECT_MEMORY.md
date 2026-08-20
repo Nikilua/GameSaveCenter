@@ -3,6 +3,13 @@
 > 维护时间：2026-08-14
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-20 当前总规则：Demo-first 覆盖旧视觉优先级
+
+- 后续所有页面迁移以 `GameSaveCenter.AcrylicFork/src/GameSaveCenter.Playnite/Design/DesignShellView.xaml`、`Pages/*.xaml`、`DesignTokens.xaml`、`DesignColorsLight.xaml`、`DesignColorsDark.xaml` 和 `DesignControls.xaml` 为唯一主要视觉基准；Demo 与旧生产页面、UiLab、历史计划或通用 Apple-inspired 建议冲突时，以 Demo 的整体结构、层级、空间、字体、颜色和控件为准。
+- `wpf-apple-desktop-ui` 不再是视觉与实现路线的优先约束，只作为 WPF 质量检查依据，继续检查真实 Binding/Command、异步错误/取消/安全语义、虚拟化、键盘/UI Automation、可访问性、主题/DPI 和 Playnite 兼容性。
+- 当前游戏选框、生产滚动条系统、真实运行时数据和 Demo 未覆盖但目标文件明确要求保留的功能继续保留；Demo Mock 数据、演示色板、窗口按钮和演示行为不得接入生产。
+- 本段覆盖早期“当前生产 main > Demo”或“技能优先”的视觉排序；旧条目只用于历史追溯，不得阻止 Demo-first 的新页面迁移。
+
 ## 2026-08-20 UI-251 当前事实：存档规则卡与诊断概览按 Demo 第三轮收口
 
 - 存档中心当前规则卡在常见工作区宽度下横向排列“当前存档规则 / 游戏名 / 状态 / 立即扫描 / 重新校验 / 刷新详情”；低于 700 DIP 才堆叠操作，避免正常宿主中规则信息和按钮被拉成多行。
@@ -424,7 +431,7 @@
 
 ## 2026-08-14 UI-REFACTOR-V1（实施包 v1）当前事实
 
-- 本轮是严格受控 WPF UI 重构，不是业务重写。事实来源优先级：当前生产 main > UI Audit（commit `4ab44fe`）> 实施包 v1 锁定/范围 > WPF Demo v6.1 > 旧布局。
+- 本轮是严格受控 WPF UI 重构，不是业务重写。事实来源优先级（当时记录，已由 2026-08-20 Demo-first 总规则覆盖）：当前生产 main > UI Audit（commit `4ab44fe`）> 实施包 v1 锁定/范围 > WPF Demo v6.1 > 旧布局。
 - 完整功能保真计划在 `docs/ai/UI_REFACTOR_FIDELITY_PLAN.md`：覆盖 92 条命令、43 个 DataGrid 列、30 个 ScrollViewer、143 个条件 UI；默认禁止 `REMOVE`，只允许 `KEEP/MOVE/RESTYLE/COLLAPSE/RESPONSIVE_MOVE`。
 - Dashboard 顶部全局 GamePicker 绝对锁定，必须是 Dashboard 单实例共享控件，在六个工作区永久常驻；首页“今日工作台 / TODAY / 当前游戏”只做布局、间距和响应式修正。
 - 已知必须修复的 Audit 症状：SaveCandidateGrid 约 3.7 行、MaintenanceAuditLogGrid 约 1.6～1.9 行、MaintenanceDeviceGrid/ProcessGrid narrow 约 3.7 行、诊断 13 工具 narrow 138 DIP 按钮墙、多处 Page Scroll + DataGrid/List Scroll 嵌套。

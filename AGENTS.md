@@ -28,10 +28,16 @@
 
 当前仍然有效的是功能与质量底线，而不是旧页面结构：默认保留真实命令、Binding、数据契约、错误/取消/安全语义、可访问性、可扩展列表性能和 Playnite 兼容性。若新设计确实需要改变其中任何一项，应在任务范围中明确迁移方案并补齐对应测试；可以更换控件或滚动模型，但不能因为“保留旧实现”而阻止用户要求的整页改造。
 
+### 最新视觉优先级：Demo-first（2026-08-20）
+
+后续所有页面迁移以 `GameSaveCenter.AcrylicFork/src/GameSaveCenter.Playnite/Design/` 下的 `DesignShellView.xaml`、`Pages/*.xaml`、`DesignTokens.xaml`、`DesignColorsLight.xaml`、`DesignColorsDark.xaml` 和 `DesignControls.xaml` 为唯一主要视觉基准。Demo 与历史生产页面、UiLab 或通用 Apple-inspired 建议发生冲突时，以 Demo 的页面结构、信息架构、层级、间距、字体、颜色、控件和状态为准。
+
+`wpf-apple-desktop-ui` 不再构成页面视觉或实现路线的优先制约，只作为质量检查依据：绑定、命令、真实业务状态、虚拟化、键盘/UI Automation、可访问性、主题/DPI 安全和 Playnite 兼容性仍须满足，但该技能的 Apple-inspired 偏好不能推翻 Demo。明确保留的例外是当前游戏选框、现有滚动条系统及目标文件中列出的真实功能与安全语义。
+
 For any WPF, XAML, Playnite UI, theming, layout, controls, animation, dialog, toast,
 DataGrid, ScrollBar, TabControl, responsive sizing, DPI, accessibility, or visual-regression work:
 
-1. Use the `wpf-apple-desktop-ui` skill and inspect the shared resources before editing. The skill is committed in the repository at `.codex/skills/wpf-apple-desktop-ui/SKILL.md`; read that file (and any task-relevant `references/`) first. On this machine it is also installed at `%USERPROFILE%\.codex\skills\wpf-apple-desktop-ui`.
+1. Use `wpf-apple-desktop-ui` only for quality review and inspect shared resources before editing. Its visual recommendations are subordinate to the Demo-first priority above. The skill is committed in the repository at `.codex/skills/wpf-apple-desktop-ui/SKILL.md`; read that file (and any task-relevant `references/`) first. On this machine it is also installed at `%USERPROFILE%\.codex\skills\wpf-apple-desktop-ui`.
 2. Read `docs/design/APPLE_WPF_IMPLEMENTATION_PROMPT.md` and `docs/design/UI_CHANGE_GATE.md`.
 3. Repair shared styles/templates rather than a single visual instance.
 4. Preserve commands, bindings, business behavior, virtualization, keyboard access, UI Automation, and Playnite compatibility.

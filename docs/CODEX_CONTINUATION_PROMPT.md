@@ -25,7 +25,9 @@
 - 任何恢复都必须：确认游戏关闭 → 创建并锁定 PreRestore → 预览 → 恢复 → 校验 → 失败回滚。
 - 未确认的存档候选不能直接生效；Xbox WGS 只能保守处理。
 - 从 Playnite 启动时事件优先；从 Steam/Xbox/Epic/Ubisoft/EA/GOG、桌面或 MOD manager 启动时由 Worker 进程侦测兜底。
-- 所有 UI 变更必须先遵守 docs/design/APPLE_WPF_IMPLEMENTATION_PROMPT.md 与 UI_CHANGE_GATE.md；不得把页面做成通用玻璃网站或 Windows Fluent 仿制品。
+- 所有 UI 变更必须以 `GameSaveCenter.AcrylicFork/src/GameSaveCenter.Playnite/Design/` 下的 `DesignShellView.xaml`、`Pages/*.xaml`、`DesignTokens.xaml`、`DesignColorsLight.xaml`、`DesignColorsDark.xaml` 和 `DesignControls.xaml` 为最高视觉基准；Demo 与生产旧页面、UiLab、历史文档或 `wpf-apple-desktop-ui` 建议冲突时，以 Demo 的整体结构和视觉关系为准。
+- `wpf-apple-desktop-ui` 只作为 WPF 质量、绑定、虚拟化、可访问性、DPI、键盘/UI Automation 和 Playnite 兼容性检查依据，不能限制或改变 Demo-first 的页面迁移方向。不得把 Demo 的 Mock 数据或演示行为接入生产运行时。
+- 仍须阅读 docs/design/APPLE_WPF_IMPLEMENTATION_PROMPT.md 与 UI_CHANGE_GATE.md；不得把页面做成脱离 Demo 的通用玻璃网站或 Windows Fluent 仿制品。
 - 当前 UI 方向已授权整页重构：页面布局、信息架构、导航结构、Tab/Segmented、控件类型、共享模板和滚动实现均可重新设计。历史交接中的“不要恢复/不要替换”只代表旧迁移阶段，不是当前禁令；仍须保留或明确迁移真实命令、Binding、业务安全、可访问性、性能和 Playnite 兼容性。
 - 所有需求、进度、限制和架构变化必须同步更新 PROJECT_MEMORY.md 与 DEVELOPMENT_PROGRESS.md。
 - 每个逻辑阶段必须自行 git commit；禁止 squash 掉既有历史。

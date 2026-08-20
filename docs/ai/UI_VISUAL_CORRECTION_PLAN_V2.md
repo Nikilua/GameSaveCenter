@@ -2,7 +2,7 @@
 
 > 来源：`GameSaveCenter_UI_Visual_Correction_Pack_v2.zip`
 > 生成日期：2026-08-14
-> 原则：生产功能 > 当前 main > 最新 Audit > 本包；`REMOVE = 0`；GamePicker HARD LOCK；只做本包点名区域的视觉/滚动收尾。
+> 状态（2026-08-20）：本文件为历史收尾计划，已由 AcrylicFork Demo-first 总目标覆盖。真实生产功能、`REMOVE = 0` 和 GamePicker HARD LOCK 仍保留；后续视觉结构以 Demo 为准。
 
 ## P0 Overview：单页面滚动上下文
 

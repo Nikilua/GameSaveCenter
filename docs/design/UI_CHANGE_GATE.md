@@ -4,9 +4,18 @@
 
 > 当前方向声明（2026-08-17）：本文件是质量、兼容性和验证门禁，不冻结页面信息架构或控件实现。用户已授权整页 UI 重构，因此页面布局、导航、控件类型、共享模板和滚动模型可以重做；下方门禁用于验证新方案仍然可用、可访问、可扩展且兼容 Playnite。
 
+## 最新视觉优先级：Demo-first（2026-08-20）
+
+本门禁的视觉基准已明确改为 Demo 优先：
+
+- 主要基准为 `GameSaveCenter.AcrylicFork/src/GameSaveCenter.Playnite/Design/DesignShellView.xaml`、`Pages/*.xaml`、`DesignTokens.xaml`、`DesignColorsLight.xaml`、`DesignColorsDark.xaml` 和 `DesignControls.xaml`。
+- Demo 与生产旧页面、UiLab、历史交接记录或 `wpf-apple-desktop-ui` 的通用视觉建议冲突时，以 Demo 的整体结构和视觉关系为准。
+- `wpf-apple-desktop-ui` 只负责质量、可访问性、绑定、虚拟化、主题/DPI 和 Playnite 兼容性检查，不得以其 Apple-inspired 偏好阻止或改变 Demo 迁移。
+- 当前游戏选框、生产滚动条系统、真实命令/绑定、异步错误/取消/安全语义和真实运行时数据仍按项目目标保留。
+
 所有新增或修改 GameSaveCenter UI 的提交，必须先阅读：
 
-- `.codex/skills/wpf-apple-desktop-ui/SKILL.md`（随仓库提交；本机同时安装于 `%USERPROFILE%\.codex\skills\wpf-apple-desktop-ui`），并按任务需要读取其 `references/` 中对应的响应式、Playnite、控件、可访问性或回归清单文档
+- `.codex/skills/wpf-apple-desktop-ui/SKILL.md`（随仓库提交；本机同时安装于 `%USERPROFILE%\.codex\skills\wpf-apple-desktop-ui`），仅作为质量检查依据；并按任务需要读取其 `references/` 中对应的响应式、Playnite、控件、可访问性或回归清单文档
 - `docs/design/APPLE_WPF_IMPLEMENTATION_PROMPT.md`
 - `docs/design/APPLE_UI_GUIDE.md`
 - `docs/KNOWN_ISSUES.md` 中与主题、DPI、动画和安装有关的条目

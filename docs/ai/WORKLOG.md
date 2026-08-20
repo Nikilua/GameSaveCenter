@@ -2,6 +2,19 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-20 DOC-002 Demo-first 优先级覆盖旧 WPF 视觉约束
+
+**决策：**
+
+- 用户明确要求取消 `wpf-apple-desktop-ui` 对页面视觉和实现路线的优先制约，后续以 AcrylicFork Demo 为最新且最高视觉基准。
+- 已在 `AGENTS.md`、`APPLE_WPF_IMPLEMENTATION_PROMPT.md`、`UI_CHANGE_GATE.md`、`DEVELOPMENT_HANDOFF.md`、`CODEX_CONTINUATION_PROMPT.md`、`AUTONOMOUS_DEVELOPMENT_RULES.md`、`PROJECT_MEMORY.md` 及当前 UI 计划中同步该优先级。
+- `wpf-apple-desktop-ui` 只保留质量检查职责：真实 Binding/Command、异步错误/取消/安全语义、虚拟化、键盘/UI Automation、可访问性、主题/DPI 和 Playnite 兼容性；不能推翻 Demo 的页面结构、导航、控件或视觉关系。
+- 明确保留当前游戏选框、生产滚动条系统、真实数据与命令；Demo Mock 数据、演示色板、窗口按钮和演示行为不迁移。
+
+**验证边界：**
+
+- 本阶段仅更新项目提示词、门禁和交接文档，没有修改生产代码或业务行为；后续页面阶段仍需按 Demo 目标运行完整源码、构建、测试和页面审计。
+
 ## 2026-08-20 UI-251 存档规则卡与诊断概览第三轮对齐
 
 **实现内容：**
