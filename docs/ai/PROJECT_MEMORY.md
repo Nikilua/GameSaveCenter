@@ -963,4 +963,4 @@
 - `OverviewStackScrollSurface` 保持现有生产页面滚动条和 `HorizontalScrollBarVisibility=Disabled`；`OverviewLayoutGrid` 必须绑定 `ViewportWidth` 并使用有限宽度，否则 WPF 的无限横向测量会让星号列按内容期望宽度增长，裁切当前游戏卡片和真实按钮。
 - 当前首页响应式证据：`artifacts/ui-qa/overview-responsive-ui257/render-qa-report.txt`。1366×768 的 workspace 为 1042 DIP，Hero 为 506 DIP、当前游戏卡片为 x=520..1026，操作按钮高度均为 38 DIP；1600×900 同样无横向溢出。RenderHarness 仅是受控 WPF 证据，不等同 Playnite 嵌入视觉验收。
 - UI-257 最终门禁：XAML 18/18；Release 0 警告/0 错误；Core 59/59；Worker 191/191；Playnite 256/318（62 跳过）；`validate-source.py` 通过；WPF 静态审查 0 error、20 warnings、146 info。
-- 两次真实宿主审计均确认生产扩展 0.6.70.0 可加载并读取真实数据，但 Playnite 返回 `EmptyWindowAutomationPeer`，未能取得可识别的嵌入页面像素截图；不得把受控窗口截图写成 Playnite 1:1 完成。七页 Demo-first 总目标仍处于进行中。
+- 三次真实宿主审计均确认生产扩展 0.6.70.0 可加载并读取真实数据，最新受控证据位于 `artifacts/ui-host-audit-ui257-final`；但 Playnite 返回 `EmptyWindowAutomationPeer`，未能取得可识别的嵌入页面像素截图。不得把受控窗口截图写成 Playnite 1:1 完成，七页 Demo-first 总目标仍处于进行中。

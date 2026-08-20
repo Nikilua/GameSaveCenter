@@ -594,7 +594,7 @@ git branch --show-current
 - 首页根滚动面仍然是 `OverviewStackScrollSurface`，横向滚动必须保持禁用；`OverviewLayoutGrid` 已绑定 `{Binding ViewportWidth, ElementName=OverviewStackScrollSurface}`，并以 `HorizontalAlignment=Left` 避免无限横向测量造成卡片和按钮右侧裁切。
 - 生产真实绑定、当前游戏选择器、`BackupSelectedCommand`、`LoadDetailsCommand`、`OpenAttentionCenterCommand`、首页全部备份/同步媒体/刷新入口未改变。RenderHarness 报告 `artifacts/ui-qa/overview-responsive-ui257/render-qa-report.txt` 已覆盖双主题、多逻辑尺寸和 resize transition；1366/1600 代表截图中的当前游戏卡片与三个按钮均完整可见。
 - 最终验证为 XAML 18/18、Release 0 warning/0 error、Core 59/59、Worker 191/191、Playnite 256 通过/62 跳过、source validation 通过、WPF 0 error。新增源码回归 `OverviewFlowUsesTheFiniteViewportWhenHorizontalScrollingIsDisabled` 当前属于既有 `LegacyProductionUiBaselineFact` 门禁组，因此在默认测试运行中按基线跳过，但随 Playnite 测试程序集完成编译并锁定源码契约。
-- 真实宿主验证边界：`real-host-audit.ps1` 两次安装并加载生产 0.6.70.0，日志确认生产插件真实读取 3 games/50 tasks/100 findings/30 media；由于 Playnite 主窗口返回 `EmptyWindowAutomationPeer`，未能抓取嵌入式导航后的逐页像素截图。受控 `DashboardView` 截图只用于确认本次裁切修复，不得宣称七页已完成 Playnite 1:1 验收。
+- 真实宿主验证边界：`real-host-audit.ps1` 三次安装并加载生产 0.6.70.0，最新受控证据为 `artifacts/ui-host-audit-ui257-final`；日志确认生产插件真实读取 3 games/50 tasks/100 findings/30 media。由于 Playnite 主窗口返回 `EmptyWindowAutomationPeer`，未能抓取嵌入式导航后的逐页像素截图。受控 `DashboardView` 截图只用于确认本次裁切修复，不得宣称七页已完成 Playnite 1:1 验收。
 
 ### 后续启动协议补充
 

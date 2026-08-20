@@ -3256,5 +3256,5 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 
 **真实宿主边界：**
 
-- `scripts/real-host-audit.ps1` 两次完成生产 0.6.70/0.6.70.0 安装并加载，日志确认真实插件读取 3 个 Playnite 游戏、50 个任务、100 个 finding、30 个媒体；但 Playnite 主窗口仍返回 `EmptyWindowAutomationPeer`，脚本无法通过 UIAutomation 找到嵌入导航项，因此只生成了受控 `DashboardView` 截图，未取得可识别的嵌入式 Playnite 逐页像素证据。
+- `scripts/real-host-audit.ps1` 三次完成生产 0.6.70/0.6.70.0 安装并加载，最新输出为 `artifacts/ui-host-audit-ui257-final`；日志确认真实插件读取 3 个 Playnite 游戏、50 个任务、100 个 finding、30 个媒体。但 Playnite 主窗口仍返回 `EmptyWindowAutomationPeer`，脚本无法通过 UIAutomation 找到嵌入导航项，因此只生成了受控 `DashboardView` 截图，未取得可识别的嵌入式 Playnite 逐页像素证据。
 - 受控截图证明生产页面本身的当前游戏卡片裁切已修复，但不能写成 Playnite 嵌入宿主 1:1 视觉验收。七页 Demo-first 总目标仍未完成，后续继续取得同一 Playnite 宿主下的逐页证据并复核真实操作路径。
