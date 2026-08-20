@@ -245,13 +245,13 @@
                         <Grid>
                         <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                         <Grid Grid.Row="0" Margin="0,0,0,12">
-                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto" MinWidth="290"/></Grid.ColumnDefinitions>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto" MinWidth="300"/></Grid.ColumnDefinitions>
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                 <TextBlock Text="当前游戏媒体" Style="{DynamicResource GscSectionTitleStyle}" VerticalAlignment="Center"/>
                                 <Border Style="{DynamicResource GscRedesignCounterPill}" Margin="10,0,0,0"><TextBlock><Run Text="媒体 "/><Run Text="{Binding MediaSummary.TotalCount, Mode=OneWay}" FontWeight="SemiBold"/></TextBlock></Border>
                             </StackPanel>
                             <Grid Grid.Column="1" VerticalAlignment="Center">
-                                <Grid.ColumnDefinitions><ColumnDefinition Width="*" MinWidth="150"/><ColumnDefinition Width="140"/></Grid.ColumnDefinitions>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="*" MinWidth="160"/><ColumnDefinition Width="140"/></Grid.ColumnDefinitions>
                                 <Grid Grid.Column="0">
                                     <TextBox x:Name="MediaSearchTextBox" HorizontalAlignment="Stretch" Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding MediaSearchText, UpdateSourceTrigger=PropertyChanged}" ToolTip="按文件名、备注或来源搜索当前游戏媒体" AutomationProperties.Name="搜索当前游戏媒体"/>
                                     <TextBlock Text="搜索媒体" Foreground="{DynamicResource GscMutedTextBrush}" VerticalAlignment="Center" Margin="12,0,8,0" IsHitTestVisible="False">

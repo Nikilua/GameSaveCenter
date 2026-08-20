@@ -28,6 +28,18 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("<Setter Property=\"Padding\" Value=\"8,4\"/>", tokens);
         }
 
+        [Fact]
+        public void SharedWorkspaceBreakpointsKeepSearchAndHistoryEssentialsReadable()
+        {
+            var root = FindRepositoryRoot();
+            var save = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "SaveCenterView.xaml.cs"));
+            var media = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
+
+            Assert.Contains("var narrowHistory = width < 1240;", save);
+            Assert.Contains("<ColumnDefinition Width=\"Auto\" MinWidth=\"300\"/>", media);
+            Assert.Contains("<ColumnDefinition Width=\"*\" MinWidth=\"160\"/>", media);
+        }
+
         private static string FindRepositoryRoot()
         {
             var directory = new DirectoryInfo(AppContext.BaseDirectory);

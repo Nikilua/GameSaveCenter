@@ -47,7 +47,13 @@ namespace GameSaveCenter.Playnite.Views
                 // Hiding it keeps 状态 inside the viewport without enabling a horizontal bar.
                 if (SaveHistoryNoteColumn != null)
                 {
-                    var narrowHistory = width < 1100;
+                    // The history table shares the normal desktop workspace with a
+                    // 360-DIP inspector. At the 1116-DIP standard route the table
+                    // itself is only about 739 DIP wide, so the compact column rhythm
+                    // must begin before the full page crosses the compact breakpoint.
+                    // This keeps the essential 状态 column inside the table without
+                    // changing the project's DataGrid scrolling contract.
+                    var narrowHistory = width < 1240;
                     SaveHistoryTimeColumn.Width = new DataGridLength(narrowHistory ? 96 : 150);
                     SaveHistoryTypeColumn.Width = new DataGridLength(narrowHistory ? 76 : 110);
                     SaveHistoryFileCountColumn.Width = new DataGridLength(narrowHistory ? 56 : 82);

@@ -14,6 +14,15 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-21 UI-267 工作区表格测量与几何审计交接
+
+- 媒体当前游戏媒体头部的操作区使用 `MinWidth=300`，搜索输入使用 `MinWidth=160`，所以标准及窄工作区不会把搜索框压成不可用的窄条；媒体搜索、筛选、卡片、预览 Inspector 和批量命令仍是真实绑定/命令。
+- 存档历史页在工作区宽度 `<1240 DIP` 时采用紧凑历史列宽，以适配表格与 `360 DIP` Inspector 并列时的真实宿主内容宽度；状态列仍可通过 DataGrid Auto 横向滚动到达。不要通过隐藏状态列、移除 Inspector 或替换项目滚动条来解决此类宽度问题。
+- `tests/GameSaveCenter.Playnite.Tests/OvernightV4SaveFormTests.cs` 的 `SharedWorkspaceBreakpointsKeepSearchAndHistoryEssentialsReadable` 是当前空间回归契约。生产 Tab chrome 是明确例外，当前游戏选框、共享 DataGrid 的排序/列宽拖动/Recycle 虚拟化、页面滚动和真实命令没有迁移。
+- `tests/GameSaveCenter.RenderHarness/UiAudit/UiLayoutAnalyzer.cs` 现在按主控件直接 Grid 行计算填充，认可 Overview 有限活动视口和表格内部卡片布局，并把有实际横向滚动能力的列压缩记录为 `EXPECTED_HORIZONTAL_SCROLL`。最新审计 `artifacts/ui-audit-ui267-fix3/AUDIT_SUMMARY.md` 为 Fidelity 0、HIGH 0、MEDIUM 0、失败路由 0。
+- 最新验证：`artifacts/gsc-b/ui-audit-layout-fix-v1` Release 0 warning/0 error；Core 59/59、Worker 191/191、Playnite 259 通过/62 跳过/0 失败；source 门禁、WPF 校验（0 error、19 warnings、161 info）和 diff 门禁通过；`artifacts/ui-qa/ui267-layout-audit-fix-v1/render-qa-report.txt` 为 `render-qa OK`，覆盖双主题、多尺寸、滚动和 resize。
+- 总 Demo-first 迁移仍未宣布完成：自动/离屏证据不能替代可识别 Playnite 生产宿主中的逐页像素、DPI、键盘焦点、主题和真实操作验收；下一阶段继续针对目标文件逐页复核并收集宿主证据。
+
 ## 2026-08-20 UI-266 存档维护指标阅读节奏交接
 
 - 存档“比较与保留”页的新增/修改/删除差异指标，以及维护页的保留、容量、趋势、保留模拟、保护状态和本地镜像指标，已统一为 Demo 的“数值 → 标签 → 补充说明”节奏；真实绑定和只读/安全语义没有改变。

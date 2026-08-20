@@ -2,6 +2,22 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-21 UI-267 工作区测量与几何审计收口
+
+**实现内容：**
+
+- 媒体“当前游戏媒体”标题区的真实搜索框最小宽度提高到 `160 DIP`，外层操作区保留 `300 DIP` 最小宽度；没有改变 `MediaSearchText` 绑定、媒体筛选、卡片列表、预览 Inspector 或生产滚动条。
+- 存档历史表在宿主工作区低于 `1240 DIP` 时提前使用紧凑列宽，确保标准约 `1116 DIP` 宿主中右侧 Inspector 存在时“状态”列仍位于表格可达区域；历史 DataGrid 的自动横向滚动、列宽拖动、排序、虚拟化和所有真实命令保持不变。
+- `SharedWorkspaceBreakpointsKeepSearchAndHistoryEssentialsReadable` 回归测试锁定媒体搜索框和存档紧凑断点契约。
+- 几何审计改为比较主 DataGrid/ListBox 直接所属 Grid 行，识别 Overview 有限活动视口、排除表格/列表内部卡片 WrapPanel 的工具栏误报，并将小于 8 DIP 的 WPF 单行 TextBox 内部滚动量视为模板测量噪声；列最小宽度超出视口但存在 Auto 横向滚动时记录为 `EXPECTED_HORIZONTAL_SCROLL`，不掩盖无滚动能力的真实压力。
+
+**验证结果：**
+
+- `scripts/build.ps1 -Configuration Release -OutputRoot artifacts/gsc-b/ui-audit-layout-fix-v1`：XAML 18/18；Release 0 warning、0 error；Core 59/59、Worker 191/191、Playnite 259 通过、62 跳过、0 失败。
+- `python scripts/validate-source.py`、WPF UI 校验（0 error、19 warnings、161 info）和 `git diff --check`：通过。
+- `artifacts/ui-audit-ui267-fix3/AUDIT_SUMMARY.md`：静态/运行时路由全部成功，Fidelity 0、HIGH 0、MEDIUM 0；主表直接行填充率在最大化任务/媒体快照为 1.00，横向列压缩有运行时滚动证据。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/ui267-layout-audit-fix-v1`：`render-qa OK`，覆盖七页双主题、多尺寸、滚动探针和 resize transition；已检查存档历史、当前游戏媒体和任务页截图。离屏证据仍不能替代可识别 Playnite 宿主中的逐页像素、DPI、键盘焦点及真实操作验收。
+
 ## 2026-08-20 UI-266 存档维护指标阅读节奏对齐 Demo
 
 **实现内容：**

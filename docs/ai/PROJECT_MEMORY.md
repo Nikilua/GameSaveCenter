@@ -1,6 +1,6 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
-> 维护时间：2026-08-14
+> 维护时间：2026-08-21
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
 ## 2026-08-20 当前总规则：Demo-first 覆盖旧视觉优先级
@@ -9,6 +9,14 @@
 - `wpf-apple-desktop-ui` 不再是视觉与实现路线的优先约束，只作为 WPF 质量检查依据，继续检查真实 Binding/Command、异步错误/取消/安全语义、虚拟化、键盘/UI Automation、可访问性、主题/DPI 和 Playnite 兼容性。
 - 当前游戏选框、生产滚动条系统、真实运行时数据和 Demo 未覆盖但目标文件明确要求保留的功能继续保留；Demo Mock 数据、演示色板、窗口按钮和演示行为不得接入生产。
 - 本段覆盖早期“当前生产 main > Demo”或“技能优先”的视觉排序；旧条目只用于历史追溯，不得阻止 Demo-first 的新页面迁移。
+
+## 2026-08-21 UI-267 当前事实：工作区表格测量与几何审计已收口
+
+- `MediaCenterView.xaml` 的当前游戏媒体搜索操作区保持至少 `300 DIP`，搜索输入列保持至少 `160 DIP`；真实 `MediaSearchText`、媒体类型筛选、媒体卡片、预览 Inspector 和批量操作没有改变。
+- `SaveCenterView.xaml.cs` 在工作区宽度低于 `1240 DIP` 时启用历史表紧凑列宽；这是为了在标准宿主的 Inspector 并列布局中保持状态列可达，不是删除列或隐藏操作。DataGrid 的 `Auto` 横向滚动、列宽拖动、排序和 Recycling 虚拟化继续由共享生产样式负责。
+- 回归断言 `SharedWorkspaceBreakpointsKeepSearchAndHistoryEssentialsReadable` 保护上述两个空间契约；生产 Tab chrome、当前游戏选框、页面滚动、真实命令/绑定和异步安全语义均未改动。
+- UI 审计已按主控件直接所属 Grid 行计算纵向填充，允许 Overview 的有限本地虚拟视口，排除列表内部媒体卡片误判工具栏；列宽超过视口但 `DG_ScrollViewer` 有真实 Auto 横向滚动时记为 `EXPECTED_HORIZONTAL_SCROLL`。最新 `artifacts/ui-audit-ui267-fix3` 为 Fidelity 0、HIGH 0、MEDIUM 0、失败路由 0。
+- 当前验证证据：`artifacts/gsc-b/ui-audit-layout-fix-v1` Release 0 warning/0 error，Core 59/59、Worker 191/191、Playnite 259 通过/62 跳过；`artifacts/ui-qa/ui267-layout-audit-fix-v1` 为 `render-qa OK`。WPF 静态检查保留 0 error、19 warnings、161 info。真实 Playnite 宿主的逐页像素、DPI、键盘焦点与真实操作仍是总目标的未收口边界。
 
 ## 2026-08-20 UI-266 当前事实：存档维护指标统一数值优先阅读
 
