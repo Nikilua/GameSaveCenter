@@ -3,6 +3,13 @@
 > 维护时间：2026-08-14
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-20 UI-250 当前事实：媒体页已恢复 AcrylicFork Tab 结构
+
+- 媒体中心以 AcrylicFork 实际 `MediaCenterView.xaml` 为结构基线：摘要四卡在顶部，工作区 `TabControl` 负责自己的标题栏和内容，不能再恢复成独立 Tab 标题 + `MediaTabContentHost` 的拼接结构。
+- 待归类 DataGrid 外部保留 `MediaInboxInspectorScrollViewer`，绑定 `SelectedInboxMedia`，侧栏包含截图/录像预览、来源/原因、目标游戏、`AssignInboxMediaCommand` 与 `IgnoreInboxMediaCommand`。常见 744 DIP 内容宽度下 Inspector 保持侧栏，低于 700 DIP 才堆叠。
+- 生产壳体及 Overview/Save/Media/Maintenance/Task/Trainer 根节点显式继承 `GscUiFontFamily`；图标仍使用明确的 Segoe MDL2 Assets，不要用页面根字体覆盖图标。
+- UI-248 的“独立 MediaTabContentHost”只保留作历史记录，当前实现以 UI-250 为准。
+
 ## 2026-08-20 UI-249 当前事实：AcrylicFork 视觉迁移已重新启动
 
 - 本轮最终视觉参考以 `D:\workplace\github\GameSaveCenter.AcrylicFork` 为准。旧的“不要恢复/不要替换”页面迁移限制已经失效；页面级结构、共享模板、Tab/分段导航和滚动模型可以按参考实现重构，但真实命令、Binding、数据契约、错误/取消/安全语义、虚拟化和 Playnite 兼容性仍必须保留。

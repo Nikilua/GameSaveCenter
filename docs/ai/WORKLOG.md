@@ -2,6 +2,21 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-20 UI-250 AcrylicFork 媒体页结构与全局字体第二轮对齐
+
+**实现内容：**
+
+- 媒体中心恢复 AcrylicFork 的实际生产结构：四张摘要卡独立占据顶部，完整 `TabControl` 自己承载 Tab 标题和内容，不再把 Tab 标题、摘要卡和内容宿主拆成变形的三段布局。
+- 待归类页保留真实 `UnassignedMedia` DataGrid，并新增/保留独立媒体详情 Inspector：选中项可预览截图或录像、查看来源与归类原因，并在侧栏完成目标游戏选择、确认归类或忽略保留副本；这些控件不放进 DataGrid 滚动面。
+- 常见 Playnite 内容宽度下待归类 Inspector 保持侧栏可见，只有低于 700 DIP 才堆叠，避免用户在实际安装后看不到预览和操作。
+- 生产壳体与工作区根节点统一继承 `GscUiFontFamily`，让页面正文、表格和按钮不再各自落到不同默认字体。
+
+**验证结果：**
+
+- `scripts/render-qa.ps1 -Configuration Release -Output .tmp/ui-qa-stage2`：`render-qa OK`；待归类 1040×700 离屏结果已显示表格 + 详情预览侧栏，双主题、多尺寸和 resize 探针通过。
+- `validate_wpf_ui.py`：0 error；19 条既有 warning、161 条 info，未新增 XAML 错误。
+- `git diff --check`：通过。未以 RenderHarness 结果宣称真实 Playnite 宿主视觉验收完成。
+
 ## 2026-08-20 UI-249 AcrylicFork 首页与共享控件首轮对齐
 
 **实现内容：**

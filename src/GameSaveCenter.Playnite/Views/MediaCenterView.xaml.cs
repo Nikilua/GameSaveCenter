@@ -55,7 +55,11 @@ namespace GameSaveCenter.Playnite.Views
                 // hidden action strip. Keep the preview/classification controls in their
                 // own measured column on wide hosts and move that complete inspector below
                 // the table only at the compact breakpoint.
-                var inboxStack = width < 980;
+                // The inbox inspector is part of the primary task: at the normal
+                // Playnite content width (~740 DIP after the sidebar) keep it beside
+                // the table so a selected item immediately exposes its preview and
+                // classification actions. Only genuinely narrow panes stack it.
+                var inboxStack = width < 700;
                 var inboxInspectorWidth = MediaInboxLayout.TryFindResource("GscInspectorWidth") is GridLength inboxLength
                     ? inboxLength
                     : new GridLength(360);
