@@ -10,6 +10,13 @@
 - 当前游戏选框、生产滚动条系统、真实运行时数据和 Demo 未覆盖但目标文件明确要求保留的功能继续保留；Demo Mock 数据、演示色板、窗口按钮和演示行为不得接入生产。
 - 本段覆盖早期“当前生产 main > Demo”或“技能优先”的视觉排序；旧条目只用于历史追溯，不得阻止 Demo-first 的新页面迁移。
 
+## 2026-08-20 UI-266 当前事实：存档维护指标统一数值优先阅读
+
+- 存档页“比较与保留”中的新增文件、修改文件、删除文件指标现在统一为“数值 → 标签”；真实 `LastBackupDiff` 绑定、差异文件列表、比较命令和只读保留预览均保持不变。
+- 维护页的保留、容量、趋势、保留模拟、保护状态和本地镜像指标统一为“数值 → 标签 → 补充说明”，绑定仍来自真实运行时状态，不得用 Demo 示例数字替换。
+- 本阶段没有改变生产 Tab chrome、页面滚动、DataGrid/列表虚拟化、Inspector、命令或安全语义；后续新增指标卡继续优先检查 Demo 的数值优先阅读节奏。
+- 当前证据：`artifacts/gsc-b/metrics-rhythm-v1` Release 0 warning/0 error，Core 59/59、Worker 191/191、Playnite 258 通过/62 跳过；XAML/source/WPF/diff 门禁通过；`artifacts/ui-qa/metrics-rhythm-v1` 双主题、多尺寸、滚动和 resize `render-qa OK`。截图仍属于离屏证据，不能替代可识别 Playnite 宿主验收。
+
 ## 2026-08-20 UI-265 当前事实：维护诊断概览先显示环境健康
 
 - `MaintenanceView.xaml` 的诊断概览现在按 Demo 顺序先显示 `DiagnosticHealthCard`/`DiagnosticHealthPanel`，再显示 `EnvironmentCheckCard` 与 `MaintenanceDiagnosticsActionCard`；不要把六项健康状态重新藏回“更多维护操作”展开区。

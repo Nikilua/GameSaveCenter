@@ -2,6 +2,20 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-20 UI-266 存档维护指标阅读节奏对齐 Demo
+
+**实现内容：**
+
+- 将存档页“最近差异”的新增/修改/删除三个真实指标改为 Demo 的“数值 → 标签”顺序，并保留差异摘要、只读比较和保留预览 Inspector。
+- 将维护页的保留、容量、容量趋势、保留模拟、保护状态和本地镜像指标统一为“数值 → 标签 → 补充说明”的阅读节奏；所有绑定仍来自真实 Snapshot、Retention、Storage、Simulation 和 Mirror 状态，没有加入 Mock 数据。
+- 没有改变命令、错误/取消/安全语义、DataGrid/列表虚拟化、页面滚动、Inspector 或用户明确保留的生产 Tab chrome。
+
+**验证结果：**
+
+- `scripts/build.ps1 -Configuration Release -OutputRoot artifacts/gsc-b/metrics-rhythm-v1`：XAML 18/18；Release 0 warning、0 error；Core 59/59、Worker 191/191、Playnite 258 通过、62 跳过、0 失败。
+- `python scripts/validate-source.py`、WPF UI 校验（0 error、19 warnings、161 info）和 `git diff --check`：通过。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/metrics-rhythm-v1`：`render-qa OK`，覆盖七页双主题、多尺寸、滚动探针和 resize transition；已检查存档比较/保留与维护异常/审计截图。离屏证据仍不能替代可识别 Playnite 宿主的逐页像素验收。
+
 ## 2026-08-20 UI-265 维护诊断概览前置环境健康区
 
 **实现内容：**

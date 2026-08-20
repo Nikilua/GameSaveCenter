@@ -14,6 +14,12 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-20 UI-266 存档维护指标阅读节奏交接
+
+- 存档“比较与保留”页的新增/修改/删除差异指标，以及维护页的保留、容量、趋势、保留模拟、保护状态和本地镜像指标，已统一为 Demo 的“数值 → 标签 → 补充说明”节奏；真实绑定和只读/安全语义没有改变。
+- `LastBackupDiff`、Snapshot、保留模拟、存储趋势和本地镜像等真实状态继续作为唯一数据来源；没有迁移 Demo Mock 数据，也没有改变任何命令、Inspector、DataGrid/列表虚拟化、滚动或生产 Tab chrome。
+- 最新验证：XAML 18/18，Release 0 warning/0 error，Core 59/59、Worker 191/191、Playnite 258 通过/62 跳过/0 失败；source/WPF/diff 门禁通过；`artifacts/ui-qa/metrics-rhythm-v1/render-qa-report.txt` 为 `render-qa OK`，覆盖双主题、多尺寸、滚动和 resize。仍需在可识别的 Playnite 生产宿主中完成逐页像素、DPI、键盘焦点及真实操作验收。
+
 ## 2026-08-20 UI-265 维护诊断概览环境健康区交接
 
 - 维护页诊断概览已按 Demo 顺序把六项真实健康卡前置到 `DiagnosticHealthCard`，随后是 `EnvironmentCheckCard` 和 `MaintenanceDiagnosticsActionCard`；不要恢复到“更多维护操作”内部。
