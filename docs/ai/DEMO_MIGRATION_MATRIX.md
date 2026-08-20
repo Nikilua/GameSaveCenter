@@ -39,4 +39,4 @@
 
 最近代码阶段：UI-279（Trainer 窄宽导入工具栏重排，已提交 `91becea`）；离屏证据：`artifacts/ui-qa/ui279-trainer-toolbar-v1/render-qa-report.txt`、`artifacts/ui-audit-ui279-trainer-toolbar-v1/AUDIT_SUMMARY.md`；构建与测试证据：`artifacts/gsc-b/ui279-trainer-toolbar-v1`；最近宿主证据阶段：`artifacts/ui-host-audit-ui271`（Settings 嵌入证据，Dashboard 未捕获）。
 
-现有离屏 RenderHarness 与静态审计只证明生产页面可构建、可渲染且在覆盖尺寸下没有已知高/中等级几何问题；在可识别 Playnite 生产宿主中完成逐页像素、DPI、主题、键盘焦点、命中区域和真实操作前，不得宣布总目标完成。
+现有离屏 RenderHarness 与静态审计证明生产页面可构建、可渲染，且当前覆盖尺寸下没有 HIGH、Fidelity 或失败路由阻断；静态审计仍记录了来自 Trainer 已选工具 Inspector 必要换行的 MEDIUM `TOOLBAR_VERTICAL_EXPANSION` 启发式项。在可识别 Playnite 生产宿主中完成逐页像素、DPI、主题、键盘焦点、命中区域和真实操作前，不得宣布总目标完成。
