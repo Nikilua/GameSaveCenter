@@ -183,6 +183,8 @@
                                    ToolTip="刷新" AutomationProperties.Name="刷新"/>
                         <ui:Button x:Name="HeaderMediaButton" Style="{DynamicResource GscRedesignHeaderButton}"
                                    Command="{Binding SyncMediaCommand}" Content="同步媒体" ToolTip="同步媒体"/>
+                        <ui:Button x:Name="HeaderBackupSelectedButton" Style="{DynamicResource GscRedesignPrimaryHeaderButton}"
+                                   Command="{Binding BackupSelectedCommand}" Content="立即备份" ToolTip="只备份当前选中的游戏"/>
                         <ui:Button x:Name="HeaderBackupButton" Style="{DynamicResource GscRedesignPrimaryHeaderButton}"
                                    Command="{Binding BackupAllCommand}" Content="全部备份" ToolTip="全部备份"/>
                     </StackPanel>

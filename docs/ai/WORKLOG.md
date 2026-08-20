@@ -2,6 +2,22 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-20 UI-249 AcrylicFork 首页与共享控件首轮对齐
+
+**实现内容：**
+
+- 以 `D:\workplace\github\GameSaveCenter.AcrylicFork` 的实际生产页面为参考，首页补回独立的“今日工作台”批量操作区，保留现有真实刷新、全部备份、媒体同步和关注项命令；首页最近任务行固定为 54 DIP，并将消息保持单行省略，避免多行消息把一条记录撑成多行高度。
+- 存档中心生产壳体新增可见的“立即备份”入口，绑定现有 `BackupSelectedCommand`；“全部备份”仍保留为全局操作，两者语义不混用。
+- 共享表格框架收紧为 Demo 的 12 DIP 圆角，状态胶囊改为紧凑无描边软填充；DataGrid 行固定使用统一行高，表头排序箭头保留独立空间，继续允许用户调整列宽、排序和虚拟化。
+- 共享折叠栏改为紧凑的箭头 + 标题行 + 内容体结构，保留原有 Header、Binding、键盘焦点和内容命令。
+
+**验证结果：**
+
+- `scripts/render-qa.ps1 -Configuration Release -Output .tmp/ui-qa-stage1`：`render-qa OK`，双主题、多尺寸和 resize 探针通过；首页 1040×700 已出现“今日工作台”，最近任务仍保持有限视口。
+- `python scripts/validate-source.py`：通过。
+- `validate_wpf_ui.py`：0 error；既有布局 warning 仍需在后续页面结构阶段逐项消除。
+- `git diff --check`：通过。未以 RenderHarness 结果宣称真实 Playnite 宿主视觉验收完成。
+
 ## 2026-08-19 UI-248 媒体中心摘要卡片与标签栏分区
 
 **实现内容：**

@@ -334,103 +334,69 @@
          chrome separates from the header when open. -->
     <Style x:Key="GscDisclosureCardExpander" TargetType="Expander">
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
-        <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="VerticalContentAlignment" Value="Stretch"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Expander">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
+                    <StackPanel>
                         <ToggleButton x:Name="HeaderSite"
-                                      Grid.Row="0"
                                       IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
                                       Content="{TemplateBinding Header}"
                                       ContentTemplate="{TemplateBinding HeaderTemplate}"
                                       ContentStringFormat="{TemplateBinding HeaderStringFormat}"
+                                      FocusVisualStyle="{DynamicResource GscSharedFocusVisual}"
                                       Foreground="{TemplateBinding Foreground}"
                                       HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                       VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                      VerticalAlignment="Center"
-                                      Padding="12,6"
-                                      MinHeight="42"
-                                      Background="{TemplateBinding Background}"
-                                      BorderBrush="{TemplateBinding BorderBrush}"
-                                      BorderThickness="{TemplateBinding BorderThickness}"
+                                      Padding="10,8"
                                       Cursor="Hand"
-                                      FocusVisualStyle="{DynamicResource GscSharedFocusVisual}"
                                       OverridesDefaultStyle="True">
                             <ToggleButton.Template>
                                 <ControlTemplate TargetType="ToggleButton">
                                     <Border x:Name="HeaderChrome"
-                                            Background="{TemplateBinding Background}"
-                                            BorderBrush="{TemplateBinding BorderBrush}"
-                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            Background="Transparent"
+                                            BorderBrush="Transparent"
+                                            BorderThickness="1"
                                             CornerRadius="10"
                                             Padding="{TemplateBinding Padding}"
                                             SnapsToDevicePixels="True">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="34"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Border x:Name="ChevronChrome"
-                                                    Grid.Column="0"
-                                                    Width="26"
-                                                    Height="26"
-                                                    CornerRadius="8"
-                                                    Background="{DynamicResource GscControlFillBrush}"
-                                                    BorderBrush="{DynamicResource GscControlStrokeBrush}"
-                                                    BorderThickness="1"
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center">
-                                                <Path x:Name="Chevron"
-                                                      Data="M 2 1 L 7 6 L 12 1"
-                                                      Stretch="None"
-                                                      Stroke="{DynamicResource GscSecondaryTextBrush}"
-                                                      StrokeThickness="1.7"
-                                                      StrokeStartLineCap="Round"
-                                                      StrokeEndLineCap="Round"
-                                                      RenderTransformOrigin="0.5,0.5"
-                                                      HorizontalAlignment="Center"
-                                                      VerticalAlignment="Center">
-                                                    <Path.RenderTransform>
-                                                        <RotateTransform Angle="90"/>
-                                                    </Path.RenderTransform>
-                                                </Path>
-                                            </Border>
-                                            <ContentPresenter Grid.Column="1"
-                                                              Content="{TemplateBinding Content}"
-                                                              ContentTemplate="{TemplateBinding ContentTemplate}"
-                                                              ContentStringFormat="{TemplateBinding ContentStringFormat}"
-                                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock x:Name="Chevron"
+                                                       Text="&#xE70D;"
+                                                       FontFamily="Segoe MDL2 Assets"
+                                                       FontSize="10"
+                                                       Foreground="{DynamicResource GscMutedTextBrush}"
+                                                       VerticalAlignment="Center"
+                                                       RenderTransformOrigin="0.5,0.5">
+                                                <TextBlock.RenderTransform>
+                                                    <RotateTransform Angle="-90"/>
+                                                </TextBlock.RenderTransform>
+                                            </TextBlock>
+                                            <ContentPresenter ContentSource="Content"
+                                                              Margin="10,0,0,0"
                                                               VerticalAlignment="Center"
                                                               TextElement.Foreground="{TemplateBinding Foreground}"
-                                                              TextElement.FontWeight="SemiBold"
-                                                              TextElement.FontSize="13"
+                                                              TextElement.FontFamily="{DynamicResource GscUiFontFamily}"
+                                                              TextElement.FontWeight="Medium"
                                                               RecognizesAccessKey="True"/>
-                                        </Grid>
+                                        </StackPanel>
                                     </Border>
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
                                             <Setter TargetName="HeaderChrome" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
-                                            <Setter TargetName="HeaderChrome" Property="BorderBrush" Value="{DynamicResource GscAccentTintStrongBrush}"/>
-                                            <Setter TargetName="ChevronChrome" Property="Background" Value="{DynamicResource GscAccentTintStrongBrush}"/>
-                                            <Setter TargetName="ChevronChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
                                         </Trigger>
                                         <Trigger Property="IsChecked" Value="True">
-                                            <Setter TargetName="HeaderChrome" Property="Background" Value="{DynamicResource GscAccentTintStrongBrush}"/>
-                                            <Setter TargetName="HeaderChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
-                                            <Setter TargetName="ChevronChrome" Property="Background" Value="{DynamicResource GscAccentTintStrongBrush}"/>
-                                            <Setter TargetName="ChevronChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
+                                            <Setter TargetName="HeaderChrome" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
                                             <Setter TargetName="Chevron" Property="RenderTransform">
-                                                <Setter.Value><RotateTransform Angle="180"/></Setter.Value>
+                                                <Setter.Value><RotateTransform Angle="0"/></Setter.Value>
                                             </Setter>
                                         </Trigger>
                                         <Trigger Property="IsEnabled" Value="False">
@@ -441,8 +407,7 @@
                             </ToggleButton.Template>
                         </ToggleButton>
                         <Border x:Name="ContentChrome"
-                                Grid.Row="1"
-                                Margin="0,6,0,0"
+                                Margin="0,4,0,0"
                                 Background="{DynamicResource GscControlFillBrush}"
                                 BorderBrush="{DynamicResource GscControlStrokeBrush}"
                                 BorderThickness="1"
@@ -455,7 +420,7 @@
                                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                         </Border>
-                    </Grid>
+                    </StackPanel>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsExpanded" Value="True">
                             <Setter TargetName="ContentChrome" Property="Visibility" Value="Visible"/>

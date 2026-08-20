@@ -108,7 +108,7 @@ namespace GameSaveCenter.Playnite.Views
             // the recent-task/global-activity rows. In the compact layout it becomes
             // a single full-width row after the primary flow; keeping this in the same
             // measured grid prevents it from falling to an implicit/out-of-range row.
-            Grid.SetRow(OverviewSecondaryScrollViewer, stack ? 4 : 2);
+            Grid.SetRow(OverviewSecondaryScrollViewer, stack ? 4 : 3);
             Grid.SetColumn(OverviewSecondaryScrollViewer, stack ? 0 : 2);
             Grid.SetColumnSpan(OverviewSecondaryScrollViewer, stack ? 3 : 1);
             Grid.SetRowSpan(OverviewSecondaryScrollViewer, stack ? 1 : 2);
@@ -130,6 +130,24 @@ namespace GameSaveCenter.Playnite.Views
             var activityWidth = OverviewFlowPrimaryColumn?.ActualWidth > 0
                 ? OverviewFlowPrimaryColumn.ActualWidth
                 : primaryWidth;
+
+            if (OverviewHomeToolbarActions != null)
+            {
+                var stackActions = primaryWidth < 720;
+                OverviewHomeToolbarActions.Orientation = Orientation.Horizontal;
+                OverviewHomeToolbarActions.HorizontalAlignment = stackActions
+                    ? HorizontalAlignment.Stretch
+                    : HorizontalAlignment.Right;
+                OverviewHomeToolbarActionsRow.Height = stackActions
+                    ? GridLength.Auto
+                    : new GridLength(0);
+                Grid.SetRow(OverviewHomeToolbarActions, stackActions ? 1 : 0);
+                Grid.SetColumn(OverviewHomeToolbarActions, stackActions ? 0 : 1);
+                Grid.SetColumnSpan(OverviewHomeToolbarActions, stackActions ? 2 : 1);
+                OverviewHomeToolbarActions.Margin = stackActions
+                    ? new Thickness(0, 12, 0, 0)
+                    : new Thickness(12, 0, 0, 0);
+            }
 
             // The six Snapshot metrics are a compact summary strip, not a card wall.
             // Wide workbenches keep the Demo's single-row rhythm; narrow hosts drop to

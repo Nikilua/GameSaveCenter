@@ -3,6 +3,14 @@
 > 维护时间：2026-08-14
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-20 UI-249 当前事实：AcrylicFork 视觉迁移已重新启动
+
+- 本轮最终视觉参考以 `D:\workplace\github\GameSaveCenter.AcrylicFork` 为准。旧的“不要恢复/不要替换”页面迁移限制已经失效；页面级结构、共享模板、Tab/分段导航和滚动模型可以按参考实现重构，但真实命令、Binding、数据契约、错误/取消/安全语义、虚拟化和 Playnite 兼容性仍必须保留。
+- 首页已补回独立“今日工作台”操作区；首页最近任务项固定为 54 DIP、消息单行省略并提供 Tooltip，不能再让多行 DetailMessage 撑高单条记录。
+- 存档中心生产壳体现在同时显示“立即备份”（`BackupSelectedCommand`）和“全部备份”（`BackupAllCommand`），前者只作用于当前游戏。
+- 共享 `GscRedesignTableFrame`、DataGrid 行/表头样式和 `GscDisclosureCard` 已按 AcrylicFork Demo 的紧凑密度首轮收口；后续页面阶段必须继续检查有限 Grid 行、Inspector 和操作区是否发生隐藏堆叠。
+- 当前证据：RenderHarness Release `render-qa OK`、source/WPF 校验和 `git diff --check` 通过；尚未获得可识别的 Playnite 生产宿主像素证据。
+
 ## 2026-08-19 UI-247 当前事实：任务搜索区必须是单一输入面
 
 - 任务中心的“搜索任务…”必须作为 `TaskSearchTextBox` 内部提示，搜索图标也在同一输入区内；禁止恢复独立标签列，否则真实宿主会把输入框测量成窄条。

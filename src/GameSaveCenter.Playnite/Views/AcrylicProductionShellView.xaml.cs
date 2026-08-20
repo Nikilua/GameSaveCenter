@@ -85,6 +85,7 @@ namespace GameSaveCenter.Playnite.Views
             var gameScoped = workspace != WorkspaceKind.Tasks && workspace != WorkspaceKind.Maintenance;
             GameContextButton.Visibility = gameScoped ? Visibility.Visible : Visibility.Collapsed;
             HeaderMediaButton.Visibility = workspace == WorkspaceKind.Media ? Visibility.Visible : Visibility.Collapsed;
+            HeaderBackupSelectedButton.Visibility = workspace == WorkspaceKind.Saves ? Visibility.Visible : Visibility.Collapsed;
             HeaderBackupButton.Visibility = Visibility.Visible;
             HeaderRefreshButton.Visibility = Visibility.Visible;
 
