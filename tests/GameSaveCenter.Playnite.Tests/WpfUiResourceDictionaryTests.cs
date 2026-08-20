@@ -4069,6 +4069,24 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void DemoCorePaletteWinsOverHostNeutralBrushesOutsideHighContrast()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var palette = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Infrastructure", "AdaptiveThemePalette.cs"));
+        var settingsCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml.cs"));
+
+        Assert.Contains("public static void ApplyDemoCoreResources(ResourceDictionary resources, bool isDark)", palette);
+        Assert.Contains("if (SystemParameters.HighContrast)\n                return;", palette);
+        Assert.Contains("ApplyDemoCoreResources(resources, palette.IsDark);", palette);
+        Assert.Contains("ApplyDemoCoreResources(Resources, palette.IsDark);", settingsCode);
+        Assert.Contains("Color.FromArgb(0xEE, 0x26, 0x2B, 0x36)", palette);
+        Assert.Contains("Color.FromArgb(0xF5, 0xFF, 0xFF, 0xFF)", palette);
+        Assert.Contains("resources[\"GscTableHeaderBrush\"] = Brush(tableHeader);", palette);
+        Assert.Contains("resources[\"GscScrollThumbBrush\"] = Brush(scrollThumb);", palette);
+        Assert.Contains("resources[\"GscErrorTintBrush\"] = Brush(errorFill);", palette);
+    }
+
+    [Fact]
     public void SharedListBoxItemsStayRoundedAndKeyboardFocusable()
     {
         var repositoryRoot = FindRepositoryRoot();

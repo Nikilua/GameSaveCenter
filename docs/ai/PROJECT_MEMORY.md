@@ -10,6 +10,12 @@
 - 当前游戏选框、生产滚动条系统、真实运行时数据和 Demo 未覆盖但目标文件明确要求保留的功能继续保留；Demo Mock 数据、演示色板、窗口按钮和演示行为不得接入生产。
 - 本段覆盖早期“当前生产 main > Demo”或“技能优先”的视觉排序；旧条目只用于历史追溯，不得阻止 Demo-first 的新页面迁移。
 
+## 2026-08-21 UI-269 当前事实：Demo 核心主题色不再被宿主中性刷覆盖
+
+- `AdaptiveThemePaletteFactory.ApplyDemoCoreResources` 是生产 Shell 与 Settings 共用的核心色板入口，固定 Demo 的浅色/深色画布渐变、卡片、侧栏、顶栏、输入框、文字层级、表格、分段控件、滚动条、遮罩和语义状态色；宿主 Accent/focus 仍保留给非核心交互。
+- 高对比度通过提前返回继续使用系统自适应路径；普通主题不再由 Playnite 背景/正文中性刷重写已迁移页面的核心表面。生产 Tab chrome、当前游戏选框、滚动条行为、虚拟化、命令/Binding 和真实业务数据没有改变。
+- 当前证据：`artifacts/gsc-b/ui-269-demo-palette-v2` Release 0 warning/0 error，Core 59/59、Worker 191/191、Playnite 260 通过/62 跳过；source/WPF/diff 门禁通过；`artifacts/ui-qa/ui269-demo-palette-v1/render-qa-report.txt` 双主题、多尺寸、滚动和 resize 均为 `OK`。截图仍不能替代可识别 Playnite 宿主的逐页像素、DPI、键盘、主题和真实操作验收。
+
 ## 2026-08-21 UI-268 当前事实：标题字体接入独立 Display 字阶
 
 - `src/GameSaveCenter.Playnite/Themes/DesignTokens.xaml` 当前同时提供 `GscUiFontFamily`（`Segoe UI Variable Text, Segoe UI, Microsoft YaHei UI`）、`GscDisplayFontFamily`（`Segoe UI Variable Display, Segoe UI, Microsoft YaHei UI`）和 `GscCodeFontFamily`（`Cascadia Mono, Consolas, Microsoft YaHei UI`）。

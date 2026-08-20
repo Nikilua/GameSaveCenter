@@ -2,6 +2,21 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-21 UI-269 Demo 核心主题配色固定
+
+**实现内容：**
+
+- 新增共享 `AdaptiveThemePaletteFactory.ApplyDemoCoreResources`，将 Demo 的浅色/深色画布渐变、卡片/侧栏/顶栏、输入框、正文层级、表格行与表头、分段控件、滚动条、遮罩和成功/警告/错误/信息状态关系写入生产资源；Playnite 仍可提供非核心 Accent/focus 颜色。
+- 生产 Shell 和 Settings 都在 WPF 主题资源应用后调用同一核心色板；高对比度仍保留系统自适应不透明路径。没有改动生产 Tab chrome、当前游戏选框、滚动条交互、虚拟化、真实命令/绑定或业务状态。
+- `DemoCorePaletteWinsOverHostNeutralBrushesOutsideHighContrast` 锁定核心色板入口、浅深色卡片、表格表头、滚动条和错误色资源契约。
+
+**验证结果：**
+
+- `scripts/build.ps1 -Configuration Release -OutputRoot artifacts/gsc-b/ui-269-demo-palette-v2`：XAML 18/18；Release 0 warning、0 error；Core 59/59、Worker 191/191、Playnite 260 通过、62 跳过、0 失败。
+- `python scripts/validate-source.py`、WPF UI 校验（0 error、19 warnings、161 info）和 `git diff --check`：通过。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/ui269-demo-palette-v1`：`render-qa OK`，覆盖七页双主题、多尺寸、滚动探针和 resize transition；已抽查 Overview、Save、Media、Maintenance、Settings 的浅/深色代表图。
+- 离屏证据仍不能替代可识别 Playnite 宿主中的逐页像素、DPI、键盘焦点、主题切换和真实操作验收，总 Demo-first 迁移保持未完成。
+
 ## 2026-08-21 UI-268 Demo 字体阶关系补齐
 
 **实现内容：**

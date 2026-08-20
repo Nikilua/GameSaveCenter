@@ -385,6 +385,116 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscPickerScrimBrush"] = Brush(Color.FromArgb(
                 palette.IsDark ? (byte)54 : (byte)34, 0, 0, 0));
             WpfUiThemeScope.Apply(resources, palette.IsDark);
+            ApplyDemoCoreResources(resources, palette.IsDark);
+        }
+
+        /// <summary>
+        /// Keeps the migrated page surfaces on the Demo's light/dark color relationships.
+        /// Playnite may still provide the accent used for focus and primary actions, but its
+        /// background/text brushes must not recolor the page cards, tables or status surfaces.
+        /// High contrast intentionally stays on the adaptive opaque path above.
+        /// </summary>
+        public static void ApplyDemoCoreResources(ResourceDictionary resources, bool isDark)
+        {
+            if (SystemParameters.HighContrast)
+                return;
+
+            var canvasStart = isDark ? Color.FromRgb(29, 32, 39) : Color.FromRgb(239, 239, 244);
+            var canvasMiddle = isDark ? Color.FromRgb(23, 26, 32) : Color.FromRgb(233, 234, 240);
+            var canvasEnd = isDark ? Color.FromRgb(19, 21, 25) : Color.FromRgb(228, 230, 237);
+            var card = isDark ? Color.FromArgb(0xEE, 0x26, 0x2B, 0x36) : Color.FromArgb(0xF5, 0xFF, 0xFF, 0xFF);
+            var cardStroke = isDark ? Color.FromArgb(0x17, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x12, 0x00, 0x00, 0x00);
+            var cardHoverStroke = isDark ? Color.FromArgb(0x2E, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x24, 0x00, 0x00, 0x00);
+            var header = isDark ? Color.FromArgb(0xA0, 0x20, 0x24, 0x30) : Color.FromArgb(0x8C, 0xF2, 0xF4, 0xFA);
+            var sidebar = isDark ? Color.FromArgb(0x8C, 0x1B, 0x1F, 0x2A) : Color.FromArgb(0xA9, 0xF4, 0xF6, 0xFB);
+            var field = isDark ? Color.FromArgb(0x66, 0x13, 0x16, 0x20) : Color.FromArgb(0x80, 0xFF, 0xFF, 0xFF);
+            var fieldStroke = isDark ? Color.FromArgb(0x1C, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x17, 0x00, 0x00, 0x00);
+            var floating = isDark ? Color.FromArgb(0xF0, 0x26, 0x2C, 0x3A) : Color.FromArgb(0xF2, 0xFF, 0xFF, 0xFF);
+            var primaryText = isDark ? Color.FromRgb(0xF2, 0xF4, 0xF8) : Color.FromArgb(0xF2, 0x1B, 0x1F, 0x27);
+            var secondaryText = isDark ? Color.FromRgb(0xB9, 0xC0, 0xCC) : Color.FromArgb(0xF2, 0x4E, 0x56, 0x66);
+            var tertiaryText = isDark ? Color.FromRgb(0x82, 0x8A, 0x99) : Color.FromArgb(0xF2, 0x8A, 0x92, 0xA1);
+            var divider = isDark ? Color.FromArgb(0x12, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x12, 0x00, 0x00, 0x00);
+            var tableHeader = isDark ? Color.FromArgb(0x0D, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x0A, 0x00, 0x00, 0x00);
+            var rowHover = isDark ? Color.FromArgb(0x0C, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x08, 0x00, 0x00, 0x00);
+            var scrollThumb = isDark ? Color.FromArgb(0x38, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x33, 0x00, 0x00, 0x00);
+            var scrollThumbHover = isDark ? Color.FromArgb(0x52, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x52, 0x00, 0x00, 0x00);
+            var scrim = isDark ? Color.FromArgb(0x66, 0x0D, 0x0F, 0x14) : Color.FromArgb(0x47, 0x10, 0x14, 0x18);
+            var success = isDark ? Color.FromRgb(0x4C, 0xDB, 0x8E) : Color.FromRgb(0x12, 0x8A, 0x4C);
+            var successFill = isDark ? Color.FromArgb(0x23, 0x4C, 0xDB, 0x8E) : Color.FromArgb(0x1F, 0x12, 0x8A, 0x4C);
+            var warning = isDark ? Color.FromRgb(0xF0, 0xB2, 0x4E) : Color.FromRgb(0x9A, 0x6A, 0x14);
+            var warningFill = isDark ? Color.FromArgb(0x26, 0xF0, 0xB2, 0x4E) : Color.FromArgb(0x22, 0x9A, 0x6A, 0x14);
+            var error = isDark ? Color.FromRgb(0xF2, 0x6D, 0x7E) : Color.FromRgb(0xC7, 0x41, 0x52);
+            var errorFill = isDark ? Color.FromArgb(0x26, 0xF2, 0x6D, 0x7E) : Color.FromArgb(0x20, 0xC7, 0x41, 0x52);
+            var info = isDark ? Color.FromRgb(0x5C, 0xAA, 0xF0) : Color.FromRgb(0x25, 0x6F, 0xBD);
+            var infoFill = isDark ? Color.FromArgb(0x22, 0x5C, 0xAA, 0xF0) : Color.FromArgb(0x1F, 0x25, 0x6F, 0xBD);
+            var neutral = isDark ? Color.FromRgb(0xB9, 0xC0, 0xCC) : Color.FromRgb(0x4E, 0x56, 0x66);
+
+            resources["GscBackdropBrush"] = CanvasGradient(canvasStart, canvasMiddle, canvasEnd);
+            resources["GscGlassFillBrush"] = Brush(header);
+            resources["GscGlassStrongBrush"] = Brush(card);
+            resources["GscGlassStrokeBrush"] = Brush(cardStroke);
+            resources["GscGlassHighlightBrush"] = Brush(cardHoverStroke);
+            resources["GscSidebarBrush"] = Brush(sidebar);
+            resources["GscPrimaryTextBrush"] = Brush(primaryText);
+            resources["GscSecondaryTextBrush"] = Brush(secondaryText);
+            resources["GscMutedTextBrush"] = Brush(tertiaryText);
+            resources["GscDisabledTextBrush"] = Brush(tertiaryText);
+            resources["GscControlFillBrush"] = Brush(field);
+            resources["GscControlStrokeBrush"] = Brush(fieldStroke);
+            resources["GscDividerBrush"] = Brush(divider);
+            resources["GscTableDividerBrush"] = Brush(divider);
+            resources["GscPopupBrush"] = Brush(floating);
+            resources["GscTableHeaderBrush"] = Brush(tableHeader);
+            resources["GscTableAlternateRowBrush"] = Brush(Colors.Transparent);
+            resources["GscRowHoverBrush"] = Brush(rowHover);
+            resources["GscRowHoverStrongBrush"] = Brush(rowHover);
+            resources["GscScrollTrackBrush"] = Brush(Colors.Transparent);
+            resources["GscScrollThumbBrush"] = Brush(scrollThumb);
+            resources["GscScrollThumbHoverBrush"] = Brush(scrollThumbHover);
+            resources["GscOverlayBrush"] = Brush(scrim);
+            resources["GscPickerScrimBrush"] = Brush(scrim);
+            resources["GscSelectionTextBrush"] = Brush(primaryText);
+            resources["GscProgressTrackBrush"] = Brush(isDark ? Color.FromArgb(0x59, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x26, 0x00, 0x00, 0x00));
+            resources["GscSegmentFillBrush"] = Brush(isDark ? Color.FromArgb(0x59, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x26, 0x00, 0x00, 0x00));
+            resources["GscSegmentItemFillBrush"] = Brush(isDark ? Color.FromArgb(0xF2, 0x37, 0x3D, 0x4C) : Color.FromArgb(0xF0, 0xFF, 0xFF, 0xFF));
+            resources["GscSegmentItemStrokeBrush"] = Brush(isDark ? Color.FromArgb(0x1C, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x14, 0x00, 0x00, 0x00));
+            resources["GscInfoBrush"] = Brush(info);
+            resources["GscSuccessBrush"] = Brush(success);
+            resources["GscWarningBrush"] = Brush(warning);
+            resources["GscErrorBrush"] = Brush(error);
+            resources["GscInfoIconFillBrush"] = Brush(infoFill);
+            resources["GscRestoreInfoFillBrush"] = Brush(infoFill);
+            resources["GscRestoreInfoStrokeBrush"] = Brush(info);
+            resources["GscSuccessIconFillBrush"] = Brush(successFill);
+            resources["GscWarningIconFillBrush"] = Brush(warningFill);
+            resources["GscSafetyFillBrush"] = Brush(warningFill);
+            resources["GscSafetyStrokeBrush"] = Brush(warning);
+            resources["GscErrorIconFillBrush"] = Brush(errorFill);
+            resources["GscErrorTintBrush"] = Brush(errorFill);
+            resources["GscMutedStatusBrush"] = Brush(neutral);
+
+            resources["TextFillColorPrimaryBrush"] = Brush(primaryText);
+            resources["TextFillColorSecondaryBrush"] = Brush(secondaryText);
+            resources["TextFillColorTertiaryBrush"] = Brush(tertiaryText);
+            resources["TextFillColorDisabledBrush"] = Brush(tertiaryText);
+            resources["ControlFillColorDefaultBrush"] = Brush(field);
+            resources["ControlFillColorSecondaryBrush"] = Brush(isDark ? Color.FromArgb(0xD9, 0x20, 0x25, 0x31) : Color.FromArgb(0x66, 0xF2, 0xF4, 0xF9));
+            resources["ControlFillColorTertiaryBrush"] = Brush(isDark ? Color.FromArgb(0x8C, 0x1A, 0x1E, 0x2B) : Color.FromArgb(0xF9, 0xFF, 0xFF, 0xFF));
+            resources["ControlFillColorInputActiveBrush"] = Brush(isDark ? Color.FromArgb(0x8C, 0x1A, 0x1E, 0x2B) : Color.FromArgb(0xF9, 0xFF, 0xFF, 0xFF));
+            resources["ControlStrokeColorDefaultBrush"] = Brush(fieldStroke);
+            resources["ControlStrokeColorSecondaryBrush"] = Brush(divider);
+            resources["CardBackgroundFillColorDefaultBrush"] = Brush(card);
+            resources["CardStrokeColorDefaultBrush"] = Brush(cardStroke);
+        }
+
+        private static LinearGradientBrush CanvasGradient(Color start, Color middle, Color end)
+        {
+            var brush = new LinearGradientBrush { StartPoint = new Point(0, 0), EndPoint = new Point(1, 1) };
+            brush.GradientStops.Add(new GradientStop(start, 0));
+            brush.GradientStops.Add(new GradientStop(middle, 0.55));
+            brush.GradientStops.Add(new GradientStop(end, 1));
+            brush.Freeze();
+            return brush;
         }
 
         public static SolidColorBrush Brush(Color color)

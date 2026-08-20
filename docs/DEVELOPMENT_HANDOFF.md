@@ -14,6 +14,12 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-21 UI-269 Demo 核心主题配色交接
+
+- `AdaptiveThemePaletteFactory.ApplyDemoCoreResources` 现在由生产 Shell 和 Settings 共用，普通浅/深色主题固定 Demo 的画布渐变、卡片/侧栏/顶栏、输入框、正文层级、表格、分段控件、滚动条、遮罩及成功/警告/错误/信息状态关系；宿主只继续影响非核心 Accent/focus 交互。
+- 高对比度仍绕过 Demo 核心覆盖并使用系统自适应资源。不要把宿主 `Background`/`Foreground` 中性刷重新应用到迁移页面核心表面，也不要为配色修复替换生产 Tab chrome、当前游戏选框或滚动条交互。
+- 当前验证：`artifacts/gsc-b/ui-269-demo-palette-v2` Release 0 warning/0 error，Core 59/59、Worker 191/191、Playnite 260 通过/62 跳过/0 失败；source/WPF/diff 门禁通过；`artifacts/ui-qa/ui269-demo-palette-v1/render-qa-report.txt` 为 `render-qa OK`，覆盖七页双主题、多尺寸、滚动和 resize。已抽查浅/深色代表截图，但仍需可识别 Playnite 宿主的逐页像素、DPI、键盘焦点、主题切换和真实操作验收。
+
 ## 2026-08-21 UI-267 工作区表格测量与几何审计交接
 
 - 媒体当前游戏媒体头部的操作区使用 `MinWidth=300`，搜索输入使用 `MinWidth=160`，所以标准及窄工作区不会把搜索框压成不可用的窄条；媒体搜索、筛选、卡片、预览 Inspector 和批量命令仍是真实绑定/命令。

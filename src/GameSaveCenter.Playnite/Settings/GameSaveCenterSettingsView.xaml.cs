@@ -392,6 +392,7 @@ namespace GameSaveCenter.Playnite.Settings
             Resources["GscGlassStrokeBrush"] = AdaptiveThemePaletteFactory.Brush(palette.ControlStroke);
             Resources["GscBackdropBrush"] = AdaptiveThemePaletteFactory.Brush(palette.Backdrop);
             WpfUiThemeScope.Apply(Resources, palette.IsDark);
+            AdaptiveThemePaletteFactory.ApplyDemoCoreResources(Resources, palette.IsDark);
 
             // Keep the two fixed background blur elements out of the render tree when glass
             // is disabled. Opacity=0 alone still leaves an effect-bearing visual alive.
