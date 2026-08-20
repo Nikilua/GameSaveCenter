@@ -14,6 +14,13 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-21 UI-271 真实 Playnite 宿主审计边界交接
+
+- `scripts/real-host-audit.ps1 -Configuration Release -Output artifacts/ui-host-audit-ui271` 已完成 Release 构建、安装和 Playnite 启动；`summary.json` 为 `EmbeddedSettingsCaptured=true`、`ControlledDashboardCaptured=true`、`EmbeddedDashboardCaptured=false`、`ProductionVisualSourceOfTruthAvailable=false`。
+- Settings 的 `settings/embedded-current/viewport/settings.png`、视觉树和资源快照确实来自 `EmbeddedPlaynite`，可用于 Settings 的宿主复核。Dashboard 自动 UI Automation 没有找到左侧 GameSaveCenter 入口，最终 90 秒超时并保留 `gates/REAL_EMBEDDED_DASHBOARD_NOT_CAPTURED.json`；Controlled Dashboard 只能作为受控布局证据。
+- Computer Use 观察到 Playnite 主窗口返回 `EmptyWindowAutomationPeer`，没有把 Codex/其他窗口画面当作 Playnite Dashboard，也没有停止不属于本轮的旧 Worker。下次优先让用户在可见 Playnite 左侧手动打开 GameSaveCenter，再重跑审计。
+- 本轮基线：XAML 18/18；Release 0 warning/0 error；Core 59/59、Worker 191/191、Playnite 262 通过、62 跳过、0 失败。真实 Dashboard 七页的像素、DPI、键盘焦点、命中区域、主题切换和真实操作仍未收口，总 Demo-first 目标不能宣布完成。
+
 ## 2026-08-21 UI-271 共享表格字阶交接
 
 - 生产 `DesignTokens.xaml` 的 `GscBodyFontSize=13.5`、`GscCaptionFontSize=12` 对齐 Demo `SizeBody`/`SizeCaption`；共享 `DataGrid` 和 `DataGridColumnHeader` 使用 UI 字体链、正文/表头字阶和 Medium 表头字重。

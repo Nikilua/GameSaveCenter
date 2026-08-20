@@ -2,6 +2,20 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-21 UI-271 真实 Playnite 宿主审计边界复核
+
+**审计结果：**
+
+- 使用 Release `0.6.70+c6cb235ef446fbe6e0c12566a7920c92e2135af8` 重新安装并启动真实 Playnite；`artifacts/ui-host-audit-ui271/summary.json` 记录 `EmbeddedSettingsCaptured=true`、`ControlledDashboardCaptured=true`、`EmbeddedDashboardCaptured=false`、`ProductionVisualSourceOfTruthAvailable=false`。
+- Settings 已取得 `EmbeddedPlaynite` 当前宿主截图、视觉树和资源快照，可作为 Settings 嵌入宿主证据；Dashboard 自动 UI Automation 未找到左侧 GameSaveCenter 入口，90 秒等待后退出，不能把受控窗口的七页截图写成生产视觉真值。
+- `gates/REAL_EMBEDDED_DASHBOARD_NOT_CAPTURED.json` 保留 HIGH 门禁；Computer Use 观察到 Playnite 主窗口返回 `EmptyWindowAutomationPeer`，未绕过该边界或强杀不属于本轮的旧 Worker。
+
+**验证结果：**
+
+- `scripts/real-host-audit.ps1 -Configuration Release -Output artifacts/ui-host-audit-ui271`：构建、安装、Playnite 启动和审计产物生成完成；最终因未捕获真实 Dashboard 以 partial 状态退出。
+- 审计内置 Release 基线：XAML 18/18；Release 0 warning、0 error；Core 59/59、Worker 191/191、Playnite 262 通过、62 跳过、0 失败。
+- 当前仍需用户在可见 Playnite 左侧手动进入 GameSaveCenter 后重跑真实审计，补齐 Dashboard 七页逐页像素、DPI、键盘焦点、命中区域和真实操作证据；总 Demo-first 目标保持未完成。
+
 ## 2026-08-21 UI-271 统一 Demo 表格字阶
 
 **实现内容：**

@@ -10,6 +10,13 @@
 - 当前游戏选框、生产滚动条系统、真实运行时数据和 Demo 未覆盖但目标文件明确要求保留的功能继续保留；Demo Mock 数据、演示色板、窗口按钮和演示行为不得接入生产。
 - 本段覆盖早期“当前生产 main > Demo”或“技能优先”的视觉排序；旧条目只用于历史追溯，不得阻止 Demo-first 的新页面迁移。
 
+## 2026-08-21 UI-271 真实 Playnite 宿主审计边界复核
+
+- Release `0.6.70+c6cb235ef446fbe6e0c12566a7920c92e2135af8` 已通过 `scripts/real-host-audit.ps1` 安装并启动 Playnite；`artifacts/ui-host-audit-ui271/summary.json` 明确记录 `EmbeddedSettingsCaptured=true`、`ControlledDashboardCaptured=true`、`EmbeddedDashboardCaptured=false`、`ProductionVisualSourceOfTruthAvailable=false`。
+- Settings 的 `settings/embedded-current/viewport/settings.png`、视觉树和资源快照来自真实 `EmbeddedPlaynite` 宿主，可作为 Settings 嵌入证据。Dashboard 自动 UI Automation 仍未定位左侧 GameSaveCenter 入口，`gates/REAL_EMBEDDED_DASHBOARD_NOT_CAPTURED.json` 的 HIGH 门禁有效；受控 Dashboard 图像只能作为布局辅助，不能冒充生产视觉真值。
+- Computer Use 观察到 Playnite 主窗口为 `EmptyWindowAutomationPeer`；未绕过该限制，也未停止另一个扩展目录中的旧 Worker。后续必须在用户可见、可交互的 Playnite 窗口中打开 GameSaveCenter 后重跑审计，才可补齐七页 Dashboard 的像素、DPI、键盘焦点、命中区域和真实操作证据。
+- 审计内 Release 基线为 XAML 18/18、Release 0 warning/0 error、Core 59/59、Worker 191/191、Playnite 262 通过/62 跳过/0 失败；这不改变总 Demo-first 目标未完成的判断。
+
 ## 2026-08-21 UI-271 当前事实：共享表格使用 Demo 正文与表头字阶
 
 - `Themes/DesignTokens.xaml` 当前提供 `GscBodyFontSize=13.5`、`GscCaptionFontSize=12`，分别对应 Demo `SizeBody` 和 `SizeCaption`；生产隐式 `DataGrid` 使用 UI 字体链和正文令牌，`DataGridColumnHeader` 使用 UI 字体链、表头令牌和 Medium 字重。
