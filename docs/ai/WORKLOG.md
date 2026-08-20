@@ -2,6 +2,21 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-20 UI-263 任务页统计条恢复 Demo 连续结构
+
+**实现内容：**
+
+- 将任务中心顶部统计从“外层卡片 + 可变列 UniformGrid + 四个内部 Border”收口为 Demo 的单个连续四等分统计条，使用 26 DIP 数字、三条分隔线和统一的 `GscRedesignSectionCard` 表面。
+- 四项仍绑定 `Tasks.Count`、`RunningTaskCount`、`RetryableTaskCount`、`CompletedTaskCount`；运行中/需要重试/今日完成分别使用 Demo 对应的强调/警告/成功色阶，没有写入演示数字。
+- `TaskSummaryPanelElement` 同步为真实 `Border`，删除旧的列数响应式分支；任务队列最小视口、筛选栏、更多筛选、右侧 Inspector、复制错误/重试/取消操作和任务表虚拟化均未改变。
+- 更新任务页结构回归断言，继续保护真实计数、Divider、连续统计条和详情布局契约。
+
+**验证结果：**
+
+- `scripts/build.ps1 -Configuration Release -OutputRoot artifacts/gsc-b/task-summary-strip-v1`：XAML 18/18；Release 0 warning、0 error；Core 59/59、Worker 191/191、Playnite 258 通过、62 跳过、0 失败。
+- `python scripts/validate-source.py`：通过；`python .codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py .`：0 error、19 warnings、161 info；`git diff --check`：通过。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/task-summary-strip-v1`：`render-qa OK`，覆盖双主题、多尺寸、滚动探针与 resize transition；已查看 Task 1366×768 截图，筛选栏、队列和 Inspector 均保持可达。离屏证据仍不能替代可识别 Playnite 宿主的逐页像素验收。
+
 ## 2026-08-20 UI-262 媒体页统计条恢复 Demo 连续结构
 
 **实现内容：**

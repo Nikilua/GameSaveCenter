@@ -10,6 +10,13 @@
 - 当前游戏选框、生产滚动条系统、真实运行时数据和 Demo 未覆盖但目标文件明确要求保留的功能继续保留；Demo Mock 数据、演示色板、窗口按钮和演示行为不得接入生产。
 - 本段覆盖早期“当前生产 main > Demo”或“技能优先”的视觉排序；旧条目只用于历史追溯，不得阻止 Demo-first 的新页面迁移。
 
+## 2026-08-20 UI-263 当前事实：任务统计条已恢复 Demo 连续结构
+
+- `TaskCenterView.xaml` 顶部 `TaskSummaryPanel` 当前是一个 `GscRedesignSectionCard` 连续统计条，四个等宽指标之间使用 `GscTableDividerBrush` 分隔；不要恢复旧的可变列数 `UniformGrid` 或独立 metric card。
+- 四项真实统计继续绑定 `Tasks.Count`、`RunningTaskCount`、`RetryableTaskCount`、`CompletedTaskCount`；运行中使用 `GscAccentBrush`、需要重试使用 `GscWarningBrush`、今日完成使用 `GscSuccessBrush`，与 Demo 的状态层级一致。
+- `TaskSummaryPanelElement` 已从 `UniformGrid` 调整为 `Border`；`ApplyResponsiveLayout` 不再调整摘要列数，但仍负责任务表 236 DIP 最小视口、筛选重排、Inspector 堆叠与详情高度。
+- 当前证据：Release 0 warning/0 error；Core 59/59、Worker 191/191、Playnite 258 通过/62 跳过；XAML/source/WPF/diff 门禁通过；`artifacts/ui-qa/task-summary-strip-v1` 的双主题、多尺寸、滚动和 resize `render-qa OK`。截图仍属于离屏证据，不能替代可识别 Playnite 宿主的逐页像素验收。
+
 ## 2026-08-20 UI-262 当前事实：媒体统计条已恢复 Demo 连续结构
 
 - `MediaCenterView.xaml` 顶部 `MediaSummaryPanel` 当前是一个 `GscRedesignSectionCard` 连续统计条，四个等宽指标之间使用 `GscTableDividerBrush` 分隔；不要恢复为四张带间隙的 `GscRedesignMetricBorder` 独立卡片。

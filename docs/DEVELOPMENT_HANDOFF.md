@@ -14,6 +14,12 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-20 UI-263 任务统计条连续结构交接
+
+- `TaskCenterView` 顶部 `TaskSummaryPanel` 已按 Demo 恢复为一个连续统计条：四个等宽指标、三条分隔线和 26 DIP 数值；生产 Tab/页签 chrome 例外规则不受本阶段影响。
+- 计数仍来自真实 `Tasks.Count`、`RunningTaskCount`、`RetryableTaskCount`、`CompletedTaskCount`；任务筛选、更多筛选、任务队列 DataGrid、右侧详情 Inspector、复制错误/重试/取消命令没有迁移或删除。后台命名元素类型同步为 `Border`，摘要不再通过 `Columns` 响应式重排。
+- 最新验证：XAML 18/18，Release 0 warning/0 error，Core 59/59、Worker 191/191、Playnite 258 通过/62 跳过/0 失败；source/WPF/diff 门禁通过；`artifacts/ui-qa/task-summary-strip-v1/render-qa-report.txt` 为 `render-qa OK`，覆盖双主题、多尺寸、滚动和 resize。仍需在可识别的 Playnite 生产宿主中完成逐页像素、DPI、键盘焦点及真实操作验收。
+
 ## 2026-08-20 UI-262 媒体统计条连续结构交接
 
 - `MediaCenterView` 顶部 `MediaSummaryPanel` 已按 Demo 恢复为一个连续统计条：四个等宽指标、三条分隔线和共享 `GscRedesignSectionCard`；生产 Tab 页签仍保留项目当前 Tab chrome，这是用户明确要求的例外。

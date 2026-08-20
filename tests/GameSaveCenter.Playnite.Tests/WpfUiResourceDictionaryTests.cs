@@ -430,11 +430,14 @@ public sealed class WpfUiResourceDictionaryTests
         var taskCode = File.ReadAllText(taskPath + ".cs");
         var viewModel = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
 
-        Assert.Contains("x:Name=\"TaskSummaryPanel\" Grid.Row=\"0\" Grid.ColumnSpan=\"3\" Columns=\"4\"", task);
+        Assert.Contains("x:Name=\"TaskSummaryPanel\" Grid.Row=\"0\" Grid.ColumnSpan=\"3\" Style=\"{DynamicResource GscRedesignSectionCard}\"", task);
+        Assert.Contains("<Rectangle Grid.Column=\"1\" Width=\"1\" Fill=\"{DynamicResource GscTableDividerBrush}\"", task);
+        Assert.Contains("<Rectangle Grid.Column=\"2\" Width=\"1\" Fill=\"{DynamicResource GscTableDividerBrush}\"", task);
+        Assert.Contains("<Rectangle Grid.Column=\"3\" Width=\"1\" Fill=\"{DynamicResource GscTableDividerBrush}\"", task);
         Assert.Contains("{Binding RunningTaskCount, Mode=OneWay}", task);
         Assert.Contains("{Binding RetryableTaskCount, Mode=OneWay}", task);
         Assert.Contains("{Binding CompletedTaskCount, Mode=OneWay}", task);
-        Assert.Contains("TaskSummaryPanel.Columns = width >= 900 ? 4 : width >= 680 ? 2 : 1", taskCode);
+        Assert.Contains("public Border TaskSummaryPanelElement => TaskSummaryPanel", taskCode);
         Assert.Contains("public int RunningTaskCount => Tasks.Count", viewModel);
         Assert.Contains("public int RetryableTaskCount => Tasks.Count(CanRetryTask)", viewModel);
         Assert.Contains("public int CompletedTaskCount => Tasks.Count", viewModel);
@@ -1946,10 +1949,11 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("BasedOn=\"{StaticResource GscInspectorScrollViewer}\"", media);
         Assert.Contains("<DataTrigger Binding=\"{Binding SelectedMedia}\" Value=\"{x:Null}\">", media);
         Assert.Contains("MinHeight=\"96\" MaxHeight=\"160\"", maintenance);
-        Assert.Contains("TaskSummaryPanel.Columns", taskCode);
+        Assert.Contains("public Border TaskSummaryPanelElement => TaskSummaryPanel", taskCode);
         var taskView = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml"));
-        Assert.Contains("Style=\"{DynamicResource GscRedesignMetricBorder}\" Padding=\"14,12\"", taskView);
-        Assert.Contains("FontSize=\"30\" FontWeight=\"SemiBold\"", taskView);
+        Assert.Contains("Style=\"{DynamicResource GscRedesignSectionCard}\" Padding=\"6,14\"", taskView);
+        Assert.Contains("FontSize=\"26\" FontWeight=\"SemiBold\"", taskView);
+        Assert.Contains("Foreground=\"{DynamicResource GscWarningBrush}\" FontSize=\"26\"", taskView);
         Assert.Contains("运行、失败、取消和完成", taskView);
         Assert.DoesNotContain("x:Key=\"TaskMetricCard\"", taskView);
         Assert.Contains("x:Name=\"TaskDetailScrollViewer\"", taskView);
