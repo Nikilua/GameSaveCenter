@@ -10,7 +10,7 @@
 | Shell / 页面框架 | 部分收口 | `Views/AcrylicProductionShellView.xaml` 保留当前游戏选框和项目 Tab chrome；标题已接入 Display 字阶。 | 对照 `DesignShellView.xaml` 核对侧栏、顶栏、页头、页脚、主工作区边界和不同尺寸命中区域。 |
 | 字体 / 密度 | 部分收口 | UI、Display、Cascadia Mono 和中文回退链已集中到生产令牌；七页已使用共享生产资源。 | 逐页核对字号、字重、行高、单行截断和 CJK 回退的真实宿主结果。 |
 | 表格 | 部分收口 | Save、Media、Maintenance、Task 基于共享 `GscRedesignWorkspaceDataGrid`，保留排序、列宽调整、选中行、Item scrolling 和 Recycling 虚拟化。 | 对照 Demo `LabGrid` 逐页检查表头高度、排序箭头、行高、长消息截断、按钮命中和被遮挡/隐藏可点击项。 |
-| Disclosure / segmented / controls | 部分收口 | 生产已有共享 `Redesign.xaml` 控件资源；Settings 左侧分类栏使用 `LabSegmented`，Trainer/Save/Media/Maintenance 外层继续使用项目 Tab chrome，业务折叠区保留真实状态。 | 对照 `LabDisclosure`、按钮、输入框、ComboBox、开关和展开动画；不要把项目工作区 Tab 再替换成 Demo `LabSegmented`。 |
+| Disclosure / segmented / controls | 部分收口 | 生产已有共享 `Redesign.xaml` 控件资源；Settings 左侧分类栏使用 `LabSegmented`，Trainer/Save/Media/Maintenance 外层继续使用项目 Tab chrome，业务折叠区保留真实状态；UI-273 已把共享按钮/开关的状态层、几何和动效进一步对齐 Demo。 | 对照 `LabDisclosure`、按钮、输入框、ComboBox、开关和展开动画继续逐项检查；不要把项目工作区 Tab 再替换成 Demo `LabSegmented`。 |
 | 滚动 / 选框 / 性能 | 保留并需持续回归 | 生产 ScrollBar、ScrollViewer、当前游戏选框、列表/表格虚拟化和媒体缩略图异步加载未替换；UI-267 几何审计已通过。 | 每次页面改动都要验证父子滚动、横向表格滚动、DPI、resize、键盘焦点和大列表性能。 |
 | 真实功能 | 保留并需持续回归 | ViewModel、Command、Worker/Playnite 生命周期、异步/错误/取消/安全语义仍在生产页面；Save 立即备份/全部备份、Media Inspector 和真实操作入口已有源码/渲染证据。 | 在可识别 Playnite 宿主执行真实备份、媒体预览/归类/忽略/保留副本、任务取消和设置保存等安全操作。 |
 | Toast / Dialog / Inspector / 状态 | 部分收口 | 生产通知、确认/选择对话框和 Inspector 继续由真实请求与选中项驱动；页面状态控件和语义色已接入 Demo 核心色板。 | 对照 Demo 空/加载/错误/提示文案布局，验证层级、Escape、焦点、取消和错误详情不被遮挡。 |
@@ -37,6 +37,6 @@
 
 ## 当前交付边界
 
-最近代码阶段：UI-272（回滚 Trainer Demo 分段栏，已提交 `f6f915d`）；构建证据：`artifacts/gsc-b/ui-272-trainer-tab-rollback-v2`；离屏证据：`artifacts/ui-qa/ui272-trainer-tab-rollback-v1/render-qa-report.txt`；最近宿主证据阶段：`artifacts/ui-host-audit-ui271`（Settings 嵌入证据，Dashboard 未捕获）。
+最近代码阶段：UI-273（共享按钮与开关状态对齐 Demo，文档提交后补充 commit hash）；构建证据：`artifacts/gsc-b/ui-273-shared-button-toggle-v1`；离屏证据：`artifacts/ui-qa/ui273-shared-button-toggle-v1/render-qa-report.txt`；最近宿主证据阶段：`artifacts/ui-host-audit-ui271`（Settings 嵌入证据，Dashboard 未捕获）。
 
 现有离屏 RenderHarness 与静态审计只证明生产页面可构建、可渲染且在覆盖尺寸下没有已知高/中等级几何问题；在可识别 Playnite 生产宿主中完成逐页像素、DPI、主题、键盘焦点、命中区域和真实操作前，不得宣布总目标完成。

@@ -2,6 +2,21 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-21 UI-273 统一 Demo 按钮与开关状态
+
+**实现内容：**
+
+- 生产共享 `GscWpfUiButton` 对齐 Demo `LabBtn` 的悬停/按下状态层：只叠加不可命中的透明覆盖层并做透明度过渡，主按钮继续使用 Demo 核心渐变与 on-accent 字色，不改变按钮内容、命令或绑定。
+- 生产共享 `GscWpfUiToggleSwitch` 对齐 Demo `LabToggle` 的 40×23 DIP 轨道、17 DIP 滑块、左侧留白和 140ms 位移动效；悬停、按下、禁用和键盘焦点仍由共享模板管理，保留现有 `ToggleSwitch` 内容和真实设置绑定。
+- 动效目标使用 WPF 属性路径 `RenderTransform.(TranslateTransform.X)`，并补充资源/模板契约测试；没有触及项目 Tab chrome、当前游戏选框、ScrollViewer、虚拟化或业务命令。
+
+**验证结果：**
+
+- `scripts/build.ps1 -Configuration Release -OutputRoot artifacts/gsc-b/ui-273-shared-button-toggle-v1`：XAML 18/18；Release 0 warning、0 error；Core 59/59；Worker 191/191；Playnite 263 通过、62 跳过、0 失败。
+- `scripts/validate-source.py`、WPF UI 校验（0 error、19 warnings、163 info）和 `git diff --check`：通过。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/ui273-shared-button-toggle-v1`：`render-qa OK`，覆盖七页、Light/Dark、多尺寸、滚动探针和 resize transition；已抽查 Settings/Save 浅色与深色 1040×700 截图，未见按钮或开关窄屏裁切。
+- 以上为离屏证据，不能替代可识别 Playnite 宿主中的 Dashboard 逐页视觉、DPI、键盘焦点与真实操作验收；总 Demo-first 目标仍未完成。
+
 ## 2026-08-21 UI-272 回滚修改器中心的 Demo 分段栏
 
 **实现内容：**

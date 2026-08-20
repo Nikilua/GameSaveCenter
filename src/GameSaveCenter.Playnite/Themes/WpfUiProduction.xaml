@@ -536,31 +536,74 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ui:Button}">
-                    <Border x:Name="ButtonChrome"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            Padding="{TemplateBinding Padding}"
-                            CornerRadius="11"
-                            SnapsToDevicePixels="True">
+                    <Grid>
+                        <Border x:Name="ButtonChrome"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}"
+                                CornerRadius="11"
+                                SnapsToDevicePixels="True"/>
+                        <!-- Demo LabBtn state layers: keep the base surface readable and
+                             animate only the overlay opacity, never layout dimensions. -->
+                        <Border x:Name="HoverOverlay"
+                                Background="{DynamicResource GscAccentTintBrush}"
+                                CornerRadius="11"
+                                Opacity="0"
+                                IsHitTestVisible="False"/>
+                        <Border x:Name="PressedOverlay"
+                                Background="{DynamicResource GscAccentTintStrongBrush}"
+                                CornerRadius="11"
+                                Opacity="0"
+                                IsHitTestVisible="False"/>
                         <ContentPresenter Content="{TemplateBinding Content}"
                                           ContentTemplate="{TemplateBinding ContentTemplate}"
                                           ContentStringFormat="{TemplateBinding ContentStringFormat}"
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                           RecognizesAccessKey="True"/>
-                    </Border>
+                    </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="Appearance" Value="Primary">
                             <Setter TargetName="ButtonChrome" Property="Background" Value="{DynamicResource GscPrimaryButtonBrush}"/>
                             <Setter TargetName="ButtonChrome" Property="BorderBrush" Value="{DynamicResource GscPrimaryButtonBorderBrush}"/>
+                            <Setter TargetName="HoverOverlay" Property="Background" Value="{DynamicResource GscOnAccentHoverOverlayBrush}"/>
+                            <Setter TargetName="PressedOverlay" Property="Background" Value="{DynamicResource GscOnAccentPressedOverlayBrush}"/>
                             <Setter Property="Foreground" Value="{DynamicResource GscOnAccentTextBrush}"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="ButtonChrome" Property="BorderBrush" Value="{DynamicResource GscAccentTintStrongBrush}"/>
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="HoverOverlay" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.12"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="HoverOverlay" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.16"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
                             <Setter TargetName="ButtonChrome" Property="Opacity" Value="0.88"/>
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="PressedOverlay" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.08"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="PressedOverlay" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.1"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="ButtonChrome" Property="Opacity" Value="0.46"/>
@@ -636,6 +679,9 @@
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="MinHeight" Value="34"/>
         <Setter Property="FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
         <Setter Property="ToolTipService.ShowDuration" Value="12000"/>
         <Setter Property="Template">
@@ -643,14 +689,20 @@
                 <ControlTemplate TargetType="{x:Type ui:ToggleSwitch}">
                     <Grid MinHeight="{TemplateBinding MinHeight}">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="38"/>
+                            <ColumnDefinition Width="46"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Border x:Name="Track" Width="32" Height="18" CornerRadius="9"
+                        <Border x:Name="Track" Width="40" Height="23" CornerRadius="11.5"
                                 Background="{DynamicResource GscControlStrokeBrush}"
+                                BorderBrush="Transparent" BorderThickness="1"
                                 HorizontalAlignment="Left" VerticalAlignment="Center">
-                            <Ellipse x:Name="Thumb" Width="14" Height="14" Fill="{DynamicResource GscGlassStrongBrush}"
-                                     HorizontalAlignment="Left" Margin="2,0,0,0"/>
+                            <Ellipse x:Name="Thumb" Width="17" Height="17" Fill="{DynamicResource GscGlassStrongBrush}"
+                                     HorizontalAlignment="Left" Margin="3,0,0,0"
+                                     Effect="{DynamicResource GscSliderThumbEffect}">
+                                <Ellipse.RenderTransform>
+                                    <TranslateTransform X="0"/>
+                                </Ellipse.RenderTransform>
+                            </Ellipse>
                         </Border>
                         <ContentPresenter Grid.Column="1" Content="{TemplateBinding Content}"
                                           ContentTemplate="{TemplateBinding ContentTemplate}"
@@ -661,8 +713,27 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
                             <Setter TargetName="Track" Property="Background" Value="{DynamicResource GscAccentBrush}"/>
-                            <Setter TargetName="Thumb" Property="HorizontalAlignment" Value="Right"/>
-                            <Setter TargetName="Thumb" Property="Margin" Value="0,0,2,0"/>
+                            <Setter TargetName="Track" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Thumb" Storyboard.TargetProperty="RenderTransform.(TranslateTransform.X)" To="17" Duration="0:0:0.14"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Thumb" Storyboard.TargetProperty="RenderTransform.(TranslateTransform.X)" To="0" Duration="0:0:0.14"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Track" Property="BorderBrush" Value="{DynamicResource GscAccentTintStrongBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Track" Property="Opacity" Value="0.86"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Opacity" Value="0.46"/>

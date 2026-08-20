@@ -31,6 +31,8 @@
     <SolidColorBrush x:Key="GscAmbientInfoBrush" Color="#00FFFFFF"/>
     <SolidColorBrush x:Key="GscAmbientSuccessBrush" Color="#00FFFFFF"/>
     <SolidColorBrush x:Key="GscPrimaryButtonBorderBrush" Color="#909CFA"/>
+    <SolidColorBrush x:Key="GscOnAccentHoverOverlayBrush" Color="#22FFFFFF"/>
+    <SolidColorBrush x:Key="GscOnAccentPressedOverlayBrush" Color="#22000000"/>
     <SolidColorBrush x:Key="GscMutedStatusBrush" Color="#828A99"/>
     <LinearGradientBrush x:Key="GscPrimaryButtonBrush" StartPoint="0,0" EndPoint="1,1">
         <GradientStop Color="#7C8CF8" Offset="0"/>

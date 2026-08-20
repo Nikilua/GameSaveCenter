@@ -3,6 +3,12 @@
 > 维护时间：2026-08-21
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-21 UI-273 当前事实：共享按钮与开关状态对齐 Demo
+
+- `Themes/WpfUiProduction.xaml` 的共享 `GscWpfUiButton` 现在有 Demo `LabBtn` 对应的 `HoverOverlay`/`PressedOverlay` 状态层和透明度动效；主按钮继续使用生产 Demo 核心色板，覆盖层 `IsHitTestVisible=False`，不得在页面局部复制按钮状态模板。
+- 共享 `GscWpfUiToggleSwitch` 使用 40×23 DIP 轨道、17 DIP 滑块、46 DIP 内容起始列和 140ms `RenderTransform.(TranslateTransform.X)` 位移动效；真实 `Content`、设置绑定、键盘焦点、禁用态和项目页面滚动保持不变。
+- UI-273 证据：`artifacts/gsc-b/ui-273-shared-button-toggle-v1` 构建通过；`artifacts/ui-qa/ui273-shared-button-toggle-v1/render-qa-report.txt` 为 `render-qa OK`，七页双主题、多尺寸、滚动和 resize 均通过。真实 Playnite Dashboard 宿主证据仍未补齐。
+
 ## 2026-08-20 当前总规则：Demo-first 覆盖旧视觉优先级
 
 - 后续所有页面迁移以 `GameSaveCenter.AcrylicFork/src/GameSaveCenter.Playnite/Design/DesignShellView.xaml`、`Pages/*.xaml`、`DesignTokens.xaml`、`DesignColorsLight.xaml`、`DesignColorsDark.xaml` 和 `DesignControls.xaml` 为唯一主要视觉基准；Demo 与旧生产页面、UiLab、历史计划或通用 Apple-inspired 建议冲突时，以 Demo 的整体结构、层级、空间、字体、颜色和控件为准。

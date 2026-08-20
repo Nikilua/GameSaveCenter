@@ -256,6 +256,34 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void SharedButtonsAndTogglesKeepDemoStateLayersWithoutChangingTheirCommands()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var production = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml"));
+        var tokens = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml"));
+        var demoControls = File.ReadAllText(Path.Combine(repositoryRoot, "..", "GameSaveCenter.AcrylicFork", "src", "GameSaveCenter.Playnite", "Design", "DesignControls.xaml"));
+
+        Assert.Contains("x:Name=\"HoverOverlay\"", production);
+        Assert.Contains("x:Name=\"PressedOverlay\"", production);
+        Assert.Contains("Duration=\"0:0:0.12\"", production);
+        Assert.Contains("Duration=\"0:0:0.08\"", production);
+        Assert.Contains("GscOnAccentHoverOverlayBrush", production);
+        Assert.Contains("GscOnAccentPressedOverlayBrush", production);
+        Assert.Contains("<SolidColorBrush x:Key=\"GscOnAccentHoverOverlayBrush\"", tokens);
+        Assert.Contains("<SolidColorBrush x:Key=\"GscOnAccentPressedOverlayBrush\"", tokens);
+
+        Assert.Contains("<ColumnDefinition Width=\"46\"/>", production);
+        Assert.Contains("Width=\"40\" Height=\"23\" CornerRadius=\"11.5\"", production);
+        Assert.Contains("RenderTransform.(TranslateTransform.X)", production);
+        Assert.Contains("Duration=\"0:0:0.14\"", production);
+
+        Assert.Contains("x:Key=\"LabBtn\"", demoControls);
+        Assert.Contains("x:Key=\"LabToggle\"", demoControls);
+        Assert.Contains("Duration=\"0:0:0.12\"", demoControls);
+        Assert.Contains("Duration=\"0:0:0.14\"", demoControls);
+    }
+
+    [Fact]
     public void ProductionAdaptersResolveGameSaveCenterTokensFromTheUserControlScope()
     {
         Exception? exception = null;

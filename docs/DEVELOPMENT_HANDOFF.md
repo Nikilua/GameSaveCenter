@@ -14,6 +14,12 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-21 UI-273 按钮与开关共享状态交接
+
+- `Themes/WpfUiProduction.xaml` 的 `GscWpfUiButton` 已加入 Demo `LabBtn` 的悬停/按下覆盖层和过渡；`GscWpfUiToggleSwitch` 已对齐 Demo `LabToggle` 的 40×23 DIP 几何与 140ms 滑块位移动效。覆盖层不可命中，所有真实内容、命令、绑定和焦点语义保持。
+- 不要为了局部页面效果复制按钮/开关模板，也不要把本阶段误扩展为项目工作区 Tab、当前游戏选框或生产滚动条迁移；Trainer/Save/Media/Maintenance 外层仍使用项目 Tab chrome。
+- 当前证据：`artifacts/gsc-b/ui-273-shared-button-toggle-v1` Release 0 warning/0 error、Core 59/59、Worker 191/191、Playnite 263 通过/62 跳过/0 失败；`artifacts/ui-qa/ui273-shared-button-toggle-v1/render-qa-report.txt` 为 `render-qa OK`。真实 Playnite Dashboard 仍需用户在可见宿主中打开 GameSaveCenter 后补证。
+
 ## 2026-08-21 UI-272 修改器中心 Tab chrome 回滚交接
 
 - 用户明确要求项目 Tab 栏优先于 Demo Tab UI；已回滚 `TrainerCenterView` 在 `a03accf` 引入的 `TrainerSegmentTabs` + `LabSegmented`，恢复 `TrainerTabControl` / `TrainerTabItem` 项目样式和四个真实 `TabItem`。
