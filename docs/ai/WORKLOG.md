@@ -2,6 +2,21 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-21 UI-268 Demo 字体阶关系补齐
+
+**实现内容：**
+
+- 在生产 `DesignTokens.xaml` 增加 `GscDisplayFontFamily`，统一为 `Segoe UI Variable Display, Segoe UI, Microsoft YaHei UI`；正文仍使用 `GscUiFontFamily`，代码/路径仍使用 `GscCodeFontFamily`。
+- `GscRedesignHeroTitle`、`GscRedesignFeedbackDialogTitle`、`GscPageTitleStyle`、生产 Shell 标题和旧 Dashboard 回退标题接入 Display 字体；分区标题保持正文族，符合 Demo 的 `LabTitle`/`LabSection` 字阶关系。
+- 没有改变生产 Tab chrome、当前游戏选框、滚动条、DataGrid/ListBox 虚拟化、命令、绑定或真实运行时数据；补充 `TypographyUsesCentralizedChineseAwareFontChain` 对 Display 令牌和标题入口的回归断言。
+
+**验证结果：**
+
+- `scripts/build.ps1 -Configuration Release -OutputRoot artifacts/gsc-b/ui-268-display-font-v1`：XAML 18/18；Release 0 warning、0 error；Core 59/59、Worker 191/191、Playnite 259 通过、62 跳过、0 失败。
+- `python scripts/validate-source.py`、WPF UI 校验（0 error、19 warnings、161 info）和 `git diff --check`：通过。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/ui268-display-font-v1`：`render-qa OK`，覆盖七页双主题、1040/1100/1366/2560 DIP、多页滚动和 resize transition。
+- 本阶段只补齐共享字体资源；离屏 RenderHarness 证据仍不能替代可识别 Playnite 宿主中的逐页像素、DPI、键盘焦点、主题切换和真实操作验收，总 Demo-first 迁移保持未完成。
+
 ## 2026-08-21 UI-267 工作区测量与几何审计收口
 
 **实现内容：**

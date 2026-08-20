@@ -356,6 +356,7 @@ namespace GameSaveCenter.Playnite.Tests
             var production = File.ReadAllText(Path.Combine(playniteRoot, "Themes", "WpfUiProduction.xaml"));
 
             Assert.Contains("x:Key=\"GscUiFontFamily\"", tokens);
+            Assert.Contains("x:Key=\"GscDisplayFontFamily\">Segoe UI Variable Display, Segoe UI, Microsoft YaHei UI", tokens);
             Assert.Contains("x:Key=\"GscCodeFontFamily\"", tokens);
             Assert.Contains("Microsoft YaHei UI", tokens);
             foreach (var file in xamlFiles)
@@ -367,8 +368,15 @@ namespace GameSaveCenter.Playnite.Tests
             }
 
             var dashboard = File.ReadAllText(Path.Combine(playniteRoot, "Views", "DashboardView.xaml"));
+            var productionShell = File.ReadAllText(Path.Combine(playniteRoot, "Views", "AcrylicProductionShellView.xaml"));
+            var redesign = File.ReadAllText(Path.Combine(playniteRoot, "Themes", "Redesign.xaml"));
             var overview = File.ReadAllText(Path.Combine(playniteRoot, "Views", "OverviewView.xaml"));
             var maintenance = File.ReadAllText(Path.Combine(playniteRoot, "Views", "MaintenanceView.xaml"));
+            Assert.Contains("FontFamily=\"{DynamicResource GscDisplayFontFamily}\"", dashboard);
+            Assert.Contains("FontFamily=\"{DynamicResource GscDisplayFontFamily}\"", productionShell);
+            Assert.Contains("x:Key=\"GscRedesignHeroTitle\"", redesign);
+            Assert.Contains("x:Key=\"GscPageTitleStyle\"", redesign);
+            Assert.Contains("<Setter Property=\"FontFamily\" Value=\"{DynamicResource GscDisplayFontFamily}\"/>", redesign);
             Assert.Contains("FontFamily=\"Segoe MDL2 Assets\"", dashboard);
             Assert.Contains("FontFamily=\"Segoe MDL2 Assets\"", overview);
             Assert.Contains("FontFamily=\"Consolas\"", maintenance);

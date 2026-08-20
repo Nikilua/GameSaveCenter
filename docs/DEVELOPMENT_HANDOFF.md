@@ -23,6 +23,13 @@
 - 最新验证：`artifacts/gsc-b/ui-audit-layout-fix-v1` Release 0 warning/0 error；Core 59/59、Worker 191/191、Playnite 259 通过/62 跳过/0 失败；source 门禁、WPF 校验（0 error、19 warnings、161 info）和 diff 门禁通过；`artifacts/ui-qa/ui267-layout-audit-fix-v1/render-qa-report.txt` 为 `render-qa OK`，覆盖双主题、多尺寸、滚动和 resize。
 - 总 Demo-first 迁移仍未宣布完成：自动/离屏证据不能替代可识别 Playnite 生产宿主中的逐页像素、DPI、键盘焦点、主题和真实操作验收；下一阶段继续针对目标文件逐页复核并收集宿主证据。
 
+## 2026-08-21 UI-268 标题字体阶关系交接
+
+- 生产共享令牌现在有三条明确字体链：`GscUiFontFamily` 使用 `Segoe UI Variable Text`，`GscDisplayFontFamily` 使用 `Segoe UI Variable Display`，`GscCodeFontFamily` 使用 `Cascadia Mono`；三者均带 `Segoe UI`/`Microsoft YaHei UI` 回退。
+- `GscRedesignHeroTitle`、`GscRedesignFeedbackDialogTitle`、`GscPageTitleStyle`、生产 Shell 标题和 Dashboard 回退标题使用 Display；分区标题仍使用正文族，避免把 Demo 的 `LabSection` 错误提升为 Display。
+- 本阶段没有改变用户指定的生产 Tab chrome、当前游戏选框、生产滚动条、表格/列表虚拟化、真实命令或 Binding。验证已通过 Release 构建/测试、source/WPF 门禁、双主题多尺寸 RenderHarness；证据目录为 `artifacts/gsc-b/ui-268-display-font-v1` 与 `artifacts/ui-qa/ui268-display-font-v1`。
+- 总目标继续未完成：仍需按目标文件逐项收口七页信息架构、Demo 颜色/控件/状态和可访问性证据，并在可识别 Playnite 生产宿主中完成逐页像素、DPI、键盘焦点、主题和真实操作验收。
+
 ## 2026-08-20 UI-266 存档维护指标阅读节奏交接
 
 - 存档“比较与保留”页的新增/修改/删除差异指标，以及维护页的保留、容量、趋势、保留模拟、保护状态和本地镜像指标，已统一为 Demo 的“数值 → 标签 → 补充说明”节奏；真实绑定和只读/安全语义没有改变。

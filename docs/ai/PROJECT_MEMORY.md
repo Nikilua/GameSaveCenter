@@ -10,6 +10,13 @@
 - 当前游戏选框、生产滚动条系统、真实运行时数据和 Demo 未覆盖但目标文件明确要求保留的功能继续保留；Demo Mock 数据、演示色板、窗口按钮和演示行为不得接入生产。
 - 本段覆盖早期“当前生产 main > Demo”或“技能优先”的视觉排序；旧条目只用于历史追溯，不得阻止 Demo-first 的新页面迁移。
 
+## 2026-08-21 UI-268 当前事实：标题字体接入独立 Display 字阶
+
+- `src/GameSaveCenter.Playnite/Themes/DesignTokens.xaml` 当前同时提供 `GscUiFontFamily`（`Segoe UI Variable Text, Segoe UI, Microsoft YaHei UI`）、`GscDisplayFontFamily`（`Segoe UI Variable Display, Segoe UI, Microsoft YaHei UI`）和 `GscCodeFontFamily`（`Cascadia Mono, Consolas, Microsoft YaHei UI`）。
+- `GscRedesignHeroTitle`、`GscRedesignFeedbackDialogTitle`、`GscPageTitleStyle`、`AcrylicProductionShellView` 的 `PageTitleText` 和 `DashboardView` 的回退标题使用 Display 字阶；`GscRedesignSectionTitle` 继续使用继承的正文族，保持 Demo `LabTitle`/`LabSection` 的层级关系。
+- 标题字体改动没有触及生产 Tab chrome、当前游戏选框、滚动条系统、虚拟化、真实命令/Binding 或业务数据；回归测试保护共享令牌和两个生产标题入口。
+- 当前证据：Release 0 warning/0 error；Core 59/59、Worker 191/191、Playnite 259 通过/62 跳过；source/WPF/diff 门禁通过；`artifacts/ui-qa/ui268-display-font-v1/render-qa-report.txt` 双主题、多尺寸、滚动和 resize 均为 `OK`。总目标仍需继续完成 Demo 七页结构/视觉逐项核对及可识别 Playnite 宿主的像素、DPI、键盘和真实操作证据。
+
 ## 2026-08-21 UI-267 当前事实：工作区表格测量与几何审计已收口
 
 - `MediaCenterView.xaml` 的当前游戏媒体搜索操作区保持至少 `300 DIP`，搜索输入列保持至少 `160 DIP`；真实 `MediaSearchText`、媒体类型筛选、媒体卡片、预览 Inspector 和批量操作没有改变。
