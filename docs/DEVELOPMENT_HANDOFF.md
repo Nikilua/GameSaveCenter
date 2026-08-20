@@ -14,6 +14,14 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-20 UI-253 修改器中心分段结构交接
+
+- 当前 `TrainerCenterView` 已按 Demo 恢复 `TrainerSegmentTabs` + `LabSegmented` 顶部分段导航，四个真实面板为 `PanelTools`、`PanelImport`、`PanelCatalog`、`PanelReleases`；旧 `TabControl/TabItem` 不再是页面主导航。
+- 面板切换由 `OnTrainerSegmentChanged` 管理，只改可见性，不改业务数据或命令。必须保留工具导入、待确认 EXE 选择、FLiNG 搜索/刷新、版本加载/下载、工具编辑 Inspector 和紧凑详情入口。
+- `TrainerToolsList`、目录结果、发行版本仍保留项目 ScrollBar、`CanContentScroll`、回收虚拟化和现有 `ApplyResponsiveLayout`；Demo segmented 导航仅包含 4 个标签，不应为了源码门禁给它添加大列表虚拟化要求。
+- 构造期 `SelectionChanged` 的空保护是必要的：XAML 的 `SelectedIndex=0` 可能在四个面板字段完全生成前触发事件。
+- 最新验证：Release 构建 0 warning/0 error；Core 59/59、Worker 191/191、Playnite 252/252 通过、61 跳过；XAML/source/WPF 静态门禁通过；RenderHarness `render-qa OK`，证据为 `artifacts/ui-qa/trainer-segmented-final`，覆盖四个分段、双主题、多尺寸和 resize。尚无新的可识别 Playnite 宿主逐页像素证据。
+
 ## 2026-08-20 UI-252 存档历史页操作卡交接
 
 - 默认“历史版本”页已补回 Demo 的 `SaveHistorySummaryCard`：真实版本数、当前规则/健康摘要，以及“立即扫描 / 重新校验 / 刷新详情”入口均位于历史表上方；对应命令仍是 `DetectPathsCommand`、`ValidateCommand`、`LoadDetailsCommand`。

@@ -10,6 +10,14 @@
 - 当前游戏选框、生产滚动条系统、真实运行时数据和 Demo 未覆盖但目标文件明确要求保留的功能继续保留；Demo Mock 数据、演示色板、窗口按钮和演示行为不得接入生产。
 - 本段覆盖早期“当前生产 main > Demo”或“技能优先”的视觉排序；旧条目只用于历史追溯，不得阻止 Demo-first 的新页面迁移。
 
+## 2026-08-20 UI-253 当前事实：修改器中心已切换为 Demo 分段面板
+
+- `TrainerCenterView.xaml` 当前使用 `TrainerSegmentTabs` + `LabSegmented`，通过 `PanelTools`、`PanelImport`、`PanelCatalog`、`PanelReleases` 四个命名面板承载 Demo 页面结构；不要恢复旧 `TabControl/TabItem` 外壳作为主要导航。
+- 分段切换只控制 `Visibility`，真实入口继续存在：`ImportTrainerCommand`、`ImportToolFolderCommand`、`ImportCheatTableCommand`、`ImportCustomLaunchItemCommand`、`ConfirmGameToolImportCommand`、`SearchTrainerCatalogCommand`、`LoadTrainerReleasesCommand` 和 `DownloadTrainerCommand`。
+- `TrainerToolsList`、目录结果和发行版本列表继续使用项目现有回收虚拟化和 ScrollViewer 交互；工具设置 Inspector、窄宽详情抽屉和响应式布局仍由 `ApplyResponsiveLayout` 管理。`LabSegmented` 四项导航属于有限标签列表，源码门禁不得要求它承担大列表虚拟化契约。
+- XAML 构造期分段事件必须保留面板字段空保护；WPF 页面初始化时 `SelectedIndex` 可能早于后续命名面板生成。
+- 当前证据：Release 0 warning/0 error；Core 59/59、Worker 191/191、Playnite 252/252 通过、61 跳过；XAML/source/diff/WPF 静态门禁通过；`artifacts/ui-qa/trainer-segmented-final` 的 RenderHarness 双主题、多尺寸、resize 和四分段探针通过。仍不能把离屏 PNG 作为 Playnite 宿主逐页像素验收。
+
 ## 2026-08-20 UI-251 当前事实：存档规则卡与诊断概览按 Demo 第三轮收口
 
 - 存档中心当前规则卡在常见工作区宽度下横向排列“当前存档规则 / 游戏名 / 状态 / 立即扫描 / 重新校验 / 刷新详情”；低于 700 DIP 才堆叠操作，避免正常宿主中规则信息和按钮被拉成多行。

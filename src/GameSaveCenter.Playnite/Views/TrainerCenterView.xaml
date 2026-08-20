@@ -9,19 +9,7 @@
              AllowDrop="True" PreviewDragOver="OnToolDragOver" Drop="OnToolDrop">
     <UserControl.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries><ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/DesignTokens.xaml"/><ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/WpfUiProduction.xaml"/><ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/Redesign.xaml"/></ResourceDictionary.MergedDictionaries>
-            <Style x:Key="TrainerTabControl" TargetType="TabControl" BasedOn="{StaticResource GscRedesignWorkspaceTabControl}">
-                <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                <Setter Property="VerticalAlignment" Value="Stretch"/>
-                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-            </Style>
-            <Style x:Key="TrainerTabItem" TargetType="TabItem" BasedOn="{StaticResource GscRedesignWorkspaceTabItem}">
-                <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                <Setter Property="VerticalAlignment" Value="Stretch"/>
-                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-            </Style>
+            <ResourceDictionary.MergedDictionaries><ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/DesignTokens.xaml"/><ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/WpfUiProduction.xaml"/><ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/Redesign.xaml"/><ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/AcrylicReferenceTokens.xaml"/><ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/AcrylicReferenceColorsDark.xaml"/><ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/AcrylicReferenceControls.xaml"/></ResourceDictionary.MergedDictionaries>
             <Style x:Key="TrainerTableFrame" TargetType="Border" BasedOn="{StaticResource GscRedesignTableFrame}"/>
             <Style x:Key="TrainerCompactNumericTextBox" TargetType="TextBox" BasedOn="{StaticResource GscNumericTextBox}">
                 <Setter Property="Height" Value="34"/>
@@ -39,8 +27,20 @@
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid Margin="0" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"><TabControl Grid.Row="0" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Style="{StaticResource TrainerTabControl}"><TabControl.Resources><Style TargetType="TabItem" BasedOn="{StaticResource TrainerTabItem}"/></TabControl.Resources>
-        <TabItem Header="已绑定工具"><Grid x:Name="InstalledToolsLayout" Margin="0,12,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscInspectorWidth}"/></Grid.ColumnDefinitions><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+    <Grid Margin="0" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+        <Grid Grid.Row="0" Margin="0,0,0,12">
+            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+            <ListBox x:Name="TrainerSegmentTabs" Style="{StaticResource LabSegmented}" SelectionChanged="OnTrainerSegmentChanged" SelectedIndex="0" AutomationProperties.Name="修改器中心分段导航">
+                <ListBoxItem Content="已绑定工具"/>
+                <ListBoxItem Content="导入确认"/>
+                <ListBoxItem Content="FLiNG 在线库"/>
+                <ListBoxItem Content="可下载版本"/>
+            </ListBox>
+            <TextBlock Grid.Row="1" Text="修改器 · CT 表 · 自定义启动项 · 拖拽导入" Style="{DynamicResource GscCaptionStyle}" Margin="2,8,0,0"/>
+        </Grid>
+        <Grid x:Name="TrainerPanelHost" Grid.Row="1" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid x:Name="PanelTools" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Visible"><Grid x:Name="InstalledToolsLayout" Margin="0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscInspectorWidth}"/></Grid.ColumnDefinitions><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
             <Grid Margin="0,0,0,10">
                 <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                 <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
@@ -69,8 +69,8 @@
                 </ScrollViewer.Style>
                 <Border Style="{DynamicResource GscReadingCardStyle}" Padding="18"><Grid><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions><TextBlock Text="工具设置" FontSize="15" FontWeight="SemiBold"/><StackPanel Grid.Row="1" Margin="0,10,0,0"><TextBlock Text="名称" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10" Margin="0,0,0,3"/><TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding SelectedGameTool.DisplayName, UpdateSourceTrigger=LostFocus}" Margin="0,0,0,6"/><TextBlock Text="版本" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10" Margin="0,6,0,3"/><ComboBox ItemsSource="{Binding SelectedGameTool.Versions}" SelectedItem="{Binding SelectedGameToolVersion}" Style="{DynamicResource GscWpfUiComboBox}" Margin="0,0,0,6" ToolTip="选择要使用的版本"><ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding VersionName}" TextTrimming="CharacterEllipsis" ToolTip="{Binding EntryPath}"/></DataTemplate></ComboBox.ItemTemplate></ComboBox><TextBlock Text="路径" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10" Margin="0,6,0,3"/><TextBlock Text="{Binding SelectedGameToolVersion.EntryPath, TargetNullValue=未选择版本}" Foreground="{DynamicResource GscMutedTextBrush}" FontSize="10" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedGameToolVersion.EntryPath}" Margin="0,0,0,6"/><TextBlock Text="工作目录" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10" Margin="0,6,0,3"/><TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding SelectedGameToolVersion.WorkingDirectory, UpdateSourceTrigger=LostFocus}" Margin="0,0,0,6"/><TextBlock Text="启动参数" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10" Margin="0,6,0,3"/><TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding SelectedGameToolVersion.Arguments, UpdateSourceTrigger=LostFocus}" Margin="0,0,0,6"/><StackPanel Margin="0,0,0,6"><StackPanel.Style><Style TargetType="StackPanel"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding SelectedGameTool.IsCustomExecutable}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></StackPanel.Style><TextBlock Text="已有实例时" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10" Margin="0,6,0,3"/><ComboBox ItemsSource="{Binding GameToolIfAlreadyRunningOptions}" SelectedValuePath="Value" SelectedValue="{Binding SelectedGameTool.IfAlreadyRunning}" Style="{DynamicResource GscWpfUiComboBox}" ToolTip="仅按解析后的 EXE 完整路径匹配，不会按名称关闭其他程序"><ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Display}" TextTrimming="CharacterEllipsis"/></DataTemplate></ComboBox.ItemTemplate></ComboBox></StackPanel><StackPanel Margin="0,0,0,6"><StackPanel.Style><Style TargetType="StackPanel"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding SelectedGameTool.IsCustomExecutable}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></StackPanel.Style><TextBlock Text="工具类别" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10" Margin="0,6,0,3"/><ComboBox ItemsSource="{Binding GameToolRiskCategoryOptions}" SelectedValuePath="Value" SelectedValue="{Binding SelectedGameTool.RiskCategory}" Style="{DynamicResource GscWpfUiComboBox}" ToolTip="反作弊游戏中仅允许标记为通用工具的自定义启动项自动启动"><ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Display}" TextTrimming="CharacterEllipsis"/></DataTemplate></ComboBox.ItemTemplate></ComboBox><StackPanel><StackPanel.Style><Style TargetType="StackPanel"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding SelectedGameTool.RiskCategory}" Value="{x:Static contracts:GameToolRiskCategory.Unknown}"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></StackPanel.Style><ui:ToggleSwitch Style="{DynamicResource GscWpfUiToggleSwitch}" Content="反作弊游戏中允许此未分类工具自动启动" IsChecked="{Binding SelectedGameTool.AllowUnknownToolWithAntiCheat}" AutomationProperties.Name="反作弊游戏中允许此未分类工具自动启动"/></StackPanel></StackPanel><TextBlock Text="{Binding SelectedGameTool.AutoStartRiskHint}" Foreground="{DynamicResource GscWarningBrush}" FontSize="10" TextWrapping="Wrap" Margin="0,0,0,6"/><TextBlock Text="{Binding SelectedGameTool.ExternalReferenceHint}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10" TextWrapping="Wrap" Margin="0,0,0,6"><TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding SelectedGameTool.IsExternalReference}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock><WrapPanel Margin="0,2,0,0"><ui:ToggleSwitch Style="{DynamicResource GscWpfUiToggleSwitch}" Content="启用" IsChecked="{Binding SelectedGameTool.Enabled}" Margin="0,0,18,8"/><ui:ToggleSwitch Style="{DynamicResource GscWpfUiToggleSwitch}" Content="随游戏启动" IsChecked="{Binding SelectedGameTool.AutoStart}" Margin="0,0,18,8"/><ui:ToggleSwitch Style="{DynamicResource GscWpfUiToggleSwitch}" Content="退出后关闭" IsChecked="{Binding SelectedGameTool.CloseOnGameExit}" IsEnabled="{Binding SelectedGameTool.CanTrackProcess}" ToolTip="仅 EXE 或可解析的快捷方式目标能可靠跟踪进程；脚本和系统默认程序无法安全关闭" Margin="0,0,18,8"/><ui:ToggleSwitch Style="{DynamicResource GscWpfUiToggleSwitch}" Content="管理员权限" IsChecked="{Binding SelectedGameTool.RequiresAdmin}" Margin="0,0,18,8"/><StackPanel Orientation="Horizontal" Margin="0,0,0,8"><TextBlock Text="启动延迟" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10" VerticalAlignment="Center" Margin="0,0,8,0" TextTrimming="CharacterEllipsis" ToolTip="启动延迟"/><TextBox Style="{StaticResource TrainerCompactNumericTextBox}" Width="72" Text="{Binding SelectedGameTool.LaunchDelaySeconds, UpdateSourceTrigger=LostFocus}" ToolTip="启动延迟，0-300 秒"/><TextBlock Text="秒" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="8,0,0,0"/></StackPanel></WrapPanel></StackPanel><WrapPanel Grid.Row="2" Margin="0,10,0,0"><ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding LaunchGameToolCommand}" Content="启动"/><ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding SaveGameToolCommand}" Content="保存设置"/><ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding OpenGameToolDirectoryCommand}" Content="打开目录"/><ui:Button Command="{Binding RelocateGameToolCommand}" Content="重新定位" Margin="0,0,8,0"><ui:Button.Style><Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiActionButton}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding SelectedGameTool.IsExternalReference}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></ui:Button.Style></ui:Button><ui:Button Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding DeleteGameToolCommand}" Content="解除绑定"/></WrapPanel></Grid></Border>
             </ScrollViewer>
-        </Grid></TabItem>
-        <TabItem Header="导入确认">
+        </Grid></Grid>
+        <Grid x:Name="PanelImport" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Collapsed">
             <Border Style="{DynamicResource GscReadingCardStyle}" Padding="22" Margin="0,12,0,0" MaxWidth="980" HorizontalAlignment="Stretch" VerticalAlignment="Top">
                 <StackPanel MaxWidth="760" HorizontalAlignment="Stretch">
                     <TextBlock Text="确认导入" Style="{DynamicResource GscSectionTitleStyle}"/>
@@ -92,8 +92,8 @@
                     </WrapPanel>
                 </StackPanel>
             </Border>
-        </TabItem>
-        <TabItem Header="FLiNG 在线库">
+        </Grid>
+        <Grid x:Name="PanelCatalog" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Collapsed">
             <Grid Margin="0,12,0,0">
                 <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
                 <Border Style="{DynamicResource GscReadingCardStyle}" Padding="16" MaxWidth="1080" HorizontalAlignment="Stretch" VerticalAlignment="Top">
@@ -117,8 +117,8 @@
                     </Grid>
                 </Border>
             </Grid>
-        </TabItem>
-        <TabItem Header="可下载版本">
+        </Grid>
+        <Grid x:Name="PanelReleases" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Collapsed">
             <Grid x:Name="TrainerReleasesLayout" Margin="0,12,0,0">
                 <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="0"/></Grid.RowDefinitions>
                 <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscInspectorWidth}"/></Grid.ColumnDefinitions>
@@ -147,6 +147,7 @@
                     </ScrollViewer>
                 </Border>
             </Grid>
-        </TabItem>
-    </TabControl></Grid>
+        </Grid>
+        </Grid>
+</Grid>
 </UserControl>

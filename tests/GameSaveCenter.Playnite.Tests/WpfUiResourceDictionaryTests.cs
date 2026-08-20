@@ -728,8 +728,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("MinHeight\" Value=\"{DynamicResource GscWorkspaceTableMinHeight}\"", trainer);
         Assert.DoesNotContain("Height\" Value=\"{DynamicResource GscListViewportHeight}\"", trainer);
         Assert.Contains("VirtualizingPanel.VirtualizationMode=\"Recycling\"", trainer);
-        Assert.Contains("<Setter Property=\"HorizontalContentAlignment\" Value=\"Stretch\"/>", trainer);
-        Assert.Contains("<Setter Property=\"VerticalContentAlignment\" Value=\"Stretch\"/>", trainer);
+        Assert.Contains("Style=\"{StaticResource LabSegmented}\"", trainer);
+        Assert.Contains("x:Name=\"TrainerPanelHost\"", trainer);
+        Assert.Contains("HorizontalAlignment=\"Stretch\" VerticalAlignment=\"Stretch\"", trainer);
         Assert.Contains("x:Name=\"InstalledToolsLayout\"", trainer);
         Assert.Contains("Grid.Column=\"2\" Grid.RowSpan=\"4\"", trainer);
         Assert.Contains("InstalledToolsLayout.ColumnDefinitions[2].Width", trainerCode);
@@ -1833,8 +1834,10 @@ public sealed class WpfUiResourceDictionaryTests
         var trainerPath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml");
         var trainerText = File.ReadAllText(trainerPath);
 
-        Assert.Contains("<TabItem Header=\"已绑定工具\">", trainerText);
-        Assert.Contains("<TabItem Header=\"导入确认\">", trainerText);
+        Assert.Contains("x:Name=\"TrainerSegmentTabs\"", trainerText);
+        Assert.Contains("<ListBoxItem Content=\"已绑定工具\"/>", trainerText);
+        Assert.Contains("<ListBoxItem Content=\"导入确认\"/>", trainerText);
+        Assert.Contains("x:Name=\"PanelImport\"", trainerText);
         Assert.Contains("ItemsSource=\"{Binding ImportEntryCandidates}\"", trainerText);
         Assert.Contains("Command=\"{Binding ConfirmGameToolImportCommand}\"", trainerText);
         Assert.Contains("Command=\"{Binding CancelGameToolImportCommand}\"", trainerText);
@@ -2009,8 +2012,17 @@ public sealed class WpfUiResourceDictionaryTests
         foreach (var viewName in new[] { "SaveCenterView.xaml", "TrainerCenterView.xaml", "MediaCenterView.xaml", "MaintenanceView.xaml" })
         {
             var view = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", viewName));
-            Assert.Contains("HorizontalContentAlignment\" Value=\"Stretch\"", view);
-            Assert.Contains("VerticalContentAlignment\" Value=\"Stretch\"", view);
+            if (viewName == "TrainerCenterView.xaml")
+            {
+                Assert.Contains("Style=\"{StaticResource LabSegmented}\"", view);
+                Assert.Contains("HorizontalAlignment=\"Stretch\"", view);
+                Assert.Contains("VerticalAlignment=\"Stretch\"", view);
+            }
+            else
+            {
+                Assert.Contains("HorizontalContentAlignment\" Value=\"Stretch\"", view);
+                Assert.Contains("VerticalContentAlignment\" Value=\"Stretch\"", view);
+            }
         }
     }
 
@@ -2349,7 +2361,8 @@ public sealed class WpfUiResourceDictionaryTests
         var searchCard = trainer.Descendants().Single(element =>
             element.Name.LocalName == "Border"
             && element.Attribute("MaxWidth")?.Value == "1080"
-            && element.Ancestors().Any(ancestor => ancestor.Attribute("Header")?.Value == "FLiNG 在线库"));
+            && element.Ancestors().Any(ancestor =>
+                ancestor.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "PanelCatalog"));
         Assert.Equal("Stretch", searchCard.Attribute("HorizontalAlignment")?.Value);
 
         var searchGrid = searchCard.Descendants().First(element => element.Name.LocalName == "Grid");
@@ -4623,7 +4636,11 @@ public sealed class WpfUiResourceDictionaryTests
             // All workspaces now use the demo's compact page rhythm. Game-scoped pages
             // receive their only game context from Dashboard; global pages start directly
             // with summary cards instead of spending a permanent row on a redundant hero.
-            if (view != "TaskCenterView.xaml")
+            if (view == "TrainerCenterView.xaml")
+            {
+                Assert.Contains("Style=\"{StaticResource LabSegmented}\"", xaml);
+            }
+            else if (view != "TaskCenterView.xaml")
             {
                 Assert.Contains("BasedOn=\"{StaticResource GscRedesignWorkspaceTabControl}\"", xaml);
             }

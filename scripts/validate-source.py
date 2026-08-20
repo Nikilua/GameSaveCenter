@@ -1414,10 +1414,14 @@ def check_final_redesign_guards() -> None:
             if any(local_name(node.tag) == "BlurEffect" for node in control.iter()):
                 fail("Final redesign must not place BlurEffect inside a DataGrid")
         else:
-            # UiLab's segmented navigation is intentionally a non-virtualized, finite
-            # ListBox of four or fewer labels. It is not a large-library list and must
-            # not be forced to carry the item-recycling contract below.
-            if control.attrib.get("Style") == "{StaticResource GscRedesignSegmented}":
+            # Segmented navigation is intentionally a non-virtualized, finite ListBox
+            # of a few labels. It is not a large-library list and must not be forced to
+            # carry the item-recycling contract below. Both the older production token
+            # and the Demo-first LabSegmented control use this contract.
+            if control.attrib.get("Style") in (
+                "{StaticResource GscRedesignSegmented}",
+                "{StaticResource LabSegmented}",
+            ):
                 continue
             for attribute, expected in (
                 ("VirtualizingPanel.IsVirtualizing", "True"),

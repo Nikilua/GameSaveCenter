@@ -2,6 +2,24 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-20 UI-253 修改器中心恢复 Demo 分段页面结构
+
+**实现内容：**
+
+- 修改器中心移除旧生产 `TabControl/TabItem` 外壳，按 Demo `TrainerPage.xaml` 恢复顶部 `LabSegmented` 分段导航、说明副标题和四个命名内容面板：已绑定工具、导入确认、FLiNG 在线库、可下载版本。
+- 分段切换仅改变面板可见性，不改变真实 ViewModel、Binding、Command 或异步流程；保留 EXE/目录/CT/自定义启动项导入、待确认入口选择、在线目录搜索、发行版本加载和下载绑定。
+- 工具列表、目录结果、发行版本列表继续使用虚拟化和回收模式；现有 Inspector、紧凑详情抽屉、项目 ScrollBar 和响应式两列/堆叠布局均保留。分段导航使用 Demo 的 `LabSegmented`，不套用旧 TabControl 样式。
+- 增加初始化期空保护，避免 `SelectedIndex=0` 在 XAML 构造期间先触发分段事件而访问尚未生成的面板字段；源码验证器同步识别 Demo segmented 导航为少量非虚拟化标签列表。
+- 更新页面基线测试，将过时的 TabControl 结构断言迁移为分段导航、四面板、真实命令和滚动/虚拟化契约；没有删除任何业务入口。
+
+**验证结果：**
+
+- `dotnet build GameSaveCenter.sln -c Release --no-restore -m:1 -nodeReuse:false -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false`：0 warning、0 error。
+- 解决方案测试：Core 59/59、Worker 191/191、Playnite 252/252 通过、61 跳过、0 失败。
+- `scripts/check-xaml.ps1`：18 个文件通过；`python scripts/validate-source.py`：通过；`git diff --check`：通过。
+- `python .codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py .`：0 error，20 个既有 warning、161 个 info。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/trainer-segmented-final`：`render-qa OK`；双主题、多尺寸、resize 以及修改器中心四个分段均完成渲染和布局探针。离屏证据仍不能替代可识别 Playnite 宿主的逐页像素验收。
+
 ## 2026-08-20 DOC-002 Demo-first 优先级覆盖旧 WPF 视觉约束
 
 **决策：**
