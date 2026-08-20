@@ -10,6 +10,13 @@
 - 当前游戏选框、生产滚动条系统、真实运行时数据和 Demo 未覆盖但目标文件明确要求保留的功能继续保留；Demo Mock 数据、演示色板、窗口按钮和演示行为不得接入生产。
 - 本段覆盖早期“当前生产 main > Demo”或“技能优先”的视觉排序；旧条目只用于历史追溯，不得阻止 Demo-first 的新页面迁移。
 
+## 2026-08-20 UI-264 当前事实：首页统计条已恢复 Demo 连续结构
+
+- `OverviewView.xaml` 的 `OverviewStatStrip` 当前是一个 `GscRedesignSectionCard` 连续统计条，六个等宽指标使用五条 `GscTableDividerBrush` 分隔；数字在上、标签在下，不要恢复六张带间隙的独立 metric card 或旧的 `UniformGrid.Columns` 响应式换列。
+- 六项显示继续绑定真实 `Snapshot.ManagedGames`、`Snapshot.MatchedGames`、`Snapshot.RunningGames`、`Snapshot.WarningGames`、`Snapshot.PendingCloudTasks`、`Snapshot.UnassignedMediaCount`；匹配/风险进度条与 `ManagedGames == 0` 时隐藏的防护仍有效，健康/注意/风险/未知明细也继续来自 Snapshot。
+- `OverviewStatStrip` 的命名 XAML 元素已从 `UniformGrid` 调整为 `Border`，`ApplyResponsiveWidth` 不再调整统计列数；今日工作台、当前游戏选框、立即备份/全部备份、活动列表虚拟化、页面滚动和 hover render-only gate 均未迁移。
+- 当前证据：Release 0 warning/0 error；Core 59/59、Worker 191/191、Playnite 258 通过/62 跳过；XAML/source/WPF/diff 门禁通过；`artifacts/ui-qa/overview-summary-strip-v1` 的双主题、多尺寸、滚动和 resize `render-qa OK`。截图仍属于离屏证据，不能替代可识别 Playnite 宿主的逐页像素验收。
+
 ## 2026-08-20 UI-263 当前事实：任务统计条已恢复 Demo 连续结构
 
 - `TaskCenterView.xaml` 顶部 `TaskSummaryPanel` 当前是一个 `GscRedesignSectionCard` 连续统计条，四个等宽指标之间使用 `GscTableDividerBrush` 分隔；不要恢复旧的可变列数 `UniformGrid` 或独立 metric card。

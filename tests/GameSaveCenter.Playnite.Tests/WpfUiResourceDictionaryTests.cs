@@ -2573,16 +2573,19 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [LegacyProductionUiBaselineFact]
-    public void OverviewStatStripKeepsSixRealSnapshotCardsWithMotionGatedHover()
+    public void OverviewStatStripKeepsSixRealSnapshotMetricsWithMotionGatedHover()
     {
         var repositoryRoot = FindRepositoryRoot();
         var overview = XDocument.Parse(File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml")));
         var strip = overview.Descendants().Single(element => element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "OverviewStatStrip");
-        var cards = strip.Elements().Where(element => element.Name.LocalName == "Border").ToList();
+        var cards = strip.Descendants().Where(element => element.Name.LocalName == "Border" && element.Attribute("Style")?.Value == "{StaticResource OverviewStatCard}").ToList();
 
-        // The six cards are real Snapshot counters, never demo placeholders.
+        // The six metrics are real Snapshot counters inside one continuous Demo strip,
+        // never demo placeholders.
         Assert.Equal(6, cards.Count);
         Assert.All(cards, card => Assert.Equal("{StaticResource OverviewStatCard}", card.Attribute("Style")?.Value));
+        Assert.Equal("{DynamicResource GscRedesignSectionCard}", strip.Attribute("Style")?.Value);
+        Assert.Equal(5, strip.Descendants().Count(element => element.Name.LocalName == "Rectangle" && element.Attribute("Fill")?.Value == "{DynamicResource GscTableDividerBrush}"));
         Assert.Contains("Binding Snapshot.ManagedGames, Mode=OneWay", strip.ToString());
         Assert.Contains("Binding Snapshot.MatchedGames, Mode=OneWay", strip.ToString());
         Assert.Contains("Binding Snapshot.RunningGames, Mode=OneWay", strip.ToString());

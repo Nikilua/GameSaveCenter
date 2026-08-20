@@ -149,15 +149,6 @@ namespace GameSaveCenter.Playnite.Views
                     : new Thickness(12, 0, 0, 0);
             }
 
-            // The six Snapshot metrics are a compact summary strip, not a card wall.
-            // Wide workbenches keep the Demo's single-row rhythm; narrow hosts drop to
-            // 3 then 2 columns so every real counter remains readable without wrapping
-            // the whole page into a giant tile grid.
-            if (OverviewStatStrip != null)
-            {
-                OverviewStatStrip.Columns = primaryWidth >= 1100 ? 6 : primaryWidth >= 620 ? 3 : 2;
-            }
-
             if (OverviewActivityTimelineList != null)
             {
                 var compactActivity = activityWidth < 900;

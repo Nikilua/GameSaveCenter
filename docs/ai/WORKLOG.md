@@ -2,6 +2,21 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-20 UI-264 首页统计条恢复 Demo 连续结构
+
+**实现内容：**
+
+- 将首页六张独立统计卡收口为 Demo 的单个连续 `GscRedesignSectionCard` 统计条，六个等宽指标之间使用五条 `GscTableDividerBrush` 分隔；数字置于标签上方，使用 26 DIP 的 Demo 阅读节奏。
+- 六项仍绑定真实 `Snapshot.ManagedGames`、`MatchedGames`、`RunningGames`、`WarningGames`、`PendingCloudTasks` 和 `UnassignedMediaCount`；匹配率/风险率进度条及空游戏库时的隐藏逻辑均保留，没有写入 Mock 数字。
+- `OverviewStatStrip` 后台契约从 `UniformGrid` 调整为 `Border`，删除仅用于旧统计卡的列数响应式分支；当前游戏选框、今日工作台操作区、活动列表滚动/虚拟化、风险卡和所有真实命令没有改变。统计卡的悬停位移动画仍受现有 render-only gate 保护。
+- 更新首页结构回归断言，明确保护连续统计条、五条 Divider、六项真实绑定、进度条和 hover 事件；生产 Tab chrome 仍按用户明确例外保持当前项目实现。
+
+**验证结果：**
+
+- `scripts/build.ps1 -Configuration Release -OutputRoot artifacts/gsc-b/overview-summary-strip-v1`：XAML 18/18；Release 0 warning、0 error；Core 59/59、Worker 191/191、Playnite 258 通过、62 跳过、0 失败。
+- `python scripts/validate-source.py`：通过；`python .codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py .`：0 error、19 warnings、161 info；`git diff --check`：通过。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/overview-summary-strip-v1`：`render-qa OK`，覆盖双主题、多尺寸、滚动探针与 resize transition；已查看 Overview 1366×768 截图，当前游戏、连续统计条和下方风险内容均保持可达。离屏证据仍不能替代可识别 Playnite 宿主的逐页像素验收。
+
 ## 2026-08-20 UI-263 任务页统计条恢复 Demo 连续结构
 
 **实现内容：**
