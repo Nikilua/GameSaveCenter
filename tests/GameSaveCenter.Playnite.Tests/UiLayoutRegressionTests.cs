@@ -321,7 +321,9 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("ClipToBounds=\"False\"", redesign);
             Assert.DoesNotContain("CornerRadius=\"14\" ClipToBounds=\"True\"", redesign);
             Assert.Contains("var shortHeight = height > 0 && height < 760;", code);
-            Assert.Contains("tab.MinHeight = compact ? 50 : shortHeight ? 60 : 72;", code);
+            Assert.Contains("SettingsSectionTabs.MinHeight = 0;", code);
+            Assert.Contains("SettingsSectionTabs.MaxHeight = narrow ? 180 : 200;", code);
+            Assert.Contains("SettingsCompactContentRow.Height = new GridLength(1, GridUnitType.Star);", code);
         }
 
         [LegacyProductionUiBaselineFact]
@@ -458,8 +460,8 @@ namespace GameSaveCenter.Playnite.Tests
 
             Assert.Contains("ScrollSelectedCategoryIntoView();", code);
             Assert.Contains("ScheduleScrollSelectedCategoryIntoView();", code);
-            Assert.Contains("FindVisualChild<ScrollViewer>(SettingsSectionTabs)", code);
-            Assert.Contains("scroller.ScrollToHorizontalOffset(target);", code);
+            Assert.Contains("SettingsSectionTabs?.SelectedItem is not ListBoxItem selected", code);
+            Assert.Contains("selected.BringIntoView();", code);
         }
 
         [LegacyProductionUiBaselineFact]

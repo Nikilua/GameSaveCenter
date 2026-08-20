@@ -76,6 +76,25 @@ public sealed class RestoredAcrylicForkBaselineTests
     }
 
     [Fact]
+    public void TaskCenterKeepsTheDemoQueueAndInspectorReadingOrder()
+    {
+        var tasks = ReadSource("Views", "TaskCenterView.xaml");
+
+        Assert.Contains("x:Name=\"TaskSummaryPanel\"", tasks);
+        Assert.Contains("x:Name=\"TaskFilterBar\"", tasks);
+        Assert.Contains("x:Name=\"TaskMoreFiltersExpander\"", tasks);
+        Assert.Contains("x:Name=\"TaskQueuePanel\"", tasks);
+        Assert.Contains("x:Name=\"TaskGrid\"", tasks);
+        Assert.Contains("x:Name=\"TaskDetailScrollViewer\"", tasks);
+        Assert.Contains("ItemsSource=\"{Binding TasksView}\"", tasks);
+        Assert.Contains("Command=\"{Binding RetryTaskCommand}\"", tasks);
+        Assert.Contains("Command=\"{Binding CancelTaskCommand}\"", tasks);
+        Assert.Contains("EnableRowVirtualization\" Value=\"True\"", tasks);
+        Assert.Contains("EnableColumnVirtualization\" Value=\"True\"", tasks);
+        Assert.Contains("ScrollViewer.CanContentScroll\" Value=\"True\"", tasks);
+    }
+
+    [Fact]
     public void MediaUsesDemoMetricCardsAndTheFullWorkspaceTabs()
     {
         var media = ReadSource("Views", "MediaCenterView.xaml");

@@ -3175,3 +3175,25 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 **验证边界：**
 
 - 本阶段只完成离屏和静态验证，没有新增可识别的 Playnite 生产宿主像素截图；不能把 RenderHarness PNG 当作宿主 1:1 验收。
+
+## 2026-08-20 UI-254 任务与设置页 Demo 结构收口
+
+**实现内容：**
+
+- 任务中心补充 Demo-first 源码契约：四项真实指标、筛选工具栏、更多筛选、任务队列、进度列和右侧 Inspector 的阅读顺序与真实 `TasksView`、`SelectedTask`、重试/取消命令、表格虚拟化保持可追踪。
+- 设置页将旧 `TabControl` 页面壳迁移为 Demo 的左侧五项 `LabSegmented` 分类栏 + 右侧单一 `GscPageScrollViewer` 内容区；五个真实设置面板按分类切换可见性，字段绑定、验证、Playnite 保存语义、导入/导出操作不变。
+- 设置页响应式逻辑在常见 Playnite 宽度保持 Demo 左栏；仅极窄宿主才把分类栏移到内容上方，并继续保证右侧滚动区拥有有限可测视口。RenderHarness 已支持 `SettingsSectionTabs` 这一 ListBox 分类入口，审计器不再依赖旧 TabControl/头部滚动条。
+- 更新源码门禁、布局/资源回归测试和任务结构契约测试；未迁移 Demo Mock 数据，也未替换项目既有 DataGrid/ScrollViewer 滚动条。
+
+**验证结果：**
+
+- `scripts/check-xaml.ps1`：18 个 XAML 文件通过。
+- `scripts/validate-source.py`：通过。
+- Release 构建：0 警告、0 错误。
+- Core：59/59；Worker：191/191；Playnite：253 通过、61 跳过、0 失败。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/task-settings-final`：`render-qa OK`；浅色/深色、多尺寸、五个设置分类、任务宽窄 Inspector 和 resize transition 均通过。
+- `validate_wpf_ui.py`：0 error、20 warnings、161 info；`git diff --check`：通过。
+
+**验证边界：**
+
+- 本阶段新增的是 RenderHarness 离屏 PNG 和静态回归证据，目检了设置页 1040/1366 代表分类与任务中心 1040/1366 宽窄状态；没有新增可识别的 Playnite 生产宿主像素截图，不能把离屏结果写成宿主 1:1 验收。

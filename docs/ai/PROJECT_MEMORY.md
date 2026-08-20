@@ -933,3 +933,11 @@
 - 最近任务和任务中心表头不能只设置 `Foreground`：WPF 的 `DataGridColumnHeader` 内容还可能通过 `TextElement.Foreground` 继承宿主默认黑色。共享表头、表头呈现器和任务局部表头现在同时显式绑定生产主题文本令牌，首页任务模板的标题、游戏名、详情和结果也有明确前景色。
 - 媒体中心四张摘要卡使用共享 `GscRedesignMetricBorder`，统一采用紧凑内边距、72 DIP 最小高度、14 DIP 圆角和 24 号数字；卡片仍由 `UniformGrid` 等宽承载，不混入 Tab 或来源规则布局。
 - 2026-08-20 RenderHarness 最终报告 `artifacts/ui-qa/phase-home-media-cards-final/render-qa-report.txt` 为 `render-qa OK`，覆盖浅色/深色、多窗口尺寸和回弹过渡；Core 59/59，Playnite 251 通过、61 跳过。该证据属于离屏渲染，不能替代可识别 Playnite 宿主的逐页截图。
+
+## 2026-08-20 UI-254 设置页分类栏与任务页 Demo 骨架事实
+
+- 生产设置入口文件是 `src/GameSaveCenter.Playnite/Settings/GameSaveCenterSettingsView.xaml`，不是 `Views/SettingsView.xaml`。当前结构必须保持 `SettingsWorkspace` 的 190 DIP 分类栏、16 DIP 间距和右侧 `SettingsScroller`；分类 ListBox 名称是 `SettingsSectionTabs`，事件是 `OnSettingsTabSelectionChanged`。
+- 设置页五个可见面板分别是 `SettingsGeneralPanel`、`SettingsBackupPanel`、`SettingsAppearancePanel`、`SettingsAutomationPanel`、`SettingsMigrationPanel`。切换只改变 `Visibility`，不得把真实字段 Binding、Validation、Playnite 保存按钮语义或导入/导出命令移入 Mock 数据。
+- 设置页常见 1040px 逻辑窗口仍使用左侧分类栏；`ApplyResponsiveLayout` 的极窄分支为 `layoutWidth < 560`，窄标题阈值为 `layoutWidth < 520`。常见窗口必须让右侧 `GscPageScrollViewer` 获得有限视口，不能让五项分类栏占满第一屏。
+- RenderHarness 的 ListBox 分段入口发现规则同时接受名称以 `SegmentTabs` 结尾的迁移页和生产设置的 `SettingsSectionTabs`；设置布局探针验证五个 `ListBoxItem` 可见可测和右侧内容视口，不再查找旧 `SettingsHeaderScroller`/TabControl。
+- 当前 `artifacts/ui-qa/task-settings-final/render-qa-report.txt` 为 `render-qa OK`；这是离屏证据。Playnite 生产宿主 Light/Dark、Follow、DPI、键盘焦点与逐页真实截图仍需单独人工验收。

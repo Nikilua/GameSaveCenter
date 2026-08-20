@@ -1090,7 +1090,8 @@ public static class Program
     private static void SelectTab(UserControl view, int index)
     {
         var segmented = FindVisualChildren<ListBox>(view)
-            .FirstOrDefault(candidate => candidate.Name.EndsWith("SegmentTabs", StringComparison.Ordinal));
+            .FirstOrDefault(candidate => candidate.Name.EndsWith("SegmentTabs", StringComparison.Ordinal)
+                || candidate.Name == "SettingsSectionTabs");
         if (segmented != null)
         {
             if (index < 0 || index >= segmented.Items.Count)
@@ -1325,7 +1326,8 @@ public static class Program
         // the named top-level segment list for migrated pages.
         var tabs = FindVisualChildren<TabControl>(host).FirstOrDefault();
         var segmentTabs = FindVisualChildren<ListBox>(host)
-            .FirstOrDefault(candidate => candidate.Name.EndsWith("SegmentTabs", StringComparison.Ordinal));
+            .FirstOrDefault(candidate => candidate.Name.EndsWith("SegmentTabs", StringComparison.Ordinal)
+                || candidate.Name == "SettingsSectionTabs");
         if (tabs == null && segmentTabs == null)
         {
             throw new InvalidOperationException($"{name} has no top-level segment control to render.");
@@ -1461,6 +1463,7 @@ public static class Program
                 && list.ActualHeight < 236
                 && list.Name != "OverviewActivityList"
                 && !list.Name.EndsWith("SegmentTabs", StringComparison.Ordinal)
+                && list.Name != "SettingsSectionTabs"
                 && list.Name != "MaintenanceDiagnosticsSubTabs")
             {
                 s_problems.Add($"{label} {list.Name} list viewport is only {list.ActualHeight:0} DIP (< 236)");
@@ -1733,44 +1736,36 @@ public static class Program
                     host.UpdateLayout();
 
                     var header = FindVisualChildren<FrameworkElement>(host).FirstOrDefault(element => element.Name == "SettingsHeader");
-                    var tabs = FindVisualChildren<TabControl>(host).FirstOrDefault();
-                    var tabItems = FindVisualChildren<TabItem>(host).Where(item => item.Parent != null).ToList();
-                    var headerScroller = FindVisualChildren<ScrollViewer>(host).FirstOrDefault(scroller => scroller.Name == "SettingsHeaderScroller");
+                    var tabs = FindVisualChildren<ListBox>(host).FirstOrDefault(element => element.Name == "SettingsSectionTabs");
+                    var tabItems = tabs == null
+                        ? new List<ListBoxItem>()
+                        : FindVisualChildren<ListBoxItem>(tabs).Where(item => item.Parent != null).ToList();
+                    var categoryScroller = tabs == null
+                        ? null
+                        : FindVisualChildren<ScrollViewer>(tabs).FirstOrDefault();
                     var visibleTabs = tabItems.Count(item => item.Visibility == Visibility.Visible);
                     var minTabWidth = tabItems.Count == 0 ? 0 : tabItems.Min(item => item.ActualWidth);
                     var minTabHeight = tabItems.Count == 0 ? 0 : tabItems.Min(item => item.ActualHeight);
                     report.AppendLine(
-                        $"  SettingsLayout w={width:0} h={height:0} headerH={(header?.ActualHeight ?? double.NaN):0.##} tabs={(tabs == null ? -1 : tabs.Items.Count)} tabItems={tabItems.Count} visible={visibleTabs} minW={minTabWidth:0.##} minH={minTabHeight:0.##} scroller={(headerScroller == null ? "missing" : headerScroller.GetType().Name)}");
+                        $"  SettingsLayout w={width:0} h={height:0} headerH={(header?.ActualHeight ?? double.NaN):0.##} tabs={(tabs == null ? -1 : tabs.Items.Count)} tabItems={tabItems.Count} visible={visibleTabs} minW={minTabWidth:0.##} minH={minTabHeight:0.##} scroller={(categoryScroller == null ? "missing" : categoryScroller.GetType().Name)}");
                     if (header == null || header.ActualHeight <= 0)
                         s_problems.Add($"SettingsLayout w={width:0} h={height:0} header is not visible");
                     if (tabs == null || tabs.Items.Count != 5)
                         s_problems.Add($"SettingsLayout w={width:0} h={height:0} expected 5 categories, got {(tabs == null ? 0 : tabs.Items.Count)}");
                     if (tabItems.Count < 5 || tabItems.Any(item => item.Visibility != Visibility.Visible || item.ActualWidth <= 0 || item.ActualHeight <= 0))
                         s_problems.Add($"SettingsLayout w={width:0} h={height:0} not all category tabs are visible and measurable");
-                    if (headerScroller == null)
-                        s_problems.Add($"SettingsLayout w={width:0} h={height:0} category rail has no scroll access");
-                    else if (tabItems.Count > 0)
+                    if (categoryScroller != null && tabItems.Count > 0 && categoryScroller.ScrollableHeight > 0.5)
                     {
-                        headerScroller.ScrollToVerticalOffset(headerScroller.ScrollableHeight);
+                        categoryScroller.ScrollToVerticalOffset(categoryScroller.ScrollableHeight);
                         host.UpdateLayout();
                         var lastTab = tabItems.OrderBy(item => tabs!.Items.IndexOf(item)).Last();
-                        var lastTabOrigin = lastTab.TransformToAncestor(headerScroller).Transform(new Point(0, 0));
+                        var lastTabOrigin = lastTab.TransformToAncestor(categoryScroller).Transform(new Point(0, 0));
                         var lastTabBottom = lastTabOrigin.Y + lastTab.ActualHeight;
-                        var chrome = FindVisualChildren<FrameworkElement>(lastTab)
-                            .FirstOrDefault(element => element.Name == "Chrome");
-                        var chromeBottom = double.NaN;
-                        var chromeSafety = double.NaN;
-                        if (chrome != null)
-                        {
-                            var chromeOrigin = chrome.TransformToAncestor(headerScroller).Transform(new Point(0, 0));
-                            chromeBottom = chromeOrigin.Y + chrome.ActualHeight;
-                            chromeSafety = lastTab.ActualHeight - chrome.ActualHeight;
-                        }
                         report.AppendLine(
-                            $"  SettingsLayout w={width:0} h={height:0} lastTabBottom={lastTabBottom:0.##} chromeBottom={chromeBottom:0.##} chromeSafety={chromeSafety:0.##} viewport={headerScroller.ViewportHeight:0.##} scrollable={headerScroller.ScrollableHeight:0.##}");
-                        if (lastTabBottom > headerScroller.ViewportHeight + 1 || chromeBottom > headerScroller.ViewportHeight + 1 || chromeSafety < 1)
+                            $"  SettingsLayout w={width:0} h={height:0} lastTabBottom={lastTabBottom:0.##} viewport={categoryScroller.ViewportHeight:0.##} scrollable={categoryScroller.ScrollableHeight:0.##}");
+                        if (lastTabBottom > categoryScroller.ViewportHeight + 1)
                         {
-                            s_problems.Add($"SettingsLayout w={width:0} h={height:0} last category chrome lacks bottom safety (tab={lastTabBottom:0.##}, chrome={chromeBottom:0.##}, safety={chromeSafety:0.##}, viewport={headerScroller.ViewportHeight:0.##})");
+                            s_problems.Add($"SettingsLayout w={width:0} h={height:0} last category is outside the scroll viewport (tab={lastTabBottom:0.##}, viewport={categoryScroller.ViewportHeight:0.##})");
                         }
                     }
                     var contentScroller = FindVisualChildren<ScrollViewer>(host).FirstOrDefault(scroller => scroller.Name == "SettingsScroller");
@@ -1938,6 +1933,7 @@ public static class Program
             if (list.ActualHeight < 236
                 && list.Name != "OverviewActivityList"
                 && !list.Name.EndsWith("SegmentTabs", StringComparison.Ordinal)
+                && list.Name != "SettingsSectionTabs"
                 && list.Name != "MaintenanceDiagnosticsSubTabs")
                 s_problems.Add($"{label} {list.Name} viewport {list.ActualHeight:0} DIP (<236)");
         }
@@ -2127,7 +2123,8 @@ public static class Program
             {
                 var tabs = FindVisualChildren<TabControl>(host).FirstOrDefault();
                 var segmentTabs = FindVisualChildren<ListBox>(host)
-                    .FirstOrDefault(candidate => candidate.Name.EndsWith("SegmentTabs", StringComparison.Ordinal));
+                    .FirstOrDefault(candidate => candidate.Name.EndsWith("SegmentTabs", StringComparison.Ordinal)
+                        || candidate.Name == "SettingsSectionTabs");
                 if (segmentTabs != null && tabIndex < segmentTabs.Items.Count)
                     segmentTabs.SelectedIndex = tabIndex;
                 else if (tabs != null && tabIndex < tabs.Items.Count)

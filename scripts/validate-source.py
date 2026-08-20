@@ -1074,7 +1074,7 @@ def check_responsive_ui_layout_guards() -> None:
         if token not in redesign:
             fail(f"Settings shared scroll template guard missing: {token}")
     for token in ("SizeChanged += OnSizeChanged", "ApplyResponsiveLayout(ActualWidth, ActualHeight)",
-                  "SettingsHeaderSubtitle.Visibility", "layoutWidth < 620"):
+                  "SettingsHeaderSubtitle.Visibility", "layoutWidth < 520"):
         if token not in settings_code:
             fail(f"Settings responsive behavior guard missing: {token}")
     for token in ("SetToolbarLabelsVisible(mode == LayoutMode.Expanded)", "TopRefreshLabel.Visibility"):
@@ -1167,15 +1167,20 @@ def check_final_redesign_guards() -> None:
           'ToggleGameBrowserButton.Visibility = Visibility.Collapsed',
           'scrollViewer.LineDown()', 'scrollViewer.LineUp()')),
         (settings, "Settings final redesign",
-         ('Themes/Redesign.xaml', 'x:Name="SettingsSectionTabs"',
-          'GscRedesignSettingsTabControl', '由 Playnite 的保存按钮提交',
+         ('Themes/Redesign.xaml', 'x:Name="SettingsWorkspace"',
+          'x:Name="SettingsCategoryRail"', 'x:Name="SettingsScroller"',
+          'Style="{StaticResource LabSegmented}"', '由 Playnite 的保存按钮提交',
           'x:Name="CoreToolFields"', 'x:Name="StorageFormatFields"', 'x:Name="StorageNumericFields"',
           'x:Name="AppearanceFields"', 'x:Name="AutomationIntervalFields"',
+          'x:Name="SettingsGeneralPanel"', 'x:Name="SettingsBackupPanel"',
+          'x:Name="SettingsAppearancePanel"', 'x:Name="SettingsAutomationPanel"',
+          'x:Name="SettingsMigrationPanel"',
           'Click="OnExportSettingsClick"', 'Click="OnImportSettingsClick"')),
         (settings_code, "Settings final responsive behavior",
-         ('var compact = layoutWidth < 700', 'var narrow = layoutWidth < 620',
-          'SettingsSectionTabs.TabStripPlacement = compact ? Dock.Top : Dock.Left',
-          'tab.MinWidth = compact ? (narrow ? 132 : 158) : 218',
+         ('var compact = layoutWidth < 560', 'var narrow = layoutWidth < 520',
+          'Grid.SetColumnSpan(SettingsCategoryRail, 3)',
+          'Grid.SetRow(SettingsScroller, 1)',
+          'SettingsCompactContentRow.Height = new GridLength(1, GridUnitType.Star)',
           'SettingsDemoShell.Margin = new Thickness(horizontalMargin)',
           'SettingsShell.Width = double.NaN', 'SettingsShell.MaxWidth = 1360',
           'var twoColumns = formWidth >= 720')),
@@ -1554,7 +1559,7 @@ def check_settings_autoselect_guards() -> None:
         fail("Settings compact category rail must allow horizontal scrolling")
     if "VerticalScrollBarVisibility=\"Auto\"" not in redesign:
         fail("Settings expanded category rail must allow vertical scrolling")
-    if "SettingsSectionTabs.SelectionChanged += OnSettingsTabSelectionChanged;" not in settings_code:
+    if 'SelectionChanged="OnSettingsTabSelectionChanged"' not in settings_view:
         fail("Settings must keep the selected category visible")
     if "selected.BringIntoView()" not in settings_code:
         fail("Settings selected category must call BringIntoView")

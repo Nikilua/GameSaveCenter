@@ -28,7 +28,6 @@ namespace GameSaveCenter.Playnite.Settings
         public GameSaveCenterSettingsView()
         {
             InitializeComponent();
-            SettingsSectionTabs.SelectionChanged += OnSettingsTabSelectionChanged;
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
             IsVisibleChanged += OnIsVisibleChanged;
@@ -133,8 +132,20 @@ namespace GameSaveCenter.Playnite.Settings
 
         private void OnSettingsTabSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            var selectedIndex = SettingsSectionTabs?.SelectedIndex ?? 0;
+            SetCategoryVisibility(SettingsGeneralPanel, selectedIndex == 0);
+            SetCategoryVisibility(SettingsBackupPanel, selectedIndex == 1);
+            SetCategoryVisibility(SettingsAppearancePanel, selectedIndex == 2);
+            SetCategoryVisibility(SettingsAutomationPanel, selectedIndex == 3);
+            SetCategoryVisibility(SettingsMigrationPanel, selectedIndex == 4);
             ScrollSelectedCategoryIntoView();
             ScheduleScrollSelectedCategoryIntoView();
+        }
+
+        private static void SetCategoryVisibility(UIElement? panel, bool isVisible)
+        {
+            if (panel != null)
+                panel.Visibility = isVisible ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void ScheduleScrollSelectedCategoryIntoView()
@@ -150,56 +161,16 @@ namespace GameSaveCenter.Playnite.Settings
 
         private void ScrollSelectedCategoryIntoView()
         {
-            if (SettingsSectionTabs?.SelectedItem is not TabItem selected)
+            if (SettingsSectionTabs?.SelectedItem is not ListBoxItem selected)
                 return;
-            var scroller = FindVisualChild<ScrollViewer>(SettingsSectionTabs);
-            if (scroller == null || scroller.ScrollableWidth <= 0.5 || scroller.ViewportWidth <= 0)
-                return;
-            if (selected.Visibility != Visibility.Visible || selected.ActualWidth <= 0)
-                return;
-
-            selected.BringIntoView();
             try
             {
-                const double breathing = 8;
-                for (var iteration = 0; iteration < 3; iteration++)
-                {
-                    var origin = selected.TransformToAncestor(scroller).Transform(new Point(0, 0));
-                    var left = origin.X;
-                    var right = left + selected.ActualWidth;
-                    var delta = 0d;
-                    if (left < breathing)
-                        delta = left - breathing;
-                    else if (right > scroller.ViewportWidth - breathing)
-                        delta = right - scroller.ViewportWidth + breathing;
-                    if (Math.Abs(delta) <= 0.5)
-                        return;
-                    var target = Math.Max(0, Math.Min(Math.Round(scroller.HorizontalOffset + delta), scroller.ScrollableWidth));
-                    if (Math.Abs(target - scroller.HorizontalOffset) <= 0.5)
-                        return;
-                    scroller.ScrollToHorizontalOffset(target);
-                    scroller.UpdateLayout();
-                }
+                selected.BringIntoView();
             }
             catch (InvalidOperationException)
             {
-                // Selected TabItem can be disconnected from the template during startup.
+                // Selected ListBoxItem can be disconnected from the template during startup.
             }
-        }
-
-        private static T? FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
-        {
-            var childCount = VisualTreeHelper.GetChildrenCount(parent);
-            for (var i = 0; i < childCount; i++)
-            {
-                var child = VisualTreeHelper.GetChild(parent, i);
-                if (child is T typed)
-                    return typed;
-                var nested = FindVisualChild<T>(child);
-                if (nested != null)
-                    return nested;
-            }
-            return null;
         }
 
         private void OnVisualSettingChanged(object sender, RoutedEventArgs e)
@@ -443,7 +414,9 @@ namespace GameSaveCenter.Playnite.Settings
         {
             if (SettingsShell == null || SettingsHeaderGrid == null || SettingsHeaderHintRow == null
                 || SettingsHeaderSubtitle == null || SettingsSaveHint == null || SettingsSectionTabs == null
-                || SettingsIntroDescription == null || SettingsHeaderIcon == null || SettingsHeader == null) return;
+                || SettingsWorkspace == null || SettingsCategoryRail == null || SettingsScroller == null
+                || SettingsCompactContentRow == null || SettingsIntroDescription == null
+                || SettingsHeaderIcon == null || SettingsHeader == null) return;
 
             // SettingsShell is the real layout surface.  The Playnite settings host can be
             // wider than this shell because the shell is capped at 1360 DIP and inset by the
@@ -455,15 +428,12 @@ namespace GameSaveCenter.Playnite.Settings
                 ? SettingsShell.ActualWidth
                 : Math.Max(320, width - 2 * 18 - 2 * 20);
 
-            // Settings uses the same four product breakpoints as Dashboard.  The category
-            // rail moves above the content before it can squeeze forms or create horizontal
-            // scrolling; fields then collapse independently according to their readable width.
-            // AcrylicFork keeps the category rail beside the form at the common 700-DIP+
-            // content width. The form switches its own field grids independently, so
-            // moving this breakpoint down does not force narrow inputs into one row.
-            var expanded = layoutWidth >= 700;
-            var compact = layoutWidth < 700;
-            var narrow = layoutWidth < 620;
+            // Keep the Demo's left category rail at the common Playnite content widths.
+            // Only genuinely narrow hosts move the rail above the form; this prevents a
+            // 1040px window from spending the entire first viewport on navigation.
+            var expanded = layoutWidth >= 560;
+            var compact = layoutWidth < 560;
+            var narrow = layoutWidth < 520;
             var shortHeight = height > 0 && height < 760;
             var horizontalMargin = narrow ? 10 : 18;
             var contentWidth = Math.Max(320, layoutWidth - horizontalMargin * 2 - 40);
@@ -513,16 +483,33 @@ namespace GameSaveCenter.Playnite.Settings
             SettingsSaveHint.Margin = stackHeaderHint
                 ? new Thickness(0, 12, 0, 0)
                 : new Thickness(14, 0, 0, 0);
-            SettingsSectionTabs.TabStripPlacement = compact ? Dock.Top : Dock.Left;
-
-            foreach (var item in SettingsSectionTabs.Items)
+            if (compact)
             {
-                if (!(item is TabItem tab)) continue;
-                tab.MinWidth = compact ? (narrow ? 132 : 158) : 218;
-                tab.Width = compact ? double.NaN : 232;
-                tab.MinHeight = compact ? 50 : shortHeight ? 60 : 72;
-                tab.HorizontalContentAlignment = HorizontalAlignment.Stretch;
-                tab.Margin = compact ? new Thickness(0, 0, 8, 8) : new Thickness(0, 0, 0, shortHeight ? 8 : 10);
+                Grid.SetRow(SettingsCategoryRail, 0);
+                Grid.SetColumn(SettingsCategoryRail, 0);
+                Grid.SetColumnSpan(SettingsCategoryRail, 3);
+                Grid.SetRow(SettingsScroller, 1);
+                Grid.SetColumn(SettingsScroller, 0);
+                Grid.SetColumnSpan(SettingsScroller, 3);
+                SettingsWorkspace.RowDefinitions[0].Height = GridLength.Auto;
+                SettingsCompactContentRow.Height = new GridLength(1, GridUnitType.Star);
+                SettingsCategoryRail.Margin = new Thickness(0, 0, 0, 8);
+                SettingsSectionTabs.MinHeight = 0;
+                SettingsSectionTabs.MaxHeight = narrow ? 180 : 200;
+            }
+            else
+            {
+                Grid.SetRow(SettingsCategoryRail, 0);
+                Grid.SetColumn(SettingsCategoryRail, 0);
+                Grid.SetColumnSpan(SettingsCategoryRail, 1);
+                Grid.SetRow(SettingsScroller, 0);
+                Grid.SetColumn(SettingsScroller, 2);
+                Grid.SetColumnSpan(SettingsScroller, 1);
+                SettingsWorkspace.RowDefinitions[0].Height = new GridLength(1, GridUnitType.Star);
+                SettingsCompactContentRow.Height = new GridLength(0);
+                SettingsCategoryRail.Margin = new Thickness(0);
+                SettingsSectionTabs.MinHeight = 0;
+                SettingsSectionTabs.MaxHeight = double.PositiveInfinity;
             }
 
             var twoColumns = formWidth >= 720;

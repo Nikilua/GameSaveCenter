@@ -563,3 +563,12 @@ git branch --show-current
 > 在继续之前你最好是能够搞一个文件，能够指引去哪里读取获得开发方向等等。这样我直接说你读取xx文件就可以了，他就知道后续怎么开发了。连我这段话你也要放进去，省得我每次都说了（这样每次开发他们都会维护这个项目）。
 
 这句话代表长期维护要求：后续每次开发都必须继续维护本项目，并同步维护本交接文件、项目记忆、开发进度和 Git commit。
+
+## 2026-08-20 UI-254 任务与设置页交接
+
+- 设置页已经完成 Demo-first 页面壳迁移：`GameSaveCenterSettingsView.xaml` 使用左侧五项 `LabSegmented` 分类栏和右侧 `SettingsScroller` 单一内容滚动区；真实字段、校验、保存语义、导入/导出入口均保留。
+- 设置页分类面板名称固定为 `SettingsGeneralPanel`、`SettingsBackupPanel`、`SettingsAppearancePanel`、`SettingsAutomationPanel`、`SettingsMigrationPanel`；代码通过 `OnSettingsTabSelectionChanged` 做可见性切换，不能恢复旧 TabControl 的横向 TabStrip 假设。
+- 任务中心当前已符合 Demo 的“指标 → 筛选 → 更多筛选 → 队列/进度 → Inspector”阅读顺序；后续修改必须继续保留真实 `TasksView`、`SelectedTask`、`RetryTaskCommand`、`CancelTaskCommand`、DataGrid 虚拟化和项目滚动条。
+- RenderHarness 设置审计已改为识别 `SettingsSectionTabs` ListBox；当前证据为 `artifacts/ui-qa/task-settings-final/render-qa-report.txt`，内容为 `render-qa OK`，涵盖 Light/Dark、1040/1100/1366/2560、多分类和 resize transition。
+- 本阶段验证：XAML 18 文件通过；源码门禁通过；Release 0 warning/0 error；Core 59/59、Worker 191/191、Playnite 253 通过/61 跳过/0 失败；WPF 静态审查 0 error、20 warnings、161 info。
+- 真实 Playnite 宿主逐页截图仍是未完成的人工验收边界；不能把 RenderHarness PNG、测试或安装清单写成 Playnite 1:1 视觉通过。总 Demo-first 迁移目标尚未完成，下一阶段继续按目标文件对照未收口页面和宿主验证。
