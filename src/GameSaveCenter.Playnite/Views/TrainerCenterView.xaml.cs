@@ -27,21 +27,6 @@ namespace GameSaveCenter.Playnite.Views
             ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
         }
 
-        private void OnTrainerSegmentChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (TrainerSegmentTabs == null || PanelTools == null || PanelImport == null || PanelCatalog == null || PanelReleases == null)
-                return;
-
-            var selectedIndex = TrainerSegmentTabs.SelectedIndex;
-            PanelTools.Visibility = selectedIndex == 0 ? Visibility.Visible : Visibility.Collapsed;
-            PanelImport.Visibility = selectedIndex == 1 ? Visibility.Visible : Visibility.Collapsed;
-            PanelCatalog.Visibility = selectedIndex == 2 ? Visibility.Visible : Visibility.Collapsed;
-            PanelReleases.Visibility = selectedIndex == 3 ? Visibility.Visible : Visibility.Collapsed;
-
-            if (selectedIndex == 0 && IsLoaded && responsiveWidth > 0 && responsiveHeight > 0)
-                ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
-        }
-
         private void OnTrainerCatalogSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count == 0 || DataContext is not DashboardViewModel viewModel)

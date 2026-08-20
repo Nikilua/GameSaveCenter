@@ -196,20 +196,20 @@ public sealed class RestoredAcrylicForkBaselineTests
     }
 
     [Fact]
-    public void TrainerCenterUsesDemoSegmentedNavigationWithoutDroppingRealEntryPoints()
+    public void TrainerCenterUsesProjectTabNavigationWithoutDroppingRealEntryPoints()
     {
         var trainer = ReadSource("Views", "TrainerCenterView.xaml");
-        var trainerCode = ReadSource("Views", "TrainerCenterView.xaml.cs");
 
-        Assert.DoesNotContain("<TabControl", trainer);
-        Assert.Contains("x:Name=\"TrainerSegmentTabs\"", trainer);
-        Assert.Contains("Style=\"{StaticResource LabSegmented}\"", trainer);
-        Assert.Contains("SelectionChanged=\"OnTrainerSegmentChanged\"", trainer);
-        Assert.Contains("修改器 · CT 表 · 自定义启动项 · 拖拽导入", trainer);
-        Assert.Contains("x:Name=\"PanelTools\"", trainer);
-        Assert.Contains("x:Name=\"PanelImport\"", trainer);
-        Assert.Contains("x:Name=\"PanelCatalog\"", trainer);
-        Assert.Contains("x:Name=\"PanelReleases\"", trainer);
+        Assert.Contains("<TabControl", trainer);
+        Assert.Contains("x:Key=\"TrainerTabControl\"", trainer);
+        Assert.Contains("BasedOn=\"{StaticResource GscRedesignWorkspaceTabControl}\"", trainer);
+        Assert.Contains("x:Key=\"TrainerTabItem\"", trainer);
+        Assert.DoesNotContain("TrainerSegmentTabs", trainer);
+        Assert.DoesNotContain("LabSegmented", trainer);
+        Assert.Contains("<TabItem Header=\"已绑定工具\">", trainer);
+        Assert.Contains("<TabItem Header=\"导入确认\">", trainer);
+        Assert.Contains("<TabItem Header=\"FLiNG 在线库\">", trainer);
+        Assert.Contains("<TabItem Header=\"可下载版本\">", trainer);
         Assert.Contains("ImportTrainerCommand", trainer);
         Assert.Contains("ImportToolFolderCommand", trainer);
         Assert.Contains("ImportCheatTableCommand", trainer);
@@ -217,10 +217,6 @@ public sealed class RestoredAcrylicForkBaselineTests
         Assert.Contains("SearchTrainerCatalogCommand", trainer);
         Assert.Contains("LoadTrainerReleasesCommand", trainer);
         Assert.Contains("DownloadTrainerCommand", trainer);
-        Assert.Contains("PanelTools.Visibility", trainerCode);
-        Assert.Contains("PanelImport.Visibility", trainerCode);
-        Assert.Contains("PanelCatalog.Visibility", trainerCode);
-        Assert.Contains("PanelReleases.Visibility", trainerCode);
         Assert.Contains("VirtualizingPanel.VirtualizationMode=\"Recycling\"", trainer);
         Assert.Contains("Property=\"ScrollViewer.VerticalScrollBarVisibility\" Value=\"Auto\"", trainer);
     }

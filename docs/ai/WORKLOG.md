@@ -2,6 +2,22 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-21 UI-272 回滚修改器中心的 Demo 分段栏
+
+**实现内容：**
+
+- 按目标文件末尾的 Tab 例外要求，回滚 `TrainerCenterView` 在 `a03accf` 引入的 `TrainerSegmentTabs` + `LabSegmented` 外层导航，恢复项目原有 `TrainerTabControl` / `TrainerTabItem`（基于 `GscRedesignWorkspaceTabControl` / `GscRedesignWorkspaceTabItem`）。
+- 恢复为四个真实 `TabItem`：已绑定工具、导入确认、FLiNG 在线库、可下载版本；移除仅服务于 Demo 分段栏的 `PanelTools`/`PanelImport`/`PanelCatalog`/`PanelReleases` 可见性切换代码。
+- 不回退 Settings 的左侧分类栏：它是目标 Demo 明确要求的设置页信息架构，不是项目工作区 Tab chrome。工具导入、目录搜索、版本下载、Inspector、列表回收虚拟化、ScrollViewer 和所有真实命令/绑定保持不变。
+
+**验证结果：**
+
+- 更新 `TrainerCenterUsesProjectTabNavigationWithoutDroppingRealEntryPoints` 及共享布局契约，锁定 Trainer 不再使用 `LabSegmented`，并继续检查四个 Tab、真实命令和虚拟化入口。
+- `scripts/build.ps1 -Configuration Release -OutputRoot artifacts/gsc-b/ui-272-trainer-tab-rollback-v2`：XAML 18/18；Release 0 warning、0 error；Core 59/59；Worker 191/191；Playnite 262 通过、62 跳过、0 失败。
+- `scripts/validate-source.py`、`validate_wpf_ui.py`（0 error、19 warnings、161 info）和 `git diff --check`：通过。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/ui272-trainer-tab-rollback-v1`：`render-qa OK`，覆盖七页、Light/Dark、多尺寸、各 Tab、滚动探针和 resize transition；已抽查 Trainer 浅色/深色代表截图。
+- 离屏证据确认项目 Tab chrome 与四个真实面板正常渲染，但不能替代可识别 Playnite 宿主中的逐页像素、DPI、键盘焦点和真实操作验收；总 Demo-first 目标仍未完成。
+
 ## 2026-08-21 UI-271 真实 Playnite 宿主审计边界复核
 
 **审计结果：**

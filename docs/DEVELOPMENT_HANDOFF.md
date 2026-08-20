@@ -14,6 +14,13 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-21 UI-272 修改器中心 Tab chrome 回滚交接
+
+- 用户明确要求项目 Tab 栏优先于 Demo Tab UI；已回滚 `TrainerCenterView` 在 `a03accf` 引入的 `TrainerSegmentTabs` + `LabSegmented`，恢复 `TrainerTabControl` / `TrainerTabItem` 项目样式和四个真实 `TabItem`。
+- 这只回滚外层导航容器，不回滚页面内容或业务：工具列表、导入确认、FLiNG 目录、发行版本、Inspector、拖拽导入、命令/绑定、回收虚拟化、ScrollViewer 和响应式布局均保留。Settings 左侧五项 `LabSegmented` 分类栏继续保留，这是 Demo 目标明确要求的 Settings 信息架构，不属于项目工作区 Tab chrome。
+- 继续禁止把修改器中心外层导航恢复成 Demo `LabSegmented`；Save、Media、Maintenance 及 Dashboard 的项目 Tab chrome 也不得因 Demo-first 页面迁移被替换。
+- 最新验证：`artifacts/gsc-b/ui-272-trainer-tab-rollback-v2` 为 XAML 18/18、Release 0 warning/0 error、Core 59/59、Worker 191/191、Playnite 262 通过/62 跳过/0 失败；source/WPF/diff 门禁通过；`artifacts/ui-qa/ui272-trainer-tab-rollback-v1/render-qa-report.txt` 为 `render-qa OK`，覆盖七页双主题、多尺寸、各 Tab、滚动和 resize。离屏截图已抽查 Trainer 浅/深主题；真实宿主证据仍未补齐。
+
 ## 2026-08-21 UI-271 真实 Playnite 宿主审计边界交接
 
 - `scripts/real-host-audit.ps1 -Configuration Release -Output artifacts/ui-host-audit-ui271` 已完成 Release 构建、安装和 Playnite 启动；`summary.json` 为 `EmbeddedSettingsCaptured=true`、`ControlledDashboardCaptured=true`、`EmbeddedDashboardCaptured=false`、`ProductionVisualSourceOfTruthAvailable=false`。

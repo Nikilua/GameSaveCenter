@@ -10,6 +10,13 @@
 - 当前游戏选框、生产滚动条系统、真实运行时数据和 Demo 未覆盖但目标文件明确要求保留的功能继续保留；Demo Mock 数据、演示色板、窗口按钮和演示行为不得接入生产。
 - 本段覆盖早期“当前生产 main > Demo”或“技能优先”的视觉排序；旧条目只用于历史追溯，不得阻止 Demo-first 的新页面迁移。
 
+## 2026-08-21 UI-272 当前事实：修改器中心恢复项目 Tab chrome
+
+- `TrainerCenterView.xaml` 已回滚 `a03accf` 引入的 `TrainerSegmentTabs` + `LabSegmented` 外层分段栏，恢复项目原有 `TrainerTabControl` / `TrainerTabItem`，其样式基于 `GscRedesignWorkspaceTabControl` / `GscRedesignWorkspaceTabItem`。
+- 四个真实页面面板重新由 `TabItem` 承载；不要再把修改器中心外层 Tab 改成 Demo 的 `LabSegmented`。Settings 左侧 `SettingsSectionTabs` 仍保留，因为它是目标 Demo 要求的分类栏信息架构而非项目工作区 Tab chrome。
+- `ImportTrainerCommand`、工具目录/CT/启动项导入、FLiNG 搜索与版本下载、工具/发行 Inspector、回收虚拟化、ScrollViewer 和 `ApplyResponsiveLayout` 均保持；仅删除 Demo 分段切换的可见性代码。
+- 当前阶段证据：`artifacts/gsc-b/ui-272-trainer-tab-rollback-v2` 的 XAML 18/18、Release 0 warning/0 error、Core 59/59、Worker 191/191、Playnite 262 通过/62 跳过/0 失败；source/WPF/diff 门禁通过；`artifacts/ui-qa/ui272-trainer-tab-rollback-v1/render-qa-report.txt` 为 `render-qa OK`，覆盖七页双主题、多尺寸、Tab、滚动和 resize。该离屏结果不替代真实 Playnite 宿主证据。
+
 ## 2026-08-21 UI-271 真实 Playnite 宿主审计边界复核
 
 - Release `0.6.70+c6cb235ef446fbe6e0c12566a7920c92e2135af8` 已通过 `scripts/real-host-audit.ps1` 安装并启动 Playnite；`artifacts/ui-host-audit-ui271/summary.json` 明确记录 `EmbeddedSettingsCaptured=true`、`ControlledDashboardCaptured=true`、`EmbeddedDashboardCaptured=false`、`ProductionVisualSourceOfTruthAvailable=false`。
