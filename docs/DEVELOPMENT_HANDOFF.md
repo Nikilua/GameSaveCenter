@@ -14,6 +14,12 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-21 UI-270 共享折叠栏动效交接
+
+- `Themes/DesignTokens.xaml` 的 `GscDisclosureCardExpander` 已按 Demo `LabDisclosure` 增加 Chevron 150ms 展开/收起旋转，`GscDisclosureCard` 仍是页面统一使用的共享入口；不要在单个页面复制另一套 Expander 模板。
+- 本阶段保留整行点击、键盘焦点、真实 `IsExpanded` 绑定、内容显隐、页面滚动和生产 ScrollBar；没有改动业务命令、数据、虚拟化或当前游戏选框。
+- 最新验证：`artifacts/gsc-b/ui-270-disclosure-animation-v1` Release 0 warning/0 error，Core 59/59、Worker 191/191、Playnite 261 通过/62 跳过/0 失败；source/WPF/diff 门禁通过；`artifacts/ui-qa/ui270-disclosure-animation-v1/render-qa-report.txt` 为 `render-qa OK`，覆盖七页双主题、多尺寸、滚动和 resize。动效时间曲线仍需在可识别 Playnite 宿主中用鼠标/键盘验收。
+
 ## 2026-08-21 UI-269 Demo 核心主题配色交接
 
 - `AdaptiveThemePaletteFactory.ApplyDemoCoreResources` 现在由生产 Shell 和 Settings 共用，普通浅/深色主题固定 Demo 的画布渐变、卡片/侧栏/顶栏、输入框、正文层级、表格、分段控件、滚动条、遮罩及成功/警告/错误/信息状态关系；宿主只继续影响非核心 Accent/focus 交互。

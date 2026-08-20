@@ -399,6 +399,24 @@
                                             <Setter TargetName="Chevron" Property="RenderTransform">
                                                 <Setter.Value><RotateTransform Angle="0"/></Setter.Value>
                                             </Setter>
+                                            <Trigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="Chevron"
+                                                                         Storyboard.TargetProperty="(TextBlock.RenderTransform).(RotateTransform.Angle)"
+                                                                         To="0" Duration="0:0:0.15"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.EnterActions>
+                                            <Trigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="Chevron"
+                                                                         Storyboard.TargetProperty="(TextBlock.RenderTransform).(RotateTransform.Angle)"
+                                                                         To="-90" Duration="0:0:0.15"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.ExitActions>
                                         </Trigger>
                                         <Trigger Property="IsEnabled" Value="False">
                                             <Setter TargetName="HeaderChrome" Property="Opacity" Value="0.45"/>

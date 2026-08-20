@@ -4087,6 +4087,22 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void SharedDisclosureChevronUsesDemoRotationTiming()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var tokens = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml"));
+        var demoControls = File.ReadAllText(Path.Combine(repositoryRoot, "..", "GameSaveCenter.AcrylicFork", "src", "GameSaveCenter.Playnite", "Design", "DesignControls.xaml"));
+
+        Assert.Contains("x:Key=\"GscDisclosureCardExpander\"", tokens);
+        Assert.Contains("Storyboard.TargetName=\"Chevron\"", tokens);
+        Assert.Contains("To=\"0\" Duration=\"0:0:0.15\"", tokens);
+        Assert.Contains("To=\"-90\" Duration=\"0:0:0.15\"", tokens);
+        Assert.Contains("GscDisclosureCard", tokens);
+        Assert.Contains("DoubleAnimation Storyboard.TargetName=\"Chevron\"", demoControls);
+        Assert.Contains("Duration=\"0:0:0.15\"", demoControls);
+    }
+
+    [Fact]
     public void SharedListBoxItemsStayRoundedAndKeyboardFocusable()
     {
         var repositoryRoot = FindRepositoryRoot();

@@ -2,6 +2,20 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-21 UI-270 统一 Demo 折叠栏箭头动效
+
+**实现内容：**
+
+- 生产共享 `GscDisclosureCardExpander` 的箭头状态现在复用 Demo `LabDisclosure` 的 150ms 展开/收起旋转动效；整行点击、键盘焦点、内容显隐、真实 Expander 绑定和主题资源保持不变。
+- 只修共享 `DesignTokens.xaml` 模板并增加源码契约，没有在页面局部复制另一套折叠栏，也没有迁移 Demo 滚动条或改变任何业务命令。
+
+**验证结果：**
+
+- `scripts/build.ps1 -Configuration Release -OutputRoot artifacts/gsc-b/ui-270-disclosure-animation-v1`：XAML 18/18；Release 0 warning、0 error；Core 59/59、Worker 191/191、Playnite 261 通过、62 跳过、0 失败。
+- `python scripts/validate-source.py`、WPF UI 校验（0 error、19 warnings、161 info）和 `git diff --check`：通过。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/ui270-disclosure-animation-v1`：`render-qa OK`，覆盖七页双主题、多尺寸、滚动探针和 resize transition；未发现布局、滚动或虚拟化回归。
+- 动效的真实时间曲线仍需在可识别 Playnite 宿主中用键盘/鼠标展开收起确认；离屏截图不作为动效完成的唯一证据，总 Demo-first 迁移保持未完成。
+
 ## 2026-08-21 UI-269 Demo 核心主题配色固定
 
 **实现内容：**
