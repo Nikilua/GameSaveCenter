@@ -588,3 +588,14 @@ git branch --show-current
 - Toast 的真实通知来源仍是 `GameSaveCenterPlugin.UiNotificationRequested`，确认/选择仍由 `UiConfirmationRequested`/`UiChoiceRequested` 和 `TaskCompletionSource` 完成；不要改成只显示静态 Demo 提示或删除错误详情、Escape、计时器清理、重复 Dialog 取消语义。
 - 设置页导出成功、导入报告和错误继续走原生 `MessageBox`，不要在 Playnite 共享 Window 中重新注册 WPF-UI `ContentDialogHost`；如果未来要改成页面内反馈，必须先补充 Window 宿主、焦点、模态、取消和真实操作验证。
 - UI-256 已完成 XAML/source/Release/三组测试/离屏 render-qa；真实 Playnite 宿主 Light/Dark/Follow、高对比度、DPI、键盘焦点、Toast/Dialog 实际触发仍是人工验收边界，总 Demo-first 目标未完成。
+
+## 2026-08-20 UI-257 首页当前游戏卡片响应式交接
+
+- 首页根滚动面仍然是 `OverviewStackScrollSurface`，横向滚动必须保持禁用；`OverviewLayoutGrid` 已绑定 `{Binding ViewportWidth, ElementName=OverviewStackScrollSurface}`，并以 `HorizontalAlignment=Left` 避免无限横向测量造成卡片和按钮右侧裁切。
+- 生产真实绑定、当前游戏选择器、`BackupSelectedCommand`、`LoadDetailsCommand`、`OpenAttentionCenterCommand`、首页全部备份/同步媒体/刷新入口未改变。RenderHarness 报告 `artifacts/ui-qa/overview-responsive-ui257/render-qa-report.txt` 已覆盖双主题、多逻辑尺寸和 resize transition；1366/1600 代表截图中的当前游戏卡片与三个按钮均完整可见。
+- 最终验证为 XAML 18/18、Release 0 warning/0 error、Core 59/59、Worker 191/191、Playnite 256 通过/62 跳过、source validation 通过、WPF 0 error。新增源码回归 `OverviewFlowUsesTheFiniteViewportWhenHorizontalScrollingIsDisabled` 当前属于既有 `LegacyProductionUiBaselineFact` 门禁组，因此在默认测试运行中按基线跳过，但随 Playnite 测试程序集完成编译并锁定源码契约。
+- 真实宿主验证边界：`real-host-audit.ps1` 两次安装并加载生产 0.6.70.0，日志确认生产插件真实读取 3 games/50 tasks/100 findings/30 media；由于 Playnite 主窗口返回 `EmptyWindowAutomationPeer`，未能抓取嵌入式导航后的逐页像素截图。受控 `DashboardView` 截图只用于确认本次裁切修复，不得宣称七页已完成 Playnite 1:1 验收。
+
+### 后续启动协议补充
+
+下一轮继续读取本文件、`docs/ai/PROJECT_MEMORY.md`、`docs/ai/WORKLOG.md` 和用户指定的目标文件；先检查 `git status` 与最近提交。页面继续以 `GameSaveCenter.AcrylicFork/src/GameSaveCenter.Playnite/Design/` Demo 为唯一视觉基准，保留当前游戏选择器、生产滚动条、真实命令/绑定、虚拟化和 Playnite 兼容性。优先在同一可识别 Playnite 宿主逐页完成 Overview、Save、Media、Maintenance、Task、Trainer、Settings 的嵌入视觉与真实操作复核；若仍返回 `EmptyWindowAutomationPeer`，如实记录阻塞，不能用 RenderHarness 替代。

@@ -3235,3 +3235,26 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - Release 解决方案构建：0 警告、0 错误；Core：59/59；Worker：190/190（排除 Soak）；Playnite：252 通过、61 跳过、0 失败。
 - `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/feedback-surfaces-final`：`render-qa OK`，七页、Light/Dark、1040/1100/1366/2560、多分类/多 Tab 和 resize transition 均通过。
 - `validate_wpf_ui.py`：0 error、20 warnings、161 info；未取得新的可识别 Playnite 宿主逐页像素截图，离屏证据不能替代宿主 1:1 验收。
+
+## 2026-08-20 UI-257 首页有限视口修复与真实宿主加载复核
+
+**问题确认：**
+
+- 真实生产 `DashboardView` 的受控宿主截图在 1366/1600 宽度暴露了首页右侧“当前游戏”卡片及操作区被窗口边界裁切的问题；原因是首页根 `ScrollViewer` 禁止横向滚动，却仍可能以无限横向约束测量子内容，星号列按期望宽度增长。
+
+**实现内容：**
+
+- `OverviewLayoutGrid` 绑定 `OverviewStackScrollSurface.ViewportWidth`，并使用左对齐的有限宽度布局；保留首页现有页面滚动、当前游戏选择器、备份/刷新/关注项命令和卡片内真实操作，不引入 Demo 横向滚动条。
+- 增加源码契约，锁定横向滚动禁用时必须绑定有限 viewport，避免后续页面结构调整再次把真实按钮推到宿主可视区之外。
+
+**验证结果：**
+
+- `scripts/check-xaml.ps1`：18 个文件通过；`scripts/validate-source.py`：通过；`git diff --check`：通过。
+- 最终隔离 Release 构建：0 警告、0 错误；Core：59/59；Worker：191/191；Playnite：256 通过、62 跳过、0 失败。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/overview-responsive-ui257`：`render-qa OK`；Light/Dark、多尺寸、页面滚动、表格探针和 resize transition 全部通过。1366 截图中首页 workspace 为 1042 DIP，当前游戏卡片完整位于 x=520..1026，三个操作按钮均可见；1600 截图同样无右侧裁切。
+- `validate_wpf_ui.py`：0 error、20 warnings、146 info；warnings/info 为既有滚动测量、Canvas、负 Margin 与共享颜色审计提示，本轮未新增错误。
+
+**真实宿主边界：**
+
+- `scripts/real-host-audit.ps1` 两次完成生产 0.6.70/0.6.70.0 安装并加载，日志确认真实插件读取 3 个 Playnite 游戏、50 个任务、100 个 finding、30 个媒体；但 Playnite 主窗口仍返回 `EmptyWindowAutomationPeer`，脚本无法通过 UIAutomation 找到嵌入导航项，因此只生成了受控 `DashboardView` 截图，未取得可识别的嵌入式 Playnite 逐页像素证据。
+- 受控截图证明生产页面本身的当前游戏卡片裁切已修复，但不能写成 Playnite 嵌入宿主 1:1 视觉验收。七页 Demo-first 总目标仍未完成，后续继续取得同一 Playnite 宿主下的逐页证据并复核真实操作路径。

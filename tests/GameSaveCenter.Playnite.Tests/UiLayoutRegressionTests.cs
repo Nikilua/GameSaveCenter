@@ -179,6 +179,24 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         [LegacyProductionUiBaselineFact]
+        public void OverviewFlowUsesTheFiniteViewportWhenHorizontalScrollingIsDisabled()
+        {
+            var root = FindRepositoryRoot();
+            var overview = XDocument.Parse(File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml")));
+            var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
+            var scrollSurface = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewStackScrollSurface");
+            var layout = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewLayoutGrid");
+
+            // WPF can measure a ScrollViewer child with an unbounded horizontal constraint
+            // even when the horizontal bar is disabled. The page must bind its flow to the
+            // finite viewport, otherwise star columns can place the real current-game
+            // actions outside the host window.
+            Assert.Equal("Disabled", scrollSurface.Attribute("HorizontalScrollBarVisibility")?.Value);
+            Assert.Equal("{Binding ViewportWidth, ElementName=OverviewStackScrollSurface}", layout.Attribute("Width")?.Value);
+            Assert.Equal("Left", layout.Attribute("HorizontalAlignment")?.Value);
+        }
+
+        [LegacyProductionUiBaselineFact]
         public void OverviewRecentProtectionDetailsAreCollapsibleWithoutLosingItems()
         {
             var root = FindRepositoryRoot();

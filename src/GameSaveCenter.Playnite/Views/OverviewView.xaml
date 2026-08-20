@@ -153,7 +153,17 @@
                   HorizontalScrollBarVisibility="Disabled"
                   CanContentScroll="False"
                   Focusable="False">
-    <Grid x:Name="OverviewLayoutGrid" Margin="0,4,0,8" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <!-- ScrollViewer measures its child with an unbounded horizontal constraint when
+         horizontal scrolling is disabled. Bind the page flow to the finite viewport so
+         star columns cannot grow to their desired width and push the current-game card
+         and its real actions outside the host window. -->
+    <Grid x:Name="OverviewLayoutGrid"
+          Width="{Binding ViewportWidth, ElementName=OverviewStackScrollSurface}"
+          Margin="0,4,0,8"
+          MinWidth="0"
+          MinHeight="0"
+          HorizontalAlignment="Left"
+          VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition x:Name="OverviewPrimaryLayoutRow" Height="*"/>
             <RowDefinition x:Name="OverviewCompactSecondaryRow" Height="0"/>

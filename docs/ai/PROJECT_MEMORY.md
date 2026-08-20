@@ -957,3 +957,10 @@
 - `UiNotificationRequested`、`UiConfirmationRequested`、`UiChoiceRequested` 的事件与安全完成逻辑保持不变；设置页导入报告/错误仍使用原生 `MessageBox`，这是为避免 Playnite 共享 Window 中 Window-wide WPF-UI host 冲突的有意边界。
 - UI-256 自动证据：XAML 18 文件通过，源码门禁通过，Release 0 warning/0 error，Core 59/59，Worker 190/190（排除 Soak），Playnite 252/61/0，`artifacts/ui-qa/feedback-surfaces-final/render-qa-report.txt` 为 `render-qa OK`，WPF validator 0 error/20 warnings/161 info。
 - 仍未完成真实 Playnite 宿主逐页视觉验收；不要把 RenderHarness 的反馈资源加载或 PNG 结果写成 Playnite Light/Dark/Follow、DPI、高对比度和键盘/UI Automation 已验收。
+
+## 2026-08-20 UI-257 首页有限视口事实
+
+- `OverviewStackScrollSurface` 保持现有生产页面滚动条和 `HorizontalScrollBarVisibility=Disabled`；`OverviewLayoutGrid` 必须绑定 `ViewportWidth` 并使用有限宽度，否则 WPF 的无限横向测量会让星号列按内容期望宽度增长，裁切当前游戏卡片和真实按钮。
+- 当前首页响应式证据：`artifacts/ui-qa/overview-responsive-ui257/render-qa-report.txt`。1366×768 的 workspace 为 1042 DIP，Hero 为 506 DIP、当前游戏卡片为 x=520..1026，操作按钮高度均为 38 DIP；1600×900 同样无横向溢出。RenderHarness 仅是受控 WPF 证据，不等同 Playnite 嵌入视觉验收。
+- UI-257 最终门禁：XAML 18/18；Release 0 警告/0 错误；Core 59/59；Worker 191/191；Playnite 256/318（62 跳过）；`validate-source.py` 通过；WPF 静态审查 0 error、20 warnings、146 info。
+- 两次真实宿主审计均确认生产扩展 0.6.70.0 可加载并读取真实数据，但 Playnite 返回 `EmptyWindowAutomationPeer`，未能取得可识别的嵌入页面像素截图；不得把受控窗口截图写成 Playnite 1:1 完成。七页 Demo-first 总目标仍处于进行中。
