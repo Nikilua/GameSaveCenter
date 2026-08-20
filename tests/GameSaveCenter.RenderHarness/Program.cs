@@ -12,6 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.Settings;
 using GameSaveCenter.Playnite.Views;
@@ -1637,6 +1638,9 @@ public static class Program
             ProbeGrid(report, "Task", "TaskGrid", -1, height,
                 () => new TaskCenterView { DataContext = new FakeDashboardData(60) },
                 view => ((TaskCenterView)view).ApplyResponsiveLayout(900, height));
+            ProbeGrid(report, "Media-Inbox", "MediaInboxGrid", 0, height,
+                () => new MediaCenterView { DataContext = CreateMediaInboxProbeData() },
+                view => ((MediaCenterView)view).ApplyResponsiveLayout(900, height));
             ProbeGrid(report, "Maintenance-Diagnostics", "FindingsGrid", 0, height,
                 () => new MaintenanceView { DataContext = new FakeDashboardData(60) },
                 view => ((MaintenanceView)view).ApplyResponsiveLayout(900, height),
@@ -1650,6 +1654,29 @@ public static class Program
                 view => ((MaintenanceView)view).ApplyResponsiveLayout(900, height),
                 "审计记录");
         }
+    }
+
+    private static FakeDashboardData CreateMediaInboxProbeData()
+    {
+        var data = new FakeDashboardData(60);
+        var existing = data.UnassignedMedia.Count;
+        for (var i = existing + 1; i <= 60; i++)
+        {
+            data.UnassignedMedia.Add(new MediaItemDto
+            {
+                MediaId = "IN-PROBE-" + i,
+                Kind = i % 3 == 0 ? MediaKind.VideoClip : MediaKind.Screenshot,
+                Source = i % 3 == 0 ? MediaSourceKind.XboxGameBar : MediaSourceKind.WindowsScreenshot,
+                ArchivePath = $@"D:\Media\Inbox\probe-{i}.{(i % 3 == 0 ? "mp4" : "png")}",
+                OriginalPath = $@"D:\Captures\probe-{i}.{(i % 3 == 0 ? "mp4" : "png")}",
+                CapturedUtc = DateTime.UtcNow.AddMinutes(-i * 5),
+                SizeBytes = 4_000_000L + i * 100_000L,
+                ClassificationState = "Inbox",
+                ClassificationReason = "无法唯一判断所属游戏"
+            });
+        }
+
+        return data;
     }
 
     private static void RunMediaWrapScrollProbe(StringBuilder report)
@@ -2178,6 +2205,8 @@ public static class Program
             }
             if (!VirtualizingPanel.GetIsVirtualizing(grid) || VirtualizingPanel.GetVirtualizationMode(grid) != VirtualizationMode.Recycling)
                 s_problems.Add($"{label} {gridName} h={height:0} virtualization/recycling is disabled");
+            if (!grid.EnableColumnVirtualization)
+                s_problems.Add($"{label} {gridName} h={height:0} column virtualization is disabled");
 
             grid.ScrollIntoView(grid.Items[grid.Items.Count - 1]);
             host.UpdateLayout();

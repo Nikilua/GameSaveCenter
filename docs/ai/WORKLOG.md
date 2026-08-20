@@ -3267,3 +3267,25 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 任务页实际显示 50 条任务、运行中 0、需关注 16、今日完成 34，并显示搜索/状态/类型筛选和选中任务详情；修改器页实际显示已绑定工具列表、导入入口、工具设置和启动/保存设置操作；维护页实际显示诊断、设备状态、保留策略、异常与审计、进程映射，并进入诊断页确认环境检查与诊断操作区域可见。
 - 设置通过 Playnite 游戏右键 `GameSaveCenter → 打开设置` 实际打开，显示 `GameSaveCenter 设置`、常规与目录分类、Worker/Ludusavi/存档目录字段及保存/取消按钮；关闭时未修改设置。
 - 这组截图来自真实 Playnite 生产嵌入宿主，不是 RenderHarness 或受控 Dashboard。自动 `real-host-audit.ps1` 仍因主窗口 `EmptyWindowAutomationPeer` 无法生成 `summary.json`，所以这里记录为人工嵌入复核，不改写自动审计门禁。七页页面入口与关键真实数据的本轮人工覆盖已完成；不同 DPI、Follow/高对比度、键盘焦点及执行真实备份/归类/忽略等操作仍需单独验证。
+
+## 2026-08-20 UI-259 媒体收件箱共享虚拟化契约收口
+
+**问题确认：**
+
+- `MediaInboxGrid` 虽然继承 `GscRedesignWorkspaceDataGrid`，但页面实例曾覆盖为 `VirtualizationMode=Standard` 并关闭列虚拟化；这与 Demo `LabGrid` 对齐的共享表格契约和大媒体库性能底线冲突，也让 WPF 静态审查产生媒体表格虚拟化警告。
+
+**实现内容：**
+
+- 删除媒体收件箱实例上的行虚拟化、`Standard` 模式和 `EnableColumnVirtualization=False` 覆盖，恢复 `GscRedesignWorkspaceDataGrid` 的 Recycling、Item scrolling、行/列虚拟化、排序和列宽调整；真实 `ItemsSource`、`SelectedItem`、Inspector、预览与归类/忽略/保留副本命令不变。
+- RenderHarness 新增 60 项收件箱夹具和 `Media-Inbox` 五种视口高度滚动探针，同时把列虚拟化作为表格回归门禁；Playnite 源码契约改为验证共享 Recycling 契约并禁止旧 workaround 回归。
+
+**验证结果：**
+
+- `scripts/check-xaml.ps1`：18 个 XAML 文件通过；`scripts/validate-source.py`：通过；`git diff --check`：通过。
+- Release 解决方案构建：0 警告、0 错误；Core：59/59；Worker：191/191；Playnite：256 通过、62 跳过、0 失败。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/media-virtualization-fix`：`render-qa OK`；浅色/深色、1040–3840 宽度、三 Tab、resize transition 和表格探针通过。`MediaInboxGrid` 在 287/311/337/353/419 DIP 高度及 0/25/50/75/100% 滚动位置均保持 Recycling、列虚拟化、首行无空洞、末行可达。
+- `validate_wpf_ui.py`：0 error、19 warnings、146 info；本次移除了媒体 DataGrid 虚拟化警告，未新增布局错误。
+
+**真实宿主边界：**
+
+- 本阶段只改变收件箱继承的表格虚拟化契约，没有重新安装并执行真实媒体操作；UI-258 的真实 Playnite 七页入口和媒体 Inspector 可达证据仍有效。不同 DPI、Follow/高对比度、键盘焦点，以及备份/归类/忽略等真实操作仍是总目标剩余人工边界。

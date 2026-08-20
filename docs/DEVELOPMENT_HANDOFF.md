@@ -606,3 +606,10 @@ git branch --show-current
 ### 后续启动协议补充
 
 下一轮继续读取本文件、`docs/ai/PROJECT_MEMORY.md`、`docs/ai/WORKLOG.md` 和用户指定的目标文件；先检查 `git status` 与最近提交。页面继续以 `GameSaveCenter.AcrylicFork/src/GameSaveCenter.Playnite/Design/` Demo 为唯一视觉基准，保留当前游戏选择器、生产滚动条、真实命令/绑定、虚拟化和 Playnite 兼容性。优先补做真实备份/媒体归类操作的安全回归与不同 DPI/主题/键盘焦点检查；自动审计若仍返回 `EmptyWindowAutomationPeer`，如实记录边界，不能用 RenderHarness 替代。
+
+## 2026-08-20 UI-259 媒体收件箱共享虚拟化交接
+
+- `MediaCenterView.xaml` 的 `MediaInboxGrid` 已移除页面级 `Standard` 行虚拟化和列虚拟化关闭覆盖，统一继承 `GscRedesignWorkspaceDataGrid` 的 `Recycling`、Item scrolling、行/列虚拟化、排序和列宽调整；真实绑定与媒体 Inspector 操作不变。
+- RenderHarness 已为 Media Inbox 提供 60 项夹具、五档高度和 0/25/50/75/100% 滚动位置探针，并将列虚拟化纳入 `ProbeGrid` 门禁；当前报告 `artifacts/ui-qa/media-virtualization-fix/render-qa-report.txt` 为 `render-qa OK`。
+- UI-259 正式门禁：XAML 18/18；source validation 通过；Release 0 warning/0 error；Core 59/59、Worker 191/191、Playnite 256 通过/62 跳过；WPF 0 error、19 warnings、146 info。
+- 本轮没有重新安装真实 Playnite；UI-258 的真实七页人工嵌入复核仍是最近宿主事实。后续优先补做不同 DPI、Follow/高对比度、键盘焦点及真实备份/媒体归类操作的安全回归，若自动审计继续遇到 `EmptyWindowAutomationPeer` 必须如实记录。

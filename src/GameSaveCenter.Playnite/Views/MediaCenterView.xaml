@@ -173,13 +173,9 @@
                         <Grid>
                             <DataGrid x:Name="MediaInboxGrid" Tag="FiniteViewport" Style="{StaticResource MediaDataGrid}" MinHeight="236" ItemsSource="{Binding UnassignedMedia}" SelectedItem="{Binding SelectedInboxMedia}"
                                       RowStyle="{StaticResource MediaInboxStableRowStyle}"
-                                      EnableRowVirtualization="True"
-                                      VirtualizingPanel.IsVirtualizing="True"
-                                      VirtualizingPanel.VirtualizationMode="Standard"
                                       VerticalContentAlignment="Top"
                                       HorizontalContentAlignment="Stretch"
                                       VirtualizingPanel.ScrollUnit="Item"
-                                      EnableColumnVirtualization="False"
                                       ClipToBounds="True">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn HeaderStyle="{StaticResource MediaFirstColumnHeader}" Header="拍摄时间" Binding="{Binding CapturedLocal, Mode=OneWay, StringFormat={}{0:MM-dd HH:mm}}" Width="110"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MediaLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>

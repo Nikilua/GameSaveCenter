@@ -575,7 +575,7 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
-    public void MediaInboxUsesStableItemScrollingAndMaintenanceHeadersOwnTheirTheme()
+    public void MediaInboxUsesSharedRecyclingAndMaintenanceHeadersOwnTheirTheme()
     {
         var repositoryRoot = FindRepositoryRoot();
         var media = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
@@ -590,8 +590,11 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("<Style TargetType=\"ListBox\">", production);
         Assert.Contains("<Setter Property=\"VerticalContentAlignment\" Value=\"Top\"/>", production);
         Assert.Contains("<Setter Property=\"ScrollViewer.VerticalContentAlignment\" Value=\"Top\"/>", production);
-        Assert.Contains("EnableColumnVirtualization=\"False\"", media);
-        Assert.Contains("VirtualizingPanel.VirtualizationMode=\"Standard\"", media);
+        Assert.Contains("BasedOn=\"{StaticResource GscRedesignWorkspaceDataGrid}\"", media);
+        Assert.Contains("EnableColumnVirtualization\" Value=\"True\"", media);
+        Assert.Contains("VirtualizingPanel.VirtualizationMode\" Value=\"Recycling\"", media);
+        Assert.DoesNotContain("EnableColumnVirtualization=\"False\"", media);
+        Assert.DoesNotContain("VirtualizingPanel.VirtualizationMode=\"Standard\"", media);
         Assert.Contains("x:Key=\"MediaInboxStableRowStyle\"", media);
         Assert.Contains("RowStyle=\"{StaticResource MediaInboxStableRowStyle}\"", media);
         Assert.Contains("HeaderStyle=\"{StaticResource MediaMiddleColumnHeader}\" Header=\"类型\"", media);

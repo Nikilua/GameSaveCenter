@@ -972,3 +972,10 @@
 - Media Inbox 已实际进入并选中截图，独立 Inspector 滚动后可见预览、归类游戏 ComboBox、“确认归类”和“忽略并保留副本”。本轮不执行这些动作，因此没有改变真实数据。
 - 设置通过 Playnite 游戏右键菜单的 `GameSaveCenter → 打开设置` 实际打开，显示 `GameSaveCenter 设置` 的“常规与目录”页面及 Worker、Ludusavi、存档目录字段；关闭时未保存更改。
 - 自动审计事实仍不变：Playnite 主窗口的 UIAutomation 树是 `EmptyWindowAutomationPeer`，脚本没有 `summary.json` 的嵌入逐页像素证据；人工截图可证明真实页面能进入和关键控件可达，但不能替代自动门禁，也不能外推到其他 DPI、主题/Follow、高对比度或完整操作回归。
+
+## 2026-08-20 UI-259 媒体收件箱共享虚拟化事实
+
+- `MediaInboxGrid` 现在只保留页面需要的 `ScrollUnit=Item` 与顶部对齐，行/列虚拟化和 `VirtualizationMode=Recycling` 统一从 `GscRedesignWorkspaceDataGrid` 继承；禁止在媒体实例上恢复 `Standard` 或关闭列虚拟化。
+- `tests/GameSaveCenter.RenderHarness/Program.cs` 的 `Media-Inbox` 探针使用 60 项真实形状的 `MediaItemDto` 夹具，覆盖 287/311/337/353/419 DIP 视口与 0/25/50/75/100% 滚动位置，检查 Recycling、列虚拟化、首行无 phantom gap 与末行可达。
+- UI-259 证据：`artifacts/ui-qa/media-virtualization-fix/render-qa-report.txt` 为 `render-qa OK`；Release 0 warning/0 error；Core 59/59、Worker 191/191、Playnite 256/318（62 跳过）；WPF validator 0 error、19 warnings、146 info。
+- 该阶段未改变真实媒体绑定、Inspector 或归类/忽略/保留副本命令；真实宿主七页人工证据沿用 UI-258，不能把本轮离屏探针写成新的 Playnite 视觉截图。
