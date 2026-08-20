@@ -3289,3 +3289,50 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 **真实宿主边界：**
 
 - 本阶段只改变收件箱继承的表格虚拟化契约，没有重新安装并执行真实媒体操作；UI-258 的真实 Playnite 七页入口和媒体 Inspector 可达证据仍有效。不同 DPI、Follow/高对比度、键盘焦点，以及备份/归类/忽略等真实操作仍是总目标剩余人工边界。
+
+## 2026-08-20 UI-260 清理存档页 Demo 游戏名残留
+
+**问题确认：**
+
+- 真实 Playnite 生产页的存档中心标题副文案硬编码为 `Elden Ring · 路径与恢复点状态`，而页头当前游戏选择器显示真实选择的 `Bongo Cat`；这是 Demo 示例数据进入生产壳的残留。
+
+**实现内容：**
+
+- `AcrylicProductionShellView.xaml.cs` 抽取 `UpdatePageHeader`，存档副文案改为读取 `DashboardViewModel.SelectedGame.Name`，未选择游戏时显示“未选择游戏”。
+- 壳体监听 `SelectedGame` 变化，切换当前游戏后立即更新页头；其它页面标题、副文案、导航和真实命令保持不变。
+- 增加 `ProductionSaveSubtitleUsesTheSelectedGameInsteadOfDemoData` 源码契约测试，防止示例游戏名再次进入生产页。
+
+**验证结果：**
+
+- `scripts/validate-source.py`：通过；`scripts/check-xaml.ps1`：18 个 XAML 文件通过；`git diff --check`：通过。
+- 定向 Playnite 源码契约：14/14 通过。
+- `dev-install-run.ps1 -Configuration Release -NoStart`：XAML 18/18、Release 0 warning/0 error、Core 59/59、Worker 191/191、Playnite 257 通过/62 跳过/0 失败，安装清单 0.6.70、DLL 0.6.70.0 校验通过。
+
+**真实宿主边界：**
+
+- 修复前的真实 Playnite 截图确认了 Bongo Cat 选择器与 Elden Ring 副文案不一致；修复后已重新安装当前 DLL，但本轮 Computer Use 在重启后的 Playnite 窗口短暂返回“foreground window did not report a process id”，因此不伪造一张修复后像素截图。
+- GSC-086 的当前宿主回归已另外完成：4468 条媒体收件箱数据下顶部/中部/底部/快速滚轮/返回顶部未出现白色空视口；125%/150% DPI、Follow/高对比度、键盘焦点和真实备份/归类/忽略仍未完成。
+
+## 2026-08-20 UI-261 按项目现有样式回滚工作区 Tab 栏
+
+**问题确认：**
+
+- 用户明确要求生产页 Tab 栏不直接沿用 Demo 的外层连续分段胶囊；当前项目原有 Tab chrome 更符合生产 UI，需回滚此前迁移到 Demo 风格的共享页签视觉。
+
+**实现内容：**
+
+- `Themes/Redesign.xaml` 的 `GscRedesignWorkspaceTabControl`/`GscRedesignWorkspaceTabItem` 保留现有工作区页签资源键和 TabControl/TabItem 结构，但改回项目原有的透明页签带、独立横向滚动、11 DIP 圆角、选中强调色和焦点视觉；不再使用 Demo 的连续外层圆角分段容器。
+- Save、Media、Maintenance 的真实 Tab headers、SelectedIndex、内容区域 Stretch、绑定和页面命令不变；`GscInternalTabControl` 继续共享该契约。
+- RenderHarness 度量探针现在为合法重复模板部件名分配稳定序号，维护页嵌套 TabControl 不会因 `HeaderScrollViewer` 同名而误报重复键。
+
+**验证结果：**
+
+- `scripts/validate-source.py`：通过；`scripts/check-xaml.ps1`：18 个 XAML 文件通过；`git diff --check`：通过。
+- 定向 `RestoredAcrylicForkBaselineTests`：15/15 通过；`scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/project-tab-chrome-rollback`：`render-qa OK`，浅色/深色、多窗口尺寸、维护页嵌套页签及 resize transition 均通过。
+- 离屏代表截图已复核 Save、Media、Maintenance：页签不再是 Demo 的外层连续胶囊，表格/Inspector/滚动区域仍完整可见。
+- Tab 回滚后的完整 `dev-install-run.ps1 -Configuration Release -NoStart` 也已通过：Release 0 warning/0 error、Core 59/59、Worker 191/191、Playnite 258 通过/62 跳过，安装清单 0.6.70、DLL 0.6.70.0；WPF validator 为 0 error、19 warnings、161 info。
+
+**真实宿主边界：**
+
+- 本轮 Tab 样式变更尚未取得重启后 Playnite 的稳定前台截图；之前重启后的 Computer Use 窗口曾返回 `foreground window did not report a process id`，因此不能把离屏截图写成真实宿主 Tab 像素验收。
+- 仍需在真实 Playnite 中复核 125%/150% DPI、窗口缩放、Follow/高对比度、键盘焦点，以及真实备份/媒体归类操作；Demo-first 七页总目标保持进行中。

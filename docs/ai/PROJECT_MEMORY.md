@@ -979,3 +979,20 @@
 - `tests/GameSaveCenter.RenderHarness/Program.cs` 的 `Media-Inbox` 探针使用 60 项真实形状的 `MediaItemDto` 夹具，覆盖 287/311/337/353/419 DIP 视口与 0/25/50/75/100% 滚动位置，检查 Recycling、列虚拟化、首行无 phantom gap 与末行可达。
 - UI-259 证据：`artifacts/ui-qa/media-virtualization-fix/render-qa-report.txt` 为 `render-qa OK`；Release 0 warning/0 error；Core 59/59、Worker 191/191、Playnite 256/318（62 跳过）；WPF validator 0 error、19 warnings、146 info。
 - 该阶段未改变真实媒体绑定、Inspector 或归类/忽略/保留副本命令；真实宿主七页人工证据沿用 UI-258，不能把本轮离屏探针写成新的 Playnite 视觉截图。
+
+## 2026-08-20 UI-260 存档页标题必须跟随真实当前游戏
+
+- 生产壳 `AcrylicProductionShellView.xaml.cs` 不得保留 Demo 游戏名；存档页副标题必须由 `SelectedGame.Name` 生成，空选择使用“未选择游戏”。
+- `UpdatePageHeader` 同时由工作区切换和 `DashboardViewModel.SelectedGame` 属性变更调用，保证当前游戏选择器改变后标题副文案不会滞后。
+- UI-260 安装验证：XAML 18/18、Release 0 warning/0 error、Core 59/59、Worker 191/191、Playnite 257/319（62 跳过）；定向契约 14/14。
+- 真实 Playnite 修复前复核已捕获 `Bongo Cat` 选择器与 `Elden Ring` 存档副文案不一致；修复后安装已完成，但重启后的 Computer Use 窗口暂时不可捕获，因此不把修复后截图写成宿主像素证据。
+- GSC-086 常规宿主滚动复核已完成（4468 条媒体收件箱数据，顶部/中部/底部/快速滚轮/返回顶部无白色空视口）；DPI、窗口缩放、Follow/高对比度、键盘焦点和真实业务操作仍是人工边界。
+
+## 2026-08-20 UI-261 工作区 Tab 栏视觉例外
+
+- Demo-first 视觉基准不覆盖生产页 Tab 栏：用户明确要求继续使用项目当前 Tab chrome，因为它比 Demo 的外层连续分段胶囊更合适；后续迁移不能把该页签视觉重新替换为 Demo 样式。
+- `GscRedesignWorkspaceTabControl`/`GscRedesignWorkspaceTabItem` 已在共享 `Themes/Redesign.xaml` 中恢复项目原有的透明 header 带、横向 HeaderScrollViewer、11 DIP 独立圆角页签、选中强调色、焦点视觉和内部 8 DIP 防裁切槽。页面仍保留 Demo 的周边布局以及真实 TabControl/TabItem、内容 Stretch、绑定和命令。
+- Save、Media、Maintenance 的顶层页签和维护页内部页签均通过共享契约；不要在单页 XAML 复制一套 TabControl 模板来绕开该例外。
+- RenderHarness 的 `SnapshotLayoutMetrics` 对重复模板部件名按出现顺序添加 `#2` 等稳定后缀，解决维护页嵌套 TabControl 的合法同名 `HeaderScrollViewer` 导致 `ToDictionary` 重复键的问题。
+- UI-261 证据：源码/XAML/差异检查通过，定向契约 15/15，`artifacts/ui-qa/project-tab-chrome-rollback/render-qa-report.txt` 为 `render-qa OK`；代表离屏截图已确认 Save/Media/Maintenance 的项目 Tab chrome。Tab 回滚后的完整安装也通过：Release 0 warning/0 error、Core 59/59、Worker 191/191、Playnite 258 通过/62 跳过、安装 0.6.70/DLL 0.6.70.0；WPF validator 0 error、19 warnings、161 info。
+- 真实宿主重装后的稳定前台截图仍缺失；不要将离屏证据扩写为 Playnite 1:1 验收。DPI、窗口缩放、Follow/高对比度、键盘焦点和真实备份/媒体操作仍是总目标边界。

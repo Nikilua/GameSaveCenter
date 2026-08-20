@@ -64,24 +64,7 @@ namespace GameSaveCenter.Playnite.Views
             if (viewModel == null) return;
             var page = GetPage(workspace);
             PageHost.Content = page;
-            PageTitleText.Text = workspace switch
-            {
-                WorkspaceKind.Saves => "存档中心",
-                WorkspaceKind.Trainers => "修改器中心",
-                WorkspaceKind.Media => "媒体中心",
-                WorkspaceKind.Tasks => "任务中心",
-                WorkspaceKind.Maintenance => "维护中心",
-                _ => "首页",
-            };
-            PageSubtitleText.Text = workspace switch
-            {
-                WorkspaceKind.Saves => "Elden Ring · 路径与恢复点状态",
-                WorkspaceKind.Trainers => "修改器 · CT 表 · 自定义启动项",
-                WorkspaceKind.Media => "截图与录像的自动归档",
-                WorkspaceKind.Tasks => "备份 · 云端 · 媒体任务队列",
-                WorkspaceKind.Maintenance => "诊断 · 设备 · 保留策略 · 审计",
-                _ => "今日工作台 · 一切运行正常",
-            };
+            UpdatePageHeader(workspace);
             var gameScoped = workspace != WorkspaceKind.Tasks && workspace != WorkspaceKind.Maintenance;
             GameContextButton.Visibility = gameScoped ? Visibility.Visible : Visibility.Collapsed;
             HeaderMediaButton.Visibility = workspace == WorkspaceKind.Media ? Visibility.Visible : Visibility.Collapsed;
@@ -167,6 +150,30 @@ namespace GameSaveCenter.Playnite.Views
             }
             if (e.PropertyName == nameof(DashboardViewModel.CurrentWorkspace) && viewModel != null)
                 NavigateTo(viewModel.CurrentWorkspace);
+            else if (e.PropertyName == nameof(DashboardViewModel.SelectedGame) && viewModel != null)
+                UpdatePageHeader(viewModel.CurrentWorkspace);
+        }
+
+        private void UpdatePageHeader(WorkspaceKind workspace)
+        {
+            PageTitleText.Text = workspace switch
+            {
+                WorkspaceKind.Saves => "存档中心",
+                WorkspaceKind.Trainers => "修改器中心",
+                WorkspaceKind.Media => "媒体中心",
+                WorkspaceKind.Tasks => "任务中心",
+                WorkspaceKind.Maintenance => "维护中心",
+                _ => "首页",
+            };
+            PageSubtitleText.Text = workspace switch
+            {
+                WorkspaceKind.Saves => $"{viewModel?.SelectedGame?.Name ?? "未选择游戏"} · 路径与恢复点状态",
+                WorkspaceKind.Trainers => "修改器 · CT 表 · 自定义启动项",
+                WorkspaceKind.Media => "截图与录像的自动归档",
+                WorkspaceKind.Tasks => "备份 · 云端 · 媒体任务队列",
+                WorkspaceKind.Maintenance => "诊断 · 设备 · 保留策略 · 审计",
+                _ => "今日工作台 · 一切运行正常",
+            };
         }
 
         private void OnGameContextClick(object sender, RoutedEventArgs e)

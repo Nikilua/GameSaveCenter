@@ -33,6 +33,36 @@ public sealed class RestoredAcrylicForkBaselineTests
     }
 
     [Fact]
+    public void ProductionSaveSubtitleUsesTheSelectedGameInsteadOfDemoData()
+    {
+        var shellCode = ReadSource("Views", "AcrylicProductionShellView.xaml.cs");
+
+        Assert.Contains("nameof(DashboardViewModel.SelectedGame)", shellCode);
+        Assert.Contains("viewModel?.SelectedGame?.Name ?? \"未选择游戏\"", shellCode);
+        Assert.DoesNotContain("Elden Ring · 路径与恢复点状态", shellCode);
+    }
+
+    [Fact]
+    public void WorkspaceTabsKeepTheProjectTabChromeInsteadOfTheDemoOuterSegment()
+    {
+        var redesign = ReadSource("Themes", "Redesign.xaml");
+        var start = redesign.IndexOf("x:Key=\"GscRedesignWorkspaceTabControl\"", StringComparison.Ordinal);
+        var end = redesign.IndexOf("</Style>", start, StringComparison.Ordinal);
+        var tabControlStyle = redesign.Substring(start, end - start);
+        start = redesign.IndexOf("x:Key=\"GscRedesignWorkspaceTabItem\"", StringComparison.Ordinal);
+        end = redesign.IndexOf("</Style>", start, StringComparison.Ordinal);
+        var tabItemStyle = redesign.Substring(start, end - start);
+
+        Assert.Contains("OverridesDefaultStyle\" Value=\"True\"", tabControlStyle);
+        Assert.Contains("x:Name=\"HeaderScrollViewer\"", tabControlStyle);
+        Assert.Contains("Padding=\"1,1,1,10\"", tabControlStyle);
+        Assert.Contains("OverridesDefaultStyle\" Value=\"True\"", tabItemStyle);
+        Assert.Contains("ColumnDefinition Width=\"8\"", tabItemStyle);
+        Assert.Contains("CornerRadius=\"11\"", tabItemStyle);
+        Assert.Contains("GscSelectionTextBrush", tabItemStyle);
+    }
+
+    [Fact]
     public void SaveCenterUsesTheRestoredBackupPolicySections()
     {
         var save = ReadSource("Views", "SaveCenterView.xaml");

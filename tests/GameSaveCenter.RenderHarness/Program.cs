@@ -2082,9 +2082,16 @@ public static class Program
     {
         if (string.IsNullOrEmpty(name))
             return;
+
+        var baseKey = kind + "|" + name;
+        var key = baseKey;
+        var ordinal = 2;
+        while (metrics.Any(metric => metric.Key == key))
+            key = baseKey + "#" + ordinal++;
+
         metrics.Add(new ElementMetric
         {
-            Key = kind + "|" + name,
+            Key = key,
             Width = width,
             Height = height,
             Visibility = visibility,

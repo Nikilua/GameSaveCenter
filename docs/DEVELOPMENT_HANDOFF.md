@@ -613,3 +613,11 @@ git branch --show-current
 - RenderHarness 已为 Media Inbox 提供 60 项夹具、五档高度和 0/25/50/75/100% 滚动位置探针，并将列虚拟化纳入 `ProbeGrid` 门禁；当前报告 `artifacts/ui-qa/media-virtualization-fix/render-qa-report.txt` 为 `render-qa OK`。
 - UI-259 正式门禁：XAML 18/18；source validation 通过；Release 0 warning/0 error；Core 59/59、Worker 191/191、Playnite 256 通过/62 跳过；WPF 0 error、19 warnings、146 info。
 - 本轮没有重新安装真实 Playnite；UI-258 的真实七页人工嵌入复核仍是最近宿主事实。后续优先补做不同 DPI、Follow/高对比度、键盘焦点及真实备份/媒体归类操作的安全回归，若自动审计继续遇到 `EmptyWindowAutomationPeer` 必须如实记录。
+
+## 2026-08-20 UI-260/261 存档页示例文案清理与工作区 Tab 样式回滚交接
+
+- `AcrylicProductionShellView.xaml.cs` 的存档副标题已从硬编码 Demo 游戏名改为 `SelectedGame.Name`，空选择显示“未选择游戏”；页头在工作区切换和 `SelectedGame` 变化时都会刷新。对应源码契约已覆盖 Elden Ring 残留防回归。
+- 生产页工作区 Tab 栏是当前项目视觉的明确例外：`Themes/Redesign.xaml` 中 `GscRedesignWorkspaceTabControl`/`GscRedesignWorkspaceTabItem` 已回滚为项目现有透明 header 带、独立圆角页签和横向滚动，不得恢复 Demo 的外层连续分段胶囊。Save/Media/Maintenance 的真实 Tab 结构、绑定、命令、内容 Stretch 和嵌套页签保持不变。
+- RenderHarness 的重复模板部件名度量已修复；最新 `artifacts/ui-qa/project-tab-chrome-rollback/render-qa-report.txt` 为 `render-qa OK`，并已人工查看 Save/Media/Maintenance 代表截图。源码/XAML/差异检查及定向契约 15/15 均通过。
+- UI-260/261 的 Release 安装验证已通过：XAML 18/18、Release 0 warning/0 error、Core 59/59、Worker 191/191、Playnite 258 通过/62 跳过、安装 0.6.70/DLL 0.6.70.0；WPF validator 0 error、19 warnings、161 info。现在可以进入提交/推送前的最终工作树检查。
+- 真实 Playnite 重启后的 Computer Use 当前仍可能返回 `foreground window did not report a process id`；不能用离屏截图代替重装后宿主 Tab 像素证据。剩余人工边界仍为 125%/150% DPI、窗口缩放、Follow/高对比度、键盘焦点和真实备份/媒体归类操作。

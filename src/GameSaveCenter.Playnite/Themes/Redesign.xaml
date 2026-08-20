@@ -372,10 +372,12 @@
         <Setter Property="TextWrapping" Value="Wrap"/>
     </Style>
 
-    <!-- Shared horizontal pill tabs for extracted workspaces. The header strip is its own
-         scroll channel so narrow windows never clip the last tab or force the content area
-         to grow horizontally. The content host remains the finite star row below it. -->
+    <!-- Production workspace tabs intentionally keep the project's existing tab chrome.
+         Demo page geometry still owns the surrounding layout, but the tab bar itself is
+         not the Demo's outer segmented pill. The header remains independently scrollable
+         so narrow windows never clip the last tab or force the content area to grow. -->
     <Style x:Key="GscRedesignWorkspaceTabControl" TargetType="TabControl">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Padding" Value="0"/>
@@ -386,27 +388,28 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TabControl">
-                    <Grid KeyboardNavigation.TabNavigation="Local">
+                    <Grid KeyboardNavigation.TabNavigation="Local"
+                          SnapsToDevicePixels="True"
+                          ClipToBounds="False">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <Border Grid.Row="0"
-                                HorizontalAlignment="Left"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{DynamicResource GscControlStrokeBrush}"
-                                BorderThickness="1"
-                                CornerRadius="10"
-                                Padding="2"
-                                Margin="0,0,0,8">
-                            <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                Padding="1,1,1,10"
+                                Background="Transparent"
+                                ClipToBounds="False">
+                            <ScrollViewer x:Name="HeaderScrollViewer"
+                                          HorizontalScrollBarVisibility="Auto"
                                           VerticalScrollBarVisibility="Disabled"
                                           CanContentScroll="False"
+                                          PanningMode="HorizontalOnly"
                                           Focusable="False">
                                 <TabPanel x:Name="HeaderPanel"
                                           IsItemsHost="True"
                                           KeyboardNavigation.TabIndex="1"
-                                          HorizontalAlignment="Left"/>
+                                          Background="Transparent"
+                                          ClipToBounds="False"/>
                             </ScrollViewer>
                         </Border>
                         <ContentPresenter Grid.Row="1"
@@ -417,45 +420,67 @@
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                           SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                     </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Tag" Value="HideHeaders">
+                            <Setter TargetName="HeaderScrollViewer" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
     <Style x:Key="GscRedesignWorkspaceTabItem" TargetType="TabItem">
-        <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
-        <Setter Property="Padding" Value="14,6"/>
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
+        <Setter Property="Foreground" Value="{DynamicResource GscSecondaryTextBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="14,7"/>
         <Setter Property="Margin" Value="0"/>
-        <Setter Property="MinHeight" Value="0"/>
-        <!-- The header presenter below controls its own centering.  The selected
-             workspace content must inherit Stretch so a page never collapses to
-             its desired-size island inside the available shell. -->
+        <Setter Property="MinHeight" Value="36"/>
+        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-        <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TabItem">
-                    <Border x:Name="Chrome"
-                            Background="Transparent"
-                            BorderBrush="Transparent"
-                            BorderThickness="1"
-                            CornerRadius="8"
-                            Padding="{TemplateBinding Padding}"
-                            SnapsToDevicePixels="True">
-                        <ContentPresenter ContentSource="Header"
-                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                          TextElement.Foreground="{TemplateBinding Foreground}"/>
-                    </Border>
+                    <Grid Background="Transparent"
+                          ClipToBounds="False"
+                          UseLayoutRounding="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="8"/>
+                        </Grid.ColumnDefinitions>
+                        <Border x:Name="Chrome"
+                                Grid.Column="0"
+                                Margin="1"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="11"
+                                Padding="{TemplateBinding Padding}"
+                                SnapsToDevicePixels="False"
+                                UseLayoutRounding="True"
+                                ClipToBounds="False">
+                            <ContentPresenter ContentSource="Header"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              RecognizesAccessKey="True"
+                                              SnapsToDevicePixels="True"/>
+                        </Border>
+                    </Grid>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="Chrome" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
-                            <Setter TargetName="Chrome" Property="BorderBrush" Value="Transparent"/>
-                            <Setter Property="FontWeight" Value="SemiBold"/>
-                        </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Chrome" Property="Background" Value="{DynamicResource GscRowHoverBrush}"/>
+                            <Setter TargetName="Chrome" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
+                            <Setter TargetName="Chrome" Property="BorderBrush" Value="{DynamicResource GscAccentTintStrongBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Chrome" Property="Background" Value="{DynamicResource GscAccentTintStrongBrush}"/>
+                            <Setter TargetName="Chrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="Chrome" Property="Opacity" Value="0.42"/>
