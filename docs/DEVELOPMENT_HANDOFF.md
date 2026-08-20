@@ -596,6 +596,13 @@ git branch --show-current
 - 最终验证为 XAML 18/18、Release 0 warning/0 error、Core 59/59、Worker 191/191、Playnite 256 通过/62 跳过、source validation 通过、WPF 0 error。新增源码回归 `OverviewFlowUsesTheFiniteViewportWhenHorizontalScrollingIsDisabled` 当前属于既有 `LegacyProductionUiBaselineFact` 门禁组，因此在默认测试运行中按基线跳过，但随 Playnite 测试程序集完成编译并锁定源码契约。
 - 真实宿主验证边界：`real-host-audit.ps1` 三次安装并加载生产 0.6.70.0，最新受控证据为 `artifacts/ui-host-audit-ui257-final`；日志确认生产插件真实读取 3 games/50 tasks/100 findings/30 media。由于 Playnite 主窗口返回 `EmptyWindowAutomationPeer`，未能抓取嵌入式导航后的逐页像素截图。受控 `DashboardView` 截图只用于确认本次裁切修复，不得宣称七页已完成 Playnite 1:1 验收。
 
+## 2026-08-20 UI-258 真实 Playnite 七页逐页复核交接
+
+- 已在实际 Playnite 生产窗口 `GameSaveCenter 生产版` 中人工打开七页：Overview、Save、Media、Task、Trainer、Maintenance，以及从游戏右键 `GameSaveCenter → 打开设置` 打开的 Settings。
+- 实际看到的关键数据/入口：当前游戏 `Bongo Cat`；Media 30 项、5.76 MiB、待归类 4468 项；Task 50 条、运行中 0、需关注 16、今日完成 34；Trainer 有 Wo Long 与 Yakuza 3；Maintenance 的诊断与进程映射均可进入；Settings 的“常规与目录”及 Worker/Ludusavi/存档目录字段可见。
+- Media Inbox 已选中真实待处理截图，滚动右侧独立详情后确认预览、归类选择器、“确认归类”和“忽略并保留副本”可达。本次未点击归类/忽略，数据未改变。
+- 这次是人工真实嵌入复核，补足了 UIAutomation 不能点击侧栏的缺口；`real-host-audit.ps1` 仍会因 `EmptyWindowAutomationPeer` 无法生成 `summary.json`，因此不要把人工截图写成自动审计通过。剩余边界是不同 DPI、Follow/高对比度、键盘焦点，以及备份/归类/忽略等真实操作回归。
+
 ### 后续启动协议补充
 
-下一轮继续读取本文件、`docs/ai/PROJECT_MEMORY.md`、`docs/ai/WORKLOG.md` 和用户指定的目标文件；先检查 `git status` 与最近提交。页面继续以 `GameSaveCenter.AcrylicFork/src/GameSaveCenter.Playnite/Design/` Demo 为唯一视觉基准，保留当前游戏选择器、生产滚动条、真实命令/绑定、虚拟化和 Playnite 兼容性。优先在同一可识别 Playnite 宿主逐页完成 Overview、Save、Media、Maintenance、Task、Trainer、Settings 的嵌入视觉与真实操作复核；若仍返回 `EmptyWindowAutomationPeer`，如实记录阻塞，不能用 RenderHarness 替代。
+下一轮继续读取本文件、`docs/ai/PROJECT_MEMORY.md`、`docs/ai/WORKLOG.md` 和用户指定的目标文件；先检查 `git status` 与最近提交。页面继续以 `GameSaveCenter.AcrylicFork/src/GameSaveCenter.Playnite/Design/` Demo 为唯一视觉基准，保留当前游戏选择器、生产滚动条、真实命令/绑定、虚拟化和 Playnite 兼容性。优先补做真实备份/媒体归类操作的安全回归与不同 DPI/主题/键盘焦点检查；自动审计若仍返回 `EmptyWindowAutomationPeer`，如实记录边界，不能用 RenderHarness 替代。

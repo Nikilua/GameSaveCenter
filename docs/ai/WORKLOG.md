@@ -3258,3 +3258,12 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 
 - `scripts/real-host-audit.ps1` 三次完成生产 0.6.70/0.6.70.0 安装并加载，最新输出为 `artifacts/ui-host-audit-ui257-final`；日志确认真实插件读取 3 个 Playnite 游戏、50 个任务、100 个 finding、30 个媒体。但 Playnite 主窗口仍返回 `EmptyWindowAutomationPeer`，脚本无法通过 UIAutomation 找到嵌入导航项，因此只生成了受控 `DashboardView` 截图，未取得可识别的嵌入式 Playnite 逐页像素证据。
 - 受控截图证明生产页面本身的当前游戏卡片裁切已修复，但不能写成 Playnite 嵌入宿主 1:1 视觉验收。七页 Demo-first 总目标仍未完成，后续继续取得同一 Playnite 宿主下的逐页证据并复核真实操作路径。
+
+## 2026-08-20 UI-258 真实 Playnite 生产宿主七页逐页复核
+
+- 通过 Computer Use 在已安装的生产扩展 `GameSaveCenter 0.6.70.0` 中实际打开并导航了七个目标页面；窗口标题显示 `GameSaveCenter 生产版`，当前游戏为 `Bongo Cat`，Worker 与 Ludusavi 状态均可见。
+- 首页实际显示当前游戏选择器、刷新/全部备份/同步媒体/查看需关注项、Hero/当前游戏卡片、指标、最近任务和风险提醒；存档页实际显示立即备份/全部备份以及历史、路径、策略、比较标签；媒体页实际显示 30 项媒体、5.76 MiB、待归类 4468 项和来源规则。
+- 媒体“待归类”页实际选中待处理截图并滚动独立 Inspector，确认预览、归类游戏选择器、“确认归类”和“忽略并保留副本”均可达；本次只查看，没有执行归类、忽略或保留副本，待归类数量未被改变。
+- 任务页实际显示 50 条任务、运行中 0、需关注 16、今日完成 34，并显示搜索/状态/类型筛选和选中任务详情；修改器页实际显示已绑定工具列表、导入入口、工具设置和启动/保存设置操作；维护页实际显示诊断、设备状态、保留策略、异常与审计、进程映射，并进入诊断页确认环境检查与诊断操作区域可见。
+- 设置通过 Playnite 游戏右键 `GameSaveCenter → 打开设置` 实际打开，显示 `GameSaveCenter 设置`、常规与目录分类、Worker/Ludusavi/存档目录字段及保存/取消按钮；关闭时未修改设置。
+- 这组截图来自真实 Playnite 生产嵌入宿主，不是 RenderHarness 或受控 Dashboard。自动 `real-host-audit.ps1` 仍因主窗口 `EmptyWindowAutomationPeer` 无法生成 `summary.json`，所以这里记录为人工嵌入复核，不改写自动审计门禁。七页页面入口与关键真实数据的本轮人工覆盖已完成；不同 DPI、Follow/高对比度、键盘焦点及执行真实备份/归类/忽略等操作仍需单独验证。

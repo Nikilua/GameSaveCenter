@@ -964,3 +964,11 @@
 - 当前首页响应式证据：`artifacts/ui-qa/overview-responsive-ui257/render-qa-report.txt`。1366×768 的 workspace 为 1042 DIP，Hero 为 506 DIP、当前游戏卡片为 x=520..1026，操作按钮高度均为 38 DIP；1600×900 同样无横向溢出。RenderHarness 仅是受控 WPF 证据，不等同 Playnite 嵌入视觉验收。
 - UI-257 最终门禁：XAML 18/18；Release 0 警告/0 错误；Core 59/59；Worker 191/191；Playnite 256/318（62 跳过）；`validate-source.py` 通过；WPF 静态审查 0 error、20 warnings、146 info。
 - 三次真实宿主审计均确认生产扩展 0.6.70.0 可加载并读取真实数据，最新受控证据位于 `artifacts/ui-host-audit-ui257-final`；但 Playnite 返回 `EmptyWindowAutomationPeer`，未能取得可识别的嵌入页面像素截图。不得把受控窗口截图写成 Playnite 1:1 完成，七页 Demo-first 总目标仍处于进行中。
+
+## 2026-08-20 UI-258 生产宿主七页人工嵌入事实
+
+- 本轮已在真实 Playnite 生产扩展 `GameSaveCenter 0.6.70.0` 中打开七个目标页面；生产壳标题为 `GameSaveCenter 生产版`，当前游戏为 `Bongo Cat`。这是真实嵌入窗口的人工 Computer Use 复核，不是离屏或受控窗口截图。
+- 首页、存档、媒体、任务、修改器、维护均从生产壳左侧导航实际进入。首页的当前游戏卡片和操作按钮完整可见；存档的立即备份/全部备份与四个标签可见；媒体显示 30 项、5.76 MiB、待归类 4468 项；任务显示 50 条任务、0 运行中、16 需关注、34 今日完成；修改器显示 Wo Long 与 Yakuza 3 工具及右侧工具设置；维护显示进程映射和诊断页。
+- Media Inbox 已实际进入并选中截图，独立 Inspector 滚动后可见预览、归类游戏 ComboBox、“确认归类”和“忽略并保留副本”。本轮不执行这些动作，因此没有改变真实数据。
+- 设置通过 Playnite 游戏右键菜单的 `GameSaveCenter → 打开设置` 实际打开，显示 `GameSaveCenter 设置` 的“常规与目录”页面及 Worker、Ludusavi、存档目录字段；关闭时未保存更改。
+- 自动审计事实仍不变：Playnite 主窗口的 UIAutomation 树是 `EmptyWindowAutomationPeer`，脚本没有 `summary.json` 的嵌入逐页像素证据；人工截图可证明真实页面能进入和关键控件可达，但不能替代自动门禁，也不能外推到其他 DPI、主题/Follow、高对比度或完整操作回归。
