@@ -451,6 +451,7 @@ public sealed class WpfUiResourceDictionaryTests
         var maintenance = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
         var saves = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "SaveCenterView.xaml"));
         var trainers = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml"));
+        var redesign = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "Redesign.xaml"));
 
         foreach (var marker in new[] { "MediaWorkspaceTab", "MaintenanceWorkspaceTab", "SaveWorkspaceTab", "TrainerWorkspaceTab" })
             Assert.Contains($"x:Name=\"{marker}\"", dashboard);
@@ -460,10 +461,13 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.DoesNotContain("SetVisibility(DiagnosticTab, false)", dashboardCode);
         Assert.DoesNotContain("SetVisibility(SaveHistoryTab, false)", dashboardCode);
         Assert.DoesNotContain("SetVisibility(TrainerTab, false)", dashboardCode);
+        Assert.Contains("x:Key=\"GscRedesignWorkspaceDataGrid\"", redesign);
+        Assert.Contains("VirtualizingPanel.IsVirtualizing\" Value=\"True\"", redesign);
+        Assert.Contains("VirtualizingPanel.VirtualizationMode\" Value=\"Recycling\"", redesign);
         foreach (var view in new[] { media, maintenance, saves, trainers })
         {
-            Assert.True(view.Contains("VirtualizingPanel.IsVirtualizing=\"True\"") || view.Contains("EnableRowVirtualization\" Value=\"True\""));
-            Assert.True(view.Contains("VirtualizingPanel.VirtualizationMode=\"Recycling\"") || view.Contains("EnableColumnVirtualization\" Value=\"True\""));
+            Assert.True(view.Contains("GscRedesignWorkspaceDataGrid") || view.Contains("VirtualizingPanel.IsVirtualizing=\"True\"") || view.Contains("EnableRowVirtualization\" Value=\"True\""));
+            Assert.True(view.Contains("GscRedesignWorkspaceDataGrid") || view.Contains("VirtualizingPanel.VirtualizationMode=\"Recycling\"") || view.Contains("EnableColumnVirtualization\" Value=\"True\""));
             Assert.Contains("DynamicResource GscPrimaryTextBrush", view);
         }
         Assert.Contains("AssignInboxMediaCommand", media);
@@ -836,19 +840,22 @@ public sealed class WpfUiResourceDictionaryTests
     {
         var repositoryRoot = FindRepositoryRoot();
         var theme = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml"));
+        var redesign = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "Redesign.xaml"));
         Assert.Contains("VirtualizingPanel.ScrollUnit\" Value=\"Item\"", theme);
         Assert.Contains("VirtualizingPanel.IsVirtualizing\" Value=\"True\"", theme);
         Assert.Contains("VirtualizingPanel.VirtualizationMode\" Value=\"Recycling\"", theme);
         Assert.Contains("EnableRowVirtualization\" Value=\"True\"", theme);
         Assert.Contains("EnableColumnVirtualization\" Value=\"True\"", theme);
+        Assert.Contains("x:Key=\"GscRedesignWorkspaceDataGrid\"", redesign);
+        Assert.Contains("VirtualizingPanel.ScrollUnit\" Value=\"Item\"", redesign);
 
         var viewDirectory = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views");
         var save = File.ReadAllText(Path.Combine(viewDirectory, "SaveCenterView.xaml"));
         var task = File.ReadAllText(Path.Combine(viewDirectory, "TaskCenterView.xaml"));
         var maintenance = File.ReadAllText(Path.Combine(viewDirectory, "MaintenanceView.xaml"));
-        Assert.Contains("VirtualizingPanel.ScrollUnit\" Value=\"Item\"", save);
-        Assert.Contains("VirtualizingPanel.ScrollUnit\" Value=\"Item\"", task);
-        Assert.Contains("VirtualizingPanel.ScrollUnit\" Value=\"Item\"", maintenance);
+        Assert.Contains("BasedOn=\"{StaticResource GscRedesignWorkspaceDataGrid}\"", save);
+        Assert.Contains("BasedOn=\"{StaticResource GscRedesignWorkspaceDataGrid}\"", task);
+        Assert.Contains("BasedOn=\"{StaticResource GscRedesignWorkspaceDataGrid}\"", maintenance);
 
         var maintenanceCode = File.ReadAllText(Path.Combine(viewDirectory, "MaintenanceView.xaml.cs"));
         var taskCode = File.ReadAllText(Path.Combine(viewDirectory, "TaskCenterView.xaml.cs"));

@@ -26,7 +26,7 @@
                 <Setter Property="TextWrapping" Value="NoWrap"/>
                 <Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}"/>
             </Style>
-            <Style x:Key="TaskDataGrid" TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
+            <Style x:Key="TaskDataGrid" TargetType="DataGrid" BasedOn="{StaticResource GscRedesignWorkspaceDataGrid}">
                 <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
                 <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
                 <Setter Property="BorderThickness" Value="0"/>

@@ -3197,3 +3197,24 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 **验证边界：**
 
 - 本阶段新增的是 RenderHarness 离屏 PNG 和静态回归证据，目检了设置页 1040/1366 代表分类与任务中心 1040/1366 宽窄状态；没有新增可识别的 Playnite 生产宿主像素截图，不能把离屏结果写成宿主 1:1 验收。
+
+## 2026-08-20 UI-255 工作区表格契约与 Mono 字体收口
+
+**实现内容：**
+
+- 在 `Themes/Redesign.xaml` 增加显式 `GscRedesignWorkspaceDataGrid`，集中承接 Demo `LabGrid` 的行高、表头高度、整行选择、列宽调整、排序、Item scrolling、行/列虚拟化与 Recycling、双向内部滚动和顶部对齐。
+- `SaveCenterView`、`MediaCenterView`、`MaintenanceView`、`TaskCenterView` 的真实表格样式改为基于该共享契约；各页仍保留自己的背景、状态行、媒体表头和稳定行样式，未改变 ItemsSource、SelectedItem、命令、列宽响应式逻辑或项目滚动条。
+- `GscCodeFontFamily` 改为 `Cascadia Mono, Consolas, Microsoft YaHei UI`，维护中心完整诊断摘要接入该 DynamicResource；所有业务折叠栏继续统一使用 `GscDisclosureCard`。
+- 增加跨页源码契约测试，并同步调整既有门禁，使其验证共享样式而不是要求每个页面复制同一组 setter。
+
+**验证结果：**
+
+- `scripts/check-xaml.ps1`：18 个 XAML 文件通过。
+- `scripts/validate-source.py`：通过；`git diff --check`：通过。
+- Release 解决方案构建：0 警告、0 错误；Core：59/59；Worker：190/190（本轮排除 Soak）；Playnite：251 通过、61 跳过、0 失败。
+- `artifacts/ui-qa/shared-grid-contract-final/render-qa-report.txt`：`render-qa OK`，覆盖七页、Light/Dark、多尺寸、多 Tab、表格滚动探针和 resize transition。
+- `validate_wpf_ui.py`：0 error、20 warnings、161 info；代表性 Save/Media/Maintenance/Task 离屏截图已目检表头、选中行、状态胶囊、滚动和 Inspector 无遮挡。
+
+**验证边界：**
+
+- 本阶段没有取得新的可识别 Playnite 生产宿主逐页像素截图；RenderHarness、测试和离屏图片不能替代 Playnite 的 Light/Dark/Follow、高对比度、DPI、键盘焦点、真实数据和连续缩放人工验收。总 Demo-first 目标仍未完成。

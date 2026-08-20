@@ -121,7 +121,7 @@
          falls back to Microsoft YaHei UI so mixed strings share one visual system instead
          of WPF picking an arbitrary CJK fallback per glyph. -->
     <FontFamily x:Key="GscUiFontFamily">Segoe UI Variable Text, Segoe UI, Microsoft YaHei UI</FontFamily>
-    <FontFamily x:Key="GscCodeFontFamily">Consolas, Microsoft YaHei UI</FontFamily>
+    <FontFamily x:Key="GscCodeFontFamily">Cascadia Mono, Consolas, Microsoft YaHei UI</FontFamily>
 
     <!-- Shared table geometry. Each workspace keeps its DataGrid in a finite Grid row, while
          these tokens provide one readable density across light, dark and host themes. -->

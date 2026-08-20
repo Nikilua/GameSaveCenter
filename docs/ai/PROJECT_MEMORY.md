@@ -941,3 +941,11 @@
 - 设置页常见 1040px 逻辑窗口仍使用左侧分类栏；`ApplyResponsiveLayout` 的极窄分支为 `layoutWidth < 560`，窄标题阈值为 `layoutWidth < 520`。常见窗口必须让右侧 `GscPageScrollViewer` 获得有限视口，不能让五项分类栏占满第一屏。
 - RenderHarness 的 ListBox 分段入口发现规则同时接受名称以 `SegmentTabs` 结尾的迁移页和生产设置的 `SettingsSectionTabs`；设置布局探针验证五个 `ListBoxItem` 可见可测和右侧内容视口，不再查找旧 `SettingsHeaderScroller`/TabControl。
 - 当前 `artifacts/ui-qa/task-settings-final/render-qa-report.txt` 为 `render-qa OK`；这是离屏证据。Playnite 生产宿主 Light/Dark、Follow、DPI、键盘焦点与逐页真实截图仍需单独人工验收。
+
+## 2026-08-20 UI-255 共享工作区表格事实
+
+- `Themes/Redesign.xaml` 的 `GscRedesignWorkspaceDataGrid` 是 Save/Media/Maintenance/Task 四个提取页的显式 LabGrid-like 行为基类，集中保护 `RowHeight`/`ColumnHeaderHeight`、FullRow 单选、列宽调整、排序、`VirtualizingPanel.ScrollUnit=Item`、Recycling、行/列虚拟化和 Auto 内部滚动。
+- 页面样式可以继续覆盖 `RowStyle`、`ColumnHeaderStyle`、Background 和媒体专用表头，但不能恢复各页复制一整套表格行为 setter 的分叉模式；新增工作区表格应优先基于该 key，并补充源契约测试。
+- `GscCodeFontFamily` 当前为 `Cascadia Mono, Consolas, Microsoft YaHei UI`；维护诊断摘要已使用该 token。业务 Expander 已统一采用 `GscDisclosureCard`，当前没有引入 Demo 滚动条。
+- 新自动证据：`artifacts/ui-qa/shared-grid-contract-final/render-qa-report.txt` 为 `render-qa OK`；Release 0 warning/0 error；Core 59/59；Worker 190/190（排除 Soak）；Playnite 251 通过/61 跳过/0 失败；WPF validator 0 error/20 warnings/161 info。
+- 本阶段仍不能声称真实 Playnite 宿主逐页验收完成；宿主截图、Follow/高对比度、DPI、键盘/UI Automation、真实长文案和大数据量滚动仍是后续人工边界。

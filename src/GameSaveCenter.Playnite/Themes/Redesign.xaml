@@ -64,6 +64,49 @@
         <Setter Property="Effect" Value="{x:Null}"/>
     </Style>
 
+    <!-- One explicit LabGrid-like contract for every extracted workspace table. Pages may
+         still override a row/header style for status-specific chrome, but geometry,
+         sorting, resizing, scrolling and recycling stay centralized here. This keeps the
+         real bindings and finite viewport layout intact while preventing Save/Media/Task/
+         Maintenance from drifting into subtly different DataGrid behavior. -->
+    <Style x:Key="GscRedesignWorkspaceDataGrid"
+           TargetType="DataGrid"
+           BasedOn="{StaticResource {x:Type DataGrid}}">
+        <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="GridLinesVisibility" Value="None"/>
+        <Setter Property="HeadersVisibility" Value="Column"/>
+        <Setter Property="RowBackground" Value="Transparent"/>
+        <Setter Property="AlternatingRowBackground" Value="{DynamicResource GscTableAlternateRowBrush}"/>
+        <Setter Property="RowHeight" Value="{DynamicResource GscTableRowHeight}"/>
+        <Setter Property="MinHeight" Value="{DynamicResource GscWorkspaceTableMinHeight}"/>
+        <Setter Property="ColumnHeaderHeight" Value="{DynamicResource GscTableHeaderHeight}"/>
+        <Setter Property="RowHeaderWidth" Value="0"/>
+        <Setter Property="SelectionMode" Value="Single"/>
+        <Setter Property="SelectionUnit" Value="FullRow"/>
+        <Setter Property="CanUserAddRows" Value="False"/>
+        <Setter Property="CanUserResizeRows" Value="False"/>
+        <Setter Property="CanUserResizeColumns" Value="True"/>
+        <Setter Property="CanUserReorderColumns" Value="False"/>
+        <Setter Property="CanUserSortColumns" Value="True"/>
+        <Setter Property="IsReadOnly" Value="True"/>
+        <Setter Property="AutoGenerateColumns" Value="False"/>
+        <Setter Property="EnableRowVirtualization" Value="True"/>
+        <Setter Property="EnableColumnVirtualization" Value="True"/>
+        <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True"/>
+        <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling"/>
+        <Setter Property="VirtualizingPanel.ScrollUnit" Value="Item"/>
+        <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Top"/>
+        <Setter Property="ScrollViewer.VerticalContentAlignment" Value="Top"/>
+        <Setter Property="ColumnHeaderStyle" Value="{StaticResource GscDataGridColumnHeaderStyle}"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+    </Style>
+
     <Style x:Key="GscRedesignHeroCard" TargetType="Border" BasedOn="{StaticResource GscRedesignSectionCard}">
         <Setter Property="Background" Value="{DynamicResource GscGlassStrongBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>

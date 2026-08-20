@@ -572,3 +572,11 @@ git branch --show-current
 - RenderHarness 设置审计已改为识别 `SettingsSectionTabs` ListBox；当前证据为 `artifacts/ui-qa/task-settings-final/render-qa-report.txt`，内容为 `render-qa OK`，涵盖 Light/Dark、1040/1100/1366/2560、多分类和 resize transition。
 - 本阶段验证：XAML 18 文件通过；源码门禁通过；Release 0 warning/0 error；Core 59/59、Worker 191/191、Playnite 253 通过/61 跳过/0 失败；WPF 静态审查 0 error、20 warnings、161 info。
 - 真实 Playnite 宿主逐页截图仍是未完成的人工验收边界；不能把 RenderHarness PNG、测试或安装清单写成 Playnite 1:1 视觉通过。总 Demo-first 迁移目标尚未完成，下一阶段继续按目标文件对照未收口页面和宿主验证。
+
+## 2026-08-20 UI-255 工作区表格共享契约交接
+
+- `src/GameSaveCenter.Playnite/Themes/Redesign.xaml` 新增 `GscRedesignWorkspaceDataGrid`。Save、Media、Maintenance、Task 的页面 DataGrid 样式必须基于它；页面可以覆盖状态行、媒体表头和背景，但不要复制回虚拟化/滚动/排序/列宽 setter。
+- 共享契约保留真实页面滚动条和有限 Grid 视口：`CanContentScroll=True`、`VirtualizingPanel.ScrollUnit=Item`、`VirtualizationMode=Recycling`、行/列虚拟化、列宽可调整、排序可用、FullRow 单选。当前离屏表格截图确认无表头、选中行、Inspector 或滚动条遮挡。
+- 所有业务折叠区仍使用 `GscDisclosureCard`；Mono 文本应使用 `GscCodeFontFamily`，其首选链是 `Cascadia Mono, Consolas, Microsoft YaHei UI`。
+- 新证据目录为 `artifacts/ui-qa/shared-grid-contract-final`，报告为 `render-qa OK`，覆盖七页、多尺寸、双主题和 resize transition。源码/XAML/Release/Playnite 门禁已通过。
+- 下一阶段继续按目标文件检查按钮、辅助界面和真实操作路径，并优先在同一可识别 Playnite 宿主取得逐页截图；不要把上述离屏证据写成 Playnite 1:1 视觉通过。

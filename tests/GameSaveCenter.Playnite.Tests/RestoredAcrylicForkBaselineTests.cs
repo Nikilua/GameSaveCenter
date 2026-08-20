@@ -95,6 +95,33 @@ public sealed class RestoredAcrylicForkBaselineTests
     }
 
     [Fact]
+    public void ExtractedWorkspaceTablesShareOneExplicitDemoGridContract()
+    {
+        var redesign = ReadSource("Themes", "Redesign.xaml");
+        Assert.Contains("x:Key=\"GscRedesignWorkspaceDataGrid\"", redesign);
+        Assert.Contains("VirtualizingPanel.VirtualizationMode\" Value=\"Recycling\"", redesign);
+        Assert.Contains("CanUserResizeColumns\" Value=\"True\"", redesign);
+        Assert.Contains("CanUserSortColumns\" Value=\"True\"", redesign);
+        Assert.Contains("ScrollViewer.VerticalScrollBarVisibility\" Value=\"Auto\"", redesign);
+
+        foreach (var page in new[] { "SaveCenterView.xaml", "MediaCenterView.xaml", "MaintenanceView.xaml", "TaskCenterView.xaml" })
+        {
+            var source = ReadSource("Views", page);
+            Assert.Contains("BasedOn=\"{StaticResource GscRedesignWorkspaceDataGrid}\"", source);
+        }
+    }
+
+    [Fact]
+    public void WorkspaceDiagnosticTextUsesTheSharedCascadiaMonoFallback()
+    {
+        var tokens = ReadSource("Themes", "DesignTokens.xaml");
+        var maintenance = ReadSource("Views", "MaintenanceView.xaml");
+
+        Assert.Contains("x:Key=\"GscCodeFontFamily\">Cascadia Mono, Consolas, Microsoft YaHei UI", tokens);
+        Assert.Contains("FontFamily=\"{DynamicResource GscCodeFontFamily}\"", maintenance);
+    }
+
+    [Fact]
     public void MediaUsesDemoMetricCardsAndTheFullWorkspaceTabs()
     {
         var media = ReadSource("Views", "MediaCenterView.xaml");

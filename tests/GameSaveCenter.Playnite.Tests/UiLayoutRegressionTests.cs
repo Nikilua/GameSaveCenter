@@ -436,9 +436,11 @@ namespace GameSaveCenter.Playnite.Tests
         {
             var root = FindRepositoryRoot();
             var maintenance = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+            var redesign = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Themes", "Redesign.xaml"));
 
             Assert.DoesNotContain("Style TargetType=\"DataGridColumnHeader\" BasedOn=\"{StaticResource {x:Type DataGridColumnHeader}}\"", maintenance);
-            Assert.Contains("Setter Property=\"ColumnHeaderStyle\" Value=\"{StaticResource GscDataGridColumnHeaderStyle}\"", maintenance);
+            Assert.Contains("BasedOn=\"{StaticResource GscRedesignWorkspaceDataGrid}\"", maintenance);
+            Assert.Contains("Setter Property=\"ColumnHeaderStyle\" Value=\"{StaticResource GscDataGridColumnHeaderStyle}\"", redesign);
         }
 
         [LegacyProductionUiBaselineFact]
