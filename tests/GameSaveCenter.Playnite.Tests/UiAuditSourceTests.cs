@@ -48,6 +48,17 @@ public sealed class UiAuditSourceTests
     }
 
     [Fact]
+    public void ThemeQaHostUsesThePageBackdropResource()
+    {
+        var root = FindRepositoryRoot();
+        var program = File.ReadAllText(Path.Combine(root, "tests", "GameSaveCenter.RenderHarness", "Program.cs"));
+
+        Assert.Contains("private static Brush CreateHarnessBackground(FrameworkElement view)", program);
+        Assert.Contains("view.TryFindResource(\"GscBackdropBrush\") as Brush", program);
+        Assert.Contains("Background = CreateHarnessBackground(view)", program);
+    }
+
+    [Fact]
     public void AuditDoesNotTouchProductionViews()
     {
         var root = FindRepositoryRoot();

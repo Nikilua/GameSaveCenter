@@ -3,6 +3,12 @@
 > 维护时间：2026-08-21
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-21 UI-278 当前事实：RenderHarness 使用主题化宿主画布
+
+- RenderHarness 之前在页面宿主 Grid 中写死 `#181E2B`，导致强制浅色 QA 将 Demo 浅色色板页面错误放在深色画布上；这不是生产 Trainer 页面本身的真实主题关系。
+- `tests/GameSaveCenter.RenderHarness/Program.cs` 的页面宿主现在统一通过 `CreateHarnessBackground(view)` 读取当前页面的 `GscBackdropBrush`；没有应用主题的历史探针保留原深色回退，不能删掉回退以改变既有探针语义。
+- UI-278 证据：`artifacts/ui-qa/ui278-themed-host-v1/render-qa-report.txt` 为 `render-qa OK`，Light/Dark 七页、多尺寸、滚动和 resize 均通过；浅色 Trainer 1040×700 已确认顶部导入区可读。真实 Playnite Dashboard 宿主证据仍未补齐。
+
 ## 2026-08-21 UI-277 当前事实：共享折叠栏 Header 具有主题表面
 
 - `DesignTokens.xaml` 的 `GscDisclosureCardExpander` 现在以 `GscControlFillBrush` 为默认背景，并把 `Background`/`BorderBrush` 传到 Header ToggleButton 的 `HeaderChrome`；Task 窄宽“更多筛选”不再在浅色主题深色画布上隐去标题。

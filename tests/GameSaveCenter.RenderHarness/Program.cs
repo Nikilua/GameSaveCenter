@@ -964,7 +964,7 @@ public static class Program
         {
             Width = contentW,
             Height = contentH,
-            Background = new SolidColorBrush(Color.FromRgb(24, 30, 43)),
+            Background = CreateHarnessBackground(view),
             ClipToBounds = true
         };
         host.Children.Add(view);
@@ -1011,7 +1011,7 @@ public static class Program
         {
             Width = contentW,
             Height = contentH,
-            Background = new SolidColorBrush(Color.FromRgb(24, 30, 43)),
+            Background = CreateHarnessBackground(view),
             ClipToBounds = true
         };
         host.Children.Add(view);
@@ -1309,7 +1309,7 @@ public static class Program
         {
             Width = contentW,
             Height = contentH,
-            Background = new SolidColorBrush(Color.FromRgb(24, 30, 43)),
+            Background = CreateHarnessBackground(view),
             ClipToBounds = true
         };
         host.Children.Add(view);
@@ -1376,7 +1376,7 @@ public static class Program
         {
             Width = contentW,
             Height = contentH,
-            Background = new SolidColorBrush(Color.FromRgb(24, 30, 43)),
+            Background = CreateHarnessBackground(view),
             ClipToBounds = true
         };
         host.Children.Add(view);
@@ -1688,7 +1688,7 @@ public static class Program
             {
                 Width = 900,
                 Height = 640,
-                Background = new SolidColorBrush(Color.FromRgb(24, 30, 43)),
+                Background = CreateHarnessBackground(view),
                 ClipToBounds = true
             };
             host.Children.Add(view);
@@ -1751,7 +1751,7 @@ public static class Program
                     {
                         Width = width,
                         Height = height,
-                        Background = new SolidColorBrush(Color.FromRgb(24, 30, 43)),
+                        Background = CreateHarnessBackground(view),
                         ClipToBounds = true
                     };
                     host.Children.Add(view);
@@ -1844,7 +1844,7 @@ public static class Program
                         {
                             Width = contentW,
                             Height = contentH,
-                            Background = new SolidColorBrush(Color.FromRgb(24, 30, 43)),
+                            Background = CreateHarnessBackground(view),
                             ClipToBounds = true
                         };
                         host.Children.Add(view);
@@ -1907,6 +1907,12 @@ public static class Program
     {
         var palette = AdaptiveThemePaletteFactory.Create(view, false, 50, mode);
         AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(view.Resources, palette, false, false);
+    }
+
+    private static Brush CreateHarnessBackground(FrameworkElement view)
+    {
+        return view.TryFindResource("GscBackdropBrush") as Brush
+            ?? new SolidColorBrush(Color.FromRgb(24, 30, 43));
     }
 
     private static void ApplyThemeResponsive(UserControl view, double width, double height)
@@ -2004,7 +2010,7 @@ public static class Program
             {
                 var host = new Grid
                 {
-                    Background = new SolidColorBrush(Color.FromRgb(24, 30, 43)),
+                    Background = CreateHarnessBackground(view),
                     ClipToBounds = true
                 };
                 host.Children.Add(view);
@@ -2145,7 +2151,7 @@ public static class Program
             {
                 Width = 900,
                 Height = height,
-                Background = new SolidColorBrush(Color.FromRgb(24, 30, 43)),
+                Background = CreateHarnessBackground(view),
                 ClipToBounds = true
             };
             host.Children.Add(view);

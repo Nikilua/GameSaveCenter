@@ -14,6 +14,12 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-21 UI-278 RenderHarness 主题背景交接
+
+- RenderHarness 的页面宿主背景不能写死为深色；`CreateHarnessBackground(view)` 必须优先读取页面当前主题的 `GscBackdropBrush`，否则强制浅色截图会把正确的深色文字错误压到深色画布上，产生假低对比。
+- 本轮覆盖主题 QA、Tab 页面、单页页面、滚动/布局探针和 resize 审计宿主；未主题化的旧探针保留原深色 fallback。生产 View、真实命令/绑定、滚动、虚拟化和项目 Tab chrome 均未改动。
+- 当前证据：`artifacts/ui-qa/ui278-themed-host-v1/render-qa-report.txt` 为 `render-qa OK`，浅色 Trainer 1040×700、浅色 Save 1366×768、深色 Trainer 1040×700 已抽查。真实 Playnite Dashboard 主题与操作证据仍需用户在可见宿主中补验。
+
 ## 2026-08-21 UI-277 折叠栏表面交接
 
 - 共享 `GscDisclosureCardExpander` 已为 Header 提供 `GscControlFillBrush` 表面，并把 Expander 的背景/边框绑定到 Header ToggleButton 与 `HeaderChrome`；这修复了 Task 1040×700 窄宽下“更多筛选”只剩箭头、标题无法识别的问题。

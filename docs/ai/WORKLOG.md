@@ -2,6 +2,21 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-21 UI-278 修正双主题 RenderHarness 宿主背景
+
+**实现内容：**
+
+- 发现 RenderHarness 的多个页面宿主 Grid 将背景写死为深色 `#181E2B`；强制浅色主题时，页面已经注入 Demo 浅色色板，但文字仍被错误地渲染在深色画布上，Trainer 顶部工具/导入区因此出现假性的低对比。
+- 新增 `CreateHarnessBackground`，页面宿主优先读取当前页面的 `GscBackdropBrush`，未主题化的历史探针继续回退原深色背景；覆盖主题 QA、Tab 页面、单页页面、滚动探针、布局探针和 resize 审计。
+- 新增 `ThemeQaHostUsesThePageBackdropResource` 源码回归断言；没有改动生产 View、命令、绑定、滚动条、虚拟化或项目 Tab chrome。
+
+**验证结果：**
+
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/ui278-themed-host-v1`：RenderHarness Release 0 warning、0 error；`render-qa OK`，覆盖七页、Light/Dark、1040/1100/1366/2560 DIP、滚动探针和 resize transition。
+- `scripts/build.ps1 -Configuration Release -OutputRoot artifacts/gsc-b/ui-278-themed-host-v1`：XAML 18/18；Release 0 warning、0 error；Core 59/59；Worker 191/191；Playnite 267 通过、62 跳过、0 失败；`scripts/validate-source.py` 通过；WPF 质量校验 0 error、19 warnings、164 info。
+- 重新抽查 `theme/light/Trainer-1040x700.png`、`theme/light/Save-1366x768.png` 与 `theme/dark/Trainer-1040x700.png`：浅色画布、Tab、Trainer 导入/工具区和深色主题层级均可读；之前的低对比来自审计宿主背景，不是 Trainer 生产页面表面。
+- 以上仍是离屏/静态证据，不能替代可识别 Playnite Dashboard 宿主中的主题切换、键盘焦点、拖放和真实命令验收；真实 Dashboard 嵌入证据仍未补齐。
+
 ## 2026-08-21 UI-277 修复共享折叠栏标题对比度
 
 **实现内容：**
