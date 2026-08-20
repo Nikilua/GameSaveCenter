@@ -37,6 +37,6 @@
 
 ## 当前交付边界
 
-最近代码阶段：UI-277（共享折叠栏 Header 表面对比度修复，文档提交后补充 commit hash）；构建证据：`artifacts/gsc-b/ui-277-disclosure-surface-v1`；离屏证据：`artifacts/ui-qa/ui277-disclosure-surface-v1/render-qa-report.txt`；最近宿主证据阶段：`artifacts/ui-host-audit-ui271`（Settings 嵌入证据，Dashboard 未捕获）。
+最近代码阶段：UI-277（共享折叠栏 Header 表面对比度修复，已提交 `88bcca3`）；构建证据：`artifacts/gsc-b/ui-277-disclosure-surface-v1`；离屏证据：`artifacts/ui-qa/ui277-disclosure-surface-v1/render-qa-report.txt`；最近宿主证据阶段：`artifacts/ui-host-audit-ui271`（Settings 嵌入证据，Dashboard 未捕获）。
 
 现有离屏 RenderHarness 与静态审计只证明生产页面可构建、可渲染且在覆盖尺寸下没有已知高/中等级几何问题；在可识别 Playnite 生产宿主中完成逐页像素、DPI、主题、键盘焦点、命中区域和真实操作前，不得宣布总目标完成。
