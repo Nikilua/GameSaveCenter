@@ -176,18 +176,21 @@ public sealed class RestoredAcrylicForkBaselineTests
     }
 
     [Fact]
-    public void MediaUsesDemoMetricCardsAndTheFullWorkspaceTabs()
+    public void MediaUsesTheDemoMetricStripAndTheFullWorkspaceTabs()
     {
         var media = ReadSource("Views", "MediaCenterView.xaml");
 
-        Assert.Contains("x:Name=\"MediaSummaryPanel\" Grid.Row=\"0\" Columns=\"4\"", media);
+        Assert.Contains("x:Name=\"MediaSummaryPanel\" Grid.Row=\"0\" Style=\"{DynamicResource GscRedesignSectionCard}\"", media);
+        Assert.Contains("<Rectangle Grid.Column=\"1\" Width=\"1\" Fill=\"{DynamicResource GscTableDividerBrush}\"", media);
+        Assert.Contains("<Rectangle Grid.Column=\"2\" Width=\"1\" Fill=\"{DynamicResource GscTableDividerBrush}\"", media);
+        Assert.Contains("<Rectangle Grid.Column=\"3\" Width=\"1\" Fill=\"{DynamicResource GscTableDividerBrush}\"", media);
+        Assert.DoesNotContain("GscRedesignMetricBorder", media);
         Assert.Contains("x:Name=\"MediaTabControl\"", media);
         Assert.Contains("Style=\"{StaticResource MediaTabControl}\"", media);
         Assert.Contains("x:Name=\"MediaInboxInspectorScrollViewer\"", media);
         Assert.Contains("x:Name=\"MediaInboxPreviewPanel\"", media);
         Assert.Contains("SelectedInboxMedia", media);
         Assert.Contains("Header=\"当前游戏媒体\"", media);
-        Assert.Contains("Style=\"{DynamicResource GscRedesignMetricBorder}\"", media);
         Assert.DoesNotContain("x:Name=\"MediaSummaryTabStrip\"", media);
         Assert.DoesNotContain("x:Name=\"MediaTabStrip\"", media);
     }

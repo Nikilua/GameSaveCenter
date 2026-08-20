@@ -26,7 +26,7 @@ namespace GameSaveCenter.Playnite.Views
             ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
         }
 
-        public UniformGrid MediaSummaryPanelElement => MediaSummaryPanel;
+        public Border MediaSummaryPanelElement => MediaSummaryPanel;
         public UniformGrid MediaSourceFieldsElement => MediaSourceFields;
         public Border MediaInspectorPanelElement => MediaInspectorPanel;
         public Border MediaPreviewPanelElement => MediaPreviewPanel;
@@ -42,12 +42,9 @@ namespace GameSaveCenter.Playnite.Views
             {
                 responsiveWidth = width;
                 responsiveHeight = height;
-                // Keep the Demo's four metric cards in one row at normal workspace widths,
-                // then reflow only when the available logical width is genuinely narrow.
-                // Do not discard summary information at short heights. Local list/inspector
-                // surfaces own overflow so the whole workspace does not become a scroll canvas.
-                var metricColumns = width >= 700 ? 4 : width >= 520 ? 2 : 1;
-                MediaSummaryPanel.Columns = metricColumns;
+                // Keep the Demo's four metrics in one continuous strip. Do not discard
+                // summary information at short heights. Local list/inspector surfaces own
+                // overflow so the whole workspace does not become a scroll canvas.
                 MediaSummaryPanel.Visibility = Visibility.Visible;
                 MediaSourceFields.Columns = width >= 820 ? 2 : 1;
 

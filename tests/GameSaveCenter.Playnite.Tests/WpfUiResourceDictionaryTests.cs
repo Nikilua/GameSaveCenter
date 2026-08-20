@@ -2175,8 +2175,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Property=\"EnableRowVirtualization\" Value=\"True\"", media);
         Assert.Contains("Text=\"{Binding MediaSummary.TotalSizeDisplay, Mode=OneWay}\"", media);
         Assert.DoesNotContain("MediaSummary.TotalSizeDisplay, Mode=TwoWay", media);
-        Assert.Contains("var metricColumns = width >= 700 ? 4 : width >= 520 ? 2 : 1", mediaCode);
-        Assert.Contains("MediaSummaryPanel.Columns = metricColumns", mediaCode);
+        Assert.Contains("public Border MediaSummaryPanelElement => MediaSummaryPanel", mediaCode);
+        Assert.Contains("Style=\"{DynamicResource GscRedesignSectionCard}\"", media);
         Assert.DoesNotContain("var compactHeight = height < 760", mediaCode);
         Assert.Contains("var stack = width < 1080", mediaCode);
         Assert.Contains("MediaPreviewPanel.Margin = new Thickness(0, 14, 0, 14)", mediaCode);
@@ -2200,28 +2200,27 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [LegacyProductionUiBaselineFact]
-    public void MediaSummaryCardsFollowTheDemoThreeLineMetricRhythm()
+    public void MediaSummaryStripFollowsTheDemoMetricRhythm()
     {
         var repositoryRoot = FindRepositoryRoot();
         var media = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
 
-        // The media center keeps the demo's four metric cards, each in the same
-        // three-line rhythm as the home overview cards: caption -> 30px value -> subtitle.
-        Assert.Contains("x:Name=\"MediaSummaryPanel\" Grid.Row=\"0\" Columns=\"4\"", media);
-        Assert.Equal(4, Regex.Matches(media, "Style=\"{DynamicResource GscRedesignMetricBorder}\"").Count);
-        Assert.Contains("Text=\"当前游戏媒体\"", media);
-        Assert.Contains("Text=\"{Binding MediaSummary.TotalCount, Mode=OneWay}\" FontSize=\"30\" FontWeight=\"SemiBold\"", media);
+        // The media center keeps the Demo's single metric strip: four equal
+        // columns, dividers, 26px values, and compact captions.
+        Assert.Contains("x:Name=\"MediaSummaryPanel\" Grid.Row=\"0\" Style=\"{DynamicResource GscRedesignSectionCard}\"", media);
+        Assert.Contains("<Rectangle Grid.Column=\"1\" Width=\"1\" Fill=\"{DynamicResource GscTableDividerBrush}\"", media);
+        Assert.Contains("<Rectangle Grid.Column=\"2\" Width=\"1\" Fill=\"{DynamicResource GscTableDividerBrush}\"", media);
+        Assert.Contains("<Rectangle Grid.Column=\"3\" Width=\"1\" Fill=\"{DynamicResource GscTableDividerBrush}\"", media);
+        Assert.DoesNotContain("GscRedesignMetricBorder", media);
+        Assert.Contains("Text=\"{Binding MediaSummary.TotalCount, Mode=OneWay}\" FontSize=\"26\" FontWeight=\"SemiBold\"", media);
         Assert.Contains("Text=\"{Binding MediaSummary.ScreenshotCount, Mode=OneWay}\"", media);
         Assert.Contains("Text=\"{Binding MediaSummary.VideoCount, Mode=OneWay}\"", media);
-        Assert.Contains("Text=\"媒体占用\"", media);
-        Assert.Contains("Text=\"{Binding MediaSummary.TotalSizeDisplay, Mode=OneWay}\" FontSize=\"30\" FontWeight=\"SemiBold\"", media);
-        Assert.Contains("Text=\"归档目录可访问\"", media);
-        Assert.Contains("Text=\"已收藏\"", media);
-        Assert.Contains("Text=\"{Binding MediaSummary.FavoriteCount, Mode=OneWay}\" FontSize=\"30\" FontWeight=\"SemiBold\"", media);
-        Assert.Contains("Text=\"支持批量收藏与备注\"", media);
-        Assert.Contains("Text=\"待归类\"", media);
+        Assert.Contains("Text=\"{Binding MediaSummary.TotalSizeDisplay, Mode=OneWay}\" FontSize=\"26\" FontWeight=\"SemiBold\"", media);
+        Assert.Contains("Text=\"归档占用 · 目录可访问\"", media);
+        Assert.Contains("Text=\"{Binding MediaSummary.FavoriteCount, Mode=OneWay}\" FontSize=\"26\" FontWeight=\"SemiBold\"", media);
+        Assert.Contains("Text=\"收藏 · 支持批量收藏与备注\"", media);
         Assert.Contains("Text=\"{Binding Snapshot.UnassignedMediaCount, Mode=OneWay}\" Foreground=\"{DynamicResource GscWarningBrush}\"", media);
-        Assert.Contains("Text=\"来源文件始终保留\"", media);
+        Assert.Contains("Text=\"待归类 · 来源文件始终保留\"", media);
         Assert.DoesNotContain("MediaSummary.TotalCount, Mode=TwoWay", media);
         Assert.DoesNotContain("MediaSummary.FavoriteCount, Mode=TwoWay", media);
     }
@@ -4610,12 +4609,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Style=\"{StaticResource GscWpfUiFilterComboBox}\" SelectedIndex=\"0\"", dashboard);
         Assert.Contains("Style=\"{DynamicResource GscWpfUiFilterComboBox}\" SelectedIndex=\"0\"", media);
         Assert.Contains("SelectedItem=\"{Binding MediaFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}\"", media);
-        // The merged UI keeps the remote alias contract compatible, while the local
-        // branch may use the shared metric style directly for the same four cards.
-        var hasMediaSummaryAlias = media.Contains("x:Key=\"MediaSummaryCard\" TargetType=\"Border\" BasedOn=\"{StaticResource GscRedesignMetricBorder}\"");
-        var directMetricCards = Regex.Matches(media, "Style=\"\\{DynamicResource GscRedesignMetricBorder\\}\"").Count;
-        var aliasedMetricCards = Regex.Matches(media, "Style=\"\\{StaticResource MediaSummaryCard\\}\"").Count;
-        Assert.True((hasMediaSummaryAlias && aliasedMetricCards == 4) || directMetricCards == 4);
+        Assert.Contains("x:Name=\"MediaSummaryPanel\" Grid.Row=\"0\" Style=\"{DynamicResource GscRedesignSectionCard}\"", media);
+        Assert.DoesNotContain("GscRedesignMetricBorder", media);
         Assert.Equal(3, Regex.Matches(tasks, "Style=\"\\{DynamicResource GscWpfUiFilterComboBox\\}\"").Count);
         Assert.Contains("TaskStatusFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部", tasks);
         Assert.Contains("TaskGameFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部", tasks);

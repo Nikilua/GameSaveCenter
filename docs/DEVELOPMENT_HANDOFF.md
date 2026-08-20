@@ -14,6 +14,12 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-20 UI-262 媒体统计条连续结构交接
+
+- `MediaCenterView` 顶部 `MediaSummaryPanel` 已按 Demo 恢复为一个连续统计条：四个等宽指标、三条分隔线和共享 `GscRedesignSectionCard`；生产 Tab 页签仍保留项目当前 Tab chrome，这是用户明确要求的例外。
+- 统计值继续来自真实 `MediaSummary`/`Snapshot` 绑定；待归类 DataGrid、媒体预览、Inspector、目标游戏选择、归类/忽略/保留副本等入口没有迁移或删除。`MediaSummaryPanelElement` 后台类型同步为 `Border`，来源规则的 `MediaSourceFields` 仍是独立 `UniformGrid`。
+- 最新验证：XAML 18/18，Release 0 warning/0 error，Core 59/59、Worker 191/191、Playnite 258 通过/62 跳过/0 失败；source/WPF/diff 门禁通过；`artifacts/ui-qa/media-summary-strip-v1/render-qa-report.txt` 为 `render-qa OK`，覆盖双主题、多尺寸、滚动和 resize。仍需在可识别的 Playnite 生产宿主中完成逐页像素、DPI、键盘焦点及真实操作验收。
+
 ## 2026-08-20 UI-253 修改器中心分段结构交接
 
 - 当前 `TrainerCenterView` 已按 Demo 恢复 `TrainerSegmentTabs` + `LabSegmented` 顶部分段导航，四个真实面板为 `PanelTools`、`PanelImport`、`PanelCatalog`、`PanelReleases`；旧 `TabControl/TabItem` 不再是页面主导航。

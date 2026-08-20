@@ -2,6 +2,21 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-20 UI-262 媒体页统计条恢复 Demo 连续结构
+
+**实现内容：**
+
+- 将生产媒体中心顶部四张独立 `GscRedesignMetricBorder` 卡片改为一个连续的 `GscRedesignSectionCard` 统计条，按 Demo 的四等分布局和三条竖向分隔线呈现媒体文件、归档占用、收藏和待归类四组真实统计。
+- 保留 `MediaSummary.TotalCount`、截图/录像数量、`TotalSizeDisplay`、`FavoriteCount`、`Snapshot.UnassignedMediaCount` 的原有 OneWay 绑定；没有写入 Demo 数字，也没有改变待归类 DataGrid、预览、Inspector、归类/忽略命令或页签结构。
+- 同步 `MediaCenterView.xaml.cs` 的命名元素契约，从旧 `UniformGrid.Columns` 调整为真实的 `Border`，避免后台响应式逻辑继续访问已移除的 `Columns` 属性。
+- 更新页面基线测试，明确保护连续统计条、Divider、真实绑定和不再出现独立 metric card；当前项目 Tab chrome 例外继续保持不变。
+
+**验证结果：**
+
+- `scripts/build.ps1 -Configuration Release -OutputRoot artifacts/gsc-b/media-summary-v1`：XAML 18/18；Release 0 warning、0 error；Core 59/59、Worker 191/191、Playnite 258 通过、62 跳过、0 失败。
+- `python scripts/validate-source.py`：通过；`python .codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py .`：0 error、19 warnings、161 info；`git diff --check`：通过。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/media-summary-strip-v1`：`render-qa OK`，覆盖双主题、多尺寸、滚动探针与 resize transition；已查看 Media 1040×700/1366×768 待归类截图，统计条和主表/Inspector 均可见。离屏证据仍不能替代可识别 Playnite 宿主的逐页像素验收。
+
 ## 2026-08-20 UI-253 修改器中心恢复 Demo 分段页面结构
 
 **实现内容：**
