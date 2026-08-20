@@ -203,12 +203,12 @@ namespace GameSaveCenter.Playnite.Views
             // afford a taller, bounded viewport. In the side rail keep the shorter
             // limit so the page's primary content remains visible.
             var riskViewportHeight = stack
-                ? Clamp(height - 220d, 380d, 520d)
-                : Clamp(height - 360d, 260d, 420d);
+                ? Clamp(height - 220d, 380d, 560d)
+                : Clamp(height - 320d, 300d, 480d);
             OverviewRiskViewport.MaxHeight = riskViewportHeight;
             OverviewProtectionItemsScrollViewer.MaxHeight = stack
-                ? Clamp(height - 360d, 300d, 420d)
-                : Clamp(height - 520d, 220d, 340d);
+                ? Clamp(height - 340d, 320d, 500d)
+                : Clamp(height - 440d, 260d, 400d);
         }
 
         private static double Clamp(double value, double minimum, double maximum)

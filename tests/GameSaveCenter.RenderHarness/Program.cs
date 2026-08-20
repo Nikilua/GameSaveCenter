@@ -1577,6 +1577,49 @@ public static class Program
                     }
                 }
             }
+
+            // The risk rail deliberately keeps its game list in a bounded local
+            // scroller, while the two actions remain outside that scroller.  A
+            // viewport screenshot can therefore look successful even when the
+            // action row has been measured to zero or clipped by the card.  Probe
+            // the actual visual tree and geometry so this class of regression is
+            // caught by QA rather than by a manual click in Playnite.
+            var riskCard = FindVisualChildren<FrameworkElement>(host)
+                .FirstOrDefault(candidate => candidate.Name == "OverviewRiskCard");
+            var protectionActions = FindVisualChildren<FrameworkElement>(host)
+                .FirstOrDefault(candidate => candidate.Name == "OverviewProtectionActions");
+            var protectionScroll = FindVisualChildren<ScrollViewer>(host)
+                .FirstOrDefault(candidate => candidate.Name == "OverviewRiskViewport");
+            if (riskCard != null && protectionActions != null)
+            {
+                var cardOrigin = riskCard.TransformToAncestor(host).Transform(new Point(0, 0));
+                var actionsOrigin = protectionActions.TransformToAncestor(host).Transform(new Point(0, 0));
+                var scrollBottom = protectionScroll == null
+                    ? double.NaN
+                    : protectionScroll.TransformToAncestor(host).Transform(new Point(0, protectionScroll.ActualHeight)).Y;
+                var actionsBottom = actionsOrigin.Y + protectionActions.ActualHeight;
+                var cardBottom = cardOrigin.Y + riskCard.ActualHeight;
+                var actionButtons = FindVisualChildren<Button>(protectionActions).ToList();
+                report.AppendLine(
+                    $"  {label} OverviewProtectionActions: x={actionsOrigin.X:0}, y={actionsOrigin.Y:0}, size={protectionActions.ActualWidth:0}x{protectionActions.ActualHeight:0}, " +
+                    $"vis={protectionActions.Visibility}, buttons={actionButtons.Count}, cardBottom={cardBottom:0}, scrollBottom={scrollBottom:0}");
+                if (protectionActions.Visibility != Visibility.Visible
+                    || protectionActions.ActualWidth <= 0
+                    || protectionActions.ActualHeight <= 0
+                    || actionButtons.Count < 2
+                    || actionButtons.Any(button => button.Visibility != Visibility.Visible || button.ActualWidth <= 0 || button.ActualHeight < 30))
+                {
+                    s_problems.Add($"{label} risk action row is not measurable (visibility={protectionActions.Visibility}, size={protectionActions.ActualWidth:0}x{protectionActions.ActualHeight:0}, buttons={actionButtons.Count})");
+                }
+                if (actionsBottom > cardBottom + 1)
+                    s_problems.Add($"{label} risk action row is clipped by its card (actionsBottom={actionsBottom:0.##}, cardBottom={cardBottom:0.##})");
+                if (protectionScroll != null && actionsOrigin.Y + 1 < scrollBottom)
+                    s_problems.Add($"{label} risk action row overlaps the risk list viewport (actionsY={actionsOrigin.Y:0.##}, scrollBottom={scrollBottom:0.##})");
+            }
+            else
+            {
+                s_problems.Add($"{label} risk action row is missing from the visual tree");
+            }
         }
     }
 

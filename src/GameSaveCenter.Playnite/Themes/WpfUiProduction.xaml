@@ -222,7 +222,7 @@
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
-        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
         <Setter Property="ScrollViewer.PanningMode" Value="VerticalOnly"/>
         <!-- A finite list with only a few realized items must measure from its
              leading edge. Some host/theme templates otherwise center the ItemsPresenter
@@ -298,7 +298,7 @@
         <Setter Property="VerticalGridLinesBrush" Value="Transparent"/>
         <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
-        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
         <!-- Keep the virtualized rows anchored at the top of a short viewport.  Stretching
              the DataGrid content vertically lets some host templates arrange a small item
              set at the bottom and exposes phantom empty space after scrolling. -->
@@ -315,6 +315,9 @@
         <Setter Property="EnableRowVirtualization" Value="True"/>
         <Setter Property="EnableColumnVirtualization" Value="True"/>
         <Setter Property="CanUserResizeRows" Value="False"/>
+        <Setter Property="CanUserResizeColumns" Value="True"/>
+        <Setter Property="CanUserReorderColumns" Value="False"/>
+        <Setter Property="CanUserSortColumns" Value="True"/>
         <Setter Property="SelectionMode" Value="Single"/>
         <Setter Property="KeyboardNavigation.TabNavigation" Value="Local"/>
         <Setter Property="KeyboardNavigation.DirectionalNavigation" Value="Contained"/>
@@ -326,12 +329,13 @@
              it with its default (white) DataGrid header style. -->
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="Foreground" Value="{DynamicResource GscSecondaryTextBrush}"/>
+        <Setter Property="TextElement.Foreground" Value="{DynamicResource GscSecondaryTextBrush}"/>
         <!-- Demo tables use one quiet header band owned by the rounded frame; individual
              columns must not become separate rounded pills. -->
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscTableDividerBrush}"/>
         <Setter Property="BorderThickness" Value="0,0,0,1"/>
-        <Setter Property="Padding" Value="12,0,20,0"/>
+        <Setter Property="Padding" Value="12,0,8,0"/>
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Tag"><Setter.Value><CornerRadius>0</CornerRadius></Setter.Value></Setter>
@@ -349,7 +353,7 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="14"/>
+                                <ColumnDefinition Width="20"/>
                             </Grid.ColumnDefinitions>
                             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -358,15 +362,17 @@
                                               TextElement.Foreground="{TemplateBinding Foreground}"/>
                             <Path x:Name="SortGlyph"
                                   Grid.Column="1"
-                                  Data="M 1 6 L 7 1 L 13 6"
-                                  Stretch="None"
+                                  Data="M 1 5.5 L 6 1 L 11 5.5"
+                                  Width="12"
+                                  Height="12"
+                                  Stretch="Uniform"
                                   Stroke="{DynamicResource GscAccentBrush}"
-                                  StrokeThickness="1.5"
+                                  StrokeThickness="1.4"
                                   StrokeStartLineCap="Round"
                                   StrokeEndLineCap="Round"
-                                  HorizontalAlignment="Right"
+                                  HorizontalAlignment="Center"
                                   VerticalAlignment="Center"
-                                  Margin="0,0,4,0"
+                                  Margin="0"
                                   Visibility="Collapsed"
                                   RenderTransformOrigin="0.5,0.5">
                                 <Path.RenderTransform><RotateTransform Angle="0"/></Path.RenderTransform>
@@ -395,6 +401,7 @@
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="Background" Value="{DynamicResource GscTableHeaderBrush}"/>
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+        <Setter Property="TextElement.Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscTableDividerBrush}"/>
     </Style>
 
@@ -404,6 +411,7 @@
     <Style TargetType="DataGridColumnHeadersPresenter">
         <Setter Property="Background" Value="{DynamicResource GscTableHeaderBrush}"/>
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+        <Setter Property="TextElement.Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
     </Style>
 
     <Style TargetType="DataGridCell">

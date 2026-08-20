@@ -51,6 +51,27 @@ namespace GameSaveCenter.Playnite.Views
                 MediaSummaryPanel.Visibility = Visibility.Visible;
                 MediaSourceFields.Columns = width >= 820 ? 2 : 1;
 
+                // The inbox is a real two-pane workspace, not a table followed by a
+                // hidden action strip. Keep the preview/classification controls in their
+                // own measured column on wide hosts and move that complete inspector below
+                // the table only at the compact breakpoint.
+                var inboxStack = width < 980;
+                var inboxInspectorWidth = MediaInboxLayout.TryFindResource("GscInspectorWidth") is GridLength inboxLength
+                    ? inboxLength
+                    : new GridLength(360);
+                MediaInboxLayout.ColumnDefinitions[1].Width = inboxStack ? new GridLength(0) : new GridLength(14);
+                MediaInboxLayout.ColumnDefinitions[2].Width = inboxStack ? new GridLength(0) : inboxInspectorWidth;
+                MediaInboxLayout.RowDefinitions[1].Height = inboxStack
+                    ? new GridLength(1, GridUnitType.Auto)
+                    : new GridLength(0);
+                Grid.SetColumn(MediaInboxInspectorScrollViewer, inboxStack ? 0 : 2);
+                Grid.SetColumnSpan(MediaInboxInspectorScrollViewer, inboxStack ? 3 : 1);
+                Grid.SetRow(MediaInboxInspectorScrollViewer, inboxStack ? 1 : 0);
+                MediaInboxInspectorScrollViewer.Margin = inboxStack ? new Thickness(0, 10, 0, 0) : new Thickness(0);
+                MediaInboxInspectorScrollViewer.MaxHeight = inboxStack
+                    ? Math.Max(260, Math.Min(520, height * 0.62))
+                    : double.PositiveInfinity;
+
                 // Both media tables retain a bounded, readable viewport. The surrounding tab
                 // surface scrolls the page-level info/actions when this viewport cannot fit
                 // below the summary cards; the DataGrid/ListBox still own row virtualization

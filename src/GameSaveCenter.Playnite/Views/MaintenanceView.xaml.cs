@@ -133,16 +133,18 @@ namespace GameSaveCenter.Playnite.Views
                 MaintenanceProcessGrid.MinHeight = 280;
             }
             var compact = width < 980;
-            // The retention page is a left-aligned reading form capped at 1050.
+            // The retention page follows the Demo's wide reading canvas. Keep a
+            // cap so the cards do not become uncomfortably wide on ultrawide
+            // hosts, while still giving the three-card row enough room to read.
             // Give the StackPanel an explicit viewport width so the cards fill
             // the form instead of collapsing to their content width, mirroring
             // the SaveCenter policy page. The 4 is the right padding of
             // GscPageScrollViewer.
-            MaintenanceRetentionStack.Width = Math.Max(0, Math.Min(width - 4, 1050));
+            MaintenanceRetentionStack.Width = Math.Max(0, Math.Min(width - 4, 1310));
             var stackRetentionDemoTop = width < 720;
             MaintenanceRetentionDemoTopLayout.Width = stackRetentionDemoTop
                 ? MaintenanceRetentionStack.Width
-                : Math.Min(874, MaintenanceRetentionStack.Width);
+                : Math.Min(1310, MaintenanceRetentionStack.Width);
             MaintenanceRetentionDemoTopLayout.ColumnDefinitions[1].Width = stackRetentionDemoTop
                 ? new GridLength(0)
                 : new GridLength(14);
@@ -157,7 +159,7 @@ namespace GameSaveCenter.Playnite.Views
             var stackRetentionDemoOperations = width < 980;
             MaintenanceRetentionDemoOperationsLayout.Width = stackRetentionDemoOperations
                 ? MaintenanceRetentionStack.Width
-                : Math.Min(1018, MaintenanceRetentionStack.Width);
+                : Math.Min(1310, MaintenanceRetentionStack.Width);
             MaintenanceRetentionDemoOperationsLayout.ColumnDefinitions[1].Width = stackRetentionDemoOperations
                 ? new GridLength(0)
                 : new GridLength(14);

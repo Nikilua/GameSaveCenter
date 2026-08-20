@@ -17,6 +17,7 @@
             <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource GscDataGridColumnHeaderStyle}">
                 <Setter Property="Background" Value="{DynamicResource GscTableHeaderBrush}"/>
                 <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+                <Setter Property="TextElement.Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
                 <Setter Property="BorderBrush" Value="{DynamicResource GscTableDividerBrush}"/>
             </Style>
             <Style x:Key="TaskLongTextCell" TargetType="TextBlock">
@@ -47,7 +48,7 @@
                 <Setter Property="EnableColumnVirtualization" Value="True"/>
                 <Setter Property="VirtualizingPanel.ScrollUnit" Value="Item"/>
                 <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
-                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
                 <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                 <Setter Property="VerticalContentAlignment" Value="Top"/>

@@ -3051,3 +3051,24 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 
 - 本轮 Computer Use 启动 Playnite 后未出现可捕获的唯一窗口，随后已释放电脑控制；因此本轮没有新增有效的 Playnite 真机截图证据。
 - 当前阶段不能据此宣称全量页面已经与 AcrylicFork Demo 完成 1:1；存档、修改器、媒体、任务、维护以及首页各状态仍需在可识别的同一 Playnite 宿主中逐页复核。
+
+## 2026-08-20 UI-244 最近任务表头与媒体摘要卡收口
+
+**问题确认：**
+
+- 最近任务的任务名和 DataGrid 表头在部分宿主样式继承下被渲染成黑色，导致深色页面对比度不足。
+- 媒体中心顶部四张摘要卡高度和内部留白过大，挤占了来源规则、列表和详情区的首屏空间。
+
+**实现内容：**
+
+- 共享 `DataGridColumnHeader`、`DataGridColumnHeadersPresenter` 和任务中心局部表头同时设置 `Foreground` 与 `TextElement.Foreground`，覆盖 WPF 宿主默认黑色继承；最近任务类型、游戏名、详情和结果文字也显式使用生产主题令牌。
+- 媒体中心四张摘要卡继续直接使用共享 `GscRedesignMetricBorder`，统一缩小为 `Padding=10,8`、`MinHeight=72`、圆角 14、数字字号 24 和紧凑间距；没有引入单页私有卡片皮肤。
+- 保留 DataGrid 的列宽拖动、排序、虚拟化和项目自身滚动条；这轮没有迁移 Demo 顶部彩色按钮或 Demo 滚动条。
+
+**验证结果：**
+
+- RenderHarness Release 构建：0 警告、0 错误。
+- `scripts/render-qa.ps1 -Output artifacts/ui-qa/phase-home-media-cards-final`：`render-qa OK`；浅色/深色、1040/1100/1366/2560 尺寸和缩放过渡均通过。
+- `scripts/validate-source.py`：通过；`validate_wpf_ui.py`：0 error；`check-xaml.ps1`：18 个 XAML 文件通过；`git diff --check`：通过。
+- Core：59/59；Playnite：251 通过、61 跳过、0 失败。
+- 最终离屏截图确认最近任务文字和表头可读，媒体四张摘要卡等比例收缩。未把本轮离屏结果写成 Playnite 宿主真机 1:1 验收。

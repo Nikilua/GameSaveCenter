@@ -882,3 +882,9 @@
 - 任务搜索提示已经和输入框合并；媒体页局部 Tab 已恢复共享紫色分段样式；首页风险侧栏和保护明细使用有限视口，保护明细采用纵向可读卡片。
 - 本轮 Release 安装和 Core/Worker/Playnite 测试通过，但 Computer Use 未取得可识别 Playnite 窗口；离屏渲染、安装清单和测试不能替代宿主视觉验收。
 - 后续逐页截图必须在同一 Playnite 宿主同时打开生产扩展和 AcrylicFork Preview，分别记录窗口、页面、分辨率、主题和滚动位置；若截图目标不是 Playnite 页面，立即记为阻塞并释放控制。
+
+## 2026-08-20 UI-244 表头前景与媒体摘要卡事实
+
+- 最近任务和任务中心表头不能只设置 `Foreground`：WPF 的 `DataGridColumnHeader` 内容还可能通过 `TextElement.Foreground` 继承宿主默认黑色。共享表头、表头呈现器和任务局部表头现在同时显式绑定生产主题文本令牌，首页任务模板的标题、游戏名、详情和结果也有明确前景色。
+- 媒体中心四张摘要卡使用共享 `GscRedesignMetricBorder`，统一采用紧凑内边距、72 DIP 最小高度、14 DIP 圆角和 24 号数字；卡片仍由 `UniformGrid` 等宽承载，不混入 Tab 或来源规则布局。
+- 2026-08-20 RenderHarness 最终报告 `artifacts/ui-qa/phase-home-media-cards-final/render-qa-report.txt` 为 `render-qa OK`，覆盖浅色/深色、多窗口尺寸和回弹过渡；Core 59/59，Playnite 251 通过、61 跳过。该证据属于离屏渲染，不能替代可识别 Playnite 宿主的逐页截图。

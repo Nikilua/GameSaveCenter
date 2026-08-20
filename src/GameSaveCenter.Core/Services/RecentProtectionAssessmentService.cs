@@ -256,6 +256,7 @@ public sealed class RecentProtectionSummary
     public int HiddenAttentionGames { get; }
     public bool HasMoreItems => HiddenAttentionGames > 0;
     public string WindowLabel => $"最近 {WindowDays} 天";
+    public string SummaryDisplay => $"共 {RecentlyPlayedGames} 个 · 已保护 {ProtectedGames} 个 · 需处理 {AttentionGames} 个";
     public bool HasAttention => AttentionGames > 0;
 
     private const int MaxVisibleItems = 6;

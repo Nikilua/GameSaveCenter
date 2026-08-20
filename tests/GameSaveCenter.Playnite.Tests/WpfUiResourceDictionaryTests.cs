@@ -639,7 +639,7 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
-    public void MediaInboxActionsStayOutsideTheGridScrollSurface()
+    public void MediaInboxInspectorKeepsActionsOutsideTheGridScrollSurface()
     {
         var repositoryRoot = FindRepositoryRoot();
         var mediaPath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml");
@@ -648,10 +648,13 @@ public sealed class WpfUiResourceDictionaryTests
             .Single(element => element.Name.LocalName == "TabItem" && element.Attribute("Header")?.Value == "待归类");
         var tabGrid = tabItem.Descendants().Single(element => element.Name.LocalName == "Grid"
             && element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value != "MediaInboxScrollSurface"
-            && element.Descendants().Count(descendant => descendant.Name.LocalName == "RowDefinition") == 3);
+            && element.Elements().Count(descendant => descendant.Name.LocalName == "Grid.RowDefinitions") == 1
+            && element.Elements().Single(descendant => descendant.Name.LocalName == "Grid.RowDefinitions")
+                .Elements().Count(descendant => descendant.Name.LocalName == "RowDefinition") == 3);
         Assert.Equal("Grid", tabGrid.Name.LocalName);
 
-        var rowHeights = tabGrid.Descendants()
+        var rowHeights = tabGrid.Elements().Single(element => element.Name.LocalName == "Grid.RowDefinitions")
+            .Elements()
             .Where(element => element.Name.LocalName == "RowDefinition")
             .Select(element => element.Attribute("Height")?.Value)
             .ToList();
@@ -664,16 +667,22 @@ public sealed class WpfUiResourceDictionaryTests
             .FirstOrDefault(element => element.Name.LocalName == "Border"
                 && (element.Attribute("Style")?.Value ?? "").Contains("MediaTableFrame"));
         Assert.NotNull(tableFrame);
-        Assert.Equal("1", tableFrame.Attribute("Grid.Row")?.Value);
+        Assert.Equal("0", tableFrame.Attribute("Grid.Row")?.Value);
+        var inboxLayout = tabItem.Descendants()
+            .Single(element => element.Name.LocalName == "Grid"
+                && element.Attribute(xamlName)?.Value == "MediaInboxLayout");
+        Assert.Equal("1", inboxLayout.Attribute("Grid.Row")?.Value);
 
-        var actionBar = tabGrid.Descendants()
-            .Single(element => element.Name.LocalName == "WrapPanel"
-                && element.DescendantsAndSelf().Any(descendant => descendant.Attribute("Command")?.Value == "{Binding AssignInboxMediaCommand}"));
-        Assert.Equal("2", actionBar.Attribute("Grid.Row")?.Value);
-        Assert.False(actionBar.Ancestors().Contains(tableFrame),
-            "待归类确认/忽略按钮与归类目标不能放进 MediaInboxGrid 的滚动面。");
-        Assert.Contains(actionBar.Descendants(), element => element.Attribute("Command")?.Value == "{Binding IgnoreInboxMediaCommand}");
-        Assert.Contains(actionBar.Descendants(), element => element.Attribute("SelectedItem")?.Value == "{Binding InboxTargetGame}");
+        var inspector = tabGrid.Descendants()
+            .Single(element => element.Name.LocalName == "ScrollViewer"
+                && element.Attribute(xamlName)?.Value == "MediaInboxInspectorScrollViewer");
+        Assert.Equal("0", inspector.Attribute("Grid.Row")?.Value);
+        Assert.Equal("2", inspector.Attribute("Grid.Column")?.Value);
+        Assert.False(inspector.Ancestors().Contains(tableFrame),
+            "待归类预览、确认/忽略按钮与归类目标不能放进 MediaInboxGrid 的滚动面。");
+        Assert.Contains(inspector.Descendants(), element => element.Attribute("Command")?.Value == "{Binding AssignInboxMediaCommand}");
+        Assert.Contains(inspector.Descendants(), element => element.Attribute("Command")?.Value == "{Binding IgnoreInboxMediaCommand}");
+        Assert.Contains(inspector.Descendants(), element => element.Attribute("SelectedItem")?.Value == "{Binding InboxTargetGame}");
     }
 
     [Fact]

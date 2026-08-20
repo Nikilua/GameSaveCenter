@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Windows.Data;
 using System.Windows.Input;
 using GameSaveCenter.Contracts;
+using GameSaveCenter.Core.Services;
 
 namespace GameSaveCenter.RenderHarness;
 
@@ -104,21 +105,33 @@ public sealed class FakeDashboardData
             LudusaviName = "BG3"
         };
 
+        var fixtureNowUtc = DateTime.UtcNow;
         for (var i = 1; i <= rowCount; i++)
         {
+            var protectedFixture = i % 4 == 0;
             Games.Add(new GameStatusDto
             {
                 PlayniteId = "game-" + i,
                 Name = i == 1 ? SelectedGame.Name : $"演示游戏 {i}",
                 Platform = GamePlatformKind.Steam,
                 IsInstalled = true,
-                LudusaviMatched = i % 2 == 0,
+                LastPlayedUtc = fixtureNowUtc.AddDays(-i),
+                LudusaviMatched = protectedFixture || i % 2 == 0,
+                LastBackupUtc = protectedFixture
+                    ? fixtureNowUtc.AddDays(-i).AddMinutes(10)
+                    : i % 3 == 0 ? fixtureNowUtc.AddDays(-(i + 1)) : null,
                 BackupVersionCount = i * 2,
+                LatestRestoreReadinessStatus = protectedFixture || i % 3 == 0 ? RestoreReadinessStatus.Ready : null,
+                Policy = protectedFixture
+                    ? new BackupPolicyDto { Enabled = true, BackupOnGameStop = true, BackupDuringPlay = true }
+                    : new BackupPolicyDto(),
                 MediaCount = i * 3,
                 CloudState = i % 3 == 0 ? "Pending" : "Uploaded",
                 HealthState = i % 5 == 0 ? "Warning" : "Ready"
             });
         }
+
+        RecentProtection = new RecentProtectionAssessmentService().Assess(Games, 30, fixtureNowUtc);
 
         for (var i = 1; i <= rowCount; i++)
         {
@@ -426,6 +439,7 @@ public sealed class FakeDashboardData
     public DashboardSnapshotDto Snapshot { get; }
     public EnvironmentCheckReportDto EnvironmentCheck { get; }
     public GameStatusDto SelectedGame { get; }
+    public RecentProtectionSummary RecentProtection { get; }
     public ObservableCollection<GameStatusDto> Games { get; } = new ObservableCollection<GameStatusDto>();
     public ObservableCollection<TaskStatusDto> Tasks { get; } = new ObservableCollection<TaskStatusDto>();
     public ICollectionView TasksView { get; }

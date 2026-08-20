@@ -20,6 +20,7 @@ public sealed class RecentProtectionAssessmentTests
         Assert.Equal(1, result.RecentlyPlayedGames);
         Assert.Equal(1, result.ProtectedGames);
         Assert.Empty(result.AttentionItems);
+        Assert.Equal("共 1 个 · 已保护 1 个 · 需处理 0 个", result.SummaryDisplay);
         var item = Assert.Single(result.Items);
         Assert.Equal(RecentProtectionIssueKind.Protected, item.IssueKind);
         Assert.Equal("已保护", item.StatusDisplay);
