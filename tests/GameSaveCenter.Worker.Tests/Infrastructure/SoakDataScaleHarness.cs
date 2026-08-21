@@ -49,11 +49,13 @@ public sealed class SoakDataScaleHarness : IDisposable
 
     public async Task RunAsync(bool fullScale, CancellationToken token)
     {
-        var games = fullScale ? 2000 : 200;
-        var backupsPerGame = 10;
-        var tasks = fullScale ? 10000 : 1000;
-        var media = fullScale ? 30000 : 3000;
-        var tools = fullScale ? 500 : 50;
+        // Keep the default developer/install profile bounded even on slow disks. The
+        // full data-scale profile remains available through GSC_SOAK_DATA_SCALE=1.
+        var games = fullScale ? 2000 : 40;
+        var backupsPerGame = fullScale ? 10 : 3;
+        var tasks = fullScale ? 10000 : 200;
+        var media = fullScale ? 30000 : 600;
+        var tools = fullScale ? 500 : 20;
 
         var process = Process.GetCurrentProcess();
         var beforeManaged = GC.GetTotalMemory(false);

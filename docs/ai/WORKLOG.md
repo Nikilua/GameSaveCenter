@@ -2,6 +2,24 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-21 BUILD-001 修复跨电脑构建测试基准路径与默认耗时
+
+**问题确认：**
+
+- `9b19dbd` 的 Release 编译本身是 0 警告/0 错误；另一台机器失败发生在 Playnite 测试阶段，五个视觉对照测试把 AcrylicFork Demo 写死为 `D:\workplace\Github\GameSaveCenter.AcrylicFork`，干净克隆没有该兄弟目录时抛出 `DirectoryNotFoundException`。
+- Worker 默认测试包含逐行 SQLite 数据规模 Soak 与稳定性循环；本机约 48 秒，较慢磁盘/旧测试 SDK 会放大为日志中的 5 分 53 秒，表现为“正在启动测试执行，请稍候”长时间无输出。
+
+**实现内容：**
+
+- 新增 `AcrylicForkDesignSource` 与 xUnit 2 兼容的 `AcrylicForkDesignFact`：优先读取 `GSC_ACRYLICFORK_ROOT`，其次读取仓库兄弟目录；外部 Demo 不存在时只跳过五个外部基准断言，其他生产源码/绑定/业务测试继续执行。设置 `GSC_REQUIRE_ACRYLICFORK_BASELINE=1` 可将缺失基准恢复为硬失败。
+- Worker 默认稳定性 Soak 降至 20 个周期；默认数据规模缩为 40 游戏、3 个版本/游戏、200 任务、600 媒体、20 工具。`GSC_SOAK_DATA_SCALE=1` 仍保留原 2000/10000/30000/500 全量压力档，`GSC_SOAK_ITERATIONS` 仍可提升至 5000。
+- 未修改生产 UI、Worker 业务实现、真实命令、绑定、数据契约或任何页面结构。
+
+**验证结果：**
+
+- 使用不存在的 `GSC_ACRYLICFORK_ROOT` 模拟干净机器：XAML 18/18；Release 0 warning/0 error；Core 59/59；Worker 194/194（23 秒）；Playnite 269 通过、65 跳过、0 失败。
+- 当前机器保留 AcrylicFork Demo 兄弟目录时，五个视觉对照测试正常执行；完整 Playnite 结果为 274 通过、60 跳过、0 失败。
+
 ## 2026-08-21 UI-287 修复共享表格排序箭头和列宽拖拽
 
 **问题确认：**

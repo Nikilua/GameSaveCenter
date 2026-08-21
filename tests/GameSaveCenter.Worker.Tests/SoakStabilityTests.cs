@@ -10,7 +10,7 @@ public sealed class SoakStabilityTests
         get
         {
             var raw = Environment.GetEnvironmentVariable("GSC_SOAK_ITERATIONS");
-            return int.TryParse(raw, out var value) ? Math.Clamp(value, 20, 5000) : 100;
+            return int.TryParse(raw, out var value) ? Math.Clamp(value, 20, 5000) : 20;
         }
     }
 

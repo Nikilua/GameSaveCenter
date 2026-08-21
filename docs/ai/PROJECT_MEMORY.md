@@ -3,6 +3,13 @@
 > 维护时间：2026-08-21
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-21 BUILD-001 当前事实：跨电脑构建测试不再依赖绝对 Demo 路径
+
+- `9b19dbd` 的 Release 编译没有错误；跨电脑失败来自五个 Playnite 视觉对照测试直接拼接开发者机器的 `D:\workplace\Github\GameSaveCenter.AcrylicFork`，不是生产代码编译或 UI 实现回退。
+- `tests/GameSaveCenter.Playnite.Tests/AcrylicForkDesignSource.cs` 解析 `GSC_ACRYLICFORK_ROOT`、仓库兄弟目录和仓库内 Demo 目录；`AcrylicForkDesignFact` 兼容当前 xUnit 2，在没有外部 Demo 时只跳过对应五个基准测试。需要强制 Demo 基准时设置 `GSC_REQUIRE_ACRYLICFORK_BASELINE=1`。
+- Worker 默认 Soak 测试改为 20 个稳定性周期、40 游戏/3 版本、200 任务、600 媒体、20 工具，以避免慢盘机器长时间无输出；`GSC_SOAK_DATA_SCALE=1` 仍启用 2000 游戏、10000 任务、30000 媒体、500 工具的全量压力档。
+- 验证：无 Demo 模拟环境为 XAML 18/18、Release 0 warning/0 error、Core 59、Worker 194、Playnite 269 通过/65 跳过/0 失败；有 Demo 环境完整 Playnite 为 274 通过/60 跳过/0 失败。没有修改生产 UI、命令、Binding 或业务逻辑。
+
 ## 2026-08-21 UI-287 当前事实：共享表格表头排序箭头与列宽调整
 
 - 生产共享 `DataGridColumnHeader` 模板之前只有排序 `Path`，没有 WPF 约定的 `PART_LeftHeaderGripper`/`PART_RightHeaderGripper`，因此虽然 `CanUserResizeColumns=True`，实际表头没有可拖拽列宽的命中区域。

@@ -14,6 +14,14 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-21 BUILD-001 跨电脑构建与测试交接
+
+- `9b19dbd` 的 Release 编译本身通过；此前另一台机器的 5 个失败均是视觉对照测试写死 `D:\workplace\Github\GameSaveCenter.AcrylicFork` 导致的 `DirectoryNotFoundException`。
+- 视觉基准解析集中在 `tests/GameSaveCenter.Playnite.Tests/AcrylicForkDesignSource.cs`，测试属性在 `AcrylicForkDesignFactAttribute.cs`。默认优先使用 `GSC_ACRYLICFORK_ROOT`，其次使用仓库兄弟目录；没有 Demo 时只跳过依赖外部文件的五个断言，不得为了通过测试删除生产资源契约。
+- 发布/验收环境若要求 Demo 必须存在，设置 `GSC_REQUIRE_ACRYLICFORK_BASELINE=1`；跨电脑普通构建不应再依赖特定绝对路径。
+- Worker 默认 Soak 规模已设为慢盘可接受的边界值；完整压力测试使用 `GSC_SOAK_DATA_SCALE=1`，稳定性周期可用 `GSC_SOAK_ITERATIONS` 覆盖。验证脚本继续使用 `-m:1 -nodeReuse:false`，避免 SDK 多节点恢复阶段长时间无输出。
+- 本阶段只修复测试环境可移植性和默认测试耗时，未回退或重写此前 Demo-first UI、功能、绑定、命令和业务行为。
+
 ## 2026-08-21 UI-287 表格表头与列宽交互交接
 
 - 共享 `WpfUiProduction.xaml` 的 DataGrid 表头现在必须包含 `PART_LeftHeaderGripper` 和 `PART_RightHeaderGripper`；不要为了改箭头而删掉这两个 WPF 模板部件。第一列左 Thumb 由 WPF 自动折叠属于正常行为，其他可调整边界必须有有效命中区。
