@@ -14,6 +14,13 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-21 UI-286 修改器导入与历史归档交接
+
+- `GameToolService` 已修复文件名误判：含版本文字 `Update` 的修改器 EXE 不再被过滤；只有明确的 `unins*`、`uninstall`、`update`、`updater`、`setup` 辅助入口在目录/ZIP候选列表中排除。显式单文件导入必须保留其入口。
+- 拖放导入的候选集合、选中项、清理和导入后工具选择均通过 `DashboardViewModel.ApplyOnUi`，防止 Worker/IPC continuation 直接修改 WPF `CollectionView`。不要将 `Replace(ImportEntryCandidates,...)` 或 `ImportEntryCandidates.Clear()` 移回后台 continuation。
+- FLiNG 目录刷新现在可选读取 `https://archive.flingtrainer.com/` 的静态目录；历史 ZIP/EXE 作为“FLiNG 归档”搜索结果，读取版本后走现有下载/安全解压/入口选择流程。归档失败是可降级的，不得让当前在线目录刷新失败；RAR/7z 不应伪装成可支持格式。
+- 当前证据：`artifacts/gsc-b/ui286-trainer-import-v2` 为 XAML 18/18、Release 0 warning/0 error、Core 59/59、Worker 194/194、Playnite 273 通过/60 跳过/0 失败；`artifacts/ui-qa/ui286-trainer-import-v1/render-qa-report.txt` 为 `render-qa OK`；source 0 error，WPF UI 0 error、20 warnings、164 info。真实 Playnite 宿主和用户提供的 EXE 均未执行/未验证，不能把本阶段写成真实宿主验收或总迁移完成。
+
 ## 2026-08-21 UI-285 媒体待归类反向滚动空白交接
 
 - `MediaInboxGrid` 已局部关闭 `infra:DataGridStarFill.Enabled`。它仍保留有限 Grid 中的原生星号列、Standard 行虚拟化、Item 滚动和列虚拟化关闭；不要恢复共享 star-fill，也不要关闭全部虚拟化。

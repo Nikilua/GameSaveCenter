@@ -4,6 +4,7 @@ using GameSaveCenter.Worker.Ipc;
 using GameSaveCenter.Worker.Persistence;
 using GameSaveCenter.Worker.Services;
 using Microsoft.Extensions.Logging.Abstractions;
+using System.IO.Compression;
 using Xunit;
 
 namespace GameSaveCenter.Worker.Tests;
@@ -247,6 +248,50 @@ public sealed class GameToolServiceImportTests : IDisposable
             CopyIntoLibrary = false
         }, CancellationToken.None));
         Assert.False(Directory.EnumerateDirectories(options.GameToolsDirectory).Any(), "failed external import must not leave an empty GameTools directory");
+    }
+
+    [Fact]
+    public async Task InspectImport_IncludesExplicitTrainerExecutableWhoseNameContainsUpdate()
+    {
+        var source=Path.Combine(root,"Outlast 2 v1.0-Update 2 Plus 4 Trainer.exe");
+        File.WriteAllText(source,"fake trainer");
+
+        var inspection=await service.InspectImportAsync(new InspectGameToolImportRequestDto
+        {
+            SourcePath=source,ToolType=GameToolType.Trainer
+        },CancellationToken.None);
+
+        var candidate=Assert.Single(inspection.Candidates);
+        Assert.Equal(Path.GetFileName(source),candidate.RelativePath);
+
+        var imported=await service.ImportAsync(new ImportGameToolRequestDto
+        {
+            PlayniteId="game",ToolType=GameToolType.Trainer,SourcePath=source,
+            EntryFileName=candidate.RelativePath,CopyIntoLibrary=true
+        },CancellationToken.None);
+
+        Assert.True(imported.ActiveVersion.IsAvailable);
+        Assert.EndsWith("Outlast 2 v1.0-Update 2 Plus 4 Trainer.exe",imported.ActiveVersion.EntryPath,StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public async Task InspectImport_ZipKeepsTrainerExecutableWithVersionUpdateInItsName()
+    {
+        var archive=Path.Combine(root,"outlast-archive.zip");
+        using(var zip=ZipFile.Open(archive,ZipArchiveMode.Create))
+        {
+            var entry=zip.CreateEntry("Outlast 2 v1.0-Update 2 Plus 4 Trainer.exe");
+            using var writer=new StreamWriter(entry.Open());
+            writer.Write("fake trainer");
+        }
+
+        var inspection=await service.InspectImportAsync(new InspectGameToolImportRequestDto
+        {
+            SourcePath=archive,ToolType=GameToolType.Trainer
+        },CancellationToken.None);
+
+        var candidate=Assert.Single(inspection.Candidates);
+        Assert.EndsWith("Outlast 2 v1.0-Update 2 Plus 4 Trainer.exe",candidate.RelativePath,StringComparison.OrdinalIgnoreCase);
     }
 
     public void Dispose()

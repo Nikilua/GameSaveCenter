@@ -41,6 +41,17 @@ public sealed class DragDropImportSourceTests
         Assert.Contains("GameToolType.Trainer", viewModel);
     }
 
+    [Fact]
+    public void ImportCandidateCollectionIsReplacedOnThePlayniteDispatcher()
+    {
+        var root=FindRepositoryRoot();
+        var viewModel=File.ReadAllText(Path.Combine(root,"src","GameSaveCenter.Playnite","ViewModels","DashboardViewModel.cs"));
+
+        Assert.Contains("ApplyOnUi(() =>",viewModel);
+        Assert.Contains("Replace(ImportEntryCandidates,inspection.Candidates);",viewModel);
+        Assert.Contains("ImportEntryCandidates.Clear();",viewModel);
+    }
+
     private static string FindRepositoryRoot()
     {
         var directory = new DirectoryInfo(AppContext.BaseDirectory);

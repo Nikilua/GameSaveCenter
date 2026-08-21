@@ -1893,12 +1893,18 @@ namespace GameSaveCenter.Playnite.ViewModels
                 await ExecuteGameToolImportAsync(inspection.SourcePath,type,inspection.Candidates[0].RelativePath);
                 return;
             }
-            pendingGameToolImportSource=inspection.SourcePath;
-            pendingGameToolImportType=type;
-            Replace(ImportEntryCandidates,inspection.Candidates);
-            SelectedImportEntryCandidate=ImportEntryCandidates.FirstOrDefault();
-            HasPendingGameToolEntrySelection=true;
-            StatusMessage=$"检测到 {ImportEntryCandidates.Count} 个可执行文件，请选择主程序";
+            ApplyOnUi(() =>
+            {
+                // RequestAsync completes on an IPC/Worker continuation. ImportEntryCandidates
+                // is bound to a WPF CollectionView, so every collection, selection, and status
+                // update must be applied through the Playnite dispatcher.
+                pendingGameToolImportSource=inspection.SourcePath;
+                pendingGameToolImportType=type;
+                Replace(ImportEntryCandidates,inspection.Candidates);
+                SelectedImportEntryCandidate=ImportEntryCandidates.FirstOrDefault();
+                HasPendingGameToolEntrySelection=true;
+                StatusMessage=$"检测到 {ImportEntryCandidates.Count} 个可执行文件，请选择主程序";
+            });
         }
 
         private Task ConfirmGameToolImportAsync()
@@ -1915,7 +1921,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                 PlayniteId=SelectedGame.PlayniteId,ToolType=type,SourcePath=source,EntryFileName=entryFileName,CopyIntoLibrary=copyIntoLibrary
             },TimeSpan.FromMinutes(5));
             ClearPendingGameToolImport();
-            await LoadDetailsAsync();SelectedGameTool=GameTools.FirstOrDefault(x=>x.ToolId==imported.ToolId)??GameTools.FirstOrDefault();
+            await LoadDetailsAsync();
+            ApplyOnUi(() => SelectedGameTool=GameTools.FirstOrDefault(x=>x.ToolId==imported.ToolId)??GameTools.FirstOrDefault());
             var message=type switch
             {
                 GameToolType.CheatTable=>"Cheat Table 已导入，自动启动保持关闭",
@@ -1927,11 +1934,14 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private void ClearPendingGameToolImport()
         {
-            pendingGameToolImportSource=string.Empty;
-            ImportEntryCandidates.Clear();
-            SelectedImportEntryCandidate=null!;
-            HasPendingGameToolEntrySelection=false;
-            StatusMessage="已取消本次导入";
+            ApplyOnUi(() =>
+            {
+                pendingGameToolImportSource=string.Empty;
+                ImportEntryCandidates.Clear();
+                SelectedImportEntryCandidate=null!;
+                HasPendingGameToolEntrySelection=false;
+                StatusMessage="已取消本次导入";
+            });
         }
 
         private async Task SaveSelectedGameToolAsync()

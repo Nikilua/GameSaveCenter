@@ -2,6 +2,28 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-21 UI-286 修复修改器 EXE 导入与旧版 FLiNG 归档搜索
+
+**问题确认：**
+
+- `Outlast 2 v1.0-Update 2 Plus 4 Trainer.exe` 的文件名包含 `Update`；旧扫描器把文件名包含 `update` 的所有 EXE 当成更新辅助程序，导致显式导入时错误提示“未在导入内容中找到 .exe”。
+- 拖放导入请求从 Worker/IPC 线程返回后，候选集合、选中项和状态直接更新；`ImportEntryCandidates` 绑定 WPF `CollectionView`，会触发“CollectionView 不支持从调度程序线程以外的线程修改 SourceCollection”。
+- FLiNG 在线目录原本只同步当前 `flingtrainer.com` 页面，没有把用户指出的 `archive.flingtrainer.com` 历史目录加入搜索；现有下载器已能安全处理 ZIP/EXE，但不是 RAR/7z。
+
+**实现内容：**
+
+- 将“显式选中的单文件”与“目录/ZIP 候选过滤”分离；仅排除 `unins*`、`uninstall`、`update`、`updater`、`setup` 这类明确辅助入口，保留带版本描述的 `...-Update ... Trainer.exe`。新增真实 EXE 导入和 ZIP 内入口回归测试。
+- 候选集合、选中项、清理状态和导入后工具选择统一通过 Playnite Dispatcher 应用；命令、绑定、复制到工具库、哈希和安全语义不变。
+- 刷新 FLiNG 目录时可选同步历史归档根目录；归档 ZIP/EXE 以可搜索条目展示，读取版本直接生成一个下载版本并复用现有 HTTPS 校验、大小限制、安全 ZIP 解压和入口选择。归档站暂时不可用时保留当前在线目录，不覆盖缓存。
+- 归档结果在目录列表中显示“FLiNG 归档”，避免与当前在线条目混淆；未执行用户提供的未知 EXE。
+
+**验证结果：**
+
+- `scripts/build.ps1 -Configuration Release -OutputRoot artifacts/gsc-b/ui286-trainer-import-v2`：XAML 18/18；Release 构建 0 warning、0 error；Core 59/59；Worker 194/194；Playnite 273 通过、60 跳过、0 失败。
+- 新增导入/归档测试通过：含 `Update` 文件名的 EXE 可检查并实际导入，ZIP 内同名入口可识别，归档目录链接可转换为可搜索条目；拖放候选更新具备 Dispatcher 源码门禁。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/ui286-trainer-import-v1`：`render-qa OK`；双主题、1040/1100/1366/2560、多页面 Tab、滚动和 resize transition 均通过，Trainer 导入确认 ComboBox 仍有 4 个候选项。
+- `scripts/validate-source.py` 通过；`validate_wpf_ui.py` 0 error、20 warnings、164 info；warnings/info 为既有共享资源、有限测量和示例资源审计提示。本阶段未运行真实 Playnite 生产宿主。
+
 ## 2026-08-21 UI-285 修复媒体待归类表格反向滚动偶发空白
 
 **问题确认：**

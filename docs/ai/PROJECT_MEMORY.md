@@ -3,6 +3,13 @@
 > 维护时间：2026-08-21
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-21 UI-286 当前事实：修改器导入线程与 FLiNG 历史归档
+
+- `GameToolService.InspectImportAsync` 不得把文件名包含 `Update` 的所有 EXE 排除；显式选中的单文件必须按扩展名保留。目录/ZIP 候选只排除明确的 `unins*`、`uninstall`、`update`、`updater`、`setup` 辅助入口，`Outlast 2 v1.0-Update 2 Plus 4 Trainer.exe` 是有效修改器入口。
+- `DashboardViewModel.PrepareGameToolImportAsync`、`ClearPendingGameToolImport` 和导入后选中工具更新涉及绑定集合/属性，必须通过 `ApplyOnUi`；`ImportEntryCandidates` 的 `CollectionView` 不能从 IPC/Worker continuation 修改。
+- `FlingTrainerCatalogSource` 现在可选同步 `https://archive.flingtrainer.com/` 的目录链接；仅登记 ZIP/EXE，归档条目的 `PageUrl` 是安全校验后的直接下载地址，`GetReleasesAsync` 返回单一归档版本。下载继续复用现有 HTTPS host 校验、2 GiB 限制、ZIP 路径/大小/文件数校验和入口筛选；RAR/7z 尚未支持。
+- UI-286 证据：`artifacts/gsc-b/ui286-trainer-import-v2` 构建/测试通过，Worker 194、Playnite 273/60；`artifacts/ui-qa/ui286-trainer-import-v1/render-qa-report.txt` 为 `render-qa OK`，覆盖双主题、多尺寸、Tab、滚动和 resize。新测试覆盖含 `Update` 的直接 EXE、ZIP 入口和归档目录解析。当前共享环境没有用户的 `D:\Download\Brave` 文件，未进行其真实签名/哈希检查，也未执行它；真实 Playnite 生产宿主逐页验证仍未完成。
+
 ## 2026-08-21 UI-285 当前事实：媒体待归类反向滚动禁用共享星号重分配
 
 - `MediaInboxGrid` 处于有限 `Grid` 视口时必须设置 `infra:DataGridStarFill.Enabled=False`。共享 star-fill 只适合无限测量宿主；在媒体 4468 条收件箱中把星号列重算为像素列并 `InvalidateMeasure`，会和 Standard 虚拟行呈现器的底部→顶部回退竞争，产生滚动条仍在但行全部消失的偶发状态。

@@ -169,6 +169,8 @@ namespace GameSaveCenter.Contracts
         public int OptionCount { get; set; }
         public DateTime? LastUpdatedUtc { get; set; }
         public DateTime LastSyncedUtc { get; set; }
+        public string SourceDisplay => PageUrl.IndexOf("archive.flingtrainer.com",StringComparison.OrdinalIgnoreCase)>=0
+            ? "FLiNG 归档" : "FLiNG 在线库";
     }
 
     public sealed class TrainerReleaseDto

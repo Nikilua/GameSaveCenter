@@ -44,7 +44,7 @@ public sealed class GameToolService
             foreach(var path in Directory.EnumerateFiles(source,"*",SearchOption.AllDirectories))
             {
                 token.ThrowIfCancellationRequested();
-                if(!IsEntryCandidate(path,extension))continue;
+                if(!IsEntryCandidate(path,extension)||IsLikelySupportExecutable(path))continue;
                 candidates.Add(new GameToolEntryCandidateDto{RelativePath=Path.GetRelativePath(source,path),SizeBytes=new FileInfo(path).Length});
             }
         }
@@ -55,7 +55,7 @@ public sealed class GameToolService
             foreach(var entry in zip.Entries)
             {
                 token.ThrowIfCancellationRequested();
-                if(string.IsNullOrEmpty(entry.Name)||!IsEntryCandidate(entry.FullName,extension))continue;
+                if(string.IsNullOrEmpty(entry.Name)||!IsEntryCandidate(entry.FullName,extension)||IsLikelySupportExecutable(entry.FullName))continue;
                 // Validate every selectable entry before showing it to the user.
                 ArchivePathGuard.ResolveEntryPath(Path.Combine(Path.GetTempPath(),"GameSaveCenterImportInspection"),entry.FullName);
                 candidates.Add(new GameToolEntryCandidateDto{RelativePath=entry.FullName.Replace('/',Path.DirectorySeparatorChar),SizeBytes=entry.Length});
@@ -394,18 +394,23 @@ public sealed class GameToolService
         }
         var extension=type==GameToolType.CheatTable?"*.ct":"*.exe";
         var candidates=Directory.GetFiles(root,extension,SearchOption.AllDirectories)
-            .Where(x=>!Path.GetFileName(x).Contains("unins",StringComparison.OrdinalIgnoreCase)&&!Path.GetFileName(x).Contains("update",StringComparison.OrdinalIgnoreCase))
+            .Where(x=>!IsLikelySupportExecutable(x))
             .OrderByDescending(x=>new FileInfo(x).Length).ToList();
         if(candidates.Count==0)throw new InvalidDataException($"未在导入内容中找到 {extension}。");
         return candidates[0];
     }
 
     private static bool IsEntryCandidate(string path,string? extension)
+        => extension==null||Path.GetExtension(path).Equals(extension,StringComparison.OrdinalIgnoreCase);
+
+    private static bool IsLikelySupportExecutable(string path)
     {
-        if(extension!=null&&!path.EndsWith(extension,StringComparison.OrdinalIgnoreCase))return false;
-        return extension==null
-            ||(!Path.GetFileName(path).Contains("unins",StringComparison.OrdinalIgnoreCase)
-               &&!Path.GetFileName(path).Contains("update",StringComparison.OrdinalIgnoreCase));
+        var name=Path.GetFileNameWithoutExtension(path);
+        return name.StartsWith("unins",StringComparison.OrdinalIgnoreCase)
+               ||name.Equals("uninstall",StringComparison.OrdinalIgnoreCase)
+               ||name.Equals("update",StringComparison.OrdinalIgnoreCase)
+               ||name.Equals("updater",StringComparison.OrdinalIgnoreCase)
+               ||name.Equals("setup",StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool IsLikelyPrimaryEntry(string path)
