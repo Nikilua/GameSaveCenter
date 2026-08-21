@@ -3,6 +3,13 @@
 > 维护时间：2026-08-21
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-21 UI-290 当前事实：首页信息层级
+
+- `OverviewPrimaryFlow` 的固定行契约是：`OverviewHeroAndGameRow` 行 0、`OverviewStatStrip` 行 1、`OverviewHomeToolbar` 行 2、`OverviewActivityColumn` 行 3/4；`OverviewSecondaryScrollViewer` 仍由响应式代码在宽屏并列、窄屏后置。
+- 首页辅助 toolbar 仍保留 `RefreshCommand`、`BackupAllCommand`、`SyncMediaCommand`、`OpenAttentionCenterCommand` 和环境检查 `OpenMaintenanceCommand`；只是视觉层级后置，不得删除这些真实入口。
+- UI-290 验证：源码门禁通过；Release 0 warning/0 error；Core 59/59、Worker 194/194、Playnite 276/58/0；`artifacts/ui-qa/overview-order-ui288/render-qa-report.txt` 为 `render-qa OK`。
+- 该 RenderHarness 报告只能作为离屏多尺寸/双主题回归，不能替代 Playnite 宿主像素截图或高 DPI/高对比度人工验收。
+
 ## 2026-08-21 UI-289 当前事实：共享控件尺寸
 
 - 普通按钮/输入/ComboBox 的共享基准是 `GscButtonHeight=36`；紧凑按钮使用独立 `GscCompactButtonHeight=30`，不能在页面上重新写回 38 DIP。

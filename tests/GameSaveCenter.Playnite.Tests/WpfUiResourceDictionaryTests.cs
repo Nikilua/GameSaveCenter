@@ -2850,7 +2850,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Key=\"GscSuccessShadowColor\"", designTokens);
     }
 
-    [LegacyProductionUiBaselineFact]
+    [Fact]
     public void OverviewFollowsDemoContextThenMetricsThenActivityOrder()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -2861,16 +2861,18 @@ public sealed class WpfUiResourceDictionaryTests
         var currentGame = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewCurrentGameCard");
         var metrics = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewStatStrip");
         var activity = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewActivityList");
+        var toolbar = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewHomeToolbar");
 
-        // The production page follows Demo HomeView's hierarchy: a separate action
-        // surface, then a TODAY/current-game row, then metrics and recent activity.
-        Assert.Equal("1", heroGameRow.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
+        // The production page follows Demo HomeView's hierarchy: TODAY/current-game,
+        // metrics, recent activity, then the auxiliary batch/environment action surface.
+        Assert.Equal("0", heroGameRow.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
         Assert.Same(heroGameRow, hero.Parent);
         Assert.Same(heroGameRow, currentGame.Parent);
         Assert.Equal("0", hero.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
         Assert.Equal("0", currentGame.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
         Assert.Equal("1*", heroGameRow.Descendants().Single(element => element.Name.LocalName == "ColumnDefinition" && element.Attribute(xamlName)?.Value == "OverviewCurrentGameColumn").Attribute("Width")?.Value);
-        Assert.Equal("2", metrics.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
+        Assert.Equal("1", metrics.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
+        Assert.Equal("2", toolbar.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
         var activityFrame = activity.Ancestors().First(element => element.Name.LocalName == "Border"
             && element.Attributes().Any(attribute => attribute.Name.LocalName == "Grid.Row")
             && element.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value == "1");

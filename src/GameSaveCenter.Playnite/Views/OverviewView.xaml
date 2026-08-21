@@ -252,7 +252,9 @@
                 <ColumnDefinition x:Name="OverviewFlowGutterColumn" Width="14"/>
                 <ColumnDefinition x:Name="OverviewFlowSecondaryColumn" Width="410"/>
             </Grid.ColumnDefinitions>
-            <Border x:Name="OverviewHomeToolbar" Grid.Row="0" Grid.ColumnSpan="3" Style="{DynamicResource GscRedesignSectionCard}" Padding="14,10" Margin="0,0,0,12">
+            <!-- Auxiliary batch/environment actions stay available, but the real page
+                 hierarchy starts with current state and the selected game. -->
+            <Border x:Name="OverviewHomeToolbar" Grid.Row="2" Grid.ColumnSpan="3" Style="{DynamicResource GscRedesignSectionCard}" Padding="14,10" Margin="0,0,0,12">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -290,7 +292,7 @@
                     </Border>
                 </Grid>
             </Border>
-             <Grid x:Name="OverviewHeroAndGameRow" Grid.Row="1" Grid.ColumnSpan="3" Margin="0,0,0,14">
+             <Grid x:Name="OverviewHeroAndGameRow" Grid.Row="0" Grid.ColumnSpan="3" Margin="0,0,0,14">
                 <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition x:Name="OverviewHeroGameCompactRow" Height="0"/></Grid.RowDefinitions>
                 <Grid.ColumnDefinitions><ColumnDefinition x:Name="OverviewHeroColumn" Width="1*"/><ColumnDefinition x:Name="OverviewHeroGameGutterColumn" Width="14"/><ColumnDefinition x:Name="OverviewCurrentGameColumn" Width="1*"/></Grid.ColumnDefinitions>
                 <Border x:Name="OverviewTodayHeroCard" Grid.Row="0" Grid.Column="0" Style="{DynamicResource GscRedesignSectionCard}" MinHeight="205">
@@ -370,7 +372,7 @@
             <!-- Keep the Demo HomeView reading order: current context first, then one
                  continuous six-metric strip. Production keeps real Snapshot counters and
                  ratio bars; no demo placeholder numbers. -->
-             <Border x:Name="OverviewStatStrip" Grid.Row="2" Grid.ColumnSpan="3" Style="{DynamicResource GscRedesignSectionCard}" Padding="6,14" MinHeight="84" Margin="0,0,0,12">
+             <Border x:Name="OverviewStatStrip" Grid.Row="1" Grid.ColumnSpan="3" Style="{DynamicResource GscRedesignSectionCard}" Padding="6,14" MinHeight="84" Margin="0,0,0,12">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/>

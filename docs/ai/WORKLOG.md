@@ -2,6 +2,21 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-21 UI-290 首页 Demo-first 信息层级
+
+**实现内容：**
+
+- 首页 `OverviewPrimaryFlow` 现在按“TODAY/当前游戏 → 六项指标 → 最近任务/全局活动 → 风险与提醒”的顺序排布；风险 rail 的宽屏并列和窄屏后置行为保持不变。
+- “今日工作台”批量按钮与首次环境检查提示仍保留真实绑定，但下移为辅助操作区，不再占据首页第一视觉层级。
+- 首页原有当前游戏、Snapshot 指标、任务列表、风险操作、滚动与响应式代码未替换为 Demo 数据或 Mock 控件。
+- 将对应顺序测试从历史基线跳过项恢复为普通 Fact，明确锁定 Hero/metrics/toolbar/activity 的行契约。
+
+**验证结果：**
+
+- `scripts/validate-source.py`：通过；Release 0 警告/0 错误；Core 59/59、Worker 194/194、Playnite 276 通过/58 跳过/0 失败。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/overview-order-ui288`：`render-qa OK`，覆盖 1040/1100/1366/2560、Light/Dark、resize transition、工作区滚动和表格探针。
+- RenderHarness 属于离屏证据，不等同真实 Playnite 宿主的逐像素验收。
+
 ## 2026-08-21 UI-289 普通与紧凑共享控件尺寸
 
 **实现内容：**
