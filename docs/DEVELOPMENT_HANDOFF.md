@@ -14,6 +14,13 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-21 UI-283 媒体待归类大数据滚动修复交接
+
+- 用户反馈待归类收件箱在约 4468 条数据向下滚动时出现表头下空白表格。当前 `MediaDataGrid` 必须保留 `Item` 滚动和行虚拟化，但局部覆盖为 `VirtualizingPanel.VirtualizationMode=Standard`、`EnableColumnVirtualization=False`；这是针对星号文本列与大数据量的 WPF 呈现稳定性例外。
+- 不要把该例外恢复为共享 `Recycling`/列虚拟化，也不要通过关闭整个 DataGrid 虚拟化、复制滚动条或删除 Inspector 来规避。`UnassignedMedia`、`SelectedInboxMedia`、预览、目标游戏选择、归类/忽略命令及安全语义均已保留；Inspector 继续位于表格滚动面之外。
+- `RenderHarness` 媒体探针固定 4468 条数据，并显式验证媒体为 Standard/关闭列虚拟化，其余工作区仍验证共享 Recycling/列虚拟化。最新报告：`artifacts/ui-qa/ui283-media-inbox-v5/render-qa-report.txt` 为 `render-qa OK`；构建/测试：`artifacts/gsc-b/ui283-media-inbox-v1`。
+- 本阶段完成了代码级回归修复和离屏验证，但没有新的可识别 Playnite 真实 Dashboard 逐页截图；后续仍需用户在可见宿主中确认实际拖动滚动条、预览/归类按钮和主题/DPI 行为，不能宣布总 Demo-first 迁移完成。
+
 ## 2026-08-21 UI-279 Trainer 导入工具栏窄宽交接
 
 - `TrainerCenterView` 标题区新增 `TrainerToolsToolbar` 与 `TrainerToolsDropHint` 的独立布局行；`ApplyResponsiveLayout` 在 `<980 DIP` 时将四个真实导入命令置于标题下方，拖放提示再下一行，解决 1040×700 / 744 DIP 工作区最后一个按钮被边界裁切的问题。

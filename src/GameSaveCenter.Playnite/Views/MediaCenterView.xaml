@@ -71,13 +71,16 @@
                 <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
                 <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
                 <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
-                <!-- The inbox is the only remaining DataGrid that combines a large,
-                     recycled item set with star-sized text columns.  Keep scrolling on
-                     whole rows and let the table surface own the inner background; this
-                     prevents WPF's virtualized presenter from exposing a white phantom
-                     viewport after the thumb is dragged. -->
+                <!-- WPF's DataGrid has a large-data regression when column virtualization
+                     and recycled rows are combined with star-sized text columns: after a
+                     thumb drag the realized rows can be laid out at the bottom of an
+                     otherwise empty viewport. Keep the inbox on stable item scrolling,
+                     standard row virtualization and the top-aligned shared presenter.
+                     Row virtualization remains enabled; only the unsafe recycling/column
+                     virtualization combination is disabled for this 5000-item inbox. -->
                 <Setter Property="VirtualizingPanel.ScrollUnit" Value="Item"/>
-                <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling"/>
+                <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Standard"/>
+                <Setter Property="EnableColumnVirtualization" Value="False"/>
                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                 <Setter Property="VerticalContentAlignment" Value="Top"/>
                 <Setter Property="ScrollViewer.VerticalContentAlignment" Value="Top"/>

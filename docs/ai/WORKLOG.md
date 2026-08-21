@@ -2,6 +2,26 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-21 UI-283 修复媒体待归类大数据滚动空白
+
+**问题确认：**
+
+- 用户反馈媒体中心“待归类”在约 4468 条数据时向下拖动滚动条，表头与实际行之间出现大段空白；真实收件箱上限由 `DashboardViewModel.Media.cs` 的 `Limit = 5000` 约束。
+- 媒体收件箱此前继承共享 `DataGrid` 的 `Recycling` 行回收和列虚拟化，同时使用星号文本列；这组组合在大数据量、拇指拖动后存在 WPF 虚拟化呈现器把已实现行放到视口底部的回归风险。
+
+**实现内容：**
+
+- `MediaDataGrid` 保留共享 DataGrid 的表头、行圆角选中态、`Item` 滚动、行虚拟化、排序/列宽调整和顶部内容对齐；仅对收件箱局部覆盖为 `VirtualizationMode=Standard`、`EnableColumnVirtualization=False`，避免大数据量下的回收/列虚拟化组合。
+- 未改动 `UnassignedMedia`、`SelectedInboxMedia`、预览 Inspector、`AssignInboxMediaCommand`、`IgnoreInboxMediaCommand`、目标游戏选择和真实归类/忽略安全语义；媒体当前游戏列表和生产滚动条系统也未迁移。
+- RenderHarness 的媒体收件箱探针扩展到 4468 条，并在 2400 DIP 宽度下验证首行、中段、末尾的 realized 行与视口几何；探针契约改为按表格显式期望 `Standard`/关闭列虚拟化，其他工作区仍要求共享 `Recycling`/列虚拟化。
+
+**验证结果：**
+
+- `scripts/build.ps1 -Configuration Release -OutputRoot artifacts/gsc-b/ui283-media-inbox-v1`：XAML 18/18；Release 构建 0 warning、0 error；Core 59/59；Worker 191/191；Playnite 272 通过、60 跳过、0 失败。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/ui283-media-inbox-v5`：`render-qa OK`；Light/Dark、1040/1100/1366/2560、多尺寸滚动、末尾回滚和 resize transition 均通过；4468 条媒体探针各位置 `gap=0`，未出现正向空白间隔。
+- `scripts/validate-source.py`、`validate_wpf_ui.py`（0 error、20 warnings、164 info）和 `git diff --check` 通过；WPF warnings/info 为现有共享资源与测量审计提示。
+- 本阶段仍是离屏 RenderHarness/静态验证，未取得新的可识别 Playnite 生产宿主截图；不能把本阶段写成 Demo-first 总迁移完成。
+
 ## 2026-08-21 UI-282 按 Demo 重构首页风险/关注区与比较保留页
 
 **问题确认：**

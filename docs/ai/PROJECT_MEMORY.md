@@ -3,6 +3,13 @@
 > 维护时间：2026-08-21
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-21 UI-283 当前事实：媒体待归类使用稳定的大数据虚拟化契约
+
+- `MediaCenterView.xaml` 的 `MediaDataGrid` 继续 `Item` 滚动、行虚拟化、固定共享行高、顶部对齐、排序/列宽调整和圆角选中态；针对真实最多 5000 条的 `UnassignedMedia`，必须局部使用 `VirtualizationMode=Standard` 与 `EnableColumnVirtualization=False`，不能恢复共享的 `Recycling` + 列虚拟化组合。
+- 这只是媒体收件箱的性能/呈现例外，不得扩散到 Save/Task/Maintenance 等工作区；其它共享表格仍由 `GscRedesignWorkspaceDataGrid` 使用 `Recycling` 和列虚拟化。当前媒体预览 Inspector、目标游戏 ComboBox、归类/忽略命令、`SelectedInboxMedia` 与安全语义必须保持在 DataGrid 滚动面之外。
+- `tests/GameSaveCenter.RenderHarness/Program.cs` 的 `CreateMediaInboxProbeData` 使用 4468 条数据，媒体滚动探针显式期望 Standard/关闭列虚拟化；不要把大数据探针降回 60 条，也不要把所有表格的 Recycling 断言重新写成无例外的全局门禁。
+- UI-283 证据：`artifacts/gsc-b/ui283-media-inbox-v1` 构建/测试通过；`artifacts/ui-qa/ui283-media-inbox-v5/render-qa-report.txt` 为 `render-qa OK`，4468 条数据在 0/25/50/75/100% 位置均无正向 gap，双主题、多尺寸和 resize 均通过。真实 Playnite 生产宿主逐页截图仍未补齐，Demo-first 总迁移仍未完成。
+
 ## 2026-08-21 UI-282 当前事实：首页小屏与 Demo 风险/比较结构已收口
 
 - 当前 `OverviewView.xaml` 的紧凑堆叠布局中，`OverviewActivityColumn` 使用内层 Flow 第 3、4 行；`OverviewSecondaryScrollViewer` 必须在专用第 5 行，不能回到第 4 行，否则风险卡会与全局活动发生空间叠加。首页根 ScrollViewer 仍是唯一页面级纵向滚动面。

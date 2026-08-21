@@ -623,7 +623,7 @@ public sealed class WpfUiResourceDictionaryTests
 
         // OverviewView hosts the recent-activity tile list instead of a DataGrid table now,
         // so the shared table chrome contract is verified on the remaining table workspaces.
-        foreach (var workspace in new[] { "SaveCenterView.xaml", "MediaCenterView.xaml", "TaskCenterView.xaml", "MaintenanceView.xaml" })
+        foreach (var workspace in new[] { "SaveCenterView.xaml", "TaskCenterView.xaml", "MaintenanceView.xaml" })
         {
             var text = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", workspace));
             Assert.Contains("BasedOn=\"{StaticResource {x:Type DataGrid}}\"", text);
@@ -647,7 +647,7 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
-    public void MediaInboxUsesSharedRecyclingAndMaintenanceHeadersOwnTheirTheme()
+    public void MediaInboxUsesStableLargeDataVirtualizationAndMaintenanceHeadersOwnTheirTheme()
     {
         var repositoryRoot = FindRepositoryRoot();
         var media = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
@@ -663,10 +663,10 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("<Setter Property=\"VerticalContentAlignment\" Value=\"Top\"/>", production);
         Assert.Contains("<Setter Property=\"ScrollViewer.VerticalContentAlignment\" Value=\"Top\"/>", production);
         Assert.Contains("BasedOn=\"{StaticResource GscRedesignWorkspaceDataGrid}\"", media);
-        Assert.Contains("EnableColumnVirtualization\" Value=\"True\"", media);
-        Assert.Contains("VirtualizingPanel.VirtualizationMode\" Value=\"Recycling\"", media);
-        Assert.DoesNotContain("EnableColumnVirtualization=\"False\"", media);
-        Assert.DoesNotContain("VirtualizingPanel.VirtualizationMode=\"Standard\"", media);
+        Assert.Contains("EnableRowVirtualization\" Value=\"True\"", media);
+        Assert.Contains("VirtualizingPanel.VirtualizationMode\" Value=\"Standard\"", media);
+        Assert.Contains("EnableColumnVirtualization\" Value=\"False\"", media);
+        Assert.DoesNotContain("VirtualizingPanel.VirtualizationMode\" Value=\"Recycling\"", media);
         Assert.Contains("x:Key=\"MediaInboxStableRowStyle\"", media);
         Assert.Contains("RowStyle=\"{StaticResource MediaInboxStableRowStyle}\"", media);
         Assert.Contains("HeaderStyle=\"{StaticResource MediaMiddleColumnHeader}\" Header=\"类型\"", media);

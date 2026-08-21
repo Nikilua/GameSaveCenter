@@ -1640,7 +1640,10 @@ public static class Program
                 view => ((TaskCenterView)view).ApplyResponsiveLayout(900, height));
             ProbeGrid(report, "Media-Inbox", "MediaInboxGrid", 0, height,
                 () => new MediaCenterView { DataContext = CreateMediaInboxProbeData() },
-                view => ((MediaCenterView)view).ApplyResponsiveLayout(900, height));
+                view => ((MediaCenterView)view).ApplyResponsiveLayout(2400, height),
+                width: 2400,
+                expectedVirtualizationMode: VirtualizationMode.Standard,
+                expectedColumnVirtualization: false);
             ProbeGrid(report, "Maintenance-Diagnostics", "FindingsGrid", 0, height,
                 () => new MaintenanceView { DataContext = new FakeDashboardData(60) },
                 view => ((MaintenanceView)view).ApplyResponsiveLayout(900, height),
@@ -1660,7 +1663,11 @@ public static class Program
     {
         var data = new FakeDashboardData(60);
         var existing = data.UnassignedMedia.Count;
-        for (var i = existing + 1; i <= 60; i++)
+        // The real inbox request is capped at 5000 and the reported regression only
+        // appears once the virtualized extent is large. Keep the probe close to the
+        // production upper bound instead of masking a large-data layout failure with
+        // the six-row fixture used by the other workspace tables.
+        for (var i = existing + 1; i <= 4468; i++)
         {
             data.UnassignedMedia.Add(new MediaItemDto
             {
@@ -2142,22 +2149,25 @@ public static class Program
         double height,
         Func<UserControl> createView,
         Action<UserControl> applyLayout,
-        string? innerTabHeader = null)
+        string? innerTabHeader = null,
+        double width = 900,
+        VirtualizationMode expectedVirtualizationMode = VirtualizationMode.Recycling,
+        bool expectedColumnVirtualization = true)
     {
         try
         {
             var view = createView();
             var host = new Grid
             {
-                Width = 900,
+                Width = width,
                 Height = height,
                 Background = CreateHarnessBackground(view),
                 ClipToBounds = true
             };
             host.Children.Add(view);
             applyLayout(view);
-            host.Measure(new Size(900, height));
-            host.Arrange(new Rect(0, 0, 900, height));
+            host.Measure(new Size(width, height));
+            host.Arrange(new Rect(0, 0, width, height));
             host.UpdateLayout();
             if (tabIndex >= 0)
             {
@@ -2216,10 +2226,10 @@ public static class Program
                 s_problems.Add($"{label} scroll probe: {gridName} needs >=50 rows, got {grid.Items.Count}");
                 return;
             }
-            if (!VirtualizingPanel.GetIsVirtualizing(grid) || VirtualizingPanel.GetVirtualizationMode(grid) != VirtualizationMode.Recycling)
-                s_problems.Add($"{label} {gridName} h={height:0} virtualization/recycling is disabled");
-            if (!grid.EnableColumnVirtualization)
-                s_problems.Add($"{label} {gridName} h={height:0} column virtualization is disabled");
+            if (!VirtualizingPanel.GetIsVirtualizing(grid) || VirtualizingPanel.GetVirtualizationMode(grid) != expectedVirtualizationMode)
+                s_problems.Add($"{label} {gridName} h={height:0} virtualization mode is {VirtualizingPanel.GetVirtualizationMode(grid)}, expected {expectedVirtualizationMode}");
+            if (grid.EnableColumnVirtualization != expectedColumnVirtualization)
+                s_problems.Add($"{label} {gridName} h={height:0} column virtualization is {grid.EnableColumnVirtualization}, expected {expectedColumnVirtualization}");
 
             grid.ScrollIntoView(grid.Items[grid.Items.Count - 1]);
             host.UpdateLayout();
