@@ -3,6 +3,14 @@
 > 维护时间：2026-08-21
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-21 UI-292 当前事实：设置路径输入框与生产壳顶部
+
+- `WpfUiProduction.xaml` 的 `GscWpfUiTextBoxTemplate` 使用拉伸的 `PART_ContentHost`，正文通过 `VerticalContentAlignment=Center` 垂直居中；`GscWpfUiTextBox` 默认 `HorizontalScrollBarVisibility=Hidden`，避免长路径自动水平滚动条占用输入框底部。
+- `DesignTokens.xaml` 的 `GscTextBox` 与 WPF-UI 适配器使用适合 36 DIP 控件的垂直内边距；不要恢复过大的上下 Padding，也不要给设置页路径字段重新加 `HorizontalScrollBarVisibility=Auto`，否则长路径会把文字视口压缩并裁切。
+- `GameSaveCenterSettingsView.xaml` 的 Worker、Ludusavi、存档目录、Rclone、云端目标、媒体目录和镜像目录仍绑定真实设置属性，编辑/保存语义不变；横向滚动条只是隐藏，获得焦点后仍可编辑长路径。
+- `AcrylicProductionShellView.xaml` 不再显示“主题 / 跟随 Playnite / 浅色 / 深色”顶部 utility surface，Header 直接使用右侧区域第一行；`AcrylicProductionShellView.xaml.cs` 与 `DashboardView.xaml.cs` 不再有壳主题按钮回调。主题选择仍由 Playnite 设置页的 `ThemeMode` 下拉框提供，动态调色板链未删除。
+- UI-292 验证：长路径 STA 测量断言通过；Release 为 XAML 18/18、0 warning/0 error、Core 59、Worker 194、Playnite 276/58/0；最终 `artifacts/ui-qa/settings-theme-fix-final/render-qa-report.txt` 为 `render-qa OK`。RenderHarness 仍是离屏证据，不等同真实 Playnite 宿主逐像素验收。
+
 ## 2026-08-21 BUILD-003 当前事实：测试根目录不受外部 Demo 工作目录影响
 
 - `WpfUiResourceDictionaryTests`、`RestoredAcrylicForkBaselineTests`、`NumericInputTests` 的仓库根目录探测只从 `AppContext.BaseDirectory` 向上查找 `GameSaveCenter.sln`；找不到时明确失败，不再信任进程当前工作目录。

@@ -1069,10 +1069,14 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"NavOverview\"", productionShell);
         Assert.Contains("x:Name=\"NavMaintenance\"", productionShell);
         Assert.Contains("x:Name=\"NavSettings\"", productionShell);
-        Assert.Contains("x:Name=\"ThemeModeFollowButton\"", productionShell);
-        Assert.Contains("x:Name=\"ThemeModeLightButton\"", productionShell);
-        Assert.Contains("x:Name=\"ThemeModeDarkButton\"", productionShell);
+        Assert.DoesNotContain("ShellUtilitySurface", productionShell);
+        Assert.DoesNotContain("ThemeModeFollowButton", productionShell);
+        Assert.DoesNotContain("ThemeModeLightButton", productionShell);
+        Assert.DoesNotContain("ThemeModeDarkButton", productionShell);
+        Assert.Contains("x:Name=\"HeaderSurface\" Grid.Row=\"0\"", productionShell);
         Assert.Contains("SettingsRequested = () => plugin.PlayniteApi.MainView.OpenPluginSettings(plugin.Id)", dashboardCode);
+        Assert.DoesNotContain("ThemeModeRequested", dashboardCode);
+        Assert.DoesNotContain("SetThemeMode", dashboardCode);
         Assert.DoesNotContain("Visibility=\"Visible\"", productionShell);
     }
 
@@ -4122,7 +4126,7 @@ public sealed class WpfUiResourceDictionaryTests
         foreach (var binding in new[]
         {
             "WorkerExecutable", "LudusaviExecutable", "LudusaviBackupDirectory",
-            "RcloneExecutable", "RcloneDestination", "MediaArchiveDirectory"
+            "RcloneExecutable", "RcloneDestination", "MediaArchiveDirectory", "LocalMirrorPath"
         })
         {
             Assert.Contains($"Text=\"{{Binding {binding}, UpdateSourceTrigger=PropertyChanged}}\"", settings);
@@ -4130,7 +4134,7 @@ public sealed class WpfUiResourceDictionaryTests
 
         Assert.Contains("x:Name=\"CoreToolFields\"", settings);
         Assert.DoesNotContain("x:Name=\"CoreToolFields\" Columns=\"2\"", settings);
-        Assert.Contains("HorizontalScrollBarVisibility=\"Auto\"", settings);
+        Assert.DoesNotContain("HorizontalScrollBarVisibility=\"Auto\"", settings);
         Assert.Contains("Worker 执行任务；Playnite 负责设置入口和游戏事件。路径支持环境变量与相对路径，保存后由 Worker 校验。", settings);
         Assert.DoesNotContain("#FFFFFF", settings);
         Assert.DoesNotContain("#000000", settings);
@@ -4781,6 +4785,8 @@ public sealed class WpfUiResourceDictionaryTests
         double compactMinHeight = 0;
         double textBoxMinHeight = 0;
         double comboBoxMinHeight = 0;
+        double textBoxContentViewportHeight = 0;
+        double textBoxContentExtentHeight = 0;
         HorizontalAlignment actionHorizontalAlignment = HorizontalAlignment.Left;
         VerticalAlignment actionVerticalAlignment = VerticalAlignment.Top;
         int filterSelectedIndex = -1;
@@ -4814,7 +4820,8 @@ public sealed class WpfUiResourceDictionaryTests
                 };
                 var textBox = new TextBox
                 {
-                    Style = Assert.IsType<Style>(resources["GscWpfUiTextBox"])
+                    Style = Assert.IsType<Style>(resources["GscWpfUiTextBox"]),
+                    Text = @"C:\Users\lopmatu\AppData\Roaming\Playnite\Extensions\GameSaveCenter\GameSaveCenter.Playnite.dll"
                 };
                 var compact = new GameSaveCenter.Playnite.Controls.Button
                 {
@@ -4837,6 +4844,12 @@ public sealed class WpfUiResourceDictionaryTests
                 actionVerticalAlignment = action.VerticalContentAlignment;
                 filterSelectedIndex = filter.SelectedIndex;
                 filterSelectedItem = filter.SelectedItem;
+                textBox.ApplyTemplate();
+                if (textBox.Template.FindName("PART_ContentHost", textBox) is ScrollViewer contentHost)
+                {
+                    textBoxContentViewportHeight = contentHost.ViewportHeight;
+                    textBoxContentExtentHeight = contentHost.ExtentHeight;
+                }
             }
             catch (Exception caught)
             {
@@ -4857,11 +4870,14 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Equal(actionMinHeight, comboBoxMinHeight);
         Assert.Equal(0, filterSelectedIndex);
         Assert.Equal("全部", filterSelectedItem);
+        Assert.True(textBoxContentViewportHeight >= textBoxContentExtentHeight,
+            $"TextBox content host is vertically clipped: viewport={textBoxContentViewportHeight}, extent={textBoxContentExtentHeight}");
 
         var repositoryRoot = FindRepositoryRoot();
         var tokens = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml"));
         var production = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml"));
         var redesign = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "Redesign.xaml"));
+        var settings = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml"));
         var dashboard = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml"));
         var trainer = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml"));
         var trainerCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml.cs"));
@@ -4878,6 +4894,11 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("<Style x:Key=\"GscWpfUiCompactButton\"", production);
         Assert.Contains("<Setter Property=\"MinHeight\" Value=\"{DynamicResource GscCompactButtonHeight}\"/>", production);
         Assert.Contains("<Setter Property=\"Height\" Value=\"{DynamicResource GscButtonHeight}\"/>", production);
+        Assert.Contains("<ControlTemplate x:Key=\"GscWpfUiTextBoxTemplate\"", production);
+        Assert.Contains("VerticalAlignment=\"Stretch\"", production);
+        Assert.Contains("<Setter Property=\"VerticalContentAlignment\" Value=\"Center\"/>", production);
+        Assert.Contains("<Setter Property=\"HorizontalScrollBarVisibility\" Value=\"Hidden\"/>", production);
+        Assert.DoesNotContain("HorizontalScrollBarVisibility=\"Auto\"", settings);
         Assert.Contains("<Setter Property=\"MinHeight\" Value=\"{DynamicResource GscButtonHeight}\"/>", redesign);
         Assert.Contains("<Setter Property=\"HorizontalContentAlignment\" Value=\"Center\"/>", redesign);
         Assert.Contains("<Setter Property=\"VerticalContentAlignment\" Value=\"Center\"/>", redesign);

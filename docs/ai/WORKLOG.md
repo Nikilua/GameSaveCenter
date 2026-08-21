@@ -2,6 +2,26 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-21 UI-292 修复设置路径输入框裁切并移除生产壳主题栏
+
+**问题确认：**
+
+- 设置页核心工具路径使用的 WPF-UI TextBox 模板把内容宿主按理想高度居中；固定 36 DIP 高度下，长路径又启用了自动水平滚动条，滚动条占用底部空间后文字视口只剩约 13 DIP，导致截图中的文字上下被裁切。
+- 生产壳顶部 44 DIP utility surface 只显示“主题 / 跟随 Playnite / 浅色 / 深色”，与当前页面需求不符；主题设置本身仍应保留在 Playnite 设置页。
+
+**实现内容：**
+
+- `WpfUiProduction.xaml` 的共享 TextBox 模板改为拉伸内容宿主、垂直居中正文，默认隐藏水平滚动条；`DesignTokens.xaml` 和 WPF-UI 适配器收紧垂直内边距，避免 36 DIP 输入框再次裁切。
+- 设置页核心路径字段移除显式自动水平滚动条，保留文本框获得焦点后的横向滚动与编辑能力；所有真实 Binding、UpdateSourceTrigger、ToolTip 和保存语义保持不变。
+- `AcrylicProductionShellView` 删除顶部主题栏，Header 上移到原 utility surface 的位置；同步移除壳主题按钮样式、回调和死代码。设置页的“界面主题”下拉框、动态调色板和 Playnite 主题设置仍保留。
+- Playnite UI 测试增加长路径 `PART_ContentHost` 实测断言，并锁定生产壳不再包含主题栏。
+
+**验证结果：**
+
+- `scripts/validate-source.py`：通过；`validate_wpf_ui.py`：0 error、20 warnings、164 info，均为既有上下文提示。
+- Release 构建：XAML 18/18、0 警告/0 错误；Core 59、Worker 194、Playnite 276 通过/58 跳过/0 失败。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/settings-theme-fix-final`：`render-qa OK`，覆盖双主题、1040/1100/1366/2560、多 Tab 和 resize transition；设置输入内容视口探针为 21 DIP、正文高度 16 DIP。
+
 ## 2026-08-21 BUILD-003 修复测试根目录被外部 Demo 工作目录劫持
 
 **问题确认：**

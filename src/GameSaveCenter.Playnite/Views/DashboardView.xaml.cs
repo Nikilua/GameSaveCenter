@@ -48,8 +48,6 @@ namespace GameSaveCenter.Playnite.Views
             DataContext = viewModel;
             ProductionShellView.Attach(viewModel);
             ProductionShellView.SettingsRequested = () => plugin.PlayniteApi.MainView.OpenPluginSettings(plugin.Id);
-            ProductionShellView.ThemeModeRequested = OnProductionShellThemeModeRequested;
-            ProductionShellView.SetThemeMode(plugin.Settings.ThemeMode);
 
             refreshTimer = new DispatcherTimer(DispatcherPriority.Background);
             refreshTimer.Tick += OnRefreshTimerTick;
@@ -61,15 +59,6 @@ namespace GameSaveCenter.Playnite.Views
         }
 
         private bool MotionEnabled => plugin.Settings.EnableUiAnimations && !SystemParameters.HighContrast && SystemParameters.ClientAreaAnimation;
-
-        private void OnProductionShellThemeModeRequested(GameSaveCenterThemeMode mode)
-        {
-            if (plugin.Settings.ThemeMode == mode) return;
-            plugin.Settings.ThemeMode = mode;
-            plugin.SavePluginSettings(plugin.Settings);
-            plugin.NotifyVisualSettingsChanged();
-            ApplyAdaptiveTheme();
-        }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
@@ -1450,7 +1439,6 @@ namespace GameSaveCenter.Playnite.Views
         {
             var glassEnabled = plugin.Settings.EnableGlassEffects && !SystemParameters.HighContrast;
             var palette = AdaptiveThemePaletteFactory.Create(this, glassEnabled, plugin.Settings.GlassEffectStrength, plugin.Settings.ThemeMode);
-            ProductionShellView.SetThemeMode(plugin.Settings.ThemeMode);
 
             AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(Resources, palette, glassEnabled, MotionEnabled);
             foreach (var workspaceView in GetWorkspaceViews())

@@ -28,8 +28,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Demo-aligned header. The production shell keeps the real settings entry
-                 point and uses the existing ThemeMode setting for this utility surface. -->
+            <!-- Demo-aligned header. The production shell keeps the real settings entry point. -->
             <Grid x:Name="SidebarLayout" Grid.Row="0" Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -125,39 +124,10 @@
 
             <Grid Grid.Row="0" Grid.Column="1">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="44"/>
                     <RowDefinition Height="68"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-            <Border x:Name="ShellUtilitySurface" Grid.Row="0"
-                    Background="{DynamicResource GscGlassFillBrush}"
-                    BorderBrush="{DynamicResource GscGlassStrokeBrush}"
-                    BorderThickness="0,0,0,1">
-                <Grid Margin="24,0,14,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="主题" FontSize="11"
-                               Foreground="{DynamicResource GscSecondaryTextBrush}"
-                               VerticalAlignment="Center"/>
-                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                        <RadioButton x:Name="ThemeModeFollowButton" GroupName="ProductionThemeMode"
-                                     Style="{StaticResource AcrylicThemeModeItem}" Tag="FollowPlaynite"
-                                     Checked="OnThemeModeChecked" Content="跟随 Playnite"
-                                     AutomationProperties.Name="跟随 Playnite 主题"/>
-                        <RadioButton x:Name="ThemeModeLightButton" GroupName="ProductionThemeMode"
-                                     Style="{StaticResource AcrylicThemeModeItem}" Tag="Light"
-                                     Checked="OnThemeModeChecked" Content="浅色"
-                                     AutomationProperties.Name="浅色主题"/>
-                        <RadioButton x:Name="ThemeModeDarkButton" GroupName="ProductionThemeMode"
-                                     Style="{StaticResource AcrylicThemeModeItem}" Tag="Dark"
-                                     Checked="OnThemeModeChecked" Content="深色"
-                                     AutomationProperties.Name="深色主题"/>
-                    </StackPanel>
-                </Grid>
-            </Border>
-            <Border x:Name="HeaderSurface" Grid.Row="1"
+            <Border x:Name="HeaderSurface" Grid.Row="0"
                     Background="{DynamicResource GscGlassFillBrush}"
                     BorderBrush="{DynamicResource GscGlassStrokeBrush}"
                     BorderThickness="0,0,0,1">

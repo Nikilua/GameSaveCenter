@@ -715,7 +715,7 @@
         <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Padding" Value="11,7"/>
+        <Setter Property="Padding" Value="11,4"/>
         <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
         <Setter Property="Height" Value="{DynamicResource GscButtonHeight}"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>

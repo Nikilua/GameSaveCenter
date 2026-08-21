@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using GameSaveCenter.Playnite.Settings;
 using GameSaveCenter.Playnite.ViewModels;
 
 namespace GameSaveCenter.Playnite.Views
@@ -19,7 +18,6 @@ namespace GameSaveCenter.Playnite.Views
         private DashboardViewModel? viewModel;
         private bool viewModelSubscribed;
         private bool suppressNavigation;
-        private bool suppressThemeMode;
 
         public AcrylicProductionShellView()
         {
@@ -35,8 +33,6 @@ namespace GameSaveCenter.Playnite.Views
         public TextBox GameSearchBoxForFocus => GameSearchTextBox;
 
         public Action? SettingsRequested { get; set; }
-
-        public Action<GameSaveCenterThemeMode>? ThemeModeRequested { get; set; }
 
         public void Attach(DashboardViewModel dashboardViewModel)
         {
@@ -89,21 +85,6 @@ namespace GameSaveCenter.Playnite.Views
             }
             ApplyHeaderLayout(ActualWidth);
             ApplyPageLayout();
-        }
-
-        public void SetThemeMode(GameSaveCenterThemeMode mode)
-        {
-            suppressThemeMode = true;
-            try
-            {
-                ThemeModeFollowButton.IsChecked = mode == GameSaveCenterThemeMode.FollowPlaynite;
-                ThemeModeLightButton.IsChecked = mode == GameSaveCenterThemeMode.Light;
-                ThemeModeDarkButton.IsChecked = mode == GameSaveCenterThemeMode.Dark;
-            }
-            finally
-            {
-                suppressThemeMode = false;
-            }
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -174,14 +155,6 @@ namespace GameSaveCenter.Playnite.Views
             viewModel.CurrentWorkspace = workspace;
             viewModel.RequestWorkspaceLoad();
             NavigateTo(workspace);
-        }
-
-        private void OnThemeModeChecked(object sender, RoutedEventArgs e)
-        {
-            if (suppressThemeMode || sender is not RadioButton button || button.Tag == null)
-                return;
-            if (Enum.TryParse(button.Tag.ToString(), out GameSaveCenterThemeMode mode))
-                ThemeModeRequested?.Invoke(mode);
         }
 
         private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
