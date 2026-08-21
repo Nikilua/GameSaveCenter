@@ -112,14 +112,18 @@ namespace GameSaveCenter.Playnite.Tests
         {
             var root = FindRepositoryRoot();
             var overview = XDocument.Parse(File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml")));
-            var protection = overview.Descendants().Single(element => element.Name.LocalName == "ItemsControl" && element.Attribute("ItemsSource")?.Value == "{Binding RecentProtection.Items}");
+            var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
+            var protection = overview.Descendants().Single(element => element.Name.LocalName == "ListBox"
+                && element.Attribute(xamlName)?.Value == "OverviewProtectionPreviewItems");
             var actions = overview.Descendants()
                 .Single(element => element.Name.LocalName == "WrapPanel"
-                    && element.Attribute("Grid.Row")?.Value == "1"
+                    && element.Attribute("Grid.Row")?.Value == "2"
                     && element.Descendants().Any(descendant => descendant.Attribute("Command")?.Value == "{Binding OpenProtectionGamesCommand}")
                     && element.Descendants().Any(descendant => descendant.Attribute("Command")?.Value == "{Binding ApplyRecommendedProtectionCommand}"));
 
-            Assert.Equal("1", actions.Attribute("Grid.Row")?.Value);
+            Assert.Equal("2", actions.Attribute("Grid.Row")?.Value);
+            Assert.Equal("Multiple", protection.Attribute("SelectionMode")?.Value);
+            Assert.Equal("OnProtectionSelectionChanged", protection.Attribute("SelectionChanged")?.Value);
         }
 
         [LegacyProductionUiBaselineFact]
@@ -199,18 +203,22 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         [Fact]
-        public void OverviewRecentProtectionDetailsStayVisibleWithoutAnExtraDisclosure()
+        public void OverviewRecentProtectionCardsMatchDemoWithoutCheckboxOrPerItemAction()
         {
             var root = FindRepositoryRoot();
             var overview = XDocument.Parse(File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml")));
             var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
-            var details = overview.Descendants().Single(element => element.Name.LocalName == "StackPanel"
-                && element.Attribute(xamlName)?.Value == "OverviewProtectionDetails");
+            var cards = overview.Descendants().Single(element => element.Name.LocalName == "ListBox"
+                && element.Attribute(xamlName)?.Value == "OverviewProtectionPreviewItems");
+            var template = cards.Descendants().Single(element => element.Name.LocalName == "DataTemplate");
 
-            Assert.NotNull(details.Descendants().SingleOrDefault(element => element.Name.LocalName == "ItemsControl"
-                && element.Attribute("ItemsSource")?.Value == "{Binding RecentProtection.Items}"));
-            Assert.NotNull(details.Descendants().SingleOrDefault(element => element.Name.LocalName == "TextBlock"
-                && (element.Attribute("Text")?.Value ?? "").Contains("选择游戏不会自动执行备份或恢复")));
+            Assert.Equal("{Binding RecentProtection.Items}", cards.Attribute("ItemsSource")?.Value);
+            Assert.NotNull(template.Descendants().SingleOrDefault(element => element.Name.LocalName == "TextBlock"
+                && element.Attribute("Text")?.Value == "{Binding GameName, Mode=OneWay}"));
+            Assert.NotNull(template.Descendants().SingleOrDefault(element => element.Name.LocalName == "TextBlock"
+                && element.Attribute("Text")?.Value == "{Binding StatusDisplay, Mode=OneWay}"));
+            Assert.DoesNotContain(template.Descendants(), element => element.Name.LocalName == "CheckBox");
+            Assert.DoesNotContain(template.Descendants(), element => element.Name.LocalName == "Button");
             Assert.DoesNotContain(overview.Descendants(), element => element.Name.LocalName == "Expander"
                 && element.Attribute("Header")?.Value == "展开最近游戏保护明细");
         }

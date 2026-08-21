@@ -214,20 +214,18 @@ namespace GameSaveCenter.Playnite.Views
             SavePolicyTemplatesCard.Margin = stackPolicy ? new Thickness(0, 14, 0, 0) : new Thickness(0);
 
 
-            var stackCompare = width < 980;
-            SaveCompareLayout.ColumnDefinitions[1].Width = stackCompare ? new GridLength(0) : new GridLength(14);
-            // Demo uses two peer cards for comparison and retention. Keep the same
-            // proportion on the production page; the inspector width belongs to the
-            // history/details workspace, not this two-column review surface.
-            SaveCompareLayout.ColumnDefinitions[2].Width = stackCompare ? new GridLength(0) : new GridLength(1, GridUnitType.Star);
-            SaveCompareLayout.RowDefinitions[1].Height = stackCompare ? new GridLength(1, GridUnitType.Auto) : new GridLength(0);
-            Grid.SetColumn(SaveCompareRetentionScrollViewer, stackCompare ? 0 : 2);
-            Grid.SetColumnSpan(SaveCompareRetentionScrollViewer, stackCompare ? 3 : 1);
-            Grid.SetRow(SaveCompareRetentionScrollViewer, stackCompare ? 1 : 0);
-            SaveCompareRetentionScrollViewer.Margin = stackCompare ? new Thickness(0, 14, 0, 0) : new Thickness(0);
-            SaveCompareRetentionScrollViewer.MaxHeight = stackCompare ? Math.Max(200, Math.Min(380, height * 0.36)) : double.PositiveInfinity;
-            SaveCompareMainScrollViewer.MaxHeight = stackCompare ? Math.Max(300, Math.Min(520, height * 0.52)) : double.PositiveInfinity;
-            SaveCompareMainScrollViewer.MinHeight = stackCompare ? 240 : 0;
+            // The Demo keeps comparison and retention as two peer cards inside one
+            // horizontally scrollable canvas. Do not stack the cards into the same
+            // narrow vertical flow: that was the source of the production page's
+            // large-height/empty-column mismatch at small widths.
+            SaveCompareLayout.ColumnDefinitions[1].Width = new GridLength(14);
+            SaveCompareLayout.ColumnDefinitions[2].Width = new GridLength(1, GridUnitType.Star);
+            SaveComparePageScrollViewer.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
+            SaveComparePageScrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            SaveCompareRetentionScrollViewer.Margin = new Thickness(0, 10, 0, 0);
+            SaveCompareRetentionScrollViewer.MaxHeight = double.PositiveInfinity;
+            SaveCompareMainScrollViewer.MaxHeight = double.PositiveInfinity;
+            SaveCompareMainScrollViewer.MinHeight = 0;
             }
             finally
             {

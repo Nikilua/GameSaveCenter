@@ -3,6 +3,14 @@
 > 维护时间：2026-08-21
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-21 UI-282 当前事实：首页小屏与 Demo 风险/比较结构已收口
+
+- 当前 `OverviewView.xaml` 的紧凑堆叠布局中，`OverviewActivityColumn` 使用内层 Flow 第 3、4 行；`OverviewSecondaryScrollViewer` 必须在专用第 5 行，不能回到第 4 行，否则风险卡会与全局活动发生空间叠加。首页根 ScrollViewer 仍是唯一页面级纵向滚动面。
+- `OverviewProtectionPreviewItems` 是 Demo 风格的多选 `ListBox`，卡片只显示状态点、游戏、状态 Chip 和原因，不得恢复 Checkbox、逐项“查看”按钮、第二个保护明细卡或安全提示子卡。卡片选中通过 `OnProtectionSelectionChanged` 转发到真实 `OpenProtectionItemCommand`；底部 `OpenProtectionGamesCommand`/`ApplyRecommendedProtectionCommand`、确认和当前快照安全语义不变。
+- `AttentionFindings` 必须使用 Demo 的紧凑分隔行，右侧绑定真实 `SuggestedAction` 文字；不要恢复“查看原因”按钮，也不要添加不在 Demo 中的自定义空状态段落。空集合时保留标题和“打开维护中心”真实入口即可。
+- `SaveCenterView.xaml` 的“比较与保留”页必须由 `SaveComparePageScrollViewer` 承载 `MinWidth=880` 的横向画布，左右两张 `GscReadingCardStyle` 对等卡片不在窄宽改为上下堆叠；左侧绑定 `LastBackupDiff` 的三类计数/文件清单，右侧绑定 `RetentionSummary`、`LastRetentionPreview.KeepBackupIds` 和 `DeleteCandidateIds`，并保留二次确认安全说明。
+- UI-282 证据：`artifacts/gsc-b/ui282-demo-structure-v4` 构建与测试通过；`artifacts/ui-qa/ui282-demo-structure-v2/render-qa-report.txt` 为 `render-qa OK`，首页 1040/1100 小屏的活动与风险坐标不重叠，比较页横向滚动指标正常；`validate-source.py` 0 error，WPF UI 0 error、20 warnings、164 info。真实 Playnite Dashboard 逐页宿主截图仍未补齐，Demo-first 总迁移仍未完成。
+
 ## 2026-08-21 UI-281 当前事实：首页风险/关注区与共享按钮几何已修复
 
 - `Themes/WpfUiProduction.xaml` 的 `GscWpfUiButton` 必须让状态层和 `ContentPresenter` 位于带 `Padding` 的同一个按钮外壳内；之前并列的空白 Border 不参与内容测量，是全局中文按钮贴边/溢出的根因。不要在页面里复制按钮模板来绕过它。

@@ -108,7 +108,10 @@ namespace GameSaveCenter.Playnite.Views
             // the recent-task/global-activity rows. In the compact layout it becomes
             // a single full-width row after the primary flow; keeping this in the same
             // measured grid prevents it from falling to an implicit/out-of-range row.
-            Grid.SetRow(OverviewSecondaryScrollViewer, stack ? 4 : 3);
+            // OverviewActivityColumn occupies rows 3-4. The compact risk rail must
+            // start on the dedicated row after that span; placing it on row 4 makes
+            // WPF arrange the risk and activity surfaces on top of each other.
+            Grid.SetRow(OverviewSecondaryScrollViewer, stack ? 5 : 3);
             Grid.SetColumn(OverviewSecondaryScrollViewer, stack ? 0 : 2);
             Grid.SetColumnSpan(OverviewSecondaryScrollViewer, stack ? 3 : 1);
             Grid.SetRowSpan(OverviewSecondaryScrollViewer, stack ? 1 : 2);
@@ -201,13 +204,9 @@ namespace GameSaveCenter.Playnite.Views
             OverviewStackScrollSurface.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
 
             // Give the risk rail a useful reading window on tall/maximized hosts while
-            // keeping a finite viewport on short windows. The protection details list gets
-            // its own smaller viewport so a large game set never pushes the action buttons
-            // out of the card or makes the page height depend on the number of games.
-            // Keep the rail readable at maximized size without letting a large
-            // protection set turn the whole homepage into an oversized column.
-            // The page owns the outer scroll; this viewport owns only the risk
-            // list and remains finite in every host height.
+            // keeping a finite viewport on short windows. The Demo uses one compact list
+            // surface in the risk card, so this is the only local scroll boundary; the
+            // findings card and page flow remain outside that list.
             // In the stacked layout the risk card has the full content column and can
             // afford a taller, bounded viewport. In the side rail keep the shorter
             // limit so the page's primary content remains visible.
@@ -215,9 +214,28 @@ namespace GameSaveCenter.Playnite.Views
                 ? Clamp(height - 220d, 380d, 560d)
                 : Clamp(height - 320d, 300d, 480d);
             OverviewRiskViewport.MaxHeight = riskViewportHeight;
-            OverviewProtectionItemsScrollViewer.MaxHeight = stack
-                ? Clamp(height - 340d, 320d, 500d)
-                : Clamp(height - 440d, 260d, 400d);
+        }
+
+        private void OnProtectionSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (DataContext is not GameSaveCenter.Playnite.ViewModels.DashboardViewModel viewModel)
+            {
+                return;
+            }
+
+            foreach (var addedItem in e.AddedItems)
+            {
+                if (addedItem is not GameSaveCenter.Core.Services.RecentProtectionItem item
+                    || !viewModel.OpenProtectionItemCommand.CanExecute(item))
+                {
+                    continue;
+                }
+
+                // The Demo selects the whole compact card rather than rendering a
+                // checkbox or a per-row action button. Keep the existing command path
+                // by routing card selection to the same real game-selection command.
+                viewModel.OpenProtectionItemCommand.Execute(item);
+            }
         }
 
         private static double Clamp(double value, double minimum, double maximum)

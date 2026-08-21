@@ -252,7 +252,8 @@ public sealed class RestoredAcrylicForkBaselineTests
         Assert.Contains("VerticalScrollBarVisibility=\"Auto\"", overview);
         Assert.Contains("HorizontalScrollBarVisibility=\"Disabled\"", overview);
         Assert.Contains("ItemsSource=\"{Binding AttentionFindings}\"", overview);
-        Assert.Contains("x:Name=\"OverviewProtectionItemsScrollViewer\"", overview);
+        Assert.Contains("x:Name=\"OverviewRiskViewport\"", overview);
+        Assert.Contains("x:Name=\"OverviewProtectionPreviewItems\"", overview);
         Assert.Contains("ItemsSource=\"{Binding RecentProtection.Items}\"", overview);
     }
 

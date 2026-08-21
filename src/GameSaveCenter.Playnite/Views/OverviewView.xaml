@@ -145,6 +145,27 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+            <Style x:Key="OverviewProtectionItemContainerStyle" TargetType="ListBoxItem">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="Margin" Value="0,0,0,6"/>
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
+                <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ListBoxItem">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              ContentStringFormat="{TemplateBinding ContentStringFormat}"/>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
             <Style x:Key="OverviewTaskProgressBar" TargetType="ProgressBar" BasedOn="{StaticResource {x:Type ProgressBar}}">
                 <Setter Property="Foreground" Value="{DynamicResource GscAccentBrush}"/>
                 <Setter Property="Background" Value="{DynamicResource GscProgressTrackBrush}"/>
@@ -215,7 +236,7 @@
                   Grid.RowSpan="2"
                   VerticalAlignment="Top">
             <Grid x:Name="OverviewPrimaryFlow" VerticalAlignment="Top">
-            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition x:Name="OverviewStackedSecondaryRow" Height="Auto"/></Grid.RowDefinitions>
+            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition x:Name="OverviewStackedSecondaryRow" Height="0"/><RowDefinition x:Name="OverviewCompactSecondaryContentRow" Height="Auto"/></Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition x:Name="OverviewFlowPrimaryColumn" Width="*"/>
                 <ColumnDefinition x:Name="OverviewFlowGutterColumn" Width="14"/>
@@ -619,13 +640,25 @@
                                   CanContentScroll="False"
                                   AutomationProperties.Name="风险与提醒列表">
                       <StackPanel x:Name="OverviewRiskScrollViewer">
-                        <ItemsControl x:Name="OverviewProtectionPreviewItems"
+                        <ListBox x:Name="OverviewProtectionPreviewItems"
                                       ItemsSource="{Binding RecentProtection.Items}"
-                                      Visibility="Collapsed"
+                                      SelectionMode="Multiple"
+                                      SelectionChanged="OnProtectionSelectionChanged"
+                                      Background="Transparent"
+                                      BorderThickness="0"
+                                      Padding="0"
+                                      ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                      ScrollViewer.CanContentScroll="True"
+                                      Tag="FiniteViewport"
+                                      VirtualizingPanel.IsVirtualizing="True"
+                                      VirtualizingPanel.VirtualizationMode="Recycling"
+                                      ItemContainerStyle="{StaticResource OverviewProtectionItemContainerStyle}"
                                       AutomationProperties.Name="最近游玩游戏保护状态">
-                            <ItemsControl.ItemTemplate>
+                            <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <Border Background="{DynamicResource GscControlFillBrush}"
+                                    <Border x:Name="OverviewProtectionPreviewCard"
+                                            Background="{DynamicResource GscControlFillBrush}"
                                             BorderBrush="{DynamicResource GscGlassStrokeBrush}"
                                             BorderThickness="1"
                                             CornerRadius="10"
@@ -669,169 +702,23 @@
                                         </Grid>
                                     </Border>
                                     <DataTemplate.Triggers>
-                                        <DataTrigger Binding="{Binding IsProtected, Mode=OneWay}" Value="True">
+                                     <DataTrigger Binding="{Binding IsProtected, Mode=OneWay}" Value="True">
                                             <Setter TargetName="OverviewProtectionPreviewDot" Property="Fill" Value="{DynamicResource GscSuccessBrush}"/>
                                             <Setter TargetName="OverviewProtectionPreviewStatusPill" Property="Background" Value="{DynamicResource GscSuccessIconFillBrush}"/>
                                             <Setter TargetName="OverviewProtectionPreviewStatusPill" Property="BorderBrush" Value="{DynamicResource GscSuccessBrush}"/>
-                                            <Setter TargetName="OverviewProtectionPreviewStatusText" Property="Foreground" Value="{DynamicResource GscSuccessBrush}"/>
-                                        </DataTrigger>
+                                         <Setter TargetName="OverviewProtectionPreviewStatusText" Property="Foreground" Value="{DynamicResource GscSuccessBrush}"/>
+                                     </DataTrigger>
+                                     <DataTrigger Binding="{Binding IsSelected, Mode=OneWay}" Value="True">
+                                         <Setter TargetName="OverviewProtectionPreviewCard" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
+                                         <Setter TargetName="OverviewProtectionPreviewCard" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
+                                     </DataTrigger>
                                     </DataTemplate.Triggers>
                                 </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                        <StackPanel x:Name="OverviewLegacyRiskContent" Visibility="Visible">
-                        <!-- The command still performs its own confirmation and snapshot
-                             safety checks. The Demo does not add a second warning card here. -->
-                        <Border Background="{DynamicResource GscSafetyFillBrush}" BorderBrush="{DynamicResource GscSafetyStrokeBrush}" BorderThickness="1" CornerRadius="12" Padding="10" Margin="0,0,0,8" Visibility="Collapsed">
-                            <Grid>
-                                <Grid.ColumnDefinitions><ColumnDefinition Width="28"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                                <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE946;" Foreground="{DynamicResource GscWarningBrush}" FontSize="17" VerticalAlignment="Top"/>
-                                <StackPanel Grid.Column="1">
-                                    <TextBlock Text="安全恢复提示" FontWeight="SemiBold"/>
-                                    <TextBlock Text="恢复始终需要人工确认，并会先创建当前快照。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,4,0,0"/>
-                                </StackPanel>
-                            </Grid>
-                        </Border>
-                        <!-- Keep the real summary and selection list, but remove the production
-                             nested-card chrome so the rail has the Demo's single card surface. -->
-                        <Border Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="0" Margin="0,0,0,8">
-                            <Grid>
-                                <Grid.ColumnDefinitions><ColumnDefinition Width="28"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                                <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE7BA;" Foreground="{DynamicResource GscWarningBrush}" FontSize="17" VerticalAlignment="Top" Visibility="Collapsed"/>
-                                <StackPanel Grid.Column="1">
-                                    <TextBlock FontWeight="SemiBold" Visibility="Collapsed"><Run Text="{Binding RecentProtection.WindowLabel, Mode=OneWay}"/><Run Text="玩过的游戏"/></TextBlock>
-                                    <TextBlock Text="{Binding RecentProtection.SummaryDisplay, Mode=OneWay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0" Visibility="Collapsed"/>
-                                    <!-- Keep the Demo's game-level risk cards visible in the
-                                         bounded risk viewport. Selection and safe commands
-                                         remain in the details list below, so this preview is
-                                         read-only and cannot accidentally execute an action. -->
-                                      <ItemsControl x:Name="OverviewLegacyProtectionPreviewItems"
-                                                    ItemsSource="{Binding RecentProtection.Items}"
-                                                    Visibility="Collapsed"
-                                                    Margin="0,10,0,0"
-                                                    AutomationProperties.Name="最近游玩游戏保护状态">
-                                         <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <Border x:Name="OverviewProtectionPreviewCard"
-                                                        Background="{DynamicResource GscControlFillBrush}"
-                                                        BorderBrush="{DynamicResource GscGlassStrokeBrush}"
-                                                        BorderThickness="1"
-                                                        CornerRadius="10"
-                                                        Padding="9,8"
-                                                        Margin="0,0,0,7">
-                                                    <Grid MinWidth="0">
-                                                        <Grid.ColumnDefinitions><ColumnDefinition Width="10"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                                                        <Ellipse x:Name="OverviewProtectionPreviewDot" Width="8" Height="8" Fill="{DynamicResource GscWarningBrush}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,5,0,0"/>
-                                                        <StackPanel Grid.Column="1" MinWidth="0">
-                                                            <Grid MinWidth="0">
-                                                                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                                                                <TextBlock Text="{Binding GameName, Mode=OneWay}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" ToolTip="{Binding GameName, Mode=OneWay}"/>
-                                                                <Border Grid.Column="1" x:Name="OverviewProtectionPreviewStatusPill" Style="{DynamicResource GscRedesignContextPill}" Background="{DynamicResource GscSafetyFillBrush}" BorderBrush="{DynamicResource GscWarningBrush}" Padding="8,3" MinWidth="76" Margin="8,0,0,0" HorizontalAlignment="Right">
-                                                                    <TextBlock x:Name="OverviewProtectionPreviewStatusText" Text="{Binding StatusDisplay, Mode=OneWay}" Foreground="{DynamicResource GscWarningBrush}" FontSize="10" FontWeight="SemiBold" TextAlignment="Center" HorizontalAlignment="Center" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding StatusDisplay, Mode=OneWay}"/>
-                                                                </Border>
-                                                            </Grid>
-                                                            <TextBlock Text="{Binding Detail, Mode=OneWay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,3,0,0" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding Detail, Mode=OneWay}"/>
-                                                        </StackPanel>
-                                                    </Grid>
-                                                </Border>
-                                                <DataTemplate.Triggers>
-                                                    <DataTrigger Binding="{Binding IsProtected, Mode=OneWay}" Value="True">
-                                                        <Setter TargetName="OverviewProtectionPreviewDot" Property="Fill" Value="{DynamicResource GscSuccessBrush}"/>
-                                                        <Setter TargetName="OverviewProtectionPreviewStatusPill" Property="Background" Value="{DynamicResource GscSuccessIconFillBrush}"/>
-                                                        <Setter TargetName="OverviewProtectionPreviewStatusPill" Property="BorderBrush" Value="{DynamicResource GscSuccessBrush}"/>
-                                                        <Setter TargetName="OverviewProtectionPreviewStatusText" Property="Foreground" Value="{DynamicResource GscSuccessBrush}"/>
-                                                    </DataTrigger>
-                                                </DataTemplate.Triggers>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
-                                    <WrapPanel Margin="0,1,0,0" Visibility="Collapsed">
-                                        <Border Style="{DynamicResource GscRedesignContextPill}" Background="{DynamicResource GscControlFillBrush}" BorderBrush="{DynamicResource GscControlStrokeBrush}" Margin="0,0,6,6" Padding="8,3"><TextBlock Foreground="{DynamicResource GscSecondaryTextBrush}"><Run Text="未识别存档 "/><Run Text="{Binding RecentProtection.UnrecognizedSaveGames, Mode=OneWay}"/></TextBlock></Border>
-                                        <Border Style="{DynamicResource GscRedesignContextPill}" Background="{DynamicResource GscSafetyFillBrush}" BorderBrush="{DynamicResource GscWarningBrush}" Margin="0,0,6,6" Padding="8,3"><TextBlock Foreground="{DynamicResource GscWarningBrush}"><Run Text="需要处理 "/><Run Text="{Binding RecentProtection.AttentionGames, Mode=OneWay}"/></TextBlock></Border>
-                                    </WrapPanel>
-                                    <!-- Demo has no second fold box here. Keep the real selectable
-                                         protection list open in the risk card so the existing
-                                         checkboxes, detail command and recommended-protection
-                                         command remain discoverable without an extra header. -->
-                                    <StackPanel x:Name="OverviewProtectionDetails" Margin="0,5,0,0">
-                                        <StackPanel Margin="0,4,0,0">
-                                            <ScrollViewer x:Name="OverviewProtectionItemsScrollViewer"
-                                                           Style="{DynamicResource GscPageScrollViewer}"
-                                                           MaxHeight="380"
-                                                           Margin="0,0,0,6"
-                                                           VerticalScrollBarVisibility="Auto"
-                                                           HorizontalScrollBarVisibility="Disabled"
-                                                           CanContentScroll="False"
-                                                           AutomationProperties.Name="最近游戏保护明细列表">
-                                             <ItemsControl x:Name="OverviewProtectionItems"
-                                                           ItemsSource="{Binding RecentProtection.Items}"
-                                                           Margin="0,0,0,6">
-                                                <ItemsControl.ItemTemplate>
-                                                    <DataTemplate>
-                                                          <!-- Keep the real selection, status, explanation and action in
-                                                               one compact two-line card matching the Demo density. -->
-                                                        <Border Background="{DynamicResource GscControlFillBrush}"
-                                                                BorderBrush="{DynamicResource GscGlassStrokeBrush}"
-                                                                BorderThickness="1"
-                                                                 CornerRadius="8"
-                                                                 Padding="8,7"
-                                                                 Margin="0,0,0,6">
-                                                          <Grid MinWidth="0">
-                                                                   <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-                                                                   <Grid.ColumnDefinitions><ColumnDefinition Width="22"/><ColumnDefinition Width="10"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                                                                   <CheckBox Grid.RowSpan="2" Grid.Column="0" IsChecked="{Binding IsSelected, Mode=TwoWay}" IsEnabled="{Binding IsSelectable}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,2,0,0" AutomationProperties.Name="选择此游戏"/>
-                                                                   <Ellipse x:Name="OverviewProtectionStatusDot" Grid.RowSpan="2" Grid.Column="1" Width="8" Height="8" Fill="{DynamicResource GscWarningBrush}" VerticalAlignment="Top" Margin="0,5,0,0"/>
-                                                                   <Grid Grid.Row="0" Grid.Column="2" MinWidth="0">
-                                                                       <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                                                                       <TextBlock Text="{Binding GameName}" FontSize="12.5" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" ToolTip="{Binding GameName}" VerticalAlignment="Center"/>
-                                                                       <Border Grid.Column="1" x:Name="OverviewProtectionStatusPill" Style="{DynamicResource GscRedesignTableStatusPill}" Background="{DynamicResource GscSafetyFillBrush}" BorderBrush="{DynamicResource GscWarningBrush}" Margin="8,0,0,0" MinWidth="0" HorizontalAlignment="Right">
-                                                                           <TextBlock x:Name="OverviewProtectionStatusText" Text="{Binding StatusDisplay}" Foreground="{DynamicResource GscWarningBrush}" FontSize="10.5" FontWeight="SemiBold" TextAlignment="Center" HorizontalAlignment="Center" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding StatusDisplay}"/>
-                                                                       </Border>
-                                                                   </Grid>
-                                                                   <TextBlock Grid.Row="1" Grid.Column="2" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10.5" MaxHeight="30" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Margin="0,2,0,0" ToolTip="{Binding Detail}"><Run Text="{Binding Title, Mode=OneWay}"/><Run Text="："/><Run Text="{Binding Detail, Mode=OneWay}"/></TextBlock>
-                                                                   <ui:Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="3" Style="{StaticResource OverviewFindingActionButton}" Command="{Binding DataContext.OpenProtectionItemCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Content="查看" IsEnabled="{Binding IsSelectable}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="8,0,0,0" AutomationProperties.Name="查看此游戏的保护详情"/>
-                                                             </Grid>
-                                                        </Border>
-                                                        <DataTemplate.Triggers>
-                                                            <DataTrigger Binding="{Binding IsProtected, Mode=OneWay}" Value="True">
-                                                                <Setter TargetName="OverviewProtectionStatusDot" Property="Fill" Value="{DynamicResource GscSuccessBrush}"/>
-                                                                <Setter TargetName="OverviewProtectionStatusPill" Property="Background" Value="{DynamicResource GscSuccessIconFillBrush}"/>
-                                                                <Setter TargetName="OverviewProtectionStatusPill" Property="BorderBrush" Value="{DynamicResource GscSuccessBrush}"/>
-                                                                <Setter TargetName="OverviewProtectionStatusText" Property="Foreground" Value="{DynamicResource GscSuccessBrush}"/>
-                                                            </DataTrigger>
-                                                            <DataTrigger Binding="{Binding IssueKind, Mode=OneWay}" Value="CloudFailure">
-                                                                <Setter TargetName="OverviewProtectionStatusDot" Property="Fill" Value="{DynamicResource GscErrorBrush}"/>
-                                                                <Setter TargetName="OverviewProtectionStatusPill" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/>
-                                                                <Setter TargetName="OverviewProtectionStatusPill" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/>
-                                                                <Setter TargetName="OverviewProtectionStatusText" Property="Foreground" Value="{DynamicResource GscErrorBrush}"/>
-                                                            </DataTrigger>
-                                                            <DataTrigger Binding="{Binding IssueKind, Mode=OneWay}" Value="BackupHealthRisk">
-                                                                <Setter TargetName="OverviewProtectionStatusDot" Property="Fill" Value="{DynamicResource GscErrorBrush}"/>
-                                                                <Setter TargetName="OverviewProtectionStatusPill" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/>
-                                                                <Setter TargetName="OverviewProtectionStatusPill" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/>
-                                                                <Setter TargetName="OverviewProtectionStatusText" Property="Foreground" Value="{DynamicResource GscErrorBrush}"/>
-                                                            </DataTrigger>
-                                                        </DataTemplate.Triggers>
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                             </ItemsControl>
-                                            </ScrollViewer>
-                                            <TextBlock Text="条目过多时只在此列表内滚动；选择游戏不会自动执行备份或恢复。" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap"/>
-                                        </StackPanel>
-                                    </StackPanel>
-                                </StackPanel>
-                            </Grid>
-                        </Border>
-                        <Border Style="{DynamicResource GscRedesignSubCard}" Visibility="Collapsed">
-                            <Grid>
-                                <Grid.ColumnDefinitions><ColumnDefinition Width="28"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                                <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE753;" Foreground="{DynamicResource GscInfoBrush}" FontSize="17" VerticalAlignment="Top"/>
-                                <StackPanel Grid.Column="1"><TextBlock Text="云端失败不会撤销本地备份" FontWeight="SemiBold"/><TextBlock Text="本地副本始终为主副本，失败任务可在任务中心诊断和重试。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,4,0,0"/></StackPanel>
-                            </Grid>
-                        </Border>
-                        </StackPanel>
-                      </StackPanel>
-                    </ScrollViewer>
+                            </ListBox.ItemTemplate>
+                         </ListBox>
+                         <!-- Demo intentionally has no second disclosure, checkbox list or per-item action here. -->
+                       </StackPanel>
+                     </ScrollViewer>
                     <WrapPanel x:Name="OverviewProtectionActions" Grid.Row="2" Margin="0,8,0,0">
                         <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding OpenProtectionGamesCommand}" Content="查看需要处理的游戏" MinHeight="34" MinWidth="128" Margin="0,0,6,0" AutomationProperties.Name="查看最近游玩但未受保护的游戏"/>
                         <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding ApplyRecommendedProtectionCommand}" Content="启用所选保护" MinHeight="34" MinWidth="128" ToolTip="启用所选保护前会要求确认，并先创建当前快照。" AutomationProperties.Name="为所选最近游玩游戏启用推荐保护"/>
@@ -853,7 +740,7 @@
                                                   CanContentScroll="False"
                                                   AutomationProperties.Name="需要关注的游戏列表">
                          <StackPanel>
-                         <ItemsControl ItemsSource="{Binding AttentionFindings}">
+                          <ItemsControl ItemsSource="{Binding AttentionFindings}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -867,7 +754,7 @@
                                             <TextBlock Text="{Binding Title, Mode=OneWay}" FontSize="12.5" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding Detail}"/>
                                             <TextBlock Text="{Binding GameName, Mode=OneWay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10.5" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/>
                                         </StackPanel>
-                                        <ui:Button Grid.Column="2" Style="{StaticResource OverviewFindingActionButton}" Command="{Binding DataContext.OpenAttentionFindingCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Content="查看原因" VerticalAlignment="Center" AutomationProperties.Name="查看关注原因"/>
+                                        <TextBlock Grid.Column="2" Text="{Binding SuggestedAction, Mode=OneWay}" Foreground="{DynamicResource GscAccentBrush}" FontSize="11" TextTrimming="CharacterEllipsis" ToolTip="{Binding SuggestedAction, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                                         </Grid>
                                     </Border>
                                 </Grid>
@@ -878,23 +765,6 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-                    <TextBlock Text="当前没有需要处理的事项。Worker、备份和媒体状态正常时，这里会保持为空。"
-                               IsHitTestVisible="False"
-                               TextWrapping="Wrap"
-                               Foreground="{DynamicResource GscMutedTextBrush}"
-                               FontSize="11"
-                               Margin="0,4,0,8">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding AttentionFindings.Count}" Value="0">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
                          </StackPanel>
                          </ScrollViewer>
                     <ui:Button Grid.Row="2" Style="{StaticResource OverviewFindingActionButton}" AutomationProperties.Name="打开维护中心查看完整关注详情" ToolTip="点击查看需要关注的游戏、原因和建议处理方式" Command="{Binding OpenAttentionCenterCommand}" Content="打开维护中心" HorizontalAlignment="Left" Margin="0,3,0,0"/>

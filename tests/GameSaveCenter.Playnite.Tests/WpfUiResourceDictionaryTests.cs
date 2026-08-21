@@ -1750,12 +1750,15 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("{Binding LastRetentionPreview.KeepBackupIds.Count", saveText);
         Assert.Contains("Command=\"{Binding CompareBackupCommand}\"", saveText);
         Assert.Contains("Command=\"{Binding PreviewRetentionCommand}\"", saveText);
-        Assert.Contains("var stackCompare = width < 1080 || height < 760;", saveCode);
-        Assert.Contains("SaveCompareRetentionScrollViewer.MaxHeight = stackCompare ? Math.Max(200, Math.Min(380, height * 0.36)) : double.PositiveInfinity;", saveCode);
-        Assert.Contains("SaveCompareLayout.RowDefinitions[1].Height = stackCompare ? new GridLength(1, GridUnitType.Auto) : new GridLength(0);", saveCode);
-        Assert.Contains("Grid.SetRow(SaveCompareRetentionScrollViewer, stackCompare ? 1 : 0);", saveCode);
-        Assert.Contains("SaveCompareMainScrollViewer.MaxHeight = stackCompare ? Math.Max(300, Math.Min(520, height * 0.52)) : double.PositiveInfinity;", saveCode);
-        Assert.Contains("SaveCompareMainScrollViewer.MinHeight = stackCompare ? 240 : 0;", saveCode);
+        Assert.Contains("x:Name=\"SaveComparePageScrollViewer\"", saveText);
+        Assert.Contains("MinWidth=\"880\"", saveText);
+        Assert.Contains("HorizontalScrollBarVisibility=\"Auto\"", saveText);
+        Assert.Contains("建议保留", saveText);
+        Assert.Contains("候选清理（需二次确认）", saveText);
+        Assert.Contains("SaveComparePageScrollViewer.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;", saveCode);
+        Assert.Contains("SaveCompareRetentionScrollViewer.MaxHeight = double.PositiveInfinity;", saveCode);
+        Assert.Contains("SaveCompareMainScrollViewer.MaxHeight = double.PositiveInfinity;", saveCode);
+        Assert.DoesNotContain("var stackCompare =", saveCode);
         Assert.DoesNotContain("MaxHeight=\"260\"", saveText);
     }
 
@@ -2601,7 +2604,7 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
-    public void AttentionFindingRowsUseDemoIconTileRhythmWithAReasonButton()
+    public void AttentionFindingRowsUseDemoIconTileRhythmWithSuggestedActionText()
     {
         var repositoryRoot = FindRepositoryRoot();
         var overviewPath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml");
@@ -2610,8 +2613,8 @@ public sealed class WpfUiResourceDictionaryTests
         var template = itemsControl.Elements().Single(element => element.Name.LocalName == "ItemsControl.ItemTemplate").Elements().Single();
 
         // The compact demo home card renders each attention finding as a small icon marker
-        // with a game title, a muted reason line and a per-row "查看原因" action. The
-        // production row keeps the same rhythm while staying bound to real findings.
+        // with a game title, a muted reason line and a right-aligned suggested-action text.
+        // Keep that structure bound to the real finding DTO instead of adding a per-row button.
         Assert.Equal("DataTemplate", template.Name.LocalName);
         var grid = template.Descendants().Single(element => element.Name.LocalName == "Grid"
             && element.Elements().Any(child => child.Name.LocalName == "Grid.ColumnDefinitions"));
@@ -2620,7 +2623,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Equal("18", tile.Attribute("Width")?.Value);
         Assert.Equal("18", tile.Attribute("Height")?.Value);
         Assert.Equal("9", tile.Attribute("CornerRadius")?.Value);
-        Assert.Contains(grid.Descendants(), element => element.Name.LocalName == "Button" && (element.Attribute("Content")?.Value == "查看原因") && ((element.Attribute("Command")?.Value.IndexOf("OpenAttentionFindingCommand", StringComparison.Ordinal) ?? -1) >= 0));
+        Assert.Contains(grid.Descendants(), element => element.Name.LocalName == "TextBlock"
+            && element.Attribute("Text")?.Value == "{Binding SuggestedAction, Mode=OneWay}");
         Assert.Contains(template.Elements(), element => element.Name.LocalName == "DataTemplate.Triggers");
         var overviewText = File.ReadAllText(overviewPath);
         Assert.Contains("Value=\"Error\"", overviewText);

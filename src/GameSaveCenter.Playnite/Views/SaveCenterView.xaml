@@ -377,56 +377,99 @@
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="比较与保留">
-                <Grid x:Name="SaveCompareLayout" Margin="0,12,0,0">
-                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="0"/></Grid.RowDefinitions>
-                    <Border Grid.Column="0" Style="{DynamicResource GscReadingCardStyle}" Padding="18">
-                        <ScrollViewer x:Name="SaveCompareMainScrollViewer" Style="{DynamicResource GscInspectorScrollViewer}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                            <StackPanel>
-                                <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                                    <StackPanel><TextBlock Text="版本比较" Style="{DynamicResource GscSectionTitleStyle}"/><TextBlock Text="当前选中版本与上一版本的只读文件清单差异。" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0" TextWrapping="Wrap"/></StackPanel>
-                                    <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding CompareBackupCommand}" Content="比较所选版本" Margin="12,0,0,0"/>
-                                </Grid>
-                                <UniformGrid Columns="3" Margin="0,16,0,0">
-                                    <Border Style="{DynamicResource GscRedesignSubCard}" Margin="0,0,8,0"><StackPanel><TextBlock Text="{Binding LastBackupDiff.Added.Count, TargetNullValue=—}" FontSize="28" FontWeight="SemiBold"/><TextBlock Text="新增文件" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/></StackPanel></Border>
-                                    <Border Style="{DynamicResource GscRedesignSubCard}" Margin="0,0,8,0"><StackPanel><TextBlock Text="{Binding LastBackupDiff.Modified.Count, TargetNullValue=—}" FontSize="28" FontWeight="SemiBold"/><TextBlock Text="修改文件" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/></StackPanel></Border>
-                                    <Border Style="{DynamicResource GscRedesignSubCard}"><StackPanel><TextBlock Text="{Binding LastBackupDiff.Removed.Count, TargetNullValue=—}" FontSize="28" FontWeight="SemiBold"/><TextBlock Text="删除文件" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/></StackPanel></Border>
-                                </UniformGrid>
-                                <Border Style="{DynamicResource GscRedesignInfoBand}" Padding="12" Margin="0,14,0,0"><StackPanel><TextBlock Text="{Binding DiffSummary, TargetNullValue=尚未比较版本。选择历史版本后点击“比较所选版本”。}" TextWrapping="Wrap" Foreground="{DynamicResource GscInfoBrush}"/><TextBlock Text="{Binding LastBackupDiff.ComparisonQualityDisplay, TargetNullValue=尚未计算比较精度。}" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/></StackPanel></Border>
-                                <TextBlock Text="变更文件" Style="{DynamicResource GscSectionTitleStyle}" Margin="0,18,0,8"/>
-                                <ItemsControl ItemsSource="{Binding LastBackupDiff.Added}">
-                                    <ItemsControl.ItemTemplate><DataTemplate><Border Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,0,0,6"><StackPanel><TextBlock Text="＋ 新增" Foreground="{DynamicResource GscSuccessBrush}" FontWeight="SemiBold"/><TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" ToolTip="{Binding}" Margin="0,3,0,0"/></StackPanel></Border></DataTemplate></ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                                <ItemsControl ItemsSource="{Binding LastBackupDiff.Modified}" Margin="0,8,0,0">
-                                    <ItemsControl.ItemTemplate><DataTemplate><Border Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,0,0,6"><StackPanel><TextBlock Text="≈ 修改" Foreground="{DynamicResource GscAccentBrush}" FontWeight="SemiBold"/><TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" ToolTip="{Binding}" Margin="0,3,0,0"/></StackPanel></Border></DataTemplate></ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                                <ItemsControl ItemsSource="{Binding LastBackupDiff.Removed}" Margin="0,8,0,0">
-                                    <ItemsControl.ItemTemplate><DataTemplate><Border Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,0,0,6"><StackPanel><TextBlock Text="－ 删除" Foreground="{DynamicResource GscMutedTextBrush}" FontWeight="SemiBold"/><TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" ToolTip="{Binding}" Margin="0,3,0,0"/></StackPanel></Border></DataTemplate></ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                                <TextBlock Text="变更清单会在比较完成后显示；未执行比较时不会猜测文件状态。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,8,0,0"/>
-                            </StackPanel>
-                        </ScrollViewer>
-                    </Border>
-                    <ScrollViewer x:Name="SaveCompareRetentionScrollViewer" Grid.Column="2" Style="{DynamicResource GscInspectorScrollViewer}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                        <Border Style="{DynamicResource GscReadingCardStyle}" Padding="18">
-                            <StackPanel>
+                <ScrollViewer x:Name="SaveComparePageScrollViewer"
+                              Style="{DynamicResource GscPageScrollViewer}"
+                              Margin="0,4,0,0"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Auto"
+                              CanContentScroll="False">
+                    <Grid x:Name="SaveCompareLayout"
+                          Width="{Binding ViewportWidth, ElementName=SaveComparePageScrollViewer}"
+                          MinWidth="880"
+                          Margin="0,8,0,8">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" Style="{DynamicResource GscReadingCardStyle}" Padding="18,14">
+                            <Grid>
+                                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                                 <Grid>
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                                    <StackPanel MinWidth="0">
-                                        <TextBlock Text="保留策略预览" Style="{DynamicResource GscSectionTitleStyle}"/>
-                                        <TextBlock Text="只读预览，不执行不安全的单版本删除。" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0" TextWrapping="Wrap"/>
+                                    <StackPanel Orientation="Horizontal" MinWidth="0">
+                                        <TextBlock Text="版本比较" Style="{DynamicResource GscSectionTitleStyle}"/>
+                                        <Border Style="{DynamicResource GscRedesignContextPill}" Background="{DynamicResource GscInfoIconFillBrush}" Margin="10,0,0,0" VerticalAlignment="Center" MaxWidth="210">
+                                            <TextBlock Text="{Binding LastBackupDiff.ComparisonQualityDisplay, TargetNullValue=尚未比较}" Foreground="{DynamicResource GscInfoBrush}" FontSize="10.5" TextTrimming="CharacterEllipsis" ToolTip="{Binding LastBackupDiff.ComparisonQualityDisplay}"/>
+                                        </Border>
                                     </StackPanel>
-                                    <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding PreviewRetentionCommand}" Content="刷新预览" Margin="12,0,0,0" HorizontalAlignment="Right"/>
+                                    <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding CompareBackupCommand}" Content="比较所选版本" HorizontalAlignment="Right" Margin="12,0,0,0"/>
                                 </Grid>
-                                <Separator Margin="0,14,0,12"/>
-                                <TextBlock Text="{Binding RetentionSummary, TargetNullValue=尚未生成保留预览。}" Style="{DynamicResource GscBodyStyle}" TextWrapping="Wrap"/>
-                                <Grid Margin="0,16,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="预计保留版本" Style="{DynamicResource GscCaptionStyle}"/><TextBlock Grid.Column="1" Text="{Binding LastRetentionPreview.KeepBackupIds.Count, TargetNullValue=—}" FontWeight="SemiBold"/></Grid>
-                                <Grid Margin="0,8,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="候选清理" Style="{DynamicResource GscCaptionStyle}"/><TextBlock Grid.Column="1" Text="{Binding LastRetentionPreview.DeleteCandidateIds.Count, TargetNullValue=—}" FontWeight="SemiBold"/></Grid>
-                                <Border Style="{DynamicResource GscRedesignInfoBand}" Padding="10" Margin="0,16,0,0"><TextBlock Text="锁定版本和已验证的健康恢复点永远不会进入候选清理。预览结果只供确认，不会自动删除文件。" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap"/></Border>
-                            </StackPanel>
+                                <Grid Grid.Row="1" Margin="0,12,0,0">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding LastBackupDiff.Added.Count, TargetNullValue=—}" FontSize="24" FontWeight="SemiBold" Foreground="{DynamicResource GscSuccessBrush}"/>
+                                        <TextBlock Text="新增文件" Style="{DynamicResource GscCaptionStyle}"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="{Binding LastBackupDiff.Modified.Count, TargetNullValue=—}" FontSize="24" FontWeight="SemiBold"/>
+                                        <TextBlock Text="内容变化" Style="{DynamicResource GscCaptionStyle}"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="{Binding LastBackupDiff.Removed.Count, TargetNullValue=—}" FontSize="24" FontWeight="SemiBold" Foreground="{DynamicResource GscErrorBrush}"/>
+                                        <TextBlock Text="删除文件" Style="{DynamicResource GscCaptionStyle}"/>
+                                    </StackPanel>
+                                </Grid>
+                                <Border Grid.Row="2" Style="{DynamicResource GscRedesignSubCard}" Padding="12" Margin="0,12,0,0">
+                                    <ScrollViewer x:Name="SaveCompareMainScrollViewer"
+                                                  Style="{DynamicResource GscInspectorScrollViewer}"
+                                                  VerticalScrollBarVisibility="Auto"
+                                                  HorizontalScrollBarVisibility="Disabled">
+                                        <StackPanel>
+                                            <ItemsControl ItemsSource="{Binding LastBackupDiff.Added}">
+                                                <ItemsControl.ItemTemplate><DataTemplate><TextBlock Text="{Binding}" FontFamily="{DynamicResource GscCodeFontFamily}" FontSize="11" Foreground="{DynamicResource GscSuccessBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding}" Margin="0,0,0,5"/></DataTemplate></ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                            <ItemsControl ItemsSource="{Binding LastBackupDiff.Modified}" Margin="0,3,0,0">
+                                                <ItemsControl.ItemTemplate><DataTemplate><TextBlock Text="{Binding}" FontFamily="{DynamicResource GscCodeFontFamily}" FontSize="11" TextTrimming="CharacterEllipsis" ToolTip="{Binding}" Margin="0,0,0,5"/></DataTemplate></ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                            <ItemsControl ItemsSource="{Binding LastBackupDiff.Removed}" Margin="0,3,0,0">
+                                                <ItemsControl.ItemTemplate><DataTemplate><TextBlock Text="{Binding}" FontFamily="{DynamicResource GscCodeFontFamily}" FontSize="11" Foreground="{DynamicResource GscErrorBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding}" Margin="0,0,0,5"/></DataTemplate></ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                            <TextBlock Text="{Binding DiffSummary, TargetNullValue=变更清单会在比较完成后显示；未执行比较时不会猜测文件状态。}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                        </StackPanel>
+                                    </ScrollViewer>
+                                </Border>
+                            </Grid>
                         </Border>
-                    </ScrollViewer>
-                </Grid>
+                        <Border Grid.Column="2" Style="{DynamicResource GscReadingCardStyle}" Padding="18,14">
+                            <Grid>
+                                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                                <Grid>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                    <TextBlock Text="保留预览" Style="{DynamicResource GscSectionTitleStyle}"/>
+                                    <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding PreviewRetentionCommand}" Content="刷新预览" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <ScrollViewer x:Name="SaveCompareRetentionScrollViewer"
+                                              Grid.Row="1"
+                                              Style="{DynamicResource GscInspectorScrollViewer}"
+                                              VerticalScrollBarVisibility="Auto"
+                                              HorizontalScrollBarVisibility="Disabled"
+                                              Margin="0,10,0,0">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding RetentionSummary, TargetNullValue=尚未生成保留预览。}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,0,0,10"/>
+                                        <TextBlock Text="建议保留" Style="{DynamicResource GscCaptionStyle}" FontWeight="SemiBold"/>
+                                        <ItemsControl ItemsSource="{Binding LastRetentionPreview.KeepBackupIds}" Margin="0,3,0,0">
+                                            <ItemsControl.ItemTemplate><DataTemplate><TextBlock Text="{Binding}" FontFamily="{DynamicResource GscCodeFontFamily}" FontSize="11" TextTrimming="CharacterEllipsis" ToolTip="{Binding}" Margin="0,0,0,6"/></DataTemplate></ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                        <TextBlock Text="候选清理（需二次确认）" Style="{DynamicResource GscCaptionStyle}" FontWeight="SemiBold" Margin="0,12,0,0"/>
+                                        <ItemsControl ItemsSource="{Binding LastRetentionPreview.DeleteCandidateIds}" Margin="0,3,0,0">
+                                            <ItemsControl.ItemTemplate><DataTemplate><TextBlock Text="{Binding}" FontFamily="{DynamicResource GscCodeFontFamily}" FontSize="11" Foreground="{DynamicResource GscWarningBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding}" Margin="0,0,0,6"/></DataTemplate></ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </ScrollViewer>
+                                <Border Grid.Row="2" Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,10,0,0">
+                                    <TextBlock Text="锁定版本、健康恢复点与 PreRestore 快照永不进入候选；实际清理始终需要你在维护中心二次确认。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </ScrollViewer>
             </TabItem>
         </TabControl>
     </Grid>

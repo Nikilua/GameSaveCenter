@@ -2,6 +2,29 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-21 UI-282 按 Demo 重构首页风险/关注区与比较保留页
+
+**问题确认：**
+
+- 小屏首页的堆叠根因是 `OverviewActivityColumn` 横跨内层 Flow 的第 3、4 行，而紧凑右栏仍被放到第 4 行，WPF 因此把风险卡与全局活动安排在同一测量区域；不是单纯的透明度或边距问题。
+- 首页风险区源码仍残留生产版安全提示、复选框、逐项“查看”和第二套明细模板，和 Demo 的紧凑无复选框卡片不一致；需关注事项也把 Demo 的右侧建议文字做成了按钮。
+- 比较与保留页之前仍是历史 Inspector 结构，缺少 Demo 的一个横向可滚动画布、两张对等卡片、真实差异文件清单和“建议保留/候选清理”清单。
+
+**实现内容：**
+
+- 紧凑首页把右栏移到 `OverviewPrimaryFlow` 的专用第 5 行，活动列继续独占第 3、4 行；风险和关注卡按先活动后右栏的顺序排列，消除小屏空间堆叠。
+- `OverviewProtectionPreviewItems` 改为 Demo 密度的多选 `ListBox`：只显示状态点、游戏名、状态 Chip 和原因，不渲染 Checkbox 或逐项按钮；选中卡仍通过 `OnProtectionSelectionChanged` 调用真实 `OpenProtectionItemCommand`，底部 `OpenProtectionGamesCommand`、`ApplyRecommendedProtectionCommand`、确认和快照安全语义保持。
+- 删除旧的 `OverviewLegacyRiskContent`、`OverviewProtectionDetails` 及其第二套复选框/查看模板；风险卡只保留一个有限列表视口。`AttentionFindings` 行改成 Demo 的图标、标题、游戏名和 `SuggestedAction` 文字，移除自定义空状态段落和每行“查看原因”按钮。
+- 比较与保留页改为 `SaveComparePageScrollViewer` 包住的 `MinWidth=880` 横向画布，两个 `GscReadingCardStyle` 对等排列；左卡展示真实三类差异计数和文件清单，右卡展示真实保留预览、建议保留、候选清理和安全说明，窄宽通过页面横向滚动保持结构而不堆叠错位。
+- 更新首页/存档页静态契约，明确 Demo 无复选框和逐项按钮、关注项使用建议文字，以及比较页必须使用横向画布和真实清单绑定。
+
+**验证结果：**
+
+- `scripts/build.ps1 -Configuration Release -OutputRoot artifacts/gsc-b/ui282-demo-structure-v4`：XAML 18/18；Release 0 warning、0 error；Core 59/59；Worker 191/191；Playnite 272 通过、60 跳过、0 失败。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/ui282-demo-structure-v2`：`render-qa OK`；Light/Dark、1040/1100/1366/2560、多尺寸滚动探针和 resize transition 均通过。1040×700 报告中活动列表位于 `y=507`，风险卡列表和底部动作位于后续独立区域，未再与活动行重叠；比较页保留横向 ScrollViewer，`MinWidth=880` 结构在窄宽可滚动。
+- `scripts/validate-source.py`、`validate_wpf_ui.py`（0 error、20 warnings、164 info）和 `git diff --check` 通过；WPF warnings 是现有滚动测量、负 Margin 和共享资源审计提示，不是本阶段构建错误。
+- 证据仍来自离屏 RenderHarness 和静态门禁，未取得新的可识别 Playnite 生产宿主逐页截图；本阶段只收口上述首页/存档页问题，不宣称 Demo-first 总迁移或真实宿主逐页验证已完成。
+
 ## 2026-08-21 UI-281 修复首页风险/关注区与共享按钮几何
 
 **问题确认：**
