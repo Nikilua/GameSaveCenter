@@ -32,7 +32,7 @@ public sealed class NumericInputTests
 
     private static string FindRepositoryRoot()
     {
-        for (var directory = new DirectoryInfo(Directory.GetCurrentDirectory()); directory != null; directory = directory.Parent)
+        for (var directory = new DirectoryInfo(AppContext.BaseDirectory); directory != null; directory = directory.Parent)
         {
             if (File.Exists(Path.Combine(directory.FullName, "GameSaveCenter.sln"))) return directory.FullName;
         }

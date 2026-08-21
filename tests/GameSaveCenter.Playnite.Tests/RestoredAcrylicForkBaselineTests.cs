@@ -278,7 +278,7 @@ public sealed class RestoredAcrylicForkBaselineTests
 
     private static string ReadSource(params string[] relativePath)
     {
-        var directory = new DirectoryInfo(Directory.GetCurrentDirectory());
+        var directory = new DirectoryInfo(AppContext.BaseDirectory);
         while (directory != null && !File.Exists(Path.Combine(directory.FullName, "GameSaveCenter.sln")))
         {
             directory = directory.Parent;

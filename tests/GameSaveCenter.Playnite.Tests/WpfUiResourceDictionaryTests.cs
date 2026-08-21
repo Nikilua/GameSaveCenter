@@ -5016,21 +5016,14 @@ public sealed class WpfUiResourceDictionaryTests
 
     private static string FindRepositoryRoot()
     {
-        foreach (var initialDirectory in new[]
-                 {
-                     new DirectoryInfo(Directory.GetCurrentDirectory()),
-                     new DirectoryInfo(AppContext.BaseDirectory)
-                 })
+        for (DirectoryInfo? directory = new DirectoryInfo(AppContext.BaseDirectory); directory != null; directory = directory.Parent)
         {
-            for (DirectoryInfo? directory = initialDirectory; directory != null; directory = directory.Parent)
+            if (File.Exists(Path.Combine(directory.FullName, "GameSaveCenter.sln")))
             {
-                if (File.Exists(Path.Combine(directory.FullName, "GameSaveCenter.sln")))
-                {
-                    return directory.FullName;
-                }
+                return directory.FullName;
             }
         }
 
-        throw new DirectoryNotFoundException("Could not locate the GameSaveCenter repository root for the WPF host regression test.");
+        throw new DirectoryNotFoundException("Could not locate the GameSaveCenter repository root from the Playnite test assembly output.");
     }
 }

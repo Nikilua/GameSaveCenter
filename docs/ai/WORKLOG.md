@@ -2,6 +2,24 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-21 BUILD-003 修复测试根目录被外部 Demo 工作目录劫持
+
+**问题确认：**
+
+- 用户的一键安装日志中，编译、Core/Worker 测试均成功，Playnite 测试的 5 个失败全部是 `DirectoryNotFoundException`；失败路径为 `D:\workplace\Github\GameSaveCenter.AcrylicFork\src\GameSaveCenter.Playnite\Design\*.xaml`。
+- 测试并没有继续读取 Demo 资源；真正的问题是 `WpfUiResourceDictionaryTests` 优先从 `Directory.GetCurrentDirectory()` 向上找 `GameSaveCenter.sln`，安装器启动目录恰好是 AcrylicFork，于是把外部仓库误认成当前仓库。两个相同模式的测试根目录探测器也一并修正。
+
+**实现内容：**
+
+- `WpfUiResourceDictionaryTests`、`RestoredAcrylicForkBaselineTests` 和 `NumericInputTests` 只从 `AppContext.BaseDirectory`（当前测试程序集所在的隔离构建输出）向上定位仓库；找不到时明确失败，不再从启动目录猜测其它仓库。
+- `RestoredAcrylicForkBaselineTests` 和 `NumericInputTests` 同样改为从测试程序集目录向上查找，避免任何测试因启动目录误选外部仓库。
+- 未引入 Demo 路径、环境变量或外部文件依赖；只读取当前仓库源码资源。
+
+**验证结果：**
+
+- 在 `D:\workplace\Github\GameSaveCenter.AcrylicFork` 作为当前工作目录时，直接运行当前仓库 Playnite 测试：276 通过、58 跳过、0 失败。
+- `scripts/build.ps1 -Configuration Release -OutputRoot artifacts/gsc-b/no-demo-root-fix`：XAML 18/18、Release 0 警告/0 错误、Core 59/59、Worker 194/194、Playnite 276/58/0。
+
 ## 2026-08-21 UI-291 媒体来源规则宽窄布局
 
 **实现内容：**

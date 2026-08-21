@@ -3,6 +3,12 @@
 > 维护时间：2026-08-21
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-21 BUILD-003 当前事实：测试根目录不受外部 Demo 工作目录影响
+
+- `WpfUiResourceDictionaryTests`、`RestoredAcrylicForkBaselineTests`、`NumericInputTests` 的仓库根目录探测只从 `AppContext.BaseDirectory` 向上查找 `GameSaveCenter.sln`；找不到时明确失败，不再信任进程当前工作目录。
+- 因此即使一键安装器从 `D:\workplace\Github\GameSaveCenter.AcrylicFork` 启动，测试也会读取当前隔离构建输出对应的 `GameSaveCenter` 仓库，不会假定外部 Demo 目录存在。
+- BUILD-003 验证：外部 Demo 目录作为当前工作目录时，当前仓库 Playnite 测试 276/58/0；完整 Release 构建为 XAML 18/18、Core 59、Worker 194、Playnite 276/58/0；没有新增 Demo 路径、环境变量或生产运行时依赖。
+
 ## 2026-08-21 UI-291 当前事实：媒体来源规则宽窄布局
 
 - `MediaCenterView.xaml` 的来源规则页使用 `MediaSourceLayout`：宽屏为 1.1* 表单、14 DIP 间距、* 规则列表；窄屏由 `ApplyResponsiveLayout` 改为表单在上、规则列表在下，字段从两列收为一列。
