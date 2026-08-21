@@ -2,6 +2,26 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-21 UI-285 修复媒体待归类表格反向滚动偶发空白
+
+**问题确认：**
+
+- UI-283 已经消除了大数据表格从顶部向下拖动时的明显空白，但用户继续反馈到达底部后向上拖动，偶发出现表头和滚动条仍在、行呈现器却全部空白的状态。
+- `MediaDataGrid` 通过共享隐式 `DataGrid` 样式继承了 `infra:DataGridStarFill.Enabled=True`。该 workaround 面向被无限测量的表格，会在有限 Grid 视口中把星号列改成像素宽度并触发 `InvalidateMeasure`；大数据 Standard 虚拟化在反向滚动期间可能因此丢失已实现行。
+- 既有 RenderHarness 只按 0/25/50/75/100% 单向取样，不能覆盖用户的“到底后回翻”路径。
+
+**实现内容：**
+
+- 仅对有限视口的 `MediaInboxGrid` 设置 `infra:DataGridStarFill.Enabled=False`，恢复 WPF 原生有限视口星号列测量；保留 `VirtualizationMode=Standard`、`ScrollUnit=Item`、行虚拟化、列虚拟化关闭、表头/列宽/排序/选中态和右侧 Inspector。
+- RenderHarness 为媒体收件箱增加 0→100→0→100→50→0→100→0 的大数据反向滚动序列，逐步检查已实现行、DataContext、表头间距、最后回翻位置，并门禁共享 star-fill 不得重新启用。
+- 未改动 `UnassignedMedia`、`SelectedInboxMedia`、媒体预览、归类/忽略命令或真实安全语义；其他 Save/Task/Maintenance 表格仍使用共享 star-fill/虚拟化契约。
+
+**验证结果：**
+
+- `scripts/build.ps1 -Configuration Release -OutputRoot artifacts/gsc-b/ui285-media-scroll-v1`：XAML 18/18；Release 构建 0 warning、0 error；Core 59/59；Worker 191/191；Playnite 272 通过、60 跳过、0 失败。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/ui285-media-scroll-v3`：`render-qa OK`；4468 条数据在多尺寸、浅/深主题和反向滚动序列中均保持实现行，无空白回翻状态。
+- `scripts/validate-source.py`、`validate_wpf_ui.py`（0 error、20 warnings、164 info）通过；WPF warnings/info 为现有共享资源和有限测量审计提示。本阶段仍未运行真实 Playnite 生产宿主。
+
 ## 2026-08-21 UI-284 修复主题前景色、按钮几何与设置侧栏
 
 **问题确认：**

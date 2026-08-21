@@ -2234,7 +2234,14 @@ public static class Program
             grid.ScrollIntoView(grid.Items[grid.Items.Count - 1]);
             host.UpdateLayout();
 
-            foreach (var fraction in new[] { 0.0, 0.25, 0.5, 0.75, 1.0 })
+            var scrollFractions = gridName == "MediaInboxGrid"
+                // The production regression is directional: the rows can disappear after
+                // reaching the end and then dragging the thumb back toward the head. Keep
+                // this sequence explicit instead of only sampling monotonically downward.
+                ? new[] { 0.0, 1.0, 0.0, 1.0, 0.5, 0.0, 1.0, 0.0 }
+                : new[] { 0.0, 0.25, 0.5, 0.75, 1.0 };
+            var scrollStep = 0;
+            foreach (var fraction in scrollFractions)
             {
                 scroller.ScrollToVerticalOffset(scroller.ScrollableHeight * fraction);
                 host.UpdateLayout();
@@ -2250,9 +2257,16 @@ public static class Program
                 var positionLabel = (int)(fraction * 100);
                 var headerGap = rows.Count > 0 ? rows[0].Y - grid.ColumnHeaderHeight : 0;
                 report.AppendLine(
-                    $"  {label} {gridName} h={height:0} pos={positionLabel} offset={scroller.VerticalOffset:0.##} " +
+                    $"  {label} {gridName} h={height:0} step={scrollStep++} pos={positionLabel} offset={scroller.VerticalOffset:0.##} " +
                     $"scrollable={scroller.ScrollableHeight:0.##} rows={rows.Count} " +
                     $"firstY={(rows.Count > 0 ? rows[0].Y : double.NaN):0.##} gap={headerGap:0.##} presenterH={(presenter?.ActualHeight ?? double.NaN):0.##} gridH={grid.ActualHeight:0.##}");
+
+                if (gridName == "MediaInboxGrid")
+                {
+                    report.AppendLine($"  {label} {gridName} starFill={DataGridStarFill.GetEnabled(grid)}");
+                    if (DataGridStarFill.GetEnabled(grid))
+                        s_problems.Add($"{label} {gridName} keeps shared star-fill redistribution enabled");
+                }
 
                 if (rows.Count == 0 && grid.Items.Count > 0)
                 {
@@ -2296,8 +2310,15 @@ public static class Program
 
             var scrollable = scroller.ScrollableHeight;
             var offset = scroller.VerticalOffset;
-            if (scrollable < 0 || offset > scrollable + 1 || offset < scrollable - 1)
+            if (gridName == "MediaInboxGrid")
+            {
+                if (scrollable < 0 || offset > 1)
+                    s_problems.Add($"{label} {gridName} h={height:0} scroll-back invalid (offset={offset:0.##} scrollable={scrollable:0.##})");
+            }
+            else if (scrollable < 0 || offset > scrollable + 1 || offset < scrollable - 1)
+            {
                 s_problems.Add($"{label} {gridName} h={height:0} scroll bottom invalid (offset={offset:0.##} scrollable={scrollable:0.##})");
+            }
         }
         catch (Exception ex)
         {

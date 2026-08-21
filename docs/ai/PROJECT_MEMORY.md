@@ -3,6 +3,13 @@
 > 维护时间：2026-08-21
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-21 UI-285 当前事实：媒体待归类反向滚动禁用共享星号重分配
+
+- `MediaInboxGrid` 处于有限 `Grid` 视口时必须设置 `infra:DataGridStarFill.Enabled=False`。共享 star-fill 只适合无限测量宿主；在媒体 4468 条收件箱中把星号列重算为像素列并 `InvalidateMeasure`，会和 Standard 虚拟行呈现器的底部→顶部回退竞争，产生滚动条仍在但行全部消失的偶发状态。
+- 媒体收件箱仍固定 `VirtualizingPanel.ScrollUnit=Item`、`VirtualizationMode=Standard`、行虚拟化开启、列虚拟化关闭；不要为了修复空白而关闭整个虚拟化，也不要把该例外扩散到其他工作区。
+- `tests/GameSaveCenter.RenderHarness/Program.cs` 的媒体探针必须覆盖多次底部→顶部→中段回退，并确认 `DataGridStarFill.GetEnabled(MediaInboxGrid)==false`、每一步有实现行且无无效 DataContext/表头 gap。
+- UI-285 证据：`artifacts/gsc-b/ui285-media-scroll-v1` 构建/测试通过；`artifacts/ui-qa/ui285-media-scroll-v3/render-qa-report.txt` 为 `render-qa OK`，多尺寸、双主题和反向滚动通过。真实 Playnite 生产宿主逐页截图仍未补齐，Demo-first 总迁移仍未完成。
+
 ## 2026-08-21 UI-284 当前事实：共享按钮和主题侧栏已统一
 
 - `Themes/WpfUiProduction.xaml` 的 `GscWpfUiButtonTextTemplate` 必须把宿主 Button 的动态 `Foreground`、字体族、字阶和字重传给内部 `TextBlock`；否则 Primary 按钮文字会回落为黑色，深色主题不可读。页面不得复制按钮模板绕过共享修复。

@@ -14,6 +14,13 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-21 UI-285 媒体待归类反向滚动空白交接
+
+- `MediaInboxGrid` 已局部关闭 `infra:DataGridStarFill.Enabled`。它仍保留有限 Grid 中的原生星号列、Standard 行虚拟化、Item 滚动和列虚拟化关闭；不要恢复共享 star-fill，也不要关闭全部虚拟化。
+- 根因是有限视口中的 star-fill 像素重分配会在大数据反向滚动时触发行/列呈现器重测量，出现滚动条有效但行容器不再显示。真实 `UnassignedMedia`、选中媒体、预览 Inspector、归类/忽略入口和安全语义均未改动。
+- RenderHarness 已加入多次 `0→100→0→100→50→0→100→0` 的 4468 行收件箱回退探针，并把 star-fill 开关纳入门禁；最新 `render-qa-report.txt` 为 `render-qa OK`，构建/测试和源码校验通过。
+- 这是代码级和离屏验证结果；真实 Playnite 宿主仍需用户在可见窗口拖动到底再回翻确认，不能把本阶段写成 Playnite 生产渲染已验证。
+
 ## 2026-08-21 UI-284 主题前景色与页面控件对齐交接
 
 - 共享 `GscWpfUiButtonTextTemplate` 已把 Button 的动态前景色和字体属性传给内部文字；这是修复深色主题 Primary 按钮黑字的根因，后续页面不要复制 Button 模板。

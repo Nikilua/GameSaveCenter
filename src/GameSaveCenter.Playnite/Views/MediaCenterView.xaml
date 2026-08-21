@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:contracts="clr-namespace:GameSaveCenter.Playnite.XamlValues"
              xmlns:converters="clr-namespace:GameSaveCenter.Playnite.Converters"
+             xmlns:infra="clr-namespace:GameSaveCenter.Playnite.Infrastructure"
              xmlns:ui="clr-namespace:GameSaveCenter.Playnite.Controls"
              FontFamily="{DynamicResource GscUiFontFamily}"
              Foreground="{DynamicResource GscPrimaryTextBrush}"
@@ -85,6 +86,12 @@
                 <Setter Property="VerticalContentAlignment" Value="Top"/>
                 <Setter Property="ScrollViewer.VerticalContentAlignment" Value="Top"/>
                 <Setter Property="ClipToBounds" Value="True"/>
+                <!-- This grid already has a finite Grid viewport. The shared star-fill
+                     workaround is intended for tables measured by an unbounded host; it
+                     converts star columns to pixel widths and can invalidate the rows
+                     presenter while the thumb is moving. Keep native finite-viewport
+                     star measurement for the large inbox instead. -->
+                <Setter Property="infra:DataGridStarFill.Enabled" Value="False"/>
                 <Setter Property="ColumnHeaderStyle" Value="{StaticResource MediaInboxColumnHeaderStyle}"/>
             </Style>
             <Style x:Key="MediaLongText" TargetType="TextBlock">

@@ -666,6 +666,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("EnableRowVirtualization\" Value=\"True\"", media);
         Assert.Contains("VirtualizingPanel.VirtualizationMode\" Value=\"Standard\"", media);
         Assert.Contains("EnableColumnVirtualization\" Value=\"False\"", media);
+        Assert.Contains("infra:DataGridStarFill.Enabled\" Value=\"False\"", media);
         Assert.DoesNotContain("VirtualizingPanel.VirtualizationMode\" Value=\"Recycling\"", media);
         Assert.Contains("x:Key=\"MediaInboxStableRowStyle\"", media);
         Assert.Contains("RowStyle=\"{StaticResource MediaInboxStableRowStyle}\"", media);
