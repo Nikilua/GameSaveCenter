@@ -1,5 +1,7 @@
 # 开发实现进度
 
+- [x] UI-295（2026-08-22）：修正媒体中心摘要条的统计块与竖线顺序；四个真实统计块使用 `0/2/4/6` 列，分隔线使用 `1/3/5` 固定 10 DIP 间隔列，移除最后一块右侧多余竖线。真实 MediaSummary/Snapshot OneWay Binding、文案、Tab、滚动和虚拟化保持不变；同步更新默认媒体摘要回归测试与历史资源契约。源码门禁通过，Release 0 警告/0 错误，Core 59、Worker 194、Playnite 277 通过/57 跳过，双主题多尺寸 render-qa 全绿；真实 Playnite 宿主、DPI 和连续缩放仍需人工验收。
+
 - [x] BUILD-001（2026-08-21）：修复 Playnite 视觉对照测试对开发者机器绝对 AcrylicFork 路径的依赖；无 Demo 时仅跳过对应外部基准测试，有 Demo 时继续完整执行；Worker 默认 Soak 测试改为慢盘可接受的边界规模，同时保留环境变量控制的全量压力档。验证：无 Demo 模拟环境 Release 0 警告/0 错误、XAML 18/18、Core 59/59、Worker 194/194、Playnite 269 通过/65 跳过/0 失败；有 Demo 环境 Playnite 274 通过/60 跳过/0 失败。未修改生产 UI、功能、命令或绑定。
 
 - [x] UI-QA-REAL-005（2026-08-13）：修复 4K/宽屏首页右侧“今日概览”未贴顶和“当前游戏”卡空间紧张问题；共享 Overview 右栏显式 Top 对齐，Hero/当前游戏列调整为 `1.1* + 0.9*`。修复设置页共享分类 Tab 的底部圆角裁切：在 `TabPanel` 外增加独立底部安全 host，并启用像素对齐/布局取整。RenderHarness 增加入口动画可见性处理、右栏 top delta、当前游戏宽度比和最后分类底部几何检查。保留命令、绑定、Tab 导航、滚动和虚拟化；`validate-source.py`、WPF 静态门禁、render-qa、Core 42/42、Worker 117/117、Playnite 210/210 通过。真实 Playnite 宿主主题/DPI/连续缩放仍需人工验收。

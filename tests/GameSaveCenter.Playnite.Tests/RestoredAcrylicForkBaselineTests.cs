@@ -187,8 +187,11 @@ public sealed class RestoredAcrylicForkBaselineTests
 
         Assert.Contains("x:Name=\"MediaSummaryPanel\" Grid.Row=\"0\" Style=\"{DynamicResource GscRedesignSectionCard}\"", media);
         Assert.Contains("<Rectangle Grid.Column=\"1\" Width=\"1\" Fill=\"{DynamicResource GscTableDividerBrush}\"", media);
-        Assert.Contains("<Rectangle Grid.Column=\"2\" Width=\"1\" Fill=\"{DynamicResource GscTableDividerBrush}\"", media);
         Assert.Contains("<Rectangle Grid.Column=\"3\" Width=\"1\" Fill=\"{DynamicResource GscTableDividerBrush}\"", media);
+        Assert.Contains("<Rectangle Grid.Column=\"5\" Width=\"1\" Fill=\"{DynamicResource GscTableDividerBrush}\"", media);
+        Assert.Contains("<StackPanel Grid.Column=\"2\" Margin=\"14,2,14,0\">", media);
+        Assert.Contains("<StackPanel Grid.Column=\"4\" Margin=\"14,2,14,0\">", media);
+        Assert.Contains("<StackPanel Grid.Column=\"6\" Margin=\"14,2,14,0\">", media);
         Assert.DoesNotContain("GscRedesignMetricBorder", media);
         Assert.Contains("x:Name=\"MediaTabControl\"", media);
         Assert.Contains("Style=\"{StaticResource MediaTabControl}\"", media);

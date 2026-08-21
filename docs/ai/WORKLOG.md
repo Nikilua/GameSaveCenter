@@ -2,6 +2,23 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-22 UI-295 修正媒体摘要统计块与竖线顺序
+
+**问题确认：**
+
+- 媒体中心摘要条的四个统计内容使用四列，但分隔线也放在第 2、3、4 个统计列中，导致第一块后没有线，后续竖线偏到统计块内部，最后一块右侧出现多余竖线。
+
+**实现内容：**
+
+- `MediaCenterView.xaml` 将摘要条改为 `* / 10 / * / 10 / * / 10 / *` 七列：四个真实统计块位于 `0/2/4/6`，分隔线位于 `1/3/5` 并水平居中；所有 `MediaSummary`、`Snapshot.UnassignedMediaCount` OneWay Binding 和文案保持不变。
+- 更新 `WpfUiResourceDictionaryTests` 与 `RestoredAcrylicForkBaselineTests`，锁定“统计块后跟分隔线”的列契约；媒体摘要测试改为默认 Fact，避免该视觉回归继续被历史基线跳过。
+
+**验证结果：**
+
+- `scripts/validate-source.py`：通过；`validate_wpf_ui.py`：0 error、21 warnings、164 info，warning/info 为既有上下文提示。
+- `scripts/build.ps1 -Configuration Release -OutputRoot artifacts/gsc-b/media-summary-divider-fix`：0 警告/0 错误；Core 59、Worker 194、Playnite 277 通过/57 跳过/0 失败。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/media-summary-divider-fix`：`render-qa OK`，双主题、1040/1100/1366/2560、多 Tab、滚动和 resize transition 通过；已抽查媒体中心亮/暗主题摘要条。
+
 ## 2026-08-21 UI-294 修正任务统计分隔线并统一工作区环境光材质
 
 **问题确认：**

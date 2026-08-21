@@ -2309,18 +2309,26 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Key=\"GscInspectorWidth\">360</GridLength>", tokens);
     }
 
-    [LegacyProductionUiBaselineFact]
+    [Fact]
     public void MediaSummaryStripFollowsTheDemoMetricRhythm()
     {
         var repositoryRoot = FindRepositoryRoot();
         var media = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
 
         // The media center keeps the Demo's single metric strip: four equal
-        // columns, dividers, 26px values, and compact captions.
+        // metric columns separated by fixed divider gutters, 26px values,
+        // and compact captions.
         Assert.Contains("x:Name=\"MediaSummaryPanel\" Grid.Row=\"0\" Style=\"{DynamicResource GscRedesignSectionCard}\"", media);
         Assert.Contains("<Rectangle Grid.Column=\"1\" Width=\"1\" Fill=\"{DynamicResource GscTableDividerBrush}\"", media);
-        Assert.Contains("<Rectangle Grid.Column=\"2\" Width=\"1\" Fill=\"{DynamicResource GscTableDividerBrush}\"", media);
         Assert.Contains("<Rectangle Grid.Column=\"3\" Width=\"1\" Fill=\"{DynamicResource GscTableDividerBrush}\"", media);
+        Assert.Contains("<Rectangle Grid.Column=\"5\" Width=\"1\" Fill=\"{DynamicResource GscTableDividerBrush}\"", media);
+        Assert.Contains("<StackPanel Grid.Column=\"2\" Margin=\"14,2,14,0\">", media);
+        Assert.Contains("<StackPanel Grid.Column=\"4\" Margin=\"14,2,14,0\">", media);
+        Assert.Contains("<StackPanel Grid.Column=\"6\" Margin=\"14,2,14,0\">", media);
+        var summaryStart = media.IndexOf("x:Name=\"MediaSummaryPanel\"", StringComparison.Ordinal);
+        var summaryEnd = media.IndexOf("</Border>", summaryStart, StringComparison.Ordinal);
+        var summary = media.Substring(summaryStart, summaryEnd - summaryStart);
+        Assert.Equal(3, Regex.Matches(summary, "<ColumnDefinition Width=\"10\"/>").Count);
         Assert.DoesNotContain("GscRedesignMetricBorder", media);
         Assert.Contains("Text=\"{Binding MediaSummary.TotalCount, Mode=OneWay}\" FontSize=\"26\" FontWeight=\"SemiBold\"", media);
         Assert.Contains("Text=\"{Binding MediaSummary.ScreenshotCount, Mode=OneWay}\"", media);

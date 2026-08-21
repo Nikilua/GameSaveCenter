@@ -14,6 +14,12 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-22 UI-295 媒体摘要分隔线交接
+
+- `MediaCenterView.xaml` 的 `MediaSummaryPanel` 使用 `* / 10 / * / 10 / * / 10 / *` 七列；四个统计块位于 `0/2/4/6`，三条分隔线位于 `1/3/5`，最后一块右侧不能再增加 Rectangle。
+- 本轮只修正摘要条几何，真实 MediaSummary/Snapshot OneWay Binding、媒体 Tab、DataGrid/ListBox 虚拟化、Inspector、命令和滚动模型均未改变。
+- UI-295 已通过源码校验、WPF 静态审查、Release 构建/测试和 `artifacts/ui-qa/media-summary-divider-fix/render-qa-report.txt` 双主题多尺寸回归；真实 Playnite 宿主 DPI/连续缩放仍需人工验收。
+
 ## 2026-08-21 BUILD-002 跨电脑构建与测试交接
 
 - `9b19dbd` 的 Release 编译本身通过；此前另一台机器的 5 个失败均是视觉对照测试读取 `D:\workplace\Github\GameSaveCenter.AcrylicFork` 导致的 `DirectoryNotFoundException`。
