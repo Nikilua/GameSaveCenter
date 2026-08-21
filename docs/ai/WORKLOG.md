@@ -13,7 +13,7 @@
 **验证结果：**
 
 - `scripts/validate-source.py`：通过；XAML 18/18；Release 0 警告/0 错误；Core 59/59、Worker 194/194、Playnite 276 通过/58 跳过/0 失败。
-- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/media-source-layout-ui290`：`render-qa OK`，覆盖 1040/1100/1366/2560、Light/Dark 和 resize transition。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/ui-final-audit`：`render-qa OK`，覆盖 1040/1100/1366/2560、Light/Dark 和 resize transition。
 - `validate_wpf_ui.py`：0 error、20 warnings、164 info；RenderHarness 为离屏证据，不等同真实 Playnite 宿主逐像素验收。
 - 测试与构建只使用当前仓库文件，不依赖另一台机器上的 AcrylicFork Demo 文件夹。
 

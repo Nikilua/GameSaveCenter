@@ -8,7 +8,7 @@
 - `MediaCenterView.xaml` 的来源规则页使用 `MediaSourceLayout`：宽屏为 1.1* 表单、14 DIP 间距、* 规则列表；窄屏由 `ApplyResponsiveLayout` 改为表单在上、规则列表在下，字段从两列收为一列。
 - 表单默认可见，真实 `CustomMediaSourcePath`/`CustomMediaPattern`/`CustomMediaShared` 绑定及 `AddMediaSourceCommand` 保留；规则列表继续使用 `MediaSources`、更新/移除命令、内部 Auto 滚动、行虚拟化和空状态。
 - 媒体待归类页的 Inspector、目标游戏、归类/忽略/批量操作和大数据表格虚拟化契约未改动；窄屏只给来源表单和规则列表各自有限视口。
-- UI-291 证据：Release 0 warning/0 error；Core 59、Worker 194、Playnite 276/58/0；`artifacts/ui-qa/media-source-layout-ui290/render-qa-report.txt` 为 `render-qa OK`，双主题、多尺寸和 resize 通过。未宣称真实 Playnite 生产宿主逐像素验收，Demo 文件夹不是运行时或测试依赖。
+- UI-291 证据：当前最终审计 Release 0 warning/0 error；Core 59、Worker 194、Playnite 276/58/0；`artifacts/ui-qa/ui-final-audit/render-qa-report.txt` 为 `render-qa OK`，双主题、多尺寸和 resize 通过。未宣称真实 Playnite 生产宿主逐像素验收，Demo 文件夹不是运行时或测试依赖。
 
 ## 2026-08-21 UI-290 当前事实：首页信息层级
 
