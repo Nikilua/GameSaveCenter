@@ -395,7 +395,7 @@
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                     <StackPanel Orientation="Horizontal" MinWidth="0">
                                         <TextBlock Text="版本比较" Style="{DynamicResource GscSectionTitleStyle}"/>
-                                        <Border Style="{DynamicResource GscRedesignContextPill}" Background="{DynamicResource GscInfoIconFillBrush}" Margin="10,0,0,0" VerticalAlignment="Center" MaxWidth="210">
+                                        <Border Style="{DynamicResource GscRedesignContextPill}" Background="{DynamicResource GscInfoIconFillBrush}" Margin="10,0,0,0" VerticalAlignment="Center" Height="28" MinHeight="28" Padding="9,0" MaxWidth="210" SnapsToDevicePixels="True">
                                             <TextBlock Text="{Binding LastBackupDiff.ComparisonQualityDisplay, TargetNullValue=尚未比较}" Foreground="{DynamicResource GscInfoBrush}" FontSize="10.5" TextTrimming="CharacterEllipsis" ToolTip="{Binding LastBackupDiff.ComparisonQualityDisplay}"/>
                                         </Border>
                                     </StackPanel>

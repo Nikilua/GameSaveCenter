@@ -568,6 +568,10 @@
          and ellipsized instead of expanding past a toolbar or inspector boundary. -->
     <DataTemplate x:Key="GscWpfUiButtonTextTemplate">
         <TextBlock Text="{Binding}"
+                   Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
+                   FontFamily="{Binding FontFamily, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
+                   FontSize="{Binding FontSize, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
+                   FontWeight="{Binding FontWeight, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
                    HorizontalAlignment="Stretch"
                    VerticalAlignment="Center"
                    TextAlignment="Center"
@@ -576,6 +580,82 @@
                    ToolTip="{Binding}"
                    SnapsToDevicePixels="True"/>
     </DataTemplate>
+
+    <!-- Settings uses the same production palette as the workspace pages. Do not reuse
+         AcrylicReferenceControls' Demo segment fill here: that legacy token is bright in
+         the dark reference palette and becomes a gray slab in Playnite settings. -->
+    <Style x:Key="GscSettingsSectionTabItem" TargetType="ListBoxItem">
+        <Setter Property="Foreground" Value="{DynamicResource GscSecondaryTextBrush}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
+        <Setter Property="FontSize" Value="{DynamicResource GscBodyFontSize}"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Padding" Value="12,9"/>
+        <Setter Property="Margin" Value="0,0,0,4"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <Border x:Name="TabChrome"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            BorderThickness="1"
+                            CornerRadius="10"
+                            Padding="{TemplateBinding Padding}"
+                            SnapsToDevicePixels="True">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          TextElement.Foreground="{TemplateBinding Foreground}"
+                                          TextElement.FontFamily="{TemplateBinding FontFamily}"
+                                          TextElement.FontSize="{TemplateBinding FontSize}"
+                                          TextElement.FontWeight="{TemplateBinding FontWeight}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="TabChrome" Property="Background" Value="{DynamicResource GscRowHoverBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="TabChrome" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
+                            <Setter TargetName="TabChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="GscSettingsSectionTabs" TargetType="ListBox">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Foreground" Value="{DynamicResource GscSecondaryTextBrush}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
+        <Setter Property="FontSize" Value="{DynamicResource GscBodyFontSize}"/>
+        <Setter Property="ItemContainerStyle" Value="{StaticResource GscSettingsSectionTabItem}"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <StackPanel/>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBox">
+                    <ScrollViewer Focusable="False"
+                                  HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                                  VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+                        <ItemsPresenter/>
+                    </ScrollViewer>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <Style x:Key="GscWpfUiButton"
            TargetType="{x:Type ui:Button}">

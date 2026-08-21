@@ -69,8 +69,7 @@
                     <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition x:Name="SettingsCompactContentRow" Height="0"/></Grid.RowDefinitions>
                     <Grid.ColumnDefinitions><ColumnDefinition Width="190"/><ColumnDefinition Width="16"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                     <Border x:Name="SettingsCategoryRail" Grid.Row="0" Grid.Column="0" Style="{DynamicResource GscRedesignSectionCard}" Padding="8" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                        <ListBox x:Name="SettingsSectionTabs" Style="{StaticResource LabSegmented}" SelectionChanged="OnSettingsTabSelectionChanged" SelectedIndex="0" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" AutomationProperties.Name="设置分类导航">
-                            <ListBox.ItemsPanel><ItemsPanelTemplate><StackPanel/></ItemsPanelTemplate></ListBox.ItemsPanel>
+                        <ListBox x:Name="SettingsSectionTabs" Style="{StaticResource GscSettingsSectionTabs}" SelectionChanged="OnSettingsTabSelectionChanged" SelectedIndex="0" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" AutomationProperties.Name="设置分类导航">
                             <ListBoxItem Content="常规与目录"/>
                             <ListBoxItem Content="备份与恢复"/>
                             <ListBoxItem Content="外观与可访问性"/>

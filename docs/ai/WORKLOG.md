@@ -2,6 +2,27 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-21 UI-284 修复主题前景色、按钮几何与设置侧栏
+
+**问题确认：**
+
+- 生产共享按钮的内容模板没有把按钮的 `Foreground`、字体族和字阶传给内部 `TextBlock`；按钮套用 Primary 外观时文字会回落为黑色，在深色主题上不可读，并会放大多个页面的按钮错位/溢出观感。
+- 设置页分类栏仍引用旧的 `LabSegmented` 灰色填充；风险操作按钮由 `WrapPanel` 自适应排列，两个按钮在窄宽下高度不一致；需关注事项底部维护入口也缺少 Demo 同级的按钮表面。
+- 比较与保留页的“估算比较（缺少完整 Hash）”状态气泡缺少稳定尺寸约束，标题行对齐会随内容测量变化。
+
+**实现内容：**
+
+- `GscWpfUiButtonTextTemplate` 改为继承宿主 Button 的动态 `Foreground`、`FontFamily`、`FontSize` 和 `FontWeight`，修复所有共享按钮的主题文字颜色；风险操作区改为固定按钮高度的水平布局，需关注事项保持 Demo 的真实分隔列表和 `SuggestedAction` 绑定，底部维护入口使用带背景/描边的 Secondary 按钮。
+- 新增 `GscSettingsSectionTabs`/`GscSettingsSectionTabItem`，使用主题动态画刷、选中态和 UI 字体，设置页改用该样式，移除旧灰色整块背景。
+- 比较页状态气泡增加固定高度、内边距、最大宽度和像素对齐约束；同步更新源码门禁与设置样式测试契约。
+- 未添加 Mock Finding、未恢复 Demo 中不存在的 checkbox/逐项按钮，真实绑定、命令、安全语义、滚动和虚拟化保持不变。
+
+**验证结果：**
+
+- `scripts/build.ps1 -Configuration Release -OutputRoot artifacts/gsc-b/ui284-theme-v1`：XAML 18/18；Release 构建 0 warning、0 error；Core 59/59；Worker 191/191；Playnite 272 通过、60 跳过、0 失败。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/ui284-theme-v1`：`render-qa OK`；双主题、1040/1100/1366/2560 多尺寸、滚动和 resize transition 均通过；Overview 风险/关注区、Settings 侧栏、Save 比较页气泡已抽查。
+- `scripts/validate-source.py`、`validate_wpf_ui.py`（0 error、20 warnings、164 info）和 `git diff --check` 通过。WPF warnings/info 为现有共享资源与测量审计提示；本阶段仍未运行真实 Playnite 生产宿主，不能宣称 Demo-first 总迁移完成。
+
 ## 2026-08-21 UI-283 修复媒体待归类大数据滚动空白
 
 **问题确认：**

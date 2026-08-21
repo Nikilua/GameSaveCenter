@@ -42,14 +42,17 @@
             <Style x:Key="OverviewFindingActionButton"
                    TargetType="ui:Button"
                    BasedOn="{StaticResource GscWpfUiCompactButton}">
-                <Setter Property="Appearance" Value="Transparent"/>
-                <Setter Property="Background" Value="Transparent"/>
-                <Setter Property="BorderBrush" Value="Transparent"/>
-                <Setter Property="BorderThickness" Value="0"/>
-                <Setter Property="Foreground" Value="{DynamicResource GscAccentBrush}"/>
-                <Setter Property="Padding" Value="8,2"/>
-                <Setter Property="MinHeight" Value="30"/>
-                <Setter Property="ui:Button.CornerRadius" Value="8"/>
+                <!-- The Demo uses a real compact secondary button for the maintenance
+                     entry. Keeping the chrome visible also prevents the empty-state action
+                     from looking like an unstyled hyperlink. -->
+                <Setter Property="Appearance" Value="Secondary"/>
+                <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+                <Setter Property="Padding" Value="12,7"/>
+                <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
+                <Setter Property="ui:Button.CornerRadius" Value="10"/>
             </Style>
             <Style x:Key="OverviewMetricActionButton"
                    TargetType="ui:Button"
@@ -150,6 +153,8 @@
                 <Setter Property="BorderThickness" Value="0"/>
                 <Setter Property="Padding" Value="0"/>
                 <Setter Property="Margin" Value="0,0,0,6"/>
+                <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+                <Setter Property="TextElement.Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                 <Setter Property="VerticalContentAlignment" Value="Stretch"/>
                 <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
@@ -161,7 +166,12 @@
                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                               Content="{TemplateBinding Content}"
                                               ContentTemplate="{TemplateBinding ContentTemplate}"
-                                              ContentStringFormat="{TemplateBinding ContentStringFormat}"/>
+                                              ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                              TextElement.Foreground="{TemplateBinding Foreground}"
+                                              TextElement.FontFamily="{DynamicResource GscUiFontFamily}"
+                                              TextElement.FontSize="{DynamicResource GscBodyFontSize}"
+                                              TextElement.FontWeight="{TemplateBinding FontWeight}"
+                                              RecognizesAccessKey="True"/>
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
@@ -663,7 +673,8 @@
                                             BorderThickness="1"
                                             CornerRadius="10"
                                             Padding="8"
-                                            Margin="0,0,0,6">
+                                            Margin="0,0,0,6"
+                                            TextElement.Foreground="{DynamicResource GscPrimaryTextBrush}">
                                         <Grid MinWidth="0">
                                             <Grid.ColumnDefinitions><ColumnDefinition Width="10"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                             <Ellipse x:Name="OverviewProtectionPreviewDot" Width="8" Height="8" Fill="{DynamicResource GscWarningBrush}" VerticalAlignment="Top" Margin="0,5,0,0"/>
@@ -719,10 +730,10 @@
                          <!-- Demo intentionally has no second disclosure, checkbox list or per-item action here. -->
                        </StackPanel>
                      </ScrollViewer>
-                    <WrapPanel x:Name="OverviewProtectionActions" Grid.Row="2" Margin="0,8,0,0">
-                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding OpenProtectionGamesCommand}" Content="查看需要处理的游戏" MinHeight="34" MinWidth="128" Margin="0,0,6,0" AutomationProperties.Name="查看最近游玩但未受保护的游戏"/>
-                        <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding ApplyRecommendedProtectionCommand}" Content="启用所选保护" MinHeight="34" MinWidth="128" ToolTip="启用所选保护前会要求确认，并先创建当前快照。" AutomationProperties.Name="为所选最近游玩游戏启用推荐保护"/>
-                    </WrapPanel>
+                    <StackPanel x:Name="OverviewProtectionActions" Grid.Row="2" Orientation="Horizontal" Margin="0,8,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding OpenProtectionGamesCommand}" Content="查看需要处理的游戏" Height="{DynamicResource GscButtonHeight}" MinWidth="128" Margin="0,0,6,0" VerticalContentAlignment="Center" AutomationProperties.Name="查看最近游玩但未受保护的游戏"/>
+                        <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding ApplyRecommendedProtectionCommand}" Content="启用所选保护" Height="{DynamicResource GscButtonHeight}" MinWidth="128" VerticalContentAlignment="Center" ToolTip="启用所选保护前会要求确认，并先创建当前快照。" AutomationProperties.Name="为所选最近游玩游戏启用推荐保护"/>
+                    </StackPanel>
                 </Grid>
             </Border>
 

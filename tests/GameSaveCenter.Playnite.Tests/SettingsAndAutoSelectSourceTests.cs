@@ -26,7 +26,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("设置迁移", xaml);
             Assert.Contains("x:Name=\"SettingsWorkspace\"", xaml);
             Assert.Contains("x:Name=\"SettingsCategoryRail\"", xaml);
-            Assert.Contains("Style=\"{StaticResource LabSegmented}\"", xaml);
+            Assert.Contains("Style=\"{StaticResource GscSettingsSectionTabs}\"", xaml);
             Assert.Contains("SelectionChanged=\"OnSettingsTabSelectionChanged\"", xaml);
             Assert.Contains("x:Name=\"SettingsGeneralPanel\"", xaml);
             Assert.Contains("x:Name=\"SettingsMigrationPanel\"", xaml);

@@ -3,6 +3,14 @@
 > 维护时间：2026-08-21
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-21 UI-284 当前事实：共享按钮和主题侧栏已统一
+
+- `Themes/WpfUiProduction.xaml` 的 `GscWpfUiButtonTextTemplate` 必须把宿主 Button 的动态 `Foreground`、字体族、字阶和字重传给内部 `TextBlock`；否则 Primary 按钮文字会回落为黑色，深色主题不可读。页面不得复制按钮模板绕过共享修复。
+- `OverviewView.xaml` 的风险操作按钮使用固定 `GscButtonHeight` 的水平布局；`AttentionFindings` 继续是 Demo 风格的真实分隔列表，右侧显示 `SuggestedAction` 文本，空集合仅保留标题、说明和真实维护入口；维护入口必须是有背景/描边的 Secondary 按钮。
+- `GameSaveCenterSettingsView.xaml` 的 `SettingsSectionTabs` 使用 `GscSettingsSectionTabs`，不要恢复 `LabSegmented` 灰色整块；选中态、Hover、字体和前景色都从当前主题动态资源读取。
+- `SaveCenterView.xaml` 的比较质量气泡固定 28 DIP 高度、内边距和最大宽度，并与“版本比较”标题垂直居中；不要让长文本重新参与标题行高度测量。
+- UI-284 证据：`artifacts/gsc-b/ui284-theme-v1` 构建/测试通过；`artifacts/ui-qa/ui284-theme-v1/render-qa-report.txt` 为 `render-qa OK`，双主题、多尺寸和 resize 通过。真实 Playnite 生产宿主逐页截图仍未补齐，Demo-first 总迁移仍未完成。
+
 ## 2026-08-21 UI-283 当前事实：媒体待归类使用稳定的大数据虚拟化契约
 
 - `MediaCenterView.xaml` 的 `MediaDataGrid` 继续 `Item` 滚动、行虚拟化、固定共享行高、顶部对齐、排序/列宽调整和圆角选中态；针对真实最多 5000 条的 `UnassignedMedia`，必须局部使用 `VirtualizationMode=Standard` 与 `EnableColumnVirtualization=False`，不能恢复共享的 `Recycling` + 列虚拟化组合。

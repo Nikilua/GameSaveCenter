@@ -1169,7 +1169,7 @@ def check_final_redesign_guards() -> None:
         (settings, "Settings final redesign",
          ('Themes/Redesign.xaml', 'x:Name="SettingsWorkspace"',
           'x:Name="SettingsCategoryRail"', 'x:Name="SettingsScroller"',
-          'Style="{StaticResource LabSegmented}"', '由 Playnite 的保存按钮提交',
+          'Style="{StaticResource GscSettingsSectionTabs}"', '由 Playnite 的保存按钮提交',
           'x:Name="CoreToolFields"', 'x:Name="StorageFormatFields"', 'x:Name="StorageNumericFields"',
           'x:Name="AppearanceFields"', 'x:Name="AutomationIntervalFields"',
           'x:Name="SettingsGeneralPanel"', 'x:Name="SettingsBackupPanel"',
@@ -1435,6 +1435,7 @@ def check_final_redesign_guards() -> None:
             if control.attrib.get("Style") in (
                 "{StaticResource GscRedesignSegmented}",
                 "{StaticResource LabSegmented}",
+                "{StaticResource GscSettingsSectionTabs}",
             ):
                 continue
             for attribute, expected in (

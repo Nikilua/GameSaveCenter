@@ -14,6 +14,14 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-21 UI-284 主题前景色与页面控件对齐交接
+
+- 共享 `GscWpfUiButtonTextTemplate` 已把 Button 的动态前景色和字体属性传给内部文字；这是修复深色主题 Primary 按钮黑字的根因，后续页面不要复制 Button 模板。
+- 首页风险操作区固定两个按钮的高度并水平对齐；需关注事项继续使用真实 `AttentionFindings` 的 Demo 分隔列表，`SuggestedAction` 仍是右侧文字，不得换回 checkbox、逐项按钮或空的自定义卡片；底部维护入口使用带背景/描边的 Secondary 样式。
+- 设置分类栏已从 `LabSegmented` 切换到 `GscSettingsSectionTabs`，背景、选中态、文字和 Hover 均来自当前主题动态资源，浅色/深色主题都不能写死灰色填充。
+- 比较页质量气泡使用固定高度与内边距，并保持标题行垂直居中；同时保留比较/保留页横向画布、真实差异/保留绑定和安全说明。
+- 当前证据：`artifacts/ui-qa/ui284-theme-v1/render-qa-report.txt` 为 `render-qa OK`，构建和测试通过，WPF 静态校验 0 error；本阶段未运行真实 Playnite 宿主，后续仍需在可见宿主补验主题、DPI 和交互命中。
+
 ## 2026-08-21 UI-283 媒体待归类大数据滚动修复交接
 
 - 用户反馈待归类收件箱在约 4468 条数据向下滚动时出现表头下空白表格。当前 `MediaDataGrid` 必须保留 `Item` 滚动和行虚拟化，但局部覆盖为 `VirtualizingPanel.VirtualizationMode=Standard`、`EnableColumnVirtualization=False`；这是针对星号文本列与大数据量的 WPF 呈现稳定性例外。

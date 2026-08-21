@@ -4674,7 +4674,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"SettingsSectionTabs\"", settings);
         Assert.Contains("x:Name=\"SettingsWorkspace\"", settings);
         Assert.Contains("x:Name=\"SettingsCategoryRail\"", settings);
-        Assert.Contains("Style=\"{StaticResource LabSegmented}\"", settings);
+        Assert.Contains("Style=\"{StaticResource GscSettingsSectionTabs}\"", settings);
         Assert.Contains("SelectionChanged=\"OnSettingsTabSelectionChanged\"", settings);
         Assert.Contains("x:Name=\"SettingsScroller\"", settings);
         Assert.Contains("x:Name=\"SettingsHeader\" Style=\"{DynamicResource GscRedesignWorkspaceHeroCard}\"", settings);
