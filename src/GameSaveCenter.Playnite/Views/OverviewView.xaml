@@ -23,6 +23,34 @@
                 <Setter Property="TextWrapping" Value="Wrap"/>
                 <Setter Property="Margin" Value="22"/>
             </Style>
+            <!-- Demo HomeView typography. Keep these aliases local to the overview so
+                 production pages that still use their own density are not changed by a
+                 homepage-only correction. -->
+            <Style x:Key="OverviewDemoSectionTitle" TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
+                <Setter Property="FontSize" Value="{DynamicResource GscSectionFontSize}"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+                <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+            </Style>
+            <Style x:Key="OverviewDemoCaption" TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
+                <Setter Property="FontSize" Value="{DynamicResource GscCaptionFontSize}"/>
+                <Setter Property="Foreground" Value="{DynamicResource GscMutedTextBrush}"/>
+                <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+            </Style>
+            <Style x:Key="OverviewFindingActionButton"
+                   TargetType="ui:Button"
+                   BasedOn="{StaticResource GscWpfUiCompactButton}">
+                <Setter Property="Appearance" Value="Transparent"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Foreground" Value="{DynamicResource GscAccentBrush}"/>
+                <Setter Property="Padding" Value="8,2"/>
+                <Setter Property="MinHeight" Value="30"/>
+                <Setter Property="ui:Button.CornerRadius" Value="8"/>
+            </Style>
             <Style x:Key="OverviewMetricActionButton"
                    TargetType="ui:Button"
                    BasedOn="{StaticResource GscWpfUiButton}">
@@ -106,6 +134,11 @@
                                 <Trigger Property="IsSelected" Value="True">
                                     <Setter TargetName="TaskItemChrome" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
                                     <Setter TargetName="TaskItemChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
+                                    <Setter TargetName="TaskItemChrome" Property="BorderThickness" Value="1"/>
+                                    <Setter TargetName="TaskItemChrome" Property="CornerRadius" Value="14"/>
+                                    <Setter TargetName="TaskItemChrome" Property="Margin" Value="4,2"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
+                                    <Setter Property="TextElement.Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
                                 </Trigger>
                                 <Trigger Property="IsMouseOver" Value="True">
                                     <Setter TargetName="TaskItemChrome" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
@@ -318,12 +351,14 @@
              <Border x:Name="OverviewStatStrip" Grid.Row="2" Grid.ColumnSpan="3" Style="{DynamicResource GscRedesignSectionCard}" Padding="6,14" MinHeight="84" Margin="0,0,0,12">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                 <Border Grid.Column="0" Style="{StaticResource OverviewStatCard}"><StackPanel><TextBlock Text="{Binding Snapshot.ManagedGames, Mode=OneWay}" Foreground="{DynamicResource GscInfoBrush}" FontSize="26" FontWeight="SemiBold"/><TextBlock Text="已管理游戏" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,2,0,0"/><TextBlock Text="来自 Playnite 游戏库" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0" TextWrapping="Wrap"/></StackPanel></Border>
                 <Rectangle Grid.Column="1" Width="1" Fill="{DynamicResource GscTableDividerBrush}" VerticalAlignment="Stretch" Margin="0,4"/>
-                <Border Grid.Column="1" Style="{StaticResource OverviewStatCard}">
+                <Border Grid.Column="2" Style="{StaticResource OverviewStatCard}">
                     <StackPanel>
                         <TextBlock Text="{Binding Snapshot.MatchedGames, Mode=OneWay}" Foreground="{DynamicResource GscAccentBrush}" FontSize="26" FontWeight="SemiBold"/>
                         <TextBlock Text="已匹配存档" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,2,0,0"/>
@@ -341,10 +376,10 @@
                         <TextBlock Text="已匹配到 Ludusavi 存档路径" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0" TextWrapping="Wrap"/>
                     </StackPanel>
                 </Border>
-                <Rectangle Grid.Column="2" Width="1" Fill="{DynamicResource GscTableDividerBrush}" VerticalAlignment="Stretch" Margin="0,4"/>
-                <Border Grid.Column="2" Style="{StaticResource OverviewStatCard}"><StackPanel><TextBlock Text="{Binding Snapshot.RunningGames, Mode=OneWay}" Foreground="{DynamicResource GscSuccessBrush}" FontSize="26" FontWeight="SemiBold"/><TextBlock Text="正在运行" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,2,0,0"/><TextBlock Text="运行中游戏按策略周期备份" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0" TextWrapping="Wrap"/></StackPanel></Border>
                 <Rectangle Grid.Column="3" Width="1" Fill="{DynamicResource GscTableDividerBrush}" VerticalAlignment="Stretch" Margin="0,4"/>
-                <Border Grid.Column="3" Style="{StaticResource OverviewStatCard}">
+                <Border Grid.Column="4" Style="{StaticResource OverviewStatCard}"><StackPanel><TextBlock Text="{Binding Snapshot.RunningGames, Mode=OneWay}" Foreground="{DynamicResource GscSuccessBrush}" FontSize="26" FontWeight="SemiBold"/><TextBlock Text="正在运行" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,2,0,0"/><TextBlock Text="运行中游戏按策略周期备份" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0" TextWrapping="Wrap"/></StackPanel></Border>
+                <Rectangle Grid.Column="5" Width="1" Fill="{DynamicResource GscTableDividerBrush}" VerticalAlignment="Stretch" Margin="0,4"/>
+                <Border Grid.Column="6" Style="{StaticResource OverviewStatCard}">
                     <StackPanel>
                         <TextBlock Text="{Binding Snapshot.WarningGames, Mode=OneWay}" Foreground="{DynamicResource GscWarningBrush}" FontSize="26" FontWeight="SemiBold"/>
                         <TextBlock Text="需要注意" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,2,0,0"/>
@@ -362,10 +397,10 @@
                         <TextBlock Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0" TextWrapping="Wrap"><Run Text="健康 "/><Run Text="{Binding Snapshot.HealthyGames, Mode=OneWay}"/><Run Text=" · 注意 "/><Run Text="{Binding Snapshot.AttentionGames, Mode=OneWay}"/><Run Text=" · 风险 "/><Run Text="{Binding Snapshot.RiskGames, Mode=OneWay}"/><Run Text=" · 未知 "/><Run Text="{Binding Snapshot.UnknownGames, Mode=OneWay}"/></TextBlock>
                     </StackPanel>
                 </Border>
-                <Rectangle Grid.Column="4" Width="1" Fill="{DynamicResource GscTableDividerBrush}" VerticalAlignment="Stretch" Margin="0,4"/>
-                <Border Grid.Column="4" Style="{StaticResource OverviewStatCard}"><StackPanel><TextBlock Text="{Binding Snapshot.PendingCloudTasks, Mode=OneWay}" Foreground="{DynamicResource GscInfoBrush}" FontSize="26" FontWeight="SemiBold"/><TextBlock Text="云端队列" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,2,0,0"/><TextBlock Text="失败不会撤销本地备份" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0" TextWrapping="Wrap"/></StackPanel></Border>
-                <Rectangle Grid.Column="5" Width="1" Fill="{DynamicResource GscTableDividerBrush}" VerticalAlignment="Stretch" Margin="0,4"/>
-                <Border Grid.Column="5" Style="{StaticResource OverviewStatCard}"><StackPanel><TextBlock Text="{Binding Snapshot.UnassignedMediaCount, Mode=OneWay}" Foreground="{DynamicResource GscWarningBrush}" FontSize="26" FontWeight="SemiBold"/><TextBlock Text="待归类媒体" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,2,0,0"/><TextBlock Text="来自共享截图目录" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0" TextWrapping="Wrap"/></StackPanel></Border>
+                <Rectangle Grid.Column="7" Width="1" Fill="{DynamicResource GscTableDividerBrush}" VerticalAlignment="Stretch" Margin="0,4"/>
+                <Border Grid.Column="8" Style="{StaticResource OverviewStatCard}"><StackPanel><TextBlock Text="{Binding Snapshot.PendingCloudTasks, Mode=OneWay}" Foreground="{DynamicResource GscInfoBrush}" FontSize="26" FontWeight="SemiBold"/><TextBlock Text="云端队列" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,2,0,0"/><TextBlock Text="失败不会撤销本地备份" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0" TextWrapping="Wrap"/></StackPanel></Border>
+                <Rectangle Grid.Column="9" Width="1" Fill="{DynamicResource GscTableDividerBrush}" VerticalAlignment="Stretch" Margin="0,4"/>
+                <Border Grid.Column="10" Style="{StaticResource OverviewStatCard}"><StackPanel><TextBlock Text="{Binding Snapshot.UnassignedMediaCount, Mode=OneWay}" Foreground="{DynamicResource GscWarningBrush}" FontSize="26" FontWeight="SemiBold"/><TextBlock Text="待归类媒体" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,2,0,0"/><TextBlock Text="来自共享截图目录" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0" TextWrapping="Wrap"/></StackPanel></Border>
                 </Grid>
              </Border>
 
@@ -390,8 +425,8 @@
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                     <Grid Margin="0,0,0,8">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                        <TextBlock Style="{DynamicResource GscRedesignSectionTitle}" Text="最近任务"/>
-                        <TextBlock Grid.Column="1" Text="{Binding OverviewTasks.Count, StringFormat=全部 {0} 个}" Style="{DynamicResource GscRedesignSectionSubtitle}" Foreground="{DynamicResource GscAccentBrush}" TextElement.Foreground="{DynamicResource GscAccentBrush}" FontSize="13" FontWeight="SemiBold" Opacity="1" HorizontalAlignment="Right" TextTrimming="CharacterEllipsis" ToolTip="最近任务数量"/>
+                        <TextBlock Style="{StaticResource OverviewDemoSectionTitle}" Text="最近任务"/>
+                        <TextBlock Grid.Column="1" Text="{Binding OverviewTasks.Count, StringFormat=全部 {0} 个}" Style="{StaticResource OverviewDemoCaption}" Foreground="{DynamicResource GscAccentBrush}" TextElement.Foreground="{DynamicResource GscAccentBrush}" FontWeight="SemiBold" Opacity="1" HorizontalAlignment="Right" TextTrimming="CharacterEllipsis" ToolTip="最近任务数量"/>
                     </Grid>
                     <Border Grid.Row="1" Style="{StaticResource OverviewActivityFrame}" MinHeight="0">
                         <Grid>
@@ -414,20 +449,20 @@
                                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                                     <Grid Grid.Column="0" MinWidth="0">
                                                         <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                                                        <TextBlock Text="{Binding TaskTypeDisplay, Mode=OneWay}" Foreground="{DynamicResource GscPrimaryTextBrush}" FontWeight="SemiBold" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding TaskTypeDisplay, Mode=OneWay}"/>
-                                                        <TextBlock Grid.Column="1" Text="{Binding GameName, Mode=OneWay, TargetNullValue=全局}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="6,0,0,0" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/>
+                                                        <TextBlock Text="{Binding TaskTypeDisplay, Mode=OneWay}" Foreground="{DynamicResource GscPrimaryTextBrush}" FontSize="12.5" FontWeight="SemiBold" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding TaskTypeDisplay, Mode=OneWay}"/>
+                                                        <TextBlock Grid.Column="1" Text="{Binding GameName, Mode=OneWay, TargetNullValue=全局}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="12.5" Margin="6,0,0,0" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/>
                                                     </Grid>
                                                 </Grid>
                                                 <Grid Margin="0,3,0,0" MinWidth="0">
                                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                                                    <TextBlock Text="{Binding DetailMessage, Mode=OneWay}" FontSize="11" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding DetailMessage}" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="{Binding DetailMessage, Mode=OneWay}" FontSize="10.5" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding DetailMessage}" VerticalAlignment="Center"/>
                                                     <ProgressBar x:Name="OverviewTaskProgressBar" Grid.Column="1" Style="{StaticResource OverviewTaskProgressBar}" Width="150" Margin="10,0,0,0" Minimum="0" Maximum="100" Value="{Binding ProgressPercent, Mode=OneWay}" VerticalAlignment="Center"/>
                                                 </Grid>
                                             </StackPanel>
-                                            <Border x:Name="OverviewTaskResultChip" Grid.Column="3" Style="{DynamicResource GscRedesignContextPill}" Padding="6,2" MinWidth="56" BorderThickness="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                <TextBlock x:Name="OverviewTaskResultText" Text="{Binding StateDisplay, Mode=OneWay}" Foreground="{DynamicResource GscPrimaryTextBrush}" FontSize="11" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding StateDisplay, Mode=OneWay}"/>
+                                            <Border x:Name="OverviewTaskResultChip" Grid.Column="3" Style="{DynamicResource GscRedesignTableStatusPill}" MinWidth="56" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <TextBlock x:Name="OverviewTaskResultText" Text="{Binding StateDisplay, Mode=OneWay}" Foreground="{DynamicResource GscPrimaryTextBrush}" FontSize="12" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding StateDisplay, Mode=OneWay}"/>
                                             </Border>
-                                            <TextBlock Grid.Column="4" Text="{Binding CreatedLocal, Mode=OneWay, StringFormat={}{0:MM-dd HH:mm}}" FontSize="11" Foreground="{DynamicResource GscSecondaryTextBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding CreatedLocal, Mode=OneWay, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"/>
+                                            <TextBlock Grid.Column="4" Text="{Binding CreatedLocal, Mode=OneWay, StringFormat={}{0:MM-dd HH:mm}}" FontSize="12" Foreground="{DynamicResource GscSecondaryTextBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding CreatedLocal, Mode=OneWay, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"/>
                                         </Grid>
                                         <DataTemplate.Triggers>
                                             <DataTrigger Binding="{Binding State}" Value="Failed">
@@ -484,7 +519,7 @@
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
                     <Grid Margin="0,0,0,12">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                        <StackPanel><TextBlock Style="{DynamicResource GscRedesignSectionTitle}" Text="全局活动"/><TextBlock Style="{DynamicResource GscRedesignSectionSubtitle}" Text="备份、恢复、云端、媒体、工具、健康、冲突、完整性与仓库修复事件" Margin="0,4,0,0"/></StackPanel>
+                         <StackPanel><TextBlock Style="{StaticResource OverviewDemoSectionTitle}" Text="全局活动"/><TextBlock Style="{StaticResource OverviewDemoCaption}" Text="备份、恢复、云端、媒体、工具、健康、冲突、完整性与仓库修复事件" Margin="0,4,0,0"/></StackPanel>
                         <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding RefreshCommand}" Content="刷新"/>
                     </Grid>
                     <Border Grid.Row="1" Style="{StaticResource OverviewActivityFrame}">
@@ -498,22 +533,22 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <Border Style="{StaticResource GscActivityRowBorder}">
-                                        <Grid MinHeight="52">
+                                        <Grid MinHeight="44">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="64"/>
                                                 <ColumnDefinition Width="*" MinWidth="140"/>
                                                 <ColumnDefinition Width="Auto"/>
                                                 <ColumnDefinition Width="96"/>
                                             </Grid.ColumnDefinitions>
-                                            <Border x:Name="ActivityKindPill" Width="58" Height="28" MinWidth="58" CornerRadius="9" Background="{DynamicResource GscAccentTintStrongBrush}" BorderBrush="{DynamicResource GscAccentBrush}" BorderThickness="0" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0">
-                                                <TextBlock x:Name="ActivityKindChipText" Text="{Binding KindDisplay, Mode=OneWay}" Foreground="{DynamicResource GscAccentBrush}" FontSize="11" FontWeight="SemiBold" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding KindDisplay, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
+                                            <Border x:Name="ActivityKindPill" Style="{DynamicResource GscRedesignTableStatusPill}" MinWidth="52" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <TextBlock x:Name="ActivityKindChipText" Text="{Binding KindDisplay, Mode=OneWay}" Foreground="{DynamicResource GscAccentBrush}" FontSize="12" FontWeight="SemiBold" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding KindDisplay, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
                                             </Border>
                                             <StackPanel Grid.Column="1" Margin="0,0,12,0" VerticalAlignment="Center" MinWidth="0">
-                                                <TextBlock Text="{Binding GameName, Mode=OneWay, TargetNullValue=全局}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/>
+                                                <TextBlock Text="{Binding GameName, Mode=OneWay, TargetNullValue=全局}" FontSize="12.5" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/>
                                                 <TextBlock Text="{Binding Summary, Mode=OneWay}" FontSize="11" Foreground="{DynamicResource GscSecondaryTextBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Summary}" Margin="0,2,0,0"/>
                                             </StackPanel>
-                                            <Border x:Name="ActivityResultChip" Grid.Column="2" Style="{DynamicResource GscRedesignContextPill}" Background="{DynamicResource GscAccentTintStrongBrush}" BorderBrush="{DynamicResource GscAccentBrush}" BorderThickness="1" Height="28" MinWidth="58" Padding="0,0" VerticalAlignment="Center" HorizontalAlignment="Center"><TextBlock x:Name="ActivityResultChipText" Text="{Binding ResultDisplay, Mode=OneWay}" Foreground="{DynamicResource GscAccentBrush}" FontSize="11" FontWeight="SemiBold" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding ResultDisplay, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/></Border>
-                                            <TextBlock Grid.Column="3" Text="{Binding CreatedDisplay, Mode=OneWay}" FontSize="11" Foreground="{DynamicResource GscSecondaryTextBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="8,0,20,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding CreatedDisplay, Mode=OneWay}"/>
+                                            <Border x:Name="ActivityResultChip" Grid.Column="2" Style="{DynamicResource GscRedesignTableStatusPill}" MinWidth="58" VerticalAlignment="Center" HorizontalAlignment="Center"><TextBlock x:Name="ActivityResultChipText" Text="{Binding ResultDisplay, Mode=OneWay}" Foreground="{DynamicResource GscAccentBrush}" FontSize="12" FontWeight="SemiBold" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding ResultDisplay, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/></Border>
+                                            <TextBlock Grid.Column="3" Text="{Binding CreatedDisplay, Mode=OneWay}" FontSize="12" Foreground="{DynamicResource GscSecondaryTextBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="8,0,20,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding CreatedDisplay, Mode=OneWay}"/>
                                         </Grid>
                                         </Border>
                                         <DataTemplate.Triggers>
@@ -580,8 +615,8 @@
                 <Grid>
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource GscRedesignSectionTitle}" Text="风险与提醒"/>
-                        <TextBlock Style="{DynamicResource GscRedesignSectionSubtitle}" Text="最近 30 天游玩过的游戏" Margin="0,3,0,0"/>
+                        <TextBlock Style="{StaticResource OverviewDemoSectionTitle}" Text="风险与提醒"/>
+                        <TextBlock Style="{StaticResource OverviewDemoCaption}" Text="最近 30 天游玩过的游戏" Margin="0,3,0,0"/>
                     </StackPanel>
                     <ScrollViewer x:Name="OverviewRiskViewport"
                                   Grid.Row="1"
@@ -654,7 +689,9 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                         <StackPanel x:Name="OverviewLegacyRiskContent" Visibility="Visible">
-                        <Border Background="{DynamicResource GscSafetyFillBrush}" BorderBrush="{DynamicResource GscSafetyStrokeBrush}" BorderThickness="1" CornerRadius="12" Padding="10" Margin="0,0,0,8">
+                        <!-- The command still performs its own confirmation and snapshot
+                             safety checks. The Demo does not add a second warning card here. -->
+                        <Border Background="{DynamicResource GscSafetyFillBrush}" BorderBrush="{DynamicResource GscSafetyStrokeBrush}" BorderThickness="1" CornerRadius="12" Padding="10" Margin="0,0,0,8" Visibility="Collapsed">
                             <Grid>
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="28"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                 <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE946;" Foreground="{DynamicResource GscWarningBrush}" FontSize="17" VerticalAlignment="Top"/>
@@ -664,7 +701,9 @@
                                 </StackPanel>
                             </Grid>
                         </Border>
-                        <Border Style="{DynamicResource GscRedesignSubCard}" Margin="0,0,0,8">
+                        <!-- Keep the real summary and selection list, but remove the production
+                             nested-card chrome so the rail has the Demo's single card surface. -->
+                        <Border Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="0" Margin="0,0,0,8">
                             <Grid>
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="28"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                 <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE7BA;" Foreground="{DynamicResource GscWarningBrush}" FontSize="17" VerticalAlignment="Top"/>
@@ -673,24 +712,14 @@
                                     <TextBlock Text="{Binding RecentProtection.SummaryDisplay, Mode=OneWay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0"/>
                                     <!-- Keep the Demo's game-level risk cards visible in the
                                          bounded risk viewport. Selection and safe commands
-                                         remain in the disclosure below, so this preview is
+                                         remain in the details list below, so this preview is
                                          read-only and cannot accidentally execute an action. -->
-                                     <ItemsControl x:Name="OverviewLegacyProtectionPreviewItems"
-                                                   ItemsSource="{Binding RecentProtection.Items}"
-                                                   Margin="0,10,0,0"
-                                                   AutomationProperties.Name="最近游玩游戏保护状态">
-                                        <ItemsControl.Style>
-                                            <Style TargetType="ItemsControl">
-                                                <Style.Triggers>
-                                                    <!-- The expanded list is the readable, actionable view. Do not make
-                                                         the same games occupy the rail twice while the disclosure is open. -->
-                                                    <DataTrigger Binding="{Binding IsExpanded, ElementName=OverviewProtectionDisclosure}" Value="True">
-                                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </ItemsControl.Style>
-                                        <ItemsControl.ItemTemplate>
+                                      <ItemsControl x:Name="OverviewLegacyProtectionPreviewItems"
+                                                    ItemsSource="{Binding RecentProtection.Items}"
+                                                    Visibility="Collapsed"
+                                                    Margin="0,10,0,0"
+                                                    AutomationProperties.Name="最近游玩游戏保护状态">
+                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <Border x:Name="OverviewProtectionPreviewCard"
                                                         Background="{DynamicResource GscControlFillBrush}"
@@ -725,15 +754,15 @@
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
-                                    <WrapPanel x:Name="OverviewLegacyProtectionActions" Margin="0,10,0,0" Visibility="Collapsed">
-                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding OpenProtectionGamesCommand}" Content="查看需要处理的游戏" MinHeight="38" MinWidth="128" Margin="0,0,6,6" AutomationProperties.Name="查看最近游玩但未受保护的游戏"/>
-                                        <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding ApplyRecommendedProtectionCommand}" Content="启用所选保护" MinHeight="38" MinWidth="128" Margin="0,0,0,6" AutomationProperties.Name="为所选最近游玩游戏启用推荐保护"/>
-                                    </WrapPanel>
-                                    <WrapPanel Margin="0,1,0,0">
+                                    <WrapPanel Margin="0,1,0,0" Visibility="Collapsed">
                                         <Border Style="{DynamicResource GscRedesignContextPill}" Background="{DynamicResource GscControlFillBrush}" BorderBrush="{DynamicResource GscControlStrokeBrush}" Margin="0,0,6,6" Padding="8,3"><TextBlock Foreground="{DynamicResource GscSecondaryTextBrush}"><Run Text="未识别存档 "/><Run Text="{Binding RecentProtection.UnrecognizedSaveGames, Mode=OneWay}"/></TextBlock></Border>
                                         <Border Style="{DynamicResource GscRedesignContextPill}" Background="{DynamicResource GscSafetyFillBrush}" BorderBrush="{DynamicResource GscWarningBrush}" Margin="0,0,6,6" Padding="8,3"><TextBlock Foreground="{DynamicResource GscWarningBrush}"><Run Text="需要处理 "/><Run Text="{Binding RecentProtection.AttentionGames, Mode=OneWay}"/></TextBlock></Border>
                                     </WrapPanel>
-                                    <Expander x:Name="OverviewProtectionDisclosure" Style="{StaticResource GscDisclosureCard}" Header="展开最近游戏保护明细" Margin="0,5,0,0">
+                                    <!-- Demo has no second fold box here. Keep the real selectable
+                                         protection list open in the risk card so the existing
+                                         checkboxes, detail command and recommended-protection
+                                         command remain discoverable without an extra header. -->
+                                    <StackPanel x:Name="OverviewProtectionDetails" Margin="0,5,0,0">
                                         <StackPanel Margin="0,4,0,0">
                                             <ScrollViewer x:Name="OverviewProtectionItemsScrollViewer"
                                                            Style="{DynamicResource GscPageScrollViewer}"
@@ -748,28 +777,27 @@
                                                            Margin="0,0,0,6">
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate>
-                                                         <!-- Use a vertical detail card instead of squeezing the game,
-                                                              status, explanation and action into one narrow line. This
-                                                              keeps the disclosure readable in the fixed side rail. -->
+                                                          <!-- Keep the real selection, status, explanation and action in
+                                                               one compact two-line card matching the Demo density. -->
                                                         <Border Background="{DynamicResource GscControlFillBrush}"
                                                                 BorderBrush="{DynamicResource GscGlassStrokeBrush}"
                                                                 BorderThickness="1"
-                                                                CornerRadius="10"
-                                                                Padding="10"
-                                                                Margin="0,0,0,8">
-                                                         <Grid MinWidth="0">
-                                                                  <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-                                                                  <Grid.ColumnDefinitions><ColumnDefinition Width="28"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                                                                  <CheckBox Grid.RowSpan="3" Grid.Column="0" IsChecked="{Binding IsSelected, Mode=TwoWay}" IsEnabled="{Binding IsSelectable}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,4,0,0" AutomationProperties.Name="选择此游戏"/>
-                                                                  <Grid Grid.Row="0" Grid.Column="1" MinWidth="0">
-                                                                      <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                                                                      <TextBlock Text="{Binding GameName}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" ToolTip="{Binding GameName}" VerticalAlignment="Center"/>
-                                                                      <Border Grid.Column="1" x:Name="OverviewProtectionStatusPill" Style="{DynamicResource GscRedesignContextPill}" Background="{DynamicResource GscSafetyFillBrush}" BorderBrush="{DynamicResource GscWarningBrush}" Margin="8,0,0,0" Padding="6,2" MinWidth="70" HorizontalAlignment="Right">
-                                                                          <TextBlock x:Name="OverviewProtectionStatusText" Text="{Binding StatusDisplay}" Foreground="{DynamicResource GscWarningBrush}" FontSize="10" FontWeight="SemiBold" TextAlignment="Center" HorizontalAlignment="Center" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding StatusDisplay}"/>
-                                                                      </Border>
-                                                                  </Grid>
-                                                                  <TextBlock Grid.Row="1" Grid.Column="1" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" MaxHeight="36" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Margin="0,5,0,0" ToolTip="{Binding Detail}"><Run Text="{Binding Title, Mode=OneWay}"/><Run Text="："/><Run Text="{Binding Detail, Mode=OneWay}"/></TextBlock>
-                                                                  <ui:Button Grid.Row="2" Grid.Column="1" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding DataContext.OpenProtectionItemCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Content="查看" IsEnabled="{Binding IsSelectable}" HorizontalAlignment="Right" Margin="0,6,0,0" AutomationProperties.Name="查看此游戏的保护详情"/>
+                                                                 CornerRadius="8"
+                                                                 Padding="8,7"
+                                                                 Margin="0,0,0,6">
+                                                          <Grid MinWidth="0">
+                                                                   <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                                                                   <Grid.ColumnDefinitions><ColumnDefinition Width="28"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                                   <CheckBox Grid.RowSpan="2" Grid.Column="0" IsChecked="{Binding IsSelected, Mode=TwoWay}" IsEnabled="{Binding IsSelectable}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,2,0,0" AutomationProperties.Name="选择此游戏"/>
+                                                                   <Grid Grid.Row="0" Grid.Column="1" MinWidth="0">
+                                                                       <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                                       <TextBlock Text="{Binding GameName}" FontSize="12.5" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" ToolTip="{Binding GameName}" VerticalAlignment="Center"/>
+                                                                       <Border Grid.Column="1" x:Name="OverviewProtectionStatusPill" Style="{DynamicResource GscRedesignTableStatusPill}" Background="{DynamicResource GscSafetyFillBrush}" BorderBrush="{DynamicResource GscWarningBrush}" Margin="8,0,0,0" MinWidth="70" HorizontalAlignment="Right">
+                                                                           <TextBlock x:Name="OverviewProtectionStatusText" Text="{Binding StatusDisplay}" Foreground="{DynamicResource GscWarningBrush}" FontSize="12" FontWeight="SemiBold" TextAlignment="Center" HorizontalAlignment="Center" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding StatusDisplay}"/>
+                                                                       </Border>
+                                                                   </Grid>
+                                                                   <TextBlock Grid.Row="1" Grid.Column="1" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10.5" MaxHeight="30" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Margin="0,2,0,0" ToolTip="{Binding Detail}"><Run Text="{Binding Title, Mode=OneWay}"/><Run Text="："/><Run Text="{Binding Detail, Mode=OneWay}"/></TextBlock>
+                                                                   <ui:Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding DataContext.OpenProtectionItemCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Content="查看" IsEnabled="{Binding IsSelectable}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="8,0,0,0" AutomationProperties.Name="查看此游戏的保护详情"/>
                                                              </Grid>
                                                         </Border>
                                                     </DataTemplate>
@@ -778,11 +806,11 @@
                                             </ScrollViewer>
                                             <TextBlock Text="条目过多时只在此列表内滚动；选择游戏不会自动执行备份或恢复。" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap"/>
                                         </StackPanel>
-                                    </Expander>
+                                    </StackPanel>
                                 </StackPanel>
                             </Grid>
                         </Border>
-                        <Border Style="{DynamicResource GscRedesignSubCard}">
+                        <Border Style="{DynamicResource GscRedesignSubCard}" Visibility="Collapsed">
                             <Grid>
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="28"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                 <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE753;" Foreground="{DynamicResource GscInfoBrush}" FontSize="17" VerticalAlignment="Top"/>
@@ -794,7 +822,7 @@
                     </ScrollViewer>
                     <WrapPanel x:Name="OverviewProtectionActions" Grid.Row="2" Margin="0,8,0,0">
                         <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding OpenProtectionGamesCommand}" Content="查看需要处理的游戏" MinHeight="34" MinWidth="128" Margin="0,0,6,0" AutomationProperties.Name="查看最近游玩但未受保护的游戏"/>
-                        <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding ApplyRecommendedProtectionCommand}" Content="启用所选保护" MinHeight="34" MinWidth="128" AutomationProperties.Name="为所选最近游玩游戏启用推荐保护"/>
+                        <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding ApplyRecommendedProtectionCommand}" Content="启用所选保护" MinHeight="34" MinWidth="128" ToolTip="启用所选保护前会要求确认，并先创建当前快照。" AutomationProperties.Name="为所选最近游玩游戏启用推荐保护"/>
                     </WrapPanel>
                 </Grid>
             </Border>
@@ -802,7 +830,7 @@
             <Border x:Name="OverviewFindingsCard" Grid.Row="1" Style="{StaticResource OverviewReadingCard}" Margin="0,14,0,0" VerticalAlignment="Top">
                 <Grid>
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-                    <TextBlock Style="{DynamicResource GscRedesignSectionTitle}" Text="需关注事项"/>
+                    <TextBlock Style="{StaticResource OverviewDemoSectionTitle}" Text="需关注事项"/>
                     <ScrollViewer x:Name="OverviewAttentionScrollViewer"
                                                   Grid.Row="1"
                                                   Style="{DynamicResource GscPageScrollViewer}"
@@ -818,15 +846,15 @@
                                 <Grid>
                                     <Border BorderBrush="{DynamicResource GscDividerBrush}" BorderThickness="0,0,0,1" Padding="0,0,0,9" Margin="0,0,0,9">
                                         <Grid>
-                                        <Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                                        <Border x:Name="AttentionFindingIcon" Width="34" Height="34" CornerRadius="10" Background="{DynamicResource GscWarningIconFillBrush}" HorizontalAlignment="Left" VerticalAlignment="Top">
-                                            <TextBlock x:Name="AttentionFindingGlyph" Text="!" FontWeight="Bold" Foreground="{DynamicResource GscWarningBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <Grid.ColumnDefinitions><ColumnDefinition Width="26"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                        <Border x:Name="AttentionFindingIcon" Width="18" Height="18" CornerRadius="9" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,1,0,0">
+                                            <TextBlock x:Name="AttentionFindingGlyph" Text="!" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource GscWarningBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Border>
                                         <StackPanel Grid.Column="1" Margin="0,0,8,0" VerticalAlignment="Center">
-                                            <TextBlock Text="{Binding Title, Mode=OneWay}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding Detail}"/>
-                                            <TextBlock Text="{Binding GameName, Mode=OneWay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/>
+                                            <TextBlock Text="{Binding Title, Mode=OneWay}" FontSize="12.5" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding Detail}"/>
+                                            <TextBlock Text="{Binding GameName, Mode=OneWay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10.5" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/>
                                         </StackPanel>
-                                        <ui:Button Grid.Column="2" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding DataContext.OpenAttentionFindingCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Content="查看原因" VerticalAlignment="Center" AutomationProperties.Name="查看关注原因"/>
+                                        <ui:Button Grid.Column="2" Style="{StaticResource OverviewFindingActionButton}" Command="{Binding DataContext.OpenAttentionFindingCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Content="查看原因" VerticalAlignment="Center" AutomationProperties.Name="查看关注原因"/>
                                         </Grid>
                                     </Border>
                                 </Grid>
@@ -838,7 +866,7 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                          </ScrollViewer>
-                    <ui:Button Grid.Row="2" Style="{DynamicResource GscWpfUiPrimaryButton}" AutomationProperties.Name="打开维护中心查看完整关注详情" ToolTip="点击查看需要关注的游戏、原因和建议处理方式" Command="{Binding OpenAttentionCenterCommand}" Content="打开维护中心" HorizontalAlignment="Right" MinWidth="140" Margin="0,3,0,0"/>
+                    <ui:Button Grid.Row="2" Style="{StaticResource OverviewFindingActionButton}" AutomationProperties.Name="打开维护中心查看完整关注详情" ToolTip="点击查看需要关注的游戏、原因和建议处理方式" Command="{Binding OpenAttentionCenterCommand}" Content="打开维护中心" HorizontalAlignment="Left" Margin="0,3,0,0"/>
                 </Grid>
             </Border>
         </Grid>

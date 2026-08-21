@@ -198,18 +198,21 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Equal("Left", layout.Attribute("HorizontalAlignment")?.Value);
         }
 
-        [LegacyProductionUiBaselineFact]
-        public void OverviewRecentProtectionDetailsAreCollapsibleWithoutLosingItems()
+        [Fact]
+        public void OverviewRecentProtectionDetailsStayVisibleWithoutAnExtraDisclosure()
         {
             var root = FindRepositoryRoot();
             var overview = XDocument.Parse(File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml")));
-            var expander = overview.Descendants().Single(element => element.Name.LocalName == "Expander"
-                && element.Attribute("Header")?.Value == "展开最近游戏保护明细");
+            var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
+            var details = overview.Descendants().Single(element => element.Name.LocalName == "StackPanel"
+                && element.Attribute(xamlName)?.Value == "OverviewProtectionDetails");
 
-            Assert.NotNull(expander.Descendants().SingleOrDefault(element => element.Name.LocalName == "ItemsControl"
+            Assert.NotNull(details.Descendants().SingleOrDefault(element => element.Name.LocalName == "ItemsControl"
                 && element.Attribute("ItemsSource")?.Value == "{Binding RecentProtection.Items}"));
-            Assert.NotNull(expander.Descendants().SingleOrDefault(element => element.Name.LocalName == "TextBlock"
+            Assert.NotNull(details.Descendants().SingleOrDefault(element => element.Name.LocalName == "TextBlock"
                 && (element.Attribute("Text")?.Value ?? "").Contains("选择游戏不会自动执行备份或恢复")));
+            Assert.DoesNotContain(overview.Descendants(), element => element.Name.LocalName == "Expander"
+                && element.Attribute("Header")?.Value == "展开最近游戏保护明细");
         }
 
         [LegacyProductionUiBaselineFact]

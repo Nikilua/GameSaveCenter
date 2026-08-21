@@ -201,9 +201,9 @@ namespace GameSaveCenter.Playnite.Views
             OverviewStackScrollSurface.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
 
             // Give the risk rail a useful reading window on tall/maximized hosts while
-            // keeping a finite viewport on short windows. The disclosure gets its own
-            // smaller viewport so expanding it never pushes the action buttons out of
-            // the card or makes the page height depend on the number of games.
+            // keeping a finite viewport on short windows. The protection details list gets
+            // its own smaller viewport so a large game set never pushes the action buttons
+            // out of the card or makes the page height depend on the number of games.
             // Keep the rail readable at maximized size without letting a large
             // protection set turn the whole homepage into an oversized column.
             // The page owns the outer scroll; this viewport owns only the risk

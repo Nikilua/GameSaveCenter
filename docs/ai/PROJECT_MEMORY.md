@@ -3,6 +3,15 @@
 > 维护时间：2026-08-21
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-21 UI-280 当前事实：首页已修正 Demo 密度与选中态
+
+- `OverviewView.xaml` 的 `OverviewStatStrip` 使用 11 列交替布局，统计卡和分隔线不再占用同一列；六个真实 `Snapshot` 指标、比例进度条和统计卡悬停动效保持。
+- 首页最近任务、全局活动、风险标题/正文和需关注事项使用本地 Demo 字体别名；状态气泡使用 `GscRedesignTableStatusPill`，共享 ToolTip 使用 UI 字体链、12 DIP 字阶、`Padding=10,7`、`VerticalOffset=4` 和受控最大宽度。
+- 首页风险区不再使用额外的 `Expander` 或嵌套生产子卡，`OverviewProtectionDetails` 直接承载真实 `RecentProtection.Items`；复选框的 `IsSelected`、逐项 `OpenProtectionItemCommand`、批量 `OpenProtectionGamesCommand`/`ApplyRecommendedProtectionCommand`、确认和当前快照安全语义必须继续保留。保护项为两行紧凑卡，列表仍在 `OverviewProtectionItemsScrollViewer` 内滚动。
+- 需关注事项使用 18 DIP 小图标标记和透明紧凑操作；不要恢复 34 DIP 大图标块。共享 `GscRoundedDataGridRowTemplate` 对隐式 `DataGridRow`、`GscStableDataGridRow` 以及 Media 行提供 Trainer 风格的 Accent 填充、Accent 描边和 14 DIP 圆角选中态；`SelectiveScrollingGrid`、DetailsPresenter、Recycling 和列宽/排序行为保持。
+- Dashboard 兼容表格的本地 DataGridRow 模板也补齐相同的选中圆角；当前游戏选框、生产滚动条系统、真实命令/绑定和项目 Tab chrome 未改动。
+- UI-280 证据：`artifacts/gsc-b/ui-overview-home-v4` 构建/测试通过（Playnite 272 通过、60 跳过）；`artifacts/ui-qa/ui-overview-home-v2/render-qa-report.txt` 为 `render-qa OK`；WPF 静态校验 0 error、19 warnings、164 info。真实 Playnite 逐页嵌入截图仍未补齐，不能把本阶段离屏证据写成总迁移完成。
+
 ## 2026-08-21 UI-279 当前事实：Trainer 窄宽导入工具栏改为可用重排
 
 - `TrainerCenterView.xaml` 的“当前游戏工具”标题区现在把导入工具栏、拖放提示和标题分成可重排的独立行；`ApplyResponsiveLayout` 在 `<980 DIP` 时把四个真实导入按钮移到标题下方，避免约 744 DIP 工作区裁掉最右侧按钮。

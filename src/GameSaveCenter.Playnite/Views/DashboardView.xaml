@@ -453,8 +453,12 @@
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
                                 <Setter TargetName="RowChrome" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
-                                <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
-                                <Setter Property="TextElement.Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+                                <Setter TargetName="RowChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
+                                <Setter TargetName="RowChrome" Property="BorderThickness" Value="1"/>
+                                <Setter TargetName="RowChrome" Property="CornerRadius" Value="14"/>
+                                <Setter TargetName="RowChrome" Property="Margin" Value="4,2"/>
+                                <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
+                                <Setter Property="TextElement.Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>

@@ -455,6 +455,60 @@
         </Setter>
     </Style>
 
+    <!-- The selected row follows the Trainer card language: the normal table stays a
+         quiet divider list, while the selected item gets an accent surface, outline and
+         14 DIP rounded corners. SelectiveScrollingGrid keeps WPF row virtualization and
+         details scrolling intact. -->
+    <ControlTemplate x:Key="GscRoundedDataGridRowTemplate" TargetType="{x:Type DataGridRow}">
+        <Border x:Name="RowChrome"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="0"
+                Margin="0"
+                SnapsToDevicePixels="True">
+            <SelectiveScrollingGrid>
+                <SelectiveScrollingGrid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </SelectiveScrollingGrid.ColumnDefinitions>
+                <SelectiveScrollingGrid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </SelectiveScrollingGrid.RowDefinitions>
+                <DataGridRowHeader Grid.RowSpan="2"
+                                   Visibility="Collapsed"
+                                   SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"/>
+                <DataGridCellsPresenter x:Name="PART_CellsPresenter"
+                                        Grid.Column="1"
+                                        ItemsPanel="{TemplateBinding ItemsPanel}"
+                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                        SelectiveScrollingGrid.SelectiveScrollingOrientation="Horizontal"/>
+                <DataGridDetailsPresenter Grid.Row="1"
+                                          Grid.Column="1"
+                                          SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"
+                                          Visibility="{TemplateBinding DetailsVisibility}"/>
+            </SelectiveScrollingGrid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="RowChrome" Property="Background" Value="{DynamicResource GscRowHoverBrush}"/>
+            </Trigger>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter TargetName="RowChrome" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
+                <Setter TargetName="RowChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
+                <Setter TargetName="RowChrome" Property="BorderThickness" Value="1"/>
+                <Setter TargetName="RowChrome" Property="CornerRadius" Value="14"/>
+                <Setter TargetName="RowChrome" Property="Margin" Value="4,2"/>
+                <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
+                <Setter Property="TextElement.Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="RowChrome" Property="Opacity" Value="0.42"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
     <Style TargetType="DataGridRow">
         <Setter Property="Height" Value="{DynamicResource GscTableRowHeight}"/>
         <Setter Property="MinHeight" Value="{DynamicResource GscTableRowHeight}"/>
@@ -463,27 +517,25 @@
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscTableDividerBrush}"/>
         <Setter Property="BorderThickness" Value="0,0,0,1"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
-        <!-- Use the stock WPF row template just like Demo's LabGrid. The old rounded
-             row chrome made every table look like a stack of unrelated cards. -->
+        <Setter Property="Template" Value="{StaticResource GscRoundedDataGridRowTemplate}"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="{DynamicResource GscRowHoverBrush}"/>
             </Trigger>
             <Trigger Property="IsSelected" Value="True">
                 <Setter Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
-                <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
-                <Setter Property="TextElement.Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
+                <Setter Property="TextElement.Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
 
-    <!--
-      A/B probe style: default DataGrid row chrome without a custom ControlTemplate.
-      The custom implicit row template is suspected of producing phantom realized-row
-      slots near the viewport edge; this keyed style lets the five primary tables use
-      WPF's stock row template while keeping theme colors, hover and selection states.
-    -->
+    <!-- Shared keyed row style used by the extracted workspace tables. -->
     <Style x:Key="GscStableDataGridRow" TargetType="DataGridRow">
         <Setter Property="Height" Value="{DynamicResource GscTableRowHeight}"/>
         <Setter Property="MinHeight" Value="{DynamicResource GscTableRowHeight}"/>
@@ -492,15 +544,20 @@
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscTableDividerBrush}"/>
         <Setter Property="BorderThickness" Value="0,0,0,1"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
+        <Setter Property="Template" Value="{StaticResource GscRoundedDataGridRowTemplate}"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="{DynamicResource GscRowHoverBrush}"/>
             </Trigger>
             <Trigger Property="IsSelected" Value="True">
                 <Setter Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
-                <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
-                <Setter Property="TextElement.Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
+                <Setter Property="TextElement.Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
             </Trigger>
         </Style.Triggers>
     </Style>

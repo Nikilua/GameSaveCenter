@@ -2,6 +2,29 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-21 UI-280 首页 Demo 结构与选中态修正
+
+**问题确认：**
+
+- `OverviewView.xaml` 的六项统计卡曾把分隔线放在与统计卡相同的 Grid 列中，导致竖线穿过卡片内容；最近任务、全局活动和状态气泡也比 Demo 使用了更大的字阶/控件高度。
+- 生产风险区额外保留了安全提示子卡、云端子卡和“展开最近游戏保护明细” Expander；需关注事项仍使用 34 DIP 大图标块，与 Demo 的紧凑行不同。
+- 共享 `DataGridRow`/媒体行和首页任务选中态没有采用修改器中心 Trainer 列表的 14 DIP 圆角选中卡效果。
+
+**实现内容：**
+
+- 统计区改为 11 列交替结构（6 个星号统计列 + 5 个 Auto 分隔列），保留六个真实 `Snapshot` 绑定和比例进度条。
+- 首页新增 Demo 字体别名，最近任务/全局活动/风险/需关注事项使用 15/12.5/10.5/12 DIP 的 Demo 密度；任务和活动状态统一复用紧凑 `GscRedesignTableStatusPill`，共享 ToolTip 补齐 UI 字体、12 DIP 字阶、7 DIP 内边距和 4 DIP 偏移。
+- 风险区取消额外 Expander 和嵌套卡表面，保护明细直接显示为两行紧凑卡；复选框、逐项查看、底部“查看需要处理的游戏”和“启用所选保护”命令、确认/快照安全语义均保留。安全说明改为批量保护按钮 ToolTip，不再占用 Demo 没有的警示卡层级。
+- 需关注事项改为 18 DIP 图标标记、紧凑标题/游戏名和透明背景的“查看原因”动作；生产 DataGrid 共享行模板与 Dashboard 兼容行模板的选中态均对齐 Trainer 的 Accent 填充、Accent 描边和 14 DIP 圆角卡片。
+- 同步更新首页布局回归契约，锁定保护明细无额外 Expander、共享圆角 DataGrid 行模板和紧凑关注项几何。
+
+**验证结果：**
+
+- `scripts/build.ps1 -Configuration Release -OutputRoot artifacts/gsc-b/ui-overview-home-v4`：XAML 18/18；Release 0 warning、0 error；Core 59/59；Worker 191/191；Playnite 272 通过、60 跳过、0 失败（新增首页结构/选中态契约正常执行）。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/ui-overview-home-v2`：`render-qa OK`，七页、Light/Dark、1040/1100/1366/2560 DIP、多尺寸滚动探针和 resize transition 均通过；首页保护列表仍保持有限内部滚动，页面横向滚动为 Disabled。
+- `scripts/validate-source.py`、`validate_wpf_ui.py`（0 error、19 warnings、164 info）和 `git diff --check` 通过；warnings/info 为既有滚动测量、负 Margin 和共享资源审计提示，本轮未新增错误。
+- 本阶段没有取得新的可识别 Playnite 生产宿主逐页截图；离屏 RenderHarness 与静态门禁不能替代宿主 Light/Dark/Follow、DPI、键盘焦点和真实命令人工验收，Demo-first 总迁移仍未完成。
+
 ## 2026-08-21 UI-279 修复修改器中心窄宽导入工具栏裁切
 
 **实现内容：**

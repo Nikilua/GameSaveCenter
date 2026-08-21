@@ -566,8 +566,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("ScrollViewer.VerticalContentAlignment\" Value=\"Top\"", production);
         Assert.Contains("<Style TargetType=\"DataGridColumnHeadersPresenter\">", production);
         Assert.Contains("OverridesDefaultStyle\" Value=\"True\"", production);
-        // Keep the shared DataGrid on WPF's stable default panning contract.  Both-axis
-        // panning combined with the custom row template can produce phantom empty rows.
+        // Keep the shared DataGrid on WPF's stable panning contract while using the shared
+        // rounded selection template for the row surface.
         Assert.Contains("KeyboardNavigation.TabNavigation\" Value=\"Local\"", production);
         Assert.Contains("KeyboardNavigation.DirectionalNavigation\" Value=\"Contained\"", production);
         Assert.Contains("VirtualizingPanel.VirtualizationMode\" Value=\"Recycling\"", production);
@@ -579,11 +579,13 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Text columns read naturally from the leading edge", production);
         Assert.Contains("x:Key=\"GscStableDataGridRow\"", production);
         Assert.Contains("TargetType=\"DataGridRow\">", production);
+        Assert.Contains("x:Key=\"GscRoundedDataGridRowTemplate\"", production);
         var stableRow = XDocument.Parse(production).Descendants().Single(element =>
             element.Name.LocalName == "Style"
             && element.Attribute(XName.Get("Key", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "GscStableDataGridRow");
-        Assert.DoesNotContain(stableRow.Descendants(), element =>
-            element.Name.LocalName == "Setter" && element.Attribute("Property")?.Value == "Template");
+        Assert.Contains(stableRow.Descendants(), element =>
+            element.Name.LocalName == "Setter" && element.Attribute("Property")?.Value == "Template"
+                && (element.Attribute("Value")?.Value ?? "").Contains("GscRoundedDataGridRowTemplate"));
         foreach (var viewFile in new[] { "SaveCenterView.xaml", "TaskCenterView.xaml", "MaintenanceView.xaml" })
         {
             var viewText = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", viewFile));
@@ -2598,7 +2600,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains(overview.Descendants(), element => element.Name.LocalName == "ItemsControl" && (element.Attribute("ItemsSource")?.Value.IndexOf("AttentionFindings", StringComparison.Ordinal) ?? -1) >= 0);
     }
 
-    [LegacyProductionUiBaselineFact]
+    [Fact]
     public void AttentionFindingRowsUseDemoIconTileRhythmWithAReasonButton()
     {
         var repositoryRoot = FindRepositoryRoot();
@@ -2607,21 +2609,71 @@ public sealed class WpfUiResourceDictionaryTests
         var itemsControl = overview.Descendants().Single(element => element.Name.LocalName == "ItemsControl" && (element.Attribute("ItemsSource")?.Value.IndexOf("AttentionFindings", StringComparison.Ordinal) ?? -1) >= 0);
         var template = itemsControl.Elements().Single(element => element.Name.LocalName == "ItemsControl.ItemTemplate").Elements().Single();
 
-        // The demo home card renders each attention finding as a 34x34 rounded icon tile
+        // The compact demo home card renders each attention finding as a small icon marker
         // with a game title, a muted reason line and a per-row "查看原因" action. The
         // production row keeps the same rhythm while staying bound to real findings.
         Assert.Equal("DataTemplate", template.Name.LocalName);
-        var grid = template.Elements().Single(element => element.Name.LocalName == "Grid");
-        Assert.Equal("38", grid.Elements().Single(element => element.Name.LocalName == "Grid.ColumnDefinitions").Elements().ElementAt(0).Attribute("Width")?.Value);
+        var grid = template.Descendants().Single(element => element.Name.LocalName == "Grid"
+            && element.Elements().Any(child => child.Name.LocalName == "Grid.ColumnDefinitions"));
+        Assert.Equal("26", grid.Elements().Single(element => element.Name.LocalName == "Grid.ColumnDefinitions").Elements().ElementAt(0).Attribute("Width")?.Value);
         var tile = grid.Descendants().Single(element => element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "AttentionFindingIcon");
-        Assert.Equal("34", tile.Attribute("Width")?.Value);
-        Assert.Equal("34", tile.Attribute("Height")?.Value);
-        Assert.Equal("10", tile.Attribute("CornerRadius")?.Value);
+        Assert.Equal("18", tile.Attribute("Width")?.Value);
+        Assert.Equal("18", tile.Attribute("Height")?.Value);
+        Assert.Equal("9", tile.Attribute("CornerRadius")?.Value);
         Assert.Contains(grid.Descendants(), element => element.Name.LocalName == "Button" && (element.Attribute("Content")?.Value == "查看原因") && ((element.Attribute("Command")?.Value.IndexOf("OpenAttentionFindingCommand", StringComparison.Ordinal) ?? -1) >= 0));
         Assert.Contains(template.Elements(), element => element.Name.LocalName == "DataTemplate.Triggers");
         var overviewText = File.ReadAllText(overviewPath);
         Assert.Contains("Value=\"Error\"", overviewText);
         Assert.Contains("Value=\"Critical\"", overviewText);
+    }
+
+    [Fact]
+    public void OverviewMetricSeparatorsOccupyGapsBetweenSixCards()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var overview = XDocument.Parse(File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml")));
+        var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
+        var strip = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewStatStrip");
+        var layout = strip.Descendants().Single(element => element.Name.LocalName == "Grid"
+            && element.Elements().SingleOrDefault(child => child.Name.LocalName == "Grid.ColumnDefinitions")?.Elements().Count() == 11);
+        var cards = layout.Descendants().Where(element => element.Name.LocalName == "Border"
+            && element.Attribute("Style")?.Value == "{StaticResource OverviewStatCard}")
+            .Select(element => element.Attribute("Grid.Column")?.Value)
+            .ToArray();
+        var separators = layout.Descendants().Where(element => element.Name.LocalName == "Rectangle"
+            && element.Attribute("Fill")?.Value == "{DynamicResource GscTableDividerBrush}")
+            .Select(element => element.Attribute("Grid.Column")?.Value)
+            .ToArray();
+
+        Assert.Equal(new[] { "0", "2", "4", "6", "8", "10" }, cards);
+        Assert.Equal(new[] { "1", "3", "5", "7", "9" }, separators);
+    }
+
+    [Fact]
+    public void SharedDataGridSelectionUsesTrainerRoundedCardChrome()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var productionPath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml");
+        var production = XDocument.Parse(File.ReadAllText(productionPath));
+        var template = production.Descendants().Single(element => element.Name.LocalName == "ControlTemplate"
+            && element.Attribute(XName.Get("Key", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "GscRoundedDataGridRowTemplate");
+        var selected = template.Descendants().Single(element => element.Name.LocalName == "Trigger"
+            && element.Attribute("Property")?.Value == "IsSelected");
+
+        Assert.Contains(selected.Descendants(), element => element.Name.LocalName == "Setter"
+            && element.Attribute("TargetName")?.Value == "RowChrome"
+            && element.Attribute("Property")?.Value == "CornerRadius"
+            && element.Attribute("Value")?.Value == "14");
+        Assert.Contains(selected.Descendants(), element => element.Name.LocalName == "Setter"
+            && element.Attribute("TargetName")?.Value == "RowChrome"
+            && element.Attribute("Property")?.Value == "Margin"
+            && element.Attribute("Value")?.Value == "4,2");
+        Assert.Contains(selected.Descendants(), element => element.Name.LocalName == "Setter"
+            && element.Attribute("TargetName")?.Value == "RowChrome"
+            && element.Attribute("Property")?.Value == "BorderBrush"
+            && (element.Attribute("Value")?.Value ?? "").Contains("GscAccentBrush"));
+        Assert.Contains(template.Descendants(), element => element.Name.LocalName == "SelectiveScrollingGrid");
+        Assert.Contains(template.Descendants(), element => element.Name.LocalName == "DataGridDetailsPresenter");
     }
 
     [LegacyProductionUiBaselineFact]

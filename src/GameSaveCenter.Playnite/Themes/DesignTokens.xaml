@@ -126,6 +126,7 @@
     <FontFamily x:Key="GscUiFontFamily">Segoe UI Variable Text, Segoe UI, Microsoft YaHei UI</FontFamily>
     <FontFamily x:Key="GscDisplayFontFamily">Segoe UI Variable Display, Segoe UI, Microsoft YaHei UI</FontFamily>
     <FontFamily x:Key="GscCodeFontFamily">Cascadia Mono, Consolas, Microsoft YaHei UI</FontFamily>
+    <sys:Double x:Key="GscSectionFontSize">15</sys:Double>
     <sys:Double x:Key="GscBodyFontSize">13.5</sys:Double>
     <sys:Double x:Key="GscCaptionFontSize">12</sys:Double>
 
@@ -1119,8 +1120,11 @@
         <Setter Property="Background" Value="{DynamicResource GscPopupBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Padding" Value="10,8"/>
-        <Setter Property="MaxWidth" Value="620"/>
+        <Setter Property="FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
+        <Setter Property="FontSize" Value="{DynamicResource GscCaptionFontSize}"/>
+        <Setter Property="Padding" Value="10,7"/>
+        <Setter Property="VerticalOffset" Value="4"/>
+        <Setter Property="MaxWidth" Value="420"/>
         <Setter Property="HasDropShadow" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
