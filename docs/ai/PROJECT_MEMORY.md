@@ -3,6 +3,14 @@
 > 维护时间：2026-08-21
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-21 UI-287 当前事实：共享表格表头排序箭头与列宽调整
+
+- 生产共享 `DataGridColumnHeader` 模板之前只有排序 `Path`，没有 WPF 约定的 `PART_LeftHeaderGripper`/`PART_RightHeaderGripper`，因此虽然 `CanUserResizeColumns=True`，实际表头没有可拖拽列宽的命中区域。
+- 排序箭头之前放在固定 14 DIP 列中，但路径本身宽约 13 DIP 还带右侧 inset，窄列排序时会被裁掉；现在预留 22 DIP 独立箭头列，并保留 64 DIP 的共享最小列宽。
+- `WpfUiProduction.xaml` 的共享表格和 `DashboardView.xaml` 的兼容表格均保留透明 resize Thumb、完整排序箭头、现有选中态、滚动和虚拟化；不改列绑定、命令或业务排序逻辑。
+- RenderHarness 现在对 Save/Task/Media/Maintenance 探测表格检查真实表头模板部件，并强制验证排序状态下箭头有非零布局宽度；第一列左 Thumb 被 WPF 自动折叠是正常边界行为，至少一个边界命中区必须有效。
+- UI-287 证据：`artifacts/gsc-b/ui287-table-header-v2` 构建/测试通过，XAML 18/18、0 warning/0 error、Core 59、Worker 194、Playnite 274 通过/60 跳过；`artifacts/ui-qa/ui287-table-header-v2/render-qa-report.txt` 为 `render-qa OK`，覆盖双主题、1040/1100/1366/2560、多 Tab、滚动和 resize transition。真实 Playnite 生产宿主逐页拖拽验证仍未完成。
+
 ## 2026-08-21 UI-286 当前事实：修改器导入线程与 FLiNG 历史归档
 
 - `GameToolService.InspectImportAsync` 不得把文件名包含 `Update` 的所有 EXE 排除；显式选中的单文件必须按扩展名保留。目录/ZIP 候选只排除明确的 `unins*`、`uninstall`、`update`、`updater`、`setup` 辅助入口，`Outlast 2 v1.0-Update 2 Plus 4 Trainer.exe` 是有效修改器入口。

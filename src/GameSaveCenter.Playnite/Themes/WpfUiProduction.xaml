@@ -323,6 +323,7 @@
         <Setter Property="EnableColumnVirtualization" Value="True"/>
         <Setter Property="CanUserResizeRows" Value="False"/>
         <Setter Property="CanUserResizeColumns" Value="True"/>
+        <Setter Property="MinColumnWidth" Value="64"/>
         <Setter Property="CanUserReorderColumns" Value="False"/>
         <Setter Property="CanUserSortColumns" Value="True"/>
         <Setter Property="SelectionMode" Value="Single"/>
@@ -363,10 +364,14 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="14"/>
+                                <!-- Keep enough room for the full 13 DIP sort chevron and
+                                     its optical inset.  The old 14 DIP slot clipped the
+                                     right stroke, especially on narrow sorted columns. -->
+                                <ColumnDefinition Width="22" MinWidth="22"/>
                             </Grid.ColumnDefinitions>
                             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Grid.Column="0"
                                               Content="{TemplateBinding Content}"
                                               ContentTemplate="{TemplateBinding ContentTemplate}"
                                               TextElement.Foreground="{TemplateBinding Foreground}"/>
@@ -385,6 +390,34 @@
                                   RenderTransformOrigin="0.5,0.5">
                                 <Path.RenderTransform><RotateTransform Angle="0"/></Path.RenderTransform>
                             </Path>
+                            <!-- WPF's DataGridColumnHeader logic locates these named thumbs
+                                 to start a column resize.  Keep them transparent so the
+                                 header remains visually quiet while the full 8 DIP edge
+                                 remains an interactive resize target. -->
+                            <Thumb x:Name="PART_LeftHeaderGripper"
+                                   Width="8"
+                                   HorizontalAlignment="Left"
+                                   Cursor="SizeWE"
+                                   Background="Transparent"
+                                   Focusable="False">
+                                <Thumb.Template>
+                                    <ControlTemplate TargetType="Thumb">
+                                        <Border Background="Transparent"/>
+                                    </ControlTemplate>
+                                </Thumb.Template>
+                            </Thumb>
+                            <Thumb x:Name="PART_RightHeaderGripper"
+                                   Width="8"
+                                   HorizontalAlignment="Right"
+                                   Cursor="SizeWE"
+                                   Background="Transparent"
+                                   Focusable="False">
+                                <Thumb.Template>
+                                    <ControlTemplate TargetType="Thumb">
+                                        <Border Background="Transparent"/>
+                                    </ControlTemplate>
+                                </Thumb.Template>
+                            </Thumb>
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>

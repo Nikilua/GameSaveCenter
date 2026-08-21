@@ -14,6 +14,14 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-21 UI-287 表格表头与列宽交互交接
+
+- 共享 `WpfUiProduction.xaml` 的 DataGrid 表头现在必须包含 `PART_LeftHeaderGripper` 和 `PART_RightHeaderGripper`；不要为了改箭头而删掉这两个 WPF 模板部件。第一列左 Thumb 由 WPF 自动折叠属于正常行为，其他可调整边界必须有有效命中区。
+- 共享 DataGrid 设置 `CanUserResizeColumns=True`、`MinColumnWidth=64`、`CanUserSortColumns=True`；排序箭头使用独立 22 DIP 列，避免窄列裁剪。`DashboardView.xaml` 的本地兼容表头也保持同样的 22 DIP 箭头列和两个 resize 部件。
+- 不要为单个页面复制另一套表头模板；Save、Media、Task、Maintenance 使用共享表格契约，真实绑定、排序、选中态、虚拟化和现有滚动条系统不变。
+- `RenderHarness` 的 `VerifyDataGridHeaderInteractionContract` 会检查真实模板部件和排序态箭头布局；运行 `scripts/render-qa.ps1` 时若表格回退到没有 Thumb 或箭头宽度为 0 的模板，必须视为失败。
+- 当前证据：`artifacts/gsc-b/ui287-table-header-v2` 构建/测试通过；`artifacts/ui-qa/ui287-table-header-v2/render-qa-report.txt` 为 `render-qa OK`。真实 Playnite 宿主仍需在可见窗口中实际拖动至少一张 Save/Media/Task 表格列边界确认命中体验，不能把离屏证据写成宿主已验证。
+
 ## 2026-08-21 UI-286 修改器导入与历史归档交接
 
 - `GameToolService` 已修复文件名误判：含版本文字 `Update` 的修改器 EXE 不再被过滤；只有明确的 `unins*`、`uninstall`、`update`、`updater`、`setup` 辅助入口在目录/ZIP候选列表中排除。显式单文件导入必须保留其入口。

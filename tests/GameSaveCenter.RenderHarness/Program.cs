@@ -2213,6 +2213,7 @@ public static class Program
                 s_problems.Add($"{label} scroll probe: {gridName} not found at height {height:0}");
                 return;
             }
+            VerifyDataGridHeaderInteractionContract(report, label, grid);
             var scroller = FindVisualChildren<ScrollViewer>(grid)
                 .OrderByDescending(candidate => candidate.ViewportHeight)
                 .FirstOrDefault();
@@ -2324,6 +2325,57 @@ public static class Program
         {
             s_problems.Add($"{label} scroll probe failed at height {height:0}: {ex.Message}");
         }
+    }
+
+    private static void VerifyDataGridHeaderInteractionContract(StringBuilder report, string label, DataGrid grid)
+    {
+        if (!grid.CanUserResizeColumns)
+            s_problems.Add($"{label} {grid.Name} disables column resizing");
+        if (!grid.CanUserSortColumns)
+            s_problems.Add($"{label} {grid.Name} disables column sorting");
+
+        var headers = FindVisualChildren<DataGridColumnHeader>(grid)
+            .Where(header => header.Visibility == Visibility.Visible && header.Column != null)
+            .ToList();
+        if (headers.Count == 0)
+        {
+            s_problems.Add($"{label} {grid.Name} has no realized column header");
+            return;
+        }
+
+        foreach (var header in headers)
+        {
+            var template = header.Template;
+            var leftGripper = template?.FindName("PART_LeftHeaderGripper", header) as Thumb;
+            var rightGripper = template?.FindName("PART_RightHeaderGripper", header) as Thumb;
+            if (leftGripper == null || rightGripper == null)
+            {
+                s_problems.Add($"{label} {grid.Name} header \"{header.Content}\" is missing WPF resize parts");
+                continue;
+            }
+
+            // WPF intentionally collapses the left gripper on the first column. The
+            // template still needs both named parts, while at least one boundary must
+            // remain an actual hit area for every realized header.
+            if (leftGripper.ActualWidth < 4 && rightGripper.ActualWidth < 4)
+                s_problems.Add($"{label} {grid.Name} header \"{header.Content}\" has no usable resize hit area");
+        }
+
+        // Force one header through a sorted state in the offscreen host. This verifies that
+        // the arrow is not merely present in XAML but obtains a non-zero layout slot.
+        var firstHeader = headers[0];
+        var column = firstHeader.Column;
+        var previousDirection = column.SortDirection;
+        column.SortDirection = System.ComponentModel.ListSortDirection.Ascending;
+        grid.UpdateLayout();
+        var arrow = FindVisualChildren<FrameworkElement>(firstHeader)
+            .FirstOrDefault(element => element.Name == "SortGlyph" || element.Name == "SortArrow");
+        if (arrow == null || arrow.Visibility != Visibility.Visible || arrow.ActualWidth < 8)
+            s_problems.Add($"{label} {grid.Name} sorted header \"{firstHeader.Content}\" has a clipped sort arrow");
+        column.SortDirection = previousDirection;
+        grid.UpdateLayout();
+
+        report.AppendLine($"  {label} {grid.Name} header contract: resize=true headers={headers.Count} sort-arrow={(arrow != null ? "visible" : "missing")}");
     }
 
     private sealed class RowProbe

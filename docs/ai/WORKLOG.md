@@ -2,6 +2,25 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-21 UI-287 修复共享表格排序箭头和列宽拖拽
+
+**问题确认：**
+
+- 生产共享表格把 `CanUserResizeColumns` 打开了，但自定义 `DataGridColumnHeader` 模板遗漏 WPF 必需的左右 `Thumb` 部件，列宽拖拽命中区域实际上不存在。
+- 排序箭头放在 14 DIP 固定列中，箭头路径和右侧留白超过可用空间，导致截图中只显示半个箭头；首页的兼容表头还使用了另一套没有独立箭头列的布局。
+
+**实现内容：**
+
+- 共享 `WpfUiProduction.xaml` 表头补回透明的 `PART_LeftHeaderGripper`/`PART_RightHeaderGripper`，共享 DataGrid 保留列排序并设置 Demo 同级的 64 DIP 最小列宽；Dashboard 本地表头同步使用 22 DIP 排序区。
+- 排序箭头改为独立 22 DIP 列，保留现有主题 Accent 颜色、字体、表头边框和选中/虚拟化语义；未修改任何真实列绑定、命令、排序数据源或当前滚动条系统。
+- 新增 Playnite 资源契约断言；RenderHarness 对每个表格运行时检查表头 Thumb、命中区和排序箭头布局，避免只靠 XAML 字符串判断。
+
+**验证结果：**
+
+- `scripts/build.ps1 -Configuration Release -OutputRoot artifacts/gsc-b/ui287-table-header-v2`：XAML 18/18；Release 构建 0 warning、0 error；Core 59/59；Worker 194/194；Playnite 274 通过、60 跳过、0 失败。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/ui287-table-header-v2`：`render-qa OK`；双主题、1040/1100/1366/2560、多页面 Tab、滚动和 resize transition 通过，表头 resize/sort 运行时门禁通过。
+- `scripts/validate-source.py` 通过；`validate_wpf_ui.py` 0 error、20 warnings、164 info，提示均为既有共享资源、有限测量和示例资源审计项。本阶段未运行真实 Playnite 生产宿主。
+
 ## 2026-08-21 UI-286 修复修改器 EXE 导入与旧版 FLiNG 归档搜索
 
 **问题确认：**

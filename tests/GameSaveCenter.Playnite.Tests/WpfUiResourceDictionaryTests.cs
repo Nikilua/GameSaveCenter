@@ -597,6 +597,11 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"SortGlyph\"", production);
         Assert.Contains("Property=\"SortDirection\" Value=\"Ascending\"", production);
         Assert.Contains("Property=\"SortDirection\" Value=\"Descending\"", production);
+        Assert.Contains("CanUserResizeColumns\" Value=\"True\"", production);
+        Assert.Contains("MinColumnWidth\" Value=\"64\"", production);
+        Assert.Contains("x:Name=\"PART_LeftHeaderGripper\"", production);
+        Assert.Contains("x:Name=\"PART_RightHeaderGripper\"", production);
+        Assert.Contains("ColumnDefinition Width=\"22\" MinWidth=\"22\"", production);
         Assert.Contains("x:Key=\"GscTableRowHeight\"", designTokens);
         Assert.Contains("x:Key=\"GscTableMinHeight\"", designTokens);
         Assert.Contains("x:Key=\"GscTableViewportHeight\"", designTokens);
@@ -644,6 +649,21 @@ public sealed class WpfUiResourceDictionaryTests
             Assert.DoesNotContain("x:Name=\"MaintenancePageScrollViewer\"", text);
             Assert.DoesNotContain("BlurEffect", text);
         }
+    }
+
+    [Fact]
+    public void DashboardDataGridHeaderKeepsSortGlyphAndResizePartsVisible()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var dashboard = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml"));
+
+        // Dashboard retains a local compatibility scope, so keep its header contract
+        // explicitly covered alongside the shared extracted-workspace template.
+        Assert.Contains("CanUserResizeColumns\" Value=\"True\"", dashboard);
+        Assert.Contains("x:Name=\"PART_LeftHeaderGripper\"", dashboard);
+        Assert.Contains("x:Name=\"PART_RightHeaderGripper\"", dashboard);
+        Assert.Contains("<ColumnDefinition Width=\"22\" MinWidth=\"22\"/>", dashboard);
+        Assert.Contains("Grid.Column=\"1\" Data=\"M 0 5 L 5 0 L 10 5\"", dashboard);
     }
 
     [Fact]
