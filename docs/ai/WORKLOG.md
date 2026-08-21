@@ -2,6 +2,21 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-21 UI-291 媒体来源规则宽窄布局
+
+**实现内容：**
+
+- 来源规则页改为 `MediaSourceLayout`：宽屏使用“来源表单 + 规则列表”双栏，窄屏按“表单 → 规则列表”堆叠；表单默认可见，不再用折叠 Expander 隐藏真实入口。
+- 保留 `CustomMediaSourcePath`、`CustomMediaPattern`、`CustomMediaShared`、添加/更新/移除命令，以及规则列表的内部滚动、虚拟化和空状态。
+- 窄屏表单字段收为单列并启用局部滚动，宽屏保持两列；媒体待归类页的预览、目标游戏、归类/忽略/批量操作未迁移或删减。
+
+**验证结果：**
+
+- `scripts/validate-source.py`：通过；XAML 18/18；Release 0 警告/0 错误；Core 59/59、Worker 194/194、Playnite 276 通过/58 跳过/0 失败。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/media-source-layout-ui290`：`render-qa OK`，覆盖 1040/1100/1366/2560、Light/Dark 和 resize transition。
+- `validate_wpf_ui.py`：0 error、20 warnings、164 info；RenderHarness 为离屏证据，不等同真实 Playnite 宿主逐像素验收。
+- 测试与构建只使用当前仓库文件，不依赖另一台机器上的 AcrylicFork Demo 文件夹。
+
 ## 2026-08-21 UI-290 首页 Demo-first 信息层级
 
 **实现内容：**

@@ -28,6 +28,8 @@ namespace GameSaveCenter.Playnite.Views
 
         public Border MediaSummaryPanelElement => MediaSummaryPanel;
         public UniformGrid MediaSourceFieldsElement => MediaSourceFields;
+        public Grid MediaSourceLayoutElement => MediaSourceLayout;
+        public ScrollViewer MediaSourceFormScrollerElement => MediaSourceFormScroller;
         public Border MediaInspectorPanelElement => MediaInspectorPanel;
         public Border MediaPreviewPanelElement => MediaPreviewPanel;
         public StackPanel MediaMetadataPanelElement => MediaMetadataPanel;
@@ -46,7 +48,29 @@ namespace GameSaveCenter.Playnite.Views
                 // summary information at short heights. Local list/inspector surfaces own
                 // overflow so the whole workspace does not become a scroll canvas.
                 MediaSummaryPanel.Visibility = Visibility.Visible;
-                MediaSourceFields.Columns = width >= 820 ? 2 : 1;
+                var sourceStack = width < 900;
+                MediaSourceFields.Columns = sourceStack ? 1 : 2;
+                MediaSourceLayout.ColumnDefinitions[1].Width = sourceStack ? new GridLength(0) : new GridLength(14);
+                MediaSourceFormRow.Height = sourceStack ? GridLength.Auto : new GridLength(1, GridUnitType.Star);
+                MediaSourceRulesRow.Height = sourceStack ? GridLength.Auto : new GridLength(0);
+                Grid.SetColumn(MediaSourceFormScroller, 0);
+                Grid.SetColumnSpan(MediaSourceFormScroller, sourceStack ? 3 : 1);
+                Grid.SetRow(MediaSourceFormScroller, 0);
+                Grid.SetColumn(MediaSourceRulesFrame, sourceStack ? 0 : 2);
+                Grid.SetColumnSpan(MediaSourceRulesFrame, sourceStack ? 3 : 1);
+                Grid.SetRow(MediaSourceRulesFrame, sourceStack ? 1 : 0);
+                MediaSourceFormScroller.MaxHeight = sourceStack
+                    ? Math.Max(260, Math.Min(520, height * 0.60))
+                    : double.PositiveInfinity;
+                MediaSourceFormScroller.VerticalScrollBarVisibility = sourceStack
+                    ? ScrollBarVisibility.Auto
+                    : ScrollBarVisibility.Disabled;
+                MediaSourceRulesFrame.Margin = sourceStack
+                    ? new Thickness(0, 10, 0, 0)
+                    : new Thickness(0);
+                MediaSourceRulesFrame.MaxHeight = sourceStack
+                    ? Math.Max(240, Math.Min(520, height * 0.60))
+                    : 520;
 
                 // The inbox is a real two-pane workspace, not a table followed by a
                 // hidden action strip. Keep the preview/classification controls in their

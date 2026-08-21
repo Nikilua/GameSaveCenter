@@ -3051,11 +3051,15 @@ public sealed class WpfUiResourceDictionaryTests
         var codeBehind = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml.cs"));
 
         Assert.Contains("x:Name=\"MediaSourceFields\"", media);
+        Assert.Contains("x:Name=\"MediaSourceLayout\"", media);
+        Assert.Contains("x:Name=\"MediaSourceFormScroller\"", media);
         Assert.Contains("Command=\"{Binding AddMediaSourceCommand}\"", media);
         Assert.Contains("Command=\"{Binding DataContext.UpdateMediaSourceCommand", media);
         Assert.Contains("Command=\"{Binding DataContext.DeleteMediaSourceCommand", media);
         Assert.Contains("Property=\"EnableRowVirtualization\" Value=\"True\"", media);
-        Assert.Contains("MediaSourceFields.Columns = width >= 820 ? 2 : 1", codeBehind);
+        Assert.Contains("var sourceStack = width < 900", codeBehind);
+        Assert.Contains("MediaSourceFields.Columns = sourceStack ? 1 : 2", codeBehind);
+        Assert.Contains("Grid.SetColumnSpan(MediaSourceRulesFrame, sourceStack ? 3 : 1)", codeBehind);
     }
 
     [Fact]
@@ -3589,20 +3593,26 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
-    public void MediaSourceRulesKeepTheTableInAStarRowWithAFormOnlyScroller()
+    public void MediaSourceRulesUseAVisibleWideFormAndResponsiveStackedList()
     {
         var repositoryRoot = FindRepositoryRoot();
         var mediaPath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml");
         var media = XDocument.Parse(File.ReadAllText(mediaPath));
         var tabItem = media.Descendants().Single(element => element.Name.LocalName == "TabItem" && element.Attribute("Header")?.Value == "来源规则");
+        var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
 
-        // The tab keeps the page scroll channel for the form and lets the rule list
-        // measure naturally in a star row: Auto form row plus a * row that absorbs the
-        // leftover page space below the frame.
+        // The source tab uses a three-column wide layout: visible form, gutter, and
+        // rules list. The code-behind collapses the gutter and stacks both surfaces
+        // when the host is narrow.
         var rows = tabItem.Descendants().Where(element => element.Name.LocalName == "RowDefinition").ToArray();
         Assert.Equal(2, rows.Length);
-        Assert.Equal("Auto", rows[0].Attribute("Height")?.Value);
-        Assert.Equal("*", rows[1].Attribute("Height")?.Value);
+        Assert.Equal("*", rows[0].Attribute("Height")?.Value);
+        Assert.Equal("0", rows[1].Attribute("Height")?.Value);
+        var layout = tabItem.Descendants().Single(element => element.Attribute(xamlName)?.Value == "MediaSourceLayout");
+        var columns = layout.Elements().Single(element => element.Name.LocalName == "Grid.ColumnDefinitions").Elements().ToArray();
+        Assert.Equal(3, columns.Length);
+        Assert.Equal("1.1*", columns[0].Attribute("Width")?.Value);
+        Assert.Equal("14", columns[1].Attribute("Width")?.Value);
 
         // The rule list frame wraps its content: no MinHeight=220 filler, a responsive
         // MaxHeight guardrail, and Top alignment so the star row absorbs the empty space.
@@ -3617,8 +3627,10 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.DoesNotContain(tabItem.Descendants(), element =>
             element.Name.LocalName == "Border" && element.Attribute("MinHeight")?.Value == "220");
 
-        // The ListBox owns an internal Auto scrollbar bounded by the frame MaxHeight;
-        // the page scroll channel above only wraps the form.
+        // The form is visible by default (no collapsed Expander); the ListBox owns an
+        // internal Auto scrollbar bounded by the frame MaxHeight.
+        Assert.DoesNotContain(tabItem.Descendants(), element => element.Name.LocalName == "Expander");
+        Assert.Contains("x:Name=\"MediaSourceFormCard\"", File.ReadAllText(mediaPath));
         Assert.Equal("Auto", sourceList.Attributes().FirstOrDefault(attribute => attribute.Name.LocalName == "ScrollViewer.VerticalScrollBarVisibility")?.Value);
         Assert.Contains("ScrollViewer.CanContentScroll=\"True\"", File.ReadAllText(mediaPath));
         Assert.Contains("VirtualizingPanel.VirtualizationMode=\"Recycling\"", File.ReadAllText(mediaPath));

@@ -141,16 +141,17 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         [Fact]
-        public void MediaSourceFormIsCollapsibleButKeepsFieldsReachable()
+        public void MediaSourceFormIsVisibleByDefaultAndKeepsFieldsReachable()
         {
             var root = FindRepositoryRoot();
             var media = XDocument.Parse(File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml")));
-            var expander = media.Descendants().Single(element => element.Name.LocalName == "Expander"
-                && element.Attribute("Header")?.Value == "添加截图或录像来源");
+            var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
+            var form = media.Descendants().Single(element => element.Name.LocalName == "Border"
+                && element.Attribute(xamlName)?.Value == "MediaSourceFormCard");
 
-            Assert.Equal("False", expander.Attribute("IsExpanded")?.Value);
-            Assert.NotNull(expander.Descendants().SingleOrDefault(element => element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "MediaSourceFields"));
-            Assert.Contains("Command=\"{Binding AddMediaSourceCommand}\"", expander.ToString());
+            Assert.NotNull(form.Descendants().SingleOrDefault(element => element.Attribute(xamlName)?.Value == "MediaSourceFields"));
+            Assert.Contains("Command=\"{Binding AddMediaSourceCommand}\"", form.ToString());
+            Assert.DoesNotContain(media.Descendants(), element => element.Name.LocalName == "Expander");
         }
 
         [LegacyProductionUiBaselineFact]
