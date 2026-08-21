@@ -28,8 +28,8 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Demo-aligned header. The Demo's theme swatches are intentionally not
-                 copied into production; only the shared palette is used here. -->
+            <!-- Demo-aligned header. The production shell keeps the real settings entry
+                 point and uses the existing ThemeMode setting for this utility surface. -->
             <Grid x:Name="SidebarLayout" Grid.Row="0" Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -95,6 +95,12 @@
                                              Style="{StaticResource AcrylicNavItem}" Tag="Maintenance" Checked="OnNavChecked" ToolTip="维护中心">
                                     <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock Text="维护中心"/></StackPanel>
                                 </RadioButton>
+                                <Rectangle Height="1" Fill="{DynamicResource GscDividerBrush}" Margin="4,8,4,12"/>
+                                <RadioButton x:Name="NavSettings" GroupName="DemoWorkspaceNavigation"
+                                             Style="{StaticResource AcrylicNavItem}" Tag="Settings" Checked="OnNavChecked" ToolTip="设置"
+                                             AutomationProperties.Name="打开 GameSaveCenter 设置">
+                                    <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock Text="设置"/></StackPanel>
+                                </RadioButton>
                             </StackPanel>
                         </ScrollViewer>
                         <Border Grid.Row="1" Style="{DynamicResource GscRedesignStatusCard}" Margin="0,12,0,0" Padding="10,9">
@@ -123,13 +129,34 @@
                     <RowDefinition Height="68"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-            <!-- Keep the same two-level shell rhythm as the Demo. Production does
-                 not copy the Demo swatches, but it still reserves the title-bar
-                 band so the page header is measured at the same vertical origin. -->
-            <Border Grid.Row="0"
+            <Border x:Name="ShellUtilitySurface" Grid.Row="0"
                     Background="{DynamicResource GscGlassFillBrush}"
                     BorderBrush="{DynamicResource GscGlassStrokeBrush}"
-                    BorderThickness="0,0,0,1"/>
+                    BorderThickness="0,0,0,1">
+                <Grid Margin="24,0,14,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="主题" FontSize="11"
+                               Foreground="{DynamicResource GscSecondaryTextBrush}"
+                               VerticalAlignment="Center"/>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <RadioButton x:Name="ThemeModeFollowButton" GroupName="ProductionThemeMode"
+                                     Style="{StaticResource AcrylicThemeModeItem}" Tag="FollowPlaynite"
+                                     Checked="OnThemeModeChecked" Content="跟随 Playnite"
+                                     AutomationProperties.Name="跟随 Playnite 主题"/>
+                        <RadioButton x:Name="ThemeModeLightButton" GroupName="ProductionThemeMode"
+                                     Style="{StaticResource AcrylicThemeModeItem}" Tag="Light"
+                                     Checked="OnThemeModeChecked" Content="浅色"
+                                     AutomationProperties.Name="浅色主题"/>
+                        <RadioButton x:Name="ThemeModeDarkButton" GroupName="ProductionThemeMode"
+                                     Style="{StaticResource AcrylicThemeModeItem}" Tag="Dark"
+                                     Checked="OnThemeModeChecked" Content="深色"
+                                     AutomationProperties.Name="深色主题"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
             <Border x:Name="HeaderSurface" Grid.Row="1"
                     Background="{DynamicResource GscGlassFillBrush}"
                     BorderBrush="{DynamicResource GscGlassStrokeBrush}"

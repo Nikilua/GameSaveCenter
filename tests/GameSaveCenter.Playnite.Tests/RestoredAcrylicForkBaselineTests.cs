@@ -24,11 +24,16 @@ public sealed class RestoredAcrylicForkBaselineTests
     }
 
     [Fact]
-    public void ProductionSidebarDoesNotExposeAPlaceholderSettingsNavigationItem()
+    public void ProductionSidebarExposesTheRealPlayniteSettingsNavigationEntry()
     {
         var shell = ReadSource("Views", "AcrylicProductionShellView.xaml");
+        var shellCode = ReadSource("Views", "AcrylicProductionShellView.xaml.cs");
+        var dashboardCode = ReadSource("Views", "DashboardView.xaml.cs");
 
-        Assert.DoesNotContain("Text=\"设置\"", shell);
+        Assert.Contains("x:Name=\"NavSettings\"", shell);
+        Assert.Contains("Text=\"设置\"", shell);
+        Assert.Contains("SettingsRequested?.Invoke()", shellCode);
+        Assert.Contains("OpenPluginSettings(plugin.Id)", dashboardCode);
         Assert.Contains("NavMaintenance", shell);
     }
 

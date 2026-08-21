@@ -2,6 +2,26 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-21 UI-288 生产壳主题操作与真实设置入口
+
+**问题确认：**
+
+- 生产壳右侧顶部保留了 44 DIP 的空白带，只是占位，无法完成 Demo 所要求的主题操作；侧栏也没有生产版可用的设置入口。
+- 旧测试把设置导航当作“占位项”禁止，但实际设置入口已经存在于 Playnite 的 `OpenPluginSettings` 路由，应该复用该真实入口而不是复制 Demo 设置页。
+
+**实现内容：**
+
+- 将顶部空白带改为共享资源驱动的主题 utility surface，提供“跟随 Playnite / 浅色 / 深色”三个真实 `ThemeMode` 选项；切换后保存现有插件设置、通知调色板刷新，并保持 Light/Dark 动态资源链。
+- 侧栏维护中心后增加真实“设置”导航项；点击时恢复当前工作区选中状态，再调用 `plugin.PlayniteApi.MainView.OpenPluginSettings(plugin.Id)`，不改变工作区 ViewModel、命令或设置页内部分类 Tab。
+- 主题按钮样式放入 `AcrylicProductionResources.xaml` 的共享资源，保留键盘/Automation 名称和高对比度动态前景资源。
+
+**验证结果：**
+
+- `scripts/validate-source.py`：通过。
+- `scripts/build.ps1 -OutputRoot artifacts/gsc-b/ui-shell`：XAML 18/18、Release 0 警告/0 错误、Core 59/59、Worker 194/194、Playnite 274 通过/60 跳过/0 失败。
+- 本阶段未依赖 AcrylicFork Demo 文件夹；源码和测试只使用当前仓库生产资源。
+
+
 ## 2026-08-21 BUILD-002 移除跨电脑测试对 Demo 目录的运行时依赖
 
 **问题确认：**

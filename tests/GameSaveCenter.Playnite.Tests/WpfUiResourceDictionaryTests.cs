@@ -1068,6 +1068,11 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"PageHost\"", productionShell);
         Assert.Contains("x:Name=\"NavOverview\"", productionShell);
         Assert.Contains("x:Name=\"NavMaintenance\"", productionShell);
+        Assert.Contains("x:Name=\"NavSettings\"", productionShell);
+        Assert.Contains("x:Name=\"ThemeModeFollowButton\"", productionShell);
+        Assert.Contains("x:Name=\"ThemeModeLightButton\"", productionShell);
+        Assert.Contains("x:Name=\"ThemeModeDarkButton\"", productionShell);
+        Assert.Contains("SettingsRequested = () => plugin.PlayniteApi.MainView.OpenPluginSettings(plugin.Id)", dashboardCode);
         Assert.DoesNotContain("Visibility=\"Visible\"", productionShell);
     }
 

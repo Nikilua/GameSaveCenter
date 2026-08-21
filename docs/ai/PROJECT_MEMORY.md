@@ -3,6 +3,13 @@
 > 维护时间：2026-08-21
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-21 UI-288 当前事实：生产壳主题操作与设置入口
+
+- `AcrylicProductionShellView` 的 44 DIP 顶部 utility band 现在是可操作的主题条，不是空白占位；三个 RadioButton 分别对应 `GameSaveCenterThemeMode.FollowPlaynite/Light/Dark`，样式位于 `AcrylicProductionResources.xaml` 的 `AcrylicThemeModeItem`。
+- `DashboardView` 给生产壳注入两个真实回调：设置项调用 `plugin.PlayniteApi.MainView.OpenPluginSettings(plugin.Id)`；主题项写入 `plugin.Settings.ThemeMode`、保存设置、触发 `NotifyVisualSettingsChanged()`，并沿用 `AdaptiveThemePaletteFactory` 的动态资源刷新。
+- 侧栏 `NavSettings` 不是工作区，不会改写 `DashboardViewModel.CurrentWorkspace`；点击时恢复当前工作区 RadioButton 后打开 Playnite 设置，设置页内部分类 Tab、真实字段和保存语义保持不变。
+- UI-288 验证：源码门禁通过；Release 0 warning/0 error；Core 59/59、Worker 194/194、Playnite 274/60/0。该阶段仍未宣称真实 Playnite 嵌入像素验收；Demo 文件夹不是运行时或测试依赖。
+
 ## 2026-08-21 BUILD-002 当前事实：跨电脑测试不再依赖 Demo 目录
 
 - `9b19dbd` 之后的跨电脑失败来自五个 Playnite 视觉对照测试仍读取开发者机器的 `D:\workplace\Github\GameSaveCenter.AcrylicFork`；不是生产代码编译或 UI 实现回退。
