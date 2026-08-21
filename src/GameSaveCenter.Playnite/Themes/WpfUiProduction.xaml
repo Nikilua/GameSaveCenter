@@ -598,33 +598,42 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ui:Button}">
-                    <Grid>
-                        <Border x:Name="ButtonChrome"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                Padding="{TemplateBinding Padding}"
-                                CornerRadius="11"
-                                SnapsToDevicePixels="True"/>
-                        <!-- Demo LabBtn state layers: keep the base surface readable and
-                             animate only the overlay opacity, never layout dimensions. -->
-                        <Border x:Name="HoverOverlay"
-                                Background="{DynamicResource GscAccentTintBrush}"
-                                CornerRadius="11"
-                                Opacity="0"
-                                IsHitTestVisible="False"/>
-                        <Border x:Name="PressedOverlay"
-                                Background="{DynamicResource GscAccentTintStrongBrush}"
-                                CornerRadius="11"
-                                Opacity="0"
-                                IsHitTestVisible="False"/>
-                        <ContentPresenter Content="{TemplateBinding Content}"
-                                          ContentTemplate="{TemplateBinding ContentTemplate}"
-                                          ContentStringFormat="{TemplateBinding ContentStringFormat}"
-                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                          RecognizesAccessKey="True"/>
-                    </Grid>
+                    <!-- The content must be measured inside the padded chrome. Keeping the
+                         presenter beside an empty Border makes WPF size the button from the
+                         text alone, which is why localized labels touched or crossed the
+                         border on every page. -->
+                    <Border x:Name="ButtonChrome"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Padding="{TemplateBinding Padding}"
+                            CornerRadius="11"
+                            ClipToBounds="True"
+                            SnapsToDevicePixels="True">
+                        <Grid ClipToBounds="True">
+                            <!-- Demo LabBtn state layers: keep the base surface readable and
+                                 animate only the overlay opacity, never layout dimensions. -->
+                            <Border x:Name="HoverOverlay"
+                                    Background="{DynamicResource GscAccentTintBrush}"
+                                    CornerRadius="11"
+                                    Opacity="0"
+                                    IsHitTestVisible="False"/>
+                            <Border x:Name="PressedOverlay"
+                                    Background="{DynamicResource GscAccentTintStrongBrush}"
+                                    CornerRadius="11"
+                                    Opacity="0"
+                                    IsHitTestVisible="False"/>
+                            <!-- Stretch gives the shared text template a bounded measure so
+                                 its ellipsis can work at narrow responsive widths. -->
+                            <ContentPresenter Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                              HorizontalAlignment="Stretch"
+                                              VerticalAlignment="Stretch"
+                                              RecognizesAccessKey="True"
+                                              TextElement.Foreground="{TemplateBinding Foreground}"/>
+                        </Grid>
+                    </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="Appearance" Value="Primary">
                             <Setter TargetName="ButtonChrome" Property="Background" Value="{DynamicResource GscPrimaryButtonBrush}"/>

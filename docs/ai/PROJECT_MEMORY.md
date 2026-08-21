@@ -3,6 +3,14 @@
 > 维护时间：2026-08-21
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-21 UI-281 当前事实：首页风险/关注区与共享按钮几何已修复
+
+- `Themes/WpfUiProduction.xaml` 的 `GscWpfUiButton` 必须让状态层和 `ContentPresenter` 位于带 `Padding` 的同一个按钮外壳内；之前并列的空白 Border 不参与内容测量，是全局中文按钮贴边/溢出的根因。不要在页面里复制按钮模板来绕过它。
+- `OverviewView.xaml` 的重复摘要只能隐藏摘要图标、标题和说明，不能折叠包住 `OverviewProtectionDetails`；真实 `RecentProtection.Items`、选择框、状态点/气泡、逐项查看和批量保护命令必须保持可见。首页最近任务/全局活动不使用 `IsMouseOver` 视觉覆盖，选中态和键盘焦点语义保留。
+- `AttentionFindings` 仍是 Dashboard 的真实 Finding 集合；需关注事项使用紧凑 Demo 行，有数据时显示真实标题/游戏/动作，无数据时仅显示绑定驱动的空状态，不得添加 Mock 条目。
+- `SaveCenterView.xaml` 的比较与保留页使用两个 `*` 对等卡片，动作按钮放在各自标题行；`ApplyResponsiveLayout` 只在窄宽时折叠到单列。备份策略、云端上传设置中的标签/Chip/Toggle/输入框/ComboBox 使用显式 `*` + `Auto` 列，避免“启用备份策略”和“重要游戏 · 严格”错位。
+- UI-281 证据：`artifacts/gsc-b/ui281-button-risk-v4` 构建/测试通过；`artifacts/ui-qa/ui281-button-risk-v3/render-qa-report.txt` 为 `render-qa OK`，风险保护列表与关注列表的 ScrollViewer 均恢复非零视口，比较与保留/备份策略截图已抽查。真实 Playnite Dashboard 宿主证据仍未补齐，Demo-first 总迁移仍未完成。
+
 ## 2026-08-21 UI-280 当前事实：首页已修正 Demo 密度与选中态
 
 - `OverviewView.xaml` 的 `OverviewStatStrip` 使用 11 列交替布局，统计卡和分隔线不再占用同一列；六个真实 `Snapshot` 指标、比例进度条和统计卡悬停动效保持。

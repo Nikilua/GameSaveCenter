@@ -216,7 +216,10 @@ namespace GameSaveCenter.Playnite.Views
 
             var stackCompare = width < 980;
             SaveCompareLayout.ColumnDefinitions[1].Width = stackCompare ? new GridLength(0) : new GridLength(14);
-            SaveCompareLayout.ColumnDefinitions[2].Width = stackCompare ? new GridLength(0) : inspectorWidth;
+            // Demo uses two peer cards for comparison and retention. Keep the same
+            // proportion on the production page; the inspector width belongs to the
+            // history/details workspace, not this two-column review surface.
+            SaveCompareLayout.ColumnDefinitions[2].Width = stackCompare ? new GridLength(0) : new GridLength(1, GridUnitType.Star);
             SaveCompareLayout.RowDefinitions[1].Height = stackCompare ? new GridLength(1, GridUnitType.Auto) : new GridLength(0);
             Grid.SetColumn(SaveCompareRetentionScrollViewer, stackCompare ? 0 : 2);
             Grid.SetColumnSpan(SaveCompareRetentionScrollViewer, stackCompare ? 3 : 1);

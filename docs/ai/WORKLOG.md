@@ -2,6 +2,28 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-21 UI-281 修复首页风险/关注区与共享按钮几何
+
+**问题确认：**
+
+- 首页风险区为了隐藏重复的生产摘要而误把真实 `RecentProtection` 明细列表放进了折叠祖先，渲染后只剩很薄的空白区；需关注事项还缺少 Demo 的紧凑业务行。
+- `GscWpfUiButton` 的空白按钮背景与 `ContentPresenter` 是并列元素，按钮内边距没有参与内容测量，导致多个页面的中文按钮文字贴边或溢出。
+- 存档中心比较与保留页误用历史 Inspector 的窄列宽；备份策略页多个标签/开关使用隐式 Grid 单元格，窄宽下出现错位。
+
+**实现内容：**
+
+- 共享 `GscWpfUiButton` 将 Hover/Pressed 状态层和 `ContentPresenter` 放入带 Padding 的按钮外壳，修复所有复用该模板的主按钮/操作按钮几何；真实 Command、Binding、焦点态和禁用态保持。
+- 首页风险区只隐藏重复的摘要图标/标题/说明，恢复真实保护明细列表、选择框、状态点/状态气泡、逐项查看和批量保护命令；首页最近任务与全局活动移除鼠标悬停变色，只保留选中态和键盘焦点语义。
+- 需关注事项增加真实 `AttentionFindings` 的紧凑空状态容器，保留实际 Finding 绑定和维护中心命令；不伪造或补入 Demo Mock 数据。
+- 存档中心比较与保留改为 Demo 风格的两张对等卡片，比较/刷新动作移到标题行并使用紧凑按钮；备份策略与云端上传设置改用显式 `*`/`Auto` 列确保标签、Chip、Toggle、输入框和 ComboBox 对齐。
+
+**验证结果：**
+
+- `scripts/build.ps1 -Configuration Release -OutputRoot artifacts/gsc-b/ui281-button-risk-v4`：XAML 18/18；Release 0 warning、0 error；Core 59/59；Worker 191/191；Playnite 272 通过、60 跳过、0 失败。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/ui281-button-risk-v3`：`render-qa OK`，Light/Dark、1040/1100/1366/2560、多尺寸滚动探针和 resize transition 均通过；风险/保护/关注 ScrollViewer 均有正确的非零视口，比较与保留、备份策略页抽查无按钮溢出或错位。
+- `scripts/validate-source.py`、`validate_wpf_ui.py`（0 error、19 warnings、164 info）和 `git diff --check` 通过；warnings/info 为既有滚动测量、负 Margin 和共享资源审计提示。
+- 证据仍来自离屏 RenderHarness 与静态门禁，未取得新的可识别 Playnite 生产宿主逐页截图；不能把本阶段证据写成 Demo-first 总迁移完成，也不能宣称已验证真实宿主的主题切换、DPI、键盘焦点和命令执行。
+
 ## 2026-08-21 UI-280 首页 Demo 结构与选中态修正
 
 **问题确认：**
