@@ -2,6 +2,26 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-21 UI-293 修复首页关注事项挤压与版本比较气泡
+
+**问题确认：**
+
+- 首页“需关注事项”行把 `SuggestedAction` 放在无约束的 `Auto` 列；建议句子按完整理想宽度测量后，标题列只剩几个字的空间，截图中出现标题被挤成“发…”/“勇…”的现象。
+- 存档中心“版本比较”标题旁的状态气泡依赖 `LastBackupDiff.ComparisonQualityDisplay` 的嵌套路径；比较尚未执行时路径可能返回 `UnsetValue`，现有 `TargetNullValue` 不足以覆盖，视觉上只剩空的色块；标题与气泡也没有明确使用同一行的垂直居中约束。
+
+**实现内容：**
+
+- `OverviewView.xaml` 将关注事项建议列固定为 220 DIP，标题/游戏名保留星号列并设置 `MinWidth=0`，建议继续绑定真实 `SuggestedAction`，只在右侧受控宽度内省略，不再反向挤压标题。
+- `SaveCenterView.xaml` 将“版本比较”标题和质量气泡改为明确的两列标题行；标题、气泡和气泡内文字均垂直居中，并为嵌套绑定同时提供 `TargetNullValue` 与 `FallbackValue`，初始显示“等待比较”。比较完成后仍直接显示 Worker 返回的精确/估算/Manifest 无效状态。
+- `DashboardViewModel` 将差异摘要初始化为“选择两个版本后，比较结果会显示在这里。”，避免比较前大面积空白；比较命令、DTO、绑定和安全语义未改变。
+- Playnite UI 源码测试锁定关注事项列宽/右对齐契约，以及比较页气泡回退文本和初始说明；未增加 Demo 文件夹、环境变量或伪造生产数据依赖。
+
+**验证结果：**
+
+- `scripts/validate-source.py`：通过；`validate_wpf_ui.py`：0 error、20 warnings、164 info，warning/info 为既有上下文提示。
+- `scripts/build.ps1 -Configuration Release -OutputRoot artifacts/gsc-b/attention-pill-fix`：XAML 18/18、0 警告/0 错误；Core 59、Worker 194、Playnite 276 通过/58 跳过/0 失败。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/attention-pill-fix`：`render-qa OK`，双主题、1040/1100/1366/2560、多 Tab、滚动和 resize transition 通过；离屏 RenderHarness 证据不等同真实 Playnite 宿主逐像素验收。
+
 ## 2026-08-21 UI-292 修复设置路径输入框裁切并移除生产壳主题栏
 
 **问题确认：**

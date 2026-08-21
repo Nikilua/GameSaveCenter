@@ -393,12 +393,13 @@
                                 <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                                 <Grid>
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                                    <StackPanel Orientation="Horizontal" MinWidth="0">
-                                        <TextBlock Text="版本比较" Style="{DynamicResource GscSectionTitleStyle}"/>
-                                        <Border Style="{DynamicResource GscRedesignContextPill}" Background="{DynamicResource GscInfoIconFillBrush}" Margin="10,0,0,0" VerticalAlignment="Center" Height="28" MinHeight="28" Padding="9,0" MaxWidth="210" SnapsToDevicePixels="True">
-                                            <TextBlock Text="{Binding LastBackupDiff.ComparisonQualityDisplay, TargetNullValue=尚未比较}" Foreground="{DynamicResource GscInfoBrush}" FontSize="10.5" TextTrimming="CharacterEllipsis" ToolTip="{Binding LastBackupDiff.ComparisonQualityDisplay}"/>
+                                    <Grid MinWidth="0">
+                                        <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="版本比较" Style="{DynamicResource GscSectionTitleStyle}" VerticalAlignment="Center"/>
+                                        <Border Grid.Column="1" Style="{DynamicResource GscRedesignContextPill}" Background="{DynamicResource GscInfoIconFillBrush}" Margin="10,0,0,0" VerticalAlignment="Center" Height="28" MinHeight="28" Padding="9,0" MaxWidth="210" SnapsToDevicePixels="True">
+                                            <TextBlock Text="{Binding LastBackupDiff.ComparisonQualityDisplay, TargetNullValue=等待比较, FallbackValue=等待比较}" Foreground="{DynamicResource GscInfoBrush}" FontSize="10.5" TextTrimming="CharacterEllipsis" ToolTip="{Binding LastBackupDiff.ComparisonQualityDisplay, TargetNullValue=等待比较, FallbackValue=等待比较}" VerticalAlignment="Center"/>
                                         </Border>
-                                    </StackPanel>
+                                    </Grid>
                                     <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding CompareBackupCommand}" Content="比较所选版本" HorizontalAlignment="Right" Margin="12,0,0,0"/>
                                 </Grid>
                                 <Grid Grid.Row="1" Margin="0,12,0,0">
@@ -431,7 +432,7 @@
                                             <ItemsControl ItemsSource="{Binding LastBackupDiff.Removed}" Margin="0,3,0,0">
                                                 <ItemsControl.ItemTemplate><DataTemplate><TextBlock Text="{Binding}" FontFamily="{DynamicResource GscCodeFontFamily}" FontSize="11" Foreground="{DynamicResource GscErrorBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding}" Margin="0,0,0,5"/></DataTemplate></ItemsControl.ItemTemplate>
                                             </ItemsControl>
-                                            <TextBlock Text="{Binding DiffSummary, TargetNullValue=变更清单会在比较完成后显示；未执行比较时不会猜测文件状态。}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                            <TextBlock Text="{Binding DiffSummary, TargetNullValue=选择两个版本后，比较结果会显示在这里。, FallbackValue=选择两个版本后，比较结果会显示在这里。}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/>
                                         </StackPanel>
                                     </ScrollViewer>
                                 </Border>

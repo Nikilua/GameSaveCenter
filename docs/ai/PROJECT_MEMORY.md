@@ -3,6 +3,13 @@
 > 维护时间：2026-08-21
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-21 UI-293 当前事实：首页关注事项与比较质量状态
+
+- `OverviewView.xaml` 的 `AttentionFindings` 行使用 `26` DIP 图标列、`*` 标题列和 `220` DIP 建议列；建议列不能恢复为无约束 `Auto`，否则长 `SuggestedAction` 会把标题/游戏名挤成单字宽。真实 `SuggestedAction` 仍右对齐并用省略号，完整内容通过 ToolTip 可读。
+- `SaveCenterView.xaml` 的“版本比较”标题行使用明确的标题/气泡两列布局；标题、`GscRedesignContextPill` 和内部文本都设为垂直居中。`LastBackupDiff.ComparisonQualityDisplay` 同时使用 `TargetNullValue=等待比较` 和 `FallbackValue=等待比较`，比较前不应出现空色块；有实际 DTO 时仍显示 Worker 返回的真实质量。
+- `DashboardViewModel.diffSummary` 初始值为“选择两个版本后，比较结果会显示在这里。”，比较前的结果区域不能恢复为空字符串；执行比较后仍由 `diff.Summary` 覆盖。
+- UI-293 验证：Release 构建为 XAML 18/18、0 warning/0 error；Core 59、Worker 194、Playnite 276/58/0；`artifacts/ui-qa/attention-pill-fix/render-qa-report.txt` 为 `render-qa OK`，覆盖双主题、多尺寸、Tab、滚动和 resize。RenderHarness 是离屏证据，不等同真实 Playnite 宿主逐像素验收；Demo 文件夹不是运行时或测试依赖。
+
 ## 2026-08-21 UI-292 当前事实：设置路径输入框与生产壳顶部
 
 - `WpfUiProduction.xaml` 的 `GscWpfUiTextBoxTemplate` 使用拉伸的 `PART_ContentHost`，正文通过 `VerticalContentAlignment=Center` 垂直居中；`GscWpfUiTextBox` 默认 `HorizontalScrollBarVisibility=Hidden`，避免长路径自动水平滚动条占用输入框底部。

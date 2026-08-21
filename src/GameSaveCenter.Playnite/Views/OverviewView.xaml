@@ -759,15 +759,17 @@
                                 <Grid>
                                     <Border BorderBrush="{DynamicResource GscDividerBrush}" BorderThickness="0,0,0,1" Padding="0,0,0,9" Margin="0,0,0,9">
                                         <Grid>
-                                        <Grid.ColumnDefinitions><ColumnDefinition Width="26"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                        <!-- Keep the finding title readable. An unconstrained Auto action column
+                                             can measure its full sentence and leave the title only a few pixels. -->
+                                        <Grid.ColumnDefinitions><ColumnDefinition Width="26"/><ColumnDefinition Width="*"/><ColumnDefinition Width="220"/></Grid.ColumnDefinitions>
                                         <Border x:Name="AttentionFindingIcon" Width="18" Height="18" CornerRadius="9" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,1,0,0">
                                             <TextBlock x:Name="AttentionFindingGlyph" Text="!" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource GscWarningBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Border>
-                                        <StackPanel Grid.Column="1" Margin="0,0,8,0" VerticalAlignment="Center">
+                                        <StackPanel Grid.Column="1" Margin="0,0,12,0" VerticalAlignment="Center" MinWidth="0">
                                             <TextBlock Text="{Binding Title, Mode=OneWay}" FontSize="12.5" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding Detail}"/>
                                             <TextBlock Text="{Binding GameName, Mode=OneWay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10.5" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/>
                                         </StackPanel>
-                                        <TextBlock Grid.Column="2" Text="{Binding SuggestedAction, Mode=OneWay}" Foreground="{DynamicResource GscAccentBrush}" FontSize="11" TextTrimming="CharacterEllipsis" ToolTip="{Binding SuggestedAction, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                        <TextBlock Grid.Column="2" Text="{Binding SuggestedAction, Mode=OneWay}" Foreground="{DynamicResource GscAccentBrush}" FontSize="11" TextTrimming="CharacterEllipsis" ToolTip="{Binding SuggestedAction, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Right" TextAlignment="Right"/>
                                         </Grid>
                                     </Border>
                                 </Grid>

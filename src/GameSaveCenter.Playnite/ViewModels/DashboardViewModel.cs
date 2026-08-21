@@ -94,7 +94,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private StorageAnalysisDto storageAnalysis = new StorageAnalysisDto { Summary = "尚未分析备份存储。" };
         private RetentionSimulationPreviewDto retentionSimulation = new RetentionSimulationPreviewDto { Summary = "尚未生成全局保留预览。" };
         private LocalMirrorStatusDto localMirrorStatus = new LocalMirrorStatusDto { Message = "尚未检查本地镜像。" };
-        private string diffSummary = string.Empty;
+        private string diffSummary = "选择两个版本后，比较结果会显示在这里。";
         private string retentionSummary = string.Empty;
         private BackupPolicyTemplateDto selectedPolicyTemplate = null!;
         private BackupPolicyTemplateDto policyTemplateDraft = new BackupPolicyTemplateDto();

@@ -1765,6 +1765,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("{Binding LastRetentionPreview.KeepBackupIds.Count", saveText);
         Assert.Contains("Command=\"{Binding CompareBackupCommand}\"", saveText);
         Assert.Contains("Command=\"{Binding PreviewRetentionCommand}\"", saveText);
+        Assert.Contains("TargetNullValue=等待比较, FallbackValue=等待比较", saveText);
+        Assert.Contains("Text=\"版本比较\" Style=\"{DynamicResource GscSectionTitleStyle}\" VerticalAlignment=\"Center\"", saveText);
+        Assert.Contains("选择两个版本后，比较结果会显示在这里。", saveText);
         Assert.Contains("x:Name=\"SaveComparePageScrollViewer\"", saveText);
         Assert.Contains("MinWidth=\"880\"", saveText);
         Assert.Contains("HorizontalScrollBarVisibility=\"Auto\"", saveText);
@@ -2633,13 +2636,17 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Equal("DataTemplate", template.Name.LocalName);
         var grid = template.Descendants().Single(element => element.Name.LocalName == "Grid"
             && element.Elements().Any(child => child.Name.LocalName == "Grid.ColumnDefinitions"));
-        Assert.Equal("26", grid.Elements().Single(element => element.Name.LocalName == "Grid.ColumnDefinitions").Elements().ElementAt(0).Attribute("Width")?.Value);
+        var columns = grid.Elements().Single(element => element.Name.LocalName == "Grid.ColumnDefinitions").Elements()
+            .Select(element => element.Attribute("Width")?.Value).ToArray();
+        Assert.Equal(new[] { "26", "*", "220" }, columns);
         var tile = grid.Descendants().Single(element => element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "AttentionFindingIcon");
         Assert.Equal("18", tile.Attribute("Width")?.Value);
         Assert.Equal("18", tile.Attribute("Height")?.Value);
         Assert.Equal("9", tile.Attribute("CornerRadius")?.Value);
-        Assert.Contains(grid.Descendants(), element => element.Name.LocalName == "TextBlock"
+        var action = grid.Descendants().Single(element => element.Name.LocalName == "TextBlock"
             && element.Attribute("Text")?.Value == "{Binding SuggestedAction, Mode=OneWay}");
+        Assert.Equal("Right", action.Attribute("HorizontalAlignment")?.Value);
+        Assert.Equal("Right", action.Attribute("TextAlignment")?.Value);
         Assert.Contains(template.Elements(), element => element.Name.LocalName == "DataTemplate.Triggers");
         var overviewText = File.ReadAllText(overviewPath);
         Assert.Contains("Value=\"Error\"", overviewText);
