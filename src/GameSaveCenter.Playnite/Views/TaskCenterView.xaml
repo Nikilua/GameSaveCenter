@@ -83,6 +83,7 @@
     </UserControl.Resources>
 
     <Grid x:Name="TaskPageScrollSurface" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ClipToBounds="True">
+        <ui:AmbientMaterialLayer Panel.ZIndex="-1"/>
     <Grid x:Name="TaskWorkspaceLayout" Margin="0" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscInspectorWidth}"/></Grid.ColumnDefinitions>
         <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
@@ -90,26 +91,29 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0" Margin="14,2,14,0">
                     <TextBlock Text="{Binding Tasks.Count, Mode=OneWay}" FontSize="26" FontWeight="SemiBold"/>
                     <TextBlock Text="任务总数" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0"/>
                 </StackPanel>
-                <Rectangle Grid.Column="1" Width="1" Fill="{DynamicResource GscTableDividerBrush}" VerticalAlignment="Stretch" Margin="0,4"/>
-                <StackPanel Grid.Column="1" Margin="14,2,14,0">
+                <Rectangle Grid.Column="1" Width="1" Fill="{DynamicResource GscTableDividerBrush}" HorizontalAlignment="Center" VerticalAlignment="Stretch" Margin="0,4"/>
+                <StackPanel Grid.Column="2" Margin="14,2,14,0">
                     <TextBlock Text="{Binding RunningTaskCount, Mode=OneWay}" Foreground="{DynamicResource GscAccentBrush}" FontSize="26" FontWeight="SemiBold"/>
                     <TextBlock Text="运行中" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0"/>
                 </StackPanel>
-                <Rectangle Grid.Column="2" Width="1" Fill="{DynamicResource GscTableDividerBrush}" VerticalAlignment="Stretch" Margin="0,4"/>
-                <StackPanel Grid.Column="2" Margin="14,2,14,0">
+                <StackPanel Grid.Column="4" Margin="14,2,14,0">
                     <TextBlock Text="{Binding RetryableTaskCount, Mode=OneWay}" Foreground="{DynamicResource GscWarningBrush}" FontSize="26" FontWeight="SemiBold"/>
                     <TextBlock Text="需要重试" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0"/>
                 </StackPanel>
-                <Rectangle Grid.Column="3" Width="1" Fill="{DynamicResource GscTableDividerBrush}" VerticalAlignment="Stretch" Margin="0,4"/>
-                <StackPanel Grid.Column="3" Margin="14,2,14,0">
+                <Rectangle Grid.Column="3" Width="1" Fill="{DynamicResource GscTableDividerBrush}" HorizontalAlignment="Center" VerticalAlignment="Stretch" Margin="0,4"/>
+                <Rectangle Grid.Column="5" Width="1" Fill="{DynamicResource GscTableDividerBrush}" HorizontalAlignment="Center" VerticalAlignment="Stretch" Margin="0,4"/>
+                <StackPanel Grid.Column="6" Margin="14,2,14,0">
                     <TextBlock Text="{Binding CompletedTaskCount, Mode=OneWay}" Foreground="{DynamicResource GscSuccessBrush}" FontSize="26" FontWeight="SemiBold"/>
                     <TextBlock Text="今日完成" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0"/>
                 </StackPanel>

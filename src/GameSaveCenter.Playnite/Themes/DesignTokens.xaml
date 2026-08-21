@@ -46,6 +46,7 @@
          semantic tints so the hero glow reads as light, never as a solid fill. -->
     <Color x:Key="GscInfoShadowColor">#5078A9FF</Color>
     <Color x:Key="GscSuccessShadowColor">#504BD39B</Color>
+    <sys:Double x:Key="GscAmbientPageOpacity">0.86</sys:Double>
 
     <!-- Effects are deliberately null until a page enables its local material palette. This
          keeps initial, high-contrast and reduced-transparency parsing free of effect visuals. -->

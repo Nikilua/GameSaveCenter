@@ -2,6 +2,25 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-21 UI-294 修正任务统计分隔线并统一工作区环境光材质
+
+**问题确认：**
+
+- 任务中心统计卡片原本把分隔线和下一个统计项放在同一列；四组 `*` 列虽然能显示内容，但分隔线会与统计项争用布局空间，视觉上出现横向分布不均和贴近数字的问题。
+- 首页 Hero 使用的是局部环境光渐变，其他工作区没有共享同一层；直接把 `BlurEffect` 套到页面内容或列表上会增加渲染成本，并可能影响滚动、虚拟化和高对比度模式。
+
+**实现内容：**
+
+- `TaskCenterView.xaml` 将统计条改为 `* / 10 / * / 10 / * / 10 / *` 七列，三条分隔线只占固定间隔列并水平居中；真实统计 Binding 保持不变，测试锁定列契约。
+- 新增共享 `AmbientMaterialLayer`，在首页、存档、修改器、媒体、任务、维护六个工作区的真实内容之后绘制轻量径向环境光；设置页沿用同一套主题颜色。该层不接管布局、不拦截输入、不对文本/表格/滚动器使用 BlurEffect。
+- 环境光颜色由 `AdaptiveThemePalette` 根据亮暗主题和透明效果设置动态资源；关闭玻璃效果或高对比度时通过 `GscAmbientPageOpacity=0` 隐藏，避免保留无效视觉树。
+
+**验证结果：**
+
+- `scripts/validate-source.py`：通过；`validate_wpf_ui.py`：0 error、21 warnings、164 info，新增 warning 仅为环境光层使用设计所需的负 Margin，其余为既有滚动/颜色提示。
+- `scripts/build.ps1 -Configuration Release -OutputRoot artifacts/gsc-b/task-ambient-current`：0 警告/0 错误；Core 59、Worker 194、Playnite 276 通过/58 跳过/0 失败。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/task-ambient-final5`：`render-qa OK`，双主题、1040/1100/1366/2560、多 Tab、滚动和 resize transition 通过；离屏 RenderHarness 证据不等同真实 Playnite 宿主逐像素验收。
+
 ## 2026-08-21 UI-293 修复首页关注事项挤压与版本比较气泡
 
 **问题确认：**

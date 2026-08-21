@@ -1460,9 +1460,8 @@ namespace GameSaveCenter.Playnite.Views
             }
             OverviewWorkspaceView.UiAnimationsEnabled = MotionEnabled;
 
-            // The ambient ellipses are the only fixed BlurEffect surfaces in the dashboard.
-            // Collapse them instead of merely making them transparent so reduced-transparency
-            // and high-contrast modes do not retain an unnecessary effect visual tree.
+            // Collapse the legacy coordinator layer instead of merely making it transparent so
+            // reduced-transparency and high-contrast modes do not retain an effect visual tree.
             AmbientGlowLayer.Visibility = glassEnabled ? Visibility.Visible : Visibility.Collapsed;
             AmbientGlowLayer.Opacity = glassEnabled
                 ? (palette.IsDark ? 0.46 : 0.56) * Math.Max(0.2, Math.Min(1, plugin.Settings.GlassEffectStrength / 100d))

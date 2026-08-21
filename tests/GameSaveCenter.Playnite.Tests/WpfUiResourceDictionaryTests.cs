@@ -484,8 +484,15 @@ public sealed class WpfUiResourceDictionaryTests
 
         Assert.Contains("x:Name=\"TaskSummaryPanel\" Grid.Row=\"0\" Grid.ColumnSpan=\"3\" Style=\"{DynamicResource GscRedesignSectionCard}\"", task);
         Assert.Contains("<Rectangle Grid.Column=\"1\" Width=\"1\" Fill=\"{DynamicResource GscTableDividerBrush}\"", task);
-        Assert.Contains("<Rectangle Grid.Column=\"2\" Width=\"1\" Fill=\"{DynamicResource GscTableDividerBrush}\"", task);
         Assert.Contains("<Rectangle Grid.Column=\"3\" Width=\"1\" Fill=\"{DynamicResource GscTableDividerBrush}\"", task);
+        Assert.Contains("<Rectangle Grid.Column=\"5\" Width=\"1\" Fill=\"{DynamicResource GscTableDividerBrush}\"", task);
+        Assert.Contains("<StackPanel Grid.Column=\"2\" Margin=\"14,2,14,0\">", task);
+        Assert.Contains("<StackPanel Grid.Column=\"4\" Margin=\"14,2,14,0\">", task);
+        Assert.Contains("<StackPanel Grid.Column=\"6\" Margin=\"14,2,14,0\">", task);
+        var summaryStart = task.IndexOf("x:Name=\"TaskSummaryPanel\"", StringComparison.Ordinal);
+        var summaryEnd = task.IndexOf("</Border>", summaryStart, StringComparison.Ordinal);
+        var summary = task.Substring(summaryStart, summaryEnd - summaryStart);
+        Assert.Equal(3, Regex.Matches(summary, "<ColumnDefinition Width=\"10\"/>").Count);
         Assert.Contains("{Binding RunningTaskCount, Mode=OneWay}", task);
         Assert.Contains("{Binding RetryableTaskCount, Mode=OneWay}", task);
         Assert.Contains("{Binding CompletedTaskCount, Mode=OneWay}", task);
@@ -2098,6 +2105,8 @@ public sealed class WpfUiResourceDictionaryTests
         var redesign = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "Redesign.xaml"));
         var dashboard = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml"));
         var productionShell = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml"));
+        var ambient = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Controls", "AmbientMaterialLayer.xaml"));
+        var overview = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml"));
         Assert.Contains("x:Key=\"GscReadingCardStyle\"", redesign);
         Assert.Contains("x:Key=\"GscSubCardStyle\"", redesign);
         Assert.Contains("x:Key=\"GscShellStyle\"", redesign);
@@ -2109,6 +2118,12 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"DemoShell\" Margin=\"4\"", productionShell);
         Assert.Contains("x:Name=\"MainPageHost\"", productionShell);
         Assert.Contains("x:Name=\"PageHost\"", productionShell);
+        Assert.Contains("AmbientMaterialLayer", ambient);
+        Assert.Contains("GscAmbientPageOpacity", ambient);
+        Assert.Contains("GscAccentShadowColor", ambient);
+        Assert.Contains("GscInfoShadowColor", ambient);
+        Assert.Contains("GscSuccessShadowColor", ambient);
+        Assert.Contains("<ui:AmbientMaterialLayer", overview);
         Assert.Contains("x:Key=\"GscButtonStyle\"", redesign);
         Assert.Contains("x:Key=\"GscPrimaryButtonStyle\"", redesign);
         Assert.Contains("x:Key=\"GscTabControlStyle\"", redesign);
@@ -2120,7 +2135,10 @@ public sealed class WpfUiResourceDictionaryTests
             var view = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", viewName));
             Assert.Contains("HorizontalContentAlignment\" Value=\"Stretch\"", view);
             Assert.Contains("VerticalContentAlignment\" Value=\"Stretch\"", view);
+            Assert.Contains("<ui:AmbientMaterialLayer", view);
         }
+        var task = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml"));
+        Assert.Contains("<ui:AmbientMaterialLayer", task);
     }
 
     [LegacyProductionUiBaselineFact]

@@ -234,6 +234,8 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscPrimaryButtonBorderBrush"] = Brush(palette.AccentHover);
             resources["GscAmbientAccentBrush"] = Brush(WithAlpha(palette.Accent, palette.IsDark ? 0.18 : 0.15));
             resources["GscAccentShadowColor"] = WithAlpha(palette.Accent, palette.IsDark ? 0.34 : 0.28);
+            resources["GscInfoShadowColor"] = WithAlpha(palette.Info, palette.IsDark ? 0.30 : 0.24);
+            resources["GscSuccessShadowColor"] = WithAlpha(palette.Success, palette.IsDark ? 0.28 : 0.22);
             resources["GscInfoBrush"] = Brush(palette.Info);
             resources["GscSuccessBrush"] = Brush(palette.Success);
             resources["GscWarningBrush"] = Brush(palette.Warning);
@@ -272,6 +274,9 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscSliderThumbEffect"] = CreateShadowEffect(glassEnabled, Colors.Black, 6, 1, 0.26);
             resources["GscPopupAllowsTransparency"] = glassEnabled;
             resources["GscPopupAnimation"] = motionEnabled ? PopupAnimation.Fade : PopupAnimation.None;
+            resources["GscAmbientPageOpacity"] = glassEnabled
+                ? (palette.IsDark ? 0.84 : 0.92)
+                : 0d;
         }
 
         /// <summary>

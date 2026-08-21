@@ -234,6 +234,7 @@
                  explanation and action controls to remain readable at maximized size. -->
             <ColumnDefinition x:Name="OverviewSecondaryColumn" Width="410"/>
         </Grid.ColumnDefinitions>
+        <ui:AmbientMaterialLayer Grid.RowSpan="2" Grid.ColumnSpan="3" Panel.ZIndex="-1"/>
 
         <Grid x:Name="OverviewPrimaryPanel" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" MinWidth="0">
             <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
