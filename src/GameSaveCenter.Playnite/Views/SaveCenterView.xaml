@@ -105,9 +105,9 @@
                                         <TextBlock Style="{DynamicResource GscCaptionStyle}" Margin="0,2,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedGame.HealthReasonDisplay, Mode=OneWay}"><Run Text="{Binding SelectedGame.MatchStateDisplay, Mode=OneWay, TargetNullValue=当前规则未匹配}"/><Run Text=" · "/><Run Text="{Binding SelectedGame.HealthStateDisplay, Mode=OneWay, TargetNullValue=尚未校验}"/></TextBlock>
                                     </StackPanel>
                                     <WrapPanel x:Name="SaveHistorySummaryActions" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="14,0,0,0">
-                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Appearance="Primary" Command="{Binding DetectPathsCommand}" Content="立即扫描" MinHeight="38" MinWidth="100" Margin="0,0,8,0"/>
-                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding ValidateCommand}" Content="重新校验" MinHeight="38" MinWidth="100" Margin="0,0,8,0"/>
-                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding LoadDetailsCommand}" Content="刷新详情" MinHeight="38" MinWidth="100"/>
+                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Appearance="Primary" Command="{Binding DetectPathsCommand}" Content="立即扫描" MinWidth="100" Margin="0,0,8,0"/>
+                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding ValidateCommand}" Content="重新校验" MinWidth="100" Margin="0,0,8,0"/>
+                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding LoadDetailsCommand}" Content="刷新详情" MinWidth="100"/>
                                     </WrapPanel>
                                 </Grid>
                             </Border>
@@ -263,9 +263,9 @@
                                 <TextBlock Style="{StaticResource SaveHealthStateText}" HorizontalAlignment="Center"><Run Text="校验状态："/><Run Text="{Binding SelectedGame.HealthStateDisplay, Mode=OneWay, TargetNullValue=尚未校验}" FontWeight="SemiBold"/></TextBlock>
                             </Border>
                             <WrapPanel x:Name="SaveCurrentRuleActions" Grid.Column="3" Margin="14,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Right">
-                                <ui:Button x:Name="SaveDetectPathsButton" Style="{DynamicResource GscWpfUiCompactButton}" Appearance="Primary" Command="{Binding DetectPathsCommand}" Content="立即扫描" MinHeight="38" MinWidth="100" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                                <ui:Button x:Name="SaveValidateButton" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding ValidateCommand}" Content="重新校验" MinHeight="38" MinWidth="100" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                                <ui:Button x:Name="SaveLoadDetailsButton" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding LoadDetailsCommand}" Content="刷新详情" MinHeight="38" MinWidth="100" VerticalAlignment="Center"/>
+                                <ui:Button x:Name="SaveDetectPathsButton" Style="{DynamicResource GscWpfUiCompactButton}" Appearance="Primary" Command="{Binding DetectPathsCommand}" Content="立即扫描" MinWidth="100" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                <ui:Button x:Name="SaveValidateButton" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding ValidateCommand}" Content="重新校验" MinWidth="100" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                <ui:Button x:Name="SaveLoadDetailsButton" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding LoadDetailsCommand}" Content="刷新详情" MinWidth="100" VerticalAlignment="Center"/>
                             </WrapPanel>
                         </Grid>
                     </Border>

@@ -814,8 +814,8 @@
     <Style x:Key="GscWpfUiCompactButton"
            TargetType="{x:Type ui:Button}"
            BasedOn="{StaticResource GscWpfUiSecondaryButton}">
-        <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
-        <Setter Property="Padding" Value="10,5"/>
+        <Setter Property="MinHeight" Value="{DynamicResource GscCompactButtonHeight}"/>
+        <Setter Property="Padding" Value="10,4"/>
     </Style>
 
     <Style x:Key="GscWpfUiActionButton"
@@ -941,7 +941,7 @@
         <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Padding" Value="12,5"/>
-        <Setter Property="Height" Value="42"/>
+        <Setter Property="Height" Value="{DynamicResource GscButtonHeight}"/>
         <Setter Property="CaretBrush" Value="{DynamicResource GscAccentBrush}"/>
         <Setter Property="SelectionBrush" Value="{DynamicResource GscAccentTintStrongBrush}"/>
         <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>

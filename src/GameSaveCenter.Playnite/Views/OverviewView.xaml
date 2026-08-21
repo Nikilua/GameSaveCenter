@@ -359,9 +359,9 @@
                             <Border Style="{DynamicResource GscRedesignContextPill}" Margin="0,0,0,6"><StackPanel><TextBlock Text="最新备份" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10"/><TextBlock Text="{Binding SelectedGame.LastBackupLocal, Mode=OneWay, StringFormat={}{0:MM-dd HH:mm}, TargetNullValue=暂无}" FontWeight="SemiBold" Margin="0,2,0,0" FontSize="12"/></StackPanel></Border>
                         </WrapPanel>
                         <WrapPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="0,10,0,0">
-                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Appearance="Primary" Command="{Binding BackupSelectedCommand}" Content="立即备份" MinHeight="38" MinWidth="88" Margin="0,0,4,4" VerticalAlignment="Center"/>
-                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding LoadDetailsCommand}" Content="刷新详情" MinHeight="38" MinWidth="88" Margin="0,0,4,4" VerticalAlignment="Center"/>
-                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" AutomationProperties.Name="查看需要关注的游戏、原因和建议处理方式" Command="{Binding OpenAttentionCenterCommand}" Content="查看需关注项" MinHeight="38" MinWidth="88" Margin="0,0,4,4" VerticalAlignment="Center"/>
+                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Appearance="Primary" Command="{Binding BackupSelectedCommand}" Content="立即备份" MinWidth="88" Margin="0,0,4,4" VerticalAlignment="Center"/>
+                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding LoadDetailsCommand}" Content="刷新详情" MinWidth="88" Margin="0,0,4,4" VerticalAlignment="Center"/>
+                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" AutomationProperties.Name="查看需要关注的游戏、原因和建议处理方式" Command="{Binding OpenAttentionCenterCommand}" Content="查看需关注项" MinWidth="88" Margin="0,0,4,4" VerticalAlignment="Center"/>
                         </WrapPanel>
                     </Grid>
                 </Border>

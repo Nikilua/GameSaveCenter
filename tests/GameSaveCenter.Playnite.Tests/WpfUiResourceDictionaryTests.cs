@@ -4759,11 +4759,12 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Effect\" Value=\"{x:Null}\"", section);
     }
 
-    [LegacyProductionUiBaselineFact]
+    [Fact]
     public void SharedActionAndFilterStylesKeepButtonAlignmentAndVisibleAllDefault()
     {
         Exception? exception = null;
         double actionMinHeight = 0;
+        double compactMinHeight = 0;
         double textBoxMinHeight = 0;
         double comboBoxMinHeight = 0;
         HorizontalAlignment actionHorizontalAlignment = HorizontalAlignment.Left;
@@ -4801,7 +4802,13 @@ public sealed class WpfUiResourceDictionaryTests
                 {
                     Style = Assert.IsType<Style>(resources["GscWpfUiTextBox"])
                 };
+                var compact = new GameSaveCenter.Playnite.Controls.Button
+                {
+                    Style = Assert.IsType<Style>(resources["GscWpfUiCompactButton"]),
+                    Content = "紧凑操作"
+                };
                 panel.Children.Add(action);
+                panel.Children.Add(compact);
                 panel.Children.Add(filter);
                 panel.Children.Add(textBox);
                 host.Content = panel;
@@ -4809,6 +4816,7 @@ public sealed class WpfUiResourceDictionaryTests
                 host.Arrange(new Rect(0, 0, 420, 120));
                 host.UpdateLayout();
                 actionMinHeight = action.MinHeight;
+                compactMinHeight = compact.MinHeight;
                 textBoxMinHeight = textBox.MinHeight;
                 comboBoxMinHeight = filter.MinHeight;
                 actionHorizontalAlignment = action.HorizontalContentAlignment;
@@ -4829,7 +4837,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Null(exception);
         Assert.Equal(HorizontalAlignment.Center, actionHorizontalAlignment);
         Assert.Equal(VerticalAlignment.Center, actionVerticalAlignment);
-        Assert.Equal(38, actionMinHeight);
+        Assert.Equal(36, actionMinHeight);
+        Assert.Equal(30, compactMinHeight);
         Assert.Equal(actionMinHeight, textBoxMinHeight);
         Assert.Equal(actionMinHeight, comboBoxMinHeight);
         Assert.Equal(0, filterSelectedIndex);
@@ -4847,10 +4856,14 @@ public sealed class WpfUiResourceDictionaryTests
         var tasks = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml"));
         var overview = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml"));
 
-        Assert.Contains("x:Key=\"GscButtonHeight\">38", tokens);
+        Assert.Contains("x:Key=\"GscButtonHeight\">36", tokens);
+        Assert.Contains("x:Key=\"GscCompactButtonHeight\">30", tokens);
         Assert.Contains("<Style x:Key=\"GscButtonBase\"", tokens);
         Assert.Contains("<Setter Property=\"MinHeight\" Value=\"{DynamicResource GscButtonHeight}\"/>", tokens);
         Assert.Contains("<Setter Property=\"MinHeight\" Value=\"{DynamicResource GscButtonHeight}\"/>", production);
+        Assert.Contains("<Style x:Key=\"GscWpfUiCompactButton\"", production);
+        Assert.Contains("<Setter Property=\"MinHeight\" Value=\"{DynamicResource GscCompactButtonHeight}\"/>", production);
+        Assert.Contains("<Setter Property=\"Height\" Value=\"{DynamicResource GscButtonHeight}\"/>", production);
         Assert.Contains("<Setter Property=\"MinHeight\" Value=\"{DynamicResource GscButtonHeight}\"/>", redesign);
         Assert.Contains("<Setter Property=\"HorizontalContentAlignment\" Value=\"Center\"/>", redesign);
         Assert.Contains("<Setter Property=\"VerticalContentAlignment\" Value=\"Center\"/>", redesign);

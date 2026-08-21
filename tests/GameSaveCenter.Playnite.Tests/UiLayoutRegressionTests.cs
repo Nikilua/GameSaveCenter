@@ -100,9 +100,9 @@ namespace GameSaveCenter.Playnite.Tests
 
             Assert.Contains("CornerRadius=\"10\"", production);
             Assert.Contains("VerticalAlignment=\"Center\"", production);
-            Assert.Contains("<Setter Property=\"Height\" Value=\"42\"/>", production);
+            Assert.Contains("<Setter Property=\"Height\" Value=\"{DynamicResource GscButtonHeight}\"/>", production);
             Assert.Contains("VerticalAlignment=\"Center\"", tokens);
-            Assert.Contains("<Setter Property=\"Height\" Value=\"42\"/>", tokens);
+            Assert.Contains("<Setter Property=\"Height\" Value=\"{DynamicResource GscButtonHeight}\"/>", tokens);
             Assert.Contains("Padding=\"0\"", redesign);
             Assert.Contains("CornerRadius=\"14\"", redesign);
         }
@@ -294,7 +294,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.All(buttons, button =>
             {
                 Assert.Contains("GscWpfUiCompactButton", button.Attribute("Style")?.Value);
-                Assert.Equal("38", button.Attribute("MinHeight")?.Value);
+                Assert.Null(button.Attribute("MinHeight"));
                 Assert.Equal("100", button.Attribute("MinWidth")?.Value);
             });
         }

@@ -3,6 +3,13 @@
 > 维护时间：2026-08-21
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-21 UI-289 当前事实：共享控件尺寸
+
+- 普通按钮/输入/ComboBox 的共享基准是 `GscButtonHeight=36`；紧凑按钮使用独立 `GscCompactButtonHeight=30`，不能在页面上重新写回 38 DIP。
+- `DesignTokens.xaml` 的 `GscTextBox`、`GscNumericFieldInput`、`GscComboBox`，以及 `WpfUiProduction.xaml` 的 WPF-UI TextBox/ComboBox/按钮适配器都引用普通动态令牌；`GscWpfUiCompactButton` 只引用紧凑令牌。
+- 首页保护动作仍保留显式普通高度，因为它是高风险操作例外；普通/紧凑工具栏和存档操作不再通过页面 `MinHeight` 覆盖共享资源。
+- UI-289 验证：源码门禁通过；Release 0 warning/0 error；Core 59/59、Worker 194/194、Playnite 275/59/0；WPF validator 0 error、20 warnings、164 info。
+
 ## 2026-08-21 UI-288 当前事实：生产壳主题操作与设置入口
 
 - `AcrylicProductionShellView` 的 44 DIP 顶部 utility band 现在是可操作的主题条，不是空白占位；三个 RadioButton 分别对应 `GameSaveCenterThemeMode.FollowPlaynite/Light/Dark`，样式位于 `AcrylicProductionResources.xaml` 的 `AcrylicThemeModeItem`。

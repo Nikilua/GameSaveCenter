@@ -2,6 +2,20 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-21 UI-289 普通与紧凑共享控件尺寸
+
+**实现内容：**
+
+- `DesignTokens.xaml` 将普通按钮、文本输入框、数值输入框和 ComboBox 的共享高度收敛为 `GscButtonHeight=36`，新增 `GscCompactButtonHeight=30`。
+- `WpfUiProduction.xaml` 的 `GscWpfUiCompactButton` 改为 30 DIP；普通 WPF-UI TextBox 的固定 42 DIP 高度改为动态引用普通控件令牌，避免主题/资源链分叉。
+- 首页与存档页的紧凑按钮删除显式 `MinHeight=38` 覆盖，保留按钮宽度、命令、绑定和高风险操作的原有特殊高度。
+- 激活共享尺寸源码测试，加入普通 36 / 紧凑 30 的 STA 度量和资源契约，修正旧的 38/42 DIP 测试断言。
+
+**验证结果：**
+
+- `scripts/validate-source.py`：通过；`validate_wpf_ui.py`：0 error、20 warnings、164 info，警告均为已有有限视口/参考控件提示。
+- Release 构建：0 警告/0 错误；Core 59/59、Worker 194/194、Playnite 275 通过/59 跳过/0 失败。
+
 ## 2026-08-21 UI-288 生产壳主题操作与真实设置入口
 
 **问题确认：**
