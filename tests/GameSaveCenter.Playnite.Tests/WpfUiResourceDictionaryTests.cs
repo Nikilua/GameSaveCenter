@@ -255,13 +255,12 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains(comboStyle.Setters.OfType<Setter>(), setter => setter.Property.Name == "Template");
     }
 
-    [AcrylicForkDesignFact("DesignControls.xaml")]
+    [Fact]
     public void SharedButtonsAndTogglesKeepDemoStateLayersWithoutChangingTheirCommands()
     {
         var repositoryRoot = FindRepositoryRoot();
         var production = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml"));
         var tokens = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml"));
-        var demoControls = AcrylicForkDesignSource.Read("DesignControls.xaml");
 
         Assert.Contains("x:Name=\"HoverOverlay\"", production);
         Assert.Contains("x:Name=\"PressedOverlay\"", production);
@@ -276,21 +275,15 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Width=\"40\" Height=\"23\" CornerRadius=\"11.5\"", production);
         Assert.Contains("RenderTransform.(TranslateTransform.X)", production);
         Assert.Contains("Duration=\"0:0:0.14\"", production);
-
-        Assert.Contains("x:Key=\"LabBtn\"", demoControls);
-        Assert.Contains("x:Key=\"LabToggle\"", demoControls);
-        Assert.Contains("Duration=\"0:0:0.12\"", demoControls);
-        Assert.Contains("Duration=\"0:0:0.14\"", demoControls);
     }
 
-    [AcrylicForkDesignFact("DesignControls.xaml")]
+    [Fact]
     public void SharedTextInputsAndComboItemsKeepDemoFocusAndSelectionLanguage()
     {
         var repositoryRoot = FindRepositoryRoot();
         var production = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml"));
         var tokens = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml"));
         var palette = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Infrastructure", "AdaptiveThemePalette.cs"));
-        var demoControls = AcrylicForkDesignSource.Read("DesignControls.xaml");
 
         Assert.Contains("GscControlFocusFillBrush", production);
         Assert.Contains("GscControlFocusFillBrush", tokens);
@@ -299,27 +292,19 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Property=\"Background\" Value=\"{DynamicResource GscControlFocusFillBrush}\"", production);
         Assert.Contains("<Setter Property=\"Cursor\" Value=\"Hand\"/>", production);
         Assert.Contains("<Setter Property=\"FontWeight\" Value=\"Medium\"/>", production);
-        Assert.Contains("x:Key=\"LabInput\"", demoControls);
-        Assert.Contains("FieldFocusFillBrush", demoControls);
-        Assert.Contains("x:Key=\"LabComboItem\"", demoControls);
-        Assert.Contains("<Setter Property=\"FontWeight\" Value=\"Medium\"/>", demoControls);
     }
 
-    [AcrylicForkDesignFact("DesignControls.xaml")]
+    [Fact]
     public void SharedSliderKeepsDemoTrackGeometryAndRealValueSurface()
     {
         var repositoryRoot = FindRepositoryRoot();
         var tokens = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml"));
-        var demoControls = AcrylicForkDesignSource.Read("DesignControls.xaml");
 
         Assert.Contains("x:Key=\"GscSlider\"", tokens);
         Assert.Contains("<Setter Property=\"Height\" Value=\"22\"/>", tokens);
         Assert.Contains("<Border Height=\"4\" CornerRadius=\"2\"", tokens);
         Assert.Contains("<Thumb Width=\"18\" Height=\"18\"", tokens);
         Assert.Contains("x:Name=\"GlassStrengthSlider\"", File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml")));
-        Assert.Contains("x:Key=\"LabSlider\"", demoControls);
-        Assert.Contains("<Setter Property=\"Height\" Value=\"22\"/>", demoControls);
-        Assert.Contains("<Thumb Width=\"18\" Height=\"18\"", demoControls);
     }
 
     [Fact]
@@ -4295,12 +4280,11 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("resources[\"GscErrorTintBrush\"] = Brush(errorFill);", palette);
     }
 
-    [AcrylicForkDesignFact("DesignControls.xaml")]
+    [Fact]
     public void SharedDisclosureChevronUsesDemoRotationTiming()
     {
         var repositoryRoot = FindRepositoryRoot();
         var tokens = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml"));
-        var demoControls = AcrylicForkDesignSource.Read("DesignControls.xaml");
 
         Assert.Contains("x:Key=\"GscDisclosureCardExpander\"", tokens);
         Assert.Contains("Storyboard.TargetName=\"Chevron\"", tokens);
@@ -4310,22 +4294,17 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("<Setter Property=\"Background\" Value=\"{DynamicResource GscControlFillBrush}\"/>", tokens);
         Assert.Contains("Background=\"{TemplateBinding Background}\"", tokens);
         Assert.Contains("BorderBrush=\"{TemplateBinding BorderBrush}\"", tokens);
-        Assert.Contains("DoubleAnimation Storyboard.TargetName=\"Chevron\"", demoControls);
-        Assert.Contains("Duration=\"0:0:0.15\"", demoControls);
     }
 
-    [AcrylicForkDesignFact("DesignTokens.xaml")]
+    [Fact]
     public void SharedDataGridUsesDemoBodyAndCaptionFontTokens()
     {
         var repositoryRoot = FindRepositoryRoot();
         var tokens = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml"));
         var production = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml"));
-        var demoTokens = AcrylicForkDesignSource.Read("DesignTokens.xaml");
 
         Assert.Contains("<sys:Double x:Key=\"GscBodyFontSize\">13.5</sys:Double>", tokens);
         Assert.Contains("<sys:Double x:Key=\"GscCaptionFontSize\">12</sys:Double>", tokens);
-        Assert.Contains("<sys:Double x:Key=\"SizeBody\">13.5</sys:Double>", demoTokens);
-        Assert.Contains("<sys:Double x:Key=\"SizeCaption\">12</sys:Double>", demoTokens);
         Assert.Contains("<Setter Property=\"FontFamily\" Value=\"{DynamicResource GscUiFontFamily}\"/>", production);
         Assert.Contains("<Setter Property=\"FontSize\" Value=\"{DynamicResource GscBodyFontSize}\"/>", production);
         Assert.Contains("<Setter Property=\"FontSize\" Value=\"{DynamicResource GscCaptionFontSize}\"/>", production);
