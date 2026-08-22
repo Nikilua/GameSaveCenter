@@ -1,17 +1,23 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
-> 维护时间：2026-08-21
+> 维护时间：2026-08-22
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
-## 2026-08-22 UI-295 当前事实：媒体摘要块后的竖线契约
+## 2026-08-22 UI-296 当前事实：任务/媒体摘要条实际宿主布局
 
-- `MediaCenterView.xaml` 的 `MediaSummaryPanel` 必须使用 7 列 `* / 10 / * / 10 / * / 10 / *`；四个真实统计块在 `0/2/4/6`，三条竖线在 `1/3/5`。不要把 Rectangle 和统计 StackPanel 放进同一列，也不要在最后一个统计块右侧增加竖线。
+- `TaskCenterView.xaml` 与 `MediaCenterView.xaml` 的摘要条当前统一使用 `* / Auto / * / Auto / * / Auto / *` 七列；四个统计块位于 `0/2/4/6`，三条竖线位于 `1/3/5`，最后一个统计块右侧不能有 Rectangle。`Auto` 分隔列与首页的 `OverviewStatStrip` 保持同一布局契约，避免恢复旧的四列重叠结构。
+- 用户截图中的错位来自实际宿主仍加载旧的四列布局；本轮已通过 `scripts/dev-install-run.ps1 -Configuration Release -NoStart` 将当前 `0.6.70.0` 安装到标准 Playnite 扩展目录。该安装过程没有读取或假定 Demo 文件夹，也不会停止 `GameSaveCenterPreview` 的其他 Worker。
+- UI-296 验证：源码门禁通过；Release 为 0 warning/0 error；Core 59、Worker 194、Playnite 277/57/0；`artifacts/ui-qa/summary-divider-layout-fix/render-qa-report.txt` 为 `render-qa OK`，双主题和多尺寸回归通过。真实 Playnite 已安装新 DLL，但本轮未自动捕获嵌入页面像素，需用户启动后复核截图。
+
+## 2026-08-22 UI-295 当前事实：媒体摘要块后的竖线契约（已由 UI-296 统一为 Auto 分隔槽）
+
+- `MediaCenterView.xaml` 的 `MediaSummaryPanel` 使用 7 列 `* / Auto / * / Auto / * / Auto / *`；四个真实统计块在 `0/2/4/6`，三条竖线在 `1/3/5`。不要把 Rectangle 和统计 StackPanel 放进同一列，也不要在最后一个统计块右侧增加竖线。
 - `MediaSummary.TotalCount`、截图/录像数量、`TotalSizeDisplay`、`FavoriteCount` 和 `Snapshot.UnassignedMediaCount` 的真实 OneWay Binding 与摘要文案保持不变；这只是几何布局修复。
 - UI-295 验证：源码门禁通过；Release 为 0 warning/0 error；Core 59、Worker 194、Playnite 277/57/0；`artifacts/ui-qa/media-summary-divider-fix/render-qa-report.txt` 为 `render-qa OK`，亮/暗主题媒体摘要已抽查。RenderHarness 是离屏证据，不等同真实 Playnite 宿主逐像素验收。
 
-## 2026-08-21 UI-294 当前事实：任务统计分隔线与全工作区环境光
+## 2026-08-21 UI-294 当前事实：任务统计分隔线与全工作区环境光（摘要列已由 UI-296 统一为 Auto 分隔槽）
 
-- `TaskCenterView.xaml` 的任务统计条固定为 7 列：四个 `*` 统计列与三个 `10` DIP 间隔列交替；分隔线位于间隔列并居中，不能恢复为与统计项共用列。
+- `TaskCenterView.xaml` 的任务统计条固定为 7 列：四个 `*` 统计列与三个 `Auto` 分隔列交替；分隔线位于分隔列并居中，不能恢复为与统计项共用列。
 - `Controls/AmbientMaterialLayer.xaml` 是共享的、无 BlurEffect 的环境光层，已放在 Overview、Save、Trainer、Media、Task、Maintenance 六个页面的真实内容之后；Settings 页使用相同的自适应环境光颜色。它不改变页面尺寸、滚动器、命令、Binding 或虚拟化列表。
 - `AdaptiveThemePaletteFactory.ApplyMaterialResources` 提供 `GscAccentShadowColor`、`GscInfoShadowColor`、`GscSuccessShadowColor` 和 `GscAmbientPageOpacity`；透明效果关闭或高对比度时环境光层隐藏。该方案是安全的渐变材质，不应改成对整页或 DataGrid 使用 BlurEffect。
 - UI-294 验证：源码门禁通过；Release 为 0 warning/0 error；Core 59、Worker 194、Playnite 276/58/0；`artifacts/ui-qa/task-ambient-final5/render-qa-report.txt` 为 `render-qa OK`，覆盖双主题、多尺寸、Tab、滚动和 resize。RenderHarness 是离屏证据，不等同真实 Playnite 宿主逐像素验收；Demo 文件夹不是运行时或测试依赖。

@@ -2,6 +2,25 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-22 UI-296 修正任务/媒体摘要条实际宿主的旧四列布局
+
+**问题确认：**
+
+- 用户提供的 Playnite 截图仍然呈现旧的“四列全等宽，Rectangle 与第 2/3/4 个统计列重叠”的结构：第一块后没有线，最后一块右侧出现多余线。此前源码和离屏证据已经改过，但 00:07 安装的 DLL 早于 00:14 构建，实际宿主仍加载旧版本；固定 10 DIP 分隔槽也没有完全复用首页的布局契约。
+
+**实现内容：**
+
+- `TaskCenterView.xaml` 与 `MediaCenterView.xaml` 的摘要条统一改为 `* / Auto / * / Auto / * / Auto / *`；四个真实统计块固定在 `0/2/4/6`，三条竖线固定在 `1/3/5`，不再存在尾部分隔线，也不允许统计块与 Rectangle 共用列。
+- `WpfUiResourceDictionaryTests` 增加精确列序列、分隔线数量和分隔线列约束，防止 Demo 旧四列结构或固定槽回归；真实 Binding、文案、命令和数据契约未改变。
+- 使用 `scripts/dev-install-run.ps1 -Configuration Release -NoStart` 完成当前版本安装验证；未访问或假定任何外部 Demo 文件夹，也没有结束 `GameSaveCenterPreview` 的 Worker。
+
+**验证结果：**
+
+- `scripts/validate-source.py`：通过；`validate_wpf_ui.py`：0 error、21 warnings、164 info，warning/info 为既有上下文提示。
+- `scripts/build.ps1 -Configuration Release -OutputRoot artifacts/gsc-b/summary-divider-layout-fix`：0 警告/0 错误；Core 59、Worker 194、Playnite 277 通过/57 跳过/0 失败。
+- `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/summary-divider-layout-fix`：`render-qa OK`，双主题、1040/1100/1366/2560、多 Tab、滚动和 resize transition 通过；已抽查 Task/Media 摘要条。
+- 安装目录 `C:\Users\lopmatu\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec` 已验证清单 `0.6.70`、DLL `0.6.70.0`；Playnite 按 `-NoStart` 保持关闭，待用户启动后做宿主截图复核。
+
 ## 2026-08-22 UI-295 修正媒体摘要统计块与竖线顺序
 
 **问题确认：**

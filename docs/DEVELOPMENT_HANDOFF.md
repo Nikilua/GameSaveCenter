@@ -14,9 +14,16 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
-## 2026-08-22 UI-295 媒体摘要分隔线交接
+## 2026-08-22 UI-296 任务/媒体摘要条实际宿主交接
 
-- `MediaCenterView.xaml` 的 `MediaSummaryPanel` 使用 `* / 10 / * / 10 / * / 10 / *` 七列；四个统计块位于 `0/2/4/6`，三条分隔线位于 `1/3/5`，最后一块右侧不能再增加 Rectangle。
+- 用户提供的 Playnite 截图证明实际宿主仍在显示旧的“四列全等宽 + Rectangle 占用第 2/3/4 个统计列”布局：第一块后缺线、最后一块后多线。此前源码的七列修复没有同步到 00:07 安装的 DLL，不能只看离屏 RenderHarness 就认为宿主已经更新。
+- `TaskCenterView.xaml` 与 `MediaCenterView.xaml` 现在统一使用 `* / Auto / * / Auto / * / Auto / *`；四个统计块为 `0/2/4/6`，三条竖线为 `1/3/5`，没有尾线。测试锁定精确列序列、3 条分隔线及仅允许奇数列放置 Rectangle。
+- UI-296 已通过 `validate-source.py`、WPF 静态审查、Release 构建/测试和 `artifacts/ui-qa/summary-divider-layout-fix/render-qa-report.txt` 双主题多尺寸回归；构建为 0 warning/0 error，Core 59、Worker 194、Playnite 277/57/0。
+- 已运行 `scripts/dev-install-run.ps1 -Configuration Release -NoStart`，标准 Playnite 扩展目录验证为 `0.6.70.0`。本轮没有启动 Playnite 也没有声称真实嵌入像素已通过；用户启动后应重新查看 Task/Media 两页确认宿主截图。
+
+## 2026-08-22 UI-295 媒体摘要分隔线交接（已由 UI-296 统一为 Auto 分隔槽）
+
+- `MediaCenterView.xaml` 的 `MediaSummaryPanel` 使用 `* / Auto / * / Auto / * / Auto / *` 七列；四个统计块位于 `0/2/4/6`，三条分隔线位于 `1/3/5`，最后一块右侧不能再增加 Rectangle。
 - 本轮只修正摘要条几何，真实 MediaSummary/Snapshot OneWay Binding、媒体 Tab、DataGrid/ListBox 虚拟化、Inspector、命令和滚动模型均未改变。
 - UI-295 已通过源码校验、WPF 静态审查、Release 构建/测试和 `artifacts/ui-qa/media-summary-divider-fix/render-qa-report.txt` 双主题多尺寸回归；真实 Playnite 宿主 DPI/连续缩放仍需人工验收。
 

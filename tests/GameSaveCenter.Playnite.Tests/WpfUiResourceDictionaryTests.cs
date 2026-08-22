@@ -492,7 +492,13 @@ public sealed class WpfUiResourceDictionaryTests
         var summaryStart = task.IndexOf("x:Name=\"TaskSummaryPanel\"", StringComparison.Ordinal);
         var summaryEnd = task.IndexOf("</Border>", summaryStart, StringComparison.Ordinal);
         var summary = task.Substring(summaryStart, summaryEnd - summaryStart);
-        Assert.Equal(3, Regex.Matches(summary, "<ColumnDefinition Width=\"10\"/>").Count);
+        var taskColumns = Regex.Matches(summary, "<ColumnDefinition Width=\"([^\"]+)\"/>")
+            .Cast<Match>()
+            .Select(match => match.Groups[1].Value)
+            .ToArray();
+        Assert.Equal(new[] { "*", "Auto", "*", "Auto", "*", "Auto", "*" }, taskColumns);
+        Assert.Equal(3, Regex.Matches(summary, "<Rectangle Grid.Column=\"[135]\" Width=\"1\"").Count);
+        Assert.DoesNotMatch("<Rectangle Grid.Column=\"[0246]\"", summary);
         Assert.Contains("{Binding RunningTaskCount, Mode=OneWay}", task);
         Assert.Contains("{Binding RetryableTaskCount, Mode=OneWay}", task);
         Assert.Contains("{Binding CompletedTaskCount, Mode=OneWay}", task);
@@ -2316,7 +2322,7 @@ public sealed class WpfUiResourceDictionaryTests
         var media = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
 
         // The media center keeps the Demo's single metric strip: four equal
-        // metric columns separated by fixed divider gutters, 26px values,
+        // metric columns separated by auto-sized divider slots, 26px values,
         // and compact captions.
         Assert.Contains("x:Name=\"MediaSummaryPanel\" Grid.Row=\"0\" Style=\"{DynamicResource GscRedesignSectionCard}\"", media);
         Assert.Contains("<Rectangle Grid.Column=\"1\" Width=\"1\" Fill=\"{DynamicResource GscTableDividerBrush}\"", media);
@@ -2328,7 +2334,13 @@ public sealed class WpfUiResourceDictionaryTests
         var summaryStart = media.IndexOf("x:Name=\"MediaSummaryPanel\"", StringComparison.Ordinal);
         var summaryEnd = media.IndexOf("</Border>", summaryStart, StringComparison.Ordinal);
         var summary = media.Substring(summaryStart, summaryEnd - summaryStart);
-        Assert.Equal(3, Regex.Matches(summary, "<ColumnDefinition Width=\"10\"/>").Count);
+        var mediaColumns = Regex.Matches(summary, "<ColumnDefinition Width=\"([^\"]+)\"/>")
+            .Cast<Match>()
+            .Select(match => match.Groups[1].Value)
+            .ToArray();
+        Assert.Equal(new[] { "*", "Auto", "*", "Auto", "*", "Auto", "*" }, mediaColumns);
+        Assert.Equal(3, Regex.Matches(summary, "<Rectangle Grid.Column=\"[135]\" Width=\"1\"").Count);
+        Assert.DoesNotMatch("<Rectangle Grid.Column=\"[0246]\"", summary);
         Assert.DoesNotContain("GscRedesignMetricBorder", media);
         Assert.Contains("Text=\"{Binding MediaSummary.TotalCount, Mode=OneWay}\" FontSize=\"26\" FontWeight=\"SemiBold\"", media);
         Assert.Contains("Text=\"{Binding MediaSummary.ScreenshotCount, Mode=OneWay}\"", media);
