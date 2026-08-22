@@ -89,6 +89,7 @@ namespace GameSaveCenter.Playnite.Views
             refreshTimer.Interval = TimeSpan.FromSeconds(Math.Max(5, Math.Min(300, plugin.Settings.DashboardRefreshSeconds)));
             if (plugin.Settings.EnableDashboardAutoRefresh) refreshTimer.Start();
             viewModel.StartTaskEventSubscription();
+            viewModel.SelectCurrentlyRunningGameOnViewActivation();
 
             if (!hasPlayedEntrance)
             {
@@ -238,6 +239,7 @@ namespace GameSaveCenter.Playnite.Views
             {
                 ApplyAdaptiveTheme();
                 ApplyResponsiveLayout(ActualWidth, ActualHeight);
+                viewModel.SelectCurrentlyRunningGameOnViewActivation();
             }
         }
 

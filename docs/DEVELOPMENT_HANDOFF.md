@@ -21,6 +21,13 @@
 - UI-296 已通过 `validate-source.py`、WPF 静态审查、Release 构建/测试和 `artifacts/ui-qa/summary-divider-layout-fix/render-qa-report.txt` 双主题多尺寸回归；构建为 0 warning/0 error，Core 59、Worker 194、Playnite 277/57/0。
 - 已运行 `scripts/dev-install-run.ps1 -Configuration Release -NoStart`，标准 Playnite 扩展目录验证为 `0.6.70.0`。本轮没有启动 Playnite 也没有声称真实嵌入像素已通过；用户启动后应重新查看 Task/Media 两页确认宿主截图。
 
+## 2026-08-22 UI-297 页面激活运行中游戏同步交接
+
+- 旧自动定位依赖首次 Worker Dashboard 快照中的 `IsRunning` 和页面存活期间的 `PlayniteGameStarted`；Worker 在游戏已运行后才启动时，进程检测首轮基线不会创建会话，因而选框可能保持上次游戏。
+- `GameSaveCenterPlugin.TryGetCurrentlyRunningPlayniteGameIds()` 只读 Playnite SDK `Game.IsRunning`。`DashboardView` 在 `Loaded`、重新可见和快照应用后调用 `DashboardViewModel.SelectCurrentlyRunningGameOnViewActivation()`；它只覆盖 UI DTO 状态并按现有 resolver 规则切换，不发送 Worker IPC、不创建会话、不触发备份，也不改变停止后保留选择的语义。
+- `GamePickerItem` 的 `INotifyPropertyChanged` 仅用于不替换缓存对象时刷新运行状态；大库筛选/排序/虚拟化和真实命令/Binding 不变。
+- 验证：`validate-source.py` 通过；隔离 Release XAML 19/19、0 warning/0 error；专项测试 1/1 通过；WPF 审查 0 error、21 warnings、164 info。完整 Playnite 测试当前分支 240 通过/62 跳过/19 既有 Demo/布局断言失败；真实 Playnite 反复打开页面、多游戏同时运行、主题/DPI 尚未验证。
+
 ## 2026-08-22 UI-295 媒体摘要分隔线交接（已由 UI-296 统一为 Auto 分隔槽）
 
 - `MediaCenterView.xaml` 的 `MediaSummaryPanel` 使用 `* / Auto / * / Auto / * / Auto / *` 七列；四个统计块位于 `0/2/4/6`，三条分隔线位于 `1/3/5`，最后一块右侧不能再增加 Rectangle。

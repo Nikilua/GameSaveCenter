@@ -541,6 +541,27 @@ namespace GameSaveCenter.Playnite
 
         public Task<T> RequestAsync<T>(string type, object payload, TimeSpan? timeout = null) => client.RequestAsync<T>(type, payload, timeout);
 
+        /// <summary>
+        /// Reads Playnite's current runtime flags for page-activation selection. This is a
+        /// read-only host query: it does not start a Worker session, process scan, backup, or
+        /// any other automation. The Worker remains authoritative for durable session work.
+        /// </summary>
+        internal IReadOnlyCollection<Guid>? TryGetCurrentlyRunningPlayniteGameIds()
+        {
+            try
+            {
+                return PlayniteApi.Database.Games
+                    .Where(game => game.IsRunning)
+                    .Select(game => game.Id)
+                    .ToArray();
+            }
+            catch (Exception ex) when (!(ex is OutOfMemoryException) && !(ex is StackOverflowException))
+            {
+                logger.Debug(ex, "Could not read Playnite running-game state during dashboard activation.");
+                return null;
+            }
+        }
+
         /// <summary>Starts a best-effort task-event listener for an open dashboard.</summary>
         public Task ListenForTaskEventsAsync(Func<TaskChangeEventDto, Task> onEvent, CancellationToken token)
             => client.ListenForTaskEventsAsync(onEvent, token);

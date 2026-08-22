@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using GameSaveCenter.Contracts;
@@ -9,7 +10,7 @@ namespace GameSaveCenter.Playnite.ViewModels
     /// Lightweight, UI-only projection used by the global game picker. It deliberately
     /// does not hold a Playnite Game object or trigger any Worker request.
     /// </summary>
-    public sealed class GamePickerItem
+    public sealed class GamePickerItem : INotifyPropertyChanged
     {
         private GameStatusDto game;
 
@@ -22,6 +23,15 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         public void UpdateGame(GameStatusDto game)
             => this.game = game ?? throw new ArgumentNullException(nameof(game));
+
+        /// <summary>
+        /// Refreshes bindings after the dashboard overlays Playnite's current runtime flag
+        /// without replacing the cached item. Worker snapshots normally replace the item
+        /// collection; page activation only needs a lightweight state notification.
+        /// </summary>
+        public void RefreshBindings() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(string.Empty));
+
+        public event PropertyChangedEventHandler? PropertyChanged;
         public string PlayniteId => Game.PlayniteId;
         public string Name => Game.Name ?? string.Empty;
         public string PlatformDisplay => Game.PlatformDisplay;

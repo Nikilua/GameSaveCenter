@@ -241,6 +241,15 @@ namespace GameSaveCenter.Playnite.ViewModels
             ApplyViewRefresh();
         }
 
+        /// <summary>Notifies cached rows after a page-activation runtime-state overlay.</summary>
+        public void RefreshGameStates()
+        {
+            if (disposed) return;
+            foreach (var item in Items)
+                item.RefreshBindings();
+            ApplyViewRefresh();
+        }
+
         /// <summary>Stops a pending debounce when the owning WPF view is unloaded.</summary>
         public void CancelPendingRefresh()
         {

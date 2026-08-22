@@ -802,6 +802,59 @@ namespace GameSaveCenter.Playnite.ViewModels
             return RefreshCoreAsync(true);
         }
 
+        /// <summary>
+        /// Synchronizes the current Playnite runtime flags whenever this page becomes visible.
+        /// This intentionally does not use the Worker session snapshot: the Worker may have
+        /// started after a game was already running and deliberately treats its first process
+        /// scan as a baseline. Page activation can therefore select the live Playnite game
+        /// without creating a duplicate session or changing backup automation.
+        /// </summary>
+        public void SelectCurrentlyRunningGameOnViewActivation()
+        {
+            if (Games.Count == 0) return;
+
+            var runningIds = plugin.TryGetCurrentlyRunningPlayniteGameIds();
+            if (runningIds == null) return;
+            var runningIdSet = new HashSet<Guid>(runningIds);
+            var runningGames = new List<GameStatusDto>();
+            var stateChanged = false;
+
+            foreach (var game in Games)
+            {
+                var isRunning = Guid.TryParse(game.PlayniteId, out var playniteId)
+                    && runningIdSet.Contains(playniteId);
+                if (game.IsRunning != isRunning)
+                {
+                    game.IsRunning = isRunning;
+                    stateChanged = true;
+                }
+                if (isRunning) runningGames.Add(game);
+            }
+
+            if (stateChanged)
+            {
+                Snapshot.RunningGames = runningGames.Count;
+                OnPropertyChanged(nameof(Snapshot));
+                gamePicker.RefreshGameStates();
+                RefreshGameView(false);
+                OnPropertyChanged(nameof(SelectedGame));
+                RaiseCommandStates();
+            }
+
+            // No running game means the user's remembered selection remains authoritative.
+            // When one is running, use the same deterministic priority as initial open.
+            if (runningGames.Count == 0) return;
+            var selected = GameSelectionResolver.ResolveInitial(
+                Games,
+                plugin.Settings.GamePickerSelectedGameId,
+                lastStartedPlayniteId);
+            if (selected == null || !selected.IsRunning) return;
+
+            pendingAutoSelectPlayniteId = null;
+            initialSelectionApplied = true;
+            gamePicker.SelectGame(selected);
+        }
+
         /// <summary>Turns the overview warning count into a route to its concrete reasons.</summary>
         private void OpenMaintenance()
         {
@@ -1194,6 +1247,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                                       ?? SelectedGame
                                       ?? Games.FirstOrDefault();
                     TryApplyPendingAutoSelection();
+                    SelectCurrentlyRunningGameOnViewActivation();
                     ApplyInitialSelectionIfNeeded();
                     RefreshSelectedGameIcon();
                 }

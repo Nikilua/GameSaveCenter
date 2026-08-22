@@ -49,6 +49,7 @@ namespace GameSaveCenter.Playnite.Tests
             var plugin = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "GameSaveCenterPlugin.cs"));
             var resolver = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Infrastructure", "GameSelectionResolver.cs"));
             var iconProvider = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Infrastructure", "PlayniteGameIconProvider.cs"));
+            var dashboardCode = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml.cs"));
             var dashboard = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml"));
             var overview = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml"));
             var saves = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "SaveCenterView.xaml"));
@@ -59,6 +60,9 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("plugin.PlayniteGameStarted += OnPlayniteGameStarted;", viewModel);
             Assert.Contains("plugin.PlayniteGameStarted -= OnPlayniteGameStarted;", viewModel);
             Assert.Contains("GameSelectionResolver.ResolveInitial", viewModel);
+            Assert.Contains("SelectCurrentlyRunningGameOnViewActivation", viewModel);
+            Assert.Contains("TryGetCurrentlyRunningPlayniteGameIds", plugin);
+            Assert.Contains("viewModel.SelectCurrentlyRunningGameOnViewActivation();", dashboardCode);
             Assert.DoesNotContain("DispatcherTimer", resolver);
             Assert.DoesNotContain("Process.GetProcesses", resolver);
             Assert.DoesNotContain("HttpClient", iconProvider);
@@ -74,6 +78,23 @@ namespace GameSaveCenter.Playnite.Tests
             var pickerEnd = dashboard.IndexOf("</ListBox>", pickerStart, StringComparison.Ordinal);
             Assert.True(pickerStart >= 0 && pickerEnd > pickerStart);
             Assert.DoesNotContain("SelectedGameIcon", dashboard.Substring(pickerStart, pickerEnd - pickerStart));
+        }
+
+        [Fact]
+        public void PageActivationAutoSelectReadsPlayniteRuntimeStateWithoutStartingWorkerSessions()
+        {
+            var root = FindRepositoryRoot();
+            var plugin = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "GameSaveCenterPlugin.cs"));
+            var viewModel = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
+            var picker = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "GamePickerViewModel.cs"));
+            var dashboardCode = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml.cs"));
+
+            Assert.Contains("game.IsRunning", plugin);
+            Assert.Contains("TryGetCurrentlyRunningPlayniteGameIds", viewModel);
+            Assert.Contains("SelectCurrentlyRunningGameOnViewActivation", viewModel);
+            Assert.Contains("RefreshGameStates", picker);
+            Assert.Contains("viewModel.SelectCurrentlyRunningGameOnViewActivation();", dashboardCode);
+            Assert.DoesNotContain("MessageTypes.GameSessionStarted", viewModel);
         }
 
         [LegacyProductionUiBaselineFact]

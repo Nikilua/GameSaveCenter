@@ -8,8 +8,8 @@ namespace GameSaveCenter.Playnite.Infrastructure
     /// <summary>
     /// Pure game-selection priority used when the dashboard first opens: running games win
     /// (persisted id → last started event → latest activity), then the persisted last
-    /// selection, then first installed game. Normal refreshes never call this; only the
-    /// initial open and new GameStarted events may change the selection.
+    /// selection, then first installed game. Normal refreshes never call this; it is used
+    /// during initial open/page activation and after new GameStarted events.
     /// </summary>
     public static class GameSelectionResolver
     {

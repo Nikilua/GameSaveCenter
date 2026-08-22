@@ -2,6 +2,29 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-22 UI-297 页面激活时同步当前运行中游戏
+
+**问题确认：**
+
+- 既有自动定位只在 Dashboard 首次读取 Worker 快照和页面存活期间收到 Playnite `GameStarted` 时生效；普通刷新刻意不抢回手动选择。
+- Worker 的 `ExternalGameProcessDetector` 首轮扫描是基线，不会把 Worker 启动前已存在的游戏进程直接建成会话。用户先启动游戏、再打开插件时，Worker 快照可能没有 `IsRunning`，导致游戏选框不切换。
+
+**实现内容：**
+
+- `GameSaveCenterPlugin` 增加只读 `TryGetCurrentlyRunningPlayniteGameIds()`，读取 Playnite SDK `Game.IsRunning`；异常时返回 null 并保留 Worker 原状态，不会触发 IPC、会话、备份或进程扫描。
+- `DashboardView.xaml.cs` 在 `Loaded` 与 `IsVisibleChanged=true` 调用页面激活同步；`DashboardViewModel` 在快照应用后再调用一次，覆盖异步快照晚于页面显示的情况。
+- 页面激活同步所有已缓存 DTO 的 `IsRunning`，刷新 `Snapshot.RunningGames`、GamePicker 缓存行和选中游戏通知；只有发现当前运行游戏时才按既有 resolver 规则切换，空闲时保留用户手动/持久化选择。
+- `GamePickerItem` 增加轻量 `INotifyPropertyChanged` 刷新入口，不替换大库缓存对象，不改变 GamePicker 的筛选、排序和虚拟化结构。
+- 新增非基线跳过的源码回归测试，锁定页面激活只读 Playnite 状态且不发起 `GameSessionStarted`。
+
+**验证结果：**
+
+- `scripts/validate-source.py`：通过。
+- `scripts/build.ps1 -Configuration Release -SkipTests -OutputRoot .tmp/runtime-autoselect-build`：XAML 19/19，Release 0 warning/0 error。
+- 页面激活自动定位源码测试：1/1 通过。
+- `validate_wpf_ui.py`：0 error、21 warnings、164 info，均为既有项目上下文提示。
+- 完整 Playnite 测试为 240 通过、62 跳过、19 失败；失败来自当前分支已有的旧 Demo/布局断言（LabSegmented、摘要列、按钮高度等），未涉及本轮运行状态改动。真实 Playnite 宿主、主题/DPI 与页面反复打开仍待人工验证。
+
 ## 2026-08-22 UI-296 修正任务/媒体摘要条实际宿主的旧四列布局
 
 **问题确认：**

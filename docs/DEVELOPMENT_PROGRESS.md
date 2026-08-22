@@ -1,5 +1,7 @@
 # 开发实现进度
 
+- [x] UI-297（2026-08-22）：修复游戏先启动、再打开或重新聚焦 GameSaveCenter 时选框不自动切换的问题。Dashboard 页面 `Loaded/IsVisible=true` 和异步快照应用后只读 Playnite `Game.IsRunning`，同步当前 DTO/运行中统计并按既有 resolver 选择运行中游戏；无运行中游戏时保留手动/持久化选择。不会启动 Worker 会话、触发 `GameSessionStarted`、新增进程扫描/IPC 轮询/网络请求，也未改变命令、Binding、DataGrid/ListBox 虚拟化或备份安全语义。`GamePickerItem` 增加轻量状态通知。源码门禁通过；隔离 Release XAML 19/19、0 警告/0 错误；专项自动定位测试 1/1；WPF 静态审查 0 error、21 warnings、164 info。完整 Playnite 测试当前分支为 240 通过/62 跳过/19 个既有 Demo/布局断言失败；真实宿主页面反复打开、主题/DPI 仍需人工验收。
+
 - [x] UI-295（2026-08-22）：修正媒体中心摘要条的统计块与竖线顺序；四个真实统计块使用 `0/2/4/6` 列，分隔线使用 `1/3/5` 固定 10 DIP 间隔列，移除最后一块右侧多余竖线。真实 MediaSummary/Snapshot OneWay Binding、文案、Tab、滚动和虚拟化保持不变；同步更新默认媒体摘要回归测试与历史资源契约。源码门禁通过，Release 0 警告/0 错误，Core 59、Worker 194、Playnite 277 通过/57 跳过，双主题多尺寸 render-qa 全绿；真实 Playnite 宿主、DPI 和连续缩放仍需人工验收。
 
 - [x] BUILD-001（2026-08-21）：修复 Playnite 视觉对照测试对开发者机器绝对 AcrylicFork 路径的依赖；无 Demo 时仅跳过对应外部基准测试，有 Demo 时继续完整执行；Worker 默认 Soak 测试改为慢盘可接受的边界规模，同时保留环境变量控制的全量压力档。验证：无 Demo 模拟环境 Release 0 警告/0 错误、XAML 18/18、Core 59/59、Worker 194/194、Playnite 269 通过/65 跳过/0 失败；有 Demo 环境 Playnite 274 通过/60 跳过/0 失败。未修改生产 UI、功能、命令或绑定。

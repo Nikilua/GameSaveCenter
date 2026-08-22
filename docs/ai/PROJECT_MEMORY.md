@@ -3,6 +3,14 @@
 > 维护时间：2026-08-22
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-22 UI-297 当前事实：页面激活时同步运行中游戏
+
+- 旧行为是：Dashboard 首次快照按 `GameSelectionResolver` 选择运行中游戏，页面已打开时由 `PlayniteGameStarted` 事件切换；普通刷新保留用户手动选择。Worker 进程检测首轮是基线扫描，因此 Worker 在游戏已经运行后才启动时，快照可能暂时没有该会话。
+- `GameSaveCenterPlugin.TryGetCurrentlyRunningPlayniteGameIds()` 只读 Playnite SDK 的 `Game.IsRunning`，不启动 Worker 会话、不发 `GameSessionStarted`、不扫描进程、不触发备份或其他自动化。
+- `DashboardView` 在 `Loaded` 和重新变为可见时调用 `DashboardViewModel.SelectCurrentlyRunningGameOnViewActivation()`；快照异步晚到时也会调用一次。该方法覆盖当前 DTO 的运行状态、刷新 GamePicker 缓存行并按既有 resolver 规则选择运行中游戏；没有运行中游戏时继续保留用户上次选择。
+- `GamePickerItem` 实现 `INotifyPropertyChanged` 以支持不替换缓存对象时刷新运行状态；GamePicker 仍然虚拟化/本地筛选，未新增定时器、Worker IPC 轮询或网络请求。
+- UI-297 验证：`scripts/validate-source.py` 通过；隔离 Release 构建 XAML 19/19、0 warning/0 error；新增页面激活自动定位源码测试通过；WPF 静态审查 0 error、21 warnings、164 info。完整 Playnite 测试当前分支仍有 19 个既有 Demo/布局断言失败、240 通过、62 跳过，未归因于本改动；真实 Playnite 宿主需启动后验证页面反复打开/切换时的实际选框。
+
 ## 2026-08-22 UI-296 当前事实：任务/媒体摘要条实际宿主布局
 
 - `TaskCenterView.xaml` 与 `MediaCenterView.xaml` 的摘要条当前统一使用 `* / Auto / * / Auto / * / Auto / *` 七列；四个统计块位于 `0/2/4/6`，三条竖线位于 `1/3/5`，最后一个统计块右侧不能有 Rectangle。`Auto` 分隔列与首页的 `OverviewStatStrip` 保持同一布局契约，避免恢复旧的四列重叠结构。
@@ -850,7 +858,7 @@
 - Settings 的 `SettingsScroller` 位于共享 `GscRedesignSettingsTabControl` 模板内容区；`SettingsHeaderScroller` 是分类导航区。宽屏分类栏为 232 DIP 左侧有限滚动，紧凑布局为顶部横向 `Auto`，不能把根 UserControl 再包回第二个页面滚动器。
 - `GscSelectedGameIconControl` 只用于当前游戏上下文表面（Dashboard、Overview、Save、Trainer、Media），GamePicker 虚拟化列表不得加载真实 Icon。
 - GamePicker 选择可被当前筛选隐藏但不能静默丢失；必须保留 `SelectedItem`、显示恢复语义并保持 `GamePickerSelectedGameId` 持久化。默认筛选只对新用户/未知值归一为“已安装”。
-- 事件驱动的 `PlayniteGameStarted` 自动定位优先于普通刷新；游戏停止不改变当前选择。不得为此新增轮询、进程扫描、IPC 或网络请求，也不得改动 DataGrid 滚动/虚拟化契约。
+- 事件驱动的 `PlayniteGameStarted` 自动定位优先于普通刷新；页面每次 `Loaded/IsVisible=true` 允许一次只读 Playnite `Game.IsRunning` 同步，以补足 Worker 在既有游戏运行后启动时的基线缺口。该同步不得启动 Worker 会话、进程扫描、IPC 轮询或网络请求，也不得改动 DataGrid 滚动/虚拟化契约。
 - 当前自动化结果：本阶段 Worker 相关 Release 构建 0 警告/0 错误，Worker 67/67 通过；上一阶段 Core 27/27、Playnite 197/197、render-qa 通过。真实 Playnite 宿主/DPI/主题人工验证仍待环境。
 
 ### 数据流
