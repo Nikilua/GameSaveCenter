@@ -20,6 +20,7 @@
 - `validate-source.py`、XAML 结构检查 19/19、WPF 静态审查 0 error/21 warnings 通过。
 - `render-qa` 输出 `artifacts/ui-qa/table-readability-v1/render-qa-report.txt` 为 `render-qa OK`；浅/深主题、多尺寸、表头排序/列宽契约、Save/Task/Media/Maintenance 表格滚动和媒体 4468 项回退探针均通过。
 - Release 一键构建安装测试通过：Core 59/59、Worker 198/198、Playnite 281 通过/57 跳过；当前开发版 0.6.70 已安装并在隔离 Preview 扩展后由真实 Playnite 日志确认加载。Computer Use 返回的 Playnite 虚拟窗口没有真实顶层 HWND，截图实际落到 Codex 窗口；为避免误点其他应用，本阶段没有把宿主点击回归写成已完成。
+- 追加宿主复核：由 Windows 正常启动 Playnite 时启动页短暂拥有 HWND，主窗口显示后句柄归零；Computer Use 重新选窗、激活和 Raise 仍返回 Codex 截图/`EmptyWindowAutomationPeer`，因此没有发送点击或滚动。测试后 Preview 238 个文件已恢复原路径，Playnite 与标准 Worker 均已停止。
 
 ## 2026-08-23 UI-298 安全增加毛玻璃高光与环境光 Blur
 
