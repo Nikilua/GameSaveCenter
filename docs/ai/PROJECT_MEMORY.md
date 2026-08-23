@@ -3,6 +3,14 @@
 > 维护时间：2026-08-23
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-23 FUNC-003 当前事实：FLiNG 历史归档递归解析
+
+- `FlingTrainerCatalogSource.SyncCatalogAsync` 先解析在线目录，再通过 `GetArchiveCatalogAsync` 从 `https://archive.flingtrainer.com/` 以有界 BFS 递归读取归档目录；每个目录只允许继续访问同一归档主机的 HTTPS 子目录。
+- 归档文件只接受 `.zip` 和 `.exe`，每次扫描最多 2048 个目录、10000 个文件，结果按 `PageUrl` 去重后写入现有 Trainer catalog；FLiNG 的旧归档文件仍通过现有单文件 release 路径下载。
+- `ParseArchiveDirectoryListing` 同时返回文件和子目录，必须保留相对路径解析、外部主机过滤和目录去重；不要把归档递归改成无界网络爬取，也不要放开非 FLiNG 主机。
+- 同步日志格式包含总数、在线目录数和归档目录数，例如 `Synchronized ... FLiNG catalog entries (... online, ... archive)`，便于确认 2019 年以前条目是否实际进入本地目录。
+- FUNC-003 当前验证：Release 解决方案构建 0 warning/0 error；Core 59/59、Worker 198/198 通过，FLiNG 解析定向测试 3/3 通过。尚未在真实 FLiNG 归档站点和真实 Playnite 宿主中做网络/宿主验收；本阶段没有 UI/XAML 改动。
+
 ## 2026-08-23 PERF-001 当前事实：大型库 Worker 预热与 Dashboard 版本探测解耦
 
 - `GameSaveCenterPlugin.OnApplicationStarted` 对 100+ 游戏库会后台调用 `StartWorkerAndScheduleSynchronizationAsync` 预热 Worker；`StartWorkerAndScheduleSynchronizationAsync` 在大型库仍会在 `interactiveSurfaceOpened == false` 时直接返回，不得提交全库 `UpsertGames`/Ludusavi 匹配。

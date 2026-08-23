@@ -20,6 +20,8 @@ public interface ITrainerCatalogSource
 public sealed class FlingTrainerCatalogSource : ITrainerCatalogSource
 {
     private const long MaxDownloadBytes=2L*1024*1024*1024;
+    private const int MaxArchiveDirectories=2048;
+    private const int MaxArchiveEntries=10000;
     private static readonly Uri CatalogUri = new("https://flingtrainer.com/all-trainers/");
     private static readonly Uri ArchiveCatalogUri = new("https://archive.flingtrainer.com/");
     private static readonly Regex TrainerLink = new(
@@ -48,7 +50,7 @@ public sealed class FlingTrainerCatalogSource : ITrainerCatalogSource
     {
         var html=await GetHtmlAsync(CatalogUri.ToString(),token).ConfigureAwait(false);
         var now=DateTime.UtcNow;
-        var items=TrainerLink.Matches(html).Cast<Match>()
+        var onlineItems=TrainerLink.Matches(html).Cast<Match>()
             .Select(match =>
             {
                 var url=WebUtility.HtmlDecode(match.Groups["url"].Value);
@@ -61,11 +63,12 @@ public sealed class FlingTrainerCatalogSource : ITrainerCatalogSource
             })
             .Where(x=>!string.IsNullOrWhiteSpace(x.Title))
             .GroupBy(x=>x.PageUrl,StringComparer.OrdinalIgnoreCase).Select(x=>x.First()).ToList();
-        if(items.Count<100)throw new WorkerOperationException("FLING_CATALOG_PARSE_FAILED","FLiNG 目录结构可能已经变化，未覆盖本地缓存。",$"Parsed only {items.Count} trainer links.");
+        if(onlineItems.Count<100)throw new WorkerOperationException("FLING_CATALOG_PARSE_FAILED","FLiNG 目录结构可能已经变化，未覆盖本地缓存。",$"Parsed only {onlineItems.Count} trainer links.");
+
+        var archiveItems=new List<TrainerCatalogItemDto>();
         try
         {
-            var archiveHtml=await GetHtmlAsync(ArchiveCatalogUri.ToString(),token).ConfigureAwait(false);
-            items.AddRange(ParseArchiveCatalog(archiveHtml,now));
+            archiveItems=await GetArchiveCatalogAsync(now,token).ConfigureAwait(false);
         }
         catch(OperationCanceledException){throw;}
         catch(Exception ex)
@@ -74,9 +77,10 @@ public sealed class FlingTrainerCatalogSource : ITrainerCatalogSource
             // the current catalog or invalidate an otherwise successful refresh.
             _logger.LogWarning(ex,"Historical FLiNG archive could not be synchronized; keeping current catalog");
         }
-        items=items.GroupBy(x=>x.PageUrl,StringComparer.OrdinalIgnoreCase).Select(x=>x.First()).ToList();
+        var items=onlineItems.Concat(archiveItems)
+            .GroupBy(x=>x.PageUrl,StringComparer.OrdinalIgnoreCase).Select(x=>x.First()).ToList();
         await _store.ReplaceTrainerCatalogAsync(items,token).ConfigureAwait(false);
-        _logger.LogInformation("Synchronized {Count} FLiNG catalog entries",items.Count);
+        _logger.LogInformation("Synchronized {Count} FLiNG catalog entries ({OnlineCount} online, {ArchiveCount} archive)",items.Count,onlineItems.Count,archiveItems.Count);
         return new TrainerCatalogSyncResultDto{ItemCount=items.Count,SyncedUtc=now,Message=$"已同步 {items.Count} 个 FLiNG 修改器"};
     }
 
@@ -148,6 +152,35 @@ public sealed class FlingTrainerCatalogSource : ITrainerCatalogSource
         return await response.Content.ReadAsStringAsync(token).ConfigureAwait(false);
     }
 
+    private async Task<List<TrainerCatalogItemDto>> GetArchiveCatalogAsync(DateTime syncedUtc,CancellationToken token)
+    {
+        var pending=new Queue<Uri>();
+        var visited=new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var items=new List<TrainerCatalogItemDto>();
+        pending.Enqueue(ArchiveCatalogUri);
+
+        while(pending.Count>0&&visited.Count<MaxArchiveDirectories&&items.Count<MaxArchiveEntries)
+        {
+            token.ThrowIfCancellationRequested();
+            var directory=pending.Dequeue();
+            if(!visited.Add(directory.AbsoluteUri))continue;
+
+            var html=await GetHtmlAsync(directory.AbsoluteUri,token).ConfigureAwait(false);
+            var listing=ParseArchiveDirectoryListing(html,directory,syncedUtc);
+            items.AddRange(listing.Files);
+            foreach(var child in listing.Directories)
+            {
+                if(visited.Count+pending.Count>=MaxArchiveDirectories)break;
+                if(!visited.Contains(child.AbsoluteUri))pending.Enqueue(child);
+            }
+        }
+
+        if(pending.Count>0)
+            _logger.LogWarning("Historical FLiNG archive crawl reached its safety limit (directories={Directories}, entries={Entries}); remaining directories were skipped",visited.Count,items.Count);
+
+        return items.GroupBy(x=>x.PageUrl,StringComparer.OrdinalIgnoreCase).Select(x=>x.First()).Take(MaxArchiveEntries).ToList();
+    }
+
     private static void EnsureFlingUri(string value)
     {
         if(!Uri.TryCreate(value,UriKind.Absolute,out var uri)||uri.Scheme!=Uri.UriSchemeHttps||
@@ -156,28 +189,49 @@ public sealed class FlingTrainerCatalogSource : ITrainerCatalogSource
     }
 
     internal static List<TrainerCatalogItemDto> ParseArchiveCatalog(string html,DateTime syncedUtc)
+        =>ParseArchiveDirectoryListing(html,ArchiveCatalogUri,syncedUtc).Files;
+
+    internal static ArchiveDirectoryListing ParseArchiveDirectoryListing(string html,Uri baseUri,DateTime syncedUtc)
     {
-        var result=new List<TrainerCatalogItemDto>();
+        var result=new ArchiveDirectoryListing();
         foreach(Match match in ArchiveFileLink.Matches(html??string.Empty))
         {
             var href=WebUtility.HtmlDecode(match.Groups["url"].Value.Trim());
-            if(!Uri.TryCreate(ArchiveCatalogUri,href,out var uri)||!IsArchiveFileUrl(uri.ToString()))continue;
+            if(string.IsNullOrWhiteSpace(href)||href.StartsWith("#",StringComparison.Ordinal))continue;
+            if(!Uri.TryCreate(baseUri,href,out var uri)||!IsArchiveUri(uri))continue;
             var name=Clean(match.Groups["name"].Value);
-            if(string.IsNullOrWhiteSpace(name))name=Uri.UnescapeDataString(Path.GetFileName(uri.LocalPath));
-            var title=Path.GetFileNameWithoutExtension(name).Replace('_',' ').Trim();
-            if(string.IsNullOrWhiteSpace(title))continue;
-            result.Add(new TrainerCatalogItemDto
+            if(IsArchiveFileUrl(uri.ToString()))
             {
-                CatalogId=StableId(uri.ToString()),Title=title,NormalizedTitle=Normalize(title),
-                PageUrl=uri.ToString(),LastSyncedUtc=syncedUtc
-            });
+                if(string.IsNullOrWhiteSpace(name))name=Uri.UnescapeDataString(Path.GetFileName(uri.LocalPath));
+                var title=Path.GetFileNameWithoutExtension(name).Replace('_',' ').Trim();
+                if(string.IsNullOrWhiteSpace(title))continue;
+                result.Files.Add(new TrainerCatalogItemDto
+                {
+                    CatalogId=StableId(uri.ToString()),Title=title,NormalizedTitle=Normalize(title),
+                    PageUrl=uri.ToString(),LastSyncedUtc=syncedUtc
+                });
+            }
+            else if(IsArchiveDirectoryLink(href,name,uri,baseUri))
+            {
+                result.Directories.Add(uri);
+            }
         }
-        return result.GroupBy(x=>x.PageUrl,StringComparer.OrdinalIgnoreCase).Select(x=>x.First()).ToList();
+        result.Files=result.Files.GroupBy(x=>x.PageUrl,StringComparer.OrdinalIgnoreCase).Select(x=>x.First()).ToList();
+        result.Directories=result.Directories.GroupBy(x=>x.AbsoluteUri,StringComparer.OrdinalIgnoreCase).Select(x=>x.First()).ToList();
+        return result;
     }
+
+    private static bool IsArchiveDirectoryLink(string href,string name,Uri uri,Uri baseUri)
+        =>!uri.Equals(baseUri)
+          &&(href.EndsWith("/",StringComparison.Ordinal)||name.EndsWith("/",StringComparison.Ordinal))
+          &&uri.AbsolutePath.EndsWith("/",StringComparison.Ordinal);
+
+    private static bool IsArchiveUri(Uri uri)
+        =>uri.Scheme==Uri.UriSchemeHttps&&uri.Host.Equals("archive.flingtrainer.com",StringComparison.OrdinalIgnoreCase);
 
     private static bool IsArchiveFileUrl(string value)
         =>Uri.TryCreate(value,UriKind.Absolute,out var uri)
-          &&uri.Host.Equals("archive.flingtrainer.com",StringComparison.OrdinalIgnoreCase)
+          &&IsArchiveUri(uri)
           &&(uri.AbsolutePath.EndsWith(".zip",StringComparison.OrdinalIgnoreCase)
              ||uri.AbsolutePath.EndsWith(".exe",StringComparison.OrdinalIgnoreCase));
 
@@ -188,4 +242,10 @@ public sealed class FlingTrainerCatalogSource : ITrainerCatalogSource
         var bytes=SHA256.HashData(Encoding.UTF8.GetBytes(value));
         return Convert.ToHexString(bytes).ToLowerInvariant()[..24];
     }
+}
+
+internal sealed class ArchiveDirectoryListing
+{
+    public List<TrainerCatalogItemDto> Files { get; set; }=new();
+    public List<Uri> Directories { get; set; }=new();
 }
