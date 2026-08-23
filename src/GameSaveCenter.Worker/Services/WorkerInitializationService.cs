@@ -1,5 +1,6 @@
 using GameSaveCenter.Worker.Persistence;
 using GameSaveCenter.Worker.Configuration;
+using System.Diagnostics;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -18,14 +19,27 @@ public sealed class WorkerInitializationService : IHostedService
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
+        var stopwatch=Stopwatch.StartNew();
         try
         {
+            var storageTimer=Stopwatch.StartNew();
             await _store.InitializeAsync(cancellationToken).ConfigureAwait(false);
+            storageTimer.Stop();
+            _logger.LogDebug("Worker storage initialization completed in {ElapsedMs}ms", storageTimer.ElapsedMilliseconds);
+
+            var taskTimer=Stopwatch.StartNew();
             await _store.MarkInterruptedTasksAsync(_options.WorkerSessionId, cancellationToken).ConfigureAwait(false);
+            taskTimer.Stop();
+            _logger.LogDebug("Worker stale-task reconciliation completed in {ElapsedMs}ms", taskTimer.ElapsedMilliseconds);
+
+            var snapshotTimer=Stopwatch.StartNew();
             await _detection.CleanupExpiredSnapshotsAsync(cancellationToken).ConfigureAwait(false);
+            snapshotTimer.Stop();
+            _logger.LogDebug("Worker snapshot cleanup completed in {ElapsedMs}ms", snapshotTimer.ElapsedMilliseconds);
             _options.RecordStartupSuccess();
             var version = typeof(WorkerInitializationService).Assembly.GetName().Version?.ToString() ?? "unknown";
-            _logger.LogInformation("GameSaveCenter Worker {Version} storage initialized and stale tasks reconciled", version);
+            stopwatch.Stop();
+            _logger.LogInformation("GameSaveCenter Worker {Version} storage initialized and stale tasks reconciled in {ElapsedMs}ms", version, stopwatch.ElapsedMilliseconds);
         }
         catch
         {

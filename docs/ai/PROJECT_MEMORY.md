@@ -3,6 +3,14 @@
 > 维护时间：2026-08-23
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-23 PERF-001 当前事实：大型库 Worker 预热与 Dashboard 版本探测解耦
+
+- `GameSaveCenterPlugin.OnApplicationStarted` 对 100+ 游戏库会后台调用 `StartWorkerAndScheduleSynchronizationAsync` 预热 Worker；`StartWorkerAndScheduleSynchronizationAsync` 在大型库仍会在 `interactiveSurfaceOpened == false` 时直接返回，不得提交全库 `UpsertGames`/Ludusavi 匹配。
+- `WaitForLibraryReadyAndStartWorkerAsync` 在库稳定为大型库后同样预热 Worker；这只提前完成 Worker/SQLite 初始化，不改变 500+ 大库的缓存优先和显式刷新门禁。
+- `DashboardService.GetAsync` 不再等待 `ludusavi --version`；首次快照读取内存缓存并通过 `RefreshLudusaviVersionAsync` 后台探测，版本结果在后续快照显示。不要把版本探测重新放回首个 Dashboard IPC 请求。
+- `WorkerInitializationService` 记录 storage、stale-task reconciliation、snapshot cleanup 和总耗时；这些日志用于继续定位用户机器上的慢启动阶段。
+- PERF-001 验证：Release 解决方案构建 0 warning/0 error；新增定向 Playnite 源码测试通过。真实 Playnite 宿主中的预热时序仍待用户机器实测。
+
 ## 2026-08-23 FUNC-002 当前事实：媒体收件箱忽略恢复
 
 - `MediaCenterView.xaml` 的待归类页在既有 `MediaInboxBatchActionRow` 内增加 `MediaInboxMode` 轻量视图切换，选项为“待归类”和“已忽略”。默认仍只加载 `ListUnassignedMedia`；切换到“已忽略”后才按需请求 `ListIgnoredMedia`，避免旧 Worker 在正常启动路径上因未知新消息而受影响。

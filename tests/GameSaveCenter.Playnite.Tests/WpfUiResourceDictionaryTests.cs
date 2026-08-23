@@ -4171,6 +4171,21 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void LargeLibraryPrewarmsWorkerWithoutBlockingDashboardOnLudusaviVersion()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var pluginCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "GameSaveCenterPlugin.cs"));
+        var dashboardService = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Worker", "Services", "DashboardService.cs"));
+
+        Assert.Contains("Prewarming Worker for large Playnite library", pluginCode);
+        Assert.Contains("FireAndForget(StartWorkerAndScheduleSynchronizationAsync);", pluginCode);
+        Assert.Contains("prewarming Worker while keeping catalog synchronization deferred", pluginCode);
+        Assert.Contains("var ludusaviVersion = _cachedLudusaviVersion;", dashboardService);
+        Assert.Contains("QueueLudusaviVersionRefresh();", dashboardService);
+        Assert.DoesNotContain("await GetLudusaviVersionAsync(token)", dashboardService);
+    }
+
+    [Fact]
     public void SettingsStoragePolicyFieldsUseASafeCompactSingleColumnLayout()
     {
         var repositoryRoot = FindRepositoryRoot();

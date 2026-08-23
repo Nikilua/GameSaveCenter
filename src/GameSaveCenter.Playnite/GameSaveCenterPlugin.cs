@@ -148,12 +148,16 @@ namespace GameSaveCenter.Playnite
                     logger.Info("Playnite game database is not ready at application start; deferring GameSaveCenter Worker startup until the host library settles.");
                     FireAndForget(WaitForLibraryReadyAndStartWorkerAsync);
                 }
-                // A 900+ game Playnite profile should not start the Worker (and its process
-                // detector/SQLite initialization) merely because the host loaded extensions.
-                // Playnite game-start callbacks and an explicit dashboard open still start it
-                // on demand, while small libraries keep the existing automatic behavior.
+                // A large profile still must not submit a catalog synchronization merely
+                // because Playnite loaded the extension.  Starting the Worker itself is
+                // cheap compared with a catalog rematch and can be done in the background
+                // before the user opens the dashboard, so the first interactive request can
+                // use the durable cache without waiting for SQLite initialization.
                 else if (IsLargeLibrary())
-                    logger.Info($"Deferring Worker startup for large Playnite library ({observedGameCount} games) until GameSaveCenter is opened or a game starts.");
+                {
+                    logger.Info($"Prewarming Worker for large Playnite library ({observedGameCount} games); catalog synchronization remains deferred until explicit user intent.");
+                    FireAndForget(StartWorkerAndScheduleSynchronizationAsync);
+                }
                 else
                     FireAndForget(StartWorkerAndScheduleSynchronizationAsync);
             }
@@ -1026,8 +1030,9 @@ namespace GameSaveCenter.Playnite
                 ObserveGameCount(gameCount);
                 if (gameCount >= LargeLibraryThreshold)
                 {
-                    logger.Info($"Playnite library settled at {gameCount} games; keeping Worker startup and catalog synchronization deferred until GameSaveCenter is opened explicitly.");
                     ConfigureLargeLibraryStartupGate();
+                    logger.Info($"Playnite library settled at {gameCount} games; prewarming Worker while keeping catalog synchronization deferred until explicit user intent.");
+                    await StartWorkerAndScheduleSynchronizationAsync().ConfigureAwait(false);
                     return;
                 }
 

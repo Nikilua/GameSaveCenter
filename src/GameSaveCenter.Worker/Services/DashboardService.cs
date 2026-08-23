@@ -34,7 +34,12 @@ public sealed class DashboardService
         var findings=await _store.GetOpenFindingsAsync(100,token).ConfigureAwait(false);
         var counts=await _store.GetCountsAsync(token).ConfigureAwait(false);
         var audit=await _store.GetAuditAsync(100,token).ConfigureAwait(false);
-        var ludusaviVersion = await GetLudusaviVersionAsync(token).ConfigureAwait(false);
+        // The first dashboard paint must not wait for an external executable.  A cold
+        // Ludusavi process can take seconds to start on a large Playnite profile, while
+        // the version is informational and is already cached for six hours after the
+        // background probe completes.  The next dashboard refresh will expose it.
+        var ludusaviVersion = _cachedLudusaviVersion;
+        QueueLudusaviVersionRefresh();
         var gameNames=games.ToDictionary(x=>x.Descriptor.PlayniteId,x=>x.Descriptor.Name,StringComparer.OrdinalIgnoreCase);
         var activities = audit.Select(x => ActivityTimelineMapper.Map(x, gameNames)).ToList();
         foreach(var finding in findings)
@@ -95,17 +100,31 @@ public sealed class DashboardService
         return snapshot;
     }
 
-    private async Task<string> GetLudusaviVersionAsync(CancellationToken token)
+    private void QueueLudusaviVersionRefresh()
     {
-        if(!_ludusavi.IsAvailable) return string.Empty;
-        if(DateTime.UtcNow-_versionCachedUtc<TimeSpan.FromHours(6)) return _cachedLudusaviVersion;
-        await _versionGate.WaitAsync(token).ConfigureAwait(false);
+        if(!_ludusavi.IsAvailable || DateTime.UtcNow-_versionCachedUtc<TimeSpan.FromHours(6)) return;
+
+        // WaitAsync(0) coalesces concurrent dashboard snapshots without adding another
+        // long-lived task or making any IPC caller wait for the version process.
+        _ = RefreshLudusaviVersionAsync();
+    }
+
+    private async Task RefreshLudusaviVersionAsync()
+    {
+        if(!await _versionGate.WaitAsync(0).ConfigureAwait(false)) return;
+        var stopwatch=Stopwatch.StartNew();
         try
         {
-            if(DateTime.UtcNow-_versionCachedUtc<TimeSpan.FromHours(6)) return _cachedLudusaviVersion;
-            _cachedLudusaviVersion=await _ludusavi.GetVersionAsync(token).ConfigureAwait(false);
+            if(!_ludusavi.IsAvailable || DateTime.UtcNow-_versionCachedUtc<TimeSpan.FromHours(6)) return;
+            _cachedLudusaviVersion=await _ludusavi.GetVersionAsync(CancellationToken.None).ConfigureAwait(false);
             _versionCachedUtc=DateTime.UtcNow;
-            return _cachedLudusaviVersion;
+            stopwatch.Stop();
+            _logger.LogDebug("[PERF] Background Ludusavi version probe={ElapsedMs}ms result={Result}", stopwatch.ElapsedMilliseconds, string.IsNullOrWhiteSpace(_cachedLudusaviVersion) ? "empty" : "available");
+        }
+        catch(Exception ex)
+        {
+            stopwatch.Stop();
+            _logger.LogDebug(ex, "Background Ludusavi version probe failed after {ElapsedMs}ms", stopwatch.ElapsedMilliseconds);
         }
         finally
         {
