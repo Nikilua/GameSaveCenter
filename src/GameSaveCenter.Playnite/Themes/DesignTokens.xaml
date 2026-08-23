@@ -81,6 +81,10 @@
     <SolidColorBrush x:Key="GscTableDividerBrush" Color="#10FFFFFF"/>
     <SolidColorBrush x:Key="GscPopupBrush" Color="#F0262C3A"/>
     <SolidColorBrush x:Key="GscTableHeaderBrush" Color="#FF212631"/>
+    <!-- Keep table rows on a stable reading surface instead of letting a host theme show
+         through every transparent row. The runtime palette replaces these with low-alpha
+         light/dark overlays so the card still reads as one surface. -->
+    <SolidColorBrush x:Key="GscTableRowBrush" Color="#08000000"/>
     <SolidColorBrush x:Key="GscTableAlternateRowBrush" Color="#00000000"/>
     <SolidColorBrush x:Key="GscRowHoverBrush" Color="#0CFFFFFF"/>
     <SolidColorBrush x:Key="GscScrollTrackBrush" Color="#00000000"/>

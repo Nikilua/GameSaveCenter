@@ -1,7 +1,15 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
-> 维护时间：2026-08-23
+> 维护时间：2026-08-24
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
+
+## 2026-08-24 UI-299 当前事实：表格字体与行表面可读性
+
+- `DesignTokens.xaml` 新增 `GscTableRowBrush`；`AdaptiveThemePalette.ApplyRuntimeThemeResources` 和 `ApplyDemoCoreResources` 为浅/深主题提供低透明度行面/交替行面，高对比度保持透明降级。
+- 共享 `WpfUiProduction.xaml` 的隐式 `DataGrid` 与 `Redesign.xaml` 的 `GscRedesignWorkspaceDataGrid` 使用 `TextOptions.TextFormattingMode=Display`；`DataGridCell` 显式使用 `GscUiFontFamily`/`GscBodyFontSize`。不要把行底色改成不透明大色块，也不要把 Display 文本格式化扩展到大范围页面滚动器。
+- `RowBackground`、隐式/稳定 `DataGridRow` 的正常背景仍来自动态 `GscTableRowBrush`，`AlternatingRowBackground`、Hover、选中态、表头排序箭头和列宽拖拽保持现有共享模板；不要移除 `SelectiveScrollingGrid`、Recycling、Item scrolling 或媒体收件箱的 Standard 虚拟化例外。
+- UI-299 当前验证：源码验证、XAML 19/19、WPF 静态审查、Release 0 警告/0 错误、Core 59、Worker 198、Playnite 281 通过/57 跳过；`artifacts/ui-qa/table-readability-v1/render-qa-report.txt` 为 `render-qa OK`。
+- 真实 Playnite 日志已确认隔离 Preview 后加载 `GameSaveCenter` 0.6.70；同一用户配置同时放置旧 Preview 时，Playnite 会先加载其 0.6.71 的同名 `GameSaveCenter.Contracts`，导致标准插件的 `MediaInboxBatchResultDto` 类型加载冲突。该冲突属于外部 Preview 安装状态，不要把 Preview 目录禁用动作当成源码修复；本阶段未在 Computer Use 中点击宿主页面，因为返回窗口无真实 HWND，避免把 Codex 截图误当 Playnite。
 
 ## 2026-08-23 UI-298 当前事实：安全毛玻璃高光与环境光 Blur
 

@@ -74,10 +74,11 @@
            BasedOn="{StaticResource {x:Type DataGrid}}">
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="GridLinesVisibility" Value="None"/>
         <Setter Property="HeadersVisibility" Value="Column"/>
-        <Setter Property="RowBackground" Value="Transparent"/>
+        <Setter Property="RowBackground" Value="{DynamicResource GscTableRowBrush}"/>
         <Setter Property="AlternatingRowBackground" Value="{DynamicResource GscTableAlternateRowBrush}"/>
         <Setter Property="RowHeight" Value="{DynamicResource GscTableRowHeight}"/>
         <Setter Property="MinHeight" Value="{DynamicResource GscWorkspaceTableMinHeight}"/>

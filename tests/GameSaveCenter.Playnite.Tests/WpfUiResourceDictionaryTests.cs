@@ -574,6 +574,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("KeyboardNavigation.DirectionalNavigation\" Value=\"Contained\"", production);
         Assert.Contains("VirtualizingPanel.VirtualizationMode\" Value=\"Recycling\"", production);
         Assert.Contains("GscTableHeaderBrush", production);
+        Assert.Contains("RowBackground\" Value=\"{DynamicResource GscTableRowBrush}\"", production);
+        Assert.Contains("TextOptions.TextFormattingMode\" Value=\"Display\"", production);
         Assert.Contains("GscRowHoverBrush", production);
         Assert.Contains("GscAccentTintBrush", production);
         Assert.Contains("CornerRadius=\"10\"", production);
@@ -616,6 +618,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.DoesNotContain("Property=\"Height\" Value=\"{DynamicResource GscTableViewportHeight}\"", File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml")));
         Assert.Contains("x:Key=\"GscTableHeaderHeight\"", designTokens);
         Assert.Contains("x:Key=\"GscTableAlternateRowBrush\"", designTokens);
+        Assert.Contains("x:Key=\"GscTableRowBrush\"", designTokens);
         Assert.Contains("x:Key=\"GscPageScrollViewer\"", designTokens);
         Assert.Contains("x:Key=\"GscInspectorScrollViewer\"", designTokens);
 
@@ -4449,6 +4452,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("<Setter Property=\"FontSize\" Value=\"{DynamicResource GscBodyFontSize}\"/>", production);
         Assert.Contains("<Setter Property=\"FontSize\" Value=\"{DynamicResource GscCaptionFontSize}\"/>", production);
         Assert.Contains("<Setter Property=\"FontWeight\" Value=\"Medium\"/>", production);
+        Assert.Contains("<Setter Property=\"FontFamily\" Value=\"{DynamicResource GscUiFontFamily}\"/>", production);
+        Assert.Contains("<Setter Property=\"FontSize\" Value=\"{DynamicResource GscBodyFontSize}\"/>", production);
     }
 
     [Fact]
@@ -4644,10 +4649,10 @@ public sealed class WpfUiResourceDictionaryTests
         var pluginCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "GameSaveCenterPlugin.cs"));
 
         // A 900+ Playnite library may be published in several partial callbacks. Once the
-        // settled probe sees 100 or more entries, the Worker must wait for explicit user intent
-        // instead of starting against a partial catalog and spawning Ludusavi lookups.
+        // settled probe sees 100 or more entries, the Worker may be prewarmed, but catalog
+        // synchronization must still wait for explicit user intent.
         Assert.Contains("if (gameCount >= LargeLibraryThreshold)", pluginCode);
-        Assert.Contains("keeping Worker startup and catalog synchronization deferred until GameSaveCenter is opened explicitly", pluginCode);
+        Assert.Contains("prewarming Worker while keeping catalog synchronization deferred until explicit user intent", pluginCode);
         Assert.Contains("private const int LargeLibraryThreshold = 100", pluginCode);
     }
 
@@ -4684,11 +4689,11 @@ public sealed class WpfUiResourceDictionaryTests
         var repositoryRoot = FindRepositoryRoot();
         var pluginCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "GameSaveCenterPlugin.cs"));
 
-        Assert.Contains("Deferring Worker startup for large Playnite library", pluginCode);
+        Assert.Contains("Prewarming Worker for large Playnite library", pluginCode);
         Assert.Contains("if (IsLargeLibrary())", pluginCode);
         Assert.Contains("return new DashboardView(this);", pluginCode);
         Assert.DoesNotContain("return new Design.DesignShellView();", pluginCode);
-        Assert.Contains("until GameSaveCenter is opened or a game starts", pluginCode);
+        Assert.Contains("catalog synchronization remains deferred until explicit user intent", pluginCode);
     }
 
     [Fact]

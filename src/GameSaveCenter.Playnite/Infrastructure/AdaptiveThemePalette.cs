@@ -375,8 +375,11 @@ namespace GameSaveCenter.Playnite.Infrastructure
             // themes.  Reuse the opaque strong surface so every DataGrid gets the same band
             // without adding a second outer rectangle or changing the project's scrollbar.
             resources["GscTableHeaderBrush"] = Brush(palette.StrongSurfaceTop);
+            resources["GscTableRowBrush"] = Brush(Color.FromArgb(
+                SystemParameters.HighContrast ? (byte)0 : palette.IsDark ? (byte)10 : (byte)6,
+                palette.PrimaryText.R, palette.PrimaryText.G, palette.PrimaryText.B));
             resources["GscTableAlternateRowBrush"] = Brush(Color.FromArgb(
-                SystemParameters.HighContrast ? (byte)0 : (byte)0,
+                SystemParameters.HighContrast ? (byte)0 : palette.IsDark ? (byte)18 : (byte)12,
                 palette.PrimaryText.R, palette.PrimaryText.G, palette.PrimaryText.B));
             resources["GscRowHoverBrush"] = Brush(Color.FromArgb(
                 palette.IsDark ? (byte)12 : (byte)8, palette.PrimaryText.R, palette.PrimaryText.G, palette.PrimaryText.B));
@@ -458,7 +461,12 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscTableDividerBrush"] = Brush(divider);
             resources["GscPopupBrush"] = Brush(floating);
             resources["GscTableHeaderBrush"] = Brush(tableHeader);
-            resources["GscTableAlternateRowBrush"] = Brush(Colors.Transparent);
+            resources["GscTableRowBrush"] = Brush(isDark
+                ? Color.FromArgb(0x0A, 0xFF, 0xFF, 0xFF)
+                : Color.FromArgb(0x06, 0x00, 0x00, 0x00));
+            resources["GscTableAlternateRowBrush"] = Brush(isDark
+                ? Color.FromArgb(0x12, 0xFF, 0xFF, 0xFF)
+                : Color.FromArgb(0x0C, 0x00, 0x00, 0x00));
             resources["GscRowHoverBrush"] = Brush(rowHover);
             resources["GscRowHoverStrongBrush"] = Brush(rowHover);
             resources["GscScrollTrackBrush"] = Brush(Colors.Transparent);

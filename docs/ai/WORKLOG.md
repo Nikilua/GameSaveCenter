@@ -2,6 +2,25 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-24 UI-299 表格字体与行表面可读性优化
+
+**问题确认：**
+
+- 现有共享 DataGrid 已使用 Demo 的 UI 字体链，但单元格没有显式锁定字体令牌；在 Playnite 宿主主题介入时存在回退风险。
+- 浅色表格的表头、数据行和卡片底色过于接近，长列表阅读时行边界主要依赖细分隔线；深色表格也缺少稳定的行面层次。
+
+**实现内容：**
+
+- `DesignTokens.xaml` 新增 `GscTableRowBrush`，运行时浅/深主题和 Demo 核心主题分别提供低透明度的基底行面与交替行面；高对比度仍降为透明，由系统高对比度颜色负责可读性。
+- 共享 `DataGrid` 与 `GscRedesignWorkspaceDataGrid` 启用 `TextOptions.TextFormattingMode=Display`；`DataGridCell` 显式继承 `GscUiFontFamily` 与 `GscBodyFontSize`，不改变页面已有按钮、游戏选框、命令、Binding、列宽、排序、滚动和 Recycling 虚拟化。
+- 由于上一轮大型库 Worker 预热已把行为改为“预热 Worker、延后目录同步”，同步修正两条仍要求旧语义的源码断言；实现行为未放宽。
+
+**验证结果：**
+
+- `validate-source.py`、XAML 结构检查 19/19、WPF 静态审查 0 error/21 warnings 通过。
+- `render-qa` 输出 `artifacts/ui-qa/table-readability-v1/render-qa-report.txt` 为 `render-qa OK`；浅/深主题、多尺寸、表头排序/列宽契约、Save/Task/Media/Maintenance 表格滚动和媒体 4468 项回退探针均通过。
+- Release 一键构建安装测试通过：Core 59/59、Worker 198/198、Playnite 281 通过/57 跳过；当前开发版 0.6.70 已安装并在隔离 Preview 扩展后由真实 Playnite 日志确认加载。Computer Use 返回的 Playnite 虚拟窗口没有真实顶层 HWND，截图实际落到 Codex 窗口；为避免误点其他应用，本阶段没有把宿主点击回归写成已完成。
+
 ## 2026-08-23 UI-298 安全增加毛玻璃高光与环境光 Blur
 
 **问题确认：**
