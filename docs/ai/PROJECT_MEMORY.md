@@ -3,6 +3,15 @@
 > 维护时间：2026-08-23
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-23 FUNC-002 当前事实：媒体收件箱忽略恢复
+
+- `MediaCenterView.xaml` 的待归类页在既有 `MediaInboxBatchActionRow` 内增加 `MediaInboxMode` 轻量视图切换，选项为“待归类”和“已忽略”。默认仍只加载 `ListUnassignedMedia`；切换到“已忽略”后才按需请求 `ListIgnoredMedia`，避免旧 Worker 在正常启动路径上因未知新消息而受影响。
+- `MediaInboxItems` 是 DataGrid 的当前显示集合，`UnassignedMedia` 和 `IgnoredMedia` 分别保留两种缓存。已忽略模式隐藏目标游戏、归类和忽略命令，只显示 `RestoreIgnoredMediaBatchCommand`；切回待归类时恢复原有单条/批量归类操作。不要把已忽略项目重新接回 `AssignInboxMediaCommand` 或 `IgnoreInboxMediaCommand`。
+- Worker 新增 `media.inbox.ignored.list` 与 `media.inbox.ignored.restore.batch`。恢复批次最多 500 个去重 ID，逐项复用安全文件移动：优先使用现有归档副本，否则从原始文件重建副本；目标已存在时必须做 SHA-256 相同校验，禁止覆盖不同内容。数据库状态变为 `Inbox`，PlayniteId 清空，CloudState 为 `NotApplicable`，原因固定为“用户撤销忽略，待重新归类”，并追加审计。
+- 恢复完成后 Playnite 同时刷新待归类和已忽略列表，避免用户切换视图看到过期缓存。当前视图切换不持久化，页面重新打开默认进入待归类。
+- RenderHarness 的 `FakeDashboardData` 通过 `MediaInboxItems => UnassignedMedia` 投影兼容生产绑定，保留 4468 行收件箱虚拟化/回顶探针，不要因为新增显示集合把夹具改回空列表。
+- FUNC-002 验证：`validate-source.py`、XAML 19/19、Release 0 warning/0 error；Core 59、Worker 196、Playnite 280 通过/57 跳过；`artifacts/ui-qa/media-inbox-restore-v1/render-qa-report.txt` 为 `render-qa OK`；WPF 审查 0 error、21 warnings、164 info。没有在真实 Playnite 中执行恢复操作，宿主 DPI、高对比度与真实点击仍待人工验收。
+
 ## 2026-08-23 FUNC-001 当前事实：媒体收件箱批量处理与侧栏真实状态
 
 - `MediaCenterView.xaml` 的 `MediaInboxGrid` 现在允许 `Extended + FullRow` 多选；表格上方新增 `MediaInboxBatchActionRow`，仅提供目标游戏 ComboBox、`归类所选` 和 `忽略所选`，原有 Inspector 与单条归类/忽略命令保持不变。`MediaInboxGrid` 仍保留既有 `Standard` 行虚拟化、关闭列虚拟化和 `GscDataGridStarFill` 例外，不要为批量操作恢复 star-fill 或改掉滚动模型。

@@ -118,6 +118,20 @@ LIMIT $limit;";
         return result;
     }
 
+    public async Task<List<MediaItemDto>> GetIgnoredMediaAsync(int limit, CancellationToken token)
+    {
+        var result=new List<MediaItemDto>(); await using var connection=Open(); await connection.OpenAsync(token).ConfigureAwait(false);
+        var command=connection.CreateCommand(); command.CommandText=@"SELECT media_id,playnite_id,kind,source,archive_path,original_path,captured_utc,size_bytes,sha256,is_favorite,comment,cloud_state,classification_state,classification_reason
+FROM media
+WHERE classification_state='Ignored'
+ORDER BY captured_utc DESC
+LIMIT $limit;";
+        command.Parameters.AddWithValue("$limit",Math.Clamp(limit,1,5000));
+        await using var reader=await command.ExecuteReaderAsync(token).ConfigureAwait(false);
+        while(await reader.ReadAsync(token).ConfigureAwait(false)) result.Add(ReadMedia(reader));
+        return result;
+    }
+
     public async Task<MediaItemDto?> GetMediaByIdAsync(string mediaId,CancellationToken token)
     {
         await using var connection=Open(); await connection.OpenAsync(token).ConfigureAwait(false);
@@ -178,6 +192,12 @@ WHERE media_id=$id;",
 UPDATE media
 SET playnite_id='',archive_path=$archive,classification_state='Ignored',classification_reason='用户已忽略',cloud_state='NotApplicable'
 WHERE media_id=$id AND classification_state='Inbox';",
+        new Dictionary<string,object?>{["$id"]=mediaId,["$archive"]=archivePath},token);
+
+    public Task RestoreMediaToInboxAsync(string mediaId,string archivePath,CancellationToken token)=>ExecuteAsync(@"
+UPDATE media
+SET playnite_id='',archive_path=$archive,classification_state='Inbox',classification_reason='用户撤销忽略，待重新归类',cloud_state='NotApplicable'
+WHERE media_id=$id AND classification_state='Ignored';",
         new Dictionary<string,object?>{["$id"]=mediaId,["$archive"]=archivePath},token);
 
     public Task UpdateMediaCloudStateAsync(string playniteId, string state, CancellationToken token) => ExecuteAsync(

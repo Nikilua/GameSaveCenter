@@ -2,6 +2,26 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-23 FUNC-002 媒体收件箱忽略恢复闭环
+
+**问题确认：**
+
+- 批量忽略已经保留了归档副本，但页面没有恢复入口；误忽略后只能手工打开媒体目录，数据库状态、文件归档和用户操作之间缺少可回退闭环。
+
+**实现内容：**
+
+- Contracts/Worker 增加已忽略媒体列表与批量恢复 IPC。Worker 只在记录仍为 `Ignored` 时处理，先校验归档文件或原始文件，再将归档副本安全移回 `_Inbox\\Pending`；目标文件已有同内容时复用校验逻辑，不覆盖不同内容，原始截图/录像始终保留。
+- SQLite 增加 `GetIgnoredMediaAsync` 与 `RestoreMediaToInboxAsync`，恢复后清空游戏归属、回写 `Inbox`、`NotApplicable` 和“用户撤销忽略，待重新归类”原因，并追加审计记录。批量接口沿用 500 项上限、去重、部分失败明细和取消传播语义。
+- Playnite 收件箱只增加现有操作条中的“待归类/已忽略”轻量视图切换；已忽略视图按需加载，默认待归类流程不向旧 Worker 发起新请求。已忽略状态下隐藏归类/忽略动作，只显示“恢复到待归类”；恢复后同时刷新待归类和已忽略缓存。
+- RenderHarness 增加 `MediaInboxItems` 兼容投影，保持大数据收件箱滚动探针覆盖真实行数据。
+
+**验证结果：**
+
+- `validate-source.py`、XAML 结构检查（19/19）通过；WPF 静态审查 0 error、21 warnings、164 info，均为既有项目上下文提示。
+- Release 全解决方案构建 0 warning、0 error；Core 59/59、Worker 196/196、Playnite 280 通过/57 跳过。
+- 新增 SQLite 恢复状态测试与真实文件移动测试；Worker 定向测试通过。
+- `artifacts/ui-qa/media-inbox-restore-v1/render-qa-report.txt` 为 `render-qa OK`，覆盖亮/暗主题、多窗口尺寸、Tab、滚动与 resize transition。未在真实 Playnite 中执行会改变用户媒体数据的恢复操作；宿主 DPI、高对比度和真实点击命中仍需人工验证。
+
 ## 2026-08-23 FUNC-001 媒体收件箱批量归类/忽略与真实状态显示
 
 **问题确认：**

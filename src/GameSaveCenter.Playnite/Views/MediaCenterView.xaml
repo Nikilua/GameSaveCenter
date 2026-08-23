@@ -175,8 +175,8 @@
                      <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                     <Border Style="{DynamicResource GscRedesignInfoBand}" Margin="0,0,0,10">
                         <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                            <StackPanel><TextBlock Text="待归类媒体" FontSize="16" FontWeight="SemiBold"/><TextBlock Text="只保留无法唯一判断所属游戏的公共截图和录像，不会静默猜测。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,4,12,0"/></StackPanel>
-                            <Border Grid.Column="1" Style="{StaticResource MediaStatusPill}" VerticalAlignment="Center"><TextBlock Text="{Binding Snapshot.UnassignedMediaCount, Mode=OneWay}" FontSize="18" FontWeight="SemiBold"/></Border>
+                            <StackPanel><TextBlock Text="{Binding MediaInboxTitle, Mode=OneWay}" FontSize="16" FontWeight="SemiBold"/><TextBlock Text="只保留无法唯一判断所属游戏的公共截图和录像，不会静默猜测。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,4,12,0"/></StackPanel>
+                            <Border Grid.Column="1" Style="{StaticResource MediaStatusPill}" VerticalAlignment="Center"><TextBlock Text="{Binding MediaInboxItems.Count, Mode=OneWay}" FontSize="18" FontWeight="SemiBold"/></Border>
                         </Grid>
                     </Border>
                     <Grid x:Name="MediaInboxLayout" Grid.Row="1" MinHeight="0" ClipToBounds="True">
@@ -190,13 +190,30 @@
                                     <TextBlock Text="批量处理" FontWeight="SemiBold"/>
                                     <TextBlock x:Name="MediaInboxBatchSelectionSummary" Text="可按住 Ctrl / Shift 多选" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/>
                                 </StackPanel>
-                                <ComboBox Width="180" Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding Games}" SelectedItem="{Binding InboxTargetGame}" ToolTip="批量归类目标游戏" AutomationProperties.Name="批量归类目标游戏" Margin="0,0,8,4">
-                                    <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/></DataTemplate></ComboBox.ItemTemplate>
-                                </ComboBox>
-                                <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding AssignInboxMediaBatchCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Content="归类所选" Margin="0,0,8,4"/>
-                                <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding IgnoreInboxMediaBatchCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Content="忽略所选" Margin="0,0,0,4"/>
+                                <ComboBox x:Name="MediaInboxModeCombo" Width="118" Style="{DynamicResource GscWpfUiFilterComboBox}" ItemsSource="{Binding MediaInboxModeOptions}" SelectedItem="{Binding MediaInboxMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="OnMediaInboxModeSelectionChanged" ToolTip="切换媒体收件箱视图" AutomationProperties.Name="媒体收件箱视图" Margin="0,0,8,4"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <StackPanel.Style>
+                                        <Style TargetType="StackPanel">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                            <Style.Triggers><DataTrigger Binding="{Binding MediaInboxMode}" Value="已忽略"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers>
+                                        </Style>
+                                    </StackPanel.Style>
+                                    <ComboBox Width="180" Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding Games}" SelectedItem="{Binding InboxTargetGame}" ToolTip="批量归类目标游戏" AutomationProperties.Name="批量归类目标游戏" Margin="0,0,8,4">
+                                        <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/></DataTemplate></ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding AssignInboxMediaBatchCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Content="归类所选" Margin="0,0,8,4"/>
+                                    <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding IgnoreInboxMediaBatchCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Content="忽略所选" Margin="0,0,0,4"/>
+                                </StackPanel>
+                                <ui:Button Command="{Binding RestoreIgnoredMediaBatchCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Content="恢复到待归类" AutomationProperties.Name="恢复所选已忽略媒体到待归类" Margin="0,0,0,4">
+                                    <ui:Button.Style>
+                                        <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiPrimaryActionButton}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers><DataTrigger Binding="{Binding MediaInboxMode}" Value="已忽略"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                        </Style>
+                                    </ui:Button.Style>
+                                </ui:Button>
                             </WrapPanel>
-                            <DataGrid Grid.Row="1" x:Name="MediaInboxGrid" Tag="FiniteViewport" Style="{StaticResource MediaDataGrid}" MinHeight="236" ItemsSource="{Binding UnassignedMedia}" SelectedItem="{Binding SelectedInboxMedia}"
+                            <DataGrid Grid.Row="1" x:Name="MediaInboxGrid" Tag="FiniteViewport" Style="{StaticResource MediaDataGrid}" MinHeight="236" ItemsSource="{Binding MediaInboxItems}" SelectedItem="{Binding SelectedInboxMedia}"
                                       SelectionMode="Extended" SelectionUnit="FullRow" SelectionChanged="OnMediaInboxSelectionChanged"
                                       RowStyle="{StaticResource MediaInboxStableRowStyle}"
                                       VerticalContentAlignment="Top"
@@ -211,12 +228,12 @@
                                     <DataGridTextColumn HeaderStyle="{StaticResource MediaLastColumnHeader}" Header="原因" Binding="{Binding ClassificationReason, Mode=OneWay}" Width="1.1*" MinWidth="220"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MediaLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
-                            <TextBlock Grid.Row="1" Text="当前没有等待归类的媒体。" IsHitTestVisible="False">
+                            <TextBlock Grid.Row="1" Text="{Binding MediaInboxEmptyText, Mode=OneWay}" IsHitTestVisible="False">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyStateText}">
                                         <Setter Property="Visibility" Value="Collapsed"/>
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding UnassignedMedia.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                                            <DataTrigger Binding="{Binding MediaInboxItems.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </TextBlock.Style>
@@ -249,10 +266,26 @@
                                 </Grid>
                                 <TextBlock Text="{Binding SelectedInboxMedia.ClassificationReason, TargetNullValue=暂无归类原因}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,12,0,0"/>
                                 <Separator Margin="0,14,0,12"/>
-                                <TextBlock Text="归类到" Style="{DynamicResource GscCaptionStyle}" Margin="0,0,0,5"/>
-                                <ComboBox Style="{DynamicResource GscWpfUiComboBox}" MinWidth="180" ItemsSource="{Binding Games}" SelectedItem="{Binding InboxTargetGame}" Margin="0,0,0,8"><ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/></DataTemplate></ComboBox.ItemTemplate></ComboBox>
-                                <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding AssignInboxMediaCommand}" Content="确认归类" HorizontalAlignment="Left"/>
-                                <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding IgnoreInboxMediaCommand}" Content="忽略并保留副本" Margin="0,8,0,0" HorizontalAlignment="Left"/>
+                                <StackPanel x:Name="MediaInboxPendingActions">
+                                    <StackPanel.Style>
+                                        <Style TargetType="StackPanel">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                            <Style.Triggers><DataTrigger Binding="{Binding MediaInboxMode}" Value="已忽略"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers>
+                                        </Style>
+                                    </StackPanel.Style>
+                                    <TextBlock Text="归类到" Style="{DynamicResource GscCaptionStyle}" Margin="0,0,0,5"/>
+                                    <ComboBox Style="{DynamicResource GscWpfUiComboBox}" MinWidth="180" ItemsSource="{Binding Games}" SelectedItem="{Binding InboxTargetGame}" Margin="0,0,0,8"><ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/></DataTemplate></ComboBox.ItemTemplate></ComboBox>
+                                    <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding AssignInboxMediaCommand}" Content="确认归类" HorizontalAlignment="Left"/>
+                                    <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding IgnoreInboxMediaCommand}" Content="忽略并保留副本" Margin="0,8,0,0" HorizontalAlignment="Left"/>
+                                </StackPanel>
+                                <ui:Button Command="{Binding RestoreIgnoredMediaBatchCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Content="恢复到待归类" AutomationProperties.Name="恢复已忽略媒体到待归类" HorizontalAlignment="Left" Margin="0,0,0,0">
+                                    <ui:Button.Style>
+                                        <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiPrimaryActionButton}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers><DataTrigger Binding="{Binding MediaInboxMode}" Value="已忽略"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                        </Style>
+                                    </ui:Button.Style>
+                                </ui:Button>
                             </StackPanel>
                         </Border>
                     </ScrollViewer>

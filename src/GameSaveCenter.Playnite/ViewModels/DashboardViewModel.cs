@@ -76,6 +76,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private bool mediaFavorite;
         private string mediaSearchText = string.Empty;
         private string mediaFilter = "全部";
+        private string mediaInboxMode = "待归类";
         private GameStatusDto mediaTargetGame = null!;
         private MediaItemDto selectedInboxMedia = null!;
         private GameStatusDto inboxTargetGame = null!;
@@ -155,6 +156,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             TasksView.Filter = FilterTask;
             MediaView = CollectionViewSource.GetDefaultView(Media);
             MediaView.Filter = FilterMedia;
+            MediaInboxItems = UnassignedMedia;
             taskSearchRefresh = new DebouncedRefresh(() => ApplyOnUi(RefreshTasksView), TimeSpan.FromMilliseconds(180));
             mediaSearchRefresh = new DebouncedRefresh(() => ApplyOnUi(RefreshMediaView), TimeSpan.FromMilliseconds(180));
             uiStateSave = new DebouncedRefresh(SaveUiStateSettings, TimeSpan.FromMilliseconds(500));
@@ -195,10 +197,11 @@ namespace GameSaveCenter.Playnite.ViewModels
             CommentSelectedMediaCommand = new RelayCommand(value => Run(() => UpdateMediaMetadataBatchAsync(value, null, true)), _ => !IsBusy);
             OpenSelectedMediaCommand = new RelayCommand(_ => RunLocal(OpenSelectedMedia), _ => SelectedMedia != null && !string.IsNullOrWhiteSpace(SelectedMedia.ArchivePath));
             RevealSelectedMediaCommand = new RelayCommand(_ => RunLocal(() => OpenPath(SelectedMedia.ArchivePath)), _ => SelectedMedia != null && !string.IsNullOrWhiteSpace(SelectedMedia.ArchivePath));
-            AssignInboxMediaCommand = new RelayCommand(_ => Run(AssignInboxMediaAsync), _ => !IsBusy && SelectedInboxMedia != null && InboxTargetGame != null);
-            IgnoreInboxMediaCommand = new RelayCommand(_ => Run(IgnoreInboxMediaAsync), _ => !IsBusy && SelectedInboxMedia != null);
-            AssignInboxMediaBatchCommand = new RelayCommand(value => Run(() => AssignInboxMediaBatchAsync(value)), value => !IsBusy && InboxTargetGame != null && GetSelectedInboxMedia(value).Count > 0);
-            IgnoreInboxMediaBatchCommand = new RelayCommand(value => Run(() => IgnoreInboxMediaBatchAsync(value)), value => !IsBusy && GetSelectedInboxMedia(value).Count > 0);
+            AssignInboxMediaCommand = new RelayCommand(_ => Run(AssignInboxMediaAsync), _ => !IsBusy && MediaInboxMode == "待归类" && SelectedInboxMedia != null && InboxTargetGame != null);
+            IgnoreInboxMediaCommand = new RelayCommand(_ => Run(IgnoreInboxMediaAsync), _ => !IsBusy && MediaInboxMode == "待归类" && SelectedInboxMedia != null);
+            AssignInboxMediaBatchCommand = new RelayCommand(value => Run(() => AssignInboxMediaBatchAsync(value)), value => !IsBusy && MediaInboxMode == "待归类" && InboxTargetGame != null && GetSelectedInboxMedia(value).Count > 0);
+            IgnoreInboxMediaBatchCommand = new RelayCommand(value => Run(() => IgnoreInboxMediaBatchAsync(value)), value => !IsBusy && MediaInboxMode == "待归类" && GetSelectedInboxMedia(value).Count > 0);
+            RestoreIgnoredMediaBatchCommand = new RelayCommand(value => Run(() => RestoreIgnoredMediaBatchAsync(value)), value => !IsBusy && MediaInboxMode == "已忽略" && GetSelectedInboxMedia(value).Count > 0);
             CancelTaskCommand = new RelayCommand(_ => _ = CancelSelectedTaskAsync(), _ => SelectedTask != null && SelectedTask.CanCancel && !IsCancellingTask);
             RetryTaskCommand = new RelayCommand(_ => Run(RetrySelectedTaskAsync), _ => !IsBusy && CanRetrySelectedTask());
             CopyTaskErrorCommand = new RelayCommand(_ => RunLocal(CopySelectedTaskError), _ => SelectedTask != null && !string.IsNullOrWhiteSpace(SelectedTask.DetailMessage));
@@ -290,6 +293,18 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             get => unassignedMedia;
             private set => SetValue(ref unassignedMedia, value);
+        }
+        private BatchObservableCollection<MediaItemDto> ignoredMedia = new BatchObservableCollection<MediaItemDto>();
+        public BatchObservableCollection<MediaItemDto> IgnoredMedia
+        {
+            get => ignoredMedia;
+            private set => SetValue(ref ignoredMedia, value);
+        }
+        private BatchObservableCollection<MediaItemDto> mediaInboxItems = new BatchObservableCollection<MediaItemDto>();
+        public BatchObservableCollection<MediaItemDto> MediaInboxItems
+        {
+            get => mediaInboxItems;
+            private set => SetValue(ref mediaInboxItems, value);
         }
         public BatchObservableCollection<AuditLogEntryDto> Audit { get; } = new BatchObservableCollection<AuditLogEntryDto>();
         public BatchObservableCollection<SavePathCandidateDto> SaveCandidates { get; } = new BatchObservableCollection<SavePathCandidateDto>();
@@ -595,6 +610,24 @@ namespace GameSaveCenter.Playnite.ViewModels
                 uiStateSave?.Schedule();
             }
         }
+        public IReadOnlyList<string> MediaInboxModeOptions { get; } = new[] { "待归类", "已忽略" };
+        public string MediaInboxMode
+        {
+            get => mediaInboxMode;
+            set
+            {
+                var normalized = string.Equals(value, "已忽略", StringComparison.Ordinal) ? "已忽略" : "待归类";
+                if (string.Equals(mediaInboxMode, normalized, StringComparison.Ordinal)) return;
+                SetValue(ref mediaInboxMode, normalized);
+                OnPropertyChanged(nameof(MediaInboxTitle));
+                OnPropertyChanged(nameof(MediaInboxEmptyText));
+                ApplyMediaInboxMode();
+                if (normalized == "已忽略") Run(LoadIgnoredMediaAsync);
+                else RaiseCommandStates();
+            }
+        }
+        public string MediaInboxTitle => MediaInboxMode == "已忽略" ? "已忽略媒体" : "待归类媒体";
+        public string MediaInboxEmptyText => MediaInboxMode == "已忽略" ? "当前没有已忽略的媒体。" : "当前没有等待归类的媒体。";
         public GameStatusDto MediaTargetGame
         {
             get => mediaTargetGame;
@@ -690,6 +723,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand IgnoreInboxMediaCommand { get; }
         public ICommand AssignInboxMediaBatchCommand { get; }
         public ICommand IgnoreInboxMediaBatchCommand { get; }
+        public ICommand RestoreIgnoredMediaBatchCommand { get; }
         public ICommand CancelTaskCommand { get; }
         public ICommand RetryTaskCommand { get; }
         public ICommand CopyTaskErrorCommand { get; }
@@ -2931,7 +2965,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 UpdateBackupMetadataCommand, CompareBackupCommand, PreviewRetentionCommand,
                 AddMediaSourceCommand, AcceptCandidateCommand, RejectCandidateCommand, ReassignMediaCommand,
                 UpdateMediaMetadataCommand,OpenSelectedMediaCommand,RevealSelectedMediaCommand,
-                AssignInboxMediaCommand, IgnoreInboxMediaCommand, AssignInboxMediaBatchCommand, IgnoreInboxMediaBatchCommand,
+                AssignInboxMediaCommand, IgnoreInboxMediaCommand, AssignInboxMediaBatchCommand, IgnoreInboxMediaBatchCommand, RestoreIgnoredMediaBatchCommand,
                 CancelTaskCommand, RetryTaskCommand, CopyTaskErrorCommand, RefreshDiagnosticsCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
                 StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,RefreshRetentionSimulationCommand,ApplyRetentionSimulationCommand,RefreshLocalMirrorStatusCommand,SyncLocalMirrorCommand,CopyMaintenanceReportCommand,ExportMaintenanceReportCommand,
                 SaveProcessMappingCommand,DeleteProcessMappingCommand,RunEnvironmentCheckCommand,SkipOnboardingCommand,CompleteOnboardingCommand,OnboardingTestBackupCommand,

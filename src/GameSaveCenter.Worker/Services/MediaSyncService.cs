@@ -161,6 +161,52 @@ public sealed class MediaSyncService
         return result;
     }
 
+    /// <summary>Restores a bounded ignored-media batch to the manual classification inbox.</summary>
+    public async Task<MediaInboxBatchResultDto> RestoreIgnoredBatchAsync(MediaInboxBatchRequestDto request,CancellationToken token)
+    {
+        var mediaIds=NormalizeInboxBatchIds(request.MediaIds);
+        if(mediaIds.Count==0)throw new InvalidOperationException("必须选择至少一个已忽略媒体。");
+        if(mediaIds.Count>500)throw new InvalidOperationException("单次最多批量处理 500 个媒体文件。");
+
+        var result=new MediaInboxBatchResultDto();
+        foreach(var mediaId in mediaIds)
+        {
+            try
+            {
+                result.UpdatedItems.Add(await RestoreIgnoredAsync(mediaId,token).ConfigureAwait(false));
+            }
+            catch(OperationCanceledException)
+            {
+                throw;
+            }
+            catch(Exception ex)
+            {
+                result.Failures.Add(new MediaInboxBatchFailureDto { MediaId=mediaId, ErrorMessage=ex.Message });
+            }
+        }
+        return result;
+    }
+
+    private async Task<MediaItemDto> RestoreIgnoredAsync(string mediaId,CancellationToken token)
+    {
+        var item=await _store.GetMediaByIdAsync(mediaId,token).ConfigureAwait(false)
+                 ??throw new InvalidOperationException("媒体记录不存在或已经被清理。");
+        if(!string.Equals(item.ClassificationState,"Ignored",StringComparison.OrdinalIgnoreCase))
+            throw new InvalidOperationException("只有已忽略媒体可以恢复到待归类收件箱。");
+
+        var extension=Path.GetExtension(File.Exists(item.ArchivePath)?item.ArchivePath:item.OriginalPath);
+        var destination=BuildInboxArchivePath(item.Source,item.Kind,item.CapturedUtc,item.Sha256,extension);
+        await RelocateArchivedCopyAsync(item,destination,token).ConfigureAwait(false);
+        await _store.RestoreMediaToInboxAsync(item.MediaId,destination,token).ConfigureAwait(false);
+        await _store.AppendAuditAsync("Media","已忽略媒体恢复到待归类收件箱",JsonSerializer.Serialize(new{item.MediaId,item.OriginalPath,destination}),token).ConfigureAwait(false);
+        item.PlayniteId=string.Empty;
+        item.ArchivePath=destination;
+        item.ClassificationState="Inbox";
+        item.ClassificationReason="用户撤销忽略，待重新归类";
+        item.CloudState="NotApplicable";
+        return item;
+    }
+
     private static List<string> NormalizeInboxBatchIds(IEnumerable<string>? mediaIds)
         =>(mediaIds??Array.Empty<string>())
             .Where(x=>!string.IsNullOrWhiteSpace(x))

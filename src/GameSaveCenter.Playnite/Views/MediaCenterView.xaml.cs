@@ -29,11 +29,19 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnMediaInboxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (MediaInboxGrid == null || MediaInboxBatchSelectionSummary == null)
+                return;
             var count=MediaInboxGrid.SelectedItems.Count;
+            var ignored=string.Equals(MediaInboxModeCombo.SelectedItem as string,"已忽略",StringComparison.Ordinal);
             MediaInboxBatchSelectionSummary.Text=count==0
                 ? "可按住 Ctrl / Shift 多选"
-                : $"已选择 {count} 项；目标游戏可在此处调整";
+                : ignored ? $"已选择 {count} 项；可恢复到待归类" : $"已选择 {count} 项；目标游戏可在此处调整";
             CommandManager.InvalidateRequerySuggested();
+        }
+
+        private void OnMediaInboxModeSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            OnMediaInboxSelectionChanged(sender,e);
         }
 
         public Border MediaSummaryPanelElement => MediaSummaryPanel;

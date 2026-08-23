@@ -14,6 +14,13 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-23 FUNC-002 媒体收件箱忽略恢复交接
+
+- 本轮继续按用户要求只补功能块，不重排媒体页面。`MediaInboxBatchActionRow` 内增加“待归类/已忽略”视图切换；已忽略列表按需加载，默认待归类流程仍只请求原有消息。Inspector 在已忽略模式只显示恢复动作，原有归类、忽略、批量选择和 DataGrid 滚动/虚拟化保持不变。
+- Worker/SQLite 新增 `ListIgnoredMedia`、`RestoreIgnoredMediaBatch`、`GetIgnoredMediaAsync` 和 `RestoreMediaToInboxAsync`。恢复最多 500 个去重 ID，文件先做现有归档/原始来源选择和目标冲突哈希校验，再移动回 `_Inbox\\Pending`；原始文件不删除，数据库回写 `Inbox`/`NotApplicable`/“用户撤销忽略，待重新归类”，每项追加审计，部分失败返回明细。
+- 恢复完成后 Playnite 刷新两个缓存，防止切回待归类时显示旧数据。当前模式不持久化，重新打开页面默认待归类；不要在旧 Worker 兼容路径中预加载已忽略查询。
+- 当前证据：`validate-source.py`、XAML 19/19、WPF 静态审查 0 error；Release 0 warning/0 error；Core 59/59、Worker 196/196、Playnite 280 通过/57 跳过；`artifacts/ui-qa/media-inbox-restore-v1/render-qa-report.txt` 为 `render-qa OK`，覆盖双主题、多尺寸、滚动和 resize transition。真实 Playnite 未执行会改变用户媒体数据的恢复操作；宿主 DPI、高对比度、键盘焦点和真实点击命中仍需人工验收。
+
 ## 2026-08-23 FUNC-001 媒体收件箱批量操作交接
 
 - 本轮按用户要求只做功能块，不重排页面。`MediaCenterView.xaml` 在待归类表格上方增加轻量 `MediaInboxBatchActionRow`：多选收件箱行、选择目标游戏、批量归类或忽略；原 Inspector、单条操作和表格滚动/虚拟化不变。

@@ -56,6 +56,29 @@ public sealed class SqliteMediaMetadataTests : IDisposable
     }
 
     [Fact]
+    public async Task IgnoredMediaCanBeListedAndRestoredToInbox()
+    {
+        await AddAsync("ignored",false,string.Empty,"Ignored");
+        await AddAsync("assigned",false,string.Empty,"Assigned");
+
+        var ignored=await store.GetIgnoredMediaAsync(50,CancellationToken.None);
+        Assert.Single(ignored);
+        Assert.Equal("ignored",ignored[0].MediaId);
+
+        var restoredPath=Path.Combine(root,"Media","_Inbox","Pending","ignored.png");
+        await store.RestoreMediaToInboxAsync("ignored",restoredPath,CancellationToken.None);
+
+        var restored=await store.GetMediaByIdAsync("ignored",CancellationToken.None);
+        Assert.NotNull(restored);
+        Assert.Equal("Inbox",restored!.ClassificationState);
+        Assert.Equal(string.Empty,restored.PlayniteId);
+        Assert.Equal(restoredPath,restored.ArchivePath);
+        Assert.Equal("用户撤销忽略，待重新归类",restored.ClassificationReason);
+        Assert.Empty(await store.GetIgnoredMediaAsync(50,CancellationToken.None));
+        Assert.Single(await store.GetUnassignedMediaAsync(50,CancellationToken.None));
+    }
+
+    [Fact]
     public async Task DeviceConflictDecision_IsPersistedWithoutFileOperations()
     {
         var decision=new DeviceConflictDecisionDto
@@ -143,7 +166,7 @@ public sealed class SqliteMediaMetadataTests : IDisposable
         if(Directory.Exists(root))Directory.Delete(root,true);
     }
 
-    private Task AddAsync(string id,bool favorite,string comment)=>store.AddMediaAsync(new MediaItemDto
+    private Task AddAsync(string id,bool favorite,string comment,string classificationState="Assigned")=>store.AddMediaAsync(new MediaItemDto
     {
         MediaId=id,
         PlayniteId="game",
@@ -156,6 +179,6 @@ public sealed class SqliteMediaMetadataTests : IDisposable
         Sha256=id.PadRight(64,'0'),
         IsFavorite=favorite,
         Comment=comment,
-        ClassificationState="Assigned"
+        ClassificationState=classificationState
     },CancellationToken.None);
 }

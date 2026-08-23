@@ -449,6 +449,11 @@ public sealed class FakeDashboardData
     public ObservableCollection<MediaItemDto> Media { get; } = new ObservableCollection<MediaItemDto>();
     public ICollectionView MediaView { get; }
     public ObservableCollection<MediaItemDto> UnassignedMedia { get; } = new ObservableCollection<MediaItemDto>();
+    public ObservableCollection<MediaItemDto> MediaInboxItems => UnassignedMedia;
+    public ObservableCollection<string> MediaInboxModeOptions { get; } = new ObservableCollection<string> { "待归类", "已忽略" };
+    public string MediaInboxMode { get; set; } = "待归类";
+    public string MediaInboxTitle => MediaInboxMode == "已忽略" ? "已忽略媒体" : "待归类媒体";
+    public string MediaInboxEmptyText => MediaInboxMode == "已忽略" ? "当前没有已忽略的媒体。" : "当前没有等待归类的媒体。";
     public ObservableCollection<MediaSourceRuleDto> MediaSources { get; } = new ObservableCollection<MediaSourceRuleDto>();
     public ObservableCollection<ValidationFindingDto> Findings { get; } = new ObservableCollection<ValidationFindingDto>();
     public ObservableCollection<AuditLogEntryDto> Audit { get; } = new ObservableCollection<AuditLogEntryDto>();

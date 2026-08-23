@@ -780,6 +780,7 @@ public sealed class WpfUiResourceDictionaryTests
             "待归类预览、确认/忽略按钮与归类目标不能放进 MediaInboxGrid 的滚动面。");
         Assert.Contains(inspector.Descendants(), element => element.Attribute("Command")?.Value == "{Binding AssignInboxMediaCommand}");
         Assert.Contains(inspector.Descendants(), element => element.Attribute("Command")?.Value == "{Binding IgnoreInboxMediaCommand}");
+        Assert.Contains(inspector.Descendants(), element => element.Attribute("Command")?.Value == "{Binding RestoreIgnoredMediaBatchCommand}");
         Assert.Contains(inspector.Descendants(), element => element.Attribute("SelectedItem")?.Value == "{Binding InboxTargetGame}");
     }
 
@@ -800,12 +801,18 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"MediaInboxBatchActionRow\"", media);
         Assert.Contains("Command=\"{Binding AssignInboxMediaBatchCommand}\"", media);
         Assert.Contains("Command=\"{Binding IgnoreInboxMediaBatchCommand}\"", media);
+        Assert.Contains("Command=\"{Binding RestoreIgnoredMediaBatchCommand}\"", media);
         Assert.Contains("CommandParameter=\"{Binding SelectedItems, ElementName=MediaInboxGrid}\"", media);
+        Assert.Contains("MediaInboxModeOptions", media);
+        Assert.Contains("ItemsSource=\"{Binding MediaInboxItems}\"", media);
         Assert.Contains("OnMediaInboxSelectionChanged", mediaCode);
         Assert.Contains("GetSelectedInboxMedia(value)", commands);
+        Assert.Contains("RestoreIgnoredMediaBatchCommand", commands);
         Assert.Contains("ProcessInboxBatchAsync", viewModel);
         Assert.Contains("ReassignMediaBatch", messages);
         Assert.Contains("IgnoreMediaBatch", messages);
+        Assert.Contains("ListIgnoredMedia", messages);
+        Assert.Contains("RestoreIgnoredMediaBatch", messages);
         Assert.Contains("MediaInboxBatchRequestDto", contracts);
         Assert.Contains("MediaInboxBatchResultDto", contracts);
         Assert.Contains("MediaInboxBatchSize = 500", commands);
@@ -2089,7 +2096,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"MediaInspectorScrollViewer\"", media);
         Assert.Contains("VerticalScrollBarVisibility=\"Auto\" HorizontalScrollBarVisibility=\"Disabled\"", media);
         Assert.Contains("MinHeight=\"0\" ClipToBounds=\"True\"", media);
-        Assert.Contains("MinHeight=\"236\" ItemsSource=\"{Binding UnassignedMedia}\"", media);
+        Assert.Contains("MinHeight=\"236\" ItemsSource=\"{Binding MediaInboxItems}\"", media);
         Assert.Contains("Setter Property=\"ColumnHeaderStyle\" Value=\"{StaticResource GscDataGridColumnHeaderStyle}\"", maintenance);
         Assert.DoesNotContain("FindVisualChildren", maintenanceCode);
         Assert.Contains("MediaInspectorScrollViewer.MaxHeight = showInspector && stack", mediaCode);
@@ -3881,7 +3888,7 @@ public sealed class WpfUiResourceDictionaryTests
             ("SaveCenterView.xaml", "Backups.Count"),
             ("SaveCenterView.xaml", "SaveCandidates.Count"),
             ("MediaCenterView.xaml", "MediaView.IsEmpty"),
-            ("MediaCenterView.xaml", "UnassignedMedia.Count"),
+            ("MediaCenterView.xaml", "MediaInboxItems.Count"),
             ("MediaCenterView.xaml", "MediaSources.Count"),
             ("TrainerCenterView.xaml", "GameTools.Count"),
             ("TrainerCenterView.xaml", "TrainerCatalogResults.Count"),

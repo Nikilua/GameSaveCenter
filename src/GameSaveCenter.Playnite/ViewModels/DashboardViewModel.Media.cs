@@ -28,13 +28,39 @@ namespace GameSaveCenter.Playnite.ViewModels
                 if (!InboxEquals(UnassignedMedia, inbox))
                     UnassignedMedia = new GameSaveCenter.Playnite.Infrastructure.BatchObservableCollection<MediaItemDto>(inbox);
 
-                SelectedInboxMedia = UnassignedMedia.FirstOrDefault(x => string.Equals(x.MediaId, selectedId, StringComparison.OrdinalIgnoreCase))
-                                     ?? UnassignedMedia.FirstOrDefault();
+                if (MediaInboxMode == "待归类")
+                    ApplyMediaInboxMode(selectedId);
                 InboxTargetGame = Games.FirstOrDefault(x => string.Equals(x.PlayniteId, targetId, StringComparison.OrdinalIgnoreCase))
                                   ?? SelectedGame
                                   ?? Games.FirstOrDefault();
                 RaiseCommandStates();
             });
+        }
+
+        private async Task LoadIgnoredMediaAsync()
+        {
+            var selectedId = SelectedInboxMedia?.MediaId;
+            var ignored = (await plugin.RequestAsync<MediaItemDto[]>(MessageTypes.ListIgnoredMedia, new GameQueryDto { Limit = 5000 }))
+                ?? Array.Empty<MediaItemDto>();
+            ApplyOnUi(() =>
+            {
+                if (!InboxEquals(IgnoredMedia, ignored))
+                    IgnoredMedia = new GameSaveCenter.Playnite.Infrastructure.BatchObservableCollection<MediaItemDto>(ignored);
+
+                if (MediaInboxMode == "已忽略")
+                    ApplyMediaInboxMode(selectedId);
+                else
+                    RaiseCommandStates();
+            });
+        }
+
+        private void ApplyMediaInboxMode(string? selectedId = null)
+        {
+            var keepId = selectedId ?? SelectedInboxMedia?.MediaId;
+            MediaInboxItems = MediaInboxMode == "已忽略" ? IgnoredMedia : UnassignedMedia;
+            SelectedInboxMedia = MediaInboxItems.FirstOrDefault(x => string.Equals(x.MediaId, keepId, StringComparison.OrdinalIgnoreCase))
+                                 ?? MediaInboxItems.FirstOrDefault();
+            RaiseCommandStates();
         }
 
         private static bool InboxEquals(IReadOnlyList<MediaItemDto> current, IReadOnlyList<MediaItemDto> incoming)
@@ -186,6 +212,24 @@ namespace GameSaveCenter.Playnite.ViewModels
             ReportInboxBatchResult("忽略",result);
             await RefreshDashboardAsync(false,false);
             await LoadInboxAsync();
+        }
+
+        private async Task RestoreIgnoredMediaBatchAsync(object? value)
+        {
+            var selected = GetSelectedInboxMedia(value);
+            if (selected.Count == 0) throw new InvalidOperationException("请先在已忽略列表中选择一个或多个媒体。");
+
+            if (!await plugin.ConfirmAsync(
+                    "恢复已忽略媒体",
+                    $"确认将所选 {selected.Count} 项媒体恢复到待归类收件箱？\n\n文件会移动回待归类归档目录，原始截图/录像不会被删除。",
+                    "恢复到待归类",
+                    "取消")) return;
+
+            var result = await ProcessInboxBatchAsync(MessageTypes.RestoreIgnoredMediaBatch, selected.Select(x => x.MediaId).ToList());
+            ReportInboxBatchResult("恢复到待归类", result);
+            await RefreshDashboardAsync(false, false);
+            await LoadInboxAsync();
+            await LoadIgnoredMediaAsync();
         }
 
         private async Task<MediaInboxBatchResultDto> ProcessInboxBatchAsync(string messageType,List<string> mediaIds,string targetPlayniteId="")
