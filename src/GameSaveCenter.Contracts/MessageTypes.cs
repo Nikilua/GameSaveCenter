@@ -38,7 +38,9 @@ namespace GameSaveCenter.Contracts
         public const string UpdateMediaMetadataBatch = "media.metadata.batch.update";
         public const string ListUnassignedMedia = "media.inbox.list";
         public const string ReassignMedia = "media.reassign";
+        public const string ReassignMediaBatch = "media.reassign.batch";
         public const string IgnoreMedia = "media.inbox.ignore";
+        public const string IgnoreMediaBatch = "media.inbox.ignore.batch";
         public const string AddMediaSource = "media.source.add";
         public const string UpdateMediaSource = "media.source.update";
         public const string DeleteMediaSource = "media.source.delete";

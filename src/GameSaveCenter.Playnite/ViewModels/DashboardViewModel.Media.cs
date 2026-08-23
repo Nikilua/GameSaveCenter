@@ -157,6 +157,80 @@ namespace GameSaveCenter.Playnite.ViewModels
             await LoadInboxAsync();
         }
 
+        private async Task AssignInboxMediaBatchAsync(object? value)
+        {
+            var selected=GetSelectedInboxMedia(value);
+            if(selected.Count==0)throw new InvalidOperationException("请先在收件箱中选择一个或多个媒体。");
+
+            var target=InboxTargetGame??throw new InvalidOperationException("请选择目标游戏。");
+            var result=await ProcessInboxBatchAsync(MessageTypes.ReassignMediaBatch,selected.Select(x=>x.MediaId).ToList(),target.PlayniteId);
+            ReportInboxBatchResult("归类",result,target.Name);
+            await RefreshDashboardAsync(false,false);
+            await LoadInboxAsync();
+            if(SelectedGame!=null&&string.Equals(SelectedGame.PlayniteId,target.PlayniteId,StringComparison.OrdinalIgnoreCase))
+                await LoadDetailsAsync();
+        }
+
+        private async Task IgnoreInboxMediaBatchAsync(object? value)
+        {
+            var selected=GetSelectedInboxMedia(value);
+            if(selected.Count==0)throw new InvalidOperationException("请先在收件箱中选择一个或多个媒体。");
+
+            if(!await plugin.ConfirmAsync(
+                    "忽略所选待归类媒体",
+                    $"确认忽略所选 {selected.Count} 项媒体？\n\n所有归档副本仍会保留在媒体目录中。",
+                    "忽略并保留副本",
+                    "取消")) return;
+
+            var result=await ProcessInboxBatchAsync(MessageTypes.IgnoreMediaBatch,selected.Select(x=>x.MediaId).ToList());
+            ReportInboxBatchResult("忽略",result);
+            await RefreshDashboardAsync(false,false);
+            await LoadInboxAsync();
+        }
+
+        private async Task<MediaInboxBatchResultDto> ProcessInboxBatchAsync(string messageType,List<string> mediaIds,string targetPlayniteId="")
+        {
+            if(mediaIds.Count==0)throw new InvalidOperationException("请先在收件箱中选择一个或多个媒体。");
+
+            var result=new MediaInboxBatchResultDto();
+            for(var offset=0;offset<mediaIds.Count;offset+=MediaInboxBatchSize)
+            {
+                var request=new MediaInboxBatchRequestDto
+                {
+                    MediaIds=mediaIds.Skip(offset).Take(MediaInboxBatchSize).ToList(),
+                    TargetPlayniteId=targetPlayniteId
+                };
+                var chunk=await plugin.RequestAsync<MediaInboxBatchResultDto>(messageType,request,TimeSpan.FromMinutes(30));
+                if(chunk==null)continue;
+                if(chunk.UpdatedItems!=null)result.UpdatedItems.AddRange(chunk.UpdatedItems);
+                if(chunk.Failures!=null)result.Failures.AddRange(chunk.Failures);
+            }
+            return result;
+        }
+
+        private void ReportInboxBatchResult(string operation,MediaInboxBatchResultDto result,string targetName="")
+        {
+            var succeeded=result.UpdatedItems?.Count??0;
+            var failed=result.Failures?.Count??0;
+            var targetSuffix=string.IsNullOrWhiteSpace(targetName)?string.Empty:$"到 {targetName}";
+            if(failed==0)
+            {
+                ConfirmSuccess($"已{operation} {succeeded} 项媒体{targetSuffix}");
+                return;
+            }
+
+            var firstFailure=result.Failures?.FirstOrDefault()?.ErrorMessage??"未知错误";
+            StatusMessage=$"批量{operation}完成：成功 {succeeded} 项，失败 {failed} 项。{firstFailure}";
+            plugin.ShowError(StatusMessage);
+        }
+
+        private static List<MediaItemDto> GetSelectedInboxMedia(object? value)
+            =>(value as IList)?.Cast<object>()
+                .OfType<MediaItemDto>()
+                .GroupBy(x=>x.MediaId,StringComparer.OrdinalIgnoreCase)
+                .Select(x=>x.First())
+                .ToList()??new List<MediaItemDto>();
+
         private bool FilterMedia(object value)
         {
             if(value is not MediaItemDto item)return false;

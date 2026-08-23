@@ -784,6 +784,49 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void MediaInboxSupportsNonIntrusiveBatchClassificationActions()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var mediaPath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml");
+        var media = File.ReadAllText(mediaPath);
+        var mediaCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml.cs"));
+        var viewModel = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.Media.cs"));
+        var commands = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
+        var messages = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Contracts", "MessageTypes.cs"));
+        var contracts = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Contracts", "OperationDtos.cs"));
+
+        Assert.Contains("SelectionMode=\"Extended\"", media);
+        Assert.Contains("SelectionUnit=\"FullRow\"", media);
+        Assert.Contains("x:Name=\"MediaInboxBatchActionRow\"", media);
+        Assert.Contains("Command=\"{Binding AssignInboxMediaBatchCommand}\"", media);
+        Assert.Contains("Command=\"{Binding IgnoreInboxMediaBatchCommand}\"", media);
+        Assert.Contains("CommandParameter=\"{Binding SelectedItems, ElementName=MediaInboxGrid}\"", media);
+        Assert.Contains("OnMediaInboxSelectionChanged", mediaCode);
+        Assert.Contains("GetSelectedInboxMedia(value)", commands);
+        Assert.Contains("ProcessInboxBatchAsync", viewModel);
+        Assert.Contains("ReassignMediaBatch", messages);
+        Assert.Contains("IgnoreMediaBatch", messages);
+        Assert.Contains("MediaInboxBatchRequestDto", contracts);
+        Assert.Contains("MediaInboxBatchResultDto", contracts);
+        Assert.Contains("MediaInboxBatchSize = 500", commands);
+    }
+
+    [Fact]
+    public void SidebarStatusUsesRealBooleanStatesInsteadOfRawBooleanText()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var shell = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml"));
+
+        Assert.Contains("DataTrigger Binding=\"{Binding Snapshot.WorkerHealthy}\" Value=\"True\"", shell);
+        Assert.Contains("DataTrigger Binding=\"{Binding Snapshot.LudusaviAvailable}\" Value=\"True\"", shell);
+        Assert.Contains("· 正常", shell);
+        Assert.Contains("· 可用", shell);
+        Assert.Contains("· 不可用", shell);
+        Assert.DoesNotContain("Snapshot.WorkerHealthy, StringFormat", shell);
+        Assert.DoesNotContain("Snapshot.LudusaviAvailable, StringFormat", shell);
+    }
+
+    [Fact]
     public void ExtractedWorkspacesUseGridRootsAndInternalTableScrolling()
     {
         var repositoryRoot = FindRepositoryRoot();

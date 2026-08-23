@@ -14,6 +14,13 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-23 FUNC-001 媒体收件箱批量操作交接
+
+- 本轮按用户要求只做功能块，不重排页面。`MediaCenterView.xaml` 在待归类表格上方增加轻量 `MediaInboxBatchActionRow`：多选收件箱行、选择目标游戏、批量归类或忽略；原 Inspector、单条操作和表格滚动/虚拟化不变。
+- Worker 新增 `media.reassign.batch` / `media.inbox.ignore.batch`，每个请求最多 500 个去重 ID；Playnite 更大选择自动分批。服务端复用现有文件移动、归档副本、SQLite 索引和审计逻辑，返回成功项与失败明细；忽略仍保留归档副本，取消继续传播。
+- `AcrylicProductionShellView.xaml` 的 Worker/Ludusavi 状态改为真实 DataTrigger 文案和颜色，禁止恢复原始布尔文本。
+- 当前证据：源码校验、XAML 19/19、Release 构建 0 warning/0 error、Core 59/59、Worker 194/194、Playnite 280 通过/57 跳过，`artifacts/ui-qa/media-inbox-batch-v1/render-qa-report.txt` 为 `render-qa OK`，WPF 审查 0 error。没有在真实 Playnite 执行会改动用户数据的批量操作；宿主 DPI、高对比度和真实点击命中仍需人工验收。
+
 ## 2026-08-22 UI-296 任务/媒体摘要条实际宿主交接
 
 - 用户提供的 Playnite 截图证明实际宿主仍在显示旧的“四列全等宽 + Rectangle 占用第 2/3/4 个统计列”布局：第一块后缺线、最后一块后多线。此前源码的七列修复没有同步到 00:07 安装的 DLL，不能只看离屏 RenderHarness 就认为宿主已经更新。

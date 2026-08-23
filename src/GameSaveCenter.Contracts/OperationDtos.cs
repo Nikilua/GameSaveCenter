@@ -353,6 +353,27 @@ namespace GameSaveCenter.Contracts
         public string MediaId { get; set; } = string.Empty;
     }
 
+    /// <summary>Batch request for inbox classification actions.</summary>
+    public sealed class MediaInboxBatchRequestDto
+    {
+        public List<string> MediaIds { get; set; } = new List<string>();
+        public string TargetPlayniteId { get; set; } = string.Empty;
+    }
+
+    /// <summary>One item that could not be processed during a best-effort inbox batch.</summary>
+    public sealed class MediaInboxBatchFailureDto
+    {
+        public string MediaId { get; set; } = string.Empty;
+        public string ErrorMessage { get; set; } = string.Empty;
+    }
+
+    /// <summary>Best-effort result for a media inbox batch operation.</summary>
+    public sealed class MediaInboxBatchResultDto
+    {
+        public List<MediaItemDto> UpdatedItems { get; set; } = new List<MediaItemDto>();
+        public List<MediaInboxBatchFailureDto> Failures { get; set; } = new List<MediaInboxBatchFailureDto>();
+    }
+
     /// <summary>Accepts a detected save directory and creates a custom Ludusavi rule draft.</summary>
     public sealed class AcceptSavePathRequestDto
     {

@@ -105,16 +105,50 @@
                         <Border Grid.Row="1" Style="{DynamicResource GscRedesignStatusCard}" Margin="0,12,0,0" Padding="10,9">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <Ellipse Width="7" Height="7" Fill="{DynamicResource GscSuccessBrush}" VerticalAlignment="Center"/>
+                                    <Ellipse Width="7" Height="7" VerticalAlignment="Center">
+                                        <Ellipse.Style>
+                                            <Style TargetType="Ellipse">
+                                                <Setter Property="Fill" Value="{DynamicResource GscErrorBrush}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Snapshot.WorkerHealthy}" Value="True"><Setter Property="Fill" Value="{DynamicResource GscSuccessBrush}"/></DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Ellipse.Style>
+                                    </Ellipse>
                                     <TextBlock Text="Worker" FontSize="10.5" Margin="7,0,0,0"/>
-                                    <TextBlock Text="{Binding Snapshot.WorkerHealthy, StringFormat= · {0}}" FontSize="10.5"
-                                               Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="4,0,0,0"/>
+                                    <TextBlock FontSize="10.5" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="4,0,0,0">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Text" Value="· 不可用"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Snapshot.WorkerHealthy}" Value="True"><Setter Property="Text" Value="· 正常"/></DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                                    <Ellipse Width="7" Height="7" Fill="{DynamicResource GscInfoBrush}" VerticalAlignment="Center"/>
+                                    <Ellipse Width="7" Height="7" VerticalAlignment="Center">
+                                        <Ellipse.Style>
+                                            <Style TargetType="Ellipse">
+                                                <Setter Property="Fill" Value="{DynamicResource GscMutedStatusBrush}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Snapshot.LudusaviAvailable}" Value="True"><Setter Property="Fill" Value="{DynamicResource GscSuccessBrush}"/></DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Ellipse.Style>
+                                    </Ellipse>
                                     <TextBlock Text="Ludusavi" FontSize="10.5" Margin="7,0,0,0"/>
-                                    <TextBlock Text="{Binding Snapshot.LudusaviAvailable, StringFormat= · {0}}" FontSize="10.5"
-                                               Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="4,0,0,0"/>
+                                    <TextBlock FontSize="10.5" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="4,0,0,0">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Text" Value="· 不可用"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Snapshot.LudusaviAvailable}" Value="True"><Setter Property="Text" Value="· 可用"/></DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
                                 </StackPanel>
                             </StackPanel>
                         </Border>

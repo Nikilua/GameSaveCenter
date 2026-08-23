@@ -100,6 +100,73 @@ public sealed class MediaSyncService
         return item;
     }
 
+    /// <summary>
+    /// Processes a bounded inbox batch without turning each selected row into a separate
+    /// Playnite-to-Worker round trip. Individual items remain best-effort because moving a
+    /// file and updating its index cannot be made one SQLite transaction.
+    /// </summary>
+    public async Task<MediaInboxBatchResultDto> ReassignBatchAsync(MediaInboxBatchRequestDto request,CancellationToken token)
+    {
+        var mediaIds=NormalizeInboxBatchIds(request.MediaIds);
+        if(mediaIds.Count==0)throw new InvalidOperationException("必须选择至少一个待归类媒体。");
+        if(mediaIds.Count>500)throw new InvalidOperationException("单次最多批量处理 500 个媒体文件。");
+        if(string.IsNullOrWhiteSpace(request.TargetPlayniteId))throw new InvalidOperationException("必须选择目标游戏。");
+
+        var result=new MediaInboxBatchResultDto();
+        foreach(var mediaId in mediaIds)
+        {
+            try
+            {
+                result.UpdatedItems.Add(await ReassignAsync(new ReassignMediaRequestDto
+                {
+                    MediaId=mediaId,
+                    TargetPlayniteId=request.TargetPlayniteId
+                },token).ConfigureAwait(false));
+            }
+            catch(OperationCanceledException)
+            {
+                throw;
+            }
+            catch(Exception ex)
+            {
+                result.Failures.Add(new MediaInboxBatchFailureDto { MediaId=mediaId, ErrorMessage=ex.Message });
+            }
+        }
+        return result;
+    }
+
+    /// <summary>Ignores a bounded inbox batch while retaining each archive copy.</summary>
+    public async Task<MediaInboxBatchResultDto> IgnoreBatchAsync(MediaInboxBatchRequestDto request,CancellationToken token)
+    {
+        var mediaIds=NormalizeInboxBatchIds(request.MediaIds);
+        if(mediaIds.Count==0)throw new InvalidOperationException("必须选择至少一个待归类媒体。");
+        if(mediaIds.Count>500)throw new InvalidOperationException("单次最多批量处理 500 个媒体文件。");
+
+        var result=new MediaInboxBatchResultDto();
+        foreach(var mediaId in mediaIds)
+        {
+            try
+            {
+                result.UpdatedItems.Add(await IgnoreAsync(new IgnoreMediaRequestDto { MediaId=mediaId },token).ConfigureAwait(false));
+            }
+            catch(OperationCanceledException)
+            {
+                throw;
+            }
+            catch(Exception ex)
+            {
+                result.Failures.Add(new MediaInboxBatchFailureDto { MediaId=mediaId, ErrorMessage=ex.Message });
+            }
+        }
+        return result;
+    }
+
+    private static List<string> NormalizeInboxBatchIds(IEnumerable<string>? mediaIds)
+        =>(mediaIds??Array.Empty<string>())
+            .Where(x=>!string.IsNullOrWhiteSpace(x))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToList();
+
     private Task<TaskStatusDto> SyncGameSourcesAsync(GameDescriptorDto game,MediaSyncRequestDto request,CancellationToken token)=>
         _tasks.RunAsync("MediaSync",game.PlayniteId,game.Name,async(progress,ct)=>
         {

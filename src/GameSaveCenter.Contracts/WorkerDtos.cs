@@ -40,7 +40,8 @@ namespace GameSaveCenter.Contracts
             "StorageAnalysis",
             "RetentionSimulation",
             "LocalMirror",
-            "MaintenanceReport"
+            "MaintenanceReport",
+            "MediaInboxBatch"
         };
     }
 }

@@ -1,7 +1,15 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
-> 维护时间：2026-08-22
+> 维护时间：2026-08-23
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
+
+## 2026-08-23 FUNC-001 当前事实：媒体收件箱批量处理与侧栏真实状态
+
+- `MediaCenterView.xaml` 的 `MediaInboxGrid` 现在允许 `Extended + FullRow` 多选；表格上方新增 `MediaInboxBatchActionRow`，仅提供目标游戏 ComboBox、`归类所选` 和 `忽略所选`，原有 Inspector 与单条归类/忽略命令保持不变。`MediaInboxGrid` 仍保留既有 `Standard` 行虚拟化、关闭列虚拟化和 `GscDataGridStarFill` 例外，不要为批量操作恢复 star-fill 或改掉滚动模型。
+- 新 IPC 类型为 `media.reassign.batch` 与 `media.inbox.ignore.batch`，请求在 Worker 侧最多 500 个去重媒体 ID；Playnite 对更大选择自动分批，每批使用较长请求超时。Worker 逐项复用现有归类/忽略逻辑，保留归档副本和审计记录，失败项通过 `MediaInboxBatchResultDto.Failures` 返回，取消不吞掉。
+- 批量归类复用 `InboxTargetGame`，忽略仍需一次安全确认；批量完成后刷新 Dashboard 和 Inbox，部分失败在状态栏和错误提示中显示首条错误。不要把单批上限扩大到无界，也不要改成前端逐项发起数千个 IPC 请求。
+- `AcrylicProductionShellView.xaml` 的 Worker/Ludusavi 指示灯和状态文字由 `Snapshot.WorkerHealthy`/`Snapshot.LudusaviAvailable` 的 DataTrigger 驱动，显示“正常/不可用”“可用/不可用”，不再显示原始布尔值。
+- FUNC-001 验证：`validate-source.py` 与 XAML 19/19 通过；Release 0 warning/0 error；Core 59、Worker 194、Playnite 280 通过/57 跳过；`artifacts/ui-qa/media-inbox-batch-v1/render-qa-report.txt` 为 `render-qa OK`；WPF 审查 0 error、21 warnings、164 info。未执行真实 Playnite 批量数据变更、宿主 DPI 或高对比度人工验收。
 
 ## 2026-08-22 UI-297 当前事实：页面激活时同步运行中游戏
 

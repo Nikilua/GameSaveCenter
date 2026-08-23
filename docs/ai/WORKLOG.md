@@ -2,6 +2,25 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-23 FUNC-001 媒体收件箱批量归类/忽略与真实状态显示
+
+**问题确认：**
+
+- 媒体待归类收件箱存在大批量待处理项，但原有归类和忽略只能逐条走 Playnite-to-Worker IPC；侧栏 Worker/Ludusavi 状态直接显示原始布尔值，用户无法快速理解“正常/不可用”的含义。
+
+**实现内容：**
+
+- Contracts 增加 `media.reassign.batch`、`media.inbox.ignore.batch` 及批量请求/结果 DTO；Worker 增加受限批量处理能力，单请求最多 500 项，去重后逐项复用现有移动、归档、SQLite 更新和审计逻辑，取消继续向上传播，部分失败返回明细。
+- Playnite 收件箱只增加表格上方的轻量批量操作条：启用 `Extended + FullRow` 多选、复用 `InboxTargetGame` 选择目标游戏、前端按 500 项自动分批并显示成功/失败摘要；原有 Inspector、单条命令、安全确认和大数据表格滚动/虚拟化保持不变。
+- 生产壳侧栏将 Worker/Ludusavi 指示灯和文案改为基于真实布尔状态的 DataTrigger，不再显示原始 `True/False`。
+
+**验证结果：**
+
+- `validate-source.py`、XAML 结构检查：通过（19 个 XAML 文件）。
+- Release 隔离构建：0 警告、0 错误；Core 59、Worker 194、Playnite 280 通过，Playnite 57 项按既有规则跳过。
+- `render-qa`：`artifacts/ui-qa/media-inbox-batch-v1/render-qa-report.txt` 为 `render-qa OK`，覆盖亮/暗主题、多窗口尺寸、滚动与 resize transition。
+- `validate_wpf_ui.py`：0 error、21 warnings、164 info；提示均为项目已有布局/颜色上下文。未在真实 Playnite 中执行批量归类/忽略，避免改动用户数据；宿主 DPI/高对比度仍需人工验证。
+
 ## 2026-08-22 UI-297 页面激活时同步当前运行中游戏
 
 **问题确认：**

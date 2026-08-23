@@ -2,6 +2,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 
 namespace GameSaveCenter.Playnite.Views
 {
@@ -24,6 +25,15 @@ namespace GameSaveCenter.Playnite.Views
                 return;
 
             ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
+        }
+
+        private void OnMediaInboxSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var count=MediaInboxGrid.SelectedItems.Count;
+            MediaInboxBatchSelectionSummary.Text=count==0
+                ? "可按住 Ctrl / Shift 多选"
+                : $"已选择 {count} 项；目标游戏可在此处调整";
+            CommandManager.InvalidateRequerySuggested();
         }
 
         public Border MediaSummaryPanelElement => MediaSummaryPanel;
