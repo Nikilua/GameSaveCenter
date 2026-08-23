@@ -77,6 +77,7 @@ public sealed class WpfUiResourceDictionaryTests
                 Assert.Null(localResources["GscSurfaceEffect"]);
                 Assert.Null(localResources["GscPrimaryButtonEffect"]);
                 Assert.Null(localResources["GscSidebarEffect"]);
+                Assert.Null(localResources["GscAmbientBlurEffect"]);
                 Assert.Null(localResources["GscPopupEffect"]);
                 Assert.Null(localResources["GscDialogEffect"]);
                 Assert.Null(localResources["GscSliderThumbEffect"]);
@@ -87,6 +88,9 @@ public sealed class WpfUiResourceDictionaryTests
                 Assert.IsType<DropShadowEffect>(localResources["GscSurfaceEffect"]);
                 Assert.IsType<DropShadowEffect>(localResources["GscPrimaryButtonEffect"]);
                 Assert.IsType<DropShadowEffect>(localResources["GscSidebarEffect"]);
+                var ambientBlur = Assert.IsType<BlurEffect>(localResources["GscAmbientBlurEffect"]);
+                Assert.Equal(18, ambientBlur.Radius);
+                Assert.Equal(RenderingBias.Performance, ambientBlur.RenderingBias);
                 Assert.IsType<DropShadowEffect>(localResources["GscPopupEffect"]);
                 Assert.IsType<DropShadowEffect>(localResources["GscDialogEffect"]);
                 Assert.IsType<DropShadowEffect>(localResources["GscSliderThumbEffect"]);
@@ -2179,6 +2183,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("GscAccentShadowColor", ambient);
         Assert.Contains("GscInfoShadowColor", ambient);
         Assert.Contains("GscSuccessShadowColor", ambient);
+        Assert.Contains("GscAmbientBlurEffect", ambient);
+        Assert.Contains("Effect=\"{DynamicResource GscAmbientBlurEffect}\"", ambient);
+        Assert.Contains("GscGlassHighlightBrush", productionShell);
         Assert.Contains("<ui:AmbientMaterialLayer", overview);
         Assert.Contains("x:Key=\"GscButtonStyle\"", redesign);
         Assert.Contains("x:Key=\"GscPrimaryButtonStyle\"", redesign);

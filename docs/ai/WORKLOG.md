@@ -2,6 +2,27 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-23 UI-298 安全增加毛玻璃高光与环境光 Blur
+
+**问题确认：**
+
+- 项目已有主题自适应的半透明表面和环境光层，但 Blur 资源一直为空，视觉上只有渐变光，没有实际的柔化环境光。
+- Playnite 是嵌入式 WPF 宿主，不能安全地把整个宿主窗口或页面内容做背景模糊；对大表格、滚动内容或文字应用 Blur 会影响性能、清晰度和虚拟化表现。
+
+**实现内容：**
+
+- 新增共享 `GscAmbientBlurEffect`，只挂在 `AmbientMaterialLayer` 的三个固定尺寸环境光椭圆上，半径 18、`RenderingBias.Performance`；不作用于页面、文字、DataGrid、ListBox 或滚动区域。
+- 生产壳增加一条 1 DIP、不可命中的玻璃高光线，增强现有半透明表面的层次，不改变布局和交互命中区域。
+- 毛玻璃关闭或系统高对比度时，Blur 资源返回真实 `null`，环境光层继续按既有逻辑隐藏，高光降为透明；保留现有不透明、可读的降级路径。
+- 增加 WPF 资源契约测试，固定 Blur 半径/性能偏好和关闭毛玻璃时的空效果；现有“滚动内容不得使用 BlurEffect”约束继续保留。
+
+**验证结果：**
+
+- WPF 资源定向测试通过（2/2）；源码验证通过。
+- WPF 静态审查 0 error、21 warnings、164 info，warning/info 均为既有项目上下文。
+- `artifacts/ui-qa/glass-blur-v1/render-qa-report.txt` 为 `render-qa OK`，覆盖双主题、多尺寸、Tab、滚动和 resize transition。
+- Release 解决方案构建 0 warning、0 error；未在真实 Playnite 宿主逐像素验收，需用户更新插件后人工确认实际显卡/宿主表现。
+
 ## 2026-08-23 FUNC-003 FLiNG 历史归档递归解析
 
 **问题确认：**

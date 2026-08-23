@@ -5,10 +5,10 @@
              IsHitTestVisible="False"
              ClipToBounds="True"
              SnapsToDevicePixels="True">
-    <!-- Shared effect-free material. It stays behind each page's real content, so text,
-         lists and virtualized rows never receive a blur or an overlay tint. -->
+    <!-- Shared decorative material. The optional blur is attached only to these three
+         fixed-size light sources; text, lists and virtualized rows never receive it. -->
     <Grid Opacity="{DynamicResource GscAmbientPageOpacity}">
-        <Ellipse Width="300" Height="300" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-96,-124,0,0" Opacity="0.90">
+        <Ellipse Width="300" Height="300" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-96,-124,0,0" Opacity="0.90" Effect="{DynamicResource GscAmbientBlurEffect}">
             <Ellipse.Fill>
                 <RadialGradientBrush>
                     <GradientStop Offset="0" Color="{DynamicResource GscAccentShadowColor}"/>
@@ -16,7 +16,7 @@
                 </RadialGradientBrush>
             </Ellipse.Fill>
         </Ellipse>
-        <Ellipse Width="280" Height="280" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-88,-86,0" Opacity="0.68">
+        <Ellipse Width="280" Height="280" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-88,-86,0" Opacity="0.68" Effect="{DynamicResource GscAmbientBlurEffect}">
             <Ellipse.Fill>
                 <RadialGradientBrush>
                     <GradientStop Offset="0" Color="{DynamicResource GscInfoShadowColor}"/>
@@ -24,7 +24,7 @@
                 </RadialGradientBrush>
             </Ellipse.Fill>
         </Ellipse>
-        <Ellipse Width="280" Height="280" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,-86,-104" Opacity="0.68">
+        <Ellipse Width="280" Height="280" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,-86,-104" Opacity="0.68" Effect="{DynamicResource GscAmbientBlurEffect}">
             <Ellipse.Fill>
                 <RadialGradientBrush>
                     <GradientStop Offset="0" Color="{DynamicResource GscSuccessShadowColor}"/>

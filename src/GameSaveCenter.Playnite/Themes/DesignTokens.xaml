@@ -53,6 +53,9 @@
     <x:Null x:Key="GscSurfaceEffect"/>
     <x:Null x:Key="GscPrimaryButtonEffect"/>
     <x:Null x:Key="GscSidebarEffect"/>
+    <!-- Applied only to the three fixed ambient light ellipses. It is never attached to
+         text, rows, lists, tables or the page scroll surface. -->
+    <x:Null x:Key="GscAmbientBlurEffect"/>
     <x:Null x:Key="GscPopupEffect"/>
     <x:Null x:Key="GscDialogEffect"/>
     <x:Null x:Key="GscSliderThumbEffect"/>

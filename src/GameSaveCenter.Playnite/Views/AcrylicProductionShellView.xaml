@@ -280,6 +280,13 @@
                     <TextBlock Text="GameSaveCenter" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 </Grid>
             </Border>
+
+            <!-- A one-DIP sheen makes the translucent shell read as glass without adding a
+                 hit-test surface, changing layout, or blurring the real page content. -->
+            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                    Height="1" Margin="1,0,1,0" VerticalAlignment="Top"
+                    Background="{DynamicResource GscGlassHighlightBrush}"
+                    IsHitTestVisible="False" Panel.ZIndex="20"/>
         </Grid>
     </Border>
 </UserControl>

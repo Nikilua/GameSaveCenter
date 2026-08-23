@@ -3,6 +3,14 @@
 > 维护时间：2026-08-23
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-23 UI-298 当前事实：安全毛玻璃高光与环境光 Blur
+
+- `DesignTokens.xaml` 的 `GscAmbientBlurEffect` 默认必须是 `x:Null`；`AdaptiveThemePaletteFactory.ApplyMaterialResources` 仅在 `glassEnabled` 时创建半径 18、`RenderingBias.Performance` 的冻结 `BlurEffect`，关闭毛玻璃或高对比度时返回真实 null。
+- `AmbientMaterialLayer.xaml` 只把该效果挂到三个固定尺寸的装饰椭圆；禁止把它提升到根 Grid、页面内容、TextBlock、DataGrid、ListBox 或任何大范围滚动容器，否则会破坏性能和可读性。
+- `AcrylicProductionShellView.xaml` 的玻璃高光是 1 DIP、`IsHitTestVisible=False` 的装饰 Border，不参与布局输入；`ApplyRuntimeThemeResources` 在 `glassEnabled=false` 时将 `GscGlassHighlightBrush` 置为透明。
+- 现有 `EnableGlassEffects`、高对比度、页面环境光隐藏和不透明主题表面降级语义不变；不要引入 Windows 宿主级 Backdrop、修改 Playnite WindowChrome 或对整个插件做 Blur。
+- UI-298 验证：WPF 资源定向测试 2/2、源码验证通过；WPF 静态审查 0 error/21 warnings/164 info；`artifacts/ui-qa/glass-blur-v1/render-qa-report.txt` 为 `render-qa OK`；Release 解决方案 0 warning/0 error。尚未在真实 Playnite 宿主逐像素验证。
+
 ## 2026-08-23 FUNC-003 当前事实：FLiNG 历史归档递归解析
 
 - `FlingTrainerCatalogSource.SyncCatalogAsync` 先解析在线目录，再通过 `GetArchiveCatalogAsync` 从 `https://archive.flingtrainer.com/` 以有界 BFS 递归读取归档目录；每个目录只允许继续访问同一归档主机的 HTTPS 子目录。

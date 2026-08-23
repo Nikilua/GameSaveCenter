@@ -269,6 +269,10 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscSurfaceEffect"] = CreateShadowEffect(glassEnabled, Colors.Black, 14, 2, palette.IsDark ? 0.34 : 0.24);
             resources["GscPrimaryButtonEffect"] = CreateShadowEffect(glassEnabled, palette.Accent, 12, 2, palette.IsDark ? 0.32 : 0.28);
             resources["GscSidebarEffect"] = CreateShadowEffect(glassEnabled, Colors.Black, 24, 3, palette.IsDark ? 0.42 : 0.30);
+            // Keep the only blur in the shared UI on three fixed-size decorative light
+            // sources. A real null fallback removes the effect tree for high contrast,
+            // reduced transparency and lower-cost machines.
+            resources["GscAmbientBlurEffect"] = CreateAmbientBlurEffect(glassEnabled);
             resources["GscPopupEffect"] = CreateShadowEffect(glassEnabled, Colors.Black, 20, 5, palette.IsDark ? 0.46 : 0.38);
             resources["GscDialogEffect"] = CreateShadowEffect(glassEnabled, Colors.Black, 34, 8, palette.IsDark ? 0.52 : 0.44);
             resources["GscSliderThumbEffect"] = CreateShadowEffect(glassEnabled, Colors.Black, 6, 1, 0.26);
@@ -363,7 +367,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscGlassStrongBrush"] = Gradient(palette.StrongSurfaceTop, palette.StrongSurfaceBottom);
             resources["GscSidebarBrush"] = Gradient(palette.SidebarTop, palette.SidebarBottom);
             resources["GscGlassStrokeBrush"] = Brush(palette.ControlStroke);
-            resources["GscGlassHighlightBrush"] = Brush(palette.Highlight);
+            resources["GscGlassHighlightBrush"] = Brush(glassEnabled ? palette.Highlight : Colors.Transparent);
             resources["GscBackdropBrush"] = Brush(palette.Backdrop);
             // The Demo owns a single, readable header band inside each table frame.  A nearly
             // transparent header is indistinguishable from the rows in Playnite and makes the
@@ -392,6 +396,8 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 palette.IsDark ? (byte)54 : (byte)34, 0, 0, 0));
             WpfUiThemeScope.Apply(resources, palette.IsDark);
             ApplyDemoCoreResources(resources, palette.IsDark);
+            if (!glassEnabled)
+                resources["GscGlassHighlightBrush"] = Brush(Colors.Transparent);
         }
 
         /// <summary>
@@ -529,6 +535,18 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 BlurRadius = blurRadius,
                 ShadowDepth = shadowDepth,
                 Opacity = opacity
+            };
+            effect.Freeze();
+            return effect;
+        }
+
+        private static BlurEffect? CreateAmbientBlurEffect(bool enabled)
+        {
+            if (!enabled) return null;
+            var effect = new BlurEffect
+            {
+                Radius = 18,
+                RenderingBias = RenderingBias.Performance
             };
             effect.Freeze();
             return effect;
