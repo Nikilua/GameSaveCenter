@@ -313,7 +313,7 @@
                             <Grid Grid.Column="1" VerticalAlignment="Center">
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="*" MinWidth="160"/><ColumnDefinition Width="140"/></Grid.ColumnDefinitions>
                                 <Grid Grid.Column="0">
-                                    <TextBox x:Name="MediaSearchTextBox" HorizontalAlignment="Stretch" Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding MediaSearchText, UpdateSourceTrigger=PropertyChanged}" ToolTip="按文件名、备注或来源搜索当前游戏媒体" AutomationProperties.Name="搜索当前游戏媒体"/>
+                                    <TextBox x:Name="MediaSearchTextBox" HorizontalAlignment="Stretch" Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding MediaSearchText, UpdateSourceTrigger=PropertyChanged}" Padding="12,3,38,3" ToolTip="按文件名、备注或来源搜索当前游戏媒体" AutomationProperties.Name="搜索当前游戏媒体"/>
                                     <TextBlock Text="搜索媒体" Foreground="{DynamicResource GscMutedTextBrush}" VerticalAlignment="Center" Margin="12,0,8,0" IsHitTestVisible="False">
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock">
@@ -324,6 +324,19 @@
                                             </Style>
                                         </TextBlock.Style>
                                     </TextBlock>
+                                    <Button HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,7,0"
+                                            Tag="{Binding ElementName=MediaSearchTextBox}" ToolTip="清除搜索"
+                                            AutomationProperties.Name="清除媒体搜索" Click="OnClearSearchTextBoxClick">
+                                        <Button.Style>
+                                            <Style TargetType="Button" BasedOn="{StaticResource GscSearchClearButton}">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Text, ElementName=MediaSearchTextBox}" Value=""><Setter Property="Visibility" Value="Collapsed"/></DataTrigger>
+                                                    <DataTrigger Binding="{Binding Text, ElementName=MediaSearchTextBox}" Value="{x:Null}"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
                                 </Grid>
                                 <ComboBox Grid.Column="1" Margin="8,0,0,0" Style="{DynamicResource GscWpfUiFilterComboBox}" SelectedIndex="0" ItemsSource="{Binding MediaFilterOptions}" SelectedItem="{Binding MediaFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" ToolTip="媒体类型筛选"/>
                             </Grid>

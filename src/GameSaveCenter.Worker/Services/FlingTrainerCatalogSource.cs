@@ -22,6 +22,7 @@ public sealed class FlingTrainerCatalogSource : ITrainerCatalogSource
     private const long MaxDownloadBytes=2L*1024*1024*1024;
     private const int MaxArchiveDirectories=2048;
     private const int MaxArchiveEntries=10000;
+    private static readonly string[] ArchiveExtensions={".zip",".rar",".7z"};
     private static readonly Uri CatalogUri = new("https://flingtrainer.com/all-trainers/");
     private static readonly Uri ArchiveCatalogUri = new("https://archive.flingtrainer.com/");
     private static readonly Regex TrainerLink = new(
@@ -232,8 +233,8 @@ public sealed class FlingTrainerCatalogSource : ITrainerCatalogSource
     private static bool IsArchiveFileUrl(string value)
         =>Uri.TryCreate(value,UriKind.Absolute,out var uri)
           &&IsArchiveUri(uri)
-          &&(uri.AbsolutePath.EndsWith(".zip",StringComparison.OrdinalIgnoreCase)
-             ||uri.AbsolutePath.EndsWith(".exe",StringComparison.OrdinalIgnoreCase));
+          &&(uri.AbsolutePath.EndsWith(".exe",StringComparison.OrdinalIgnoreCase)
+             ||ArchiveExtensions.Any(extension=>uri.AbsolutePath.EndsWith(extension,StringComparison.OrdinalIgnoreCase)));
 
     private static string Clean(string value)=>WebUtility.HtmlDecode(Tags.Replace(value,string.Empty)).Trim();
     private static string Normalize(string value)=>new(value.ToLowerInvariant().Where(char.IsLetterOrDigit).ToArray());

@@ -6,6 +6,7 @@ using GameSaveCenter.Core.Services;
 using GameSaveCenter.Worker.Configuration;
 using GameSaveCenter.Worker.Persistence;
 using Microsoft.Extensions.Logging;
+using SharpCompress.Readers;
 
 namespace GameSaveCenter.Worker.Services;
 
@@ -251,6 +252,11 @@ public sealed class GameToolService
                     ExtractZipSafely(temporary,root);
                     entry=SelectEntry(root,string.Empty,GameToolType.Trainer);
                 }
+                else if(HasArchiveSignature(temporary))
+                {
+                    ExtractArchiveSafely(temporary,root,taskToken);
+                    entry=SelectEntry(root,string.Empty,GameToolType.Trainer);
+                }
                 else if(HasSignature(temporary,0x4D,0x5A))
                 {
                     entry=Path.Combine(root,SafeSegment(release.DisplayName)+".exe");
@@ -258,7 +264,7 @@ public sealed class GameToolService
                 }
                 else
                 {
-                    throw new WorkerOperationException("FLING_DOWNLOAD_INVALID","下载内容既不是 ZIP 也不是 Windows 可执行文件，已拒绝绑定。",release.DownloadUrl);
+                    throw new WorkerOperationException("FLING_DOWNLOAD_INVALID","下载内容既不是 ZIP、RAR、7z 或 Windows 可执行文件，已拒绝绑定。",release.DownloadUrl);
                 }
 
                 var now=DateTime.UtcNow;
@@ -378,6 +384,52 @@ public sealed class GameToolService
         }
     }
 
+    private static void ExtractArchiveSafely(string archive,string destination,CancellationToken token)
+    {
+        using var reader=ReaderFactory.OpenReader(archive);
+        var entryCount=0;
+        long expandedBytes=0;
+        while(reader.MoveToNextEntry())
+        {
+            token.ThrowIfCancellationRequested();
+            if(++entryCount>MaxArchiveEntryCount)
+                throw new InvalidDataException($"压缩包包含过多文件（{entryCount}），已拒绝解压。");
+
+            var key=reader.Entry.Key??string.Empty;
+            string target;
+            try{target=ArchivePathGuard.ResolveEntryPath(destination,key);}
+            catch(InvalidDataException ex){throw new InvalidDataException("压缩包包含越界路径，已拒绝解压。",ex);}
+            if(reader.Entry.IsDirectory)
+            {
+                Directory.CreateDirectory(target);
+                continue;
+            }
+
+            var declaredSize=reader.Entry.Size;
+            if(declaredSize>MaxArchiveEntryBytes)
+                throw new InvalidDataException($"压缩包包含超过安全大小上限的文件：{key}");
+            if(declaredSize>0&&expandedBytes>MaxArchiveExpandedBytes-declaredSize)
+                throw new InvalidDataException("压缩包解压后的总大小超过安全上限，已拒绝解压。");
+
+            Directory.CreateDirectory(Path.GetDirectoryName(target)!);
+            long written=0;
+            using var input=reader.OpenEntryStream();
+            using var output=new FileStream(target,FileMode.CreateNew,FileAccess.Write,FileShare.None,81920,false);
+            var buffer=new byte[81920];
+            while(true)
+            {
+                token.ThrowIfCancellationRequested();
+                var count=input.Read(buffer,0,buffer.Length);
+                if(count==0)break;
+                written+=count;
+                expandedBytes+=count;
+                if(written>MaxArchiveEntryBytes||expandedBytes>MaxArchiveExpandedBytes)
+                    throw new InvalidDataException("压缩包解压后的内容超过安全上限，已拒绝解压。");
+                output.Write(buffer,0,count);
+            }
+        }
+    }
+
     private static string SelectEntry(string root,string requested,GameToolType type)
     {
         if(!string.IsNullOrWhiteSpace(requested))
@@ -465,6 +517,19 @@ public sealed class GameToolService
     {
         using var stream=new FileStream(path,FileMode.Open,FileAccess.Read,FileShare.Read);
         return stream.ReadByte()==first&&stream.ReadByte()==second;
+    }
+
+    private static bool HasArchiveSignature(string path)
+        =>HasSignature(path,0x50,0x4B)
+          ||HasSignature(path,0x52,0x61,0x72,0x21)
+          ||HasSignature(path,0x37,0x7A,0xBC,0xAF,0x27,0x1C);
+
+    private static bool HasSignature(string path,params byte[] signature)
+    {
+        using var stream=new FileStream(path,FileMode.Open,FileAccess.Read,FileShare.Read);
+        for(var i=0;i<signature.Length;i++)
+            if(stream.ReadByte()!=signature[i])return false;
+        return true;
     }
 
     private static string SafeSegment(string value)

@@ -237,12 +237,26 @@
                             <Grid>
                                 <TextBox x:Name="GameSearchTextBox" Style="{DynamicResource GscWpfUiTextBox}"
                                          Text="{Binding GamePicker.SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         Padding="12,3,38,3"
                                          AutomationProperties.Name="搜索游戏" ToolTip="搜索游戏、平台或状态"/>
                                 <TextBlock Text="搜索游戏" Foreground="{DynamicResource GscMutedTextBrush}"
                                            IsHitTestVisible="False" Margin="12,0,0,0" VerticalAlignment="Center">
                                     <TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding Text, ElementName=GameSearchTextBox}" Value=""><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style>
-                                </TextBlock>
-                            </Grid>
+                                 </TextBlock>
+                                 <Button HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,7,0"
+                                         Tag="{Binding ElementName=GameSearchTextBox}" ToolTip="清除搜索"
+                                         AutomationProperties.Name="清除游戏搜索" Click="OnClearGameSearchClick">
+                                     <Button.Style>
+                                         <Style TargetType="Button" BasedOn="{StaticResource GscSearchClearButton}">
+                                             <Setter Property="Visibility" Value="Visible"/>
+                                             <Style.Triggers>
+                                                 <DataTrigger Binding="{Binding Text, ElementName=GameSearchTextBox}" Value=""><Setter Property="Visibility" Value="Collapsed"/></DataTrigger>
+                                                 <DataTrigger Binding="{Binding Text, ElementName=GameSearchTextBox}" Value="{x:Null}"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger>
+                                             </Style.Triggers>
+                                         </Style>
+                                     </Button.Style>
+                                 </Button>
+                             </Grid>
                             <UniformGrid Grid.Row="1" Columns="3" Margin="0,8,0,0">
                                 <ComboBox x:Name="GamePickerStatusComboBox" Style="{DynamicResource GscWpfUiFilterComboBox}"
                                           ItemsSource="{Binding GamePicker.StatusFilterOptions}" SelectedItem="{Binding GamePicker.StatusFilter, Mode=TwoWay}" Margin="0,0,4,0"/>

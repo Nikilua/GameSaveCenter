@@ -733,9 +733,9 @@
                          <!-- Demo intentionally has no second disclosure, checkbox list or per-item action here. -->
                        </StackPanel>
                      </ScrollViewer>
-                    <StackPanel x:Name="OverviewProtectionActions" Grid.Row="2" Orientation="Horizontal" Margin="0,8,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding OpenProtectionGamesCommand}" Content="查看需要处理的游戏" Height="{DynamicResource GscButtonHeight}" MinWidth="128" Margin="0,0,6,0" VerticalContentAlignment="Center" AutomationProperties.Name="查看最近游玩但未受保护的游戏"/>
-                        <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding ApplyRecommendedProtectionCommand}" Content="启用所选保护" Height="{DynamicResource GscButtonHeight}" MinWidth="128" VerticalContentAlignment="Center" ToolTip="启用所选保护前会要求确认，并先创建当前快照。" AutomationProperties.Name="为所选最近游玩游戏启用推荐保护"/>
+                    <StackPanel x:Name="OverviewProtectionActions" Grid.Row="2" Orientation="Horizontal" Margin="0,8,0,0" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenProtectionGamesCommand}" Content="查看需要处理的游戏" Height="{DynamicResource GscButtonHeight}" MinHeight="{DynamicResource GscButtonHeight}" MinWidth="128" Margin="0,0,6,0" VerticalAlignment="Center" AutomationProperties.Name="查看最近游玩但未受保护的游戏"/>
+                        <ui:Button Style="{DynamicResource GscWpfUiToolbarPrimaryButton}" Command="{Binding ApplyRecommendedProtectionCommand}" Content="启用所选保护" Height="{DynamicResource GscButtonHeight}" MinHeight="{DynamicResource GscButtonHeight}" MinWidth="128" Margin="0" VerticalAlignment="Center" ToolTip="启用所选保护前会要求确认，并先创建当前快照。" AutomationProperties.Name="为所选最近游玩游戏启用推荐保护"/>
                     </StackPanel>
                 </Grid>
             </Border>

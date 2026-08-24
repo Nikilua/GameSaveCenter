@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using GameSaveCenter.Playnite.ViewModels;
 
 namespace GameSaveCenter.Playnite.Views
@@ -17,6 +18,17 @@ namespace GameSaveCenter.Playnite.Views
         {
             InitializeComponent();
             TrainerToolsSettingsScrollViewer.IsVisibleChanged += OnTrainerInspectorIsVisibleChanged;
+        }
+
+        private void OnClearSearchTextBoxClick(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement source && source.Tag is TextBox textBox)
+            {
+                textBox.Clear();
+                textBox.Focus();
+                Keyboard.Focus(textBox);
+            }
+            e.Handled = true;
         }
 
         private void OnTrainerInspectorIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -86,6 +98,8 @@ namespace GameSaveCenter.Playnite.Views
                 // input shrink before the host reaches the Narrow fallback.  The form is
                 // presentation-only; the existing binding and search command are untouched.
                 var searchWidth = Math.Max(260, Math.Min(680, width - (width < 960 ? 200 : 320)));
+                TrainerSearchBoxHost.Width = searchWidth;
+                TrainerSearchBoxHost.MinWidth = 0;
                 TrainerSearchTextBox.Width = searchWidth;
                 TrainerSearchTextBox.MinWidth = 0;
                 var importWidth = Math.Max(240, Math.Min(520, width - 360));

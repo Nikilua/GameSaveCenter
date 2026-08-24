@@ -2,6 +2,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 
 namespace GameSaveCenter.Playnite.Views
 {
@@ -15,6 +16,17 @@ namespace GameSaveCenter.Playnite.Views
         {
             InitializeComponent();
             TaskDetailScrollViewer.IsVisibleChanged += OnTaskDetailScrollViewerIsVisibleChanged;
+        }
+
+        private void OnClearSearchTextBoxClick(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement source && source.Tag is TextBox textBox)
+            {
+                textBox.Clear();
+                textBox.Focus();
+                Keyboard.Focus(textBox);
+            }
+            e.Handled = true;
         }
 
         private void OnTaskDetailScrollViewerIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)

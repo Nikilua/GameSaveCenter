@@ -14,6 +14,15 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-24 UI-300 / FUNC-004 表格、输入框与 FLiNG 归档修复交接
+
+- 共享 `WpfUiProduction.xaml`、`DesignTokens.xaml` 的普通 TextBox 现在显式使用左对齐内容和文本；模板把 `HorizontalContentAlignment` 传给 `PART_ContentHost`，因此插入光标从输入框左侧内边距开始。数值输入仍由专用样式覆盖为右对齐或居中，不改变原有编辑语义。
+- 游戏、媒体、任务和 FLiNG 搜索框均增加共享清除按钮：有内容时显示 `×`，清空后保留键盘焦点；Dashboard 原有游戏搜索行为保持不变。按钮使用 AutomationProperties 名称，右侧输入内边距为清除按钮预留命中区。
+- 共享 `GscRoundedDataGridRowTemplate` 与 Dashboard 本地兼容行模板把选中描边收进右侧安全区，避免 Playnite 宿主垂直滚动轨道覆盖右边圆角；Save/Task/Media/Maintenance 仍复用同一选中态、滚动、排序和 Recycling 契约。
+- Overview 风险区两个真实命令按钮统一使用工具栏按钮模板、固定共享高度和垂直居中，命令、Automation 名称和安全行为不变。
+- FLiNG 归档按实际站点链路处理：归档站点的字母/子目录列表中的 `.zip`、`.rar`、`.7z` 直链进入现有目录搜索；下载后识别 RAR/7z 签名，由 SharpCompress 流式解包，并复用越界路径、条目数、单文件和总展开体积限制；不执行压缩包中的 EXE。官方归档临时不可用时仍不阻塞在线目录刷新。
+- 当前阶段验证：`validate-source.py`、XAML 19/19、WPF 静态审查 0 error/20 warnings/165 info、Release 0 warning/0 error、Core 59/59、Worker 199/199、Playnite 282/282（57 项按既有环境规则跳过），`artifacts/ui-qa/ui300-input-fling-v1/render-qa-report.txt` 为 `render-qa OK`。`scripts/dev-install-run.ps1 -Configuration Release -NoStart` 已在受控 Windows 权限下完成生产扩展安装，清单 `0.6.70`、DLL `0.6.70.0`；尚未从官方归档实际下载并运行修改器，安全软件拦截仍需用户环境复核。
+
 ## 2026-08-23 FUNC-002 媒体收件箱忽略恢复交接
 
 - 本轮继续按用户要求只补功能块，不重排媒体页面。`MediaInboxBatchActionRow` 内增加“待归类/已忽略”视图切换；已忽略列表按需加载，默认待归类流程仍只请求原有消息。Inspector 在已忽略模式只显示恢复动作，原有归类、忽略、批量选择和 DataGrid 滚动/虚拟化保持不变。
@@ -68,7 +77,7 @@
 
 - `GameToolService` 已修复文件名误判：含版本文字 `Update` 的修改器 EXE 不再被过滤；只有明确的 `unins*`、`uninstall`、`update`、`updater`、`setup` 辅助入口在目录/ZIP候选列表中排除。显式单文件导入必须保留其入口。
 - 拖放导入的候选集合、选中项、清理和导入后工具选择均通过 `DashboardViewModel.ApplyOnUi`，防止 Worker/IPC continuation 直接修改 WPF `CollectionView`。不要将 `Replace(ImportEntryCandidates,...)` 或 `ImportEntryCandidates.Clear()` 移回后台 continuation。
-- FLiNG 目录刷新现在可选读取 `https://archive.flingtrainer.com/` 的静态目录；历史 ZIP/EXE 作为“FLiNG 归档”搜索结果，读取版本后走现有下载/安全解压/入口选择流程。归档失败是可降级的，不得让当前在线目录刷新失败；RAR/7z 不应伪装成可支持格式。
+- FLiNG 目录刷新现在可选读取 `https://archive.flingtrainer.com/` 的静态目录；历史 ZIP/RAR/7z/EXE 作为“FLiNG 归档”搜索结果，读取版本后走现有下载/安全解压/入口选择流程。归档失败是可降级的，不得让当前在线目录刷新失败；RAR/7z 由 SharpCompress 解包并继续执行同一安全限制。
 - 当前证据：`artifacts/gsc-b/ui286-trainer-import-v2` 为 XAML 18/18、Release 0 warning/0 error、Core 59/59、Worker 194/194、Playnite 273 通过/60 跳过/0 失败；`artifacts/ui-qa/ui286-trainer-import-v1/render-qa-report.txt` 为 `render-qa OK`；source 0 error，WPF UI 0 error、20 warnings、164 info。真实 Playnite 宿主和用户提供的 EXE 均未执行/未验证，不能把本阶段写成真实宿主验收或总迁移完成。
 
 ## 2026-08-21 UI-285 媒体待归类反向滚动空白交接

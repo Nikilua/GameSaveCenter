@@ -44,6 +44,17 @@ namespace GameSaveCenter.Playnite.Views
             OnMediaInboxSelectionChanged(sender,e);
         }
 
+        private void OnClearSearchTextBoxClick(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement source && source.Tag is TextBox textBox)
+            {
+                textBox.Clear();
+                textBox.Focus();
+                Keyboard.Focus(textBox);
+            }
+            e.Handled = true;
+        }
+
         public Border MediaSummaryPanelElement => MediaSummaryPanel;
         public UniformGrid MediaSourceFieldsElement => MediaSourceFields;
         public Grid MediaSourceLayoutElement => MediaSourceLayout;

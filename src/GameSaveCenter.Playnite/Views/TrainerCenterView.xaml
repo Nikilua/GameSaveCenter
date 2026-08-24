@@ -103,7 +103,22 @@
                 <Border Style="{DynamicResource GscReadingCardStyle}" Padding="16" MaxWidth="1080" HorizontalAlignment="Stretch" VerticalAlignment="Top">
                     <Grid>
                         <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-                        <TextBox x:Name="TrainerSearchTextBox" Style="{DynamicResource GscWpfUiTextBox}" Width="680" MinWidth="0" MaxWidth="680" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding TrainerSearchText, UpdateSourceTrigger=PropertyChanged}" ToolTip="输入游戏名称，搜索本地缓存的 FLiNG 目录" AutomationProperties.Name="搜索 FLiNG 目录"/>
+                        <Grid x:Name="TrainerSearchBoxHost" Width="680" MinWidth="0" MaxWidth="680" HorizontalAlignment="Left">
+                            <TextBox x:Name="TrainerSearchTextBox" Style="{DynamicResource GscWpfUiTextBox}" Width="680" MinWidth="0" MaxWidth="680" HorizontalAlignment="Stretch" Padding="12,3,38,3" VerticalAlignment="Center" Text="{Binding TrainerSearchText, UpdateSourceTrigger=PropertyChanged}" ToolTip="输入游戏名称，搜索本地缓存的 FLiNG 目录" AutomationProperties.Name="搜索 FLiNG 目录"/>
+                            <Button HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,7,0"
+                                    Tag="{Binding ElementName=TrainerSearchTextBox}" ToolTip="清除搜索"
+                                    AutomationProperties.Name="清除 FLiNG 搜索" Click="OnClearSearchTextBoxClick">
+                                <Button.Style>
+                                    <Style TargetType="Button" BasedOn="{StaticResource GscSearchClearButton}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Text, ElementName=TrainerSearchTextBox}" Value=""><Setter Property="Visibility" Value="Collapsed"/></DataTrigger>
+                                            <DataTrigger Binding="{Binding Text, ElementName=TrainerSearchTextBox}" Value="{x:Null}"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                        </Grid>
                         <WrapPanel Grid.Row="1" Margin="0,12,0,0">
                             <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding SearchTrainerCatalogCommand}" Content="搜索目录" Margin="0,0,8,0"/>
                             <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding SyncTrainerCatalogCommand}" Content="刷新目录" Margin="0,0,0,0"/>

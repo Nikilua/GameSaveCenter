@@ -2791,7 +2791,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains(selected.Descendants(), element => element.Name.LocalName == "Setter"
             && element.Attribute("TargetName")?.Value == "RowChrome"
             && element.Attribute("Property")?.Value == "Margin"
-            && element.Attribute("Value")?.Value == "4,2");
+            && element.Attribute("Value")?.Value == "4,2,8,2");
         Assert.Contains(selected.Descendants(), element => element.Name.LocalName == "Setter"
             && element.Attribute("TargetName")?.Value == "RowChrome"
             && element.Attribute("Property")?.Value == "BorderBrush"

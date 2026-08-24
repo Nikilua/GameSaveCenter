@@ -24,6 +24,23 @@ public sealed class FlingTrainerCatalogSourceTests
     }
 
     [Fact]
+    public void ArchiveDirectoryListing_ProducesSearchableRarEntry()
+    {
+        const string html="""
+            <html><body>
+              <a href="files/Devil%20May%20Cry%204%20Special%20Edition%20v20190328%20Plus%2020%20Trainer.rar">Devil May Cry 4 Special Edition v20190328 Plus 20 Trainer.rar</a>
+            </body></html>
+            """;
+
+        var listing=FlingTrainerCatalogSource.ParseArchiveDirectoryListing(
+            html,new Uri("https://archive.flingtrainer.com/"),DateTime.UtcNow);
+
+        var item=Assert.Single(listing.Files);
+        Assert.Contains("Devil May Cry 4 Special Edition",item.Title,StringComparison.OrdinalIgnoreCase);
+        Assert.EndsWith(".rar",item.PageUrl,StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
     public void ArchiveDirectoryListing_ExposesNestedDirectoriesAndKeepsExternalLinksOut()
     {
         const string html="""

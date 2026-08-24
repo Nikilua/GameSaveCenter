@@ -140,7 +140,7 @@
                      separate Auto column made the real host give the input only a
                      narrow sliver, while the Demo uses one continuous search field. -->
                 <Grid x:Name="TaskSearchBoxHost" Grid.Row="0" Grid.Column="0" MinWidth="180" Margin="0,0,10,0">
-                    <TextBox x:Name="TaskSearchTextBox" Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding TaskSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="搜索任务、游戏或错误" AutomationProperties.Name="搜索任务" HorizontalAlignment="Stretch" Padding="30,7,10,7"/>
+                    <TextBox x:Name="TaskSearchTextBox" Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding TaskSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="搜索任务、游戏或错误" AutomationProperties.Name="搜索任务" HorizontalAlignment="Stretch" Padding="30,7,38,7"/>
                     <TextBlock Text="&#xE721;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource GscSecondaryTextBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="11,0,0,0" IsHitTestVisible="False"/>
                     <TextBlock Text="搜索任务…" VerticalAlignment="Center" Margin="30,0,12,0" IsHitTestVisible="False">
                         <TextBlock.Style>
@@ -154,6 +154,19 @@
                             </Style>
                         </TextBlock.Style>
                     </TextBlock>
+                    <Button HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,7,0"
+                            Tag="{Binding ElementName=TaskSearchTextBox}" ToolTip="清除搜索"
+                            AutomationProperties.Name="清除任务搜索" Click="OnClearSearchTextBoxClick">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource GscSearchClearButton}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Text, ElementName=TaskSearchTextBox}" Value=""><Setter Property="Visibility" Value="Collapsed"/></DataTrigger>
+                                    <DataTrigger Binding="{Binding Text, ElementName=TaskSearchTextBox}" Value="{x:Null}"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
                 </Grid>
                 <TextBlock x:Name="TaskStatusFilterLabel" Grid.Row="0" Grid.Column="1" Text="状态:" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,4,0"/>
                 <ComboBox x:Name="TaskStatusFilterComboBox" Grid.Row="0" Grid.Column="2" Style="{DynamicResource GscWpfUiFilterComboBox}" MinWidth="112" MaxWidth="160" ItemsSource="{Binding TaskStatusFilterOptions}" SelectedItem="{Binding TaskStatusFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" ToolTip="任务状态" Margin="0,0,10,0"/>

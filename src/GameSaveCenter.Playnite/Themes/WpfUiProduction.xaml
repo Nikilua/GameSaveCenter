@@ -65,6 +65,7 @@
                           VerticalAlignment="Stretch"
                           VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                           HorizontalAlignment="Stretch"
+                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                           Focusable="False"
                           HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}"
                           VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}"
@@ -535,7 +536,10 @@
                 <Setter TargetName="RowChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
                 <Setter TargetName="RowChrome" Property="BorderThickness" Value="1"/>
                 <Setter TargetName="RowChrome" Property="CornerRadius" Value="14"/>
-                <Setter TargetName="RowChrome" Property="Margin" Value="4,2"/>
+                <!-- Leave a small safe area at the right edge. Playnite's host ScrollViewer
+                     can overlay the last device pixels with its vertical track; keeping the
+                     selected outline inside the rounded frame makes both side corners visible. -->
+                <Setter TargetName="RowChrome" Property="Margin" Value="4,2,8,2"/>
                 <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
                 <Setter Property="TextElement.Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
             </Trigger>
@@ -939,6 +943,8 @@
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="TextAlignment" Value="Left"/>
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>

@@ -34,6 +34,14 @@ namespace GameSaveCenter.Playnite.Views
 
         public Action? SettingsRequested { get; set; }
 
+        private void OnClearGameSearchClick(object sender, RoutedEventArgs e)
+        {
+            GameSearchTextBox.Clear();
+            GameSearchTextBox.Focus();
+            Keyboard.Focus(GameSearchTextBox);
+            e.Handled = true;
+        }
+
         public void Attach(DashboardViewModel dashboardViewModel)
         {
             if (ReferenceEquals(viewModel, dashboardViewModel))

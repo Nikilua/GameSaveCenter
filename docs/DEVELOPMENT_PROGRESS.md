@@ -1,5 +1,7 @@
 # 开发实现进度
 
+- [x] UI-300 / FUNC-004（2026-08-24）：修复共享 DataGrid 选中描边右侧圆角在宿主滚动轨道下不可见的问题；Overview 风险区两个真实按钮统一高度、模板和垂直对齐；普通 TextBox 明确左对齐并修正模板内容对齐传递，游戏/媒体/任务/FLiNG 搜索框增加带键盘焦点保留的一键清除按钮。FLiNG 归档同步接受归档站点的 ZIP/RAR/7z/EXE 直链，Worker 对 RAR/7z 使用 SharpCompress 流式安全解包，保留路径、条目数、单文件和总展开体积限制，不执行归档内 EXE。源码门禁、XAML 19/19、Release 0 警告/0 错误、Core 59/59、Worker 199/199、Playnite 282/282（57 跳过）和 `render-qa OK` 已通过；受控一键安装已验证生产扩展 `0.6.70.0`，真实 FLiNG 下载/运行和用户宿主安全软件行为仍待复核。
+
 - [x] UI-297（2026-08-22）：修复游戏先启动、再打开或重新聚焦 GameSaveCenter 时选框不自动切换的问题。Dashboard 页面 `Loaded/IsVisible=true` 和异步快照应用后只读 Playnite `Game.IsRunning`，同步当前 DTO/运行中统计并按既有 resolver 选择运行中游戏；无运行中游戏时保留手动/持久化选择。不会启动 Worker 会话、触发 `GameSessionStarted`、新增进程扫描/IPC 轮询/网络请求，也未改变命令、Binding、DataGrid/ListBox 虚拟化或备份安全语义。`GamePickerItem` 增加轻量状态通知。源码门禁通过；隔离 Release XAML 19/19、0 警告/0 错误；专项自动定位测试 1/1；WPF 静态审查 0 error、21 warnings、164 info。完整 Playnite 测试当前分支为 240 通过/62 跳过/19 个既有 Demo/布局断言失败；真实宿主页面反复打开、主题/DPI 仍需人工验收。
 
 - [x] UI-295（2026-08-22）：修正媒体中心摘要条的统计块与竖线顺序；四个真实统计块使用 `0/2/4/6` 列，分隔线使用 `1/3/5` 固定 10 DIP 间隔列，移除最后一块右侧多余竖线。真实 MediaSummary/Snapshot OneWay Binding、文案、Tab、滚动和虚拟化保持不变；同步更新默认媒体摘要回归测试与历史资源契约。源码门禁通过，Release 0 警告/0 错误，Core 59、Worker 194、Playnite 277 通过/57 跳过，双主题多尺寸 render-qa 全绿；真实 Playnite 宿主、DPI 和连续缩放仍需人工验收。

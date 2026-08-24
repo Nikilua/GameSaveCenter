@@ -3,6 +3,14 @@
 > 维护时间：2026-08-24
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-24 UI-300 / FUNC-004 当前事实：表格、输入框与 FLiNG 归档
+
+- `WpfUiProduction.xaml` 的共享 `GscRoundedDataGridRowTemplate` 选中描边使用 `4,2,8,2` 安全边距，`DashboardView.xaml` 的本地兼容行模板同步；不要把右边距恢复为 `4,2`，否则宿主垂直滚动轨道可能覆盖右侧圆角。共享行的排序、SelectiveScrollingGrid、Item 滚动和 Recycling 不变。
+- `GscWpfUiTextBox` 与 `GscTextBox` 的普通文本默认 `HorizontalContentAlignment=Left`、`TextAlignment=Left`，模板把对齐属性传给 `PART_ContentHost`；数值输入专用样式仍可覆盖对齐方式。普通搜索框通过 `GscSearchClearButton` 在非空时显示清除动作并清空后恢复焦点。
+- `AcrylicProductionShellView`、`MediaCenterView`、`TaskCenterView`、`TrainerCenterView` 的搜索清除按钮均只影响输入值和焦点，不改绑定/命令；Trainer 的响应式宽度现在作用于 `TrainerSearchBoxHost`，避免按钮被宽度赋值挤出输入框。
+- `FlingTrainerCatalogSource` 从 `https://archive.flingtrainer.com/` 有界 BFS 解析 `.zip`、`.rar`、`.7z`、`.exe` 归档直链，并保留同主机 HTTPS、目录/文件上限和可降级在线目录刷新。`GameToolService` 先保留 ZIP/direct EXE 路径，RAR/7z 使用 SharpCompress reader 流式写入临时版本目录，通过 `ArchivePathGuard` 与 1 GiB 单文件/4 GiB 总展开限制后再选择修改器 EXE；不执行下载内容。
+- `SharpCompress` 版本由 `Directory.Packages.props` 统一锁定为 `0.50.4`。本阶段验证：源码门禁通过，XAML 19/19，WPF 0 error/20 warnings/165 info，Release 0 warning/0 error，Core 59/59、Worker 199/199、Playnite 282/282（57 跳过），`artifacts/ui-qa/ui300-input-fling-v1/render-qa-report.txt` 为 `render-qa OK`。受控运行 `scripts/dev-install-run.ps1 -Configuration Release -NoStart` 已安装生产扩展并核验 `0.6.70.0`；沙箱内直接运行时的 Access denied 只来自受限环境写不了 Roaming Playnite 扩展目录。真实 FLiNG 归档下载/运行和安全软件拦截仍不由自动验证声称覆盖。
+
 ## 2026-08-24 UI-299 当前事实：表格字体与行表面可读性
 
 - `DesignTokens.xaml` 新增 `GscTableRowBrush`；`AdaptiveThemePalette.ApplyRuntimeThemeResources` 和 `ApplyDemoCoreResources` 为浅/深主题提供低透明度行面/交替行面，高对比度保持透明降级。

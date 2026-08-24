@@ -2,6 +2,28 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-24 UI-300 / FUNC-004 表格、输入框与 FLiNG 归档修复
+
+**问题确认：**
+
+- 多个生产 DataGrid 的选中描边左侧可见、右侧圆角容易被 Playnite 宿主垂直滚动轨道覆盖；Overview 风险区的两个真实操作按钮使用不同按钮模板，高度和垂直位置不一致。
+- 共享 TextBox 模板没有把 `HorizontalContentAlignment` 传给 `PART_ContentHost`，部分宿主下插入光标看起来偏中；游戏、媒体、任务、FLiNG 搜索框缺少统一的一键清除入口。
+- FLiNG 历史归档站点的实际直链不只包含 EXE/ZIP，也有 RAR/7z；旧解析器能爬到归档目录，却会把这些文件排除，且 Worker 只有 ZIP/单 EXE 路径。
+
+**实现内容：**
+
+- 共享 `GscRoundedDataGridRowTemplate` 和 Dashboard 本地兼容行模板把选中 `RowChrome` 的 Margin 从 `4,2` 调整为 `4,2,8,2`，让右侧圆角落在稳定安全区；没有改表格命令、排序、SelectiveScrollingGrid、Item 滚动或 Recycling 虚拟化。
+- Overview 风险按钮统一使用共享工具栏普通/主按钮模板、共享高度、最小宽度和垂直居中；原有命令、Automation 名称和安全语义保留。
+- `GscWpfUiTextBox`、`GscTextBox` 默认左对齐并把内容对齐传到 `PART_ContentHost`；数值输入专用样式仍能覆盖为右对齐/居中。Shell、Media、Task、Trainer 搜索框增加条件显示的 `GscSearchClearButton`，点击清空并保留焦点；Trainer 响应式宽度作用于包含清除按钮的 Host 和输入框。
+- FLiNG 归档有界 BFS 接受 `.zip`、`.rar`、`.7z`、`.exe` 直链，仍限制 HTTPS 同主机、目录/文件数量和归档故障降级。Worker 用 SharpCompress reader 流式解包 RAR/7z，逐条执行 `ArchivePathGuard`、1 GiB 单文件和 4 GiB 总展开大小上限，失败清理版本目录，绝不执行压缩包内 EXE；现有 ZIP/direct EXE 流程保持优先。
+
+**验证结果：**
+
+- `validate-source.py` 通过；XAML 结构 19/19；WPF 静态审查 0 error、20 warnings、165 info。
+- Release 解决方案 0 warning/0 error；Core 59/59、Worker 199/199、Playnite 282/282，另有 57 项按既有环境规则跳过；新增 FLiNG RAR 解析和输入/无障碍契约测试均通过。
+- `artifacts/ui-qa/ui300-input-fling-v1/render-qa-report.txt` 为 `render-qa OK`，覆盖浅/深主题、多尺寸、表格滚动和 resize transition；抽查历史版本表格选中行右侧圆角可见。
+- 受控 Windows 权限运行 `scripts/dev-install-run.ps1 -Configuration Release -NoStart` 成功，生产扩展目录清单为 `0.6.70`、DLL 为 `0.6.70.0`。普通沙箱运行同一脚本时无法创建 Roaming Playnite 暂存目录，属于环境写权限限制，不是 Demo 路径或打包来源错误。未实际下载/运行 FLiNG 修改器，安全软件行为仍需用户环境复核。
+
 ## 2026-08-24 UI-299 表格字体与行表面可读性优化
 
 **问题确认：**

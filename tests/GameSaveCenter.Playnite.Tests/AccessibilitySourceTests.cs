@@ -12,6 +12,7 @@ public sealed class AccessibilitySourceTests
         var root = FindRepositoryRoot();
         var dashboardCode = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml.cs"));
         var dashboardXaml = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml"));
+        var shellXaml = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml"));
         var taskXaml = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml"));
         var mediaXaml = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
         var trainerXaml = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml"));
@@ -28,6 +29,29 @@ public sealed class AccessibilitySourceTests
         Assert.Contains("x:Name=\"MediaSearchTextBox\"", mediaXaml);
         Assert.Contains("AutomationProperties.Name=\"搜索当前游戏媒体\"", mediaXaml);
         Assert.Contains("AutomationProperties.Name=\"搜索 FLiNG 目录\"", trainerXaml);
+        Assert.Contains("AutomationProperties.Name=\"清除游戏搜索\"", shellXaml);
+        Assert.Contains("AutomationProperties.Name=\"清除媒体搜索\"", mediaXaml);
+        Assert.Contains("AutomationProperties.Name=\"清除任务搜索\"", taskXaml);
+        Assert.Contains("AutomationProperties.Name=\"清除 FLiNG 搜索\"", trainerXaml);
+        Assert.Contains("Padding=\"12,3,38,3\"", shellXaml);
+        Assert.Contains("Padding=\"12,3,38,3\"", mediaXaml);
+        Assert.Contains("Padding=\"30,7,38,7\"", taskXaml);
+        Assert.Contains("Padding=\"12,3,38,3\"", trainerXaml);
+    }
+
+    [Fact]
+    public void SharedTextBoxesUseLeadingCaretAlignment()
+    {
+        var root = FindRepositoryRoot();
+        var production = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml"));
+        var tokens = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml"));
+
+        Assert.Contains("<Setter Property=\"HorizontalContentAlignment\" Value=\"Left\"/>", production);
+        Assert.Contains("<Setter Property=\"TextAlignment\" Value=\"Left\"/>", production);
+        Assert.Contains("<Setter Property=\"HorizontalContentAlignment\" Value=\"Left\"/>", tokens);
+        Assert.Contains("<Setter Property=\"TextAlignment\" Value=\"Left\"/>", tokens);
+        Assert.Contains("HorizontalContentAlignment=\"{TemplateBinding HorizontalContentAlignment}\"", production);
+        Assert.Contains("HorizontalContentAlignment=\"{TemplateBinding HorizontalContentAlignment}\"", tokens);
     }
 
     [Fact]
