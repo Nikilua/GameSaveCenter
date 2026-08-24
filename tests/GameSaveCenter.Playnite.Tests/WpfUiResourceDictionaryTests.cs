@@ -63,7 +63,18 @@ public sealed class WpfUiResourceDictionaryTests
                 Assert.IsType<SolidColorBrush>(localResources["GscSafetyStrokeBrush"]);
                 Assert.IsType<SolidColorBrush>(localResources["GscAmbientInfoBrush"]);
                 Assert.IsType<SolidColorBrush>(localResources["GscAmbientSuccessBrush"]);
+                Assert.IsType<Color>(localResources["GscAmbientCenterShadowColor"]);
                 Assert.IsType<SolidColorBrush>(localResources["GscMutedStatusBrush"]);
+                var strongerPalette = factoryType.GetMethod("Create", BindingFlags.Public | BindingFlags.Static)!.Invoke(
+                    null,
+                    new object[] { host, true, 100, GameSaveCenterThemeMode.FollowPlaynite })!;
+                var strongerResources = new ResourceDictionary();
+                factoryType.GetMethod("ApplyAccentResources", BindingFlags.Public | BindingFlags.Static)!.Invoke(
+                    null,
+                    new object[] { strongerResources, strongerPalette });
+                Assert.True(
+                    Assert.IsType<Color>(strongerResources["GscAccentShadowColor"]).A
+                    > Assert.IsType<Color>(localResources["GscAccentShadowColor"]).A);
                 factoryType.GetMethod("ApplyWpfUiResources", BindingFlags.Public | BindingFlags.Static)!.Invoke(
                     null,
                     new object[] { localResources, palette });
@@ -85,11 +96,17 @@ public sealed class WpfUiResourceDictionaryTests
                 Assert.Equal(PopupAnimation.None, Assert.IsType<PopupAnimation>(localResources["GscPopupAnimation"]));
 
                 materialResources.Invoke(null, new object[] { localResources, palette, true, true });
+                var mediumAmbientOpacity = Assert.IsType<double>(localResources["GscAmbientPageOpacity"]);
+                var strongerMaterialResources = new ResourceDictionary();
+                materialResources.Invoke(null, new object[] { strongerMaterialResources, strongerPalette, true, false });
+                Assert.True(
+                    Assert.IsType<double>(strongerMaterialResources["GscAmbientPageOpacity"])
+                    > mediumAmbientOpacity);
                 Assert.IsType<DropShadowEffect>(localResources["GscSurfaceEffect"]);
                 Assert.IsType<DropShadowEffect>(localResources["GscPrimaryButtonEffect"]);
                 Assert.IsType<DropShadowEffect>(localResources["GscSidebarEffect"]);
                 var ambientBlur = Assert.IsType<BlurEffect>(localResources["GscAmbientBlurEffect"]);
-                Assert.Equal(18, ambientBlur.Radius);
+                Assert.Equal(24, ambientBlur.Radius);
                 Assert.Equal(RenderingBias.Performance, ambientBlur.RenderingBias);
                 Assert.IsType<DropShadowEffect>(localResources["GscPopupEffect"]);
                 Assert.IsType<DropShadowEffect>(localResources["GscDialogEffect"]);
@@ -145,6 +162,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("resources[\"GscSafetyFillBrush\"]", paletteSource);
         Assert.Contains("resources[\"GscAmbientInfoBrush\"]", paletteSource);
         Assert.Contains("resources[\"GscAmbientSuccessBrush\"]", paletteSource);
+        Assert.Contains("resources[\"GscAmbientCenterShadowColor\"]", paletteSource);
         Assert.Contains("SemanticTint", paletteSource);
         Assert.Contains("resources[\"GscAccentShadowColor\"]", paletteSource);
         Assert.Contains("resources[\"AccentBrush\"]", paletteSource);

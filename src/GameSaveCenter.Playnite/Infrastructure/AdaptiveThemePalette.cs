@@ -48,6 +48,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
         public Color SuccessIconFill { get; set; }
         public Color WarningIconFill { get; set; }
         public Color ErrorIconFill { get; set; }
+        public double GlassStrength { get; set; }
     }
 
     internal static class AdaptiveThemePaletteFactory
@@ -149,28 +150,43 @@ namespace GameSaveCenter.Playnite.Infrastructure
             var warning = highContrast ? primaryText : Color.FromRgb(240, 178, 78);
             var error = highContrast ? primaryText : Color.FromRgb(242, 109, 126);
 
+            // A larger strength should reveal more of the bounded ambient material instead
+            // of making every card an opaque mask. Keep the low end stable and readable, then
+            // open the surface gradually as the user moves toward 100%.
+            var surfaceOpacity = glassEnabled
+                ? 0.72 + (0.10 * (1 - strength))
+                : 1;
+            var strongTopOpacity = glassEnabled
+                ? 0.80 + (0.08 * (1 - strength))
+                : 1;
+            var strongBottomOpacity = glassEnabled
+                ? 0.68 + (0.10 * (1 - strength))
+                : 1;
             var surfaceTop = glassEnabled
-                ? WithAlpha(strongControl, 0.92 * strength)
+                ? WithAlpha(strongControl, surfaceOpacity)
                 : WithAlpha(strongControl, 1);
             var surfaceBottom = glassEnabled
-                ? WithAlpha(controlFill, 0.92 * strength)
+                ? WithAlpha(controlFill, surfaceOpacity)
                 : WithAlpha(controlFill, 1);
             var strongTop = glassEnabled
-                ? WithAlpha(Blend(strongControl, primaryText, isDark ? 0.018 : 0.006), 0.96 * strength)
+                ? WithAlpha(Blend(strongControl, primaryText, isDark ? 0.018 : 0.006), strongTopOpacity)
                 : WithAlpha(strongControl, 1);
             var strongBottom = glassEnabled
-                ? WithAlpha(controlFill, 0.88 * strength)
+                ? WithAlpha(controlFill, strongBottomOpacity)
                 : WithAlpha(controlFill, 1);
 
             return new AdaptiveThemePalette
             {
                 IsDark = isDark,
+                GlassStrength = strength,
                 Background = stableBase,
                 PrimaryText = primaryText,
                 SecondaryText = WithAlpha(primaryText, 0.74),
                 MutedText = WithAlpha(primaryText, 0.56),
                 DisabledText = WithAlpha(primaryText, 0.38),
-                ControlFill = WithAlpha(controlFill, glassEnabled ? Math.Max(0.76, 0.9 * strength) : 1),
+                ControlFill = WithAlpha(controlFill, glassEnabled
+                    ? 0.78 + (0.10 * (1 - strength))
+                    : 1),
                 // UiLab uses a hairline rather than a bright outline. Keep the production
                 // surfaces readable while avoiding the sharp blue/white frame seen in the
                 // host screenshots at 125–150% DPI.
@@ -232,10 +248,26 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscSelectionTextBrush"] = Brush(SystemParameters.HighContrast ? SystemColors.HighlightTextColor : palette.PrimaryText);
             resources["GscPrimaryButtonBrush"] = Gradient(palette.Accent, palette.AccentPressed);
             resources["GscPrimaryButtonBorderBrush"] = Brush(palette.AccentHover);
-            resources["GscAmbientAccentBrush"] = Brush(WithAlpha(palette.Accent, palette.IsDark ? 0.18 : 0.15));
-            resources["GscAccentShadowColor"] = WithAlpha(palette.Accent, palette.IsDark ? 0.34 : 0.28);
-            resources["GscInfoShadowColor"] = WithAlpha(palette.Info, palette.IsDark ? 0.30 : 0.24);
-            resources["GscSuccessShadowColor"] = WithAlpha(palette.Success, palette.IsDark ? 0.28 : 0.22);
+            // The strength slider used to affect mostly surface opacity, so a value of 100
+            // could actually hide the ambient light behind the reading surfaces. Drive the
+            // fixed decorative light sources from the same value as well. Their alpha remains
+            // deliberately bounded: this is a visible material wash, not a saturated overlay.
+            var glassStrength = Math.Max(0.2, Math.Min(1, palette.GlassStrength));
+            resources["GscAmbientAccentBrush"] = Brush(WithAlpha(
+                palette.Accent,
+                palette.IsDark ? 0.16 + (0.26 * glassStrength) : 0.12 + (0.18 * glassStrength)));
+            resources["GscAccentShadowColor"] = WithAlpha(
+                palette.Accent,
+                palette.IsDark ? 0.26 + (0.20 * glassStrength) : 0.22 + (0.16 * glassStrength));
+            resources["GscInfoShadowColor"] = WithAlpha(
+                palette.Info,
+                palette.IsDark ? 0.22 + (0.16 * glassStrength) : 0.18 + (0.13 * glassStrength));
+            resources["GscSuccessShadowColor"] = WithAlpha(
+                palette.Success,
+                palette.IsDark ? 0.20 + (0.15 * glassStrength) : 0.17 + (0.12 * glassStrength));
+            resources["GscAmbientCenterShadowColor"] = WithAlpha(
+                palette.Accent,
+                palette.IsDark ? 0.06 + (0.11 * glassStrength) : 0.04 + (0.08 * glassStrength));
             resources["GscInfoBrush"] = Brush(palette.Info);
             resources["GscSuccessBrush"] = Brush(palette.Success);
             resources["GscWarningBrush"] = Brush(palette.Warning);
@@ -278,8 +310,9 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscSliderThumbEffect"] = CreateShadowEffect(glassEnabled, Colors.Black, 6, 1, 0.26);
             resources["GscPopupAllowsTransparency"] = glassEnabled;
             resources["GscPopupAnimation"] = motionEnabled ? PopupAnimation.Fade : PopupAnimation.None;
+            var glassStrength = Math.Max(0.2, Math.Min(1, palette.GlassStrength));
             resources["GscAmbientPageOpacity"] = glassEnabled
-                ? (palette.IsDark ? 0.84 : 0.92)
+                ? (palette.IsDark ? 0.74 + (0.26 * glassStrength) : 0.84 + (0.16 * glassStrength))
                 : 0d;
         }
 
@@ -553,7 +586,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             if (!enabled) return null;
             var effect = new BlurEffect
             {
-                Radius = 18,
+                Radius = 24,
                 RenderingBias = RenderingBias.Performance
             };
             effect.Freeze();

@@ -3,6 +3,13 @@
 > 维护时间：2026-08-24
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-24 UI-304 当前事实：毛玻璃强度联动与固定环境光增强
+
+- `AdaptiveThemePalette` 现在保存规范化 `GlassStrength`；`ApplyAccentResources` 使用它增加固定 accent/info/success 环境光及中心柔光的 alpha，`ApplyMaterialResources` 使用它计算 `GscAmbientPageOpacity`。100% 不再只是让卡片更不透明。
+- `AmbientMaterialLayer.xaml` 目前有四个固定尺寸环境光椭圆，新增 `GscAmbientCenterShadowColor`。Blur 仍只附着到这四个装饰椭圆，半径为 24、`RenderingBias.Performance`；严禁把 Blur 提升到页面根、文字、表格、列表或滚动表面。
+- 高强度玻璃表面的 alpha 采用受控透光曲线（强度越高越能透出固定环境光），低强度保持稳定阅读底色；`EnableGlassEffects=false`、高对比度和真实 null 效果降级语义不变。
+- UI-304 验证：源码门禁、XAML 结构、WPF 静态审查和临时开启 100% 的主题离屏 QA 通过；RenderHarness 已恢复为无毛玻璃布局基线，避免测试夹具污染正式代码。Release 构建 0 警告/0 错误，Core 59/59、Worker 199/199、Playnite 282/282（57 跳过），标准 `render-qa` 为 `render-qa OK`；生产安装已核验 `0.6.70.0`。真实 Playnite 逐像素强度仍需用户本机复核。
+
 ## 2026-08-24 UI-303 当前事实：TextBox 内容宿主重复 Padding 修复
 
 - 任务中心输入文字裁切的根因是模板将 `TextBox.Padding` 绑定到 `PART_ContentHost.Margin`，而 WPF TextBox/宿主又会对内容宿主应用自身 Padding；Task 搜索框上下 `7 DIP` 被重复计算，导致 `PART_ContentHost` viewport 只有 `5 DIP`。不要恢复 `Margin="{TemplateBinding Padding}"`，也不要靠增加 TextBox 高度规避。
