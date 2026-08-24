@@ -2,6 +2,26 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-24 UI-303 任务中心输入文字被垂直裁切修复
+
+**问题确认：**
+
+- 用户截图中的实际输入文字并非单纯颜色不足，而是只剩一条淡痕；离屏输入态复现显示 Task 搜索框 `PART_ContentHost` 实际高度约 `19 DIP`，但 `ViewportHeight` 只有 `5 DIP`。
+- 生产 TextBox 模板把 `TextBox.Padding` 同时绑定到 `PART_ContentHost.Margin`。WPF TextBox 在模板内部还会按自身 Padding 管理文本宿主，任务搜索框上下 `7 DIP` 因此被重复扣除；增加外框高度只是把这个错误几何暂时掩盖。
+
+**实现内容：**
+
+- `WpfUiProduction.xaml` 与 `DesignTokens.xaml` 的 TextBox 模板统一让 `PART_ContentHost` 使用 `Margin="0"`、`Padding="0"`、`BorderThickness="0"`，由 TextBox 自身 Padding 负责输入起点，避免宿主默认 ScrollViewer 与模板重复计算。
+- 共享 `GscWpfUiTextBox`/`GscTextBox` 明确锁定项目字体、`GscBodyFontSize` 和普通字重；内容宿主同步继承字体、字号、字重和前景色，隔离 Playnite 宿主默认控件度量。
+- 增加模板契约测试；临时给 RenderHarness 注入“存档”测试文字确认输入态完整显示后已恢复测试夹具，不改变生产假数据或业务行为。
+
+**验证结果：**
+
+- `validate-source.py`、XAML 结构 19/19、WPF 静态审查 0 error/20 warnings/165 info。
+- Release 构建 0 warning/0 error；Core 59/59、Worker 199/199、Playnite 282/282，57 项按既有环境规则跳过。
+- 空态与输入态渲染均 `render-qa OK`；输入态 `PART_ContentHost` viewport 从 `5` 恢复到 `19 DIP`，已抽查深色 Task 页面文字正常显示。
+- 受控一键安装成功，生产扩展清单 `0.6.70`、DLL `0.6.70.0`；未声称完成真实 Playnite 逐像素输入截图。
+
 ## 2026-08-24 UI-302 任务中心搜索框可见性与图标间距修复
 
 **问题确认：**

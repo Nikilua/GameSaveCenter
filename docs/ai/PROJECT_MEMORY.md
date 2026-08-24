@@ -3,6 +3,13 @@
 > 维护时间：2026-08-24
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-24 UI-303 当前事实：TextBox 内容宿主重复 Padding 修复
+
+- 任务中心输入文字裁切的根因是模板将 `TextBox.Padding` 绑定到 `PART_ContentHost.Margin`，而 WPF TextBox/宿主又会对内容宿主应用自身 Padding；Task 搜索框上下 `7 DIP` 被重复计算，导致 `PART_ContentHost` viewport 只有 `5 DIP`。不要恢复 `Margin="{TemplateBinding Padding}"`，也不要靠增加 TextBox 高度规避。
+- `WpfUiProduction.xaml` 与 `DesignTokens.xaml` 的 TextBox `PART_ContentHost` 当前固定 `Margin="0"`、`Padding="0"`、`BorderThickness="0"`，输入起点由 TextBox 的 Padding 单独负责；字体、字号、字重和前景色均从 TextBox 显式传入内容宿主。
+- 当前共享 TextBox 样式使用 `GscUiFontFamily`、`GscBodyFontSize` 和 `FontWeight=Normal`。Task/Dashboard 图标搜索框的 `30 DIP` 左侧输入区、右侧清除按钮区、Binding、命令和焦点语义保持。
+- UI-303 输入态验证：离屏 RenderHarness 注入“存档”后文字完整显示，`PART_ContentHost` viewport 从 `5` 恢复为 `19 DIP`；空态/输入态 render QA 均通过。Release 0 warning/0 error、Core 59/59、Worker 199/199、Playnite 282/282（57 跳过），生产安装核验 DLL `0.6.70.0`；真实 Playnite 逐像素截图仍需用户复核。
+
 ## 2026-08-24 UI-302 当前事实：任务中心搜索框可见性与图标间距
 
 - TaskCenter 的“搜索任务…”和 Dashboard 的游戏库搜索框是带放大镜的特殊输入框，当前 `TextBox.Padding` 与占位提示 `Margin` 均为 `30,7,38,7` / `30,0,38,0`（Task 提示右侧为 `12`）；`30` 是图标与实际文字之间的独立安全间距。普通无图标输入框仍按共享样式的常规左侧内边距处理。

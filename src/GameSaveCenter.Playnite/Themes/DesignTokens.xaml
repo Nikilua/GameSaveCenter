@@ -720,6 +720,9 @@
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="FocusVisualStyle" Value="{StaticResource GscSharedFocusVisual}"/>
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
+        <Setter Property="FontSize" Value="{DynamicResource GscBodyFontSize}"/>
+        <Setter Property="FontWeight" Value="Normal"/>
         <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
@@ -741,12 +744,17 @@
                             BorderThickness="{TemplateBinding BorderThickness}"
                             SnapsToDevicePixels="True">
                         <ScrollViewer x:Name="PART_ContentHost"
-                                      Margin="{TemplateBinding Padding}"
+                                      Margin="0"
+                                      Padding="0"
+                                      BorderThickness="0"
                                       VerticalAlignment="Stretch"
                                       VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                       HorizontalAlignment="Stretch"
                                       HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                       TextElement.Foreground="{TemplateBinding Foreground}"
+                                      TextElement.FontFamily="{TemplateBinding FontFamily}"
+                                      TextElement.FontSize="{TemplateBinding FontSize}"
+                                      TextElement.FontWeight="{TemplateBinding FontWeight}"
                                       Focusable="False"
                                       HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}"
                                       VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}"

@@ -1,5 +1,7 @@
 # 开发实现进度
 
+- [x] UI-303（2026-08-24）：修复任务中心输入后文字只显示淡痕的问题。根因是 TextBox Padding 同时作为 `PART_ContentHost.Margin`，与 WPF/Playnite 内容宿主自身 Padding 重复计算，Task 搜索框可视高度被压到约 5 DIP；共享模板改为 `Margin=0`、`Padding=0`、`BorderThickness=0`，并显式传递字体、字号、字重和前景色，不增加输入框高度。源码门禁、XAML 19/19、WPF 静态审查 0 error/20 warnings/165 info、Release 0 警告/0 错误、Core 59/59、Worker 199/199、Playnite 282/282（57 跳过）通过；输入态 RenderHarness 验证 viewport `5→19 DIP`、文字完整显示，生产安装已核验 DLL `0.6.70.0`。
+
 - [x] UI-302（2026-08-24）：修复任务中心搜索框中放大镜与“搜索任务…”贴合、实际输入文字不可见的问题。TaskCenter/Dashboard 带图标搜索框的左侧输入 Padding 与提示 Margin 调整为 `30`，共享生产/设计 TextBox 模板把 `Foreground` 显式传给 `PART_ContentHost`；清除按钮、Binding、命令、焦点和过滤行为不变。源码门禁、XAML 19/19、WPF 静态审查 0 error/20 warnings/165 info、Release 0 警告/0 错误、Core 59/59、Worker 199/199、Playnite 282/282（57 跳过）通过；`artifacts/ui-qa/ui302-task-search-v1/render-qa-report.txt` 为 `render-qa OK`，受控生产安装已核验扩展清单 `0.6.70`、DLL `0.6.70.0`。
 
 - [x] UI-301（2026-08-24）：根据宿主截图继续收紧表格与搜索框的边距。共享 DataGrid 选中行及 Dashboard 本地兼容行的右侧安全 Margin 统一为 `4,2,12,2`，TaskCenter/Dashboard 游戏库带搜索图标的输入框左侧 Padding 与提示 Margin 曾统一为 `20`，后由 UI-302 修正为 `30`；不改 Binding、命令、清除按钮、键盘焦点、排序、滚动或虚拟化。`validate-source.py`、XAML 19/19、WPF 静态审查 0 error/20 warnings/165 info、Release 0 警告/0 错误、Core 59/59、Worker 199/199、Playnite 282/282（57 跳过）通过；`artifacts/ui-qa/ui301-spacing-v1/render-qa-report.txt` 为 `render-qa OK`，受控一键安装已核验生产 DLL `0.6.70.0`。

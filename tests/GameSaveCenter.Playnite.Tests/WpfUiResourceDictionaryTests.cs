@@ -5022,6 +5022,11 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("<Setter Property=\"Height\" Value=\"{DynamicResource GscButtonHeight}\"/>", production);
         Assert.Contains("<ControlTemplate x:Key=\"GscWpfUiTextBoxTemplate\"", production);
         Assert.Contains("TextElement.Foreground=\"{TemplateBinding Foreground}\"", production);
+        Assert.Contains("TextElement.FontFamily=\"{TemplateBinding FontFamily}\"", production);
+        Assert.Contains("TextElement.FontSize=\"{TemplateBinding FontSize}\"", production);
+        Assert.Contains("Padding=\"0\"", production);
+        Assert.Contains("Margin=\"0\"", production);
+        Assert.DoesNotContain("Margin=\"{TemplateBinding Padding}\"", production);
         Assert.Contains("VerticalAlignment=\"Stretch\"", production);
         Assert.Contains("<Setter Property=\"VerticalContentAlignment\" Value=\"Center\"/>", production);
         Assert.Contains("<Setter Property=\"HorizontalScrollBarVisibility\" Value=\"Hidden\"/>", production);

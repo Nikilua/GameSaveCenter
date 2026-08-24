@@ -61,12 +61,17 @@
                 BorderThickness="{TemplateBinding BorderThickness}"
                 SnapsToDevicePixels="True">
             <ScrollViewer x:Name="PART_ContentHost"
-                          Margin="{TemplateBinding Padding}"
+                          Margin="0"
+                          Padding="0"
+                          BorderThickness="0"
                           VerticalAlignment="Stretch"
                           VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                           HorizontalAlignment="Stretch"
                           HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                           TextElement.Foreground="{TemplateBinding Foreground}"
+                          TextElement.FontFamily="{TemplateBinding FontFamily}"
+                          TextElement.FontSize="{TemplateBinding FontSize}"
+                          TextElement.FontWeight="{TemplateBinding FontWeight}"
                           Focusable="False"
                           HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}"
                           VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}"
@@ -943,6 +948,9 @@
            BasedOn="{StaticResource {x:Type TextBox}}">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
+        <Setter Property="FontSize" Value="{DynamicResource GscBodyFontSize}"/>
+        <Setter Property="FontWeight" Value="Normal"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
         <Setter Property="TextAlignment" Value="Left"/>

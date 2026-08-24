@@ -54,6 +54,16 @@ public sealed class AccessibilitySourceTests
         Assert.Contains("HorizontalContentAlignment=\"{TemplateBinding HorizontalContentAlignment}\"", tokens);
         Assert.Contains("TextElement.Foreground=\"{TemplateBinding Foreground}\"", production);
         Assert.Contains("TextElement.Foreground=\"{TemplateBinding Foreground}\"", tokens);
+        Assert.Contains("TextElement.FontFamily=\"{TemplateBinding FontFamily}\"", production);
+        Assert.Contains("TextElement.FontFamily=\"{TemplateBinding FontFamily}\"", tokens);
+        Assert.Contains("TextElement.FontSize=\"{TemplateBinding FontSize}\"", production);
+        Assert.Contains("TextElement.FontSize=\"{TemplateBinding FontSize}\"", tokens);
+        Assert.Contains("Padding=\"0\"", production);
+        Assert.Contains("Padding=\"0\"", tokens);
+        Assert.Contains("Margin=\"0\"", production);
+        Assert.Contains("Margin=\"0\"", tokens);
+        Assert.DoesNotContain("Margin=\"{TemplateBinding Padding}\"", production);
+        Assert.DoesNotContain("Margin=\"{TemplateBinding Padding}\"", tokens);
     }
 
     [Fact]

@@ -14,6 +14,12 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-24 UI-303 任务中心输入文字垂直裁切修复交接
+
+- 根因已确认：TextBox 模板把 `TextBox.Padding` 同时用于 `PART_ContentHost.Margin`，WPF TextBox/Playnite 宿主又对内容宿主应用 Padding，任务搜索框上下 `7 DIP` 重复扣除，`PART_ContentHost.ViewportHeight` 仅约 `5 DIP`。不要恢复 `Margin="{TemplateBinding Padding}"`，也不要通过增加 TextBox 高度修复。
+- `WpfUiProduction.xaml`、`DesignTokens.xaml` 的 `PART_ContentHost` 当前使用 `Margin="0"`、`Padding="0"`、`BorderThickness="0"`；TextBox 的 Padding 单独负责左右输入边距。内容宿主显式继承 TextBox 的 Foreground、FontFamily、FontSize、FontWeight，避免宿主主题重新改变文字度量或颜色。
+- 当前验证：源码门禁、XAML 19/19、WPF 静态审查 0 error/20 warnings/165 info、Release 0 warning/0 error、Core 59/59、Worker 199/199、Playnite 282/282（57 跳过）通过；输入态离屏 viewport `5→19 DIP` 且文字完整显示，render QA 通过；生产安装已核验清单 `0.6.70`、DLL `0.6.70.0`。真实 Playnite 逐像素截图仍需用户复核。
+
 ## 2026-08-24 UI-302 任务中心搜索框可见性与图标间距修复交接
 
 - TaskCenter 的“搜索任务…”和 Dashboard 游戏库搜索框属于带图标输入，当前输入 Padding 为 `30,7,38,7`，对应占位提示从 `30` DIP 起始；右侧 `38` DIP 继续为清除按钮保留空间。不要把这两处重新收紧到 `20`，否则放大镜会贴住提示文字。
