@@ -3,10 +3,17 @@
 > 维护时间：2026-08-24
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-24 UI-311 当前事实：背景切换、Today 圆角与材质强度
+
+- `OverviewTodayHeroCard` 内的宽域洗色必须使用带 `CornerRadius="12"` 的 Border；不要把整面 Rectangle 直接放进圆角卡片并依赖 `ClipToBounds`，WPF 不会按 CornerRadius 裁切子元素。
+- `PlayniteGameBackgroundProvider` 优先解析 `Game.BackgroundImage` 的本地路径/数据库文件；如果 Playnite 返回 HTTP/HTTPS 直链，只为当前选中游戏异步下载，5 秒超时、12 MB 上限、取消令牌和后台 1920 宽度解码仍必须保留。快速切换由 generation 和 6 张缓存保护。
+- `GscGameBackgroundOpacity` 当前深色/浅色为 0.36/0.28，背景 tint alpha 当前为 0x98/0xA8；`GscAmbientWideWashBrush` 的受限 alpha 也略有提升。若继续调强，优先保持大范围均匀和文字对比度，不要恢复圆形光斑或大面积 BlurEffect。
+- UI-311 已完成源码/XAML/WPF 门禁、Release 全量构建测试和多主题多尺寸 `render-qa OK`；Playnite 测试为 288/345（57 跳过），真实 Playnite 背景切换仍需用户安装新包后切换两款有不同背景图的游戏确认。
+
 ## 2026-08-24 UI-310 当前游戏背景图环境材质
 
-- `DashboardViewModel.SelectedGameBackground` 由 UI-only `PlayniteGameBackgroundProvider` 从 Playnite `Game.BackgroundImage` 读取；优先解析本地缓存/数据库文件，不自行下载 HTTP 直链，无法解析时返回 null。
-- 背景图在后台线程按最多 1920 宽度解码，缓存最多 6 张；选中游戏切换时使用取消令牌和 generation 丢弃旧结果。不要在 Playnite UI 线程同步解码大图，也不要把网络请求接进选框切换。
+- `DashboardViewModel.SelectedGameBackground` 由 UI-only `PlayniteGameBackgroundProvider` 从 Playnite `Game.BackgroundImage` 读取；优先解析本地缓存/数据库文件，UI-311 已补齐受限的 HTTP/HTTPS 异步下载。
+- 背景图在后台线程按最多 1920 宽度解码，缓存最多 6 张；远程请求仅限当前选中游戏并带 5 秒超时、12 MB 上限，选中游戏切换时使用取消令牌和 generation 丢弃旧结果。不要在 Playnite UI 线程同步解码或无限制下载。
 - `AcrylicProductionShellView` 在 Shell 底层绘制低透明度背景图和主题 tint；无图、关闭毛玻璃、高对比度时图片层透明，继续使用 `GscBackdropBrush` 和 `GscAmbientWideWashBrush`。
 - 默认背景与主题挂钩：`AdaptiveThemePalette` 依据 Playnite 主题/固定浅深色模式生成默认背景、tint 和宽域材质。背景图只作为环境素材，不覆盖卡片/导航的功能层级。
 - UI-310 已完成源码/XAML/WPF 门禁、Release 构建/全量测试和多主题多尺寸 `render-qa OK`；当前用户 Playnite 未被强制重启，真实宿主背景图显示仍需用户在更新后复核。

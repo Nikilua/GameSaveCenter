@@ -308,7 +308,12 @@
                         <!-- Use the same pane-wide multi-color material as the rest of the
                              program. The hero gets an overall glass veil instead of three
                              circular color spots, while the content remains above it. -->
-                        <Rectangle Grid.RowSpan="2" Fill="{DynamicResource GscAmbientWideWashBrush}" IsHitTestVisible="False"/>
+                         <!-- Keep the page-wide wash inside a rounded surface. A Rectangle here
+                              ignores the hero's corner geometry and leaves a square color block
+                              visible inside the otherwise rounded Today card. -->
+                         <Border Grid.RowSpan="2" CornerRadius="12"
+                                 Background="{DynamicResource GscAmbientWideWashBrush}"
+                                 IsHitTestVisible="False"/>
                         <StackPanel Grid.Row="0" MinWidth="0" VerticalAlignment="Center" Margin="0,0,0,14">
                             <TextBlock Style="{DynamicResource GscRedesignHeroEyebrow}" Text="TODAY"/>
                             <TextBlock FontSize="35" FontWeight="SemiBold" Margin="0,8,0,8" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}">

@@ -28,6 +28,24 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         [Fact]
+        public void OverviewTodayAmbientWashUsesRoundedSurfaceInsteadOfSquareRectangle()
+        {
+            var root = FindRepositoryRoot();
+            var overview = XDocument.Parse(File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml")));
+            var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
+            var hero = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewTodayHeroCard");
+            var grid = hero.Elements().Single(element => element.Name.LocalName == "Grid");
+            var wash = grid.Elements().Single(element =>
+                element.Name.LocalName == "Border"
+                && element.Attribute("Background")?.Value == "{DynamicResource GscAmbientWideWashBrush}");
+
+            Assert.Equal("12", wash.Attribute("CornerRadius")?.Value);
+            Assert.DoesNotContain(grid.Elements(), element =>
+                element.Name.LocalName == "Rectangle"
+                && element.Attribute("Fill")?.Value == "{DynamicResource GscAmbientWideWashBrush}");
+        }
+
+        [Fact]
         public void MaintenanceEnvironmentChecksUsePredictableResponsiveColumns()
         {
             var root = FindRepositoryRoot();

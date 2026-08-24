@@ -2,6 +2,25 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-24 UI-311 修复 Today 卡方块与游戏背景切换
+
+**问题确认：**
+
+- Today 卡在圆角 Border 内直接放置整面 Rectangle；WPF 的 `ClipToBounds` 只做矩形裁切，不会按外层 `CornerRadius` 裁切，所以材质在卡片内容边缘呈现方块。
+- Playnite `Game.BackgroundImage` 不只可能是本地缓存/数据库文件，也可能是 HTTP/HTTPS 直链。之前只解析本地路径，切换到网页背景的游戏时会得到 null，因此背景保持不变。
+
+**实现内容：**
+
+- Today 卡的宽域材质改为带 12 DIP 圆角的内层 Border，保留现有卡片布局、Binding 和状态胶囊，避免方块覆盖圆角。
+- `PlayniteGameBackgroundProvider` 继续优先使用本地文件，并增加远程背景的异步下载：仅加载当前选中的一张图，5 秒超时、12 MB 大小上限、可取消、后台解码和 6 张 LRU 缓存；快速切换仍由 generation 丢弃旧结果。
+- 适度增强背景图和宽域渐变的可见度：深色背景图透明度由 0.28 提到 0.36，浅色由 0.22 提到 0.28；主题 tint 略微变透明，100% 毛玻璃时能看到更连续的环境材质，但不引入整页 `BlurEffect`。
+
+**验证结果：**
+
+- `validate-source.py`、XAML structural validation、`validate_wpf_ui.py` 和 `git diff --check` 通过；WPF 静态审查仍为 0 error、18 条既有 warning。
+- Release 构建与全量测试通过；本轮首次定向 `dotnet test` 因 MSBuild 子进程无输出而中止，随后仓库 `scripts/build.ps1 -Configuration Release` 完整通过：Core 59/59、Worker 199/199、Playnite 288/345（57 跳过）。
+- `scripts/render-qa.ps1 -Configuration Release -Output .tmp/ui-qa-current` 为 `render-qa OK`，Overview Today 圆角和双主题、多尺寸、滚动、resize transition 均通过；临时目录需在提交前清理。
+
 ## 2026-08-24 UI-310 当前游戏背景图环境材质
 
 **问题确认：**
@@ -11,7 +30,7 @@
 
 **实现内容：**
 
-- 新增 UI-only `PlayniteGameBackgroundProvider`：解析 Playnite 本地缓存/数据库文件，限制 1920 DIP 解码宽度，最多缓存 6 张背景，并在后台线程解码；HTTP 直链无法解析为本地文件时安全回退，不自行发起网络请求。
+- 新增 UI-only `PlayniteGameBackgroundProvider`：首版解析 Playnite 本地缓存/数据库文件，限制 1920 DIP 解码宽度，最多缓存 6 张背景，并在后台线程解码；HTTP 直链在 UI-311 中补齐为受限异步下载。
 - `DashboardViewModel` 暴露 `SelectedGameBackground`；选中游戏变化时取消旧加载并用 generation 丢弃过期结果，避免快速切换时串图或阻塞界面。
 - 生产 Shell 在导航栏和主界面下方增加一层低透明度背景图，再叠加当前主题的 tint 与宽域多色材质。没有背景图、毛玻璃关闭或高对比度时图片层透明，现有主题默认背景保持不变。
 - 默认背景仍由 `AdaptiveThemePalette` 从 Playnite 主题/用户主题模式推导；背景图只是环境素材，不改变文字、卡片、命令、Binding、滚动和虚拟化。

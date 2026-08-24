@@ -25,6 +25,17 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         [Fact]
+        public void ResolveRemoteUriAcceptsPlayniteBackgroundUrlWithoutTreatingLocalFilesAsRemote()
+        {
+            var uri = PlayniteGameBackgroundProvider.ResolveRemoteUri(
+                "https://example.com/background.jpg",
+                _ => "https://example.com/background.jpg");
+
+            Assert.Equal("https://example.com/background.jpg", uri?.AbsoluteUri);
+            Assert.Null(PlayniteGameBackgroundProvider.ResolveRemoteUri("background.jpg", _ => root));
+        }
+
+        [Fact]
         public void DecodeLocalImageReturnsFrozenBoundedBitmap()
         {
             var path = Path.Combine(root, "background.png");
@@ -33,6 +44,20 @@ namespace GameSaveCenter.Playnite.Tests
                 "AAABAgEAAPcQ5fIAAAAASUVORK5CYII="));
 
             var image = PlayniteGameBackgroundProvider.DecodeLocalImage(path);
+
+            Assert.NotNull(image);
+            Assert.True(image!.IsFrozen);
+            Assert.InRange(image.PixelWidth, 1, 1920);
+        }
+
+        [Fact]
+        public void DecodeImageBytesReturnsFrozenBoundedBitmap()
+        {
+            var bytes = Convert.FromBase64String(
+                "iVBORw0KGgoAAAANSUhEUgAAAEAAAAAQCAYAAACqaXHeAAAAEElEQVR42mNkYPj/n4GBgYGJAQoA" +
+                "AAABAgEAAPcQ5fIAAAAASUVORK5CYII=");
+
+            var image = PlayniteGameBackgroundProvider.DecodeImage(bytes);
 
             Assert.NotNull(image);
             Assert.True(image!.IsFrozen);

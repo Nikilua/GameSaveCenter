@@ -8,6 +8,13 @@
 
 新实现仍需以真实业务行为为底线：命令、Binding、数据、安全确认、错误/取消、可访问性、可扩展性能和 Playnite 兼容性不能被无意删除。如果新方案有意改变这些能力，应在当前阶段明确说明并配套测试；不得以“旧实现必须保留”为理由阻止整页重构。
 
+## 2026-08-24 UI-311 当前交接：Today 圆角与游戏背景切换
+
+- Today 卡内部宽域材质使用带 12 DIP 圆角的 Border；不要改回整面 Rectangle。外层 `ClipToBounds` 不能模拟 WPF 的圆角裁切。
+- 背景切换链路仍是 `GamePickerViewModel.SelectedItem` → `DashboardViewModel.RefreshSelectedGameBackground` → `AcrylicProductionShellView` 的 `SelectedGameBackground` Binding。提供器优先读 Playnite 本地缓存/数据库文件，也支持当前选中游戏的 HTTP/HTTPS 背景直链；远程路径必须保持 5 秒超时、12 MB 上限、后台解码、取消和 generation 防串图。
+- 毛玻璃本轮只做小幅增强，不增加 Shell/页面/表格/滚动器的 BlurEffect：背景图透明度和宽域渐变稍微提高，主题 tint 稍微变透明；关闭毛玻璃和高对比度仍必须回退到透明背景图层。
+- 验证：`scripts/build.ps1 -Configuration Release` 完整通过（Core 59、Worker 199、Playnite 288 通过，57 跳过），XAML/source/WPF 门禁通过，`.tmp/ui-qa-current/render-qa-report.txt` 为 `render-qa OK`。本轮未在可识别 Playnite 宿主中实际切换游戏截图，不能把真实宿主背景切换宣称为已人工复核。
+
 ## 最新视觉优先级：Demo-first（2026-08-20）
 
 后续迁移统一以 `GameSaveCenter.AcrylicFork/src/GameSaveCenter.Playnite/Design/` 下的 `DesignShellView.xaml`、`Pages/*.xaml`、`DesignTokens.xaml`、`DesignColorsLight.xaml`、`DesignColorsDark.xaml` 和 `DesignControls.xaml` 为主要且唯一视觉基准。Demo 与旧生产页面、UiLab、历史计划或 `wpf-apple-desktop-ui` 的通用 Apple-inspired 设计建议冲突时，以 Demo 的整体页面结构和视觉层级为准。
@@ -16,7 +23,7 @@
 
 ## 2026-08-24 UI-310 当前游戏背景图环境材质
 
-- 生产 Shell 通过 `DashboardViewModel.SelectedGameBackground` 使用 Playnite `Game.BackgroundImage` 的本地缓存/数据库文件；HTTP 直链无法解析为本地文件时必须回退主题默认背景，不要在选框切换中自行发起网络请求。
+- 生产 Shell 通过 `DashboardViewModel.SelectedGameBackground` 使用 Playnite `Game.BackgroundImage` 的本地缓存/数据库文件；UI-311 已补齐当前选中游戏的受限 HTTP/HTTPS 异步下载，其他无法解析的引用仍回退主题默认背景。
 - 背景图片低透明度绘制在 Shell 底层，之上仍是主题 tint、宽域多色材质、导航和页面卡片；它不是对整页加 BlurEffect。无背景图、关闭毛玻璃或高对比度时，`GscGameBackgroundOpacity` 必须为 0。
 - 默认背景确实跟随当前主题：`AdaptiveThemePalette` 根据 Playnite 主题/用户的浅深色模式生成 `GscBackdropBrush`、背景 tint 和宽域材质。不要让某个游戏背景图替换主题文字/控件对比度。
 - `PlayniteGameBackgroundProvider` 使用后台解码、1920 宽度上限、6 张缓存和取消/generation 保护；保持这些性能边界。

@@ -294,10 +294,10 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 : 0d;
             var gameBackgroundVisible = glassEnabled && !SystemParameters.HighContrast;
             resources["GscGameBackgroundOpacity"] = gameBackgroundVisible
-                ? (palette.IsDark ? 0.28 : 0.22)
+                ? (palette.IsDark ? 0.36 : 0.28)
                 : 0d;
             resources["GscGameBackgroundTintBrush"] = Brush(gameBackgroundVisible
-                ? Color.FromArgb(palette.IsDark ? (byte)0xA8 : (byte)0xB8,
+                ? Color.FromArgb(palette.IsDark ? (byte)0x98 : (byte)0xA8,
                     palette.Backdrop.R, palette.Backdrop.G, palette.Backdrop.B)
                 : Colors.Transparent);
             // This is a wide, non-circular material wash. It adds a low-cost sense of depth
@@ -617,8 +617,8 @@ namespace GameSaveCenter.Playnite.Infrastructure
             var tealWash = Blend(infoWash, Opaque(palette.Success), 0.52);
             var successWash = Opaque(palette.Success);
             var baseOpacity = palette.IsDark
-                ? 0.085 + (0.18 * glassStrength)
-                : 0.035 + (0.095 * glassStrength);
+                ? 0.10 + (0.20 * glassStrength)
+                : 0.045 + (0.11 * glassStrength);
             var brush = new LinearGradientBrush
             {
                 StartPoint = new Point(0, 0),
