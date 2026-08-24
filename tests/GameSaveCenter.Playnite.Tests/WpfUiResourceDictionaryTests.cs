@@ -84,6 +84,8 @@ public sealed class WpfUiResourceDictionaryTests
                 Assert.Null(localResources["GscSidebarEffect"]);
                 var disabledWideWash = Assert.IsType<LinearGradientBrush>(localResources["GscAmbientWideWashBrush"]);
                 Assert.All(disabledWideWash.GradientStops, stop => Assert.Equal(0, stop.Color.A));
+                Assert.Equal(0d, Assert.IsType<double>(localResources["GscGameBackgroundOpacity"]));
+                Assert.Equal(0, Assert.IsType<SolidColorBrush>(localResources["GscGameBackgroundTintBrush"]).Color.A);
                 Assert.Null(localResources["GscPopupEffect"]);
                 Assert.Null(localResources["GscDialogEffect"]);
                 Assert.Null(localResources["GscSliderThumbEffect"]);
@@ -105,6 +107,8 @@ public sealed class WpfUiResourceDictionaryTests
                 Assert.Equal(new Point(1, 1), wideWash.EndPoint);
                 Assert.True(wideWash.GradientStops.Count >= 6);
                 Assert.Contains(wideWash.GradientStops, stop => stop.Color.A > 0);
+                Assert.True(Assert.IsType<double>(localResources["GscGameBackgroundOpacity"]) > 0);
+                Assert.True(Assert.IsType<SolidColorBrush>(localResources["GscGameBackgroundTintBrush"]).Color.A > 0);
                 var strongerWideWash = Assert.IsType<LinearGradientBrush>(strongerMaterialResources["GscAmbientWideWashBrush"]);
                 Assert.True(
                     strongerWideWash.GradientStops.Max(stop => stop.Color.A)

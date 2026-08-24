@@ -39,6 +39,10 @@
     <Color x:Key="GscPopupShadowColor">#5C000000</Color>
     <sys:Double x:Key="GscAmbientPageOpacity">0.86</sys:Double>
     <sys:Double x:Key="GscShellAmbientOpacity">0.86</sys:Double>
+    <!-- The selected game's local background is only an ambient source. A zero fallback
+         keeps the normal theme background unchanged when no image is available. -->
+    <sys:Double x:Key="GscGameBackgroundOpacity">0</sys:Double>
+    <SolidColorBrush x:Key="GscGameBackgroundTintBrush" Color="#00000000"/>
     <!-- Pane-wide non-circular wash. Runtime replaces this with the active accent/info/success
          colors; transparent fallback keeps reduced-transparency and high-contrast parsing safe. -->
     <LinearGradientBrush x:Key="GscAmbientWideWashBrush" StartPoint="0,0" EndPoint="1,1">

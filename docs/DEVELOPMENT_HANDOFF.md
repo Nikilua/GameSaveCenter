@@ -14,6 +14,14 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-24 UI-310 当前游戏背景图环境材质
+
+- 生产 Shell 通过 `DashboardViewModel.SelectedGameBackground` 使用 Playnite `Game.BackgroundImage` 的本地缓存/数据库文件；HTTP 直链无法解析为本地文件时必须回退主题默认背景，不要在选框切换中自行发起网络请求。
+- 背景图片低透明度绘制在 Shell 底层，之上仍是主题 tint、宽域多色材质、导航和页面卡片；它不是对整页加 BlurEffect。无背景图、关闭毛玻璃或高对比度时，`GscGameBackgroundOpacity` 必须为 0。
+- 默认背景确实跟随当前主题：`AdaptiveThemePalette` 根据 Playnite 主题/用户的浅深色模式生成 `GscBackdropBrush`、背景 tint 和宽域材质。不要让某个游戏背景图替换主题文字/控件对比度。
+- `PlayniteGameBackgroundProvider` 使用后台解码、1920 宽度上限、6 张缓存和取消/generation 保护；保持这些性能边界。
+- UI-310 已完成构建、全量测试、WPF 静态检查和多主题多尺寸 render QA；本轮未强制关闭正在运行的 Playnite，因此真实宿主背景图显示需更新安装后复核。
+
 ## 2026-08-24 UI-309 全局宽域多色玻璃材质
 
 - 主页 Today 卡片、Settings 环境层、兼容 Dashboard 和共享 `AmbientMaterialLayer` 统一使用 `GscAmbientWideWashBrush` 的整面矩形；不再恢复装饰性径向渐变、椭圆光斑或 `GscAmbientBlurEffect`。

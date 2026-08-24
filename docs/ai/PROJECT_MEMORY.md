@@ -3,6 +3,14 @@
 > 维护时间：2026-08-24
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-24 UI-310 当前游戏背景图环境材质
+
+- `DashboardViewModel.SelectedGameBackground` 由 UI-only `PlayniteGameBackgroundProvider` 从 Playnite `Game.BackgroundImage` 读取；优先解析本地缓存/数据库文件，不自行下载 HTTP 直链，无法解析时返回 null。
+- 背景图在后台线程按最多 1920 宽度解码，缓存最多 6 张；选中游戏切换时使用取消令牌和 generation 丢弃旧结果。不要在 Playnite UI 线程同步解码大图，也不要把网络请求接进选框切换。
+- `AcrylicProductionShellView` 在 Shell 底层绘制低透明度背景图和主题 tint；无图、关闭毛玻璃、高对比度时图片层透明，继续使用 `GscBackdropBrush` 和 `GscAmbientWideWashBrush`。
+- 默认背景与主题挂钩：`AdaptiveThemePalette` 依据 Playnite 主题/固定浅深色模式生成默认背景、tint 和宽域材质。背景图只作为环境素材，不覆盖卡片/导航的功能层级。
+- UI-310 已完成源码/XAML/WPF 门禁、Release 构建/全量测试和多主题多尺寸 `render-qa OK`；当前用户 Playnite 未被强制重启，真实宿主背景图显示仍需用户在更新后复核。
+
 ## 2026-08-24 UI-309 当前事实：全局宽域多色玻璃材质
 
 - `AmbientMaterialLayer.xaml`、Overview Today 卡片、Settings 环境层和兼容 `DashboardView.xaml` 都使用 `GscAmbientWideWashBrush` 的整面 `Rectangle`；生产 UI 不再使用装饰性 `RadialGradientBrush`、椭圆光源或 `GscAmbientBlurEffect`。

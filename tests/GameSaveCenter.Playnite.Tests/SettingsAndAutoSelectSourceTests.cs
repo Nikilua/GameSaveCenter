@@ -49,8 +49,10 @@ namespace GameSaveCenter.Playnite.Tests
             var plugin = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "GameSaveCenterPlugin.cs"));
             var resolver = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Infrastructure", "GameSelectionResolver.cs"));
             var iconProvider = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Infrastructure", "PlayniteGameIconProvider.cs"));
+            var backgroundProvider = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Infrastructure", "PlayniteGameBackgroundProvider.cs"));
             var dashboardCode = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml.cs"));
             var dashboard = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml"));
+            var productionShell = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml"));
             var overview = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml"));
             var saves = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "SaveCenterView.xaml"));
             var trainers = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml"));
@@ -68,6 +70,12 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.DoesNotContain("HttpClient", iconProvider);
             Assert.DoesNotContain("WebClient", iconProvider);
             Assert.DoesNotContain("WebRequest", iconProvider);
+            Assert.Contains("BackgroundImage", backgroundProvider);
+            Assert.Contains("ResolveLocalPath", backgroundProvider);
+            Assert.Contains("SelectedGameBackground", viewModel);
+            Assert.Contains("Source=\"{Binding SelectedGameBackground}\"", productionShell);
+            Assert.Contains("GscGameBackgroundOpacity", productionShell);
+            Assert.Contains("GscGameBackgroundTintBrush", productionShell);
             Assert.Contains("SelectedGameIcon", dashboard);
             Assert.Contains("SelectedGameIcon", overview);
             Assert.Contains("SelectedGameIcon", saves);

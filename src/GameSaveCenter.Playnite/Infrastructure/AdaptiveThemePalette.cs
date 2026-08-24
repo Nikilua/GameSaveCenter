@@ -292,6 +292,14 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscShellAmbientOpacity"] = glassEnabled
                 ? 0.68 + (0.32 * glassStrength)
                 : 0d;
+            var gameBackgroundVisible = glassEnabled && !SystemParameters.HighContrast;
+            resources["GscGameBackgroundOpacity"] = gameBackgroundVisible
+                ? (palette.IsDark ? 0.28 : 0.22)
+                : 0d;
+            resources["GscGameBackgroundTintBrush"] = Brush(gameBackgroundVisible
+                ? Color.FromArgb(palette.IsDark ? (byte)0xA8 : (byte)0xB8,
+                    palette.Backdrop.R, palette.Backdrop.G, palette.Backdrop.B)
+                : Colors.Transparent);
             // This is a wide, non-circular material wash. It adds a low-cost sense of depth
             // across large empty regions without a page-sized BlurEffect or spotlight tree.
             resources["GscAmbientWideWashBrush"] = CreateAmbientWideWashBrush(palette, glassEnabled);

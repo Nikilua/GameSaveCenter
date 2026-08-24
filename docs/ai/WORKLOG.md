@@ -2,6 +2,27 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-24 UI-310 当前游戏背景图环境材质
+
+**问题确认：**
+
+- Playnite SDK 的 `Game.BackgroundImage` 支持本地路径、HTTP 地址和数据库文件 ID；项目之前只读取当前游戏的 `Icon`，所以所有页面都只能看到主题默认背景。
+- 直接让整页读取远程图片或挂大面积 BlurEffect 会把网络/解码/重绘成本带到 Playnite 主线程，和大型游戏库启动优化及滚动性能目标冲突。
+
+**实现内容：**
+
+- 新增 UI-only `PlayniteGameBackgroundProvider`：解析 Playnite 本地缓存/数据库文件，限制 1920 DIP 解码宽度，最多缓存 6 张背景，并在后台线程解码；HTTP 直链无法解析为本地文件时安全回退，不自行发起网络请求。
+- `DashboardViewModel` 暴露 `SelectedGameBackground`；选中游戏变化时取消旧加载并用 generation 丢弃过期结果，避免快速切换时串图或阻塞界面。
+- 生产 Shell 在导航栏和主界面下方增加一层低透明度背景图，再叠加当前主题的 tint 与宽域多色材质。没有背景图、毛玻璃关闭或高对比度时图片层透明，现有主题默认背景保持不变。
+- 默认背景仍由 `AdaptiveThemePalette` 从 Playnite 主题/用户主题模式推导；背景图只是环境素材，不改变文字、卡片、命令、Binding、滚动和虚拟化。
+
+**验证结果：**
+
+- `validate-source.py`、XAML structural validation、`validate_wpf_ui.py` 和 `git diff --check` 通过；WPF 静态审查 0 error、18 条既有 warning。
+- Release 构建 0 warning/0 error；Core 59/59、Worker 199/199、Playnite 285/285，57 项按既有环境规则跳过。
+- `scripts/render-qa.ps1 -Configuration Release -Output .tmp/ui-qa-game-background` 为 `render-qa OK`，覆盖浅色/深色、多尺寸、滚动和 resize transition。
+- 已生成 `artifacts/GameSaveCenter-0.6.70-playnite.zip`；由于本机 Playnite/Worker 当时仍在运行，本轮没有强制结束用户进程覆盖安装，也没有把真实宿主背景图显示宣称为已截图复核。
+
 ## 2026-08-24 UI-309 全局宽域多色材质替换圆形光斑
 
 **问题确认：**

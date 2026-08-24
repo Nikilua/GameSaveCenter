@@ -35,6 +35,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private readonly GameSaveCenterPlugin plugin;
         private readonly GamePickerViewModel gamePicker;
         private readonly PlayniteGameIconProvider gameIconProvider;
+        private readonly PlayniteGameBackgroundProvider gameBackgroundProvider;
         private readonly SynchronizationContext? uiSynchronizationContext = SynchronizationContext.Current;
         private readonly Dictionary<string, TaskState> knownTaskStates = new Dictionary<string, TaskState>(StringComparer.OrdinalIgnoreCase);
         private readonly TaskIndexedCollection taskIndex = new TaskIndexedCollection();
@@ -47,13 +48,16 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string? pendingAutoSelectPlayniteId;
         private string? lastStartedPlayniteId;
         private ImageSource selectedGameIcon = null!;
+        private ImageSource? selectedGameBackground;
         private long lastTaskEventSequence;
         private CancellationTokenSource? taskEventSubscription;
         private CancellationTokenSource? gamePickerPersistenceCancellation;
         private CancellationTokenSource? detailsLoadCancellation;
+        private CancellationTokenSource? selectedGameBackgroundCancellation;
         private CancellationTokenSource? initialSynchronizationCancellation;
         private long deferredUiWorkGeneration;
         private long detailsLoadGeneration;
+        private long selectedGameBackgroundGeneration;
         private Task? taskEventListener;
         private bool commandRefreshScheduled;
         private readonly DebouncedRefresh taskSearchRefresh;
@@ -146,6 +150,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             gamePicker.PropertyChanged += OnGamePickerPropertyChanged;
             OnWorkspaceStateInitialize();
             gameIconProvider = new PlayniteGameIconProvider(plugin.PlayniteApi);
+            gameBackgroundProvider = new PlayniteGameBackgroundProvider(plugin.PlayniteApi);
             plugin.PlayniteGameStarted += OnPlayniteGameStarted;
             gameSearchText = gamePicker.SearchText;
             gameStatusFilter = gamePicker.StatusFilter;
@@ -536,6 +541,11 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             get => selectedGameIcon;
             private set => SetValue(ref selectedGameIcon, value);
+        }
+        public ImageSource? SelectedGameBackground
+        {
+            get => selectedGameBackground;
+            private set => SetValue(ref selectedGameBackground, value);
         }
         public BackupVersionDto SelectedBackup
         {
@@ -1028,6 +1038,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             taskSearchRefresh.Cancel();
             mediaSearchRefresh.Cancel();
             CancelDetailsLoad();
+            CancelSelectedGameBackgroundLoad();
             CancelInitialSynchronization();
             var persistence = gamePickerPersistenceCancellation;
             gamePickerPersistenceCancellation = null;
@@ -1289,6 +1300,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                     SelectCurrentlyRunningGameOnViewActivation();
                     ApplyInitialSelectionIfNeeded();
                     RefreshSelectedGameIcon();
+                    RefreshSelectedGameBackground();
                 }
                 finally { suppressSelectionLoad = false; }
                 // Cache-first snapshots can be older than the current wall clock. The protection
@@ -2774,7 +2786,11 @@ namespace GameSaveCenter.Playnite.ViewModels
             if (!string.Equals(e.PropertyName, nameof(GamePickerViewModel.SelectedItem), StringComparison.Ordinal)) return;
             var selected = gamePicker.SelectedGame;
             OnPropertyChanged(nameof(SelectedGame));
-            if (!suppressSelectionLoad) RefreshSelectedGameIcon();
+            if (!suppressSelectionLoad)
+            {
+                RefreshSelectedGameIcon();
+                RefreshSelectedGameBackground();
+            }
             RaiseCommandStates();
             if (suppressSelectionLoad) return;
             ClearSelectedGameDetails();
@@ -2825,6 +2841,59 @@ namespace GameSaveCenter.Playnite.ViewModels
             if (selected != null && Guid.TryParse(selected.PlayniteId, out var playniteId))
                 icon = gameIconProvider.Load(playniteId);
             SelectedGameIcon = icon!;
+        }
+
+        private void RefreshSelectedGameBackground()
+        {
+            var generation = Interlocked.Increment(ref selectedGameBackgroundGeneration);
+            var next = new CancellationTokenSource();
+            var previous = Interlocked.Exchange(ref selectedGameBackgroundCancellation, next);
+            previous?.Cancel();
+            previous?.Dispose();
+            SelectedGameBackground = null;
+
+            var selected = gamePicker.SelectedGame;
+            if (selected == null || !Guid.TryParse(selected.PlayniteId, out var playniteId))
+            {
+                next.Dispose();
+                Interlocked.CompareExchange(ref selectedGameBackgroundCancellation, null, next);
+                return;
+            }
+
+            _ = LoadSelectedGameBackgroundAsync(playniteId, generation, next);
+        }
+
+        private async Task LoadSelectedGameBackgroundAsync(Guid playniteId, long generation, CancellationTokenSource cancellation)
+        {
+            try
+            {
+                var image = await gameBackgroundProvider.LoadAsync(playniteId, cancellation.Token).ConfigureAwait(false);
+                if (cancellation.IsCancellationRequested || generation != Interlocked.Read(ref selectedGameBackgroundGeneration)) return;
+                ApplyOnUi(() =>
+                {
+                    if (!cancellation.IsCancellationRequested && generation == Interlocked.Read(ref selectedGameBackgroundGeneration))
+                        SelectedGameBackground = image;
+                });
+            }
+            catch (OperationCanceledException) when (cancellation.IsCancellationRequested) { }
+            catch (Exception ex)
+            {
+                Logger.Debug(ex, "Could not load the selected Playnite game background; keeping the theme material fallback.");
+            }
+            finally
+            {
+                if (ReferenceEquals(Interlocked.CompareExchange(ref selectedGameBackgroundCancellation, null, cancellation), cancellation))
+                    cancellation.Dispose();
+            }
+        }
+
+        private void CancelSelectedGameBackgroundLoad()
+        {
+            Interlocked.Increment(ref selectedGameBackgroundGeneration);
+            var cancellation = Interlocked.Exchange(ref selectedGameBackgroundCancellation, null);
+            if (cancellation == null) return;
+            try { cancellation.Cancel(); }
+            finally { cancellation.Dispose(); }
         }
 
         /// <summary>

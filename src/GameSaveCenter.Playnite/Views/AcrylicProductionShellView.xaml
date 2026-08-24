@@ -28,10 +28,26 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
+            <!-- Playnite already resolves a game's BackgroundImage into its local cache or
+                 database file. Keep it as a low-opacity ambient source; the theme tint and
+                 wide material layer remain above it, while a missing image simply draws nothing
+                 and leaves the theme-derived backdrop visible. -->
+            <Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                   Source="{Binding SelectedGameBackground}"
+                   Stretch="UniformToFill"
+                   Opacity="{DynamicResource GscGameBackgroundOpacity}"
+                   IsHitTestVisible="False"
+                   RenderOptions.BitmapScalingMode="LowQuality"
+                   Panel.ZIndex="0"/>
+            <Rectangle Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                       Fill="{DynamicResource GscGameBackgroundTintBrush}"
+                       IsHitTestVisible="False"
+                       Panel.ZIndex="0"/>
+
             <!-- Keep one low-cost material layer behind the page host. Page-local layers still
                  provide page-specific light. The sidebar uses a separate neutral translucent
                  surface so an accent bloom cannot become a full-height navigation pillar. The
-                 blur remains limited to the fixed decorative light sources inside this layer. -->
+                 material remains a fixed-cost rectangle and never blurs the moving page. -->
             <ui:AmbientMaterialLayer x:Name="ShellAmbientMaterialLayer"
                                      Grid.Row="0" Grid.Column="1"
                                      Opacity="{DynamicResource GscShellAmbientOpacity}"
