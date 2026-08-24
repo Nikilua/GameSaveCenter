@@ -1041,6 +1041,23 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void TaskGridKeepsBottomRowAboveScrollbarWithoutChangingColumnScrollContract()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var task = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml"));
+        var harness = File.ReadAllText(Path.Combine(repositoryRoot, "tests", "GameSaveCenter.RenderHarness", "Program.cs"));
+
+        Assert.Contains("<Setter Property=\"Padding\" Value=\"0,0,0,12\"/>", task);
+        Assert.Contains("<Setter Property=\"ScrollViewer.HorizontalScrollBarVisibility\" Value=\"Auto\"/>", task);
+        Assert.Contains("<Setter Property=\"VirtualizingPanel.ScrollUnit\" Value=\"Item\"/>", task);
+        Assert.Contains("<Setter Property=\"ScrollViewer.CanContentScroll\" Value=\"True\"/>", task);
+        Assert.DoesNotContain("<Setter Property=\"infra:DataGridStarFill.Enabled\" Value=\"False\"/>", task);
+        Assert.Contains("FakeDashboardData(500)", harness);
+        Assert.Contains("gridName is \"MediaInboxGrid\" or \"TaskGrid\"", harness);
+        Assert.Contains("bottom last row is under horizontal scrollbar", harness);
+    }
+
+    [Fact]
     public void SaveAndTrainerStackedInspectorsReserveAReadableListViewport()
     {
         var repositoryRoot = FindRepositoryRoot();

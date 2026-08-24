@@ -2,6 +2,26 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-24 UI-305 任务表格底部行与水平滚动条安全区
+
+**问题确认：**
+
+- Playnite 实际宿主的 DataGrid 模板可能把水平滚动条绘制到任务表最后一个已实现行上，导致滚到底部时最后一行显示不完整。
+- 任务表仍需要保留横向滚动和共享星号列重分配；关闭横向滚动或关闭 `DataGridStarFill` 会重新引入列裁切、回拉空白列等旧问题。
+
+**实现内容：**
+
+- `TaskDataGrid` 增加 `Padding="0,0,0,12"` 底部内容安全区，使最后一行在宿主水平滚动条上方完整结束；没有改列宽、真实 Binding/命令、Item 滚动或 Recycling 虚拟化。
+- RenderHarness 的任务探针使用 Worker 真实上限 500 条数据，执行到底、回顶、再到底、回到中段、再回顶的方向性滚动，并检查最后一行不得进入水平滚动条区域、回拉后不得出现无效行。
+- WPF 源码契约锁定任务表的横向 Auto、`CanContentScroll=True`、Item scrolling 和 star-fill 未被关闭。
+
+**验证结果：**
+
+- `validate-source.py`、XAML 结构检查、`validate_wpf_ui.py` 均通过；WPF 静态审查 0 error。
+- Release 构建 0 警告/0 错误；Core 59/59、Worker 199/199、Playnite 283/283，57 项按既有环境规则跳过。
+- `artifacts/ui-qa/task-bottom-final/render-qa-report.txt` 为 `render-qa OK`，覆盖浅色/深色、多尺寸、滚动回拉和 resize transition；任务底部几何检查确认最后一行底部与水平滚动条顶部相接但不重叠。
+- 真实 Playnite 宿主的 DPI、主题和滚动条皮肤仍需用户启动后复核，不能把离屏 RenderHarness 当作逐像素宿主验收。
+
 ## 2026-08-24 UI-304 毛玻璃强度联动与固定环境光增强
 
 **问题确认：**

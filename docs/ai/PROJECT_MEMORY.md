@@ -3,6 +3,13 @@
 > 维护时间：2026-08-24
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-24 UI-305 当前事实：任务表格底部滚动安全区
+
+- `TaskCenterView.xaml` 的 `TaskDataGrid` 使用 `Padding="0,0,0,12"`，为 Playnite 宿主可能覆盖最后一行的水平滚动条保留内部底部安全区；不要通过关闭横向滚动或关闭 `DataGridStarFill` 修复，否则会破坏列可见性和旧的回拉滚动契约。
+- 任务表仍保持横向 `Auto`、`ScrollViewer.CanContentScroll=True`、`VirtualizingPanel.ScrollUnit=Item`、Recycling 和真实列宽/Binding/命令。
+- RenderHarness 的任务探针使用 500 条数据，明确测试到底→回顶→再到底→中段→回顶，并比较最后一行底部与水平滚动条顶部；任务表无效行、底部覆盖或回拉异常都必须失败。
+- UI-305 验证：源码门禁、XAML/WPF 静态检查、Release 0 warning/0 error、Core 59/59、Worker 199/199、Playnite 283/283（57 跳过）及 `artifacts/ui-qa/task-bottom-final/render-qa-report.txt` 均通过。真实 Playnite 逐像素宿主表现仍需用户复核。
+
 ## 2026-08-24 UI-304 当前事实：毛玻璃强度联动与固定环境光增强
 
 - `AdaptiveThemePalette` 现在保存规范化 `GlassStrength`；`ApplyAccentResources` 使用它增加固定 accent/info/success 环境光及中心柔光的 alpha，`ApplyMaterialResources` 使用它计算 `GscAmbientPageOpacity`。100% 不再只是让卡片更不透明。

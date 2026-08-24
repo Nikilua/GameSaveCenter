@@ -54,6 +54,10 @@
                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                 <Setter Property="VerticalContentAlignment" Value="Top"/>
                 <Setter Property="ScrollViewer.VerticalContentAlignment" Value="Top"/>
+                <!-- Some Playnite host templates paint the horizontal scrollbar over the
+                     final realized row. Keep a small content safety zone inside the grid;
+                     this does not alter column widths or the virtualized scroll model. -->
+                <Setter Property="Padding" Value="0,0,0,12"/>
             </Style>
             <Style x:Key="TaskTableFrame" TargetType="Border" BasedOn="{StaticResource GscRedesignTableFrame}"/>
             <Style x:Key="TaskFirstColumnHeader" TargetType="DataGridColumnHeader" BasedOn="{StaticResource GscDataGridColumnHeaderStyle}">

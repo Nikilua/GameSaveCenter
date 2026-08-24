@@ -1636,7 +1636,7 @@ public static class Program
                 () => new SaveCenterView { DataContext = new FakeDashboardData(60) },
                 view => ((SaveCenterView)view).ApplyResponsiveLayout(900, height));
             ProbeGrid(report, "Task", "TaskGrid", -1, height,
-                () => new TaskCenterView { DataContext = new FakeDashboardData(60) },
+                () => new TaskCenterView { DataContext = new FakeDashboardData(500) },
                 view => ((TaskCenterView)view).ApplyResponsiveLayout(900, height));
             ProbeGrid(report, "Media-Inbox", "MediaInboxGrid", 0, height,
                 () => new MediaCenterView { DataContext = CreateMediaInboxProbeData() },
@@ -2235,7 +2235,7 @@ public static class Program
             grid.ScrollIntoView(grid.Items[grid.Items.Count - 1]);
             host.UpdateLayout();
 
-            var scrollFractions = gridName == "MediaInboxGrid"
+            var scrollFractions = gridName is "MediaInboxGrid" or "TaskGrid"
                 // The production regression is directional: the rows can disappear after
                 // reaching the end and then dragging the thumb back toward the head. Keep
                 // this sequence explicit instead of only sampling monotonically downward.
@@ -2281,6 +2281,31 @@ public static class Program
                 if (fraction >= 1.0)
                 {
                     var lastRow = rows.FirstOrDefault(row => row.Index == grid.Items.Count - 1);
+                    var horizontalBars = FindVisualChildren<ScrollBar>(scroller)
+                        .Where(bar => bar.Orientation == Orientation.Horizontal)
+                        .Select(bar => new
+                        {
+                            Height = bar.ActualHeight,
+                            Y = bar.TransformToAncestor(scroller).Transform(new Point(0, 0)).Y,
+                            Visibility = bar.Visibility
+                        })
+                        .ToList();
+                    var visibleHorizontalBar = horizontalBars.FirstOrDefault(bar =>
+                        bar.Visibility == Visibility.Visible && bar.Height > 0);
+                    var lastRowDescription = lastRow == null
+                        ? "missing"
+                        : $"y={lastRow.Y:0.##},h={lastRow.Height:0.##},bottom={lastRow.Y + lastRow.Height:0.##}";
+                    var horizontalBarDescription = horizontalBars.Count == 0
+                        ? "missing"
+                        : string.Join(";", horizontalBars.Select(bar =>
+                            $"y={bar.Y:0.##},h={bar.Height:0.##},vis={bar.Visibility}"));
+                    var columnWidthDescription = string.Join(",", grid.Columns.Select(column =>
+                        $"{column.Header}:{column.ActualWidth:0.##}/{column.MinWidth:0.##}"));
+                    report.AppendLine(
+                        $"  {label} {gridName} bottom geometry: viewport={scroller.ViewportWidth:0.##}x{scroller.ViewportHeight:0.##} " +
+                        $"extent={scroller.ExtentWidth:0.##}x{scroller.ExtentHeight:0.##} " +
+                        $"grid={grid.ActualWidth:0.##}x{grid.ActualHeight:0.##} last={lastRowDescription} " +
+                        $"hbar={horizontalBarDescription} cols={columnWidthDescription}");
                     if (lastRow == null)
                     {
                         s_problems.Add($"{label} {gridName} h={height:0} bottom last row not realized");
@@ -2290,6 +2315,8 @@ public static class Program
                         var bottom = lastRow.Y + lastRow.Height;
                         if (bottom > grid.ActualHeight + 1)
                             s_problems.Add($"{label} {gridName} h={height:0} bottom last row clipped (bottom={bottom:0.##} gridH={grid.ActualHeight:0.##})");
+                        if (visibleHorizontalBar != null && bottom > visibleHorizontalBar.Y + 0.5)
+                            s_problems.Add($"{label} {gridName} h={height:0} bottom last row is under horizontal scrollbar (bottom={bottom:0.##} hbarY={visibleHorizontalBar.Y:0.##})");
                     }
                     if (rows.Count > 0 && headerGap > 4)
                         s_problems.Add($"{label} {gridName} h={height:0} bottom phantom gap under header (gap={headerGap:0.##})");
@@ -2311,7 +2338,7 @@ public static class Program
 
             var scrollable = scroller.ScrollableHeight;
             var offset = scroller.VerticalOffset;
-            if (gridName == "MediaInboxGrid")
+            if (gridName is "MediaInboxGrid" or "TaskGrid")
             {
                 if (scrollable < 0 || offset > 1)
                     s_problems.Add($"{label} {gridName} h={height:0} scroll-back invalid (offset={offset:0.##} scrollable={scrollable:0.##})");

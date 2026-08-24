@@ -14,6 +14,12 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-24 UI-305 任务表格底部滚动交接
+
+- 用户截图中的任务表最后一行被水平滚动条覆盖。生产 `TaskDataGrid` 当前仅增加 `Padding="0,0,0,12"` 底部安全区，不能关闭横向滚动、不能关闭共享 `DataGridStarFill`，也不要改动真实列宽、Binding、命令、Item scrolling 或 Recycling。
+- RenderHarness 使用 500 条任务数据执行到底→回顶→再到底→中段→回顶；底部检查比较最后一行底部和水平滚动条顶部，同时检查回拉后无空白/无效行。修改滚动链路时必须保留该方向性探针。
+- 当前离屏证据在 `artifacts/ui-qa/task-bottom-final/render-qa-report.txt`，结果为 `render-qa OK`；这不等同真实 Playnite 宿主逐像素验收，用户仍需在本机滚到任务列表底部确认最后一行完整。
+
 ## 2026-08-24 UI-303 任务中心输入文字垂直裁切修复交接
 
 - 根因已确认：TextBox 模板把 `TextBox.Padding` 同时用于 `PART_ContentHost.Margin`，WPF TextBox/Playnite 宿主又对内容宿主应用 Padding，任务搜索框上下 `7 DIP` 重复扣除，`PART_ContentHost.ViewportHeight` 仅约 `5 DIP`。不要恢复 `Margin="{TemplateBinding Padding}"`，也不要通过增加 TextBox 高度修复。
