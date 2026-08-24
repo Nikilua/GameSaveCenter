@@ -49,6 +49,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string? lastStartedPlayniteId;
         private ImageSource selectedGameIcon = null!;
         private ImageSource? selectedGameBackground;
+        private Brush? selectedGameBackgroundAmbientBrush;
+        private bool hasSelectedGameBackgroundAmbientMaterial;
         private long lastTaskEventSequence;
         private CancellationTokenSource? taskEventSubscription;
         private CancellationTokenSource? gamePickerPersistenceCancellation;
@@ -546,6 +548,16 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             get => selectedGameBackground;
             private set => SetValue(ref selectedGameBackground, value);
+        }
+        public Brush? SelectedGameBackgroundAmbientBrush
+        {
+            get => selectedGameBackgroundAmbientBrush;
+            private set => SetValue(ref selectedGameBackgroundAmbientBrush, value);
+        }
+        public bool HasSelectedGameBackgroundAmbientMaterial
+        {
+            get => hasSelectedGameBackgroundAmbientMaterial;
+            private set => SetValue(ref hasSelectedGameBackgroundAmbientMaterial, value);
         }
         public BackupVersionDto SelectedBackup
         {
@@ -2851,6 +2863,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             previous?.Cancel();
             previous?.Dispose();
             SelectedGameBackground = null;
+            SelectedGameBackgroundAmbientBrush = null;
+            HasSelectedGameBackgroundAmbientMaterial = false;
 
             var selected = gamePicker.SelectedGame;
             if (selected == null || !Guid.TryParse(selected.PlayniteId, out var playniteId))
@@ -2867,12 +2881,16 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             try
             {
-                var image = await gameBackgroundProvider.LoadAsync(playniteId, cancellation.Token).ConfigureAwait(false);
+                var visual = await gameBackgroundProvider.LoadVisualAsync(playniteId, cancellation.Token).ConfigureAwait(false);
                 if (cancellation.IsCancellationRequested || generation != Interlocked.Read(ref selectedGameBackgroundGeneration)) return;
                 ApplyOnUi(() =>
                 {
                     if (!cancellation.IsCancellationRequested && generation == Interlocked.Read(ref selectedGameBackgroundGeneration))
-                        SelectedGameBackground = image;
+                    {
+                        SelectedGameBackground = visual?.Image;
+                        SelectedGameBackgroundAmbientBrush = visual?.AmbientBrush;
+                        HasSelectedGameBackgroundAmbientMaterial = visual != null;
+                    }
                 });
             }
             catch (OperationCanceledException) when (cancellation.IsCancellationRequested) { }

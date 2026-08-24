@@ -3,6 +3,14 @@
 > 维护时间：2026-08-24
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-24 UI-312 当前事实：卡片表面与游戏背景自适应
+
+- `OverviewTodayHeroCard` 不再嵌套整面背景 Border；它只使用共享 `GscRedesignSectionCard`，因此卡片本身是一层连续的阅读/玻璃表面，不能恢复“卡片里面再放一张全尺寸背景”的结构。
+- `PlayniteGameBackgroundProvider.LoadVisualAsync` 返回真实 `ImageSource` 和从同一张位图采样出的冻结 `AmbientBrush`；采样只生成低 alpha 线性渐变，不替换真实图片。缓存仍为最多 6 张、后台最多 1920 宽度解码、远程 5 秒/12 MB 限制、取消和 generation 防串图。
+- `AmbientMaterialLayer` 在 `DashboardViewModel.HasSelectedGameBackgroundAmbientMaterial` 为 true 时隐藏固定 `GscAmbientWideWashBrush`，显示 `SelectedGameBackgroundAmbientBrush`；没有背景图时才使用主题 accent/info/success 宽域洗色。这样游戏背景颜色跟随图片，不再固定 success 绿色。
+- 当前背景图层透明度为深色/浅色 0.48/0.40，主题 tint alpha 为 0x52/0x66；关闭毛玻璃或高对比度仍让图片层和环境材质透明。不要把图片层改成内容卡片或对整页、表格、列表加 BlurEffect。
+- UI-312 验证：源码门禁、WPF 静态检查和 render QA 通过；背景提供器定向测试 5/5；Release 全量测试为 Core 59/59、Worker 199/199、Playnite 289/346（57 跳过、0 失败）。当前 Playnite 无可控窗口，真实宿主背景切换仍需安装后人工切换两款有不同背景图的游戏确认。
+
 ## 2026-08-24 UI-311 当前事实：背景切换、Today 圆角与材质强度
 
 - `OverviewTodayHeroCard` 内的宽域洗色必须使用带 `CornerRadius="12"` 的 Border；不要把整面 Rectangle 直接放进圆角卡片并依赖 `ClipToBounds`，WPF 不会按 CornerRadius 裁切子元素。

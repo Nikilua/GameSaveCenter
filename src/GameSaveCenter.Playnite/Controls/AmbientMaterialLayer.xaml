@@ -8,6 +8,7 @@
     <!-- Shared material is one pane-wide, multi-color linear wash. It has no circular light
          sources and no effect tree, so pages, text, lists and virtualized rows stay cheap. -->
     <Grid Opacity="{DynamicResource GscAmbientPageOpacity}">
-        <Rectangle Fill="{DynamicResource GscAmbientWideWashBrush}"/>
+        <Rectangle x:Name="ThemeAmbientWash" Fill="{DynamicResource GscAmbientWideWashBrush}"/>
+        <Rectangle x:Name="GameBackgroundAmbientWash"/>
     </Grid>
 </UserControl>

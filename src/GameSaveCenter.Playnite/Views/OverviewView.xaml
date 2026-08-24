@@ -296,7 +296,7 @@
              <Grid x:Name="OverviewHeroAndGameRow" Grid.Row="0" Grid.ColumnSpan="3" Margin="0,0,0,14">
                 <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition x:Name="OverviewHeroGameCompactRow" Height="0"/></Grid.RowDefinitions>
                 <Grid.ColumnDefinitions><ColumnDefinition x:Name="OverviewHeroColumn" Width="1*"/><ColumnDefinition x:Name="OverviewHeroGameGutterColumn" Width="14"/><ColumnDefinition x:Name="OverviewCurrentGameColumn" Width="1*"/></Grid.ColumnDefinitions>
-                <Border x:Name="OverviewTodayHeroCard" Grid.Row="0" Grid.Column="0" Style="{DynamicResource GscRedesignSectionCard}" MinHeight="205" ClipToBounds="True">
+                <Border x:Name="OverviewTodayHeroCard" Grid.Row="0" Grid.Column="0" Style="{DynamicResource GscRedesignSectionCard}" MinHeight="205">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -305,15 +305,9 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <!-- Use the same pane-wide multi-color material as the rest of the
-                             program. The hero gets an overall glass veil instead of three
-                             circular color spots, while the content remains above it. -->
-                         <!-- Keep the page-wide wash inside a rounded surface. A Rectangle here
-                              ignores the hero's corner geometry and leaves a square color block
-                              visible inside the otherwise rounded Today card. -->
-                         <Border Grid.RowSpan="2" CornerRadius="12"
-                                 Background="{DynamicResource GscAmbientWideWashBrush}"
-                                 IsHitTestVisible="False"/>
+                        <!-- The card itself is the shared reading/glass surface. Do not nest a
+                             second full-size wash here: it creates a square inner background and
+                             makes the rounded card look like a panel inside another panel. -->
                         <StackPanel Grid.Row="0" MinWidth="0" VerticalAlignment="Center" Margin="0,0,0,14">
                             <TextBlock Style="{DynamicResource GscRedesignHeroEyebrow}" Text="TODAY"/>
                             <TextBlock FontSize="35" FontWeight="SemiBold" Margin="0,8,0,8" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}">

@@ -64,6 +64,22 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.InRange(image.PixelWidth, 1, 1920);
         }
 
+        [Fact]
+        public void AmbientBrushIsFrozenAndUsesTheDecodedBackground()
+        {
+            var bytes = Convert.FromBase64String(
+                "iVBORw0KGgoAAAANSUhEUgAAAEAAAAAQCAYAAACqaXHeAAAAEElEQVR42mNkYPj/n4GBgYGJAQoA" +
+                "AAABAgEAAPcQ5fIAAAAASUVORK5CYII=");
+            var image = PlayniteGameBackgroundProvider.DecodeImage(bytes);
+
+            Assert.NotNull(image);
+            var brush = PlayniteGameBackgroundProvider.CreateAmbientBrush(image!);
+
+            Assert.True(brush.IsFrozen);
+            Assert.Equal(4, brush.GradientStops.Count);
+            Assert.Contains(brush.GradientStops, stop => stop.Color.A > 0);
+        }
+
         public void Dispose()
         {
             try { Directory.Delete(root, true); }

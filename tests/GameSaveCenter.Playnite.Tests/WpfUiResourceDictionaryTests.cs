@@ -2236,13 +2236,15 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("AmbientMaterialLayer", ambient);
         Assert.Contains("GscAmbientPageOpacity", ambient);
         Assert.Contains("GscAmbientWideWashBrush", ambient);
+        Assert.Contains("GameBackgroundAmbientWash", ambient);
         Assert.Contains("<Rectangle", ambient);
         Assert.DoesNotContain("RadialGradientBrush", ambient);
         Assert.DoesNotContain("BlurEffect", ambient);
         Assert.Contains("GscGlassHighlightBrush", productionShell);
         Assert.Contains("x:Name=\"OverviewTodayHeroCard\"", overview);
         var heroMarkup = overview.Substring(overview.IndexOf("x:Name=\"OverviewTodayHeroCard\"", StringComparison.Ordinal));
-        Assert.Contains("ClipToBounds=\"True\"", heroMarkup);
+        Assert.Contains("Style=\"{DynamicResource GscRedesignSectionCard}\"", heroMarkup);
+        Assert.DoesNotContain("GscAmbientWideWashBrush", heroMarkup);
         Assert.DoesNotContain("Margin=\"-112", heroMarkup);
         Assert.Contains("<ui:AmbientMaterialLayer", overview);
         Assert.Contains("x:Key=\"GscButtonStyle\"", redesign);

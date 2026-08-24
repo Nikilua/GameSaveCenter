@@ -2,6 +2,26 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-24 UI-312 收口卡片材质层级与背景自适应洗色
+
+**问题确认：**
+
+- UI-311 虽然修复了圆角外溢，但 Today 卡仍在共享卡片表面里面嵌了一层整面宽域 Border；截图因此呈现“卡片里面还有一张背景卡”的方形内层。
+- 固定的 `GscAmbientWideWashBrush` 使用主题 success 绿色段。它叠在选中游戏图片上方，导致不同游戏看起来都带同一片绿色；真实图片本身又被低透明度图片层和较重的固定 tint 压暗。
+
+**实现内容：**
+
+- `OverviewTodayHeroCard` 现在只使用共享 `GscRedesignSectionCard` 表面，移除卡内整面材质 Border；后续普通内容卡继续通过同一共享样式保持一致。
+- `PlayniteGameBackgroundProvider` 新增 `GameBackgroundVisual`，在复用真实图片缓存的同时，从同一张冻结位图采样四段低 alpha 线性渐变；仅当前选中游戏使用这套环境色，背景切换仍由取消令牌和 generation 保护。
+- `AmbientMaterialLayer` 对 Dashboard 页面订阅背景材质状态：有真实游戏背景时隐藏固定主题洗色，改用该游戏采样的环境色；无图、关闭毛玻璃或高对比度仍走主题透明回退。背景图透明度调整为深色 0.48、浅色 0.40，固定 tint alpha 降为 0x52/0x66，使图片成为可识别的底图。
+
+**验证结果：**
+
+- `validate-source.py`、`validate_wpf_ui.py`、`git diff --check` 通过；WPF 静态审查 0 error、18 条既有 warning。
+- Playnite Release Debug/测试项目构建均为 0 warning/0 error；背景提供器定向测试 5/5 通过。
+- 全量 Playnite 测试在更新本轮结构契约后为 289 通过、57 跳过、0 失败；Core 59/59、Worker 199/199 也全部通过。
+- `scripts/render-qa.ps1 -Configuration Release -Output .tmp/ui-qa-current` 为 `render-qa OK`；已查看 Overview 的 1600×900 与 1040×700 离屏图，Today 卡连续表面和紧凑布局正常。当前 Playnite 进程没有暴露可控窗口，未宣称真实宿主截图验证。
+
 ## 2026-08-24 UI-311 修复 Today 卡方块与游戏背景切换
 
 **问题确认：**
