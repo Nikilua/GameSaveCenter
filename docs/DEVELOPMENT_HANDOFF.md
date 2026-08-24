@@ -14,6 +14,12 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-24 UI-301 表格右侧安全边距与搜索输入起点微调交接
+
+- 共享及 Dashboard 本地选中行模板的 `RowChrome` Margin 已统一为 `4,2,12,2`；这只是为了避开 Playnite 宿主垂直滚动轨道，不要改动 `SelectiveScrollingGrid`、滚动方式、排序或 Recycling。
+- TaskCenter 和 Dashboard 游戏库的带搜索图标输入框左侧 Padding/提示 Margin 已统一为 `20`，右侧清除按钮预留 `38` 保持；普通 TextBox、数值输入、清除按钮、Binding 和键盘焦点语义不变。
+- 当前验证：`validate-source.py`、XAML 19/19、WPF 静态审查 0 error/20 warnings/165 info、Release 0 warning/0 error、Core 59/59、Worker 199/199、Playnite 282/282（57 跳过），`artifacts/ui-qa/ui301-spacing-v1/render-qa-report.txt` 为 `render-qa OK`；受控 `scripts/dev-install-run.ps1 -Configuration Release -NoStart` 已安装生产扩展 `0.6.70.0`。真实 Playnite 宿主逐像素边距仍由用户复核。
+
 ## 2026-08-24 UI-300 / FUNC-004 表格、输入框与 FLiNG 归档修复交接
 
 - 共享 `WpfUiProduction.xaml`、`DesignTokens.xaml` 的普通 TextBox 现在显式使用左对齐内容和文本；模板把 `HorizontalContentAlignment` 传给 `PART_ContentHost`，因此插入光标从输入框左侧内边距开始。数值输入仍由专用样式覆盖为右对齐或居中，不改变原有编辑语义。

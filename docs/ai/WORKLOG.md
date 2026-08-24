@@ -2,6 +2,26 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-24 UI-301 表格右侧安全边距与搜索输入起点微调
+
+**问题确认：**
+
+- 上一轮选中行右侧安全边距为 `8`，在用户截图对应的 Playnite 宿主滚动轨道下仍可能把右侧圆角压得太近。
+- 任务中心和游戏库搜索框为搜索图标预留了 `30/32` 的左侧内容区，实际文字起点仍偏右；这不是普通 TextBox 左对齐模板失效。
+
+**实现内容：**
+
+- 共享 `GscRoundedDataGridRowTemplate` 和 Dashboard 本地兼容行模板统一使用 `4,2,12,2`，只扩大右侧安全区，不改 DataGrid 选择、排序、滚动或虚拟化契约。
+- TaskCenter、Dashboard 游戏库搜索框的左侧内容留白统一收紧到 `20`，搜索图标、占位提示和右侧清除按钮的命中区保持不变；普通输入框、清除逻辑、Binding 和键盘焦点行为不变。
+- 新增/更新静态契约断言，锁定表格右侧边距和两个带图标搜索框的输入起点，避免后续页面微调重新引入偏移。
+
+**验证结果：**
+
+- `validate-source.py` 通过；XAML 结构 19/19；WPF 静态审查 0 error、20 warnings、165 info。
+- Release 构建 0 warning/0 error；Core 59/59、Worker 199/199、Playnite 282/282，57 项按既有环境规则跳过。
+- `artifacts/ui-qa/ui301-spacing-v1/render-qa-report.txt` 为 `render-qa OK`，覆盖双主题、多尺寸、表格滚动和 resize transition。
+- 受控运行 `scripts/dev-install-run.ps1 -Configuration Release -NoStart` 成功，标准生产扩展目录清单为 `0.6.70`、DLL 为 `0.6.70.0`；本轮隔离构建目录已清理。未启动真实 Playnite 逐像素截图，需用户在宿主中复核最终边距。
+
 ## 2026-08-24 UI-300 / FUNC-004 表格、输入框与 FLiNG 归档修复
 
 **问题确认：**
@@ -12,7 +32,7 @@
 
 **实现内容：**
 
-- 共享 `GscRoundedDataGridRowTemplate` 和 Dashboard 本地兼容行模板把选中 `RowChrome` 的 Margin 从 `4,2` 调整为 `4,2,8,2`，让右侧圆角落在稳定安全区；没有改表格命令、排序、SelectiveScrollingGrid、Item 滚动或 Recycling 虚拟化。
+- 共享 `GscRoundedDataGridRowTemplate` 和 Dashboard 本地兼容行模板把选中 `RowChrome` 的 Margin 从 `4,2` 调整为 `4,2,12,2`，让右侧圆角落在稳定安全区；没有改表格命令、排序、SelectiveScrollingGrid、Item 滚动或 Recycling 虚拟化。
 - Overview 风险按钮统一使用共享工具栏普通/主按钮模板、共享高度、最小宽度和垂直居中；原有命令、Automation 名称和安全语义保留。
 - `GscWpfUiTextBox`、`GscTextBox` 默认左对齐并把内容对齐传到 `PART_ContentHost`；数值输入专用样式仍能覆盖为右对齐/居中。Shell、Media、Task、Trainer 搜索框增加条件显示的 `GscSearchClearButton`，点击清空并保留焦点；Trainer 响应式宽度作用于包含清除按钮的 Host 和输入框。
 - FLiNG 归档有界 BFS 接受 `.zip`、`.rar`、`.7z`、`.exe` 直链，仍限制 HTTPS 同主机、目录/文件数量和归档故障降级。Worker 用 SharpCompress reader 流式解包 RAR/7z，逐条执行 `ArchivePathGuard`、1 GiB 单文件和 4 GiB 总展开大小上限，失败清理版本目录，绝不执行压缩包内 EXE；现有 ZIP/direct EXE 流程保持优先。

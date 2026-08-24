@@ -3,9 +3,15 @@
 > 维护时间：2026-08-24
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-24 UI-301 当前事实：表格右侧安全边距与搜索输入起点
+
+- 共享 `WpfUiProduction.xaml` 的 `GscRoundedDataGridRowTemplate` 和 `DashboardView.xaml` 的本地兼容行模板，选中 `RowChrome` 使用 `4,2,12,2`；`12` 是为 Playnite 宿主垂直滚动轨道保留的右侧安全区。不要恢复到 `4,2,8,2` 或旧的 `4,2`。
+- TaskCenter 与 Dashboard 游戏库搜索框为搜索图标保留 `20` DIP 左侧内容留白，提示文本同步从 `20` 起始；右侧 `38` DIP 仍为清除按钮预留区。共享普通 TextBox 的左对齐模板、数值输入的专用对齐和清除按钮行为不变。
+- UI-301 验证：`validate-source.py`、XAML 19/19、WPF 静态审查 0 error/20 warnings/165 info、Release 0 warning/0 error、Core 59/59、Worker 199/199、Playnite 282/282（57 跳过）、`artifacts/ui-qa/ui301-spacing-v1/render-qa-report.txt` 的 `render-qa OK`；受控一键安装已核验生产扩展 `0.6.70.0`。真实 Playnite 宿主逐像素边距仍需用户复核。
+
 ## 2026-08-24 UI-300 / FUNC-004 当前事实：表格、输入框与 FLiNG 归档
 
-- `WpfUiProduction.xaml` 的共享 `GscRoundedDataGridRowTemplate` 选中描边使用 `4,2,8,2` 安全边距，`DashboardView.xaml` 的本地兼容行模板同步；不要把右边距恢复为 `4,2`，否则宿主垂直滚动轨道可能覆盖右侧圆角。共享行的排序、SelectiveScrollingGrid、Item 滚动和 Recycling 不变。
+- `WpfUiProduction.xaml` 的共享 `GscRoundedDataGridRowTemplate` 选中描边使用 `4,2,12,2` 安全边距，`DashboardView.xaml` 的本地兼容行模板同步；不要把右边距恢复为 `4,2,8,2` 或 `4,2`，否则宿主垂直滚动轨道可能覆盖右侧圆角。共享行的排序、SelectiveScrollingGrid、Item 滚动和 Recycling 不变。
 - `GscWpfUiTextBox` 与 `GscTextBox` 的普通文本默认 `HorizontalContentAlignment=Left`、`TextAlignment=Left`，模板把对齐属性传给 `PART_ContentHost`；数值输入专用样式仍可覆盖对齐方式。普通搜索框通过 `GscSearchClearButton` 在非空时显示清除动作并清空后恢复焦点。
 - `AcrylicProductionShellView`、`MediaCenterView`、`TaskCenterView`、`TrainerCenterView` 的搜索清除按钮均只影响输入值和焦点，不改绑定/命令；Trainer 的响应式宽度现在作用于 `TrainerSearchBoxHost`，避免按钮被宽度赋值挤出输入框。
 - `FlingTrainerCatalogSource` 从 `https://archive.flingtrainer.com/` 有界 BFS 解析 `.zip`、`.rar`、`.7z`、`.exe` 归档直链，并保留同主机 HTTPS、目录/文件上限和可降级在线目录刷新。`GameToolService` 先保留 ZIP/direct EXE 路径，RAR/7z 使用 SharpCompress reader 流式写入临时版本目录，通过 `ArchivePathGuard` 与 1 GiB 单文件/4 GiB 总展开限制后再选择修改器 EXE；不执行下载内容。

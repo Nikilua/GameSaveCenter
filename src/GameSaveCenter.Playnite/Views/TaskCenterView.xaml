@@ -140,9 +140,9 @@
                      separate Auto column made the real host give the input only a
                      narrow sliver, while the Demo uses one continuous search field. -->
                 <Grid x:Name="TaskSearchBoxHost" Grid.Row="0" Grid.Column="0" MinWidth="180" Margin="0,0,10,0">
-                    <TextBox x:Name="TaskSearchTextBox" Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding TaskSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="搜索任务、游戏或错误" AutomationProperties.Name="搜索任务" HorizontalAlignment="Stretch" Padding="30,7,38,7"/>
+                    <TextBox x:Name="TaskSearchTextBox" Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding TaskSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="搜索任务、游戏或错误" AutomationProperties.Name="搜索任务" HorizontalAlignment="Stretch" Padding="20,7,38,7"/>
                     <TextBlock Text="&#xE721;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource GscSecondaryTextBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="11,0,0,0" IsHitTestVisible="False"/>
-                    <TextBlock Text="搜索任务…" VerticalAlignment="Center" Margin="30,0,12,0" IsHitTestVisible="False">
+                    <TextBlock Text="搜索任务…" VerticalAlignment="Center" Margin="20,0,12,0" IsHitTestVisible="False">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock" BasedOn="{StaticResource GscCaptionStyle}">
                                 <Setter Property="Visibility" Value="Collapsed"/>

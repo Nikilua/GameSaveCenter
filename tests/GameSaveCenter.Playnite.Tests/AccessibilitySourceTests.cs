@@ -35,7 +35,7 @@ public sealed class AccessibilitySourceTests
         Assert.Contains("AutomationProperties.Name=\"清除 FLiNG 搜索\"", trainerXaml);
         Assert.Contains("Padding=\"12,3,38,3\"", shellXaml);
         Assert.Contains("Padding=\"12,3,38,3\"", mediaXaml);
-        Assert.Contains("Padding=\"30,7,38,7\"", taskXaml);
+        Assert.Contains("Padding=\"20,7,38,7\"", taskXaml);
         Assert.Contains("Padding=\"12,3,38,3\"", trainerXaml);
     }
 

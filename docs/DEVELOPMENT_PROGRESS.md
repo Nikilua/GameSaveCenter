@@ -1,5 +1,7 @@
 # 开发实现进度
 
+- [x] UI-301（2026-08-24）：根据宿主截图继续收紧表格与搜索框的边距。共享 DataGrid 选中行及 Dashboard 本地兼容行的右侧安全 Margin 统一为 `4,2,12,2`，TaskCenter/Dashboard 游戏库带搜索图标的输入框左侧 Padding 与提示 Margin 统一为 `20`；不改 Binding、命令、清除按钮、键盘焦点、排序、滚动或虚拟化。`validate-source.py`、XAML 19/19、WPF 静态审查 0 error/20 warnings/165 info、Release 0 警告/0 错误、Core 59/59、Worker 199/199、Playnite 282/282（57 跳过）通过；`artifacts/ui-qa/ui301-spacing-v1/render-qa-report.txt` 为 `render-qa OK`，受控一键安装已核验生产 DLL `0.6.70.0`。
+
 - [x] UI-300 / FUNC-004（2026-08-24）：修复共享 DataGrid 选中描边右侧圆角在宿主滚动轨道下不可见的问题；Overview 风险区两个真实按钮统一高度、模板和垂直对齐；普通 TextBox 明确左对齐并修正模板内容对齐传递，游戏/媒体/任务/FLiNG 搜索框增加带键盘焦点保留的一键清除按钮。FLiNG 归档同步接受归档站点的 ZIP/RAR/7z/EXE 直链，Worker 对 RAR/7z 使用 SharpCompress 流式安全解包，保留路径、条目数、单文件和总展开体积限制，不执行归档内 EXE。源码门禁、XAML 19/19、Release 0 警告/0 错误、Core 59/59、Worker 199/199、Playnite 282/282（57 跳过）和 `render-qa OK` 已通过；受控一键安装已验证生产扩展 `0.6.70.0`，真实 FLiNG 下载/运行和用户宿主安全软件行为仍待复核。
 
 - [x] UI-297（2026-08-22）：修复游戏先启动、再打开或重新聚焦 GameSaveCenter 时选框不自动切换的问题。Dashboard 页面 `Loaded/IsVisible=true` 和异步快照应用后只读 Playnite `Game.IsRunning`，同步当前 DTO/运行中统计并按既有 resolver 选择运行中游戏；无运行中游戏时保留手动/持久化选择。不会启动 Worker 会话、触发 `GameSessionStarted`、新增进程扫描/IPC 轮询/网络请求，也未改变命令、Binding、DataGrid/ListBox 虚拟化或备份安全语义。`GamePickerItem` 增加轻量状态通知。源码门禁通过；隔离 Release XAML 19/19、0 警告/0 错误；专项自动定位测试 1/1；WPF 静态审查 0 error、21 warnings、164 info。完整 Playnite 测试当前分支为 240 通过/62 跳过/19 个既有 Demo/布局断言失败；真实宿主页面反复打开、主题/DPI 仍需人工验收。
