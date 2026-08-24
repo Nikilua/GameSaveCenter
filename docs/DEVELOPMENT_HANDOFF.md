@@ -14,6 +14,13 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-24 UI-306 Shell 毛玻璃与导航栏硬边交接
+
+- `AcrylicProductionShellView.xaml` 的 `ShellAmbientMaterialLayer` 使用正向 Z 层级覆盖整个 Shell 两列，位于导航/页面表面下方；不要放回负 Z 层，也不要把 Blur 挂到根 Shell 或页面内容。
+- 导航栏两个表面不再绘制右侧 1 DIP 边框；`SidebarSeamMaterial` 是 42 DIP、不可交互的渐隐过渡，`GscSidebarSeamBrush` 和 `GscShellAmbientOpacity` 由运行时主题/毛玻璃强度提供。不要恢复硬直线或新建布局列。
+- 本轮未改动真实导航命令、页面 Binding、DataGrid/ListBox 虚拟化、滚动条或页面布局契约。共享固定装饰 Blur 仍为性能模式，关闭毛玻璃/高对比度必须保持真实 null/0 降级。
+- 证据：`artifacts/ui-qa/shell-glass-final2/render-qa-report.txt` 为 `render-qa OK`；Release 构建 0 warning/0 error，Core 59、Worker 199、Playnite 283 通过，57 跳过；生产扩展 `0.6.70.0` 已安装并在真实 Playnite 查看首页/存档/修改器页面。若沙箱中重现安装 Access denied，应使用与 Playnite 相同用户权限的安装流程，不要据此判断旧 DLL 的视觉结果。
+
 ## 2026-08-24 UI-305 任务表格底部滚动交接
 
 - 用户截图中的任务表最后一行被水平滚动条覆盖。生产 `TaskDataGrid` 当前仅增加 `Padding="0,0,0,12"` 底部安全区，不能关闭横向滚动、不能关闭共享 `DataGridStarFill`，也不要改动真实列宽、Binding、命令、Item scrolling 或 Recycling。

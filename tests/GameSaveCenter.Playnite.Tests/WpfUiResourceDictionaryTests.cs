@@ -2216,6 +2216,12 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"DemoShell\" Margin=\"4\"", productionShell);
         Assert.Contains("x:Name=\"MainPageHost\"", productionShell);
         Assert.Contains("x:Name=\"PageHost\"", productionShell);
+        Assert.Contains("x:Name=\"ShellAmbientMaterialLayer\"", productionShell);
+        Assert.Contains("Grid.ColumnSpan=\"2\"", productionShell.Substring(productionShell.IndexOf("x:Name=\"ShellAmbientMaterialLayer\"", StringComparison.Ordinal)));
+        Assert.Contains("GscShellAmbientOpacity", productionShell);
+        Assert.Contains("x:Name=\"SidebarSeamMaterial\"", productionShell);
+        Assert.Contains("GscSidebarSeamBrush", productionShell);
+        Assert.DoesNotContain("BorderThickness=\"0,0,1,0\"", productionShell);
         Assert.Contains("AmbientMaterialLayer", ambient);
         Assert.Contains("GscAmbientPageOpacity", ambient);
         Assert.Contains("GscAccentShadowColor", ambient);

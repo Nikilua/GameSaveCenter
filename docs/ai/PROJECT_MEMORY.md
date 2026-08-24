@@ -3,6 +3,13 @@
 > 维护时间：2026-08-24
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-24 UI-306 当前事实：Shell 毛玻璃覆盖与导航栏过渡
+
+- 生产 Shell 的 `ShellAmbientMaterialLayer` 当前必须位于 Shell 背景之上、`SidebarLayout`/主内容 Grid 之下，覆盖两列；不要恢复为 `Panel.ZIndex=-1`，否则会被 Shell 背景压住，用户看不到环境光。
+- 导航栏右侧硬分割线已移除；`SidebarSeamMaterial` 只负责低成本不可交互的渐隐过渡，不能恢复 `BorderThickness="0,0,1,0"`。导航栏仍使用半透明 `GscSidebarBrush`，导航项、命令、页面切换、列宽和滚动均未改变。
+- `GscShellAmbientOpacity` 按 `GlassStrength` 计算，`GscSidebarSeamBrush` 由当前主题和 accent 动态生成；Blur 仍只挂在固定 `AmbientMaterialLayer` 装饰椭圆上，不能对整个 Shell、页面、表格或滚动器加 Blur。
+- UI-306 验证：源码门禁、XAML 结构、WPF 静态审查、Release 构建/测试和 `artifacts/ui-qa/shell-glass-final2/render-qa-report.txt` 均通过；真实 Playnite 已安装 `0.6.70.0` 并实际查看首页、存档中心、修改器中心。沙箱直接安装失败是外部 Roaming 目录 ACL 限制，受控当前用户权限安装成功。
+
 ## 2026-08-24 UI-305 当前事实：任务表格底部滚动安全区
 
 - `TaskCenterView.xaml` 的 `TaskDataGrid` 使用 `Padding="0,0,0,12"`，为 Playnite 宿主可能覆盖最后一行的水平滚动条保留内部底部安全区；不要通过关闭横向滚动或关闭 `DataGridStarFill` 修复，否则会破坏列可见性和旧的回拉滚动契约。

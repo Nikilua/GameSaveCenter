@@ -268,6 +268,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscAmbientCenterShadowColor"] = WithAlpha(
                 palette.Accent,
                 palette.IsDark ? 0.06 + (0.11 * glassStrength) : 0.04 + (0.08 * glassStrength));
+            resources["GscSidebarSeamBrush"] = CreateSidebarSeamBrush(palette);
             resources["GscInfoBrush"] = Brush(palette.Info);
             resources["GscSuccessBrush"] = Brush(palette.Success);
             resources["GscWarningBrush"] = Brush(palette.Warning);
@@ -313,6 +314,9 @@ namespace GameSaveCenter.Playnite.Infrastructure
             var glassStrength = Math.Max(0.2, Math.Min(1, palette.GlassStrength));
             resources["GscAmbientPageOpacity"] = glassEnabled
                 ? (palette.IsDark ? 0.74 + (0.26 * glassStrength) : 0.84 + (0.16 * glassStrength))
+                : 0d;
+            resources["GscShellAmbientOpacity"] = glassEnabled
+                ? 0.68 + (0.32 * glassStrength)
                 : 0d;
         }
 
@@ -591,6 +595,21 @@ namespace GameSaveCenter.Playnite.Infrastructure
             };
             effect.Freeze();
             return effect;
+        }
+
+        private static LinearGradientBrush CreateSidebarSeamBrush(AdaptiveThemePalette palette)
+        {
+            var seamBase = Blend(palette.Background, palette.Accent, palette.IsDark ? 0.12 : 0.08);
+            var brush = new LinearGradientBrush
+            {
+                StartPoint = new Point(0, 0),
+                EndPoint = new Point(1, 0)
+            };
+            brush.GradientStops.Add(new GradientStop(WithAlpha(seamBase, palette.IsDark ? 0.52 : 0.38), 0));
+            brush.GradientStops.Add(new GradientStop(WithAlpha(palette.Accent, palette.IsDark ? 0.10 : 0.07), 0.38));
+            brush.GradientStops.Add(new GradientStop(Colors.Transparent, 1));
+            brush.Freeze();
+            return brush;
         }
 
         private static Color ChooseBestText(Color background, Color? first, Color? second, bool darkBackground)

@@ -2,6 +2,26 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-24 UI-306 Shell 毛玻璃覆盖与导航栏硬边修复
+
+**问题确认：**
+
+- 生产 Shell 的页面环境光曾放在 `Panel.ZIndex=-1`，实际被 Shell 背景压住；导航栏右侧两个 Border 仍保留 1 DIP 硬分割线，导致页面左边缘看起来像锐利直线。
+- 之前的安装尝试还可能继续加载旧 DLL；受限环境直接写 Roaming Playnite 扩展目录会出现 Access denied，不能据此判断 UI 修改没有生效。
+
+**实现内容：**
+
+- `AcrylicProductionShellView.xaml` 将 Shell 环境光提升到真实背景表面之上、导航和页面内容之下，覆盖两列及页面间隙；仍只在 `AmbientMaterialLayer` 的固定装饰椭圆上使用 Blur，不触碰列表、表格或根滚动面。
+- 移除导航栏右侧硬边框，加入低成本、不可交互的渐隐过渡带；导航栏继续使用半透明 `GscSidebarBrush`，不改变导航命令、页面切换和布局列宽。
+- 新增 `GscShellAmbientOpacity`、`GscSidebarSeamBrush` 运行时资源，使毛玻璃强度滑块实际控制 Shell 环境光；关闭毛玻璃和高对比度仍为 0/无效果降级。
+- 增加 Shell 资源契约测试，锁定覆盖两列、过渡材质和硬边移除。
+
+**验证结果：**
+
+- Release 构建 0 警告/0 错误；Core 59/59、Worker 199/199、Playnite 283/283，57 项按既有环境规则跳过。
+- `artifacts/ui-qa/shell-glass-final2/render-qa-report.txt` 为 `render-qa OK`，覆盖浅色/深色、多尺寸、滚动和 resize transition。
+- 受控开发安装已核验生产扩展 `0.6.70.0`；首次沙箱安装被 `CodexSandboxUsers` 的 Roaming 目录权限拒绝，使用当前用户权限完成后，在真实 Playnite 中查看首页、存档中心、修改器中心，导航右侧与页面间隙已出现连续环境光过渡。
+
 ## 2026-08-24 UI-305 任务表格底部行与水平滚动条安全区
 
 **问题确认：**

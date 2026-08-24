@@ -28,8 +28,19 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
+            <!-- Keep one low-cost material layer behind both the sidebar and the page host.
+                 Page-local layers still provide their page-specific light, while this shell
+                 bleed covers the host gutter and the sidebar/page seam so the material never
+                 starts at a sharp vertical content edge. The blur remains limited to the
+                 fixed decorative light sources inside AmbientMaterialLayer. -->
+            <ui:AmbientMaterialLayer x:Name="ShellAmbientMaterialLayer"
+                                     Grid.Row="0" Grid.ColumnSpan="2"
+                                     Opacity="{DynamicResource GscShellAmbientOpacity}"
+                                     Panel.ZIndex="1"/>
+
             <!-- Demo-aligned header. The production shell keeps the real settings entry point. -->
-            <Grid x:Name="SidebarLayout" Grid.Row="0" Grid.Column="0">
+            <Grid x:Name="SidebarLayout" Grid.Row="0" Grid.Column="0"
+                  Panel.ZIndex="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
@@ -37,7 +48,7 @@
             <Border Grid.Row="0"
                     Background="{DynamicResource GscSidebarBrush}"
                     BorderBrush="{DynamicResource GscGlassStrokeBrush}"
-                    BorderThickness="0,0,1,1"
+                    BorderThickness="0,0,0,1"
                     MinHeight="44">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="14,0,0,0">
                     <Border Width="26" Height="26" CornerRadius="8" Background="{DynamicResource GscAccentBrush}">
@@ -56,8 +67,8 @@
 
                 <Border Grid.Row="1"
                         Background="{DynamicResource GscSidebarBrush}"
-                        BorderBrush="{DynamicResource GscGlassStrokeBrush}"
-                        BorderThickness="0,0,1,0"
+                        BorderBrush="Transparent"
+                        BorderThickness="0"
                         Padding="10,10,10,12">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -156,7 +167,17 @@
                 </Border>
             </Grid>
 
-            <Grid Grid.Row="0" Grid.Column="1">
+            <!-- The sidebar and page are separate surfaces, so their old hairline could never
+                 become a rounded glass transition. This small, non-interactive feather bridges
+                 the seam without covering page content or introducing a new layout column. -->
+            <Border x:Name="SidebarSeamMaterial"
+                    Grid.Row="0" Grid.Column="0"
+                    Width="42" Margin="0,0,-21,0"
+                    HorizontalAlignment="Right" VerticalAlignment="Stretch"
+                    Background="{DynamicResource GscSidebarSeamBrush}"
+                    IsHitTestVisible="False" Panel.ZIndex="3"/>
+
+            <Grid Grid.Row="0" Grid.Column="1" Panel.ZIndex="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="68"/>
                     <RowDefinition Height="*"/>
