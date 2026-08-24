@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 using GameSaveCenter.Playnite.ViewModels;
 
@@ -7,6 +8,19 @@ namespace GameSaveCenter.Playnite.Controls
     public partial class AmbientMaterialLayer : UserControl
     {
         private DashboardViewModel? dashboard;
+
+        public static readonly DependencyProperty UseSelectedGameBackgroundProperty =
+            DependencyProperty.Register(
+                nameof(UseSelectedGameBackground),
+                typeof(bool),
+                typeof(AmbientMaterialLayer),
+                new PropertyMetadata(false, OnUseSelectedGameBackgroundChanged));
+
+        public bool UseSelectedGameBackground
+        {
+            get => (bool)GetValue(UseSelectedGameBackgroundProperty);
+            set => SetValue(UseSelectedGameBackgroundProperty, value);
+        }
 
         public AmbientMaterialLayer()
         {
@@ -58,11 +72,19 @@ namespace GameSaveCenter.Playnite.Controls
                 Dispatcher.BeginInvoke(new System.Action(ApplyDashboardMaterial));
         }
 
+        private static void OnUseSelectedGameBackgroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is AmbientMaterialLayer layer)
+                layer.ApplyDashboardMaterial();
+        }
+
         private void ApplyDashboardMaterial()
         {
             var hasGameMaterial = dashboard?.HasSelectedGameBackgroundAmbientMaterial == true;
             ThemeAmbientWash.Opacity = hasGameMaterial ? 0 : 1;
-            GameBackgroundAmbientWash.Fill = dashboard?.SelectedGameBackgroundAmbientBrush;
+            GameBackgroundAmbientWash.Fill = UseSelectedGameBackground && hasGameMaterial
+                ? dashboard?.SelectedGameBackgroundAmbientBrush
+                : null;
         }
     }
 }

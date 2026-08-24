@@ -2207,6 +2207,7 @@ public sealed class WpfUiResourceDictionaryTests
         var dashboard = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml"));
         var productionShell = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml"));
         var ambient = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Controls", "AmbientMaterialLayer.xaml"));
+        var ambientCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Controls", "AmbientMaterialLayer.xaml.cs"));
         var overview = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml"));
         Assert.Contains("x:Key=\"GscReadingCardStyle\"", redesign);
         Assert.Contains("x:Key=\"GscSubCardStyle\"", redesign);
@@ -2224,6 +2225,8 @@ public sealed class WpfUiResourceDictionaryTests
         var shellAmbientEnd = productionShell.IndexOf("/>", shellAmbientStart, StringComparison.Ordinal);
         var shellAmbientMarkup = productionShell.Substring(shellAmbientStart, shellAmbientEnd - shellAmbientStart);
         Assert.Contains("Grid.Column=\"1\"", shellAmbientMarkup);
+        Assert.Contains("Grid.RowSpan=\"2\"", shellAmbientMarkup);
+        Assert.Contains("UseSelectedGameBackground=\"True\"", shellAmbientMarkup);
         Assert.DoesNotContain("ShowLeftGlow", shellAmbientMarkup);
         Assert.DoesNotContain("Grid.ColumnSpan=\"2\"", shellAmbientMarkup);
         Assert.Contains("GscShellAmbientOpacity", productionShell);
@@ -2237,6 +2240,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("GscAmbientPageOpacity", ambient);
         Assert.Contains("GscAmbientWideWashBrush", ambient);
         Assert.Contains("GameBackgroundAmbientWash", ambient);
+        Assert.Contains("UseSelectedGameBackground", ambientCode);
         Assert.Contains("<Rectangle", ambient);
         Assert.DoesNotContain("RadialGradientBrush", ambient);
         Assert.DoesNotContain("BlurEffect", ambient);

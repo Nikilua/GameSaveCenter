@@ -3,6 +3,13 @@
 > 维护时间：2026-08-24
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-24 UI-313 当前事实：背景图单层居中与底部接缝修复
+
+- 截图中的横向矩形不是游戏原图被拼接，而是 Shell 和各页面内部的 `AmbientMaterialLayer` 同时绘制同一份游戏采样渐变；不同控件尺寸让相对坐标不同，形成可见接缝。
+- `AmbientMaterialLayer.UseSelectedGameBackground` 默认关闭，只有生产 Shell 的 `ShellAmbientMaterialLayer` 开启游戏采样环境色；页面局部层在有游戏背景时仅保持透明，不再重复绘制图片材质或固定绿色洗色。
+- `AcrylicProductionShellView` 现在用一个跨越 Shell 两行/两列的 `ImageBrush` 绘制真实背景，`UniformToFill`、`AlignmentX/Y=Center`、`TileMode=None` 明确保持比例、对称裁剪并禁止平铺；主题 tint 也覆盖同一完整区域，页脚不再切换到另一块背景。
+- UI-313 验证：源码门禁、WPF 静态检查（0 error、18 条既有 warning）、Release 构建与测试通过；Core 59/59、Worker 199/199、Playnite 289/346（57 跳过）；多主题多尺寸 `render-qa OK`。真实 Playnite 没有可控窗口，仍需安装后用带不同宽高比背景的游戏人工确认裁剪中心。
+
 ## 2026-08-24 UI-312 当前事实：卡片表面与游戏背景自适应
 
 - `OverviewTodayHeroCard` 不再嵌套整面背景 Border；它只使用共享 `GscRedesignSectionCard`，因此卡片本身是一层连续的阅读/玻璃表面，不能恢复“卡片里面再放一张全尺寸背景”的结构。

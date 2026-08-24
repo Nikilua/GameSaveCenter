@@ -73,7 +73,10 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("BackgroundImage", backgroundProvider);
             Assert.Contains("ResolveLocalPath", backgroundProvider);
             Assert.Contains("SelectedGameBackground", viewModel);
-            Assert.Contains("Source=\"{Binding SelectedGameBackground}\"", productionShell);
+            Assert.Contains("ImageSource=\"{Binding SelectedGameBackground}\"", productionShell);
+            Assert.Contains("AlignmentX=\"Center\"", productionShell);
+            Assert.Contains("AlignmentY=\"Center\"", productionShell);
+            Assert.Contains("TileMode=\"None\"", productionShell);
             Assert.Contains("GscGameBackgroundOpacity", productionShell);
             Assert.Contains("GscGameBackgroundTintBrush", productionShell);
             Assert.Contains("SelectedGameIcon", dashboard);

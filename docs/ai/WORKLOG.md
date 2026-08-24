@@ -2,6 +2,25 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-24 UI-313 修复游戏背景重复材质与底部矩形接缝
+
+**问题确认：**
+
+- 用户新截图中的横向分界位于内容区中部，且底部呈现另一块矩形；源码显示生产 Shell 和每个工作区页面都挂有 `AmbientMaterialLayer`，UI-312 后这些层会同时显示同一个游戏采样渐变。相对渐变坐标随容器变化，造成拼接感。
+- Shell 的背景图片、tint 只覆盖内容行，页脚行不是同一背景区域；原本的 `Image` 也没有把中心裁剪意图表达成独立的 TileBrush。
+
+**实现内容：**
+
+- 为共享 `AmbientMaterialLayer` 增加 `UseSelectedGameBackground` 依赖属性，默认关闭；仅 Shell 层启用游戏采样色，页面局部层在游戏材质存在时隐藏固定主题洗色并保持透明。
+- 将 Shell 的真实图片改为单个跨两行两列的 `ImageBrush`，显式 `UniformToFill`、水平/垂直居中和 `TileMode=None`；图片与 tint 同时覆盖页脚，避免底部切换到另一块矩形。
+- 保留真实 `SelectedGameBackground` Binding、图片采样、取消/generation、缓存、主题降级和所有业务命令，不改变页面内容与滚动/虚拟化契约；补充源码测试锁定单层、中心裁剪和不平铺约束。
+
+**验证结果：**
+
+- `validate-source.py`、`validate_wpf_ui.py`、`git diff --check` 通过；WPF 静态审查 0 error、18 条既有 warning。
+- `scripts/build.ps1 -Configuration Release` 通过：Core 59/59、Worker 199/199、Playnite 289/346（57 跳过、0 失败）。
+- `scripts/render-qa.ps1 -Configuration Release -Output .tmp/ui-qa-current` 为 `render-qa OK`；临时目录提交前清理。当前 Playnite 无可控窗口，未宣称真实宿主背景图已截图验证。
+
 ## 2026-08-24 UI-312 收口卡片材质层级与背景自适应洗色
 
 **问题确认：**

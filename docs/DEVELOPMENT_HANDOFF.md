@@ -2,6 +2,13 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-24 UI-313 当前交接：背景图单层居中与底部接缝
+
+- 截图中的矩形接缝来自重复材质层：生产 `ShellAmbientMaterialLayer` 与各工作区内部的 `AmbientMaterialLayer` 不能同时绘制 `SelectedGameBackgroundAmbientBrush`。共享控件的 `UseSelectedGameBackground` 默认关闭，只有 Shell 实例设置为 `True`。
+- Shell 真实背景使用一个跨两行两列的 `ImageBrush`，显式 `Stretch="UniformToFill"`、`AlignmentX/Y="Center"`、`TileMode="None"`；图片和 tint 均覆盖页脚行。不要恢复多个 Image/ImageBrush 或页面局部游戏背景层。
+- 页面局部环境层在有游戏背景时保持透明，因此游戏颜色仍能从 Shell 单一环境层透出，同时不再叠加固定绿色宽域渐变。无背景、关闭毛玻璃和高对比度的主题回退保持不变。
+- UI-313 已通过源码门禁、WPF 静态审查、Release 全量测试和多主题多尺寸 `render-qa OK`；当前 Playnite 没有可控窗口，真实宿主仍需安装后切换不同宽高比游戏背景人工确认。
+
 ## 2026-08-24 UI-312 当前交接：卡片表面与游戏背景自适应
 
 - Today 卡必须直接使用共享 `GscRedesignSectionCard`，不要在卡片内部放整面背景 Border；此前的方形内层来自 WPF 圆角卡片里嵌套第二层材质。

@@ -29,17 +29,24 @@
             </Grid.ColumnDefinitions>
 
             <!-- Playnite already resolves a game's BackgroundImage into its local cache or
-                 database file. Keep it as a low-opacity ambient source; the theme tint and
-                 wide material layer remain above it, while a missing image simply draws nothing
-                 and leaves the theme-derived backdrop visible. -->
-            <Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
-                   Source="{Binding SelectedGameBackground}"
-                   Stretch="UniformToFill"
-                   Opacity="{DynamicResource GscGameBackgroundOpacity}"
-                   IsHitTestVisible="False"
-                   RenderOptions.BitmapScalingMode="LowQuality"
-                   Panel.ZIndex="0"/>
-            <Rectangle Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                 database file. Render it exactly once as a full-shell ImageBrush. Explicit
+                 center alignment and UniformToFill keep the source aspect ratio intact while
+                 cropping symmetrically; TileMode=None prevents any repeat/stitched rectangle.
+                 The layer spans the footer row too, so the shell never changes background
+                 source at the bottom edge. -->
+            <Rectangle Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2"
+                       Opacity="{DynamicResource GscGameBackgroundOpacity}"
+                       IsHitTestVisible="False"
+                       Panel.ZIndex="0">
+                <Rectangle.Fill>
+                    <ImageBrush ImageSource="{Binding SelectedGameBackground}"
+                                Stretch="UniformToFill"
+                                AlignmentX="Center"
+                                AlignmentY="Center"
+                                TileMode="None"/>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Rectangle Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2"
                        Fill="{DynamicResource GscGameBackgroundTintBrush}"
                        IsHitTestVisible="False"
                        Panel.ZIndex="0"/>
@@ -50,7 +57,9 @@
                  material remains a fixed-cost rectangle and never blurs the moving page. -->
             <ui:AmbientMaterialLayer x:Name="ShellAmbientMaterialLayer"
                                      Grid.Row="0" Grid.Column="1"
+                                     Grid.RowSpan="2"
                                      Opacity="{DynamicResource GscShellAmbientOpacity}"
+                                     UseSelectedGameBackground="True"
                                      Panel.ZIndex="1"/>
 
             <!-- Demo-aligned header. The production shell keeps the real settings entry point. -->
