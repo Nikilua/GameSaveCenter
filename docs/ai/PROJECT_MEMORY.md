@@ -11,6 +11,7 @@
 - UI-299 当前验证：源码验证、XAML 19/19、WPF 静态审查、Release 0 警告/0 错误、Core 59、Worker 198、Playnite 281 通过/57 跳过；`artifacts/ui-qa/table-readability-v1/render-qa-report.txt` 为 `render-qa OK`。
 - 真实 Playnite 日志已确认隔离 Preview 后加载 `GameSaveCenter` 0.6.70；同一用户配置同时放置旧 Preview 时，Playnite 会先加载其 0.6.71 的同名 `GameSaveCenter.Contracts`，导致标准插件的 `MediaInboxBatchResultDto` 类型加载冲突。该冲突属于外部 Preview 安装状态，不要把 Preview 目录禁用动作当成源码修复；本阶段未在 Computer Use 中点击宿主页面，因为返回窗口无真实 HWND，避免把 Codex 截图误当 Playnite。
 - 2026-08-24 复核：改由 Windows 正常启动 Playnite 后，启动页短暂出现真实 HWND，但主窗口显示后 `MainWindowHandle` 又回到 0；Computer Use 重新选窗、激活、Raise 后仍返回 Codex 截图和 `EmptyWindowAutomationPeer`。未发送点击或滚动输入；这属于当前宿主/Computer Use 窗口映射限制，不是 UI 代码通过后的失败。Preview 已用 238 个文件恢复原路径，Playnite 与标准 Worker 均已停止。
+- 同轮新增真实 WPF 操控证据：临时宿主直接加载生产 `SaveCenterView`、当前主题资源和 160 行 `DataGrid`；Computer Use 实际切换“历史版本”标签、选择第二行、向下滚动再滚回，选中行高亮、右侧详情和表格字体/行面均保持正确。临时宿主及构建输出已清理，正式源码未被测试夹具污染。
 
 ## 2026-08-23 UI-298 当前事实：安全毛玻璃高光与环境光 Blur
 
