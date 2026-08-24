@@ -49,12 +49,19 @@
     <Color x:Key="GscAmbientCenterShadowColor">#0F7C8CF8</Color>
     <sys:Double x:Key="GscAmbientPageOpacity">0.86</sys:Double>
     <sys:Double x:Key="GscShellAmbientOpacity">0.86</sys:Double>
-    <!-- The production shell uses a translucent sidebar surface that fades into the
-         shared backdrop. It must not be an accent-colored full-height seam. -->
-    <LinearGradientBrush x:Key="GscSidebarMaterialBrush" StartPoint="0,0.5" EndPoint="1,0.5">
-      <GradientStop Color="#E01F2531" Offset="0"/>
-      <GradientStop Color="#D01F2531" Offset="0.58"/>
-      <GradientStop Color="#C51F2531" Offset="1"/>
+    <!-- Pane-wide non-circular wash. Runtime replaces this with the active accent/info/success
+         colors; transparent fallback keeps reduced-transparency and high-contrast parsing safe. -->
+    <LinearGradientBrush x:Key="GscAmbientWideWashBrush" StartPoint="0,0" EndPoint="1,1">
+      <GradientStop Color="#00000000" Offset="0"/>
+      <GradientStop Color="#00000000" Offset="1"/>
+    </LinearGradientBrush>
+    <!-- The production shell uses one continuous diagonal translucent material surface across
+         the navigation column. It does not fade to transparent at the page boundary. -->
+    <LinearGradientBrush x:Key="GscSidebarMaterialBrush" StartPoint="0,0" EndPoint="1,1">
+      <GradientStop Color="#ED343B56" Offset="0"/>
+      <GradientStop Color="#E53A4056" Offset="0.28"/>
+      <GradientStop Color="#DD303745" Offset="0.64"/>
+      <GradientStop Color="#D92B303C" Offset="1"/>
     </LinearGradientBrush>
 
     <!-- Effects are deliberately null until a page enables its local material palette. This
@@ -62,7 +69,7 @@
     <x:Null x:Key="GscSurfaceEffect"/>
     <x:Null x:Key="GscPrimaryButtonEffect"/>
     <x:Null x:Key="GscSidebarEffect"/>
-    <!-- Applied only to the three fixed ambient light ellipses. It is never attached to
+    <!-- Applied only to the four fixed ambient light ellipses. It is never attached to
          text, rows, lists, tables or the page scroll surface. -->
     <x:Null x:Key="GscAmbientBlurEffect"/>
     <x:Null x:Key="GscPopupEffect"/>

@@ -40,13 +40,14 @@
 
             <!-- Demo-aligned header. The production shell keeps the real settings entry point. -->
             <Grid x:Name="SidebarLayout" Grid.Row="0" Grid.Column="0"
+                  Background="{DynamicResource GscSidebarMaterialBrush}"
                   Panel.ZIndex="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
             <Border Grid.Row="0"
-                    Background="{DynamicResource GscSidebarMaterialBrush}"
+                    Background="Transparent"
                     BorderBrush="{DynamicResource GscGlassStrokeBrush}"
                     BorderThickness="0,0,0,1"
                     MinHeight="44">
@@ -66,7 +67,7 @@
                 </Border>
 
                 <Border Grid.Row="1"
-                        Background="{DynamicResource GscSidebarMaterialBrush}"
+                        Background="Transparent"
                         BorderBrush="Transparent"
                         BorderThickness="0"
                         Padding="10,10,10,12">

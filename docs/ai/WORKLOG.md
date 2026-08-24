@@ -2,6 +2,27 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-24 UI-308 导航栏连续毛玻璃与宽域非圆形洗色
+
+**问题确认：**
+
+- 之前的导航栏虽然已经消除了光柱和硬边，但材质主要表现为低对比度的中性底色，用户仍然感受不到导航栏的毛玻璃；共享环境光也主要依赖固定圆形光源。
+- Playnite 的 WPF 扩展视图不能安全地读取宿主桌面像素做真正的 backdrop blur；把 BlurEffect 直接挂到导航栏或页面根会放大重绘成本，并影响列表、表格和滚动性能。
+
+**实现内容：**
+
+- 将 `GscSidebarMaterialBrush` 改为贯穿整个 `SidebarLayout` 的对角线性材质，标题区和导航内容区改为透明承载，避免每个子区域重置渐变；最终停止保持正常表面，不做右缘透明渐隐，因此不会重新产生光柱。
+- 新增 `GscAmbientWideWashBrush`：由动态 accent/info/success 颜色生成一层覆盖整个环境光面的大范围线性渐变矩形，提供非圆形、低透明度的宽域玻璃质感；固定椭圆仍只负责局部柔光。
+- 关闭毛玻璃和高对比度时，宽域洗色回到全透明渐变；BlurEffect 继续只绑定四个固定尺寸装饰椭圆，未触碰页面根、文本、表格、列表和滚动面。
+- 新增运行时资源及 XAML 契约测试，验证宽域资源的方向、关闭毛玻璃时的透明降级、导航容器的整栏承载方式。
+
+**验证结果：**
+
+- `validate-source.py`、XAML structural validation、`validate_wpf_ui.py` 通过；WPF 静态审查仍为 0 error、18 条既有 warning。
+- Release 构建 0 warning/0 error；Core 59/59、Worker 199/199、Playnite 283/283，57 项按既有环境规则跳过。
+- `.tmp/ui-qa-nav-glass/render-qa-report.txt` 为 `render-qa OK`，覆盖浅色/深色、多尺寸、滚动和 resize transition。
+- 生产扩展已通过 `scripts/install-dev.ps1` 安装到 Playnite `0.6.70.0`，真实 Playnite 截图确认导航栏出现连续对角材质，主界面出现宽域线性洗色，之前修复的圆角外溢和边界光柱没有回归。
+
 ## 2026-08-24 UI-307 首页圆角外溢与导航材质均匀化
 
 **问题确认：**

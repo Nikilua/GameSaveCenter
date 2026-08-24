@@ -14,6 +14,14 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-24 UI-308 导航栏与宽域材质交接
+
+- `AcrylicProductionShellView.xaml` 的 `SidebarLayout` 统一使用 `GscSidebarMaterialBrush`；标题/导航两个子 Border 必须保持透明，不能恢复成各自绘制材质，否则会造成渐变断层。
+- 导航栏材质使用全区域对角线性渐变，不做透明边缘渐隐，不新增右侧硬边或光柱。它是 Playnite 嵌入视图下的低成本玻璃模拟，不是对宿主桌面像素的真正 backdrop blur。
+- `AmbientMaterialLayer.xaml` 第一层为 `GscAmbientWideWashBrush` 的 `Rectangle`，用于大范围非圆形环境洗色；Blur 只挂在四个固定尺寸 `Ellipse` 上。不要给 `SidebarLayout`、页面根、表格、列表或滚动器增加 BlurEffect。
+- `AdaptiveThemePaletteFactory.ApplyMaterialResources` 必须在关闭毛玻璃/高对比度时提供透明宽域渐变；资源测试已锁定这一降级契约。
+- UI-308 已完成 Release 构建、全量测试、多主题/多尺寸 render QA，并在真实 Playnite `0.6.70.0` 中查看了导航栏和首页；详情见 `docs/ai/WORKLOG.md`。
+
 ## 2026-08-24 UI-307 首页圆角与导航材质交接
 
 - Today 卡片的装饰椭圆已全部移入卡片内部。不要依赖 `ClipToBounds` 裁切圆角，也不要恢复负边距光源；WPF 这里按矩形裁切，负边距会在圆角外产生直角色块。

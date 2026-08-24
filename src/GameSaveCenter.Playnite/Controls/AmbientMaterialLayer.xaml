@@ -8,9 +8,11 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
     </UserControl.Resources>
-    <!-- Shared decorative material. The optional blur is attached only to these four
-         fixed-size light sources; text, lists and virtualized rows never receive it. -->
+    <!-- Shared decorative material. One broad linear wash covers the pane without a circular
+         edge; the optional blur is attached only to four fixed-size light sources. Text, lists
+         and virtualized rows never receive it. -->
     <Grid Opacity="{DynamicResource GscAmbientPageOpacity}">
+        <Rectangle Fill="{DynamicResource GscAmbientWideWashBrush}"/>
         <Ellipse x:Name="LeftAmbientGlow"
                  Visibility="{Binding ShowLeftGlow, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Converter={StaticResource BoolToVisibility}}"
                  Width="380" Height="380" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="18,18,0,0" Opacity="0.92" Effect="{DynamicResource GscAmbientBlurEffect}">
@@ -39,9 +41,8 @@
                 </RadialGradientBrush>
             </Ellipse.Fill>
         </Ellipse>
-        <!-- A broad, low-alpha center wash makes the material readable across large empty
-             workspaces at high strength. It is still a fixed decorative ellipse and never
-             becomes a blur over page content. -->
+        <!-- A broad, low-alpha center light adds depth at high strength. It remains a fixed
+             decorative ellipse; the pane-wide non-circular wash above carries the large area. -->
         <Ellipse Width="680" Height="680" HorizontalAlignment="Center" VerticalAlignment="Center"
                  Opacity="0.66" Effect="{DynamicResource GscAmbientBlurEffect}">
             <Ellipse.Fill>

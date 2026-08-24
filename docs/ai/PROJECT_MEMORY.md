@@ -3,6 +3,14 @@
 > 维护时间：2026-08-24
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-24 UI-308 当前事实：导航栏连续材质与宽域环境洗色
+
+- 生产 Shell 的 `SidebarLayout` 现在统一承载 `GscSidebarMaterialBrush`；标题区和导航内容区使用透明背景，保证整个 236 DIP 导航栏只绘制一层连续对角材质。
+- `GscSidebarMaterialBrush` 是动态的低成本半透明线性渐变，不能改回右侧透明渐隐、硬分割线或单独的 `SidebarSeamMaterial`；边界保持正常表面，避免再次出现亮柱。
+- `AmbientMaterialLayer` 的第一层是 `GscAmbientWideWashBrush` 线性渐变矩形，负责大范围非圆形洗色；四个固定椭圆只负责局部柔光并使用 `GscAmbientBlurEffect`。不要把 BlurEffect 提升到导航栏、页面根、表格、列表或滚动面。
+- 宽域洗色运行时按 accent/info/success 和 `GlassStrength` 生成；关闭毛玻璃或高对比度时必须返回透明渐变，不能留下大面积遮罩。
+- UI-308 验证：Release 0 warning/0 error；Core 59/59、Worker 199/199、Playnite 283/283（57 跳过）；多主题多尺寸 `render-qa OK`；真实 Playnite `0.6.70.0` 已安装并截图复核导航材质和宽域洗色。
+
 ## 2026-08-24 UI-307 当前事实：首页圆角外溢与导航材质均匀化
 
 - `OverviewTodayHeroCard` 的装饰椭圆必须保持在卡片内部；不要恢复 `Margin="-112..."` 等负边距。WPF `ClipToBounds` 是矩形裁切，不会按 `CornerRadius` 裁切，负边距会在圆角外留下直角色块。

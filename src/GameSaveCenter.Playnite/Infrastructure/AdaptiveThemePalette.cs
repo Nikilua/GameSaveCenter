@@ -301,7 +301,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscSurfaceEffect"] = CreateShadowEffect(glassEnabled, Colors.Black, 14, 2, palette.IsDark ? 0.34 : 0.24);
             resources["GscPrimaryButtonEffect"] = CreateShadowEffect(glassEnabled, palette.Accent, 12, 2, palette.IsDark ? 0.32 : 0.28);
             resources["GscSidebarEffect"] = CreateShadowEffect(glassEnabled, Colors.Black, 24, 3, palette.IsDark ? 0.42 : 0.30);
-            // Keep the only blur in the shared UI on three fixed-size decorative light
+            // Keep the only blur in the shared UI on four fixed-size decorative light
             // sources. A real null fallback removes the effect tree for high contrast,
             // reduced transparency and lower-cost machines.
             resources["GscAmbientBlurEffect"] = CreateAmbientBlurEffect(glassEnabled);
@@ -317,6 +317,9 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscShellAmbientOpacity"] = glassEnabled
                 ? 0.68 + (0.32 * glassStrength)
                 : 0d;
+            // This is a wide, non-circular material wash. It adds a low-cost sense of depth
+            // across large empty regions; only the small decorative sources below use BlurEffect.
+            resources["GscAmbientWideWashBrush"] = CreateAmbientWideWashBrush(palette, glassEnabled);
         }
 
         /// <summary>
@@ -435,10 +438,10 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 palette.IsDark ? (byte)54 : (byte)34, 0, 0, 0));
             WpfUiThemeScope.Apply(resources, palette.IsDark);
             ApplyDemoCoreResources(resources, palette.IsDark);
-            // The shell sidebar is a translucent surface, not a second opaque column. Its
-            // right edge fades to the same backdrop used by the page so neither side can
-            // produce a sharp vertical seam. Keep this separate from GscSidebarBrush,
-            // which is also used by standalone rounded cards in the settings view.
+            // The shell sidebar is one continuous translucent material surface. Keep this
+            // separate from GscSidebarBrush, which is also used by standalone rounded cards
+            // in the settings view; the shell brush can therefore carry a broad navigation wash
+            // without reintroducing a transparent edge or a bright vertical seam.
             resources["GscSidebarMaterialBrush"] = CreateSidebarMaterialBrush(palette, glassEnabled);
             if (!glassEnabled)
                 resources["GscGlassHighlightBrush"] = Brush(Colors.Transparent);
@@ -606,26 +609,54 @@ namespace GameSaveCenter.Playnite.Infrastructure
             if (!glassEnabled || SystemParameters.HighContrast)
                 return Gradient(palette.SidebarTop, palette.SidebarBottom);
 
-            // Keep the sidebar material neutral. The shell ambient layer deliberately lives
-            // only in the page column; exposing its accent bloom through the sidebar fade
-            // produced a bright vertical pillar at the navigation boundary. A slightly
-            // lifted neutral surface gives the sidebar its own material depth without that
-            // directional artifact.
+            // Use a diagonal, full-width material wash instead of a right-edge fade. The
+            // sidebar gets a visible glass character across its whole area while its final
+            // stop remains a normal surface, so the page boundary cannot become a light pillar.
             var sidebarBase = Blend(Opaque(palette.SidebarTop), Opaque(palette.SidebarBottom), 0.42);
             var sidebarTint = palette.IsDark
                 ? Blend(sidebarBase, Colors.White, 0.065)
                 : Blend(sidebarBase, Colors.Black, 0.028);
+            var accentTint = Blend(sidebarTint, palette.Accent, palette.IsDark ? 0.16 : 0.055);
+            var infoTint = Blend(sidebarTint, palette.Info, palette.IsDark ? 0.075 : 0.032);
+            var neutralLift = palette.IsDark
+                ? Blend(sidebarTint, Colors.White, 0.035)
+                : Blend(sidebarTint, Colors.Black, 0.018);
             var brush = new LinearGradientBrush
             {
                 StartPoint = new Point(0, 0),
-                EndPoint = new Point(1, 0)
+                EndPoint = new Point(1, 1)
             };
-            // Keep the material present through the whole sidebar. Fading to transparent at
-            // the column edge exposed the bright shell ambient layer as a vertical pillar;
-            // the final stop is therefore still a neutral translucent surface.
-            brush.GradientStops.Add(new GradientStop(WithAlpha(sidebarTint, palette.IsDark ? 0.90 : 0.90), 0));
-            brush.GradientStops.Add(new GradientStop(WithAlpha(sidebarTint, palette.IsDark ? 0.84 : 0.84), 0.52));
-            brush.GradientStops.Add(new GradientStop(WithAlpha(sidebarTint, palette.IsDark ? 0.79 : 0.80), 1));
+            brush.GradientStops.Add(new GradientStop(WithAlpha(accentTint, palette.IsDark ? 0.93 : 0.94), 0));
+            brush.GradientStops.Add(new GradientStop(WithAlpha(Blend(accentTint, sidebarTint, 0.48), palette.IsDark ? 0.89 : 0.91), 0.28));
+            brush.GradientStops.Add(new GradientStop(WithAlpha(Blend(sidebarTint, infoTint, 0.40), palette.IsDark ? 0.86 : 0.88), 0.64));
+            brush.GradientStops.Add(new GradientStop(WithAlpha(neutralLift, palette.IsDark ? 0.84 : 0.86), 1));
+            brush.Freeze();
+            return brush;
+        }
+
+        private static LinearGradientBrush CreateAmbientWideWashBrush(AdaptiveThemePalette palette, bool glassEnabled)
+        {
+            if (!glassEnabled || SystemParameters.HighContrast)
+                return Gradient(Colors.Transparent, Colors.Transparent);
+
+            var glassStrength = Math.Max(0.2, Math.Min(1, palette.GlassStrength));
+            var accentWash = Blend(Opaque(palette.Accent), Opaque(palette.Info), 0.22);
+            var centerWash = Blend(Opaque(palette.Info), Opaque(palette.SurfaceTop), 0.34);
+            var endWash = Blend(Opaque(palette.Success), Opaque(palette.SurfaceBottom), 0.38);
+            var baseOpacity = palette.IsDark
+                ? 0.055 + (0.085 * glassStrength)
+                : 0.025 + (0.060 * glassStrength);
+            var brush = new LinearGradientBrush
+            {
+                StartPoint = new Point(0, 0),
+                EndPoint = new Point(1, 1)
+            };
+            // Several broad stops create a gentle pane-wide color field rather than a circular
+            // spotlight. The alpha is intentionally restrained because the layer spans a page.
+            brush.GradientStops.Add(new GradientStop(WithAlpha(accentWash, baseOpacity), 0));
+            brush.GradientStops.Add(new GradientStop(WithAlpha(Blend(accentWash, centerWash, 0.42), baseOpacity * 0.76), 0.30));
+            brush.GradientStops.Add(new GradientStop(WithAlpha(Blend(centerWash, endWash, 0.38), baseOpacity * 0.58), 0.68));
+            brush.GradientStops.Add(new GradientStop(WithAlpha(endWash, baseOpacity * 0.34), 1));
             brush.Freeze();
             return brush;
         }

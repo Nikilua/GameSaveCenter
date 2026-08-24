@@ -89,6 +89,8 @@ public sealed class WpfUiResourceDictionaryTests
                 Assert.Null(localResources["GscPrimaryButtonEffect"]);
                 Assert.Null(localResources["GscSidebarEffect"]);
                 Assert.Null(localResources["GscAmbientBlurEffect"]);
+                var disabledWideWash = Assert.IsType<LinearGradientBrush>(localResources["GscAmbientWideWashBrush"]);
+                Assert.All(disabledWideWash.GradientStops, stop => Assert.Equal(0, stop.Color.A));
                 Assert.Null(localResources["GscPopupEffect"]);
                 Assert.Null(localResources["GscDialogEffect"]);
                 Assert.Null(localResources["GscSliderThumbEffect"]);
@@ -108,6 +110,10 @@ public sealed class WpfUiResourceDictionaryTests
                 var ambientBlur = Assert.IsType<BlurEffect>(localResources["GscAmbientBlurEffect"]);
                 Assert.Equal(24, ambientBlur.Radius);
                 Assert.Equal(RenderingBias.Performance, ambientBlur.RenderingBias);
+                var wideWash = Assert.IsType<LinearGradientBrush>(localResources["GscAmbientWideWashBrush"]);
+                Assert.Equal(new Point(0, 0), wideWash.StartPoint);
+                Assert.Equal(new Point(1, 1), wideWash.EndPoint);
+                Assert.Contains(wideWash.GradientStops, stop => stop.Color.A > 0);
                 Assert.IsType<DropShadowEffect>(localResources["GscPopupEffect"]);
                 Assert.IsType<DropShadowEffect>(localResources["GscDialogEffect"]);
                 Assert.IsType<DropShadowEffect>(localResources["GscSliderThumbEffect"]);
@@ -163,6 +169,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("resources[\"GscAmbientInfoBrush\"]", paletteSource);
         Assert.Contains("resources[\"GscAmbientSuccessBrush\"]", paletteSource);
         Assert.Contains("resources[\"GscAmbientCenterShadowColor\"]", paletteSource);
+        Assert.Contains("resources[\"GscAmbientWideWashBrush\"]", paletteSource);
         Assert.Contains("SemanticTint", paletteSource);
         Assert.Contains("resources[\"GscAccentShadowColor\"]", paletteSource);
         Assert.Contains("resources[\"AccentBrush\"]", paletteSource);
@@ -2225,6 +2232,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.DoesNotContain("Grid.ColumnSpan=\"2\"", shellAmbientMarkup);
         Assert.Contains("GscShellAmbientOpacity", productionShell);
         Assert.Contains("GscSidebarMaterialBrush", productionShell);
+        Assert.Contains("x:Name=\"SidebarLayout\"", productionShell);
+        Assert.Contains("Background=\"{DynamicResource GscSidebarMaterialBrush}\"", productionShell);
         Assert.DoesNotContain("SidebarSeamMaterial", productionShell);
         Assert.DoesNotContain("GscSidebarSeamBrush", productionShell);
         Assert.DoesNotContain("BorderThickness=\"0,0,1,0\"", productionShell);
@@ -2233,6 +2242,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("GscAccentShadowColor", ambient);
         Assert.Contains("GscInfoShadowColor", ambient);
         Assert.Contains("GscSuccessShadowColor", ambient);
+        Assert.Contains("GscAmbientWideWashBrush", ambient);
+        Assert.Contains("<Rectangle", ambient);
         Assert.Contains("GscAmbientBlurEffect", ambient);
         Assert.Contains("Effect=\"{DynamicResource GscAmbientBlurEffect}\"", ambient);
         Assert.Contains("GscGlassHighlightBrush", productionShell);
