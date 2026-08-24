@@ -898,7 +898,7 @@
                                      PreviewKeyDown="OnGamePickerPreviewKeyDown"
                                      ToolTip="搜索游戏名、Ludusavi 名称、平台或状态"
                                      AutomationProperties.Name="搜索游戏"
-                                     Padding="20,7,38,7"/>
+                                     Padding="30,7,38,7"/>
                             <TextBlock FontFamily="Segoe MDL2 Assets"
                                        Text="&#xE721;"
                                        Foreground="{DynamicResource GscMutedTextBrush}"
@@ -908,7 +908,7 @@
                                        IsHitTestVisible="False"/>
                             <TextBlock Text="搜索游戏…"
                                        Foreground="{DynamicResource GscMutedTextBrush}"
-                                       Margin="20,0,38,0"
+                                       Margin="30,0,38,0"
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
                                        IsHitTestVisible="False">

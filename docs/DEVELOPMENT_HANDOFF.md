@@ -14,10 +14,16 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-24 UI-302 任务中心搜索框可见性与图标间距修复交接
+
+- TaskCenter 的“搜索任务…”和 Dashboard 游戏库搜索框属于带图标输入，当前输入 Padding 为 `30,7,38,7`，对应占位提示从 `30` DIP 起始；右侧 `38` DIP 继续为清除按钮保留空间。不要把这两处重新收紧到 `20`，否则放大镜会贴住提示文字。
+- `WpfUiProduction.xaml` 和 `DesignTokens.xaml` 的 TextBox 模板必须把 `TextElement.Foreground` 绑定到 `Foreground`，并保留 `PART_ContentHost` 的现有对齐绑定；这是 Playnite 宿主下真实输入文字可见性的关键。数值输入的专用对齐、搜索清除按钮、Binding、命令、焦点和无障碍语义保持。
+- 当前验证：`validate-source.py`、XAML 19/19、WPF 静态审查 0 error/20 warnings/165 info、Release 0 warning/0 error、Core 59/59、Worker 199/199、Playnite 282/282（57 跳过），`artifacts/ui-qa/ui302-task-search-v1/render-qa-report.txt` 为 `render-qa OK`；受控生产安装已核验扩展清单 `0.6.70`、DLL `0.6.70.0`，用户宿主逐像素截图仍需用户复核。
+
 ## 2026-08-24 UI-301 表格右侧安全边距与搜索输入起点微调交接
 
 - 共享及 Dashboard 本地选中行模板的 `RowChrome` Margin 已统一为 `4,2,12,2`；这只是为了避开 Playnite 宿主垂直滚动轨道，不要改动 `SelectiveScrollingGrid`、滚动方式、排序或 Recycling。
-- TaskCenter 和 Dashboard 游戏库的带搜索图标输入框左侧 Padding/提示 Margin 已统一为 `20`，右侧清除按钮预留 `38` 保持；普通 TextBox、数值输入、清除按钮、Binding 和键盘焦点语义不变。
+- UI-301 曾将 TaskCenter 和 Dashboard 游戏库的带搜索图标输入框左侧 Padding/提示 Margin 收紧为 `20`；UI-302 已修正为 `30`，右侧清除按钮预留 `38` 保持；普通 TextBox、数值输入、清除按钮、Binding 和键盘焦点语义不变。
 - 当前验证：`validate-source.py`、XAML 19/19、WPF 静态审查 0 error/20 warnings/165 info、Release 0 warning/0 error、Core 59/59、Worker 199/199、Playnite 282/282（57 跳过），`artifacts/ui-qa/ui301-spacing-v1/render-qa-report.txt` 为 `render-qa OK`；受控 `scripts/dev-install-run.ps1 -Configuration Release -NoStart` 已安装生产扩展 `0.6.70.0`。真实 Playnite 宿主逐像素边距仍由用户复核。
 
 ## 2026-08-24 UI-300 / FUNC-004 表格、输入框与 FLiNG 归档修复交接

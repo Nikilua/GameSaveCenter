@@ -106,8 +106,8 @@ public sealed class RestoredAcrylicForkBaselineTests
         Assert.Contains("Text=\"搜索任务…\"", tasks);
         Assert.Contains("x:Name=\"TaskSearchTextBox\"", tasks);
         Assert.Contains("HorizontalAlignment=\"Stretch\"", tasks);
-        Assert.Contains("Padding=\"20,7,38,7\"", tasks);
-        Assert.Contains("Margin=\"20,0,12,0\"", tasks);
+        Assert.Contains("Padding=\"30,7,38,7\"", tasks);
+        Assert.Contains("Margin=\"30,0,12,0\"", tasks);
         Assert.Contains("TaskSearchBoxHost.MinWidth = 420", taskCode);
         Assert.DoesNotContain("x:Name=\"TaskSearchLabel\"", tasks);
     }

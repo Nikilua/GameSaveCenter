@@ -3,10 +3,17 @@
 > 维护时间：2026-08-24
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-24 UI-302 当前事实：任务中心搜索框可见性与图标间距
+
+- TaskCenter 的“搜索任务…”和 Dashboard 的游戏库搜索框是带放大镜的特殊输入框，当前 `TextBox.Padding` 与占位提示 `Margin` 均为 `30,7,38,7` / `30,0,38,0`（Task 提示右侧为 `12`）；`30` 是图标与实际文字之间的独立安全间距。普通无图标输入框仍按共享样式的常规左侧内边距处理。
+- `WpfUiProduction.xaml` 与 `DesignTokens.xaml` 的 TextBox 模板均要求 `PART_ContentHost` 显式设置 `TextElement.Foreground="{TemplateBinding Foreground}"`，确保输入文字继承 Gsc 前景色；不要仅靠宿主默认 TextBox 主题推断文字颜色。
+- 右侧清除按钮、现有 Binding、搜索过滤、命令、键盘焦点和无障碍名称未改变。UI-302 只修复输入可见性与图标间距。
+- UI-302 验证：源码验证、XAML 19/19、WPF 静态审查 0 error/20 warnings/165 info、Release 0 warning/0 error、Core 59/59、Worker 199/199、Playnite 282/282（57 跳过）、`artifacts/ui-qa/ui302-task-search-v1/render-qa-report.txt` 为 `render-qa OK`；真实 Playnite 逐像素输入截图仍需用户复核。
+
 ## 2026-08-24 UI-301 当前事实：表格右侧安全边距与搜索输入起点
 
 - 共享 `WpfUiProduction.xaml` 的 `GscRoundedDataGridRowTemplate` 和 `DashboardView.xaml` 的本地兼容行模板，选中 `RowChrome` 使用 `4,2,12,2`；`12` 是为 Playnite 宿主垂直滚动轨道保留的右侧安全区。不要恢复到 `4,2,8,2` 或旧的 `4,2`。
-- TaskCenter 与 Dashboard 游戏库搜索框为搜索图标保留 `20` DIP 左侧内容留白，提示文本同步从 `20` 起始；右侧 `38` DIP 仍为清除按钮预留区。共享普通 TextBox 的左对齐模板、数值输入的专用对齐和清除按钮行为不变。
+- UI-301 曾将 TaskCenter 与 Dashboard 游戏库搜索框的图标字段收紧到 `20` DIP；UI-302 已将当前值修正为 `30` DIP，提示文本同步从 `30` 起始，右侧 `38` DIP 仍为清除按钮预留区。共享普通 TextBox 的左对齐模板、数值输入的专用对齐和清除按钮行为不变。
 - UI-301 验证：`validate-source.py`、XAML 19/19、WPF 静态审查 0 error/20 warnings/165 info、Release 0 warning/0 error、Core 59/59、Worker 199/199、Playnite 282/282（57 跳过）、`artifacts/ui-qa/ui301-spacing-v1/render-qa-report.txt` 的 `render-qa OK`；受控一键安装已核验生产扩展 `0.6.70.0`。真实 Playnite 宿主逐像素边距仍需用户复核。
 
 ## 2026-08-24 UI-300 / FUNC-004 当前事实：表格、输入框与 FLiNG 归档

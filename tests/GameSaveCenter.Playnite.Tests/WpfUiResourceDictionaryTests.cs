@@ -3304,10 +3304,10 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Equal("OnGamePickerPreviewKeyDown", gameList.Attribute("PreviewKeyDown")?.Value);
         var gameSearch = xaml.Descendants().Single(element => element.Name.LocalName == "TextBox" && element.Attribute(xamlName)?.Value == "GameSearchTextBox");
         Assert.Equal("OnGamePickerPreviewKeyDown", gameSearch.Attribute("PreviewKeyDown")?.Value);
-        Assert.Equal("20,7,38,7", gameSearch.Attribute("Padding")?.Value);
+        Assert.Equal("30,7,38,7", gameSearch.Attribute("Padding")?.Value);
         var gameSearchHint = xaml.Descendants().Single(element => element.Name.LocalName == "TextBlock"
             && element.Attribute("Text")?.Value == "搜索游戏…");
-        Assert.Equal("20,0,38,0", gameSearchHint.Attribute("Margin")?.Value);
+        Assert.Equal("30,0,38,0", gameSearchHint.Attribute("Margin")?.Value);
 
         Assert.Contains("GamePicker.SearchText", dashboard);
         Assert.Contains("GamePicker.StatusFilterOptions", dashboard);
@@ -5021,6 +5021,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("<Setter Property=\"MinHeight\" Value=\"{DynamicResource GscCompactButtonHeight}\"/>", production);
         Assert.Contains("<Setter Property=\"Height\" Value=\"{DynamicResource GscButtonHeight}\"/>", production);
         Assert.Contains("<ControlTemplate x:Key=\"GscWpfUiTextBoxTemplate\"", production);
+        Assert.Contains("TextElement.Foreground=\"{TemplateBinding Foreground}\"", production);
         Assert.Contains("VerticalAlignment=\"Stretch\"", production);
         Assert.Contains("<Setter Property=\"VerticalContentAlignment\" Value=\"Center\"/>", production);
         Assert.Contains("<Setter Property=\"HorizontalScrollBarVisibility\" Value=\"Hidden\"/>", production);

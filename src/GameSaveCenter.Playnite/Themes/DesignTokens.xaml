@@ -746,6 +746,7 @@
                                       VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                       HorizontalAlignment="Stretch"
                                       HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      TextElement.Foreground="{TemplateBinding Foreground}"
                                       Focusable="False"
                                       HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}"
                                       VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}"

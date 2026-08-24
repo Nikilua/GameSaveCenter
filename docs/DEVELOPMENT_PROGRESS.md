@@ -1,6 +1,8 @@
 # 开发实现进度
 
-- [x] UI-301（2026-08-24）：根据宿主截图继续收紧表格与搜索框的边距。共享 DataGrid 选中行及 Dashboard 本地兼容行的右侧安全 Margin 统一为 `4,2,12,2`，TaskCenter/Dashboard 游戏库带搜索图标的输入框左侧 Padding 与提示 Margin 统一为 `20`；不改 Binding、命令、清除按钮、键盘焦点、排序、滚动或虚拟化。`validate-source.py`、XAML 19/19、WPF 静态审查 0 error/20 warnings/165 info、Release 0 警告/0 错误、Core 59/59、Worker 199/199、Playnite 282/282（57 跳过）通过；`artifacts/ui-qa/ui301-spacing-v1/render-qa-report.txt` 为 `render-qa OK`，受控一键安装已核验生产 DLL `0.6.70.0`。
+- [x] UI-302（2026-08-24）：修复任务中心搜索框中放大镜与“搜索任务…”贴合、实际输入文字不可见的问题。TaskCenter/Dashboard 带图标搜索框的左侧输入 Padding 与提示 Margin 调整为 `30`，共享生产/设计 TextBox 模板把 `Foreground` 显式传给 `PART_ContentHost`；清除按钮、Binding、命令、焦点和过滤行为不变。源码门禁、XAML 19/19、WPF 静态审查 0 error/20 warnings/165 info、Release 0 警告/0 错误、Core 59/59、Worker 199/199、Playnite 282/282（57 跳过）通过；`artifacts/ui-qa/ui302-task-search-v1/render-qa-report.txt` 为 `render-qa OK`，受控生产安装已核验扩展清单 `0.6.70`、DLL `0.6.70.0`。
+
+- [x] UI-301（2026-08-24）：根据宿主截图继续收紧表格与搜索框的边距。共享 DataGrid 选中行及 Dashboard 本地兼容行的右侧安全 Margin 统一为 `4,2,12,2`，TaskCenter/Dashboard 游戏库带搜索图标的输入框左侧 Padding 与提示 Margin 曾统一为 `20`，后由 UI-302 修正为 `30`；不改 Binding、命令、清除按钮、键盘焦点、排序、滚动或虚拟化。`validate-source.py`、XAML 19/19、WPF 静态审查 0 error/20 warnings/165 info、Release 0 警告/0 错误、Core 59/59、Worker 199/199、Playnite 282/282（57 跳过）通过；`artifacts/ui-qa/ui301-spacing-v1/render-qa-report.txt` 为 `render-qa OK`，受控一键安装已核验生产 DLL `0.6.70.0`。
 
 - [x] UI-300 / FUNC-004（2026-08-24）：修复共享 DataGrid 选中描边右侧圆角在宿主滚动轨道下不可见的问题；Overview 风险区两个真实按钮统一高度、模板和垂直对齐；普通 TextBox 明确左对齐并修正模板内容对齐传递，游戏/媒体/任务/FLiNG 搜索框增加带键盘焦点保留的一键清除按钮。FLiNG 归档同步接受归档站点的 ZIP/RAR/7z/EXE 直链，Worker 对 RAR/7z 使用 SharpCompress 流式安全解包，保留路径、条目数、单文件和总展开体积限制，不执行归档内 EXE。源码门禁、XAML 19/19、Release 0 警告/0 错误、Core 59/59、Worker 199/199、Playnite 282/282（57 跳过）和 `render-qa OK` 已通过；受控一键安装已验证生产扩展 `0.6.70.0`，真实 FLiNG 下载/运行和用户宿主安全软件行为仍待复核。
 
