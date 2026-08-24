@@ -14,7 +14,15 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
-## 2026-08-24 UI-306 Shell 毛玻璃与导航栏硬边交接
+## 2026-08-24 UI-307 首页圆角与导航材质交接
+
+- Today 卡片的装饰椭圆已全部移入卡片内部。不要依赖 `ClipToBounds` 裁切圆角，也不要恢复负边距光源；WPF 这里按矩形裁切，负边距会在圆角外产生直角色块。
+- `AmbientMaterialLayer` 的 `ShowLeftGlow` 默认开启，生产 Shell 必须关闭它；页面局部环境光仍可保留。这样主内容列起点不会出现竖向光柱。
+- 导航栏必须使用完整宽度的中性 `GscSidebarMaterialBrush`，当前不使用 `SidebarSeamMaterial`、`GscSidebarSeamBrush`、透明渐隐边缘或右侧 1 DIP 硬边。导航玻璃感由整栏低对比度材质提供，不能通过边缘高亮增强。
+- 本轮没有改变命令、Binding、页面结构、DataGrid/ListBox 虚拟化、滚动条或安全语义。真实 Playnite `0.6.70.0` 已安装并截图复核：Today 左上角圆角正常、导航分界无光柱。
+- 证据：Release 构建 0 warning/0 error；Core 59/59、Worker 199/199、Playnite 283/283（57 跳过）；多主题、多尺寸、滚动及 resize transition `render-qa OK`。
+
+## 2026-08-24 UI-306 历史记录（已由 UI-307 覆盖）：Shell 毛玻璃与导航栏硬边
 
 - `AcrylicProductionShellView.xaml` 的 `ShellAmbientMaterialLayer` 使用正向 Z 层级覆盖整个 Shell 两列，位于导航/页面表面下方；不要放回负 Z 层，也不要把 Blur 挂到根 Shell 或页面内容。
 - 导航栏两个表面不再绘制右侧 1 DIP 边框；`SidebarSeamMaterial` 是 42 DIP、不可交互的渐隐过渡，`GscSidebarSeamBrush` 和 `GscShellAmbientOpacity` 由运行时主题/毛玻璃强度提供。不要恢复硬直线或新建布局列。

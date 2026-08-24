@@ -3,7 +3,15 @@
 > 维护时间：2026-08-24
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
-## 2026-08-24 UI-306 当前事实：Shell 毛玻璃覆盖与导航栏过渡
+## 2026-08-24 UI-307 当前事实：首页圆角外溢与导航材质均匀化
+
+- `OverviewTodayHeroCard` 的装饰椭圆必须保持在卡片内部；不要恢复 `Margin="-112..."` 等负边距。WPF `ClipToBounds` 是矩形裁切，不会按 `CornerRadius` 裁切，负边距会在圆角外留下直角色块。
+- `AmbientMaterialLayer.ShowLeftGlow` 默认是 `true`，页面局部层继续显示左侧环境光；生产 `ShellAmbientMaterialLayer` 必须设置 `ShowLeftGlow="False"`，否则主内容列起点会再次出现竖向亮带。
+- 导航栏使用贯穿整栏的中性 `GscSidebarMaterialBrush`，不得恢复透明渐隐到右边缘，也不要重新加入 `SidebarSeamMaterial`、`GscSidebarSeamBrush` 或右侧硬边框。当前材质通过低对比度的整栏渐变体现玻璃感，边界保持均匀。
+- Blur 仍只挂在固定尺寸环境光椭圆上；真实导航命令、页面 Binding、滚动/虚拟化、关闭毛玻璃/高对比度降级语义不变。
+- UI-307 验证：源码/XAML/WPF 静态门禁通过，Release 0 warning/0 error，Core 59/59、Worker 199/199、Playnite 283/283（57 跳过），多主题多尺寸 `render-qa OK`；真实 Playnite 已安装并截图复核 `0.6.70.0`。
+
+## 2026-08-24 UI-306 历史记录（当前以 UI-307 为准）：Shell 毛玻璃覆盖与导航栏过渡
 
 - 生产 Shell 的 `ShellAmbientMaterialLayer` 当前必须位于 Shell 背景之上、`SidebarLayout`/主内容 Grid 之下，覆盖两列；不要恢复为 `Panel.ZIndex=-1`，否则会被 Shell 背景压住，用户看不到环境光。
 - 导航栏右侧硬分割线已移除；`SidebarSeamMaterial` 只负责低成本不可交互的渐隐过渡，不能恢复 `BorderThickness="0,0,1,0"`。导航栏仍使用半透明 `GscSidebarBrush`，导航项、命令、页面切换、列宽和滚动均未改变。

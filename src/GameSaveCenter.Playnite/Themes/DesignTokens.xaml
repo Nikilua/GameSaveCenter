@@ -49,10 +49,12 @@
     <Color x:Key="GscAmbientCenterShadowColor">#0F7C8CF8</Color>
     <sys:Double x:Key="GscAmbientPageOpacity">0.86</sys:Double>
     <sys:Double x:Key="GscShellAmbientOpacity">0.86</sys:Double>
-    <LinearGradientBrush x:Key="GscSidebarSeamBrush" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#521F2538" Offset="0"/>
-        <GradientStop Color="#197C8CF8" Offset="0.38"/>
-        <GradientStop Color="#007C8CF8" Offset="1"/>
+    <!-- The production shell uses a translucent sidebar surface that fades into the
+         shared backdrop. It must not be an accent-colored full-height seam. -->
+    <LinearGradientBrush x:Key="GscSidebarMaterialBrush" StartPoint="0,0.5" EndPoint="1,0.5">
+      <GradientStop Color="#E01F2531" Offset="0"/>
+      <GradientStop Color="#D01F2531" Offset="0.58"/>
+      <GradientStop Color="#C51F2531" Offset="1"/>
     </LinearGradientBrush>
 
     <!-- Effects are deliberately null until a page enables its local material palette. This

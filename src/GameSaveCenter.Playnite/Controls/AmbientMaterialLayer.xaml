@@ -5,10 +5,15 @@
              IsHitTestVisible="False"
              ClipToBounds="True"
              SnapsToDevicePixels="True">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+    </UserControl.Resources>
     <!-- Shared decorative material. The optional blur is attached only to these four
          fixed-size light sources; text, lists and virtualized rows never receive it. -->
     <Grid Opacity="{DynamicResource GscAmbientPageOpacity}">
-        <Ellipse Width="380" Height="380" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-128,-154,0,0" Opacity="0.92" Effect="{DynamicResource GscAmbientBlurEffect}">
+        <Ellipse x:Name="LeftAmbientGlow"
+                 Visibility="{Binding ShowLeftGlow, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Converter={StaticResource BoolToVisibility}}"
+                 Width="380" Height="380" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="18,18,0,0" Opacity="0.92" Effect="{DynamicResource GscAmbientBlurEffect}">
             <Ellipse.Fill>
                 <RadialGradientBrush>
                     <GradientStop Offset="0" Color="{DynamicResource GscAccentShadowColor}"/>
@@ -16,7 +21,9 @@
                 </RadialGradientBrush>
             </Ellipse.Fill>
         </Ellipse>
-        <Ellipse Width="360" Height="360" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-112,-104,0" Opacity="0.82" Effect="{DynamicResource GscAmbientBlurEffect}">
+        <!-- Keep the fixed light source inside the rounded shell. Extending it past the
+             right edge created a clipped blue/green bar instead of a soft corner bloom. -->
+        <Ellipse Width="360" Height="360" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,18,52,0" Opacity="0.72" Effect="{DynamicResource GscAmbientBlurEffect}">
             <Ellipse.Fill>
                 <RadialGradientBrush>
                     <GradientStop Offset="0" Color="{DynamicResource GscInfoShadowColor}"/>
@@ -24,7 +31,7 @@
                 </RadialGradientBrush>
             </Ellipse.Fill>
         </Ellipse>
-        <Ellipse Width="360" Height="360" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,-104,-126" Opacity="0.82" Effect="{DynamicResource GscAmbientBlurEffect}">
+        <Ellipse Width="360" Height="360" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,52,28" Opacity="0.72" Effect="{DynamicResource GscAmbientBlurEffect}">
             <Ellipse.Fill>
                 <RadialGradientBrush>
                     <GradientStop Offset="0" Color="{DynamicResource GscSuccessShadowColor}"/>

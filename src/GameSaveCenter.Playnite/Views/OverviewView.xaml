@@ -296,7 +296,7 @@
              <Grid x:Name="OverviewHeroAndGameRow" Grid.Row="0" Grid.ColumnSpan="3" Margin="0,0,0,14">
                 <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition x:Name="OverviewHeroGameCompactRow" Height="0"/></Grid.RowDefinitions>
                 <Grid.ColumnDefinitions><ColumnDefinition x:Name="OverviewHeroColumn" Width="1*"/><ColumnDefinition x:Name="OverviewHeroGameGutterColumn" Width="14"/><ColumnDefinition x:Name="OverviewCurrentGameColumn" Width="1*"/></Grid.ColumnDefinitions>
-                <Border x:Name="OverviewTodayHeroCard" Grid.Row="0" Grid.Column="0" Style="{DynamicResource GscRedesignSectionCard}" MinHeight="205">
+                <Border x:Name="OverviewTodayHeroCard" Grid.Row="0" Grid.Column="0" Style="{DynamicResource GscRedesignSectionCard}" MinHeight="205" ClipToBounds="True">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -308,13 +308,16 @@
                         <!-- Demo HomeView hero carries a soft ambient glow behind the
                              TODAY headline; production uses theme-adaptive radial gradients
                              so the glow stays cheap while scrolling large libraries. -->
-                        <Ellipse Width="230" Height="230" IsHitTestVisible="False" Opacity="0.85" Grid.RowSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-112,-112,0,0">
+                        <!-- Keep the hero's decorative sources inside the card. WPF's
+                             ClipToBounds is rectangular, so negative offsets still paint
+                             into a rounded card's square corners. -->
+                        <Ellipse Width="230" Height="230" IsHitTestVisible="False" Opacity="0.70" Grid.RowSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0">
                             <Ellipse.Fill><RadialGradientBrush><GradientStop Offset="0" Color="{DynamicResource GscAccentShadowColor}"/><GradientStop Offset="1" Color="Transparent"/></RadialGradientBrush></Ellipse.Fill>
                         </Ellipse>
-                        <Ellipse Width="230" Height="230" IsHitTestVisible="False" Opacity="0.85" Grid.RowSpan="2" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-112,-86,0">
+                        <Ellipse Width="230" Height="230" IsHitTestVisible="False" Opacity="0.70" Grid.RowSpan="2" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0">
                             <Ellipse.Fill><RadialGradientBrush><GradientStop Offset="0" Color="{DynamicResource GscInfoShadowColor}"/><GradientStop Offset="1" Color="Transparent"/></RadialGradientBrush></Ellipse.Fill>
                         </Ellipse>
-                        <Ellipse Width="230" Height="230" IsHitTestVisible="False" Opacity="0.85" Grid.RowSpan="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,-86,-112">
+                        <Ellipse Width="230" Height="230" IsHitTestVisible="False" Opacity="0.70" Grid.RowSpan="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0">
                             <Ellipse.Fill><RadialGradientBrush><GradientStop Offset="0" Color="{DynamicResource GscSuccessShadowColor}"/><GradientStop Offset="1" Color="Transparent"/></RadialGradientBrush></Ellipse.Fill>
                         </Ellipse>
                         <StackPanel Grid.Row="0" MinWidth="0" VerticalAlignment="Center" Margin="0,0,0,14">

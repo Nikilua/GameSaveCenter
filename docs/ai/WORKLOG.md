@@ -2,7 +2,28 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
-## 2026-08-24 UI-306 Shell 毛玻璃覆盖与导航栏硬边修复
+## 2026-08-24 UI-307 首页圆角外溢与导航材质均匀化
+
+**问题确认：**
+
+- Today 卡片的 `ClipToBounds` 只能按矩形裁切，不能按 `CornerRadius` 裁切；卡片内部三个带负边距的装饰椭圆因此会把颜色画进左上角等圆角缺口，形成用户看到的直角色块。
+- Shell 环境光的左侧光源从主内容列的起点开始，叠加导航材质右侧渐隐时，会在导航与页面之间形成竖向亮带；把导航渐隐到透明并不能得到自然的玻璃过渡。
+
+**实现内容：**
+
+- `OverviewTodayHeroCard` 的装饰光源全部收回卡片内部，并保留低成本固定椭圆；共享 `ClipToBounds` 继续作为矩形安全边界，但不再依赖它模拟圆角裁切。
+- `AmbientMaterialLayer` 增加 `ShowLeftGlow` 属性；生产 Shell 关闭左侧光源，页面局部环境光保持原有语义，避免主内容起始处形成光柱。
+- 导航栏改用贯穿整栏宽度的中性 `GscSidebarMaterialBrush`，取消右侧透明渐隐，并提高低对比度材质的可见性；没有恢复硬分割线，也没有新增布局列或交互层。
+- 保留真实导航命令、页面 Binding、滚动/虚拟化、Blur 限定和高对比度/关闭毛玻璃降级语义。
+
+**验证结果：**
+
+- `validate-source.py`、XAML 结构检查和 `validate_wpf_ui.py` 通过（0 error；静态审查仅保留既有 18 条 warning）。
+- Release 构建 0 warning/0 error；Core 59/59、Worker 199/199、Playnite 283/283，57 项按既有环境规则跳过。
+- `scripts/render-qa.ps1` 多主题、多尺寸、滚动和 resize transition 均为 `render-qa OK`。
+- 受控 `scripts/dev-install-run.ps1 -Configuration Release -NoStart` 已安装真实扩展 `0.6.70.0`；通过真实 Playnite 截图复核，Today 左上角无直角溢出，导航分界无竖向光柱，导航材质对比度可见。
+
+## 2026-08-24 UI-306 历史记录（已由 UI-307 覆盖）：Shell 毛玻璃覆盖与导航栏硬边修复
 
 **问题确认：**
 

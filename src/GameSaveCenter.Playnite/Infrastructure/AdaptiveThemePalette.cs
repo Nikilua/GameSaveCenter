@@ -268,7 +268,6 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscAmbientCenterShadowColor"] = WithAlpha(
                 palette.Accent,
                 palette.IsDark ? 0.06 + (0.11 * glassStrength) : 0.04 + (0.08 * glassStrength));
-            resources["GscSidebarSeamBrush"] = CreateSidebarSeamBrush(palette);
             resources["GscInfoBrush"] = Brush(palette.Info);
             resources["GscSuccessBrush"] = Brush(palette.Success);
             resources["GscWarningBrush"] = Brush(palette.Warning);
@@ -436,6 +435,11 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 palette.IsDark ? (byte)54 : (byte)34, 0, 0, 0));
             WpfUiThemeScope.Apply(resources, palette.IsDark);
             ApplyDemoCoreResources(resources, palette.IsDark);
+            // The shell sidebar is a translucent surface, not a second opaque column. Its
+            // right edge fades to the same backdrop used by the page so neither side can
+            // produce a sharp vertical seam. Keep this separate from GscSidebarBrush,
+            // which is also used by standalone rounded cards in the settings view.
+            resources["GscSidebarMaterialBrush"] = CreateSidebarMaterialBrush(palette, glassEnabled);
             if (!glassEnabled)
                 resources["GscGlassHighlightBrush"] = Brush(Colors.Transparent);
         }
@@ -597,17 +601,31 @@ namespace GameSaveCenter.Playnite.Infrastructure
             return effect;
         }
 
-        private static LinearGradientBrush CreateSidebarSeamBrush(AdaptiveThemePalette palette)
+        private static LinearGradientBrush CreateSidebarMaterialBrush(AdaptiveThemePalette palette, bool glassEnabled)
         {
-            var seamBase = Blend(palette.Background, palette.Accent, palette.IsDark ? 0.12 : 0.08);
+            if (!glassEnabled || SystemParameters.HighContrast)
+                return Gradient(palette.SidebarTop, palette.SidebarBottom);
+
+            // Keep the sidebar material neutral. The shell ambient layer deliberately lives
+            // only in the page column; exposing its accent bloom through the sidebar fade
+            // produced a bright vertical pillar at the navigation boundary. A slightly
+            // lifted neutral surface gives the sidebar its own material depth without that
+            // directional artifact.
+            var sidebarBase = Blend(Opaque(palette.SidebarTop), Opaque(palette.SidebarBottom), 0.42);
+            var sidebarTint = palette.IsDark
+                ? Blend(sidebarBase, Colors.White, 0.065)
+                : Blend(sidebarBase, Colors.Black, 0.028);
             var brush = new LinearGradientBrush
             {
                 StartPoint = new Point(0, 0),
                 EndPoint = new Point(1, 0)
             };
-            brush.GradientStops.Add(new GradientStop(WithAlpha(seamBase, palette.IsDark ? 0.52 : 0.38), 0));
-            brush.GradientStops.Add(new GradientStop(WithAlpha(palette.Accent, palette.IsDark ? 0.10 : 0.07), 0.38));
-            brush.GradientStops.Add(new GradientStop(Colors.Transparent, 1));
+            // Keep the material present through the whole sidebar. Fading to transparent at
+            // the column edge exposed the bright shell ambient layer as a vertical pillar;
+            // the final stop is therefore still a neutral translucent surface.
+            brush.GradientStops.Add(new GradientStop(WithAlpha(sidebarTint, palette.IsDark ? 0.90 : 0.90), 0));
+            brush.GradientStops.Add(new GradientStop(WithAlpha(sidebarTint, palette.IsDark ? 0.84 : 0.84), 0.52));
+            brush.GradientStops.Add(new GradientStop(WithAlpha(sidebarTint, palette.IsDark ? 0.79 : 0.80), 1));
             brush.Freeze();
             return brush;
         }
