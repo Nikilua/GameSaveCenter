@@ -61,9 +61,6 @@ public sealed class WpfUiResourceDictionaryTests
                 Assert.IsType<SolidColorBrush>(localResources["GscRestoreInfoStrokeBrush"]);
                 Assert.IsType<SolidColorBrush>(localResources["GscSafetyFillBrush"]);
                 Assert.IsType<SolidColorBrush>(localResources["GscSafetyStrokeBrush"]);
-                Assert.IsType<SolidColorBrush>(localResources["GscAmbientInfoBrush"]);
-                Assert.IsType<SolidColorBrush>(localResources["GscAmbientSuccessBrush"]);
-                Assert.IsType<Color>(localResources["GscAmbientCenterShadowColor"]);
                 Assert.IsType<SolidColorBrush>(localResources["GscMutedStatusBrush"]);
                 var strongerPalette = factoryType.GetMethod("Create", BindingFlags.Public | BindingFlags.Static)!.Invoke(
                     null,
@@ -72,9 +69,6 @@ public sealed class WpfUiResourceDictionaryTests
                 factoryType.GetMethod("ApplyAccentResources", BindingFlags.Public | BindingFlags.Static)!.Invoke(
                     null,
                     new object[] { strongerResources, strongerPalette });
-                Assert.True(
-                    Assert.IsType<Color>(strongerResources["GscAccentShadowColor"]).A
-                    > Assert.IsType<Color>(localResources["GscAccentShadowColor"]).A);
                 factoryType.GetMethod("ApplyWpfUiResources", BindingFlags.Public | BindingFlags.Static)!.Invoke(
                     null,
                     new object[] { localResources, palette });
@@ -88,7 +82,6 @@ public sealed class WpfUiResourceDictionaryTests
                 Assert.Null(localResources["GscSurfaceEffect"]);
                 Assert.Null(localResources["GscPrimaryButtonEffect"]);
                 Assert.Null(localResources["GscSidebarEffect"]);
-                Assert.Null(localResources["GscAmbientBlurEffect"]);
                 var disabledWideWash = Assert.IsType<LinearGradientBrush>(localResources["GscAmbientWideWashBrush"]);
                 Assert.All(disabledWideWash.GradientStops, stop => Assert.Equal(0, stop.Color.A));
                 Assert.Null(localResources["GscPopupEffect"]);
@@ -107,13 +100,15 @@ public sealed class WpfUiResourceDictionaryTests
                 Assert.IsType<DropShadowEffect>(localResources["GscSurfaceEffect"]);
                 Assert.IsType<DropShadowEffect>(localResources["GscPrimaryButtonEffect"]);
                 Assert.IsType<DropShadowEffect>(localResources["GscSidebarEffect"]);
-                var ambientBlur = Assert.IsType<BlurEffect>(localResources["GscAmbientBlurEffect"]);
-                Assert.Equal(24, ambientBlur.Radius);
-                Assert.Equal(RenderingBias.Performance, ambientBlur.RenderingBias);
                 var wideWash = Assert.IsType<LinearGradientBrush>(localResources["GscAmbientWideWashBrush"]);
                 Assert.Equal(new Point(0, 0), wideWash.StartPoint);
                 Assert.Equal(new Point(1, 1), wideWash.EndPoint);
+                Assert.True(wideWash.GradientStops.Count >= 6);
                 Assert.Contains(wideWash.GradientStops, stop => stop.Color.A > 0);
+                var strongerWideWash = Assert.IsType<LinearGradientBrush>(strongerMaterialResources["GscAmbientWideWashBrush"]);
+                Assert.True(
+                    strongerWideWash.GradientStops.Max(stop => stop.Color.A)
+                    > wideWash.GradientStops.Max(stop => stop.Color.A));
                 Assert.IsType<DropShadowEffect>(localResources["GscPopupEffect"]);
                 Assert.IsType<DropShadowEffect>(localResources["GscDialogEffect"]);
                 Assert.IsType<DropShadowEffect>(localResources["GscSliderThumbEffect"]);
@@ -162,16 +157,11 @@ public sealed class WpfUiResourceDictionaryTests
         var redesign = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "Redesign.xaml"));
         var tokens = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml"));
         var production = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml"));
-        Assert.Contains("resources[\"GscAmbientAccentBrush\"]", paletteSource);
         Assert.Contains("resources[\"GscErrorTintBrush\"]", paletteSource);
         Assert.Contains("resources[\"GscRestoreInfoFillBrush\"]", paletteSource);
         Assert.Contains("resources[\"GscSafetyFillBrush\"]", paletteSource);
-        Assert.Contains("resources[\"GscAmbientInfoBrush\"]", paletteSource);
-        Assert.Contains("resources[\"GscAmbientSuccessBrush\"]", paletteSource);
-        Assert.Contains("resources[\"GscAmbientCenterShadowColor\"]", paletteSource);
         Assert.Contains("resources[\"GscAmbientWideWashBrush\"]", paletteSource);
         Assert.Contains("SemanticTint", paletteSource);
-        Assert.Contains("resources[\"GscAccentShadowColor\"]", paletteSource);
         Assert.Contains("resources[\"AccentBrush\"]", paletteSource);
         Assert.Contains("resources[\"AccentTintBrush\"]", paletteSource);
         Assert.Contains("resources[\"AccentStrokeBrush\"]", paletteSource);
@@ -185,7 +175,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("highContrast ? accent", paletteSource);
         Assert.DoesNotContain("{StaticResource GscAccentShadowColor}", dashboard);
         Assert.DoesNotContain("{StaticResource GscAccentShadowColor}", tokens);
-        Assert.Contains("{DynamicResource GscAmbientAccentBrush}", dashboard);
+        Assert.Contains("{DynamicResource GscAmbientWideWashBrush}", dashboard);
+        Assert.DoesNotContain("RadialGradientBrush", dashboard);
+        Assert.DoesNotContain("BlurEffect", dashboard);
         Assert.Contains("{DynamicResource GscSelectionTextBrush}", dashboard);
         Assert.Contains("{DynamicResource GscSelectionTextBrush}", tokens);
         Assert.Contains("x:Key=\"GscPickerScrimBrush\"", tokens);
@@ -414,7 +406,7 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
-    public void FixedAmbientBlurLayersUseTheOpaqueAccessibilityFallback()
+    public void FixedAmbientMaterialLayersUseTheOpaqueAccessibilityFallback()
     {
         var repositoryRoot = FindRepositoryRoot();
         var dashboardCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml.cs"));
@@ -2228,7 +2220,7 @@ public sealed class WpfUiResourceDictionaryTests
         var shellAmbientEnd = productionShell.IndexOf("/>", shellAmbientStart, StringComparison.Ordinal);
         var shellAmbientMarkup = productionShell.Substring(shellAmbientStart, shellAmbientEnd - shellAmbientStart);
         Assert.Contains("Grid.Column=\"1\"", shellAmbientMarkup);
-        Assert.Contains("ShowLeftGlow=\"False\"", shellAmbientMarkup);
+        Assert.DoesNotContain("ShowLeftGlow", shellAmbientMarkup);
         Assert.DoesNotContain("Grid.ColumnSpan=\"2\"", shellAmbientMarkup);
         Assert.Contains("GscShellAmbientOpacity", productionShell);
         Assert.Contains("GscSidebarMaterialBrush", productionShell);
@@ -2239,13 +2231,10 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.DoesNotContain("BorderThickness=\"0,0,1,0\"", productionShell);
         Assert.Contains("AmbientMaterialLayer", ambient);
         Assert.Contains("GscAmbientPageOpacity", ambient);
-        Assert.Contains("GscAccentShadowColor", ambient);
-        Assert.Contains("GscInfoShadowColor", ambient);
-        Assert.Contains("GscSuccessShadowColor", ambient);
         Assert.Contains("GscAmbientWideWashBrush", ambient);
         Assert.Contains("<Rectangle", ambient);
-        Assert.Contains("GscAmbientBlurEffect", ambient);
-        Assert.Contains("Effect=\"{DynamicResource GscAmbientBlurEffect}\"", ambient);
+        Assert.DoesNotContain("RadialGradientBrush", ambient);
+        Assert.DoesNotContain("BlurEffect", ambient);
         Assert.Contains("GscGlassHighlightBrush", productionShell);
         Assert.Contains("x:Name=\"OverviewTodayHeroCard\"", overview);
         var heroMarkup = overview.Substring(overview.IndexOf("x:Name=\"OverviewTodayHeroCard\"", StringComparison.Ordinal));
@@ -2986,7 +2975,7 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [LegacyProductionUiBaselineFact]
-    public void OverviewHeroMatchesDemoHeadlineScaleWithRadialAmbientGlow()
+    public void OverviewHeroMatchesDemoHeadlineScaleWithWideAmbientMaterial()
     {
         var repositoryRoot = FindRepositoryRoot();
         var overviewPath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml");
@@ -3000,25 +2989,12 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("整体状态安全", overviewText);
         Assert.Contains("Worker 异常", overviewText);
 
-        // The demo hero glow is a blurred ambient ellipse; production keeps the same
-        // decorative light as theme-adaptive radial gradients (no BlurEffect on the
-        // workspace) that must never intercept mouse input or sit above the text/pills.
-        var glowEllipses = overview.Descendants()
-            .Where(element => element.Name.LocalName == "Ellipse"
-                && element.Attribute("IsHitTestVisible")?.Value == "False"
-                && element.Descendants().Any(child => child.Name.LocalName == "RadialGradientBrush"))
-            .ToList();
-        Assert.True(glowEllipses.Count >= 2, "Hero should carry at least two decorative radial glow ellipses.");
+        // The hero uses the shared full-surface material veil instead of separate circular
+        // color spots, and the veil must remain behind the real headline and status pills.
+        Assert.Contains("GscAmbientWideWashBrush", overviewText);
+        Assert.DoesNotContain("RadialGradientBrush", overviewText);
         Assert.DoesNotContain("BlurEffect", overviewText);
-        Assert.Contains("GscAccentShadowColor", overviewText);
-        Assert.Contains("GscInfoShadowColor", overviewText);
-        Assert.Contains("GscSuccessShadowColor", overviewText);
 
-        // The decorative gradient centers live in the shared token dictionary so the
-        // hero glow keeps a single source of truth instead of inline hex colors.
-        var designTokens = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml"));
-        Assert.Contains("x:Key=\"GscInfoShadowColor\"", designTokens);
-        Assert.Contains("x:Key=\"GscSuccessShadowColor\"", designTokens);
     }
 
     [Fact]

@@ -14,11 +14,18 @@
 
 `wpf-apple-desktop-ui` 仅用于质量检查，不再限制 Demo-first 的页面选择；必须继续保护真实数据、命令、Binding、错误/取消/安全语义、虚拟化、可访问性和 Playnite 兼容性。当前游戏选框与现有滚动条系统按总目标保留，Demo 的 Mock 数据和演示行为不迁移。
 
+## 2026-08-24 UI-309 全局宽域多色玻璃材质
+
+- 主页 Today 卡片、Settings 环境层、兼容 Dashboard 和共享 `AmbientMaterialLayer` 统一使用 `GscAmbientWideWashBrush` 的整面矩形；不再恢复装饰性径向渐变、椭圆光斑或 `GscAmbientBlurEffect`。
+- 宽域材质由动态 accent/info/teal/success/中性表面组成六段线性渐变，颜色在大范围内缓慢过渡；透明度受 `GlassStrength` 限制，关闭毛玻璃/高对比度必须透明。状态小圆点和图标语义色仍保留。
+- 不要给 Shell、导航栏、页面根、表格、列表或滚动器挂大面积 `BlurEffect`；Playnite 嵌入视图没有安全的宿主桌面像素 backdrop blur，这里采用低成本整面渐变模拟。
+- 本轮不改变真实命令、Binding、数据契约、虚拟化、滚动条或 Playnite 兼容性；源码/XAML/WPF 门禁、Release 构建、全量测试和多主题多尺寸 `render-qa` 均已通过，当前用户 Playnite 扩展已核对为 `0.6.70.0`。由于 Computer Use 当前只返回 `EmptyWindowAutomationPeer`，不要把本轮描述为真实宿主页面点击/截图已复核。
+
 ## 2026-08-24 UI-308 导航栏与宽域材质交接
 
 - `AcrylicProductionShellView.xaml` 的 `SidebarLayout` 统一使用 `GscSidebarMaterialBrush`；标题/导航两个子 Border 必须保持透明，不能恢复成各自绘制材质，否则会造成渐变断层。
 - 导航栏材质使用全区域对角线性渐变，不做透明边缘渐隐，不新增右侧硬边或光柱。它是 Playnite 嵌入视图下的低成本玻璃模拟，不是对宿主桌面像素的真正 backdrop blur。
-- `AmbientMaterialLayer.xaml` 第一层为 `GscAmbientWideWashBrush` 的 `Rectangle`，用于大范围非圆形环境洗色；Blur 只挂在四个固定尺寸 `Ellipse` 上。不要给 `SidebarLayout`、页面根、表格、列表或滚动器增加 BlurEffect。
+- `AmbientMaterialLayer.xaml` 第一层为 `GscAmbientWideWashBrush` 的 `Rectangle`，用于大范围非圆形环境洗色；旧的固定椭圆实现已由 UI-309 移除。不要给 `SidebarLayout`、页面根、表格、列表或滚动器增加 BlurEffect。
 - `AdaptiveThemePaletteFactory.ApplyMaterialResources` 必须在关闭毛玻璃/高对比度时提供透明宽域渐变；资源测试已锁定这一降级契约。
 - UI-308 已完成 Release 构建、全量测试、多主题/多尺寸 render QA，并在真实 Playnite `0.6.70.0` 中查看了导航栏和首页；详情见 `docs/ai/WORKLOG.md`。
 

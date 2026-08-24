@@ -249,25 +249,8 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscPrimaryButtonBrush"] = Gradient(palette.Accent, palette.AccentPressed);
             resources["GscPrimaryButtonBorderBrush"] = Brush(palette.AccentHover);
             // The strength slider used to affect mostly surface opacity, so a value of 100
-            // could actually hide the ambient light behind the reading surfaces. Drive the
-            // fixed decorative light sources from the same value as well. Their alpha remains
-            // deliberately bounded: this is a visible material wash, not a saturated overlay.
-            var glassStrength = Math.Max(0.2, Math.Min(1, palette.GlassStrength));
-            resources["GscAmbientAccentBrush"] = Brush(WithAlpha(
-                palette.Accent,
-                palette.IsDark ? 0.16 + (0.26 * glassStrength) : 0.12 + (0.18 * glassStrength)));
-            resources["GscAccentShadowColor"] = WithAlpha(
-                palette.Accent,
-                palette.IsDark ? 0.26 + (0.20 * glassStrength) : 0.22 + (0.16 * glassStrength));
-            resources["GscInfoShadowColor"] = WithAlpha(
-                palette.Info,
-                palette.IsDark ? 0.22 + (0.16 * glassStrength) : 0.18 + (0.13 * glassStrength));
-            resources["GscSuccessShadowColor"] = WithAlpha(
-                palette.Success,
-                palette.IsDark ? 0.20 + (0.15 * glassStrength) : 0.17 + (0.12 * glassStrength));
-            resources["GscAmbientCenterShadowColor"] = WithAlpha(
-                palette.Accent,
-                palette.IsDark ? 0.06 + (0.11 * glassStrength) : 0.04 + (0.08 * glassStrength));
+            // could actually hide the ambient light behind the reading surfaces. Keep the
+            // pane-wide material tied to the same value while its alpha remains bounded.
             resources["GscInfoBrush"] = Brush(palette.Info);
             resources["GscSuccessBrush"] = Brush(palette.Success);
             resources["GscWarningBrush"] = Brush(palette.Warning);
@@ -280,10 +263,6 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscRestoreInfoStrokeBrush"] = Brush(SemanticTint(palette.Info, palette.IsDark ? 0.46 : 0.32));
             resources["GscSafetyFillBrush"] = Brush(SemanticTint(palette.Warning, palette.IsDark ? 0.20 : 0.12));
             resources["GscSafetyStrokeBrush"] = Brush(SemanticTint(palette.Warning, palette.IsDark ? 0.48 : 0.34));
-            // AcrylicFork uses one restrained accent wash. The previous semantic ambient
-            // blobs competed with the page hierarchy, so keep those optional layers inert.
-            resources["GscAmbientInfoBrush"] = Brush(Colors.Transparent);
-            resources["GscAmbientSuccessBrush"] = Brush(Colors.Transparent);
             resources["GscMutedStatusBrush"] = Brush(SemanticTint(palette.PrimaryText, palette.IsDark ? 0.54 : 0.46));
             resources["GscInfoIconFillBrush"] = Brush(palette.InfoIconFill);
             resources["GscSuccessIconFillBrush"] = Brush(palette.SuccessIconFill);
@@ -301,10 +280,6 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscSurfaceEffect"] = CreateShadowEffect(glassEnabled, Colors.Black, 14, 2, palette.IsDark ? 0.34 : 0.24);
             resources["GscPrimaryButtonEffect"] = CreateShadowEffect(glassEnabled, palette.Accent, 12, 2, palette.IsDark ? 0.32 : 0.28);
             resources["GscSidebarEffect"] = CreateShadowEffect(glassEnabled, Colors.Black, 24, 3, palette.IsDark ? 0.42 : 0.30);
-            // Keep the only blur in the shared UI on four fixed-size decorative light
-            // sources. A real null fallback removes the effect tree for high contrast,
-            // reduced transparency and lower-cost machines.
-            resources["GscAmbientBlurEffect"] = CreateAmbientBlurEffect(glassEnabled);
             resources["GscPopupEffect"] = CreateShadowEffect(glassEnabled, Colors.Black, 20, 5, palette.IsDark ? 0.46 : 0.38);
             resources["GscDialogEffect"] = CreateShadowEffect(glassEnabled, Colors.Black, 34, 8, palette.IsDark ? 0.52 : 0.44);
             resources["GscSliderThumbEffect"] = CreateShadowEffect(glassEnabled, Colors.Black, 6, 1, 0.26);
@@ -318,7 +293,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 ? 0.68 + (0.32 * glassStrength)
                 : 0d;
             // This is a wide, non-circular material wash. It adds a low-cost sense of depth
-            // across large empty regions; only the small decorative sources below use BlurEffect.
+            // across large empty regions without a page-sized BlurEffect or spotlight tree.
             resources["GscAmbientWideWashBrush"] = CreateAmbientWideWashBrush(palette, glassEnabled);
         }
 
@@ -592,18 +567,6 @@ namespace GameSaveCenter.Playnite.Infrastructure
             return effect;
         }
 
-        private static BlurEffect? CreateAmbientBlurEffect(bool enabled)
-        {
-            if (!enabled) return null;
-            var effect = new BlurEffect
-            {
-                Radius = 24,
-                RenderingBias = RenderingBias.Performance
-            };
-            effect.Freeze();
-            return effect;
-        }
-
         private static LinearGradientBrush CreateSidebarMaterialBrush(AdaptiveThemePalette palette, bool glassEnabled)
         {
             if (!glassEnabled || SystemParameters.HighContrast)
@@ -640,23 +603,27 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 return Gradient(Colors.Transparent, Colors.Transparent);
 
             var glassStrength = Math.Max(0.2, Math.Min(1, palette.GlassStrength));
-            var accentWash = Blend(Opaque(palette.Accent), Opaque(palette.Info), 0.22);
-            var centerWash = Blend(Opaque(palette.Info), Opaque(palette.SurfaceTop), 0.34);
-            var endWash = Blend(Opaque(palette.Success), Opaque(palette.SurfaceBottom), 0.38);
+            var accentWash = Opaque(palette.Accent);
+            var infoWash = Opaque(palette.Info);
+            var neutralWash = Blend(Opaque(palette.SurfaceTop), Opaque(palette.SurfaceBottom), 0.5);
+            var tealWash = Blend(infoWash, Opaque(palette.Success), 0.52);
+            var successWash = Opaque(palette.Success);
             var baseOpacity = palette.IsDark
-                ? 0.055 + (0.085 * glassStrength)
-                : 0.025 + (0.060 * glassStrength);
+                ? 0.085 + (0.18 * glassStrength)
+                : 0.035 + (0.095 * glassStrength);
             var brush = new LinearGradientBrush
             {
                 StartPoint = new Point(0, 0),
                 EndPoint = new Point(1, 1)
             };
-            // Several broad stops create a gentle pane-wide color field rather than a circular
-            // spotlight. The alpha is intentionally restrained because the layer spans a page.
+            // A long, multi-stop diagonal field creates a pane-wide color transition rather
+            // than separate spotlights. Alpha remains bounded because this layer spans a page.
             brush.GradientStops.Add(new GradientStop(WithAlpha(accentWash, baseOpacity), 0));
-            brush.GradientStops.Add(new GradientStop(WithAlpha(Blend(accentWash, centerWash, 0.42), baseOpacity * 0.76), 0.30));
-            brush.GradientStops.Add(new GradientStop(WithAlpha(Blend(centerWash, endWash, 0.38), baseOpacity * 0.58), 0.68));
-            brush.GradientStops.Add(new GradientStop(WithAlpha(endWash, baseOpacity * 0.34), 1));
+            brush.GradientStops.Add(new GradientStop(WithAlpha(infoWash, baseOpacity * 0.82), 0.22));
+            brush.GradientStops.Add(new GradientStop(WithAlpha(Blend(infoWash, neutralWash, 0.46), baseOpacity * 0.64), 0.43));
+            brush.GradientStops.Add(new GradientStop(WithAlpha(tealWash, baseOpacity * 0.58), 0.65));
+            brush.GradientStops.Add(new GradientStop(WithAlpha(successWash, baseOpacity * 0.46), 0.84));
+            brush.GradientStops.Add(new GradientStop(WithAlpha(Blend(successWash, neutralWash, 0.52), baseOpacity * 0.32), 1));
             brush.Freeze();
             return brush;
         }

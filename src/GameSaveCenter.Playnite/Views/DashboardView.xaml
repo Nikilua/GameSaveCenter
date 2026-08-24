@@ -566,18 +566,10 @@
 
     <Grid x:Name="RootShell" Background="{DynamicResource GscBackdropBrush}" ClipToBounds="True">
         <Grid x:Name="AmbientGlowLayer" IsHitTestVisible="False" Opacity="0.9">
-            <Ellipse Width="360" Height="360" HorizontalAlignment="Left" VerticalAlignment="Top" Fill="{DynamicResource GscAmbientAccentBrush}">
-                <Ellipse.RenderTransform><TranslateTransform X="-95" Y="-130"/></Ellipse.RenderTransform>
-                <Ellipse.Effect><BlurEffect Radius="82"/></Ellipse.Effect>
-            </Ellipse>
-            <Ellipse Width="320" Height="320" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,35,0,0" Fill="{DynamicResource GscAmbientInfoBrush}">
-                <Ellipse.RenderTransform><TranslateTransform X="105" Y="0"/></Ellipse.RenderTransform>
-                <Ellipse.Effect><BlurEffect Radius="90"/></Ellipse.Effect>
-            </Ellipse>
-            <Ellipse Width="300" Height="300" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,20,0" Fill="{DynamicResource GscAmbientSuccessBrush}">
-                <Ellipse.RenderTransform><TranslateTransform X="0" Y="165"/></Ellipse.RenderTransform>
-                <Ellipse.Effect><BlurEffect Radius="96"/></Ellipse.Effect>
-            </Ellipse>
+            <!-- Keep the legacy dashboard on the same pane-wide material as the production
+                 shell. It is collapsed in normal Playnite navigation, but must not retain the
+                 old circular effect tree when compatibility code loads it. -->
+            <Rectangle Fill="{DynamicResource GscAmbientWideWashBrush}"/>
         </Grid>
 
         <!-- The legacy shell remains loaded only as a compatibility surface for the

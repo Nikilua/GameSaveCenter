@@ -34,7 +34,6 @@
                  blur remains limited to the fixed decorative light sources inside this layer. -->
             <ui:AmbientMaterialLayer x:Name="ShellAmbientMaterialLayer"
                                      Grid.Row="0" Grid.Column="1"
-                                     ShowLeftGlow="False"
                                      Opacity="{DynamicResource GscShellAmbientOpacity}"
                                      Panel.ZIndex="1"/>
 

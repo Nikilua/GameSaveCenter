@@ -3,11 +3,19 @@
 > 维护时间：2026-08-24
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-24 UI-309 当前事实：全局宽域多色玻璃材质
+
+- `AmbientMaterialLayer.xaml`、Overview Today 卡片、Settings 环境层和兼容 `DashboardView.xaml` 都使用 `GscAmbientWideWashBrush` 的整面 `Rectangle`；生产 UI 不再使用装饰性 `RadialGradientBrush`、椭圆光源或 `GscAmbientBlurEffect`。
+- `GscAmbientWideWashBrush` 是按当前主题动态生成的六段对角线性渐变，颜色从 accent/info 过渡到 teal/success 和中性表面，覆盖大范围但保持低饱和、低透明度；`GlassStrength` 只提升受限 alpha。
+- `GscAmbientAccentBrush`、`GscAmbientInfoBrush`、`GscAmbientSuccessBrush` 及旧的环境阴影色 token 已删除。状态圆点、图标填充和语义状态色不属于装饰光斑，继续保留。
+- 关闭毛玻璃或高对比度时必须返回透明渐变；不要把真实 `BlurEffect` 提升到导航栏、页面根、表格、列表或滚动面。此处是嵌入式 WPF 下的低成本整面渐变模拟，不是宿主桌面像素级 backdrop blur。
+- UI-309 验证：源码/XAML/WPF 静态门禁通过，Release 0 warning/0 error，Core 59/59、Worker 199/199、Playnite 283/283（57 跳过），多主题多尺寸 `render-qa OK`；已打包并核对当前用户 Playnite 扩展 `0.6.70.0`。本轮 Computer Use 仅返回 `EmptyWindowAutomationPeer`，未宣称真实宿主页面点击/截图已复核。
+
 ## 2026-08-24 UI-308 当前事实：导航栏连续材质与宽域环境洗色
 
 - 生产 Shell 的 `SidebarLayout` 现在统一承载 `GscSidebarMaterialBrush`；标题区和导航内容区使用透明背景，保证整个 236 DIP 导航栏只绘制一层连续对角材质。
 - `GscSidebarMaterialBrush` 是动态的低成本半透明线性渐变，不能改回右侧透明渐隐、硬分割线或单独的 `SidebarSeamMaterial`；边界保持正常表面，避免再次出现亮柱。
-- `AmbientMaterialLayer` 的第一层是 `GscAmbientWideWashBrush` 线性渐变矩形，负责大范围非圆形洗色；四个固定椭圆只负责局部柔光并使用 `GscAmbientBlurEffect`。不要把 BlurEffect 提升到导航栏、页面根、表格、列表或滚动面。
+- `AmbientMaterialLayer` 的第一层是 `GscAmbientWideWashBrush` 线性渐变矩形，负责大范围非圆形洗色；本条记录的旧版本曾保留固定椭圆，当前以 UI-309 为准。
 - 宽域洗色运行时按 accent/info/success 和 `GlassStrength` 生成；关闭毛玻璃或高对比度时必须返回透明渐变，不能留下大面积遮罩。
 - UI-308 验证：Release 0 warning/0 error；Core 59/59、Worker 199/199、Playnite 283/283（57 跳过）；多主题多尺寸 `render-qa OK`；真实 Playnite `0.6.70.0` 已安装并截图复核导航材质和宽域洗色。
 

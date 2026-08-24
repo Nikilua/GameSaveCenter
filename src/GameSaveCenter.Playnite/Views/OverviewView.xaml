@@ -305,21 +305,10 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <!-- Demo HomeView hero carries a soft ambient glow behind the
-                             TODAY headline; production uses theme-adaptive radial gradients
-                             so the glow stays cheap while scrolling large libraries. -->
-                        <!-- Keep the hero's decorative sources inside the card. WPF's
-                             ClipToBounds is rectangular, so negative offsets still paint
-                             into a rounded card's square corners. -->
-                        <Ellipse Width="230" Height="230" IsHitTestVisible="False" Opacity="0.70" Grid.RowSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0">
-                            <Ellipse.Fill><RadialGradientBrush><GradientStop Offset="0" Color="{DynamicResource GscAccentShadowColor}"/><GradientStop Offset="1" Color="Transparent"/></RadialGradientBrush></Ellipse.Fill>
-                        </Ellipse>
-                        <Ellipse Width="230" Height="230" IsHitTestVisible="False" Opacity="0.70" Grid.RowSpan="2" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0">
-                            <Ellipse.Fill><RadialGradientBrush><GradientStop Offset="0" Color="{DynamicResource GscInfoShadowColor}"/><GradientStop Offset="1" Color="Transparent"/></RadialGradientBrush></Ellipse.Fill>
-                        </Ellipse>
-                        <Ellipse Width="230" Height="230" IsHitTestVisible="False" Opacity="0.70" Grid.RowSpan="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0">
-                            <Ellipse.Fill><RadialGradientBrush><GradientStop Offset="0" Color="{DynamicResource GscSuccessShadowColor}"/><GradientStop Offset="1" Color="Transparent"/></RadialGradientBrush></Ellipse.Fill>
-                        </Ellipse>
+                        <!-- Use the same pane-wide multi-color material as the rest of the
+                             program. The hero gets an overall glass veil instead of three
+                             circular color spots, while the content remains above it. -->
+                        <Rectangle Grid.RowSpan="2" Fill="{DynamicResource GscAmbientWideWashBrush}" IsHitTestVisible="False"/>
                         <StackPanel Grid.Row="0" MinWidth="0" VerticalAlignment="Center" Margin="0,0,0,14">
                             <TextBlock Style="{DynamicResource GscRedesignHeroEyebrow}" Text="TODAY"/>
                             <TextBlock FontSize="35" FontWeight="SemiBold" Margin="0,8,0,8" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}">

@@ -2,6 +2,28 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-24 UI-309 全局宽域多色材质替换圆形光斑
+
+**问题确认：**
+
+- 用户反馈主页和全局页面的毛玻璃像几个明显的彩色圆形色块，视觉上更像聚光灯，不像覆盖整面的玻璃材质；主页、设置页和兼容 Dashboard 还各自保留了局部径向光源。
+- Playnite 嵌入式 WPF 视图不能安全地读取宿主桌面像素做真正的 backdrop blur；大面积 `BlurEffect` 会增加重绘成本，也会影响表格、列表和滚动性能。
+
+**实现内容：**
+
+- `AmbientMaterialLayer`、Overview Today 卡片、Settings 环境层和兼容 `DashboardView` 统一改为单个 `GscAmbientWideWashBrush` 矩形，不再保留装饰性 `RadialGradientBrush`、椭圆光源或环境 BlurEffect。
+- `GscAmbientWideWashBrush` 改为由 accent/info/teal/success/中性表面组成的六段对角线性渐变，在整面范围内缓慢过渡多种颜色；透明度仍受限，并随毛玻璃强度增加，不把页面变成饱和色块。
+- 清理旧的环境圆形资源和阴影色 token；状态小圆点、图标和语义色仍保留，它们是信息标识而不是毛玻璃装饰。关闭毛玻璃、高对比度时宽域材质保持透明。
+- 共享层不改变页面尺寸、命令、Binding、虚拟化、滚动链路和 Playnite 宿主兼容性；该材质是低成本的整面渐变模拟，不宣称为桌面像素级 backdrop blur。
+
+**验证结果：**
+
+- `python scripts/validate-source.py`、XAML structural validation、`validate_wpf_ui.py` 和 `git diff --check` 通过；WPF 静态审查为 0 error、18 条既有 warning。
+- Release 构建 0 warning/0 error；Core 59/59、Worker 199/199、Playnite 283/283，57 项按既有环境规则跳过。
+- `.tmp/ui-qa-glass-overall-final/render-qa-report.txt` 为 `render-qa OK`，覆盖浅色/深色、多尺寸、滚动和 resize transition；已将本轮临时 QA 目录清理，不纳入提交。
+- 已打包 `artifacts/GameSaveCenter-0.6.70-playnite.zip`，并核对当前用户 Playnite 扩展目录中的 manifest 为 `0.6.70`、DLL 为 `0.6.70.0`、共 239 个文件。Computer Use 当前只能返回 `EmptyWindowAutomationPeer`，因此本轮不把真实宿主页面点击/截图宣称为已复核。
+
+
 ## 2026-08-24 UI-308 导航栏连续毛玻璃与宽域非圆形洗色
 
 **问题确认：**

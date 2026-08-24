@@ -27,9 +27,6 @@
     <SolidColorBrush x:Key="GscSafetyFillBrush" Color="#25F0B24E"/>
     <SolidColorBrush x:Key="GscSafetyStrokeBrush" Color="#66F0B24E"/>
     <SolidColorBrush x:Key="GscRowHoverStrongBrush" Color="#0CFFFFFF"/>
-    <SolidColorBrush x:Key="GscAmbientAccentBrush" Color="#2E7C8CF8"/>
-    <SolidColorBrush x:Key="GscAmbientInfoBrush" Color="#00FFFFFF"/>
-    <SolidColorBrush x:Key="GscAmbientSuccessBrush" Color="#00FFFFFF"/>
     <SolidColorBrush x:Key="GscPrimaryButtonBorderBrush" Color="#909CFA"/>
     <SolidColorBrush x:Key="GscOnAccentHoverOverlayBrush" Color="#22FFFFFF"/>
     <SolidColorBrush x:Key="GscOnAccentPressedOverlayBrush" Color="#22000000"/>
@@ -40,13 +37,6 @@
     </LinearGradientBrush>
     <Color x:Key="GscSoftShadowColor">#22000000</Color>
     <Color x:Key="GscPopupShadowColor">#5C000000</Color>
-    <Color x:Key="GscAccentShadowColor">#507C8CF8</Color>
-    <!-- Decorative radial-glow gradient centers. The runtime palette replaces the accent
-         shadow with the current theme accent; info/success stay as static low-alpha
-         semantic tints so the hero glow reads as light, never as a solid fill. -->
-    <Color x:Key="GscInfoShadowColor">#5078A9FF</Color>
-    <Color x:Key="GscSuccessShadowColor">#504BD39B</Color>
-    <Color x:Key="GscAmbientCenterShadowColor">#0F7C8CF8</Color>
     <sys:Double x:Key="GscAmbientPageOpacity">0.86</sys:Double>
     <sys:Double x:Key="GscShellAmbientOpacity">0.86</sys:Double>
     <!-- Pane-wide non-circular wash. Runtime replaces this with the active accent/info/success
@@ -69,9 +59,6 @@
     <x:Null x:Key="GscSurfaceEffect"/>
     <x:Null x:Key="GscPrimaryButtonEffect"/>
     <x:Null x:Key="GscSidebarEffect"/>
-    <!-- Applied only to the four fixed ambient light ellipses. It is never attached to
-         text, rows, lists, tables or the page scroll surface. -->
-    <x:Null x:Key="GscAmbientBlurEffect"/>
     <x:Null x:Key="GscPopupEffect"/>
     <x:Null x:Key="GscDialogEffect"/>
     <x:Null x:Key="GscSliderThumbEffect"/>
