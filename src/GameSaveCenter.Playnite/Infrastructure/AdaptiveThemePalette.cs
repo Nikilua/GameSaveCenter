@@ -475,6 +475,52 @@ namespace GameSaveCenter.Playnite.Infrastructure
         }
 
         /// <summary>
+        /// Settings is a standalone window/page and intentionally does not follow the selected
+        /// game's artwork. It still needs a material hierarchy of its own so the ambient theme
+        /// wash is visible through the shell, rail, form card and content surface.
+        /// </summary>
+        public static void ApplySettingsMaterialResources(
+            ResourceDictionary resources,
+            AdaptiveThemePalette palette,
+            bool glassEnabled)
+        {
+            resources["GscSettingsAmbientBrush"] = CreateSettingsAmbientBrush(
+                palette, glassEnabled && !SystemParameters.HighContrast);
+            resources["GscSettingsAmbientEffect"] = CreateSettingsAmbientBlurEffect(
+                glassEnabled && !SystemParameters.HighContrast, palette.GlassStrength);
+
+            if (!glassEnabled || SystemParameters.HighContrast)
+            {
+                resources["GscSettingsShellBrush"] = Brush(Opaque(palette.Background));
+                resources["GscSettingsPanelBrush"] = Brush(Opaque(palette.StrongSurfaceTop));
+                resources["GscSettingsCardBrush"] = Brush(Opaque(palette.StrongSurfaceBottom));
+                resources["GscSettingsContentBrush"] = Brush(Opaque(palette.Background));
+                return;
+            }
+
+            var strength = Math.Max(0.2, Math.Min(1, palette.GlassStrength));
+            var shellTop = Blend(Opaque(palette.SurfaceTop), Opaque(palette.StrongSurfaceTop), 0.42);
+            var shellBottom = Blend(Opaque(palette.SurfaceBottom), Opaque(palette.StrongSurfaceBottom), 0.36);
+            var panelTop = Blend(shellTop, Opaque(palette.StrongSurfaceTop), 0.34);
+            var panelBottom = Blend(shellBottom, Opaque(palette.StrongSurfaceBottom), 0.30);
+            var cardTop = Blend(panelTop, Colors.White, palette.IsDark ? 0.025 : 0.018);
+            var cardBottom = Blend(panelBottom, Colors.Black, palette.IsDark ? 0.018 : 0.012);
+
+            resources["GscSettingsShellBrush"] = CreateSettingsSurfaceBrush(
+                shellTop, shellBottom,
+                palette.IsDark ? 0.66 - (0.06 * strength) : 0.86 - (0.05 * strength));
+            resources["GscSettingsPanelBrush"] = CreateSettingsSurfaceBrush(
+                panelTop, panelBottom,
+                palette.IsDark ? 0.76 - (0.05 * strength) : 0.91 - (0.04 * strength));
+            resources["GscSettingsCardBrush"] = CreateSettingsSurfaceBrush(
+                cardTop, cardBottom,
+                palette.IsDark ? 0.82 - (0.04 * strength) : 0.94 - (0.03 * strength));
+            resources["GscSettingsContentBrush"] = CreateSettingsSurfaceBrush(
+                shellTop, shellBottom,
+                palette.IsDark ? 0.28 - (0.06 * strength) : 0.46 - (0.06 * strength));
+        }
+
+        /// <summary>
         /// Keeps the migrated page surfaces on the Demo's light/dark color relationships.
         /// Playnite may still provide the accent used for focus and primary actions, but its
         /// background/text brushes must not recolor the page cards, tables or status surfaces.
@@ -615,6 +661,54 @@ namespace GameSaveCenter.Playnite.Infrastructure
             return result;
         }
 
+        private static LinearGradientBrush CreateSettingsSurfaceBrush(
+            Color top,
+            Color bottom,
+            double opacity)
+        {
+            var result = new LinearGradientBrush
+            {
+                StartPoint = new Point(0, 0),
+                EndPoint = new Point(1, 1)
+            };
+            result.GradientStops.Add(new GradientStop(WithAlpha(Opaque(top), opacity), 0));
+            result.GradientStops.Add(new GradientStop(WithAlpha(Opaque(bottom), opacity), 1));
+            result.Freeze();
+            return result;
+        }
+
+        private static LinearGradientBrush CreateSettingsAmbientBrush(
+            AdaptiveThemePalette palette,
+            bool enabled)
+        {
+            if (!enabled)
+                return Gradient(Colors.Transparent, Colors.Transparent);
+
+            var strength = Math.Max(0.2, Math.Min(1, palette.GlassStrength));
+            var baseOpacity = palette.IsDark
+                ? 0.24 + (0.20 * strength)
+                : 0.10 + (0.14 * strength);
+            var accent = Opaque(palette.Accent);
+            var info = Opaque(palette.Info);
+            var success = Opaque(palette.Success);
+            var neutral = Blend(Opaque(palette.SurfaceTop), Opaque(palette.SurfaceBottom), 0.5);
+            var brush = new LinearGradientBrush
+            {
+                StartPoint = new Point(0, 0),
+                EndPoint = new Point(1, 1)
+            };
+            brush.GradientStops.Add(new GradientStop(WithAlpha(accent, baseOpacity), 0));
+            brush.GradientStops.Add(new GradientStop(WithAlpha(info, baseOpacity * 0.84), 0.24));
+            brush.GradientStops.Add(new GradientStop(
+                WithAlpha(Blend(info, neutral, 0.42), baseOpacity * 0.70), 0.48));
+            brush.GradientStops.Add(new GradientStop(
+                WithAlpha(Blend(info, success, 0.46), baseOpacity * 0.56), 0.70));
+            brush.GradientStops.Add(new GradientStop(
+                WithAlpha(Blend(success, neutral, 0.48), baseOpacity * 0.42), 1));
+            brush.Freeze();
+            return brush;
+        }
+
         private static LinearGradientBrush CanvasGradient(Color start, Color middle, Color end)
         {
             var brush = new LinearGradientBrush { StartPoint = new Point(0, 0), EndPoint = new Point(1, 1) };
@@ -665,6 +759,19 @@ namespace GameSaveCenter.Playnite.Infrastructure
             var effect = new BlurEffect
             {
                 Radius = 12 + (22 * Math.Max(0.2, Math.Min(1, glassStrength))),
+                RenderingBias = RenderingBias.Performance
+            };
+            effect.Freeze();
+            return effect;
+        }
+
+        private static BlurEffect? CreateSettingsAmbientBlurEffect(bool enabled, double glassStrength)
+        {
+            if (!enabled) return null;
+
+            var effect = new BlurEffect
+            {
+                Radius = 16 + (14 * Math.Max(0.2, Math.Min(1, glassStrength))),
                 RenderingBias = RenderingBias.Performance
             };
             effect.Freeze();

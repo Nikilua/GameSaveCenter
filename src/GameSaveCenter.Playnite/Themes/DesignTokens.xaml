@@ -63,6 +63,7 @@
     <x:Null x:Key="GscSurfaceEffect"/>
     <x:Null x:Key="GscPrimaryButtonEffect"/>
     <x:Null x:Key="GscSidebarEffect"/>
+    <x:Null x:Key="GscSettingsAmbientEffect"/>
     <!-- Runtime enables this only for a loaded game background image. It must remain null
          when transparency is disabled, high contrast is active, or no image is selected. -->
     <x:Null x:Key="GscGameBackgroundEffect"/>
@@ -76,6 +77,14 @@
     <SolidColorBrush x:Key="GscGlassStrongBrush" Color="#F5252936"/>
     <SolidColorBrush x:Key="GscGlassStrokeBrush" Color="#1AFFFFFF"/>
     <SolidColorBrush x:Key="GscGlassHighlightBrush" Color="#12FFFFFF"/>
+    <SolidColorBrush x:Key="GscSettingsShellBrush" Color="#B5252A36"/>
+    <SolidColorBrush x:Key="GscSettingsPanelBrush" Color="#D5252A36"/>
+    <SolidColorBrush x:Key="GscSettingsCardBrush" Color="#E0252A36"/>
+    <SolidColorBrush x:Key="GscSettingsContentBrush" Color="#55252A36"/>
+    <LinearGradientBrush x:Key="GscSettingsAmbientBrush" StartPoint="0,0" EndPoint="1,1">
+      <GradientStop Color="#00000000" Offset="0"/>
+      <GradientStop Color="#00000000" Offset="1"/>
+    </LinearGradientBrush>
     <SolidColorBrush x:Key="GscSidebarBrush" Color="#B8191C26"/>
     <SolidColorBrush x:Key="GscBackdropBrush" Color="#FF16181E"/>
     <SolidColorBrush x:Key="GscPrimaryTextBrush" Color="#FFF2F4F8"/>

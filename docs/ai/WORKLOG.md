@@ -4449,6 +4449,27 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - Release 构建：0 warning、0 error；Core 59/59、Worker 199/199、Playnite 289 通过、57 跳过、0 失败。
 - `scripts/render-qa.ps1 -Configuration Release -Output .tmp/ui-qa-adaptive-glass`：`render-qa OK`，浅色/深色、多尺寸和 resize transition 全部通过。
 
+## 2026-08-25 UI-316 设置页独立毛玻璃材质
+
+**用户问题：**
+
+- 用户指出设置窗口没有跟随主工作区的毛玻璃：设置页可以不跟随游戏图片取色，但外壳、左侧分类、右侧表单和输入区域不能继续像实色深色面板。
+
+**实现内容：**
+
+- 为设置页新增独立的 `GscSettingsShellBrush`、`GscSettingsPanelBrush`、`GscSettingsCardBrush`、`GscSettingsContentBrush`、`GscSettingsAmbientBrush` 和 `GscSettingsAmbientEffect`；颜色只由当前主题的 Accent/Info/Success 生成，不读取游戏背景图。
+- `SettingsAmbientLayer` 只承载整页主题环境渐变和 `BlurEffect`，外壳、分类栏、表单卡片及右侧滚动面使用不同透明度的共享材质；文字、输入框内容和滚动条不挂模糊效果。
+- 关闭透明度或高对比度时回退到不透明主题色；RenderHarness 设置页现在显式触发运行时主题初始化，避免截图只验证静态 `DesignTokens` 回退资源。
+
+**验证结果：**
+
+- `scripts/validate-source.py`、`scripts/check-xaml.ps1` 通过；Release 编译 0 警告/0 错误；Core 59/59、Worker 199/199、Playnite 289 通过/57 跳过。
+- WPF 静态审查 0 error、18 warnings、172 info；`scripts/render-qa.ps1 -Configuration Release -Output .tmp/ui-qa-settings-glass-v5` 为 `render-qa OK`，浅色/深色、多窗口尺寸、设置分类和 resize transition 均通过；已人工复核运行时材质截图。
+
+**实现边界：**
+
+- 设置页刻意不跟随 Bongo Cat 等当前游戏图片；后续只需在真实 Playnite 中复核不同主题、Follow/高对比度和 125%/150% DPI，不能把 RenderHarness 截图写成 Playnite 1:1 宿主像素验收。
+
 **实现边界：**
 
 - 这是共享资源级的自适应玻璃材质，不是给每个卡片挂 BlurEffect；后者会模糊卡片内容且成本更高。输入框等交互控件继续保持相对中性的填充，避免游戏图片颜色干扰输入可读性。

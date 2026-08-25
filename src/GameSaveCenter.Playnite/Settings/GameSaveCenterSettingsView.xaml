@@ -30,6 +30,7 @@
         <Style x:Key="SettingsCard" TargetType="{x:Type ui:Card}" BasedOn="{StaticResource GscWpfUiCard}">
             <Setter Property="Padding" Value="18"/>
             <Setter Property="Margin" Value="0"/>
+            <Setter Property="Background" Value="{DynamicResource GscSettingsCardBrush}"/>
             <Setter Property="Border.CornerRadius" Value="16"/>
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
             <Setter Property="Effect" Value="{x:Null}"/>
@@ -38,13 +39,14 @@
     </UserControl.Resources>
 
         <Grid Background="{DynamicResource GscBackdropBrush}" ClipToBounds="True">
-        <Grid x:Name="SettingsAmbientLayer" IsHitTestVisible="False" ClipToBounds="True">
-            <Rectangle Fill="{DynamicResource GscAmbientWideWashBrush}"/>
+        <Grid x:Name="SettingsAmbientLayer" IsHitTestVisible="False" ClipToBounds="True" Effect="{DynamicResource GscSettingsAmbientEffect}">
+            <Rectangle Fill="{DynamicResource GscAmbientWideWashBrush}" Opacity="0.22"/>
+            <Rectangle Fill="{DynamicResource GscSettingsAmbientBrush}"/>
         </Grid>
-        <Border x:Name="SettingsDemoShell" Style="{StaticResource GscShellStyle}" Margin="18" Padding="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Border x:Name="SettingsDemoShell" Style="{StaticResource GscShellStyle}" Background="{DynamicResource GscSettingsShellBrush}" Effect="{DynamicResource GscSurfaceEffect}" Margin="18" Padding="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid x:Name="SettingsShell" Opacity="0" Margin="0" MaxWidth="1360" HorizontalAlignment="Stretch">
                 <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
-                <Border x:Name="SettingsHeader" Style="{DynamicResource GscRedesignWorkspaceHeroCard}" ClipToBounds="False">
+                <Border x:Name="SettingsHeader" Style="{DynamicResource GscRedesignWorkspaceHeroCard}" ClipToBounds="False" Background="{DynamicResource GscSettingsCardBrush}">
                 <Grid x:Name="SettingsHeaderGrid">
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition x:Name="SettingsHeaderHintRow" Height="0"/></Grid.RowDefinitions>
                     <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
@@ -67,7 +69,7 @@
                 <Grid x:Name="SettingsWorkspace" Grid.Row="2" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition x:Name="SettingsCompactContentRow" Height="0"/></Grid.RowDefinitions>
                     <Grid.ColumnDefinitions><ColumnDefinition Width="190"/><ColumnDefinition Width="16"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                    <Border x:Name="SettingsCategoryRail" Grid.Row="0" Grid.Column="0" Style="{DynamicResource GscRedesignSectionCard}" Padding="8" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Border x:Name="SettingsCategoryRail" Grid.Row="0" Grid.Column="0" Style="{DynamicResource GscRedesignSectionCard}" Background="{DynamicResource GscSettingsPanelBrush}" Padding="8" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                         <ListBox x:Name="SettingsSectionTabs" Style="{StaticResource GscSettingsSectionTabs}" SelectionChanged="OnSettingsTabSelectionChanged" SelectedIndex="0" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" AutomationProperties.Name="设置分类导航">
                             <ListBoxItem Content="常规与目录"/>
                             <ListBoxItem Content="备份与恢复"/>
@@ -76,7 +78,7 @@
                             <ListBoxItem Content="设置迁移"/>
                         </ListBox>
                     </Border>
-                    <ScrollViewer x:Name="SettingsScroller" Grid.Row="0" Grid.Column="2" Style="{DynamicResource GscPageScrollViewer}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <ScrollViewer x:Name="SettingsScroller" Grid.Row="0" Grid.Column="2" Style="{DynamicResource GscPageScrollViewer}" Background="{DynamicResource GscSettingsContentBrush}" BorderBrush="{DynamicResource GscGlassStrokeBrush}" BorderThickness="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                         <StackPanel x:Name="SettingsContentStack" MaxWidth="820" HorizontalAlignment="Left" Margin="0,0,10,0">
                             <Grid x:Name="SettingsGeneralPanel" Visibility="Visible">
                                 <ui:Card Style="{StaticResource SettingsCard}">

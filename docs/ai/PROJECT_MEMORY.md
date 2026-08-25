@@ -1433,3 +1433,11 @@
 - `DashboardView.ApplySelectedGameGlassResources` 必须在主题刷新和 `SelectedGameBackgroundAmbientBrush`/`HasSelectedGameBackgroundAmbientMaterial` 变化时同步 Dashboard、生产壳及所有 workspace 的本地 ResourceDictionary；切换到无图游戏时必须恢复 `ApplyDemoCoreResources` 的中性资源。
 - 不要给每张卡片增加 BlurEffect，也不要把游戏采样色直接作为完全透明背景；前者会模糊文字并增加视觉树成本，后者会让表格在亮色图片上失去可读性。共享表面应保持受控 alpha，真实 Blur 继续留在底层图片。
 - 输入框、ComboBox 等交互控件暂不跟随图片大幅变色；如果未来扩大范围，先验证文本对比度、焦点边框、禁用态和高对比度回退。
+
+## 2026-08-25 UI-316 设置页独立毛玻璃材质
+
+- 设置窗口是独立页，不跟随当前游戏图片取色；它通过 `AdaptiveThemePaletteFactory.ApplySettingsMaterialResources` 使用主题 Accent/Info/Success 生成自己的环境渐变和透明材质层。
+- `GameSaveCenterSettingsView.xaml` 的外壳、分类栏、右侧 `SettingsScroller`、设置 `Card` 和表单输入继续使用分层 DynamicResource；只有 `SettingsAmbientLayer` 承载整页 BlurEffect，不能把模糊效果挂在卡片或输入控件上。
+- `GscSettingsShellBrush`/`PanelBrush`/`CardBrush`/`ContentBrush` 的 alpha 需要保持层次：底层环境渐变可见，表单文字和输入值仍清晰；禁用玻璃和高对比度必须恢复不透明回退。
+- RenderHarness 的设置页渲染应显式调用 `ApplyThemeForAudit`，否则只会捕获 `DesignTokens` 初始回退，无法验证设置页运行时玻璃资源是否真正生效。
+- UI-316 已通过源码/XAML 校验、Release 全量构建测试和浅色/深色/多尺寸 render-qa；WPF validator 为 0 error、18 warnings、172 info。真实 Playnite 重启后的逐页像素证据仍不具备，不得扩写为宿主验收。

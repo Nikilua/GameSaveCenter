@@ -928,3 +928,11 @@ git branch --show-current
 - 底层游戏图 BlurEffect 的职责与卡片颜色分离：不能把 BlurEffect 直接挂到卡片，否则会把卡片自己的文字/表格一起模糊；也不能把采样渐变设成完全不透明，否则失去玻璃效果。
 - UI-315 验证：source validation 通过；Release 0 warning/0 error；Core 59/59、Worker 199/199、Playnite 289 通过/57 跳过；WPF validator 0 error/18 warnings/166 info；多主题、多尺寸和 resize transition 的 render-qa 为 OK。
 - 本轮没有新增真实 Playnite 重启后的逐页像素证据；后续若继续调透明度，应在真实宿主中复核 Bongo Cat 等不同主色背景、Follow/高对比度和 125%/150% DPI，并继续保留真实备份/媒体归类操作边界。
+
+## 2026-08-25 UI-316 设置页毛玻璃交接
+
+- 设置页不使用游戏图片背景，但必须保留整页玻璃层。运行时由 `ApplySettingsMaterialResources` 生成主题驱动的环境渐变、外壳/分类栏/表单/内容四级材质，以及仅作用于 `SettingsAmbientLayer` 的 BlurEffect。
+- 需要继续保持 `SettingsScroller` 的现有滚动模型、五个分类、字段绑定、保存/取消和设置导入导出语义；不要为了加玻璃再包裹一层改变响应式代码定位或滚动通道。
+- `tests/GameSaveCenter.RenderHarness/Program.cs` 已在 Settings 离屏渲染前调用 `ApplyThemeForAudit(FollowPlaynite)`，后续截图回归要保留这一步，否则会误测静态 DesignTokens。
+- UI-316 验证：source validation、XAML 结构检查通过；Release 0 warning/0 error；Core 59/59、Worker 199/199、Playnite 289 通过/57 跳过；render-qa OK；WPF validator 0 error、18 warnings、172 info。
+- 当前没有新的真实 Playnite 重启后设置窗口截图；下一轮若继续调材质，优先用真实宿主复核 Follow/高对比度、不同 DPI、关闭玻璃回退和键盘焦点，不能将 `.tmp/ui-qa-settings-glass-v5` 当作 Playnite 1:1 证据。

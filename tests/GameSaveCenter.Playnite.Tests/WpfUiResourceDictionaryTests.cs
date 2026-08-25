@@ -143,6 +143,23 @@ public sealed class WpfUiResourceDictionaryTests
 
                 gameGlass.Invoke(null, new object[] { localResources, palette, null!, false, false });
                 Assert.IsType<SolidColorBrush>(localResources["GscGlassStrongBrush"]);
+
+                var settingsMaterial = factoryType.GetMethod("ApplySettingsMaterialResources", BindingFlags.Public | BindingFlags.Static)!;
+                settingsMaterial.Invoke(null, new object[] { localResources, palette, false });
+                Assert.Null(localResources["GscSettingsAmbientEffect"]);
+                settingsMaterial.Invoke(null, new object[] { localResources, palette, true });
+                var settingsAmbientEffect = Assert.IsType<BlurEffect>(localResources["GscSettingsAmbientEffect"]);
+                Assert.InRange(settingsAmbientEffect.Radius, 18, 31);
+                Assert.Equal(RenderingBias.Performance, settingsAmbientEffect.RenderingBias);
+                var settingsAmbientBrush = Assert.IsType<LinearGradientBrush>(localResources["GscSettingsAmbientBrush"]);
+                Assert.True(settingsAmbientBrush.GradientStops.Count >= 4);
+                Assert.All(settingsAmbientBrush.GradientStops, stop => Assert.InRange(stop.Color.A, 1, 254));
+                var settingsShellBrush = Assert.IsType<LinearGradientBrush>(localResources["GscSettingsShellBrush"]);
+                Assert.True(settingsShellBrush.GradientStops.Count >= 2);
+                Assert.All(settingsShellBrush.GradientStops, stop => Assert.InRange(stop.Color.A, 1, 254));
+                Assert.IsType<LinearGradientBrush>(localResources["GscSettingsPanelBrush"]);
+                Assert.IsType<LinearGradientBrush>(localResources["GscSettingsCardBrush"]);
+                Assert.IsType<LinearGradientBrush>(localResources["GscSettingsContentBrush"]);
             }
             catch (Exception caught)
             {
@@ -165,6 +182,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("AdaptiveThemePaletteFactory.ApplyAccentResources(Resources, palette)", settingsCode);
         Assert.Contains("AdaptiveThemePaletteFactory.ApplyMaterialResources(Resources, palette, glassEnabled, MotionEnabled)", settingsCode);
         Assert.Contains("AdaptiveThemePaletteFactory.ApplyWpfUiResources(Resources, palette)", settingsCode);
+        Assert.Contains("AdaptiveThemePaletteFactory.ApplySettingsMaterialResources(Resources, palette, glassEnabled)", settingsCode);
 
         foreach (var xamlPath in new[]
                  {
@@ -198,6 +216,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("resources[\"GscSurfaceEffect\"]", paletteSource);
         Assert.Contains("resources[\"GscPrimaryButtonEffect\"]", paletteSource);
         Assert.Contains("ApplyGameBackgroundGlassResources", paletteSource);
+        Assert.Contains("ApplySettingsMaterialResources", paletteSource);
         Assert.Contains("resources[\"GscPickerScrimBrush\"]", paletteSource);
         Assert.Contains("resources[\"GscPopupAllowsTransparency\"] = glassEnabled", paletteSource);
         Assert.Contains("resources[\"GscPopupAnimation\"] = motionEnabled ? PopupAnimation.Fade : PopupAnimation.None", paletteSource);
@@ -212,6 +231,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("{DynamicResource GscSelectionTextBrush}", dashboard);
         Assert.Contains("{DynamicResource GscSelectionTextBrush}", tokens);
         Assert.Contains("x:Key=\"GscPickerScrimBrush\"", tokens);
+        Assert.Contains("x:Key=\"GscSettingsAmbientEffect\"", tokens);
+        Assert.Contains("x:Key=\"GscSettingsAmbientBrush\"", tokens);
+        Assert.Contains("x:Key=\"GscSettingsShellBrush\"", tokens);
         Assert.Contains("{DynamicResource GscSurfaceEffect}", dashboard);
         Assert.Contains("{DynamicResource GscPrimaryButtonEffect}", tokens);
         Assert.Contains("{DynamicResource GscSidebarEffect}", redesign);

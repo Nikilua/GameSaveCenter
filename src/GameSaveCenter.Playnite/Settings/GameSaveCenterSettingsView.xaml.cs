@@ -393,12 +393,13 @@ namespace GameSaveCenter.Playnite.Settings
             Resources["GscBackdropBrush"] = AdaptiveThemePaletteFactory.Brush(palette.Backdrop);
             WpfUiThemeScope.Apply(Resources, palette.IsDark);
             AdaptiveThemePaletteFactory.ApplyDemoCoreResources(Resources, palette.IsDark);
+            AdaptiveThemePaletteFactory.ApplySettingsMaterialResources(Resources, palette, glassEnabled);
 
             // Keep the fixed background ambient layer out of the render tree when glass is
             // disabled. Visibility is preferable to retaining a decorative visual at opacity 0.
             SettingsAmbientLayer.Visibility = glassEnabled ? Visibility.Visible : Visibility.Collapsed;
             SettingsAmbientLayer.Opacity = glassEnabled
-                ? (palette.IsDark ? 0.42 : 0.3) * Math.Max(0.2, Math.Min(1, strength / 100.0))
+                ? (palette.IsDark ? 0.82 : 0.64) * Math.Max(0.2, Math.Min(1, strength / 100.0))
                 : 0;
         }
 

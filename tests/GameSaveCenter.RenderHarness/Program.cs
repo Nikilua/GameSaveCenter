@@ -1274,6 +1274,10 @@ public static class Program
     private static void RenderSettings(string outputRoot, int windowW, int windowH, double contentW, double contentH, StringBuilder report)
     {
         var view = new GameSaveCenterSettingsView { DataContext = new GameSaveCenterSettings() };
+        // Exercise the same runtime material path as the Playnite settings host. Without the
+        // lifecycle event, the offscreen harness would only capture DesignTokens fallbacks and
+        // could not catch a regression where the settings glass resources are never applied.
+        view.ApplyThemeForAudit(GameSaveCenterThemeMode.FollowPlaynite);
         var apply = typeof(GameSaveCenterSettingsView).GetMethod(
             "ApplyResponsiveLayout",
             BindingFlags.Instance | BindingFlags.NonPublic);
