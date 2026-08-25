@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using GameSaveCenter.Playnite.Controls;
 using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.ViewModels;
 
@@ -47,6 +48,12 @@ namespace GameSaveCenter.Playnite.Views
         /// </summary>
         public Func<bool>? MotionEnabledProvider { get; set; }
 
+        /// <summary>Reads the shell chrome preference without coupling this view to the plugin.</summary>
+        public Func<bool>? SidebarCollapsedProvider { get; set; }
+
+        /// <summary>Persists a changed shell chrome preference in the parent dashboard.</summary>
+        public Action<bool>? SidebarCollapsedChanged { get; set; }
+
         private void OnClearGameSearchClick(object sender, RoutedEventArgs e)
         {
             GameSearchTextBox.Clear();
@@ -66,6 +73,7 @@ namespace GameSaveCenter.Playnite.Views
                     viewModelSubscribed = true;
                 }
                 NavigateTo(dashboardViewModel.CurrentWorkspace);
+                RestoreSidebarState();
                 QueueGamePickerFilterDefaults();
                 return;
             }
@@ -84,6 +92,7 @@ namespace GameSaveCenter.Playnite.Views
             viewModelSubscribed = true;
             CreatePages();
             NavigateTo(viewModel.CurrentWorkspace);
+            RestoreSidebarState();
             QueueGamePickerFilterDefaults();
         }
 
@@ -118,6 +127,7 @@ namespace GameSaveCenter.Playnite.Views
             UpdateSidebarVersion();
             if (DataContext is DashboardViewModel dashboardViewModel)
                 Attach(dashboardViewModel);
+            RestoreSidebarState();
             QueueGamePickerFilterDefaults();
         }
 
@@ -232,6 +242,7 @@ namespace GameSaveCenter.Playnite.Views
             }
 
             sidebarCollapsed = !sidebarCollapsed;
+            SidebarCollapsedChanged?.Invoke(sidebarCollapsed);
             if (!IsSidebarMotionEnabled)
             {
                 ApplySidebarLayout();
@@ -241,44 +252,33 @@ namespace GameSaveCenter.Playnite.Views
             }
 
             sidebarTransitionRunning = true;
+            var currentWidth = SidebarColumn.ActualWidth > 0
+                ? SidebarColumn.ActualWidth
+                : SidebarColumn.Width.Value;
+            var targetWidth = sidebarCollapsed ? 72d : 270d;
+            ApplySidebarLayout(updateColumnWidth: false);
+            SidebarColumn.BeginAnimation(ColumnDefinition.WidthProperty, null);
+            SidebarColumn.Width = new GridLength(currentWidth, GridUnitType.Pixel);
+
             var translate = SidebarContentLayer.RenderTransform as TranslateTransform ?? new TranslateTransform();
             SidebarContentLayer.RenderTransform = translate;
             translate.BeginAnimation(TranslateTransform.XProperty, null);
-            SidebarContentLayer.BeginAnimation(OpacityProperty, null);
-
-            var fadeOut = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(110))
+            var widthAnimation = new GridLengthAnimation
             {
+                From = new GridLength(currentWidth, GridUnitType.Pixel),
+                To = new GridLength(targetWidth, GridUnitType.Pixel),
+                Duration = new Duration(TimeSpan.FromMilliseconds(210)),
                 EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
             };
-            fadeOut.Completed += (_, _) =>
+            widthAnimation.Completed += (_, _) =>
             {
+                SidebarColumn.BeginAnimation(ColumnDefinition.WidthProperty, null);
                 ApplySidebarLayout();
-                translate.X = sidebarCollapsed ? -4 : 4;
-
-                var fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(170))
-                {
-                    EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
-                };
-                fadeIn.Completed += (_, _) =>
-                {
-                    translate.BeginAnimation(TranslateTransform.XProperty, null);
-                    SidebarContentLayer.Opacity = 1;
-                    sidebarTransitionRunning = false;
-                };
-                SidebarContentLayer.BeginAnimation(OpacityProperty, fadeIn);
-                translate.BeginAnimation(TranslateTransform.XProperty,
-                    new DoubleAnimation(translate.X, 0, TimeSpan.FromMilliseconds(170))
-                    {
-                        EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
-                    });
+                translate.BeginAnimation(TranslateTransform.XProperty, null);
+                SidebarColumn.Width = new GridLength(targetWidth, GridUnitType.Pixel);
+                sidebarTransitionRunning = false;
             };
-
-            SidebarContentLayer.BeginAnimation(OpacityProperty, fadeOut);
-            translate.BeginAnimation(TranslateTransform.XProperty,
-                new DoubleAnimation(0, sidebarCollapsed ? -4 : 4, TimeSpan.FromMilliseconds(110))
-                {
-                    EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
-                });
+            SidebarColumn.BeginAnimation(ColumnDefinition.WidthProperty, widthAnimation);
             SidebarCollapseButton.Focus();
             e.Handled = true;
         }
@@ -288,10 +288,17 @@ namespace GameSaveCenter.Playnite.Views
                && !SystemParameters.HighContrast
                && SystemParameters.ClientAreaAnimation;
 
-        private void ApplySidebarLayout()
+        private void RestoreSidebarState()
+        {
+            sidebarCollapsed = SidebarCollapsedProvider?.Invoke() ?? false;
+            ApplySidebarLayout();
+        }
+
+        private void ApplySidebarLayout(bool updateColumnWidth = true)
         {
             var expanded = !sidebarCollapsed;
-            SidebarColumn.Width = new GridLength(sidebarCollapsed ? 78 : 236);
+            if (updateColumnWidth)
+                SidebarColumn.Width = new GridLength(sidebarCollapsed ? 72 : 270, GridUnitType.Pixel);
 
             SidebarBrandText.Visibility = expanded ? Visibility.Visible : Visibility.Collapsed;
             SidebarProductionBadge.Visibility = expanded ? Visibility.Visible : Visibility.Collapsed;
@@ -328,20 +335,11 @@ namespace GameSaveCenter.Playnite.Views
                 item.HorizontalContentAlignment = expanded ? HorizontalAlignment.Stretch : HorizontalAlignment.Center;
             }
 
-            SidebarCollapseButton.Width = expanded ? 168 : 40;
-            SidebarCollapseButton.Height = 34;
-            SidebarCollapseButton.HorizontalAlignment = expanded
-                ? HorizontalAlignment.Left
-                : HorizontalAlignment.Center;
-            SidebarCollapseButton.Margin = expanded
-                ? new Thickness(12, 0, 0, 14)
-                : new Thickness(0, 0, 0, 14);
-            SidebarCollapseButtonContent.HorizontalAlignment = expanded
-                ? HorizontalAlignment.Stretch
-                : HorizontalAlignment.Center;
-            SidebarCollapseLabel.Visibility = expanded ? Visibility.Visible : Visibility.Collapsed;
-            SidebarCollapseChevron.Visibility = expanded ? Visibility.Visible : Visibility.Collapsed;
-            SidebarCollapseGlyph.Text = expanded ? "\uE76B" : "\uE76C";
+            SidebarCollapseButton.Width = 32;
+            SidebarCollapseButton.Height = 32;
+            SidebarCollapseButton.HorizontalAlignment = HorizontalAlignment.Center;
+            SidebarCollapseButton.VerticalAlignment = VerticalAlignment.Center;
+            SidebarCollapseGlyph.Text = expanded ? "‹" : "›";
             SidebarCollapseButton.ToolTip = expanded ? "收起导航栏" : "展开导航栏";
             AutomationProperties.SetName(SidebarCollapseButton, expanded ? "收起导航栏" : "展开导航栏");
 

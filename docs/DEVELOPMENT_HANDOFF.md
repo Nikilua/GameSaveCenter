@@ -2,6 +2,14 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-25 UI-326 设置窗口与侧栏折叠交互交接
+
+- 设置页根控件已移除 `MinWidth=1180/MinHeight=760`，避免窗口缩小时被 UserControl 强行撑大。`GameSaveCenterSettingsView.OnLoaded` 会通过 `Window.GetWindow(this)` 对真实宿主执行一次 `EnsureHostWindowSize`：优先约 1280×840，受当前工作区上限约束，设置 `SizeToContent=Manual` 和 Stretch 对齐；后续缩放不再强制回弹，继续由 `ApplyResponsiveLayout` 处理紧凑模式。没有 owner Window 的 RenderHarness 不会触发该逻辑。
+- 生产壳侧栏控件位于 `SidebarLayout` 底部行 `SidebarCollapseArea`，共享样式为 `AcrylicSidebarBoundaryButton`。它是透明 32×32 边界控制，不带“收起侧栏”等文字、不覆盖导航内容；`‹` 表示收起，`›` 表示展开，悬停/按下只显示轻量 tint。
+- `GridLengthAnimation` 位于 `src/GameSaveCenter.Playnite/Controls/GridLengthAnimation.cs`，210ms、`CubicEase.EaseOut`，驱动 `SidebarColumn.Width` 从 270 到 72 DIP 或反向变化。动画关闭时保持同步直接切换；页面通过 Grid 列变化自动跟随，不使用 Canvas。
+- `GameSaveCenterSettings.SidebarCollapsed` 由 `DashboardView` 注入生产壳读写并立即保存，首次加载恢复用户选择。命令、导航、设置入口、主题切换、滚动与虚拟化未改动。
+- 本轮验证：Debug 隔离构建 0 warning/0 error；Core 59/59、Worker 199/199、Playnite 295 通过/57 跳过；`validate-source.py`、`check-xaml.ps1`、WPF 静态审查（0 error/18 warning/172 info）、`git diff --check` 和 `.tmp/ui-qa-sidebar-boundary-v1/render-qa-report.txt`（`render-qa OK`）均通过。真实 Playnite 宿主尺寸、动画点击、DPI/焦点仍需重载扩展后复核。
+
 ## 2026-08-25 UI-319 Dune 浅色主题 FollowPlaynite 修复
 
 - 用户当前 Playnite Desktop 主题是 Dune。该主题通过 `ThemeDarkStyle=False` 表示浅色，并同时发布 `WindowBackgroundBrush`/`DarkWindowBackgroundBrush`；Follow 不能只依赖默认主题的历史 `WindowBackgourndBrush`。

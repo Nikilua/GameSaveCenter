@@ -50,6 +50,13 @@ namespace GameSaveCenter.Playnite.Views
             DataContext = viewModel;
             ProductionShellView.Attach(viewModel);
             ProductionShellView.MotionEnabledProvider = () => MotionEnabled;
+            ProductionShellView.SidebarCollapsedProvider = () => plugin.Settings.SidebarCollapsed;
+            ProductionShellView.SidebarCollapsedChanged = value =>
+            {
+                if (plugin.Settings.SidebarCollapsed == value) return;
+                plugin.Settings.SidebarCollapsed = value;
+                plugin.SavePluginSettings(plugin.Settings);
+            };
             ProductionShellView.SettingsRequested = () => plugin.PlayniteApi.MainView.OpenPluginSettings(plugin.Id);
 
             refreshTimer = new DispatcherTimer(DispatcherPriority.Background);

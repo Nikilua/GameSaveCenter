@@ -3,6 +3,15 @@
 > 维护时间：2026-08-25
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-25 UI-326 当前事实：设置宿主尺寸与侧栏边界折叠
+
+- `GameSaveCenterSettingsView` 根 `UserControl` 不再设置 `MinWidth/MinHeight`；这些属性会阻止页面缩到紧凑断点。真实宿主第一次加载时由 `EnsureHostWindowSize` 将 Window 设为工作区允许范围内的约 1280×840、`SizeToContent=Manual`、水平/垂直 Stretch；RenderHarness 无 owner Window，不会被改尺寸。
+- 设置页后续缩放仍走 `ApplyResponsiveLayout`，所以宿主可在首次打开后缩小，分类栏会堆叠到表单上方，表单内容在 `SettingsScroller` 内滚动。不要把 UserControl 的最小尺寸重新加回去。
+- 生产侧栏的 `SidebarCollapseArea` 是 `SidebarLayout` 的底部 Grid 行，控制器使用 `AcrylicSidebarBoundaryButton`，只显示 `‹`/`›`，没有文字或独立书签形状。展开宽度为 270 DIP，折叠宽度为 72 DIP，按钮固定 32×32、16 圆角；静止透明、悬停/按下只叠加低 alpha tint。
+- 侧栏宽度必须通过 `Controls/GridLengthAnimation.cs` 的 210ms `GridLengthAnimation` 动画变化，不能回到瞬时 `GridLength` 赋值或 Canvas 绝对定位。动画使用 `CubicEase.EaseOut`，内容列由 Grid 自动同步重排。
+- `GameSaveCenterSettings.SidebarCollapsed` 是持久化 UI 偏好；`DashboardView` 通过 `SidebarCollapsedProvider/SidebarCollapsedChanged` 注入生产壳，切换后立即保存，启动时恢复。不要把插件实例直接耦合到 `AcrylicProductionShellView`。
+- UI-326 已通过 Debug 隔离构建、Core 59、Worker 199、Playnite 295/57、源码/XAML/WPF 门禁和 `.tmp/ui-qa-sidebar-boundary-v1` render QA；真实 Playnite 宿主仍需人工确认初始 Window 尺寸、实际动画、DPI 和键盘焦点。
+
 ## 2026-08-25 UI-319 当前事实：Dune 浅色 FollowPlaynite 判断
 
 - 当前用户 Playnite 配置 `config.json` 的 Desktop 主题是 Dune；Dune 用资源 `ThemeDarkStyle=False` 表示浅色，同时保留 `WindowBackgroundBrush` 和 `DarkWindowBackgroundBrush` 两套颜色。

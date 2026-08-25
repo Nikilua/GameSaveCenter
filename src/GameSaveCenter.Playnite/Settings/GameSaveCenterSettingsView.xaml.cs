@@ -50,6 +50,8 @@ namespace GameSaveCenter.Playnite.Settings
             }
             ApplyAdaptiveTheme();
             ApplyResponsiveLayout(ActualWidth, ActualHeight);
+            EnsureHostWindowSize();
+            BeginUiSafely(EnsureHostWindowSize, DispatcherPriority.ContextIdle);
             RealHostUiAuditService.TryCaptureSettings(this);
             RefreshValidationSummary();
             if (entrancePlayed)
@@ -71,6 +73,33 @@ namespace GameSaveCenter.Playnite.Settings
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
             => QueueResponsiveLayout(e.NewSize);
+
+        private void EnsureHostWindowSize()
+        {
+            var hostWindow = Window.GetWindow(this);
+            if (hostWindow == null || hostWindow.WindowState == WindowState.Maximized)
+                return;
+
+            // The UserControl deliberately has no minimum size: compact layout must be
+            // allowed to take over when the user resizes the host smaller.  The first
+            // settings visit, however, should open with enough room for the category rail
+            // and form instead of inheriting Playnite's narrow fallback dialog size.
+            const double preferredWidth = 1280;
+            const double preferredHeight = 840;
+            var workArea = SystemParameters.WorkArea;
+            var targetWidth = Math.Min(preferredWidth, Math.Max(1024, workArea.Width - 80));
+            var targetHeight = Math.Min(preferredHeight, Math.Max(720, workArea.Height - 80));
+
+            hostWindow.SizeToContent = SizeToContent.Manual;
+            hostWindow.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+            hostWindow.VerticalContentAlignment = VerticalAlignment.Stretch;
+            var currentWidth = hostWindow.ActualWidth > 0 ? hostWindow.ActualWidth : hostWindow.Width;
+            var currentHeight = hostWindow.ActualHeight > 0 ? hostWindow.ActualHeight : hostWindow.Height;
+            if (double.IsNaN(currentWidth) || currentWidth < targetWidth)
+                hostWindow.Width = targetWidth;
+            if (double.IsNaN(currentHeight) || currentHeight < targetHeight)
+                hostWindow.Height = targetHeight;
+        }
 
         private void OnSettingsFieldChanged(object sender, RoutedEventArgs e) => RefreshValidationSummary();
 

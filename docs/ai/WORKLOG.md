@@ -2,6 +2,27 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-25 UI-326 设置宿主响应式修复与侧栏边界控件重做
+
+**问题确认：**
+
+- 设置页根 `UserControl` 的 `MinWidth/MinHeight` 会把页面锁在大尺寸，窗口打开时又不能可靠地向 Playnite 宿主要到足够的初始空间；窗口变小时内容因此出现右侧裁切，而不是切换到紧凑布局。
+- 侧栏折叠入口仍是带文字的普通按钮，和导航材质割裂；宽度是瞬间切换，且没有保存用户的展开/折叠选择。
+
+**实现内容：**
+
+- 移除设置页根控件的硬性最小尺寸，新增 `EnsureHostWindowSize`：首次进入真实宿主时将窗口调整到工作区允许范围内的约 1280×840，并保持 `Stretch` 内容对齐；后续用户缩小窗口时由已有响应式布局接管，不再被 UserControl 最小尺寸挡住。RenderHarness 没有宿主 Window，因此不会被测试窗口尺寸逻辑影响。
+- 将生产侧栏折叠控制改为底部 54 DIP 区域内的 32×32、16 圆角、无文字边界控件；静止时透明融入导航材质，悬停提亮、按下使用轻微蓝色强调。展开/折叠分别显示左右单字符箭头，控制不再覆盖导航内容或挤压版本气泡。
+- 新增 `GridLengthAnimation`，用 `CubicEase EaseOut` 在 210ms 内将侧栏宽度平滑切换为 270/72 DIP；内容列随 Grid 重排同步移动，关闭动画、高对比度或系统动画禁用时仍直接切换。
+- 在 `GameSaveCenterSettings` 增加 `SidebarCollapsed`，由 `DashboardView` 注入读取/保存回调，导航点击、设置入口、主题和页面命令保持原有绑定与语义。
+- 更新生产壳源码契约，锁定底部内嵌位置、无文字样式、动画时长、72/270 宽度和设置宿主尺寸策略。
+
+**验证结果：**
+
+- `validate-source.py`、`check-xaml.ps1`、`git diff --check` 通过；WPF 静态审查 0 error、18 条既有 warning、172 条 info。
+- Debug 隔离构建 0 warning、0 error；Core 59/59、Worker 199/199、Playnite 295 通过/57 跳过/0 失败。
+- `.tmp/ui-qa-sidebar-boundary-v1/render-qa-report.txt` 为 `render-qa OK`，覆盖多尺寸、浅色/深色和 resize transition；真实 Playnite 宿主的窗口初始尺寸、实际点击动画、DPI 和键盘焦点仍需重载扩展后人工确认。
+
 ## 2026-08-25 UI-324 侧栏折叠书签与过渡动画
 
 **问题确认：**

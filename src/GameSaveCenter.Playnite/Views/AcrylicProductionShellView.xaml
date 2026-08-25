@@ -24,7 +24,7 @@
                 <RowDefinition Height="36"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition x:Name="SidebarColumn" Width="236"/>
+                <ColumnDefinition x:Name="SidebarColumn" Width="270"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
@@ -81,7 +81,11 @@
                     ClipToBounds="True"
                     Panel.ZIndex="2">
                 <Grid x:Name="SidebarLayout" Background="Transparent">
-                    <Grid x:Name="SidebarContentLayer">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="54"/>
+                    </Grid.RowDefinitions>
+                    <Grid x:Name="SidebarContentLayer" Grid.Row="0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
@@ -156,37 +160,27 @@
                             </Grid>
                         </Border>
                     </Grid>
+                    <Border x:Name="SidebarCollapseArea" Grid.Row="1"
+                            Background="Transparent"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Padding="0,0,0,12">
                     <ui:Button x:Name="SidebarCollapseButton"
-                               Style="{StaticResource AcrylicSidebarCollapseButton}"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Bottom"
-                               Margin="12,0,0,14"
+                               Style="{StaticResource AcrylicSidebarBoundaryButton}"
+                               Width="32"
+                               Height="32"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
                                ToolTip="收起导航栏"
                                AutomationProperties.Name="收起导航栏"
                                Click="OnSidebarCollapseClick"
                                Panel.ZIndex="3">
-                        <Grid x:Name="SidebarCollapseButtonContent" HorizontalAlignment="Stretch">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Border x:Name="SidebarCollapseGlyphFrame" Width="20" Height="20" CornerRadius="10"
-                                    Background="{DynamicResource GscAccentTintBrush}"
-                                    VerticalAlignment="Center">
-                                <TextBlock x:Name="SidebarCollapseGlyph" Text="&#xE76B;"
-                                           FontFamily="Segoe MDL2 Assets" FontSize="10"
-                                           Foreground="{DynamicResource GscAccentBrush}"
-                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Border>
-                            <TextBlock x:Name="SidebarCollapseLabel" Grid.Column="1" Text="收起侧栏"
-                                       Margin="8,0,8,0" VerticalAlignment="Center"
-                                       TextTrimming="CharacterEllipsis"/>
-                            <TextBlock x:Name="SidebarCollapseChevron" Grid.Column="2" Text="›"
-                                       FontSize="16" Foreground="{DynamicResource GscSecondaryTextBrush}"
-                                       VerticalAlignment="Center"/>
-                        </Grid>
+                        <TextBlock x:Name="SidebarCollapseGlyph" Text="‹"
+                                   FontFamily="{DynamicResource GscUiFontFamily}" FontSize="18"
+                                   Foreground="{DynamicResource GscSecondaryTextBrush}"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </ui:Button>
+                    </Border>
                 </Grid>
             </Border>
 

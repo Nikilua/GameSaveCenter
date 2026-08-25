@@ -22,34 +22,43 @@ public sealed class ProductionShellChromeSourceTests
     }
 
     [Fact]
-    public void ProductionSidebarCollapseIsASeparateSmallChromeAction()
+    public void ProductionSidebarCollapseIsAnIntegratedBoundaryAffordance()
     {
         var shell = ReadSource("src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml");
         var shellCode = ReadSource("src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml.cs");
+        var settingsCode = ReadSource("src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettings.cs");
         var resources = ReadSource("src", "GameSaveCenter.Playnite", "Themes", "AcrylicProductionResources.xaml");
 
-        Assert.Contains("x:Name=\"SidebarColumn\" Width=\"236\"", shell);
+        Assert.Contains("x:Name=\"SidebarColumn\" Width=\"270\"", shell);
         Assert.Contains("x:Name=\"SidebarContentLayer\"", shell);
-        Assert.Contains("AcrylicSidebarCollapseButton", shell);
+        Assert.Contains("AcrylicSidebarBoundaryButton", shell);
         Assert.Contains("x:Name=\"SidebarCollapseButton\"", shell);
-        Assert.Contains("VerticalAlignment=\"Bottom\"", shell);
-        Assert.Contains("x:Name=\"SidebarCollapseButtonContent\"", shell);
-        Assert.Contains("Text=\"收起侧栏\"", shell);
-        Assert.Contains("Property=\"Width\" Value=\"168\"", resources);
-        Assert.Contains("Property=\"Height\" Value=\"34\"", resources);
-        Assert.Contains("HorizontalAlignment=\"Left\"", shell);
-        Assert.Contains("Margin=\"12,0,0,14\"", shell);
+        Assert.Contains("x:Name=\"SidebarCollapseArea\" Grid.Row=\"1\"", shell);
+        Assert.Contains("Width=\"32\"", shell);
+        Assert.Contains("Height=\"32\"", shell);
+        Assert.Contains("Text=\"‹\"", shell);
+        Assert.DoesNotContain("x:Name=\"SidebarCollapseButtonContent\"", shell);
+        Assert.DoesNotContain("Text=\"收起侧栏\"", shell);
+        Assert.Contains("Property=\"Width\" Value=\"32\"", resources);
+        Assert.Contains("Property=\"Height\" Value=\"32\"", resources);
+        Assert.Contains("CornerRadius=\"16\"", resources);
+        Assert.Contains("Background\" Value=\"Transparent\"", resources);
         Assert.Contains("Click=\"OnSidebarCollapseClick\"", shell);
         Assert.Contains("AutomationProperties.Name=\"收起导航栏\"", shell);
         Assert.Contains("x:Name=\"NavOverviewContent\"", shell);
         Assert.Contains("x:Name=\"SidebarProductionVersionText\"", shell);
         Assert.Contains("sidebarCollapsed = !sidebarCollapsed", shellCode);
         Assert.Contains("sidebarTransitionRunning", shellCode);
-        Assert.Contains("DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(110))", shellCode);
+        Assert.Contains("GridLengthAnimation", shellCode);
+        Assert.Contains("TimeSpan.FromMilliseconds(210)", shellCode);
+        Assert.Contains("CubicEase", shellCode);
         Assert.Contains("MotionEnabledProvider", shellCode);
-        Assert.Contains("new GridLength(sidebarCollapsed ? 78 : 236)", shellCode);
-        Assert.Contains("SidebarCollapseLabel.Visibility", shellCode);
-        Assert.Contains("SidebarCollapseButtonContent.HorizontalAlignment", shellCode);
+        Assert.Contains("new GridLength(sidebarCollapsed ? 72 : 270, GridUnitType.Pixel)", shellCode);
+        Assert.Contains("ApplySidebarLayout(updateColumnWidth: false)", shellCode);
+        Assert.Contains("SidebarCollapsedProvider", shellCode);
+        Assert.Contains("SidebarCollapsedChanged", shellCode);
+        Assert.Contains("public bool SidebarCollapsed", settingsCode);
+        Assert.Contains("SidebarCollapsed = other.SidebarCollapsed", settingsCode);
         Assert.Contains("HorizontalAlignment.Center", shellCode);
         Assert.Contains("typeof(AcrylicProductionShellView).Assembly.GetName().Version", shellCode);
         Assert.Contains("展开导航栏", shellCode);
@@ -60,8 +69,13 @@ public sealed class ProductionShellChromeSourceTests
     public void SettingsViewRequestsAUsableDefaultWindowSize()
     {
         var settings = ReadSource("src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml");
+        var settingsCode = ReadSource("src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml.cs");
 
-        Assert.Contains("MinWidth=\"1180\" MinHeight=\"760\"", settings);
+        Assert.DoesNotContain("MinWidth=\"1180\" MinHeight=\"760\"", settings);
+        Assert.Contains("EnsureHostWindowSize();", settingsCode);
+        Assert.Contains("preferredWidth = 1280", settingsCode);
+        Assert.Contains("preferredHeight = 840", settingsCode);
+        Assert.Contains("hostWindow.SizeToContent = SizeToContent.Manual", settingsCode);
     }
 
     private static string ReadSource(params string[] segments)

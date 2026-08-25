@@ -69,6 +69,8 @@ namespace GameSaveCenter.Playnite.Settings
         public bool EnableUiAnimations { get; set; } = true;
         public bool EnableGlassEffects { get; set; } = true;
         public int GlassEffectStrength { get; set; } = 78;
+        /// <summary>Whether the production shell navigation rail is currently collapsed.</summary>
+        public bool SidebarCollapsed { get; set; }
         public int DashboardRefreshSeconds { get; set; } = 10;
         public int RecentProtectionWindowDays { get; set; } = 30;
         public int ProcessPollingSeconds { get; set; } = 5;
@@ -292,6 +294,7 @@ namespace GameSaveCenter.Playnite.Settings
             EnableUiAnimations = other.EnableUiAnimations;
             EnableGlassEffects = other.EnableGlassEffects;
             GlassEffectStrength = other.GlassEffectStrength <= 0 ? 78 : other.GlassEffectStrength;
+            SidebarCollapsed = other.SidebarCollapsed;
             DashboardRefreshSeconds = other.DashboardRefreshSeconds;
             RecentProtectionWindowDays = RecentProtectionAssessmentService.NormalizeWindowDays(other.RecentProtectionWindowDays);
             ProcessPollingSeconds = other.ProcessPollingSeconds;

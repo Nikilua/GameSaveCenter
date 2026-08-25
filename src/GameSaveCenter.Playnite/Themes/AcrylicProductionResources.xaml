@@ -45,22 +45,68 @@
         </Setter>
     </Style>
 
-    <!-- The collapse affordance is part of the sidebar's bottom chrome.  It deliberately
-         uses the shared rounded button surface; the shell narrows it in compact mode. -->
-    <Style x:Key="AcrylicSidebarCollapseButton"
+    <!-- This is a boundary affordance, not a command button.  It stays visually quiet at
+         rest and only reveals a small material tint on hover/press. -->
+    <Style x:Key="AcrylicSidebarBoundaryButton"
            TargetType="{x:Type ui:Button}"
            BasedOn="{StaticResource GscWpfUiButton}">
-        <Setter Property="Width" Value="168"/>
-        <Setter Property="Height" Value="34"/>
+        <Setter Property="Width" Value="32"/>
+        <Setter Property="Height" Value="32"/>
         <Setter Property="MinWidth" Value="0"/>
         <Setter Property="MinHeight" Value="0"/>
-        <Setter Property="Padding" Value="10,5"/>
-        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="ContentTemplate" Value="{x:Null}"/>
-        <Setter Property="ui:Button.CornerRadius" Value="11"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground" Value="{DynamicResource GscSecondaryTextBrush}"/>
+        <Setter Property="ui:Button.CornerRadius" Value="16"/>
         <Setter Property="ToolTipService.ShowDuration" Value="12000"/>
         <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ui:Button}">
+                    <Border x:Name="BoundaryChrome"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="0"
+                            CornerRadius="16"
+                            SnapsToDevicePixels="True">
+                        <Grid>
+                            <Border x:Name="BoundaryStateOverlay"
+                                    Background="{DynamicResource GscAccentTintBrush}"
+                                    CornerRadius="16"
+                                    Opacity="0"
+                                    IsHitTestVisible="False"/>
+                            <ContentPresenter Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              TextElement.Foreground="{TemplateBinding Foreground}"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="BoundaryStateOverlay" Property="Opacity" Value="0.42"/>
+                            <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="BoundaryStateOverlay" Property="Background" Value="{DynamicResource GscAccentTintStrongBrush}"/>
+                            <Setter TargetName="BoundaryStateOverlay" Property="Opacity" Value="0.72"/>
+                            <Setter Property="Foreground" Value="{DynamicResource GscAccentBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                            <Setter TargetName="BoundaryStateOverlay" Property="Opacity" Value="0.3"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="BoundaryChrome" Property="Opacity" Value="0.46"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
 </ResourceDictionary>
