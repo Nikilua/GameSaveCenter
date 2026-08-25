@@ -4,6 +4,7 @@ using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Playnite.SDK;
@@ -152,14 +153,15 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 var height = converted.PixelHeight;
                 if (width < 1 || height < 1) return TransparentGradient();
 
-                var stride = width * 4;
-                var pixels = new byte[stride * height];
-                converted.CopyPixels(pixels, stride, 0);
-                var topLeft = Sample(pixels, stride, width, height, 0.12, 0.18);
-                var topRight = Sample(pixels, stride, width, height, 0.88, 0.18);
-                var center = Sample(pixels, stride, width, height, 0.50, 0.50);
-                var bottomLeft = Sample(pixels, stride, width, height, 0.12, 0.82);
-                var bottomRight = Sample(pixels, stride, width, height, 0.88, 0.82);
+                // The material needs only five pixels. Copying the entire decoded frame here
+                // briefly allocates roughly width * height * 4 bytes per selected game, even
+                // though the result is just a small gradient. Read one pixel at a time so a
+                // 1920px background does not create another multi-megabyte transient buffer.
+                var topLeft = Sample(converted, width, height, 0.12, 0.18);
+                var topRight = Sample(converted, width, height, 0.88, 0.18);
+                var center = Sample(converted, width, height, 0.50, 0.50);
+                var bottomLeft = Sample(converted, width, height, 0.12, 0.82);
+                var bottomRight = Sample(converted, width, height, 0.88, 0.82);
                 var brush = new LinearGradientBrush
                 {
                     StartPoint = new System.Windows.Point(0, 0),
@@ -178,12 +180,13 @@ namespace GameSaveCenter.Playnite.Infrastructure
             }
         }
 
-        private static Color Sample(byte[] pixels, int stride, int width, int height, double x, double y)
+        private static Color Sample(BitmapSource image, int width, int height, double x, double y)
         {
             var px = Math.Max(0, Math.Min(width - 1, (int)Math.Round((width - 1) * x)));
             var py = Math.Max(0, Math.Min(height - 1, (int)Math.Round((height - 1) * y)));
-            var offset = (py * stride) + (px * 4);
-            return Color.FromRgb(pixels[offset + 2], pixels[offset + 1], pixels[offset]);
+            var pixel = new byte[4];
+            image.CopyPixels(new Int32Rect(px, py, 1, 1), pixel, 4, 0);
+            return Color.FromRgb(pixel[2], pixel[1], pixel[0]);
         }
 
         private static Color Blend(Color first, Color second, double amount)

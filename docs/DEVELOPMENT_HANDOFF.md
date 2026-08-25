@@ -2,6 +2,14 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-25 UI-329 刷新与布局流畅度交接
+
+- Dashboard 自动刷新不得在选中游戏未变化时重复刷新 Icon 或 Background；`EnsureSelectedGameBackgroundLoaded` 只在页面重新显示且当前背景确实缺失时做一次恢复。不要把背景解码放回普通快照轮询。
+- 背景取色只读取五个 1×1 像素，不能恢复整张位图的临时 `byte[]` 复制；如果未来增加采样点，应先评估切换游戏时的分配、GC 和取消语义。
+- 生产壳连续 `SizeChanged` 通过 `DispatcherPriority.Render` 合并，筛选平台集合变化通过单个 `Loaded` 调度恢复默认值；不要在拖拽窗口时同步执行全页面响应式重排，也不要重复排队 `DataBind + Loaded` 两套同一恢复工作。
+- 本轮保留真实命令、绑定、滚动/虚拟化、侧栏宽度动画和主题材质；卸载时必须清理 pending 标记。`render-qa` 通过不等于 Playnite 宿主已完成帧率、内存、DPI 和实际缩放验收。
+- 验证证据：定向 Playnite 26/26，全量 297 通过/57 跳过，Release 0 警告/0 错误，WPF 0 error/18 warning/172 info，`.tmp/ui-qa-performance-v1/render-qa-report.txt` 为 `render-qa OK`。
+
 ## 2026-08-25 UI-328 游戏背景跟随开关交接
 
 - 设置新增 `FollowSelectedGameBackground`，默认开启，位于“外观与动态效果”。关闭后不是只隐藏图片：ViewModel 会取消封面加载、清理已解码图像和采样 Brush，重新开启后只加载当前选中游戏。

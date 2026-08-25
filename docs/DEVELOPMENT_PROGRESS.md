@@ -1,5 +1,7 @@
 # 开发实现进度
 
+- [x] UI-329（2026-08-25）：收口界面刷新与背景取色性能。Dashboard 自动快照仅在选中游戏变化时刷新 Icon/Background，页面重新显示时只做一次缺失背景恢复；背景渐变从整帧复制改为五次 1×1 像素采样，降低切换游戏时的瞬时内存分配；生产壳窗口拖拽布局与游戏筛选默认值恢复分别按 Render/Loaded 合并，减少重复重排且保留现有视觉、命令、绑定、虚拟化和侧栏动画。定向 26/26、全量 Playnite 297 通过/57 跳过、Release 0 warning/0 error、WPF 0 error/18 warning/172 info、`.tmp/ui-qa-performance-v1/render-qa-report.txt`（`render-qa OK`）通过；真实 Playnite 帧率、内存、DPI 和宿主缩放仍需人工复核。
+
 - [x] UI-328（2026-08-25）：在设置“外观与动态效果”中新增默认开启的“跟随当前游戏背景”开关。关闭时取消封面异步加载、清理已解码图像和采样材质，开启时仅对当前选中游戏重新加载；共享游戏背景图片/tint/BlurEffect 和 AmbientMaterialLayer 统一检查开关并正确回退到主题环境光/中性材质，避免空图片层和残留色。`validate-source.py`、XAML 19/19、WPF 静态审查 0 error/18 warning/172 info、Release 0 warning/0 error、Playnite 296 通过/57 跳过、`.tmp/ui-qa-game-background-v1/render-qa-report.txt`（`render-qa OK`）通过；真实 Playnite 开关即时效果、DPI、Follow/高对比度和性能仍需人工复核。
 
 - [x] UI-327（2026-08-25）：修复生产页面与设置页文字在大字号/中文 fallback 下像素感偏重的问题，生产壳、首页、设置页、共享 DataGrid 和兼容探针统一使用 `Ideal + ClearType + Fixed hinting`，保留像素对齐；修改器确认导入页改用 Grid 让“主程序”标签与下拉框同行对齐；维护中心诊断、存储、保留策略、任务协调和镜像摘要改用低饱和信息气泡与常规次级文字。真实命令、候选项、Binding、状态 pill、表格滚动和虚拟化未变。`validate-source.py`、XAML 结构检查、WPF 静态审查、Release 构建、Core 59/59、Worker 199/199、Playnite 295/352（57 跳过）和 `.tmp/ui-qa-font-bubbles-v1/render-qa-report.txt`（`render-qa OK`）通过；真实 Playnite 字体像素观感与 DPI 仍需人工复核。

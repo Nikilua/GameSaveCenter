@@ -100,6 +100,7 @@ namespace GameSaveCenter.Playnite.Views
             if (plugin.Settings.EnableDashboardAutoRefresh) refreshTimer.Start();
             viewModel.StartTaskEventSubscription();
             viewModel.SelectCurrentlyRunningGameOnViewActivation();
+            viewModel.EnsureSelectedGameBackgroundLoaded();
 
             if (!hasPlayedEntrance)
             {
@@ -193,7 +194,9 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnGamePickerPlatformOptionsChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
-            BeginUiSafely(RestoreGamePickerFilterDefaults, DispatcherPriority.DataBind);
+            // The production shell owns the visible picker. One post-bind restore is enough;
+            // queuing both DataBind and Loaded duplicates selection work during every platform
+            // list reset, especially noticeable with a large library.
             BeginUiSafely(RestoreGamePickerFilterDefaults, DispatcherPriority.Loaded);
         }
 

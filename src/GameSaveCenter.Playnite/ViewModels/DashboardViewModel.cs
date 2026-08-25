@@ -572,6 +572,23 @@ namespace GameSaveCenter.Playnite.ViewModels
             if (enabled == selectedGameBackgroundPreferenceApplied) return;
             RefreshSelectedGameBackground();
         }
+
+        /// <summary>
+        /// Restores a cancelled background load when the embedded dashboard is shown again.
+        /// This is intentionally a one-shot safety check; normal dashboard polling must not
+        /// restart the same decode while the selected game has not changed.
+        /// </summary>
+        public void EnsureSelectedGameBackgroundLoaded()
+        {
+            if (!plugin.Settings.FollowSelectedGameBackground
+                || gamePicker.SelectedGame == null
+                || SelectedGameBackground != null
+                || HasSelectedGameBackgroundAmbientMaterial
+                || selectedGameBackgroundCancellation != null)
+                return;
+
+            RefreshSelectedGameBackground();
+        }
         public BackupVersionDto SelectedBackup
         {
             get => selectedBackup;
@@ -1324,8 +1341,15 @@ namespace GameSaveCenter.Playnite.ViewModels
                     TryApplyPendingAutoSelection();
                     SelectCurrentlyRunningGameOnViewActivation();
                     ApplyInitialSelectionIfNeeded();
-                    RefreshSelectedGameIcon();
-                    RefreshSelectedGameBackground();
+                    var selectedGameChanged = !string.Equals(
+                        selectedGameId,
+                        SelectedGame?.PlayniteId,
+                        StringComparison.OrdinalIgnoreCase);
+                    if (selectedGameChanged)
+                    {
+                        RefreshSelectedGameIcon();
+                        RefreshSelectedGameBackground();
+                    }
                 }
                 finally { suppressSelectionLoad = false; }
                 // Cache-first snapshots can be older than the current wall clock. The protection

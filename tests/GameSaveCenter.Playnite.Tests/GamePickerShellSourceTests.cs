@@ -18,8 +18,8 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("TargetNullValue=全部", xaml);
             Assert.Contains("UiFilterSelection.RestoreDefault(GamePickerPlatformComboBox", code);
             Assert.Contains("PlatformFilterOptions.CollectionChanged += OnGamePickerPlatformOptionsChanged", code);
-            Assert.Contains("DispatcherPriority.DataBind", code);
             Assert.Contains("DispatcherPriority.Loaded", code);
+            Assert.Contains("pickerFilterRestorePending", code);
             Assert.Contains("Loaded=\"OnGamePickerFilterLoaded\"", xaml);
         }
 
@@ -30,6 +30,25 @@ namespace GameSaveCenter.Playnite.Tests
             var xaml = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml"));
 
             Assert.Contains("CornerRadius=\"11\" Padding=\"11,9\" ClipToBounds=\"True\"", xaml);
+        }
+
+        [Fact]
+        public void RefreshAndResizePathsCoalesceExpensiveVisualWork()
+        {
+            var root = FindRepositoryRoot();
+            var viewModel = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
+            var dashboardCode = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml.cs"));
+            var shellCode = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml.cs"));
+            var backgroundProvider = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Infrastructure", "PlayniteGameBackgroundProvider.cs"));
+
+            Assert.Contains("EnsureSelectedGameBackgroundLoaded();", dashboardCode);
+            Assert.Contains("var selectedGameChanged", viewModel);
+            Assert.Contains("if (selectedGameChanged)", viewModel);
+            Assert.Contains("new Int32Rect(px, py, 1, 1)", backgroundProvider);
+            Assert.DoesNotContain("var pixels = new byte[stride * height]", backgroundProvider);
+            Assert.Contains("private bool responsiveLayoutPending;", shellCode);
+            Assert.Contains("DispatcherPriority.Render", shellCode);
+            Assert.Contains("if (!IsLoaded) return;", shellCode);
         }
 
         private static string FindRepositoryRoot()

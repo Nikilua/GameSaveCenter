@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
 using GameSaveCenter.Playnite.Controls;
 using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.ViewModels;
@@ -26,6 +27,9 @@ namespace GameSaveCenter.Playnite.Views
         private bool suppressNavigation;
         private bool sidebarCollapsed;
         private bool sidebarTransitionRunning;
+        private bool responsiveLayoutPending;
+        private double pendingResponsiveWidth;
+        private bool pickerFilterRestorePending;
 
         public AcrylicProductionShellView()
         {
@@ -141,6 +145,8 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
+            responsiveLayoutPending = false;
+            pickerFilterRestorePending = false;
             if (viewModel != null && viewModelSubscribed)
             {
                 viewModel.PropertyChanged -= OnViewModelPropertyChanged;
@@ -167,10 +173,22 @@ namespace GameSaveCenter.Playnite.Views
         private void QueueGamePickerFilterDefaults()
         {
             RestoreGamePickerFilterDefaults();
-            if (Dispatcher.HasShutdownStarted || Dispatcher.HasShutdownFinished)
+            if (pickerFilterRestorePending || Dispatcher.HasShutdownStarted || Dispatcher.HasShutdownFinished)
                 return;
-            Dispatcher.BeginInvoke(new Action(RestoreGamePickerFilterDefaults), System.Windows.Threading.DispatcherPriority.DataBind);
-            Dispatcher.BeginInvoke(new Action(RestoreGamePickerFilterDefaults), System.Windows.Threading.DispatcherPriority.Loaded);
+
+            pickerFilterRestorePending = true;
+            try
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    pickerFilterRestorePending = false;
+                    if (IsLoaded) RestoreGamePickerFilterDefaults();
+                }), DispatcherPriority.Loaded);
+            }
+            catch (InvalidOperationException)
+            {
+                pickerFilterRestorePending = false;
+            }
         }
 
         private void OnGamePickerFilterLoaded(object sender, RoutedEventArgs e)
@@ -420,8 +438,25 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnShellSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            ApplyHeaderLayout(e.NewSize.Width);
-            ApplyPageLayout();
+            pendingResponsiveWidth = e.NewSize.Width;
+            if (responsiveLayoutPending || Dispatcher.HasShutdownStarted || Dispatcher.HasShutdownFinished)
+                return;
+
+            responsiveLayoutPending = true;
+            try
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    responsiveLayoutPending = false;
+                    if (!IsLoaded) return;
+                    ApplyHeaderLayout(pendingResponsiveWidth);
+                    ApplyPageLayout();
+                }), DispatcherPriority.Render);
+            }
+            catch (InvalidOperationException)
+            {
+                responsiveLayoutPending = false;
+            }
         }
 
         private void ApplyHeaderLayout(double width)

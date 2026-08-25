@@ -3,6 +3,14 @@
 > 维护时间：2026-08-25
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-25 UI-329 当前事实：刷新与背景取色性能
+
+- `DashboardViewModel.RefreshDashboardAsync` 只有在 `SelectedGame.PlayniteId` 变化时才允许刷新当前游戏 Icon/Background；普通自动快照轮询不能重复读取 Playnite 图标或重启同一背景解码。`DashboardView.OnLoaded` 的 `EnsureSelectedGameBackgroundLoaded` 只负责恢复卸载期间被取消且当前仍缺失的加载。
+- `PlayniteGameBackgroundProvider.CreateAmbientBrush` 已将整帧 `CopyPixels` 改为五次 1×1 `BitmapSource.CopyPixels`，因为材质只需要五个采样点。不要为了“方便取色”恢复多 MB 的全图临时 `byte[]`，也不要改变已验证的五个采样坐标。
+- `AcrylicProductionShellView.OnShellSizeChanged` 使用 `DispatcherPriority.Render` 合并连续窗口尺寸事件；`QueueGamePickerFilterDefaults` 使用单个 `Loaded` 调度和 pending 标记。待处理标记必须在卸载和 Dispatcher 关闭路径可安全复位，避免窗口重开后丢布局或重复恢复筛选。
+- 这些优化不改变页面资源、Binding、Command、导航、列表虚拟化和侧栏动画；如果后续需要进一步提速，优先复用快照/材质缓存并保持 UI 线程只做轻量状态更新，不要增加新的轮询器或每帧动画计时器。
+- UI-329 验证：定向 26/26、Playnite 297/354（57 跳过）、Release 0 warning/0 error、WPF 0 error/18 warning/172 info、`.tmp/ui-qa-performance-v1/render-qa-report.txt` 为 `render-qa OK`；真实 Playnite 帧率/内存/DPI 仍需人工复核。
+
 ## 2026-08-25 UI-328 当前事实：游戏背景跟随开关与材质回退
 
 - `GameSaveCenterSettings.FollowSelectedGameBackground` 默认 `true`，位于设置页“外观与动态效果”中的“跟随当前游戏背景”开关；旧 JSON/便携设置没有该字段时必须继续默认跟随。
