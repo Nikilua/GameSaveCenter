@@ -15,6 +15,10 @@ namespace GameSaveCenter.Worker.Services;
 /// </summary>
 public sealed class RetentionSimulationService
 {
+    private static readonly TimeSpan MaximumPreviewAge = TimeSpan.FromMinutes(10);
+    private static readonly TimeSpan MaximumFutureClockSkew = TimeSpan.FromMinutes(1);
+    private const string QuarantineDirectoryName = ".gsc-retention-quarantine";
+
     private readonly WorkerOptions _options;
     private readonly SqliteStateStore _store;
     private readonly ILogger<RetentionSimulationService> _logger;
@@ -46,7 +50,10 @@ public sealed class RetentionSimulationService
             .OrderByDescending(x => x.TotalBytes)
             .Take(200)
             .ToList();
-        preview.Summary = $"现有 {preview.ExistingVersionCount} 个版本，建议保留 {preview.KeepVersionCount} 个，候选清理 {preview.DeleteCandidateCount} 个（预计释放 {preview.EstimatedReleaseDisplay}）；用户锁定 {preview.UserLockedCount}，健康恢复点保护 {preview.HealthProtectedCount}，PreRestore {preview.PreRestoreCount}。预览只读，清理不会自动执行。";
+        var itemHint = preview.DeleteCandidateCount > preview.Items.Count
+            ? $"明细按体积展示前 {preview.Items.Count} 条"
+            : "已展示全部候选明细";
+        preview.Summary = $"现有 {preview.ExistingVersionCount} 个版本，建议保留 {preview.KeepVersionCount} 个，候选清理 {preview.DeleteCandidateCount} 个（预计释放 {preview.EstimatedReleaseDisplay}）；用户锁定 {preview.UserLockedCount}，健康恢复点保护 {preview.HealthProtectedCount}，PreRestore {preview.PreRestoreCount}。{itemHint}。预览只读，清理不会自动执行。";
         return preview;
     }
 
@@ -54,9 +61,16 @@ public sealed class RetentionSimulationService
     {
         if (request == null || !request.Confirmed)
             throw new WorkerOperationException("RETENTION_APPLY_NOT_CONFIRMED", "全局清理需要二次确认；预览只读不会删除任何文件。");
+        token.ThrowIfCancellationRequested();
+        ValidatePreviewRequest(request);
 
         var (versions, policies) = await LoadAsync(token).ConfigureAwait(false);
         var plans = BuildPlans(versions, policies);
+        var currentCandidateCount = plans.Sum(x => x.Plan.DeleteCandidates.Count);
+        var currentReleaseBytes = plans.Sum(x => x.Plan.DeleteCandidates.Sum(y => Math.Max(0, y.TotalBytes)));
+        if (currentCandidateCount != request.ExpectedCandidateCount || currentReleaseBytes != request.ExpectedReleaseBytes)
+            throw new WorkerOperationException("RETENTION_PREVIEW_STALE", "备份状态在确认前已变化，请刷新全局预览后再清理。");
+
         var result = new RetentionSimulationResultDto();
         var failures = new List<string>();
         var backupRoot = string.IsNullOrWhiteSpace(_options.LudusaviBackupDirectory)
@@ -114,22 +128,38 @@ public sealed class RetentionSimulationService
 
                 try
                 {
-                    await _store.DeleteBackupVersionAsync(current.PlayniteId, current.BackupId, token).ConfigureAwait(false);
+                    // Quarantine first so a database failure can put the archive back. The
+                    // quarantine is inside the configured root but has no .zip suffix, so it
+                    // cannot be mistaken for a Ludusavi archive during a later scan.
+                    var quarantinePath = CreateQuarantinePath(backupRoot, current.BackupId);
+                    Directory.CreateDirectory(Path.GetDirectoryName(quarantinePath)!);
+                    File.Move(fullPath, quarantinePath);
+                    try
+                    {
+                        await _store.DeleteBackupVersionAsync(current.PlayniteId, current.BackupId, token).ConfigureAwait(false);
+                    }
+                    catch
+                    {
+                        TryRestoreFromQuarantine(quarantinePath, fullPath);
+                        throw;
+                    }
+
+                    try
+                    {
+                        File.Delete(quarantinePath);
+                    }
+                    catch (Exception cleanupException)
+                    {
+                        result.PendingQuarantineCount++;
+                        result.PendingQuarantineBytes += fileBytes;
+                        failures.Add($"{current.PlayniteId}/{current.BackupId}: 归档已安全移出但隔离文件清理失败 {cleanupException.Message}");
+                    }
                 }
                 catch (Exception ex)
                 {
                     result.FailedCount++;
-                    failures.Add($"{current.PlayniteId}/{current.BackupId}: 数据库索引删除失败 {ex.Message}");
-                    continue;
-                }
-                try
-                {
-                    File.Delete(fullPath);
-                }
-                catch (Exception ex)
-                {
-                    result.FailedCount++;
-                    failures.Add($"{current.PlayniteId}/{current.BackupId}: 归档删除失败 {ex.Message}");
+                    if (!failures.Any(x => x.StartsWith($"{current.PlayniteId}/{current.BackupId}:", StringComparison.Ordinal)))
+                        failures.Add($"{current.PlayniteId}/{current.BackupId}: 清理失败 {ex.Message}");
                     continue;
                 }
                 result.DeletedCount++;
@@ -147,15 +177,52 @@ public sealed class RetentionSimulationService
                 result.SkippedMissingCount,
                 result.SkippedUnsupportedCount,
                 result.FailedCount,
+                result.PendingQuarantineCount,
+                result.PendingQuarantineBytes,
                 result.FreedBytes,
                 Failures = failures.Take(20)
             }),
             token).ConfigureAwait(false);
 
         result.Summary = $"清理完成：删除 {result.DeletedCount} 个版本，释放 {FormatBytes(result.FreedBytes)}；跳过保护 {result.SkippedProtectedCount}、缺失 {result.SkippedMissingCount}、不支持 {result.SkippedUnsupportedCount}，失败 {result.FailedCount}。";
+        if (result.PendingQuarantineCount > 0)
+            result.Summary += $"有 {result.PendingQuarantineCount} 个隔离文件待重试清理（{FormatBytes(result.PendingQuarantineBytes)}）。";
         if (failures.Count > 0)
             result.Summary += " 失败明细已写入审计日志。";
         return result;
+    }
+
+    private static void ValidatePreviewRequest(RetentionSimulationApplyRequestDto request)
+    {
+        if (request.PreviewGeneratedUtc == default || request.ExpectedCandidateCount < 0 || request.ExpectedReleaseBytes < 0)
+            throw new WorkerOperationException("RETENTION_PREVIEW_REQUIRED", "请先刷新全局预览，再确认清理候选版本。");
+
+        var age = DateTime.UtcNow - request.PreviewGeneratedUtc.ToUniversalTime();
+        if (age > MaximumPreviewAge || age < -MaximumFutureClockSkew)
+            throw new WorkerOperationException("RETENTION_PREVIEW_STALE", "全局预览已过期，请刷新预览后再清理。");
+    }
+
+    private static string CreateQuarantinePath(string backupRoot, string backupId)
+    {
+        var root = backupRoot.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+        var batch = Guid.NewGuid().ToString("N");
+        var safeId = string.IsNullOrWhiteSpace(backupId) ? "archive" : backupId;
+        foreach (var invalid in Path.GetInvalidFileNameChars()) safeId = safeId.Replace(invalid, '_');
+        return Path.Combine(root, QuarantineDirectoryName, batch, safeId + ".pending");
+    }
+
+    private static void TryRestoreFromQuarantine(string quarantinePath, string originalPath)
+    {
+        try
+        {
+            if (File.Exists(quarantinePath) && !File.Exists(originalPath))
+                File.Move(quarantinePath, originalPath);
+        }
+        catch
+        {
+            // The original exception contains the database failure. The quarantine path is
+            // recorded separately by the audit summary if restoration itself is unavailable.
+        }
     }
 
     private async Task<(List<BackupVersionDto> Versions, Dictionary<string, BackupPolicyDto> Policies)> LoadAsync(CancellationToken token)

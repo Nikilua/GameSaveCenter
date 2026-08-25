@@ -106,8 +106,15 @@ public sealed class RetentionSimulationServiceTests : IDisposable
         await AddVersionAsync("g1", "outside", outsidePath, 500, DateTime.UtcNow.AddDays(-90));
 
         var service = new RetentionSimulationService(options, store, NullLogger<RetentionSimulationService>.Instance);
+        var preview = await service.PreviewAsync(CancellationToken.None);
         var result = await service.ApplyAsync(
-            new RetentionSimulationApplyRequestDto { Confirmed = true },
+            new RetentionSimulationApplyRequestDto
+            {
+                Confirmed = true,
+                PreviewGeneratedUtc = preview.GeneratedUtc,
+                ExpectedCandidateCount = preview.DeleteCandidateCount,
+                ExpectedReleaseBytes = preview.EstimatedReleaseBytes
+            },
             CancellationToken.None);
 
         Assert.Equal(1, result.DeletedCount);
@@ -121,10 +128,52 @@ public sealed class RetentionSimulationServiceTests : IDisposable
         Assert.True(File.Exists(prePath));
         Assert.True(File.Exists(healthyPath));
         Assert.True(File.Exists(outsidePath));
+        Assert.False(Directory.Exists(Path.Combine(options.LudusaviBackupDirectory, ".gsc-retention-quarantine")) &&
+                     Directory.EnumerateFiles(Path.Combine(options.LudusaviBackupDirectory, ".gsc-retention-quarantine"), "*", SearchOption.AllDirectories).Any());
         var remaining = await store.GetStorageAnalysisRowsAsync(CancellationToken.None);
         Assert.DoesNotContain(remaining, x => x.BackupId == "delete");
         Assert.Contains(remaining, x => x.BackupId == "locked");
         Assert.Contains(remaining, x => x.BackupId == "outside");
+    }
+
+    [Fact]
+    public async Task ApplyRejectsPreviewWhenIndexedStateChanged()
+    {
+        await AddZeroRetentionPolicyAsync("g1");
+        var firstPath = CreateArchive("g1-first.zip", 500);
+        await AddVersionAsync("g1", "first", firstPath, 500, DateTime.UtcNow.AddDays(-90));
+
+        var service = new RetentionSimulationService(options, store, NullLogger<RetentionSimulationService>.Instance);
+        var preview = await service.PreviewAsync(CancellationToken.None);
+        await AddVersionAsync("g1", "new", CreateArchive("g1-new.zip", 700), 700, DateTime.UtcNow.AddDays(-90));
+
+        var ex = await Assert.ThrowsAsync<WorkerOperationException>(() => service.ApplyAsync(
+            new RetentionSimulationApplyRequestDto
+            {
+                Confirmed = true,
+                PreviewGeneratedUtc = preview.GeneratedUtc,
+                ExpectedCandidateCount = preview.DeleteCandidateCount,
+                ExpectedReleaseBytes = preview.EstimatedReleaseBytes
+            }, CancellationToken.None));
+
+        Assert.Equal("RETENTION_PREVIEW_STALE", ex.Code);
+        Assert.True(File.Exists(firstPath));
+    }
+
+    [Fact]
+    public async Task ApplyRejectsExpiredPreview()
+    {
+        var service = new RetentionSimulationService(options, store, NullLogger<RetentionSimulationService>.Instance);
+        var ex = await Assert.ThrowsAsync<WorkerOperationException>(() => service.ApplyAsync(
+            new RetentionSimulationApplyRequestDto
+            {
+                Confirmed = true,
+                PreviewGeneratedUtc = DateTime.UtcNow.AddMinutes(-11),
+                ExpectedCandidateCount = 0,
+                ExpectedReleaseBytes = 0
+            }, CancellationToken.None));
+
+        Assert.Equal("RETENTION_PREVIEW_STALE", ex.Code);
     }
 
     [Fact]

@@ -58,6 +58,12 @@ namespace GameSaveCenter.Contracts
     public sealed class RetentionSimulationApplyRequestDto
     {
         public bool Confirmed { get; set; }
+        /// <summary>UTC timestamp of the read-only preview the user confirmed.</summary>
+        public DateTime PreviewGeneratedUtc { get; set; }
+        /// <summary>Candidate count shown by the preview. The Worker rechecks it before deleting.</summary>
+        public int ExpectedCandidateCount { get; set; }
+        /// <summary>Estimated bytes shown by the preview. The Worker rechecks it before deleting.</summary>
+        public long ExpectedReleaseBytes { get; set; }
     }
 
     /// <summary>Result of applying a user-confirmed retention cleanup.</summary>
@@ -68,6 +74,8 @@ namespace GameSaveCenter.Contracts
         public int SkippedMissingCount { get; set; }
         public int SkippedUnsupportedCount { get; set; }
         public int FailedCount { get; set; }
+        public int PendingQuarantineCount { get; set; }
+        public long PendingQuarantineBytes { get; set; }
         public long FreedBytes { get; set; }
         public string Summary { get; set; } = string.Empty;
     }

@@ -1649,7 +1649,13 @@ namespace GameSaveCenter.Playnite.ViewModels
 
             var result = await plugin.RequestAsync<RetentionSimulationResultDto>(
                 MessageTypes.ApplyRetentionSimulation,
-                new RetentionSimulationApplyRequestDto { Confirmed = true },
+                new RetentionSimulationApplyRequestDto
+                {
+                    Confirmed = true,
+                    PreviewGeneratedUtc = preview.GeneratedUtc,
+                    ExpectedCandidateCount = preview.DeleteCandidateCount,
+                    ExpectedReleaseBytes = preview.EstimatedReleaseBytes
+                },
                 TimeSpan.FromMinutes(10));
             ApplyOnUi(() =>
             {

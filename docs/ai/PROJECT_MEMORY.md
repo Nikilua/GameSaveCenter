@@ -1565,3 +1565,11 @@
 - 这些调整只改变共享布局密度，不改变风险状态语义、关注项真实数据、操作命令或主题资源。
 - UI-326 已通过 source/XAML 门禁、WPF 0 error、Release 构建、Core 59/59、Worker 199/199、Playnite 295/57 skipped/0 failed，以及双主题多尺寸 `render-qa OK`。
 - 真实 Playnite 重启后的折叠像素、Follow/浅色/深色、DPI 和键盘焦点仍未由本轮重新确认；不得把 RenderHarness 截图写成真实宿主逐像素验收。
+
+## 2026-08-26 CORE-327 保留策略清理安全闭环
+
+- `RetentionSimulationApplyRequestDto` 必须包含 `PreviewGeneratedUtc`、`ExpectedCandidateCount` 和 `ExpectedReleaseBytes`；Worker 在加载当前索引后重新计算候选数量/体积，不匹配或超过 10 分钟就抛出 `RETENTION_PREVIEW_STALE`，缺少预览则抛出 `RETENTION_PREVIEW_REQUIRED`。
+- `RetentionSimulationService` 处理候选 ZIP 时先移动到备份根下的 `.gsc-retention-quarantine/<batch>/<backupId>.pending`，再删除索引；索引删除失败要尝试原路恢复。不能恢复时必须保留审计明细，不能直接把原文件静默删除。
+- 隔离目录中的文件不使用 `.zip` 后缀，以免被后续 Ludusavi 归档扫描误识别；清理失败通过 `PendingQuarantineCount`/`PendingQuarantineBytes` 返回并记录审计。
+- 预览 UI 最多展示 200 条候选明细，摘要必须明确“前 N 条/全部候选”，避免产生完整列表的错误认知。
+- CORE-327 已完成 Worker 定向测试 6/6；本阶段跳过真实 Playnite 宿主验收，不能把离线测试写成主题、DPI 或宿主行为证据。
