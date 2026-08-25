@@ -26,21 +26,31 @@ public sealed class ProductionShellChromeSourceTests
     {
         var shell = ReadSource("src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml");
         var shellCode = ReadSource("src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml.cs");
+        var resources = ReadSource("src", "GameSaveCenter.Playnite", "Themes", "AcrylicProductionResources.xaml");
 
         Assert.Contains("x:Name=\"SidebarColumn\" Width=\"236\"", shell);
         Assert.Contains("x:Name=\"SidebarContentLayer\"", shell);
-        Assert.Contains("AcrylicSidebarBookmarkButton", shell);
+        Assert.Contains("AcrylicSidebarCollapseButton", shell);
         Assert.Contains("x:Name=\"SidebarCollapseButton\"", shell);
         Assert.Contains("VerticalAlignment=\"Bottom\"", shell);
-        Assert.Contains("Margin=\"0,0,-1,16\"", shell);
+        Assert.Contains("x:Name=\"SidebarCollapseButtonContent\"", shell);
+        Assert.Contains("Text=\"收起侧栏\"", shell);
+        Assert.Contains("Property=\"Width\" Value=\"168\"", resources);
+        Assert.Contains("Property=\"Height\" Value=\"34\"", resources);
+        Assert.Contains("HorizontalAlignment=\"Left\"", shell);
+        Assert.Contains("Margin=\"12,0,0,14\"", shell);
         Assert.Contains("Click=\"OnSidebarCollapseClick\"", shell);
         Assert.Contains("AutomationProperties.Name=\"收起导航栏\"", shell);
+        Assert.Contains("x:Name=\"NavOverviewContent\"", shell);
         Assert.Contains("x:Name=\"SidebarProductionVersionText\"", shell);
         Assert.Contains("sidebarCollapsed = !sidebarCollapsed", shellCode);
         Assert.Contains("sidebarTransitionRunning", shellCode);
         Assert.Contains("DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(110))", shellCode);
         Assert.Contains("MotionEnabledProvider", shellCode);
         Assert.Contains("new GridLength(sidebarCollapsed ? 78 : 236)", shellCode);
+        Assert.Contains("SidebarCollapseLabel.Visibility", shellCode);
+        Assert.Contains("SidebarCollapseButtonContent.HorizontalAlignment", shellCode);
+        Assert.Contains("HorizontalAlignment.Center", shellCode);
         Assert.Contains("typeof(AcrylicProductionShellView).Assembly.GetName().Version", shellCode);
         Assert.Contains("展开导航栏", shellCode);
         Assert.Contains("ApplyPageLayout();", shellCode);

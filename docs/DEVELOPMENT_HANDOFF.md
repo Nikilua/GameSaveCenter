@@ -992,3 +992,10 @@ git branch --show-current
 - 品牌名称和 `SidebarProductionBadge` 保持原位置，版本气泡继续显示程序集版本；`SidebarContentLayer` 只负责标题和真实导航内容，书签位于独立覆盖层，不改变导航项的测量和事件。
 - 展开/收起仍使用 `ApplySidebarLayout` 的 236/78 DIP 宽度和页面响应式重算；动画只淡出/淡入并做 4 DIP `TranslateTransform`，时长 110/170ms。`MotionEnabledProvider` 连接到 `DashboardView.MotionEnabled`，关闭动画、系统禁用动画和高对比度时必须同步切换。
 - 本阶段 `validate-source.py`、`check-xaml.ps1`、WPF 静态审查（0 error）、Release、Playnite 295 通过/57 跳过和 RenderHarness `render-qa OK` 均已通过；真实 Playnite 重载后的书签点击、键盘焦点、浅色/深色/Follow 与 DPI 仍需人工复核。
+
+## 2026-08-25 UI-325 侧栏折叠控件纠偏交接
+
+- UI-324 的字面“书签”实现已被否定并替换：不要恢复 `AcrylicSidebarBookmarkButton` 或 Path 丝带。用户参考图要求的是侧栏底部的一体式普通圆角控制。
+- 当前使用共享 `AcrylicSidebarCollapseButton`：展开态约 168×34 DIP，左侧图标、中间“收起侧栏”、右侧箭头；折叠态约 40×34 DIP，只显示居中的展开图标。控件位于侧栏底部，不挤压品牌名称和版本气泡。
+- `ApplySidebarLayout` 显式设置折叠按钮尺寸/边距、按钮内容居中、`SidebarCollapseLabel`/箭头可见性，以及 `NavOverviewContent` 等导航内部 StackPanel 的折叠态居中；原有 236/78 DIP 侧栏宽度、真实导航、动画和页面重排保持不变。
+- 质量边界：源码/XAML/Release/Playnite 契约及 `.tmp/ui-qa-sidebar-control-v1` 离屏 QA 需要保持通过；真实 Playnite 重载后仍需人工确认点击、键盘焦点、Light/Dark/Follow、125%/150% DPI，不能把 RenderHarness 当作宿主像素证据。

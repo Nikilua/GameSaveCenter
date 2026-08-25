@@ -308,6 +308,17 @@ namespace GameSaveCenter.Playnite.Views
             NavMaintenanceLabel.Visibility = labelVisibility;
             NavSettingsLabel.Visibility = labelVisibility;
 
+            foreach (var content in new[]
+                     {
+                         NavOverviewContent, NavSavesContent, NavTrainersContent, NavMediaContent,
+                         NavTasksContent, NavMaintenanceContent, NavSettingsContent
+                     })
+            {
+                content.HorizontalAlignment = expanded
+                    ? HorizontalAlignment.Left
+                    : HorizontalAlignment.Center;
+            }
+
             var navigationPadding = expanded ? new Thickness(12, 10, 12, 10) : new Thickness(8, 10, 8, 10);
             foreach (var item in new[] { NavOverview, NavSaves, NavTrainers, NavMedia, NavTasks, NavMaintenance, NavSettings })
             {
@@ -317,7 +328,20 @@ namespace GameSaveCenter.Playnite.Views
                 item.HorizontalContentAlignment = expanded ? HorizontalAlignment.Stretch : HorizontalAlignment.Center;
             }
 
-            SidebarCollapseButton.Content = expanded ? "\uE76B" : "\uE76C";
+            SidebarCollapseButton.Width = expanded ? 168 : 40;
+            SidebarCollapseButton.Height = 34;
+            SidebarCollapseButton.HorizontalAlignment = expanded
+                ? HorizontalAlignment.Left
+                : HorizontalAlignment.Center;
+            SidebarCollapseButton.Margin = expanded
+                ? new Thickness(12, 0, 0, 14)
+                : new Thickness(0, 0, 0, 14);
+            SidebarCollapseButtonContent.HorizontalAlignment = expanded
+                ? HorizontalAlignment.Stretch
+                : HorizontalAlignment.Center;
+            SidebarCollapseLabel.Visibility = expanded ? Visibility.Visible : Visibility.Collapsed;
+            SidebarCollapseChevron.Visibility = expanded ? Visibility.Visible : Visibility.Collapsed;
+            SidebarCollapseGlyph.Text = expanded ? "\uE76B" : "\uE76C";
             SidebarCollapseButton.ToolTip = expanded ? "收起导航栏" : "展开导航栏";
             AutomationProperties.SetName(SidebarCollapseButton, expanded ? "收起导航栏" : "展开导航栏");
 

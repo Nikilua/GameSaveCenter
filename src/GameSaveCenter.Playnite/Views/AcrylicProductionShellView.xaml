@@ -123,33 +123,33 @@
                                         <RadioButton x:Name="NavOverview" GroupName="DemoWorkspaceNavigation"
                                                      Style="{StaticResource AcrylicNavItem}"
                                                      Tag="Overview" Checked="OnNavChecked" ToolTip="首页" AutomationProperties.Name="打开首页">
-                                            <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock x:Name="NavOverviewLabel" Text="首页" FontWeight="SemiBold"/></StackPanel>
+                                            <StackPanel x:Name="NavOverviewContent" Orientation="Horizontal"><TextBlock Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock x:Name="NavOverviewLabel" Text="首页" FontWeight="SemiBold"/></StackPanel>
                                         </RadioButton>
                                         <RadioButton x:Name="NavSaves" GroupName="DemoWorkspaceNavigation"
                                                      Style="{StaticResource AcrylicNavItem}" Tag="Saves" Checked="OnNavChecked" ToolTip="存档中心" AutomationProperties.Name="打开存档中心">
-                                            <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock x:Name="NavSavesLabel" Text="存档中心"/></StackPanel>
+                                            <StackPanel x:Name="NavSavesContent" Orientation="Horizontal"><TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock x:Name="NavSavesLabel" Text="存档中心"/></StackPanel>
                                         </RadioButton>
                                         <RadioButton x:Name="NavTrainers" GroupName="DemoWorkspaceNavigation"
                                                      Style="{StaticResource AcrylicNavItem}" Tag="Trainers" Checked="OnNavChecked" ToolTip="修改器中心" AutomationProperties.Name="打开修改器中心">
-                                            <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE90F;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock x:Name="NavTrainersLabel" Text="修改器中心"/></StackPanel>
+                                            <StackPanel x:Name="NavTrainersContent" Orientation="Horizontal"><TextBlock Text="&#xE90F;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock x:Name="NavTrainersLabel" Text="修改器中心"/></StackPanel>
                                         </RadioButton>
                                         <RadioButton x:Name="NavMedia" GroupName="DemoWorkspaceNavigation"
                                                      Style="{StaticResource AcrylicNavItem}" Tag="Media" Checked="OnNavChecked" ToolTip="媒体中心" AutomationProperties.Name="打开媒体中心">
-                                            <StackPanel Orientation="Horizontal"><TextBlock Text="&#xEB9F;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock x:Name="NavMediaLabel" Text="媒体中心"/></StackPanel>
+                                            <StackPanel x:Name="NavMediaContent" Orientation="Horizontal"><TextBlock Text="&#xEB9F;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock x:Name="NavMediaLabel" Text="媒体中心"/></StackPanel>
                                         </RadioButton>
                                         <RadioButton x:Name="NavTasks" GroupName="DemoWorkspaceNavigation"
                                                      Style="{StaticResource AcrylicNavItem}" Tag="Tasks" Checked="OnNavChecked" ToolTip="任务中心" AutomationProperties.Name="打开任务中心">
-                                            <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE9D5;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock x:Name="NavTasksLabel" Text="任务中心"/></StackPanel>
+                                            <StackPanel x:Name="NavTasksContent" Orientation="Horizontal"><TextBlock Text="&#xE9D5;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock x:Name="NavTasksLabel" Text="任务中心"/></StackPanel>
                                         </RadioButton>
                                         <RadioButton x:Name="NavMaintenance" GroupName="DemoWorkspaceNavigation"
                                                      Style="{StaticResource AcrylicNavItem}" Tag="Maintenance" Checked="OnNavChecked" ToolTip="维护中心" AutomationProperties.Name="打开维护中心">
-                                            <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock x:Name="NavMaintenanceLabel" Text="维护中心"/></StackPanel>
+                                            <StackPanel x:Name="NavMaintenanceContent" Orientation="Horizontal"><TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock x:Name="NavMaintenanceLabel" Text="维护中心"/></StackPanel>
                                         </RadioButton>
                                         <Rectangle Height="1" Fill="{DynamicResource GscDividerBrush}" Margin="4,8,4,12"/>
                                         <RadioButton x:Name="NavSettings" GroupName="DemoWorkspaceNavigation"
                                                      Style="{StaticResource AcrylicNavItem}" Tag="Settings" Checked="OnNavChecked" ToolTip="设置"
                                                      AutomationProperties.Name="打开 GameSaveCenter 设置">
-                                            <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock x:Name="NavSettingsLabel" Text="设置"/></StackPanel>
+                                            <StackPanel x:Name="NavSettingsContent" Orientation="Horizontal"><TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock x:Name="NavSettingsLabel" Text="设置"/></StackPanel>
                                         </RadioButton>
                                     </StackPanel>
                                 </ScrollViewer>
@@ -157,16 +157,36 @@
                         </Border>
                     </Grid>
                     <ui:Button x:Name="SidebarCollapseButton"
-                               Grid.RowSpan="3"
-                               Style="{StaticResource AcrylicSidebarBookmarkButton}"
-                               HorizontalAlignment="Right"
+                               Style="{StaticResource AcrylicSidebarCollapseButton}"
+                               HorizontalAlignment="Left"
                                VerticalAlignment="Bottom"
-                               Margin="0,0,-1,16"
-                               Content="&#xE76B;"
+                               Margin="12,0,0,14"
                                ToolTip="收起导航栏"
                                AutomationProperties.Name="收起导航栏"
                                Click="OnSidebarCollapseClick"
-                               Panel.ZIndex="3"/>
+                               Panel.ZIndex="3">
+                        <Grid x:Name="SidebarCollapseButtonContent" HorizontalAlignment="Stretch">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Border x:Name="SidebarCollapseGlyphFrame" Width="20" Height="20" CornerRadius="10"
+                                    Background="{DynamicResource GscAccentTintBrush}"
+                                    VerticalAlignment="Center">
+                                <TextBlock x:Name="SidebarCollapseGlyph" Text="&#xE76B;"
+                                           FontFamily="Segoe MDL2 Assets" FontSize="10"
+                                           Foreground="{DynamicResource GscAccentBrush}"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock x:Name="SidebarCollapseLabel" Grid.Column="1" Text="收起侧栏"
+                                       Margin="8,0,8,0" VerticalAlignment="Center"
+                                       TextTrimming="CharacterEllipsis"/>
+                            <TextBlock x:Name="SidebarCollapseChevron" Grid.Column="2" Text="›"
+                                       FontSize="16" Foreground="{DynamicResource GscSecondaryTextBrush}"
+                                       VerticalAlignment="Center"/>
+                        </Grid>
+                    </ui:Button>
                 </Grid>
             </Border>
 

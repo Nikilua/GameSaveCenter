@@ -4629,3 +4629,26 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 
 - 这是共享资源级的自适应玻璃材质，不是给每个卡片挂 BlurEffect；后者会模糊卡片内容且成本更高。输入框等交互控件继续保持相对中性的填充，避免游戏图片颜色干扰输入可读性。
 - 本轮没有新增真实 Playnite 重启后的逐页像素截图；RenderHarness 证据只能证明受控 WPF 的布局、主题和资源加载没有回归。
+
+## 2026-08-25 UI-325 侧栏底部折叠控件按设计图修正
+
+**问题确认：**
+
+- 用户明确指出上一轮的“书签”理解错误：不需要字面上的丝带/书签轮廓，而是设计图中的侧栏底部一体式控制。
+- 上一轮 `AcrylicSidebarBookmarkButton` 的垂直 Path 外形已被本阶段替换，UI-325 的视觉和实现事实覆盖 UI-324 中关于字面书签的描述。
+
+**实现内容：**
+
+- 新增共享 `AcrylicSidebarCollapseButton`，基于 `GscWpfUiButton` 的普通圆角按钮模板；展开态位于侧栏底部，约 168×34 DIP，显示图标、“收起侧栏”和右侧箭头。
+- 折叠态按钮缩为 40×34 DIP，保留单个展开图标并通过按钮本身和内容网格的双重居中保证水平居中；导航项内部 StackPanel 也显式切换到居中对齐，避免图标偏左。
+- 原有 110/170ms 淡出、横向 4 DIP 过渡、动画设置和系统高对比度/禁用动画降级保持不变；真实 `Nav*` RadioButton、绑定、页面宽度重算和可访问名称不变。
+
+**验证结果：**
+
+- `validate-source.py`、`check-xaml.ps1`、`git diff --check` 通过；Release 构建 0 警告/0 错误。
+- Playnite 定向折叠契约通过；完整测试修正后应为 295 通过、57 跳过、0 失败。
+- `scripts/render-qa.ps1 -Configuration Release -Output .tmp/ui-qa-sidebar-control-v1`：`render-qa OK`，浅色/深色、多尺寸和 resize transition 通过。
+
+**真实宿主边界：**
+
+- 当前 RenderHarness 只能证明共享样式资源、页面响应式和主题回归；仍需在真实 Playnite 中确认展开/折叠点击、键盘焦点、浅色/深色/Follow 和 DPI 像素效果，不能把离屏报告写成宿主 1:1 验收。

@@ -1500,3 +1500,11 @@
 - `OnSidebarCollapseClick` 在动画启用时对 `SidebarContentLayer` 做短暂淡出、4 DIP 横向位移再淡入；`MotionEnabledProvider` 从 `DashboardView` 提供持久化动画设置，系统高对比度/禁用动画时走同步切换。不要把动画改成循环计时器，也不要给页面列表内容加 BlurEffect。
 - 书签 ControlTemplate 只使用共享动态材质和状态触发器，包含悬停、按下、键盘焦点、禁用和 Tooltip/AutomationProperties；不要将折叠按钮恢复为普通导航项或重新放回品牌行。
 - UI-324 已通过源码/XAML、WPF 0 error、Release、Playnite 295/352 和 RenderHarness `render-qa OK`；真实 Playnite 宿主点击/键盘/DPI 像素仍是人工边界。
+
+## 2026-08-25 UI-325 当前事实：侧栏底部一体式折叠控件
+
+- UI-325 覆盖 UI-324 中“字面垂直书签”的视觉指导。当前不得恢复 `AcrylicSidebarBookmarkButton`、Path 丝带轮廓或贴在侧栏右边的书签形状；“书签”只表示用户提供的底部控制位置概念。
+- 当前共享样式是 `AcrylicSidebarCollapseButton`，基于 `GscWpfUiButton` 的普通圆角按钮。展开态在侧栏底部显示图标、“收起侧栏”和右箭头，约 168×34 DIP；折叠态为 40×34 DIP 的小圆角按钮，只保留居中的展开图标。
+- 折叠态必须同时设置 `SidebarCollapseButton` 与 `SidebarCollapseButtonContent` 的居中；所有 `Nav*Content` 在折叠时也必须显式 `HorizontalAlignment=Center`。不能只隐藏文字后依赖默认 ContentPresenter 推断位置。
+- `OnSidebarCollapseClick` 的动画、MotionEnabledProvider、系统动画/高对比度降级以及 `ApplyHeaderLayout`/`ApplyPageLayout` 重算继续保持；不能为了换控件改变真实导航绑定、滚动、虚拟化或版本气泡。
+- UI-325 已完成源码/XAML、Release、定向折叠契约和 RenderHarness `render-qa OK`；完整测试与真实 Playnite 点击/键盘/DPI 像素复核是本阶段提交前/宿主边界。

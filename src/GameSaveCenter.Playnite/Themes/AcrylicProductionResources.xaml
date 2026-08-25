@@ -45,90 +45,22 @@
         </Setter>
     </Style>
 
-    <!-- A small edge bookmark keeps the collapse affordance out of the brand row.  It is
-         intentionally a shell-only control: the main navigation remains unchanged and the
-         bookmark can stay hit-testable while the navigation content fades during a toggle. -->
-    <Style x:Key="AcrylicSidebarBookmarkButton" TargetType="{x:Type ui:Button}">
-        <Setter Property="OverridesDefaultStyle" Value="True"/>
-        <Setter Property="Width" Value="30"/>
-        <Setter Property="Height" Value="44"/>
+    <!-- The collapse affordance is part of the sidebar's bottom chrome.  It deliberately
+         uses the shared rounded button surface; the shell narrows it in compact mode. -->
+    <Style x:Key="AcrylicSidebarCollapseButton"
+           TargetType="{x:Type ui:Button}"
+           BasedOn="{StaticResource GscWpfUiButton}">
+        <Setter Property="Width" Value="168"/>
+        <Setter Property="Height" Value="34"/>
         <Setter Property="MinWidth" Value="0"/>
         <Setter Property="MinHeight" Value="0"/>
-        <Setter Property="Padding" Value="0"/>
-        <Setter Property="Background" Value="{DynamicResource GscGlassStrongBrush}"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
-        <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
-        <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
-        <Setter Property="FontSize" Value="12"/>
-        <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
+        <Setter Property="Padding" Value="10,5"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="ContentTemplate" Value="{x:Null}"/>
+        <Setter Property="ui:Button.CornerRadius" Value="11"/>
         <Setter Property="ToolTipService.ShowDuration" Value="12000"/>
         <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ui:Button}">
-                    <Grid SnapsToDevicePixels="True" UseLayoutRounding="True">
-                        <Path x:Name="BookmarkChrome"
-                              Data="M 1,1 H 29 V 43 L 15,35 L 1,43 Z"
-                              Stretch="Fill"
-                              Fill="{TemplateBinding Background}"
-                              Stroke="{TemplateBinding BorderBrush}"
-                              StrokeThickness="1"
-                              StrokeLineJoin="Round"
-                              Effect="{DynamicResource GscSurfaceEffect}"/>
-                        <Path x:Name="BookmarkHover"
-                              Data="M 1,1 H 29 V 43 L 15,35 L 1,43 Z"
-                              Stretch="Fill"
-                              Fill="{DynamicResource GscAccentTintBrush}"
-                              Opacity="0"
-                              IsHitTestVisible="False"/>
-                        <ContentPresenter Content="{TemplateBinding Content}"
-                                          ContentTemplate="{TemplateBinding ContentTemplate}"
-                                          ContentStringFormat="{TemplateBinding ContentStringFormat}"
-                                          HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"
-                                          Margin="0,0,0,5"
-                                          RecognizesAccessKey="True"
-                                          TextElement.Foreground="{TemplateBinding Foreground}"
-                                          TextElement.FontFamily="{TemplateBinding FontFamily}"
-                                          TextElement.FontSize="{TemplateBinding FontSize}"
-                                          TextElement.FontWeight="{TemplateBinding FontWeight}"/>
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="BookmarkChrome" Property="Stroke" Value="{DynamicResource GscAccentBrush}"/>
-                            <Trigger.EnterActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="BookmarkHover"
-                                                         Storyboard.TargetProperty="Opacity"
-                                                         To="1" Duration="0:0:0.12"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </Trigger.EnterActions>
-                            <Trigger.ExitActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="BookmarkHover"
-                                                         Storyboard.TargetProperty="Opacity"
-                                                         To="0" Duration="0:0:0.16"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </Trigger.ExitActions>
-                        </Trigger>
-                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                            <Setter TargetName="BookmarkChrome" Property="Stroke" Value="{DynamicResource GscAccentBrush}"/>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="BookmarkChrome" Property="Opacity" Value="0.84"/>
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="BookmarkChrome" Property="Opacity" Value="0.46"/>
-                            <Setter TargetName="BookmarkHover" Property="Visibility" Value="Collapsed"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
     </Style>
 
 </ResourceDictionary>
