@@ -147,7 +147,7 @@
                     <UniformGrid x:Name="AppearanceFields" Columns="2" Margin="0,0,0,12">
                         <StackPanel Margin="0,0,12,10">
                         <TextBlock Text="界面主题" Margin="0,0,0,4"/>
-                        <ComboBox Style="{StaticResource GscWpfUiComboBox}" SelectedIndex="0" SelectedValue="{Binding ThemeMode, Mode=TwoWay, TargetNullValue={x:Static settings:GameSaveCenterThemeMode.FollowPlaynite}, FallbackValue={x:Static settings:GameSaveCenterThemeMode.FollowPlaynite}}" SelectedValuePath="Tag" SelectionChanged="OnThemeModeChanged">
+                        <ComboBox x:Name="ThemeModeSelector" Style="{StaticResource GscWpfUiComboBox}" SelectedIndex="0" SelectedValue="{Binding ThemeMode, Mode=TwoWay, TargetNullValue={x:Static settings:GameSaveCenterThemeMode.FollowPlaynite}, FallbackValue={x:Static settings:GameSaveCenterThemeMode.FollowPlaynite}}" SelectedValuePath="Tag" SelectionChanged="OnThemeModeChanged">
                             <ComboBoxItem Content="跟随 Playnite" Tag="{x:Static settings:GameSaveCenterThemeMode.FollowPlaynite}"/>
                             <ComboBoxItem Content="浅色" Tag="{x:Static settings:GameSaveCenterThemeMode.Light}"/>
                             <ComboBoxItem Content="深色" Tag="{x:Static settings:GameSaveCenterThemeMode.Dark}"/>

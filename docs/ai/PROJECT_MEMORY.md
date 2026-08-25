@@ -3,6 +3,13 @@
 > 维护时间：2026-08-25
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-25 UI-318 当前事实：Follow Playnite 资源解析
+
+- Playnite Desktop 默认主题的窗口背景资源键是历史拼写 `WindowBackgourndBrush`，由 `MainWindowStyle`/`StandardWindowStyle` 使用；Follow 解析必须保留该键，同时兼容 `WindowBackgroundBrush` 等第三方主题键。
+- 设置页可能被 Playnite 放在独立设置窗口中，不能只依赖插件 UserControl 的视觉树背景。`AdaptiveThemePalette` 现在还显式检查 owner Window 与 `Application.Current` 资源；背景仍不可用时用宿主 `TextBrush`/`TextBrushDark` 推断浅深。
+- `GameSaveCenterSettingsView.OnThemeModeChanged` 先把 ComboBox 的 enum 写回 `CurrentSettings.ThemeMode`，再排队 `ApplyAdaptiveTheme`，确保从强制深色切换 Follow 不会继续使用旧值。
+- UI-318 验证：真实资源键回归测试、Release 全量构建/测试和 v8 多主题多尺寸 render QA 均通过。离屏 RenderHarness 的默认 Follow 没有 Playnite 宿主资源，仍会按中性深色回退；真实宿主需安装后复核。
+
 ## 2026-08-25 UI-317 当前事实：壳体圆角玻璃与 Follow Playnite 浅色主题
 
 - 生产 `AcrylicProductionShellView` 的导航由 `SidebarSurface` 真实 Border 承载，使用 `GscRedesignSidebarSurface` 与动态 `GscSidebarMaterialBrush`；不要再让内部 Grid 直接承担整块导航背景，否则右侧上下角不会被圆角裁切。

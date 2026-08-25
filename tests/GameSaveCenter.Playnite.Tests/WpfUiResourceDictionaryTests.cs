@@ -34,7 +34,10 @@ public sealed class WpfUiResourceDictionaryTests
                 // Simulate the plugin's initial dark fallback on the visual itself while the
                 // Playnite theme publishes a light window resource above it.
                 host.Background = new SolidColorBrush(Color.FromRgb(17, 19, 25));
-                host.Resources["WindowBackgroundBrush"] = new SolidColorBrush(Color.FromRgb(248, 249, 252));
+                // This is Playnite Desktop's actual built-in resource key (including its
+                // historical spelling). Settings dialogs may not inherit the main window's
+                // Background property, so FollowPlaynite must read this resource directly.
+                host.Resources["WindowBackgourndBrush"] = new SolidColorBrush(Color.FromRgb(248, 249, 252));
                 host.Resources["TextBrush"] = new SolidColorBrush(Colors.Black);
                 host.Resources["TextBrushDark"] = new SolidColorBrush(Colors.White);
                 host.Resources["HighlightGlyphBrush"] = new SolidColorBrush(hostAccent);
@@ -4947,6 +4950,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("SelectedIndex=\"0\" SelectedValue=\"{Binding BackupFormat, Mode=TwoWay, TargetNullValue={x:Static contracts:BackupStorageFormat.Zip}, FallbackValue={x:Static contracts:BackupStorageFormat.Zip}}\"", settings);
         Assert.Contains("SelectedIndex=\"0\" SelectedValue=\"{Binding Compression, Mode=TwoWay, TargetNullValue=zstd, FallbackValue=zstd}\"", settings);
         Assert.Contains("SelectedIndex=\"0\" SelectedValue=\"{Binding ThemeMode, Mode=TwoWay, TargetNullValue={x:Static settings:GameSaveCenterThemeMode.FollowPlaynite}, FallbackValue={x:Static settings:GameSaveCenterThemeMode.FollowPlaynite}}\"", settings);
+        Assert.Contains("x:Name=\"ThemeModeSelector\"", settings);
+        Assert.Contains("CurrentSettings.ThemeMode = mode", settingsCode);
         Assert.Contains("IsChecked=\"{Binding EnableUiAnimations}\"", settings);
         Assert.Contains("IsChecked=\"{Binding EnableCloudUpload}\"", settings);
         Assert.Contains("Click=\"OnExportSettingsClick\"", settings);

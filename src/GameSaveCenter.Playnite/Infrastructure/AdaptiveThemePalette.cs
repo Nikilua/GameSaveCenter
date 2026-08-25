@@ -55,6 +55,10 @@ namespace GameSaveCenter.Playnite.Infrastructure
     {
         private static readonly string[] BackgroundResourceKeys =
         {
+            // Playnite Desktop's built-in theme uses this historical spelling. It is the
+            // resource applied by MainWindowStyle/StandardWindowStyle and is the reliable
+            // source when a plugin settings view is hosted in a separate dialog window.
+            "WindowBackgourndBrush",
             "WindowBackgroundBrush",
             "MainWindowBackgroundBrush",
             "ControlBackgroundBrush",
@@ -73,6 +77,8 @@ namespace GameSaveCenter.Playnite.Infrastructure
             var forcedLight = themeMode == GameSaveCenterThemeMode.Light;
             var forcedDark = themeMode == GameSaveCenterThemeMode.Dark;
             var highContrast = SystemParameters.HighContrast;
+            var hostText = highContrast ? null : ResolveResourceColor(host, "TextBrush");
+            var hostInverseText = highContrast ? null : ResolveResourceColor(host, "TextBrushDark");
             // The UserControl itself is initially backed by GameSaveCenter's dark fallback
             // brush. Resolve Playnite's published theme resource first; otherwise FollowPlaynite
             // would always classify the page from that local fallback before it can see the host.
@@ -84,10 +90,11 @@ namespace GameSaveCenter.Playnite.Infrastructure
                         ? Color.FromRgb(23, 24, 31)
                         : ResolveFirstResourceColor(host, BackgroundResourceKeys)
                             ?? ResolveHostBackground(host)
+                            ?? InferBackgroundFromHostText(hostText, hostInverseText)
                             ?? Color.FromRgb(17, 19, 25);
 
-            var text = highContrast ? SystemColors.WindowTextColor : forcedLight ? Colors.Black : forcedDark ? Colors.White : ResolveResourceColor(host, "TextBrush");
-            var inverseText = highContrast ? SystemColors.WindowTextColor : forcedLight ? Colors.White : forcedDark ? Colors.Black : ResolveResourceColor(host, "TextBrushDark");
+            var text = highContrast ? SystemColors.WindowTextColor : forcedLight ? Colors.Black : forcedDark ? Colors.White : hostText;
+            var inverseText = highContrast ? SystemColors.WindowTextColor : forcedLight ? Colors.White : forcedDark ? Colors.Black : hostInverseText;
 
             // If a theme uses a transparent/image background, infer a stable local surface from the
             // required text brushes. Otherwise preserve some of the theme's own color character.
@@ -894,7 +901,39 @@ namespace GameSaveCenter.Playnite.Infrastructure
         }
 
         private static Color? ResolveResourceColor(FrameworkElement host, string key)
-            => ExtractUsableColor(host.TryFindResource(key) as Brush);
+        {
+            var color = ExtractUsableColor(host.TryFindResource(key) as Brush);
+            if (color.HasValue) return color;
+
+            // Settings can be presented by Playnite in a separate Window whose resource
+            // dictionary is not part of the plugin UserControl's logical tree. Check the
+            // actual owner and application scopes explicitly instead of relying on only one
+            // WPF resource lookup path.
+            var window = Window.GetWindow(host);
+            color = ExtractUsableColor(window?.TryFindResource(key) as Brush);
+            if (color.HasValue) return color;
+
+            return ExtractUsableColor(Application.Current?.TryFindResource(key) as Brush);
+        }
+
+        private static Color? InferBackgroundFromHostText(Color? text, Color? inverseText)
+        {
+            if (text.HasValue)
+            {
+                var textLuminance = RelativeLuminance(text.Value);
+                if (textLuminance <= 0.45) return Color.FromRgb(243, 244, 248);
+                if (textLuminance >= 0.60) return Color.FromRgb(17, 19, 25);
+            }
+
+            if (inverseText.HasValue)
+            {
+                var inverseLuminance = RelativeLuminance(inverseText.Value);
+                if (inverseLuminance >= 0.60) return Color.FromRgb(243, 244, 248);
+                if (inverseLuminance <= 0.45) return Color.FromRgb(17, 19, 25);
+            }
+
+            return null;
+        }
 
         private static Color? ExtractUsableColor(Brush? brush)
         {

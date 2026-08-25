@@ -127,6 +127,14 @@ namespace GameSaveCenter.Playnite.Settings
 
         private void OnThemeModeChanged(object sender, SelectionChangedEventArgs e)
         {
+            // SelectionChanged can arrive before the TwoWay binding has pushed the enum back
+            // into the settings object. Write the selected value explicitly so switching from
+            // Dark to Follow Playnite immediately re-evaluates the host theme in this window.
+            if (CurrentSettings != null && sender is ComboBox selector
+                && selector.SelectedValue is GameSaveCenterThemeMode mode)
+            {
+                CurrentSettings.ThemeMode = mode;
+            }
             QueueAdaptiveThemeUpdate();
         }
 

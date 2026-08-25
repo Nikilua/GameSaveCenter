@@ -2,6 +2,13 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-25 UI-318 Follow Playnite 主题读取修复
+
+- Playnite Desktop 的实际背景资源键是 `WindowBackgourndBrush`；Follow 解析已加入该键，并兼容其他常见背景键。设置窗口还会显式检查 owner Window 和 `Application.Current` 资源。
+- 当主题只提供文本资源时，使用 `TextBrush`/`TextBrushDark` 明暗推断安全背景；强制浅色/深色行为保持不变。
+- 设置页主题 ComboBox 会先显式写回 `CurrentSettings.ThemeMode` 再刷新材质，避免从深色切换 Follow 时使用旧枚举值。
+- UI-318 已通过定向/全量测试、Release 构建、源码/XAML/WPF 门禁和 `.tmp/ui-qa-settings-follow-v8/render-qa-report.txt`；真实 Playnite 重启后需确认实际浅色宿主窗口。
+
 ## 2026-08-25 UI-317 壳体圆角玻璃与 Follow Playnite 主题
 
 - 生产壳导航当前由 `SidebarSurface` 的真实圆角 Border 裁切，材质使用动态 `GscSidebarMaterialBrush`；页脚由 `FooterSurface` 提供四边圆角玻璃面。不要恢复让内部 Grid 直接绘制导航背景的结构。

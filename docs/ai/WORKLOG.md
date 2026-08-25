@@ -2,6 +2,26 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-25 UI-318 修复设置页 Follow Playnite 不生效
+
+**问题确认：**
+
+- 首页已经能呈现浅色，但设置窗口在选择“跟随 Playnite”后仍使用深色回退；强制选择“浅色”则正常。
+- Playnite Desktop 默认主题实际通过历史拼写的 `WindowBackgourndBrush` 提供窗口背景，之前的资源键列表遗漏了它；设置窗口也可能不在主窗口视觉树上。
+
+**实现内容：**
+
+- `AdaptiveThemePaletteFactory` 加入 Playnite 实际背景资源键，并显式检查设置窗口和 `Application.Current` 资源；背景资源不可用时，用宿主 `TextBrush`/`TextBrushDark` 明暗做安全兜底。
+- 设置主题 ComboBox 在 `SelectionChanged` 中显式写回 `GameSaveCenterThemeMode` 后再排队刷新，修复从“深色”切换到“跟随 Playnite”时可能仍读取旧值的问题。
+- 回归测试改为使用 Playnite 的真实历史资源键，并锁定设置选择器与即时写回逻辑。
+
+**验证结果：**
+
+- 定向 WPF 资源测试：118 通过、39 跳过、0 失败。
+- `validate-source.py`、`check-xaml.ps1`、`git diff --check` 通过；WPF 静态审查 0 error、18 条既有 warning、172 条 info。
+- Release 构建 0 warning/0 error；全量测试 Core 59/59、Worker 199/199、Playnite 289 通过/57 跳过/0 失败。
+- `.tmp/ui-qa-settings-follow-v8/render-qa-report.txt` 为 `render-qa OK`，包含设置页多尺寸与浅/深主题回归；真实宿主窗口仍需重启后人工确认。
+
 ## 2026-08-25 UI-317 修复壳体玻璃圆角与跟随主题
 
 **问题确认：**
