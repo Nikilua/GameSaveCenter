@@ -1580,3 +1580,8 @@
 - `EnvironmentCheckRequestDto.IncludeBackupProbe` 控制是否调用 Ludusavi 的全库只读列表；首次自动检查传 false，手动“重新检查”传 true。`IncludeRemoteProbe` 同样在首次自动检查关闭，避免启动时网络探测。
 - IPC 默认请求仍保持完整探测（两个开关默认 true），只有 Playnite 首次启动路径显式使用快速模式，避免改变其他调用方语义。
 - CORE-328 的真实逐窗口 DPI、Playnite 多屏位置和远端探测宿主行为仍属于跳过的人工验收边界。
+
+## 2026-08-26 PERF-329 大库更新回归门槛
+
+- `LargeLibraryPerformanceTests.GamePicker2000_Benchmark_WritesMeasuredTimings` 不仅写 profiling，还必须保持 2000 条首次/单项变化更新和任务首次替换低于 5 秒、未变化替换低于 1 秒；阈值刻意宽松，只拦截数量级退化。
+- 详细基准仍写入 `large-library.txt`，不得把这些离线集合耗时扩写为真实 Playnite 渲染帧率。

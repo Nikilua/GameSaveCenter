@@ -4838,3 +4838,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 **实现边界：**
 
 - `GetDpiForSystem` 不可用时回退 1.0；真实窗口所在显示器的逐窗口 DPI 仍需真实 Playnite 宿主人工复核，本轮按约定跳过。
+
+## 2026-08-26 PERF-329 大库更新回归门槛
+
+- 为 `LargeLibraryPerformanceTests.GamePicker2000_Benchmark_WritesMeasuredTimings` 增加宽松的 2000 条数据更新上限：首次/单项变化更新及任务首次替换 5 秒，未变化替换 1 秒。
+- 继续保留详细耗时写入 `large-library.txt` 的 profiling 行为；门槛只用于拦截数量级退化或明显卡死，不替代真实 Playnite 帧率验收。
+- 同步更新 `docs/ai/PERFORMANCE_BASELINE.md`，明确自动门禁与离线 profiling 的边界。

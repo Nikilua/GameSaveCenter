@@ -80,6 +80,11 @@
 - 2000 游戏中单游戏状态变化：1 次 Reset、0 次逐项 Add。
 - 2000 任务相同 Snapshot：`BatchObservableCollection` 第二次 ReplaceAll 0 次 CollectionChanged。
 
+自动回归门槛：
+
+- `LargeLibraryPerformanceTests.GamePicker2000_Benchmark_WritesMeasuredTimings` 对 2000 条 GamePicker 首次/单项变化更新和任务首次更新设置 5 秒宽松上限；未变化更新设置 1 秒上限。
+- 这些上限用于拦截数量级退化或明显 UI 卡死，不替代本机 profiling 数字，也不把真实 Playnite 帧率写成离线测试结论。
+
 ## 2000 规模合成 profiling（本机，2026-08-12）
 
 由 `LargeLibraryPerformanceTests.GamePicker2000_Benchmark_WritesMeasuredTimings` 输出（Playnite 171/171 通过，文件在 `artifacts/ui-qa/fixup-tests/playnite/artifacts/ui-qa/benchmarks/large-library.txt`）：

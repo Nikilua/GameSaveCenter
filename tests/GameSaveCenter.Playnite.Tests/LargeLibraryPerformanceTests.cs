@@ -114,6 +114,15 @@ namespace GameSaveCenter.Playnite.Tests
             timer.Stop();
             var taskUnchangedReplaceMs = timer.ElapsedMilliseconds;
 
+            // These are deliberately broad regression guards rather than machine-specific
+            // micro-benchmarks. A 2000-item update should never turn into a multi-second UI
+            // freeze; the detailed timings above remain the diagnostic baseline artifact.
+            Assert.InRange(firstSetMs, 0, 5000);
+            Assert.InRange(unchangedSetMs, 0, 1000);
+            Assert.InRange(changedSetMs, 0, 5000);
+            Assert.InRange(taskFirstReplaceMs, 0, 5000);
+            Assert.InRange(taskUnchangedReplaceMs, 0, 1000);
+
             var artifactRoot = Environment.GetEnvironmentVariable("GSC_TEST_ARTIFACT_ROOT");
             var benchmarkDirectory = string.IsNullOrWhiteSpace(artifactRoot)
                 ? Path.Combine(Path.GetTempPath(), "GameSaveCenter", "ui-qa", "benchmarks")
