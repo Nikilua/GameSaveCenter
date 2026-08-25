@@ -37,7 +37,7 @@ public sealed class EnvironmentCheckService
         Add(report, CheckDirectory("media", "媒体目录", _options.MediaArchiveDirectory, true));
         Add(report, await CheckDatabaseAsync(token).ConfigureAwait(false));
         Add(report, await CheckLibraryAsync(token).ConfigureAwait(false));
-        Add(report, await CheckLudusaviAsync(token).ConfigureAwait(false));
+        Add(report, await CheckLudusaviAsync(request.IncludeBackupProbe, token).ConfigureAwait(false));
         Add(report, await CheckRcloneAsync(request.IncludeRemoteProbe, token).ConfigureAwait(false));
         foreach (var disk in CheckDiskSpace()) Add(report, disk);
 
@@ -90,7 +90,7 @@ public sealed class EnvironmentCheckService
         }
     }
 
-    private async Task<EnvironmentCheckItemDto> CheckLudusaviAsync(CancellationToken token)
+    private async Task<EnvironmentCheckItemDto> CheckLudusaviAsync(bool includeBackupProbe, CancellationToken token)
     {
         if (!_ludusavi.IsAvailable)
             return Failed("ludusavi", "Ludusavi", "未配置有效的 Ludusavi 可执行文件。", _options.LudusaviExecutable);
@@ -99,6 +99,12 @@ public sealed class EnvironmentCheckService
         {
             var version = await _ludusavi.GetVersionAsync(token).ConfigureAwait(false);
             if (string.IsNullOrWhiteSpace(version)) return Failed("ludusavi", "Ludusavi", "Ludusavi 无法返回版本信息。", _options.LudusaviExecutable);
+            if (!includeBackupProbe)
+            {
+                var fast = Passed("ludusavi", "Ludusavi", "版本检查成功；首次检查跳过全库备份列表探测。", _options.LudusaviExecutable);
+                fast.Version = version;
+                return fast;
+            }
             var result = await _ludusavi.ListBackupsAsync(Array.Empty<string>(), token).ConfigureAwait(false);
             var item = result.Success
                 ? Passed("ludusavi", "Ludusavi", "版本检查和只读备份列表调用均成功。", _options.LudusaviExecutable)

@@ -234,7 +234,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             CopyMaintenanceReportCommand = new RelayCommand(_ => Run(CopyMaintenanceReportAsync), _ => !IsBusy);
             ExportMaintenanceReportCommand = new RelayCommand(_ => Run(ExportMaintenanceReportAsync), _ => !IsBusy);
             ExitSafeModeCommand = new RelayCommand(_ => Run(ExitSafeModeAsync), _ => !IsBusy);
-            RunEnvironmentCheckCommand = new RelayCommand(_ => Run(RunEnvironmentCheckAsync), _ => !IsBusy);
+            RunEnvironmentCheckCommand = new RelayCommand(_ => Run(() => RunEnvironmentCheckAsync(true)), _ => !IsBusy);
             SkipOnboardingCommand = new RelayCommand(_ => SkipOnboarding(), _ => !IsBusy && IsOnboardingPending);
             CompleteOnboardingCommand = new RelayCommand(_ => CompleteOnboarding(), _ => !IsBusy && IsOnboardingPending && EnvironmentCheck.IsReady && EnvironmentCheck.CheckedUtc != default(DateTime));
             OnboardingTestBackupCommand = new RelayCommand(_ => Run(BackupSelectedAsync), _ => !IsBusy && IsOnboardingPending && SelectedGame != null && SelectedGame.LudusaviMatched && Snapshot.LudusaviAvailable);
@@ -1416,7 +1416,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 await LoadDiagnosticsAsync();
             }
             if (IsOnboardingPending && !environmentCheckLoaded)
-                await RunEnvironmentCheckAsync();
+                await RunEnvironmentCheckAsync(false);
         }
 
         private async Task ExitSafeModeAsync()
@@ -1429,9 +1429,16 @@ namespace GameSaveCenter.Playnite.ViewModels
             StatusMessage = "已恢复正常模式";
         }
 
-        private async Task RunEnvironmentCheckAsync()
+        private async Task RunEnvironmentCheckAsync(bool includeFullProbes)
         {
-            var report = await plugin.RequestAsync<EnvironmentCheckReportDto>(MessageTypes.CheckEnvironment, new EnvironmentCheckRequestDto(), TimeSpan.FromMinutes(3));
+            var report = await plugin.RequestAsync<EnvironmentCheckReportDto>(
+                MessageTypes.CheckEnvironment,
+                new EnvironmentCheckRequestDto
+                {
+                    IncludeRemoteProbe = includeFullProbes,
+                    IncludeBackupProbe = includeFullProbes
+                },
+                TimeSpan.FromMinutes(3));
             ApplyOnUi(() =>
             {
                 EnvironmentCheck = report;
@@ -1771,7 +1778,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                     ThemeMode = plugin.Settings.ThemeMode.ToString(),
                     CurrentWorkspace = CurrentWorkspace.ToString(),
                     DpiScale = TryGetDpiScale(),
-                    ScreenCount = 1
+                    ScreenCount = TryGetScreenCount()
                 },
                 TimeSpan.FromMinutes(3));
             StatusMessage = result.Summary;
@@ -1779,13 +1786,32 @@ namespace GameSaveCenter.Playnite.ViewModels
             OpenPath(result.PackagePath);
         }
 
+        private const int MonitorCountMetric = 80;
+
+        [DllImport("user32.dll", EntryPoint = "GetDpiForSystem")]
+        private static extern uint GetDpiForSystemNative();
+
+        [DllImport("user32.dll")]
+        private static extern int GetSystemMetrics(int index);
+
         private static double TryGetDpiScale()
         {
             try
             {
-                var width = SystemParameters.PrimaryScreenWidth;
-                var work = SystemParameters.WorkArea.Width;
-                return work > 0 ? Math.Round(width / work, 2) : 1;
+                var dpi = GetDpiForSystemNative();
+                return dpi > 0 ? Math.Round(dpi / 96d, 2) : 1;
+            }
+            catch
+            {
+                return 1;
+            }
+        }
+
+        private static int TryGetScreenCount()
+        {
+            try
+            {
+                return Math.Max(1, GetSystemMetrics(MonitorCountMetric));
             }
             catch
             {

@@ -1573,3 +1573,10 @@
 - 隔离目录中的文件不使用 `.zip` 后缀，以免被后续 Ludusavi 归档扫描误识别；清理失败通过 `PendingQuarantineCount`/`PendingQuarantineBytes` 返回并记录审计。
 - 预览 UI 最多展示 200 条候选明细，摘要必须明确“前 N 条/全部候选”，避免产生完整列表的错误认知。
 - CORE-327 已完成 Worker 定向测试 6/6；本阶段跳过真实 Playnite 宿主验收，不能把离线测试写成主题、DPI 或宿主行为证据。
+
+## 2026-08-26 CORE-328 诊断环境信息与首次检查性能
+
+- 诊断包展示 DPI 必须来自 `GetDpiForSystem`，不能用 `SystemParameters.PrimaryScreenWidth / WorkArea.Width`；屏幕数量来自 `GetSystemMetrics(80)`，API 失败时回退 1。
+- `EnvironmentCheckRequestDto.IncludeBackupProbe` 控制是否调用 Ludusavi 的全库只读列表；首次自动检查传 false，手动“重新检查”传 true。`IncludeRemoteProbe` 同样在首次自动检查关闭，避免启动时网络探测。
+- IPC 默认请求仍保持完整探测（两个开关默认 true），只有 Playnite 首次启动路径显式使用快速模式，避免改变其他调用方语义。
+- CORE-328 的真实逐窗口 DPI、Playnite 多屏位置和远端探测宿主行为仍属于跳过的人工验收边界。

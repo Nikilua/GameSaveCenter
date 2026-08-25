@@ -61,5 +61,7 @@ namespace GameSaveCenter.Contracts
     public sealed class EnvironmentCheckRequestDto
     {
         public bool IncludeRemoteProbe { get; set; } = true;
+        /// <summary>Whether the check should enumerate the full Ludusavi backup list.</summary>
+        public bool IncludeBackupProbe { get; set; } = true;
     }
 }

@@ -4826,3 +4826,15 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 **实现边界：**
 
 - 本阶段没有启动真实 Playnite 做宿主验收；离线 Worker 测试不代表真实宿主窗口、主题或 DPI 验收。
+
+## 2026-08-26 CORE-328 诊断环境信息与首次检查性能
+
+**实现内容：**
+
+- 诊断包的 DPI 改为读取 Windows `GetDpiForSystem`，多屏数量改为 `GetSystemMetrics(SM_CMONITORS)`；移除原先把工作区宽度差异误当 DPI 的估算。
+- 首次打开维护中心时，环境检查只执行 Worker/目录/SQLite/本地库和依赖版本等快速检查，跳过完整 Ludusavi 备份列表枚举与 Rclone 远端探测；用户手动点击重新检查时恢复完整探测。
+- `EnvironmentCheckRequestDto` 增加 `IncludeBackupProbe`，保留 IPC 默认完整检查，避免影响外部调用者的现有语义。
+
+**实现边界：**
+
+- `GetDpiForSystem` 不可用时回退 1.0；真实窗口所在显示器的逐窗口 DPI 仍需真实 Playnite 宿主人工复核，本轮按约定跳过。
