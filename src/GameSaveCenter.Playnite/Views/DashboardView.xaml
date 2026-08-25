@@ -8,7 +8,7 @@
              Foreground="{DynamicResource GscPrimaryTextBrush}" TextElement.Foreground="{DynamicResource GscPrimaryTextBrush}" Background="Transparent"
              TextElement.FontFamily="{DynamicResource GscUiFontFamily}"
              UseLayoutRounding="True" SnapsToDevicePixels="True"
-             TextOptions.TextFormattingMode="Display" TextOptions.TextRenderingMode="ClearType"
+             TextOptions.TextFormattingMode="Ideal" TextOptions.TextRenderingMode="ClearType"
              TextOptions.TextHintingMode="Fixed" RenderOptions.ClearTypeHint="Enabled"
              ToolTipService.InitialShowDelay="350" ToolTipService.ShowDuration="18000">
     <UserControl.Resources>
@@ -36,7 +36,7 @@
         <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockStyle}">
             <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
             <Setter Property="FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
-            <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
+            <Setter Property="TextOptions.TextFormattingMode" Value="Ideal"/>
             <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
             <Setter Property="TextOptions.TextHintingMode" Value="Fixed"/>
             <Setter Property="SnapsToDevicePixels" Value="True"/>

@@ -2,6 +2,26 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-25 UI-327 字体清晰度、修改器表单对齐与诊断提示气泡
+
+**问题确认：**
+
+- 生产页面、设置页和共享 DataGrid 显式使用 WPF `TextFormattingMode=Display`，在当前大字号中文和高 DPI 截图中出现笔画偏硬、边缘像素感明显的问题。
+- 修改器中心“确认导入”页把“主程序”标签和 ComboBox 放在纵向 StackPanel 中，标签与输入框不在同一基线。
+- 维护中心诊断摘要复用高强调 InfoBand，并直接使用亮蓝色文字，提示状态比内容层级更抢眼。
+
+**实现内容：**
+
+- 生产壳、首页、设置页、共享 DataGrid、兼容探针统一改为 `Ideal + ClearType + Fixed hinting`，继续保留 `UseLayoutRounding`、`SnapsToDevicePixels` 和 ClearType hint；没有给文字、列表或表格增加 BlurEffect。
+- 修改器确认表单改为 Grid：标签和主程序 ComboBox 同行居中对齐，确认/取消按钮与辅助说明放到下一行，绑定、候选项和命令保持不变。
+- 在共享 `Redesign.xaml` 新增 `GscDiagnosticHintBubble` 与 `GscDiagnosticHintText`，维护中心的诊断、存储、保留策略、任务协调和镜像摘要改用低饱和信息气泡与常规次级文字；严重程度状态 pill 和真实语义色不变。
+
+**验证结果：**
+
+- `validate-source.py`、`check-xaml.ps1`、`git diff --check` 通过；WPF 静态审查 0 error、18 条既有 warning、172 条 info。
+- Release 构建 0 warning、0 error；Core 59/59、Worker 199/199、Playnite 295 通过/57 跳过/0 失败。
+- `.tmp/ui-qa-font-bubbles-v1/render-qa-report.txt` 为 `render-qa OK`，覆盖多尺寸、浅色/深色和 resize transition；真实 Playnite 宿主字体像素观感、DPI 和 Follow Playnite 仍需用户更新扩展后人工复核。
+
 ## 2026-08-25 UI-326 设置宿主响应式修复与侧栏边界控件重做
 
 **问题确认：**

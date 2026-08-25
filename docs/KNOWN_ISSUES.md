@@ -324,7 +324,7 @@
 
 - **状态**：已改善，待 100%/125%/150% DPI 回归。
 - **原因**：正文大量使用控件整体 `Opacity`，按钮悬停缩放文字，同时缺少统一像素对齐和 ClearType 提示。
-- **修复**：文字透明度改为带 Alpha 的专用前景色；启用 `UseLayoutRounding`、`SnapsToDevicePixels`、Display/ClearType/Fixed hinting；按钮悬停改为整数像素位移，不再缩放正文。
+- **修复**：文字透明度改为带 Alpha 的专用前景色；启用 `UseLayoutRounding`、`SnapsToDevicePixels`、Ideal/ClearType/Fixed hinting；按钮悬停改为整数像素位移，不再缩放正文。2026-08-25 的 UI-327 又将生产壳、首页、设置页和共享 DataGrid 的排版模式统一到 Ideal，以降低大字号中文笔画的像素感。
 
 ## GSC-035：大型游戏库缺少搜索、筛选和排序
 

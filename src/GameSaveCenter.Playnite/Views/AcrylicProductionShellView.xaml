@@ -8,6 +8,10 @@
              Background="{DynamicResource GscBackdropBrush}"
              UseLayoutRounding="True"
              SnapsToDevicePixels="True"
+             TextOptions.TextFormattingMode="Ideal"
+             TextOptions.TextRenderingMode="ClearType"
+             TextOptions.TextHintingMode="Fixed"
+             RenderOptions.ClearTypeHint="Enabled"
              SizeChanged="OnShellSizeChanged">
     <UserControl.Resources>
         <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/AcrylicProductionResources.xaml"/>

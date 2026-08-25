@@ -74,7 +74,7 @@
            BasedOn="{StaticResource {x:Type DataGrid}}">
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
+        <Setter Property="TextOptions.TextFormattingMode" Value="Ideal"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="GridLinesVisibility" Value="None"/>
         <Setter Property="HeadersVisibility" Value="Column"/>
@@ -333,6 +333,25 @@
         <Setter Property="Padding" Value="14,11"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="UseLayoutRounding" Value="True"/>
+    </Style>
+
+    <!-- Diagnostic summaries are supporting context, not actions. Keep the information
+         inside a quiet tinted bubble with regular text so a page does not become a wall of
+         saturated blue emphasis. The text-element setters are inherited by the bubble's
+         content while individual semantic status pills keep their own foregrounds. -->
+    <Style x:Key="GscDiagnosticHintBubble" TargetType="Border" BasedOn="{StaticResource GscRedesignInfoBand}">
+        <Setter Property="Background" Value="{DynamicResource GscInfoIconFillBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource GscRestoreInfoStrokeBrush}"/>
+        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="Padding" Value="12,10"/>
+        <Setter Property="TextElement.Foreground" Value="{DynamicResource GscSecondaryTextBrush}"/>
+        <Setter Property="TextElement.FontWeight" Value="Normal"/>
+    </Style>
+
+    <Style x:Key="GscDiagnosticHintText" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource GscSecondaryTextBrush}"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
     </Style>
 
     <Style x:Key="GscRedesignSubCard" TargetType="Border">

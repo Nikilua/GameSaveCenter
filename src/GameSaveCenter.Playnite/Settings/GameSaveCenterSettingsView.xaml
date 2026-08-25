@@ -8,7 +8,7 @@
              Foreground="{DynamicResource GscPrimaryTextBrush}"
              TextElement.FontFamily="{DynamicResource GscUiFontFamily}"
              UseLayoutRounding="True" SnapsToDevicePixels="True"
-             TextOptions.TextFormattingMode="Display" TextOptions.TextRenderingMode="ClearType"
+             TextOptions.TextFormattingMode="Ideal" TextOptions.TextRenderingMode="ClearType"
              TextOptions.TextHintingMode="Fixed" RenderOptions.ClearTypeHint="Enabled">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -22,7 +22,7 @@
             </ResourceDictionary.MergedDictionaries>
         <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockStyle}">
             <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
-            <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
+            <Setter Property="TextOptions.TextFormattingMode" Value="Ideal"/>
             <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
             <Setter Property="TextOptions.TextHintingMode" Value="Fixed"/>
             <Setter Property="SnapsToDevicePixels" Value="True"/>

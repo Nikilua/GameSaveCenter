@@ -1,5 +1,7 @@
 # 开发实现进度
 
+- [x] UI-327（2026-08-25）：修复生产页面与设置页文字在大字号/中文 fallback 下像素感偏重的问题，生产壳、首页、设置页、共享 DataGrid 和兼容探针统一使用 `Ideal + ClearType + Fixed hinting`，保留像素对齐；修改器确认导入页改用 Grid 让“主程序”标签与下拉框同行对齐；维护中心诊断、存储、保留策略、任务协调和镜像摘要改用低饱和信息气泡与常规次级文字。真实命令、候选项、Binding、状态 pill、表格滚动和虚拟化未变。`validate-source.py`、XAML 结构检查、WPF 静态审查、Release 构建、Core 59/59、Worker 199/199、Playnite 295/352（57 跳过）和 `.tmp/ui-qa-font-bubbles-v1/render-qa-report.txt`（`render-qa OK`）通过；真实 Playnite 字体像素观感与 DPI 仍需人工复核。
+
 - [x] UI-303（2026-08-24）：修复任务中心输入后文字只显示淡痕的问题。根因是 TextBox Padding 同时作为 `PART_ContentHost.Margin`，与 WPF/Playnite 内容宿主自身 Padding 重复计算，Task 搜索框可视高度被压到约 5 DIP；共享模板改为 `Margin=0`、`Padding=0`、`BorderThickness=0`，并显式传递字体、字号、字重和前景色，不增加输入框高度。源码门禁、XAML 19/19、WPF 静态审查 0 error/20 warnings/165 info、Release 0 警告/0 错误、Core 59/59、Worker 199/199、Playnite 282/282（57 跳过）通过；输入态 RenderHarness 验证 viewport `5→19 DIP`、文字完整显示，生产安装已核验 DLL `0.6.70.0`。
 
 - [x] UI-302（2026-08-24）：修复任务中心搜索框中放大镜与“搜索任务…”贴合、实际输入文字不可见的问题。TaskCenter/Dashboard 带图标搜索框的左侧输入 Padding 与提示 Margin 调整为 `30`，共享生产/设计 TextBox 模板把 `Foreground` 显式传给 `PART_ContentHost`；清除按钮、Binding、命令、焦点和过滤行为不变。源码门禁、XAML 19/19、WPF 静态审查 0 error/20 warnings/165 info、Release 0 警告/0 错误、Core 59/59、Worker 199/199、Playnite 282/282（57 跳过）通过；`artifacts/ui-qa/ui302-task-search-v1/render-qa-report.txt` 为 `render-qa OK`，受控生产安装已核验扩展清单 `0.6.70`、DLL `0.6.70.0`。

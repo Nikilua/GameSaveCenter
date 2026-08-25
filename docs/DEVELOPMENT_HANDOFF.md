@@ -2,6 +2,13 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-25 UI-327 字体清晰度与维护提示交接
+
+- 共享生产文字排版已从 `Display` 改为 `Ideal`，由生产壳、首页、设置页和 DataGrid 样式统一传递；继续保留 `ClearType`、`Fixed` hinting、`UseLayoutRounding` 和 `SnapsToDevicePixels`。这是针对用户反馈的大号中文笔画像素感，不是把文字做模糊。
+- 修改器确认导入页的“主程序”标签和 ComboBox 已放在同一 Grid 行；按钮仍绑定原确认/取消命令。后续若再做窄宽度适配，应保持该标签/输入行的基线关系，不要恢复纵向 StackPanel。
+- 维护中心摘要采用 `GscDiagnosticHintBubble` / `GscDiagnosticHintText`，用于诊断、存储、保留策略、镜像和任务摘要；气泡使用信息色低透明度，正文常规次级文字，Severity pill 的状态语义不变。
+- 验证证据：`.tmp/ui-qa-font-bubbles-v1/render-qa-report.txt` 为 `render-qa OK`；Release 0 警告/0 错误，Core 59、Worker 199、Playnite 295 通过/57 跳过。未在真实 Playnite 宿主执行本轮人工 DPI/字体像素检查。
+
 ## 2026-08-25 UI-326 设置窗口与侧栏折叠交互交接
 
 - 设置页根控件已移除 `MinWidth=1180/MinHeight=760`，避免窗口缩小时被 UserControl 强行撑大。`GameSaveCenterSettingsView.OnLoaded` 会通过 `Window.GetWindow(this)` 对真实宿主执行一次 `EnsureHostWindowSize`：优先约 1280×840，受当前工作区上限约束，设置 `SizeToContent=Manual` 和 Stretch 对齐；后续缩放不再强制回弹，继续由 `ApplyResponsiveLayout` 处理紧凑模式。没有 owner Window 的 RenderHarness 不会触发该逻辑。

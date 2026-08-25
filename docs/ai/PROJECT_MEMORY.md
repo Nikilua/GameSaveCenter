@@ -3,6 +3,13 @@
 > 维护时间：2026-08-25
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-25 UI-327 当前事实：文字渲染、修改器对齐与诊断气泡
+
+- 生产壳、Dashboard、Settings、共享 `DataGrid` 和开发探针现在统一使用 `TextFormattingMode=Ideal`、`TextRenderingMode=ClearType`、`TextHintingMode=Fixed`，并保留像素对齐；不要为修复锯齿把 BlurEffect 加到文字或滚动内容。
+- `TrainerCenterView` 的“确认导入”表单现在用 Grid 将“主程序”标签与 `TrainerImportEntryComboBox` 放在同一行，按钮和辅助说明在下一行；真实 `ImportEntryCandidates`、`SelectedImportEntryCandidate` 和确认/取消命令未改变。
+- `Redesign.xaml` 的 `GscDiagnosticHintBubble` / `GscDiagnosticHintText` 是维护中心摘要提示的共享样式：低饱和信息底、细信息描边、常规次级文字。严重程度 pill 仍保留语义色，不能用诊断气泡样式覆盖 Warning/Error/Critical 标识。
+- UI-327 已通过 Release 构建、Core 59、Worker 199、Playnite 295/57、源码/XAML/WPF 门禁和 `.tmp/ui-qa-font-bubbles-v1` 多主题多尺寸 render QA；真实 Playnite 宿主字体清晰度、DPI 和 Follow 仍需人工回归。
+
 ## 2026-08-25 UI-326 当前事实：设置宿主尺寸与侧栏边界折叠
 
 - `GameSaveCenterSettingsView` 根 `UserControl` 不再设置 `MinWidth/MinHeight`；这些属性会阻止页面缩到紧凑断点。真实宿主第一次加载时由 `EnsureHostWindowSize` 将 Window 设为工作区允许范围内的约 1280×840、`SizeToContent=Manual`、水平/垂直 Stretch；RenderHarness 无 owner Window，不会被改尺寸。
