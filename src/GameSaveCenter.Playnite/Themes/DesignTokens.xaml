@@ -52,10 +52,10 @@
     <!-- The production shell uses one continuous diagonal translucent material surface across
          the navigation column. It does not fade to transparent at the page boundary. -->
     <LinearGradientBrush x:Key="GscSidebarMaterialBrush" StartPoint="0,0" EndPoint="1,1">
-      <GradientStop Color="#ED343B56" Offset="0"/>
-      <GradientStop Color="#E53A4056" Offset="0.28"/>
-      <GradientStop Color="#DD303745" Offset="0.64"/>
-      <GradientStop Color="#D92B303C" Offset="1"/>
+      <GradientStop Color="#B8343B56" Offset="0"/>
+      <GradientStop Color="#AC3A4056" Offset="0.28"/>
+      <GradientStop Color="#A0303745" Offset="0.64"/>
+      <GradientStop Color="#982B303C" Offset="1"/>
     </LinearGradientBrush>
 
     <!-- Effects are deliberately null until a page enables its local material palette. This
@@ -77,10 +77,10 @@
     <SolidColorBrush x:Key="GscGlassStrongBrush" Color="#F5252936"/>
     <SolidColorBrush x:Key="GscGlassStrokeBrush" Color="#1AFFFFFF"/>
     <SolidColorBrush x:Key="GscGlassHighlightBrush" Color="#12FFFFFF"/>
-    <SolidColorBrush x:Key="GscSettingsShellBrush" Color="#B5252A36"/>
-    <SolidColorBrush x:Key="GscSettingsPanelBrush" Color="#D5252A36"/>
-    <SolidColorBrush x:Key="GscSettingsCardBrush" Color="#E0252A36"/>
-    <SolidColorBrush x:Key="GscSettingsContentBrush" Color="#55252A36"/>
+    <SolidColorBrush x:Key="GscSettingsShellBrush" Color="#94252A36"/>
+    <SolidColorBrush x:Key="GscSettingsPanelBrush" Color="#B0252A36"/>
+    <SolidColorBrush x:Key="GscSettingsCardBrush" Color="#C0252A36"/>
+    <SolidColorBrush x:Key="GscSettingsContentBrush" Color="#3D252A36"/>
     <LinearGradientBrush x:Key="GscSettingsAmbientBrush" StartPoint="0,0" EndPoint="1,1">
       <GradientStop Color="#00000000" Offset="0"/>
       <GradientStop Color="#00000000" Offset="1"/>

@@ -1,7 +1,16 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
-> 维护时间：2026-08-24
+> 维护时间：2026-08-25
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
+
+## 2026-08-25 UI-317 当前事实：壳体圆角玻璃与 Follow Playnite 浅色主题
+
+- 生产 `AcrylicProductionShellView` 的导航由 `SidebarSurface` 真实 Border 承载，使用 `GscRedesignSidebarSurface` 与动态 `GscSidebarMaterialBrush`；不要再让内部 Grid 直接承担整块导航背景，否则右侧上下角不会被圆角裁切。
+- 生产页脚由 `FooterSurface` 提供独立四边圆角玻璃面；文字、状态 Binding 和底部布局不变。共享导航样式也已改为同一动态 sidebar 材质。
+- 设置页继续不使用游戏图片，但 `SettingsAmbientLayer` 负责固定环境渐变与唯一 BlurEffect，外壳、分类栏、卡片和内容层使用较低 alpha 的主题材质，使环境模糊可见。不要把 BlurEffect 加到文字、表格、列表或滚动面。
+- `AdaptiveThemePaletteFactory.Create` 在 `FollowPlaynite` 下必须优先检查宿主发布的 Window/Main/Control/Background 资源，再检查视觉树背景；插件控件自身的深色 `GscBackdropBrush` 只能作为回退，不能遮蔽 Playnite 浅色主题。
+- `RenderHarness` 的设置页 Light/Dark 渲染必须调用 `GameSaveCenterSettingsView.ApplyThemeForAudit(mode)`；否则会误测静态深色 DesignTokens，而不是运行时主题链路。
+- UI-317 验证：源码/XAML 门禁、Release 全量构建测试、WPF 静态审查和多主题多尺寸 `render-qa OK` 均通过。真实 Playnite 宿主、DPI、Follow、高对比度和关闭玻璃回退仍需安装后人工复核。
 
 ## 2026-08-25 UI-314 当前事实：游戏背景增加真实模糊
 

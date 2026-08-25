@@ -1916,6 +1916,15 @@ public static class Program
 
     private static void ApplyThemePalette(UserControl view, GameSaveCenterThemeMode mode)
     {
+        // Settings owns a separate material hierarchy and must use the same runtime path as
+        // the Playnite settings host. The generic Dashboard resource injection would leave its
+        // shell/card brushes on the static dark DesignTokens fallback during Light QA.
+        if (view is GameSaveCenterSettingsView settings)
+        {
+            settings.ApplyThemeForAudit(mode);
+            return;
+        }
+
         var palette = AdaptiveThemePaletteFactory.Create(view, false, 50, mode);
         AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(view.Resources, palette, false, false);
     }

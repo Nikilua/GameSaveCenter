@@ -21,7 +21,7 @@
         <Grid MinWidth="0" ClipToBounds="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="28"/>
+                <RowDefinition Height="36"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="236"/>
@@ -73,9 +73,14 @@
                                      Panel.ZIndex="1"/>
 
             <!-- Demo-aligned header. The production shell keeps the real settings entry point. -->
-            <Grid x:Name="SidebarLayout" Grid.Row="0" Grid.Column="0"
-                  Background="{DynamicResource GscSidebarMaterialBrush}"
-                  Panel.ZIndex="2">
+            <Border x:Name="SidebarSurface" Grid.Row="0" Grid.Column="0"
+                    Style="{StaticResource GscRedesignSidebarSurface}"
+                    Background="{DynamicResource GscSidebarMaterialBrush}"
+                    Padding="0"
+                    Margin="0,0,6,0"
+                    ClipToBounds="True"
+                    Panel.ZIndex="2">
+                <Grid x:Name="SidebarLayout" Background="Transparent">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
@@ -200,7 +205,8 @@
                         </Border>
                     </Grid>
                 </Border>
-            </Grid>
+                </Grid>
+            </Border>
 
             <Grid Grid.Row="0" Grid.Column="1" Panel.ZIndex="2">
                 <Grid.RowDefinitions>
@@ -334,8 +340,16 @@
             </Grid>
             </Grid>
 
-            <Border Grid.Row="1" Grid.Column="1" BorderBrush="{DynamicResource GscDividerBrush}" BorderThickness="0,1,0,0">
-                <Grid Margin="20,0">
+            <Border x:Name="FooterSurface" Grid.Row="1" Grid.Column="1"
+                    Background="{DynamicResource GscGlassFillBrush}"
+                    BorderBrush="{DynamicResource GscGlassStrokeBrush}"
+                    BorderThickness="1"
+                    CornerRadius="12"
+                    Margin="0,4,6,6"
+                    Padding="16,0"
+                    ClipToBounds="True"
+                    SnapsToDevicePixels="True">
+                <Grid>
                     <TextBlock Text="生产版 · 真实数据由 Worker 提供" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10" VerticalAlignment="Center"/>
                     <TextBlock Text="GameSaveCenter" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 </Grid>

@@ -73,14 +73,17 @@ namespace GameSaveCenter.Playnite.Infrastructure
             var forcedLight = themeMode == GameSaveCenterThemeMode.Light;
             var forcedDark = themeMode == GameSaveCenterThemeMode.Dark;
             var highContrast = SystemParameters.HighContrast;
+            // The UserControl itself is initially backed by GameSaveCenter's dark fallback
+            // brush. Resolve Playnite's published theme resource first; otherwise FollowPlaynite
+            // would always classify the page from that local fallback before it can see the host.
             var rawBackground = highContrast
                 ? SystemColors.WindowColor
                 : forcedLight
                     ? Color.FromRgb(243, 244, 248)
                     : forcedDark
                         ? Color.FromRgb(23, 24, 31)
-                        : ResolveHostBackground(host)
-                            ?? ResolveFirstResourceColor(host, BackgroundResourceKeys)
+                        : ResolveFirstResourceColor(host, BackgroundResourceKeys)
+                            ?? ResolveHostBackground(host)
                             ?? Color.FromRgb(17, 19, 25);
 
             var text = highContrast ? SystemColors.WindowTextColor : forcedLight ? Colors.Black : forcedDark ? Colors.White : ResolveResourceColor(host, "TextBrush");
@@ -508,16 +511,16 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
             resources["GscSettingsShellBrush"] = CreateSettingsSurfaceBrush(
                 shellTop, shellBottom,
-                palette.IsDark ? 0.66 - (0.06 * strength) : 0.86 - (0.05 * strength));
+                palette.IsDark ? 0.58 - (0.04 * strength) : 0.78 - (0.04 * strength));
             resources["GscSettingsPanelBrush"] = CreateSettingsSurfaceBrush(
                 panelTop, panelBottom,
-                palette.IsDark ? 0.76 - (0.05 * strength) : 0.91 - (0.04 * strength));
+                palette.IsDark ? 0.68 - (0.05 * strength) : 0.84 - (0.04 * strength));
             resources["GscSettingsCardBrush"] = CreateSettingsSurfaceBrush(
                 cardTop, cardBottom,
-                palette.IsDark ? 0.82 - (0.04 * strength) : 0.94 - (0.03 * strength));
+                palette.IsDark ? 0.74 - (0.06 * strength) : 0.88 - (0.04 * strength));
             resources["GscSettingsContentBrush"] = CreateSettingsSurfaceBrush(
                 shellTop, shellBottom,
-                palette.IsDark ? 0.28 - (0.06 * strength) : 0.46 - (0.06 * strength));
+                palette.IsDark ? 0.24 - (0.04 * strength) : 0.35 - (0.05 * strength));
         }
 
         /// <summary>
@@ -800,10 +803,12 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 StartPoint = new Point(0, 0),
                 EndPoint = new Point(1, 1)
             };
-            brush.GradientStops.Add(new GradientStop(WithAlpha(accentTint, palette.IsDark ? 0.93 : 0.94), 0));
-            brush.GradientStops.Add(new GradientStop(WithAlpha(Blend(accentTint, sidebarTint, 0.48), palette.IsDark ? 0.89 : 0.91), 0.28));
-            brush.GradientStops.Add(new GradientStop(WithAlpha(Blend(sidebarTint, infoTint, 0.40), palette.IsDark ? 0.86 : 0.88), 0.64));
-            brush.GradientStops.Add(new GradientStop(WithAlpha(neutralLift, palette.IsDark ? 0.84 : 0.86), 1));
+            // Keep the navigation readable, but leave enough of the blurred backdrop visible
+            // to make the rail a glass surface instead of a second opaque window.
+            brush.GradientStops.Add(new GradientStop(WithAlpha(accentTint, palette.IsDark ? 0.72 : 0.78), 0));
+            brush.GradientStops.Add(new GradientStop(WithAlpha(Blend(accentTint, sidebarTint, 0.48), palette.IsDark ? 0.68 : 0.74), 0.28));
+            brush.GradientStops.Add(new GradientStop(WithAlpha(Blend(sidebarTint, infoTint, 0.40), palette.IsDark ? 0.64 : 0.70), 0.64));
+            brush.GradientStops.Add(new GradientStop(WithAlpha(neutralLift, palette.IsDark ? 0.60 : 0.67), 1));
             brush.Freeze();
             return brush;
         }

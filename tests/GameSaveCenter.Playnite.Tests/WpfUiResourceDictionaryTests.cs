@@ -31,6 +31,9 @@ public sealed class WpfUiResourceDictionaryTests
             {
                 var host = new System.Windows.Controls.Border();
                 var hostAccent = Color.FromRgb(84, 61, 190);
+                // Simulate the plugin's initial dark fallback on the visual itself while the
+                // Playnite theme publishes a light window resource above it.
+                host.Background = new SolidColorBrush(Color.FromRgb(17, 19, 25));
                 host.Resources["WindowBackgroundBrush"] = new SolidColorBrush(Color.FromRgb(248, 249, 252));
                 host.Resources["TextBrush"] = new SolidColorBrush(Colors.Black);
                 host.Resources["TextBrushDark"] = new SolidColorBrush(Colors.White);
@@ -43,6 +46,8 @@ public sealed class WpfUiResourceDictionaryTests
                     null,
                     new object[] { host, true, 78, GameSaveCenterThemeMode.FollowPlaynite })!;
 
+                Assert.False((bool)palette.GetType().GetProperty("IsDark")!.GetValue(palette)!);
+                Assert.Equal(Colors.Black, (Color)palette.GetType().GetProperty("PrimaryText")!.GetValue(palette)!);
                 Assert.Equal(hostAccent, (Color)palette.GetType().GetProperty("Accent")!.GetValue(palette)!);
                 Assert.Equal(Colors.White, (Color)palette.GetType().GetProperty("OnAccentText")!.GetValue(palette)!);
 
@@ -2280,6 +2285,10 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.DoesNotContain("Grid.ColumnSpan=\"2\"", shellAmbientMarkup);
         Assert.Contains("GscShellAmbientOpacity", productionShell);
         Assert.Contains("GscSidebarMaterialBrush", productionShell);
+        Assert.Contains("x:Name=\"SidebarSurface\"", productionShell);
+        Assert.Contains("Property=\"CornerRadius\" Value=\"{StaticResource GscRedesignSidebarCorner}\"", redesign);
+        Assert.Contains("x:Name=\"FooterSurface\"", productionShell);
+        Assert.Contains("CornerRadius=\"12\"", productionShell);
         Assert.Contains("x:Name=\"SidebarLayout\"", productionShell);
         Assert.Contains("Background=\"{DynamicResource GscSidebarMaterialBrush}\"", productionShell);
         Assert.DoesNotContain("SidebarSeamMaterial", productionShell);
@@ -4302,6 +4311,7 @@ public sealed class WpfUiResourceDictionaryTests
         var repositoryRoot = FindRepositoryRoot();
         var settings = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml"));
         var settingsCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml.cs"));
+        var renderHarness = File.ReadAllText(Path.Combine(repositoryRoot, "tests", "GameSaveCenter.RenderHarness", "Program.cs"));
 
         Assert.Contains("x:Name=\"StorageFormatFields\" Columns=\"2\"", settings);
         Assert.Contains("x:Name=\"StorageNumericFields\" Columns=\"3\"", settings);
@@ -4916,6 +4926,7 @@ public sealed class WpfUiResourceDictionaryTests
         var repositoryRoot = FindRepositoryRoot();
         var settings = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml"));
         var settingsCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml.cs"));
+        var renderHarness = File.ReadAllText(Path.Combine(repositoryRoot, "tests", "GameSaveCenter.RenderHarness", "Program.cs"));
 
         Assert.Contains("x:Name=\"SettingsSectionTabs\"", settings);
         Assert.Contains("x:Name=\"SettingsWorkspace\"", settings);
@@ -4944,6 +4955,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Grid.SetColumnSpan(SettingsSaveHint, stackHeaderHint ? 2 : 1)", settingsCode);
         Assert.Contains("SettingsSaveHint.Margin = stackHeaderHint", settingsCode);
         Assert.Contains("SettingsShell.HorizontalAlignment = HorizontalAlignment.Stretch", settingsCode);
+        Assert.Contains("if (view is GameSaveCenterSettingsView settings)", renderHarness);
+        Assert.Contains("settings.ApplyThemeForAudit(mode)", renderHarness);
         Assert.Contains("SettingsShell.MaxWidth = 1360", settingsCode);
         Assert.Contains("Grid.SetColumnSpan(SettingsCategoryRail, 3)", settingsCode);
         Assert.Contains("Grid.SetRow(SettingsScroller, 1)", settingsCode);

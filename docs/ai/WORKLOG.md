@@ -2,6 +2,26 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-25 UI-317 修复壳体玻璃圆角与跟随主题
+
+**问题确认：**
+
+- 主壳导航虽然有材质 Brush，但没有独立的圆角裁切容器，右上/右下角仍会被内部 Grid 填满；生产页脚也只是矩形边框。
+- 设置页的材质 alpha 偏高，底层环境模糊几乎不可见。
+- Follow Playnite 的浅色审计路径被插件控件自身的深色回退背景抢先命中，导致浅色宿主仍被识别为深色；设置页离屏审计也没有走设置专用主题资源入口。
+
+**实现内容：**
+
+- 将生产导航放入共享 `GscRedesignSidebarSurface` 的真实 Border 裁切容器，使用动态 `GscSidebarMaterialBrush`；生产页脚改为独立四边圆角玻璃面，并保留底部安全间距。
+- 降低导航和设置页外壳、分类栏、卡片、内容区域的运行时透明度，让底层环境渐变和 BlurEffect 可见；BlurEffect 仍只作用于固定环境层，不模糊文字、表格或滚动内容。
+- `AdaptiveThemePaletteFactory` 在 FollowPlaynite 下优先读取宿主发布的背景资源，再回退到视觉树背景；RenderHarness 的设置页浅/深色审计统一走 `ApplyThemeForAudit`。新增回归测试覆盖“控件初始深色、宿主资源为浅色”的场景。
+
+**验证结果：**
+
+- `validate-source.py`、`check-xaml.ps1`、`git diff --check` 通过；WPF 静态审查 0 error、18 条既有 warning、172 条 info。
+- Release 全量构建无 warning/无 error；Core 59/59、Worker 199/199、Playnite 289 通过/57 跳过/0 失败。
+- `.tmp/ui-qa-settings-glass-v7/render-qa-report.txt` 为 `render-qa OK`，覆盖浅/深色、多尺寸、设置页和 resize transition；真实 Playnite 宿主仍需人工复核像素级主题、DPI 和高对比度表现。
+
 ## 2026-08-25 UI-314 增强游戏背景毛玻璃模糊
 
 **问题确认：**

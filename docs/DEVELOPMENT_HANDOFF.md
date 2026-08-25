@@ -2,6 +2,13 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-25 UI-317 壳体圆角玻璃与 Follow Playnite 主题
+
+- 生产壳导航当前由 `SidebarSurface` 的真实圆角 Border 裁切，材质使用动态 `GscSidebarMaterialBrush`；页脚由 `FooterSurface` 提供四边圆角玻璃面。不要恢复让内部 Grid 直接绘制导航背景的结构。
+- 设置页不跟随游戏图片，但使用 `SettingsAmbientLayer` 的环境渐变/BlurEffect 和低 alpha 的外壳、分类栏、卡片、内容材质；BlurEffect 不得提升到文字、表格、列表或滚动区域。
+- Follow Playnite 解析优先级已调整为宿主发布的背景资源，再回退视觉树背景，避免插件自身深色回退资源抢先把 Playnite 浅色主题识别成深色。
+- RenderHarness 设置页 Light/Dark 审计必须经过 `ApplyThemeForAudit`；最新证据为 `.tmp/ui-qa-settings-glass-v7/render-qa-report.txt`，真实宿主逐像素、DPI、高对比度仍待人工确认。
+
 ## 2026-08-25 UI-314 当前交接：游戏背景真实模糊
 
 - 当前游戏背景仍由 Shell 的唯一跨壳 `ImageBrush` 绘制；UI-314 只在背景实际加载时给这个矩形挂 `GscGameBackgroundEffect`，不要把 BlurEffect 加到卡片、文字、页面根、列表或滚动器。
