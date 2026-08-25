@@ -46,6 +46,7 @@ public sealed class ProductionShellChromeSourceTests
         Assert.Contains("Click=\"OnSidebarCollapseClick\"", shell);
         Assert.Contains("AutomationProperties.Name=\"收起导航栏\"", shell);
         Assert.Contains("x:Name=\"NavOverviewContent\"", shell);
+        Assert.Contains("TextAlignment=\"Center\"", shell);
         Assert.Contains("x:Name=\"SidebarProductionVersionText\"", shell);
         Assert.Contains("sidebarCollapsed = !sidebarCollapsed", shellCode);
         Assert.Contains("sidebarTransitionRunning", shellCode);
@@ -57,6 +58,8 @@ public sealed class ProductionShellChromeSourceTests
         Assert.Contains("ApplySidebarLayout(updateColumnWidth: false)", shellCode);
         Assert.Contains("SidebarCollapsedProvider", shellCode);
         Assert.Contains("SidebarCollapsedChanged", shellCode);
+        Assert.Contains("SidebarHeaderLayout.Margin", shellCode);
+        Assert.Contains("content.Width = expanded ? double.NaN : 26", shellCode);
         Assert.Contains("public bool SidebarCollapsed", settingsCode);
         Assert.Contains("SidebarCollapsed = other.SidebarCollapsed", settingsCode);
         Assert.Contains("HorizontalAlignment.Center", shellCode);

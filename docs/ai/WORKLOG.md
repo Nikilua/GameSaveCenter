@@ -4673,3 +4673,29 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 **真实宿主边界：**
 
 - 当前 RenderHarness 只能证明共享样式资源、页面响应式和主题回归；仍需在真实 Playnite 中确认展开/折叠点击、键盘焦点、浅色/深色/Follow 和 DPI 像素效果，不能把离屏报告写成宿主 1:1 验收。
+
+## 2026-08-25 UI-326 折叠态图标对齐与首页右侧卡片间距
+
+**用户反馈：**
+
+- 侧栏收起后品牌图标、导航图标和设置图标没有落在同一条水平中心线上。
+- “风险与提醒”卡片中状态圆点与游戏标题过近。
+- “需关注事项”卡片的可读高度偏紧，需要多留一点垂直空间。
+
+**实现内容：**
+
+- 折叠态为 `SidebarHeaderLayout` 清除展开态的不对称左右边距，并将品牌内容固定为 26 DIP 居中宽度；每个 `Nav*Content` 在折叠态也固定为 26 DIP 并垂直/水平居中。
+- 导航图标文本区域统一使用 `TextAlignment="Center"`，配合折叠态 0 左右 Padding，修复字形本身按左侧绘制造成的视觉偏移；展开态导航宽度、文字和选中状态不变。
+- 风险卡状态列从 10 DIP 调整到 14 DIP，标题与圆点之间增加轻微呼吸空间。
+- “需关注事项”列表 `MaxHeight` 从 190 调整为 220 DIP，仍由独立有限 `ScrollViewer` 承担局部滚动，页面根滚动与真实命令保持不变。
+
+**验证结果：**
+
+- `scripts/validate-source.py`、`scripts/check-xaml.ps1`、`git diff --check` 通过。
+- WPF 静态审查 0 error、18 warnings、172 info；warnings/info 均为既有资源或有限视口审查提示，未新增 error。
+- Release 解决方案构建 0 warning/0 error；Core 59/59、Worker 199/199、Playnite 295 通过/57 跳过/0 失败。
+- `scripts/render-qa.ps1 -Configuration Release -Output .tmp/ui-qa-sidebar-icons-v1` 为 `render-qa OK`；报告覆盖 1040/1100/1366/2560、多主题和 resize transition，关注列表新视口在短窗口仍保持有限且由页面滚动承接。
+
+**真实宿主边界：**
+
+- 本轮未重新启动真实 Playnite 做逐像素侧栏折叠截图；离屏报告不能替代真实宿主中的展开/折叠、Light/Dark/Follow、DPI、键盘焦点和 Tooltip 验收。

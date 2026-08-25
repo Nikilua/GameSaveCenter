@@ -258,7 +258,7 @@ public sealed class RestoredAcrylicForkBaselineTests
 
         Assert.Contains("x:Name=\"OverviewAttentionScrollViewer\"", overview);
         Assert.Contains("Style=\"{DynamicResource GscPageScrollViewer}\"", overview);
-        Assert.Contains("MaxHeight=\"190\"", overview);
+        Assert.Contains("MaxHeight=\"220\"", overview);
         Assert.Contains("VerticalScrollBarVisibility=\"Auto\"", overview);
         Assert.Contains("HorizontalScrollBarVisibility=\"Disabled\"", overview);
         Assert.Contains("ItemsSource=\"{Binding AttentionFindings}\"", overview);

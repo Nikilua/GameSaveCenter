@@ -302,9 +302,13 @@ namespace GameSaveCenter.Playnite.Views
 
             SidebarBrandText.Visibility = expanded ? Visibility.Visible : Visibility.Collapsed;
             SidebarProductionBadge.Visibility = expanded ? Visibility.Visible : Visibility.Collapsed;
+            SidebarHeaderLayout.Margin = expanded
+                ? new Thickness(14, 0, 8, 0)
+                : new Thickness(0);
             SidebarBrandContent.HorizontalAlignment = expanded
                 ? HorizontalAlignment.Left
                 : HorizontalAlignment.Center;
+            SidebarBrandContent.Width = expanded ? double.NaN : 26;
 
             var labelVisibility = expanded ? Visibility.Visible : Visibility.Collapsed;
             NavOverviewLabel.Visibility = labelVisibility;
@@ -324,9 +328,11 @@ namespace GameSaveCenter.Playnite.Views
                 content.HorizontalAlignment = expanded
                     ? HorizontalAlignment.Left
                     : HorizontalAlignment.Center;
+                content.Width = expanded ? double.NaN : 26;
+                content.VerticalAlignment = VerticalAlignment.Center;
             }
 
-            var navigationPadding = expanded ? new Thickness(12, 10, 12, 10) : new Thickness(8, 10, 8, 10);
+            var navigationPadding = expanded ? new Thickness(12, 10, 12, 10) : new Thickness(0, 10, 0, 10);
             foreach (var item in new[] { NavOverview, NavSaves, NavTrainers, NavMedia, NavTasks, NavMaintenance, NavSettings })
             {
                 item.Padding = navigationPadding;

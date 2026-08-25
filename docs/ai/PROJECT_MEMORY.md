@@ -1517,3 +1517,12 @@
 - 折叠态必须同时设置 `SidebarCollapseButton` 与 `SidebarCollapseButtonContent` 的居中；所有 `Nav*Content` 在折叠时也必须显式 `HorizontalAlignment=Center`。不能只隐藏文字后依赖默认 ContentPresenter 推断位置。
 - `OnSidebarCollapseClick` 的动画、MotionEnabledProvider、系统动画/高对比度降级以及 `ApplyHeaderLayout`/`ApplyPageLayout` 重算继续保持；不能为了换控件改变真实导航绑定、滚动、虚拟化或版本气泡。
 - UI-325 已完成源码/XAML、Release、定向折叠契约和 RenderHarness `render-qa OK`；完整测试与真实 Playnite 点击/键盘/DPI 像素复核是本阶段提交前/宿主边界。
+
+## 2026-08-25 UI-326 当前事实：折叠图标中心线与首页右侧卡片密度
+
+- 折叠态导航的对齐基准是侧栏内部 26 DIP 图标槽：`SidebarHeaderLayout` 去掉展开态不对称边距，`SidebarBrandContent` 与所有 `Nav*Content` 在折叠态固定宽度并居中；图标 `TextBlock` 必须保持 `TextAlignment="Center"`，不能只依赖 StackPanel 的默认测量。
+- `AcrylicProductionShellView.xaml.cs` 的 `ApplySidebarLayout` 仍是展开/折叠唯一布局入口，需保留 `ApplyHeaderLayout`、`ApplyPageLayout` 和导航 RadioButton 的真实绑定/滚动/虚拟化。
+- 首页 `OverviewProtectionPreviewCard` 的圆点列为 14 DIP，以便状态点和游戏标题之间保留轻微间距；`OverviewAttentionScrollViewer` 的有限视口为 220 DIP，页面根滚动继续负责更长内容。
+- 这些调整只改变共享布局密度，不改变风险状态语义、关注项真实数据、操作命令或主题资源。
+- UI-326 已通过 source/XAML 门禁、WPF 0 error、Release 构建、Core 59/59、Worker 199/199、Playnite 295/57 skipped/0 failed，以及双主题多尺寸 `render-qa OK`。
+- 真实 Playnite 重启后的折叠像素、Follow/浅色/深色、DPI 和键盘焦点仍未由本轮重新确认；不得把 RenderHarness 截图写成真实宿主逐像素验收。
