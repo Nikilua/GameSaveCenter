@@ -176,6 +176,13 @@
                             <TextBlock Text="只用于侧栏、浮层和固定环境光，不应用到滚动内容" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0"/>
                         </StackPanel>
                     </ui:ToggleSwitch>
+                    <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关"
+                                     IsChecked="{Binding FollowSelectedGameBackground}" Margin="0,6" Checked="OnVisualSettingChanged" Unchecked="OnVisualSettingChanged" AutomationProperties.Name="跟随当前游戏背景">
+                        <StackPanel>
+                            <TextBlock Text="跟随当前游戏背景" FontWeight="SemiBold"/>
+                            <TextBlock Text="根据当前游戏封面更新环境色和背景模糊；关闭后不再解码封面，减少性能消耗" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                        </StackPanel>
+                    </ui:ToggleSwitch>
                 </StackPanel>
             </ui:Card>
                     </Grid>

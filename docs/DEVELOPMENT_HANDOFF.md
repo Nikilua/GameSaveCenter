@@ -2,6 +2,13 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-25 UI-328 游戏背景跟随开关交接
+
+- 设置新增 `FollowSelectedGameBackground`，默认开启，位于“外观与动态效果”。关闭后不是只隐藏图片：ViewModel 会取消封面加载、清理已解码图像和采样 Brush，重新开启后只加载当前选中游戏。
+- 游戏背景资源入口必须保留共享回退：只有开关开启、采样材质存在、毛玻璃可用且非高对比度时才显示底层图片、tint 和 BlurEffect；其他情况恢复主题/Demo 中性材质。
+- `AmbientMaterialLayer` 必须以 `UseSelectedGameBackground && HasSelectedGameBackgroundAmbientMaterial` 决定隐藏主题洗色，避免关闭开关后主题环境光消失。设置保存通过既有 `EndEdit -> NotifyVisualSettingsChanged` 链路通知已打开的 Dashboard。
+- 验证证据：`validate-source.py`、`check-xaml.ps1`、WPF 静态审查 0 error/18 warning/172 info、Release 0 warning/0 error、Playnite 296 通过/57 跳过、`.tmp/ui-qa-game-background-v1/render-qa-report.txt` 为 `render-qa OK`。真实 Playnite 重载后仍需确认开关即时生效、浅色/深色/Follow、高对比度、DPI 和性能。
+
 ## 2026-08-25 UI-327 字体清晰度与维护提示交接
 
 - 共享生产文字排版已从 `Display` 改为 `Ideal`，由生产壳、首页、设置页和 DataGrid 样式统一传递；继续保留 `ClearType`、`Fixed` hinting、`UseLayoutRounding` 和 `SnapsToDevicePixels`。这是针对用户反馈的大号中文笔画像素感，不是把文字做模糊。

@@ -460,6 +460,20 @@ namespace GameSaveCenter.Playnite.Infrastructure
             bool hasGameMaterial,
             bool glassEnabled)
         {
+            var gameBackgroundVisible = glassEnabled
+                && hasGameMaterial
+                && ambientBrush != null
+                && !SystemParameters.HighContrast;
+            var strength = Math.Max(0.2, Math.Min(1, palette.GlassStrength));
+            resources["GscGameBackgroundOpacity"] = gameBackgroundVisible
+                ? (palette.IsDark ? 0.48 : 0.40)
+                : 0d;
+            resources["GscGameBackgroundTintBrush"] = Brush(gameBackgroundVisible
+                ? Color.FromArgb(palette.IsDark ? (byte)0x52 : (byte)0x66,
+                    palette.Backdrop.R, palette.Backdrop.G, palette.Backdrop.B)
+                : Colors.Transparent);
+            resources["GscGameBackgroundEffect"] = CreateGameBackgroundBlurEffect(gameBackgroundVisible, strength);
+
             if (!glassEnabled || !hasGameMaterial || ambientBrush == null || SystemParameters.HighContrast)
             {
                 // ApplyDemoCoreResources is the single source of truth for the neutral fallback
@@ -468,7 +482,6 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 return;
             }
 
-            var strength = Math.Max(0.2, Math.Min(1, palette.GlassStrength));
             var fillOpacity = palette.IsDark
                 ? 0.80 - (0.12 * strength)
                 : 0.95 - (0.08 * strength);

@@ -28,6 +28,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Equal(source.WorkerExecutable, imported.WorkerExecutable);
             Assert.Equal(source.RcloneDestination, imported.RcloneDestination);
             Assert.Equal(source.ThemeMode, imported.ThemeMode);
+            Assert.Equal(source.FollowSelectedGameBackground, imported.FollowSelectedGameBackground);
             Assert.Equal(source.BackupFormat, imported.BackupFormat);
             Assert.Equal(source.CompressionLevel, imported.CompressionLevel);
             Assert.Equal(source.DifferentialBackupLimit, imported.DifferentialBackupLimit);
@@ -70,6 +71,7 @@ namespace GameSaveCenter.Playnite.Tests
 
             Assert.True(imported.EnableUiAnimations);
             Assert.True(imported.EnableGlassEffects);
+            Assert.True(imported.FollowSelectedGameBackground);
             Assert.Equal(78, imported.GlassEffectStrength);
             Assert.Equal(10, imported.DashboardRefreshSeconds);
             Assert.Equal(30, imported.RecentProtectionWindowDays);
@@ -195,6 +197,7 @@ namespace GameSaveCenter.Playnite.Tests
             EnableUiAnimations = false,
             EnableGlassEffects = false,
             GlassEffectStrength = 64,
+            FollowSelectedGameBackground = false,
             DashboardRefreshSeconds = 30,
             RecentProtectionWindowDays = 90,
             ProcessPollingSeconds = 9,

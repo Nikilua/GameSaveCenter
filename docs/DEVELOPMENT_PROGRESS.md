@@ -1,5 +1,7 @@
 # 开发实现进度
 
+- [x] UI-328（2026-08-25）：在设置“外观与动态效果”中新增默认开启的“跟随当前游戏背景”开关。关闭时取消封面异步加载、清理已解码图像和采样材质，开启时仅对当前选中游戏重新加载；共享游戏背景图片/tint/BlurEffect 和 AmbientMaterialLayer 统一检查开关并正确回退到主题环境光/中性材质，避免空图片层和残留色。`validate-source.py`、XAML 19/19、WPF 静态审查 0 error/18 warning/172 info、Release 0 warning/0 error、Playnite 296 通过/57 跳过、`.tmp/ui-qa-game-background-v1/render-qa-report.txt`（`render-qa OK`）通过；真实 Playnite 开关即时效果、DPI、Follow/高对比度和性能仍需人工复核。
+
 - [x] UI-327（2026-08-25）：修复生产页面与设置页文字在大字号/中文 fallback 下像素感偏重的问题，生产壳、首页、设置页、共享 DataGrid 和兼容探针统一使用 `Ideal + ClearType + Fixed hinting`，保留像素对齐；修改器确认导入页改用 Grid 让“主程序”标签与下拉框同行对齐；维护中心诊断、存储、保留策略、任务协调和镜像摘要改用低饱和信息气泡与常规次级文字。真实命令、候选项、Binding、状态 pill、表格滚动和虚拟化未变。`validate-source.py`、XAML 结构检查、WPF 静态审查、Release 构建、Core 59/59、Worker 199/199、Playnite 295/352（57 跳过）和 `.tmp/ui-qa-font-bubbles-v1/render-qa-report.txt`（`render-qa OK`）通过；真实 Playnite 字体像素观感与 DPI 仍需人工复核。
 
 - [x] UI-303（2026-08-24）：修复任务中心输入后文字只显示淡痕的问题。根因是 TextBox Padding 同时作为 `PART_ContentHost.Margin`，与 WPF/Playnite 内容宿主自身 Padding 重复计算，Task 搜索框可视高度被压到约 5 DIP；共享模板改为 `Margin=0`、`Padding=0`、`BorderThickness=0`，并显式传递字体、字号、字重和前景色，不增加输入框高度。源码门禁、XAML 19/19、WPF 静态审查 0 error/20 warnings/165 info、Release 0 警告/0 错误、Core 59/59、Worker 199/199、Playnite 282/282（57 跳过）通过；输入态 RenderHarness 验证 viewport `5→19 DIP`、文字完整显示，生产安装已核验 DLL `0.6.70.0`。

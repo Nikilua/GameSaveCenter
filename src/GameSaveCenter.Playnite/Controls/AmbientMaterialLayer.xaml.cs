@@ -81,8 +81,9 @@ namespace GameSaveCenter.Playnite.Controls
         private void ApplyDashboardMaterial()
         {
             var hasGameMaterial = dashboard?.HasSelectedGameBackgroundAmbientMaterial == true;
-            ThemeAmbientWash.Opacity = hasGameMaterial ? 0 : 1;
-            GameBackgroundAmbientWash.Fill = UseSelectedGameBackground && hasGameMaterial
+            var useGameMaterial = UseSelectedGameBackground && hasGameMaterial;
+            ThemeAmbientWash.Opacity = useGameMaterial ? 0 : 1;
+            GameBackgroundAmbientWash.Fill = useGameMaterial
                 ? dashboard?.SelectedGameBackgroundAmbientBrush
                 : null;
         }

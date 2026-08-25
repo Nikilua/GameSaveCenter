@@ -225,6 +225,7 @@ namespace GameSaveCenter.Playnite.Views
             BeginUiSafely(() =>
             {
                 if (!IsLoaded) return;
+                viewModel.ApplySelectedGameBackgroundPreference();
                 ApplyAdaptiveTheme();
                 refreshTimer.Interval = TimeSpan.FromSeconds(Math.Max(5, Math.Min(300, plugin.Settings.DashboardRefreshSeconds)));
                 if (plugin.Settings.EnableDashboardAutoRefresh) refreshTimer.Start(); else refreshTimer.Stop();
@@ -1493,7 +1494,8 @@ namespace GameSaveCenter.Playnite.Views
             if (activePalette == null) return;
 
             var ambientBrush = viewModel.SelectedGameBackgroundAmbientBrush;
-            var hasGameMaterial = viewModel.HasSelectedGameBackgroundAmbientMaterial;
+            var hasGameMaterial = plugin.Settings.FollowSelectedGameBackground
+                && viewModel.HasSelectedGameBackgroundAmbientMaterial;
             AdaptiveThemePaletteFactory.ApplyGameBackgroundGlassResources(
                 Resources, activePalette, ambientBrush, hasGameMaterial, activeGlassEnabled);
             foreach (var workspaceView in GetWorkspaceViews())

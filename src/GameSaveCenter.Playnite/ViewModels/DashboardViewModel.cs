@@ -60,6 +60,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private long deferredUiWorkGeneration;
         private long detailsLoadGeneration;
         private long selectedGameBackgroundGeneration;
+        private bool selectedGameBackgroundPreferenceApplied;
         private Task? taskEventListener;
         private bool commandRefreshScheduled;
         private readonly DebouncedRefresh taskSearchRefresh;
@@ -558,6 +559,18 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             get => hasSelectedGameBackgroundAmbientMaterial;
             private set => SetValue(ref hasSelectedGameBackgroundAmbientMaterial, value);
+        }
+
+        /// <summary>
+        /// Applies a changed visual preference without reloading the artwork when another
+        /// appearance setting changes. Turning the preference off also releases the decoded
+        /// image and cancels the in-flight provider operation immediately.
+        /// </summary>
+        public void ApplySelectedGameBackgroundPreference()
+        {
+            var enabled = plugin.Settings.FollowSelectedGameBackground;
+            if (enabled == selectedGameBackgroundPreferenceApplied) return;
+            RefreshSelectedGameBackground();
         }
         public BackupVersionDto SelectedBackup
         {
@@ -2857,6 +2870,16 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private void RefreshSelectedGameBackground()
         {
+            selectedGameBackgroundPreferenceApplied = plugin.Settings.FollowSelectedGameBackground;
+            if (!selectedGameBackgroundPreferenceApplied)
+            {
+                CancelSelectedGameBackgroundLoad();
+                SelectedGameBackground = null;
+                SelectedGameBackgroundAmbientBrush = null;
+                HasSelectedGameBackgroundAmbientMaterial = false;
+                return;
+            }
+
             var generation = Interlocked.Increment(ref selectedGameBackgroundGeneration);
             var next = new CancellationTokenSource();
             var previous = Interlocked.Exchange(ref selectedGameBackgroundCancellation, next);

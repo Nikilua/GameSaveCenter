@@ -62,6 +62,8 @@ public sealed class ProductionShellChromeSourceTests
         Assert.Contains("content.Width = expanded ? double.NaN : 26", shellCode);
         Assert.Contains("public bool SidebarCollapsed", settingsCode);
         Assert.Contains("SidebarCollapsed = other.SidebarCollapsed", settingsCode);
+        Assert.Contains("public bool FollowSelectedGameBackground", settingsCode);
+        Assert.Contains("FollowSelectedGameBackground = other.FollowSelectedGameBackground", settingsCode);
         Assert.Contains("HorizontalAlignment.Center", shellCode);
         Assert.Contains("typeof(AcrylicProductionShellView).Assembly.GetName().Version", shellCode);
         Assert.Contains("展开导航栏", shellCode);
@@ -79,6 +81,23 @@ public sealed class ProductionShellChromeSourceTests
         Assert.Contains("preferredWidth = 1280", settingsCode);
         Assert.Contains("preferredHeight = 840", settingsCode);
         Assert.Contains("hostWindow.SizeToContent = SizeToContent.Manual", settingsCode);
+    }
+
+    [Fact]
+    public void GameBackgroundPreferenceControlsDecodeAndMaterialFallback()
+    {
+        var settings = ReadSource("src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml");
+        var dashboard = ReadSource("src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml.cs");
+        var viewModel = ReadSource("src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs");
+        var ambient = ReadSource("src", "GameSaveCenter.Playnite", "Controls", "AmbientMaterialLayer.xaml.cs");
+
+        Assert.Contains("IsChecked=\"{Binding FollowSelectedGameBackground}\"", settings);
+        Assert.Contains("不再解码封面", settings);
+        Assert.Contains("ApplySelectedGameBackgroundPreference();", dashboard);
+        Assert.Contains("plugin.Settings.FollowSelectedGameBackground", dashboard);
+        Assert.Contains("CancelSelectedGameBackgroundLoad();", viewModel);
+        Assert.Contains("var useGameMaterial = UseSelectedGameBackground && hasGameMaterial;", ambient);
+        Assert.Contains("ThemeAmbientWash.Opacity = useGameMaterial ? 0 : 1;", ambient);
     }
 
     private static string ReadSource(params string[] segments)

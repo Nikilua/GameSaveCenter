@@ -3,6 +3,14 @@
 > 维护时间：2026-08-25
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-25 UI-328 当前事实：游戏背景跟随开关与材质回退
+
+- `GameSaveCenterSettings.FollowSelectedGameBackground` 默认 `true`，位于设置页“外观与动态效果”中的“跟随当前游戏背景”开关；旧 JSON/便携设置没有该字段时必须继续默认跟随。
+- `DashboardViewModel.ApplySelectedGameBackgroundPreference()` 只在偏好状态发生变化时刷新；关闭时取消 `PlayniteGameBackgroundProvider` 当前任务并清空 `SelectedGameBackground`、采样 Brush 和材质标记，开启时按当前选择重新加载。不要把它改成每次调节毛玻璃强度都解码图片。
+- `DashboardView.ApplySelectedGameGlassResources` 和 `AdaptiveThemePaletteFactory.ApplyGameBackgroundGlassResources` 必须共同检查开关、采样材质、毛玻璃和高对比度；关闭/无图时 `GscGameBackgroundOpacity=0`、tint 透明、BlurEffect 为 null，并恢复 Demo 中性表面资源。
+- `AmbientMaterialLayer` 的 `ThemeAmbientWash` 只能在实际使用游戏材质时隐藏：判断应使用 `UseSelectedGameBackground && hasGameMaterial`，不能只看 `hasGameMaterial`，否则关闭游戏背景后会丢失主题环境光。
+- UI-328 验证：源码/XAML 门禁、WPF 0 error、Release 0 warning/0 error、Playnite 296/353（57 跳过）和 `.tmp/ui-qa-game-background-v1/render-qa-report.txt`（`render-qa OK`）通过；真实 Playnite 的开关即时效果、DPI、Follow/高对比度和性能仍需人工复核。
+
 ## 2026-08-25 UI-327 当前事实：文字渲染、修改器对齐与诊断气泡
 
 - 生产壳、Dashboard、Settings、共享 `DataGrid` 和开发探针现在统一使用 `TextFormattingMode=Ideal`、`TextRenderingMode=ClearType`、`TextHintingMode=Fixed`，并保留像素对齐；不要为修复锯齿把 BlurEffect 加到文字或滚动内容。
