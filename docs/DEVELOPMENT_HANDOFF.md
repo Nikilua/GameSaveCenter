@@ -2,6 +2,13 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-25 UI-330 毛玻璃强度交接
+
+- `GlassStrengthSlider` 仍是 20–100；`AdaptiveThemePalette.BlurRadiusForStrength` 现在直接把百分比映射为 Blur DIP：20→20、默认 78→78、100→100。后续不要再使用 12–34 或 16–34 的压缩范围，否则滑块会再次出现“100 像 20”的观感。
+- 真实 Blur 只允许出现在游戏背景图片层和设置页环境层；卡片、文字、表格、列表和滚动区域继续使用共享半透明材质，不挂 BlurEffect。
+- 保留关闭玻璃、高对比度、无图/关闭游戏背景跟随时的 null/透明/不透明回退，并且强度变化不能启动新的背景解码。
+- 验证证据：WPF 资源定向 119 通过/39 跳过，全量 Playnite 297 通过/57 跳过，Release 0 警告/0 错误，`.tmp/ui-qa-glass-strength-v1/render-qa-report.txt` 为 `render-qa OK`。真实 Playnite 的 100% 帧率、DPI 和视觉观感仍需安装后确认。
+
 ## 2026-08-25 UI-329 刷新与布局流畅度交接
 
 - Dashboard 自动刷新不得在选中游戏未变化时重复刷新 Icon 或 Background；`EnsureSelectedGameBackgroundLoaded` 只在页面重新显示且当前背景确实缺失时做一次恢复。不要把背景解码放回普通快照轮询。
@@ -56,7 +63,7 @@
 ## 2026-08-25 UI-314 当前交接：游戏背景真实模糊
 
 - 当前游戏背景仍由 Shell 的唯一跨壳 `ImageBrush` 绘制；UI-314 只在背景实际加载时给这个矩形挂 `GscGameBackgroundEffect`，不要把 BlurEffect 加到卡片、文字、页面根、列表或滚动器。
-- `GscGameBackgroundEffect` 由 `AdaptiveThemePalette` 按毛玻璃强度生成冻结 `BlurEffect`，默认设置约 29 DIP，范围约 16–34 DIP，`RenderingBias=Performance`。图片仍保持 `UniformToFill` 居中、不平铺和原有透明度/tint。
+- `GscGameBackgroundEffect` 由 `AdaptiveThemePalette` 按毛玻璃强度直接生成 20–100 DIP 的冻结 `BlurEffect`，默认设置为 78 DIP，`RenderingBias=Performance`。图片仍保持 `UniformToFill` 居中、不平铺和原有透明度/tint。
 - 没有背景图、关闭毛玻璃、高对比度时必须返回 null；XAML 的 `HasSelectedGameBackgroundAmbientMaterial` DataTrigger 负责避免无图时保留大面积效果视觉。
 - UI-314 已通过源码门禁、WPF 静态审查、Release 全量测试和多主题多尺寸 `render-qa OK`。真实 Playnite 没有可控窗口，安装后需人工确认模糊强度和帧率。
 

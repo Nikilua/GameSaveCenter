@@ -169,10 +169,11 @@ public sealed class WpfUiResourceDictionaryTests
                 Assert.True(Assert.IsType<double>(localResources["GscGameBackgroundOpacity"]) > 0);
                 Assert.True(Assert.IsType<SolidColorBrush>(localResources["GscGameBackgroundTintBrush"]).Color.A > 0);
                 var gameBackgroundBlur = Assert.IsType<BlurEffect>(localResources["GscGameBackgroundEffect"]);
-                Assert.InRange(gameBackgroundBlur.Radius, 20, 35);
+                Assert.Equal(78d, gameBackgroundBlur.Radius, 3);
                 Assert.Equal(RenderingBias.Performance, gameBackgroundBlur.RenderingBias);
                 var strongerGameBackgroundBlur = Assert.IsType<BlurEffect>(strongerMaterialResources["GscGameBackgroundEffect"]);
-                Assert.True(strongerGameBackgroundBlur.Radius > gameBackgroundBlur.Radius);
+                Assert.Equal(100d, strongerGameBackgroundBlur.Radius, 3);
+                Assert.Equal(22d, strongerGameBackgroundBlur.Radius - gameBackgroundBlur.Radius, 3);
                 var strongerWideWash = Assert.IsType<LinearGradientBrush>(strongerMaterialResources["GscAmbientWideWashBrush"]);
                 Assert.True(
                     strongerWideWash.GradientStops.Max(stop => stop.Color.A)
@@ -207,7 +208,7 @@ public sealed class WpfUiResourceDictionaryTests
                 Assert.Null(localResources["GscSettingsAmbientEffect"]);
                 settingsMaterial.Invoke(null, new object[] { localResources, palette, true });
                 var settingsAmbientEffect = Assert.IsType<BlurEffect>(localResources["GscSettingsAmbientEffect"]);
-                Assert.InRange(settingsAmbientEffect.Radius, 18, 31);
+                Assert.Equal(78d, settingsAmbientEffect.Radius, 3);
                 Assert.Equal(RenderingBias.Performance, settingsAmbientEffect.RenderingBias);
                 var settingsAmbientBrush = Assert.IsType<LinearGradientBrush>(localResources["GscSettingsAmbientBrush"]);
                 Assert.True(settingsAmbientBrush.GradientStops.Count >= 4);

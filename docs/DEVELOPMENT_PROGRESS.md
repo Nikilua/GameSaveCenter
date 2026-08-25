@@ -1,5 +1,7 @@
 # 开发实现进度
 
+- [x] UI-330（2026-08-25）：校准毛玻璃强度映射。设置滑块仍为 20–100，但游戏背景与设置环境 Blur 改为直接比例：20%→20 DIP、默认 78%→78 DIP、100%→100 DIP，使初始效果更明显且最大值确实更强；Blur 仍只作用于静态环境层，关闭玻璃、高对比度、无图和游戏背景跟随后保持原有回退。WPF 资源定向 119 通过/39 跳过、Playnite 297 通过/57 跳过、Release 0 warning/0 error、`.tmp/ui-qa-glass-strength-v1/render-qa-report.txt`（`render-qa OK`）通过；真实 Playnite 100% 强度帧率、DPI 和视觉观感仍需人工复核。
+
 - [x] UI-329（2026-08-25）：收口界面刷新与背景取色性能。Dashboard 自动快照仅在选中游戏变化时刷新 Icon/Background，页面重新显示时只做一次缺失背景恢复；背景渐变从整帧复制改为五次 1×1 像素采样，降低切换游戏时的瞬时内存分配；生产壳窗口拖拽布局与游戏筛选默认值恢复分别按 Render/Loaded 合并，减少重复重排且保留现有视觉、命令、绑定、虚拟化和侧栏动画。定向 26/26、全量 Playnite 297 通过/57 跳过、Release 0 warning/0 error、WPF 0 error/18 warning/172 info、`.tmp/ui-qa-performance-v1/render-qa-report.txt`（`render-qa OK`）通过；真实 Playnite 帧率、内存、DPI 和宿主缩放仍需人工复核。
 
 - [x] UI-328（2026-08-25）：在设置“外观与动态效果”中新增默认开启的“跟随当前游戏背景”开关。关闭时取消封面异步加载、清理已解码图像和采样材质，开启时仅对当前选中游戏重新加载；共享游戏背景图片/tint/BlurEffect 和 AmbientMaterialLayer 统一检查开关并正确回退到主题环境光/中性材质，避免空图片层和残留色。`validate-source.py`、XAML 19/19、WPF 静态审查 0 error/18 warning/172 info、Release 0 warning/0 error、Playnite 296 通过/57 跳过、`.tmp/ui-qa-game-background-v1/render-qa-report.txt`（`render-qa OK`）通过；真实 Playnite 开关即时效果、DPI、Follow/高对比度和性能仍需人工复核。

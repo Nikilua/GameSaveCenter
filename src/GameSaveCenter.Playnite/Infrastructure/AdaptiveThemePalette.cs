@@ -781,12 +781,13 @@ namespace GameSaveCenter.Playnite.Infrastructure
         {
             if (!enabled) return null;
 
-            // The effect is restricted to the static game image layer. A 16–34 DIP range keeps
-            // the selected artwork recognizable at low strength while making the default 78%
-            // setting visibly diffuse instead of merely translucent.
+            // The effect is restricted to the static game image layer. Map the user-facing
+            // percentage directly to the WPF blur radius: 20% means 20 DIP, the default 78%
+            // means 78 DIP, and 100% reaches the full 100 DIP range. The previous 12–34 DIP
+            // range made 100% look too close to the minimum and did not match the slider label.
             var effect = new BlurEffect
             {
-                Radius = 12 + (22 * Math.Max(0.2, Math.Min(1, glassStrength))),
+                Radius = BlurRadiusForStrength(glassStrength),
                 RenderingBias = RenderingBias.Performance
             };
             effect.Freeze();
@@ -799,11 +800,17 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
             var effect = new BlurEffect
             {
-                Radius = 16 + (14 * Math.Max(0.2, Math.Min(1, glassStrength))),
+                Radius = BlurRadiusForStrength(glassStrength),
                 RenderingBias = RenderingBias.Performance
             };
             effect.Freeze();
             return effect;
+        }
+
+        private static double BlurRadiusForStrength(double glassStrength)
+        {
+            var normalized = Math.Max(0.2, Math.Min(1, glassStrength));
+            return normalized * 100d;
         }
 
         private static LinearGradientBrush CreateSidebarMaterialBrush(AdaptiveThemePalette palette, bool glassEnabled)

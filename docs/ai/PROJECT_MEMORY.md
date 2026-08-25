@@ -3,6 +3,13 @@
 > 维护时间：2026-08-25
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-25 UI-330 当前事实：毛玻璃强度直接比例映射
+
+- `AdaptiveThemePalette.BlurRadiusForStrength` 将设置滑块 20–100 直接映射为 Blur 半径 20–100 DIP：默认 `GlassEffectStrength=78` 就是 78 DIP，100 才是完整 100 DIP。不要恢复此前 12–34 或 16–34 DIP 的压缩范围。
+- 主界面 `GscGameBackgroundEffect` 只挂在 Shell 的静态游戏背景图片层；设置页 `GscSettingsAmbientEffect` 只挂在设置页环境层。卡片、文字、DataGrid、ListBox 和 ScrollViewer 禁止使用 BlurEffect。
+- `EnableGlassEffects=false`、`SystemParameters.HighContrast`、无游戏背景/关闭跟随后，仍必须返回真实 `null` 或透明/不透明回退资源；强度调整不能重新触发背景解码。
+- UI-330 验证：WPF 资源定向 119/158（39 跳过）、Playnite 全量 297/354（57 跳过）、Release 0 warning/0 error、`.tmp/ui-qa-glass-strength-v1/render-qa-report.txt` 为 `render-qa OK`。真实 Playnite 的 100% 帧率、DPI 和宿主视觉仍需人工复核。
+
 ## 2026-08-25 UI-329 当前事实：刷新与背景取色性能
 
 - `DashboardViewModel.RefreshDashboardAsync` 只有在 `SelectedGame.PlayniteId` 变化时才允许刷新当前游戏 Icon/Background；普通自动快照轮询不能重复读取 Playnite 图标或重启同一背景解码。`DashboardView.OnLoaded` 的 `EnsureSelectedGameBackgroundLoaded` 只负责恢复卸载期间被取消且当前仍缺失的加载。
@@ -62,7 +69,7 @@
 
 - UI-313 解决了背景图重复绘制和横向矩形接缝，但原链路只有低透明度图片、主题 tint 和采样渐变，没有任何 `BlurEffect`，因此用户看到的仍接近清晰原图。
 - `AcrylicProductionShellView` 的单一游戏背景矩形现在仅在 `HasSelectedGameBackgroundAmbientMaterial=True` 时挂 `GscGameBackgroundEffect`；卡片、文字、页面、列表和滚动内容不挂 BlurEffect。
-- `AdaptiveThemePalette.ApplyMaterialResources` 按 `GlassEffectStrength` 生成冻结的 `BlurEffect`，半径约 16–34 DIP，默认 78% 约 29 DIP，使用 `RenderingBias.Performance`。关闭毛玻璃、无背景图或高对比度时资源为真正的 null，不保留无效效果视觉。
+- `AdaptiveThemePalette.ApplyMaterialResources` 按 `GlassEffectStrength` 生成冻结的 `BlurEffect`；UI-330 已改为直接比例半径 20–100 DIP，默认 78% 为 78 DIP，使用 `RenderingBias.Performance`。关闭毛玻璃、无背景图或高对比度时资源为真正的 null，不保留无效效果视觉。
 - UI-314 验证：源码门禁、WPF 静态检查（0 error、18 条既有 warning）、Release 全量构建/测试和多主题多尺寸 `render-qa OK`。真实 Playnite 没有可控窗口，安装后需确认实际模糊观感与性能。
 
 ## 2026-08-24 UI-313 当前事实：背景图单层居中与底部接缝修复
