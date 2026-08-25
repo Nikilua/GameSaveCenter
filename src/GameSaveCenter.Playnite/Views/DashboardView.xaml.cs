@@ -38,6 +38,8 @@ namespace GameSaveCenter.Playnite.Views
         private bool responsiveLayoutPending;
         private bool compactGameBrowserOpen;
         private Size pendingResponsiveSize;
+        private AdaptiveThemePalette? activePalette;
+        private bool activeGlassEnabled;
 
         public DashboardView(GameSaveCenterPlugin plugin)
         {
@@ -926,7 +928,12 @@ namespace GameSaveCenter.Playnite.Views
                 return;
             }
             if (!IsLoaded) return;
-            if (e.PropertyName == nameof(DashboardViewModel.SelectedGame) && !viewModel.IsBackgroundRefreshing)
+            if (e.PropertyName == nameof(DashboardViewModel.SelectedGameBackgroundAmbientBrush)
+                || e.PropertyName == nameof(DashboardViewModel.HasSelectedGameBackgroundAmbientMaterial))
+            {
+                ApplySelectedGameGlassResources();
+            }
+            else if (e.PropertyName == nameof(DashboardViewModel.SelectedGame) && !viewModel.IsBackgroundRefreshing)
             {
                 BeginUiSafely(() => AnimateElement(GameDetailCard, 13, 0, 0.23), DispatcherPriority.Background);
             }
@@ -1441,6 +1448,8 @@ namespace GameSaveCenter.Playnite.Views
         {
             var glassEnabled = plugin.Settings.EnableGlassEffects && !SystemParameters.HighContrast;
             var palette = AdaptiveThemePaletteFactory.Create(this, glassEnabled, plugin.Settings.GlassEffectStrength, plugin.Settings.ThemeMode);
+            activePalette = palette;
+            activeGlassEnabled = glassEnabled;
 
             AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(Resources, palette, glassEnabled, MotionEnabled);
             foreach (var workspaceView in GetWorkspaceViews())
@@ -1460,6 +1469,7 @@ namespace GameSaveCenter.Playnite.Views
             {
                 AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(workspaceView.Resources, palette, glassEnabled, MotionEnabled);
             }
+            ApplySelectedGameGlassResources();
             OverviewWorkspaceView.UiAnimationsEnabled = MotionEnabled;
 
             // Collapse the legacy coordinator layer instead of merely making it transparent so
@@ -1468,6 +1478,28 @@ namespace GameSaveCenter.Playnite.Views
             AmbientGlowLayer.Opacity = glassEnabled
                 ? (palette.IsDark ? 0.46 : 0.56) * Math.Max(0.2, Math.Min(1, plugin.Settings.GlassEffectStrength / 100d))
                 : 0;
+        }
+
+        private void ApplySelectedGameGlassResources()
+        {
+            if (activePalette == null) return;
+
+            var ambientBrush = viewModel.SelectedGameBackgroundAmbientBrush;
+            var hasGameMaterial = viewModel.HasSelectedGameBackgroundAmbientMaterial;
+            AdaptiveThemePaletteFactory.ApplyGameBackgroundGlassResources(
+                Resources, activePalette, ambientBrush, hasGameMaterial, activeGlassEnabled);
+            foreach (var workspaceView in GetWorkspaceViews())
+            {
+                AdaptiveThemePaletteFactory.ApplyGameBackgroundGlassResources(
+                    workspaceView.Resources, activePalette, ambientBrush, hasGameMaterial, activeGlassEnabled);
+            }
+            AdaptiveThemePaletteFactory.ApplyGameBackgroundGlassResources(
+                ProductionShellView.Resources, activePalette, ambientBrush, hasGameMaterial, activeGlassEnabled);
+            foreach (var workspaceView in ProductionShellView.WorkspaceViews)
+            {
+                AdaptiveThemePaletteFactory.ApplyGameBackgroundGlassResources(
+                    workspaceView.Resources, activePalette, ambientBrush, hasGameMaterial, activeGlassEnabled);
+            }
         }
 
         internal void ApplyThemeForAudit(GameSaveCenterThemeMode mode)

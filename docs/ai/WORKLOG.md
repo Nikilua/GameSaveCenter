@@ -4430,3 +4430,26 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 
 - 本轮 Tab 样式变更尚未取得重启后 Playnite 的稳定前台截图；之前重启后的 Computer Use 窗口曾返回 `foreground window did not report a process id`，因此不能把离屏截图写成真实宿主 Tab 像素验收。
 - 仍需在真实 Playnite 中复核 125%/150% DPI、窗口缩放、Follow/高对比度、键盘焦点，以及真实备份/媒体归类操作；Demo-first 七页总目标保持进行中。
+
+## 2026-08-25 UI-315 游戏背景驱动的共享毛玻璃材质
+
+**用户问题：**
+
+- 用户希望所有卡片、表格和容器共用毛玻璃背景，并且颜色/渐变跟随当前游戏背景图，而不是继续使用固定绿色或单一中性色。
+
+**实现内容：**
+
+- 在 `AdaptiveThemePaletteFactory.ApplyGameBackgroundGlassResources` 中把当前游戏背景的采样渐变混入 `GscGlassFillBrush`、`GscGlassStrongBrush`、`GscTableHeaderBrush`、`GscPopupBrush` 和 WPF-UI 卡片背景资源；共享 `GscRedesignSectionCard`、`GscRedesignTableFrame`、Metric/Popup 等样式因此统一跟随当前游戏。
+- 卡片材质使用受控半透明渐变，文字和表格仍保持阅读对比度；真正的 BlurEffect 仍只作用于壳体底层游戏图，避免把卡片自己的文字一起模糊。
+- `DashboardView` 在主题刷新、背景加载完成、切换游戏或背景缺失时同步自身、生产壳和全部工作区的资源字典；禁用玻璃、高对比度或没有背景图时恢复 Demo 中性回退。
+
+**验证结果：**
+
+- `scripts/validate-source.py`：通过；WPF 审计：0 error、18 warnings、166 info，未新增错误。
+- Release 构建：0 warning、0 error；Core 59/59、Worker 199/199、Playnite 289 通过、57 跳过、0 失败。
+- `scripts/render-qa.ps1 -Configuration Release -Output .tmp/ui-qa-adaptive-glass`：`render-qa OK`，浅色/深色、多尺寸和 resize transition 全部通过。
+
+**实现边界：**
+
+- 这是共享资源级的自适应玻璃材质，不是给每个卡片挂 BlurEffect；后者会模糊卡片内容且成本更高。输入框等交互控件继续保持相对中性的填充，避免游戏图片颜色干扰输入可读性。
+- 本轮没有新增真实 Playnite 重启后的逐页像素截图；RenderHarness 证据只能证明受控 WPF 的布局、主题和资源加载没有回归。

@@ -1425,3 +1425,11 @@
 - RenderHarness 的 `SnapshotLayoutMetrics` 对重复模板部件名按出现顺序添加 `#2` 等稳定后缀，解决维护页嵌套 TabControl 的合法同名 `HeaderScrollViewer` 导致 `ToDictionary` 重复键的问题。
 - UI-261 证据：源码/XAML/差异检查通过，定向契约 15/15，`artifacts/ui-qa/project-tab-chrome-rollback/render-qa-report.txt` 为 `render-qa OK`；代表离屏截图已确认 Save/Media/Maintenance 的项目 Tab chrome。Tab 回滚后的完整安装也通过：Release 0 warning/0 error、Core 59/59、Worker 191/191、Playnite 258 通过/62 跳过、安装 0.6.70/DLL 0.6.70.0；WPF validator 0 error、19 warnings、161 info。
 - 真实宿主重装后的稳定前台截图仍缺失；不要将离屏证据扩写为 Playnite 1:1 验收。DPI、窗口缩放、Follow/高对比度、键盘焦点和真实备份/媒体操作仍是总目标边界。
+
+## 2026-08-25 UI-315 共享自适应毛玻璃材质
+
+- 游戏背景的真实图片、壳体底层模糊和卡片共享材质是三层职责：图片只绘制一次并居中裁剪；BlurEffect 只放在壳体图片层；卡片/表格/浮层通过共享 DynamicResource 使用采样色渐变。
+- `AdaptiveThemePaletteFactory.ApplyGameBackgroundGlassResources` 是共享表面入口。当前覆盖 `GscGlassFillBrush`、`GscGlassStrongBrush`、`GscTableHeaderBrush`、`GscPopupBrush` 和 `CardBackgroundFillColorDefaultBrush`，从而覆盖 Redesign 的 SectionCard、TableFrame、Hero、Metric、FloatingPicker 及 WPF-UI Card。
+- `DashboardView.ApplySelectedGameGlassResources` 必须在主题刷新和 `SelectedGameBackgroundAmbientBrush`/`HasSelectedGameBackgroundAmbientMaterial` 变化时同步 Dashboard、生产壳及所有 workspace 的本地 ResourceDictionary；切换到无图游戏时必须恢复 `ApplyDemoCoreResources` 的中性资源。
+- 不要给每张卡片增加 BlurEffect，也不要把游戏采样色直接作为完全透明背景；前者会模糊文字并增加视觉树成本，后者会让表格在亮色图片上失去可读性。共享表面应保持受控 alpha，真实 Blur 继续留在底层图片。
+- 输入框、ComboBox 等交互控件暂不跟随图片大幅变色；如果未来扩大范围，先验证文本对比度、焦点边框、禁用态和高对比度回退。

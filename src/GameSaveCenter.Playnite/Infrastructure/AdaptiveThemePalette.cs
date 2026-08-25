@@ -432,6 +432,49 @@ namespace GameSaveCenter.Playnite.Infrastructure
         }
 
         /// <summary>
+        /// Applies the selected game's sampled colors to the shared reading surfaces. The actual
+        /// artwork is already blurred by the shell; these resources only add a controlled,
+        /// translucent color field to cards, table frames and floating containers. Keeping this
+        /// at the resource level makes every page follow the same material without attaching an
+        /// expensive BlurEffect to each control (which would blur its own text as well).
+        /// </summary>
+        public static void ApplyGameBackgroundGlassResources(
+            ResourceDictionary resources,
+            AdaptiveThemePalette palette,
+            Brush? ambientBrush,
+            bool hasGameMaterial,
+            bool glassEnabled)
+        {
+            if (!glassEnabled || !hasGameMaterial || ambientBrush == null || SystemParameters.HighContrast)
+            {
+                // ApplyDemoCoreResources is the single source of truth for the neutral fallback
+                // values. This also restores the fallback immediately when a game has no image.
+                ApplyDemoCoreResources(resources, palette.IsDark);
+                return;
+            }
+
+            var strength = Math.Max(0.2, Math.Min(1, palette.GlassStrength));
+            var fillOpacity = palette.IsDark
+                ? 0.80 - (0.12 * strength)
+                : 0.95 - (0.08 * strength);
+            var strongOpacity = palette.IsDark
+                ? 0.90 - (0.10 * strength)
+                : 0.98 - (0.06 * strength);
+            var fillTint = palette.IsDark ? 0.20 : 0.14;
+            var strongTint = palette.IsDark ? 0.16 : 0.11;
+
+            resources["GscGlassFillBrush"] = CreateGameGlassBrush(
+                ambientBrush, palette.SurfaceTop, palette.SurfaceBottom, fillTint, fillOpacity);
+            resources["GscGlassStrongBrush"] = CreateGameGlassBrush(
+                ambientBrush, palette.StrongSurfaceTop, palette.StrongSurfaceBottom, strongTint, strongOpacity);
+            resources["GscTableHeaderBrush"] = CreateGameGlassBrush(
+                ambientBrush, palette.StrongSurfaceTop, palette.StrongSurfaceBottom, strongTint * 0.72, strongOpacity + 0.02);
+            resources["GscPopupBrush"] = CreateGameGlassBrush(
+                ambientBrush, palette.StrongSurfaceTop, palette.StrongSurfaceBottom, strongTint * 0.82, Math.Min(0.98, strongOpacity + 0.04));
+            resources["CardBackgroundFillColorDefaultBrush"] = resources["GscGlassStrongBrush"];
+        }
+
+        /// <summary>
         /// Keeps the migrated page surfaces on the Demo's light/dark color relationships.
         /// Playnite may still provide the accent used for focus and primary actions, but its
         /// background/text brushes must not recolor the page cards, tables or status surfaces.
@@ -534,6 +577,42 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["ControlStrokeColorSecondaryBrush"] = Brush(divider);
             resources["CardBackgroundFillColorDefaultBrush"] = Brush(card);
             resources["CardStrokeColorDefaultBrush"] = Brush(cardStroke);
+        }
+
+        private static LinearGradientBrush CreateGameGlassBrush(
+            Brush ambientBrush,
+            Color surfaceTop,
+            Color surfaceBottom,
+            double tint,
+            double opacity)
+        {
+            var result = new LinearGradientBrush
+            {
+                StartPoint = new Point(0, 0),
+                EndPoint = new Point(1, 1)
+            };
+
+            if (ambientBrush is GradientBrush gradient && gradient.GradientStops.Count > 0)
+            {
+                foreach (var stop in gradient.GradientStops)
+                {
+                    var offset = Math.Max(0, Math.Min(1, stop.Offset));
+                    var surface = Blend(Opaque(surfaceTop), Opaque(surfaceBottom), offset);
+                    var gameTint = Blend(surface, Opaque(stop.Color), tint);
+                    result.GradientStops.Add(new GradientStop(WithAlpha(gameTint, opacity), offset));
+                }
+            }
+            else
+            {
+                var fallback = ExtractUsableColor(ambientBrush) ?? Opaque(surfaceTop);
+                result.GradientStops.Add(new GradientStop(
+                    WithAlpha(Blend(Opaque(surfaceTop), fallback, tint), opacity), 0));
+                result.GradientStops.Add(new GradientStop(
+                    WithAlpha(Blend(Opaque(surfaceBottom), fallback, tint), opacity), 1));
+            }
+
+            result.Freeze();
+            return result;
         }
 
         private static LinearGradientBrush CanvasGradient(Color start, Color middle, Color end)

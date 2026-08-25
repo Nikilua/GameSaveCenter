@@ -919,3 +919,12 @@ git branch --show-current
 - RenderHarness 的重复模板部件名度量已修复；最新 `artifacts/ui-qa/project-tab-chrome-rollback/render-qa-report.txt` 为 `render-qa OK`，并已人工查看 Save/Media/Maintenance 代表截图。源码/XAML/差异检查及定向契约 15/15 均通过。
 - UI-260/261 的 Release 安装验证已通过：XAML 18/18、Release 0 warning/0 error、Core 59/59、Worker 191/191、Playnite 258 通过/62 跳过、安装 0.6.70/DLL 0.6.70.0；WPF validator 0 error、19 warnings、161 info。现在可以进入提交/推送前的最终工作树检查。
 - 真实 Playnite 重启后的 Computer Use 当前仍可能返回 `foreground window did not report a process id`；不能用离屏截图代替重装后宿主 Tab 像素证据。剩余人工边界仍为 125%/150% DPI、窗口缩放、Follow/高对比度、键盘焦点和真实备份/媒体归类操作。
+
+## 2026-08-25 UI-315 共享卡片/表格自适应毛玻璃交接
+
+- 用户已要求所有卡片、表格、容器尽量使用毛玻璃，并希望颜色跟随当前游戏背景图。实现已集中在 `AdaptiveThemePaletteFactory.ApplyGameBackgroundGlassResources`，不要回到逐页写固定背景色的方式。
+- 生产卡片和表格通常通过 `GscGlassFillBrush` / `GscGlassStrongBrush`，表头通过 `GscTableHeaderBrush`，浮层通过 `GscPopupBrush`；修改材质优先改这些共享资源和 `Redesign.xaml`，不要逐个页面加局部 Brush。
+- `DashboardView` 主题刷新后以及当前游戏背景采样属性变化时，会把材质同步到 Dashboard、`AcrylicProductionShellView` 和所有生产 workspace 的 ResourceDictionary。没有游戏背景、禁用玻璃或高对比度时必须走中性回退。
+- 底层游戏图 BlurEffect 的职责与卡片颜色分离：不能把 BlurEffect 直接挂到卡片，否则会把卡片自己的文字/表格一起模糊；也不能把采样渐变设成完全不透明，否则失去玻璃效果。
+- UI-315 验证：source validation 通过；Release 0 warning/0 error；Core 59/59、Worker 199/199、Playnite 289 通过/57 跳过；WPF validator 0 error/18 warnings/166 info；多主题、多尺寸和 resize transition 的 render-qa 为 OK。
+- 本轮没有新增真实 Playnite 重启后的逐页像素证据；后续若继续调透明度，应在真实宿主中复核 Bongo Cat 等不同主色背景、Follow/高对比度和 125%/150% DPI，并继续保留真实备份/媒体归类操作边界。

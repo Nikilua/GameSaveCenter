@@ -124,6 +124,25 @@ public sealed class WpfUiResourceDictionaryTests
                 Assert.IsType<DropShadowEffect>(localResources["GscSliderThumbEffect"]);
                 Assert.True(Assert.IsType<bool>(localResources["GscPopupAllowsTransparency"]));
                 Assert.Equal(PopupAnimation.Fade, Assert.IsType<PopupAnimation>(localResources["GscPopupAnimation"]));
+
+                var gameGlass = factoryType.GetMethod("ApplyGameBackgroundGlassResources", BindingFlags.Public | BindingFlags.Static)!;
+                var ambientBrush = new LinearGradientBrush
+                {
+                    StartPoint = new Point(0, 0),
+                    EndPoint = new Point(1, 1)
+                };
+                ambientBrush.GradientStops.Add(new GradientStop(Color.FromArgb(0x40, 0xD8, 0x6A, 0x5C), 0));
+                ambientBrush.GradientStops.Add(new GradientStop(Color.FromArgb(0x38, 0x4E, 0xA8, 0xD8), 1));
+                ambientBrush.Freeze();
+                gameGlass.Invoke(null, new object[] { localResources, palette, ambientBrush, true, true });
+                var adaptiveGlass = Assert.IsType<LinearGradientBrush>(localResources["GscGlassStrongBrush"]);
+                Assert.True(adaptiveGlass.GradientStops.Count >= 2);
+                Assert.All(adaptiveGlass.GradientStops, stop => Assert.InRange(stop.Color.A, 1, 254));
+                Assert.True(adaptiveGlass.GradientStops.Select(stop => stop.Color).Distinct().Count() > 1);
+                Assert.Same(localResources["GscGlassStrongBrush"], localResources["CardBackgroundFillColorDefaultBrush"]);
+
+                gameGlass.Invoke(null, new object[] { localResources, palette, null!, false, false });
+                Assert.IsType<SolidColorBrush>(localResources["GscGlassStrongBrush"]);
             }
             catch (Exception caught)
             {
@@ -178,6 +197,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("resources[\"GscSelectionTextBrush\"]", paletteSource);
         Assert.Contains("resources[\"GscSurfaceEffect\"]", paletteSource);
         Assert.Contains("resources[\"GscPrimaryButtonEffect\"]", paletteSource);
+        Assert.Contains("ApplyGameBackgroundGlassResources", paletteSource);
         Assert.Contains("resources[\"GscPickerScrimBrush\"]", paletteSource);
         Assert.Contains("resources[\"GscPopupAllowsTransparency\"] = glassEnabled", paletteSource);
         Assert.Contains("resources[\"GscPopupAnimation\"] = motionEnabled ? PopupAnimation.Fade : PopupAnimation.None", paletteSource);
@@ -186,6 +206,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.DoesNotContain("{StaticResource GscAccentShadowColor}", dashboard);
         Assert.DoesNotContain("{StaticResource GscAccentShadowColor}", tokens);
         Assert.Contains("{DynamicResource GscAmbientWideWashBrush}", dashboard);
+        Assert.Contains("ApplySelectedGameGlassResources", dashboardCode);
         Assert.DoesNotContain("RadialGradientBrush", dashboard);
         Assert.DoesNotContain("BlurEffect", dashboard);
         Assert.Contains("{DynamicResource GscSelectionTextBrush}", dashboard);
