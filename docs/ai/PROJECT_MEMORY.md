@@ -1478,3 +1478,10 @@
 - 平台筛选默认值恢复必须覆盖弹层打开、平台选项集合变化和 `GamePickerPlatformComboBox.Loaded`，并至少排队到 `DispatcherPriority.DataBind`、`DispatcherPriority.Loaded` 两个阶段。
 - `UiFilterSelection.RestoreDefault` 只应修复空选中或不再属于当前 Items 的无效选中；有效的用户平台选择不能被“全部”覆盖。
 - UI-321 已通过源码/XAML 门禁、Release 构建和 Playnite 定向测试；真实宿主需重载扩展后确认中间框显示“全部”。
+
+## 2026-08-25 UI-322 底部状态栏与侧栏折叠事实
+
+- 生产壳 `FooterSurface` 现在位于根 Grid 的第 0 列并跨两列，Worker/Ludusavi 状态灯由 `FooterStatusPanel` 承载；侧栏不再放状态卡。新增状态展示必须继续使用 `Snapshot.WorkerHealthy` 与 `Snapshot.LudusaviAvailable`，不能复制静态健康状态。
+- 侧栏默认宽度是 236 DIP；`SidebarCollapseButton` 是品牌区内 26×26 的小型共享 `GscWpfUiButton`，点击通过 `ApplySidebarLayout` 切换 78 DIP 图标态，再调用既有页头/页面响应式布局。不要把折叠入口做成导航项，也不要默认启动为折叠态。
+- 折叠态只隐藏品牌文字、生产版标签和导航文字，并保留 ToolTip/AutomationProperties.Name；导航 RadioButton 仍是同一组真实工作区入口，绑定、命令、滚动和虚拟化不变。
+- UI-322 的源码/XAML/Release/Playnite/RenderHarness 门禁已通过；RenderHarness 只证明页面主题和响应式回归，不等同真实 Playnite 侧栏折叠像素或键盘验收。

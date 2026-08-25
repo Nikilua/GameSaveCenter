@@ -971,3 +971,10 @@ git branch --show-current
 - 维护 `AcrylicProductionShellView` 的游戏弹层时，平台默认恢复必须保留 `Loaded` 事件、弹层打开时的 `DataBind/Loaded` 调度，以及 `PlatformFilterOptions.CollectionChanged` 监听。
 - `UiFilterSelection.RestoreDefault` 的有效选中保护不能删除；用户已经选择具体平台时，集合仍包含该平台就必须保留它。
 - UI-321 已完成源码/XAML/Release/定向测试；真实 Playnite 重载后的中间框“全部”像素仍待确认。
+
+## 2026-08-25 UI-322 底部状态栏与侧栏折叠交接
+
+- `AcrylicProductionShellView.xaml` 的 `FooterSurface` 已跨越根 Grid 两列，`FooterStatusPanel` 显示真实 Worker/Ludusavi 状态；不要把状态灯恢复到侧栏，或改成不绑定 `Snapshot` 的静态文案。
+- 侧栏品牌区右上角的 `SidebarCollapseButton` 是 26×26 小按钮；生产壳默认仍为 236 DIP 展开态，代码中的 78 DIP 是折叠态。折叠只隐藏文字并将导航项收成图标，不改变 `Nav*` 的真实工作区事件与设置入口。
+- `ApplySidebarLayout` 必须在切换后调用既有 `ApplyHeaderLayout`/`ApplyPageLayout`，以便页面按新可用宽度重新布局；不要为折叠状态复制一套页面布局或改变滚动/虚拟化。
+- 本阶段 `validate-source.py`、`check-xaml.ps1`、Release 构建、Playnite 294/351 和 RenderHarness `render-qa OK` 均已通过。离屏渲染没有覆盖真实 Playnite 中点击折叠按钮的像素结果；后续应在可识别宿主中复核展开/折叠、Light/Dark/Follow、125%/150% DPI、键盘焦点和导航 Tooltip。

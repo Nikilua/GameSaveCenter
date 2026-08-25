@@ -24,7 +24,7 @@
                 <RowDefinition Height="36"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="236"/>
+                <ColumnDefinition x:Name="SidebarColumn" Width="236"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
@@ -85,24 +85,41 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-            <Border Grid.Row="0"
+            <Border x:Name="SidebarHeader"
+                    Grid.Row="0"
                     Background="Transparent"
                     BorderBrush="{DynamicResource GscGlassStrokeBrush}"
                     BorderThickness="0,0,0,1"
                     MinHeight="44">
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="14,0,0,0">
-                    <Border Width="26" Height="26" CornerRadius="8" Background="{DynamicResource GscAccentBrush}">
+                <Grid x:Name="SidebarHeaderLayout" Margin="14,0,8,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel x:Name="SidebarBrandContent" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border x:Name="SidebarBrandIcon" Width="26" Height="26" CornerRadius="8" Background="{DynamicResource GscAccentBrush}">
                         <TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" FontSize="12"
                                    Foreground="{DynamicResource GscOnAccentTextBrush}"
                                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
-                    <TextBlock Text="GameSaveCenter" FontSize="12.5" FontWeight="SemiBold"
+                    <TextBlock x:Name="SidebarBrandText" Text="GameSaveCenter" FontSize="12.5" FontWeight="SemiBold"
                                Margin="9,0,0,0" VerticalAlignment="Center"/>
-                    <Border Background="{DynamicResource GscAccentTintBrush}" CornerRadius="8"
+                    <Border x:Name="SidebarProductionBadge" Background="{DynamicResource GscAccentTintBrush}" CornerRadius="8"
                             Padding="8,4" Margin="8,0,0,0" VerticalAlignment="Center">
                         <TextBlock Text="生产版" FontSize="10.5" Foreground="{DynamicResource GscAccentBrush}"/>
                     </Border>
                     </StackPanel>
+                    <ui:Button x:Name="SidebarCollapseButton"
+                               Grid.Column="1"
+                               Style="{DynamicResource GscWpfUiButton}"
+                               Width="26" Height="26" MinWidth="0" MinHeight="0"
+                               Padding="0" Margin="6,0,0,0"
+                               Content="&#xE76B;"
+                               FontFamily="Segoe MDL2 Assets" FontSize="12"
+                               ToolTip="收起导航栏"
+                               AutomationProperties.Name="收起导航栏"
+                               Click="OnSidebarCollapseClick"/>
+                </Grid>
                 </Border>
 
                 <Border Grid.Row="1"
@@ -113,7 +130,6 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <ScrollViewer x:Name="NavigationScrollViewer"
                                       Style="{DynamicResource GscPageScrollViewer}"
@@ -122,87 +138,37 @@
                             <StackPanel>
                                 <RadioButton x:Name="NavOverview" GroupName="DemoWorkspaceNavigation"
                                              Style="{StaticResource AcrylicNavItem}"
-                                             Tag="Overview" Checked="OnNavChecked" ToolTip="首页">
-                                    <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock Text="首页" FontWeight="SemiBold"/></StackPanel>
+                                             Tag="Overview" Checked="OnNavChecked" ToolTip="首页" AutomationProperties.Name="打开首页">
+                                    <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock x:Name="NavOverviewLabel" Text="首页" FontWeight="SemiBold"/></StackPanel>
                                 </RadioButton>
                                 <RadioButton x:Name="NavSaves" GroupName="DemoWorkspaceNavigation"
-                                             Style="{StaticResource AcrylicNavItem}" Tag="Saves" Checked="OnNavChecked" ToolTip="存档中心">
-                                    <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock Text="存档中心"/></StackPanel>
+                                             Style="{StaticResource AcrylicNavItem}" Tag="Saves" Checked="OnNavChecked" ToolTip="存档中心" AutomationProperties.Name="打开存档中心">
+                                    <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock x:Name="NavSavesLabel" Text="存档中心"/></StackPanel>
                                 </RadioButton>
                                 <RadioButton x:Name="NavTrainers" GroupName="DemoWorkspaceNavigation"
-                                             Style="{StaticResource AcrylicNavItem}" Tag="Trainers" Checked="OnNavChecked" ToolTip="修改器中心">
-                                    <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE90F;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock Text="修改器中心"/></StackPanel>
+                                             Style="{StaticResource AcrylicNavItem}" Tag="Trainers" Checked="OnNavChecked" ToolTip="修改器中心" AutomationProperties.Name="打开修改器中心">
+                                    <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE90F;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock x:Name="NavTrainersLabel" Text="修改器中心"/></StackPanel>
                                 </RadioButton>
                                 <RadioButton x:Name="NavMedia" GroupName="DemoWorkspaceNavigation"
-                                             Style="{StaticResource AcrylicNavItem}" Tag="Media" Checked="OnNavChecked" ToolTip="媒体中心">
-                                    <StackPanel Orientation="Horizontal"><TextBlock Text="&#xEB9F;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock Text="媒体中心"/></StackPanel>
+                                             Style="{StaticResource AcrylicNavItem}" Tag="Media" Checked="OnNavChecked" ToolTip="媒体中心" AutomationProperties.Name="打开媒体中心">
+                                    <StackPanel Orientation="Horizontal"><TextBlock Text="&#xEB9F;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock x:Name="NavMediaLabel" Text="媒体中心"/></StackPanel>
                                 </RadioButton>
                                 <RadioButton x:Name="NavTasks" GroupName="DemoWorkspaceNavigation"
-                                             Style="{StaticResource AcrylicNavItem}" Tag="Tasks" Checked="OnNavChecked" ToolTip="任务中心">
-                                    <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE9D5;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock Text="任务中心"/></StackPanel>
+                                             Style="{StaticResource AcrylicNavItem}" Tag="Tasks" Checked="OnNavChecked" ToolTip="任务中心" AutomationProperties.Name="打开任务中心">
+                                    <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE9D5;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock x:Name="NavTasksLabel" Text="任务中心"/></StackPanel>
                                 </RadioButton>
                                 <RadioButton x:Name="NavMaintenance" GroupName="DemoWorkspaceNavigation"
-                                             Style="{StaticResource AcrylicNavItem}" Tag="Maintenance" Checked="OnNavChecked" ToolTip="维护中心">
-                                    <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock Text="维护中心"/></StackPanel>
+                                             Style="{StaticResource AcrylicNavItem}" Tag="Maintenance" Checked="OnNavChecked" ToolTip="维护中心" AutomationProperties.Name="打开维护中心">
+                                    <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock x:Name="NavMaintenanceLabel" Text="维护中心"/></StackPanel>
                                 </RadioButton>
                                 <Rectangle Height="1" Fill="{DynamicResource GscDividerBrush}" Margin="4,8,4,12"/>
                                 <RadioButton x:Name="NavSettings" GroupName="DemoWorkspaceNavigation"
                                              Style="{StaticResource AcrylicNavItem}" Tag="Settings" Checked="OnNavChecked" ToolTip="设置"
                                              AutomationProperties.Name="打开 GameSaveCenter 设置">
-                                    <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock Text="设置"/></StackPanel>
+                                    <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" Width="26"/><TextBlock x:Name="NavSettingsLabel" Text="设置"/></StackPanel>
                                 </RadioButton>
                             </StackPanel>
                         </ScrollViewer>
-                        <Border Grid.Row="1" Style="{DynamicResource GscRedesignStatusCard}" Margin="0,12,0,0" Padding="10,9">
-                            <StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <Ellipse Width="7" Height="7" VerticalAlignment="Center">
-                                        <Ellipse.Style>
-                                            <Style TargetType="Ellipse">
-                                                <Setter Property="Fill" Value="{DynamicResource GscErrorBrush}"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Snapshot.WorkerHealthy}" Value="True"><Setter Property="Fill" Value="{DynamicResource GscSuccessBrush}"/></DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Ellipse.Style>
-                                    </Ellipse>
-                                    <TextBlock Text="Worker" FontSize="10.5" Margin="7,0,0,0"/>
-                                    <TextBlock FontSize="10.5" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="4,0,0,0">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock">
-                                                <Setter Property="Text" Value="· 不可用"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Snapshot.WorkerHealthy}" Value="True"><Setter Property="Text" Value="· 正常"/></DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                                    <Ellipse Width="7" Height="7" VerticalAlignment="Center">
-                                        <Ellipse.Style>
-                                            <Style TargetType="Ellipse">
-                                                <Setter Property="Fill" Value="{DynamicResource GscMutedStatusBrush}"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Snapshot.LudusaviAvailable}" Value="True"><Setter Property="Fill" Value="{DynamicResource GscSuccessBrush}"/></DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Ellipse.Style>
-                                    </Ellipse>
-                                    <TextBlock Text="Ludusavi" FontSize="10.5" Margin="7,0,0,0"/>
-                                    <TextBlock FontSize="10.5" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="4,0,0,0">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock">
-                                                <Setter Property="Text" Value="· 不可用"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Snapshot.LudusaviAvailable}" Value="True"><Setter Property="Text" Value="· 可用"/></DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                </StackPanel>
-                            </StackPanel>
-                        </Border>
                     </Grid>
                 </Border>
                 </Grid>
@@ -354,7 +320,7 @@
             </Grid>
             </Grid>
 
-            <Border x:Name="FooterSurface" Grid.Row="1" Grid.Column="1"
+            <Border x:Name="FooterSurface" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                     Background="{DynamicResource GscGlassFillBrush}"
                     BorderBrush="{DynamicResource GscGlassStrokeBrush}"
                     BorderThickness="1"
@@ -364,8 +330,61 @@
                     ClipToBounds="True"
                     SnapsToDevicePixels="True">
                 <Grid>
-                    <TextBlock Text="生产版 · 真实数据由 Worker 提供" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10" VerticalAlignment="Center"/>
-                    <TextBlock Text="GameSaveCenter" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel x:Name="FooterStatusPanel" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" ToolTip="Worker 与 Ludusavi 运行状态">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,16,0">
+                            <Ellipse Width="7" Height="7" VerticalAlignment="Center">
+                                <Ellipse.Style>
+                                    <Style TargetType="Ellipse">
+                                        <Setter Property="Fill" Value="{DynamicResource GscErrorBrush}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Snapshot.WorkerHealthy}" Value="True"><Setter Property="Fill" Value="{DynamicResource GscSuccessBrush}"/></DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Ellipse.Style>
+                            </Ellipse>
+                            <TextBlock Text="Worker" FontSize="10.5" Margin="7,0,0,0"/>
+                            <TextBlock FontSize="10.5" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="4,0,0,0">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Text" Value="· 不可用"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Snapshot.WorkerHealthy}" Value="True"><Setter Property="Text" Value="· 正常"/></DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Width="7" Height="7" VerticalAlignment="Center">
+                                <Ellipse.Style>
+                                    <Style TargetType="Ellipse">
+                                        <Setter Property="Fill" Value="{DynamicResource GscMutedStatusBrush}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Snapshot.LudusaviAvailable}" Value="True"><Setter Property="Fill" Value="{DynamicResource GscSuccessBrush}"/></DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Ellipse.Style>
+                            </Ellipse>
+                            <TextBlock Text="Ludusavi" FontSize="10.5" Margin="7,0,0,0"/>
+                            <TextBlock FontSize="10.5" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="4,0,0,0">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Text" Value="· 不可用"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Snapshot.LudusaviAvailable}" Value="True"><Setter Property="Text" Value="· 可用"/></DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                    <TextBlock Grid.Column="1" Text="生产版 · 真实数据由 Worker 提供" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10" VerticalAlignment="Center" Margin="18,0,0,0"/>
+                    <TextBlock Grid.Column="2" Text="GameSaveCenter" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 </Grid>
             </Border>
 

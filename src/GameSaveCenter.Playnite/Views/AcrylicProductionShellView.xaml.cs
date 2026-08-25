@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Input;
 using GameSaveCenter.Playnite.Infrastructure;
@@ -20,6 +21,7 @@ namespace GameSaveCenter.Playnite.Views
         private DashboardViewModel? viewModel;
         private bool viewModelSubscribed;
         private bool suppressNavigation;
+        private bool sidebarCollapsed;
 
         public AcrylicProductionShellView()
         {
@@ -201,6 +203,53 @@ namespace GameSaveCenter.Playnite.Views
             viewModel.CurrentWorkspace = workspace;
             viewModel.RequestWorkspaceLoad();
             NavigateTo(workspace);
+        }
+
+        private void OnSidebarCollapseClick(object sender, RoutedEventArgs e)
+        {
+            sidebarCollapsed = !sidebarCollapsed;
+            ApplySidebarLayout();
+            SidebarCollapseButton.Focus();
+            e.Handled = true;
+        }
+
+        private void ApplySidebarLayout()
+        {
+            var expanded = !sidebarCollapsed;
+            SidebarColumn.Width = new GridLength(sidebarCollapsed ? 78 : 236);
+
+            SidebarBrandText.Visibility = expanded ? Visibility.Visible : Visibility.Collapsed;
+            SidebarProductionBadge.Visibility = expanded ? Visibility.Visible : Visibility.Collapsed;
+            SidebarBrandContent.HorizontalAlignment = expanded
+                ? HorizontalAlignment.Left
+                : HorizontalAlignment.Center;
+
+            var labelVisibility = expanded ? Visibility.Visible : Visibility.Collapsed;
+            NavOverviewLabel.Visibility = labelVisibility;
+            NavSavesLabel.Visibility = labelVisibility;
+            NavTrainersLabel.Visibility = labelVisibility;
+            NavMediaLabel.Visibility = labelVisibility;
+            NavTasksLabel.Visibility = labelVisibility;
+            NavMaintenanceLabel.Visibility = labelVisibility;
+            NavSettingsLabel.Visibility = labelVisibility;
+
+            var navigationPadding = expanded ? new Thickness(12, 10, 12, 10) : new Thickness(8, 10, 8, 10);
+            foreach (var item in new[] { NavOverview, NavSaves, NavTrainers, NavMedia, NavTasks, NavMaintenance, NavSettings })
+            {
+                item.Padding = navigationPadding;
+                item.Width = expanded ? double.NaN : 48;
+                item.HorizontalAlignment = expanded ? HorizontalAlignment.Stretch : HorizontalAlignment.Center;
+                item.HorizontalContentAlignment = expanded ? HorizontalAlignment.Stretch : HorizontalAlignment.Center;
+            }
+
+            SidebarCollapseButton.Content = expanded ? "\uE76B" : "\uE76C";
+            SidebarCollapseButton.ToolTip = expanded ? "收起导航栏" : "展开导航栏";
+            AutomationProperties.SetName(SidebarCollapseButton, expanded ? "收起导航栏" : "展开导航栏");
+
+            // The column is part of the shell chrome, so let the existing page-aware
+            // layout pass recompute the available workspace width after the toggle.
+            ApplyHeaderLayout(ActualWidth);
+            ApplyPageLayout();
         }
 
         private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
