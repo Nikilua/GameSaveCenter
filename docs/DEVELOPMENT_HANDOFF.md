@@ -2,6 +2,13 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-25 UI-314 当前交接：游戏背景真实模糊
+
+- 当前游戏背景仍由 Shell 的唯一跨壳 `ImageBrush` 绘制；UI-314 只在背景实际加载时给这个矩形挂 `GscGameBackgroundEffect`，不要把 BlurEffect 加到卡片、文字、页面根、列表或滚动器。
+- `GscGameBackgroundEffect` 由 `AdaptiveThemePalette` 按毛玻璃强度生成冻结 `BlurEffect`，默认设置约 29 DIP，范围约 16–34 DIP，`RenderingBias=Performance`。图片仍保持 `UniformToFill` 居中、不平铺和原有透明度/tint。
+- 没有背景图、关闭毛玻璃、高对比度时必须返回 null；XAML 的 `HasSelectedGameBackgroundAmbientMaterial` DataTrigger 负责避免无图时保留大面积效果视觉。
+- UI-314 已通过源码门禁、WPF 静态审查、Release 全量测试和多主题多尺寸 `render-qa OK`。真实 Playnite 没有可控窗口，安装后需人工确认模糊强度和帧率。
+
 ## 2026-08-24 UI-313 当前交接：背景图单层居中与底部接缝
 
 - 截图中的矩形接缝来自重复材质层：生产 `ShellAmbientMaterialLayer` 与各工作区内部的 `AmbientMaterialLayer` 不能同时绘制 `SelectedGameBackgroundAmbientBrush`。共享控件的 `UseSelectedGameBackground` 默认关闭，只有 Shell 实例设置为 `True`。

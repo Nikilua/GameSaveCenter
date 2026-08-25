@@ -77,6 +77,8 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("AlignmentX=\"Center\"", productionShell);
             Assert.Contains("AlignmentY=\"Center\"", productionShell);
             Assert.Contains("TileMode=\"None\"", productionShell);
+            Assert.Contains("HasSelectedGameBackgroundAmbientMaterial", productionShell);
+            Assert.Contains("GscGameBackgroundEffect", productionShell);
             Assert.Contains("GscGameBackgroundOpacity", productionShell);
             Assert.Contains("GscGameBackgroundTintBrush", productionShell);
             Assert.Contains("SelectedGameIcon", dashboard);

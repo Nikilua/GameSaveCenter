@@ -38,6 +38,16 @@
                        Opacity="{DynamicResource GscGameBackgroundOpacity}"
                        IsHitTestVisible="False"
                        Panel.ZIndex="0">
+                <Rectangle.Style>
+                    <Style TargetType="Rectangle">
+                        <Setter Property="Effect" Value="{x:Null}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding HasSelectedGameBackgroundAmbientMaterial}" Value="True">
+                                <Setter Property="Effect" Value="{DynamicResource GscGameBackgroundEffect}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Rectangle.Style>
                 <Rectangle.Fill>
                     <ImageBrush ImageSource="{Binding SelectedGameBackground}"
                                 Stretch="UniformToFill"

@@ -86,6 +86,7 @@ public sealed class WpfUiResourceDictionaryTests
                 Assert.All(disabledWideWash.GradientStops, stop => Assert.Equal(0, stop.Color.A));
                 Assert.Equal(0d, Assert.IsType<double>(localResources["GscGameBackgroundOpacity"]));
                 Assert.Equal(0, Assert.IsType<SolidColorBrush>(localResources["GscGameBackgroundTintBrush"]).Color.A);
+                Assert.Null(localResources["GscGameBackgroundEffect"]);
                 Assert.Null(localResources["GscPopupEffect"]);
                 Assert.Null(localResources["GscDialogEffect"]);
                 Assert.Null(localResources["GscSliderThumbEffect"]);
@@ -109,6 +110,11 @@ public sealed class WpfUiResourceDictionaryTests
                 Assert.Contains(wideWash.GradientStops, stop => stop.Color.A > 0);
                 Assert.True(Assert.IsType<double>(localResources["GscGameBackgroundOpacity"]) > 0);
                 Assert.True(Assert.IsType<SolidColorBrush>(localResources["GscGameBackgroundTintBrush"]).Color.A > 0);
+                var gameBackgroundBlur = Assert.IsType<BlurEffect>(localResources["GscGameBackgroundEffect"]);
+                Assert.InRange(gameBackgroundBlur.Radius, 20, 35);
+                Assert.Equal(RenderingBias.Performance, gameBackgroundBlur.RenderingBias);
+                var strongerGameBackgroundBlur = Assert.IsType<BlurEffect>(strongerMaterialResources["GscGameBackgroundEffect"]);
+                Assert.True(strongerGameBackgroundBlur.Radius > gameBackgroundBlur.Radius);
                 var strongerWideWash = Assert.IsType<LinearGradientBrush>(strongerMaterialResources["GscAmbientWideWashBrush"]);
                 Assert.True(
                     strongerWideWash.GradientStops.Max(stop => stop.Color.A)

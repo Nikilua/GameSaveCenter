@@ -300,6 +300,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 ? Color.FromArgb(palette.IsDark ? (byte)0x52 : (byte)0x66,
                     palette.Backdrop.R, palette.Backdrop.G, palette.Backdrop.B)
                 : Colors.Transparent);
+            resources["GscGameBackgroundEffect"] = CreateGameBackgroundBlurEffect(gameBackgroundVisible, glassStrength);
             // This is a wide, non-circular material wash. It adds a low-cost sense of depth
             // across large empty regions without a page-sized BlurEffect or spotlight tree.
             resources["GscAmbientWideWashBrush"] = CreateAmbientWideWashBrush(palette, glassEnabled);
@@ -570,6 +571,22 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 BlurRadius = blurRadius,
                 ShadowDepth = shadowDepth,
                 Opacity = opacity
+            };
+            effect.Freeze();
+            return effect;
+        }
+
+        private static BlurEffect? CreateGameBackgroundBlurEffect(bool enabled, double glassStrength)
+        {
+            if (!enabled) return null;
+
+            // The effect is restricted to the static game image layer. A 16–34 DIP range keeps
+            // the selected artwork recognizable at low strength while making the default 78%
+            // setting visibly diffuse instead of merely translucent.
+            var effect = new BlurEffect
+            {
+                Radius = 12 + (22 * Math.Max(0.2, Math.Min(1, glassStrength))),
+                RenderingBias = RenderingBias.Performance
             };
             effect.Freeze();
             return effect;

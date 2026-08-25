@@ -3,6 +3,13 @@
 > 维护时间：2026-08-24
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-25 UI-314 当前事实：游戏背景增加真实模糊
+
+- UI-313 解决了背景图重复绘制和横向矩形接缝，但原链路只有低透明度图片、主题 tint 和采样渐变，没有任何 `BlurEffect`，因此用户看到的仍接近清晰原图。
+- `AcrylicProductionShellView` 的单一游戏背景矩形现在仅在 `HasSelectedGameBackgroundAmbientMaterial=True` 时挂 `GscGameBackgroundEffect`；卡片、文字、页面、列表和滚动内容不挂 BlurEffect。
+- `AdaptiveThemePalette.ApplyMaterialResources` 按 `GlassEffectStrength` 生成冻结的 `BlurEffect`，半径约 16–34 DIP，默认 78% 约 29 DIP，使用 `RenderingBias.Performance`。关闭毛玻璃、无背景图或高对比度时资源为真正的 null，不保留无效效果视觉。
+- UI-314 验证：源码门禁、WPF 静态检查（0 error、18 条既有 warning）、Release 全量构建/测试和多主题多尺寸 `render-qa OK`。真实 Playnite 没有可控窗口，安装后需确认实际模糊观感与性能。
+
 ## 2026-08-24 UI-313 当前事实：背景图单层居中与底部接缝修复
 
 - 截图中的横向矩形不是游戏原图被拼接，而是 Shell 和各页面内部的 `AmbientMaterialLayer` 同时绘制同一份游戏采样渐变；不同控件尺寸让相对坐标不同，形成可见接缝。

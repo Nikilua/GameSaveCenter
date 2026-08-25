@@ -2,6 +2,24 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-25 UI-314 增强游戏背景毛玻璃模糊
+
+**问题确认：**
+
+- 用户确认背景连续性已正常，但认为“毛玻璃约等于无 blur”。检查后发现 Shell 只有真实背景图、低透明度、主题 tint 和采样渐变，项目中没有作用于游戏背景的 `BlurEffect`。
+
+**实现内容：**
+
+- 新增 `GscGameBackgroundEffect` 运行时资源，并在真实游戏背景已加载时通过 XAML `DataTrigger` 应用到唯一的 Shell 背景矩形；内容卡片、文字、列表和滚动区域保持清晰。
+- 模糊半径由 `GlassEffectStrength` 计算，范围约 16–34 DIP，默认 78% 约 29 DIP，使用性能渲染偏好；无图、关闭毛玻璃和高对比度返回真正的 null。
+- 补充资源契约测试，锁定禁用态无效果、启用态有可见半径且强度提高会增强模糊；保留已有背景居中、不平铺和单层绘制逻辑。
+
+**验证结果：**
+
+- `validate-source.py`、`validate_wpf_ui.py`、`git diff --check` 通过；WPF 静态审查 0 error、18 条既有 warning。
+- Release 全量构建/测试通过：Core 59/59、Worker 199/199、Playnite 289/346（57 跳过、0 失败）。
+- `scripts/render-qa.ps1 -Configuration Release -Output .tmp/ui-qa-current` 为 `render-qa OK`；真实 Playnite 无可控窗口，未宣称实际宿主模糊效果已截图验证。
+
 ## 2026-08-24 UI-313 修复游戏背景重复材质与底部矩形接缝
 
 **问题确认：**

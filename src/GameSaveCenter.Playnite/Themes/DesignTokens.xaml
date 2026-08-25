@@ -63,6 +63,9 @@
     <x:Null x:Key="GscSurfaceEffect"/>
     <x:Null x:Key="GscPrimaryButtonEffect"/>
     <x:Null x:Key="GscSidebarEffect"/>
+    <!-- Runtime enables this only for a loaded game background image. It must remain null
+         when transparency is disabled, high contrast is active, or no image is selected. -->
+    <x:Null x:Key="GscGameBackgroundEffect"/>
     <x:Null x:Key="GscPopupEffect"/>
     <x:Null x:Key="GscDialogEffect"/>
     <x:Null x:Key="GscSliderThumbEffect"/>
