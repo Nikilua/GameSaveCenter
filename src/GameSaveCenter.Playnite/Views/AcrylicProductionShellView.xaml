@@ -41,6 +41,7 @@
             <Rectangle Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2"
                        Opacity="{DynamicResource GscGameBackgroundOpacity}"
                        IsHitTestVisible="False"
+                       CacheMode="BitmapCache"
                        Panel.ZIndex="0">
                 <Rectangle.Style>
                     <Style TargetType="Rectangle">

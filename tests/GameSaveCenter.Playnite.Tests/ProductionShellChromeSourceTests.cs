@@ -30,6 +30,7 @@ public sealed class ProductionShellChromeSourceTests
         var resources = ReadSource("src", "GameSaveCenter.Playnite", "Themes", "AcrylicProductionResources.xaml");
 
         Assert.Contains("x:Name=\"SidebarColumn\" Width=\"270\"", shell);
+        Assert.Contains("CacheMode=\"BitmapCache\"", shell);
         Assert.Contains("x:Name=\"SidebarContentLayer\"", shell);
         Assert.Contains("AcrylicSidebarBoundaryButton", shell);
         Assert.Contains("x:Name=\"SidebarCollapseButton\"", shell);
@@ -56,6 +57,10 @@ public sealed class ProductionShellChromeSourceTests
         Assert.Contains("MotionEnabledProvider", shellCode);
         Assert.Contains("new GridLength(sidebarCollapsed ? 72 : 270, GridUnitType.Pixel)", shellCode);
         Assert.Contains("ApplySidebarLayout(updateColumnWidth: false)", shellCode);
+        Assert.Contains("SidebarContentLayer.BeginAnimation(UIElement.OpacityProperty", shellCode);
+        Assert.Contains("TimeSpan.FromMilliseconds(190)", shellCode);
+        Assert.Contains("translate.X = sidebarCollapsed ? -4 : 4", shellCode);
+        Assert.Contains("SidebarColumn.BeginAnimation(ColumnDefinition.WidthProperty, null)", shellCode);
         Assert.Contains("SidebarCollapsedProvider", shellCode);
         Assert.Contains("SidebarCollapsedChanged", shellCode);
         Assert.Contains("SidebarHeaderLayout.Margin", shellCode);

@@ -2,6 +2,15 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-25 UI-331 共享控件与流畅度交接
+
+- 共享生产 TextBox 模板现在把样式 Padding 应用到外层 Chrome；ContentHost 必须保持零 Margin/零 Padding，避免输入文字高度和左右内边距因模板重复计算而漂移。TextBox/ComboBox 保留 `SnapsToDevicePixels` 与 `UseLayoutRounding`。
+- ComboBox 选中内容和下拉项统一传递字体族、字号、字重，并使用明确的左对齐；相邻筛选下拉框的 Items、Binding、默认值和命令未改动。
+- 侧栏边界控制仍是无文字、32×32 的底部集成控件。宽度 270↔72 DIP 由 210ms `GridLengthAnimation` 驱动；内容层的 190ms 淡入/4 DIP 位移只用于平滑视觉过渡。完成、非动画布局和卸载必须停止/清理动画。
+- 游戏背景仍只有 Shell 的一个静态图片层，现增加 `BitmapCache`；不要为了追求“玻璃感”给卡片、文字、表格、列表和 ScrollViewer 挂 BlurEffect。
+- 设置路径输入校验已改为 Background Dispatcher 合并通知，避免 `File.Exists` 在每个键盘字符同步执行；验证语义不变。
+- 证据：定向 124/39、全量 Playnite 297/57、Release 0/0、WPF 0 error/18 warning/172 info，`.tmp/ui-qa-polish-v1/render-qa-report.txt` 为 `render-qa OK`。真实 Playnite 宿主仍需复核实际点击动画、DPI、帧率与焦点。
+
 ## 2026-08-25 UI-330 毛玻璃强度交接
 
 - `GlassStrengthSlider` 仍是 20–100；`AdaptiveThemePalette.BlurRadiusForStrength` 现在直接把百分比映射为 Blur DIP：20→20、默认 78→78、100→100。后续不要再使用 12–34 或 16–34 的压缩范围，否则滑块会再次出现“100 像 20”的观感。

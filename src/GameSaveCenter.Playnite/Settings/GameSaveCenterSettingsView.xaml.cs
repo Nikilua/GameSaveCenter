@@ -21,6 +21,7 @@ namespace GameSaveCenter.Playnite.Settings
         private bool settingsTransferInProgress;
         private bool responsiveLayoutPending;
         private bool adaptiveThemePending;
+        private bool validationPending;
         private bool systemParametersSubscribed;
         private bool scrollSelectionPending;
         private Size pendingResponsiveSize;
@@ -101,7 +102,24 @@ namespace GameSaveCenter.Playnite.Settings
                 hostWindow.Height = targetHeight;
         }
 
-        private void OnSettingsFieldChanged(object sender, RoutedEventArgs e) => RefreshValidationSummary();
+        private void OnSettingsFieldChanged(object sender, RoutedEventArgs e) => QueueValidationSummaryUpdate();
+
+        // VerifySettings checks executable paths and other file-backed values. Coalesce
+        // per-keystroke notifications so typing a long path does not synchronously hit the
+        // filesystem on every character or compete with the input caret/layout pass.
+        private void QueueValidationSummaryUpdate()
+        {
+            if (!IsLoaded || validationPending) return;
+            validationPending = true;
+            if (BeginUiSafely(() =>
+            {
+                validationPending = false;
+                if (!IsLoaded) return;
+                RefreshValidationSummary();
+            }, DispatcherPriority.Background)) return;
+
+            validationPending = false;
+        }
 
         private void RefreshValidationSummary()
         {
@@ -129,6 +147,7 @@ namespace GameSaveCenter.Playnite.Settings
             }
             responsiveLayoutPending = false;
             adaptiveThemePending = false;
+            validationPending = false;
             if (systemParametersSubscribed)
             {
                 SystemParameters.StaticPropertyChanged -= OnSystemParametersChanged;

@@ -1,5 +1,7 @@
 # 开发实现进度
 
+- [x] UI-331（2026-08-25）：完成共享控件与界面流畅度收口。生产 TextBox 模板真正应用 Padding，TextBox/ComboBox 统一字体传递、左对齐、像素对齐和布局取整；侧栏保留 270↔72 DIP 的 210ms 宽度动画并补齐内容层 190ms 淡入/轻位移及卸载清理；静态游戏背景层增加 BitmapCache；设置路径校验改为 Background Dispatcher 合并逐字通知，降低输入卡顿。真实命令、Binding、默认值、滚动和虚拟化未变。`validate-source.py`、XAML 结构检查、`git diff --check`、WPF 静态审查 0 error/18 warning/172 info、Playnite 297 通过/57 跳过、Release 0 warning/0 error、`.tmp/ui-qa-polish-v1/render-qa-report.txt`（`render-qa OK`）通过；真实 Playnite 帧率、DPI、焦点和动画仍需人工复核。
+
 - [x] UI-330（2026-08-25）：校准毛玻璃强度映射。设置滑块仍为 20–100，但游戏背景与设置环境 Blur 改为直接比例：20%→20 DIP、默认 78%→78 DIP、100%→100 DIP，使初始效果更明显且最大值确实更强；Blur 仍只作用于静态环境层，关闭玻璃、高对比度、无图和游戏背景跟随后保持原有回退。WPF 资源定向 119 通过/39 跳过、Playnite 297 通过/57 跳过、Release 0 warning/0 error、`.tmp/ui-qa-glass-strength-v1/render-qa-report.txt`（`render-qa OK`）通过；真实 Playnite 100% 强度帧率、DPI 和视觉观感仍需人工复核。
 
 - [x] UI-329（2026-08-25）：收口界面刷新与背景取色性能。Dashboard 自动快照仅在选中游戏变化时刷新 Icon/Background，页面重新显示时只做一次缺失背景恢复；背景渐变从整帧复制改为五次 1×1 像素采样，降低切换游戏时的瞬时内存分配；生产壳窗口拖拽布局与游戏筛选默认值恢复分别按 Render/Loaded 合并，减少重复重排且保留现有视觉、命令、绑定、虚拟化和侧栏动画。定向 26/26、全量 Playnite 297 通过/57 跳过、Release 0 warning/0 error、WPF 0 error/18 warning/172 info、`.tmp/ui-qa-performance-v1/render-qa-report.txt`（`render-qa OK`）通过；真实 Playnite 帧率、内存、DPI 和宿主缩放仍需人工复核。

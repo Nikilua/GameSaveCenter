@@ -145,6 +145,12 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
+            SidebarColumn.BeginAnimation(ColumnDefinition.WidthProperty, null);
+            SidebarContentLayer.BeginAnimation(UIElement.OpacityProperty, null);
+            if (SidebarContentLayer.RenderTransform is TranslateTransform translate)
+                translate.BeginAnimation(TranslateTransform.XProperty, null);
+            SidebarContentLayer.Opacity = 1;
+            sidebarTransitionRunning = false;
             responsiveLayoutPending = false;
             pickerFilterRestorePending = false;
             if (viewModel != null && viewModelSubscribed)
@@ -274,13 +280,16 @@ namespace GameSaveCenter.Playnite.Views
                 ? SidebarColumn.ActualWidth
                 : SidebarColumn.Width.Value;
             var targetWidth = sidebarCollapsed ? 72d : 270d;
+            var translate = SidebarContentLayer.RenderTransform as TranslateTransform ?? new TranslateTransform();
+            SidebarContentLayer.RenderTransform = translate;
+            SidebarContentLayer.BeginAnimation(UIElement.OpacityProperty, null);
+            translate.BeginAnimation(TranslateTransform.XProperty, null);
+            SidebarContentLayer.Opacity = 0;
+            translate.X = sidebarCollapsed ? -4 : 4;
             ApplySidebarLayout(updateColumnWidth: false);
             SidebarColumn.BeginAnimation(ColumnDefinition.WidthProperty, null);
             SidebarColumn.Width = new GridLength(currentWidth, GridUnitType.Pixel);
 
-            var translate = SidebarContentLayer.RenderTransform as TranslateTransform ?? new TranslateTransform();
-            SidebarContentLayer.RenderTransform = translate;
-            translate.BeginAnimation(TranslateTransform.XProperty, null);
             var widthAnimation = new GridLengthAnimation
             {
                 From = new GridLength(currentWidth, GridUnitType.Pixel),
@@ -292,11 +301,24 @@ namespace GameSaveCenter.Playnite.Views
             {
                 SidebarColumn.BeginAnimation(ColumnDefinition.WidthProperty, null);
                 ApplySidebarLayout();
+                SidebarContentLayer.BeginAnimation(UIElement.OpacityProperty, null);
+                SidebarContentLayer.Opacity = 1;
                 translate.BeginAnimation(TranslateTransform.XProperty, null);
+                translate.X = 0;
                 SidebarColumn.Width = new GridLength(targetWidth, GridUnitType.Pixel);
                 sidebarTransitionRunning = false;
             };
             SidebarColumn.BeginAnimation(ColumnDefinition.WidthProperty, widthAnimation);
+            SidebarContentLayer.BeginAnimation(UIElement.OpacityProperty,
+                new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(190))
+                {
+                    EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+                });
+            translate.BeginAnimation(TranslateTransform.XProperty,
+                new DoubleAnimation(sidebarCollapsed ? -4 : 4, 0, TimeSpan.FromMilliseconds(190))
+                {
+                    EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+                });
             SidebarCollapseButton.Focus();
             e.Handled = true;
         }
@@ -315,6 +337,16 @@ namespace GameSaveCenter.Playnite.Views
         private void ApplySidebarLayout(bool updateColumnWidth = true)
         {
             var expanded = !sidebarCollapsed;
+            if (!sidebarTransitionRunning)
+            {
+                SidebarContentLayer.BeginAnimation(UIElement.OpacityProperty, null);
+                SidebarContentLayer.Opacity = 1;
+                if (SidebarContentLayer.RenderTransform is TranslateTransform translate)
+                {
+                    translate.BeginAnimation(TranslateTransform.XProperty, null);
+                    translate.X = 0;
+                }
+            }
             if (updateColumnWidth)
                 SidebarColumn.Width = new GridLength(sidebarCollapsed ? 72 : 270, GridUnitType.Pixel);
 

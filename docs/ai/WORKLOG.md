@@ -2,6 +2,29 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-25 UI-331 共享控件与界面流畅度收口
+
+**巡检结论：**
+
+- 共享 TextBox 样式虽然声明了 Padding，但生产模板没有把它应用到外层 Chrome，容易造成不同页面输入文字与边框的内边距不一致。
+- ComboBox 的选中值和下拉项没有完整继承共享字体链，选中/弹出状态在中文和不同字号下可能出现字重、字号或基线漂移；相邻筛选控件也缺少明确的左对齐契约。
+- 侧栏宽度动画已有实现，但内容层的轻微位移/淡入没有真正启动；卸载时也没有停止正在运行的宽度和内容动画，窗口重开或快速点击时存在残留动画风险。
+- 静态游戏背景是高成本视觉层，内容不变时可以缓存其渲染结果；设置页逐字输入路径时同步做文件存在性检查，会把磁盘访问叠加到输入和布局过程中。
+
+**实现内容：**
+
+- 共享 TextBox 模板将 `Padding` 应用到外层 Chrome，并保持 `PART_ContentHost` 的零 Margin/零 Padding，避免重复计算；TextBox/ComboBox 开启像素对齐和布局取整。
+- ComboBox 选中值、下拉项和共享样式统一传递字体族、字号、字重与左对齐，保持相邻下拉框的文本起点和高度一致；不改变 Items、Binding、Command 或键盘行为。
+- 侧栏继续使用 270↔72 DIP 的 210ms `GridLengthAnimation`，补上内容层的 190ms EaseOut 淡入与 4 DIP 轻位移动画；完成和卸载时清理所有动画，快速切换/重载不会留下透明或偏移状态。
+- 单一游戏背景图片层增加 `BitmapCache`，不向卡片、文字、表格、列表或 ScrollViewer 增加 BlurEffect；设置字段校验改为 Dispatcher Background 阶段合并逐字通知，避免每个字符都同步访问文件系统。
+
+**验证结果：**
+
+- `scripts/validate-source.py`、`check-xaml.ps1`、`git diff --check` 通过；WPF 静态审查 0 error、18 条既有 warning、172 条 info。
+- Playnite 定向 124 通过、39 跳过；全量 297 通过、57 跳过、0 失败；Release 解决方案构建 0 warning、0 error。
+- `.tmp/ui-qa-polish-v1/render-qa-report.txt` 为 `render-qa OK`，覆盖深色主题、全部工作区、设置页、多窗口尺寸、滚动和 2560→1100→2560 resize transition。
+- 真实 Playnite 宿主的帧率、DPI、键盘焦点和侧栏实际点击动画仍需安装后人工复核；离屏渲染不替代宿主验收。
+
 ## 2026-08-25 UI-330 毛玻璃强度按滑块比例校准
 
 **用户反馈：**

@@ -3,6 +3,15 @@
 > 维护时间：2026-08-25
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-25 UI-331 当前事实：共享控件、侧栏动画与输入校验性能
+
+- `WpfUiProduction.xaml` 的生产 TextBox 模板通过外层 `Chrome.Padding={TemplateBinding Padding}` 应用输入框内边距；`PART_ContentHost` 必须继续保持 `Margin=0`、`Padding=0`，不要恢复把 Padding 绑定到 ContentHost Margin 的旧写法。
+- ComboBox 选中值和 `ComboBoxItem` 都显式继承 `FontFamily`、`FontSize`、`FontWeight`；共享 ComboBox 固定 `HorizontalContentAlignment=Left`、像素对齐和布局取整。不要在单个页面给相邻筛选框另设字体或基线补丁。
+- `AcrylicProductionShellView` 的侧栏仍由 `GridLengthAnimation` 驱动 270↔72 DIP、210ms、CubicEase EaseOut；内容层额外使用 190ms、4 DIP 的淡入/位移过渡。切换完成、非动画布局恢复和 `OnUnloaded` 都要清理 `BeginAnimation`，避免重载后残留透明/偏移。
+- Shell 的游戏背景仍是唯一静态图片层，`CacheMode=BitmapCache` 只用于该层；禁止把缓存或 BlurEffect 扩散到卡片、文字、表格、列表或滚动器，以免内存/虚拟化成本反弹。
+- `GameSaveCenterSettingsView.OnSettingsFieldChanged` 通过 `DispatcherPriority.Background` 合并校验通知；`VerifySettings` 含文件存在性检查，不能改回每个字符同步执行，否则长路径输入会卡顿。
+- UI-331 验证：WPF 0 error/18 warning/172 info、Playnite 297/354（57 跳过）、Release 0 warning/0 error、`.tmp/ui-qa-polish-v1/render-qa-report.txt` 为 `render-qa OK`。真实 Playnite 帧率、DPI、键盘焦点与动画仍需人工复核。
+
 ## 2026-08-25 UI-330 当前事实：毛玻璃强度直接比例映射
 
 - `AdaptiveThemePalette.BlurRadiusForStrength` 将设置滑块 20–100 直接映射为 Blur 半径 20–100 DIP：默认 `GlassEffectStrength=78` 就是 78 DIP，100 才是完整 100 DIP。不要恢复此前 12–34 或 16–34 DIP 的压缩范围。

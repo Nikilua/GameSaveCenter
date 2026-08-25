@@ -18,6 +18,8 @@ public sealed class SettingsValidationSourceTests
         Assert.Contains("AddHandler(TextBox.TextChangedEvent", code);
         Assert.Contains("AddHandler(ComboBox.SelectionChangedEvent", code);
         Assert.Contains("AddHandler(CheckBox.ClickEvent", code);
+        Assert.Contains("QueueValidationSummaryUpdate", code);
+        Assert.Contains("DispatcherPriority.Background", code);
         Assert.Contains("RefreshValidationSummary", code);
         Assert.Contains("settings.VerifySettings(out errors)", code);
     }

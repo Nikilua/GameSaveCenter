@@ -5190,6 +5190,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("TextElement.Foreground=\"{TemplateBinding Foreground}\"", production);
         Assert.Contains("TextElement.FontFamily=\"{TemplateBinding FontFamily}\"", production);
         Assert.Contains("TextElement.FontSize=\"{TemplateBinding FontSize}\"", production);
+        Assert.Contains("Padding=\"{TemplateBinding Padding}\"", production);
         Assert.Contains("Padding=\"0\"", production);
         Assert.Contains("Margin=\"0\"", production);
         Assert.DoesNotContain("Margin=\"{TemplateBinding Padding}\"", production);
@@ -5230,6 +5231,10 @@ public sealed class WpfUiResourceDictionaryTests
         // fallback when the production adapter is not present.
         Assert.Contains("VerticalAlignment=\"{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType=ComboBox}}\"", production);
         Assert.Contains("TextElement.Foreground=\"{Binding Foreground, RelativeSource={RelativeSource AncestorType=ComboBox}}\"", production);
+        Assert.Contains("TextElement.FontFamily=\"{Binding FontFamily, RelativeSource={RelativeSource AncestorType=ComboBox}}\"", production);
+        Assert.Contains("TextElement.FontSize=\"{Binding FontSize, RelativeSource={RelativeSource AncestorType=ComboBox}}\"", production);
+        Assert.Contains("TextElement.FontWeight=\"{Binding FontWeight, RelativeSource={RelativeSource AncestorType=ComboBox}}\"", production);
+        Assert.Contains("<Setter Property=\"HorizontalContentAlignment\" Value=\"Left\"/>", production);
         Assert.Contains("TextElement.Foreground=\"{TemplateBinding Foreground}\"", production);
         Assert.Contains("HorizontalAlignment=\"{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType=ComboBox}}\"", tokens);
         Assert.Contains("VerticalAlignment=\"{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType=ComboBox}}\"", tokens);

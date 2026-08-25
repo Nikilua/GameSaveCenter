@@ -59,6 +59,7 @@
                 Background="{TemplateBinding Background}"
                 BorderBrush="{TemplateBinding BorderBrush}"
                 BorderThickness="{TemplateBinding BorderThickness}"
+                Padding="{TemplateBinding Padding}"
                 SnapsToDevicePixels="True">
             <ScrollViewer x:Name="PART_ContentHost"
                           Margin="0"
@@ -120,7 +121,10 @@
                                                   ContentStringFormat="{Binding SelectionBoxItemStringFormat, RelativeSource={RelativeSource AncestorType=ComboBox}}"
                                                   HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType=ComboBox}}"
                                                   VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                                  TextElement.Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ComboBox}}"/>
+                                                  TextElement.Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ComboBox}}"
+                                                  TextElement.FontFamily="{Binding FontFamily, RelativeSource={RelativeSource AncestorType=ComboBox}}"
+                                                  TextElement.FontSize="{Binding FontSize, RelativeSource={RelativeSource AncestorType=ComboBox}}"
+                                                  TextElement.FontWeight="{Binding FontWeight, RelativeSource={RelativeSource AncestorType=ComboBox}}"/>
                                 <Path x:Name="Chevron"
                                       Grid.Column="1"
                                       Data="M 1 2 L 5 6 L 9 2"
@@ -206,7 +210,10 @@
                             Padding="{TemplateBinding Padding}">
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="Center"
-                                          TextElement.Foreground="{TemplateBinding Foreground}"/>
+                                          TextElement.Foreground="{TemplateBinding Foreground}"
+                                          TextElement.FontFamily="{TemplateBinding FontFamily}"
+                                          TextElement.FontSize="{TemplateBinding FontSize}"
+                                          TextElement.FontWeight="{TemplateBinding FontWeight}"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsHighlighted" Value="True">
@@ -965,6 +972,8 @@
         <Setter Property="SelectionBrush" Value="{DynamicResource GscAccentTintStrongBrush}"/>
         <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
         <Setter Property="ToolTipService.ShowDuration" Value="12000"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
         <Setter Property="Template" Value="{StaticResource GscWpfUiTextBoxTemplate}"/>
     </Style>
 
@@ -973,6 +982,10 @@
            BasedOn="{StaticResource {x:Type ComboBox}}">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
+        <Setter Property="FontSize" Value="{DynamicResource GscBodyFontSize}"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
@@ -980,6 +993,8 @@
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Padding" Value="12,5"/>
         <Setter Property="MaxDropDownHeight" Value="320"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
         <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
         <Setter Property="ToolTipService.ShowDuration" Value="12000"/>
         <Setter Property="Template" Value="{StaticResource GscWpfUiComboBoxTemplate}"/>
