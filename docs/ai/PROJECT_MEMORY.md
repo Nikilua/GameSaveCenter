@@ -1485,3 +1485,10 @@
 - 侧栏默认宽度是 236 DIP；`SidebarCollapseButton` 是品牌区内 26×26 的小型共享 `GscWpfUiButton`，点击通过 `ApplySidebarLayout` 切换 78 DIP 图标态，再调用既有页头/页面响应式布局。不要把折叠入口做成导航项，也不要默认启动为折叠态。
 - 折叠态只隐藏品牌文字、生产版标签和导航文字，并保留 ToolTip/AutomationProperties.Name；导航 RadioButton 仍是同一组真实工作区入口，绑定、命令、滚动和虚拟化不变。
 - UI-322 的源码/XAML/Release/Playnite/RenderHarness 门禁已通过；RenderHarness 只证明页面主题和响应式回归，不等同真实 Playnite 侧栏折叠像素或键盘验收。
+
+## 2026-08-25 UI-323 当前事实：状态栏右对齐、版本气泡与设置尺寸
+
+- 生产壳底部 `FooterStatusPanel` 位于 Footer 的右侧 Auto 列；底部不再显示产品名和“生产版 · 真实数据由 Worker 提供”，状态文字仍必须绑定 `Snapshot.WorkerHealthy`/`Snapshot.LudusaviAvailable`。
+- `SidebarProductionVersionText` 在壳体 Loaded 时从 `AcrylicProductionShellView` 程序集读取三段版本号，XAML 的 `v0.6.70` 只是安全初始值；不要将它改回“生产版”静态标签。折叠按钮在 `SidebarUtilityStrip`（标题下方独立工具条），品牌行只负责图标、名称和版本气泡。
+- 设置入口 `GameSaveCenterSettingsView` 现在请求 `MinWidth=1180`、`MinHeight=760`；内部 `SettingsShell` 仍受 1360 DIP 上限和原有响应式断点控制，不能为了放大窗口移除滚动或改变保存语义。
+- UI-323 的源码/XAML/Release/Playnite/RenderHarness 门禁已通过；RenderHarness 的设置尺寸证据不等同 Playnite 宿主最终窗口尺寸，需重载扩展后人工确认。

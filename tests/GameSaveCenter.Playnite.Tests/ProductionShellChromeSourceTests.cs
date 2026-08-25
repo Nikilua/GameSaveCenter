@@ -13,9 +13,11 @@ public sealed class ProductionShellChromeSourceTests
         var shell = ReadSource("src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml");
 
         Assert.Contains("x:Name=\"FooterSurface\" Grid.Row=\"1\" Grid.Column=\"0\" Grid.ColumnSpan=\"2\"", shell);
-        Assert.Contains("x:Name=\"FooterStatusPanel\"", shell);
+        Assert.Contains("Grid.Column=\"1\" x:Name=\"FooterStatusPanel\"", shell);
         Assert.Contains("{Binding Snapshot.WorkerHealthy}", shell);
         Assert.Contains("{Binding Snapshot.LudusaviAvailable}", shell);
+        Assert.DoesNotContain("Text=\"生产版 · 真实数据由 Worker 提供\"", shell);
+        Assert.DoesNotContain("Grid.Column=\"2\" Text=\"GameSaveCenter\"", shell);
         Assert.DoesNotContain("GscRedesignStatusCard", shell);
     }
 
@@ -26,14 +28,25 @@ public sealed class ProductionShellChromeSourceTests
         var shellCode = ReadSource("src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml.cs");
 
         Assert.Contains("x:Name=\"SidebarColumn\" Width=\"236\"", shell);
+        Assert.Contains("x:Name=\"SidebarUtilityStrip\" Grid.Row=\"1\"", shell);
         Assert.Contains("x:Name=\"SidebarCollapseButton\"", shell);
         Assert.Contains("Width=\"26\" Height=\"26\" MinWidth=\"0\" MinHeight=\"0\"", shell);
         Assert.Contains("Click=\"OnSidebarCollapseClick\"", shell);
         Assert.Contains("AutomationProperties.Name=\"收起导航栏\"", shell);
+        Assert.Contains("x:Name=\"SidebarProductionVersionText\"", shell);
         Assert.Contains("sidebarCollapsed = !sidebarCollapsed", shellCode);
         Assert.Contains("new GridLength(sidebarCollapsed ? 78 : 236)", shellCode);
+        Assert.Contains("typeof(AcrylicProductionShellView).Assembly.GetName().Version", shellCode);
         Assert.Contains("展开导航栏", shellCode);
         Assert.Contains("ApplyPageLayout();", shellCode);
+    }
+
+    [Fact]
+    public void SettingsViewRequestsAUsableDefaultWindowSize()
+    {
+        var settings = ReadSource("src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml");
+
+        Assert.Contains("MinWidth=\"1180\" MinHeight=\"760\"", settings);
     }
 
     private static string ReadSource(params string[] segments)

@@ -978,3 +978,10 @@ git branch --show-current
 - 侧栏品牌区右上角的 `SidebarCollapseButton` 是 26×26 小按钮；生产壳默认仍为 236 DIP 展开态，代码中的 78 DIP 是折叠态。折叠只隐藏文字并将导航项收成图标，不改变 `Nav*` 的真实工作区事件与设置入口。
 - `ApplySidebarLayout` 必须在切换后调用既有 `ApplyHeaderLayout`/`ApplyPageLayout`，以便页面按新可用宽度重新布局；不要为折叠状态复制一套页面布局或改变滚动/虚拟化。
 - 本阶段 `validate-source.py`、`check-xaml.ps1`、Release 构建、Playnite 294/351 和 RenderHarness `render-qa OK` 均已通过。离屏渲染没有覆盖真实 Playnite 中点击折叠按钮的像素结果；后续应在可识别宿主中复核展开/折叠、Light/Dark/Follow、125%/150% DPI、键盘焦点和导航 Tooltip。
+
+## 2026-08-25 UI-323 状态栏、版本气泡与设置尺寸交接
+
+- `FooterSurface` 的两个状态灯现在靠右，产品名和生产版说明已移除；不要把版本说明重新塞回底部栏。`SidebarProductionBadge` 保留在品牌行并显示程序集版本，折叠按钮位于标题下方的 `SidebarUtilityStrip`，避免按钮覆盖或挤压版本气泡。
+- 如果继续修复折叠按钮，优先检查 `SidebarCollapseButton` 的 Click 路径和 `ApplySidebarLayout`，不要再把它放回品牌行；默认展开宽度仍为 236 DIP，折叠为 78 DIP。
+- `GameSaveCenterSettingsView.xaml` 根 UserControl 的 `MinWidth=1180`、`MinHeight=760` 用于让 Playnite 设置宿主默认打开更大；`SettingsShell` 的 MaxWidth、原有分类/滚动/保存按钮语义不变。若真实宿主仍忽略最小尺寸，再单独调查 Playnite 设置窗口宿主，不要用页面内部硬编码宽度强行撑破窗口。
+- 本阶段源码/XAML/Release/Playnite 295/352 和 RenderHarness `render-qa OK` 均已通过；尚未取得重载后真实 Playnite 的按钮点击/窗口尺寸像素证据，后续需复核折叠、展开、设置窗口、Follow/浅色、DPI 和键盘焦点。

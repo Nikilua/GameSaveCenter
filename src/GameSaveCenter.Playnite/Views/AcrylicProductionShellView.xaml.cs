@@ -106,9 +106,18 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
+            UpdateSidebarVersion();
             if (DataContext is DashboardViewModel dashboardViewModel)
                 Attach(dashboardViewModel);
             QueueGamePickerFilterDefaults();
+        }
+
+        private void UpdateSidebarVersion()
+        {
+            var version = typeof(AcrylicProductionShellView).Assembly.GetName().Version;
+            SidebarProductionVersionText.Text = version == null
+                ? "开发预览"
+                : "v" + version.ToString(3);
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)

@@ -83,6 +83,7 @@
                 <Grid x:Name="SidebarLayout" Background="Transparent">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="32"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
             <Border x:Name="SidebarHeader"
@@ -92,11 +93,7 @@
                     BorderThickness="0,0,0,1"
                     MinHeight="44">
                 <Grid x:Name="SidebarHeaderLayout" Margin="14,0,8,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel x:Name="SidebarBrandContent" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <StackPanel x:Name="SidebarBrandContent" Orientation="Horizontal" VerticalAlignment="Center">
                     <Border x:Name="SidebarBrandIcon" Width="26" Height="26" CornerRadius="8" Background="{DynamicResource GscAccentBrush}">
                         <TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" FontSize="12"
                                    Foreground="{DynamicResource GscOnAccentTextBrush}"
@@ -106,23 +103,30 @@
                                Margin="9,0,0,0" VerticalAlignment="Center"/>
                     <Border x:Name="SidebarProductionBadge" Background="{DynamicResource GscAccentTintBrush}" CornerRadius="8"
                             Padding="8,4" Margin="8,0,0,0" VerticalAlignment="Center">
-                        <TextBlock Text="生产版" FontSize="10.5" Foreground="{DynamicResource GscAccentBrush}"/>
+                        <TextBlock x:Name="SidebarProductionVersionText" Text="v0.6.70" FontSize="10.5" Foreground="{DynamicResource GscAccentBrush}"/>
                     </Border>
                     </StackPanel>
+                </Grid>
+                </Border>
+
+                <Border x:Name="SidebarUtilityStrip" Grid.Row="1"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        BorderThickness="0"
+                        Padding="0,2,8,2">
                     <ui:Button x:Name="SidebarCollapseButton"
-                               Grid.Column="1"
                                Style="{DynamicResource GscWpfUiButton}"
                                Width="26" Height="26" MinWidth="0" MinHeight="0"
-                               Padding="0" Margin="6,0,0,0"
+                               Padding="0"
+                               HorizontalAlignment="Right"
                                Content="&#xE76B;"
                                FontFamily="Segoe MDL2 Assets" FontSize="12"
                                ToolTip="收起导航栏"
                                AutomationProperties.Name="收起导航栏"
                                Click="OnSidebarCollapseClick"/>
-                </Grid>
                 </Border>
 
-                <Border Grid.Row="1"
+                <Border Grid.Row="2"
                         Background="Transparent"
                         BorderBrush="Transparent"
                         BorderThickness="0"
@@ -331,11 +335,10 @@
                     SnapsToDevicePixels="True">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <StackPanel x:Name="FooterStatusPanel" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" ToolTip="Worker 与 Ludusavi 运行状态">
+                    <StackPanel Grid.Column="1" x:Name="FooterStatusPanel" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" ToolTip="Worker 与 Ludusavi 运行状态">
                         <StackPanel Orientation="Horizontal" Margin="0,0,16,0">
                             <Ellipse Width="7" Height="7" VerticalAlignment="Center">
                                 <Ellipse.Style>
@@ -383,8 +386,6 @@
                             </TextBlock>
                         </StackPanel>
                     </StackPanel>
-                    <TextBlock Grid.Column="1" Text="生产版 · 真实数据由 Worker 提供" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10" VerticalAlignment="Center" Margin="18,0,0,0"/>
-                    <TextBlock Grid.Column="2" Text="GameSaveCenter" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 </Grid>
             </Border>
 
