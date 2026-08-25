@@ -2,6 +2,13 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-25 UI-319 Dune 浅色主题 FollowPlaynite 修复
+
+- 用户当前 Playnite Desktop 主题是 Dune。该主题通过 `ThemeDarkStyle=False` 表示浅色，并同时发布 `WindowBackgroundBrush`/`DarkWindowBackgroundBrush`；Follow 不能只依赖默认主题的历史 `WindowBackgourndBrush`。
+- `AdaptiveThemePaletteFactory` 现在先读取 `ThemeDarkStyle`，按主题模式选择浅色或深色窗口资源；无该标志的主题才使用背景与 `TextBrush`/`TextBrushDark` 的一致性推断。正确拼写的 `WindowBackgroundBrush` 排在历史拼写之前。
+- 本轮没有改变强制浅色/深色、设置绑定、保存按钮、命令、虚拟化或 Playnite 兼容性；新增回归测试锁定 Dune 两套资源同时存在时的 Follow 结果。
+- UI-319 验证：定向 2/2，Playnite 290 通过/57 跳过/0 失败，Release 0 警告/0 错误，`validate-source.py` 和 `check-xaml.ps1` 通过。真实 Playnite 重载后的 Follow 浅色设置窗口仍需人工确认，不能把离屏测试写成宿主像素验收。
+
 ## 2026-08-25 UI-318 Follow Playnite 主题读取修复
 
 - Playnite Desktop 的实际背景资源键是 `WindowBackgourndBrush`；Follow 解析已加入该键，并兼容其他常见背景键。设置窗口还会显式检查 owner Window 和 `Application.Current` 资源。

@@ -3,6 +3,13 @@
 > 维护时间：2026-08-25
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-25 UI-319 当前事实：Dune 浅色 FollowPlaynite 判断
+
+- 当前用户 Playnite 配置 `config.json` 的 Desktop 主题是 Dune；Dune 用资源 `ThemeDarkStyle=False` 表示浅色，同时保留 `WindowBackgroundBrush` 和 `DarkWindowBackgroundBrush` 两套颜色。
+- `AdaptiveThemePaletteFactory.Create` 在 FollowPlaynite 下必须优先读取 `ThemeDarkStyle`：False 使用浅色窗口资源/浅色回退，True 使用 `DarkWindowBackgroundBrush`/深色回退。不能只读取通用 `WindowBackgourndBrush`，因为 Playnite 默认主题的历史拼写可能作为遗留资源继续可见。
+- 没有 `ThemeDarkStyle` 的第三方主题才走背景资源 + `TextBrush`/`TextBrushDark` 的一致性推断；若二者明暗冲突，应优先选择文字资源推断，避免设置独立窗口出现黑底黑字。
+- UI-319 已通过定向 2/2、Playnite 290/57/0、Release 0 警告/0 错误、源码校验和 19 个 XAML 结构检查。真实宿主重载后的设置窗口 Follow 浅色像素仍需人工确认。
+
 ## 2026-08-25 UI-318 当前事实：Follow Playnite 资源解析
 
 - Playnite Desktop 默认主题的窗口背景资源键是历史拼写 `WindowBackgourndBrush`，由 `MainWindowStyle`/`StandardWindowStyle` 使用；Follow 解析必须保留该键，同时兼容 `WindowBackgroundBrush` 等第三方主题键。

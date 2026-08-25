@@ -21,6 +21,56 @@ namespace GameSaveCenter.Playnite.Tests;
 public sealed class WpfUiResourceDictionaryTests
 {
     [Fact]
+    public void FollowPlayniteUsesTheActiveThemeModeWhenBothThemeBrushSetsArePublished()
+    {
+        Exception? exception = null;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var host = new Border();
+                host.Resources["WindowBackgroundBrush"] = new SolidColorBrush(Color.FromRgb(235, 235, 235));
+                host.Resources["DarkWindowBackgroundBrush"] = new SolidColorBrush(Color.FromRgb(20, 20, 20));
+                // This is the stale Playnite Default resource that previously won because its
+                // key was checked before the active theme's correctly spelled key.
+                host.Resources["WindowBackgourndBrush"] = new SolidColorBrush(Color.FromRgb(17, 19, 25));
+                host.Resources["TextBrush"] = new SolidColorBrush(Colors.Black);
+                host.Resources["TextBrushDark"] = new SolidColorBrush(Colors.White);
+                host.Resources["ThemeDarkStyle"] = false;
+
+                var factoryType = typeof(DashboardView).Assembly.GetType(
+                    "GameSaveCenter.Playnite.Infrastructure.AdaptiveThemePaletteFactory",
+                    throwOnError: true)!;
+                var create = factoryType.GetMethod("Create", BindingFlags.Public | BindingFlags.Static)!;
+
+                var lightPalette = create.Invoke(
+                    null,
+                    new object[] { host, true, 78, GameSaveCenterThemeMode.FollowPlaynite })!;
+                Assert.False((bool)lightPalette.GetType().GetProperty("IsDark")!.GetValue(lightPalette)!);
+                Assert.Equal(Colors.Black, (Color)lightPalette.GetType().GetProperty("PrimaryText")!.GetValue(lightPalette)!);
+
+                host.Resources["ThemeDarkStyle"] = true;
+                var darkPalette = create.Invoke(
+                    null,
+                    new object[] { host, true, 78, GameSaveCenterThemeMode.FollowPlaynite })!;
+                Assert.True((bool)darkPalette.GetType().GetProperty("IsDark")!.GetValue(darkPalette)!);
+                Assert.Equal(Colors.White, (Color)darkPalette.GetType().GetProperty("PrimaryText")!.GetValue(darkPalette)!);
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+    }
+
+    [Fact]
     public void LocalAccentTokensFollowTheHostPaletteWithoutStaticThemeCapture()
     {
         Exception? exception = null;

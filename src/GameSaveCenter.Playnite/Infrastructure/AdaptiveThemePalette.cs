@@ -55,14 +55,21 @@ namespace GameSaveCenter.Playnite.Infrastructure
     {
         private static readonly string[] BackgroundResourceKeys =
         {
-            // Playnite Desktop's built-in theme uses this historical spelling. It is the
-            // resource applied by MainWindowStyle/StandardWindowStyle and is the reliable
-            // source when a plugin settings view is hosted in a separate dialog window.
-            "WindowBackgourndBrush",
+            // Dune and other current Desktop themes use the correctly spelled key. Keep the
+            // historical built-in key as a fallback for Playnite's Default theme.
             "WindowBackgroundBrush",
             "MainWindowBackgroundBrush",
+            "WindowBackgourndBrush",
             "ControlBackgroundBrush",
             "BackgroundBrush"
+        };
+
+        private static readonly string[] DarkBackgroundResourceKeys =
+        {
+            "DarkWindowBackgroundBrush",
+            "DarkMainWindowBackgroundBrush",
+            "DarkControlBackgroundBrush",
+            "DarkBackgroundBrush"
         };
 
         private static readonly string[] AccentResourceKeys =
@@ -79,6 +86,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             var highContrast = SystemParameters.HighContrast;
             var hostText = highContrast ? null : ResolveResourceColor(host, "TextBrush");
             var hostInverseText = highContrast ? null : ResolveResourceColor(host, "TextBrushDark");
+            var hostThemeDark = highContrast ? null : ResolveResourceBoolean(host, "ThemeDarkStyle");
             // The UserControl itself is initially backed by GameSaveCenter's dark fallback
             // brush. Resolve Playnite's published theme resource first; otherwise FollowPlaynite
             // would always classify the page from that local fallback before it can see the host.
@@ -88,10 +96,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
                     ? Color.FromRgb(243, 244, 248)
                     : forcedDark
                         ? Color.FromRgb(23, 24, 31)
-                        : ResolveFirstResourceColor(host, BackgroundResourceKeys)
-                            ?? ResolveHostBackground(host)
-                            ?? InferBackgroundFromHostText(hostText, hostInverseText)
-                            ?? Color.FromRgb(17, 19, 25);
+                        : ResolveFollowedBackground(host, hostThemeDark, hostText, hostInverseText);
 
             var text = highContrast ? SystemColors.WindowTextColor : forcedLight ? Colors.Black : forcedDark ? Colors.White : hostText;
             var inverseText = highContrast ? SystemColors.WindowTextColor : forcedLight ? Colors.White : forcedDark ? Colors.Black : hostInverseText;
@@ -890,6 +895,45 @@ namespace GameSaveCenter.Playnite.Infrastructure
             return ExtractUsableColor(window?.Background);
         }
 
+        private static Color ResolveFollowedBackground(
+            FrameworkElement host,
+            bool? themeDark,
+            Color? text,
+            Color? inverseText)
+        {
+            // Playnite themes such as Dune keep both light and dark brushes in the resource
+            // dictionary and switch between them with ThemeDarkStyle. Looking at a generic
+            // WindowBackgroundBrush alone therefore reports Dune's light theme as dark (or
+            // the other way around). The theme's explicit mode is the authoritative signal.
+            if (themeDark.HasValue)
+            {
+                if (themeDark.Value)
+                {
+                    return ResolveFirstResourceColor(host, DarkBackgroundResourceKeys)
+                        ?? Color.FromRgb(17, 19, 25);
+                }
+
+                return ResolveFirstResourceColor(host, BackgroundResourceKeys)
+                    ?? Color.FromRgb(243, 244, 248);
+            }
+
+            var resourceBackground = ResolveFirstResourceColor(host, BackgroundResourceKeys);
+            var inferredBackground = InferBackgroundFromHostText(text, inverseText);
+            if (resourceBackground.HasValue && inferredBackground.HasValue
+                && IsDark(resourceBackground.Value) != IsDark(inferredBackground.Value))
+            {
+                // A separate plugin window can still see Playnite's default dark resource
+                // while inheriting the active light theme's text brushes. Prefer the coherent
+                // pair instead of producing a page with mixed black-on-dark colors.
+                return inferredBackground.Value;
+            }
+
+            return resourceBackground
+                ?? ResolveHostBackground(host)
+                ?? inferredBackground
+                ?? Color.FromRgb(17, 19, 25);
+        }
+
         private static Color? ResolveFirstResourceColor(FrameworkElement host, IEnumerable<string> keys)
         {
             foreach (var key in keys)
@@ -910,11 +954,35 @@ namespace GameSaveCenter.Playnite.Infrastructure
             // actual owner and application scopes explicitly instead of relying on only one
             // WPF resource lookup path.
             var window = Window.GetWindow(host);
-            color = ExtractUsableColor(window?.TryFindResource(key) as Brush);
-            if (color.HasValue) return color;
+            while (window != null)
+            {
+                color = ExtractUsableColor(window.TryFindResource(key) as Brush);
+                if (color.HasValue) return color;
+                window = window.Owner;
+            }
 
             return ExtractUsableColor(Application.Current?.TryFindResource(key) as Brush);
         }
+
+        private static bool? ResolveResourceBoolean(FrameworkElement host, string key)
+        {
+            var value = host.TryFindResource(key);
+            if (value is bool hostValue) return hostValue;
+
+            var window = Window.GetWindow(host);
+            while (window != null)
+            {
+                if (window.Resources.Contains(key) && window.Resources[key] is bool windowValue)
+                    return windowValue;
+                window = window.Owner;
+            }
+
+            return Application.Current?.TryFindResource(key) is bool applicationValue
+                ? applicationValue
+                : null;
+        }
+
+        private static bool IsDark(Color color) => RelativeLuminance(color) < 0.5;
 
         private static Color? InferBackgroundFromHostText(Color? text, Color? inverseText)
         {

@@ -2,6 +2,25 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-25 UI-319 修复 Dune 浅色主题的 Follow Playnite 误判
+
+**问题确认：**
+
+- 用户当前 Playnite 配置实际使用 Dune 主题，`ThemeDarkStyle=False` 明确表示浅色；但设置窗口仍被识别为深色。
+- Dune 同时发布 `WindowBackgroundBrush` 与 `DarkWindowBackgroundBrush`，而 Playnite 默认主题遗留的 `WindowBackgourndBrush` 也可能可见。旧的键顺序会先命中默认深色渐变，导致设置页出现黑底与黑字混用。
+
+**实现内容：**
+
+- `AdaptiveThemePaletteFactory` 将正确拼写的 `WindowBackgroundBrush` 放在历史拼写前，并读取 Playnite 的 `ThemeDarkStyle` 作为 FollowPlaynite 的权威明暗信号；Dune 深色时改用 `DarkWindowBackgroundBrush`，浅色时改用浅色窗口资源。
+- 没有 `ThemeDarkStyle` 的第三方主题继续使用背景资源，并在背景与 `TextBrush`/`TextBrushDark` 明暗冲突时选择一致的文字推断结果，避免独立设置窗口被旧默认资源污染。
+- 新增回归测试覆盖“浅色主题同时残留默认深色资源”和“Dune 深色资源并存”两种情况；未改变强制浅色/深色、绑定、命令或设置保存语义。
+
+**验证结果：**
+
+- 定向主题测试：2/2 通过；Playnite 全量测试：290 通过、57 跳过、0 失败。
+- `scripts/validate-source.py`、`scripts/check-xaml.ps1` 通过；19 个 XAML 结构检查通过；Release 全量构建 0 警告、0 错误。
+- 真实 Playnite 当前配置已确认是 Dune 浅色，但本轮仍未把用户宿主截图作为自动化像素证据；提交后需要重载扩展并确认设置窗口实际变为浅色。
+
 ## 2026-08-25 UI-318 修复设置页 Follow Playnite 不生效
 
 **问题确认：**
