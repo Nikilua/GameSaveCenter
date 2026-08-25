@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.ViewModels;
 
 namespace GameSaveCenter.Playnite.Views
@@ -49,24 +51,29 @@ namespace GameSaveCenter.Playnite.Views
                 if (!viewModelSubscribed)
                 {
                     viewModel.PropertyChanged += OnViewModelPropertyChanged;
+                    viewModel.GamePicker.PlatformFilterOptions.CollectionChanged += OnGamePickerPlatformOptionsChanged;
                     viewModelSubscribed = true;
                 }
                 NavigateTo(dashboardViewModel.CurrentWorkspace);
+                RestoreGamePickerFilterDefaults();
                 return;
             }
 
             if (viewModel != null && viewModelSubscribed)
             {
                 viewModel.PropertyChanged -= OnViewModelPropertyChanged;
+                viewModel.GamePicker.PlatformFilterOptions.CollectionChanged -= OnGamePickerPlatformOptionsChanged;
                 viewModelSubscribed = false;
             }
 
             viewModel = dashboardViewModel ?? throw new ArgumentNullException(nameof(dashboardViewModel));
             DataContext = viewModel;
             viewModel.PropertyChanged += OnViewModelPropertyChanged;
+            viewModel.GamePicker.PlatformFilterOptions.CollectionChanged += OnGamePickerPlatformOptionsChanged;
             viewModelSubscribed = true;
             CreatePages();
             NavigateTo(viewModel.CurrentWorkspace);
+            RestoreGamePickerFilterDefaults();
         }
 
         public void NavigateTo(WorkspaceKind workspace)
@@ -99,6 +106,7 @@ namespace GameSaveCenter.Playnite.Views
         {
             if (DataContext is DashboardViewModel dashboardViewModel)
                 Attach(dashboardViewModel);
+            RestoreGamePickerFilterDefaults();
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
@@ -106,8 +114,26 @@ namespace GameSaveCenter.Playnite.Views
             if (viewModel != null && viewModelSubscribed)
             {
                 viewModel.PropertyChanged -= OnViewModelPropertyChanged;
+                viewModel.GamePicker.PlatformFilterOptions.CollectionChanged -= OnGamePickerPlatformOptionsChanged;
                 viewModelSubscribed = false;
             }
+        }
+
+        private void OnGamePickerPlatformOptionsChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            RestoreGamePickerFilterDefaults();
+            Dispatcher.BeginInvoke(new Action(RestoreGamePickerFilterDefaults), System.Windows.Threading.DispatcherPriority.DataBind);
+            Dispatcher.BeginInvoke(new Action(RestoreGamePickerFilterDefaults), System.Windows.Threading.DispatcherPriority.Loaded);
+        }
+
+        private void RestoreGamePickerFilterDefaults()
+        {
+            if (viewModel?.GamePicker == null)
+                return;
+
+            UiFilterSelection.RestoreDefault(GamePickerStatusComboBox, viewModel.GamePicker.StatusFilter);
+            UiFilterSelection.RestoreDefault(GamePickerPlatformComboBox, viewModel.GamePicker.PlatformFilter);
+            UiFilterSelection.RestoreDefault(GamePickerSortComboBox, viewModel.GamePicker.SortMode);
         }
 
         private void CreatePages()
@@ -206,7 +232,10 @@ namespace GameSaveCenter.Playnite.Views
                 ? Visibility.Collapsed
                 : Visibility.Visible;
             if (PickerOverlay.Visibility == Visibility.Visible)
+            {
+                RestoreGamePickerFilterDefaults();
                 GameSearchTextBox.Focus();
+            }
         }
 
         private void OnPickerScrimMouseDown(object sender, MouseButtonEventArgs e)

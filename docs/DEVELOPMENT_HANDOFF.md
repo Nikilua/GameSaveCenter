@@ -957,3 +957,10 @@ git branch --show-current
 - `tests/GameSaveCenter.RenderHarness/Program.cs` 已在 Settings 离屏渲染前调用 `ApplyThemeForAudit(FollowPlaynite)`，后续截图回归要保留这一步，否则会误测静态 DesignTokens。
 - UI-316 验证：source validation、XAML 结构检查通过；Release 0 warning/0 error；Core 59/59、Worker 199/199、Playnite 289 通过/57 跳过；render-qa OK；WPF validator 0 error、18 warnings、172 info。
 - 当前没有新的真实 Playnite 重启后设置窗口截图；下一轮若继续调材质，优先用真实宿主复核 Follow/高对比度、不同 DPI、关闭玻璃回退和键盘焦点，不能将 `.tmp/ui-qa-settings-glass-v5` 当作 Playnite 1:1 证据。
+
+## 2026-08-25 UI-320 游戏选择器交接
+
+- `AcrylicProductionShellView.xaml` 的生产游戏弹层使用共享 `ListBoxItem` 圆角模板；不要重新添加未基于共享样式的局部 `ListBoxItem`，否则选中和预选会回到 Playnite 的矩形默认视觉。
+- 生产壳状态/平台/排序筛选默认值是“已安装 / 全部 / 名称”。平台列表异步重建后必须通过 `UiFilterSelection.RestoreDefault` 恢复显示；真实 `GamePicker` 绑定和选中命令不可改成静态选项。
+- `DashboardView.xaml` 游戏列表 Row 的 `ClipToBounds` 是圆角状态契约；如果继续调整游戏行，请同时检查选中、鼠标预选、键盘焦点和高对比度边框。
+- UI-320 已完成源码/XAML/Release/定向 Playnite 测试与离屏 render-qa。真实 Playnite 游戏弹层尚未由本轮自动截图验证，后续如能取得可识别宿主窗口，应优先确认选中/预选圆角和中间“全部”显示。

@@ -965,7 +965,7 @@
                                     <Setter.Value>
                                         <ControlTemplate TargetType="ListBoxItem">
                                             <Grid>
-                                                <Border x:Name="Row" Background="{TemplateBinding Background}" CornerRadius="11" Padding="11,9">
+                                                <Border x:Name="Row" Background="{TemplateBinding Background}" CornerRadius="11" Padding="11,9" ClipToBounds="True">
                                                     <ContentPresenter TextElement.Foreground="{TemplateBinding Foreground}"/>
                                                 </Border>
                                                 <Border x:Name="SelectionIndicator" Width="2" Margin="3,9,0,9" CornerRadius="1"

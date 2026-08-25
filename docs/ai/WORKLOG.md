@@ -2,6 +2,26 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-25 UI-320 修复游戏选框圆角与平台筛选默认值
+
+**问题确认：**
+
+- 生产壳游戏选框的 `ListBoxItem` 局部样式没有继承项目共享的圆角模板，因此 Playnite/WPF 默认选中与悬停层会显示成矩形；首页选框的圆角容器也没有开启内容裁切。
+- 生产壳三个筛选 ComboBox 没有首页同等的 `SelectedIndex`、空值回退和异步选项重建后的恢复逻辑；平台选项集合重建时，中间框可能失去当前显示值。
+
+**实现内容：**
+
+- 生产壳游戏列表改为基于共享 `ListBoxItem` 样式，仅覆盖自身间距与文本对齐，选中/预选状态统一使用圆角 ItemChrome 与共享焦点视觉。
+- 首页游戏列表的选中 Row 增加 `ClipToBounds`，避免圆角状态下内容或状态层泄露成矩形。
+- 生产壳状态、平台、排序筛选补齐默认索引和空值回退；订阅平台选项集合重建，复用 `UiFilterSelection.RestoreDefault`，并在打开选框和加载阶段恢复“已安装 / 全部 / 名称”。
+- 新增生产壳源码回归测试，锁定共享圆角样式、默认筛选和首页裁切契约；未改变游戏选择、绑定、命令或虚拟化行为。
+
+**验证结果：**
+
+- `validate-source.py`、`check-xaml.ps1`、`git diff --check` 通过；WPF 静态审查 0 error、18 条既有 warning、172 条 info。
+- Release 构建 0 warning、0 error；Playnite 定向测试 292 通过、57 跳过、0 失败；此前全量 Core/Worker 测试分别为 59/59、199/199。
+- `.tmp/ui-qa-game-picker-rounded-defaults/render-qa-report.txt` 为 `render-qa OK`，覆盖 Light/Dark、多尺寸和 resize transition；该报告是离屏 WPF 证据，不替代真实 Playnite 弹层像素验收。
+
 ## 2026-08-25 UI-319 修复 Dune 浅色主题的 Follow Playnite 误判
 
 **问题确认：**

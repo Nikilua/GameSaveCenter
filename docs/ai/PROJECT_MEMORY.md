@@ -1464,3 +1464,10 @@
 - `GscSettingsShellBrush`/`PanelBrush`/`CardBrush`/`ContentBrush` 的 alpha 需要保持层次：底层环境渐变可见，表单文字和输入值仍清晰；禁用玻璃和高对比度必须恢复不透明回退。
 - RenderHarness 的设置页渲染应显式调用 `ApplyThemeForAudit`，否则只会捕获 `DesignTokens` 初始回退，无法验证设置页运行时玻璃资源是否真正生效。
 - UI-316 已通过源码/XAML 校验、Release 全量构建测试和浅色/深色/多尺寸 render-qa；WPF validator 为 0 error、18 warnings、172 info。真实 Playnite 重启后的逐页像素证据仍不具备，不得扩写为宿主验收。
+
+## 2026-08-25 UI-320 游戏选框圆角与筛选默认值事实
+
+- 生产壳游戏选框 `AcrylicProductionShellView.xaml` 的 `PickerList` 必须基于共享隐式 `ListBoxItem` 样式；局部样式只能覆盖间距、对齐和文本前景，不能让 Playnite 默认模板接管选中/预选状态，否则会重新出现矩形高亮。
+- 生产壳三个游戏筛选框必须同时保留 `SelectedIndex="0"` 与真实 `SelectedItem` 双向绑定的 `TargetNullValue`/`FallbackValue`。平台选项集合会异步重建，代码需要订阅 `PlatformFilterOptions.CollectionChanged` 并调用 `UiFilterSelection.RestoreDefault`，不要只依赖 XAML 初始 `SelectedIndex`。
+- 首页游戏选框自定义 Row 若使用 `CornerRadius`，必须同时使用 `ClipToBounds="True"`；否则圆角背景下的内容/状态层可能露出矩形。
+- 真实游戏选择绑定、`SelectedGame` 更新、列表虚拟化和关闭弹层逻辑保持不变。当前 `.tmp/ui-qa-game-picker-rounded-defaults/render-qa-report.txt` 仅是离屏证据，不能写成真实 Playnite 弹层视觉验收。
