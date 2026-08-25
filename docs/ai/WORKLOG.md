@@ -2,6 +2,25 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-25 UI-324 侧栏折叠书签与过渡动画
+
+**问题确认：**
+
+- 折叠按钮放在品牌标题下方的独立工具条，仍然像第二个标题栏；用户希望它靠侧栏下方、像一个小书签，并在收起/展开时有自然过渡。
+
+**实现内容：**
+
+- 将折叠入口移出品牌区和工具条，改为贴在侧栏右边、靠近底部的垂直书签形按钮；版本气泡和原有导航项目布局不再被挤压。
+- 在共享 `AcrylicProductionResources.xaml` 增加书签按钮 ControlTemplate，提供书签轮廓、悬停、按下、键盘焦点、禁用态和 Tooltip/AutomationProperties。
+- 侧栏导航内容包在独立 `SidebarContentLayer` 中；切换时以 110ms 淡出 + 4 DIP 横向位移、170ms 淡入归位，系统禁用动画、高对比度或设置关闭动画时直接切换。
+- 动画偏好由 `DashboardView` 通过 `MotionEnabledProvider` 注入，生产壳不直接依赖插件对象；折叠宽度、真实导航事件、页面响应式重算和滚动/虚拟化保持不变。
+
+**验证结果：**
+
+- `validate-source.py`、`check-xaml.ps1`、`git diff --check` 通过；WPF 静态审查 0 error（保留 18 条既有 warning）。
+- Release 构建 0 warning、0 error；Playnite 测试 295 通过、57 跳过、0 失败。
+- RenderHarness 多尺寸、浅色/深色及 resize transition 均 `render-qa OK`；真实 Playnite 宿主中的书签点击、键盘焦点和 DPI 像素仍需重载扩展后人工确认。
+
 ## 2026-08-25 UI-323 调整状态栏、版本气泡与设置窗口尺寸
 
 **问题确认：**

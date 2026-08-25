@@ -985,3 +985,10 @@ git branch --show-current
 - 如果继续修复折叠按钮，优先检查 `SidebarCollapseButton` 的 Click 路径和 `ApplySidebarLayout`，不要再把它放回品牌行；默认展开宽度仍为 236 DIP，折叠为 78 DIP。
 - `GameSaveCenterSettingsView.xaml` 根 UserControl 的 `MinWidth=1180`、`MinHeight=760` 用于让 Playnite 设置宿主默认打开更大；`SettingsShell` 的 MaxWidth、原有分类/滚动/保存按钮语义不变。若真实宿主仍忽略最小尺寸，再单独调查 Playnite 设置窗口宿主，不要用页面内部硬编码宽度强行撑破窗口。
 - 本阶段源码/XAML/Release/Playnite 295/352 和 RenderHarness `render-qa OK` 均已通过；尚未取得重载后真实 Playnite 的按钮点击/窗口尺寸像素证据，后续需复核折叠、展开、设置窗口、Follow/浅色、DPI 和键盘焦点。
+
+## 2026-08-25 UI-324 侧栏折叠书签与动画交接
+
+- `AcrylicProductionShellView.xaml` 的折叠入口现在是贴在侧栏右边、靠近底部的 `SidebarCollapseButton`，使用 `AcrylicSidebarBookmarkButton` 书签模板；不要再把它放回品牌标题行或新增一个大号导航按钮。
+- 品牌名称和 `SidebarProductionBadge` 保持原位置，版本气泡继续显示程序集版本；`SidebarContentLayer` 只负责标题和真实导航内容，书签位于独立覆盖层，不改变导航项的测量和事件。
+- 展开/收起仍使用 `ApplySidebarLayout` 的 236/78 DIP 宽度和页面响应式重算；动画只淡出/淡入并做 4 DIP `TranslateTransform`，时长 110/170ms。`MotionEnabledProvider` 连接到 `DashboardView.MotionEnabled`，关闭动画、系统禁用动画和高对比度时必须同步切换。
+- 本阶段 `validate-source.py`、`check-xaml.ps1`、WPF 静态审查（0 error）、Release、Playnite 295 通过/57 跳过和 RenderHarness `render-qa OK` 均已通过；真实 Playnite 重载后的书签点击、键盘焦点、浅色/深色/Follow 与 DPI 仍需人工复核。

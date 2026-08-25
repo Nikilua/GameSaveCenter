@@ -6,6 +6,8 @@ using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
 using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.ViewModels;
 
@@ -22,6 +24,7 @@ namespace GameSaveCenter.Playnite.Views
         private bool viewModelSubscribed;
         private bool suppressNavigation;
         private bool sidebarCollapsed;
+        private bool sidebarTransitionRunning;
 
         public AcrylicProductionShellView()
         {
@@ -37,6 +40,12 @@ namespace GameSaveCenter.Playnite.Views
         public TextBox GameSearchBoxForFocus => GameSearchTextBox;
 
         public Action? SettingsRequested { get; set; }
+
+        /// <summary>
+        /// The parent dashboard owns the persisted animation preference.  Keep the shell
+        /// independent from the plugin instance while still respecting that preference.
+        /// </summary>
+        public Func<bool>? MotionEnabledProvider { get; set; }
 
         private void OnClearGameSearchClick(object sender, RoutedEventArgs e)
         {
@@ -216,11 +225,68 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnSidebarCollapseClick(object sender, RoutedEventArgs e)
         {
+            if (sidebarTransitionRunning)
+            {
+                e.Handled = true;
+                return;
+            }
+
             sidebarCollapsed = !sidebarCollapsed;
-            ApplySidebarLayout();
+            if (!IsSidebarMotionEnabled)
+            {
+                ApplySidebarLayout();
+                SidebarCollapseButton.Focus();
+                e.Handled = true;
+                return;
+            }
+
+            sidebarTransitionRunning = true;
+            var translate = SidebarContentLayer.RenderTransform as TranslateTransform ?? new TranslateTransform();
+            SidebarContentLayer.RenderTransform = translate;
+            translate.BeginAnimation(TranslateTransform.XProperty, null);
+            SidebarContentLayer.BeginAnimation(OpacityProperty, null);
+
+            var fadeOut = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(110))
+            {
+                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+            };
+            fadeOut.Completed += (_, _) =>
+            {
+                ApplySidebarLayout();
+                translate.X = sidebarCollapsed ? -4 : 4;
+
+                var fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(170))
+                {
+                    EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+                };
+                fadeIn.Completed += (_, _) =>
+                {
+                    translate.BeginAnimation(TranslateTransform.XProperty, null);
+                    SidebarContentLayer.Opacity = 1;
+                    sidebarTransitionRunning = false;
+                };
+                SidebarContentLayer.BeginAnimation(OpacityProperty, fadeIn);
+                translate.BeginAnimation(TranslateTransform.XProperty,
+                    new DoubleAnimation(translate.X, 0, TimeSpan.FromMilliseconds(170))
+                    {
+                        EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+                    });
+            };
+
+            SidebarContentLayer.BeginAnimation(OpacityProperty, fadeOut);
+            translate.BeginAnimation(TranslateTransform.XProperty,
+                new DoubleAnimation(0, sidebarCollapsed ? -4 : 4, TimeSpan.FromMilliseconds(110))
+                {
+                    EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+                });
             SidebarCollapseButton.Focus();
             e.Handled = true;
         }
+
+        private bool IsSidebarMotionEnabled
+            => (MotionEnabledProvider?.Invoke() ?? true)
+               && !SystemParameters.HighContrast
+               && SystemParameters.ClientAreaAnimation;
 
         private void ApplySidebarLayout()
         {

@@ -28,13 +28,18 @@ public sealed class ProductionShellChromeSourceTests
         var shellCode = ReadSource("src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml.cs");
 
         Assert.Contains("x:Name=\"SidebarColumn\" Width=\"236\"", shell);
-        Assert.Contains("x:Name=\"SidebarUtilityStrip\" Grid.Row=\"1\"", shell);
+        Assert.Contains("x:Name=\"SidebarContentLayer\"", shell);
+        Assert.Contains("AcrylicSidebarBookmarkButton", shell);
         Assert.Contains("x:Name=\"SidebarCollapseButton\"", shell);
-        Assert.Contains("Width=\"26\" Height=\"26\" MinWidth=\"0\" MinHeight=\"0\"", shell);
+        Assert.Contains("VerticalAlignment=\"Bottom\"", shell);
+        Assert.Contains("Margin=\"0,0,-1,16\"", shell);
         Assert.Contains("Click=\"OnSidebarCollapseClick\"", shell);
         Assert.Contains("AutomationProperties.Name=\"收起导航栏\"", shell);
         Assert.Contains("x:Name=\"SidebarProductionVersionText\"", shell);
         Assert.Contains("sidebarCollapsed = !sidebarCollapsed", shellCode);
+        Assert.Contains("sidebarTransitionRunning", shellCode);
+        Assert.Contains("DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(110))", shellCode);
+        Assert.Contains("MotionEnabledProvider", shellCode);
         Assert.Contains("new GridLength(sidebarCollapsed ? 78 : 236)", shellCode);
         Assert.Contains("typeof(AcrylicProductionShellView).Assembly.GetName().Version", shellCode);
         Assert.Contains("展开导航栏", shellCode);

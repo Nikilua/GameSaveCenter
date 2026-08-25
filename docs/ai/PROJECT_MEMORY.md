@@ -1492,3 +1492,11 @@
 - `SidebarProductionVersionText` 在壳体 Loaded 时从 `AcrylicProductionShellView` 程序集读取三段版本号，XAML 的 `v0.6.70` 只是安全初始值；不要将它改回“生产版”静态标签。折叠按钮在 `SidebarUtilityStrip`（标题下方独立工具条），品牌行只负责图标、名称和版本气泡。
 - 设置入口 `GameSaveCenterSettingsView` 现在请求 `MinWidth=1180`、`MinHeight=760`；内部 `SettingsShell` 仍受 1360 DIP 上限和原有响应式断点控制，不能为了放大窗口移除滚动或改变保存语义。
 - UI-323 的源码/XAML/Release/Playnite/RenderHarness 门禁已通过；RenderHarness 的设置尺寸证据不等同 Playnite 宿主最终窗口尺寸，需重载扩展后人工确认。
+
+## 2026-08-25 UI-324 当前事实：侧栏折叠书签与过渡动画
+
+- `AcrylicProductionShellView.xaml` 的 `SidebarCollapseButton` 不再位于品牌标题下方工具条，而是覆盖在侧栏右侧靠近底部的位置；它使用 `AcrylicSidebarBookmarkButton` 共享 ControlTemplate，呈垂直书签轮廓，默认展开态仍为 236 DIP，折叠态仍为 78 DIP。
+- 书签是独立于 `SidebarContentLayer` 的交互层，因此不会挤压 `GameSaveCenter`、版本气泡或真实 `Nav*` 项；导航内容继续由同一组 RadioButton、绑定、滚动和虚拟化承载。
+- `OnSidebarCollapseClick` 在动画启用时对 `SidebarContentLayer` 做短暂淡出、4 DIP 横向位移再淡入；`MotionEnabledProvider` 从 `DashboardView` 提供持久化动画设置，系统高对比度/禁用动画时走同步切换。不要把动画改成循环计时器，也不要给页面列表内容加 BlurEffect。
+- 书签 ControlTemplate 只使用共享动态材质和状态触发器，包含悬停、按下、键盘焦点、禁用和 Tooltip/AutomationProperties；不要将折叠按钮恢复为普通导航项或重新放回品牌行。
+- UI-324 已通过源码/XAML、WPF 0 error、Release、Playnite 295/352 和 RenderHarness `render-qa OK`；真实 Playnite 宿主点击/键盘/DPI 像素仍是人工边界。

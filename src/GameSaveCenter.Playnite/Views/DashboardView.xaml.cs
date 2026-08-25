@@ -49,6 +49,7 @@ namespace GameSaveCenter.Playnite.Views
             viewModel = new DashboardViewModel(plugin);
             DataContext = viewModel;
             ProductionShellView.Attach(viewModel);
+            ProductionShellView.MotionEnabledProvider = () => MotionEnabled;
             ProductionShellView.SettingsRequested = () => plugin.PlayniteApi.MainView.OpenPluginSettings(plugin.Id);
 
             refreshTimer = new DispatcherTimer(DispatcherPriority.Background);
