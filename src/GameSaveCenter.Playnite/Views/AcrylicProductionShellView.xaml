@@ -317,7 +317,7 @@
                                 <ComboBox x:Name="GamePickerPlatformComboBox" Style="{DynamicResource GscWpfUiFilterComboBox}"
                                           ItemsSource="{Binding GamePicker.PlatformFilterOptions}" SelectedIndex="0"
                                           SelectedItem="{Binding GamePicker.PlatformFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}"
-                                          Margin="4,0,4,0"/>
+                                          Margin="4,0,4,0" Loaded="OnGamePickerFilterLoaded"/>
                                 <ComboBox x:Name="GamePickerSortComboBox" Style="{DynamicResource GscWpfUiFilterComboBox}"
                                           ItemsSource="{Binding GamePicker.SortOptions}" SelectedIndex="0"
                                           SelectedItem="{Binding GamePicker.SortMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=名称, FallbackValue=名称}"

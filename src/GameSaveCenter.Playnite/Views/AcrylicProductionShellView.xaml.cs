@@ -55,7 +55,7 @@ namespace GameSaveCenter.Playnite.Views
                     viewModelSubscribed = true;
                 }
                 NavigateTo(dashboardViewModel.CurrentWorkspace);
-                RestoreGamePickerFilterDefaults();
+                QueueGamePickerFilterDefaults();
                 return;
             }
 
@@ -73,7 +73,7 @@ namespace GameSaveCenter.Playnite.Views
             viewModelSubscribed = true;
             CreatePages();
             NavigateTo(viewModel.CurrentWorkspace);
-            RestoreGamePickerFilterDefaults();
+            QueueGamePickerFilterDefaults();
         }
 
         public void NavigateTo(WorkspaceKind workspace)
@@ -106,7 +106,7 @@ namespace GameSaveCenter.Playnite.Views
         {
             if (DataContext is DashboardViewModel dashboardViewModel)
                 Attach(dashboardViewModel);
-            RestoreGamePickerFilterDefaults();
+            QueueGamePickerFilterDefaults();
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
@@ -121,9 +121,7 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnGamePickerPlatformOptionsChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
-            RestoreGamePickerFilterDefaults();
-            Dispatcher.BeginInvoke(new Action(RestoreGamePickerFilterDefaults), System.Windows.Threading.DispatcherPriority.DataBind);
-            Dispatcher.BeginInvoke(new Action(RestoreGamePickerFilterDefaults), System.Windows.Threading.DispatcherPriority.Loaded);
+            QueueGamePickerFilterDefaults();
         }
 
         private void RestoreGamePickerFilterDefaults()
@@ -134,6 +132,20 @@ namespace GameSaveCenter.Playnite.Views
             UiFilterSelection.RestoreDefault(GamePickerStatusComboBox, viewModel.GamePicker.StatusFilter);
             UiFilterSelection.RestoreDefault(GamePickerPlatformComboBox, viewModel.GamePicker.PlatformFilter);
             UiFilterSelection.RestoreDefault(GamePickerSortComboBox, viewModel.GamePicker.SortMode);
+        }
+
+        private void QueueGamePickerFilterDefaults()
+        {
+            RestoreGamePickerFilterDefaults();
+            if (Dispatcher.HasShutdownStarted || Dispatcher.HasShutdownFinished)
+                return;
+            Dispatcher.BeginInvoke(new Action(RestoreGamePickerFilterDefaults), System.Windows.Threading.DispatcherPriority.DataBind);
+            Dispatcher.BeginInvoke(new Action(RestoreGamePickerFilterDefaults), System.Windows.Threading.DispatcherPriority.Loaded);
+        }
+
+        private void OnGamePickerFilterLoaded(object sender, RoutedEventArgs e)
+        {
+            QueueGamePickerFilterDefaults();
         }
 
         private void CreatePages()
@@ -233,7 +245,7 @@ namespace GameSaveCenter.Playnite.Views
                 : Visibility.Visible;
             if (PickerOverlay.Visibility == Visibility.Visible)
             {
-                RestoreGamePickerFilterDefaults();
+                QueueGamePickerFilterDefaults();
                 GameSearchTextBox.Focus();
             }
         }

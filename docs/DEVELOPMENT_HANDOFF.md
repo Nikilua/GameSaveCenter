@@ -964,3 +964,10 @@ git branch --show-current
 - 生产壳状态/平台/排序筛选默认值是“已安装 / 全部 / 名称”。平台列表异步重建后必须通过 `UiFilterSelection.RestoreDefault` 恢复显示；真实 `GamePicker` 绑定和选中命令不可改成静态选项。
 - `DashboardView.xaml` 游戏列表 Row 的 `ClipToBounds` 是圆角状态契约；如果继续调整游戏行，请同时检查选中、鼠标预选、键盘焦点和高对比度边框。
 - UI-320 已完成源码/XAML/Release/定向 Playnite 测试与离屏 render-qa。真实 Playnite 游戏弹层尚未由本轮自动截图验证，后续如能取得可识别宿主窗口，应优先确认选中/预选圆角和中间“全部”显示。
+
+## 2026-08-25 UI-321 平台筛选显示时序交接
+
+- 仅设置 `SelectedIndex="0"` 不足以保证生产游戏弹层的中间框显示“全部”：弹层初始隐藏时 ItemsSource 可能尚未生成。
+- 维护 `AcrylicProductionShellView` 的游戏弹层时，平台默认恢复必须保留 `Loaded` 事件、弹层打开时的 `DataBind/Loaded` 调度，以及 `PlatformFilterOptions.CollectionChanged` 监听。
+- `UiFilterSelection.RestoreDefault` 的有效选中保护不能删除；用户已经选择具体平台时，集合仍包含该平台就必须保留它。
+- UI-321 已完成源码/XAML/Release/定向测试；真实 Playnite 重载后的中间框“全部”像素仍待确认。

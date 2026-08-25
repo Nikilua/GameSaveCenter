@@ -18,6 +18,9 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("TargetNullValue=全部", xaml);
             Assert.Contains("UiFilterSelection.RestoreDefault(GamePickerPlatformComboBox", code);
             Assert.Contains("PlatformFilterOptions.CollectionChanged += OnGamePickerPlatformOptionsChanged", code);
+            Assert.Contains("DispatcherPriority.DataBind", code);
+            Assert.Contains("DispatcherPriority.Loaded", code);
+            Assert.Contains("Loaded=\"OnGamePickerFilterLoaded\"", xaml);
         }
 
         [Fact]

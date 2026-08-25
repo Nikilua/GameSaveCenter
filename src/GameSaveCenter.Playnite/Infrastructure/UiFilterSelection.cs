@@ -11,7 +11,13 @@ public static class UiFilterSelection
 {
     public static void RestoreDefault(ComboBox combo, string defaultText)
     {
-        if (combo == null || combo.Items.Count == 0 || combo.SelectedItem != null)
+        if (combo == null || combo.Items.Count == 0)
+            return;
+
+        // A ComboBox bound to an ObservableCollection can retain an old selected
+        // object while the collection is being reset. Treat that state as empty so
+        // the logical default can be restored after the item container is generated.
+        if (combo.SelectedIndex >= 0 && combo.SelectedItem != null && combo.Items.Contains(combo.SelectedItem))
             return;
 
         var index = string.IsNullOrEmpty(defaultText) ? 0 : combo.Items.IndexOf(defaultText);

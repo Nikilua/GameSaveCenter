@@ -1471,3 +1471,10 @@
 - 生产壳三个游戏筛选框必须同时保留 `SelectedIndex="0"` 与真实 `SelectedItem` 双向绑定的 `TargetNullValue`/`FallbackValue`。平台选项集合会异步重建，代码需要订阅 `PlatformFilterOptions.CollectionChanged` 并调用 `UiFilterSelection.RestoreDefault`，不要只依赖 XAML 初始 `SelectedIndex`。
 - 首页游戏选框自定义 Row 若使用 `CornerRadius`，必须同时使用 `ClipToBounds="True"`；否则圆角背景下的内容/状态层可能露出矩形。
 - 真实游戏选择绑定、`SelectedGame` 更新、列表虚拟化和关闭弹层逻辑保持不变。当前 `.tmp/ui-qa-game-picker-rounded-defaults/render-qa-report.txt` 仅是离屏证据，不能写成真实 Playnite 弹层视觉验收。
+
+## 2026-08-25 UI-321 平台筛选默认值时序事实
+
+- 生产 `PickerOverlay` 初始为 `Collapsed`，不能只在 `Attach` 或点击事件的同步代码中调用 `UiFilterSelection.RestoreDefault`；这些时刻可能还没有生成 ComboBox Items。
+- 平台筛选默认值恢复必须覆盖弹层打开、平台选项集合变化和 `GamePickerPlatformComboBox.Loaded`，并至少排队到 `DispatcherPriority.DataBind`、`DispatcherPriority.Loaded` 两个阶段。
+- `UiFilterSelection.RestoreDefault` 只应修复空选中或不再属于当前 Items 的无效选中；有效的用户平台选择不能被“全部”覆盖。
+- UI-321 已通过源码/XAML 门禁、Release 构建和 Playnite 定向测试；真实宿主需重载扩展后确认中间框显示“全部”。
