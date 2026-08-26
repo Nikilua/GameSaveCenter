@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-26 STAB-007 Phase 7 性能测量
+
+- 先测量后决定：没有修改默认 Blur、动画时长/曲线、滚动模型、虚拟化或新增 BlurEffect。Blur 回归覆盖 20/78/100 DIP，配置值分别为 20/78/100，保持 `RenderingBias.Performance`。
+- Worker 全量数据规模 `GSC_SOAK_DATA_SCALE=1` 通过 `1/1`，耗时约 3m03s；2,000 游戏、20,000 备份、10,000 任务、30,000 媒体、500 工具与 20 个循环后的 `managedGrowth=0 MiB, handles+0, threads+0`。
+- 2,000 游戏合成基准通过 `1/1`：首次/未变化/单项变化 `SetItems=55/2/15ms`，搜索/清空 `215/196ms`，任务 `ReplaceAll=1/0ms`。RenderHarness 现有双主题/多尺寸/Resize 报告 253 样本，20–3032ms，平均 219.01ms，`render-qa OK`。
+- 证据与限制已写入 `docs/ai/PERFORMANCE_BASELINE.md`。真实 Playnite 首次打开、工作区切换、侧栏 UI 线程、主题/背景内存、DPI 帧率与大库真实滚动仍因用户跳过 Phase 4 标记 `MANUAL QA REQUIRED`，没有将离屏数字当作实机结论。
+
 ## 2026-08-26 STAB-006 Phase 5/6 页面树与响应式协调
 
 - 双页面树清单已落到 `docs/ai/WORKSPACE_TREE_INVENTORY.md`：`ProductionShellView.PageHost` 是唯一可见业务宿主，Dashboard 折叠旧树仍保留为兼容面；导航、维护定位、任务动画、搜索焦点和响应式页面分发已迁移到生产页面注册表。未删除旧树，也没有把 RenderHarness 当成真实 Playnite 证据。

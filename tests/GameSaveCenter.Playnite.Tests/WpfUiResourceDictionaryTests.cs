@@ -169,10 +169,18 @@ public sealed class WpfUiResourceDictionaryTests
                 Assert.True(Assert.IsType<double>(localResources["GscGameBackgroundOpacity"]) > 0);
                 Assert.True(Assert.IsType<SolidColorBrush>(localResources["GscGameBackgroundTintBrush"]).Color.A > 0);
                 var gameBackgroundBlur = Assert.IsType<BlurEffect>(localResources["GscGameBackgroundEffect"]);
+                var lowStrengthPalette = factoryType.GetMethod("Create", BindingFlags.Public | BindingFlags.Static)!.Invoke(
+                    null,
+                    new object[] { host, true, 20, GameSaveCenterThemeMode.FollowPlaynite })!;
+                var lowStrengthResources = new ResourceDictionary();
+                materialResources.Invoke(null, new object[] { lowStrengthResources, lowStrengthPalette, true, false });
+                var lowStrengthBlur = Assert.IsType<BlurEffect>(lowStrengthResources["GscGameBackgroundEffect"]);
+                Assert.Equal(20d, lowStrengthBlur.Radius, 3);
                 Assert.Equal(78d, gameBackgroundBlur.Radius, 3);
                 Assert.Equal(RenderingBias.Performance, gameBackgroundBlur.RenderingBias);
                 var strongerGameBackgroundBlur = Assert.IsType<BlurEffect>(strongerMaterialResources["GscGameBackgroundEffect"]);
                 Assert.Equal(100d, strongerGameBackgroundBlur.Radius, 3);
+                Assert.Equal(58d, gameBackgroundBlur.Radius - lowStrengthBlur.Radius, 3);
                 Assert.Equal(22d, strongerGameBackgroundBlur.Radius - gameBackgroundBlur.Radius, 3);
                 var strongerWideWash = Assert.IsType<LinearGradientBrush>(strongerMaterialResources["GscAmbientWideWashBrush"]);
                 Assert.True(

@@ -3,6 +3,14 @@
 > 维护时间：2026-08-12
 > 本文件记录性能测量方法、当前基线数字与待真机验证项。不要伪造数字；没有实测的写“待验证”。
 
+## Phase 7 测量记录（2026-08-26）
+
+- Worker 全量数据规模 harness：`GSC_SOAK_DATA_SCALE=1`，2,000 游戏、20,000 备份、10,000 任务、30,000 媒体、500 工具，20 个读/事件/原子写/锁循环；`SoakDataScaleTests.DataScaleSoakRemainsBounded` 通过 `1/1`，耗时约 `3m03s`，记录 `managedGrowth=0 MiB, handles+0, threads+0`。这是 Worker/SQLite 压力证据，不是 Playnite UI 滚动帧率。
+- 2,000 游戏合成集合基准（`GamePicker2000_Benchmark_WritesMeasuredTimings`）通过 `1/1`：首次 `SetItems=55ms`、未变化 `2ms`、单项变化 `15ms`、搜索刷新 `215ms`、清空搜索 `196ms`、任务首次/未变化 `ReplaceAll=1/0ms`。原始文件为 `.tmp/phase7-performance/ui-qa/benchmarks/large-library.txt`。
+- 当前离屏 Render QA 报告 `.tmp/phase6-responsive-coordinator-render/render-qa-report.txt`：253 个 `render_ms` 样本，范围 `20–3032ms`，平均 `219.01ms`，`render-qa OK`；Light/Dark、四个尺寸组和 Resize 恢复通过。该数字包含 WPF 离屏布局/PNG 输出，不等于真实宿主首屏或页面切换耗时。
+- Blur 配置回归现在覆盖 `20→20 DIP`、`78→78 DIP`、`100→100 DIP`，差值分别为 `58 DIP` 与 `22 DIP`，并保持 `RenderingBias.Performance`；本阶段没有修改默认 Blur、动画时长、曲线或新增 BlurEffect。
+- 首次打开、真实工作区切换、侧栏动画 UI 线程耗时、主题切换、背景开关内存、DPI 帧率以及 2,000/10,000/30,000 数据在 Playnite 真实页面中的滚动刷新仍为 `MANUAL QA REQUIRED`，因为用户要求跳过 Phase 4，当前环境没有可审计的 Playnite 宿主。不能用上述离屏或 SQLite 数字替代这些证据。
+
 ## Phase 0 当前基线（2026-08-26）
 
 - Release RenderHarness 报告：253 张 PNG、11 个窗口尺寸、`render-qa OK`、无 `PROBLEM`；253 个 `render_ms` 样本范围 16–3072ms，平均 238.82ms。报告为 `.tmp/phase0-render-qa/render-qa-report.txt`。

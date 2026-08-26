@@ -2,6 +2,12 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-26 STAB-007 性能测量交接
+
+- Worker 全量数据规模已测完：2,000 游戏、20,000 备份、10,000 任务、30,000 媒体、500 工具，约 3m03s，managedGrowth 0 MiB、handles +0、threads +0；2,000 游戏合成集合基准为 55/2/15ms SetItems、215/196ms 搜索、1/0ms ReplaceAll。
+- Blur 20/78/100 DIP 已加入回归；没有改默认 Blur、动画、滚动模型、虚拟化或增加效果。离屏 Render QA 253 样本平均 219.01ms，报告 `render-qa OK`。
+- 这些是 Worker/SQLite、合成集合或离屏数据。真实 Playnite 初次打开/切页/侧栏/主题/背景内存/DPI/大库滚动仍是 `MANUAL QA REQUIRED`，Phase 4 依用户要求跳过，禁止用离屏证据替代。
+
 ## 2026-08-26 STAB-006 页面树与响应式协调交接
 
 - Phase 5 已完成静态双树治理：可见业务实例来自 `ProductionShellView.PageHost`；旧 Dashboard 页面树保留为兼容面，详情见 `docs/ai/WORKSPACE_TREE_INVENTORY.md`。业务导航、搜索焦点、维护定位、任务动画和生产页面布局不得重新引用旧实例。

@@ -3,6 +3,13 @@
 > 维护时间：2026-08-25
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-26 STAB-007 性能测量事实
+
+- Phase 7 只完成测量，没有性能猜测式改动：默认 Blur/动画/滚动/虚拟化保持不变；Blur 20/78/100 的半径回归为 20/78/100 DIP。
+- 全量 Worker 数据规模通过：2,000 游戏、20,000 备份、10,000 任务、30,000 媒体、500 工具，约 3m03s，managed memory 增长 0 MiB、句柄 +0、线程 +0。
+- 2,000 游戏合成 UI 集合测试：首次/未变化/单项变化 55/2/15ms，搜索/清空 215/196ms，任务 ReplaceAll 1/0ms；离屏 Render QA 253 样本 20–3032ms，平均 219.01ms，双主题和 Resize 通过。
+- 真实 Playnite 首屏、切页、侧栏、主题/背景内存、DPI 和大库滚动仍未验证；Phase 4 是用户明确跳过的宿主阶段，不能把这些数字写成实机结论。
+
 ## 2026-08-26 STAB-006 页面树与响应式协调事实
 
 - 生产页面路径现在由 `AcrylicProductionShellView.PageHost` 和 `GetWorkspaceView<T>` 统一承载；Dashboard 中的旧页面树仍存在，但只作为兼容资源/审计面，`GetLegacyCompatibilityWorkspaceViews()` 是显式边界。不要删除旧树，除非后续取得 Playnite 初始化、资源查找和外部引用的真实证明。

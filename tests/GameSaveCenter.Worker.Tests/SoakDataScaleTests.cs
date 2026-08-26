@@ -1,10 +1,18 @@
 using GameSaveCenter.Worker.Tests.Infrastructure;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace GameSaveCenter.Worker.Tests;
 
 public sealed class SoakDataScaleTests
 {
+    private readonly ITestOutputHelper output;
+
+    public SoakDataScaleTests(ITestOutputHelper output)
+    {
+        this.output = output;
+    }
+
     [Fact]
     public async Task DataScaleSoakRemainsBounded()
     {
@@ -17,5 +25,6 @@ public sealed class SoakDataScaleTests
         Assert.True(harness.BoundedGrowth, harness.GrowthSummary);
         Assert.Equal(0, harness.SubscriberResidue);
         Assert.Equal(0, harness.TempResidue);
+        output.WriteLine($"[PERF] WorkerSoak fullScale={fullScale} " + harness.GrowthSummary);
     }
 }
