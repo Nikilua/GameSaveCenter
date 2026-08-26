@@ -2,6 +2,13 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-26 STAB-006 页面树与响应式协调交接
+
+- Phase 5 已完成静态双树治理：可见业务实例来自 `ProductionShellView.PageHost`；旧 Dashboard 页面树保留为兼容面，详情见 `docs/ai/WORKSPACE_TREE_INVENTORY.md`。业务导航、搜索焦点、维护定位、任务动画和生产页面布局不得重新引用旧实例。
+- Phase 6 已将现有响应式宽高状态集中到 `ResponsiveLayoutCoordinator`，保持所有既有断点和尺寸；`AcrylicProductionShellView` 的导航、侧栏切换、Resize 延迟回调都统一调用 `ApplyResponsiveLayout`。不可在未测量前修改 Blur、动画、滚动模型或虚拟化。
+- 自动证据：Release 0 warning/0 error，Core 59/59、Worker 210/210、Playnite 309/366（57 跳过），源校验/XAML/WPF 门禁通过，`.tmp/phase6-responsive-coordinator-render/render-qa-report.txt` 为双主题与连续 Resize `render-qa OK`。
+- Phase 4 由用户明确跳过；不要把上述离屏证据称为真实 Playnite 验收。宿主安装、DPI、键盘焦点、Worker 重启/日志、性能和旧树删除安全性仍是 `MANUAL QA REQUIRED`。
+
 ## 2026-08-26 STAB-005 媒体 Inbox 响应超限交接
 
 - 用户实机两端均为 `0.6.70.0`；Worker 在 `11:04:21` 报告 Named Pipe 响应超过 `4194304` 字节，Playnite 随后把 `MESSAGE_TOO_LARGE` 显示成“操作失败”。已确认根因是媒体 Inbox 列表旧路径一次请求 5000 条，用户库有 4615 条 Inbox 媒体。
@@ -20,7 +27,7 @@
 
 - 当前环境没有可执行的 Playnite、运行中的宿主或注册表安装入口；`D:\software\Playnite\Playnite\Playnite.DesktopApp.exe` 等历史候选路径也不存在。Phase 4 状态为 `BLOCKED_ENVIRONMENT`。
 - 不要用离屏 RenderHarness、静态 WPF 审计或历史截图宣称真实宿主通过；也不要未经隔离证明运行 `real-host-audit.ps1`/`dev-install-run.ps1`，因为它们可能安装扩展、关闭宿主或写入用户目录。
-- 下一步需要用户提供隔离 Playnite 安装/便携目录、独立数据根、唯一进程边界和扩展目录。拿到后按四尺寸/三 DPI/四主题、七页面+Settings、交互/生命周期/游戏事件/Worker 重启与日志矩阵执行；在此之前暂停 Phase 5 双树治理。
+- 下一步如果要完成真实宿主验收，需要用户提供隔离 Playnite 安装/便携目录、独立数据根、唯一进程边界和扩展目录；在用户已明确跳过 Phase 4 的前提下，Phase 5/6 的静态治理可以继续，但不能补写真实宿主通过结论。
 - Phase 0–3 的自动验证已提交推送，最新 IPC commit 为 `9d53b1d`；Phase 4 没有源码改动。
 
 ## 2026-08-26 STAB-003 IPC 健壮性交接

@@ -1,5 +1,7 @@
 # 开发实现进度
 
+- [x] STAB-006（2026-08-26）：完成 Phase 5/6 页面树与响应式协调。生产 `PageHost` 作为唯一可见业务页面宿主，旧 Dashboard 页面树保留为显式兼容面；导航、维护定位、任务动画、搜索焦点和生产页面布局改走生产页面注册表。新增 `ResponsiveLayoutCoordinator` 集中既有宽高断点/尺寸，Shell 导航、侧栏切换和 Resize 延迟回调统一走 `ApplyResponsiveLayout`，未改断点、颜色、字体、尺寸、动画、Blur、滚动、命令、Binding 或数据契约。Release `0 warning/0 error`、Core `59/59`、Worker `210/210`、Playnite `309/366`（57 跳过）、WPF `0 error/18 warning/172 info`、双主题多尺寸连续 Resize `.tmp/phase6-responsive-coordinator-render/render-qa-report.txt`（`render-qa OK`）通过。Phase 4 按用户要求跳过，真实 Playnite 仍待人工验证。
+
 - [x] STAB-005（2026-08-26）：修复媒体 Inbox/Ignore 列表一次请求 5000 条导致 Named Pipe 响应超过 4 MiB 的问题。Worker 增加 500 条分页上限、稳定排序和 `Offset`，Playnite 分页读取并保留原 5000 条 UI 上限；服务端超限日志记录请求 ID、消息类型、响应字节数和 payload 字节数，4 MiB 安全限制保留。Release `0 warning/0 error`、Core `59/59`、Worker `210/210`、Playnite `302/359`（57 跳过）、WPF `0 error/18 warning/172 info`、`.tmp/phase3-ipc-response-fix-render/render-qa-report.txt`（`render-qa OK`）通过。用户明确跳过本次 Phase 4；真实 Playnite 安装后的新包复核仍待人工执行。
 
 - [x] UI-331（2026-08-25）：完成共享控件与界面流畅度收口。生产 TextBox 模板真正应用 Padding，TextBox/ComboBox 统一字体传递、左对齐、像素对齐和布局取整；侧栏保留 270↔72 DIP 的 210ms 宽度动画并补齐内容层 190ms 淡入/轻位移及卸载清理；静态游戏背景层增加 BitmapCache；设置路径校验改为 Background Dispatcher 合并逐字通知，降低输入卡顿。真实命令、Binding、默认值、滚动和虚拟化未变。`validate-source.py`、XAML 结构检查、`git diff --check`、WPF 静态审查 0 error/18 warning/172 info、Playnite 297 通过/57 跳过、Release 0 warning/0 error、`.tmp/ui-qa-polish-v1/render-qa-report.txt`（`render-qa OK`）通过；真实 Playnite 帧率、DPI、焦点和动画仍需人工复核。

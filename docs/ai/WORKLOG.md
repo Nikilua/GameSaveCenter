@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-26 STAB-006 Phase 5/6 页面树与响应式协调
+
+- 双页面树清单已落到 `docs/ai/WORKSPACE_TREE_INVENTORY.md`：`ProductionShellView.PageHost` 是唯一可见业务宿主，Dashboard 折叠旧树仍保留为兼容面；导航、维护定位、任务动画、搜索焦点和响应式页面分发已迁移到生产页面注册表。未删除旧树，也没有把 RenderHarness 当成真实 Playnite 证据。
+- 新增 `WorkspaceTreeGovernanceTests`，锁定可见 PageHost、旧树兼容职责和禁止回到旧页面实例的业务布局调用；旧资源 key、DataContext、WorkspaceKind、命令、Binding、滚动和虚拟化保持不变。
+- `ResponsiveLayoutCoordinator` 集中保存既有 960/980/1040/1080/1180/1200/1280 宽度与 650/700/760 高度计算；Dashboard 和生产 Shell 共用同一状态，Shell 导航、侧栏切换和 SizeChanged 延迟回调统一进入 `ApplyResponsiveLayout`，并保留 `IsLoaded` 防护。没有修改断点、尺寸、动画、Blur 或 XAML 视觉值。
+- 新增宽高边界与确定性回归，覆盖 980/1040/1200、640/700/720/768/900 以及 1180/1200/1280 临界决策。Release 构建 `0 warning/0 error`；Core `59/59`、Worker `210/210`、Playnite `309/366`（57 跳过）；源校验、19 文件 XAML 校验和 WPF 静态审计 `0 error/18 warning/172 info` 通过；`.tmp/phase6-responsive-coordinator-render/render-qa-report.txt` 为 `render-qa OK`，Light/Dark 与连续 Resize 恢复通过。
+- Phase 4 仍按用户要求跳过，真实 Playnite、DPI、宿主日志、Worker 重启和实机帧率/内存不宣称已验证；旧树删除和 GscTableViewportHeight 清理继续等待真实宿主证据与完整引用证明。
+
 ## 2026-08-26 STAB-005 IPC 媒体 Inbox 响应超限修复
 
 - 根据用户 0.6.70.0 Playnite/Worker 日志定位到 `media.inbox.list`：旧版 Dashboard 一次请求 `Limit=5000`，用户库有 4615 条 Inbox 媒体，Worker 记录响应超过 `4194304` 字节并返回 `MESSAGE_TOO_LARGE`。

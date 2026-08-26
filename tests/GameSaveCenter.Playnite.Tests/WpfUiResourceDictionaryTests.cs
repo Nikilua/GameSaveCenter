@@ -1308,10 +1308,10 @@ public sealed class WpfUiResourceDictionaryTests
         var productionShellMarkup = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml"));
         var overview = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml"));
 
-        Assert.Contains("var compact = width < 980", productionShell);
+        Assert.Contains("var compact = layout.IsCompactShellHeader", productionShell);
         Assert.Contains("HeaderActionsRow.Height = compact ? GridLength.Auto", productionShell);
-        Assert.Contains("ApplyPageLayout();", productionShell);
-        Assert.Contains("view.ApplyResponsiveColumns(width < 1200)", productionShell);
+        Assert.Contains("ApplyResponsiveLayout(effectiveWidth, effectiveHeight);", productionShell);
+        Assert.Contains("view.ApplyResponsiveColumns(layout.OverviewUsesStackedColumns)", productionShell);
         Assert.Contains("Style=\"{DynamicResource GscPageScrollViewer}\"", productionShellMarkup);
         Assert.Contains("VerticalScrollBarVisibility=\"Auto\"", productionShellMarkup);
         Assert.Contains("最近活动", overview);
@@ -2181,7 +2181,7 @@ public sealed class WpfUiResourceDictionaryTests
 
         Assert.Equal("Auto", scroller.Attribute("HorizontalScrollBarVisibility")?.Value);
         Assert.Equal("Disabled", scroller.Attribute("VerticalScrollBarVisibility")?.Value);
-        Assert.Contains("SetToolbarLabelsVisible(mode == LayoutMode.Expanded)", File.ReadAllText(dashboardPath + ".cs"));
+        Assert.Contains("SetToolbarLabelsVisible(layout.IsToolbarLabelsVisible);", File.ReadAllText(dashboardPath + ".cs"));
     }
 
     [Fact]
@@ -4501,7 +4501,7 @@ public sealed class WpfUiResourceDictionaryTests
             Assert.Contains($"{action.Item2}.Visibility = labelVisibility;", dashboardCode);
         }
 
-        Assert.Contains("SetToolbarLabelsVisible(mode == LayoutMode.Expanded);", dashboardCode);
+        Assert.Contains("SetToolbarLabelsVisible(layout.IsToolbarLabelsVisible);", dashboardCode);
         Assert.Contains("var labelVisibility = visible ? Visibility.Visible : Visibility.Collapsed;", dashboardCode);
     }
 
@@ -4713,7 +4713,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Visibility=\"Collapsed\"", dashboard.Substring(dashboard.IndexOf("x:Name=\"DashboardDemoShell\"", StringComparison.Ordinal)));
         Assert.Contains("x:Name=\"MainPageHost\"", productionShellMarkup);
         Assert.Contains("PageHost.Content = page", productionShell);
-        Assert.Contains("view.ApplyResponsiveHeight(height, width < 1200)", productionShell);
+        Assert.Contains("view.ApplyResponsiveHeight(height, layout.OverviewUsesStackedColumns)", productionShell);
         Assert.Contains("ApplyResponsiveLayout(width, height)", productionShell);
         Assert.Contains("ProductionShellView.Attach(viewModel)", dashboardCode);
     }
@@ -4723,13 +4723,15 @@ public sealed class WpfUiResourceDictionaryTests
     {
         var repositoryRoot = FindRepositoryRoot();
         var dashboardCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml.cs"));
+        var coordinatorCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Infrastructure", "ResponsiveLayoutCoordinator.cs"));
 
         // The demo shell declares 1040x700 DIP as its minimum common window. At that
         // width the production shell must retain readable labels and the single-row header.
-        Assert.Contains("var mode = width >= 1280 ? LayoutMode.Expanded", dashboardCode);
-        Assert.Contains(": width >= 1040 ? LayoutMode.Standard", dashboardCode);
-        Assert.Contains(": width >= 960 ? LayoutMode.Compact", dashboardCode);
-        Assert.Contains("var iconSidebar = mode == LayoutMode.Compact || mode == LayoutMode.Narrow;", dashboardCode);
+        Assert.Contains("var mode = layout.Mode;", dashboardCode);
+        Assert.Contains("width >= 1280 ? LayoutMode.Expanded", coordinatorCode);
+        Assert.Contains(": width >= 1040 ? LayoutMode.Standard", coordinatorCode);
+        Assert.Contains(": width >= 960 ? LayoutMode.Compact", coordinatorCode);
+        Assert.Contains("var iconSidebar = layout.IsIconSidebar;", dashboardCode);
     }
 
     [Fact]
@@ -4940,6 +4942,7 @@ public sealed class WpfUiResourceDictionaryTests
         var repositoryRoot = FindRepositoryRoot();
         var dashboard = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml"));
         var dashboardCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml.cs"));
+        var coordinatorCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Infrastructure", "ResponsiveLayoutCoordinator.cs"));
 
         Assert.Contains("x:Name=\"HeaderCompactActionsRow\"", dashboard);
         Assert.Contains("x:Name=\"TopActionsScroller\"", dashboard);
@@ -4947,9 +4950,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"HeaderGamePickerColumn\"", dashboard);
         Assert.Contains("x:Name=\"CompactGameSelector\"", dashboard);
         Assert.Contains("x:Name=\"ToggleGameBrowserButton\"", dashboard);
-        Assert.Contains("width >= 1280 ? LayoutMode.Expanded", dashboardCode);
-        Assert.Contains("width >= 1040 ? LayoutMode.Standard", dashboardCode);
-        Assert.Contains("width >= 960 ? LayoutMode.Compact", dashboardCode);
+        Assert.Contains("width >= 1280 ? LayoutMode.Expanded", coordinatorCode);
+        Assert.Contains("width >= 1040 ? LayoutMode.Standard", coordinatorCode);
+        Assert.Contains("width >= 960 ? LayoutMode.Compact", coordinatorCode);
         Assert.Contains("Grid.SetRow(TopActionsScroller, 2)", dashboardCode);
         Assert.Contains("Grid.SetColumnSpan(TopActionsScroller, 3)", dashboardCode);
         Assert.Contains("var pickerOnTopBar = gameScopedWorkspace", dashboardCode);
@@ -4964,7 +4967,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Value=\"LudusaviUnavailable\"", dashboard);
         Assert.Contains("an in-host floating layer clipped by the Playnite page", dashboardCode);
         Assert.Contains("GameBrowserScrim.Visibility = gameBrowserVisibility", dashboardCode);
-        Assert.Contains("GameBrowserPanel.Width = mode == LayoutMode.Narrow ? double.NaN : floatingPickerWidth", dashboardCode);
+        Assert.Contains("GameBrowserPanel.Width = layout.IsCompactGameBrowser ? double.NaN : floatingPickerWidth", dashboardCode);
     }
 
     [Fact]

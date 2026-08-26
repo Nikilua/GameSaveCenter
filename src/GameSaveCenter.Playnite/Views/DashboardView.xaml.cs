@@ -307,10 +307,8 @@ namespace GameSaveCenter.Playnite.Views
             // The companion demo starts at 1040x700 DIP. Keep its labeled sidebar and
             // one-row header at that common minimum; switching to the icon shell at 1080
             // made a normal window look like an undersized emergency layout.
-            var mode = width >= 1280 ? LayoutMode.Expanded
-                : width >= 1040 ? LayoutMode.Standard
-                : width >= 960 ? LayoutMode.Compact
-                : LayoutMode.Narrow;
+            var layout = ResponsiveLayoutCoordinator.Calculate(width, height);
+            var mode = layout.Mode;
             viewModel.LayoutMode = mode;
 
             // The demo shell already provides its complete outer spacing through the
@@ -339,22 +337,14 @@ namespace GameSaveCenter.Playnite.Views
             // virtualized rows appear as blank space below the real items.  Keep a small
             // readability floor only when there is enough vertical room, and let the
             // table's own Auto scrollbar handle the rest.
-            var tableMinHeight = height < 650
-                ? 0d
-                : height < 760
-                    ? 96d
-                    : 140d;
-            var workspaceTableMinHeight = height < 650
-                ? 0d
-                : height < 760
-                    ? 112d
-                    : 160d;
+            var tableMinHeight = layout.TableMinHeight;
+            var workspaceTableMinHeight = layout.WorkspaceTableMinHeight;
             Resources["GscTableMinHeight"] = tableMinHeight;
             Resources["GscWorkspaceTableMinHeight"] = workspaceTableMinHeight;
             // Keep a finite, generous viewport so each table shows a useful batch of rows
             // without allowing a DataGrid to consume the entire page measure. The outer page
             // ScrollViewer remains responsible for reaching action/inspector sections below it.
-            var tableViewportHeight = Math.Max(520d, Math.Min(820d, height * (height < 700 ? 0.94 : 0.95)));
+            var tableViewportHeight = layout.TableViewportHeight;
             Resources["GscTableViewportHeight"] = tableViewportHeight;
             foreach (var workspaceView in GetLegacyCompatibilityWorkspaceViews())
             {
@@ -365,7 +355,7 @@ namespace GameSaveCenter.Playnite.Views
             }
             Resources["GscListViewportHeight"] = tableViewportHeight;
 
-            var iconSidebar = mode == LayoutMode.Compact || mode == LayoutMode.Narrow;
+            var iconSidebar = layout.IsIconSidebar;
             // The game picker is a single global context entry. It is never a permanent
             // third column: all widths use the same top button and the same floating layer.
             // Tasks and maintenance remain global and intentionally have no game picker.
@@ -373,15 +363,12 @@ namespace GameSaveCenter.Playnite.Views
                 && viewModel.CurrentWorkspace != WorkspaceKind.Maintenance;
             var showCompactGameBrowser = gameScopedWorkspace && compactGameBrowserOpen;
 
-            SidebarColumn.Width = new GridLength(mode == LayoutMode.Expanded ? 228
-                : mode == LayoutMode.Standard ? 228
-                : mode == LayoutMode.Compact ? 78
-                : 72);
-            SidebarGutterColumn.Width = new GridLength(iconSidebar ? 10 : 0);
+            SidebarColumn.Width = new GridLength(layout.SidebarWidth);
+            SidebarGutterColumn.Width = new GridLength(layout.SidebarGutterWidth);
             TopChromeSafetyColumn.Width = new GridLength(0);
-            ToastHost.Margin = new Thickness(0, height < 760 ? 66 : 78, width < 1080 ? 12 : 22, 0);
+            ToastHost.Margin = new Thickness(0, layout.ToastTopMargin, layout.ToastRightMargin, 0);
             SetSidebarLabelsVisible(!iconSidebar);
-            SetToolbarLabelsVisible(mode == LayoutMode.Expanded);
+            SetToolbarLabelsVisible(layout.IsToolbarLabelsVisible);
 
             // Header layout is explicit at every breakpoint.  It never relies on wrapping the
             // title and action bar into the same measure slot, which prevents overlap at 125–200% DPI.
@@ -390,8 +377,7 @@ namespace GameSaveCenter.Playnite.Views
             GameSwitcherHost.Visibility = gameScopedWorkspace
                 ? Visibility.Visible
                 : Visibility.Collapsed;
-            var pickerOnTopBar = gameScopedWorkspace
-                && (mode == LayoutMode.Expanded || mode == LayoutMode.Standard);
+            var pickerOnTopBar = gameScopedWorkspace && layout.SupportsTopBarPicker;
             HeaderGamePickerColumn.Width = pickerOnTopBar
                 ? GridLength.Auto
                 : new GridLength(0);
@@ -402,7 +388,7 @@ namespace GameSaveCenter.Playnite.Views
             // The picker lives inside the same bordered header as the title and the
             // contextual actions.  Give it a finite width so its Auto columns cannot
             // measure beyond HeaderSurface at normal and high-DPI window sizes.
-            var pickerWidth = mode == LayoutMode.Expanded ? 380d : 330d;
+            var pickerWidth = layout.PickerWidth;
             GameSwitcherHost.Width = pickerOnTopBar ? pickerWidth : double.NaN;
             GameSwitcherHost.MaxWidth = pickerOnTopBar ? pickerWidth : double.PositiveInfinity;
             GameSwitcherHost.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -468,12 +454,12 @@ namespace GameSaveCenter.Playnite.Views
                 ? WorkspaceGrid.ActualWidth
                 : Math.Max(420d, width - SidebarColumn.ActualWidth - SidebarGutterColumn.ActualWidth - 48d);
             var floatingPickerWidth = Math.Max(420d, Math.Min(720d, workspaceWidth - 28d));
-            GameBrowserPanel.Width = mode == LayoutMode.Narrow ? double.NaN : floatingPickerWidth;
+            GameBrowserPanel.Width = layout.IsCompactGameBrowser ? double.NaN : floatingPickerWidth;
             GameBrowserPanel.MaxWidth = floatingPickerWidth;
             GameBrowserPanel.MaxHeight = double.PositiveInfinity;
-            GameBrowserPanel.HorizontalAlignment = mode == LayoutMode.Narrow ? HorizontalAlignment.Stretch : HorizontalAlignment.Right;
+            GameBrowserPanel.HorizontalAlignment = layout.IsCompactGameBrowser ? HorizontalAlignment.Stretch : HorizontalAlignment.Right;
             GameBrowserPanel.Margin = showCompactGameBrowser
-                ? (mode == LayoutMode.Narrow ? new Thickness(0) : new Thickness(0, 0, 0, 0))
+                ? (layout.IsCompactGameBrowser ? new Thickness(0) : new Thickness(0, 0, 0, 0))
                 : new Thickness(0);
             Grid.SetRow(GameDetailCard, 1);
             Grid.SetRowSpan(GameDetailCard, 1);
@@ -509,9 +495,7 @@ namespace GameSaveCenter.Playnite.Views
             // that breathing room, but reclaim a few DIP in compact windows so the table's
             // star row remains the first thing that scrolls instead of disappearing below the
             // fold.
-            var workspaceTopGap = mode == LayoutMode.Expanded ? 12
-                : mode == LayoutMode.Standard ? 10
-                : 8;
+            var workspaceTopGap = layout.WorkspaceTopGap;
             DetailsTabControl.Margin = viewModel.CurrentWorkspace == WorkspaceKind.Trainers
                 || viewModel.CurrentWorkspace == WorkspaceKind.Media
                 ? new Thickness(0, workspaceTopGap, 0, 0)
@@ -520,15 +504,15 @@ namespace GameSaveCenter.Playnite.Views
             // The page-level workspace ScrollViewer is the overflow channel. Keep the
             // contextual subtitle available at every height instead of silently removing
             // information when a user resizes a window or uses a high-DPI display.
-            var comfortableHeight = height >= 760;
+            var comfortableHeight = layout.IsComfortableHeight;
             PageSubtitleText.Visibility = Visibility.Visible;
             PageSubtitleText.Opacity = comfortableHeight ? 1d : 0.92d;
             if (DemoFooter != null)
             {
                 // Keep the Demo's footer hierarchy, but do not let its secondary note
                 // consume the last few pixels on a short Playnite host.
-                DemoFooter.Padding = height < 700 ? new Thickness(10, 5, 10, 5) : new Thickness(12, 7, 12, 7);
-                DemoFooterHint.Visibility = width < 900 ? Visibility.Collapsed : Visibility.Visible;
+                DemoFooter.Padding = layout.IsShortFooter ? new Thickness(10, 5, 10, 5) : new Thickness(12, 7, 12, 7);
+                DemoFooterHint.Visibility = layout.IsFooterHintVisible ? Visibility.Visible : Visibility.Collapsed;
             }
             if (SelectedGameMetricPanel != null)
             {
@@ -541,7 +525,7 @@ namespace GameSaveCenter.Playnite.Views
                 // one row after the sidebar had already consumed 200+ DIP, which compressed
                 // the identity and metric columns instead of following the Demo's readable
                 // context-header rhythm.
-                var stackGameHeaderActions = workspaceContentWidth < 1180;
+                var stackGameHeaderActions = layout.ShouldStackGameHeader(workspaceContentWidth);
                 Grid.SetRow(GameHeaderActions, stackGameHeaderActions ? 1 : 0);
                 Grid.SetColumn(GameHeaderActions, stackGameHeaderActions ? 0 : 1);
                 Grid.SetColumnSpan(GameHeaderActions, stackGameHeaderActions ? 2 : 1);

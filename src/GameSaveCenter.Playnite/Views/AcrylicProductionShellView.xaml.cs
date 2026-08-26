@@ -133,8 +133,7 @@ namespace GameSaveCenter.Playnite.Views
             {
                 suppressNavigation = false;
             }
-            ApplyHeaderLayout(ActualWidth);
-            ApplyPageLayout();
+            ApplyResponsiveLayout(ActualWidth, ActualHeight);
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -412,8 +411,7 @@ namespace GameSaveCenter.Playnite.Views
 
             // The column is part of the shell chrome, so let the existing page-aware
             // layout pass recompute the available workspace width after the toggle.
-            ApplyHeaderLayout(ActualWidth);
-            ApplyPageLayout();
+            ApplyResponsiveLayout(ActualWidth, ActualHeight);
         }
 
         private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -492,8 +490,7 @@ namespace GameSaveCenter.Playnite.Views
                 {
                     responsiveLayoutPending = false;
                     if (!IsLoaded) return;
-                    ApplyHeaderLayout(pendingResponsiveWidth);
-                    ApplyPageLayout();
+                    ApplyResponsiveLayout(pendingResponsiveWidth, ActualHeight);
                 }), DispatcherPriority.Render);
             }
             catch (InvalidOperationException)
@@ -511,8 +508,9 @@ namespace GameSaveCenter.Playnite.Views
             // viewport than the standalone RenderHarness. Move the action row below
             // the title before the header starts asking its parent for a width larger
             // than the host. This is an explicit second row, not a hidden overflow fix.
-            var compact = width < 980;
-            var veryCompact = width < 720;
+            var layout = ResponsiveLayoutCoordinator.Calculate(width, ActualHeight);
+            var compact = layout.IsCompactShellHeader;
+            var veryCompact = layout.IsVeryCompactShellHeader;
             Grid.SetRow(HeaderActionsPanel, compact ? 1 : 0);
             Grid.SetColumn(HeaderActionsPanel, compact ? 0 : 1);
             Grid.SetColumnSpan(HeaderActionsPanel, compact ? 2 : 1);
@@ -529,7 +527,7 @@ namespace GameSaveCenter.Playnite.Views
 
             // Keep the real game picker usable in the compact row while ensuring its
             // desired width plus the action buttons always fits the content column.
-            var pickerWidth = compact ? (veryCompact ? 190d : 220d) : 300d;
+            var pickerWidth = layout.ShellPickerWidth;
             GameContextButton.Width = pickerWidth;
             GameContextButton.MinWidth = 0;
             GameContextButton.MaxWidth = pickerWidth;
@@ -541,8 +539,10 @@ namespace GameSaveCenter.Playnite.Views
         /// </summary>
         public void ApplyResponsiveLayout(double width, double height)
         {
-            ApplyHeaderLayout(width > 0 ? width : ActualWidth);
-            ApplyPageLayout(width, height);
+            var effectiveWidth = width > 0 ? width : ActualWidth;
+            var effectiveHeight = height > 0 ? height : ActualHeight;
+            ApplyHeaderLayout(effectiveWidth);
+            ApplyPageLayout(effectiveWidth, effectiveHeight);
         }
 
         private void ApplyPageLayout(double fallbackWidth, double fallbackHeight)
@@ -554,12 +554,13 @@ namespace GameSaveCenter.Playnite.Views
                 ? PageHost.ActualHeight
                 : fallbackHeight > 0 ? fallbackHeight : ActualHeight;
             if (width <= 0 || height <= 0) return;
+            var layout = ResponsiveLayoutCoordinator.Calculate(width, height);
             if (pages.TryGetValue(WorkspaceKind.Overview, out var overview))
             {
                 var view = (OverviewView)overview;
-                view.ApplyResponsiveColumns(width < 1200);
+                view.ApplyResponsiveColumns(layout.OverviewUsesStackedColumns);
                 view.ApplyResponsiveWidth(width);
-                view.ApplyResponsiveHeight(height, width < 1200);
+                view.ApplyResponsiveHeight(height, layout.OverviewUsesStackedColumns);
             }
             if (pages.TryGetValue(WorkspaceKind.Saves, out var saves)) ((SaveCenterView)saves).ApplyResponsiveLayout(width, height);
             if (pages.TryGetValue(WorkspaceKind.Trainers, out var trainers)) ((TrainerCenterView)trainers).ApplyResponsiveLayout(width, height);

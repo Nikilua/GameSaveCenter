@@ -418,8 +418,9 @@ def check_dashboard_regressions() -> None:
         if token not in (dashboard + "\n" + workspace_ui):
             fail(f"Dashboard design-system guard is missing: {token}")
     responsive = (ROOT / "src/GameSaveCenter.Playnite/Views/DashboardView.xaml.cs").read_text(encoding="utf-8")
+    responsive_coordinator = (ROOT / "src/GameSaveCenter.Playnite/Infrastructure/ResponsiveLayoutCoordinator.cs").read_text(encoding="utf-8")
     for boundary in ("width >= 1280", "width >= 1040", "width >= 960", "height >= 760"):
-        if boundary not in responsive:
+        if boundary not in responsive_coordinator:
             fail(f"Unified responsive breakpoint is missing: {boundary}")
     tokens = (ROOT / "src/GameSaveCenter.Playnite/Themes/DesignTokens.xaml").read_text(encoding="utf-8")
     for token in ('x:Key="GscSharedFocusVisual"', 'x:Key="GscCheckBox"', 'x:Key="GscScrollThumb"'):
@@ -1096,7 +1097,7 @@ def check_responsive_ui_layout_guards() -> None:
                   "SettingsHeaderSubtitle.Visibility", "layoutWidth < 520"):
         if token not in settings_code:
             fail(f"Settings responsive behavior guard missing: {token}")
-    for token in ("SetToolbarLabelsVisible(mode == LayoutMode.Expanded)", "TopRefreshLabel.Visibility"):
+    for token in ("SetToolbarLabelsVisible(layout.IsToolbarLabelsVisible)", "TopRefreshLabel.Visibility"):
         if token not in dashboard_code:
             fail(f"Dashboard responsive behavior guard missing: {token}")
 
@@ -1104,6 +1105,7 @@ def check_final_redesign_guards() -> None:
     """Protect the final visual redesign from prototype overflow and feature-loss regressions."""
     dashboard_path = ROOT / "src/GameSaveCenter.Playnite/Views/DashboardView.xaml"
     dashboard_code_path = ROOT / "src/GameSaveCenter.Playnite/Views/DashboardView.xaml.cs"
+    responsive_coordinator_path = ROOT / "src/GameSaveCenter.Playnite/Infrastructure/ResponsiveLayoutCoordinator.cs"
     settings_path = ROOT / "src/GameSaveCenter.Playnite/Settings/GameSaveCenterSettingsView.xaml"
     settings_code_path = ROOT / "src/GameSaveCenter.Playnite/Settings/GameSaveCenterSettingsView.xaml.cs"
     redesign_path = ROOT / "src/GameSaveCenter.Playnite/Themes/Redesign.xaml"
@@ -1113,6 +1115,7 @@ def check_final_redesign_guards() -> None:
 
     dashboard = dashboard_path.read_text(encoding="utf-8")
     dashboard_code = dashboard_code_path.read_text(encoding="utf-8")
+    responsive_coordinator = responsive_coordinator_path.read_text(encoding="utf-8")
     settings = settings_path.read_text(encoding="utf-8")
     settings_code = settings_code_path.read_text(encoding="utf-8")
     redesign = redesign_path.read_text(encoding="utf-8")
@@ -1173,14 +1176,17 @@ def check_final_redesign_guards() -> None:
          ('x:Name="OverviewLayoutGrid"', 'x:Name="SaveHistoryActionsScrollViewer"',
           'x:Name="MediaSummaryPanel"', 'x:Name="TaskSummaryPanel"',
          'x:Name="DiagnosticHealthPanel"', 'x:Name="SaveCandidateLayout"', '暂无判断依据')),
-        (dashboard_code, "Dashboard final responsive behavior",
+        (responsive_coordinator, "Unified responsive coordinator",
          ('width >= 1280 ? LayoutMode.Expanded', 'width >= 1040 ? LayoutMode.Standard',
-          'width >= 960 ? LayoutMode.Compact', 'Grid.SetRow(TopActionsScroller, 2)',
+          'width >= 960 ? LayoutMode.Compact', 'height >= 760',
+         )),
+        (dashboard_code, "Dashboard final responsive behavior",
+         ('var mode = layout.Mode;', 'var iconSidebar = layout.IsIconSidebar', 'Grid.SetRow(TopActionsScroller, 2)',
           'Grid.SetColumnSpan(TopActionsScroller, 3)',
           'item.Width = visible ? double.NaN : 48', 'item.Height = visible ? double.NaN : 48',
           'card.Width = expanded ? double.NaN : 48', 'card.Height = expanded ? double.NaN : 50',
           'GameBrowserScrim.Visibility = gameBrowserVisibility',
-          'GameBrowserPanel.Width = mode == LayoutMode.Narrow ? double.NaN : floatingPickerWidth',
+          'GameBrowserPanel.Width = layout.IsCompactGameBrowser ? double.NaN : floatingPickerWidth',
           'GameBrowserPanel.MaxHeight = double.PositiveInfinity',
            'GameSwitcherHost.Visibility = gameScopedWorkspace',
           'ToggleGameBrowserButton.Visibility = Visibility.Collapsed',

@@ -72,7 +72,7 @@ public sealed class ProductionShellChromeSourceTests
         Assert.Contains("HorizontalAlignment.Center", shellCode);
         Assert.Contains("typeof(AcrylicProductionShellView).Assembly.GetName().Version", shellCode);
         Assert.Contains("展开导航栏", shellCode);
-        Assert.Contains("ApplyPageLayout();", shellCode);
+        Assert.Contains("ApplyResponsiveLayout(ActualWidth, ActualHeight);", shellCode);
     }
 
     [Fact]

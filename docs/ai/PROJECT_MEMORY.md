@@ -3,6 +3,13 @@
 > 维护时间：2026-08-25
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-26 STAB-006 页面树与响应式协调事实
+
+- 生产页面路径现在由 `AcrylicProductionShellView.PageHost` 和 `GetWorkspaceView<T>` 统一承载；Dashboard 中的旧页面树仍存在，但只作为兼容资源/审计面，`GetLegacyCompatibilityWorkspaceViews()` 是显式边界。不要删除旧树，除非后续取得 Playnite 初始化、资源查找和外部引用的真实证明。
+- `ResponsiveLayoutCoordinator.Calculate(width, height)` 是宽高状态的唯一数值来源，保留原有断点和尺寸。Dashboard 外壳与生产 Shell 共用状态，Shell 的导航、侧栏切换和延迟 Resize 都通过 `ApplyResponsiveLayout`，回调在 `IsLoaded` 之后才执行。
+- 结构测试覆盖双树职责、生产注册表和宽高临界值；Release Core `59/59`、Worker `210/210`、Playnite `309/366`（57 跳过），WPF `0 error/18 warning/172 info`，Render QA 双主题/多尺寸/Resize `render-qa OK`。
+- Phase 4 按用户明确指示跳过。离屏渲染、静态审计和测试不等于真实 Playnite；实机视觉、DPI、宿主日志、Worker 重启、性能和 `GscTableViewportHeight` 外部引用仍需人工/环境证据。
+
 ## 2026-08-26 STAB-005 媒体 Inbox IPC 分页事实
 
 - 超限接口已确认是 `media.inbox.list` / `ListUnassignedMedia`，不是 Dashboard 快照：旧 Playnite 请求 `Limit=5000` 会把 4615 条 Inbox 媒体拼成超过 4 MiB 的响应，随后 UI 只看到通用“操作失败”。
