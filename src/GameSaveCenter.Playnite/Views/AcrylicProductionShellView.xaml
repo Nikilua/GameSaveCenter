@@ -196,9 +196,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
             <Border x:Name="HeaderSurface" Grid.Row="0"
-                    Background="{DynamicResource GscGlassFillBrush}"
-                    BorderBrush="{DynamicResource GscGlassStrokeBrush}"
-                    BorderThickness="0,0,0,1">
+                    Style="{StaticResource GscRedesignHeaderSurface}">
                 <Grid x:Name="HeaderLayoutGrid" Margin="24,0,14,0" MinWidth="0" VerticalAlignment="Center">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>

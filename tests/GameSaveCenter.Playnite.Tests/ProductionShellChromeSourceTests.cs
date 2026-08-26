@@ -22,6 +22,20 @@ public sealed class ProductionShellChromeSourceTests
     }
 
     [Fact]
+    public void ProductionHeaderUsesRoundedSharedChrome()
+    {
+        var shell = ReadSource("src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml");
+        var redesign = ReadSource("src", "GameSaveCenter.Playnite", "Themes", "Redesign.xaml");
+
+        Assert.Contains("x:Name=\"HeaderSurface\" Grid.Row=\"0\"", shell);
+        Assert.Contains("Style=\"{StaticResource GscRedesignHeaderSurface}\"", shell);
+        Assert.Contains("x:Key=\"GscRedesignHeaderSurface\"", redesign);
+        Assert.Contains("x:Key=\"GscRedesignHeaderCorner\">16,16,0,0", redesign);
+        Assert.Contains("CornerRadius\" Value=\"{StaticResource GscRedesignHeaderCorner}\"", redesign);
+        Assert.Contains("ClipToBounds\" Value=\"True\"", redesign);
+    }
+
+    [Fact]
     public void ProductionSidebarCollapseIsAnIntegratedBoundaryAffordance()
     {
         var shell = ReadSource("src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml");

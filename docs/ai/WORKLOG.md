@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-26 UI-333 生产标题栏顶部圆角
+
+- 生产 Shell 顶部页面标题栏从直接矩形 Border 收口为共享 `GscRedesignHeaderSurface`，增加 `16,16,0,0` 顶部圆角和裁剪；下边界保持直线，避免与 PageHost 之间出现额外缝隙。
+- 标题/副标题内容、游戏选择器、刷新/同步/备份按钮及其命令和响应式行为未改；新增 `ProductionHeaderUsesRoundedSharedChrome` 源码回归测试。
+- `validate-source.py`、XAML 结构检查、WPF 静态审计、Release 构建和全量测试通过；Core `59/59`、Worker `210/210`、Playnite `310/367`（57 跳过）；`.tmp/ui-qa-header-corner-v1/render-qa-report.txt` 为 `render-qa OK`。
+- RenderHarness 只渲染页面内容，不包含外层 Shell 标题栏；真实 Playnite 未运行，本轮按用户要求跳过 Phase 4。
+
 ## 2026-08-26 UI-332 按钮组、提示气泡与环境材质边界
 
 - 根据用户实机截图，维护中心远端恢复按钮改用共享固定尺寸样式，媒体中心当前游戏媒体的操作行和 Inspector 批量操作行统一固定按钮宽高与间距；真实命令、Binding、选择行为、滚动和虚拟化未改。

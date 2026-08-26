@@ -2,6 +2,13 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-26 UI-333 生产标题栏圆角交接
+
+- `AcrylicProductionShellView.HeaderSurface` 已接入共享 `GscRedesignHeaderSurface`；顶部两角为 16 DIP 圆角并裁剪内部材质，底边保持直线，避免标题栏与 PageHost 之间出现尖锐矩形边界或额外布局缝隙。
+- 标题、副标题、游戏选择器、刷新/同步/备份命令和响应式布局未变；变更只涉及 `Redesign.xaml`、`AcrylicProductionShellView.xaml` 与 `ProductionShellChromeSourceTests.cs`。
+- 自动证据：Release 0 warning/0 error，Core `59/59`、Worker `210/210`、Playnite `310/367`（57 跳过），源码/XAML/WPF 门禁通过，`.tmp/ui-qa-header-corner-v1/render-qa-report.txt` 为双主题、多尺寸、Resize `render-qa OK`。
+- 页面 RenderHarness 不包含外层 Shell 标题栏，因此未将页面 PNG 误称为标题栏实机截图；真实 Playnite 未运行，Phase 4 仍为用户明确跳过的人工验证项。
+
 ## 2026-08-26 UI-332 按钮组与页面环境材质交接
 
 - 生产页面已收口本轮用户指出的三类视觉问题：远端恢复按钮使用 `GscWpfUiRemoteRestoreButton`，媒体中心当前游戏媒体两处批量按钮使用 `GscWpfUiMediaBatchButton`，修改器下载版本提示使用中性 `GscDiagnosticHintBubble` 与 `GscDiagnosticHintText`。

@@ -3,6 +3,12 @@
 > 维护时间：2026-08-25
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-26 UI-333 生产标题栏顶部圆角
+
+- `AcrylicProductionShellView.HeaderSurface` 现在使用共享 `GscRedesignHeaderSurface`，顶部两角使用 `GscRedesignHeaderCorner=16,16,0,0` 并启用 `ClipToBounds`；底部保留直线边界，标题栏与页面内容仍然连续。
+- 本轮只改共享 Redesign 资源、生产 Shell 样式引用和源码契约测试；页面导航、标题/副标题绑定、顶部按钮命令、响应式行高和内容滚动保持不变。
+- Release 构建 0 warning/0 error；Core `59/59`、Worker `210/210`、Playnite `310/367`（57 跳过）；源码/XAML/WPF 静态门禁通过，`.tmp/ui-qa-header-corner-v1/render-qa-report.txt` 为双主题、多尺寸和 Resize `render-qa OK`。RenderHarness PNG 不包含外层 Shell 标题栏，真实 Playnite 仍未运行，Phase 4 按用户要求跳过。
+
 ## 2026-08-26 UI-332 按钮组、提示气泡与环境材质边界
 
 - 按用户当前视觉反馈，维护中心“远端恢复”按钮统一使用共享 `GscWpfUiRemoteRestoreButton`（148×36 DIP），媒体中心当前游戏媒体的两处批量操作统一使用 `GscWpfUiMediaBatchButton`（120×36 DIP）；命令、Binding、间距语义和两处页面实例保持不变。

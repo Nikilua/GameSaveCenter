@@ -1,5 +1,7 @@
 # 开发实现进度
 
+- [x] UI-333（2026-08-26）：生产 Shell 顶部页面标题栏接入共享 `GscRedesignHeaderSurface`，顶部两角使用 16 DIP 圆角并裁剪，底边保持直线；标题、副标题、游戏选择器、刷新/同步/备份命令和响应式布局未改。新增标题栏共享样式源码回归测试。Release 0 warning/0 error、Core `59/59`、Worker `210/210`、Playnite `310/367`（57 跳过）、WPF 静态审计 0 error、`.tmp/ui-qa-header-corner-v1/render-qa-report.txt`（`render-qa OK`）通过；RenderHarness 不包含外层 Shell，真实 Playnite/实机 DPI 仍按要求跳过 Phase 4。
+
 - [x] UI-332（2026-08-26）：按实机截图统一维护中心远端恢复按钮（148×36 DIP）和媒体中心当前游戏媒体两处批量按钮（120×36 DIP）的共享尺寸/间距；修改器下载版本提示改为中性诊断气泡与常规次级文字；页面环境材质层增加共享圆角裁剪，Shell 保持完整窗格覆盖。命令、Binding、数据契约、滚动、虚拟化和动画未改。Release 0 warning/0 error、Core `59/59`、Worker `210/210`、Playnite `309/366`（57 跳过）、WPF 静态审计 0 error、`.tmp/ui-qa-button-material-v1/render-qa-report.txt`（`render-qa OK`）通过；真实 Playnite/实机 DPI 仍按用户要求跳过 Phase 4，待人工复核。
 
 - [x] STAB-007（2026-08-26）：完成 Phase 7 先测量后决策。Worker 全量数据规模（2,000 游戏/20,000 备份/10,000 任务/30,000 媒体/500 工具）约 3m03s 通过，managed memory `0 MiB`、句柄 `+0`、线程 `+0`；2,000 游戏合成集合基准首次/未变化/单项变化 `55/2/15ms`、搜索/清空 `215/196ms`、任务 `1/0ms`；Blur 20/78/100 DIP 回归通过；离屏 Render QA 253 样本 `20–3032ms`、平均 `219.01ms`、双主题/Resize `render-qa OK`。没有修改默认 Blur、动画、滚动或虚拟化。真实 Playnite 性能仍因跳过 Phase 4 待人工验证。
