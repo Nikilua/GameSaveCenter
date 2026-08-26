@@ -3,6 +3,12 @@
 > 维护时间：2026-08-25
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-26 STAB-003A 真实 Named Pipe 烟测事实
+
+- 当前 Release Worker 在隔离 `.tmp/phase3-ipc-runtime-escalated/data` 中真实启动成功；超限请求 `4194778` UTF-8 字节得到 `MESSAGE_TOO_LARGE`，同一连接后续 `system.ping` 成功。
+- 受限上下文的 Named Pipe `Access is denied` 已与 Worker 启动问题区分：最小同用户探针同样失败，提升权限后真实 Worker 烟测通过。报告位于 `.tmp/phase3-ipc-runtime-escalated/runtime-smoke-report.txt`。
+- 烟测结束已停止临时进程，未触碰 Playnite 用户数据；真实宿主、多客户端、重启和日志矩阵仍属于 Phase 4/人工验收范围。
+
 ## 2026-08-26 STAB-004 真实 Playnite 环境阻塞事实
 
 - Phase 4 真实宿主矩阵尚未执行，状态必须保持 `BLOCKED_ENVIRONMENT`：当前机没有 `Playnite.DesktopApp.exe`、运行中的 Playnite 进程、App Paths 或卸载注册表入口；历史候选 `D:\software\Playnite\Playnite\Playnite.DesktopApp.exe` 也不存在。

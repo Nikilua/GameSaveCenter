@@ -2,6 +2,12 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-26 STAB-003A IPC 真实管道烟测补充
+
+- 隔离 Release Worker 真实启动后，`4194778` 字节超限请求返回 `MESSAGE_TOO_LARGE`；同一 Named Pipe 连接的后续 `system.ping` 成功，证明超限行消费和连接复用路径可工作。
+- 受限执行上下文的 Named Pipe 连接会 `Access is denied`，但提升权限后的同一隔离烟测通过；报告为 `.tmp/phase3-ipc-runtime-escalated/runtime-smoke-report.txt`。
+- 仅测试结束时强制停止临时 Worker，退出码 `-1` 属于清理动作；没有修改 Playnite 用户数据。Phase 4 真实 Playnite 矩阵仍被缺少宿主环境阻塞。
+
 ## 2026-08-26 STAB-004 真实 Playnite 验证阻塞
 
 - 当前环境没有可执行的 Playnite、运行中的宿主或注册表安装入口；`D:\software\Playnite\Playnite\Playnite.DesktopApp.exe` 等历史候选路径也不存在。Phase 4 状态为 `BLOCKED_ENVIRONMENT`。

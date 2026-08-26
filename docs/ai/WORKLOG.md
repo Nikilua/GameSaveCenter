@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-26 STAB-003A Phase 3 真实 Named Pipe 烟测
+
+- 使用当前 Release Worker 和隔离 `.tmp/phase3-ipc-runtime-escalated/data` 启动临时宿主；Worker 完成 SQLite 初始化并正常进入 Hosting 状态。
+- 真实当前用户请求管道收到 `4194778` UTF-8 字节的超限请求，返回稳定错误 `MESSAGE_TOO_LARGE`；同一连接随后发送 `system.ping`，响应成功，证明超限消费不会丢失下一条消息或终止服务。
+- 受限执行上下文本身连接 Named Pipe 会返回 `Access is denied`，连最小同用户探针也如此；经批准使用提升权限在仓库隔离目录重跑后通过。证据保留在 `.tmp/phase3-ipc-runtime-escalated/runtime-smoke-report.txt`。
+- 测试结束已停止临时 Worker；没有访问或修改 Playnite 用户数据。强制清理产生的 Worker 进程码 `-1` 不代表请求失败。
+
 ## 2026-08-26 STAB-004 Phase 4 真实 Playnite 验证 `BLOCKED_ENVIRONMENT`
 
 **只读环境结论：**
