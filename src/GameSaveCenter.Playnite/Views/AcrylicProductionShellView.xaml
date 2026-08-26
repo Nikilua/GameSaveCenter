@@ -73,6 +73,7 @@
             <ui:AmbientMaterialLayer x:Name="ShellAmbientMaterialLayer"
                                      Grid.Row="0" Grid.Column="1"
                                      Grid.RowSpan="2"
+                                     CornerRadius="0"
                                      Opacity="{DynamicResource GscShellAmbientOpacity}"
                                      UseSelectedGameBackground="True"
                                      Panel.ZIndex="1"/>

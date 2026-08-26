@@ -1,5 +1,7 @@
 # 开发实现进度
 
+- [x] UI-332（2026-08-26）：按实机截图统一维护中心远端恢复按钮（148×36 DIP）和媒体中心当前游戏媒体两处批量按钮（120×36 DIP）的共享尺寸/间距；修改器下载版本提示改为中性诊断气泡与常规次级文字；页面环境材质层增加共享圆角裁剪，Shell 保持完整窗格覆盖。命令、Binding、数据契约、滚动、虚拟化和动画未改。Release 0 warning/0 error、Core `59/59`、Worker `210/210`、Playnite `309/366`（57 跳过）、WPF 静态审计 0 error、`.tmp/ui-qa-button-material-v1/render-qa-report.txt`（`render-qa OK`）通过；真实 Playnite/实机 DPI 仍按用户要求跳过 Phase 4，待人工复核。
+
 - [x] STAB-007（2026-08-26）：完成 Phase 7 先测量后决策。Worker 全量数据规模（2,000 游戏/20,000 备份/10,000 任务/30,000 媒体/500 工具）约 3m03s 通过，managed memory `0 MiB`、句柄 `+0`、线程 `+0`；2,000 游戏合成集合基准首次/未变化/单项变化 `55/2/15ms`、搜索/清空 `215/196ms`、任务 `1/0ms`；Blur 20/78/100 DIP 回归通过；离屏 Render QA 253 样本 `20–3032ms`、平均 `219.01ms`、双主题/Resize `render-qa OK`。没有修改默认 Blur、动画、滚动或虚拟化。真实 Playnite 性能仍因跳过 Phase 4 待人工验证。
 
 - [x] STAB-006（2026-08-26）：完成 Phase 5/6 页面树与响应式协调。生产 `PageHost` 作为唯一可见业务页面宿主，旧 Dashboard 页面树保留为显式兼容面；导航、维护定位、任务动画、搜索焦点和生产页面布局改走生产页面注册表。新增 `ResponsiveLayoutCoordinator` 集中既有宽高断点/尺寸，Shell 导航、侧栏切换和 Resize 延迟回调统一走 `ApplyResponsiveLayout`，未改断点、颜色、字体、尺寸、动画、Blur、滚动、命令、Binding 或数据契约。Release `0 warning/0 error`、Core `59/59`、Worker `210/210`、Playnite `309/366`（57 跳过）、WPF `0 error/18 warning/172 info`、双主题多尺寸连续 Resize `.tmp/phase6-responsive-coordinator-render/render-qa-report.txt`（`render-qa OK`）通过。Phase 4 按用户要求跳过，真实 Playnite 仍待人工验证。

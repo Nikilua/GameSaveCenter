@@ -9,6 +9,13 @@ namespace GameSaveCenter.Playnite.Controls
     {
         private DashboardViewModel? dashboard;
 
+        public static readonly DependencyProperty CornerRadiusProperty =
+            DependencyProperty.Register(
+                nameof(CornerRadius),
+                typeof(CornerRadius),
+                typeof(AmbientMaterialLayer),
+                new FrameworkPropertyMetadata(new CornerRadius(16)));
+
         public static readonly DependencyProperty UseSelectedGameBackgroundProperty =
             DependencyProperty.Register(
                 nameof(UseSelectedGameBackground),
@@ -20,6 +27,12 @@ namespace GameSaveCenter.Playnite.Controls
         {
             get => (bool)GetValue(UseSelectedGameBackgroundProperty);
             set => SetValue(UseSelectedGameBackgroundProperty, value);
+        }
+
+        public CornerRadius CornerRadius
+        {
+            get => (CornerRadius)GetValue(CornerRadiusProperty);
+            set => SetValue(CornerRadiusProperty, value);
         }
 
         public AmbientMaterialLayer()

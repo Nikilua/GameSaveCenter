@@ -2,6 +2,13 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-26 UI-332 按钮组与页面环境材质交接
+
+- 生产页面已收口本轮用户指出的三类视觉问题：远端恢复按钮使用 `GscWpfUiRemoteRestoreButton`，媒体中心当前游戏媒体两处批量按钮使用 `GscWpfUiMediaBatchButton`，修改器下载版本提示使用中性 `GscDiagnosticHintBubble` 与 `GscDiagnosticHintText`。
+- `AmbientMaterialLayer` 的页面环境材质现在由共享圆角 `MaterialChrome` 裁剪，默认页面圆角 16 DIP；`AcrylicProductionShellView` 的 Shell 环境层显式为 0 DIP，避免在完整 Shell 内形成额外内凹边界。
+- 自动证据：Release 0 warning/0 error，Core `59/59`、Worker `210/210`、Playnite `309/366`（57 跳过），源码/XAML/WPF 门禁通过，`.tmp/ui-qa-button-material-v1/render-qa-report.txt` 为双主题、多尺寸、Resize `render-qa OK`。
+- 本轮只改共享样式、控件材质容器和对应页面样式引用，未改命令、Binding、数据契约、滚动、虚拟化或动画。真实 Playnite 未运行，Phase 4 仍为用户明确跳过的人工验证项。
+
 ## 2026-08-26 STAB-007 性能测量交接
 
 - Worker 全量数据规模已测完：2,000 游戏、20,000 备份、10,000 任务、30,000 媒体、500 工具，约 3m03s，managedGrowth 0 MiB、handles +0、threads +0；2,000 游戏合成集合基准为 55/2/15ms SetItems、215/196ms 搜索、1/0ms ReplaceAll。

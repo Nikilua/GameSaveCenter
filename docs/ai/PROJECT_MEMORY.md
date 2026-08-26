@@ -3,6 +3,13 @@
 > 维护时间：2026-08-25
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-26 UI-332 按钮组、提示气泡与环境材质边界
+
+- 按用户当前视觉反馈，维护中心“远端恢复”按钮统一使用共享 `GscWpfUiRemoteRestoreButton`（148×36 DIP），媒体中心当前游戏媒体的两处批量操作统一使用 `GscWpfUiMediaBatchButton`（120×36 DIP）；命令、Binding、间距语义和两处页面实例保持不变。
+- 修改器中心“可下载版本”提示改用 `GscDiagnosticHintBubble`/`GscDiagnosticHintText`，取消醒目的蓝色粗体文本，保留低干扰提示气泡语义。
+- `AmbientMaterialLayer` 增加共享 `CornerRadius` 依赖属性和 `MaterialChrome` 裁剪容器；页面层默认 16 DIP 圆角，生产 Shell 层显式使用 0 DIP 以覆盖完整内容窗格，消除页面底部环境材质的尖锐矩形边界。
+- Release 构建 0 warning/0 error；Core `59/59`、Worker `210/210`、Playnite `309/366`（57 跳过）；源码/XAML/WPF 静态门禁通过，`.tmp/ui-qa-button-material-v1/render-qa-report.txt` 为双主题、多尺寸和 Resize `render-qa OK`。本轮未运行真实 Playnite，Phase 4 仍按用户要求跳过，实机视觉/DPI/宿主日志仍需人工复核。
+
 ## 2026-08-26 STAB-007 性能测量事实
 
 - Phase 7 只完成测量，没有性能猜测式改动：默认 Blur/动画/滚动/虚拟化保持不变；Blur 20/78/100 的半径回归为 20/78/100 DIP。

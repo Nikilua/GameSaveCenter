@@ -2243,6 +2243,7 @@ public sealed class WpfUiResourceDictionaryTests
         var workspaceCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml.cs"));
         var redesign = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "Redesign.xaml"));
         var tokens = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml"));
+        var wpfProduction = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml"));
 
         Assert.Contains("MediaVideoSourceConverter", media);
         Assert.Contains("UpdateMediaMetadataCommand", media);
@@ -2253,6 +2254,14 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("DeleteMediaSourceCommand", media);
         Assert.Contains("StageRemoteBackupCommand", maintenance);
         Assert.Contains("RestoreStagedRemoteBackupCommand", maintenance);
+        Assert.Contains("GscWpfUiRemoteRestoreButton", maintenance);
+        Assert.Contains("GscWpfUiMediaBatchButton", media);
+        Assert.Contains("Command=\"{Binding CommentSelectedMediaCommand}\"", media);
+        Assert.Contains("GscDiagnosticHintBubble", trainer);
+        Assert.Contains("GscDiagnosticHintText", trainer);
+        Assert.DoesNotContain("下载后会先校验并安全解压，再创建当前游戏的工具绑定；旧版本不会被覆盖。\" Foreground=\"{DynamicResource GscInfoBrush}", trainer);
+        Assert.Contains("x:Key=\"GscWpfUiRemoteRestoreButton\"", wpfProduction);
+        Assert.Contains("x:Key=\"GscWpfUiMediaBatchButton\"", wpfProduction);
         Assert.Contains("HasPendingGameToolEntrySelection", trainer);
         Assert.Contains("ConfirmGameToolImportCommand", trainer);
         Assert.Contains("SelectedGameToolVersion", trainer);
@@ -2345,6 +2354,7 @@ public sealed class WpfUiResourceDictionaryTests
         var shellAmbientMarkup = productionShell.Substring(shellAmbientStart, shellAmbientEnd - shellAmbientStart);
         Assert.Contains("Grid.Column=\"1\"", shellAmbientMarkup);
         Assert.Contains("Grid.RowSpan=\"2\"", shellAmbientMarkup);
+        Assert.Contains("CornerRadius=\"0\"", shellAmbientMarkup);
         Assert.Contains("UseSelectedGameBackground=\"True\"", shellAmbientMarkup);
         Assert.DoesNotContain("ShowLeftGlow", shellAmbientMarkup);
         Assert.DoesNotContain("Grid.ColumnSpan=\"2\"", shellAmbientMarkup);
@@ -2363,6 +2373,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("GscAmbientPageOpacity", ambient);
         Assert.Contains("GscAmbientWideWashBrush", ambient);
         Assert.Contains("GameBackgroundAmbientWash", ambient);
+        Assert.Contains("x:Name=\"MaterialChrome\"", ambient);
+        Assert.Contains("CornerRadius=\"{Binding CornerRadius", ambient);
+        Assert.Contains("CornerRadiusProperty", ambientCode);
         Assert.Contains("UseSelectedGameBackground", ambientCode);
         Assert.Contains("<Rectangle", ambient);
         Assert.DoesNotContain("RadialGradientBrush", ambient);
@@ -5333,6 +5346,8 @@ public sealed class WpfUiResourceDictionaryTests
                 Assert.IsType<Style>(resources["GscRedesignHeroEyebrow"]);
                 Assert.IsType<Style>(resources["GscRedesignHeroTitle"]);
                 Assert.IsType<Style>(resources["GscRedesignInfoBand"]);
+                Assert.IsType<Style>(resources["GscDiagnosticHintBubble"]);
+                Assert.IsType<Style>(resources["GscDiagnosticHintText"]);
                 Assert.IsType<Style>(resources["GscRedesignSubCard"]);
                 Assert.IsType<Style>(resources["GscRedesignCounterPill"]);
                 Assert.IsType<Style>(resources["GscRedesignSettingsTabControl"]);

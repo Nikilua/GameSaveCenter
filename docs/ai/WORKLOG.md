@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-26 UI-332 按钮组、提示气泡与环境材质边界
+
+- 根据用户实机截图，维护中心远端恢复按钮改用共享固定尺寸样式，媒体中心当前游戏媒体的操作行和 Inspector 批量操作行统一固定按钮宽高与间距；真实命令、Binding、选择行为、滚动和虚拟化未改。
+- 修改器下载任务的版本提示改用中性诊断气泡和常规次级文字，修复遗漏的蓝色粗体提示；共享 `AmbientMaterialLayer` 使用圆角 `MaterialChrome` 裁剪页面环境材质，Shell 层保留全窗格覆盖。
+- `validate-source.py`、XAML 结构检查、WPF 静态审计、Release 构建和全量测试通过；Core `59/59`、Worker `210/210`、Playnite `309/366`（57 跳过）；`.tmp/ui-qa-button-material-v1/render-qa-report.txt` 为 `render-qa OK`。
+- 真实 Playnite 未运行；本轮按用户要求跳过 Phase 4，离屏 RenderHarness 只作为自动回归证据，不能替代实机视觉与 DPI 验收。
+
 ## 2026-08-26 STAB-007 Phase 7 性能测量
 
 - 先测量后决定：没有修改默认 Blur、动画时长/曲线、滚动模型、虚拟化或新增 BlurEffect。Blur 回归覆盖 20/78/100 DIP，配置值分别为 20/78/100，保持 `RenderingBias.Performance`。

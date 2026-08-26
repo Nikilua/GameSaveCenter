@@ -1,14 +1,22 @@
 <UserControl x:Class="GameSaveCenter.Playnite.Controls.AmbientMaterialLayer"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="clr-namespace:GameSaveCenter.Playnite.Controls"
              Background="Transparent"
              IsHitTestVisible="False"
              ClipToBounds="True"
              SnapsToDevicePixels="True">
     <!-- Shared material is one pane-wide, multi-color linear wash. It has no circular light
-         sources and no effect tree, so pages, text, lists and virtualized rows stay cheap. -->
-    <Grid Opacity="{DynamicResource GscAmbientPageOpacity}">
-        <Rectangle x:Name="ThemeAmbientWash" Fill="{DynamicResource GscAmbientWideWashBrush}"/>
-        <Rectangle x:Name="GameBackgroundAmbientWash"/>
-    </Grid>
+         sources and no effect tree, so pages, text, lists and virtualized rows stay cheap.
+         The rounded chrome clips the wash at workspace edges so the layer cannot leak a
+         sharp rectangle between the page cards and the host shell. -->
+    <Border x:Name="MaterialChrome"
+            CornerRadius="{Binding CornerRadius, RelativeSource={RelativeSource AncestorType={x:Type ui:AmbientMaterialLayer}}}"
+            ClipToBounds="True"
+            Background="Transparent">
+        <Grid Opacity="{DynamicResource GscAmbientPageOpacity}">
+            <Rectangle x:Name="ThemeAmbientWash" Fill="{DynamicResource GscAmbientWideWashBrush}"/>
+            <Rectangle x:Name="GameBackgroundAmbientWash"/>
+        </Grid>
+    </Border>
 </UserControl>
