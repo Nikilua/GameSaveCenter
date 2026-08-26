@@ -2283,10 +2283,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("VerticalScrollBarVisibility=\"Auto\" HorizontalScrollBarVisibility=\"Disabled\"", taskView);
         Assert.Contains("var workspaceContentWidth = DetailsTabControl.ActualWidth > 0", workspaceCode);
         Assert.Contains("var stackGameHeaderActions = workspaceContentWidth < 1180", workspaceCode);
-        Assert.Contains("TaskWorkspaceView.ApplyResponsiveLayout(workspaceContentWidth, height)", workspaceCode);
-        Assert.Contains("SaveWorkspaceView.ApplyResponsiveLayout(workspaceContentWidth, height)", workspaceCode);
-        Assert.Contains("TrainerWorkspaceView.ApplyResponsiveLayout(workspaceContentWidth, height)", workspaceCode);
-        Assert.Contains("MaintenanceWorkspaceView.ApplyResponsiveLayout(workspaceContentWidth, height)", workspaceCode);
+        Assert.Contains("ProductionShellView.ApplyResponsiveLayout(width, height)", workspaceCode);
+        var productionShellCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml.cs"));
+        Assert.Contains("view.ApplyResponsiveLayout(width, height)", productionShellCode);
         Assert.Contains("x:Key=\"GscRedesignWorkspaceTabControl\"", redesign);
         Assert.Contains("HorizontalScrollBarVisibility=\"Auto\"", redesign);
         Assert.Contains("x:Key=\"GscRedesignWorkspaceTabItem\"", redesign);
@@ -3584,8 +3583,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("<views:TaskCenterView x:Name=\"TaskWorkspaceView\"/>", dashboard);
         Assert.DoesNotContain("SetVisibility(TaskTab, false);", dashboardCode);
         Assert.DoesNotContain("TaskTab", dashboard);
-        Assert.Contains("TaskWorkspaceView.ApplyResponsiveLayout(workspaceContentWidth, height)", dashboardCode);
-        Assert.Contains("TaskWorkspaceView.TaskDetailCardElement", dashboardCode);
+        Assert.Contains("ProductionShellView.ApplyResponsiveLayout(width, height)", dashboardCode);
+        Assert.Contains("ProductionShellView.GetWorkspaceView<TaskCenterView>(WorkspaceKind.Tasks)", dashboardCode);
         Assert.DoesNotContain("GamePicker", File.ReadAllText(taskPath));
 
         var dataGrid = task.Descendants().Single(element => element.Name.LocalName == "DataGrid");
@@ -4562,7 +4561,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("SystemParameters.HighContrast ? (byte)0", palette);
         Assert.Contains("ApplyRuntimeThemeResources(Resources, palette", dashboardCode);
         Assert.Contains("ApplyRuntimeThemeResources(workspaceView.Resources, palette", dashboardCode);
-        Assert.Contains("GetWorkspaceViews()", dashboardCode);
+        Assert.Contains("GetLegacyCompatibilityWorkspaceViews()", dashboardCode);
         foreach (var workspaceName in new[]
                  {
                      "OverviewWorkspaceView", "MediaWorkspaceView", "MaintenanceWorkspaceView",

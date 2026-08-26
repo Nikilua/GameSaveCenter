@@ -168,7 +168,7 @@ namespace GameSaveCenter.Playnite.Views
 
         internal void ApplyWorkspaceForAudit(WorkspaceKind workspace)
         {
-            if (viewModel == null || DetailsTabControl == null)
+            if (viewModel == null)
                 return;
             viewModel.CurrentWorkspace = workspace;
             UpdateWorkspacePresentation();
@@ -216,12 +216,12 @@ namespace GameSaveCenter.Playnite.Views
             BeginUiSafely(() =>
             {
                 if (!IsLoaded) return;
-                NavMaintenance.IsChecked = true;
                 UpdateWorkspacePresentation();
-                DetailsTabControl.SelectedItem = MaintenanceWorkspaceTab;
-                MaintenanceWorkspaceView.FindingsGridElement.ScrollIntoView(viewModel.SelectedFinding);
-                MaintenanceWorkspaceView.FindingsGridElement.Focus();
-                AnimateElement(DetailsTabControl, 10, 0, 0.2);
+                var maintenance = ProductionShellView.GetWorkspaceView<MaintenanceView>(WorkspaceKind.Maintenance);
+                if (maintenance == null) return;
+                maintenance.FindingsGridElement.ScrollIntoView(viewModel.SelectedFinding);
+                maintenance.FindingsGridElement.Focus();
+                AnimateElement(ProductionShellView.PageHostForAudit, 10, 0, 0.2);
             }, DispatcherPriority.Background);
         }
 
@@ -356,7 +356,7 @@ namespace GameSaveCenter.Playnite.Views
             // ScrollViewer remains responsible for reaching action/inspector sections below it.
             var tableViewportHeight = Math.Max(520d, Math.Min(820d, height * (height < 700 ? 0.94 : 0.95)));
             Resources["GscTableViewportHeight"] = tableViewportHeight;
-            foreach (var workspaceView in GetWorkspaceViews())
+            foreach (var workspaceView in GetLegacyCompatibilityWorkspaceViews())
             {
                 workspaceView.Resources["GscTableMinHeight"] = tableMinHeight;
                 workspaceView.Resources["GscWorkspaceTableMinHeight"] = workspaceTableMinHeight;
@@ -530,24 +530,6 @@ namespace GameSaveCenter.Playnite.Views
                 DemoFooter.Padding = height < 700 ? new Thickness(10, 5, 10, 5) : new Thickness(12, 7, 12, 7);
                 DemoFooterHint.Visibility = width < 900 ? Visibility.Collapsed : Visibility.Visible;
             }
-            if (OverviewWorkspaceView != null)
-            {
-                // The Demo HomeView is a single page flow; at common 1280/1366-DIP
-                // windowed sizes the persistent right summary column left the primary
-                // workbench only ~550-600 DIP wide, forcing Hero and 当前游戏 to stack
-                // below the fold. Switch the Overview to its stacked single-column flow
-                // until the content area is wide enough to keep both columns comfortable.
-                // The right rail belongs beside Recent Tasks/Global Activity at the
-                // normal Playnite workspace width. Only compact workspaces below 980 DIP
-                // move it below the primary flow, matching the Demo breakpoint without
-                // turning a normal 1398px host into the old full-width stacked layout.
-                var stackOverview = workspaceContentWidth < 980;
-                OverviewWorkspaceView.OverviewCompactSecondaryRowHeight = stackOverview ? GridLength.Auto : new GridLength(0);
-                OverviewWorkspaceView.ApplyResponsiveColumns(stackOverview);
-                OverviewWorkspaceView.ApplyResponsiveWidth(workspaceContentWidth);
-                OverviewWorkspaceView.ApplyResponsiveHeight(height, stackOverview);
-            }
-
             if (SelectedGameMetricPanel != null)
             {
                 // The extracted workspaces already expose the shared GamePicker context.
@@ -571,33 +553,10 @@ namespace GameSaveCenter.Playnite.Views
                     : new Thickness(16, 0, 0, 0);
             }
 
-            if (MediaWorkspaceView != null)
-            {
-                MediaWorkspaceView.ApplyResponsiveLayout(workspaceContentWidth, height);
-            }
-
-            if (TaskWorkspaceView != null)
-            {
-                TaskWorkspaceView.ApplyResponsiveLayout(workspaceContentWidth, height);
-            }
-
-            // Every extracted workspace owns its wrapped action/inspector channels.  Keeping
-            // these calls in the single shell coordinator prevents Save/Trainer/Maintenance
-            // from silently retaining their desktop-sized MaxHeight values after a resize.
-            if (SaveWorkspaceView != null)
-            {
-                SaveWorkspaceView.ApplyResponsiveLayout(workspaceContentWidth, height);
-            }
-
-            if (TrainerWorkspaceView != null)
-            {
-                TrainerWorkspaceView.ApplyResponsiveLayout(workspaceContentWidth, height);
-            }
-
-            if (MaintenanceWorkspaceView != null)
-            {
-                MaintenanceWorkspaceView.ApplyResponsiveLayout(workspaceContentWidth, height);
-            }
+            // The visible production PageHost is the only responsive page coordinator.
+            // The collapsed Dashboard tree remains as a compatibility surface, but its
+            // duplicate page instances must not receive business layout decisions.
+            ProductionShellView.ApplyResponsiveLayout(width, height);
 
             // Responsive behavior now belongs to each extracted workspace view.
             // The safety banner is actionable context, not decorative chrome. Keep it visible
@@ -679,7 +638,7 @@ namespace GameSaveCenter.Playnite.Views
             timer.Stop();
             Logger.Debug($"[PERF] WorkspaceSwitch workspace={workspace} layout={timer.ElapsedMilliseconds}ms");
             viewModel.RequestWorkspaceLoad();
-            AnimateElement(DetailsTabControl, 10, 0, 0.2);
+            AnimateElement(ProductionShellView.PageHostForAudit, 10, 0, 0.2);
         }
 
         private void UpdateWorkspaceHeader(WorkspaceKind workspace)
@@ -717,6 +676,9 @@ namespace GameSaveCenter.Playnite.Views
         {
             var workspace = viewModel.CurrentWorkspace;
             UpdateWorkspaceHeader(workspace);
+            // Keep the visible production PageHost authoritative. The following legacy
+            // visibility updates are retained only for old code-behind/audit names.
+            ProductionShellView.NavigateTo(workspace);
             // Each workspace is now rendered by its extracted physical view. The shell only
             // coordinates which workspace tab is visible and delegates local layout to it.
             SetVisibility(OverviewWorkspaceTab, workspace == WorkspaceKind.Overview);
@@ -949,11 +911,13 @@ namespace GameSaveCenter.Playnite.Views
             }
             else if (e.PropertyName == nameof(DashboardViewModel.SelectedGame) && !viewModel.IsBackgroundRefreshing)
             {
-                BeginUiSafely(() => AnimateElement(GameDetailCard, 13, 0, 0.23), DispatcherPriority.Background);
+                BeginUiSafely(() => AnimateElement(ProductionShellView.PageHostForAudit, 13, 0, 0.23), DispatcherPriority.Background);
             }
             else if (e.PropertyName == nameof(DashboardViewModel.SelectedTask) && !viewModel.IsBackgroundRefreshing)
             {
-                BeginUiSafely(() => AnimateElement(TaskWorkspaceView.TaskDetailCardElement, 8, 0, 0.2), DispatcherPriority.Background);
+                var task = ProductionShellView.GetWorkspaceView<TaskCenterView>(WorkspaceKind.Tasks);
+                if (task != null)
+                    BeginUiSafely(() => AnimateElement(task.TaskDetailCardElement, 8, 0, 0.2), DispatcherPriority.Background);
             }
             else if (e.PropertyName == nameof(DashboardViewModel.StatusMessage))
             {
@@ -1328,12 +1292,16 @@ namespace GameSaveCenter.Playnite.Views
         private void FocusWorkspaceSearch()
         {
             if (DataContext is not DashboardViewModel viewModel) return;
+            var trainer = ProductionShellView.GetWorkspaceView<TrainerCenterView>(WorkspaceKind.Trainers);
+            var tasks = ProductionShellView.GetWorkspaceView<TaskCenterView>(WorkspaceKind.Tasks);
+            var media = ProductionShellView.GetWorkspaceView<MediaCenterView>(WorkspaceKind.Media);
+            var maintenance = ProductionShellView.GetWorkspaceView<MaintenanceView>(WorkspaceKind.Maintenance);
             FrameworkElement? target = viewModel.CurrentWorkspace switch
             {
-                WorkspaceKind.Trainers => TrainerWorkspaceView.FindName("TrainerSearchTextBox") as FrameworkElement,
-                WorkspaceKind.Tasks => TaskWorkspaceView.FindName("TaskSearchTextBox") as FrameworkElement,
-                WorkspaceKind.Media => MediaWorkspaceView.FindName("MediaSearchTextBox") as FrameworkElement,
-                WorkspaceKind.Maintenance => MaintenanceWorkspaceView.FindName("ProcessMappingExecutableTextBox") as FrameworkElement,
+                WorkspaceKind.Trainers => trainer?.FindName("TrainerSearchTextBox") as FrameworkElement,
+                WorkspaceKind.Tasks => tasks?.FindName("TaskSearchTextBox") as FrameworkElement,
+                WorkspaceKind.Media => media?.FindName("MediaSearchTextBox") as FrameworkElement,
+                WorkspaceKind.Maintenance => maintenance?.FindName("ProcessMappingExecutableTextBox") as FrameworkElement,
                 _ => GameSearchTextBox
             };
             if (target == null) target = GameSearchTextBox;
@@ -1466,7 +1434,7 @@ namespace GameSaveCenter.Playnite.Views
             activeGlassEnabled = glassEnabled;
 
             AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(Resources, palette, glassEnabled, MotionEnabled);
-            foreach (var workspaceView in GetWorkspaceViews())
+            foreach (var workspaceView in GetLegacyCompatibilityWorkspaceViews())
             {
                 AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(workspaceView.Resources, palette, glassEnabled, MotionEnabled);
             }
@@ -1485,6 +1453,9 @@ namespace GameSaveCenter.Playnite.Views
             }
             ApplySelectedGameGlassResources();
             OverviewWorkspaceView.UiAnimationsEnabled = MotionEnabled;
+            var productionOverview = ProductionShellView.GetWorkspaceView<OverviewView>(WorkspaceKind.Overview);
+            if (productionOverview != null)
+                productionOverview.UiAnimationsEnabled = MotionEnabled;
 
             // Collapse the legacy coordinator layer instead of merely making it transparent so
             // reduced-transparency and high-contrast modes do not retain an effect visual tree.
@@ -1503,7 +1474,7 @@ namespace GameSaveCenter.Playnite.Views
                 && viewModel.HasSelectedGameBackgroundAmbientMaterial;
             AdaptiveThemePaletteFactory.ApplyGameBackgroundGlassResources(
                 Resources, activePalette, ambientBrush, hasGameMaterial, activeGlassEnabled);
-            foreach (var workspaceView in GetWorkspaceViews())
+            foreach (var workspaceView in GetLegacyCompatibilityWorkspaceViews())
             {
                 AdaptiveThemePaletteFactory.ApplyGameBackgroundGlassResources(
                     workspaceView.Resources, activePalette, ambientBrush, hasGameMaterial, activeGlassEnabled);
@@ -1526,7 +1497,7 @@ namespace GameSaveCenter.Playnite.Views
             UpdateLayout();
         }
 
-        private IEnumerable<UserControl> GetWorkspaceViews()
+        private IEnumerable<UserControl> GetLegacyCompatibilityWorkspaceViews()
         {
             yield return OverviewWorkspaceView;
             yield return MediaWorkspaceView;

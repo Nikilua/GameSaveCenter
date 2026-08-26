@@ -40,6 +40,17 @@ namespace GameSaveCenter.Playnite.Views
 
         public IEnumerable<UserControl> WorkspaceViews => pages.Values;
 
+        /// <summary>
+        /// Returns the single page instance owned by the visible production PageHost.
+        /// Dashboard compatibility code must use this registry instead of reaching into
+        /// the collapsed legacy DashboardView tree.
+        /// </summary>
+        public UserControl? GetWorkspaceView(WorkspaceKind workspace)
+            => pages.TryGetValue(workspace, out var page) ? page : null;
+
+        public T? GetWorkspaceView<T>(WorkspaceKind workspace) where T : UserControl
+            => GetWorkspaceView(workspace) as T;
+
         public FrameworkElement PageHostForAudit => PageHost;
 
         public TextBox GameSearchBoxForFocus => GameSearchTextBox;
@@ -524,10 +535,24 @@ namespace GameSaveCenter.Playnite.Views
             GameContextButton.MaxWidth = pickerWidth;
         }
 
-        private void ApplyPageLayout()
+        /// <summary>
+        /// Applies the responsive layout to the pages owned by the visible PageHost.
+        /// The fallback dimensions are used only during the first measure pass.
+        /// </summary>
+        public void ApplyResponsiveLayout(double width, double height)
         {
-            var width = PageHost.ActualWidth > 0 ? PageHost.ActualWidth : ActualWidth;
-            var height = PageHost.ActualHeight > 0 ? PageHost.ActualHeight : ActualHeight;
+            ApplyHeaderLayout(width > 0 ? width : ActualWidth);
+            ApplyPageLayout(width, height);
+        }
+
+        private void ApplyPageLayout(double fallbackWidth, double fallbackHeight)
+        {
+            var width = PageHost.ActualWidth > 0
+                ? PageHost.ActualWidth
+                : fallbackWidth > 0 ? fallbackWidth : ActualWidth;
+            var height = PageHost.ActualHeight > 0
+                ? PageHost.ActualHeight
+                : fallbackHeight > 0 ? fallbackHeight : ActualHeight;
             if (width <= 0 || height <= 0) return;
             if (pages.TryGetValue(WorkspaceKind.Overview, out var overview))
             {
