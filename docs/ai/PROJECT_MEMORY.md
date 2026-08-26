@@ -3,6 +3,15 @@
 > 维护时间：2026-08-25
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-26 STAB-002 外部进程执行事实
+
+- `ProcessExecutionLimits.MaximumOutputBytes` 集中定义为每个 stdout/stderr `4 * 1024 * 1024`；`ExternalProcessRunner` 必须使用有界读取，不能恢复 `ReadToEndAsync` 或把超限内容继续追加到内存。
+- `ProcessResult.ErrorCode` 是稳定的低层错误码：超限为 `PROCESS_OUTPUT_LIMIT_EXCEEDED`，超时为 `PROCESS_TIMED_OUT`，可执行文件缺失为 `EXECUTABLE_NOT_FOUND`。正常输出、非零退出码、取消异常和既有标准错误文本都要继续保留。
+- 超限读取器达到上限后仍消费管道但丢弃后续内容，以避免子进程阻塞；只记录流是否受限和上限，不记录被截断文本。不要把本地化错误文本当作机器判断条件。
+- `RcloneClient.RunSafeAsync` 的签名不再含 `workingDirectory`；它向 Runner 显式传 `null` standardInput，Runner 继续将可执行文件所在目录作为实际 WorkingDirectory。不要为修复命名而改变 Rclone 参数、allowlist 或工作目录。
+- STAB-002 验证：定向 Worker `6/6`，隔离 Release Core `59/59`、Worker `201/201`、Playnite `302/359`（57 跳过），构建 `0 warning/0 error`，WPF `0 error/18 warning/172 info`，`.tmp/phase2-process-stability-render/render-qa-report.txt` 为 `render-qa OK`。
+- 本阶段未修改 UI；真实 Worker/Rclone/Ludusavi 实机行为和 Playnite 宿主日志仍需人工验证。
+
 ## 2026-08-26 STAB-001 Dashboard 生命周期订阅事实
 
 - `DashboardViewModel` 不再在构造函数永久订阅 `PlayniteGameStarted`；`PlayniteGameStartedSubscription` 以幂等 `Start/Stop` 保存唯一 handler，`DashboardView.OnLoaded`/`OnUnloaded` 分别调用启动/停止。

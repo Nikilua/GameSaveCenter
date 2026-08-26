@@ -27,7 +27,7 @@ public sealed class RcloneClient
         var destination = CombineRemote(_options.RcloneDestination, remoteSubPath);
         return RunSafeAsync(
             new[] { "copy", localDirectory, destination, "--checksum", "--check-first", "--create-empty-src-dirs", "--stats-one-line" },
-            null, TimeSpan.FromHours(2), token);
+            TimeSpan.FromHours(2), token);
     }
 
     public Task<ProcessResult> CheckAsync(string localDirectory, string remoteSubPath, CancellationToken token)
@@ -36,7 +36,7 @@ public sealed class RcloneClient
         var destination = CombineRemote(_options.RcloneDestination, remoteSubPath);
         return RunSafeAsync(
             new[] { "check", localDirectory, destination, "--one-way", "--size-only" },
-            null, TimeSpan.FromHours(1), token);
+            TimeSpan.FromHours(1), token);
     }
 
     /// <summary>Verifies a staged download using provider hashes whenever Rclone can obtain them.</summary>
@@ -45,7 +45,7 @@ public sealed class RcloneClient
         if (!IsConfigured) return Task.FromResult(ProcessResult.Failed(-1, string.Empty, "Rclone is not configured."));
         return RunSafeAsync(
             BuildChecksumCheckArguments(_options.RcloneDestination, remoteSubPath, localDirectory),
-            null, TimeSpan.FromHours(1), token);
+            TimeSpan.FromHours(1), token);
     }
 
     /// <summary>Copies a remote directory into a new local staging directory. It never writes to the remote.</summary>
@@ -55,7 +55,7 @@ public sealed class RcloneClient
         var source = CombineRemote(_options.RcloneDestination, remoteSubPath);
         return RunSafeAsync(
             new[] { "copy", source, localDirectory, "--checksum", "--check-first", "--create-empty-src-dirs", "--stats-one-line" },
-            null, TimeSpan.FromHours(2), token);
+            TimeSpan.FromHours(2), token);
     }
 
     /// <summary>Lists remote sidecar paths. This is read-only and never modifies the remote.</summary>
@@ -64,7 +64,7 @@ public sealed class RcloneClient
         if (!IsConfigured) return Array.Empty<string>();
         var result = await RunSafeAsync(
             new[] { "lsf", _options.RcloneDestination, "--recursive", "--files-only", "--include", "*/DeviceState/*.json" },
-            null, TimeSpan.FromMinutes(2), token).ConfigureAwait(false);
+            TimeSpan.FromMinutes(2), token).ConfigureAwait(false);
         return !result.Success ? Array.Empty<string>() : result.StandardOutput.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
             .Select(x=>x.Trim()).Where(x=>x.Length>0).Take(64).ToList();
     }
@@ -75,7 +75,7 @@ public sealed class RcloneClient
         if (!IsConfigured) return Task.FromResult(ProcessResult.Failed(-1, string.Empty, "Rclone is not configured."));
         return RunSafeAsync(
             new[] { "lsf", _options.RcloneDestination, "--max-depth", "1", "--files-only" },
-            null, TimeSpan.FromMinutes(2), token);
+            TimeSpan.FromMinutes(2), token);
     }
 
     /// <summary>Reads a small JSON sidecar; callers enforce their own schema and size limits.</summary>
@@ -83,14 +83,14 @@ public sealed class RcloneClient
     {
         if (!IsConfigured) return string.Empty;
         var result = await RunSafeAsync(new[] { "cat", CombineRemote(_options.RcloneDestination,remoteRelativePath) },
-            null,TimeSpan.FromMinutes(1),token).ConfigureAwait(false);
+            TimeSpan.FromMinutes(1),token).ConfigureAwait(false);
         return result.Success&&result.StandardOutput.Length<=1024*1024 ? result.StandardOutput : string.Empty;
     }
 
     public async Task<string> GetVersionAsync(CancellationToken token)
     {
         if (!IsAvailable) return string.Empty;
-        var result = await RunSafeAsync(new[] { "version" }, null, TimeSpan.FromSeconds(15), token).ConfigureAwait(false);
+        var result = await RunSafeAsync(new[] { "version" }, TimeSpan.FromSeconds(15), token).ConfigureAwait(false);
         return result.Success ? result.StandardOutput.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault() ?? string.Empty : string.Empty;
     }
 
@@ -106,10 +106,10 @@ public sealed class RcloneClient
     internal static bool IsAllowedCommand(IReadOnlyList<string>? arguments)
         => arguments is { Count: > 0 } && AllowedCommands.Contains(arguments[0]);
 
-    private Task<ProcessResult> RunSafeAsync(IReadOnlyList<string> arguments, string? workingDirectory, TimeSpan timeout, CancellationToken token)
+    private Task<ProcessResult> RunSafeAsync(IReadOnlyList<string> arguments, TimeSpan timeout, CancellationToken token)
     {
         if (!IsAllowedCommand(arguments))
             return Task.FromResult(ProcessResult.Failed(-1, string.Empty, "Rclone command is outside the one-way safety allowlist."));
-        return _runner.RunAsync(_options.RcloneExecutable, arguments, workingDirectory, timeout, token);
+        return _runner.RunAsync(_options.RcloneExecutable, arguments, null, timeout, token);
     }
 }

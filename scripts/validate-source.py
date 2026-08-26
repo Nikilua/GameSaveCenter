@@ -1584,6 +1584,26 @@ def check_settings_autoselect_guards() -> None:
         if "SelectedGameIcon" in tail:
             fail("GamePicker rows must not load real icons")
 
+def check_external_process_guards() -> None:
+    """Keep external process output bounded without changing caller semantics."""
+    runner = (ROOT / "src/GameSaveCenter.Worker/Infrastructure/ExternalProcessRunner.cs").read_text(encoding="utf-8")
+    limits = (ROOT / "src/GameSaveCenter.Worker/Infrastructure/ProcessExecutionLimits.cs").read_text(encoding="utf-8")
+    rclone = (ROOT / "src/GameSaveCenter.Worker/Infrastructure/RcloneClient.cs").read_text(encoding="utf-8")
+    for forbidden in ("ReadToEndAsync", "workingDirectory"):
+        if forbidden in runner or forbidden in rclone:
+            fail(f"External process guard must not use unbounded or ambiguous parameter semantics: {forbidden}")
+    for required in (
+        "internal const int MaximumOutputBytes = 4 * 1024 * 1024;",
+        'internal const string OutputLimitExceededCode = "PROCESS_OUTPUT_LIMIT_EXCEEDED";',
+        "ReadBoundedAsync",
+        "PROCESS_OUTPUT_LIMIT_EXCEEDED",
+        "ProcessResult(int ExitCode, string StandardOutput, string StandardError, string ErrorCode = \"\")",
+    ):
+        if required not in (limits + "\n" + runner):
+            fail(f"External process output guard missing: {required}")
+    if "_runner.RunAsync(_options.RcloneExecutable, arguments, null, timeout, token)" not in rclone:
+        fail("Rclone safe runner must keep the existing executable working-directory policy")
+
 def main() -> int:
     check_structured_files()
     check_csharp_delimiters()
@@ -1598,6 +1618,7 @@ def main() -> int:
     check_media_sql_migration()
     check_game_tools_guards()
     check_windows_launchers()
+    check_external_process_guards()
     check_large_library_performance_guards()
     check_061_reliability_guards()
     check_device_state_guards()

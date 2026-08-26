@@ -2,6 +2,14 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-26 STAB-002 外部进程输出交接
+
+- `ExternalProcessRunner` 每个 stdout/stderr 流最多保留 4 MiB；超限后继续消费但丢弃，返回 `PROCESS_OUTPUT_LIMIT_EXCEEDED`，不能恢复无界 `ReadToEndAsync`。
+- `ProcessResult` 保留退出码、标准输出/错误和稳定 `ErrorCode`；`PROCESS_TIMED_OUT` 仍返回超时结果，调用者取消仍抛出取消异常。普通进程失败仍使用原退出码和输出。
+- `RcloneClient.RunSafeAsync` 不再有 `workingDirectory` 参数，始终传 null standardInput 给 Runner；不要改变 Runner 既有的可执行文件目录或 Rclone 参数顺序。
+- 本轮验证：定向 Worker `6/6`、全量 Core `59/59`、Worker `201/201`、Playnite `302/359`（57 跳过）、Release 0 warning/0 error，WPF 0 error/18 warning/172 info，RenderHarness `render-qa OK`。
+- 下一阶段处理 Named Pipe 统一消息上限和边界读取；真实 Rclone/Ludusavi 大输出、Worker 重启和 Playnite 宿主日志仍需人工复核。
+
 ## 2026-08-26 STAB-001 Dashboard 事件生命周期交接
 
 - `DashboardViewModel` 的 `PlayniteGameStarted` 订阅由 `PlayniteGameStartedSubscription` 持有，必须通过 `StartPlayniteGameStartedSubscription` / `StopPlayniteGameStartedSubscription` 管理；生产 View 的 Loaded/Unloaded 已成对调用，禁止重新放回构造函数永久订阅。

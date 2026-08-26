@@ -2,6 +2,23 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-26 STAB-002 Phase 2 外部进程输出稳定性收口
+
+**实现内容：**
+
+- `ExternalProcessRunner` 增加集中定义的每流 `4 MiB` 输出上限；读取器超限后继续消费并丢弃新增内容，不再让 stdout/stderr 无限增长，保留正常输出的原始内容。
+- 超限结果返回稳定 `PROCESS_OUTPUT_LIMIT_EXCEEDED`，并记录只包含限额与流状态的结构化警告，不记录被截断内容；进程退出码仍保留。超时返回 `PROCESS_TIMED_OUT`，取消仍抛出 `OperationCanceledException`，既有调用者可继续按原语义处理。
+- `ProcessResult.Success` 将输出限制视为失败，同时保留非零退出码和 stdout/stderr；缺失可执行文件增加 `EXECUTABLE_NOT_FOUND`，不改变原有文本诊断。
+- `RcloneClient.RunSafeAsync` 移除语义错误的 `workingDirectory` 参数，始终显式向 Runner 传入 `standardInput=null`；实际工作目录仍由 Runner 按可执行文件目录策略决定，Rclone 的安全 allowlist、参数顺序和超时不变。
+
+**验证结果：**
+
+- 定向 Worker 回归 `6/6`：UTF-8 正常输出、stdout/stderr 双流超限、进程失败、超时、取消和 Rclone 参数语义均覆盖。
+- 隔离 Release 全量构建与测试：构建 `0 warning/0 error`；Core `59/59`，Worker `201/201`，Playnite `302/359`（57 跳过、0 失败）。
+- `python scripts/validate-source.py`、`scripts/check-xaml.ps1`（19 个文件）通过；WPF 静态审计 `0 error/18 warning/172 info`。
+- RenderHarness：`.tmp/phase2-process-stability-render/render-qa-report.txt` 为 `render-qa OK`，0 条 `PROBLEM`，253 张 PNG、253 个样本，范围 `16–3062ms`，平均 `203.85ms`。
+- 本阶段没有修改 UI、XAML、Binding 或业务数据契约；真实 Playnite 仍需人工确认 Worker 启停、Rclone/Ludusavi 实机输出与宿主日志，继续标记 `MANUAL QA REQUIRED`。
+
 ## 2026-08-26 STAB-001 Phase 1 Dashboard 生命周期订阅收口
 
 **问题与边界：**

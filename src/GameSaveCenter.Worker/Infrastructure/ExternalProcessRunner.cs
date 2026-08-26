@@ -20,7 +20,11 @@ public sealed class ExternalProcessRunner
     {
         if (string.IsNullOrWhiteSpace(executable) || !File.Exists(executable))
         {
-            return ProcessResult.Failed(-1, string.Empty, $"Executable not found: {executable}");
+            return ProcessResult.Failed(
+                -1,
+                string.Empty,
+                $"Executable not found: {executable}",
+                ProcessExecutionLimits.ExecutableNotFoundCode);
         }
 
         var start = new ProcessStartInfo
@@ -49,8 +53,8 @@ public sealed class ExternalProcessRunner
             process.StandardInput.Close();
         }
 
-        var stdoutTask = process.StandardOutput.ReadToEndAsync(cancellationToken);
-        var stderrTask = process.StandardError.ReadToEndAsync(cancellationToken);
+        var stdoutTask = ReadBoundedAsync(process.StandardOutput, cancellationToken);
+        var stderrTask = ReadBoundedAsync(process.StandardError, cancellationToken);
         using var timeoutCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         timeoutCts.CancelAfter(timeout);
 
@@ -62,17 +66,111 @@ public sealed class ExternalProcessRunner
         {
             _logger.LogWarning("Cancelling external process {Executable}", Path.GetFileName(executable));
             TryKill(process);
+            await ObserveOutputAsync(stdoutTask).ConfigureAwait(false);
+            await ObserveOutputAsync(stderrTask).ConfigureAwait(false);
             throw;
         }
         catch (OperationCanceledException)
         {
             TryKill(process);
-            return ProcessResult.Failed(-2, await stdoutTask.ConfigureAwait(false), "Process timed out.");
+            var timedOutOutput = await CaptureOutputAfterTerminationAsync(process, stdoutTask, stderrTask).ConfigureAwait(false);
+            return ProcessResult.Failed(
+                -2,
+                timedOutOutput.Text,
+                "Process timed out.",
+                ProcessExecutionLimits.TimeoutCode);
         }
 
         var stdout = await stdoutTask.ConfigureAwait(false);
         var stderr = await stderrTask.ConfigureAwait(false);
-        return new ProcessResult(process.ExitCode, stdout, stderr);
+        var errorCode = stdout.WasTruncated || stderr.WasTruncated
+            ? ProcessExecutionLimits.OutputLimitExceededCode
+            : string.Empty;
+        if (!string.IsNullOrEmpty(errorCode))
+        {
+            _logger.LogWarning(
+                "External process output was limited to {MaximumOutputBytes} bytes per stream; stdoutLimited={StdoutLimited}, stderrLimited={StderrLimited}",
+                ProcessExecutionLimits.MaximumOutputBytes,
+                stdout.WasTruncated,
+                stderr.WasTruncated);
+        }
+
+        return new ProcessResult(process.ExitCode, stdout.Text, stderr.Text, errorCode);
+    }
+
+    private static async Task<ProcessStreamCapture> ReadBoundedAsync(
+        StreamReader reader,
+        CancellationToken cancellationToken)
+    {
+        var builder = new StringBuilder();
+        var buffer = new char[8192];
+        var capturedBytes = 0;
+        var wasTruncated = false;
+
+        while (true)
+        {
+            var count = await reader.ReadAsync(buffer.AsMemory(), cancellationToken).ConfigureAwait(false);
+            if (count == 0) break;
+            if (wasTruncated) continue;
+
+            var remainingBytes = ProcessExecutionLimits.MaximumOutputBytes - capturedBytes;
+            var take = GetUtf8PrefixLength(buffer, count, remainingBytes);
+            if (take > 0)
+            {
+                builder.Append(buffer, 0, take);
+                capturedBytes += Encoding.UTF8.GetByteCount(buffer, 0, take);
+            }
+
+            if (take < count) wasTruncated = true;
+        }
+
+        return new ProcessStreamCapture(builder.ToString(), wasTruncated);
+    }
+
+    private static int GetUtf8PrefixLength(char[] buffer, int count, int remainingBytes)
+    {
+        if (remainingBytes <= 0) return 0;
+        var bytes = 0;
+        var take = 0;
+        while (take < count)
+        {
+            var charBytes = Encoding.UTF8.GetByteCount(buffer, take, 1);
+            if (bytes + charBytes > remainingBytes) break;
+            bytes += charBytes;
+            take++;
+        }
+        return take;
+    }
+
+    private static async Task<ProcessStreamCapture> CaptureOutputAfterTerminationAsync(
+        Process process,
+        Task<ProcessStreamCapture> stdoutTask,
+        Task<ProcessStreamCapture> stderrTask)
+    {
+        try
+        {
+            await process.WaitForExitAsync().ConfigureAwait(false);
+        }
+        catch
+        {
+            // The timeout result remains authoritative if the process exits between kill and wait.
+        }
+
+        var stdout = await ObserveOutputAsync(stdoutTask).ConfigureAwait(false);
+        await ObserveOutputAsync(stderrTask).ConfigureAwait(false);
+        return stdout;
+    }
+
+    private static async Task<ProcessStreamCapture> ObserveOutputAsync(Task<ProcessStreamCapture> outputTask)
+    {
+        try
+        {
+            return await outputTask.ConfigureAwait(false);
+        }
+        catch
+        {
+            return new ProcessStreamCapture(string.Empty, false);
+        }
     }
 
     private static void TryKill(Process process)
@@ -89,8 +187,11 @@ public sealed class ExternalProcessRunner
 }
 
 /// <summary>External process execution result.</summary>
-public sealed record ProcessResult(int ExitCode, string StandardOutput, string StandardError)
+public sealed record ProcessResult(int ExitCode, string StandardOutput, string StandardError, string ErrorCode = "")
 {
-    public bool Success => ExitCode == 0;
-    public static ProcessResult Failed(int exitCode, string stdout, string stderr) => new(exitCode, stdout, stderr);
+    public bool Success => ExitCode == 0 && string.IsNullOrEmpty(ErrorCode);
+    public static ProcessResult Failed(int exitCode, string stdout, string stderr, string errorCode = "")
+        => new(exitCode, stdout, stderr, errorCode);
 }
+
+internal readonly record struct ProcessStreamCapture(string Text, bool WasTruncated);
