@@ -3,6 +3,15 @@
 > 维护时间：2026-08-25
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-26 STAB-003 IPC 边界事实
+
+- `BoundedIpcLineReader` 是共享 Contracts 类型，必须按连接实例化；它有 4 KiB 内部字符缓冲并保存块内偏移，不能改回静态一次性块读取，否则遇到同块多条消息会丢掉下一条。超限行只保留上限内内容并继续消费到换行。
+- 请求、响应和事件都使用 `ProtocolConstants.MaximumMessageBytes`（4 MiB）；Worker 服务端对请求/响应、事件服务端对事件写出、Playnite 客户端对请求/响应/事件读取均有边界。超限稳定码为 `MESSAGE_TOO_LARGE`，事件端收到后忽略并继续重连/监听。
+- `NamedPipeServerService` 的业务连接槽位为 32，`TaskEventPipeServerService` 为 8；这是过载保护，不改变单请求、任务事件广播或 SQLite 回退路径。管道名、版本、消息类型和 `PipeOptions.CurrentUserOnly` 不变。
+- Playnite 请求响应读取取消后继续抛出原 `TimeoutException("Worker response timed out.")`；事件监听 token 取消仍走外层 `OperationCanceledException` catch；服务端仍分别处理 JSON 错误、IO 断开和停止取消。
+- STAB-003 验证：IPC 定向 `3/3`，隔离 Release Core `59/59`、Worker `201/201`、Playnite `302/359`（57 跳过），构建 `0 warning/0 error`，WPF `0 error/18 warning/172 info`，`.tmp/phase3-ipc-boundary-render-final/render-qa-report.txt` 为 `render-qa OK`。
+- 本阶段没有 UI 改动；真实宿主的多连接/重启/权限和 Worker 日志仍需人工验证。
+
 ## 2026-08-26 STAB-002 外部进程执行事实
 
 - `ProcessExecutionLimits.MaximumOutputBytes` 集中定义为每个 stdout/stderr `4 * 1024 * 1024`；`ExternalProcessRunner` 必须使用有界读取，不能恢复 `ReadToEndAsync` 或把超限内容继续追加到内存。

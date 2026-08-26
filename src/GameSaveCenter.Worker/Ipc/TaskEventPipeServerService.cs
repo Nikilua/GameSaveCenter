@@ -14,9 +14,11 @@ namespace GameSaveCenter.Worker.Ipc;
 /// </summary>
 public sealed class TaskEventPipeServerService : BackgroundService
 {
+    private const int MaximumConcurrentClients = 8;
     private readonly TaskEventBroadcaster broadcaster;
     private readonly ILogger<TaskEventPipeServerService> logger;
     private readonly JsonSerializerOptions json = new(JsonSerializerDefaults.Web);
+    private readonly SemaphoreSlim clientSlots = new(MaximumConcurrentClients, MaximumConcurrentClients);
 
     public TaskEventPipeServerService(TaskEventBroadcaster broadcaster, ILogger<TaskEventPipeServerService> logger)
     {
@@ -55,6 +57,25 @@ public sealed class TaskEventPipeServerService : BackgroundService
 
     private async Task StreamEventsAsync(NamedPipeServerStream pipe, CancellationToken token)
     {
+        if (!clientSlots.Wait(0))
+        {
+            logger.LogWarning("Task event pipe client limit reached; closing the excess client connection");
+            await pipe.DisposeAsync().ConfigureAwait(false);
+            return;
+        }
+
+        try
+        {
+            await StreamEventsCoreAsync(pipe, token).ConfigureAwait(false);
+        }
+        finally
+        {
+            clientSlots.Release();
+        }
+    }
+
+    private async Task StreamEventsCoreAsync(NamedPipeServerStream pipe, CancellationToken token)
+    {
         await using (pipe)
         using (var subscription = broadcaster.Subscribe())
         await using (var writer = new StreamWriter(pipe, new UTF8Encoding(false), 64 * 1024, true) { AutoFlush = true })
@@ -68,7 +89,7 @@ public sealed class TaskEventPipeServerService : BackgroundService
                         Type = MessageTypes.TaskEvent,
                         PayloadJson = JsonSerializer.Serialize(change, json)
                     };
-                    await writer.WriteLineAsync(JsonSerializer.Serialize(envelope, json)).ConfigureAwait(false);
+                    await WriteEnvelopeAsync(writer, envelope).ConfigureAwait(false);
                 }
             }
             catch (IOException)
@@ -83,5 +104,24 @@ public sealed class TaskEventPipeServerService : BackgroundService
                 logger.LogDebug(ex, "Task event client disconnected unexpectedly");
             }
         }
+    }
+
+    private async Task WriteEnvelopeAsync(StreamWriter writer, IpcEnvelope envelope)
+    {
+        var serialized = JsonSerializer.Serialize(envelope, json);
+        if (Encoding.UTF8.GetByteCount(serialized) > ProtocolConstants.MaximumMessageBytes)
+        {
+            logger.LogWarning("Task event exceeded {MaximumMessageBytes} bytes; sending a bounded error", ProtocolConstants.MaximumMessageBytes);
+            serialized = JsonSerializer.Serialize(new IpcEnvelope
+            {
+                RequestId = envelope.RequestId,
+                Type = MessageTypes.TaskEvent,
+                IsResponse = true,
+                Success = false,
+                ErrorCode = "MESSAGE_TOO_LARGE",
+                ErrorMessage = "IPC event exceeded the configured limit."
+            }, json);
+        }
+        await writer.WriteLineAsync(serialized).ConfigureAwait(false);
     }
 }

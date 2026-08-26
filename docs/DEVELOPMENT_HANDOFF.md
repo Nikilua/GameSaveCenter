@@ -2,6 +2,14 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-26 STAB-003 IPC 健壮性交接
+
+- 三个 Named Pipe 方向共用 Contracts 的有状态 `BoundedIpcLineReader`；按 4 MiB 字节上限消费消息，超限返回/发送 `MESSAGE_TOO_LARGE`，服务端响应和事件写出同样先检查，不能恢复 `ReadLineAsync` 后再检查。
+- 读取器必须按连接实例化以保存 4 KiB 缓冲剩余数据；否则一块内多条消息会被错误丢弃。请求服务端并行槽位 32、事件服务端槽位 8，`CurrentUserOnly`、管道名、协议版本和消息类型保持原值。
+- Playnite 请求超时仍向上暴露 `TimeoutException("Worker response timed out.")`；事件取消、JSON 错误和客户端断开继续走原有重连/忽略路径。
+- 本轮验证：IPC 定向 `3/3`，全量 Core `59/59`、Worker `201/201`、Playnite `302/359`（57 跳过）、Release 0 warning/0 error，WPF 0 error/18 warning/172 info，最终 RenderHarness `.tmp/phase3-ipc-boundary-render-final/render-qa-report.txt` 为 `render-qa OK`。
+- 下一阶段是 Phase 4 真实 Playnite 隔离宿主验证；若环境无法完成，必须明确写 `MANUAL QA REQUIRED` 或 `BLOCKED_ENVIRONMENT`，不能把离屏 RenderHarness 当作宿主证据。
+
 ## 2026-08-26 STAB-002 外部进程输出交接
 
 - `ExternalProcessRunner` 每个 stdout/stderr 流最多保留 4 MiB；超限后继续消费但丢弃，返回 `PROCESS_OUTPUT_LIMIT_EXCEEDED`，不能恢复无界 `ReadToEndAsync`。

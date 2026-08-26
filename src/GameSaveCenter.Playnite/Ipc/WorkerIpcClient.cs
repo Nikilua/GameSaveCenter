@@ -48,11 +48,23 @@ namespace GameSaveCenter.Playnite.Ipc
                 using (var reader = new StreamReader(pipe, new UTF8Encoding(false), false, 64 * 1024, true))
                 using (var writer = new StreamWriter(pipe, new UTF8Encoding(false), 64 * 1024, true) { AutoFlush = true })
                 {
+                    var lineReader = new BoundedIpcLineReader(reader);
                     var line = JsonConvert.SerializeObject(request, jsonSettings);
                     if (Encoding.UTF8.GetByteCount(line) > ProtocolConstants.MaximumMessageBytes)
-                        throw new InvalidOperationException("IPC request is too large.");
+                        throw new WorkerRequestException("MESSAGE_TOO_LARGE", "IPC request exceeded the configured limit.");
                     await writer.WriteLineAsync(line).ConfigureAwait(false);
-                    var responseLine = await ReadLineWithCancellationAsync(reader, cancellation.Token).ConfigureAwait(false);
+                    BoundedIpcLineReadResult responseMessage;
+                    try
+                    {
+                        responseMessage = await lineReader.ReadAsync(cancellation.Token).ConfigureAwait(false);
+                    }
+                    catch (OperationCanceledException) when (cancellation.IsCancellationRequested)
+                    {
+                        throw new TimeoutException("Worker response timed out.");
+                    }
+                    if (responseMessage.IsTooLarge)
+                        throw new WorkerRequestException("MESSAGE_TOO_LARGE", "IPC response exceeded the configured limit.");
+                    var responseLine = responseMessage.Line;
                     if (string.IsNullOrWhiteSpace(responseLine)) throw new IOException("Worker closed the pipe without a response.");
                     var response = JsonConvert.DeserializeObject<IpcEnvelope>(responseLine!, jsonSettings);
                     if (response == null) throw new IOException("Worker returned an invalid response.");
@@ -83,12 +95,14 @@ namespace GameSaveCenter.Playnite.Ipc
                         await ConnectAsync(pipe, 3000).ConfigureAwait(false);
                         using (var reader = new StreamReader(pipe, new UTF8Encoding(false), false, 64 * 1024, true))
                         {
+                            var lineReader = new BoundedIpcLineReader(reader);
                             retryDelay = TimeSpan.FromMilliseconds(300);
                             while (pipe.IsConnected && !token.IsCancellationRequested)
                             {
-                                var line = await ReadLineWithCancellationAsync(reader, token).ConfigureAwait(false);
+                                var message = await lineReader.ReadAsync(token).ConfigureAwait(false);
+                                if (message.IsTooLarge) continue;
+                                var line = message.Line;
                                 if (string.IsNullOrWhiteSpace(line)) break;
-                                if (Encoding.UTF8.GetByteCount(line) > ProtocolConstants.MaximumMessageBytes) continue;
                                 var envelope = JsonConvert.DeserializeObject<IpcEnvelope>(line!, jsonSettings);
                                 if (envelope == null || !envelope.Success || !string.Equals(envelope.Type, MessageTypes.TaskEvent, StringComparison.Ordinal)) continue;
                                 var change = JsonConvert.DeserializeObject<TaskChangeEventDto>(envelope.PayloadJson, jsonSettings);
@@ -128,14 +142,6 @@ namespace GameSaveCenter.Playnite.Ipc
             return Task.Run(() => pipe.Connect(timeoutMilliseconds));
         }
 
-        private static async Task<string?> ReadLineWithCancellationAsync(StreamReader reader, CancellationToken token)
-        {
-            var read = reader.ReadLineAsync();
-            var cancellation = Task.Delay(Timeout.Infinite, token);
-            var completed = await Task.WhenAny(read, cancellation).ConfigureAwait(false);
-            if (completed != read) throw new TimeoutException("Worker response timed out.");
-            return await read.ConfigureAwait(false);
-        }
     }
 
     /// <summary>Typed Worker error surfaced to the UI.</summary>

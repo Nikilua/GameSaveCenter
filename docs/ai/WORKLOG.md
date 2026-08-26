@@ -2,6 +2,23 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-26 STAB-003 Phase 3 IPC 边界与并发收口
+
+**实现内容：**
+
+- Contracts 新增有状态 `BoundedIpcLineReader`：每条连接保留 4 KiB 内部缓冲的剩余字符，按 `ProtocolConstants.MaximumMessageBytes` 读取；超限后继续消费当前行并丢弃，不再先无上限构造整行，也不会丢掉同一块中的下一条消息。
+- Worker 请求服务端、Worker 任务事件服务端和 Playnite `WorkerIpcClient` 全部使用共享读取器/同一消息上限；服务端响应和事件写出前检查 UTF-8 字节数，超限返回小型稳定 `MESSAGE_TOO_LARGE` 错误信封并记录受限日志。
+- 请求客户端超大请求、超大响应和事件超限都走稳定错误/忽略路径；JSON 解析错误、客户端断开、Worker 取消保持原有 catch 语义，短请求超时仍转换为原来的 `TimeoutException("Worker response timed out.")`。
+- 请求服务端最多并行 32 个连接，事件服务端最多并行 8 个连接；单任务与后台事件流正常路径不变，管道名称、协议版本、消息类型和 `CurrentUserOnly` 权限保持不变。
+
+**验证结果：**
+
+- IPC 边界定向 `3/3`：最大允许行、超大行后继续读取下一条消息、端点 bounded reader/错误码/并发/当前用户权限/超时契约。
+- 隔离 Release 全量构建与测试：构建 `0 warning/0 error`；Core `59/59`，Worker `201/201`，Playnite `302/359`（57 跳过、0 失败）。
+- `python scripts/validate-source.py`、`scripts/check-xaml.ps1`（19 个文件）通过；WPF 静态审计 `0 error/18 warning/172 info`。
+- RenderHarness：`.tmp/phase3-ipc-boundary-render-final/render-qa-report.txt` 为 `render-qa OK`，0 条 `PROBLEM`，253 张 PNG、253 个样本，范围 `16–3007ms`，平均 `211.15ms`。
+- 本阶段没有修改 UI、Binding 或业务数据契约；真实 Playnite/Worker 多客户端、当前用户管道权限、重启和日志仍需人工验收，继续标记 `MANUAL QA REQUIRED`。
+
 ## 2026-08-26 STAB-002 Phase 2 外部进程输出稳定性收口
 
 **实现内容：**

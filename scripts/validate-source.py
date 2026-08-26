@@ -281,6 +281,25 @@ def check_ipc_constants() -> None:
                 fail(f"Unknown MessageTypes.{name} in {path.relative_to(ROOT)}")
 
 
+def check_ipc_message_guards() -> None:
+    """Keep every named-pipe direction bounded and cap concurrent clients."""
+    contracts = (ROOT / "src/GameSaveCenter.Contracts/BoundedIpcLineReader.cs").read_text(encoding="utf-8")
+    server = (ROOT / "src/GameSaveCenter.Worker/Ipc/NamedPipeServerService.cs").read_text(encoding="utf-8")
+    event_server = (ROOT / "src/GameSaveCenter.Worker/Ipc/TaskEventPipeServerService.cs").read_text(encoding="utf-8")
+    client = (ROOT / "src/GameSaveCenter.Playnite/Ipc/WorkerIpcClient.cs").read_text(encoding="utf-8")
+    for path, source in (("NamedPipeServerService", server), ("TaskEventPipeServerService", event_server), ("WorkerIpcClient", client)):
+        if "ReadLineAsync" in source:
+            fail(f"{path} must use the bounded IPC line reader")
+        if "ProtocolConstants.MaximumMessageBytes" not in source:
+            fail(f"{path} must enforce the shared IPC message limit")
+        if "MESSAGE_TOO_LARGE" not in source:
+            fail(f"{path} must keep a stable oversized-message error")
+    if "BoundedIpcLineReader" not in contracts or "ReadAsync" not in contracts:
+        fail("Shared bounded IPC line reader is missing")
+    if "SemaphoreSlim clientSlots" not in server or "SemaphoreSlim clientSlots" not in event_server:
+        fail("Named pipe endpoints must cap concurrent clients")
+
+
 def check_version_consistency() -> None:
     manifest = (ROOT / "src/GameSaveCenter.Playnite/extension.yaml").read_text(encoding="utf-8")
     props = (ROOT / "Directory.Build.props").read_text(encoding="utf-8")
@@ -1611,6 +1630,7 @@ def main() -> int:
     check_gsc_resource_references()
     check_solution()
     check_ipc_constants()
+    check_ipc_message_guards()
     check_version_consistency()
     check_delivery_guards()
     check_dashboard_regressions()
