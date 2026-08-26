@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-26 UI-334 按钮聚焦与按压状态全按钮覆盖
+
+- 修复生产共享 `GscWpfUiButton` 的状态层只覆盖内容内侧的问题：`ButtonChrome` 取消 Padding，Hover/Pressed 层覆盖整个圆角 Chrome，内容间距由 `ContentPresenter` Margin 保留。
+- 增加全按钮 `FocusOverlay`，键盘聚焦时显示整按钮覆盖色，同时保留共享键盘焦点环；Primary 状态使用 on-accent 覆盖资源。命令、Binding、尺寸、文字省略、滚动、虚拟化和主题契约不变。
+- 相关源码回归测试通过；TextBox Padding 断言改为只检查 TextBox 模板，避免误伤按钮模板。Release 0 warning/0 error，Core `59/59`、Worker `210/210`、Playnite `310/367`（57 跳过），源码/XAML/WPF 门禁通过；`.tmp/ui-qa-button-focus-v1/render-qa-report.txt` 为 `render-qa OK`。真实 Playnite 未运行，Phase 4 按用户要求跳过。
+
 ## 2026-08-26 UI-333 生产标题栏顶部圆角
 
 - 生产 Shell 顶部页面标题栏从直接矩形 Border 收口为共享 `GscRedesignHeaderSurface`，增加 `16,16,0,0` 顶部圆角和裁剪；下边界保持直线，避免与 PageHost 之间出现额外缝隙。

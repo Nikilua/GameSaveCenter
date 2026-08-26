@@ -731,21 +731,29 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ui:Button}">
-                    <!-- The content must be measured inside the padded chrome. Keeping the
-                         presenter beside an empty Border makes WPF size the button from the
-                         text alone, which is why localized labels touched or crossed the
-                         border on every page. -->
+                    <!-- State layers must cover the complete button chrome. Padding belongs
+                         on the presenter margin; putting this Grid inside a padded Border
+                         would shrink Hover/Pressed/Focus to an inner strip. Keeping the
+                         presenter bounded still lets localized labels ellipsize instead of
+                         expanding past a toolbar or inspector boundary. -->
                     <Border x:Name="ButtonChrome"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            Padding="{TemplateBinding Padding}"
+                            Padding="0"
                             CornerRadius="11"
                             ClipToBounds="True"
                             SnapsToDevicePixels="True">
                         <Grid ClipToBounds="True">
-                            <!-- Demo LabBtn state layers: keep the base surface readable and
-                                 animate only the overlay opacity, never layout dimensions. -->
+                            <!-- Focus is a complete selected-like surface; the shared focus
+                                 adorner remains active as the high-contrast keyboard ring. -->
+                            <Border x:Name="FocusOverlay"
+                                    Background="{DynamicResource GscAccentTintBrush}"
+                                    CornerRadius="11"
+                                    Opacity="0"
+                                    IsHitTestVisible="False"/>
+                            <!-- Demo LabBtn state layers animate only overlay opacity, never
+                                 layout dimensions, and now cover the entire rounded chrome. -->
                             <Border x:Name="HoverOverlay"
                                     Background="{DynamicResource GscAccentTintBrush}"
                                     CornerRadius="11"
@@ -761,6 +769,7 @@
                             <ContentPresenter Content="{TemplateBinding Content}"
                                               ContentTemplate="{TemplateBinding ContentTemplate}"
                                               ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                              Margin="{TemplateBinding Padding}"
                                               HorizontalAlignment="Stretch"
                                               VerticalAlignment="Stretch"
                                               RecognizesAccessKey="True"
@@ -771,6 +780,7 @@
                         <Trigger Property="Appearance" Value="Primary">
                             <Setter TargetName="ButtonChrome" Property="Background" Value="{DynamicResource GscPrimaryButtonBrush}"/>
                             <Setter TargetName="ButtonChrome" Property="BorderBrush" Value="{DynamicResource GscPrimaryButtonBorderBrush}"/>
+                            <Setter TargetName="FocusOverlay" Property="Background" Value="{DynamicResource GscOnAccentHoverOverlayBrush}"/>
                             <Setter TargetName="HoverOverlay" Property="Background" Value="{DynamicResource GscOnAccentHoverOverlayBrush}"/>
                             <Setter TargetName="PressedOverlay" Property="Background" Value="{DynamicResource GscOnAccentPressedOverlayBrush}"/>
                             <Setter Property="Foreground" Value="{DynamicResource GscOnAccentTextBrush}"/>
@@ -808,6 +818,10 @@
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.ExitActions>
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                            <Setter TargetName="FocusOverlay" Property="Opacity" Value="1"/>
+                            <Setter TargetName="ButtonChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="ButtonChrome" Property="Opacity" Value="0.46"/>

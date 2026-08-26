@@ -2,6 +2,13 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-26 UI-334 按钮状态层覆盖交接
+
+- 生产共享 `GscWpfUiButton` 已改为整按钮状态覆盖：`ButtonChrome` 不再承载内容 Padding，Hover/Pressed 层覆盖整个圆角表面，内容间距由 `ContentPresenter Margin={TemplateBinding Padding}` 保持。
+- 键盘焦点新增整按钮 `FocusOverlay`，Primary 使用 on-accent 覆盖资源，并保留共享 `GscSharedFocusVisual` 焦点环；命令、Binding、按钮尺寸、文字省略、滚动、虚拟化和主题契约未改。
+- 自动证据：`validate-source.py`、XAML 检查、WPF 静态审计、Release 构建/全量测试通过；Core `59/59`、Worker `210/210`、Playnite `310/367`（57 跳过）、`.tmp/ui-qa-button-focus-v1/render-qa-report.txt` 为 `render-qa OK`。
+- RenderHarness 不模拟真实 Playnite 外壳或所有键盘交互状态；真实 Playnite、DPI 和焦点实机验收未运行。Phase 4 仍按用户要求跳过。
+
 ## 2026-08-26 UI-333 生产标题栏圆角交接
 
 - `AcrylicProductionShellView.HeaderSurface` 已接入共享 `GscRedesignHeaderSurface`；顶部两角为 16 DIP 圆角并裁剪内部材质，底边保持直线，避免标题栏与 PageHost 之间出现尖锐矩形边界或额外布局缝隙。

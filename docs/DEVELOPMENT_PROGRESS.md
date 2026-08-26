@@ -1,5 +1,7 @@
 # 开发实现进度
 
+- [x] UI-334（2026-08-26）：修复生产共享按钮的 Hover/Pressed 状态层只覆盖内容内侧的问题。`GscWpfUiButton` 的状态层现在覆盖整个圆角按钮，键盘聚焦新增全按钮 `FocusOverlay` 并保留共享焦点环；内容 Padding 由 `ContentPresenter` Margin 保留。命令、Binding、按钮尺寸、文字省略、滚动、虚拟化和主题契约未改。Release 0 warning/0 error、Core `59/59`、Worker `210/210`、Playnite `310/367`（57 跳过）、源码/XAML/WPF 门禁和 `.tmp/ui-qa-button-focus-v1/render-qa-report.txt`（`render-qa OK`）通过；真实 Playnite/实机 DPI/焦点仍按要求跳过 Phase 4。
+
 - [x] UI-333（2026-08-26）：生产 Shell 顶部页面标题栏接入共享 `GscRedesignHeaderSurface`，顶部两角使用 16 DIP 圆角并裁剪，底边保持直线；标题、副标题、游戏选择器、刷新/同步/备份命令和响应式布局未改。新增标题栏共享样式源码回归测试。Release 0 warning/0 error、Core `59/59`、Worker `210/210`、Playnite `310/367`（57 跳过）、WPF 静态审计 0 error、`.tmp/ui-qa-header-corner-v1/render-qa-report.txt`（`render-qa OK`）通过；RenderHarness 不包含外层 Shell，真实 Playnite/实机 DPI 仍按要求跳过 Phase 4。
 
 - [x] UI-332（2026-08-26）：按实机截图统一维护中心远端恢复按钮（148×36 DIP）和媒体中心当前游戏媒体两处批量按钮（120×36 DIP）的共享尺寸/间距；修改器下载版本提示改为中性诊断气泡与常规次级文字；页面环境材质层增加共享圆角裁剪，Shell 保持完整窗格覆盖。命令、Binding、数据契约、滚动、虚拟化和动画未改。Release 0 warning/0 error、Core `59/59`、Worker `210/210`、Playnite `309/366`（57 跳过）、WPF 静态审计 0 error、`.tmp/ui-qa-button-material-v1/render-qa-report.txt`（`render-qa OK`）通过；真实 Playnite/实机 DPI 仍按用户要求跳过 Phase 4，待人工复核。

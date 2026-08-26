@@ -62,7 +62,10 @@ public sealed class AccessibilitySourceTests
         Assert.Contains("Padding=\"0\"", tokens);
         Assert.Contains("Margin=\"0\"", production);
         Assert.Contains("Margin=\"0\"", tokens);
-        Assert.DoesNotContain("Margin=\"{TemplateBinding Padding}\"", production);
+        var productionTextBoxTemplateStart = production.IndexOf("x:Key=\"GscWpfUiTextBoxTemplate\"", StringComparison.Ordinal);
+        var productionComboBoxTemplateStart = production.IndexOf("x:Key=\"GscWpfUiComboBoxTemplate\"", productionTextBoxTemplateStart, StringComparison.Ordinal);
+        Assert.True(productionTextBoxTemplateStart >= 0 && productionComboBoxTemplateStart > productionTextBoxTemplateStart);
+        Assert.DoesNotContain("Margin=\"{TemplateBinding Padding}\"", production.Substring(productionTextBoxTemplateStart, productionComboBoxTemplateStart - productionTextBoxTemplateStart));
         Assert.DoesNotContain("Margin=\"{TemplateBinding Padding}\"", tokens);
     }
 

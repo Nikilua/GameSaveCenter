@@ -3,6 +3,12 @@
 > 维护时间：2026-08-25
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-26 UI-334 按钮状态层覆盖范围
+
+- 生产 `GscWpfUiButton` 的 Hover/Pressed 状态层现在覆盖整个圆角按钮；`ButtonChrome` 保持 0 padding，内容间距改由 `ContentPresenter` 的 `TemplateBinding Padding` Margin 保留。
+- 新增全按钮 `FocusOverlay`：键盘聚焦时覆盖整个按钮，并继续保留共享焦点环；Primary 按钮使用对应的 on-accent 覆盖色。命令、Binding、按钮尺寸、文字省略、滚动、虚拟化和主题资源契约未改。
+- TextBox 的 Padding 回归断言收窄到 TextBox 模板范围，避免与按钮模板的内容 Margin 契约冲突。Release 0 warning/0 error；Core `59/59`、Worker `210/210`、Playnite `310/367`（57 跳过）；源码/XAML/WPF 门禁通过，`.tmp/ui-qa-button-focus-v1/render-qa-report.txt` 为 `render-qa OK`。真实 Playnite 未运行，Phase 4 按用户要求跳过。
+
 ## 2026-08-26 UI-333 生产标题栏顶部圆角
 
 - `AcrylicProductionShellView.HeaderSurface` 现在使用共享 `GscRedesignHeaderSurface`，顶部两角使用 `GscRedesignHeaderCorner=16,16,0,0` 并启用 `ClipToBounds`；底部保留直线边界，标题栏与页面内容仍然连续。

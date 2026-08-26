@@ -403,8 +403,12 @@ public sealed class WpfUiResourceDictionaryTests
         var production = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml"));
         var tokens = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml"));
 
+        Assert.Contains("x:Name=\"FocusOverlay\"", production);
         Assert.Contains("x:Name=\"HoverOverlay\"", production);
         Assert.Contains("x:Name=\"PressedOverlay\"", production);
+        Assert.Contains("Padding=\"0\"", production);
+        Assert.Contains("Margin=\"{TemplateBinding Padding}\"", production);
+        Assert.Contains("Property=\"IsKeyboardFocusWithin\" Value=\"True\"", production);
         Assert.Contains("Duration=\"0:0:0.12\"", production);
         Assert.Contains("Duration=\"0:0:0.08\"", production);
         Assert.Contains("GscOnAccentHoverOverlayBrush", production);
@@ -5224,7 +5228,10 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Padding=\"{TemplateBinding Padding}\"", production);
         Assert.Contains("Padding=\"0\"", production);
         Assert.Contains("Margin=\"0\"", production);
-        Assert.DoesNotContain("Margin=\"{TemplateBinding Padding}\"", production);
+        var productionTextBoxTemplateStart = production.IndexOf("x:Key=\"GscWpfUiTextBoxTemplate\"", StringComparison.Ordinal);
+        var productionComboBoxTemplateStart = production.IndexOf("x:Key=\"GscWpfUiComboBoxTemplate\"", productionTextBoxTemplateStart, StringComparison.Ordinal);
+        Assert.True(productionTextBoxTemplateStart >= 0 && productionComboBoxTemplateStart > productionTextBoxTemplateStart);
+        Assert.DoesNotContain("Margin=\"{TemplateBinding Padding}\"", production.Substring(productionTextBoxTemplateStart, productionComboBoxTemplateStart - productionTextBoxTemplateStart));
         Assert.Contains("VerticalAlignment=\"Stretch\"", production);
         Assert.Contains("<Setter Property=\"VerticalContentAlignment\" Value=\"Center\"/>", production);
         Assert.Contains("<Setter Property=\"HorizontalScrollBarVisibility\" Value=\"Hidden\"/>", production);
