@@ -2,6 +2,13 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-26 STAB-004 真实 Playnite 验证阻塞
+
+- 当前环境没有可执行的 Playnite、运行中的宿主或注册表安装入口；`D:\software\Playnite\Playnite\Playnite.DesktopApp.exe` 等历史候选路径也不存在。Phase 4 状态为 `BLOCKED_ENVIRONMENT`。
+- 不要用离屏 RenderHarness、静态 WPF 审计或历史截图宣称真实宿主通过；也不要未经隔离证明运行 `real-host-audit.ps1`/`dev-install-run.ps1`，因为它们可能安装扩展、关闭宿主或写入用户目录。
+- 下一步需要用户提供隔离 Playnite 安装/便携目录、独立数据根、唯一进程边界和扩展目录。拿到后按四尺寸/三 DPI/四主题、七页面+Settings、交互/生命周期/游戏事件/Worker 重启与日志矩阵执行；在此之前暂停 Phase 5 双树治理。
+- Phase 0–3 的自动验证已提交推送，最新 IPC commit 为 `9d53b1d`；Phase 4 没有源码改动。
+
 ## 2026-08-26 STAB-003 IPC 健壮性交接
 
 - 三个 Named Pipe 方向共用 Contracts 的有状态 `BoundedIpcLineReader`；按 4 MiB 字节上限消费消息，超限返回/发送 `MESSAGE_TOO_LARGE`，服务端响应和事件写出同样先检查，不能恢复 `ReadLineAsync` 后再检查。

@@ -2,6 +2,20 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-26 STAB-004 Phase 4 真实 Playnite 验证 `BLOCKED_ENVIRONMENT`
+
+**只读环境结论：**
+
+- Phase 4 要求隔离安装/数据目录、唯一宿主 PID、窗口尺寸 `1040×700`/`1100×720`/`1366×768`/`2560×1440`、100%/125%/150% DPI、Light/Dark/Follow/High Contrast、七个 Dashboard 页面与 Settings、生命周期/游戏启动事件/Worker 重启/日志无异常验证。
+- 本机未发现 `Playnite.DesktopApp.exe`：标准安装目录、用户 LocalAppData、已知便携路径和项目历史记录中的 `D:\software\Playnite\Playnite\Playnite.DesktopApp.exe` 均不存在；当前也没有运行中的 Playnite 进程，Playnite App Paths 与卸载注册表没有可用入口。
+- `scripts/real-host-audit.ps1` 会调用 `scripts/dev-install-run.ps1`，后者可能写入用户扩展目录并管理/关闭宿主进程；在没有可证明隔离宿主时没有运行它，也没有启动、关闭、复制或修改任何用户 Playnite 数据。
+
+**状态与后续：**
+
+- 状态明确记录为 `BLOCKED_ENVIRONMENT`，不能用 RenderHarness、静态审计或历史截图替代真实宿主证据；Phase 4 没有修改业务代码、XAML、Binding、版本或安装包。
+- Phase 0–3 的自动证据仍有效：最终 Phase 3 Release 构建 `0 warning/0 error`，Core `59/59`、Worker `201/201`、Playnite `302/359`（57 跳过），源码/XAML/WPF 门禁通过，最终 RenderHarness `render-qa OK`。
+- 解除阻塞需要用户提供可执行的 Playnite 安装/便携环境及可审计的独立数据根、单实例边界和扩展安装路径；在此之前不开始依赖真实宿主通过的 Phase 5 双页面树治理。
+
 ## 2026-08-26 STAB-003 Phase 3 IPC 边界与并发收口
 
 **实现内容：**

@@ -3,6 +3,13 @@
 > 维护时间：2026-08-25
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-26 STAB-004 真实 Playnite 环境阻塞事实
+
+- Phase 4 真实宿主矩阵尚未执行，状态必须保持 `BLOCKED_ENVIRONMENT`：当前机没有 `Playnite.DesktopApp.exe`、运行中的 Playnite 进程、App Paths 或卸载注册表入口；历史候选 `D:\software\Playnite\Playnite\Playnite.DesktopApp.exe` 也不存在。
+- 不要运行 `scripts/real-host-audit.ps1` 或 `scripts/dev-install-run.ps1` 作为替代。它们的安装/启动路径可能写入用户扩展目录、关闭当前宿主或复用全局单实例；在没有隔离安装、独立数据根、唯一 PID 和扩展路径证明前，不能触碰用户实例。
+- 必须验证的真实条件仍包括四种窗口尺寸、100%/125%/150% DPI、Light/Dark/Follow/High Contrast、七个 Dashboard 页面与 Settings、侧栏/Tab/表格/搜索/键盘、Dashboard 重载、游戏启动事件、Worker 启停/握手/日志和旧 DLL 复用。
+- Phase 0–3 自动验证已完成，但不能解除 Phase 4 阻塞，也不能作为 Phase 5 双页面树治理的“前置全部通过”证据。解除条件是用户提供可审计的隔离 Playnite 环境。
+
 ## 2026-08-26 STAB-003 IPC 边界事实
 
 - `BoundedIpcLineReader` 是共享 Contracts 类型，必须按连接实例化；它有 4 KiB 内部字符缓冲并保存块内偏移，不能改回静态一次性块读取，否则遇到同块多条消息会丢掉下一条。超限行只保留上限内内容并继续消费到换行。
