@@ -142,10 +142,15 @@ namespace GameSaveCenter.Playnite.ViewModels
         private GameToolType pendingGameToolImportType = GameToolType.Trainer;
         private bool hasPendingGameToolEntrySelection;
         private readonly RecentProtectionAssessmentService recentProtectionAssessment = new RecentProtectionAssessmentService();
+        private readonly PlayniteGameStartedSubscription playniteGameStartedSubscription;
 
         public DashboardViewModel(GameSaveCenterPlugin plugin)
         {
             this.plugin = plugin;
+            playniteGameStartedSubscription = new PlayniteGameStartedSubscription(
+                callback => plugin.PlayniteGameStarted += callback,
+                callback => plugin.PlayniteGameStarted -= callback,
+                OnPlayniteGameStarted);
             currentWorkspace = plugin.SessionLastWorkspace ?? WorkspaceKind.Overview;
             gamePicker = new GamePickerViewModel();
             gamePicker.ApplyPersistedState(plugin.Settings.GamePickerSearchText, plugin.Settings.GamePickerStatusFilter, plugin.Settings.GamePickerPlatformFilter, plugin.Settings.GamePickerSortMode);
@@ -154,7 +159,6 @@ namespace GameSaveCenter.Playnite.ViewModels
             OnWorkspaceStateInitialize();
             gameIconProvider = new PlayniteGameIconProvider(plugin.PlayniteApi);
             gameBackgroundProvider = new PlayniteGameBackgroundProvider(plugin.PlayniteApi);
-            plugin.PlayniteGameStarted += OnPlayniteGameStarted;
             gameSearchText = gamePicker.SearchText;
             gameStatusFilter = gamePicker.StatusFilter;
             gameSortMode = gamePicker.SortMode;
@@ -1030,6 +1034,12 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         public event EventHandler? AttentionCenterRequested;
 
+        /// <summary>Starts the Playnite game-started subscription once for the visible Dashboard.</summary>
+        public void StartPlayniteGameStartedSubscription() => playniteGameStartedSubscription.Start();
+
+        /// <summary>Stops the Playnite game-started subscription for an unloaded Dashboard.</summary>
+        public void StopPlayniteGameStartedSubscription() => playniteGameStartedSubscription.Stop();
+
         /// <summary>
         /// Enables the optional Worker event connection while the WPF dashboard is visible.
         /// Normal task polling remains active as the durable fallback after a Worker restart,
@@ -1075,7 +1085,6 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         public void CancelDeferredUiWork()
         {
-            plugin.PlayniteGameStarted -= OnPlayniteGameStarted;
             gamePicker.CancelPendingRefresh();
             taskSearchRefresh.Cancel();
             mediaSearchRefresh.Cancel();
@@ -2882,8 +2891,10 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private void OnPlayniteGameStarted(Guid playniteId)
         {
+            if (!playniteGameStartedSubscription.IsSubscribed) return;
             ApplyOnUi(() =>
             {
+                if (!playniteGameStartedSubscription.IsSubscribed) return;
                 lastStartedPlayniteId = playniteId.ToString("D");
                 pendingAutoSelectPlayniteId = playniteId.ToString("D");
                 TryApplyPendingAutoSelection();

@@ -4739,8 +4739,12 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("private bool viewModelSubscribed;", dashboardCode);
         Assert.Contains("SubscribeViewModel();", dashboardCode);
         Assert.Contains("UnsubscribeViewModel();", dashboardCode);
+        Assert.Contains("viewModel.StartPlayniteGameStartedSubscription();", dashboardCode);
+        Assert.Contains("viewModel.StopPlayniteGameStartedSubscription();", dashboardCode);
         Assert.Contains("gamePickerPersistenceCancellation = null;", viewModelCode);
         Assert.Contains("persistence.Dispose();", viewModelCode);
+        Assert.Contains("private readonly PlayniteGameStartedSubscription playniteGameStartedSubscription;", viewModelCode);
+        Assert.Contains("if (!playniteGameStartedSubscription.IsSubscribed) return;", viewModelCode);
         Assert.Contains("private void SubscribeViewModel()", dashboardCode);
         Assert.Contains("private void UnsubscribeViewModel()", dashboardCode);
         Assert.Contains("viewModel.PropertyChanged -= OnViewModelPropertyChanged;", dashboardCode);

@@ -3,6 +3,14 @@
 > 维护时间：2026-08-25
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-26 STAB-001 Dashboard 生命周期订阅事实
+
+- `DashboardViewModel` 不再在构造函数永久订阅 `PlayniteGameStarted`；`PlayniteGameStartedSubscription` 以幂等 `Start/Stop` 保存唯一 handler，`DashboardView.OnLoaded`/`OnUnloaded` 分别调用启动/停止。
+- `OnPlayniteGameStarted` 在进入 `ApplyOnUi` 前后都检查 `IsSubscribed`，因此卸载后已经排队的回调不会继续写入 Dashboard；`pendingAutoSelectPlayniteId`、`TryApplyPendingAutoSelection` 和“游戏尚未到达时保留 pending”语义不变。
+- 生命周期回归事实覆盖首次加载、卸载、重载、重复生命周期和 pending selection；源码门禁现在要求上述 View 生命周期契约，不能恢复为构造函数直接订阅。
+- STAB-001 验证：定向 `6/6`，隔离 Release Core `59/59`、Worker `201/201`、Playnite `302/359`（57 跳过），构建 `0 warning/0 error`，WPF `0 error/18 warning/172 info`，`.tmp/phase1-dashboard-lifecycle-render/render-qa-report.txt` 为 `render-qa OK`。
+- 本阶段没有修改 XAML；真实 Playnite 仍需重启扩展后确认事件订阅、DPI、主题、焦点和重载行为。
+
 ## 2026-08-26 STAB-000 当前稳定性修复基线
 
 - 当前基线提交为 `28bccfe4ad7f55a9ea95083d5a686d7d2837e96b`，`main` 与 `origin/main` 同步，工作树干净。

@@ -2,6 +2,27 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-26 STAB-001 Phase 1 Dashboard 生命周期订阅收口
+
+**问题与边界：**
+
+- `DashboardViewModel` 原先在构造函数直接订阅 `PlayniteGameStarted`，但 View 的 Loaded/Unloaded 没有成对管理订阅；Dashboard 重载、多个可见实例或卸载后的排队 UI 回调可能造成重复处理或访问已离开页面。
+- 本阶段只治理 Dashboard 的游戏启动事件生命周期；不修改 XAML、页面结构、Binding、命令、数据契约、pending selection 语义或 Playnite 事件名。
+
+**实现内容：**
+
+- 新增 `PlayniteGameStartedSubscription`，以幂等 `Start/Stop` 管理单个事件处理器；`DashboardViewModel` 暴露生命周期入口，由 `DashboardView.OnLoaded` 启动、`OnUnloaded` 停止。
+- `OnPlayniteGameStarted` 在进入 UI 调度前及调度回调内再次确认仍处于已订阅状态，避免卸载后已排队回调继续更新页面；pending game selection 仍由原有 Dashboard handler 处理。
+- 新增首次加载、卸载、重载、重复 Loaded/Unloaded 和 pending selection 回归事实；同步更新源码门禁，防止回到构造函数永久订阅。
+
+**验证结果：**
+
+- 定向生命周期/事件回归：`6/6` 通过。
+- 隔离 Release 构建与全量测试：构建 `0 warning/0 error`；Core `59/59`，Worker `201/201`，Playnite `302/359`（57 跳过、0 失败）。
+- `python scripts/validate-source.py`、`scripts/check-xaml.ps1`（19 个文件）通过；WPF 静态审计 `0 error/18 warning/172 info`。
+- RenderHarness：`.tmp/phase1-dashboard-lifecycle-render/render-qa-report.txt` 为 `render-qa OK`，0 条 `PROBLEM`，253 张 PNG、253 个耗时样本，范围 `18–3059ms`，平均 `222.84ms`。
+- 真实 Playnite 未在本阶段重启；宿主事件订阅、DPI、主题和键盘焦点仍需人工验收，继续标记 `MANUAL QA REQUIRED`。
+
 ## 2026-08-26 STAB-000 Phase 0 稳定性修复基线
 
 **基线范围：**

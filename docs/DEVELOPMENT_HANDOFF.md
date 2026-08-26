@@ -2,6 +2,14 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-26 STAB-001 Dashboard 事件生命周期交接
+
+- `DashboardViewModel` 的 `PlayniteGameStarted` 订阅由 `PlayniteGameStartedSubscription` 持有，必须通过 `StartPlayniteGameStartedSubscription` / `StopPlayniteGameStartedSubscription` 管理；生产 View 的 Loaded/Unloaded 已成对调用，禁止重新放回构造函数永久订阅。
+- handler 在排队 UI 调度前后都检查订阅状态，卸载后的旧回调不能写入页面；pending auto-select 的原有时序和游戏列表未到达时的保留行为不变。
+- 本轮没有改 XAML 或页面视觉；验证为生命周期定向 `6/6`、Release Core `59/59`、Worker `201/201`、Playnite `302/359`（57 跳过）、0 warning/0 error，RenderHarness `render-qa OK`。
+- 下一阶段应处理 `ExternalProcessRunner` 的 stdout/stderr 有限累积及 `RcloneClient` 参数语义；完成后继续同步本文件、`docs/ai/WORKLOG.md` 与 `docs/ai/PROJECT_MEMORY.md`。
+- 真实 Playnite 重载、事件触发、DPI、主题和焦点仍是 `MANUAL QA REQUIRED`，不能用离屏渲染报告代替。
+
 ## 2026-08-25 UI-331 共享控件与流畅度交接
 
 - 共享生产 TextBox 模板现在把样式 Padding 应用到外层 Chrome；ContentHost 必须保持零 Margin/零 Padding，避免输入文字高度和左右内边距因模板重复计算而漂移。TextBox/ComboBox 保留 `SnapsToDevicePixels` 与 `UseLayoutRounding`。

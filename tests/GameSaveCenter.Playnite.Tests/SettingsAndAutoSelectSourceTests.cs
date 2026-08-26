@@ -59,8 +59,10 @@ namespace GameSaveCenter.Playnite.Tests
             var media = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
 
             Assert.Contains("internal event Action<Guid>? PlayniteGameStarted;", plugin);
-            Assert.Contains("plugin.PlayniteGameStarted += OnPlayniteGameStarted;", viewModel);
-            Assert.Contains("plugin.PlayniteGameStarted -= OnPlayniteGameStarted;", viewModel);
+            Assert.Contains("public void StartPlayniteGameStartedSubscription()", viewModel);
+            Assert.Contains("public void StopPlayniteGameStartedSubscription()", viewModel);
+            Assert.Contains("callback => plugin.PlayniteGameStarted += callback", viewModel);
+            Assert.Contains("callback => plugin.PlayniteGameStarted -= callback", viewModel);
             Assert.Contains("GameSelectionResolver.ResolveInitial", viewModel);
             Assert.Contains("SelectCurrentlyRunningGameOnViewActivation", viewModel);
             Assert.Contains("TryGetCurrentlyRunningPlayniteGameIds", plugin);

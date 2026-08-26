@@ -1551,10 +1551,15 @@ def check_settings_autoselect_guards() -> None:
         fail("Settings GamePickerStatusFilter must default to 已安装")
     if "PlayniteGameStarted?.Invoke(args.Game.Id);" not in plugin:
         fail("Plugin must publish PlayniteGameStarted")
-    if "plugin.PlayniteGameStarted += OnPlayniteGameStarted;" not in view_model:
-        fail("DashboardViewModel must subscribe to PlayniteGameStarted")
-    if "plugin.PlayniteGameStarted -= OnPlayniteGameStarted;" not in view_model:
-        fail("DashboardViewModel must unsubscribe PlayniteGameStarted")
+    for required in (
+        "public void StartPlayniteGameStartedSubscription()",
+        "public void StopPlayniteGameStartedSubscription()",
+        "callback => plugin.PlayniteGameStarted += callback",
+        "callback => plugin.PlayniteGameStarted -= callback",
+        "private readonly PlayniteGameStartedSubscription playniteGameStartedSubscription;",
+    ):
+        if required not in view_model:
+            fail(f"DashboardViewModel must keep the loaded-view PlayniteGameStarted subscription contract: {required}")
     for forbidden in ("DispatcherTimer", "System.Threading.Timer", "Process.GetProcesses"):
         if forbidden in resolver:
             fail(f"Auto-select resolver must not poll or scan processes: {forbidden}")

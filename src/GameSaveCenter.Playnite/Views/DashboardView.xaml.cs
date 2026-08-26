@@ -98,6 +98,7 @@ namespace GameSaveCenter.Playnite.Views
             RealHostUiAuditService.TryCaptureDashboard(this);
             refreshTimer.Interval = TimeSpan.FromSeconds(Math.Max(5, Math.Min(300, plugin.Settings.DashboardRefreshSeconds)));
             if (plugin.Settings.EnableDashboardAutoRefresh) refreshTimer.Start();
+            viewModel.StartPlayniteGameStartedSubscription();
             viewModel.StartTaskEventSubscription();
             viewModel.SelectCurrentlyRunningGameOnViewActivation();
             viewModel.EnsureSelectedGameBackgroundLoaded();
@@ -116,6 +117,7 @@ namespace GameSaveCenter.Playnite.Views
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
             refreshTimer.Stop();
+            viewModel.StopPlayniteGameStartedSubscription();
             viewModel.CancelDeferredUiWork();
             viewModel.StopTaskEventSubscription();
             // For very large libraries the notification feed is a convenience channel, not
