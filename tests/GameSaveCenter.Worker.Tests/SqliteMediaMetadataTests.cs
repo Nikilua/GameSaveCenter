@@ -3,6 +3,7 @@ using GameSaveCenter.Worker.Configuration;
 using GameSaveCenter.Worker.Persistence;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging.Abstractions;
+using System.Linq;
 using Xunit;
 
 namespace GameSaveCenter.Worker.Tests;
@@ -76,6 +77,21 @@ public sealed class SqliteMediaMetadataTests : IDisposable
         Assert.Equal("用户撤销忽略，待重新归类",restored.ClassificationReason);
         Assert.Empty(await store.GetIgnoredMediaAsync(50,CancellationToken.None));
         Assert.Single(await store.GetUnassignedMediaAsync(50,CancellationToken.None));
+    }
+
+    [Fact]
+    public async Task InboxMediaCanBeReadInBoundedPagesWithoutRepeatingRows()
+    {
+        await AddAsync("page-one",false,string.Empty,"Inbox",DateTime.UtcNow.AddMinutes(-1));
+        await AddAsync("page-two",false,string.Empty,"Inbox",DateTime.UtcNow.AddMinutes(-2));
+        await AddAsync("page-three",false,string.Empty,"Inbox",DateTime.UtcNow.AddMinutes(-3));
+
+        var firstPage = await store.GetUnassignedMediaAsync(2,CancellationToken.None,0);
+        var secondPage = await store.GetUnassignedMediaAsync(2,CancellationToken.None,2);
+
+        Assert.Equal(new[] { "page-one", "page-two" }, firstPage.Select(x => x.MediaId));
+        Assert.Equal(new[] { "page-three" }, secondPage.Select(x => x.MediaId));
+        Assert.Empty(firstPage.Select(x => x.MediaId).Intersect(secondPage.Select(x => x.MediaId)));
     }
 
     [Fact]
@@ -166,7 +182,7 @@ public sealed class SqliteMediaMetadataTests : IDisposable
         if(Directory.Exists(root))Directory.Delete(root,true);
     }
 
-    private Task AddAsync(string id,bool favorite,string comment,string classificationState="Assigned")=>store.AddMediaAsync(new MediaItemDto
+    private Task AddAsync(string id,bool favorite,string comment,string classificationState="Assigned",DateTime? capturedUtc=null)=>store.AddMediaAsync(new MediaItemDto
     {
         MediaId=id,
         PlayniteId="game",
@@ -174,7 +190,7 @@ public sealed class SqliteMediaMetadataTests : IDisposable
         Source=MediaSourceKind.Custom,
         ArchivePath=Path.Combine(root,id+".png"),
         OriginalPath=Path.Combine(root,id+".png"),
-        CapturedUtc=DateTime.UtcNow,
+        CapturedUtc=capturedUtc??DateTime.UtcNow,
         SizeBytes=10,
         Sha256=id.PadRight(64,'0'),
         IsFavorite=favorite,

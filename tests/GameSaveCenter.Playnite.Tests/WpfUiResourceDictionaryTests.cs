@@ -838,7 +838,11 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("DataGridLoaded", maintenanceCode);
         Assert.DoesNotContain("AddHandler(FrameworkElement.LoadedEvent, new RoutedEventHandler(ApplyHeaderTheme), true)", maintenanceCode);
         Assert.Contains("UnassignedMedia = new GameSaveCenter.Playnite.Infrastructure.BatchObservableCollection<MediaItemDto>(inbox)", File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.Media.cs")));
-        Assert.Contains("Limit = 5000", File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.Media.cs")));
+        var mediaViewModel = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.Media.cs"));
+        Assert.Contains("MediaInboxPageSize = 500", mediaViewModel);
+        Assert.Contains("MaximumMediaInboxItems = 5000", mediaViewModel);
+        Assert.Contains("Offset = offset", mediaViewModel);
+        Assert.DoesNotContain("Limit = 5000", mediaViewModel);
         Assert.DoesNotContain("if (loadInbox) await LoadInboxAsync();", File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs")));
     }
 

@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-26 STAB-005 IPC 媒体 Inbox 响应超限修复
+
+- 根据用户 0.6.70.0 Playnite/Worker 日志定位到 `media.inbox.list`：旧版 Dashboard 一次请求 `Limit=5000`，用户库有 4615 条 Inbox 媒体，Worker 记录响应超过 `4194304` 字节并返回 `MESSAGE_TOO_LARGE`。
+- Worker 对未分配/已忽略媒体请求增加 500 条单页上限与 `Offset`，SQL 使用稳定的 `captured_utc DESC, media_id DESC` 排序；Playnite 以 500 条分页加载，整体仍限制为 5000 条。服务端超限日志现在包含 `RequestId`、`Type`、`ResponseBytes` 与 `PayloadBytes`，4 MiB 安全限制保留。
+- 新增偏移分页和不重复读取回归测试，并更新 IPC 源码契约测试。Release 构建 `0 warning/0 error`；Core `59/59`、Worker `210/210`、Playnite `302/359`（57 跳过）；WPF 静态审计 `0 error/18 warning/172 info`；`.tmp/phase3-ipc-response-fix-render/render-qa-report.txt` 为 `render-qa OK`。
+- 只读实机数据探针确认旧 Worker 的 500 条请求为约 `745990` UTF-8 字节；尝试隔离启动补丁 Worker 时命中全局单实例互斥，没有停止或修改用户正在运行的 Worker，也没有把该探针误记为补丁 Worker 的宿主验收。用户已明确本修复跳过 Phase 4，真实 Playnite 安装后的日志复核仍待后续手工执行。
+
 ## 2026-08-26 STAB-003A Phase 3 真实 Named Pipe 烟测
 
 - 使用当前 Release Worker 和隔离 `.tmp/phase3-ipc-runtime-escalated/data` 启动临时宿主；Worker 完成 SQLite 初始化并正常进入 Hosting 状态。

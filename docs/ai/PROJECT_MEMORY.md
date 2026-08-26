@@ -3,6 +3,14 @@
 > 维护时间：2026-08-25
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-26 STAB-005 媒体 Inbox IPC 分页事实
+
+- 超限接口已确认是 `media.inbox.list` / `ListUnassignedMedia`，不是 Dashboard 快照：旧 Playnite 请求 `Limit=5000` 会把 4615 条 Inbox 媒体拼成超过 4 MiB 的响应，随后 UI 只看到通用“操作失败”。
+- `GameQueryDto.Offset` 是兼容性增量字段；Worker 强制将未分配/已忽略媒体单页限制为 500，并使用稳定时间+ID排序和 SQL `OFFSET`。Playnite 连续请求 offset `0..4999`，短页或空页停止，最终最多应用 5000 条，保留原集合、选择、Binding 和虚拟化路径。
+- `NamedPipeServerService` 超限日志必须包含请求 ID、消息类型、完整响应字节数和 payload 字节数；4 MiB 限制与 `MESSAGE_TOO_LARGE` 语义不能放宽。该诊断也覆盖未来其他超限接口。
+- 自动验证：Core `59/59`、Worker `210/210`、Playnite `302/359`（57 跳过），Release `0 warning/0 error`，RenderHarness `render-qa OK`，WPF `0 error/18 warning/172 info`。现有用户 Worker 的只读 500 条请求为 `745990` 字节；补丁 Worker 未在用户实例中替换运行。
+- 本次按用户要求跳过 Phase 4，不得把离屏 RenderHarness或旧 Worker 只读探针写成真实宿主验收；发布/安装新包后应复查日志中 `RequestId=... Type=media.inbox.list ResponseBytes=...`，并确认 Inbox/Ignored 页面无超限错误。
+
 ## 2026-08-26 STAB-003A 真实 Named Pipe 烟测事实
 
 - 当前 Release Worker 在隔离 `.tmp/phase3-ipc-runtime-escalated/data` 中真实启动成功；超限请求 `4194778` UTF-8 字节得到 `MESSAGE_TOO_LARGE`，同一连接后续 `system.ping` 成功。

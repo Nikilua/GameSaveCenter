@@ -294,6 +294,8 @@ namespace GameSaveCenter.Contracts
     {
         public string PlayniteId { get; set; } = string.Empty;
         public int Limit { get; set; } = 200;
+        /// <summary>Optional zero-based offset for bounded list responses.</summary>
+        public int Offset { get; set; }
         public bool ForceRefresh { get; set; }
     }
 

@@ -88,8 +88,8 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.GetMediaSummary=>await _store.GetMediaSummaryAsync(Read<GameQueryDto>(request).PlayniteId,token).ConfigureAwait(false),
                 MessageTypes.UpdateMediaMetadata=>await UpdateMediaMetadataAsync(Read<MediaMetadataUpdateDto>(request),token).ConfigureAwait(false),
                 MessageTypes.UpdateMediaMetadataBatch=>await UpdateMediaMetadataBatchAsync(Read<MediaMetadataBatchUpdateDto>(request),token).ConfigureAwait(false),
-                MessageTypes.ListUnassignedMedia=>await _store.GetUnassignedMediaAsync(Read<GameQueryDto>(request).Limit,token).ConfigureAwait(false),
-                MessageTypes.ListIgnoredMedia=>await _store.GetIgnoredMediaAsync(Read<GameQueryDto>(request).Limit,token).ConfigureAwait(false),
+                MessageTypes.ListUnassignedMedia=>await ListUnassignedMediaAsync(Read<GameQueryDto>(request),token).ConfigureAwait(false),
+                MessageTypes.ListIgnoredMedia=>await ListIgnoredMediaAsync(Read<GameQueryDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ReassignMedia=>await _media.ReassignAsync(Read<ReassignMediaRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ReassignMediaBatch=>await _media.ReassignBatchAsync(Read<MediaInboxBatchRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.IgnoreMedia=>await _media.IgnoreAsync(Read<IgnoreMediaRequestDto>(request),token).ConfigureAwait(false),
@@ -201,6 +201,11 @@ public sealed class IpcRequestDispatcher
     }
     private Task<GameSessionStopResultDto> StopAsync(GameSessionEventDto value,CancellationToken token)
         =>_sessions.StopAsync(value,token);
+    private const int MaximumMediaInboxPageSize = 500;
+    private Task<List<MediaItemDto>> ListUnassignedMediaAsync(GameQueryDto query,CancellationToken token)
+        =>_store.GetUnassignedMediaAsync(Math.Min(query.Limit,MaximumMediaInboxPageSize),token,query.Offset);
+    private Task<List<MediaItemDto>> ListIgnoredMediaAsync(GameQueryDto query,CancellationToken token)
+        =>_store.GetIgnoredMediaAsync(Math.Min(query.Limit,MaximumMediaInboxPageSize),token,query.Offset);
     private async Task<List<BackupVersionDto>> ListBackupsAsync(GameQueryDto query,CancellationToken token)
     {
         if (string.IsNullOrWhiteSpace(query.PlayniteId)) return new List<BackupVersionDto>();

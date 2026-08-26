@@ -104,29 +104,31 @@ WHERE media_id=$id;";
         }
     }
 
-    public async Task<List<MediaItemDto>> GetUnassignedMediaAsync(int limit, CancellationToken token)
+    public async Task<List<MediaItemDto>> GetUnassignedMediaAsync(int limit, CancellationToken token, int offset = 0)
     {
         var result=new List<MediaItemDto>(); await using var connection=Open(); await connection.OpenAsync(token).ConfigureAwait(false);
         var command=connection.CreateCommand(); command.CommandText=@"SELECT media_id,playnite_id,kind,source,archive_path,original_path,captured_utc,size_bytes,sha256,is_favorite,comment,cloud_state,classification_state,classification_reason
 FROM media
 WHERE classification_state='Inbox'
-ORDER BY captured_utc DESC
-LIMIT $limit;";
+ORDER BY captured_utc DESC, media_id DESC
+LIMIT $limit OFFSET $offset;";
         command.Parameters.AddWithValue("$limit",Math.Clamp(limit,1,5000));
+        command.Parameters.AddWithValue("$offset",Math.Max(offset,0));
         await using var reader=await command.ExecuteReaderAsync(token).ConfigureAwait(false);
         while(await reader.ReadAsync(token).ConfigureAwait(false)) result.Add(ReadMedia(reader));
         return result;
     }
 
-    public async Task<List<MediaItemDto>> GetIgnoredMediaAsync(int limit, CancellationToken token)
+    public async Task<List<MediaItemDto>> GetIgnoredMediaAsync(int limit, CancellationToken token, int offset = 0)
     {
         var result=new List<MediaItemDto>(); await using var connection=Open(); await connection.OpenAsync(token).ConfigureAwait(false);
         var command=connection.CreateCommand(); command.CommandText=@"SELECT media_id,playnite_id,kind,source,archive_path,original_path,captured_utc,size_bytes,sha256,is_favorite,comment,cloud_state,classification_state,classification_reason
 FROM media
 WHERE classification_state='Ignored'
-ORDER BY captured_utc DESC
-LIMIT $limit;";
+ORDER BY captured_utc DESC, media_id DESC
+LIMIT $limit OFFSET $offset;";
         command.Parameters.AddWithValue("$limit",Math.Clamp(limit,1,5000));
+        command.Parameters.AddWithValue("$offset",Math.Max(offset,0));
         await using var reader=await command.ExecuteReaderAsync(token).ConfigureAwait(false);
         while(await reader.ReadAsync(token).ConfigureAwait(false)) result.Add(ReadMedia(reader));
         return result;

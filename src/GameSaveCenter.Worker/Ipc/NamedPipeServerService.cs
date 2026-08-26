@@ -101,9 +101,17 @@ public sealed class NamedPipeServerService : BackgroundService
     private async Task WriteEnvelopeAsync(StreamWriter writer, IpcEnvelope envelope)
     {
         var serialized = JsonSerializer.Serialize(envelope, _json);
-        if (Encoding.UTF8.GetByteCount(serialized) > ProtocolConstants.MaximumMessageBytes)
+        var responseBytes = Encoding.UTF8.GetByteCount(serialized);
+        if (responseBytes > ProtocolConstants.MaximumMessageBytes)
         {
-            _logger.LogWarning("Named pipe response exceeded {MaximumMessageBytes} bytes; returning a bounded error", ProtocolConstants.MaximumMessageBytes);
+            var payloadBytes = Encoding.UTF8.GetByteCount(envelope.PayloadJson ?? string.Empty);
+            _logger.LogWarning(
+                "Named pipe response exceeded {MaximumMessageBytes} bytes; returning a bounded error. RequestId={RequestId} Type={Type} ResponseBytes={ResponseBytes} PayloadBytes={PayloadBytes}",
+                ProtocolConstants.MaximumMessageBytes,
+                envelope.RequestId,
+                envelope.Type,
+                responseBytes,
+                payloadBytes);
             serialized = JsonSerializer.Serialize(new IpcEnvelope
             {
                 RequestId = envelope.RequestId,

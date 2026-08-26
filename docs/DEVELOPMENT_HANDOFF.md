@@ -2,6 +2,14 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-26 STAB-005 媒体 Inbox 响应超限交接
+
+- 用户实机两端均为 `0.6.70.0`；Worker 在 `11:04:21` 报告 Named Pipe 响应超过 `4194304` 字节，Playnite 随后把 `MESSAGE_TOO_LARGE` 显示成“操作失败”。已确认根因是媒体 Inbox 列表旧路径一次请求 5000 条，用户库有 4615 条 Inbox 媒体。
+- 当前修复在 Worker 端把未分配/已忽略媒体限制为 500 条并支持 `Offset`，在 Playnite 端分页读取最多 5000 条；数据库查询按 `captured_utc DESC, media_id DESC` 稳定排序。服务端超限日志新增 `RequestId`、`Type`、`ResponseBytes`、`PayloadBytes`，不能简单调高 4 MiB 上限。
+- 代码没有改 XAML、布局、动画或页面数据应用路径；自动验证为 Core `59/59`、Worker `210/210`、Playnite `302/359`（57 跳过）、Release 0 warning/0 error、RenderHarness `render-qa OK`。WPF 静态审计仍为 0 error/18 warning/172 info。
+- 用户明确允许本修复跳过 Phase 4。当前未覆盖真实 Playnite 安装后的补丁 Worker 验收：只读探针对现有 Worker 的 500 条请求测得约 745990 字节，隔离补丁 Worker 因全局互斥未启动成功；没有停止用户 Worker 或修改其数据。
+- 下一步：用本次构建产物安装到用户实际扩展目录后，打开 Media Inbox/Ignore 页面，确认没有 IPC 超限；若仍有超限，按新增 Worker 日志中的 `Type`、请求 ID和字节数继续定位其他接口。
+
 ## 2026-08-26 STAB-003A IPC 真实管道烟测补充
 
 - 隔离 Release Worker 真实启动后，`4194778` 字节超限请求返回 `MESSAGE_TOO_LARGE`；同一 Named Pipe 连接的后续 `system.ping` 成功，证明超限行消费和连接复用路径可工作。

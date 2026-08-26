@@ -106,6 +106,7 @@
 | GSC-101 | Worker 任务回调同步更新 Dashboard 绑定集合时未保护 Dispatcher 关闭竞态 | 源码已修复待 Playnite 生命周期回归 | 集合更新保留顺序，但关闭中的 Dispatcher 会被守卫并写入真实日志 |
 | GSC-102 | 插件级通知与安全确认直接 Invoke Playnite Dispatcher，关闭期间可能向宿主回抛异常 | 源码已修复待 Playnite 生命周期回归 | 统一调度守卫；无法显示的确认默认取消，通知安全回退 |
 | GSC-103 | 多个 DataGrid 选中描边右侧圆角被宿主滚动轨道覆盖 | 源码已修复待多表格视觉回归 | 共享选中行模板保留右侧安全区；Dashboard 本地兼容表格同步修复 |
+| GSC-104 | 媒体 Inbox 一次返回 5000 条导致 IPC 响应超过 4 MiB | 源码已修复，待新包实机复核 | Worker/Playnite 均按 500 条分页，整体最多 5000 条；超限日志记录请求类型、ID 和实际字节数，确认 Inbox/Ignore 页面不再显示 `MESSAGE_TOO_LARGE` |
 | GSC-104 | Overview 风险区两个操作按钮垂直位置和高度不一致 | 源码已修复待 Overview 视觉回归 | 两个真实命令统一共享工具栏按钮尺寸与居中对齐 |
 | GSC-105 | 普通输入框光标起点不稳定，搜索框缺少一键清除 | 源码已修复待多主题/键盘回归 | 普通 TextBox 左对齐并传递内容对齐属性；游戏、媒体、任务、FLiNG 搜索框有条件显示清除按钮 |
 | GSC-106 | FLiNG 2012–2019 归档直链为 RAR/7z 时无法进入下载流程 | 源码已修复待归档下载回归 | 归档爬取接受 ZIP/RAR/7z，Worker 使用 SharpCompress 流式解包并保留安全上限；不自动执行 EXE |

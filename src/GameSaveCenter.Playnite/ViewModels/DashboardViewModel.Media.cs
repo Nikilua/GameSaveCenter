@@ -11,6 +11,9 @@ namespace GameSaveCenter.Playnite.ViewModels
 {
     public sealed partial class DashboardViewModel
     {
+        private const int MediaInboxPageSize = 500;
+        private const int MaximumMediaInboxItems = 5000;
+
         private async Task LoadMediaWorkspaceAsync()
         {
             await LoadInboxAsync();
@@ -21,8 +24,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             var selectedId = SelectedInboxMedia?.MediaId;
             var targetId = InboxTargetGame?.PlayniteId;
-            var inbox = (await plugin.RequestAsync<MediaItemDto[]>(MessageTypes.ListUnassignedMedia, new GameQueryDto { Limit = 5000 }))
-                ?? Array.Empty<MediaItemDto>();
+            var inbox = await LoadMediaInboxPagesAsync(MessageTypes.ListUnassignedMedia);
             ApplyOnUi(() =>
             {
                 if (!InboxEquals(UnassignedMedia, inbox))
@@ -40,8 +42,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private async Task LoadIgnoredMediaAsync()
         {
             var selectedId = SelectedInboxMedia?.MediaId;
-            var ignored = (await plugin.RequestAsync<MediaItemDto[]>(MessageTypes.ListIgnoredMedia, new GameQueryDto { Limit = 5000 }))
-                ?? Array.Empty<MediaItemDto>();
+            var ignored = await LoadMediaInboxPagesAsync(MessageTypes.ListIgnoredMedia);
             ApplyOnUi(() =>
             {
                 if (!InboxEquals(IgnoredMedia, ignored))
@@ -52,6 +53,25 @@ namespace GameSaveCenter.Playnite.ViewModels
                 else
                     RaiseCommandStates();
             });
+        }
+
+        private async Task<MediaItemDto[]> LoadMediaInboxPagesAsync(string messageType)
+        {
+            var result = new List<MediaItemDto>();
+            for (var offset = 0; offset < MaximumMediaInboxItems; offset += MediaInboxPageSize)
+            {
+                var limit = Math.Min(MediaInboxPageSize, MaximumMediaInboxItems - offset);
+                var page = await plugin.RequestAsync<MediaItemDto[]>(messageType, new GameQueryDto
+                {
+                    Limit = limit,
+                    Offset = offset
+                }).ConfigureAwait(false) ?? Array.Empty<MediaItemDto>();
+                if (page.Length == 0) break;
+
+                result.AddRange(page);
+                if (page.Length < limit) break;
+            }
+            return result.ToArray();
         }
 
         private void ApplyMediaInboxMode(string? selectedId = null)

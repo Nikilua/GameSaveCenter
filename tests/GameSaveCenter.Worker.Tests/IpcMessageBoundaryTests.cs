@@ -60,10 +60,31 @@ public sealed class IpcMessageBoundaryTests
         Assert.Contains("MESSAGE_TOO_LARGE", client);
         Assert.Contains("PipeOptions.CurrentUserOnly", server);
         Assert.Contains("PipeOptions.CurrentUserOnly", events);
+        Assert.Contains("RequestId={RequestId}", server);
+        Assert.Contains("Type={Type}", server);
+        Assert.Contains("ResponseBytes={ResponseBytes}", server);
+        Assert.Contains("PayloadBytes={PayloadBytes}", server);
         Assert.Contains("catch(JsonException", server);
         Assert.Contains("catch(IOException)", server);
         Assert.Contains("catch (OperationCanceledException) when (cancellation.IsCancellationRequested)", client);
         Assert.Contains("throw new TimeoutException(\"Worker response timed out.\")", client);
+    }
+
+    [Fact]
+    public void MediaInboxRequestsUseBoundedPagesAndOffsets()
+    {
+        var root = FindRepositoryRoot();
+        var dispatcher = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Worker", "Ipc", "IpcRequestDispatcher.cs"));
+        var store = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Worker", "Persistence", "SqliteStateStore.Media.cs"));
+        var viewModel = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.Media.cs"));
+
+        Assert.Contains("MaximumMediaInboxPageSize = 500", dispatcher);
+        Assert.Contains("query.Offset", dispatcher);
+        Assert.Contains("OFFSET $offset", store);
+        Assert.Contains("ORDER BY captured_utc DESC, media_id DESC", store);
+        Assert.Contains("MediaInboxPageSize = 500", viewModel);
+        Assert.Contains("Offset = offset", viewModel);
+        Assert.DoesNotContain("Limit = 5000", viewModel);
     }
 
     private static string FindRepositoryRoot()
