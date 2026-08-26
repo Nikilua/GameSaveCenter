@@ -3,6 +3,12 @@
 > 维护时间：2026-08-12
 > 本文件记录性能测量方法、当前基线数字与待真机验证项。不要伪造数字；没有实测的写“待验证”。
 
+## Phase 0 当前基线（2026-08-26）
+
+- Release RenderHarness 报告：253 张 PNG、11 个窗口尺寸、`render-qa OK`、无 `PROBLEM`；253 个 `render_ms` 样本范围 16–3072ms，平均 238.82ms。报告为 `.tmp/phase0-render-qa/render-qa-report.txt`。
+- 当前 2000 游戏合成基准：首次 `SetItems=21ms`、未变化 `SetItems=0ms`、单项变化 `SetItems=26ms`、搜索刷新 `203ms`、清空搜索 `195ms`、任务首次/未变化 `ReplaceAll=0ms`。详细结果为 `.tmp/phase0-baseline-build/ui-qa/benchmarks/large-library.txt`。
+- 这些数字来自隔离 WPF/单元测试夹具，不包含真实 Playnite 宿主 IPC、磁盘、DPI、窗口合成和大库可视滚动；不能用来宣称真实帧率或宿主性能已验收。
+
 ## 测量设施（PERF-004）
 
 统一使用 `[PERF]` 前缀的 Debug 日志：

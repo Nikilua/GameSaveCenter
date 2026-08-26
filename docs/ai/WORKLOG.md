@@ -2,6 +2,34 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-26 STAB-000 Phase 0 稳定性修复基线
+
+**基线范围：**
+
+- 依据《GameSaveCenter 稳定性修复实施目标》只做只读检查；没有修改业务代码、XAML、Binding、命令、DTO、IPC 协议或页面资源。
+- 当前提交为 `28bccfe4ad7f55a9ea95083d5a686d7d2837e96b`，分支为 `main`，与 `origin/main` 同步；检查前后工作树均无未提交源码修改。
+- 生产页面树为 `DashboardView` 挂载 `AcrylicProductionShellView.PageHost`，由 `CreatePages()` 管理 Overview、Save、Trainer、Media、Task、Maintenance 六个真实页面；Settings 由独立 `GameSaveCenterSettingsView` 提供。`DashboardView.xaml` 中仍保留兼容/旧页面树，本阶段不治理或删除。
+- 生产壳资源入口为 `AcrylicProductionResources.xaml`；Dashboard 与各真实页面继续合并 `DesignTokens.xaml`、`WpfUiProduction.xaml`、`Redesign.xaml`，兼容 Dashboard 还合并 AcrylicReference 资源。页面 Binding、命令、虚拟化和滚动结构保持现状。
+
+**当前稳定性风险记录：**
+
+- `DashboardViewModel` 构造函数仍直接订阅 `plugin.PlayniteGameStarted`，`DashboardView.OnLoaded` 尚未显式启动该订阅；`OnUnloaded` 通过 `CancelDeferredUiWork()` 取消回调。Phase 1 需改为 View 生命周期驱动的幂等订阅，并保留 pending selection 语义。
+- `ExternalProcessRunner` 当前使用 `ReadToEndAsync` 无上限累积 stdout/stderr；`NamedPipeServerService` 和 `WorkerIpcClient` 仍是先按行读取再检查消息大小，边界保护尚未收口。
+- `RcloneClient.RunSafeAsync` 将名为 `workingDirectory` 的参数实际作为 `standardInput` 传给 Runner；本阶段仅记录，不改变现有运行目录或调用参数。
+
+**自动基线结果：**
+
+- `python scripts/validate-source.py`：通过。
+- `scripts/check-xaml.ps1`：19 个 XAML 文件通过。
+- `python .codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py .`：0 error、18 warning、172 info；warning 为既有有限滚动/模板审查提示，info 主要为资源字典 token 提示。
+- 隔离 Release 构建：0 warning、0 error；Core `59/59`，Worker `201/201`，Playnite `297/354`（57 跳过、0 失败）。隔离输出位于 `.tmp/phase0-baseline-build`。
+- RenderHarness：`render-qa OK`，0 条 `PROBLEM`，253 张 PNG，覆盖 11 个窗口尺寸（1040×700 至 3840×2160）、7 个页面/工作区及 Light/Dark 和 resize transition。`render_ms` 样本 253 个，范围 16–3072ms，平均 238.82ms；报告位于 `.tmp/phase0-render-qa/render-qa-report.txt`。
+- 2000 游戏合成基准：首次 `SetItems=21ms`、未变化 `SetItems=0ms`、单项变化 `SetItems=26ms`、搜索刷新 `203ms`、清空搜索 `195ms`、任务首次/未变化 `ReplaceAll=0ms`；详细文件位于 `.tmp/phase0-baseline-build/ui-qa/benchmarks/large-library.txt`。
+
+**宿主边界：**
+
+- 本轮没有重新启动真实 Playnite 进行逐页、DPI、主题、键盘焦点或生命周期人工验收；离屏 RenderHarness 不能替代真实宿主证据。Phase 4 仍标记为 `MANUAL QA REQUIRED`，若隔离环境不可用则记录 `BLOCKED_ENVIRONMENT`。
+
 ## 2026-08-25 UI-331 共享控件与界面流畅度收口
 
 **巡检结论：**

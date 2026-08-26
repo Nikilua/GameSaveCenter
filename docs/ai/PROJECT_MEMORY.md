@@ -3,6 +3,15 @@
 > 维护时间：2026-08-25
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-26 STAB-000 当前稳定性修复基线
+
+- 当前基线提交为 `28bccfe4ad7f55a9ea95083d5a686d7d2837e96b`，`main` 与 `origin/main` 同步，工作树干净。
+- Phase 0 已完成只读基线：源码校验通过、XAML 19/19、WPF 0 error/18 warning/172 info、Release Core 59/59、Worker 201/201、Playnite 297/354（57 跳过），RenderHarness `render-qa OK`，2000 游戏合成耗时已记录在 WORKLOG。
+- 生产壳通过 `AcrylicProductionShellView.PageHost` 动态承载 Overview、Save、Trainer、Media、Task、Maintenance；Settings 是独立 `GameSaveCenterSettingsView`。`DashboardView.xaml` 旧/兼容页面树仍保留，禁止在稳定性阶段删除。
+- Phase 1 的首个已确认风险是 Dashboard 生命周期：`DashboardViewModel` 构造函数订阅 `PlayniteGameStarted`，而 View 的 Loaded/Unloaded 没有对应的显式启动/停止 API。后续应增加幂等 Start/Stop，由 `DashboardView.OnLoaded`/`OnUnloaded` 驱动，并锁定卸载后不调度 UI、重新加载可恢复、pending selection 不变。
+- Phase 2/3 的首个边界风险也已确认：`ExternalProcessRunner.ReadToEndAsync` 无输出上限；Named Pipe 服务端/客户端读取整行后才检查大小；`RcloneClient.RunSafeAsync` 的 workingDirectory/standardInput 参数语义错位。正常输出、退出码、超时、取消、JSON 错误和协议契约必须保持不变。
+- 本轮未重新启动真实 Playnite；RenderHarness 和静态审计均不等于宿主视觉、DPI、键盘焦点或生命周期验收。真实验证继续标记为 `MANUAL QA REQUIRED`。
+
 ## 2026-08-25 UI-331 当前事实：共享控件、侧栏动画与输入校验性能
 
 - `WpfUiProduction.xaml` 的生产 TextBox 模板通过外层 `Chrome.Padding={TemplateBinding Padding}` 应用输入框内边距；`PART_ContentHost` 必须继续保持 `Margin=0`、`Padding=0`，不要恢复把 Padding 绑定到 ContentHost Margin 的旧写法。
