@@ -30,8 +30,9 @@ public sealed class ProductionShellChromeSourceTests
         Assert.Contains("x:Name=\"HeaderSurface\" Grid.Row=\"0\"", shell);
         Assert.Contains("Style=\"{StaticResource GscRedesignHeaderSurface}\"", shell);
         Assert.Contains("x:Key=\"GscRedesignHeaderSurface\"", redesign);
-        Assert.Contains("x:Key=\"GscRedesignHeaderCorner\">16,16,0,0", redesign);
+        Assert.Contains("x:Key=\"GscRedesignHeaderCorner\">18", redesign);
         Assert.Contains("CornerRadius\" Value=\"{StaticResource GscRedesignHeaderCorner}\"", redesign);
+        Assert.Contains("BorderThickness\" Value=\"1\"", redesign);
         Assert.Contains("ClipToBounds\" Value=\"True\"", redesign);
     }
 

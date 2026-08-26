@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-08-26 UI-335 标题栏与页面卡片完整圆角
+
+- 针对用户新截图收口共享圆角：生产标题栏由仅顶部两角改为四角 18 DIP 圆角和完整描边；`GscRedesignSectionCard` 增加 `ClipToBounds=True`，防止内部材质/子内容重新露出尖角。
+- 保留原有标题、顶部按钮命令、页面 Binding、滚动、虚拟化和数据契约；新增/更新共享样式源码回归断言。
+- `validate-source.py`、19 文件 XAML 检查、WPF 静态审计、Release 构建/全量测试通过；Core `59/59`、Worker `210/210`、Playnite `310/367`（57 跳过）；`.tmp/ui-qa-rounded-surfaces-v1/render-qa-report.txt` 为 `render-qa OK`。真实 Playnite 未运行，Phase 4 按用户要求跳过。
+
 ## 2026-08-26 UI-334 按钮聚焦与按压状态全按钮覆盖
 
 - 修复生产共享 `GscWpfUiButton` 的状态层只覆盖内容内侧的问题：`ButtonChrome` 取消 Padding，Hover/Pressed 层覆盖整个圆角 Chrome，内容间距由 `ContentPresenter` Margin 保留。

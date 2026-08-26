@@ -2,6 +2,13 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-08-26 UI-335 完整圆角交接
+
+- 标题栏 `GscRedesignHeaderSurface` 已从仅顶部圆角改为四角 18 DIP 圆角、完整 1 DIP 描边和 `ClipToBounds=True`；普通页面共享卡片 `GscRedesignSectionCard` 也统一启用裁剪，避免内部背景造成方形角泄漏。
+- 变更只影响共享视觉容器，不改变标题/副标题、顶部按钮命令、Binding、页面数据、滚动或虚拟化；对应源码回归断言已更新。
+- 自动证据：源码校验、XAML 19/19、WPF 静态审计、Release 0 warning/0 error，Core `59/59`、Worker `210/210`、Playnite `310/367`（57 跳过），`.tmp/ui-qa-rounded-surfaces-v1/render-qa-report.txt` 为 `render-qa OK`。
+- RenderHarness 只覆盖页面内容，不覆盖外层 Shell 标题栏；真实 Playnite、DPI 和宿主截图仍未运行，Phase 4 按用户要求跳过。
+
 ## 2026-08-26 UI-334 按钮状态层覆盖交接
 
 - 生产共享 `GscWpfUiButton` 已改为整按钮状态覆盖：`ButtonChrome` 不再承载内容 Padding，Hover/Pressed 层覆盖整个圆角表面，内容间距由 `ContentPresenter Margin={TemplateBinding Padding}` 保持。

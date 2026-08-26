@@ -5101,6 +5101,7 @@ public sealed class WpfUiResourceDictionaryTests
 
         Assert.Contains("CornerRadius\" Value=\"16\"", section);
         Assert.Contains("Padding\" Value=\"16\"", section);
+        Assert.Contains("ClipToBounds\" Value=\"True\"", section);
         Assert.Contains("Effect\" Value=\"{x:Null}\"", section);
     }
 

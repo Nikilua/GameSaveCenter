@@ -13,7 +13,7 @@
     <CornerRadius x:Key="GscRedesignSidebarCorner">18</CornerRadius>
     <CornerRadius x:Key="GscRedesignCardCorner">16</CornerRadius>
     <CornerRadius x:Key="GscRedesignControlCorner">10</CornerRadius>
-    <CornerRadius x:Key="GscRedesignHeaderCorner">16,16,0,0</CornerRadius>
+    <CornerRadius x:Key="GscRedesignHeaderCorner">18</CornerRadius>
     <Thickness x:Key="GscRedesignPagePadding">18</Thickness>
     <Thickness x:Key="GscRedesignCardPadding">16</Thickness>
 
@@ -34,12 +34,12 @@
     </Style>
 
     <Style x:Key="GscRedesignHeaderSurface" TargetType="Border">
-        <!-- The title bar is the top surface of the production shell. Round only its
-             exposed top corners; the straight lower edge keeps the page host attached
-             without a translucent seam or an extra layout gap. -->
+        <!-- The title bar is a standalone rounded surface. All four corners must remain
+             visible; otherwise the rectangular page/background layer behind it makes the
+             header look square even when only the outer border has a radius. -->
         <Setter Property="Background" Value="{DynamicResource GscGlassFillBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
-        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+        <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CornerRadius" Value="{StaticResource GscRedesignHeaderCorner}"/>
         <Setter Property="ClipToBounds" Value="True"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
@@ -58,6 +58,7 @@
              values below, so this shared change does not alter their layout contracts. -->
         <Setter Property="CornerRadius" Value="16"/>
         <Setter Property="Padding" Value="16"/>
+        <Setter Property="ClipToBounds" Value="True"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="UseLayoutRounding" Value="True"/>
         <Setter Property="Effect" Value="{x:Null}"/>

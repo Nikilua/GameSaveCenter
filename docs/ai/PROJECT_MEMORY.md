@@ -3,6 +3,12 @@
 > 维护时间：2026-08-25
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-08-26 UI-335 标题栏与页面卡片完整圆角
+
+- 用户反馈截图中的标题栏和页面卡片仍有尖角。根因是 `GscRedesignHeaderCorner` 只设置了 `16,16,0,0`，普通 `GscRedesignSectionCard` 也没有统一裁剪内部子元素。
+- 标题栏改为 18 DIP 四角圆角、完整 1 DIP 描边和裁剪；共享页面卡片启用 `ClipToBounds=True`，避免内部背景/内容把圆角视觉填回直角。命令、Binding、页面数据、滚动和虚拟化未改。
+- Release 0 warning/0 error；Core `59/59`、Worker `210/210`、Playnite `310/367`（57 跳过）；源码/XAML/WPF 门禁通过，`.tmp/ui-qa-rounded-surfaces-v1/render-qa-report.txt` 为 `render-qa OK`。RenderHarness 不包含外层 Shell 标题栏，真实 Playnite 未运行，Phase 4 按用户要求跳过。
+
 ## 2026-08-26 UI-334 按钮状态层覆盖范围
 
 - 生产 `GscWpfUiButton` 的 Hover/Pressed 状态层现在覆盖整个圆角按钮；`ButtonChrome` 保持 0 padding，内容间距改由 `ContentPresenter` 的 `TemplateBinding Padding` Margin 保留。
