@@ -216,7 +216,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             RestoreIgnoredMediaBatchCommand = new RelayCommand(value => Run(() => RestoreIgnoredMediaBatchAsync(value)), value => !IsBusy && MediaInboxMode == "已忽略" && GetSelectedInboxMedia(value).Count > 0);
             CancelTaskCommand = new RelayCommand(_ => _ = CancelSelectedTaskAsync(), _ => SelectedTask != null && SelectedTask.CanCancel && !IsCancellingTask);
             RetryTaskCommand = new RelayCommand(_ => Run(RetrySelectedTaskAsync), _ => !IsBusy && CanRetrySelectedTask());
-            CopyTaskErrorCommand = new RelayCommand(_ => RunLocal(CopySelectedTaskError), _ => SelectedTask != null && !string.IsNullOrWhiteSpace(SelectedTask.DetailMessage));
+            CopyTaskErrorCommand = new RelayCommand(_ => Run(CopySelectedTaskErrorAsync), _ => SelectedTask != null && !string.IsNullOrWhiteSpace(SelectedTask.DetailMessage));
             OpenAttentionCenterCommand = new RelayCommand(_ => OpenAttentionCenter());
             OpenMaintenanceCommand = new RelayCommand(_ => OpenMaintenance());
             OpenAttentionFindingCommand = new RelayCommand(value => OpenAttentionFinding(value as ValidationFindingDto));
@@ -248,7 +248,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             RestoreStagedRemoteBackupCommand = new RelayCommand(_ => Run(RestoreStagedRemoteBackupAsync), _ => !IsBusy && StagedRemoteBackup != null && StagedRemoteBackup.Verified);
             SaveProcessMappingCommand = new RelayCommand(_ => Run(SaveProcessMappingAsync), _ => !IsBusy && !string.IsNullOrWhiteSpace(ProcessMappingExecutable) && ProcessMappingTargetGame != null);
             DeleteProcessMappingCommand = new RelayCommand(_ => Run(DeleteProcessMappingAsync), _ => !IsBusy && SelectedProcessMapping != null);
-            CopyDiagnosticsCommand = new RelayCommand(_ => RunLocal(CopyDiagnostics), _ => !string.IsNullOrWhiteSpace(DiagnosticSummary));
+            CopyDiagnosticsCommand = new RelayCommand(_ => Run(CopyDiagnosticsAsync), _ => !string.IsNullOrWhiteSpace(DiagnosticSummary));
             CreateDiagnosticsPackageCommand = new RelayCommand(_ => Run(CreateDiagnosticsPackageAsync), _ => !IsBusy && !string.IsNullOrWhiteSpace(EffectiveSettings.DataDirectory));
             OpenDataDirectoryCommand = new RelayCommand(_ => RunLocal(() => OpenPath(EffectiveSettings.DataDirectory)), _ => !string.IsNullOrWhiteSpace(EffectiveSettings.DataDirectory));
             OpenBackupDirectoryCommand = new RelayCommand(_ => RunLocal(() => OpenPath(EffectiveSettings.LudusaviBackupDirectory)), _ => !string.IsNullOrWhiteSpace(EffectiveSettings.LudusaviBackupDirectory));
@@ -1707,7 +1707,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private async Task CopyMaintenanceReportAsync()
         {
             var report = await plugin.RequestAsync<MaintenanceReportDto>(MessageTypes.GetMaintenanceReport, new { }, TimeSpan.FromMinutes(3));
-            CopyTextWithRetry(report.ReportText, "健康报告已复制", "健康报告已复制到剪贴板。");
+            await CopyTextWithRetryAsync(report.ReportText, "健康报告已复制", "健康报告已复制到剪贴板。");
         }
 
         private async Task ExportMaintenanceReportAsync()
@@ -2251,9 +2251,15 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task BackupAllAsync()
         {
-            var tasks = await plugin.RequestAsync<TaskStatusDto[]>(MessageTypes.BackupAll, new BackupRequestDto { Force = true, Reason = "ManualAll" }, TimeSpan.FromMinutes(45));
+            // BackupAll creates a durable Worker task and returns immediately. The full-library
+            // scan continues after this pipe request completes and resumes from SQLite after a
+            // Worker restart; the task center and terminal notification carry the real outcome.
+            var submitted = await plugin.RequestAsync<TaskStatusDto[]>(MessageTypes.BackupAll, new BackupRequestDto { Force = true, Reason = "ManualAll" }, TimeSpan.FromSeconds(30));
             await RefreshCoreAsync(false);
-            NotifyTaskResults(tasks);
+            var job = submitted.FirstOrDefault(x => string.Equals(x.TaskType, "BackupAll", StringComparison.OrdinalIgnoreCase));
+            ConfirmSuccess(job == null
+                ? "整库备份请求已提交；请在任务中心查看状态"
+                : $"已建立整库备份任务：{job.StateDisplay}，进度见任务中心");
         }
 
         private async Task DetectPathsAsync()
@@ -2429,6 +2435,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             if (task == null) return false;
             if (task.State != TaskState.Failed && task.State != TaskState.Cancelled) return false;
             if (string.Equals(task.TaskType, "MediaInbox", StringComparison.OrdinalIgnoreCase)) return true;
+            if (string.Equals(task.TaskType, "BackupAll", StringComparison.OrdinalIgnoreCase)) return true;
             if (string.IsNullOrWhiteSpace(task.GameId)) return false;
             if (string.Equals(task.TaskType, "CloudUpload", StringComparison.OrdinalIgnoreCase)) return true;
             if (task.ErrorCode?.StartsWith("RCLONE_", StringComparison.OrdinalIgnoreCase) == true) return true;
@@ -2456,6 +2463,14 @@ namespace GameSaveCenter.Playnite.ViewModels
                     TimeSpan.FromMinutes(15));
                 NotifyTaskResults(result);
             }
+            else if (string.Equals(task.TaskType, "BackupAll", StringComparison.OrdinalIgnoreCase))
+            {
+                var result = await plugin.RequestAsync<TaskStatusDto[]>(
+                    MessageTypes.BackupAll,
+                    new BackupRequestDto { Force = true, Reason = "RetryAll" },
+                    TimeSpan.FromSeconds(30));
+                NotifyTaskResults(result);
+            }
             else if (string.Equals(task.TaskType, "MediaSync", StringComparison.OrdinalIgnoreCase))
             {
                 var request = new MediaSyncRequestDto { UploadAfterSync = plugin.Settings.EnableCloudUpload };
@@ -2481,14 +2496,14 @@ namespace GameSaveCenter.Playnite.ViewModels
             StatusMessage = "重试任务已完成";
         }
 
-        private void CopySelectedTaskError()
+        private async Task CopySelectedTaskErrorAsync()
         {
             if (SelectedTask == null) return;
             var text = $"{SelectedTask.GameName} · {SelectedTask.TaskType}\r\n{SelectedTask.DetailMessage}\r\n任务 ID：{SelectedTask.TaskId}";
-            CopyTextWithRetry(text, "任务详情已复制", "任务详情已复制到剪贴板。");
+            await CopyTextWithRetryAsync(text, "任务详情已复制", "任务详情已复制到剪贴板。");
         }
 
-        private void CopyTextWithRetry(string text, string statusMessage, string infoMessage)
+        private async Task CopyTextWithRetryAsync(string text, string statusMessage, string infoMessage)
         {
             for (var attempt = 0; attempt < 4; attempt++)
             {
@@ -2502,8 +2517,9 @@ namespace GameSaveCenter.Playnite.ViewModels
                 catch (COMException) when (attempt < 3)
                 {
                     // CLIPBRD_E_CANT_OPEN / COM exceptions mean another process owns the
-                    // clipboard at this instant. A short retry usually succeeds.
-                    Thread.Sleep(150 + attempt * 100);
+                    // clipboard at this instant. A short asynchronous retry usually succeeds
+                    // without blocking the Playnite dispatcher between attempts.
+                    await Task.Delay(150 + attempt * 100).ConfigureAwait(true);
                 }
                 catch (Exception)
                 {
@@ -2547,9 +2563,9 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
         }
 
-        private void CopyDiagnostics()
+        private async Task CopyDiagnosticsAsync()
         {
-            CopyTextWithRetry(DiagnosticSummary ?? string.Empty, "诊断信息已复制到剪贴板", "GameSaveCenter 诊断信息已复制");
+            await CopyTextWithRetryAsync(DiagnosticSummary ?? string.Empty, "诊断信息已复制到剪贴板", "GameSaveCenter 诊断信息已复制");
         }
 
         private string BuildDiagnosticSummary(WorkerSettingsSnapshotDto settings)

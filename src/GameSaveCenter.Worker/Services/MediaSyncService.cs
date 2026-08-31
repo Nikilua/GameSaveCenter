@@ -1,3 +1,4 @@
+using System;
 using System.Security.Cryptography;
 using System.Text.Json;
 using GameSaveCenter.Contracts;
@@ -16,6 +17,9 @@ namespace GameSaveCenter.Worker.Services;
 /// </summary>
 public sealed class MediaSyncService
 {
+    private const int MediaSignatureSampleBytes = 4096;
+    private static readonly TimeSpan MediaSignatureRetention = TimeSpan.FromDays(30);
+    private const int MaximumMediaSignatures = 100_000;
     private static readonly HashSet<string> ImageExtensions=new(StringComparer.OrdinalIgnoreCase){".png",".jpg",".jpeg",".webp",".bmp"};
     private static readonly HashSet<string> VideoExtensions=new(StringComparer.OrdinalIgnoreCase){".mp4",".mkv",".mov",".webm",".avi"};
     private readonly WorkerOptions _options;
@@ -33,6 +37,7 @@ public sealed class MediaSyncService
     public async Task<List<TaskStatusDto>> SyncAsync(MediaSyncRequestDto request,CancellationToken token)
     {
         if(!_options.EnableMediaSync) return new List<TaskStatusDto>();
+        await _store.PruneMediaFileSignaturesAsync(DateTime.UtcNow.Subtract(MediaSignatureRetention), MaximumMediaSignatures, token).ConfigureAwait(false);
         var allGames=await _catalog.GetGamesAsync(token).ConfigureAwait(false);
         var selectedGames=allGames;
         if(request.PlayniteIds.Count>0)
@@ -307,25 +312,33 @@ public sealed class MediaSyncService
     {
         try
         {
-            if(!await IsStableAsync(path,token).ConfigureAwait(false))return false;
-            var hash=await ComputeSha256Async(path,token).ConfigureAwait(false);
-            if(await _store.MediaHashExistsAsync(hash,token).ConfigureAwait(false))return false;
-            var info=new FileInfo(path);
-            if(!info.Exists)return false;
-            var captured=info.CreationTimeUtc==DateTime.MinValue?info.LastWriteTimeUtc:info.CreationTimeUtc;
-            var kind=ImageExtensions.Contains(info.Extension)?MediaKind.Screenshot:MediaKind.VideoClip;
-            var archive=game==null
-                ?BuildInboxArchivePath(source,kind,captured,hash,info.Extension)
-                :BuildArchivePath(game,source,kind,captured,hash,info.Extension);
-            Directory.CreateDirectory(Path.GetDirectoryName(archive)!);
-            await CopyAtomicallyAsync(path,archive,token).ConfigureAwait(false);
-            await _store.AddMediaAsync(new MediaItemDto
+            // Fast path: a size+last-write match plus three small content samples against a
+            // previously hashed version lets us reuse the stored SHA-256 without the 350 ms
+            // stability wait or a full-file read on every rescan. Old rows without a sample
+            // deliberately fall through to a full hash. The sample is only a change detector;
+            // the archive hash still remains the deduplication source of truth.
+            var current=new FileInfo(path);
+            if(!current.Exists)return false;
+            var signature=await _store.TryGetMediaFileSignatureAsync(path,token).ConfigureAwait(false);
+            if(signature!=null&&signature.Length==current.Length&&signature.LastWriteTimeUtc==current.LastWriteTimeUtc&&!string.IsNullOrWhiteSpace(signature.SampleHash))
             {
-                MediaId=Guid.NewGuid().ToString("N"),PlayniteId=game?.PlayniteId??string.Empty,Kind=kind,Source=source,
-                ArchivePath=archive,OriginalPath=path,CapturedUtc=captured,SizeBytes=info.Length,Sha256=hash,
-                CloudState=game==null?"NotApplicable":"Pending",ClassificationState=game==null?"Inbox":"Assigned",ClassificationReason=classificationReason
-            },token).ConfigureAwait(false);
-            return true;
+                var sampleHash=await ComputeSampleHashAsync(path,current.Length,token).ConfigureAwait(false);
+                if(string.Equals(sampleHash,signature.SampleHash,StringComparison.OrdinalIgnoreCase)
+                    && await _store.MediaHashExistsAsync(signature.Sha256,token).ConfigureAwait(false))
+                {
+                    // Refresh the retention timestamp whenever a cached source is observed.
+                    await _store.UpsertMediaFileSignatureAsync(path,current.Length,current.LastWriteTimeUtc,signature.Sha256,sampleHash,token).ConfigureAwait(false);
+                    return false;
+                }
+            }
+
+            if(!await IsStableAsync(path,token).ConfigureAwait(false))return false;
+            current.Refresh();
+            var currentSampleHash=await ComputeSampleHashAsync(path,current.Length,token).ConfigureAwait(false);
+            var hash=await ComputeSha256Async(path,token).ConfigureAwait(false);
+            await _store.UpsertMediaFileSignatureAsync(path,current.Length,current.LastWriteTimeUtc,hash,currentSampleHash,token).ConfigureAwait(false);
+            if(await _store.MediaHashExistsAsync(hash,token).ConfigureAwait(false))return false;
+            return await ArchiveWithHashAsync(path,current,hash,source,game,classificationReason,token).ConfigureAwait(false);
         }
         catch(OperationCanceledException){throw;}
         catch(Exception ex)
@@ -333,6 +346,25 @@ public sealed class MediaSyncService
             _logger.LogWarning(ex,"Could not archive media candidate {Path}",path);
             return false;
         }
+    }
+
+    private async Task<bool> ArchiveWithHashAsync(string path,FileInfo info,string hash,MediaSourceKind source,GameDescriptorDto? game,string classificationReason,CancellationToken token)
+    {
+        if(!info.Exists)return false;
+        var captured=info.CreationTimeUtc==DateTime.MinValue?info.LastWriteTimeUtc:info.CreationTimeUtc;
+        var kind=ImageExtensions.Contains(info.Extension)?MediaKind.Screenshot:MediaKind.VideoClip;
+        var archive=game==null
+            ?BuildInboxArchivePath(source,kind,captured,hash,info.Extension)
+            :BuildArchivePath(game,source,kind,captured,hash,info.Extension);
+        Directory.CreateDirectory(Path.GetDirectoryName(archive)!);
+        await CopyAtomicallyAsync(path,archive,token).ConfigureAwait(false);
+        await _store.AddMediaAsync(new MediaItemDto
+        {
+            MediaId=Guid.NewGuid().ToString("N"),PlayniteId=game?.PlayniteId??string.Empty,Kind=kind,Source=source,
+            ArchivePath=archive,OriginalPath=path,CapturedUtc=captured,SizeBytes=info.Length,Sha256=hash,
+            CloudState=game==null?"NotApplicable":"Pending",ClassificationState=game==null?"Inbox":"Assigned",ClassificationReason=classificationReason
+        },token).ConfigureAwait(false);
+        return true;
     }
 
     private async Task<GameSessionEventDto?> ResolveSharedSessionAsync(string sessionId,CancellationToken token)
@@ -561,6 +593,30 @@ public sealed class MediaSyncService
     {
         await using var stream=new FileStream(path,FileMode.Open,FileAccess.Read,FileShare.ReadWrite,1024*128,FileOptions.Asynchronous|FileOptions.SequentialScan);
         var hash=await SHA256.HashDataAsync(stream,token).ConfigureAwait(false);return Convert.ToHexString(hash).ToLowerInvariant();
+    }
+
+    private static async Task<string> ComputeSampleHashAsync(string path,long length,CancellationToken token)
+    {
+        var offsets=new[]{0L,Math.Max(0,length/2-MediaSignatureSampleBytes/2),Math.Max(0,length-MediaSignatureSampleBytes)}
+            .Distinct()
+            .ToArray();
+        using var hash=IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
+        await using var stream=new FileStream(path,FileMode.Open,FileAccess.Read,FileShare.ReadWrite|FileShare.Delete,64*1024,FileOptions.Asynchronous);
+        var buffer=new byte[MediaSignatureSampleBytes];
+        foreach(var offset in offsets)
+        {
+            stream.Position=offset;
+            hash.AppendData(BitConverter.GetBytes(offset));
+            var remaining=(int)Math.Min(MediaSignatureSampleBytes,Math.Max(0,length-offset));
+            while(remaining>0)
+            {
+                var read=await stream.ReadAsync(buffer,0,remaining,token).ConfigureAwait(false);
+                if(read==0)break;
+                hash.AppendData(buffer,0,read);
+                remaining-=read;
+            }
+        }
+        return Convert.ToHexString(hash.GetHashAndReset()).ToLowerInvariant();
     }
 
     private static async Task CopyAtomicallyAsync(string source,string destination,CancellationToken token)

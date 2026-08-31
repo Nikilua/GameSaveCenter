@@ -11,11 +11,13 @@ public sealed class WorkerInitializationService : IHostedService
 {
     private readonly SqliteStateStore _store;
     private readonly SavePathDetectionService _detection;
+    private readonly BackupOrchestrator _backups;
     private readonly WorkerOptions _options;
+    private readonly IHostApplicationLifetime _lifetime;
     private readonly ILogger<WorkerInitializationService> _logger;
 
-    public WorkerInitializationService(SqliteStateStore store, SavePathDetectionService detection, WorkerOptions options, ILogger<WorkerInitializationService> logger)
-    { _store=store; _detection=detection; _options=options; _logger=logger; }
+    public WorkerInitializationService(SqliteStateStore store, SavePathDetectionService detection, BackupOrchestrator backups, WorkerOptions options, IHostApplicationLifetime lifetime, ILogger<WorkerInitializationService> logger)
+    { _store=store; _detection=detection; _backups=backups; _options=options; _lifetime=lifetime; _logger=logger; }
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
@@ -36,6 +38,7 @@ public sealed class WorkerInitializationService : IHostedService
             await _detection.CleanupExpiredSnapshotsAsync(cancellationToken).ConfigureAwait(false);
             snapshotTimer.Stop();
             _logger.LogDebug("Worker snapshot cleanup completed in {ElapsedMs}ms", snapshotTimer.ElapsedMilliseconds);
+            await _backups.ResumePendingAsync(_lifetime.ApplicationStopping).ConfigureAwait(false);
             _options.RecordStartupSuccess();
             var version = typeof(WorkerInitializationService).Assembly.GetName().Version?.ToString() ?? "unknown";
             stopwatch.Stop();

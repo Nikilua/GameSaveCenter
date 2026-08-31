@@ -31,12 +31,15 @@ public sealed class TaskCoordinator
         string gameName,
         Func<TaskProgress, CancellationToken, Task> operation,
         CancellationToken outerToken,
-        string sessionId = "")
+        string sessionId = "",
+        string? taskId = null,
+        DateTime? createdUtc = null)
     {
         var task = new TaskStatusDto
         {
-            TaskId=Guid.NewGuid().ToString("N"), SessionId=sessionId ?? string.Empty, WorkerSessionId=workerSessionId, TaskType=taskType, GameId=gameId, GameName=gameName,
-            State=TaskState.Queued, ProgressPercent=0, Message="等待执行", CreatedUtc=DateTime.UtcNow
+            TaskId=string.IsNullOrWhiteSpace(taskId) ? Guid.NewGuid().ToString("N") : taskId,
+            SessionId=sessionId ?? string.Empty, WorkerSessionId=workerSessionId, TaskType=taskType, GameId=gameId, GameName=gameName,
+            State=TaskState.Queued, ProgressPercent=0, Message="等待执行", CreatedUtc=createdUtc ?? DateTime.UtcNow
         };
         await PersistAndPublishAsync(task, outerToken).ConfigureAwait(false);
         var gate=_gameLocks.GetOrAdd(string.IsNullOrWhiteSpace(gameId)?"__global__":gameId,_=>new SemaphoreSlim(1,1));

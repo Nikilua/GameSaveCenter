@@ -111,6 +111,7 @@ namespace GameSaveCenter.Contracts
             "Restore" => "存档恢复",
             "MediaSync" => "媒体同步",
             "MediaInbox" => "媒体归类",
+            "BackupAll" => "整库备份",
             "TrainerDownload" => "修改器下载",
             "CloudUpload" => "云端上传",
             "Validation" => "存档校验",

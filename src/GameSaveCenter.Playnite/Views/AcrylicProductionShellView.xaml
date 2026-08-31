@@ -192,7 +192,7 @@
 
             <Grid Grid.Row="0" Grid.Column="1" Panel.ZIndex="2">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="68"/>
+                    <RowDefinition x:Name="HeaderRow" Height="68"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
             <Border x:Name="HeaderSurface" Grid.Row="0"
@@ -216,9 +216,9 @@
                                    FontSize="12" Foreground="{DynamicResource GscSecondaryTextBrush}"
                                    Margin="0,2,0,0" TextTrimming="CharacterEllipsis"/>
                     </StackPanel>
-                    <StackPanel x:Name="HeaderActionsPanel" Grid.Row="0" Grid.Column="1"
-                                Orientation="Horizontal" VerticalAlignment="Center"
-                                HorizontalAlignment="Right" MinWidth="0" Panel.ZIndex="1">
+                    <WrapPanel x:Name="HeaderActionsPanel" Grid.Row="0" Grid.Column="1"
+                               Orientation="Horizontal" VerticalAlignment="Center"
+                               HorizontalAlignment="Right" MinWidth="0" Panel.ZIndex="1">
                         <Button x:Name="GameContextButton" Style="{DynamicResource GscRedesignGameContextButton}"
                                 Width="300" MinWidth="0" MaxWidth="300" Click="OnGameContextClick"
                                 AutomationProperties.Name="选择当前游戏">
@@ -251,7 +251,7 @@
                                    Command="{Binding BackupSelectedCommand}" Content="立即备份" ToolTip="只备份当前选中的游戏"/>
                         <ui:Button x:Name="HeaderBackupButton" Style="{DynamicResource GscRedesignPrimaryHeaderButton}"
                                    Command="{Binding BackupAllCommand}" Content="全部备份" ToolTip="全部备份"/>
-                    </StackPanel>
+                    </WrapPanel>
                 </Grid>
             </Border>
 

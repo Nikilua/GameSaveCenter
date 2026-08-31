@@ -58,6 +58,7 @@ public sealed partial class SqliteStateStore
         await EnsureColumnAsync(connection, "backup_versions", "parent_backup_id", "TEXT", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "tasks", "session_id", "TEXT NOT NULL DEFAULT ''", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "tasks", "worker_session_id", "TEXT NOT NULL DEFAULT ''", token).ConfigureAwait(false);
+        await EnsureColumnAsync(connection, "media_file_signatures", "sample_hash", "TEXT NOT NULL DEFAULT ''", token).ConfigureAwait(false);
         var normalizeMedia = connection.CreateCommand();
         normalizeMedia.CommandText = @"
 UPDATE media
@@ -678,7 +679,7 @@ WHERE playnite_id<>$game
 SET state=$failed, progress=CASE WHEN progress>99 THEN 99 ELSE progress END, message=$message,
     finished_utc=$finished,
     error_code=CASE WHEN task_type IN ('Restore') THEN 'MANUAL_INTERVENTION_REQUIRED'
-                    WHEN task_type IN ('Backup','MediaSync','MediaInbox','CloudUpload') THEN 'WORKER_RESTARTED_RETRYABLE'
+                    WHEN task_type IN ('Backup','BackupAll','MediaSync','MediaInbox','CloudUpload') THEN 'WORKER_RESTARTED_RETRYABLE'
                     ELSE 'WORKER_RESTARTED' END,
     error_message=CASE WHEN task_type IN ('Restore') THEN 'Worker 意外退出，恢复任务已中断，需要人工介入并检查 PreRestore 快照。'
                        ELSE 'Worker 意外退出，任务中断；请确认目标文件状态后重新执行。' END
@@ -1125,6 +1126,8 @@ CREATE TABLE IF NOT EXISTS trainer_releases(release_id TEXT PRIMARY KEY,catalog_
 CREATE TABLE IF NOT EXISTS process_mappings(executable_name TEXT PRIMARY KEY,playnite_id TEXT NOT NULL,game_name TEXT NOT NULL,enabled INTEGER NOT NULL DEFAULT 1,created_utc TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS device_conflict_decisions(playnite_id TEXT NOT NULL,remote_device TEXT NOT NULL,local_backup_id TEXT,remote_backup_id TEXT,decision TEXT NOT NULL,comment TEXT,decided_utc TEXT NOT NULL,PRIMARY KEY(playnite_id,remote_device));
 CREATE TABLE IF NOT EXISTS cloud_retry_queue(playnite_id TEXT PRIMARY KEY,attempt_count INTEGER NOT NULL,next_attempt_utc TEXT NOT NULL,last_error TEXT,created_utc TEXT NOT NULL,updated_utc TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS media_file_signatures(path TEXT PRIMARY KEY,length INTEGER NOT NULL,last_write_utc TEXT NOT NULL,sha256 TEXT NOT NULL,sample_hash TEXT NOT NULL DEFAULT '',updated_utc TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS backup_all_jobs(job_id TEXT PRIMARY KEY,request_json TEXT NOT NULL,state INTEGER NOT NULL,progress INTEGER NOT NULL,message TEXT NOT NULL,completed_game_ids_json TEXT NOT NULL,current_game_id TEXT,created_utc TEXT NOT NULL,started_utc TEXT,finished_utc TEXT,worker_session_id TEXT NOT NULL,error_code TEXT,error_message TEXT);
  CREATE INDEX IF NOT EXISTS ix_tasks_created ON tasks(created_utc DESC);
  CREATE INDEX IF NOT EXISTS ix_tasks_game_type_created ON tasks(game_id,task_type,created_utc DESC);
 CREATE INDEX IF NOT EXISTS ix_backup_versions_game_time ON backup_versions(playnite_id,created_utc DESC);
@@ -1135,6 +1138,7 @@ CREATE INDEX IF NOT EXISTS ix_game_tools_game ON game_tools(playnite_id,tool_typ
 CREATE INDEX IF NOT EXISTS ix_game_tool_versions_tool ON game_tool_versions(tool_id,created_utc DESC);
 CREATE INDEX IF NOT EXISTS ix_trainer_catalog_title ON trainer_catalog(normalized_title);
 CREATE INDEX IF NOT EXISTS ix_cloud_retry_due ON cloud_retry_queue(next_attempt_utc);
+CREATE INDEX IF NOT EXISTS ix_backup_all_jobs_state_created ON backup_all_jobs(state,created_utc DESC);
 ";
 }
 

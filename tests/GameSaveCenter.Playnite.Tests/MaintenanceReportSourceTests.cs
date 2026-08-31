@@ -17,7 +17,7 @@ public sealed class MaintenanceReportSourceTests
         Assert.Contains("CopyMaintenanceReportCommand", maintenance);
         Assert.Contains("ExportMaintenanceReportCommand", maintenance);
         Assert.Contains("MessageTypes.GetMaintenanceReport", viewModel);
-        Assert.Contains("CopyTextWithRetry(report.ReportText", viewModel);
+        Assert.Contains("CopyTextWithRetryAsync(report.ReportText", viewModel);
         Assert.Contains("Clipboard.SetText(text)", viewModel);
         Assert.Contains("File.WriteAllText(dialog.FileName, report.ReportText)", viewModel);
         Assert.Contains("GetMaintenanceReport = \"maintenance.report.get\"", messages);

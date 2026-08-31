@@ -4,6 +4,8 @@ using GameSaveCenter.Core.Services;
 using GameSaveCenter.Worker.Configuration;
 using GameSaveCenter.Worker.Infrastructure;
 using GameSaveCenter.Worker.Persistence;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace GameSaveCenter.Worker.Services;
 
@@ -19,6 +21,9 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
     private readonly WorkerOptions _options;
     private readonly GameOperationLock _gameLock;
     private readonly BackupValidationService _validator = new();
+    private readonly ILogger<BackupOrchestrator> _logger;
+    private readonly IHostApplicationLifetime? _lifetime;
+    private int _backupAllInFlight;
 
     public BackupOrchestrator(
         GameCatalogService catalog,
@@ -28,7 +33,9 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
         CloudTransferCoordinator cloudTransfers,
         TaskCoordinator tasks,
         WorkerOptions options,
-        GameOperationLock gameLock)
+        GameOperationLock gameLock,
+        ILogger<BackupOrchestrator> logger,
+        IHostApplicationLifetime? lifetime = null)
     {
         _catalog = catalog;
         _store = store;
@@ -38,9 +45,18 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
         _tasks = tasks;
         _options = options;
         _gameLock = gameLock;
+        _logger = logger;
+        _lifetime = lifetime;
     }
 
-    public async Task<List<TaskStatusDto>> BackupAsync(BackupRequestDto request, CancellationToken token)
+    public Task<List<TaskStatusDto>> BackupAsync(BackupRequestDto request, CancellationToken token)
+        => BackupAsync(request, token, null, null);
+
+    private async Task<List<TaskStatusDto>> BackupAsync(
+        BackupRequestDto request,
+        CancellationToken token,
+        ISet<string>? completedGameIds,
+        Func<int, int, GameDescriptorDto, bool, Task>? progressCallback)
     {
         var games = await _catalog.GetGamesAsync(token).ConfigureAwait(false);
         var matches = await _catalog.GetMatchesAsync(token).ConfigureAwait(false);
@@ -51,13 +67,29 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
                 .ToList();
         }
 
+        var totalGames = games.Count;
+        var processedGames = completedGameIds == null
+            ? 0
+            : games.Count(x => completedGameIds.Contains(x.PlayniteId));
+        async Task ReportProcessedAsync(GameDescriptorDto game, bool completed)
+        {
+            if (completed && completedGameIds != null)
+                completedGameIds.Add(game.PlayniteId);
+            processedGames++;
+            if (progressCallback != null)
+                await progressCallback(processedGames, totalGames, game, completed).ConfigureAwait(false);
+        }
+
         var results = new List<TaskStatusDto>();
         var requestLabel = GetRequestLabel(request.Reason);
         foreach (var game in games)
         {
+            if (completedGameIds?.Contains(game.PlayniteId) == true)
+                continue;
+
             if (!_ludusavi.IsAvailable)
             {
-                results.Add(await _tasks.RunAsync(
+                var task = await _tasks.RunAsync(
                     "Backup",
                     game.PlayniteId,
                     game.Name,
@@ -65,7 +97,9 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
                         "LUDUSAVI_NOT_CONFIGURED",
                         "Ludusavi 尚未配置或可执行文件不存在。",
                         _options.LudusaviExecutable)),
-                    token, request.NotificationSessionId).ConfigureAwait(false));
+                    token, request.NotificationSessionId).ConfigureAwait(false);
+                results.Add(task);
+                await ReportProcessedAsync(game, task.State == TaskState.Succeeded).ConfigureAwait(false);
                 continue;
             }
 
@@ -73,7 +107,7 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
             {
                 if (request.PlayniteIds.Count > 0)
                 {
-                    results.Add(await _tasks.RunAsync(
+                    var task = await _tasks.RunAsync(
                         "Backup",
                         game.PlayniteId,
                         game.Name,
@@ -81,15 +115,19 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
                             "LUDUSAVI_GAME_UNMATCHED",
                             "该游戏尚未匹配到 Ludusavi 存档规则。",
                             game.Name)),
-                        token, request.NotificationSessionId).ConfigureAwait(false));
+                        token, request.NotificationSessionId).ConfigureAwait(false);
+                    results.Add(task);
+                    await ReportProcessedAsync(game, task.State == TaskState.Succeeded).ConfigureAwait(false);
                 }
+                else
+                    await ReportProcessedAsync(game, false).ConfigureAwait(false);
                 continue;
             }
 
             using var lease = await _gameLock.AcquireAsync(game.PlayniteId, GameOperationKind.Backup, TimeSpan.FromSeconds(10), token).ConfigureAwait(false);
             if (lease == null)
             {
-                results.Add(await _tasks.RunAsync(
+                var task = await _tasks.RunAsync(
                     "Backup",
                     game.PlayniteId,
                     game.Name,
@@ -97,11 +135,13 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
                         "GAME_OPERATION_BUSY",
                         "该游戏已有备份、恢复或媒体操作正在执行，已跳过本次备份。",
                         game.PlayniteId)),
-                    token, request.NotificationSessionId).ConfigureAwait(false));
+                    token, request.NotificationSessionId).ConfigureAwait(false);
+                results.Add(task);
+                await ReportProcessedAsync(game, task.State == TaskState.Succeeded).ConfigureAwait(false);
                 continue;
             }
 
-            results.Add(await _tasks.RunAsync(
+            var completedTask = await _tasks.RunAsync(
                 "Backup",
                 game.PlayniteId,
                 game.Name,
@@ -243,7 +283,9 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
                     };
                     await progress.ReportAsync(100, $"{requestLabel}：{completion}").ConfigureAwait(false);
                 },
-                token, request.NotificationSessionId).ConfigureAwait(false));
+                token, request.NotificationSessionId).ConfigureAwait(false);
+            results.Add(completedTask);
+            await ReportProcessedAsync(game, completedTask.State == TaskState.Succeeded).ConfigureAwait(false);
         }
 
         if (request.PlayniteIds.Count > 0 && results.Count == 0)
@@ -255,6 +297,166 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
         }
 
         return results;
+    }
+
+    /// <summary>Creates a durable full-library backup job and returns its queued status immediately.
+    /// The request is stored before the background operation starts, so an unexpected Worker exit
+    /// leaves enough information for the next Worker instance to resume the unfinished job.</summary>
+    public async Task<List<TaskStatusDto>> SubmitAllAsync(BackupRequestDto request, CancellationToken token)
+    {
+        if (Interlocked.CompareExchange(ref _backupAllInFlight, 1, 0) != 0)
+        {
+            _logger.LogInformation("Backup-all submission ignored: a full-library backup is already running.");
+            var current = await _store.GetActiveBackupAllJobAsync(token).ConfigureAwait(false);
+            return current == null ? new List<TaskStatusDto>() : new List<TaskStatusDto> { current.ToTaskStatus() };
+        }
+
+        try
+        {
+            var current = await _store.GetActiveBackupAllJobAsync(token).ConfigureAwait(false);
+            if (current != null)
+            {
+                _logger.LogInformation("Resuming the existing durable backup-all job {JobId}.", current.JobId);
+                _ = RunAllBackgroundAsync(current, _lifetime?.ApplicationStopping ?? token);
+                return new List<TaskStatusDto> { current.ToTaskStatus() };
+            }
+
+            var job = new BackupAllJobRecord
+            {
+                JobId = Guid.NewGuid().ToString("N"),
+                RequestJson = JsonSerializer.Serialize(request),
+                CreatedUtc = DateTime.UtcNow,
+                WorkerSessionId = _options.WorkerSessionId,
+                Message = "等待执行"
+            };
+            await _store.CreateBackupAllJobAsync(job, token).ConfigureAwait(false);
+            _ = RunAllBackgroundAsync(job, _lifetime?.ApplicationStopping ?? token);
+            return new List<TaskStatusDto> { job.ToTaskStatus() };
+        }
+        catch
+        {
+            Interlocked.Exchange(ref _backupAllInFlight, 0);
+            throw;
+        }
+    }
+
+    /// <summary>Starts an unfinished durable full-library job after storage reconciliation.</summary>
+    public async Task ResumePendingAsync(CancellationToken token)
+    {
+        var job = await _store.GetActiveBackupAllJobAsync(token).ConfigureAwait(false);
+        if (job == null || Interlocked.CompareExchange(ref _backupAllInFlight, 1, 0) != 0)
+            return;
+
+        _logger.LogInformation("Resuming unfinished backup-all job {JobId} from durable state.", job.JobId);
+        _ = RunAllBackgroundAsync(job, token);
+    }
+
+    private async Task RunAllBackgroundAsync(BackupAllJobRecord job, CancellationToken token)
+    {
+        try
+        {
+            var request = JsonSerializer.Deserialize<BackupRequestDto>(job.RequestJson)
+                ?? throw new WorkerOperationException("BACKUP_ALL_REQUEST_INVALID", "整库备份任务请求已损坏，无法恢复。", job.JobId);
+            request.PlayniteIds ??= new List<string>();
+            request.PlayniteIds.Clear();
+
+            job.State = TaskState.Running;
+            job.StartedUtc ??= DateTime.UtcNow;
+            job.WorkerSessionId = _options.WorkerSessionId;
+            job.Message = "正在准备整库备份";
+            await _store.UpdateBackupAllJobAsync(job, CancellationToken.None).ConfigureAwait(false);
+
+            var completedGameIds = DeserializeGameIds(job.CompletedGameIdsJson);
+            var result = await _tasks.RunAsync(
+                "BackupAll",
+                string.Empty,
+                "全部游戏",
+                async (progress, operationToken) =>
+                {
+                    var results = await BackupAsync(
+                        request,
+                        operationToken,
+                        completedGameIds,
+                        async (processed, total, game, completed) =>
+                        {
+                            job.ProgressPercent = total <= 0 ? 100 : Math.Clamp(processed * 100 / total, 0, 99);
+                            job.CurrentGameId = game.PlayniteId;
+                            job.Message = completed
+                                ? $"正在处理整库备份：{processed}/{total} · {game.Name}"
+                                : $"已记录结果：{processed}/{total} · {game.Name}";
+                            job.CompletedGameIdsJson = JsonSerializer.Serialize(completedGameIds.OrderBy(x => x, StringComparer.OrdinalIgnoreCase));
+                            await _store.UpdateBackupAllJobAsync(job, CancellationToken.None).ConfigureAwait(false);
+                            await progress.ReportAsync(job.ProgressPercent, job.Message).ConfigureAwait(false);
+                        }).ConfigureAwait(false);
+
+                    operationToken.ThrowIfCancellationRequested();
+                    var failed = results.Count(x => x.State == TaskState.Failed);
+                    var cancelled = results.Count(x => x.State == TaskState.Cancelled);
+                    if (failed > 0 || cancelled > 0)
+                    {
+                        throw new WorkerOperationException(
+                            "BACKUP_ALL_PARTIAL_FAILURE",
+                            $"整库备份已处理，但有 {failed} 个游戏失败、{cancelled} 个游戏取消。",
+                            string.Join("；", results.Where(x => x.State is TaskState.Failed or TaskState.Cancelled)
+                                .Take(8)
+                                .Select(x => $"{x.GameName}: {x.DetailMessage}")));
+                    }
+
+                    await progress.ReportAsync(100, results.Count == 0 ? "整库备份没有发现可执行的匹配游戏" : "整库备份已完成").ConfigureAwait(false);
+                },
+                token,
+                request.NotificationSessionId,
+                job.JobId,
+                job.CreatedUtc).ConfigureAwait(false);
+
+            job.State = result.State;
+            job.ProgressPercent = result.ProgressPercent;
+            job.Message = result.Message;
+            job.FinishedUtc = result.FinishedUtc ?? DateTime.UtcNow;
+            job.ErrorCode = result.ErrorCode;
+            job.ErrorMessage = result.ErrorMessage;
+            job.CompletedGameIdsJson = JsonSerializer.Serialize(completedGameIds.OrderBy(x => x, StringComparer.OrdinalIgnoreCase));
+            await _store.UpdateBackupAllJobAsync(job, CancellationToken.None).ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Background backup-all failed for job {JobId}.", job.JobId);
+            job.State = ex is OperationCanceledException ? TaskState.Cancelled : TaskState.Failed;
+            job.ProgressPercent = Math.Clamp(job.ProgressPercent, 0, 99);
+            job.Message = job.State == TaskState.Cancelled ? "已取消" : "整库备份失败";
+            job.FinishedUtc = DateTime.UtcNow;
+            if (ex is WorkerOperationException workerError)
+            {
+                job.ErrorCode = workerError.Code;
+                job.ErrorMessage = string.IsNullOrWhiteSpace(workerError.DiagnosticDetail)
+                    ? workerError.Message
+                    : $"{workerError.Message} | {workerError.DiagnosticDetail}";
+            }
+            else
+            {
+                job.ErrorCode = ex.GetType().Name;
+                job.ErrorMessage = ex.Message;
+            }
+            try { await _store.UpdateBackupAllJobAsync(job, CancellationToken.None).ConfigureAwait(false); }
+            catch (Exception persistError) { _logger.LogError(persistError, "Could not persist backup-all failure for job {JobId}.", job.JobId); }
+        }
+        finally
+        {
+            Interlocked.Exchange(ref _backupAllInFlight, 0);
+        }
+    }
+
+    private static HashSet<string> DeserializeGameIds(string json)
+    {
+        try
+        {
+            var ids = JsonSerializer.Deserialize<List<string>>(json);
+            return new HashSet<string>(ids?.Where(x => !string.IsNullOrWhiteSpace(x)) ?? Enumerable.Empty<string>(), StringComparer.OrdinalIgnoreCase);
+        }
+        catch (JsonException)
+        {
+            return new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        }
     }
 
     private static List<GameSaveCenter.Core.Models.FileManifestEntry> DeserializeManifest(string json)

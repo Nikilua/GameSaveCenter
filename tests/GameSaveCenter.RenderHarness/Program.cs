@@ -65,6 +65,14 @@ public static class Program
         (2560, 1440)
     };
 
+    private static readonly (int Width, int Height)[] ShellWindowSizes =
+    {
+        (720, 640),
+        (960, 640),
+        (980, 640),
+        (1040, 700)
+    };
+
     public static int Main(string[] args)
     {
         if (args.Length > 0
@@ -80,6 +88,19 @@ public static class Program
             auditThread.Start();
             auditThread.Join();
             return auditExitCode;
+        }
+
+        if (args.Length > 0 && args[0].Equals("shellqa", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", "artifacts", "ui-qa", "shell");
+            var shellExitCode = 0;
+            var shellThread = new Thread(() => { shellExitCode = RunShellChromeQa(outputRoot); });
+            shellThread.SetApartmentState(ApartmentState.STA);
+            shellThread.Start();
+            shellThread.Join();
+            return shellExitCode;
         }
 
         if (args.Length > 0 && args[0].Equals("v3shots", StringComparison.OrdinalIgnoreCase))
@@ -1187,6 +1208,7 @@ public static class Program
             RunSettingsLayoutProbes(report);
             RunThemeQa(outputRoot, report);
             RunResizeTransitionProbes(report);
+            RunShellChromeProbes(outputRoot, report);
 
             if (s_problems.Count > 0)
             {
@@ -1210,6 +1232,44 @@ public static class Program
             report.AppendLine("render-qa FAILED");
             report.AppendLine(ex.ToString());
             File.WriteAllText(Path.Combine(outputRoot, "render-qa-report.txt"), report.ToString());
+            return 1;
+        }
+    }
+
+    private static int RunShellChromeQa(string outputRoot)
+    {
+        Directory.CreateDirectory(outputRoot);
+        var report = new StringBuilder();
+        report.AppendLine("GameSaveCenter production shell chrome QA");
+        report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+        s_problems.Clear();
+
+        try
+        {
+            var app = new Application();
+            app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+            RunShellChromeProbes(outputRoot, report);
+            if (s_problems.Count > 0)
+            {
+                report.AppendLine("shell-qa FAILED");
+                foreach (var problem in s_problems)
+                    report.AppendLine("  PROBLEM " + problem);
+                File.WriteAllText(Path.Combine(outputRoot, "shell-qa-report.txt"), report.ToString());
+                Console.WriteLine(report.ToString());
+                return 1;
+            }
+
+            report.AppendLine("shell-qa OK");
+            File.WriteAllText(Path.Combine(outputRoot, "shell-qa-report.txt"), report.ToString());
+            Console.WriteLine(report.ToString());
+            return 0;
+        }
+        catch (Exception ex)
+        {
+            report.AppendLine("shell-qa FAILED");
+            report.AppendLine(ex.ToString());
+            File.WriteAllText(Path.Combine(outputRoot, "shell-qa-report.txt"), report.ToString());
+            Console.Error.WriteLine(ex);
             return 1;
         }
     }
@@ -2062,6 +2122,56 @@ public static class Program
             {
                 s_problems.Add($"{name} resize transition failed: {ex.Message}");
                 report.AppendLine($"  {name} RESIZE FAILED {ex.Message}");
+            }
+        }
+    }
+
+    private static void RunShellChromeProbes(string outputRoot, StringBuilder report)
+    {
+        report.AppendLine();
+        report.AppendLine("Production shell chrome QA (compact header)" );
+        foreach (var (windowW, windowH) in ShellWindowSizes)
+        {
+            try
+            {
+                var shell = new AcrylicProductionShellView { DataContext = new FakeDashboardData() };
+                var host = new Grid
+                {
+                    Width = windowW,
+                    Height = windowH,
+                    Background = CreateHarnessBackground(shell),
+                    ClipToBounds = true
+                };
+                host.Children.Add(shell);
+                shell.ApplyResponsiveLayout(windowW, windowH);
+                host.Measure(new Size(windowW, windowH));
+                host.Arrange(new Rect(0, 0, windowW, windowH));
+                host.UpdateLayout();
+                shell.ApplyResponsiveLayout(windowW, windowH);
+                host.UpdateLayout();
+
+                var headerRow = shell.GetType().GetField("HeaderRow", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(shell) as RowDefinition;
+                var headerSurface = FindVisualChildren<FrameworkElement>(shell).FirstOrDefault(x => x.Name == "HeaderSurface");
+                var actions = FindVisualChildren<FrameworkElement>(shell).FirstOrDefault(x => x.Name == "HeaderActionsPanel");
+                if (headerRow == null || headerSurface == null || actions == null)
+                    throw new InvalidOperationException("Production shell header probe elements are missing.");
+
+                if (windowW < 980 && headerRow.ActualHeight <= 68)
+                    s_problems.Add($"Shell {windowW}x{windowH} compact header did not grow beyond the original 68 DIP row.");
+                if (actions.Visibility == Visibility.Visible)
+                {
+                    var actionsBounds = actions.TransformToAncestor(headerSurface).TransformBounds(new Rect(0, 0, actions.ActualWidth, actions.ActualHeight));
+                    if (actionsBounds.Left < -0.5 || actionsBounds.Right > headerSurface.ActualWidth + 0.5
+                        || actionsBounds.Top < -0.5 || actionsBounds.Bottom > headerSurface.ActualHeight + 0.5)
+                        s_problems.Add($"Shell {windowW}x{windowH} header actions exceed HeaderSurface bounds ({actionsBounds.Left:0.0}..{actionsBounds.Right:0.0}, {actionsBounds.Top:0.0}..{actionsBounds.Bottom:0.0}/{headerSurface.ActualWidth:0.0}x{headerSurface.ActualHeight:0.0}).");
+                }
+
+                SavePng(host, Path.Combine(outputRoot, $"Shell-{windowW}x{windowH}.png"));
+                report.AppendLine($"  Shell {windowW}x{windowH} header={headerRow.ActualHeight:0.0} actions={actions.ActualWidth:0.0}x{actions.ActualHeight:0.0}");
+            }
+            catch (Exception ex)
+            {
+                s_problems.Add($"Shell {windowW}x{windowH} probe failed: {ex.Message}");
             }
         }
     }

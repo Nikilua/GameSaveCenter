@@ -2,6 +2,7 @@ using System.Text.Json;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Worker.Infrastructure;
 using GameSaveCenter.Worker.Persistence;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace GameSaveCenter.Worker.Services;
@@ -26,23 +27,25 @@ public sealed class GameCatalogService : IRestoreCatalog
     private static readonly TimeSpan RecentlyPlayedPriorityWindow = TimeSpan.FromDays(90);
     private static readonly TimeSpan BackgroundMatchYieldDelay = TimeSpan.FromMilliseconds(180);
     private static readonly TimeSpan BackgroundMatchInitialDelay = TimeSpan.FromSeconds(30);
+    private static readonly TimeSpan UnmatchedRetryInterval = TimeSpan.FromHours(6);
     private readonly SqliteStateStore _store;
     private readonly LudusaviClient _ludusavi;
     private readonly ILogger<GameCatalogService> _logger;
+    private readonly IHostApplicationLifetime? _lifetime;
     private readonly object _backgroundMatchGate = new();
     private readonly Dictionary<string, PendingMatch> _backgroundMatches = new(StringComparer.OrdinalIgnoreCase);
     private Task? _backgroundMatchTask;
     private DateTime _backgroundMatchNotBeforeUtc = DateTime.MinValue;
 
-    public GameCatalogService(SqliteStateStore store,LudusaviClient ludusavi,ILogger<GameCatalogService> logger)
-    { _store=store;_ludusavi=ludusavi;_logger=logger; }
+    public GameCatalogService(SqliteStateStore store,LudusaviClient ludusavi,ILogger<GameCatalogService> logger,IHostApplicationLifetime? lifetime=null)
+    { _store=store;_ludusavi=ludusavi;_logger=logger;_lifetime=lifetime; }
 
     public async Task UpsertAndMatchAsync(IEnumerable<GameDescriptorDto> games,CancellationToken token)
     {
         var list=games.Where(x=>!string.IsNullOrWhiteSpace(x.PlayniteId)).ToList();
         var cached=await _store.GetGameMatchCacheAsync(token).ConfigureAwait(false);
         var now=DateTime.UtcNow;
-        var retryBefore=now.AddDays(-7);
+        var retryBefore=now.Subtract(UnmatchedRetryInterval);
         var pending=new List<(GameDescriptorDto Game,string InputHash)>();
         var changedDescriptors=new List<GameDescriptorDto>();
         foreach(var game in list)
@@ -103,22 +106,28 @@ public sealed class GameCatalogService : IRestoreCatalog
         // its session has a match available, while large library refreshes return immediately.
         if (pending.Count >= BackgroundMatchThreshold || list.Count >= 100)
         {
-            var backgroundPending = list.Count >= 100
+            var priorityBudget = list.Count >= VeryLargeLibraryThreshold
+                ? VeryLargeLibraryBackgroundMatchBudget
+                : LargeLibraryBackgroundMatchBudget;
+            var priorityCount = list.Count >= 100
                 ? pending
                     .Where(x => x.Game.IsInstalled || IsRecentlyPlayed(x.Game, now))
                     .OrderByDescending(x => x.Game.IsInstalled)
                     .ThenByDescending(x => x.Game.LastPlayedUtc ?? DateTime.MinValue)
                     .ThenBy(x => x.Game.Name, StringComparer.OrdinalIgnoreCase)
-                    .Take(list.Count >= VeryLargeLibraryThreshold
-                        ? VeryLargeLibraryBackgroundMatchBudget
-                        : LargeLibraryBackgroundMatchBudget)
-                    .ToList()
-                : pending;
-            QueueBackgroundMatches(backgroundPending);
+                    .Take(priorityBudget)
+                    .Count()
+                : pending.Count;
+            // Queue every pending item. The priority budget controls the first batch ordering
+            // through the processor's installed/recently-played sort; dropping the deferred
+            // rows here would leave a large library permanently unmatched until another full
+            // Playnite refresh happens. low-priority entries deferred by that ordering remain
+            // queued and are drained after the useful foreground set, rather than being lost.
+            QueueBackgroundMatches(pending);
             _logger.LogInformation(
-                "Library descriptors persisted; {QueuedCount} Ludusavi matches queued in the background ({DeferredCount} low-priority entries deferred).",
-                backgroundPending.Count,
-                Math.Max(0, pending.Count - backgroundPending.Count));
+                "Library descriptors persisted; {QueuedCount} Ludusavi matches queued in the background ({PriorityCount} priority entries will be processed first).",
+                pending.Count,
+                priorityCount);
             return;
         }
 
@@ -140,11 +149,14 @@ public sealed class GameCatalogService : IRestoreCatalog
                 _backgroundMatchNotBeforeUtc = DateTime.UtcNow.Add(BackgroundMatchInitialDelay);
 
             if (_backgroundMatchTask == null || _backgroundMatchTask.IsCompleted)
-                _backgroundMatchTask = Task.Run(ProcessBackgroundMatchesAsync);
+            {
+                var cancellation = _lifetime?.ApplicationStopping ?? CancellationToken.None;
+                _backgroundMatchTask = Task.Run(() => ProcessBackgroundMatchesAsync(cancellation), cancellation);
+            }
         }
     }
 
-    private async Task ProcessBackgroundMatchesAsync()
+    private async Task ProcessBackgroundMatchesAsync(CancellationToken token)
     {
         try
         {
@@ -154,7 +166,7 @@ public sealed class GameCatalogService : IRestoreCatalog
                 lock (_backgroundMatchGate)
                     wait = _backgroundMatchNotBeforeUtc - DateTime.UtcNow;
                 if (wait > TimeSpan.Zero)
-                    await Task.Delay(wait).ConfigureAwait(false);
+                    await Task.Delay(wait, token).ConfigureAwait(false);
 
                 List<PendingMatch> batch;
                 lock (_backgroundMatchGate)
@@ -180,13 +192,18 @@ public sealed class GameCatalogService : IRestoreCatalog
                 }
 
                 foreach (var item in batch)
-                    await MatchOneAsync(item, CancellationToken.None).ConfigureAwait(false);
+                    await MatchOneAsync(item, token).ConfigureAwait(false);
                 // Do not let hundreds of short-lived Ludusavi processes monopolize the
                 // machine. The pause is deliberately outside the store lock and does not
                 // block IPC request handling; the next batch can resume after UI/backup work
                 // has had an opportunity to run.
-                await Task.Delay(BackgroundMatchYieldDelay).ConfigureAwait(false);
+                await Task.Delay(BackgroundMatchYieldDelay, token).ConfigureAwait(false);
             }
+        }
+        catch (OperationCanceledException) when (token.IsCancellationRequested)
+        {
+            lock (_backgroundMatchGate) _backgroundMatchTask = null;
+            _logger.LogDebug("Background Ludusavi matching stopped with Worker shutdown.");
         }
         catch (Exception ex)
         {
@@ -211,6 +228,10 @@ public sealed class GameCatalogService : IRestoreCatalog
             await _store.SetGameMatchAsync(game.PlayniteId,match.Name,match.Score,item.InputHash,token).ConfigureAwait(false);
             if(match.Name.Length==0)
                 await _store.AppendAuditAsync("LudusaviMatch",$"未找到匹配：{game.Name}",result.Json?.GetRawText()??"{}",token).ConfigureAwait(false);
+        }
+        catch(OperationCanceledException) when (token.IsCancellationRequested)
+        {
+            throw;
         }
         catch(Exception ex)
         {

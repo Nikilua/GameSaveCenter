@@ -1321,7 +1321,9 @@ public sealed class WpfUiResourceDictionaryTests
         var overview = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml"));
 
         Assert.Contains("var compact = layout.IsCompactShellHeader", productionShell);
+        Assert.Contains("HeaderRow.Height = compact ? GridLength.Auto", productionShell);
         Assert.Contains("HeaderActionsRow.Height = compact ? GridLength.Auto", productionShell);
+        Assert.Contains("<WrapPanel x:Name=\"HeaderActionsPanel\"", productionShellMarkup);
         Assert.Contains("ApplyResponsiveLayout(effectiveWidth, effectiveHeight);", productionShell);
         Assert.Contains("view.ApplyResponsiveColumns(layout.OverviewUsesStackedColumns)", productionShell);
         Assert.Contains("Style=\"{DynamicResource GscPageScrollViewer}\"", productionShellMarkup);
