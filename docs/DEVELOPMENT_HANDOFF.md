@@ -2,6 +2,12 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-09-01 原生确认框 UI 线程边界
+
+- `GameSaveCenterPlugin.ConfirmAsync` 的 Playnite 原生对话兜底现在也通过 `TryInvokeUi` 在宿主 UI Dispatcher 内执行；游戏停止、快捷操作等后台续体不会直接从线程池调用 `PlayniteApi.Dialogs.ShowMessage`。
+- UI Dispatcher 已关闭或调用失败时按未确认处理，危险动作保持拒绝；嵌入式确认事件和正常确认语义不变。
+- 自动证据：定向 Playnite 源码回归通过；Release 0 warning/0 error，Core `65/65`、Worker `230/230`、Playnite `319/376`（57 跳过），源码门禁通过。真实宿主后台事件触发确认框与关闭竞态仍需人工复核。
+
 ## 2026-09-01 自动修改器审计异常隔离
 
 - `GameToolService.LaunchAfterDelayAsync` 现在通过 `TryAppendAutoStartAuditAsync` 统一写入跳过/成功/失败审计；审计失败只记录 Debug，不会从脱离任务继续抛出。

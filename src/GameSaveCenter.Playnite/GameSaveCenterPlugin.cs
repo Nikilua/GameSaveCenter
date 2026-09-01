@@ -622,7 +622,15 @@ namespace GameSaveCenter.Playnite
             }
             if (args.Handled) return await args.Completion.Task.ConfigureAwait(false);
 
-            var result = PlayniteApi.Dialogs.ShowMessage(message, title, System.Windows.MessageBoxButton.YesNo);
+            // Game-stop and quick-action callbacks can enter this fallback from a Worker
+            // continuation. Playnite's native dialog API belongs to the host UI thread just
+            // like the embedded confirmation surface, so keep the fallback inside the same
+            // dispatcher boundary instead of showing a modal window from a pool thread.
+            var result = System.Windows.MessageBoxResult.No;
+            if (!TryInvokeUi(
+                    () => result = PlayniteApi.Dialogs.ShowMessage(message, title, System.Windows.MessageBoxButton.YesNo),
+                    "native confirmation"))
+                return false;
             return result == System.Windows.MessageBoxResult.Yes;
         }
 

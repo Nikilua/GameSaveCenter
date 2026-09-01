@@ -3,6 +3,12 @@
 > 维护时间：2026-09-01
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-01 原生确认框 UI 线程边界
+
+- `GameSaveCenterPlugin.ConfirmAsync` 的原生 Playnite 对话兜底不再直接在调用线程执行；结果变量在 `TryInvokeUi` 的 Dispatcher 边界内赋值，后台游戏事件和快捷操作不会从线程池触碰宿主对话 API。
+- Dispatcher 已关闭或调用失败时返回 `false`，因此危险操作保持未确认状态；Dashboard 嵌入式确认流程、按钮命令和文案不变。
+- STAB-018 自动证据：定向 Playnite 源码回归通过；Release 0 warning/0 error，Core `65/65`、Worker `230/230`、Playnite `319/376`（57 跳过），源码门禁通过。真实宿主后台确认与关闭竞态仍需人工观察。
+
 ## 2026-09-01 自动修改器审计异常隔离
 
 - `LaunchAfterDelayAsync` 的自动启动审计统一调用 `TryAppendAutoStartAuditAsync`；该 helper 会观察取消并吞掉审计存储异常，避免 detached task 在 Worker 关闭期间留下未观察异常。

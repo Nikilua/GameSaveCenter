@@ -4843,6 +4843,18 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void NativeConfirmationFallbackAlsoRunsInsideTheUiBoundary()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var pluginCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "GameSaveCenterPlugin.cs"));
+
+        Assert.Contains("var result = System.Windows.MessageBoxResult.No;", pluginCode);
+        Assert.Contains("() => result = PlayniteApi.Dialogs.ShowMessage(message, title, System.Windows.MessageBoxButton.YesNo)", pluginCode);
+        Assert.Contains("\"native confirmation\"", pluginCode);
+        Assert.Contains("if (!TryInvokeUi(", pluginCode);
+    }
+
+    [Fact]
     public void LargeLibrarySynchronizationWaitsForAnInteractiveSurface()
     {
         var repositoryRoot = FindRepositoryRoot();

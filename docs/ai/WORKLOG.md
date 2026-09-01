@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-01 原生确认框 UI 线程边界
+
+- 继续检查 Playnite 退出和后台事件路径时发现，Dashboard 未打开时，游戏停止/快捷操作可能从线程池续体进入 `ConfirmAsync` 的原生对话兜底；直接调用 `PlayniteApi.Dialogs.ShowMessage` 存在跨线程风险。
+- 原生确认结果现在也通过 `TryInvokeUi` 在宿主 UI Dispatcher 中读取；Dispatcher 不可用或调用失败时按未确认处理，不会放行危险动作。
+- 验证：Release 构建 0 warning/0 error；Core `65/65`、Worker `230/230`、Playnite `319/376`（57 跳过）；源码门禁和定向回归通过。真实宿主后台确认与关闭竞态仍需人工观察。
+
 ## 2026-09-01 自动修改器审计异常隔离
 
 - 继续检查 STAB-016 时确认，审计改用任务 token 仍不足以覆盖存储已释放后抛出的非取消异常；失败补写可能使 `LaunchAfterDelayAsync` 这个脱离任务冒泡。
