@@ -87,6 +87,27 @@ public sealed class WorkspaceStateSourceTests
         Assert.Contains("CommandParameter=\"{Binding}\"", trainer);
     }
 
+    [Fact]
+    public void MediaInboxLoadingKeepsTheLatestModeAndIgnoresStaleSelections()
+    {
+        var root = FindRepositoryRoot();
+        var implementation = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
+        var media = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.Media.cs"));
+
+        Assert.Contains("mediaInboxLoadGeneration", implementation);
+        Assert.Contains("pendingMediaInboxLoadMode", implementation);
+        Assert.Contains("StartQueuedMediaInboxLoad();", implementation);
+        Assert.Contains("requestGeneration == Interlocked.Read(ref mediaInboxLoadGeneration)", media);
+        Assert.Contains("var currentSelectedId = SelectedInboxMedia?.MediaId", media);
+        Assert.Contains("var currentTargetId = InboxTargetGame?.PlayniteId", media);
+        Assert.Contains("LoadMediaInboxModeAsync", media);
+        Assert.Contains("if (MediaInboxMode == \"已忽略\") await LoadIgnoredMediaAsync();", implementation);
+        Assert.Contains("var selectedBackupId = SelectedBackup?.BackupId", implementation);
+        Assert.Contains("var selectedMediaId = SelectedMedia?.MediaId", implementation);
+        Assert.Contains("FirstOrDefault(x => string.Equals(x.MediaId, selectedMediaId", implementation);
+        Assert.Contains("媒体收件箱暂时不可用", File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml")));
+    }
+
     private static string FindRepositoryRoot()
     {
         var directory = new DirectoryInfo(AppContext.BaseDirectory);

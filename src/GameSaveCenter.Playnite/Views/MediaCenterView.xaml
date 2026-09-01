@@ -234,10 +234,21 @@
                                         <Setter Property="Visibility" Value="Collapsed"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding MediaInboxItems.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                                            <DataTrigger Binding="{Binding IsWorkerOffline}" Value="True"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </TextBlock.Style>
                             </TextBlock>
+                        <ui:WorkspaceStatePresenter Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" State="Offline" Title="Worker 当前离线" Message="媒体收件箱暂时不可用；Worker 恢复后可重新读取待归类和已忽略列表。" IsHitTestVisible="False">
+                            <ui:WorkspaceStatePresenter.Style>
+                                <Style TargetType="ui:WorkspaceStatePresenter" BasedOn="{StaticResource GscWorkspaceStatePresenter}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsWorkerOffline}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ui:WorkspaceStatePresenter.Style>
+                        </ui:WorkspaceStatePresenter>
                         </Grid>
                     </Border>
                     <ScrollViewer x:Name="MediaInboxInspectorScrollViewer" Grid.Column="2" Grid.Row="0" Style="{DynamicResource GscInspectorScrollViewer}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">

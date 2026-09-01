@@ -129,6 +129,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         private long trainerReleaseLoadGeneration;
         private string? trainerReleaseLoadCatalogId;
         private string? pendingTrainerReleaseCatalogId;
+        private long mediaInboxLoadGeneration;
+        private string? pendingMediaInboxLoadMode;
         private string taskStatusFilter = "全部";
         private string taskGameFilter = "全部";
         private string taskTypeFilter = "全部";
@@ -698,8 +700,10 @@ namespace GameSaveCenter.Playnite.ViewModels
                 OnPropertyChanged(nameof(MediaInboxTitle));
                 OnPropertyChanged(nameof(MediaInboxEmptyText));
                 ApplyMediaInboxMode();
-                if (normalized == "已忽略") Run(LoadIgnoredMediaAsync);
-                else RaiseCommandStates();
+                pendingMediaInboxLoadMode = normalized;
+                Interlocked.Increment(ref mediaInboxLoadGeneration);
+                StartQueuedMediaInboxLoad();
+                RaiseCommandStates();
             }
         }
         public string MediaInboxTitle => MediaInboxMode == "已忽略" ? "已忽略媒体" : "待归类媒体";
@@ -1108,6 +1112,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             gamePicker.CancelPendingRefresh();
             taskSearchRefresh.Cancel();
             mediaSearchRefresh.Cancel();
+            Interlocked.Increment(ref mediaInboxLoadGeneration);
+            pendingMediaInboxLoadMode = null;
             CancelDetailsLoad();
             CancelSelectedGameBackgroundLoad();
             CancelInitialSynchronization();
@@ -1317,7 +1323,11 @@ namespace GameSaveCenter.Playnite.ViewModels
             StatusMessage = synchronize ? "正在同步设置与游戏库…" : "正在读取本地状态…";
             await RefreshDashboardAsync(synchronize, false, snapshotTimeout);
             if (!policyTemplatesLoaded) await LoadPolicyTemplatesAsync();
-            if (CurrentWorkspace == WorkspaceKind.Media) await LoadInboxAsync();
+            if (CurrentWorkspace == WorkspaceKind.Media)
+            {
+                await LoadInboxAsync();
+                if (MediaInboxMode == "已忽略") await LoadIgnoredMediaAsync();
+            }
             if (CurrentWorkspace == WorkspaceKind.Maintenance) await LoadDiagnosticsAsync();
             if (SelectedGame != null && IsGameScopedWorkspace(CurrentWorkspace)) await LoadDetailsAsync();
             else ClearSelectedGameDetails();
@@ -1929,9 +1939,11 @@ namespace GameSaveCenter.Playnite.ViewModels
                     ApplyOnUi(() =>
                     {
                         if (!IsCurrentDetailsLoad(id, cancellationToken, expectedGeneration)) return;
+                        var selectedBackupId = SelectedBackup?.BackupId;
                         Replace(Backups, backupsTask.Result, SnapshotComparers.Backup);
                         Replace(SaveCandidates, candidatesTask.Result, SnapshotComparers.SaveCandidate);
-                        SelectedBackup = Backups.FirstOrDefault();
+                        SelectedBackup = Backups.FirstOrDefault(x => string.Equals(x.BackupId, selectedBackupId, StringComparison.OrdinalIgnoreCase))
+                                         ?? Backups.FirstOrDefault();
                         SelectedCandidate = SaveCandidates.FirstOrDefault(x => string.Equals(x.Status, "Pending", StringComparison.OrdinalIgnoreCase))
                                             ?? SaveCandidates.FirstOrDefault();
                         RaiseCommandStates();
@@ -1955,7 +1967,9 @@ namespace GameSaveCenter.Playnite.ViewModels
                             MediaView.Refresh();
                         Replace(MediaSources, sourcesTask.Result, SnapshotComparers.MediaSource);
                         MediaSummary=summaryTask.Result;
-                        SelectedMedia=Media.FirstOrDefault();
+                        var selectedMediaId = SelectedMedia?.MediaId;
+                        SelectedMedia=Media.FirstOrDefault(x => string.Equals(x.MediaId, selectedMediaId, StringComparison.OrdinalIgnoreCase))
+                                      ?? Media.FirstOrDefault();
                         MediaTargetGame = Games.FirstOrDefault(x => string.Equals(x.PlayniteId, MediaTargetGame?.PlayniteId, StringComparison.OrdinalIgnoreCase))
                                           ?? SelectedGame
                                           ?? Games.FirstOrDefault();
@@ -2750,6 +2764,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 }
                 IsBusy = false;
                 StartQueuedTrainerReleaseLoad();
+                StartQueuedMediaInboxLoad();
             }
         }
 

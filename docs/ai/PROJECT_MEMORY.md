@@ -3,6 +3,13 @@
 > 维护时间：2026-09-01
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-01 媒体收件箱与详情刷新一致性
+
+- `MediaInboxMode` 切换现在用 `mediaInboxLoadGeneration` 丢弃过期可见响应；`pendingMediaInboxLoadMode` 保留忙碌期间最后一次模式，`RunAsync` 结束后自动补加载。旧响应仍可更新对应缓存，但不会把旧集合应用到当前视图。
+- 媒体收件箱刷新按当前 `MediaId` 和目标游戏 ID 保留用户选择；存档版本和当前游戏媒体详情刷新按 `BackupId`/`MediaId` 保留选择，只有条目不存在时才回退第一项。媒体工作区刷新在“已忽略”模式会同时更新忽略缓存。
+- 收件箱补齐共享 Worker 离线态，离线时隐藏“空列表”误导文案；健康状态下的 Demo-first 布局、命令、Binding、滚动和虚拟化不变。新增源契约回归。
+- Release 构建 `0 warning/0 error`；Core `65/65`、Worker `226/226`、Playnite `315/372`（57 跳过）；源码/WPF 门禁和双主题、多尺寸、连续 Resize、Shell `render-qa OK`。真实宿主快速切换、Worker 重启和 DPI 仍需人工观察。
+
 ## 2026-09-01 修改器目录加载状态反馈
 
 - `DashboardViewModel` 新增 `IsTrainerCatalogLoading` 与 `IsTrainerReleasesLoading`，覆盖 FLiNG 目录同步/搜索及版本查询的真实请求生命周期，并在 `finally` 中清理状态。

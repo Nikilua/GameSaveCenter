@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using GameSaveCenter.Contracts;
 
@@ -17,41 +18,88 @@ namespace GameSaveCenter.Playnite.ViewModels
         private async Task LoadMediaWorkspaceAsync()
         {
             await LoadInboxAsync();
+            if (MediaInboxMode == "已忽略") await LoadIgnoredMediaAsync();
             if (SelectedGame != null) await LoadDetailsAsync();
         }
 
-        private async Task LoadInboxAsync()
+        private void StartQueuedMediaInboxLoad()
+        {
+            if (IsBusy || string.IsNullOrWhiteSpace(pendingMediaInboxLoadMode)) return;
+            if (!string.Equals(MediaInboxMode, pendingMediaInboxLoadMode, StringComparison.Ordinal))
+            {
+                pendingMediaInboxLoadMode = null;
+                return;
+            }
+
+            var requestedMode = pendingMediaInboxLoadMode;
+            var requestGeneration = Interlocked.Read(ref mediaInboxLoadGeneration);
+            pendingMediaInboxLoadMode = null;
+            Run(() => LoadMediaInboxModeAsync(requestedMode!, requestGeneration));
+        }
+
+        private Task LoadMediaInboxModeAsync(string mode, long requestGeneration)
+            => string.Equals(mode, "已忽略", StringComparison.Ordinal)
+                ? LoadIgnoredMediaAsync(requestGeneration)
+                : LoadInboxAsync(requestGeneration);
+
+        private Task LoadInboxAsync()
+            => LoadInboxAsync(Interlocked.Read(ref mediaInboxLoadGeneration));
+
+        private async Task LoadInboxAsync(long requestGeneration)
         {
             var selectedId = SelectedInboxMedia?.MediaId;
             var targetId = InboxTargetGame?.PlayniteId;
+            var requestMode = MediaInboxMode;
             var inbox = await LoadMediaInboxPagesAsync(MessageTypes.ListUnassignedMedia);
             ApplyOnUi(() =>
             {
                 if (!InboxEquals(UnassignedMedia, inbox))
                     UnassignedMedia = new GameSaveCenter.Playnite.Infrastructure.BatchObservableCollection<MediaItemDto>(inbox);
 
-                if (MediaInboxMode == "待归类")
-                    ApplyMediaInboxMode(selectedId);
-                InboxTargetGame = Games.FirstOrDefault(x => string.Equals(x.PlayniteId, targetId, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(MediaInboxMode, requestMode, StringComparison.Ordinal)
+                    && requestGeneration == Interlocked.Read(ref mediaInboxLoadGeneration))
+                {
+                    var currentSelectedId = SelectedInboxMedia?.MediaId;
+                    var keepSelectedId = string.Equals(currentSelectedId, selectedId, StringComparison.OrdinalIgnoreCase)
+                        ? selectedId
+                        : currentSelectedId;
+                    ApplyMediaInboxMode(keepSelectedId);
+                }
+
+                var currentTargetId = InboxTargetGame?.PlayniteId;
+                var keepTargetId = string.Equals(currentTargetId, targetId, StringComparison.OrdinalIgnoreCase)
+                    ? targetId
+                    : currentTargetId;
+                InboxTargetGame = Games.FirstOrDefault(x => string.Equals(x.PlayniteId, keepTargetId, StringComparison.OrdinalIgnoreCase))
                                   ?? SelectedGame
                                   ?? Games.FirstOrDefault();
                 RaiseCommandStates();
             });
         }
 
-        private async Task LoadIgnoredMediaAsync()
+        private Task LoadIgnoredMediaAsync()
+            => LoadIgnoredMediaAsync(Interlocked.Read(ref mediaInboxLoadGeneration));
+
+        private async Task LoadIgnoredMediaAsync(long requestGeneration)
         {
             var selectedId = SelectedInboxMedia?.MediaId;
+            var requestMode = MediaInboxMode;
             var ignored = await LoadMediaInboxPagesAsync(MessageTypes.ListIgnoredMedia);
             ApplyOnUi(() =>
             {
                 if (!InboxEquals(IgnoredMedia, ignored))
                     IgnoredMedia = new GameSaveCenter.Playnite.Infrastructure.BatchObservableCollection<MediaItemDto>(ignored);
 
-                if (MediaInboxMode == "已忽略")
-                    ApplyMediaInboxMode(selectedId);
-                else
-                    RaiseCommandStates();
+                if (string.Equals(MediaInboxMode, requestMode, StringComparison.Ordinal)
+                    && requestGeneration == Interlocked.Read(ref mediaInboxLoadGeneration))
+                {
+                    var currentSelectedId = SelectedInboxMedia?.MediaId;
+                    var keepSelectedId = string.Equals(currentSelectedId, selectedId, StringComparison.OrdinalIgnoreCase)
+                        ? selectedId
+                        : currentSelectedId;
+                    ApplyMediaInboxMode(keepSelectedId);
+                }
+                RaiseCommandStates();
             });
         }
 
