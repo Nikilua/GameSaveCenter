@@ -1931,8 +1931,13 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task SaveProcessMappingAsync()
         {
-            var saved=await plugin.RequestAsync<ProcessMappingDto>(MessageTypes.SaveProcessMapping,new ProcessMappingDto{ExecutableName=ProcessMappingExecutable,PlayniteId=ProcessMappingTargetGame.PlayniteId});
-            await LoadDiagnosticsAsync();ProcessMappingExecutable=string.Empty;StatusMessage=$"已将 {saved.ExecutableName} 绑定到 {saved.GameName}";
+            var executable = ProcessMappingExecutable;
+            var target = ProcessMappingTargetGame ?? throw new InvalidOperationException("请选择映射目标游戏。");
+            var saved=await plugin.RequestAsync<ProcessMappingDto>(MessageTypes.SaveProcessMapping,new ProcessMappingDto{ExecutableName=executable,PlayniteId=target.PlayniteId});
+            await LoadDiagnosticsAsync();
+            if (string.Equals(ProcessMappingExecutable, executable, StringComparison.Ordinal))
+                ProcessMappingExecutable=string.Empty;
+            StatusMessage=$"已将 {saved.ExecutableName} 绑定到 {saved.GameName}";
         }
 
         private async Task DeleteProcessMappingAsync()
@@ -2162,13 +2167,23 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task BackupSelectedAsync()
         {
-            var tasks = await plugin.RequestAsync<TaskStatusDto[]>(MessageTypes.BackupGame, new BackupRequestDto { PlayniteIds = { SelectedGame.PlayniteId }, Force = true, Reason = "Manual" }, TimeSpan.FromMinutes(15));
+            var game = SelectedGame ?? throw new InvalidOperationException("请先选择游戏。");
+            var gameId = game.PlayniteId;
+            var gameName = game.Name;
+            var tasks = await plugin.RequestAsync<TaskStatusDto[]>(MessageTypes.BackupGame, new BackupRequestDto { PlayniteIds = { gameId }, Force = true, Reason = "Manual" }, TimeSpan.FromMinutes(15));
             NotifyTaskResults(tasks);
             await RefreshCoreAsync(false);
-            await LoadDetailsAsync();
-            StatusMessage = Backups.Count > 0
-                ? $"备份完成，已读取 {Backups.Count} 个历史版本"
-                : "备份完成，但历史索引仍为空；请打开诊断页查看 Ludusavi 输出。";
+            if (CurrentWorkspace == WorkspaceKind.Saves && IsSelectedGame(gameId))
+            {
+                await LoadDetailsAsync();
+                StatusMessage = Backups.Count > 0
+                    ? $"备份完成，已读取 {Backups.Count} 个历史版本"
+                    : "备份完成，但历史索引仍为空；请打开诊断页查看 Ludusavi 输出。";
+            }
+            else
+            {
+                StatusMessage = $"“{gameName}”的备份已完成，请返回存档中心查看历史版本。";
+            }
         }
 
         private async Task ImportGameToolAsync(GameToolType type)
@@ -2522,19 +2537,26 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task ValidateAsync()
         {
-            await plugin.RequestAsync<object>(MessageTypes.ValidateGame, new ValidateGameRequestDto { PlayniteId = SelectedGame.PlayniteId });
+            var game = SelectedGame ?? throw new InvalidOperationException("请先选择游戏。");
+            var gameId = game.PlayniteId;
+            var gameName = game.Name;
+            await plugin.RequestAsync<object>(MessageTypes.ValidateGame, new ValidateGameRequestDto { PlayniteId = gameId });
             await RefreshCoreAsync(false);
-            ConfirmSuccess($"{SelectedGame.Name} 的存档校验已完成");
+            ConfirmSuccess($"{gameName} 的存档校验已完成");
         }
 
         private async Task ValidateRestoreReadinessAsync()
         {
-            var selectedId = SelectedBackup.BackupId;
+            var game = SelectedGame ?? throw new InvalidOperationException("请先选择游戏。");
+            var gameId = game.PlayniteId;
+            var gameName = game.Name;
+            var selectedId = SelectedBackup?.BackupId ?? throw new InvalidOperationException("请先选择备份版本。");
             var result = await plugin.RequestAsync<RestoreReadinessDto>(MessageTypes.ValidateRestoreReadiness,
-                new RestoreReadinessRequestDto { PlayniteId = SelectedGame.PlayniteId, BackupId = selectedId },
+                new RestoreReadinessRequestDto { PlayniteId = gameId, BackupId = selectedId },
                 TimeSpan.FromMinutes(15));
-            await LoadDetailsAsync(true);
-            ConfirmSuccess($"{SelectedGame.Name} / {selectedId}：{result.StatusDisplay}。{result.Summary}");
+            if (CurrentWorkspace == WorkspaceKind.Saves && IsSelectedGame(gameId))
+                await LoadDetailsAsync(true);
+            ConfirmSuccess($"{gameName} / {selectedId}：{result.StatusDisplay}。{result.Summary}");
         }
 
         private async Task SavePolicyAsync()
@@ -2598,10 +2620,16 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task ApplyPolicyTemplateAsync()
         {
+            var game = SelectedGame ?? throw new InvalidOperationException("请先选择游戏。");
+            var template = SelectedPolicyTemplate ?? throw new InvalidOperationException("请先选择策略模板。");
+            var gameId = game.PlayniteId;
+            var gameName = game.Name;
+            var templateId = template.TemplateId;
+            var templateName = template.Name;
             await plugin.RequestAsync<object>(MessageTypes.ApplyPolicyTemplate,
-                new ApplyPolicyTemplateDto { PlayniteId = SelectedGame.PlayniteId, TemplateId = SelectedPolicyTemplate.TemplateId });
+                new ApplyPolicyTemplateDto { PlayniteId = gameId, TemplateId = templateId });
             await RefreshDashboardAsync(false, false);
-            ConfirmSuccess($"已将策略模板“{SelectedPolicyTemplate.Name}”复制到 {SelectedGame.Name}；后续修改模板不会影响该游戏");
+            ConfirmSuccess($"已将策略模板“{templateName}”复制到 {gameName}；后续修改模板不会影响该游戏");
         }
 
         private async Task DeletePolicyTemplateAsync()
@@ -2616,10 +2644,20 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task UpdateBackupMetadataAsync()
         {
-            await plugin.RequestAsync<object>(MessageTypes.UpdateBackupMetadata, new BackupMetadataUpdateDto { PlayniteId = SelectedGame.PlayniteId, BackupId = SelectedBackup.BackupId, Comment = BackupComment, Locked = LockSelectedBackup });
-            backupCommentDirty = false;
-            backupLockDirty = false;
-            await LoadDetailsAsync();
+            var gameId = SelectedGame?.PlayniteId ?? throw new InvalidOperationException("请先选择游戏。");
+            var backupId = SelectedBackup?.BackupId ?? throw new InvalidOperationException("请先选择备份版本。");
+            var comment = BackupComment;
+            var locked = LockSelectedBackup;
+            await plugin.RequestAsync<object>(MessageTypes.UpdateBackupMetadata, new BackupMetadataUpdateDto { PlayniteId = gameId, BackupId = backupId, Comment = comment, Locked = locked });
+            if (CurrentWorkspace == WorkspaceKind.Saves && IsSelectedGame(gameId))
+            {
+                if (string.Equals(SelectedBackup?.BackupId, backupId, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (string.Equals(BackupComment, comment, StringComparison.Ordinal)) backupCommentDirty = false;
+                    if (LockSelectedBackup == locked) backupLockDirty = false;
+                }
+                await LoadDetailsAsync();
+            }
             ConfirmSuccess("备份备注与锁定状态已保存");
         }
 
@@ -2627,14 +2665,22 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             var index = Backups.IndexOf(SelectedBackup);
             if (index < 0 || index + 1 >= Backups.Count) { DiffSummary = "没有可比较的上一个版本。"; return; }
-            var diff = await plugin.RequestAsync<BackupDiffDto>(MessageTypes.CompareBackups, new BackupCompareRequestDto { PlayniteId = SelectedGame.PlayniteId, LeftBackupId = Backups[index + 1].BackupId, RightBackupId = SelectedBackup.BackupId });
+            var gameId = SelectedGame?.PlayniteId ?? throw new InvalidOperationException("请先选择游戏。");
+            var leftBackupId = Backups[index + 1].BackupId;
+            var rightBackupId = SelectedBackup.BackupId;
+            var diff = await plugin.RequestAsync<BackupDiffDto>(MessageTypes.CompareBackups, new BackupCompareRequestDto { PlayniteId = gameId, LeftBackupId = leftBackupId, RightBackupId = rightBackupId });
+            if (CurrentWorkspace != WorkspaceKind.Saves
+                || !IsSelectedGame(gameId)
+                || !string.Equals(SelectedBackup?.BackupId, rightBackupId, StringComparison.OrdinalIgnoreCase)) return;
             LastBackupDiff = diff;
             DiffSummary = diff.Summary;
         }
 
         private async Task PreviewRetentionAsync()
         {
-            var preview = await plugin.RequestAsync<RetentionPreviewDto>(MessageTypes.PreviewRetention, new GameQueryDto { PlayniteId = SelectedGame.PlayniteId });
+            var gameId = SelectedGame?.PlayniteId ?? throw new InvalidOperationException("请先选择游戏。");
+            var preview = await plugin.RequestAsync<RetentionPreviewDto>(MessageTypes.PreviewRetention, new GameQueryDto { PlayniteId = gameId });
+            if (CurrentWorkspace != WorkspaceKind.Saves || !IsSelectedGame(gameId)) return;
             LastRetentionPreview = preview;
             RetentionSummary = preview.Summary;
         }

@@ -169,29 +169,46 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task ReassignMediaAsync()
         {
-            await plugin.RequestAsync<MediaItemDto>(MessageTypes.ReassignMedia, new ReassignMediaRequestDto { MediaId = SelectedMedia.MediaId, TargetPlayniteId = MediaTargetGame.PlayniteId });
-            ConfirmSuccess($"媒体已重新归类到 {MediaTargetGame.Name}");
-            await LoadDetailsAsync();
+            var media = SelectedMedia ?? throw new InvalidOperationException("请先选择媒体。");
+            var sourceGameId = SelectedGame?.PlayniteId ?? throw new InvalidOperationException("请先选择游戏。");
+            var target = MediaTargetGame ?? throw new InvalidOperationException("请选择目标游戏。");
+            var mediaId = media.MediaId;
+            var targetName = target.Name;
+            await plugin.RequestAsync<MediaItemDto>(MessageTypes.ReassignMedia, new ReassignMediaRequestDto { MediaId = mediaId, TargetPlayniteId = target.PlayniteId });
+            ConfirmSuccess($"媒体已重新归类到 {targetName}");
+            if (CurrentWorkspace == WorkspaceKind.Media && IsSelectedGame(sourceGameId))
+                await LoadDetailsAsync();
             await LoadInboxAsync();
         }
 
         private async Task UpdateMediaMetadataAsync()
         {
             var selected=SelectedMedia??throw new InvalidOperationException("请先选择媒体。");
+            var gameId = SelectedGame?.PlayniteId ?? throw new InvalidOperationException("请先选择游戏。");
+            var mediaId = selected.MediaId;
+            var favorite = MediaFavorite;
+            var comment = MediaComment;
             var updated=await plugin.RequestAsync<MediaItemDto>(MessageTypes.UpdateMediaMetadata,new MediaMetadataUpdateDto
             {
-                MediaId=selected.MediaId,
-                IsFavorite=MediaFavorite,
-                Comment=MediaComment
+                MediaId=mediaId,
+                IsFavorite=favorite,
+                Comment=comment
             });
-            var index=Media.IndexOf(selected);
-            if(index>=0)Media[index]=updated;
-            mediaCommentDirty = false;
-            mediaFavoriteDirty = false;
-            SelectedMedia=updated;
-            MediaView.Refresh();
-            if(SelectedGame!=null)
-                MediaSummary=await plugin.RequestAsync<MediaStorageSummaryDto>(MessageTypes.GetMediaSummary,new GameQueryDto{PlayniteId=SelectedGame.PlayniteId});
+            if (CurrentWorkspace == WorkspaceKind.Media && IsSelectedGame(gameId))
+            {
+                var index = Media.ToList().FindIndex(x => string.Equals(x.MediaId, mediaId, StringComparison.OrdinalIgnoreCase));
+                if (index >= 0) Media[index] = updated;
+                if (string.Equals(SelectedMedia?.MediaId, mediaId, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (string.Equals(MediaComment, comment, StringComparison.Ordinal)) mediaCommentDirty = false;
+                    if (MediaFavorite == favorite) mediaFavoriteDirty = false;
+                    SelectedMedia = updated;
+                }
+                MediaView.Refresh();
+                var summary = await plugin.RequestAsync<MediaStorageSummaryDto>(MessageTypes.GetMediaSummary,new GameQueryDto{PlayniteId=gameId});
+                if (CurrentWorkspace == WorkspaceKind.Media && IsSelectedGame(gameId))
+                    MediaSummary = summary;
+            }
             ConfirmSuccess("媒体备注与收藏状态已保存");
         }
 
@@ -202,25 +219,32 @@ namespace GameSaveCenter.Playnite.ViewModels
                 .Select(x=>x.First())
                 .ToList()??new List<MediaItemDto>();
             if(selected.Count==0)throw new InvalidOperationException("请先在媒体列表中选择一个或多个项目。");
+            var gameId = SelectedGame?.PlayniteId ?? throw new InvalidOperationException("请先选择游戏。");
+            var comment = MediaComment;
+            var mediaIds = selected.Select(x=>x.MediaId).ToList();
             var updated=await plugin.RequestAsync<MediaItemDto[]>(MessageTypes.UpdateMediaMetadataBatch,new MediaMetadataBatchUpdateDto
             {
-                MediaIds=selected.Select(x=>x.MediaId).ToList(),
+                MediaIds=mediaIds,
                 IsFavorite=favorite,
                 UpdateComment=updateComment,
-                Comment=MediaComment
+                Comment=comment
             });
             var byId=updated.ToDictionary(x=>x.MediaId,StringComparer.OrdinalIgnoreCase);
-            for(var index=0;index<Media.Count;index++)
-                if(byId.TryGetValue(Media[index].MediaId,out var replacement))Media[index]=replacement;
-            MediaView.Refresh();
-            if(SelectedMedia!=null&&byId.TryGetValue(SelectedMedia.MediaId,out var selectedReplacement))
+            if (CurrentWorkspace == WorkspaceKind.Media && IsSelectedGame(gameId))
             {
-                if (updateComment) mediaCommentDirty = false;
-                if (favorite.HasValue) mediaFavoriteDirty = false;
-                SelectedMedia=selectedReplacement;
+                for(var index=0;index<Media.Count;index++)
+                    if(byId.TryGetValue(Media[index].MediaId,out var replacement))Media[index]=replacement;
+                MediaView.Refresh();
+                if(SelectedMedia!=null&&byId.TryGetValue(SelectedMedia.MediaId,out var selectedReplacement))
+                {
+                    if (updateComment && string.Equals(MediaComment, comment, StringComparison.Ordinal)) mediaCommentDirty = false;
+                    if (favorite.HasValue && MediaFavorite == favorite.Value) mediaFavoriteDirty = false;
+                    SelectedMedia=selectedReplacement;
+                }
+                var summary = await plugin.RequestAsync<MediaStorageSummaryDto>(MessageTypes.GetMediaSummary,new GameQueryDto{PlayniteId=gameId});
+                if (CurrentWorkspace == WorkspaceKind.Media && IsSelectedGame(gameId))
+                    MediaSummary = summary;
             }
-            if(SelectedGame!=null)
-                MediaSummary=await plugin.RequestAsync<MediaStorageSummaryDto>(MessageTypes.GetMediaSummary,new GameQueryDto{PlayniteId=SelectedGame.PlayniteId});
             ConfirmSuccess(updateComment?$"已为 {updated.Length} 个媒体文件更新备注":favorite==true?$"已收藏 {updated.Length} 个媒体文件":$"已取消收藏 {updated.Length} 个媒体文件");
         }
 

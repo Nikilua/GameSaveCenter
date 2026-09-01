@@ -128,6 +128,20 @@ public sealed class WorkspaceStateSourceTests
         Assert.Contains("var playniteId = selected.PlayniteId;", implementation);
         Assert.Contains("var policy = GameSaveCenter.Core.Services.BackupPolicyTemplateCatalog.ClonePolicy(selected.Policy);", implementation);
         Assert.Contains("if (IsSelectedGame(playniteId))", implementation);
+        Assert.Contains("var gameId = SelectedGame?.PlayniteId", implementation);
+        Assert.Contains("string.Equals(SelectedBackup?.BackupId, backupId, StringComparison.OrdinalIgnoreCase)", implementation);
+        Assert.Contains("var gameId = SelectedGame?.PlayniteId ?? throw new InvalidOperationException(\"请先选择游戏。\");", media);
+        Assert.Contains("if (CurrentWorkspace == WorkspaceKind.Media && IsSelectedGame(gameId))", media);
+        Assert.Contains("var mediaIds = selected.Select(x=>x.MediaId).ToList();", media);
+        Assert.Contains("if (updateComment && string.Equals(MediaComment, comment, StringComparison.Ordinal))", media);
+        Assert.Contains("if (favorite.HasValue && MediaFavorite == favorite.Value)", media);
+        Assert.Contains("var sourceGameId = SelectedGame?.PlayniteId", media);
+        Assert.Contains("var targetName = target.Name;", media);
+        Assert.Contains("var executable = ProcessMappingExecutable;", implementation);
+        Assert.Contains("if (string.Equals(ProcessMappingExecutable, executable, StringComparison.Ordinal))", implementation);
+        Assert.Contains("var gameName = game.Name;", implementation);
+        Assert.Contains("if (CurrentWorkspace != WorkspaceKind.Saves", implementation);
+        Assert.Contains("var templateName = template.Name;", implementation);
     }
 
     [Fact]
