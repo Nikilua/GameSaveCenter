@@ -3,6 +3,12 @@
 > 维护时间：2026-09-01
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-01 自动修改器审计异常隔离
+
+- `LaunchAfterDelayAsync` 的自动启动审计统一调用 `TryAppendAutoStartAuditAsync`；该 helper 会观察取消并吞掉审计存储异常，避免 detached task 在 Worker 关闭期间留下未观察异常。
+- 原始启动异常在停机 token 已取消时降为 Debug；正常启动失败仍保留 Error。自动启动成功后即使审计失败，也不会影响已启动进程或让后台任务冒泡。
+- STAB-017 自动证据：Release 0 warning/0 error，Core `65/65`、Worker `230/230`、Playnite `319/376`（57 跳过），源码门禁通过。真实 Worker 关闭竞态仍需人工观察。
+
 ## 2026-09-01 自动修改器审计写入退出期取消
 
 - `GameToolService.LaunchAfterDelayAsync` 的三个审计分支（已有实例跳过、成功启动、启动失败）均使用传入的延迟任务 token，不再以 `CancellationToken.None` 回写 SQLite。

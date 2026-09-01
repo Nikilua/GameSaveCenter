@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-01 自动修改器审计异常隔离
+
+- 继续检查 STAB-016 时确认，审计改用任务 token 仍不足以覆盖存储已释放后抛出的非取消异常；失败补写可能使 `LaunchAfterDelayAsync` 这个脱离任务冒泡。
+- 新增 `TryAppendAutoStartAuditAsync` 统一观察并隔离审计异常；停机 token 下的原始启动异常记录 Debug，普通启动失败仍记录 Error，审计失败不会改变进程启动结果。
+- 验证：Release 构建 0 warning/0 error；Core `65/65`、Worker `230/230`、Playnite `319/376`（57 跳过）；源码门禁通过。真实自动修改器与 Worker 关闭竞态仍需人工观察。
+
 ## 2026-09-01 自动修改器审计写入退出期取消
 
 - 对 STAB-015 的自动修改器链继续下钻，发现 `LaunchAfterDelayAsync` 已经绑定取消令牌，但跳过/成功/失败审计写入仍使用 `CancellationToken.None`；停机时可能继续触碰 SQLite，失败补写还可能再次抛异常。

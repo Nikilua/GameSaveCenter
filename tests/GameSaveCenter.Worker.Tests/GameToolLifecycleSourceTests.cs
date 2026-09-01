@@ -15,9 +15,11 @@ public sealed class GameToolLifecycleSourceTests
         Assert.True(start>=0&&end>start,"Could not locate the delayed launch method.");
         var method=source.Substring(start,end-start);
 
-        Assert.Contains("AppendAuditAsync",method,StringComparison.Ordinal);
+        Assert.Contains("TryAppendAutoStartAuditAsync",method,StringComparison.Ordinal);
         Assert.DoesNotContain("CancellationToken.None",method,StringComparison.Ordinal);
-        Assert.Contains("}),token).ConfigureAwait(false);",method,StringComparison.Ordinal);
+        Assert.Contains("private async Task TryAppendAutoStartAuditAsync",source,StringComparison.Ordinal);
+        Assert.Contains("if(token.IsCancellationRequested)",method,StringComparison.Ordinal);
+        Assert.Contains("Could not persist automatic game tool audit",source,StringComparison.Ordinal);
     }
 
     private static string FindRepositoryRoot()

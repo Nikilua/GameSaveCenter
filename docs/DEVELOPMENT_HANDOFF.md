@@ -2,6 +2,12 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-09-01 自动修改器审计异常隔离
+
+- `GameToolService.LaunchAfterDelayAsync` 现在通过 `TryAppendAutoStartAuditAsync` 统一写入跳过/成功/失败审计；审计失败只记录 Debug，不会从脱离任务继续抛出。
+- Worker 停止令牌已取消时，自动启动失败按停机取消记录 Debug；正常业务启动失败仍按 Error 记录，审计写入是 best-effort，不影响任务主流程。
+- 自动证据：Release 0 warning/0 error，Core `65/65`、Worker `230/230`、Playnite `319/376`（57 跳过），源码门禁通过；真实自动修改器启动、进程权限和 Worker 关闭竞态仍需人工复核。
+
 ## 2026-09-01 自动修改器审计写入退出期取消
 
 - `GameToolService.LaunchAfterDelayAsync` 的跳过、成功和失败审计写入现在使用延迟启动任务的取消令牌，不再使用 `CancellationToken.None`；停机取消会被现有取消分支观察。

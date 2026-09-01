@@ -301,22 +301,42 @@ public sealed class GameToolService
             var decision=PrepareLaunch(tool);
             if(decision.Skipped)
             {
-                await _store.AppendAuditAsync("GameTool","已有同一路径实例，已跳过自动启动",
-                    System.Text.Json.JsonSerializer.Serialize(new{session.SessionId,tool.ToolId,tool.DisplayName,existingProcessIds=decision.ExistingProcessIds}),token).ConfigureAwait(false);
+                await TryAppendAutoStartAuditAsync("已有同一路径实例，已跳过自动启动",
+                    new{session.SessionId,tool.ToolId,tool.DisplayName,existingProcessIds=decision.ExistingProcessIds},token).ConfigureAwait(false);
                 return;
             }
             var (process,trackable)=LaunchWithPlan(tool);
             var closeOnExit=tool.CloseOnGameExit&&trackable;
             _sessionTracker.Track(session.SessionId,process.Id,process.StartTime.ToUniversalTime(),closeOnExit);
-            await _store.AppendAuditAsync("GameTool","已随游戏启动工具",
-                System.Text.Json.JsonSerializer.Serialize(new{session.SessionId,tool.ToolId,tool.DisplayName,processId=process.Id}),token).ConfigureAwait(false);
+            await TryAppendAutoStartAuditAsync("已随游戏启动工具",
+                new{session.SessionId,tool.ToolId,tool.DisplayName,processId=process.Id},token).ConfigureAwait(false);
         }
         catch(OperationCanceledException){}
         catch(Exception ex)
         {
+            if(token.IsCancellationRequested)
+            {
+                _logger.LogDebug(ex,"Automatic game tool launch stopped during Worker shutdown for {Tool}",tool.DisplayName);
+                return;
+            }
             _logger.LogError(ex,"Automatic game tool launch failed for {Tool}",tool.DisplayName);
-            await _store.AppendAuditAsync("GameTool","随游戏启动工具失败",
-                System.Text.Json.JsonSerializer.Serialize(new{tool.ToolId,tool.DisplayName,error=ex.Message}),token).ConfigureAwait(false);
+            await TryAppendAutoStartAuditAsync("随游戏启动工具失败",
+                new{tool.ToolId,tool.DisplayName,error=ex.Message},token).ConfigureAwait(false);
+        }
+    }
+
+    private async Task TryAppendAutoStartAuditAsync(string message,object details,CancellationToken token)
+    {
+        try
+        {
+            await _store.AppendAuditAsync("GameTool",message,System.Text.Json.JsonSerializer.Serialize(details),token).ConfigureAwait(false);
+        }
+        catch(OperationCanceledException) when(token.IsCancellationRequested)
+        {
+        }
+        catch(Exception ex)
+        {
+            _logger.LogDebug(ex,"Could not persist automatic game tool audit: {Message}",message);
         }
     }
 
