@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-01 会话快照退出期取消
+
+- 复查后台任务生命周期时发现，`SavePathDetectionService.BeginSessionCapture` 为避免 IPC 请求结束时取消，使用了 `CancellationToken.None`；Worker 停止期间可能继续访问文件和 SQLite，存储释放竞态会产生无效回写。
+- 现在由 `IHostApplicationLifetime.ApplicationStopping` 取消后台快照，保留非阻塞启动行为；既有 `ContinueWith` 会观察取消/失败并清理 `_captureTasks`。
+- 验证：Release 构建 0 warning/0 error；Core `65/65`、Worker `228/228`、Playnite `319/376`（57 跳过）；源码门禁通过。真实 Worker 重启/关闭时扫描取消仍需人工观察。
+
 ## 2026-09-01 FLiNG 下载进度写入收口
 
 - 复查发现，FLiNG 下载每个 80 KiB 分块都会通过 `Progress<T>` 异步写任务进度，但调用方不等待也不观察返回任务；大文件会制造大量 SQLite/任务事件写入，并可能因数据库异常产生未观察任务异常。

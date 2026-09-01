@@ -2,6 +2,12 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-09-01 会话快照退出期取消
+
+- `SavePathDetectionService.BeginSessionCapture` 仍然不等待短暂 IPC 请求，但现在使用 Worker 的 `IHostApplicationLifetime.ApplicationStopping` 作为后台扫描令牌；Worker 停止时会取消存档路径快照，避免 SQLite/文件存储释放后继续回写。
+- 取消异常由既有完成回调观察，正常停止不会升级为未观察任务异常；真实 Worker 忙碌时重启、文件扫描取消时机仍需人工复核。
+- 自动证据：Release 0 warning/0 error，Core `65/65`、Worker `228/228`、Playnite `319/376`（57 跳过），源码门禁通过。
+
 ## 2026-09-01 FLiNG 下载进度写入收口
 
 - 下载进度回调由 `IProgress` 改为可等待异步回调；GameToolService 按百分比变化节流任务进度，避免大文件产生大量并发 SQLite 写入和未观察异常。

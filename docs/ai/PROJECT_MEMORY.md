@@ -3,6 +3,12 @@
 > 维护时间：2026-09-01
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-01 会话存档路径快照退出期取消
+
+- `SavePathDetectionService` 注入可选 `IHostApplicationLifetime`；会话开始时的非阻塞存档路径快照使用 `ApplicationStopping`，不再永久使用 `CancellationToken.None`。
+- 这样保留了“不阻塞游戏启动 IPC”的行为，同时保证 Worker 停止时扫描会取消，避免 SQLite 已释放后继续写入快照/审计；完成回调仍观察取消或失败结果。
+- STAB-014 自动证据：Release 0 warning/0 error，Core `65/65`、Worker `228/228`、Playnite `319/376`（57 跳过），源码门禁通过。真实 Worker 重启取消时机仍需人工观察。
+
 ## 2026-09-01 FLiNG 下载进度写入收口
 
 - FLiNG 下载接口使用可等待的 `Func<long, long?, Task>` 进度回调；下载循环等待回调完成，不再把任务进度写入丢到未观察的后台任务。

@@ -4,6 +4,7 @@ using GameSaveCenter.Contracts;
 using GameSaveCenter.Core.Services;
 using GameSaveCenter.Worker.Configuration;
 using GameSaveCenter.Worker.Persistence;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace GameSaveCenter.Worker.Services;
@@ -37,6 +38,7 @@ public sealed class SavePathDetectionService
     private readonly GameCatalogService _catalog;
     private readonly SqliteStateStore _store;
     private readonly ILogger<SavePathDetectionService> _logger;
+    private readonly IHostApplicationLifetime? _lifetime;
     private readonly SaveCandidateScorer _scorer = new();
     private readonly ConcurrentDictionary<string, Task> _captureTasks = new(StringComparer.OrdinalIgnoreCase);
     private readonly JsonSerializerOptions _json = new(JsonSerializerDefaults.Web) { WriteIndented = false };
@@ -45,12 +47,14 @@ public sealed class SavePathDetectionService
         WorkerOptions options,
         GameCatalogService catalog,
         SqliteStateStore store,
-        ILogger<SavePathDetectionService> logger)
+        ILogger<SavePathDetectionService> logger,
+        IHostApplicationLifetime? lifetime = null)
     {
         _options = options;
         _catalog = catalog;
         _store = store;
         _logger = logger;
+        _lifetime = lifetime;
     }
 
     public async Task<List<SavePathCandidateDto>> DetectAsync(DetectionRequestDto request, CancellationToken token)
@@ -95,7 +99,10 @@ public sealed class SavePathDetectionService
     public void BeginSessionCapture(GameSessionEventDto session)
     {
         if (!_options.EnableSessionSavePathDetection || string.IsNullOrWhiteSpace(session.SessionId)) return;
-        var task = CaptureSessionStartAsync(session, CancellationToken.None);
+        // The capture is intentionally detached from the short-lived IPC request, but it
+        // must still stop with the Worker. Otherwise a host shutdown can dispose SQLite while
+        // this scan is still trying to persist its snapshot.
+        var task = CaptureSessionStartAsync(session, _lifetime?.ApplicationStopping ?? CancellationToken.None);
         _captureTasks[session.SessionId] = task;
         _ = task.ContinueWith(
             completed =>

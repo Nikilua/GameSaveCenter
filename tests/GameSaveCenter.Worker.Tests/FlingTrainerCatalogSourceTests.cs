@@ -22,6 +22,17 @@ public sealed class FlingTrainerCatalogSourceTests
     }
 
     [Fact]
+    public void SessionSavePathCaptureFollowsWorkerShutdown()
+    {
+        var root=FindRepositoryRoot();
+        var source=File.ReadAllText(Path.Combine(root,"src","GameSaveCenter.Worker","Services","SavePathDetectionService.cs"));
+
+        Assert.Contains("IHostApplicationLifetime? _lifetime",source,StringComparison.Ordinal);
+        Assert.Contains("IHostApplicationLifetime? lifetime = null",source,StringComparison.Ordinal);
+        Assert.Contains("CaptureSessionStartAsync(session, _lifetime?.ApplicationStopping ?? CancellationToken.None)",source,StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void ArchiveDirectoryListing_ProducesSearchableZipEntry()
     {
         const string html="""
