@@ -3,6 +3,12 @@
 > 维护时间：2026-09-01
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-01 修改器目录加载状态反馈
+
+- `DashboardViewModel` 新增 `IsTrainerCatalogLoading` 与 `IsTrainerReleasesLoading`，覆盖 FLiNG 目录同步/搜索及版本查询的真实请求生命周期，并在 `finally` 中清理状态。
+- `TrainerCenterView` 的目录结果和版本结果空状态现在要求对应请求已结束；请求期间使用共享 `WorkspaceStatePresenter` 展示加载信息，避免空集合短暂显示为“没有匹配”或“请选择版本”。
+- Release 构建 `0 warning/0 error`；Core `65/65`、Worker `226/226`、Playnite `313/370`（57 跳过），源校验和 WPF 静态审计通过；RenderHarness 双主题、多尺寸、连续 Resize 和 Shell 紧凑标题区均 `render-qa OK`。不要把离屏结果写成新增 UI 在真实 Playnite 全矩阵中已验收。
+
 ## 2026-09-01 IPC 媒体边界与任务通知缓存优化
 
 - `IpcRequestDispatcher` 对 `ListMedia` 的请求统一夹限到 1–1000 条；数据库仍保留自身 5000 条防线，分发层新增的 1000 条上限用于避免异常 IPC 请求产生过大的单次响应，当前 Dashboard 请求行为不变。

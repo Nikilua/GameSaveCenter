@@ -124,6 +124,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         private TrainerReleaseDto selectedTrainerRelease = null!;
         private string trainerSearchText = string.Empty;
         private bool showTrainerLibrary;
+        private bool isTrainerCatalogLoading;
+        private bool isTrainerReleasesLoading;
         private string taskStatusFilter = "全部";
         private string taskGameFilter = "全部";
         private string taskTypeFilter = "全部";
@@ -2209,36 +2211,60 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task SyncTrainerCatalogAsync()
         {
-            var result=await plugin.RequestAsync<TrainerCatalogSyncResultDto>(MessageTypes.SyncTrainerCatalog,new{},TimeSpan.FromMinutes(2));
-            ConfirmSuccess(result.Message);
-            if(!string.IsNullOrWhiteSpace(TrainerSearchText))await SearchTrainerCatalogAsync();
+            ApplyOnUi(() => IsTrainerCatalogLoading = true);
+            try
+            {
+                var result=await plugin.RequestAsync<TrainerCatalogSyncResultDto>(MessageTypes.SyncTrainerCatalog,new{},TimeSpan.FromMinutes(2));
+                ConfirmSuccess(result.Message);
+                if(!string.IsNullOrWhiteSpace(TrainerSearchText))await SearchTrainerCatalogAsync();
+            }
+            finally
+            {
+                ApplyOnUi(() => IsTrainerCatalogLoading = false);
+            }
         }
 
         private async Task SearchTrainerCatalogAsync()
         {
-            var query=string.IsNullOrWhiteSpace(TrainerSearchText)?SelectedGame?.Name??string.Empty:TrainerSearchText.Trim();
-            var results=await plugin.RequestAsync<TrainerCatalogItemDto[]>(MessageTypes.SearchTrainerCatalog,new TrainerCatalogQueryDto{Query=query,Limit=60},TimeSpan.FromMinutes(2));
-            ApplyOnUi(()=>
+            ApplyOnUi(() => IsTrainerCatalogLoading = true);
+            try
             {
-                Replace(TrainerCatalogResults,results);
-                SelectedTrainerCatalogItem=TrainerCatalogResults.FirstOrDefault();
-                StatusMessage=results.Length==0?"没有找到匹配的 FLiNG 修改器":"找到 "+results.Length+" 个 FLiNG 结果";
-            });
-            // A search result is only useful when its downloadable releases are immediately visible.
-            // Keep the explicit button for retrying a failed release lookup, but load the first result
-            // automatically and load again whenever the user selects another catalogue entry in the view.
-            if (results.Length > 0) await LoadTrainerReleasesAsync();
+                var query=string.IsNullOrWhiteSpace(TrainerSearchText)?SelectedGame?.Name??string.Empty:TrainerSearchText.Trim();
+                var results=await plugin.RequestAsync<TrainerCatalogItemDto[]>(MessageTypes.SearchTrainerCatalog,new TrainerCatalogQueryDto{Query=query,Limit=60},TimeSpan.FromMinutes(2));
+                ApplyOnUi(() =>
+                {
+                    Replace(TrainerCatalogResults,results);
+                    SelectedTrainerCatalogItem=TrainerCatalogResults.FirstOrDefault();
+                    StatusMessage=results.Length==0?"没有找到匹配的 FLiNG 修改器":"找到 "+results.Length+" 个 FLiNG 结果";
+                });
+                // A search result is only useful when its downloadable releases are immediately visible.
+                // Keep the explicit button for retrying a failed release lookup, but load the first result
+                // automatically and load again whenever the user selects another catalogue entry in the view.
+                if (results.Length > 0) await LoadTrainerReleasesAsync();
+            }
+            finally
+            {
+                ApplyOnUi(() => IsTrainerCatalogLoading = false);
+            }
         }
 
         private async Task LoadTrainerReleasesAsync()
         {
-            var releases=await plugin.RequestAsync<TrainerReleaseDto[]>(MessageTypes.GetTrainerReleases,
-                new TrainerCatalogQueryDto{CatalogId=SelectedTrainerCatalogItem.CatalogId},TimeSpan.FromMinutes(2));
-            ApplyOnUi(()=>
+            ApplyOnUi(() => IsTrainerReleasesLoading = true);
+            try
             {
-                Replace(TrainerReleases,releases);SelectedTrainerRelease=TrainerReleases.FirstOrDefault();
-                StatusMessage=releases.Length==0?"没有可下载版本":"已加载 "+releases.Length+" 个版本";
-            });
+                var releases=await plugin.RequestAsync<TrainerReleaseDto[]>(MessageTypes.GetTrainerReleases,
+                    new TrainerCatalogQueryDto{CatalogId=SelectedTrainerCatalogItem.CatalogId},TimeSpan.FromMinutes(2));
+                ApplyOnUi(() =>
+                {
+                    Replace(TrainerReleases,releases);SelectedTrainerRelease=TrainerReleases.FirstOrDefault();
+                    StatusMessage=releases.Length==0?"没有可下载版本":"已加载 "+releases.Length+" 个版本";
+                });
+            }
+            finally
+            {
+                ApplyOnUi(() => IsTrainerReleasesLoading = false);
+            }
         }
 
         private async Task DownloadTrainerAsync()

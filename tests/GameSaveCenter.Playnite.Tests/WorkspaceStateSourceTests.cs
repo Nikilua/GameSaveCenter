@@ -54,6 +54,24 @@ public sealed class WorkspaceStateSourceTests
         Assert.Contains("\"Disabled\"", control);
     }
 
+    [Fact]
+    public void TrainerCatalogAndReleaseEmptyStatesWaitForRealLoadingToFinish()
+    {
+        var root = FindRepositoryRoot();
+        var viewModel = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.WorkspaceStates.cs"));
+        var implementation = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
+        var trainer = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml"));
+
+        Assert.Contains("IsTrainerCatalogLoading", viewModel);
+        Assert.Contains("IsTrainerReleasesLoading", viewModel);
+        Assert.Contains("IsTrainerCatalogLoading = true", implementation);
+        Assert.Contains("IsTrainerReleasesLoading = true", implementation);
+        Assert.Contains("Condition Binding=\"{Binding IsTrainerCatalogLoading}\" Value=\"False\"", trainer);
+        Assert.Contains("Condition Binding=\"{Binding IsTrainerReleasesLoading}\" Value=\"False\"", trainer);
+        Assert.Contains("Title=\"正在读取 FLiNG 目录\"", trainer);
+        Assert.Contains("Title=\"正在读取可下载版本\"", trainer);
+    }
+
     private static string FindRepositoryRoot()
     {
         var directory = new DirectoryInfo(AppContext.BaseDirectory);

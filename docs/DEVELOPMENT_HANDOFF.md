@@ -2,6 +2,12 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-09-01 修改器目录加载状态反馈交接
+
+- 修改器中心的 FLiNG 搜索结果、目录同步和可下载版本读取现在分别有真实加载状态；结果为空时只有在请求完成后才显示空状态，加载期间显示共享加载面板。
+- `DashboardViewModel` 的命令、自动读取版本、下载绑定和错误传播未改变；`TrainerCenterView.xaml` 只补充状态呈现与空态条件，未改变页面导航、列表虚拟化或数据契约。
+- 自动证据：Release 构建 `0 warning/0 error`，Core `65/65`、Worker `226/226`、Playnite `313/370`（57 跳过），源码校验通过，WPF `0 error/18 warning/172 info`，RenderHarness 双主题/多尺寸/Resize/Shell QA `render-qa OK`。用户已确认当前版本能编译并正常运行于 Playnite；本轮新增状态尚未由 Agent 在真实宿主重新操作，仍需随发布包做一次人工观察。
+
 ## 2026-09-01 IPC 媒体边界与任务通知缓存优化
 
 - 当前游戏媒体 `ListMedia` 在 Worker 分发层新增 1–1000 条页大小夹限，避免未来异常请求绕过 IPC 响应边界；现有 UI 的 1000 条读取上限不变，Inbox/Ignored 的 500 条分页规则不变。

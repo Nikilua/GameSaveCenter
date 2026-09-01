@@ -11,6 +11,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         public bool IsCloudDegraded => Snapshot.WorkerHealthy && EffectiveSettings.EnableCloudUpload && !Snapshot.RcloneAvailable;
         public bool IsSaveHistoryLoading => IsBusy && Backups.Count == 0;
         public bool IsTrainerToolsLoading => IsBusy && GameTools.Count == 0;
+        public bool IsTrainerCatalogLoading { get => isTrainerCatalogLoading; private set => SetValue(ref isTrainerCatalogLoading, value); }
+        public bool IsTrainerReleasesLoading { get => isTrainerReleasesLoading; private set => SetValue(ref isTrainerReleasesLoading, value); }
 
         partial void OnWorkspaceStateInitialize()
         {
