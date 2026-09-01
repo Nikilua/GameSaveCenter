@@ -4347,7 +4347,22 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Interlocked.Exchange(ref runningWorker, null)", launcherCode);
         Assert.Contains("public void StopOwnedWorker()", launcherCode);
         Assert.Contains("worker.Kill();", launcherCode);
+        Assert.Contains("lifetimeCancellation.Cancel();", pluginCode);
+        Assert.Contains("StopTaskNotificationMonitor();", pluginCode);
         Assert.Contains("launcher.StopOwnedWorker();", pluginCode);
+    }
+
+    [Fact]
+    public void PlayniteShutdownStopsQueuedCallbacksBeforeTheyTouchWorkerOrUi()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var pluginCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "GameSaveCenterPlugin.cs"));
+
+        Assert.Contains("if (lifetimeCancellation.IsCancellationRequested) return;", pluginCode);
+        Assert.Contains("private async Task PollTaskNotificationsAsync()", pluginCode);
+        Assert.Contains("await synchronizationGate.WaitAsync(lifetimeCancellation.Token)", pluginCode);
+        Assert.Contains("if (choice.HasValue && !lifetimeCancellation.IsCancellationRequested)", pluginCode);
+        Assert.Contains("if (lifetimeCancellation.IsCancellationRequested) return;\n            try\n            {\n                Observe(operation());", pluginCode);
     }
 
     [Fact]

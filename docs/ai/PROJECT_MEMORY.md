@@ -3,6 +3,12 @@
 > 维护时间：2026-09-01
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-01 Playnite 退出阶段后台生命周期收口
+
+- `GameSaveCenterPlugin.OnApplicationStopped` 现在先取消 `lifetimeCancellation`，停止任务通知计时器后再停止本插件持有的 Worker；计时器已经排队的回调会在轮询入口、IPC 返回后和通知逐项处理前退出。
+- `FireAndForget`、`EnsureWorkerAsync`、库回调、游戏启动/停止事件、目录同步和任务通知均拒绝退出后的新工作；同步闸门等待使用 `lifetimeCancellation.Token`，避免 Playnite 关闭期间继续触碰 Worker、Dispatcher 或 UI 通知。
+- Release 构建 0 warning/0 error，Core `65/65`、Worker `226/226`、Playnite `319/376`（57 跳过）和源码门禁通过。真实宿主退出竞态、Worker 重启与 Dispatcher 关闭仍属于人工验证边界。
+
 ## 2026-09-01 异步操作返回上下文保护
 
 - 保存媒体单项/批量元数据、存档元数据时，先捕获原游戏、条目和编辑值；Worker 返回后只有原游戏仍在媒体/存档工作区、且编辑器仍对应原条目时才更新集合、摘要或清理 dirty 标记，避免切换期间丢失新输入。

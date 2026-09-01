@@ -110,10 +110,12 @@ namespace GameSaveCenter.Playnite
                 FireAndForget(async () =>
                 {
                     await Task.Delay(2000);
+                    if (lifetimeCancellation.IsCancellationRequested) return;
                     _ = dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
                     {
                         try
                         {
+                            if (lifetimeCancellation.IsCancellationRequested) return;
                             // SidebarItemType.View is opened by Playnite through Opened, not by
                             // invoking Activated. Ask the user to click the sidebar entry so the
                             // real embedded DashboardView.OnLoaded can capture production truth.
@@ -124,8 +126,12 @@ namespace GameSaveCenter.Playnite
                             FireAndForget(async () =>
                             {
                                 await Task.Delay(8000);
+                                if (lifetimeCancellation.IsCancellationRequested) return;
                                 _ = dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
-                                    RealHostUiAuditService.EnsureDashboardCaptured(this)));
+                                {
+                                    if (lifetimeCancellation.IsCancellationRequested) return;
+                                    RealHostUiAuditService.EnsureDashboardCaptured(this);
+                                }));
                             });
                         }
                         catch (Exception ex)
@@ -166,10 +172,9 @@ namespace GameSaveCenter.Playnite
         public override void OnApplicationStopped(OnApplicationStoppedEventArgs args)
         {
             lifetimeCancellation.Cancel();
-            launcher.StopOwnedWorker();
-            taskNotificationTimer?.Dispose();
-            taskNotificationTimer = null;
+            StopTaskNotificationMonitor();
             taskNotificationMonitorDeferred = false;
+            launcher.StopOwnedWorker();
         }
 
         public override void OnLibraryUpdated(OnLibraryUpdatedEventArgs args) => RequestLibrarySynchronization("library update");
@@ -178,13 +183,18 @@ namespace GameSaveCenter.Playnite
 
         public override void OnGameStarted(OnGameStartedEventArgs args)
         {
+            if (lifetimeCancellation.IsCancellationRequested) return;
             PlayniteGameStarted?.Invoke(args.Game.Id);
             FireAndForget(async () =>
             {
+                if (lifetimeCancellation.IsCancellationRequested) return;
                 await EnsureWorkerAsync();
+                if (lifetimeCancellation.IsCancellationRequested) return;
                 await ApplySettingsCoreAsync();
+                if (lifetimeCancellation.IsCancellationRequested) return;
                 var descriptor = adapter.Convert(args.Game);
                 await RequestAsync<object>(MessageTypes.UpsertGames, new[] { descriptor });
+                if (lifetimeCancellation.IsCancellationRequested) return;
                 var action = args.SourceAction == null ? null : adapter.ConvertSourceAction(args.Game, args.SourceAction);
                 await RequestAsync<object>(MessageTypes.GameSessionStarted, new GameSessionEventDto
                 {
@@ -197,10 +207,14 @@ namespace GameSaveCenter.Playnite
 
         public override void OnGameStopped(OnGameStoppedEventArgs args)
         {
+            if (lifetimeCancellation.IsCancellationRequested) return;
             FireAndForget(async () =>
             {
+                if (lifetimeCancellation.IsCancellationRequested) return;
                 await EnsureWorkerAsync();
+                if (lifetimeCancellation.IsCancellationRequested) return;
                 await ApplySettingsCoreAsync();
+                if (lifetimeCancellation.IsCancellationRequested) return;
                 var descriptor = adapter.Convert(args.Game);
                 var stopEvent = new GameSessionEventDto
                 {
@@ -208,6 +222,7 @@ namespace GameSaveCenter.Playnite
                     StoppedUtc = DateTime.UtcNow, ElapsedSeconds = checked((long)Math.Min(args.ElapsedSeconds, (ulong)long.MaxValue))
                 };
                 var result = await RequestAsync<GameSessionStopResultDto>(MessageTypes.GameSessionStopped, stopEvent, TimeSpan.FromMinutes(3));
+                if (lifetimeCancellation.IsCancellationRequested) return;
                 var prompt = result?.ProtectionPrompt;
                 if (result != null && result.ExpectedTaskCount > 0 && !string.IsNullOrWhiteSpace(result.SessionId))
                 {
@@ -219,13 +234,14 @@ namespace GameSaveCenter.Playnite
                 }
                 if (prompt?.ShouldPrompt == true)
                 {
+                    if (lifetimeCancellation.IsCancellationRequested) return;
                     var choice = await ChooseAsync(
                         "发现可保护的存档",
                         prompt.Message,
                         "启用推荐策略",
                         "以后再说",
                         "不再提醒").ConfigureAwait(false);
-                    if (choice.HasValue)
+                    if (choice.HasValue && !lifetimeCancellation.IsCancellationRequested)
                     {
                         await RequestAsync<object>(MessageTypes.ProtectionPromptDecision,
                             new ProtectionPromptDecisionDto { PlayniteId = prompt.PlayniteId, Choice = choice.Value }).ConfigureAwait(false);
@@ -422,6 +438,7 @@ namespace GameSaveCenter.Playnite
 
         public async Task EnsureWorkerAsync()
         {
+            if (lifetimeCancellation.IsCancellationRequested) return;
             // On a 500+ game profile, a busy Worker can legitimately miss a short Ping while
             // SQLite or an explicit catalog refresh is running.  Killing that process loses
             // the in-flight durable work and creates the restart/pipe-timeout loop observed in
@@ -457,6 +474,7 @@ namespace GameSaveCenter.Playnite
 
         private void RequestLibrarySynchronization(string reason)
         {
+            if (lifetimeCancellation.IsCancellationRequested) return;
             // A library callback can arrive while Playnite still exposes an empty database.
             // Do not enqueue an automatic synchronization from that transient snapshot; the
             // provider will publish another callback after import, and the delayed startup
@@ -677,6 +695,7 @@ namespace GameSaveCenter.Playnite
 
         private void StartTaskNotificationMonitor()
         {
+            if (lifetimeCancellation.IsCancellationRequested) return;
             if (taskNotificationTimer != null || taskNotificationMonitorDeferred && !interactiveSurfaceOpened)
                 return;
 
@@ -729,6 +748,7 @@ namespace GameSaveCenter.Playnite
             var gateEntered = false;
             try
             {
+                if (lifetimeCancellation.IsCancellationRequested) return;
                 // Do not reconnect to a starting/busy Worker every second. A full library
                 // refresh can legitimately keep the pipe unavailable for a while; exponential
                 // backoff prevents the notification timer from adding hundreds of failed pipe
@@ -736,13 +756,16 @@ namespace GameSaveCenter.Playnite
                 if (DateTime.UtcNow < taskNotificationRetryAfterUtc) return;
                 if (!await taskNotificationPollGate.WaitAsync(0).ConfigureAwait(false)) return;
                 gateEntered = true;
+                if (lifetimeCancellation.IsCancellationRequested) return;
                 if (!taskNotificationSnapshotInitialized)
                 {
                     // Seed durable history once, then switch to the Worker's signalled change feed.
                     // This does not start a disabled Worker; connection failure is handled below.
                     var tasks = await RequestAsync<TaskStatusDto[]>(MessageTypes.GetTasks, new GameQueryDto { Limit = 200 }, TimeSpan.FromSeconds(4)).ConfigureAwait(false);
+                    if (lifetimeCancellation.IsCancellationRequested) return;
                     foreach (var task in tasks)
                     {
+                        if (lifetimeCancellation.IsCancellationRequested) return;
                         var terminal = task.State == TaskState.Succeeded || task.State == TaskState.Failed || task.State == TaskState.Cancelled;
                         if (!terminal) continue;
                         if (task.CreatedUtc < taskNotificationMonitorStartedUtc.AddSeconds(-5))
@@ -753,13 +776,16 @@ namespace GameSaveCenter.Playnite
                     taskNotificationSnapshotInitialized = true;
                 }
 
+                if (lifetimeCancellation.IsCancellationRequested) return;
                 var feed = await RequestAsync<TaskChangeFeedDto>(
                     MessageTypes.WaitForTaskChanges,
                     new TaskChangeRequestDto { AfterSequence = lastTaskNotificationSequence, Limit = 200, WaitSeconds = 20 },
                     TimeSpan.FromSeconds(25)).ConfigureAwait(false);
+                if (lifetimeCancellation.IsCancellationRequested) return;
                 if (feed.ResetRequired) lastTaskNotificationSequence = 0;
                 foreach (var change in feed.Changes)
                 {
+                    if (lifetimeCancellation.IsCancellationRequested) return;
                     var task=change.Task;
                     var terminal=task.State==TaskState.Succeeded||task.State==TaskState.Failed||task.State==TaskState.Cancelled;
                     if (terminal)
@@ -775,6 +801,7 @@ namespace GameSaveCenter.Playnite
             }
             catch (Exception ex)
             {
+                if (lifetimeCancellation.IsCancellationRequested) return;
                 taskNotificationFailureCount = Math.Min(taskNotificationFailureCount + 1, 6);
                 var delaySeconds = Math.Min(60, 5 * (1 << Math.Max(0, taskNotificationFailureCount - 1)));
                 taskNotificationRetryAfterUtc = DateTime.UtcNow.AddSeconds(delaySeconds);
@@ -836,12 +863,18 @@ namespace GameSaveCenter.Playnite
             foreach (var completed in session.Tasks) notifiedTaskIds.TryAdd(completed.TaskId);
         }
 
-        private async Task ApplySettingsCoreAsync() => await RequestAsync<object>(MessageTypes.UpdateSettings, Settings.ToWorkerSettings());
+        private async Task ApplySettingsCoreAsync()
+        {
+            if (lifetimeCancellation.IsCancellationRequested) return;
+            await RequestAsync<object>(MessageTypes.UpdateSettings, Settings.ToWorkerSettings());
+        }
 
         public Task SynchronizeAsync()
         {
+            if (lifetimeCancellation.IsCancellationRequested) return Task.CompletedTask;
             lock (synchronizationRequestGate)
             {
+                if (lifetimeCancellation.IsCancellationRequested) return Task.CompletedTask;
                 synchronizationRequested = true;
                 if (synchronizationTask == null || synchronizationTask.IsCompleted)
                     synchronizationTask = SynchronizeLoopAsync();
@@ -858,6 +891,7 @@ namespace GameSaveCenter.Playnite
         /// </summary>
         public Task SynchronizeFromDashboardAsync()
         {
+            if (lifetimeCancellation.IsCancellationRequested) return Task.CompletedTask;
             interactiveSurfaceOpened = true;
             if (IsVeryLargeLibrary())
             {
@@ -900,8 +934,10 @@ namespace GameSaveCenter.Playnite
 
         private async Task SynchronizeOnceAsync()
         {
+            if (lifetimeCancellation.IsCancellationRequested) return;
             // Playnite's database is captured before asynchronous continuations leave the UI context.
             var games = PlayniteApi.Database.Games.Select(adapter.Convert).ToList();
+            if (lifetimeCancellation.IsCancellationRequested) return;
             // The first library callback may still arrive after the extension was loaded while
             // the host is importing games.  Re-check the actual captured snapshot here: if it is
             // a very large library and the user has not opened GameSaveCenter, abort before
@@ -931,6 +967,8 @@ namespace GameSaveCenter.Playnite
                 await Task.Delay(quietDelay, lifetimeCancellation.Token).ConfigureAwait(false);
             }
 
+            if (lifetimeCancellation.IsCancellationRequested) return;
+
             // Avoid even starting Worker/IPC work for duplicate Playnite library events.  The
             // old order performed EnsureWorker and UpdateSettings before checking the fingerprint,
             // so a burst of import notifications still woke the Worker repeatedly.
@@ -940,17 +978,21 @@ namespace GameSaveCenter.Playnite
                 return;
             }
 
-            await synchronizationGate.WaitAsync().ConfigureAwait(false);
+            await synchronizationGate.WaitAsync(lifetimeCancellation.Token).ConfigureAwait(false);
             try
             {
+                if (lifetimeCancellation.IsCancellationRequested) return;
                 if (string.Equals(fingerprint, lastSynchronizedLibraryFingerprint, StringComparison.Ordinal)
                     && DateTime.UtcNow - lastLibrarySynchronizationUtc < TimeSpan.FromMinutes(5))
                 {
                     return;
                 }
                 await EnsureWorkerAsync().ConfigureAwait(false);
+                if (lifetimeCancellation.IsCancellationRequested) return;
                 await ApplySettingsCoreAsync().ConfigureAwait(false);
+                if (lifetimeCancellation.IsCancellationRequested) return;
                 await RequestAsync<object>(MessageTypes.UpsertGames, games, TimeSpan.FromMinutes(5)).ConfigureAwait(false);
+                if (lifetimeCancellation.IsCancellationRequested) return;
                 lastSynchronizedLibraryFingerprint = fingerprint;
                 lastLibrarySynchronizationUtc = DateTime.UtcNow;
             }
@@ -1081,6 +1123,7 @@ namespace GameSaveCenter.Playnite
         private void FireAndForget(Func<Task> operation)
         {
             if (operation == null) throw new ArgumentNullException(nameof(operation));
+            if (lifetimeCancellation.IsCancellationRequested) return;
             try
             {
                 Observe(operation());
