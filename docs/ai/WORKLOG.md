@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-01 公共 IPC 入口的退出期保护
+
+- 反向复核 STAB-011 时发现，部分页面命令和 Playnite 快捷操作会在 `EnsureWorkerAsync` 后经过多个 await，再直接调用公共 `RequestAsync`；只保护生命周期回调本身仍可能留下退出阶段的后续 Worker 命令。
+- `GameSaveCenterPlugin.RequestAsync` 现在是统一生命周期闸门：Playnite 开始停止后返回取消任务，不再创建新的 Named Pipe 请求。正常运行期间仍原样转发到 Worker；已经写入管道的单个请求仍由客户端自身完成或超时，后续请求会被阻断。
+- 验证：Release 构建 0 warning/0 error；Core `65/65`、Worker `226/226`、Playnite `319/376`（57 跳过）；源码校验通过。真实 Playnite 关闭中执行快捷操作/页面命令仍需人工观察。
+
 ## 2026-09-01 Playnite 退出阶段后台生命周期收口
 
 - 复查发现，任务通知计时器、Playnite 游戏事件和目录同步可能在 `OnApplicationStopped` 已开始后仍进入异步续体；此前生命周期取消只覆盖部分启动延迟，轮询请求本身没有退出后的结果隔离。

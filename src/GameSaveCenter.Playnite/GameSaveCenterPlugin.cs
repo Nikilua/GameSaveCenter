@@ -561,7 +561,16 @@ namespace GameSaveCenter.Playnite
 
         public bool IsVeryLargeLibraryForUi => observedGameCount >= VeryLargeLibraryThreshold;
 
-        public Task<T> RequestAsync<T>(string type, object payload, TimeSpan? timeout = null) => client.RequestAsync<T>(type, payload, timeout);
+        public Task<T> RequestAsync<T>(string type, object payload, TimeSpan? timeout = null)
+        {
+            // Some page commands and Playnite quick actions have several awaits between
+            // their entry point and the next IPC call.  Keep the lifecycle boundary at the
+            // shared request seam so an operation that was already in flight cannot submit
+            // another command after Playnite has begun shutting down.
+            if (lifetimeCancellation.IsCancellationRequested)
+                return Task.FromCanceled<T>(lifetimeCancellation.Token);
+            return client.RequestAsync<T>(type, payload, timeout);
+        }
 
         /// <summary>
         /// Reads Playnite's current runtime flags for page-activation selection. This is a

@@ -3,6 +3,12 @@
 > 维护时间：2026-09-01
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-01 公共 IPC 入口的退出期保护
+
+- `GameSaveCenterPlugin.RequestAsync<T>` 现在检查 `lifetimeCancellation`；退出后返回 `Task.FromCanceled<T>`，统一阻止页面命令、快捷操作和异步续体在多个 await 后绕过生命周期守卫发起新 Worker 请求。
+- 该保护只拦截退出后尚未创建的请求，不强行中断已经在管道中的请求；现有调用方的 `OperationCanceledException` 由页面命令的取消路径观察，不显示退出期错误通知。
+- STAB-012 自动证据：Release 0 warning/0 error，Core `65/65`、Worker `226/226`、Playnite `319/376`（57 跳过），源码门禁通过。真实宿主关闭中操作仍需人工回归。
+
 ## 2026-09-01 Playnite 退出阶段后台生命周期收口
 
 - `GameSaveCenterPlugin.OnApplicationStopped` 现在先取消 `lifetimeCancellation`，停止任务通知计时器后再停止本插件持有的 Worker；计时器已经排队的回调会在轮询入口、IPC 返回后和通知逐项处理前退出。

@@ -4362,6 +4362,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("private async Task PollTaskNotificationsAsync()", pluginCode);
         Assert.Contains("await synchronizationGate.WaitAsync(lifetimeCancellation.Token)", pluginCode);
         Assert.Contains("if (choice.HasValue && !lifetimeCancellation.IsCancellationRequested)", pluginCode);
+        Assert.Contains("return Task.FromCanceled<T>(lifetimeCancellation.Token);", pluginCode);
         Assert.Contains("if (lifetimeCancellation.IsCancellationRequested) return;\n            try\n            {\n                Observe(operation());", pluginCode);
     }
 
