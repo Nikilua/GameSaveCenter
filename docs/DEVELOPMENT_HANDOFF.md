@@ -8,6 +8,12 @@
 - `DashboardViewModel` 的命令、自动读取版本、下载绑定和错误传播未改变；`TrainerCenterView.xaml` 只补充状态呈现与空态条件，未改变页面导航、列表虚拟化或数据契约。
 - 自动证据：Release 构建 `0 warning/0 error`，Core `65/65`、Worker `226/226`、Playnite `313/370`（57 跳过），源码校验通过，WPF `0 error/18 warning/172 info`，RenderHarness 双主题/多尺寸/Resize/Shell QA `render-qa OK`。用户已确认当前版本能编译并正常运行于 Playnite；本轮新增状态尚未由 Agent 在真实宿主重新操作，仍需随发布包做一次人工观察。
 
+## 2026-09-01 修改器版本读取竞态与逐项操作交接
+
+- FLiNG 目录结果行的“读取版本”按钮现在带有当前行作为参数；非选中行也会正确切换选择并读取对应版本。
+- 版本请求增加代际号、目录 ID 校验和忙碌期间最新选择排队；旧的慢响应只结束自身加载状态，不再写入新选择的 `TrainerReleases`。全局命令保护、下载校验、安全解压和绑定行为未变。
+- 自动证据：Release 构建 `0 warning/0 error`，Core `65/65`、Worker `226/226`、Playnite `314/371`（57 跳过），源码校验通过，WPF `0 error/18 warning/172 info`，RenderHarness 双主题/多尺寸/Resize/Shell QA `render-qa OK`。用户已确认当前版本可在 Playnite 正常运行；本轮新增竞态场景仍需在实际宿主中快速切换目录项观察一次。
+
 ## 2026-09-01 IPC 媒体边界与任务通知缓存优化
 
 - 当前游戏媒体 `ListMedia` 在 Worker 分发层新增 1–1000 条页大小夹限，避免未来异常请求绕过 IPC 响应边界；现有 UI 的 1000 条读取上限不变，Inbox/Ignored 的 500 条分页规则不变。

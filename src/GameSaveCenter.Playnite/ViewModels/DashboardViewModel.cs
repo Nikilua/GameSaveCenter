@@ -126,6 +126,9 @@ namespace GameSaveCenter.Playnite.ViewModels
         private bool showTrainerLibrary;
         private bool isTrainerCatalogLoading;
         private bool isTrainerReleasesLoading;
+        private long trainerReleaseLoadGeneration;
+        private string? trainerReleaseLoadCatalogId;
+        private string? pendingTrainerReleaseCatalogId;
         private string taskStatusFilter = "全部";
         private string taskGameFilter = "全部";
         private string taskTypeFilter = "全部";
@@ -269,7 +272,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             RelocateGameToolCommand = new RelayCommand(_ => Run(RelocateSelectedGameToolAsync), _ => !IsBusy && SelectedGameTool != null && SelectedGameTool.IsExternalReference);
             SyncTrainerCatalogCommand = new RelayCommand(_ => Run(SyncTrainerCatalogAsync), _ => !IsBusy);
             SearchTrainerCatalogCommand = new RelayCommand(_ => Run(SearchTrainerCatalogAsync), _ => !IsBusy);
-            LoadTrainerReleasesCommand = new RelayCommand(_ => Run(LoadTrainerReleasesAsync), _ => !IsBusy && SelectedTrainerCatalogItem != null);
+            LoadTrainerReleasesCommand = new RelayCommand(value => RequestTrainerReleasesLoad(value as TrainerCatalogItemDto), _ => SelectedTrainerCatalogItem != null);
             DownloadTrainerCommand = new RelayCommand(_ => Run(DownloadTrainerAsync), _ => !IsBusy && SelectedGame != null && SelectedTrainerRelease != null);
             // Initial rendering is cache-first and must not pass through RunAsync: that helper
             // waits for Worker startup before doing anything and marks the whole dashboard busy.
@@ -534,7 +537,22 @@ namespace GameSaveCenter.Playnite.ViewModels
         public TrainerCatalogItemDto SelectedTrainerCatalogItem
         {
             get => selectedTrainerCatalogItem;
-            set { SetValue(ref selectedTrainerCatalogItem,value); TrainerReleases.Clear(); SelectedTrainerRelease=null!; RaiseCommandStates(); }
+            set
+            {
+                var previousCatalogId = selectedTrainerCatalogItem == null ? null : selectedTrainerCatalogItem.CatalogId;
+                var selectionChanged = !Equals(selectedTrainerCatalogItem, value);
+                selectedTrainerCatalogItem = value!;
+                if (selectionChanged)
+                    OnPropertyChanged(nameof(SelectedTrainerCatalogItem));
+                var currentCatalogId = value?.CatalogId;
+                if (!string.Equals(previousCatalogId, currentCatalogId, StringComparison.OrdinalIgnoreCase))
+                    Interlocked.Increment(ref trainerReleaseLoadGeneration);
+                if (string.IsNullOrWhiteSpace(currentCatalogId))
+                    pendingTrainerReleaseCatalogId = null;
+                TrainerReleases.Clear();
+                SelectedTrainerRelease = null!;
+                RaiseCommandStates();
+            }
         }
         public TrainerReleaseDto SelectedTrainerRelease
         {
@@ -2240,7 +2258,13 @@ namespace GameSaveCenter.Playnite.ViewModels
                 // A search result is only useful when its downloadable releases are immediately visible.
                 // Keep the explicit button for retrying a failed release lookup, but load the first result
                 // automatically and load again whenever the user selects another catalogue entry in the view.
-                if (results.Length > 0) await LoadTrainerReleasesAsync();
+                if (results.Length > 0)
+                {
+                    // The selection event may have queued the same request while IsBusy was still true.
+                    // This direct load is already part of the search operation, so consume that queue.
+                    pendingTrainerReleaseCatalogId = null;
+                    await LoadTrainerReleasesAsync();
+                }
             }
             finally
             {
@@ -2250,21 +2274,63 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task LoadTrainerReleasesAsync()
         {
+            var selected = SelectedTrainerCatalogItem;
+            if (selected == null || string.IsNullOrWhiteSpace(selected.CatalogId)) return;
+            var catalogId = selected.CatalogId;
+            var generation = Interlocked.Read(ref trainerReleaseLoadGeneration);
+            trainerReleaseLoadCatalogId = catalogId;
+            if (string.Equals(pendingTrainerReleaseCatalogId, catalogId, StringComparison.OrdinalIgnoreCase))
+                pendingTrainerReleaseCatalogId = null;
             ApplyOnUi(() => IsTrainerReleasesLoading = true);
             try
             {
                 var releases=await plugin.RequestAsync<TrainerReleaseDto[]>(MessageTypes.GetTrainerReleases,
-                    new TrainerCatalogQueryDto{CatalogId=SelectedTrainerCatalogItem.CatalogId},TimeSpan.FromMinutes(2));
+                    new TrainerCatalogQueryDto{CatalogId=catalogId},TimeSpan.FromMinutes(2));
                 ApplyOnUi(() =>
                 {
+                    if (generation != Interlocked.Read(ref trainerReleaseLoadGeneration)
+                        || !string.Equals(SelectedTrainerCatalogItem?.CatalogId, catalogId, StringComparison.OrdinalIgnoreCase))
+                        return;
                     Replace(TrainerReleases,releases);SelectedTrainerRelease=TrainerReleases.FirstOrDefault();
                     StatusMessage=releases.Length==0?"没有可下载版本":"已加载 "+releases.Length+" 个版本";
                 });
             }
             finally
             {
+                trainerReleaseLoadCatalogId = null;
                 ApplyOnUi(() => IsTrainerReleasesLoading = false);
             }
+        }
+
+        private void RequestTrainerReleasesLoad(TrainerCatalogItemDto? requested = null)
+        {
+            if (requested != null
+                && !string.IsNullOrWhiteSpace(requested.CatalogId)
+                && !string.Equals(SelectedTrainerCatalogItem?.CatalogId, requested.CatalogId, StringComparison.OrdinalIgnoreCase))
+                SelectedTrainerCatalogItem = requested;
+            var selected = SelectedTrainerCatalogItem;
+            if (selected == null || string.IsNullOrWhiteSpace(selected.CatalogId)) return;
+            var catalogId = selected.CatalogId;
+            if (IsTrainerReleasesLoading
+                && string.Equals(trainerReleaseLoadCatalogId, catalogId, StringComparison.OrdinalIgnoreCase))
+                return;
+            pendingTrainerReleaseCatalogId = catalogId;
+            IsTrainerReleasesLoading = true;
+            StartQueuedTrainerReleaseLoad();
+        }
+
+        private void StartQueuedTrainerReleaseLoad()
+        {
+            if (IsBusy || string.IsNullOrWhiteSpace(pendingTrainerReleaseCatalogId)) return;
+            if (!string.Equals(SelectedTrainerCatalogItem?.CatalogId, pendingTrainerReleaseCatalogId, StringComparison.OrdinalIgnoreCase))
+            {
+                pendingTrainerReleaseCatalogId = null;
+                IsTrainerReleasesLoading = false;
+                return;
+            }
+            trainerReleaseLoadCatalogId = pendingTrainerReleaseCatalogId;
+            pendingTrainerReleaseCatalogId = null;
+            Run(LoadTrainerReleasesAsync);
         }
 
         private async Task DownloadTrainerAsync()
@@ -2677,7 +2743,13 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
             finally
             {
+                if (trainerReleaseLoadCatalogId != null && IsTrainerReleasesLoading)
+                {
+                    trainerReleaseLoadCatalogId = null;
+                    IsTrainerReleasesLoading = false;
+                }
                 IsBusy = false;
+                StartQueuedTrainerReleaseLoad();
             }
         }
 

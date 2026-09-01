@@ -9,6 +9,12 @@
 - `TrainerCenterView` 的目录结果和版本结果空状态现在要求对应请求已结束；请求期间使用共享 `WorkspaceStatePresenter` 展示加载信息，避免空集合短暂显示为“没有匹配”或“请选择版本”。
 - Release 构建 `0 warning/0 error`；Core `65/65`、Worker `226/226`、Playnite `313/370`（57 跳过），源校验和 WPF 静态审计通过；RenderHarness 双主题、多尺寸、连续 Resize 和 Shell 紧凑标题区均 `render-qa OK`。不要把离屏结果写成新增 UI 在真实 Playnite 全矩阵中已验收。
 
+## 2026-09-01 修改器版本读取竞态与逐项操作优化
+
+- `LoadTrainerReleasesCommand` 接收 FLiNG 目录行的 `CommandParameter`；点击某一行的“读取版本”会先将该行设为当前目录项，再读取它的版本，而不是复用此前的选择。
+- 版本请求用 `trainerReleaseLoadGeneration` 和当前 `CatalogId` 双重确认响应是否仍然有效；`pendingTrainerReleaseCatalogId` 记录忙碌期间最新选择，`RunAsync` 完成后自动补发一次，旧响应不会覆盖新选择。
+- 当前验证：Release 构建 `0 warning/0 error`；Core `65/65`、Worker `226/226`、Playnite `314/371`（57 跳过），源码/WPF 门禁通过，RenderHarness 多尺寸、双主题、连续 Resize 和 Shell QA 均 `render-qa OK`。该请求队列仍需随新包在真实 Playnite 中人工观察一次。
+
 ## 2026-09-01 IPC 媒体边界与任务通知缓存优化
 
 - `IpcRequestDispatcher` 对 `ListMedia` 的请求统一夹限到 1–1000 条；数据库仍保留自身 5000 条防线，分发层新增的 1000 条上限用于避免异常 IPC 请求产生过大的单次响应，当前 Dashboard 请求行为不变。

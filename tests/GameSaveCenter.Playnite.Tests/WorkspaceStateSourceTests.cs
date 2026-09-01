@@ -72,6 +72,21 @@ public sealed class WorkspaceStateSourceTests
         Assert.Contains("Title=\"正在读取可下载版本\"", trainer);
     }
 
+    [Fact]
+    public void TrainerReleaseLoadingIgnoresStaleSelectionsAndQueuesTheLatestOne()
+    {
+        var root = FindRepositoryRoot();
+        var implementation = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
+        var trainer = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml"));
+
+        Assert.Contains("trainerReleaseLoadGeneration", implementation);
+        Assert.Contains("pendingTrainerReleaseCatalogId", implementation);
+        Assert.Contains("generation != Interlocked.Read(ref trainerReleaseLoadGeneration)", implementation);
+        Assert.Contains("StartQueuedTrainerReleaseLoad();", implementation);
+        Assert.Contains("RequestTrainerReleasesLoad(TrainerCatalogItemDto? requested = null)", implementation);
+        Assert.Contains("CommandParameter=\"{Binding}\"", trainer);
+    }
+
     private static string FindRepositoryRoot()
     {
         var directory = new DirectoryInfo(AppContext.BaseDirectory);
