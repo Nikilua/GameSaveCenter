@@ -1,3 +1,4 @@
+using GameSaveCenter.Contracts;
 using GameSaveCenter.Worker.Configuration;
 using GameSaveCenter.Worker.Persistence;
 using Microsoft.Data.Sqlite;
@@ -85,6 +86,42 @@ public sealed class SqliteMediaSignatureTests : IDisposable
         await using var command = connection.CreateCommand();
         command.CommandText = "SELECT COUNT(*) FROM media_file_signatures;";
         Assert.Equal(2L, (long)(await command.ExecuteScalarAsync() ?? 0L));
+    }
+
+    [Fact]
+    public async Task MediaCloudRetryCandidatesIncludePendingAndFailedAssignedMedia()
+    {
+        await store.AddMediaAsync(new MediaItemDto
+        {
+            MediaId = "pending-media", PlayniteId = "game-pending", ArchivePath = "pending.png",
+            OriginalPath = "pending-source.png", Sha256 = "pending-hash", CloudState = "Pending",
+            ClassificationState = "Assigned"
+        }, CancellationToken.None);
+        await store.AddMediaAsync(new MediaItemDto
+        {
+            MediaId = "failed-media", PlayniteId = "game-failed", ArchivePath = "failed.png",
+            OriginalPath = "failed-source.png", Sha256 = "failed-hash", CloudState = "Failed",
+            ClassificationState = "Assigned"
+        }, CancellationToken.None);
+        await store.AddMediaAsync(new MediaItemDto
+        {
+            MediaId = "synced-media", PlayniteId = "game-synced", ArchivePath = "synced.png",
+            OriginalPath = "synced-source.png", Sha256 = "synced-hash", CloudState = "Synced",
+            ClassificationState = "Assigned"
+        }, CancellationToken.None);
+        await store.AddMediaAsync(new MediaItemDto
+        {
+            MediaId = "inbox-media", PlayniteId = "game-inbox", ArchivePath = "inbox.png",
+            OriginalPath = "inbox-source.png", Sha256 = "inbox-hash", CloudState = "Pending",
+            ClassificationState = "Inbox"
+        }, CancellationToken.None);
+
+        var candidates = await store.GetMediaGamesNeedingCloudUploadAsync(CancellationToken.None);
+
+        Assert.Contains("game-pending", candidates);
+        Assert.Contains("game-failed", candidates);
+        Assert.DoesNotContain("game-synced", candidates);
+        Assert.DoesNotContain("game-inbox", candidates);
     }
 
     public void Dispose()

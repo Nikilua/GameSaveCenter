@@ -1,7 +1,13 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
-> 维护时间：2026-08-31
+> 维护时间：2026-09-01
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
+
+## 2026-09-01 媒体云端重试收口
+
+- 修复媒体本地归档成功、云端复制失败后再次同步可能不上传的问题：单游戏同步不再只看本轮 `copied > 0`，还会识别已归类且处于 `Pending`/`Failed`/`RetryScheduled` 的媒体；公共 Inbox 同样会补入这些游戏。
+- 新增 `GetMediaGamesNeedingCloudUploadAsync` 及 SQLite 索引；媒体复制前回写 `Pending`，成功为 `Synced`，同时补齐媒体和游戏云端状态的用户文案。Worker 测试 `220/220` 通过。
+- 该修复只保证任务重试路径不丢上传，不等同真实 Rclone 远端验证；真实网络失败、远端权限和 Playnite 任务通知仍需人工回归。
 
 ## 2026-08-31 UI/可靠性审计收口
 

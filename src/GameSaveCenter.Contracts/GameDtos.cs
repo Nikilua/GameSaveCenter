@@ -138,6 +138,7 @@ namespace GameSaveCenter.Contracts
             "Failed" => "上传失败",
             "Disabled" => "未启用",
             "Pending" => "待上传",
+            "RetryScheduled" => "等待重试",
             _ => string.IsNullOrWhiteSpace(CloudState) ? "未启用" : CloudState
         };
         public DateTime? LastBackupLocal => LastBackupUtc?.ToLocalTime();

@@ -237,9 +237,12 @@ namespace GameSaveCenter.Contracts
         };
         public string CloudStateDisplay => CloudState switch
         {
+            "Synced" => "已同步",
             "Uploaded" => "已上传",
             "Failed" => "失败",
             "Pending" => "待上传",
+            "RetryScheduled" => "等待重试",
+            "NotApplicable" => "不适用",
             _ => string.IsNullOrWhiteSpace(CloudState) ? "未启用" : CloudState
         };
         public string ClassificationStateDisplay => string.Equals(ClassificationState, "Inbox", StringComparison.OrdinalIgnoreCase)

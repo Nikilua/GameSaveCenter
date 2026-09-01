@@ -71,6 +71,9 @@ WHERE COALESCE(classification_state,'')='' OR classification_state='Assigned';";
         var mediaClassificationIndex = connection.CreateCommand();
         mediaClassificationIndex.CommandText = "CREATE INDEX IF NOT EXISTS ix_media_classification ON media(classification_state,captured_utc DESC);";
         await mediaClassificationIndex.ExecuteNonQueryAsync(token).ConfigureAwait(false);
+        var mediaCloudIndex = connection.CreateCommand();
+        mediaCloudIndex.CommandText = "CREATE INDEX IF NOT EXISTS ix_media_cloud_state ON media(cloud_state,classification_state,playnite_id);";
+        await mediaCloudIndex.ExecuteNonQueryAsync(token).ConfigureAwait(false);
         await EnsureBackupVersionSchemaAsync(connection, token).ConfigureAwait(false);
     }
 

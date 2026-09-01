@@ -235,8 +235,11 @@ public sealed class MediaSyncService
             }
 
             var policy=await _store.GetPolicyAsync(game.PlayniteId,ct).ConfigureAwait(false);
-            if(!_options.SafeModeEnabled&&_options.EnableCloudUpload&&(request.UploadAfterSync||policy.UploadAfterBackup)&&copied>0&&_rclone.IsConfigured)
+            var pendingCloudGames = await _store.GetMediaGamesNeedingCloudUploadAsync(ct).ConfigureAwait(false);
+            var shouldUpload = copied > 0 || pendingCloudGames.Contains(game.PlayniteId, StringComparer.OrdinalIgnoreCase);
+            if(!_options.SafeModeEnabled&&_options.EnableCloudUpload&&(request.UploadAfterSync||policy.UploadAfterBackup)&&shouldUpload&&_rclone.IsConfigured)
             {
+                await _store.UpdateMediaCloudStateAsync(game.PlayniteId,"Pending",ct).ConfigureAwait(false);
                 await progress.ReportAsync(90,"正在复制媒体到云端").ConfigureAwait(false);
                 var gameDirectory=Path.Combine(_options.MediaArchiveDirectory,Sanitize(game.Name));
                 var remote=Path.Combine(Environment.MachineName,"Media",Sanitize(game.Name));
@@ -286,8 +289,10 @@ public sealed class MediaSyncService
                     break;
                 }
             }
-            if(!_options.SafeModeEnabled&&_options.EnableCloudUpload&&_rclone.IsConfigured&&assignedGameIds.Count>0)
+            if(!_options.SafeModeEnabled&&_options.EnableCloudUpload&&_rclone.IsConfigured)
             {
+                foreach(var gameId in await _store.GetMediaGamesNeedingCloudUploadAsync(ct).ConfigureAwait(false))
+                    assignedGameIds.Add(gameId);
                 foreach(var gameId in assignedGameIds)
                 {
                     var game=games.First(x=>string.Equals(x.PlayniteId,gameId,StringComparison.OrdinalIgnoreCase));
@@ -296,6 +301,7 @@ public sealed class MediaSyncService
                     await progress.ReportAsync(94,$"正在复制 {game.Name} 的公共媒体到云端").ConfigureAwait(false);
                     var gameDirectory=Path.Combine(_options.MediaArchiveDirectory,Sanitize(game.Name));
                     var remote=Path.Combine(Environment.MachineName,"Media",Sanitize(game.Name));
+                    await _store.UpdateMediaCloudStateAsync(gameId,"Pending",ct).ConfigureAwait(false);
                     var cloud=await _cloudTransfers.RunUploadAsync("media inbox",transferToken=>_rclone.CopyAsync(gameDirectory,remote,transferToken),ct).ConfigureAwait(false);
                     if(!cloud.Success)
                     {

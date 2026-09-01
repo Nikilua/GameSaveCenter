@@ -1,5 +1,7 @@
 # 开发实现进度
 
+- [x] STAB-008（2026-09-01）：修复媒体云端复制失败后的重试遗漏。单游戏媒体同步不再因本轮新增文件数为 0 而跳过 `Pending`/`Failed`/`RetryScheduled` 媒体；公共 Inbox 重试也会重新纳入这些游戏。新增 SQLite 查询和索引，媒体重新尝试前明确回写 `Pending`；媒体/游戏云端状态补齐“已同步”“等待重试”“不适用”等用户文案。Worker `220/220` 通过；真实 Rclone/Playnite 云端回归仍需人工验证。
+
 - [x] UI-335（2026-08-26）：针对实机截图修复共享圆角视觉：生产标题栏改为四角 18 DIP 圆角、完整描边和裁剪；普通页面卡片统一启用 `ClipToBounds`，避免内部背景/内容把圆角填回直角。标题、按钮命令、Binding、数据、滚动和虚拟化未改。Release 0 warning/0 error、Core `59/59`、Worker `210/210`、Playnite `310/367`（57 跳过）、源码/XAML/WPF 门禁和 `.tmp/ui-qa-rounded-surfaces-v1/render-qa-report.txt`（`render-qa OK`）通过；RenderHarness 不包含外层 Shell，真实 Playnite/实机 DPI 仍按要求跳过 Phase 4。
 
 - [x] UI-334（2026-08-26）：修复生产共享按钮的 Hover/Pressed 状态层只覆盖内容内侧的问题。`GscWpfUiButton` 的状态层现在覆盖整个圆角按钮，键盘聚焦新增全按钮 `FocusOverlay` 并保留共享焦点环；内容 Padding 由 `ContentPresenter` Margin 保留。命令、Binding、按钮尺寸、文字省略、滚动、虚拟化和主题契约未改。Release 0 warning/0 error、Core `59/59`、Worker `210/210`、Playnite `310/367`（57 跳过）、源码/XAML/WPF 门禁和 `.tmp/ui-qa-button-focus-v1/render-qa-report.txt`（`render-qa OK`）通过；真实 Playnite/实机 DPI/焦点仍按要求跳过 Phase 4。

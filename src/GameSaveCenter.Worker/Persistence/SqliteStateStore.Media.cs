@@ -205,4 +205,21 @@ WHERE media_id=$id AND classification_state='Ignored';",
     public Task UpdateMediaCloudStateAsync(string playniteId, string state, CancellationToken token) => ExecuteAsync(
         "UPDATE media SET cloud_state=$state WHERE playnite_id=$game;",
         new Dictionary<string, object?> { ["$game"]=playniteId, ["$state"]=state }, token);
+
+    public async Task<List<string>> GetMediaGamesNeedingCloudUploadAsync(CancellationToken token)
+    {
+        var result = new List<string>();
+        await using var connection = Open();
+        await connection.OpenAsync(token).ConfigureAwait(false);
+        var command = connection.CreateCommand();
+        command.CommandText = @"SELECT DISTINCT playnite_id
+FROM media
+WHERE playnite_id IS NOT NULL AND playnite_id <> ''
+  AND classification_state='Assigned'
+  AND cloud_state IN ('Pending','Failed','RetryScheduled');";
+        await using var reader = await command.ExecuteReaderAsync(token).ConfigureAwait(false);
+        while (await reader.ReadAsync(token).ConfigureAwait(false))
+            result.Add(reader.GetString(0));
+        return result;
+    }
 }
