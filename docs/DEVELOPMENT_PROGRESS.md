@@ -1,5 +1,7 @@
 # 开发实现进度
 
+- [x] STAB-013（2026-09-01）：修复 FLiNG 下载进度回调的未观察异步写入和高频 SQLite 更新。下载器现在等待可异步进度回调，GameToolService 只按下载百分比推进任务状态，避免大文件产生大量并发任务事件、进度倒序或未观察异常；下载、取消、解压和安全上限语义不变。Release 0 warning/0 error、Core `65/65`、Worker `227/227`、Playnite `319/376`（57 跳过）和源码门禁通过；真实 FLiNG 下载速度与网络异常仍需人工观察。
+
 - [x] STAB-012（2026-09-01）：补齐公共 IPC 入口的退出期保护。部分页面命令和 Playnite 快捷操作在多个 await 后才发起下一次请求，现由插件公共 `RequestAsync` 在生命周期取消后统一返回取消任务，避免调用方绕过 STAB-011 在 Playnite 关闭阶段继续提交 Worker 命令。Release 0 warning/0 error、Core `65/65`、Worker `226/226`、Playnite `319/376`（57 跳过）和源码门禁通过；真实宿主关闭中操作仍需人工观察。
 
 - [x] STAB-011（2026-09-01）：收口 Playnite 退出阶段的后台生命周期。应用停止时先取消插件生命周期、停止任务通知计时器，再停止本插件持有的 Worker；排队的 Fire-and-forget、游戏启动/停止事件、任务长轮询和目录同步在退出边界不再创建新 IPC、通知或 UI 回写，正在进行的同步等待使用生命周期令牌退出。Release 0 warning/0 error、Core `65/65`、Worker `226/226`、Playnite `319/376`（57 跳过）和源码门禁通过；真实宿主退出、Worker 重启及 Dispatcher 关闭仍需人工观察。

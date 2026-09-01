@@ -13,7 +13,7 @@ public interface ITrainerCatalogSource
     Task<TrainerCatalogSyncResultDto> SyncCatalogAsync(CancellationToken token);
     Task<List<TrainerCatalogItemDto>> SearchAsync(string query, int limit, CancellationToken token);
     Task<List<TrainerReleaseDto>> GetReleasesAsync(string catalogId, CancellationToken token);
-    Task DownloadAsync(string releaseId, string targetPath, IProgress<(long Received,long? Total)>? progress, CancellationToken token);
+    Task DownloadAsync(string releaseId, string targetPath, Func<long, long?, Task>? progress, CancellationToken token);
 }
 
 /// <summary>Isolates FLiNG's public HTML so page changes cannot affect local tool management.</summary>
@@ -98,7 +98,7 @@ public sealed class FlingTrainerCatalogSource : ITrainerCatalogSource
         return releases;
     }
 
-    public async Task DownloadAsync(string releaseId,string targetPath,IProgress<(long Received,long? Total)>? progress,CancellationToken token)
+    public async Task DownloadAsync(string releaseId,string targetPath,Func<long,long?,Task>? progress,CancellationToken token)
     {
         var release=await _store.GetTrainerReleaseAsync(releaseId,token).ConfigureAwait(false)
                     ?? throw new KeyNotFoundException("下载版本不存在，请重新展开版本列表。");
@@ -118,7 +118,7 @@ public sealed class FlingTrainerCatalogSource : ITrainerCatalogSource
             await target.WriteAsync(buffer.AsMemory(0,count),token).ConfigureAwait(false);received+=count;
             if(received>MaxDownloadBytes)
                 throw new WorkerOperationException("FLING_DOWNLOAD_TOO_LARGE","修改器下载文件超过安全大小上限，已中止下载。",$"{received} bytes");
-            progress?.Report((received,total));
+            if (progress != null) await progress(received,total).ConfigureAwait(false);
         }
         if(received==0)throw new WorkerOperationException("FLING_DOWNLOAD_EMPTY","下载内容为空。",release.DownloadUrl);
     }

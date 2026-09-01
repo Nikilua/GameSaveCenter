@@ -3,6 +3,12 @@
 > 维护时间：2026-09-01
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-01 FLiNG 下载进度写入收口
+
+- FLiNG 下载接口使用可等待的 `Func<long, long?, Task>` 进度回调；下载循环等待回调完成，不再把任务进度写入丢到未观察的后台任务。
+- GameToolService 只在百分比变化时报告 5–80 的下载进度，避免 80 KiB 分块级别的 SQLite/任务事件写入和进度倒序；下载、取消、解压和 2 GiB 安全上限未改变。
+- STAB-013 自动证据：Release 0 warning/0 error，Core `65/65`、Worker `227/227`、Playnite `319/376`（57 跳过）和源码门禁通过。真实网络下载与取消时机仍需人工回归。
+
 ## 2026-09-01 公共 IPC 入口的退出期保护
 
 - `GameSaveCenterPlugin.RequestAsync<T>` 现在检查 `lifetimeCancellation`；退出后返回 `Task.FromCanceled<T>`，统一阻止页面命令、快捷操作和异步续体在多个 await 后绕过生命周期守卫发起新 Worker 请求。

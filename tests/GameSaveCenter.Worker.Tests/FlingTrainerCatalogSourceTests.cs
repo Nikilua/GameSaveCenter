@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 using GameSaveCenter.Worker.Services;
 using Xunit;
@@ -6,6 +7,20 @@ namespace GameSaveCenter.Worker.Tests;
 
 public sealed class FlingTrainerCatalogSourceTests
 {
+    [Fact]
+    public void TrainerDownloadProgressIsAwaitableAndThrottled()
+    {
+        var root=FindRepositoryRoot();
+        var source=File.ReadAllText(Path.Combine(root,"src","GameSaveCenter.Worker","Services","FlingTrainerCatalogSource.cs"));
+        var service=File.ReadAllText(Path.Combine(root,"src","GameSaveCenter.Worker","Services","GameToolService.cs"));
+
+        Assert.Contains("Func<long, long?, Task>? progress",source,StringComparison.Ordinal);
+        Assert.Contains("if (progress != null) await progress(received,total).ConfigureAwait(false);",source,StringComparison.Ordinal);
+        Assert.Contains("var lastDownloadPercent=5;",service,StringComparison.Ordinal);
+        Assert.Contains("if(percent<=lastDownloadPercent)return;",service,StringComparison.Ordinal);
+        Assert.DoesNotContain("_ = progress.ReportAsync",service,StringComparison.Ordinal);
+    }
+
     [Fact]
     public void ArchiveDirectoryListing_ProducesSearchableZipEntry()
     {
@@ -178,5 +193,13 @@ public sealed class FlingTrainerCatalogSourceTests
         Assert.StartsWith("https://flingtrainer.com/downloads/Game_%26_v1.zip",release.DownloadUrl,StringComparison.OrdinalIgnoreCase);
         Assert.Contains("token=abc&part=1",release.DownloadUrl,StringComparison.Ordinal);
         Assert.DoesNotContain("#",release.DownloadUrl,StringComparison.Ordinal);
+    }
+
+    private static string FindRepositoryRoot()
+    {
+        var directory=new DirectoryInfo(AppContext.BaseDirectory);
+        while(directory != null && !File.Exists(Path.Combine(directory.FullName,"GameSaveCenter.sln")))
+            directory=directory.Parent;
+        return directory?.FullName ?? throw new DirectoryNotFoundException("GameSaveCenter repository root not found.");
     }
 }

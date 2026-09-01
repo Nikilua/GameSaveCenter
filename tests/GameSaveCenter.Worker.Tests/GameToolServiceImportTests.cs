@@ -305,7 +305,7 @@ public sealed class GameToolServiceImportTests : IDisposable
         public Task<TrainerCatalogSyncResultDto> SyncCatalogAsync(CancellationToken token) => throw new NotSupportedException();
         public Task<List<TrainerCatalogItemDto>> SearchAsync(string query, int limit, CancellationToken token) => throw new NotSupportedException();
         public Task<List<TrainerReleaseDto>> GetReleasesAsync(string catalogId, CancellationToken token) => throw new NotSupportedException();
-        public Task DownloadAsync(string releaseId, string targetPath, IProgress<(long Received, long? Total)>? progress, CancellationToken token) => throw new NotSupportedException();
+        public Task DownloadAsync(string releaseId, string targetPath, Func<long, long?, Task>? progress, CancellationToken token) => throw new NotSupportedException();
     }
 
     private sealed class ConfigurableShortcutResolver : IShortcutResolver
