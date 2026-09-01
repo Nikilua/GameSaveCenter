@@ -26,10 +26,10 @@ public sealed class FlingTrainerCatalogSource : ITrainerCatalogSource
     private static readonly Uri CatalogUri = new("https://flingtrainer.com/all-trainers/");
     private static readonly Uri ArchiveCatalogUri = new("https://archive.flingtrainer.com/");
     private static readonly Regex TrainerLink = new(
-        "<a[^>]+href=[\"'](?<url>https://flingtrainer\\.com/trainer/[^\"'#?]+/?)[\"'][^>]*>(?<title>.*?)</a>",
+        "<a\\b[^>]*\\bhref\\s*=\\s*[\"'](?<url>[^\"']*)[\"'][^>]*>(?<title>.*?)</a\\s*>",
         RegexOptions.IgnoreCase|RegexOptions.Singleline|RegexOptions.Compiled);
     private static readonly Regex DownloadLink = new(
-        "<a[^>]+href=[\"'](?<url>https://flingtrainer\\.com/downloads/[^\"']+)[\"'][^>]*>(?<name>.*?)</a>",
+        "<a\\b[^>]*\\bhref\\s*=\\s*[\"'](?<url>[^\"']*)[\"'][^>]*>(?<name>.*?)</a\\s*>",
         RegexOptions.IgnoreCase|RegexOptions.Singleline|RegexOptions.Compiled);
     private static readonly Regex ArchiveFileLink = new(
         "<a[^>]+href=[\"'](?<url>[^\"'#?]+)[\"'][^>]*>(?<name>.*?)</a>",
@@ -51,19 +51,7 @@ public sealed class FlingTrainerCatalogSource : ITrainerCatalogSource
     {
         var html=await GetHtmlAsync(CatalogUri.ToString(),token).ConfigureAwait(false);
         var now=DateTime.UtcNow;
-        var onlineItems=TrainerLink.Matches(html).Cast<Match>()
-            .Select(match =>
-            {
-                var url=WebUtility.HtmlDecode(match.Groups["url"].Value);
-                var title=Clean(match.Groups["title"].Value);
-                return new TrainerCatalogItemDto
-                {
-                    CatalogId=StableId(url),Title=title,NormalizedTitle=Normalize(title),
-                    PageUrl=url,LastSyncedUtc=now
-                };
-            })
-            .Where(x=>!string.IsNullOrWhiteSpace(x.Title))
-            .GroupBy(x=>x.PageUrl,StringComparer.OrdinalIgnoreCase).Select(x=>x.First()).ToList();
+        var onlineItems=ParseOnlineCatalog(html,now);
         if(onlineItems.Count<100)throw new WorkerOperationException("FLING_CATALOG_PARSE_FAILED","FLiNG 目录结构可能已经变化，未覆盖本地缓存。",$"Parsed only {onlineItems.Count} trainer links.");
 
         var archiveItems=new List<TrainerCatalogItemDto>();
@@ -104,16 +92,7 @@ public sealed class FlingTrainerCatalogSource : ITrainerCatalogSource
             return new List<TrainerReleaseDto>{archiveRelease};
         }
         var html=await GetHtmlAsync(item.PageUrl,token).ConfigureAwait(false);
-        var releases=DownloadLink.Matches(html).Cast<Match>().Select(match =>
-        {
-            var url=WebUtility.HtmlDecode(match.Groups["url"].Value);
-            var name=Clean(match.Groups["name"].Value);
-            return new TrainerReleaseDto
-            {
-                ReleaseId=StableId(url),CatalogId=catalogId,DisplayName=string.IsNullOrWhiteSpace(name)?"FLiNG Trainer":name,
-                DownloadUrl=url
-            };
-        }).GroupBy(x=>x.DownloadUrl,StringComparer.OrdinalIgnoreCase).Select(x=>x.First()).ToList();
+        var releases=ParseReleases(html,catalogId,new Uri(item.PageUrl,UriKind.Absolute));
         if(releases.Count==0)throw new WorkerOperationException("FLING_RELEASE_PARSE_FAILED","没有从详情页识别到可下载版本；FLiNG 页面可能已变化。",item.PageUrl);
         await _store.ReplaceTrainerReleasesAsync(catalogId,releases,token).ConfigureAwait(false);
         return releases;
@@ -185,8 +164,78 @@ public sealed class FlingTrainerCatalogSource : ITrainerCatalogSource
     private static void EnsureFlingUri(string value)
     {
         if(!Uri.TryCreate(value,UriKind.Absolute,out var uri)||uri.Scheme!=Uri.UriSchemeHttps||
-           !(uri.Host.Equals("flingtrainer.com",StringComparison.OrdinalIgnoreCase)||uri.Host.EndsWith(".flingtrainer.com",StringComparison.OrdinalIgnoreCase)))
+           !IsFlingHost(uri.Host))
             throw new WorkerOperationException("FLING_URL_REJECTED","拒绝访问非 FLiNG HTTPS 地址。",value);
+    }
+
+    private static bool TryNormalizeFlingUri(string value,Uri baseUri,string requiredPathPrefix,bool stripQuery,out Uri uri)
+    {
+        uri=null!;
+        var decoded=WebUtility.HtmlDecode(value).Trim();
+        if(string.IsNullOrWhiteSpace(decoded)||!Uri.TryCreate(baseUri,decoded,out var candidate)
+           ||candidate.Scheme!=Uri.UriSchemeHttps||!IsFlingHost(candidate.Host)
+           ||!candidate.AbsolutePath.StartsWith(requiredPathPrefix,StringComparison.OrdinalIgnoreCase))return false;
+
+        var builder=new UriBuilder(candidate){Fragment=string.Empty};
+        if(stripQuery)builder.Query=string.Empty;
+        uri=builder.Uri;
+        return true;
+    }
+
+    private static bool IsFlingHost(string host)
+        =>host.Equals("flingtrainer.com",StringComparison.OrdinalIgnoreCase)
+          ||host.EndsWith(".flingtrainer.com",StringComparison.OrdinalIgnoreCase);
+
+    /// <summary>
+    /// Parses the online /all-trainers/ page into catalog items. Pure and deterministic,
+    /// so a FLiNG markup change can be caught by canary tests before it reaches the local cache.
+    /// </summary>
+    internal static List<TrainerCatalogItemDto> ParseOnlineCatalog(string html,DateTime syncedUtc)
+        =>ParseOnlineCatalog(html,syncedUtc,CatalogUri);
+
+    internal static List<TrainerCatalogItemDto> ParseOnlineCatalog(string html,DateTime syncedUtc,Uri baseUri)
+    {
+        var items=new List<TrainerCatalogItemDto>();
+        var seen=new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach(Match match in TrainerLink.Matches(html??string.Empty))
+        {
+            if(!TryNormalizeFlingUri(match.Groups["url"].Value,baseUri,"/trainer/",stripQuery:true,out var uri))continue;
+            var title=Clean(match.Groups["title"].Value);
+            if(string.IsNullOrWhiteSpace(title)||!seen.Add(uri.AbsoluteUri))continue;
+            var url=uri.AbsoluteUri;
+            items.Add(new TrainerCatalogItemDto
+            {
+                CatalogId=StableId(url),Title=title,NormalizedTitle=Normalize(title),
+                PageUrl=url,LastSyncedUtc=syncedUtc
+            });
+        }
+        return items;
+    }
+
+    /// <summary>
+    /// Parses a trainer detail page into downloadable release versions. Pure and deterministic;
+    /// empty names fall back to the generic "FLiNG Trainer" display label.
+    /// </summary>
+    internal static List<TrainerReleaseDto> ParseReleases(string html,string catalogId)
+        =>ParseReleases(html,catalogId,CatalogUri);
+
+    internal static List<TrainerReleaseDto> ParseReleases(string html,string catalogId,Uri baseUri)
+    {
+        var releases=new List<TrainerReleaseDto>();
+        var seen=new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach(Match match in DownloadLink.Matches(html??string.Empty))
+        {
+            if(!TryNormalizeFlingUri(match.Groups["url"].Value,baseUri,"/downloads/",stripQuery:false,out var uri))continue;
+            var url=uri.AbsoluteUri;
+            if(!seen.Add(url))continue;
+            var name=Clean(match.Groups["name"].Value);
+            releases.Add(new TrainerReleaseDto
+            {
+                ReleaseId=StableId(url),CatalogId=catalogId,DisplayName=string.IsNullOrWhiteSpace(name)?"FLiNG Trainer":name,
+                DownloadUrl=url
+            });
+        }
+        return releases;
     }
 
     internal static List<TrainerCatalogItemDto> ParseArchiveCatalog(string html,DateTime syncedUtc)

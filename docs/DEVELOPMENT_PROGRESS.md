@@ -1,5 +1,7 @@
 # 开发实现进度
 
+- [x] FLING-001（2026-09-01）：收口 FLiNG 在线目录与详情页解析。解析器支持绝对/相对/协议相对链接，统一 HTML 解码与 HTTPS 主域/子域及路径校验；目录去除追踪查询参数，下载链接保留查询参数但移除 fragment，规范 URL 去重并保留空名称回退。新增结构变化、相对链接、实体编码、重复项和外站链接 canary。Core `65/65`、Worker `222/222`、Playnite `310/367`（57 跳过）、源码校验通过；真实 FLiNG 页面/下载、安全软件和 Playnite 宿主仍需人工回归。
+
 - [x] STAB-008（2026-09-01）：修复媒体云端复制失败后的重试遗漏。单游戏媒体同步不再因本轮新增文件数为 0 而跳过 `Pending`/`Failed`/`RetryScheduled` 媒体；公共 Inbox 重试也会重新纳入这些游戏。新增 SQLite 查询和索引，媒体重新尝试前明确回写 `Pending`；媒体/游戏云端状态补齐“已同步”“等待重试”“不适用”等用户文案。Worker `220/220` 通过；真实 Rclone/Playnite 云端回归仍需人工验证。
 
 - [x] UI-335（2026-08-26）：针对实机截图修复共享圆角视觉：生产标题栏改为四角 18 DIP 圆角、完整描边和裁剪；普通页面卡片统一启用 `ClipToBounds`，避免内部背景/内容把圆角填回直角。标题、按钮命令、Binding、数据、滚动和虚拟化未改。Release 0 warning/0 error、Core `59/59`、Worker `210/210`、Playnite `310/367`（57 跳过）、源码/XAML/WPF 门禁和 `.tmp/ui-qa-rounded-surfaces-v1/render-qa-report.txt`（`render-qa OK`）通过；RenderHarness 不包含外层 Shell，真实 Playnite/实机 DPI 仍按要求跳过 Phase 4。
