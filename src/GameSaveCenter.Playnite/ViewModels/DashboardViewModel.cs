@@ -1223,7 +1223,13 @@ namespace GameSaveCenter.Playnite.ViewModels
             // The delayed task owns disposal in its finally block. Disposing the source here
             // races with Task.Delay's cancellation registration on the WPF dispatcher and can
             // turn an intentional unload into an ObjectDisposedException.
-            pending.Cancel();
+            try { pending.Cancel(); }
+            catch (ObjectDisposedException)
+            {
+                // The retry/synchronization task completed and released the source between
+                // the field exchange above and this cancellation call. The unload is already
+                // safe; there is no remaining work to cancel.
+            }
         }
 
         private async Task ApplyTaskEventAsync(TaskChangeEventDto change)

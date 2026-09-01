@@ -3,6 +3,12 @@
 > 维护时间：2026-09-01
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-01 初始同步取消的令牌源释放竞态
+
+- `DashboardViewModel.CancelInitialSynchronization` 不再假设字段交换后令牌源一定仍未释放；如果后台同步任务已在并发窗口内完成并释放对象，卸载取消会吞掉该次 `ObjectDisposedException`。
+- 令牌源释放权仍归初始同步/缓存重试任务的 `finally`，避免主动 Dispose 与 `Task.Delay` 取消注册竞争；正常取消、代际失效和后台同步行为不变。
+- STAB-019 自动证据：定向 Playnite 回归通过；Release 0 warning/0 error，Core `65/65`、Worker `230/230`、Playnite `320/377`（57 跳过），源码门禁通过。真实宿主快速打开/关闭仍需人工观察。
+
 ## 2026-09-01 原生确认框 UI 线程边界
 
 - `GameSaveCenterPlugin.ConfirmAsync` 的原生 Playnite 对话兜底不再直接在调用线程执行；结果变量在 `TryInvokeUi` 的 Dispatcher 边界内赋值，后台游戏事件和快捷操作不会从线程池触碰宿主对话 API。

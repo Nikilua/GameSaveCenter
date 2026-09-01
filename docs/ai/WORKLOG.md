@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-01 初始同步取消的令牌源释放竞态
+
+- 继续检查 Dashboard 卸载路径时发现，初始同步任务在 `finally` 中释放令牌源，而卸载线程可能在字段交换后才调用 `Cancel()`；任务若刚好先完成，会让页面卸载抛出 `ObjectDisposedException`。
+- 保留“由后台任务负责释放”的竞态安全设计，在卸载取消处捕获 `ObjectDisposedException`；这表示后台任务已经结束，没有剩余延迟或同步工作需要取消。
+- 验证：定向 Playnite 回归通过；Release 构建 0 warning/0 error；Core `65/65`、Worker `230/230`、Playnite `320/377`（57 跳过）；源码门禁通过。真实宿主快速打开/关闭与 Worker 启动竞态仍需人工观察。
+
 ## 2026-09-01 原生确认框 UI 线程边界
 
 - 继续检查 Playnite 退出和后台事件路径时发现，Dashboard 未打开时，游戏停止/快捷操作可能从线程池续体进入 `ConfirmAsync` 的原生对话兜底；直接调用 `PlayniteApi.Dialogs.ShowMessage` 存在跨线程风险。

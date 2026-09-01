@@ -2,6 +2,12 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-09-01 初始同步取消的令牌源释放竞态
+
+- `DashboardViewModel.CancelInitialSynchronization` 取消页面初始同步时，现在容忍后台同步任务已在并发窗口中先行释放 `CancellationTokenSource` 的情况；`ObjectDisposedException` 只表示任务已经结束，不再影响页面卸载。
+- 仍由初始同步任务的 `finally` 负责释放令牌源，避免卸载线程与 `Task.Delay` 注册竞争；代际号失效和正常取消语义保持不变。
+- 自动证据：定向 Playnite 源码回归通过；Release 0 warning/0 error，Core `65/65`、Worker `230/230`、Playnite `320/377`（57 跳过），源码门禁通过。真实宿主快速打开/关闭与 Worker 启动竞态仍需人工复核。
+
 ## 2026-09-01 原生确认框 UI 线程边界
 
 - `GameSaveCenterPlugin.ConfirmAsync` 的 Playnite 原生对话兜底现在也通过 `TryInvokeUi` 在宿主 UI Dispatcher 内执行；游戏停止、快捷操作等后台续体不会直接从线程池调用 `PlayniteApi.Dialogs.ShowMessage`。

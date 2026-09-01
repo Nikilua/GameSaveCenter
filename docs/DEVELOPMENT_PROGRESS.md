@@ -1,5 +1,7 @@
 # 开发实现进度
 
+- [x] STAB-019（2026-09-01）：修复初始同步取消与后台任务自释放之间的卸载竞态。页面卸载取消初始同步时，即使后台任务刚好先释放 `CancellationTokenSource`，也会安全结束，不再因 `ObjectDisposedException` 影响 Playnite 页面卸载。定向 Playnite 回归通过；Release 0 warning/0 error、Core `65/65`、Worker `230/230`、Playnite `320/377`（57 跳过）和源码门禁通过；真实宿主快速打开/关闭仍需人工观察。
+
 - [x] STAB-018（2026-09-01）：收口原生确认框的 UI 线程边界。Dashboard 未打开时，游戏停止或快捷操作可能从后台续体进入确认兜底；现在原生 Playnite 对话 API 也统一通过 UI Dispatcher 调用，关闭或调度失败时安全返回取消，不改变确认语义。定向 Playnite 回归通过；Release 0 warning/0 error、Core `65/65`、Worker `230/230`、Playnite `319/376`（57 跳过）和源码门禁通过；真实宿主后台事件触发确认框仍需人工观察。
 
 - [x] STAB-017（2026-09-01）：隔离自动修改器停机审计异常。延迟启动任务的跳过/成功/失败审计统一走 best-effort 写入；存储释放、取消或停机期间的审计失败不会从脱离任务冒泡，真正的启动失败仍保留 Error 日志。Release 0 warning/0 error、Core `65/65`、Worker `230/230`、Playnite `319/376`（57 跳过）和源码门禁通过；真实自动修改器/Worker 关闭时序仍需人工观察。

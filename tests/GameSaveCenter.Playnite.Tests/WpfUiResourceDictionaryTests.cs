@@ -4826,6 +4826,17 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void InitialSynchronizationCancellationToleratesCompletionRace()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var viewModelCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
+
+        Assert.Contains("try { pending.Cancel(); }", viewModelCode);
+        Assert.Contains("catch (ObjectDisposedException)", viewModelCode);
+        Assert.Contains("The unload is already", viewModelCode);
+    }
+
+    [Fact]
     public void PluginNotificationAndConfirmationDispatchRespectPlayniteShutdown()
     {
         var repositoryRoot = FindRepositoryRoot();
