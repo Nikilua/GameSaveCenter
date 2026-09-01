@@ -1,5 +1,7 @@
 # 开发实现进度
 
+- [x] STAB-015（2026-09-01）：收口游戏会话自动化的 Worker 停止语义。启动后的自动修改器、退出备份/媒体同步以及游玩中定时备份/媒体同步现在统一使用 `ApplicationStopping`；停机取消按正常调试日志处理，不再把 Worker 关闭误报为业务失败。Release 0 warning/0 error、Core `65/65`、Worker `229/229`、Playnite `319/376`（57 跳过）和源码门禁通过；真实 Worker 忙碌时退出仍需人工观察。
+
 - [x] STAB-014（2026-09-01）：让会话存档路径快照跟随 Worker 生命周期取消。快照扫描仍然脱离短暂 IPC 请求异步执行，但 Worker 停止时会取消扫描，避免 SQLite/文件存储开始释放后继续进行无效回写。Release 0 warning/0 error、Core `65/65`、Worker `228/228`、Playnite `319/376`（57 跳过）和源码门禁通过；真实 Worker 重启/关闭时的文件扫描仍需人工观察。
 
 - [x] STAB-013（2026-09-01）：修复 FLiNG 下载进度回调的未观察异步写入和高频 SQLite 更新。下载器现在等待可异步进度回调，GameToolService 只按下载百分比推进任务状态，避免大文件产生大量并发任务事件、进度倒序或未观察异常；下载、取消、解压和安全上限语义不变。Release 0 warning/0 error、Core `65/65`、Worker `227/227`、Playnite `319/376`（57 跳过）和源码门禁通过；真实 FLiNG 下载速度与网络异常仍需人工观察。

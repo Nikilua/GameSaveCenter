@@ -2,6 +2,12 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-09-01 游戏会话自动化退出期取消
+
+- `GameSessionCoordinator` 的脱离请求后台任务现在统一使用 `ApplicationStopping`：自动修改器延迟启动、退出备份、退出媒体同步、游玩中定时备份和定时媒体同步均会随 Worker 停止取消。
+- `RunSafeAsync` 将 Worker 停止期间的 `OperationCanceledException` 记为 Debug，不再把正常停机写成业务失败；真正的异常仍按原有错误日志处理。会话停止请求本身仍使用调用方令牌完成必要的状态收口。
+- 自动证据：Release 0 warning/0 error，Core `65/65`、Worker `229/229`、Playnite `319/376`（57 跳过），源码门禁通过；真实 Worker 忙碌时退出与外部进程取消仍需人工复核。
+
 ## 2026-09-01 会话快照退出期取消
 
 - `SavePathDetectionService.BeginSessionCapture` 仍然不等待短暂 IPC 请求，但现在使用 Worker 的 `IHostApplicationLifetime.ApplicationStopping` 作为后台扫描令牌；Worker 停止时会取消存档路径快照，避免 SQLite/文件存储释放后继续回写。

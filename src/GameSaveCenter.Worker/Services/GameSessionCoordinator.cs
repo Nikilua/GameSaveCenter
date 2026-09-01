@@ -17,10 +17,11 @@ public sealed class GameSessionCoordinator : BackgroundService, IRestoreSessionS
     private readonly GameToolService _gameTools;
     private readonly WorkerOptions _options;
     private readonly ILogger<GameSessionCoordinator> _logger;
+    private readonly IHostApplicationLifetime? _lifetime;
     private readonly ConcurrentDictionary<string,ActiveSession> _active=new(StringComparer.OrdinalIgnoreCase);
 
-    public GameSessionCoordinator(SqliteStateStore store,BackupOrchestrator backup,MediaSyncService media,SavePathDetectionService detection,GameToolService gameTools,WorkerOptions options,ILogger<GameSessionCoordinator> logger)
-    { _store=store;_backup=backup;_media=media;_detection=detection;_gameTools=gameTools;_options=options;_logger=logger; }
+    public GameSessionCoordinator(SqliteStateStore store,BackupOrchestrator backup,MediaSyncService media,SavePathDetectionService detection,GameToolService gameTools,WorkerOptions options,ILogger<GameSessionCoordinator> logger,IHostApplicationLifetime? lifetime=null)
+    { _store=store;_backup=backup;_media=media;_detection=detection;_gameTools=gameTools;_options=options;_logger=logger;_lifetime=lifetime; }
 
     public IReadOnlyCollection<GameSessionEventDto> ActiveSessions=>_active.Values.Select(x=>x.Event).ToList();
 
@@ -43,7 +44,7 @@ public sealed class GameSessionCoordinator : BackgroundService, IRestoreSessionS
         var active=new ActiveSession(incoming,DateTime.UtcNow.AddMinutes(intervalMinutes),intervalMinutes,timedAutomationEnabled);
         _active[incoming.PlayniteId]=active;await _store.AddSessionAsync(incoming,token).ConfigureAwait(false);
         if(!_options.SafeModeEnabled)_detection.BeginSessionCapture(incoming);
-        _=RunSafeAsync(()=>_gameTools.StartAutomaticAsync(incoming,CancellationToken.None),"automatic game tools",incoming.GameName);
+        _=RunSafeAsync(()=>_gameTools.StartAutomaticAsync(incoming,ApplicationStopping),"automatic game tools",incoming.GameName);
         _logger.LogInformation("Session started for {Game} from {Source}; timed backup is scheduled every {IntervalMinutes} minute(s) (safe mode: {SafeMode})",incoming.GameName,incoming.Source,intervalMinutes,_options.SafeModeEnabled);return incoming;
     }
 
@@ -60,12 +61,12 @@ public sealed class GameSessionCoordinator : BackgroundService, IRestoreSessionS
         if(!_options.SafeModeEnabled&&policy.Enabled&&policy.BackupOnGameStop)
         {
             expectedTaskCount++;
-            _=RunSafeAsync(()=>_backup.BackupAsync(new BackupRequestDto{PlayniteIds=new(){active.Event.PlayniteId},Force=true,Reason="GameStopped",SessionId=active.Event.SessionId,NotificationSessionId=active.Event.SessionId},CancellationToken.None),"exit backup",active.Event.GameName);
+            _=RunSafeAsync(()=>_backup.BackupAsync(new BackupRequestDto{PlayniteIds=new(){active.Event.PlayniteId},Force=true,Reason="GameStopped",SessionId=active.Event.SessionId,NotificationSessionId=active.Event.SessionId},ApplicationStopping),"exit backup",active.Event.GameName);
         }
         if(!_options.SafeModeEnabled&&policy.Enabled&&policy.SyncMediaOnGameStop)
         {
             if(_options.EnableMediaSync) expectedTaskCount += 2; // game media task + shared inbox task (the request keeps its existing default)
-            _=RunSafeAsync(()=>_media.SyncAsync(new MediaSyncRequestDto{PlayniteIds=new(){active.Event.PlayniteId},SessionId=active.Event.SessionId,NotificationSessionId=active.Event.SessionId,UploadAfterSync=policy.UploadAfterBackup},CancellationToken.None),"exit media sync",active.Event.GameName);
+            _=RunSafeAsync(()=>_media.SyncAsync(new MediaSyncRequestDto{PlayniteIds=new(){active.Event.PlayniteId},SessionId=active.Event.SessionId,NotificationSessionId=active.Event.SessionId,UploadAfterSync=policy.UploadAfterBackup},ApplicationStopping),"exit media sync",active.Event.GameName);
         }
         var detectedCandidates=0;
         if(!_options.SafeModeEnabled)
@@ -161,7 +162,7 @@ public sealed class GameSessionCoordinator : BackgroundService, IRestoreSessionS
                 else if(timedBackupEnabled)
                     _logger.LogWarning("Skipped overlapping timed backup for {Game}; the previous backup is still pending",pair.Value.Event.GameName);
                 if(timedMediaEnabled)
-                    _=RunSafeAsync(()=>_media.SyncAsync(new MediaSyncRequestDto{PlayniteIds=new(){pair.Key},SessionId=pair.Value.Event.SessionId,UploadAfterSync=false},CancellationToken.None),"timed media sync",pair.Value.Event.GameName);
+                    _=RunSafeAsync(()=>_media.SyncAsync(new MediaSyncRequestDto{PlayniteIds=new(){pair.Key},SessionId=pair.Value.Event.SessionId,UploadAfterSync=false},ApplicationStopping),"timed media sync",pair.Value.Event.GameName);
             }
             // Keep a one-minute policy reasonably precise without running any file work on this loop.
             await Task.Delay(TimeSpan.FromSeconds(5),stoppingToken).ConfigureAwait(false);
@@ -170,7 +171,10 @@ public sealed class GameSessionCoordinator : BackgroundService, IRestoreSessionS
 
     private async Task RunSafeAsync(Func<Task> operation,string label,string game)
     {
-        try{await operation().ConfigureAwait(false);}catch(Exception ex){_logger.LogError(ex,"{Label} failed for {Game}",label,game);}
+        try{await operation().ConfigureAwait(false);}
+        catch(OperationCanceledException) when(ApplicationStopping.IsCancellationRequested)
+        { _logger.LogDebug("{Label} cancelled during Worker shutdown for {Game}",label,game); }
+        catch(Exception ex){_logger.LogError(ex,"{Label} failed for {Game}",label,game);}
     }
 
     private async Task RunTimedBackupAsync(string playniteId,ActiveSession active)
@@ -180,13 +184,15 @@ public sealed class GameSessionCoordinator : BackgroundService, IRestoreSessionS
             await RunSafeAsync(()=>_backup.BackupAsync(new BackupRequestDto
             {
                 PlayniteIds=new(){playniteId},Force=true,Reason="DuringPlay",SessionId=active.Event.SessionId
-            },CancellationToken.None),"timed backup",active.Event.GameName).ConfigureAwait(false);
+            },ApplicationStopping),"timed backup",active.Event.GameName).ConfigureAwait(false);
         }
         finally
         {
             Interlocked.Exchange(ref active.BackupPending,0);
         }
     }
+
+    private CancellationToken ApplicationStopping => _lifetime?.ApplicationStopping ?? CancellationToken.None;
 
     private sealed class ActiveSession
     {

@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-01 游戏会话自动化退出期取消
+
+- 继续扫描后台生命周期时发现，`GameSessionCoordinator` 的自动修改器、退出备份/媒体同步、游玩中定时备份/媒体同步都用 `CancellationToken.None` 脱离请求运行；Worker 停止时可能继续触碰 SQLite、归档目录或外部进程。
+- 现在这些任务统一绑定 `IHostApplicationLifetime.ApplicationStopping`；停机触发的取消由 `RunSafeAsync` 以 Debug 记录，真正异常仍保留 Error 日志，定时备份的 pending 标记继续在 finally 清理。
+- 验证：Release 构建 0 warning/0 error；Core `65/65`、Worker `229/229`、Playnite `319/376`（57 跳过）；源码门禁通过。真实 Worker 忙碌时退出和外部工具取消仍需人工观察。
+
 ## 2026-09-01 会话快照退出期取消
 
 - 复查后台任务生命周期时发现，`SavePathDetectionService.BeginSessionCapture` 为避免 IPC 请求结束时取消，使用了 `CancellationToken.None`；Worker 停止期间可能继续访问文件和 SQLite，存储释放竞态会产生无效回写。

@@ -3,6 +3,12 @@
 > 维护时间：2026-09-01
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-01 游戏会话自动化退出期取消
+
+- `GameSessionCoordinator` 注入可选 `IHostApplicationLifetime`，为所有脱离 IPC 请求的会话自动化操作提供统一 `ApplicationStopping` 令牌：自动修改器、退出备份/媒体同步、游玩中定时备份/媒体同步均不再使用 `CancellationToken.None`。
+- `RunSafeAsync` 只在 Worker 停止取消时记录 Debug；非取消异常仍记录 Error。这样不会让停机中的任务继续访问已开始释放的 SQLite、归档目录或外部工具。
+- STAB-015 自动证据：Release 0 warning/0 error，Core `65/65`、Worker `229/229`、Playnite `319/376`（57 跳过），源码门禁通过。真实 Worker 退出竞态仍需人工观察。
+
 ## 2026-09-01 会话存档路径快照退出期取消
 
 - `SavePathDetectionService` 注入可选 `IHostApplicationLifetime`；会话开始时的非阻塞存档路径快照使用 `ApplicationStopping`，不再永久使用 `CancellationToken.None`。
