@@ -203,6 +203,9 @@ public sealed class IpcRequestDispatcher
     private Task<GameSessionStopResultDto> StopAsync(GameSessionEventDto value,CancellationToken token)
         =>_sessions.StopAsync(value,token);
     private const int MaximumMediaInboxPageSize = 500;
+    internal const int MaximumMediaPageSize = 1000;
+    internal static int ClampMediaPageSize(int requested)
+        =>Math.Clamp(requested,1,MaximumMediaPageSize);
     private Task<List<MediaItemDto>> ListUnassignedMediaAsync(GameQueryDto query,CancellationToken token)
         =>_store.GetUnassignedMediaAsync(Math.Min(query.Limit,MaximumMediaInboxPageSize),token,query.Offset);
     private Task<List<MediaItemDto>> ListIgnoredMediaAsync(GameQueryDto query,CancellationToken token)
@@ -249,7 +252,8 @@ public sealed class IpcRequestDispatcher
         }
         return cached;
     }
-    private Task<List<MediaItemDto>> ListMediaAsync(GameQueryDto query,CancellationToken token)=>_store.GetMediaAsync(query.PlayniteId,query.Limit,token);
+    private Task<List<MediaItemDto>> ListMediaAsync(GameQueryDto query,CancellationToken token)
+        =>_store.GetMediaAsync(query.PlayniteId,ClampMediaPageSize(query.Limit),token);
     private async Task<MediaItemDto> UpdateMediaMetadataAsync(MediaMetadataUpdateDto update,CancellationToken token)
     {
         if(string.IsNullOrWhiteSpace(update.MediaId))throw new ArgumentException("必须选择媒体。");

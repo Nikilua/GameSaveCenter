@@ -1,5 +1,6 @@
 using System.Text;
 using GameSaveCenter.Contracts;
+using GameSaveCenter.Worker.Ipc;
 using Xunit;
 
 namespace GameSaveCenter.Worker.Tests;
@@ -79,12 +80,24 @@ public sealed class IpcMessageBoundaryTests
         var viewModel = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.Media.cs"));
 
         Assert.Contains("MaximumMediaInboxPageSize = 500", dispatcher);
+        Assert.Contains("ClampMediaPageSize(query.Limit)", dispatcher);
         Assert.Contains("query.Offset", dispatcher);
         Assert.Contains("OFFSET $offset", store);
         Assert.Contains("ORDER BY captured_utc DESC, media_id DESC", store);
         Assert.Contains("MediaInboxPageSize = 500", viewModel);
         Assert.Contains("Offset = offset", viewModel);
         Assert.DoesNotContain("Limit = 5000", viewModel);
+    }
+
+    [Theory]
+    [InlineData(-10, 1)]
+    [InlineData(0, 1)]
+    [InlineData(1000, 1000)]
+    [InlineData(5000, 1000)]
+    public void CurrentGameMediaRequestsAreClampedBeforeStoreAccess(int requested, int expected)
+    {
+        Assert.Equal(expected, IpcRequestDispatcher.ClampMediaPageSize(requested));
+        Assert.Equal(1000, IpcRequestDispatcher.MaximumMediaPageSize);
     }
 
     private static string FindRepositoryRoot()

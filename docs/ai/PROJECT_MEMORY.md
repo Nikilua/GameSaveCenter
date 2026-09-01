@@ -3,6 +3,12 @@
 > 维护时间：2026-09-01
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-01 IPC 媒体边界与任务通知缓存优化
+
+- `IpcRequestDispatcher` 对 `ListMedia` 的请求统一夹限到 1–1000 条；数据库仍保留自身 5000 条防线，分发层新增的 1000 条上限用于避免异常 IPC 请求产生过大的单次响应，当前 Dashboard 请求行为不变。
+- `GameSaveCenterPlugin` 的任务通知去重从无界 `ConcurrentDictionary` 改为 `BoundedTaskIdSet`，默认保留最近 4096 个任务 ID，操作带锁且大小写不敏感；这只是通知去重缓存，未改变任务执行、状态持久化和通知策略。
+- Release 构建 `0 warning/0 error`；Core `65/65`、Worker `226/226`、Playnite `312/369`（57 跳过），`validate-source.py` 通过，WPF 静态审计 `0 error/18 warning/172 info`。真实 Playnite、DPI、历史任务重放和用户环境命名管道响应仍需人工验收。
+
 ## 2026-09-01 FLiNG 目录解析收口
 
 - 将在线目录和详情页解析从网络流程中抽成纯解析方法，保留目录最小数量保护；支持绝对、相对和协议相对链接，统一 HTML 解码与 URI 规范化，只接受 FLiNG HTTPS 主域/子域及预期路径。
