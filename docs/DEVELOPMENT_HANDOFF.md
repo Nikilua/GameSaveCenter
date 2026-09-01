@@ -2,6 +2,12 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-09-01 自动修改器审计写入退出期取消
+
+- `GameToolService.LaunchAfterDelayAsync` 的跳过、成功和失败审计写入现在使用延迟启动任务的取消令牌，不再使用 `CancellationToken.None`；停机取消会被现有取消分支观察。
+- 这补齐了 STAB-015 对自动修改器启动链的最后一段生命周期边界；真正的启动失败仍记录 Error 并尝试写审计，正常 Worker 停止不再补写。
+- 自动证据：Release 0 warning/0 error，Core `65/65`、Worker `230/230`、Playnite `319/376`（57 跳过），源码门禁通过；真实自动修改器与 Worker 停机竞态仍需人工复核。
+
 ## 2026-09-01 游戏会话自动化退出期取消
 
 - `GameSessionCoordinator` 的脱离请求后台任务现在统一使用 `ApplicationStopping`：自动修改器延迟启动、退出备份、退出媒体同步、游玩中定时备份和定时媒体同步均会随 Worker 停止取消。

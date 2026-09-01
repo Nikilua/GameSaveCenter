@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-01 自动修改器审计写入退出期取消
+
+- 对 STAB-015 的自动修改器链继续下钻，发现 `LaunchAfterDelayAsync` 已经绑定取消令牌，但跳过/成功/失败审计写入仍使用 `CancellationToken.None`；停机时可能继续触碰 SQLite，失败补写还可能再次抛异常。
+- 三个审计写入改用延迟任务 token；正常取消由现有 `OperationCanceledException` 分支吞并，业务启动失败仍保留 Error 日志和审计尝试。
+- 验证：Release 构建 0 warning/0 error；Core `65/65`、Worker `230/230`、Playnite `319/376`（57 跳过）；源码门禁通过。真实自动修改器/Worker 退出时序仍需人工观察。
+
 ## 2026-09-01 游戏会话自动化退出期取消
 
 - 继续扫描后台生命周期时发现，`GameSessionCoordinator` 的自动修改器、退出备份/媒体同步、游玩中定时备份/媒体同步都用 `CancellationToken.None` 脱离请求运行；Worker 停止时可能继续触碰 SQLite、归档目录或外部进程。

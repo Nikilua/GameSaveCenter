@@ -3,6 +3,12 @@
 > 维护时间：2026-09-01
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-01 自动修改器审计写入退出期取消
+
+- `GameToolService.LaunchAfterDelayAsync` 的三个审计分支（已有实例跳过、成功启动、启动失败）均使用传入的延迟任务 token，不再以 `CancellationToken.None` 回写 SQLite。
+- 延迟任务已经绑定 `GameSessionCoordinator.ApplicationStopping`；Worker 停止时，延迟、启动后的审计和取消异常均不会继续形成停机期存储访问。
+- STAB-016 自动证据：Release 0 warning/0 error，Core `65/65`、Worker `230/230`、Playnite `319/376`（57 跳过），源码门禁通过。真实启动/停机时序仍需人工观察。
+
 ## 2026-09-01 游戏会话自动化退出期取消
 
 - `GameSessionCoordinator` 注入可选 `IHostApplicationLifetime`，为所有脱离 IPC 请求的会话自动化操作提供统一 `ApplicationStopping` 令牌：自动修改器、退出备份/媒体同步、游玩中定时备份/媒体同步均不再使用 `CancellationToken.None`。
