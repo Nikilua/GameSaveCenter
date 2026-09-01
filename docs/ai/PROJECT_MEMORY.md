@@ -3,6 +3,12 @@
 > 维护时间：2026-09-01
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-01 IPC 长连接读取器的取消等待对象累积
+
+- `BoundedIpcLineReader` 不再为每次底层读取创建会一直等待监听器令牌取消的无限 `Task.Delay`；改用一次性 `CancellationToken.Register` 唤醒竞争任务，读取完成后立即释放注册。
+- 任务事件长连接的取消、JSON 行边界、4 MiB 上限和超大消息丢弃语义保持不变；这只收口长期运行时的对象/令牌回调积累。
+- STAB-020 自动证据：阻塞读取取消与源码契约回归通过；Release 0 warning/0 error，Core `65/65`、Worker `232/232`、Playnite `321/378`（57 跳过），源码门禁通过。真实宿主长时间任务通知仍需人工观察。
+
 ## 2026-09-01 初始同步取消的令牌源释放竞态
 
 - `DashboardViewModel.CancelInitialSynchronization` 不再假设字段交换后令牌源一定仍未释放；如果后台同步任务已在并发窗口内完成并释放对象，卸载取消会吞掉该次 `ObjectDisposedException`。

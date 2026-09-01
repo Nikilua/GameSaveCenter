@@ -100,10 +100,20 @@ namespace GameSaveCenter.Contracts
 
         private static async Task<int> AwaitReadAsync(Task<int> read, CancellationToken token)
         {
-            var cancellation = Task.Delay(Timeout.Infinite, token);
-            var completed = await Task.WhenAny(read, cancellation).ConfigureAwait(false);
-            if (completed != read) throw new OperationCanceledException(token);
-            return await read.ConfigureAwait(false);
+            if (read.IsCompleted)
+                return await read.ConfigureAwait(false);
+
+            // Do not use an infinite Task.Delay here. Every completed pipe read would leave
+            // that delay and its cancellation registration attached to the long-lived event
+            // listener until the whole listener token was cancelled. A disposable registration
+            // keeps cancellation bounded to this one pending read.
+            var cancellation = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+            using (token.Register(() => cancellation.TrySetResult(true)))
+            {
+                var completed = await Task.WhenAny(read, cancellation.Task).ConfigureAwait(false);
+                if (completed != read) throw new OperationCanceledException(token);
+                return await read.ConfigureAwait(false);
+            }
         }
 
         private static int GetUtf8ByteCount(char character)

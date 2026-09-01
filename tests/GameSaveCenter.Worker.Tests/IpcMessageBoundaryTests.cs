@@ -41,6 +41,31 @@ public sealed class IpcMessageBoundaryTests
     }
 
     [Fact]
+    public async Task PendingReadCanBeCancelledBeforeThePipeProducesData()
+    {
+        using var stream = new BlockingReadStream();
+        using var reader = new StreamReader(stream, new UTF8Encoding(false));
+        var lineReader = new BoundedIpcLineReader(reader);
+        using var cancellation = new CancellationTokenSource();
+
+        var pending = lineReader.ReadAsync(cancellation.Token);
+        await stream.ReadStarted;
+        cancellation.Cancel();
+
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => pending);
+    }
+
+    [Fact]
+    public void PendingReadCancellationUsesAReleasableRegistration()
+    {
+        var root = FindRepositoryRoot();
+        var source = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Contracts", "BoundedIpcLineReader.cs"));
+
+        Assert.DoesNotContain("Task.Delay(Timeout.Infinite, token)", source);
+        Assert.Contains("token.Register", source);
+    }
+
+    [Fact]
     public void PipeEndpointsUseTheSharedBoundedReaderAndFiniteClientSlots()
     {
         var root = FindRepositoryRoot();
@@ -106,5 +131,38 @@ public sealed class IpcMessageBoundaryTests
         while (directory != null && !File.Exists(Path.Combine(directory.FullName, "GameSaveCenter.sln")))
             directory = directory.Parent;
         return directory?.FullName ?? throw new InvalidOperationException("Repository root not found.");
+    }
+
+    private sealed class BlockingReadStream : Stream
+    {
+        private readonly TaskCompletionSource<bool> readStarted = new(TaskCreationOptions.RunContinuationsAsynchronously);
+        private readonly TaskCompletionSource<int> readCompletion = new(TaskCreationOptions.RunContinuationsAsynchronously);
+
+        public Task ReadStarted => readStarted.Task;
+
+        public override bool CanRead => true;
+        public override bool CanSeek => false;
+        public override bool CanWrite => false;
+        public override long Length => 0;
+        public override long Position { get => 0; set => throw new NotSupportedException(); }
+
+        public override int Read(byte[] buffer, int offset, int count) => throw new NotSupportedException();
+
+        public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+        {
+            readStarted.TrySetResult(true);
+            return readCompletion.Task;
+        }
+
+        public override void Flush() { }
+        public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException();
+        public override void SetLength(long value) => throw new NotSupportedException();
+        public override void Write(byte[] buffer, int offset, int count) => throw new NotSupportedException();
+
+        protected override void Dispose(bool disposing)
+        {
+            readCompletion.TrySetResult(0);
+            base.Dispose(disposing);
+        }
     }
 }

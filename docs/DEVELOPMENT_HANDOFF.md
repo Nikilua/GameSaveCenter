@@ -2,6 +2,12 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-09-01 IPC 长连接读取器的取消等待对象累积
+
+- `BoundedIpcLineReader` 原先用 `Task.Delay(Timeout.Infinite, token)` 与每次底层读取竞争；读取先完成时，该 Delay 和取消注册会一直保留到整个事件监听器取消。
+- 现在用 `TaskCompletionSource` 配合一次性 `CancellationToken.Register`，在底层读取完成或取消竞争结束后释放注册；IPC 协议、4 MiB 行上限和超大消息丢弃语义不变。
+- 自动证据：阻塞读取取消与可释放注册回归通过；Release 0 warning/0 error，Core `65/65`、Worker `232/232`、Playnite `321/378`（57 跳过），源码门禁通过。真实宿主长时间任务通知连接仍需人工观察。
+
 ## 2026-09-01 初始同步取消的令牌源释放竞态
 
 - `DashboardViewModel.CancelInitialSynchronization` 取消页面初始同步时，现在容忍后台同步任务已在并发窗口中先行释放 `CancellationTokenSource` 的情况；`ObjectDisposedException` 只表示任务已经结束，不再影响页面卸载。

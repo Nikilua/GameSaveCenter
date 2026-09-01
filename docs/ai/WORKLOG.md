@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-01 IPC 长连接读取器的取消等待对象累积
+
+- 深审任务事件 IPC 时发现，`BoundedIpcLineReader.AwaitReadAsync` 每次底层读取都创建无限 `Task.Delay`；读取成功后该 Delay 的取消注册仍挂在长生命周期监听器令牌上，消息持续到达会形成慢性对象累积。
+- 改为 `TaskCompletionSource` + 一次性 `CancellationToken.Register`，等待竞争结束即释放注册；保留读取取消和协议大小限制语义。
+- 验证：阻塞读取取消与可释放注册测试通过；Release 构建 0 warning/0 error；Core `65/65`、Worker `232/232`、Playnite `321/378`（57 跳过）；源码门禁通过。真实宿主长时间任务事件连接仍需人工观察。
+
 ## 2026-09-01 初始同步取消的令牌源释放竞态
 
 - 继续检查 Dashboard 卸载路径时发现，初始同步任务在 `finally` 中释放令牌源，而卸载线程可能在字段交换后才调用 `Cancel()`；任务若刚好先完成，会让页面卸载抛出 `ObjectDisposedException`。
