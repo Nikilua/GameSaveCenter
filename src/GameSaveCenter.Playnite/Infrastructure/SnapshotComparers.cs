@@ -32,6 +32,8 @@ namespace GameSaveCenter.Playnite.Infrastructure
             && a.LatestRestoreReadinessStatus == b.LatestRestoreReadinessStatus
             && PolicyEquals(a.Policy, b.Policy);
 
+        public static readonly Func<BackupPolicyDto, BackupPolicyDto, bool> Policy = PolicyEquals;
+
         public static readonly Func<TaskStatusDto, TaskStatusDto, bool> Task = (a, b) =>
             string.Equals(a.TaskId, b.TaskId, StringComparison.Ordinal)
             && string.Equals(a.SessionId, b.SessionId, StringComparison.Ordinal)

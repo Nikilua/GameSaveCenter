@@ -186,6 +186,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             });
             var index=Media.IndexOf(selected);
             if(index>=0)Media[index]=updated;
+            mediaCommentDirty = false;
+            mediaFavoriteDirty = false;
             SelectedMedia=updated;
             MediaView.Refresh();
             if(SelectedGame!=null)
@@ -212,7 +214,11 @@ namespace GameSaveCenter.Playnite.ViewModels
                 if(byId.TryGetValue(Media[index].MediaId,out var replacement))Media[index]=replacement;
             MediaView.Refresh();
             if(SelectedMedia!=null&&byId.TryGetValue(SelectedMedia.MediaId,out var selectedReplacement))
+            {
+                if (updateComment) mediaCommentDirty = false;
+                if (favorite.HasValue) mediaFavoriteDirty = false;
                 SelectedMedia=selectedReplacement;
+            }
             if(SelectedGame!=null)
                 MediaSummary=await plugin.RequestAsync<MediaStorageSummaryDto>(MessageTypes.GetMediaSummary,new GameQueryDto{PlayniteId=SelectedGame.PlayniteId});
             ConfirmSuccess(updateComment?$"已为 {updated.Length} 个媒体文件更新备注":favorite==true?$"已收藏 {updated.Length} 个媒体文件":$"已取消收藏 {updated.Length} 个媒体文件");

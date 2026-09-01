@@ -67,6 +67,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         private readonly DebouncedRefresh mediaSearchRefresh;
         private readonly DebouncedRefresh uiStateSave;
         private DateTime lastFullDashboardRefreshUtc=DateTime.MinValue;
+        private string? selectedGamePolicyId;
+        private BackupPolicyDto? selectedGamePolicyBaseline;
         private string statusMessage = "准备就绪";
         private BackupVersionDto selectedBackup = null!;
         private DashboardSnapshotDto snapshot = new DashboardSnapshotDto();
@@ -77,10 +79,15 @@ namespace GameSaveCenter.Playnite.ViewModels
         private SavePathCandidateDto selectedCandidate = null!;
         private string backupComment = string.Empty;
         private bool lockSelectedBackup;
+        private bool backupCommentDirty;
+        private bool backupLockDirty;
         private MediaItemDto selectedMedia = null!;
         private MediaStorageSummaryDto mediaSummary = new MediaStorageSummaryDto();
         private string mediaComment = string.Empty;
         private bool mediaFavorite;
+        private bool mediaCommentDirty;
+        private bool mediaFavoriteDirty;
+        private bool applyingEditorSelection;
         private string mediaSearchText = string.Empty;
         private string mediaFilter = "全部";
         private string mediaInboxMode = "待归类";
@@ -620,12 +627,14 @@ namespace GameSaveCenter.Playnite.ViewModels
             get => selectedBackup;
             set
             {
-                SetValue(ref selectedBackup, value);
-                if (value != null)
+                var sameBackup = value != null
+                    && string.Equals(selectedBackup?.BackupId, value.BackupId, StringComparison.OrdinalIgnoreCase);
+                if (!ReferenceEquals(selectedBackup, value))
                 {
-                    BackupComment = value.Comment;
-                    LockSelectedBackup = value.IsLocked;
+                    selectedBackup = value!;
+                    OnPropertyChanged(nameof(SelectedBackup));
                 }
+                SyncBackupEditor(value, sameBackup);
                 RaiseCommandStates();
             }
         }
@@ -652,22 +661,103 @@ namespace GameSaveCenter.Playnite.ViewModels
             get => selectedFinding;
             set => SetValue(ref selectedFinding, value);
         }
-        public string BackupComment { get => backupComment; set => SetValue(ref backupComment, value); }
-        public bool LockSelectedBackup { get => lockSelectedBackup; set => SetValue(ref lockSelectedBackup, value); }
+        public string BackupComment
+        {
+            get => backupComment;
+            set
+            {
+                var normalized = value ?? string.Empty;
+                if (!applyingEditorSelection && !string.Equals(backupComment, normalized, StringComparison.Ordinal))
+                    backupCommentDirty = true;
+                SetValue(ref backupComment, normalized);
+            }
+        }
+        public bool LockSelectedBackup
+        {
+            get => lockSelectedBackup;
+            set
+            {
+                if (!applyingEditorSelection && lockSelectedBackup != value)
+                    backupLockDirty = true;
+                SetValue(ref lockSelectedBackup, value);
+            }
+        }
         public MediaItemDto SelectedMedia
         {
             get => selectedMedia;
             set
             {
-                SetValue(ref selectedMedia, value);
-                MediaComment=value?.Comment??string.Empty;
-                MediaFavorite=value?.IsFavorite??false;
+                var sameMedia = value != null
+                    && string.Equals(selectedMedia?.MediaId, value.MediaId, StringComparison.OrdinalIgnoreCase);
+                if (!ReferenceEquals(selectedMedia, value))
+                {
+                    selectedMedia = value!;
+                    OnPropertyChanged(nameof(SelectedMedia));
+                }
+                SyncMediaEditor(value, sameMedia);
                 RaiseCommandStates();
             }
         }
         public MediaStorageSummaryDto MediaSummary { get => mediaSummary; private set => SetValue(ref mediaSummary,value??new MediaStorageSummaryDto()); }
-        public string MediaComment { get => mediaComment; set => SetValue(ref mediaComment,value??string.Empty); }
-        public bool MediaFavorite { get => mediaFavorite; set => SetValue(ref mediaFavorite,value); }
+        public string MediaComment
+        {
+            get => mediaComment;
+            set
+            {
+                var normalized = value ?? string.Empty;
+                if (!applyingEditorSelection && !string.Equals(mediaComment, normalized, StringComparison.Ordinal))
+                    mediaCommentDirty = true;
+                SetValue(ref mediaComment, normalized);
+            }
+        }
+        public bool MediaFavorite
+        {
+            get => mediaFavorite;
+            set
+            {
+                if (!applyingEditorSelection && mediaFavorite != value)
+                    mediaFavoriteDirty = true;
+                SetValue(ref mediaFavorite, value);
+            }
+        }
+
+        private void SyncBackupEditor(BackupVersionDto? value, bool preserveDirtyFields)
+        {
+            var applyComment = !preserveDirtyFields || !backupCommentDirty;
+            var applyLock = !preserveDirtyFields || !backupLockDirty;
+            applyingEditorSelection = true;
+            try
+            {
+                if (applyComment) BackupComment = value?.Comment ?? string.Empty;
+                if (applyLock) LockSelectedBackup = value?.IsLocked ?? false;
+            }
+            finally
+            {
+                applyingEditorSelection = false;
+            }
+
+            if (applyComment) backupCommentDirty = false;
+            if (applyLock) backupLockDirty = false;
+        }
+
+        private void SyncMediaEditor(MediaItemDto? value, bool preserveDirtyFields)
+        {
+            var applyComment = !preserveDirtyFields || !mediaCommentDirty;
+            var applyFavorite = !preserveDirtyFields || !mediaFavoriteDirty;
+            applyingEditorSelection = true;
+            try
+            {
+                if (applyComment) MediaComment = value?.Comment ?? string.Empty;
+                if (applyFavorite) MediaFavorite = value?.IsFavorite ?? false;
+            }
+            finally
+            {
+                applyingEditorSelection = false;
+            }
+
+            if (applyComment) mediaCommentDirty = false;
+            if (applyFavorite) mediaFavoriteDirty = false;
+        }
         public string MediaSearchText
         {
             get => mediaSearchText;
@@ -1345,6 +1435,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             ApplyOnUi(() =>
             {
                 var selectedGameId = SelectedGame?.PlayniteId;
+                var selectedGamePolicyDraft = CaptureSelectedGamePolicyDraft(selectedGameId);
                 var selectedTaskId = SelectedTask?.TaskId;
                 var mediaTargetId = MediaTargetGame?.PlayniteId;
                 if (taskSnapshotInitialized)
@@ -1367,7 +1458,12 @@ namespace GameSaveCenter.Playnite.ViewModels
                 suppressSelectionLoad = true;
                 try
                 {
-                    var gamesChanged = Replace(Games, data.Games, SnapshotComparers.Game);
+                    var displayGames = selectedGamePolicyDraft == null
+                        ? data.Games
+                        : data.Games.Select(game => string.Equals(game.PlayniteId, selectedGameId, StringComparison.OrdinalIgnoreCase)
+                            ? CloneGameWithPolicy(game, selectedGamePolicyDraft)
+                            : game).ToList();
+                    var gamesChanged = Replace(Games, displayGames, SnapshotComparers.Game);
                     var pickerChanged = gamePicker.SetItems(Games, selectedGameId ?? plugin.Settings.GamePickerSelectedGameId);
                     if (gamesChanged || pickerChanged)
                         RefreshGameView(false);
@@ -1389,6 +1485,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                         RefreshSelectedGameIcon();
                         RefreshSelectedGameBackground();
                     }
+                    if (selectedGamePolicyDraft == null)
+                        UpdateSelectedGamePolicyBaseline(SelectedGame);
                 }
                 finally { suppressSelectionLoad = false; }
                 // Cache-first snapshots can be older than the current wall clock. The protection
@@ -1456,6 +1554,53 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
             if (IsOnboardingPending && !environmentCheckLoaded)
                 await RunEnvironmentCheckAsync(false);
+        }
+
+        private BackupPolicyDto? CaptureSelectedGamePolicyDraft(string? selectedGameId)
+        {
+            if (string.IsNullOrWhiteSpace(selectedGameId)
+                || selectedGamePolicyBaseline == null
+                || !string.Equals(selectedGamePolicyId, selectedGameId, StringComparison.OrdinalIgnoreCase))
+                return null;
+
+            var selected = gamePicker.SelectedGame;
+            if (selected == null || SnapshotComparers.Policy(selected.Policy, selectedGamePolicyBaseline))
+                return null;
+
+            return GameSaveCenter.Core.Services.BackupPolicyTemplateCatalog.ClonePolicy(selected.Policy);
+        }
+
+        private void UpdateSelectedGamePolicyBaseline(GameStatusDto? game)
+        {
+            selectedGamePolicyId = game?.PlayniteId;
+            selectedGamePolicyBaseline = game == null
+                ? null
+                : GameSaveCenter.Core.Services.BackupPolicyTemplateCatalog.ClonePolicy(game.Policy);
+        }
+
+        private static GameStatusDto CloneGameWithPolicy(GameStatusDto source, BackupPolicyDto policy)
+        {
+            return new GameStatusDto
+            {
+                PlayniteId = source.PlayniteId,
+                Name = source.Name,
+                Platform = source.Platform,
+                IsInstalled = source.IsInstalled,
+                LastPlayedUtc = source.LastPlayedUtc,
+                IsRunning = source.IsRunning,
+                LudusaviMatched = source.LudusaviMatched,
+                LudusaviName = source.LudusaviName,
+                LastBackupUtc = source.LastBackupUtc,
+                BackupVersionCount = source.BackupVersionCount,
+                LastMediaSyncUtc = source.LastMediaSyncUtc,
+                MediaCount = source.MediaCount,
+                CloudState = source.CloudState,
+                HealthState = source.HealthState,
+                HealthSummary = source.HealthSummary,
+                HealthReasons = source.HealthReasons == null ? new List<string>() : new List<string>(source.HealthReasons),
+                LatestRestoreReadinessStatus = source.LatestRestoreReadinessStatus,
+                Policy = GameSaveCenter.Core.Services.BackupPolicyTemplateCatalog.ClonePolicy(policy)
+            };
         }
 
         private async Task ExitSafeModeAsync()
@@ -2394,8 +2539,14 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task SavePolicyAsync()
         {
-            await plugin.RequestAsync<object>(MessageTypes.UpdateGamePolicy, new GamePolicyUpdateDto { PlayniteId = SelectedGame.PlayniteId, Policy = SelectedGame.Policy });
-            ConfirmSuccess($"已保存 {SelectedGame.Name} 的游戏策略");
+            var selected = SelectedGame ?? throw new InvalidOperationException("请先选择游戏。");
+            var playniteId = selected.PlayniteId;
+            var gameName = selected.Name;
+            var policy = GameSaveCenter.Core.Services.BackupPolicyTemplateCatalog.ClonePolicy(selected.Policy);
+            await plugin.RequestAsync<object>(MessageTypes.UpdateGamePolicy, new GamePolicyUpdateDto { PlayniteId = playniteId, Policy = policy });
+            if (IsSelectedGame(playniteId))
+                UpdateSelectedGamePolicyBaseline(SelectedGame);
+            ConfirmSuccess($"已保存 {gameName} 的游戏策略");
         }
 
         private void CreatePolicyTemplate()
@@ -2466,6 +2617,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         private async Task UpdateBackupMetadataAsync()
         {
             await plugin.RequestAsync<object>(MessageTypes.UpdateBackupMetadata, new BackupMetadataUpdateDto { PlayniteId = SelectedGame.PlayniteId, BackupId = SelectedBackup.BackupId, Comment = BackupComment, Locked = LockSelectedBackup });
+            backupCommentDirty = false;
+            backupLockDirty = false;
             await LoadDetailsAsync();
             ConfirmSuccess("备份备注与锁定状态已保存");
         }
@@ -2999,11 +3152,17 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private void OnGamePickerPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
+            if (string.Equals(e.PropertyName, nameof(GamePickerViewModel.SelectedGame), StringComparison.Ordinal))
+            {
+                OnPropertyChanged(nameof(SelectedGame));
+                return;
+            }
             // SelectedItem raises both SelectedItem and SelectedGame notifications. Respond once
             // to the source notification so a rapid keyboard/mouse selection does not enqueue
             // duplicate IPC requests for the same game.
             if (!string.Equals(e.PropertyName, nameof(GamePickerViewModel.SelectedItem), StringComparison.Ordinal)) return;
             var selected = gamePicker.SelectedGame;
+            UpdateSelectedGamePolicyBaseline(selected);
             OnPropertyChanged(nameof(SelectedGame));
             if (!suppressSelectionLoad)
             {

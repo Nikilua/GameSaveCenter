@@ -108,6 +108,43 @@ public sealed class WorkspaceStateSourceTests
         Assert.Contains("媒体收件箱暂时不可用", File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml")));
     }
 
+    [Fact]
+    public void DetailEditorDraftsSurviveRefreshOfTheSameItem()
+    {
+        var root = FindRepositoryRoot();
+        var implementation = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
+        var media = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.Media.cs"));
+
+        Assert.Contains("backupCommentDirty", implementation);
+        Assert.Contains("backupLockDirty", implementation);
+        Assert.Contains("mediaCommentDirty", implementation);
+        Assert.Contains("mediaFavoriteDirty", implementation);
+        Assert.Contains("SyncBackupEditor(value, sameBackup)", implementation);
+        Assert.Contains("SyncMediaEditor(value, sameMedia)", implementation);
+        Assert.Contains("if (applyComment) backupCommentDirty = false", implementation);
+        Assert.Contains("if (applyFavorite) mediaFavoriteDirty = false", implementation);
+        Assert.Contains("backupCommentDirty = false;", implementation);
+        Assert.Contains("mediaCommentDirty = false;", media);
+        Assert.Contains("var playniteId = selected.PlayniteId;", implementation);
+        Assert.Contains("var policy = GameSaveCenter.Core.Services.BackupPolicyTemplateCatalog.ClonePolicy(selected.Policy);", implementation);
+        Assert.Contains("if (IsSelectedGame(playniteId))", implementation);
+    }
+
+    [Fact]
+    public void GamePickerRefreshPropagatesCurrentGameChangesToDashboardBindings()
+    {
+        var root = FindRepositoryRoot();
+        var picker = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "GamePickerViewModel.cs"));
+        var dashboard = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
+
+        Assert.Contains("if (ReferenceEquals(previousSelectedItem, candidate))", picker);
+        Assert.Contains("OnPropertyChanged(nameof(SelectedGame));", picker);
+        Assert.Contains("nameof(GamePickerViewModel.SelectedGame)", dashboard);
+        Assert.Contains("OnPropertyChanged(nameof(SelectedGame));", dashboard);
+        Assert.Contains("CaptureSelectedGamePolicyDraft", dashboard);
+        Assert.Contains("CloneGameWithPolicy", dashboard);
+    }
+
     private static string FindRepositoryRoot()
     {
         var directory = new DirectoryInfo(AppContext.BaseDirectory);

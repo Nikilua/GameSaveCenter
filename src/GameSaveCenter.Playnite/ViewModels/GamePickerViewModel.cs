@@ -212,10 +212,13 @@ namespace GameSaveCenter.Playnite.ViewModels
             Logger.Debug($"[PERF] GamePicker setItems={timer.ElapsedMilliseconds}ms games={Items.Count}");
             // Keep the selected game even when a filter hides it. The picker presents a
             // recovery affordance instead of silently replacing the user's context.
+            var previousSelectedItem = SelectedItem;
             var candidate = Items.FirstOrDefault(x => string.Equals(x.PlayniteId, previousId, StringComparison.OrdinalIgnoreCase))
                             ?? ItemsView.Cast<GamePickerItem>().FirstOrDefault()
                             ?? null;
             SelectedItem = candidate;
+            if (ReferenceEquals(previousSelectedItem, candidate))
+                OnPropertyChanged(nameof(SelectedGame));
             OnPropertyChanged(nameof(SelectedGameHiddenByFilter));
             return !unchanged;
         }

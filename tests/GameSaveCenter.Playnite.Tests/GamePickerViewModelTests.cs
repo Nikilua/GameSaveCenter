@@ -198,6 +198,26 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Equal(2, notificationCount);
         }
 
+        [Fact]
+        public void ChangedSelectedGameRefreshRaisesSelectedGameNotification()
+        {
+            using var picker = new GamePickerViewModel();
+            picker.StatusFilter = "全部";
+            picker.SetItems(new[] { Game("A") });
+            var notifications = 0;
+            picker.PropertyChanged += (_, args) =>
+            {
+                if (args.PropertyName == nameof(GamePickerViewModel.SelectedGame)) notifications++;
+            };
+
+            var refreshed = Game("A");
+            refreshed.Name = "New";
+            picker.SetItems(new[] { refreshed });
+
+            Assert.Equal(1, notifications);
+            Assert.Equal("New", picker.SelectedGame!.Name);
+        }
+
         private static GameStatusDto Game(string name, bool installed = true, bool matched = true,
             int backups = 0, string health = "Ready", GamePlatformKind platform = GamePlatformKind.Other,
             DateTime? backup = null, DateTime? played = null)

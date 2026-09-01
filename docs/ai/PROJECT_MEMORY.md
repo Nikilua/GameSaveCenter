@@ -3,6 +3,13 @@
 > 维护时间：2026-09-01
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-01 详情编辑草稿与游戏摘要刷新保护
+
+- `SelectedBackup`/`SelectedMedia` 重新绑定同一 ID 时，不再无条件覆盖编辑器字段。`backupCommentDirty`、`backupLockDirty`、`mediaCommentDirty`、`mediaFavoriteDirty` 分别记录用户是否改过对应值，详情刷新只同步未修改字段。
+- 切换到新条目或清空选择会完整同步/清空编辑器；存档单项保存、媒体单项保存以及媒体批量修改成功后清理相应 dirty 标记，使后续服务端回读可以校准值。
+- 游戏策略编辑以选中游戏的基线副本识别本地未保存 `Policy`，快照刷新时只给展示集合保留该草稿；保存请求捕获原游戏 ID、名称和策略副本，返回期间切换游戏时只更新原游戏的基线，成功提示不会串到新选中的游戏。`GamePickerViewModel.SetItems` 在当前 item 未变但 DTO 更新时补发 `SelectedGame`，Dashboard 再转发通知给壳层绑定。
+- 这项保护只涉及 Playnite ViewModel 的 UI 编辑草稿，不改变 DTO、IPC 或 Worker 数据；需在真实 Playnite 中边输入边触发任务刷新/切换页面观察绑定体验。
+
 ## 2026-09-01 媒体收件箱与详情刷新一致性
 
 - `MediaInboxMode` 切换现在用 `mediaInboxLoadGeneration` 丢弃过期可见响应；`pendingMediaInboxLoadMode` 保留忙碌期间最后一次模式，`RunAsync` 结束后自动补加载。旧响应仍可更新对应缓存，但不会把旧集合应用到当前视图。
