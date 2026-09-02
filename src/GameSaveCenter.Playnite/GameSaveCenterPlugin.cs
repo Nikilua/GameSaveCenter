@@ -494,17 +494,17 @@ namespace GameSaveCenter.Playnite
                 logger.Debug($"Deferring automatic catalog synchronization because the Playnite library is not ready ({reason}).");
                 return;
             }
-            if (IsVeryLargeLibrary())
-            {
-                logger.Info($"Deferring automatic catalog synchronization for very large Playnite library ({observedGameCount} games); reason: {reason}. Use the dashboard refresh action to opt in.");
-                return;
-            }
             if (!interactiveSurfaceOpened && IsLargeLibrary())
             {
-                logger.Debug($"Deferring large-library synchronization until GameSaveCenter is opened ({reason}).");
+                logger.Debug($"Deferring large-library descriptor synchronization until GameSaveCenter is opened ({reason}).");
                 return;
             }
 
+            // The Worker persists changed descriptors synchronously but matches large batches
+            // in a throttled background queue. Keep library callbacks useful after the
+            // dashboard is open, including for 500+ game profiles, so a game installed in
+            // Steam before or during the current Playnite session is searchable without a
+            // manual refresh. The expensive Ludusavi work remains bounded by GameCatalogService.
             FireAndForget(SynchronizeAsync);
         }
 
@@ -558,8 +558,6 @@ namespace GameSaveCenter.Playnite
         /// Playnite database or a full Game collection to the UI layer.
         /// </summary>
         public bool IsLargeLibraryForUi => observedGameCount >= 100;
-
-        public bool IsVeryLargeLibraryForUi => observedGameCount >= VeryLargeLibraryThreshold;
 
         public Task<T> RequestAsync<T>(string type, object payload, TimeSpan? timeout = null)
         {
@@ -910,11 +908,6 @@ namespace GameSaveCenter.Playnite
         {
             if (lifetimeCancellation.IsCancellationRequested) return Task.CompletedTask;
             interactiveSurfaceOpened = true;
-            if (IsVeryLargeLibrary())
-            {
-                logger.Info($"Skipping automatic dashboard catalog synchronization for very large library ({observedGameCount} games); cache-first UI remains available and explicit refresh is required.");
-                return Task.CompletedTask;
-            }
             lock (synchronizationRequestGate)
             {
                 if (synchronizationTask != null && !synchronizationTask.IsCompleted)

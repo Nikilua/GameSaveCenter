@@ -24,7 +24,11 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 PlatformGameId = game.GameId ?? string.Empty,
                 PluginId = game.PluginId.ToString("D"),
                 InstallDirectory = game.InstallDirectory ?? string.Empty,
-                IsInstalled = game.IsInstalled,
+                // Playnite's Steam integration can briefly leave IsInstalled=false while
+                // refreshing a profile or after a library is moved to another machine. The
+                // install directory is a local, read-only signal and prevents the GameSaveCenter
+                // picker default ("已安装") from hiding a game that is actually present.
+                IsInstalled = game.IsInstalled || IsInstallDirectoryPresent(game.InstallDirectory),
                 LastPlayedUtc = game.LastActivity,
                 Tags = game.Tags == null ? new List<string>() : game.Tags.Select(x => x.Name).Where(x => !string.IsNullOrWhiteSpace(x)).ToList()
             };
@@ -94,6 +98,13 @@ namespace GameSaveCenter.Playnite.Infrastructure
         {
             var value = ((name ?? string.Empty) + " " + (path ?? string.Empty)).ToLowerInvariant();
             return new[] { "mod", "skse", "smapi", "f4se", "nvse", "mo2", "modorganizer", "vortex", "frosty", "reloaded", "r2modman", "thunderstore" }.Any(value.Contains);
+        }
+
+        internal static bool IsInstallDirectoryPresent(string? installDirectory)
+        {
+            if (string.IsNullOrWhiteSpace(installDirectory)) return false;
+            try { return Directory.Exists(Environment.ExpandEnvironmentVariables(installDirectory)); }
+            catch (Exception ex) when (!(ex is OutOfMemoryException) && !(ex is StackOverflowException)) { return false; }
         }
 
         private static GamePlatformKind DetectPlatform(Game game)

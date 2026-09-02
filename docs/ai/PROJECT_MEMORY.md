@@ -3,6 +3,13 @@
 > 维护时间：2026-09-02
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-02 跨机器 Steam 游戏目录同步与安装状态识别
+
+- 已确认插件不直接读取 Steam 客户端，而是读取 Playnite `Database.Games`，再把目录描述同步到 Worker 的 SQLite；此前 500+ 游戏库在 Dashboard 打开时仍跳过自动目录同步，第二台机器的本地 Worker 缓存为空/过期时，游戏会永久不出现在搜索结果，除非手动刷新。
+- `GameSaveCenterPlugin` 现在在 Dashboard 打开后允许大库/超大库同步目录描述；`DashboardViewModel` 仍先绘制缓存，但随后立即在后台触发同步。Worker 先持久化全部描述，再把昂贵的 Ludusavi 匹配放入已有的节流队列，保持首屏不阻塞。
+- `PlayniteGameAdapter` 将存在的 `InstallDirectory` 作为 `IsInstalled` 的只读兜底，避免 Steam/Playnite 短暂错误上报未安装时被默认“已安装”筛选隐藏。若游戏根本没有进入 Playnite Steam 库，插件仍无法仅凭 Steam 客户端发现它，必须先让 Playnite 导入该游戏。
+- 自动证据：Core `65/65`、Worker `233/233`、Playnite `323/380`（57 跳过），Release 构建 0 warning/0 error，源码校验通过，WPF 静态审计 0 error/18 warning/172 info；真实第二台 Playnite 宿主仍需安装新包后复核。
+
 ## 2026-09-02 媒体收件箱旧代际分页取消
 
 - `LoadMediaInboxPagesAsync` 现在接收 `requestGeneration`，并在每页 IPC 前后与 `mediaInboxLoadGeneration` 比较；旧代际直接返回 `null`，调用方不再进入集合或 UI 回写。
@@ -1335,7 +1342,7 @@
 - `BatchObservableCollection<T>`：批量 Replace 只发一次 Reset（默认引用相等比较；PERF-005 起支持内容比较器跳过未变化）。
 - GamePicker 有 180ms 搜索防抖、按 PlayniteId 缓存 `GamePickerItem`、平台指纹短路。
 - Task 筛选指纹短路（`ComputeTaskFilterFingerprint`）、平台指纹短路（`ComputePlatformFingerprint`）。
-- Dashboard 大库 cache-first + 延迟后台同步；`[PERF]` 日志设施见 `docs/ai/PERFORMANCE_BASELINE.md`。
+- Dashboard 大库 cache-first + 非阻塞后台目录描述同步；昂贵的 Ludusavi 匹配仍由 Worker 节流队列处理；`[PERF]` 日志设施见 `docs/ai/PERFORMANCE_BASELINE.md`。
 
 ## UI 设计原则
 

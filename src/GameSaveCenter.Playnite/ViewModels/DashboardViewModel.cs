@@ -1272,33 +1272,13 @@ namespace GameSaveCenter.Playnite.ViewModels
                 StatusMessage = "正在启动后台服务，稍后刷新本地状态…";
                 Logger.Debug(ex, "GameSaveCenter dashboard cache read deferred until Worker startup completes.");
             }
-            // For 500+ game profiles the dashboard is intentionally cache-first. Do not keep a
-            // delayed task alive merely to discover that the plugin will skip the automatic full
-            // catalog rematch; an explicit Refresh command remains available to opt in.
-            if (plugin.IsVeryLargeLibraryForUi)
-            {
-                ApplyOnUi(() => StatusMessage = "已显示本地缓存；大型目录默认不自动全量匹配，可按需点击刷新。\n游戏启动时仍会按需更新当前游戏。");
-                // The dashboard is allowed to open while the Worker is still coming up. A
-                // first cache read can therefore time out even though the Worker becomes
-                // healthy moments later. Retry only the aggregate SQLite snapshot a few times;
-                // never turn this recovery path into a catalog synchronization or Ludusavi
-                // scan. This keeps the first paint responsive without leaving a newly created
-                // 900+ library permanently blank until the user clicks Refresh.
-                var cacheGeneration = Interlocked.Read(ref deferredUiWorkGeneration);
-                _ = RefreshLargeLibraryCacheWhenWorkerReadyAsync(cacheGeneration);
-                return;
-            }
-            // A large library already has durable game summaries in SQLite in the normal
-            // case. Starting 100+ Ludusavi lookups while the user is opening the panel makes
-            // Playnite appear frozen and competes with other Ludusavi integrations. Keep the
-            // shell immediately usable and release the background catalog sync only after a
-            // quiet period. An empty cache uses a shorter delay so first-run installations
-            // still begin indexing without making the sidebar activation synchronous.
-            var largeLibraryDelay = plugin.IsLargeLibraryForUi
-                ? (Games.Count > 0 ? TimeSpan.FromSeconds(60) : TimeSpan.FromSeconds(10))
-                : TimeSpan.Zero;
+            // A large library remains cache-first for painting, but the descriptor sync itself
+            // is safe to start in the background: GameCatalogService persists the changed
+            // Playnite rows quickly and moves the expensive Ludusavi matching into a throttled
+            // Worker queue. This is important on a second machine, where the local cache may
+            // be empty or may not contain a game that Steam/Playnite already knows about.
             var generation = Interlocked.Read(ref deferredUiWorkGeneration);
-            _ = RefreshAfterSynchronizationAsync(largeLibraryDelay, generation);
+            _ = RefreshAfterSynchronizationAsync(TimeSpan.Zero, generation);
         }
 
         private async Task RefreshAfterSynchronizationAsync(TimeSpan delay, long generation)
@@ -1331,42 +1311,6 @@ namespace GameSaveCenter.Playnite.ViewModels
             catch (Exception ex)
             {
                 ApplyOnUi(() => StatusMessage = "已显示本地缓存；后台同步暂不可用：" + ex.Message);
-            }
-            finally
-            {
-                if (ReferenceEquals(initialSynchronizationCancellation, cancellation))
-                    initialSynchronizationCancellation = null;
-                cancellation.Dispose();
-            }
-        }
-
-        private async Task RefreshLargeLibraryCacheWhenWorkerReadyAsync(long generation)
-        {
-            var cancellation = new CancellationTokenSource();
-            initialSynchronizationCancellation = cancellation;
-            try
-            {
-                for (var attempt = 0; attempt < 4; attempt++)
-                {
-                    if (generation != Interlocked.Read(ref deferredUiWorkGeneration)) return;
-                    try
-                    {
-                        await Task.Delay(TimeSpan.FromSeconds(attempt == 0 ? 1 : 2), cancellation.Token).ConfigureAwait(false);
-                        if (generation != Interlocked.Read(ref deferredUiWorkGeneration)) return;
-                        await RefreshDashboardAsync(false, false, TimeSpan.FromSeconds(3));
-                        ApplyOnUi(() => StatusMessage = "已显示本地缓存；大型目录默认不自动全量匹配，可按需点击刷新。\n游戏启动时仍会按需更新当前游戏。");
-                        return;
-                    }
-                    catch (OperationCanceledException) when (cancellation.IsCancellationRequested || generation != Interlocked.Read(ref deferredUiWorkGeneration))
-                    {
-                        // Dashboard unload intentionally cancels the retry loop.
-                        return;
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Debug(ex, "Large-library cache snapshot is not ready yet; retrying without catalog synchronization.");
-                    }
-                }
             }
             finally
             {

@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-02 跨机器 Steam 游戏目录同步与安装状态识别
+
+- 用户反馈另一台电脑的 Steam 游戏已安装，但 GameSaveCenter 搜索不到。代码核实后确认：插件的搜索源是 Playnite 游戏库 + Worker SQLite 快照，不是 Steam 客户端；此前超大库在首次打开 Dashboard 时直接跳过自动目录同步，空/旧快照不会自愈；默认“已安装”筛选还完全依赖 Playnite 的 `IsInstalled` 标志。
+- 修复 `GameSaveCenterPlugin`/`DashboardViewModel`：Dashboard 首屏仍先读缓存，但打开后立即允许大库同步目录描述；Worker 先同步持久化全部描述，再把 Ludusavi 匹配交给已有的节流后台队列。修复 `PlayniteGameAdapter`：本地安装目录存在时将其作为安装状态兜底。同步更新大库源码门禁和回归测试，并新增 520 条目录描述的全量持久化测试。
+- `python scripts/validate-source.py`：通过；WPF 静态审计：0 error、18 warning、172 info（均为既有布局/资源提示，本轮未改 XAML）。
+- 验证：Core `65/65`、Worker `233/233`、Playnite `323/380`（57 跳过）；Release 构建 0 warning/0 error。真实第二台 Playnite 安装、Steam 导入状态和搜索结果仍需人工复核。
+
 ## 2026-09-02 媒体收件箱旧加载继续分页
 
 - 继续审查 Dashboard 生命周期时发现，媒体收件箱只在全部分页结束后校验代际；页面卸载或切换模式时，旧加载仍可能继续请求剩余页面，并在不可见页面上更新缓存集合。

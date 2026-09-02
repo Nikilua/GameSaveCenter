@@ -4367,7 +4367,7 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
-    public void LargeLibraryDashboardDelaysInitialFullSynchronization()
+    public void LargeLibraryDashboardStartsDescriptorSynchronizationWithoutBlockingTheFirstPaint()
     {
         var repositoryRoot = FindRepositoryRoot();
         var viewModelCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
@@ -4375,16 +4375,14 @@ public sealed class WpfUiResourceDictionaryTests
 
         Assert.Contains("private volatile int observedGameCount;", pluginCode);
         Assert.Contains("public bool IsLargeLibraryForUi => observedGameCount >= 100;", pluginCode);
-        Assert.Contains("var largeLibraryDelay = plugin.IsLargeLibraryForUi", viewModelCode);
-        Assert.Contains("Games.Count > 0 ? TimeSpan.FromSeconds(60) : TimeSpan.FromSeconds(10)", viewModelCode);
         Assert.Contains("private CancellationTokenSource? initialSynchronizationCancellation;", viewModelCode);
         Assert.Contains("private long deferredUiWorkGeneration;", viewModelCode);
         Assert.Contains("Interlocked.Increment(ref deferredUiWorkGeneration);", viewModelCode);
         Assert.Contains("Interlocked.Read(ref deferredUiWorkGeneration)", viewModelCode);
         Assert.Contains("CancelInitialSynchronization();", viewModelCode);
-        Assert.Contains("await Task.Delay(delay, cancellation.Token)", viewModelCode);
+        Assert.Contains("_ = RefreshAfterSynchronizationAsync(TimeSpan.Zero, generation);", viewModelCode);
+        Assert.Contains("await plugin.SynchronizeFromDashboardAsync();", viewModelCode);
         Assert.Contains("catch (OperationCanceledException) when (cancellation.IsCancellationRequested)", viewModelCode);
-        Assert.Contains("大型目录同步将在空闲时进行", viewModelCode);
         Assert.Contains("await RefreshCoreAsync(false, TimeSpan.FromSeconds(5));", viewModelCode);
         Assert.Contains("private async Task ListenForTaskEventsWhenReadyAsync(CancellationToken token)", viewModelCode);
         Assert.Contains("await Task.Delay(TimeSpan.FromSeconds(60), token)", viewModelCode);
@@ -4937,7 +4935,7 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
-    public void VeryLargeLibrariesDoNotAutomaticallyRematchOnDashboardOpen()
+    public void VeryLargeLibrariesSyncDescriptorsAndKeepMatchingInTheWorkerQueue()
     {
         var repositoryRoot = FindRepositoryRoot();
         var pluginCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "GameSaveCenterPlugin.cs"));
@@ -4945,17 +4943,16 @@ public sealed class WpfUiResourceDictionaryTests
         var catalogCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Worker", "Services", "GameCatalogService.cs"));
 
         Assert.Contains("VeryLargeLibraryThreshold = 500", pluginCode);
-        Assert.Contains("public bool IsVeryLargeLibraryForUi", pluginCode);
-        Assert.Contains("Skipping automatic dashboard catalog synchronization for very large library", pluginCode);
-        Assert.Contains("Very large Playnite library", pluginCode);
-        Assert.Contains("if (plugin.IsVeryLargeLibraryForUi)", viewModelCode);
-        Assert.Contains("explicit Refresh command remains available", viewModelCode);
-        Assert.Contains("RefreshLargeLibraryCacheWhenWorkerReadyAsync", viewModelCode);
+        Assert.Contains("descriptor synchronization until GameSaveCenter is opened", pluginCode);
+        Assert.Contains("game installed in", pluginCode);
+        Assert.DoesNotContain("Skipping automatic dashboard catalog synchronization for very large library", pluginCode);
+        Assert.DoesNotContain("RefreshLargeLibraryCacheWhenWorkerReadyAsync", viewModelCode);
+        Assert.Contains("GameCatalogService persists the changed", viewModelCode);
+        Assert.Contains("await plugin.SynchronizeFromDashboardAsync();", viewModelCode);
+        Assert.Contains("_ = RefreshAfterSynchronizationAsync(TimeSpan.Zero, generation);", viewModelCode);
         Assert.Contains("var cancellation = new CancellationTokenSource();", viewModelCode);
         Assert.Contains("initialSynchronizationCancellation = cancellation;", viewModelCode);
-        Assert.Contains("cancellation.IsCancellationRequested || generation != Interlocked.Read(ref deferredUiWorkGeneration)", viewModelCode);
         Assert.Contains("cancellation.Dispose();", viewModelCode);
-        Assert.Contains("never turn this recovery path into a catalog synchronization", viewModelCode);
         Assert.Contains("VeryLargeLibraryBackgroundMatchBudget = 12", catalogCode);
         Assert.Contains("list.Count >= VeryLargeLibraryThreshold", catalogCode);
         Assert.Contains("if (games.Count >= LargeLibraryThreshold && !interactiveSurfaceOpened)", pluginCode);

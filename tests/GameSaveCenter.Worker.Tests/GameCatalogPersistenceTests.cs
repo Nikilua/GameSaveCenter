@@ -74,6 +74,28 @@ public sealed class GameCatalogPersistenceTests : IDisposable
         Assert.Null(changedCache["game-1"].LastMatchAttemptUtc);
     }
 
+    [Fact]
+    public async Task LargeRefreshPersistsEveryDescriptorBeforeAnyBackgroundMatch()
+    {
+        var games = Enumerable.Range(0, 520)
+            .Select(index => new GameDescriptorDto
+            {
+                PlayniteId = "large-game-" + index,
+                Name = "Large Game " + index,
+                Platform = GamePlatformKind.Steam,
+                PlatformGameId = (10000 + index).ToString(),
+                IsInstalled = true
+            })
+            .ToArray();
+
+        // Ludusavi is intentionally unavailable in this fixture. Descriptor persistence must
+        // still complete for the whole library; matching availability is a separate concern.
+        await catalog.UpsertAndMatchAsync(games, CancellationToken.None);
+
+        var persisted = await store.GetGamesAsync(CancellationToken.None);
+        Assert.Equal(games.Length, persisted.Count);
+    }
+
     private async Task<string?> ReadUpdatedUtcAsync(string playniteId)
     {
         await using var connection = new SqliteConnection($"Data Source={options.DatabasePath}");

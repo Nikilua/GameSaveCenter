@@ -635,14 +635,19 @@ def check_large_library_performance_guards() -> None:
         if token not in catalog:
             fail(f"Very-large-library matching budget guard missing: {token}")
     for token in ("StartWorkerAndScheduleSynchronizationAsync", "WaitForLibraryReadyAndStartWorkerAsync", "largeLibraryStartupSyncNotBeforeUtc", "TimeSpan.FromSeconds(25)", "ConfigureLargeLibraryStartupGate", "TimeSpan.FromSeconds(60)",
-                  "VeryLargeLibraryThreshold = 500", "Skipping automatic dashboard catalog synchronization for very large library",
-                  "Very large Playnite library", "public bool IsVeryLargeLibraryForUi",
-                  "games.Count >= LargeLibraryThreshold && !interactiveSurfaceOpened",
+                  "VeryLargeLibraryThreshold = 500", "descriptor synchronization until GameSaveCenter is opened",
+                  "game installed in", "games.Count >= LargeLibraryThreshold && !interactiveSurfaceOpened",
                   "Playnite game database is not ready at application start"):
         if token not in plugin:
             fail(f"Playnite large-library startup grace guard missing: {token}")
-    if "explicit Refresh command remains available" not in view_model:
-        fail("Dashboard must make very-large-library cache-first behavior explicit")
+    for token in ("RefreshAfterSynchronizationAsync(TimeSpan.Zero, generation)",
+                  "GameCatalogService persists the changed", "await plugin.SynchronizeFromDashboardAsync()"):
+        if token not in view_model:
+            fail(f"Dashboard must synchronize large-library descriptors after the first cache paint: {token}")
+    for token in ("Skipping automatic dashboard catalog synchronization for very large library",
+                  "public bool IsVeryLargeLibraryForUi"):
+        if token in plugin:
+            fail(f"Obsolete very-large-library catalog skip must be removed: {token}")
     for token in ("taskNotificationRetryAfterUtc", "taskNotificationFailureCount", "retrying in"):
         if token not in plugin:
             fail(f"Task notification backoff guard missing: {token}")

@@ -2,6 +2,13 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-09-02 跨机器 Steam 游戏搜索不到
+
+- 根因已确认：GameSaveCenter 的搜索数据来自 Playnite `Database.Games` 和 Worker SQLite 快照，不会直接枚举 Steam 客户端；旧逻辑对 500+ 游戏库在 Dashboard 打开时跳过自动目录同步，第二台机器的空/旧 Worker 缓存因此不会出现新游戏；同时默认“已安装”筛选只看 Playnite `IsInstalled`。
+- 已修复：Dashboard 首屏仍缓存优先，但打开后立即同步 Playnite 目录描述；Worker 先持久化整批描述，昂贵的 Ludusavi 匹配继续由节流后台队列处理；适配器在 Playnite 标志为 false 但 `InstallDirectory` 实际存在时按已安装处理。大库回调在 Dashboard 打开后也不再被超大库门禁吞掉。
+- 自动证据：Core `65/65`、Worker `233/233`、Playnite `323/380`（57 跳过），Release 0 warning/0 error，源码校验通过，WPF 静态审计 0 error/18 warning/172 info。真实 Playnite 宿主尚未在本机运行，安装新包后需在第二台电脑重启 Playnite/插件并打开一次 Dashboard 复核。
+- 边界：若游戏没有被 Playnite 的 Steam 集成导入到 `Database.Games`，本插件仍没有可同步的来源；应先确认 Playnite 本身能看到该游戏，再检查插件的“全部”筛选或重新打开 Dashboard。
+
 ## 2026-09-02 媒体收件箱旧加载继续分页
 
 - `DashboardViewModel` 的媒体收件箱加载现在把 `mediaInboxLoadGeneration` 传入分页读取；每一页 IPC 发起前和返回后都会检查代际。
