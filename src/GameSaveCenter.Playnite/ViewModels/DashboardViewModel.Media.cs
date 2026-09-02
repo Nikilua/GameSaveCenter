@@ -50,21 +50,22 @@ namespace GameSaveCenter.Playnite.ViewModels
             var selectedId = SelectedInboxMedia?.MediaId;
             var targetId = InboxTargetGame?.PlayniteId;
             var requestMode = MediaInboxMode;
-            var inbox = await LoadMediaInboxPagesAsync(MessageTypes.ListUnassignedMedia);
+            var inbox = await LoadMediaInboxPagesAsync(MessageTypes.ListUnassignedMedia, requestGeneration);
+            if (inbox == null) return;
             ApplyOnUi(() =>
             {
+                if (!string.Equals(MediaInboxMode, requestMode, StringComparison.Ordinal)
+                    || requestGeneration != Interlocked.Read(ref mediaInboxLoadGeneration))
+                    return;
+
                 if (!InboxEquals(UnassignedMedia, inbox))
                     UnassignedMedia = new GameSaveCenter.Playnite.Infrastructure.BatchObservableCollection<MediaItemDto>(inbox);
 
-                if (string.Equals(MediaInboxMode, requestMode, StringComparison.Ordinal)
-                    && requestGeneration == Interlocked.Read(ref mediaInboxLoadGeneration))
-                {
-                    var currentSelectedId = SelectedInboxMedia?.MediaId;
-                    var keepSelectedId = string.Equals(currentSelectedId, selectedId, StringComparison.OrdinalIgnoreCase)
-                        ? selectedId
-                        : currentSelectedId;
-                    ApplyMediaInboxMode(keepSelectedId);
-                }
+                var currentSelectedId = SelectedInboxMedia?.MediaId;
+                var keepSelectedId = string.Equals(currentSelectedId, selectedId, StringComparison.OrdinalIgnoreCase)
+                    ? selectedId
+                    : currentSelectedId;
+                ApplyMediaInboxMode(keepSelectedId);
 
                 var currentTargetId = InboxTargetGame?.PlayniteId;
                 var keepTargetId = string.Equals(currentTargetId, targetId, StringComparison.OrdinalIgnoreCase)
@@ -84,36 +85,43 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             var selectedId = SelectedInboxMedia?.MediaId;
             var requestMode = MediaInboxMode;
-            var ignored = await LoadMediaInboxPagesAsync(MessageTypes.ListIgnoredMedia);
+            var ignored = await LoadMediaInboxPagesAsync(MessageTypes.ListIgnoredMedia, requestGeneration);
+            if (ignored == null) return;
             ApplyOnUi(() =>
             {
+                if (!string.Equals(MediaInboxMode, requestMode, StringComparison.Ordinal)
+                    || requestGeneration != Interlocked.Read(ref mediaInboxLoadGeneration))
+                    return;
+
                 if (!InboxEquals(IgnoredMedia, ignored))
                     IgnoredMedia = new GameSaveCenter.Playnite.Infrastructure.BatchObservableCollection<MediaItemDto>(ignored);
 
-                if (string.Equals(MediaInboxMode, requestMode, StringComparison.Ordinal)
-                    && requestGeneration == Interlocked.Read(ref mediaInboxLoadGeneration))
-                {
-                    var currentSelectedId = SelectedInboxMedia?.MediaId;
-                    var keepSelectedId = string.Equals(currentSelectedId, selectedId, StringComparison.OrdinalIgnoreCase)
-                        ? selectedId
-                        : currentSelectedId;
-                    ApplyMediaInboxMode(keepSelectedId);
-                }
+                var currentSelectedId = SelectedInboxMedia?.MediaId;
+                var keepSelectedId = string.Equals(currentSelectedId, selectedId, StringComparison.OrdinalIgnoreCase)
+                    ? selectedId
+                    : currentSelectedId;
+                ApplyMediaInboxMode(keepSelectedId);
                 RaiseCommandStates();
             });
         }
 
-        private async Task<MediaItemDto[]> LoadMediaInboxPagesAsync(string messageType)
+        private async Task<MediaItemDto[]?> LoadMediaInboxPagesAsync(string messageType, long requestGeneration)
         {
             var result = new List<MediaItemDto>();
             for (var offset = 0; offset < MaximumMediaInboxItems; offset += MediaInboxPageSize)
             {
+                if (requestGeneration != Interlocked.Read(ref mediaInboxLoadGeneration))
+                    return null;
+
                 var limit = Math.Min(MediaInboxPageSize, MaximumMediaInboxItems - offset);
                 var page = await plugin.RequestAsync<MediaItemDto[]>(messageType, new GameQueryDto
                 {
                     Limit = limit,
                     Offset = offset
                 }).ConfigureAwait(false) ?? Array.Empty<MediaItemDto>();
+                if (requestGeneration != Interlocked.Read(ref mediaInboxLoadGeneration))
+                    return null;
+
                 if (page.Length == 0) break;
 
                 result.AddRange(page);

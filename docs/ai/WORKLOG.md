@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-02 媒体收件箱旧加载继续分页
+
+- 继续审查 Dashboard 生命周期时发现，媒体收件箱只在全部分页结束后校验代际；页面卸载或切换模式时，旧加载仍可能继续请求剩余页面，并在不可见页面上更新缓存集合。
+- 将 `mediaInboxLoadGeneration` 传入分页函数，在每页请求前后检查；代际变化后立即放弃后续分页，`LoadInboxAsync`/`LoadIgnoredMediaAsync` 不再调用 UI 回写。当前已发出的单个 IPC 请求仍按客户端既有超时结束。
+- 验证：Playnite `321/378`（57 跳过）、Core `65/65`、Worker `232/232`，Release 构建 0 warning/0 error，源码校验和 WPF 静态审计通过。真实 Playnite 快速切换与卸载仍需人工观察。
+
 ## 2026-09-01 IPC 长连接读取器的取消等待对象累积
 
 - 深审任务事件 IPC 时发现，`BoundedIpcLineReader.AwaitReadAsync` 每次底层读取都创建无限 `Task.Delay`；读取成功后该 Delay 的取消注册仍挂在长生命周期监听器令牌上，消息持续到达会形成慢性对象累积。

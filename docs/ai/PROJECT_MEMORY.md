@@ -1,7 +1,13 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
-> 维护时间：2026-09-01
+> 维护时间：2026-09-02
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
+
+## 2026-09-02 媒体收件箱旧代际分页取消
+
+- `LoadMediaInboxPagesAsync` 现在接收 `requestGeneration`，并在每页 IPC 前后与 `mediaInboxLoadGeneration` 比较；旧代际直接返回 `null`，调用方不再进入集合或 UI 回写。
+- 这收口了页面卸载、模式切换和忙碌期间最新请求排队时的无效工作：当前已发出的单个 IPC 请求仍由客户端既有超时完成，但旧加载不会继续请求最多 5000 条收件箱的剩余页面。
+- STAB-021 自动证据：Release 0 warning/0 error，Core `65/65`、Worker `232/232`、Playnite `321/378`（57 跳过），源码校验和 WPF 静态审计通过；真实 Playnite 快速切换/卸载仍需人工观察。
 
 ## 2026-09-01 IPC 长连接读取器的取消等待对象累积
 

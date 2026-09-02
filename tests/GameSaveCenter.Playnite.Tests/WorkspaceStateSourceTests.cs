@@ -97,10 +97,16 @@ public sealed class WorkspaceStateSourceTests
         Assert.Contains("mediaInboxLoadGeneration", implementation);
         Assert.Contains("pendingMediaInboxLoadMode", implementation);
         Assert.Contains("StartQueuedMediaInboxLoad();", implementation);
-        Assert.Contains("requestGeneration == Interlocked.Read(ref mediaInboxLoadGeneration)", media);
+        Assert.Contains("requestGeneration != Interlocked.Read(ref mediaInboxLoadGeneration)", media);
         Assert.Contains("var currentSelectedId = SelectedInboxMedia?.MediaId", media);
         Assert.Contains("var currentTargetId = InboxTargetGame?.PlayniteId", media);
         Assert.Contains("LoadMediaInboxModeAsync", media);
+        Assert.Contains("LoadMediaInboxPagesAsync(MessageTypes.ListUnassignedMedia, requestGeneration)", media);
+        Assert.Contains("LoadMediaInboxPagesAsync(MessageTypes.ListIgnoredMedia, requestGeneration)", media);
+        Assert.Contains("if (requestGeneration != Interlocked.Read(ref mediaInboxLoadGeneration))", media);
+        Assert.Contains("if (!string.Equals(MediaInboxMode, requestMode, StringComparison.Ordinal)", media);
+        Assert.Contains("if (inbox == null) return;", media);
+        Assert.Contains("if (ignored == null) return;", media);
         Assert.Contains("if (MediaInboxMode == \"已忽略\") await LoadIgnoredMediaAsync();", implementation);
         Assert.Contains("var selectedBackupId = SelectedBackup?.BackupId", implementation);
         Assert.Contains("var selectedMediaId = SelectedMedia?.MediaId", implementation);

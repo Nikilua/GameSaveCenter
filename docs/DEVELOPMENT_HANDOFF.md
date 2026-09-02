@@ -2,6 +2,12 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-09-02 媒体收件箱旧加载继续分页
+
+- `DashboardViewModel` 的媒体收件箱加载现在把 `mediaInboxLoadGeneration` 传入分页读取；每一页 IPC 发起前和返回后都会检查代际。
+- 页面卸载或切换“待归类/已忽略”后，旧请求最多完成当前已发出的单页，不再继续请求剩余分页，也不会再进入收件箱集合和 UI 状态回写；公共 IPC 的既有客户端超时语义不变。
+- 自动证据：Release 0 warning/0 error，Core `65/65`、Worker `232/232`、Playnite `321/378`（57 跳过），源码校验和 WPF 静态审计通过。真实 Playnite 快速切换、卸载和 Worker 重启仍需人工观察。
+
 ## 2026-09-01 IPC 长连接读取器的取消等待对象累积
 
 - `BoundedIpcLineReader` 原先用 `Task.Delay(Timeout.Infinite, token)` 与每次底层读取竞争；读取先完成时，该 Delay 和取消注册会一直保留到整个事件监听器取消。
