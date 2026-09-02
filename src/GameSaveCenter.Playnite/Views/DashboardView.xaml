@@ -942,9 +942,9 @@
                             </Button>
                         </Grid>
                         <UniformGrid Grid.Row="1" Columns="3">
-                            <ComboBox x:Name="GamePickerStatusComboBox" Style="{StaticResource GscWpfUiFilterComboBox}" SelectedIndex="0" ItemsSource="{Binding GamePicker.StatusFilterOptions}" SelectedItem="{Binding GamePicker.StatusFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" Margin="0,0,4,0" ToolTip="状态筛选"/>
+                            <ComboBox x:Name="GamePickerStatusComboBox" Style="{StaticResource GscWpfUiFilterComboBox}" ItemsSource="{Binding GamePicker.StatusFilterOptions}" SelectedItem="{Binding GamePicker.StatusFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" Margin="0,0,4,0" ToolTip="状态筛选"/>
                             <ComboBox x:Name="GamePickerPlatformComboBox" Style="{StaticResource GscWpfUiFilterComboBox}" SelectedIndex="0" ItemsSource="{Binding GamePicker.PlatformFilterOptions}" SelectedItem="{Binding GamePicker.PlatformFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" Margin="4,0,4,0" ToolTip="平台筛选"/>
-                            <ComboBox x:Name="GamePickerSortComboBox" Style="{StaticResource GscWpfUiFilterComboBox}" SelectedIndex="0" ItemsSource="{Binding GamePicker.SortOptions}" SelectedItem="{Binding GamePicker.SortMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=名称, FallbackValue=名称}" Margin="4,0,0,0" ToolTip="排序"/>
+                            <ComboBox x:Name="GamePickerSortComboBox" Style="{StaticResource GscWpfUiFilterComboBox}" ItemsSource="{Binding GamePicker.SortOptions}" SelectedItem="{Binding GamePicker.SortMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=名称, FallbackValue=名称}" Margin="4,0,0,0" ToolTip="排序"/>
                         </UniformGrid>
                     </Grid>
                     <Grid Grid.Row="2">

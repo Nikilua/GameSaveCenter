@@ -63,6 +63,21 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         [Fact]
+        public void AllFilterIncludesUninstalledGameThatHasMatchOrBackup()
+        {
+            using var picker = new GamePickerViewModel();
+            picker.SetItems(new[]
+            {
+                Game("Steam Adventure", installed: false, matched: true, backups: 1)
+            });
+
+            picker.StatusFilter = "全部";
+
+            Assert.Equal(1, picker.FilteredCount);
+            Assert.True(picker.MatchesCurrentFilter(picker.Items.Single()));
+        }
+
+        [Fact]
         public void SelectionFallsBackWhenSelectedGameIsRemovedAndPreservesHiddenSelection()
         {
             using var picker = new GamePickerViewModel();

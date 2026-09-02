@@ -3,6 +3,13 @@
 > 维护时间：2026-09-02
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-02 游戏选择器状态筛选抢写
+
+- GamePicker 的状态/排序选项是静态列表，不应在 XAML 同时设置 `SelectedIndex="0"` 与共享 ViewModel 的双向 `SelectedItem`。生产 Shell 和隐藏兼容 Dashboard 各有一套选择器，两个初始化序列会互相抢写 `GamePicker.StatusFilter`，表现为用户选“全部”后仍沿用“已安装”过滤。
+- 当前两套 XAML 已移除状态、排序的强制索引；动态 `PlatformFilterOptions` 仍保留索引 0 和 Loaded 恢复，因为它会异步重建。不要把状态/排序的静态索引加回来。
+- 回归覆盖：`GamePickerViewModelTests.AllFilterIncludesUninstalledGameThatHasMatchOrBackup` 和 `GamePickerShellSourceTests.GamePickerStatusAndSortSelectionsComeFromSharedViewModel`。
+- 自动证据：Core `65/65`、Worker `233/233`、Playnite `325/382`（57 跳过）、Release 0 warning/0 error、源码门禁通过，WPF 静态审计 0 error/18 warning/172 info；真实宿主仍需第二台 Playnite 复核。
+
 ## 2026-09-02 跨机器 Steam 游戏目录同步与安装状态识别
 
 - 已确认插件不直接读取 Steam 客户端，而是读取 Playnite `Database.Games`，再把目录描述同步到 Worker 的 SQLite；此前 500+ 游戏库在 Dashboard 打开时仍跳过自动目录同步，第二台机器的本地 Worker 缓存为空/过期时，游戏会永久不出现在搜索结果，除非手动刷新。

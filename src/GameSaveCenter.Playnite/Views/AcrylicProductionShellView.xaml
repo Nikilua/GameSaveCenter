@@ -291,7 +291,7 @@
                              </Grid>
                             <UniformGrid Grid.Row="1" Columns="3" Margin="0,8,0,0">
                                 <ComboBox x:Name="GamePickerStatusComboBox" Style="{DynamicResource GscWpfUiFilterComboBox}"
-                                          ItemsSource="{Binding GamePicker.StatusFilterOptions}" SelectedIndex="0"
+                                          ItemsSource="{Binding GamePicker.StatusFilterOptions}"
                                           SelectedItem="{Binding GamePicker.StatusFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}"
                                           Margin="0,0,4,0"/>
                                 <ComboBox x:Name="GamePickerPlatformComboBox" Style="{DynamicResource GscWpfUiFilterComboBox}"
@@ -299,7 +299,7 @@
                                           SelectedItem="{Binding GamePicker.PlatformFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}"
                                           Margin="4,0,4,0" Loaded="OnGamePickerFilterLoaded"/>
                                 <ComboBox x:Name="GamePickerSortComboBox" Style="{DynamicResource GscWpfUiFilterComboBox}"
-                                          ItemsSource="{Binding GamePicker.SortOptions}" SelectedIndex="0"
+                                          ItemsSource="{Binding GamePicker.SortOptions}"
                                           SelectedItem="{Binding GamePicker.SortMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=名称, FallbackValue=名称}"
                                           Margin="4,0,0,0"/>
                             </UniformGrid>

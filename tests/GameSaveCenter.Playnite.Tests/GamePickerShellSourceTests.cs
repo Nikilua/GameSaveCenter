@@ -24,6 +24,19 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         [Fact]
+        public void GamePickerStatusAndSortSelectionsComeFromSharedViewModel()
+        {
+            var root = FindRepositoryRoot();
+            var production = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml"));
+            var dashboard = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml"));
+
+            Assert.DoesNotContain("ItemsSource=\"{Binding GamePicker.StatusFilterOptions}\" SelectedIndex=\"0\"", production);
+            Assert.DoesNotContain("ItemsSource=\"{Binding GamePicker.SortOptions}\" SelectedIndex=\"0\"", production);
+            Assert.DoesNotContain("GamePickerStatusComboBox\" Style=\"{StaticResource GscWpfUiFilterComboBox}\" SelectedIndex=\"0\"", dashboard);
+            Assert.DoesNotContain("GamePickerSortComboBox\" Style=\"{StaticResource GscWpfUiFilterComboBox}\" SelectedIndex=\"0\"", dashboard);
+        }
+
+        [Fact]
         public void DashboardPickerClipsItsRoundedSelectionSurface()
         {
             var root = FindRepositoryRoot();

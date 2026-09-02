@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-02 游戏选择器状态筛选抢写
+
+- 用户反馈同一款游戏在“已匹配/有备份”可见，但切换“全部”或“已安装”后消失。检查确认 Worker Dashboard SQL 返回 `games` 全量，`GamePickerViewModel` 的“全部”过滤也会保留未安装但已匹配/有备份的条目。
+- 根因是游戏选择器的状态/排序静态选项同时设置 `SelectedIndex="0"` 和共享 ViewModel 的双向 `SelectedItem`；生产 Shell 与隐藏兼容树各有一套控件，初始化时可能把索引 0 的“全部”或“名称”写回共享状态，导致真实状态与界面筛选不同步。
+- 修复两套 XAML：状态与排序只由共享 ViewModel 绑定值决定，动态平台列表继续保留索引 0 作为集合重建兜底；新增“未安装但已匹配/有备份在全部下可见”和 XAML 抢写防回归测试。
+- 验证：源码门禁通过；WPF 静态审计 0 error、18 warning、172 info；Release 构建 0 warning/0 error；Core `65/65`、Worker `233/233`、Playnite `325/382`（57 跳过）通过。真实第二台 Playnite 宿主仍需安装新包后复核。
+
 ## 2026-09-02 跨机器 Steam 游戏目录同步与安装状态识别
 
 - 用户反馈另一台电脑的 Steam 游戏已安装，但 GameSaveCenter 搜索不到。代码核实后确认：插件的搜索源是 Playnite 游戏库 + Worker SQLite 快照，不是 Steam 客户端；此前超大库在首次打开 Dashboard 时直接跳过自动目录同步，空/旧快照不会自愈；默认“已安装”筛选还完全依赖 Playnite 的 `IsInstalled` 标志。

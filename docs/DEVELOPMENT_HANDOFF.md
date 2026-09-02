@@ -2,6 +2,13 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-09-02 游戏选择器“全部”状态被抢写
+
+- 用户复核上一轮跨机器修复时发现：某款游戏在“已匹配/有备份”能看到，但切换到“全部”或“已安装”后消失。
+- 已确认数据层不是按状态分别查询：Worker 的 Dashboard 聚合 SQL 从 `games g` 全量返回，ViewModel 的“全部”分支也不会排除未安装条目。实际问题是生产 Shell 与隐藏兼容 Dashboard 各有一套绑定同一 `GamePicker` 的 ComboBox；状态和排序静态列表上的 `SelectedIndex="0"` 与双向 `SelectedItem` 绑定在初始化时存在抢写，界面显示值和 ViewModel 实际筛选值可能不一致。
+- 已修复：两套 XAML 的状态、排序 ComboBox 删除强制 `SelectedIndex="0"`，以持久化/用户当前的共享 ViewModel 值为唯一来源；动态平台列表仍保留索引 0 和 Loaded 恢复。新增 ViewModel 和 XAML 源码回归测试。
+- 自动验证已通过：Release 0 warning/0 error；Core `65/65`、Worker `233/233`、Playnite `325/382`（57 跳过）；源码门禁和 WPF 静态审计通过。需要在真实第二台 Playnite 中安装新包，确认首次打开、选择“全部/已安装”及重新打开面板后目标游戏均可见。
+
 ## 2026-09-02 跨机器 Steam 游戏搜索不到
 
 - 根因已确认：GameSaveCenter 的搜索数据来自 Playnite `Database.Games` 和 Worker SQLite 快照，不会直接枚举 Steam 客户端；旧逻辑对 500+ 游戏库在 Dashboard 打开时跳过自动目录同步，第二台机器的空/旧 Worker 缓存因此不会出现新游戏；同时默认“已安装”筛选只看 Playnite `IsInstalled`。
