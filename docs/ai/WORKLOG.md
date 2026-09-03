@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-03 游戏选择器用户选择写回竞态补强
+
+- 用户澄清：目标游戏确实已安装，游戏选择器行信息也显示“已安装”，但“全部”能搜到，“已安装”搜不到。该现象说明此前的安装判定补强不是唯一问题，筛选控件仍可能在程序化 `SelectionChanged` 后保留错误的共享状态。
+- 0.6.72 将两套状态/平台/排序 ComboBox 的用户写回入口改为 `DropDownClosed`，只接受用户完成下拉选择后的值；初始化、绑定同步和选项集合重建只负责显示，不再改写 ViewModel。
+- 新增 `InstalledFilterKeepsInstalledGameVisibleWhenSearching`，覆盖“死亡空间 + 已安装 + 搜索”组合；版本同步到 Directory.Build.props、extension.yaml、安装清单和页面版本文本。
+- 验证完成：Release 编译 0 warning/0 error；Core `65/65`、Worker `234/234`、Playnite `331/388`（57 跳过、0 失败）；XAML `19/19`、`validate-source.py`、`check-xaml.ps1`、WPF 静态审查和 Render QA 通过。0.6.72 包已安装到本机 Playnite，`extensions.log` 确认 `GameSaveCenter 0.6.72.0 loaded`；本机样本只有 3 个游戏，不含用户目标游戏，故仍需用户目标机复核。
+
 ## 2026-09-03 游戏选择器双向绑定残留与安装判定补强
 
 - 用户复核后仍报告“死亡空间”在“已匹配/有备份/需处理”可见，但“全部/已安装”不可见。已确认上一轮只把加载后的 ComboBox 显示值对齐到 VM，无法阻止 WPF 双向绑定在另一个选择器副本重建时再次写回旧值。

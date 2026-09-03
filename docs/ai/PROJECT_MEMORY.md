@@ -3,6 +3,13 @@
 > 维护时间：2026-09-03
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-03 游戏选择器用户选择写回竞态补强
+
+- 用户进一步确认目标游戏行信息显示“已安装”，但“已安装”筛选搜索不到；这排除了单纯安装状态缺失，问题仍是筛选框显示值与共享 `GamePickerViewModel.StatusFilter` 在 WPF 初始化/集合刷新期间发生抢写。
+- 0.6.72 将两套选择器的筛选写回从 `SelectionChanged` 改为 `DropDownClosed`，程序化选中、绑定刷新和 `ItemsSource` 重建不再被当成用户输入；保留 OneWay 显示绑定和 `UiFilterSelection.Synchronize`。
+- 新增精确回归：`IsInstalled=true` 的“死亡空间”在搜索词为“死亡空间”、状态为“已安装”时 `FilteredCount=1`，且显示状态为“已安装”。
+- 本阶段验证完成：Release 0 warning/0 error；Core `65/65`、Worker `234/234`、Playnite `331/388`（57 跳过）；XAML `19/19`、源码门禁、WPF 静态审查和 Render QA 通过；0.6.72 包已安装到本机 Playnite，`extensions.log` 已记录 `GameSaveCenter 0.6.72.0 loaded`。本机 Playnite 只有 3 条样本数据，不包含用户目标游戏，不能替代目标机器复核。
+
 ## 2026-09-03 游戏选择器双向绑定残留与安装判定补强
 
 - GSC-130 的“加载后同步”仍不能阻止 WPF 在两个选择器副本的 ItemsSource 重建期间把旧值写回共享状态；本轮将生产 Shell 与兼容 Dashboard 的状态、平台、排序 ComboBox 改为 `Mode=OneWay`，只在 `SelectionChanged` 收到实际字符串选项时写入 `GamePickerViewModel`，并移除平台的静态 `SelectedIndex="0"`。

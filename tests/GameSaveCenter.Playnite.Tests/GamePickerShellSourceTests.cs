@@ -16,7 +16,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("BasedOn=\"{StaticResource {x:Type ListBoxItem}}\"", xaml);
             Assert.Contains("TargetNullValue=全部", xaml);
             Assert.Contains("GscWpfUiPickerFilterComboBox", xaml);
-            Assert.Contains("SelectionChanged=\"OnGamePickerFilterSelectionChanged\"", xaml);
+            Assert.Contains("DropDownClosed=\"OnGamePickerFilterDropDownClosed\"", xaml);
             Assert.Contains("UiFilterSelection.Synchronize(GamePickerStatusComboBox", code);
             Assert.Contains("UiFilterSelection.Synchronize(GamePickerPlatformComboBox", code);
             Assert.Contains("UiFilterSelection.Synchronize(GamePickerSortComboBox", code);
@@ -24,9 +24,11 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("DispatcherPriority.Loaded", code);
             Assert.Contains("pickerFilterRestorePending", code);
             Assert.Contains("Loaded=\"OnGamePickerFilterLoaded\"", xaml);
+            Assert.Contains("OnGamePickerFilterDropDownClosed", code);
             Assert.Contains("viewModel.GamePicker.StatusFilter = value", code);
             Assert.Contains("viewModel.GamePicker.PlatformFilter = value", code);
             Assert.Contains("viewModel.GamePicker.SortMode = value", code);
+            Assert.DoesNotContain("OnGamePickerFilterSelectionChanged", xaml);
         }
 
         [Fact]
@@ -50,6 +52,8 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.DoesNotContain("GamePicker.StatusFilterOptions}\" SelectedIndex=\"0\"", dashboard);
             Assert.DoesNotContain("GamePicker.PlatformFilterOptions}\" SelectedIndex=\"0\"", dashboard);
             Assert.DoesNotContain("GamePicker.SortOptions}\" SelectedIndex=\"0\"", dashboard);
+            Assert.DoesNotContain("SelectionChanged=\"OnGamePickerFilterSelectionChanged\"", production);
+            Assert.DoesNotContain("SelectionChanged=\"OnGamePickerFilterSelectionChanged\"", dashboard);
         }
 
         [Fact]

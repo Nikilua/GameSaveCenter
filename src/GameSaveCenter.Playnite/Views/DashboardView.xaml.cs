@@ -211,14 +211,14 @@ namespace GameSaveCenter.Playnite.Views
             UiFilterSelection.Synchronize(GamePickerSortComboBox, viewModel.GamePicker.SortMode);
         }
 
-        private void OnGamePickerFilterSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnGamePickerFilterDropDownClosed(object sender, EventArgs e)
         {
             if (viewModel?.GamePicker == null || !(sender is ComboBox combo) || !(combo.SelectedItem is string value))
                 return;
 
             // Keep the visible and responsive picker copies from competing through WPF's
-            // TwoWay binding during ItemsSource resets. Only a concrete user selection is
-            // allowed to update the shared filter state.
+            // binding and ItemsSource notifications. Only a closed user dropdown is allowed
+            // to update the shared filter state.
             if (ReferenceEquals(combo, GamePickerStatusComboBox))
                 viewModel.GamePicker.StatusFilter = value;
             else if (ReferenceEquals(combo, GamePickerPlatformComboBox))

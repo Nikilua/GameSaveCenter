@@ -3535,7 +3535,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("GamePicker.SortOptions", dashboard);
         Assert.Contains("GamePicker.PlatformFilterOptions", dashboard);
         Assert.Contains("GamePicker.PlatformFilter, Mode=OneWay", dashboard);
-        Assert.Contains("SelectionChanged=\"OnGamePickerFilterSelectionChanged\"", dashboard);
+        Assert.Contains("DropDownClosed=\"OnGamePickerFilterDropDownClosed\"", dashboard);
         Assert.Contains("TargetNullValue=全部, FallbackValue=全部", dashboard);
         Assert.Contains("GameSwitcherHost.Visibility = gameScopedWorkspace", dashboardCode);
         Assert.Contains("ToggleGameBrowserButton.Visibility = Visibility.Collapsed", dashboardCode);

@@ -78,6 +78,24 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         [Fact]
+        public void InstalledFilterKeepsInstalledGameVisibleWhenSearching()
+        {
+            using var picker = new GamePickerViewModel();
+            picker.SetItems(new[]
+            {
+                Game("死亡空间", installed: true, matched: true, backups: 1)
+            });
+
+            picker.StatusFilter = "已安装";
+            picker.SearchText = "死亡空间";
+            picker.RefreshNow();
+
+            Assert.Equal(1, picker.FilteredCount);
+            Assert.True(picker.MatchesCurrentFilter(picker.Items.Single()));
+            Assert.Equal("已安装", picker.Items.Single().InstallStateDisplay);
+        }
+
+        [Fact]
         public void SelectionFallsBackWhenSelectedGameIsRemovedAndPreservesHiddenSelection()
         {
             using var picker = new GamePickerViewModel();
