@@ -16,7 +16,9 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("BasedOn=\"{StaticResource {x:Type ListBoxItem}}\"", xaml);
             Assert.Contains("SelectedIndex=\"0\"", xaml);
             Assert.Contains("TargetNullValue=全部", xaml);
-            Assert.Contains("UiFilterSelection.RestoreDefault(GamePickerPlatformComboBox", code);
+            Assert.Contains("UiFilterSelection.Synchronize(GamePickerStatusComboBox", code);
+            Assert.Contains("UiFilterSelection.Synchronize(GamePickerPlatformComboBox", code);
+            Assert.Contains("UiFilterSelection.Synchronize(GamePickerSortComboBox", code);
             Assert.Contains("PlatformFilterOptions.CollectionChanged += OnGamePickerPlatformOptionsChanged", code);
             Assert.Contains("DispatcherPriority.Loaded", code);
             Assert.Contains("pickerFilterRestorePending", code);

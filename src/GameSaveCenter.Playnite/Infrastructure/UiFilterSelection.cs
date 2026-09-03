@@ -9,6 +9,23 @@ namespace GameSaveCenter.Playnite.Infrastructure;
 /// </summary>
 public static class UiFilterSelection
 {
+    /// <summary>
+    /// Aligns a bound ComboBox with the authoritative ViewModel value after WPF has
+    /// regenerated its items. Unlike RestoreDefault, this also repairs a valid but stale
+    /// selection left behind by another compatible view bound to the same state.
+    /// </summary>
+    public static void Synchronize(ComboBox combo, string selectedText)
+    {
+        if (combo == null || combo.Items.Count == 0)
+            return;
+
+        var index = string.IsNullOrEmpty(selectedText) ? 0 : combo.Items.IndexOf(selectedText);
+        if (index < 0)
+            index = 0;
+        if (index >= 0 && index < combo.Items.Count && combo.SelectedIndex != index)
+            combo.SelectedIndex = index;
+    }
+
     public static void RestoreDefault(ComboBox combo, string defaultText)
     {
         if (combo == null || combo.Items.Count == 0)

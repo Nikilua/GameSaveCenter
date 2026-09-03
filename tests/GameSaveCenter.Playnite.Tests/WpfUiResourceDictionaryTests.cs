@@ -1271,6 +1271,37 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void UiFilterSelectionRepairsAValidButStaleSelection()
+    {
+        Exception? exception = null;
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var combo = new ComboBox();
+                combo.Items.Add("全部");
+                combo.Items.Add("已安装");
+                combo.Items.Add("已匹配");
+
+                combo.SelectedItem = "全部";
+                GameSaveCenter.Playnite.Infrastructure.UiFilterSelection.Synchronize(combo, "已安装");
+                Assert.Equal("已安装", combo.SelectedItem);
+
+                GameSaveCenter.Playnite.Infrastructure.UiFilterSelection.Synchronize(combo, "全部");
+                Assert.Equal("全部", combo.SelectedItem);
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+        Assert.Null(exception);
+    }
+
+    [Fact]
     public void SettingsAndSidebarUseTheSharedPageScrollChannel()
     {
         var repositoryRoot = FindRepositoryRoot();

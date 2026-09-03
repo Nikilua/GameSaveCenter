@@ -181,9 +181,9 @@ namespace GameSaveCenter.Playnite.Views
             if (viewModel?.GamePicker == null)
                 return;
 
-            UiFilterSelection.RestoreDefault(GamePickerStatusComboBox, viewModel.GamePicker.StatusFilter);
-            UiFilterSelection.RestoreDefault(GamePickerPlatformComboBox, viewModel.GamePicker.PlatformFilter);
-            UiFilterSelection.RestoreDefault(GamePickerSortComboBox, viewModel.GamePicker.SortMode);
+            UiFilterSelection.Synchronize(GamePickerStatusComboBox, viewModel.GamePicker.StatusFilter);
+            UiFilterSelection.Synchronize(GamePickerPlatformComboBox, viewModel.GamePicker.PlatformFilter);
+            UiFilterSelection.Synchronize(GamePickerSortComboBox, viewModel.GamePicker.SortMode);
         }
 
         private void QueueGamePickerFilterDefaults()

@@ -3,6 +3,13 @@
 > 维护时间：2026-09-03
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-03 游戏选择器合法过期选中值收口
+
+- 仅移除状态/排序 ComboBox 的静态 `SelectedIndex="0"` 仍不足以覆盖 WPF 初始化顺序：生产 Shell 与隐藏兼容 Dashboard 可能各自保留一个“合法但过期”的选中项，造成界面显示“全部”而 `GamePicker.StatusFilter` 仍为“已安装”。
+- `UiFilterSelection.Synchronize` 现在在 Loaded 和平台选项重建后的恢复点，以共享 ViewModel 值为准同步状态、平台和排序三个 ComboBox；用户选择仍先写入共享 ViewModel，因此不会被恢复逻辑改回默认项。`RestoreDefault` 保留给只应修复空选择的其他场景。
+- 回归覆盖新增有效过期选中值修复测试，并保留“全部包含未安装但已匹配/有备份”测试。GSC-130 自动证据：Core `65/65`、Worker `234/234`、Playnite `329/386`（57 跳过）、Release 0 warning/0 error、源码/XAML/WPF 门禁和 Render QA 通过。
+- 本轮重新安装了当前 Release 到本机 Playnite，安装 DLL 与隔离构建 SHA256 一致；真实宿主审计已启动 Playnite，但 UI Automation 未找到侧栏入口，只产生受控证据，不能替代第二台机器的实际筛选复核。
+
 ## 2026-09-03 设置页持久化选择状态收口
 
 - `GameSaveCenterSettingsView.xaml` 的备份格式、压缩方式和主题模式不再设置局部静态 `SelectedIndex="0"`；三项均由持久化 `SelectedValue` 的 `Mode=TwoWay`、`UpdateSourceTrigger=PropertyChanged` 绑定驱动，避免初始化时覆盖 `GameSaveCenterSettings` 已恢复的值。

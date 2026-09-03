@@ -2,6 +2,12 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-09-03 游戏选择器合法过期选中值收口
+
+- 在上一轮移除状态/排序静态 `SelectedIndex="0"` 后，仍需防御 WPF 两套共享选择器各自留下的合法旧选中值；否则控件可能显示“全部”，但 `GamePicker.StatusFilter` 仍是“已安装”。
+- 已在 `UiFilterSelection` 增加 `Synchronize`，生产 Shell 与兼容 Dashboard 的加载和动态平台列表恢复均以共享 ViewModel 值同步状态、平台和排序，用户改变选项后仍由 ViewModel 作为唯一状态源。新增 STA 回归测试。
+- 自动验证：Core `65/65`、Worker `234/234`、Playnite `329/386`（57 跳过）、Release 0 warning/0 error、源码/XAML/WPF 门禁和 Render QA 全部通过；0.6.70 包已安装到本机 Playnite且 DLL 哈希与隔离构建一致。真实宿主审计未能通过 UI Automation 进入 Dashboard，不能替代用户第二台机器复核。
+
 ## 2026-09-03 设置页持久化选择状态收口
 
 - 设置页的备份格式、压缩方式和主题模式此前同时设置静态 `SelectedIndex="0"` 与持久化 `SelectedValue` 双向绑定；WPF 初始化时可能把已保存的 `Simple`、`Deflate` 或深色主题抢回第一项。

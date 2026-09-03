@@ -1,5 +1,7 @@
 # 开发实现进度
 
+- [x] GSC-130（2026-09-03）：收口游戏选择器在两套共享 WPF 视图间的合法过期选中值。新增 `UiFilterSelection.Synchronize`，在加载和平台选项重建后以 `GamePickerViewModel` 为准同步状态/平台/排序，修复界面显示“全部”但实际仍按“已安装”过滤的问题；新增 STA 回归。Core `65/65`、Worker `234/234`、Playnite `329/386`（57 跳过）、Release 0 warning/0 error、源码/XAML/WPF 门禁和 Render QA 通过，真实第二台 Playnite 仍需人工复核。
+
 - [x] GSC-129（2026-09-03）：修复设置页备份格式、压缩方式和主题模式的静态 `SelectedIndex="0"` 与持久化 `SelectedValue` 绑定抢写。三项配置现在均由 ViewModel 双向状态恢复，并补充即时更新、ToolTip 和 UI Automation 名称。Release 0 warning/0 error、Core `65/65`、Worker `234/234`、Playnite `328/385`（57 跳过）和源码校验通过；真实 Playnite 重新打开设置及主题切换仍需复核。
 
 - [x] GSC-128（2026-09-03）：修复设备冲突决策和媒体类型筛选的静态 `SelectedIndex="0"` 与 ViewModel 双向绑定抢写。已保存的设备决策和用户上次媒体筛选现在由绑定状态恢复；设备详情同时显示远端备份隔离下载/校验状态，并补充决策控件和远端操作的 UI Automation 名称。Release 0 warning/0 error、Core `65/65`、Worker `234/234`、Playnite `327/384`（57 跳过）通过，真实宿主仍需复核。
