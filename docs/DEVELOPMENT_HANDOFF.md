@@ -2,6 +2,12 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-09-03 Playnite 游戏菜单补充媒体同步
+
+- Playnite 游戏右键菜单新增“同步媒体”，单选和多选均可用；执行前会同步当前游戏描述，复用现有 Worker `media.sync`、媒体开关和云端上传设置。
+- 媒体归档关闭时只提示用户，不提交请求；该入口没有新增业务实现或 IPC 协议，仍沿用现有任务和通知链路。
+- 自动证据：Playnite `325/382`（57 跳过）和源码校验通过；Release 构建与 Core/Worker 全量回归需在本阶段收口，真实 Playnite 菜单命中仍需人工复核。
+
 ## 2026-09-03 游戏级云端状态汇总媒体上传
 
 - Dashboard 的 `GetDashboardGameRecordsAsync` 现在在一次 SQLite 媒体聚合中计算已归类媒体的 `Failed`、`RetryScheduled`、`Pending` 和 `Synced/Uploaded` 数量，并与存档上传状态合并。

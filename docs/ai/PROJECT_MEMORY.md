@@ -3,11 +3,17 @@
 > 维护时间：2026-09-03
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-03 Playnite 游戏菜单补充媒体同步
+
+- `GameSaveCenterPlugin.GetGameMenuItems` 新增“同步媒体”，对 Playnite 当前选中的一个或多个游戏调用现有 `MessageTypes.SyncMedia`；先写入最新游戏描述，`UploadAfterSync` 跟随 `Settings.EnableCloudUpload`。
+- 入口受 `Settings.EnableMediaSync` 保护，媒体关闭时只显示提示；没有新增 Worker/IPC 业务协议，保留既有任务、错误和通知语义。
+- GSC-126 自动证据：Playnite `325/382`（57 跳过）和源码校验通过；真实 Playnite 右键菜单、多选和任务通知仍需人工观察。
+
 ## 2026-09-03 游戏级云端状态汇总媒体上传
 
 - `SqliteStateStore.GetDashboardGameRecordsAsync` 的现有媒体统计子查询现在同时聚合已归类媒体的云端状态；Dashboard 以失败、等待重试、待上传、已上传的顺序合并存档和媒体状态。
 - 这样 `GameStatusDto.CloudState` 在存档已上传但媒体上传失败/排队时仍能显示真实的游戏级风险；`Inbox`/`Ignored` 媒体不计入游戏状态，没有云端内容时保留“未启用”。没有新增 IPC 字段，也没有 N+1 查询。
-- GSC-125 自动证据：Release 0 warning/0 error，Core `65/65`、Worker `234/234`、Playnite `321/378`（57 跳过），源码校验和 WPF 静态审计通过；真实 Rclone 和宿主显示仍需人工观察。
+- GSC-125 自动证据：Release 0 warning/0 error，Core `65/65`、Worker `234/234`、Playnite `325/382`（57 跳过），源码校验和 WPF 静态审计通过；真实 Rclone 和宿主显示仍需人工观察。
 
 ## 2026-09-02 游戏选择器状态筛选抢写
 

@@ -278,6 +278,12 @@ namespace GameSaveCenter.Playnite
             };
             yield return new GameMenuItem
             {
+                Description = "同步媒体",
+                MenuSection = "GameSaveCenter",
+                Action = _ => FireAndForget(() => SyncMediaFromQuickActionAsync(games))
+            };
+            yield return new GameMenuItem
+            {
                 Description = "查看备份历史",
                 MenuSection = "GameSaveCenter",
                 Action = _ => FireAndForget(() => ShowBackupHistoryQuickActionAsync(games[0]))
@@ -315,6 +321,26 @@ namespace GameSaveCenter.Playnite
                 Reason = "ContextMenu"
             }).ConfigureAwait(false);
             ShowInfo($"已提交 {descriptors.Count} 个游戏的备份任务。");
+        }
+
+        private async Task SyncMediaFromQuickActionAsync(IReadOnlyList<Game> games)
+        {
+            if (!Settings.EnableMediaSync)
+            {
+                ShowInfo("媒体归档已关闭；请在插件设置中启用后再同步。");
+                return;
+            }
+
+            await EnsureWorkerAsync().ConfigureAwait(false);
+            await ApplySettingsCoreAsync().ConfigureAwait(false);
+            var descriptors = games.Select(adapter.Convert).ToList();
+            await RequestAsync<object>(MessageTypes.UpsertGames, descriptors).ConfigureAwait(false);
+            await RequestAsync<TaskStatusDto[]>(MessageTypes.SyncMedia, new MediaSyncRequestDto
+            {
+                PlayniteIds = descriptors.Select(x => x.PlayniteId).ToList(),
+                UploadAfterSync = Settings.EnableCloudUpload
+            }, TimeSpan.FromMinutes(60)).ConfigureAwait(false);
+            ShowInfo($"已提交 {descriptors.Count} 个游戏的媒体同步任务。");
         }
 
         private async Task ShowBackupHistoryQuickActionAsync(Game game)
