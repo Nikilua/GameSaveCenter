@@ -2,6 +2,12 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-09-03 任务中心批量安全重试
+
+- TaskCenter 新增“重试可恢复”按钮；从当前最近任务中筛选失败/取消且已有安全重试路径的任务，同一游戏与任务类型只取最新一条，`BackupAll`/`MediaInbox` 各只执行一次。
+- 批量操作先二次确认，逐项调用既有 Backup、MediaSync、CloudUpload 或 MediaInbox 重试分流；单项失败会继续处理其他项，最后汇总成功/失败并刷新任务列表，不扩大 Worker/IPC 协议。
+- 自动证据：Release 0 warning/0 error、Core `65/65`、Worker `234/234`、Playnite `326/383`（57 跳过）、源码校验和 WPF 静态审计通过。真实 Playnite 任务中心命中、批量确认和长任务行为仍需人工复核。
+
 ## 2026-09-03 Playnite 游戏菜单补充媒体同步
 
 - Playnite 游戏右键菜单新增“同步媒体”，单选和多选均可用；执行前会同步当前游戏描述，复用现有 Worker `media.sync`、媒体开关和云端上传设置。

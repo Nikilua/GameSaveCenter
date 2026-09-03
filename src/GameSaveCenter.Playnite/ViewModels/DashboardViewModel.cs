@@ -230,6 +230,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             RestoreIgnoredMediaBatchCommand = new RelayCommand(value => Run(() => RestoreIgnoredMediaBatchAsync(value)), value => !IsBusy && MediaInboxMode == "已忽略" && GetSelectedInboxMedia(value).Count > 0);
             CancelTaskCommand = new RelayCommand(_ => _ = CancelSelectedTaskAsync(), _ => SelectedTask != null && SelectedTask.CanCancel && !IsCancellingTask);
             RetryTaskCommand = new RelayCommand(_ => Run(RetrySelectedTaskAsync), _ => !IsBusy && CanRetrySelectedTask());
+            RetryAllTasksCommand = new RelayCommand(_ => Run(RetryAllTasksAsync), _ => !IsBusy && RetryableTaskCount > 0);
             CopyTaskErrorCommand = new RelayCommand(_ => Run(CopySelectedTaskErrorAsync), _ => SelectedTask != null && !string.IsNullOrWhiteSpace(SelectedTask.DetailMessage));
             OpenAttentionCenterCommand = new RelayCommand(_ => OpenAttentionCenter());
             OpenMaintenanceCommand = new RelayCommand(_ => OpenMaintenance());
@@ -896,6 +897,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand RestoreIgnoredMediaBatchCommand { get; }
         public ICommand CancelTaskCommand { get; }
         public ICommand RetryTaskCommand { get; }
+        public ICommand RetryAllTasksCommand { get; }
         public ICommand CopyTaskErrorCommand { get; }
         public ICommand OpenAttentionCenterCommand { get; }
         public ICommand OpenMaintenanceCommand { get; }
@@ -2698,9 +2700,98 @@ namespace GameSaveCenter.Playnite.ViewModels
                    || string.Equals(task.TaskType, "MediaSync", StringComparison.OrdinalIgnoreCase);
         }
 
+        private async Task RetryAllTasksAsync()
+        {
+            var candidates = Tasks
+                .Where(CanRetryTask)
+                .GroupBy(GetRetryGroupKey, StringComparer.OrdinalIgnoreCase)
+                .Select(group => group.OrderByDescending(x => x.CreatedUtc).First())
+                .OrderByDescending(x => x.CreatedUtc)
+                .ToList();
+            if (candidates.Count == 0)
+            {
+                StatusMessage = "当前没有可安全重试的任务。";
+                return;
+            }
+
+            var preview = string.Join("\n", candidates.Take(8).Select(x =>
+                string.IsNullOrWhiteSpace(x.GameName) ? x.TaskTypeDisplay : $"{x.GameName} · {x.TaskTypeDisplay}"));
+            if (candidates.Count > 8) preview += $"\n……以及另外 {candidates.Count - 8} 项";
+            if (!await plugin.ConfirmAsync(
+                    "批量安全重试",
+                    $"将按游戏和任务类型各重试一次，共 {candidates.Count} 项。\n\n{preview}",
+                    "全部重试",
+                    "取消"))
+            {
+                StatusMessage = "已取消批量重试。";
+                return;
+            }
+
+            await plugin.EnsureWorkerAsync();
+            var succeeded = 0;
+            var failed = 0;
+            var failures = new List<string>();
+            foreach (var candidate in candidates)
+            {
+                try
+                {
+                    var results = await RetryTaskCoreAsync(candidate);
+                    foreach (var result in results) plugin.ShowTaskNotification(result);
+                    var failedResult = results.FirstOrDefault(x => x.State == TaskState.Failed || x.State == TaskState.Cancelled);
+                    if (failedResult == null && results.Count > 0)
+                    {
+                        succeeded++;
+                        continue;
+                    }
+
+                    failed++;
+                    var detail = failedResult?.ErrorMessage;
+                    if (string.IsNullOrWhiteSpace(detail)) detail = failedResult?.DetailMessage;
+                    failures.Add($"{candidate.GameName} · {candidate.TaskTypeDisplay}：{(string.IsNullOrWhiteSpace(detail) ? "未完成" : detail)}");
+                }
+                catch (OperationCanceledException)
+                {
+                    throw;
+                }
+                catch (Exception ex)
+                {
+                    failed++;
+                    failures.Add($"{candidate.GameName} · {candidate.TaskTypeDisplay}：{ex.Message}");
+                }
+            }
+
+            await RefreshCoreAsync(false);
+            StatusMessage = $"批量重试完成：成功 {succeeded} 项，失败 {failed} 项。";
+            if (failed > 0)
+            {
+                var firstFailure = failures.FirstOrDefault();
+                plugin.ShowError(StatusMessage + (string.IsNullOrWhiteSpace(firstFailure) ? string.Empty : $"\n{firstFailure}"));
+            }
+            else
+            {
+                plugin.ShowInfo(StatusMessage);
+            }
+        }
+
+        private static string GetRetryGroupKey(TaskStatusDto task)
+        {
+            if (string.Equals(task.TaskType, "BackupAll", StringComparison.OrdinalIgnoreCase)) return "BackupAll";
+            if (string.Equals(task.TaskType, "MediaInbox", StringComparison.OrdinalIgnoreCase)) return "MediaInbox";
+            return $"{task.TaskType}:{task.GameId}";
+        }
+
         private async Task RetrySelectedTaskAsync()
         {
             var task = SelectedTask ?? throw new InvalidOperationException("请先选择失败或已取消的任务。");
+            await plugin.EnsureWorkerAsync();
+            var results = await RetryTaskCoreAsync(task);
+            NotifyTaskResults(results);
+            await RefreshCoreAsync(false);
+            StatusMessage = "重试任务已完成";
+        }
+
+        private async Task<List<TaskStatusDto>> RetryTaskCoreAsync(TaskStatusDto task)
+        {
             if (string.Equals(task.TaskType, "CloudUpload", StringComparison.OrdinalIgnoreCase)
                 || task.ErrorCode?.StartsWith("RCLONE_", StringComparison.OrdinalIgnoreCase) == true)
             {
@@ -2708,7 +2799,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                     MessageTypes.RetryCloudUpload,
                     new GameQueryDto{PlayniteId=task.GameId},
                     TimeSpan.FromHours(2));
-                NotifyTaskResults(new[]{result});
+                return result == null ? new List<TaskStatusDto>() : new List<TaskStatusDto> { result };
             }
             else if (string.Equals(task.TaskType, "Backup", StringComparison.OrdinalIgnoreCase))
             {
@@ -2716,7 +2807,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                     MessageTypes.BackupGame,
                     new BackupRequestDto { PlayniteIds = { task.GameId }, Force = true, Reason = "Retry" },
                     TimeSpan.FromMinutes(15));
-                NotifyTaskResults(result);
+                return result?.ToList() ?? new List<TaskStatusDto>();
             }
             else if (string.Equals(task.TaskType, "BackupAll", StringComparison.OrdinalIgnoreCase))
             {
@@ -2724,14 +2815,14 @@ namespace GameSaveCenter.Playnite.ViewModels
                     MessageTypes.BackupAll,
                     new BackupRequestDto { Force = true, Reason = "RetryAll" },
                     TimeSpan.FromSeconds(30));
-                NotifyTaskResults(result);
+                return result?.ToList() ?? new List<TaskStatusDto>();
             }
             else if (string.Equals(task.TaskType, "MediaSync", StringComparison.OrdinalIgnoreCase))
             {
                 var request = new MediaSyncRequestDto { UploadAfterSync = plugin.Settings.EnableCloudUpload };
                 request.PlayniteIds.Add(task.GameId);
                 var result = await plugin.RequestAsync<TaskStatusDto[]>(MessageTypes.SyncMedia, request, TimeSpan.FromMinutes(60));
-                NotifyTaskResults(result);
+                return result?.ToList() ?? new List<TaskStatusDto>();
             }
             else if (string.Equals(task.TaskType, "MediaInbox", StringComparison.OrdinalIgnoreCase))
             {
@@ -2741,14 +2832,9 @@ namespace GameSaveCenter.Playnite.ViewModels
                     SharedOnly = true,
                     UploadAfterSync = plugin.Settings.EnableCloudUpload
                 }, TimeSpan.FromMinutes(60));
-                NotifyTaskResults(result);
+                return result?.ToList() ?? new List<TaskStatusDto>();
             }
-            else
-            {
-                throw new NotSupportedException("该任务类型暂不支持安全重试。");
-            }
-            await RefreshCoreAsync(false);
-            StatusMessage = "重试任务已完成";
+            throw new NotSupportedException("该任务类型暂不支持安全重试。");
         }
 
         private async Task CopySelectedTaskErrorAsync()
@@ -3427,7 +3513,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 AddMediaSourceCommand, AcceptCandidateCommand, RejectCandidateCommand, ReassignMediaCommand,
                 UpdateMediaMetadataCommand,OpenSelectedMediaCommand,RevealSelectedMediaCommand,
                 AssignInboxMediaCommand, IgnoreInboxMediaCommand, AssignInboxMediaBatchCommand, IgnoreInboxMediaBatchCommand, RestoreIgnoredMediaBatchCommand,
-                CancelTaskCommand, RetryTaskCommand, CopyTaskErrorCommand, RefreshDiagnosticsCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
+                CancelTaskCommand, RetryTaskCommand, RetryAllTasksCommand, CopyTaskErrorCommand, RefreshDiagnosticsCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
                 StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,RefreshRetentionSimulationCommand,ApplyRetentionSimulationCommand,RefreshLocalMirrorStatusCommand,SyncLocalMirrorCommand,CopyMaintenanceReportCommand,ExportMaintenanceReportCommand,
                 SaveProcessMappingCommand,DeleteProcessMappingCommand,RunEnvironmentCheckCommand,SkipOnboardingCommand,CompleteOnboardingCommand,OnboardingTestBackupCommand,
                 OpenDataDirectoryCommand, OpenBackupDirectoryCommand, OpenMediaDirectoryCommand, OpenWorkerLogCommand

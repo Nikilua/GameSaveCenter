@@ -190,7 +190,10 @@
                 <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
                 <Grid Grid.Row="0" Margin="12,2,12,8">
                     <TextBlock Text="任务队列" FontSize="15" FontWeight="SemiBold"/>
-                    <TextBlock Text="按提交时间倒序 · 实时更新" Style="{DynamicResource GscCaptionStyle}" HorizontalAlignment="Right"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <ui:Button Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding RetryAllTasksCommand}" Content="重试可恢复" ToolTip="按游戏和任务类型各重试一次" AutomationProperties.Name="批量重试可恢复任务" Margin="0,0,10,0"/>
+                        <TextBlock Text="按提交时间倒序 · 实时更新" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center"/>
+                    </StackPanel>
                 </Grid>
                 <Border Grid.Row="1" Style="{StaticResource TaskTableFrame}">
                     <Grid>
