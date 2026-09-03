@@ -3,6 +3,13 @@
 > 维护时间：2026-09-03
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-03 游戏选择器双向绑定残留与安装判定补强
+
+- GSC-130 的“加载后同步”仍不能阻止 WPF 在两个选择器副本的 ItemsSource 重建期间把旧值写回共享状态；本轮将生产 Shell 与兼容 Dashboard 的状态、平台、排序 ComboBox 改为 `Mode=OneWay`，只在 `SelectionChanged` 收到实际字符串选项时写入 `GamePickerViewModel`，并移除平台的静态 `SelectedIndex="0"`。
+- `PlayniteGameAdapter` 现在除 `IsInstalled` 和安装目录外，还把存在的本地 Play action/working directory 作为只读安装信号；Steam URI 等非文件路径不会被误判，安装目录枚举也使用展开后的路径。
+- 版本提升到 `0.6.71`，用于强制 Playnite 替换之前复用相同程序集版本号的旧 DLL。交付前必须核对 Playnite 日志为 `0.6.71.0`，不能只看 zip 文件时间。
+- 本阶段已完成 Release 编译/回归、XAML/源码/WPF 门禁、Render QA、打包和本机安装；Playnite 日志已记录 `GameSaveCenter 0.6.71.0 loaded`，安装 DLL 与打包暂存 DLL 哈希一致。当前环境的 Playnite 样本只有 3 个游戏，未包含用户截图中的“死亡空间”，因此不能伪称已经在真实目标游戏上完成宿主 UI 复核。
+
 ## 2026-09-03 游戏选择器合法过期选中值收口
 
 - 仅移除状态/排序 ComboBox 的静态 `SelectedIndex="0"` 仍不足以覆盖 WPF 初始化顺序：生产 Shell 与隐藏兼容 Dashboard 可能各自保留一个“合法但过期”的选中项，造成界面显示“全部”而 `GamePicker.StatusFilter` 仍为“已安装”。

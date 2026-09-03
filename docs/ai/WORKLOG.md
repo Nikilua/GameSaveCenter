@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-03 游戏选择器双向绑定残留与安装判定补强
+
+- 用户复核后仍报告“死亡空间”在“已匹配/有备份/需处理”可见，但“全部/已安装”不可见。已确认上一轮只把加载后的 ComboBox 显示值对齐到 VM，无法阻止 WPF 双向绑定在另一个选择器副本重建时再次写回旧值。
+- 两套游戏选择器的状态、平台、排序改为 OneWay 显示绑定，新增明确的 `SelectionChanged` 写回路径；平台也移除静态首项，避免集合重建产生隐式用户输入。新增源契约断言。
+- 安装状态补强为 `Playnite.IsInstalled`、有效 `InstallDirectory`、有效本地 Play action/working directory 三路只读判定；非本地 Steam URI 不计为安装。版本提升至 0.6.71，避免 Playnite 继续加载同版本旧 DLL。
+- 验证已完成：Playnite `extensions.log` 记录 `GameSaveCenter 0.6.71.0 loaded`；安装 DLL 与打包暂存 DLL SHA-256 均为 `569D47C1E169FB0F7DFBB8248D12F2761641F86712B6E698E02AABFD18988E50`；Core `65/65`、Worker `234/234`、Playnite `330/387`（57 跳过）；Release 0 warning/0 error；XAML `19/19`、源码门禁、WPF 静态检查（0 error）和 Render QA 均通过。真实宿主 UI Automation 仍不能替代用户对目标游戏的复核。
+
 ## 2026-09-03 游戏选择器筛选状态同步收口
 
 - 用户截图显示同一游戏在“已匹配/有备份/需处理”可见，但“全部/已安装”不可见。ViewModel 的“全部”分支和 Worker 全量 Dashboard 查询均不会排除该条目；问题落在两套共享绑定 ComboBox 的初始化后状态可能脱节。

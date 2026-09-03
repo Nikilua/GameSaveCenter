@@ -1050,4 +1050,15 @@
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
     </Style>
+
+    <!-- GamePicker has two responsive ComboBox copies bound to one ViewModel. It must not
+         inherit the generic filter's implicit first-item selection: a collection reset in
+         either copy would otherwise turn a valid shared value into an unintended user input. -->
+    <Style x:Key="GscWpfUiPickerFilterComboBox"
+           TargetType="ComboBox"
+           BasedOn="{StaticResource GscWpfUiComboBox}">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
+    </Style>
 </ResourceDictionary>

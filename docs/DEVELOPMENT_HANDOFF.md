@@ -2,6 +2,13 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-09-03 游戏选择器双向绑定残留与安装判定补强
+
+- 用户在真实使用中复核到上一轮后仍有“全部/已安装找不到、已匹配/有备份/需处理可见”。这说明仅在加载后同步 ComboBox 仍不足以覆盖 WPF 两套选择器副本的 ItemsSource 重建竞态。
+- 生产 Shell 与兼容 Dashboard 的状态、平台、排序 ComboBox 现在只从 `GamePickerViewModel` 单向显示；用户实际选择通过 `SelectionChanged` 明确写回，所有静态/动态首项都不再隐式写回共享状态。
+- Playnite 安装状态增加有效本地 Play action/working directory 兜底，Steam URI 不会被当成本地文件；版本升为 `0.6.71`，安装后应在 `extensions.log` 确认 `GameSaveCenter 0.6.71.0 loaded`，并重启 Playnite 使旧 0.6.70 DLL 卸载。
+- 本轮交付门槛已完成：Release 编译 0 warning/0 error，全量自动化为 Core `65/65`、Worker `234/234`、Playnite `330/387`（57 跳过），XAML `19/19`、源码/WPF 门禁和 Render QA 通过；本机安装目录与打包暂存 DLL 哈希一致，`extensions.log` 已确认 `GameSaveCenter 0.6.71.0 loaded`。真实嵌入 Playnite Dashboard 和目标游戏仍需用户复核，不能把 ControlledAuditWindow 当成宿主真机证据。
+
 ## 2026-09-03 游戏选择器合法过期选中值收口
 
 - 在上一轮移除状态/排序静态 `SelectedIndex="0"` 后，仍需防御 WPF 两套共享选择器各自留下的合法旧选中值；否则控件可能显示“全部”，但 `GamePicker.StatusFilter` 仍是“已安装”。

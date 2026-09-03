@@ -3534,7 +3534,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("GamePicker.StatusFilterOptions", dashboard);
         Assert.Contains("GamePicker.SortOptions", dashboard);
         Assert.Contains("GamePicker.PlatformFilterOptions", dashboard);
-        Assert.Contains("SelectedIndex=\"0\" ItemsSource=\"{Binding GamePicker.PlatformFilterOptions}\"", dashboard);
+        Assert.Contains("GamePicker.PlatformFilter, Mode=OneWay", dashboard);
+        Assert.Contains("SelectionChanged=\"OnGamePickerFilterSelectionChanged\"", dashboard);
         Assert.Contains("TargetNullValue=全部, FallbackValue=全部", dashboard);
         Assert.Contains("GameSwitcherHost.Visibility = gameScopedWorkspace", dashboardCode);
         Assert.Contains("ToggleGameBrowserButton.Visibility = Visibility.Collapsed", dashboardCode);
@@ -5321,7 +5322,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Key=\"GscWpfUiFilterComboBox\"", production);
         Assert.Contains("<Setter Property=\"SelectedIndex\" Value=\"0\"/>", production);
         Assert.Contains("MinHeight\" Value=\"{DynamicResource GscButtonHeight}\"", redesign);
-        Assert.Contains("Style=\"{StaticResource GscWpfUiFilterComboBox}\" SelectedIndex=\"0\"", dashboard);
+        Assert.Contains("Style=\"{StaticResource GscWpfUiPickerFilterComboBox}\" ItemsSource=\"{Binding GamePicker.PlatformFilterOptions}\"", dashboard);
+        Assert.Contains("GamePicker.StatusFilter, Mode=OneWay", dashboard);
+        Assert.Contains("GamePicker.SortMode, Mode=OneWay", dashboard);
         Assert.Contains("Style=\"{DynamicResource GscWpfUiFilterComboBox}\" ItemsSource=\"{Binding MediaFilterOptions}\" SelectedItem=\"{Binding MediaFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}\"", media);
         Assert.Contains("SelectedItem=\"{Binding MediaFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}\"", media);
         Assert.Contains("x:Name=\"MediaSummaryPanel\" Grid.Row=\"0\" Style=\"{DynamicResource GscRedesignSectionCard}\"", media);

@@ -16,6 +16,8 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
         public GameDescriptorDto Convert(Game game)
         {
+            var installDirectory = game.InstallDirectory ?? string.Empty;
+            var isInstalled = game.IsInstalled || IsInstallDirectoryPresent(installDirectory);
             var descriptor = new GameDescriptorDto
             {
                 PlayniteId = game.Id.ToString("D"),
@@ -23,12 +25,12 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 Platform = DetectPlatform(game),
                 PlatformGameId = game.GameId ?? string.Empty,
                 PluginId = game.PluginId.ToString("D"),
-                InstallDirectory = game.InstallDirectory ?? string.Empty,
+                InstallDirectory = installDirectory,
                 // Playnite's Steam integration can briefly leave IsInstalled=false while
                 // refreshing a profile or after a library is moved to another machine. The
                 // install directory is a local, read-only signal and prevents the GameSaveCenter
                 // picker default ("已安装") from hiding a game that is actually present.
-                IsInstalled = game.IsInstalled || IsInstallDirectoryPresent(game.InstallDirectory),
+                IsInstalled = isInstalled,
                 LastPlayedUtc = game.LastActivity,
                 Tags = game.Tags == null ? new List<string>() : game.Tags.Select(x => x.Name).Where(x => !string.IsNullOrWhiteSpace(x)).ToList()
             };
@@ -49,16 +51,22 @@ namespace GameSaveCenter.Playnite.Infrastructure
                     });
                     AddProcessName(descriptor, expanded.Path);
                     AddProcessName(descriptor, expanded.TrackingPath);
+                    // Steam/launcher integrations can leave InstallDirectory empty or stale
+                    // while their playable action still points to the local executable. Treat
+                    // an existing local play action as a second read-only installation signal.
+                    if (!isInstalled && expanded.IsPlayAction && IsLocalPathPresent(expanded.Path, expanded.WorkingDir))
+                        isInstalled = true;
                 }
             }
+            descriptor.IsInstalled = isInstalled;
 
             // Many library plugins don't expose their primary action in GameActions.
             // Top-level executables are useful fallback candidates but remain user-reviewable.
-            if (game.IsInstalled && Directory.Exists(game.InstallDirectory))
+            if (isInstalled && IsInstallDirectoryPresent(installDirectory))
             {
                 try
                 {
-                    foreach (var executable in Directory.EnumerateFiles(game.InstallDirectory, "*.exe", SearchOption.TopDirectoryOnly).Take(20))
+                    foreach (var executable in Directory.EnumerateFiles(Environment.ExpandEnvironmentVariables(installDirectory), "*.exe", SearchOption.TopDirectoryOnly).Take(20))
                         AddProcessName(descriptor, executable);
                 }
                 catch { }
@@ -104,6 +112,24 @@ namespace GameSaveCenter.Playnite.Infrastructure
         {
             if (string.IsNullOrWhiteSpace(installDirectory)) return false;
             try { return Directory.Exists(Environment.ExpandEnvironmentVariables(installDirectory)); }
+            catch (Exception ex) when (!(ex is OutOfMemoryException) && !(ex is StackOverflowException)) { return false; }
+        }
+
+        internal static bool IsLocalPathPresent(string? path, string? workingDirectory)
+        {
+            return IsLocalFileOrDirectory(path) || IsInstallDirectoryPresent(workingDirectory);
+        }
+
+        private static bool IsLocalFileOrDirectory(string? path)
+        {
+            if (string.IsNullOrWhiteSpace(path)) return false;
+            try
+            {
+                var expanded = Environment.ExpandEnvironmentVariables(path!.Trim().Trim('"'));
+                if (Uri.TryCreate(expanded, UriKind.Absolute, out var uri) && !uri.IsFile)
+                    return false;
+                return File.Exists(expanded) || Directory.Exists(expanded);
+            }
             catch (Exception ex) when (!(ex is OutOfMemoryException) && !(ex is StackOverflowException)) { return false; }
         }
 

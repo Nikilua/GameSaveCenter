@@ -1,5 +1,7 @@
 # 开发实现进度
 
+- [x] GSC-131（2026-09-03）：继续收口游戏选择器双向绑定残留，并补强 Playnite 安装状态判定。生产 Shell 与兼容 Dashboard 的状态/平台/排序 ComboBox 改为 OneWay 显示，用户选择由 `SelectionChanged` 唯一写回共享 ViewModel；Playnite 适配器增加本地 Play action/working directory 兜底，版本提升到 0.6.71 以强制替换同版本旧 DLL。Release 编译 0 warning/0 error；Core `65/65`、Worker `234/234`、Playnite `330/387`（57 跳过）；XAML `19/19`、源码门禁、WPF 静态检查和 Render QA 通过；本机已安装并由 Playnite 日志确认加载 `0.6.71.0`，DLL 与打包暂存 DLL 哈希一致。真实目标游戏和第二台 Playnite 仍需用户复核。
+
 - [x] GSC-130（2026-09-03）：收口游戏选择器在两套共享 WPF 视图间的合法过期选中值。新增 `UiFilterSelection.Synchronize`，在加载和平台选项重建后以 `GamePickerViewModel` 为准同步状态/平台/排序，修复界面显示“全部”但实际仍按“已安装”过滤的问题；新增 STA 回归。Core `65/65`、Worker `234/234`、Playnite `329/386`（57 跳过）、Release 0 warning/0 error、源码/XAML/WPF 门禁和 Render QA 通过，真实第二台 Playnite 仍需人工复核。
 
 - [x] GSC-129（2026-09-03）：修复设置页备份格式、压缩方式和主题模式的静态 `SelectedIndex="0"` 与持久化 `SelectedValue` 绑定抢写。三项配置现在均由 ViewModel 双向状态恢复，并补充即时更新、ToolTip 和 UI Automation 名称。Release 0 warning/0 error、Core `65/65`、Worker `234/234`、Playnite `328/385`（57 跳过）和源码校验通过；真实 Playnite 重新打开设置及主题切换仍需复核。

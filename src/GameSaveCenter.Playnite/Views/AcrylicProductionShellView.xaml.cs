@@ -186,6 +186,22 @@ namespace GameSaveCenter.Playnite.Views
             UiFilterSelection.Synchronize(GamePickerSortComboBox, viewModel.GamePicker.SortMode);
         }
 
+        private void OnGamePickerFilterSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (viewModel?.GamePicker == null || !(sender is ComboBox combo) || !(combo.SelectedItem is string value))
+                return;
+
+            // These ComboBoxes are deliberately OneWay-bound because two copies of the
+            // picker exist in the responsive shell. SelectionChanged is the only user-input
+            // path, so a platform-list reset cannot write a stale default back into the VM.
+            if (ReferenceEquals(combo, GamePickerStatusComboBox))
+                viewModel.GamePicker.StatusFilter = value;
+            else if (ReferenceEquals(combo, GamePickerPlatformComboBox))
+                viewModel.GamePicker.PlatformFilter = value;
+            else if (ReferenceEquals(combo, GamePickerSortComboBox))
+                viewModel.GamePicker.SortMode = value;
+        }
+
         private void QueueGamePickerFilterDefaults()
         {
             RestoreGamePickerFilterDefaults();

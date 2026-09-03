@@ -29,5 +29,24 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.False(PlayniteGameAdapter.IsInstallDirectoryPresent(string.Empty));
             Assert.False(PlayniteGameAdapter.IsInstallDirectoryPresent(Path.Combine(Path.GetTempPath(), "GameSaveCenter.Tests", Guid.NewGuid().ToString("N"))));
         }
+
+        [Fact]
+        public void ExistingPlayActionOrWorkingDirectoryCountsAsInstalled()
+        {
+            var root = Path.Combine(Path.GetTempPath(), "GameSaveCenter.Tests", Guid.NewGuid().ToString("N"));
+            var executable = Path.Combine(root, "DeadSpace.exe");
+            Directory.CreateDirectory(root);
+            File.WriteAllText(executable, string.Empty);
+            try
+            {
+                Assert.True(PlayniteGameAdapter.IsLocalPathPresent(executable, null));
+                Assert.True(PlayniteGameAdapter.IsLocalPathPresent(null, root));
+                Assert.False(PlayniteGameAdapter.IsLocalPathPresent("steam://rungameid/17470", null));
+            }
+            finally
+            {
+                if (Directory.Exists(root)) Directory.Delete(root, true);
+            }
+        }
     }
 }
