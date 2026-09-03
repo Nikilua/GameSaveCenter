@@ -1,5 +1,7 @@
 # 开发实现进度
 
+- [x] GSC-125（2026-09-03）：增强游戏级云端状态汇总。Dashboard 的 SQLite 聚合现在同时读取存档上传与已归类媒体上传状态，按失败、等待重试、待上传、已上传优先级展示，避免媒体失败被存档“已上传”掩盖；收件箱/已忽略媒体不参与游戏状态。新增 Worker 持久化回归；真实 Rclone 断网恢复和长传输仍需人工观察。
+
 - [x] GSC-124（2026-09-02）：修复游戏选择器状态/排序下拉框的静态 `SelectedIndex="0"` 与共享 ViewModel 双向绑定抢写。生产 Shell 和隐藏兼容 Dashboard 的两套选择器现在以共享状态为准，动态平台筛选仍保留集合重建恢复；“全部”下未安装但已匹配/有备份的条目回归通过。Core `65/65`、Worker `233/233`、Playnite `325/382`（57 跳过）、Release 0 warning/0 error、源码门禁通过、WPF 静态审计 0 error/18 warning/172 info；真实第二台 Playnite 仍需复核。
 
 - [x] GSC-123（2026-09-02）：修复另一台电脑 Steam 已安装游戏在 GameSaveCenter 中搜索不到的问题。根因是插件只同步 Playnite 库到本地 Worker SQLite，旧逻辑对 500+ 游戏库在 Dashboard 打开时跳过目录同步，空/旧缓存无法自愈；另有 Playnite `IsInstalled` 短暂误报导致默认“已安装”筛选隐藏游戏。现在 Dashboard 首屏仍缓存优先但立即在后台同步完整目录描述，Worker 先持久化全量描述、再将 Ludusavi 匹配放入节流队列；本地安装目录存在时适配器也按已安装处理。Core `65/65`、Worker `233/233`、Playnite `323/380`（57 跳过）、Release 0 warning/0 error、源码校验通过；真实第二台 Playnite 宿主仍需人工复核。

@@ -2,6 +2,12 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-09-03 游戏级云端状态汇总媒体上传
+
+- Dashboard 的 `GetDashboardGameRecordsAsync` 现在在一次 SQLite 媒体聚合中计算已归类媒体的 `Failed`、`RetryScheduled`、`Pending` 和 `Synced/Uploaded` 数量，并与存档上传状态合并。
+- 游戏级状态优先级为失败、等待重试、待上传、已上传；因此存档已上传但媒体失败时，游戏选择器、Overview 和详情页会显示“上传失败”。Inbox/Ignore 媒体不参与游戏级状态。
+- 自动证据：新增 Worker 持久化回归后 Worker `234/234`；Release 构建、Core/Playnite 自动化、源码校验和 WPF 静态审计通过。真实 Rclone 远端断网恢复、媒体长传输和宿主显示仍需人工复核。
+
 ## 2026-09-02 游戏选择器“全部”状态被抢写
 
 - 用户复核上一轮跨机器修复时发现：某款游戏在“已匹配/有备份”能看到，但切换到“全部”或“已安装”后消失。

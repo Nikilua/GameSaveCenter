@@ -92,6 +92,60 @@ public sealed class DashboardHealthPersistenceTests : IDisposable
         Assert.Equal("health-session", Assert.Single(await store.GetRecentTasksAsync(10, CancellationToken.None)).SessionId);
     }
 
+    [Fact]
+    public async Task DashboardAggregateCombinesSaveAndAssignedMediaCloudState()
+    {
+        await store.UpsertGamesAsync(new[]
+        {
+            new GameDescriptorDto
+            {
+                PlayniteId = "cloud-failed-game",
+                Name = "Cloud Failed Game",
+                Platform = GamePlatformKind.Steam
+            },
+            new GameDescriptorDto
+            {
+                PlayniteId = "cloud-synced-media-game",
+                Name = "Cloud Synced Media Game",
+                Platform = GamePlatformKind.Epic
+            }
+        }, CancellationToken.None);
+        await store.UpdateGameCloudStateAsync("cloud-failed-game", "Uploaded", CancellationToken.None);
+        await store.AddMediaAsync(new MediaItemDto
+        {
+            MediaId = "cloud-failed-media",
+            PlayniteId = "cloud-failed-game",
+            Kind = MediaKind.Screenshot,
+            Source = MediaSourceKind.Steam,
+            ArchivePath = "archive/cloud-failed-media.png",
+            OriginalPath = "C:/Screens/cloud-failed-media.png",
+            CapturedUtc = DateTime.UtcNow,
+            SizeBytes = 12,
+            Sha256 = "cloud-failed-media-hash",
+            CloudState = "Failed",
+            ClassificationState = "Assigned"
+        }, CancellationToken.None);
+        await store.AddMediaAsync(new MediaItemDto
+        {
+            MediaId = "cloud-synced-media",
+            PlayniteId = "cloud-synced-media-game",
+            Kind = MediaKind.Screenshot,
+            Source = MediaSourceKind.Epic,
+            ArchivePath = "archive/cloud-synced-media.png",
+            OriginalPath = "C:/Screens/cloud-synced-media.png",
+            CapturedUtc = DateTime.UtcNow,
+            SizeBytes = 12,
+            Sha256 = "cloud-synced-media-hash",
+            CloudState = "Synced",
+            ClassificationState = "Assigned"
+        }, CancellationToken.None);
+
+        var records = await store.GetDashboardGameRecordsAsync(CancellationToken.None);
+
+        Assert.Equal("Failed", Assert.Single(records, x => x.Descriptor.PlayniteId == "cloud-failed-game").CloudState);
+        Assert.Equal("Uploaded", Assert.Single(records, x => x.Descriptor.PlayniteId == "cloud-synced-media-game").CloudState);
+    }
+
     public void Dispose()
     {
         SqliteConnection.ClearAllPools();

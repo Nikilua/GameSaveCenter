@@ -532,7 +532,14 @@ WHERE playnite_id=$id;",
         await connection.OpenAsync(token).ConfigureAwait(false);
         var command = connection.CreateCommand();
         command.CommandText = @"
-SELECT g.descriptor_json,g.ludusavi_name,g.match_confidence,g.cloud_state,
+SELECT g.descriptor_json,g.ludusavi_name,g.match_confidence,
+       CASE
+           WHEN g.cloud_state='Failed' OR COALESCE(m.failed_count,0)>0 THEN 'Failed'
+           WHEN g.cloud_state='RetryScheduled' OR COALESCE(m.retry_count,0)>0 THEN 'RetryScheduled'
+           WHEN g.cloud_state='Pending' OR COALESCE(m.pending_count,0)>0 THEN 'Pending'
+           WHEN g.cloud_state='Uploaded' OR COALESCE(m.synced_count,0)>0 THEN 'Uploaded'
+           ELSE COALESCE(g.cloud_state,'Disabled')
+       END AS cloud_state,
        COALESCE(b.version_count,0),b.last_backup_utc,b.latest_readiness_json,
        COALESCE(bt.recent_backup_failures,0),bt.last_backup_attempt_utc,bt.latest_backup_state,
        COALESCE(m.media_count,0),m.last_media_utc,p.policy_json,
@@ -560,7 +567,11 @@ LEFT JOIN (
     FROM findings f0 WHERE f0.resolved=0 AND COALESCE(f0.playnite_id,'')<>'' GROUP BY f0.playnite_id
 ) f ON f.playnite_id=g.playnite_id
 LEFT JOIN (
-    SELECT playnite_id,COUNT(*) AS media_count,MAX(captured_utc) AS last_media_utc
+    SELECT playnite_id,COUNT(*) AS media_count,MAX(captured_utc) AS last_media_utc,
+           SUM(CASE WHEN cloud_state='Failed' THEN 1 ELSE 0 END) AS failed_count,
+           SUM(CASE WHEN cloud_state='RetryScheduled' THEN 1 ELSE 0 END) AS retry_count,
+           SUM(CASE WHEN cloud_state='Pending' THEN 1 ELSE 0 END) AS pending_count,
+           SUM(CASE WHEN cloud_state IN ('Synced','Uploaded') THEN 1 ELSE 0 END) AS synced_count
     FROM media WHERE classification_state='Assigned' GROUP BY playnite_id
 ) m ON m.playnite_id=g.playnite_id
 LEFT JOIN game_policies p ON p.playnite_id=g.playnite_id
