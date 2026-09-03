@@ -3,6 +3,12 @@
 > 维护时间：2026-09-03
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-03 设置页持久化选择状态收口
+
+- `GameSaveCenterSettingsView.xaml` 的备份格式、压缩方式和主题模式不再设置局部静态 `SelectedIndex="0"`；三项均由持久化 `SelectedValue` 的 `Mode=TwoWay`、`UpdateSourceTrigger=PropertyChanged` 绑定驱动，避免初始化时覆盖 `GameSaveCenterSettings` 已恢复的值。
+- 这三项补充了中文 ToolTip 和 `AutomationProperties.Name`；不要为了视觉默认值把静态首项加回设置型 ComboBox。动态集合重建型筛选器可按各自契约保留恢复逻辑。
+- GSC-129 自动证据：Release 0 warning/0 error、Core `65/65`、Worker `234/234`、Playnite `328/385`（57 跳过）和源码校验通过；真实 Playnite 重启/主题/设置导入仍需人工复核。
+
 ## 2026-09-03 设备冲突状态与媒体筛选绑定收口
 
 - `MaintenanceView` 的设备决策 ComboBox 和 `MediaCenterView` 的媒体类型 ComboBox 移除局部静态 `SelectedIndex="0"`；设备决策显式使用双向 `DeviceDecision` 绑定，媒体筛选继续恢复 `MediaFilterState`，避免初始化阶段把持久化状态抢回第一项。

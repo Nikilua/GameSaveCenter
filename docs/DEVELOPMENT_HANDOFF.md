@@ -2,6 +2,12 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-09-03 设置页持久化选择状态收口
+
+- 设置页的备份格式、压缩方式和主题模式此前同时设置静态 `SelectedIndex="0"` 与持久化 `SelectedValue` 双向绑定；WPF 初始化时可能把已保存的 `Simple`、`Deflate` 或深色主题抢回第一项。
+- 已移除三处局部静态首项，显式使用 `Mode=TwoWay` 与 `UpdateSourceTrigger=PropertyChanged`，并补充 ToolTip 与 UI Automation 名称；设置模型原有保存/导入契约不变。
+- 自动证据：Release 0 warning/0 error、Core `65/65`、Worker `234/234`、Playnite `328/385`（57 跳过）和源码校验通过。当前阶段没有改变页面布局，因此未重复执行渲染截图；真实 Playnite 重新打开设置、切换主题并重启后的配置恢复仍需人工复核。
+
 ## 2026-09-03 设备冲突状态与媒体筛选绑定收口
 
 - 设备冲突详情的人工决策和媒体中心的类型筛选不再同时使用静态 `SelectedIndex="0"` 与双向 ViewModel 绑定，已保存的“以本机为准/以远端为准”和上次媒体筛选不会在加载时被重置。

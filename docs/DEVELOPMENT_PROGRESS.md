@@ -1,5 +1,7 @@
 # 开发实现进度
 
+- [x] GSC-129（2026-09-03）：修复设置页备份格式、压缩方式和主题模式的静态 `SelectedIndex="0"` 与持久化 `SelectedValue` 绑定抢写。三项配置现在均由 ViewModel 双向状态恢复，并补充即时更新、ToolTip 和 UI Automation 名称。Release 0 warning/0 error、Core `65/65`、Worker `234/234`、Playnite `328/385`（57 跳过）和源码校验通过；真实 Playnite 重新打开设置及主题切换仍需复核。
+
 - [x] GSC-128（2026-09-03）：修复设备冲突决策和媒体类型筛选的静态 `SelectedIndex="0"` 与 ViewModel 双向绑定抢写。已保存的设备决策和用户上次媒体筛选现在由绑定状态恢复；设备详情同时显示远端备份隔离下载/校验状态，并补充决策控件和远端操作的 UI Automation 名称。Release 0 warning/0 error、Core `65/65`、Worker `234/234`、Playnite `327/384`（57 跳过）通过，真实宿主仍需复核。
 
 - [x] GSC-127（2026-09-03）：任务中心新增“重试可恢复”批量操作。筛选失败/取消任务后按游戏与任务类型去重，只重试最新项；`BackupAll`/`MediaInbox` 全局任务各执行一次；逐项失败不会中断其他重试，结束后汇总并刷新任务列表。新增 TaskCenter 源码回归；Release 0 warning/0 error、Core `65/65`、Worker `234/234`、Playnite `326/383`（57 跳过）通过，真实宿主仍需复核。

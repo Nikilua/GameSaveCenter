@@ -17,6 +17,8 @@
 
 2026-09-03 功能增强：设备冲突决策和媒体类型筛选移除会覆盖 ViewModel 状态的静态首项；设备详情新增远端备份隔离下载/校验状态展示和可访问名称。真实多设备、Rclone 以及宿主无障碍树仍需复核。
 
+2026-09-03 功能增强：设置页的备份格式、压缩方式和主题模式移除会覆盖持久化绑定的静态首项，改由 ViewModel 双向状态恢复并补齐控件提示和可访问名称。真实 Playnite 重新打开设置、切换主题和重启后的配置恢复仍需复核。
+
 2026-09-02 增补收口：修复跨机器 Steam 游戏目录搜索不到的问题。Dashboard 打开后会同步 Playnite 的完整游戏描述，即使本机 Worker SQLite 缓存为空或过期也能补齐；大库仍由 Worker 先持久化描述、再节流执行 Ludusavi 匹配。若 Playnite 的 `IsInstalled` 暂时为 false 但安装目录存在，适配器会按已安装处理。真实第二台 Playnite 宿主仍需安装新包后复核；若 Playnite 本身没有导入该 Steam 游戏，插件无法直接从 Steam 客户端发现它。
 
 2026-09-02 增补收口：修复游戏选择器“全部/已安装”与“已匹配/有备份”显示不一致的问题。状态和排序静态 ComboBox 不再用 `SelectedIndex="0"` 与共享 ViewModel 双向绑定抢写；动态平台选项仍在集合重建后恢复。自动测试和 Release 构建已通过，真实第二台 Playnite 仍需安装新包后复核。
@@ -149,6 +151,7 @@
 | GSC-126 | Playnite 游戏右键菜单缺少直接同步媒体入口 | 源码已补充，待 Playnite 菜单回归 | 新增“同步媒体”快捷操作，支持单选/多选并复用现有媒体同步与云端上传设置 |
 | GSC-127 | 任务中心只能逐条重试失败/取消任务，积压较多时处理成本高 | 源码已补充，待 Playnite 批量回归 | 新增“重试可恢复”批量操作，按游戏/任务类型去重，逐项执行既有安全重试并汇总结果 |
 | GSC-128 | 设备决策/媒体筛选的静态首项可能覆盖已恢复绑定状态，远端隔离状态不在 Inspector 可见 | 源码已修复，待宿主回归 | 移除局部 `SelectedIndex="0"`，由 ViewModel 双向绑定驱动；展示隔离下载/校验状态并补齐 UI Automation 名称 |
+| GSC-129 | 设置页备份格式/压缩方式/主题模式的静态首项可能覆盖已恢复配置 | 源码已修复，待宿主回归 | 移除三处局部 `SelectedIndex="0"`，由持久化 `SelectedValue` 双向即时绑定驱动，并补齐 ToolTip/UI Automation 名称 |
 
 ## GSC-119：原生确认框的 UI 线程边界
 
@@ -205,6 +208,13 @@
 - **根因**：设备冲突 Inspector 的决策 ComboBox 和媒体中心类型筛选同时设置了局部 `SelectedIndex="0"` 与双向 `SelectedItem`。WPF 加载静态集合时可能先写入第一项，覆盖 ViewModel 根据当前冲突记录或持久化设置恢复的选择；远端隔离下载结果虽然写入 `StagedRemoteBackupStatus`，但原界面没有绑定该状态。
 - **修复**：移除两处局部静态首项，设备决策显式使用 `Mode=TwoWay` 与 `UpdateSourceTrigger=PropertyChanged`，保留共享样式的默认回退；设备 Inspector 增加隔离状态提示，并为决策、备注、保存、下载校验和恢复操作补充 ToolTip/AutomationProperties。
 - **回归**：新增源码契约测试；Release 0 warning/0 error、Core `65/65`、Worker `234/234`、Playnite `327/384`（57 跳过）、源码/WPF 门禁和多尺寸双主题 `render-qa` 通过。真实已保存决策恢复、媒体筛选持久化、隔离下载有效期和键盘/辅助功能树仍需人工验证。
+
+## GSC-129：设置页持久化选择状态
+
+- **状态**：源码已修复，待真实 Playnite 设置恢复回归。
+- **根因**：备份格式、压缩方式和主题模式的设置值会持久化，但三个 ComboBox 同时声明静态 `SelectedIndex="0"` 和双向 `SelectedValue`。初始化顺序不稳定时，第一项可能把已恢复的用户配置写回 ViewModel。
+- **修复**：移除三处局部静态首项，保留 `BackupFormat`、`Compression`、`ThemeMode` 的双向 `SelectedValue` 绑定，并显式设置 `UpdateSourceTrigger=PropertyChanged`；新增提示文本和 UI Automation 名称，未改动设置保存契约。
+- **回归**：新增 Playnite 源码契约测试；Release 0 warning/0 error、Core `65/65`、Worker `234/234`、Playnite `328/385`（57 跳过）和源码门禁通过。真实宿主中导入/保存 `Simple`、`Deflate`、深色主题后重新打开设置和重启 Playnite，确认三项仍保持选择，仍需手工验证。
 
 ## GSC-112：Playnite 退出阶段后台回调隔离
 

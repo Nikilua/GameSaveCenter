@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-03 设置页持久化选择状态收口
+
+- 继续排查“首次加载/状态恢复”时发现，设置页备份格式、压缩方式和主题模式仍同时声明静态 `SelectedIndex="0"` 与持久化 `SelectedValue`；这会让 `Simple`、`Deflate` 或深色主题在初始化顺序不利时被第一项覆盖。
+- 移除三处静态首项，显式保留双向即时绑定；新增 `SettingsSelectionStateSourceTests` 和控件的 ToolTip/UI Automation 名称。未改变设置模型、保存格式或业务语义。
+- 验证：Release 0 warning/0 error；Core `65/65`、Worker `234/234`、Playnite `328/385`（57 跳过）；源码校验通过，WPF 静态审计 0 error/18 warning/172 info。此阶段未改变布局，因此未重复执行 Render QA；真实 Playnite 设置重开、主题切换和重启恢复仍需人工验证。
+
 ## 2026-09-03 设备冲突状态与媒体筛选绑定收口
 
 - 继续检查持久化选择状态时发现，设备冲突决策和媒体类型筛选仍有局部 `SelectedIndex="0"`，可能在 WPF 初始化期间覆盖 ViewModel 已恢复的选择；设备决策还维护了隔离下载状态，却没有在 Inspector 展示。

@@ -5071,9 +5071,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"SettingsHeaderGrid\"", settings);
         Assert.Contains("x:Name=\"SettingsHeaderHintRow\" Height=\"0\"", settings);
         Assert.Contains("Text=\"{Binding WorkerExecutable, UpdateSourceTrigger=PropertyChanged}\"", settings);
-        Assert.Contains("SelectedIndex=\"0\" SelectedValue=\"{Binding BackupFormat, Mode=TwoWay, TargetNullValue={x:Static contracts:BackupStorageFormat.Zip}, FallbackValue={x:Static contracts:BackupStorageFormat.Zip}}\"", settings);
-        Assert.Contains("SelectedIndex=\"0\" SelectedValue=\"{Binding Compression, Mode=TwoWay, TargetNullValue=zstd, FallbackValue=zstd}\"", settings);
-        Assert.Contains("SelectedIndex=\"0\" SelectedValue=\"{Binding ThemeMode, Mode=TwoWay, TargetNullValue={x:Static settings:GameSaveCenterThemeMode.FollowPlaynite}, FallbackValue={x:Static settings:GameSaveCenterThemeMode.FollowPlaynite}}\"", settings);
+        Assert.Contains("SelectedValue=\"{Binding BackupFormat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static contracts:BackupStorageFormat.Zip}, FallbackValue={x:Static contracts:BackupStorageFormat.Zip}}\"", settings);
+        Assert.Contains("SelectedValue=\"{Binding Compression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=zstd, FallbackValue=zstd}\"", settings);
+        Assert.Contains("SelectedValue=\"{Binding ThemeMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static settings:GameSaveCenterThemeMode.FollowPlaynite}, FallbackValue={x:Static settings:GameSaveCenterThemeMode.FollowPlaynite}}\"", settings);
         Assert.Contains("x:Name=\"ThemeModeSelector\"", settings);
         Assert.Contains("CurrentSettings.ThemeMode = mode", settingsCode);
         Assert.Contains("IsChecked=\"{Binding EnableUiAnimations}\"", settings);

@@ -106,14 +106,14 @@
                     <UniformGrid x:Name="StorageFormatFields" Columns="2" Margin="0,0,0,12">
                         <StackPanel Margin="0,0,12,0">
                         <TextBlock Text="备份格式" VerticalAlignment="Center" Margin="0,0,0,4"/>
-                        <ComboBox Style="{StaticResource GscWpfUiComboBox}" SelectedIndex="0" SelectedValue="{Binding BackupFormat, Mode=TwoWay, TargetNullValue={x:Static contracts:BackupStorageFormat.Zip}, FallbackValue={x:Static contracts:BackupStorageFormat.Zip}}" SelectedValuePath="Tag">
+                        <ComboBox Style="{StaticResource GscWpfUiComboBox}" SelectedValue="{Binding BackupFormat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static contracts:BackupStorageFormat.Zip}, FallbackValue={x:Static contracts:BackupStorageFormat.Zip}}" SelectedValuePath="Tag" ToolTip="选择多版本 ZIP 或单副本 Simple 格式" AutomationProperties.Name="备份存储格式">
                             <ComboBoxItem Content="ZIP（多版本）" Tag="{x:Static contracts:BackupStorageFormat.Zip}"/>
                             <ComboBoxItem Content="Simple（单副本）" Tag="{x:Static contracts:BackupStorageFormat.Simple}"/>
                         </ComboBox>
                         </StackPanel>
                         <StackPanel Margin="0,0,0,0">
                         <TextBlock Text="压缩方式" VerticalAlignment="Center" Margin="0,0,0,4"/>
-                        <ComboBox Style="{StaticResource GscWpfUiComboBox}" SelectedIndex="0" SelectedValue="{Binding Compression, Mode=TwoWay, TargetNullValue=zstd, FallbackValue=zstd}" SelectedValuePath="Tag">
+                        <ComboBox Style="{StaticResource GscWpfUiComboBox}" SelectedValue="{Binding Compression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=zstd, FallbackValue=zstd}" SelectedValuePath="Tag" ToolTip="选择备份压缩方式" AutomationProperties.Name="备份压缩方式">
                             <ComboBoxItem Content="Zstandard" Tag="zstd"/><ComboBoxItem Content="Deflate" Tag="deflate"/>
                             <ComboBoxItem Content="Bzip2" Tag="bzip2"/><ComboBoxItem Content="不压缩" Tag="none"/>
                         </ComboBox>
@@ -147,7 +147,7 @@
                     <UniformGrid x:Name="AppearanceFields" Columns="2" Margin="0,0,0,12">
                         <StackPanel Margin="0,0,12,10">
                         <TextBlock Text="界面主题" Margin="0,0,0,4"/>
-                        <ComboBox x:Name="ThemeModeSelector" Style="{StaticResource GscWpfUiComboBox}" SelectedIndex="0" SelectedValue="{Binding ThemeMode, Mode=TwoWay, TargetNullValue={x:Static settings:GameSaveCenterThemeMode.FollowPlaynite}, FallbackValue={x:Static settings:GameSaveCenterThemeMode.FollowPlaynite}}" SelectedValuePath="Tag" SelectionChanged="OnThemeModeChanged">
+                        <ComboBox x:Name="ThemeModeSelector" Style="{StaticResource GscWpfUiComboBox}" SelectedValue="{Binding ThemeMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static settings:GameSaveCenterThemeMode.FollowPlaynite}, FallbackValue={x:Static settings:GameSaveCenterThemeMode.FollowPlaynite}}" SelectedValuePath="Tag" SelectionChanged="OnThemeModeChanged" ToolTip="选择跟随 Playnite、浅色或深色主题" AutomationProperties.Name="界面主题">
                             <ComboBoxItem Content="跟随 Playnite" Tag="{x:Static settings:GameSaveCenterThemeMode.FollowPlaynite}"/>
                             <ComboBoxItem Content="浅色" Tag="{x:Static settings:GameSaveCenterThemeMode.Light}"/>
                             <ComboBoxItem Content="深色" Tag="{x:Static settings:GameSaveCenterThemeMode.Dark}"/>
