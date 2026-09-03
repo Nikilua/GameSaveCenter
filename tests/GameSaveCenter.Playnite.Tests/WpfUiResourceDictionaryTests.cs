@@ -5291,7 +5291,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("<Setter Property=\"SelectedIndex\" Value=\"0\"/>", production);
         Assert.Contains("MinHeight\" Value=\"{DynamicResource GscButtonHeight}\"", redesign);
         Assert.Contains("Style=\"{StaticResource GscWpfUiFilterComboBox}\" SelectedIndex=\"0\"", dashboard);
-        Assert.Contains("Style=\"{DynamicResource GscWpfUiFilterComboBox}\" SelectedIndex=\"0\"", media);
+        Assert.Contains("Style=\"{DynamicResource GscWpfUiFilterComboBox}\" ItemsSource=\"{Binding MediaFilterOptions}\" SelectedItem=\"{Binding MediaFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}\"", media);
         Assert.Contains("SelectedItem=\"{Binding MediaFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}\"", media);
         Assert.Contains("x:Name=\"MediaSummaryPanel\" Grid.Row=\"0\" Style=\"{DynamicResource GscRedesignSectionCard}\"", media);
         Assert.DoesNotContain("GscRedesignMetricBorder", media);
@@ -5299,7 +5299,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("TaskStatusFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部", tasks);
         Assert.Contains("TaskGameFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部", tasks);
         Assert.Contains("TaskTypeFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部", tasks);
-        Assert.Contains("Style=\"{DynamicResource GscWpfUiComboBox}\" SelectedIndex=\"0\" ItemsSource=\"{Binding DeviceDecisionOptions}\" SelectedItem=\"{Binding DeviceDecision, TargetNullValue=稍后处理, FallbackValue=稍后处理}\"", maintenance);
+        Assert.Contains("Style=\"{DynamicResource GscWpfUiComboBox}\" ItemsSource=\"{Binding DeviceDecisionOptions}\" SelectedItem=\"{Binding DeviceDecision, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=稍后处理, FallbackValue=稍后处理}\"", maintenance);
         Assert.Contains("<Setter Property=\"VerticalContentAlignment\" Value=\"Stretch\"/>", overview);
         Assert.DoesNotContain("ScrollViewer.VerticalContentAlignment\" Value=\"Center\"", overview);
 

@@ -3,6 +3,12 @@
 > 维护时间：2026-09-03
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-03 设备冲突状态与媒体筛选绑定收口
+
+- `MaintenanceView` 的设备决策 ComboBox 和 `MediaCenterView` 的媒体类型 ComboBox 移除局部静态 `SelectedIndex="0"`；设备决策显式使用双向 `DeviceDecision` 绑定，媒体筛选继续恢复 `MediaFilterState`，避免初始化阶段把持久化状态抢回第一项。
+- 设备冲突 Inspector 显示 `StagedRemoteBackupStatus`，默认提示隔离区保护，完成下载校验后显示游戏、远端设备、备份 ID 和有效期；决策备注、保存决策、下载校验、已校验恢复均补充可访问名称和安全 ToolTip。
+- GSC-128 自动证据：Release 0 warning/0 error、Core `65/65`、Worker `234/234`、Playnite `327/384`（57 跳过）、源码/WPF 门禁通过，真实宿主和 Rclone/多设备仍需人工复核。
+
 ## 2026-09-03 任务中心批量安全重试
 
 - `DashboardViewModel` 新增 `RetryAllTasksCommand` 与 `RetryAllTasksAsync`；从最近任务中选取 `CanRetryTask` 项，按游戏/任务类型去重并保留最新记录，`BackupAll`/`MediaInbox` 使用全局单例键。

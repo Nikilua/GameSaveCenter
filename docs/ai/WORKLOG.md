@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-03 设备冲突状态与媒体筛选绑定收口
+
+- 继续检查持久化选择状态时发现，设备冲突决策和媒体类型筛选仍有局部 `SelectedIndex="0"`，可能在 WPF 初始化期间覆盖 ViewModel 已恢复的选择；设备决策还维护了隔离下载状态，却没有在 Inspector 展示。
+- 移除两处静态首项，设备决策补全 `Mode=TwoWay`、ToolTip 和 AutomationProperties；设备 Inspector 展示 `StagedRemoteBackupStatus`，让隔离下载/校验结果和有效期在恢复前持续可见。
+- 验证：Release 0 warning/0 error、Core `65/65`、Worker `234/234`、Playnite `327/384`（57 跳过）、源码校验、WPF 静态审计、`git diff --check` 和多尺寸双主题 `render-qa` 通过。真实宿主、多设备 Rclone 和辅助功能树仍需人工验证。
+
 ## 2026-09-03 任务中心批量安全重试
 
 - 产品完整性检查发现，任务中心已有逐条安全重试和“需要重试”计数，但失败项较多时缺少批量处理入口；补充 TaskCenter “重试可恢复”。

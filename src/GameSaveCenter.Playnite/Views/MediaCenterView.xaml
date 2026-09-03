@@ -349,7 +349,7 @@
                                         </Button.Style>
                                     </Button>
                                 </Grid>
-                                <ComboBox Grid.Column="1" Margin="8,0,0,0" Style="{DynamicResource GscWpfUiFilterComboBox}" SelectedIndex="0" ItemsSource="{Binding MediaFilterOptions}" SelectedItem="{Binding MediaFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" ToolTip="媒体类型筛选"/>
+                                <ComboBox Grid.Column="1" Margin="8,0,0,0" Style="{DynamicResource GscWpfUiFilterComboBox}" ItemsSource="{Binding MediaFilterOptions}" SelectedItem="{Binding MediaFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" ToolTip="媒体类型筛选"/>
                             </Grid>
                         </Grid>
                         <ListBox Grid.Row="1" x:Name="MediaGrid" Tag="FiniteViewport" ItemsSource="{Binding MediaView}" SelectedItem="{Binding SelectedMedia}" SelectionChanged="OnMediaSelectionChanged" SelectionMode="Extended" BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
