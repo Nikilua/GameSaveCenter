@@ -1,5 +1,7 @@
 # 开发实现进度
 
+- [x] GSC-133（2026-09-04）：修复 Worker 目录缓存只按 Ludusavi 匹配输入去重导致的安装状态陈旧。`GameMatchInput` 继续避免安装状态触发重匹配，但 `GameCatalogService` 现在独立比较并持久化安装状态、安装目录、启动动作等描述变化；新增“死亡空间已匹配后从未安装变为已安装”的 Worker 回归测试，版本提升到 0.6.73。Release 编译 0 warning/0 error；Core `65/65`、Worker `235/235`、Playnite `331/388`（57 跳过）；XAML `19/19`、源码/WPF 门禁通过；0.6.73 已打包并安装到本机 Playnite，日志确认加载 `0.6.73.0`。
+
 - [x] GSC-132（2026-09-03）：继续修复游戏选择器“显示已安装但已安装筛选搜不到”的 WPF 竞态。两套选择器不再通过 `SelectionChanged` 写回共享 ViewModel，改为仅在 `DropDownClosed` 后提交用户选择；新增“已安装 + 死亡空间搜索”回归测试，版本提升到 0.6.72。已完成 Release 编译（0 warning/0 error）、Core `65/65`、Worker `234/234`、Playnite `331/388`（57 跳过）、XAML `19/19`、源码/WPF 门禁和 Render QA；本机 Playnite 已实际加载 `0.6.72.0`，安装包与安装 DLL 已核对。当前本机样本只有 3 个游戏，不含用户目标游戏，目标机器仍需复核。
 
 - [x] GSC-131（2026-09-03）：继续收口游戏选择器双向绑定残留，并补强 Playnite 安装状态判定。生产 Shell 与兼容 Dashboard 的状态/平台/排序 ComboBox 改为 OneWay 显示，用户选择由 `SelectionChanged` 唯一写回共享 ViewModel；Playnite 适配器增加本地 Play action/working directory 兜底，版本提升到 0.6.71 以强制替换同版本旧 DLL。Release 编译 0 warning/0 error；Core `65/65`、Worker `234/234`、Playnite `330/387`（57 跳过）；XAML `19/19`、源码门禁、WPF 静态检查和 Render QA 通过；本机已安装并由 Playnite 日志确认加载 `0.6.71.0`，DLL 与打包暂存 DLL 哈希一致。真实目标游戏和第二台 Playnite 仍需用户复核。

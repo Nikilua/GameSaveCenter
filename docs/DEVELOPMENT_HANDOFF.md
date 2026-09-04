@@ -2,6 +2,13 @@
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
+## 2026-09-04 Worker 描述缓存安装状态陈旧
+
+- 0.6.72 只修复了 WPF 选择器的程序化筛选抢写，用户实测仍有“全部/已匹配/有备份可见、已安装不可见”。
+- 0.6.73 已修复真正的数据链：`GameCatalogService` 不再把匹配输入缓存当成完整描述缓存；`IsInstalled`、`InstallDirectory`、Actions 等非匹配字段变化会独立写入 SQLite，不会使已有 Ludusavi 匹配失效。
+- 本阶段已通过 Release 0 warning/0 error、Core `65/65`、Worker `235/235`、Playnite `331/388`（57 跳过）、XAML `19/19`、源码/WPF 门禁；0.6.73 已安装到本机 Playnite，日志确认 `GameSaveCenter 0.6.73.0 loaded`。
+- 目标机器复核步骤：完全退出 Playnite 和 Worker，安装 [GameSaveCenter-0.6.73.pext](../artifacts/GameSaveCenter-0.6.73.pext) 或对应 Release 包，重新打开后执行一次刷新，再在“已安装”搜索“死亡空间”。本机样本只有 3 个游戏，没有目标条目。
+
 ## 2026-09-03 游戏选择器用户选择写回竞态补强
 
 - 用户确认目标游戏行信息已显示“已安装”，但“全部”可以搜索、“已安装”无法搜索。0.6.71 的 `SelectionChanged` 写回仍会把程序化初始化/绑定刷新当成用户选择。

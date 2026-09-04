@@ -6,7 +6,8 @@ namespace GameSaveCenter.Worker.Services;
 
 /// <summary>
 /// Produces the stable subset of a Playnite descriptor that can affect Ludusavi matching.
-/// UI-only metadata and install state deliberately do not invalidate a valid match.
+/// UI-only metadata and install state deliberately do not invalidate a valid match. The
+/// catalog still persists those descriptor changes separately from match invalidation.
 /// </summary>
 public static class GameMatchInput
 {

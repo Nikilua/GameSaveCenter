@@ -47,14 +47,14 @@ public sealed class GameCatalogService : IRestoreCatalog
         var now=DateTime.UtcNow;
         var retryBefore=now.Subtract(UnmatchedRetryInterval);
         var pending=new List<(GameDescriptorDto Game,string InputHash)>();
-        var changedDescriptors=new List<GameDescriptorDto>();
+        var descriptorsToPersist=new List<GameDescriptorDto>();
         foreach(var game in list)
         {
             var inputHash=GameMatchInput.CreateHash(game);
             if(!cached.TryGetValue(game.PlayniteId,out var previous))
             {
                 pending.Add((game,inputHash));
-                changedDescriptors.Add(game);
+                descriptorsToPersist.Add(game);
                 continue;
             }
 
@@ -62,6 +62,7 @@ public sealed class GameCatalogService : IRestoreCatalog
                 ? GameMatchInput.CreateHash(previous.Descriptor)
                 : previous.MatchInputHash;
             var inputChanged=!string.Equals(previousHash,inputHash,StringComparison.Ordinal);
+            var descriptorChanged=!DescriptorsEqual(previous.Descriptor,game);
             // A large refresh queues matching outside the IPC request. If the Worker exits
             // between persisting the descriptor and executing that queued item, the durable
             // row has the new input hash but no match-attempt timestamp. Treat that state as
@@ -78,8 +79,14 @@ public sealed class GameCatalogService : IRestoreCatalog
             if(inputChanged||retryMatch)
             {
                 pending.Add((game,inputHash));
-                changedDescriptors.Add(game);
             }
+            // MatchInput intentionally excludes install state and other runtime metadata so
+            // a valid Ludusavi match survives a Playnite refresh. That does not mean the
+            // descriptor itself can stay stale: the dashboard filter reads IsInstalled from
+            // the durable descriptor, not from the latest IPC request. Persist descriptor
+            // changes independently, while only inputChanged/retryMatch enters matching.
+            if(descriptorChanged || inputChanged || retryMatch)
+                descriptorsToPersist.Add(game);
         }
 
         // The Playnite host can raise a full-library synchronization after every restart.
@@ -88,12 +95,11 @@ public sealed class GameCatalogService : IRestoreCatalog
         // When a subset changed, persist only that subset; unchanged rows remain durable and
         // their backup/media/policy history is untouched. This keeps a 900+ game profile from
         // turning a harmless refresh into a long SQLite write transaction.
-        if(changedDescriptors.Count>0)
-            await _store.UpsertGamesAsync(changedDescriptors,token).ConfigureAwait(false);
+        if(descriptorsToPersist.Count>0)
+            await _store.UpsertGamesAsync(descriptorsToPersist,token).ConfigureAwait(false);
         else
         {
             _logger.LogDebug("Skipped unchanged game descriptor persistence for {GameCount} games.", list.Count);
-            return;
         }
 
         if(!_ludusavi.IsAvailable||pending.Count==0) return;
@@ -132,6 +138,36 @@ public sealed class GameCatalogService : IRestoreCatalog
         }
 
         foreach(var item in pending) await MatchOneAsync(new PendingMatch(item.Game, item.InputHash),token).ConfigureAwait(false);
+    }
+
+    private static bool DescriptorsEqual(GameDescriptorDto left,GameDescriptorDto right)
+    {
+        if(!string.Equals(left.PlayniteId,right.PlayniteId,StringComparison.Ordinal)
+           || !string.Equals(left.Name,right.Name,StringComparison.Ordinal)
+           || left.Platform!=right.Platform
+           || !string.Equals(left.PlatformGameId,right.PlatformGameId,StringComparison.Ordinal)
+           || !string.Equals(left.PluginId,right.PluginId,StringComparison.Ordinal)
+           || !string.Equals(left.InstallDirectory,right.InstallDirectory,StringComparison.Ordinal)
+           || left.IsInstalled!=right.IsInstalled
+           || left.LastPlayedUtc!=right.LastPlayedUtc
+           || !left.KnownProcessNames.SequenceEqual(right.KnownProcessNames,StringComparer.OrdinalIgnoreCase)
+           || !left.Tags.SequenceEqual(right.Tags,StringComparer.Ordinal))
+            return false;
+
+        if(left.Actions.Count!=right.Actions.Count) return false;
+        for(var i=0;i<left.Actions.Count;i++)
+        {
+            var a=left.Actions[i];
+            var b=right.Actions[i];
+            if(!string.Equals(a.Name,b.Name,StringComparison.Ordinal)
+               || !string.Equals(a.Path,b.Path,StringComparison.Ordinal)
+               || !string.Equals(a.Arguments,b.Arguments,StringComparison.Ordinal)
+               || !string.Equals(a.WorkingDirectory,b.WorkingDirectory,StringComparison.Ordinal)
+               || a.IsPlayAction!=b.IsPlayAction
+               || a.IsModLoader!=b.IsModLoader)
+                return false;
+        }
+        return true;
     }
 
     private void QueueBackgroundMatches(IEnumerable<(GameDescriptorDto Game,string InputHash)> pending)

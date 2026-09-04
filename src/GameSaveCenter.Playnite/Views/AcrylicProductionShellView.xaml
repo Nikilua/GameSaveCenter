@@ -113,7 +113,7 @@
                                                Margin="9,0,0,0" VerticalAlignment="Center"/>
                                     <Border x:Name="SidebarProductionBadge" Background="{DynamicResource GscAccentTintBrush}" CornerRadius="8"
                                             Padding="8,4" Margin="8,0,0,0" VerticalAlignment="Center">
-                                        <TextBlock x:Name="SidebarProductionVersionText" Text="v0.6.72" FontSize="10.5" Foreground="{DynamicResource GscAccentBrush}"/>
+                                        <TextBlock x:Name="SidebarProductionVersionText" Text="v0.6.73" FontSize="10.5" Foreground="{DynamicResource GscAccentBrush}"/>
                                     </Border>
                                 </StackPanel>
                             </Grid>

@@ -3,6 +3,14 @@
 > 维护时间：2026-09-03
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-04 Worker 描述缓存安装状态陈旧
+
+- 用户实测 0.6.72 后仍确认：“全部、已匹配、有备份等都有死亡空间，但已安装没有”；这排除了只修 WPF ComboBox 写回竞态的解释。
+- 真正根因在 `GameCatalogService.UpsertAndMatchAsync`：`GameMatchInput.CreateHash` 有意排除 `IsInstalled`，但旧逻辑把“匹配输入未变化”错误当成“描述无需持久化”，导致 SQLite `descriptor_json` 一直保留旧的 `IsInstalled=false`。Dashboard 的“已安装”筛选读取这个持久化描述，因此目标条目被过滤。
+- 0.6.73 将 `descriptorsToPersist` 与 `pending` 匹配队列分离；描述全字段变化（安装状态、安装目录、启动动作、标签、进程名、最近游玩等）会更新 SQLite，但只有匹配输入变化或到期重试才进入 Ludusavi。这样保持已有匹配，又让安装筛选使用最新状态。
+- 新增 `GameCatalogPersistenceTests.InstallStateChangePersistsWithoutInvalidatingExistingMatch`，锁定“死亡空间已匹配后 false→true”场景；`GameMatchInput` 注释明确记录“匹配输入与描述持久化是两个契约”。
+- 验证：Release 0 warning/0 error；Core `65/65`、Worker `235/235`、Playnite `331/388`（57 跳过）；XAML `19/19`、源码验证、WPF 静态检查通过；0.6.73 已打包、安装并由 Playnite 日志确认 `GameSaveCenter 0.6.73.0 loaded`。本机 Playnite 仍只有 3 个样本游戏，不能代替用户目标机器复核。
+
 ## 2026-09-03 游戏选择器用户选择写回竞态补强
 
 - 用户进一步确认目标游戏行信息显示“已安装”，但“已安装”筛选搜索不到；这排除了单纯安装状态缺失，问题仍是筛选框显示值与共享 `GamePickerViewModel.StatusFilter` 在 WPF 初始化/集合刷新期间发生抢写。

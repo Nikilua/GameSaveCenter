@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-04 Worker 描述缓存安装状态陈旧修复
+
+- 用户实测 0.6.72 后仍反馈“全部、已匹配、有备份都有死亡空间，已安装没有”。沿数据链确认不是筛选枚举，而是 Worker SQLite 中的 `descriptor_json.IsInstalled` 可能停留在安装前的 `false`。
+- `GameMatchInput` 为避免已有 Ludusavi 匹配因安装状态变化而失效，故意不包含安装状态；旧 `GameCatalogService` 却只在匹配 hash 变化时调用 `UpsertGamesAsync`，遗漏了安装状态、安装目录和动作变化。
+- 0.6.73 新增 `DescriptorsEqual`，将 `descriptorsToPersist` 与 `pending` 匹配队列分离：描述变化写缓存，只有匹配输入变化或到期重试才匹配；已有匹配名和置信度保持不变。
+- 新增 `InstallStateChangePersistsWithoutInvalidatingExistingMatch`，先写入未安装“死亡空间”并设置既有匹配，再同步已安装描述，断言缓存变为已安装且匹配名/置信度不变。
+- 验证：Release 0 warning/0 error；Core `65/65`、Worker `235/235`、Playnite `331/388`（57 跳过）；XAML `19/19`、`validate-source.py`、`check-xaml.ps1`、WPF 静态审查和 `git diff --check` 通过；0.6.73 打包并安装成功，Playnite 日志确认 `0.6.73.0 loaded`。
+
 ## 2026-09-03 游戏选择器用户选择写回竞态补强
 
 - 用户澄清：目标游戏确实已安装，游戏选择器行信息也显示“已安装”，但“全部”能搜到，“已安装”搜不到。该现象说明此前的安装判定补强不是唯一问题，筛选控件仍可能在程序化 `SelectionChanged` 后保留错误的共享状态。

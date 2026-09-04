@@ -96,6 +96,41 @@ public sealed class GameCatalogPersistenceTests : IDisposable
         Assert.Equal(games.Length, persisted.Count);
     }
 
+    [Fact]
+    public async Task InstallStateChangePersistsWithoutInvalidatingExistingMatch()
+    {
+        var notInstalled = new GameDescriptorDto
+        {
+            PlayniteId = "dead-space",
+            Name = "死亡空间",
+            Platform = GamePlatformKind.Steam,
+            PlatformGameId = "17470",
+            IsInstalled = false
+        };
+        await catalog.UpsertAndMatchAsync(new[] { notInstalled }, CancellationToken.None);
+        await store.SetGameMatchAsync(
+            notInstalled.PlayniteId,
+            "Dead Space",
+            1.0,
+            GameMatchInput.CreateHash(notInstalled),
+            CancellationToken.None);
+
+        var installed = new GameDescriptorDto
+        {
+            PlayniteId = notInstalled.PlayniteId,
+            Name = notInstalled.Name,
+            Platform = notInstalled.Platform,
+            PlatformGameId = notInstalled.PlatformGameId,
+            IsInstalled = true
+        };
+        await catalog.UpsertAndMatchAsync(new[] { installed }, CancellationToken.None);
+
+        var persisted = await store.GetGameMatchCacheAsync(CancellationToken.None);
+        Assert.True(persisted[installed.PlayniteId].Descriptor.IsInstalled);
+        Assert.Equal("Dead Space", persisted[installed.PlayniteId].LudusaviName);
+        Assert.Equal(1.0, persisted[installed.PlayniteId].Confidence);
+    }
+
     private async Task<string?> ReadUpdatedUtcAsync(string playniteId)
     {
         await using var connection = new SqliteConnection($"Data Source={options.DatabasePath}");

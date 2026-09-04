@@ -1,10 +1,11 @@
 AddonId: 66e9f2d7-67bb-43ef-b62a-b8e60734fcec
 Packages:
-  - Version: 0.6.72
+  - Version: 0.6.73
     RequiredApiVersion: 6.16.0
     ReleaseDate: 2026-08-05
-    PackageUrl: https://github.com/Nikilua/GameSaveCenter/releases/download/v0.6.72/GameSaveCenter-0.6.72.pext
+    PackageUrl: https://github.com/Nikilua/GameSaveCenter/releases/download/v0.6.73/GameSaveCenter-0.6.73.pext
     Changelog:
+      - 0.6.73：修复 Worker 只按匹配输入去重时遗漏安装状态更新；安装状态、安装目录和启动动作变化会更新缓存但不会让已有 Ludusavi 匹配失效。
       - 0.6.72：修复游戏选择器在筛选框程序化刷新时抢写状态；只有用户完成下拉选择后才更新状态、平台和排序筛选。
       - 0.6.71：修复游戏选择器在响应式双视图重建时状态错乱，并补强 Playnite Steam 游戏安装状态识别；状态、平台、排序筛选不再被旧选中值覆盖。
       - 0.6.70：修复修改器中心工具设置检查器在宽屏占用固定短高度、导致右侧出现大块空白；宽屏填满工作区，窄窗口仍保留有限内部滚动，并统一为 Demo 阅读卡表面。
