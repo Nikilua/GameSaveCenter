@@ -55,10 +55,14 @@ namespace GameSaveCenter.Playnite.Views
                 TaskGrid.MinHeight = tableMinHeight;
                 TaskGrid.Height = double.NaN;
                 TaskGrid.MaxHeight = double.PositiveInfinity;
-                // Keep the Demo's four metrics in one continuous strip at every width; the
-                // table and inspector
-                // own their finite scroll surfaces instead of scrolling the whole workspace.
+                // Keep the Demo's four metrics in one continuous strip at every width. On a
+                // short window, tighten only the secondary summary chrome so the queue still
+                // gets a useful first viewport; the table and inspector keep their own scroll
+                // surfaces instead of scrolling the whole workspace.
+                var shortHeight = height > 0 && height < 700;
                 TaskSummaryPanel.Visibility = Visibility.Visible;
+                TaskSummaryPanel.MinHeight = shortHeight ? 64 : 84;
+                TaskSummaryPanel.Padding = shortHeight ? new Thickness(6, 8, 6, 8) : new Thickness(6, 14, 6, 14);
                 // The action row stays horizontal on all common compact widths; only a
                 // genuinely narrow pane stacks the three commands vertically.
                 TaskDetailActions.Orientation = width < 520 ? Orientation.Vertical : Orientation.Horizontal;

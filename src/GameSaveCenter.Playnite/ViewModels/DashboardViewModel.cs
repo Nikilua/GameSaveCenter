@@ -259,6 +259,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             RetryTaskCommand = new RelayCommand(_ => Run(RetrySelectedTaskAsync), _ => !IsBusy && CanRetrySelectedTask());
             RetryAllTasksCommand = new RelayCommand(_ => Run(RetryAllTasksAsync), _ => !IsBusy && RetryableTaskCount > 0);
             LoadMoreTasksCommand = new RelayCommand(_ => Run(() => LoadTaskPageAsync(false)), _ => !IsBusy && taskHistoryActive && TaskHistoryHasMore);
+            ClearTaskFiltersCommand = new RelayCommand(_ => ClearTaskFilters(), _ => !IsBusy);
             CopyTaskErrorCommand = new RelayCommand(_ => Run(CopySelectedTaskErrorAsync), _ => SelectedTask != null && !string.IsNullOrWhiteSpace(SelectedTask.DetailMessage));
             OpenAttentionCenterCommand = new RelayCommand(_ => OpenAttentionCenter());
             OpenMaintenanceCommand = new RelayCommand(_ => OpenMaintenance());
@@ -564,7 +565,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             set
             {
                 SetValue(ref taskStatusFilter, string.IsNullOrWhiteSpace(value) ? "全部" : value);
-                TasksView.Refresh();
+                RefreshTasksView();
                 ScheduleTaskHistoryQuery();
                 uiStateSave?.Schedule();
             }
@@ -575,7 +576,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             set
             {
                 SetValue(ref taskGameFilter, string.IsNullOrWhiteSpace(value) ? "全部" : value);
-                TasksView.Refresh();
+                RefreshTasksView();
                 ScheduleTaskHistoryQuery();
                 uiStateSave?.Schedule();
             }
@@ -586,7 +587,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             set
             {
                 SetValue(ref taskTypeFilter, string.IsNullOrWhiteSpace(value) ? "全部" : value);
-                TasksView.Refresh();
+                RefreshTasksView();
                 ScheduleTaskHistoryQuery();
                 uiStateSave?.Schedule();
             }
@@ -985,6 +986,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand RetryTaskCommand { get; }
         public ICommand RetryAllTasksCommand { get; }
         public ICommand LoadMoreTasksCommand { get; }
+        public ICommand ClearTaskFiltersCommand { get; }
         public ICommand CopyTaskErrorCommand { get; }
         public ICommand OpenAttentionCenterCommand { get; }
         public ICommand OpenMaintenanceCommand { get; }
@@ -1476,7 +1478,21 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             if (synchronize) await plugin.SynchronizeAsync();
             var fetchTimer = Stopwatch.StartNew();
-            var data = await plugin.RequestAsync<DashboardSnapshotDto>(MessageTypes.GetDashboard, new { }, snapshotTimeout);
+            DashboardSnapshotDto data;
+            try
+            {
+                data = await plugin.RequestAsync<DashboardSnapshotDto>(MessageTypes.GetDashboard, new { }, snapshotTimeout);
+            }
+            catch (OperationCanceledException)
+            {
+                ApplyOnUi(CancelTaskPageLoad);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                ApplyOnUi(() => FailTaskPageLoad(ex));
+                throw;
+            }
             fetchTimer.Stop();
             var notifications = new List<TaskStatusDto>();
             var selectedTaskCompleted = false;
@@ -1553,6 +1569,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                 if (tasksChanged) taskIndex.Rebuild(Tasks);
                 if (tasksChanged) OnPropertyChanged(nameof(LoadedTaskCount));
                 if (tasksChanged) OnPropertyChanged(nameof(TaskLoadedSummary));
+                if (!taskHistoryActive)
+                    CompleteTaskPageLoad();
                 Replace(OverviewTasks, data.RecentTasks.Take(8), SnapshotComparers.Task);
                 Replace(Activities, data.RecentActivities.Take(12), SnapshotComparers.Activity);
                 RebuildTaskFilters();
@@ -1893,34 +1911,49 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
             if (!taskHistoryActive) return;
 
-            var page = await plugin.RequestAsync<TaskPageDto>(
-                MessageTypes.GetTaskPage,
-                BuildTaskQuery(taskHistoryCursor),
-                TimeSpan.FromMinutes(3));
-            ApplyOnUi(() =>
+            ApplyOnUi(BeginTaskPageLoad);
+            try
             {
-                var incoming = page?.Items ?? new List<TaskStatusDto>();
-                var merged = reset
-                    ? incoming
-                    : Tasks.Concat(incoming.Where(item => !Tasks.Any(existing => string.Equals(existing.TaskId, item.TaskId, StringComparison.OrdinalIgnoreCase)))).ToList();
-                var selectedTaskId = SelectedTask?.TaskId;
-                var changed = Replace(Tasks, merged, SnapshotComparers.Task);
-                if (changed) taskIndex.Rebuild(Tasks);
-                taskHistoryCursor = page?.NextCursor ?? string.Empty;
-                taskHistoryTotalCount = page?.TotalCount ?? Tasks.Count;
-                TaskHistoryHasMore = page?.HasMore == true;
-                TaskSummary = page?.Summary ?? new TaskSummaryDto { TotalCount = taskHistoryTotalCount };
-                OnPropertyChanged(nameof(TaskTotalCount));
-                OnPropertyChanged(nameof(RunningTaskCount));
-                OnPropertyChanged(nameof(RetryableTaskCount));
-                OnPropertyChanged(nameof(CompletedTaskCount));
-                OnPropertyChanged(nameof(LoadedTaskCount));
-                OnPropertyChanged(nameof(TaskLoadedSummary));
-                RebuildTaskFilters();
-                SelectedTask = Tasks.FirstOrDefault(item => string.Equals(item.TaskId, selectedTaskId, StringComparison.OrdinalIgnoreCase)) ?? Tasks.FirstOrDefault();
-                StatusMessage = TaskLoadedSummary;
-                RaiseCommandStates();
-            });
+                var page = await plugin.RequestAsync<TaskPageDto>(
+                    MessageTypes.GetTaskPage,
+                    BuildTaskQuery(taskHistoryCursor),
+                    TimeSpan.FromMinutes(3));
+                ApplyOnUi(() =>
+                {
+                    var incoming = page?.Items ?? new List<TaskStatusDto>();
+                    var merged = reset
+                        ? incoming
+                        : Tasks.Concat(incoming.Where(item => !Tasks.Any(existing => string.Equals(existing.TaskId, item.TaskId, StringComparison.OrdinalIgnoreCase)))).ToList();
+                    var selectedTaskId = SelectedTask?.TaskId;
+                    var changed = Replace(Tasks, merged, SnapshotComparers.Task);
+                    if (changed) taskIndex.Rebuild(Tasks);
+                    taskHistoryCursor = page?.NextCursor ?? string.Empty;
+                    taskHistoryTotalCount = page?.TotalCount ?? Tasks.Count;
+                    TaskHistoryHasMore = page?.HasMore == true;
+                    TaskSummary = page?.Summary ?? new TaskSummaryDto { TotalCount = taskHistoryTotalCount };
+                    OnPropertyChanged(nameof(TaskTotalCount));
+                    OnPropertyChanged(nameof(RunningTaskCount));
+                    OnPropertyChanged(nameof(RetryableTaskCount));
+                    OnPropertyChanged(nameof(CompletedTaskCount));
+                    OnPropertyChanged(nameof(LoadedTaskCount));
+                    OnPropertyChanged(nameof(TaskLoadedSummary));
+                    RebuildTaskFilters();
+                    SelectedTask = Tasks.FirstOrDefault(item => string.Equals(item.TaskId, selectedTaskId, StringComparison.OrdinalIgnoreCase)) ?? Tasks.FirstOrDefault();
+                    CompleteTaskPageLoad();
+                    StatusMessage = TaskLoadedSummary;
+                    RaiseCommandStates();
+                });
+            }
+            catch (OperationCanceledException)
+            {
+                ApplyOnUi(CancelTaskPageLoad);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                ApplyOnUi(() => FailTaskPageLoad(ex));
+                throw;
+            }
         }
 
         private TaskQueryDto BuildTaskQuery(string cursor)
@@ -3327,6 +3360,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             TasksView.Refresh();
             timer.Stop();
             Logger.Debug($"[PERF] TaskSearch refresh={timer.ElapsedMilliseconds}ms tasks={Tasks.Count}");
+            NotifyTaskPageStateChanged();
         }
 
         private void RefreshMediaView()
@@ -3358,7 +3392,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 TaskGameFilter = "全部";
             if (string.IsNullOrEmpty(selectedType) || !TaskTypeFilterOptions.Contains(selectedType))
                 TaskTypeFilter = "全部";
-            TasksView.Refresh();
+            RefreshTasksView();
         }
 
         private long lastTaskFilterFingerprint;

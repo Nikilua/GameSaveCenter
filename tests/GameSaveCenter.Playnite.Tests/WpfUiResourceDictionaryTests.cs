@@ -4131,7 +4131,7 @@ public sealed class WpfUiResourceDictionaryTests
 
         var views = new[]
         {
-            ("TaskCenterView.xaml", "TasksView.IsEmpty"),
+            ("TaskCenterView.xaml", "TaskPageState"),
             ("SaveCenterView.xaml", "Backups.Count"),
             ("SaveCenterView.xaml", "SaveCandidates.Count"),
             ("MediaCenterView.xaml", "MediaView.IsEmpty"),

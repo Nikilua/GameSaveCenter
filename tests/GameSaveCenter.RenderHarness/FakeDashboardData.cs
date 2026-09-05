@@ -18,6 +18,8 @@ public sealed class FakeDashboardData
     public string OnboardingDescription => "先确认 Worker、目录、SQLite 与备份工具可用。所有检查都是非破坏性的；你可以跳过，之后随时在维护中心重新运行。";
     public bool IsOnboardingPending => false;
     public ICommand OpenMaintenanceCommand { get; } = new NoopCommand();
+    public ICommand RefreshCommand { get; } = new NoopCommand();
+    public ICommand ClearTaskFiltersCommand { get; } = new NoopCommand();
 
     public FakeDashboardData(int rowCount = 8)
     {
@@ -497,6 +499,13 @@ public sealed class FakeDashboardData
     public int RunningTaskCount { get; }
     public int RetryableTaskCount { get; }
     public int CompletedTaskCount { get; }
+    public bool TaskPageHasLoaded => true;
+    public bool IsTaskPageLoading => false;
+    public bool TaskPageLoadFailed => false;
+    public bool TaskPageHasItems => Tasks.Count > 0;
+    public string TaskPageState => Tasks.Count > 0 ? "Ready" : "Empty";
+    public string TaskPageStatusSummary => "最近更新：2026-09-05 00:00:00";
+    public string TaskPageErrorMessage => string.Empty;
     public TaskStatusDto SelectedTask { get; set; } = null!;
     public BackupVersionDto SelectedBackup { get; set; } = null!;
     public SavePathCandidateDto SelectedCandidate { get; set; } = null!;

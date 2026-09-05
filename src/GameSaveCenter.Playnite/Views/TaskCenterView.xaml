@@ -191,7 +191,7 @@
         </Expander>
         <Border x:Name="TaskQueuePanel" Grid.Row="3" Grid.Column="0" Style="{DynamicResource GscRedesignSectionCard}" Padding="6,10">
             <Grid>
-                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
                 <Grid Grid.Row="0" Margin="12,2,12,8">
                     <TextBlock Text="任务队列" FontSize="15" FontWeight="SemiBold"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
@@ -204,10 +204,42 @@
                                 </Style>
                             </ui:Button.Style>
                         </ui:Button>
-                        <TextBlock Text="{Binding TaskLoadedSummary}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                        <StackPanel VerticalAlignment="Center" Margin="10,0,0,0">
+                            <TextBlock Text="{Binding TaskLoadedSummary}" Style="{DynamicResource GscCaptionStyle}"/>
+                            <TextBlock Text="{Binding TaskPageStatusSummary}" Style="{DynamicResource GscCaptionStyle}" Foreground="{DynamicResource GscMutedTextBrush}" Margin="0,2,0,0"/>
+                        </StackPanel>
                     </StackPanel>
                 </Grid>
-                <Border Grid.Row="1" Style="{StaticResource TaskTableFrame}">
+                <Border x:Name="TaskStaleDataBanner" Grid.Row="1" Padding="10,7" Margin="0,0,0,8">
+                    <Border.Style>
+                        <Style TargetType="Border" BasedOn="{StaticResource GscRedesignSubCard}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource GscWarningBrush}"/>
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding TaskPageLoadFailed}" Value="True"/>
+                                        <Condition Binding="{Binding TaskPageHasItems}" Value="True"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding IsTaskPageLoading}" Value="True"/>
+                                        <Condition Binding="{Binding TaskPageHasItems}" Value="True"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <Grid>
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding TaskPageStatusSummary}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                        <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding RefreshCommand}" Content="重试" Margin="10,0,0,0" AutomationProperties.Name="重试任务记录读取"/>
+                    </Grid>
+                </Border>
+                <Border Grid.Row="2" Style="{StaticResource TaskTableFrame}">
                     <Grid>
                     <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                     <DataGrid x:Name="TaskGrid" Style="{StaticResource TaskDataGrid}" RowStyle="{StaticResource GscStableDataGridRow}" ItemsSource="{Binding TasksView}" SelectedItem="{Binding SelectedTask}" SelectionChanged="OnTaskSelectionChanged">
@@ -225,7 +257,43 @@
                         <Style TargetType="ui:WorkspaceStatePresenter" BasedOn="{StaticResource GscWorkspaceStatePresenter}">
                             <Setter Property="Visibility" Value="Collapsed"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding TasksView.IsEmpty}" Value="True">
+                                <DataTrigger Binding="{Binding TaskPageState}" Value="Empty">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ui:WorkspaceStatePresenter.Style>
+                </ui:WorkspaceStatePresenter>
+                <ui:WorkspaceStatePresenter State="FilterEmpty" Title="当前筛选没有任务" Message="任务记录仍然存在，但不符合当前搜索、状态、类型或时间条件。" RetryCommand="{Binding ClearTaskFiltersCommand}" RetryText="清除筛选">
+                    <ui:WorkspaceStatePresenter.Style>
+                        <Style TargetType="ui:WorkspaceStatePresenter" BasedOn="{StaticResource GscWorkspaceStatePresenter}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding TaskPageState}" Value="FilterEmpty">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ui:WorkspaceStatePresenter.Style>
+                </ui:WorkspaceStatePresenter>
+                <ui:WorkspaceStatePresenter State="Loading" Title="正在读取任务记录" Message="正在从 Worker 读取任务；已有记录会在刷新期间保留。" IsHitTestVisible="False">
+                    <ui:WorkspaceStatePresenter.Style>
+                        <Style TargetType="ui:WorkspaceStatePresenter" BasedOn="{StaticResource GscWorkspaceStatePresenter}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding TaskPageState}" Value="Loading">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ui:WorkspaceStatePresenter.Style>
+                </ui:WorkspaceStatePresenter>
+                <ui:WorkspaceStatePresenter State="Error" Title="任务记录读取失败" Message="Worker 暂时没有返回任务列表；可以重试，已有旧数据不会被清除。" Detail="{Binding TaskPageErrorMessage}" RetryCommand="{Binding RefreshCommand}" RetryText="重试">
+                    <ui:WorkspaceStatePresenter.Style>
+                        <Style TargetType="ui:WorkspaceStatePresenter" BasedOn="{StaticResource GscWorkspaceStatePresenter}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding TaskPageState}" Value="Error">
                                     <Setter Property="Visibility" Value="Visible"/>
                                 </DataTrigger>
                             </Style.Triggers>

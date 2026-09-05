@@ -3,6 +3,12 @@
 > 维护时间：2026-09-05
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-05 U01 任务页视口与状态试点
+
+- `DashboardViewModel.TaskPageState.cs` 将任务页请求生命周期和展示状态独立出来：`Loading`、`Empty`、`FilterEmpty`、`Error`/`ErrorWithData`、`Ready`；刷新失败或刷新中的已有数据不被清空，并通过 `TaskPageLastUpdatedDisplay` 与 `TaskPageStatusSummary` 暴露旧数据时间和恢复入口。
+- TaskCenter 在 1040×700、1366×768 等尺寸下保持主列表+Inspector 和窄屏紧凑详情路径；短高度将摘要 `MinHeight`/Padding 收紧，任务表最小高度保持 `236` DIP，列表内部滚动与 Recycling 虚拟化保留。状态层提供清除筛选、重试和无旧数据错误详情。
+- 阶段验证：Release 0 warning/0 error；Core `65/65`、Worker `260/260`、Playnite `337/399`（62 跳过）、XAML `19/19`，源码门禁和 RenderHarness `render-qa OK` 通过。离屏夹具不是真实 Playnite 宿主证据；高对比度、实际 DPI、长历史性能和故障时序仍需人工复核。
+
 ## 2026-09-05 U03 游戏目录来源与新鲜度诊断
 
 - `GameDescriptorDto` 新增 `PlayniteIsInstalled` 与 `InstallStateSource`；`PlayniteGameAdapter` 按 Playnite 原始标志、有效安装目录、有效本地 Play action 的顺序记录来源，`GameMatchInput` 不包含安装状态，安装状态变化不会使已有匹配失效。
