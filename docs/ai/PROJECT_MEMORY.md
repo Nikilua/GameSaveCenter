@@ -1,9 +1,15 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
-> 维护时间：2026-09-05
+> 维护时间：2026-09-06
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
 > 当前事实入口：先读 [`CURRENT_STATE.md`](CURRENT_STATE.md)。本文保留按阶段的历史约束和证据；若与当前事实入口或最新代码冲突，以 `CURRENT_STATE.md` 的覆盖说明为准，不要按旧条目恢复已撤销布局或外部 Demo 路径。
+
+## 2026-09-06 完成后复查（仅文档）
+
+- 新增 [FOLLOWUP_REVIEW_2026-09-06.md](FOLLOWUP_REVIEW_2026-09-06.md)，基线 `8018cee`。确认上一轮主体已实现，另列 7 项源码边界和 3 项扩展，未修改生产代码。
+- V2-01 媒体归类/撤销数据库提交后异常可能只补偿文件；V2-02/03 巡检忙等、外围异常隔离、游标持久化与公平性；V2-04 RequestId 内容指纹；V2-05/06 云端校验终态与完整摘要；V2-07 媒体多页累积成本。后续应先写行为复现测试，不能将审阅认定为已修复。
+- 本轮 Release 0 warning/0 error，Core 65/65、Worker 275 通过/1 跳过、Playnite 339 通过/62 跳过，XAML 19/19、源码门禁通过。没有复跑真实宿主、规模矩阵或新增故障注入；Worker 重启和 5 项 IPC 行为测试本次跳过。
 
 ## 2026-09-05 UI-134 任务中心搜索文字垂直裁切修复
 
@@ -1466,13 +1472,13 @@
 
 开始 GameSaveCenter 开发前，请依次阅读：
 
-1. `docs/ai/PROJECT_MEMORY.md`（本文件）
-2. `docs/ai/WORKLOG.md`
-3. `docs/DEVELOPMENT_HANDOFF.md`
-4. `docs/design/APPLE_WPF_IMPLEMENTATION_PROMPT.md`（如果存在）
-5. `docs/design/UI_CHANGE_GATE.md`（如果存在）
-6. `git log` 最近 15～30 个 commit
-7. `git status`
+1. `docs/ai/CURRENT_STATE.md`（当前事实入口）
+2. `docs/ai/PROJECT_MEMORY.md`（本文件）
+3. `docs/ai/WORKLOG.md`
+4. `docs/DEVELOPMENT_HANDOFF.md`
+5. `git log` 最近 15～30 个 commit 与 `git status`
+6. `docs/design/APPLE_WPF_IMPLEMENTATION_PROMPT.md`（UI 任务）
+7. `docs/design/UI_CHANGE_GATE.md`（UI 任务）
 
 然后才开始修改代码。不要仅凭历史对话假设当前项目状态；代码、文档和 Git 历史是唯一事实来源。
 

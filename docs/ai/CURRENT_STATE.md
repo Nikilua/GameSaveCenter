@@ -1,6 +1,13 @@
 # GameSaveCenter 当前事实入口
 
-> 更新时间：2026-09-05。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
+> 更新时间：2026-09-06。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
+
+## 2026-09-06 复查后待办（尚未修复）
+
+- 最新审阅为 [FOLLOWUP_REVIEW_2026-09-06.md](FOLLOWUP_REVIEW_2026-09-06.md)，基线 `8018cee`；上一轮功能已有实现，本轮只更新文档，新增 V2-01～07 和 X2-01～03，不重新执行旧路线图。
+- 优先源码风险：媒体归类/撤销在数据库提交后异常可能仅回滚文件；巡检手动占锁时后台争锁失败无等待，候选游标未在验证前落盘且推迟项可能饿死其他候选；云端 check 取消/异常可能遗留 Transferring。均需对应行为/故障测试，不代表已经真机复现。
+- 覆盖旧 F01/F03 交接中的保证：已实现存储账本不等于所有崩溃窗口闭环；目前不能无条件保证巡检重启恢复同一候选、或归类异常一定恢复原副本。详细触发条件与实施方案见新审阅。
+- 本轮 Release 无警告/错误，Core 65/65，Worker 275 通过/1 跳过，Playnite 339 通过/62 跳过，XAML 19/19。Worker 重启及 5 项 Named Pipe 行为测试本次跳过，09-05 的受控历史证据保留，不算本轮重新通过；真实宿主仍为 MANUAL QA REQUIRED。
 
 ## 版本与生产入口
 

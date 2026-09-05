@@ -4,6 +4,12 @@
 
 > 新会话短入口：先读 [`docs/ai/CURRENT_STATE.md`](ai/CURRENT_STATE.md)。本文下方的历史交接按时间保留；除顶部最新阶段和明确标注的覆盖关系外，旧条目只用于追溯，不得覆盖当前事实入口。
 
+## 2026-09-06 下一阶段复查任务入口
+
+- 读 [第二轮复查与实施包](ai/FOLLOWUP_REVIEW_2026-09-06.md)。原 R/U/F/E 主体已有实现，新任务使用 V2/X2 编号；本轮仅文档，应用仍为 0.6.73。
+- 优先处理媒体归类数据库提交后的文件补偿、巡检后台争锁/候选落盘、云端 check 的取消终态；方案区分源码事实与待复现行为。CURRENT_STATE 顶部说明覆盖此前过强的恢复保证。
+- 本轮 Release 0 warning/0 error、Core 65/65、Worker 275 通过/1 跳过、Playnite 339 通过/62 跳过、XAML 19/19；独立 Worker 重启/5 项 Named Pipe 行为本次未执行通过，历史 09-05 证据不改写，真实宿主仍待验收。
+
 ## 2026-09-05 UI-134 任务中心搜索文字垂直裁切修复
 
 - 用户报告任务中心搜索框输入后文字不可见。根因是生产 `GscWpfUiTextBoxTemplate` 将 TextBox Padding 同时用于外层 Chrome 和原生内容视口；上下 `7 DIP` 被重复扣除，36 DIP 输入框的 `PART_ContentHost.ViewportHeight` 只有约 `5 DIP`。
