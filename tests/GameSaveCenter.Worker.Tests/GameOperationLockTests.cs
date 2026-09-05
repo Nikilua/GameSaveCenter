@@ -45,6 +45,7 @@ public sealed class GameOperationLockTests
     [InlineData(GameOperationKind.Restore, GameOperationKind.Restore, false)]
     [InlineData(GameOperationKind.Restore, GameOperationKind.Retention, false)]
     [InlineData(GameOperationKind.Retention, GameOperationKind.Backup, false)]
+    [InlineData(GameOperationKind.Metadata, GameOperationKind.Backup, false)]
     public void OperationCompatibilityMatrixIsExplicit(GameOperationKind left, GameOperationKind right, bool expected)
         => Assert.Equal(expected, GameOperationPolicy.IsCompatible(left, right));
 

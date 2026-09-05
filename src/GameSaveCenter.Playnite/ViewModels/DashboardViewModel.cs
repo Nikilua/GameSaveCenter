@@ -1795,6 +1795,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 new RetentionSimulationApplyRequestDto
                 {
                     Confirmed = true,
+                    PreviewId = preview.PreviewId,
                     PreviewGeneratedUtc = preview.GeneratedUtc,
                     ExpectedCandidateCount = preview.DeleteCandidateCount,
                     ExpectedReleaseBytes = preview.EstimatedReleaseBytes

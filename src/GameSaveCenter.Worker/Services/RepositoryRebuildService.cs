@@ -20,15 +20,18 @@ public sealed class RepositoryRebuildService
     private readonly SqliteStateStore _store;
     private readonly WorkerOptions _options;
     private readonly ILogger<RepositoryRebuildService> _logger;
+    private readonly GameOperationLock _gameLock;
 
     public RepositoryRebuildService(
         SqliteStateStore store,
         WorkerOptions options,
-        ILogger<RepositoryRebuildService> logger)
+        ILogger<RepositoryRebuildService> logger,
+        GameOperationLock? gameLock = null)
     {
         _store = store;
         _options = options;
         _logger = logger;
+        _gameLock = gameLock ?? new GameOperationLock();
     }
 
     public async Task<RepositoryRebuildPreviewDto> PreviewAsync(CancellationToken token)
@@ -86,6 +89,13 @@ public sealed class RepositoryRebuildService
             {
                 var resolution = await ResolveGameAsync(group.Key, matches, token).ConfigureAwait(false);
                 if (resolution.Recovered) recovered++;
+                using var lease = await _gameLock.AcquireAsync(
+                    resolution.PlayniteId,
+                    GameOperationKind.RepositoryRepair,
+                    TimeSpan.FromSeconds(10),
+                    token).ConfigureAwait(false);
+                if (lease == null)
+                    throw new WorkerOperationException("GAME_OPERATION_BUSY", "该游戏已有备份、恢复、媒体或保留清理操作正在执行，已跳过索引重建。", resolution.PlayniteId);
 
                 var activeIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 foreach (var artifact in group)

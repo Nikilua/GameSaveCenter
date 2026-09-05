@@ -41,13 +41,14 @@ public sealed class IpcRequestDispatcher
     private readonly RetentionSimulationService _retentionSimulation;
     private readonly LocalMirrorService _localMirror;
     private readonly MaintenanceReportService _maintenanceReport;
+    private readonly GameOperationLock _gameLock;
     private readonly ILogger<IpcRequestDispatcher> _logger;
 
     public IpcRequestDispatcher(GameCatalogService catalog,GameSessionCoordinator sessions,BackupOrchestrator backup,RestoreOrchestrator restore,
         MediaSyncService media,SavePathDetectionService detection,DashboardService dashboard,SqliteStateStore store,TaskCoordinator tasks,
         LudusaviClient ludusavi,WorkerOptions options,GameToolService gameTools,ITrainerCatalogSource trainerCatalog,
-        DeviceStateService deviceStates,RemoteBackupStagingService remoteBackups,RestoreReadinessService restoreReadiness,EnvironmentCheckService environment,DiagnosticsPackageService diagnostics,IntegrityCheckService integrityCheck,MetadataBackupService metadataBackup,RepositoryRebuildService repositoryRebuild,PathRemapService pathRemap,TaskReconcileService taskReconcile,StorageAnalysisService storageAnalysis,RetentionSimulationService retentionSimulation,LocalMirrorService localMirror,MaintenanceReportService maintenanceReport,ILogger<IpcRequestDispatcher> logger)
-    { _catalog=catalog;_sessions=sessions;_backup=backup;_restore=restore;_media=media;_detection=detection;_dashboard=dashboard;_store=store;_tasks=tasks;_ludusavi=ludusavi;_options=options;_gameTools=gameTools;_trainerCatalog=trainerCatalog;_deviceStates=deviceStates;_remoteBackups=remoteBackups;_restoreReadiness=restoreReadiness;_environment=environment;_diagnostics=diagnostics;_integrityCheck=integrityCheck;_metadataBackup=metadataBackup;_repositoryRebuild=repositoryRebuild;_pathRemap=pathRemap;_taskReconcile=taskReconcile;_storageAnalysis=storageAnalysis;_retentionSimulation=retentionSimulation;_localMirror=localMirror;_maintenanceReport=maintenanceReport;_logger=logger; }
+        DeviceStateService deviceStates,RemoteBackupStagingService remoteBackups,RestoreReadinessService restoreReadiness,EnvironmentCheckService environment,DiagnosticsPackageService diagnostics,IntegrityCheckService integrityCheck,MetadataBackupService metadataBackup,RepositoryRebuildService repositoryRebuild,PathRemapService pathRemap,TaskReconcileService taskReconcile,StorageAnalysisService storageAnalysis,RetentionSimulationService retentionSimulation,LocalMirrorService localMirror,MaintenanceReportService maintenanceReport,GameOperationLock gameLock,ILogger<IpcRequestDispatcher> logger)
+    { _catalog=catalog;_sessions=sessions;_backup=backup;_restore=restore;_media=media;_detection=detection;_dashboard=dashboard;_store=store;_tasks=tasks;_ludusavi=ludusavi;_options=options;_gameTools=gameTools;_trainerCatalog=trainerCatalog;_deviceStates=deviceStates;_remoteBackups=remoteBackups;_restoreReadiness=restoreReadiness;_environment=environment;_diagnostics=diagnostics;_integrityCheck=integrityCheck;_metadataBackup=metadataBackup;_repositoryRebuild=repositoryRebuild;_pathRemap=pathRemap;_taskReconcile=taskReconcile;_storageAnalysis=storageAnalysis;_retentionSimulation=retentionSimulation;_localMirror=localMirror;_maintenanceReport=maintenanceReport;_gameLock=gameLock;_logger=logger; }
 
     public async Task<IpcEnvelope> DispatchAsync(IpcEnvelope request,CancellationToken token)
     {
@@ -298,6 +299,7 @@ public sealed class IpcRequestDispatcher
     {
         update.Policy ??= new BackupPolicyDto();
         update.Policy.DuringPlayIntervalMinutes = Math.Clamp(update.Policy.DuringPlayIntervalMinutes, 1, 1440);
+        using var lease = await AcquireGameOperationAsync(update.PlayniteId, token).ConfigureAwait(false);
         await _store.SetPolicyAsync(update.PlayniteId,update.Policy,token).ConfigureAwait(false);
         await _store.AppendAuditAsync("Policy","Updated game policy",JsonSerializer.Serialize(new{update.PlayniteId,update.Policy}),token).ConfigureAwait(false);
         return new{updated=true};
@@ -314,6 +316,7 @@ public sealed class IpcRequestDispatcher
         };
         if(request.Choice==ProtectionPromptChoice.EnableRecommended)
         {
+            using var lease = await AcquireGameOperationAsync(request.PlayniteId, token).ConfigureAwait(false);
             var policy=await _store.GetPolicyAsync(request.PlayniteId,token).ConfigureAwait(false);
             policy.Enabled=true;
             policy.BackupOnGameStop=true;
@@ -329,6 +332,7 @@ public sealed class IpcRequestDispatcher
         var ids=(request?.PlayniteIds??new List<string>()).Where(x=>!string.IsNullOrWhiteSpace(x)).Distinct(StringComparer.OrdinalIgnoreCase).Take(100).ToList();
         foreach(var id in ids)
         {
+            using var lease = await AcquireGameOperationAsync(id, token).ConfigureAwait(false);
             var policy=await _store.GetPolicyAsync(id,token).ConfigureAwait(false);
             policy.Enabled=true;
             policy.BackupOnGameStop=true;
@@ -388,6 +392,7 @@ public sealed class IpcRequestDispatcher
         var template = await _store.GetPolicyTemplateAsync(templateId,token).ConfigureAwait(false)
                        ?? throw new KeyNotFoundException("策略模板不存在。");
         var policy = BackupPolicyTemplateCatalog.ClonePolicy(template.Policy);
+        using var lease = await AcquireGameOperationAsync(game.PlayniteId, token).ConfigureAwait(false);
         await _store.SetPolicyAsync(game.PlayniteId,policy,token).ConfigureAwait(false);
         await _store.AppendAuditAsync("PolicyTemplate", "Applied policy template to game",
             JsonSerializer.Serialize(new { game.PlayniteId, template.TemplateId, template.Name, policy }), token).ConfigureAwait(false);
@@ -469,6 +474,7 @@ public sealed class IpcRequestDispatcher
 
     private async Task<RestoreReadinessDto> ValidateRestoreReadinessAsync(RestoreReadinessRequestDto request, CancellationToken token)
     {
+        using var lease = await AcquireGameOperationAsync(request.PlayniteId, token).ConfigureAwait(false);
         var version = (await _store.GetBackupVersionsAsync(request.PlayniteId, token).ConfigureAwait(false))
             .FirstOrDefault(x => string.Equals(x.BackupId, request.BackupId, StringComparison.OrdinalIgnoreCase));
         if (version == null) throw new InvalidOperationException("找不到需要验证的备份版本。");
@@ -490,12 +496,19 @@ public sealed class IpcRequestDispatcher
 
     private async Task<object> UpdateMetadataAsync(BackupMetadataUpdateDto update,CancellationToken token)
     {
+        using var lease = await AcquireGameOperationAsync(update.PlayniteId, token).ConfigureAwait(false);
         var matches=await _catalog.GetMatchesAsync(token).ConfigureAwait(false);
         if(!matches.TryGetValue(update.PlayniteId,out var match)||string.IsNullOrWhiteSpace(match.Name))throw new InvalidOperationException("Game is not matched to Ludusavi.");
         var edited=await _ludusavi.EditBackupAsync(match.Name,update.BackupId,update.Comment,update.Locked,token).ConfigureAwait(false);
         if(!edited.Success)throw new InvalidOperationException(edited.ErrorMessage);
         await _backup.RefreshBackupHistoryAsync(update.PlayniteId,match.Name,token).ConfigureAwait(false);
         return new{updated=true};
+    }
+
+    private async Task<GameOperationLease> AcquireGameOperationAsync(string playniteId, CancellationToken token)
+    {
+        var lease = await _gameLock.AcquireAsync(playniteId, GameOperationKind.Metadata, TimeSpan.FromSeconds(10), token).ConfigureAwait(false);
+        return lease ?? throw new WorkerOperationException("GAME_OPERATION_BUSY", "该游戏已有备份、恢复、媒体或保留清理操作正在执行，请稍后重试。", playniteId);
     }
 
 

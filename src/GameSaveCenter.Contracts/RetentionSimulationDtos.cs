@@ -6,6 +6,8 @@ namespace GameSaveCenter.Contracts
     /// <summary>Read-only global retention simulation returned by the Worker.</summary>
     public sealed class RetentionSimulationPreviewDto
     {
+        /// <summary>Opaque Worker-owned handle for this exact preview snapshot.</summary>
+        public string PreviewId { get; set; } = string.Empty;
         public DateTime GeneratedUtc { get; set; } = DateTime.UtcNow;
         public int ExistingVersionCount { get; set; }
         public int KeepVersionCount { get; set; }
@@ -58,11 +60,13 @@ namespace GameSaveCenter.Contracts
     public sealed class RetentionSimulationApplyRequestDto
     {
         public bool Confirmed { get; set; }
+        /// <summary>Worker-generated preview handle. The apply operation never trusts client-supplied candidate counts.</summary>
+        public string PreviewId { get; set; } = string.Empty;
         /// <summary>UTC timestamp of the read-only preview the user confirmed.</summary>
         public DateTime PreviewGeneratedUtc { get; set; }
-        /// <summary>Candidate count shown by the preview. The Worker rechecks it before deleting.</summary>
+        /// <summary>Legacy display value retained for wire compatibility; the Worker does not use it for authorization.</summary>
         public int ExpectedCandidateCount { get; set; }
-        /// <summary>Estimated bytes shown by the preview. The Worker rechecks it before deleting.</summary>
+        /// <summary>Legacy display value retained for wire compatibility; the Worker does not use it for authorization.</summary>
         public long ExpectedReleaseBytes { get; set; }
     }
 
@@ -73,6 +77,8 @@ namespace GameSaveCenter.Contracts
         public int SkippedProtectedCount { get; set; }
         public int SkippedMissingCount { get; set; }
         public int SkippedUnsupportedCount { get; set; }
+        public int SkippedBusyCount { get; set; }
+        public int SkippedChangedCount { get; set; }
         public int FailedCount { get; set; }
         public int PendingQuarantineCount { get; set; }
         public long PendingQuarantineBytes { get; set; }

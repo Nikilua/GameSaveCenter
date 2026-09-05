@@ -11,7 +11,8 @@ public enum GameOperationKind
     CloudDownload,
     Media,
     RestoreReadiness,
-    RepositoryRepair
+    RepositoryRepair,
+    Metadata
 }
 
 /// <summary>Explicit compatibility matrix for same-game operations.</summary>
@@ -24,6 +25,8 @@ public static class GameOperationPolicy
         if (left == GameOperationKind.Backup && right == GameOperationKind.Backup)
             return false;
         if (left == GameOperationKind.Retention || right == GameOperationKind.Retention)
+            return false;
+        if (left == GameOperationKind.Metadata || right == GameOperationKind.Metadata)
             return false;
         return true;
     }
