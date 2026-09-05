@@ -10,7 +10,7 @@ namespace GameSaveCenter.Worker.Services;
 /// <summary>Serializes destructive work per game while allowing unrelated games to progress.</summary>
 public sealed class TaskCoordinator
 {
-    private readonly SqliteStateStore _store;
+    private readonly ITaskStatusStore _store;
     private readonly ILogger<TaskCoordinator> _logger;
     private readonly TaskEventBroadcaster _events;
     private readonly string workerSessionId;
@@ -22,7 +22,7 @@ public sealed class TaskCoordinator
     private long _changeSequence;
     private const int ChangeRetention = 500;
 
-    public TaskCoordinator(SqliteStateStore store, TaskEventBroadcaster events, ILogger<TaskCoordinator> logger, WorkerOptions? options = null)
+    public TaskCoordinator(ITaskStatusStore store, TaskEventBroadcaster events, ILogger<TaskCoordinator> logger, WorkerOptions? options = null)
     { _store=store; _events=events; _logger=logger; workerSessionId=options?.WorkerSessionId ?? Guid.NewGuid().ToString("N"); }
 
     public async Task<TaskStatusDto> RunAsync(
@@ -83,9 +83,24 @@ public sealed class TaskCoordinator
         }
         finally
         {
-            await PersistAndPublishAsync(task,CancellationToken.None).ConfigureAwait(false);
-            _taskTokens.TryRemove(task.TaskId,out _);
-            if(gateEntered)gate.Release();
+            try
+            {
+                await PersistAndPublishAsync(task,CancellationToken.None).ConfigureAwait(false);
+            }
+            catch(Exception ex)
+            {
+                // The operation result and its durable terminal record are separate
+                // outcomes.  Never let a storage outage strand the per-game gate or
+                // keep a completed cancellation source reachable from Cancel().
+                _logger.LogError(ex,
+                    "Task {TaskId} terminal state persistence failed for game {GameId}. Business result: {BusinessState}; task type: {TaskType}.",
+                    task.TaskId, task.GameId, task.State, task.TaskType);
+            }
+            finally
+            {
+                _taskTokens.TryRemove(task.TaskId,out _);
+                if(gateEntered)gate.Release();
+            }
         }
         return task;
     }

@@ -13,7 +13,7 @@ namespace GameSaveCenter.Worker.Persistence;
 /// Durable local state. Large binaries remain on disk; SQLite stores identities,
 /// summaries and audit history so files stay usable without this application.
 /// </summary>
-public sealed partial class SqliteStateStore
+public sealed partial class SqliteStateStore : ITaskStatusStore
 {
     private readonly WorkerOptions _options;
     private readonly ILogger<SqliteStateStore> _logger;

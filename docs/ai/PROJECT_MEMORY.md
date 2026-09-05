@@ -3,6 +3,13 @@
 > 维护时间：2026-09-05
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-05 R01 任务终态写入失败不再锁死同一游戏
+
+- `TaskCoordinator` 将任务状态写入依赖收口为 `ITaskStatusStore`；终态持久化放在独立保护块中，失败时记录 TaskId、GameId、TaskType、原始业务终态和异常，但不阻断 `_taskTokens` 清理或同游戏信号量释放。
+- `PersistAndPublishAsync` 仍先成功写入 SQLite 再发布终态事件，因此未成功落盘的 `Succeeded` 不会进入 UI 任务事件流；业务返回值保留原始成功/失败/取消结果，便于区分业务结果与持久化故障。
+- 新增 `TaskCoordinatorFailureTests`，对成功、业务失败、取消三条终态路径注入最后一次写入失败，验证后续同游戏任务和其他游戏任务均能在有界时间内完成，取消令牌已清理且没有发布未落盘终态事件。
+- 验证：Worker Debug 构建 0 warning/0 error；Worker `238/238` 通过；`git diff --check` 通过。未运行真实 Worker 故障注入或 Playnite 宿主，后续按 R02 继续。
+
 ## 2026-09-05 全项目完善方案（仅审阅，尚未实施）
 
 - 用户要求审阅功能、UI、可扩展性、健壮性、稳定性与性能，并提供便于其他 AI 实施的方案；已交付 [IMPROVEMENT_ROADMAP_2026-09-05.md](IMPROVEMENT_ROADMAP_2026-09-05.md)，含 15 个任务的代码依据、步骤、依赖和验收条件，基线 `d5fd494` / 0.6.73。
