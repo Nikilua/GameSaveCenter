@@ -3,7 +3,16 @@
 > 维护时间：2026-09-05
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
-## 2026-09-05 F03 媒体归类建议与可撤销批量操作
+> 当前事实入口：先读 [`CURRENT_STATE.md`](CURRENT_STATE.md)。本文保留按阶段的历史约束和证据；若与当前事实入口或最新代码冲突，以 `CURRENT_STATE.md` 的覆盖说明为准，不要按旧条目恢复已撤销布局或外部 Demo 路径。
+
+## 2026-09-05 E02 当前事实入口与模块边界文档治理
+
+- `docs/ai/CURRENT_STATE.md` 是新会话的短事实入口：当前版本 `0.6.73`，生产可见路径为 `DashboardView` 承载的 `AcrylicProductionShellView`，工作区和 Worker/Contracts/SQLite 入口均指向仓库实际文件。`GameSaveCenter.AcrylicFork/src/GameSaveCenter.Playnite/Design/` 当前缺失，不能作为编译、测试或逐像素证据输入；生产主题入口是 `Themes/AcrylicProductionResources.xaml` 及其 `DesignTokens`/`WpfUiProduction`/`Redesign` 资源。
+- 当前有效的 UI/行为例外和保护边界在短入口集中说明：游戏选择器、既有滚动条、真实数据与安全确认语义保留；筛选使用 OneWay 显示 + `UiFilterSelection.Synchronize` + `DropDownClosed` 写回；历史记忆只作阶段证据，冲突时短入口与最新代码覆盖。
+- `AGENTS.md` 已将 CURRENT_STATE 放在启动协议第一项；根 `docs/PROJECT_MEMORY.md` 与 `DEVELOPMENT_HANDOFF.md` 通过链接声明自身为历史归档。源码门禁会检查短入口中的版本、资源、缺失 Demo 和 `MANUAL QA REQUIRED` 标记。
+- E02 阶段验证：Release 0 warning/0 error；Core `65/65`、Worker `275/275`、Playnite `338/400`（62 跳过）、XAML `19/19`，源码校验和 `git diff --check` 通过。真实宿主和大库证据仍未被文档治理替代。
+
+## 2026-09-05 F03 媒体归类建议与可撤销批次
 
 - `MediaSyncService` 的归类预览读取 Inbox 媒体、启用来源规则、会话区间和进程映射；规则目录/进程映射可给 High，时间范围或唯一文件名候选给 Medium，多个候选、未知时间或冲突给 Low 且不提供可应用目标。预览默认最多 200 项，批次有效期 30 分钟。
 - `media_classification_batches` / `media_classification_batch_items` 保存原始媒体快照（状态、PlayniteId、版本、路径、云端状态、不可变元数据）以及建议/应用后快照。应用默认 `HighConfidenceOnly=true`，只处理仍匹配原快照的条目；手工覆盖或并发修改返回 Conflict，不覆盖用户选择。

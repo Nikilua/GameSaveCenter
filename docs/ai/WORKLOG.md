@@ -2,7 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
-## 2026-09-05 F03 媒体归类建议与可撤销批量操作
+## 2026-09-05 E02 当前事实入口与模块边界文档治理
+
+- 新增 [`CURRENT_STATE.md`](CURRENT_STATE.md) 作为跨电脑、跨模型的短入口，集中记录版本 `0.6.73`、生产 Shell/工作区、Worker/Contracts/SQLite 入口、实际生产主题资源和 Demo 目录缺失事实；明确 Demo Mock 不进入生产、当前游戏选框/滚动条/安全语义的有效例外，以及 OneWay + `DropDownClosed` 筛选规则。
+- `AGENTS.md` 启动协议改为先读当前事实入口；`docs/PROJECT_MEMORY.md` 和 `docs/DEVELOPMENT_HANDOFF.md` 增加历史归档与冲突覆盖说明，避免旧条目中的外部 AcrylicFork 路径、旧 Tab/绑定建议被误当作当前实现。没有修改生产业务或版本。
+- `scripts/validate-source.py` 新增当前事实文档门禁，检查版本、生产资源、缺失 Demo、筛选写回和人工验收边界标记，防止短入口与代码/交接文档脱节。
+- 验证：Release 0 warning/0 error；Core `65/65`、Worker `275/275`、Playnite `338/400`（62 跳过）、XAML `19/19`；源码校验和 `git diff --check` 通过。E02 不涉及 XAML 改动，WPF/RenderHarness 沿用 F03 已通过结果；真实 Playnite、DPI、长时压力和目标机仍需人工复核。
+
+## 2026-09-05 F03 媒体归类建议与可撤销批次
 
 - 新增媒体归类预览、应用和撤销契约及 IPC：Worker 结合来源目录规则、会话时间范围、进程映射和唯一文件名候选生成可解释建议，返回目标游戏、原因、置信等级；规则冲突、重叠会话和未知时间保持低置信度，不会自动归类。
 - 新增 SQLite `media_classification_batches` / `media_classification_batch_items`，批次保存 30 分钟预览有效期、原始状态/目标/版本/云端状态/路径/不可变媒体元数据。确认默认只应用高置信建议，应用前再次校验快照；低置信、已手工修改或并发变化的条目逐项跳过并记录冲突。

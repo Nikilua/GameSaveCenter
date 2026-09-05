@@ -4,10 +4,11 @@
 
 开始任何开发前，先依次阅读：
 
-1. `docs/ai/PROJECT_MEMORY.md`
-2. `docs/ai/WORKLOG.md`
-3. `docs/DEVELOPMENT_HANDOFF.md`
-4. 最近的 Git log 与 `git status`
+1. `docs/ai/CURRENT_STATE.md`
+2. `docs/ai/PROJECT_MEMORY.md`
+3. `docs/ai/WORKLOG.md`
+4. `docs/DEVELOPMENT_HANDOFF.md`
+5. 最近的 Git log 与 `git status`
 
 然后按 `docs/ai/PROJECT_MEMORY.md` 的启动协议继续；每完成一个独立阶段，编译、跑测试、更新 `docs/ai/WORKLOG.md` 与项目记忆，并单独 commit。
 

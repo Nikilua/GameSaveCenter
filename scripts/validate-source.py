@@ -383,6 +383,30 @@ def check_delivery_guards() -> None:
             fail(f"Development installation stale-process safety guard is missing: {token}")
 
 
+def check_current_state_documentation() -> None:
+    """Keep the short cross-model handoff anchored to the current repository facts."""
+    current_state_path = ROOT / "docs/ai/CURRENT_STATE.md"
+    if not current_state_path.exists():
+        fail("Missing docs/ai/CURRENT_STATE.md current-facts entry point")
+        return
+    current_state = current_state_path.read_text(encoding="utf-8")
+    for required in (
+        "0.6.73",
+        "AcrylicProductionResources.xaml",
+        "GameSaveCenter.AcrylicFork/src/GameSaveCenter.Playnite/Design/",
+        "当前工作区不存在",
+        "DropDownClosed",
+        "MANUAL QA REQUIRED",
+        "PROJECT_MEMORY.md",
+        "DEVELOPMENT_HANDOFF.md",
+    ):
+        if required not in current_state:
+            fail(f"CURRENT_STATE.md is missing current-facts marker: {required}")
+    agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
+    if "docs/ai/CURRENT_STATE.md" not in agents.split("然后按", 1)[0]:
+        fail("AGENTS.md must make CURRENT_STATE.md the first startup document")
+
+
 
 
 
@@ -1654,6 +1678,7 @@ def main() -> int:
     check_ipc_message_guards()
     check_version_consistency()
     check_delivery_guards()
+    check_current_state_documentation()
     check_dashboard_regressions()
     check_media_inbox_guards()
     check_media_sql_migration()

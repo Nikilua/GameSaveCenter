@@ -1,5 +1,7 @@
 # 项目记忆与不可丢失约束
 
+> 当前事实入口已迁移到 [`docs/ai/CURRENT_STATE.md`](ai/CURRENT_STATE.md)。本文件是历史约束与证据归档；新开发先读当前事实入口，冲突时以当前事实入口、`AGENTS.md` 和最新代码为准。
+
 > SKILL-001（2026-08-11）：`wpf-apple-desktop-ui` 技能已随仓库提交到 `.codex/skills/wpf-apple-desktop-ui/`，并安装到本机 `%USERPROFILE%\.codex\skills\wpf-apple-desktop-ui`。任何 WPF/XAML/Playnite UI 改动前必须读取该技能 `SKILL.md` 及任务相关的 `references/`；跨电脑、跨模型以仓库副本为唯一事实来源，AGENTS.md、DEVELOPMENT_HANDOFF.md 与 UI_CHANGE_GATE.md 中的路径提示必须保持同步。UI 静态审查新增 `python .codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py .`。
 
 > QA-001（2026-08-11）：离屏渲染 QA 已入库：`tests/GameSaveCenter.RenderHarness` + `scripts/render-qa.ps1`，用假数据（不启动 Worker/IPC）在 1040×700/1280×720/1366×768/1600×900/1920×1080 逻辑窗口渲染 Overview/Media/Maintenance/Task 并输出 PNG 与 `artifacts/ui-qa/render/render-qa-report.txt`。复核结论：常用最小窗口下 Media/Task/Maintenance 主表保持 350–460 DIP 有限视口且多行可见，页面滚动面为 `Auto` 且超限可滚动，Overview 堆叠由页面滚动承载、右侧风险区内容完整。后续 UI 改动应运行 `scripts/render-qa.ps1` 并在交接记录中写入结果；真实 Playnite 宿主、主题、DPI 真机和连续缩放流畅性不能因此声称已验证。
