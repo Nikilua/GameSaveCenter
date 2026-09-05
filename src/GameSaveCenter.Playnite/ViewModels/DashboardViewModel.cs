@@ -55,6 +55,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         private CancellationTokenSource? taskEventSubscription;
         private CancellationTokenSource? gamePickerPersistenceCancellation;
         private CancellationTokenSource? detailsLoadCancellation;
+        private CancellationTokenSource? mediaPageRequestCancellation;
+        private CancellationTokenSource? mediaInboxRequestCancellation;
         private CancellationTokenSource? selectedGameBackgroundCancellation;
         private CancellationTokenSource? initialSynchronizationCancellation;
         private long deferredUiWorkGeneration;
@@ -1289,6 +1291,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             Interlocked.Increment(ref mediaPageGeneration);
             Interlocked.Increment(ref mediaInboxLoadGeneration);
             pendingMediaInboxLoadMode = null;
+            CancelMediaPageRequest();
+            CancelMediaInboxRequest();
             CancelDetailsLoad();
             CancelSelectedGameBackgroundLoad();
             CancelInitialSynchronization();
@@ -2218,8 +2222,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 case WorkspaceKind.Saves:
                 {
-                    var backupsTask = plugin.RequestAsync<BackupVersionDto[]>(MessageTypes.ListBackups, new GameQueryDto { PlayniteId = id, Limit = 500, ForceRefresh = forceBackupHistory });
-                    var candidatesTask = plugin.RequestAsync<SavePathCandidateDto[]>(MessageTypes.ListSaveCandidates, new GameQueryDto { PlayniteId = id });
+                    var backupsTask = plugin.RequestAsync<BackupVersionDto[]>(MessageTypes.ListBackups, new GameQueryDto { PlayniteId = id, Limit = 500, ForceRefresh = forceBackupHistory }, cancellationToken: cancellationToken);
+                    var candidatesTask = plugin.RequestAsync<SavePathCandidateDto[]>(MessageTypes.ListSaveCandidates, new GameQueryDto { PlayniteId = id }, cancellationToken: cancellationToken);
                     await Task.WhenAll(backupsTask, candidatesTask);
                     if (!IsCurrentDetailsLoad(id, cancellationToken, expectedGeneration)) return;
                     ApplyOnUi(() =>
@@ -2240,9 +2244,9 @@ namespace GameSaveCenter.Playnite.ViewModels
                 {
                     var mediaLoadTimer = Stopwatch.StartNew();
                     var mediaRequestGeneration = Interlocked.Increment(ref mediaPageGeneration);
-                    var mediaTask = plugin.RequestAsync<MediaPageDto>(MessageTypes.ListMediaPage, BuildMediaQuery(id, string.Empty));
-                    var sourcesTask = plugin.RequestAsync<MediaSourceRuleDto[]>(MessageTypes.ListMediaSources, new GameQueryDto { PlayniteId = id });
-                    var summaryTask = plugin.RequestAsync<MediaStorageSummaryDto>(MessageTypes.GetMediaSummary, new GameQueryDto { PlayniteId = id });
+                    var mediaTask = plugin.RequestAsync<MediaPageDto>(MessageTypes.ListMediaPage, BuildMediaQuery(id, string.Empty), cancellationToken: cancellationToken);
+                    var sourcesTask = plugin.RequestAsync<MediaSourceRuleDto[]>(MessageTypes.ListMediaSources, new GameQueryDto { PlayniteId = id }, cancellationToken: cancellationToken);
+                    var summaryTask = plugin.RequestAsync<MediaStorageSummaryDto>(MessageTypes.GetMediaSummary, new GameQueryDto { PlayniteId = id }, cancellationToken: cancellationToken);
                     await Task.WhenAll(mediaTask, sourcesTask, summaryTask);
                     mediaLoadTimer.Stop();
                     if (!IsCurrentDetailsLoad(id, cancellationToken, expectedGeneration)) return;
@@ -2266,7 +2270,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 }
                 case WorkspaceKind.Trainers:
                 {
-                    var gameTools = await plugin.RequestAsync<GameToolDto[]>(MessageTypes.ListGameTools, new GameQueryDto { PlayniteId = id });
+                    var gameTools = await plugin.RequestAsync<GameToolDto[]>(MessageTypes.ListGameTools, new GameQueryDto { PlayniteId = id }, cancellationToken: cancellationToken);
                     if (!IsCurrentDetailsLoad(id, cancellationToken, expectedGeneration)) return;
                     ApplyOnUi(() =>
                     {
@@ -3558,12 +3562,11 @@ namespace GameSaveCenter.Playnite.ViewModels
         }
 
         /// <summary>
-        /// Loads only the currently selected game's detail surface. The IPC client does not
-        /// expose cancellation for an already-written named-pipe request, so a generation token
-        /// is used as a second safety boundary: stale responses are ignored and never overwrite
-        /// the newly selected game's UI. This path deliberately does not toggle IsBusy, allowing
-        /// a fast picker sequence to converge on the latest selection while a normal command is
-        /// still running.
+        /// Loads only the currently selected game's detail surface. The caller token now stops
+        /// the transport wait as soon as selection/workspace changes; the generation token is
+        /// still the UI safety boundary for a response that was already accepted by Worker.
+        /// This path deliberately does not toggle IsBusy, allowing a fast picker sequence to
+        /// converge on the latest selection while a normal command is still running.
         /// </summary>
         private async Task LoadSelectionDetailsAsync(string playniteId)
         {
@@ -3587,7 +3590,56 @@ namespace GameSaveCenter.Playnite.ViewModels
         private void CancelDetailsLoad()
         {
             Interlocked.Increment(ref detailsLoadGeneration);
+            CancelMediaPageRequest();
             var cancellation = Interlocked.Exchange(ref detailsLoadCancellation, null);
+            if (cancellation == null) return;
+            try { cancellation.Cancel(); }
+            finally { cancellation.Dispose(); }
+        }
+
+        private CancellationTokenSource BeginMediaPageRequest()
+        {
+            var next = new CancellationTokenSource();
+            var previous = Interlocked.Exchange(ref mediaPageRequestCancellation, next);
+            if (previous == null) return next;
+            try { previous.Cancel(); }
+            finally { previous.Dispose(); }
+            return next;
+        }
+
+        private void EndMediaPageRequest(CancellationTokenSource requestCancellation)
+        {
+            if (ReferenceEquals(Interlocked.CompareExchange(ref mediaPageRequestCancellation, null, requestCancellation), requestCancellation))
+                requestCancellation.Dispose();
+        }
+
+        private void CancelMediaPageRequest()
+        {
+            var cancellation = Interlocked.Exchange(ref mediaPageRequestCancellation, null);
+            if (cancellation == null) return;
+            try { cancellation.Cancel(); }
+            finally { cancellation.Dispose(); }
+        }
+
+        private CancellationTokenSource BeginMediaInboxRequest()
+        {
+            var next = new CancellationTokenSource();
+            var previous = Interlocked.Exchange(ref mediaInboxRequestCancellation, next);
+            if (previous == null) return next;
+            try { previous.Cancel(); }
+            finally { previous.Dispose(); }
+            return next;
+        }
+
+        private void EndMediaInboxRequest(CancellationTokenSource requestCancellation)
+        {
+            if (ReferenceEquals(Interlocked.CompareExchange(ref mediaInboxRequestCancellation, null, requestCancellation), requestCancellation))
+                requestCancellation.Dispose();
+        }
+
+        private void CancelMediaInboxRequest()
+        {
+            var cancellation = Interlocked.Exchange(ref mediaInboxRequestCancellation, null);
             if (cancellation == null) return;
             try { cancellation.Cancel(); }
             finally { cancellation.Dispose(); }

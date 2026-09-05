@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Text;
 using System.Threading;
@@ -27,13 +28,15 @@ namespace GameSaveCenter.Contracts
     public sealed class BoundedIpcLineReader
     {
         private readonly StreamReader reader;
+        private readonly Action? cancelPendingRead;
         private readonly char[] buffer = new char[4096];
         private int bufferOffset;
         private int bufferCount;
 
-        public BoundedIpcLineReader(StreamReader reader)
+        public BoundedIpcLineReader(StreamReader reader, Action? cancelPendingRead = null)
         {
             this.reader = reader ?? throw new System.ArgumentNullException(nameof(reader));
+            this.cancelPendingRead = cancelPendingRead;
         }
 
         public async Task<BoundedIpcLineReadResult> ReadAsync(CancellationToken token)
@@ -90,7 +93,7 @@ namespace GameSaveCenter.Contracts
             {
                 var read = reader.ReadAsync(buffer, 0, buffer.Length);
                 bufferCount = token.CanBeCanceled
-                    ? await AwaitReadAsync(read, token).ConfigureAwait(false)
+                    ? await AwaitReadAsync(read, token, cancelPendingRead).ConfigureAwait(false)
                     : await read.ConfigureAwait(false);
                 bufferOffset = 0;
                 if (bufferCount == 0) return -1;
@@ -98,7 +101,7 @@ namespace GameSaveCenter.Contracts
             return buffer[bufferOffset++];
         }
 
-        private static async Task<int> AwaitReadAsync(Task<int> read, CancellationToken token)
+        private static async Task<int> AwaitReadAsync(Task<int> read, CancellationToken token, Action? cancelPendingRead)
         {
             if (read.IsCompleted)
                 return await read.ConfigureAwait(false);
@@ -108,7 +111,25 @@ namespace GameSaveCenter.Contracts
             // listener until the whole listener token was cancelled. A disposable registration
             // keeps cancellation bounded to this one pending read.
             var cancellation = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
-            using (token.Register(() => cancellation.TrySetResult(true)))
+            using (token.Register(() =>
+            {
+                cancellation.TrySetResult(true);
+                // StreamReader/NamedPipeStream disposal can block briefly while a native
+                // read is being completed. Never run that close synchronously inside a
+                // CancellationToken callback: Cancel() must return so the caller can
+                // observe the intentional cancellation promptly.
+                if (cancelPendingRead != null)
+                {
+                    try
+                    {
+                        ThreadPool.QueueUserWorkItem(_ =>
+                        {
+                            try { cancelPendingRead.Invoke(); } catch { }
+                        });
+                    }
+                    catch { }
+                }
+            }))
             {
                 var completed = await Task.WhenAny(read, cancellation.Task).ConfigureAwait(false);
                 if (completed != read) throw new OperationCanceledException(token);

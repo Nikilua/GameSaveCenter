@@ -58,7 +58,9 @@ public sealed partial class SqliteStateStore : ITaskStatusStore
         await EnsureColumnAsync(connection, "backup_versions", "parent_backup_id", "TEXT", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "tasks", "session_id", "TEXT NOT NULL DEFAULT ''", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "tasks", "worker_session_id", "TEXT NOT NULL DEFAULT ''", token).ConfigureAwait(false);
+        await EnsureColumnAsync(connection, "tasks", "request_id", "TEXT NOT NULL DEFAULT ''", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "media_file_signatures", "sample_hash", "TEXT NOT NULL DEFAULT ''", token).ConfigureAwait(false);
+        await RecoverIpcRequestLedgerAsync(token).ConfigureAwait(false);
         var normalizeMedia = connection.CreateCommand();
         normalizeMedia.CommandText = @"
 UPDATE media
@@ -714,13 +716,13 @@ WHERE state IN ($queued,$running) AND (worker_session_id='' OR worker_session_id
     }
 
     public Task AddOrUpdateTaskAsync(TaskStatusDto task, CancellationToken token) => ExecuteAsync(@"
-INSERT INTO tasks(task_id,session_id,worker_session_id,task_type,game_id,game_name,state,progress,message,created_utc,started_utc,finished_utc,error_code,error_message)
-VALUES($id,$session,$worker,$type,$game,$name,$state,$progress,$message,$created,$started,$finished,$errorCode,$errorMessage)
+INSERT INTO tasks(task_id,request_id,session_id,worker_session_id,task_type,game_id,game_name,state,progress,message,created_utc,started_utc,finished_utc,error_code,error_message)
+VALUES($id,$request,$session,$worker,$type,$game,$name,$state,$progress,$message,$created,$started,$finished,$errorCode,$errorMessage)
 ON CONFLICT(task_id) DO UPDATE SET state=excluded.state,progress=excluded.progress,message=excluded.message,worker_session_id=excluded.worker_session_id,
- started_utc=excluded.started_utc,finished_utc=excluded.finished_utc,error_code=excluded.error_code,error_message=excluded.error_message;",
+ request_id=excluded.request_id,started_utc=excluded.started_utc,finished_utc=excluded.finished_utc,error_code=excluded.error_code,error_message=excluded.error_message;",
         new Dictionary<string, object?>
         {
-            ["$id"] = task.TaskId, ["$session"] = task.SessionId, ["$worker"] = task.WorkerSessionId, ["$type"] = task.TaskType, ["$game"] = task.GameId, ["$name"] = task.GameName,
+            ["$id"] = task.TaskId, ["$request"] = task.RequestId, ["$session"] = task.SessionId, ["$worker"] = task.WorkerSessionId, ["$type"] = task.TaskType, ["$game"] = task.GameId, ["$name"] = task.GameName,
             ["$state"] = (int)task.State, ["$progress"] = task.ProgressPercent, ["$message"] = task.Message,
             ["$created"] = task.CreatedUtc.ToString("O"), ["$started"] = task.StartedUtc?.ToString("O"), ["$finished"] = task.FinishedUtc?.ToString("O"),
             ["$errorCode"] = task.ErrorCode, ["$errorMessage"] = task.ErrorMessage
@@ -732,20 +734,21 @@ ON CONFLICT(task_id) DO UPDATE SET state=excluded.state,progress=excluded.progre
         await using var connection = Open();
         await connection.OpenAsync(token).ConfigureAwait(false);
         var command = connection.CreateCommand();
-        command.CommandText = "SELECT task_id,session_id,worker_session_id,task_type,game_id,game_name,state,progress,message,created_utc,started_utc,finished_utc,error_code,error_message FROM tasks ORDER BY created_utc DESC LIMIT $limit;";
+        command.CommandText = "SELECT task_id,request_id,session_id,worker_session_id,task_type,game_id,game_name,state,progress,message,created_utc,started_utc,finished_utc,error_code,error_message FROM tasks ORDER BY created_utc DESC LIMIT $limit;";
         command.Parameters.AddWithValue("$limit", Math.Clamp(limit, 1, 500));
         await using var reader = await command.ExecuteReaderAsync(token).ConfigureAwait(false);
         while (await reader.ReadAsync(token).ConfigureAwait(false))
         {
             result.Add(new TaskStatusDto
             {
-                TaskId=reader.GetString(0), SessionId=reader.IsDBNull(1)?string.Empty:reader.GetString(1), WorkerSessionId=reader.IsDBNull(2)?string.Empty:reader.GetString(2),
-                TaskType=reader.GetString(3), GameId=reader.IsDBNull(4)?string.Empty:reader.GetString(4),
-                GameName=reader.IsDBNull(5)?string.Empty:reader.GetString(5), State=(TaskState)reader.GetInt32(6), ProgressPercent=reader.GetInt32(7),
-                Message=reader.IsDBNull(8)?string.Empty:reader.GetString(8), CreatedUtc=DateTime.Parse(reader.GetString(9)).ToUniversalTime(),
-                StartedUtc=reader.IsDBNull(10)?null:DateTime.Parse(reader.GetString(10)).ToUniversalTime(),
-                FinishedUtc=reader.IsDBNull(11)?null:DateTime.Parse(reader.GetString(11)).ToUniversalTime(),
-                ErrorCode=reader.IsDBNull(12)?string.Empty:reader.GetString(12), ErrorMessage=reader.IsDBNull(13)?string.Empty:reader.GetString(13)
+                TaskId=reader.GetString(0), RequestId=reader.IsDBNull(1)?string.Empty:reader.GetString(1),
+                SessionId=reader.IsDBNull(2)?string.Empty:reader.GetString(2), WorkerSessionId=reader.IsDBNull(3)?string.Empty:reader.GetString(3),
+                TaskType=reader.GetString(4), GameId=reader.IsDBNull(5)?string.Empty:reader.GetString(5),
+                GameName=reader.IsDBNull(6)?string.Empty:reader.GetString(6), State=(TaskState)reader.GetInt32(7), ProgressPercent=reader.GetInt32(8),
+                Message=reader.IsDBNull(9)?string.Empty:reader.GetString(9), CreatedUtc=DateTime.Parse(reader.GetString(10)).ToUniversalTime(),
+                StartedUtc=reader.IsDBNull(11)?null:DateTime.Parse(reader.GetString(11)).ToUniversalTime(),
+                FinishedUtc=reader.IsDBNull(12)?null:DateTime.Parse(reader.GetString(12)).ToUniversalTime(),
+                ErrorCode=reader.IsDBNull(13)?string.Empty:reader.GetString(13), ErrorMessage=reader.IsDBNull(14)?string.Empty:reader.GetString(14)
             });
         }
         return result;
@@ -1131,7 +1134,8 @@ CREATE TABLE IF NOT EXISTS games(playnite_id TEXT PRIMARY KEY,name TEXT NOT NULL
 CREATE TABLE IF NOT EXISTS game_policies(playnite_id TEXT PRIMARY KEY,policy_json TEXT NOT NULL,updated_utc TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS backup_policy_templates(template_id TEXT PRIMARY KEY,name TEXT NOT NULL,is_built_in INTEGER NOT NULL,policy_json TEXT NOT NULL,created_utc TEXT NOT NULL,updated_utc TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS sessions(session_id TEXT PRIMARY KEY,playnite_id TEXT NOT NULL,source INTEGER NOT NULL,process_id INTEGER,process_name TEXT,launch_profile TEXT,started_utc TEXT NOT NULL,stopped_utc TEXT,elapsed_seconds INTEGER DEFAULT 0);
-CREATE TABLE IF NOT EXISTS tasks(task_id TEXT PRIMARY KEY,session_id TEXT NOT NULL DEFAULT '',worker_session_id TEXT NOT NULL DEFAULT '',task_type TEXT NOT NULL,game_id TEXT,game_name TEXT,state INTEGER NOT NULL,progress INTEGER NOT NULL,message TEXT,created_utc TEXT NOT NULL,started_utc TEXT,finished_utc TEXT,error_code TEXT,error_message TEXT);
+CREATE TABLE IF NOT EXISTS tasks(task_id TEXT PRIMARY KEY,request_id TEXT NOT NULL DEFAULT '',session_id TEXT NOT NULL DEFAULT '',worker_session_id TEXT NOT NULL DEFAULT '',task_type TEXT NOT NULL,game_id TEXT,game_name TEXT,state INTEGER NOT NULL,progress INTEGER NOT NULL,message TEXT,created_utc TEXT NOT NULL,started_utc TEXT,finished_utc TEXT,error_code TEXT,error_message TEXT);
+CREATE TABLE IF NOT EXISTS ipc_request_ledger(request_id TEXT PRIMARY KEY,type TEXT NOT NULL,state INTEGER NOT NULL,response_json TEXT,created_utc TEXT NOT NULL,updated_utc TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS findings(finding_id TEXT PRIMARY KEY,playnite_id TEXT,severity INTEGER NOT NULL,code TEXT NOT NULL,title TEXT NOT NULL,detail TEXT,suggested_action TEXT,created_utc TEXT NOT NULL,resolved INTEGER NOT NULL DEFAULT 0);
 CREATE TABLE IF NOT EXISTS backup_versions(backup_id TEXT NOT NULL,playnite_id TEXT NOT NULL,ludusavi_name TEXT NOT NULL,created_utc TEXT NOT NULL,total_bytes INTEGER NOT NULL,file_count INTEGER NOT NULL,is_locked INTEGER NOT NULL DEFAULT 0,comment TEXT,source_device TEXT,operating_system TEXT,is_pre_restore INTEGER NOT NULL DEFAULT 0,manifest_json TEXT,archive_path TEXT,restore_readiness_json TEXT,parent_backup_id TEXT,PRIMARY KEY(playnite_id,backup_id));
 CREATE TABLE IF NOT EXISTS media(media_id TEXT PRIMARY KEY,playnite_id TEXT,kind INTEGER NOT NULL,source INTEGER NOT NULL,archive_path TEXT NOT NULL,original_path TEXT NOT NULL,captured_utc TEXT NOT NULL,size_bytes INTEGER NOT NULL,sha256 TEXT NOT NULL UNIQUE,is_favorite INTEGER NOT NULL DEFAULT 0,comment TEXT,cloud_state TEXT NOT NULL DEFAULT 'Pending',classification_state TEXT NOT NULL DEFAULT 'Assigned',classification_reason TEXT);
@@ -1154,7 +1158,9 @@ CREATE UNIQUE INDEX IF NOT EXISTS ux_retention_quarantine_identity ON retention_
 CREATE INDEX IF NOT EXISTS ix_retention_quarantine_state ON retention_quarantine_entries(state,updated_utc DESC);
 CREATE INDEX IF NOT EXISTS ix_tasks_created ON tasks(created_utc DESC);
 CREATE INDEX IF NOT EXISTS ix_tasks_finished_state ON tasks(finished_utc,state);
- CREATE INDEX IF NOT EXISTS ix_tasks_game_type_created ON tasks(game_id,task_type,created_utc DESC);
+CREATE INDEX IF NOT EXISTS ix_tasks_game_type_created ON tasks(game_id,task_type,created_utc DESC);
+CREATE INDEX IF NOT EXISTS ix_tasks_request_created ON tasks(request_id,created_utc DESC);
+CREATE INDEX IF NOT EXISTS ix_ipc_request_updated ON ipc_request_ledger(updated_utc);
 CREATE INDEX IF NOT EXISTS ix_backup_versions_game_time ON backup_versions(playnite_id,created_utc DESC);
 CREATE INDEX IF NOT EXISTS ix_media_game ON media(playnite_id,captured_utc DESC);
 CREATE INDEX IF NOT EXISTS ix_sessions_open ON sessions(stopped_utc);

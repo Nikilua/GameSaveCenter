@@ -74,7 +74,7 @@ public sealed class IpcMessageBoundaryTests
         var client = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Ipc", "WorkerIpcClient.cs"));
 
         Assert.Contains("new BoundedIpcLineReader(reader)", server);
-        Assert.Contains("new BoundedIpcLineReader(reader)", client);
+        Assert.Contains("new BoundedIpcLineReader(reader,", client);
         Assert.Contains("WriteEnvelopeAsync", events);
         Assert.Contains("ProtocolConstants.MaximumMessageBytes", events);
         Assert.DoesNotContain("reader.ReadLineAsync", server);
@@ -92,8 +92,12 @@ public sealed class IpcMessageBoundaryTests
         Assert.Contains("PayloadBytes={PayloadBytes}", server);
         Assert.Contains("catch(JsonException", server);
         Assert.Contains("catch(IOException)", server);
-        Assert.Contains("catch (OperationCanceledException) when (cancellation.IsCancellationRequested)", client);
-        Assert.Contains("throw new TimeoutException(\"Worker response timed out.\")", client);
+        Assert.Contains("CancellationToken cancellationToken = default(CancellationToken)", client);
+        Assert.Contains("hostCancellationToken", client);
+        Assert.Contains("WorkerIpcCancellationReason.HostShutdown", client);
+        Assert.Contains("WorkerIpcFailureKind.PipeDisconnected", client);
+        Assert.Contains("AwaitPipeOperationAsync", client);
+        Assert.Contains("IpcRequestSemantics.RequiresReplayProtection", client);
     }
 
     [Fact]

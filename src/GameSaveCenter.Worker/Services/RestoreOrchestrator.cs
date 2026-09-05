@@ -39,6 +39,7 @@ public sealed class RestoreOrchestrator
         return await ExecuteCoreAsync(new RestoreRequestDto
         {
             PlayniteId=stage.Manifest.PlayniteId,BackupId=stage.Manifest.BackupId,
+            RequestId=request.RequestId,
             ConfirmedCurrentSnapshot=request.ConfirmedCurrentSnapshot,ConfirmedGameClosed=request.ConfirmedGameClosed,
             UserComment=$"Remote device {stage.Manifest.RemoteDevice}: {request.UserComment}".Trim()
         },stage.VaultPath,token).ConfigureAwait(false);
@@ -131,7 +132,7 @@ public sealed class RestoreOrchestrator
             }
             state=RestoreState.Completed;await AuditAsync(game.PlayniteId,state,new{request,preVersion.BackupId},ct).ConfigureAwait(false);
             await progress.ReportAsync(100,"安全恢复完成").ConfigureAwait(false);
-        },token).ConfigureAwait(false);
+        },token, requestId: request.RequestId).ConfigureAwait(false);
     }
 
     private Task<LudusaviCommandResult> RestoreTargetAsync(string? backupPath,string game,string backupId,bool preview,CancellationToken token)
@@ -139,11 +140,11 @@ public sealed class RestoreOrchestrator
             ?_ludusavi.RestoreAsync(game,backupId,preview,token)
             :_ludusavi.RestoreFromPathAsync(backupPath,game,backupId,preview,token);
 
-    public async Task<TaskStatusDto> UndoAsync(string playniteId,CancellationToken token)
+    public async Task<TaskStatusDto> UndoAsync(string playniteId,CancellationToken token,string requestId = "")
     {
         var version=(await _store.GetBackupVersionsAsync(playniteId,token).ConfigureAwait(false)).FirstOrDefault(x=>x.IsPreRestore)
             ??throw new InvalidOperationException("No PreRestore snapshot is indexed for this game.");
-        return await ExecuteAsync(new RestoreRequestDto{PlayniteId=playniteId,BackupId=version.BackupId,ConfirmedCurrentSnapshot=true,ConfirmedGameClosed=true,UserComment="Undo previous restore"},token).ConfigureAwait(false);
+        return await ExecuteAsync(new RestoreRequestDto{RequestId=requestId,PlayniteId=playniteId,BackupId=version.BackupId,ConfirmedCurrentSnapshot=true,ConfirmedGameClosed=true,UserComment="Undo previous restore"},token).ConfigureAwait(false);
     }
 
     private async Task<string> ResolveAsync(string playniteId,CancellationToken token)

@@ -51,6 +51,7 @@ public sealed class TaskEventBroadcaster
         Task = new TaskStatusDto
         {
             TaskId = change.Task.TaskId,
+            RequestId = change.Task.RequestId,
             SessionId = change.Task.SessionId,
             WorkerSessionId = change.Task.WorkerSessionId,
             TaskType = change.Task.TaskType,

@@ -33,11 +33,13 @@ public sealed class TaskCoordinator
         CancellationToken outerToken,
         string sessionId = "",
         string? taskId = null,
-        DateTime? createdUtc = null)
+        DateTime? createdUtc = null,
+        string requestId = "")
     {
         var task = new TaskStatusDto
         {
             TaskId=string.IsNullOrWhiteSpace(taskId) ? Guid.NewGuid().ToString("N") : taskId,
+            RequestId=requestId ?? string.Empty,
             SessionId=sessionId ?? string.Empty, WorkerSessionId=workerSessionId, TaskType=taskType, GameId=gameId, GameName=gameName,
             State=TaskState.Queued, ProgressPercent=0, Message="等待执行", CreatedUtc=createdUtc ?? DateTime.UtcNow
         };
@@ -169,7 +171,8 @@ public sealed class TaskCoordinator
     private static TaskStatusDto Clone(TaskStatusDto task)=>new()
     {
             TaskId=task.TaskId,SessionId=task.SessionId,WorkerSessionId=task.WorkerSessionId,TaskType=task.TaskType,GameId=task.GameId,GameName=task.GameName,State=task.State,
-        ProgressPercent=task.ProgressPercent,Message=task.Message,CreatedUtc=task.CreatedUtc,StartedUtc=task.StartedUtc,
+            RequestId=task.RequestId,
+            ProgressPercent=task.ProgressPercent,Message=task.Message,CreatedUtc=task.CreatedUtc,StartedUtc=task.StartedUtc,
         FinishedUtc=task.FinishedUtc,ErrorCode=task.ErrorCode,ErrorMessage=task.ErrorMessage
     };
 }

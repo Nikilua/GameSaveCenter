@@ -2,6 +2,7 @@ using System.IO.Pipes;
 using System.Text;
 using System.Text.Json;
 using GameSaveCenter.Contracts;
+using GameSaveCenter.Worker.Persistence;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -12,12 +13,13 @@ public sealed class NamedPipeServerService : BackgroundService
 {
     private const int MaximumConcurrentClients = 32;
     private readonly IpcRequestDispatcher _dispatcher;
+    private readonly SqliteStateStore _store;
     private readonly ILogger<NamedPipeServerService> _logger;
     private readonly JsonSerializerOptions _json=new(JsonSerializerDefaults.Web){PropertyNameCaseInsensitive=true};
     private readonly SemaphoreSlim clientSlots = new(MaximumConcurrentClients, MaximumConcurrentClients);
 
-    public NamedPipeServerService(IpcRequestDispatcher dispatcher,ILogger<NamedPipeServerService> logger)
-    { _dispatcher=dispatcher;_logger=logger; }
+    public NamedPipeServerService(IpcRequestDispatcher dispatcher, SqliteStateStore store, ILogger<NamedPipeServerService> logger)
+    { _dispatcher=dispatcher;_store=store;_logger=logger; }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -79,7 +81,7 @@ public sealed class NamedPipeServerService : BackgroundService
                         await WriteErrorAsync(writer, "INVALID_JSON", ex.Message).ConfigureAwait(false);continue;
                     }
                     if(request==null)continue;
-                    var response=await _dispatcher.DispatchAsync(request,token).ConfigureAwait(false);
+                    var response=await DispatchWithReplayProtectionAsync(request,token).ConfigureAwait(false);
                     await WriteEnvelopeAsync(writer, response).ConfigureAwait(false);
                 }
             }
@@ -87,6 +89,41 @@ public sealed class NamedPipeServerService : BackgroundService
             catch(OperationCanceledException) when(token.IsCancellationRequested){ }
             catch(Exception ex){_logger.LogWarning(ex,"Named pipe client failed");}
         }
+    }
+
+    private async Task<IpcEnvelope> DispatchWithReplayProtectionAsync(IpcEnvelope request, CancellationToken token)
+    {
+        if (!IpcRequestPolicy.RequiresReplayProtection(request.Type) || string.IsNullOrWhiteSpace(request.RequestId))
+            return await _dispatcher.DispatchAsync(request,token).ConfigureAwait(false);
+
+        var claim=await _store.ClaimIpcRequestAsync(request.RequestId,request.Type,token).ConfigureAwait(false);
+        if (!claim.IsOwner)
+        {
+            if (claim.State==IpcRequestState.Completed && !string.IsNullOrWhiteSpace(claim.ResponseJson))
+            {
+                try
+                {
+                    var replay=JsonSerializer.Deserialize<IpcEnvelope>(claim.ResponseJson,_json);
+                    if (replay!=null)return replay;
+                }
+                catch(JsonException ex)
+                {
+                    _logger.LogError(ex,"Stored IPC response could not be replayed. RequestId={RequestId}",request.RequestId);
+                }
+                return Error(request,"REQUEST_RESPONSE_CORRUPT","已提交请求的结果记录损坏，请在任务中心核对实际状态。");
+            }
+
+            var code=claim.State==IpcRequestState.Interrupted?"REQUEST_INTERRUPTED":"REQUEST_IN_PROGRESS";
+            var message=claim.State==IpcRequestState.Interrupted
+                ?"此前 Worker 已退出，未重放该写请求；请先在任务中心核对状态。"
+                :"相同请求仍在 Worker 中执行，未重复提交；请稍后查询任务状态。";
+            return Error(request,code,message);
+        }
+
+        var response=await _dispatcher.DispatchAsync(request,token).ConfigureAwait(false);
+        var serialized=JsonSerializer.Serialize(response,_json);
+        await _store.CompleteIpcRequestAsync(request.RequestId,serialized,CancellationToken.None).ConfigureAwait(false);
+        return response;
     }
 
     private async Task WriteErrorAsync(StreamWriter writer, string code, string message)
@@ -124,4 +161,16 @@ public sealed class NamedPipeServerService : BackgroundService
         }
         await writer.WriteLineAsync(serialized).ConfigureAwait(false);
     }
+
+    private static IpcEnvelope Error(IpcEnvelope request,string code,string message)
+        => new()
+        {
+            RequestId=request.RequestId,
+            Type=request.Type,
+            IsResponse=true,
+            Success=false,
+            ErrorCode=code,
+            ErrorMessage=message,
+            PayloadJson="{}"
+        };
 }

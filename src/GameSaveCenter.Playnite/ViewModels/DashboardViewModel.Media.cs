@@ -100,13 +100,22 @@ namespace GameSaveCenter.Playnite.ViewModels
             var messageType = ignored
                 ? MessageTypes.ListIgnoredMediaPage
                 : MessageTypes.ListUnassignedMediaPage;
-            return await plugin.RequestAsync<MediaPageDto>(messageType, new MediaQueryDto
+            var requestCancellation = BeginMediaInboxRequest();
+            try
             {
-                Limit = MediaPageSize,
-                Cursor = reset
-                    ? string.Empty
-                    : ignored ? ignoredMediaPageCursor : unassignedMediaPageCursor
-            }).ConfigureAwait(false);
+                if (requestGeneration != Interlocked.Read(ref mediaInboxLoadGeneration)) return null;
+                return await plugin.RequestAsync<MediaPageDto>(messageType, new MediaQueryDto
+                {
+                    Limit = MediaPageSize,
+                    Cursor = reset
+                        ? string.Empty
+                        : ignored ? ignoredMediaPageCursor : unassignedMediaPageCursor
+                }, cancellationToken: requestCancellation.Token).ConfigureAwait(false);
+            }
+            finally
+            {
+                EndMediaInboxRequest(requestCancellation);
+            }
         }
 
         private void ApplyMediaInboxPage(MediaPageDto page, bool reset, string collectionMode, string? selectedId, string? targetId)
@@ -169,9 +178,19 @@ namespace GameSaveCenter.Playnite.ViewModels
             var requestGeneration = reset
                 ? Interlocked.Increment(ref mediaPageGeneration)
                 : Interlocked.Read(ref mediaPageGeneration);
-            var page = await plugin.RequestAsync<MediaPageDto>(MessageTypes.ListMediaPage, BuildMediaQuery(
-                playniteId,
-                reset ? string.Empty : mediaPageCursor)).ConfigureAwait(false);
+            var requestCancellation = BeginMediaPageRequest();
+            MediaPageDto? page;
+            try
+            {
+                if (requestGeneration != Interlocked.Read(ref mediaPageGeneration)) return;
+                page = await plugin.RequestAsync<MediaPageDto>(MessageTypes.ListMediaPage, BuildMediaQuery(
+                    playniteId,
+                    reset ? string.Empty : mediaPageCursor), cancellationToken: requestCancellation.Token).ConfigureAwait(false);
+            }
+            finally
+            {
+                EndMediaPageRequest(requestCancellation);
+            }
             if (requestGeneration != Interlocked.Read(ref mediaPageGeneration)
                 || CurrentWorkspace != WorkspaceKind.Media
                 || !IsSelectedGame(playniteId)) return;

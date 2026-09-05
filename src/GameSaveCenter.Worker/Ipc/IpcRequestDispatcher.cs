@@ -75,16 +75,16 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.UpsertGames=>await UpsertAsync(Read<List<GameDescriptorDto>>(request),token).ConfigureAwait(false),
                 MessageTypes.GameSessionStarted=>await _sessions.StartAsync(Read<GameSessionEventDto>(request),token).ConfigureAwait(false),
                 MessageTypes.GameSessionStopped=>await StopAsync(Read<GameSessionEventDto>(request),token).ConfigureAwait(false),
-                MessageTypes.BackupGame=>await _backup.BackupAsync(Read<BackupRequestDto>(request),token).ConfigureAwait(false),
-                MessageTypes.BackupAll=>await _backup.SubmitAllAsync(Read<BackupRequestDto>(request),token).ConfigureAwait(false),
+                MessageTypes.BackupGame=>await _backup.BackupAsync(ReadCorrelated<BackupRequestDto>(request),token).ConfigureAwait(false),
+                MessageTypes.BackupAll=>await _backup.SubmitAllAsync(ReadCorrelated<BackupRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ListBackups=>await ListBackupsAsync(Read<GameQueryDto>(request),token).ConfigureAwait(false),
                 MessageTypes.CompareBackups=>await CompareBackupsAsync(Read<BackupCompareRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.PreviewRetention=>await PreviewRetentionAsync(Read<GameQueryDto>(request),token).ConfigureAwait(false),
                 MessageTypes.UpdateBackupMetadata=>await UpdateMetadataAsync(Read<BackupMetadataUpdateDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ValidateRestoreReadiness=>await ValidateRestoreReadinessAsync(Read<RestoreReadinessRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.RestorePreview=>ToPortable(await _restore.PreviewAsync(Read<RestoreRequestDto>(request),token).ConfigureAwait(false)),
-                MessageTypes.RestoreExecute=>await _restore.ExecuteAsync(Read<RestoreRequestDto>(request),token).ConfigureAwait(false),
-                MessageTypes.UndoRestore=>await _restore.UndoAsync(Read<GameQueryDto>(request).PlayniteId,token).ConfigureAwait(false),
+                MessageTypes.RestoreExecute=>await _restore.ExecuteAsync(ReadCorrelated<RestoreRequestDto>(request),token).ConfigureAwait(false),
+                MessageTypes.UndoRestore=>await _restore.UndoAsync(Read<GameQueryDto>(request).PlayniteId,token,request.RequestId).ConfigureAwait(false),
                 MessageTypes.SyncMedia=>await _media.SyncAsync(Read<MediaSyncRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ListMedia=>await ListMediaAsync(Read<GameQueryDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ListMediaPage=>await _store.GetMediaPageAsync(Read<MediaQueryDto>(request),token).ConfigureAwait(false),
@@ -125,7 +125,7 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.SyncDeviceStates=>await _deviceStates.SyncAsync(token).ConfigureAwait(false),
                 MessageTypes.SaveDeviceConflictDecision=>await SaveDeviceConflictDecisionAsync(Read<DeviceConflictDecisionDto>(request),token).ConfigureAwait(false),
                 MessageTypes.StageRemoteBackup=>await _remoteBackups.StageAsync(Read<RemoteBackupStageRequestDto>(request),token).ConfigureAwait(false),
-                MessageTypes.RestoreRemoteBackup=>await _restore.ExecuteRemoteAsync(Read<RemoteRestoreRequestDto>(request),token).ConfigureAwait(false),
+                MessageTypes.RestoreRemoteBackup=>await _restore.ExecuteRemoteAsync(ReadCorrelated<RemoteRestoreRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ListProcessMappings=>await _store.GetProcessMappingsAsync(token).ConfigureAwait(false),
                 MessageTypes.SaveProcessMapping=>await SaveProcessMappingAsync(Read<ProcessMappingDto>(request),token).ConfigureAwait(false),
                 MessageTypes.DeleteProcessMapping=>await DeleteProcessMappingAsync(Read<ProcessMappingDto>(request).ExecutableName,token).ConfigureAwait(false),
@@ -578,6 +578,12 @@ public sealed class IpcRequestDispatcher
     };
 
     private T Read<T>(IpcEnvelope envelope)=>JsonSerializer.Deserialize<T>(envelope.PayloadJson,_json)??throw new InvalidOperationException($"Invalid payload for {envelope.Type}.");
+    private T ReadCorrelated<T>(IpcEnvelope envelope) where T : IIpcRequestWithId
+    {
+        var payload=Read<T>(envelope);
+        payload.RequestId=envelope.RequestId;
+        return payload;
+    }
     private object ToPortable(LudusaviCommandResult result)=>new{result.Success,result.ErrorCode,result.ErrorMessage,result.ExitCode,json=result.Json?.GetRawText(),result.WarningText};
     private IpcEnvelope Success(IpcEnvelope request,object payload)=>new(){RequestId=request.RequestId,Type=request.Type,IsResponse=true,Success=true,PayloadJson=JsonSerializer.Serialize(payload,_json)};
     private static IpcEnvelope Error(IpcEnvelope request,string code,string message)=>new(){RequestId=request.RequestId,Type=request.Type,IsResponse=true,Success=false,ErrorCode=code,ErrorMessage=message,PayloadJson="{}"};

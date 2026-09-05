@@ -97,7 +97,7 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
                         "LUDUSAVI_NOT_CONFIGURED",
                         "Ludusavi 尚未配置或可执行文件不存在。",
                         _options.LudusaviExecutable)),
-                    token, request.NotificationSessionId).ConfigureAwait(false);
+                    token, request.NotificationSessionId, requestId: request.RequestId).ConfigureAwait(false);
                 results.Add(task);
                 await ReportProcessedAsync(game, task.State == TaskState.Succeeded).ConfigureAwait(false);
                 continue;
@@ -115,7 +115,7 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
                             "LUDUSAVI_GAME_UNMATCHED",
                             "该游戏尚未匹配到 Ludusavi 存档规则。",
                             game.Name)),
-                        token, request.NotificationSessionId).ConfigureAwait(false);
+                        token, request.NotificationSessionId, requestId: request.RequestId).ConfigureAwait(false);
                     results.Add(task);
                     await ReportProcessedAsync(game, task.State == TaskState.Succeeded).ConfigureAwait(false);
                 }
@@ -135,7 +135,7 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
                         "GAME_OPERATION_BUSY",
                         "该游戏已有备份、恢复或媒体操作正在执行，已跳过本次备份。",
                         game.PlayniteId)),
-                    token, request.NotificationSessionId).ConfigureAwait(false);
+                    token, request.NotificationSessionId, requestId: request.RequestId).ConfigureAwait(false);
                 results.Add(task);
                 await ReportProcessedAsync(game, task.State == TaskState.Succeeded).ConfigureAwait(false);
                 continue;
@@ -283,7 +283,7 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
                     };
                     await progress.ReportAsync(100, $"{requestLabel}：{completion}").ConfigureAwait(false);
                 },
-                token, request.NotificationSessionId).ConfigureAwait(false);
+                token, request.NotificationSessionId, requestId: request.RequestId).ConfigureAwait(false);
             results.Add(completedTask);
             await ReportProcessedAsync(game, completedTask.State == TaskState.Succeeded).ConfigureAwait(false);
         }
@@ -407,7 +407,8 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
                 token,
                 request.NotificationSessionId,
                 job.JobId,
-                job.CreatedUtc).ConfigureAwait(false);
+                job.CreatedUtc,
+                request.RequestId).ConfigureAwait(false);
 
             job.State = result.State;
             job.ProgressPercent = result.ProgressPercent;

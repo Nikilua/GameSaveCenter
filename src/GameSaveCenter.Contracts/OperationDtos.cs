@@ -29,8 +29,9 @@ namespace GameSaveCenter.Contracts
     }
 
     /// <summary>Request to back up one game or all games.</summary>
-    public sealed class BackupRequestDto
+    public sealed class BackupRequestDto : IIpcRequestWithId
     {
+        public string RequestId { get; set; } = string.Empty;
         public List<string> PlayniteIds { get; set; } = new List<string>();
         public bool Force { get; set; }
         public string Reason { get; set; } = "Manual";
@@ -50,8 +51,9 @@ namespace GameSaveCenter.Contracts
     }
 
     /// <summary>Safe restore request. Automatic restore is deliberately absent.</summary>
-    public sealed class RestoreRequestDto
+    public sealed class RestoreRequestDto : IIpcRequestWithId
     {
+        public string RequestId { get; set; } = string.Empty;
         public string PlayniteId { get; set; } = string.Empty;
         public string BackupId { get; set; } = string.Empty;
         public bool ConfirmedCurrentSnapshot { get; set; }
@@ -79,6 +81,8 @@ namespace GameSaveCenter.Contracts
     public sealed class TaskStatusDto
     {
         public string TaskId { get; set; } = string.Empty;
+        /// <summary>IPC request that submitted this task; empty for legacy/non-IPC tasks.</summary>
+        public string RequestId { get; set; } = string.Empty;
         /// <summary>Groups tasks launched by one game session for a single exit summary.</summary>
         public string SessionId { get; set; } = string.Empty;
         /// <summary>Identifies the Worker process/lifecycle that owned this task.</summary>

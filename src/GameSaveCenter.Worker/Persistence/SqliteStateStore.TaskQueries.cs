@@ -18,7 +18,7 @@ public sealed partial class SqliteStateStore
         await connection.OpenAsync(token).ConfigureAwait(false);
         var command = connection.CreateCommand();
         command.CommandText = $@"
-SELECT task_id,session_id,worker_session_id,task_type,game_id,game_name,state,progress,message,created_utc,started_utc,finished_utc,error_code,error_message
+SELECT task_id,request_id,session_id,worker_session_id,task_type,game_id,game_name,state,progress,message,created_utc,started_utc,finished_utc,error_code,error_message
 FROM tasks
 WHERE {filter.Sql}
 ORDER BY created_utc DESC,task_id DESC
@@ -128,6 +128,11 @@ WHERE state=$state AND finished_utc IS NOT NULL
             predicates.Add("task_type=$typeFilter");
             parameters["$typeFilter"] = query.TaskType.Trim();
         }
+        if (!string.IsNullOrWhiteSpace(query.RequestId))
+        {
+            predicates.Add("request_id=$requestFilter");
+            parameters["$requestFilter"] = query.RequestId.Trim();
+        }
         if (!string.IsNullOrWhiteSpace(query.Search))
         {
             predicates.Add("(task_id LIKE $search OR task_type LIKE $search OR COALESCE(game_name,'') LIKE $search OR COALESCE(message,'') LIKE $search OR COALESCE(error_message,'') LIKE $search)");
@@ -161,19 +166,20 @@ WHERE state=$state AND finished_utc IS NOT NULL
         => new TaskStatusDto
         {
             TaskId = reader.GetString(0),
-            SessionId = reader.IsDBNull(1) ? string.Empty : reader.GetString(1),
-            WorkerSessionId = reader.IsDBNull(2) ? string.Empty : reader.GetString(2),
-            TaskType = reader.GetString(3),
-            GameId = reader.IsDBNull(4) ? string.Empty : reader.GetString(4),
-            GameName = reader.IsDBNull(5) ? string.Empty : reader.GetString(5),
-            State = (TaskState)reader.GetInt32(6),
-            ProgressPercent = reader.GetInt32(7),
-            Message = reader.IsDBNull(8) ? string.Empty : reader.GetString(8),
-            CreatedUtc = DateTime.Parse(reader.GetString(9)).ToUniversalTime(),
-            StartedUtc = reader.IsDBNull(10) ? null : DateTime.Parse(reader.GetString(10)).ToUniversalTime(),
-            FinishedUtc = reader.IsDBNull(11) ? null : DateTime.Parse(reader.GetString(11)).ToUniversalTime(),
-            ErrorCode = reader.IsDBNull(12) ? string.Empty : reader.GetString(12),
-            ErrorMessage = reader.IsDBNull(13) ? string.Empty : reader.GetString(13)
+            RequestId = reader.IsDBNull(1) ? string.Empty : reader.GetString(1),
+            SessionId = reader.IsDBNull(2) ? string.Empty : reader.GetString(2),
+            WorkerSessionId = reader.IsDBNull(3) ? string.Empty : reader.GetString(3),
+            TaskType = reader.GetString(4),
+            GameId = reader.IsDBNull(5) ? string.Empty : reader.GetString(5),
+            GameName = reader.IsDBNull(6) ? string.Empty : reader.GetString(6),
+            State = (TaskState)reader.GetInt32(7),
+            ProgressPercent = reader.GetInt32(8),
+            Message = reader.IsDBNull(9) ? string.Empty : reader.GetString(9),
+            CreatedUtc = DateTime.Parse(reader.GetString(10)).ToUniversalTime(),
+            StartedUtc = reader.IsDBNull(11) ? null : DateTime.Parse(reader.GetString(11)).ToUniversalTime(),
+            FinishedUtc = reader.IsDBNull(12) ? null : DateTime.Parse(reader.GetString(12)).ToUniversalTime(),
+            ErrorCode = reader.IsDBNull(13) ? string.Empty : reader.GetString(13),
+            ErrorMessage = reader.IsDBNull(14) ? string.Empty : reader.GetString(14)
         };
 
     private static string EncodeTaskCursor(DateTime createdUtc, string taskId)

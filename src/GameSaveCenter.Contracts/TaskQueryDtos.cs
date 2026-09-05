@@ -14,6 +14,8 @@ namespace GameSaveCenter.Contracts
         public string GameId { get; set; } = string.Empty;
         public string GameName { get; set; } = string.Empty;
         public string TaskType { get; set; } = string.Empty;
+        /// <summary>Optional exact IPC request correlation used to recover a lost write response.</summary>
+        public string RequestId { get; set; } = string.Empty;
         public string Search { get; set; } = string.Empty;
         public DateTime? StartUtc { get; set; }
         public DateTime? EndUtc { get; set; }

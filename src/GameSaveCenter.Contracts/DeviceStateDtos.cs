@@ -112,8 +112,9 @@ namespace GameSaveCenter.Contracts
     }
 
     /// <summary>Explicit restore request for a previously verified remote staging vault.</summary>
-    public sealed class RemoteRestoreRequestDto
+    public sealed class RemoteRestoreRequestDto : IIpcRequestWithId
     {
+        public string RequestId { get; set; } = string.Empty;
         public string StagingId { get; set; } = string.Empty;
         public bool ConfirmedCurrentSnapshot { get; set; }
         public bool ConfirmedGameClosed { get; set; }

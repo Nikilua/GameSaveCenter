@@ -2,6 +2,12 @@ using System;
 
 namespace GameSaveCenter.Contracts
 {
+    /// <summary>Marks a write request whose durable task can be correlated with the IPC envelope.</summary>
+    public interface IIpcRequestWithId
+    {
+        string RequestId { get; set; }
+    }
+
     /// <summary>
     /// Transport envelope for newline-delimited JSON messages over the named pipe.
     /// PayloadJson intentionally stays opaque at this layer to keep the protocol

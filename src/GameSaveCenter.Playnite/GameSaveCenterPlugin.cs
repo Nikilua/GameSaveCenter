@@ -585,15 +585,47 @@ namespace GameSaveCenter.Playnite
         /// </summary>
         public bool IsLargeLibraryForUi => observedGameCount >= 100;
 
-        public Task<T> RequestAsync<T>(string type, object payload, TimeSpan? timeout = null)
+        public Task<T> RequestAsync<T>(
+            string type,
+            object payload,
+            TimeSpan? timeout = null,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             // Some page commands and Playnite quick actions have several awaits between
             // their entry point and the next IPC call.  Keep the lifecycle boundary at the
             // shared request seam so an operation that was already in flight cannot submit
             // another command after Playnite has begun shutting down.
             if (lifetimeCancellation.IsCancellationRequested)
-                return Task.FromCanceled<T>(lifetimeCancellation.Token);
-            return client.RequestAsync<T>(type, payload, timeout);
+            {
+                var stopped = new TaskCompletionSource<T>();
+                stopped.SetException(new WorkerIpcCancellationException(
+                    WorkerIpcCancellationReason.HostShutdown,
+                    string.Empty,
+                    type,
+                    false));
+                return stopped.Task;
+            }
+            return client.RequestAsync<T>(type, payload, timeout, cancellationToken, lifetimeCancellation.Token);
+        }
+
+        /// <summary>Returns the IPC RequestId and task IDs for write-operation reconciliation.</summary>
+        public Task<WorkerRequestResult<T>> RequestWithTrackingAsync<T>(
+            string type,
+            object payload,
+            TimeSpan? timeout = null,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (lifetimeCancellation.IsCancellationRequested)
+            {
+                var stopped = new TaskCompletionSource<WorkerRequestResult<T>>();
+                stopped.SetException(new WorkerIpcCancellationException(
+                    WorkerIpcCancellationReason.HostShutdown,
+                    string.Empty,
+                    type,
+                    false));
+                return stopped.Task;
+            }
+            return client.RequestWithTrackingAsync<T>(type, payload, timeout, cancellationToken, lifetimeCancellation.Token);
         }
 
         /// <summary>
@@ -1181,6 +1213,11 @@ namespace GameSaveCenter.Playnite
 
         private void ReportBackgroundFailure(Exception exception)
         {
+            if (exception is OperationCanceledException)
+            {
+                logger.Debug(exception, "GameSaveCenter background operation was cancelled.");
+                return;
+            }
             logger.Error(exception, "GameSaveCenter background operation failed.");
             try
             {

@@ -3,6 +3,14 @@
 > 维护时间：2026-09-05
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-05 R07 IPC 取消与请求结果追踪
+
+- `WorkerIpcClient`/插件请求入口现在接受调用者 `CancellationToken`，并联结插件生命周期；连接、写入和读取均使用可取消的 `Task.WhenAny` 竞态。取消回调只负责发出完成信号并把管道关闭排到线程池，避免在 `CancellationTokenSource.Cancel()` 中同步 Dispose 原生管道。
+- `DashboardViewModel` 的选中详情、当前媒体分页、媒体收件箱分页会取消旧请求；generation/选中 ID 仍是响应回写的第二道边界。后台失败汇报忽略 `OperationCanceledException`，用户取消与 Playnite 退出不会弹失败提示。
+- 破坏性 IPC 类型由 Contracts 集中分类；客户端超时/断管且请求可能已接收时用同一 RequestId 做有限重放，遇到 `RequestInProgress` 会短暂轮询。Worker `ipc_request_ledger` 保留 7 天，Completed 可重放，InProgress 重启恢复为 Interrupted；任务表新增 RequestId，Backup/Restore 的 TaskStatusDto 与请求关联，`TaskQueryDto.RequestId` 可精确查询。
+- net462 继续使用 `NamedPipeClientStream.Connect(int)` 在线程池执行，不依赖现代 Stream 取消重载。真实 Named Pipe 行为套件有能力探测：当前沙箱客户端连接被系统拒绝时 5 项跳过；完整 Windows/Playnite 运行时应执行，不得把跳过当作真实行为验收。
+- 阶段验证：Release 构建 0 warning/0 error；Core `65/65`、Worker `258/258`、Playnite `333/395`（62 跳过）、XAML `19/19`、源码校验通过。真实宿主、Worker 重启和长任务断线恢复仍需人工复核。
+
 ## 2026-09-05 R06 媒体按需分页
 
 - Contracts 新增 `MediaQueryDto`/`MediaPageDto`；Worker 新增三类分页 IPC，按固定 `classification_state` 查询，支持 `PlayniteId`、`Kind`、`FavoriteOnly`、关键词和稳定 `(captured_utc, media_id)` 游标。`TotalCount` 不受当前游标影响，旧列表消息仍保留给兼容客户端。

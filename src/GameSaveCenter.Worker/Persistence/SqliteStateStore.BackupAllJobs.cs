@@ -1,3 +1,4 @@
+using System.Text.Json;
 using GameSaveCenter.Contracts;
 
 namespace GameSaveCenter.Worker.Persistence;
@@ -23,6 +24,7 @@ internal sealed class BackupAllJobRecord
         => new()
         {
             TaskId = JobId,
+            RequestId = TryGetRequestId(),
             WorkerSessionId = WorkerSessionId,
             TaskType = "BackupAll",
             GameName = "全部游戏",
@@ -35,6 +37,12 @@ internal sealed class BackupAllJobRecord
             ErrorCode = ErrorCode,
             ErrorMessage = ErrorMessage
         };
+
+    private string TryGetRequestId()
+    {
+        try { return JsonSerializer.Deserialize<BackupRequestDto>(RequestJson)?.RequestId ?? string.Empty; }
+        catch (JsonException) { return string.Empty; }
+    }
 }
 
 public sealed partial class SqliteStateStore

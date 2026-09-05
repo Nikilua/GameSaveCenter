@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-05 R07 IPC 取消与写请求结果追踪
+
+- Playnite IPC 增加调用者取消和宿主退出令牌，连接/写入/读取统一走有界等待；取消先结束调用者等待，再异步关闭管道，避免 `StreamReader`、底层 Named Pipe 读任务和 Dispose 互相卡住。错误区分用户取消、宿主退出、超时、管道断开、连接失败及 Worker 请求处理中/已中断。
+- 详情加载、当前媒体分页和媒体收件箱分页均把页面/请求生命周期令牌传入 IPC；已接受的旧响应仍由代际与选中游戏校验拦截。用户取消不再进入后台失败通知。
+- 写请求增加同一 RequestId 的重放保护：Worker SQLite 账本保留 7 天，完成后重放原响应，处理中不重复执行，重启时未完成请求标为 Interrupted；备份/恢复任务持久化 RequestId，任务查询可精确按 RequestId 核对 TaskId。
+- 新增账本/任务关联/客户端行为回归。验证：Release 构建 0 warning/0 error；Core `65/65`、Worker `258/258`、Playnite `333/395`（62 跳过）、XAML `19/19`、源码校验通过。5 项真实 Named Pipe 测试因当前执行环境禁止本地 Named Pipe 客户端而能力探测跳过，完整 Windows/Playnite 环境执行；真实宿主和 Worker 重启仍待人工复核。
+
 ## 2026-09-05 R06 媒体界面按需分页与稳定查询
 
 - 新增 `MediaQueryDto`/`MediaPageDto` 及 `media.page`、`media.inbox.page`、`media.inbox.ignored.page` IPC；Worker 以 `(captured_utc, media_id)` 生成不透明游标，返回独立 `TotalCount`/`HasMore`，并将类型、收藏、关键词筛选下推 SQLite。旧列表消息保留兼容路径。
