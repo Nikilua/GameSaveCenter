@@ -18,6 +18,8 @@ namespace GameSaveCenter.Worker.Tests.Infrastructure;
 /// </summary>
 public sealed class SoakDataScaleHarness : IDisposable
 {
+    private const int MediaGameBucketCount = 20;
+    private const int SimulationGameBucketCount = 200;
     private readonly string root;
     private readonly WorkerOptions options;
     private readonly SqliteStateStore store;
@@ -53,6 +55,22 @@ public sealed class SoakDataScaleHarness : IDisposable
     public int ToolCount { get; private set; }
     public long SeedDurationMilliseconds { get; private set; }
     public long SimulationDurationMilliseconds { get; private set; }
+    public long QueryAllocatedBytes { get; private set; }
+    public long SimulationAllocatedBytes { get; private set; }
+    public long FirstGamesQueryMilliseconds { get; private set; }
+    public long WarmGamesQueryMilliseconds { get; private set; }
+    public long FirstTaskPageQueryMilliseconds { get; private set; }
+    public long WarmTaskPageQueryMilliseconds { get; private set; }
+    public long NextTaskPageQueryMilliseconds { get; private set; }
+    public long TaskSearchQueryMilliseconds { get; private set; }
+    public long FirstMediaPageQueryMilliseconds { get; private set; }
+    public long WarmMediaPageQueryMilliseconds { get; private set; }
+    public long NextMediaPageQueryMilliseconds { get; private set; }
+    public long MediaSearchQueryMilliseconds { get; private set; }
+    public int TaskPageItemCount { get; private set; }
+    public int MediaPageItemCount { get; private set; }
+    public int TaskSearchResultCount { get; private set; }
+    public int MediaSearchResultCount { get; private set; }
     public bool BoundedGrowth { get; private set; }
     public string GrowthSummary { get; private set; } = string.Empty;
     public IReadOnlyList<string> Errors => errors;
@@ -92,6 +110,9 @@ public sealed class SoakDataScaleHarness : IDisposable
         seedTimer.Stop();
         SeedDurationMilliseconds = seedTimer.ElapsedMilliseconds;
 
+        await MeasureQueryBaselinesAsync(scale, token).ConfigureAwait(false);
+
+        var simulationAllocatedBefore = GC.GetTotalAllocatedBytes(false);
         var simulationTimer = Stopwatch.StartNew();
         for (var cycle = 0; cycle < 20; cycle++)
         {
@@ -102,6 +123,7 @@ public sealed class SoakDataScaleHarness : IDisposable
         }
         simulationTimer.Stop();
         SimulationDurationMilliseconds = simulationTimer.ElapsedMilliseconds;
+        SimulationAllocatedBytes = Math.Max(0, GC.GetTotalAllocatedBytes(false) - simulationAllocatedBefore);
 
         GC.Collect();
         GC.WaitForPendingFinalizers();
@@ -116,6 +138,88 @@ public sealed class SoakDataScaleHarness : IDisposable
             && threadGrowth <= 32;
         GrowthSummary = $"managedGrowth={managedGrowth / 1024d / 1024d:0.#} MiB, handles+{handleGrowth}, threads+{threadGrowth}";
         if (!BoundedGrowth) errors.Add("bounded growth assertion failed: " + GrowthSummary);
+    }
+
+    private async Task MeasureQueryBaselinesAsync(
+        (string Name, int Games, int BackupsPerGame, int Tasks, int Media, int Tools) scale,
+        CancellationToken token)
+    {
+        var allocatedBefore = GC.GetTotalAllocatedBytes(true);
+
+        var firstGames = await MeasureAsync(() => store.GetGamesAsync(token)).ConfigureAwait(false);
+        var warmGames = await MeasureAsync(() => store.GetGamesAsync(token)).ConfigureAwait(false);
+        FirstGamesQueryMilliseconds = firstGames.ElapsedMilliseconds;
+        WarmGamesQueryMilliseconds = warmGames.ElapsedMilliseconds;
+        if (firstGames.Result.Count != scale.Games)
+            errors.Add($"games query count mismatch: expected {scale.Games}, actual {firstGames.Result.Count}");
+
+        var firstTasks = await MeasureAsync(() => store.GetTaskPageAsync(
+            new TaskQueryDto { Limit = 200 }, token)).ConfigureAwait(false);
+        var warmTasks = await MeasureAsync(() => store.GetTaskPageAsync(
+            new TaskQueryDto { Limit = 200 }, token)).ConfigureAwait(false);
+        FirstTaskPageQueryMilliseconds = firstTasks.ElapsedMilliseconds;
+        WarmTaskPageQueryMilliseconds = warmTasks.ElapsedMilliseconds;
+        TaskPageItemCount = firstTasks.Result.Items.Count;
+        if (firstTasks.Result.TotalCount != scale.Tasks)
+            errors.Add($"task page count mismatch: expected {scale.Tasks}, actual {firstTasks.Result.TotalCount}");
+        if (TaskPageItemCount != Math.Min(200, scale.Tasks))
+            errors.Add($"task first page size mismatch: expected {Math.Min(200, scale.Tasks)}, actual {TaskPageItemCount}");
+
+        if (firstTasks.Result.HasMore)
+        {
+            var nextTasks = await MeasureAsync(() => store.GetTaskPageAsync(
+                new TaskQueryDto { Limit = 200, Cursor = firstTasks.Result.NextCursor }, token)).ConfigureAwait(false);
+            NextTaskPageQueryMilliseconds = nextTasks.ElapsedMilliseconds;
+            if (nextTasks.Result.Items.Count == 0)
+                errors.Add("task pagination returned an empty second page");
+        }
+
+        var taskSearch = await MeasureAsync(() => store.GetTaskPageAsync(
+            new TaskQueryDto { Limit = 200, Search = "task-" + (scale.Tasks - 1) }, token)).ConfigureAwait(false);
+        TaskSearchQueryMilliseconds = taskSearch.ElapsedMilliseconds;
+        TaskSearchResultCount = taskSearch.Result.Items.Count;
+        if (TaskSearchResultCount == 0)
+            errors.Add("task search returned no matching seeded task");
+
+        var firstMedia = await MeasureAsync(() => store.GetMediaPageAsync(
+            new MediaQueryDto { PlayniteId = "g-0", Limit = 200 }, token)).ConfigureAwait(false);
+        var warmMedia = await MeasureAsync(() => store.GetMediaPageAsync(
+            new MediaQueryDto { PlayniteId = "g-0", Limit = 200 }, token)).ConfigureAwait(false);
+        FirstMediaPageQueryMilliseconds = firstMedia.ElapsedMilliseconds;
+        WarmMediaPageQueryMilliseconds = warmMedia.ElapsedMilliseconds;
+        MediaPageItemCount = firstMedia.Result.Items.Count;
+        var expectedPrimaryMediaCount = (scale.Media + MediaGameBucketCount - 1) / MediaGameBucketCount;
+        if (firstMedia.Result.TotalCount != expectedPrimaryMediaCount)
+            errors.Add($"media page count mismatch: expected {expectedPrimaryMediaCount}, actual {firstMedia.Result.TotalCount}");
+        if (MediaPageItemCount != Math.Min(200, expectedPrimaryMediaCount))
+            errors.Add($"media first page size mismatch: expected {Math.Min(200, expectedPrimaryMediaCount)}, actual {MediaPageItemCount}");
+
+        if (firstMedia.Result.HasMore)
+        {
+            var nextMedia = await MeasureAsync(() => store.GetMediaPageAsync(
+                new MediaQueryDto { PlayniteId = "g-0", Limit = 200, Cursor = firstMedia.Result.NextCursor }, token)).ConfigureAwait(false);
+            NextMediaPageQueryMilliseconds = nextMedia.ElapsedMilliseconds;
+            if (nextMedia.Result.Items.Count == 0)
+                errors.Add("media pagination returned an empty second page");
+        }
+
+        var mediaSearchId = (scale.Media / (MediaGameBucketCount * 2)) * MediaGameBucketCount;
+        var mediaSearch = await MeasureAsync(() => store.GetMediaPageAsync(
+            new MediaQueryDto { PlayniteId = "g-0", Search = "m-" + mediaSearchId, Limit = 200 }, token)).ConfigureAwait(false);
+        MediaSearchQueryMilliseconds = mediaSearch.ElapsedMilliseconds;
+        MediaSearchResultCount = mediaSearch.Result.Items.Count;
+        if (MediaSearchResultCount == 0)
+            errors.Add("media search returned no matching seeded media");
+
+        QueryAllocatedBytes = Math.Max(0, GC.GetTotalAllocatedBytes(false) - allocatedBefore);
+    }
+
+    private static async Task<(long ElapsedMilliseconds, T Result)> MeasureAsync<T>(Func<Task<T>> operation)
+    {
+        var timer = Stopwatch.StartNew();
+        var result = await operation().ConfigureAwait(false);
+        timer.Stop();
+        return (timer.ElapsedMilliseconds, result);
     }
 
     private async Task SeedGamesAsync(int count, CancellationToken token)
@@ -165,8 +269,8 @@ public sealed class SoakDataScaleHarness : IDisposable
             {
                 TaskId = "task-" + i,
                 TaskType = i % 4 == 0 ? "Backup" : i % 4 == 1 ? "MediaSync" : i % 4 == 2 ? "CloudUpload" : "Validation",
-                GameId = "g-" + (i % 200),
-                GameName = "Game " + (i % 200),
+                GameId = "g-" + (i % SimulationGameBucketCount),
+                GameName = "Game " + (i % SimulationGameBucketCount),
                 State = i % 5 == 0 ? TaskState.Succeeded : TaskState.Failed,
                 ProgressPercent = 100,
                 Message = "soak",
@@ -184,7 +288,7 @@ public sealed class SoakDataScaleHarness : IDisposable
             await store.AddMediaAsync(new MediaItemDto
             {
                 MediaId = "m-" + i,
-                PlayniteId = "g-" + (i % 200),
+                PlayniteId = "g-" + (i % MediaGameBucketCount),
                 Kind = i % 3 == 0 ? MediaKind.VideoClip : MediaKind.Screenshot,
                 Source = MediaSourceKind.Steam,
                 ArchivePath = Path.Combine(options.MediaArchiveDirectory, i + ".png"),
@@ -207,7 +311,7 @@ public sealed class SoakDataScaleHarness : IDisposable
             await store.UpsertGameToolAsync(new GameToolDto
             {
                 ToolId = "tool-" + i,
-                PlayniteId = "g-" + (i % 200),
+                PlayniteId = "g-" + (i % SimulationGameBucketCount),
                 ToolType = GameToolType.CustomExecutable,
                 SourceType = GameToolSourceType.Manual,
                 DisplayName = "Tool " + i,
@@ -233,9 +337,9 @@ public sealed class SoakDataScaleHarness : IDisposable
         _ = await store.GetGamesAsync(token).ConfigureAwait(false);
         _ = await store.GetCountsAsync(token).ConfigureAwait(false);
         _ = await store.GetHealthStateCountsAsync(token).ConfigureAwait(false);
-        _ = await store.GetBackupVersionsAsync("g-" + (cycle % 200), token).ConfigureAwait(false);
-        _ = await store.GetMediaSummaryAsync("g-" + (cycle % 200), token).ConfigureAwait(false);
-        _ = await store.GetGameToolsAsync("g-" + (cycle % 200), token).ConfigureAwait(false);
+        _ = await store.GetBackupVersionsAsync("g-" + (cycle % SimulationGameBucketCount), token).ConfigureAwait(false);
+        _ = await store.GetMediaSummaryAsync("g-" + (cycle % SimulationGameBucketCount), token).ConfigureAwait(false);
+        _ = await store.GetGameToolsAsync("g-" + (cycle % SimulationGameBucketCount), token).ConfigureAwait(false);
         _ = await store.GetOpenFindingsAsync(20, token).ConfigureAwait(false);
         await store.ProbeReadWriteAsync(token).ConfigureAwait(false);
     }
@@ -268,7 +372,7 @@ public sealed class SoakDataScaleHarness : IDisposable
 
     private async Task SimulateOperationLockAsync(int cycle, CancellationToken token)
     {
-        using var lease = await operationLock.AcquireAsync("g-" + (cycle % 200), GameOperationKind.Backup, TimeSpan.FromSeconds(2), token).ConfigureAwait(false);
+        using var lease = await operationLock.AcquireAsync("g-" + (cycle % SimulationGameBucketCount), GameOperationKind.Backup, TimeSpan.FromSeconds(2), token).ConfigureAwait(false);
         if (lease == null) errors.Add("operation lock could not be acquired during soak");
         await Task.Yield();
     }
@@ -292,6 +396,22 @@ public sealed class SoakDataScaleHarness : IDisposable
             tools = ToolCount,
             seedDurationMilliseconds = SeedDurationMilliseconds,
             simulationDurationMilliseconds = SimulationDurationMilliseconds,
+            queryAllocatedBytes = QueryAllocatedBytes,
+            simulationAllocatedBytes = SimulationAllocatedBytes,
+            firstGamesQueryMilliseconds = FirstGamesQueryMilliseconds,
+            warmGamesQueryMilliseconds = WarmGamesQueryMilliseconds,
+            firstTaskPageQueryMilliseconds = FirstTaskPageQueryMilliseconds,
+            warmTaskPageQueryMilliseconds = WarmTaskPageQueryMilliseconds,
+            nextTaskPageQueryMilliseconds = NextTaskPageQueryMilliseconds,
+            taskSearchQueryMilliseconds = TaskSearchQueryMilliseconds,
+            firstMediaPageQueryMilliseconds = FirstMediaPageQueryMilliseconds,
+            warmMediaPageQueryMilliseconds = WarmMediaPageQueryMilliseconds,
+            nextMediaPageQueryMilliseconds = NextMediaPageQueryMilliseconds,
+            mediaSearchQueryMilliseconds = MediaSearchQueryMilliseconds,
+            taskPageItemCount = TaskPageItemCount,
+            mediaPageItemCount = MediaPageItemCount,
+            taskSearchResultCount = TaskSearchResultCount,
+            mediaSearchResultCount = MediaSearchResultCount,
             boundedGrowth = BoundedGrowth,
             subscriberResidue = SubscriberResidue,
             tempResidue = TempResidue,
