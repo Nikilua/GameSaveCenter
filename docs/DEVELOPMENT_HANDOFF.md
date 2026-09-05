@@ -8,7 +8,7 @@
 
 - 新增 `scripts/e01-behavior-matrix.ps1`，默认在 `.tmp` 生成按业务、IPC、WPF/STA、故障/Soak 分组的测试日志和 Markdown/JSON 汇总；`-IncludeRender` 可额外保留 RenderHarness 报告。构建和分组测试均使用隔离输出，不改用户数据。
 - 本机执行结果：业务 `44/44`、IPC `22/22`、WPF/STA `40/45`（Named Pipe 5 项跳过）、故障/Soak `3/3`，Release 0 warning/0 error。跳过项和离屏证据在报告中保持可见，没有合并为通过。
-- E01 的真实 Named Pipe、独立 Worker 进程中断恢复、双选择器及 Playnite 主题/DPI/睡眠唤醒/退出重启仍需用户提供隔离宿主；在此之前状态保持 `MANUAL QA REQUIRED`。
+- 已在不停止用户 Worker 的前提下对当前真实 Named Pipe 执行只读 `system.ping`，返回成功。独立 Worker 进程中断恢复、双选择器及 Playnite 主题/DPI/睡眠唤醒/退出重启仍需用户提供隔离宿主；在此之前状态保持 `MANUAL QA REQUIRED`。
 
 ## 2026-09-05 E02 当前事实入口与模块边界文档治理
 

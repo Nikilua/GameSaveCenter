@@ -6,7 +6,7 @@
 
 - 新增 `scripts/e01-behavior-matrix.ps1`：在隔离 `.tmp` 输出根执行 Release 构建后，按业务 Worker、IPC、WPF/STA、故障/Soak 分组运行现有行为测试，每个测试类保留独立日志，并生成 `behavior-report.md`、`behavior-summary.json` 和人工验收清单；可选 `-IncludeRender` 接入 RenderHarness。
 - 本机矩阵结果：业务 `44/44`、IPC `22/22`、WPF/STA `40/45`（`WorkerIpcClientBehaviorTests` 的 5 项因受限环境无法连接 Named Pipe 而跳过）、故障/Soak `3/3`，所有测试进程退出码为 0。矩阵不会把静态源码断言、离屏渲染或跳过项合并成真实宿主通过。
-- E01 仍未完成：独立 Worker 进程中断恢复、真实 Named Pipe、真实 Playnite 双选择器/主题/DPI/睡眠唤醒与退出重启需隔离宿主和用户操作；本阶段只固化了可重复的自动证据分层。
+- 已对正在运行的用户 Worker 做一次只读 `system.ping`，真实 Named Pipe 返回成功；没有停止、替换或写入该 Worker。E01 仍未完成：独立 Worker 进程中断恢复、真实 Playnite 双选择器/主题/DPI/睡眠唤醒与退出重启需隔离宿主和用户操作；本阶段只固化了可重复的自动证据分层。
 
 ## 2026-09-05 E02 当前事实入口与模块边界文档治理
 

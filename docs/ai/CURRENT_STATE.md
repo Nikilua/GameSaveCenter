@@ -25,7 +25,7 @@
 ## 验证边界
 
 - 自动基线：Release 构建 0 warning/0 error；Core `65/65`、Worker `275/275`、Playnite `338/400`（62 跳过）、XAML `19/19`；`scripts/validate-source.py`、WPF 静态审计和 RenderHarness 多尺寸/双主题/resize/侧栏探针通过。
-- 离屏 RenderHarness、静态源码检查和沙箱测试不等同真实 Playnite 宿主证据。真实 Playnite 逐页像素、主题/高对比度、DPI、键盘焦点、媒体大库、真实云端凭据/断网、Worker 硬重启和长时多进程并发仍标记为 `MANUAL QA REQUIRED`。
+- 离屏 RenderHarness、静态源码检查和沙箱测试不等同真实 Playnite 宿主证据。已对当前用户 Worker 完成一次只读 `system.ping` 的真实 Named Pipe 连通性验证；真实 Playnite 逐页像素、主题/高对比度、DPI、键盘焦点、媒体大库、真实云端凭据/断网、Worker 硬重启和长时多进程并发仍标记为 `MANUAL QA REQUIRED`。
 - 用户可操作的验收应使用隔离 Playnite 安装、独立数据目录和明确进程边界；在这些条件未提供前，继续做安全的源码/Worker/离屏验证，但不要安装插件、写入用户数据或伪造宿主通过结论。
 
 ## 新任务启动顺序

@@ -191,7 +191,7 @@
 
 **验收**：至少一个独立 Worker 进程的中断恢复用例、一个真实 Named Pipe 用例、一个双选择器行为用例；真机覆盖多主题、DPI、快速切页、睡眠唤醒/退出重启。不能用静态字符串断言替代业务行为，也不能把离屏截图标为 Playnite。
 
-**已实施基础（2026-09-05）**：新增 `scripts/e01-behavior-matrix.ps1`，默认在隔离 `.tmp` 输出构建、分组测试日志、Markdown/JSON 汇总，并可选接入 RenderHarness；本机业务 `44/44`、IPC `22/22`、WPF/STA `40/45`、故障/Soak `3/3`，WPF/STA 少的 5 项是当前受限环境跳过的真实 Named Pipe 行为测试。矩阵显式保留 `MANUAL QA REQUIRED` 的真实 Playnite 项，不把静态、离屏或跳过证据当作宿主通过。独立 Worker 中断恢复、真实 Named Pipe、双选择器宿主操作、多主题/DPI、睡眠唤醒和退出重启仍是 E01 未完成项。
+**已实施基础（2026-09-05）**：新增 `scripts/e01-behavior-matrix.ps1`，默认在隔离 `.tmp` 输出构建、分组测试日志、Markdown/JSON 汇总，并可选接入 RenderHarness；本机业务 `44/44`、IPC `22/22`、WPF/STA `40/45`、故障/Soak `3/3`，WPF/STA 少的 5 项是当前受限环境跳过的 Named Pipe 行为测试。另对正在运行的用户 Worker 执行了一次只读 `system.ping`，真实 Named Pipe 返回成功，没有停止或写入该进程。矩阵显式保留 `MANUAL QA REQUIRED` 的真实 Playnite 项，不把静态、离屏或跳过证据当作宿主通过。独立 Worker 进程中断恢复、双选择器宿主操作、多主题/DPI、睡眠唤醒和退出重启仍是 E01 未完成项。
 
 ## E02：文档与模块边界降低后续 AI 返工（已完成）
 

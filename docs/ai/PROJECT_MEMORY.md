@@ -9,7 +9,7 @@
 
 - `scripts/e01-behavior-matrix.ps1` 是自动证据分层入口：输出根默认在 `.tmp/e01-behavior`，业务、IPC、WPF/STA、故障/Soak 每个测试类单独记录；`-IncludeRender` 才运行 RenderHarness，真实 Playnite 始终写入 `MANUAL QA REQUIRED`。
 - 最近矩阵执行结果为业务 `44/44`、IPC `22/22`、WPF/STA `40/45`（5 项 `WorkerIpcClientBehaviorTests` 因当前环境 Named Pipe 能力探测跳过）、故障/Soak `3/3`；构建 Release 0 warning/0 error，整体进程退出码为 0。
-- 这只是 E01 的可执行基础，不代表独立 Worker 进程中断恢复、真实 Named Pipe 或 Playnite 宿主已验收；后续在隔离宿主可用时复用该报告结构补齐证据。
+- 已对当前用户 Worker 执行一次只读 `system.ping` 并收到成功响应，证明真实 Named Pipe 连通；没有停止或写入用户 Worker。这只是 E01 的可执行基础，不代表独立 Worker 进程中断恢复或 Playnite 宿主已验收；后续在隔离宿主可用时复用该报告结构补齐证据。
 
 ## 2026-09-05 E02 当前事实入口与模块边界文档治理
 
