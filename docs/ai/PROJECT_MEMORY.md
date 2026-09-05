@@ -3,6 +3,13 @@
 > 维护时间：2026-09-05
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-05 R04 任务统计口径与完整历史查询
+
+- Worker 新增 `TaskQueryDto`/`TaskPageDto`/`TaskSummaryDto` 查询契约和 `tasks.page` IPC；查询支持状态（含组合状态）、游戏、类型、关键词、创建时间半开区间，按 `created_utc DESC, task_id DESC` 加不透明游标分页，稳定覆盖同一创建时间的任务。
+- `GetTaskSummaryAsync` 独立聚合全量匹配结果，`DashboardService` 不再用最近 50 条推导云端等待数；今日成功使用本地日边界转换后的 UTC 半开区间。`finished_utc,state` 索引已由查询计划测试证明用于完成数统计。
+- TaskCenter 的任务总数、运行中和今日完成不再混用加载窗口；支持最近/全部历史、时间范围筛选和“加载更多”，列表底部明确已加载/总数。选择历史或时间范围后采用服务端分页，重试计数明确为当前已加载结果；原有命令、绑定、虚拟化和任务滚动保留。
+- 阶段验证：Release 0 warning/0 error；Core `65/65`、Worker `251/251`、Playnite `331/388`（57 跳过）、XAML `19/19`、源码校验和 `git diff --check` 通过。未运行真实 Playnite 宿主、10,000 条任务性能实验和跨午夜人工验收。
+
 ## 2026-09-05 R03 保留清理隔离账本与启动恢复
 
 - 新增 `retention_quarantine_batches` / `retention_quarantine_entries` SQLite 表和 `RetentionQuarantineState` 状态机；每个条目持久化批次、游戏/备份 ID、原路径、隔离路径、文件字节和最后错误，应用流程依次记录 `Planned` → `Moved` → `IndexRemoved` → `Deleted`，不确定时进入 `RecoveryRequired`。

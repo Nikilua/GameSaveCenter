@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-05 R04 任务统计口径与完整历史查询
+
+- 新增 `TaskQueryDto`、`TaskPageDto`、`TaskSummaryDto` 和 `tasks.page` IPC 请求；Worker 支持状态/游戏/类型/关键词/创建时间半开区间过滤，使用 `(created_utc, task_id)` 稳定游标分页，查询结果不会因相同创建时间重叠或漏项。
+- 摘要使用独立 SQLite 聚合，不受当前页大小影响；Dashboard 的云端待处理数改用全量摘要，今日完成按 Playnite 本地日换算 UTC 半开区间统计。新增 `finished_utc,state` 索引，并用 `EXPLAIN QUERY PLAN` 回归确认完成数查询命中该索引。
+- TaskCenter 保留现有任务命令、详情、虚拟化和滚动行为，增加“最近任务/全部历史”、今天/昨天/近 7 天/近 30 天/全部时间范围、“加载更多”和已加载/总数提示；状态、类型、搜索和时间范围均下推 Worker，重试计数明确为当前已加载结果。
+- 新增相同创建时间分页、日期半开区间、窗口外搜索和索引查询计划测试；修正任务页扩展筛选在窄窗口下的列定位，并让手动刷新后历史查询重新加载。验证：Release 构建 0 warning/0 error；Core `65/65`、Worker `251/251`、Playnite `331/388`（57 跳过）、XAML `19/19`，`validate-source.py` 和 `git diff --check` 通过。真实 Playnite 宿主、10,000 条任务长时性能和跨午夜人工复核仍待执行。
+
 ## 2026-09-05 R03 保留清理隔离账本与启动恢复
 
 - 新增 SQLite 清理批次/条目账本，持久化原路径、隔离路径、文件大小和 `Planned`、`Moved`、`IndexRemoved`、`Deleted`、`RecoveryRequired` 状态；应用流程在每个不可逆边界后推进状态，失败明细包含实际隔离路径。

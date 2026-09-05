@@ -64,6 +64,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private Task? taskEventListener;
         private bool commandRefreshScheduled;
         private readonly DebouncedRefresh taskSearchRefresh;
+        private readonly DebouncedRefresh taskHistoryQueryRefresh;
         private readonly DebouncedRefresh mediaSearchRefresh;
         private readonly DebouncedRefresh uiStateSave;
         private DateTime lastFullDashboardRefreshUtc=DateTime.MinValue;
@@ -142,6 +143,14 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string taskGameFilter = "全部";
         private string taskTypeFilter = "全部";
         private string taskSearchText = string.Empty;
+        private TaskSummaryDto taskSummary = new TaskSummaryDto();
+        private int todaySucceededTaskCount;
+        private string taskHistoryScope = "最近任务";
+        private string taskHistoryRange = "全部时间";
+        private string taskHistoryCursor = string.Empty;
+        private int taskHistoryTotalCount;
+        private bool taskHistoryHasMore;
+        private bool taskHistoryActive;
         private string deviceStateMessage = "尚未刷新多设备状态。该功能只比较摘要，绝不自动恢复或覆盖存档。";
         private DeviceConflictStatusDto selectedDeviceComparison = null!;
         private string deviceDecision = "稍后处理";
@@ -184,6 +193,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             MediaView.Filter = FilterMedia;
             MediaInboxItems = UnassignedMedia;
             taskSearchRefresh = new DebouncedRefresh(() => ApplyOnUi(RefreshTasksView), TimeSpan.FromMilliseconds(180));
+            taskHistoryQueryRefresh = new DebouncedRefresh(() => Run(() => LoadTaskPageAsync(true)), TimeSpan.FromMilliseconds(240));
             mediaSearchRefresh = new DebouncedRefresh(() => ApplyOnUi(RefreshMediaView), TimeSpan.FromMilliseconds(180));
             uiStateSave = new DebouncedRefresh(SaveUiStateSettings, TimeSpan.FromMilliseconds(500));
             taskStatusFilter = TaskStatusFilterOptions.Contains(plugin.Settings.TaskStatusFilterState) ? plugin.Settings.TaskStatusFilterState : "全部";
@@ -231,6 +241,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             CancelTaskCommand = new RelayCommand(_ => _ = CancelSelectedTaskAsync(), _ => SelectedTask != null && SelectedTask.CanCancel && !IsCancellingTask);
             RetryTaskCommand = new RelayCommand(_ => Run(RetrySelectedTaskAsync), _ => !IsBusy && CanRetrySelectedTask());
             RetryAllTasksCommand = new RelayCommand(_ => Run(RetryAllTasksAsync), _ => !IsBusy && RetryableTaskCount > 0);
+            LoadMoreTasksCommand = new RelayCommand(_ => Run(() => LoadTaskPageAsync(false)), _ => !IsBusy && taskHistoryActive && TaskHistoryHasMore);
             CopyTaskErrorCommand = new RelayCommand(_ => Run(CopySelectedTaskErrorAsync), _ => SelectedTask != null && !string.IsNullOrWhiteSpace(SelectedTask.DetailMessage));
             OpenAttentionCenterCommand = new RelayCommand(_ => OpenAttentionCenter());
             OpenMaintenanceCommand = new RelayCommand(_ => OpenMaintenance());
@@ -467,9 +478,46 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
         }
         public IReadOnlyList<string> TaskStatusFilterOptions { get; } = new[] { "全部", "运行中", "等待中", "失败", "已完成" };
-        public int RunningTaskCount => Tasks.Count(task => task.State == TaskState.Running);
+        public IReadOnlyList<string> TaskHistoryScopeOptions { get; } = new[] { "最近任务", "全部历史" };
+        public IReadOnlyList<string> TaskHistoryRangeOptions { get; } = new[] { "全部时间", "今天", "昨天", "近7天", "近30天" };
+        public TaskSummaryDto TaskSummary { get => taskSummary; private set => SetValue(ref taskSummary, value ?? new TaskSummaryDto()); }
+        public int TaskTotalCount => TaskSummary.TotalCount;
+        public int RunningTaskCount => TaskSummary.RunningCount;
         public int RetryableTaskCount => Tasks.Count(CanRetryTask);
-        public int CompletedTaskCount => Tasks.Count(task => task.State == TaskState.Succeeded);
+        public int CompletedTaskCount => todaySucceededTaskCount;
+        public int LoadedTaskCount => Tasks.Count;
+        public bool TaskHistoryHasMore { get => taskHistoryHasMore; private set => SetValue(ref taskHistoryHasMore, value); }
+        public string TaskLoadedSummary => taskHistoryActive
+            ? $"已加载 {Tasks.Count} / {taskHistoryTotalCount} 条 · {TaskHistoryScope}{(TaskHistoryRange == "全部时间" ? string.Empty : " · " + TaskHistoryRange)}"
+            : $"最近加载 {Tasks.Count} 条 · 全部任务 {TaskTotalCount} 条";
+        public string TaskHistoryScope
+        {
+            get => taskHistoryScope;
+            set
+            {
+                var normalized = value == "全部历史" ? "全部历史" : "最近任务";
+                if (string.Equals(taskHistoryScope, normalized, StringComparison.Ordinal)) return;
+                SetValue(ref taskHistoryScope, normalized);
+                taskHistoryQueryRefresh.Cancel();
+                Run(() => LoadTaskPageAsync(true));
+                OnPropertyChanged(nameof(TaskLoadedSummary));
+                RaiseCommandStates();
+            }
+        }
+        public string TaskHistoryRange
+        {
+            get => taskHistoryRange;
+            set
+            {
+                var normalized = TaskHistoryRangeOptions.Contains(value) ? value : "全部时间";
+                if (string.Equals(taskHistoryRange, normalized, StringComparison.Ordinal)) return;
+                SetValue(ref taskHistoryRange, normalized);
+                taskHistoryQueryRefresh.Cancel();
+                Run(() => LoadTaskPageAsync(true));
+                OnPropertyChanged(nameof(TaskLoadedSummary));
+                RaiseCommandStates();
+            }
+        }
         public string TaskSearchText
         {
             get => taskSearchText;
@@ -477,6 +525,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 SetValue(ref taskSearchText, value ?? string.Empty);
                 taskSearchRefresh.Schedule(value);
+                ScheduleTaskHistoryQuery();
                 uiStateSave?.Schedule();
             }
         }
@@ -487,6 +536,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 SetValue(ref taskStatusFilter, string.IsNullOrWhiteSpace(value) ? "全部" : value);
                 TasksView.Refresh();
+                ScheduleTaskHistoryQuery();
                 uiStateSave?.Schedule();
             }
         }
@@ -497,6 +547,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 SetValue(ref taskGameFilter, string.IsNullOrWhiteSpace(value) ? "全部" : value);
                 TasksView.Refresh();
+                ScheduleTaskHistoryQuery();
                 uiStateSave?.Schedule();
             }
         }
@@ -507,6 +558,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 SetValue(ref taskTypeFilter, string.IsNullOrWhiteSpace(value) ? "全部" : value);
                 TasksView.Refresh();
+                ScheduleTaskHistoryQuery();
                 uiStateSave?.Schedule();
             }
         }
@@ -898,6 +950,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand CancelTaskCommand { get; }
         public ICommand RetryTaskCommand { get; }
         public ICommand RetryAllTasksCommand { get; }
+        public ICommand LoadMoreTasksCommand { get; }
         public ICommand CopyTaskErrorCommand { get; }
         public ICommand OpenAttentionCenterCommand { get; }
         public ICommand OpenMaintenanceCommand { get; }
@@ -1203,6 +1256,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             gamePicker.CancelPendingRefresh();
             taskSearchRefresh.Cancel();
+            taskHistoryQueryRefresh.Cancel();
             mediaSearchRefresh.Cancel();
             Interlocked.Increment(ref mediaInboxLoadGeneration);
             pendingMediaInboxLoadMode = null;
@@ -1364,6 +1418,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             StatusMessage = synchronize ? "正在同步设置与游戏库…" : "正在读取本地状态…";
             await RefreshDashboardAsync(synchronize, false, snapshotTimeout);
+            if (taskHistoryActive) await LoadTaskPageAsync(true);
             if (!policyTemplatesLoaded) await LoadPolicyTemplatesAsync();
             if (CurrentWorkspace == WorkspaceKind.Media)
             {
@@ -1445,11 +1500,17 @@ namespace GameSaveCenter.Playnite.ViewModels
                 // window is a user-facing "recent" promise, so anchor it to now rather than to
                 // the snapshot's generation time when Worker data is temporarily unavailable.
                 RecentProtection = recentProtectionAssessment.Assess(data.Games, plugin.Settings.RecentProtectionWindowDays, DateTime.UtcNow);
-                var tasksChanged = Replace(Tasks, data.RecentTasks, SnapshotComparers.Task);
-                if (tasksChanged) taskIndex.Rebuild(Tasks);
+                TaskSummary = data.TaskSummary ?? new TaskSummaryDto();
+                todaySucceededTaskCount = data.TodaySucceededTaskCount;
+                OnPropertyChanged(nameof(TaskTotalCount));
                 OnPropertyChanged(nameof(RunningTaskCount));
                 OnPropertyChanged(nameof(RetryableTaskCount));
                 OnPropertyChanged(nameof(CompletedTaskCount));
+                OnPropertyChanged(nameof(TaskLoadedSummary));
+                var tasksChanged = taskHistoryActive ? false : Replace(Tasks, data.RecentTasks, SnapshotComparers.Task);
+                if (tasksChanged) taskIndex.Rebuild(Tasks);
+                if (tasksChanged) OnPropertyChanged(nameof(LoadedTaskCount));
+                if (tasksChanged) OnPropertyChanged(nameof(TaskLoadedSummary));
                 Replace(OverviewTasks, data.RecentTasks.Take(8), SnapshotComparers.Task);
                 Replace(Activities, data.RecentActivities.Take(12), SnapshotComparers.Activity);
                 RebuildTaskFilters();
@@ -1772,6 +1833,99 @@ namespace GameSaveCenter.Playnite.ViewModels
                 StatusMessage = result.Summary;
                 RaiseCommandStates();
             });
+        }
+
+        private void ScheduleTaskHistoryQuery()
+        {
+            if (taskHistoryActive) taskHistoryQueryRefresh.Schedule();
+        }
+
+        private async Task LoadTaskPageAsync(bool reset)
+        {
+            if (reset)
+            {
+                taskHistoryActive = true;
+                taskHistoryCursor = string.Empty;
+                taskHistoryTotalCount = 0;
+                TaskHistoryHasMore = false;
+            }
+            if (!taskHistoryActive) return;
+
+            var page = await plugin.RequestAsync<TaskPageDto>(
+                MessageTypes.GetTaskPage,
+                BuildTaskQuery(taskHistoryCursor),
+                TimeSpan.FromMinutes(3));
+            ApplyOnUi(() =>
+            {
+                var incoming = page?.Items ?? new List<TaskStatusDto>();
+                var merged = reset
+                    ? incoming
+                    : Tasks.Concat(incoming.Where(item => !Tasks.Any(existing => string.Equals(existing.TaskId, item.TaskId, StringComparison.OrdinalIgnoreCase)))).ToList();
+                var selectedTaskId = SelectedTask?.TaskId;
+                var changed = Replace(Tasks, merged, SnapshotComparers.Task);
+                if (changed) taskIndex.Rebuild(Tasks);
+                taskHistoryCursor = page?.NextCursor ?? string.Empty;
+                taskHistoryTotalCount = page?.TotalCount ?? Tasks.Count;
+                TaskHistoryHasMore = page?.HasMore == true;
+                TaskSummary = page?.Summary ?? new TaskSummaryDto { TotalCount = taskHistoryTotalCount };
+                OnPropertyChanged(nameof(TaskTotalCount));
+                OnPropertyChanged(nameof(RunningTaskCount));
+                OnPropertyChanged(nameof(RetryableTaskCount));
+                OnPropertyChanged(nameof(CompletedTaskCount));
+                OnPropertyChanged(nameof(LoadedTaskCount));
+                OnPropertyChanged(nameof(TaskLoadedSummary));
+                RebuildTaskFilters();
+                SelectedTask = Tasks.FirstOrDefault(item => string.Equals(item.TaskId, selectedTaskId, StringComparison.OrdinalIgnoreCase)) ?? Tasks.FirstOrDefault();
+                StatusMessage = TaskLoadedSummary;
+                RaiseCommandStates();
+            });
+        }
+
+        private TaskQueryDto BuildTaskQuery(string cursor)
+        {
+            var query = new TaskQueryDto
+            {
+                Limit = taskHistoryScope == "全部历史" ? 200 : 50,
+                Cursor = cursor ?? string.Empty,
+                Search = TaskSearchText,
+                GameName = TaskGameFilter == "全部" ? string.Empty : TaskGameFilter,
+                TaskType = TaskTypeFilter == "全部" ? string.Empty : TaskTypeFilter switch
+                {
+                    "存档备份" => "Backup",
+                    "存档恢复" => "Restore",
+                    "媒体同步" => "MediaSync",
+                    "媒体归类" => "MediaInbox",
+                    "整库备份" => "BackupAll",
+                    "修改器下载" => "TrainerDownload",
+                    "云端上传" => "CloudUpload",
+                    "存档校验" => "Validation",
+                    _ => TaskTypeFilter
+                },
+                States = TaskStatusFilter switch
+                {
+                    "运行中" => new List<TaskState> { TaskState.Running },
+                    "等待中" => new List<TaskState> { TaskState.Queued, TaskState.WaitingForUser },
+                    "失败" => new List<TaskState> { TaskState.Failed },
+                    "已完成" => new List<TaskState> { TaskState.Succeeded, TaskState.Cancelled },
+                    _ => new List<TaskState>()
+                }
+            };
+            var today = DateTime.Today;
+            DateTime? start = taskHistoryRange switch
+            {
+                "今天" => today,
+                "昨天" => today.AddDays(-1),
+                "近7天" => today.AddDays(-6),
+                "近30天" => today.AddDays(-29),
+                _ => null
+            };
+            if (start.HasValue)
+            {
+                var end = taskHistoryRange == "昨天" ? today : today.AddDays(1);
+                query.StartUtc = DateTime.SpecifyKind(start.Value, DateTimeKind.Local).ToUniversalTime();
+                query.EndUtc = DateTime.SpecifyKind(end, DateTimeKind.Local).ToUniversalTime();
+            }
+            return query;
         }
 
         private async Task ApplyRetentionSimulationAsync()
@@ -3514,7 +3668,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 AddMediaSourceCommand, AcceptCandidateCommand, RejectCandidateCommand, ReassignMediaCommand,
                 UpdateMediaMetadataCommand,OpenSelectedMediaCommand,RevealSelectedMediaCommand,
                 AssignInboxMediaCommand, IgnoreInboxMediaCommand, AssignInboxMediaBatchCommand, IgnoreInboxMediaBatchCommand, RestoreIgnoredMediaBatchCommand,
-                CancelTaskCommand, RetryTaskCommand, RetryAllTasksCommand, CopyTaskErrorCommand, RefreshDiagnosticsCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
+                CancelTaskCommand, RetryTaskCommand, RetryAllTasksCommand, LoadMoreTasksCommand, CopyTaskErrorCommand, RefreshDiagnosticsCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
                 StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,RefreshRetentionSimulationCommand,ApplyRetentionSimulationCommand,RefreshLocalMirrorStatusCommand,SyncLocalMirrorCommand,CopyMaintenanceReportCommand,ExportMaintenanceReportCommand,
                 SaveProcessMappingCommand,DeleteProcessMappingCommand,RunEnvironmentCheckCommand,SkipOnboardingCommand,CompleteOnboardingCommand,OnboardingTestBackupCommand,
                 OpenDataDirectoryCommand, OpenBackupDirectoryCommand, OpenMediaDirectoryCommand, OpenWorkerLogCommand

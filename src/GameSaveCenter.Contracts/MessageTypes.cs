@@ -52,6 +52,7 @@ namespace GameSaveCenter.Contracts
         public const string AcceptSavePath = "detection.accept";
         public const string RejectSavePath = "detection.reject";
         public const string GetTasks = "tasks.get";
+        public const string GetTaskPage = "tasks.page";
         public const string GetTaskChanges = "tasks.changes";
         public const string WaitForTaskChanges = "tasks.changes.wait";
         public const string RetryCloudUpload = "cloud.upload.retry";

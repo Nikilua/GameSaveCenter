@@ -27,6 +27,8 @@ namespace GameSaveCenter.Contracts
         public int RiskGames { get; set; }
         public int UnknownGames { get; set; }
         public int PendingCloudTasks { get; set; }
+        public TaskSummaryDto TaskSummary { get; set; } = new TaskSummaryDto();
+        public int TodaySucceededTaskCount { get; set; }
         public int UnassignedMediaCount { get; set; }
         public List<GameStatusDto> Games { get; set; } = new List<GameStatusDto>();
         public List<TaskStatusDto> RecentTasks { get; set; } = new List<TaskStatusDto>();

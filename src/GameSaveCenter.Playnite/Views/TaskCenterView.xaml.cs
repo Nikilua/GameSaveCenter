@@ -65,7 +65,7 @@ namespace GameSaveCenter.Playnite.Views
 
                 // The primary toolbar is a finite Grid rather than a WrapPanel. The
                 // game selector is intentionally kept in the optional disclosure so
-                // the four primary controls never reflow into each other.
+                // the primary controls never reflow into each other.
                 var compactFilters = width < 760;
                 TaskMoreFiltersExpander.Visibility = compactFilters ? Visibility.Visible : Visibility.Collapsed;
                 TaskFiltersPanel.RowDefinitions[1].Height = compactFilters
@@ -81,10 +81,14 @@ namespace GameSaveCenter.Playnite.Views
                 Grid.SetColumn(TaskTypeFilterLabel, compactFilters ? 2 : 3);
                 Grid.SetRow(TaskTypeFilterComboBox, compactFilters ? 1 : 0);
                 Grid.SetColumn(TaskTypeFilterComboBox, compactFilters ? 3 : 4);
+                Grid.SetRow(TaskHistoryScopeComboBox, compactFilters ? 1 : 0);
+                Grid.SetColumn(TaskHistoryScopeComboBox, compactFilters ? 4 : 5);
+                Grid.SetRow(TaskHistoryRangeComboBox, compactFilters ? 1 : 0);
+                Grid.SetColumn(TaskHistoryRangeComboBox, compactFilters ? 5 : 6);
                 Grid.SetRow(TaskRefreshButton, compactFilters ? 1 : 0);
-                Grid.SetColumn(TaskRefreshButton, compactFilters ? 4 : 5);
+                Grid.SetColumn(TaskRefreshButton, compactFilters ? 6 : 7);
 
-                Grid.SetColumnSpan(TaskSearchBoxHost, compactFilters ? 6 : 1);
+                Grid.SetColumnSpan(TaskSearchBoxHost, compactFilters ? 7 : 1);
                 Grid.SetRow(TaskSearchBoxHost, 0);
 
                 // Give the common desktop width a stable rhythm like the Demo's
@@ -102,6 +106,8 @@ namespace GameSaveCenter.Playnite.Views
                     TaskSearchBoxHost.MinWidth = 420;
                     TaskStatusFilterComboBox.Width = 140;
                     TaskTypeFilterComboBox.Width = 140;
+                    TaskHistoryScopeComboBox.Width = 120;
+                    TaskHistoryRangeComboBox.Width = 120;
                     TaskGameFilterComboBox.Width = 180;
                 }
                 else if (width >= 760)
@@ -109,6 +115,8 @@ namespace GameSaveCenter.Playnite.Views
                     TaskSearchBoxHost.MinWidth = 300;
                     TaskStatusFilterComboBox.Width = double.NaN;
                     TaskTypeFilterComboBox.Width = double.NaN;
+                    TaskHistoryScopeComboBox.Width = double.NaN;
+                    TaskHistoryRangeComboBox.Width = double.NaN;
                     TaskGameFilterComboBox.Width = double.NaN;
                 }
                 else
@@ -116,6 +124,8 @@ namespace GameSaveCenter.Playnite.Views
                     TaskSearchBoxHost.MinWidth = 180;
                     TaskStatusFilterComboBox.Width = double.NaN;
                     TaskTypeFilterComboBox.Width = double.NaN;
+                    TaskHistoryScopeComboBox.Width = double.NaN;
+                    TaskHistoryRangeComboBox.Width = double.NaN;
                     TaskGameFilterComboBox.Width = double.NaN;
                 }
 

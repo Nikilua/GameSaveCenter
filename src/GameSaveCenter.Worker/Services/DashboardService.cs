@@ -31,6 +31,9 @@ public sealed class DashboardService
         var games=await _store.GetDashboardGameRecordsAsync(token).ConfigureAwait(false);
         var active=_sessions.ActiveSessions.Select(x=>x.PlayniteId).ToHashSet(StringComparer.OrdinalIgnoreCase);
         var tasks=await _store.GetRecentTasksAsync(50,token).ConfigureAwait(false);
+        var taskSummary=await _store.GetTaskSummaryAsync(new TaskQueryDto(),token).ConfigureAwait(false);
+        var (localDayStartUtc, localDayEndUtc)=GetCurrentLocalDayUtc();
+        var todaySucceededTaskCount=await _store.GetSucceededTaskCountAsync(localDayStartUtc,localDayEndUtc,token).ConfigureAwait(false);
         var findings=await _store.GetOpenFindingsAsync(100,token).ConfigureAwait(false);
         var counts=await _store.GetCountsAsync(token).ConfigureAwait(false);
         var audit=await _store.GetAuditAsync(100,token).ConfigureAwait(false);
@@ -55,7 +58,7 @@ public sealed class DashboardService
             LudusaviAvailable=_ludusavi.IsAvailable,RcloneAvailable=_rclone.IsAvailable,LudusaviVersion=ludusaviVersion,
             LudusaviExecutable=_options.LudusaviExecutable,LudusaviBackupDirectory=_options.LudusaviBackupDirectory,BackupFormat=_options.BackupFormat,
             ManagedGames=counts.Games,MatchedGames=counts.Matched,
-            RunningGames=active.Count,PendingCloudTasks=tasks.Count(x=>x.TaskType.Contains("Cloud",StringComparison.OrdinalIgnoreCase)&&x.State is TaskState.Queued or TaskState.Running),
+            RunningGames=active.Count,PendingCloudTasks=taskSummary.PendingCloudCount,TaskSummary=taskSummary,TodaySucceededTaskCount=todaySucceededTaskCount,
             UnassignedMediaCount=counts.Unassigned,RecentTasks=tasks,Findings=findings,RecentAudit=audit,RecentActivities=activities
         };
         foreach(var record in games)
@@ -98,6 +101,14 @@ public sealed class DashboardService
         _logger.LogDebug("[PERF] DashboardSnapshot fetch={FetchMs}ms games={Games} tasks={Tasks} findings={Findings} audit={Audit}",
             stopwatch.ElapsedMilliseconds,snapshot.Games.Count,snapshot.RecentTasks.Count,snapshot.Findings.Count,snapshot.RecentAudit.Count);
         return snapshot;
+    }
+
+    private static (DateTime StartUtc,DateTime EndUtc) GetCurrentLocalDayUtc()
+    {
+        // Convert the local half-open day before querying SQLite so DST transition days
+        // use 23/25 actual hours instead of assuming a fixed 24-hour UTC interval.
+        var localStart=DateTime.SpecifyKind(DateTime.Now.Date,DateTimeKind.Local);
+        return (localStart.ToUniversalTime(),localStart.AddDays(1).ToUniversalTime());
     }
 
     private void QueueLudusaviVersionRefresh()

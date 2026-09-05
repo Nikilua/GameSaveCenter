@@ -115,6 +115,7 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.DeletePolicyTemplate=>await DeletePolicyTemplateAsync(Read<PolicyTemplateDeleteDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ApplyPolicyTemplate=>await ApplyPolicyTemplateAsync(Read<ApplyPolicyTemplateDto>(request),token).ConfigureAwait(false),
                 MessageTypes.GetTasks=>await _store.GetRecentTasksAsync(200,token).ConfigureAwait(false),
+                MessageTypes.GetTaskPage=>await _store.GetTaskPageAsync(Read<TaskQueryDto>(request),token).ConfigureAwait(false),
                 MessageTypes.GetTaskChanges=>GetTaskChanges(Read<TaskChangeRequestDto>(request)),
                 MessageTypes.WaitForTaskChanges=>await WaitForTaskChangesAsync(Read<TaskChangeRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.RetryCloudUpload=>await _backup.RetryCloudUploadAsync(Read<GameQueryDto>(request).PlayniteId,token).ConfigureAwait(false),
