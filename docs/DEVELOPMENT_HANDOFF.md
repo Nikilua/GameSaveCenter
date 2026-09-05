@@ -4,6 +4,13 @@
 
 > 新会话短入口：先读 [`docs/ai/CURRENT_STATE.md`](ai/CURRENT_STATE.md)。本文下方的历史交接按时间保留；除顶部最新阶段和明确标注的覆盖关系外，旧条目只用于追溯，不得覆盖当前事实入口。
 
+## 2026-09-05 UI-134 任务中心搜索文字垂直裁切修复
+
+- 用户报告任务中心搜索框输入后文字不可见。根因是生产 `GscWpfUiTextBoxTemplate` 将 TextBox Padding 同时用于外层 Chrome 和原生内容视口；上下 `7 DIP` 被重复扣除，36 DIP 输入框的 `PART_ContentHost.ViewportHeight` 只有约 `5 DIP`。
+- 已移除生产模板外层 `Padding="{TemplateBinding Padding}"`，保留任务搜索框现有 `Padding="30,7,38,7"`、高度 `GscButtonHeight=36`、搜索 Binding/占位提示/清除命令以及 Foreground 和 ContentHost 对齐绑定。不要把外层 Padding 加回去，也不要通过增加输入框高度规避。
+- 新增真实生产资源加载的 STA 回归测试；Release 定向测试 `126 通过/39 跳过`，源码校验、XAML 检查、WPF 静态审查通过。RenderHarness 双主题、多尺寸、resize `render-qa OK`，修复后任务 viewport 为 `19 DIP`、文字 extent 为 `18 DIP`。
+- 以上仍是离屏/WPF 自动证据，不等同真实 Playnite 宿主；真实主题、DPI、键盘输入和焦点需用户复核。
+
 ## 2026-09-05 E01 规模性能基线
 
 - 新增 `scripts/e01-scale-baseline.ps1`，仅在显式指定 `full` 或 `stress` 时创建大规模隔离 SQLite 夹具；脚本独立还原/Release 构建 Worker 测试，保存测试日志、`worker-scale.json` 和 `baseline.md`，不会碰当前用户 Worker 或 Playnite 数据。
@@ -366,7 +373,7 @@
 
 ## 2026-08-25 UI-331 共享控件与流畅度交接
 
-- 共享生产 TextBox 模板现在把样式 Padding 应用到外层 Chrome；ContentHost 必须保持零 Margin/零 Padding，避免输入文字高度和左右内边距因模板重复计算而漂移。TextBox/ComboBox 保留 `SnapsToDevicePixels` 与 `UseLayoutRounding`。
+- 历史实现曾把样式 Padding 应用到外层 Chrome；当前有效实现由原生 ContentHost 消费 TextBox Padding，外层 Chrome 保持无 Padding。ContentHost 必须保持零 Margin/零 Padding，避免输入文字高度和左右内边距因模板重复计算而漂移。TextBox/ComboBox 保留 `SnapsToDevicePixels` 与 `UseLayoutRounding`。
 - ComboBox 选中内容和下拉项统一传递字体族、字号、字重，并使用明确的左对齐；相邻筛选下拉框的 Items、Binding、默认值和命令未改动。
 - 侧栏边界控制仍是无文字、32×32 的底部集成控件。宽度 270↔72 DIP 由 210ms `GridLengthAnimation` 驱动；内容层的 190ms 淡入/4 DIP 位移只用于平滑视觉过渡。完成、非动画布局和卸载必须停止/清理动画。
 - 游戏背景仍只有 Shell 的一个静态图片层，现增加 `BitmapCache`；不要为了追求“玻璃感”给卡片、文字、表格、列表和 ScrollViewer 挂 BlurEffect。
@@ -518,7 +525,7 @@
 ## 2026-08-24 UI-303 任务中心输入文字垂直裁切修复交接
 
 - 根因已确认：TextBox 模板把 `TextBox.Padding` 同时用于 `PART_ContentHost.Margin`，WPF TextBox/Playnite 宿主又对内容宿主应用 Padding，任务搜索框上下 `7 DIP` 重复扣除，`PART_ContentHost.ViewportHeight` 仅约 `5 DIP`。不要恢复 `Margin="{TemplateBinding Padding}"`，也不要通过增加 TextBox 高度修复。
-- `WpfUiProduction.xaml`、`DesignTokens.xaml` 的 `PART_ContentHost` 当前使用 `Margin="0"`、`Padding="0"`、`BorderThickness="0"`；TextBox 的 Padding 单独负责左右输入边距。内容宿主显式继承 TextBox 的 Foreground、FontFamily、FontSize、FontWeight，避免宿主主题重新改变文字度量或颜色。
+- `WpfUiProduction.xaml`、`DesignTokens.xaml` 的 `PART_ContentHost` 当前使用 `Margin="0"`、`Padding="0"`、`BorderThickness="0"`；TextBox 的 Padding 由原生内容视口消费，负责上下可视空间和左右输入边距。内容宿主显式继承 TextBox 的 Foreground、FontFamily、FontSize、FontWeight，避免宿主主题重新改变文字度量或颜色。
 - 当前验证：源码门禁、XAML 19/19、WPF 静态审查 0 error/20 warnings/165 info、Release 0 warning/0 error、Core 59/59、Worker 199/199、Playnite 282/282（57 跳过）通过；输入态离屏 viewport `5→19 DIP` 且文字完整显示，render QA 通过；生产安装已核验清单 `0.6.70`、DLL `0.6.70.0`。真实 Playnite 逐像素截图仍需用户复核。
 
 ## 2026-08-24 UI-302 任务中心搜索框可见性与图标间距修复交接

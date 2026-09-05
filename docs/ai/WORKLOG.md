@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-05 UI-134 任务中心搜索文字垂直裁切修复
+
+- 复现确认：任务搜索框保留 `Padding="30,7,38,7"` 和 `GscButtonHeight=36` 时，生产 `GscWpfUiTextBoxTemplate` 将同一 Padding 再应用到外层 Chrome，`PART_ContentHost` viewport 只有 `5 DIP`，文字 extent 约 `18 DIP`，因此输入后只剩裁切笔画。
+- 修复只删除生产模板外层 `Padding="{TemplateBinding Padding}"`，不改 TaskCenter 高度、左右输入起点、搜索绑定、占位提示、清除命令或前景绑定；DesignTokens fallback 本来已遵守该契约。
+- 新增 STA 回归：使用真实生产样式和任务搜索尺寸断言高度仍为 `36 DIP`、viewport 不小于文字 extent、内容前景非透明。Playnite 定向 Release 测试 `126 通过/39 跳过`；源码校验、XAML 检查、WPF 静态审查通过。RenderHarness 双主题、多尺寸、resize 均 `render-qa OK`，修复后任务 viewport 为 `19/18 DIP`。
+- 以上是离屏/WPF 自动证据，不等同真实 Playnite 宿主；真实主题、DPI 和键盘输入仍需用户复核。
+
 ## 2026-09-05 E01 规模性能基线
 
 - 新增 `scripts/e01-scale-baseline.ps1`，在隔离 `.tmp` 输出、独立 SQLite 和默认 Release 构建下运行 Worker 规模夹具；默认测试仍使用 reduced，只有显式传入 `-Profile full|stress` 才创建大夹具，并输出 `worker-scale.json` 与可读 `baseline.md`。

@@ -5,6 +5,12 @@
 
 > 当前事实入口：先读 [`CURRENT_STATE.md`](CURRENT_STATE.md)。本文保留按阶段的历史约束和证据；若与当前事实入口或最新代码冲突，以 `CURRENT_STATE.md` 的覆盖说明为准，不要按旧条目恢复已撤销布局或外部 Demo 路径。
 
+## 2026-09-05 UI-134 任务中心搜索文字垂直裁切修复
+
+- `GscWpfUiTextBoxTemplate` 的 TextBox Padding 由原生 `PART_ContentHost` 消费，外层 `Chrome` 必须保持无 Padding；重复应用 `30,7,38,7` 会把 36 DIP 搜索框的文字 viewport 压到约 5 DIP。
+- 本次只移除生产模板外层重复 Padding，任务搜索框尺寸、左右输入区、Foreground、Binding、清除按钮和键盘语义均未变；新增 STA 回归锁定高度 `36 DIP`、viewport 不小于文字 extent 和非透明前景。
+- 自动证据：Playnite 定向 Release 测试 `126/165` 通过、`39` 跳过，源码/XAML/WPF 门禁通过；RenderHarness 双主题、多尺寸及 resize `render-qa OK`，修复后 viewport `19/18 DIP`。真实 Playnite 仍需人工复核。
+
 ## 2026-09-05 E01 规模性能基线
 
 - `scripts/e01-scale-baseline.ps1` 是显式触发的隔离规模入口：默认不扩大普通测试夹具，`-Profile full` 使用 2,000 游戏/20,000 备份/10,000 任务/5,000 媒体/500 工具，`-Profile stress` 使用 10,000 游戏/20,000 备份/10,000 任务/50,000 媒体/500 工具；两档均写出 `worker-scale.json` 和 `baseline.md`。
@@ -419,7 +425,7 @@
 
 ## 2026-08-25 UI-331 当前事实：共享控件、侧栏动画与输入校验性能
 
-- `WpfUiProduction.xaml` 的生产 TextBox 模板通过外层 `Chrome.Padding={TemplateBinding Padding}` 应用输入框内边距；`PART_ContentHost` 必须继续保持 `Margin=0`、`Padding=0`，不要恢复把 Padding 绑定到 ContentHost Margin 的旧写法。
+- 历史实现曾通过外层 `Chrome.Padding={TemplateBinding Padding}` 应用输入框内边距；当前有效实现由原生 `PART_ContentHost` 消费 TextBox Padding，外层 Chrome 保持无 Padding。ContentHost 必须继续保持 `Margin=0`、`Padding=0`，不要恢复外层重复 Padding 或把 Padding 绑定到 ContentHost Margin 的旧写法。
 - ComboBox 选中值和 `ComboBoxItem` 都显式继承 `FontFamily`、`FontSize`、`FontWeight`；共享 ComboBox 固定 `HorizontalContentAlignment=Left`、像素对齐和布局取整。不要在单个页面给相邻筛选框另设字体或基线补丁。
 - `AcrylicProductionShellView` 的侧栏仍由 `GridLengthAnimation` 驱动 270↔72 DIP、210ms、CubicEase EaseOut；内容层额外使用 190ms、4 DIP 的淡入/位移过渡。切换完成、非动画布局恢复和 `OnUnloaded` 都要清理 `BeginAnimation`，避免重载后残留透明/偏移。
 - Shell 的游戏背景仍是唯一静态图片层，`CacheMode=BitmapCache` 只用于该层；禁止把缓存或 BlurEffect 扩散到卡片、文字、表格、列表或滚动器，以免内存/虚拟化成本反弹。

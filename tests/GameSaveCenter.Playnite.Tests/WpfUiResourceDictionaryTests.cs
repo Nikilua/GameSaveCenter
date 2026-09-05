@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
@@ -5198,6 +5199,73 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void TaskSearchTextKeepsVisibleViewportAtExistingFieldHeight()
+    {
+        Exception? exception = null;
+        double textBoxHeight = 0;
+        double contentViewportHeight = 0;
+        double contentExtentHeight = 0;
+        Brush? contentForeground = null;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var resources = (ResourceDictionary)XamlReader.Parse(@"
+<ResourceDictionary xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""
+                    xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml"">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source=""/GameSaveCenter.Playnite;component/Themes/DesignTokens.xaml""/>
+        <ResourceDictionary Source=""/GameSaveCenter.Playnite;component/Themes/WpfUiProduction.xaml""/>
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>");
+
+                var textBox = new TextBox
+                {
+                    Style = Assert.IsType<Style>(resources["GscWpfUiTextBox"]),
+                    Width = 320,
+                    Text = "测试任务",
+                    Padding = new Thickness(30, 7, 38, 7)
+                };
+                var host = new Border
+                {
+                    Width = 420,
+                    Height = 80,
+                    Resources = resources,
+                    Child = textBox
+                };
+                host.Measure(new Size(420, 80));
+                host.Arrange(new Rect(0, 0, 420, 80));
+                host.UpdateLayout();
+
+                textBoxHeight = textBox.ActualHeight;
+                textBox.ApplyTemplate();
+                if (textBox.Template.FindName("PART_ContentHost", textBox) is ScrollViewer contentHost)
+                {
+                    contentViewportHeight = contentHost.ViewportHeight;
+                    contentExtentHeight = contentHost.ExtentHeight;
+                    contentForeground = TextElement.GetForeground(contentHost);
+                }
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.Equal(36, textBoxHeight);
+        Assert.True(contentViewportHeight >= contentExtentHeight,
+            $"Task search text is vertically clipped: viewport={contentViewportHeight}, extent={contentExtentHeight}");
+        Assert.NotNull(contentForeground);
+        Assert.NotEqual(Colors.Transparent, ((SolidColorBrush)contentForeground!).Color);
+    }
+
+    [Fact]
     public void SharedActionAndFilterStylesKeepButtonAlignmentAndVisibleAllDefault()
     {
         Exception? exception = null;
@@ -5318,13 +5386,14 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("TextElement.Foreground=\"{TemplateBinding Foreground}\"", production);
         Assert.Contains("TextElement.FontFamily=\"{TemplateBinding FontFamily}\"", production);
         Assert.Contains("TextElement.FontSize=\"{TemplateBinding FontSize}\"", production);
-        Assert.Contains("Padding=\"{TemplateBinding Padding}\"", production);
         Assert.Contains("Padding=\"0\"", production);
         Assert.Contains("Margin=\"0\"", production);
         var productionTextBoxTemplateStart = production.IndexOf("x:Key=\"GscWpfUiTextBoxTemplate\"", StringComparison.Ordinal);
         var productionComboBoxTemplateStart = production.IndexOf("x:Key=\"GscWpfUiComboBoxTemplate\"", productionTextBoxTemplateStart, StringComparison.Ordinal);
         Assert.True(productionTextBoxTemplateStart >= 0 && productionComboBoxTemplateStart > productionTextBoxTemplateStart);
-        Assert.DoesNotContain("Margin=\"{TemplateBinding Padding}\"", production.Substring(productionTextBoxTemplateStart, productionComboBoxTemplateStart - productionTextBoxTemplateStart));
+        var productionTextBoxTemplate = production.Substring(productionTextBoxTemplateStart, productionComboBoxTemplateStart - productionTextBoxTemplateStart);
+        Assert.DoesNotContain("Padding=\"{TemplateBinding Padding}\"", productionTextBoxTemplate);
+        Assert.DoesNotContain("Margin=\"{TemplateBinding Padding}\"", productionTextBoxTemplate);
         Assert.Contains("VerticalAlignment=\"Stretch\"", production);
         Assert.Contains("<Setter Property=\"VerticalContentAlignment\" Value=\"Center\"/>", production);
         Assert.Contains("<Setter Property=\"HorizontalScrollBarVisibility\" Value=\"Hidden\"/>", production);

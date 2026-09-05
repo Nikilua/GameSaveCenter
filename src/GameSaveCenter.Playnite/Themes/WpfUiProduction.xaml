@@ -53,13 +53,15 @@
          production adapters own the input chrome so a Playnite host theme cannot reintroduce
          square white editors or an unthemed ComboBox popup.  These templates use only shared
          DynamicResource tokens and keep the content host/keyboard behavior of native WPF. -->
+    <!-- TextBox applies Padding to the native content view itself. Keep the outer Chrome
+         unpadded; applying the same Thickness here would subtract the vertical padding twice
+         and leave short fields with a clipped text viewport. -->
     <ControlTemplate x:Key="GscWpfUiTextBoxTemplate" TargetType="TextBox">
         <Border x:Name="Chrome"
                 CornerRadius="10"
                 Background="{TemplateBinding Background}"
                 BorderBrush="{TemplateBinding BorderBrush}"
                 BorderThickness="{TemplateBinding BorderThickness}"
-                Padding="{TemplateBinding Padding}"
                 SnapsToDevicePixels="True">
             <ScrollViewer x:Name="PART_ContentHost"
                           Margin="0"
