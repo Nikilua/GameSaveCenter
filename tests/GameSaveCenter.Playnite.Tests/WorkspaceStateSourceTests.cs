@@ -101,8 +101,10 @@ public sealed class WorkspaceStateSourceTests
         Assert.Contains("var currentSelectedId = SelectedInboxMedia?.MediaId", media);
         Assert.Contains("var currentTargetId = InboxTargetGame?.PlayniteId", media);
         Assert.Contains("LoadMediaInboxModeAsync", media);
-        Assert.Contains("LoadMediaInboxPagesAsync(MessageTypes.ListUnassignedMedia, requestGeneration)", media);
-        Assert.Contains("LoadMediaInboxPagesAsync(MessageTypes.ListIgnoredMedia, requestGeneration)", media);
+        Assert.Contains("RequestMediaInboxPageAsync(true, ignored: false, requestGeneration: requestGeneration)", media);
+        Assert.Contains("ListUnassignedMediaPage", media);
+        Assert.Contains("ListIgnoredMediaPage", media);
+        Assert.Contains("LoadMoreMediaInboxPageAsync", media);
         Assert.Contains("if (requestGeneration != Interlocked.Read(ref mediaInboxLoadGeneration))", media);
         Assert.Contains("if (!string.Equals(MediaInboxMode, requestMode, StringComparison.Ordinal)", media);
         Assert.Contains("if (inbox == null) return;", media);
@@ -110,7 +112,7 @@ public sealed class WorkspaceStateSourceTests
         Assert.Contains("if (MediaInboxMode == \"已忽略\") await LoadIgnoredMediaAsync();", implementation);
         Assert.Contains("var selectedBackupId = SelectedBackup?.BackupId", implementation);
         Assert.Contains("var selectedMediaId = SelectedMedia?.MediaId", implementation);
-        Assert.Contains("FirstOrDefault(x => string.Equals(x.MediaId, selectedMediaId", implementation);
+        Assert.Contains("SelectedMedia = Media.FirstOrDefault(x => string.Equals(x.MediaId, selectedId", media);
         Assert.Contains("媒体收件箱暂时不可用", File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml")));
     }
 

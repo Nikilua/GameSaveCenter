@@ -7,13 +7,13 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using GameSaveCenter.Contracts;
+using GameSaveCenter.Playnite.Infrastructure;
 
 namespace GameSaveCenter.Playnite.ViewModels
 {
     public sealed partial class DashboardViewModel
     {
-        private const int MediaInboxPageSize = 500;
-        private const int MaximumMediaInboxItems = 5000;
+        private const int MediaPageSize = 200;
 
         private async Task LoadMediaWorkspaceAsync()
         {
@@ -49,32 +49,14 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             var selectedId = SelectedInboxMedia?.MediaId;
             var targetId = InboxTargetGame?.PlayniteId;
-            var requestMode = MediaInboxMode;
-            var inbox = await LoadMediaInboxPagesAsync(MessageTypes.ListUnassignedMedia, requestGeneration);
+            var inbox = await RequestMediaInboxPageAsync(true, ignored: false, requestGeneration: requestGeneration);
             if (inbox == null) return;
             ApplyOnUi(() =>
             {
-                if (!string.Equals(MediaInboxMode, requestMode, StringComparison.Ordinal)
-                    || requestGeneration != Interlocked.Read(ref mediaInboxLoadGeneration))
+                if (requestGeneration != Interlocked.Read(ref mediaInboxLoadGeneration))
                     return;
 
-                if (!InboxEquals(UnassignedMedia, inbox))
-                    UnassignedMedia = new GameSaveCenter.Playnite.Infrastructure.BatchObservableCollection<MediaItemDto>(inbox);
-
-                var currentSelectedId = SelectedInboxMedia?.MediaId;
-                var keepSelectedId = string.Equals(currentSelectedId, selectedId, StringComparison.OrdinalIgnoreCase)
-                    ? selectedId
-                    : currentSelectedId;
-                ApplyMediaInboxMode(keepSelectedId);
-
-                var currentTargetId = InboxTargetGame?.PlayniteId;
-                var keepTargetId = string.Equals(currentTargetId, targetId, StringComparison.OrdinalIgnoreCase)
-                    ? targetId
-                    : currentTargetId;
-                InboxTargetGame = Games.FirstOrDefault(x => string.Equals(x.PlayniteId, keepTargetId, StringComparison.OrdinalIgnoreCase))
-                                  ?? SelectedGame
-                                  ?? Games.FirstOrDefault();
-                RaiseCommandStates();
+                ApplyMediaInboxPage(inbox, reset: true, collectionMode: "待归类", selectedId: selectedId, targetId: targetId);
             });
         }
 
@@ -84,50 +66,209 @@ namespace GameSaveCenter.Playnite.ViewModels
         private async Task LoadIgnoredMediaAsync(long requestGeneration)
         {
             var selectedId = SelectedInboxMedia?.MediaId;
-            var requestMode = MediaInboxMode;
-            var ignored = await LoadMediaInboxPagesAsync(MessageTypes.ListIgnoredMedia, requestGeneration);
+            var ignored = await RequestMediaInboxPageAsync(true, ignored: true, requestGeneration: requestGeneration);
             if (ignored == null) return;
+            ApplyOnUi(() =>
+            {
+                if (requestGeneration != Interlocked.Read(ref mediaInboxLoadGeneration))
+                    return;
+
+                ApplyMediaInboxPage(ignored, reset: true, collectionMode: "已忽略", selectedId: selectedId, targetId: null);
+            });
+        }
+
+        private async Task LoadMoreMediaInboxPageAsync()
+        {
+            var requestGeneration = Interlocked.Read(ref mediaInboxLoadGeneration);
+            var requestMode = MediaInboxMode;
+            var selectedId = SelectedInboxMedia?.MediaId;
+            var targetId = InboxTargetGame?.PlayniteId;
+            var page = await RequestMediaInboxPageAsync(false, ignored: requestMode == "已忽略", requestGeneration: requestGeneration);
+            if (page == null) return;
             ApplyOnUi(() =>
             {
                 if (!string.Equals(MediaInboxMode, requestMode, StringComparison.Ordinal)
                     || requestGeneration != Interlocked.Read(ref mediaInboxLoadGeneration))
                     return;
-
-                if (!InboxEquals(IgnoredMedia, ignored))
-                    IgnoredMedia = new GameSaveCenter.Playnite.Infrastructure.BatchObservableCollection<MediaItemDto>(ignored);
-
-                var currentSelectedId = SelectedInboxMedia?.MediaId;
-                var keepSelectedId = string.Equals(currentSelectedId, selectedId, StringComparison.OrdinalIgnoreCase)
-                    ? selectedId
-                    : currentSelectedId;
-                ApplyMediaInboxMode(keepSelectedId);
-                RaiseCommandStates();
+                ApplyMediaInboxPage(page, reset: false, collectionMode: requestMode, selectedId: selectedId, targetId: targetId);
             });
         }
 
-        private async Task<MediaItemDto[]?> LoadMediaInboxPagesAsync(string messageType, long requestGeneration)
+        private async Task<MediaPageDto?> RequestMediaInboxPageAsync(bool reset, bool ignored, long requestGeneration)
         {
-            var result = new List<MediaItemDto>();
-            for (var offset = 0; offset < MaximumMediaInboxItems; offset += MediaInboxPageSize)
+            if (requestGeneration != Interlocked.Read(ref mediaInboxLoadGeneration)) return null;
+            var messageType = ignored
+                ? MessageTypes.ListIgnoredMediaPage
+                : MessageTypes.ListUnassignedMediaPage;
+            return await plugin.RequestAsync<MediaPageDto>(messageType, new MediaQueryDto
             {
-                if (requestGeneration != Interlocked.Read(ref mediaInboxLoadGeneration))
-                    return null;
+                Limit = MediaPageSize,
+                Cursor = reset
+                    ? string.Empty
+                    : ignored ? ignoredMediaPageCursor : unassignedMediaPageCursor
+            }).ConfigureAwait(false);
+        }
 
-                var limit = Math.Min(MediaInboxPageSize, MaximumMediaInboxItems - offset);
-                var page = await plugin.RequestAsync<MediaItemDto[]>(messageType, new GameQueryDto
-                {
-                    Limit = limit,
-                    Offset = offset
-                }).ConfigureAwait(false) ?? Array.Empty<MediaItemDto>();
-                if (requestGeneration != Interlocked.Read(ref mediaInboxLoadGeneration))
-                    return null;
-
-                if (page.Length == 0) break;
-
-                result.AddRange(page);
-                if (page.Length < limit) break;
+        private void ApplyMediaInboxPage(MediaPageDto page, bool reset, string collectionMode, string? selectedId, string? targetId)
+        {
+            var ignored = string.Equals(collectionMode, "已忽略", StringComparison.Ordinal);
+            var target = ignored ? IgnoredMedia : UnassignedMedia;
+            var incoming = page.Items ?? new List<MediaItemDto>();
+            var merged = reset ? incoming : MergeMediaItems(target, incoming);
+            Replace(target, merged, SnapshotComparers.Media);
+            if (ignored)
+            {
+                ignoredMediaPageCursor = page.NextCursor ?? string.Empty;
+                ignoredMediaPageTotalCount = Math.Max(0, page.TotalCount);
+                ignoredMediaPageHasMore = page.HasMore;
             }
-            return result.ToArray();
+            else
+            {
+                unassignedMediaPageCursor = page.NextCursor ?? string.Empty;
+                unassignedMediaPageTotalCount = Math.Max(0, page.TotalCount);
+                unassignedMediaPageHasMore = page.HasMore;
+            }
+
+            if (!string.Equals(MediaInboxMode, collectionMode, StringComparison.Ordinal))
+                return;
+
+            OnPropertyChanged(nameof(MediaInboxPageHasMore));
+            OnPropertyChanged(nameof(MediaInboxLoadedSummary));
+
+            var currentSelectedId = SelectedInboxMedia?.MediaId;
+            var keepSelectedId = string.Equals(currentSelectedId, selectedId, StringComparison.OrdinalIgnoreCase)
+                ? selectedId
+                : currentSelectedId;
+            ApplyMediaInboxMode(keepSelectedId);
+
+            var currentTargetId = InboxTargetGame?.PlayniteId;
+            var keepTargetId = string.Equals(currentTargetId, targetId, StringComparison.OrdinalIgnoreCase)
+                ? targetId
+                : currentTargetId;
+            InboxTargetGame = Games.FirstOrDefault(x => string.Equals(x.PlayniteId, keepTargetId, StringComparison.OrdinalIgnoreCase))
+                              ?? SelectedGame
+                              ?? Games.FirstOrDefault();
+            OnPropertyChanged(nameof(MediaInboxLoadedSummary));
+            RaiseCommandStates();
+        }
+
+        private async Task LoadFilteredMediaPageAsync()
+        {
+            if (SelectedGame == null || CurrentWorkspace != WorkspaceKind.Media) return;
+            await LoadMediaPageAsync(true, SelectedGame.PlayniteId);
+        }
+
+        private async Task LoadMoreMediaPageAsync()
+        {
+            if (SelectedGame == null || CurrentWorkspace != WorkspaceKind.Media) return;
+            await LoadMediaPageAsync(false, SelectedGame.PlayniteId);
+        }
+
+        private async Task LoadMediaPageAsync(bool reset, string playniteId)
+        {
+            var requestGeneration = reset
+                ? Interlocked.Increment(ref mediaPageGeneration)
+                : Interlocked.Read(ref mediaPageGeneration);
+            var page = await plugin.RequestAsync<MediaPageDto>(MessageTypes.ListMediaPage, BuildMediaQuery(
+                playniteId,
+                reset ? string.Empty : mediaPageCursor)).ConfigureAwait(false);
+            if (requestGeneration != Interlocked.Read(ref mediaPageGeneration)
+                || CurrentWorkspace != WorkspaceKind.Media
+                || !IsSelectedGame(playniteId)) return;
+
+            var selectedId = SelectedMedia?.MediaId;
+            ApplyOnUi(() =>
+            {
+                if (requestGeneration != Interlocked.Read(ref mediaPageGeneration)
+                    || CurrentWorkspace != WorkspaceKind.Media
+                    || !IsSelectedGame(playniteId)) return;
+                ApplyMediaPage(page ?? new MediaPageDto(), reset, selectedId);
+            });
+        }
+
+        private void ApplyMediaPage(MediaPageDto page, bool reset, string? selectedId)
+        {
+            var incoming = page.Items ?? new List<MediaItemDto>();
+            Replace(Media, reset ? incoming : MergeMediaItems(Media, incoming), SnapshotComparers.Media);
+            mediaPageCursor = page.NextCursor ?? string.Empty;
+            mediaPageTotalCount = Math.Max(0, page.TotalCount);
+            mediaPageHasMore = page.HasMore;
+            OnPropertyChanged(nameof(MediaPageHasMore));
+            OnPropertyChanged(nameof(MediaLoadedSummary));
+            SelectedMedia = Media.FirstOrDefault(x => string.Equals(x.MediaId, selectedId, StringComparison.OrdinalIgnoreCase))
+                            ?? Media.FirstOrDefault();
+            MediaView.Refresh();
+            RaiseCommandStates();
+        }
+
+        private MediaQueryDto BuildMediaQuery(string playniteId, string cursor)
+        {
+            var query = new MediaQueryDto
+            {
+                PlayniteId = playniteId,
+                Search = MediaSearchText,
+                Limit = MediaPageSize,
+                Cursor = cursor ?? string.Empty
+            };
+            if (string.Equals(MediaFilter, "截图", StringComparison.Ordinal))
+                query.Kind = MediaKind.Screenshot;
+            else if (string.Equals(MediaFilter, "录像", StringComparison.Ordinal))
+                query.Kind = MediaKind.VideoClip;
+            else if (string.Equals(MediaFilter, "收藏", StringComparison.Ordinal))
+                query.FavoriteOnly = true;
+            return query;
+        }
+
+        private void ScheduleMediaPageQuery()
+        {
+            if (CurrentWorkspace == WorkspaceKind.Media && SelectedGame != null)
+                mediaPageQueryRefresh.Schedule();
+        }
+
+        private void ResetMediaPageState()
+        {
+            mediaPageCursor = string.Empty;
+            mediaPageTotalCount = 0;
+            mediaPageHasMore = false;
+            OnPropertyChanged(nameof(MediaPageHasMore));
+            OnPropertyChanged(nameof(MediaLoadedSummary));
+            RaiseCommandStates();
+        }
+
+        private void ResetMediaInboxPageState()
+        {
+            if (MediaInboxMode == "已忽略")
+            {
+                ignoredMediaPageCursor = string.Empty;
+                ignoredMediaPageTotalCount = 0;
+                ignoredMediaPageHasMore = false;
+            }
+            else
+            {
+                unassignedMediaPageCursor = string.Empty;
+                unassignedMediaPageTotalCount = 0;
+                unassignedMediaPageHasMore = false;
+            }
+            OnPropertyChanged(nameof(MediaInboxPageHasMore));
+            OnPropertyChanged(nameof(MediaInboxLoadedSummary));
+            RaiseCommandStates();
+        }
+
+        private static List<MediaItemDto> MergeMediaItems(IReadOnlyList<MediaItemDto> current, IEnumerable<MediaItemDto> incoming)
+        {
+            var replacements = incoming
+                .GroupBy(x => x.MediaId, StringComparer.OrdinalIgnoreCase)
+                .ToDictionary(x => x.Key, x => x.Last(), StringComparer.OrdinalIgnoreCase);
+            var result = new List<MediaItemDto>(current.Count + replacements.Count);
+            var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var item in current)
+            {
+                if (!seen.Add(item.MediaId)) continue;
+                result.Add(replacements.TryGetValue(item.MediaId, out var replacement) ? replacement : item);
+            }
+            foreach (var item in incoming)
+                if (seen.Add(item.MediaId)) result.Add(item);
+            return result;
         }
 
         private void ApplyMediaInboxMode(string? selectedId = null)

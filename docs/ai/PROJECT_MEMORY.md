@@ -3,6 +3,13 @@
 > 维护时间：2026-09-05
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-05 R06 媒体按需分页
+
+- Contracts 新增 `MediaQueryDto`/`MediaPageDto`；Worker 新增三类分页 IPC，按固定 `classification_state` 查询，支持 `PlayniteId`、`Kind`、`FavoriteOnly`、关键词和稳定 `(captured_utc, media_id)` 游标。`TotalCount` 不受当前游标影响，旧列表消息仍保留给兼容客户端。
+- SQLite 新增 `ix_media_game_state_capture` 与 `ix_media_state_capture`，分页数据按 `captured_utc DESC, media_id DESC` 返回；查询计划测试证明当前游戏/收件箱路径命中新索引。搜索匹配路径、备注、媒体 ID 及可识别来源显示名，LIKE 通配符已转义。
+- Dashboard 当前游戏首批 200 条，搜索/类型/收藏变化服务端重取首屏；待归类与已忽略集合各自保存游标、总数和 HasMore，模式切换、刷新、批量归类期间的旧页按代际丢弃。`MediaLoadedSummary`/`MediaInboxLoadedSummary` 显示已加载/总数，“加载更多”不改变现有多选、批量操作和 Item/Recycling 虚拟化。
+- R06 验证：Release 0 warning/0 error；Core `65/65`、Worker `255/255`、Playnite `333/390`（57 跳过）、XAML `19/19`、源码校验和 `git diff --check` 通过。未运行真实 Playnite、50,000 项性能实验、4 MiB 消息边界和长时 UI 帧率测量。
+
 ## 2026-09-05 R05 游戏筛选下拉框 STA 行为验证
 
 - `GamePickerFilterBehaviorTests` 在真实 WPF STA 线程中把筛选 ComboBox 挂到窗口，验证程序化关闭状态选中不会触发提交，以及打开→改选→关闭会触发 `DropDownClosed` 并得到最终选项。

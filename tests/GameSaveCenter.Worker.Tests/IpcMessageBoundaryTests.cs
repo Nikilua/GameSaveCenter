@@ -97,7 +97,7 @@ public sealed class IpcMessageBoundaryTests
     }
 
     [Fact]
-    public void MediaInboxRequestsUseBoundedPagesAndOffsets()
+    public void MediaInboxRequestsKeepCompatibilityAndAddCursorPages()
     {
         var root = FindRepositoryRoot();
         var dispatcher = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Worker", "Ipc", "IpcRequestDispatcher.cs"));
@@ -109,9 +109,14 @@ public sealed class IpcMessageBoundaryTests
         Assert.Contains("query.Offset", dispatcher);
         Assert.Contains("OFFSET $offset", store);
         Assert.Contains("ORDER BY captured_utc DESC, media_id DESC", store);
-        Assert.Contains("MediaInboxPageSize = 500", viewModel);
-        Assert.Contains("Offset = offset", viewModel);
-        Assert.DoesNotContain("Limit = 5000", viewModel);
+        Assert.Contains("ListUnassignedMediaPage", dispatcher);
+        Assert.Contains("ListIgnoredMediaPage", dispatcher);
+        Assert.Contains("GetUnassignedMediaPageAsync", dispatcher);
+        Assert.Contains("MediaPageSize = 200", viewModel);
+        Assert.Contains("RequestMediaInboxPageAsync", viewModel);
+        Assert.Contains("Cursor = reset", viewModel);
+        Assert.Contains("ignored ? ignoredMediaPageCursor : unassignedMediaPageCursor", viewModel);
+        Assert.DoesNotContain("LoadMediaInboxPagesAsync", viewModel);
     }
 
     [Theory]

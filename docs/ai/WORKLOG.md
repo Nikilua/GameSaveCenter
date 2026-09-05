@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-05 R06 媒体界面按需分页与稳定查询
+
+- 新增 `MediaQueryDto`/`MediaPageDto` 及 `media.page`、`media.inbox.page`、`media.inbox.ignored.page` IPC；Worker 以 `(captured_utc, media_id)` 生成不透明游标，返回独立 `TotalCount`/`HasMore`，并将类型、收藏、关键词筛选下推 SQLite。旧列表消息保留兼容路径。
+- 新增游戏/分类/拍摄时间复合索引，`EXPLAIN QUERY PLAN` 回归确认当前游戏与收件箱分页使用对应索引；同拍摄时间、首屏之外旧媒体、收件箱/已忽略总数均有持久化测试。
+- Dashboard 首批 200 条，当前游戏与待归类/已忽略分别维护游标和总数；搜索/筛选变化触发代际安全的服务端首屏重载，支持加载更多，选中项按 ID 恢复。保留批量选中语义、现有 Item 滚动、Recycling 虚拟化与离线/取消保护。
+- 验证：Release 构建 0 warning/0 error；Core `65/65`、Worker `255/255`、Playnite `333/390`（57 跳过）、XAML `19/19`，`validate-source.py` 与 `git diff --check` 通过。真实 Playnite 宿主、50,000 项压力、4 MiB IPC 上限和长时 UI 性能仍待执行。
+
 ## 2026-09-05 R05 游戏筛选下拉框 STA 行为验证
 
 - 针对生产 Shell 与兼容 Dashboard 共用的 OneWay + `DropDownClosed` 提交策略，新增真实 WPF STA 夹具：程序化修改关闭状态下的 `SelectedIndex` 不会提交；挂载到窗口后打开下拉、改变选择并关闭，会提交最终选项。

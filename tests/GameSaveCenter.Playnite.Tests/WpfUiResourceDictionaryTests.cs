@@ -853,12 +853,14 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("HeaderStyle=\"{StaticResource MaintenanceLastColumnHeader}\" Header=\"建议处理\"", maintenance);
         Assert.Contains("DataGridLoaded", maintenanceCode);
         Assert.DoesNotContain("AddHandler(FrameworkElement.LoadedEvent, new RoutedEventHandler(ApplyHeaderTheme), true)", maintenanceCode);
-        Assert.Contains("UnassignedMedia = new GameSaveCenter.Playnite.Infrastructure.BatchObservableCollection<MediaItemDto>(inbox)", File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.Media.cs")));
+        Assert.Contains("ApplyMediaInboxPage(inbox, reset: true, collectionMode: \"待归类\", selectedId: selectedId, targetId: targetId)", File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.Media.cs")));
         var mediaViewModel = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.Media.cs"));
-        Assert.Contains("MediaInboxPageSize = 500", mediaViewModel);
-        Assert.Contains("MaximumMediaInboxItems = 5000", mediaViewModel);
-        Assert.Contains("Offset = offset", mediaViewModel);
-        Assert.DoesNotContain("Limit = 5000", mediaViewModel);
+        Assert.Contains("MediaPageSize = 200", mediaViewModel);
+        Assert.Contains("MediaInboxPageHasMore", mediaViewModel);
+        Assert.Contains("MediaInboxLoadedSummary", mediaViewModel);
+        Assert.Contains("Cursor = reset", mediaViewModel);
+        Assert.DoesNotContain("LoadMediaInboxPagesAsync", mediaViewModel);
+        Assert.DoesNotContain("MaximumMediaInboxItems", mediaViewModel);
         Assert.DoesNotContain("if (loadInbox) await LoadInboxAsync();", File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs")));
     }
 
@@ -958,6 +960,10 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Command=\"{Binding AssignInboxMediaBatchCommand}\"", media);
         Assert.Contains("Command=\"{Binding IgnoreInboxMediaBatchCommand}\"", media);
         Assert.Contains("Command=\"{Binding RestoreIgnoredMediaBatchCommand}\"", media);
+        Assert.Contains("Command=\"{Binding LoadMoreMediaInboxCommand}\"", media);
+        Assert.Contains("Command=\"{Binding LoadMoreMediaCommand}\"", media);
+        Assert.Contains("MediaInboxLoadedSummary", media);
+        Assert.Contains("MediaLoadedSummary", media);
         Assert.Contains("CommandParameter=\"{Binding SelectedItems, ElementName=MediaInboxGrid}\"", media);
         Assert.Contains("MediaInboxModeOptions", media);
         Assert.Contains("ItemsSource=\"{Binding MediaInboxItems}\"", media);
@@ -968,6 +974,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("ReassignMediaBatch", messages);
         Assert.Contains("IgnoreMediaBatch", messages);
         Assert.Contains("ListIgnoredMedia", messages);
+        Assert.Contains("ListMediaPage", messages);
         Assert.Contains("RestoreIgnoredMediaBatch", messages);
         Assert.Contains("MediaInboxBatchRequestDto", contracts);
         Assert.Contains("MediaInboxBatchResultDto", contracts);

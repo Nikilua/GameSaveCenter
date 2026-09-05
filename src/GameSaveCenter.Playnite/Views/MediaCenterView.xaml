@@ -212,6 +212,15 @@
                                         </Style>
                                     </ui:Button.Style>
                                 </ui:Button>
+                                <TextBlock Text="{Binding MediaInboxLoadedSummary, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="12,0,8,4" AutomationProperties.Name="媒体收件箱加载统计"/>
+                                <ui:Button Content="加载更多" Command="{Binding LoadMoreMediaInboxCommand}" ToolTip="加载下一页媒体收件箱项目" AutomationProperties.Name="加载更多媒体收件箱项目" Margin="0,0,0,4">
+                                    <ui:Button.Style>
+                                        <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiSecondaryButton}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers><DataTrigger Binding="{Binding MediaInboxPageHasMore}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                        </Style>
+                                    </ui:Button.Style>
+                                </ui:Button>
                             </WrapPanel>
                             <DataGrid Grid.Row="1" x:Name="MediaInboxGrid" Tag="FiniteViewport" Style="{StaticResource MediaDataGrid}" MinHeight="236" ItemsSource="{Binding MediaInboxItems}" SelectedItem="{Binding SelectedInboxMedia}"
                                       SelectionMode="Extended" SelectionUnit="FullRow" SelectionChanged="OnMediaInboxSelectionChanged"
@@ -419,7 +428,18 @@
                         <Grid x:Name="MediaCurrentActionRow" Grid.Row="2" Margin="0,12,0,0">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                             <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="0"/></Grid.RowDefinitions>
-                            <TextBlock x:Name="MediaCurrentActionHint" Text="已选媒体可在右侧查看详情" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center"/>
+                            <StackPanel x:Name="MediaCurrentActionHint" Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="已选媒体可在右侧查看详情" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding MediaLoadedSummary, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="12,0,8,0" AutomationProperties.Name="当前游戏媒体加载统计"/>
+                                <ui:Button Content="加载更多" Command="{Binding LoadMoreMediaCommand}" ToolTip="加载当前筛选条件下的下一页媒体" AutomationProperties.Name="加载更多当前游戏媒体">
+                                    <ui:Button.Style>
+                                        <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiSecondaryButton}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers><DataTrigger Binding="{Binding MediaPageHasMore}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                        </Style>
+                                    </ui:Button.Style>
+                                </ui:Button>
+                            </StackPanel>
                             <WrapPanel x:Name="MediaCurrentBatchActions" Grid.Column="1" HorizontalAlignment="Right">
                                 <ui:Button Style="{DynamicResource GscWpfUiMediaBatchButton}" Command="{Binding FavoriteSelectedMediaCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaGrid}" Content="收藏所选"/>
                                 <ui:Button Style="{DynamicResource GscWpfUiMediaBatchButton}" Command="{Binding UnfavoriteSelectedMediaCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaGrid}" Content="取消收藏"/>
