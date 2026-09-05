@@ -15,6 +15,31 @@ namespace GameSaveCenter.Playnite.ViewModels
     {
         private const int MediaPageSize = 200;
 
+        public MediaClassificationPreviewDto? MediaClassificationPreview
+        {
+            get => mediaClassificationPreview;
+            private set
+            {
+                SetValue(ref mediaClassificationPreview, value);
+                OnPropertyChanged(nameof(MediaClassificationPreviewSummary));
+                RaiseCommandStates();
+            }
+        }
+
+        public string MediaClassificationPreviewSummary => MediaClassificationPreview == null
+            ? mediaClassificationStatus
+            : $"{MediaClassificationPreview.SummaryDisplay} 预览有效期至 {MediaClassificationPreview.ExpiresUtc.ToLocalTime():MM-dd HH:mm}。低/中置信项目保持未归类。";
+
+        public string LastMediaClassificationBatchId
+        {
+            get => lastMediaClassificationBatchId;
+            private set
+            {
+                SetValue(ref lastMediaClassificationBatchId, value ?? string.Empty);
+                RaiseCommandStates();
+            }
+        }
+
         private async Task LoadMediaWorkspaceAsync()
         {
             await LoadInboxAsync();
@@ -496,6 +521,72 @@ namespace GameSaveCenter.Playnite.ViewModels
             await RefreshDashboardAsync(false, false);
             await LoadInboxAsync();
             await LoadIgnoredMediaAsync();
+        }
+
+        private async Task PreviewMediaClassificationAsync(object? value)
+        {
+            var selected = GetSelectedInboxMedia(value);
+            if (selected.Count == 0) throw new InvalidOperationException("请先在待归类收件箱中选择一个或多个媒体。");
+
+            var preview = await plugin.RequestAsync<MediaClassificationPreviewDto>(MessageTypes.PreviewMediaClassification,
+                new MediaClassificationPreviewRequestDto
+                {
+                    MediaIds = selected.Select(x => x.MediaId).ToList(),
+                    Limit = Math.Min(200, selected.Count)
+                }, TimeSpan.FromMinutes(3));
+            MediaClassificationPreview = preview;
+            LastMediaClassificationBatchId = preview.BatchId;
+            mediaClassificationStatus = preview.SummaryDisplay;
+            OnPropertyChanged(nameof(MediaClassificationPreviewSummary));
+            ConfirmSuccess($"已生成媒体归类预览：{preview.SummaryDisplay}");
+        }
+
+        private async Task ApplyMediaClassificationAsync()
+        {
+            var preview = MediaClassificationPreview ?? throw new InvalidOperationException("请先生成媒体归类预览。");
+            if (preview.HighConfidenceCount <= 0) throw new InvalidOperationException("当前预览没有可安全确认的高置信建议。");
+            if (!await plugin.ConfirmAsync(
+                    "应用媒体归类建议",
+                    $"确认应用 {preview.HighConfidenceCount} 项高置信建议？\n\n只会处理高置信且预览后未发生变化的项目；中/低置信或有冲突的项目会继续留在待归类收件箱。原始截图/录像不会被删除。",
+                    "应用高置信建议",
+                    "取消")) return;
+
+            var result = await plugin.RequestAsync<MediaClassificationBatchResultDto>(MessageTypes.ApplyMediaClassification,
+                new MediaClassificationApplyRequestDto
+                {
+                    BatchId = preview.BatchId,
+                    MediaIds = preview.Items.Where(x => x.CanApply).Select(x => x.MediaId).ToList(),
+                    HighConfidenceOnly = true
+                }, TimeSpan.FromMinutes(10));
+            MediaClassificationPreview = null;
+            LastMediaClassificationBatchId = result.BatchId;
+            mediaClassificationStatus = $"{result.State}：{result.SummaryDisplay}。如需回退，可撤销本次建议批次。";
+            OnPropertyChanged(nameof(MediaClassificationPreviewSummary));
+            await RefreshDashboardAsync(false, false);
+            await LoadInboxAsync();
+            if (SelectedGame != null) await LoadDetailsAsync();
+            ConfirmSuccess($"媒体归类建议已处理：{result.SummaryDisplay}");
+        }
+
+        private async Task UndoMediaClassificationAsync()
+        {
+            var batchId = LastMediaClassificationBatchId;
+            if (string.IsNullOrWhiteSpace(batchId)) throw new InvalidOperationException("没有可撤销的媒体归类建议批次。");
+            if (!await plugin.ConfirmAsync(
+                    "撤销媒体归类建议",
+                    "确认撤销最近一批已应用的媒体归类建议？\n\n只有应用后未被再次修改的项目会被恢复；发生冲突的项目会保留当前状态，不会覆盖用户后续修改。",
+                    "撤销建议批次",
+                    "取消")) return;
+
+            var result = await plugin.RequestAsync<MediaClassificationBatchResultDto>(MessageTypes.UndoMediaClassification,
+                new MediaClassificationUndoRequestDto { BatchId = batchId }, TimeSpan.FromMinutes(10));
+            LastMediaClassificationBatchId = string.Empty;
+            mediaClassificationStatus = $"{result.State}：{result.SummaryDisplay}。冲突项目已保留当前状态。";
+            OnPropertyChanged(nameof(MediaClassificationPreviewSummary));
+            await RefreshDashboardAsync(false, false);
+            await LoadInboxAsync();
+            if (SelectedGame != null) await LoadDetailsAsync();
+            ConfirmSuccess($"媒体归类建议撤销完成：{result.SummaryDisplay}");
         }
 
         private async Task<MediaInboxBatchResultDto> ProcessInboxBatchAsync(string messageType,List<string> mediaIds,string targetPlayniteId="")

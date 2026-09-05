@@ -108,6 +108,9 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string ignoredMediaPageCursor = string.Empty;
         private int ignoredMediaPageTotalCount;
         private bool ignoredMediaPageHasMore;
+        private MediaClassificationPreviewDto? mediaClassificationPreview;
+        private string mediaClassificationStatus = "尚未生成归类建议。建议只会使用来源规则、会话和进程映射等本地证据。";
+        private string lastMediaClassificationBatchId = string.Empty;
         private const int MediaInboxBatchSize = 500;
         private TaskStatusDto selectedTask = null!;
         private ValidationFindingDto selectedFinding = null!;
@@ -254,6 +257,9 @@ namespace GameSaveCenter.Playnite.ViewModels
             AssignInboxMediaBatchCommand = new RelayCommand(value => Run(() => AssignInboxMediaBatchAsync(value)), value => !IsBusy && MediaInboxMode == "待归类" && InboxTargetGame != null && GetSelectedInboxMedia(value).Count > 0);
             IgnoreInboxMediaBatchCommand = new RelayCommand(value => Run(() => IgnoreInboxMediaBatchAsync(value)), value => !IsBusy && MediaInboxMode == "待归类" && GetSelectedInboxMedia(value).Count > 0);
             RestoreIgnoredMediaBatchCommand = new RelayCommand(value => Run(() => RestoreIgnoredMediaBatchAsync(value)), value => !IsBusy && MediaInboxMode == "已忽略" && GetSelectedInboxMedia(value).Count > 0);
+            PreviewMediaClassificationCommand = new RelayCommand(value => Run(() => PreviewMediaClassificationAsync(value)), value => !IsBusy && MediaInboxMode == "待归类" && GetSelectedInboxMedia(value).Count > 0);
+            ApplyMediaClassificationCommand = new RelayCommand(_ => Run(ApplyMediaClassificationAsync), _ => !IsBusy && MediaClassificationPreview != null && MediaClassificationPreview.HighConfidenceCount > 0);
+            UndoMediaClassificationCommand = new RelayCommand(_ => Run(UndoMediaClassificationAsync), _ => !IsBusy && !string.IsNullOrWhiteSpace(LastMediaClassificationBatchId));
             LoadMoreMediaInboxCommand = new RelayCommand(_ => Run(LoadMoreMediaInboxPageAsync), _ => !IsBusy && MediaInboxPageHasMore);
             CancelTaskCommand = new RelayCommand(_ => _ = CancelSelectedTaskAsync(), _ => SelectedTask != null && SelectedTask.CanCancel && !IsCancellingTask);
             RetryTaskCommand = new RelayCommand(_ => Run(RetrySelectedTaskAsync), _ => !IsBusy && CanRetrySelectedTask());
@@ -982,6 +988,9 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand AssignInboxMediaBatchCommand { get; }
         public ICommand IgnoreInboxMediaBatchCommand { get; }
         public ICommand RestoreIgnoredMediaBatchCommand { get; }
+        public ICommand PreviewMediaClassificationCommand { get; }
+        public ICommand ApplyMediaClassificationCommand { get; }
+        public ICommand UndoMediaClassificationCommand { get; }
         public ICommand LoadMoreMediaInboxCommand { get; }
         public ICommand CancelTaskCommand { get; }
         public ICommand RetryTaskCommand { get; }
@@ -3805,6 +3814,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 UpdateMediaMetadataCommand,OpenSelectedMediaCommand,RevealSelectedMediaCommand,
                 LoadMoreMediaCommand,
                 AssignInboxMediaCommand, IgnoreInboxMediaCommand, AssignInboxMediaBatchCommand, IgnoreInboxMediaBatchCommand, RestoreIgnoredMediaBatchCommand,
+                PreviewMediaClassificationCommand, ApplyMediaClassificationCommand, UndoMediaClassificationCommand,
                 LoadMoreMediaInboxCommand,
                 CancelTaskCommand, RetryTaskCommand, RetryAllTasksCommand, LoadMoreTasksCommand, CopyTaskErrorCommand, RefreshDiagnosticsCommand, DiagnoseGameCommand, SyncGameDescriptorCommand, RetryGameMatchCommand, ClearGamePickerFiltersCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
                 StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,RunHealthInspectionCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,RefreshRetentionSimulationCommand,ApplyRetentionSimulationCommand,RefreshLocalMirrorStatusCommand,SyncLocalMirrorCommand,CopyMaintenanceReportCommand,ExportMaintenanceReportCommand,

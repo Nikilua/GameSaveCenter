@@ -12,6 +12,7 @@ public static class IpcRequestSemantics
             MessageTypes.UpdateMediaMetadata or MessageTypes.UpdateMediaMetadataBatch or
             MessageTypes.ReassignMedia or MessageTypes.ReassignMediaBatch or MessageTypes.IgnoreMedia or
             MessageTypes.IgnoreMediaBatch or MessageTypes.RestoreIgnoredMediaBatch or
+            MessageTypes.PreviewMediaClassification or MessageTypes.ApplyMediaClassification or MessageTypes.UndoMediaClassification or
             MessageTypes.AddMediaSource or MessageTypes.UpdateMediaSource or MessageTypes.DeleteMediaSource or
             MessageTypes.AcceptSavePath or MessageTypes.RejectSavePath or MessageTypes.UpdateGamePolicy or
             MessageTypes.ProtectionPromptDecision or MessageTypes.ApplyRecommendedProtection or

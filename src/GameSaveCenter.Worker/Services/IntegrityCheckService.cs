@@ -21,6 +21,7 @@ public sealed class IntegrityCheckService
         "backup_versions", "media", "media_sources", "save_candidates", "audit_log",
         "game_tools", "game_tool_versions", "protection_prompt_states", "trainer_catalog",
         "trainer_releases", "process_mappings", "device_conflict_decisions", "cloud_retry_queue", "cloud_transfer_queue",
+        "media_classification_batches", "media_classification_batch_items",
         "health_inspection_state"
     };
 

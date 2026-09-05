@@ -49,6 +49,9 @@ namespace GameSaveCenter.Contracts
         public const string ListIgnoredMedia = "media.inbox.ignored.list";
         public const string ListIgnoredMediaPage = "media.inbox.ignored.page";
         public const string RestoreIgnoredMediaBatch = "media.inbox.ignored.restore.batch";
+        public const string PreviewMediaClassification = "media.classification.preview";
+        public const string ApplyMediaClassification = "media.classification.apply";
+        public const string UndoMediaClassification = "media.classification.undo";
         public const string AddMediaSource = "media.source.add";
         public const string UpdateMediaSource = "media.source.update";
         public const string DeleteMediaSource = "media.source.delete";

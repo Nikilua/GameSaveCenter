@@ -1,6 +1,7 @@
 using System;
 using System.Security.Cryptography;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Core.Services;
 using GameSaveCenter.Worker.Configuration;
@@ -199,6 +200,207 @@ public sealed class MediaSyncService
         return result;
     }
 
+    /// <summary>
+    /// Creates an expiring, Worker-owned classification preview. Suggestions are conservative:
+    /// only a unique source/process signal is high confidence; ambiguous candidates stay in
+    /// the inbox and are never applied by the batch command.
+    /// </summary>
+    public async Task<MediaClassificationPreviewDto> CreateClassificationPreviewAsync(MediaClassificationPreviewRequestDto request, CancellationToken token)
+    {
+        var mediaIds = NormalizeInboxBatchIds(request.MediaIds);
+        var limit = Math.Clamp(request.Limit, 1, 200);
+        var media = new List<MediaItemDto>();
+        if (mediaIds.Count > 0)
+        {
+            foreach (var mediaId in mediaIds.Take(500))
+            {
+                var item = await _store.GetMediaByIdAsync(mediaId, token).ConfigureAwait(false);
+                if (item != null && string.Equals(item.ClassificationState, "Inbox", StringComparison.OrdinalIgnoreCase)) media.Add(item);
+            }
+        }
+        else
+        {
+            media.AddRange(await _store.GetUnassignedMediaAsync(limit, token).ConfigureAwait(false));
+        }
+        media = media.Take(limit).ToList();
+
+        var batchId = Guid.NewGuid().ToString("N");
+        var now = DateTime.UtcNow;
+        var preview = new MediaClassificationPreviewDto { BatchId = batchId, CreatedUtc = now, ExpiresUtc = now.AddMinutes(30) };
+        if (media.Count == 0)
+        {
+            await _store.CreateMediaClassificationBatchAsync(batchId, now, preview.ExpiresUtc,
+                Array.Empty<MediaClassificationBatchItemRecord>(), token).ConfigureAwait(false);
+            return preview;
+        }
+
+        var games = await _catalog.GetGamesAsync(token).ConfigureAwait(false);
+        var sources = await _store.GetEnabledMediaSourcesForClassificationAsync(token).ConfigureAwait(false);
+        var knownCaptures = media.Where(x => x.CapturedUtc != default).Select(x => x.CapturedUtc).ToList();
+        var from = knownCaptures.Count == 0 ? DateTime.UtcNow : knownCaptures.Min().AddMinutes(-15);
+        var to = knownCaptures.Count == 0 ? DateTime.UtcNow : knownCaptures.Max().AddMinutes(15);
+        var sessions = await _store.GetSessionsForMediaClassificationAsync(from, to, token).ConfigureAwait(false);
+        if (!string.IsNullOrWhiteSpace(request.SessionId))
+        {
+            var requestedSession = await _store.GetSessionAsync(request.SessionId, token).ConfigureAwait(false);
+            sessions = requestedSession == null ? new List<GameSessionEventDto>() : new List<GameSessionEventDto> { requestedSession };
+        }
+        var mappings = await _store.GetProcessMappingsAsync(token).ConfigureAwait(false);
+        var gameById = games.ToDictionary(x => x.PlayniteId, StringComparer.OrdinalIgnoreCase);
+        var suggestions = media.Select(item => BuildClassificationSuggestion(item, games, gameById, sources, sessions, mappings)).ToList();
+        preview.Items = suggestions;
+        preview.HighConfidenceCount = suggestions.Count(x => x.Confidence == "High");
+        preview.MediumConfidenceCount = suggestions.Count(x => x.Confidence == "Medium");
+        preview.LowConfidenceCount = suggestions.Count(x => x.Confidence == "Low");
+
+        var records = media.Zip(suggestions, (item, suggestion) => new MediaClassificationBatchItemRecord
+        {
+            BatchId = batchId, MediaId = item.MediaId, OriginalPlayniteId = item.PlayniteId ?? string.Empty,
+            OriginalClassificationState = item.ClassificationState ?? "Inbox", OriginalClassificationReason = item.ClassificationReason ?? string.Empty,
+            OriginalArchivePath = item.ArchivePath, OriginalPath = item.OriginalPath, OriginalCapturedUtc = item.CapturedUtc,
+            OriginalSizeBytes = item.SizeBytes, OriginalSha256 = item.Sha256, OriginalIsFavorite = item.IsFavorite,
+            OriginalComment = item.Comment ?? string.Empty, OriginalCloudState = item.CloudState ?? "NotApplicable",
+            TargetPlayniteId = suggestion.SuggestedPlayniteId, TargetReason = suggestion.Reason, Confidence = suggestion.Confidence,
+            UpdatedUtc = now
+        }).ToList();
+        await _store.CreateMediaClassificationBatchAsync(batchId, now, preview.ExpiresUtc, records, token).ConfigureAwait(false);
+        return preview;
+    }
+
+    /// <summary>Applies only explicitly confirmable high-confidence suggestions and keeps per-item conflicts.</summary>
+    public async Task<MediaClassificationBatchResultDto> ApplyClassificationPreviewAsync(MediaClassificationApplyRequestDto request, CancellationToken token)
+    {
+        var batch = await GetLiveClassificationBatchAsync(request.BatchId, token).ConfigureAwait(false);
+        var records = await _store.GetMediaClassificationBatchItemsAsync(batch.BatchId, token).ConfigureAwait(false);
+        var selected = NormalizeInboxBatchIds(request.MediaIds);
+        var games = (await _catalog.GetGamesAsync(token).ConfigureAwait(false)).ToDictionary(x => x.PlayniteId, StringComparer.OrdinalIgnoreCase);
+        var result = new MediaClassificationBatchResultDto { BatchId = batch.BatchId };
+
+        foreach (var record in records)
+        {
+            if (selected.Count > 0 && !selected.Contains(record.MediaId, StringComparer.OrdinalIgnoreCase)) continue;
+            if (record.ItemState == "Applied")
+            {
+                AddClassificationResult(result, record.MediaId, "Skipped", "该建议批次项目已经应用。", skipped: true);
+                continue;
+            }
+            if (request.HighConfidenceOnly && record.Confidence != "High")
+            {
+                AddClassificationResult(result, record.MediaId, "Skipped", "低于高置信门槛，保持未归类。", skipped: true);
+                await _store.UpdateMediaClassificationBatchItemAsync(batch.BatchId, record.MediaId, "Skipped", string.Empty, token).ConfigureAwait(false);
+                continue;
+            }
+            if (string.IsNullOrWhiteSpace(record.TargetPlayniteId) || !games.TryGetValue(record.TargetPlayniteId, out var game))
+            {
+                AddClassificationResult(result, record.MediaId, "Skipped", "没有可确认的唯一目标游戏。", skipped: true);
+                await _store.UpdateMediaClassificationBatchItemAsync(batch.BatchId, record.MediaId, "Skipped", string.Empty, token).ConfigureAwait(false);
+                continue;
+            }
+
+            var current = await _store.GetMediaByIdAsync(record.MediaId, token).ConfigureAwait(false);
+            if (current == null || !MatchesOriginalClassification(current, record))
+            {
+                AddClassificationResult(result, record.MediaId, "Conflict", "预览后媒体记录已变化，未移动或覆盖。", conflict: true);
+                await _store.UpdateMediaClassificationBatchItemAsync(batch.BatchId, record.MediaId, "Conflict", string.Empty, token).ConfigureAwait(false);
+                continue;
+            }
+
+            var extension = Path.GetExtension(File.Exists(current.ArchivePath) ? current.ArchivePath : current.OriginalPath);
+            var destination = BuildArchivePath(game, current.Source, current.Kind, current.CapturedUtc, current.Sha256, extension);
+            var moved = false;
+            try
+            {
+                await RelocateArchivedCopyAsync(current, destination, token).ConfigureAwait(false);
+                moved = true;
+                if (!await _store.TryApplyMediaClassificationAsync(record, destination, token).ConfigureAwait(false))
+                {
+                    await RestoreMovedClassificationCopyAsync(current, destination, token).ConfigureAwait(false);
+                    AddClassificationResult(result, record.MediaId, "Conflict", "媒体在应用前后发生变化，已恢复原归档路径。", conflict: true);
+                    await _store.UpdateMediaClassificationBatchItemAsync(batch.BatchId, record.MediaId, "Conflict", string.Empty, token).ConfigureAwait(false);
+                    continue;
+                }
+                await _store.UpdateMediaClassificationBatchItemAsync(batch.BatchId, record.MediaId, "Applied", destination, token).ConfigureAwait(false);
+                await _store.AppendAuditAsync("Media", "已应用媒体归类建议", JsonSerializer.Serialize(new { record.MediaId, record.TargetPlayniteId, destination, record.TargetReason }), token).ConfigureAwait(false);
+                AddClassificationResult(result, record.MediaId, "Applied", $"已归类到 {game.Name}。", applied: true);
+            }
+            catch (OperationCanceledException)
+            {
+                if (moved) await RestoreMovedClassificationCopyAsync(current, destination, token).ConfigureAwait(false);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                if (moved)
+                {
+                    try { await RestoreMovedClassificationCopyAsync(current, destination, token).ConfigureAwait(false); }
+                    catch (Exception rollback) { _logger.LogError(rollback, "Could not roll back classification suggestion move for {MediaId}", record.MediaId); }
+                }
+                AddClassificationResult(result, record.MediaId, "Conflict", $"归类未完成，原副本保持不变：{ex.Message}", conflict: true);
+                await _store.UpdateMediaClassificationBatchItemAsync(batch.BatchId, record.MediaId, "Conflict", string.Empty, token).ConfigureAwait(false);
+            }
+        }
+
+        result.State = result.AppliedCount == 0
+            ? result.ConflictCount > 0 ? "Conflict" : "Preview"
+            : result.ConflictCount > 0 ? "AppliedWithConflicts" : "Applied";
+        await _store.UpdateMediaClassificationBatchStateAsync(batch.BatchId, result.State, string.Empty, token).ConfigureAwait(false);
+        return result;
+    }
+
+    /// <summary>Undoes only items that still match the applied snapshot; changed items become conflicts.</summary>
+    public async Task<MediaClassificationBatchResultDto> UndoClassificationBatchAsync(MediaClassificationUndoRequestDto request, CancellationToken token)
+    {
+        var batch = await GetLiveClassificationBatchAsync(request.BatchId, token, forUndo: true).ConfigureAwait(false);
+        var records = await _store.GetMediaClassificationBatchItemsAsync(batch.BatchId, token).ConfigureAwait(false);
+        var result = new MediaClassificationBatchResultDto { BatchId = batch.BatchId };
+        foreach (var record in records.Where(x => x.ItemState == "Applied"))
+        {
+            var current = await _store.GetMediaByIdAsync(record.MediaId, token).ConfigureAwait(false);
+            if (current == null || !MatchesAppliedClassification(current, record))
+            {
+                AddClassificationResult(result, record.MediaId, "Conflict", "应用后媒体已被再次修改，未撤销。", conflict: true);
+                await _store.UpdateMediaClassificationBatchItemAsync(batch.BatchId, record.MediaId, "Conflict", record.AppliedArchivePath, token).ConfigureAwait(false);
+                continue;
+            }
+
+            var moved = false;
+            try
+            {
+                await RelocateArchivedCopyAsync(current, record.OriginalArchivePath, token).ConfigureAwait(false);
+                moved = true;
+                if (!await _store.TryUndoMediaClassificationAsync(record, token).ConfigureAwait(false))
+                {
+                    await RestoreMovedClassificationCopyAsync(current, record.OriginalArchivePath, token, record.AppliedArchivePath).ConfigureAwait(false);
+                    AddClassificationResult(result, record.MediaId, "Conflict", "撤销时媒体状态已变化，已恢复应用后的归档路径。", conflict: true);
+                    await _store.UpdateMediaClassificationBatchItemAsync(batch.BatchId, record.MediaId, "Conflict", record.AppliedArchivePath, token).ConfigureAwait(false);
+                    continue;
+                }
+                await _store.UpdateMediaClassificationBatchItemAsync(batch.BatchId, record.MediaId, "Undone", string.Empty, token).ConfigureAwait(false);
+                await _store.AppendAuditAsync("Media", "已撤销媒体归类建议", JsonSerializer.Serialize(new { record.MediaId, record.BatchId }), token).ConfigureAwait(false);
+                AddClassificationResult(result, record.MediaId, "Undone", "已恢复到待归类状态。", undone: true);
+            }
+            catch (OperationCanceledException)
+            {
+                if (moved) await RestoreMovedClassificationCopyAsync(current, record.OriginalArchivePath, token, record.AppliedArchivePath).ConfigureAwait(false);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                if (moved)
+                {
+                    try { await RestoreMovedClassificationCopyAsync(current, record.OriginalArchivePath, token, record.AppliedArchivePath).ConfigureAwait(false); }
+                    catch (Exception rollback) { _logger.LogError(rollback, "Could not restore applied classification copy for {MediaId}", record.MediaId); }
+                }
+                AddClassificationResult(result, record.MediaId, "Conflict", $"撤销未完成，未覆盖当前文件：{ex.Message}", conflict: true);
+                await _store.UpdateMediaClassificationBatchItemAsync(batch.BatchId, record.MediaId, "Conflict", record.AppliedArchivePath, token).ConfigureAwait(false);
+            }
+        }
+
+        result.State = result.ConflictCount > 0 ? "UndoneWithConflicts" : "Undone";
+        await _store.UpdateMediaClassificationBatchStateAsync(batch.BatchId, result.State, string.Empty, token).ConfigureAwait(false);
+        return result;
+    }
+
     private async Task<MediaItemDto> RestoreIgnoredAsync(string mediaId,CancellationToken token)
     {
         var item=await _store.GetMediaByIdAsync(mediaId,token).ConfigureAwait(false)
@@ -224,6 +426,199 @@ public sealed class MediaSyncService
             .Where(x=>!string.IsNullOrWhiteSpace(x))
             .Distinct(StringComparer.OrdinalIgnoreCase)
             .ToList();
+
+    private static MediaClassificationSuggestionDto BuildClassificationSuggestion(MediaItemDto item,
+        IReadOnlyList<GameDescriptorDto> games,
+        IReadOnlyDictionary<string, GameDescriptorDto> gameById,
+        IReadOnlyList<MediaSourceRuleDto> sources,
+        IReadOnlyList<GameSessionEventDto> sessions,
+        IReadOnlyList<ProcessMappingDto> mappings)
+    {
+        var candidates = new Dictionary<string, (int Rank, List<string> Reasons)>(StringComparer.OrdinalIgnoreCase);
+
+        void AddCandidate(string playniteId, int rank, string reason)
+        {
+            if (!gameById.ContainsKey(playniteId)) return;
+            if (candidates.TryGetValue(playniteId, out var candidate))
+            {
+                if (!candidate.Reasons.Contains(reason, StringComparer.Ordinal)) candidate.Reasons.Add(reason);
+                candidates[playniteId] = (Math.Max(candidate.Rank, rank), candidate.Reasons);
+                return;
+            }
+            candidates[playniteId] = (rank, new List<string> { reason });
+        }
+
+        foreach (var source in sources.Where(x => x.Enabled && !string.IsNullOrWhiteSpace(x.PlayniteId)))
+        {
+            if (IsPathWithin(item.OriginalPath, source.RootPath)
+                && MatchesIncludePattern(item.OriginalPath, source.IncludePattern))
+            {
+                AddCandidate(source.PlayniteId, 3, "命中游戏媒体来源规则");
+            }
+        }
+
+        var captureKnown = item.CapturedUtc != default;
+        var matchingSessions = captureKnown
+            ? sessions.Where(x => IsCapturedWithinSession(item.CapturedUtc, x)).ToList()
+            : new List<GameSessionEventDto>();
+        foreach (var sessionGame in matchingSessions.Select(x => x.PlayniteId)
+                     .Where(x => !string.IsNullOrWhiteSpace(x)).Distinct(StringComparer.OrdinalIgnoreCase))
+        {
+            AddCandidate(sessionGame, 2, matchingSessions.Count(x => string.Equals(x.PlayniteId, sessionGame, StringComparison.OrdinalIgnoreCase)) > 1
+                ? "媒体时间命中重叠的同一游戏会话"
+                : "媒体时间位于游戏会话窗口");
+        }
+
+        foreach (var session in matchingSessions)
+        {
+            var processName = NormalizeProcessName(session.ProcessName);
+            if (string.IsNullOrWhiteSpace(processName)) continue;
+            foreach (var mapping in mappings.Where(x => x.Enabled && !string.IsNullOrWhiteSpace(x.PlayniteId)
+                                                         && string.Equals(NormalizeProcessName(x.ExecutableName), processName, StringComparison.OrdinalIgnoreCase)))
+            {
+                AddCandidate(mapping.PlayniteId, 3, "会话进程映射与媒体时间一致");
+            }
+        }
+
+        var nameMatches = games.Where(x => !string.IsNullOrWhiteSpace(x.Name)
+                                           && SharedFileMatchesGame(item.OriginalPath, x.Name)).ToList();
+        foreach (var game in nameMatches)
+        {
+            AddCandidate(game.PlayniteId, 2, nameMatches.Count == 1 ? "文件名唯一匹配游戏" : "文件名匹配多个候选游戏");
+        }
+
+        var suggestion = new MediaClassificationSuggestionDto
+        {
+            MediaId = item.MediaId,
+            FileName = item.FileName,
+            CapturedUtc = item.CapturedUtc,
+            Confidence = "Low",
+            State = "Suggested"
+        };
+
+        if (candidates.Count == 1)
+        {
+            var candidate = candidates.Single();
+            var game = gameById[candidate.Key];
+            suggestion.SuggestedPlayniteId = game.PlayniteId;
+            suggestion.SuggestedGameName = game.Name;
+            suggestion.Confidence = candidate.Value.Rank >= 3 ? "High" : "Medium";
+            suggestion.Reason = string.Join("；", candidate.Value.Reasons);
+        }
+        else if (candidates.Count > 1)
+        {
+            suggestion.Reason = "来源规则、会话或文件名产生多个候选，保持未归类";
+        }
+        else
+        {
+            suggestion.Reason = captureKnown ? "没有足够的来源、会话或文件名证据，保持未归类" : "媒体时间未知，无法安全匹配会话，保持未归类";
+        }
+
+        return suggestion;
+    }
+
+    private async Task<MediaClassificationBatchRecord> GetLiveClassificationBatchAsync(string batchId, CancellationToken token, bool forUndo = false)
+    {
+        if (string.IsNullOrWhiteSpace(batchId)) throw new InvalidOperationException("缺少媒体归类建议批次号。");
+        var batch = await _store.GetMediaClassificationBatchAsync(batchId, token).ConfigureAwait(false)
+                    ?? throw new InvalidOperationException("媒体归类建议批次不存在，可能已被清理。");
+        if (forUndo)
+        {
+            if (batch.State is not ("Applied" or "AppliedWithConflicts"))
+                throw new InvalidOperationException("只有已应用的媒体归类建议批次可以撤销。");
+            return batch;
+        }
+
+        if (!string.Equals(batch.State, "Preview", StringComparison.OrdinalIgnoreCase))
+            throw new InvalidOperationException("该媒体归类建议批次已经处理，不能重复应用。");
+        if (DateTime.UtcNow > batch.ExpiresUtc)
+        {
+            await _store.UpdateMediaClassificationBatchStateAsync(batch.BatchId, "Expired", "预览已过期，请重新生成建议。", token).ConfigureAwait(false);
+            throw new InvalidOperationException("媒体归类预览已过期，请重新生成建议。");
+        }
+        return batch;
+    }
+
+    private static bool MatchesOriginalClassification(MediaItemDto current, MediaClassificationBatchItemRecord record)
+        => string.Equals(current.PlayniteId ?? string.Empty, record.OriginalPlayniteId, StringComparison.Ordinal)
+           && string.Equals(current.ClassificationState ?? string.Empty, record.OriginalClassificationState, StringComparison.Ordinal)
+           && string.Equals(current.ClassificationReason ?? string.Empty, record.OriginalClassificationReason, StringComparison.Ordinal)
+           && string.Equals(current.ArchivePath ?? string.Empty, record.OriginalArchivePath ?? string.Empty, StringComparison.OrdinalIgnoreCase)
+           && string.Equals(current.OriginalPath ?? string.Empty, record.OriginalPath ?? string.Empty, StringComparison.OrdinalIgnoreCase)
+           && current.CapturedUtc.ToUniversalTime() == record.OriginalCapturedUtc.ToUniversalTime()
+           && current.SizeBytes == record.OriginalSizeBytes
+           && string.Equals(current.Sha256 ?? string.Empty, record.OriginalSha256, StringComparison.OrdinalIgnoreCase)
+           && current.IsFavorite == record.OriginalIsFavorite
+           && string.Equals(current.Comment ?? string.Empty, record.OriginalComment, StringComparison.Ordinal)
+           && string.Equals(current.CloudState ?? string.Empty, record.OriginalCloudState, StringComparison.OrdinalIgnoreCase);
+
+    private static bool MatchesAppliedClassification(MediaItemDto current, MediaClassificationBatchItemRecord record)
+        => string.Equals(current.PlayniteId ?? string.Empty, record.TargetPlayniteId, StringComparison.Ordinal)
+           && string.Equals(current.ClassificationState ?? string.Empty, "Assigned", StringComparison.OrdinalIgnoreCase)
+           && string.Equals(current.ClassificationReason ?? string.Empty, record.TargetReason, StringComparison.Ordinal)
+           && string.Equals(current.ArchivePath ?? string.Empty, record.AppliedArchivePath ?? string.Empty, StringComparison.OrdinalIgnoreCase)
+           && string.Equals(current.OriginalPath ?? string.Empty, record.OriginalPath ?? string.Empty, StringComparison.OrdinalIgnoreCase)
+           && current.CapturedUtc.ToUniversalTime() == record.OriginalCapturedUtc.ToUniversalTime()
+           && current.SizeBytes == record.OriginalSizeBytes
+           && string.Equals(current.Sha256 ?? string.Empty, record.OriginalSha256, StringComparison.OrdinalIgnoreCase)
+           && current.IsFavorite == record.OriginalIsFavorite
+           && string.Equals(current.Comment ?? string.Empty, record.OriginalComment, StringComparison.Ordinal)
+           && string.Equals(current.CloudState ?? string.Empty, "Pending", StringComparison.OrdinalIgnoreCase);
+
+    private static Task RestoreMovedClassificationCopyAsync(MediaItemDto item, string movedPath, CancellationToken token, string? destination = null)
+    {
+        var restoreSource = new MediaItemDto
+        {
+            ArchivePath = movedPath,
+            OriginalPath = item.OriginalPath,
+            Sha256 = item.Sha256
+        };
+        return RelocateArchivedCopyAsync(restoreSource, destination ?? item.ArchivePath, token);
+    }
+
+    private static void AddClassificationResult(MediaClassificationBatchResultDto result, string mediaId, string state,
+        string message, bool applied = false, bool undone = false, bool conflict = false, bool skipped = false)
+    {
+        result.Items.Add(new MediaClassificationBatchItemResultDto { MediaId = mediaId, State = state, Message = message });
+        if (applied) result.AppliedCount++;
+        if (undone) result.UndoneCount++;
+        if (conflict) result.ConflictCount++;
+        if (skipped) result.SkippedCount++;
+    }
+
+    private static bool IsCapturedWithinSession(DateTime capturedUtc, GameSessionEventDto session)
+    {
+        if (capturedUtc == default || session.StartedUtc == default) return false;
+        var start = session.StartedUtc.ToUniversalTime().AddMinutes(-2);
+        var stop = (session.StoppedUtc ?? DateTime.UtcNow).ToUniversalTime().AddMinutes(10);
+        return capturedUtc.ToUniversalTime() >= start && capturedUtc.ToUniversalTime() <= stop;
+    }
+
+    private static bool IsPathWithin(string path, string root)
+    {
+        if (string.IsNullOrWhiteSpace(path) || string.IsNullOrWhiteSpace(root)) return false;
+        try
+        {
+            var fullPath = Path.GetFullPath(path).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+            var fullRoot = Path.GetFullPath(root).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+            return string.Equals(fullPath, fullRoot, StringComparison.OrdinalIgnoreCase)
+                   || fullPath.StartsWith(fullRoot + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase)
+                   || fullPath.StartsWith(fullRoot + Path.AltDirectorySeparatorChar, StringComparison.OrdinalIgnoreCase);
+        }
+        catch (Exception) { return false; }
+    }
+
+    private static bool MatchesIncludePattern(string path, string pattern)
+    {
+        var fileName = Path.GetFileName(path);
+        var patterns = (pattern ?? "*").Split(new[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        if (patterns.Length == 0) return true;
+        return patterns.Any(value => string.Equals(value, "*", StringComparison.Ordinal)
+                                     || Regex.IsMatch(fileName, "^" + Regex.Escape(value).Replace("\\*", ".*").Replace("\\?", ".") + "$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant));
+    }
+
+    private static string NormalizeProcessName(string value)
+        => Path.GetFileName(value ?? string.Empty).Trim();
 
     private Task<TaskStatusDto> SyncGameSourcesAsync(GameDescriptorDto game,MediaSyncRequestDto request,CancellationToken token)=>
         _tasks.RunAsync("MediaSync",game.PlayniteId,game.Name,async(progress,ct)=>

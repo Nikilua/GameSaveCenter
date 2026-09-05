@@ -3,6 +3,14 @@
 > 维护时间：2026-09-05
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-05 F03 媒体归类建议与可撤销批量操作
+
+- `MediaSyncService` 的归类预览读取 Inbox 媒体、启用来源规则、会话区间和进程映射；规则目录/进程映射可给 High，时间范围或唯一文件名候选给 Medium，多个候选、未知时间或冲突给 Low 且不提供可应用目标。预览默认最多 200 项，批次有效期 30 分钟。
+- `media_classification_batches` / `media_classification_batch_items` 保存原始媒体快照（状态、PlayniteId、版本、路径、云端状态、不可变元数据）以及建议/应用后快照。应用默认 `HighConfidenceOnly=true`，只处理仍匹配原快照的条目；手工覆盖或并发修改返回 Conflict，不覆盖用户选择。
+- 归类移动的是归档目录中的副本，使用路径安全校验和同盘移动/复制回退；原始媒体和真实存档不删除、不移动。撤销从 SQLite 批次恢复原路径与元数据，只接受当前应用快照和 `Pending` 云端状态，批次可在 Worker 重启或预览过期后撤销；部分失败会保留逐项结果和审计。
+- MediaCenter Inspector 的三个命令是预览、应用高置信建议、撤销上次批次；预览为空时列表折叠，不挤占空 Inspector 的首屏高度，非空列表保留 `FiniteViewport`、Recycling 虚拟化和内部滚动。手工 Assign/Ignore/Restore 入口不变。
+- F03 阶段验证：Release 0 warning/0 error；Core `65/65`、Worker `275/275`、Playnite `338/400`（62 跳过）、XAML `19/19`、源码校验和 WPF 质量审计通过，RenderHarness 为 `render-qa OK`。未取得真实 Playnite 宿主、真实媒体目录、50,000 媒体压力和多进程并发证据。
+
 ## 2026-09-05 F02 云端队列可见与传输策略
 
 - 备份与媒体复制统一写入 SQLite `cloud_transfer_queue`，键为 `Backup/Media + PlayniteId`；旧 `cloud_retry_queue` 继续兼容。Worker 启动恢复未完成的 `Pending/Transferring`，自动扫描同时覆盖旧备份队列和新媒体/备份队列，同一游戏同一类型只保留一条状态。

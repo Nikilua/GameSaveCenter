@@ -939,6 +939,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains(inspector.Descendants(), element => element.Attribute("Command")?.Value == "{Binding AssignInboxMediaCommand}");
         Assert.Contains(inspector.Descendants(), element => element.Attribute("Command")?.Value == "{Binding IgnoreInboxMediaCommand}");
         Assert.Contains(inspector.Descendants(), element => element.Attribute("Command")?.Value == "{Binding RestoreIgnoredMediaBatchCommand}");
+        Assert.Contains(inspector.Descendants(), element => element.Attribute("ItemsSource")?.Value == "{Binding MediaClassificationPreview.Items}");
         Assert.Contains(inspector.Descendants(), element => element.Attribute("SelectedItem")?.Value == "{Binding InboxTargetGame}");
     }
 
@@ -960,6 +961,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Command=\"{Binding AssignInboxMediaBatchCommand}\"", media);
         Assert.Contains("Command=\"{Binding IgnoreInboxMediaBatchCommand}\"", media);
         Assert.Contains("Command=\"{Binding RestoreIgnoredMediaBatchCommand}\"", media);
+        Assert.Contains("Command=\"{Binding PreviewMediaClassificationCommand}\"", media);
+        Assert.Contains("Command=\"{Binding ApplyMediaClassificationCommand}\"", media);
+        Assert.Contains("Command=\"{Binding UndoMediaClassificationCommand}\"", media);
         Assert.Contains("Command=\"{Binding LoadMoreMediaInboxCommand}\"", media);
         Assert.Contains("Command=\"{Binding LoadMoreMediaCommand}\"", media);
         Assert.Contains("MediaInboxLoadedSummary", media);
@@ -970,12 +974,18 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("OnMediaInboxSelectionChanged", mediaCode);
         Assert.Contains("GetSelectedInboxMedia(value)", commands);
         Assert.Contains("RestoreIgnoredMediaBatchCommand", commands);
+        Assert.Contains("PreviewMediaClassificationCommand", commands);
+        Assert.Contains("ApplyMediaClassificationCommand", commands);
+        Assert.Contains("UndoMediaClassificationCommand", commands);
         Assert.Contains("ProcessInboxBatchAsync", viewModel);
         Assert.Contains("ReassignMediaBatch", messages);
         Assert.Contains("IgnoreMediaBatch", messages);
         Assert.Contains("ListIgnoredMedia", messages);
         Assert.Contains("ListMediaPage", messages);
         Assert.Contains("RestoreIgnoredMediaBatch", messages);
+        Assert.Contains("PreviewMediaClassification", messages);
+        Assert.Contains("ApplyMediaClassification", messages);
+        Assert.Contains("UndoMediaClassification", messages);
         Assert.Contains("MediaInboxBatchRequestDto", contracts);
         Assert.Contains("MediaInboxBatchResultDto", contracts);
         Assert.Contains("MediaInboxBatchSize = 500", commands);
