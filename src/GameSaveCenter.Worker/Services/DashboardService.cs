@@ -83,6 +83,7 @@ public sealed class DashboardService
             snapshot.Games.Add(new GameStatusDto
             {
                 PlayniteId=game.PlayniteId,Name=game.Name,Platform=game.Platform,IsInstalled=game.IsInstalled,LastPlayedUtc=game.LastPlayedUtc,IsRunning=active.Contains(game.PlayniteId),LudusaviMatched=matched,
+                PlayniteIsInstalled=game.PlayniteIsInstalled,InstallStateSource=game.InstallStateSource,DescriptorSyncedUtc=record.DescriptorSyncedUtc,
                 LudusaviName=record.LudusaviName,LastBackupUtc=record.LastBackupUtc,BackupVersionCount=record.BackupVersionCount,
                 LastMediaSyncUtc=record.LastMediaUtc,MediaCount=record.MediaCount,CloudState=record.CloudState,
                 HealthState=assessment.State.ToString(),

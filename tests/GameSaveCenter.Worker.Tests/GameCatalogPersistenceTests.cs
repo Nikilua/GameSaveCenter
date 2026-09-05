@@ -131,6 +131,92 @@ public sealed class GameCatalogPersistenceTests : IDisposable
         Assert.Equal(1.0, persisted[installed.PlayniteId].Confidence);
     }
 
+    [Fact]
+    public async Task DescriptorOnlySyncUpdatesFreshnessWithoutMatchingOtherGames()
+    {
+        var first = new GameDescriptorDto
+        {
+            PlayniteId = "sync-one",
+            Name = "Sync One",
+            Platform = GamePlatformKind.Steam,
+            PlatformGameId = "100",
+            IsInstalled = false,
+            PlayniteIsInstalled = false,
+            InstallStateSource = GameInstallStateSources.None
+        };
+        var other = new GameDescriptorDto
+        {
+            PlayniteId = "sync-other",
+            Name = "Sync Other",
+            Platform = GamePlatformKind.Steam,
+            PlatformGameId = "200",
+            IsInstalled = true,
+            PlayniteIsInstalled = true,
+            InstallStateSource = GameInstallStateSources.PlayniteFlag
+        };
+        await catalog.UpsertAndMatchAsync(new[] { first, other }, CancellationToken.None);
+        await store.SetGameMatchAsync(first.PlayniteId, "Sync One", 0.9, GameMatchInput.CreateHash(first), CancellationToken.None);
+        await store.SetGameMatchAsync(other.PlayniteId, "Sync Other", 0.8, GameMatchInput.CreateHash(other), CancellationToken.None);
+        var before = await store.GetGameDiscoveryDiagnosticAsync(first.PlayniteId, CancellationToken.None);
+
+        first.IsInstalled = true;
+        first.PlayniteIsInstalled = true;
+        first.InstallStateSource = GameInstallStateSources.PlayniteFlag;
+        await catalog.UpsertDescriptorOnlyAsync(first, CancellationToken.None);
+
+        var current = await store.GetGameDiscoveryDiagnosticAsync(first.PlayniteId, CancellationToken.None);
+        var otherCurrent = await store.GetGameDiscoveryDiagnosticAsync(other.PlayniteId, CancellationToken.None);
+        Assert.NotNull(current);
+        Assert.NotNull(current!.DescriptorSyncedUtc);
+        Assert.True(current.DescriptorSyncedUtc >= before!.DescriptorSyncedUtc);
+        Assert.True(current.Descriptor.IsInstalled);
+        Assert.Equal("Sync One", current.LudusaviName);
+        Assert.Equal("Sync Other", otherCurrent!.LudusaviName);
+    }
+
+    [Fact]
+    public async Task DiscoveryDiagnosticReportsBackupAndMatchAttemptWithoutPrivatePaths()
+    {
+        var game = new GameDescriptorDto
+        {
+            PlayniteId = "diagnostic-game",
+            Name = "Diagnostic Game",
+            Platform = GamePlatformKind.Gog,
+            PlatformGameId = "gog-1",
+            InstallDirectory = Path.Combine(root, "missing-install"),
+            IsInstalled = false,
+            InstallStateSource = GameInstallStateSources.None
+        };
+        await catalog.UpsertAndMatchAsync(new[] { game }, CancellationToken.None);
+        await store.SetGameMatchAsync(game.PlayniteId, string.Empty, 0, GameMatchInput.CreateHash(game), CancellationToken.None);
+        await store.AddBackupVersionAsync(new BackupVersionDto
+        {
+            BackupId = "diagnostic-backup",
+            PlayniteId = game.PlayniteId,
+            LudusaviName = game.Name,
+            CreatedUtc = DateTime.UtcNow,
+            TotalBytes = 10,
+            FileCount = 1
+        }, "[]", CancellationToken.None);
+
+        var diagnostic = await catalog.GetDiscoveryDiagnosticAsync(new GameDiscoveryDiagnosticRequestDto
+        {
+            PlayniteId = game.PlayniteId,
+            CurrentStatusFilter = "有备份",
+            CurrentPlatformFilter = "GOG",
+            CurrentSearchText = "diagnostic"
+        }, CancellationToken.None);
+
+        Assert.True(diagnostic.WorkerRecordExists);
+        Assert.False(diagnostic.IsInstalled);
+        Assert.True(diagnostic.HasInstallDirectoryConfigured);
+        Assert.False(diagnostic.InstallDirectoryPresent);
+        Assert.Equal(1, diagnostic.BackupVersionCount);
+        Assert.Equal("UnmatchedAfterAttempt", diagnostic.MatchState);
+        Assert.Equal("有备份", diagnostic.CurrentStatusFilter);
+        Assert.DoesNotContain(root, System.Text.Json.JsonSerializer.Serialize(diagnostic));
+    }
+
     private async Task<string?> ReadUpdatedUtcAsync(string playniteId)
     {
         await using var connection = new SqliteConnection($"Data Source={options.DatabasePath}");

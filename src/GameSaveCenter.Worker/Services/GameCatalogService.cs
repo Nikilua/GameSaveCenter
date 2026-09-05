@@ -140,6 +140,84 @@ public sealed class GameCatalogService : IRestoreCatalog
         foreach(var item in pending) await MatchOneAsync(new PendingMatch(item.Game, item.InputHash),token).ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// Persists a single live Playnite descriptor without invoking Ludusavi. This is the
+    /// explicit repair path used when a user wants to refresh catalog truth but is not yet
+    /// ready to pay the cost of a match attempt.
+    /// </summary>
+    public async Task UpsertDescriptorOnlyAsync(GameDescriptorDto game, CancellationToken token)
+    {
+        if (game == null || string.IsNullOrWhiteSpace(game.PlayniteId))
+            throw new ArgumentException("必须提供有效的 Playnite 游戏 ID。", nameof(game));
+        await _store.UpsertDescriptorOnlyAsync(new[] { game }, token).ConfigureAwait(false);
+    }
+
+    public async Task<GameDiscoveryDiagnosticDto> GetDiscoveryDiagnosticAsync(GameDiscoveryDiagnosticRequestDto request, CancellationToken token)
+    {
+        var diagnosticRequest = request ?? throw new ArgumentNullException(nameof(request));
+        var playniteId = diagnosticRequest.PlayniteId?.Trim() ?? string.Empty;
+        if (playniteId.Length == 0)
+            throw new ArgumentException("必须提供 Playnite 游戏 ID。", nameof(request));
+
+        var record = await _store.GetGameDiscoveryDiagnosticAsync(playniteId, token).ConfigureAwait(false);
+        if (record == null)
+        {
+            return new GameDiscoveryDiagnosticDto
+            {
+                PlayniteId = playniteId,
+                WorkerRecordExists = false,
+                CurrentStatusFilter = diagnosticRequest.CurrentStatusFilter ?? "全部",
+                CurrentPlatformFilter = diagnosticRequest.CurrentPlatformFilter ?? "全部",
+                CurrentSearchText = diagnosticRequest.CurrentSearchText ?? string.Empty,
+                MatchState = "Unknown"
+            };
+        }
+
+        var descriptor = record.Descriptor;
+        var source = string.IsNullOrWhiteSpace(descriptor.InstallStateSource)
+            ? descriptor.IsInstalled ? GameInstallStateSources.Unknown : GameInstallStateSources.None
+            : descriptor.InstallStateSource;
+        var matched = !string.IsNullOrWhiteSpace(record.LudusaviName);
+        return new GameDiscoveryDiagnosticDto
+        {
+            PlayniteId = playniteId,
+            Name = descriptor.Name ?? string.Empty,
+            Platform = descriptor.Platform,
+            WorkerRecordExists = true,
+            PlayniteIsInstalled = descriptor.PlayniteIsInstalled,
+            IsInstalled = descriptor.IsInstalled,
+            InstallStateSource = source,
+            HasInstallDirectoryConfigured = record.HasInstallDirectoryConfigured,
+            InstallDirectoryPresent = record.InstallDirectoryPresent,
+            DescriptorSyncedUtc = record.DescriptorSyncedUtc,
+            LudusaviMatched = matched,
+            LudusaviName = record.LudusaviName ?? string.Empty,
+            MatchConfidence = record.MatchConfidence,
+            LastMatchAttemptUtc = record.LastMatchAttemptUtc,
+            MatchState = matched ? "Matched" : record.LastMatchAttemptUtc.HasValue ? "UnmatchedAfterAttempt" : "NeverAttempted",
+            BackupVersionCount = record.BackupVersionCount,
+            LastBackupUtc = record.LastBackupUtc,
+            CurrentStatusFilter = diagnosticRequest.CurrentStatusFilter ?? "全部",
+            CurrentPlatformFilter = diagnosticRequest.CurrentPlatformFilter ?? "全部",
+            CurrentSearchText = diagnosticRequest.CurrentSearchText ?? string.Empty
+        };
+    }
+
+    public async Task<GameDiscoveryDiagnosticDto> RetryGameMatchAsync(GameMatchRetryRequestDto request, CancellationToken token)
+    {
+        var retryRequest = request ?? throw new ArgumentNullException(nameof(request));
+        var playniteId = retryRequest.PlayniteId?.Trim() ?? string.Empty;
+        if (playniteId.Length == 0)
+            throw new ArgumentException("必须提供 Playnite 游戏 ID。", nameof(request));
+        var descriptor = await _store.GetGameAsync(playniteId, token).ConfigureAwait(false);
+        if (descriptor == null)
+            throw new WorkerOperationException("GAME_NOT_FOUND", "Worker 中没有该游戏的描述，请先同步此游戏描述。", playniteId);
+
+        lock (_backgroundMatchGate) _backgroundMatches.Remove(playniteId);
+        await MatchOneAsync(new PendingMatch(descriptor, GameMatchInput.CreateHash(descriptor)), token).ConfigureAwait(false);
+        return await GetDiscoveryDiagnosticAsync(new GameDiscoveryDiagnosticRequestDto { PlayniteId = playniteId }, token).ConfigureAwait(false);
+    }
+
     private static bool DescriptorsEqual(GameDescriptorDto left,GameDescriptorDto right)
     {
         if(!string.Equals(left.PlayniteId,right.PlayniteId,StringComparison.Ordinal)

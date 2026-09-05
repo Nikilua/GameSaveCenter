@@ -17,7 +17,14 @@ namespace GameSaveCenter.Playnite.Infrastructure
         public GameDescriptorDto Convert(Game game)
         {
             var installDirectory = game.InstallDirectory ?? string.Empty;
-            var isInstalled = game.IsInstalled || IsInstallDirectoryPresent(installDirectory);
+            var playniteIsInstalled = game.IsInstalled;
+            var installDirectoryPresent = IsInstallDirectoryPresent(installDirectory);
+            var isInstalled = playniteIsInstalled || installDirectoryPresent;
+            var installStateSource = playniteIsInstalled
+                ? GameInstallStateSources.PlayniteFlag
+                : installDirectoryPresent
+                    ? GameInstallStateSources.InstallDirectory
+                    : GameInstallStateSources.None;
             var descriptor = new GameDescriptorDto
             {
                 PlayniteId = game.Id.ToString("D"),
@@ -26,11 +33,13 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 PlatformGameId = game.GameId ?? string.Empty,
                 PluginId = game.PluginId.ToString("D"),
                 InstallDirectory = installDirectory,
+                PlayniteIsInstalled = playniteIsInstalled,
                 // Playnite's Steam integration can briefly leave IsInstalled=false while
                 // refreshing a profile or after a library is moved to another machine. The
                 // install directory is a local, read-only signal and prevents the GameSaveCenter
                 // picker default ("已安装") from hiding a game that is actually present.
                 IsInstalled = isInstalled,
+                InstallStateSource = installStateSource,
                 LastPlayedUtc = game.LastActivity,
                 Tags = game.Tags == null ? new List<string>() : game.Tags.Select(x => x.Name).Where(x => !string.IsNullOrWhiteSpace(x)).ToList()
             };
@@ -55,10 +64,14 @@ namespace GameSaveCenter.Playnite.Infrastructure
                     // while their playable action still points to the local executable. Treat
                     // an existing local play action as a second read-only installation signal.
                     if (!isInstalled && expanded.IsPlayAction && IsLocalPathPresent(expanded.Path, expanded.WorkingDir))
+                    {
                         isInstalled = true;
+                        installStateSource = GameInstallStateSources.PlayAction;
+                    }
                 }
             }
             descriptor.IsInstalled = isInstalled;
+            descriptor.InstallStateSource = installStateSource;
 
             // Many library plugins don't expose their primary action in GameActions.
             // Top-level executables are useful fallback candidates but remain user-reviewable.

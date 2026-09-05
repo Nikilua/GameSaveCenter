@@ -198,6 +198,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             gameSearchText = gamePicker.SearchText;
             gameStatusFilter = gamePicker.StatusFilter;
             gameSortMode = gamePicker.SortMode;
+            gameDiagnosticPlayniteId = plugin.Settings.GamePickerSelectedGameId ?? string.Empty;
             GamesView = CollectionViewSource.GetDefaultView(Games);
             GamesView.Filter = FilterGame;
             TasksView = CollectionViewSource.GetDefaultView(Tasks);
@@ -266,6 +267,10 @@ namespace GameSaveCenter.Playnite.ViewModels
             OpenProtectionItemCommand = new RelayCommand(value => OpenProtectionItem(value as RecentProtectionItem));
             ApplyRecommendedProtectionCommand = new RelayCommand(_ => Run(ApplyRecommendedProtectionAsync), _ => !IsBusy);
             RefreshDiagnosticsCommand = new RelayCommand(_ => Run(RefreshDiagnosticsAsync), _ => !IsBusy);
+            DiagnoseGameCommand = new RelayCommand(_ => RunGameDiscoveryDiagnostic(), _ => !IsBusy && !IsGameDiagnosticLoading && !string.IsNullOrWhiteSpace(GameDiagnosticPlayniteId));
+            SyncGameDescriptorCommand = new RelayCommand(_ => Run(SynchronizeGameDescriptorAsync), _ => !IsBusy && !string.IsNullOrWhiteSpace(GameDiagnosticPlayniteId));
+            RetryGameMatchCommand = new RelayCommand(_ => Run(RetryGameMatchAsync), _ => !IsBusy && !string.IsNullOrWhiteSpace(GameDiagnosticPlayniteId));
+            ClearGamePickerFiltersCommand = new RelayCommand(_ => ClearGamePickerFilters());
             RunIntegrityCheckCommand = new RelayCommand(_ => Run(RunIntegrityCheckAsync), _ => !IsBusy);
             CreateMetadataBackupCommand = new RelayCommand(_ => Run(CreateMetadataBackupAsync), _ => !IsBusy && !string.IsNullOrWhiteSpace(EffectiveSettings.DataDirectory));
             RestoreMetadataBackupCommand = new RelayCommand(_ => Run(RestoreMetadataBackupAsync), _ => !IsBusy && !string.IsNullOrWhiteSpace(EffectiveSettings.DataDirectory));
@@ -988,6 +993,10 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand OpenProtectionItemCommand { get; }
         public ICommand ApplyRecommendedProtectionCommand { get; }
         public ICommand RefreshDiagnosticsCommand { get; }
+        public ICommand DiagnoseGameCommand { get; }
+        public ICommand SyncGameDescriptorCommand { get; }
+        public ICommand RetryGameMatchCommand { get; }
+        public ICommand ClearGamePickerFiltersCommand { get; }
         public ICommand RunIntegrityCheckCommand { get; }
         public ICommand CreateMetadataBackupCommand { get; }
         public ICommand RestoreMetadataBackupCommand { get; }
@@ -3431,6 +3440,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             // duplicate IPC requests for the same game.
             if (!string.Equals(e.PropertyName, nameof(GamePickerViewModel.SelectedItem), StringComparison.Ordinal)) return;
             var selected = gamePicker.SelectedGame;
+            if (selected != null && !string.Equals(GameDiagnosticPlayniteId, selected.PlayniteId, StringComparison.OrdinalIgnoreCase))
+                GameDiagnosticPlayniteId = selected.PlayniteId;
             UpdateSelectedGamePolicyBaseline(selected);
             OnPropertyChanged(nameof(SelectedGame));
             if (!suppressSelectionLoad)
@@ -3751,7 +3762,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 LoadMoreMediaCommand,
                 AssignInboxMediaCommand, IgnoreInboxMediaCommand, AssignInboxMediaBatchCommand, IgnoreInboxMediaBatchCommand, RestoreIgnoredMediaBatchCommand,
                 LoadMoreMediaInboxCommand,
-                CancelTaskCommand, RetryTaskCommand, RetryAllTasksCommand, LoadMoreTasksCommand, CopyTaskErrorCommand, RefreshDiagnosticsCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
+                CancelTaskCommand, RetryTaskCommand, RetryAllTasksCommand, LoadMoreTasksCommand, CopyTaskErrorCommand, RefreshDiagnosticsCommand, DiagnoseGameCommand, SyncGameDescriptorCommand, RetryGameMatchCommand, ClearGamePickerFiltersCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
                 StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,RefreshRetentionSimulationCommand,ApplyRetentionSimulationCommand,RefreshLocalMirrorStatusCommand,SyncLocalMirrorCommand,CopyMaintenanceReportCommand,ExportMaintenanceReportCommand,
                 SaveProcessMappingCommand,DeleteProcessMappingCommand,RunEnvironmentCheckCommand,SkipOnboardingCommand,CompleteOnboardingCommand,OnboardingTestBackupCommand,
                 OpenDataDirectoryCommand, OpenBackupDirectoryCommand, OpenMediaDirectoryCommand, OpenWorkerLogCommand

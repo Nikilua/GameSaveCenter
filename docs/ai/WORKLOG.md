@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-05 U03 游戏目录来源与新鲜度诊断
+
+- Contracts 新增按 Playnite ID 的只读诊断、单项描述同步和单项匹配重试消息；`GameDescriptorDto` 保留 Playnite 原始安装标志及有效判定来源，Dashboard 继续输出这些字段和描述同步时间。
+- SQLite 为 `games` 增加 `descriptor_synced_utc` 迁移列；诊断仅返回 Worker 描述/匹配/备份计数、时间和安装目录是否存在等脱敏信号，不返回完整本地路径。Playnite 缺失的来源只标记为来源缺失，未增加任何按目录同步删除备份或历史的路径。
+- 维护页增加按 ID 诊断、清除游戏筛选、同步此游戏描述、重试此游戏匹配；选择器空状态增加清除筛选。筛选排除原因直接复用同一 `GamePickerViewModel` 谓词，普通 Dashboard 刷新仍不会触发额外全库匹配。
+- 新增 Worker 描述-only/诊断/备份与路径信号回归、Playnite 筛选原因与清除筛选回归、旧库新增列迁移断言。验证：Release 构建 0 warning/0 error；Core `65/65`、Worker `260/260`、Playnite `335/397`（62 跳过）、XAML `19/19`、`validate-source.py` 和 `git diff --check` 通过。真实 Playnite 目标游戏、Worker 离线和来源移除后的人工宿主复核仍待执行。
+
 ## 2026-09-05 R07 IPC 取消与写请求结果追踪
 
 - Playnite IPC 增加调用者取消和宿主退出令牌，连接/写入/读取统一走有界等待；取消先结束调用者等待，再异步关闭管道，避免 `StreamReader`、底层 Named Pipe 读任务和 Dispose 互相卡住。错误区分用户取消、宿主退出、超时、管道断开、连接失败及 Worker 请求处理中/已中断。

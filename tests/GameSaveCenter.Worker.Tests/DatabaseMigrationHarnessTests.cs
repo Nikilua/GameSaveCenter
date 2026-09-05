@@ -66,7 +66,7 @@ VALUES ('v9','tool9','1.0','C:\Tools\u.exe','C:\Tools','','','','2025-01-01T00:0
             new[] { "games", "tasks", "backup_versions", "game_policies", "backup_policy_templates", "sessions", "device_conflict_decisions", "media", "media_sources", "game_tools", "game_tool_versions", "protection_prompt_states", "legacy_marker" },
             new Dictionary<string, IReadOnlyCollection<string>>
             {
-                ["games"] = new[] { "match_input_hash", "last_match_attempt_utc" },
+                ["games"] = new[] { "match_input_hash", "last_match_attempt_utc", "descriptor_synced_utc" },
                 ["tasks"] = new[] { "session_id", "worker_session_id" },
                 ["backup_versions"] = new[] { "archive_path", "restore_readiness_json" },
                 ["media"] = new[] { "classification_state", "classification_reason" },
@@ -140,7 +140,7 @@ VALUES ('v9','tool9','1.0','C:\Tools\u.exe','C:\Tools','','','','2025-01-01T00:0
             new[] { "games", "tasks", "backup_versions", "media", "cloud_retry_queue" },
             new Dictionary<string, IReadOnlyCollection<string>>
             {
-                ["games"] = new[] { "match_input_hash" },
+                ["games"] = new[] { "match_input_hash", "descriptor_synced_utc" },
                 ["backup_versions"] = new[] { "archive_path", "restore_readiness_json" }
             },
             CancellationToken.None);

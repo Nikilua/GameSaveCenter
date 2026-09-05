@@ -10,6 +10,9 @@ namespace GameSaveCenter.Contracts
         public const string Handshake = "system.handshake";
         public const string GetDashboard = "dashboard.get";
         public const string UpsertGames = "games.upsert";
+        public const string GetGameDiagnostic = "games.diagnostic.get";
+        public const string SyncGameDescriptor = "games.descriptor.sync";
+        public const string RetryGameMatch = "games.match.retry";
         public const string GameSessionStarted = "session.started";
         public const string GameSessionStopped = "session.stopped";
         public const string BackupGame = "backup.game";

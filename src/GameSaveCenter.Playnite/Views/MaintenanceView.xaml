@@ -292,6 +292,23 @@
                                             </Expander>
                                         </Grid>
                                     </Border>
+                                    <Border x:Name="GameDiscoveryDiagnosticCard" Style="{DynamicResource GscRedesignSubCard}" Padding="12" Margin="0,10,0,0">
+                                        <StackPanel>
+                                            <TextBlock Text="游戏来源诊断" Style="{DynamicResource GscSectionTitleStyle}"/>
+                                            <TextBlock Text="按 Playnite ID 检查来源、安装信号、Worker 描述新鲜度和匹配状态；诊断不会触发全库同步。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                            <Grid Margin="0,10,0,0">
+                                                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                <TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding GameDiagnosticPlayniteId, UpdateSourceTrigger=PropertyChanged}" ToolTip="输入 Playnite 游戏 ID；默认使用当前选择的游戏" AutomationProperties.Name="Playnite 游戏 ID"/>
+                                                <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiToolbarPrimaryButton}" Command="{Binding DiagnoseGameCommand}" Content="诊断此游戏" Margin="10,0,0,0" AutomationProperties.Name="诊断此游戏"/>
+                                            </Grid>
+                                            <WrapPanel Margin="0,8,0,0">
+                                                <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding ClearGamePickerFiltersCommand}" Content="清除游戏筛选" Margin="0,0,8,8" ToolTip="清除搜索、状态和平台筛选，不改变排序"/>
+                                                <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding SyncGameDescriptorCommand}" Content="同步此游戏描述" Margin="0,0,8,8" ToolTip="只同步当前游戏的 Playnite 描述，不重新匹配其他游戏"/>
+                                                <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RetryGameMatchCommand}" Content="重试此游戏匹配" Margin="0,0,0,8" ToolTip="只为当前游戏执行一次 Ludusavi 匹配"/>
+                                            </WrapPanel>
+                                            <TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding GameDiscoveryDiagnosticSummary, Mode=OneWay}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="150" MaxHeight="250" VerticalScrollBarVisibility="Auto" Margin="0,2,0,0" AutomationProperties.Name="游戏来源诊断结果"/>
+                                        </StackPanel>
+                                    </Border>
                                     <Border x:Name="MaintenanceDiagnosticSummaryGrid" Style="{DynamicResource GscRedesignSubCard}" Padding="12" Margin="0,10,0,0">
                                         <StackPanel>
                                             <TextBlock Text="完整诊断摘要" Style="{DynamicResource GscSectionTitleStyle}"/>

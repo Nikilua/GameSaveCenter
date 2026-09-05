@@ -78,6 +78,43 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         [Fact]
+        public void FilterDiagnosisUsesTheSamePredicateAsThePicker()
+        {
+            using var picker = new GamePickerViewModel();
+            picker.SetItems(new[] { Game("Steam Adventure", installed: false, matched: true, platform: GamePlatformKind.Steam) });
+            picker.StatusFilter = "已安装";
+            picker.PlatformFilter = "Xbox";
+            picker.SearchText = "missing";
+            picker.RefreshNow();
+
+            var item = picker.Items.Single();
+            var reasons = picker.GetFilterExclusionReasons(item);
+
+            Assert.False(picker.MatchesCurrentFilter(item));
+            Assert.Equal(3, reasons.Count);
+            Assert.Contains(reasons, reason => reason.Contains("平台筛选"));
+            Assert.Contains(reasons, reason => reason.Contains("搜索"));
+            Assert.Contains(reasons, reason => reason.Contains("已安装"));
+        }
+
+        [Fact]
+        public void ClearFiltersResetsSearchStatusAndPlatformButKeepsSort()
+        {
+            using var picker = new GamePickerViewModel();
+            picker.SortMode = "最近备份";
+            picker.StatusFilter = "未匹配";
+            picker.PlatformFilter = "Steam";
+            picker.SearchText = "ring";
+
+            picker.ClearFiltersCommand.Execute(null);
+
+            Assert.Equal(string.Empty, picker.SearchText);
+            Assert.Equal("全部", picker.StatusFilter);
+            Assert.Equal("全部", picker.PlatformFilter);
+            Assert.Equal("最近备份", picker.SortMode);
+        }
+
+        [Fact]
         public void InstalledFilterKeepsInstalledGameVisibleWhenSearching()
         {
             using var picker = new GamePickerViewModel();

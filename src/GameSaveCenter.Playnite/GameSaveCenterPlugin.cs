@@ -629,6 +629,134 @@ namespace GameSaveCenter.Playnite
         }
 
         /// <summary>
+        /// Reads one catalog identity without synchronizing the library or starting a
+        /// Ludusavi match wave. Live Playnite facts are overlaid locally so a stale Worker
+        /// row can be distinguished from a game that has disappeared from the source.
+        /// </summary>
+        public async Task<GameDiscoveryDiagnosticDto> GetGameDiscoveryDiagnosticAsync(
+            string playniteId,
+            string statusFilter,
+            string platformFilter,
+            string searchText)
+        {
+            var normalizedId = (playniteId ?? string.Empty).Trim();
+            if (normalizedId.Length == 0) throw new ArgumentException("请输入 Playnite 游戏 ID。", nameof(playniteId));
+            var live = TryGetPlayniteDescriptor(normalizedId);
+            GameDiscoveryDiagnosticDto result;
+            try
+            {
+                await EnsureWorkerAsync().ConfigureAwait(false);
+                result = await RequestAsync<GameDiscoveryDiagnosticDto>(
+                    MessageTypes.GetGameDiagnostic,
+                    new GameDiscoveryDiagnosticRequestDto
+                    {
+                        PlayniteId = normalizedId,
+                        CurrentStatusFilter = statusFilter ?? "全部",
+                        CurrentPlatformFilter = platformFilter ?? "全部",
+                        CurrentSearchText = searchText ?? string.Empty
+                    },
+                    TimeSpan.FromSeconds(8)).ConfigureAwait(false);
+            }
+            catch (OperationCanceledException)
+            {
+                throw;
+            }
+            catch (Exception)
+            {
+                // A read-only diagnostic remains useful while the Worker is unavailable:
+                // the live Playnite half still tells the user whether the source has the game.
+                result = new GameDiscoveryDiagnosticDto
+                {
+                    PlayniteId = normalizedId,
+                    WorkerReachable = false,
+                    WorkerMessage = "Worker 当前不可用；请稍后重试诊断。",
+                    CurrentStatusFilter = statusFilter ?? "全部",
+                    CurrentPlatformFilter = platformFilter ?? "全部",
+                    CurrentSearchText = searchText ?? string.Empty
+                };
+            }
+            return OverlayLiveDiagnostic(result, live, normalizedId, statusFilter, platformFilter, searchText);
+        }
+
+        /// <summary>Synchronizes exactly one live descriptor; it never invokes matching.</summary>
+        public async Task<GameDiscoveryDiagnosticDto> SynchronizeGameDescriptorAsync(
+            string playniteId,
+            string statusFilter,
+            string platformFilter,
+            string searchText)
+        {
+            var normalizedId = (playniteId ?? string.Empty).Trim();
+            var live = TryGetPlayniteDescriptor(normalizedId)
+                ?? throw new InvalidOperationException("Playnite 中找不到该游戏。请确认 ID 正确，已移除的游戏不会被重新同步。");
+            await EnsureWorkerAsync().ConfigureAwait(false);
+            await RequestAsync<object>(
+                MessageTypes.SyncGameDescriptor,
+                new GameDescriptorSyncRequestDto { Descriptor = live },
+                TimeSpan.FromSeconds(15)).ConfigureAwait(false);
+            return await GetGameDiscoveryDiagnosticAsync(normalizedId, statusFilter, platformFilter, searchText).ConfigureAwait(false);
+        }
+
+        /// <summary>Retries matching for exactly one already-synchronized Worker row.</summary>
+        public async Task<GameDiscoveryDiagnosticDto> RetryGameMatchAsync(
+            string playniteId,
+            string statusFilter,
+            string platformFilter,
+            string searchText)
+        {
+            var normalizedId = (playniteId ?? string.Empty).Trim();
+            var live = TryGetPlayniteDescriptor(normalizedId);
+            await EnsureWorkerAsync().ConfigureAwait(false);
+            var result = await RequestAsync<GameDiscoveryDiagnosticDto>(
+                MessageTypes.RetryGameMatch,
+                new GameMatchRetryRequestDto { PlayniteId = normalizedId },
+                TimeSpan.FromMinutes(3)).ConfigureAwait(false);
+            return OverlayLiveDiagnostic(result, live, normalizedId, statusFilter, platformFilter, searchText);
+        }
+
+        private GameDescriptorDto? TryGetPlayniteDescriptor(string playniteId)
+        {
+            if (string.IsNullOrWhiteSpace(playniteId)) return null;
+            try
+            {
+                var game = PlayniteApi.Database.Games.FirstOrDefault(item =>
+                    string.Equals(item.Id.ToString("D"), playniteId, StringComparison.OrdinalIgnoreCase));
+                return game == null ? null : adapter.Convert(game);
+            }
+            catch (Exception ex) when (!(ex is OutOfMemoryException) && !(ex is StackOverflowException))
+            {
+                logger.Debug(ex, $"Could not read Playnite game {playniteId} for catalog diagnosis.");
+                return null;
+            }
+        }
+
+        private static GameDiscoveryDiagnosticDto OverlayLiveDiagnostic(
+            GameDiscoveryDiagnosticDto result,
+            GameDescriptorDto? live,
+            string playniteId,
+            string? statusFilter,
+            string? platformFilter,
+            string? searchText)
+        {
+            result.PlayniteId = playniteId;
+            result.CurrentStatusFilter = statusFilter ?? "全部";
+            result.CurrentPlatformFilter = platformFilter ?? "全部";
+            result.CurrentSearchText = searchText ?? string.Empty;
+            result.PlayniteExists = live != null;
+            if (live != null)
+            {
+                result.Name = live.Name ?? string.Empty;
+                result.Platform = live.Platform;
+                result.PlayniteIsInstalled = live.PlayniteIsInstalled;
+                result.IsInstalled = live.IsInstalled;
+                result.InstallStateSource = live.InstallStateSource;
+                result.HasInstallDirectoryConfigured = !string.IsNullOrWhiteSpace(live.InstallDirectory);
+                result.InstallDirectoryPresent = PlayniteGameAdapter.IsInstallDirectoryPresent(live.InstallDirectory);
+            }
+            result.SourceMissing = !result.PlayniteExists && result.WorkerRecordExists;
+            return result;
+        }
+
+        /// <summary>
         /// Reads Playnite's current runtime flags for page-activation selection. This is a
         /// read-only host query: it does not start a Worker session, process scan, backup, or
         /// any other automation. The Worker remains authoritative for durable session work.

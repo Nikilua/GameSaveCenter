@@ -15,11 +15,24 @@ namespace GameSaveCenter.Contracts
         public string PlatformGameId { get; set; } = string.Empty;
         public string PluginId { get; set; } = string.Empty;
         public string InstallDirectory { get; set; } = string.Empty;
+        /// <summary>Raw installation flag reported by Playnite before local fallback signals.</summary>
+        public bool PlayniteIsInstalled { get; set; }
+        /// <summary>Stable machine-readable explanation for the effective installation state.</summary>
+        public string InstallStateSource { get; set; } = GameInstallStateSources.Unknown;
         public bool IsInstalled { get; set; }
         public DateTime? LastPlayedUtc { get; set; }
         public List<GameActionDto> Actions { get; set; } = new List<GameActionDto>();
         public List<string> KnownProcessNames { get; set; } = new List<string>();
         public List<string> Tags { get; set; } = new List<string>();
+    }
+
+    public static class GameInstallStateSources
+    {
+        public const string PlayniteFlag = "PlayniteFlag";
+        public const string InstallDirectory = "InstallDirectory";
+        public const string PlayAction = "PlayAction";
+        public const string None = "None";
+        public const string Unknown = "Unknown";
     }
 
     /// <summary>Serializable launch action used to learn original and MOD launch paths.</summary>
@@ -89,6 +102,12 @@ namespace GameSaveCenter.Contracts
         public GamePlatformKind Platform { get; set; }
         /// <summary>Whether the game is currently installed in Playnite.</summary>
         public bool IsInstalled { get; set; }
+        /// <summary>Playnite's raw installation flag, without local fallback signals.</summary>
+        public bool PlayniteIsInstalled { get; set; }
+        /// <summary>Machine-readable source used for the effective installation state.</summary>
+        public string InstallStateSource { get; set; } = GameInstallStateSources.Unknown;
+        /// <summary>When the Worker last persisted a descriptor received from Playnite.</summary>
+        public DateTime? DescriptorSyncedUtc { get; set; }
         public DateTime? LastPlayedUtc { get; set; }
         public bool IsRunning { get; set; }
         public bool LudusaviMatched { get; set; }
@@ -115,6 +134,14 @@ namespace GameSaveCenter.Contracts
             _ => "未知"
         };
         public string InstallStateDisplay => IsInstalled ? "已安装" : "未安装";
+        public string InstallStateSourceDisplay => InstallStateSource switch
+        {
+            GameInstallStateSources.PlayniteFlag => "Playnite 安装标志",
+            GameInstallStateSources.InstallDirectory => "安装目录存在",
+            GameInstallStateSources.PlayAction => "启动动作路径存在",
+            GameInstallStateSources.None => "未发现安装信号",
+            _ => "来源未知"
+        };
         public string MatchStateDisplay => LudusaviMatched ? "已匹配" : "未匹配";
         public string HealthStateDisplay => HealthState switch
         {

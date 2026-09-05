@@ -73,6 +73,9 @@ public sealed class IpcRequestDispatcher
                 },
                 MessageTypes.GetDashboard=>await _dashboard.GetAsync(token).ConfigureAwait(false),
                 MessageTypes.UpsertGames=>await UpsertAsync(Read<List<GameDescriptorDto>>(request),token).ConfigureAwait(false),
+                MessageTypes.GetGameDiagnostic=>await _catalog.GetDiscoveryDiagnosticAsync(Read<GameDiscoveryDiagnosticRequestDto>(request),token).ConfigureAwait(false),
+                MessageTypes.SyncGameDescriptor=>await SyncGameDescriptorAsync(Read<GameDescriptorSyncRequestDto>(request),token).ConfigureAwait(false),
+                MessageTypes.RetryGameMatch=>await _catalog.RetryGameMatchAsync(Read<GameMatchRetryRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.GameSessionStarted=>await _sessions.StartAsync(Read<GameSessionEventDto>(request),token).ConfigureAwait(false),
                 MessageTypes.GameSessionStopped=>await StopAsync(Read<GameSessionEventDto>(request),token).ConfigureAwait(false),
                 MessageTypes.BackupGame=>await _backup.BackupAsync(ReadCorrelated<BackupRequestDto>(request),token).ConfigureAwait(false),
@@ -181,6 +184,13 @@ public sealed class IpcRequestDispatcher
     }
 
     private async Task<object> UpsertAsync(List<GameDescriptorDto> games,CancellationToken token){await _catalog.UpsertAndMatchAsync(games,token).ConfigureAwait(false);return new{accepted=games.Count};}
+    private async Task<object> SyncGameDescriptorAsync(GameDescriptorSyncRequestDto request, CancellationToken token)
+    {
+        if (request?.Descriptor == null)
+            throw new ArgumentException("必须提供游戏描述。", nameof(request));
+        await _catalog.UpsertDescriptorOnlyAsync(request.Descriptor, token).ConfigureAwait(false);
+        return new { accepted = true, playniteId = request.Descriptor.PlayniteId };
+    }
     private object GetTaskChanges(TaskChangeRequestDto request)=>_tasks.GetChanges(request.AfterSequence,request.Limit);
     private Task<TaskChangeFeedDto> WaitForTaskChangesAsync(TaskChangeRequestDto request,CancellationToken token)
         =>_tasks.WaitForChangesAsync(request.AfterSequence,request.Limit,request.WaitSeconds,token);

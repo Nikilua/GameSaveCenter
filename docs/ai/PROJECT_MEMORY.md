@@ -3,6 +3,14 @@
 > 维护时间：2026-09-05
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-05 U03 游戏目录来源与新鲜度诊断
+
+- `GameDescriptorDto` 新增 `PlayniteIsInstalled` 与 `InstallStateSource`；`PlayniteGameAdapter` 按 Playnite 原始标志、有效安装目录、有效本地 Play action 的顺序记录来源，`GameMatchInput` 不包含安装状态，安装状态变化不会使已有匹配失效。
+- `GameCatalogService` 新增 descriptor-only 持久化、按 ID 诊断和单项匹配重试；描述同步不调用 Ludusavi，重试只读取并处理该 Worker 游戏。`SqliteStateStore.games.descriptor_synced_utc` 独立于匹配尝试时间，旧库通过 `EnsureColumnAsync` 升级。
+- `GameDiscoveryDiagnosticDto` 只返回存在性、安装信号、匹配/备份摘要、时间和当前筛选条件，不包含完整私人路径；Playnite 插件在 Worker 不可用时仍返回本地来源事实。来源缺失只展示诊断状态，不能触发删除历史或备份。
+- `GamePickerViewModel.GetFilterExclusionReasons` 与真实 `FilterItem` 共用判断逻辑；维护页提供按 ID 诊断、清除筛选、单项描述同步、单项匹配重试，普通刷新不改变现有全库同步策略。
+- 阶段验证：Release 0 warning/0 error；Core `65/65`、Worker `260/260`、Playnite `335/397`（62 跳过）、XAML `19/19`、源码校验和 `git diff --check` 通过。真实宿主目标游戏、Worker 离线/重启及来源移除后的 UI 仍需人工复核。
+
 ## 2026-09-05 R07 IPC 取消与请求结果追踪
 
 - `WorkerIpcClient`/插件请求入口现在接受调用者 `CancellationToken`，并联结插件生命周期；连接、写入和读取均使用可取消的 `Task.WhenAny` 竞态。取消回调只负责发出完成信号并把管道关闭排到线程池，避免在 `CancellationTokenSource.Cancel()` 中同步 Dispose 原生管道。

@@ -41,6 +41,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             Items.CollectionChanged += OnItemsChanged;
             RebuildSortDescriptions();
             ClearSearchCommand = new RelayCommand(_ => SearchText = string.Empty);
+            ClearFiltersCommand = new RelayCommand(_ => ClearFilters());
             ShowSelectedGameCommand = new RelayCommand(_ => ShowSelectedGame());
         }
 
@@ -50,6 +51,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public IReadOnlyList<string> SortOptions { get; } = new[] { "名称", "最近游玩", "最近备份" };
         public ObservableCollection<string> PlatformFilterOptions { get; } = new ObservableCollection<string> { "全部" };
         public ICommand ClearSearchCommand { get; }
+        public ICommand ClearFiltersCommand { get; }
         public ICommand ShowSelectedGameCommand { get; }
 
         public GamePickerItem? SelectedItem
@@ -261,6 +263,48 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         public bool MatchesCurrentFilter(GamePickerItem item) => FilterItem(item);
 
+        /// <summary>
+        /// Returns the same individual reasons used by <see cref="FilterItem"/>. Keeping
+        /// this beside the predicate makes the maintenance diagnosis truthful when a game
+        /// is hidden by a platform, search or status filter.
+        /// </summary>
+        public IReadOnlyList<string> GetFilterExclusionReasons(GameStatusDto game)
+            => game == null
+                ? new[] { "当前没有可诊断的游戏状态。" }
+                : GetFilterExclusionReasons(new GamePickerItem(game));
+
+        public IReadOnlyList<string> GetFilterExclusionReasons(GamePickerItem game)
+        {
+            var reasons = new List<string>();
+            if (!string.Equals(PlatformFilter, "全部", StringComparison.OrdinalIgnoreCase)
+                && !string.Equals(game.PlatformDisplay, PlatformFilter, StringComparison.OrdinalIgnoreCase))
+                reasons.Add($"平台筛选为“{PlatformFilter}”，游戏平台为“{game.PlatformDisplay}”。");
+
+            var query = SearchText.Trim();
+            if (query.Length > 0 && game.SearchText.IndexOf(query, StringComparison.CurrentCultureIgnoreCase) < 0)
+                reasons.Add($"搜索“{query}”未命中名称、匹配名、平台、健康或云端状态。");
+
+            switch (StatusFilter)
+            {
+                case "已安装" when !game.IsInstalled:
+                    reasons.Add("状态筛选为“已安装”，但当前游戏判定为未安装。");
+                    break;
+                case "已匹配" when !game.IsMatched:
+                    reasons.Add("状态筛选为“已匹配”，但当前没有 Ludusavi 匹配。");
+                    break;
+                case "有备份" when !game.HasBackups:
+                    reasons.Add("状态筛选为“有备份”，但当前没有备份版本。");
+                    break;
+                case "需处理" when !game.NeedsAttention:
+                    reasons.Add("状态筛选为“需处理”，但当前健康状态不属于需处理范围。");
+                    break;
+                case "未匹配" when game.IsMatched:
+                    reasons.Add("状态筛选为“未匹配”，但当前已有 Ludusavi 匹配。");
+                    break;
+            }
+            return reasons;
+        }
+
         public void Dispose()
         {
             if (disposed) return;
@@ -275,19 +319,15 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             var game = item as GamePickerItem;
             if (game == null) return false;
-            if (!string.Equals(PlatformFilter, "全部", StringComparison.OrdinalIgnoreCase)
-                && !string.Equals(game.PlatformDisplay, PlatformFilter, StringComparison.OrdinalIgnoreCase)) return false;
-            var query = SearchText.Trim();
-            if (query.Length > 0 && game.SearchText.IndexOf(query, StringComparison.CurrentCultureIgnoreCase) < 0) return false;
-            switch (StatusFilter)
-            {
-                case "已安装": return game.IsInstalled;
-                case "已匹配": return game.IsMatched;
-                case "有备份": return game.HasBackups;
-                case "需处理": return game.NeedsAttention;
-                case "未匹配": return !game.IsMatched;
-                default: return true;
-            }
+            return GetFilterExclusionReasons(game).Count == 0;
+        }
+
+        private void ClearFilters()
+        {
+            SearchText = string.Empty;
+            StatusFilter = "全部";
+            PlatformFilter = "全部";
+            RefreshNow();
         }
 
         private void RebuildSortDescriptions()
