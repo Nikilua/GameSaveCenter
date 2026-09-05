@@ -17,6 +17,7 @@ public sealed class MaintenanceReportService
     private readonly StorageAnalysisService _storageAnalysis;
     private readonly LocalMirrorService _localMirror;
     private readonly IntegrityCheckService _integrityCheck;
+    private readonly RetentionSimulationService _retentionSimulation;
     private readonly ILogger<MaintenanceReportService> _logger;
 
     public MaintenanceReportService(
@@ -25,6 +26,7 @@ public sealed class MaintenanceReportService
         StorageAnalysisService storageAnalysis,
         LocalMirrorService localMirror,
         IntegrityCheckService integrityCheck,
+        RetentionSimulationService retentionSimulation,
         ILogger<MaintenanceReportService> logger)
     {
         _options = options;
@@ -32,6 +34,7 @@ public sealed class MaintenanceReportService
         _storageAnalysis = storageAnalysis;
         _localMirror = localMirror;
         _integrityCheck = integrityCheck;
+        _retentionSimulation = retentionSimulation;
         _logger = logger;
     }
 
@@ -43,6 +46,7 @@ public sealed class MaintenanceReportService
         var integrity = await _integrityCheck.RunAsync(token).ConfigureAwait(false);
         var storage = await _storageAnalysis.AnalyzeAsync(token).ConfigureAwait(false);
         var mirror = await _localMirror.StatusAsync(token).ConfigureAwait(false);
+        var quarantine = await _retentionSimulation.GetQuarantineStatusAsync(token).ConfigureAwait(false);
 
         var ready = rows.Count(x => x.RestoreReadiness?.Status == RestoreReadinessStatus.Ready);
         var warning = rows.Count(x => x.RestoreReadiness?.Status == RestoreReadinessStatus.Warning);
@@ -67,8 +71,9 @@ public sealed class MaintenanceReportService
         builder.AppendLine($"工具：{missingTools} 个外部路径失效");
         builder.AppendLine($"存储：{storagePercent:0.#}% used（{storage.VolumeFreeDisplay} 剩余）");
         builder.AppendLine($"上次完整性自检：{integrity.Summary}");
+        builder.AppendLine($"保留清理隔离区：{quarantine.PendingCount} 个条目，占用 {FormatBytes(quarantine.OccupancyBytes)}，待恢复 {quarantine.RecoveryRequiredCount}");
 
-        var summary = $"健康报告：数据库 {integrity.State}，恢复点 Ready {ready}，需关注 {attention}，存储 {storagePercent:0.#}% used。";
+        var summary = $"健康报告：数据库 {integrity.State}，恢复点 Ready {ready}，需关注 {attention}，存储 {storagePercent:0.#}% used，隔离区待处理 {quarantine.PendingCount} 个。";
         return new MaintenanceReportDto
         {
             GeneratedUtc = DateTime.UtcNow,
@@ -81,5 +86,13 @@ public sealed class MaintenanceReportService
     {
         if (!_options.EnableCloudUpload || string.IsNullOrWhiteSpace(_options.RcloneDestination)) return "未启用/未配置";
         return "已配置（仅 copy/check，不做删除）";
+    }
+
+    private static string FormatBytes(long bytes)
+    {
+        if (bytes < 1024) return $"{bytes:0} B";
+        if (bytes < 1024L * 1024) return $"{bytes / 1024d:0.##} KiB";
+        if (bytes < 1024L * 1024 * 1024) return $"{bytes / 1024d / 1024d:0.##} MiB";
+        return $"{bytes / 1024d / 1024d / 1024d:0.##} GiB";
     }
 }

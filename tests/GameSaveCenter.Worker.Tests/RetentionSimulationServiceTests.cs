@@ -135,6 +135,10 @@ public sealed class RetentionSimulationServiceTests : IDisposable
         Assert.DoesNotContain(remaining, x => x.BackupId == "delete");
         Assert.Contains(remaining, x => x.BackupId == "locked");
         Assert.Contains(remaining, x => x.BackupId == "outside");
+        var quarantineLedger = await store.GetRetentionQuarantineEntriesAsync(CancellationToken.None);
+        var deletedLedger = Assert.Single(quarantineLedger);
+        Assert.Equal("delete", deletedLedger.BackupId);
+        Assert.Equal(RetentionQuarantineState.Deleted, deletedLedger.State);
     }
 
     [Fact]

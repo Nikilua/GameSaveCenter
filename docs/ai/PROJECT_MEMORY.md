@@ -3,6 +3,13 @@
 > 维护时间：2026-09-05
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-05 R03 保留清理隔离账本与启动恢复
+
+- 新增 `retention_quarantine_batches` / `retention_quarantine_entries` SQLite 表和 `RetentionQuarantineState` 状态机；每个条目持久化批次、游戏/备份 ID、原路径、隔离路径、文件字节和最后错误，应用流程依次记录 `Planned` → `Moved` → `IndexRemoved` → `Deleted`，不确定时进入 `RecoveryRequired`。
+- `WorkerInitializationService` 在常规任务恢复前调用 `RecoverPendingQuarantineAsync`。仅 `IndexRemoved` 且精确 `.pending` 文件仍在当前备份根、大小与账本一致、原路径不存在时自动删除；`Planned`/`Moved` 优先把文件恢复回原路径；原路径冲突、路径越界、大小变化和未知隔离文件均保持不动。
+- Retention 预览、应用结果和维护健康报告分别展示 pending 条目数、实际隔离占用、人工恢复数、移入隔离字节和真实释放字节；`FreedBytes` 只在物理删除成功后增加。维护页沿用现有 `RetentionSimulation.Summary` 显示这些状态，因此本阶段未改 XAML。
+- 新增 `RetentionQuarantineRecoveryTests` 并补充成功清理的 `Deleted` 账本断言。验证：Worker Debug/Release `247/247`、Core `65/65`、Playnite `331/388`（57 跳过），Release 构建 0 warning/0 error，`validate-source.py` 和 `git diff --check` 通过；未运行真实 Worker 崩溃时序或 Playnite 宿主，阶段提交待完成。
+
 ## 2026-09-05 R02 全局保留清理候选身份与互斥
 
 - `RetentionSimulationPreviewDto` 新增 Worker 生成的 `PreviewId`；Worker 仅在服务端保存的预览快照中查找完整候选列表，执行开始即消费句柄，重复提交、重启后旧句柄和过期句柄都会被拒绝。旧的候选数量/体积字段保留为兼容显示字段，不再作为执行授权依据。

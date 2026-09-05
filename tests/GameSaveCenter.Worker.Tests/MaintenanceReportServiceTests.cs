@@ -47,12 +47,14 @@ public sealed class MaintenanceReportServiceTests : IDisposable
         var storage = new StorageAnalysisService(options, store, NullLogger<StorageAnalysisService>.Instance);
         var mirror = new LocalMirrorService(options, NullLogger<LocalMirrorService>.Instance);
         var integrity = new IntegrityCheckService(options, store, NullLogger<IntegrityCheckService>.Instance);
+        var retention = new RetentionSimulationService(options, store, NullLogger<RetentionSimulationService>.Instance);
         var service = new MaintenanceReportService(
             options,
             store,
             storage,
             mirror,
             integrity,
+            retention,
             NullLogger<MaintenanceReportService>.Instance);
 
         var report = await service.GetAsync(CancellationToken.None);
@@ -63,6 +65,7 @@ public sealed class MaintenanceReportServiceTests : IDisposable
         Assert.Contains("恢复点", report.ReportText);
         Assert.Contains("本地镜像", report.ReportText);
         Assert.Contains("Ready", report.ReportText);
+        Assert.Contains("保留清理隔离区", report.ReportText);
     }
 
     public void Dispose()

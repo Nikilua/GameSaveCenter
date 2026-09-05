@@ -47,6 +47,7 @@ public sealed class RetentionSimulationService
             .SelectMany(x => x.Plan.DeleteCandidates.Select(candidate => ToFingerprint(x.PlayniteId, x.Policy, x.Versions, candidate)))
             .ToList();
         StorePreview(new RetentionPreviewSnapshot(previewId, generatedUtc, candidates));
+        var quarantine = await GetQuarantineStatusAsync(token).ConfigureAwait(false);
         var preview = new RetentionSimulationPreviewDto
         {
             PreviewId = previewId,
@@ -57,7 +58,11 @@ public sealed class RetentionSimulationService
             HealthProtectedCount = plans.Sum(x => x.Plan.HealthProtected.Count),
             UserLockedCount = versions.Count(x => x.IsLocked),
             PreRestoreCount = versions.Count(x => x.IsPreRestore),
-            EstimatedReleaseBytes = plans.Sum(x => x.Plan.DeleteCandidates.Sum(y => Math.Max(0, y.TotalBytes)))
+            EstimatedReleaseBytes = plans.Sum(x => x.Plan.DeleteCandidates.Sum(y => Math.Max(0, y.TotalBytes))),
+            PendingQuarantineCount = quarantine.PendingCount,
+            PendingQuarantineBytes = quarantine.OccupancyBytes,
+            RecoveryRequiredCount = quarantine.RecoveryRequiredCount,
+            QuarantineOccupancyBytes = quarantine.OccupancyBytes
         };
         preview.Items = plans
             .SelectMany(x => x.Plan.DeleteCandidates.Select(candidate => ToItem(x.PlayniteId, x.GameName, x.Versions, candidate)))
@@ -67,7 +72,7 @@ public sealed class RetentionSimulationService
         var itemHint = preview.DeleteCandidateCount > preview.Items.Count
             ? $"明细按体积展示前 {preview.Items.Count} 条"
             : "已展示全部候选明细";
-        preview.Summary = $"现有 {preview.ExistingVersionCount} 个版本，建议保留 {preview.KeepVersionCount} 个，候选清理 {preview.DeleteCandidateCount} 个（预计释放 {preview.EstimatedReleaseDisplay}）；用户锁定 {preview.UserLockedCount}，健康恢复点保护 {preview.HealthProtectedCount}，PreRestore {preview.PreRestoreCount}。{itemHint}。预览只读，清理不会自动执行。";
+        preview.Summary = $"现有 {preview.ExistingVersionCount} 个版本，建议保留 {preview.KeepVersionCount} 个，候选清理 {preview.DeleteCandidateCount} 个（预计释放 {preview.EstimatedReleaseDisplay}）；用户锁定 {preview.UserLockedCount}，健康恢复点保护 {preview.HealthProtectedCount}，PreRestore {preview.PreRestoreCount}。{itemHint}。{QuarantineSummaryText(quarantine)}预览只读，清理不会自动执行。";
         return preview;
     }
 
@@ -92,6 +97,9 @@ public sealed class RetentionSimulationService
 
         var result = new RetentionSimulationResultDto();
         var failures = new List<string>();
+        var batchId = Guid.NewGuid().ToString("N");
+        await _store.CreateRetentionQuarantineBatchAsync(batchId, previewSnapshot.PreviewId, token).ConfigureAwait(false);
+        var batchNeedsRecovery = false;
         var backupRoot = string.IsNullOrWhiteSpace(_options.LudusaviBackupDirectory)
             ? string.Empty
             : Path.GetFullPath(_options.LudusaviBackupDirectory).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar) + Path.DirectorySeparatorChar;
@@ -201,28 +209,63 @@ public sealed class RetentionSimulationService
                     // Quarantine first so a database failure can put the archive back. The
                     // quarantine is inside the configured root but has no .zip suffix, so it
                     // cannot be mistaken for a Ludusavi archive during a later scan.
-                    var quarantinePath = CreateQuarantinePath(backupRoot, current.BackupId);
+                    var quarantinePath = CreateQuarantinePath(backupRoot, batchId, current.BackupId);
                     Directory.CreateDirectory(Path.GetDirectoryName(quarantinePath)!);
+                    var entry = new RetentionQuarantineEntryDto
+                    {
+                        EntryId = Guid.NewGuid().ToString("N"),
+                        BatchId = batchId,
+                        PlayniteId = current.PlayniteId,
+                        BackupId = current.BackupId,
+                        OriginalPath = fullPath,
+                        QuarantinePath = quarantinePath,
+                        FileBytes = fileBytes,
+                        State = RetentionQuarantineState.Planned,
+                        CreatedUtc = DateTime.UtcNow,
+                        UpdatedUtc = DateTime.UtcNow
+                    };
+                    await _store.CreateRetentionQuarantineEntryAsync(entry, token).ConfigureAwait(false);
                     File.Move(fullPath, quarantinePath);
+                    await _store.UpdateRetentionQuarantineEntryAsync(entry.EntryId, RetentionQuarantineState.Moved, null, token).ConfigureAwait(false);
+                    result.MovedCount++;
+                    result.MovedBytes += fileBytes;
                     try
                     {
                         await _store.DeleteBackupVersionAsync(current.PlayniteId, current.BackupId, token).ConfigureAwait(false);
                     }
-                    catch
+                    catch (Exception indexException)
                     {
-                        TryRestoreFromQuarantine(quarantinePath, fullPath);
+                        var restored = TryRestoreFromQuarantine(quarantinePath, fullPath);
+                        batchNeedsRecovery = true;
+                        await TryMarkQuarantineStateAsync(
+                            entry.EntryId,
+                            RetentionQuarantineState.RecoveryRequired,
+                            restored
+                                ? $"SQLite 索引删除失败，归档已恢复到原路径：{indexException.Message}"
+                                : $"SQLite 索引删除失败，隔离文件仍需恢复：{indexException.Message}",
+                            token).ConfigureAwait(false);
+                        failures.Add($"{current.PlayniteId}/{current.BackupId}: SQLite 索引删除失败，隔离路径 {quarantinePath}；{(restored ? "归档已恢复到原路径" : "归档仍保留在隔离区待恢复")}");
+                        if (restored)
+                        {
+                            result.MovedCount--;
+                            result.MovedBytes -= fileBytes;
+                        }
                         throw;
                     }
+                    await _store.UpdateRetentionQuarantineEntryAsync(entry.EntryId, RetentionQuarantineState.IndexRemoved, null, token).ConfigureAwait(false);
+                    result.DeletedCount++;
 
                     try
                     {
                         File.Delete(quarantinePath);
+                        await _store.UpdateRetentionQuarantineEntryAsync(entry.EntryId, RetentionQuarantineState.Deleted, null, token).ConfigureAwait(false);
+                        result.FreedBytes += fileBytes;
                     }
                     catch (Exception cleanupException)
                     {
-                        result.PendingQuarantineCount++;
-                        result.PendingQuarantineBytes += fileBytes;
-                        failures.Add($"{current.PlayniteId}/{current.BackupId}: 归档已安全移出但隔离文件清理失败 {cleanupException.Message}");
+                        batchNeedsRecovery = true;
+                        await TryMarkQuarantineStateAsync(entry.EntryId, RetentionQuarantineState.IndexRemoved, cleanupException.Message, token).ConfigureAwait(false);
+                        failures.Add($"{current.PlayniteId}/{current.BackupId}: 归档已安全移出但隔离文件清理失败，隔离路径 {quarantinePath}，{cleanupException.Message}");
                     }
                 }
                 catch (Exception ex)
@@ -232,10 +275,19 @@ public sealed class RetentionSimulationService
                         failures.Add($"{current.PlayniteId}/{current.BackupId}: 清理失败 {ex.Message}");
                     continue;
                 }
-                result.DeletedCount++;
-                result.FreedBytes += fileBytes;
             }
         }
+
+        var quarantineAfterApply = await GetQuarantineStatusAsync(token).ConfigureAwait(false);
+        result.PendingQuarantineCount = quarantineAfterApply.PendingCount;
+        result.PendingQuarantineBytes = quarantineAfterApply.OccupancyBytes;
+        result.RecoveryRequiredCount = quarantineAfterApply.RecoveryRequiredCount;
+        result.QuarantineOccupancyBytes = quarantineAfterApply.OccupancyBytes;
+        await _store.UpdateRetentionQuarantineBatchAsync(
+            batchId,
+            batchNeedsRecovery || result.PendingQuarantineCount > 0 ? "RecoveryRequired" : "Completed",
+            batchNeedsRecovery || result.PendingQuarantineCount > 0 ? "一个或多个隔离账本条目仍需恢复或重试。" : null,
+            token).ConfigureAwait(false);
 
         await _store.AppendAuditAsync(
             "RetentionSimulation",
@@ -251,17 +303,104 @@ public sealed class RetentionSimulationService
                 result.FailedCount,
                 result.PendingQuarantineCount,
                 result.PendingQuarantineBytes,
+                result.RecoveryRequiredCount,
+                result.MovedCount,
+                result.MovedBytes,
+                result.QuarantineOccupancyBytes,
                 result.FreedBytes,
                 Failures = failures.Take(20)
             }),
             token).ConfigureAwait(false);
 
-        result.Summary = $"清理完成：删除 {result.DeletedCount} 个版本，释放 {FormatBytes(result.FreedBytes)}；跳过保护 {result.SkippedProtectedCount}、缺失 {result.SkippedMissingCount}、不支持 {result.SkippedUnsupportedCount}、忙碌 {result.SkippedBusyCount}、状态变化 {result.SkippedChangedCount}，失败 {result.FailedCount}。";
+        result.Summary = $"清理完成：索引删除 {result.DeletedCount} 个版本，移入隔离 {FormatBytes(result.MovedBytes)}，真正释放 {FormatBytes(result.FreedBytes)}；跳过保护 {result.SkippedProtectedCount}、缺失 {result.SkippedMissingCount}、不支持 {result.SkippedUnsupportedCount}、忙碌 {result.SkippedBusyCount}、状态变化 {result.SkippedChangedCount}，失败 {result.FailedCount}。";
         if (result.PendingQuarantineCount > 0)
-            result.Summary += $"有 {result.PendingQuarantineCount} 个隔离文件待重试清理（{FormatBytes(result.PendingQuarantineBytes)}）。";
+            result.Summary += $"隔离区当前占用 {FormatBytes(result.QuarantineOccupancyBytes)}，有 {result.PendingQuarantineCount} 个条目待恢复或重试清理。";
         if (failures.Count > 0)
             result.Summary += " 失败明细已写入审计日志。";
         return result;
+    }
+
+    /// <summary>
+    /// Reconciles unfinished quarantine entries after a Worker restart. Only an entry whose
+    /// index-removal state was durably recorded may be completed by deleting its exact pending
+    /// file. Earlier states are restored to their original path when possible; unknown files
+    /// and path conflicts are left untouched and marked for manual recovery.
+    /// </summary>
+    public async Task<RetentionQuarantineRecoverySummary> RecoverPendingQuarantineAsync(CancellationToken token)
+    {
+        var entries = await _store.GetRetentionQuarantineEntriesAsync(token).ConfigureAwait(false);
+        var summary = new RetentionQuarantineRecoverySummary();
+        foreach (var entry in entries.Where(x => x.State != RetentionQuarantineState.Deleted))
+        {
+            token.ThrowIfCancellationRequested();
+            var safeQuarantinePath = IsSafeQuarantinePath(entry.QuarantinePath);
+            var safeOriginalPath = IsSafeArchivePath(entry.OriginalPath);
+            if (!safeQuarantinePath || !safeOriginalPath)
+            {
+                await TryMarkQuarantineStateAsync(entry.EntryId, RetentionQuarantineState.RecoveryRequired, $"账本路径不在当前备份根目录内，已停止自动处理（隔离路径安全={safeQuarantinePath}，原路径安全={safeOriginalPath}）。", token).ConfigureAwait(false);
+                summary.RecoveryRequiredCount++;
+                continue;
+            }
+
+            var quarantineExists = File.Exists(entry.QuarantinePath);
+            var originalExists = File.Exists(entry.OriginalPath);
+            if (entry.State == RetentionQuarantineState.IndexRemoved)
+            {
+                if (!quarantineExists)
+                {
+                    await TryMarkQuarantineStateAsync(entry.EntryId, RetentionQuarantineState.RecoveryRequired,
+                        originalExists ? "隔离文件已不存在但原路径仍存在，请确认索引与文件状态。" : "索引已删除但隔离文件不存在，无法确认文件最终状态。", token).ConfigureAwait(false);
+                    summary.RecoveryRequiredCount++;
+                    continue;
+                }
+                if (originalExists || !MatchesQuarantineLength(entry))
+                {
+                    await TryMarkQuarantineStateAsync(entry.EntryId, RetentionQuarantineState.RecoveryRequired,
+                        originalExists ? "原路径已有文件，未覆盖；隔离文件保留待人工确认。" : "隔离文件大小与账本不一致，未删除。", token).ConfigureAwait(false);
+                    summary.RecoveryRequiredCount++;
+                    continue;
+                }
+
+                try
+                {
+                    File.Delete(entry.QuarantinePath);
+                    await _store.UpdateRetentionQuarantineEntryAsync(entry.EntryId, RetentionQuarantineState.Deleted, null, token).ConfigureAwait(false);
+                    summary.DeletedCount++;
+                }
+                catch (Exception ex)
+                {
+                    await TryMarkQuarantineStateAsync(entry.EntryId, RetentionQuarantineState.RecoveryRequired, ex.Message, token).ConfigureAwait(false);
+                    summary.RecoveryRequiredCount++;
+                }
+                continue;
+            }
+
+            if ((entry.State == RetentionQuarantineState.Planned || entry.State == RetentionQuarantineState.Moved)
+                && quarantineExists && !originalExists && MatchesQuarantineLength(entry))
+            {
+                try
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(entry.OriginalPath)!);
+                    File.Move(entry.QuarantinePath, entry.OriginalPath);
+                    await TryMarkQuarantineStateAsync(entry.EntryId, RetentionQuarantineState.RecoveryRequired,
+                        "Worker 中断后已将归档恢复到原路径；请重新执行仓库索引检查。", token).ConfigureAwait(false);
+                    summary.RestoredCount++;
+                    summary.RecoveryRequiredCount++;
+                }
+                catch (Exception ex)
+                {
+                    await TryMarkQuarantineStateAsync(entry.EntryId, RetentionQuarantineState.RecoveryRequired, ex.Message, token).ConfigureAwait(false);
+                    summary.RecoveryRequiredCount++;
+                }
+                continue;
+            }
+
+            await TryMarkQuarantineStateAsync(entry.EntryId, RetentionQuarantineState.RecoveryRequired,
+                quarantineExists && originalExists ? "原路径与隔离路径同时存在，未覆盖任何文件。" : "账本与文件状态不一致，未自动处理。", token).ConfigureAwait(false);
+            summary.RecoveryRequiredCount++;
+        }
+
+        return summary;
     }
 
     private static void ValidatePreviewRequest(RetentionSimulationApplyRequestDto request)
@@ -378,7 +517,7 @@ public sealed class RetentionSimulationService
         {
             var root = Path.TrimEndingDirectorySeparator(Path.GetFullPath(backupRoot));
             var file = new FileInfo(fullPath);
-            if ((file.Attributes & FileAttributes.ReparsePoint) != 0) return true;
+            if (file.Exists && (file.Attributes & FileAttributes.ReparsePoint) != 0) return true;
 
             var rootInfo = new DirectoryInfo(root);
             if ((rootInfo.Attributes & FileAttributes.ReparsePoint) != 0) return true;
@@ -417,26 +556,124 @@ public sealed class RetentionSimulationService
             policy.KeepWeeklyWeeks,
             policy.KeepMonthlyMonths);
 
-    private static string CreateQuarantinePath(string backupRoot, string backupId)
+    private string CreateQuarantinePath(string backupRoot, string batchId, string backupId)
     {
         var root = backupRoot.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
-        var batch = Guid.NewGuid().ToString("N");
         var safeId = string.IsNullOrWhiteSpace(backupId) ? "archive" : backupId;
         foreach (var invalid in Path.GetInvalidFileNameChars()) safeId = safeId.Replace(invalid, '_');
-        return Path.Combine(root, QuarantineDirectoryName, batch, safeId + ".pending");
+        return Path.Combine(root, QuarantineDirectoryName, batchId, safeId + ".pending");
     }
 
-    private static void TryRestoreFromQuarantine(string quarantinePath, string originalPath)
+    private static bool TryRestoreFromQuarantine(string quarantinePath, string originalPath)
     {
         try
         {
-            if (File.Exists(quarantinePath) && !File.Exists(originalPath))
+            if (!File.Exists(quarantinePath)) return File.Exists(originalPath);
+            if (!File.Exists(originalPath))
+            {
                 File.Move(quarantinePath, originalPath);
+                return true;
+            }
         }
         catch
         {
-            // The original exception contains the database failure. The quarantine path is
-            // recorded separately by the audit summary if restoration itself is unavailable.
+            return false;
+        }
+        return false;
+    }
+
+    private async Task TryMarkQuarantineStateAsync(
+        string entryId,
+        RetentionQuarantineState state,
+        string error,
+        CancellationToken token)
+    {
+        try
+        {
+            await _store.UpdateRetentionQuarantineEntryAsync(entryId, state, error, token).ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Retention quarantine ledger update failed for entry {EntryId}; requested state {State}.", entryId, state);
+        }
+    }
+
+    public async Task<RetentionQuarantineStatusDto> GetQuarantineStatusAsync(CancellationToken token)
+    {
+        var entries = await _store.GetRetentionQuarantineEntriesAsync(token).ConfigureAwait(false);
+        var active = entries.Where(x => x.State != RetentionQuarantineState.Deleted).ToList();
+        var occupancy = active
+            .Where(x => IsSafeQuarantinePath(x.QuarantinePath) && File.Exists(x.QuarantinePath))
+            .Sum(x => ReadFileLength(x.QuarantinePath, x.FileBytes));
+        return new RetentionQuarantineStatusDto
+        {
+            PendingCount = active.Count,
+            OccupancyBytes = occupancy,
+            RecoveryRequiredCount = active.Count(x => x.State == RetentionQuarantineState.RecoveryRequired)
+        };
+    }
+
+    private string GetBackupRootWithSeparator()
+    {
+        if (string.IsNullOrWhiteSpace(_options.LudusaviBackupDirectory)) return string.Empty;
+        try
+        {
+            return Path.GetFullPath(_options.LudusaviBackupDirectory).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar) + Path.DirectorySeparatorChar;
+        }
+        catch
+        {
+            return string.Empty;
+        }
+    }
+
+    private bool IsSafeArchivePath(string path)
+    {
+        var root = GetBackupRootWithSeparator();
+        if (root.Length == 0) return false;
+        try
+        {
+            var fullPath = Path.GetFullPath(path);
+            return fullPath.EndsWith(".zip", StringComparison.OrdinalIgnoreCase)
+                && fullPath.StartsWith(root, StringComparison.OrdinalIgnoreCase)
+                && !HasReparsePointBoundary(root, fullPath);
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private bool IsSafeQuarantinePath(string path)
+    {
+        var root = GetBackupRootWithSeparator();
+        if (root.Length == 0) return false;
+        try
+        {
+            var quarantineRoot = Path.Combine(root.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar), QuarantineDirectoryName) + Path.DirectorySeparatorChar;
+            var fullPath = Path.GetFullPath(path);
+            return fullPath.EndsWith(".pending", StringComparison.OrdinalIgnoreCase)
+                && fullPath.StartsWith(quarantineRoot, StringComparison.OrdinalIgnoreCase)
+                && !HasReparsePointBoundary(root, fullPath);
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private static bool MatchesQuarantineLength(RetentionQuarantineEntryDto entry)
+        => ReadFileLength(entry.QuarantinePath, -1) == entry.FileBytes;
+
+    private static long ReadFileLength(string path, long fallback)
+    {
+        try
+        {
+            var file = new FileInfo(path);
+            return file.Exists ? file.Length : fallback;
+        }
+        catch
+        {
+            return fallback;
         }
     }
 
@@ -523,6 +760,11 @@ public sealed class RetentionSimulationService
         return $"{bytes / 1024d / 1024d / 1024d:0.##} GiB";
     }
 
+    private static string QuarantineSummaryText(RetentionQuarantineStatusDto summary)
+        => summary.PendingCount == 0
+            ? string.Empty
+            : $"隔离区当前占用 {FormatBytes(summary.OccupancyBytes)}，有 {summary.PendingCount} 个条目待恢复或重试清理{(summary.RecoveryRequiredCount > 0 ? $"，其中 {summary.RecoveryRequiredCount} 个需人工确认" : string.Empty)}。";
+
     private sealed record RetentionPreviewSnapshot(
         string PreviewId,
         DateTime GeneratedUtc,
@@ -548,4 +790,12 @@ public sealed class RetentionSimulationService
         List<BackupVersionDto> Versions,
         BackupPolicyDto Policy,
         RetentionPlan Plan);
+
+}
+
+public sealed class RetentionQuarantineRecoverySummary
+{
+    public int RestoredCount { get; set; }
+    public int DeletedCount { get; set; }
+    public int RecoveryRequiredCount { get; set; }
 }

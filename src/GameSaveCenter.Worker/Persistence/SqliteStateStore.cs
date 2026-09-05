@@ -1142,6 +1142,10 @@ CREATE TABLE IF NOT EXISTS device_conflict_decisions(playnite_id TEXT NOT NULL,r
 CREATE TABLE IF NOT EXISTS cloud_retry_queue(playnite_id TEXT PRIMARY KEY,attempt_count INTEGER NOT NULL,next_attempt_utc TEXT NOT NULL,last_error TEXT,created_utc TEXT NOT NULL,updated_utc TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS media_file_signatures(path TEXT PRIMARY KEY,length INTEGER NOT NULL,last_write_utc TEXT NOT NULL,sha256 TEXT NOT NULL,sample_hash TEXT NOT NULL DEFAULT '',updated_utc TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS backup_all_jobs(job_id TEXT PRIMARY KEY,request_json TEXT NOT NULL,state INTEGER NOT NULL,progress INTEGER NOT NULL,message TEXT NOT NULL,completed_game_ids_json TEXT NOT NULL,current_game_id TEXT,created_utc TEXT NOT NULL,started_utc TEXT,finished_utc TEXT,worker_session_id TEXT NOT NULL,error_code TEXT,error_message TEXT);
+CREATE TABLE IF NOT EXISTS retention_quarantine_batches(batch_id TEXT PRIMARY KEY,preview_id TEXT NOT NULL,created_utc TEXT NOT NULL,updated_utc TEXT NOT NULL,state TEXT NOT NULL,last_error TEXT);
+CREATE TABLE IF NOT EXISTS retention_quarantine_entries(entry_id TEXT PRIMARY KEY,batch_id TEXT NOT NULL REFERENCES retention_quarantine_batches(batch_id) ON DELETE CASCADE,playnite_id TEXT NOT NULL,backup_id TEXT NOT NULL,original_path TEXT NOT NULL,quarantine_path TEXT NOT NULL,file_bytes INTEGER NOT NULL,state TEXT NOT NULL,created_utc TEXT NOT NULL,updated_utc TEXT NOT NULL,last_error TEXT);
+CREATE UNIQUE INDEX IF NOT EXISTS ux_retention_quarantine_identity ON retention_quarantine_entries(batch_id,playnite_id,backup_id);
+CREATE INDEX IF NOT EXISTS ix_retention_quarantine_state ON retention_quarantine_entries(state,updated_utc DESC);
  CREATE INDEX IF NOT EXISTS ix_tasks_created ON tasks(created_utc DESC);
  CREATE INDEX IF NOT EXISTS ix_tasks_game_type_created ON tasks(game_id,task_type,created_utc DESC);
 CREATE INDEX IF NOT EXISTS ix_backup_versions_game_time ON backup_versions(playnite_id,created_utc DESC);

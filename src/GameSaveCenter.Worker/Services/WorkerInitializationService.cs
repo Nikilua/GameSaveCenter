@@ -12,12 +12,13 @@ public sealed class WorkerInitializationService : IHostedService
     private readonly SqliteStateStore _store;
     private readonly SavePathDetectionService _detection;
     private readonly BackupOrchestrator _backups;
+    private readonly RetentionSimulationService _retentionSimulation;
     private readonly WorkerOptions _options;
     private readonly IHostApplicationLifetime _lifetime;
     private readonly ILogger<WorkerInitializationService> _logger;
 
-    public WorkerInitializationService(SqliteStateStore store, SavePathDetectionService detection, BackupOrchestrator backups, WorkerOptions options, IHostApplicationLifetime lifetime, ILogger<WorkerInitializationService> logger)
-    { _store=store; _detection=detection; _backups=backups; _options=options; _lifetime=lifetime; _logger=logger; }
+    public WorkerInitializationService(SqliteStateStore store, SavePathDetectionService detection, BackupOrchestrator backups, RetentionSimulationService retentionSimulation, WorkerOptions options, IHostApplicationLifetime lifetime, ILogger<WorkerInitializationService> logger)
+    { _store=store; _detection=detection; _backups=backups; _retentionSimulation=retentionSimulation; _options=options; _lifetime=lifetime; _logger=logger; }
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
@@ -28,6 +29,11 @@ public sealed class WorkerInitializationService : IHostedService
             await _store.InitializeAsync(cancellationToken).ConfigureAwait(false);
             storageTimer.Stop();
             _logger.LogDebug("Worker storage initialization completed in {ElapsedMs}ms", storageTimer.ElapsedMilliseconds);
+
+            var quarantineTimer=Stopwatch.StartNew();
+            var quarantineRecovery=await _retentionSimulation.RecoverPendingQuarantineAsync(cancellationToken).ConfigureAwait(false);
+            quarantineTimer.Stop();
+            _logger.LogInformation("Retention quarantine recovery completed in {ElapsedMs}ms: restored {RestoredCount}, deleted {DeletedCount}, recovery required {RecoveryRequiredCount}.", quarantineTimer.ElapsedMilliseconds, quarantineRecovery.RestoredCount, quarantineRecovery.DeletedCount, quarantineRecovery.RecoveryRequiredCount);
 
             var taskTimer=Stopwatch.StartNew();
             await _store.MarkInterruptedTasksAsync(_options.WorkerSessionId, cancellationToken).ConfigureAwait(false);

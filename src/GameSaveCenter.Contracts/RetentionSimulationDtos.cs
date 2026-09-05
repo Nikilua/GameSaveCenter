@@ -3,6 +3,40 @@ using System.Collections.Generic;
 
 namespace GameSaveCenter.Contracts
 {
+    /// <summary>Durable state of one retention quarantine entry.</summary>
+    public enum RetentionQuarantineState
+    {
+        Planned,
+        Moved,
+        IndexRemoved,
+        Deleted,
+        RecoveryRequired
+    }
+
+    /// <summary>Durable identity and recovery paths for one quarantined archive.</summary>
+    public sealed class RetentionQuarantineEntryDto
+    {
+        public string EntryId { get; set; } = string.Empty;
+        public string BatchId { get; set; } = string.Empty;
+        public string PlayniteId { get; set; } = string.Empty;
+        public string BackupId { get; set; } = string.Empty;
+        public string OriginalPath { get; set; } = string.Empty;
+        public string QuarantinePath { get; set; } = string.Empty;
+        public long FileBytes { get; set; }
+        public RetentionQuarantineState State { get; set; }
+        public DateTime CreatedUtc { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedUtc { get; set; } = DateTime.UtcNow;
+        public string LastError { get; set; } = string.Empty;
+    }
+
+    /// <summary>Current durable quarantine occupancy shown by maintenance surfaces.</summary>
+    public sealed class RetentionQuarantineStatusDto
+    {
+        public int PendingCount { get; set; }
+        public long OccupancyBytes { get; set; }
+        public int RecoveryRequiredCount { get; set; }
+    }
+
     /// <summary>Read-only global retention simulation returned by the Worker.</summary>
     public sealed class RetentionSimulationPreviewDto
     {
@@ -16,6 +50,10 @@ namespace GameSaveCenter.Contracts
         public int HealthProtectedCount { get; set; }
         public int PreRestoreCount { get; set; }
         public long EstimatedReleaseBytes { get; set; }
+        public int PendingQuarantineCount { get; set; }
+        public long PendingQuarantineBytes { get; set; }
+        public int RecoveryRequiredCount { get; set; }
+        public long QuarantineOccupancyBytes { get; set; }
         public string Summary { get; set; } = string.Empty;
         public List<RetentionSimulationItemDto> Items { get; set; } = new List<RetentionSimulationItemDto>();
 
@@ -82,6 +120,10 @@ namespace GameSaveCenter.Contracts
         public int FailedCount { get; set; }
         public int PendingQuarantineCount { get; set; }
         public long PendingQuarantineBytes { get; set; }
+        public int RecoveryRequiredCount { get; set; }
+        public int MovedCount { get; set; }
+        public long MovedBytes { get; set; }
+        public long QuarantineOccupancyBytes { get; set; }
         public long FreedBytes { get; set; }
         public string Summary { get; set; } = string.Empty;
     }
