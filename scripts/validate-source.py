@@ -396,12 +396,21 @@ def check_current_state_documentation() -> None:
         "GameSaveCenter.AcrylicFork/src/GameSaveCenter.Playnite/Design/",
         "当前工作区不存在",
         "DropDownClosed",
+        "e01-behavior-matrix.ps1",
         "MANUAL QA REQUIRED",
         "PROJECT_MEMORY.md",
         "DEVELOPMENT_HANDOFF.md",
     ):
         if required not in current_state:
             fail(f"CURRENT_STATE.md is missing current-facts marker: {required}")
+    behavior_matrix = ROOT / "scripts/e01-behavior-matrix.ps1"
+    if not behavior_matrix.exists():
+        fail("Missing E01 behavior evidence matrix script")
+    else:
+        behavior_text = behavior_matrix.read_text(encoding="utf-8")
+        for required in ("business", "ipc", "wpf-sta", "fault-soak", "MANUAL QA REQUIRED"):
+            if required not in behavior_text:
+                fail(f"E01 behavior matrix is missing evidence category marker: {required}")
     agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
     if "docs/ai/CURRENT_STATE.md" not in agents.split("然后按", 1)[0]:
         fail("AGENTS.md must make CURRENT_STATE.md the first startup document")

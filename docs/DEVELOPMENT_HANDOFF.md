@@ -4,6 +4,12 @@
 
 > 新会话短入口：先读 [`docs/ai/CURRENT_STATE.md`](ai/CURRENT_STATE.md)。本文下方的历史交接按时间保留；除顶部最新阶段和明确标注的覆盖关系外，旧条目只用于追溯，不得覆盖当前事实入口。
 
+## 2026-09-05 E01 行为证据矩阵基础
+
+- 新增 `scripts/e01-behavior-matrix.ps1`，默认在 `.tmp` 生成按业务、IPC、WPF/STA、故障/Soak 分组的测试日志和 Markdown/JSON 汇总；`-IncludeRender` 可额外保留 RenderHarness 报告。构建和分组测试均使用隔离输出，不改用户数据。
+- 本机执行结果：业务 `44/44`、IPC `22/22`、WPF/STA `40/45`（Named Pipe 5 项跳过）、故障/Soak `3/3`，Release 0 warning/0 error。跳过项和离屏证据在报告中保持可见，没有合并为通过。
+- E01 的真实 Named Pipe、独立 Worker 进程中断恢复、双选择器及 Playnite 主题/DPI/睡眠唤醒/退出重启仍需用户提供隔离宿主；在此之前状态保持 `MANUAL QA REQUIRED`。
+
 ## 2026-09-05 E02 当前事实入口与模块边界文档治理
 
 - 已建立 `docs/ai/CURRENT_STATE.md`，固定当前版本、生产可见 Shell、六个工作区、Worker/Contracts/SQLite 入口、实际主题资源和缺失外部 Demo 的验证边界。新会话先读该文件，再进入历史记忆和阶段日志。

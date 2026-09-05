@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-05 E01 行为证据矩阵基础
+
+- 新增 `scripts/e01-behavior-matrix.ps1`：在隔离 `.tmp` 输出根执行 Release 构建后，按业务 Worker、IPC、WPF/STA、故障/Soak 分组运行现有行为测试，每个测试类保留独立日志，并生成 `behavior-report.md`、`behavior-summary.json` 和人工验收清单；可选 `-IncludeRender` 接入 RenderHarness。
+- 本机矩阵结果：业务 `44/44`、IPC `22/22`、WPF/STA `40/45`（`WorkerIpcClientBehaviorTests` 的 5 项因受限环境无法连接 Named Pipe 而跳过）、故障/Soak `3/3`，所有测试进程退出码为 0。矩阵不会把静态源码断言、离屏渲染或跳过项合并成真实宿主通过。
+- E01 仍未完成：独立 Worker 进程中断恢复、真实 Named Pipe、真实 Playnite 双选择器/主题/DPI/睡眠唤醒与退出重启需隔离宿主和用户操作；本阶段只固化了可重复的自动证据分层。
+
 ## 2026-09-05 E02 当前事实入口与模块边界文档治理
 
 - 新增 [`CURRENT_STATE.md`](CURRENT_STATE.md) 作为跨电脑、跨模型的短入口，集中记录版本 `0.6.73`、生产 Shell/工作区、Worker/Contracts/SQLite 入口、实际生产主题资源和 Demo 目录缺失事实；明确 Demo Mock 不进入生产、当前游戏选框/滚动条/安全语义的有效例外，以及 OneWay + `DropDownClosed` 筛选规则。

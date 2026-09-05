@@ -5,6 +5,12 @@
 
 > 当前事实入口：先读 [`CURRENT_STATE.md`](CURRENT_STATE.md)。本文保留按阶段的历史约束和证据；若与当前事实入口或最新代码冲突，以 `CURRENT_STATE.md` 的覆盖说明为准，不要按旧条目恢复已撤销布局或外部 Demo 路径。
 
+## 2026-09-05 E01 行为证据矩阵基础
+
+- `scripts/e01-behavior-matrix.ps1` 是自动证据分层入口：输出根默认在 `.tmp/e01-behavior`，业务、IPC、WPF/STA、故障/Soak 每个测试类单独记录；`-IncludeRender` 才运行 RenderHarness，真实 Playnite 始终写入 `MANUAL QA REQUIRED`。
+- 最近矩阵执行结果为业务 `44/44`、IPC `22/22`、WPF/STA `40/45`（5 项 `WorkerIpcClientBehaviorTests` 因当前环境 Named Pipe 能力探测跳过）、故障/Soak `3/3`；构建 Release 0 warning/0 error，整体进程退出码为 0。
+- 这只是 E01 的可执行基础，不代表独立 Worker 进程中断恢复、真实 Named Pipe 或 Playnite 宿主已验收；后续在隔离宿主可用时复用该报告结构补齐证据。
+
 ## 2026-09-05 E02 当前事实入口与模块边界文档治理
 
 - `docs/ai/CURRENT_STATE.md` 是新会话的短事实入口：当前版本 `0.6.73`，生产可见路径为 `DashboardView` 承载的 `AcrylicProductionShellView`，工作区和 Worker/Contracts/SQLite 入口均指向仓库实际文件。`GameSaveCenter.AcrylicFork/src/GameSaveCenter.Playnite/Design/` 当前缺失，不能作为编译、测试或逐像素证据输入；生产主题入口是 `Themes/AcrylicProductionResources.xaml` 及其 `DesignTokens`/`WpfUiProduction`/`Redesign` 资源。
