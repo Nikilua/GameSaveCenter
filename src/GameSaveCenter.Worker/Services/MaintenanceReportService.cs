@@ -47,6 +47,7 @@ public sealed class MaintenanceReportService
         var storage = await _storageAnalysis.AnalyzeAsync(token).ConfigureAwait(false);
         var mirror = await _localMirror.StatusAsync(token).ConfigureAwait(false);
         var quarantine = await _retentionSimulation.GetQuarantineStatusAsync(token).ConfigureAwait(false);
+        var inspection = await _store.GetHealthInspectionStateAsync(token).ConfigureAwait(false);
 
         var ready = rows.Count(x => x.RestoreReadiness?.Status == RestoreReadinessStatus.Ready);
         var warning = rows.Count(x => x.RestoreReadiness?.Status == RestoreReadinessStatus.Warning);
@@ -71,9 +72,10 @@ public sealed class MaintenanceReportService
         builder.AppendLine($"工具：{missingTools} 个外部路径失效");
         builder.AppendLine($"存储：{storagePercent:0.#}% used（{storage.VolumeFreeDisplay} 剩余）");
         builder.AppendLine($"上次完整性自检：{integrity.Summary}");
+        builder.AppendLine($"恢复可用性巡检：{inspection.LastStatusDisplay}；最近成功验证：{inspection.LastSuccessfulLocalDisplay}；下次计划：{inspection.NextDueLocalDisplay}");
         builder.AppendLine($"保留清理隔离区：{quarantine.PendingCount} 个条目，占用 {FormatBytes(quarantine.OccupancyBytes)}，待恢复 {quarantine.RecoveryRequiredCount}");
 
-        var summary = $"健康报告：数据库 {integrity.State}，恢复点 Ready {ready}，需关注 {attention}，存储 {storagePercent:0.#}% used，隔离区待处理 {quarantine.PendingCount} 个。";
+        var summary = $"健康报告：数据库 {integrity.State}，恢复点 Ready {ready}，巡检 {inspection.LastStatusDisplay}，需关注 {attention}，存储 {storagePercent:0.#}% used，隔离区待处理 {quarantine.PendingCount} 个。";
         return new MaintenanceReportDto
         {
             GeneratedUtc = DateTime.UtcNow,

@@ -41,14 +41,15 @@ public sealed class IpcRequestDispatcher
     private readonly RetentionSimulationService _retentionSimulation;
     private readonly LocalMirrorService _localMirror;
     private readonly MaintenanceReportService _maintenanceReport;
+    private readonly HealthInspectionService _healthInspection;
     private readonly GameOperationLock _gameLock;
     private readonly ILogger<IpcRequestDispatcher> _logger;
 
     public IpcRequestDispatcher(GameCatalogService catalog,GameSessionCoordinator sessions,BackupOrchestrator backup,RestoreOrchestrator restore,
         MediaSyncService media,SavePathDetectionService detection,DashboardService dashboard,SqliteStateStore store,TaskCoordinator tasks,
         LudusaviClient ludusavi,WorkerOptions options,GameToolService gameTools,ITrainerCatalogSource trainerCatalog,
-        DeviceStateService deviceStates,RemoteBackupStagingService remoteBackups,RestoreReadinessService restoreReadiness,EnvironmentCheckService environment,DiagnosticsPackageService diagnostics,IntegrityCheckService integrityCheck,MetadataBackupService metadataBackup,RepositoryRebuildService repositoryRebuild,PathRemapService pathRemap,TaskReconcileService taskReconcile,StorageAnalysisService storageAnalysis,RetentionSimulationService retentionSimulation,LocalMirrorService localMirror,MaintenanceReportService maintenanceReport,GameOperationLock gameLock,ILogger<IpcRequestDispatcher> logger)
-    { _catalog=catalog;_sessions=sessions;_backup=backup;_restore=restore;_media=media;_detection=detection;_dashboard=dashboard;_store=store;_tasks=tasks;_ludusavi=ludusavi;_options=options;_gameTools=gameTools;_trainerCatalog=trainerCatalog;_deviceStates=deviceStates;_remoteBackups=remoteBackups;_restoreReadiness=restoreReadiness;_environment=environment;_diagnostics=diagnostics;_integrityCheck=integrityCheck;_metadataBackup=metadataBackup;_repositoryRebuild=repositoryRebuild;_pathRemap=pathRemap;_taskReconcile=taskReconcile;_storageAnalysis=storageAnalysis;_retentionSimulation=retentionSimulation;_localMirror=localMirror;_maintenanceReport=maintenanceReport;_gameLock=gameLock;_logger=logger; }
+        DeviceStateService deviceStates,RemoteBackupStagingService remoteBackups,RestoreReadinessService restoreReadiness,EnvironmentCheckService environment,DiagnosticsPackageService diagnostics,IntegrityCheckService integrityCheck,MetadataBackupService metadataBackup,RepositoryRebuildService repositoryRebuild,PathRemapService pathRemap,TaskReconcileService taskReconcile,StorageAnalysisService storageAnalysis,RetentionSimulationService retentionSimulation,LocalMirrorService localMirror,MaintenanceReportService maintenanceReport,HealthInspectionService healthInspection,GameOperationLock gameLock,ILogger<IpcRequestDispatcher> logger)
+    { _catalog=catalog;_sessions=sessions;_backup=backup;_restore=restore;_media=media;_detection=detection;_dashboard=dashboard;_store=store;_tasks=tasks;_ludusavi=ludusavi;_options=options;_gameTools=gameTools;_trainerCatalog=trainerCatalog;_deviceStates=deviceStates;_remoteBackups=remoteBackups;_restoreReadiness=restoreReadiness;_environment=environment;_diagnostics=diagnostics;_integrityCheck=integrityCheck;_metadataBackup=metadataBackup;_repositoryRebuild=repositoryRebuild;_pathRemap=pathRemap;_taskReconcile=taskReconcile;_storageAnalysis=storageAnalysis;_retentionSimulation=retentionSimulation;_localMirror=localMirror;_maintenanceReport=maintenanceReport;_healthInspection=healthInspection;_gameLock=gameLock;_logger=logger; }
 
     public async Task<IpcEnvelope> DispatchAsync(IpcEnvelope request,CancellationToken token)
     {
@@ -137,6 +138,8 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.UpdateSettings=>await UpdateSettingsAsync(Read<WorkerSettingsDto>(request),token).ConfigureAwait(false),
                 MessageTypes.CheckEnvironment=>await _environment.RunAsync(Read<EnvironmentCheckRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.CheckIntegrity=>await _integrityCheck.RunAsync(token).ConfigureAwait(false),
+                MessageTypes.GetHealthInspection=>await _healthInspection.GetStatusAsync(token).ConfigureAwait(false),
+                MessageTypes.RunHealthInspection=>await _healthInspection.RunNowAsync(token).ConfigureAwait(false),
                 MessageTypes.CreateMetadataBackup=>await _metadataBackup.CreateAsync(Read<MetadataBackupCreateRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.PreviewMetadataRestore=>await _metadataBackup.PreviewAsync(Read<MetadataRestoreRequestDto>(request).PackagePath,token).ConfigureAwait(false),
                 MessageTypes.ExecuteMetadataRestore=>await _metadataBackup.RestoreAsync(Read<MetadataRestoreRequestDto>(request),token).ConfigureAwait(false),
@@ -530,6 +533,7 @@ public sealed class IpcRequestDispatcher
     private async Task<object> UpdateSettingsAsync(WorkerSettingsDto settings,CancellationToken token)
     {
         _options.Apply(settings,persist:true);
+        await _healthInspection.SyncPlanAsync(token).ConfigureAwait(false);
         await _store.AppendAuditAsync("Settings","Worker settings updated",JsonSerializer.Serialize(new
         {
             _options.LudusaviExecutable,_options.LudusaviBackupDirectory,_options.BackupFormat,_options.FullBackupLimit,_options.DifferentialBackupLimit
@@ -584,7 +588,10 @@ public sealed class IpcRequestDispatcher
         Compression=_options.Compression,
         CompressionLevel=_options.CompressionLevel,
         FullBackupLimit=_options.FullBackupLimit,
-        DifferentialBackupLimit=_options.DifferentialBackupLimit
+        DifferentialBackupLimit=_options.DifferentialBackupLimit,
+        HealthInspectionEnabled=_options.HealthInspectionEnabled,
+        HealthInspectionIntervalMinutes=_options.HealthInspectionIntervalMinutes,
+        HealthInspectionStaleAfterDays=_options.HealthInspectionStaleAfterDays
     };
 
     private T Read<T>(IpcEnvelope envelope)=>JsonSerializer.Deserialize<T>(envelope.PayloadJson,_json)??throw new InvalidOperationException($"Invalid payload for {envelope.Type}.");

@@ -37,6 +37,7 @@ public sealed class DashboardService
         var findings=await _store.GetOpenFindingsAsync(100,token).ConfigureAwait(false);
         var counts=await _store.GetCountsAsync(token).ConfigureAwait(false);
         var audit=await _store.GetAuditAsync(100,token).ConfigureAwait(false);
+        var healthInspection=await _store.GetHealthInspectionStateAsync(token).ConfigureAwait(false);
         // The first dashboard paint must not wait for an external executable.  A cold
         // Ludusavi process can take seconds to start on a large Playnite profile, while
         // the version is informational and is already cached for six hours after the
@@ -59,7 +60,7 @@ public sealed class DashboardService
             LudusaviExecutable=_options.LudusaviExecutable,LudusaviBackupDirectory=_options.LudusaviBackupDirectory,BackupFormat=_options.BackupFormat,
             ManagedGames=counts.Games,MatchedGames=counts.Matched,
             RunningGames=active.Count,PendingCloudTasks=taskSummary.PendingCloudCount,TaskSummary=taskSummary,TodaySucceededTaskCount=todaySucceededTaskCount,
-            UnassignedMediaCount=counts.Unassigned,RecentTasks=tasks,Findings=findings,RecentAudit=audit,RecentActivities=activities
+            UnassignedMediaCount=counts.Unassigned,HealthInspection=healthInspection,RecentTasks=tasks,Findings=findings,RecentAudit=audit,RecentActivities=activities
         };
         foreach(var record in games)
         {

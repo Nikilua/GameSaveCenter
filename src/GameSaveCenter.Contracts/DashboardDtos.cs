@@ -27,6 +27,7 @@ namespace GameSaveCenter.Contracts
         public int RiskGames { get; set; }
         public int UnknownGames { get; set; }
         public int PendingCloudTasks { get; set; }
+        public HealthInspectionStateDto HealthInspection { get; set; } = new HealthInspectionStateDto();
         public TaskSummaryDto TaskSummary { get; set; } = new TaskSummaryDto();
         public int TodaySucceededTaskCount { get; set; }
         public int UnassignedMediaCount { get; set; }
@@ -138,6 +139,8 @@ namespace GameSaveCenter.Contracts
         public string HashValidation { get; set; } = "NotAvailable";
         public int WarningCount { get; set; }
         public int ErrorCount { get; set; }
+        /// <summary>Whether the Worker-owned temporary extraction directory was removed.</summary>
+        public string StagingCleanupStatus { get; set; } = "NotNeeded";
         public string Summary { get; set; } = string.Empty;
 
         public string StatusDisplay => Status switch

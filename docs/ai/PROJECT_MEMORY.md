@@ -3,6 +3,15 @@
 > 维护时间：2026-09-05
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-05 F01 备份健康巡检与隔离恢复演练
+
+- `HealthInspectionService` 是 Worker HostedService，计划/游标/最近结果位于 SQLite `health_inspection_state` 单例行；每轮只选一个新或超过有效期的备份，按 PlayniteId/创建时间/BackupId 稳定排序，游戏运行或 `GameOperationLock` 忙时只记录 `Deferred`，不读取归档。
+- `LastStartedUtc` 在候选读取前落盘，`LastCompletedUtc` 只在终态落盘；Worker 非正常退出后下次启动识别 in-flight 状态并从同一游标重试。成功验证时间只在 `Ready` 更新，`Warning`/`Corrupted`/`Failed`/`Unsupported` 写入稳定的 `HEALTH_INSPECTION_FAILED` 关注项。
+- `RestoreOrchestrator` 在真实恢复开始前读取目标版本的最近校验结果；已知 `Corrupted`/`Failed` 直接以 `RESTORE_READINESS_FAILED` 拦截，预览和未建立校验记录的旧/非 ZIP 版本保持兼容，不会因巡检入口自动执行真实恢复。
+- 健康巡检复用 `RestoreReadinessService` 的 ZIP/Manifest/哈希/安全路径逻辑，隔离目录位于 `WorkerOptions.RestoreReadinessDirectory`，只在实际检查时创建；空间不足在解包前失败，清理状态明确为 `Pending`、`Cleaned` 或 `Retained`。这不代表真实进度或真实恢复已经演练。
+- 设置 DTO/页面新增启用、间隔（15–10080 分钟）和重新验证有效期（1–3650 天）；最大单次预算由 Worker 固定校验范围（30–1800 秒）控制。维护页和报告展示“状态/最近成功/下次计划”，手动入口只执行隔离校验。
+- F01 自动证据：Release 0 warning/0 error；Core `65/65`、Worker `264/264`、Playnite `338/400`（62 跳过）、XAML `19/19`、源码门禁和 RenderHarness `render-qa OK`。真实 Playnite、断电/硬杀时序、磁盘耗尽、分卷归档和长时资源压力仍待人工复核。
+
 ## 2026-09-05 U02 侧栏动画成本与快速操作终态
 
 - `AcrylicProductionShellView.OnSidebarCollapseClick` 不再拒绝动画期间的后续点击；每次从当前 `SidebarColumn.ActualWidth` 接续到最新 72/270 DIP 目标。`sidebarTransitionGeneration` 使取消或卸载后的旧 `Completed` 回调失效，避免旧动画把新目标覆盖；无动画分支会清除宽度/透明度/位移动画后一次性落终态。

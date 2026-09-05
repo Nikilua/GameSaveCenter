@@ -43,6 +43,10 @@ public sealed class WorkerOptions
     public int CompressionLevel { get; set; } = 3;
     public int FullBackupLimit { get; set; } = 3;
     public int DifferentialBackupLimit { get; set; } = 5;
+    public bool HealthInspectionEnabled { get; set; } = true;
+    public int HealthInspectionIntervalMinutes { get; set; } = 1440;
+    public int HealthInspectionStaleAfterDays { get; set; } = 30;
+    public int HealthInspectionMaxDurationSeconds { get; set; } = 300;
 
     public string DatabasePath => Path.Combine(DataDirectory, "gamesavecenter.db");
     public string LogDirectory => Path.Combine(DataDirectory, "Logs");
@@ -50,6 +54,7 @@ public sealed class WorkerOptions
     public string GameToolsDirectory => Path.Combine(DataDirectory, "GameTools");
     public string DownloadDirectory => Path.Combine(DataDirectory, "Downloads");
     public string RemoteBackupStagingDirectory => Path.Combine(DataDirectory, "RemoteBackups");
+    public string RestoreReadinessDirectory => Path.Combine(DataDirectory, "RestoreReadiness");
     public string RuntimeSettingsPath => Path.Combine(DataDirectory, "worker-settings.json");
     public string StartupFailureCountPath => Path.Combine(DataDirectory, "startup-failure-count");
 
@@ -89,6 +94,9 @@ public sealed class WorkerOptions
         CompressionLevel = Math.Clamp(settings.CompressionLevel, -7, 22);
         FullBackupLimit = Math.Clamp(settings.FullBackupLimit, 1, 255);
         DifferentialBackupLimit = Math.Clamp(settings.DifferentialBackupLimit, 0, 255);
+        HealthInspectionEnabled = settings.HealthInspectionEnabled;
+        HealthInspectionIntervalMinutes = Math.Clamp(settings.HealthInspectionIntervalMinutes, 15, 10080);
+        HealthInspectionStaleAfterDays = Math.Clamp(settings.HealthInspectionStaleAfterDays, 1, 3650);
         Normalize();
         if (persist) Persist();
     }
@@ -120,7 +128,10 @@ public sealed class WorkerOptions
         Compression = Compression,
         CompressionLevel = CompressionLevel,
         FullBackupLimit = FullBackupLimit,
-        DifferentialBackupLimit = DifferentialBackupLimit
+        DifferentialBackupLimit = DifferentialBackupLimit,
+        HealthInspectionEnabled = HealthInspectionEnabled,
+        HealthInspectionIntervalMinutes = HealthInspectionIntervalMinutes,
+        HealthInspectionStaleAfterDays = HealthInspectionStaleAfterDays
     };
 
     public void RecordStartupFailure()
@@ -162,6 +173,9 @@ public sealed class WorkerOptions
         CompressionLevel = Math.Clamp(CompressionLevel, -7, 22);
         FullBackupLimit = Math.Clamp(FullBackupLimit, 1, 255);
         DifferentialBackupLimit = Math.Clamp(DifferentialBackupLimit, 0, 255);
+        HealthInspectionIntervalMinutes = Math.Clamp(HealthInspectionIntervalMinutes, 15, 10080);
+        HealthInspectionStaleAfterDays = Math.Clamp(HealthInspectionStaleAfterDays, 1, 3650);
+        HealthInspectionMaxDurationSeconds = Math.Clamp(HealthInspectionMaxDurationSeconds, 30, 1800);
         Directory.CreateDirectory(DataDirectory);
         Directory.CreateDirectory(GameToolsDirectory);
         Directory.CreateDirectory(DownloadDirectory);

@@ -345,6 +345,9 @@ namespace GameSaveCenter.Contracts
         public int CompressionLevel { get; set; } = 3;
         public int FullBackupLimit { get; set; } = 3;
         public int DifferentialBackupLimit { get; set; } = 5;
+        public bool HealthInspectionEnabled { get; set; } = true;
+        public int HealthInspectionIntervalMinutes { get; set; } = 1440;
+        public int HealthInspectionStaleAfterDays { get; set; } = 30;
     }
 
     /// <summary>Moves an indexed media item to another game without touching the original capture.</summary>
@@ -425,6 +428,9 @@ namespace GameSaveCenter.Contracts
         public int CompressionLevel { get; set; } = 3;
         public int FullBackupLimit { get; set; } = 3;
         public int DifferentialBackupLimit { get; set; } = 5;
+        public bool HealthInspectionEnabled { get; set; } = true;
+        public int HealthInspectionIntervalMinutes { get; set; } = 1440;
+        public int HealthInspectionStaleAfterDays { get; set; } = 30;
     }
 
 }

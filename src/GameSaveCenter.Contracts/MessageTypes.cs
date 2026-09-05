@@ -74,6 +74,8 @@ namespace GameSaveCenter.Contracts
         public const string GetSettings = "settings.get";
         public const string CheckEnvironment = "environment.check";
         public const string CheckIntegrity = "integrity.check";
+        public const string GetHealthInspection = "health.inspection.get";
+        public const string RunHealthInspection = "health.inspection.run";
         public const string CreateMetadataBackup = "metadata.backup.create";
         public const string PreviewMetadataRestore = "metadata.restore.preview";
         public const string ExecuteMetadataRestore = "metadata.restore.execute";

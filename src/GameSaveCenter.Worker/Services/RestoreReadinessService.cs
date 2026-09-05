@@ -15,6 +15,7 @@ public sealed class RestoreReadinessService
 {
     private const int MaxEntries = 100_000;
     private const long MaxExpandedBytes = 4L * 1024 * 1024 * 1024;
+    private const long StagingFreeSpaceReserve = 64L * 1024 * 1024;
     private readonly ILogger<RestoreReadinessService> _logger;
 
     public RestoreReadinessService(ILogger<RestoreReadinessService> logger) => _logger = logger;
@@ -59,17 +60,27 @@ public sealed class RestoreReadinessService
             return result;
         }
 
+        if (expected.Count > 0)
+        {
+            result.ExpectedFileCount = expected.Count;
+            result.ExpectedTotalSize = expected.Sum(x => Math.Max(0, x.SizeBytes));
+        }
+        if (result.ExpectedTotalSize > 0 && TryGetAvailableBytes(stagingRoot, out var availableBytes)
+            && availableBytes < result.ExpectedTotalSize + StagingFreeSpaceReserve)
+        {
+            result.Status = RestoreReadinessStatus.Failed;
+            result.ErrorCount++;
+            result.Summary = $"恢复校验隔离区所在磁盘空间不足：需要约 {FormatBytes(result.ExpectedTotalSize)}，当前可用 {FormatBytes(availableBytes)}。";
+            return result;
+        }
+
         var stagingDirectory = string.Empty;
         try
         {
             stagingDirectory = Path.Combine(stagingRoot, "restore-readiness-" + Guid.NewGuid().ToString("N"));
+            result.StagingCleanupStatus = "Pending";
             Directory.CreateDirectory(stagingDirectory);
-            if (expected.Count > 0)
-            {
-                result.ExpectedFileCount = expected.Count;
-                result.ExpectedTotalSize = expected.Sum(x => Math.Max(0, x.SizeBytes));
-            }
-            else if (manifestState == ManifestReadState.Missing)
+            if (expected.Count == 0 && manifestState == ManifestReadState.Missing)
             {
                 result.WarningCount++;
             }
@@ -222,7 +233,8 @@ public sealed class RestoreReadinessService
         }
         finally
         {
-            if (stagingDirectory.Length > 0) TryDeleteStagingDirectory(stagingDirectory);
+            if (stagingDirectory.Length > 0)
+                result.StagingCleanupStatus = TryDeleteStagingDirectory(stagingDirectory) ? "Cleaned" : "Retained";
         }
 
         return result;
@@ -298,15 +310,41 @@ public sealed class RestoreReadinessService
         return target.StartsWith(root, StringComparison.OrdinalIgnoreCase);
     }
 
-    private static void TryDeleteStagingDirectory(string path)
+    private static bool TryGetAvailableBytes(string path, out long availableBytes)
+    {
+        availableBytes = 0;
+        try
+        {
+            var root = Path.GetPathRoot(Path.GetFullPath(path));
+            if (string.IsNullOrWhiteSpace(root)) return false;
+            availableBytes = new DriveInfo(root).AvailableFreeSpace;
+            return availableBytes >= 0;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private static string FormatBytes(long bytes)
+    {
+        if (bytes < 1024) return $"{bytes} B";
+        if (bytes < 1024L * 1024) return $"{bytes / 1024d:0.##} KiB";
+        if (bytes < 1024L * 1024 * 1024) return $"{bytes / 1024d / 1024d:0.##} MiB";
+        return $"{bytes / 1024d / 1024d / 1024d:0.##} GiB";
+    }
+
+    private static bool TryDeleteStagingDirectory(string path)
     {
         try
         {
             if (Directory.Exists(path)) Directory.Delete(path, recursive: true);
+            return !Directory.Exists(path) && !File.Exists(path);
         }
         catch
         {
             // A locked validation artifact remains inside the app-owned staging root and is harmless.
+            return false;
         }
     }
 }

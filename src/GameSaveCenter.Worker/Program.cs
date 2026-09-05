@@ -71,9 +71,11 @@ internal static class Program
         builder.Services.AddSingleton<RetentionSimulationService>();
         builder.Services.AddSingleton<LocalMirrorService>();
         builder.Services.AddSingleton<MaintenanceReportService>();
+        builder.Services.AddSingleton<HealthInspectionService>();
         builder.Services.AddSingleton<IpcRequestDispatcher>();
         builder.Services.AddHostedService<WorkerInitializationService>();
         builder.Services.AddHostedService<CloudRetryService>();
+        builder.Services.AddHostedService(provider => provider.GetRequiredService<HealthInspectionService>());
         builder.Services.AddHostedService<NamedPipeServerService>();
         builder.Services.AddHostedService<TaskEventPipeServerService>();
         builder.Services.AddSingleton<GameSessionCoordinator>();

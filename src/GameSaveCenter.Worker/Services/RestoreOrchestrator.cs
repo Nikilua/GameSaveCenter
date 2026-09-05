@@ -54,6 +54,13 @@ public sealed class RestoreOrchestrator
         using var lease = await _gameLock.AcquireAsync(request.PlayniteId, GameOperationKind.Restore, TimeSpan.FromSeconds(10), token).ConfigureAwait(false);
         if (lease == null)
             throw new WorkerOperationException("GAME_OPERATION_BUSY","该游戏已有备份、恢复或媒体操作正在执行，已阻止恢复。",request.PlayniteId);
+        var indexedTarget = (await _store.GetBackupVersionsAsync(request.PlayniteId, token).ConfigureAwait(false))
+            .FirstOrDefault(x => string.Equals(x.BackupId, request.BackupId, StringComparison.OrdinalIgnoreCase));
+        if (indexedTarget?.RestoreReadiness?.Status is RestoreReadinessStatus.Corrupted or RestoreReadinessStatus.Failed)
+            throw new WorkerOperationException(
+                "RESTORE_READINESS_FAILED",
+                "目标备份最近一次隔离恢复校验未通过，已阻止真实恢复。请先重新验证该版本并处理归档问题。",
+                request.PlayniteId);
         return await _tasks.RunAsync("Restore",game.PlayniteId,game.Name,async(progress,ct)=>
         {
             var state=RestoreState.Requested;

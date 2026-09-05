@@ -222,6 +222,7 @@
                                 <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding CompareBackupCommand}" Content="与上一版本比较" Margin="0,8,0,0"/>
                                 <Separator Margin="0,16,0,12"/>
                                 <TextBlock Text="恢复可用性" FontWeight="SemiBold"/>
+                                <TextBlock Text="归档可读取性由隔离校验表示；不代表路径映射已完成，也不代表真实恢复已演练。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0" AutomationProperties.HelpText="恢复可用性巡检只读取隔离目录，不会执行真实恢复。"/>
                                 <TextBlock Text="{Binding SelectedBackup.RestoreReadinessStatusDisplay, Mode=OneWay}" Foreground="{DynamicResource GscAccentBrush}" Margin="0,5,0,0"/>
                                 <TextBlock Text="{Binding SelectedBackup.RestoreReadinessSummaryDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                                 <TextBlock Text="{Binding SelectedBackup.RestoreReadinessMetricsDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>

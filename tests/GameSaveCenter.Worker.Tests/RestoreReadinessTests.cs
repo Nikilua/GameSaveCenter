@@ -35,6 +35,7 @@ public sealed class RestoreReadinessTests : IDisposable
         Assert.True(result.ExtractSucceeded);
         Assert.Equal(1, result.ActualFileCount);
         Assert.Equal(9, result.ActualTotalSize);
+        Assert.Equal("Cleaned", result.StagingCleanupStatus);
         Assert.True(!Directory.Exists(Path.Combine(root, "staging")) || !Directory.EnumerateDirectories(Path.Combine(root, "staging")).Any());
     }
 

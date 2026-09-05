@@ -206,6 +206,35 @@ public sealed class RestoreOrchestratorTests : IDisposable
         Assert.Empty(client.RestoreCalls);
     }
 
+    [Fact]
+    public async Task FailedReadinessCheck_BlocksRealRestoreBeforeAnyClientCall()
+    {
+        await SeedGameAsync();
+        client.Backups.Add("B", "B");
+        await store.AddBackupVersionAsync(new BackupVersionDto
+        {
+            PlayniteId = "game-1",
+            BackupId = "B",
+            LudusaviName = "Test Game",
+            CreatedUtc = DateTime.UtcNow,
+            FileCount = 1,
+            TotalBytes = 4,
+            RestoreReadiness = new RestoreReadinessDto
+            {
+                BackupVersionId = "B",
+                Status = RestoreReadinessStatus.Corrupted,
+                ErrorCount = 1,
+                Summary = "归档损坏。"
+            }
+        }, "[]", CancellationToken.None);
+
+        var exception = await Assert.ThrowsAsync<WorkerOperationException>(
+            () => CreateOrchestrator().ExecuteAsync(Request("B"), CancellationToken.None));
+
+        Assert.Equal("RESTORE_READINESS_FAILED", exception.Code);
+        Assert.Empty(client.RestoreCalls);
+    }
+
     private RestoreOrchestrator CreateOrchestrator()
         => new(catalog, store, client, tasks, sessions, cloud, new FakeRemoteStageProvider(), new GameOperationLock());
 

@@ -32,6 +32,9 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Equal(source.BackupFormat, imported.BackupFormat);
             Assert.Equal(source.CompressionLevel, imported.CompressionLevel);
             Assert.Equal(source.DifferentialBackupLimit, imported.DifferentialBackupLimit);
+            Assert.Equal(source.HealthInspectionEnabled, imported.HealthInspectionEnabled);
+            Assert.Equal(source.HealthInspectionIntervalMinutes, imported.HealthInspectionIntervalMinutes);
+            Assert.Equal(source.HealthInspectionStaleAfterDays, imported.HealthInspectionStaleAfterDays);
             Assert.Equal(source.RecentProtectionWindowDays, imported.RecentProtectionWindowDays);
             Assert.Equal(source.EnableXboxGameBarMedia, imported.EnableXboxGameBarMedia);
             Assert.Equal(source.EnableCustomMedia, imported.EnableCustomMedia);
@@ -79,6 +82,9 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Equal(NotificationLevel.Summary, imported.NotificationLevel);
             Assert.False(imported.SafeModeEnabled);
             Assert.Equal("zstd", imported.Compression);
+            Assert.True(imported.HealthInspectionEnabled);
+            Assert.Equal(1440, imported.HealthInspectionIntervalMinutes);
+            Assert.Equal(30, imported.HealthInspectionStaleAfterDays);
             Assert.True(imported.EnableSteamMedia);
             Assert.True(imported.EnableXboxGameBarMedia);
             Assert.True(imported.EnableWindowsScreenshotMedia);
@@ -206,7 +212,10 @@ namespace GameSaveCenter.Playnite.Tests
             Compression = "zstd",
             CompressionLevel = 8,
             FullBackupLimit = 7,
-            DifferentialBackupLimit = 11
+            DifferentialBackupLimit = 11,
+            HealthInspectionEnabled = false,
+            HealthInspectionIntervalMinutes = 720,
+            HealthInspectionStaleAfterDays = 14
         };
     }
 }

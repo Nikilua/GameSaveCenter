@@ -273,6 +273,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             RetryGameMatchCommand = new RelayCommand(_ => Run(RetryGameMatchAsync), _ => !IsBusy && !string.IsNullOrWhiteSpace(GameDiagnosticPlayniteId));
             ClearGamePickerFiltersCommand = new RelayCommand(_ => ClearGamePickerFilters());
             RunIntegrityCheckCommand = new RelayCommand(_ => Run(RunIntegrityCheckAsync), _ => !IsBusy);
+            RunHealthInspectionCommand = new RelayCommand(_ => Run(RunHealthInspectionAsync), _ => !IsBusy);
             CreateMetadataBackupCommand = new RelayCommand(_ => Run(CreateMetadataBackupAsync), _ => !IsBusy && !string.IsNullOrWhiteSpace(EffectiveSettings.DataDirectory));
             RestoreMetadataBackupCommand = new RelayCommand(_ => Run(RestoreMetadataBackupAsync), _ => !IsBusy && !string.IsNullOrWhiteSpace(EffectiveSettings.DataDirectory));
             RebuildRepositoryCommand = new RelayCommand(_ => Run(RebuildRepositoryAsync), _ => !IsBusy && Snapshot.LudusaviAvailable);
@@ -1000,6 +1001,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand RetryGameMatchCommand { get; }
         public ICommand ClearGamePickerFiltersCommand { get; }
         public ICommand RunIntegrityCheckCommand { get; }
+        public ICommand RunHealthInspectionCommand { get; }
         public ICommand CreateMetadataBackupCommand { get; }
         public ICommand RestoreMetadataBackupCommand { get; }
         public ICommand RebuildRepositoryCommand { get; }
@@ -1712,6 +1714,14 @@ namespace GameSaveCenter.Playnite.ViewModels
                 IntegritySummary = $"完整性自检：{result.StateDisplay}（错误 {result.ErrorCount} / 警告 {result.WarningCount}）\n{result.Summary}";
                 StatusMessage = result.Summary;
             });
+        }
+
+        private async Task RunHealthInspectionAsync()
+        {
+            var result = await plugin.RequestAsync<HealthInspectionStateDto>(
+                MessageTypes.RunHealthInspection, new { }, TimeSpan.FromMinutes(10));
+            await RefreshDashboardAsync(false, false);
+            StatusMessage = $"恢复可用性巡检：{result.LastStatusDisplay}。{result.LastSummary}";
         }
 
         private async Task CreateMetadataBackupAsync()
@@ -3797,7 +3807,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 AssignInboxMediaCommand, IgnoreInboxMediaCommand, AssignInboxMediaBatchCommand, IgnoreInboxMediaBatchCommand, RestoreIgnoredMediaBatchCommand,
                 LoadMoreMediaInboxCommand,
                 CancelTaskCommand, RetryTaskCommand, RetryAllTasksCommand, LoadMoreTasksCommand, CopyTaskErrorCommand, RefreshDiagnosticsCommand, DiagnoseGameCommand, SyncGameDescriptorCommand, RetryGameMatchCommand, ClearGamePickerFiltersCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
-                StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,RefreshRetentionSimulationCommand,ApplyRetentionSimulationCommand,RefreshLocalMirrorStatusCommand,SyncLocalMirrorCommand,CopyMaintenanceReportCommand,ExportMaintenanceReportCommand,
+                StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,RunHealthInspectionCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,RefreshRetentionSimulationCommand,ApplyRetentionSimulationCommand,RefreshLocalMirrorStatusCommand,SyncLocalMirrorCommand,CopyMaintenanceReportCommand,ExportMaintenanceReportCommand,
                 SaveProcessMappingCommand,DeleteProcessMappingCommand,RunEnvironmentCheckCommand,SkipOnboardingCommand,CompleteOnboardingCommand,OnboardingTestBackupCommand,
                 OpenDataDirectoryCommand, OpenBackupDirectoryCommand, OpenMediaDirectoryCommand, OpenWorkerLogCommand
                 ,ImportTrainerCommand,ImportCheatTableCommand,ImportCustomLaunchItemCommand,ImportToolFolderCommand,SaveGameToolCommand,LaunchGameToolCommand,

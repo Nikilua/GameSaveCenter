@@ -48,4 +48,24 @@ public sealed class DeviceIdentityTests
         options.Apply(new WorkerSettingsDto { SafeModeEnabled = false });
         Assert.False(options.SafeModeEnabled);
     }
+
+    [Fact]
+    public void HealthInspectionSettingsAreClampedAndRoundTrip()
+    {
+        var options = new WorkerOptions();
+
+        options.Apply(new WorkerSettingsDto
+        {
+            HealthInspectionEnabled = false,
+            HealthInspectionIntervalMinutes = 1,
+            HealthInspectionStaleAfterDays = 99999
+        });
+
+        Assert.False(options.HealthInspectionEnabled);
+        Assert.Equal(15, options.HealthInspectionIntervalMinutes);
+        Assert.Equal(3650, options.HealthInspectionStaleAfterDays);
+        Assert.False(options.ToDto().HealthInspectionEnabled);
+        Assert.Equal(15, options.ToDto().HealthInspectionIntervalMinutes);
+        Assert.Equal(3650, options.ToDto().HealthInspectionStaleAfterDays);
+    }
 }

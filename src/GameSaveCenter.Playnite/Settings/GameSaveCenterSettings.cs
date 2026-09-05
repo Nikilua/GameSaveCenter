@@ -82,6 +82,9 @@ namespace GameSaveCenter.Playnite.Settings
         public int CompressionLevel { get; set; } = 3;
         public int FullBackupLimit { get; set; } = 3;
         public int DifferentialBackupLimit { get; set; } = 5;
+        public bool HealthInspectionEnabled { get; set; } = true;
+        public int HealthInspectionIntervalMinutes { get; set; } = 1440;
+        public int HealthInspectionStaleAfterDays { get; set; } = 30;
         // Lightweight global game-picker state. These values are UI preferences only;
         // game data remains in the Worker/SQLite cache.
         public string GamePickerSearchText { get; set; } = string.Empty;
@@ -186,6 +189,10 @@ namespace GameSaveCenter.Playnite.Settings
                 errors.Add("完整备份保留数量必须为 1–255。");
             if (DifferentialBackupLimit < 0 || DifferentialBackupLimit > 255)
                 errors.Add("差异备份保留数量必须为 0–255。");
+            if (HealthInspectionIntervalMinutes < 15 || HealthInspectionIntervalMinutes > 10080)
+                errors.Add("恢复可用性巡检间隔必须为 15–10080 分钟。");
+            if (HealthInspectionStaleAfterDays < 1 || HealthInspectionStaleAfterDays > 3650)
+                errors.Add("恢复可用性验证有效期必须为 1–3650 天。");
             if (CompressionLevel < -7 || CompressionLevel > 22)
                 errors.Add("压缩等级必须为 -7–22；zstd 建议使用 3。");
             return errors.Count == 0;
@@ -218,7 +225,10 @@ namespace GameSaveCenter.Playnite.Settings
             Compression = Compression,
             CompressionLevel = CompressionLevel,
             FullBackupLimit = FullBackupLimit,
-            DifferentialBackupLimit = DifferentialBackupLimit
+            DifferentialBackupLimit = DifferentialBackupLimit,
+            HealthInspectionEnabled = HealthInspectionEnabled,
+            HealthInspectionIntervalMinutes = HealthInspectionIntervalMinutes,
+            HealthInspectionStaleAfterDays = HealthInspectionStaleAfterDays
         };
 
         private bool EnsureDefaults(string pluginInstallPath)
@@ -307,6 +317,9 @@ namespace GameSaveCenter.Playnite.Settings
             CompressionLevel = other.CompressionLevel;
             FullBackupLimit = other.FullBackupLimit;
             DifferentialBackupLimit = other.DifferentialBackupLimit;
+            HealthInspectionEnabled = other.HealthInspectionEnabled;
+            HealthInspectionIntervalMinutes = other.HealthInspectionIntervalMinutes < 15 ? 1440 : other.HealthInspectionIntervalMinutes;
+            HealthInspectionStaleAfterDays = other.HealthInspectionStaleAfterDays < 1 ? 30 : other.HealthInspectionStaleAfterDays;
             GamePickerSearchText = other.GamePickerSearchText ?? string.Empty;
             GamePickerStatusFilter = string.IsNullOrWhiteSpace(other.GamePickerStatusFilter) ? "已安装" : other.GamePickerStatusFilter;
             GamePickerPlatformFilter = string.IsNullOrWhiteSpace(other.GamePickerPlatformFilter) ? "全部" : other.GamePickerPlatformFilter;
@@ -331,6 +344,8 @@ namespace GameSaveCenter.Playnite.Settings
             if (value.GlassEffectStrength < 20 || value.GlassEffectStrength > 100) errors.Add("毛玻璃强度超出 20–100");
             if (value.FullBackupLimit < 1 || value.FullBackupLimit > 255) errors.Add("完整版本数超出 1–255");
             if (value.DifferentialBackupLimit < 0 || value.DifferentialBackupLimit > 255) errors.Add("差异版本数超出 0–255");
+            if (value.HealthInspectionIntervalMinutes < 15 || value.HealthInspectionIntervalMinutes > 10080) errors.Add("恢复巡检间隔超出 15–10080");
+            if (value.HealthInspectionStaleAfterDays < 1 || value.HealthInspectionStaleAfterDays > 3650) errors.Add("恢复验证有效期超出 1–3650");
             if (value.CompressionLevel < -7 || value.CompressionLevel > 22) errors.Add("压缩等级超出 -7–22");
             if (!Enum.IsDefined(typeof(GameSaveCenterThemeMode), value.ThemeMode)) errors.Add("未知主题模式");
             if (!Enum.IsDefined(typeof(BackupStorageFormat), value.BackupFormat)) errors.Add("未知备份格式");

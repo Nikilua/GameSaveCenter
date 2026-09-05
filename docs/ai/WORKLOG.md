@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-05 F01 备份健康巡检与隔离恢复演练
+
+- 新增 `HealthInspectionStateDto` 与 SQLite `health_inspection_state` 单例账本，持久化启用状态、巡检间隔、过期阈值、单次预算、下次时间、游标、最近结果、最近成功验证时间、推迟/失败计数；Worker 启动和设置更新会同步计划，硬中断后通过 `LastStartedUtc > LastCompletedUtc` 重复当前游标，不静默跳过未完成版本。
+- `HealthInspectionService` 作为 Worker HostedService 提供周期巡检和手动入口：按新备份/过期校验优先、单次只处理一个候选，游戏运行或同游戏操作锁占用时推迟；超时、异常和损坏结果写入恢复可用性、关注项和审计记录。已知 `Corrupted/Failed` 版本在真实恢复前被拦截，设置页可配置间隔/重新验证有效期，维护页显示状态/最近成功时间并提供“运行恢复巡检”。
+- `RestoreReadinessService` 增加隔离区磁盘余量预检和 `Pending/Cleaned/Retained` 清理状态；演练继续复用现有 ZIP、Manifest、哈希和路径安全校验，隔离目录按需创建，绝不写入真实存档。Dashboard、维护报告与 Worker 能力声明均接入巡检状态。
+- 新增状态重启续跑、成功归档隔离清理、损坏归档关注项、游戏运行推迟等回归。验证：XAML `19/19`；Release 构建 0 warning/0 error；Core `65/65`、Worker `264/264`、Playnite `338/400`（62 跳过）；`validate-source.py`、`git diff --check` 和 RenderHarness 多尺寸/双主题/resize/侧栏探针均通过并输出 `render-qa OK`。真实 Playnite、断电时序、真实磁盘耗尽和多分卷归档仍需人工复核。
+
 ## 2026-09-05 U02 侧栏动画成本与快速操作终态
 
 - 侧栏折叠动画继续保留现有 210ms 宽度过渡和 190ms 内容淡入，但增加从当前实际宽度重新接续的逻辑；连续点击会采用最新目标，不再在动画期间吞掉第二次操作。通过过渡代际令牌忽略已取消动画迟到的 `Completed` 回调，禁用动画和卸载路径统一停止旧动画并恢复最终状态。
