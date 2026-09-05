@@ -4,6 +4,12 @@
 
 > 新会话短入口：先读 [`docs/ai/CURRENT_STATE.md`](ai/CURRENT_STATE.md)。本文下方的历史交接按时间保留；除顶部最新阶段和明确标注的覆盖关系外，旧条目只用于追溯，不得覆盖当前事实入口。
 
+## 2026-09-05 E01 规模性能基线
+
+- 新增 `scripts/e01-scale-baseline.ps1`，仅在显式指定 `full` 或 `stress` 时创建大规模隔离 SQLite 夹具；脚本独立还原/Release 构建 Worker 测试，保存测试日志、`worker-scale.json` 和 `baseline.md`，不会碰当前用户 Worker 或 Playnite 数据。
+- full 使用 2,000 游戏/20,000 备份/10,000 任务/5,000 媒体/500 工具，seed `111193 ms`、模拟 `523 ms`；stress 使用 10,000 游戏/20,000 备份/10,000 任务/50,000 媒体/500 工具，seed `256888 ms`、模拟 `1762 ms`。两档资源增长、事件订阅残留和原子写临时文件残留均通过。
+- 结果只代表隔离 Worker/SQLite 夹具；没有将其描述为真实 Playnite 冷/热首屏、UI 分配、帧间隔或用户目录性能。真实宿主大库、主题/DPI 和目标机仍需人工复核。
+
 ## 2026-09-05 E01 行为证据矩阵与独立 Worker 重启验证
 
 - `scripts/e01-behavior-matrix.ps1` 默认在 `.tmp` 生成按业务、IPC、WPF/STA、故障/Soak 分组的测试日志和 Markdown/JSON 汇总；故障/Soak 已包含 `WorkerProcessRestartTests`，`-IncludeRender` 可额外接入 RenderHarness。构建和分组测试均使用隔离输出，不改用户数据。

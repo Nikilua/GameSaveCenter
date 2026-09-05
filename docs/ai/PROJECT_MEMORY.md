@@ -5,6 +5,12 @@
 
 > 当前事实入口：先读 [`CURRENT_STATE.md`](CURRENT_STATE.md)。本文保留按阶段的历史约束和证据；若与当前事实入口或最新代码冲突，以 `CURRENT_STATE.md` 的覆盖说明为准，不要按旧条目恢复已撤销布局或外部 Demo 路径。
 
+## 2026-09-05 E01 规模性能基线
+
+- `scripts/e01-scale-baseline.ps1` 是显式触发的隔离规模入口：默认不扩大普通测试夹具，`-Profile full` 使用 2,000 游戏/20,000 备份/10,000 任务/5,000 媒体/500 工具，`-Profile stress` 使用 10,000 游戏/20,000 备份/10,000 任务/50,000 媒体/500 工具；两档均写出 `worker-scale.json` 和 `baseline.md`。
+- 2026-09-05 两档 Release 基线均通过：full seed `111193 ms`、模拟 `523 ms`；stress seed `256888 ms`、模拟 `1762 ms`。托管内存保留增长、句柄/线程增长、订阅者和临时文件残留均受断言约束。
+- 这是隔离 Worker/SQLite 数据量、查询/事件/原子写/操作锁模拟和资源增长的基线，不是 Playnite 宿主的冷/热首屏、UI 分配或帧间隔证据；真实宿主大库、DPI 和目标机目录仍按 `MANUAL QA REQUIRED` 处理。
+
 ## 2026-09-05 E01 行为证据矩阵与独立 Worker 重启验证
 
 - `scripts/e01-behavior-matrix.ps1` 是自动证据分层入口：输出根默认在 `.tmp/e01-behavior`，业务、IPC、WPF/STA、故障/Soak 每个测试类单独记录；`-IncludeRender` 才运行 RenderHarness，真实 Playnite 始终写入 `MANUAL QA REQUIRED`。故障/Soak 组包含 `WorkerProcessRestartTests`。

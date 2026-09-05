@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Text.Json;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Worker.Configuration;
 using GameSaveCenter.Worker.Infrastructure;
@@ -12,7 +13,8 @@ namespace GameSaveCenter.Worker.Tests.Infrastructure;
 
 /// <summary>
 /// Data-scale soak harness. The default test run uses a reduced profile so CI stays fast;
-/// setting GSC_SOAK_DATA_SCALE=1 runs the full 2000/20000/10000/30000/500 profile.
+/// GSC_SOAK_DATA_SCALE=1 runs the full 2000/20000/10000/5000/500 profile and
+/// GSC_SOAK_DATA_SCALE=2 runs the stress 10000/20000/10000/50000/500 profile.
 /// </summary>
 public sealed class SoakDataScaleHarness : IDisposable
 {
@@ -43,31 +45,54 @@ public sealed class SoakDataScaleHarness : IDisposable
 
     public int SubscriberResidue { get; private set; }
     public int TempResidue { get; private set; }
+    public string DataScaleProfile { get; private set; } = "reduced";
+    public int GameCount { get; private set; }
+    public int BackupCount { get; private set; }
+    public int TaskCount { get; private set; }
+    public int MediaCount { get; private set; }
+    public int ToolCount { get; private set; }
+    public long SeedDurationMilliseconds { get; private set; }
+    public long SimulationDurationMilliseconds { get; private set; }
     public bool BoundedGrowth { get; private set; }
     public string GrowthSummary { get; private set; } = string.Empty;
     public IReadOnlyList<string> Errors => errors;
 
     public async Task RunAsync(bool fullScale, CancellationToken token)
+        => await RunAsync(fullScale ? "full" : "reduced", token).ConfigureAwait(false);
+
+    public async Task RunAsync(string profile, CancellationToken token)
     {
         // Keep the default developer/install profile bounded even on slow disks. The
-        // full data-scale profile remains available through GSC_SOAK_DATA_SCALE=1.
-        var games = fullScale ? 2000 : 40;
-        var backupsPerGame = fullScale ? 10 : 3;
-        var tasks = fullScale ? 10000 : 200;
-        var media = fullScale ? 30000 : 600;
-        var tools = fullScale ? 500 : 20;
+        // full and stress profiles are explicit so a normal test run never creates a
+        // large fixture unexpectedly.
+        var scale = profile.Trim().ToLowerInvariant() switch
+        {
+            "1" or "full" => (Name: "full", Games: 2000, BackupsPerGame: 10, Tasks: 10000, Media: 5000, Tools: 500),
+            "2" or "stress" => (Name: "stress", Games: 10000, BackupsPerGame: 2, Tasks: 10000, Media: 50000, Tools: 500),
+            _ => (Name: "reduced", Games: 40, BackupsPerGame: 3, Tasks: 200, Media: 600, Tools: 20)
+        };
+        DataScaleProfile = scale.Name;
+        GameCount = scale.Games;
+        BackupCount = scale.Games * scale.BackupsPerGame;
+        TaskCount = scale.Tasks;
+        MediaCount = scale.Media;
+        ToolCount = scale.Tools;
 
         var process = Process.GetCurrentProcess();
         var beforeManaged = GC.GetTotalMemory(false);
         var beforeHandles = process.HandleCount;
         var beforeThreads = process.Threads.Count;
 
-        await SeedGamesAsync(games, token).ConfigureAwait(false);
-        await SeedBackupsAsync(games, backupsPerGame, token).ConfigureAwait(false);
-        await SeedTasksAsync(tasks, token).ConfigureAwait(false);
-        await SeedMediaAsync(media, token).ConfigureAwait(false);
-        await SeedToolsAsync(tools, token).ConfigureAwait(false);
+        var seedTimer = Stopwatch.StartNew();
+        await SeedGamesAsync(scale.Games, token).ConfigureAwait(false);
+        await SeedBackupsAsync(scale.Games, scale.BackupsPerGame, token).ConfigureAwait(false);
+        await SeedTasksAsync(scale.Tasks, token).ConfigureAwait(false);
+        await SeedMediaAsync(scale.Media, token).ConfigureAwait(false);
+        await SeedToolsAsync(scale.Tools, token).ConfigureAwait(false);
+        seedTimer.Stop();
+        SeedDurationMilliseconds = seedTimer.ElapsedMilliseconds;
 
+        var simulationTimer = Stopwatch.StartNew();
         for (var cycle = 0; cycle < 20; cycle++)
         {
             await SimulateReadsAsync(cycle, token).ConfigureAwait(false);
@@ -75,6 +100,8 @@ public sealed class SoakDataScaleHarness : IDisposable
             await SimulateAtomicWriteAsync(cycle, token).ConfigureAwait(false);
             await SimulateOperationLockAsync(cycle, token).ConfigureAwait(false);
         }
+        simulationTimer.Stop();
+        SimulationDurationMilliseconds = simulationTimer.ElapsedMilliseconds;
 
         GC.Collect();
         GC.WaitForPendingFinalizers();
@@ -250,5 +277,29 @@ public sealed class SoakDataScaleHarness : IDisposable
     {
         SqliteConnection.ClearAllPools();
         try { if (Directory.Exists(root)) Directory.Delete(root, true); } catch { }
+    }
+
+    public void WriteReport(string directory)
+    {
+        Directory.CreateDirectory(directory);
+        var report = new
+        {
+            profile = DataScaleProfile,
+            games = GameCount,
+            backups = BackupCount,
+            tasks = TaskCount,
+            media = MediaCount,
+            tools = ToolCount,
+            seedDurationMilliseconds = SeedDurationMilliseconds,
+            simulationDurationMilliseconds = SimulationDurationMilliseconds,
+            boundedGrowth = BoundedGrowth,
+            subscriberResidue = SubscriberResidue,
+            tempResidue = TempResidue,
+            growthSummary = GrowthSummary,
+            errors
+        };
+        File.WriteAllText(
+            Path.Combine(directory, "worker-scale.json"),
+            JsonSerializer.Serialize(report, new JsonSerializerOptions { WriteIndented = true }));
     }
 }

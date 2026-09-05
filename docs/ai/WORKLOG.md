@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-05 E01 规模性能基线
+
+- 新增 `scripts/e01-scale-baseline.ps1`，在隔离 `.tmp` 输出、独立 SQLite 和默认 Release 构建下运行 Worker 规模夹具；默认测试仍使用 reduced，只有显式传入 `-Profile full|stress` 才创建大夹具，并输出 `worker-scale.json` 与可读 `baseline.md`。
+- full 夹具为 2,000 游戏、20,000 备份、10,000 任务、5,000 媒体、500 工具；seed 用时 `111193 ms`，20 轮 Worker 读/事件/原子写/操作锁模拟用时 `523 ms`。stress 夹具为 10,000 游戏、20,000 备份、10,000 任务、50,000 媒体、500 工具；seed 用时 `256888 ms`，模拟用时 `1762 ms`。
+- 两档均通过 `managedGrowth <= 256 MiB`、句柄/线程增长上限、订阅者残留和原子写临时文件残留断言，报告错误列表为空。该阶段证明的是隔离 Worker/SQLite 数据规模和资源边界，不等同真实 Playnite 冷/热首屏、UI 分配、帧间隔或用户目录性能；这些仍需宿主/目标机验收。
+
 ## 2026-09-05 E01 行为证据矩阵与独立 Worker 重启验证
 
 - `scripts/e01-behavior-matrix.ps1` 现在在隔离 `.tmp` 输出根执行 Release 构建后，按业务 Worker、IPC、WPF/STA、故障/Soak 分组运行行为测试，并包含 `WorkerProcessRestartTests`；每个测试类保留独立日志，生成 `behavior-report.md`、`behavior-summary.json` 和人工验收清单，可选 `-IncludeRender` 接入 RenderHarness。
