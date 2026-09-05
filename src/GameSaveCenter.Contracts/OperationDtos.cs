@@ -340,6 +340,9 @@ namespace GameSaveCenter.Contracts
         public bool EnablePlatformAdjacentMedia { get; set; } = true;
         public bool EnableCustomMedia { get; set; } = true;
         public bool EnableCloudUpload { get; set; }
+        public bool CloudUploadQueuePaused { get; set; }
+        public int CloudUploadAllowedStartMinute { get; set; }
+        public int CloudUploadAllowedEndMinute { get; set; } = 1440;
         public BackupStorageFormat BackupFormat { get; set; } = BackupStorageFormat.Zip;
         public string Compression { get; set; } = "zstd";
         public int CompressionLevel { get; set; } = 3;
@@ -423,6 +426,9 @@ namespace GameSaveCenter.Contracts
         public bool EnablePlatformAdjacentMedia { get; set; } = true;
         public bool EnableCustomMedia { get; set; } = true;
         public bool EnableCloudUpload { get; set; }
+        public bool CloudUploadQueuePaused { get; set; }
+        public int CloudUploadAllowedStartMinute { get; set; }
+        public int CloudUploadAllowedEndMinute { get; set; } = 1440;
         public BackupStorageFormat BackupFormat { get; set; } = BackupStorageFormat.Zip;
         public string Compression { get; set; } = "zstd";
         public int CompressionLevel { get; set; } = 3;

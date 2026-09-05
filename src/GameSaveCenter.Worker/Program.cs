@@ -43,6 +43,7 @@ internal static class Program
         builder.Services.AddSingleton<IRestoreClient>(provider => provider.GetRequiredService<LudusaviClient>());
         builder.Services.AddSingleton<RcloneClient>();
         builder.Services.AddSingleton<CloudTransferCoordinator>();
+        builder.Services.AddSingleton<CloudTransferStateService>();
         builder.Services.AddSingleton<DeviceStateService>();
         builder.Services.AddSingleton<RemoteBackupStagingService>();
         builder.Services.AddSingleton<IRemoteBackupStageProvider>(provider => provider.GetRequiredService<RemoteBackupStagingService>());

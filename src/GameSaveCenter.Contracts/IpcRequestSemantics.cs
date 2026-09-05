@@ -17,6 +17,7 @@ public static class IpcRequestSemantics
             MessageTypes.ProtectionPromptDecision or MessageTypes.ApplyRecommendedProtection or
             MessageTypes.SavePolicyTemplate or MessageTypes.DeletePolicyTemplate or MessageTypes.ApplyPolicyTemplate or
             MessageTypes.RetryCloudUpload or MessageTypes.SyncDeviceStates or MessageTypes.SaveDeviceConflictDecision or
+            MessageTypes.VerifyCloudTransfer or
             MessageTypes.StageRemoteBackup or MessageTypes.SaveProcessMapping or MessageTypes.DeleteProcessMapping or
             MessageTypes.UpdateSettings or MessageTypes.CreateMetadataBackup or MessageTypes.ExecuteMetadataRestore or
             MessageTypes.RollbackMetadataRestore or MessageTypes.RebuildRepository or MessageTypes.PathRemap or

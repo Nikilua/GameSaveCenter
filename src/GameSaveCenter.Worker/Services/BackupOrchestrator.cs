@@ -17,6 +17,7 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
     private readonly LudusaviClient _ludusavi;
     private readonly RcloneClient _rclone;
     private readonly CloudTransferCoordinator _cloudTransfers;
+    private readonly CloudTransferStateService _cloudState;
     private readonly TaskCoordinator _tasks;
     private readonly WorkerOptions _options;
     private readonly GameOperationLock _gameLock;
@@ -31,6 +32,7 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
         LudusaviClient ludusavi,
         RcloneClient rclone,
         CloudTransferCoordinator cloudTransfers,
+        CloudTransferStateService cloudState,
         TaskCoordinator tasks,
         WorkerOptions options,
         GameOperationLock gameLock,
@@ -42,6 +44,7 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
         _ludusavi = ludusavi;
         _rclone = rclone;
         _cloudTransfers = cloudTransfers;
+        _cloudState = cloudState;
         _tasks = tasks;
         _options = options;
         _gameLock = gameLock;
@@ -253,10 +256,16 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
 
                     if (!_options.SafeModeEnabled && _options.EnableCloudUpload && policy.UploadAfterBackup && _rclone.IsConfigured)
                     {
+                        // A fresh local backup starts a new cloud-copy attempt. Do not reuse an old
+                        // legacy retry counter from a previous backup, but keep the local backup intact.
+                        await _store.RemoveCloudRetryAsync(game.PlayniteId, ct).ConfigureAwait(false);
+                        await _cloudState.StartNewAsync(CloudTransferKind.Backup, game.PlayniteId, ct).ConfigureAwait(false);
                         await _store.UpdateGameCloudStateAsync(game.PlayniteId,"Pending",ct).ConfigureAwait(false);
+                        await _cloudState.MarkTransferringAsync(CloudTransferKind.Backup, game.PlayniteId, ct).ConfigureAwait(false);
                         await progress.ReportAsync(82, $"{requestLabel}：正在复制到云端").ConfigureAwait(false);
                         var cloud = await _cloudTransfers.RunUploadAsync("backup", transferToken => _rclone
-                            .CopyAsync(_options.LudusaviBackupDirectory, Path.Combine(_options.DeviceStorageKey, "Saves"), transferToken), ct)
+                            .CopyAsync(_options.LudusaviBackupDirectory, Path.Combine(_options.DeviceStorageKey, "Saves"), transferToken), ct,
+                            CloudTransferStateService.GetTransferKey(CloudTransferKind.Backup, game.PlayniteId))
                             .ConfigureAwait(false);
                         if (!cloud.Success)
                         {
@@ -270,6 +279,7 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
                         }
                         await _store.RemoveCloudRetryAsync(game.PlayniteId,ct).ConfigureAwait(false);
                         await _store.UpdateGameCloudStateAsync(game.PlayniteId,"Uploaded",ct).ConfigureAwait(false);
+                        await _cloudState.MarkUploadedAsync(CloudTransferKind.Backup, game.PlayniteId, ct).ConfigureAwait(false);
                     }
 
                     var completion = change switch
@@ -494,9 +504,11 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
                 throw new WorkerOperationException("BACKUP_DIRECTORY_MISSING","本地 Ludusavi 备份目录不存在，无法重试上传。",_options.LudusaviBackupDirectory);
 
             await _store.UpdateGameCloudStateAsync(game.PlayniteId,"Pending",ct).ConfigureAwait(false);
+            await _cloudState.MarkTransferringAsync(CloudTransferKind.Backup, game.PlayniteId, ct).ConfigureAwait(false);
             await progress.ReportAsync(10,"正在重新复制本地备份到云端").ConfigureAwait(false);
             var cloud=await _cloudTransfers.RunUploadAsync("backup retry",transferToken=>_rclone.CopyAsync(
-                _options.LudusaviBackupDirectory,Path.Combine(_options.DeviceStorageKey,"Saves"),transferToken),ct).ConfigureAwait(false);
+                _options.LudusaviBackupDirectory,Path.Combine(_options.DeviceStorageKey,"Saves"),transferToken),ct,
+                CloudTransferStateService.GetTransferKey(CloudTransferKind.Backup, game.PlayniteId)).ConfigureAwait(false);
             if(!cloud.Success)
             {
                 var failure = RcloneFailureClassifier.Classify(cloud.StandardError);
@@ -506,6 +518,7 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
             }
             await _store.RemoveCloudRetryAsync(game.PlayniteId,ct).ConfigureAwait(false);
             await _store.UpdateGameCloudStateAsync(game.PlayniteId,"Uploaded",ct).ConfigureAwait(false);
+            await _cloudState.MarkUploadedAsync(CloudTransferKind.Backup, game.PlayniteId, ct).ConfigureAwait(false);
             await progress.ReportAsync(100,"云端复制重试完成").ConfigureAwait(false);
         },token).ConfigureAwait(false);
         return result;
@@ -517,8 +530,13 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
         if (!RcloneFailureClassifier.IsRetryable(errorCode))
         {
             await _store.RemoveCloudRetryAsync(playniteId, token).ConfigureAwait(false);
-            await _store.UpdateGameCloudStateAsync(playniteId, "Failed", token).ConfigureAwait(false);
+            await _store.UpdateGameCloudStateAsync(playniteId,
+                string.Equals(errorCode, "RCLONE_AUTH_FAILED", StringComparison.OrdinalIgnoreCase) ? "AuthenticationRequired" : "Failed", token).ConfigureAwait(false);
             await _store.AppendAuditAsync("CloudRetry", $"云端复制失败（{errorCode}），未安排自动重试", error, token).ConfigureAwait(false);
+            if (string.Equals(errorCode, "RCLONE_AUTH_FAILED", StringComparison.OrdinalIgnoreCase))
+                await _cloudState.MarkAuthenticationRequiredAsync(CloudTransferKind.Backup, playniteId, errorCode, error, token).ConfigureAwait(false);
+            else
+                await _cloudState.MarkFailedAsync(CloudTransferKind.Backup, playniteId, errorCode, error, token).ConfigureAwait(false);
             return;
         }
         var existing = await _store.GetCloudRetryAsync(playniteId, token).ConfigureAwait(false);
@@ -528,6 +546,7 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
             await _store.RemoveCloudRetryAsync(playniteId, token).ConfigureAwait(false);
             await _store.UpdateGameCloudStateAsync(playniteId, "Failed", token).ConfigureAwait(false);
             await _store.AppendAuditAsync("CloudRetry", $"云端复制的 {CloudRetryPolicy.MaximumAutomaticRetries} 次自动重试均失败，已停止自动重试", error, token).ConfigureAwait(false);
+            await _cloudState.MarkFailedAsync(CloudTransferKind.Backup, playniteId, errorCode, error, token).ConfigureAwait(false);
             return;
         }
 
@@ -539,6 +558,7 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
             LastError = error, CreatedUtc = existing?.CreatedUtc ?? now, UpdatedUtc = now
         };
         await _store.UpsertCloudRetryAsync(entry, token).ConfigureAwait(false);
+        await _cloudState.RecordRetryScheduledAsync(CloudTransferKind.Backup, playniteId, retryCount, entry.NextAttemptUtc, errorCode, error, token).ConfigureAwait(false);
         await _store.UpdateGameCloudStateAsync(playniteId, "RetryScheduled", token).ConfigureAwait(false);
         await _store.AppendAuditAsync("CloudRetry", $"云端复制失败，已排程第 {retryCount} 次自动重试", error, token).ConfigureAwait(false);
     }

@@ -7,6 +7,7 @@ using GameSaveCenter.Worker.Configuration;
 using GameSaveCenter.Worker.Infrastructure;
 using GameSaveCenter.Worker.Persistence;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace GameSaveCenter.Worker.Services;
 
@@ -27,12 +28,18 @@ public sealed class MediaSyncService
     private readonly SqliteStateStore _store;
     private readonly RcloneClient _rclone;
     private readonly CloudTransferCoordinator _cloudTransfers;
+    private readonly CloudTransferStateService _cloudState;
     private readonly TaskCoordinator _tasks;
     private readonly GameOperationLock _gameLock;
     private readonly ILogger<MediaSyncService> _logger;
 
     public MediaSyncService(WorkerOptions options,GameCatalogService catalog,SqliteStateStore store,RcloneClient rclone,CloudTransferCoordinator cloudTransfers,TaskCoordinator tasks,GameOperationLock gameLock,ILogger<MediaSyncService> logger)
-    { _options=options;_catalog=catalog;_store=store;_rclone=rclone;_cloudTransfers=cloudTransfers;_tasks=tasks;_gameLock=gameLock;_logger=logger; }
+        : this(options,catalog,store,rclone,cloudTransfers,new CloudTransferStateService(store,options,rclone,cloudTransfers,NullLogger<CloudTransferStateService>.Instance),tasks,gameLock,logger)
+    {
+    }
+
+    public MediaSyncService(WorkerOptions options,GameCatalogService catalog,SqliteStateStore store,RcloneClient rclone,CloudTransferCoordinator cloudTransfers,CloudTransferStateService cloudState,TaskCoordinator tasks,GameOperationLock gameLock,ILogger<MediaSyncService> logger)
+    { _options=options;_catalog=catalog;_store=store;_rclone=rclone;_cloudTransfers=cloudTransfers;_cloudState=cloudState;_tasks=tasks;_gameLock=gameLock;_logger=logger; }
 
     public async Task<List<TaskStatusDto>> SyncAsync(MediaSyncRequestDto request,CancellationToken token)
     {
@@ -239,17 +246,25 @@ public sealed class MediaSyncService
             var shouldUpload = copied > 0 || pendingCloudGames.Contains(game.PlayniteId, StringComparer.OrdinalIgnoreCase);
             if(!_options.SafeModeEnabled&&_options.EnableCloudUpload&&(request.UploadAfterSync||policy.UploadAfterBackup)&&shouldUpload&&_rclone.IsConfigured)
             {
+                if(copied>0) await _cloudState.StartNewAsync(CloudTransferKind.Media,game.PlayniteId,ct).ConfigureAwait(false);
                 await _store.UpdateMediaCloudStateAsync(game.PlayniteId,"Pending",ct).ConfigureAwait(false);
+                await _cloudState.MarkTransferringAsync(CloudTransferKind.Media,game.PlayniteId,ct).ConfigureAwait(false);
                 await progress.ReportAsync(90,"正在复制媒体到云端").ConfigureAwait(false);
                 var gameDirectory=Path.Combine(_options.MediaArchiveDirectory,Sanitize(game.Name));
                 var remote=Path.Combine(Environment.MachineName,"Media",Sanitize(game.Name));
-                var cloud=await _cloudTransfers.RunUploadAsync("media",transferToken=>_rclone.CopyAsync(gameDirectory,remote,transferToken),ct).ConfigureAwait(false);
+                var cloud=await _cloudTransfers.RunUploadAsync("media",transferToken=>_rclone.CopyAsync(gameDirectory,remote,transferToken),ct,
+                    CloudTransferStateService.GetTransferKey(CloudTransferKind.Media,game.PlayniteId)).ConfigureAwait(false);
                 if(!cloud.Success)
                 {
-                    await _store.UpdateMediaCloudStateAsync(game.PlayniteId,"Failed",ct).ConfigureAwait(false);
+                    var failure=RcloneFailureClassifier.Classify(cloud.StandardError);
+                    var errorCode=RcloneFailureClassifier.GetErrorCode(failure);
+                    await _cloudState.ScheduleAutomaticRetryAsync(CloudTransferKind.Media,game.PlayniteId,errorCode,cloud.StandardError,ct).ConfigureAwait(false);
+                    await _store.UpdateMediaCloudStateAsync(game.PlayniteId,
+                        errorCode == "RCLONE_AUTH_FAILED" ? "AuthenticationRequired" : RcloneFailureClassifier.IsRetryable(errorCode) ? "RetryScheduled" : "Failed",ct).ConfigureAwait(false);
                     throw new InvalidOperationException("媒体已在本地归档，但云端复制失败："+cloud.StandardError);
                 }
                 await _store.UpdateMediaCloudStateAsync(game.PlayniteId,"Synced",ct).ConfigureAwait(false);
+                await _cloudState.MarkUploadedAsync(CloudTransferKind.Media,game.PlayniteId,ct).ConfigureAwait(false);
             }
             await progress.ReportAsync(100,$"媒体同步完成，新增 {copied} 个文件").ConfigureAwait(false);
         },token,request.NotificationSessionId);
@@ -267,6 +282,7 @@ public sealed class MediaSyncService
             var session=await ResolveSharedSessionAsync(request.SessionId,ct).ConfigureAwait(false);
             var assigned=0;var inbox=0;var index=0;
             var assignedGameIds=new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var newlyAssignedGameIds=new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach(var candidate in candidates)
             {
                 ct.ThrowIfCancellationRequested();index++;
@@ -279,6 +295,7 @@ public sealed class MediaSyncService
                     {
                         assigned++;
                         assignedGameIds.Add(target.PlayniteId);
+                        newlyAssignedGameIds.Add(target.PlayniteId);
                     }
                 }
                 if(index%25==0)await progress.ReportAsync(Math.Min(90,5+(int)(85d*index/Math.Max(1,candidates.Count))),$"已检查 {index}/{candidates.Count}，待归类 {inbox}").ConfigureAwait(false);
@@ -301,18 +318,67 @@ public sealed class MediaSyncService
                     await progress.ReportAsync(94,$"正在复制 {game.Name} 的公共媒体到云端").ConfigureAwait(false);
                     var gameDirectory=Path.Combine(_options.MediaArchiveDirectory,Sanitize(game.Name));
                     var remote=Path.Combine(Environment.MachineName,"Media",Sanitize(game.Name));
+                    if(newlyAssignedGameIds.Contains(gameId))
+                        await _cloudState.StartNewAsync(CloudTransferKind.Media,gameId,ct).ConfigureAwait(false);
                     await _store.UpdateMediaCloudStateAsync(gameId,"Pending",ct).ConfigureAwait(false);
-                    var cloud=await _cloudTransfers.RunUploadAsync("media inbox",transferToken=>_rclone.CopyAsync(gameDirectory,remote,transferToken),ct).ConfigureAwait(false);
+                    await _cloudState.MarkTransferringAsync(CloudTransferKind.Media,gameId,ct).ConfigureAwait(false);
+                    var cloud=await _cloudTransfers.RunUploadAsync("media inbox",transferToken=>_rclone.CopyAsync(gameDirectory,remote,transferToken),ct,
+                        CloudTransferStateService.GetTransferKey(CloudTransferKind.Media,gameId)).ConfigureAwait(false);
                     if(!cloud.Success)
                     {
-                        await _store.UpdateMediaCloudStateAsync(gameId,"Failed",ct).ConfigureAwait(false);
+                        var failure=RcloneFailureClassifier.Classify(cloud.StandardError);
+                        var errorCode=RcloneFailureClassifier.GetErrorCode(failure);
+                        await _cloudState.ScheduleAutomaticRetryAsync(CloudTransferKind.Media,gameId,errorCode,cloud.StandardError,ct).ConfigureAwait(false);
+                        await _store.UpdateMediaCloudStateAsync(gameId,
+                            errorCode == "RCLONE_AUTH_FAILED" ? "AuthenticationRequired" : RcloneFailureClassifier.IsRetryable(errorCode) ? "RetryScheduled" : "Failed",ct).ConfigureAwait(false);
                         throw new InvalidOperationException($"{game.Name} 的公共媒体已在本地归档，但云端复制失败：{cloud.StandardError}");
                     }
                     await _store.UpdateMediaCloudStateAsync(gameId,"Synced",ct).ConfigureAwait(false);
+                    await _cloudState.MarkUploadedAsync(CloudTransferKind.Media,gameId,ct).ConfigureAwait(false);
                 }
             }
             await progress.ReportAsync(100,$"公共媒体扫描完成，自动归类 {assigned} 个，待人工归类 {inbox} 个").ConfigureAwait(false);
         },token,request.NotificationSessionId);
+
+    /// <summary>Retries only the safe one-way media copy; it never rescans or deletes captures.</summary>
+    public async Task<TaskStatusDto> RetryCloudUploadAsync(string playniteId, CancellationToken token)
+    {
+        var game=await _catalog.GetGameAsync(playniteId,token).ConfigureAwait(false)
+            ??throw new WorkerOperationException("CLOUD_GAME_NOT_FOUND","找不到需要重试媒体云端上传的游戏。",playniteId);
+        var policy=await _store.GetPolicyAsync(playniteId,token).ConfigureAwait(false);
+        if(!policy.UploadAfterBackup)
+        {
+            await _cloudState.MarkPausedAsync(CloudTransferKind.Media,playniteId,"该游戏策略未允许媒体上传，已暂停自动重试。",token).ConfigureAwait(false);
+            return new TaskStatusDto{TaskType="CloudUpload",GameId=playniteId,GameName=game.Name,State=TaskState.Cancelled,Message="媒体云端上传已按策略暂停",CreatedUtc=DateTime.UtcNow,FinishedUtc=DateTime.UtcNow};
+        }
+        using var lease=await _gameLock.AcquireAsync(playniteId,GameOperationKind.CloudUpload,TimeSpan.FromSeconds(10),token).ConfigureAwait(false);
+        if(lease==null)throw new WorkerOperationException("GAME_OPERATION_BUSY","该游戏已有操作正在执行，已跳过媒体云端上传重试。",playniteId);
+        return await _tasks.RunAsync("CloudUpload",game.PlayniteId,game.Name,async(progress,ct)=>
+        {
+            if(_options.SafeModeEnabled)throw new WorkerOperationException("SAFE_MODE_ENABLED","安全模式已开启，云端上传已暂停。请先关闭安全模式。","SafeMode");
+            if(!_options.EnableCloudUpload||!_rclone.IsConfigured)throw new WorkerOperationException("RCLONE_NOT_CONFIGURED","云端复制尚未启用或 Rclone 配置不可用。",_options.RcloneDestination);
+            var local=Path.Combine(_options.MediaArchiveDirectory,Sanitize(game.Name));
+            if(!Directory.Exists(local))throw new WorkerOperationException("MEDIA_DIRECTORY_MISSING","本地媒体归档目录不存在，无法重试上传。",local);
+            await _store.UpdateMediaCloudStateAsync(playniteId,"Pending",ct).ConfigureAwait(false);
+            await _cloudState.MarkTransferringAsync(CloudTransferKind.Media,playniteId,ct).ConfigureAwait(false);
+            await progress.ReportAsync(10,"正在重新复制媒体到云端").ConfigureAwait(false);
+            var remote=Path.Combine(Environment.MachineName,"Media",Sanitize(game.Name));
+            var cloud=await _cloudTransfers.RunUploadAsync("media retry",transferToken=>_rclone.CopyAsync(local,remote,transferToken),ct,
+                CloudTransferStateService.GetTransferKey(CloudTransferKind.Media,playniteId)).ConfigureAwait(false);
+            if(!cloud.Success)
+            {
+                var failure=RcloneFailureClassifier.Classify(cloud.StandardError);
+                var errorCode=RcloneFailureClassifier.GetErrorCode(failure);
+                await _cloudState.ScheduleAutomaticRetryAsync(CloudTransferKind.Media,playniteId,errorCode,cloud.StandardError,ct).ConfigureAwait(false);
+                await _store.UpdateMediaCloudStateAsync(playniteId,
+                    errorCode == "RCLONE_AUTH_FAILED" ? "AuthenticationRequired" : RcloneFailureClassifier.IsRetryable(errorCode) ? "RetryScheduled" : "Failed",ct).ConfigureAwait(false);
+                throw new WorkerOperationException(errorCode,$"媒体云端复制重试失败：{RcloneFailureClassifier.GetUserMessage(failure)}",cloud.StandardError);
+            }
+            await _store.UpdateMediaCloudStateAsync(playniteId,"Synced",ct).ConfigureAwait(false);
+            await _cloudState.MarkUploadedAsync(CloudTransferKind.Media,playniteId,ct).ConfigureAwait(false);
+            await progress.ReportAsync(100,"媒体云端复制重试完成").ConfigureAwait(false);
+        },token).ConfigureAwait(false);
+    }
 
     private async Task<bool> ArchiveCandidateAsync(string path,MediaSourceKind source,GameDescriptorDto? game,string classificationReason,CancellationToken token)
     {

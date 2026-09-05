@@ -578,9 +578,12 @@ WHERE playnite_id=$id;",
         command.CommandText = @"
 SELECT g.descriptor_json,g.ludusavi_name,g.match_confidence,
        CASE
+           WHEN g.cloud_state='AuthenticationRequired' OR COALESCE(m.authentication_required_count,0)>0 THEN 'AuthenticationRequired'
+           WHEN g.cloud_state='CheckFailed' OR COALESCE(m.check_failed_count,0)>0 THEN 'CheckFailed'
            WHEN g.cloud_state='Failed' OR COALESCE(m.failed_count,0)>0 THEN 'Failed'
            WHEN g.cloud_state='RetryScheduled' OR COALESCE(m.retry_count,0)>0 THEN 'RetryScheduled'
            WHEN g.cloud_state='Pending' OR COALESCE(m.pending_count,0)>0 THEN 'Pending'
+           WHEN g.cloud_state='RemoteVerified' OR COALESCE(m.remote_verified_count,0)>0 THEN 'RemoteVerified'
            WHEN g.cloud_state='Uploaded' OR COALESCE(m.synced_count,0)>0 THEN 'Uploaded'
            ELSE COALESCE(g.cloud_state,'Disabled')
        END AS cloud_state,
@@ -614,8 +617,11 @@ LEFT JOIN (
 LEFT JOIN (
     SELECT playnite_id,COUNT(*) AS media_count,MAX(captured_utc) AS last_media_utc,
            SUM(CASE WHEN cloud_state='Failed' THEN 1 ELSE 0 END) AS failed_count,
+           SUM(CASE WHEN cloud_state='AuthenticationRequired' THEN 1 ELSE 0 END) AS authentication_required_count,
+           SUM(CASE WHEN cloud_state='CheckFailed' THEN 1 ELSE 0 END) AS check_failed_count,
            SUM(CASE WHEN cloud_state='RetryScheduled' THEN 1 ELSE 0 END) AS retry_count,
            SUM(CASE WHEN cloud_state='Pending' THEN 1 ELSE 0 END) AS pending_count,
+           SUM(CASE WHEN cloud_state='RemoteVerified' THEN 1 ELSE 0 END) AS remote_verified_count,
            SUM(CASE WHEN cloud_state IN ('Synced','Uploaded') THEN 1 ELSE 0 END) AS synced_count
     FROM media WHERE classification_state='Assigned' GROUP BY playnite_id
 ) m ON m.playnite_id=g.playnite_id
@@ -1195,6 +1201,7 @@ CREATE TABLE IF NOT EXISTS trainer_releases(release_id TEXT PRIMARY KEY,catalog_
 CREATE TABLE IF NOT EXISTS process_mappings(executable_name TEXT PRIMARY KEY,playnite_id TEXT NOT NULL,game_name TEXT NOT NULL,enabled INTEGER NOT NULL DEFAULT 1,created_utc TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS device_conflict_decisions(playnite_id TEXT NOT NULL,remote_device TEXT NOT NULL,local_backup_id TEXT,remote_backup_id TEXT,decision TEXT NOT NULL,comment TEXT,decided_utc TEXT NOT NULL,PRIMARY KEY(playnite_id,remote_device));
 CREATE TABLE IF NOT EXISTS cloud_retry_queue(playnite_id TEXT PRIMARY KEY,attempt_count INTEGER NOT NULL,next_attempt_utc TEXT NOT NULL,last_error TEXT,created_utc TEXT NOT NULL,updated_utc TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS cloud_transfer_queue(transfer_key TEXT PRIMARY KEY,transfer_kind TEXT NOT NULL,playnite_id TEXT NOT NULL,state TEXT NOT NULL,attempt_count INTEGER NOT NULL DEFAULT 0,next_attempt_utc TEXT,last_attempt_utc TEXT,last_error_code TEXT,last_error TEXT,created_utc TEXT NOT NULL,updated_utc TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS health_inspection_state(state_id TEXT PRIMARY KEY,enabled INTEGER NOT NULL DEFAULT 1,interval_minutes INTEGER NOT NULL DEFAULT 1440,stale_after_days INTEGER NOT NULL DEFAULT 30,max_duration_seconds INTEGER NOT NULL DEFAULT 300,next_due_utc TEXT,last_started_utc TEXT,last_completed_utc TEXT,last_successful_utc TEXT,cursor_playnite_id TEXT NOT NULL DEFAULT '',cursor_backup_id TEXT NOT NULL DEFAULT '',last_playnite_id TEXT NOT NULL DEFAULT '',last_backup_id TEXT NOT NULL DEFAULT '',last_status TEXT NOT NULL DEFAULT 'NeverRun',last_summary TEXT NOT NULL DEFAULT '',deferred_count INTEGER NOT NULL DEFAULT 0,failure_count INTEGER NOT NULL DEFAULT 0,updated_utc TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS media_file_signatures(path TEXT PRIMARY KEY,length INTEGER NOT NULL,last_write_utc TEXT NOT NULL,sha256 TEXT NOT NULL,sample_hash TEXT NOT NULL DEFAULT '',updated_utc TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS backup_all_jobs(job_id TEXT PRIMARY KEY,request_json TEXT NOT NULL,state INTEGER NOT NULL,progress INTEGER NOT NULL,message TEXT NOT NULL,completed_game_ids_json TEXT NOT NULL,current_game_id TEXT,created_utc TEXT NOT NULL,started_utc TEXT,finished_utc TEXT,worker_session_id TEXT NOT NULL,error_code TEXT,error_message TEXT);
@@ -1215,6 +1222,7 @@ CREATE INDEX IF NOT EXISTS ix_game_tools_game ON game_tools(playnite_id,tool_typ
 CREATE INDEX IF NOT EXISTS ix_game_tool_versions_tool ON game_tool_versions(tool_id,created_utc DESC);
 CREATE INDEX IF NOT EXISTS ix_trainer_catalog_title ON trainer_catalog(normalized_title);
 CREATE INDEX IF NOT EXISTS ix_cloud_retry_due ON cloud_retry_queue(next_attempt_utc);
+CREATE INDEX IF NOT EXISTS ix_cloud_transfer_due ON cloud_transfer_queue(transfer_kind,state,next_attempt_utc);
 CREATE INDEX IF NOT EXISTS ix_backup_all_jobs_state_created ON backup_all_jobs(state,created_utc DESC);
 ";
 }

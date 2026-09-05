@@ -162,6 +162,11 @@ namespace GameSaveCenter.Contracts
         public string CloudStateDisplay => CloudState switch
         {
             "Uploaded" => "已上传",
+            "AuthenticationRequired" => "认证需处理",
+            "Transferring" => "传输中",
+            "RemoteVerified" => "已校验",
+            "CheckFailed" => "校验失败",
+            "Paused" => "已暂停",
             "Failed" => "上传失败",
             "Disabled" => "未启用",
             "Pending" => "待上传",

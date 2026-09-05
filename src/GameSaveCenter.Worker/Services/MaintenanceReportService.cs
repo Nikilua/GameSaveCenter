@@ -1,8 +1,10 @@
 using System.Text;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Worker.Configuration;
+using GameSaveCenter.Worker.Infrastructure;
 using GameSaveCenter.Worker.Persistence;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace GameSaveCenter.Worker.Services;
 
@@ -18,6 +20,7 @@ public sealed class MaintenanceReportService
     private readonly LocalMirrorService _localMirror;
     private readonly IntegrityCheckService _integrityCheck;
     private readonly RetentionSimulationService _retentionSimulation;
+    private readonly CloudTransferStateService _cloudTransfers;
     private readonly ILogger<MaintenanceReportService> _logger;
 
     public MaintenanceReportService(
@@ -28,6 +31,25 @@ public sealed class MaintenanceReportService
         IntegrityCheckService integrityCheck,
         RetentionSimulationService retentionSimulation,
         ILogger<MaintenanceReportService> logger)
+        : this(options,store,storageAnalysis,localMirror,integrityCheck,retentionSimulation,
+            new CloudTransferStateService(
+                store,options,
+                new RcloneClient(options,new ExternalProcessRunner(NullLogger<ExternalProcessRunner>.Instance)),
+                new CloudTransferCoordinator(NullLogger<CloudTransferCoordinator>.Instance),
+                NullLogger<CloudTransferStateService>.Instance),
+            logger)
+    {
+    }
+
+    public MaintenanceReportService(
+        WorkerOptions options,
+        SqliteStateStore store,
+        StorageAnalysisService storageAnalysis,
+        LocalMirrorService localMirror,
+        IntegrityCheckService integrityCheck,
+        RetentionSimulationService retentionSimulation,
+        CloudTransferStateService cloudTransfers,
+        ILogger<MaintenanceReportService> logger)
     {
         _options = options;
         _store = store;
@@ -35,6 +57,7 @@ public sealed class MaintenanceReportService
         _localMirror = localMirror;
         _integrityCheck = integrityCheck;
         _retentionSimulation = retentionSimulation;
+        _cloudTransfers = cloudTransfers;
         _logger = logger;
     }
 
@@ -48,6 +71,7 @@ public sealed class MaintenanceReportService
         var mirror = await _localMirror.StatusAsync(token).ConfigureAwait(false);
         var quarantine = await _retentionSimulation.GetQuarantineStatusAsync(token).ConfigureAwait(false);
         var inspection = await _store.GetHealthInspectionStateAsync(token).ConfigureAwait(false);
+        var cloudTransfers = await _cloudTransfers.GetStatusAsync(token).ConfigureAwait(false);
 
         var ready = rows.Count(x => x.RestoreReadiness?.Status == RestoreReadinessStatus.Ready);
         var warning = rows.Count(x => x.RestoreReadiness?.Status == RestoreReadinessStatus.Warning);
@@ -67,7 +91,9 @@ public sealed class MaintenanceReportService
         builder.AppendLine($"备份仓库：{(storage.BackupDirectoryAvailable ? "可访问" : "不可访问")}，目录实测 {storage.RepositoryBytesDisplay}");
         builder.AppendLine($"恢复点：Ready {ready}，Warning {warning}，Corrupted {corrupted}");
         builder.AppendLine($"最近游戏：已保护 {protectedGames}，需关注 {attention}，已匹配存档 {counts.Matched}");
-        builder.AppendLine($"云端：{CloudDisplay()}");
+        builder.AppendLine($"云端：{CloudDisplay()}；{cloudTransfers.SummaryDisplay}；{cloudTransfers.QueueControlDisplay}");
+        foreach (var item in cloudTransfers.Items.Where(x => x.State is "RetryScheduled" or "AuthenticationRequired" or "CheckFailed" or "Failed").Take(8))
+            builder.AppendLine($"云端详情：{item.Kind} · {item.GameName} · {item.DetailDisplay}");
         builder.AppendLine($"本地镜像：{mirror.Message}");
         builder.AppendLine($"工具：{missingTools} 个外部路径失效");
         builder.AppendLine($"存储：{storagePercent:0.#}% used（{storage.VolumeFreeDisplay} 剩余）");

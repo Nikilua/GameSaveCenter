@@ -11,19 +11,27 @@ public sealed class CloudTransferCoordinator
 {
     private readonly SemaphoreSlim gate=new(1,1);
     private readonly ILogger<CloudTransferCoordinator> logger;
+    private readonly System.Collections.Concurrent.ConcurrentDictionary<string,CloudTransferActivity> active=new(StringComparer.OrdinalIgnoreCase);
 
     public CloudTransferCoordinator(ILogger<CloudTransferCoordinator> logger)=>this.logger=logger;
 
-    public async Task<T> RunUploadAsync<T>(string operation,Func<CancellationToken,Task<T>> action,CancellationToken token)
+    public async Task<T> RunUploadAsync<T>(string operation,Func<CancellationToken,Task<T>> action,CancellationToken token,string? transferKey=null)
     {
         await gate.WaitAsync(token).ConfigureAwait(false);
+        if(!string.IsNullOrWhiteSpace(transferKey)) active[transferKey]=new CloudTransferActivity{TransferKey=transferKey,Operation=operation,StartedUtc=DateTime.UtcNow};
         try
         {
             logger.LogDebug("Cloud transfer gate acquired for {Operation}",operation);
             return await action(token).ConfigureAwait(false);
         }
-        finally { gate.Release(); }
+        finally
+        {
+            if(!string.IsNullOrWhiteSpace(transferKey)) active.TryRemove(transferKey,out _);
+            gate.Release();
+        }
     }
+
+    public IReadOnlyList<CloudTransferActivity> GetActiveTransfers()=>active.Values.ToList();
 
     /// <summary>Waits for active uploads and blocks new uploads until the returned lease is disposed.</summary>
     public async Task<IDisposable> PauseForRestoreAsync(CancellationToken token)
@@ -48,4 +56,11 @@ public sealed class CloudTransferCoordinator
             logger.LogInformation("Cloud transfer gate released after restore");
         }
     }
+}
+
+public sealed class CloudTransferActivity
+{
+    public string TransferKey { get; set; } = string.Empty;
+    public string Operation { get; set; } = string.Empty;
+    public DateTime StartedUtc { get; set; }
 }

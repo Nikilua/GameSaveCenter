@@ -20,7 +20,7 @@ public sealed class IntegrityCheckService
         "games", "game_policies", "backup_policy_templates", "sessions", "tasks", "findings",
         "backup_versions", "media", "media_sources", "save_candidates", "audit_log",
         "game_tools", "game_tool_versions", "protection_prompt_states", "trainer_catalog",
-        "trainer_releases", "process_mappings", "device_conflict_decisions", "cloud_retry_queue",
+        "trainer_releases", "process_mappings", "device_conflict_decisions", "cloud_retry_queue", "cloud_transfer_queue",
         "health_inspection_state"
     };
 

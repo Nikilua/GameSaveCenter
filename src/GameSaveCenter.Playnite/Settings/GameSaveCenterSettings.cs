@@ -60,6 +60,9 @@ namespace GameSaveCenter.Playnite.Settings
         public bool EnablePlatformAdjacentMedia { get; set; } = true;
         public bool EnableCustomMedia { get; set; } = true;
         public bool EnableCloudUpload { get; set; }
+        public bool CloudUploadQueuePaused { get; set; }
+        public int CloudUploadAllowedStartMinute { get; set; }
+        public int CloudUploadAllowedEndMinute { get; set; } = 1440;
         public bool EnableDashboardAutoRefresh { get; set; } = true;
         public bool EnableTaskNotifications { get; set; } = true;
         public NotificationLevel NotificationLevel { get; set; } = NotificationLevel.Summary;
@@ -221,6 +224,9 @@ namespace GameSaveCenter.Playnite.Settings
             EnablePlatformAdjacentMedia = EnablePlatformAdjacentMedia,
             EnableCustomMedia = EnableCustomMedia,
             EnableCloudUpload = EnableCloudUpload,
+            CloudUploadQueuePaused = CloudUploadQueuePaused,
+            CloudUploadAllowedStartMinute = CloudUploadAllowedStartMinute,
+            CloudUploadAllowedEndMinute = CloudUploadAllowedEndMinute,
             BackupFormat = BackupFormat,
             Compression = Compression,
             CompressionLevel = CompressionLevel,
@@ -295,6 +301,9 @@ namespace GameSaveCenter.Playnite.Settings
             EnablePlatformAdjacentMedia = other.EnablePlatformAdjacentMedia;
             EnableCustomMedia = other.EnableCustomMedia;
             EnableCloudUpload = other.EnableCloudUpload;
+            CloudUploadQueuePaused = other.CloudUploadQueuePaused;
+            CloudUploadAllowedStartMinute = other.CloudUploadAllowedStartMinute;
+            CloudUploadAllowedEndMinute = other.CloudUploadAllowedEndMinute <= 0 ? 1440 : other.CloudUploadAllowedEndMinute;
             EnableDashboardAutoRefresh = other.EnableDashboardAutoRefresh;
             EnableTaskNotifications = other.EnableTaskNotifications;
             NotificationLevel = Enum.IsDefined(typeof(NotificationLevel), other.NotificationLevel)
@@ -346,6 +355,8 @@ namespace GameSaveCenter.Playnite.Settings
             if (value.DifferentialBackupLimit < 0 || value.DifferentialBackupLimit > 255) errors.Add("差异版本数超出 0–255");
             if (value.HealthInspectionIntervalMinutes < 15 || value.HealthInspectionIntervalMinutes > 10080) errors.Add("恢复巡检间隔超出 15–10080");
             if (value.HealthInspectionStaleAfterDays < 1 || value.HealthInspectionStaleAfterDays > 3650) errors.Add("恢复验证有效期超出 1–3650");
+            if (value.CloudUploadAllowedStartMinute < 0 || value.CloudUploadAllowedStartMinute > 1439) errors.Add("云端允许时段起始分钟超出 0–1439");
+            if (value.CloudUploadAllowedEndMinute < 1 || value.CloudUploadAllowedEndMinute > 1440) errors.Add("云端允许时段结束分钟超出 1–1440");
             if (value.CompressionLevel < -7 || value.CompressionLevel > 22) errors.Add("压缩等级超出 -7–22");
             if (!Enum.IsDefined(typeof(GameSaveCenterThemeMode), value.ThemeMode)) errors.Add("未知主题模式");
             if (!Enum.IsDefined(typeof(BackupStorageFormat), value.BackupFormat)) errors.Add("未知备份格式");

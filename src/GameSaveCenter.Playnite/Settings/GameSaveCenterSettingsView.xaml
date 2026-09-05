@@ -222,6 +222,28 @@
                         <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" Content="自定义来源" OnContent="开" OffContent="关" IsChecked="{Binding EnableCustomMedia}" Margin="0,4,14,4"/>
                     </WrapPanel>
                     <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" Content="完成本地任务后允许单向云端复制" OnContent="开" OffContent="关" IsChecked="{Binding EnableCloudUpload}" Margin="0,5"/>
+                    <Border Style="{DynamicResource GscRedesignSubCard}" Padding="12" Margin="0,3,0,4" IsEnabled="{Binding EnableCloudUpload}">
+                        <StackPanel>
+                            <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关" IsChecked="{Binding CloudUploadQueuePaused}" AutomationProperties.Name="暂停云端自动重试">
+                                <StackPanel>
+                                    <TextBlock Text="暂停云端自动重试队列" FontWeight="SemiBold"/>
+                                    <TextBlock Text="只暂停后台自动重试，手动备份/媒体同步仍可执行；恢复开关后会继续处理已保存队列。" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                </StackPanel>
+                            </ui:ToggleSwitch>
+                            <TextBlock Text="自动上传允许时段（本地时间）" FontWeight="SemiBold" Margin="0,10,0,0"/>
+                            <TextBlock Text="填写当天分钟数（0–1439 / 1–1440）；起始晚于结束表示跨午夜，默认 0–1440 为全天。" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,7"/>
+                            <UniformGrid Columns="2">
+                                <StackPanel Margin="0,0,10,0">
+                                    <TextBlock Text="起始分钟" Margin="0,0,0,4"/>
+                                    <TextBox Style="{StaticResource GscNumericTextBox}" infra:SelectAllOnKeyboardFocus.Enabled="True" ToolTip="允许 0–1439；例如 1320 表示 22:00"><TextBox.Text><Binding Path="CloudUploadAllowedStartMinute" UpdateSourceTrigger="LostFocus" ValidatesOnExceptions="True" NotifyOnValidationError="True"><Binding.ValidationRules><infra:IntegerRangeValidationRule Minimum="0" Maximum="1439"/></Binding.ValidationRules></Binding></TextBox.Text></TextBox>
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBlock Text="结束分钟（不含）" Margin="0,0,0,4"/>
+                                    <TextBox Style="{StaticResource GscNumericTextBox}" infra:SelectAllOnKeyboardFocus.Enabled="True" ToolTip="允许 1–1440；例如 120 表示 02:00"><TextBox.Text><Binding Path="CloudUploadAllowedEndMinute" UpdateSourceTrigger="LostFocus" ValidatesOnExceptions="True" NotifyOnValidationError="True"><Binding.ValidationRules><infra:IntegerRangeValidationRule Minimum="1" Maximum="1440"/></Binding.ValidationRules></Binding></TextBox.Text></TextBox>
+                                </StackPanel>
+                            </UniformGrid>
+                        </StackPanel>
+                    </Border>
                     <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" Content="管理面板打开时自动刷新任务与状态" OnContent="开" OffContent="关" IsChecked="{Binding EnableDashboardAutoRefresh}" Margin="0,5"/>
                     <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关" IsChecked="{Binding EnableTaskNotifications}" Margin="0,5" AutomationProperties.Name="任务完成或失败时显示 Playnite 通知">
                         <StackPanel>

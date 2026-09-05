@@ -15,6 +15,7 @@ public sealed class DashboardService
     private readonly GameSessionCoordinator _sessions;
     private readonly LudusaviClient _ludusavi;
     private readonly RcloneClient _rclone;
+    private readonly CloudTransferStateService _cloudTransfers;
     private readonly WorkerOptions _options;
     private readonly ILogger<DashboardService> _logger;
     private readonly GameHealthAssessmentService _health = new();
@@ -22,8 +23,8 @@ public sealed class DashboardService
     private string _cachedLudusaviVersion=string.Empty;
     private DateTime _versionCachedUtc=DateTime.MinValue;
 
-    public DashboardService(SqliteStateStore store,GameSessionCoordinator sessions,LudusaviClient ludusavi,RcloneClient rclone,WorkerOptions options,ILogger<DashboardService> logger)
-    { _store=store;_sessions=sessions;_ludusavi=ludusavi;_rclone=rclone;_options=options;_logger=logger; }
+    public DashboardService(SqliteStateStore store,GameSessionCoordinator sessions,LudusaviClient ludusavi,RcloneClient rclone,CloudTransferStateService cloudTransfers,WorkerOptions options,ILogger<DashboardService> logger)
+    { _store=store;_sessions=sessions;_ludusavi=ludusavi;_rclone=rclone;_cloudTransfers=cloudTransfers;_options=options;_logger=logger; }
 
     public async Task<DashboardSnapshotDto> GetAsync(CancellationToken token)
     {
@@ -38,6 +39,7 @@ public sealed class DashboardService
         var counts=await _store.GetCountsAsync(token).ConfigureAwait(false);
         var audit=await _store.GetAuditAsync(100,token).ConfigureAwait(false);
         var healthInspection=await _store.GetHealthInspectionStateAsync(token).ConfigureAwait(false);
+        var cloudTransfers=await _cloudTransfers.GetStatusAsync(token).ConfigureAwait(false);
         // The first dashboard paint must not wait for an external executable.  A cold
         // Ludusavi process can take seconds to start on a large Playnite profile, while
         // the version is informational and is already cached for six hours after the
@@ -60,7 +62,7 @@ public sealed class DashboardService
             LudusaviExecutable=_options.LudusaviExecutable,LudusaviBackupDirectory=_options.LudusaviBackupDirectory,BackupFormat=_options.BackupFormat,
             ManagedGames=counts.Games,MatchedGames=counts.Matched,
             RunningGames=active.Count,PendingCloudTasks=taskSummary.PendingCloudCount,TaskSummary=taskSummary,TodaySucceededTaskCount=todaySucceededTaskCount,
-            UnassignedMediaCount=counts.Unassigned,HealthInspection=healthInspection,RecentTasks=tasks,Findings=findings,RecentAudit=audit,RecentActivities=activities
+            UnassignedMediaCount=counts.Unassigned,HealthInspection=healthInspection,CloudTransfers=cloudTransfers,RecentTasks=tasks,Findings=findings,RecentAudit=audit,RecentActivities=activities
         };
         foreach(var record in games)
         {

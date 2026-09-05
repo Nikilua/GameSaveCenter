@@ -42,7 +42,8 @@ namespace GameSaveCenter.Contracts
             "LocalMirror",
             "MaintenanceReport",
             "HealthInspection",
-            "MediaInboxBatch"
+            "MediaInboxBatch",
+            "CloudTransferQueue"
         };
     }
 }

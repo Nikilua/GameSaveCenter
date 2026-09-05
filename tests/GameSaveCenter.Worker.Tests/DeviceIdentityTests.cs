@@ -68,4 +68,23 @@ public sealed class DeviceIdentityTests
         Assert.Equal(15, options.ToDto().HealthInspectionIntervalMinutes);
         Assert.Equal(3650, options.ToDto().HealthInspectionStaleAfterDays);
     }
+
+    [Fact]
+    public void CloudQueueWindowSettingsAreClampedAndRoundTrip()
+    {
+        var options = new WorkerOptions();
+        options.Apply(new WorkerSettingsDto
+        {
+            CloudUploadQueuePaused = true,
+            CloudUploadAllowedStartMinute = -5,
+            CloudUploadAllowedEndMinute = 2000
+        });
+
+        Assert.True(options.CloudUploadQueuePaused);
+        Assert.Equal(0, options.CloudUploadAllowedStartMinute);
+        Assert.Equal(1440, options.CloudUploadAllowedEndMinute);
+        Assert.True(options.ToDto().CloudUploadQueuePaused);
+        Assert.Equal(0, options.ToDto().CloudUploadAllowedStartMinute);
+        Assert.Equal(1440, options.ToDto().CloudUploadAllowedEndMinute);
+    }
 }

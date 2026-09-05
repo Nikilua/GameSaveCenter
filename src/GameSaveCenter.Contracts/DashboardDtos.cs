@@ -27,6 +27,7 @@ namespace GameSaveCenter.Contracts
         public int RiskGames { get; set; }
         public int UnknownGames { get; set; }
         public int PendingCloudTasks { get; set; }
+        public CloudTransferSummaryDto CloudTransfers { get; set; } = new CloudTransferSummaryDto();
         public HealthInspectionStateDto HealthInspection { get; set; } = new HealthInspectionStateDto();
         public TaskSummaryDto TaskSummary { get; set; } = new TaskSummaryDto();
         public int TodaySucceededTaskCount { get; set; }
@@ -244,6 +245,11 @@ namespace GameSaveCenter.Contracts
         {
             "Synced" => "已同步",
             "Uploaded" => "已上传",
+            "AuthenticationRequired" => "认证需处理",
+            "Transferring" => "传输中",
+            "RemoteVerified" => "已校验",
+            "CheckFailed" => "校验失败",
+            "Paused" => "已暂停",
             "Failed" => "失败",
             "Pending" => "待上传",
             "RetryScheduled" => "等待重试",

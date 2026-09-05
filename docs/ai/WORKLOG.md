@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-05 F02 云端队列可见与传输策略
+
+- 备份与媒体云端复制共用 SQLite `cloud_transfer_queue` 持久化状态，以 `Backup/Media + PlayniteId` 去重；兼容旧 `cloud_retry_queue`，Worker 启动会把 `Pending/Transferring` 恢复为可重试状态，后台同时扫描两类到期项。正在执行的同游戏操作不会被重试扫描改写。
+- Dashboard、维护报告和游戏状态接入“待上传/传输中/下次尝试/认证需处理/已上传/已校验”等状态，显示尝试次数、失败原因和下次时间；上传命令成功与远端 `check` 成功分级，新增只读 `cloud.transfer.verify` 入口，校验失败不会修改本地副本。认证失败停止自动重试并要求处理凭据。
+- 设置页新增后台队列暂停和本地允许时段（默认 `00:00–24:00`，起始晚于结束支持跨午夜）；暂停/时段只影响后台队列，手动云端复制与校验仍可用。未加入带宽上限或游戏运行限速：当前未锁定可验证的 Rclone 参数版本，避免伪造策略能力；既有上传仍只使用安全的 `copy/check` 路径，不引入 `sync/delete/purge` 或冲突自动覆盖。
+- 新增同游戏双类型去重、认证不入到期队列、存储重建、跨午夜窗口和 Worker 重启恢复回归；修正新本地备份不复用旧重试计数、媒体认证状态汇总和游戏忙碌跳过边界。验证：Release 构建 0 warning/0 error；Core `65/65`、Worker `272/272`、Playnite `338/400`（62 跳过）、XAML `19/19`；`validate-source.py`、`git diff --check` 与 RenderHarness 多尺寸/双主题/resize/侧栏探针均通过并输出 `render-qa OK`。真实云端凭据、断网恢复和独立 Worker 硬重启仍需用户在目标环境操作复核。
+
 ## 2026-09-05 F01 备份健康巡检与隔离恢复演练
 
 - 新增 `HealthInspectionStateDto` 与 SQLite `health_inspection_state` 单例账本，持久化启用状态、巡检间隔、过期阈值、单次预算、下次时间、游标、最近结果、最近成功验证时间、推迟/失败计数；Worker 启动和设置更新会同步计划，硬中断后通过 `LastStartedUtc > LastCompletedUtc` 重复当前游标，不静默跳过未完成版本。

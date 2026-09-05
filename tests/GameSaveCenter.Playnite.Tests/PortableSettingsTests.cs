@@ -35,6 +35,9 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Equal(source.HealthInspectionEnabled, imported.HealthInspectionEnabled);
             Assert.Equal(source.HealthInspectionIntervalMinutes, imported.HealthInspectionIntervalMinutes);
             Assert.Equal(source.HealthInspectionStaleAfterDays, imported.HealthInspectionStaleAfterDays);
+            Assert.Equal(source.CloudUploadQueuePaused, imported.CloudUploadQueuePaused);
+            Assert.Equal(source.CloudUploadAllowedStartMinute, imported.CloudUploadAllowedStartMinute);
+            Assert.Equal(source.CloudUploadAllowedEndMinute, imported.CloudUploadAllowedEndMinute);
             Assert.Equal(source.RecentProtectionWindowDays, imported.RecentProtectionWindowDays);
             Assert.Equal(source.EnableXboxGameBarMedia, imported.EnableXboxGameBarMedia);
             Assert.Equal(source.EnableCustomMedia, imported.EnableCustomMedia);
@@ -85,6 +88,9 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.True(imported.HealthInspectionEnabled);
             Assert.Equal(1440, imported.HealthInspectionIntervalMinutes);
             Assert.Equal(30, imported.HealthInspectionStaleAfterDays);
+            Assert.False(imported.CloudUploadQueuePaused);
+            Assert.Equal(0, imported.CloudUploadAllowedStartMinute);
+            Assert.Equal(1440, imported.CloudUploadAllowedEndMinute);
             Assert.True(imported.EnableSteamMedia);
             Assert.True(imported.EnableXboxGameBarMedia);
             Assert.True(imported.EnableWindowsScreenshotMedia);
@@ -215,7 +221,10 @@ namespace GameSaveCenter.Playnite.Tests
             DifferentialBackupLimit = 11,
             HealthInspectionEnabled = false,
             HealthInspectionIntervalMinutes = 720,
-            HealthInspectionStaleAfterDays = 14
+            HealthInspectionStaleAfterDays = 14,
+            CloudUploadQueuePaused = true,
+            CloudUploadAllowedStartMinute = 1320,
+            CloudUploadAllowedEndMinute = 120
         };
     }
 }

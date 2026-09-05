@@ -3,6 +3,13 @@
 > 维护时间：2026-09-05
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-05 F02 云端队列可见与传输策略
+
+- 备份与媒体复制统一写入 SQLite `cloud_transfer_queue`，键为 `Backup/Media + PlayniteId`；旧 `cloud_retry_queue` 继续兼容。Worker 启动恢复未完成的 `Pending/Transferring`，自动扫描同时覆盖旧备份队列和新媒体/备份队列，同一游戏同一类型只保留一条状态。
+- `CloudTransferStateService` 负责状态、次数、原因、下次时间及远端保证等级；`Uploaded` 仅表示 copy 命令成功，`RemoteVerified` 才表示 `rclone check` 成功。认证失败为 `AuthenticationRequired` 且不进入自动到期扫描，校验失败只记录状态，不删改本地内容。
+- 设置 `CloudUploadQueuePaused`、`CloudUploadAllowedStartMinute/EndMinute` 默认关闭暂停、全天允许；允许时段用本地分钟并支持跨午夜，后台队列以外时段延后，手动入口不受该策略限制。没有实现带宽上限/运行中游戏限速，因为当前没有锁定并验证的 Rclone 参数；安全命令边界仍是 `copy/check/lsf/cat/version`。
+- F02 阶段验证：Release 0 warning/0 error；Core `65/65`、Worker `272/272`、Playnite `338/400`（62 跳过）、XAML `19/19`、源码门禁和 RenderHarness `render-qa OK`。目标机真实凭据、断网、Worker 硬重启和云端 check 仍需人工复核。
+
 ## 2026-09-05 F01 备份健康巡检与隔离恢复演练
 
 - `HealthInspectionService` 是 Worker HostedService，计划/游标/最近结果位于 SQLite `health_inspection_state` 单例行；每轮只选一个新或超过有效期的备份，按 PlayniteId/创建时间/BackupId 稳定排序，游戏运行或 `GameOperationLock` 忙时只记录 `Deferred`，不读取归档。

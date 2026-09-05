@@ -62,6 +62,8 @@ namespace GameSaveCenter.Contracts
         public const string GetTaskChanges = "tasks.changes";
         public const string WaitForTaskChanges = "tasks.changes.wait";
         public const string RetryCloudUpload = "cloud.upload.retry";
+        public const string GetCloudTransferStatus = "cloud.transfer.status";
+        public const string VerifyCloudTransfer = "cloud.transfer.verify";
         public const string SyncDeviceStates = "devices.state.sync";
         public const string SaveDeviceConflictDecision = "devices.conflict.decision.save";
         public const string StageRemoteBackup = "devices.backup.stage";

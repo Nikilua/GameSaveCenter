@@ -34,5 +34,6 @@ public sealed class ProtocolCompatibilityTests
         Assert.Contains("RetentionSimulation", WorkerCapabilities.Current);
         Assert.Contains("LocalMirror", WorkerCapabilities.Current);
         Assert.Contains("MaintenanceReport", WorkerCapabilities.Current);
+        Assert.Contains("CloudTransferQueue", WorkerCapabilities.Current);
     }
 }

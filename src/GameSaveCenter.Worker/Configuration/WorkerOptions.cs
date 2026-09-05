@@ -38,6 +38,9 @@ public sealed class WorkerOptions
     public bool EnablePlatformAdjacentMedia { get; set; } = true;
     public bool EnableCustomMedia { get; set; } = true;
     public bool EnableCloudUpload { get; set; }
+    public bool CloudUploadQueuePaused { get; set; }
+    public int CloudUploadAllowedStartMinute { get; set; }
+    public int CloudUploadAllowedEndMinute { get; set; } = 1440;
     public BackupStorageFormat BackupFormat { get; set; } = BackupStorageFormat.Zip;
     public string Compression { get; set; } = "zstd";
     public int CompressionLevel { get; set; } = 3;
@@ -89,6 +92,9 @@ public sealed class WorkerOptions
         EnablePlatformAdjacentMedia = settings.EnablePlatformAdjacentMedia;
         EnableCustomMedia = settings.EnableCustomMedia;
         EnableCloudUpload = settings.EnableCloudUpload;
+        CloudUploadQueuePaused = settings.CloudUploadQueuePaused;
+        CloudUploadAllowedStartMinute = Math.Clamp(settings.CloudUploadAllowedStartMinute, 0, 1439);
+        CloudUploadAllowedEndMinute = Math.Clamp(settings.CloudUploadAllowedEndMinute, 1, 1440);
         BackupFormat = settings.BackupFormat;
         Compression = NormalizeCompression(settings.Compression);
         CompressionLevel = Math.Clamp(settings.CompressionLevel, -7, 22);
@@ -124,6 +130,9 @@ public sealed class WorkerOptions
         EnablePlatformAdjacentMedia = EnablePlatformAdjacentMedia,
         EnableCustomMedia = EnableCustomMedia,
         EnableCloudUpload = EnableCloudUpload,
+        CloudUploadQueuePaused = CloudUploadQueuePaused,
+        CloudUploadAllowedStartMinute = CloudUploadAllowedStartMinute,
+        CloudUploadAllowedEndMinute = CloudUploadAllowedEndMinute,
         BackupFormat = BackupFormat,
         Compression = Compression,
         CompressionLevel = CompressionLevel,
@@ -176,6 +185,8 @@ public sealed class WorkerOptions
         HealthInspectionIntervalMinutes = Math.Clamp(HealthInspectionIntervalMinutes, 15, 10080);
         HealthInspectionStaleAfterDays = Math.Clamp(HealthInspectionStaleAfterDays, 1, 3650);
         HealthInspectionMaxDurationSeconds = Math.Clamp(HealthInspectionMaxDurationSeconds, 30, 1800);
+        CloudUploadAllowedStartMinute = Math.Clamp(CloudUploadAllowedStartMinute, 0, 1439);
+        CloudUploadAllowedEndMinute = Math.Clamp(CloudUploadAllowedEndMinute, 1, 1440);
         Directory.CreateDirectory(DataDirectory);
         Directory.CreateDirectory(GameToolsDirectory);
         Directory.CreateDirectory(DownloadDirectory);
