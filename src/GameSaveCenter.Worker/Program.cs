@@ -15,19 +15,22 @@ internal static class Program
 {
     public static async Task Main(string[] args)
     {
+        var builder = Host.CreateApplicationBuilder(args);
+        // Resolve the pipe before loading WorkerOptions so a duplicate process keeps the
+        // existing behavior of not touching the configured data directory before it exits.
+        var pipeName = WorkerOptions.ResolvePipeName(builder.Configuration["GameSaveCenter:PipeName"]);
         // The Playnite extension can receive overlapping startup callbacks while the host is
         // importing a large library.  A second Worker sharing the same named pipe is not a
         // harmless duplicate: clients can land on different SQLite/process-detection state
         // and the original instance may be killed by a later health probe.  Keep one current-
         // user Worker per protocol pipe and let the existing instance serve all clients.
-        using var singleInstance = new Mutex(true, "Local\\" + ProtocolConstants.PipeName, out var createdNew);
+        using var singleInstance = new Mutex(true, WorkerOptions.GetInstanceMutexName(pipeName), out var createdNew);
         if (!createdNew)
         {
             Console.Error.WriteLine("GameSaveCenter Worker is already running; exiting duplicate instance.");
             return;
         }
 
-        var builder = Host.CreateApplicationBuilder(args);
         builder.Logging.ClearProviders();
         builder.Logging.AddSimpleConsole(options =>
         {
@@ -38,6 +41,7 @@ internal static class Program
         var options = WorkerOptions.Load(builder.Configuration);
         builder.Services.AddSingleton(options);
         builder.Services.AddSingleton<SqliteStateStore>();
+        builder.Services.AddSingleton<ITaskStatusStore>(provider => provider.GetRequiredService<SqliteStateStore>());
         builder.Services.AddSingleton<ExternalProcessRunner>();
         builder.Services.AddSingleton<LudusaviClient>();
         builder.Services.AddSingleton<IRestoreClient>(provider => provider.GetRequiredService<LudusaviClient>());

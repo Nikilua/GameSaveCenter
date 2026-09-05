@@ -2,11 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
-## 2026-09-05 E01 行为证据矩阵基础
+## 2026-09-05 E01 行为证据矩阵与独立 Worker 重启验证
 
-- 新增 `scripts/e01-behavior-matrix.ps1`：在隔离 `.tmp` 输出根执行 Release 构建后，按业务 Worker、IPC、WPF/STA、故障/Soak 分组运行现有行为测试，每个测试类保留独立日志，并生成 `behavior-report.md`、`behavior-summary.json` 和人工验收清单；可选 `-IncludeRender` 接入 RenderHarness。
-- 本机矩阵结果：业务 `44/44`、IPC `22/22`、WPF/STA `40/45`（`WorkerIpcClientBehaviorTests` 的 5 项因受限环境无法连接 Named Pipe 而跳过）、故障/Soak `3/3`，所有测试进程退出码为 0。矩阵不会把静态源码断言、离屏渲染或跳过项合并成真实宿主通过。
-- 已对正在运行的用户 Worker 做一次只读 `system.ping`，真实 Named Pipe 返回成功；没有停止、替换或写入该 Worker。E01 仍未完成：独立 Worker 进程中断恢复、真实 Playnite 双选择器/主题/DPI/睡眠唤醒与退出重启需隔离宿主和用户操作；本阶段只固化了可重复的自动证据分层。
+- `scripts/e01-behavior-matrix.ps1` 现在在隔离 `.tmp` 输出根执行 Release 构建后，按业务 Worker、IPC、WPF/STA、故障/Soak 分组运行行为测试，并包含 `WorkerProcessRestartTests`；每个测试类保留独立日志，生成 `behavior-report.md`、`behavior-summary.json` 和人工验收清单，可选 `-IncludeRender` 接入 RenderHarness。
+- 受控真实 Windows 矩阵结果：业务 `44/44`、IPC `22/22`、WPF/STA `45/45`、故障/Soak `4/4`，所有测试进程退出码为 0；完整 Release 套件为 Core `65/65`、Worker `276/276`、Playnite `343/400`（57 项跳过）。矩阵不会把静态源码断言、离屏渲染或跳过项合并成真实宿主通过。
+- `WorkerProcessRestartTests` 启动真实 Worker，使用随机请求/事件管道、独立 Mutex 和临时 SQLite；先硬停止第一进程，再启动第二进程并确认未完成 Backup 被启动恢复标记为 `WORKER_RESTARTED_RETRYABLE`。过程中修复了 Worker 缺失 `ITaskStatusStore` 的真实启动依赖，以及只读 IPC 取消错误标记为“可能已提交”的问题。
+- 已对正在运行的用户 Worker 做一次只读 `system.ping`，真实 Named Pipe 返回成功；没有停止、替换或写入该 Worker。E01 仍未完成：真实 Playnite 双选择器/主题/DPI/睡眠唤醒与退出重启需隔离宿主和用户操作；这些项继续保持人工验收边界。
 
 ## 2026-09-05 E02 当前事实入口与模块边界文档治理
 

@@ -4,11 +4,11 @@
 
 > 新会话短入口：先读 [`docs/ai/CURRENT_STATE.md`](ai/CURRENT_STATE.md)。本文下方的历史交接按时间保留；除顶部最新阶段和明确标注的覆盖关系外，旧条目只用于追溯，不得覆盖当前事实入口。
 
-## 2026-09-05 E01 行为证据矩阵基础
+## 2026-09-05 E01 行为证据矩阵与独立 Worker 重启验证
 
-- 新增 `scripts/e01-behavior-matrix.ps1`，默认在 `.tmp` 生成按业务、IPC、WPF/STA、故障/Soak 分组的测试日志和 Markdown/JSON 汇总；`-IncludeRender` 可额外保留 RenderHarness 报告。构建和分组测试均使用隔离输出，不改用户数据。
-- 本机执行结果：业务 `44/44`、IPC `22/22`、WPF/STA `40/45`（Named Pipe 5 项跳过）、故障/Soak `3/3`，Release 0 warning/0 error。跳过项和离屏证据在报告中保持可见，没有合并为通过。
-- 已在不停止用户 Worker 的前提下对当前真实 Named Pipe 执行只读 `system.ping`，返回成功。独立 Worker 进程中断恢复、双选择器及 Playnite 主题/DPI/睡眠唤醒/退出重启仍需用户提供隔离宿主；在此之前状态保持 `MANUAL QA REQUIRED`。
+- `scripts/e01-behavior-matrix.ps1` 默认在 `.tmp` 生成按业务、IPC、WPF/STA、故障/Soak 分组的测试日志和 Markdown/JSON 汇总；故障/Soak 已包含 `WorkerProcessRestartTests`，`-IncludeRender` 可额外接入 RenderHarness。构建和分组测试均使用隔离输出，不改用户数据。
+- 受控真实 Windows 执行结果：业务 `44/44`、IPC `22/22`、WPF/STA `45/45`、故障/Soak `4/4`，Release 0 warning/0 error；完整套件 Core `65/65`、Worker `276/276`、Playnite `343/400`（57 项跳过）。跳过项和离屏证据在报告中保持可见，没有合并为通过。
+- 独立进程测试已启动真实 Worker，在随机管道/独立 Mutex/临时 SQLite 中硬停止后重启，确认未完成 Backup 在启动时变为 `WORKER_RESTARTED_RETRYABLE`。另已在不停止用户 Worker 的前提下对当前真实管道执行只读 `system.ping` 并返回成功。双选择器及 Playnite 主题/DPI/睡眠唤醒/退出重启仍需隔离宿主；在此之前状态保持 `MANUAL QA REQUIRED`。
 
 ## 2026-09-05 E02 当前事实入口与模块边界文档治理
 

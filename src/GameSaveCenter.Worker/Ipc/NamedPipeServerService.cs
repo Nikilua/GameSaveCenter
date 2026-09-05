@@ -2,6 +2,7 @@ using System.IO.Pipes;
 using System.Text;
 using System.Text.Json;
 using GameSaveCenter.Contracts;
+using GameSaveCenter.Worker.Configuration;
 using GameSaveCenter.Worker.Persistence;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -14,12 +15,13 @@ public sealed class NamedPipeServerService : BackgroundService
     private const int MaximumConcurrentClients = 32;
     private readonly IpcRequestDispatcher _dispatcher;
     private readonly SqliteStateStore _store;
+    private readonly WorkerOptions _options;
     private readonly ILogger<NamedPipeServerService> _logger;
     private readonly JsonSerializerOptions _json=new(JsonSerializerDefaults.Web){PropertyNameCaseInsensitive=true};
     private readonly SemaphoreSlim clientSlots = new(MaximumConcurrentClients, MaximumConcurrentClients);
 
-    public NamedPipeServerService(IpcRequestDispatcher dispatcher, SqliteStateStore store, ILogger<NamedPipeServerService> logger)
-    { _dispatcher=dispatcher;_store=store;_logger=logger; }
+    public NamedPipeServerService(IpcRequestDispatcher dispatcher, SqliteStateStore store, WorkerOptions options, ILogger<NamedPipeServerService> logger)
+    { _dispatcher=dispatcher;_store=store;_options=options;_logger=logger; }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -27,7 +29,7 @@ public sealed class NamedPipeServerService : BackgroundService
         {
             try
             {
-                var pipe=new NamedPipeServerStream(ProtocolConstants.PipeName,PipeDirection.InOut,NamedPipeServerStream.MaxAllowedServerInstances,
+                var pipe=new NamedPipeServerStream(_options.PipeName,PipeDirection.InOut,NamedPipeServerStream.MaxAllowedServerInstances,
                     PipeTransmissionMode.Byte,PipeOptions.Asynchronous|PipeOptions.CurrentUserOnly,64*1024,64*1024);
                 await pipe.WaitForConnectionAsync(stoppingToken).ConfigureAwait(false);
                 _=HandleClientAsync(pipe,stoppingToken);

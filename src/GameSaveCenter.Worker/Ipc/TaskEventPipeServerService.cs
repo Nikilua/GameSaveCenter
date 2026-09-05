@@ -2,6 +2,7 @@ using System.IO.Pipes;
 using System.Text;
 using System.Text.Json;
 using GameSaveCenter.Contracts;
+using GameSaveCenter.Worker.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -16,13 +17,15 @@ public sealed class TaskEventPipeServerService : BackgroundService
 {
     private const int MaximumConcurrentClients = 8;
     private readonly TaskEventBroadcaster broadcaster;
+    private readonly WorkerOptions options;
     private readonly ILogger<TaskEventPipeServerService> logger;
     private readonly JsonSerializerOptions json = new(JsonSerializerDefaults.Web);
     private readonly SemaphoreSlim clientSlots = new(MaximumConcurrentClients, MaximumConcurrentClients);
 
-    public TaskEventPipeServerService(TaskEventBroadcaster broadcaster, ILogger<TaskEventPipeServerService> logger)
+    public TaskEventPipeServerService(TaskEventBroadcaster broadcaster, WorkerOptions options, ILogger<TaskEventPipeServerService> logger)
     {
         this.broadcaster = broadcaster;
+        this.options = options;
         this.logger = logger;
     }
 
@@ -33,7 +36,7 @@ public sealed class TaskEventPipeServerService : BackgroundService
             try
             {
                 var pipe = new NamedPipeServerStream(
-                    ProtocolConstants.EventPipeName,
+                    options.EventPipeName,
                     PipeDirection.Out,
                     NamedPipeServerStream.MaxAllowedServerInstances,
                     PipeTransmissionMode.Byte,

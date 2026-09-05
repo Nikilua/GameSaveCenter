@@ -274,9 +274,11 @@ namespace GameSaveCenter.Playnite.Ipc
                                 false,
                                 null);
 
-                        // Mark before starting the write: cancellation during the write has an
-                        // ambiguous acceptance boundary and must never be retried with a new ID.
-                        mayHaveBeenAccepted = true;
+                        // Mark only destructive requests before starting the write: cancellation
+                        // during their write has an ambiguous acceptance boundary and must never
+                        // be retried with a new ID. Read-only requests cannot commit business
+                        // state merely because their response read was interrupted.
+                        mayHaveBeenAccepted = IpcRequestSemantics.RequiresReplayProtection(request.Type);
                         await AwaitPipeOperationAsync(writer.WriteLineAsync(line), linkedCancellation.Token, pipe).ConfigureAwait(false);
 
                         var responseMessage = await AwaitPipeOperationAsync(

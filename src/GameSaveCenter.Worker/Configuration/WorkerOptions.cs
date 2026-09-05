@@ -18,6 +18,13 @@ public sealed class WorkerOptions
     public string DataDirectory { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "GameSaveCenter");
     public string DeviceId { get; set; } = Guid.NewGuid().ToString("N");
     public string WorkerSessionId { get; set; } = Guid.NewGuid().ToString("N");
+    /// <summary>
+    /// Request pipe name. The production default is fixed; an isolated name is useful for
+    /// process-level recovery tests without competing with the user's running Worker.
+    /// </summary>
+    public string PipeName { get; set; } = ProtocolConstants.PipeName;
+    /// <summary>Event pipe paired with <see cref="PipeName"/> for isolated Worker instances.</summary>
+    public string EventPipeName { get; set; } = ProtocolConstants.EventPipeName;
     public bool SafeModeEnabled { get; set; }
     public bool SafeModeRequested { get; set; }
     public string LudusaviExecutable { get; set; } = string.Empty;
@@ -60,6 +67,13 @@ public sealed class WorkerOptions
     public string RestoreReadinessDirectory => Path.Combine(DataDirectory, "RestoreReadiness");
     public string RuntimeSettingsPath => Path.Combine(DataDirectory, "worker-settings.json");
     public string StartupFailureCountPath => Path.Combine(DataDirectory, "startup-failure-count");
+    public string InstanceMutexName => GetInstanceMutexName(PipeName);
+
+    public static string ResolvePipeName(string? value)
+        => NormalizeIpcName(value, ProtocolConstants.PipeName);
+
+    public static string GetInstanceMutexName(string? pipeName)
+        => "Local\\GameSaveCenter.Worker." + ResolvePipeName(pipeName);
 
     public static WorkerOptions Load(IConfiguration configuration)
     {
@@ -169,6 +183,8 @@ public sealed class WorkerOptions
     private void Normalize()
     {
         if (!IsValidDeviceId(DeviceId)) DeviceId = Guid.NewGuid().ToString("N");
+        PipeName = ResolvePipeName(PipeName);
+        EventPipeName = NormalizeIpcName(EventPipeName, ProtocolConstants.EventPipeName);
         DataDirectory = Expand(DataDirectory);
         LudusaviExecutable = Expand(LudusaviExecutable);
         LudusaviBackupDirectory = Expand(LudusaviBackupDirectory);
@@ -233,4 +249,17 @@ public sealed class WorkerOptions
 
     public static bool IsValidDeviceId(string? value)
         => value?.Length == 32 && value.All(c => c is >= '0' and <= '9' or >= 'a' and <= 'f' or >= 'A' and <= 'F');
+
+    private static string NormalizeIpcName(string? value, string fallback)
+    {
+        var normalized = (value ?? string.Empty).Trim();
+        if (normalized.Length is 0 or > 240)
+            return fallback;
+        return normalized.All(c => c is >= 'a' and <= 'z'
+            or >= 'A' and <= 'Z'
+            or >= '0' and <= '9'
+            or '.' or '-' or '_')
+            ? normalized
+            : fallback;
+    }
 }

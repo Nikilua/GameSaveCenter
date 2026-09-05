@@ -30,7 +30,7 @@ $groups = @(
         'SettingsSelectionStateSourceTests', 'TaskFilterOptionsSyncTests', 'ResponsiveLayoutCoordinatorTests',
         'TaskCenterViewResponsiveTests', 'WorkerIpcClientBehaviorTests') },
     [pscustomobject]@{ Name = 'fault-soak'; Project = $workerProject; Tests = @(
-        'FaultInjectionTests', 'SoakStabilityTests', 'SoakDataScaleTests') }
+        'FaultInjectionTests', 'SoakStabilityTests', 'SoakDataScaleTests', 'WorkerProcessRestartTests') }
 )
 
 if (-not $SkipBuild) {

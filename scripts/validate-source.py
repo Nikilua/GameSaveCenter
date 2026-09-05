@@ -919,7 +919,7 @@ def check_0618_task_event_guards() -> None:
     for token in ("BoundedChannelFullMode.DropOldest", "PerSubscriberCapacity", "TaskEventSubscription"):
         if token not in broadcaster:
             fail(f"Task event bounded fan-out guard missing: {token}")
-    for token in ("ProtocolConstants.EventPipeName", "PipeOptions.CurrentUserOnly", "MessageTypes.TaskEvent"):
+    for token in ("options.EventPipeName", "PipeOptions.CurrentUserOnly", "MessageTypes.TaskEvent"):
         if token not in event_server:
             fail(f"Task event server isolation guard missing: {token}")
     if "AddHostedService<TaskEventPipeServerService>" not in program:

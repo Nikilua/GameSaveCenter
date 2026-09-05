@@ -4,7 +4,7 @@
 
 本方案最初是代码审阅与实施任务包；当前已按阶段落地部分修复。结论仍区分“源码确认”“需要实验验证的风险”“产品增强建议”；源码推导和自动化测试不等于已在 Playnite 复现。没有运行真实宿主、实际云端传输或破坏性故障注入，不声称完成视觉验收或测出真实性能瓶颈。
 
-实施进度：R01～R07、U03、U01（任务页试点）、U02（侧栏动画试点）、F01（健康巡检与隔离恢复演练）、F02（云端队列与传输策略）、F03（媒体归类建议与可撤销批次）、E02（当前事实入口与模块边界文档治理）已于 2026-09-05 完成；E01 已落地自动证据矩阵基础，独立 Worker/真实 Named Pipe/Playnite 宿主仍待验证。
+实施进度：R01～R07、U03、U01（任务页试点）、U02（侧栏动画试点）、F01（健康巡检与隔离恢复演练）、F02（云端队列与传输策略）、F03（媒体归类建议与可撤销批次）、E02（当前事实入口与模块边界文档治理）已于 2026-09-05 完成；E01 已完成自动矩阵和独立 Worker 重启/真实 Named Pipe 证据，真实 Playnite 宿主仍待隔离复核。
 
 ## 先做什么
 
@@ -191,7 +191,7 @@
 
 **验收**：至少一个独立 Worker 进程的中断恢复用例、一个真实 Named Pipe 用例、一个双选择器行为用例；真机覆盖多主题、DPI、快速切页、睡眠唤醒/退出重启。不能用静态字符串断言替代业务行为，也不能把离屏截图标为 Playnite。
 
-**已实施基础（2026-09-05）**：新增 `scripts/e01-behavior-matrix.ps1`，默认在隔离 `.tmp` 输出构建、分组测试日志、Markdown/JSON 汇总，并可选接入 RenderHarness；本机业务 `44/44`、IPC `22/22`、WPF/STA `40/45`、故障/Soak `3/3`，WPF/STA 少的 5 项是当前受限环境跳过的 Named Pipe 行为测试。另对正在运行的用户 Worker 执行了一次只读 `system.ping`，真实 Named Pipe 返回成功，没有停止或写入该进程。矩阵显式保留 `MANUAL QA REQUIRED` 的真实 Playnite 项，不把静态、离屏或跳过证据当作宿主通过。独立 Worker 进程中断恢复、双选择器宿主操作、多主题/DPI、睡眠唤醒和退出重启仍是 E01 未完成项。
+**已实施基础（2026-09-05）**：新增 `scripts/e01-behavior-matrix.ps1`，默认在隔离 `.tmp` 输出构建、分组测试日志、Markdown/JSON 汇总，并可选接入 RenderHarness；受控真实 Windows 矩阵业务 `44/44`、IPC `22/22`、WPF/STA `45/45`、故障/Soak `4/4`，完整 Release 套件 Core `65/65`、Worker `276/276`、Playnite `343/400`（57 项跳过）。新增 `WorkerProcessRestartTests`，在随机 Named Pipe、独立 Mutex 和临时 SQLite 中真实硬停止第一进程、重启第二进程，并确认未完成 Backup 变为 `WORKER_RESTARTED_RETRYABLE`；另对正在运行的用户 Worker 执行了一次只读 `system.ping`，真实 Named Pipe 返回成功，没有停止或写入该进程。期间修复 Worker 缺失 `ITaskStatusStore` 注册和只读 IPC 取消错误标为“可能已提交”的问题。矩阵显式保留 `MANUAL QA REQUIRED` 的真实 Playnite 项，不把静态、离屏或跳过证据当作宿主通过。双选择器宿主操作、多主题/DPI、睡眠唤醒和退出重启仍是 E01 未完成项。
 
 ## E02：文档与模块边界降低后续 AI 返工（已完成）
 
