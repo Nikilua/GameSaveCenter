@@ -12,6 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.Settings;
@@ -2173,6 +2174,198 @@ public static class Program
             {
                 s_problems.Add($"Shell {windowW}x{windowH} probe failed: {ex.Message}");
             }
+        }
+
+        RunSidebarTransitionProbe(report);
+    }
+
+    private static void RunSidebarTransitionProbe(StringBuilder report)
+    {
+        report.AppendLine();
+        report.AppendLine("Sidebar transition performance probe (2000x1100 host)");
+        foreach (var (rapidToggle, enableMotion) in new[]
+                 {
+                     (false, true),
+                     (true, true),
+                     (false, false)
+                 })
+        {
+            var measurement = MeasureSidebarTransition(rapidToggle, enableMotion);
+            var label = !enableMotion ? "atomic-final" : rapidToggle ? "rapid-toggle" : "single-toggle";
+            report.AppendLine(
+                $"  {label} motion={measurement.MotionEnabled} duration={measurement.DurationMs:0.0}ms "
+                + $"layout={measurement.LayoutUpdates} measure={measurement.MeasureCount}/{measurement.MeasureMs:0.0}ms "
+                + $"arrange={measurement.ArrangeCount}/{measurement.ArrangeMs:0.0}ms "
+                + $"frames={measurement.RenderingFrames} maxFrameGap={measurement.MaxFrameGapMs:0.0}ms "
+                + $"secondClick={measurement.SecondClickFired} finalWidth={measurement.FinalWidth:0.0} "
+                + $"collapsed={measurement.FinalCollapsed} settled={measurement.Settled}");
+            if (!measurement.Settled)
+                s_problems.Add($"Sidebar {label} transition did not settle on its requested target.");
+            if (rapidToggle && enableMotion && measurement.MotionEnabled && Math.Abs(measurement.FinalWidth - 270d) > 0.5)
+                s_problems.Add($"Sidebar rapid toggle did not keep the latest expanded target (width={measurement.FinalWidth:0.0}).");
+        }
+    }
+
+    private static SidebarTransitionMeasurement MeasureSidebarTransition(bool rapidToggle, bool enableMotion)
+    {
+        var shell = new AcrylicProductionShellView
+        {
+            DataContext = new FakeDashboardData(),
+            MotionEnabledProvider = () => enableMotion
+        };
+        if (shell.PageHostForAudit is ContentControl pageHost)
+            pageHost.Content = new TaskCenterView { DataContext = new FakeDashboardData() };
+
+        var host = new LayoutProbeHost
+        {
+            Width = 2000,
+            Height = 1100,
+            Background = CreateHarnessBackground(shell),
+            ClipToBounds = true
+        };
+        host.Children.Add(shell);
+        host.Measure(new Size(host.Width, host.Height));
+        host.Arrange(new Rect(0, 0, host.Width, host.Height));
+        host.UpdateLayout();
+        shell.ApplyResponsiveLayout(host.Width, host.Height);
+        host.UpdateLayout();
+        host.ResetMetrics();
+
+        var layoutUpdates = 0;
+        var renderingFrames = 0;
+        var maxFrameGapMs = 0d;
+        long lastFrameTimestamp = 0;
+        var stopwatch = Stopwatch.StartNew();
+        var secondClickFired = false;
+        host.LayoutUpdated += OnLayoutUpdated;
+        EventHandler renderingHandler = (_, _) =>
+        {
+            renderingFrames++;
+            var now = stopwatch.ElapsedTicks;
+            if (lastFrameTimestamp != 0)
+                maxFrameGapMs = Math.Max(maxFrameGapMs, ToMilliseconds(now - lastFrameTimestamp));
+            lastFrameTimestamp = now;
+        };
+        CompositionTarget.Rendering += renderingHandler;
+
+        var button = shell.SidebarCollapseButtonForAudit;
+        button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+        DispatcherTimer? rapidTimer = null;
+        if (rapidToggle)
+        {
+            rapidTimer = new DispatcherTimer(DispatcherPriority.Background)
+            {
+                Interval = TimeSpan.FromMilliseconds(60)
+            };
+            rapidTimer.Tick += (_, _) =>
+            {
+                rapidTimer.Stop();
+                secondClickFired = true;
+                button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            };
+            rapidTimer.Start();
+        }
+
+        var frame = new DispatcherFrame();
+        var endTimer = new DispatcherTimer(DispatcherPriority.Render)
+        {
+            Interval = TimeSpan.FromMilliseconds(16)
+        };
+        endTimer.Tick += (_, _) =>
+        {
+            host.UpdateLayout();
+            var elapsedMilliseconds = stopwatch.ElapsedMilliseconds;
+            var minimumWait = enableMotion ? 260 : 50;
+            var timedOut = elapsedMilliseconds >= 1500;
+            var completed = elapsedMilliseconds >= minimumWait
+                            && !shell.SidebarTransitionRunningForAudit
+                            && (!rapidToggle || secondClickFired);
+            if (completed || timedOut)
+            {
+                endTimer.Stop();
+                frame.Continue = false;
+            }
+        };
+        endTimer.Start();
+        Dispatcher.PushFrame(frame);
+        stopwatch.Stop();
+
+        host.LayoutUpdated -= OnLayoutUpdated;
+        CompositionTarget.Rendering -= renderingHandler;
+        rapidTimer?.Stop();
+        return new SidebarTransitionMeasurement
+        {
+            MotionEnabled = shell.SidebarMotionEnabledForAudit,
+            DurationMs = stopwatch.Elapsed.TotalMilliseconds,
+            LayoutUpdates = layoutUpdates,
+            MeasureCount = host.MeasureCount,
+            MeasureMs = ToMilliseconds(host.MeasureTicks),
+            ArrangeCount = host.ArrangeCount,
+            ArrangeMs = ToMilliseconds(host.ArrangeTicks),
+            RenderingFrames = renderingFrames,
+            MaxFrameGapMs = maxFrameGapMs,
+            FinalWidth = shell.SidebarWidthForAudit,
+            FinalCollapsed = shell.SidebarCollapsedForAudit,
+            SecondClickFired = secondClickFired,
+            Settled = !shell.SidebarTransitionRunningForAudit
+        };
+
+        void OnLayoutUpdated(object? sender, EventArgs args) => layoutUpdates++;
+    }
+
+    private static double ToMilliseconds(long stopwatchTicks)
+        => stopwatchTicks * 1000d / Stopwatch.Frequency;
+
+    private sealed class SidebarTransitionMeasurement
+    {
+        public bool MotionEnabled { get; set; }
+        public double DurationMs { get; set; }
+        public int LayoutUpdates { get; set; }
+        public int MeasureCount { get; set; }
+        public double MeasureMs { get; set; }
+        public int ArrangeCount { get; set; }
+        public double ArrangeMs { get; set; }
+        public int RenderingFrames { get; set; }
+        public double MaxFrameGapMs { get; set; }
+        public double FinalWidth { get; set; }
+        public bool FinalCollapsed { get; set; }
+        public bool SecondClickFired { get; set; }
+        public bool Settled { get; set; }
+    }
+
+    private sealed class LayoutProbeHost : Grid
+    {
+        public int MeasureCount { get; private set; }
+        public long MeasureTicks { get; private set; }
+        public int ArrangeCount { get; private set; }
+        public long ArrangeTicks { get; private set; }
+
+        public void ResetMetrics()
+        {
+            MeasureCount = 0;
+            MeasureTicks = 0;
+            ArrangeCount = 0;
+            ArrangeTicks = 0;
+        }
+
+        protected override Size MeasureOverride(Size availableSize)
+        {
+            var timer = Stopwatch.StartNew();
+            var result = base.MeasureOverride(availableSize);
+            timer.Stop();
+            MeasureCount++;
+            MeasureTicks += timer.ElapsedTicks;
+            return result;
+        }
+
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            var timer = Stopwatch.StartNew();
+            var result = base.ArrangeOverride(finalSize);
+            timer.Stop();
+            ArrangeCount++;
+            ArrangeTicks += timer.ElapsedTicks;
+            return result;
         }
     }
 

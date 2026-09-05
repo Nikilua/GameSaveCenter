@@ -91,6 +91,22 @@ public sealed class ProductionShellChromeSourceTests
     }
 
     [Fact]
+    public void SidebarTransitionUsesTheCurrentWidthAndKeepsTheLatestTarget()
+    {
+        var shellCode = ReadSource("src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml.cs");
+
+        Assert.DoesNotContain("if (sidebarTransitionRunning)", shellCode);
+        Assert.Contains("Capture the currently rendered width before cancelling the old", shellCode);
+        Assert.Contains("SidebarColumn.BeginAnimation(ColumnDefinition.WidthProperty, null);", shellCode);
+        Assert.Contains("var transitionGeneration = ++sidebarTransitionGeneration;", shellCode);
+        Assert.Contains("if (transitionGeneration != sidebarTransitionGeneration)", shellCode);
+        Assert.Contains("SidebarColumn.Width = new GridLength(currentWidth, GridUnitType.Pixel);", shellCode);
+        Assert.Contains("internal bool SidebarTransitionRunningForAudit", shellCode);
+        Assert.Contains("SidebarContentLayer.BeginAnimation(UIElement.OpacityProperty, null);", shellCode);
+        Assert.Contains("sidebarTransitionRunning = false;", shellCode);
+    }
+
+    [Fact]
     public void SettingsViewRequestsAUsableDefaultWindowSize()
     {
         var settings = ReadSource("src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml");

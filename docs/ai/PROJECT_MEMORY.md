@@ -3,6 +3,12 @@
 > 维护时间：2026-09-05
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-05 U02 侧栏动画成本与快速操作终态
+
+- `AcrylicProductionShellView.OnSidebarCollapseClick` 不再拒绝动画期间的后续点击；每次从当前 `SidebarColumn.ActualWidth` 接续到最新 72/270 DIP 目标。`sidebarTransitionGeneration` 使取消或卸载后的旧 `Completed` 回调失效，避免旧动画把新目标覆盖；无动画分支会清除宽度/透明度/位移动画后一次性落终态。
+- `tests/GameSaveCenter.RenderHarness/Program.cs` 的侧栏探针统计 Measure/Arrange 次数与耗时、LayoutUpdated、Rendering 帧间隔，并对比 `MotionEnabledProvider=false` 的原子切换。独立 2000×1100 夹具单次 Arrange 约 `9.9ms`、快速往返最终宽度 `270`，原子切换 Arrange 约 `4.0ms`；因此保留当前过渡，暂不做大范围视觉简化。
+- 阶段验证：Release 0 warning/0 error；Core `65/65`、Worker `260/260`、Playnite `338/400`（62 跳过）、XAML `19/19`，源码门禁和完整 RenderHarness `render-qa OK` 通过。探针不是真实 Playnite 帧率证据，长列表真机压力、DPI、高对比度和宿主卸载仍需人工复核。
+
 ## 2026-09-05 U01 任务页视口与状态试点
 
 - `DashboardViewModel.TaskPageState.cs` 将任务页请求生命周期和展示状态独立出来：`Loading`、`Empty`、`FilterEmpty`、`Error`/`ErrorWithData`、`Ready`；刷新失败或刷新中的已有数据不被清空，并通过 `TaskPageLastUpdatedDisplay` 与 `TaskPageStatusSummary` 暴露旧数据时间和恢复入口。

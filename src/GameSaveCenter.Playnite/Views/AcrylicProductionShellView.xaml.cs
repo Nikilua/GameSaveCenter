@@ -27,6 +27,7 @@ namespace GameSaveCenter.Playnite.Views
         private bool suppressNavigation;
         private bool sidebarCollapsed;
         private bool sidebarTransitionRunning;
+        private int sidebarTransitionGeneration;
         private bool responsiveLayoutPending;
         private double pendingResponsiveWidth;
         private bool pickerFilterRestorePending;
@@ -155,6 +156,7 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
+            sidebarTransitionGeneration++;
             SidebarColumn.BeginAnimation(ColumnDefinition.WidthProperty, null);
             SidebarContentLayer.BeginAnimation(UIElement.OpacityProperty, null);
             if (SidebarContentLayer.RenderTransform is TranslateTransform translate)
@@ -286,35 +288,39 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnSidebarCollapseClick(object sender, RoutedEventArgs e)
         {
-            if (sidebarTransitionRunning)
-            {
-                e.Handled = true;
-                return;
-            }
-
             sidebarCollapsed = !sidebarCollapsed;
             SidebarCollapsedChanged?.Invoke(sidebarCollapsed);
             if (!IsSidebarMotionEnabled)
             {
+                sidebarTransitionGeneration++;
+                SidebarColumn.BeginAnimation(ColumnDefinition.WidthProperty, null);
+                SidebarContentLayer.BeginAnimation(UIElement.OpacityProperty, null);
+                if (SidebarContentLayer.RenderTransform is TranslateTransform currentTranslate)
+                    currentTranslate.BeginAnimation(TranslateTransform.XProperty, null);
+                sidebarTransitionRunning = false;
                 ApplySidebarLayout();
                 SidebarCollapseButton.Focus();
                 e.Handled = true;
                 return;
             }
 
-            sidebarTransitionRunning = true;
             var currentWidth = SidebarColumn.ActualWidth > 0
                 ? SidebarColumn.ActualWidth
                 : SidebarColumn.Width.Value;
             var targetWidth = sidebarCollapsed ? 72d : 270d;
+            // A second click while the previous transition is running becomes the new
+            // target. Capture the currently rendered width before cancelling the old
+            // clock so rapid input never gets stuck on an obsolete visual state.
+            var transitionGeneration = ++sidebarTransitionGeneration;
+            SidebarColumn.BeginAnimation(ColumnDefinition.WidthProperty, null);
             var translate = SidebarContentLayer.RenderTransform as TranslateTransform ?? new TranslateTransform();
             SidebarContentLayer.RenderTransform = translate;
             SidebarContentLayer.BeginAnimation(UIElement.OpacityProperty, null);
             translate.BeginAnimation(TranslateTransform.XProperty, null);
+            sidebarTransitionRunning = true;
             SidebarContentLayer.Opacity = 0;
             translate.X = sidebarCollapsed ? -4 : 4;
             ApplySidebarLayout(updateColumnWidth: false);
-            SidebarColumn.BeginAnimation(ColumnDefinition.WidthProperty, null);
             SidebarColumn.Width = new GridLength(currentWidth, GridUnitType.Pixel);
 
             var widthAnimation = new GridLengthAnimation
@@ -326,6 +332,8 @@ namespace GameSaveCenter.Playnite.Views
             };
             widthAnimation.Completed += (_, _) =>
             {
+                if (transitionGeneration != sidebarTransitionGeneration)
+                    return;
                 SidebarColumn.BeginAnimation(ColumnDefinition.WidthProperty, null);
                 ApplySidebarLayout();
                 SidebarContentLayer.BeginAnimation(UIElement.OpacityProperty, null);
@@ -354,6 +362,12 @@ namespace GameSaveCenter.Playnite.Views
             => (MotionEnabledProvider?.Invoke() ?? true)
                && !SystemParameters.HighContrast
                && SystemParameters.ClientAreaAnimation;
+
+        internal bool SidebarMotionEnabledForAudit => IsSidebarMotionEnabled;
+        internal GameSaveCenter.Playnite.Controls.Button SidebarCollapseButtonForAudit => SidebarCollapseButton;
+        internal bool SidebarCollapsedForAudit => sidebarCollapsed;
+        internal bool SidebarTransitionRunningForAudit => sidebarTransitionRunning;
+        internal double SidebarWidthForAudit => SidebarColumn.Width.Value;
 
         private void RestoreSidebarState()
         {
