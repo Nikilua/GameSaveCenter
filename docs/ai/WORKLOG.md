@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-05 R05 游戏筛选下拉框 STA 行为验证
+
+- 针对生产 Shell 与兼容 Dashboard 共用的 OneWay + `DropDownClosed` 提交策略，新增真实 WPF STA 夹具：程序化修改关闭状态下的 `SelectedIndex` 不会提交；挂载到窗口后打开下拉、改变选择并关闭，会提交最终选项。
+- 测试明确使用可视窗口和 Dispatcher，而不是仅对脱离模板的 ComboBox 手动触发事件；当前行为无需改生产代码，保留初始化/ItemsSource 重建只同步显示、用户关闭下拉才写回共享 `GamePickerViewModel` 的边界。
+- 验证：R05 STA 行为测试 `2/2` 通过，Playnite Debug 编译 0 warning/0 error。真实 Playnite 中的 UI Automation Selection、字符搜索、Esc 取消、双选择器同时存在和宿主主题差异仍待人工验收。
+
 ## 2026-09-05 R04 任务统计口径与完整历史查询
 
 - 新增 `TaskQueryDto`、`TaskPageDto`、`TaskSummaryDto` 和 `tasks.page` IPC 请求；Worker 支持状态/游戏/类型/关键词/创建时间半开区间过滤，使用 `(created_utc, task_id)` 稳定游标分页，查询结果不会因相同创建时间重叠或漏项。

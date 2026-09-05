@@ -3,6 +3,12 @@
 > 维护时间：2026-09-05
 > 本文件面向新的 AI/Codex 会话，目标是在几分钟内恢复项目状态，避免重复实现已完成的工作。
 
+## 2026-09-05 R05 游戏筛选下拉框 STA 行为验证
+
+- `GamePickerFilterBehaviorTests` 在真实 WPF STA 线程中把筛选 ComboBox 挂到窗口，验证程序化关闭状态选中不会触发提交，以及打开→改选→关闭会触发 `DropDownClosed` 并得到最终选项。
+- R05 未改生产行为：两套选择器仍使用 OneWay 显示绑定、`UiFilterSelection.Synchronize` 恢复程序化状态、`DropDownClosed` 作为唯一用户写回入口。脱离可视宿主的 ComboBox 不会自然触发关闭事件，测试夹具不可省略。
+- 目前自动证据仅覆盖 WPF 控件基本提交时序；真实宿主 UI Automation Selection、字符搜索、Esc、双实例竞态、主题/DPI 仍待人工验证。
+
 ## 2026-09-05 R04 任务统计口径与完整历史查询
 
 - Worker 新增 `TaskQueryDto`/`TaskPageDto`/`TaskSummaryDto` 查询契约和 `tasks.page` IPC；查询支持状态（含组合状态）、游戏、类型、关键词、创建时间半开区间，按 `created_utc DESC, task_id DESC` 加不透明游标分页，稳定覆盖同一创建时间的任务。
