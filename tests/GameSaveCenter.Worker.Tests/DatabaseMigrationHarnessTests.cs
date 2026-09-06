@@ -19,6 +19,7 @@ CREATE TABLE media_sources(source_id TEXT PRIMARY KEY,playnite_id TEXT,source_ki
 CREATE TABLE game_tools(tool_id TEXT PRIMARY KEY,playnite_id TEXT NOT NULL,tool_type INTEGER NOT NULL,source_type INTEGER NOT NULL,display_name TEXT NOT NULL,enabled INTEGER NOT NULL DEFAULT 1,auto_start INTEGER NOT NULL DEFAULT 0,launch_timing INTEGER NOT NULL DEFAULT 1,launch_delay_seconds INTEGER NOT NULL DEFAULT 8,close_on_game_exit INTEGER NOT NULL DEFAULT 0,requires_admin INTEGER NOT NULL DEFAULT 0,active_version_id TEXT,created_utc TEXT NOT NULL,updated_utc TEXT NOT NULL);
 CREATE TABLE game_tool_versions(version_id TEXT PRIMARY KEY,tool_id TEXT NOT NULL REFERENCES game_tools(tool_id) ON DELETE CASCADE,version_name TEXT,entry_path TEXT NOT NULL,working_directory TEXT,arguments TEXT,source_url TEXT,file_sha256 TEXT,download_utc TEXT,created_utc TEXT NOT NULL);
 CREATE TABLE protection_prompt_states(playnite_id TEXT PRIMARY KEY,updated_utc TEXT NOT NULL);
+CREATE TABLE ipc_request_ledger(request_id TEXT PRIMARY KEY,type TEXT NOT NULL,state INTEGER NOT NULL,response_json TEXT,created_utc TEXT NOT NULL,updated_utc TEXT NOT NULL);
 ";
 
     private const string LegacyData = @"
@@ -63,7 +64,7 @@ VALUES ('v9','tool9','1.0','C:\Tools\u.exe','C:\Tools','','','','2025-01-01T00:0
         await harness.CreateLegacyFixtureAsync(LegacySchema, LegacyData, CancellationToken.None);
 
         var result = await harness.RunAsync(
-            new[] { "games", "tasks", "backup_versions", "game_policies", "backup_policy_templates", "sessions", "device_conflict_decisions", "media", "media_sources", "game_tools", "game_tool_versions", "protection_prompt_states", "legacy_marker" },
+            new[] { "games", "tasks", "backup_versions", "game_policies", "backup_policy_templates", "sessions", "device_conflict_decisions", "media", "media_sources", "game_tools", "game_tool_versions", "protection_prompt_states", "ipc_request_ledger", "legacy_marker" },
             new Dictionary<string, IReadOnlyCollection<string>>
             {
                 ["games"] = new[] { "match_input_hash", "last_match_attempt_utc", "descriptor_synced_utc" },
@@ -73,7 +74,8 @@ VALUES ('v9','tool9','1.0','C:\Tools\u.exe','C:\Tools','','','','2025-01-01T00:0
                 ["media_sources"] = new[] { "shared_directory" },
                 ["game_tools"] = new[] { "if_already_running", "risk_category", "allow_unknown_anticheat_autostart" },
                 ["game_tool_versions"] = new[] { "resolved_target_path" },
-                ["protection_prompt_states"] = new[] { "state", "last_save_recognized", "last_observed_utc", "last_prompt_utc" }
+                ["protection_prompt_states"] = new[] { "state", "last_save_recognized", "last_observed_utc", "last_prompt_utc" },
+                ["ipc_request_ledger"] = new[] { "protocol_version", "payload_hash" }
             },
             CancellationToken.None);
 

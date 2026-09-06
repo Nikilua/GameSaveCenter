@@ -88,6 +88,9 @@ public sealed class IpcMessageBoundaryTests
         Assert.Contains("PipeOptions.CurrentUserOnly", events);
         Assert.Contains("RequestId={RequestId}", server);
         Assert.Contains("Type={Type}", server);
+        Assert.Contains("REQUEST_ID_REQUIRED", server);
+        Assert.Contains("REQUEST_ID_CONFLICT", server);
+        Assert.Contains("ClaimIpcRequestAsync(request.RequestId,request.Type,request.ProtocolVersion,request.PayloadJson", server);
         Assert.Contains("ResponseBytes={ResponseBytes}", server);
         Assert.Contains("PayloadBytes={PayloadBytes}", server);
         Assert.Contains("catch(JsonException", server);

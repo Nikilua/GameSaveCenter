@@ -4,6 +4,14 @@
 
 > 新会话短入口：先读 [`docs/ai/CURRENT_STATE.md`](ai/CURRENT_STATE.md)。本文下方的历史交接按时间保留；除顶部最新阶段和明确标注的覆盖关系外，旧条目只用于追溯，不得覆盖当前事实入口。
 
+## 2026-09-06 V2-04 IPC 请求身份与重放指纹
+
+- `ipc_request_ledger` 保存协议版本和规范化 JSON 负载指纹；同一个 `RequestId` 必须同时匹配 type、协议版本和 payload，属性顺序变化仍可重放。
+- ID 内容不一致返回 `REQUEST_ID_CONFLICT`，缺少 ID 的受保护写请求返回 `REQUEST_ID_REQUIRED`；两者均不执行也不重放旧响应。旧账本没有指纹时按冲突处理。
+- 迁移自动补齐 `protocol_version`、`payload_hash`；完成行 7 天后按 256 行批次清理，中断行保留 30 天；Named Pipe 服务每小时低频执行终态维护。
+- IPC/迁移定向 `20/20`；Release 全量通过：Core `65/65`、Worker `288/289`（1 跳过）、Playnite `339/401`（62 跳过）、XAML `19/19`，源码门禁和差异检查通过。
+- 真实 Playnite、跨版本组合和硬杀端到端重放仍待人工复核；下一项按复查包进入 V2-05。
+
 ## 2026-09-06 V2-03 健康巡检候选公平与恢复游标
 
 - 健康巡检候选按 `PlayniteId`、`CreatedUtc`、`BackupId` 稳定排序，以完整游戏/备份身份轮转；持久化 in-flight 候选会在重启后优先恢复。

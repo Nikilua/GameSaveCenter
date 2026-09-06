@@ -25,18 +25,44 @@ public sealed class NamedPipeServerService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        while(!stoppingToken.IsCancellationRequested)
+        using var maintenanceCancellation = CancellationTokenSource.CreateLinkedTokenSource(stoppingToken);
+        var maintenanceTask = MaintainLedgerAsync(maintenanceCancellation.Token);
+        try
         {
-            try
+            while(!stoppingToken.IsCancellationRequested)
             {
-                var pipe=new NamedPipeServerStream(_options.PipeName,PipeDirection.InOut,NamedPipeServerStream.MaxAllowedServerInstances,
-                    PipeTransmissionMode.Byte,PipeOptions.Asynchronous|PipeOptions.CurrentUserOnly,64*1024,64*1024);
-                await pipe.WaitForConnectionAsync(stoppingToken).ConfigureAwait(false);
-                _=HandleClientAsync(pipe,stoppingToken);
+                try
+                {
+                    var pipe=new NamedPipeServerStream(_options.PipeName,PipeDirection.InOut,NamedPipeServerStream.MaxAllowedServerInstances,
+                        PipeTransmissionMode.Byte,PipeOptions.Asynchronous|PipeOptions.CurrentUserOnly,64*1024,64*1024);
+                    await pipe.WaitForConnectionAsync(stoppingToken).ConfigureAwait(false);
+                    _=HandleClientAsync(pipe,stoppingToken);
+                }
+                catch(OperationCanceledException) when(stoppingToken.IsCancellationRequested){break;}
+                catch(Exception ex){_logger.LogError(ex,"Named pipe accept failed");await Task.Delay(1000,stoppingToken).ConfigureAwait(false);}
             }
-            catch(OperationCanceledException) when(stoppingToken.IsCancellationRequested){break;}
-            catch(Exception ex){_logger.LogError(ex,"Named pipe accept failed");await Task.Delay(1000,stoppingToken).ConfigureAwait(false);}
         }
+        finally
+        {
+            maintenanceCancellation.Cancel();
+            try { await maintenanceTask.ConfigureAwait(false); }
+            catch (OperationCanceledException) when (maintenanceCancellation.IsCancellationRequested) { }
+        }
+    }
+
+    private async Task MaintainLedgerAsync(CancellationToken token)
+    {
+        try
+        {
+            using var timer = new PeriodicTimer(TimeSpan.FromHours(1));
+            while (await timer.WaitForNextTickAsync(token).ConfigureAwait(false))
+            {
+                try { await _store.MaintainIpcRequestLedgerAsync(token).ConfigureAwait(false); }
+                catch (OperationCanceledException) when (token.IsCancellationRequested) { return; }
+                catch (Exception ex) { _logger.LogWarning(ex, "IPC request ledger maintenance failed"); }
+            }
+        }
+        catch (OperationCanceledException) when (token.IsCancellationRequested) { }
     }
 
     private async Task HandleClientAsync(NamedPipeServerStream pipe,CancellationToken token)
@@ -95,10 +121,17 @@ public sealed class NamedPipeServerService : BackgroundService
 
     private async Task<IpcEnvelope> DispatchWithReplayProtectionAsync(IpcEnvelope request, CancellationToken token)
     {
-        if (!IpcRequestPolicy.RequiresReplayProtection(request.Type) || string.IsNullOrWhiteSpace(request.RequestId))
+        if (!IpcRequestPolicy.RequiresReplayProtection(request.Type))
             return await _dispatcher.DispatchAsync(request,token).ConfigureAwait(false);
+        if (string.IsNullOrWhiteSpace(request.RequestId))
+            return Error(request, "REQUEST_ID_REQUIRED", "该写请求必须提供 RequestId，未执行操作。");
 
-        var claim=await _store.ClaimIpcRequestAsync(request.RequestId,request.Type,token).ConfigureAwait(false);
+        var claim=await _store.ClaimIpcRequestAsync(request.RequestId,request.Type,request.ProtocolVersion,request.PayloadJson,token).ConfigureAwait(false);
+        if (claim.IsConflict)
+        {
+            _logger.LogWarning("IPC RequestId conflict rejected. RequestId={RequestId} Type={Type}", request.RequestId, request.Type);
+            return Error(request, "REQUEST_ID_CONFLICT", "该 RequestId 已用于不同的请求内容，请使用新的 RequestId。");
+        }
         if (!claim.IsOwner)
         {
             if (claim.State==IpcRequestState.Completed && !string.IsNullOrWhiteSpace(claim.ResponseJson))

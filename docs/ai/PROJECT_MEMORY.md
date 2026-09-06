@@ -28,6 +28,14 @@
 - 新增候选提前落盘、状态写失败、公平推迟、新鲜集合和 in-flight 恢复回归；定向健康巡检 `11/11`，隔离 Release 全量结果为 Core `65/65`、Worker `285/286`（1 跳过）、Playnite `339/401`（62 跳过）、XAML `19/19`。
 - 本阶段仍未取得真实 Playnite、硬杀/断电、跨进程并发和长时调度证据；后续按复查包处理 V2-04～V2-07。
 
+## 2026-09-06 V2-04 IPC 请求身份与重放指纹
+
+- `ipc_request_ledger` 现在持久化 `protocol_version` 和规范化 JSON 负载 SHA-256 指纹。对象属性按序规范化、数组顺序保持语义；相同请求属性顺序变化可以安全重放。
+- `ClaimIpcRequestAsync` 对已有 ID 同时核对 type、协议版本和 payload 指纹；不一致或旧行缺少指纹时返回冲突标记，`NamedPipeServerService` 返回 `REQUEST_ID_CONFLICT`，不会执行或重放旧结果。受保护写请求没有 ID 时返回 `REQUEST_ID_REQUIRED`。
+- 旧表通过 `EnsureColumnAsync` 补齐新列；完成行 7 天后按每轮最多 256 行有界清理，中断行保留 30 天以便核对。Named Pipe 服务每小时执行一次只清理终态的维护任务，启动恢复仍单独负责将本进程外的 in-flight 标记为 Interrupted。
+- 新增 RequestId 内容冲突、属性顺序、旧账本、迁移和保留策略回归；隔离 Release 全量结果为 Core `65/65`、Worker `288/289`（1 跳过）、Playnite `339/401`（62 跳过）、XAML `19/19`。
+- 未取得真实 Playnite、跨版本旧 Worker/插件组合和硬杀端到端重放证据；后续处理 V2-05～V2-07。
+
 ## 2026-09-06 完成后复查（仅文档）
 
 - 新增 [FOLLOWUP_REVIEW_2026-09-06.md](FOLLOWUP_REVIEW_2026-09-06.md)，基线 `8018cee`。确认上一轮主体已实现，另列 7 项源码边界和 3 项扩展，未修改生产代码。
