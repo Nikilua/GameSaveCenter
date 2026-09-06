@@ -5,6 +5,14 @@
 
 > 当前事实入口：先读 [`CURRENT_STATE.md`](CURRENT_STATE.md)。本文保留按阶段的历史约束和证据；若与当前事实入口或最新代码冲突，以 `CURRENT_STATE.md` 的覆盖说明为准，不要按旧条目恢复已撤销布局或外部 Demo 路径。
 
+## 2026-09-06 V2-07 媒体多页累积成本与有界窗口
+
+- `MediaPageAccumulator` 为媒体主列表、未归类收件箱和已忽略收件箱分别维护 ID 索引；首个游标页替换，后续页只对相同 ID 更新并追加新项，不再按已加载集合执行全量合并/替换。
+- 每个缓存默认保留最近 2000 条。裁剪时保留当前选中媒体，`MediaLoadedSummary`/`MediaInboxLoadedSummary` 明确区分当前保留数、服务端总数和窗口上限；游标和总数继续由服务端分页状态驱动。
+- `BatchObservableCollection.ApplyBatch` 将一页内的更新、追加和裁剪收敛成一次 Reset 通知，避免逐项触发 UI 重排；索引更新保持与集合位置一致。
+- 回归覆盖 250 页 × 200 项的 5 万条输入、2000 条窗口、选中项保留，以及重叠 ID 更新不重复。隔离 Release 全量为 Core `65/65`、Worker `294/295`（1 跳过）、Playnite `341/403`（62 跳过）、XAML `19/19`，构建无警告/错误，源码/XAML/差异门禁通过。
+- 未取得真实 Playnite 大库滚动回收、DPI、目标机帧率或长时内存证据；不得将有界集合回归写成真实宿主性能验收。
+
 ## 2026-09-06 V2-06 云队列全量摘要与独立分页
 
 - `SqliteStateStore.CloudTransfers` 使用统一 CTE 合并 durable 新队列、legacy 重试表和游戏/媒体基础云状态；按 `transfer_key`（不区分大小写）以新队列优先去重，再由 SQL 聚合全量状态计数和最早重试时间。

@@ -102,6 +102,9 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string mediaPageCursor = string.Empty;
         private int mediaPageTotalCount;
         private bool mediaPageHasMore;
+        private readonly MediaPageAccumulator mediaPageAccumulator;
+        private readonly MediaPageAccumulator unassignedMediaPageAccumulator;
+        private readonly MediaPageAccumulator ignoredMediaPageAccumulator;
         private string unassignedMediaPageCursor = string.Empty;
         private int unassignedMediaPageTotalCount;
         private bool unassignedMediaPageHasMore;
@@ -208,6 +211,9 @@ namespace GameSaveCenter.Playnite.ViewModels
             TasksView.Filter = FilterTask;
             MediaView = CollectionViewSource.GetDefaultView(Media);
             MediaView.Filter = FilterMedia;
+            mediaPageAccumulator = new MediaPageAccumulator(Media);
+            unassignedMediaPageAccumulator = new MediaPageAccumulator(UnassignedMedia);
+            ignoredMediaPageAccumulator = new MediaPageAccumulator(IgnoredMedia);
             MediaInboxItems = UnassignedMedia;
             taskSearchRefresh = new DebouncedRefresh(() => ApplyOnUi(RefreshTasksView), TimeSpan.FromMilliseconds(180));
             taskHistoryQueryRefresh = new DebouncedRefresh(() => Run(() => LoadTaskPageAsync(true)), TimeSpan.FromMilliseconds(240));
@@ -397,12 +403,12 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICollectionView MediaView { get; }
         public bool MediaPageHasMore => mediaPageHasMore;
         public string MediaLoadedSummary => mediaPageTotalCount <= 0
-            ? $"已加载 {Media.Count} 条"
-            : $"已加载 {Media.Count} / {mediaPageTotalCount} 条";
+            ? $"当前保留 {Media.Count} 条（窗口上限 {mediaPageAccumulator.Capacity}）"
+            : $"当前保留 {Media.Count} / {mediaPageTotalCount} 条（窗口上限 {mediaPageAccumulator.Capacity}）";
         public bool MediaInboxPageHasMore => MediaInboxMode == "已忽略" ? ignoredMediaPageHasMore : unassignedMediaPageHasMore;
         public string MediaInboxLoadedSummary => (MediaInboxMode == "已忽略" ? ignoredMediaPageTotalCount : unassignedMediaPageTotalCount) <= 0
-            ? $"已加载 {MediaInboxItems.Count} 条"
-            : $"已加载 {MediaInboxItems.Count} / {(MediaInboxMode == "已忽略" ? ignoredMediaPageTotalCount : unassignedMediaPageTotalCount)} 条";
+            ? $"当前保留 {MediaInboxItems.Count} 条（窗口上限 {CurrentMediaInboxAccumulator.Capacity}）"
+            : $"当前保留 {MediaInboxItems.Count} / {(MediaInboxMode == "已忽略" ? ignoredMediaPageTotalCount : unassignedMediaPageTotalCount)} 条（窗口上限 {CurrentMediaInboxAccumulator.Capacity}）";
         public IReadOnlyList<string> MediaFilterOptions { get; } = new[] { "全部", "截图", "录像", "收藏" };
         public IReadOnlyList<string> GameStatusFilterOptions { get; } = new[] { "全部", "已就绪", "未匹配", "运行中", "需关注", "有历史" };
         public IReadOnlyList<string> GameSortOptions { get; } = new[] { "名称", "运行优先", "匹配优先", "最近备份" };
@@ -3768,6 +3774,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 Backups.Clear();
                 Media.Clear();
+                mediaPageAccumulator.Clear();
                 MediaSources.Clear();
                 SaveCandidates.Clear();
                 GameTools.Clear();

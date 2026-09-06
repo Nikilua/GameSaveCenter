@@ -15,6 +15,10 @@ namespace GameSaveCenter.Playnite.ViewModels
     {
         private const int MediaPageSize = 200;
 
+        private MediaPageAccumulator CurrentMediaInboxAccumulator => MediaInboxMode == "已忽略"
+            ? ignoredMediaPageAccumulator
+            : unassignedMediaPageAccumulator;
+
         public MediaClassificationPreviewDto? MediaClassificationPreview
         {
             get => mediaClassificationPreview;
@@ -146,10 +150,12 @@ namespace GameSaveCenter.Playnite.ViewModels
         private void ApplyMediaInboxPage(MediaPageDto page, bool reset, string collectionMode, string? selectedId, string? targetId)
         {
             var ignored = string.Equals(collectionMode, "已忽略", StringComparison.Ordinal);
-            var target = ignored ? IgnoredMedia : UnassignedMedia;
             var incoming = page.Items ?? new List<MediaItemDto>();
-            var merged = reset ? incoming : MergeMediaItems(target, incoming);
-            Replace(target, merged, SnapshotComparers.Media);
+            var accumulator = ignored ? ignoredMediaPageAccumulator : unassignedMediaPageAccumulator;
+            if (reset)
+                accumulator.ReplaceFirstPage(incoming, selectedId);
+            else
+                accumulator.AppendPage(incoming, selectedId);
             if (ignored)
             {
                 ignoredMediaPageCursor = page.NextCursor ?? string.Empty;
@@ -233,7 +239,10 @@ namespace GameSaveCenter.Playnite.ViewModels
         private void ApplyMediaPage(MediaPageDto page, bool reset, string? selectedId)
         {
             var incoming = page.Items ?? new List<MediaItemDto>();
-            Replace(Media, reset ? incoming : MergeMediaItems(Media, incoming), SnapshotComparers.Media);
+            if (reset)
+                mediaPageAccumulator.ReplaceFirstPage(incoming, selectedId);
+            else
+                mediaPageAccumulator.AppendPage(incoming, selectedId);
             mediaPageCursor = page.NextCursor ?? string.Empty;
             mediaPageTotalCount = Math.Max(0, page.TotalCount);
             mediaPageHasMore = page.HasMore;
@@ -296,23 +305,6 @@ namespace GameSaveCenter.Playnite.ViewModels
             OnPropertyChanged(nameof(MediaInboxPageHasMore));
             OnPropertyChanged(nameof(MediaInboxLoadedSummary));
             RaiseCommandStates();
-        }
-
-        private static List<MediaItemDto> MergeMediaItems(IReadOnlyList<MediaItemDto> current, IEnumerable<MediaItemDto> incoming)
-        {
-            var replacements = incoming
-                .GroupBy(x => x.MediaId, StringComparer.OrdinalIgnoreCase)
-                .ToDictionary(x => x.Key, x => x.Last(), StringComparer.OrdinalIgnoreCase);
-            var result = new List<MediaItemDto>(current.Count + replacements.Count);
-            var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            foreach (var item in current)
-            {
-                if (!seen.Add(item.MediaId)) continue;
-                result.Add(replacements.TryGetValue(item.MediaId, out var replacement) ? replacement : item);
-            }
-            foreach (var item in incoming)
-                if (seen.Add(item.MediaId)) result.Add(item);
-            return result;
         }
 
         private void ApplyMediaInboxMode(string? selectedId = null)

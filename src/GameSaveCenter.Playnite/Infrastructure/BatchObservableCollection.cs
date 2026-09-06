@@ -76,4 +76,25 @@ public sealed class BatchObservableCollection<T> : ObservableCollection<T>
         OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         return true;
     }
+
+    /// <summary>Applies several indexed updates as one collection reset.</summary>
+    public void ApplyBatch(Action action)
+    {
+        if (action == null) throw new ArgumentNullException(nameof(action));
+        var countBefore = Count;
+        suppressNotifications = true;
+        try
+        {
+            action();
+        }
+        finally
+        {
+            suppressNotifications = false;
+        }
+
+        if (countBefore != Count)
+            OnPropertyChanged(new PropertyChangedEventArgs(nameof(Count)));
+        OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
+        OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+    }
 }

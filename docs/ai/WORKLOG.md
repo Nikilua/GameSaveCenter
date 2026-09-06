@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-06 V2-07 媒体多页增量累积与有界缓存
+
+- 依据 `FOLLOWUP_REVIEW_2026-09-06.md` 实现 `MediaPageAccumulator`：媒体主列表与两个 Inbox 缓存按 ID 建索引，首个游标页替换，后续页增量更新/追加；移除旧的每页全量 `MergeMediaItems` 路径。
+- 三个缓存默认限制 2000 项，裁剪时保留当前选中媒体；媒体主列表清空时同步重置索引；摘要改为显示当前保留数、总数和窗口上限，未归类/已忽略使用独立累积器。
+- 给 `BatchObservableCollection` 增加批量更新入口，页面更新、追加和裁剪每页只发一次 Reset；保留现有滚动、虚拟化、绑定、命令和选择语义，没有改 UI 结构或服务端分页契约。
+- 新增 `MediaPageAccumulatorTests`：250 页 × 200 条输入保持 2000 条窗口且选中项仍在；重叠 ID 更新替换原项且不重复。定向测试 `2/2` 通过。
+- 验证：Release 构建 0 warning/0 error；Core `65/65`，Worker `294/295`（1 跳过），Playnite `341/403`（62 跳过），XAML `19/19`；`scripts/validate-source.py`、`scripts/check-xaml.ps1`、`git diff --check` 通过。真实 Playnite/目标机大库性能仍需手工 QA。
+
 ## 2026-09-06 V2-06 云队列全量摘要与独立分页
 
 - 重写云端状态读取路径：SQLite 先将 `cloud_transfer_queue`、`cloud_retry_queue` 和游戏/媒体基础状态按稳定键去重，再做全量摘要；新 durable 行优先，分页明细不再决定 `TotalCount` 或 `NextAttemptUtc`。
