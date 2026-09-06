@@ -161,6 +161,117 @@ public sealed class HealthInspectionServiceTests : IDisposable
     }
 
     [Fact]
+    public async Task CandidateIdentityIsPersistedBeforeArchiveValidation()
+    {
+        var archive = CreateArchive(("profile.dat", "save"));
+        await AddBackupAsync("game-1", "backup-1", archive, Manifest("profile.dat", 4));
+        var persisted = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+        var service = CreateService();
+        service.InspectionStageHook = async stage =>
+        {
+            if (stage != HealthInspectionStage.CandidateStateSaved) return;
+            var state = await store.GetHealthInspectionStateAsync(CancellationToken.None);
+            if (state.CursorPlayniteId == "game-1" && state.CursorBackupId == "backup-1" && state.IsRunning)
+                persisted.TrySetResult(true);
+        };
+
+        var result = await service.RunNowAsync(CancellationToken.None);
+
+        Assert.Equal("Ready", result.LastStatus);
+        Assert.True(await persisted.Task.WaitAsync(TimeSpan.FromSeconds(2)));
+    }
+
+    [Fact]
+    public async Task CandidateStateWriteFailureDoesNotCreateArchiveFailure()
+    {
+        var archive = CreateArchive(("profile.dat", "save"));
+        await AddBackupAsync("game-1", "backup-1", archive, Manifest("profile.dat", 4));
+        await ExecuteSqlAsync(@"CREATE TRIGGER fail_health_candidate_state_update
+BEFORE UPDATE OF cursor_playnite_id ON health_inspection_state
+WHEN NEW.cursor_playnite_id <> ''
+BEGIN SELECT RAISE(ABORT, 'injected candidate state failure'); END;");
+
+        try
+        {
+            var result = await CreateService().RunNowAsync(CancellationToken.None);
+
+            Assert.Equal("Failed", result.LastStatus);
+            Assert.Contains("尚未开始归档校验", result.LastSummary);
+            var stored = Assert.Single(await store.GetBackupVersionsAsync("game-1", CancellationToken.None));
+            Assert.Null(stored.RestoreReadiness);
+            Assert.Empty(await store.GetOpenFindingsAsync(20, CancellationToken.None));
+        }
+        finally
+        {
+            await ExecuteSqlAsync("DROP TRIGGER fail_health_candidate_state_update;");
+        }
+    }
+
+    [Fact]
+    public async Task DeferredGameDoesNotStarveAnotherCheckableGame()
+    {
+        var deferredArchive = Path.Combine(root, "deferred-missing.zip");
+        await AddBackupAsync("game-a", "backup-a", deferredArchive, "[]");
+        var healthyArchive = CreateArchive(("profile.dat", "save"));
+        await AddBackupAsync("game-b", "backup-b", healthyArchive, Manifest("profile.dat", 4));
+        var sessions = new FakeRestoreSessionState();
+        sessions.Active.Add(new GameSessionEventDto { PlayniteId = "game-a", GameName = "Running Game" });
+        var service = CreateService(sessions);
+
+        var first = await service.RunNowAsync(CancellationToken.None);
+        var second = await service.RunNowAsync(CancellationToken.None);
+
+        Assert.Equal("Deferred", first.LastStatus);
+        Assert.Equal("game-a", first.LastPlayniteId);
+        Assert.Equal("Ready", second.LastStatus);
+        Assert.Equal("game-b", second.LastPlayniteId);
+        var deferred = await store.GetHealthInspectionDeferredCandidatesAsync(CancellationToken.None);
+        Assert.Contains(deferred, x => x.PlayniteId == "game-a" && x.BackupId == "backup-a");
+    }
+
+    [Fact]
+    public async Task FreshBackupSetReturnsUpToDateWithoutReadingArchiveAgain()
+    {
+        var archive = CreateArchive(("profile.dat", "save"));
+        await AddBackupAsync("game-1", "backup-1", archive, Manifest("profile.dat", 4));
+        var service = CreateService();
+
+        var first = await service.RunNowAsync(CancellationToken.None);
+        File.Delete(archive);
+        var second = await service.RunNowAsync(CancellationToken.None);
+
+        Assert.Equal("Ready", first.LastStatus);
+        Assert.Equal("UpToDate", second.LastStatus);
+    }
+
+    [Fact]
+    public async Task PersistedInFlightCursorWinsOverNewerUnvalidatedCandidate()
+    {
+        var inFlightArchive = CreateArchive(("profile.dat", "save"));
+        await AddBackupAsync("game-a", "backup-a", inFlightArchive, Manifest("profile.dat", 4));
+        await AddBackupAsync("game-b", "backup-b", Path.Combine(root, "missing.zip"), "[]");
+        await store.SaveRestoreReadinessAsync("game-a", "backup-a", new RestoreReadinessDto
+        {
+            BackupVersionId = "backup-a", CheckedUtc = DateTime.UtcNow, Status = RestoreReadinessStatus.Ready,
+            ExpectedFileCount = 1, ExpectedTotalSize = 4, StagingCleanupStatus = "Cleaned", Summary = "ok"
+        }, CancellationToken.None);
+        var interrupted = new HealthInspectionStateDto
+        {
+            Enabled = true, IntervalMinutes = 15, StaleAfterDays = 30, MaxDurationSeconds = 30,
+            NextDueUtc = DateTime.UtcNow.AddMinutes(10), LastStartedUtc = DateTime.UtcNow.AddMinutes(-1),
+            LastCompletedUtc = DateTime.UtcNow.AddMinutes(-2), CursorPlayniteId = "game-a", CursorBackupId = "backup-a",
+            LastPlayniteId = "game-a", LastBackupId = "backup-a", LastStatus = "Running", LastSummary = "interrupted"
+        };
+        await store.SaveHealthInspectionStateAsync(interrupted, CancellationToken.None);
+
+        var result = await CreateService().RunNowAsync(CancellationToken.None);
+
+        Assert.Equal("Ready", result.LastStatus);
+        Assert.Equal("game-a", result.LastPlayniteId);
+        Assert.Equal("backup-a", result.LastBackupId);
+    }
+
+    [Fact]
     public async Task ExecutionStateWriteDoesNotOverwriteAConcurrentPlanChange()
     {
         var initial = new HealthInspectionStateDto
@@ -232,6 +343,15 @@ public sealed class HealthInspectionServiceTests : IDisposable
 
     private static string Manifest(string path, long bytes)
         => JsonSerializer.Serialize(new[] { new FileManifestEntry { RelativePath = path, SizeBytes = bytes } });
+
+    private async Task ExecuteSqlAsync(string sql)
+    {
+        await using var connection = new SqliteConnection($"Data Source={options.DatabasePath};Cache=Shared;Foreign Keys=True");
+        await connection.OpenAsync();
+        await using var command = connection.CreateCommand();
+        command.CommandText = sql;
+        await command.ExecuteNonQueryAsync();
+    }
 
     public void Dispose()
     {

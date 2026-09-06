@@ -124,6 +124,7 @@ public sealed class HealthInspectionService : BackgroundService
 
     private async Task<HealthInspectionStateDto> RunOneAsync(HealthInspectionStateDto state, string source, CancellationToken token)
     {
+        var resumeInFlight = state.IsRunning;
         var startedUtc = DateTime.UtcNow;
         state.LastStartedUtc = startedUtc;
         state.LastStatus = "Running";
@@ -137,22 +138,65 @@ public sealed class HealthInspectionService : BackgroundService
         try
         {
             var versions = await _store.GetAllBackupVersionsForInspectionAsync(token).ConfigureAwait(false);
-            candidate = SelectCandidate(versions, state, DateTime.UtcNow);
-            if (candidate == null)
-                return await CompleteAsync(state, "NoBackups", "当前没有可用于恢复可用性巡检的备份版本。", null, null).ConfigureAwait(false);
+            var deferred = (await _store.GetHealthInspectionDeferredCandidatesAsync(token).ConfigureAwait(false))
+                .ToDictionary(x => MakeCandidateKey(x.PlayniteId, x.BackupId), x => x.NextAttemptUtc, StringComparer.OrdinalIgnoreCase);
+            var selection = SelectCandidate(versions, state, DateTime.UtcNow, deferred, resumeInFlight);
+            if (selection.Candidate == null)
+            {
+                return selection.Decision switch
+                {
+                    HealthInspectionCandidateDecision.NoBackups
+                        => await CompleteAsync(state, "NoBackups", "当前没有可供巡检的备份版本。", null, null).ConfigureAwait(false),
+                    HealthInspectionCandidateDecision.UpToDate
+                        => await CompleteAsync(state, "UpToDate", "所有备份版本的恢复可用性校验仍在有效期内。", null, null).ConfigureAwait(false),
+                    _ => await CompleteAsync(state, "Deferred", "当前候选均在等待下次可检查时间，本轮未重复读取归档。", null, "all-candidates-deferred").ConfigureAwait(false)
+                };
+            }
+            candidate = selection.Candidate;
 
+            var previousLastPlayniteId = state.LastPlayniteId;
+            var previousLastBackupId = state.LastBackupId;
+            var previousCursorPlayniteId = state.CursorPlayniteId;
+            var previousCursorBackupId = state.CursorBackupId;
             state.LastPlayniteId = candidate.PlayniteId;
             state.LastBackupId = candidate.BackupId;
             state.CursorPlayniteId = candidate.PlayniteId;
             state.CursorBackupId = candidate.BackupId;
+            // Persist the selected identity before checking the game or opening the archive.
+            // A restart can therefore resume this exact candidate instead of selecting a newer one.
+            try
+            {
+                await _store.SaveHealthInspectionExecutionStateAsync(state, CancellationToken.None).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                state.LastPlayniteId = previousLastPlayniteId;
+                state.LastBackupId = previousLastBackupId;
+                state.CursorPlayniteId = previousCursorPlayniteId;
+                state.CursorBackupId = previousCursorBackupId;
+                var summary = "恢复可用性巡检状态写入失败，尚未开始归档校验；下次巡检会重试。";
+                _logger.LogError(ex, "Could not persist selected health inspection candidate for {PlayniteId}/{BackupId}",
+                    candidate.PlayniteId, candidate.BackupId);
+                await AppendFailureAuditBestEffortAsync(source, candidate, summary, "state-write").ConfigureAwait(false);
+                return await CompleteAsync(state, "Failed", summary, null, "state-write").ConfigureAwait(false);
+            }
+            await NotifyInspectionStageAsync(HealthInspectionStage.CandidateStateSaved).ConfigureAwait(false);
 
             var active = _sessions.ActiveSessions.Any(x => string.Equals(x.PlayniteId, candidate.PlayniteId, StringComparison.OrdinalIgnoreCase));
             if (active)
+            {
+                await DeferCandidateAsync(candidate, "game-running").ConfigureAwait(false);
                 return await CompleteAsync(state, "Deferred", "该游戏正在运行，本轮已推迟高成本恢复校验。", candidate, "game-running").ConfigureAwait(false);
+            }
 
             using var lease = await _gameLock.AcquireAsync(candidate.PlayniteId, GameOperationKind.RestoreReadiness, TimeSpan.Zero, token).ConfigureAwait(false);
             if (lease == null)
+            {
+                await DeferCandidateAsync(candidate, "game-operation-busy").ConfigureAwait(false);
                 return await CompleteAsync(state, "Deferred", "该游戏已有备份、恢复或媒体操作，本轮已推迟恢复校验。", candidate, "game-operation-busy").ConfigureAwait(false);
+            }
+
+            await _store.ClearHealthInspectionDeferredCandidateAsync(candidate.PlayniteId, candidate.BackupId, CancellationToken.None).ConfigureAwait(false);
 
             using var budget = CancellationTokenSource.CreateLinkedTokenSource(token);
             budget.CancelAfter(TimeSpan.FromSeconds(_options.HealthInspectionMaxDurationSeconds));
@@ -304,27 +348,52 @@ public sealed class HealthInspectionService : BackgroundService
     private Task NotifyInspectionStageAsync(HealthInspectionStage stage)
         => InspectionStageHook?.Invoke(stage) ?? Task.CompletedTask;
 
-    private BackupVersionDto? SelectCandidate(IReadOnlyCollection<BackupVersionDto> versions, HealthInspectionStateDto state, DateTime now)
+    private async Task DeferCandidateAsync(BackupVersionDto candidate, string reason)
     {
-        if (versions.Count == 0) return null;
+        var retryMinutes = Math.Min(15, Math.Max(1, _options.HealthInspectionIntervalMinutes));
+        await _store.SaveHealthInspectionDeferredCandidateAsync(candidate.PlayniteId, candidate.BackupId,
+            DateTime.UtcNow.AddMinutes(retryMinutes), reason, CancellationToken.None).ConfigureAwait(false);
+    }
+
+    private CandidateSelection SelectCandidate(IReadOnlyCollection<BackupVersionDto> versions, HealthInspectionStateDto state,
+        DateTime now, IReadOnlyDictionary<string, DateTime> deferred, bool resumeInFlight)
+    {
+        if (versions.Count == 0) return new CandidateSelection(null, HealthInspectionCandidateDecision.NoBackups);
         var ordered = versions
             .OrderBy(x => x.PlayniteId, StringComparer.OrdinalIgnoreCase)
             .ThenBy(x => x.CreatedUtc)
             .ThenBy(x => x.BackupId, StringComparer.OrdinalIgnoreCase)
             .ToList();
-        var staleBefore = now.AddDays(-state.StaleAfterDays);
-        var priority = ordered
-            .Where(x => x.RestoreReadiness == null || !x.RestoreReadiness.CheckedUtc.HasValue || x.RestoreReadiness.CheckedUtc < staleBefore)
-            .OrderBy(x => x.RestoreReadiness?.CheckedUtc ?? DateTime.MinValue)
-            .ThenByDescending(x => x.CreatedUtc)
-            .ThenBy(x => x.PlayniteId, StringComparer.OrdinalIgnoreCase)
-            .ThenBy(x => x.BackupId, StringComparer.OrdinalIgnoreCase)
-            .FirstOrDefault();
-        if (priority != null) return priority;
 
-        var cursor = MakeKey(state.CursorPlayniteId, state.CursorBackupId);
-        return ordered.FirstOrDefault(x => string.Compare(MakeKey(x.PlayniteId, x.BackupId), cursor, StringComparison.OrdinalIgnoreCase) > 0)
-            ?? ordered[0];
+        if (resumeInFlight && !string.IsNullOrWhiteSpace(state.CursorPlayniteId) && !string.IsNullOrWhiteSpace(state.CursorBackupId))
+        {
+            var inFlight = ordered.FirstOrDefault(x => string.Equals(x.PlayniteId, state.CursorPlayniteId, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(x.BackupId, state.CursorBackupId, StringComparison.OrdinalIgnoreCase));
+            if (inFlight != null) return new CandidateSelection(inFlight, HealthInspectionCandidateDecision.Candidate);
+        }
+
+        var staleBefore = now.AddDays(-state.StaleAfterDays);
+        bool NeedsCheck(BackupVersionDto version)
+            => version.RestoreReadiness == null || !version.RestoreReadiness.CheckedUtc.HasValue
+                || version.RestoreReadiness.CheckedUtc < staleBefore;
+
+        var checkable = ordered.Where(NeedsCheck)
+            .Where(x => !deferred.TryGetValue(MakeCandidateKey(x.PlayniteId, x.BackupId), out var next) || next <= now)
+            .ToList();
+        if (checkable.Count == 0)
+            return new CandidateSelection(null, ordered.Any(NeedsCheck)
+                ? HealthInspectionCandidateDecision.AllDeferred
+                : HealthInspectionCandidateDecision.UpToDate);
+
+        var cursorIndex = ordered.FindIndex(x => string.Equals(x.PlayniteId, state.CursorPlayniteId, StringComparison.OrdinalIgnoreCase)
+            && string.Equals(x.BackupId, state.CursorBackupId, StringComparison.OrdinalIgnoreCase));
+        var start = cursorIndex < 0 ? 0 : (cursorIndex + 1) % ordered.Count;
+        for (var offset = 0; offset < ordered.Count; offset++)
+        {
+            var candidate = ordered[(start + offset) % ordered.Count];
+            if (checkable.Contains(candidate)) return new CandidateSelection(candidate, HealthInspectionCandidateDecision.Candidate);
+        }
+        return new CandidateSelection(checkable[0], HealthInspectionCandidateDecision.Candidate);
     }
 
     private static bool IsDue(HealthInspectionStateDto state, DateTime now)
@@ -340,11 +409,22 @@ public sealed class HealthInspectionService : BackgroundService
         return remaining <= TimeSpan.Zero ? TimeSpan.FromSeconds(1) : TimeSpan.FromSeconds(Math.Min(30, Math.Max(1, remaining.TotalSeconds)));
     }
 
-    private static string MakeKey(string playniteId, string backupId) => playniteId + "\0" + backupId;
+    private static string MakeCandidateKey(string playniteId, string backupId) => playniteId + "\0" + backupId;
 }
 
 internal enum HealthInspectionStage
 {
     RunningStateSaved,
+    CandidateStateSaved,
     ScheduledGateMiss
 }
+
+internal enum HealthInspectionCandidateDecision
+{
+    Candidate,
+    NoBackups,
+    UpToDate,
+    AllDeferred
+}
+
+internal sealed record CandidateSelection(BackupVersionDto? Candidate, HealthInspectionCandidateDecision Decision);

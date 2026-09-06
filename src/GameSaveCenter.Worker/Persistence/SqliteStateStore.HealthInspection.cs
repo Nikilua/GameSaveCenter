@@ -170,6 +170,41 @@ FROM backup_versions ORDER BY playnite_id COLLATE NOCASE,created_utc ASC,backup_
         return result;
     }
 
+    public async Task<List<HealthInspectionDeferredCandidateRecord>> GetHealthInspectionDeferredCandidatesAsync(CancellationToken token)
+    {
+        var result = new List<HealthInspectionDeferredCandidateRecord>();
+        await using var connection = Open();
+        await connection.OpenAsync(token).ConfigureAwait(false);
+        var command = connection.CreateCommand();
+        command.CommandText = @"SELECT playnite_id,backup_id,next_attempt_utc,reason
+FROM health_inspection_deferred_candidates;";
+        await using var reader = await command.ExecuteReaderAsync(token).ConfigureAwait(false);
+        while (await reader.ReadAsync(token).ConfigureAwait(false))
+            result.Add(new HealthInspectionDeferredCandidateRecord
+            {
+                PlayniteId = reader.GetString(0), BackupId = reader.GetString(1),
+                NextAttemptUtc = DateTime.Parse(reader.GetString(2)).ToUniversalTime(), Reason = reader.GetString(3)
+            });
+        return result;
+    }
+
+    public Task SaveHealthInspectionDeferredCandidateAsync(string playniteId, string backupId, DateTime nextAttemptUtc,
+        string reason, CancellationToken token)
+        => ExecuteAsync(@"INSERT INTO health_inspection_deferred_candidates(playnite_id,backup_id,next_attempt_utc,reason,updated_utc)
+VALUES($game,$backup,$next,$reason,$updated)
+ON CONFLICT(playnite_id,backup_id) DO UPDATE SET next_attempt_utc=excluded.next_attempt_utc,
+reason=excluded.reason,updated_utc=excluded.updated_utc;",
+            new Dictionary<string, object?>
+            {
+                ["$game"] = playniteId, ["$backup"] = backupId,
+                ["$next"] = nextAttemptUtc.ToUniversalTime().ToString("O"), ["$reason"] = reason,
+                ["$updated"] = DateTime.UtcNow.ToString("O")
+            }, token);
+
+    public Task ClearHealthInspectionDeferredCandidateAsync(string playniteId, string backupId, CancellationToken token)
+        => ExecuteAsync("DELETE FROM health_inspection_deferred_candidates WHERE playnite_id=$game AND backup_id=$backup;",
+            new Dictionary<string, object?> { ["$game"] = playniteId, ["$backup"] = backupId }, token);
+
     public Task UpsertHealthInspectionFindingAsync(string playniteId, string backupId, RestoreReadinessDto readiness, CancellationToken token)
     {
         var findingId = HealthFindingId(playniteId, backupId);
@@ -213,4 +248,12 @@ suggested_action=excluded.suggested_action,created_utc=excluded.created_utc,reso
 
     private static string HealthFindingId(string playniteId, string backupId)
         => "health-readiness-" + Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(playniteId + "\0" + backupId)));
+}
+
+public sealed class HealthInspectionDeferredCandidateRecord
+{
+    public string PlayniteId { get; set; } = string.Empty;
+    public string BackupId { get; set; } = string.Empty;
+    public DateTime NextAttemptUtc { get; set; }
+    public string Reason { get; set; } = string.Empty;
 }

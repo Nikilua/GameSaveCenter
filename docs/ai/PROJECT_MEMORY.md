@@ -18,7 +18,15 @@
 - `HealthInspectionService` 后台循环在 `_runGate` 争用失败时等待 250ms 后重试，外围 `Get/SyncPlan/RunOne` 异常按 1s 退避隔离，应用停止时不进行无界重试。
 - 计划和执行状态采用不同 SQLite 写入契约：`UpdateHealthInspectionPlanAsync` 只更新计划字段，`SaveHealthInspectionExecutionStateAsync` 只更新结果/游标字段；`CompleteAsync` 读取最新计划后设置下一次时间，避免并发设置修改被旧 DTO 整行覆盖。
 - 定向回归用可控手动巡检闸门证明 700ms 内后台争锁次数受限，并证明执行写入不会覆盖已更新的启用/间隔/过期/预算；隔离 Release 全量验证为 Core `65/65`、Worker `280/281`（1 跳过）、Playnite `339/401`（62 跳过）、XAML `19/19`。
-- V2-03 仍需在此基础上处理候选身份提前落盘、推迟项公平性、复合游标一致性和全新鲜集合不重复解包。
+- 真实宿主长时调度与目标机资源压力仍需人工复核。
+
+## 2026-09-06 V2-03 健康巡检候选公平与恢复游标
+
+- `HealthInspectionService` 先按稳定的 `PlayniteId`、`CreatedUtc`、`BackupId` 顺序建立候选集，再按完整游戏/备份复合游标轮转；启动时若存在持久化 in-flight 游标，优先恢复该确切候选。
+- 候选身份在检查会话、游戏锁和归档前通过执行状态契约落盘。状态写失败会停止本轮且不读取归档、不写入 Failed readiness/finding；审计和完成状态仍走尽力记录路径。
+- `health_inspection_deferred_candidates` 为被运行中游戏或操作锁推迟的版本记录独立下次尝试时间，允许本轮转向其他游戏；无过期项时返回 `UpToDate`，不重复解包。
+- 新增候选提前落盘、状态写失败、公平推迟、新鲜集合和 in-flight 恢复回归；定向健康巡检 `11/11`，隔离 Release 全量结果为 Core `65/65`、Worker `285/286`（1 跳过）、Playnite `339/401`（62 跳过）、XAML `19/19`。
+- 本阶段仍未取得真实 Playnite、硬杀/断电、跨进程并发和长时调度证据；后续按复查包处理 V2-04～V2-07。
 
 ## 2026-09-06 完成后复查（仅文档）
 

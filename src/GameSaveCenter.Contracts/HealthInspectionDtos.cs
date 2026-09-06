@@ -35,6 +35,7 @@ namespace GameSaveCenter.Contracts
             "Deferred" => "已推迟",
             "Cancelled" => "已取消",
             "NoBackups" => "暂无备份",
+            "UpToDate" => "校验仍在有效期内",
             "Running" => "巡检中",
             _ => "尚未运行"
         };
