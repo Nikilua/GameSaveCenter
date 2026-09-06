@@ -8,10 +8,14 @@ public sealed partial class SqliteStateStore
 {
     public Task UpsertCloudTransferAsync(CloudTransferQueueEntry entry, CancellationToken token)
         => ExecuteAsync(@"
-INSERT INTO cloud_transfer_queue(transfer_key,transfer_kind,playnite_id,state,attempt_count,next_attempt_utc,last_attempt_utc,last_error_code,last_error,created_utc,updated_utc)
-VALUES($key,$kind,$game,$state,$attempts,$next,$last_attempt,$error_code,$error,$created,$updated)
+INSERT INTO cloud_transfer_queue(transfer_key,transfer_kind,playnite_id,state,operation_kind,operation_id,prior_state,prior_operation_kind,prior_operation_id,prior_next_attempt_utc,prior_last_attempt_utc,prior_error_code,prior_error,attempt_count,next_attempt_utc,last_attempt_utc,last_error_code,last_error,created_utc,updated_utc)
+VALUES($key,$kind,$game,$state,$operation_kind,$operation_id,$prior_state,$prior_operation_kind,$prior_operation_id,$prior_next,$prior_last_attempt,$prior_error_code,$prior_error,$attempts,$next,$last_attempt,$error_code,$error,$created,$updated)
 ON CONFLICT(transfer_key) DO UPDATE SET
 transfer_kind=excluded.transfer_kind,playnite_id=excluded.playnite_id,state=excluded.state,
+operation_kind=excluded.operation_kind,operation_id=excluded.operation_id,prior_state=excluded.prior_state,
+prior_operation_kind=excluded.prior_operation_kind,prior_operation_id=excluded.prior_operation_id,
+prior_next_attempt_utc=excluded.prior_next_attempt_utc,prior_last_attempt_utc=excluded.prior_last_attempt_utc,
+prior_error_code=excluded.prior_error_code,prior_error=excluded.prior_error,
 attempt_count=excluded.attempt_count,next_attempt_utc=excluded.next_attempt_utc,last_attempt_utc=excluded.last_attempt_utc,
 last_error_code=excluded.last_error_code,last_error=excluded.last_error,updated_utc=excluded.updated_utc;",
             new Dictionary<string, object?>
@@ -20,6 +24,15 @@ last_error_code=excluded.last_error_code,last_error=excluded.last_error,updated_
                 ["$kind"] = entry.Kind.ToString(),
                 ["$game"] = entry.PlayniteId,
                 ["$state"] = entry.State,
+                ["$operation_kind"] = entry.OperationKind.ToString(),
+                ["$operation_id"] = entry.OperationId,
+                ["$prior_state"] = entry.PriorState,
+                ["$prior_operation_kind"] = entry.PriorOperationKind.ToString(),
+                ["$prior_operation_id"] = entry.PriorOperationId,
+                ["$prior_next"] = ToNullableUtc(entry.PriorNextAttemptUtc),
+                ["$prior_last_attempt"] = ToNullableUtc(entry.PriorLastAttemptUtc),
+                ["$prior_error_code"] = entry.PriorErrorCode,
+                ["$prior_error"] = entry.PriorError,
                 ["$attempts"] = Math.Max(0, entry.AttemptCount),
                 ["$next"] = ToNullableUtc(entry.NextAttemptUtc),
                 ["$last_attempt"] = ToNullableUtc(entry.LastAttemptUtc),
@@ -28,6 +41,49 @@ last_error_code=excluded.last_error_code,last_error=excluded.last_error,updated_
                 ["$created"] = entry.CreatedUtc.ToUniversalTime().ToString("O"),
                 ["$updated"] = entry.UpdatedUtc.ToUniversalTime().ToString("O")
             }, token);
+
+    public async Task<bool> TryUpdateCloudTransferAsync(CloudTransferQueueEntry entry, string expectedOperationId, CancellationToken token)
+    {
+        if (string.IsNullOrWhiteSpace(expectedOperationId)) return false;
+        await _writeGate.WaitAsync(token).ConfigureAwait(false);
+        try
+        {
+            await using var connection = Open();
+            await connection.OpenAsync(token).ConfigureAwait(false);
+            var command = connection.CreateCommand();
+            command.CommandText = @"
+UPDATE cloud_transfer_queue
+SET state=$state,operation_kind=$operation_kind,operation_id=$operation_id,prior_state=$prior_state,
+    prior_operation_kind=$prior_operation_kind,prior_operation_id=$prior_operation_id,
+    prior_next_attempt_utc=$prior_next,prior_last_attempt_utc=$prior_last_attempt,
+    prior_error_code=$prior_error_code,prior_error=$prior_error,attempt_count=$attempts,
+    next_attempt_utc=$next,last_attempt_utc=$last_attempt,last_error_code=$error_code,last_error=$error,updated_utc=$updated
+WHERE transfer_key=$key AND operation_id=$expected_operation_id;";
+            command.Parameters.AddWithValue("$state", entry.State);
+            command.Parameters.AddWithValue("$operation_kind", entry.OperationKind.ToString());
+            command.Parameters.AddWithValue("$operation_id", entry.OperationId);
+            command.Parameters.AddWithValue("$prior_state", entry.PriorState);
+            command.Parameters.AddWithValue("$prior_operation_kind", entry.PriorOperationKind.ToString());
+            command.Parameters.AddWithValue("$prior_operation_id", entry.PriorOperationId);
+            command.Parameters.AddWithValue("$prior_next", (object?)ToNullableUtc(entry.PriorNextAttemptUtc) ?? DBNull.Value);
+            command.Parameters.AddWithValue("$prior_last_attempt", (object?)ToNullableUtc(entry.PriorLastAttemptUtc) ?? DBNull.Value);
+            command.Parameters.AddWithValue("$prior_error_code", entry.PriorErrorCode);
+            command.Parameters.AddWithValue("$prior_error", entry.PriorError);
+            command.Parameters.AddWithValue("$attempts", Math.Max(0, entry.AttemptCount));
+            command.Parameters.AddWithValue("$next", (object?)ToNullableUtc(entry.NextAttemptUtc) ?? DBNull.Value);
+            command.Parameters.AddWithValue("$last_attempt", (object?)ToNullableUtc(entry.LastAttemptUtc) ?? DBNull.Value);
+            command.Parameters.AddWithValue("$error_code", entry.LastErrorCode);
+            command.Parameters.AddWithValue("$error", entry.LastError);
+            command.Parameters.AddWithValue("$updated", entry.UpdatedUtc.ToUniversalTime().ToString("O"));
+            command.Parameters.AddWithValue("$key", entry.TransferKey);
+            command.Parameters.AddWithValue("$expected_operation_id", expectedOperationId);
+            return await command.ExecuteNonQueryAsync(token).ConfigureAwait(false) == 1;
+        }
+        finally
+        {
+            _writeGate.Release();
+        }
+    }
 
     public async Task<CloudTransferQueueEntry?> GetCloudTransferAsync(string transferKey, CancellationToken token)
     {
@@ -75,7 +131,18 @@ last_error_code=excluded.last_error_code,last_error=excluded.last_error,updated_
 UPDATE cloud_transfer_queue
 SET state='RetryScheduled',next_attempt_utc=$next,last_error_code='WORKER_RESTARTED_RETRYABLE',
     last_error='Worker 在云端复制过程中退出，已重新排队；本地副本保持不变。',updated_utc=$updated
-WHERE state IN ('Pending','Transferring');",
+WHERE state IN ('Pending','Transferring') AND operation_kind='Upload';
+UPDATE cloud_transfer_queue
+SET state=CASE WHEN prior_state<>'' THEN prior_state ELSE 'CheckFailed' END,
+    operation_kind=CASE WHEN prior_state<>'' THEN prior_operation_kind ELSE 'Verify' END,
+    operation_id=CASE WHEN prior_state<>'' THEN prior_operation_id ELSE operation_id END,
+    next_attempt_utc=CASE WHEN prior_state<>'' THEN prior_next_attempt_utc ELSE NULL END,
+    last_attempt_utc=CASE WHEN prior_state<>'' THEN prior_last_attempt_utc ELSE last_attempt_utc END,
+    last_error_code=CASE WHEN prior_state<>'' THEN prior_error_code ELSE 'WORKER_RESTARTED_VERIFY' END,
+    last_error=CASE WHEN prior_state<>'' THEN prior_error ELSE 'Worker 在远端校验期间退出；未重新发起上传。' END,
+    prior_state='',prior_operation_kind='Upload',prior_operation_id='',prior_next_attempt_utc=NULL,
+    prior_last_attempt_utc=NULL,prior_error_code='',prior_error='',updated_utc=$updated
+WHERE state='Verifying' AND operation_kind='Verify';",
             new Dictionary<string, object?>
             {
                 ["$next"] = nextAttemptUtc.ToUniversalTime().ToString("O"),
@@ -133,7 +200,7 @@ GROUP BY m.playnite_id,g.name;";
         return result;
     }
 
-    private const string SelectCloudTransfers = @"SELECT transfer_key,transfer_kind,playnite_id,state,attempt_count,next_attempt_utc,last_attempt_utc,last_error_code,last_error,created_utc,updated_utc FROM cloud_transfer_queue";
+    private const string SelectCloudTransfers = @"SELECT transfer_key,transfer_kind,playnite_id,state,operation_kind,operation_id,prior_state,prior_operation_kind,prior_operation_id,prior_next_attempt_utc,prior_last_attempt_utc,prior_error_code,prior_error,attempt_count,next_attempt_utc,last_attempt_utc,last_error_code,last_error,created_utc,updated_utc FROM cloud_transfer_queue";
 
     private static CloudTransferQueueEntry ReadCloudTransfer(SqliteDataReader reader)
         => new()
@@ -142,13 +209,22 @@ GROUP BY m.playnite_id,g.name;";
             Kind = Enum.TryParse<CloudTransferKind>(reader.GetString(1), true, out var kind) ? kind : CloudTransferKind.Backup,
             PlayniteId = reader.GetString(2),
             State = reader.GetString(3),
-            AttemptCount = reader.GetInt32(4),
-            NextAttemptUtc = ParseNullableUtc(reader, 5),
-            LastAttemptUtc = ParseNullableUtc(reader, 6),
-            LastErrorCode = reader.IsDBNull(7) ? string.Empty : reader.GetString(7),
-            LastError = reader.IsDBNull(8) ? string.Empty : reader.GetString(8),
-            CreatedUtc = DateTime.Parse(reader.GetString(9)).ToUniversalTime(),
-            UpdatedUtc = DateTime.Parse(reader.GetString(10)).ToUniversalTime()
+            OperationKind = Enum.TryParse<CloudTransferOperationKind>(reader.GetString(4), true, out var operationKind) ? operationKind : CloudTransferOperationKind.Upload,
+            OperationId = reader.GetString(5),
+            PriorState = reader.GetString(6),
+            PriorOperationKind = Enum.TryParse<CloudTransferOperationKind>(reader.GetString(7), true, out var priorOperationKind) ? priorOperationKind : CloudTransferOperationKind.Upload,
+            PriorOperationId = reader.GetString(8),
+            PriorNextAttemptUtc = ParseNullableUtc(reader, 9),
+            PriorLastAttemptUtc = ParseNullableUtc(reader, 10),
+            PriorErrorCode = reader.IsDBNull(11) ? string.Empty : reader.GetString(11),
+            PriorError = reader.IsDBNull(12) ? string.Empty : reader.GetString(12),
+            AttemptCount = reader.GetInt32(13),
+            NextAttemptUtc = ParseNullableUtc(reader, 14),
+            LastAttemptUtc = ParseNullableUtc(reader, 15),
+            LastErrorCode = reader.IsDBNull(16) ? string.Empty : reader.GetString(16),
+            LastError = reader.IsDBNull(17) ? string.Empty : reader.GetString(17),
+            CreatedUtc = DateTime.Parse(reader.GetString(18)).ToUniversalTime(),
+            UpdatedUtc = DateTime.Parse(reader.GetString(19)).ToUniversalTime()
         };
 
     private static DateTime? ParseNullableUtc(SqliteDataReader reader, int ordinal)
@@ -164,6 +240,15 @@ public sealed class CloudTransferQueueEntry
     public CloudTransferKind Kind { get; set; }
     public string PlayniteId { get; set; } = string.Empty;
     public string State { get; set; } = "Pending";
+    public CloudTransferOperationKind OperationKind { get; set; } = CloudTransferOperationKind.Upload;
+    public string OperationId { get; set; } = string.Empty;
+    public string PriorState { get; set; } = string.Empty;
+    public CloudTransferOperationKind PriorOperationKind { get; set; } = CloudTransferOperationKind.Upload;
+    public string PriorOperationId { get; set; } = string.Empty;
+    public DateTime? PriorNextAttemptUtc { get; set; }
+    public DateTime? PriorLastAttemptUtc { get; set; }
+    public string PriorErrorCode { get; set; } = string.Empty;
+    public string PriorError { get; set; } = string.Empty;
     public int AttemptCount { get; set; }
     public DateTime? NextAttemptUtc { get; set; }
     public DateTime? LastAttemptUtc { get; set; }

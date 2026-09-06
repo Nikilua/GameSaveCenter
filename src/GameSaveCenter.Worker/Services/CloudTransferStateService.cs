@@ -9,7 +9,8 @@ namespace GameSaveCenter.Worker.Services;
 /// <summary>
 /// Owns the durable, user-visible state shared by backup and media cloud copies.
 /// It records only one row per game and transfer kind; remote content is never deleted
-/// or overwritten through this service.
+/// or overwritten through this service. Uploads and read-only verification use separate
+/// durable operation generations so a late check cannot overwrite a newer upload.
 /// </summary>
 public sealed class CloudTransferStateService
 {
@@ -17,6 +18,11 @@ public sealed class CloudTransferStateService
     private readonly WorkerOptions _options;
     private readonly RcloneClient _rclone;
     private readonly CloudTransferCoordinator _coordinator;
+    private readonly ILogger<CloudTransferStateService> _logger;
+
+    // Test-only injection keeps cancellation and process-failure windows deterministic
+    // without requiring a real remote provider or mutating user data.
+    internal Func<string, string, CancellationToken, Task<ProcessResult>>? VerifyCheckHook { get; set; }
 
     public CloudTransferStateService(SqliteStateStore store, WorkerOptions options, RcloneClient rclone,
         CloudTransferCoordinator coordinator, ILogger<CloudTransferStateService> logger)
@@ -25,6 +31,7 @@ public sealed class CloudTransferStateService
         _options = options;
         _rclone = rclone;
         _coordinator = coordinator;
+        _logger = logger;
     }
 
     public static string GetTransferKey(CloudTransferKind kind, string playniteId)
@@ -37,12 +44,13 @@ public sealed class CloudTransferStateService
         await SaveAsync(new CloudTransferQueueEntry
         {
             TransferKey = GetTransferKey(kind, playniteId), Kind = kind, PlayniteId = playniteId,
-            State = "Pending", AttemptCount = 0, CreatedUtc = existing?.CreatedUtc ?? now, UpdatedUtc = now
+            State = "Pending", OperationKind = CloudTransferOperationKind.Upload, OperationId = NewOperationId(),
+            AttemptCount = 0, CreatedUtc = existing?.CreatedUtc ?? now, UpdatedUtc = now
         }, token).ConfigureAwait(false);
     }
 
     public Task MarkTransferringAsync(CloudTransferKind kind, string playniteId, CancellationToken token)
-        => UpdateStateAsync(kind, playniteId, "Transferring", token);
+        => UpdateStateAsync(kind, playniteId, "Transferring", token, beginOperation: true);
 
     public Task MarkUploadedAsync(CloudTransferKind kind, string playniteId, CancellationToken token)
         => UpdateStateAsync(kind, playniteId, "Uploaded", token, clearError: true);
@@ -71,6 +79,7 @@ public sealed class CloudTransferStateService
             TransferKey = existing.TransferKey, Kind = existing.Kind, PlayniteId = existing.PlayniteId,
             State = "RetryScheduled", AttemptCount = existing.AttemptCount, NextAttemptUtc = nextAttemptUtc,
             LastAttemptUtc = existing.LastAttemptUtc, LastErrorCode = existing.LastErrorCode, LastError = error,
+            OperationKind = existing.OperationKind, OperationId = existing.OperationId,
             CreatedUtc = existing.CreatedUtc, UpdatedUtc = DateTime.UtcNow
         }, token).ConfigureAwait(false);
     }
@@ -117,6 +126,8 @@ public sealed class CloudTransferStateService
             TransferKey = GetTransferKey(kind, playniteId), Kind = kind, PlayniteId = playniteId,
             State = "RetryScheduled", AttemptCount = Math.Max(0, retryCount), NextAttemptUtc = nextAttemptUtc,
             LastAttemptUtc = now, LastErrorCode = errorCode, LastError = error,
+            OperationKind = existing?.OperationKind ?? CloudTransferOperationKind.Upload,
+            OperationId = existing?.OperationId ?? NewOperationId(),
             CreatedUtc = existing?.CreatedUtc ?? now, UpdatedUtc = now
         }, token).ConfigureAwait(false);
     }
@@ -146,33 +157,148 @@ public sealed class CloudTransferStateService
             : Path.Combine(Environment.MachineName, "Media", Sanitize(gameName));
         if (!Directory.Exists(local)) throw new WorkerOperationException("CLOUD_LOCAL_SOURCE_MISSING", "本地云端复制源不存在，已阻止校验。", local);
 
-        await MarkTransferringAsync(request.Kind, request.PlayniteId, token).ConfigureAwait(false);
-        var result = await _coordinator.RunUploadAsync($"{request.Kind} remote check",
-            ct => _rclone.CheckAsync(local, remote, ct), token,
-            GetTransferKey(request.Kind, request.PlayniteId)).ConfigureAwait(false);
-        if (!result.Success)
+        var operation = await BeginVerificationAsync(request.Kind, request.PlayniteId, token).ConfigureAwait(false);
+        var finalized = false;
+        try
         {
-            var failure = RcloneFailureClassifier.Classify(result.StandardError);
-            var code = "RCLONE_CHECK_FAILED";
-            if (failure == RcloneFailureKind.Authentication) code = "RCLONE_AUTH_FAILED";
-            if (code == "RCLONE_AUTH_FAILED")
+            var result = await _coordinator.RunUploadAsync($"{request.Kind} remote check",
+                ct => VerifyCheckHook?.Invoke(local, remote, ct) ?? _rclone.CheckAsync(local, remote, ct), token,
+                operation.TransferKey, CloudTransferOperationKind.Verify).ConfigureAwait(false);
+            if (!result.Success)
             {
-                await MarkAuthenticationRequiredAsync(request.Kind, request.PlayniteId, code, result.StandardError, token).ConfigureAwait(false);
-                await PersistGameCloudStateAsync(request.Kind, request.PlayniteId, "AuthenticationRequired", token).ConfigureAwait(false);
+                var failure = RcloneFailureClassifier.Classify(result.StandardError);
+                var code = failure == RcloneFailureKind.Authentication ? "RCLONE_AUTH_FAILED" : "RCLONE_CHECK_FAILED";
+                var state = code == "RCLONE_AUTH_FAILED" ? "AuthenticationRequired" : "CheckFailed";
+                finalized = await TryFinalizeVerificationAsync(operation, state, code, result.StandardError).ConfigureAwait(false);
+                if (!finalized) throw CreateSupersededException(operation);
+                await PersistGameCloudStateBestEffortAsync(request.Kind, request.PlayniteId, state).ConfigureAwait(false);
+                throw new WorkerOperationException(code, "远端 check 未通过；本地副本保持不变。", result.StandardError);
             }
-            else
-            {
-                await MarkCheckFailedAsync(request.Kind, request.PlayniteId, code, result.StandardError, token).ConfigureAwait(false);
-                await PersistGameCloudStateAsync(request.Kind, request.PlayniteId, "CheckFailed", token).ConfigureAwait(false);
-            }
-            throw new WorkerOperationException(code, "远端 check 未通过；本地副本保持不变。", result.StandardError);
-        }
 
-        await MarkRemoteVerifiedAsync(request.Kind, request.PlayniteId, token).ConfigureAwait(false);
-        await PersistGameCloudStateAsync(request.Kind, request.PlayniteId, "RemoteVerified", token).ConfigureAwait(false);
-        return await GetOneAsync(request.Kind, request.PlayniteId, token).ConfigureAwait(false)
+            finalized = await TryFinalizeVerificationAsync(operation, "RemoteVerified", string.Empty, string.Empty).ConfigureAwait(false);
+            if (!finalized) throw CreateSupersededException(operation);
+            await PersistGameCloudStateBestEffortAsync(request.Kind, request.PlayniteId, "RemoteVerified").ConfigureAwait(false);
+            return await GetOneAsync(request.Kind, request.PlayniteId, CancellationToken.None).ConfigureAwait(false)
             ?? throw new InvalidOperationException("云端校验状态写入后无法读取。");
+        }
+        catch (OperationCanceledException) when (token.IsCancellationRequested)
+        {
+            if (!finalized) await RestoreVerificationBestEffortAsync(operation, "CLOUD_CHECK_CANCELLED").ConfigureAwait(false);
+            throw;
+        }
+        catch (WorkerOperationException)
+        {
+            if (!finalized) await RestoreVerificationBestEffortAsync(operation, "CLOUD_CHECK_INTERRUPTED").ConfigureAwait(false);
+            throw;
+        }
+        catch (Exception ex)
+        {
+            if (!finalized) await RestoreVerificationBestEffortAsync(operation, "CLOUD_CHECK_EXCEPTION").ConfigureAwait(false);
+            throw new WorkerOperationException("RCLONE_CHECK_EXCEPTION", "远端 check 执行失败；此前云端保证未被提升。", ex.Message);
+        }
     }
+
+    private async Task<CloudTransferQueueEntry> BeginVerificationAsync(CloudTransferKind kind, string playniteId, CancellationToken token)
+    {
+        var now = DateTime.UtcNow;
+        var key = GetTransferKey(kind, playniteId);
+        var existing = await _store.GetCloudTransferAsync(key, token).ConfigureAwait(false);
+        var operation = new CloudTransferQueueEntry
+        {
+            TransferKey = key,
+            Kind = kind,
+            PlayniteId = playniteId,
+            State = "Verifying",
+            OperationKind = CloudTransferOperationKind.Verify,
+            OperationId = NewOperationId(),
+            AttemptCount = existing?.AttemptCount ?? 0,
+            LastAttemptUtc = existing?.LastAttemptUtc,
+            LastErrorCode = existing?.LastErrorCode ?? string.Empty,
+            LastError = existing?.LastError ?? string.Empty,
+            CreatedUtc = existing?.CreatedUtc ?? now,
+            UpdatedUtc = now,
+            PriorState = existing?.State ?? string.Empty,
+            PriorOperationKind = existing?.OperationKind ?? CloudTransferOperationKind.Upload,
+            PriorOperationId = existing?.OperationId ?? string.Empty,
+            PriorNextAttemptUtc = existing?.NextAttemptUtc,
+            PriorLastAttemptUtc = existing?.LastAttemptUtc,
+            PriorErrorCode = existing?.LastErrorCode ?? string.Empty,
+            PriorError = existing?.LastError ?? string.Empty
+        };
+        await SaveAsync(operation, token).ConfigureAwait(false);
+        return operation;
+    }
+
+    private async Task<bool> TryFinalizeVerificationAsync(CloudTransferQueueEntry operation, string state,
+        string errorCode, string error)
+    {
+        var now = DateTime.UtcNow;
+        return await _store.TryUpdateCloudTransferAsync(new CloudTransferQueueEntry
+        {
+            TransferKey = operation.TransferKey,
+            Kind = operation.Kind,
+            PlayniteId = operation.PlayniteId,
+            State = state,
+            OperationKind = CloudTransferOperationKind.Verify,
+            OperationId = operation.OperationId,
+            AttemptCount = operation.AttemptCount,
+            LastAttemptUtc = now,
+            LastErrorCode = errorCode,
+            LastError = error,
+            CreatedUtc = operation.CreatedUtc,
+            UpdatedUtc = now
+        }, operation.OperationId, CancellationToken.None).ConfigureAwait(false);
+    }
+
+    private async Task RestoreVerificationBestEffortAsync(CloudTransferQueueEntry operation, string cancellationCode)
+    {
+        var hasPriorState = !string.IsNullOrWhiteSpace(operation.PriorState);
+        var now = DateTime.UtcNow;
+        var restored = new CloudTransferQueueEntry
+        {
+            TransferKey = operation.TransferKey,
+            Kind = operation.Kind,
+            PlayniteId = operation.PlayniteId,
+            State = hasPriorState ? operation.PriorState : "CheckCancelled",
+            OperationKind = hasPriorState ? operation.PriorOperationKind : CloudTransferOperationKind.Verify,
+            OperationId = hasPriorState && !string.IsNullOrWhiteSpace(operation.PriorOperationId)
+                ? operation.PriorOperationId : operation.OperationId,
+            AttemptCount = operation.AttemptCount,
+            NextAttemptUtc = hasPriorState ? operation.PriorNextAttemptUtc : null,
+            LastAttemptUtc = hasPriorState ? operation.PriorLastAttemptUtc : now,
+            LastErrorCode = hasPriorState ? operation.PriorErrorCode : cancellationCode,
+            LastError = hasPriorState ? operation.PriorError : "远端校验已取消或中断，未发起上传。",
+            CreatedUtc = operation.CreatedUtc,
+            UpdatedUtc = now
+        };
+        try
+        {
+            var restoredByThisOperation = await _store.TryUpdateCloudTransferAsync(restored, operation.OperationId, CancellationToken.None).ConfigureAwait(false);
+            if (!restoredByThisOperation)
+                _logger.LogInformation("Cloud verification cleanup skipped because a newer operation owns {TransferKey}", operation.TransferKey);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Could not finalize cancelled cloud verification for {TransferKey}", operation.TransferKey);
+        }
+    }
+
+    private async Task PersistGameCloudStateBestEffortAsync(CloudTransferKind kind, string playniteId, string state)
+    {
+        try
+        {
+            await PersistGameCloudStateAsync(kind, playniteId, state, CancellationToken.None).ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Could not project cloud verification state for {Kind}/{PlayniteId}", kind, playniteId);
+        }
+    }
+
+    private static WorkerOperationException CreateSupersededException(CloudTransferQueueEntry operation)
+        => new("CLOUD_CHECK_SUPERSEDED", "远端校验结果已被更新的云端操作取代，未覆盖新状态。", operation.TransferKey);
+
+    private static string NewOperationId() => Guid.NewGuid().ToString("N");
 
     public async Task<CloudTransferSummaryDto> GetStatusAsync(CancellationToken token)
     {
@@ -209,10 +335,11 @@ public sealed class CloudTransferStateService
             if (!byKey.TryGetValue(active.TransferKey, out var status))
             {
                 if (!TryParseKey(active.TransferKey, out var kind, out var gameId)) continue;
-                status = new CloudTransferStatusDto { TransferKey = active.TransferKey, Kind = kind, PlayniteId = gameId, UpdatedUtc = DateTime.UtcNow };
+                status = new CloudTransferStatusDto { TransferKey = active.TransferKey, Kind = kind, OperationKind = active.OperationKind, PlayniteId = gameId, UpdatedUtc = DateTime.UtcNow };
                 byKey[active.TransferKey] = status;
             }
-            status.State = "Transferring";
+            status.OperationKind = active.OperationKind;
+            status.State = active.OperationKind == CloudTransferOperationKind.Verify ? "Verifying" : "Transferring";
             status.UpdatedUtc = DateTime.UtcNow;
         }
 
@@ -224,7 +351,7 @@ public sealed class CloudTransferStateService
                 "CheckFailed" => 6,
                 "Failed" => 5,
                 "RetryScheduled" => 4,
-                "Transferring" => 3,
+                "Transferring" or "Verifying" => 3,
                 "Pending" => 2,
                 "Paused" => 1,
                 _ => 0
@@ -250,6 +377,7 @@ public sealed class CloudTransferStateService
         };
         summary.PendingCount = allItems.Count(x => x.State == "Pending");
         summary.TransferringCount = allItems.Count(x => x.State == "Transferring");
+        summary.VerifyingCount = allItems.Count(x => x.State == "Verifying");
         summary.RetryScheduledCount = allItems.Count(x => x.State == "RetryScheduled");
         summary.AuthenticationRequiredCount = allItems.Count(x => x.State == "AuthenticationRequired");
         summary.UploadedCount = allItems.Count(x => x.State == "Uploaded");
@@ -274,13 +402,17 @@ public sealed class CloudTransferStateService
     }
 
     private async Task UpdateStateAsync(CloudTransferKind kind, string playniteId, string state, CancellationToken token,
-        string errorCode = "", string error = "", bool clearError = false)
+        string errorCode = "", string error = "", bool clearError = false, bool beginOperation = false)
     {
         var now = DateTime.UtcNow;
         var existing = await _store.GetCloudTransferAsync(GetTransferKey(kind, playniteId), token).ConfigureAwait(false);
+        var operationId = beginOperation || string.IsNullOrWhiteSpace(existing?.OperationId)
+            ? NewOperationId() : existing!.OperationId;
         await SaveAsync(new CloudTransferQueueEntry
         {
             TransferKey = GetTransferKey(kind, playniteId), Kind = kind, PlayniteId = playniteId, State = state,
+            OperationKind = beginOperation ? CloudTransferOperationKind.Upload : existing?.OperationKind ?? CloudTransferOperationKind.Upload,
+            OperationId = operationId,
             AttemptCount = existing?.AttemptCount ?? 0,
             NextAttemptUtc = state == "RetryScheduled" ? existing?.NextAttemptUtc : null,
             LastAttemptUtc = state == "Transferring" || state == "Uploaded" || state == "RemoteVerified" ? now : existing?.LastAttemptUtc,
@@ -301,7 +433,7 @@ public sealed class CloudTransferStateService
     private static CloudTransferStatusDto ToDto(CloudTransferQueueEntry entry, string gameName)
         => new()
         {
-            TransferKey = entry.TransferKey, Kind = entry.Kind, PlayniteId = entry.PlayniteId, GameName = gameName,
+            TransferKey = entry.TransferKey, Kind = entry.Kind, OperationKind = entry.OperationKind, PlayniteId = entry.PlayniteId, GameName = gameName,
             State = entry.State, AttemptCount = entry.AttemptCount, NextAttemptUtc = entry.NextAttemptUtc,
             LastAttemptUtc = entry.LastAttemptUtc, LastErrorCode = entry.LastErrorCode, LastError = entry.LastError,
             UpdatedUtc = entry.UpdatedUtc

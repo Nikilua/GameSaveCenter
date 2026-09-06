@@ -4,6 +4,14 @@
 
 > 新会话短入口：先读 [`docs/ai/CURRENT_STATE.md`](ai/CURRENT_STATE.md)。本文下方的历史交接按时间保留；除顶部最新阶段和明确标注的覆盖关系外，旧条目只用于追溯，不得覆盖当前事实入口。
 
+## 2026-09-06 V2-05 云端校验终态与代际保护
+
+- `cloud_transfer_queue` 记录 `Upload`/`Verify` 操作类型、操作 ID 和校验前快照。校验在等待全局传输闸门前持久化为 `Verifying`，取消、异常和工具失败均恢复原上传状态或留下明确校验失败，避免永久 `Transferring`。
+- 校验收尾通过操作 ID CAS 保护；较新的上传接管后，迟到校验返回 `CLOUD_CHECK_SUPERSEDED`，不覆盖上传状态，也不触发任何本地/远端删除或上传。
+- Worker 启动恢复仅处理 Upload 型 `Pending/Transferring`；Verify 型 `Verifying` 恢复快照或 `CheckFailed`，不会把纯校验恢复为上传任务。游戏行云端状态投影失败只记日志，不反向修改已确认的队列终态。
+- V2-05 回归覆盖取消、工具异常、check 失败、上传代际竞争、重启恢复和旧库迁移；Release 全量通过：Core `65/65`、Worker `293/294`（1 跳过）、Playnite `339/401`（62 跳过）、XAML `19/19`，源码门禁和差异检查通过。
+- 真实 Playnite、真实云端凭据/断网、硬杀和跨进程并发仍待人工复核；下一项按复查包进入 V2-06。
+
 ## 2026-09-06 V2-04 IPC 请求身份与重放指纹
 
 - `ipc_request_ledger` 保存协议版本和规范化 JSON 负载指纹；同一个 `RequestId` 必须同时匹配 type、协议版本和 payload，属性顺序变化仍可重放。

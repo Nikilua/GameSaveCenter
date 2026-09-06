@@ -62,6 +62,15 @@ public sealed partial class SqliteStateStore : ITaskStatusStore
         await EnsureColumnAsync(connection, "tasks", "request_id", "TEXT NOT NULL DEFAULT ''", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "ipc_request_ledger", "protocol_version", "INTEGER NOT NULL DEFAULT 1", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "ipc_request_ledger", "payload_hash", "TEXT NOT NULL DEFAULT ''", token).ConfigureAwait(false);
+        await EnsureColumnAsync(connection, "cloud_transfer_queue", "operation_kind", "TEXT NOT NULL DEFAULT 'Upload'", token).ConfigureAwait(false);
+        await EnsureColumnAsync(connection, "cloud_transfer_queue", "operation_id", "TEXT NOT NULL DEFAULT ''", token).ConfigureAwait(false);
+        await EnsureColumnAsync(connection, "cloud_transfer_queue", "prior_state", "TEXT NOT NULL DEFAULT ''", token).ConfigureAwait(false);
+        await EnsureColumnAsync(connection, "cloud_transfer_queue", "prior_operation_kind", "TEXT NOT NULL DEFAULT 'Upload'", token).ConfigureAwait(false);
+        await EnsureColumnAsync(connection, "cloud_transfer_queue", "prior_operation_id", "TEXT NOT NULL DEFAULT ''", token).ConfigureAwait(false);
+        await EnsureColumnAsync(connection, "cloud_transfer_queue", "prior_next_attempt_utc", "TEXT", token).ConfigureAwait(false);
+        await EnsureColumnAsync(connection, "cloud_transfer_queue", "prior_last_attempt_utc", "TEXT", token).ConfigureAwait(false);
+        await EnsureColumnAsync(connection, "cloud_transfer_queue", "prior_error_code", "TEXT NOT NULL DEFAULT ''", token).ConfigureAwait(false);
+        await EnsureColumnAsync(connection, "cloud_transfer_queue", "prior_error", "TEXT NOT NULL DEFAULT ''", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "media_file_signatures", "sample_hash", "TEXT NOT NULL DEFAULT ''", token).ConfigureAwait(false);
         await RecoverIpcRequestLedgerAsync(token).ConfigureAwait(false);
         var normalizeMedia = connection.CreateCommand();
@@ -1209,7 +1218,7 @@ CREATE TABLE IF NOT EXISTS trainer_releases(release_id TEXT PRIMARY KEY,catalog_
 CREATE TABLE IF NOT EXISTS process_mappings(executable_name TEXT PRIMARY KEY,playnite_id TEXT NOT NULL,game_name TEXT NOT NULL,enabled INTEGER NOT NULL DEFAULT 1,created_utc TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS device_conflict_decisions(playnite_id TEXT NOT NULL,remote_device TEXT NOT NULL,local_backup_id TEXT,remote_backup_id TEXT,decision TEXT NOT NULL,comment TEXT,decided_utc TEXT NOT NULL,PRIMARY KEY(playnite_id,remote_device));
 CREATE TABLE IF NOT EXISTS cloud_retry_queue(playnite_id TEXT PRIMARY KEY,attempt_count INTEGER NOT NULL,next_attempt_utc TEXT NOT NULL,last_error TEXT,created_utc TEXT NOT NULL,updated_utc TEXT NOT NULL);
-CREATE TABLE IF NOT EXISTS cloud_transfer_queue(transfer_key TEXT PRIMARY KEY,transfer_kind TEXT NOT NULL,playnite_id TEXT NOT NULL,state TEXT NOT NULL,attempt_count INTEGER NOT NULL DEFAULT 0,next_attempt_utc TEXT,last_attempt_utc TEXT,last_error_code TEXT,last_error TEXT,created_utc TEXT NOT NULL,updated_utc TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS cloud_transfer_queue(transfer_key TEXT PRIMARY KEY,transfer_kind TEXT NOT NULL,playnite_id TEXT NOT NULL,state TEXT NOT NULL,operation_kind TEXT NOT NULL DEFAULT 'Upload',operation_id TEXT NOT NULL DEFAULT '',prior_state TEXT NOT NULL DEFAULT '',prior_operation_kind TEXT NOT NULL DEFAULT 'Upload',prior_operation_id TEXT NOT NULL DEFAULT '',prior_next_attempt_utc TEXT,prior_last_attempt_utc TEXT,prior_error_code TEXT NOT NULL DEFAULT '',prior_error TEXT NOT NULL DEFAULT '',attempt_count INTEGER NOT NULL DEFAULT 0,next_attempt_utc TEXT,last_attempt_utc TEXT,last_error_code TEXT,last_error TEXT,created_utc TEXT NOT NULL,updated_utc TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS health_inspection_state(state_id TEXT PRIMARY KEY,enabled INTEGER NOT NULL DEFAULT 1,interval_minutes INTEGER NOT NULL DEFAULT 1440,stale_after_days INTEGER NOT NULL DEFAULT 30,max_duration_seconds INTEGER NOT NULL DEFAULT 300,next_due_utc TEXT,last_started_utc TEXT,last_completed_utc TEXT,last_successful_utc TEXT,cursor_playnite_id TEXT NOT NULL DEFAULT '',cursor_backup_id TEXT NOT NULL DEFAULT '',last_playnite_id TEXT NOT NULL DEFAULT '',last_backup_id TEXT NOT NULL DEFAULT '',last_status TEXT NOT NULL DEFAULT 'NeverRun',last_summary TEXT NOT NULL DEFAULT '',deferred_count INTEGER NOT NULL DEFAULT 0,failure_count INTEGER NOT NULL DEFAULT 0,updated_utc TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS health_inspection_deferred_candidates(playnite_id TEXT NOT NULL,backup_id TEXT NOT NULL,next_attempt_utc TEXT NOT NULL,reason TEXT NOT NULL,updated_utc TEXT NOT NULL,PRIMARY KEY(playnite_id,backup_id));
 CREATE TABLE IF NOT EXISTS media_file_signatures(path TEXT PRIMARY KEY,length INTEGER NOT NULL,last_write_utc TEXT NOT NULL,sha256 TEXT NOT NULL,sample_hash TEXT NOT NULL DEFAULT '',updated_utc TEXT NOT NULL);

@@ -1,3 +1,4 @@
+using GameSaveCenter.Contracts;
 using Microsoft.Extensions.Logging;
 
 namespace GameSaveCenter.Worker.Services;
@@ -15,10 +16,11 @@ public sealed class CloudTransferCoordinator
 
     public CloudTransferCoordinator(ILogger<CloudTransferCoordinator> logger)=>this.logger=logger;
 
-    public async Task<T> RunUploadAsync<T>(string operation,Func<CancellationToken,Task<T>> action,CancellationToken token,string? transferKey=null)
+    public async Task<T> RunUploadAsync<T>(string operation,Func<CancellationToken,Task<T>> action,CancellationToken token,string? transferKey=null,
+        CloudTransferOperationKind operationKind = CloudTransferOperationKind.Upload)
     {
         await gate.WaitAsync(token).ConfigureAwait(false);
-        if(!string.IsNullOrWhiteSpace(transferKey)) active[transferKey]=new CloudTransferActivity{TransferKey=transferKey,Operation=operation,StartedUtc=DateTime.UtcNow};
+        if(!string.IsNullOrWhiteSpace(transferKey)) active[transferKey]=new CloudTransferActivity{TransferKey=transferKey,Operation=operation,OperationKind=operationKind,StartedUtc=DateTime.UtcNow};
         try
         {
             logger.LogDebug("Cloud transfer gate acquired for {Operation}",operation);
@@ -62,5 +64,6 @@ public sealed class CloudTransferActivity
 {
     public string TransferKey { get; set; } = string.Empty;
     public string Operation { get; set; } = string.Empty;
+    public CloudTransferOperationKind OperationKind { get; set; } = CloudTransferOperationKind.Upload;
     public DateTime StartedUtc { get; set; }
 }

@@ -21,6 +21,8 @@ public sealed class CloudTransferStateTests : IDisposable
         {
             DataDirectory = root,
             EnableCloudUpload = true,
+            RcloneExecutable = Path.Combine(Environment.SystemDirectory, "WindowsPowerShell", "v1.0", "powershell.exe"),
+            RcloneDestination = "remote:",
             LudusaviBackupDirectory = Path.Combine(root, "Saves"),
             MediaArchiveDirectory = Path.Combine(root, "Media")
         };
@@ -81,9 +83,153 @@ public sealed class CloudTransferStateTests : IDisposable
         Assert.Equal("offline", loaded.LastError);
     }
 
+    [Fact]
+    public async Task CancelledVerificationRestoresPreviousUploadedGuarantee()
+    {
+        await PrepareVerificationGameAsync();
+        var coordinator = new CloudTransferCoordinator(NullLogger<CloudTransferCoordinator>.Instance);
+        var state = CreateState(coordinator);
+        await state.StartNewAsync(CloudTransferKind.Backup, "game-verify", CancellationToken.None);
+        await state.MarkUploadedAsync(CloudTransferKind.Backup, "game-verify", CancellationToken.None);
+        using var lease = await coordinator.PauseForRestoreAsync(CancellationToken.None);
+        using var cancellation = new CancellationTokenSource();
+
+        var verification = state.VerifyAsync(new CloudTransferVerifyRequestDto
+        {
+            Kind = CloudTransferKind.Backup, PlayniteId = "game-verify"
+        }, cancellation.Token);
+        await WaitForStateAsync("Backup:game-verify", "Verifying");
+        cancellation.Cancel();
+
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => verification);
+        var restored = await store.GetCloudTransferAsync("Backup:game-verify", CancellationToken.None);
+        Assert.NotNull(restored);
+        Assert.Equal("Uploaded", restored!.State);
+        Assert.Equal(CloudTransferOperationKind.Upload, restored.OperationKind);
+    }
+
+    [Fact]
+    public async Task VerificationExceptionRestoresPreviousRemoteGuarantee()
+    {
+        await PrepareVerificationGameAsync();
+        var coordinator = new CloudTransferCoordinator(NullLogger<CloudTransferCoordinator>.Instance);
+        var state = CreateState(coordinator);
+        await state.StartNewAsync(CloudTransferKind.Backup, "game-verify", CancellationToken.None);
+        await state.MarkRemoteVerifiedAsync(CloudTransferKind.Backup, "game-verify", CancellationToken.None);
+        state.VerifyCheckHook = (_, _, _) => throw new InvalidOperationException("provider unavailable");
+
+        var error = await Assert.ThrowsAsync<WorkerOperationException>(() => state.VerifyAsync(
+            new CloudTransferVerifyRequestDto { Kind = CloudTransferKind.Backup, PlayniteId = "game-verify" },
+            CancellationToken.None));
+
+        Assert.Equal("RCLONE_CHECK_EXCEPTION", error.Code);
+        var restored = await store.GetCloudTransferAsync("Backup:game-verify", CancellationToken.None);
+        Assert.NotNull(restored);
+        Assert.Equal("RemoteVerified", restored!.State);
+        Assert.Equal(CloudTransferOperationKind.Upload, restored.OperationKind);
+    }
+
+    [Fact]
+    public async Task VerificationFailureIsRecordedWithoutClaimingRemoteSuccess()
+    {
+        await PrepareVerificationGameAsync();
+        var coordinator = new CloudTransferCoordinator(NullLogger<CloudTransferCoordinator>.Instance);
+        var state = CreateState(coordinator);
+        state.VerifyCheckHook = (_, _, _) => Task.FromResult(ProcessResult.Failed(1, string.Empty, "checksum mismatch"));
+
+        var error = await Assert.ThrowsAsync<WorkerOperationException>(() => state.VerifyAsync(
+            new CloudTransferVerifyRequestDto { Kind = CloudTransferKind.Backup, PlayniteId = "game-verify" },
+            CancellationToken.None));
+
+        Assert.Equal("RCLONE_CHECK_FAILED", error.Code);
+        var failed = await store.GetCloudTransferAsync("Backup:game-verify", CancellationToken.None);
+        Assert.NotNull(failed);
+        Assert.Equal("CheckFailed", failed!.State);
+        Assert.Equal(CloudTransferOperationKind.Verify, failed.OperationKind);
+        Assert.Equal("CheckFailed", (await store.GetCloudGameStatesAsync(CancellationToken.None)).Single(x => x.PlayniteId == "game-verify").State);
+    }
+
+    [Fact]
+    public async Task LateVerificationCannotOverwriteNewerUploadGeneration()
+    {
+        await PrepareVerificationGameAsync();
+        var coordinator = new CloudTransferCoordinator(NullLogger<CloudTransferCoordinator>.Instance);
+        var state = CreateState(coordinator);
+        await state.StartNewAsync(CloudTransferKind.Backup, "game-verify", CancellationToken.None);
+        await state.MarkUploadedAsync(CloudTransferKind.Backup, "game-verify", CancellationToken.None);
+        var entered = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+        var release = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+        state.VerifyCheckHook = async (_, _, _) =>
+        {
+            entered.TrySetResult(true);
+            await release.Task;
+            return ProcessResult.Failed(0, string.Empty, string.Empty);
+        };
+
+        var verification = state.VerifyAsync(new CloudTransferVerifyRequestDto
+        {
+            Kind = CloudTransferKind.Backup, PlayniteId = "game-verify"
+        }, CancellationToken.None);
+        await entered.Task.WaitAsync(TimeSpan.FromSeconds(5));
+        await state.StartNewAsync(CloudTransferKind.Backup, "game-verify", CancellationToken.None);
+        await state.MarkUploadedAsync(CloudTransferKind.Backup, "game-verify", CancellationToken.None);
+        release.TrySetResult(true);
+
+        var error = await Assert.ThrowsAsync<WorkerOperationException>(() => verification);
+        Assert.Equal("CLOUD_CHECK_SUPERSEDED", error.Code);
+        var current = await store.GetCloudTransferAsync("Backup:game-verify", CancellationToken.None);
+        Assert.NotNull(current);
+        Assert.Equal("Uploaded", current!.State);
+        Assert.Equal(CloudTransferOperationKind.Upload, current.OperationKind);
+    }
+
+    [Fact]
+    public async Task RestartedVerificationRestoresPriorStateWithoutQueueingUpload()
+    {
+        var priorOperationId = Guid.NewGuid().ToString("N");
+        await store.UpsertCloudTransferAsync(new CloudTransferQueueEntry
+        {
+            TransferKey = "Backup:game-verify", Kind = CloudTransferKind.Backup, PlayniteId = "game-verify",
+            State = "Verifying", OperationKind = CloudTransferOperationKind.Verify, OperationId = "verify-operation",
+            PriorState = "Uploaded", PriorOperationKind = CloudTransferOperationKind.Upload, PriorOperationId = priorOperationId,
+            CreatedUtc = DateTime.UtcNow.AddMinutes(-2), UpdatedUtc = DateTime.UtcNow
+        }, CancellationToken.None);
+
+        await store.RecoverInterruptedCloudTransfersAsync(DateTime.UtcNow, CancellationToken.None);
+
+        var recovered = await store.GetCloudTransferAsync("Backup:game-verify", CancellationToken.None);
+        Assert.NotNull(recovered);
+        Assert.Equal("Uploaded", recovered!.State);
+        Assert.Equal(CloudTransferOperationKind.Upload, recovered.OperationKind);
+        Assert.Equal(priorOperationId, recovered.OperationId);
+        Assert.Empty(recovered.PriorState);
+    }
+
     private CloudTransferStateService CreateState(CloudTransferCoordinator coordinator)
         => new(store, options, new RcloneClient(options, new ExternalProcessRunner(NullLogger<ExternalProcessRunner>.Instance)),
             coordinator, NullLogger<CloudTransferStateService>.Instance);
+
+    private async Task PrepareVerificationGameAsync()
+    {
+        await store.UpsertGamesAsync(new[]
+        {
+            new GameDescriptorDto { PlayniteId = "game-verify", Name = "Verification Game" }
+        }, CancellationToken.None);
+        await store.UpdateGameCloudStateAsync("game-verify", "Uploaded", CancellationToken.None);
+        Directory.CreateDirectory(options.LudusaviBackupDirectory);
+    }
+
+    private async Task WaitForStateAsync(string transferKey, string expectedState)
+    {
+        for (var attempt = 0; attempt < 50; attempt++)
+        {
+            var entry = await store.GetCloudTransferAsync(transferKey, CancellationToken.None);
+            if (entry?.State == expectedState) return;
+            await Task.Delay(20);
+        }
+        var actual = await store.GetCloudTransferAsync(transferKey, CancellationToken.None);
+        Assert.Equal(expectedState, actual?.State);
+    }
 
     public void Dispose()
     {

@@ -10,6 +10,13 @@ public enum CloudTransferKind
     Media
 }
 
+/// <summary>Durable operation currently owning a cloud transfer row.</summary>
+public enum CloudTransferOperationKind
+{
+    Upload,
+    Verify
+}
+
 /// <summary>Request for a read-only remote check of one persisted transfer target.</summary>
 public sealed class CloudTransferVerifyRequestDto
 {
@@ -22,6 +29,7 @@ public sealed class CloudTransferStatusDto
 {
     public string TransferKey { get; set; } = string.Empty;
     public CloudTransferKind Kind { get; set; }
+    public CloudTransferOperationKind OperationKind { get; set; } = CloudTransferOperationKind.Upload;
     public string PlayniteId { get; set; } = string.Empty;
     public string GameName { get; set; } = string.Empty;
     public string State { get; set; } = "Pending";
@@ -37,10 +45,12 @@ public sealed class CloudTransferStatusDto
     {
         "Pending" => "待上传",
         "Transferring" => "传输中",
+        "Verifying" => "远端校验中",
         "RetryScheduled" => "下次尝试",
         "AuthenticationRequired" => "认证需处理",
         "Uploaded" => "已上传",
         "RemoteVerified" => "已校验",
+        "CheckCancelled" => "校验已取消",
         "CheckFailed" => "校验失败",
         "Failed" => "上传失败",
         "Paused" => "已暂停",
@@ -74,6 +84,7 @@ public sealed class CloudTransferSummaryDto
     public int TotalCount { get; set; }
     public int PendingCount { get; set; }
     public int TransferringCount { get; set; }
+    public int VerifyingCount { get; set; }
     public int RetryScheduledCount { get; set; }
     public int AuthenticationRequiredCount { get; set; }
     public int UploadedCount { get; set; }
@@ -88,7 +99,7 @@ public sealed class CloudTransferSummaryDto
 
     public DateTime? NextAttemptLocal => NextAttemptUtc?.ToLocalTime();
     public int AttentionCount => RetryScheduledCount + AuthenticationRequiredCount + CheckFailedCount + FailedCount;
-    public int QueueCount => PendingCount + TransferringCount + RetryScheduledCount + AuthenticationRequiredCount
+    public int QueueCount => PendingCount + TransferringCount + VerifyingCount + RetryScheduledCount + AuthenticationRequiredCount
         + CheckFailedCount + FailedCount + PausedCount;
     public string PrimaryStatusDisplay
     {
@@ -97,6 +108,7 @@ public sealed class CloudTransferSummaryDto
             if (AuthenticationRequiredCount > 0) return "认证需处理";
             if (CheckFailedCount > 0 || FailedCount > 0) return "上传失败";
             if (RetryScheduledCount > 0) return "下次尝试";
+            if (VerifyingCount > 0) return "远端校验中";
             if (TransferringCount > 0) return "传输中";
             if (PendingCount > 0) return "待上传";
             if (VerifiedCount > 0) return "已校验";

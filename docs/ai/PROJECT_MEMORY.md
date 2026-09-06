@@ -5,6 +5,14 @@
 
 > 当前事实入口：先读 [`CURRENT_STATE.md`](CURRENT_STATE.md)。本文保留按阶段的历史约束和证据；若与当前事实入口或最新代码冲突，以 `CURRENT_STATE.md` 的覆盖说明为准，不要按旧条目恢复已撤销布局或外部 Demo 路径。
 
+## 2026-09-06 V2-05 云端校验终态与代际保护
+
+- `cloud_transfer_queue` 新增操作类型、操作 ID 和校验前快照字段。上传使用 `Upload` 代际，远端只读校验使用独立 `Verify` 代际；校验在等待全局闸门前就持久化为 `Verifying`，避免 durable 状态与实际操作不一致。
+- 校验取消、工具启动/执行异常和失败结果均有明确收尾：可恢复时恢复校验前的 Uploaded/RemoteVerified/RetryScheduled 等快照，失败结果记录 `CheckFailed` 或 `AuthenticationRequired`；恢复失败也不会提升云端保证。投影到游戏行的状态使用尽力路径。
+- 校验结果以操作 ID CAS 写回；更晚的上传代际接管后，旧校验不会覆盖队列。Worker 重启只恢复 Upload 型 Pending/Transferring；Verify 型 Verifying 恢复快照或 `CheckFailed`，绝不因校验恢复而排入上传。
+- 新增五项云端校验行为回归及旧队列迁移覆盖；隔离 Release 全量构建 0 warning/0 error，Core `65/65`，Worker `293/294`（1 跳过），Playnite `339/401`（62 跳过），XAML `19/19`，源码校验与差异检查通过。
+- 真实 Playnite、真实云端凭据/断网、硬杀和跨进程并发证据仍未取得；不要把这些 Worker/SQLite 回归写成真实宿主验收。
+
 ## 2026-09-06 V2-01 媒体归类提交与恢复协调
 
 - `media_classification_operations` 记录归类/撤销的操作意图、源/目标路径、哈希、原始文件标记和目标预存状态；媒体行、批次条目和账本状态在 SQLite 同一事务内从 `Moved` 提交为 `Committed`。
