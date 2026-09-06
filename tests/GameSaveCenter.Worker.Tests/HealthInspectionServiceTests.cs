@@ -123,6 +123,78 @@ public sealed class HealthInspectionServiceTests : IDisposable
         Assert.Empty(await store.GetOpenFindingsAsync(20, CancellationToken.None));
     }
 
+    [Fact]
+    public async Task ScheduledLoopBacksOffWhileManualInspectionOwnsRunGate()
+    {
+        var entered = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+        var release = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+        var service = CreateService();
+        var hookUsed = 0;
+        var gateMisses = 0;
+        service.InspectionStageHook = stage =>
+        {
+            if (stage == HealthInspectionStage.RunningStateSaved && Interlocked.Exchange(ref hookUsed, 1) == 0)
+            {
+                entered.TrySetResult(true);
+                return release.Task;
+            }
+            return Task.CompletedTask;
+        };
+        service.ScheduledGateMissHook = () =>
+        {
+            Interlocked.Increment(ref gateMisses);
+            return Task.CompletedTask;
+        };
+
+        var manual = service.RunNowAsync(CancellationToken.None);
+        await entered.Task.WaitAsync(TimeSpan.FromSeconds(5));
+        using var backgroundCancellation = new CancellationTokenSource();
+        await service.StartAsync(backgroundCancellation.Token);
+        await Task.Delay(TimeSpan.FromMilliseconds(700));
+
+        Assert.InRange(gateMisses, 1, 5);
+        backgroundCancellation.Cancel();
+        release.TrySetResult(true);
+        var result = await manual;
+        await service.StopAsync(CancellationToken.None);
+        Assert.Equal("NoBackups", result.LastStatus);
+    }
+
+    [Fact]
+    public async Task ExecutionStateWriteDoesNotOverwriteAConcurrentPlanChange()
+    {
+        var initial = new HealthInspectionStateDto
+        {
+            Enabled = true,
+            IntervalMinutes = 15,
+            StaleAfterDays = 30,
+            MaxDurationSeconds = 30,
+            NextDueUtc = DateTime.UtcNow.AddMinutes(15),
+            LastStatus = "NeverRun"
+        };
+        await store.SaveHealthInspectionStateAsync(initial, CancellationToken.None);
+        options.HealthInspectionEnabled = false;
+        options.HealthInspectionIntervalMinutes = 60;
+        options.HealthInspectionStaleAfterDays = 90;
+        options.HealthInspectionMaxDurationSeconds = 120;
+        var service = CreateService();
+
+        var planned = await service.SyncPlanAsync(CancellationToken.None);
+        Assert.False(planned.Enabled);
+        Assert.Equal(60, planned.IntervalMinutes);
+
+        initial.LastStatus = "Running";
+        initial.LastStartedUtc = DateTime.UtcNow;
+        await store.SaveHealthInspectionExecutionStateAsync(initial, CancellationToken.None);
+
+        var loaded = await store.GetHealthInspectionStateAsync(CancellationToken.None);
+        Assert.False(loaded.Enabled);
+        Assert.Equal(60, loaded.IntervalMinutes);
+        Assert.Equal(90, loaded.StaleAfterDays);
+        Assert.Equal(120, loaded.MaxDurationSeconds);
+        Assert.Equal("Running", loaded.LastStatus);
+    }
+
     private HealthInspectionService CreateService(FakeRestoreSessionState? sessions = null)
         => new(
             store,

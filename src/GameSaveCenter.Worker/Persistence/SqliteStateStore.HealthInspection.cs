@@ -78,6 +78,59 @@ deferred_count=excluded.deferred_count,failure_count=excluded.failure_count,upda
                 ["$updated"] = DateTime.UtcNow.ToString("O")
             }, token);
 
+    public Task UpdateHealthInspectionPlanAsync(HealthInspectionStateDto state, CancellationToken token)
+        => ExecuteAsync(@"INSERT INTO health_inspection_state(state_id,enabled,interval_minutes,stale_after_days,max_duration_seconds,
+next_due_utc,last_started_utc,last_completed_utc,last_successful_utc,cursor_playnite_id,cursor_backup_id,last_playnite_id,
+last_backup_id,last_status,last_summary,deferred_count,failure_count,updated_utc)
+VALUES($id,$enabled,$interval,$stale,$duration,$next,NULL,NULL,NULL,'','','','', 'NeverRun','',0,0,$updated)
+ON CONFLICT(state_id) DO UPDATE SET enabled=excluded.enabled,interval_minutes=excluded.interval_minutes,
+stale_after_days=excluded.stale_after_days,max_duration_seconds=excluded.max_duration_seconds,
+next_due_utc=excluded.next_due_utc,updated_utc=excluded.updated_utc;",
+            new Dictionary<string, object?>
+            {
+                ["$id"] = HealthInspectionStateId,
+                ["$enabled"] = state.Enabled ? 1 : 0,
+                ["$interval"] = state.IntervalMinutes,
+                ["$stale"] = state.StaleAfterDays,
+                ["$duration"] = state.MaxDurationSeconds,
+                ["$next"] = ToUtcText(state.NextDueUtc),
+                ["$updated"] = DateTime.UtcNow.ToString("O")
+            }, token);
+
+    public Task SaveHealthInspectionExecutionStateAsync(HealthInspectionStateDto state, CancellationToken token)
+        => ExecuteAsync(@"INSERT INTO health_inspection_state(state_id,enabled,interval_minutes,stale_after_days,max_duration_seconds,
+next_due_utc,last_started_utc,last_completed_utc,last_successful_utc,cursor_playnite_id,cursor_backup_id,last_playnite_id,
+last_backup_id,last_status,last_summary,deferred_count,failure_count,updated_utc)
+VALUES($id,$enabled,$interval,$stale,$duration,$next,$started,$completed,$successful,$cursor_game,$cursor_backup,$last_game,
+$last_backup,$status,$summary,$deferred,$failures,$updated)
+ON CONFLICT(state_id) DO UPDATE SET next_due_utc=excluded.next_due_utc,last_started_utc=excluded.last_started_utc,
+last_completed_utc=excluded.last_completed_utc,last_successful_utc=excluded.last_successful_utc,
+cursor_playnite_id=excluded.cursor_playnite_id,cursor_backup_id=excluded.cursor_backup_id,
+last_playnite_id=excluded.last_playnite_id,last_backup_id=excluded.last_backup_id,last_status=excluded.last_status,
+last_summary=excluded.last_summary,deferred_count=excluded.deferred_count,failure_count=excluded.failure_count,
+updated_utc=excluded.updated_utc;",
+            new Dictionary<string, object?>
+            {
+                ["$id"] = HealthInspectionStateId,
+                ["$enabled"] = state.Enabled ? 1 : 0,
+                ["$interval"] = state.IntervalMinutes,
+                ["$stale"] = state.StaleAfterDays,
+                ["$duration"] = state.MaxDurationSeconds,
+                ["$next"] = ToUtcText(state.NextDueUtc),
+                ["$started"] = ToUtcText(state.LastStartedUtc),
+                ["$completed"] = ToUtcText(state.LastCompletedUtc),
+                ["$successful"] = ToUtcText(state.LastSuccessfulUtc),
+                ["$cursor_game"] = state.CursorPlayniteId,
+                ["$cursor_backup"] = state.CursorBackupId,
+                ["$last_game"] = state.LastPlayniteId,
+                ["$last_backup"] = state.LastBackupId,
+                ["$status"] = state.LastStatus,
+                ["$summary"] = state.LastSummary,
+                ["$deferred"] = state.DeferredCount,
+                ["$failures"] = state.FailureCount,
+                ["$updated"] = DateTime.UtcNow.ToString("O")
+            }, token);
+
     public async Task<List<BackupVersionDto>> GetAllBackupVersionsForInspectionAsync(CancellationToken token)
     {
         var result = new List<BackupVersionDto>();

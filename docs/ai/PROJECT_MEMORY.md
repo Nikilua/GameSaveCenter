@@ -13,6 +13,13 @@
 - 新增 `MediaSyncServiceTests` 的 SQLite 触发器/取消回归：批次条目提交失败后启动恢复可恢复 Inbox 副本，审计失败仍保留 Assigned 副本，取消后文件和数据库回到 Inbox。V2-01 验证为 Release 0 warning/0 error、Core `65/65`、Worker `278/279`（1 跳过）、Playnite `339/401`（62 跳过）、XAML `19/19`、源码门禁与差异检查通过。
 - 这仍不是真实 Playnite、用户媒体、断电或跨进程并发证据；后续 V2-02 起按复查包顺序逐项实施。
 
+## 2026-09-06 V2-02 健康巡检调度与计划写入
+
+- `HealthInspectionService` 后台循环在 `_runGate` 争用失败时等待 250ms 后重试，外围 `Get/SyncPlan/RunOne` 异常按 1s 退避隔离，应用停止时不进行无界重试。
+- 计划和执行状态采用不同 SQLite 写入契约：`UpdateHealthInspectionPlanAsync` 只更新计划字段，`SaveHealthInspectionExecutionStateAsync` 只更新结果/游标字段；`CompleteAsync` 读取最新计划后设置下一次时间，避免并发设置修改被旧 DTO 整行覆盖。
+- 定向回归用可控手动巡检闸门证明 700ms 内后台争锁次数受限，并证明执行写入不会覆盖已更新的启用/间隔/过期/预算；隔离 Release 全量验证为 Core `65/65`、Worker `280/281`（1 跳过）、Playnite `339/401`（62 跳过）、XAML `19/19`。
+- V2-03 仍需在此基础上处理候选身份提前落盘、推迟项公平性、复合游标一致性和全新鲜集合不重复解包。
+
 ## 2026-09-06 完成后复查（仅文档）
 
 - 新增 [FOLLOWUP_REVIEW_2026-09-06.md](FOLLOWUP_REVIEW_2026-09-06.md)，基线 `8018cee`。确认上一轮主体已实现，另列 7 项源码边界和 3 项扩展，未修改生产代码。

@@ -22,6 +22,14 @@ public sealed class HealthInspectionService : BackgroundService
     private readonly ILogger<HealthInspectionService> _logger;
     private readonly SemaphoreSlim _runGate = new(1, 1);
 
+    // Test-only hooks make scheduler contention and state persistence deterministic without
+    // running a real archive validation for several seconds.
+    internal Func<HealthInspectionStage, Task>? InspectionStageHook { get; set; }
+    internal Func<Task>? ScheduledGateMissHook { get; set; }
+
+    private static readonly TimeSpan BusyRetryDelay = TimeSpan.FromMilliseconds(250);
+    private static readonly TimeSpan BackgroundFailureRetryDelay = TimeSpan.FromSeconds(1);
+
     public HealthInspectionService(
         SqliteStateStore store,
         RestoreReadinessService readiness,
@@ -56,8 +64,8 @@ public sealed class HealthInspectionService : BackgroundService
         state.MaxDurationSeconds = _options.HealthInspectionMaxDurationSeconds;
         if (changed || !state.NextDueUtc.HasValue)
             state.NextDueUtc = DateTime.UtcNow.AddMinutes(state.IntervalMinutes);
-        await _store.SaveHealthInspectionStateAsync(state, token).ConfigureAwait(false);
-        return state;
+        await _store.UpdateHealthInspectionPlanAsync(state, token).ConfigureAwait(false);
+        return await _store.GetHealthInspectionStateAsync(token).ConfigureAwait(false);
     }
 
     public async Task<HealthInspectionStateDto> RunNowAsync(CancellationToken token)
@@ -77,20 +85,39 @@ public sealed class HealthInspectionService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        await SyncPlanAsync(stoppingToken).ConfigureAwait(false);
         while (!stoppingToken.IsCancellationRequested)
         {
-            var state = await _store.GetHealthInspectionStateAsync(stoppingToken).ConfigureAwait(false);
-            if (!state.Enabled || !IsDue(state, DateTime.UtcNow))
+            try
             {
-                await Task.Delay(GetDelay(state), stoppingToken).ConfigureAwait(false);
-                continue;
-            }
+                await SyncPlanAsync(stoppingToken).ConfigureAwait(false);
+                var state = await _store.GetHealthInspectionStateAsync(stoppingToken).ConfigureAwait(false);
+                if (!state.Enabled || !IsDue(state, DateTime.UtcNow))
+                {
+                    await Task.Delay(GetDelay(state), stoppingToken).ConfigureAwait(false);
+                    continue;
+                }
 
-            if (await _runGate.WaitAsync(0, stoppingToken).ConfigureAwait(false))
+                if (await _runGate.WaitAsync(0, stoppingToken).ConfigureAwait(false))
+                {
+                    try { await RunOneAsync(state, "scheduled", stoppingToken).ConfigureAwait(false); }
+                    finally { _runGate.Release(); }
+                }
+                else
+                {
+                    await NotifyInspectionStageAsync(HealthInspectionStage.ScheduledGateMiss).ConfigureAwait(false);
+                    await (ScheduledGateMissHook?.Invoke() ?? Task.CompletedTask).ConfigureAwait(false);
+                    await Task.Delay(BusyRetryDelay, stoppingToken).ConfigureAwait(false);
+                }
+            }
+            catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
             {
-                try { await RunOneAsync(state, "scheduled", stoppingToken).ConfigureAwait(false); }
-                finally { _runGate.Release(); }
+                return;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Health inspection scheduler iteration failed; retrying after backoff");
+                try { await Task.Delay(BackgroundFailureRetryDelay, stoppingToken).ConfigureAwait(false); }
+                catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested) { return; }
             }
         }
     }
@@ -102,6 +129,7 @@ public sealed class HealthInspectionService : BackgroundService
         state.LastStatus = "Running";
         state.LastSummary = source == "manual" ? "正在运行手动恢复可用性巡检。" : "正在运行周期恢复可用性巡检。";
         await SaveStateBestEffortAsync(state).ConfigureAwait(false);
+        await NotifyInspectionStageAsync(HealthInspectionStage.RunningStateSaved).ConfigureAwait(false);
 
         BackupVersionDto? candidate = null;
         RestoreReadinessDto? readiness = null;
@@ -226,6 +254,18 @@ public sealed class HealthInspectionService : BackgroundService
         state.LastCompletedUtc = completedUtc;
         state.LastStatus = status;
         state.LastSummary = summary;
+        try
+        {
+            var latestPlan = await _store.GetHealthInspectionStateAsync(CancellationToken.None).ConfigureAwait(false);
+            state.Enabled = latestPlan.Enabled;
+            state.IntervalMinutes = latestPlan.IntervalMinutes;
+            state.StaleAfterDays = latestPlan.StaleAfterDays;
+            state.MaxDurationSeconds = latestPlan.MaxDurationSeconds;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Could not read the latest health inspection plan before completion");
+        }
         state.NextDueUtc = completedUtc.AddMinutes(state.IntervalMinutes);
         if (candidate != null)
         {
@@ -257,9 +297,12 @@ public sealed class HealthInspectionService : BackgroundService
 
     private async Task SaveStateBestEffortAsync(HealthInspectionStateDto state)
     {
-        try { await _store.SaveHealthInspectionStateAsync(state, CancellationToken.None).ConfigureAwait(false); }
+        try { await _store.SaveHealthInspectionExecutionStateAsync(state, CancellationToken.None).ConfigureAwait(false); }
         catch (Exception ex) { _logger.LogWarning(ex, "Could not persist health inspection state"); }
     }
+
+    private Task NotifyInspectionStageAsync(HealthInspectionStage stage)
+        => InspectionStageHook?.Invoke(stage) ?? Task.CompletedTask;
 
     private BackupVersionDto? SelectCandidate(IReadOnlyCollection<BackupVersionDto> versions, HealthInspectionStateDto state, DateTime now)
     {
@@ -298,4 +341,10 @@ public sealed class HealthInspectionService : BackgroundService
     }
 
     private static string MakeKey(string playniteId, string backupId) => playniteId + "\0" + backupId;
+}
+
+internal enum HealthInspectionStage
+{
+    RunningStateSaved,
+    ScheduledGateMiss
 }
