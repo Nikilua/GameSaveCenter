@@ -14,12 +14,13 @@ public sealed class WorkerInitializationService : IHostedService
     private readonly BackupOrchestrator _backups;
     private readonly RetentionSimulationService _retentionSimulation;
     private readonly CloudTransferStateService _cloudState;
+    private readonly MediaSyncService _mediaSync;
     private readonly WorkerOptions _options;
     private readonly IHostApplicationLifetime _lifetime;
     private readonly ILogger<WorkerInitializationService> _logger;
 
-    public WorkerInitializationService(SqliteStateStore store, SavePathDetectionService detection, BackupOrchestrator backups, RetentionSimulationService retentionSimulation, CloudTransferStateService cloudState, WorkerOptions options, IHostApplicationLifetime lifetime, ILogger<WorkerInitializationService> logger)
-    { _store=store; _detection=detection; _backups=backups; _retentionSimulation=retentionSimulation; _cloudState=cloudState; _options=options; _lifetime=lifetime; _logger=logger; }
+    public WorkerInitializationService(SqliteStateStore store, SavePathDetectionService detection, BackupOrchestrator backups, RetentionSimulationService retentionSimulation, CloudTransferStateService cloudState, MediaSyncService mediaSync, WorkerOptions options, IHostApplicationLifetime lifetime, ILogger<WorkerInitializationService> logger)
+    { _store=store; _detection=detection; _backups=backups; _retentionSimulation=retentionSimulation; _cloudState=cloudState; _mediaSync=mediaSync; _options=options; _lifetime=lifetime; _logger=logger; }
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
@@ -30,6 +31,11 @@ public sealed class WorkerInitializationService : IHostedService
             await _store.InitializeAsync(cancellationToken).ConfigureAwait(false);
             storageTimer.Stop();
             _logger.LogDebug("Worker storage initialization completed in {ElapsedMs}ms", storageTimer.ElapsedMilliseconds);
+
+            var mediaClassificationTimer=Stopwatch.StartNew();
+            var mediaClassificationRecovery=await _mediaSync.RecoverPendingClassificationOperationsAsync(cancellationToken).ConfigureAwait(false);
+            mediaClassificationTimer.Stop();
+            _logger.LogInformation("Media classification recovery completed in {ElapsedMs}ms: recovered {RecoveredCount}, recovery required {RecoveryRequiredCount}.", mediaClassificationTimer.ElapsedMilliseconds, mediaClassificationRecovery.RecoveredCount, mediaClassificationRecovery.RecoveryRequiredCount);
 
             var quarantineTimer=Stopwatch.StartNew();
             var quarantineRecovery=await _retentionSimulation.RecoverPendingQuarantineAsync(cancellationToken).ConfigureAwait(false);

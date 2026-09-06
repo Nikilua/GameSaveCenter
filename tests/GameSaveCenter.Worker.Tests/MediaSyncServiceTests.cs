@@ -239,6 +239,143 @@ public sealed class MediaSyncServiceTests : IDisposable
         Assert.True(File.Exists(media.ArchivePath));
     }
 
+    [Fact]
+    public async Task ClassificationCommitFailureLeavesRecoveryLedgerAndStartupRestoresArchiveCopy()
+    {
+        var prepared = await PrepareClassificationAsync("commit-failure-media");
+        var service = CreateService();
+        var preview = await service.CreateClassificationPreviewAsync(new MediaClassificationPreviewRequestDto
+        {
+            MediaIds = new List<string> { prepared.Media.MediaId }
+        }, CancellationToken.None);
+        await ExecuteSqlAsync(@"CREATE TRIGGER fail_classification_batch_item_update
+BEFORE UPDATE OF item_state ON media_classification_batch_items
+BEGIN SELECT RAISE(ABORT, 'injected batch item failure'); END;");
+
+        var result = await service.ApplyClassificationPreviewAsync(new MediaClassificationApplyRequestDto
+        {
+            BatchId = preview.BatchId
+        }, CancellationToken.None);
+
+        Assert.Equal("Conflict", result.State);
+        Assert.Equal(1, result.ConflictCount);
+        Assert.True(File.Exists(prepared.AppliedPath));
+        Assert.False(File.Exists(prepared.InboxPath));
+        var beforeRecovery = await store.GetMediaByIdAsync(prepared.Media.MediaId, CancellationToken.None);
+        Assert.Equal("Inbox", beforeRecovery!.ClassificationState);
+        Assert.Equal(prepared.InboxPath, beforeRecovery.ArchivePath);
+        Assert.NotEmpty(await store.GetPendingMediaClassificationOperationsAsync(CancellationToken.None));
+
+        await ExecuteSqlAsync("DROP TRIGGER fail_classification_batch_item_update;");
+        var recovery = await CreateService().RecoverPendingClassificationOperationsAsync(CancellationToken.None);
+
+        Assert.Equal(1, recovery.RecoveredCount);
+        Assert.Equal(0, recovery.RecoveryRequiredCount);
+        Assert.True(File.Exists(prepared.InboxPath));
+        Assert.False(File.Exists(prepared.AppliedPath));
+        Assert.Empty(await store.GetPendingMediaClassificationOperationsAsync(CancellationToken.None));
+    }
+
+    [Fact]
+    public async Task ClassificationAuditFailureDoesNotRollbackCommittedBusinessState()
+    {
+        var prepared = await PrepareClassificationAsync("audit-failure-media");
+        var service = CreateService();
+        var preview = await service.CreateClassificationPreviewAsync(new MediaClassificationPreviewRequestDto
+        {
+            MediaIds = new List<string> { prepared.Media.MediaId }
+        }, CancellationToken.None);
+        await ExecuteSqlAsync(@"CREATE TRIGGER fail_classification_audit_insert
+BEFORE INSERT ON audit_log
+BEGIN SELECT RAISE(ABORT, 'injected audit failure'); END;");
+
+        var result = await service.ApplyClassificationPreviewAsync(new MediaClassificationApplyRequestDto
+        {
+            BatchId = preview.BatchId
+        }, CancellationToken.None);
+
+        Assert.Equal("Applied", result.State);
+        Assert.Equal(1, result.AppliedCount);
+        Assert.Contains("审计记录写入失败", result.Items.Single().Message);
+        var applied = await store.GetMediaByIdAsync(prepared.Media.MediaId, CancellationToken.None);
+        Assert.Equal("Assigned", applied!.ClassificationState);
+        Assert.True(File.Exists(prepared.AppliedPath));
+        Assert.False(File.Exists(prepared.InboxPath));
+        Assert.Empty(await store.GetPendingMediaClassificationOperationsAsync(CancellationToken.None));
+    }
+
+    [Fact]
+    public async Task ClassificationCancellationRestoresArchiveCopyWithIndependentRecoveryToken()
+    {
+        var prepared = await PrepareClassificationAsync("cancelled-media");
+        var canceled = new CancellationTokenSource();
+        var service = CreateService();
+        service.ClassificationOperationStageHook = stage =>
+        {
+            if (stage == MediaClassificationOperationStage.AfterMove) canceled.Cancel();
+            return Task.CompletedTask;
+        };
+        var preview = await service.CreateClassificationPreviewAsync(new MediaClassificationPreviewRequestDto
+        {
+            MediaIds = new List<string> { prepared.Media.MediaId }
+        }, CancellationToken.None);
+
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => service.ApplyClassificationPreviewAsync(
+            new MediaClassificationApplyRequestDto { BatchId = preview.BatchId }, canceled.Token));
+
+        var current = await store.GetMediaByIdAsync(prepared.Media.MediaId, CancellationToken.None);
+        Assert.Equal("Inbox", current!.ClassificationState);
+        Assert.Equal(prepared.InboxPath, current.ArchivePath);
+        Assert.True(File.Exists(prepared.InboxPath));
+        Assert.False(File.Exists(prepared.AppliedPath));
+        Assert.Empty(await store.GetPendingMediaClassificationOperationsAsync(CancellationToken.None));
+    }
+
+    private async Task<PreparedClassification> PrepareClassificationAsync(string mediaId)
+    {
+        var captured = new DateTime(2026, 9, 5, 10, 20, 30, DateTimeKind.Utc);
+        var game = new GameDescriptorDto { PlayniteId = "game-1", Name = "Alpha Quest", Platform = GamePlatformKind.Steam };
+        await store.UpsertGamesAsync(new[] { game }, CancellationToken.None);
+        var sourceRoot = Path.Combine(root, "Captures", mediaId);
+        var originalPath = Path.Combine(sourceRoot, "capture.png");
+        var inboxPath = Path.Combine(options.MediaArchiveDirectory, "_Inbox", "Pending", mediaId + ".png");
+        var appliedPath = Path.Combine(options.MediaArchiveDirectory, game.Name, "Screenshots", "2026", "09",
+            $"2026-09-05_10-20-30_Custom_{mediaId[..8]}.png");
+        var content = new byte[] { 8, 5, 3, 2, 1, (byte)mediaId.Length };
+        Directory.CreateDirectory(Path.GetDirectoryName(originalPath)!);
+        Directory.CreateDirectory(Path.GetDirectoryName(inboxPath)!);
+        await File.WriteAllBytesAsync(originalPath, content);
+        await File.WriteAllBytesAsync(inboxPath, content);
+        var hash = Convert.ToHexString(SHA256.HashData(content)).ToLowerInvariant();
+        var media = new MediaItemDto
+        {
+            MediaId = mediaId, Kind = MediaKind.Screenshot, Source = MediaSourceKind.Custom,
+            ArchivePath = inboxPath, OriginalPath = originalPath, CapturedUtc = captured, SizeBytes = content.Length,
+            Sha256 = hash, ClassificationState = "Inbox", ClassificationReason = "待归类", CloudState = "NotApplicable"
+        };
+        await store.AddMediaAsync(media, CancellationToken.None);
+        await store.AddMediaSourceAsync(new MediaSourceRuleDto
+        {
+            SourceId = mediaId + "-source", PlayniteId = game.PlayniteId, RootPath = sourceRoot,
+            IncludePattern = "*.png", SourceKind = MediaSourceKind.Custom
+        }, CancellationToken.None);
+        // BuildArchivePath uses the first eight characters of the content hash, not the media ID.
+        appliedPath = Path.Combine(options.MediaArchiveDirectory, game.Name, "Screenshots", "2026", "09",
+            $"2026-09-05_10-20-30_Custom_{hash[..8]}.png");
+        return new PreparedClassification(media, inboxPath, appliedPath);
+    }
+
+    private async Task ExecuteSqlAsync(string sql)
+    {
+        await using var connection = new SqliteConnection($"Data Source={options.DatabasePath};Cache=Shared;Foreign Keys=True");
+        await connection.OpenAsync();
+        await using var command = connection.CreateCommand();
+        command.CommandText = sql;
+        await command.ExecuteNonQueryAsync();
+    }
+
+    private sealed record PreparedClassification(MediaItemDto Media, string InboxPath, string AppliedPath);
+
     private async Task<MediaItemDto> AddInboxMediaAsync(string mediaId, string originalPath, DateTime capturedUtc)
     {
         var content = new byte[] { 1, 4, 7, (byte)mediaId.Length, (byte)mediaId[0], (byte)mediaId[1] };

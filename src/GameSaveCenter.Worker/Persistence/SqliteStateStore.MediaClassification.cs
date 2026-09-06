@@ -124,6 +124,181 @@ WHERE batch_id=$batch AND media_id=$media;",
                 ["$applied"] = appliedArchivePath, ["$updated"] = DateTime.UtcNow.ToString("O")
             }, token);
 
+    public async Task CreateMediaClassificationOperationAsync(MediaClassificationOperationRecord operation, CancellationToken token)
+    {
+        await _writeGate.WaitAsync(token).ConfigureAwait(false);
+        try
+        {
+            await using var connection = Open();
+            await connection.OpenAsync(token).ConfigureAwait(false);
+            var command = connection.CreateCommand();
+            command.CommandText = @"
+INSERT INTO media_classification_operations(
+ operation_id,batch_id,media_id,operation_kind,state,source_path,destination_path,expected_sha256,
+ source_is_original,destination_preexisted,created_utc,updated_utc,last_error)
+VALUES($operation,$batch,$media,$kind,'Planned',$source,$destination,$sha,$source_original,$destination_exists,$created,$updated,'');";
+            command.Parameters.AddWithValue("$operation", operation.OperationId);
+            command.Parameters.AddWithValue("$batch", operation.BatchId);
+            command.Parameters.AddWithValue("$media", operation.MediaId);
+            command.Parameters.AddWithValue("$kind", operation.OperationKind);
+            command.Parameters.AddWithValue("$source", operation.SourcePath);
+            command.Parameters.AddWithValue("$destination", operation.DestinationPath);
+            command.Parameters.AddWithValue("$sha", operation.ExpectedSha256);
+            command.Parameters.AddWithValue("$source_original", operation.SourceIsOriginal ? 1 : 0);
+            command.Parameters.AddWithValue("$destination_exists", operation.DestinationPreexisted ? 1 : 0);
+            command.Parameters.AddWithValue("$created", operation.CreatedUtc.ToUniversalTime().ToString("O"));
+            command.Parameters.AddWithValue("$updated", operation.CreatedUtc.ToUniversalTime().ToString("O"));
+            await command.ExecuteNonQueryAsync(token).ConfigureAwait(false);
+        }
+        finally
+        {
+            _writeGate.Release();
+        }
+    }
+
+    public Task UpdateMediaClassificationOperationAsync(string operationId, string state, string error, CancellationToken token)
+        => ExecuteAsync(@"UPDATE media_classification_operations
+SET state=$state,updated_utc=$updated,last_error=$error WHERE operation_id=$operation;",
+            new Dictionary<string, object?>
+            {
+                ["$operation"] = operationId, ["$state"] = state,
+                ["$updated"] = DateTime.UtcNow.ToString("O"), ["$error"] = error
+            }, token);
+
+    public async Task<List<MediaClassificationOperationRecord>> GetPendingMediaClassificationOperationsAsync(CancellationToken token)
+    {
+        var result = new List<MediaClassificationOperationRecord>();
+        await using var connection = Open();
+        await connection.OpenAsync(token).ConfigureAwait(false);
+        var command = connection.CreateCommand();
+        command.CommandText = @"
+SELECT operation_id,batch_id,media_id,operation_kind,state,source_path,destination_path,expected_sha256,
+       source_is_original,destination_preexisted,created_utc,updated_utc,last_error
+FROM media_classification_operations
+WHERE state IN ('Planned','Moved','RecoveryRequired')
+ORDER BY created_utc,operation_id;";
+        await using var reader = await command.ExecuteReaderAsync(token).ConfigureAwait(false);
+        while (await reader.ReadAsync(token).ConfigureAwait(false))
+        {
+            result.Add(new MediaClassificationOperationRecord
+            {
+                OperationId = reader.GetString(0), BatchId = reader.GetString(1), MediaId = reader.GetString(2),
+                OperationKind = reader.GetString(3), State = reader.GetString(4), SourcePath = reader.GetString(5),
+                DestinationPath = reader.GetString(6), ExpectedSha256 = reader.GetString(7), SourceIsOriginal = reader.GetInt32(8) == 1,
+                DestinationPreexisted = reader.GetInt32(9) == 1, CreatedUtc = DateTime.Parse(reader.GetString(10)).ToUniversalTime(),
+                UpdatedUtc = DateTime.Parse(reader.GetString(11)).ToUniversalTime(), LastError = reader.IsDBNull(12) ? string.Empty : reader.GetString(12)
+            });
+        }
+        return result;
+    }
+
+    public Task<bool> TryCommitMediaClassificationApplyAsync(string operationId, MediaClassificationBatchItemRecord item,
+        string appliedArchivePath, CancellationToken token)
+        => TryCommitMediaClassificationAsync(operationId, item, appliedArchivePath, appliedArchivePath, "Applied", "item_state NOT IN ('Applied','Undone')", @"
+UPDATE media SET playnite_id=$target,archive_path=$applied,classification_state='Assigned',
+    classification_reason=$target_reason,cloud_state='Pending'
+WHERE media_id=$media AND COALESCE(playnite_id,'')=$original_game
+  AND COALESCE(classification_state,'')=$original_state
+  AND COALESCE(classification_reason,'')=$original_reason
+  AND archive_path=$original_archive AND original_path=$original_path
+  AND captured_utc=$captured AND size_bytes=$size AND sha256=$sha
+  AND is_favorite=$favorite AND COALESCE(comment,'')=$comment
+  AND COALESCE(cloud_state,'')=$original_cloud;", token);
+
+    public Task<bool> TryCommitMediaClassificationUndoAsync(string operationId, MediaClassificationBatchItemRecord item,
+        CancellationToken token)
+        => TryCommitMediaClassificationAsync(operationId, item, item.AppliedArchivePath, string.Empty, "Undone", "item_state='Applied'", @"
+UPDATE media SET playnite_id=$original_game,archive_path=$original_archive,
+    classification_state=$original_state,classification_reason=$original_reason,cloud_state=$original_cloud
+WHERE media_id=$media AND COALESCE(playnite_id,'')=$target
+  AND classification_state='Assigned' AND archive_path=$applied
+  AND original_path=$original_path AND captured_utc=$captured AND size_bytes=$size AND sha256=$sha
+  AND is_favorite=$favorite AND COALESCE(comment,'')=$comment AND cloud_state='Pending';", token);
+
+    private async Task<bool> TryCommitMediaClassificationAsync(string operationId, MediaClassificationBatchItemRecord item,
+        string mediaPathValue, string batchAppliedArchivePath, string itemState, string batchItemCondition, string mediaSql, CancellationToken token)
+    {
+        await _writeGate.WaitAsync(token).ConfigureAwait(false);
+        try
+        {
+            await using var connection = Open();
+            await connection.OpenAsync(token).ConfigureAwait(false);
+            await using var transaction = (SqliteTransaction)await connection.BeginTransactionAsync(CancellationToken.None).ConfigureAwait(false);
+            try
+            {
+                var media = connection.CreateCommand();
+                media.Transaction = transaction;
+                media.CommandText = mediaSql;
+                AddClassificationParameters(media, item, mediaPathValue);
+                if (await media.ExecuteNonQueryAsync(CancellationToken.None).ConfigureAwait(false) != 1)
+                {
+                    await transaction.RollbackAsync(CancellationToken.None).ConfigureAwait(false);
+                    return false;
+                }
+
+                var batchItem = connection.CreateCommand();
+                batchItem.Transaction = transaction;
+                batchItem.CommandText = $@"UPDATE media_classification_batch_items
+SET item_state=$item_state,applied_archive_path=$applied,updated_utc=$updated
+WHERE batch_id=$batch AND media_id=$media AND {batchItemCondition};";
+                batchItem.Parameters.AddWithValue("$item_state", itemState);
+                batchItem.Parameters.AddWithValue("$applied", batchAppliedArchivePath);
+                batchItem.Parameters.AddWithValue("$updated", DateTime.UtcNow.ToString("O"));
+                batchItem.Parameters.AddWithValue("$batch", item.BatchId);
+                batchItem.Parameters.AddWithValue("$media", item.MediaId);
+                if (await batchItem.ExecuteNonQueryAsync(CancellationToken.None).ConfigureAwait(false) != 1)
+                {
+                    await transaction.RollbackAsync(CancellationToken.None).ConfigureAwait(false);
+                    return false;
+                }
+
+                var operation = connection.CreateCommand();
+                operation.Transaction = transaction;
+                operation.CommandText = @"UPDATE media_classification_operations
+SET state='Committed',updated_utc=$updated,last_error=''
+WHERE operation_id=$operation AND state='Moved';";
+                operation.Parameters.AddWithValue("$updated", DateTime.UtcNow.ToString("O"));
+                operation.Parameters.AddWithValue("$operation", operationId);
+                if (await operation.ExecuteNonQueryAsync(CancellationToken.None).ConfigureAwait(false) != 1)
+                {
+                    await transaction.RollbackAsync(CancellationToken.None).ConfigureAwait(false);
+                    return false;
+                }
+
+                await transaction.CommitAsync(CancellationToken.None).ConfigureAwait(false);
+                return true;
+            }
+            catch
+            {
+                try { await transaction.RollbackAsync(CancellationToken.None).ConfigureAwait(false); } catch { }
+                throw;
+            }
+        }
+        finally
+        {
+            _writeGate.Release();
+        }
+    }
+
+    private static void AddClassificationParameters(SqliteCommand command, MediaClassificationBatchItemRecord item, string appliedArchivePath)
+    {
+        command.Parameters.AddWithValue("$media", item.MediaId);
+        command.Parameters.AddWithValue("$original_game", item.OriginalPlayniteId);
+        command.Parameters.AddWithValue("$original_state", item.OriginalClassificationState);
+        command.Parameters.AddWithValue("$original_reason", item.OriginalClassificationReason);
+        command.Parameters.AddWithValue("$original_archive", item.OriginalArchivePath);
+        command.Parameters.AddWithValue("$original_path", item.OriginalPath);
+        command.Parameters.AddWithValue("$captured", item.OriginalCapturedUtc.ToUniversalTime().ToString("O"));
+        command.Parameters.AddWithValue("$size", item.OriginalSizeBytes);
+        command.Parameters.AddWithValue("$sha", item.OriginalSha256);
+        command.Parameters.AddWithValue("$favorite", item.OriginalIsFavorite ? 1 : 0);
+        command.Parameters.AddWithValue("$comment", item.OriginalComment);
+        command.Parameters.AddWithValue("$original_cloud", item.OriginalCloudState);
+        command.Parameters.AddWithValue("$target", item.TargetPlayniteId);
+        command.Parameters.AddWithValue("$target_reason", item.TargetReason);
+        command.Parameters.AddWithValue("$applied", appliedArchivePath);
+    }
+
     public async Task<List<MediaSourceRuleDto>> GetEnabledMediaSourcesForClassificationAsync(CancellationToken token)
     {
         var result = new List<MediaSourceRuleDto>();
@@ -267,4 +442,21 @@ public sealed class MediaClassificationBatchItemRecord
     public string ItemState { get; set; } = "Pending";
     public string AppliedArchivePath { get; set; } = string.Empty;
     public DateTime UpdatedUtc { get; set; }
+}
+
+public sealed class MediaClassificationOperationRecord
+{
+    public string OperationId { get; set; } = string.Empty;
+    public string BatchId { get; set; } = string.Empty;
+    public string MediaId { get; set; } = string.Empty;
+    public string OperationKind { get; set; } = string.Empty;
+    public string State { get; set; } = "Planned";
+    public string SourcePath { get; set; } = string.Empty;
+    public string DestinationPath { get; set; } = string.Empty;
+    public string ExpectedSha256 { get; set; } = string.Empty;
+    public bool SourceIsOriginal { get; set; }
+    public bool DestinationPreexisted { get; set; }
+    public DateTime CreatedUtc { get; set; }
+    public DateTime UpdatedUtc { get; set; }
+    public string LastError { get; set; } = string.Empty;
 }

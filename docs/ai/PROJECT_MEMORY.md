@@ -5,6 +5,14 @@
 
 > 当前事实入口：先读 [`CURRENT_STATE.md`](CURRENT_STATE.md)。本文保留按阶段的历史约束和证据；若与当前事实入口或最新代码冲突，以 `CURRENT_STATE.md` 的覆盖说明为准，不要按旧条目恢复已撤销布局或外部 Demo 路径。
 
+## 2026-09-06 V2-01 媒体归类提交与恢复协调
+
+- `media_classification_operations` 记录归类/撤销的操作意图、源/目标路径、哈希、原始文件标记和目标预存状态；媒体行、批次条目和账本状态在 SQLite 同一事务内从 `Moved` 提交为 `Committed`。
+- `WorkerInitializationService` 在任务/云队列恢复前调用 `MediaSyncService.RecoverPendingClassificationOperationsAsync`。启动时能确认业务已提交则补齐账本，未提交且状态仍匹配则按账本恢复文件并标记 `Aborted`，无法唯一判断则保留 `RecoveryRequired`。
+- 审计是提交后的尽力写入，失败只产生结果告警和 Worker 日志，不回滚已提交业务；取消回滚和文件协调使用独立非取消令牌。原始媒体作为源时只清理本次新建的归档副本。
+- 新增 `MediaSyncServiceTests` 的 SQLite 触发器/取消回归：批次条目提交失败后启动恢复可恢复 Inbox 副本，审计失败仍保留 Assigned 副本，取消后文件和数据库回到 Inbox。V2-01 验证为 Release 0 warning/0 error、Core `65/65`、Worker `278/279`（1 跳过）、Playnite `339/401`（62 跳过）、XAML `19/19`、源码门禁与差异检查通过。
+- 这仍不是真实 Playnite、用户媒体、断电或跨进程并发证据；后续 V2-02 起按复查包顺序逐项实施。
+
 ## 2026-09-06 完成后复查（仅文档）
 
 - 新增 [FOLLOWUP_REVIEW_2026-09-06.md](FOLLOWUP_REVIEW_2026-09-06.md)，基线 `8018cee`。确认上一轮主体已实现，另列 7 项源码边界和 3 项扩展，未修改生产代码。

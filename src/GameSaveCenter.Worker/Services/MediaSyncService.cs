@@ -34,6 +34,9 @@ public sealed class MediaSyncService
     private readonly GameOperationLock _gameLock;
     private readonly ILogger<MediaSyncService> _logger;
 
+    // Test-only seam for deterministic cancellation/failure checks at the file/SQLite boundary.
+    internal Func<MediaClassificationOperationStage, Task>? ClassificationOperationStageHook { get; set; }
+
     public MediaSyncService(WorkerOptions options,GameCatalogService catalog,SqliteStateStore store,RcloneClient rclone,CloudTransferCoordinator cloudTransfers,TaskCoordinator tasks,GameOperationLock gameLock,ILogger<MediaSyncService> logger)
         : this(options,catalog,store,rclone,cloudTransfers,new CloudTransferStateService(store,options,rclone,cloudTransfers,NullLogger<CloudTransferStateService>.Instance),tasks,gameLock,logger)
     {
@@ -307,43 +310,66 @@ public sealed class MediaSyncService
 
             var extension = Path.GetExtension(File.Exists(current.ArchivePath) ? current.ArchivePath : current.OriginalPath);
             var destination = BuildArchivePath(game, current.Source, current.Kind, current.CapturedUtc, current.Sha256, extension);
+            var operation = await CreateClassificationOperationAsync(batch.BatchId, current, destination, "Apply", token).ConfigureAwait(false);
             var moved = false;
+            var commitAttempted = false;
+            var committed = false;
             try
             {
                 await RelocateArchivedCopyAsync(current, destination, token).ConfigureAwait(false);
                 moved = true;
-                if (!await _store.TryApplyMediaClassificationAsync(record, destination, token).ConfigureAwait(false))
+                await _store.UpdateMediaClassificationOperationAsync(operation.OperationId, "Moved", string.Empty, token).ConfigureAwait(false);
+                await NotifyClassificationOperationStageAsync(MediaClassificationOperationStage.AfterMove).ConfigureAwait(false);
+                commitAttempted = true;
+                if (!await _store.TryCommitMediaClassificationApplyAsync(operation.OperationId, record, destination, token).ConfigureAwait(false))
                 {
-                    await RestoreMovedClassificationCopyAsync(current, destination, token).ConfigureAwait(false);
-                    AddClassificationResult(result, record.MediaId, "Conflict", "媒体在应用前后发生变化，已恢复原归档路径。", conflict: true);
-                    await _store.UpdateMediaClassificationBatchItemAsync(batch.BatchId, record.MediaId, "Conflict", string.Empty, token).ConfigureAwait(false);
+                    var restored = await TryAbortClassificationOperationAsync(operation, "媒体状态在提交前发生变化", CancellationToken.None).ConfigureAwait(false);
+                    AddClassificationResult(result, record.MediaId, "Conflict", restored
+                        ? "媒体在应用前后发生变化，已恢复原归档路径。"
+                        : "媒体状态在提交前发生变化，文件与数据库需要恢复协调。", conflict: true);
+                    await TryUpdateClassificationBatchItemAsync(batch.BatchId, record.MediaId, "Conflict", string.Empty).ConfigureAwait(false);
                     continue;
                 }
-                await _store.UpdateMediaClassificationBatchItemAsync(batch.BatchId, record.MediaId, "Applied", destination, token).ConfigureAwait(false);
-                await _store.AppendAuditAsync("Media", "已应用媒体归类建议", JsonSerializer.Serialize(new { record.MediaId, record.TargetPlayniteId, destination, record.TargetReason }), token).ConfigureAwait(false);
-                AddClassificationResult(result, record.MediaId, "Applied", $"已归类到 {game.Name}。", applied: true);
+                committed = true;
+                var auditWarning = await TryAppendClassificationAuditAsync("已应用媒体归类建议", new { record.MediaId, record.TargetPlayniteId, destination, record.TargetReason }).ConfigureAwait(false);
+                AddClassificationResult(result, record.MediaId, "Applied", auditWarning
+                    ? $"已归类到 {game.Name}，但审计记录写入失败。"
+                    : $"已归类到 {game.Name}。", applied: true);
             }
             catch (OperationCanceledException)
             {
-                if (moved) await RestoreMovedClassificationCopyAsync(current, destination, token).ConfigureAwait(false);
+                if (moved && !committed) await TryAbortClassificationOperationAsync(operation, "用户取消，已恢复原归档路径", CancellationToken.None).ConfigureAwait(false);
                 throw;
             }
             catch (Exception ex)
             {
-                if (moved)
+                if (committed)
                 {
-                    try { await RestoreMovedClassificationCopyAsync(current, destination, token).ConfigureAwait(false); }
-                    catch (Exception rollback) { _logger.LogError(rollback, "Could not roll back classification suggestion move for {MediaId}", record.MediaId); }
+                    _logger.LogError(ex, "Classification operation completed but response finalization failed for {MediaId}", record.MediaId);
+                    AddClassificationResult(result, record.MediaId, "Applied", $"已归类到 {game.Name}，但结果收尾失败。", applied: true);
+                    continue;
                 }
-                AddClassificationResult(result, record.MediaId, "Conflict", $"归类未完成，原副本保持不变：{ex.Message}", conflict: true);
-                await _store.UpdateMediaClassificationBatchItemAsync(batch.BatchId, record.MediaId, "Conflict", string.Empty, token).ConfigureAwait(false);
+                if (moved && !commitAttempted)
+                {
+                    var restored = await TryAbortClassificationOperationAsync(operation, ex.Message, CancellationToken.None).ConfigureAwait(false);
+                    AddClassificationResult(result, record.MediaId, "Conflict", restored
+                        ? $"归类未完成，原副本保持不变：{ex.Message}"
+                        : $"归类未完成，文件与数据库需要恢复协调：{ex.Message}", conflict: true);
+                }
+                else
+                {
+                    await TryMarkClassificationRecoveryRequiredAsync(operation, ex).ConfigureAwait(false);
+                    AddClassificationResult(result, record.MediaId, "Conflict", $"归类提交状态不确定，已保留恢复记录：{ex.Message}", conflict: true);
+                }
+                await TryUpdateClassificationBatchItemAsync(batch.BatchId, record.MediaId, "Conflict", string.Empty).ConfigureAwait(false);
             }
         }
 
         result.State = result.AppliedCount == 0
             ? result.ConflictCount > 0 ? "Conflict" : "Preview"
             : result.ConflictCount > 0 ? "AppliedWithConflicts" : "Applied";
-        await _store.UpdateMediaClassificationBatchStateAsync(batch.BatchId, result.State, string.Empty, token).ConfigureAwait(false);
+        try { await _store.UpdateMediaClassificationBatchStateAsync(batch.BatchId, result.State, string.Empty, token).ConfigureAwait(false); }
+        catch (Exception ex) { _logger.LogError(ex, "Could not finalize media classification batch {BatchId}", batch.BatchId); }
         return result;
     }
 
@@ -363,42 +389,243 @@ public sealed class MediaSyncService
                 continue;
             }
 
+            var operation = await CreateClassificationOperationAsync(batch.BatchId, current, record.OriginalArchivePath, "Undo", token).ConfigureAwait(false);
             var moved = false;
+            var commitAttempted = false;
+            var committed = false;
             try
             {
                 await RelocateArchivedCopyAsync(current, record.OriginalArchivePath, token).ConfigureAwait(false);
                 moved = true;
-                if (!await _store.TryUndoMediaClassificationAsync(record, token).ConfigureAwait(false))
+                await _store.UpdateMediaClassificationOperationAsync(operation.OperationId, "Moved", string.Empty, token).ConfigureAwait(false);
+                await NotifyClassificationOperationStageAsync(MediaClassificationOperationStage.AfterMove).ConfigureAwait(false);
+                commitAttempted = true;
+                if (!await _store.TryCommitMediaClassificationUndoAsync(operation.OperationId, record, token).ConfigureAwait(false))
                 {
-                    await RestoreMovedClassificationCopyAsync(current, record.OriginalArchivePath, token, record.AppliedArchivePath).ConfigureAwait(false);
-                    AddClassificationResult(result, record.MediaId, "Conflict", "撤销时媒体状态已变化，已恢复应用后的归档路径。", conflict: true);
-                    await _store.UpdateMediaClassificationBatchItemAsync(batch.BatchId, record.MediaId, "Conflict", record.AppliedArchivePath, token).ConfigureAwait(false);
+                    var restored = await TryAbortClassificationOperationAsync(operation, "撤销时媒体状态已变化", CancellationToken.None).ConfigureAwait(false);
+                    AddClassificationResult(result, record.MediaId, "Conflict", restored
+                        ? "撤销时媒体状态已变化，已恢复应用后的归档路径。"
+                        : "撤销时媒体状态已变化，文件与数据库需要恢复协调。", conflict: true);
+                    await TryUpdateClassificationBatchItemAsync(batch.BatchId, record.MediaId, "Conflict", record.AppliedArchivePath).ConfigureAwait(false);
                     continue;
                 }
-                await _store.UpdateMediaClassificationBatchItemAsync(batch.BatchId, record.MediaId, "Undone", string.Empty, token).ConfigureAwait(false);
-                await _store.AppendAuditAsync("Media", "已撤销媒体归类建议", JsonSerializer.Serialize(new { record.MediaId, record.BatchId }), token).ConfigureAwait(false);
-                AddClassificationResult(result, record.MediaId, "Undone", "已恢复到待归类状态。", undone: true);
+                committed = true;
+                var auditWarning = await TryAppendClassificationAuditAsync("已撤销媒体归类建议", new { record.MediaId, record.BatchId }).ConfigureAwait(false);
+                AddClassificationResult(result, record.MediaId, "Undone", auditWarning
+                    ? "已恢复到待归类状态，但审计记录写入失败。"
+                    : "已恢复到待归类状态。", undone: true);
             }
             catch (OperationCanceledException)
             {
-                if (moved) await RestoreMovedClassificationCopyAsync(current, record.OriginalArchivePath, token, record.AppliedArchivePath).ConfigureAwait(false);
+                if (moved && !committed) await TryAbortClassificationOperationAsync(operation, "用户取消，已恢复应用后的归档路径", CancellationToken.None).ConfigureAwait(false);
                 throw;
             }
             catch (Exception ex)
             {
-                if (moved)
+                if (committed)
                 {
-                    try { await RestoreMovedClassificationCopyAsync(current, record.OriginalArchivePath, token, record.AppliedArchivePath).ConfigureAwait(false); }
-                    catch (Exception rollback) { _logger.LogError(rollback, "Could not restore applied classification copy for {MediaId}", record.MediaId); }
+                    _logger.LogError(ex, "Classification undo completed but response finalization failed for {MediaId}", record.MediaId);
+                    AddClassificationResult(result, record.MediaId, "Undone", "已恢复到待归类状态，但结果收尾失败。", undone: true);
+                    continue;
                 }
-                AddClassificationResult(result, record.MediaId, "Conflict", $"撤销未完成，未覆盖当前文件：{ex.Message}", conflict: true);
-                await _store.UpdateMediaClassificationBatchItemAsync(batch.BatchId, record.MediaId, "Conflict", record.AppliedArchivePath, token).ConfigureAwait(false);
+                if (moved && !commitAttempted)
+                {
+                    var restored = await TryAbortClassificationOperationAsync(operation, ex.Message, CancellationToken.None).ConfigureAwait(false);
+                    AddClassificationResult(result, record.MediaId, "Conflict", restored
+                        ? $"撤销未完成，未覆盖当前文件：{ex.Message}"
+                        : $"撤销未完成，文件与数据库需要恢复协调：{ex.Message}", conflict: true);
+                }
+                else
+                {
+                    await TryMarkClassificationRecoveryRequiredAsync(operation, ex).ConfigureAwait(false);
+                    AddClassificationResult(result, record.MediaId, "Conflict", $"撤销提交状态不确定，已保留恢复记录：{ex.Message}", conflict: true);
+                }
+                await TryUpdateClassificationBatchItemAsync(batch.BatchId, record.MediaId, "Conflict", record.AppliedArchivePath).ConfigureAwait(false);
             }
         }
 
         result.State = result.ConflictCount > 0 ? "UndoneWithConflicts" : "Undone";
-        await _store.UpdateMediaClassificationBatchStateAsync(batch.BatchId, result.State, string.Empty, token).ConfigureAwait(false);
+        try { await _store.UpdateMediaClassificationBatchStateAsync(batch.BatchId, result.State, string.Empty, token).ConfigureAwait(false); }
+        catch (Exception ex) { _logger.LogError(ex, "Could not finalize media classification undo batch {BatchId}", batch.BatchId); }
         return result;
+    }
+
+    /// <summary>
+    /// Reconciles file moves that were durable in the operation ledger but did not reach
+    /// the SQLite commit point. This is intentionally called before regular Worker work.
+    /// </summary>
+    public async Task<MediaClassificationRecoverySummary> RecoverPendingClassificationOperationsAsync(CancellationToken token)
+    {
+        var summary = new MediaClassificationRecoverySummary();
+        foreach (var operation in await _store.GetPendingMediaClassificationOperationsAsync(token).ConfigureAwait(false))
+        {
+            try
+            {
+                var record = (await _store.GetMediaClassificationBatchItemsAsync(operation.BatchId, token).ConfigureAwait(false))
+                    .SingleOrDefault(x => string.Equals(x.MediaId, operation.MediaId, StringComparison.OrdinalIgnoreCase));
+                var current = await _store.GetMediaByIdAsync(operation.MediaId, token).ConfigureAwait(false);
+                if (record == null || current == null)
+                {
+                    await _store.UpdateMediaClassificationOperationAsync(operation.OperationId, "RecoveryRequired",
+                        "恢复记录缺少媒体或批次条目，已停止自动处理。", CancellationToken.None).ConfigureAwait(false);
+                    summary.RecoveryRequiredCount++;
+                    continue;
+                }
+
+                var isApply = string.Equals(operation.OperationKind, "Apply", StringComparison.OrdinalIgnoreCase);
+                var isCommitted = isApply
+                    ? string.Equals(record.ItemState, "Applied", StringComparison.OrdinalIgnoreCase) && MatchesAppliedClassification(current, record)
+                    : string.Equals(record.ItemState, "Undone", StringComparison.OrdinalIgnoreCase) && MatchesOriginalClassification(current, record);
+                if (isCommitted)
+                {
+                    await _store.UpdateMediaClassificationOperationAsync(operation.OperationId, "Committed", string.Empty, CancellationToken.None).ConfigureAwait(false);
+                    summary.RecoveredCount++;
+                    continue;
+                }
+
+                var isBeforeCommit = isApply
+                    ? MatchesOriginalClassification(current, record)
+                    : MatchesAppliedClassification(current, record);
+                if (!isBeforeCommit)
+                {
+                    await _store.UpdateMediaClassificationOperationAsync(operation.OperationId, "RecoveryRequired",
+                        "文件与数据库状态无法唯一对应，需人工确认后恢复。", CancellationToken.None).ConfigureAwait(false);
+                    summary.RecoveryRequiredCount++;
+                    continue;
+                }
+
+                await RestoreClassificationOperationFileAsync(operation, CancellationToken.None).ConfigureAwait(false);
+                await _store.UpdateMediaClassificationOperationAsync(operation.OperationId, "Aborted",
+                    "Worker 启动恢复了未提交的媒体归类文件操作。", CancellationToken.None).ConfigureAwait(false);
+                summary.RecoveredCount++;
+            }
+            catch (Exception ex)
+            {
+                await TryMarkClassificationRecoveryRequiredAsync(operation, ex).ConfigureAwait(false);
+                summary.RecoveryRequiredCount++;
+            }
+        }
+        return summary;
+    }
+
+    private async Task<MediaClassificationOperationRecord> CreateClassificationOperationAsync(string batchId,
+        MediaItemDto item, string destination, string operationKind, CancellationToken token)
+    {
+        var sourceIsOriginal = !File.Exists(item.ArchivePath) && File.Exists(item.OriginalPath);
+        var sourcePath = sourceIsOriginal ? item.OriginalPath : item.ArchivePath;
+        var operation = new MediaClassificationOperationRecord
+        {
+            OperationId = Guid.NewGuid().ToString("N"), BatchId = batchId, MediaId = item.MediaId,
+            OperationKind = operationKind, SourcePath = sourcePath, DestinationPath = destination,
+            ExpectedSha256 = item.Sha256, SourceIsOriginal = sourceIsOriginal,
+            DestinationPreexisted = File.Exists(destination), CreatedUtc = DateTime.UtcNow
+        };
+        await _store.CreateMediaClassificationOperationAsync(operation, token).ConfigureAwait(false);
+        return operation;
+    }
+
+    private Task NotifyClassificationOperationStageAsync(MediaClassificationOperationStage stage)
+        => ClassificationOperationStageHook?.Invoke(stage) ?? Task.CompletedTask;
+
+    private async Task<bool> TryAppendClassificationAuditAsync(string message, object details)
+    {
+        try
+        {
+            await _store.AppendAuditAsync("Media", message, JsonSerializer.Serialize(details), CancellationToken.None).ConfigureAwait(false);
+            return false;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Media classification committed but audit append failed");
+            return true;
+        }
+    }
+
+    private async Task<bool> TryAbortClassificationOperationAsync(MediaClassificationOperationRecord operation,
+        string reason, CancellationToken token)
+    {
+        try
+        {
+            await RestoreClassificationOperationFileAsync(operation, token).ConfigureAwait(false);
+            await _store.UpdateMediaClassificationOperationAsync(operation.OperationId, "Aborted", reason, CancellationToken.None).ConfigureAwait(false);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            await TryMarkClassificationRecoveryRequiredAsync(operation, ex).ConfigureAwait(false);
+            return false;
+        }
+    }
+
+    private async Task TryMarkClassificationRecoveryRequiredAsync(MediaClassificationOperationRecord operation, Exception error)
+    {
+        try
+        {
+            await _store.UpdateMediaClassificationOperationAsync(operation.OperationId, "RecoveryRequired", error.Message, CancellationToken.None).ConfigureAwait(false);
+        }
+        catch (Exception markError)
+        {
+            _logger.LogError(markError, "Could not persist media classification recovery state for {OperationId}", operation.OperationId);
+        }
+    }
+
+    private async Task TryUpdateClassificationBatchItemAsync(string batchId, string mediaId, string state, string appliedArchivePath)
+    {
+        try
+        {
+            await _store.UpdateMediaClassificationBatchItemAsync(batchId, mediaId, state, appliedArchivePath, CancellationToken.None).ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Could not persist media classification item state for {MediaId}", mediaId);
+        }
+    }
+
+    private static async Task RestoreClassificationOperationFileAsync(MediaClassificationOperationRecord operation, CancellationToken token)
+    {
+        if (string.Equals(Path.GetFullPath(operation.SourcePath), Path.GetFullPath(operation.DestinationPath), StringComparison.OrdinalIgnoreCase)) return;
+
+        if (operation.SourceIsOriginal)
+        {
+            if (operation.DestinationPreexisted || !File.Exists(operation.DestinationPath)) return;
+            await EnsureExpectedFileAsync(operation.DestinationPath, operation.ExpectedSha256, token).ConfigureAwait(false);
+            File.Delete(operation.DestinationPath);
+            return;
+        }
+
+        if (operation.DestinationPreexisted)
+        {
+            if (File.Exists(operation.SourcePath))
+            {
+                await EnsureExpectedFileAsync(operation.SourcePath, operation.ExpectedSha256, token).ConfigureAwait(false);
+                return;
+            }
+            if (!File.Exists(operation.DestinationPath)) throw new FileNotFoundException("归类恢复缺少已存在的目标副本。", operation.DestinationPath);
+            await EnsureExpectedFileAsync(operation.DestinationPath, operation.ExpectedSha256, token).ConfigureAwait(false);
+            await EnsureArchivedCopyAsync(operation.DestinationPath, operation.SourcePath, operation.ExpectedSha256, token).ConfigureAwait(false);
+            return;
+        }
+
+        if (File.Exists(operation.SourcePath))
+        {
+            if (File.Exists(operation.DestinationPath))
+            {
+                await EnsureExpectedFileAsync(operation.DestinationPath, operation.ExpectedSha256, token).ConfigureAwait(false);
+                File.Delete(operation.DestinationPath);
+            }
+            return;
+        }
+        if (!File.Exists(operation.DestinationPath)) throw new FileNotFoundException("归类恢复缺少源文件和目标文件。", operation.SourcePath);
+        await MoveArchivedFileAsync(operation.DestinationPath, operation.SourcePath, operation.ExpectedSha256, token).ConfigureAwait(false);
+    }
+
+    private static async Task EnsureExpectedFileAsync(string path, string expectedHash, CancellationToken token)
+    {
+        if (!File.Exists(path)) throw new FileNotFoundException("归类恢复所需文件不存在。", path);
+        if (string.IsNullOrWhiteSpace(expectedHash)) return;
+        var actualHash = await ComputeSha256Async(path, token).ConfigureAwait(false);
+        if (!string.Equals(actualHash, expectedHash, StringComparison.OrdinalIgnoreCase))
+            throw new IOException("归类恢复发现文件内容与账本哈希不一致。");
     }
 
     private async Task<MediaItemDto> RestoreIgnoredAsync(string mediaId,CancellationToken token)
@@ -1097,4 +1324,15 @@ public sealed class MediaSyncService
 
     private sealed record MediaSource(string Path,MediaSourceKind Source,string IncludePattern="*");
     private sealed record SharedMediaResolution(GameDescriptorDto? Game,string Reason);
+}
+
+internal enum MediaClassificationOperationStage
+{
+    AfterMove
+}
+
+public sealed class MediaClassificationRecoverySummary
+{
+    public int RecoveredCount { get; set; }
+    public int RecoveryRequiredCount { get; set; }
 }
