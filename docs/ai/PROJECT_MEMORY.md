@@ -5,6 +5,14 @@
 
 > 当前事实入口：先读 [`CURRENT_STATE.md`](CURRENT_STATE.md)。本文保留按阶段的历史约束和证据；若与当前事实入口或最新代码冲突，以 `CURRENT_STATE.md` 的覆盖说明为准，不要按旧条目恢复已撤销布局或外部 Demo 路径。
 
+## 2026-09-06 V2-06 云队列全量摘要与独立分页
+
+- `SqliteStateStore.CloudTransfers` 使用统一 CTE 合并 durable 新队列、legacy 重试表和游戏/媒体基础云状态；按 `transfer_key`（不区分大小写）以新队列优先去重，再由 SQL 聚合全量状态计数和最早重试时间。
+- `CloudTransferStateService.GetStatusAsync` 保留无参数调用作为首页兼容入口，同时接受 `CloudTransferStatusRequestDto` 的页码、页大小、状态和类型过滤；摘要总数与分页明细查询相互独立，页大小服务端限制为 100，并返回已加载量和是否还有下一页。
+- 旧备份重试表仍按原有错误分类显示认证需处理或下次尝试；基础游戏/媒体状态只在无更高优先级 durable 行时补入，避免新旧来源重复计数。
+- 新增 1005 条记录、旧新同键、摘要最早重试、分页末页和失败过滤回归；隔离 Release 全量验证为 Core `65/65`、Worker `294/295`（1 跳过）、Playnite `339/401`（62 跳过）、XAML `19/19`，源码校验与差异检查通过。
+- 未取得真实 Playnite 大库 UI 首屏、跨进程并发或真实宿主证据；后续处理 V2-07。
+
 ## 2026-09-06 V2-05 云端校验终态与代际保护
 
 - `cloud_transfer_queue` 新增操作类型、操作 ID 和校验前快照字段。上传使用 `Upload` 代际，远端只读校验使用独立 `Verify` 代际；校验在等待全局闸门前就持久化为 `Verifying`，避免 durable 状态与实际操作不一致。

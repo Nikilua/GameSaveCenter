@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-06 V2-06 云队列全量摘要与独立分页
+
+- 重写云端状态读取路径：SQLite 先将 `cloud_transfer_queue`、`cloud_retry_queue` 和游戏/媒体基础状态按稳定键去重，再做全量摘要；新 durable 行优先，分页明细不再决定 `TotalCount` 或 `NextAttemptUtc`。
+- 新增 `CloudTransferStatusRequestDto`，支持状态/类型过滤与独立页码，服务端页大小上限 100，并返回 `LoadedCount/HasMore/LoadedDisplay`；默认首页调用保持兼容。
+- 旧重试记录继续映射认证和网络等稳定错误码，媒体按游戏聚合的基础状态和新队列仍只出现一次；没有改变上传、校验、删除或重试调度语义。
+- 新增超过 1000 条、旧新同键、早期重试、末页与失败过滤回归。验证：隔离 Release 构建 0 warning/0 error，Core `65/65`，Worker `294/295`（1 跳过），Playnite `339/401`（62 跳过），XAML `19/19`，源码校验、XAML 检查和差异检查通过。
+- 未执行真实 Playnite 大库 UI、跨进程并发或目标机性能验收。
+
 ## 2026-09-06 V2-05 云端校验终态与代际保护
 
 - 将云端上传和远端只读校验拆成不同的持久化操作代际。校验先落盘 `Verifying`，保存校验前状态快照；闸门等待、工具启动、执行、取消和 Worker 重启都不再把校验伪装成上传中的 `Transferring`。

@@ -130,7 +130,7 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.GetTaskChanges=>GetTaskChanges(Read<TaskChangeRequestDto>(request)),
                 MessageTypes.WaitForTaskChanges=>await WaitForTaskChangesAsync(Read<TaskChangeRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.RetryCloudUpload=>await _backup.RetryCloudUploadAsync(Read<GameQueryDto>(request).PlayniteId,token).ConfigureAwait(false),
-                MessageTypes.GetCloudTransferStatus=>await _cloudState.GetStatusAsync(token).ConfigureAwait(false),
+                MessageTypes.GetCloudTransferStatus=>await _cloudState.GetStatusAsync(Read<CloudTransferStatusRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.VerifyCloudTransfer=>await _cloudState.VerifyAsync(Read<CloudTransferVerifyRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.SyncDeviceStates=>await _deviceStates.SyncAsync(token).ConfigureAwait(false),
                 MessageTypes.SaveDeviceConflictDecision=>await SaveDeviceConflictDecisionAsync(Read<DeviceConflictDecisionDto>(request),token).ConfigureAwait(false),

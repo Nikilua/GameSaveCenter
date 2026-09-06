@@ -300,92 +300,65 @@ public sealed class CloudTransferStateService
 
     private static string NewOperationId() => Guid.NewGuid().ToString("N");
 
-    public async Task<CloudTransferSummaryDto> GetStatusAsync(CancellationToken token)
+    public Task<CloudTransferSummaryDto> GetStatusAsync(CancellationToken token)
+        => GetStatusAsync(new CloudTransferStatusRequestDto(), token);
+
+    public async Task<CloudTransferSummaryDto> GetStatusAsync(CloudTransferStatusRequestDto request, CancellationToken token)
     {
-        var entries = await _store.GetCloudTransfersAsync(1000, token).ConfigureAwait(false);
-        var legacy = await _store.GetCloudRetriesAsync(1000, token).ConfigureAwait(false);
+        var stateFilter = request.State?.Trim() ?? string.Empty;
+        var pageSize = Math.Clamp(request.PageSize, 1, 100);
+        var page = Math.Clamp(request.Page, 0, int.MaxValue / pageSize);
+        var offset = page * pageSize;
+        var kindFilter = request.Kind;
+        var aggregate = await _store.GetCloudTransferSummaryAsync(stateFilter, kindFilter, token).ConfigureAwait(false);
+        var entries = await _store.GetCloudTransferPageAsync(offset, pageSize, stateFilter, kindFilter, token).ConfigureAwait(false);
         var games = await _store.GetCloudGameStatesAsync(token).ConfigureAwait(false);
         var media = await _store.GetCloudMediaStatesAsync(token).ConfigureAwait(false);
-        var byKey = new Dictionary<string, CloudTransferStatusDto>(StringComparer.OrdinalIgnoreCase);
-
-        foreach (var entry in entries)
-            byKey[entry.TransferKey] = ToDto(entry, string.Empty);
-
-        foreach (var old in legacy)
-        {
-            var key = GetTransferKey(CloudTransferKind.Backup, old.PlayniteId);
-            if (byKey.ContainsKey(key)) continue;
-            var code = RcloneFailureClassifier.GetErrorCode(RcloneFailureClassifier.Classify(old.LastError));
-            byKey[key] = new CloudTransferStatusDto
-            {
-                TransferKey = key, Kind = CloudTransferKind.Backup, PlayniteId = old.PlayniteId,
-                State = code == "RCLONE_AUTH_FAILED" ? "AuthenticationRequired" : "RetryScheduled",
-                AttemptCount = old.RetryCount, NextAttemptUtc = old.NextAttemptUtc, LastAttemptUtc = old.UpdatedUtc,
-                LastErrorCode = code, LastError = old.LastError, UpdatedUtc = old.UpdatedUtc
-            };
-        }
-
-        foreach (var game in games)
-            AddBaseState(byKey, CloudTransferKind.Backup, game.PlayniteId, game.GameName, game.State);
-        foreach (var item in media)
-            AddBaseState(byKey, CloudTransferKind.Media, item.PlayniteId, item.GameName, item.State);
-
-        foreach (var active in _coordinator.GetActiveTransfers())
-        {
-            if (!byKey.TryGetValue(active.TransferKey, out var status))
-            {
-                if (!TryParseKey(active.TransferKey, out var kind, out var gameId)) continue;
-                status = new CloudTransferStatusDto { TransferKey = active.TransferKey, Kind = kind, OperationKind = active.OperationKind, PlayniteId = gameId, UpdatedUtc = DateTime.UtcNow };
-                byKey[active.TransferKey] = status;
-            }
-            status.OperationKind = active.OperationKind;
-            status.State = active.OperationKind == CloudTransferOperationKind.Verify ? "Verifying" : "Transferring";
-            status.UpdatedUtc = DateTime.UtcNow;
-        }
-
-        var allItems = byKey.Values
-            .Where(x => !string.Equals(x.State, "NotApplicable", StringComparison.OrdinalIgnoreCase))
-            .OrderByDescending(x => x.State switch
-            {
-                "AuthenticationRequired" => 7,
-                "CheckFailed" => 6,
-                "Failed" => 5,
-                "RetryScheduled" => 4,
-                "Transferring" or "Verifying" => 3,
-                "Pending" => 2,
-                "Paused" => 1,
-                _ => 0
-            })
-            .ThenBy(x => x.NextAttemptUtc ?? DateTime.MaxValue)
-            .ThenByDescending(x => x.UpdatedUtc)
-            .ToList();
         var names = games.Concat<CloudGameStateRecord>(media)
             .GroupBy(x => x.PlayniteId, StringComparer.OrdinalIgnoreCase)
             .ToDictionary(x => x.Key, x => x.Select(y => y.GameName).FirstOrDefault(n => !string.IsNullOrWhiteSpace(n)) ?? string.Empty, StringComparer.OrdinalIgnoreCase);
-        foreach (var item in allItems)
-            if (string.IsNullOrWhiteSpace(item.GameName) && names.TryGetValue(item.PlayniteId, out var gameName)) item.GameName = gameName;
-        var items = allItems.Take(100).ToList();
+        var items = entries.Select(entry =>
+        {
+            var gameName = names.TryGetValue(entry.PlayniteId, out var name) ? name : string.Empty;
+            return ToDto(entry, gameName);
+        }).ToList();
+
+        var activeByKey = _coordinator.GetActiveTransfers()
+            .ToDictionary(x => x.TransferKey, StringComparer.OrdinalIgnoreCase);
+        foreach (var item in items)
+        {
+            if (!activeByKey.TryGetValue(item.TransferKey, out var active)) continue;
+            item.OperationKind = active.OperationKind;
+            item.State = active.OperationKind == CloudTransferOperationKind.Verify ? "Verifying" : "Transferring";
+            item.UpdatedUtc = DateTime.UtcNow;
+        }
 
         var summary = new CloudTransferSummaryDto
         {
-            TotalCount = allItems.Count,
+            TotalCount = aggregate.TotalCount,
+            PendingCount = aggregate.PendingCount,
+            TransferringCount = aggregate.TransferringCount,
+            VerifyingCount = aggregate.VerifyingCount,
+            RetryScheduledCount = aggregate.RetryScheduledCount,
+            AuthenticationRequiredCount = aggregate.AuthenticationRequiredCount,
+            UploadedCount = aggregate.UploadedCount,
+            VerifiedCount = aggregate.VerifiedCount,
+            CheckFailedCount = aggregate.CheckFailedCount,
+            FailedCount = aggregate.FailedCount,
+            PausedCount = aggregate.PausedCount,
+            NextAttemptUtc = aggregate.NextAttemptUtc,
             Items = items,
+            Page = page,
+            PageSize = pageSize,
+            LoadedCount = items.Count,
+            HasMore = offset + items.Count < aggregate.TotalCount,
+            StateFilter = stateFilter,
+            KindFilter = kindFilter,
             QueuePaused = _options.CloudUploadQueuePaused,
             OutsideAllowedWindow = _options.EnableCloudUpload
                 && !_options.CloudUploadQueuePaused
                 && !CloudUploadWindowPolicy.IsAllowed(DateTime.UtcNow, _options.CloudUploadAllowedStartMinute, _options.CloudUploadAllowedEndMinute)
         };
-        summary.PendingCount = allItems.Count(x => x.State == "Pending");
-        summary.TransferringCount = allItems.Count(x => x.State == "Transferring");
-        summary.VerifyingCount = allItems.Count(x => x.State == "Verifying");
-        summary.RetryScheduledCount = allItems.Count(x => x.State == "RetryScheduled");
-        summary.AuthenticationRequiredCount = allItems.Count(x => x.State == "AuthenticationRequired");
-        summary.UploadedCount = allItems.Count(x => x.State == "Uploaded");
-        summary.VerifiedCount = allItems.Count(x => x.State == "RemoteVerified");
-        summary.CheckFailedCount = allItems.Count(x => x.State == "CheckFailed");
-        summary.FailedCount = allItems.Count(x => x.State == "Failed");
-        summary.PausedCount = allItems.Count(x => x.State == "Paused");
-        summary.NextAttemptUtc = allItems.Where(x => x.State == "RetryScheduled" && x.NextAttemptUtc.HasValue).Select(x => x.NextAttemptUtc).Min();
         return summary;
     }
 
@@ -438,33 +411,6 @@ public sealed class CloudTransferStateService
             LastAttemptUtc = entry.LastAttemptUtc, LastErrorCode = entry.LastErrorCode, LastError = entry.LastError,
             UpdatedUtc = entry.UpdatedUtc
         };
-
-    private static void AddBaseState(Dictionary<string, CloudTransferStatusDto> byKey, CloudTransferKind kind, string playniteId, string gameName, string state)
-    {
-        if (string.IsNullOrWhiteSpace(playniteId) || string.Equals(state, "Disabled", StringComparison.OrdinalIgnoreCase)) return;
-        var key = GetTransferKey(kind, playniteId);
-        if (byKey.TryGetValue(key, out var existing))
-        {
-            if (string.IsNullOrWhiteSpace(existing.GameName)) existing.GameName = gameName;
-            return;
-        }
-        byKey[key] = new CloudTransferStatusDto
-        {
-            TransferKey = key, Kind = kind, PlayniteId = playniteId, GameName = gameName,
-            State = state == "Synced" ? "Uploaded" : state, UpdatedUtc = DateTime.UtcNow
-        };
-    }
-
-    private static bool TryParseKey(string key, out CloudTransferKind kind, out string playniteId)
-    {
-        kind = CloudTransferKind.Backup;
-        playniteId = string.Empty;
-        var separator = key.IndexOf(':');
-        if (separator <= 0 || separator == key.Length - 1) return false;
-        if (!Enum.TryParse(key[..separator], true, out kind)) return false;
-        playniteId = key[(separator + 1)..];
-        return true;
-    }
 
     private static string Sanitize(string value)
     {

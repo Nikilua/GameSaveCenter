@@ -24,6 +24,15 @@ public sealed class CloudTransferVerifyRequestDto
     public CloudTransferKind Kind { get; set; } = CloudTransferKind.Backup;
 }
 
+/// <summary>Bounded query for the cloud transfer summary and its independently paged details.</summary>
+public sealed class CloudTransferStatusRequestDto
+{
+    public int Page { get; set; }
+    public int PageSize { get; set; } = 100;
+    public string State { get; set; } = string.Empty;
+    public CloudTransferKind? Kind { get; set; }
+}
+
 /// <summary>One durable cloud transfer status. A successful copy is not a remote check.</summary>
 public sealed class CloudTransferStatusDto
 {
@@ -94,6 +103,12 @@ public sealed class CloudTransferSummaryDto
     public int PausedCount { get; set; }
     public bool QueuePaused { get; set; }
     public bool OutsideAllowedWindow { get; set; }
+    public int Page { get; set; }
+    public int PageSize { get; set; }
+    public int LoadedCount { get; set; }
+    public bool HasMore { get; set; }
+    public string StateFilter { get; set; } = string.Empty;
+    public CloudTransferKind? KindFilter { get; set; }
     public DateTime? NextAttemptUtc { get; set; }
     public List<CloudTransferStatusDto> Items { get; set; } = new List<CloudTransferStatusDto>();
 
@@ -127,6 +142,10 @@ public sealed class CloudTransferSummaryDto
             return $"{PrimaryStatusDisplay} · {TotalCount} 项{next}";
         }
     }
+
+    public string LoadedDisplay => HasMore
+        ? $"已加载 {LoadedCount}/{TotalCount} 项"
+        : $"已加载全部 {LoadedCount} 项";
 
     public string QueueControlDisplay => QueuePaused
         ? "自动队列已暂停"

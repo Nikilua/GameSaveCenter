@@ -109,6 +109,86 @@ WHERE transfer_key=$key AND operation_id=$expected_operation_id;";
         return result;
     }
 
+    public async Task<CloudTransferSummaryAggregate> GetCloudTransferSummaryAsync(
+        string? stateFilter, CloudTransferKind? kindFilter, CancellationToken token)
+    {
+        await using var connection = Open();
+        await connection.OpenAsync(token).ConfigureAwait(false);
+        var command = connection.CreateCommand();
+        command.CommandText = $@"
+SELECT COUNT(*),
+       COALESCE(SUM(CASE WHEN current.state='Pending' THEN 1 ELSE 0 END),0),
+       COALESCE(SUM(CASE WHEN current.state='Transferring' THEN 1 ELSE 0 END),0),
+       COALESCE(SUM(CASE WHEN current.state='Verifying' THEN 1 ELSE 0 END),0),
+       COALESCE(SUM(CASE WHEN current.state='RetryScheduled' THEN 1 ELSE 0 END),0),
+       COALESCE(SUM(CASE WHEN current.state='AuthenticationRequired' THEN 1 ELSE 0 END),0),
+       COALESCE(SUM(CASE WHEN current.state='Uploaded' THEN 1 ELSE 0 END),0),
+       COALESCE(SUM(CASE WHEN current.state='RemoteVerified' THEN 1 ELSE 0 END),0),
+       COALESCE(SUM(CASE WHEN current.state='CheckFailed' THEN 1 ELSE 0 END),0),
+       COALESCE(SUM(CASE WHEN current.state='Failed' THEN 1 ELSE 0 END),0),
+       COALESCE(SUM(CASE WHEN current.state='Paused' THEN 1 ELSE 0 END),0),
+       MIN(CASE WHEN current.state='RetryScheduled' THEN current.next_attempt_utc END)
+FROM ({CurrentCloudTransferRows}) AS current
+WHERE current.state <> 'NotApplicable'
+  AND ($state='' OR current.state=$state)
+  AND ($kind='' OR current.transfer_kind=$kind);";
+        AddCloudTransferFilters(command, stateFilter, kindFilter);
+        await using var reader = await command.ExecuteReaderAsync(token).ConfigureAwait(false);
+        if (!await reader.ReadAsync(token).ConfigureAwait(false)) return new CloudTransferSummaryAggregate();
+        return new CloudTransferSummaryAggregate
+        {
+            TotalCount = Convert.ToInt32(reader.GetInt64(0)),
+            PendingCount = Convert.ToInt32(reader.GetInt64(1)),
+            TransferringCount = Convert.ToInt32(reader.GetInt64(2)),
+            VerifyingCount = Convert.ToInt32(reader.GetInt64(3)),
+            RetryScheduledCount = Convert.ToInt32(reader.GetInt64(4)),
+            AuthenticationRequiredCount = Convert.ToInt32(reader.GetInt64(5)),
+            UploadedCount = Convert.ToInt32(reader.GetInt64(6)),
+            VerifiedCount = Convert.ToInt32(reader.GetInt64(7)),
+            CheckFailedCount = Convert.ToInt32(reader.GetInt64(8)),
+            FailedCount = Convert.ToInt32(reader.GetInt64(9)),
+            PausedCount = Convert.ToInt32(reader.GetInt64(10)),
+            NextAttemptUtc = ParseNullableUtc(reader, 11)
+        };
+    }
+
+    public async Task<List<CloudTransferQueueEntry>> GetCloudTransferPageAsync(
+        int offset, int limit, string? stateFilter, CloudTransferKind? kindFilter, CancellationToken token)
+    {
+        var result = new List<CloudTransferQueueEntry>();
+        await using var connection = Open();
+        await connection.OpenAsync(token).ConfigureAwait(false);
+        var command = connection.CreateCommand();
+        command.CommandText = $@"
+SELECT transfer_key,transfer_kind,playnite_id,state,operation_kind,operation_id,prior_state,prior_operation_kind,prior_operation_id,
+       prior_next_attempt_utc,prior_last_attempt_utc,prior_error_code,prior_error,attempt_count,next_attempt_utc,last_attempt_utc,
+       last_error_code,last_error,created_utc,updated_utc
+FROM ({CurrentCloudTransferRows}) AS current
+WHERE current.state <> 'NotApplicable'
+  AND ($state='' OR current.state=$state)
+  AND ($kind='' OR current.transfer_kind=$kind)
+ORDER BY CASE current.state
+    WHEN 'AuthenticationRequired' THEN 7
+    WHEN 'CheckFailed' THEN 6
+    WHEN 'Failed' THEN 5
+    WHEN 'RetryScheduled' THEN 4
+    WHEN 'Transferring' THEN 3
+    WHEN 'Verifying' THEN 3
+    WHEN 'Pending' THEN 2
+    WHEN 'Paused' THEN 1
+    ELSE 0 END DESC,
+    CASE WHEN current.state='RetryScheduled' THEN COALESCE(current.next_attempt_utc,'9999-12-31T23:59:59.9999999Z') ELSE '9999-12-31T23:59:59.9999999Z' END,
+    current.updated_utc DESC,
+    current.transfer_key COLLATE NOCASE
+LIMIT $limit OFFSET $offset;";
+        AddCloudTransferFilters(command, stateFilter, kindFilter);
+        command.Parameters.AddWithValue("$limit", Math.Clamp(limit, 1, 100));
+        command.Parameters.AddWithValue("$offset", Math.Max(0, offset));
+        await using var reader = await command.ExecuteReaderAsync(token).ConfigureAwait(false);
+        while (await reader.ReadAsync(token).ConfigureAwait(false)) result.Add(ReadCloudTransfer(reader));
+        return result;
+    }
+
     public async Task<List<CloudTransferQueueEntry>> GetDueCloudTransfersAsync(CloudTransferKind kind, DateTime nowUtc, int limit, CancellationToken token)
     {
         var result = new List<CloudTransferQueueEntry>();
@@ -200,7 +280,83 @@ GROUP BY m.playnite_id,g.name;";
         return result;
     }
 
+    private static void AddCloudTransferFilters(SqliteCommand command, string? stateFilter, CloudTransferKind? kindFilter)
+    {
+        command.Parameters.AddWithValue("$state", stateFilter?.Trim() ?? string.Empty);
+        command.Parameters.AddWithValue("$kind", kindFilter?.ToString() ?? string.Empty);
+    }
+
     private const string SelectCloudTransfers = @"SELECT transfer_key,transfer_kind,playnite_id,state,operation_kind,operation_id,prior_state,prior_operation_kind,prior_operation_id,prior_next_attempt_utc,prior_last_attempt_utc,prior_error_code,prior_error,attempt_count,next_attempt_utc,last_attempt_utc,last_error_code,last_error,created_utc,updated_utc FROM cloud_transfer_queue";
+
+    private const string CurrentCloudTransferRows = @"
+WITH media_base AS (
+    SELECT m.playnite_id,COALESCE(g.name,'') AS game_name,
+           CASE WHEN SUM(CASE WHEN m.cloud_state='AuthenticationRequired' THEN 1 ELSE 0 END)>0 THEN 'AuthenticationRequired'
+                WHEN SUM(CASE WHEN m.cloud_state='CheckFailed' THEN 1 ELSE 0 END)>0 THEN 'CheckFailed'
+                WHEN SUM(CASE WHEN m.cloud_state='Failed' THEN 1 ELSE 0 END)>0 THEN 'Failed'
+                WHEN SUM(CASE WHEN m.cloud_state='RetryScheduled' THEN 1 ELSE 0 END)>0 THEN 'RetryScheduled'
+                WHEN SUM(CASE WHEN m.cloud_state='Pending' THEN 1 ELSE 0 END)>0 THEN 'Pending'
+                WHEN SUM(CASE WHEN m.cloud_state='RemoteVerified' THEN 1 ELSE 0 END)>0 THEN 'RemoteVerified'
+                WHEN SUM(CASE WHEN m.cloud_state IN ('Synced','Uploaded') THEN 1 ELSE 0 END)>0 THEN 'Uploaded'
+                ELSE 'NotApplicable' END AS state
+    FROM media m LEFT JOIN games g ON g.playnite_id=m.playnite_id
+    WHERE COALESCE(m.playnite_id,'')<>'' AND m.classification_state='Assigned'
+    GROUP BY m.playnite_id,g.name
+), candidates AS (
+    SELECT transfer_key,transfer_kind,playnite_id,state,operation_kind,operation_id,prior_state,prior_operation_kind,prior_operation_id,
+           prior_next_attempt_utc,prior_last_attempt_utc,prior_error_code,prior_error,attempt_count,next_attempt_utc,last_attempt_utc,
+           last_error_code,last_error,created_utc,updated_utc,0 AS source_priority
+    FROM cloud_transfer_queue
+    UNION ALL
+    SELECT 'Backup:'||r.playnite_id,'Backup',r.playnite_id,
+           CASE WHEN lower(COALESCE(r.last_error,'')) LIKE '%authentication%'
+                     OR lower(COALESCE(r.last_error,'')) LIKE '%unauthorized%'
+                     OR lower(COALESCE(r.last_error,'')) LIKE '%invalid token%'
+                     OR lower(COALESCE(r.last_error,'')) LIKE '%expired token%'
+                THEN 'AuthenticationRequired' ELSE 'RetryScheduled' END,
+           'Upload','', '', 'Upload','', NULL, r.updated_utc, '', '', r.attempt_count, r.next_attempt_utc, r.updated_utc,
+           CASE WHEN lower(COALESCE(r.last_error,'')) LIKE '%authentication%'
+                     OR lower(COALESCE(r.last_error,'')) LIKE '%unauthorized%'
+                     OR lower(COALESCE(r.last_error,'')) LIKE '%invalid token%'
+                     OR lower(COALESCE(r.last_error,'')) LIKE '%expired token%'
+                THEN 'RCLONE_AUTH_FAILED'
+                WHEN lower(COALESCE(r.last_error,'')) LIKE '%permission denied%'
+                     OR lower(COALESCE(r.last_error,'')) LIKE '%access denied%'
+                     OR lower(COALESCE(r.last_error,'')) LIKE '%forbidden%' THEN 'RCLONE_PERMISSION_DENIED'
+                WHEN lower(COALESCE(r.last_error,'')) LIKE '%timeout%'
+                     OR lower(COALESCE(r.last_error,'')) LIKE '%timed out%'
+                     OR lower(COALESCE(r.last_error,'')) LIKE '%connection%'
+                     OR lower(COALESCE(r.last_error,'')) LIKE '%network%'
+                     OR lower(COALESCE(r.last_error,'')) LIKE '%temporarily unavailable%'
+                     OR lower(COALESCE(r.last_error,'')) LIKE '%429%' THEN 'RCLONE_NETWORK_FAILED'
+                WHEN lower(COALESCE(r.last_error,'')) LIKE '%partial%'
+                     OR lower(COALESCE(r.last_error,'')) LIKE '%incomplete%'
+                     OR (lower(COALESCE(r.last_error,'')) LIKE '%transferred%' AND lower(COALESCE(r.last_error,'')) LIKE '%error%') THEN 'RCLONE_TRANSFER_INCOMPLETE'
+                ELSE 'RCLONE_COPY_FAILED' END,
+           r.last_error,r.created_utc,r.updated_utc,1
+    FROM cloud_retry_queue r
+    UNION ALL
+    SELECT 'Backup:'||g.playnite_id,'Backup',g.playnite_id,
+           CASE WHEN g.cloud_state='Synced' THEN 'Uploaded' ELSE COALESCE(g.cloud_state,'Disabled') END,
+           'Upload','', '', 'Upload','', NULL, NULL, '', '', 0, NULL, NULL, '', '',
+           strftime('%Y-%m-%dT%H:%M:%fZ','now'),strftime('%Y-%m-%dT%H:%M:%fZ','now'),2
+    FROM games g
+    WHERE COALESCE(g.cloud_state,'Disabled')<>'Disabled'
+    UNION ALL
+    SELECT 'Media:'||m.playnite_id,'Media',m.playnite_id,m.state,
+           'Upload','', '', 'Upload','', NULL, NULL, '', '', 0, NULL, NULL, '', '',
+           strftime('%Y-%m-%dT%H:%M:%fZ','now'),strftime('%Y-%m-%dT%H:%M:%fZ','now'),2
+    FROM media_base m
+), ranked AS (
+    SELECT candidates.*,
+           ROW_NUMBER() OVER (PARTITION BY transfer_key COLLATE NOCASE ORDER BY source_priority) AS duplicate_rank
+    FROM candidates
+)
+SELECT transfer_key,transfer_kind,playnite_id,state,operation_kind,operation_id,prior_state,prior_operation_kind,prior_operation_id,
+       prior_next_attempt_utc,prior_last_attempt_utc,prior_error_code,prior_error,attempt_count,next_attempt_utc,last_attempt_utc,
+       last_error_code,last_error,created_utc,updated_utc
+FROM ranked
+WHERE duplicate_rank=1";
 
     private static CloudTransferQueueEntry ReadCloudTransfer(SqliteDataReader reader)
         => new()
@@ -256,6 +412,22 @@ public sealed class CloudTransferQueueEntry
     public string LastError { get; set; } = string.Empty;
     public DateTime CreatedUtc { get; set; }
     public DateTime UpdatedUtc { get; set; }
+}
+
+public sealed class CloudTransferSummaryAggregate
+{
+    public int TotalCount { get; set; }
+    public int PendingCount { get; set; }
+    public int TransferringCount { get; set; }
+    public int VerifyingCount { get; set; }
+    public int RetryScheduledCount { get; set; }
+    public int AuthenticationRequiredCount { get; set; }
+    public int UploadedCount { get; set; }
+    public int VerifiedCount { get; set; }
+    public int CheckFailedCount { get; set; }
+    public int FailedCount { get; set; }
+    public int PausedCount { get; set; }
+    public DateTime? NextAttemptUtc { get; set; }
 }
 
 public class CloudGameStateRecord

@@ -84,6 +84,61 @@ public sealed class CloudTransferStateTests : IDisposable
     }
 
     [Fact]
+    public async Task CloudStatusSummaryUsesFullDatasetAndDetailsStayPaged()
+    {
+        var now = DateTime.UtcNow;
+        for (var index = 0; index < 1005; index++)
+        {
+            var state = index == 1003 ? "RetryScheduled" : index == 1004 ? "CheckFailed" : "Uploaded";
+            await store.UpsertCloudTransferAsync(new CloudTransferQueueEntry
+            {
+                TransferKey = $"Backup:game-{index}",
+                Kind = CloudTransferKind.Backup,
+                PlayniteId = $"game-{index}",
+                State = state,
+                OperationKind = CloudTransferOperationKind.Upload,
+                OperationId = $"upload-{index}",
+                AttemptCount = state == "RetryScheduled" ? 3 : 0,
+                NextAttemptUtc = state == "RetryScheduled" ? now.AddHours(-2) : null,
+                LastAttemptUtc = now.AddDays(-2),
+                LastErrorCode = state == "CheckFailed" ? "RCLONE_CHECK_FAILED" : state == "RetryScheduled" ? "RCLONE_NETWORK_FAILED" : string.Empty,
+                LastError = state == "CheckFailed" ? "checksum mismatch" : state == "RetryScheduled" ? "network timeout" : string.Empty,
+                CreatedUtc = now.AddDays(-3),
+                UpdatedUtc = now.AddDays(-1)
+            }, CancellationToken.None);
+        }
+        await InsertLegacyRetryAsync("game-1000", "expired token");
+
+        var stateService = CreateState(new CloudTransferCoordinator(NullLogger<CloudTransferCoordinator>.Instance));
+        var firstPage = await stateService.GetStatusAsync(new CloudTransferStatusRequestDto { Page = 0, PageSize = 50 }, CancellationToken.None);
+
+        Assert.Equal(1005, firstPage.TotalCount);
+        Assert.Equal(1003, firstPage.UploadedCount);
+        Assert.Equal(1, firstPage.RetryScheduledCount);
+        Assert.Equal(1, firstPage.CheckFailedCount);
+        Assert.Equal(50, firstPage.LoadedCount);
+        Assert.True(firstPage.HasMore);
+        Assert.NotNull(firstPage.NextAttemptUtc);
+        Assert.Equal(now.AddHours(-2), firstPage.NextAttemptUtc!.Value, precision: TimeSpan.FromSeconds(1));
+        Assert.Contains(firstPage.Items, x => x.State == "RetryScheduled" && x.PlayniteId == "game-1003");
+        Assert.Contains(firstPage.Items, x => x.State == "CheckFailed" && x.PlayniteId == "game-1004");
+
+        var lastPage = await stateService.GetStatusAsync(new CloudTransferStatusRequestDto { Page = 20, PageSize = 50 }, CancellationToken.None);
+        Assert.Equal(5, lastPage.LoadedCount);
+        Assert.False(lastPage.HasMore);
+        Assert.Equal(20, lastPage.Page);
+
+        var filtered = await stateService.GetStatusAsync(new CloudTransferStatusRequestDto
+        {
+            State = "CheckFailed", PageSize = 10
+        }, CancellationToken.None);
+        Assert.Equal(1, filtered.TotalCount);
+        Assert.Single(filtered.Items);
+        Assert.Equal("game-1004", filtered.Items[0].PlayniteId);
+        Assert.Equal("已加载全部 1 项", filtered.LoadedDisplay);
+    }
+
+    [Fact]
     public async Task CancelledVerificationRestoresPreviousUploadedGuarantee()
     {
         await PrepareVerificationGameAsync();
@@ -229,6 +284,23 @@ public sealed class CloudTransferStateTests : IDisposable
         }
         var actual = await store.GetCloudTransferAsync(transferKey, CancellationToken.None);
         Assert.Equal(expectedState, actual?.State);
+    }
+
+    private async Task InsertLegacyRetryAsync(string playniteId, string error)
+    {
+        await using var connection = new SqliteConnection($"Data Source={options.DatabasePath};Mode=ReadWriteCreate;Cache=Shared;Foreign Keys=True");
+        await connection.OpenAsync();
+        await using var command = connection.CreateCommand();
+        command.CommandText = @"
+INSERT INTO cloud_retry_queue(playnite_id,attempt_count,next_attempt_utc,last_error,created_utc,updated_utc)
+VALUES($playnite_id,1,$next,$error,$created,$updated);";
+        var now = DateTime.UtcNow.ToString("O");
+        command.Parameters.AddWithValue("$playnite_id", playniteId);
+        command.Parameters.AddWithValue("$next", DateTime.UtcNow.AddHours(1).ToString("O"));
+        command.Parameters.AddWithValue("$error", error);
+        command.Parameters.AddWithValue("$created", now);
+        command.Parameters.AddWithValue("$updated", now);
+        await command.ExecuteNonQueryAsync();
     }
 
     public void Dispose()
