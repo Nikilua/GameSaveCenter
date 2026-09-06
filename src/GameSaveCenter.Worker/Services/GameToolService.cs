@@ -233,21 +233,22 @@ public sealed class GameToolService
                 return;
             }
             var temporary=Path.Combine(_options.DownloadDirectory,request.ReleaseId+"."+Guid.NewGuid().ToString("N")+".download");
-            await progress.ReportAsync(5,"正在下载 FLiNG 修改器").ConfigureAwait(false);
-            var lastDownloadPercent=5;
-            await _catalog.DownloadAsync(request.ReleaseId,temporary,async (received,total)=>
-            {
-                var percent=total>0?(int)Math.Min(80,5+received*75/total.Value):35;
-                if(percent<=lastDownloadPercent)return;
-                lastDownloadPercent=percent;
-                await progress.ReportAsync(percent,"正在下载 FLiNG 修改器").ConfigureAwait(false);
-            },taskToken).ConfigureAwait(false);
-            await progress.ReportAsync(82,"正在安全解压").ConfigureAwait(false);
-            var toolId=existingTool?.ToolId??Guid.NewGuid().ToString("N");var versionId=Guid.NewGuid().ToString("N");
-            var root=Path.Combine(_options.GameToolsDirectory,SafeSegment(request.PlayniteId),toolId,versionId);Directory.CreateDirectory(root);
             var installedSuccessfully=false;
+            string? root=null;
             try
             {
+                await progress.ReportAsync(5,"正在下载 FLiNG 修改器").ConfigureAwait(false);
+                var lastDownloadPercent=5;
+                await _catalog.DownloadAsync(request.ReleaseId,temporary,async (received,total)=>
+                {
+                    var percent=total>0?(int)Math.Min(80,5+received*75/total.Value):35;
+                    if(percent<=lastDownloadPercent)return;
+                    lastDownloadPercent=percent;
+                    await progress.ReportAsync(percent,"正在下载 FLiNG 修改器").ConfigureAwait(false);
+                },taskToken).ConfigureAwait(false);
+                await progress.ReportAsync(82,"正在安全解压").ConfigureAwait(false);
+                var toolId=existingTool?.ToolId??Guid.NewGuid().ToString("N");var versionId=Guid.NewGuid().ToString("N");
+                root=Path.Combine(_options.GameToolsDirectory,SafeSegment(request.PlayniteId),toolId,versionId);Directory.CreateDirectory(root);
                 string entry;
                 if(HasSignature(temporary,0x50,0x4B))
                 {
@@ -282,7 +283,7 @@ public sealed class GameToolService
             }
             catch
             {
-                if(!installedSuccessfully&&Directory.Exists(root))Directory.Delete(root,true);
+                if(!installedSuccessfully&&!string.IsNullOrWhiteSpace(root)&&Directory.Exists(root))Directory.Delete(root,true);
                 throw;
             }
             finally

@@ -4,6 +4,14 @@
 
 > 新会话短入口：先读 [`docs/ai/CURRENT_STATE.md`](ai/CURRENT_STATE.md)。本文下方的历史交接按时间保留；除顶部最新阶段和明确标注的覆盖关系外，旧条目只用于追溯，不得覆盖当前事实入口。
 
+## 2026-09-06 修复 FLiNG 后台下载 403
+
+- FLiNG 详情页可访问但下载文件返回 403；Worker 原请求没有复用详情页 Cookie，也没有携带详情页 Referer。现已在 `FlingTrainerCatalogSource` 中维护 CookieContainer，发送浏览器风格请求头，先预热对应官方 `/trainer/` 详情页，再按同一会话下载。
+- 下载请求继续执行 FLiNG HTTPS 域名白名单和重定向最终地址校验；403 转换为 `FLING_DOWNLOAD_FORBIDDEN`，任务页可给出明确站点拒绝提示。没有放宽非 FLiNG 地址、HTTPS 或文件大小限制。
+- `GameToolService` 现在从下载开始到安全解压/工具绑定结束统一 finally 清理临时文件，下载阶段失败不再遗留 `.download` 文件。
+- 回归已验证两步请求顺序、Referer、浏览器 User-Agent 和文件落盘；Release 全量通过：构建 0 warning/0 error，Core `65/65`、Worker `295/296`（1 跳过）、Playnite `341/403`（62 跳过）、XAML `19/19`，源码/XAML/差异门禁通过。
+- 未执行真实 Worker 在线下载；如果 FLiNG 后续出现 JS/验证码挑战，需要用户在浏览器完成验证或使用浏览器下载，不能通过后台绕过站点安全措施。
+
 ## 2026-09-06 接下来优先可见 UI
 
 - 最新审阅入口：[UI_REVIEW_V3_2026-09-06.md](ai/UI_REVIEW_V3_2026-09-06.md)，基线 `0ac0e39`；含截图、代码依据、实施顺序与验收。此次只改文档，UI3 任务未实施。

@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-06
 
+## 2026-09-06 FLiNG 后台下载 403 修复
+
+- 复查确认详情页正常、下载文件链接 403 与 Worker 请求特征不完整相符：原实现没有 Cookie 会话和详情页 Referer，且只发送 `GameSaveCenter/0.5` User-Agent。
+- 下载源现在显式维护 `CookieContainer`，所有页面/文件请求使用浏览器风格 User-Agent、Accept 和 Accept-Language；下载前从 `release.CatalogId` 找到官方 `/trainer/` 页面并预热，会话 Cookie 与 Referer 一起用于文件请求。
+- 仍保留 `EnsureFlingUri` 的 HTTPS/主域及子域约束、重定向后的最终地址校验和 2 GiB 大小限制；403 映射为 `FLING_DOWNLOAD_FORBIDDEN`，便于任务页区分站点拒绝与网络错误。
+- 同时修复 `GameToolService` 下载失败时临时 `.download` 文件未进入 finally 的边界；现由下载到安全解压/绑定的完整流程统一清理。
+- `FlingTrainerCatalogSourceTests.Download_UsesTrainerPageSessionAndReferer` 覆盖请求顺序、来源头、User-Agent 和文件落盘；定向 `12/12`，Release 全量 Worker `295/296`（1 跳过）。未取得真实 Worker 在线下载或 Cloudflare/验证码挑战证据。
+
 ## 2026-09-06 Luna 实现后 UI 复查（仅审阅）
 
 - 基线 `0ac0e39`：抽查 V2 已实现代码与测试，新增 [UI3 可见优化任务包](UI_REVIEW_V3_2026-09-06.md)，不重新执行已完成的 V2 修复。

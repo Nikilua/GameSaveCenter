@@ -1,12 +1,74 @@
+using System.Net;
+using System.Net.Http;
 using System.IO;
 using System.Text;
+using GameSaveCenter.Contracts;
+using GameSaveCenter.Worker.Configuration;
+using GameSaveCenter.Worker.Persistence;
 using GameSaveCenter.Worker.Services;
+using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
 namespace GameSaveCenter.Worker.Tests;
 
 public sealed class FlingTrainerCatalogSourceTests
 {
+    [Fact]
+    public async Task Download_UsesTrainerPageSessionAndReferer()
+    {
+        var root=Path.Combine(Path.GetTempPath(),"GameSaveCenter.Tests",Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(root);
+        try
+        {
+            var options=new WorkerOptions
+            {
+                DataDirectory=Path.Combine(root,"Data"),
+                LudusaviBackupDirectory=Path.Combine(root,"Saves"),
+                MediaArchiveDirectory=Path.Combine(root,"Media")
+            };
+            var store=new SqliteStateStore(options,NullLogger<SqliteStateStore>.Instance);
+            await store.InitializeAsync(CancellationToken.None);
+            const string catalogId="catalog-1";
+            const string pageUrl="https://flingtrainer.com/trainer/test-trainer/";
+            const string downloadUrl="https://flingtrainer.com/downloads/test-trainer.zip";
+            await store.ReplaceTrainerCatalogAsync(new[]
+            {
+                new TrainerCatalogItemDto
+                {
+                    CatalogId=catalogId,Title="Test Trainer",NormalizedTitle="testtrainer",
+                    PageUrl=pageUrl,LastSyncedUtc=DateTime.UtcNow
+                }
+            },CancellationToken.None);
+            await store.ReplaceTrainerReleasesAsync(catalogId,new[]
+            {
+                new TrainerReleaseDto
+                {
+                    ReleaseId="release-1",CatalogId=catalogId,DisplayName="Test Trainer v1.0",
+                    DownloadUrl=downloadUrl
+                }
+            },CancellationToken.None);
+
+            var handler=new RecordingHandler();
+            using var http=new HttpClient(handler);
+            var source=new FlingTrainerCatalogSource(store,NullLogger<FlingTrainerCatalogSource>.Instance,http);
+            var targetPath=Path.Combine(root,"trainer.zip");
+            await source.DownloadAsync("release-1",targetPath,null,CancellationToken.None);
+
+            Assert.Equal(2,handler.Requests.Count);
+            Assert.Equal(pageUrl,handler.Requests[0].RequestUri!.AbsoluteUri);
+            Assert.Equal(downloadUrl,handler.Requests[1].RequestUri!.AbsoluteUri);
+            Assert.Equal(pageUrl,handler.Requests[1].Headers.Referrer!.AbsoluteUri);
+            Assert.Contains("Mozilla/5.0",handler.Requests[1].Headers.UserAgent.ToString(),StringComparison.Ordinal);
+            Assert.Equal(new byte[] {0x50,0x4B,0x03,0x04},await File.ReadAllBytesAsync(targetPath));
+        }
+        finally
+        {
+            SqliteConnection.ClearAllPools();
+            if(Directory.Exists(root))Directory.Delete(root,true);
+        }
+    }
+
     [Fact]
     public void TrainerDownloadProgressIsAwaitableAndThrottled()
     {
@@ -212,5 +274,23 @@ public sealed class FlingTrainerCatalogSourceTests
         while(directory != null && !File.Exists(Path.Combine(directory.FullName,"GameSaveCenter.sln")))
             directory=directory.Parent;
         return directory?.FullName ?? throw new DirectoryNotFoundException("GameSaveCenter repository root not found.");
+    }
+
+    private sealed class RecordingHandler : HttpMessageHandler
+    {
+        public List<HttpRequestMessage> Requests { get; }=new();
+
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,CancellationToken cancellationToken)
+        {
+            Requests.Add(request);
+            var content=request.RequestUri!.AbsolutePath.StartsWith("/downloads/",StringComparison.OrdinalIgnoreCase)
+                ? new ByteArrayContent(new byte[] {0x50,0x4B,0x03,0x04})
+                : new StringContent("<html>trainer</html>",Encoding.UTF8);
+            return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                RequestMessage=request,
+                Content=content
+            });
+        }
     }
 }

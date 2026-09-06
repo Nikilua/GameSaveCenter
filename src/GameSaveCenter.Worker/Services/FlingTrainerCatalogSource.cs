@@ -22,6 +22,7 @@ public sealed class FlingTrainerCatalogSource : ITrainerCatalogSource
     private const long MaxDownloadBytes=2L*1024*1024*1024;
     private const int MaxArchiveDirectories=2048;
     private const int MaxArchiveEntries=10000;
+    private const string BrowserUserAgent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36";
     private static readonly string[] ArchiveExtensions={".zip",".rar",".7z"};
     private static readonly Uri CatalogUri = new("https://flingtrainer.com/all-trainers/");
     private static readonly Uri ArchiveCatalogUri = new("https://archive.flingtrainer.com/");
@@ -40,11 +41,13 @@ public sealed class FlingTrainerCatalogSource : ITrainerCatalogSource
     private readonly ILogger<FlingTrainerCatalogSource> _logger;
 
     public FlingTrainerCatalogSource(SqliteStateStore store,ILogger<FlingTrainerCatalogSource> logger)
+        : this(store,logger,CreateHttpClient())
     {
-        _store=store;_logger=logger;
-        _http=new HttpClient(new HttpClientHandler{AutomaticDecompression=DecompressionMethods.All})
-        {Timeout=TimeSpan.FromSeconds(45)};
-        _http.DefaultRequestHeaders.UserAgent.ParseAdd("GameSaveCenter/0.5 (+https://github.com/)");
+    }
+
+    internal FlingTrainerCatalogSource(SqliteStateStore store,ILogger<FlingTrainerCatalogSource> logger,HttpClient http)
+    {
+        _store=store;_logger=logger;_http=http??throw new ArgumentNullException(nameof(http));
     }
 
     public async Task<TrainerCatalogSyncResultDto> SyncCatalogAsync(CancellationToken token)
@@ -102,9 +105,16 @@ public sealed class FlingTrainerCatalogSource : ITrainerCatalogSource
     {
         var release=await _store.GetTrainerReleaseAsync(releaseId,token).ConfigureAwait(false)
                     ?? throw new KeyNotFoundException("下载版本不存在，请重新展开版本列表。");
+        var catalog=await _store.GetTrainerCatalogItemAsync(release.CatalogId,token).ConfigureAwait(false);
         EnsureFlingUri(release.DownloadUrl);
-        using var response=await _http.GetAsync(release.DownloadUrl,HttpCompletionOption.ResponseHeadersRead,token).ConfigureAwait(false);
+        var referrer=TryGetTrainerPageUri(catalog?.PageUrl);
+        if(referrer != null)
+            await PrimeDownloadSessionAsync(referrer,token).ConfigureAwait(false);
+        using var request=CreateRequest(release.DownloadUrl,referrer);
+        using var response=await _http.SendAsync(request,HttpCompletionOption.ResponseHeadersRead,token).ConfigureAwait(false);
         EnsureFlingUri(response.RequestMessage?.RequestUri?.ToString()??string.Empty);
+        if(response.StatusCode==HttpStatusCode.Forbidden)
+            throw new WorkerOperationException("FLING_DOWNLOAD_FORBIDDEN","FLiNG 拒绝了后台下载请求。已刷新详情页会话并携带来源信息，请从最新版本列表重试。",release.DownloadUrl);
         response.EnsureSuccessStatusCode();
         if(response.Content.Headers.ContentLength is long declaredLength&&declaredLength>MaxDownloadBytes)
             throw new WorkerOperationException("FLING_DOWNLOAD_TOO_LARGE","修改器下载文件超过安全大小上限，已拒绝下载。",$"{declaredLength} bytes");
@@ -126,10 +136,63 @@ public sealed class FlingTrainerCatalogSource : ITrainerCatalogSource
     private async Task<string> GetHtmlAsync(string url,CancellationToken token)
     {
         EnsureFlingUri(url);
-        using var response=await _http.GetAsync(url,HttpCompletionOption.ResponseContentRead,token).ConfigureAwait(false);
+        using var request=CreateRequest(url,null);
+        using var response=await _http.SendAsync(request,HttpCompletionOption.ResponseContentRead,token).ConfigureAwait(false);
         EnsureFlingUri(response.RequestMessage?.RequestUri?.ToString()??string.Empty);
         response.EnsureSuccessStatusCode();
         return await response.Content.ReadAsStringAsync(token).ConfigureAwait(false);
+    }
+
+    private async Task PrimeDownloadSessionAsync(Uri referrer,CancellationToken token)
+    {
+        try
+        {
+            using var request=CreateRequest(referrer.AbsoluteUri,null);
+            using var response=await _http.SendAsync(request,HttpCompletionOption.ResponseContentRead,token).ConfigureAwait(false);
+            EnsureFlingUri(response.RequestMessage?.RequestUri?.ToString()??string.Empty);
+            if(!response.IsSuccessStatusCode)
+                _logger.LogDebug("FLiNG detail page returned {StatusCode} while priming download session for {Url}",response.StatusCode,referrer);
+        }
+        catch(OperationCanceledException){throw;}
+        catch(HttpRequestException ex)
+        {
+            // The download request still carries the page referrer. A transient detail
+            // page failure should not hide a direct file response that remains usable.
+            _logger.LogDebug(ex,"Could not prime FLiNG download session for {Url}",referrer);
+        }
+    }
+
+    private static HttpClient CreateHttpClient()
+    {
+        var handler=new HttpClientHandler
+        {
+            AutomaticDecompression=DecompressionMethods.All,
+            AllowAutoRedirect=true,
+            UseCookies=true,
+            CookieContainer=new CookieContainer()
+        };
+        return new HttpClient(handler){Timeout=TimeSpan.FromSeconds(45)};
+    }
+
+    private static HttpRequestMessage CreateRequest(string url,Uri? referrer)
+    {
+        var request=new HttpRequestMessage(HttpMethod.Get,url);
+        request.Headers.UserAgent.ParseAdd(BrowserUserAgent);
+        request.Headers.Accept.ParseAdd("*/*");
+        request.Headers.AcceptLanguage.ParseAdd("en-US,en;q=0.9");
+        if(referrer != null)
+            request.Headers.Referrer=referrer;
+        return request;
+    }
+
+    private static Uri? TryGetTrainerPageUri(string? value)
+    {
+        if(!Uri.TryCreate(value,UriKind.Absolute,out var uri)
+           ||uri.Scheme!=Uri.UriSchemeHttps
+           ||!IsFlingHost(uri.Host)
+           ||!uri.AbsolutePath.StartsWith("/trainer/",StringComparison.OrdinalIgnoreCase))
+            return null;
+        return uri;
     }
 
     private async Task<List<TrainerCatalogItemDto>> GetArchiveCatalogAsync(DateTime syncedUtc,CancellationToken token)

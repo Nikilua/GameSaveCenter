@@ -2,6 +2,14 @@
 
 > 更新时间：2026-09-06。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-06 修复 FLiNG 后台下载 403
+
+- FLiNG 详情页可访问而 `/downloads/` 文件链接对非浏览器抓取返回 403；Worker 原先只发送自定义 User-Agent，未复用详情页 Cookie，也未携带下载来源页 Referer。
+- `FlingTrainerCatalogSource` 现在使用 CookieContainer、浏览器风格请求头，并在下载前读取对应目录项、预热官方详情页会话，再以该详情页作为 Referer 发起下载；最终重定向仍必须通过 FLiNG HTTPS 域名白名单。
+- 403 现在落为稳定的 `FLING_DOWNLOAD_FORBIDDEN` 业务错误；`GameToolService` 将下载临时文件清理范围扩展到下载/解压/绑定全流程，失败不会留下 `.download` 残留。
+- 新增 Worker 回归验证详情页预热、Referer、浏览器请求头和文件落盘。Release 全量结果为构建 0 warning/0 error、Core `65/65`、Worker `295/296`（1 跳过）、Playnite `341/403`（62 跳过）、XAML `19/19`；源码校验、XAML 检查和 `git diff --check` 通过。
+- 本机沙箱无法对 FLiNG 进行真实 Worker 在线下载；若站点后续启用 JavaScript/验证码挑战，仍需人工确认或改用浏览器下载，不会绕过安全验证。
+
 ## 2026-09-06 V2 完成后 UI 复查（仅文档，UI3 尚未实施）
 
 - 当前审阅基线 `0ac0e39`；入口为 [UI_REVIEW_V3_2026-09-06.md](UI_REVIEW_V3_2026-09-06.md)。V2 主体有对应代码/测试，抽查未确认阻断 UI 工作的新 P0；不代表完整无缺陷验收。

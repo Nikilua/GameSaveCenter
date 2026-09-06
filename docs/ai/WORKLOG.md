@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-06 修复 FLiNG 后台下载 403
+
+- 定位 `FlingTrainerCatalogSource.DownloadAsync`：详情页能读、文件下载被 403，原请求没有详情页来源和 Cookie 会话。改为 `HttpClientHandler` 显式 CookieContainer，统一浏览器风格请求头，下载前预热对应官方 trainer 详情页并携带 Referer。
+- 保留 FLiNG HTTPS 域名白名单和重定向校验；收到 403 时转为 `FLING_DOWNLOAD_FORBIDDEN`，不把站点拒绝误报为普通网络失败。若站点要求 JS/验证码挑战，继续如实失败，不绕过验证。
+- 将 `GameToolService` 的临时下载文件清理包住下载、解压和绑定全过程，补上下载阶段异常的残留边界。
+- 新增请求链路集成回归：验证详情页请求先于文件请求、文件请求的 Referer/User-Agent 和文件内容；定向 Worker `12/12`。
+- 验证：Release 0 warning/0 error；Core `65/65`，Worker `295/296`（1 跳过），Playnite `341/403`（62 跳过），XAML `19/19`；`validate-source.py`、`check-xaml.ps1`、`git diff --check` 通过。沙箱未执行真实 FLiNG Worker 在线下载。
+
 ## 2026-09-06 V2 实现复查与可见 UI 优化方案
 
 - 用户要求核对 Luna 已完成修复并重视界面优化。抽查 `0ac0e39` 及 V2-01～07，沿用本会话只审阅/更新文档范围，新增 [UI3 方案](UI_REVIEW_V3_2026-09-06.md)。
