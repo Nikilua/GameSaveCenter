@@ -17,6 +17,12 @@ namespace GameSaveCenter.Playnite.Settings
         private string deviceId = Guid.NewGuid().ToString("N");
         private bool deviceIdWasLoaded;
 
+        /// <summary>Raised after Playnite commits the current edit buffer.</summary>
+        public event EventHandler? SettingsCommitted;
+
+        /// <summary>Raised after Playnite cancels the current edit buffer.</summary>
+        public event EventHandler? SettingsReverted;
+
         public GameSaveCenterSettings() { }
 
         public GameSaveCenterSettings(GameSaveCenterPlugin plugin)
@@ -154,7 +160,9 @@ namespace GameSaveCenter.Playnite.Settings
 
         public void CancelEdit()
         {
-            if (editingClone != null) CopyFrom(editingClone);
+            if (editingClone == null) return;
+            CopyFrom(editingClone);
+            SettingsReverted?.Invoke(this, EventArgs.Empty);
         }
 
         public void EndEdit()
@@ -163,6 +171,19 @@ namespace GameSaveCenter.Playnite.Settings
             plugin.SavePluginSettings(this);
             plugin.NotifyVisualSettingsChanged();
             plugin.ApplySettingsAsync();
+            SettingsCommitted?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Creates a stable comparison value for the editable settings surface. The device
+        /// identity is deliberately omitted because it is installation state rather than a
+        /// user-editable setting and portable imports preserve the destination identity.
+        /// </summary>
+        public string CreateSettingsFingerprint()
+        {
+            var snapshot = Clone();
+            snapshot.DeviceId = string.Empty;
+            return JsonConvert.SerializeObject(snapshot, Formatting.None);
         }
 
         public bool VerifySettings(out List<string> errors)

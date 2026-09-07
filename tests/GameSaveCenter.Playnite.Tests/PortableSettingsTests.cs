@@ -124,6 +124,35 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         [Fact]
+        public void SettingsFingerprintIgnoresDeviceIdentityButTracksEditableValues()
+        {
+            var settings = CreateSettings();
+            var fingerprint = settings.CreateSettingsFingerprint();
+
+            settings.DeviceId = Guid.NewGuid().ToString("N");
+            Assert.Equal(fingerprint, settings.CreateSettingsFingerprint());
+
+            settings.RcloneDestination = "another-remote:GameSaveCenter";
+            Assert.NotEqual(fingerprint, settings.CreateSettingsFingerprint());
+        }
+
+        [Fact]
+        public void CancelEditRaisesRevertedNotificationAfterRestoringValues()
+        {
+            var settings = CreateSettings();
+            var originalDestination = settings.RcloneDestination;
+            var notifications = 0;
+            settings.SettingsReverted += (_, _) => notifications++;
+
+            settings.BeginEdit();
+            settings.RcloneDestination = "temporary-remote:GameSaveCenter";
+            settings.CancelEdit();
+
+            Assert.Equal(originalDestination, settings.RcloneDestination);
+            Assert.Equal(1, notifications);
+        }
+
+        [Fact]
         public void Import_InvalidValuesDoesNotMutateCurrentSettings()
         {
             var settings = CreateSettings();

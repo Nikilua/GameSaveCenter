@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-07 Q5-01 设置页操作反馈
+
+- 设置页保存提示改为真实状态：按 `GameSaveCenterSettings` 的稳定编辑指纹和 `VerifySettings` 结果显示已保存、未保存或校验失败；状态文字始终可见并提供 Tooltip/AutomationProperties，不引入第二套保存命令。
+- 设置对象在 Playnite `EndEdit`/`CancelEdit` 后发出提交/回退通知，视图同步保存基线；导入 Portable JSON 的 DataContext 重绑保留脏状态，`DeviceId` 不参与指纹，避免把安装身份变化提示成用户修改。
+- 紧凑/矮窗口不再隐藏状态提示，仍折叠长副标题与说明以保护首屏表单空间；真实绑定、Playnite 保存/取消边界、页面滚动和验证语义未改。
+- 验证：设置定向 `153/203`（50 跳过）；全量 Core `72/72`、Worker `300/301`（1 跳过）、Playnite `360/422`（62 跳过）；Release 构建 0 错误（保留 2 个 NU1900 网络警告）、XAML `19/19`、源码校验、`render-qa OK`、`git diff --check` 通过。未运行真实 Playnite/DPI/高对比度/完整键盘人工流程。
+
 ## 2026-09-07 Q4-04 动态排序分页一致性
 
 - 复现并补回归：云端队列新增记录、归类历史新增批次后，继续请求旧 token 的下一页必须返回 reset，不能凭旧 OFFSET 结果继续追加并宣称完整；旧 SQLite 夹具也验证会创建两条修订记录。

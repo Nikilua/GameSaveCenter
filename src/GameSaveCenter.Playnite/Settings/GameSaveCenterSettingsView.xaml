@@ -59,8 +59,8 @@
                         <TextBlock x:Name="SettingsHeaderSubtitle" Text="工具路径、版本策略、外观效果与自动化安全" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,3,0,0" TextWrapping="Wrap"/>
                         <TextBlock x:Name="SettingsValidationSummary" Foreground="{DynamicResource GscErrorBrush}" TextWrapping="Wrap" Margin="0,6,0,0" Visibility="Collapsed" AutomationProperties.Name="设置验证错误"/>
                     </StackPanel>
-                    <Border x:Name="SettingsSaveHint" Grid.Row="0" Grid.Column="2" Style="{StaticResource GscRedesignContextPill}" VerticalAlignment="Center" Margin="14,0,0,0">
-                        <TextBlock Text="由 Playnite 的保存按钮提交" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
+                    <Border x:Name="SettingsSaveHint" Grid.Row="0" Grid.Column="2" Style="{StaticResource GscRedesignContextPill}" VerticalAlignment="Center" Margin="14,0,0,0" ToolTip="设置仍由 Playnite 设置窗口的保存和取消按钮提交。">
+                        <TextBlock x:Name="SettingsSaveHintText" Text="已保存 · 由 Playnite 保存按钮提交" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" AutomationProperties.Name="设置保存状态"/>
                     </Border>
                 </Grid>
                 </Border>

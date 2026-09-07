@@ -1,10 +1,18 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-07 设置页操作反馈已完成：保存状态由编辑指纹和校验结果驱动，矮窗口不再隐藏状态；Playnite 保存/取消边界保持不变。下一步进入动效一致性与真实宿主/DPI/键盘验收。
+
 > 2026-09-07 收尾更新：Q4-04 动态分页一致性已完成；云端队列和归类历史已接入持久化修订号与 stale-token reset。后续按 [Q4-00～04 与 UI 优化阶段](ai/QUALITY_REVIEW_2026-09-07.md) 进入设置页与动效/真实宿主验收，不重复实现已完成的分页入口。
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
 > 新会话短入口：先读 [`docs/ai/CURRENT_STATE.md`](ai/CURRENT_STATE.md)。本文下方的历史交接按时间保留；除顶部最新阶段和明确标注的覆盖关系外，旧条目只用于追溯，不得覆盖当前事实入口。
+
+## 2026-09-07 Q5-01 设置页操作反馈已收口
+
+- `GameSaveCenterSettingsView` 的 `SettingsSaveHintText` 始终显示状态：校验失败优先，其次是未保存修改，最后是已保存；Tooltip 明确保存/取消仍由 Playnite 设置宿主处理。
+- `GameSaveCenterSettings` 用排除 `DeviceId` 的编辑指纹识别脏状态，`SettingsCommitted`/`SettingsReverted` 在 Playnite `EndEdit`/`CancelEdit` 后更新视图基线；Portable 导入不会因 DataContext 重新绑定而伪造“已保存”。
+- RenderHarness 双主题及多尺寸通过，矮窗口状态可见；完整测试与构建通过（Core `72/72`、Worker `300/301`、Playnite `360/422`），只有无法访问 nuget.org 漏洞服务的既有 `NU1900`。不要把该离屏证据描述成真实 Playnite 渲染。
 
 ## 2026-09-07 Q4-04 动态分页一致性已收口
 

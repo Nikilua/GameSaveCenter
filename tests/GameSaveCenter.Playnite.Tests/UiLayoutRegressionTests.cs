@@ -456,7 +456,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("x:Name=\"SettingsIntroDescription\"", settings);
             Assert.Contains("SettingsIntroDescription.Visibility = compact ? Visibility.Collapsed : Visibility.Visible;", code);
             Assert.Contains("SettingsHeaderSubtitle.Visibility = narrow || shortHeight ? Visibility.Collapsed : Visibility.Visible;", code);
-            Assert.Contains("SettingsSaveHint.Visibility = narrow || shortHeight ? Visibility.Collapsed : Visibility.Visible;", code);
+            Assert.Contains("SettingsSaveHint.Visibility = Visibility.Visible;", code);
             Assert.Contains("SettingsHeader.MinHeight = compactHeaderHeight ? 56 : compact ? 68 : 76;", code);
         }
 

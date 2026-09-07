@@ -24,7 +24,10 @@ namespace GameSaveCenter.Playnite.Settings
         private bool validationPending;
         private bool systemParametersSubscribed;
         private bool scrollSelectionPending;
+        private bool settingsBaselineInitialized;
         private Size pendingResponsiveSize;
+        private GameSaveCenterSettings? observedSettings;
+        private string savedSettingsFingerprint = string.Empty;
 
         public GameSaveCenterSettingsView()
         {
@@ -33,6 +36,7 @@ namespace GameSaveCenter.Playnite.Settings
             Unloaded += OnUnloaded;
             IsVisibleChanged += OnIsVisibleChanged;
             SizeChanged += OnSizeChanged;
+            DataContextChanged += OnDataContextChanged;
             AddHandler(TextBox.TextChangedEvent, new TextChangedEventHandler(OnSettingsFieldChanged));
             AddHandler(ComboBox.SelectionChangedEvent, new SelectionChangedEventHandler(OnSettingsFieldChanged));
             AddHandler(CheckBox.ClickEvent, new RoutedEventHandler(OnSettingsFieldChanged));
@@ -55,6 +59,7 @@ namespace GameSaveCenter.Playnite.Settings
             BeginUiSafely(EnsureHostWindowSize, DispatcherPriority.ContextIdle);
             RealHostUiAuditService.TryCaptureSettings(this);
             RefreshValidationSummary();
+            RefreshSaveState();
             if (entrancePlayed)
             {
                 SettingsShell.Opacity = 1;
@@ -102,6 +107,51 @@ namespace GameSaveCenter.Playnite.Settings
                 hostWindow.Height = targetHeight;
         }
 
+        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (observedSettings != null)
+            {
+                observedSettings.SettingsCommitted -= OnSettingsCommitted;
+                observedSettings.SettingsReverted -= OnSettingsReverted;
+            }
+
+            observedSettings = e.NewValue as GameSaveCenterSettings;
+            if (observedSettings == null)
+            {
+                RefreshSaveState();
+                return;
+            }
+
+            observedSettings.SettingsCommitted += OnSettingsCommitted;
+            observedSettings.SettingsReverted += OnSettingsReverted;
+            if (!settingsTransferInProgress || !settingsBaselineInitialized)
+            {
+                savedSettingsFingerprint = observedSettings.CreateSettingsFingerprint();
+                settingsBaselineInitialized = true;
+            }
+
+            RefreshValidationSummary();
+            RefreshSaveState();
+        }
+
+        private void OnSettingsCommitted(object? sender, EventArgs e)
+        {
+            if (sender is not GameSaveCenterSettings settings) return;
+            savedSettingsFingerprint = settings.CreateSettingsFingerprint();
+            settingsBaselineInitialized = true;
+            RefreshValidationSummary();
+            RefreshSaveState();
+        }
+
+        private void OnSettingsReverted(object? sender, EventArgs e)
+        {
+            if (sender is not GameSaveCenterSettings settings) return;
+            savedSettingsFingerprint = settings.CreateSettingsFingerprint();
+            settingsBaselineInitialized = true;
+            RefreshValidationSummary();
+            RefreshSaveState();
+        }
+
         private void OnSettingsFieldChanged(object sender, RoutedEventArgs e) => QueueValidationSummaryUpdate();
 
         // VerifySettings checks executable paths and other file-backed values. Coalesce
@@ -130,10 +180,47 @@ namespace GameSaveCenter.Playnite.Settings
             if (errors.Count == 0)
             {
                 SettingsValidationSummary.Visibility = Visibility.Collapsed;
+                RefreshSaveState(true);
                 return;
             }
             SettingsValidationSummary.Text = "设置需要修正：" + string.Join("；", errors.Take(4));
             SettingsValidationSummary.Visibility = Visibility.Visible;
+            RefreshSaveState(errors.Count != 0);
+        }
+
+        private void RefreshSaveState()
+        {
+            var settings = CurrentSettings;
+            if (settings == null || SettingsSaveHintText == null) return;
+            RefreshSaveState(settings.VerifySettings(out var errors));
+        }
+
+        private void RefreshSaveState(bool settingsValid)
+        {
+            var settings = CurrentSettings;
+            if (settings == null || SettingsSaveHintText == null) return;
+            if (!settingsBaselineInitialized)
+            {
+                savedSettingsFingerprint = settings.CreateSettingsFingerprint();
+                settingsBaselineInitialized = true;
+            }
+
+            var isDirty = !string.Equals(savedSettingsFingerprint, settings.CreateSettingsFingerprint(), StringComparison.Ordinal);
+            SettingsSaveHintText.Text = !settingsValid
+                ? "存在校验错误 · 保存前请修正"
+                : isDirty
+                    ? "有未保存更改 · 使用 Playnite 保存"
+                    : "已保存 · 由 Playnite 保存按钮提交";
+            SettingsSaveHintText.Foreground = FindResource(!settingsValid
+                ? "GscErrorBrush"
+                : isDirty
+                    ? "GscWarningBrush"
+                    : "GscSecondaryTextBrush") as Brush;
+            SettingsSaveHintText.ToolTip = !settingsValid
+                ? "存在设置校验错误，Playnite 保存前请先修正。"
+                : isDirty
+                    ? "设置已修改但尚未提交；请使用 Playnite 设置窗口的保存按钮，或使用取消按钮放弃修改。"
+                    : "当前设置已保存；继续修改后请使用 Playnite 的保存或取消按钮。";
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
@@ -525,7 +612,7 @@ namespace GameSaveCenter.Playnite.Settings
             // instead of silently removing information.
             SettingsHeaderSubtitle.Visibility = narrow || shortHeight ? Visibility.Collapsed : Visibility.Visible;
             SettingsHeaderSubtitle.MaxWidth = narrow ? 300 : double.PositiveInfinity;
-            SettingsSaveHint.Visibility = narrow || shortHeight ? Visibility.Collapsed : Visibility.Visible;
+            SettingsSaveHint.Visibility = Visibility.Visible;
             SettingsSaveHint.MaxWidth = layoutWidth >= 1040 ? 320 : narrow ? 180 : 230;
             var stackHeaderHint = compact;
             SettingsHeaderHintRow.Height = stackHeaderHint ? GridLength.Auto : new GridLength(0);

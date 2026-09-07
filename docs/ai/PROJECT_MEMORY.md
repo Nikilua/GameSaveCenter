@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-07
 
+## 2026-09-07 Q5-01 设置页操作反馈实现约束
+
+- 设置页状态必须由当前设置指纹、`VerifySettings` 结果和 Playnite 编辑生命周期共同决定：验证错误优先于脏状态；无错误且指纹与提交基线不同显示未保存；相同显示已保存。不要添加绕过 Playnite 的自定义保存按钮。
+- `GameSaveCenterSettings.CreateSettingsFingerprint()` 必须排除 `DeviceId`，因为它是安装身份而非用户可编辑设置；`SettingsCommitted`/`SettingsReverted` 只在 Playnite 的 `EndEdit`/`CancelEdit` 边界更新基线。导入 Portable JSON 仍是当前编辑缓冲区的修改，DataContext 重绑不得清掉未保存状态。
+- `SettingsSaveHintText` 在所有高度保持可见，矮窗口只隐藏冗长副标题/说明，不隐藏保存语义；状态文字需有 AutomationProperties.Name 与 Tooltip，并保持双主题资源可用。真实宿主仍需检查 Playnite 保存/取消后的回写、DPI 和键盘焦点。
+- 当前验证：RenderHarness 双主题、多尺寸、resize `render-qa OK`；全量 Core `72/72`、Worker `300/301`（1 跳过）、Playnite `360/422`（62 跳过）；XAML 19/19、源码校验和差异检查通过。离屏结果不能当作真实 Playnite 宿主验收。
+
 ## 2026-09-07 Q4-04 动态分页一致性实现约束
 
 - `cloud_transfers` 与 `classification_history` 使用 SQLite 持久化修订号，不使用动态查询结果里的 `strftime('now')` 或 `MAX(updated_utc)` 充当快照标识；旧库启动时必须创建 `query_revisions`、种子行和幂等触发器。

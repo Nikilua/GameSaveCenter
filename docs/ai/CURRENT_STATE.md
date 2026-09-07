@@ -2,6 +2,13 @@
 
 > 更新时间：2026-09-07。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-07 Q5-01 设置页操作反馈已完成
+
+- 设置页头部现在始终保留一行可读状态：无错误时显示“已保存 · 由 Playnite 保存按钮提交”，修改后显示“有未保存更改 · 使用 Playnite 保存”，验证失败时显示“存在校验错误 · 保存前请修正”；状态带 Tooltip，未增加自定义保存按钮，Playnite 原有保存/取消边界不变。
+- `GameSaveCenterSettings` 提供不包含 `DeviceId` 的稳定编辑指纹，并在 `EndEdit`/`CancelEdit` 后通知设置页重置基线；导入设置仍视为待提交修改，不会被 DataContext 重绑误判为已保存。设备身份不会因内部变化触发脏状态。
+- 矮窗口不再隐藏保存状态；紧凑头部仍折叠长说明，页面滚动与分类导航、实际绑定和校验逻辑保持不变。RenderHarness 已验证浅色/深色及 1040×700、1100×720、1366×768 等尺寸，`render-qa OK`。
+- 验证：Release 全量 Core `72/72`、Worker `300/301`（1 跳过）、Playnite `360/422`（62 跳过）；构建 0 错误、NuGet 漏洞审计保留既有 `NU1900` 网络警告；XAML `19/19`、源码校验、设置定向测试 `153/203`、`git diff --check` 通过。真实 Playnite、DPI/高对比度和完整键盘仍需外部验收。
+
 ## 2026-09-07 Q4-04 动态分页一致性已完成
 
 - 云端队列与媒体归类历史新增持久化 `query_revisions` 修订表和 SQLite 触发器；覆盖队列/重试记录、游戏/媒体影响字段、归类批次和批次条目，已有数据库初始化时会自动补齐。

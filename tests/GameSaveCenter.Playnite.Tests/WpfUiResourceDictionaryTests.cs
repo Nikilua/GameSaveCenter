@@ -5193,7 +5193,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Content=\"备份与恢复\"", settings);
         Assert.Contains("Content=\"外观与可访问性\"", settings);
         Assert.Contains("Content=\"自动化与媒体\"", settings);
-        Assert.Contains("由 Playnite 的保存按钮提交", settings);
+        Assert.Contains("已保存 · 由 Playnite 保存按钮提交", settings);
+        Assert.Contains("ToolTip=\"设置仍由 Playnite 设置窗口的保存和取消按钮提交。\"", settings);
         Assert.Contains("x:Name=\"SettingsHeaderGrid\"", settings);
         Assert.Contains("x:Name=\"SettingsHeaderHintRow\" Height=\"0\"", settings);
         Assert.Contains("Text=\"{Binding WorkerExecutable, UpdateSourceTrigger=PropertyChanged}\"", settings);
