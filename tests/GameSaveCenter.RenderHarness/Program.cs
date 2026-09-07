@@ -2190,6 +2190,7 @@ public static class Program
         }
 
         RunProductionShellMediaProbe(outputRoot, report);
+        RunProductionShellMaintenanceProbe(outputRoot, report);
         RunSidebarTransitionProbe(report);
     }
 
@@ -2255,6 +2256,115 @@ public static class Program
             }
         }
     }
+
+    private static void RunProductionShellMaintenanceProbe(string outputRoot, StringBuilder report)
+    {
+        report.AppendLine();
+        report.AppendLine("Production shell PageHost geometry QA (maintenance compact inspectors)");
+        foreach (var (windowW, windowH) in new[] { (1040, 700), (1100, 720), (1366, 768) })
+        {
+            try
+            {
+                var data = new FakeDashboardData(60);
+                var shell = new AcrylicProductionShellView { DataContext = data };
+                var maintenance = new MaintenanceView { DataContext = data };
+                if (shell.PageHostForAudit is not ContentControl pageHost)
+                    throw new InvalidOperationException("Production shell PageHost is not a ContentControl.");
+                pageHost.Content = maintenance;
+
+                var host = new Grid
+                {
+                    Width = windowW,
+                    Height = windowH,
+                    Background = CreateHarnessBackground(shell),
+                    ClipToBounds = true
+                };
+                host.Children.Add(shell);
+                shell.ApplyResponsiveLayout(windowW, windowH);
+                host.Measure(new Size(windowW, windowH));
+                host.Arrange(new Rect(0, 0, windowW, windowH));
+                host.UpdateLayout();
+                shell.ApplyResponsiveLayout(windowW, windowH);
+                maintenance.ApplyResponsiveLayout(pageHost.ActualWidth, pageHost.ActualHeight);
+                host.UpdateLayout();
+
+                var tabs = FindVisualChildren<TabControl>(maintenance)
+                    .FirstOrDefault(candidate => candidate.Items.Count >= 6);
+                var findings = FindVisualChildren<DataGrid>(maintenance)
+                    .FirstOrDefault(candidate => candidate.Name == "FindingsGrid");
+                var diagnosticsInspector = FindVisualChildren<FrameworkElement>(maintenance)
+                    .FirstOrDefault(candidate => candidate.Name == "MaintenanceDiagnosticsInspector");
+                var diagnosticsButton = FindVisualChildren<Button>(maintenance)
+                    .FirstOrDefault(candidate => candidate.Name == "MaintenanceDiagnosticsCompactDetailsButton");
+                if (pageHost.ActualWidth <= 0 || pageHost.ActualHeight <= 0
+                    || tabs == null || findings == null
+                    || diagnosticsInspector == null || diagnosticsButton == null)
+                    throw new InvalidOperationException("Production PageHost did not measure maintenance probe elements.");
+
+                tabs.SelectedIndex = 0;
+                host.UpdateLayout();
+                findings.SelectedIndex = 0;
+                maintenance.ApplyResponsiveLayout(pageHost.ActualWidth, pageHost.ActualHeight);
+                host.UpdateLayout();
+                var diagnosticsClosedRows = CountVisibleRows(findings);
+                var compact = pageHost.ActualWidth < 980;
+                if (diagnosticsClosedRows < 3)
+                    s_problems.Add($"Shell Maintenance diagnostics {windowW}x{windowH} keeps only {diagnosticsClosedRows} complete rows (target >= 3).");
+                if (compact && diagnosticsInspector.Visibility != Visibility.Collapsed)
+                    s_problems.Add($"Shell Maintenance diagnostics {windowW}x{windowH} opens the inspector by default in compact mode.");
+                if (compact && diagnosticsButton.Visibility != Visibility.Visible)
+                    s_problems.Add($"Shell Maintenance diagnostics {windowW}x{windowH} does not expose the compact details action.");
+                var diagnosticsClosedVisibility = diagnosticsInspector.Visibility;
+                SavePng(host, Path.Combine(outputRoot, $"Shell-Maintenance-Diagnostics-{windowW}x{windowH}-closed.png"));
+                diagnosticsButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                host.UpdateLayout();
+                if (compact && diagnosticsInspector.Visibility != Visibility.Visible)
+                    s_problems.Add($"Shell Maintenance diagnostics {windowW}x{windowH} cannot open the compact inspector.");
+                SavePng(host, Path.Combine(outputRoot, $"Shell-Maintenance-Diagnostics-{windowW}x{windowH}.png"));
+
+                tabs.SelectedIndex = 5;
+                host.UpdateLayout();
+                var process = FindVisualChildren<DataGrid>(maintenance)
+                    .FirstOrDefault(candidate => candidate.Name == "MaintenanceProcessGrid");
+                var processInspector = FindVisualChildren<FrameworkElement>(maintenance)
+                    .FirstOrDefault(candidate => candidate.Name == "MaintenanceProcessInspector");
+                var processButton = FindVisualChildren<Button>(maintenance)
+                    .FirstOrDefault(candidate => candidate.Name == "MaintenanceProcessCompactDetailsButton");
+                if (process == null || processInspector == null || processButton == null)
+                    throw new InvalidOperationException("Production PageHost did not materialize maintenance process tab elements.");
+                process.SelectedIndex = 0;
+                maintenance.ApplyResponsiveLayout(pageHost.ActualWidth, pageHost.ActualHeight);
+                host.UpdateLayout();
+                var processClosedRows = CountVisibleRows(process);
+                if (processClosedRows < 3)
+                    s_problems.Add($"Shell Maintenance process {windowW}x{windowH} keeps only {processClosedRows} complete rows (target >= 3).");
+                if (compact && processInspector.Visibility != Visibility.Collapsed)
+                    s_problems.Add($"Shell Maintenance process {windowW}x{windowH} opens the inspector by default in compact mode.");
+                if (compact && processButton.Visibility != Visibility.Visible)
+                    s_problems.Add($"Shell Maintenance process {windowW}x{windowH} does not expose the compact details action.");
+                var processClosedVisibility = processInspector.Visibility;
+                SavePng(host, Path.Combine(outputRoot, $"Shell-Maintenance-Process-{windowW}x{windowH}-closed.png"));
+                processButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                host.UpdateLayout();
+                if (compact && processInspector.Visibility != Visibility.Visible)
+                    s_problems.Add($"Shell Maintenance process {windowW}x{windowH} cannot open the compact inspector.");
+                SavePng(host, Path.Combine(outputRoot, $"Shell-Maintenance-Process-{windowW}x{windowH}.png"));
+                report.AppendLine(
+                    $"  Shell Maintenance {windowW}x{windowH}: PageHost={pageHost.ActualWidth:0}x{pageHost.ActualHeight:0}, "
+                    + $"compact={compact}, diagnosticsRows={diagnosticsClosedRows}, processRows={processClosedRows}, "
+                    + $"closed={diagnosticsClosedVisibility}/{processClosedVisibility}, "
+                    + $"opened={diagnosticsInspector.Visibility}/{processInspector.Visibility}");
+            }
+            catch (Exception ex)
+            {
+                s_problems.Add($"Shell Maintenance {windowW}x{windowH} probe failed: {ex.Message}");
+            }
+        }
+    }
+
+    private static int CountVisibleRows(DataGrid grid)
+        => FindVisualChildren<DataGridRow>(grid)
+            .Count(row => row.Visibility == Visibility.Visible && row.ActualHeight >= 22);
 
     private static void RunSidebarTransitionProbe(StringBuilder report)
     {

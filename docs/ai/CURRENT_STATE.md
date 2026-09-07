@@ -2,6 +2,13 @@
 
 > 更新时间：2026-09-07。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-07 Q4-03 紧凑维护页详情布局已完成
+
+- `MaintenanceView` 的诊断/进程映射页在 PageHost 宽度小于 980 DIP 时默认折叠选中详情，保留主列表的有限星号空间；新增明确的“查看详情 › / 收起详情 ›”操作，打开后详情仍由可滚动 Inspector 承载。选择变化会关闭旧详情，Esc 可收起，Tab/Shift+Tab 继续使用 WPF 默认键盘导航；宽屏维持并排 Inspector。
+- 修正进程映射紧凑布局的第三行高度未应用问题，并把进程详情改为单一滚动容器；诊断与进程列表都按视觉树中实际可见行做审计，不再只看 `DataGrid.ActualHeight`。
+- RenderHarness 新增真实 `AcrylicProductionShellView.PageHost` 维护页探针，覆盖 1040×700、1100×720、1366×768。紧凑 PageHost 715×577/775×597 时，诊断与进程列表默认分别可见 10/7、10/8 行；宽屏 PageHost 1041×645 保持并排详情。最终 `render-qa OK`，截图在本地 `.tmp/q4-03-render-final` 生成后已按规则清理。
+- 验证：Release 构建 0 warning/0 error；新增维护紧凑详情 STA 回归与审计入口回归通过，XAML 19/19、源码校验通过，WPF 静态检查 0 errors/20 warnings/172 info；尚未运行真实 Playnite 宿主、真实 DPI/高对比度和完整键盘人工流程。
+
 ## 2026-09-07 Q4-01/Q4-02 媒体重试与目标标签导航已完成
 
 - 媒体云端重试现在使用独立的 `media.cloud.upload.retry` IPC，Worker 接到 `MediaSyncService.RetryCloudUploadForUserAsync`；只重传已有媒体归档，不重新扫描来源、不复用备份专用 `cloud.upload.retry`。返回 `Submitted`、`PausedByPolicy`、`CannotSubmit` 及可选任务详情。

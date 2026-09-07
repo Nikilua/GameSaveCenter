@@ -2,6 +2,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Media;
 using GameSaveCenter.Playnite.ViewModels;
 
@@ -14,6 +15,8 @@ namespace GameSaveCenter.Playnite.Views
         private bool isApplyingLayout;
         private bool deviceInspectorOpen;
         private bool cloudTransferInspectorOpen;
+        private bool diagnosticsInspectorOpen;
+        private bool processInspectorOpen;
 
         public MaintenanceView()
         {
@@ -77,6 +80,56 @@ namespace GameSaveCenter.Playnite.Views
                 ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
         }
 
+        private void OnMaintenanceDiagnosticsSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            diagnosticsInspectorOpen = false;
+            if (IsLoaded && responsiveWidth > 0 && responsiveHeight > 0)
+                ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
+        }
+
+        private void OnMaintenanceDiagnosticsCompactDetailsClick(object sender, RoutedEventArgs e)
+        {
+            if (FindingsGrid.SelectedItem == null) return;
+            diagnosticsInspectorOpen = !diagnosticsInspectorOpen;
+            ApplyResponsiveLayout(
+                responsiveWidth > 0 ? responsiveWidth : ActualWidth,
+                responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+        }
+
+        private void OnMaintenanceProcessSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            processInspectorOpen = false;
+            if (IsLoaded && responsiveWidth > 0 && responsiveHeight > 0)
+                ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
+        }
+
+        private void OnMaintenanceProcessCompactDetailsClick(object sender, RoutedEventArgs e)
+        {
+            if (MaintenanceProcessGrid.SelectedItem == null) return;
+            processInspectorOpen = !processInspectorOpen;
+            ApplyResponsiveLayout(
+                responsiveWidth > 0 ? responsiveWidth : ActualWidth,
+                responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+        }
+
+        private void OnCompactInspectorPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Escape)
+                return;
+
+            if (ReferenceEquals(sender, MaintenanceDiagnosticsInspector))
+                diagnosticsInspectorOpen = false;
+            else if (ReferenceEquals(sender, MaintenanceProcessInspectorScrollViewer))
+                processInspectorOpen = false;
+            else
+                return;
+
+            e.Handled = true;
+            ApplyResponsiveLayout(
+                responsiveWidth > 0 ? responsiveWidth : ActualWidth,
+                responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+        }
+
         private void OnMaintenanceDeviceCompactDetailsClick(object sender, RoutedEventArgs e)
         {
             if (MaintenanceDeviceGrid.SelectedItem == null) return;
@@ -131,6 +184,7 @@ namespace GameSaveCenter.Playnite.Views
             isApplyingLayout = true;
             try
             {
+            var previousWidth = responsiveWidth;
             responsiveWidth = width;
             responsiveHeight = height;
             // At the demo minimum the measured workspace is about 700 DIP. Two health
@@ -173,6 +227,14 @@ namespace GameSaveCenter.Playnite.Views
                 MaintenanceProcessGrid.MinHeight = 280;
             }
             var compact = width < 980;
+            if (compact && previousWidth >= 980)
+            {
+                // A desktop inspector is not implicitly reopened when the shell is
+                // resized back into compact mode; the primary list remains the safe
+                // default and the user can opt into the detail drawer again.
+                diagnosticsInspectorOpen = false;
+                processInspectorOpen = false;
+            }
             // The retention page follows the Demo's wide reading canvas. Keep a
             // cap so the cards do not become uncomfortably wide on ultrawide
             // hosts, while still giving the three-card row enough room to read.
@@ -262,6 +324,25 @@ namespace GameSaveCenter.Playnite.Views
             // findings/inspector composition at normal desktop widths and stack only
             // below the documented compact breakpoint.
             var stackDiagnostics = width < 980;
+            var hasDiagnosticsSelection = FindingsGrid.SelectedItem != null;
+            if (stackDiagnostics)
+            {
+                MaintenanceDiagnosticsInspector.Visibility = hasDiagnosticsSelection && diagnosticsInspectorOpen
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
+                MaintenanceDiagnosticsCompactDetailsButton.Visibility = hasDiagnosticsSelection
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
+                MaintenanceDiagnosticsCompactDetailsButton.Content = diagnosticsInspectorOpen
+                    ? "收起详情 ›"
+                    : "查看详情 ›";
+            }
+            else
+            {
+                if (hasDiagnosticsSelection || MaintenanceDiagnosticsInspector.Visibility != Visibility.Collapsed)
+                    MaintenanceDiagnosticsInspector.Visibility = Visibility.Visible;
+                MaintenanceDiagnosticsCompactDetailsButton.Visibility = Visibility.Collapsed;
+            }
             var showDiagnosticsInspector = MaintenanceDiagnosticsInspector.Visibility == Visibility.Visible;
             var diagnosticsSideBySide = showDiagnosticsInspector && !stackDiagnostics;
             ApplyFindingsColumnLayout(width);
@@ -279,6 +360,25 @@ namespace GameSaveCenter.Playnite.Views
             // vertical budget so the findings table keeps the remaining rows.
             MaintenanceDiagnosticsInspector.MaxHeight = showDiagnosticsInspector && stackDiagnostics ? Math.Max(150, height * 0.34) : double.PositiveInfinity;
             var stackProcess = width < 980;
+            var hasProcessSelection = MaintenanceProcessGrid.SelectedItem != null;
+            if (stackProcess)
+            {
+                MaintenanceProcessInspector.Visibility = hasProcessSelection && processInspectorOpen
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
+                MaintenanceProcessCompactDetailsButton.Visibility = hasProcessSelection
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
+                MaintenanceProcessCompactDetailsButton.Content = processInspectorOpen
+                    ? "收起详情 ›"
+                    : "查看详情 ›";
+            }
+            else
+            {
+                if (hasProcessSelection || MaintenanceProcessInspector.Visibility != Visibility.Collapsed)
+                    MaintenanceProcessInspector.Visibility = Visibility.Visible;
+                MaintenanceProcessCompactDetailsButton.Visibility = Visibility.Collapsed;
+            }
             var showProcessInspector = MaintenanceProcessInspector.Visibility == Visibility.Visible;
             var processSideBySide = showProcessInspector && !stackProcess;
             MaintenanceProcessLayout.ColumnDefinitions[1].Width = processSideBySide ? new GridLength(14) : new GridLength(0);
@@ -288,6 +388,19 @@ namespace GameSaveCenter.Playnite.Views
             Grid.SetColumnSpan(MaintenanceProcessInspector, stackProcess ? 3 : 1);
             Grid.SetRow(MaintenanceProcessInspector, stackProcess ? 2 : 1);
             MaintenanceProcessInspector.Margin = showProcessInspector && stackProcess ? new Thickness(0, 10, 0, 0) : new Thickness(0);
+            var processAvailableHeight = MaintenanceProcessLayout.ActualHeight > 0
+                ? MaintenanceProcessLayout.ActualHeight - MaintenanceProcessLayout.RowDefinitions[0].ActualHeight
+                : Math.Max(320, height - 180);
+            var processInspectorHeight = Math.Max(150, Math.Min(360, processAvailableHeight - 150));
+            MaintenanceProcessInspector.MaxHeight = showProcessInspector && stackProcess
+                ? processInspectorHeight
+                : double.PositiveInfinity;
+            MaintenanceProcessInspectorScrollViewer.MaxHeight = showProcessInspector && stackProcess
+                ? processInspectorHeight
+                : double.PositiveInfinity;
+            MaintenanceProcessGrid.MinHeight = showProcessInspector && stackProcess
+                ? 150
+                : width < 800 ? 280 : Math.Max(tableMinHeight, 252d);
 
             // Match the Demo process-mapping editor on wide workspaces: the EXE field
             // receives the flexible space, the game target stays readable at 240 DIP,

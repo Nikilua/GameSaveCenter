@@ -1665,6 +1665,67 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("SelectedItem=\"{Binding ProcessMappingTargetGame}\"", maintenanceText);
     }
 
+    [Fact]
+    public void MaintenanceCompactInspectorsDefaultClosedAndToggleOpen()
+    {
+        Exception? exception = null;
+        var diagnosticsClosed = false;
+        var processClosed = false;
+        var diagnosticsOpened = false;
+        var processOpened = false;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var view = new MaintenanceView();
+                var viewType = typeof(MaintenanceView);
+                var findings = (DataGrid)viewType.GetField("FindingsGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var process = (DataGrid)viewType.GetField("MaintenanceProcessGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var diagnosticsInspector = (ScrollViewer)viewType.GetField("MaintenanceDiagnosticsInspector", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var processInspector = (Border)viewType.GetField("MaintenanceProcessInspector", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var diagnosticsButton = (GameSaveCenter.Playnite.Controls.Button)viewType.GetField("MaintenanceDiagnosticsCompactDetailsButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var processButton = (GameSaveCenter.Playnite.Controls.Button)viewType.GetField("MaintenanceProcessCompactDetailsButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var selected = new object();
+                findings.ItemsSource = new[] { selected };
+                findings.SelectedItem = selected;
+                process.ItemsSource = new[] { selected };
+                process.SelectedItem = selected;
+
+                view.ApplyResponsiveLayout(900, 640);
+                diagnosticsClosed = diagnosticsInspector.Visibility == Visibility.Collapsed
+                    && diagnosticsButton.Visibility == Visibility.Visible;
+                processClosed = processInspector.Visibility == Visibility.Collapsed
+                    && processButton.Visibility == Visibility.Visible;
+
+                viewType.GetMethod("OnMaintenanceDiagnosticsCompactDetailsClick", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .Invoke(view, new object[] { diagnosticsButton, new RoutedEventArgs() });
+                viewType.GetMethod("OnMaintenanceProcessCompactDetailsClick", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .Invoke(view, new object[] { processButton, new RoutedEventArgs() });
+                diagnosticsOpened = diagnosticsInspector.Visibility == Visibility.Visible
+                    && ((string)diagnosticsButton.Content).Contains("收起")
+                    && ReferenceEquals(findings.SelectedItem, selected);
+                processOpened = processInspector.Visibility == Visibility.Visible
+                    && ((string)processButton.Content).Contains("收起")
+                    && ReferenceEquals(process.SelectedItem, selected);
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.True(diagnosticsClosed);
+        Assert.True(processClosed);
+        Assert.True(diagnosticsOpened);
+        Assert.True(processOpened);
+    }
+
     [LegacyProductionUiBaselineFact]
     public void MaintenanceDeviceStateUsesAStarTableRowAndInternalScrolling()
     {

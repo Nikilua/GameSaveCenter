@@ -6,6 +6,12 @@
 
 > 新会话短入口：先读 [`docs/ai/CURRENT_STATE.md`](ai/CURRENT_STATE.md)。本文下方的历史交接按时间保留；除顶部最新阶段和明确标注的覆盖关系外，旧条目只用于追溯，不得覆盖当前事实入口。
 
+## 2026-09-07 Q4-03 紧凑维护页已收口
+
+- 维护页诊断/进程映射在紧凑 PageHost 默认只显示主列表；详情由“查看详情 ›”按钮显式展开，详情拥有有限高度和单一滚动容器。选中项变化会关闭详情，Esc 可收起，宽屏继续并排显示。
+- `RenderHarness` 的 `RunProductionShellMaintenanceProbe` 使用真实 Production Shell 的 PageHost 几何，检查 1040×700、1100×720、1366×768 的可见完整行数、关闭/打开状态和截图。离屏证据已通过，不能替代真实 Playnite 宿主验收。
+- 当前阶段源码/测试/文档待单独提交；提交前需保留工作树可复现并清理 `.tmp/q4-03-render-final` 等临时渲染目录。下一项按质量报告进入 Q4-04 动态排序分页边界，不要恢复旧的自动展开详情。
+
 ## 2026-09-07 Q4-01/Q4-02 媒体重试与目标标签导航
 
 - 媒体云端重试已独立为 `media.cloud.upload.retry`，请求 `MediaCloudRetryRequestDto`，Worker 返回 `MediaCloudRetryResultDto`；不要恢复此前对媒体调用 `SyncMedia` 的实现，也不要把媒体请求接到备份专用 `cloud.upload.retry`。

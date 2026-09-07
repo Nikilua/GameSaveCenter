@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-07
 
+## 2026-09-07 Q4-03 紧凑维护页详情布局实现约束
+
+- 诊断和进程映射的紧凑断点为 PageHost 宽度 `< 980` DIP。选中行不能自动让 Inspector 进入 Auto 行；默认必须保留列表，详情只能通过命名的紧凑按钮展开，详情打开后才占用有限的第三行空间。
+- `FindingsGrid`/`MaintenanceProcessGrid` 的选择变化必须关闭旧详情，`Esc` 关闭当前紧凑 Inspector；按钮提供 AutomationProperties.Name，Tab/Shift+Tab 交给 WPF 键盘导航。宽度恢复到 980 以上时回到并排详情，不能保留紧凑抽屉状态造成空列。
+- 进程详情的唯一滚动所有者是 `MaintenanceProcessInspectorScrollViewer`，诊断继续由 `MaintenanceDiagnosticsInspector` 承担；不要再把详情拆成多个竞争滚动条。列表行数回归必须统计可视树中实际可见且有高度的 `DataGridRow`，不能只断言 `ActualHeight`。
+- RenderHarness 的 `RunProductionShellMaintenanceProbe` 必须使用 `AcrylicProductionShellView.PageHostForAudit`，覆盖 1040×700、1100×720、1366×768，并同时验证紧凑默认关闭、按钮可见、打开后可见及至少 3 个完整行；离屏结果仍不等同真实 Playnite。
+
 ## 2026-09-07 Q4-01/Q4-02 媒体重试与目标标签导航实现约束
 
 - 媒体云端重试必须走 `MessageTypes.RetryMediaCloudUpload` 和 `MediaCloudRetryRequestDto`，Worker 只调用 `MediaSyncService.RetryCloudUploadForUserAsync`；`MessageTypes.RetryCloudUpload` 继续只服务备份，禁止用 `SyncMedia` 冒充“重试上传”。该入口不能扫描来源或归类新文件。

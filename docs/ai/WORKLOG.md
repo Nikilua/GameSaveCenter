@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-07 Q4-03 紧凑维护页详情布局
+
+- 修复 `MaintenanceView` 诊断/进程映射在窄 PageHost 中由选中详情挤压主列表的问题：紧凑默认折叠详情，新增可访问的查看/收起按钮；选择变化自动收起，Esc 可收起，宽屏恢复并排 Inspector。进程映射详情补为单一可滚动容器，并真正应用紧凑第三行高度。
+- RenderHarness 增加真实 Production Shell PageHost 维护页探针，按视觉树统计完整 `DataGridRow`，覆盖 1040×700、1100×720、1366×768，生成了详情关闭/打开同画布截图后清理 `.tmp/q4-03-render-final`。
+- 验证：Release 构建 0/0；维护紧凑详情 STA 回归、审计入口回归通过；XAML 19/19、`validate-source.py`、WPF 静态检查 0 errors/20 warnings/172 info、双主题/多尺寸/resize/Production Shell `render-qa OK`、`git diff --check` 通过。真实 Playnite/DPI/高对比度/完整键盘人工操作仍未执行。
+
 ## 2026-09-07 Q4-01/Q4-02 媒体重试语义与目标标签导航
 
 - 将维护中心媒体重试从 `SyncMedia` 改为独立 `media.cloud.upload.retry` IPC，接入已有 `MediaSyncService.RetryCloudUploadAsync` 的媒体专用安全复制流程；不重新扫描来源、不触碰备份重试路由。

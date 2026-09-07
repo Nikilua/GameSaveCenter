@@ -47,6 +47,7 @@ public sealed class UiAuditSourceTests
         Assert.Contains("PRIMARY_VIEWPORT_UNREACHABLE", layout);
         Assert.Contains("CONTROL_CLIPPED", layout);
         Assert.Contains("RunProductionShellMediaProbe", program);
+        Assert.Contains("RunProductionShellMaintenanceProbe", program);
         Assert.Contains("%USERPROFILE%", sanitizer);
     }
 
