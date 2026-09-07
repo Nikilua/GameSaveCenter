@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-07
 
+## 2026-09-07 任务页紧凑空间实现约束
+
+- `TaskCenterView` 的紧凑详情按钮不能与 `TaskGrid` 共享一个会发生溢出的有限行：详情关闭时使用队列底部按钮，详情打开后必须隐藏该按钮并在 `TaskDetailCard` 内提供“收起详情”，避免按钮覆盖第三行。
+- 紧凑详情仍保留 `TaskGrid.MinHeight=180`、36 DIP 数据行和 `TaskDetailScrollViewer.MaxHeight=160` 的可读性底线；Production Shell 探针必须按 `PageHostForAudit` 的实际 DataGrid 视口统计展开后的完整行，1040×700 至少 3 行，1100×720 至少 3 行。
+- `TaskHasActiveFilters` 必须覆盖搜索、状态、游戏、类型、历史范围和时间范围，并在每个对应 setter 及清除路径通知；无有效筛选时只隐藏清除按钮，不能隐藏“更多筛选”或断开真实 `ClearTaskFiltersCommand`。
+- 当前验证：紧凑详情定向 `4/4`；Core `72/72`、Worker `300/301`（1 跳过）、Playnite `364/426`（62 跳过）；XAML `19/19`、源码校验、WPF 静态审查 `0 errors/20 warnings/172 info`、`render-qa OK`。真实 Playnite、DPI/高对比度、完整键盘和大库连续滚动仍是外部验收边界。
+
 ## 2026-09-07 质量计划状态同步
 
 - 当前质量计划 `QUALITY_REVIEW_2026-09-07.md` 已将 Q4-01～Q4-03 的历史待办改为已完成状态：媒体云端重试独立 IPC/结构化结果、目标标签导航、维护页紧凑详情折叠与 Production Shell 离屏探针均已落地并有回归证据。

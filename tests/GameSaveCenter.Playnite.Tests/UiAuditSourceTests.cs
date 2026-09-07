@@ -48,6 +48,7 @@ public sealed class UiAuditSourceTests
         Assert.Contains("CONTROL_CLIPPED", layout);
         Assert.Contains("RunProductionShellMediaProbe", program);
         Assert.Contains("RunProductionShellMaintenanceProbe", program);
+        Assert.Contains("RunProductionShellTaskProbe", program);
         Assert.Contains("%USERPROFILE%", sanitizer);
     }
 

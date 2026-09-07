@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-07 任务页紧凑详情空间门禁
+
+- 复核 Production Shell 1040×700 截图时发现紧凑详情展开后的“收起任务详情”按钮覆盖了 DataGrid 第三行；原因是按钮所在 Auto 行与 `TaskGrid.MinHeight=180` 在有限队列高度下发生溢出，而不是下载/任务数据异常。
+- 将关闭入口移入 `TaskDetailCard`，详情打开时隐藏队列表按钮；同时新增 `TaskHasActiveFilters`，无筛选时隐藏无效的“清除”按钮并保留更多筛选入口。真实任务绑定、筛选通知、清除命令、虚拟化和分页未改变。
+- RenderHarness 新增任务 Production Shell 探针及展开状态截图/几何门禁：1040×700 PageHost `715×577` 展开后 3 行，1100×720 `775×597` 展开后 4 行，1366×768 保持并排 Inspector；`render-qa OK`。
+- 验证：Release 构建 0 错误（1 个 `NU1900` 网络审计警告）；Core `72/72`、Worker `300/301`（1 跳过）、Playnite `364/426`（62 跳过）；`validate-source.py`、XAML `19/19`、WPF 静态审查 `0 errors/20 warnings/172 info`、`git diff --check` 通过。`.tmp/task-shellqa-final` 和 `artifacts/ui-qa/render` 为可再生临时产物，交付前清理；尚未运行真实 Playnite。
+
 ## 2026-09-07 质量计划完成状态校正
 
 - 修正 `QUALITY_REVIEW_2026-09-07.md` 顶部 UI3 交付表、Q4-01～Q4-03 正文和后续阶段安排中的文档漂移：已完成的媒体重试、目标标签导航、维护紧凑详情不再被标记为待实施，剩余项明确为真实宿主/远端/用户数据等外部验收边界或可选密度优化。

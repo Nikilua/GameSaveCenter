@@ -638,6 +638,13 @@ namespace GameSaveCenter.Playnite.ViewModels
         public string TaskLoadedSummary => taskHistoryActive
             ? $"已加载 {Tasks.Count} / {taskHistoryTotalCount} 条 · {TaskHistoryScope}{(TaskHistoryRange == "全部时间" ? string.Empty : " · " + TaskHistoryRange)}"
             : $"最近加载 {Tasks.Count} 条 · 全部任务 {TaskTotalCount} 条";
+        public bool TaskHasActiveFilters
+            => !string.IsNullOrWhiteSpace(TaskSearchText)
+               || !string.Equals(TaskStatusFilter, "全部", StringComparison.Ordinal)
+               || !string.Equals(TaskTypeFilter, "全部", StringComparison.Ordinal)
+               || !string.Equals(TaskGameFilter, "全部", StringComparison.Ordinal)
+               || !string.Equals(TaskHistoryScope, "最近任务", StringComparison.Ordinal)
+               || !string.Equals(TaskHistoryRange, "全部时间", StringComparison.Ordinal);
         public string TaskActiveFiltersSummary
         {
             get
@@ -649,7 +656,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 if (!string.Equals(TaskGameFilter, "全部", StringComparison.Ordinal)) active.Add($"游戏：{TaskGameFilter}");
                 if (!string.Equals(TaskHistoryScope, "最近任务", StringComparison.Ordinal)) active.Add(TaskHistoryScope);
                 if (!string.Equals(TaskHistoryRange, "全部时间", StringComparison.Ordinal)) active.Add(TaskHistoryRange);
-                return active.Count == 0 ? "当前未设置额外条件" : "当前：" + string.Join(" · ", active);
+                return TaskHasActiveFilters ? "当前：" + string.Join(" · ", active) : "当前未设置额外条件";
             }
         }
         public string TaskHistoryScope
@@ -663,6 +670,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 taskHistoryQueryRefresh.Cancel();
                 Run(() => LoadTaskPageAsync(true));
                 OnPropertyChanged(nameof(TaskLoadedSummary));
+                OnPropertyChanged(nameof(TaskHasActiveFilters));
                 OnPropertyChanged(nameof(TaskActiveFiltersSummary));
                 RaiseCommandStates();
             }
@@ -678,6 +686,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 taskHistoryQueryRefresh.Cancel();
                 Run(() => LoadTaskPageAsync(true));
                 OnPropertyChanged(nameof(TaskLoadedSummary));
+                OnPropertyChanged(nameof(TaskHasActiveFilters));
                 OnPropertyChanged(nameof(TaskActiveFiltersSummary));
                 RaiseCommandStates();
             }
@@ -691,6 +700,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 taskSearchRefresh.Schedule(value);
                 ScheduleTaskHistoryQuery();
                 uiStateSave?.Schedule();
+                OnPropertyChanged(nameof(TaskHasActiveFilters));
                 OnPropertyChanged(nameof(TaskActiveFiltersSummary));
             }
         }
@@ -703,6 +713,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 RefreshTasksView();
                 ScheduleTaskHistoryQuery();
                 uiStateSave?.Schedule();
+                OnPropertyChanged(nameof(TaskHasActiveFilters));
                 OnPropertyChanged(nameof(TaskActiveFiltersSummary));
             }
         }
@@ -715,6 +726,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 RefreshTasksView();
                 ScheduleTaskHistoryQuery();
                 uiStateSave?.Schedule();
+                OnPropertyChanged(nameof(TaskHasActiveFilters));
                 OnPropertyChanged(nameof(TaskActiveFiltersSummary));
             }
         }
@@ -727,6 +739,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 RefreshTasksView();
                 ScheduleTaskHistoryQuery();
                 uiStateSave?.Schedule();
+                OnPropertyChanged(nameof(TaskHasActiveFilters));
                 OnPropertyChanged(nameof(TaskActiveFiltersSummary));
             }
         }

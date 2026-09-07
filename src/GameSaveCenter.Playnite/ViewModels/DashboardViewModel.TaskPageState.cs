@@ -171,6 +171,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             OnPropertyChanged(nameof(TaskTypeFilter));
             OnPropertyChanged(nameof(TaskHistoryScope));
             OnPropertyChanged(nameof(TaskHistoryRange));
+            OnPropertyChanged(nameof(TaskHasActiveFilters));
             OnPropertyChanged(nameof(TaskActiveFiltersSummary));
             TasksView.Refresh();
             NotifyTaskPageStateChanged();

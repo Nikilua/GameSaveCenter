@@ -674,6 +674,7 @@ public sealed class FakeDashboardData
     public string TaskGameFilter { get; set; } = "全部";
     public string TaskTypeFilter { get; set; } = "全部";
     public string TaskSearchText { get; set; } = string.Empty;
+    public bool TaskHasActiveFilters => false;
     public string MediaFilter { get; set; } = "全部";
     public string MediaSearchText { get; set; } = string.Empty;
     public string MediaComment { get; set; } = string.Empty;

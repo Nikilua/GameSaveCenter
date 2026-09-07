@@ -52,7 +52,12 @@ namespace GameSaveCenter.Playnite.Views
                 // let only the inspector consume the remaining finite height.
                 const double tableMinHeight = 236d;
                 var stack = width < 980;
-                TaskGrid.MinHeight = tableMinHeight;
+                var compactInspectorOpen = stack && taskInspectorOpen && TaskGrid.SelectedItem != null;
+                // The compact inspector is a secondary drawer. Once it is open, keep
+                // three 36-DIP rows plus the header visible instead of allowing the
+                // original 236-DIP minimum to overflow the finite PageHost and hide
+                // the table behind the drawer.
+                TaskGrid.MinHeight = compactInspectorOpen ? 180d : tableMinHeight;
                 TaskGrid.Height = double.NaN;
                 TaskGrid.MaxHeight = double.PositiveInfinity;
                 // The compact page must expose several task rows before the stacked
@@ -150,17 +155,24 @@ namespace GameSaveCenter.Playnite.Views
                         TaskCompactDetailsButton.Content = taskInspectorOpen
                             ? "收起任务详情 ›"
                             : "查看任务详情 ›";
-                        TaskCompactDetailsButton.Visibility = Visibility.Visible;
+                        TaskCompactDetailsButton.Visibility = taskInspectorOpen
+                            ? Visibility.Collapsed
+                            : Visibility.Visible;
+                        TaskCompactCloseDetailsButton.Visibility = taskInspectorOpen
+                            ? Visibility.Visible
+                            : Visibility.Collapsed;
                     }
                     else
                     {
                         TaskCompactDetailsButton.Visibility = Visibility.Collapsed;
+                        TaskCompactCloseDetailsButton.Visibility = Visibility.Collapsed;
                         taskInspectorOpen = false;
                     }
                 }
                 else
                 {
                     TaskCompactDetailsButton.Visibility = Visibility.Collapsed;
+                    TaskCompactCloseDetailsButton.Visibility = Visibility.Collapsed;
                     TaskDetailScrollViewer.Visibility = TaskGrid.SelectedItem != null
                         ? Visibility.Visible
                         : Visibility.Collapsed;
@@ -189,6 +201,8 @@ namespace GameSaveCenter.Playnite.Views
                 // demo-minimum and common 1366-DIP windows. Keep the finite cap so the
                 // inspector owns its own scroll, but give stacked mode a readable floor.
                 var inspectorHeight = Math.Max(160, Math.Min(420, workspaceHeight - tableMinHeight - 10));
+                if (showInspector && stack)
+                    inspectorHeight = Math.Min(inspectorHeight, 160);
                 TaskDetailScrollViewer.MaxHeight = showInspector && stack
                     ? inspectorHeight
                     : double.PositiveInfinity;

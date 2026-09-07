@@ -62,6 +62,7 @@ namespace GameSaveCenter.Playnite.Tests
             var root = FindRepositoryRoot();
             var view = System.IO.File.ReadAllText(System.IO.Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml"));
             var state = System.IO.File.ReadAllText(System.IO.Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.TaskPageState.cs"));
+            var dashboard = System.IO.File.ReadAllText(System.IO.Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
 
             Assert.Contains("Value=\"FilterEmpty\"", view);
             Assert.Contains("Value=\"Loading\"", view);
@@ -73,6 +74,8 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("TaskPageHasItems", state);
             Assert.Contains("TaskPageLoadFailed", state);
             Assert.Contains("TaskPageStatusSummary", state);
+            Assert.Contains("TaskHasActiveFilters", dashboard);
+            Assert.Contains("TaskCompactCloseDetailsButton", view);
         }
 
         [Fact]
@@ -139,6 +142,53 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.True(wideMainHasType);
             Assert.True(wideMainHasScope);
             Assert.True(wideMainHasRange);
+        }
+
+        [Fact]
+        public void CompactTaskDetailsKeepsReadableTableFloor()
+        {
+            Exception? exception = null;
+            var compactTableMinHeight = 0d;
+            var compactInspectorMaxHeight = 0d;
+            var queueDetailsVisibility = Visibility.Visible;
+            var inspectorCloseVisibility = Visibility.Collapsed;
+
+            var thread = new Thread(() =>
+            {
+                try
+                {
+                    var view = new TaskCenterView();
+                    var viewType = typeof(TaskCenterView);
+                    var grid = (DataGrid)viewType.GetField("TaskGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                    var button = (Button)viewType.GetField("TaskCompactDetailsButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                    var closeButton = (Button)viewType.GetField("TaskCompactCloseDetailsButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                    var selected = new object();
+                    grid.ItemsSource = new[] { selected };
+                    grid.SelectedItem = selected;
+
+                    view.ApplyResponsiveLayout(715, 577);
+                    viewType.GetMethod("OnTaskCompactDetailsClick", BindingFlags.Instance | BindingFlags.NonPublic)!
+                        .Invoke(view, new object[] { button, new RoutedEventArgs() });
+                    compactTableMinHeight = grid.MinHeight;
+                    compactInspectorMaxHeight = view.TaskDetailScrollViewerElement.MaxHeight;
+                    queueDetailsVisibility = button.Visibility;
+                    inspectorCloseVisibility = closeButton.Visibility;
+                }
+                catch (Exception caught)
+                {
+                    exception = caught;
+                }
+            });
+
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+            thread.Join();
+
+            Assert.Null(exception);
+            Assert.Equal(180, compactTableMinHeight);
+            Assert.Equal(160, compactInspectorMaxHeight);
+            Assert.Equal(Visibility.Collapsed, queueDetailsVisibility);
+            Assert.Equal(Visibility.Visible, inspectorCloseVisibility);
         }
 
         private static string FindRepositoryRoot()

@@ -2,6 +2,12 @@
 
 > 更新时间：2026-09-07。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-07 任务页紧凑空间门禁已补齐
+
+- `TaskCenterView` 在紧凑详情展开时不再让队列表底部的“收起任务详情”按钮覆盖 DataGrid 行：按钮移入详情卡片，队列保持有限表格视口；无有效筛选时，更多筛选标题中的“清除”按钮自动隐藏，不再占用首屏空间。搜索、状态、类型、游戏、范围和时间筛选的真实绑定与清除命令保持不变。
+- `DashboardViewModel.TaskHasActiveFilters` 与筛选属性通知保持一致；RenderHarness 的 Fake 数据同步该绑定。Production Shell 任务探针覆盖 1040×700、1100×720、1366×768，详情展开后分别保留 3、4 行完整任务记录，宽屏仍保持右侧 Inspector。
+- 新增紧凑详情 STA 回归，验证表格最小高度、Inspector 有限高度以及展开/收起按钮可达；最新验证为 Release 构建 0 错误（保留 1 个 `NU1900` 网络审计警告）、Core `72/72`、Worker `300/301`（1 跳过）、Playnite `364/426`（62 跳过）、XAML `19/19`、源码校验、WPF 静态审查 `0 errors/20 warnings/172 info`、双主题/多尺寸/resize/Production Shell `render-qa OK`。真实 Playnite、DPI/高对比度、完整键盘和 60fps 仍需人工验收。
+
 ## 2026-09-07 质量计划状态已校正
 
 - `QUALITY_REVIEW_2026-09-07.md` 的活动表和 Q4-01～Q4-03 正文已同步为已完成：媒体重试独立 IPC 与结果语义、媒体/存档目标标签导航、维护页紧凑详情显式展开及 Production Shell 离屏探针均已有实现和回归证据。

@@ -2191,6 +2191,7 @@ public static class Program
 
         RunProductionShellMediaProbe(outputRoot, report);
         RunProductionShellMaintenanceProbe(outputRoot, report);
+        RunProductionShellTaskProbe(outputRoot, report);
         RunSidebarTransitionProbe(report);
     }
 
@@ -2362,9 +2363,140 @@ public static class Program
         }
     }
 
+    private static void RunProductionShellTaskProbe(string outputRoot, StringBuilder report)
+    {
+        report.AppendLine();
+        report.AppendLine("Production shell PageHost geometry QA (task workspace)");
+        foreach (var (windowW, windowH) in new[] { (1040, 700), (1100, 720), (1366, 768) })
+        {
+            try
+            {
+                var data = new FakeDashboardData(60);
+                var shell = new AcrylicProductionShellView { DataContext = data };
+                var tasks = new TaskCenterView { DataContext = data };
+                if (shell.PageHostForAudit is not ContentControl pageHost)
+                    throw new InvalidOperationException("Production shell PageHost is not a ContentControl.");
+                pageHost.Content = tasks;
+
+                var host = new Grid
+                {
+                    Width = windowW,
+                    Height = windowH,
+                    Background = CreateHarnessBackground(shell),
+                    ClipToBounds = true
+                };
+                host.Children.Add(shell);
+                shell.ApplyResponsiveLayout(windowW, windowH);
+                host.Measure(new Size(windowW, windowH));
+                host.Arrange(new Rect(0, 0, windowW, windowH));
+                host.UpdateLayout();
+                shell.ApplyResponsiveLayout(windowW, windowH);
+                tasks.ApplyResponsiveLayout(pageHost.ActualWidth, pageHost.ActualHeight);
+                host.UpdateLayout();
+
+                var taskSurface = FindVisualChildren<FrameworkElement>(tasks)
+                    .FirstOrDefault(candidate => candidate.Name == "TaskPageScrollSurface");
+                var taskGrid = FindVisualChildren<DataGrid>(tasks)
+                    .FirstOrDefault(candidate => candidate.Name == "TaskGrid");
+                var taskGridScroll = taskGrid == null
+                    ? null
+                    : FindVisualChildren<ScrollViewer>(taskGrid).FirstOrDefault();
+                var taskQueue = FindVisualChildren<FrameworkElement>(tasks)
+                    .FirstOrDefault(candidate => candidate.Name == "TaskQueuePanel");
+                var taskInspector = FindVisualChildren<ScrollViewer>(tasks)
+                    .FirstOrDefault(candidate => candidate.Name == "TaskDetailScrollViewer");
+                var taskDetailsButton = FindVisualChildren<Button>(tasks)
+                    .FirstOrDefault(candidate => candidate.Name == "TaskCompactDetailsButton");
+                var taskCloseDetailsButton = FindVisualChildren<Button>(tasks)
+                    .FirstOrDefault(candidate => candidate.Name == "TaskCompactCloseDetailsButton");
+                var moreFilters = FindVisualChildren<Expander>(tasks)
+                    .FirstOrDefault(candidate => candidate.Name == "TaskMoreFiltersExpander");
+                if (pageHost.ActualWidth <= 0 || pageHost.ActualHeight <= 0
+                    || taskSurface == null || taskGrid == null || taskGridScroll == null || taskQueue == null
+                    || taskInspector == null || taskDetailsButton == null || taskCloseDetailsButton == null || moreFilters == null)
+                    throw new InvalidOperationException("Production PageHost did not measure task probe elements.");
+
+                taskGrid.SelectedIndex = 0;
+                tasks.ApplyResponsiveLayout(pageHost.ActualWidth, pageHost.ActualHeight);
+                host.UpdateLayout();
+
+                var compact = pageHost.ActualWidth < 980;
+                var closedRows = CountRowsFullyInside(taskGrid, taskGridScroll);
+                if (closedRows < 3)
+                    s_problems.Add($"Shell Tasks {windowW}x{windowH} keeps only {closedRows} complete rows before details (target >= 3).");
+                if (compact && taskInspector.Visibility != Visibility.Collapsed)
+                    s_problems.Add($"Shell Tasks {windowW}x{windowH} opens the inspector by default in compact mode.");
+                if (compact && taskDetailsButton.Visibility != Visibility.Visible)
+                    s_problems.Add($"Shell Tasks {windowW}x{windowH} does not expose the compact details action.");
+                if (compact && pageHost.ActualWidth < 760 && moreFilters.Visibility != Visibility.Visible)
+                    s_problems.Add($"Shell Tasks {windowW}x{windowH} does not expose the compact filter disclosure.");
+                if (!compact && taskDetailsButton.Visibility == Visibility.Visible)
+                    s_problems.Add($"Shell Tasks {windowW}x{windowH} keeps the compact details action visible on the wide layout.");
+
+                SavePng(host, Path.Combine(outputRoot, $"Shell-Tasks-{windowW}x{windowH}-closed.png"));
+
+                if (compact)
+                {
+                    taskDetailsButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                    host.UpdateLayout();
+                    var openedRows = CountRowsFullyInside(taskGrid, taskGridScroll);
+                    if (taskInspector.Visibility != Visibility.Visible || taskInspector.ActualHeight <= 0)
+                        s_problems.Add($"Shell Tasks {windowW}x{windowH} cannot open the compact inspector.");
+                    if (openedRows < 3)
+                        s_problems.Add($"Shell Tasks {windowW}x{windowH} keeps only {openedRows} complete rows after opening details.");
+                    if (taskDetailsButton.Visibility != Visibility.Collapsed
+                        || taskCloseDetailsButton.Visibility != Visibility.Visible)
+                        s_problems.Add($"Shell Tasks {windowW}x{windowH} leaves the queue details action over the table after opening.");
+
+                    var surfaceBounds = new Rect(0, 0, taskSurface.ActualWidth, taskSurface.ActualHeight);
+                    var queueBounds = taskQueue.TransformToAncestor(taskSurface).TransformBounds(new Rect(0, 0, taskQueue.ActualWidth, taskQueue.ActualHeight));
+                    var inspectorBounds = taskInspector.TransformToAncestor(taskSurface).TransformBounds(new Rect(0, 0, taskInspector.ActualWidth, taskInspector.ActualHeight));
+                    if (inspectorBounds.Top + 0.5 < queueBounds.Bottom
+                        || inspectorBounds.Bottom > surfaceBounds.Bottom + 0.5
+                        || inspectorBounds.Left < -0.5
+                        || inspectorBounds.Right > surfaceBounds.Right + 0.5)
+                    {
+                        s_problems.Add($"Shell Tasks {windowW}x{windowH} compact inspector escapes the task surface (queueBottom={queueBounds.Bottom:0.0}, inspector={inspectorBounds.Left:0.0},{inspectorBounds.Top:0.0}..{inspectorBounds.Right:0.0},{inspectorBounds.Bottom:0.0}, surface={surfaceBounds.Width:0.0}x{surfaceBounds.Height:0.0}).");
+                    }
+                    report.AppendLine($"    openedRows={openedRows}, closeAction={taskCloseDetailsButton.Visibility}");
+                    SavePng(host, Path.Combine(outputRoot, $"Shell-Tasks-{windowW}x{windowH}.png"));
+                }
+                else if (taskInspector.Visibility != Visibility.Visible || taskInspector.ActualWidth <= 0)
+                {
+                    s_problems.Add($"Shell Tasks {windowW}x{windowH} does not show the selected-task inspector on the wide layout.");
+                }
+
+                report.AppendLine(
+                    $"  Shell Tasks {windowW}x{windowH}: PageHost={pageHost.ActualWidth:0}x{pageHost.ActualHeight:0}, "
+                    + $"compact={compact}, rows={closedRows}, queue={taskQueue.ActualWidth:0}x{taskQueue.ActualHeight:0}, gridScroll={taskGridScroll.ActualWidth:0}x{taskGridScroll.ActualHeight:0}, "
+                    + $"grid={taskGrid.ActualWidth:0}x{taskGrid.ActualHeight:0}, inspector={taskInspector.Visibility}/{taskInspector.ActualWidth:0}x{taskInspector.ActualHeight:0}, "
+                    + $"filters={moreFilters.Visibility}");
+            }
+            catch (Exception ex)
+            {
+                s_problems.Add($"Shell Tasks {windowW}x{windowH} probe failed: {ex.Message}");
+            }
+        }
+    }
+
     private static int CountVisibleRows(DataGrid grid)
         => FindVisualChildren<DataGridRow>(grid)
             .Count(row => row.Visibility == Visibility.Visible && row.ActualHeight >= 22);
+
+    private static int CountRowsFullyInside(DataGrid grid, FrameworkElement boundary)
+    {
+        var bounds = new Rect(0, 0, boundary.ActualWidth, boundary.ActualHeight);
+        return FindVisualChildren<DataGridRow>(grid)
+            .Count(row =>
+            {
+                if (row.Visibility != Visibility.Visible || row.ActualHeight < 22)
+                    return false;
+                var rowBounds = row.TransformToAncestor(boundary)
+                    .TransformBounds(new Rect(0, 0, row.ActualWidth, row.ActualHeight));
+                return rowBounds.Top >= -0.5
+                    && rowBounds.Bottom <= bounds.Bottom + 0.5;
+            });
+    }
 
     private static void RunSidebarTransitionProbe(StringBuilder report)
     {
