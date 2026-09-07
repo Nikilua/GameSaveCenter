@@ -293,6 +293,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             OpenAttentionCenterCommand = new RelayCommand(_ => OpenAttentionCenter());
             OpenMaintenanceCommand = new RelayCommand(_ => OpenMaintenance());
             OpenCloudQueueCommand = new RelayCommand(_ => OpenCloudQueue());
+            OpenMediaWorkspaceCommand = new RelayCommand(_ => OpenMediaWorkspace());
             OpenAttentionFindingCommand = new RelayCommand(value => OpenAttentionFinding(value as ValidationFindingDto));
             OpenProtectionGamesCommand = new RelayCommand(_ => OpenProtectionGames());
             OpenProtectionItemCommand = new RelayCommand(value => OpenProtectionItem(value as RecentProtectionItem));
@@ -487,6 +488,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             private set
             {
                 SetValue(ref snapshot, value);
+                NotifyOverviewPriorityChanged();
                 OnWorkspaceStateInputsChanged();
             }
         }
@@ -497,6 +499,29 @@ namespace GameSaveCenter.Playnite.ViewModels
         public string OnboardingDescription => IsOnboardingPending
             ? "先确认 Worker、目录、SQLite 与备份工具可用。所有检查都是非破坏性的；你可以跳过，之后随时在维护中心重新运行。"
             : "重新运行非破坏性环境检查，确认备份链路仍然可用。";
+        private OverviewPriorityState OverviewPriority => OverviewPriorityResolver.Resolve(Snapshot, IsOnboardingPending);
+        public string OverviewPriorityKind => OverviewPriority.Kind;
+        public string OverviewPriorityTitle => OverviewPriority.Title;
+        public string OverviewPriorityDescription => OverviewPriority.Description;
+        public string OverviewPriorityActionText => OverviewPriority.ActionText;
+        public string OverviewPriorityActionToolTip => OverviewPriority.ActionToolTip;
+        public ICommand OverviewPriorityActionCommand => OverviewPriority.ActionKind switch
+        {
+            "Maintenance" => OpenMaintenanceCommand,
+            "CloudQueue" => OpenCloudQueueCommand,
+            "Media" => OpenMediaWorkspaceCommand,
+            "Attention" => OpenAttentionCenterCommand,
+            _ => RefreshCommand
+        };
+        private void NotifyOverviewPriorityChanged()
+        {
+            OnPropertyChanged(nameof(OverviewPriorityKind));
+            OnPropertyChanged(nameof(OverviewPriorityTitle));
+            OnPropertyChanged(nameof(OverviewPriorityDescription));
+            OnPropertyChanged(nameof(OverviewPriorityActionText));
+            OnPropertyChanged(nameof(OverviewPriorityActionToolTip));
+            OnPropertyChanged(nameof(OverviewPriorityActionCommand));
+        }
         public RecentProtectionSummary RecentProtection { get => recentProtection; private set => SetValue(ref recentProtection, value); }
         public WorkerSettingsSnapshotDto EffectiveSettings
         {
@@ -1102,6 +1127,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand OpenAttentionCenterCommand { get; }
         public ICommand OpenMaintenanceCommand { get; }
         public ICommand OpenCloudQueueCommand { get; }
+        public ICommand OpenMediaWorkspaceCommand { get; }
         public ICommand OpenAttentionFindingCommand { get; }
         public ICommand OpenProtectionGamesCommand { get; }
         public ICommand OpenProtectionItemCommand { get; }
@@ -1287,6 +1313,12 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             CurrentWorkspace = WorkspaceKind.Maintenance;
             MaintenanceTabIndex = 1;
+            RequestWorkspaceLoad();
+        }
+
+        private void OpenMediaWorkspace()
+        {
+            CurrentWorkspace = WorkspaceKind.Media;
             RequestWorkspaceLoad();
         }
 
@@ -2227,6 +2259,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             OnPropertyChanged(nameof(IsOnboardingPending));
             OnPropertyChanged(nameof(OnboardingTitle));
             OnPropertyChanged(nameof(OnboardingDescription));
+            NotifyOverviewPriorityChanged();
             StatusMessage = "已跳过首次环境检查；之后可在维护中心重新运行。";
             RaiseCommandStates();
         }
@@ -2243,6 +2276,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             OnPropertyChanged(nameof(IsOnboardingPending));
             OnPropertyChanged(nameof(OnboardingTitle));
             OnPropertyChanged(nameof(OnboardingDescription));
+            NotifyOverviewPriorityChanged();
             StatusMessage = "环境检查已完成。测试备份仍需由你明确点击执行。";
             RaiseCommandStates();
         }
@@ -3980,7 +4014,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 UpdateBackupMetadataCommand, CompareBackupCommand, PreviewRetentionCommand,
                 AddMediaSourceCommand, AcceptCandidateCommand, RejectCandidateCommand, ReassignMediaCommand,
                 UpdateMediaMetadataCommand,OpenSelectedMediaCommand,RevealSelectedMediaCommand,
-                LoadMoreMediaCommand, OpenCloudQueueCommand, RefreshCloudTransfersCommand, LoadMoreCloudTransfersCommand, VerifyCloudTransferCommand, RetryCloudUploadCommand,
+                LoadMoreMediaCommand, OpenCloudQueueCommand, OpenMediaWorkspaceCommand, RefreshCloudTransfersCommand, LoadMoreCloudTransfersCommand, VerifyCloudTransferCommand, RetryCloudUploadCommand,
                 AssignInboxMediaCommand, IgnoreInboxMediaCommand, AssignInboxMediaBatchCommand, IgnoreInboxMediaBatchCommand, RestoreIgnoredMediaBatchCommand,
                 PreviewMediaClassificationCommand, ApplyMediaClassificationCommand, UndoMediaClassificationCommand,
                 RefreshMediaClassificationHistoryCommand, LoadMoreMediaClassificationHistoryCommand,

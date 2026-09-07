@@ -260,37 +260,17 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition x:Name="OverviewHomeToolbarActionsRow" Height="0"/>
-                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                     <StackPanel MinWidth="0" VerticalAlignment="Center">
                         <TextBlock Style="{DynamicResource GscRedesignSectionTitle}" Text="今日工作台"/>
-                        <TextBlock Style="{DynamicResource GscRedesignSectionSubtitle}" Text="全局批量命令保留在首页，不与单游戏操作混在一起。" Margin="0,4,0,0" TextWrapping="Wrap"/>
+                        <TextBlock Style="{DynamicResource GscRedesignSectionSubtitle}" Text="这里处理全局备份和媒体同步；当前游戏操作在右侧卡片。" Margin="0,4,0,0" TextWrapping="Wrap"/>
                     </StackPanel>
                     <WrapPanel x:Name="OverviewHomeToolbarActions" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="12,0,0,0">
                         <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding RefreshCommand}" Content="刷新" MinWidth="72"/>
                         <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding BackupAllCommand}" Content="全部备份" Margin="8,0,0,0" MinWidth="92"/>
                         <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding SyncMediaCommand}" Content="同步媒体" Margin="8,0,0,0" MinWidth="92"/>
-                        <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding OpenAttentionCenterCommand}" Content="查看需关注项" Margin="8,0,0,0" MinWidth="116" AutomationProperties.Name="查看需要关注的游戏、原因和建议处理方式"/>
                     </WrapPanel>
-                    <Border Grid.Row="2" Grid.ColumnSpan="2" Padding="12" Margin="0,10,0,0">
-                        <Border.Style>
-                            <Style TargetType="Border" BasedOn="{StaticResource GscRedesignInfoBand}">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsOnboardingPending}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <Grid>
-                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                            <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="首次环境检查尚未完成" FontWeight="SemiBold"/>
-                                <TextBlock Text="首页仍可正常使用；开始检查后会打开维护中心完成环境准备。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,3,0,0" FontSize="11"/>
-                            </StackPanel>
-                            <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiPrimaryButton}" Command="{Binding OpenMaintenanceCommand}" Content="开始环境检查" Margin="12,0,0,0" VerticalAlignment="Center"/>
-                        </Grid>
-                    </Border>
                 </Grid>
             </Border>
              <Grid x:Name="OverviewHeroAndGameRow" Grid.Row="0" Grid.ColumnSpan="3" Margin="0,0,0,14">
@@ -310,18 +290,20 @@
                              makes the rounded card look like a panel inside another panel. -->
                         <StackPanel Grid.Row="0" MinWidth="0" VerticalAlignment="Center" Margin="0,0,0,14">
                             <TextBlock Style="{DynamicResource GscRedesignHeroEyebrow}" Text="TODAY"/>
-                            <TextBlock FontSize="35" FontWeight="SemiBold" Margin="0,8,0,8" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}">
+                            <TextBlock FontSize="30" FontWeight="SemiBold" Margin="0,8,0,0" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding OverviewPriorityDescription}">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="Text" Value="存在需要处理的项目"/><Setter Property="Foreground" Value="{DynamicResource GscWarningBrush}"/>
+                                        <Setter Property="Text" Value="{Binding OverviewPriorityTitle}"/><Setter Property="Foreground" Value="{DynamicResource GscWarningBrush}"/>
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Snapshot.WarningGames}" Value="0"><Setter Property="Text" Value="整体状态安全"/><Setter Property="Foreground" Value="{DynamicResource GscSuccessBrush}"/></DataTrigger>
-                                            <DataTrigger Binding="{Binding Snapshot.WorkerHealthy}" Value="False"><Setter Property="Text" Value="Worker 异常"/><Setter Property="Foreground" Value="{DynamicResource GscErrorBrush}"/></DataTrigger>
+                                            <DataTrigger Binding="{Binding OverviewPriorityKind}" Value="Worker"><Setter Property="Foreground" Value="{DynamicResource GscErrorBrush}"/></DataTrigger>
+                                            <DataTrigger Binding="{Binding OverviewPriorityKind}" Value="Healthy"><Setter Property="Foreground" Value="{DynamicResource GscSuccessBrush}"/></DataTrigger>
+                                            <DataTrigger Binding="{Binding OverviewPriorityKind}" Value="Cloud"><Setter Property="Foreground" Value="{DynamicResource GscInfoBrush}"/></DataTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </TextBlock.Style>
                             </TextBlock>
-                            <TextBlock Text="本地备份始终是主副本；下方胶囊显示 Worker、云端与媒体的实时状态。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" FontSize="12" Margin="0,5,0,0"/>
+                            <TextBlock Text="{Binding OverviewPriorityDescription}" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" FontSize="12" Margin="0,8,0,0"/>
+                            <ui:Button Style="{DynamicResource GscWpfUiPrimaryButton}" Command="{Binding OverviewPriorityActionCommand}" Content="{Binding OverviewPriorityActionText}" ToolTip="{Binding OverviewPriorityActionToolTip}" AutomationProperties.Name="{Binding OverviewPriorityActionText}" Margin="0,10,0,0" HorizontalAlignment="Left" MinWidth="116"/>
                         </StackPanel>
                         <WrapPanel Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0">
                             <Border Style="{DynamicResource GscRedesignContextPill}" Margin="0,0,8,8"><StackPanel Orientation="Horizontal"><Ellipse Width="8" Height="8" Margin="0,0,7,0" VerticalAlignment="Center"><Ellipse.Style><Style TargetType="Ellipse"><Setter Property="Fill" Value="{DynamicResource GscErrorBrush}"/><Style.Triggers><DataTrigger Binding="{Binding Snapshot.WorkerHealthy}" Value="True"><Setter Property="Fill" Value="{DynamicResource GscSuccessBrush}"/></DataTrigger></Style.Triggers></Style></Ellipse.Style></Ellipse><TextBlock FontSize="11"><TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Text" Value="Worker 异常"/><Setter Property="Foreground" Value="{DynamicResource GscErrorBrush}"/><Style.Triggers><DataTrigger Binding="{Binding Snapshot.WorkerHealthy}" Value="True"><Setter Property="Text" Value="Worker 正常"/><Setter Property="Foreground" Value="{DynamicResource GscSuccessBrush}"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock></StackPanel></Border>
@@ -355,7 +337,6 @@
                         <WrapPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="0,10,0,0">
                             <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Appearance="Primary" Command="{Binding BackupSelectedCommand}" Content="立即备份" MinWidth="88" Margin="0,0,4,4" VerticalAlignment="Center"/>
                             <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding LoadDetailsCommand}" Content="刷新详情" MinWidth="88" Margin="0,0,4,4" VerticalAlignment="Center"/>
-                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" AutomationProperties.Name="查看需要关注的游戏、原因和建议处理方式" Command="{Binding OpenAttentionCenterCommand}" Content="查看需关注项" MinWidth="88" Margin="0,0,4,4" VerticalAlignment="Center"/>
                         </WrapPanel>
                     </Grid>
                 </Border>

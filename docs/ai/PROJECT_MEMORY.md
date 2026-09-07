@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-07
 
+## 2026-09-07 UI3-05 首页优先级与下一步动作实现约束
+
+- Hero 的优先级唯一来源是 `OverviewPriorityResolver.Resolve(snapshot, isOnboardingPending)`；不要在 XAML 重新按多个计数拼接互相竞争的主标题或命令。顺序固定为 Worker、Onboarding、Cloud attention、Unassigned media、Warning games、Healthy refresh。
+- `DashboardViewModel` 暴露 `OverviewPriorityKind/Title/Description/ActionText/ActionToolTip/ActionCommand`，快照刷新和 onboarding 完成/跳过都必须通知这些派生属性。`OpenMediaWorkspaceCommand` 只切换到真实 `WorkspaceKind.Media` 并调用现有工作区加载路径。
+- 首页 Hero 只保留一个动态主操作；全局工具栏处理全部备份/媒体同步，当前游戏卡处理当前游戏备份/详情刷新，关注项保留在风险卡上下文入口。不要恢复被移除的工具栏、当前游戏卡关注按钮或首次环境检查重复横幅。
+- 离屏夹具必须把 `CloudTransferViewSummary` 回填到 `Snapshot.CloudTransfers`，否则首页 Hero 会错误地落入媒体/游戏分支。RenderHarness 只是合成壳层证据，真实 Playnite、DPI、高对比度和用户快照仍需人工复核。
+
 ## 2026-09-07 UI3-03 媒体归类批次历史与可找回撤销
 
 - `media_classification_batches` 已有的 durable 记录现在通过 `GetMediaClassificationBatchHistoryAsync` 聚合成分页摘要；查询不加载全部项目明细，按批次更新时间和批次号稳定排序，状态筛选不会改变聚合语义。

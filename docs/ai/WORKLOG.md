@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-07 UI3-05 首页优先级与下一步动作
+
+- 新增纯逻辑 `OverviewPriorityResolver`，用真实 `DashboardSnapshotDto` 和首次使用状态确定单一 Hero 下一步：Worker 故障、环境准备、云端异常、待归类媒体、游戏关注和健康刷新按优先级互斥呈现；`DashboardViewModel` 在快照/首次使用状态变化时通知全部派生绑定。
+- 首页 Hero 绑定具体计数、用户可理解的说明和动态主命令；新增媒体工作区入口。工具栏删去关注项按钮，当前游戏卡删去重复关注入口，仅保留风险卡的上下文入口；健康状态不再显示警告式大标题。
+- RenderHarness Fake 将云端明细摘要回填到 `Snapshot.CloudTransfers`，避免离屏首页与生产快照分叉；新增 5 项优先级/首页绑定回归。
+- 验证：定向 `5/5`；Release 全量 Core `65/65`、Worker `296/297`（1 跳过）、Playnite `348/410`（62 跳过）；构建 0 warning/0 error，XAML `19/19`、`validate-source.py`、WPF 静态审查、`render-qa OK`、`git diff --check` 通过。未执行真实 Playnite 宿主。
+
 ## 2026-09-07 UI3-03 媒体归类批次历史与可找回撤销
 
 - 新增 `MediaClassificationHistoryDto` 与 `media.classification.history` 只读 IPC，Worker 在 SQLite 中按 `updated_utc DESC, batch_id DESC` 分页聚合批次条目，返回应用/冲突/撤销/跳过计数和可撤销判定；状态筛选与总量独立于当前页。

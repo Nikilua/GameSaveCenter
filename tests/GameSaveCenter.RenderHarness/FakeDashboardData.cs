@@ -18,8 +18,10 @@ public sealed class FakeDashboardData
     public string OnboardingTitle => "首次使用：准备环境";
     public string OnboardingDescription => "先确认 Worker、目录、SQLite 与备份工具可用。所有检查都是非破坏性的；你可以跳过，之后随时在维护中心重新运行。";
     public bool IsOnboardingPending => false;
+    public ICommand OpenAttentionCenterCommand { get; } = new NoopCommand();
     public ICommand OpenMaintenanceCommand { get; } = new NoopCommand();
     public ICommand OpenCloudQueueCommand { get; } = new NoopCommand();
+    public ICommand OpenMediaWorkspaceCommand { get; } = new NoopCommand();
     public ICommand RefreshCommand { get; } = new NoopCommand();
     public ICommand RefreshCloudTransfersCommand { get; } = new NoopCommand();
     public ICommand LoadMoreCloudTransfersCommand { get; } = new NoopCommand();
@@ -79,6 +81,7 @@ public sealed class FakeDashboardData
             HasMore = false,
             Items = new System.Collections.Generic.List<CloudTransferStatusDto>(CloudTransferItems)
         };
+        Snapshot.CloudTransfers = CloudTransferViewSummary;
 
         EnvironmentCheck = new EnvironmentCheckReportDto
         {
@@ -514,6 +517,20 @@ public sealed class FakeDashboardData
     }
 
     public DashboardSnapshotDto Snapshot { get; }
+    private OverviewPriorityState OverviewPriority => OverviewPriorityResolver.Resolve(Snapshot, IsOnboardingPending);
+    public string OverviewPriorityKind => OverviewPriority.Kind;
+    public string OverviewPriorityTitle => OverviewPriority.Title;
+    public string OverviewPriorityDescription => OverviewPriority.Description;
+    public string OverviewPriorityActionText => OverviewPriority.ActionText;
+    public string OverviewPriorityActionToolTip => OverviewPriority.ActionToolTip;
+    public ICommand OverviewPriorityActionCommand => OverviewPriority.ActionKind switch
+    {
+        "Maintenance" => OpenMaintenanceCommand,
+        "CloudQueue" => OpenCloudQueueCommand,
+        "Media" => OpenMediaWorkspaceCommand,
+        "Attention" => OpenAttentionCenterCommand,
+        _ => RefreshCommand
+    };
     public EnvironmentCheckReportDto EnvironmentCheck { get; }
     public GameStatusDto SelectedGame { get; }
     public RecentProtectionSummary RecentProtection { get; }
