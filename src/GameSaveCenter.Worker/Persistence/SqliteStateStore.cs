@@ -790,7 +790,7 @@ ON CONFLICT(task_id) DO UPDATE SET state=excluded.state,progress=excluded.progre
         await using var connection = Open();
         await connection.OpenAsync(token).ConfigureAwait(false);
         var command = connection.CreateCommand();
-        command.CommandText = "SELECT task_id,request_id,session_id,worker_session_id,task_type,game_id,game_name,state,progress,message,created_utc,started_utc,finished_utc,error_code,error_message FROM tasks ORDER BY created_utc DESC LIMIT $limit;";
+        command.CommandText = "SELECT task_id,request_id,session_id,worker_session_id,task_type,game_id,game_name,state,progress,message,created_utc,started_utc,finished_utc,error_code,error_message FROM tasks ORDER BY created_utc DESC, task_id DESC LIMIT $limit;";
         command.Parameters.AddWithValue("$limit", Math.Clamp(limit, 1, 500));
         await using var reader = await command.ExecuteReaderAsync(token).ConfigureAwait(false);
         while (await reader.ReadAsync(token).ConfigureAwait(false))

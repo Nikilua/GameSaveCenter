@@ -163,8 +163,8 @@
                 </StackPanel>
             </Grid>
         </Border>
-        <TabControl x:Name="MediaTabControl" Grid.Row="1" SelectedIndex="{Binding MediaTabIndex, Mode=TwoWay}" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Style="{StaticResource MediaTabControl}">
-            <TabControl.Resources><Style TargetType="TabItem" BasedOn="{StaticResource MediaTabItem}"/></TabControl.Resources>
+        <TabControl x:Name="MediaTabControl" Grid.Row="1" SelectedIndex="{Binding MediaTabIndex, Mode=TwoWay}" MinWidth="0" MinHeight="0" Margin="8,0,8,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Style="{StaticResource MediaTabControl}">
+            <TabControl.Resources><Style TargetType="TabItem" BasedOn="{StaticResource MediaTabItem}"><Setter Property="Padding" Value="16,8"/><Setter Property="Margin" Value="0,0,4,0"/></Style></TabControl.Resources>
             <TabItem Header="待归类">
                 <!-- Keep the real DataGrid in a finite viewport. The page surface is a
                      deliberate overflow channel for compact windows; the DataGrid below
@@ -184,7 +184,7 @@
                     <Grid x:Name="MediaInboxLayout" Grid.Row="1" MinHeight="0" ClipToBounds="True">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscInspectorWidth}"/></Grid.ColumnDefinitions>
                         <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-                        <Border Grid.Column="0" Grid.Row="0" x:Name="MediaInboxTableFrame" Style="{StaticResource MediaTableFrame}" MinHeight="0" ClipToBounds="True">
+                        <Border Grid.Column="0" Grid.Row="0" x:Name="MediaInboxTableFrame" Style="{StaticResource MediaTableFrame}" Padding="14,12,14,0" MinHeight="0" ClipToBounds="True">
                         <Grid>
                             <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
                             <WrapPanel x:Name="MediaInboxBatchActionRow" Grid.Row="0" Margin="0,0,0,10" VerticalAlignment="Center">
@@ -368,7 +368,7 @@
                         </Border>
                     </ScrollViewer>
                     </Grid>
-                    <Grid x:Name="MediaInboxFooter" Grid.Row="2" Margin="12,10,12,0" VerticalAlignment="Center">
+                    <Grid x:Name="MediaInboxFooter" Grid.Row="2" Margin="16,12,16,0" VerticalAlignment="Center">
                         <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                         <WrapPanel Grid.Row="0" VerticalAlignment="Center">
                             <TextBlock Text="{Binding MediaInboxLoadedSummary, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,10,4" AutomationProperties.Name="媒体收件箱加载统计"/>
@@ -385,7 +385,7 @@
                                 </ui:Button.Style>
                             </ui:Button>
                         </WrapPanel>
-                        <WrapPanel x:Name="MediaInboxSecondaryActions" Grid.Row="1" VerticalAlignment="Center" Margin="0,4,0,0">
+                        <WrapPanel x:Name="MediaInboxSecondaryActions" Grid.Row="1" VerticalAlignment="Center" Margin="0,8,0,0">
                             <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding IgnoreInboxMediaBatchCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Content="忽略所选" Margin="0,0,8,4"/>
                             <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding PreviewMediaClassificationCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Content="生成归类建议" ToolTip="根据来源规则、游戏会话和进程映射生成可解释预览" Margin="0,0,8,4"/>
                             <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding ApplyMediaClassificationCommand}" Content="应用高置信建议" ToolTip="只应用预览中唯一且高置信的建议" Margin="0,0,8,4"/>

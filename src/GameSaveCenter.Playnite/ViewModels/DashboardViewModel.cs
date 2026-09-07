@@ -630,8 +630,9 @@ namespace GameSaveCenter.Playnite.ViewModels
         public IReadOnlyList<string> TaskHistoryRangeOptions { get; } = new[] { "全部时间", "今天", "昨天", "近7天", "近30天" };
         public TaskSummaryDto TaskSummary { get => taskSummary; private set => SetValue(ref taskSummary, value ?? new TaskSummaryDto()); }
         public int TaskTotalCount => TaskSummary.TotalCount;
+        public string TaskTotalCountLabel => taskHistoryActive ? "任务总数（当前筛选）" : "任务总数（全部历史）";
         public int RunningTaskCount => TaskSummary.RunningCount;
-        public int RetryableTaskCount => Tasks.Count(CanRetryTask);
+        public int RetryableTaskCount => TasksView?.Cast<TaskStatusDto>().Count(CanRetryTask) ?? Tasks.Count(CanRetryTask);
         public int CompletedTaskCount => todaySucceededTaskCount;
         public int LoadedTaskCount => Tasks.Count;
         public bool TaskHistoryHasMore { get => taskHistoryHasMore; private set => SetValue(ref taskHistoryHasMore, value); }
@@ -2145,10 +2146,12 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             if (reset)
             {
+                var wasActive = taskHistoryActive;
                 taskHistoryActive = true;
                 taskHistoryCursor = string.Empty;
                 taskHistoryTotalCount = 0;
                 TaskHistoryHasMore = false;
+                if (!wasActive) OnPropertyChanged(nameof(TaskTotalCountLabel));
             }
             if (!taskHistoryActive) return;
 
@@ -3174,24 +3177,32 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task RetryAllTasksAsync()
         {
-            var candidates = Tasks
+            var currentResult = TasksView.Cast<TaskStatusDto>().ToList();
+            var retryable = currentResult
                 .Where(CanRetryTask)
+                .ToList();
+            var candidates = retryable
                 .GroupBy(GetRetryGroupKey, StringComparer.OrdinalIgnoreCase)
                 .Select(group => group.OrderByDescending(x => x.CreatedUtc).First())
                 .OrderByDescending(x => x.CreatedUtc)
                 .ToList();
+            var duplicateCount = retryable.Count - candidates.Count;
+            var notEligibleCount = currentResult.Count - retryable.Count;
             if (candidates.Count == 0)
             {
-                StatusMessage = "当前没有可安全重试的任务。";
+                StatusMessage = currentResult.Count == 0
+                    ? "当前结果没有任务。"
+                    : $"当前结果没有可安全重试的任务，已跳过 {notEligibleCount} 项。";
                 return;
             }
 
             var preview = string.Join("\n", candidates.Take(8).Select(x =>
                 string.IsNullOrWhiteSpace(x.GameName) ? x.TaskTypeDisplay : $"{x.GameName} · {x.TaskTypeDisplay}"));
             if (candidates.Count > 8) preview += $"\n……以及另外 {candidates.Count - 8} 项";
+            var skipped = $"当前结果 {currentResult.Count} 项：实际计划 {candidates.Count} 项；去重 {duplicateCount} 项；未纳入 {notEligibleCount} 项（状态或任务类型不支持安全重试）。";
             if (!await plugin.ConfirmAsync(
                     "批量安全重试",
-                    $"将按游戏和任务类型各重试一次，共 {candidates.Count} 项。\n\n{preview}",
+                    $"{skipped}\n\n将按游戏和任务类型各重试一次。\n\n{preview}",
                     "全部重试",
                     "取消"))
             {

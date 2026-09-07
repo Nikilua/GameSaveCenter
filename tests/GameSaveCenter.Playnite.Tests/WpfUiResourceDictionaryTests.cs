@@ -649,12 +649,13 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("{Binding RetryableTaskCount, Mode=OneWay}", task);
         Assert.Contains("{Binding CompletedTaskCount, Mode=OneWay}", task);
         Assert.Contains("{Binding TaskTotalCount, Mode=OneWay}", task);
+        Assert.Contains("{Binding TaskTotalCountLabel, Mode=OneWay}", task);
         Assert.Contains("TaskHistoryScopeOptions", task);
         Assert.Contains("TaskHistoryRangeOptions", task);
         Assert.Contains("TaskLoadedSummary", task);
         Assert.Contains("public Border TaskSummaryPanelElement => TaskSummaryPanel", taskCode);
         Assert.Contains("public int RunningTaskCount => TaskSummary.RunningCount", viewModel);
-        Assert.Contains("public int RetryableTaskCount => Tasks.Count(CanRetryTask)", viewModel);
+        Assert.Contains("public int RetryableTaskCount => TasksView?.Cast<TaskStatusDto>().Count(CanRetryTask)", viewModel);
         Assert.Contains("public int CompletedTaskCount => todaySucceededTaskCount", viewModel);
         Assert.Contains("OnPropertyChanged(nameof(RetryableTaskCount))", viewModel);
     }
@@ -959,6 +960,11 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("SelectionMode=\"Extended\"", media);
         Assert.Contains("SelectionUnit=\"FullRow\"", media);
         Assert.Contains("x:Name=\"MediaInboxBatchActionRow\"", media);
+        Assert.Contains("x:Name=\"MediaInboxTableFrame\" Style=\"{StaticResource MediaTableFrame}\" Padding=\"14,12,14,0\"", media);
+        Assert.Contains("x:Name=\"MediaInboxFooter\" Grid.Row=\"2\" Margin=\"16,12,16,0\"", media);
+        Assert.Contains("x:Name=\"MediaInboxSecondaryActions\" Grid.Row=\"1\" VerticalAlignment=\"Center\" Margin=\"0,8,0,0\"", media);
+        Assert.Contains("x:Name=\"MediaTabControl\" Grid.Row=\"1\" SelectedIndex=\"{Binding MediaTabIndex, Mode=TwoWay}\" MinWidth=\"0\" MinHeight=\"0\" Margin=\"8,0,8,0\"", media);
+        Assert.Contains("<Setter Property=\"Padding\" Value=\"16,8\"/>", media);
         Assert.Contains("Command=\"{Binding AssignInboxMediaBatchCommand}\"", media);
         Assert.Contains("Command=\"{Binding IgnoreInboxMediaBatchCommand}\"", media);
         Assert.Contains("Command=\"{Binding RestoreIgnoredMediaBatchCommand}\"", media);

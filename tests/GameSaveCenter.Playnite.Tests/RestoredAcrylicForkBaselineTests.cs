@@ -92,7 +92,7 @@ public sealed class RestoredAcrylicForkBaselineTests
 
         Assert.Contains("当前游戏媒体", media);
         Assert.Contains("待归类", media);
-        Assert.Contains("任务总数", tasks);
+        Assert.Contains("TaskTotalCountLabel", tasks);
         Assert.Contains("任务队列", tasks);
     }
 

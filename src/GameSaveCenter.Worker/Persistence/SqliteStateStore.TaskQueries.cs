@@ -6,6 +6,30 @@ namespace GameSaveCenter.Worker.Persistence;
 
 public sealed partial class SqliteStateStore
 {
+    /// <summary>
+    /// Returns every non-terminal task independently of the recent-history window.
+    /// The dashboard uses this result so an old running task remains actionable even
+    /// when many newer terminal tasks have been created.
+    /// </summary>
+    public async Task<List<TaskStatusDto>> GetActiveTasksAsync(CancellationToken token)
+    {
+        var result = new List<TaskStatusDto>();
+        await using var connection = Open();
+        await connection.OpenAsync(token).ConfigureAwait(false);
+        var command = connection.CreateCommand();
+        command.CommandText = @"
+SELECT task_id,request_id,session_id,worker_session_id,task_type,game_id,game_name,state,progress,message,created_utc,started_utc,finished_utc,error_code,error_message
+FROM tasks
+WHERE state IN ($queued,$running,$waiting)
+ORDER BY created_utc DESC,task_id DESC;";
+        command.Parameters.AddWithValue("$queued", (int)TaskState.Queued);
+        command.Parameters.AddWithValue("$running", (int)TaskState.Running);
+        command.Parameters.AddWithValue("$waiting", (int)TaskState.WaitingForUser);
+        await using var reader = await command.ExecuteReaderAsync(token).ConfigureAwait(false);
+        while (await reader.ReadAsync(token).ConfigureAwait(false)) result.Add(ReadTask(reader));
+        return result;
+    }
+
     public async Task<TaskPageDto> GetTaskPageAsync(TaskQueryDto? query, CancellationToken token)
     {
         query ??= new TaskQueryDto();
@@ -53,7 +77,7 @@ SELECT COUNT(*),
        COALESCE(SUM(CASE WHEN state=$succeeded THEN 1 ELSE 0 END),0),
        COALESCE(SUM(CASE WHEN state=$failed THEN 1 ELSE 0 END),0),
        COALESCE(SUM(CASE WHEN state=$cancelled THEN 1 ELSE 0 END),0),
-       COALESCE(SUM(CASE WHEN state IN ($queued,$running) AND task_type LIKE '%Cloud%' THEN 1 ELSE 0 END),0)
+       COALESCE(SUM(CASE WHEN state IN ($queued,$running,$waiting) AND task_type LIKE '%Cloud%' THEN 1 ELSE 0 END),0)
 FROM tasks
 WHERE {filter.Sql};";
         AddParameters(command, filter.Parameters);

@@ -111,7 +111,7 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0" Margin="14,2,14,0">
                     <TextBlock Text="{Binding TaskTotalCount, Mode=OneWay}" FontSize="26" FontWeight="SemiBold"/>
-                    <TextBlock Text="任务总数（当前范围）" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0"/>
+                    <TextBlock Text="{Binding TaskTotalCountLabel, Mode=OneWay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0"/>
                 </StackPanel>
                 <Rectangle Grid.Column="1" Width="1" Fill="{DynamicResource GscTableDividerBrush}" HorizontalAlignment="Center" VerticalAlignment="Stretch" Margin="0,4"/>
                 <StackPanel Grid.Column="2" Margin="14,2,14,0">

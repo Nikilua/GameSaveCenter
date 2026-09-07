@@ -31,7 +31,17 @@ public sealed class DashboardService
         var stopwatch=Stopwatch.StartNew();
         var games=await _store.GetDashboardGameRecordsAsync(token).ConfigureAwait(false);
         var active=_sessions.ActiveSessions.Select(x=>x.PlayniteId).ToHashSet(StringComparer.OrdinalIgnoreCase);
-        var tasks=await _store.GetRecentTasksAsync(50,token).ConfigureAwait(false);
+        var recentTasks=await _store.GetRecentTasksAsync(50,token).ConfigureAwait(false);
+        var activeTasks=await _store.GetActiveTasksAsync(token).ConfigureAwait(false);
+        // Keep the recent terminal window small, but never hide an active task just
+        // because newer history entries pushed it out of that window.
+        var tasks=activeTasks
+            .Concat(recentTasks)
+            .GroupBy(x => x.TaskId, StringComparer.OrdinalIgnoreCase)
+            .Select(x => x.First())
+            .OrderByDescending(x => x.CreatedUtc)
+            .ThenByDescending(x => x.TaskId, StringComparer.Ordinal)
+            .ToList();
         var taskSummary=await _store.GetTaskSummaryAsync(new TaskQueryDto(),token).ConfigureAwait(false);
         var (localDayStartUtc, localDayEndUtc)=GetCurrentLocalDayUtc();
         var todaySucceededTaskCount=await _store.GetSucceededTaskCountAsync(localDayStartUtc,localDayEndUtc,token).ConfigureAwait(false);

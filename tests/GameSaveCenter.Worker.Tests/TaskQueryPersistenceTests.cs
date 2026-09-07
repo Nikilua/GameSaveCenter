@@ -50,6 +50,32 @@ public sealed class TaskQueryPersistenceTests : IDisposable
     }
 
     [Fact]
+    public async Task ActiveTaskQueryIsIndependentOfRecentHistoryWindow()
+    {
+        var created = DateTime.UtcNow.AddHours(-3);
+        for (var i = 0; i < 225; i++)
+            await AddTaskAsync("active-" + i.ToString("000"), TaskState.Running, created.AddSeconds(i), null);
+
+        var active = await store.GetActiveTasksAsync(CancellationToken.None);
+
+        Assert.Equal(225, active.Count);
+        Assert.Equal("active-224", active[0].TaskId);
+        Assert.Equal("active-000", active[^1].TaskId);
+        Assert.All(active, task => Assert.Equal(TaskState.Running, task.State));
+    }
+
+    [Fact]
+    public async Task SummaryCountsWaitingCloudTasksAsPending()
+    {
+        await AddTaskAsync("waiting-cloud", TaskState.WaitingForUser, DateTime.UtcNow, null);
+
+        var summary = await store.GetTaskSummaryAsync(new TaskQueryDto(), CancellationToken.None);
+
+        Assert.Equal(1, summary.WaitingForUserCount);
+        Assert.Equal(1, summary.PendingCloudCount);
+    }
+
+    [Fact]
     public async Task SummaryAndPageApplyIndependentFiltersAndDateHalfOpenRange()
     {
         var start = DateTime.UtcNow.AddHours(-2);
