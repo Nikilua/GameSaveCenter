@@ -1456,6 +1456,8 @@ namespace GameSaveCenter.Playnite.Views
             var productionOverview = ProductionShellView.GetWorkspaceView<OverviewView>(WorkspaceKind.Overview);
             if (productionOverview != null)
                 productionOverview.UiAnimationsEnabled = MotionEnabled;
+            ProductionShellView.NormalizeMotionIfDisabled();
+            NormalizeDashboardMotionIfDisabled();
 
             // Collapse the legacy coordinator layer instead of merely making it transparent so
             // reduced-transparency and high-contrast modes do not retain an effect visual tree.
@@ -1463,6 +1465,42 @@ namespace GameSaveCenter.Playnite.Views
             AmbientGlowLayer.Opacity = glassEnabled
                 ? (palette.IsDark ? 0.46 : 0.56) * Math.Max(0.2, Math.Min(1, plugin.Settings.GlassEffectStrength / 100d))
                 : 0;
+        }
+
+        private void NormalizeDashboardMotionIfDisabled()
+        {
+            if (MotionEnabled)
+                return;
+
+            NormalizeAnimatedElement(MainShell);
+            NormalizeAnimatedElement(GameBrowserPanel);
+            NormalizeAnimatedElement(DetailsTabControl);
+            NormalizeAnimatedElement(StatusPill);
+            NormalizeAnimatedElement(DialogCard);
+
+            var taskCenter = ProductionShellView.GetWorkspaceView<TaskCenterView>(WorkspaceKind.Tasks);
+            if (taskCenter != null)
+                NormalizeAnimatedElement(taskCenter.TaskDetailCardElement);
+        }
+
+        private static void NormalizeAnimatedElement(FrameworkElement element)
+        {
+            element.BeginAnimation(UIElement.OpacityProperty, null);
+            if (element.RenderTransform is TranslateTransform translate)
+            {
+                translate.BeginAnimation(TranslateTransform.XProperty, null);
+                translate.BeginAnimation(TranslateTransform.YProperty, null);
+                translate.X = 0;
+                translate.Y = 0;
+            }
+            else if (element.RenderTransform is ScaleTransform scale)
+            {
+                scale.BeginAnimation(ScaleTransform.ScaleXProperty, null);
+                scale.BeginAnimation(ScaleTransform.ScaleYProperty, null);
+                scale.ScaleX = 1;
+                scale.ScaleY = 1;
+            }
+            element.Opacity = 1;
         }
 
         private void ApplySelectedGameGlassResources()

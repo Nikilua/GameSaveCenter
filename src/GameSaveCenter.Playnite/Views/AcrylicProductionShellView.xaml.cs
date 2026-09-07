@@ -292,13 +292,7 @@ namespace GameSaveCenter.Playnite.Views
             SidebarCollapsedChanged?.Invoke(sidebarCollapsed);
             if (!IsSidebarMotionEnabled)
             {
-                sidebarTransitionGeneration++;
-                SidebarColumn.BeginAnimation(ColumnDefinition.WidthProperty, null);
-                SidebarContentLayer.BeginAnimation(UIElement.OpacityProperty, null);
-                if (SidebarContentLayer.RenderTransform is TranslateTransform currentTranslate)
-                    currentTranslate.BeginAnimation(TranslateTransform.XProperty, null);
-                sidebarTransitionRunning = false;
-                ApplySidebarLayout();
+                NormalizeMotionIfDisabled();
                 SidebarCollapseButton.Focus();
                 e.Handled = true;
                 return;
@@ -356,6 +350,30 @@ namespace GameSaveCenter.Playnite.Views
                 });
             SidebarCollapseButton.Focus();
             e.Handled = true;
+        }
+
+        /// <summary>
+        /// Cancels an in-flight sidebar transition when reduced motion becomes active.
+        /// Settings and Windows animation preferences can change while the embedded page
+        /// remains loaded, so waiting for the next click would leave a visual transition
+        /// running after the user has explicitly disabled it.
+        /// </summary>
+        internal void NormalizeMotionIfDisabled()
+        {
+            if (IsSidebarMotionEnabled)
+                return;
+
+            sidebarTransitionGeneration++;
+            SidebarColumn.BeginAnimation(ColumnDefinition.WidthProperty, null);
+            SidebarContentLayer.BeginAnimation(UIElement.OpacityProperty, null);
+            if (SidebarContentLayer.RenderTransform is TranslateTransform translate)
+            {
+                translate.BeginAnimation(TranslateTransform.XProperty, null);
+                translate.X = 0;
+            }
+            SidebarContentLayer.Opacity = 1;
+            sidebarTransitionRunning = false;
+            ApplySidebarLayout();
         }
 
         private bool IsSidebarMotionEnabled

@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-07
 
+## 2026-09-07 动效门控实现约束
+
+- `AcrylicProductionShellView.NormalizeMotionIfDisabled()` 是侧栏动效的统一终态入口：当 Dashboard 的设置或 Windows 动画偏好变为关闭时，必须取消 `ColumnDefinition.Width`、内容层 `Opacity`/`TranslateTransform.X` 的活动时钟，恢复内容不透明、当前侧栏宽度和 `sidebarTransitionRunning=false`。
+- Dashboard 的 `ApplyAdaptiveTheme()` 在传播 `MotionEnabled` 后调用生产 Shell 的终态清理，并清理自身已知的入口、游戏筛选、详情页、状态胶囊、对话框和任务详情过渡。动画关闭只跳过视觉过渡，不改变页面可见性、命令、Binding 或业务状态。
+- 不要把动画时长改成 `DynamicResource` 直接塞入 Storyboard；WPF 会尝试冻结跨线程时间线并在测试/宿主中抛出冻结异常。当前安全路线是代码级门控、即时终态清理和资源级 PopupAnimation `Fade/None`。
+- 行为测试必须在真实 STA `Window` 中验证关闭动画后的最终几何和无活动过渡；离屏渲染不能证明 60fps。当前动效门控定向 `7/7`，全量 Playnite `363/425`（62 跳过），真实 Playnite/DPI/高对比度/键盘和流畅度仍是外部验收边界。
+
 ## 2026-09-07 Q4-00 媒体分页锚点行为实现约束
 
 - `MediaCenterView` 的延迟 `RestoreAnchor` 回调必须携带 `anchorRestoreGeneration`；切换游戏、收件箱模式、ViewModel、页面生命周期或产生新的集合/选择上下文时递增代际并统一清除待恢复锚点、选择和计时器。旧回调只能静默退出，不能改动当前列表。

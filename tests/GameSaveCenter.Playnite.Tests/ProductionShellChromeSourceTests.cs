@@ -1,6 +1,9 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Windows;
+using System.Windows.Controls.Primitives;
 using Xunit;
 
 namespace GameSaveCenter.Playnite.Tests;
@@ -88,6 +91,7 @@ public sealed class ProductionShellChromeSourceTests
         Assert.Contains("typeof(AcrylicProductionShellView).Assembly.GetName().Version", shellCode);
         Assert.Contains("展开导航栏", shellCode);
         Assert.Contains("ApplyResponsiveLayout(ActualWidth, ActualHeight);", shellCode);
+        Assert.Contains("NormalizeMotionIfDisabled();", shellCode);
     }
 
     [Fact]
@@ -104,6 +108,67 @@ public sealed class ProductionShellChromeSourceTests
         Assert.Contains("internal bool SidebarTransitionRunningForAudit", shellCode);
         Assert.Contains("SidebarContentLayer.BeginAnimation(UIElement.OpacityProperty, null);", shellCode);
         Assert.Contains("sidebarTransitionRunning = false;", shellCode);
+    }
+
+    [Fact]
+    public void ReducedMotionNormalizesSidebarToItsFinalStateInAnActualWpfWindow()
+    {
+        Exception? exception = null;
+        var transitionRunning = true;
+        var sidebarWidth = 0d;
+        var sidebarCollapsed = false;
+        var motionEnabled = true;
+
+        var thread = new Thread(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var shell = new GameSaveCenter.Playnite.Views.AcrylicProductionShellView
+                {
+                    MotionEnabledProvider = () => false,
+                    SidebarCollapsedProvider = () => false
+                };
+                window = new Window
+                {
+                    Content = shell,
+                    Width = 900,
+                    Height = 640,
+                    ShowInTaskbar = false,
+                    ShowActivated = false,
+                    WindowStyle = WindowStyle.None,
+                    Opacity = 0.01
+                };
+                window.Show();
+                window.UpdateLayout();
+                shell.UpdateLayout();
+                shell.SidebarCollapseButtonForAudit.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                shell.UpdateLayout();
+
+                motionEnabled = shell.SidebarMotionEnabledForAudit;
+                transitionRunning = shell.SidebarTransitionRunningForAudit;
+                sidebarWidth = shell.SidebarWidthForAudit;
+                sidebarCollapsed = shell.SidebarCollapsedForAudit;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.False(motionEnabled);
+        Assert.False(transitionRunning);
+        Assert.True(sidebarCollapsed);
+        Assert.Equal(72d, sidebarWidth);
     }
 
     [Fact]
