@@ -2,12 +2,17 @@
 
 > 更新时间：2026-09-07。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-07 质量复核收尾补充
+
+- UI3-07 已在 `9e93909` 提交；本轮补审锚点逻辑并独立运行 MediaPageAccumulator/MediaWindowAnchorContract 定向测试 **5/5**。已更新 [Q4-00～04 收口计划](QUALITY_REVIEW_2026-09-07.md)，后续重点是实际滚动行为、操作语义和可见布局。
+- 完整构建/渲染证据仍属于 `b0aa85a`。UI3-07 的源码字符串契约测试不能代替 WPF 滚动/延迟回调验收；先补该项，随后落实 Q4-01～04，再进行设置和动效优化。
+
 ## 2026-09-07 UI3-07 缓存窗口翻页与滚动锚点已完成
 
 - `MediaCenterView` 在当前游戏媒体和媒体收件箱点击“加载更多”前捕获可见首项、滚动偏移和当前多选 ID；集合 Reset 后按 `VirtualizingWrapPanel`/DataGrid 的滚动模型恢复位置与可见选择，编辑中的媒体对象仍由 ViewModel 保持。
 - 三个缓存窗口继续使用既有 2000 项上限。窗口裁剪掉锚点时不伪造位置恢复：页面显示“列表窗口已前移，当前位置不可恢复”和“返回最新”，分别通过 `ReloadMediaWindowCommand`/`ReloadMediaInboxCommand` 重新载入较新的首批内容。
 - 多选语义明确为“仅当前保留窗口参与批量操作”；跨模式分别保存选中 ID，窗口外 ID 不会被批量命令静默覆盖。RenderHarness Fake 已补齐新增命令和加载统计绑定。
-- 验证：Release 构建 0 warning/0 error；Core `72/72`、Worker `296/297`（1 跳过）、Playnite `355/417`（62 跳过）；XAML `19/19`、源码校验、WPF 静态审查 `0 error`、双主题/多尺寸/resize `render-qa OK`、`git diff --check` 均通过。代表证据保留在 [`docs/design/reviews/2026-09-07-quality/`](../design/reviews/2026-09-07-quality/)。未运行真实 Playnite 宿主；真实大媒体库连续滚动、DPI、高对比度和用户数据仍需人工复核。
+- 验证：Release 构建 0 warning/0 error；Core `72/72`、Worker `296/297`（1 跳过）、Playnite `355/417`（62 跳过）；XAML `19/19`、源码校验、WPF 静态审查 `0 error`、双主题/多尺寸/resize `render-qa OK`、`git diff --check` 均通过。该目录的证据实际来自 b0aa85a 冻结审计，不作为 UI3-07 行为验证证据。未运行真实 Playnite 宿主；真实大媒体库连续滚动、DPI、高对比度和用户数据仍需人工复核。
 
 ## 2026-09-07 UI3 完成质量复核（文档交付）
 

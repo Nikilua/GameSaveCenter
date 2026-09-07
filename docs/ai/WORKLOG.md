@@ -2,12 +2,17 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-07 质量复核收尾补审
+
+- 收尾时 UI3-07 已提交 `9e93909`，补审新增 View/VM 锚点链路并独立运行定向测试 5/5；完整冻结审计仍为 b0aa85a。新增 Q4-00 要求真实 WPF 锚点行为与延迟回调代际测试，不将源码字符串契约测试称为行为通过。
+- 并发 UI3-07 提交已包含本轮先前写入的共享文档段落；本轮最终提交仅补充评估文档、原始证据与来源校正。清理本轮隔离源码、构建和未引用渲染输出，未改其他任务源码。
+
 ## 2026-09-07 UI3-07 缓存窗口翻页与滚动锚点
 
 - `MediaCenterView` 为当前游戏媒体 `ListBox` 和媒体收件箱 `DataGrid` 增加加载更多前的滚动锚点捕获，集合 Reset 后按实际滚动面恢复首项位置；恢复失败会显示返回最新入口，不把裁剪后的窗口误报为原位置。
 - 维护当前/待归类/已忽略三套 2000 项缓存的多选语义：按模式记录选中 ID，恢复时只重新选择当前保留项，批量命令只接收当前控件 `SelectedItems`，窗口外 ID 明确不参与操作。ViewModel 的 SelectedMedia/SelectedInboxMedia 和编辑草稿不因翻页被重置。
 - 新增 `ReloadMediaWindowCommand`、`ReloadMediaInboxCommand`，补齐离屏夹具绑定；新增第 11 页跨容量窗口、固定选中项保留、锚点/恢复入口契约回归。
-- 验证：Release 构建无警告/错误；Core `72/72`、Worker `296/297`（1 跳过）、Playnite `355/417`（62 跳过），XAML `19/19`，源码校验、WPF 静态审查 0 error、RenderHarness 双主题/多尺寸/resize `render-qa OK`。代表截图和报告保留在 `docs/design/reviews/2026-09-07-quality/`；已清理本阶段 `.tmp/ui3-07-render` 后提交；未执行真实 Playnite 宿主。
+- 验证：Release 构建无警告/错误；Core `72/72`、Worker `296/297`（1 跳过）、Playnite `355/417`（62 跳过），XAML `19/19`，源码校验、WPF 静态审查 0 error、RenderHarness 双主题/多尺寸/resize `render-qa OK`。校正：`docs/design/reviews/2026-09-07-quality/` 是另一轮 b0aa85a 冻结审计证据，不能归属于 UI3-07；已清理本阶段 `.tmp/ui3-07-render` 后提交；未执行真实 Playnite 宿主。
 
 ## 2026-09-07 UI3 完成质量复核与开发计划（仅文档）
 
