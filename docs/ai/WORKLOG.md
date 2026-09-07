@@ -9,6 +9,12 @@
 - 新增真实 STA WPF `Window` 回归，验证关闭动画后侧栏无活动过渡且收起宽度为 72 DIP。动效门控定向测试 `7/7`。
 - 验证：Release 构建 0 错误（1 个 `NU1900` 网络审计警告）、Core `72/72`、Worker `300/301`（1 跳过）、Playnite `363/425`（62 跳过）、源码校验、XAML `19/19`、`git diff --check` 通过。未声称真实 Playnite、DPI/高对比度、完整键盘或 60fps 已验收。
 
+## 2026-09-07 动效阶段门禁与最新安装包复核
+
+- 按 UI 门禁运行技能级 WPF 静态审查：`0 errors / 20 warnings / 172 info`；运行 `scripts/render-qa.ps1 -Configuration Release`，双主题、多尺寸、resize、生产 Shell PageHost、维护紧凑详情和侧栏性能探针均为 `render-qa OK`。报告与截图为临时再生物，已按规则清理。
+- 使用最新 Release 输出重新运行 `scripts/package.ps1 -Configuration Release -SkipBuild`，生成 `artifacts/GameSaveCenter-0.6.73.pext`/同名 zip，包内版本和必需文件校验通过；没有安装或替换用户 Playnite。
+- 当前仍不把离屏帧间隔写成真实 60fps 结论；Playnite 宿主、DPI/高对比度、键盘焦点和实际用户数据仍需人工验收。
+
 ## 2026-09-07 Q4-00 媒体分页锚点行为收口
 
 - 复核发现 UI3-07 原有锚点恢复只有源码契约断言，延迟回调未绑定游戏/请求上下文；模式提前返回还可能遗留 `selectionRestoreQueued`，导致后续选择记录被阻塞。该阶段先处理竞态，再进入动效/真实宿主验收。
