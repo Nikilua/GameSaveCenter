@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-07 UI3-02 云端队列明细分页与用户操作入口
+
+- 将已有 Worker 云端状态分页协议接入生产维护中心：新增云端队列 Tab、概览入口、状态/类型筛选、分页加载、有限虚拟化表格和选中记录详情；摘要总量独立于当前页，刷新按 `TransferKey` 尝试恢复焦点。
+- 详情文案严格区分 `Uploaded` 与 `RemoteVerified`。远端 check 调用 `cloud.transfer.verify`，只读比对且不提升失败保证；备份重试调用 `cloud.upload.retry`，媒体重试改走 `SyncMedia` 并携带上传意图，避免把媒体记录误发给备份重试接口；认证失败不开放自动上传重试。
+- 增加请求代际/取消：筛选、刷新和离开维护页会取消旧请求；紧凑窗口将 Inspector 收为“查看详情”抽屉，宽屏保留右侧详情，未删除真实命令、Binding、分页或安全语义。RenderHarness Fake 数据同步覆盖 Pending、Verifying、RetryScheduled、AuthenticationRequired、Uploaded、RemoteVerified、CheckFailed、Failed。
+- 验证：Release 构建 0 warning/0 error；Core `65/65`、Worker `295/296`（1 跳过）、Playnite `342/404`（62 跳过）；XAML `19/19`、`validate-source.py`、WPF 静态审查、`render-qa OK`、`git diff --check` 均通过。RenderHarness/离屏结果不等同真实 Playnite 宿主，真实云端凭据和目标机 DPI 仍待人工复核。
+
 ## 2026-09-07 UI3-00/01 媒体收件箱可见性与紧凑布局
 
 - 修正 `MediaCenterView` 待归类页的可见路径：页面滚动使用共享 `GscPageScrollViewer`，表格保留有限虚拟化视口；批量操作拆成主操作行与表格后次级动作区，窄屏 Inspector 改为详情按钮，保留所有真实命令、Binding、选择和安全语义。

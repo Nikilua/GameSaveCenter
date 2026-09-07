@@ -5,6 +5,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Core.Services;
+using GameSaveCenter.Playnite.ViewModels;
 
 namespace GameSaveCenter.RenderHarness;
 
@@ -18,7 +19,12 @@ public sealed class FakeDashboardData
     public string OnboardingDescription => "先确认 Worker、目录、SQLite 与备份工具可用。所有检查都是非破坏性的；你可以跳过，之后随时在维护中心重新运行。";
     public bool IsOnboardingPending => false;
     public ICommand OpenMaintenanceCommand { get; } = new NoopCommand();
+    public ICommand OpenCloudQueueCommand { get; } = new NoopCommand();
     public ICommand RefreshCommand { get; } = new NoopCommand();
+    public ICommand RefreshCloudTransfersCommand { get; } = new NoopCommand();
+    public ICommand LoadMoreCloudTransfersCommand { get; } = new NoopCommand();
+    public ICommand VerifyCloudTransferCommand { get; } = new NoopCommand();
+    public ICommand RetryCloudUploadCommand { get; } = new NoopCommand();
     public ICommand ClearTaskFiltersCommand { get; } = new NoopCommand();
 
     public FakeDashboardData(int rowCount = 8)
@@ -37,6 +43,33 @@ public sealed class FakeDashboardData
             WarningGames = 3,
             PendingCloudTasks = 2,
             UnassignedMediaCount = 7
+        };
+
+        var cloudNow = DateTime.UtcNow;
+        CloudTransferItems.Add(new CloudTransferStatusDto { TransferKey = "Backup:game-1", Kind = CloudTransferKind.Backup, PlayniteId = "game-1", GameName = "Baldur's Gate 3", State = "Pending", UpdatedUtc = cloudNow.AddMinutes(-2) });
+        CloudTransferItems.Add(new CloudTransferStatusDto { TransferKey = "Media:game-2", Kind = CloudTransferKind.Media, PlayniteId = "game-2", GameName = "演示游戏 2", State = "Verifying", OperationKind = CloudTransferOperationKind.Verify, UpdatedUtc = cloudNow.AddMinutes(-1) });
+        CloudTransferItems.Add(new CloudTransferStatusDto { TransferKey = "Backup:game-3", Kind = CloudTransferKind.Backup, PlayniteId = "game-3", GameName = "演示游戏 3", State = "RetryScheduled", AttemptCount = 2, NextAttemptUtc = cloudNow.AddMinutes(18), LastErrorCode = "RCLONE_NETWORK_FAILED", LastError = "远端暂时不可用", UpdatedUtc = cloudNow.AddMinutes(-5) });
+        CloudTransferItems.Add(new CloudTransferStatusDto { TransferKey = "Media:game-4", Kind = CloudTransferKind.Media, PlayniteId = "game-4", GameName = "演示游戏 4", State = "AuthenticationRequired", AttemptCount = 1, LastErrorCode = "RCLONE_AUTH_FAILED", LastError = "凭据已过期", UpdatedUtc = cloudNow.AddMinutes(-8) });
+        CloudTransferItems.Add(new CloudTransferStatusDto { TransferKey = "Backup:game-5", Kind = CloudTransferKind.Backup, PlayniteId = "game-5", GameName = "演示游戏 5", State = "Uploaded", UpdatedUtc = cloudNow.AddHours(-1) });
+        CloudTransferItems.Add(new CloudTransferStatusDto { TransferKey = "Media:game-6", Kind = CloudTransferKind.Media, PlayniteId = "game-6", GameName = "演示游戏 6", State = "RemoteVerified", UpdatedUtc = cloudNow.AddHours(-2) });
+        CloudTransferItems.Add(new CloudTransferStatusDto { TransferKey = "Backup:game-7", Kind = CloudTransferKind.Backup, PlayniteId = "game-7", GameName = "演示游戏 7", State = "CheckFailed", LastErrorCode = "RCLONE_CHECK_FAILED", LastError = "远端内容未通过 check", UpdatedUtc = cloudNow.AddHours(-3) });
+        CloudTransferItems.Add(new CloudTransferStatusDto { TransferKey = "Backup:game-8", Kind = CloudTransferKind.Backup, PlayniteId = "game-8", GameName = "演示游戏 8", State = "Failed", AttemptCount = 3, LastErrorCode = "RCLONE_NETWORK_FAILED", LastError = "自动重试已达上限", UpdatedUtc = cloudNow.AddHours(-4) });
+        CloudTransferViewSummary = new CloudTransferSummaryDto
+        {
+            TotalCount = CloudTransferItems.Count,
+            PendingCount = 1,
+            VerifyingCount = 1,
+            RetryScheduledCount = 1,
+            AuthenticationRequiredCount = 1,
+            UploadedCount = 1,
+            VerifiedCount = 1,
+            CheckFailedCount = 1,
+            FailedCount = 1,
+            Page = 0,
+            PageSize = 100,
+            LoadedCount = CloudTransferItems.Count,
+            HasMore = false,
+            Items = new System.Collections.Generic.List<CloudTransferStatusDto>(CloudTransferItems)
         };
 
         EnvironmentCheck = new EnvironmentCheckReportDto
@@ -412,6 +445,7 @@ public sealed class FakeDashboardData
         SelectedFinding = Findings.Count > 0 ? Findings[0] : null;
         SelectedDeviceComparison = DeviceComparisons.Count > 0 ? DeviceComparisons[0] : null;
         SelectedProcessMapping = ProcessMappings.Count > 0 ? ProcessMappings[0] : null;
+        SelectedCloudTransfer = CloudTransferItems[0];
         SelectedBackup = Backups[0];
         SelectedCandidate = SaveCandidates[0];
         SelectedGameTool = GameTools[0];
@@ -467,6 +501,22 @@ public sealed class FakeDashboardData
     public ObservableCollection<TrainerCatalogItemDto> TrainerCatalogResults { get; } = new ObservableCollection<TrainerCatalogItemDto>();
     public ObservableCollection<TrainerReleaseDto> TrainerReleases { get; } = new ObservableCollection<TrainerReleaseDto>();
     public ObservableCollection<GameToolEntryCandidateDto> ImportEntryCandidates { get; } = new ObservableCollection<GameToolEntryCandidateDto>();
+    public ObservableCollection<CloudTransferStatusDto> CloudTransferItems { get; } = new ObservableCollection<CloudTransferStatusDto>();
+    public CloudTransferSummaryDto CloudTransferViewSummary { get; private set; } = new CloudTransferSummaryDto();
+    public CloudTransferStatusDto? SelectedCloudTransfer { get; set; }
+    public ObservableCollection<CloudTransferFilterOption> CloudTransferStateOptions { get; } = new ObservableCollection<CloudTransferFilterOption>
+    {
+        new CloudTransferFilterOption(string.Empty, "全部状态"), new CloudTransferFilterOption("Pending", "待上传"), new CloudTransferFilterOption("Uploaded", "已上传")
+    };
+    public ObservableCollection<CloudTransferFilterOption> CloudTransferKindOptions { get; } = new ObservableCollection<CloudTransferFilterOption>
+    {
+        new CloudTransferFilterOption(string.Empty, "全部类型"), new CloudTransferFilterOption("Backup", "备份"), new CloudTransferFilterOption("Media", "媒体")
+    };
+    public string CloudTransferStateFilter { get; set; } = string.Empty;
+    public string CloudTransferKindFilter { get; set; } = string.Empty;
+    public bool CloudTransferHasMore => CloudTransferViewSummary.HasMore;
+    public string CloudTransferLoadedSummary => $"已加载全部 {CloudTransferItems.Count} 项";
+    public int MaintenanceTabIndex { get; set; }
     public ObservableCollection<string> TaskStatusFilterOptions { get; } = new ObservableCollection<string> { "全部", "等待中", "执行中", "成功", "失败", "已取消" };
     public ObservableCollection<string> TaskGameFilterOptions { get; } = new ObservableCollection<string> { "全部" };
     public ObservableCollection<string> TaskTypeFilterOptions { get; } = new ObservableCollection<string> { "全部", "存档备份", "媒体同步", "云端上传" };

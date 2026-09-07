@@ -16,6 +16,7 @@
 <Style x:Key="MaintenanceDataGrid" TargetType="DataGrid" BasedOn="{StaticResource GscRedesignWorkspaceDataGrid}"><Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
             </Style>
             <Style x:Key="MaintenanceLongText" TargetType="TextBlock"><Setter Property="TextTrimming" Value="CharacterEllipsis"/><Setter Property="TextWrapping" Value="NoWrap"/><Setter Property="HorizontalAlignment" Value="Stretch"/><Setter Property="VerticalAlignment" Value="Center"/><Setter Property="TextAlignment" Value="Left"/><Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}"/></Style>
+            <Style x:Key="GscComboBoxLongText" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockStyle}"><Setter Property="TextTrimming" Value="CharacterEllipsis"/><Setter Property="TextWrapping" Value="NoWrap"/><Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}"/></Style>
             <Style x:Key="MaintenanceTableFrame" TargetType="Border" BasedOn="{StaticResource GscRedesignTableFrame}"/>
             <Style x:Key="MaintenanceFirstColumnHeader" TargetType="DataGridColumnHeader" BasedOn="{StaticResource GscDataGridColumnHeaderStyle}"><Setter Property="Background" Value="{DynamicResource GscTableHeaderBrush}"/><Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/><Setter Property="BorderBrush" Value="{DynamicResource GscTableDividerBrush}"/><Setter Property="Tag"><Setter.Value><CornerRadius>11,0,0,0</CornerRadius></Setter.Value></Setter></Style>
             <Style x:Key="MaintenanceLastColumnHeader" TargetType="DataGridColumnHeader" BasedOn="{StaticResource GscDataGridColumnHeaderStyle}"><Setter Property="Background" Value="{DynamicResource GscTableHeaderBrush}"/><Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/><Setter Property="BorderBrush" Value="{DynamicResource GscTableDividerBrush}"/><Setter Property="Tag"><Setter.Value><CornerRadius>0,11,0,0</CornerRadius></Setter.Value></Setter></Style>
@@ -45,7 +46,7 @@
     <Grid Margin="0" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="0"/></Grid.RowDefinitions>
         <ui:AmbientMaterialLayer Grid.RowSpan="2" Panel.ZIndex="-1"/>
-        <TabControl Grid.Row="0" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Style="{StaticResource MaintenanceTabControl}">
+        <TabControl x:Name="MaintenanceTabControl" Grid.Row="0" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Style="{StaticResource MaintenanceTabControl}" SelectedIndex="{Binding MaintenanceTabIndex, Mode=TwoWay}" SelectionChanged="OnMaintenanceTabChanged">
             <TabControl.Resources><Style TargetType="TabItem" BasedOn="{StaticResource MaintenanceTabItem}"/></TabControl.Resources>
             <TabItem Header="诊断">
                 <!-- Overnight v4: diagnostics is split into a finite problem-list viewport
@@ -321,6 +322,95 @@
                             </ScrollViewer>
                         </TabItem>
                     </TabControl>
+                </Grid>
+            </TabItem>
+            <TabItem Header="云端队列">
+                <Grid x:Name="CloudTransfersSurface" Margin="0,12,0,0" VerticalAlignment="Stretch">
+                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                    <Border Grid.Row="0" Style="{DynamicResource GscReadingCardStyle}" Padding="12" Margin="0,0,0,10">
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                <TextBlock Text="待处理" Style="{DynamicResource GscCaptionStyle}"/>
+                                <TextBlock Text="{Binding CloudTransferViewSummary.PendingCount}" FontSize="24" FontWeight="SemiBold" Foreground="{DynamicResource GscInfoBrush}" Margin="0,3,0,0"/>
+                                <TextBlock Text="待上传与排队中的本地任务" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Margin="10,0,10,0">
+                                <TextBlock Text="远端校验中" Style="{DynamicResource GscCaptionStyle}"/>
+                                <TextBlock Text="{Binding CloudTransferViewSummary.VerifyingCount}" FontSize="24" FontWeight="SemiBold" Foreground="{DynamicResource GscInfoBrush}" Margin="0,3,0,0"/>
+                                <TextBlock Text="只读 check 正在执行" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2" Margin="10,0,0,0">
+                                <TextBlock Text="需要处理" Style="{DynamicResource GscCaptionStyle}"/>
+                                <TextBlock Text="{Binding CloudTransferViewSummary.AttentionCount}" FontSize="24" FontWeight="SemiBold" Foreground="{DynamicResource GscWarningBrush}" Margin="0,3,0,0"/>
+                                <TextBlock Text="认证、失败或等待重试" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <Grid Grid.Row="1" Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                        <ComboBox Grid.Column="0" Width="160" Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding CloudTransferStateOptions}" SelectedValue="{Binding CloudTransferStateFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Code" SelectionChanged="OnCloudTransferFilterSelectionChanged" ToolTip="按云端队列状态筛选" AutomationProperties.Name="云端队列状态筛选"><ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Display}" Style="{DynamicResource GscComboBoxLongText}"/></DataTemplate></ComboBox.ItemTemplate></ComboBox>
+                        <ComboBox Grid.Column="1" Width="120" Margin="8,0,0,0" Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding CloudTransferKindOptions}" SelectedValue="{Binding CloudTransferKindFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Code" SelectionChanged="OnCloudTransferFilterSelectionChanged" ToolTip="按备份或媒体筛选" AutomationProperties.Name="云端队列类型筛选"><ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Display}" Style="{DynamicResource GscComboBoxLongText}"/></DataTemplate></ComboBox.ItemTemplate></ComboBox>
+                        <ui:Button Grid.Column="2" Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RefreshCloudTransfersCommand}" Content="刷新队列" Margin="8,0,0,0" AutomationProperties.Name="刷新云端队列"/>
+                        <ui:Button x:Name="CloudTransferCompactDetailsButton" Grid.Column="3" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="查看详情 ›" HorizontalAlignment="Right" Visibility="Collapsed" Click="OnCloudTransferCompactDetailsClick" AutomationProperties.Name="查看或收起云端队列详情"/>
+                    </Grid>
+                    <Grid x:Name="CloudTransfersLayout" Grid.Row="2" Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscInspectorWidth}"/></Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="0"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                        <Border x:Name="CloudTransferTableFrame" Grid.Row="0" Grid.Column="0" Style="{DynamicResource GscRedesignTableFrame}">
+                            <Grid>
+                                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                                <Grid Grid.Row="0" Margin="12,2,12,8">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Text="传输明细" Style="{DynamicResource GscSectionTitleStyle}"/>
+                                        <Border Style="{DynamicResource GscRedesignContextPill}" Margin="10,0,0,0" Padding="8,3" VerticalAlignment="Center"><TextBlock Text="{Binding CloudTransferLoadedSummary}" Foreground="{DynamicResource GscSecondaryTextBrush}"/></Border>
+                                    </StackPanel>
+                                    <TextBlock Grid.Column="1" Text="{Binding CloudTransferViewSummary.QueueControlDisplay}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding CloudTransferViewSummary.QueueControlDisplay}"/>
+                                </Grid>
+                                <Grid Grid.Row="1">
+                                    <DataGrid x:Name="CloudTransferGrid" Style="{StaticResource MaintenanceDataGrid}" RowStyle="{StaticResource GscStableDataGridRow}" ItemsSource="{Binding CloudTransferItems}" SelectedItem="{Binding SelectedCloudTransfer, Mode=TwoWay}" EnableRowVirtualization="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" ScrollViewer.CanContentScroll="True" SelectionChanged="OnCloudTransferSelectionChanged">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn HeaderStyle="{StaticResource MaintenanceFirstColumnHeader}" Header="状态" Binding="{Binding StateDisplay}" Width="112" MinWidth="102"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
+                                            <DataGridTextColumn Header="类型" Binding="{Binding KindDisplay}" Width="70" MinWidth="60"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
+                                            <DataGridTextColumn Header="游戏" Binding="{Binding GameName}" Width="150" MinWidth="120"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
+                                            <DataGridTextColumn Header="保证级别" Binding="{Binding GuaranteeLevelDisplay}" Width="*" MinWidth="190"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
+                                            <DataGridTextColumn HeaderStyle="{StaticResource MaintenanceLastColumnHeader}" Header="状态详情" Binding="{Binding DetailDisplay}" Width="1.1*" MinWidth="210"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                    <TextBlock Text="暂无符合筛选条件的云端传输记录。&#xA;上传成功不代表远端已校验，请选择记录查看保证级别。" IsHitTestVisible="False"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyStateText}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding CloudTransferItems.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                        <ScrollViewer x:Name="CloudTransferInspector" Grid.Row="0" Grid.Column="2" Style="{DynamicResource GscInspectorScrollViewer}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                            <Border Style="{DynamicResource GscRedesignSectionCard}" Padding="14">
+                                <StackPanel>
+                                    <TextBlock Text="队列详情" Style="{DynamicResource GscSectionTitleStyle}"/>
+                                    <TextBlock Text="{Binding SelectedCloudTransfer.GameName, TargetNullValue=尚未选择传输记录}" Style="{DynamicResource GscCaptionStyle}" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedCloudTransfer.GameName}" Margin="0,4,0,0"/>
+                                    <Border Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,12,0,0">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding SelectedCloudTransfer.GuaranteeLevelDisplay, TargetNullValue=选择一条记录查看远端保证级别}" TextWrapping="Wrap"/>
+                                            <TextBlock Text="{Binding SelectedCloudTransfer.DetailDisplay, TargetNullValue=暂无状态详情}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,5,0,0"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <TextBlock Text="错误码" Style="{DynamicResource GscCaptionStyle}" Margin="0,14,0,3"/>
+                                    <TextBlock Text="{Binding SelectedCloudTransfer.LastErrorCode, TargetNullValue=无}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedCloudTransfer.LastErrorCode}"/>
+                                    <TextBlock Text="错误详情" Style="{DynamicResource GscCaptionStyle}" Margin="0,10,0,3"/>
+                                    <TextBlock Text="{Binding SelectedCloudTransfer.LastError, TargetNullValue=无}" TextWrapping="Wrap" Foreground="{DynamicResource GscSecondaryTextBrush}"/>
+                                    <TextBlock Text="下一次尝试" Style="{DynamicResource GscCaptionStyle}" Margin="0,10,0,3"/>
+                                    <TextBlock Text="{Binding SelectedCloudTransfer.NextAttemptLocal, StringFormat={}{0:yyyy-MM-dd HH:mm}, TargetNullValue=暂无自动重试}" TextWrapping="Wrap"/>
+                                    <Border Style="{DynamicResource GscDiagnosticHintBubble}" Padding="10" Margin="0,14,0,0"><TextBlock Text="远端 check 只读取并比对远端内容，不上传、不覆盖本地存档或媒体。认证失败不会被当作可自动重试的上传。" Style="{DynamicResource GscDiagnosticHintText}" TextWrapping="Wrap"/></Border>
+                                    <WrapPanel Margin="0,14,0,0">
+                                        <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding VerifyCloudTransferCommand}" Content="执行远端 check" ToolTip="只读检查远端内容，不会上传或覆盖" AutomationProperties.Name="执行远端只读校验" Margin="0,0,8,8"/>
+                                        <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RetryCloudUploadCommand}" Content="重试上传" ToolTip="只重新提交失败或已排队的上传" AutomationProperties.Name="重试云端上传" Margin="0,0,0,8"/>
+                                    </WrapPanel>
+                                </StackPanel>
+                            </Border>
+                        </ScrollViewer>
+                        <Border Grid.Row="2" Grid.ColumnSpan="3" Style="{DynamicResource GscRedesignSubCard}" Padding="10,8" Margin="0,10,0,0">
+                            <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="{Binding CloudTransferLoadedSummary}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center"/><ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding LoadMoreCloudTransfersCommand}" Content="加载更多" ToolTip="继续读取当前筛选条件下的下一页" AutomationProperties.Name="加载更多云端队列"/></Grid>
+                        </Border>
+                    </Grid>
                 </Grid>
             </TabItem>
             <TabItem Header="设备状态">

@@ -4,6 +4,14 @@
 
 > 新会话短入口：先读 [`docs/ai/CURRENT_STATE.md`](ai/CURRENT_STATE.md)。本文下方的历史交接按时间保留；除顶部最新阶段和明确标注的覆盖关系外，旧条目只用于追溯，不得覆盖当前事实入口。
 
+## 2026-09-07 UI3-02 云端队列明细分页与用户操作入口
+
+- 维护中心新增云端队列页，概览卡的“查看明细”进入该页；生产 VM 已接 `GetCloudTransferStatus`、`VerifyCloudTransfer` 和按内容类型区分的重试路径。摘要来自全量聚合，明细每页最多 100 条，支持状态/类型筛选和继续加载。
+- UI 事实边界：`Uploaded` 只表示上传命令成功，`RemoteVerified` 才表示远端 check 成功；check 为只读操作；认证失败保持“认证需处理”，不能通过 UI 误变为普通自动重试。媒体记录不能调用只针对备份的 `RetryCloudUpload`，必须走媒体同步上传路径。
+- 取消/竞态边界：云队列请求有代际和独立 CTS，筛选/刷新会让旧页失效，离开 Maintenance 会取消请求；宽屏 Inspector 与表格并排，紧凑屏由“查看详情”按钮打开堆叠详情。RenderHarness 已调整旧维护页 Tab 索引并覆盖新页。
+- 当前验证：`dotnet test GameSaveCenter.sln -c Release --no-restore -m:1` 全部通过（Core 65，Worker 295/296，Playnite 342/404）；XAML 19/19，`validate-source.py`、WPF 静态审查、`render-qa OK`、`git diff --check` 通过。未运行真实 Playnite 宿主、真实 Rclone 远端、DPI/高对比度或用户大库。
+- 下一阶段：UI3-03 媒体归类批次历史与恢复入口。不要重复实现 UI3-02，也不要把离屏 RenderHarness 结果写成真实宿主 1:1 验收。
+
 ## 2026-09-07 UI3-00/01 媒体收件箱可见性与紧凑布局
 
 - 媒体收件箱已完成首轮可见性修复：共享页面滚动承载页内容，`MediaInboxGrid` 保持有限高度和 Recycling 虚拟化；选择/视图、目标/主操作、次级动作分层，Inspector 在窄宽度下由“查看预览与归类”按钮打开，业务命令与安全语义未改。

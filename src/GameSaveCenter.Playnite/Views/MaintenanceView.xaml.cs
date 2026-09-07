@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
+using GameSaveCenter.Playnite.ViewModels;
 
 namespace GameSaveCenter.Playnite.Views
 {
@@ -12,6 +13,7 @@ namespace GameSaveCenter.Playnite.Views
         private double responsiveHeight;
         private bool isApplyingLayout;
         private bool deviceInspectorOpen;
+        private bool cloudTransferInspectorOpen;
 
         public MaintenanceView()
         {
@@ -25,11 +27,13 @@ namespace GameSaveCenter.Playnite.Views
             MaintenanceAuditFindingsGrid.Loaded += DataGridLoaded;
             MaintenanceAuditLogGrid.Loaded += DataGridLoaded;
             MaintenanceProcessGrid.Loaded += DataGridLoaded;
+            CloudTransferGrid.Loaded += DataGridLoaded;
             MaintenanceDiagnosticsInspector.IsVisibleChanged += InspectorIsVisibleChanged;
             MaintenanceAuditInspector.IsVisibleChanged += InspectorIsVisibleChanged;
             MaintenanceProcessInspector.IsVisibleChanged += InspectorIsVisibleChanged;
             MaintenanceDeviceInspectorScrollViewer.IsVisibleChanged += InspectorIsVisibleChanged;
             MaintenanceDeviceGrid.SelectionChanged += OnMaintenanceDeviceSelectionChanged;
+            CloudTransferGrid.SelectionChanged += OnCloudTransferSelectionChanged;
         }
 
         private void DataGridLoaded(object sender, RoutedEventArgs e)
@@ -77,6 +81,42 @@ namespace GameSaveCenter.Playnite.Views
         {
             if (MaintenanceDeviceGrid.SelectedItem == null) return;
             deviceInspectorOpen = !deviceInspectorOpen;
+            ApplyResponsiveLayout(
+                responsiveWidth > 0 ? responsiveWidth : ActualWidth,
+                responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+        }
+
+        private void OnMaintenanceTabChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.Source != MaintenanceTabControl || MaintenanceTabControl.SelectedIndex != 1)
+                return;
+
+            if (DataContext is DashboardViewModel viewModel
+                && viewModel.RefreshCloudTransfersCommand.CanExecute(null))
+                viewModel.RefreshCloudTransfersCommand.Execute(null);
+        }
+
+        private void OnCloudTransferFilterSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.Source is not ComboBox || !IsLoaded || DataContext is not DashboardViewModel viewModel)
+                return;
+
+            cloudTransferInspectorOpen = false;
+            if (viewModel.RefreshCloudTransfersCommand.CanExecute(null))
+                viewModel.RefreshCloudTransfersCommand.Execute(null);
+        }
+
+        private void OnCloudTransferSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            cloudTransferInspectorOpen = false;
+            if (IsLoaded && responsiveWidth > 0 && responsiveHeight > 0)
+                ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
+        }
+
+        private void OnCloudTransferCompactDetailsClick(object sender, RoutedEventArgs e)
+        {
+            if (CloudTransferGrid.SelectedItem == null) return;
+            cloudTransferInspectorOpen = !cloudTransferInspectorOpen;
             ApplyResponsiveLayout(
                 responsiveWidth > 0 ? responsiveWidth : ActualWidth,
                 responsiveHeight > 0 ? responsiveHeight : ActualHeight);
@@ -332,6 +372,50 @@ namespace GameSaveCenter.Playnite.Views
             MaintenanceDeviceInspectorScrollViewer.MaxHeight = showDeviceInspector && stackDevice
                 ? deviceInspectorHeight
                 : double.PositiveInfinity;
+
+            var stackCloudTransfers = width < 980;
+            var hasCloudTransferSelection = CloudTransferGrid.SelectedItem != null;
+            if (stackCloudTransfers)
+            {
+                CloudTransferInspector.Visibility = hasCloudTransferSelection && cloudTransferInspectorOpen
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
+                CloudTransferCompactDetailsButton.Visibility = hasCloudTransferSelection
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
+                CloudTransferCompactDetailsButton.Content = cloudTransferInspectorOpen
+                    ? "收起详情 ›"
+                    : "查看详情 ›";
+            }
+            else
+            {
+                CloudTransferInspector.Visibility = Visibility.Visible;
+                CloudTransferCompactDetailsButton.Visibility = Visibility.Collapsed;
+            }
+            var showCloudTransferInspector = CloudTransferInspector.Visibility == Visibility.Visible;
+            CloudTransfersLayout.ColumnDefinitions[1].Width = !stackCloudTransfers && showCloudTransferInspector
+                ? new GridLength(14)
+                : new GridLength(0);
+            CloudTransfersLayout.ColumnDefinitions[2].Width = !stackCloudTransfers && showCloudTransferInspector
+                ? inspectorWidth
+                : new GridLength(0);
+            CloudTransfersLayout.RowDefinitions[1].Height = showCloudTransferInspector && stackCloudTransfers
+                ? new GridLength(1, GridUnitType.Auto)
+                : new GridLength(0);
+            Grid.SetColumn(CloudTransferInspector, stackCloudTransfers ? 0 : 2);
+            Grid.SetColumnSpan(CloudTransferInspector, stackCloudTransfers ? 3 : 1);
+            Grid.SetRow(CloudTransferInspector, stackCloudTransfers ? 1 : 0);
+            CloudTransferInspector.Margin = showCloudTransferInspector && stackCloudTransfers
+                ? new Thickness(0, 10, 0, 0)
+                : new Thickness(0);
+            CloudTransferInspector.MaxHeight = showCloudTransferInspector && stackCloudTransfers
+                ? Math.Max(180, height * 0.34)
+                : double.PositiveInfinity;
+            CloudTransferGrid.MinHeight = showCloudTransferInspector && stackCloudTransfers
+                ? 150
+                : width < 800 ? 280 : tableMinHeight;
+            CloudTransferGrid.Height = double.NaN;
+            CloudTransferGrid.MaxHeight = double.PositiveInfinity;
 
             var stackAudit = width < 980;
             var showAuditInspector = MaintenanceAuditInspector.Visibility == Visibility.Visible;

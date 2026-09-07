@@ -631,6 +631,16 @@ public static class Program
                 view => SelectTab(view, 0));
             CaptureV3Shot(
                 new MaintenanceView { DataContext = new FakeDashboardData() },
+                Path.Combine(outputRoot, "v6-maintenance-cloud-transfers.png"),
+                "CloudTransfersSurface",
+                1600,
+                900,
+                ApplySimpleResponsiveV3,
+                problems,
+                report,
+                view => SelectTab(view, 1));
+            CaptureV3Shot(
+                new MaintenanceView { DataContext = new FakeDashboardData() },
                 Path.Combine(outputRoot, "v6-maintenance-device.png"),
                 "MaintenanceDeviceScrollSurface",
                 1600,
@@ -638,7 +648,7 @@ public static class Program
                 ApplySimpleResponsiveV3,
                 problems,
                 report,
-                view => SelectTab(view, 1));
+                view => SelectTab(view, 2));
             CaptureV3Shot(
                 new MaintenanceView { DataContext = new FakeDashboardData() },
                 Path.Combine(outputRoot, "v6-maintenance-audit.png"),
@@ -648,7 +658,7 @@ public static class Program
                 ApplySimpleResponsiveV3,
                 problems,
                 report,
-                view => SelectTab(view, 3));
+                view => SelectTab(view, 4));
             CaptureV3Shot(
                 new MaintenanceView { DataContext = new FakeDashboardData() },
                 Path.Combine(outputRoot, "v6-maintenance-process.png"),
@@ -658,7 +668,7 @@ public static class Program
                 ApplySimpleResponsiveV3,
                 problems,
                 report,
-                view => SelectTab(view, 4));
+                view => SelectTab(view, 5));
 
             report.AppendLine("  session-navigation: covered by SessionNavigationStateTests + UiStatePersistenceSourceTests");
 
@@ -767,7 +777,7 @@ public static class Program
                     ApplySimpleResponsiveV3,
                     problems,
                     report,
-                    view => SelectTab(view, 1),
+                    view => SelectTab(view, 2),
                     metrics: (host, target, shotReport) =>
                     {
                         var grid = (DataGrid)target;
@@ -784,7 +794,7 @@ public static class Program
                     ApplySimpleResponsiveV3,
                     problems,
                     report,
-                    view => SelectTab(view, 3),
+                    view => SelectTab(view, 4),
                     metrics: (host, target, shotReport) =>
                     {
                         var grid = (DataGrid)target;
@@ -1716,11 +1726,11 @@ public static class Program
                 () => new MaintenanceView { DataContext = new FakeDashboardData(60) },
                 view => ((MaintenanceView)view).ApplyResponsiveLayout(900, height),
                 "问题列表");
-            ProbeGrid(report, "Maintenance-Audit", "MaintenanceAuditFindingsGrid", 3, height,
+            ProbeGrid(report, "Maintenance-Audit", "MaintenanceAuditFindingsGrid", 4, height,
                 () => new MaintenanceView { DataContext = new FakeDashboardData(60) },
                 view => ((MaintenanceView)view).ApplyResponsiveLayout(900, height),
                 "发现的问题");
-            ProbeGrid(report, "Maintenance-AuditLog", "MaintenanceAuditLogGrid", 3, height,
+            ProbeGrid(report, "Maintenance-AuditLog", "MaintenanceAuditLogGrid", 4, height,
                 () => new MaintenanceView { DataContext = new FakeDashboardData(60) },
                 view => ((MaintenanceView)view).ApplyResponsiveLayout(900, height),
                 "审计记录");

@@ -875,7 +875,7 @@ public sealed class WpfUiResourceDictionaryTests
             .Where(element => element.Name.LocalName == "DataGrid")
             .ToList();
 
-        Assert.Equal(5, dataGrids.Count);
+        Assert.Equal(6, dataGrids.Count);
 
         foreach (var dataGrid in dataGrids)
         {
@@ -4189,11 +4189,11 @@ public sealed class WpfUiResourceDictionaryTests
         var maintenancePath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml");
         var maintenance = XDocument.Parse(File.ReadAllText(maintenancePath));
 
-        // Diagnostics, device, audit findings, audit log and process mappings tables all
+        // Diagnostics, cloud transfers, device, audit findings, audit log and process mappings tables all
         // own a centered, hit-test-free empty state so an empty page never shows a blank
         // DataGrid frame without explaining the next step.
         var dataGrids = maintenance.Descendants().Where(element => element.Name.LocalName == "DataGrid").ToArray();
-        Assert.Equal(5, dataGrids.Length);
+        Assert.Equal(6, dataGrids.Length);
         foreach (var grid in dataGrids)
         {
             var overlay = grid.Parent?.Elements().FirstOrDefault(element =>

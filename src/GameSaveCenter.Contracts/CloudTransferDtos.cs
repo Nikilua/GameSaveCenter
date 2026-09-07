@@ -50,6 +50,7 @@ public sealed class CloudTransferStatusDto
     public DateTime UpdatedUtc { get; set; }
 
     public DateTime? NextAttemptLocal => NextAttemptUtc?.ToLocalTime();
+    public string KindDisplay => Kind == CloudTransferKind.Backup ? "备份" : "媒体";
     public string StateDisplay => State switch
     {
         "Pending" => "待上传",

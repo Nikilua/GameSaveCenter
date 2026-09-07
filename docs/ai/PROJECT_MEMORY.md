@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-07
 
+## 2026-09-07 UI3-02 云端队列明细分页与用户操作入口
+
+- 生产维护中心现在有独立的云端队列 Tab。`DashboardViewModel.CloudTransfers` 以 `CloudTransferStatusRequestDto` 调用 Worker 的 `GetCloudTransferStatus`，页大小固定请求 100，服务端聚合总量，客户端按 `TransferKey` 去重追加并在刷新时恢复当前选择。
+- `CloudTransferStatusDto` 增加面向 UI 的备份/媒体类型显示；列表和 Inspector 同时显示状态详情、错误码、下次尝试和保证级别，`Uploaded` 不得写成“已验证”。
+- `VerifyCloudTransferCommand` 使用 `VerifyCloudTransfer` 只读 check；`RetryCloudUploadCommand` 对 Backup 使用既有云上传重试，对 Media 使用 `SyncMedia` + `UploadAfterSync`，认证需处理状态不被当作自动可重试上传。请求有独立 CTS 和代际，离开维护页会取消云队列请求。
+- `MaintenanceView` 宽屏为表格 + Inspector，低于 980 DIP 时表格保持有限高度，详情通过 `CloudTransferCompactDetailsButton` 打开并堆叠；RenderHarness 已加入真实状态夹具和维护页 Tab 索引回归。验证基线为 Core `65/65`、Worker `295/296`（1 跳过）、Playnite `342/404`（62 跳过）、XAML `19/19`、RenderHarness `render-qa OK`。
+- 未取得真实 Playnite 宿主、真实 Rclone 凭据/远端、DPI/高对比度证据；下一阶段按 UI3-03 处理可找回的媒体归类批次历史。
+
 ## 2026-09-07 UI3-00/01 媒体收件箱可见性与紧凑布局
 
 - 媒体收件箱拆分为“选择/视图、目标/主操作、次级动作”三层：主操作栏在窄屏保持单行，次级操作和加载统计位于表格之后；详情面板在不足以同时容纳列表与 Inspector 时默认折叠，由 `MediaInboxCompactDetailsButton` 打开并堆叠到表格下方。
