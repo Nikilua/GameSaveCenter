@@ -81,6 +81,8 @@ public sealed class MediaClassificationHistoryRequestDto
     public int Page { get; set; }
     public int PageSize { get; set; } = 25;
     public string State { get; set; } = string.Empty;
+    /// <summary>Opaque Worker-owned revision returned by the preceding page.</summary>
+    public string ConsistencyToken { get; set; } = string.Empty;
 }
 
 /// <summary>Aggregated, restart-safe state for one classification batch.</summary>
@@ -133,6 +135,9 @@ public sealed class MediaClassificationHistoryDto
     public int PageSize { get; set; }
     public int LoadedCount { get; set; }
     public bool HasMore { get; set; }
+    public string ConsistencyToken { get; set; } = string.Empty;
+    public bool PageResetRequired { get; set; }
+    public string PageResetReason { get; set; } = string.Empty;
     public string StateFilter { get; set; } = string.Empty;
     public List<MediaClassificationBatchSummaryDto> Items { get; set; } = new List<MediaClassificationBatchSummaryDto>();
 

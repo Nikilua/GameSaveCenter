@@ -67,7 +67,7 @@ VALUES ('v9','tool9','1.0','C:\Tools\u.exe','C:\Tools','','','','2025-01-01T00:0
         await harness.CreateLegacyFixtureAsync(LegacySchema, LegacyData, CancellationToken.None);
 
         var result = await harness.RunAsync(
-            new[] { "games", "tasks", "backup_versions", "game_policies", "backup_policy_templates", "sessions", "device_conflict_decisions", "media", "media_sources", "game_tools", "game_tool_versions", "protection_prompt_states", "ipc_request_ledger", "cloud_transfer_queue", "legacy_marker" },
+            new[] { "games", "tasks", "backup_versions", "game_policies", "backup_policy_templates", "sessions", "device_conflict_decisions", "media", "media_sources", "game_tools", "game_tool_versions", "protection_prompt_states", "ipc_request_ledger", "cloud_transfer_queue", "query_revisions", "legacy_marker" },
             new Dictionary<string, IReadOnlyCollection<string>>
             {
                 ["games"] = new[] { "match_input_hash", "last_match_attempt_utc", "descriptor_synced_utc" },
@@ -97,6 +97,7 @@ VALUES ('v9','tool9','1.0','C:\Tools\u.exe','C:\Tools','','','','2025-01-01T00:0
         Assert.Equal(1, result.RowCounts["device_conflict_decisions"]);
         Assert.Equal(1, result.RowCounts["media"]);
         Assert.Equal(1, result.RowCounts["cloud_transfer_queue"]);
+        Assert.Equal(2, result.RowCounts["query_revisions"]);
         Assert.Equal("KeepBoth", harness.ReadScalar("SELECT decision FROM device_conflict_decisions WHERE playnite_id='g1';"));
         Assert.Contains("BackupOnGameStop", harness.ReadScalar("SELECT policy_json FROM game_policies WHERE playnite_id='g1';"));
         Assert.Equal("重要游戏", harness.ReadScalar("SELECT name FROM backup_policy_templates WHERE template_id='important';"));

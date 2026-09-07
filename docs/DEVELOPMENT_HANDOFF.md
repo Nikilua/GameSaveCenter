@@ -1,16 +1,23 @@
 # GameSaveCenter 持续维护交接与开发入口
 
-> 2026-09-07 收尾更新：UI3-07 已提交 9e93909，质量审阅补跑定向测试 5/5；完整截图/构建基线仍为 b0aa85a。后续按 [Q4-00～04 与 UI 优化阶段](ai/QUALITY_REVIEW_2026-09-07.md) 收口，先补滚动行为验收，不重复实现锚点入口。
+> 2026-09-07 收尾更新：Q4-04 动态分页一致性已完成；云端队列和归类历史已接入持久化修订号与 stale-token reset。后续按 [Q4-00～04 与 UI 优化阶段](ai/QUALITY_REVIEW_2026-09-07.md) 进入设置页与动效/真实宿主验收，不重复实现已完成的分页入口。
 
 > 这是 GameSaveCenter 的跨电脑、跨模型持续维护入口。任何新的 agent、模型或开发者接手前，先完整读取本文件，再读取项目记忆、开发进度和 UI 规则。不要只依赖聊天记录。
 
 > 新会话短入口：先读 [`docs/ai/CURRENT_STATE.md`](ai/CURRENT_STATE.md)。本文下方的历史交接按时间保留；除顶部最新阶段和明确标注的覆盖关系外，旧条目只用于追溯，不得覆盖当前事实入口。
 
+## 2026-09-07 Q4-04 动态分页一致性已收口
+
+- `query_revisions` 在 Worker 初始化中幂等创建，触发器覆盖两类分页实际参与排序/聚合的数据源；持久化 token 不依赖动态 CTE 生成的当前时间。
+- `CloudTransferStatusDto`、`MediaClassificationHistoryDto` 的请求/响应已携带 `ConsistencyToken`、`PageResetRequired`、`PageResetReason`。Worker 对读前 stale token 和读期间修订变化都返回 reset，避免错误地继续 OFFSET。
+- Dashboard 翻页 reset 会清空过期窗口、提示“列表已发生变化”并自动从第一页重载一次；选择仍只按稳定 TransferKey/BatchId 恢复。新增 Worker stale-token 和旧库迁移回归已通过。
+- 验证：Core `72/72`、Worker `300/301`（1 跳过）、Playnite `358/420`（62 跳过），构建无错误、XAML 19/19、源码/XAML/WPF 检查通过。真实 Playnite、跨进程写入和人工键盘仍需用户环境验收。
+
 ## 2026-09-07 Q4-03 紧凑维护页已收口
 
 - 维护页诊断/进程映射在紧凑 PageHost 默认只显示主列表；详情由“查看详情 ›”按钮显式展开，详情拥有有限高度和单一滚动容器。选中项变化会关闭详情，Esc 可收起，宽屏继续并排显示。
 - `RenderHarness` 的 `RunProductionShellMaintenanceProbe` 使用真实 Production Shell 的 PageHost 几何，检查 1040×700、1100×720、1366×768 的可见完整行数、关闭/打开状态和截图。离屏证据已通过，不能替代真实 Playnite 宿主验收。
-- 当前阶段源码/测试/文档待单独提交；提交前需保留工作树可复现并清理 `.tmp/q4-03-render-final` 等临时渲染目录。下一项按质量报告进入 Q4-04 动态排序分页边界，不要恢复旧的自动展开详情。
+- Q4-03 已由 `0fc31ce` 本地提交；`.tmp/q4-03-render-final` 等临时渲染目录已清理。不要恢复旧的自动展开详情。
 
 ## 2026-09-07 Q4-01/Q4-02 媒体重试与目标标签导航
 

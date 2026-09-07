@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-07
 
+## 2026-09-07 Q4-04 动态分页一致性实现约束
+
+- `cloud_transfers` 与 `classification_history` 使用 SQLite 持久化修订号，不使用动态查询结果里的 `strftime('now')` 或 `MAX(updated_utc)` 充当快照标识；旧库启动时必须创建 `query_revisions`、种子行和幂等触发器。
+- 云端修订由 `cloud_transfer_queue`、`cloud_retry_queue`、游戏名称/云端状态、媒体归属/云端/归类状态变化触发；归类历史修订由批次和批次条目的增删改触发。筛选共用全局修订号，宁可要求刷新也不能静默漏项。
+- 两套分页响应必须同时带 `ConsistencyToken`、`PageResetRequired` 和 `PageResetReason`。Worker 在读前拒绝旧 token，在读后发现修订变化也返回 reset；页面不能用空结果宣称“已加载全部”。
+- Playnite 继续按稳定 `TransferKey`/`BatchId` 恢复选择。reset 时清空已加载窗口、提示用户列表已变化并自动从第一页重试一次；不要改成拉取全量列表，也不要把可变排序键游标当成一致性快照。
+- 当前只验证 Worker/离屏客户端链路；真实 Playnite 宿主、跨进程持续写入、DPI/高对比度和人工键盘仍是外部验收边界。
+
 ## 2026-09-07 Q4-03 紧凑维护页详情布局实现约束
 
 - 诊断和进程映射的紧凑断点为 PageHost 宽度 `< 980` DIP。选中行不能自动让 Inspector 进入 Auto 行；默认必须保留列表，详情只能通过命名的紧凑按钮展开，详情打开后才占用有限的第三行空间。

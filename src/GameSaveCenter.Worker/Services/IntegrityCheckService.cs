@@ -22,7 +22,7 @@ public sealed class IntegrityCheckService
         "game_tools", "game_tool_versions", "protection_prompt_states", "trainer_catalog",
         "trainer_releases", "process_mappings", "device_conflict_decisions", "cloud_retry_queue", "cloud_transfer_queue",
         "media_classification_batches", "media_classification_batch_items",
-        "health_inspection_state"
+        "health_inspection_state", "query_revisions"
     };
 
     private const int MaxPathExamplesPerFinding = 20;

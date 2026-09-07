@@ -33,7 +33,7 @@ public sealed partial class DashboardViewModel
         new MediaClassificationHistoryStateOption("Expired", "已过期")
     };
 
-    private async Task LoadMediaClassificationHistoryAsync(bool reset)
+    private async Task LoadMediaClassificationHistoryAsync(bool reset, bool allowConsistencyRetry = true)
     {
         if (CurrentWorkspace != WorkspaceKind.Media)
             return;
@@ -50,15 +50,35 @@ public sealed partial class DashboardViewModel
                 {
                     Page = page,
                     PageSize = 25,
-                    State = MediaClassificationHistoryStateFilter
+                    State = MediaClassificationHistoryStateFilter,
+                    ConsistencyToken = reset ? string.Empty : mediaClassificationHistoryConsistencyToken
                 },
                 cancellationToken: requestCancellation.Token).ConfigureAwait(false);
 
+            var retryFromFirstPage = false;
             ApplyOnUi(() =>
             {
                 if (generation != Interlocked.Read(ref mediaClassificationHistoryLoadGeneration)
                     || CurrentWorkspace != WorkspaceKind.Media)
                     return;
+
+                if (response?.PageResetRequired == true)
+                {
+                    MediaClassificationHistoryItems.ReplaceAll(
+                        Array.Empty<MediaClassificationBatchSummaryDto>(), AreSameMediaClassificationBatch);
+                    mediaClassificationHistoryPage = 0;
+                    mediaClassificationHistoryHasMore = false;
+                    mediaClassificationHistoryConsistencyToken = response.ConsistencyToken ?? string.Empty;
+                    SelectedMediaClassificationBatch = null;
+                    StatusMessage = string.IsNullOrWhiteSpace(response.PageResetReason)
+                        ? "媒体归类历史已更新，正在从第一页刷新。"
+                        : response.PageResetReason;
+                    OnPropertyChanged(nameof(MediaClassificationHistoryHasMore));
+                    OnPropertyChanged(nameof(MediaClassificationHistoryLoadedSummary));
+                    RaiseCommandStates();
+                    retryFromFirstPage = allowConsistencyRetry;
+                    return;
+                }
 
                 var incoming = response?.Items ?? new List<MediaClassificationBatchSummaryDto>();
                 if (reset)
@@ -78,6 +98,7 @@ public sealed partial class DashboardViewModel
 
                 mediaClassificationHistoryPage = response?.Page ?? page;
                 mediaClassificationHistoryHasMore = response?.HasMore == true;
+                mediaClassificationHistoryConsistencyToken = response?.ConsistencyToken ?? string.Empty;
                 var restored = !string.IsNullOrWhiteSpace(selectedBatchId)
                     ? MediaClassificationHistoryItems.FirstOrDefault(x => string.Equals(x.BatchId, selectedBatchId, StringComparison.OrdinalIgnoreCase))
                     : null;
@@ -93,6 +114,8 @@ public sealed partial class DashboardViewModel
                 OnPropertyChanged(nameof(MediaClassificationHistoryLoadedSummary));
                 RaiseCommandStates();
             });
+            if (retryFromFirstPage)
+                await LoadMediaClassificationHistoryAsync(true, false).ConfigureAwait(false);
         }
         catch (OperationCanceledException) when (requestCancellation.IsCancellationRequested)
         {

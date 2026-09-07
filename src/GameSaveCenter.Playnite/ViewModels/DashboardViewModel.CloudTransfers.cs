@@ -21,7 +21,7 @@ public sealed class CloudTransferFilterOption
 
 public sealed partial class DashboardViewModel
 {
-    private async Task LoadCloudTransferPageAsync(bool reset)
+    private async Task LoadCloudTransferPageAsync(bool reset, bool allowConsistencyRetry = true)
     {
         if (CurrentWorkspace != WorkspaceKind.Maintenance)
             return;
@@ -36,13 +36,15 @@ public sealed partial class DashboardViewModel
                 Page = page,
                 PageSize = 100,
                 State = CloudTransferStateFilter,
-                Kind = ParseCloudTransferKind(CloudTransferKindFilter)
+                Kind = ParseCloudTransferKind(CloudTransferKindFilter),
+                ConsistencyToken = reset ? string.Empty : cloudTransferConsistencyToken
             };
             var response = await plugin.RequestAsync<CloudTransferSummaryDto>(
                 MessageTypes.GetCloudTransferStatus,
                 request,
                 cancellationToken: requestCancellation.Token).ConfigureAwait(false);
 
+            var retryFromFirstPage = false;
             ApplyOnUi(() =>
             {
                 if (generation != Interlocked.Read(ref cloudTransferLoadGeneration))
@@ -50,6 +52,24 @@ public sealed partial class DashboardViewModel
 
                 if (CurrentWorkspace != WorkspaceKind.Maintenance)
                     return;
+
+                if (response?.PageResetRequired == true)
+                {
+                    CloudTransferItems.ReplaceAll(Array.Empty<CloudTransferStatusDto>(), AreSameCloudTransfer);
+                    CloudTransferViewSummary = response;
+                    cloudTransferPage = 0;
+                    cloudTransferHasMore = false;
+                    cloudTransferConsistencyToken = response.ConsistencyToken ?? string.Empty;
+                    SelectedCloudTransfer = null!;
+                    StatusMessage = string.IsNullOrWhiteSpace(response.PageResetReason)
+                        ? "云端队列已更新，正在从第一页刷新。"
+                        : response.PageResetReason;
+                    OnPropertyChanged(nameof(CloudTransferHasMore));
+                    OnPropertyChanged(nameof(CloudTransferLoadedSummary));
+                    RaiseCommandStates();
+                    retryFromFirstPage = allowConsistencyRetry;
+                    return;
+                }
 
                 var selectedKey = SelectedCloudTransfer?.TransferKey;
                 if (reset)
@@ -73,6 +93,7 @@ public sealed partial class DashboardViewModel
                 CloudTransferViewSummary = response ?? new CloudTransferSummaryDto();
                 cloudTransferPage = response?.Page ?? page;
                 cloudTransferHasMore = response?.HasMore == true;
+                cloudTransferConsistencyToken = response?.ConsistencyToken ?? string.Empty;
                 var restored = !string.IsNullOrWhiteSpace(selectedKey)
                     ? CloudTransferItems.FirstOrDefault(x => string.Equals(x.TransferKey, selectedKey, StringComparison.OrdinalIgnoreCase))
                     : null;
@@ -80,6 +101,8 @@ public sealed partial class DashboardViewModel
                 OnPropertyChanged(nameof(CloudTransferHasMore));
                 OnPropertyChanged(nameof(CloudTransferLoadedSummary));
             });
+            if (retryFromFirstPage)
+                await LoadCloudTransferPageAsync(true, false).ConfigureAwait(false);
         }
         catch (OperationCanceledException) when (requestCancellation.IsCancellationRequested)
         {

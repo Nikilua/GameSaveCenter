@@ -369,6 +369,55 @@ BEGIN SELECT RAISE(ABORT, 'injected batch item failure'); END;");
     }
 
     [Fact]
+    public async Task ClassificationHistoryRejectsStaleConsistencyTokenAfterNewBatch()
+    {
+        var now = DateTime.UtcNow;
+        await store.CreateMediaClassificationBatchAsync("history-page-1", now, now.AddHours(1),
+            new[]
+            {
+                new MediaClassificationBatchItemRecord
+                {
+                    BatchId = "history-page-1", MediaId = "history-page-media-1", OriginalClassificationState = "Inbox",
+                    OriginalClassificationReason = "待归类", OriginalArchivePath = "archive-1",
+                    OriginalPath = "original-1", OriginalCapturedUtc = now, OriginalSha256 = "hash-page-1",
+                    TargetPlayniteId = "game-1", TargetReason = "来源规则", Confidence = "High"
+                }
+            }, CancellationToken.None);
+
+        var service = CreateService();
+        var firstPage = await service.GetClassificationHistoryAsync(new MediaClassificationHistoryRequestDto
+        {
+            Page = 0,
+            PageSize = 1
+        }, CancellationToken.None);
+
+        await store.CreateMediaClassificationBatchAsync("history-page-2", now.AddMinutes(1), now.AddHours(1),
+            new[]
+            {
+                new MediaClassificationBatchItemRecord
+                {
+                    BatchId = "history-page-2", MediaId = "history-page-media-2", OriginalClassificationState = "Inbox",
+                    OriginalClassificationReason = "待归类", OriginalArchivePath = "archive-2",
+                    OriginalPath = "original-2", OriginalCapturedUtc = now, OriginalSha256 = "hash-page-2",
+                    TargetPlayniteId = "game-1", TargetReason = "来源规则", Confidence = "High"
+                }
+            }, CancellationToken.None);
+
+        var stalePage = await service.GetClassificationHistoryAsync(new MediaClassificationHistoryRequestDto
+        {
+            Page = 1,
+            PageSize = 1,
+            ConsistencyToken = firstPage.ConsistencyToken
+        }, CancellationToken.None);
+
+        Assert.True(stalePage.PageResetRequired);
+        Assert.Empty(stalePage.Items);
+        Assert.False(stalePage.HasMore);
+        Assert.NotEqual(firstPage.ConsistencyToken, stalePage.ConsistencyToken);
+        Assert.Contains("刷新", stalePage.PageResetReason);
+    }
+
+    [Fact]
     public async Task ClassificationAuditFailureDoesNotRollbackCommittedBusinessState()
     {
         var prepared = await PrepareClassificationAsync("audit-failure-media");

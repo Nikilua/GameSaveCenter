@@ -310,6 +310,15 @@ public sealed class CloudTransferStateService
         var page = Math.Clamp(request.Page, 0, int.MaxValue / pageSize);
         var offset = page * pageSize;
         var kindFilter = request.Kind;
+        var consistencyToken = await _store.GetQueryRevisionAsync(
+            SqliteStateStore.CloudTransferQueryRevision, token).ConfigureAwait(false);
+        if (!string.IsNullOrWhiteSpace(request.ConsistencyToken)
+            && !string.Equals(request.ConsistencyToken, consistencyToken, StringComparison.Ordinal))
+        {
+            return CreatePageResetSummary(page, pageSize, stateFilter, kindFilter, consistencyToken,
+                "云端队列已发生变化，请从第一页刷新后继续。");
+        }
+
         var aggregate = await _store.GetCloudTransferSummaryAsync(stateFilter, kindFilter, token).ConfigureAwait(false);
         var entries = await _store.GetCloudTransferPageAsync(offset, pageSize, stateFilter, kindFilter, token).ConfigureAwait(false);
         var games = await _store.GetCloudGameStatesAsync(token).ConfigureAwait(false);
@@ -359,8 +368,31 @@ public sealed class CloudTransferStateService
                 && !_options.CloudUploadQueuePaused
                 && !CloudUploadWindowPolicy.IsAllowed(DateTime.UtcNow, _options.CloudUploadAllowedStartMinute, _options.CloudUploadAllowedEndMinute)
         };
+        var completedToken = await _store.GetQueryRevisionAsync(
+            SqliteStateStore.CloudTransferQueryRevision, token).ConfigureAwait(false);
+        if (!string.Equals(consistencyToken, completedToken, StringComparison.Ordinal))
+        {
+            return CreatePageResetSummary(page, pageSize, stateFilter, kindFilter, completedToken,
+                "云端队列在加载期间发生变化，请从第一页刷新后继续。");
+        }
+
+        summary.ConsistencyToken = consistencyToken;
         return summary;
     }
+
+    private static CloudTransferSummaryDto CreatePageResetSummary(
+        int page, int pageSize, string stateFilter, CloudTransferKind? kindFilter,
+        string consistencyToken, string reason)
+        => new()
+        {
+            Page = page,
+            PageSize = pageSize,
+            StateFilter = stateFilter,
+            KindFilter = kindFilter,
+            ConsistencyToken = consistencyToken,
+            PageResetRequired = true,
+            PageResetReason = reason
+        };
 
     public async Task<CloudTransferStatusDto?> GetOneAsync(CloudTransferKind kind, string playniteId, CancellationToken token)
     {

@@ -120,6 +120,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string mediaClassificationHistoryStateFilter = string.Empty;
         private int mediaClassificationHistoryPage;
         private bool mediaClassificationHistoryHasMore;
+        private string mediaClassificationHistoryConsistencyToken = string.Empty;
         private long mediaClassificationHistoryLoadGeneration;
         private const int MediaInboxBatchSize = 500;
         private TaskStatusDto selectedTask = null!;
@@ -195,6 +196,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private CloudTransferStatusDto selectedCloudTransfer = null!;
         private int cloudTransferPage;
         private bool cloudTransferHasMore;
+        private string cloudTransferConsistencyToken = string.Empty;
         private string cloudTransferStateFilter = string.Empty;
         private string cloudTransferKindFilter = string.Empty;
         private int maintenanceTabIndex;

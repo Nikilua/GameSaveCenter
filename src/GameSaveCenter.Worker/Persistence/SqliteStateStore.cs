@@ -39,6 +39,7 @@ public sealed partial class SqliteStateStore : ITaskStatusStore
         var command = connection.CreateCommand();
         command.CommandText = Schema;
         await command.ExecuteNonQueryAsync(token).ConfigureAwait(false);
+        await EnsureQueryRevisionSchemaAsync(connection, token).ConfigureAwait(false);
         await EnsureBuiltInPolicyTemplatesAsync(connection, token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "media_sources", "shared_directory", "INTEGER NOT NULL DEFAULT 0", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "media", "classification_state", "TEXT NOT NULL DEFAULT 'Assigned'", token).ConfigureAwait(false);

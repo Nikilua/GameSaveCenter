@@ -2,6 +2,13 @@
 
 > 更新时间：2026-09-07。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-07 Q4-04 动态分页一致性已完成
+
+- 云端队列与媒体归类历史新增持久化 `query_revisions` 修订表和 SQLite 触发器；覆盖队列/重试记录、游戏/媒体影响字段、归类批次和批次条目，已有数据库初始化时会自动补齐。
+- 两套分页请求/响应增加不透明 `ConsistencyToken`。Worker 在查询前后校验修订号，翻页携带旧 token 或查询期间发生变化时返回 `PageResetRequired` 与中文原因，不把不一致结果标记为“已加载全部”。
+- Playnite 翻页携带 token；收到 reset 后清空旧窗口、保留稳定 ID 语义、显示状态提示并自动从第一页重载一次，第二次仍变化时保留手动刷新入口。
+- 新增云端队列、归类历史 stale-token 回归及旧库迁移断言。验证：Release 构建 0 错误；Core `72/72`、Worker `300/301`（1 跳过）、Playnite `358/420`（62 跳过）；XAML `19/19`、源码校验、WPF 静态检查 0 errors、`git diff --check` 通过。NuGet 漏洞审计因当前网络不可达出现既有 `NU1900` 警告；真实 Playnite、真实数据并发和人工键盘流程未运行。
+
 ## 2026-09-07 Q4-03 紧凑维护页详情布局已完成
 
 - `MaintenanceView` 的诊断/进程映射页在 PageHost 宽度小于 980 DIP 时默认折叠选中详情，保留主列表的有限星号空间；新增明确的“查看详情 › / 收起详情 ›”操作，打开后详情仍由可滚动 Inspector 承载。选择变化会关闭旧详情，Esc 可收起，Tab/Shift+Tab 继续使用 WPF 默认键盘导航；宽屏维持并排 Inspector。

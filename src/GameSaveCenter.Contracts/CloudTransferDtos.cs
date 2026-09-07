@@ -60,6 +60,8 @@ public sealed class CloudTransferStatusRequestDto
     public int PageSize { get; set; } = 100;
     public string State { get; set; } = string.Empty;
     public CloudTransferKind? Kind { get; set; }
+    /// <summary>Opaque Worker-owned revision returned by the preceding page.</summary>
+    public string ConsistencyToken { get; set; } = string.Empty;
 }
 
 /// <summary>One durable cloud transfer status. A successful copy is not a remote check.</summary>
@@ -137,6 +139,9 @@ public sealed class CloudTransferSummaryDto
     public int PageSize { get; set; }
     public int LoadedCount { get; set; }
     public bool HasMore { get; set; }
+    public string ConsistencyToken { get; set; } = string.Empty;
+    public bool PageResetRequired { get; set; }
+    public string PageResetReason { get; set; } = string.Empty;
     public string StateFilter { get; set; } = string.Empty;
     public CloudTransferKind? KindFilter { get; set; }
     public DateTime? NextAttemptUtc { get; set; }

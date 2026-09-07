@@ -380,7 +380,24 @@ public sealed class MediaSyncService
         var pageSize = Math.Clamp(request.PageSize, 1, 100);
         var page = Math.Clamp(request.Page, 0, int.MaxValue / pageSize);
         var offset = page * pageSize;
+        var consistencyToken = await _store.GetQueryRevisionAsync(
+            SqliteStateStore.ClassificationHistoryQueryRevision, token).ConfigureAwait(false);
+        if (!string.IsNullOrWhiteSpace(request.ConsistencyToken)
+            && !string.Equals(request.ConsistencyToken, consistencyToken, StringComparison.Ordinal))
+        {
+            return CreateClassificationHistoryPageReset(page, pageSize, state, consistencyToken,
+                "媒体归类历史已发生变化，请从第一页刷新后继续。");
+        }
+
         var history = await _store.GetMediaClassificationBatchHistoryAsync(offset, pageSize, state, token).ConfigureAwait(false);
+        var completedToken = await _store.GetQueryRevisionAsync(
+            SqliteStateStore.ClassificationHistoryQueryRevision, token).ConfigureAwait(false);
+        if (!string.Equals(consistencyToken, completedToken, StringComparison.Ordinal))
+        {
+            return CreateClassificationHistoryPageReset(page, pageSize, state, completedToken,
+                "媒体归类历史在加载期间发生变化，请从第一页刷新后继续。");
+        }
+
         return new MediaClassificationHistoryDto
         {
             TotalCount = history.TotalCount,
@@ -388,10 +405,23 @@ public sealed class MediaSyncService
             PageSize = pageSize,
             LoadedCount = history.Items.Count,
             HasMore = offset + history.Items.Count < history.TotalCount,
+            ConsistencyToken = consistencyToken,
             StateFilter = state,
             Items = history.Items.Select(ToClassificationBatchSummary).ToList()
         };
     }
+
+    private static MediaClassificationHistoryDto CreateClassificationHistoryPageReset(
+        int page, int pageSize, string state, string consistencyToken, string reason)
+        => new()
+        {
+            Page = page,
+            PageSize = pageSize,
+            StateFilter = state,
+            ConsistencyToken = consistencyToken,
+            PageResetRequired = true,
+            PageResetReason = reason
+        };
 
     /// <summary>Undoes only items that still match the applied snapshot; changed items become conflicts.</summary>
     public async Task<MediaClassificationBatchResultDto> UndoClassificationBatchAsync(MediaClassificationUndoRequestDto request, CancellationToken token)
