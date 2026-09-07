@@ -22,7 +22,7 @@ public static class IpcRequestSemantics
             MessageTypes.StageRemoteBackup or MessageTypes.SaveProcessMapping or MessageTypes.DeleteProcessMapping or
             MessageTypes.UpdateSettings or MessageTypes.CreateMetadataBackup or MessageTypes.ExecuteMetadataRestore or
             MessageTypes.RollbackMetadataRestore or MessageTypes.RebuildRepository or MessageTypes.PathRemap or
-            MessageTypes.ApplyRetentionSimulation or MessageTypes.MirrorLocalSync or MessageTypes.CancelTask or
+            MessageTypes.ApplyRetentionSimulation or MessageTypes.RecoverRetentionQuarantine or MessageTypes.MirrorLocalSync or MessageTypes.CancelTask or
             MessageTypes.ImportGameTool or MessageTypes.UpdateGameTool or MessageTypes.RelocateGameTool or
             MessageTypes.DeleteGameTool or MessageTypes.LaunchGameTool or MessageTypes.DownloadTrainer => true,
             _ => false

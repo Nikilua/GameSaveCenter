@@ -143,6 +143,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             NotifyMediaDetailsStateChanged();
             NotifyMediaInboxStateChanged();
             NotifyMaintenanceStateChanged();
+            RebuildMaintenanceActionItems();
         }
 
         private static string FormatStateDetail(DateTime? lastSuccessUtc, string errorMessage)

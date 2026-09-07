@@ -71,7 +71,9 @@ public sealed partial class DashboardViewModel
                     return;
                 }
 
-                var selectedKey = SelectedCloudTransfer?.TransferKey;
+                var selectedKey = !string.IsNullOrWhiteSpace(pendingCloudTransferKey)
+                    ? pendingCloudTransferKey
+                    : SelectedCloudTransfer?.TransferKey;
                 if (reset)
                 {
                     Replace(CloudTransferItems, response?.Items ?? Enumerable.Empty<CloudTransferStatusDto>(), AreSameCloudTransfer);
@@ -98,11 +100,23 @@ public sealed partial class DashboardViewModel
                     ? CloudTransferItems.FirstOrDefault(x => string.Equals(x.TransferKey, selectedKey, StringComparison.OrdinalIgnoreCase))
                     : null;
                 SelectedCloudTransfer = restored!;
+                var shouldLoadPending = restored == null
+                    && !string.IsNullOrWhiteSpace(pendingCloudTransferKey)
+                    && response?.HasMore == true;
+                if (restored != null && string.Equals(pendingCloudTransferKey, restored.TransferKey, StringComparison.OrdinalIgnoreCase))
+                    pendingCloudTransferKey = null;
+                else if (!shouldLoadPending)
+                    pendingCloudTransferKey = null;
                 OnPropertyChanged(nameof(CloudTransferHasMore));
                 OnPropertyChanged(nameof(CloudTransferLoadedSummary));
+                RebuildMaintenanceActionItems();
+                if (shouldLoadPending)
+                    retryFromFirstPage = false;
             });
             if (retryFromFirstPage)
                 await LoadCloudTransferPageAsync(true, false).ConfigureAwait(false);
+            else if (!string.IsNullOrWhiteSpace(pendingCloudTransferKey))
+                await LoadCloudTransferPageAsync(false, allowConsistencyRetry).ConfigureAwait(false);
         }
         catch (OperationCanceledException) when (requestCancellation.IsCancellationRequested)
         {

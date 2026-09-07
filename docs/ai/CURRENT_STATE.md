@@ -2,6 +2,12 @@
 
 > 更新时间：2026-09-07。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-07 X2-02 运维总览与失败下一步已落地
+
+- 维护页“诊断概览”新增真实的“下一步运维”列表，统一展示恢复巡检、云端失败/认证/重试记录和清理隔离账本：每项都带上次验证、下次尝试、当前状态、错误详情和明确动作；云端项可定位到原队列记录，未加载完的队列明确提示继续分页，不把加载窗口当全集。
+- 新增隔离账本只读 IPC 与按 `EntryId` 定位的再次协调 IPC。再次协调必须经过 Playnite 明确确认，Worker 仍复用原有路径安全、文件身份和索引状态机；冲突或不安全路径保留文件并继续标为需人工确认，不提供无目标的“全部自动修复”。
+- 当前验证：Release 构建 0 警告/0 错误；Core `72/72`、Worker `303/304`（1 跳过）、Playnite `366/428`（62 跳过）；XAML `19/19`、源码校验、WPF 静态审查 `0 errors/21 warnings/172 info`、双主题/多尺寸/resize/Production Shell `render-qa OK`。真实 Playnite、DPI/高对比度和完整键盘仍需人工验收。
+
 ## 2026-09-07 X2-01 工作区状态体验已落地
 
 - 媒体当前游戏列表、媒体收件箱和维护诊断现在共享 `WorkspaceDataState`：Loading、Ready、Empty、Stale、Error、Offline。状态来自真实 IPC 请求、分页代际和 Worker 快照，不使用延时模拟；旧数据在刷新失败时保留，并显示上次成功读取时间、失败详情和重试命令。

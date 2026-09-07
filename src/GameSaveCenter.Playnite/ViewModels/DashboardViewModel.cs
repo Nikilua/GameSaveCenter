@@ -306,6 +306,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             OpenProtectionItemCommand = new RelayCommand(value => OpenProtectionItem(value as RecentProtectionItem));
             ApplyRecommendedProtectionCommand = new RelayCommand(_ => Run(ApplyRecommendedProtectionAsync), _ => !IsBusy);
             RefreshDiagnosticsCommand = new RelayCommand(_ => Run(RefreshDiagnosticsAsync), _ => !IsBusy);
+            RunMaintenanceActionCommand = new RelayCommand(value => Run(() => RunMaintenanceActionAsync(value)), value => !IsBusy && value is MaintenanceActionItem);
             RefreshCloudTransfersCommand = new RelayCommand(_ => Run(() => LoadCloudTransferPageAsync(true)), _ => !IsBusy);
             LoadMoreCloudTransfersCommand = new RelayCommand(_ => Run(() => LoadCloudTransferPageAsync(false)), _ => !IsBusy && CloudTransferHasMore);
             VerifyCloudTransferCommand = new RelayCommand(_ => Run(VerifySelectedCloudTransferAsync), _ => !IsBusy && CanVerifySelectedCloudTransfer());
@@ -1173,6 +1174,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand OpenProtectionItemCommand { get; }
         public ICommand ApplyRecommendedProtectionCommand { get; }
         public ICommand RefreshDiagnosticsCommand { get; }
+        public ICommand RunMaintenanceActionCommand { get; }
         public ICommand RefreshCloudTransfersCommand { get; }
         public ICommand LoadMoreCloudTransfersCommand { get; }
         public ICommand VerifyCloudTransferCommand { get; }
@@ -1349,10 +1351,15 @@ namespace GameSaveCenter.Playnite.ViewModels
             AttentionCenterRequested?.Invoke(this, EventArgs.Empty);
         }
 
-        private void OpenCloudQueue()
+        private void OpenCloudQueue(string? transferKey = null, string? transferState = null, CloudTransferKind? transferKind = null)
         {
             CurrentWorkspace = WorkspaceKind.Maintenance;
             MaintenanceTabIndex = 1;
+            pendingCloudTransferKey = transferKey;
+            if (!string.IsNullOrWhiteSpace(transferState))
+                CloudTransferStateFilter = transferState ?? string.Empty;
+            if (transferKind.HasValue)
+                CloudTransferKindFilter = transferKind.Value.ToString();
             RequestWorkspaceLoad();
         }
 
@@ -1901,6 +1908,10 @@ namespace GameSaveCenter.Playnite.ViewModels
                     Replace(ProcessMappings,mappings, SnapshotComparers.ProcessMapping);
                     if(ProcessMappingTargetGame==null) ProcessMappingTargetGame=SelectedGame??Games.FirstOrDefault();
                 });
+                var quarantineEntries = await plugin.RequestAsync<List<RetentionQuarantineEntryDto>>(
+                    MessageTypes.GetRetentionQuarantineEntries,
+                    new { });
+                ApplyOnUi(() => UpdatePendingQuarantineEntries(quarantineEntries));
                 if (MaintenanceTabIndex == 1)
                     await LoadCloudTransferPageAsync(true);
                 if (settings.SafeModeRequested && !safeModePromptShown)
@@ -4188,7 +4199,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 PreviewMediaClassificationCommand, ApplyMediaClassificationCommand, UndoMediaClassificationCommand,
                 RefreshMediaClassificationHistoryCommand, LoadMoreMediaClassificationHistoryCommand,
                 LoadMoreMediaInboxCommand, ReloadMediaInboxCommand,
-                CancelTaskCommand, RetryTaskCommand, RetryAllTasksCommand, LoadMoreTasksCommand, CopyTaskErrorCommand, RefreshDiagnosticsCommand, DiagnoseGameCommand, SyncGameDescriptorCommand, RetryGameMatchCommand, ClearGamePickerFiltersCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
+                CancelTaskCommand, RetryTaskCommand, RetryAllTasksCommand, LoadMoreTasksCommand, CopyTaskErrorCommand, RefreshDiagnosticsCommand, RunMaintenanceActionCommand, DiagnoseGameCommand, SyncGameDescriptorCommand, RetryGameMatchCommand, ClearGamePickerFiltersCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
                 StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,RunHealthInspectionCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,RefreshRetentionSimulationCommand,ApplyRetentionSimulationCommand,RefreshLocalMirrorStatusCommand,SyncLocalMirrorCommand,CopyMaintenanceReportCommand,ExportMaintenanceReportCommand,
                 SaveProcessMappingCommand,DeleteProcessMappingCommand,RunEnvironmentCheckCommand,SkipOnboardingCommand,CompleteOnboardingCommand,OnboardingTestBackupCommand,
                 OpenDataDirectoryCommand, OpenBackupDirectoryCommand, OpenMediaDirectoryCommand, OpenWorkerLogCommand

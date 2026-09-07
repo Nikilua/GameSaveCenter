@@ -96,6 +96,8 @@ namespace GameSaveCenter.Contracts
         public const string StorageAnalysis = "storage.analysis";
         public const string PreviewRetentionSimulation = "retention.simulation.preview";
         public const string ApplyRetentionSimulation = "retention.simulation.apply";
+        public const string GetRetentionQuarantineEntries = "retention.quarantine.list";
+        public const string RecoverRetentionQuarantine = "retention.quarantine.recover";
         public const string MirrorLocalStatus = "mirror.local.status";
         public const string MirrorLocalSync = "mirror.local.sync";
         public const string GetMaintenanceReport = "maintenance.report.get";

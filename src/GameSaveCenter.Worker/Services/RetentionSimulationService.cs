@@ -326,9 +326,20 @@ public sealed class RetentionSimulationService
     /// file. Earlier states are restored to their original path when possible; unknown files
     /// and path conflicts are left untouched and marked for manual recovery.
     /// </summary>
-    public async Task<RetentionQuarantineRecoverySummary> RecoverPendingQuarantineAsync(CancellationToken token)
+    public async Task<RetentionQuarantineRecoverySummary> RecoverPendingQuarantineAsync(
+        CancellationToken token,
+        string? entryId = null)
     {
         var entries = await _store.GetRetentionQuarantineEntriesAsync(token).ConfigureAwait(false);
+        if (!string.IsNullOrWhiteSpace(entryId))
+        {
+            var requested = entries.FirstOrDefault(x => string.Equals(x.EntryId, entryId, StringComparison.OrdinalIgnoreCase));
+            if (requested == null)
+                throw new WorkerOperationException("RETENTION_ENTRY_NOT_FOUND", "找不到要协调的隔离账本条目。", entryId);
+
+            entries = new List<RetentionQuarantineEntryDto> { requested };
+        }
+
         var summary = new RetentionQuarantineRecoverySummary();
         foreach (var entry in entries.Where(x => x.State != RetentionQuarantineState.Deleted))
         {

@@ -37,6 +37,21 @@ namespace GameSaveCenter.Contracts
         public int RecoveryRequiredCount { get; set; }
     }
 
+    /// <summary>Explicit confirmation for reconciling one durable quarantine ledger entry.</summary>
+    public sealed class RetentionQuarantineRecoveryRequestDto
+    {
+        public string EntryId { get; set; } = string.Empty;
+        public bool Confirmed { get; set; }
+    }
+
+    /// <summary>Result of a targeted, safety-checked quarantine reconciliation.</summary>
+    public sealed class RetentionQuarantineRecoverySummaryDto
+    {
+        public int RestoredCount { get; set; }
+        public int DeletedCount { get; set; }
+        public int RecoveryRequiredCount { get; set; }
+    }
+
     /// <summary>Read-only global retention simulation returned by the Worker.</summary>
     public sealed class RetentionSimulationPreviewDto
     {

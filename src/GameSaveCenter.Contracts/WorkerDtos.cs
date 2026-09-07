@@ -39,6 +39,7 @@ namespace GameSaveCenter.Contracts
             "AtomicIo",
             "StorageAnalysis",
             "RetentionSimulation",
+            "RetentionQuarantineRecovery",
             "LocalMirror",
             "MaintenanceReport",
             "HealthInspection",

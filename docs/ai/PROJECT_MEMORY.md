@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-07
 
+## 2026-09-07 X2-02 运维总览实现约束
+
+- “下一步运维”必须从真实 `HealthInspectionStateDto`、`CloudTransferStatusDto`/摘要和 `RetentionQuarantineEntryDto` 生成；每个动作都保留真实记录 ID 或明确导航目标，不新增一个没有对象边界的全局自动修复按钮。
+- 云端项只在当前已加载的真实记录上显示详情；若摘要中还有未加载的关注项，必须显示“未全部加载”并把动作导向现有云端队列分页。重试、远端 check、认证处理继续使用原有命令与权限语义。
+- 隔离账本再次协调只接受 `EntryId`，IPC 请求必须 `Confirmed=true`；Worker 仍检查原/隔离路径安全、文件大小/身份和账本状态，遇到冲突不得覆盖或删除未知文件。启动恢复与用户针对单条记录的协调共用同一状态机。
+- 当前验证：Release 构建 0 警告/0 错误；Core `72/72`、Worker `303/304`（1 跳过）、Playnite `366/428`（62 跳过）；源码/XAML 门禁、WPF `0 errors/21 warnings/172 info`、`render-qa OK` 均通过。真实宿主、DPI/高对比度、完整键盘和真实故障注入仍是外部边界。
+
 ## 2026-09-07 X2-01 工作区状态实现约束
 
 - 媒体当前列表、收件箱和维护诊断统一使用 `WorkspaceDataState` 的 Loading/Ready/Empty/Stale/Error/Offline 语义，并通过现有 `WorkspaceStatePresenter` 呈现；不要回退为只看集合 Count 或只显示全局 `StatusMessage`。

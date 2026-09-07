@@ -82,6 +82,23 @@ public sealed class RetentionQuarantineRecoveryTests : IDisposable
         Assert.True(File.Exists(entry.QuarantinePath));
     }
 
+    [Fact]
+    public async Task TargetedRecoveryOnlyProcessesTheSelectedLedgerEntry()
+    {
+        var selected = await AddEntryAsync(Guid.NewGuid().ToString("N"), "selected", RetentionQuarantineState.IndexRemoved, 13);
+        var untouched = await AddEntryAsync(Guid.NewGuid().ToString("N"), "untouched", RetentionQuarantineState.IndexRemoved, 19);
+
+        var service = new RetentionSimulationService(options, store, NullLogger<RetentionSimulationService>.Instance);
+        var recovery = await service.RecoverPendingQuarantineAsync(CancellationToken.None, selected.EntryId);
+
+        Assert.Equal(1, recovery.DeletedCount);
+        Assert.False(File.Exists(selected.QuarantinePath));
+        Assert.True(File.Exists(untouched.QuarantinePath));
+        var entries = await store.GetRetentionQuarantineEntriesAsync(CancellationToken.None);
+        Assert.Equal(RetentionQuarantineState.Deleted, entries.Single(x => x.EntryId == selected.EntryId).State);
+        Assert.Equal(RetentionQuarantineState.IndexRemoved, entries.Single(x => x.EntryId == untouched.EntryId).State);
+    }
+
     private async Task<RetentionQuarantineEntryDto> AddEntryAsync(
         string batchId,
         string backupId,

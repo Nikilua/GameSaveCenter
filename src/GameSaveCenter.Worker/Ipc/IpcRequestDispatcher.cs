@@ -161,6 +161,8 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.StorageAnalysis=>await _storageAnalysis.AnalyzeAsync(token).ConfigureAwait(false),
                 MessageTypes.PreviewRetentionSimulation=>await _retentionSimulation.PreviewAsync(token).ConfigureAwait(false),
                 MessageTypes.ApplyRetentionSimulation=>await _retentionSimulation.ApplyAsync(Read<RetentionSimulationApplyRequestDto>(request),token).ConfigureAwait(false),
+                MessageTypes.GetRetentionQuarantineEntries=>await _store.GetRetentionQuarantineEntriesAsync(token).ConfigureAwait(false),
+                MessageTypes.RecoverRetentionQuarantine=>await RecoverRetentionQuarantineAsync(Read<RetentionQuarantineRecoveryRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.MirrorLocalStatus=>await _localMirror.StatusAsync(token).ConfigureAwait(false),
                 MessageTypes.MirrorLocalSync=>await _localMirror.SyncAsync(token).ConfigureAwait(false),
                 MessageTypes.GetMaintenanceReport=>await _maintenanceReport.GetAsync(token).ConfigureAwait(false),
@@ -205,6 +207,22 @@ public sealed class IpcRequestDispatcher
     private object GetTaskChanges(TaskChangeRequestDto request)=>_tasks.GetChanges(request.AfterSequence,request.Limit);
     private Task<TaskChangeFeedDto> WaitForTaskChangesAsync(TaskChangeRequestDto request,CancellationToken token)
         =>_tasks.WaitForChangesAsync(request.AfterSequence,request.Limit,request.WaitSeconds,token);
+
+    private async Task<RetentionQuarantineRecoverySummaryDto> RecoverRetentionQuarantineAsync(
+        RetentionQuarantineRecoveryRequestDto request,
+        CancellationToken token)
+    {
+        if (request == null || !request.Confirmed)
+            throw new WorkerOperationException("RETENTION_RECOVERY_CONFIRMATION_REQUIRED", "隔离账本协调必须经过明确确认。", request?.EntryId);
+
+        var result = await _retentionSimulation.RecoverPendingQuarantineAsync(token, request.EntryId).ConfigureAwait(false);
+        return new RetentionQuarantineRecoverySummaryDto
+        {
+            RestoredCount = result.RestoredCount,
+            DeletedCount = result.DeletedCount,
+            RecoveryRequiredCount = result.RecoveryRequiredCount
+        };
+    }
     private async Task<object> SaveProcessMappingAsync(ProcessMappingDto mapping,CancellationToken token)
     {
         mapping.ExecutableName=Path.GetFileNameWithoutExtension(mapping.ExecutableName??string.Empty).Trim();
