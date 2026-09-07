@@ -1,6 +1,13 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
-> 维护时间：2026-09-06
+> 维护时间：2026-09-07
+
+## 2026-09-07 UI3-00/01 媒体收件箱可见性与紧凑布局
+
+- 媒体收件箱拆分为“选择/视图、目标/主操作、次级动作”三层：主操作栏在窄屏保持单行，次级操作和加载统计位于表格之后；详情面板在不足以同时容纳列表与 Inspector 时默认折叠，由 `MediaInboxCompactDetailsButton` 打开并堆叠到表格下方。
+- `MediaInboxPageScrollViewer` 使用 `GscPageScrollViewer`，`MediaInboxGrid` 仍是 `Tag=FiniteViewport` 的共享 `MediaDataGrid`，代码按实际页面高度赋予有限 Height/MaxHeight。不要把整个 DataGrid 放回无限测量的外层 ScrollViewer，也不要删除页内滚动入口来追求假性首屏填满。
+- RenderHarness 现将 measured PageHost/content 高度传给页面协调器，并在真实 `AcrylicProductionShellView` 内验证 1040×700、1100×720、1366×768 的 PageHost、滚动 extent、表格高度；`UiLayoutAnalyzer` 通过祖先裁剪交集检查表格和动作控件是否真的可见。`validate-source.py` 也已认识新的页面滚动契约。
+- 当前证据：`render-qa OK`，双主题/多尺寸/resize/壳层几何通过；UI audit 154 个运行时快照，Fidelity 0、失败路由 0、媒体页无 HIGH；Playnite `342/404` 通过、62 跳过。截图见 [`docs/design/reviews/2026-09-07-ui3/`](../design/reviews/2026-09-07-ui3/)。未运行真实 Playnite 宿主，不能把离屏结果写成宿主验收。
 
 ## 2026-09-06 FLiNG 后台下载 403 修复
 

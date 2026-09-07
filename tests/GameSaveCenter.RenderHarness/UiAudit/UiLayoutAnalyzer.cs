@@ -47,6 +47,7 @@ public static class UiLayoutAnalyzer
         AnalyzeEssentialColumnVisibility(root, report);
         AnalyzeShortSemanticValueTrimming(root, report);
         AnalyzeInteractiveInspectorUsability(root, report);
+        AnalyzeVisibleMediaInboxGeometry(root, report);
         AnalyzeVisualCorrectionV2(root, report);
         AnalyzeVerticalFill(root, report);
         return report;
@@ -270,9 +271,13 @@ public static class UiLayoutAnalyzer
             {
                 var approvedOverviewPageScroll = report.RouteId == "overview"
                     && string.Equals(scroller.Name, "OverviewStackScrollSurface", StringComparison.Ordinal);
+                var approvedMediaInboxPageScroll = report.RouteId == "media-center"
+                    && string.Equals(report.TabHeader, "待归类", StringComparison.Ordinal)
+                    && string.Equals(scroller.Name, "MediaInboxPageScrollViewer", StringComparison.Ordinal);
                 var trueParentChild = containsList
                     && !isInternal
                     && !approvedOverviewPageScroll
+                    && !approvedMediaInboxPageScroll
                     && scroller.VerticalScrollBarVisibility != ScrollBarVisibility.Disabled
                     && scroller.VerticalScrollBarVisibility != ScrollBarVisibility.Hidden
                     && HasContainedListWithOwnVerticalScroll(scroller);
@@ -424,10 +429,15 @@ public static class UiLayoutAnalyzer
         var tracked = report.RouteId == "task-center"
             || (report.RouteId == "media-center"
                 && (report.TabHeader == "待归类" || report.TabHeader == "当前游戏媒体"));
+        var mediaInboxUsesPageScroll = report.RouteId == "media-center"
+            && report.TabHeader == "待归类"
+            && FindVisualChildren<ScrollViewer>(root)
+                .Any(scroller => string.Equals(scroller.Name, "MediaInboxPageScrollViewer", StringComparison.Ordinal));
         if (tracked
             && report.SizeKey is "2k" or "wide" or "maximized"
             && report.VerticalFillRatio > 0
-            && report.VerticalFillRatio < 0.92)
+            && report.VerticalFillRatio < 0.92
+            && !mediaInboxUsesPageScroll)
         {
             report.Warnings.Add(new UiAuditWarning
             {
@@ -915,6 +925,173 @@ public static class UiLayoutAnalyzer
                 Message = $"MaintenanceDeviceInspector 交互内容 viewport {inspector.ViewportHeight:0} DIP / extent {inspector.ExtentHeight:0} DIP 过小"
             });
         }
+    }
+
+    private static void AnalyzeVisibleMediaInboxGeometry(DependencyObject root, UiLayoutReport report)
+    {
+        if (report.RouteId != "media-center" || report.TabHeader != "待归类")
+            return;
+
+        if (root is not Visual visualRoot)
+            return;
+
+        var pageScroller = FindVisualChildren<ScrollViewer>(root)
+            .FirstOrDefault(scroller => scroller.Name == "MediaInboxPageScrollViewer");
+        var grid = FindVisualChildren<DataGrid>(root)
+            .FirstOrDefault(candidate => candidate.Name == "MediaInboxGrid");
+        var actionRow = FindVisualChildren<FrameworkElement>(root)
+            .FirstOrDefault(element => element.Name == "MediaInboxBatchActionRow");
+
+        if (pageScroller == null)
+        {
+            AddGeometryWarning(report, "PRIMARY_SCROLL_CHANNEL_MISSING", "HIGH", "媒体收件箱缺少明确的页面纵向滚动通道");
+        }
+        else if (pageScroller.VerticalScrollBarVisibility == ScrollBarVisibility.Disabled
+                 && pageScroller.ExtentHeight > pageScroller.ViewportHeight + 0.5)
+        {
+            AddGeometryWarning(report, "PRIMARY_SCROLL_CHANNEL_MISSING", "HIGH", $"MediaInboxPageScrollViewer 禁用了纵向滚动，但 extent={pageScroller.ExtentHeight:0} > viewport={pageScroller.ViewportHeight:0}");
+        }
+
+        if (grid != null && grid.Visibility == Visibility.Visible && grid.ActualWidth > 0 && grid.ActualHeight > 0)
+        {
+            var gridBounds = GetRootBounds(grid, visualRoot);
+            var visibleBounds = GetVisibleBounds(grid, visualRoot);
+            var clippedByPageScroll = IsClippedOnlyByAncestor(grid, visualRoot, pageScroller);
+            var hasPageAccess = clippedByPageScroll && pageScroller != null && pageScroller.ScrollableHeight > 0.5;
+            if (grid.ActualHeight < 212)
+            {
+                AddGeometryWarning(report, "PRIMARY_VIEWPORT_TOO_SHORT", "HIGH", $"MediaInboxGrid 视口 {grid.ActualHeight:0} DIP，不足表头加约四行可读内容");
+            }
+            if (visibleBounds.Height + 0.5 < gridBounds.Height && !hasPageAccess)
+            {
+                AddGeometryWarning(report, "PRIMARY_VIEWPORT_UNREACHABLE", "HIGH", $"MediaInboxGrid 可见交集 {visibleBounds.Width:0}x{visibleBounds.Height:0} / 布局 {gridBounds.Width:0}x{gridBounds.Height:0}，裁剪祖先不可滚动");
+            }
+            else if (visibleBounds.Height + 0.5 < gridBounds.Height)
+            {
+                report.Warnings.Add(new UiAuditWarning
+                {
+                    Severity = "INFO",
+                    Code = "PRIMARY_SCROLL_ACCESS",
+                    RouteId = report.RouteId,
+                    Tab = report.TabHeader,
+                    SizeKey = report.SizeKey,
+                    Message = $"MediaInboxGrid 超出首屏，但可通过 MediaInboxPageScrollViewer 滚动到完整表格：visible={visibleBounds.Height:0} / layout={gridBounds.Height:0}"
+                });
+            }
+        }
+
+        if (actionRow == null)
+            return;
+
+        foreach (var control in FindVisualChildren<FrameworkElement>(actionRow)
+                     .Where(element => element is Button || element is ComboBox || element is TextBox)
+                     .Where(element => element.Visibility == Visibility.Visible
+                                       && element.IsHitTestVisible
+                                       && element.ActualWidth > 0
+                                       && element.ActualHeight > 0)
+                     .GroupBy(element => element, ReferenceEqualityComparer.Instance)
+                     .Select(group => group.Key))
+        {
+            var layoutBounds = GetRootBounds(control, visualRoot);
+            var visibleBounds = GetVisibleBounds(control, visualRoot);
+            if (visibleBounds.Width + 0.5 >= layoutBounds.Width
+                && visibleBounds.Height + 0.5 >= layoutBounds.Height)
+                continue;
+
+            var clippedByPageScroll = IsClippedOnlyByAncestor(control, visualRoot, pageScroller);
+            var horizontalClipping = visibleBounds.Width + 0.5 < layoutBounds.Width;
+            if (!clippedByPageScroll || horizontalClipping)
+            {
+                AddGeometryWarning(
+                    report,
+                    "CONTROL_CLIPPED",
+                    "HIGH",
+                    $"{control.Name ?? control.GetType().Name} 可点击区域被裁剪：visible={visibleBounds.Width:0}x{visibleBounds.Height:0} / layout={layoutBounds.Width:0}x{layoutBounds.Height:0}");
+            }
+        }
+    }
+
+    private static void AddGeometryWarning(UiLayoutReport report, string code, string severity, string message)
+    {
+        report.Warnings.Add(new UiAuditWarning
+        {
+            Severity = severity,
+            Code = code,
+            RouteId = report.RouteId,
+            Tab = report.TabHeader,
+            SizeKey = report.SizeKey,
+            Message = message
+        });
+    }
+
+    private static Rect GetRootBounds(FrameworkElement element, Visual root)
+    {
+        var local = new Rect(0, 0, element.ActualWidth, element.ActualHeight);
+        return ReferenceEquals(element, root)
+            ? local
+            : element.TransformToAncestor(root).TransformBounds(local);
+    }
+
+    private static Rect GetVisibleBounds(FrameworkElement element, Visual root)
+    {
+        var bounds = GetRootBounds(element, root);
+        var current = VisualTreeHelper.GetParent(element);
+        while (current != null && !ReferenceEquals(current, root))
+        {
+            if (current is FrameworkElement ancestor
+                && (ancestor.ClipToBounds || ancestor is ScrollViewer))
+            {
+                var clip = GetRootBounds(ancestor, root);
+                bounds = Rect.Intersect(bounds, clip);
+            }
+            current = VisualTreeHelper.GetParent(current);
+        }
+
+        if (root is FrameworkElement rootElement && rootElement.ClipToBounds)
+            bounds = Rect.Intersect(bounds, GetRootBounds(rootElement, root));
+        return bounds;
+    }
+
+    private static bool IsClippedOnlyByAncestor(FrameworkElement element, Visual root, ScrollViewer? expectedScroller)
+    {
+        if (expectedScroller == null)
+            return false;
+
+        var current = VisualTreeHelper.GetParent(element);
+        var sawExpected = false;
+        while (current != null && !ReferenceEquals(current, root))
+        {
+            if (ReferenceEquals(current, expectedScroller))
+            {
+                sawExpected = true;
+                current = VisualTreeHelper.GetParent(current);
+                continue;
+            }
+
+            if (current is FrameworkElement ancestor
+                && (ancestor.ClipToBounds || ancestor is ScrollViewer))
+            {
+                var clip = GetRootBounds(ancestor, root);
+                var elementBounds = GetRootBounds(element, root);
+                if (clip.Contains(elementBounds))
+                {
+                    current = VisualTreeHelper.GetParent(current);
+                    continue;
+                }
+                return false;
+            }
+            current = VisualTreeHelper.GetParent(current);
+        }
+        return sawExpected;
+    }
+
+    private sealed class ReferenceEqualityComparer : IEqualityComparer<FrameworkElement>
+    {
+        public static readonly ReferenceEqualityComparer Instance = new ReferenceEqualityComparer();
+
+        public bool Equals(FrameworkElement? x, FrameworkElement? y) => ReferenceEquals(x, y);
+
+        public int GetHashCode(FrameworkElement obj) => System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(obj);
     }
 
     private static bool IsDescendantOf(DependencyObject current, DependencyObject ancestor)

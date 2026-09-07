@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-07 UI3-00/01 媒体收件箱可见性与紧凑布局
+
+- 修正 `MediaCenterView` 待归类页的可见路径：页面滚动使用共享 `GscPageScrollViewer`，表格保留有限虚拟化视口；批量操作拆成主操作行与表格后次级动作区，窄屏 Inspector 改为详情按钮，保留所有真实命令、Binding、选择和安全语义。
+- `ApplyResponsiveLayout` 改用实测页面高度，并把 Inspector 堆叠/详情按钮和表格有限高度作为同一响应式决策；RenderHarness 新增真实 `AcrylicProductionShellView` 嵌套夹具，验证 1040×700、1100×720、1366×768 的 PageHost 与滚动几何。
+- `UiLayoutAnalyzer` 新增祖先裁剪交集、表格最低可见高度、页面滚动可达性和动作控件命中区门禁；修正媒体页在存在明确页面滚动通道时的纵向填充误报，源码门禁同步识别 `MediaInboxPageScrollViewer`。
+- 验证：RenderHarness Release 构建 0 warning/0 error，`render-qa OK`；UI audit Fidelity 0/失败路由 0/HIGH 0；Playnite `342/404` 通过、62 跳过；`validate-source.py` 通过；WPF 静态审查 0 error；前后截图和报告归档到 `docs/design/reviews/2026-09-07-ui3/`。未执行真实 Playnite 宿主。
+
 ## 2026-09-06 修复 FLiNG 后台下载 403
 
 - 定位 `FlingTrainerCatalogSource.DownloadAsync`：详情页能读、文件下载被 403，原请求没有详情页来源和 Cookie 会话。改为 `HttpClientHandler` 显式 CookieContainer，统一浏览器风格请求头，下载前预热对应官方 trainer 详情页并携带 Referer。

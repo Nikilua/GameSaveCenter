@@ -12,6 +12,7 @@ namespace GameSaveCenter.Playnite.Views
         private double responsiveHeight;
         private bool isApplyingLayout;
         private bool mediaInspectorOpen;
+        private bool mediaInboxInspectorOpen;
 
         public MediaCenterView()
         {
@@ -37,6 +38,8 @@ namespace GameSaveCenter.Playnite.Views
                 ? "可按住 Ctrl / Shift 多选"
                 : ignored ? $"已选择 {count} 项；可恢复到待归类" : $"已选择 {count} 项；目标游戏可在此处调整";
             CommandManager.InvalidateRequerySuggested();
+            if (IsLoaded && responsiveWidth > 0 && responsiveHeight > 0)
+                ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
         }
 
         private void OnMediaInboxModeSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -77,6 +80,17 @@ namespace GameSaveCenter.Playnite.Views
                 // summary information at short heights. Local list/inspector surfaces own
                 // overflow so the whole workspace does not become a scroll canvas.
                 MediaSummaryPanel.Visibility = Visibility.Visible;
+                var compactHeight = height < 760;
+                MediaSummaryPanel.MinHeight = compactHeight ? 68 : 84;
+                MediaSummaryPanel.Padding = compactHeight
+                    ? new Thickness(6, 8, 6, 8)
+                    : new Thickness(6, 14, 6, 14);
+                MediaInboxInfoBand.Padding = compactHeight
+                    ? new Thickness(10, 6, 10, 6)
+                    : new Thickness(14, 11, 14, 11);
+                MediaInboxInfoDescription.Visibility = compactHeight
+                    ? Visibility.Collapsed
+                    : Visibility.Visible;
                 var sourceStack = width < 900;
                 MediaSourceFields.Columns = sourceStack ? 1 : 2;
                 MediaSourceLayout.ColumnDefinitions[1].Width = sourceStack ? new GridLength(0) : new GridLength(14);
@@ -101,38 +115,57 @@ namespace GameSaveCenter.Playnite.Views
                     ? Math.Max(240, Math.Min(520, height * 0.60))
                     : 520;
 
-                // The inbox is a real two-pane workspace, not a table followed by a
-                // hidden action strip. Keep the preview/classification controls in their
-                // own measured column on wide hosts and move that complete inspector below
-                // the table only at the compact breakpoint.
-                // The inbox inspector is part of the primary task: at the normal
-                // Playnite content width (~740 DIP after the sidebar) keep it beside
-                // the table so a selected item immediately exposes its preview and
-                // classification actions. Only genuinely narrow panes stack it.
-                var inboxStack = width < 700;
+                // The inbox inspector is useful, but it must not consume the list's
+                // minimum readable width. Calculate the breakpoint from the table and
+                // inspector budgets rather than from the outer window size. In a narrow
+                // pane the inspector becomes an explicit, keyboard-reachable details
+                // action; opening it moves the same inspector below the table.
                 var inboxInspectorWidth = MediaInboxLayout.TryFindResource("GscInspectorWidth") is GridLength inboxLength
                     ? inboxLength
                     : new GridLength(360);
-                MediaInboxLayout.ColumnDefinitions[1].Width = inboxStack ? new GridLength(0) : new GridLength(14);
-                MediaInboxLayout.ColumnDefinitions[2].Width = inboxStack ? new GridLength(0) : inboxInspectorWidth;
-                MediaInboxLayout.RowDefinitions[1].Height = inboxStack
+                var inboxAvailableWidth = MediaInboxLayout.ActualWidth > 0
+                    ? MediaInboxLayout.ActualWidth
+                    : width;
+                const double inboxTableMinimumWidth = 520;
+                var inboxStack = inboxAvailableWidth < inboxTableMinimumWidth + inboxInspectorWidth.Value + 14;
+                var hasInboxSelection = MediaInboxGrid.SelectedItem != null;
+                var showInboxInspector = !inboxStack || (mediaInboxInspectorOpen && hasInboxSelection);
+                MediaInboxLayout.ColumnDefinitions[1].Width = inboxStack || !showInboxInspector
+                    ? new GridLength(0)
+                    : new GridLength(14);
+                MediaInboxLayout.ColumnDefinitions[2].Width = inboxStack || !showInboxInspector
+                    ? new GridLength(0)
+                    : inboxInspectorWidth;
+                MediaInboxLayout.RowDefinitions[1].Height = inboxStack && showInboxInspector
                     ? new GridLength(1, GridUnitType.Auto)
                     : new GridLength(0);
                 Grid.SetColumn(MediaInboxInspectorScrollViewer, inboxStack ? 0 : 2);
                 Grid.SetColumnSpan(MediaInboxInspectorScrollViewer, inboxStack ? 3 : 1);
                 Grid.SetRow(MediaInboxInspectorScrollViewer, inboxStack ? 1 : 0);
-                MediaInboxInspectorScrollViewer.Margin = inboxStack ? new Thickness(0, 10, 0, 0) : new Thickness(0);
-                MediaInboxInspectorScrollViewer.MaxHeight = inboxStack
+                MediaInboxInspectorScrollViewer.Margin = inboxStack && showInboxInspector
+                    ? new Thickness(0, 10, 0, 0)
+                    : new Thickness(0);
+                MediaInboxInspectorScrollViewer.Visibility = showInboxInspector
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
+                MediaInboxInspectorScrollViewer.MaxHeight = inboxStack && showInboxInspector
                     ? Math.Max(260, Math.Min(520, height * 0.62))
                     : double.PositiveInfinity;
+                MediaInboxCompactDetailsButton.Visibility = inboxStack && hasInboxSelection
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
+                MediaInboxCompactDetailsButton.Content = mediaInboxInspectorOpen
+                    ? "收起预览与归类 ›"
+                    : "查看预览与归类 ›";
 
                 // Both media tables retain a bounded, readable viewport. The surrounding tab
                 // surface scrolls the page-level info/actions when this viewport cannot fit
                 // below the summary cards; the DataGrid/ListBox still own row virtualization
                 // and their own internal scrolling.
                 MediaInboxGrid.MinHeight = 236d;
-                MediaInboxGrid.Height = double.NaN;
-                MediaInboxGrid.MaxHeight = double.PositiveInfinity;
+                var inboxGridHeight = Math.Max(236, Math.Min(420, height - (compactHeight ? 220 : 300)));
+                MediaInboxGrid.Height = inboxGridHeight;
+                MediaInboxGrid.MaxHeight = inboxGridHeight;
                 MediaGrid.MinHeight = 236d;
                 MediaGrid.Height = double.NaN;
                 MediaGrid.MaxHeight = double.PositiveInfinity;
@@ -237,7 +270,19 @@ namespace GameSaveCenter.Playnite.Views
         {
             if (MediaGrid.SelectedItem == null) return;
             mediaInspectorOpen = !mediaInspectorOpen;
-            ApplyResponsiveLayout(responsiveWidth > 0 ? responsiveWidth : ActualWidth, responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+                ApplyResponsiveLayout(responsiveWidth > 0 ? responsiveWidth : ActualWidth, responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+        }
+
+        private void OnMediaInboxCompactDetailsClick(object sender, RoutedEventArgs e)
+        {
+            if (MediaInboxGrid.SelectedItem == null) return;
+            mediaInboxInspectorOpen = !mediaInboxInspectorOpen;
+            ApplyResponsiveLayout(
+                responsiveWidth > 0 ? responsiveWidth : ActualWidth,
+                responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+            if (mediaInboxInspectorOpen)
+                MediaInboxInspectorScrollViewer.Focus();
+            e.Handled = true;
         }
 
     }

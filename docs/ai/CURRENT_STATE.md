@@ -1,6 +1,13 @@
 # GameSaveCenter 当前事实入口
 
-> 更新时间：2026-09-06。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
+> 更新时间：2026-09-07。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
+
+## 2026-09-07 UI3-00/01 媒体收件箱可见性与紧凑布局已完成
+
+- `MediaCenterView` 的“待归类”页现在使用共享页面滚动样式承载有限的 `MediaInboxGrid` 视口；批量主操作、目标游戏和查看详情保持一行，忽略/预览/应用/恢复/撤销等次级动作移到表格后的页内滚动区。窄宽度下详情面板默认折叠为可访问的“查看预览与归类”按钮，真实命令、Binding、选择和虚拟化未改。
+- `ApplyResponsiveLayout` 使用实际页面可用高度计算表格高度；`RenderHarness` 不再把外层窗口高度冒充页面高度，并新增 1040×700、1100×720、1366×768 生产壳层 `PageHost` 几何夹具。布局审计新增祖先裁剪交集、首屏表格高度和动作控件命中区检查，当前媒体页无 HIGH/Fidelity/失败路由。
+- 证据保存在 [`docs/design/reviews/2026-09-07-ui3/`](../design/reviews/2026-09-07-ui3/)，包含同一 1040×700 夹具的改造前后截图。Release RenderHarness 构建 0 warning/0 error，`render-qa OK`；Playnite 测试 `342/404` 通过、62 跳过，`validate-source.py` 通过。WPF 静态审查仍有既有 warning/info，未新增 error。
+- 以上是离屏/WPF 自动证据，不等同实际 Playnite 宿主渲染；真实宿主、DPI、高对比度和用户大媒体库仍需人工复核。下一阶段继续处理 UI3-02/03 的云队列明细分页入口和可找回归类批次。
 
 ## 2026-09-06 修复 FLiNG 后台下载 403
 

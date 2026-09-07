@@ -1386,6 +1386,7 @@ def check_final_redesign_guards() -> None:
             and any(
                 local_name(node.tag) == "ScrollViewer"
                 and node.attrib.get("{http://schemas.microsoft.com/winfx/2006/xaml}Name", "") in {
+                    "MediaInboxPageScrollViewer",
                     "MediaInboxScrollSurface",
                     "MediaCurrentScrollSurface",
                     "MaintenanceDiagnosticsScrollSurface",

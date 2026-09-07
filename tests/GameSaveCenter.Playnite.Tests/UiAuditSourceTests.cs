@@ -44,7 +44,27 @@ public sealed class UiAuditSourceTests
         Assert.Contains("NESTED_VERTICAL_SCROLL", layout);
         Assert.Contains("TABLE_VIEWPORT_TOO_SHORT", layout);
         Assert.Contains("TOOLBAR_VERTICAL_EXPANSION", layout);
+        Assert.Contains("PRIMARY_VIEWPORT_UNREACHABLE", layout);
+        Assert.Contains("CONTROL_CLIPPED", layout);
+        Assert.Contains("RunProductionShellMediaProbe", program);
         Assert.Contains("%USERPROFILE%", sanitizer);
+    }
+
+    [Fact]
+    public void MediaInboxKeepsFiniteGridAndCompactInspectorContracts()
+    {
+        var root = FindRepositoryRoot();
+        var xaml = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
+        var codeBehind = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml.cs"));
+        var sourceValidator = File.ReadAllText(Path.Combine(root, "scripts", "validate-source.py"));
+
+        Assert.Contains("x:Name=\"MediaInboxPageScrollViewer\"", xaml);
+        Assert.Contains("Style=\"{DynamicResource GscPageScrollViewer}\"", xaml);
+        Assert.Contains("x:Name=\"MediaInboxCompactDetailsButton\"", xaml);
+        Assert.Contains("x:Name=\"MediaInboxSecondaryActions\"", xaml);
+        Assert.Contains("x:Name=\"MediaInboxGrid\" Tag=\"FiniteViewport\"", xaml);
+        Assert.Contains("mediaInboxInspectorOpen", codeBehind);
+        Assert.Contains("MediaInboxPageScrollViewer", sourceValidator);
     }
 
     [Fact]

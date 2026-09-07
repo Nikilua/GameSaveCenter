@@ -104,7 +104,11 @@ public static class UiAuditRunner
                 "CONTROL_USABILITY_GEOMETRY",
                 "ESSENTIAL_COLUMN_VISIBILITY",
                 "SHORT_SEMANTIC_VALUE_TRIMMING",
-                "INTERACTIVE_INSPECTOR_USABILITY"
+                "INTERACTIVE_INSPECTOR_USABILITY",
+                "PRIMARY_SCROLL_CHANNEL_MISSING",
+                "PRIMARY_VIEWPORT_TOO_SHORT",
+                "PRIMARY_VIEWPORT_UNREACHABLE",
+                "CONTROL_CLIPPED"
             };
             var fidelityFailures = result.Warnings
                 .Where(warning => fidelityCodes.Contains(warning.Code))

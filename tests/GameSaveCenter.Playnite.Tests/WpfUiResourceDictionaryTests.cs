@@ -1042,7 +1042,10 @@ public sealed class WpfUiResourceDictionaryTests
                 Assert.Empty(directScrollViewers);
             }
             Assert.True(root.Descendants().Any(element => element.Name.LocalName == "Grid"), $"{file} must expose a Grid workspace.");
-            Assert.DoesNotContain("PageScrollViewer\" Style=\"{DynamicResource GscPageScrollViewer}", text);
+            if (file == "MediaCenterView.xaml")
+                Assert.Contains("x:Name=\"MediaInboxPageScrollViewer\" Style=\"{DynamicResource GscPageScrollViewer}", text);
+            else
+                Assert.DoesNotContain("PageScrollViewer\" Style=\"{DynamicResource GscPageScrollViewer}", text);
         }
 
         var trainer = File.ReadAllText(Path.Combine(viewDirectory, "TrainerCenterView.xaml"));

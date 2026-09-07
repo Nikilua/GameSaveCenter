@@ -4,6 +4,13 @@
 
 > 新会话短入口：先读 [`docs/ai/CURRENT_STATE.md`](ai/CURRENT_STATE.md)。本文下方的历史交接按时间保留；除顶部最新阶段和明确标注的覆盖关系外，旧条目只用于追溯，不得覆盖当前事实入口。
 
+## 2026-09-07 UI3-00/01 媒体收件箱可见性与紧凑布局
+
+- 媒体收件箱已完成首轮可见性修复：共享页面滚动承载页内容，`MediaInboxGrid` 保持有限高度和 Recycling 虚拟化；选择/视图、目标/主操作、次级动作分层，Inspector 在窄宽度下由“查看预览与归类”按钮打开，业务命令与安全语义未改。
+- RenderHarness 现在把真实 PageHost 测量高度传入响应式布局，并用生产 `AcrylicProductionShellView` 验证 1040×700、1100×720、1366×768；布局审计检查祖先裁剪后的实际可见交集、表格首屏高度和动作控件命中区域，而非只检查元素存在。
+- 当前交付证据：[`docs/design/reviews/2026-09-07-ui3/`](design/reviews/2026-09-07-ui3/) 的同夹具前后截图；RenderHarness `render-qa OK`，UI audit 无 HIGH/Fidelity/失败路由，源码门禁和 Playnite 测试通过。静态审查的既有 warning/info 不等于本阶段新增错误。
+- 尚未完成：真实 Playnite 宿主渲染、DPI/高对比度、用户大媒体库连续滚动；下一阶段按 UI3-02/03 接云队列明细分页入口和可找回归类批次。不要把离屏壳层夹具描述成真实宿主验收。
+
 ## 2026-09-06 修复 FLiNG 后台下载 403
 
 - FLiNG 详情页可访问但下载文件返回 403；Worker 原请求没有复用详情页 Cookie，也没有携带详情页 Referer。现已在 `FlingTrainerCatalogSource` 中维护 CookieContainer，发送浏览器风格请求头，先预热对应官方 `/trainer/` 详情页，再按同一会话下载。

@@ -1317,7 +1317,10 @@ public static class Program
     private static void RenderMedia(string outputRoot, int windowW, int windowH, double contentW, double contentH, StringBuilder report)
     {
         var view = new MediaCenterView { DataContext = new FakeDashboardData() };
-        RenderTabs(view, outputRoot, "Media", windowW, windowH, contentW, contentH, report, () => view.ApplyResponsiveLayout(contentW, windowH));
+        // The page receives the measured workspace height, not the outer window height.
+        // Passing windowH here hid the compact-height path and made the offscreen fixture
+        // disagree with the production shell's PageHost geometry.
+        RenderTabs(view, outputRoot, "Media", windowW, windowH, contentW, contentH, report, () => view.ApplyResponsiveLayout(contentW, contentH));
     }
 
     private static void RenderSave(string outputRoot, int windowW, int windowH, double contentW, double contentH, StringBuilder report)
@@ -2176,7 +2179,71 @@ public static class Program
             }
         }
 
+        RunProductionShellMediaProbe(outputRoot, report);
         RunSidebarTransitionProbe(report);
+    }
+
+    private static void RunProductionShellMediaProbe(string outputRoot, StringBuilder report)
+    {
+        report.AppendLine();
+        report.AppendLine("Production shell PageHost geometry QA (media inbox)");
+        foreach (var (windowW, windowH) in new[] { (1040, 700), (1100, 720), (1366, 768) })
+        {
+            try
+            {
+                var data = new FakeDashboardData(60);
+                var shell = new AcrylicProductionShellView { DataContext = data };
+                var media = new MediaCenterView { DataContext = data };
+                if (shell.PageHostForAudit is not ContentControl pageHost)
+                    throw new InvalidOperationException("Production shell PageHost is not a ContentControl.");
+                pageHost.Content = media;
+
+                var host = new Grid
+                {
+                    Width = windowW,
+                    Height = windowH,
+                    Background = CreateHarnessBackground(shell),
+                    ClipToBounds = true
+                };
+                host.Children.Add(shell);
+                shell.ApplyResponsiveLayout(windowW, windowH);
+                host.Measure(new Size(windowW, windowH));
+                host.Arrange(new Rect(0, 0, windowW, windowH));
+                host.UpdateLayout();
+                shell.ApplyResponsiveLayout(windowW, windowH);
+                media.ApplyResponsiveLayout(pageHost.ActualWidth, pageHost.ActualHeight);
+                host.UpdateLayout();
+
+                var tabs = FindVisualChildren<TabControl>(media).FirstOrDefault();
+                if (tabs == null)
+                    throw new InvalidOperationException("Media TabControl is missing in production PageHost.");
+                tabs.SelectedIndex = 0;
+                host.UpdateLayout();
+                media.ApplyResponsiveLayout(pageHost.ActualWidth, pageHost.ActualHeight);
+                host.UpdateLayout();
+
+                var pageScroller = FindVisualChildren<ScrollViewer>(media)
+                    .FirstOrDefault(candidate => candidate.Name == "MediaInboxPageScrollViewer");
+                var grid = FindVisualChildren<DataGrid>(media)
+                    .FirstOrDefault(candidate => candidate.Name == "MediaInboxGrid");
+                if (pageHost.ActualWidth <= 0 || pageHost.ActualHeight <= 0 || pageScroller == null || grid == null)
+                    throw new InvalidOperationException("Production PageHost did not measure the media inbox surface.");
+                if (pageScroller.HorizontalScrollBarVisibility != ScrollBarVisibility.Disabled)
+                    s_problems.Add($"Shell Media {windowW}x{windowH} page surface enables horizontal scrolling.");
+                if (grid.ActualHeight < 212)
+                    s_problems.Add($"Shell Media {windowW}x{windowH} inbox grid is shorter than four readable rows ({grid.ActualHeight:0} DIP).");
+
+                SavePng(host, Path.Combine(outputRoot, $"Shell-Media-{windowW}x{windowH}.png"));
+                report.AppendLine(
+                    $"  Shell Media {windowW}x{windowH}: PageHost={pageHost.ActualWidth:0}x{pageHost.ActualHeight:0}, "
+                    + $"scroll={pageScroller.ActualWidth:0}x{pageScroller.ActualHeight:0} extent={pageScroller.ExtentHeight:0}, "
+                    + $"grid={grid.ActualWidth:0}x{grid.ActualHeight:0}");
+            }
+            catch (Exception ex)
+            {
+                s_problems.Add($"Shell Media {windowW}x{windowH} probe failed: {ex.Message}");
+            }
+        }
     }
 
     private static void RunSidebarTransitionProbe(StringBuilder report)
