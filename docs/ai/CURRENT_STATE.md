@@ -2,6 +2,19 @@
 
 > 更新时间：2026-09-07。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-07 UI3-07 缓存窗口翻页与滚动锚点已完成
+
+- `MediaCenterView` 在当前游戏媒体和媒体收件箱点击“加载更多”前捕获可见首项、滚动偏移和当前多选 ID；集合 Reset 后按 `VirtualizingWrapPanel`/DataGrid 的滚动模型恢复位置与可见选择，编辑中的媒体对象仍由 ViewModel 保持。
+- 三个缓存窗口继续使用既有 2000 项上限。窗口裁剪掉锚点时不伪造位置恢复：页面显示“列表窗口已前移，当前位置不可恢复”和“返回最新”，分别通过 `ReloadMediaWindowCommand`/`ReloadMediaInboxCommand` 重新载入较新的首批内容。
+- 多选语义明确为“仅当前保留窗口参与批量操作”；跨模式分别保存选中 ID，窗口外 ID 不会被批量命令静默覆盖。RenderHarness Fake 已补齐新增命令和加载统计绑定。
+- 验证：Release 构建 0 warning/0 error；Core `72/72`、Worker `296/297`（1 跳过）、Playnite `355/417`（62 跳过）；XAML `19/19`、源码校验、WPF 静态审查 `0 error`、双主题/多尺寸/resize `render-qa OK`、`git diff --check` 均通过。代表证据保留在 [`docs/design/reviews/2026-09-07-quality/`](../design/reviews/2026-09-07-quality/)。未运行真实 Playnite 宿主；真实大媒体库连续滚动、DPI、高对比度和用户数据仍需人工复核。
+
+## 2026-09-07 UI3 完成质量复核（文档交付）
+
+- 新增 [完成质量复核与后续计划](QUALITY_REVIEW_2026-09-07.md)，冻结基线 `b0aa85a`。UI3-00～06 主体完成；审阅时 UI3-07 仍有并发未提交改动，不纳入验收结果。
+- 隔离源码 Release：0 warning/error；Core 72 通过，Worker 296 通过/1 跳过，Playnite 352 通过/62 跳过；XAML、源码门禁、静态 UI 检查、RenderHarness 通过。未验证真实 Playnite。
+- 下一步先验收 UI3-07，再处理媒体上传重试语义、目标标签导航、紧凑维护列表空间和动态分页一致性；之后优化任务密度、设置首屏与动效。离屏证据位于 `docs/design/reviews/2026-09-07-quality/`，其中独立页面画布与生产 Shell 几何应明确区分。
+
 ## 2026-09-07 UI3-06 存档与维护详情可读性已完成
 
 - 存档历史表将时间收敛为 `MM-dd HH:mm`，完整 `yyyy-MM-dd HH:mm:ss` 仍在单元格和 Inspector Tooltip；窄宽度下给“类型/状态”保留语义宽度，备注继续弹性占用。Inspector 把恢复可用性、隔离校验风险和验证入口置于备注编辑之前，恢复仍沿用预检、确认和 PreRestore 保护流程。

@@ -2,6 +2,19 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-07 UI3-07 缓存窗口翻页与滚动锚点
+
+- `MediaCenterView` 为当前游戏媒体 `ListBox` 和媒体收件箱 `DataGrid` 增加加载更多前的滚动锚点捕获，集合 Reset 后按实际滚动面恢复首项位置；恢复失败会显示返回最新入口，不把裁剪后的窗口误报为原位置。
+- 维护当前/待归类/已忽略三套 2000 项缓存的多选语义：按模式记录选中 ID，恢复时只重新选择当前保留项，批量命令只接收当前控件 `SelectedItems`，窗口外 ID 明确不参与操作。ViewModel 的 SelectedMedia/SelectedInboxMedia 和编辑草稿不因翻页被重置。
+- 新增 `ReloadMediaWindowCommand`、`ReloadMediaInboxCommand`，补齐离屏夹具绑定；新增第 11 页跨容量窗口、固定选中项保留、锚点/恢复入口契约回归。
+- 验证：Release 构建无警告/错误；Core `72/72`、Worker `296/297`（1 跳过）、Playnite `355/417`（62 跳过），XAML `19/19`，源码校验、WPF 静态审查 0 error、RenderHarness 双主题/多尺寸/resize `render-qa OK`。代表截图和报告保留在 `docs/design/reviews/2026-09-07-quality/`；已清理本阶段 `.tmp/ui3-07-render` 后提交；未执行真实 Playnite 宿主。
+
+## 2026-09-07 UI3 完成质量复核与开发计划（仅文档）
+
+- 用户要求检查完成质量并规划后续。为避开并发 UI3-07 编辑，从 `b0aa85a` 归档隔离源码，复核 UI3-00～06、真实命令链、动态分页及各页离屏效果；没有修改生产源码或测试，没有安装/操作用户数据。
+- 新增 `QUALITY_REVIEW_2026-09-07.md` 与六张原始截图、渲染报告；列出媒体重试语义、目标标签导航、维护紧凑详情挤压列表、动态分页一致性四项收口任务，以及任务密度/设置/动效计划。明确代码确认、离屏复现与待验证边界。
+- 本轮实跑：Release 0 warning/error；Core 72 通过，Worker 296 通过/1 跳过，Playnite 352 通过/62 跳过；XAML 19/19、validate-source、WPF 静态扫描 src/GameSaveCenter.Playnite（0 errors/20 warnings/157 info）、render-qa OK。真实 Playnite 未验证。隔离构建和未引用渲染产物在交付前清理，仅保留文档证据。
+
 ## 2026-09-07 UI3-06 存档与维护详情可读性
 
 - 存档历史时间列和 Inspector 改为 `MM-dd HH:mm`，完整时间通过 Tooltip 保留；响应式列宽提高类型/状态可读性并保留备注弹性列。Inspector 顺序调整为版本摘要 → 恢复可用性/风险 → 备注与锁定 → 恢复操作，未改变预检、确认、PreRestore 和撤销语义。

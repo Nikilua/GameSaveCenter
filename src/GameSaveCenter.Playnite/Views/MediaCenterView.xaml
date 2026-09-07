@@ -372,9 +372,11 @@
                         <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                         <WrapPanel Grid.Row="0" VerticalAlignment="Center">
                             <TextBlock Text="{Binding MediaInboxLoadedSummary, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,10,4" AutomationProperties.Name="媒体收件箱加载统计"/>
+                            <TextBlock x:Name="MediaInboxWindowAnchorNotice" Text="列表窗口已前移，当前位置不可恢复" Style="{DynamicResource GscCaptionStyle}" Foreground="{DynamicResource GscWarningBrush}" VerticalAlignment="Center" Margin="0,0,8,4" Visibility="Collapsed"/>
+                            <ui:Button x:Name="ReloadMediaInboxButton" Content="返回最新" Command="{Binding ReloadMediaInboxCommand}" Click="OnReloadMediaInboxClick" ToolTip="重新载入较新的媒体收件箱内容并回到列表顶部" AutomationProperties.Name="返回最新媒体收件箱内容" Visibility="Collapsed" Margin="0,0,8,4"/>
                             <TextBlock Text="{Binding MediaClassificationPreviewSummary}" Style="{DynamicResource GscCaptionStyle}" TextTrimming="CharacterEllipsis" Width="220" VerticalAlignment="Center" Margin="0,0,10,4" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" AutomationProperties.Name="媒体归类建议状态"/>
                             <TextBlock Text="选择媒体后可在右侧预览并归类" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,10,4"/>
-                            <ui:Button Content="加载更多" Command="{Binding LoadMoreMediaInboxCommand}" ToolTip="加载下一页媒体收件箱项目" AutomationProperties.Name="加载更多媒体收件箱项目" Margin="0,0,0,4">
+                            <ui:Button Content="加载更多" Command="{Binding LoadMoreMediaInboxCommand}" Click="OnLoadMoreMediaInboxClick" ToolTip="加载下一页媒体收件箱项目" AutomationProperties.Name="加载更多媒体收件箱项目" Margin="0,0,0,4">
                                 <ui:Button.Style>
                                     <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiSecondaryButton}">
                                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -519,7 +521,9 @@
                             <StackPanel x:Name="MediaCurrentActionHint" Orientation="Horizontal" VerticalAlignment="Center">
                                 <TextBlock Text="已选媒体可在右侧查看详情" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center"/>
                                 <TextBlock Text="{Binding MediaLoadedSummary, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="12,0,8,0" AutomationProperties.Name="当前游戏媒体加载统计"/>
-                                <ui:Button Content="加载更多" Command="{Binding LoadMoreMediaCommand}" ToolTip="加载当前筛选条件下的下一页媒体" AutomationProperties.Name="加载更多当前游戏媒体">
+                                <TextBlock x:Name="MediaWindowAnchorNotice" Text="列表窗口已前移，当前位置不可恢复" Style="{DynamicResource GscCaptionStyle}" Foreground="{DynamicResource GscWarningBrush}" VerticalAlignment="Center" Margin="8,0,8,0" Visibility="Collapsed"/>
+                                <ui:Button x:Name="ReloadMediaWindowButton" Content="返回最新" Command="{Binding ReloadMediaWindowCommand}" Click="OnReloadMediaWindowClick" ToolTip="重新载入较新的媒体内容并回到列表顶部" AutomationProperties.Name="返回最新媒体内容" Visibility="Collapsed" Margin="0,0,8,0"/>
+                                <ui:Button Content="加载更多" Command="{Binding LoadMoreMediaCommand}" Click="OnLoadMoreMediaClick" ToolTip="加载当前筛选条件下的下一页媒体" AutomationProperties.Name="加载更多当前游戏媒体">
                                     <ui:Button.Style>
                                         <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiSecondaryButton}">
                                             <Setter Property="Visibility" Value="Collapsed"/>

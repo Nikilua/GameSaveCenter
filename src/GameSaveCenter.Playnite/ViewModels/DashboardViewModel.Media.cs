@@ -205,6 +205,21 @@ namespace GameSaveCenter.Playnite.ViewModels
             await LoadMediaPageAsync(false, SelectedGame.PlayniteId);
         }
 
+        private async Task ReloadMediaWindowAsync()
+        {
+            if (SelectedGame == null || CurrentWorkspace != WorkspaceKind.Media) return;
+            await LoadMediaPageAsync(true, SelectedGame.PlayniteId);
+        }
+
+        private async Task ReloadMediaInboxWindowAsync()
+        {
+            if (CurrentWorkspace != WorkspaceKind.Media) return;
+
+            var requestGeneration = Interlocked.Increment(ref mediaInboxLoadGeneration);
+            var mode = MediaInboxMode;
+            await LoadMediaInboxModeAsync(mode, requestGeneration);
+        }
+
         private async Task LoadMediaPageAsync(bool reset, string playniteId)
         {
             var requestGeneration = reset

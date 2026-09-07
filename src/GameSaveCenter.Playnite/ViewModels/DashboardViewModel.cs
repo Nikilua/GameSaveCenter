@@ -267,6 +267,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             RejectCandidateCommand = new RelayCommand(_ => Run(RejectCandidateAsync), _ => !IsBusy && SelectedGame != null && SelectedCandidate != null && !string.Equals(SelectedCandidate.Status, "Accepted", StringComparison.OrdinalIgnoreCase));
             ReassignMediaCommand = new RelayCommand(_ => Run(ReassignMediaAsync), _ => !IsBusy && SelectedMedia != null && MediaTargetGame != null);
             LoadMoreMediaCommand = new RelayCommand(_ => Run(LoadMoreMediaPageAsync), _ => !IsBusy && CurrentWorkspace == WorkspaceKind.Media && SelectedGame != null && MediaPageHasMore);
+            ReloadMediaWindowCommand = new RelayCommand(_ => Run(ReloadMediaWindowAsync), _ => !IsBusy && CurrentWorkspace == WorkspaceKind.Media && SelectedGame != null);
             UpdateMediaMetadataCommand = new RelayCommand(_ => Run(UpdateMediaMetadataAsync), _ => !IsBusy && SelectedMedia != null);
             FavoriteSelectedMediaCommand = new RelayCommand(value => Run(() => UpdateMediaMetadataBatchAsync(value, true, false)), _ => !IsBusy);
             UnfavoriteSelectedMediaCommand = new RelayCommand(value => Run(() => UpdateMediaMetadataBatchAsync(value, false, false)), _ => !IsBusy);
@@ -284,6 +285,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             RefreshMediaClassificationHistoryCommand = new RelayCommand(_ => Run(() => LoadMediaClassificationHistoryAsync(true)), _ => !IsBusy);
             LoadMoreMediaClassificationHistoryCommand = new RelayCommand(_ => Run(() => LoadMediaClassificationHistoryAsync(false)), _ => !IsBusy && MediaClassificationHistoryHasMore);
             LoadMoreMediaInboxCommand = new RelayCommand(_ => Run(LoadMoreMediaInboxPageAsync), _ => !IsBusy && MediaInboxPageHasMore);
+            ReloadMediaInboxCommand = new RelayCommand(_ => Run(ReloadMediaInboxWindowAsync), _ => !IsBusy && CurrentWorkspace == WorkspaceKind.Media);
             CancelTaskCommand = new RelayCommand(_ => _ = CancelSelectedTaskAsync(), _ => SelectedTask != null && SelectedTask.CanCancel && !IsCancellingTask);
             RetryTaskCommand = new RelayCommand(_ => Run(RetrySelectedTaskAsync), _ => !IsBusy && CanRetrySelectedTask());
             RetryAllTasksCommand = new RelayCommand(_ => Run(RetryAllTasksAsync), _ => !IsBusy && RetryableTaskCount > 0);
@@ -1113,6 +1115,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand RejectCandidateCommand { get; }
         public ICommand ReassignMediaCommand { get; }
         public ICommand LoadMoreMediaCommand { get; }
+        public ICommand ReloadMediaWindowCommand { get; }
         public ICommand UpdateMediaMetadataCommand { get; }
         public ICommand FavoriteSelectedMediaCommand { get; }
         public ICommand UnfavoriteSelectedMediaCommand { get; }
@@ -1130,6 +1133,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand RefreshMediaClassificationHistoryCommand { get; }
         public ICommand LoadMoreMediaClassificationHistoryCommand { get; }
         public ICommand LoadMoreMediaInboxCommand { get; }
+        public ICommand ReloadMediaInboxCommand { get; }
         public ICommand CancelTaskCommand { get; }
         public ICommand RetryTaskCommand { get; }
         public ICommand RetryAllTasksCommand { get; }
@@ -4060,11 +4064,11 @@ namespace GameSaveCenter.Playnite.ViewModels
                 UpdateBackupMetadataCommand, CompareBackupCommand, PreviewRetentionCommand,
                 AddMediaSourceCommand, AcceptCandidateCommand, RejectCandidateCommand, ReassignMediaCommand,
                 UpdateMediaMetadataCommand,OpenSelectedMediaCommand,RevealSelectedMediaCommand,
-                LoadMoreMediaCommand, OpenCloudQueueCommand, OpenMediaWorkspaceCommand, OpenSelectedFindingNavigationCommand, RefreshCloudTransfersCommand, LoadMoreCloudTransfersCommand, VerifyCloudTransferCommand, RetryCloudUploadCommand,
+                LoadMoreMediaCommand, ReloadMediaWindowCommand, OpenCloudQueueCommand, OpenMediaWorkspaceCommand, OpenSelectedFindingNavigationCommand, RefreshCloudTransfersCommand, LoadMoreCloudTransfersCommand, VerifyCloudTransferCommand, RetryCloudUploadCommand,
                 AssignInboxMediaCommand, IgnoreInboxMediaCommand, AssignInboxMediaBatchCommand, IgnoreInboxMediaBatchCommand, RestoreIgnoredMediaBatchCommand,
                 PreviewMediaClassificationCommand, ApplyMediaClassificationCommand, UndoMediaClassificationCommand,
                 RefreshMediaClassificationHistoryCommand, LoadMoreMediaClassificationHistoryCommand,
-                LoadMoreMediaInboxCommand,
+                LoadMoreMediaInboxCommand, ReloadMediaInboxCommand,
                 CancelTaskCommand, RetryTaskCommand, RetryAllTasksCommand, LoadMoreTasksCommand, CopyTaskErrorCommand, RefreshDiagnosticsCommand, DiagnoseGameCommand, SyncGameDescriptorCommand, RetryGameMatchCommand, ClearGamePickerFiltersCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
                 StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,RunHealthInspectionCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,RefreshRetentionSimulationCommand,ApplyRetentionSimulationCommand,RefreshLocalMirrorStatusCommand,SyncLocalMirrorCommand,CopyMaintenanceReportCommand,ExportMaintenanceReportCommand,
                 SaveProcessMappingCommand,DeleteProcessMappingCommand,RunEnvironmentCheckCommand,SkipOnboardingCommand,CompleteOnboardingCommand,OnboardingTestBackupCommand,

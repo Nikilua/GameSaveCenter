@@ -1,8 +1,15 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Threading;
+using GameSaveCenter.Contracts;
+using GameSaveCenter.Playnite.Controls;
 using GameSaveCenter.Playnite.ViewModels;
 
 namespace GameSaveCenter.Playnite.Views
@@ -14,11 +21,75 @@ namespace GameSaveCenter.Playnite.Views
         private bool isApplyingLayout;
         private bool mediaInspectorOpen;
         private bool mediaInboxInspectorOpen;
+        private DashboardViewModel? attachedViewModel;
+        private readonly HashSet<string> selectedMediaIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, HashSet<string>> selectedInboxIdsByMode = new Dictionary<string, HashSet<string>>(StringComparer.Ordinal);
+        private ScrollAnchor? pendingMediaAnchor;
+        private ScrollAnchor? pendingInboxAnchor;
+        private string? pendingInboxAnchorMode;
+        private bool restoringSelection;
+        private bool selectionRestoreQueued;
+        private readonly DispatcherTimer pendingAnchorExpiryTimer;
 
         public MediaCenterView()
         {
             InitializeComponent();
             MediaInspectorScrollViewer.IsVisibleChanged += OnMediaInspectorIsVisibleChanged;
+            Loaded += OnLoaded;
+            Unloaded += OnUnloaded;
+            DataContextChanged += OnDataContextChanged;
+            pendingAnchorExpiryTimer = new DispatcherTimer(DispatcherPriority.Background)
+            {
+                Interval = TimeSpan.FromSeconds(15)
+            };
+            pendingAnchorExpiryTimer.Tick += OnPendingAnchorExpiry;
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e) => AttachViewModel(DataContext as DashboardViewModel);
+
+        private void OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            pendingAnchorExpiryTimer.Stop();
+            DetachViewModel();
+        }
+
+        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+            => AttachViewModel(e.NewValue as DashboardViewModel);
+
+        private void AttachViewModel(DashboardViewModel? viewModel)
+        {
+            if (ReferenceEquals(attachedViewModel, viewModel)) return;
+            DetachViewModel();
+            attachedViewModel = viewModel;
+            if (viewModel == null) return;
+
+            viewModel.Media.CollectionChanged += OnMediaCollectionChanged;
+            viewModel.UnassignedMedia.CollectionChanged += OnInboxCollectionChanged;
+            viewModel.IgnoredMedia.CollectionChanged += OnInboxCollectionChanged;
+        }
+
+        private void DetachViewModel()
+        {
+            if (attachedViewModel == null) return;
+            attachedViewModel.Media.CollectionChanged -= OnMediaCollectionChanged;
+            attachedViewModel.UnassignedMedia.CollectionChanged -= OnInboxCollectionChanged;
+            attachedViewModel.IgnoredMedia.CollectionChanged -= OnInboxCollectionChanged;
+            attachedViewModel = null;
+        }
+
+        private void OnPendingAnchorExpiry(object? sender, EventArgs e)
+        {
+            pendingMediaAnchor = null;
+            pendingInboxAnchor = null;
+            pendingInboxAnchorMode = null;
+            selectionRestoreQueued = false;
+            pendingAnchorExpiryTimer.Stop();
+        }
+
+        private void ArmPendingAnchorExpiry()
+        {
+            pendingAnchorExpiryTimer.Stop();
+            pendingAnchorExpiryTimer.Start();
         }
 
         private void OnMediaInspectorIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -33,14 +104,63 @@ namespace GameSaveCenter.Playnite.Views
         {
             if (MediaInboxGrid == null || MediaInboxBatchSelectionSummary == null)
                 return;
+            if (!restoringSelection && !selectionRestoreQueued)
+                UpdateSelectionDelta(GetInboxSelectionSet(), e);
             var count=MediaInboxGrid.SelectedItems.Count;
-            var ignored=string.Equals(MediaInboxModeCombo.SelectedItem as string,"已忽略",StringComparison.Ordinal);
-            MediaInboxBatchSelectionSummary.Text=count==0
+            var ignored=string.Equals(attachedViewModel?.MediaInboxMode, "已忽略", StringComparison.Ordinal);
+            var tracked = GetInboxSelectionSet().Count;
+            var evicted = Math.Max(0, tracked - count);
+            MediaInboxBatchSelectionSummary.Text=count==0 && evicted == 0
                 ? "可按住 Ctrl / Shift 多选"
-                : ignored ? $"已选择 {count} 项；可恢复到待归类" : $"已选择 {count} 项；目标游戏可在此处调整";
+                : ignored
+                    ? evicted > 0 ? $"当前窗口 {count} 项；另有 {evicted} 项已裁掉，不参与本次操作" : $"已选择 {count} 项；可恢复到待归类"
+                    : evicted > 0 ? $"当前窗口 {count} 项；另有 {evicted} 项已裁掉，不参与本次操作" : $"已选择 {count} 项；目标游戏可在此处调整";
             CommandManager.InvalidateRequerySuggested();
             if (IsLoaded && responsiveWidth > 0 && responsiveHeight > 0)
                 ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
+        }
+
+        private void OnMediaCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (pendingMediaAnchor == null) return;
+            var anchor = pendingMediaAnchor;
+            pendingMediaAnchor = null;
+            pendingAnchorExpiryTimer.Stop();
+            selectionRestoreQueued = true;
+            QueueRestore(MediaGrid, anchor, selectedMediaIds, isInbox: false, mode: null);
+        }
+
+        private void OnInboxCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (pendingInboxAnchor == null || attachedViewModel == null) return;
+            var mode = pendingInboxAnchorMode;
+            if (mode == null || !string.Equals(mode, attachedViewModel.MediaInboxMode, StringComparison.Ordinal))
+                return;
+            var anchor = pendingInboxAnchor;
+            pendingInboxAnchor = null;
+            pendingInboxAnchorMode = null;
+            pendingAnchorExpiryTimer.Stop();
+            selectionRestoreQueued = true;
+            QueueRestore(MediaInboxGrid, anchor, GetInboxSelectionSet(mode), isInbox: true, mode);
+        }
+
+        private void OnLoadMoreMediaClick(object sender, RoutedEventArgs e)
+        {
+            if (attachedViewModel == null) return;
+            CaptureSelection(MediaGrid.SelectedItems, selectedMediaIds);
+            pendingMediaAnchor = CaptureAnchor(MediaGrid);
+            ArmPendingAnchorExpiry();
+        }
+
+        private void OnLoadMoreMediaInboxClick(object sender, RoutedEventArgs e)
+        {
+            if (attachedViewModel == null) return;
+            var mode = attachedViewModel.MediaInboxMode;
+            var selection = GetInboxSelectionSet(mode);
+            CaptureSelection(MediaInboxGrid.SelectedItems, selection);
+            pendingInboxAnchorMode = mode;
+            pendingInboxAnchor = CaptureAnchor(MediaInboxGrid);
+            ArmPendingAnchorExpiry();
         }
 
         private void OnMediaInboxModeSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -270,9 +390,265 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnMediaSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (!restoringSelection && !selectionRestoreQueued)
+                UpdateSelectionDelta(selectedMediaIds, e);
             mediaInspectorOpen = false;
             if (IsLoaded && responsiveWidth > 0 && responsiveHeight > 0)
                 ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
+        }
+
+        private void OnReloadMediaWindowClick(object sender, RoutedEventArgs e)
+        {
+            pendingMediaAnchor = null;
+            HideAnchorNotice(isInbox: false);
+        }
+
+        private void OnReloadMediaInboxClick(object sender, RoutedEventArgs e)
+        {
+            pendingInboxAnchor = null;
+            pendingInboxAnchorMode = null;
+            HideAnchorNotice(isInbox: true);
+        }
+
+        private HashSet<string> GetInboxSelectionSet(string? mode = null)
+        {
+            var key = mode ?? attachedViewModel?.MediaInboxMode ?? "待归类";
+            if (!selectedInboxIdsByMode.TryGetValue(key, out var selection))
+            {
+                selection = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                selectedInboxIdsByMode[key] = selection;
+            }
+            return selection;
+        }
+
+        private static void UpdateSelectionDelta(HashSet<string> selection, SelectionChangedEventArgs args)
+        {
+            foreach (var item in args.RemovedItems)
+            {
+                var id = GetMediaId(item);
+                if (!string.IsNullOrWhiteSpace(id)) selection.Remove(id!);
+            }
+            foreach (var item in args.AddedItems)
+            {
+                var id = GetMediaId(item);
+                if (!string.IsNullOrWhiteSpace(id)) selection.Add(id!);
+            }
+        }
+
+        private static void CaptureSelection(System.Collections.IList selectedItems, HashSet<string> selection)
+        {
+            selection.Clear();
+            foreach (var item in selectedItems)
+            {
+                var id = GetMediaId(item);
+                if (!string.IsNullOrWhiteSpace(id)) selection.Add(id!);
+            }
+        }
+
+        private void QueueRestore(ItemsControl itemsControl, ScrollAnchor anchor, HashSet<string> selection, bool isInbox, string? mode)
+        {
+            Dispatcher.BeginInvoke(
+                DispatcherPriority.Loaded,
+                new Action(() => RestoreAnchor(itemsControl, anchor, selection, isInbox, mode, 0)));
+        }
+
+        private void RestoreAnchor(
+            ItemsControl itemsControl,
+            ScrollAnchor anchor,
+            HashSet<string> selection,
+            bool isInbox,
+            string? mode,
+            int attempt)
+        {
+            if (!IsLoaded || (isInbox && attachedViewModel != null && !string.Equals(attachedViewModel.MediaInboxMode, mode, StringComparison.Ordinal)))
+                return;
+
+            RestoreSelection(itemsControl, selection);
+            var itemIndex = FindItemIndex(itemsControl, anchor.ItemId);
+            if (itemIndex < 0)
+            {
+                ShowAnchorNotice(isInbox, selection.Count);
+                return;
+            }
+
+            var viewer = FindDescendant<ScrollViewer>(itemsControl);
+            if (viewer == null)
+            {
+                RetryRestore(itemsControl, anchor, selection, isInbox, mode, attempt);
+                return;
+            }
+
+            if (itemsControl is DataGrid dataGrid)
+                dataGrid.ScrollIntoView(itemsControl.Items[itemIndex]);
+            else if (itemsControl is ListBox listBox)
+                listBox.ScrollIntoView(itemsControl.Items[itemIndex]);
+            itemsControl.UpdateLayout();
+
+            var container = itemsControl.ItemContainerGenerator.ContainerFromIndex(itemIndex) as FrameworkElement;
+            if (container == null)
+            {
+                RetryRestore(itemsControl, anchor, selection, isInbox, mode, attempt);
+                return;
+            }
+
+            if (FindDescendant<VirtualizingWrapPanel>(itemsControl) != null)
+            {
+                var currentTop = GetRelativeTop(container, viewer);
+                viewer.ScrollToVerticalOffset(viewer.VerticalOffset + currentTop - anchor.RelativeTop);
+            }
+            else if (viewer.CanContentScroll)
+            {
+                var remainder = anchor.LogicalOffset - anchor.ItemIndex;
+                viewer.ScrollToVerticalOffset(itemIndex + Math.Max(0, remainder));
+            }
+            else
+            {
+                var currentTop = GetRelativeTop(container, viewer);
+                viewer.ScrollToVerticalOffset(viewer.VerticalOffset + currentTop - anchor.RelativeTop);
+            }
+
+            HideAnchorNotice(isInbox);
+        }
+
+        private void RetryRestore(
+            ItemsControl itemsControl,
+            ScrollAnchor anchor,
+            HashSet<string> selection,
+            bool isInbox,
+            string? mode,
+            int attempt)
+        {
+            if (attempt >= 4)
+            {
+                ShowAnchorNotice(isInbox, selection.Count);
+                return;
+            }
+
+            Dispatcher.BeginInvoke(
+                DispatcherPriority.ContextIdle,
+                new Action(() => RestoreAnchor(itemsControl, anchor, selection, isInbox, mode, attempt + 1)));
+        }
+
+        private void RestoreSelection(ItemsControl itemsControl, HashSet<string> selection)
+        {
+            restoringSelection = true;
+            try
+            {
+                var selectedItems = GetSelectedItems(itemsControl);
+                selectedItems.Clear();
+                foreach (var item in itemsControl.Items.Cast<object>())
+                {
+                    if (selection.Contains(GetMediaId(item) ?? string.Empty))
+                        selectedItems.Add(item);
+                }
+            }
+            finally
+            {
+                restoringSelection = false;
+                selectionRestoreQueued = false;
+            }
+        }
+
+        private static System.Collections.IList GetSelectedItems(ItemsControl itemsControl)
+            => itemsControl switch
+            {
+                DataGrid dataGrid => dataGrid.SelectedItems,
+                ListBox listBox => listBox.SelectedItems,
+                _ => throw new NotSupportedException($"不支持的多选控件：{itemsControl.GetType().Name}")
+            };
+
+        private void ShowAnchorNotice(bool isInbox, int trackedSelectionCount)
+        {
+            var notice = isInbox ? MediaInboxWindowAnchorNotice : MediaWindowAnchorNotice;
+            var button = isInbox ? ReloadMediaInboxButton : ReloadMediaWindowButton;
+            var suffix = trackedSelectionCount > 0
+                ? $"；已选择 {trackedSelectionCount} 项中仅当前保留项参与操作"
+                : string.Empty;
+            notice.Text = $"列表窗口已前移，当前位置不可恢复{suffix}";
+            notice.Visibility = Visibility.Visible;
+            button.Visibility = Visibility.Visible;
+        }
+
+        private void HideAnchorNotice(bool isInbox)
+        {
+            (isInbox ? MediaInboxWindowAnchorNotice : MediaWindowAnchorNotice).Visibility = Visibility.Collapsed;
+            (isInbox ? ReloadMediaInboxButton : ReloadMediaWindowButton).Visibility = Visibility.Collapsed;
+        }
+
+        private static int FindItemIndex(ItemsControl itemsControl, string itemId)
+        {
+            for (var index = 0; index < itemsControl.Items.Count; index++)
+            {
+                if (string.Equals(GetMediaId(itemsControl.Items[index]), itemId, StringComparison.OrdinalIgnoreCase))
+                    return index;
+            }
+            return -1;
+        }
+
+        private static ScrollAnchor? CaptureAnchor(ItemsControl itemsControl)
+        {
+            var viewer = FindDescendant<ScrollViewer>(itemsControl);
+            if (viewer == null || itemsControl.Items.Count == 0) return null;
+
+            var firstIndex = -1;
+            var firstTop = double.MaxValue;
+            for (var index = 0; index < itemsControl.Items.Count; index++)
+            {
+                if (itemsControl.ItemContainerGenerator.ContainerFromIndex(index) is not FrameworkElement container)
+                    continue;
+                var top = GetRelativeTop(container, viewer);
+                if (top + Math.Max(1, container.ActualHeight) <= 0 || top >= viewer.ViewportHeight)
+                    continue;
+                if (top < firstTop)
+                {
+                    firstTop = top;
+                    firstIndex = index;
+                }
+            }
+
+            if (firstIndex < 0)
+            {
+                firstIndex = Math.Min(itemsControl.Items.Count - 1, Math.Max(0, (int)Math.Floor(viewer.VerticalOffset)));
+                firstTop = 0;
+            }
+
+            var itemId = GetMediaId(itemsControl.Items[firstIndex]);
+            return string.IsNullOrWhiteSpace(itemId)
+                ? null
+                : new ScrollAnchor(itemId!, firstIndex, firstTop, viewer.VerticalOffset);
+        }
+
+        private static double GetRelativeTop(FrameworkElement element, Visual ancestor)
+            => element.TransformToAncestor(ancestor).Transform(new Point(0, 0)).Y;
+
+        private static string? GetMediaId(object? item) => (item as MediaItemDto)?.MediaId;
+
+        private static T? FindDescendant<T>(DependencyObject root) where T : DependencyObject
+        {
+            for (var index = 0; index < VisualTreeHelper.GetChildrenCount(root); index++)
+            {
+                var child = VisualTreeHelper.GetChild(root, index);
+                if (child is T match) return match;
+                var nested = FindDescendant<T>(child);
+                if (nested != null) return nested;
+            }
+            return null;
+        }
+
+        private sealed class ScrollAnchor
+        {
+            public ScrollAnchor(string itemId, int itemIndex, double relativeTop, double logicalOffset)
+            {
+                ItemId = itemId;
+                ItemIndex = itemIndex;
+                RelativeTop = relativeTop;
+                LogicalOffset = logicalOffset;
+            }
+
+            public string ItemId { get; }
+            public int ItemIndex { get; }
+            public double RelativeTop { get; }
+            public double LogicalOffset { get; }
         }
 
         private void OnMediaCompactDetailsClick(object sender, RoutedEventArgs e)

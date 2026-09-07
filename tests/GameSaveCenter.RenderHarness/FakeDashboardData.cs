@@ -30,6 +30,10 @@ public sealed class FakeDashboardData
     public ICommand RetryCloudUploadCommand { get; } = new NoopCommand();
     public ICommand RefreshMediaClassificationHistoryCommand { get; } = new NoopCommand();
     public ICommand LoadMoreMediaClassificationHistoryCommand { get; } = new NoopCommand();
+    public ICommand LoadMoreMediaCommand { get; } = new NoopCommand();
+    public ICommand ReloadMediaWindowCommand { get; } = new NoopCommand();
+    public ICommand LoadMoreMediaInboxCommand { get; } = new NoopCommand();
+    public ICommand ReloadMediaInboxCommand { get; } = new NoopCommand();
     public ICommand UndoMediaClassificationCommand { get; } = new NoopCommand();
     public ICommand LoadMoreTasksCommand { get; } = new NoopCommand();
     public ICommand RetryAllTasksCommand { get; } = new NoopCommand();
@@ -543,8 +547,12 @@ public sealed class FakeDashboardData
     public ObservableCollection<ValidationFindingDto> AttentionFindings { get; } = new ObservableCollection<ValidationFindingDto>();
     public ObservableCollection<MediaItemDto> Media { get; } = new ObservableCollection<MediaItemDto>();
     public ICollectionView MediaView { get; }
+    public bool MediaPageHasMore => true;
+    public string MediaLoadedSummary => $"当前保留 {Media.Count} 条（窗口上限 2000）";
     public ObservableCollection<MediaItemDto> UnassignedMedia { get; } = new ObservableCollection<MediaItemDto>();
     public ObservableCollection<MediaItemDto> MediaInboxItems => UnassignedMedia;
+    public bool MediaInboxPageHasMore => false;
+    public string MediaInboxLoadedSummary => $"当前保留 {MediaInboxItems.Count} 条（窗口上限 2000）";
     public ObservableCollection<string> MediaInboxModeOptions { get; } = new ObservableCollection<string> { "待归类", "已忽略" };
     public string MediaInboxMode { get; set; } = "待归类";
     public string MediaInboxTitle => MediaInboxMode == "已忽略" ? "已忽略媒体" : "待归类媒体";

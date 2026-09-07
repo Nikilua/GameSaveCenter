@@ -61,6 +61,44 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains(collection, x => x.MediaId == "media-10");
         }
 
+        [Fact]
+        public void CrossingTheEleventhPageMakesEvictedSelectionExplicitButKeepsPinnedSelection()
+        {
+            var collection = new BatchObservableCollection<MediaItemDto>();
+            var accumulator = new MediaPageAccumulator(collection, capacity: 2000);
+
+            for (var page = 0; page < 11; page++)
+            {
+                var items = Enumerable.Range(0, 200)
+                    .Select(offset => Media("media-" + (page * 200 + offset)))
+                    .ToArray();
+                if (page == 0)
+                    accumulator.ReplaceFirstPage(items, null);
+                else
+                    accumulator.AppendPage(items, null);
+            }
+
+            Assert.Equal(2000, collection.Count);
+            Assert.DoesNotContain(collection, item => item.MediaId == "media-0");
+
+            var pinnedCollection = new BatchObservableCollection<MediaItemDto>();
+            var pinnedAccumulator = new MediaPageAccumulator(pinnedCollection, capacity: 2000);
+            for (var page = 0; page < 11; page++)
+            {
+                var items = Enumerable.Range(0, 200)
+                    .Select(offset => Media("media-" + (page * 200 + offset)))
+                    .ToArray();
+                if (page == 0)
+                    pinnedAccumulator.ReplaceFirstPage(items, "media-0");
+                else
+                    pinnedAccumulator.AppendPage(items, "media-0");
+            }
+
+            Assert.Equal(2000, pinnedCollection.Count);
+            Assert.Contains(pinnedCollection, item => item.MediaId == "media-0");
+            Assert.Contains(pinnedCollection, item => item.MediaId == "media-2199");
+        }
+
         private static MediaItemDto Media(string id)
             => new MediaItemDto
             {

@@ -2,6 +2,21 @@
 
 > 维护时间：2026-09-07
 
+## 2026-09-07 UI3-07 缓存窗口与滚动锚点实现约束
+
+- `MediaCenterView` 的“加载更多”不是纯粹追加：点击事件必须先捕获当前列表可见首项、相对位置/逻辑偏移和多选 ID；`MediaPageAccumulator` 发出 Reset 后，由视图按 `VirtualizingWrapPanel` 的像素偏移或 DataGrid 的逻辑 item 偏移恢复。不要用一个像素公式同时处理两种滚动模型。
+- 当前游戏媒体、未归类收件箱、已忽略收件箱各自保持既有 2000 项窗口。窗口裁掉锚点时必须显示“返回最新/重新载入较新内容”路径；`ReloadMediaWindowCommand` 和 `ReloadMediaInboxCommand` 只重新请求首批，不自动修复、删除或修改媒体。
+- 多选语义是“仅当前保留窗口”：按收件箱模式分开保存 ID，恢复只将仍在 `Items` 中的项目加入控件选择；批量操作继续从当前 `SelectedItems` 取值，不能让被裁掉的 ID 被静默执行。SelectedMedia、SelectedInboxMedia 和未保存备注/收藏草稿仍归 ViewModel 管理。
+- 集合 Reset 后的 WPF SelectionChanged 不能覆盖待恢复 ID 集合；`selectionRestoreQueued` 必须在恢复或 15 秒无变化超时后释放。离开页面需解除集合事件，避免旧 ViewModel 接收事件。
+- RenderHarness Fake 必须暴露新增恢复命令、分页状态和摘要；RenderHarness 只证明合成壳层的布局/夹具，不等同真实 Playnite。真实大库第 2/11 页滚动、多选、快速切换、编辑中加载、DPI 和高对比度仍属人工验收边界。
+
+## 2026-09-07 UI3 质量复核与后续边界
+
+- [质量报告](QUALITY_REVIEW_2026-09-07.md) 以 `b0aa85a` 为冻结基线；UI3-07 并发改动不属于该次验证。报告只新增文档和原始证据，不改变生产行为。
+- 后续优先补媒体重试的独立 IPC/真实结果反馈，以及媒体收件箱、存档路径页的明确 Tab 路由；现有 workspace 跳转不等于到达按钮承诺的位置。
+- 紧凑维护 Inspector 挤压列表在独立小画布中复现；须先扩展生产 Shell 几何检查，不能把独立页面场景名当成真实宿主尺寸。动态 offset 分页漏项是静态推导边界，后续先补变更回归再改一致性契约。
+- 全量构建/现有测试通过不代表真实宿主、DPI、动画流畅度或 UI3-07 已验收；下一轮遵循报告的分阶段计划，不重复重做 UI3-00～06。
+
 ## 2026-09-07 UI3-06 存档与维护详情实现约束
 
 - `SaveCenterView` 的历史时间展示使用 `MM-dd HH:mm`，完整时间只通过 Tooltip 提供；`SaveHistoryTimeColumn` 在窄宽度仍不得低于能读出日期/时间的宽度，类型和状态列优先于备注，备注继续使用星号列。Inspector 中恢复可用性必须先于备注编辑，但安全恢复命令、隔离校验、确认和 PreRestore 保护不能被 UI 重排绕过。
