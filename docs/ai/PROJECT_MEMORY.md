@@ -2,6 +2,11 @@
 
 > 维护时间：2026-09-07
 
+## 2026-09-07 质量计划状态同步
+
+- 当前质量计划 `QUALITY_REVIEW_2026-09-07.md` 已将 Q4-01～Q4-03 的历史待办改为已完成状态：媒体云端重试独立 IPC/结构化结果、目标标签导航、维护页紧凑详情折叠与 Production Shell 离屏探针均已落地并有回归证据。
+- 后续阅读计划时，只把真实 Playnite、Rclone/远端、用户数据、DPI/高对比度和完整键盘流程视为外部人工验收边界，不要重新实现上述已完成代码。
+
 ## 2026-09-07 动效门控实现约束
 
 - `AcrylicProductionShellView.NormalizeMotionIfDisabled()` 是侧栏动效的统一终态入口：当 Dashboard 的设置或 Windows 动画偏好变为关闭时，必须取消 `ColumnDefinition.Width`、内容层 `Opacity`/`TranslateTransform.X` 的活动时钟，恢复内容不透明、当前侧栏宽度和 `sidebarTransitionRunning=false`。
