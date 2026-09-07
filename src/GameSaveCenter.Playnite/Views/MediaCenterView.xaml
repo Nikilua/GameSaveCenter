@@ -299,6 +299,48 @@
                                                 </DataTemplate>
                                             </ListBox.ItemTemplate>
                                         </ListBox>
+                                        <Separator Margin="0,12,0,10"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <TextBlock Text="归类批次历史" Style="{DynamicResource GscSectionTitleStyle}" VerticalAlignment="Center"/>
+                                            <ui:Button Grid.Column="1" Content="刷新" Command="{Binding RefreshMediaClassificationHistoryCommand}" Style="{DynamicResource GscWpfUiSecondaryButton}" Padding="8,3" AutomationProperties.Name="刷新媒体归类批次历史"/>
+                                        </Grid>
+                                        <ComboBox x:Name="MediaClassificationHistoryStateCombo" ItemsSource="{Binding MediaClassificationHistoryStateOptions}" SelectedValuePath="Code" SelectedValue="{Binding MediaClassificationHistoryStateFilter}" SelectionChanged="OnMediaClassificationHistoryStateChanged" Style="{DynamicResource GscWpfUiComboBox}" Margin="0,8,0,0" AutomationProperties.Name="媒体归类批次状态筛选">
+                                            <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Display}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Display}"/></DataTemplate></ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                        <ListBox x:Name="MediaClassificationHistoryList" Tag="FiniteViewport" ItemsSource="{Binding MediaClassificationHistoryItems}" SelectedItem="{Binding SelectedMediaClassificationBatch, Mode=TwoWay}" MinHeight="236" MaxHeight="260" Margin="0,8,0,0" BorderThickness="0" Background="Transparent" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" AutomationProperties.Name="媒体归类批次历史">
+                                            <ListBox.ItemContainerStyle>
+                                                <Style TargetType="ListBoxItem">
+                                                    <Setter Property="Padding" Value="0"/>
+                                                    <Setter Property="Margin" Value="0,0,0,6"/>
+                                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                                </Style>
+                                            </ListBox.ItemContainerStyle>
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border Background="{DynamicResource GscGlassStrongBrush}" BorderBrush="{DynamicResource GscGlassStrokeBrush}" BorderThickness="1" CornerRadius="8" Padding="8">
+                                                        <StackPanel>
+                                                            <TextBlock Text="{Binding StateDisplay}" FontWeight="SemiBold"/>
+                                                            <TextBlock Text="{Binding CountsDisplay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/>
+                                                            <TextBlock Text="{Binding DetailDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+                                        <Grid Margin="0,8,0,0">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <TextBlock Text="{Binding MediaClassificationHistoryLoadedSummary}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center"/>
+                                            <ui:Button Grid.Column="1" Content="加载更多" Command="{Binding LoadMoreMediaClassificationHistoryCommand}" Padding="10,4">
+                                                <ui:Button.Style>
+                                                    <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiSecondaryButton}">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                        <Style.Triggers><DataTrigger Binding="{Binding MediaClassificationHistoryHasMore}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                                    </Style>
+                                                </ui:Button.Style>
+                                            </ui:Button>
+                                        </Grid>
+                                        <ui:Button Content="撤销所选可回退批次" Command="{Binding UndoMediaClassificationCommand}" Style="{DynamicResource GscWpfUiSecondaryButton}" HorizontalAlignment="Left" Margin="0,8,0,0" ToolTip="只撤销仍处于安全可回退状态的批次；冲突项目不会被覆盖"/>
                                     </StackPanel>
                                 </Border>
                                 <Separator Margin="0,14,0,12"/>

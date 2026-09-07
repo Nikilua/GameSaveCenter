@@ -373,6 +373,26 @@ public sealed class MediaSyncService
         return result;
     }
 
+    public async Task<MediaClassificationHistoryDto> GetClassificationHistoryAsync(
+        MediaClassificationHistoryRequestDto request, CancellationToken token)
+    {
+        var state = request.State?.Trim() ?? string.Empty;
+        var pageSize = Math.Clamp(request.PageSize, 1, 100);
+        var page = Math.Clamp(request.Page, 0, int.MaxValue / pageSize);
+        var offset = page * pageSize;
+        var history = await _store.GetMediaClassificationBatchHistoryAsync(offset, pageSize, state, token).ConfigureAwait(false);
+        return new MediaClassificationHistoryDto
+        {
+            TotalCount = history.TotalCount,
+            Page = page,
+            PageSize = pageSize,
+            LoadedCount = history.Items.Count,
+            HasMore = offset + history.Items.Count < history.TotalCount,
+            StateFilter = state,
+            Items = history.Items.Select(ToClassificationBatchSummary).ToList()
+        };
+    }
+
     /// <summary>Undoes only items that still match the applied snapshot; changed items become conflicts.</summary>
     public async Task<MediaClassificationBatchResultDto> UndoClassificationBatchAsync(MediaClassificationUndoRequestDto request, CancellationToken token)
     {
@@ -765,6 +785,22 @@ public sealed class MediaSyncService
         }
         return batch;
     }
+
+    private static MediaClassificationBatchSummaryDto ToClassificationBatchSummary(MediaClassificationBatchRecord batch)
+        => new()
+        {
+            BatchId = batch.BatchId,
+            State = batch.State,
+            CreatedUtc = batch.CreatedUtc,
+            UpdatedUtc = batch.UpdatedUtc,
+            ExpiresUtc = batch.ExpiresUtc,
+            LastError = batch.LastError,
+            ItemCount = batch.ItemCount,
+            AppliedCount = batch.AppliedCount,
+            UndoneCount = batch.UndoneCount,
+            ConflictCount = batch.ConflictCount,
+            SkippedCount = batch.SkippedCount
+        };
 
     private static bool MatchesOriginalClassification(MediaItemDto current, MediaClassificationBatchItemRecord record)
         => string.Equals(current.PlayniteId ?? string.Empty, record.OriginalPlayniteId, StringComparison.Ordinal)

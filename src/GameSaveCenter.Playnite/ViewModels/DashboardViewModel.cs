@@ -58,6 +58,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private CancellationTokenSource? mediaPageRequestCancellation;
         private CancellationTokenSource? mediaInboxRequestCancellation;
         private CancellationTokenSource? cloudTransferRequestCancellation;
+        private CancellationTokenSource? mediaClassificationHistoryRequestCancellation;
         private CancellationTokenSource? selectedGameBackgroundCancellation;
         private CancellationTokenSource? initialSynchronizationCancellation;
         private long deferredUiWorkGeneration;
@@ -115,6 +116,11 @@ namespace GameSaveCenter.Playnite.ViewModels
         private MediaClassificationPreviewDto? mediaClassificationPreview;
         private string mediaClassificationStatus = "尚未生成归类建议。建议只会使用来源规则、会话和进程映射等本地证据。";
         private string lastMediaClassificationBatchId = string.Empty;
+        private MediaClassificationBatchSummaryDto? selectedMediaClassificationBatch;
+        private string mediaClassificationHistoryStateFilter = string.Empty;
+        private int mediaClassificationHistoryPage;
+        private bool mediaClassificationHistoryHasMore;
+        private long mediaClassificationHistoryLoadGeneration;
         private const int MediaInboxBatchSize = 500;
         private TaskStatusDto selectedTask = null!;
         private ValidationFindingDto selectedFinding = null!;
@@ -274,7 +280,9 @@ namespace GameSaveCenter.Playnite.ViewModels
             RestoreIgnoredMediaBatchCommand = new RelayCommand(value => Run(() => RestoreIgnoredMediaBatchAsync(value)), value => !IsBusy && MediaInboxMode == "已忽略" && GetSelectedInboxMedia(value).Count > 0);
             PreviewMediaClassificationCommand = new RelayCommand(value => Run(() => PreviewMediaClassificationAsync(value)), value => !IsBusy && MediaInboxMode == "待归类" && GetSelectedInboxMedia(value).Count > 0);
             ApplyMediaClassificationCommand = new RelayCommand(_ => Run(ApplyMediaClassificationAsync), _ => !IsBusy && MediaClassificationPreview != null && MediaClassificationPreview.HighConfidenceCount > 0);
-            UndoMediaClassificationCommand = new RelayCommand(_ => Run(UndoMediaClassificationAsync), _ => !IsBusy && !string.IsNullOrWhiteSpace(LastMediaClassificationBatchId));
+            UndoMediaClassificationCommand = new RelayCommand(_ => Run(UndoMediaClassificationAsync), _ => !IsBusy && CanUndoMediaClassification());
+            RefreshMediaClassificationHistoryCommand = new RelayCommand(_ => Run(() => LoadMediaClassificationHistoryAsync(true)), _ => !IsBusy);
+            LoadMoreMediaClassificationHistoryCommand = new RelayCommand(_ => Run(() => LoadMediaClassificationHistoryAsync(false)), _ => !IsBusy && MediaClassificationHistoryHasMore);
             LoadMoreMediaInboxCommand = new RelayCommand(_ => Run(LoadMoreMediaInboxPageAsync), _ => !IsBusy && MediaInboxPageHasMore);
             CancelTaskCommand = new RelayCommand(_ => _ = CancelSelectedTaskAsync(), _ => SelectedTask != null && SelectedTask.CanCancel && !IsCancellingTask);
             RetryTaskCommand = new RelayCommand(_ => Run(RetrySelectedTaskAsync), _ => !IsBusy && CanRetrySelectedTask());
@@ -401,6 +409,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public BatchObservableCollection<TrainerCatalogItemDto> TrainerCatalogResults { get; } = new BatchObservableCollection<TrainerCatalogItemDto>();
         public BatchObservableCollection<TrainerReleaseDto> TrainerReleases { get; } = new BatchObservableCollection<TrainerReleaseDto>();
         public BatchObservableCollection<CloudTransferStatusDto> CloudTransferItems { get; } = new BatchObservableCollection<CloudTransferStatusDto>();
+        public BatchObservableCollection<MediaClassificationBatchSummaryDto> MediaClassificationHistoryItems { get; } = new BatchObservableCollection<MediaClassificationBatchSummaryDto>();
         public IReadOnlyList<CloudTransferFilterOption> CloudTransferStateOptions { get; } = new[]
         {
             new CloudTransferFilterOption(string.Empty, "全部状态"),
@@ -442,6 +451,22 @@ namespace GameSaveCenter.Playnite.ViewModels
         public string MediaInboxLoadedSummary => (MediaInboxMode == "已忽略" ? ignoredMediaPageTotalCount : unassignedMediaPageTotalCount) <= 0
             ? $"当前保留 {MediaInboxItems.Count} 条（窗口上限 {CurrentMediaInboxAccumulator.Capacity}）"
             : $"当前保留 {MediaInboxItems.Count} / {(MediaInboxMode == "已忽略" ? ignoredMediaPageTotalCount : unassignedMediaPageTotalCount)} 条（窗口上限 {CurrentMediaInboxAccumulator.Capacity}）";
+        public MediaClassificationBatchSummaryDto? SelectedMediaClassificationBatch
+        {
+            get => selectedMediaClassificationBatch;
+            set { SetValue(ref selectedMediaClassificationBatch, value); RaiseCommandStates(); }
+        }
+        public string MediaClassificationHistoryStateFilter
+        {
+            get => mediaClassificationHistoryStateFilter;
+            set { SetValue(ref mediaClassificationHistoryStateFilter, value ?? string.Empty); }
+        }
+        public bool MediaClassificationHistoryHasMore => mediaClassificationHistoryHasMore;
+        public string MediaClassificationHistoryLoadedSummary => MediaClassificationHistoryItems.Count == 0
+            ? "暂无归类批次历史"
+            : mediaClassificationHistoryHasMore
+                ? $"已加载 {MediaClassificationHistoryItems.Count} 个批次，还可继续加载"
+                : $"已加载全部 {MediaClassificationHistoryItems.Count} 个批次";
         public IReadOnlyList<string> MediaFilterOptions { get; } = new[] { "全部", "截图", "录像", "收藏" };
         public IReadOnlyList<string> GameStatusFilterOptions { get; } = new[] { "全部", "已就绪", "未匹配", "运行中", "需关注", "有历史" };
         public IReadOnlyList<string> GameSortOptions { get; } = new[] { "名称", "运行优先", "匹配优先", "最近备份" };
@@ -657,6 +682,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 if (currentWorkspace == WorkspaceKind.Maintenance && value != WorkspaceKind.Maintenance)
                     CancelCloudTransferRequest();
+                if (currentWorkspace == WorkspaceKind.Media && value != WorkspaceKind.Media)
+                    CancelMediaClassificationHistoryRequest();
                 SetValue(ref currentWorkspace, value);
                 plugin.SessionLastWorkspace = value;
                 uiStateSave?.Schedule();
@@ -1043,6 +1070,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand PreviewMediaClassificationCommand { get; }
         public ICommand ApplyMediaClassificationCommand { get; }
         public ICommand UndoMediaClassificationCommand { get; }
+        public ICommand RefreshMediaClassificationHistoryCommand { get; }
+        public ICommand LoadMoreMediaClassificationHistoryCommand { get; }
         public ICommand LoadMoreMediaInboxCommand { get; }
         public ICommand CancelTaskCommand { get; }
         public ICommand RetryTaskCommand { get; }
@@ -1379,6 +1408,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             pendingMediaInboxLoadMode = null;
             CancelMediaPageRequest();
             CancelMediaInboxRequest();
+            CancelMediaClassificationHistoryRequest();
             CancelDetailsLoad();
             CancelSelectedGameBackgroundLoad();
             CancelInitialSynchronization();
@@ -1542,6 +1572,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             if (CurrentWorkspace == WorkspaceKind.Media)
             {
                 await LoadInboxAsync();
+                await LoadMediaClassificationHistoryAsync(true);
                 if (MediaInboxMode == "已忽略") await LoadIgnoredMediaAsync();
             }
             if (CurrentWorkspace == WorkspaceKind.Maintenance) await LoadDiagnosticsAsync();
@@ -3786,6 +3817,31 @@ namespace GameSaveCenter.Playnite.ViewModels
             finally { cancellation.Dispose(); }
         }
 
+        private CancellationTokenSource BeginMediaClassificationHistoryRequest()
+        {
+            var next = new CancellationTokenSource();
+            var previous = Interlocked.Exchange(ref mediaClassificationHistoryRequestCancellation, next);
+            if (previous == null) return next;
+            try { previous.Cancel(); }
+            finally { previous.Dispose(); }
+            return next;
+        }
+
+        private void EndMediaClassificationHistoryRequest(CancellationTokenSource requestCancellation)
+        {
+            if (ReferenceEquals(Interlocked.CompareExchange(ref mediaClassificationHistoryRequestCancellation, null, requestCancellation), requestCancellation))
+                requestCancellation.Dispose();
+        }
+
+        private void CancelMediaClassificationHistoryRequest()
+        {
+            Interlocked.Increment(ref mediaClassificationHistoryLoadGeneration);
+            var cancellation = Interlocked.Exchange(ref mediaClassificationHistoryRequestCancellation, null);
+            if (cancellation == null) return;
+            try { cancellation.Cancel(); }
+            finally { cancellation.Dispose(); }
+        }
+
         private void EndMediaInboxRequest(CancellationTokenSource requestCancellation)
         {
             if (ReferenceEquals(Interlocked.CompareExchange(ref mediaInboxRequestCancellation, null, requestCancellation), requestCancellation))
@@ -3907,6 +3963,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 LoadMoreMediaCommand, OpenCloudQueueCommand, RefreshCloudTransfersCommand, LoadMoreCloudTransfersCommand, VerifyCloudTransferCommand, RetryCloudUploadCommand,
                 AssignInboxMediaCommand, IgnoreInboxMediaCommand, AssignInboxMediaBatchCommand, IgnoreInboxMediaBatchCommand, RestoreIgnoredMediaBatchCommand,
                 PreviewMediaClassificationCommand, ApplyMediaClassificationCommand, UndoMediaClassificationCommand,
+                RefreshMediaClassificationHistoryCommand, LoadMoreMediaClassificationHistoryCommand,
                 LoadMoreMediaInboxCommand,
                 CancelTaskCommand, RetryTaskCommand, RetryAllTasksCommand, LoadMoreTasksCommand, CopyTaskErrorCommand, RefreshDiagnosticsCommand, DiagnoseGameCommand, SyncGameDescriptorCommand, RetryGameMatchCommand, ClearGamePickerFiltersCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
                 StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,RunHealthInspectionCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,RefreshRetentionSimulationCommand,ApplyRetentionSimulationCommand,RefreshLocalMirrorStatusCommand,SyncLocalMirrorCommand,CopyMaintenanceReportCommand,ExportMaintenanceReportCommand,

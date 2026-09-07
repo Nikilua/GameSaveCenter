@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using GameSaveCenter.Playnite.ViewModels;
 
 namespace GameSaveCenter.Playnite.Views
 {
@@ -45,6 +46,14 @@ namespace GameSaveCenter.Playnite.Views
         private void OnMediaInboxModeSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             OnMediaInboxSelectionChanged(sender,e);
+        }
+
+        private void OnMediaClassificationHistoryStateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!IsLoaded || DataContext is not DashboardViewModel viewModel)
+                return;
+            if (viewModel.RefreshMediaClassificationHistoryCommand.CanExecute(null))
+                viewModel.RefreshMediaClassificationHistoryCommand.Execute(null);
         }
 
         private void OnClearSearchTextBoxClick(object sender, RoutedEventArgs e)

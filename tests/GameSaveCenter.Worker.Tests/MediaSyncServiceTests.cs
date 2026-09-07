@@ -277,6 +277,65 @@ BEGIN SELECT RAISE(ABORT, 'injected batch item failure'); END;");
     }
 
     [Fact]
+    public async Task ClassificationHistoryIsDurablePagedAndKeepsConflictCounts()
+    {
+        var now = DateTime.UtcNow;
+        for (var index = 1; index <= 3; index++)
+        {
+            var batchId = $"history-batch-{index}";
+            await store.CreateMediaClassificationBatchAsync(batchId, now.AddMinutes(index), now.AddHours(1),
+                new[]
+                {
+                    new MediaClassificationBatchItemRecord
+                    {
+                        BatchId = batchId, MediaId = $"history-media-{index}", OriginalClassificationState = "Inbox",
+                        OriginalClassificationReason = "待归类", OriginalArchivePath = $"archive-{index}",
+                        OriginalPath = $"original-{index}", OriginalCapturedUtc = now, OriginalSha256 = $"hash-{index}",
+                        TargetPlayniteId = "game-1", TargetReason = "来源规则", Confidence = "High"
+                    }
+                }, CancellationToken.None);
+        }
+
+        await store.UpdateMediaClassificationBatchItemAsync("history-batch-1", "history-media-1", "Applied", "applied-1", CancellationToken.None);
+        await store.UpdateMediaClassificationBatchStateAsync("history-batch-1", "Applied", string.Empty, CancellationToken.None);
+        await store.UpdateMediaClassificationBatchItemAsync("history-batch-2", "history-media-2", "Conflict", string.Empty, CancellationToken.None);
+        await store.UpdateMediaClassificationBatchStateAsync("history-batch-2", "Conflict", "媒体状态已变化", CancellationToken.None);
+
+        var restartedStore = new SqliteStateStore(options, NullLogger<SqliteStateStore>.Instance);
+        await restartedStore.InitializeAsync(CancellationToken.None);
+        var service = CreateService(restartedStore);
+        var first = await service.GetClassificationHistoryAsync(new MediaClassificationHistoryRequestDto
+        {
+            Page = 0, PageSize = 2
+        }, CancellationToken.None);
+        var second = await service.GetClassificationHistoryAsync(new MediaClassificationHistoryRequestDto
+        {
+            Page = 1, PageSize = 2
+        }, CancellationToken.None);
+        var conflicts = await service.GetClassificationHistoryAsync(new MediaClassificationHistoryRequestDto
+        {
+            State = "Conflict", PageSize = 10
+        }, CancellationToken.None);
+        var appliedOnly = await service.GetClassificationHistoryAsync(new MediaClassificationHistoryRequestDto
+        {
+            State = "Applied", PageSize = 10
+        }, CancellationToken.None);
+
+        Assert.Equal(3, first.TotalCount);
+        Assert.Equal(2, first.Items.Count);
+        Assert.True(first.HasMore);
+        Assert.Single(second.Items);
+        Assert.False(second.HasMore);
+        var applied = Assert.Single(appliedOnly.Items);
+        Assert.Equal("history-batch-1", applied.BatchId);
+        Assert.Equal(1, applied.AppliedCount);
+        Assert.True(applied.IsUndoable);
+        var conflict = Assert.Single(conflicts.Items);
+        Assert.Equal(1, conflict.ConflictCount);
+        Assert.Equal("媒体状态已变化", conflict.LastError);
+    }
+
+    [Fact]
     public async Task ClassificationAuditFailureDoesNotRollbackCommittedBusinessState()
     {
         var prepared = await PrepareClassificationAsync("audit-failure-media");

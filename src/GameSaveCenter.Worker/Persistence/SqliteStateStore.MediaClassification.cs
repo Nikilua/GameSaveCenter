@@ -88,6 +88,60 @@ FROM media_classification_batches WHERE batch_id=$batch LIMIT 1;";
         };
     }
 
+    public async Task<MediaClassificationBatchHistoryPage> GetMediaClassificationBatchHistoryAsync(
+        int offset, int limit, string? stateFilter, CancellationToken token)
+    {
+        var result = new MediaClassificationBatchHistoryPage();
+        var state = stateFilter?.Trim() ?? string.Empty;
+        var safeOffset = Math.Max(0, offset);
+        var safeLimit = Math.Clamp(limit, 1, 100);
+        await using var connection = Open();
+        await connection.OpenAsync(token).ConfigureAwait(false);
+
+        var count = connection.CreateCommand();
+        count.CommandText = @"SELECT COUNT(*) FROM media_classification_batches
+WHERE ($state='' OR state=$state);";
+        count.Parameters.AddWithValue("$state", state);
+        result.TotalCount = Convert.ToInt32(await count.ExecuteScalarAsync(token).ConfigureAwait(false));
+
+        var command = connection.CreateCommand();
+        command.CommandText = @"
+SELECT b.batch_id,b.state,b.created_utc,b.updated_utc,b.expires_utc,b.last_error,
+       COUNT(i.media_id),
+       COALESCE(SUM(CASE WHEN i.item_state='Applied' THEN 1 ELSE 0 END),0),
+       COALESCE(SUM(CASE WHEN i.item_state='Undone' THEN 1 ELSE 0 END),0),
+       COALESCE(SUM(CASE WHEN i.item_state='Conflict' THEN 1 ELSE 0 END),0),
+       COALESCE(SUM(CASE WHEN i.item_state='Skipped' THEN 1 ELSE 0 END),0)
+FROM media_classification_batches b
+LEFT JOIN media_classification_batch_items i ON i.batch_id=b.batch_id
+WHERE ($state='' OR b.state=$state)
+GROUP BY b.batch_id,b.state,b.created_utc,b.updated_utc,b.expires_utc,b.last_error
+ORDER BY b.updated_utc DESC,b.batch_id DESC
+LIMIT $limit OFFSET $offset;";
+        command.Parameters.AddWithValue("$state", state);
+        command.Parameters.AddWithValue("$limit", safeLimit);
+        command.Parameters.AddWithValue("$offset", safeOffset);
+        await using var reader = await command.ExecuteReaderAsync(token).ConfigureAwait(false);
+        while (await reader.ReadAsync(token).ConfigureAwait(false))
+        {
+            result.Items.Add(new MediaClassificationBatchRecord
+            {
+                BatchId = reader.GetString(0),
+                State = reader.GetString(1),
+                CreatedUtc = DateTime.Parse(reader.GetString(2)).ToUniversalTime(),
+                UpdatedUtc = DateTime.Parse(reader.GetString(3)).ToUniversalTime(),
+                ExpiresUtc = DateTime.Parse(reader.GetString(4)).ToUniversalTime(),
+                LastError = reader.IsDBNull(5) ? string.Empty : reader.GetString(5),
+                ItemCount = Convert.ToInt32(reader.GetInt64(6)),
+                AppliedCount = Convert.ToInt32(reader.GetInt64(7)),
+                UndoneCount = Convert.ToInt32(reader.GetInt64(8)),
+                ConflictCount = Convert.ToInt32(reader.GetInt64(9)),
+                SkippedCount = Convert.ToInt32(reader.GetInt64(10))
+            });
+        }
+        return result;
+    }
+
     public async Task<List<MediaClassificationBatchItemRecord>> GetMediaClassificationBatchItemsAsync(string batchId, CancellationToken token)
     {
         var result = new List<MediaClassificationBatchItemRecord>();
@@ -419,6 +473,17 @@ public sealed class MediaClassificationBatchRecord
     public DateTime UpdatedUtc { get; set; }
     public DateTime ExpiresUtc { get; set; }
     public string LastError { get; set; } = string.Empty;
+    public int ItemCount { get; set; }
+    public int AppliedCount { get; set; }
+    public int UndoneCount { get; set; }
+    public int ConflictCount { get; set; }
+    public int SkippedCount { get; set; }
+}
+
+public sealed class MediaClassificationBatchHistoryPage
+{
+    public int TotalCount { get; set; }
+    public List<MediaClassificationBatchRecord> Items { get; } = new List<MediaClassificationBatchRecord>();
 }
 
 public sealed class MediaClassificationBatchItemRecord

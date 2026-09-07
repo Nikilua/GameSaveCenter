@@ -965,6 +965,10 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Command=\"{Binding PreviewMediaClassificationCommand}\"", media);
         Assert.Contains("Command=\"{Binding ApplyMediaClassificationCommand}\"", media);
         Assert.Contains("Command=\"{Binding UndoMediaClassificationCommand}\"", media);
+        Assert.Contains("MediaClassificationHistoryItems", media);
+        Assert.Contains("SelectedMediaClassificationBatch", media);
+        Assert.Contains("Command=\"{Binding RefreshMediaClassificationHistoryCommand}\"", media);
+        Assert.Contains("Command=\"{Binding LoadMoreMediaClassificationHistoryCommand}\"", media);
         Assert.Contains("Command=\"{Binding LoadMoreMediaInboxCommand}\"", media);
         Assert.Contains("Command=\"{Binding LoadMoreMediaCommand}\"", media);
         Assert.Contains("MediaInboxLoadedSummary", media);
@@ -978,6 +982,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("PreviewMediaClassificationCommand", commands);
         Assert.Contains("ApplyMediaClassificationCommand", commands);
         Assert.Contains("UndoMediaClassificationCommand", commands);
+        Assert.Contains("RefreshMediaClassificationHistoryCommand", commands);
+        Assert.Contains("LoadMoreMediaClassificationHistoryCommand", commands);
         Assert.Contains("ProcessInboxBatchAsync", viewModel);
         Assert.Contains("ReassignMediaBatch", messages);
         Assert.Contains("IgnoreMediaBatch", messages);
@@ -987,6 +993,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("PreviewMediaClassification", messages);
         Assert.Contains("ApplyMediaClassification", messages);
         Assert.Contains("UndoMediaClassification", messages);
+        Assert.Contains("ListMediaClassificationHistory", messages);
         Assert.Contains("MediaInboxBatchRequestDto", contracts);
         Assert.Contains("MediaInboxBatchResultDto", contracts);
         Assert.Contains("MediaInboxBatchSize = 500", commands);

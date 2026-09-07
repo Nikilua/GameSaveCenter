@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-07 UI3-03 媒体归类批次历史与可找回撤销
+
+- 新增 `MediaClassificationHistoryDto` 与 `media.classification.history` 只读 IPC，Worker 在 SQLite 中按 `updated_utc DESC, batch_id DESC` 分页聚合批次条目，返回应用/冲突/撤销/跳过计数和可撤销判定；状态筛选与总量独立于当前页。
+- `DashboardViewModel` 新增历史加载代际、独立 CTS、状态筛选、选择恢复和加载更多；预览不再写入 `LastMediaClassificationBatchId`，应用后才建立撤销候选，撤销后的部分冲突通过历史状态继续保留。
+- `MediaCenterView` 新增批次历史有限列表、刷新/状态筛选/加载更多和选中批次撤销入口；RenderHarness Fake 数据覆盖待确认、已应用有冲突、已撤销有冲突。列表最小 236 DIP 经过 RenderHarness 门禁修正。
+- 新增 Worker 回归：重启后历史仍可分页、状态可筛选、冲突计数和 `IsUndoable` 正确；验证目标历史测试通过，随后全量 Release 测试/Render QA 需要在提交前再次执行。未执行真实 Playnite 宿主。
+
 ## 2026-09-07 UI3-02 云端队列明细分页与用户操作入口
 
 - 将已有 Worker 云端状态分页协议接入生产维护中心：新增云端队列 Tab、概览入口、状态/类型筛选、分页加载、有限虚拟化表格和选中记录详情；摘要总量独立于当前页，刷新按 `TransferKey` 尝试恢复焦点。

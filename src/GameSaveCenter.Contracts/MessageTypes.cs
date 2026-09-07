@@ -52,6 +52,7 @@ namespace GameSaveCenter.Contracts
         public const string PreviewMediaClassification = "media.classification.preview";
         public const string ApplyMediaClassification = "media.classification.apply";
         public const string UndoMediaClassification = "media.classification.undo";
+        public const string ListMediaClassificationHistory = "media.classification.history";
         public const string AddMediaSource = "media.source.add";
         public const string UpdateMediaSource = "media.source.update";
         public const string DeleteMediaSource = "media.source.delete";

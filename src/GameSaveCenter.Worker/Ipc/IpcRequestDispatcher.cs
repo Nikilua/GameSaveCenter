@@ -108,6 +108,7 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.PreviewMediaClassification=>await _media.CreateClassificationPreviewAsync(Read<MediaClassificationPreviewRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ApplyMediaClassification=>await _media.ApplyClassificationPreviewAsync(Read<MediaClassificationApplyRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.UndoMediaClassification=>await _media.UndoClassificationBatchAsync(Read<MediaClassificationUndoRequestDto>(request),token).ConfigureAwait(false),
+                MessageTypes.ListMediaClassificationHistory=>await _media.GetClassificationHistoryAsync(Read<MediaClassificationHistoryRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.AddMediaSource=>await AddMediaSourceAsync(Read<MediaSourceRuleDto>(request),token).ConfigureAwait(false),
                 MessageTypes.UpdateMediaSource=>await UpdateMediaSourceAsync(Read<MediaSourceRuleDto>(request),token).ConfigureAwait(false),
                 MessageTypes.DeleteMediaSource=>await DeleteMediaSourceAsync(Read<MediaSourceRuleDto>(request),token).ConfigureAwait(false),

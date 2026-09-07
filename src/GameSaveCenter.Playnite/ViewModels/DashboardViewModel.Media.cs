@@ -47,6 +47,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private async Task LoadMediaWorkspaceAsync()
         {
             await LoadInboxAsync();
+            await LoadMediaClassificationHistoryAsync(true);
             if (MediaInboxMode == "已忽略") await LoadIgnoredMediaAsync();
             if (SelectedGame != null) await LoadDetailsAsync();
         }
@@ -525,11 +526,12 @@ namespace GameSaveCenter.Playnite.ViewModels
                 {
                     MediaIds = selected.Select(x => x.MediaId).ToList(),
                     Limit = Math.Min(200, selected.Count)
-                }, TimeSpan.FromMinutes(3));
+            }, TimeSpan.FromMinutes(3));
             MediaClassificationPreview = preview;
-            LastMediaClassificationBatchId = preview.BatchId;
             mediaClassificationStatus = preview.SummaryDisplay;
             OnPropertyChanged(nameof(MediaClassificationPreviewSummary));
+            await LoadMediaClassificationHistoryAsync(true);
+            ApplyOnUi(() => SelectedMediaClassificationBatch = MediaClassificationHistoryItems.FirstOrDefault(x => x.BatchId == preview.BatchId));
             ConfirmSuccess($"已生成媒体归类预览：{preview.SummaryDisplay}");
         }
 
@@ -549,20 +551,22 @@ namespace GameSaveCenter.Playnite.ViewModels
                     BatchId = preview.BatchId,
                     MediaIds = preview.Items.Where(x => x.CanApply).Select(x => x.MediaId).ToList(),
                     HighConfidenceOnly = true
-                }, TimeSpan.FromMinutes(10));
+            }, TimeSpan.FromMinutes(10));
             MediaClassificationPreview = null;
-            LastMediaClassificationBatchId = result.BatchId;
+            LastMediaClassificationBatchId = result.AppliedCount > 0 ? result.BatchId : string.Empty;
             mediaClassificationStatus = $"{result.State}：{result.SummaryDisplay}。如需回退，可撤销本次建议批次。";
             OnPropertyChanged(nameof(MediaClassificationPreviewSummary));
             await RefreshDashboardAsync(false, false);
             await LoadInboxAsync();
+            await LoadMediaClassificationHistoryAsync(true);
+            ApplyOnUi(() => SelectedMediaClassificationBatch = MediaClassificationHistoryItems.FirstOrDefault(x => x.BatchId == result.BatchId));
             if (SelectedGame != null) await LoadDetailsAsync();
             ConfirmSuccess($"媒体归类建议已处理：{result.SummaryDisplay}");
         }
 
         private async Task UndoMediaClassificationAsync()
         {
-            var batchId = LastMediaClassificationBatchId;
+            var batchId = GetMediaClassificationUndoBatchId();
             if (string.IsNullOrWhiteSpace(batchId)) throw new InvalidOperationException("没有可撤销的媒体归类建议批次。");
             if (!await plugin.ConfirmAsync(
                     "撤销媒体归类建议",
@@ -572,11 +576,13 @@ namespace GameSaveCenter.Playnite.ViewModels
 
             var result = await plugin.RequestAsync<MediaClassificationBatchResultDto>(MessageTypes.UndoMediaClassification,
                 new MediaClassificationUndoRequestDto { BatchId = batchId }, TimeSpan.FromMinutes(10));
-            LastMediaClassificationBatchId = string.Empty;
+            LastMediaClassificationBatchId = result.ConflictCount > 0 ? result.BatchId : string.Empty;
             mediaClassificationStatus = $"{result.State}：{result.SummaryDisplay}。冲突项目已保留当前状态。";
             OnPropertyChanged(nameof(MediaClassificationPreviewSummary));
             await RefreshDashboardAsync(false, false);
             await LoadInboxAsync();
+            await LoadMediaClassificationHistoryAsync(true);
+            ApplyOnUi(() => SelectedMediaClassificationBatch = MediaClassificationHistoryItems.FirstOrDefault(x => x.BatchId == result.BatchId));
             if (SelectedGame != null) await LoadDetailsAsync();
             ConfirmSuccess($"媒体归类建议撤销完成：{result.SummaryDisplay}");
         }

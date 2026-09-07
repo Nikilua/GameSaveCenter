@@ -75,6 +75,72 @@ public sealed class MediaClassificationUndoRequestDto
     public string BatchId { get; set; } = string.Empty;
 }
 
+/// <summary>Bounded query for durable media classification batches.</summary>
+public sealed class MediaClassificationHistoryRequestDto
+{
+    public int Page { get; set; }
+    public int PageSize { get; set; } = 25;
+    public string State { get; set; } = string.Empty;
+}
+
+/// <summary>Aggregated, restart-safe state for one classification batch.</summary>
+public sealed class MediaClassificationBatchSummaryDto
+{
+    public string BatchId { get; set; } = string.Empty;
+    public string State { get; set; } = "Preview";
+    public DateTime CreatedUtc { get; set; }
+    public DateTime UpdatedUtc { get; set; }
+    public DateTime ExpiresUtc { get; set; }
+    public string LastError { get; set; } = string.Empty;
+    public int ItemCount { get; set; }
+    public int AppliedCount { get; set; }
+    public int UndoneCount { get; set; }
+    public int ConflictCount { get; set; }
+    public int SkippedCount { get; set; }
+
+    public DateTime CreatedLocal => CreatedUtc.ToLocalTime();
+    public DateTime UpdatedLocal => UpdatedUtc.ToLocalTime();
+    public DateTime ExpiresLocal => ExpiresUtc.ToLocalTime();
+    public bool IsUndoable => (State == "Applied" || State == "AppliedWithConflicts") && AppliedCount > 0;
+    public string StateDisplay => State switch
+    {
+        "Preview" => "待确认",
+        "Applied" => "已应用",
+        "AppliedWithConflicts" => "已应用 · 有冲突",
+        "Undone" => "已撤销",
+        "UndoneWithConflicts" => "已撤销 · 有冲突",
+        "Conflict" => "应用冲突",
+        "Expired" => "已过期",
+        _ => string.IsNullOrWhiteSpace(State) ? "未知" : State
+    };
+    public string CountsDisplay => $"{ItemCount} 项 · 已应用 {AppliedCount} · 冲突 {ConflictCount} · 已撤销 {UndoneCount}";
+    public string DetailDisplay
+    {
+        get
+        {
+            var error = string.IsNullOrWhiteSpace(LastError) ? string.Empty : $" · {LastError}";
+            var expiry = State == "Preview" ? $" · 有效至 {ExpiresLocal:MM-dd HH:mm}" : string.Empty;
+            return $"{StateDisplay} · 更新于 {UpdatedLocal:MM-dd HH:mm}{expiry}{error}";
+        }
+    }
+}
+
+/// <summary>Paged durable media classification history.</summary>
+public sealed class MediaClassificationHistoryDto
+{
+    public int TotalCount { get; set; }
+    public int Page { get; set; }
+    public int PageSize { get; set; }
+    public int LoadedCount { get; set; }
+    public bool HasMore { get; set; }
+    public string StateFilter { get; set; } = string.Empty;
+    public List<MediaClassificationBatchSummaryDto> Items { get; set; } = new List<MediaClassificationBatchSummaryDto>();
+
+    public string LoadedDisplay => HasMore
+        ? $"已加载 {LoadedCount}/{TotalCount} 个批次"
+        : $"已加载全部 {LoadedCount} 个批次";
+}
+
 public sealed class MediaClassificationBatchItemResultDto
 {
     public string MediaId { get; set; } = string.Empty;

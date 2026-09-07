@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-07
 
+## 2026-09-07 UI3-03 媒体归类批次历史与可找回撤销
+
+- `media_classification_batches` 已有的 durable 记录现在通过 `GetMediaClassificationBatchHistoryAsync` 聚合成分页摘要；查询不加载全部项目明细，按批次更新时间和批次号稳定排序，状态筛选不会改变聚合语义。
+- `MediaClassificationBatchSummaryDto.IsUndoable` 只对 `Applied`/`AppliedWithConflicts` 且仍有 `Applied` 条目的批次为真。撤销服务仍只接受这两个状态；撤销后 `UndoneWithConflicts` 与冲突计数保留为不可覆盖的历史事实。
+- Dashboard 的预览、应用、撤销分别更新“预览对象”“最后应用批次”和历史选中项；不要把预览 ID 当作可撤销 ID，也不要在撤销有冲突时无条件清除批次上下文。
+- UI 历史列表使用有限 `ListBox`（最小 236 DIP，最大 260 DIP）并保留内部滚动；筛选变化通过 code-behind 触发刷新，历史请求拥有独立 generation/CTS，离开 Media workspace 必须取消。
+
 ## 2026-09-07 UI3-02 云端队列明细分页与用户操作入口
 
 - 生产维护中心现在有独立的云端队列 Tab。`DashboardViewModel.CloudTransfers` 以 `CloudTransferStatusRequestDto` 调用 Worker 的 `GetCloudTransferStatus`，页大小固定请求 100，服务端聚合总量，客户端按 `TransferKey` 去重追加并在刷新时恢复当前选择。

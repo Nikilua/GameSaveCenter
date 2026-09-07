@@ -25,6 +25,9 @@ public sealed class FakeDashboardData
     public ICommand LoadMoreCloudTransfersCommand { get; } = new NoopCommand();
     public ICommand VerifyCloudTransferCommand { get; } = new NoopCommand();
     public ICommand RetryCloudUploadCommand { get; } = new NoopCommand();
+    public ICommand RefreshMediaClassificationHistoryCommand { get; } = new NoopCommand();
+    public ICommand LoadMoreMediaClassificationHistoryCommand { get; } = new NoopCommand();
+    public ICommand UndoMediaClassificationCommand { get; } = new NoopCommand();
     public ICommand ClearTaskFiltersCommand { get; } = new NoopCommand();
 
     public FakeDashboardData(int rowCount = 8)
@@ -270,6 +273,39 @@ public sealed class FakeDashboardData
             });
         }
 
+        var classificationNow = DateTime.UtcNow;
+        MediaClassificationPreview = new MediaClassificationPreviewDto
+        {
+            BatchId = "preview-demo",
+            CreatedUtc = classificationNow.AddMinutes(-4),
+            ExpiresUtc = classificationNow.AddMinutes(6),
+            Items = new System.Collections.Generic.List<MediaClassificationSuggestionDto>
+            {
+                new MediaClassificationSuggestionDto { MediaId = "IN-1", FileName = "shared-1.png", SuggestedGameName = "Baldur's Gate 3", SuggestedPlayniteId = "game-1", Confidence = "High", Reason = "媒体来源规则" },
+                new MediaClassificationSuggestionDto { MediaId = "IN-2", FileName = "shared-2.png", Confidence = "Low", Reason = "多个候选游戏，保持未归类" }
+            },
+            HighConfidenceCount = 1,
+            LowConfidenceCount = 1
+        };
+        MediaClassificationHistoryItems.Add(new MediaClassificationBatchSummaryDto
+        {
+            BatchId = "classification-1", State = "AppliedWithConflicts", CreatedUtc = classificationNow.AddHours(-1),
+            UpdatedUtc = classificationNow.AddMinutes(-7), ExpiresUtc = classificationNow.AddHours(-1), ItemCount = 12,
+            AppliedCount = 8, ConflictCount = 2, UndoneCount = 2
+        });
+        MediaClassificationHistoryItems.Add(new MediaClassificationBatchSummaryDto
+        {
+            BatchId = "classification-2", State = "UndoneWithConflicts", CreatedUtc = classificationNow.AddHours(-3),
+            UpdatedUtc = classificationNow.AddHours(-2), ExpiresUtc = classificationNow.AddHours(-3), ItemCount = 6,
+            UndoneCount = 5, ConflictCount = 1
+        });
+        MediaClassificationHistoryItems.Add(new MediaClassificationBatchSummaryDto
+        {
+            BatchId = "classification-3", State = "Preview", CreatedUtc = classificationNow.AddMinutes(-4),
+            UpdatedUtc = classificationNow.AddMinutes(-4), ExpiresUtc = classificationNow.AddMinutes(6), ItemCount = 2
+        });
+        SelectedMediaClassificationBatch = MediaClassificationHistoryItems[0];
+
         MediaSources.Add(new MediaSourceRuleDto
         {
             SourceId = "steam",
@@ -502,6 +538,17 @@ public sealed class FakeDashboardData
     public ObservableCollection<TrainerReleaseDto> TrainerReleases { get; } = new ObservableCollection<TrainerReleaseDto>();
     public ObservableCollection<GameToolEntryCandidateDto> ImportEntryCandidates { get; } = new ObservableCollection<GameToolEntryCandidateDto>();
     public ObservableCollection<CloudTransferStatusDto> CloudTransferItems { get; } = new ObservableCollection<CloudTransferStatusDto>();
+    public ObservableCollection<MediaClassificationBatchSummaryDto> MediaClassificationHistoryItems { get; } = new ObservableCollection<MediaClassificationBatchSummaryDto>();
+    public MediaClassificationBatchSummaryDto? SelectedMediaClassificationBatch { get; set; }
+    public MediaClassificationPreviewDto MediaClassificationPreview { get; }
+    public string MediaClassificationPreviewSummary => $"{MediaClassificationPreview.SummaryDisplay} 预览有效期至 {MediaClassificationPreview.ExpiresUtc.ToLocalTime():MM-dd HH:mm}。";
+    public ObservableCollection<MediaClassificationHistoryStateOption> MediaClassificationHistoryStateOptions { get; } = new ObservableCollection<MediaClassificationHistoryStateOption>
+    {
+        new MediaClassificationHistoryStateOption(string.Empty, "全部批次"), new MediaClassificationHistoryStateOption("Applied", "已应用"), new MediaClassificationHistoryStateOption("Conflict", "应用冲突")
+    };
+    public string MediaClassificationHistoryStateFilter { get; set; } = string.Empty;
+    public bool MediaClassificationHistoryHasMore => false;
+    public string MediaClassificationHistoryLoadedSummary => $"已加载全部 {MediaClassificationHistoryItems.Count} 个批次";
     public CloudTransferSummaryDto CloudTransferViewSummary { get; private set; } = new CloudTransferSummaryDto();
     public CloudTransferStatusDto? SelectedCloudTransfer { get; set; }
     public ObservableCollection<CloudTransferFilterOption> CloudTransferStateOptions { get; } = new ObservableCollection<CloudTransferFilterOption>
