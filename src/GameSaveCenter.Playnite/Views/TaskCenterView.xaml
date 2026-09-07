@@ -26,6 +26,9 @@
                 <Setter Property="TextWrapping" Value="NoWrap"/>
                 <Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}"/>
             </Style>
+            <Style x:Key="TaskTimeCell" TargetType="TextBlock" BasedOn="{StaticResource TaskLongTextCell}">
+                <Setter Property="ToolTip" Value="{Binding CreatedLocal, Mode=OneWay, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"/>
+            </Style>
             <Style x:Key="TaskDataGrid" TargetType="DataGrid" BasedOn="{StaticResource GscRedesignWorkspaceDataGrid}">
                 <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
                 <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
@@ -58,6 +61,10 @@
                      final realized row. Keep a small content safety zone inside the grid;
                      this does not alter column widths or the virtualized scroll model. -->
                 <Setter Property="Padding" Value="0,0,0,12"/>
+            </Style>
+            <Style x:Key="TaskCompactDataGridRow" TargetType="DataGridRow" BasedOn="{StaticResource GscStableDataGridRow}">
+                <Setter Property="Height" Value="36"/>
+                <Setter Property="MinHeight" Value="36"/>
             </Style>
             <Style x:Key="TaskTableFrame" TargetType="Border" BasedOn="{StaticResource GscRedesignTableFrame}"/>
             <Style x:Key="TaskFirstColumnHeader" TargetType="DataGridColumnHeader" BasedOn="{StaticResource GscDataGridColumnHeaderStyle}">
@@ -183,10 +190,20 @@
                 <ui:Button x:Name="TaskRefreshButton" Grid.Row="0" Grid.Column="7" Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding RefreshCommand}" Content="刷新" ToolTip="刷新任务列表"/>
             </Grid>
         </Border>
-        <Expander x:Name="TaskMoreFiltersExpander" Grid.Row="2" Grid.ColumnSpan="3" Style="{StaticResource GscDisclosureCard}" Header="更多筛选" Visibility="Collapsed" Margin="0,0,0,8">
+        <Expander x:Name="TaskMoreFiltersExpander" Grid.Row="2" Grid.ColumnSpan="3" Style="{StaticResource GscDisclosureCard}" Visibility="Collapsed" Margin="0,0,0,8">
+            <Expander.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                    <TextBlock Text="更多筛选" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" Text="{Binding TaskActiveFiltersSummary, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" Foreground="{DynamicResource GscMutedTextBrush}" TextTrimming="CharacterEllipsis" Margin="12,0,12,0" VerticalAlignment="Center"/>
+                    <ui:Button x:Name="TaskClearFiltersButton" Grid.Column="2" Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding ClearTaskFiltersCommand}" Content="清除" ToolTip="清除搜索、状态、类型、游戏和时间筛选" AutomationProperties.Name="清除任务筛选" Click="OnClearTaskFiltersClick"/>
+                </Grid>
+            </Expander.Header>
             <StackPanel x:Name="TaskMoreFiltersHost" Orientation="Horizontal" Margin="0,4,0,0">
                 <TextBlock x:Name="TaskGameFilterLabel" Text="游戏" Style="{DynamicResource GscBodyStyle}" VerticalAlignment="Center"/>
                 <ComboBox x:Name="TaskGameFilterComboBox" Style="{DynamicResource GscWpfUiFilterComboBox}" MinWidth="130" MaxWidth="210" ItemsSource="{Binding TaskGameFilterOptions}" SelectedItem="{Binding TaskGameFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" ToolTip="游戏筛选" Margin="10,0,6,0"/>
+                <TextBlock x:Name="TaskHistoryScopeLabel" Text="范围:" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="6,0,4,0"/>
+                <TextBlock x:Name="TaskHistoryRangeLabel" Text="时间:" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="6,0,4,0"/>
             </StackPanel>
         </Expander>
         <Border x:Name="TaskQueuePanel" Grid.Row="3" Grid.Column="0" Style="{DynamicResource GscRedesignSectionCard}" Padding="6,10">
@@ -206,7 +223,7 @@
                         </ui:Button>
                         <StackPanel VerticalAlignment="Center" Margin="10,0,0,0">
                             <TextBlock Text="{Binding TaskLoadedSummary}" Style="{DynamicResource GscCaptionStyle}"/>
-                            <TextBlock Text="{Binding TaskPageStatusSummary}" Style="{DynamicResource GscCaptionStyle}" Foreground="{DynamicResource GscMutedTextBrush}" Margin="0,2,0,0"/>
+                            <TextBlock x:Name="TaskQueueLastUpdatedSummary" Text="{Binding TaskPageStatusSummary}" Style="{DynamicResource GscCaptionStyle}" Foreground="{DynamicResource GscMutedTextBrush}" Margin="0,2,0,0" ToolTip="{Binding TaskPageStatusSummary}"/>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
@@ -244,12 +261,12 @@
                     <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                     <DataGrid x:Name="TaskGrid" Style="{StaticResource TaskDataGrid}" RowStyle="{StaticResource GscStableDataGridRow}" ItemsSource="{Binding TasksView}" SelectedItem="{Binding SelectedTask}" SelectionChanged="OnTaskSelectionChanged">
                 <DataGrid.Columns>
-                    <DataGridTextColumn HeaderStyle="{StaticResource TaskFirstColumnHeader}" Header="本地时间" Binding="{Binding CreatedLocal, Mode=OneWay, StringFormat={}{0:MM-dd HH:mm:ss}}" Width="106" ElementStyle="{StaticResource TaskLongTextCell}"/>
-                    <DataGridTextColumn Header="任务" Binding="{Binding TaskTypeDisplay, Mode=OneWay}" Width="96" ElementStyle="{StaticResource TaskLongTextCell}"/>
-                    <DataGridTextColumn Header="游戏" Binding="{Binding GameName, Mode=OneWay}" Width="1.15*" MinWidth="100" ElementStyle="{StaticResource TaskLongTextCell}"/>
-                    <DataGridTemplateColumn Header="状态" Width="94"><DataGridTemplateColumn.CellTemplate><DataTemplate><Border x:Name="TaskStatusPill" Style="{DynamicResource GscRedesignTableStatusPill}"><TextBlock Text="{Binding StateDisplay, Mode=OneWay}" Foreground="{DynamicResource GscPrimaryTextBrush}" HorizontalAlignment="Center"/></Border><DataTemplate.Triggers><DataTrigger Binding="{Binding State}" Value="Succeeded"><Setter TargetName="TaskStatusPill" Property="Background" Value="{DynamicResource GscSuccessIconFillBrush}"/><Setter TargetName="TaskStatusPill" Property="BorderBrush" Value="{DynamicResource GscSuccessBrush}"/></DataTrigger><DataTrigger Binding="{Binding State}" Value="Failed"><Setter TargetName="TaskStatusPill" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/><Setter TargetName="TaskStatusPill" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/></DataTrigger><DataTrigger Binding="{Binding State}" Value="Running"><Setter TargetName="TaskStatusPill" Property="Background" Value="{DynamicResource GscInfoIconFillBrush}"/><Setter TargetName="TaskStatusPill" Property="BorderBrush" Value="{DynamicResource GscInfoBrush}"/></DataTrigger><DataTrigger Binding="{Binding State}" Value="Cancelled"><Setter TargetName="TaskStatusPill" Property="Background" Value="{DynamicResource GscControlFillBrush}"/><Setter TargetName="TaskStatusPill" Property="BorderBrush" Value="{DynamicResource GscMutedStatusBrush}"/></DataTrigger></DataTemplate.Triggers></DataTemplate></DataGridTemplateColumn.CellTemplate></DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="进度" Width="126" MinWidth="116"><DataGridTemplateColumn.CellTemplate><DataTemplate><Grid Margin="8,0" HorizontalAlignment="Stretch" VerticalAlignment="Center"><Grid.ColumnDefinitions><ColumnDefinition Width="*" MinWidth="52"/><ColumnDefinition Width="40"/></Grid.ColumnDefinitions><ProgressBar Height="8" MinWidth="52" HorizontalAlignment="Stretch" VerticalAlignment="Center" Minimum="0" Maximum="100" Value="{Binding ProgressPercent, Mode=OneWay}"/><TextBlock Grid.Column="1" Text="{Binding ProgressPercent, Mode=OneWay, StringFormat={}{0}%}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" FontSize="11" Foreground="{DynamicResource GscSecondaryTextBrush}"/></Grid></DataTemplate></DataGridTemplateColumn.CellTemplate></DataGridTemplateColumn>
-                    <DataGridTextColumn HeaderStyle="{StaticResource TaskLastColumnHeader}" Header="详情" Binding="{Binding DetailMessage, Mode=OneWay}" Width="1.4*" MinWidth="140" ElementStyle="{StaticResource TaskLongTextCell}"/>
+                    <DataGridTextColumn HeaderStyle="{StaticResource TaskFirstColumnHeader}" Header="本地时间" Binding="{Binding CreatedLocal, Mode=OneWay, StringFormat={}{0:MM-dd HH:mm}}" Width="112" MinWidth="104" ElementStyle="{StaticResource TaskTimeCell}"/>
+                    <DataGridTextColumn Header="任务" Binding="{Binding TaskTypeDisplay, Mode=OneWay}" Width="104" MinWidth="96" ElementStyle="{StaticResource TaskLongTextCell}"/>
+                    <DataGridTextColumn Header="游戏" Binding="{Binding GameName, Mode=OneWay}" Width="1.2*" MinWidth="110" ElementStyle="{StaticResource TaskLongTextCell}"/>
+                    <DataGridTemplateColumn Header="状态" Width="104" MinWidth="100"><DataGridTemplateColumn.CellTemplate><DataTemplate><Border x:Name="TaskStatusPill" Style="{DynamicResource GscRedesignTableStatusPill}"><TextBlock Text="{Binding StateDisplay, Mode=OneWay}" Foreground="{DynamicResource GscPrimaryTextBrush}" HorizontalAlignment="Center"/></Border><DataTemplate.Triggers><DataTrigger Binding="{Binding State}" Value="Succeeded"><Setter TargetName="TaskStatusPill" Property="Background" Value="{DynamicResource GscSuccessIconFillBrush}"/><Setter TargetName="TaskStatusPill" Property="BorderBrush" Value="{DynamicResource GscSuccessBrush}"/></DataTrigger><DataTrigger Binding="{Binding State}" Value="Failed"><Setter TargetName="TaskStatusPill" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/><Setter TargetName="TaskStatusPill" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/></DataTrigger><DataTrigger Binding="{Binding State}" Value="Running"><Setter TargetName="TaskStatusPill" Property="Background" Value="{DynamicResource GscInfoIconFillBrush}"/><Setter TargetName="TaskStatusPill" Property="BorderBrush" Value="{DynamicResource GscInfoBrush}"/></DataTrigger><DataTrigger Binding="{Binding State}" Value="Cancelled"><Setter TargetName="TaskStatusPill" Property="Background" Value="{DynamicResource GscControlFillBrush}"/><Setter TargetName="TaskStatusPill" Property="BorderBrush" Value="{DynamicResource GscMutedStatusBrush}"/></DataTrigger></DataTemplate.Triggers></DataTemplate></DataGridTemplateColumn.CellTemplate></DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="进度" Width="132" MinWidth="120"><DataGridTemplateColumn.CellTemplate><DataTemplate><Grid Margin="8,0" HorizontalAlignment="Stretch" VerticalAlignment="Center"><Grid.ColumnDefinitions><ColumnDefinition Width="*" MinWidth="52"/><ColumnDefinition Width="40"/></Grid.ColumnDefinitions><ProgressBar Height="8" MinWidth="52" HorizontalAlignment="Stretch" VerticalAlignment="Center" Minimum="0" Maximum="100" Value="{Binding ProgressPercent, Mode=OneWay}"/><TextBlock Grid.Column="1" Text="{Binding ProgressPercent, Mode=OneWay, StringFormat={}{0}%}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" FontSize="11" Foreground="{DynamicResource GscSecondaryTextBrush}"/></Grid></DataTemplate></DataGridTemplateColumn.CellTemplate></DataGridTemplateColumn>
+                    <DataGridTextColumn HeaderStyle="{StaticResource TaskLastColumnHeader}" Header="详情" Binding="{Binding DetailMessage, Mode=OneWay}" Width="1.2*" MinWidth="160" ElementStyle="{StaticResource TaskLongTextCell}"/>
                 </DataGrid.Columns>
             </DataGrid>
                 <ui:WorkspaceStatePresenter State="Empty" Title="暂无任务记录" Message="完成备份、媒体同步或维护操作后，任务会显示在这里。" IsHitTestVisible="False">

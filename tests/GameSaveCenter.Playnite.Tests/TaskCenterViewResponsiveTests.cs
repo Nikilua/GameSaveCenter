@@ -75,6 +75,72 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("TaskPageStatusSummary", state);
         }
 
+        [Fact]
+        public void CompactTaskFiltersKeepCommonControlsInOneRowAndMoveSecondaryFiltersIntoDisclosure()
+        {
+            Exception? exception = null;
+            var compactMainHasType = true;
+            var compactMainHasScope = true;
+            var compactMainHasRange = true;
+            var compactMoreHasType = false;
+            var compactMoreHasScope = false;
+            var compactMoreHasRange = false;
+            var compactSearchSpan = 0;
+            var wideMainHasType = false;
+            var wideMainHasScope = false;
+            var wideMainHasRange = false;
+
+            var thread = new Thread(() =>
+            {
+                try
+                {
+                    var view = new TaskCenterView();
+                    var viewType = typeof(TaskCenterView);
+                    var filters = (Grid)viewType.GetField("TaskFiltersPanel", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                    var more = (StackPanel)viewType.GetField("TaskMoreFiltersHost", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                    var typeLabel = (TextBlock)viewType.GetField("TaskTypeFilterLabel", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                    var typeCombo = (ComboBox)viewType.GetField("TaskTypeFilterComboBox", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                    var scopeCombo = (ComboBox)viewType.GetField("TaskHistoryScopeComboBox", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                    var rangeCombo = (ComboBox)viewType.GetField("TaskHistoryRangeComboBox", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                    var search = (Grid)viewType.GetField("TaskSearchBoxHost", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+
+                    view.ApplyResponsiveLayout(700, 640);
+                    compactMainHasType = filters.Children.Contains(typeLabel) || filters.Children.Contains(typeCombo);
+                    compactMainHasScope = filters.Children.Contains(scopeCombo);
+                    compactMainHasRange = filters.Children.Contains(rangeCombo);
+                    compactMoreHasType = more.Children.Contains(typeLabel) && more.Children.Contains(typeCombo);
+                    compactMoreHasScope = more.Children.Contains(scopeCombo);
+                    compactMoreHasRange = more.Children.Contains(rangeCombo);
+                    compactSearchSpan = Grid.GetColumnSpan(search);
+
+                    view.ApplyResponsiveLayout(1280, 720);
+                    wideMainHasType = filters.Children.Contains(typeLabel) && filters.Children.Contains(typeCombo);
+                    wideMainHasScope = filters.Children.Contains(scopeCombo);
+                    wideMainHasRange = filters.Children.Contains(rangeCombo);
+                }
+                catch (Exception caught)
+                {
+                    exception = caught;
+                }
+            });
+
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+            thread.Join();
+
+            Assert.Null(exception);
+            Assert.False(compactMainHasType);
+            Assert.False(compactMainHasScope);
+            Assert.False(compactMainHasRange);
+            Assert.True(compactMoreHasType);
+            Assert.True(compactMoreHasScope);
+            Assert.True(compactMoreHasRange);
+            Assert.Equal(4, compactSearchSpan);
+            Assert.True(wideMainHasType);
+            Assert.True(wideMainHasScope);
+            Assert.True(wideMainHasRange);
+        }
+
         private static string FindRepositoryRoot()
         {
             var directory = new System.IO.DirectoryInfo(AppContext.BaseDirectory);

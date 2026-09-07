@@ -9,6 +9,13 @@
 - Dashboard 的预览、应用、撤销分别更新“预览对象”“最后应用批次”和历史选中项；不要把预览 ID 当作可撤销 ID，也不要在撤销有冲突时无条件清除批次上下文。
 - UI 历史列表使用有限 `ListBox`（最小 236 DIP，最大 260 DIP）并保留内部滚动；筛选变化通过 code-behind 触发刷新，历史请求拥有独立 generation/CTS，离开 Media workspace 必须取消。
 
+## 2026-09-07 UI3-04 任务中心筛选与密度实现约束
+
+- `TaskCenterView` 在 `<760 DIP` 时只把搜索、状态和刷新留在主工具栏；类型、历史范围、时间范围和游戏筛选放入 `TaskMoreFiltersHost`。不要复制 ComboBox 以实现响应式布局：`SetCompactFilterPlacement` 会将同一批真实控件从 `TaskFiltersPanel` 移到 StackPanel，宽屏再移回，Binding/选择状态因此连续。
+- `TaskActiveFiltersSummary` 必须随搜索、状态、游戏、类型、范围和时间变化通知；收起的 `TaskMoreFiltersExpander` 仍需显示生效条件并提供 `ClearTaskFiltersCommand`，不能因为隐藏控件而隐藏已生效条件。清除按钮位于 Expander header，点击要阻止误触发折叠切换。
+- 任务时间列使用 `TaskTimeCell` 显示 `MM-dd HH:mm`，Tooltip 保留 `yyyy-MM-dd HH:mm:ss`；时间/状态/进度的最小宽度优先于详情，详情可以省略但不能改变真实数据。紧凑模式使用 `TaskCompactDataGridRow`（36 DIP），宽屏必须恢复 `GscStableDataGridRow`，不要修改共享表格行高来迁就单页。
+- `FakeDashboardData` 需要覆盖 `TaskTotalCount`、`TaskHistoryScopeOptions`、`TaskHistoryRangeOptions`、`TaskLoadedSummary`、`TaskHistoryHasMore` 和任务详情/批量命令；夹具字段为空不应被误判为生产 Binding 缺陷。最终离屏只能说明合成壳层几何，不能代替真实 Playnite 宿主、DPI 或高对比度验收。
+
 ## 2026-09-07 UI3-02 云端队列明细分页与用户操作入口
 
 - 生产维护中心现在有独立的云端队列 Tab。`DashboardViewModel.CloudTransfers` 以 `CloudTransferStatusRequestDto` 调用 Worker 的 `GetCloudTransferStatus`，页大小固定请求 100，服务端聚合总量，客户端按 `TransferKey` 去重追加并在刷新时恢复当前选择。

@@ -9,6 +9,13 @@
 - `MediaCenterView` 新增批次历史有限列表、刷新/状态筛选/加载更多和选中批次撤销入口；RenderHarness Fake 数据覆盖待确认、已应用有冲突、已撤销有冲突。列表最小 236 DIP 经过 RenderHarness 门禁修正。
 - 新增 Worker 回归：重启后历史仍可分页、状态可筛选、冲突计数和 `IsUndoable` 正确；验证目标历史测试通过，随后全量 Release 测试/Render QA 需要在提交前再次执行。未执行真实 Playnite 宿主。
 
+## 2026-09-07 UI3-04 任务中心紧凑筛选与主表密度
+
+- `TaskCenterView` 紧凑态将搜索、状态、刷新保留为常用入口，并在 `TaskMoreFiltersExpander` 中复用现有类型/游戏/历史范围/时间范围控件；控件在 Grid 与 StackPanel 之间按宽度可逆重排，收起标题显示当前生效筛选和清除命令。
+- 任务表时间显示改为月日+时分并保留完整时间 Tooltip；时间、状态、进度列设定稳定最小宽度，详情列保持弹性；堆叠页使用 36 DIP 专用行样式，宽屏恢复共享表格行样式。夹具补齐统计、历史范围、分页和详情动作命令。
+- 新增 `TaskCenterViewResponsiveTests.CompactTaskFiltersKeepCommonControlsInOneRowAndMoveSecondaryFiltersIntoDisclosure`，覆盖紧凑重排、宽屏恢复和搜索列跨度；已有历史基线测试未解除跳过。
+- 验证：Release 全量 Core `65/65`、Worker `296/297`（1 跳过）、Playnite `343/405`（62 跳过）；构建 0 warning/0 error，XAML `19/19`，`validate-source.py`、WPF 静态审查、三次任务页最终渲染确认及 `render-qa OK` 通过。未执行真实 Playnite 宿主。
+
 ## 2026-09-07 UI3-02 云端队列明细分页与用户操作入口
 
 - 将已有 Worker 云端状态分页协议接入生产维护中心：新增云端队列 Tab、概览入口、状态/类型筛选、分页加载、有限虚拟化表格和选中记录详情；摘要总量独立于当前页，刷新按 `TransferKey` 尝试恢复焦点。

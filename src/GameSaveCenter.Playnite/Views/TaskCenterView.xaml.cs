@@ -55,6 +55,11 @@ namespace GameSaveCenter.Playnite.Views
                 TaskGrid.MinHeight = tableMinHeight;
                 TaskGrid.Height = double.NaN;
                 TaskGrid.MaxHeight = double.PositiveInfinity;
+                // The compact page must expose several task rows before the stacked
+                // inspector button; the desktop theme row height remains unchanged.
+                TaskGrid.ClearValue(DataGrid.RowHeightProperty);
+                if (stack) TaskGrid.RowHeight = 36d;
+                TaskGrid.RowStyle = (Style)FindResource(stack ? "TaskCompactDataGridRow" : "GscStableDataGridRow");
                 // Keep the Demo's four metrics in one continuous strip at every width. On a
                 // short window, tighten only the secondary summary chrome so the queue still
                 // gets a useful first viewport; the table and inspector keep their own scroll
@@ -72,27 +77,25 @@ namespace GameSaveCenter.Playnite.Views
                 // the primary controls never reflow into each other.
                 var compactFilters = width < 760;
                 TaskMoreFiltersExpander.Visibility = compactFilters ? Visibility.Visible : Visibility.Collapsed;
-                TaskFiltersPanel.RowDefinitions[1].Height = compactFilters
-                    ? new GridLength(1, GridUnitType.Auto)
-                    : new GridLength(0);
+                TaskFilterBar.Padding = compactFilters ? new Thickness(8, 6, 8, 6) : new Thickness(10, 8, 10, 8);
+                TaskMoreFiltersExpander.Margin = compactFilters ? new Thickness(0, 0, 0, 4) : new Thickness(0, 0, 0, 8);
+                TaskQueuePanel.Padding = stack ? new Thickness(6, 6, 6, 6) : new Thickness(6, 10, 6, 10);
+                TaskQueueLastUpdatedSummary.Visibility = stack ? Visibility.Collapsed : Visibility.Visible;
+                SetCompactFilterPlacement(compactFilters);
+                TaskMoreFiltersHost.Orientation = compactFilters && width < 660
+                    ? Orientation.Vertical
+                    : Orientation.Horizontal;
+                TaskFiltersPanel.RowDefinitions[1].Height = new GridLength(0);
                 Grid.SetRow(TaskSearchBoxHost, 0);
                 Grid.SetColumn(TaskSearchBoxHost, 0);
-                Grid.SetRow(TaskStatusFilterLabel, compactFilters ? 1 : 0);
-                Grid.SetColumn(TaskStatusFilterLabel, compactFilters ? 0 : 1);
-                Grid.SetRow(TaskStatusFilterComboBox, compactFilters ? 1 : 0);
-                Grid.SetColumn(TaskStatusFilterComboBox, compactFilters ? 1 : 2);
-                Grid.SetRow(TaskTypeFilterLabel, compactFilters ? 1 : 0);
-                Grid.SetColumn(TaskTypeFilterLabel, compactFilters ? 2 : 3);
-                Grid.SetRow(TaskTypeFilterComboBox, compactFilters ? 1 : 0);
-                Grid.SetColumn(TaskTypeFilterComboBox, compactFilters ? 3 : 4);
-                Grid.SetRow(TaskHistoryScopeComboBox, compactFilters ? 1 : 0);
-                Grid.SetColumn(TaskHistoryScopeComboBox, compactFilters ? 4 : 5);
-                Grid.SetRow(TaskHistoryRangeComboBox, compactFilters ? 1 : 0);
-                Grid.SetColumn(TaskHistoryRangeComboBox, compactFilters ? 5 : 6);
-                Grid.SetRow(TaskRefreshButton, compactFilters ? 1 : 0);
+                Grid.SetRow(TaskStatusFilterLabel, 0);
+                Grid.SetColumn(TaskStatusFilterLabel, compactFilters ? 4 : 1);
+                Grid.SetRow(TaskStatusFilterComboBox, 0);
+                Grid.SetColumn(TaskStatusFilterComboBox, compactFilters ? 5 : 2);
+                Grid.SetRow(TaskRefreshButton, 0);
                 Grid.SetColumn(TaskRefreshButton, compactFilters ? 6 : 7);
 
-                Grid.SetColumnSpan(TaskSearchBoxHost, compactFilters ? 7 : 1);
+                Grid.SetColumnSpan(TaskSearchBoxHost, compactFilters ? 4 : 1);
                 Grid.SetRow(TaskSearchBoxHost, 0);
 
                 // Give the common desktop width a stable rhythm like the Demo's
@@ -203,6 +206,60 @@ namespace GameSaveCenter.Playnite.Views
                 ApplyResponsiveLayout(
                     TaskPageScrollSurface.ActualWidth > 0 ? TaskPageScrollSurface.ActualWidth : TaskWorkspaceLayout.ActualWidth,
                     TaskPageScrollSurface.ActualHeight > 0 ? TaskPageScrollSurface.ActualHeight : TaskWorkspaceLayout.ActualHeight);
+        }
+
+        private void OnClearTaskFiltersClick(object sender, RoutedEventArgs e)
+        {
+            // The command performs the reset. Mark the click handled so the button
+            // inside the disclosure header never toggles the Expander as a side effect.
+            e.Handled = true;
+        }
+
+        private void SetCompactFilterPlacement(bool compact)
+        {
+            if (compact)
+            {
+                RemoveChild(TaskFiltersPanel, TaskTypeFilterLabel);
+                RemoveChild(TaskFiltersPanel, TaskTypeFilterComboBox);
+                RemoveChild(TaskFiltersPanel, TaskHistoryScopeComboBox);
+                RemoveChild(TaskFiltersPanel, TaskHistoryRangeComboBox);
+
+                TaskMoreFiltersHost.Children.Clear();
+                TaskMoreFiltersHost.Children.Add(TaskTypeFilterLabel);
+                TaskMoreFiltersHost.Children.Add(TaskTypeFilterComboBox);
+                TaskMoreFiltersHost.Children.Add(TaskHistoryScopeLabel);
+                TaskMoreFiltersHost.Children.Add(TaskHistoryScopeComboBox);
+                TaskMoreFiltersHost.Children.Add(TaskHistoryRangeLabel);
+                TaskMoreFiltersHost.Children.Add(TaskHistoryRangeComboBox);
+                TaskMoreFiltersHost.Children.Add(TaskGameFilterLabel);
+                TaskMoreFiltersHost.Children.Add(TaskGameFilterComboBox);
+                return;
+            }
+
+            RemoveChild(TaskMoreFiltersHost, TaskTypeFilterLabel);
+            RemoveChild(TaskMoreFiltersHost, TaskTypeFilterComboBox);
+            RemoveChild(TaskMoreFiltersHost, TaskHistoryScopeComboBox);
+            RemoveChild(TaskMoreFiltersHost, TaskHistoryRangeComboBox);
+            TaskMoreFiltersHost.Children.Clear();
+            TaskMoreFiltersHost.Children.Add(TaskGameFilterLabel);
+            TaskMoreFiltersHost.Children.Add(TaskGameFilterComboBox);
+            TaskMoreFiltersHost.Children.Add(TaskHistoryScopeLabel);
+            TaskMoreFiltersHost.Children.Add(TaskHistoryRangeLabel);
+
+            AddChild(TaskFiltersPanel, TaskTypeFilterLabel);
+            AddChild(TaskFiltersPanel, TaskTypeFilterComboBox);
+            AddChild(TaskFiltersPanel, TaskHistoryScopeComboBox);
+            AddChild(TaskFiltersPanel, TaskHistoryRangeComboBox);
+        }
+
+        private static void RemoveChild(Panel parent, UIElement child)
+        {
+            if (parent.Children.Contains(child)) parent.Children.Remove(child);
+        }
+
+        private static void AddChild(Panel parent, UIElement child)
+        {
+            if (!parent.Children.Contains(child)) parent.Children.Add(child);
         }
 
         private void OnTaskCompactDetailsClick(object sender, RoutedEventArgs e)

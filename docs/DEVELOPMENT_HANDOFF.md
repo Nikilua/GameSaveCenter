@@ -12,6 +12,13 @@
 - 本阶段测试应记录为 Core `65/65`、Worker `296/297`（1 跳过）、Playnite `342/404`（62 跳过）若全量结果保持当前基线；真实 Playnite、跨重启宿主交互、DPI/高对比度和用户大库仍为人工复核项。
 - 下一步优先按 UI3 方案继续任务中心密度/可见状态复查；不要重复 UI3-02 的云队列入口，也不要把 `render-qa OK` 写成真实宿主验收。
 
+## 2026-09-07 UI3-04 任务中心紧凑筛选与主表密度
+
+- 紧凑态主工具栏只保留搜索、状态、刷新；类型、游戏、历史范围和时间范围由 `TaskMoreFiltersExpander` 承载。`TaskCenterView.xaml.cs` 通过可逆 reparent 使用同一组真实控件，宽度恢复后必须回到 `TaskFiltersPanel`，不能新增重复 Binding 控件。
+- 收起时 `TaskActiveFiltersSummary` 显示当前生效条件，`ClearTaskFiltersCommand` 始终可找；任务时间列使用 `MM-dd HH:mm` + 完整 Tooltip，关键状态/进度列最小宽度不可被详情列挤压。堆叠模式仅使用页面专用 36 DIP 行样式，宽屏恢复共享样式。
+- `FakeDashboardData` 已补齐任务统计、范围、分页和详情操作命令；响应式测试覆盖紧凑/宽屏来回切换。验证基线：构建 0 warning/0 error，Core `65/65`、Worker `296/297`（1 跳过）、Playnite `343/405`（62 跳过）、XAML `19/19`、源码/WPF 检查和 `render-qa OK`。
+- 离屏最终结果：1040×700 紧凑页三行完整可读并保留详情按钮，1366×768 宽屏首屏五行；这不是实际 Playnite 宿主验收。下一步按 UI3-05 处理首页最高优先级状态与明确下一步动作，之后再做 UI3-06 存档/维护文本和入口收口。
+
 ## 2026-09-07 UI3-02 云端队列明细分页与用户操作入口
 
 - 维护中心新增云端队列页，概览卡的“查看明细”进入该页；生产 VM 已接 `GetCloudTransferStatus`、`VerifyCloudTransfer` 和按内容类型区分的重试路径。摘要来自全量聚合，明细每页最多 100 条，支持状态/类型筛选和继续加载。

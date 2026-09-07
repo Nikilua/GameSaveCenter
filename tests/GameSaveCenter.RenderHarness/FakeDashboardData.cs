@@ -28,6 +28,11 @@ public sealed class FakeDashboardData
     public ICommand RefreshMediaClassificationHistoryCommand { get; } = new NoopCommand();
     public ICommand LoadMoreMediaClassificationHistoryCommand { get; } = new NoopCommand();
     public ICommand UndoMediaClassificationCommand { get; } = new NoopCommand();
+    public ICommand LoadMoreTasksCommand { get; } = new NoopCommand();
+    public ICommand RetryAllTasksCommand { get; } = new NoopCommand();
+    public ICommand RetryTaskCommand { get; } = new NoopCommand();
+    public ICommand CancelTaskCommand { get; } = new NoopCommand();
+    public ICommand CopyTaskErrorCommand { get; } = new NoopCommand();
     public ICommand ClearTaskFiltersCommand { get; } = new NoopCommand();
 
     public FakeDashboardData(int rowCount = 8)
@@ -564,9 +569,11 @@ public sealed class FakeDashboardData
     public bool CloudTransferHasMore => CloudTransferViewSummary.HasMore;
     public string CloudTransferLoadedSummary => $"已加载全部 {CloudTransferItems.Count} 项";
     public int MaintenanceTabIndex { get; set; }
-    public ObservableCollection<string> TaskStatusFilterOptions { get; } = new ObservableCollection<string> { "全部", "等待中", "执行中", "成功", "失败", "已取消" };
+    public ObservableCollection<string> TaskStatusFilterOptions { get; } = new ObservableCollection<string> { "全部", "运行中", "等待中", "失败", "已完成" };
     public ObservableCollection<string> TaskGameFilterOptions { get; } = new ObservableCollection<string> { "全部" };
     public ObservableCollection<string> TaskTypeFilterOptions { get; } = new ObservableCollection<string> { "全部", "存档备份", "媒体同步", "云端上传" };
+    public ObservableCollection<string> TaskHistoryScopeOptions { get; } = new ObservableCollection<string> { "最近任务", "全部历史" };
+    public ObservableCollection<string> TaskHistoryRangeOptions { get; } = new ObservableCollection<string> { "全部时间", "今天", "昨天", "近7天", "近30天" };
     public ObservableCollection<string> MediaFilterOptions { get; } = new ObservableCollection<string> { "全部", "截图", "录像", "收藏" };
     public ObservableCollection<string> DeviceDecisionOptions { get; } = new ObservableCollection<string> { "稍后处理", "记录为优先本机", "记录为优先远端" };
     public RetentionPreviewDto LastRetentionPreview { get; } = new RetentionPreviewDto();
@@ -596,6 +603,12 @@ public sealed class FakeDashboardData
     public int RunningTaskCount { get; }
     public int RetryableTaskCount { get; }
     public int CompletedTaskCount { get; }
+    public int TaskTotalCount => Tasks.Count;
+    public string TaskHistoryScope { get; set; } = "最近任务";
+    public string TaskHistoryRange { get; set; } = "全部时间";
+    public bool TaskHistoryHasMore => false;
+    public string TaskLoadedSummary => $"已加载 {Tasks.Count} / {Tasks.Count} 条 · {TaskHistoryScope}";
+    public string TaskActiveFiltersSummary => "当前未设置额外条件";
     public bool TaskPageHasLoaded => true;
     public bool IsTaskPageLoading => false;
     public bool TaskPageLoadFailed => false;
