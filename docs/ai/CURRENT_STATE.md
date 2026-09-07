@@ -2,6 +2,13 @@
 
 > 更新时间：2026-09-07。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-07 Q4-01/Q4-02 媒体重试与目标标签导航已完成
+
+- 媒体云端重试现在使用独立的 `media.cloud.upload.retry` IPC，Worker 接到 `MediaSyncService.RetryCloudUploadForUserAsync`；只重传已有媒体归档，不重新扫描来源、不复用备份专用 `cloud.upload.retry`。返回 `Submitted`、`PausedByPolicy`、`CannotSubmit` 及可选任务详情。
+- 安全模式、全局云端关闭、Rclone 未配置、游戏策略未允许上传、后台失败/取消均不会在 UI 显示“已提交”；策略暂停会提示到存档策略设置。备份云端重试路径保持不变。
+- `MediaTabIndex`/`SaveTabIndex` 通过 TabControl 双向绑定保留普通标签状态；首页待归类动作先选媒体“待归类”，诊断“进入存档路径确认”先选“路径与校验”，不模拟点击或延时跳转。
+- 验证：Release 构建 0 warning/0 error；媒体重试 Worker 定向 10/10、媒体锚点/重试契约 Playnite 定向 4/4。尚未运行真实 Playnite、真实 Rclone 远端和用户数据上传。
+
 ## 2026-09-07 质量复核收尾补充
 
 - UI3-07 已在 `9e93909` 提交；本轮补审锚点逻辑并独立运行 MediaPageAccumulator/MediaWindowAnchorContract 定向测试 **5/5**。已更新 [Q4-00～04 收口计划](QUALITY_REVIEW_2026-09-07.md)，后续重点是实际滚动行为、操作语义和可见布局。

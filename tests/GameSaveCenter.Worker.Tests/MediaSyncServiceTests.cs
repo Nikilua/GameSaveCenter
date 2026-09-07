@@ -75,6 +75,39 @@ public sealed class MediaSyncServiceTests : IDisposable
     }
 
     [Fact]
+    public async Task UserMediaRetryReportsPolicyPauseWithoutStartingMediaSync()
+    {
+        await store.UpsertGamesAsync(new[]
+        {
+            new GameDescriptorDto { PlayniteId = "policy-game", Name = "Policy Game", Platform = GamePlatformKind.Steam }
+        }, CancellationToken.None);
+
+        var result = await CreateService().RetryCloudUploadForUserAsync("policy-game", CancellationToken.None);
+
+        Assert.Equal(MediaCloudRetryOutcome.PausedByPolicy, result.Outcome);
+        Assert.Null(result.Task);
+        Assert.Contains("策略", result.Message);
+    }
+
+    [Fact]
+    public async Task UserMediaRetryReportsUnavailableCloudWithoutSubmittingTask()
+    {
+        await store.UpsertGamesAsync(new[]
+        {
+            new GameDescriptorDto { PlayniteId = "cloud-disabled-game", Name = "Cloud Disabled Game", Platform = GamePlatformKind.Steam }
+        }, CancellationToken.None);
+        await store.SetPolicyAsync("cloud-disabled-game", new BackupPolicyDto { UploadAfterBackup = true }, CancellationToken.None);
+        options.EnableCloudUpload = false;
+
+        var result = await CreateService().RetryCloudUploadForUserAsync("cloud-disabled-game", CancellationToken.None);
+
+        Assert.Equal(MediaCloudRetryOutcome.CannotSubmit, result.Outcome);
+        Assert.Equal("RCLONE_NOT_CONFIGURED", result.ErrorCode);
+        Assert.Null(result.Task);
+        Assert.Contains("云端", result.Message);
+    }
+
+    [Fact]
     public async Task ClassificationPreviewUsesSourceRuleAndLeavesOverlappingSessionsAmbiguous()
     {
         var captured = DateTime.UtcNow.AddMinutes(-4);

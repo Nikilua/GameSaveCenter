@@ -198,6 +198,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string cloudTransferStateFilter = string.Empty;
         private string cloudTransferKindFilter = string.Empty;
         private int maintenanceTabIndex;
+        private int mediaTabIndex = 1;
+        private int saveTabIndex;
         private readonly RecentProtectionAssessmentService recentProtectionAssessment = new RecentProtectionAssessmentService();
         private readonly PlayniteGameStartedSubscription playniteGameStartedSubscription;
 
@@ -496,6 +498,10 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
         }
         public int MaintenanceTabIndex { get => maintenanceTabIndex; set { SetValue(ref maintenanceTabIndex, value); } }
+        /// <summary>Remembers the ordinary media tab; purpose actions may override it once.</summary>
+        public int MediaTabIndex { get => mediaTabIndex; set { SetValue(ref mediaTabIndex, Math.Max(0, Math.Min(2, value))); } }
+        /// <summary>Remembers the ordinary save tab; diagnostics can route directly to paths.</summary>
+        public int SaveTabIndex { get => saveTabIndex; set { SetValue(ref saveTabIndex, Math.Max(0, Math.Min(3, value))); } }
         public EnvironmentCheckReportDto EnvironmentCheck { get => environmentCheck; private set { SetValue(ref environmentCheck, value ?? new EnvironmentCheckReportDto()); RaiseCommandStates(); } }
         public bool IsOnboardingPending => !plugin.Settings.OnboardingCompleted;
         public string OnboardingTitle => IsOnboardingPending ? "首次使用：准备环境" : "环境检查";
@@ -1335,6 +1341,7 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private void OpenMediaWorkspace()
         {
+            MediaTabIndex = 0;
             CurrentWorkspace = WorkspaceKind.Media;
             RequestWorkspaceLoad();
         }
@@ -1353,6 +1360,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                             SelectedGame = game;
                     }
 
+                    SaveTabIndex = 1;
                     CurrentWorkspace = WorkspaceKind.Saves;
                     RequestWorkspaceLoad();
                     break;

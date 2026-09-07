@@ -163,7 +163,7 @@
                 </StackPanel>
             </Grid>
         </Border>
-        <TabControl x:Name="MediaTabControl" Grid.Row="1" SelectedIndex="1" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Style="{StaticResource MediaTabControl}">
+        <TabControl x:Name="MediaTabControl" Grid.Row="1" SelectedIndex="{Binding MediaTabIndex, Mode=TwoWay}" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Style="{StaticResource MediaTabControl}">
             <TabControl.Resources><Style TargetType="TabItem" BasedOn="{StaticResource MediaTabItem}"/></TabControl.Resources>
             <TabItem Header="待归类">
                 <!-- Keep the real DataGrid in a finite viewport. The page surface is a

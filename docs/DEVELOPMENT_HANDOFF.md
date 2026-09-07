@@ -6,6 +6,13 @@
 
 > 新会话短入口：先读 [`docs/ai/CURRENT_STATE.md`](ai/CURRENT_STATE.md)。本文下方的历史交接按时间保留；除顶部最新阶段和明确标注的覆盖关系外，旧条目只用于追溯，不得覆盖当前事实入口。
 
+## 2026-09-07 Q4-01/Q4-02 媒体重试与目标标签导航
+
+- 媒体云端重试已独立为 `media.cloud.upload.retry`，请求 `MediaCloudRetryRequestDto`，Worker 返回 `MediaCloudRetryResultDto`；不要恢复此前对媒体调用 `SyncMedia` 的实现，也不要把媒体请求接到备份专用 `cloud.upload.retry`。
+- 重试仅复制已有媒体归档。策略关闭返回 `PausedByPolicy`；安全模式、全局云端关闭、Rclone 未配置或后台失败/取消返回 `CannotSubmit`/准确任务信息；只有 `Submitted` 才能显示已提交。已有自动重试 `RetryCloudUploadAsync` 和备份路径保持不变。
+- `MediaCenterView` 的 TabControl 绑定 `MediaTabIndex`，`SaveCenterView` 绑定 `SaveTabIndex`。首页待归类入口先设 0，存档路径诊断入口先设 1，再切换工作区；不要用模拟点击或延时。
+- 阶段验证：Release 构建 0/0；Worker 媒体定向 10/10；Playnite 媒体重试/锚点契约定向 4/4。真实 Playnite、Rclone 远端、DPI、高对比度和用户数据仍未验收。
+
 ## 2026-09-07 UI3-07 缓存窗口翻页与滚动锚点
 
 - 当前游戏媒体和媒体收件箱的“加载更多”按钮会在命令执行前捕获可见首项、偏移和多选 ID；`MediaCenterView.xaml.cs` 在集合 Reset 后恢复 `VirtualizingWrapPanel`/DataGrid 的对应滚动模型和仍保留的选择。编辑对象/草稿仍由 Dashboard ViewModel 持有。

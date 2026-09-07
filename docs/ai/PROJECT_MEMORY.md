@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-07
 
+## 2026-09-07 Q4-01/Q4-02 媒体重试与目标标签导航实现约束
+
+- 媒体云端重试必须走 `MessageTypes.RetryMediaCloudUpload` 和 `MediaCloudRetryRequestDto`，Worker 只调用 `MediaSyncService.RetryCloudUploadForUserAsync`；`MessageTypes.RetryCloudUpload` 继续只服务备份，禁止用 `SyncMedia` 冒充“重试上传”。该入口不能扫描来源或归类新文件。
+- `MediaCloudRetryResultDto.Outcome` 是 UI 的事实来源：`Submitted` 才能显示提交/完成；`PausedByPolicy` 必须说明游戏策略未允许上传；`CannotSubmit` 必须展示安全模式、全局开关、Rclone、失败或取消原因，不能无条件写成功提示。
+- `MediaTabIndex` 初始保留当前游戏媒体页，`SaveTabIndex` 初始保留历史页；首页待归类动作设置媒体索引 0，诊断存档路径动作设置存档索引 1，且必须在切换 `CurrentWorkspace` 前设置，让生产 Shell 的页面绑定不会先落到默认标签。
+- 本阶段定向测试覆盖 Worker 策略暂停/云端不可用不创建任务，以及 Playnite IPC/Tab 绑定契约；仍需真实 Playnite 宿主、真实 Rclone、DPI/高对比度和用户数据验收。
+
 ## 2026-09-07 质量复核补审更新
 
 - UI3-07 已提交 9e93909；独立补审定向测试 5/5，但新增的 View 契约测试仅查源码字符串。下一步以 [质量报告 Q4-00～04](QUALITY_REVIEW_2026-09-07.md) 为收口计划，先补锚点真实行为与上下文切换验收。

@@ -17,6 +17,35 @@ public enum CloudTransferOperationKind
     Verify
 }
 
+/// <summary>Outcome of a user-requested media-only cloud upload retry.</summary>
+public enum MediaCloudRetryOutcome
+{
+    Submitted,
+    PausedByPolicy,
+    CannotSubmit
+}
+
+/// <summary>Typed request for retrying an already archived media copy.</summary>
+public sealed class MediaCloudRetryRequestDto
+{
+    public string PlayniteId { get; set; } = string.Empty;
+}
+
+/// <summary>
+/// Explicitly distinguishes an accepted retry from a policy pause or a preflight failure.
+/// The embedded task is included when the Worker reached the task coordinator so the UI can
+/// report a terminal failure/cancellation without claiming that an upload was accepted.
+/// </summary>
+public sealed class MediaCloudRetryResultDto
+{
+    public MediaCloudRetryOutcome Outcome { get; set; }
+    public string PlayniteId { get; set; } = string.Empty;
+    public string GameName { get; set; } = string.Empty;
+    public string ErrorCode { get; set; } = string.Empty;
+    public string Message { get; set; } = string.Empty;
+    public TaskStatusDto? Task { get; set; }
+}
+
 /// <summary>Request for a read-only remote check of one persisted transfer target.</summary>
 public sealed class CloudTransferVerifyRequestDto
 {

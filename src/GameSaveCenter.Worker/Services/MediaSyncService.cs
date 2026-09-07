@@ -1038,6 +1038,81 @@ public sealed class MediaSyncService
         },token).ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// User-facing entry point for a media-only retry. It performs the same safety checks
+    /// as the existing retry operation before creating a task, and returns a typed outcome
+    /// so a disabled policy or unavailable cloud cannot be shown as a successful submit.
+    /// </summary>
+    public async Task<MediaCloudRetryResultDto> RetryCloudUploadForUserAsync(string playniteId, CancellationToken token)
+    {
+        var game = await _catalog.GetGameAsync(playniteId, token).ConfigureAwait(false)
+            ?? throw new WorkerOperationException("CLOUD_GAME_NOT_FOUND", "找不到需要重试媒体云端上传的游戏。", playniteId);
+        var policy = await _store.GetPolicyAsync(playniteId, token).ConfigureAwait(false);
+        if (!policy.UploadAfterBackup)
+        {
+            await _cloudState.MarkPausedAsync(
+                CloudTransferKind.Media,
+                playniteId,
+                "该游戏策略未允许媒体上传，已暂停手动重试。",
+                token).ConfigureAwait(false);
+            return new MediaCloudRetryResultDto
+            {
+                Outcome = MediaCloudRetryOutcome.PausedByPolicy,
+                PlayniteId = playniteId,
+                GameName = game.Name,
+                Message = "该游戏策略未允许媒体上传。请在存档策略中开启“备份后自动上传云端”后再重试。"
+            };
+        }
+
+        if (_options.SafeModeEnabled)
+        {
+            return CannotSubmit(playniteId, game.Name, "SAFE_MODE_ENABLED", "安全模式已开启，云端上传已暂停。请先关闭安全模式。");
+        }
+
+        if (!_options.EnableCloudUpload || !_rclone.IsConfigured)
+        {
+            return CannotSubmit(playniteId, game.Name, "RCLONE_NOT_CONFIGURED", "云端复制尚未启用或 Rclone 配置不可用。请先完成云端设置。");
+        }
+
+        var task = await RetryCloudUploadAsync(playniteId, token).ConfigureAwait(false);
+        if (task.State == TaskState.Failed)
+        {
+            return CannotSubmit(playniteId, game.Name, task.ErrorCode, task.ErrorMessage, task);
+        }
+
+        if (task.State == TaskState.Cancelled)
+        {
+            return CannotSubmit(playniteId, game.Name, "RETRY_CANCELLED", task.Message, task);
+        }
+
+        return new MediaCloudRetryResultDto
+        {
+            Outcome = MediaCloudRetryOutcome.Submitted,
+            PlayniteId = playniteId,
+            GameName = game.Name,
+            Message = task.State == TaskState.Succeeded
+                ? "媒体云端复制重试已完成。"
+                : "媒体云端复制重试已提交。",
+            Task = task
+        };
+    }
+
+    private static MediaCloudRetryResultDto CannotSubmit(
+        string playniteId,
+        string gameName,
+        string errorCode,
+        string message,
+        TaskStatusDto? task = null)
+        => new()
+        {
+            Outcome = MediaCloudRetryOutcome.CannotSubmit,
+            PlayniteId = playniteId,
+            GameName = gameName,
+            ErrorCode = errorCode ?? string.Empty,
+            Message = message ?? "媒体云端重试未提交。",
+            Task = task
+        };
+
     private async Task<bool> ArchiveCandidateAsync(string path,MediaSourceKind source,GameDescriptorDto? game,string classificationReason,CancellationToken token)
     {
         try

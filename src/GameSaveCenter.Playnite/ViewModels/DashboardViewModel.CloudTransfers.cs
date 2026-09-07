@@ -109,12 +109,21 @@ public sealed partial class DashboardViewModel
         var selected = SelectedCloudTransfer ?? throw new InvalidOperationException("请先选择一条云端传输记录。");
         if (selected.Kind == CloudTransferKind.Media)
         {
-            var mediaRequest = new MediaSyncRequestDto
+            var result = await plugin.RequestAsync<MediaCloudRetryResultDto>(
+                MessageTypes.RetryMediaCloudUpload,
+                new MediaCloudRetryRequestDto { PlayniteId = selected.PlayniteId },
+                TimeSpan.FromHours(2));
+            StatusMessage = result?.Outcome switch
             {
-                UploadAfterSync = plugin.Settings.EnableCloudUpload
+                MediaCloudRetryOutcome.Submitted when result.Task?.State == TaskState.Succeeded
+                    => result.Message,
+                MediaCloudRetryOutcome.Submitted
+                    => "媒体云端上传重试已提交；请在队列状态变为已上传或远端已校验后再确认结果。",
+                MediaCloudRetryOutcome.PausedByPolicy
+                    => result.Message,
+                _
+                    => $"媒体云端上传重试未提交：{result?.Message ?? "Worker 未返回结果。"}"
             };
-            mediaRequest.PlayniteIds.Add(selected.PlayniteId);
-            await plugin.RequestAsync<TaskStatusDto[]>(MessageTypes.SyncMedia, mediaRequest, TimeSpan.FromHours(2));
         }
         else
         {
@@ -122,8 +131,8 @@ public sealed partial class DashboardViewModel
                 MessageTypes.RetryCloudUpload,
                 new GameQueryDto { PlayniteId = selected.PlayniteId },
                 TimeSpan.FromHours(2));
+            StatusMessage = "云端上传重试已提交；请在队列状态变为已上传或远端已校验后再确认结果。";
         }
-        StatusMessage = "云端上传重试已提交；请在队列状态变为已上传或远端已校验后再确认结果。";
         await LoadCloudTransferPageAsync(true);
         await RefreshDashboardAsync(false, false);
     }
