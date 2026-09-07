@@ -101,8 +101,10 @@ public sealed class DiagnosticsPackageService
     {
         createdUtc,
         pluginVersion = request?.PluginVersion ?? string.Empty,
+        pluginBuildIdentity = request?.PluginBuildIdentity ?? string.Empty,
         playniteVersion = request?.PlayniteVersion ?? string.Empty,
         workerVersion = typeof(DiagnosticsPackageService).Assembly.GetName().Version?.ToString() ?? "dev",
+        workerBuildIdentity = BuildIdentity.ForAssembly(typeof(DiagnosticsPackageService).Assembly),
         windowsVersion = Environment.OSVersion.ToString(),
         dotNetRuntime = Environment.Version.ToString(),
         machineArchitecture = Environment.Is64BitProcess ? "x64" : "x86",
@@ -121,6 +123,7 @@ public sealed class DiagnosticsPackageService
             pid = process.Id,
             startTimeUtc = process.StartTime.ToUniversalTime().ToString("O"),
             uptimeSeconds = Math.Max(0, (long)(createdUtc - process.StartTime.ToUniversalTime()).TotalSeconds),
+            buildIdentity = BuildIdentity.ForAssembly(typeof(DiagnosticsPackageService).Assembly),
             ipcProtocol = GameSaveCenter.Contracts.ProtocolConstants.ProtocolVersion,
             ipcState = "Ready",
             lastHealthProbe = "见 worker-launch.log"

@@ -4400,11 +4400,11 @@ public sealed class WpfUiResourceDictionaryTests
 
         Assert.Contains("Observe(InitializeAsync())", viewModelCode);
         Assert.DoesNotContain("Run(InitializeAsync)", viewModelCode);
-        Assert.Contains("WaitForHealthAsync(TimeSpan.FromSeconds(45), expectedVersion)", launcherCode);
+        Assert.Contains("WaitForHealthAsync(TimeSpan.FromSeconds(45), expectedVersion, expectedBuildIdentity)", launcherCode);
         Assert.Contains("WaitForHealthAsync", launcherCode);
         Assert.Contains("var startupDeadline = DateTime.UtcNow + TimeSpan.FromSeconds(30);", launcherCode);
         Assert.Contains("while (DateTime.UtcNow < startupDeadline)", launcherCode);
-        Assert.Contains("IsHealthyAsync(TimeSpan.FromMilliseconds(650), expectedVersion)", launcherCode);
+        Assert.Contains("IsHealthyAsync(TimeSpan.FromMilliseconds(650), expectedVersion, expectedBuildIdentity)", launcherCode);
         Assert.DoesNotContain("for (var i = 0; i < 120; i++)", launcherCode);
     }
 
@@ -4444,14 +4444,18 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.True(File.Exists(compatibilityPath));
         Assert.Contains("WorkerHandshakeDto", File.ReadAllText(dtoPath));
         Assert.Contains("MinimumSupportedProtocolVersion", File.ReadAllText(dtoPath));
+        Assert.Contains("BuildIdentity", File.ReadAllText(dtoPath));
         Assert.Contains("HandshakeAsync", File.ReadAllText(clientPath));
         Assert.Contains("ProtocolCompatibility.IsCompatible", File.ReadAllText(clientPath));
         Assert.Contains("MessageTypes.Handshake", dispatcherCode);
         Assert.Contains("WorkerPingDto", dispatcherCode);
         Assert.Contains("expectedVersion", launcherCode);
+        Assert.Contains("expectedBuildIdentity", launcherCode);
+        Assert.Contains("IsBuildIdentityCompatible", launcherCode);
         Assert.Contains("ProbeHealthAsync", launcherCode);
         Assert.Contains("HealthProbe.Incompatible", launcherCode);
         Assert.Contains("expectedVersion: Assembly.GetExecutingAssembly().GetName().Version?.ToString()", pluginCode);
+        Assert.Contains("expectedBuildIdentity: BuildIdentity.ForAssembly", pluginCode);
         Assert.Contains("if (probe != HealthProbe.Incompatible && !terminateUnhealthyProcess)", launcherCode);
         Assert.Contains("if (probe == HealthProbe.Healthy || probe == HealthProbe.Incompatible)", launcherCode);
     }

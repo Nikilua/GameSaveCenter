@@ -10,6 +10,19 @@ param(
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
 $artifacts = Join-Path $root 'artifacts'
+$buildCommit = ''
+try {
+    $buildCommit = (& git -C $root rev-parse --verify HEAD 2>$null | Select-Object -First 1).ToString().Trim()
+}
+catch {
+    $buildCommit = ''
+}
+if ($buildCommit -match '^[0-9a-fA-F]{7,40}$') {
+    # Directory.Build.props embeds this in AssemblyInformationalVersion for both
+    # the plugin and the published Worker. It is diagnostic metadata only; the
+    # public extension version remains controlled by extension.yaml/VersionPrefix.
+    $env:GSC_BUILD_COMMIT = $buildCommit
+}
 $stage = Join-Path $artifacts 'GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec'
 $workerStage = Join-Path $stage 'Worker'
 $sourceManifest = Join-Path $root 'src\GameSaveCenter.Playnite\extension.yaml'

@@ -1,5 +1,7 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-08 X2-03 构建身份底座已完成：公共版本仍为 0.6.73，但打包脚本会把当前 Git HEAD 写入程序集 InformationalVersion；Worker 握手/Ping、Dashboard、诊断包和维护页显示该身份，插件对已知同版本不同构建拒绝复用。实际发布升版本、安装替换和已安装 DLL 核验仍待发布窗口，当前没有安装插件。
+
 > 2026-09-07 X2-02 运维总览已完成：维护页诊断概览统一显示巡检、云端关注项和清理隔离账本的上次验证、下次尝试与逐项动作；云端动作可回到真实队列记录，隔离账本再次协调需明确确认且按 EntryId 单条执行。Release 构建、全量 Core/Worker/Playnite 测试、XAML/WPF 静态检查和双主题多尺寸 `render-qa` 均已通过。真实 Playnite、DPI/高对比度、完整键盘和真实故障注入仍待用户环境验收。
 
 > 2026-09-07 X2-01 工作区状态体验已完成：媒体当前列表、媒体收件箱和维护诊断共享 Loading/Ready/Empty/Stale/Error/Offline 状态；刷新失败保留旧数据、选择和编辑草稿，并提供过期详情与真实重试入口。Release 构建、全量 Core/Worker/Playnite 测试、XAML/WPF 静态检查和双主题多尺寸 `render-qa` 均已通过。真实 Playnite、DPI/高对比度和完整键盘仍待用户环境验收。

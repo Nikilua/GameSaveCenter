@@ -473,7 +473,8 @@ namespace GameSaveCenter.Playnite
             await launcher.EnsureStartedAsync(
                 Environment.ExpandEnvironmentVariables(Settings.WorkerExecutable),
                 terminateUnhealthyProcess: !IsVeryLargeLibrary(),
-                expectedVersion: Assembly.GetExecutingAssembly().GetName().Version?.ToString());
+                expectedVersion: Assembly.GetExecutingAssembly().GetName().Version?.ToString(),
+                expectedBuildIdentity: BuildIdentity.ForAssembly(Assembly.GetExecutingAssembly()));
         }
 
         public void NotifyVisualSettingsChanged() => VisualSettingsChanged?.Invoke(this, EventArgs.Empty);

@@ -1,6 +1,13 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
-> 维护时间：2026-09-07
+> 维护时间：2026-09-08
+
+## 2026-09-08 X2-03 构建身份实现约束
+
+- 公共扩展版本仍由 `extension.yaml`/`VersionPrefix` 控制；构建身份是独立诊断字段，来自 `AssemblyInformationalVersion`，格式为 `版本+提交号`，没有提交号时必须显示 `unknown`，不得用它替代协议版本或擅自升级插件版本。
+- `scripts/package.ps1` 必须让插件和 self-contained Worker 使用同一个 Git HEAD 构建身份；`WorkerHandshakeDto`/`WorkerPingDto`、Dashboard 快照和诊断包都要暴露该身份。旧 Worker 返回空身份时保持兼容，两个新构建身份已知且不一致时必须标记为不可复用并重新启动/提示。
+- 当前发布窗口尚未执行安装替换；不能把本地打包或离屏检查写成已安装 DLL 验收。实际发布时需核对 `extension.yaml`、程序集版本、包内 Worker、握手身份和 Playnite 扩展目录中的文件来源。
+- 当前自动验证：Release 构建 0 警告/0 错误；Core `72/72`、Worker `303/304`（1 跳过）、Playnite `368/430`（62 跳过）；WPF 静态 `0 errors/21 warnings/172 info`，`render-qa OK`。
 
 ## 2026-09-07 X2-02 运维总览实现约束
 

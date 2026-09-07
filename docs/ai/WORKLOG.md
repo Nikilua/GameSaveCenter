@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-08 X2-03 构建身份核验底座
+
+- 新增统一 `BuildIdentity` 解析器和程序集 InformationalVersion 注入：公共版本保持 `0.6.73`，打包时由 `scripts/package.ps1` 将当前 Git HEAD 作为 `GSC_BUILD_COMMIT` 传入，缺失时保留 `unknown`。
+- Worker 握手/Ping、Dashboard 快照和脱敏诊断包加入 Worker 构建身份；诊断包请求携带插件构建身份。`WorkerLauncher` 对两个已知构建身份做兼容性判断，同版本不同构建不复用，旧响应缺少字段仍兼容。
+- 维护页 Worker 卡片和诊断摘要显示构建身份；新增构建身份与诊断包回归，并同步更新握手静态契约测试。没有修改版本或执行安装。
+- 验证：Release 构建 0 警告/0 错误；Core `72/72`、Worker `303/304`（1 跳过）、Playnite `368/430`（62 跳过）；源码校验、XAML `19/19`、WPF `0 errors/21 warnings/172 info`、双主题/多尺寸/resize/Production Shell `render-qa OK`。
+
 ## 2026-09-07 X2-02 运维总览与失败下一步
 
 - 在维护页诊断概览加入“下一步运维”工作区，基于真实巡检状态、云队列关注项和清理隔离账本生成带时间线的逐项动作；云端未加载完的关注项明确提示继续分页，动作可回到具体队列记录。

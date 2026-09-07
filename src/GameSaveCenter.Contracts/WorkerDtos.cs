@@ -12,6 +12,7 @@ namespace GameSaveCenter.Contracts
     {
         public DateTime Utc { get; set; }
         public string Version { get; set; } = string.Empty;
+        public string BuildIdentity { get; set; } = string.Empty;
     }
 
     /// <summary>Explicit protocol handshake returned by the Worker named pipe.</summary>
@@ -21,6 +22,7 @@ namespace GameSaveCenter.Contracts
         public int MinimumSupportedProtocolVersion { get; set; } = ProtocolConstants.ProtocolVersion;
         public string WorkerVersion { get; set; } = string.Empty;
         public string AppVersion { get; set; } = string.Empty;
+        public string BuildIdentity { get; set; } = string.Empty;
         public List<string> Capabilities { get; set; } = new List<string>();
         public DateTime Utc { get; set; }
     }

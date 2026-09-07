@@ -24,15 +24,15 @@ namespace GameSaveCenter.Playnite.Infrastructure
         private volatile bool shutdownRequested;
         public WorkerLauncher(WorkerIpcClient client) { this.client = client; }
 
-        public async Task EnsureStartedAsync(string executable, bool terminateUnhealthyProcess = true, string? expectedVersion = null)
+        public async Task EnsureStartedAsync(string executable, bool terminateUnhealthyProcess = true, string? expectedVersion = null, string? expectedBuildIdentity = null)
         {
             if (shutdownRequested) return;
-            if (await IsHealthyAsync(expectedVersion: expectedVersion).ConfigureAwait(false)) return;
+            if (await IsHealthyAsync(expectedVersion: expectedVersion, expectedBuildIdentity: expectedBuildIdentity).ConfigureAwait(false)) return;
             await startupGate.WaitAsync().ConfigureAwait(false);
             try
             {
                 if (shutdownRequested) return;
-                if (await IsHealthyAsync(expectedVersion: expectedVersion).ConfigureAwait(false)) return;
+                if (await IsHealthyAsync(expectedVersion: expectedVersion, expectedBuildIdentity: expectedBuildIdentity).ConfigureAwait(false)) return;
                 if (string.IsNullOrWhiteSpace(executable) || !File.Exists(executable))
                     throw new FileNotFoundException("未找到 GameSaveCenter Worker。", executable);
                 if (!GameSaveCenterSettings.IsWorkerExecutable(executable))
@@ -64,9 +64,9 @@ namespace GameSaveCenter.Playnite.Infrastructure
                             // Treat a responding version mismatch differently from a busy
                             // current Worker: the former must be replaced, otherwise the new
                             // plugin silently reuses old startup/catalog behavior forever.
-                            var probe = await ProbeHealthAsync(TimeSpan.FromSeconds(2), expectedVersion).ConfigureAwait(false);
+                            var probe = await ProbeHealthAsync(TimeSpan.FromSeconds(2), expectedVersion, expectedBuildIdentity).ConfigureAwait(false);
                             var healthy = probe == HealthProbe.Healthy ||
-                                (probe == HealthProbe.Unavailable && await WaitForHealthAsync(TimeSpan.FromSeconds(45), expectedVersion).ConfigureAwait(false));
+                                (probe == HealthProbe.Unavailable && await WaitForHealthAsync(TimeSpan.FromSeconds(45), expectedVersion, expectedBuildIdentity).ConfigureAwait(false));
                             if (healthy) return;
 
                             // A large-library Worker may be healthy at the process level while
@@ -104,7 +104,8 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 workerLogPath = logPath;
                 Directory.CreateDirectory(Path.GetDirectoryName(logPath));
                 var expectedVersionLabel = string.IsNullOrWhiteSpace(expectedVersion) ? "unknown" : expectedVersion;
-                AppendLog(logPath, $"Starting Worker: {fullExecutable} (expected GameSaveCenter Worker version {expectedVersionLabel})");
+                var expectedBuildLabel = string.IsNullOrWhiteSpace(expectedBuildIdentity) ? "unknown" : expectedBuildIdentity;
+                AppendLog(logPath, $"Starting Worker: {fullExecutable} (expected GameSaveCenter Worker version {expectedVersionLabel}, build {expectedBuildLabel})");
 
                 runningWorker?.Dispose();
                 var worker = new Process
@@ -148,7 +149,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
                     // short and enforce one real wall-clock deadline; the previous fixed
                     // 120-iteration loop multiplied a 2-second probe timeout into several
                     // minutes when the Worker never created its pipe.
-                    if (await IsHealthyAsync(TimeSpan.FromMilliseconds(650), expectedVersion).ConfigureAwait(false)) return;
+                    if (await IsHealthyAsync(TimeSpan.FromMilliseconds(650), expectedVersion, expectedBuildIdentity).ConfigureAwait(false)) return;
                 }
                 throw new TimeoutException($"Worker 已启动，但 30 秒内未就绪。请查看日志：{logPath}");
             }
@@ -193,17 +194,17 @@ namespace GameSaveCenter.Playnite.Infrastructure
             }
         }
 
-        public async Task<bool> IsHealthyAsync(TimeSpan? timeout = null, string? expectedVersion = null)
+        public async Task<bool> IsHealthyAsync(TimeSpan? timeout = null, string? expectedVersion = null, string? expectedBuildIdentity = null)
         {
-            return await ProbeHealthAsync(timeout ?? TimeSpan.FromSeconds(2), expectedVersion).ConfigureAwait(false) == HealthProbe.Healthy;
+            return await ProbeHealthAsync(timeout ?? TimeSpan.FromSeconds(2), expectedVersion, expectedBuildIdentity).ConfigureAwait(false) == HealthProbe.Healthy;
         }
 
-        private async Task<bool> WaitForHealthAsync(TimeSpan gracePeriod, string? expectedVersion = null)
+        private async Task<bool> WaitForHealthAsync(TimeSpan gracePeriod, string? expectedVersion = null, string? expectedBuildIdentity = null)
         {
             var deadline = DateTime.UtcNow + gracePeriod;
             do
             {
-                var probe = await ProbeHealthAsync(TimeSpan.FromSeconds(2), expectedVersion).ConfigureAwait(false);
+                var probe = await ProbeHealthAsync(TimeSpan.FromSeconds(2), expectedVersion, expectedBuildIdentity).ConfigureAwait(false);
                 if (probe == HealthProbe.Healthy || probe == HealthProbe.Incompatible) return probe == HealthProbe.Healthy;
                 var remaining = deadline - DateTime.UtcNow;
                 if (remaining <= TimeSpan.Zero) break;
@@ -221,13 +222,15 @@ namespace GameSaveCenter.Playnite.Infrastructure
             Incompatible
         }
 
-        private async Task<HealthProbe> ProbeHealthAsync(TimeSpan timeout, string? expectedVersion)
+        private async Task<HealthProbe> ProbeHealthAsync(TimeSpan timeout, string? expectedVersion, string? expectedBuildIdentity)
         {
             try
             {
                 var handshake = await client.HandshakeAsync(timeout).ConfigureAwait(false);
                 if (!string.IsNullOrWhiteSpace(expectedVersion) &&
                     !string.Equals(handshake.WorkerVersion, expectedVersion, StringComparison.OrdinalIgnoreCase))
+                    return HealthProbe.Incompatible;
+                if (!IsBuildIdentityCompatible(handshake.BuildIdentity, expectedBuildIdentity))
                     return HealthProbe.Incompatible;
                 return HealthProbe.Healthy;
             }
@@ -244,6 +247,8 @@ namespace GameSaveCenter.Playnite.Infrastructure
                     if (!string.IsNullOrWhiteSpace(expectedVersion) &&
                         !string.Equals(ping.Version, expectedVersion, StringComparison.OrdinalIgnoreCase))
                         return HealthProbe.Incompatible;
+                    if (!IsBuildIdentityCompatible(ping.BuildIdentity, expectedBuildIdentity))
+                        return HealthProbe.Incompatible;
                     return HealthProbe.Healthy;
                 }
                 catch
@@ -253,6 +258,11 @@ namespace GameSaveCenter.Playnite.Infrastructure
             }
             catch { return HealthProbe.Unavailable; }
         }
+
+        internal static bool IsBuildIdentityCompatible(string? actual, string? expected)
+            => string.IsNullOrWhiteSpace(expected)
+               || string.IsNullOrWhiteSpace(actual)
+               || string.Equals(actual, expected, StringComparison.OrdinalIgnoreCase);
 
         private static void AppendLog(string? path, string? message)
         {

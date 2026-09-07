@@ -11,6 +11,12 @@
     <VersionPrefix>0.6.73</VersionPrefix>
     <AssemblyVersion>0.6.73.0</AssemblyVersion>
     <FileVersion>0.6.73.0</FileVersion>
+    <!-- Keep the public extension version stable between development commits, but
+         embed the source revision in assembly metadata when a build/package run
+         provides GSC_BUILD_COMMIT. This makes same-version stale Workers diagnosable. -->
+    <GscBuildCommit Condition="'$(GscBuildCommit)' == ''">$(GSC_BUILD_COMMIT)</GscBuildCommit>
+    <GscBuildCommit Condition="'$(GscBuildCommit)' == ''">unknown</GscBuildCommit>
+    <InformationalVersion Condition="'$(InformationalVersion)' == ''">$(VersionPrefix)+$(GscBuildCommit)</InformationalVersion>
     <NoWarn>$(NoWarn);1591</NoWarn>
     <!-- Optional per-run isolation for builds/tests while another testhost or Worker
          still holds files in the repository's normal bin/obj tree. This is intentionally

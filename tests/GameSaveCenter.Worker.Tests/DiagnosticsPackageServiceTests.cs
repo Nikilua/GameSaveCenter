@@ -40,6 +40,7 @@ public sealed class DiagnosticsPackageServiceTests
                 .CreateAsync(new CreateDiagnosticsPackageRequestDto
                 {
                     PluginVersion = "0.6.70",
+                    PluginBuildIdentity = "diagnostic-build-123",
                     PlayniteVersion = "10.56",
                     ThemeMode = "Dark",
                     CurrentWorkspace = "Maintenance",
@@ -62,6 +63,10 @@ public sealed class DiagnosticsPackageServiceTests
             Assert.Contains(names, x => x.EndsWith("worker-launch.log", StringComparison.OrdinalIgnoreCase));
             Assert.DoesNotContain(names, x => x.EndsWith(".db", StringComparison.OrdinalIgnoreCase));
             var contents = string.Join("\n", archive.Entries.Select(ReadEntry));
+            Assert.Contains("pluginBuildIdentity", contents);
+            Assert.Contains("diagnostic-build-123", contents);
+            Assert.Contains("\"workerBuildIdentity\"", contents);
+            Assert.Contains("\"buildIdentity\"", contents);
             Assert.DoesNotContain("abc123", contents);
             Assert.DoesNotContain("token123", contents);
             Assert.DoesNotContain("secret123", contents);

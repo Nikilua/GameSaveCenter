@@ -12,6 +12,7 @@ namespace GameSaveCenter.Contracts
         public bool WorkerHealthy { get; set; }
         public bool SafeModeEnabled { get; set; }
         public string WorkerVersion { get; set; } = string.Empty;
+        public string WorkerBuildIdentity { get; set; } = string.Empty;
         public bool LudusaviAvailable { get; set; }
         public bool RcloneAvailable { get; set; }
         public string LudusaviVersion { get; set; } = string.Empty;

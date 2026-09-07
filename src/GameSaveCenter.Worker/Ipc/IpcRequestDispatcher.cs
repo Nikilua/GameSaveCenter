@@ -62,7 +62,8 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.Ping=>new WorkerPingDto
                 {
                     Utc = DateTime.UtcNow,
-                    Version = typeof(IpcRequestDispatcher).Assembly.GetName().Version?.ToString() ?? "dev"
+                    Version = typeof(IpcRequestDispatcher).Assembly.GetName().Version?.ToString() ?? "dev",
+                    BuildIdentity = BuildIdentity.ForAssembly(typeof(IpcRequestDispatcher).Assembly)
                 },
                 MessageTypes.Handshake=>new WorkerHandshakeDto
                 {
@@ -70,6 +71,7 @@ public sealed class IpcRequestDispatcher
                     MinimumSupportedProtocolVersion = ProtocolConstants.ProtocolVersion,
                     WorkerVersion = typeof(IpcRequestDispatcher).Assembly.GetName().Version?.ToString() ?? "dev",
                     AppVersion = typeof(IpcRequestDispatcher).Assembly.GetName().Version?.ToString() ?? "dev",
+                    BuildIdentity = BuildIdentity.ForAssembly(typeof(IpcRequestDispatcher).Assembly),
                     Capabilities = new List<string>(WorkerCapabilities.Current),
                     Utc = DateTime.UtcNow
                 },
