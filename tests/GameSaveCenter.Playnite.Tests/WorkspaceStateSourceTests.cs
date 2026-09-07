@@ -117,6 +117,33 @@ public sealed class WorkspaceStateSourceTests
     }
 
     [Fact]
+    public void MediaAndMaintenanceUseTheSharedRealDataStateContract()
+    {
+        var root = FindRepositoryRoot();
+        var states = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.WorkspaceStates.cs"));
+        var dashboard = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
+        var media = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
+        var maintenance = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+
+        foreach (var state in new[] { "Loading", "Ready", "Empty", "Stale", "Error", "Offline" })
+            Assert.Contains(state, states);
+
+        Assert.Contains("MediaDetailsPresenterState", states);
+        Assert.Contains("MediaInboxPresenterState", states);
+        Assert.Contains("MaintenancePresenterState", states);
+        Assert.Contains("FailMediaDetailsLoad", states);
+        Assert.Contains("FailMediaInboxLoad", states);
+        Assert.Contains("FailMaintenanceLoad", states);
+        Assert.Contains("RefreshCoreBodyAsync", dashboard);
+        Assert.Contains("MediaDetailsStaleVisible", media);
+        Assert.Contains("MediaInboxStaleVisible", media);
+        Assert.Contains("MaintenanceStaleVisible", maintenance);
+        Assert.Contains("RetryCommand=\"{Binding ReloadMediaWindowCommand}\"", media);
+        Assert.Contains("RetryCommand=\"{Binding ReloadMediaInboxCommand}\"", media);
+        Assert.Contains("RetryCommand=\"{Binding RefreshDiagnosticsCommand}\"", maintenance);
+    }
+
+    [Fact]
     public void DetailEditorDraftsSurviveRefreshOfTheSameItem()
     {
         var root = FindRepositoryRoot();

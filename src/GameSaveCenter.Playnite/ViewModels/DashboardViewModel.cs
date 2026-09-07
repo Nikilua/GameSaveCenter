@@ -1044,7 +1044,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                 ApplyMediaInboxMode();
                 ResetMediaInboxPageState();
                 pendingMediaInboxLoadMode = normalized;
-                Interlocked.Increment(ref mediaInboxLoadGeneration);
+                var requestGeneration = Interlocked.Increment(ref mediaInboxLoadGeneration);
+                BeginMediaInboxLoad(normalized, requestGeneration);
                 StartQueuedMediaInboxLoad();
                 RaiseCommandStates();
             }
@@ -1691,6 +1692,60 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task RefreshCoreAsync(bool synchronize, TimeSpan? snapshotTimeout = null)
         {
+            var workspace = CurrentWorkspace;
+            var inboxMode = MediaInboxMode;
+            ApplyOnUi(() =>
+            {
+                if (workspace == WorkspaceKind.Media)
+                {
+                    BeginMediaInboxLoad(inboxMode);
+                    if (SelectedGame != null) BeginMediaDetailsLoad();
+                }
+                else if (workspace == WorkspaceKind.Maintenance)
+                {
+                    BeginMaintenanceLoad();
+                }
+            });
+            try
+            {
+                await RefreshCoreBodyAsync(synchronize, snapshotTimeout);
+            }
+            catch (OperationCanceledException)
+            {
+                ApplyOnUi(() =>
+                {
+                    if (workspace == WorkspaceKind.Media)
+                    {
+                        CancelMediaInboxLoad(inboxMode);
+                        CancelMediaDetailsLoad();
+                    }
+                    else if (workspace == WorkspaceKind.Maintenance)
+                    {
+                        CancelMaintenanceLoad();
+                    }
+                });
+                throw;
+            }
+            catch (Exception ex)
+            {
+                ApplyOnUi(() =>
+                {
+                    if (workspace == WorkspaceKind.Media)
+                    {
+                        FailMediaInboxLoad(inboxMode, ex);
+                        FailMediaDetailsLoad(ex);
+                    }
+                    else if (workspace == WorkspaceKind.Maintenance)
+                    {
+                        FailMaintenanceLoad(ex);
+                    }
+                });
+                throw;
+            }
+        }
+
+        private async Task RefreshCoreBodyAsync(bool synchronize, TimeSpan? snapshotTimeout = null)
+        {
             StatusMessage = synchronize ? "正在同步设置与游戏库…" : "正在读取本地状态…";
             await RefreshDashboardAsync(synchronize, false, snapshotTimeout);
             if (taskHistoryActive) await LoadTaskPageAsync(true);
@@ -1834,33 +1889,48 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task LoadDiagnosticsAsync()
         {
-            var settings = await plugin.RequestAsync<WorkerSettingsSnapshotDto>(MessageTypes.GetSettings, new { });
-            var mappings = await plugin.RequestAsync<List<ProcessMappingDto>>(MessageTypes.ListProcessMappings, new { });
-            ApplyOnUi(() =>
+            ApplyOnUi(BeginMaintenanceLoad);
+            try
             {
-                EffectiveSettings = settings;
-                DiagnosticSummary = BuildDiagnosticSummary(settings);
-                Replace(ProcessMappings,mappings, SnapshotComparers.ProcessMapping);
-                if(ProcessMappingTargetGame==null) ProcessMappingTargetGame=SelectedGame??Games.FirstOrDefault();
-            });
-            if (MaintenanceTabIndex == 1)
-                await LoadCloudTransferPageAsync(true);
-            if (settings.SafeModeRequested && !safeModePromptShown)
-            {
-                safeModePromptShown = true;
-                var useSafe = await plugin.ConfirmAsync(
-                    "安全模式",
-                    "GameSaveCenter 最近连续启动失败。是否使用安全模式打开？",
-                    "使用安全模式",
-                    "暂不");
-                plugin.Settings.SafeModeEnabled = useSafe;
-                plugin.Settings.SafeModeRequested = false;
-                plugin.SavePluginSettings(plugin.Settings);
-                await plugin.RequestAsync<object>(MessageTypes.UpdateSettings, plugin.Settings.ToWorkerSettings());
-                await LoadDiagnosticsAsync();
+                var settings = await plugin.RequestAsync<WorkerSettingsSnapshotDto>(MessageTypes.GetSettings, new { });
+                var mappings = await plugin.RequestAsync<List<ProcessMappingDto>>(MessageTypes.ListProcessMappings, new { });
+                ApplyOnUi(() =>
+                {
+                    EffectiveSettings = settings;
+                    DiagnosticSummary = BuildDiagnosticSummary(settings);
+                    Replace(ProcessMappings,mappings, SnapshotComparers.ProcessMapping);
+                    if(ProcessMappingTargetGame==null) ProcessMappingTargetGame=SelectedGame??Games.FirstOrDefault();
+                });
+                if (MaintenanceTabIndex == 1)
+                    await LoadCloudTransferPageAsync(true);
+                if (settings.SafeModeRequested && !safeModePromptShown)
+                {
+                    safeModePromptShown = true;
+                    var useSafe = await plugin.ConfirmAsync(
+                        "安全模式",
+                        "GameSaveCenter 最近连续启动失败。是否使用安全模式打开？",
+                        "使用安全模式",
+                        "暂不");
+                    plugin.Settings.SafeModeEnabled = useSafe;
+                    plugin.Settings.SafeModeRequested = false;
+                    plugin.SavePluginSettings(plugin.Settings);
+                    await plugin.RequestAsync<object>(MessageTypes.UpdateSettings, plugin.Settings.ToWorkerSettings());
+                    await LoadDiagnosticsAsync();
+                }
+                if (IsOnboardingPending && !environmentCheckLoaded)
+                    await RunEnvironmentCheckAsync(false);
+                ApplyOnUi(CompleteMaintenanceLoad);
             }
-            if (IsOnboardingPending && !environmentCheckLoaded)
-                await RunEnvironmentCheckAsync(false);
+            catch (OperationCanceledException)
+            {
+                ApplyOnUi(CancelMaintenanceLoad);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                ApplyOnUi(() => FailMaintenanceLoad(ex));
+                throw;
+            }
         }
 
         private BackupPolicyDto? CaptureSelectedGamePolicyDraft(string? selectedGameId)
@@ -2530,30 +2600,45 @@ namespace GameSaveCenter.Playnite.ViewModels
                 }
                 case WorkspaceKind.Media:
                 {
-                    var mediaLoadTimer = Stopwatch.StartNew();
                     var mediaRequestGeneration = Interlocked.Increment(ref mediaPageGeneration);
-                    var mediaTask = plugin.RequestAsync<MediaPageDto>(MessageTypes.ListMediaPage, BuildMediaQuery(id, string.Empty), cancellationToken: cancellationToken);
-                    var sourcesTask = plugin.RequestAsync<MediaSourceRuleDto[]>(MessageTypes.ListMediaSources, new GameQueryDto { PlayniteId = id }, cancellationToken: cancellationToken);
-                    var summaryTask = plugin.RequestAsync<MediaStorageSummaryDto>(MessageTypes.GetMediaSummary, new GameQueryDto { PlayniteId = id }, cancellationToken: cancellationToken);
-                    await Task.WhenAll(mediaTask, sourcesTask, summaryTask);
-                    mediaLoadTimer.Stop();
-                    if (!IsCurrentDetailsLoad(id, cancellationToken, expectedGeneration)) return;
-                    var mediaApplyTimer = Stopwatch.StartNew();
-                    ApplyOnUi(() =>
+                    ApplyOnUi(() => BeginMediaDetailsLoad(mediaRequestGeneration));
+                    try
                     {
+                        var mediaLoadTimer = Stopwatch.StartNew();
+                        var mediaTask = plugin.RequestAsync<MediaPageDto>(MessageTypes.ListMediaPage, BuildMediaQuery(id, string.Empty), cancellationToken: cancellationToken);
+                        var sourcesTask = plugin.RequestAsync<MediaSourceRuleDto[]>(MessageTypes.ListMediaSources, new GameQueryDto { PlayniteId = id }, cancellationToken: cancellationToken);
+                        var summaryTask = plugin.RequestAsync<MediaStorageSummaryDto>(MessageTypes.GetMediaSummary, new GameQueryDto { PlayniteId = id }, cancellationToken: cancellationToken);
+                        await Task.WhenAll(mediaTask, sourcesTask, summaryTask);
+                        mediaLoadTimer.Stop();
                         if (!IsCurrentDetailsLoad(id, cancellationToken, expectedGeneration)) return;
-                        if (mediaRequestGeneration != Interlocked.Read(ref mediaPageGeneration)) return;
-                        var selectedMediaId = SelectedMedia?.MediaId;
-                        ApplyMediaPage(mediaTask.Result ?? new MediaPageDto(), reset: true, selectedId: selectedMediaId);
-                        Replace(MediaSources, sourcesTask.Result, SnapshotComparers.MediaSource);
-                        MediaSummary=summaryTask.Result;
-                        MediaTargetGame = Games.FirstOrDefault(x => string.Equals(x.PlayniteId, MediaTargetGame?.PlayniteId, StringComparison.OrdinalIgnoreCase))
-                                          ?? SelectedGame
-                                          ?? Games.FirstOrDefault();
-                        RaiseCommandStates();
-                    });
-                    mediaApplyTimer.Stop();
-                    Logger.Debug($"[PERF] MediaDetails load={mediaLoadTimer.ElapsedMilliseconds}ms apply={mediaApplyTimer.ElapsedMilliseconds}ms media={mediaTask.Result?.Items.Count ?? 0} sources={sourcesTask.Result.Length}");
+                        var mediaApplyTimer = Stopwatch.StartNew();
+                        ApplyOnUi(() =>
+                        {
+                            if (!IsCurrentDetailsLoad(id, cancellationToken, expectedGeneration)) return;
+                            if (mediaRequestGeneration != Interlocked.Read(ref mediaPageGeneration)) return;
+                            var selectedMediaId = SelectedMedia?.MediaId;
+                            ApplyMediaPage(mediaTask.Result ?? new MediaPageDto(), reset: true, selectedId: selectedMediaId);
+                            Replace(MediaSources, sourcesTask.Result, SnapshotComparers.MediaSource);
+                            MediaSummary=summaryTask.Result;
+                            MediaTargetGame = Games.FirstOrDefault(x => string.Equals(x.PlayniteId, MediaTargetGame?.PlayniteId, StringComparison.OrdinalIgnoreCase))
+                                              ?? SelectedGame
+                                              ?? Games.FirstOrDefault();
+                            CompleteMediaDetailsLoad(mediaRequestGeneration);
+                            RaiseCommandStates();
+                        });
+                        mediaApplyTimer.Stop();
+                        Logger.Debug($"[PERF] MediaDetails load={mediaLoadTimer.ElapsedMilliseconds}ms apply={mediaApplyTimer.ElapsedMilliseconds}ms media={mediaTask.Result?.Items.Count ?? 0} sources={sourcesTask.Result.Length}");
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        ApplyOnUi(() => CancelMediaDetailsLoad(mediaRequestGeneration));
+                        throw;
+                    }
+                    catch (Exception ex)
+                    {
+                        ApplyOnUi(() => FailMediaDetailsLoad(ex, mediaRequestGeneration));
+                        throw;
+                    }
                     break;
                 }
                 case WorkspaceKind.Trainers:

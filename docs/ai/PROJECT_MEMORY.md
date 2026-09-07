@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-07
 
+## 2026-09-07 X2-01 工作区状态实现约束
+
+- 媒体当前列表、收件箱和维护诊断统一使用 `WorkspaceDataState` 的 Loading/Ready/Empty/Stale/Error/Offline 语义，并通过现有 `WorkspaceStatePresenter` 呈现；不要回退为只看集合 Count 或只显示全局 `StatusMessage`。
+- Loading/首失败时可以覆盖内容区域；已有成功数据刷新失败必须保留旧集合、选择和编辑草稿，使用降级提示显示上次成功读取时间与错误详情，并把 RetryCommand 接回真实的媒体/诊断刷新命令。Worker 离线优先于普通错误状态。
+- 状态变更必须受媒体分页/收件箱代际保护，旧请求不得把新游戏、新模式或新列表覆盖为 Stale/Ready；`RefreshCoreAsync` 的工作区级失败也要结束 Loading 状态。不要用 `Task.Delay` 制造成功或加载效果。
+- 当前验证：Release 构建 0 警告/0 错误；Core `72/72`、Worker `302/303`（1 跳过）、Playnite `365/427`（62 跳过）；XAML `19/19`、源码校验、WPF 静态审查 `0 errors/21 warnings/172 info`、`render-qa OK`。离屏证据不能替代真实 Playnite、DPI/高对比度和完整键盘验收。
+
 ## 2026-09-07 媒体间距与任务范围实现约束
 
 - 待归类页签的按钮不能贴住工作区边界：`MediaTabControl` 保留 `8,0,8,0` 外边距，页签保留 `16,8` 内边距和 `4` 间距；批量处理卡片保留 `14,12,14,0` 内边距，底部操作区保留 `16,12,16,0` 与 `0,8,0,0` 间距。后续只能在共享布局契约内调整，不要为压缩高度移除这些呼吸空间。

@@ -2,6 +2,12 @@
 
 > 更新时间：2026-09-07。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-07 X2-01 工作区状态体验已落地
+
+- 媒体当前游戏列表、媒体收件箱和维护诊断现在共享 `WorkspaceDataState`：Loading、Ready、Empty、Stale、Error、Offline。状态来自真实 IPC 请求、分页代际和 Worker 快照，不使用延时模拟；旧数据在刷新失败时保留，并显示上次成功读取时间、失败详情和重试命令。
+- `WorkspaceStatePresenter` 已接入媒体当前列表、收件箱和维护诊断表；正常空结果仍显示下一步说明，加载/首失败显示阻塞状态，已有数据刷新失败显示降级提示，不再把旧列表误标为最新结果。媒体编辑草稿、选择、批量命令、虚拟化和有限滚动视口保持不变。
+- 当前验证：Release 构建 0 警告/0 错误；Core `72/72`、Worker `302/303`（1 跳过）、Playnite `365/427`（62 跳过）；XAML `19/19`、源码校验、WPF 静态审查 `0 errors/21 warnings/172 info`、双主题/多尺寸/resize/Production Shell `render-qa OK`。真实 Playnite、DPI/高对比度和完整键盘仍需人工验收。
+
 ## 2026-09-07 媒体待归类间距与任务统计边界已收口
 
 - `MediaCenterView` 的待归类页签增加了外边距、按钮内边距和页签间距；批量处理卡片使用 `14,12,14,0` 内边距，底部操作区使用 `16,12,16,0` 与 `0,8,0,0` 间距，解决按钮贴边问题，同时保留真实命令、选中语义、DataGrid 虚拟化和有限滚动视口。

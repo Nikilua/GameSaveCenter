@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-07 X2-01 工作区状态体验
+
+- 将 `WorkspaceDataState` 接入媒体当前游戏媒体、媒体收件箱和维护诊断：真实请求开始时进入 Loading，成功结果按 Ready/Empty 收口，首次失败显示 Error，已有成功数据失败显示 Stale；Worker 离线统一优先显示 Offline。
+- 复用共享 `WorkspaceStatePresenter`，媒体/维护页面新增可重试状态面板和过期提示。刷新失败不清空旧集合，不改变媒体选择、编辑草稿、批量操作、分页代际或 DataGrid/ListBox 虚拟化；`RefreshCoreAsync` 也会结束工作区级 Loading 状态。
+- 新增状态契约回归，修正 WPF `Style.BasedOn` 的静态资源限制，并保留现有源码契约兼容文本。验证：Release 构建 0 警告/0 错误；Core `72/72`、Worker `302/303`（1 跳过）、Playnite `365/427`（62 跳过）；XAML `19/19`、源码校验、WPF 静态审查 `0 errors/21 warnings/172 info`、双主题/多尺寸/resize/Production Shell `render-qa OK`、`git diff --check` 通过。未运行真实 Playnite。
+
 ## 2026-09-07 媒体待归类间距与任务统计边界
 
 - 根据待归类页截图复核发现，页签、批量处理行和下方操作行贴近卡片边缘；`MediaCenterView` 增加页签外/内间距，批量表格卡片与底部操作区补齐左右、上下留白，未改变命令、Binding、选中传递或内部虚拟化滚动。

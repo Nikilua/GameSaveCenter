@@ -187,7 +187,20 @@
                         <Border Grid.Column="0" Grid.Row="0" x:Name="MediaInboxTableFrame" Style="{StaticResource MediaTableFrame}" Padding="14,12,14,0" MinHeight="0" ClipToBounds="True">
                         <Grid>
                             <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
-                            <WrapPanel x:Name="MediaInboxBatchActionRow" Grid.Row="0" Margin="0,0,0,10" VerticalAlignment="Center">
+                            <StackPanel Grid.Row="0">
+                            <Border x:Name="MediaInboxStaleBanner" Padding="10" Margin="0,0,0,10">
+                                <Border.Style>
+                                    <Style TargetType="Border" BasedOn="{StaticResource GscDiagnosticHintBubble}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers><DataTrigger Binding="{Binding MediaInboxStaleVisible}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                    <StackPanel><TextBlock Text="{Binding MediaInboxStateTitle}" FontWeight="SemiBold"/><TextBlock Text="{Binding MediaInboxStateDetail}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,8,0"/></StackPanel>
+                                    <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding ReloadMediaInboxCommand}" Content="重试" AutomationProperties.Name="重试读取媒体收件箱" Margin="8,0,0,0"/>
+                                </Grid>
+                            </Border>
+                            <WrapPanel x:Name="MediaInboxBatchActionRow" Margin="0,0,0,10" VerticalAlignment="Center">
                                 <StackPanel Margin="0,0,12,4">
                                     <TextBlock Text="批量处理" FontWeight="SemiBold"/>
                                     <TextBlock x:Name="MediaInboxBatchSelectionSummary" Text="可按住 Ctrl / Shift 多选" Style="{DynamicResource GscCaptionStyle}" Width="132" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" Margin="0,3,0,0"/>
@@ -207,6 +220,7 @@
                                 </StackPanel>
                                 <ui:Button x:Name="MediaInboxCompactDetailsButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="查看预览与归类 ›" ToolTip="打开所选媒体的预览、归类建议和安全操作" AutomationProperties.Name="查看所选媒体预览与归类" Click="OnMediaInboxCompactDetailsClick" Visibility="Collapsed" Margin="8,0,0,4"/>
                             </WrapPanel>
+                            </StackPanel>
                             <DataGrid Grid.Row="1" x:Name="MediaInboxGrid" Tag="FiniteViewport" Style="{StaticResource MediaDataGrid}" MinHeight="236" ItemsSource="{Binding MediaInboxItems}" SelectedItem="{Binding SelectedInboxMedia}"
                                       SelectionMode="Extended" SelectionUnit="FullRow" SelectionChanged="OnMediaInboxSelectionChanged"
                                       RowStyle="{StaticResource MediaInboxStableRowStyle}"
@@ -227,19 +241,17 @@
                                     <Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyStateText}">
                                         <Setter Property="Visibility" Value="Collapsed"/>
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding MediaInboxItems.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                                            <DataTrigger Binding="{Binding MediaInboxState}" Value="Empty"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
                                             <DataTrigger Binding="{Binding IsWorkerOffline}" Value="True"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </TextBlock.Style>
                             </TextBlock>
-                        <ui:WorkspaceStatePresenter Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" State="Offline" Title="Worker 当前离线" Message="媒体收件箱暂时不可用；Worker 恢复后可重新读取待归类和已忽略列表。" IsHitTestVisible="False">
+                        <ui:WorkspaceStatePresenter Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" State="{Binding MediaInboxPresenterState}" Title="{Binding MediaInboxStateTitle}" Message="{Binding MediaInboxStateMessage, FallbackValue=媒体收件箱暂时不可用}" Detail="{Binding MediaInboxStateDetail}" RetryCommand="{Binding ReloadMediaInboxCommand}" RetryText="重试" IsHitTestVisible="False">
                             <ui:WorkspaceStatePresenter.Style>
                                 <Style TargetType="ui:WorkspaceStatePresenter" BasedOn="{StaticResource GscWorkspaceStatePresenter}">
                                     <Setter Property="Visibility" Value="Collapsed"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsWorkerOffline}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
-                                    </Style.Triggers>
+                                    <Style.Triggers><DataTrigger Binding="{Binding MediaInboxStateOverlayVisible}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
                                 </Style>
                             </ui:WorkspaceStatePresenter.Style>
                         </ui:WorkspaceStatePresenter>
@@ -413,7 +425,7 @@
                     <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="0"/><RowDefinition Height="0"/></Grid.RowDefinitions>
                     <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource MediaTableFrame}" MinHeight="{DynamicResource GscWorkspaceTableMinHeight}" Padding="14,12">
                         <Grid>
-                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                         <Grid Grid.Row="0" Margin="0,0,0,12">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto" MinWidth="300"/></Grid.ColumnDefinitions>
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -494,28 +506,39 @@
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
+                        <!-- MediaView.IsEmpty remains a filter-level signal; the workspace state decides whether this is a real empty result. -->
                         <TextBlock Grid.Row="1" Text="当前游戏还没有媒体&#xA;导入截图或录像后，它们会显示在这里。" IsHitTestVisible="False">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyStateText}">
                                     <Setter Property="Visibility" Value="Collapsed"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding MediaView.IsEmpty}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                                        <DataTrigger Binding="{Binding MediaDetailsState}" Value="Empty"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
                                         <DataTrigger Binding="{Binding IsWorkerOffline}" Value="True"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
-                        <ui:WorkspaceStatePresenter Grid.Row="1" State="Offline" Title="Worker 当前离线" Message="媒体列表和归类操作暂时不可用，Worker 恢复后会自动回到正常状态。" IsHitTestVisible="False">
+                        <ui:WorkspaceStatePresenter Grid.Row="1" Grid.RowSpan="3" State="{Binding MediaDetailsPresenterState}" Title="{Binding MediaDetailsStateTitle}" Message="{Binding MediaDetailsStateMessage}" Detail="{Binding MediaDetailsStateDetail}" RetryCommand="{Binding ReloadMediaWindowCommand}" RetryText="重试" IsHitTestVisible="False">
                             <ui:WorkspaceStatePresenter.Style>
                                 <Style TargetType="ui:WorkspaceStatePresenter" BasedOn="{StaticResource GscWorkspaceStatePresenter}">
                                     <Setter Property="Visibility" Value="Collapsed"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsWorkerOffline}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
-                                    </Style.Triggers>
+                                    <Style.Triggers><DataTrigger Binding="{Binding MediaDetailsStateOverlayVisible}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
                                 </Style>
                             </ui:WorkspaceStatePresenter.Style>
                         </ui:WorkspaceStatePresenter>
-                        <Grid x:Name="MediaCurrentActionRow" Grid.Row="2" Margin="0,12,0,0">
+                        <Border x:Name="MediaCurrentStaleBanner" Grid.Row="2" Padding="10" Margin="0,12,0,0">
+                            <Border.Style>
+                                    <Style TargetType="Border" BasedOn="{StaticResource GscDiagnosticHintBubble}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers><DataTrigger Binding="{Binding MediaDetailsStaleVisible}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                <StackPanel><TextBlock Text="{Binding MediaDetailsStateTitle}" FontWeight="SemiBold"/><TextBlock Text="{Binding MediaDetailsStateDetail}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,8,0"/></StackPanel>
+                                <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding ReloadMediaWindowCommand}" Content="重试" AutomationProperties.Name="重试读取当前游戏媒体" Margin="8,0,0,0"/>
+                            </Grid>
+                        </Border>
+                        <Grid x:Name="MediaCurrentActionRow" Grid.Row="3" Margin="0,12,0,0">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                             <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="0"/></Grid.RowDefinitions>
                             <StackPanel x:Name="MediaCurrentActionHint" Orientation="Horizontal" VerticalAlignment="Center">

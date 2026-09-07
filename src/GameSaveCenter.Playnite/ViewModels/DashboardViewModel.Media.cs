@@ -77,17 +77,32 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task LoadInboxAsync(long requestGeneration)
         {
-            var selectedId = SelectedInboxMedia?.MediaId;
-            var targetId = InboxTargetGame?.PlayniteId;
-            var inbox = await RequestMediaInboxPageAsync(true, ignored: false, requestGeneration: requestGeneration);
-            if (inbox == null) return;
-            ApplyOnUi(() =>
+            BeginMediaInboxLoad("待归类", requestGeneration);
+            try
             {
-                if (requestGeneration != Interlocked.Read(ref mediaInboxLoadGeneration))
-                    return;
+                var selectedId = SelectedInboxMedia?.MediaId;
+                var targetId = InboxTargetGame?.PlayniteId;
+                var inbox = await RequestMediaInboxPageAsync(true, ignored: false, requestGeneration: requestGeneration);
+                if (inbox == null) return;
+                ApplyOnUi(() =>
+                {
+                    if (requestGeneration != Interlocked.Read(ref mediaInboxLoadGeneration))
+                        return;
 
-                ApplyMediaInboxPage(inbox, reset: true, collectionMode: "待归类", selectedId: selectedId, targetId: targetId);
-            });
+                    ApplyMediaInboxPage(inbox, reset: true, collectionMode: "待归类", selectedId: selectedId, targetId: targetId);
+                    CompleteMediaInboxLoad("待归类", requestGeneration);
+                });
+            }
+            catch (OperationCanceledException)
+            {
+                ApplyOnUi(() => CancelMediaInboxLoad("待归类", requestGeneration));
+                throw;
+            }
+            catch (Exception ex)
+            {
+                ApplyOnUi(() => FailMediaInboxLoad("待归类", ex, requestGeneration));
+                throw;
+            }
         }
 
         private Task LoadIgnoredMediaAsync()
@@ -95,33 +110,62 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task LoadIgnoredMediaAsync(long requestGeneration)
         {
-            var selectedId = SelectedInboxMedia?.MediaId;
-            var ignored = await RequestMediaInboxPageAsync(true, ignored: true, requestGeneration: requestGeneration);
-            if (ignored == null) return;
-            ApplyOnUi(() =>
+            BeginMediaInboxLoad("已忽略", requestGeneration);
+            try
             {
-                if (requestGeneration != Interlocked.Read(ref mediaInboxLoadGeneration))
-                    return;
+                var selectedId = SelectedInboxMedia?.MediaId;
+                var ignored = await RequestMediaInboxPageAsync(true, ignored: true, requestGeneration: requestGeneration);
+                if (ignored == null) return;
+                ApplyOnUi(() =>
+                {
+                    if (requestGeneration != Interlocked.Read(ref mediaInboxLoadGeneration))
+                        return;
 
-                ApplyMediaInboxPage(ignored, reset: true, collectionMode: "已忽略", selectedId: selectedId, targetId: null);
-            });
+                    ApplyMediaInboxPage(ignored, reset: true, collectionMode: "已忽略", selectedId: selectedId, targetId: null);
+                    CompleteMediaInboxLoad("已忽略", requestGeneration);
+                });
+            }
+            catch (OperationCanceledException)
+            {
+                ApplyOnUi(() => CancelMediaInboxLoad("已忽略", requestGeneration));
+                throw;
+            }
+            catch (Exception ex)
+            {
+                ApplyOnUi(() => FailMediaInboxLoad("已忽略", ex, requestGeneration));
+                throw;
+            }
         }
 
         private async Task LoadMoreMediaInboxPageAsync()
         {
             var requestGeneration = Interlocked.Read(ref mediaInboxLoadGeneration);
             var requestMode = MediaInboxMode;
-            var selectedId = SelectedInboxMedia?.MediaId;
-            var targetId = InboxTargetGame?.PlayniteId;
-            var page = await RequestMediaInboxPageAsync(false, ignored: requestMode == "已忽略", requestGeneration: requestGeneration);
-            if (page == null) return;
-            ApplyOnUi(() =>
+            try
             {
-                if (!string.Equals(MediaInboxMode, requestMode, StringComparison.Ordinal)
-                    || requestGeneration != Interlocked.Read(ref mediaInboxLoadGeneration))
-                    return;
-                ApplyMediaInboxPage(page, reset: false, collectionMode: requestMode, selectedId: selectedId, targetId: targetId);
-            });
+                var selectedId = SelectedInboxMedia?.MediaId;
+                var targetId = InboxTargetGame?.PlayniteId;
+                var page = await RequestMediaInboxPageAsync(false, ignored: requestMode == "已忽略", requestGeneration: requestGeneration);
+                if (page == null) return;
+                ApplyOnUi(() =>
+                {
+                    if (!string.Equals(MediaInboxMode, requestMode, StringComparison.Ordinal)
+                        || requestGeneration != Interlocked.Read(ref mediaInboxLoadGeneration))
+                        return;
+                    ApplyMediaInboxPage(page, reset: false, collectionMode: requestMode, selectedId: selectedId, targetId: targetId);
+                    CompleteMediaInboxLoad(requestMode, requestGeneration);
+                });
+            }
+            catch (OperationCanceledException)
+            {
+                ApplyOnUi(() => CancelMediaInboxLoad(requestMode, requestGeneration));
+                throw;
+            }
+            catch (Exception ex)
+            {
+                ApplyOnUi(() => FailMediaInboxLoad(requestMode, ex, requestGeneration));
+                throw;
+            }
         }
 
         private async Task<MediaPageDto?> RequestMediaInboxPageAsync(bool reset, bool ignored, long requestGeneration)
@@ -225,6 +269,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             var requestGeneration = reset
                 ? Interlocked.Increment(ref mediaPageGeneration)
                 : Interlocked.Read(ref mediaPageGeneration);
+            if (reset) BeginMediaDetailsLoad(requestGeneration);
             var requestCancellation = BeginMediaPageRequest();
             MediaPageDto? page;
             try
@@ -233,6 +278,16 @@ namespace GameSaveCenter.Playnite.ViewModels
                 page = await plugin.RequestAsync<MediaPageDto>(MessageTypes.ListMediaPage, BuildMediaQuery(
                     playniteId,
                     reset ? string.Empty : mediaPageCursor), cancellationToken: requestCancellation.Token).ConfigureAwait(false);
+            }
+            catch (OperationCanceledException)
+            {
+                if (reset) ApplyOnUi(() => CancelMediaDetailsLoad(requestGeneration));
+                throw;
+            }
+            catch (Exception ex)
+            {
+                if (reset) ApplyOnUi(() => FailMediaDetailsLoad(ex, requestGeneration));
+                throw;
             }
             finally
             {
@@ -249,6 +304,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                     || CurrentWorkspace != WorkspaceKind.Media
                     || !IsSelectedGame(playniteId)) return;
                 ApplyMediaPage(page ?? new MediaPageDto(), reset, selectedId);
+                if (reset) CompleteMediaDetailsLoad(requestGeneration);
             });
         }
 
