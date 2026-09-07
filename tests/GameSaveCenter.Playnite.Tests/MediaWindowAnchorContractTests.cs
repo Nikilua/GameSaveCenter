@@ -1,6 +1,14 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Threading;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Threading;
+using GameSaveCenter.Contracts;
 using Xunit;
 
 namespace GameSaveCenter.Playnite.Tests;
@@ -19,6 +27,10 @@ public sealed class MediaWindowAnchorContractTests
         Assert.Contains("CaptureAnchor(MediaInboxGrid)", codeBehind);
         Assert.Contains("ScrollToVerticalOffset", codeBehind);
         Assert.Contains("ScrollIntoView", codeBehind);
+        Assert.Contains("anchorRestoreGeneration", codeBehind);
+        Assert.Contains("PropertyChanged += OnViewModelPropertyChanged", codeBehind);
+        Assert.Contains("generation == anchorRestoreGeneration", codeBehind);
+        Assert.Contains("selectionRestoreQueued = false;", codeBehind);
     }
 
     [Fact]
@@ -48,6 +60,163 @@ public sealed class MediaWindowAnchorContractTests
         Assert.Contains("SelectedIndex=\"{Binding SaveTabIndex, Mode=TwoWay}\"", saves);
         Assert.DoesNotContain("SelectedIndex=\"1\"", media);
     }
+
+    [Fact]
+    public void StaleRestoreCallbackCannotSurfaceEvictedAnchorAfterContextInvalidation()
+    {
+        Exception? exception = null;
+        var viewWasLoaded = false;
+        var noticeVisibility = Visibility.Visible;
+
+        var thread = new Thread(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var view = new GameSaveCenter.Playnite.Views.MediaCenterView();
+                var viewType = typeof(GameSaveCenter.Playnite.Views.MediaCenterView);
+                var list = (ListBox)viewType.GetField("MediaGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var anchorType = viewType.GetNestedType("ScrollAnchor", BindingFlags.NonPublic)!;
+                var anchor = Activator.CreateInstance(
+                    anchorType,
+                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
+                    binder: null,
+                    args: new object[] { "removed-after-window-trim", 0, 0d, 0d },
+                    culture: null)!;
+                var items = new ObservableCollection<MediaItemDto>
+                {
+                    Media("anchor"),
+                    Media("new-selection")
+                };
+                list.ItemsSource = items;
+                window = new Window
+                {
+                    Content = view,
+                    Width = 900,
+                    Height = 640,
+                    ShowInTaskbar = false,
+                    ShowActivated = false,
+                    WindowStyle = WindowStyle.None,
+                    Opacity = 0.01
+                };
+                window.Show();
+                window.UpdateLayout();
+                view.UpdateLayout();
+                viewWasLoaded = view.IsLoaded;
+
+                var generation = (long)viewType.GetField("anchorRestoreGeneration", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                viewType.GetMethod("QueueRestore", BindingFlags.Instance | BindingFlags.NonPublic)!.Invoke(
+                    view,
+                    new object?[] { list, anchor, new HashSet<string>(StringComparer.OrdinalIgnoreCase), false, null, generation });
+
+                viewType.GetMethod("InvalidatePendingAnchorRestore", BindingFlags.Instance | BindingFlags.NonPublic)!.Invoke(view, null);
+                view.Dispatcher.Invoke(DispatcherPriority.ApplicationIdle, new Action(() => { }));
+                noticeVisibility = ((TextBlock)viewType.GetField("MediaWindowAnchorNotice", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!).Visibility;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.True(viewWasLoaded);
+        Assert.Equal(Visibility.Collapsed, noticeVisibility);
+    }
+
+    [Fact]
+    public void EvictedAnchorNoticeReleasesSelectionRestoreGuard()
+    {
+        Exception? exception = null;
+        var noticeVisibility = Visibility.Collapsed;
+        var selectionGuard = true;
+
+        var thread = new Thread(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var view = new GameSaveCenter.Playnite.Views.MediaCenterView();
+                var viewType = typeof(GameSaveCenter.Playnite.Views.MediaCenterView);
+                var list = (ListBox)viewType.GetField("MediaGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var anchorType = viewType.GetNestedType("ScrollAnchor", BindingFlags.NonPublic)!;
+                var anchor = Activator.CreateInstance(
+                    anchorType,
+                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
+                    binder: null,
+                    args: new object[] { "removed-after-window-trim", 0, 0d, 0d },
+                    culture: null)!;
+                list.ItemsSource = new ObservableCollection<MediaItemDto> { Media("kept") };
+                window = new Window
+                {
+                    Content = view,
+                    Width = 900,
+                    Height = 640,
+                    ShowInTaskbar = false,
+                    ShowActivated = false,
+                    WindowStyle = WindowStyle.None,
+                    Opacity = 0.01
+                };
+                window.Show();
+                window.UpdateLayout();
+                view.UpdateLayout();
+
+                var generation = (long)viewType.GetField("anchorRestoreGeneration", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                viewType.GetField("selectionRestoreQueued", BindingFlags.Instance | BindingFlags.NonPublic)!.SetValue(view, true);
+                viewType.GetMethod("RestoreAnchor", BindingFlags.Instance | BindingFlags.NonPublic)!.Invoke(
+                    view,
+                    new object?[]
+                    {
+                        list,
+                        anchor,
+                        new HashSet<string>(StringComparer.OrdinalIgnoreCase),
+                        false,
+                        null,
+                        generation,
+                        0
+                    });
+                noticeVisibility = ((TextBlock)viewType.GetField("MediaWindowAnchorNotice", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!).Visibility;
+                selectionGuard = (bool)viewType.GetField("selectionRestoreQueued", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.Equal(Visibility.Visible, noticeVisibility);
+        Assert.False(selectionGuard);
+    }
+
+    private static MediaItemDto Media(string id)
+        => new MediaItemDto
+        {
+            MediaId = id,
+            Kind = MediaKind.Screenshot,
+            Source = MediaSourceKind.WindowsScreenshot,
+            ArchivePath = "C:\\archive\\" + id + ".png",
+            OriginalPath = "C:\\source\\" + id + ".png",
+            Sha256 = id,
+            CapturedUtc = DateTime.UtcNow,
+            ClassificationState = "Assigned"
+        };
 
     private static string Read(params string[] parts)
     {

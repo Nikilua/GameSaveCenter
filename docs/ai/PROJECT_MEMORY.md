@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-07
 
+## 2026-09-07 Q4-00 媒体分页锚点行为实现约束
+
+- `MediaCenterView` 的延迟 `RestoreAnchor` 回调必须携带 `anchorRestoreGeneration`；切换游戏、收件箱模式、ViewModel、页面生命周期或产生新的集合/选择上下文时递增代际并统一清除待恢复锚点、选择和计时器。旧回调只能静默退出，不能改动当前列表。
+- 收件箱恢复除代际外还要校验 `MediaInboxMode`；`PropertyChanged` 订阅必须随 ViewModel Attach/Detach 成对管理，避免离开页面后旧 ViewModel 继续触发失效逻辑。
+- `selectionRestoreQueued` 在整个恢复/重试链路中保持占用，只有恢复成功、无法恢复并显示提示、或上下文失效时释放。不要在单次 `RestoreSelection` 的 `finally` 中提前清零，否则集合 Reset 的后续 `SelectionChanged` 会覆盖待恢复选择。
+- 行为测试必须在真实 STA `Window` 中驱动 View、Dispatcher 和私有恢复链路，至少验证旧上下文回调不显示过期提示，以及锚点被裁掉时提示可见且恢复锁释放。源码契约断言只能作为补充，不能替代该行为证据。
+- 当前证据：媒体锚点定向 `5/5`；全量 Core `72/72`、Worker `300/301`（1 跳过）、Playnite `362/424`（62 跳过）；构建 0 错误，存在 1 个 `NU1900` 网络审计警告。真实 Playnite、DPI/高对比度、完整键盘和大库连续滚动仍是外部验收边界。
+
 ## 2026-09-07 Q5-01 设置页操作反馈实现约束
 
 - 设置页状态必须由当前设置指纹、`VerifySettings` 结果和 Playnite 编辑生命周期共同决定：验证错误优先于脏状态；无错误且指纹与提交基线不同显示未保存；相同显示已保存。不要添加绕过 Playnite 的自定义保存按钮。

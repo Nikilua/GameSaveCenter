@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -29,6 +30,7 @@ namespace GameSaveCenter.Playnite.Views
         private string? pendingInboxAnchorMode;
         private bool restoringSelection;
         private bool selectionRestoreQueued;
+        private long anchorRestoreGeneration;
         private readonly DispatcherTimer pendingAnchorExpiryTimer;
 
         public MediaCenterView()
@@ -49,6 +51,7 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
+            InvalidatePendingAnchorRestore();
             pendingAnchorExpiryTimer.Stop();
             DetachViewModel();
         }
@@ -59,10 +62,12 @@ namespace GameSaveCenter.Playnite.Views
         private void AttachViewModel(DashboardViewModel? viewModel)
         {
             if (ReferenceEquals(attachedViewModel, viewModel)) return;
+            InvalidatePendingAnchorRestore();
             DetachViewModel();
             attachedViewModel = viewModel;
             if (viewModel == null) return;
 
+            viewModel.PropertyChanged += OnViewModelPropertyChanged;
             viewModel.Media.CollectionChanged += OnMediaCollectionChanged;
             viewModel.UnassignedMedia.CollectionChanged += OnInboxCollectionChanged;
             viewModel.IgnoredMedia.CollectionChanged += OnInboxCollectionChanged;
@@ -71,19 +76,37 @@ namespace GameSaveCenter.Playnite.Views
         private void DetachViewModel()
         {
             if (attachedViewModel == null) return;
+            attachedViewModel.PropertyChanged -= OnViewModelPropertyChanged;
             attachedViewModel.Media.CollectionChanged -= OnMediaCollectionChanged;
             attachedViewModel.UnassignedMedia.CollectionChanged -= OnInboxCollectionChanged;
             attachedViewModel.IgnoredMedia.CollectionChanged -= OnInboxCollectionChanged;
             attachedViewModel = null;
         }
 
-        private void OnPendingAnchorExpiry(object? sender, EventArgs e)
+        private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
+            if (string.IsNullOrEmpty(e.PropertyName)
+                || string.Equals(e.PropertyName, nameof(DashboardViewModel.SelectedGame), StringComparison.Ordinal)
+                || string.Equals(e.PropertyName, nameof(DashboardViewModel.CurrentWorkspace), StringComparison.Ordinal)
+                || string.Equals(e.PropertyName, nameof(DashboardViewModel.MediaInboxMode), StringComparison.Ordinal))
+            {
+                InvalidatePendingAnchorRestore();
+            }
+        }
+
+        private void InvalidatePendingAnchorRestore()
+        {
+            unchecked { anchorRestoreGeneration++; }
             pendingMediaAnchor = null;
             pendingInboxAnchor = null;
             pendingInboxAnchorMode = null;
             selectionRestoreQueued = false;
             pendingAnchorExpiryTimer.Stop();
+        }
+
+        private void OnPendingAnchorExpiry(object? sender, EventArgs e)
+        {
+            InvalidatePendingAnchorRestore();
         }
 
         private void ArmPendingAnchorExpiry()
@@ -127,21 +150,25 @@ namespace GameSaveCenter.Playnite.Views
             pendingMediaAnchor = null;
             pendingAnchorExpiryTimer.Stop();
             selectionRestoreQueued = true;
-            QueueRestore(MediaGrid, anchor, selectedMediaIds, isInbox: false, mode: null);
+            QueueRestore(MediaGrid, anchor, selectedMediaIds, isInbox: false, mode: null, generation: anchorRestoreGeneration);
         }
 
         private void OnInboxCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             if (pendingInboxAnchor == null || attachedViewModel == null) return;
             var mode = pendingInboxAnchorMode;
-            if (mode == null || !string.Equals(mode, attachedViewModel.MediaInboxMode, StringComparison.Ordinal))
+            if (mode == null) return;
+            if (!string.Equals(mode, attachedViewModel.MediaInboxMode, StringComparison.Ordinal))
+            {
+                InvalidatePendingAnchorRestore();
                 return;
+            }
             var anchor = pendingInboxAnchor;
             pendingInboxAnchor = null;
             pendingInboxAnchorMode = null;
             pendingAnchorExpiryTimer.Stop();
             selectionRestoreQueued = true;
-            QueueRestore(MediaInboxGrid, anchor, GetInboxSelectionSet(mode), isInbox: true, mode);
+            QueueRestore(MediaInboxGrid, anchor, GetInboxSelectionSet(mode), isInbox: true, mode: mode, generation: anchorRestoreGeneration);
         }
 
         private void OnLoadMoreMediaClick(object sender, RoutedEventArgs e)
@@ -165,6 +192,7 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnMediaInboxModeSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            InvalidatePendingAnchorRestore();
             OnMediaInboxSelectionChanged(sender,e);
         }
 
@@ -445,11 +473,11 @@ namespace GameSaveCenter.Playnite.Views
             }
         }
 
-        private void QueueRestore(ItemsControl itemsControl, ScrollAnchor anchor, HashSet<string> selection, bool isInbox, string? mode)
+        private void QueueRestore(ItemsControl itemsControl, ScrollAnchor anchor, HashSet<string> selection, bool isInbox, string? mode, long generation)
         {
             Dispatcher.BeginInvoke(
                 DispatcherPriority.Loaded,
-                new Action(() => RestoreAnchor(itemsControl, anchor, selection, isInbox, mode, 0)));
+                new Action(() => RestoreAnchor(itemsControl, anchor, selection, isInbox, mode, generation, 0)));
         }
 
         private void RestoreAnchor(
@@ -458,9 +486,10 @@ namespace GameSaveCenter.Playnite.Views
             HashSet<string> selection,
             bool isInbox,
             string? mode,
+            long generation,
             int attempt)
         {
-            if (!IsLoaded || (isInbox && attachedViewModel != null && !string.Equals(attachedViewModel.MediaInboxMode, mode, StringComparison.Ordinal)))
+            if (!IsCurrentAnchorRestore(generation, isInbox, mode))
                 return;
 
             RestoreSelection(itemsControl, selection);
@@ -474,7 +503,7 @@ namespace GameSaveCenter.Playnite.Views
             var viewer = FindDescendant<ScrollViewer>(itemsControl);
             if (viewer == null)
             {
-                RetryRestore(itemsControl, anchor, selection, isInbox, mode, attempt);
+                RetryRestore(itemsControl, anchor, selection, isInbox, mode, generation, attempt);
                 return;
             }
 
@@ -487,7 +516,7 @@ namespace GameSaveCenter.Playnite.Views
             var container = itemsControl.ItemContainerGenerator.ContainerFromIndex(itemIndex) as FrameworkElement;
             if (container == null)
             {
-                RetryRestore(itemsControl, anchor, selection, isInbox, mode, attempt);
+                RetryRestore(itemsControl, anchor, selection, isInbox, mode, generation, attempt);
                 return;
             }
 
@@ -508,7 +537,15 @@ namespace GameSaveCenter.Playnite.Views
             }
 
             HideAnchorNotice(isInbox);
+            selectionRestoreQueued = false;
         }
+
+        private bool IsCurrentAnchorRestore(long generation, bool isInbox, string? mode)
+            => IsLoaded
+                && generation == anchorRestoreGeneration
+                && (!isInbox
+                    || attachedViewModel == null
+                    || string.Equals(attachedViewModel.MediaInboxMode, mode, StringComparison.Ordinal));
 
         private void RetryRestore(
             ItemsControl itemsControl,
@@ -516,6 +553,7 @@ namespace GameSaveCenter.Playnite.Views
             HashSet<string> selection,
             bool isInbox,
             string? mode,
+            long generation,
             int attempt)
         {
             if (attempt >= 4)
@@ -526,7 +564,7 @@ namespace GameSaveCenter.Playnite.Views
 
             Dispatcher.BeginInvoke(
                 DispatcherPriority.ContextIdle,
-                new Action(() => RestoreAnchor(itemsControl, anchor, selection, isInbox, mode, attempt + 1)));
+                new Action(() => RestoreAnchor(itemsControl, anchor, selection, isInbox, mode, generation, attempt + 1)));
         }
 
         private void RestoreSelection(ItemsControl itemsControl, HashSet<string> selection)
@@ -545,7 +583,6 @@ namespace GameSaveCenter.Playnite.Views
             finally
             {
                 restoringSelection = false;
-                selectionRestoreQueued = false;
             }
         }
 
@@ -559,6 +596,7 @@ namespace GameSaveCenter.Playnite.Views
 
         private void ShowAnchorNotice(bool isInbox, int trackedSelectionCount)
         {
+            selectionRestoreQueued = false;
             var notice = isInbox ? MediaInboxWindowAnchorNotice : MediaWindowAnchorNotice;
             var button = isInbox ? ReloadMediaInboxButton : ReloadMediaWindowButton;
             var suffix = trackedSelectionCount > 0

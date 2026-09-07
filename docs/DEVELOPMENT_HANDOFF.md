@@ -8,6 +8,13 @@
 
 > 新会话短入口：先读 [`docs/ai/CURRENT_STATE.md`](ai/CURRENT_STATE.md)。本文下方的历史交接按时间保留；除顶部最新阶段和明确标注的覆盖关系外，旧条目只用于追溯，不得覆盖当前事实入口。
 
+## 2026-09-07 Q4-00 媒体分页锚点行为已收口
+
+- `MediaCenterView` 的延迟恢复已使用上下文代际；游戏、收件箱模式、ViewModel、页面生命周期或新的集合/选择上下文变化都会使旧回调失效。旧回调不能显示过期锚点提示，也不能覆盖当前选择或滚动状态。
+- `selectionRestoreQueued` 在恢复重试期间保持锁定，只在恢复成功、显示不可恢复提示或统一失效清理时释放；Attach/Detach 同步维护 ViewModel 的 `PropertyChanged` 订阅。
+- 已增加真实 STA WPF `Window` 行为测试，覆盖上下文失效后的旧回调和锚点被窗口裁掉的提示/解锁行为；媒体锚点定向测试 `5/5` 通过。
+- 当前全量验证：Core `72/72`、Worker `300/301`（1 跳过）、Playnite `362/424`（62 跳过），Release 构建 0 错误，源码校验/XAML `19/19`/差异检查通过。真实 Playnite、DPI/高对比度、完整键盘和大库连续滚动仍需用户环境验收；本阶段没有 XAML 改动，不伪造渲染证据。
+
 ## 2026-09-07 Q5-01 设置页操作反馈已收口
 
 - `GameSaveCenterSettingsView` 的 `SettingsSaveHintText` 始终显示状态：校验失败优先，其次是未保存修改，最后是已保存；Tooltip 明确保存/取消仍由 Playnite 设置宿主处理。
