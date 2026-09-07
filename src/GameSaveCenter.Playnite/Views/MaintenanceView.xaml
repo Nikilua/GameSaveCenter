@@ -86,7 +86,32 @@
                                             <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RefreshDiagnosticsCommand}" Content="刷新诊断"/>
                                         </Grid>
                                         <Grid Grid.Row="1">
-                                            <DataGrid x:Name="FindingsGrid" Style="{StaticResource MaintenanceDataGrid}" RowStyle="{StaticResource GscStableDataGridRow}" ItemsSource="{Binding Findings}" SelectedItem="{Binding SelectedFinding}"><DataGrid.Columns><DataGridTemplateColumn HeaderStyle="{StaticResource MaintenanceFirstColumnHeader}" Header="等级" Width="{StaticResource GscSeverityColumnWidth}"><DataGridTemplateColumn.CellTemplate><DataTemplate><Border x:Name="SeverityPill" Style="{DynamicResource GscRedesignTableStatusPill}"><TextBlock Text="{Binding SeverityDisplay, Mode=OneWay}" Foreground="{DynamicResource GscPrimaryTextBrush}" HorizontalAlignment="Center"/></Border><DataTemplate.Triggers><DataTrigger Binding="{Binding Severity}" Value="Info"><Setter TargetName="SeverityPill" Property="Background" Value="{DynamicResource GscInfoIconFillBrush}"/><Setter TargetName="SeverityPill" Property="BorderBrush" Value="{DynamicResource GscInfoBrush}"/></DataTrigger><DataTrigger Binding="{Binding Severity}" Value="Warning"><Setter TargetName="SeverityPill" Property="Background" Value="{DynamicResource GscSafetyFillBrush}"/><Setter TargetName="SeverityPill" Property="BorderBrush" Value="{DynamicResource GscWarningBrush}"/></DataTrigger><DataTrigger Binding="{Binding Severity}" Value="Error"><Setter TargetName="SeverityPill" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/><Setter TargetName="SeverityPill" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/></DataTrigger><DataTrigger Binding="{Binding Severity}" Value="Critical"><Setter TargetName="SeverityPill" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/><Setter TargetName="SeverityPill" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/></DataTrigger></DataTemplate.Triggers></DataTemplate></DataGridTemplateColumn.CellTemplate></DataGridTemplateColumn><DataGridTextColumn Header="游戏" Binding="{Binding GameName}" Width="120"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn><DataGridTextColumn Header="标题" Binding="{Binding Title}" Width="160"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn><DataGridTextColumn Header="详情" Binding="{Binding Detail}" Width="*" MinWidth="180"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn><DataGridTextColumn HeaderStyle="{StaticResource MaintenanceLastColumnHeader}" Header="建议处理" Binding="{Binding SuggestedAction}" Width="0.75*" MinWidth="140"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn></DataGrid.Columns></DataGrid><TextBlock Text="当前没有需要处理的诊断项。&#xA;Worker、备份和媒体状态正常时，这里会保持为空。" IsHitTestVisible="False"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyStateText}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding Findings.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
+                                            <DataGrid x:Name="FindingsGrid" Style="{StaticResource MaintenanceDataGrid}" RowStyle="{StaticResource GscStableDataGridRow}" ItemsSource="{Binding Findings}" SelectedItem="{Binding SelectedFinding}">
+                                                <DataGrid.Columns>
+                                                    <DataGridTemplateColumn HeaderStyle="{StaticResource MaintenanceFirstColumnHeader}" Header="等级" Width="{StaticResource GscSeverityColumnWidth}">
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <Border x:Name="SeverityPill" Style="{DynamicResource GscRedesignTableStatusPill}">
+                                                                    <TextBlock Text="{Binding SeverityDisplay, Mode=OneWay}" Foreground="{DynamicResource GscPrimaryTextBrush}" HorizontalAlignment="Center"/>
+                                                                </Border>
+                                                                <DataTemplate.Triggers>
+                                                                    <DataTrigger Binding="{Binding Severity}" Value="Info"><Setter TargetName="SeverityPill" Property="Background" Value="{DynamicResource GscInfoIconFillBrush}"/><Setter TargetName="SeverityPill" Property="BorderBrush" Value="{DynamicResource GscInfoBrush}"/></DataTrigger>
+                                                                    <DataTrigger Binding="{Binding Severity}" Value="Warning"><Setter TargetName="SeverityPill" Property="Background" Value="{DynamicResource GscSafetyFillBrush}"/><Setter TargetName="SeverityPill" Property="BorderBrush" Value="{DynamicResource GscWarningBrush}"/></DataTrigger>
+                                                                    <DataTrigger Binding="{Binding Severity}" Value="Error"><Setter TargetName="SeverityPill" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/><Setter TargetName="SeverityPill" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/></DataTrigger>
+                                                                    <DataTrigger Binding="{Binding Severity}" Value="Critical"><Setter TargetName="SeverityPill" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/><Setter TargetName="SeverityPill" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/></DataTrigger>
+                                                                </DataTemplate.Triggers>
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                    </DataGridTemplateColumn>
+                                                    <DataGridTextColumn Header="游戏" Binding="{Binding GameName}" Width="120">
+                                                        <DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle>
+                                                    </DataGridTextColumn>
+                                                    <DataGridTextColumn HeaderStyle="{StaticResource MaintenanceLastColumnHeader}" Header="问题" Binding="{Binding Title}" Width="*" MinWidth="180">
+                                                        <DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle>
+                                                    </DataGridTextColumn>
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+                                            <TextBlock Text="当前没有需要处理的诊断项。&#xA;Worker、备份和媒体状态正常时，这里会保持为空。" IsHitTestVisible="False"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyStateText}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding Findings.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
                                         </Grid>
                                     </Grid>
                                 </Border>
@@ -122,14 +147,22 @@
                                                 <TextBlock Text="{Binding SelectedFinding.GameName, TargetNullValue=选择一条诊断项查看详情}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,8,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
                                                 <TextBlock Text="{Binding SelectedFinding.Title, TargetNullValue=暂无标题}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                                                 <Border Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,12,0,0">
-                                                    <TextBlock Text="{Binding SelectedFinding.Detail, TargetNullValue=暂无详细说明}" TextWrapping="Wrap" Foreground="{DynamicResource GscSecondaryTextBrush}"/>
+                                                    <TextBlock Text="{Binding SelectedFinding.Detail, TargetNullValue=暂无详细说明}" TextWrapping="Wrap" Foreground="{DynamicResource GscSecondaryTextBrush}" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
                                                 </Border>
                                                 <Border Style="{DynamicResource GscDiagnosticHintBubble}" Padding="10" Margin="0,12,0,0">
                                                     <TextBlock Style="{DynamicResource GscDiagnosticHintText}" Text="{Binding SelectedFinding.SuggestedAction, TargetNullValue=暂无建议处理方式}"/>
                                                 </Border>
-                                                <StackPanel Orientation="Horizontal" Margin="0,14,0,0">
-                                                    <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding DataContext.CopyDiagnosticsCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" Content="复制诊断"/>
-                                                </StackPanel>
+                                                <WrapPanel Margin="0,14,0,0">
+                                                    <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding DataContext.CopyDiagnosticsCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" Content="复制诊断" Margin="0,0,8,8"/>
+                                                    <ui:Button Command="{Binding DataContext.OpenSelectedFindingNavigationCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" Content="{Binding DataContext.SelectedFindingNavigationText, RelativeSource={RelativeSource AncestorType=UserControl}}" ToolTip="{Binding DataContext.SelectedFindingNavigationToolTip, RelativeSource={RelativeSource AncestorType=UserControl}}" AutomationProperties.Name="{Binding DataContext.SelectedFindingNavigationText, RelativeSource={RelativeSource AncestorType=UserControl}}" Margin="0,0,0,8">
+                                                        <ui:Button.Style>
+                                                            <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiContextButton}">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                                <Style.Triggers><DataTrigger Binding="{Binding DataContext.HasSelectedFindingNavigation, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                                            </Style>
+                                                        </ui:Button.Style>
+                                                    </ui:Button>
+                                                </WrapPanel>
                                             </StackPanel>
                                             <Border.Style>
                                                 <Style TargetType="Border" BasedOn="{StaticResource GscRedesignSectionCard}"/>
@@ -430,7 +463,7 @@
                             </Border>
                             <StackPanel Grid.Column="1" Margin="12,0,18,0" VerticalAlignment="Center">
                                 <TextBlock Text="多设备云目录" Style="{DynamicResource GscSectionTitleStyle}"/>
-                                <TextBlock Text="2 台设备共用一个云端仓库 · 内容指纹判定等价 · 分叉只标记不合并" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0" TextWrapping="Wrap"/>
+                                <TextBlock Text="设备共享同一个云端仓库 · 内容指纹判定等价 · 分叉只标记不合并" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0" TextWrapping="Wrap"/>
                             </StackPanel>
                             <ui:Button Grid.Column="2" Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding SyncDeviceStatesCommand}" Content="刷新设备状态" VerticalAlignment="Center" Margin="0"/>
                         </Grid>

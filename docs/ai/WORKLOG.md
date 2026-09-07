@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-07 UI3-06 存档与维护详情可读性
+
+- 存档历史时间列和 Inspector 改为 `MM-dd HH:mm`，完整时间通过 Tooltip 保留；响应式列宽提高类型/状态可读性并保留备注弹性列。Inspector 顺序调整为版本摘要 → 恢复可用性/风险 → 备注与锁定 → 恢复操作，未改变预检、确认、PreRestore 和撤销语义。
+- 维护诊断表收敛为等级/游戏/问题三列，长详情和建议处理集中在选中项 Inspector；新增 `FindingNavigationResolver` 和单一动态入口，按代码/诊断提示受控跳转存档、失败任务或云端队列，未知或无身份诊断不提供误导性动作。Fake 夹具同步该绑定面。
+- 显示层修正云端校验失败/上传失败/混合失败文案、未知状态回退和媒体归类状态映射；设备页删除固定设备数量文案。新增 DTO 显示映射与导航解析回归，并更新原有三/五列结构基线断言。
+- 验证：Core `72/72`、Worker `296/297`（1 跳过）、Playnite `352/414`（62 跳过）；Release 构建无 warning/error，XAML `19/19`、`validate-source.py`、WPF 静态审查 `0 error/20 warnings/172 info`、RenderHarness `render-qa OK`、`git diff --check` 通过。未执行真实 Playnite 宿主；清理了 `.tmp/ui3-06-render`，下一阶段为 UI3-07 缓存窗口与滚动锚点。
+
 ## 2026-09-07 UI3-05 首页优先级与下一步动作
 
 - 新增纯逻辑 `OverviewPriorityResolver`，用真实 `DashboardSnapshotDto` 和首次使用状态确定单一 Hero 下一步：Worker 故障、环境准备、云端异常、待归类媒体、游戏关注和健康刷新按优先级互斥呈现；`DashboardViewModel` 在快照/首次使用状态变化时通知全部派生绑定。

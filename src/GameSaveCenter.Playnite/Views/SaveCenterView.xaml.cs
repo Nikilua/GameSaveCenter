@@ -54,12 +54,12 @@ namespace GameSaveCenter.Playnite.Views
                     // This keeps the essential 状态 column inside the table without
                     // changing the project's DataGrid scrolling contract.
                     var narrowHistory = width < 1240;
-                    SaveHistoryTimeColumn.Width = new DataGridLength(narrowHistory ? 96 : 150);
-                    SaveHistoryTypeColumn.Width = new DataGridLength(narrowHistory ? 76 : 110);
+                    SaveHistoryTimeColumn.Width = new DataGridLength(narrowHistory ? 104 : 110);
+                    SaveHistoryTypeColumn.Width = new DataGridLength(narrowHistory ? 104 : 124);
                     SaveHistoryFileCountColumn.Width = new DataGridLength(narrowHistory ? 56 : 82);
                     SaveHistorySizeColumn.Width = new DataGridLength(narrowHistory ? 78 : 116);
                     SaveHistoryDeviceColumn.Width = new DataGridLength(narrowHistory ? 110 : 120);
-                    SaveHistoryStateColumn.Width = new DataGridLength(narrowHistory ? 76 : 96);
+                    SaveHistoryStateColumn.Width = new DataGridLength(narrowHistory ? 96 : 106);
                     SaveHistoryNoteColumn.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
                     SaveHistoryNoteColumn.MinWidth = narrowHistory ? 116 : 180;
                 }

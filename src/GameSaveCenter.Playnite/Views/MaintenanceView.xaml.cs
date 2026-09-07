@@ -254,13 +254,9 @@ namespace GameSaveCenter.Playnite.Views
             MaintenanceRetentionDeleteCard.Margin = stackRetentionDetails
                 ? new Thickness(0, 14, 0, 0)
                 : new Thickness(0);
-            // The findings table has five readable columns plus an inspector. Keep the
-            // inspector beside it only when the main table can still show those columns;
-            // otherwise stack it before WPF starts compressing the text into a single strip.
-            // Keep the findings inspector beside the table only when the table has enough
-            // room for readable game/title/detail/action columns.  At common 1280-DIP and
-            // high-DPI sizes the inspector must stack instead of forcing ellipses into every
-            // column and exposing the host's white fallback header surface.
+            // The findings table keeps only the severity, game and problem columns. Detail
+            // and suggested handling belong to the selected inspector, where they can wrap
+            // and remain readable without making every row a wall of ellipses.
             // The shell's content width is smaller than the outer Playnite window
             // because the sidebar is already accounted for. Keep the Demo's two-column
             // findings/inspector composition at normal desktop widths and stack only
@@ -472,15 +468,13 @@ namespace GameSaveCenter.Playnite.Views
                 return;
             }
 
-            if (grid.Columns.Count < 5)
+            if (grid.Columns.Count < 3)
                 return;
 
             grid.Columns[0].Width = compact ? new DataGridLength(84) : new DataGridLength(92);
-            grid.Columns[1].Width = compact ? new DataGridLength(100) : new DataGridLength(120);
-            grid.Columns[2].Width = compact ? new DataGridLength(118) : new DataGridLength(160);
-            grid.Columns[3].MinWidth = compact ? 110 : 180;
-            grid.Columns[4].Width = new DataGridLength(compact ? 1 : 0.75, DataGridLengthUnitType.Star);
-            grid.Columns[4].MinWidth = compact ? 110 : 140;
+            grid.Columns[1].Width = compact ? new DataGridLength(120) : new DataGridLength(180);
+            grid.Columns[2].Width = new DataGridLength(1, DataGridLengthUnitType.Star);
+            grid.Columns[2].MinWidth = compact ? 180 : 320;
         }
 
         private static T? FindVisualChild<T>(DependencyObject? parent) where T : DependencyObject

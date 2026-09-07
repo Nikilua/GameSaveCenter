@@ -851,7 +851,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.DoesNotContain("FindVisualChild", mediaCode);
         Assert.DoesNotContain("ScrollViewer.Background=\"{DynamicResource GscGlassStrongBrush}\"", media);
         Assert.Contains("ColumnHeaderStyle\" Value=\"{StaticResource MediaInboxColumnHeaderStyle}\"", media);
-        Assert.Contains("HeaderStyle=\"{StaticResource MaintenanceLastColumnHeader}\" Header=\"建议处理\"", maintenance);
+        Assert.Contains("HeaderStyle=\"{StaticResource MaintenanceLastColumnHeader}\" Header=\"问题\"", maintenance);
         Assert.Contains("DataGridLoaded", maintenanceCode);
         Assert.DoesNotContain("AddHandler(FrameworkElement.LoadedEvent, new RoutedEventHandler(ApplyHeaderTheme), true)", maintenanceCode);
         Assert.Contains("ApplyMediaInboxPage(inbox, reset: true, collectionMode: \"待归类\", selectedId: selectedId, targetId: targetId)", File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.Media.cs")));

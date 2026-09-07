@@ -9,7 +9,7 @@ namespace GameSaveCenter.Playnite.Tests
     public sealed class OvernightV4MaintenanceTests
     {
         [Fact]
-        public void MaintenanceDiagnosticsUseUnifiedDisclosureCardAndFiveReadableColumns()
+        public void MaintenanceDiagnosticsUseUnifiedDisclosureCardAndThreePriorityColumns()
         {
             var root = FindRepositoryRoot();
             var maintenance = XDocument.Parse(File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml")));
@@ -17,13 +17,13 @@ namespace GameSaveCenter.Playnite.Tests
 
             var findings = maintenance.Descendants().Single(element => element.Attribute(xamlName)?.Value == "FindingsGrid");
             var columns = findings.Elements().Single(element => element.Name.LocalName == "DataGrid.Columns").Elements().ToList();
-            Assert.Equal(5, columns.Count);
+            Assert.Equal(3, columns.Count);
             Assert.Contains("Width=\"{StaticResource GscSeverityColumnWidth}\"", columns[0].ToString());
+            Assert.Contains("Header=\"游戏\"", columns[1].ToString());
             Assert.Contains("Width=\"120\"", columns[1].ToString());
-            Assert.Contains("Width=\"160\"", columns[2].ToString());
-            Assert.Contains("MinWidth=\"180\"", columns[3].ToString());
-            Assert.Contains("Width=\"0.75*\"", columns[4].ToString());
-            Assert.Contains("MinWidth=\"140\"", columns[4].ToString());
+            Assert.Contains("Header=\"问题\"", columns[2].ToString());
+            Assert.Contains("Width=\"*\"", columns[2].ToString());
+            Assert.Contains("MinWidth=\"180\"", columns[2].ToString());
 
             var expanders = maintenance.Descendants().Where(element => element.Name.LocalName == "Expander").ToList();
             Assert.NotEmpty(expanders);

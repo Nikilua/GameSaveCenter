@@ -64,7 +64,7 @@ public sealed class CloudTransferStatusDto
         "CheckFailed" => "校验失败",
         "Failed" => "上传失败",
         "Paused" => "已暂停",
-        _ => string.IsNullOrWhiteSpace(State) ? "未启用" : State
+        _ => string.IsNullOrWhiteSpace(State) ? "未启用" : "未知状态"
     };
 
     /// <summary>Explains what has actually been established about the remote copy.</summary>
@@ -122,7 +122,9 @@ public sealed class CloudTransferSummaryDto
         get
         {
             if (AuthenticationRequiredCount > 0) return "认证需处理";
-            if (CheckFailedCount > 0 || FailedCount > 0) return "上传失败";
+            if (CheckFailedCount > 0 && FailedCount > 0) return "校验/上传失败";
+            if (CheckFailedCount > 0) return "校验失败";
+            if (FailedCount > 0) return "上传失败";
             if (RetryScheduledCount > 0) return "下次尝试";
             if (VerifyingCount > 0) return "远端校验中";
             if (TransferringCount > 0) return "传输中";

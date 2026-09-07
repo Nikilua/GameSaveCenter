@@ -22,6 +22,7 @@ public sealed class FakeDashboardData
     public ICommand OpenMaintenanceCommand { get; } = new NoopCommand();
     public ICommand OpenCloudQueueCommand { get; } = new NoopCommand();
     public ICommand OpenMediaWorkspaceCommand { get; } = new NoopCommand();
+    public ICommand OpenSelectedFindingNavigationCommand { get; } = new NoopCommand();
     public ICommand RefreshCommand { get; } = new NoopCommand();
     public ICommand RefreshCloudTransfersCommand { get; } = new NoopCommand();
     public ICommand LoadMoreCloudTransfersCommand { get; } = new NoopCommand();
@@ -645,6 +646,9 @@ public sealed class FakeDashboardData
     public MediaItemDto? SelectedMedia { get; set; }
     public MediaItemDto? SelectedInboxMedia { get; set; }
     public ValidationFindingDto? SelectedFinding { get; set; }
+    public string SelectedFindingNavigationText => FindingNavigationResolver.Resolve(SelectedFinding).Text;
+    public string SelectedFindingNavigationToolTip => FindingNavigationResolver.Resolve(SelectedFinding).ToolTip;
+    public bool HasSelectedFindingNavigation => FindingNavigationResolver.Resolve(SelectedFinding).IsAvailable;
     public DeviceConflictStatusDto? SelectedDeviceComparison { get; set; }
     public ProcessMappingDto? SelectedProcessMapping { get; set; }
     public GameStatusDto MediaTargetGame { get; set; } = null!;

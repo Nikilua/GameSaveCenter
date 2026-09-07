@@ -111,7 +111,7 @@ public sealed class MediaClassificationBatchSummaryDto
         "UndoneWithConflicts" => "已撤销 · 有冲突",
         "Conflict" => "应用冲突",
         "Expired" => "已过期",
-        _ => string.IsNullOrWhiteSpace(State) ? "未知" : State
+        _ => "未知状态"
     };
     public string CountsDisplay => $"{ItemCount} 项 · 已应用 {AppliedCount} · 冲突 {ConflictCount} · 已撤销 {UndoneCount}";
     public string DetailDisplay
@@ -152,7 +152,7 @@ public sealed class MediaClassificationBatchItemResultDto
         "Undone" => "已撤销",
         "Conflict" => "冲突，未改动",
         "Skipped" => "已跳过",
-        _ => State
+        _ => "未知状态"
     };
 }
 

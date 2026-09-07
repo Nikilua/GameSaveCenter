@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-07
 
+## 2026-09-07 UI3-06 存档与维护详情实现约束
+
+- `SaveCenterView` 的历史时间展示使用 `MM-dd HH:mm`，完整时间只通过 Tooltip 提供；`SaveHistoryTimeColumn` 在窄宽度仍不得低于能读出日期/时间的宽度，类型和状态列优先于备注，备注继续使用星号列。Inspector 中恢复可用性必须先于备注编辑，但安全恢复命令、隔离校验、确认和 PreRestore 保护不能被 UI 重排绕过。
+- `MaintenanceView` 的主诊断表只显示等级/游戏/问题三列；`Detail` 与 `SuggestedAction` 只能在选中 Inspector 中完整换行。`ApplyFindingsColumnLayout` 的主表分支按三列处理，审计表仍保持自己的四列契约，不要把两者混用。
+- 诊断跳转统一经过 `FindingNavigationResolver`：带云端/Rclone/远端身份进入云队列，任务/Worker/健康或明确任务提示进入失败任务筛选，有游戏身份的其他诊断进入存档工作区并选中同一游戏；未知或无身份返回 `None`。动态按钮只隐藏/显示，不复制多套命令或自动执行修复。
+- `CloudTransferStatusDto`、`CloudTransferSummaryDto` 和媒体归类 DTO 只改变显示映射，不改变状态存储/IPC 值；校验失败与上传失败必须可区分，未知未来状态不得把内部英文枚举直接泄漏到界面。设备说明不得写死设备数量。
+- UI3-06 当前证据：全量 Core `72/72`、Worker `296/297`（1 跳过）、Playnite `352/414`（62 跳过），XAML `19/19`，WPF 静态审查 0 error，RenderHarness 双主题/多尺寸/resize `render-qa OK`。离屏渲染不等同真实 Playnite，下一阶段继续 UI3-07 缓存窗口与滚动锚点。
+
 ## 2026-09-07 UI3-05 首页优先级与下一步动作实现约束
 
 - Hero 的优先级唯一来源是 `OverviewPriorityResolver.Resolve(snapshot, isOnboardingPending)`；不要在 XAML 重新按多个计数拼接互相竞争的主标题或命令。顺序固定为 Worker、Onboarding、Cloud attention、Unassigned media、Warning games、Healthy refresh。

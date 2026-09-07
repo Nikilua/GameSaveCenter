@@ -295,6 +295,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             OpenCloudQueueCommand = new RelayCommand(_ => OpenCloudQueue());
             OpenMediaWorkspaceCommand = new RelayCommand(_ => OpenMediaWorkspace());
             OpenAttentionFindingCommand = new RelayCommand(value => OpenAttentionFinding(value as ValidationFindingDto));
+            OpenSelectedFindingNavigationCommand = new RelayCommand(_ => OpenSelectedFindingNavigation(), _ => SelectedFindingNavigation.IsAvailable && !IsBusy);
             OpenProtectionGamesCommand = new RelayCommand(_ => OpenProtectionGames());
             OpenProtectionItemCommand = new RelayCommand(value => OpenProtectionItem(value as RecentProtectionItem));
             ApplyRecommendedProtectionCommand = new RelayCommand(_ => Run(ApplyRecommendedProtectionAsync), _ => !IsBusy);
@@ -873,8 +874,19 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ValidationFindingDto SelectedFinding
         {
             get => selectedFinding;
-            set => SetValue(ref selectedFinding, value);
+            set
+            {
+                SetValue(ref selectedFinding, value);
+                OnPropertyChanged(nameof(SelectedFindingNavigationText));
+                OnPropertyChanged(nameof(SelectedFindingNavigationToolTip));
+                OnPropertyChanged(nameof(HasSelectedFindingNavigation));
+                RaiseCommandStates();
+            }
         }
+        private FindingNavigation SelectedFindingNavigation => FindingNavigationResolver.Resolve(SelectedFinding);
+        public string SelectedFindingNavigationText => SelectedFindingNavigation.Text;
+        public string SelectedFindingNavigationToolTip => SelectedFindingNavigation.ToolTip;
+        public bool HasSelectedFindingNavigation => SelectedFindingNavigation.IsAvailable;
         public string BackupComment
         {
             get => backupComment;
@@ -1129,6 +1141,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand OpenCloudQueueCommand { get; }
         public ICommand OpenMediaWorkspaceCommand { get; }
         public ICommand OpenAttentionFindingCommand { get; }
+        public ICommand OpenSelectedFindingNavigationCommand { get; }
         public ICommand OpenProtectionGamesCommand { get; }
         public ICommand OpenProtectionItemCommand { get; }
         public ICommand ApplyRecommendedProtectionCommand { get; }
@@ -1320,6 +1333,39 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             CurrentWorkspace = WorkspaceKind.Media;
             RequestWorkspaceLoad();
+        }
+
+        private void OpenSelectedFindingNavigation()
+        {
+            var finding = SelectedFinding;
+            var navigation = FindingNavigationResolver.Resolve(finding);
+            switch (navigation.Kind)
+            {
+                case FindingNavigationKind.Save:
+                    if (finding != null && !string.IsNullOrWhiteSpace(finding.PlayniteId))
+                    {
+                        var game = Games.FirstOrDefault(x => string.Equals(x.PlayniteId, finding.PlayniteId, StringComparison.OrdinalIgnoreCase));
+                        if (game != null)
+                            SelectedGame = game;
+                    }
+
+                    CurrentWorkspace = WorkspaceKind.Saves;
+                    RequestWorkspaceLoad();
+                    break;
+                case FindingNavigationKind.FailedTasks:
+                    var taskGameName = finding?.GameName;
+                    if (string.IsNullOrWhiteSpace(taskGameName) && finding != null && !string.IsNullOrWhiteSpace(finding.PlayniteId))
+                        taskGameName = Games.FirstOrDefault(x => string.Equals(x.PlayniteId, finding.PlayniteId, StringComparison.OrdinalIgnoreCase))?.Name;
+                    if (!string.IsNullOrWhiteSpace(taskGameName))
+                        TaskSearchText = taskGameName!;
+                    TaskStatusFilter = "失败";
+                    CurrentWorkspace = WorkspaceKind.Tasks;
+                    Run(() => LoadTaskPageAsync(true));
+                    break;
+                case FindingNavigationKind.CloudQueue:
+                    OpenCloudQueue();
+                    break;
+            }
         }
 
         private void OpenAttentionCenter()
@@ -4014,7 +4060,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 UpdateBackupMetadataCommand, CompareBackupCommand, PreviewRetentionCommand,
                 AddMediaSourceCommand, AcceptCandidateCommand, RejectCandidateCommand, ReassignMediaCommand,
                 UpdateMediaMetadataCommand,OpenSelectedMediaCommand,RevealSelectedMediaCommand,
-                LoadMoreMediaCommand, OpenCloudQueueCommand, OpenMediaWorkspaceCommand, RefreshCloudTransfersCommand, LoadMoreCloudTransfersCommand, VerifyCloudTransferCommand, RetryCloudUploadCommand,
+                LoadMoreMediaCommand, OpenCloudQueueCommand, OpenMediaWorkspaceCommand, OpenSelectedFindingNavigationCommand, RefreshCloudTransfersCommand, LoadMoreCloudTransfersCommand, VerifyCloudTransferCommand, RetryCloudUploadCommand,
                 AssignInboxMediaCommand, IgnoreInboxMediaCommand, AssignInboxMediaBatchCommand, IgnoreInboxMediaBatchCommand, RestoreIgnoredMediaBatchCommand,
                 PreviewMediaClassificationCommand, ApplyMediaClassificationCommand, UndoMediaClassificationCommand,
                 RefreshMediaClassificationHistoryCommand, LoadMoreMediaClassificationHistoryCommand,

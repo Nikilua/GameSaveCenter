@@ -11,6 +11,7 @@
 <Style x:Key="SaveDataGrid" TargetType="DataGrid" BasedOn="{StaticResource GscRedesignWorkspaceDataGrid}"/>
             <Style x:Key="SaveTableFrame" TargetType="Border" BasedOn="{StaticResource GscRedesignTableFrame}"/>
             <Style x:Key="SaveLongText" TargetType="TextBlock"><Setter Property="TextTrimming" Value="CharacterEllipsis"/><Setter Property="TextWrapping" Value="NoWrap"/><Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}"/></Style>
+            <Style x:Key="SaveHistoryTimeText" TargetType="TextBlock" BasedOn="{StaticResource SaveLongText}"><Setter Property="ToolTip" Value="{Binding CreatedLocal, Mode=OneWay, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"/></Style>
             <Style x:Key="SaveSizeValue" TargetType="TextBlock" BasedOn="{StaticResource SaveLongText}"><Setter Property="TextTrimming" Value="None"/><Setter Property="Tag" Value="SaveHistorySize"/></Style>
             <Style x:Key="SaveHealthStateBadge" TargetType="Border" BasedOn="{StaticResource GscRedesignContextPill}">
                 <Setter Property="Padding" Value="10,5"/>
@@ -114,8 +115,8 @@
                             </Border>
                             <DataGrid x:Name="SaveHistoryGrid" Grid.Row="1" Style="{StaticResource SaveDataGrid}" RowStyle="{StaticResource GscStableDataGridRow}" ItemsSource="{Binding Backups}" SelectedItem="{Binding SelectedBackup}" SelectionChanged="OnSaveHistorySelectionChanged">
                             <DataGrid.Columns>
-                                <DataGridTextColumn x:Name="SaveHistoryTimeColumn" HeaderStyle="{StaticResource SaveFirstHeader}" Header="时间" Binding="{Binding CreatedLocal, Mode=OneWay, StringFormat={}{0:yyyy-MM-dd HH:mm}}" Width="150"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource SaveLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
-                                <DataGridTemplateColumn x:Name="SaveHistoryTypeColumn" Header="类型" Width="110">
+                                <DataGridTextColumn x:Name="SaveHistoryTimeColumn" HeaderStyle="{StaticResource SaveFirstHeader}" Header="时间" Binding="{Binding CreatedLocal, Mode=OneWay, StringFormat={}{0:MM-dd HH:mm}}" Width="110"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource SaveHistoryTimeText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
+                                <DataGridTemplateColumn x:Name="SaveHistoryTypeColumn" Header="类型" Width="124">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <Border Style="{DynamicResource GscRedesignTableStatusPill}" BorderBrush="{DynamicResource GscAccentTintStrongBrush}">
@@ -132,7 +133,7 @@
                                         <Style TargetType="TextBlock" BasedOn="{StaticResource SaveLongText}"/>
                                     </DataGridTextColumn.ElementStyle>
                                 </DataGridTextColumn>
-                                <DataGridTemplateColumn x:Name="SaveHistoryStateColumn" HeaderStyle="{StaticResource SaveLastHeader}" Header="状态" Width="96">
+                                <DataGridTemplateColumn x:Name="SaveHistoryStateColumn" HeaderStyle="{StaticResource SaveLastHeader}" Header="状态" Width="106">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <Border BorderThickness="1">
@@ -209,17 +210,12 @@
                                 <Grid>
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="82"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/></Grid.RowDefinitions>
-                                    <TextBlock Text="创建时间" Style="{DynamicResource GscCaptionStyle}"/><TextBlock Grid.Column="1" Text="{Binding SelectedBackup.CreatedLocal, Mode=OneWay, StringFormat={}{0:yyyy-MM-dd HH:mm}}" TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock Text="创建时间" Style="{DynamicResource GscCaptionStyle}"/><TextBlock Grid.Column="1" Text="{Binding SelectedBackup.CreatedLocal, Mode=OneWay, StringFormat={}{0:MM-dd HH:mm}}" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedBackup.CreatedLocal, Mode=OneWay, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"/>
                                     <TextBlock Grid.Row="1" Text="触发方式" Style="{DynamicResource GscCaptionStyle}" Margin="0,9,0,0"/><TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedBackup.BackupTypeDisplay, Mode=OneWay}" Margin="0,9,0,0"/>
                                     <TextBlock Grid.Row="2" Text="文件数量" Style="{DynamicResource GscCaptionStyle}" Margin="0,9,0,0"/><TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SelectedBackup.FileCount, Mode=OneWay}" Margin="0,9,0,0"/>
                                     <TextBlock Grid.Row="3" Text="大小" Style="{DynamicResource GscCaptionStyle}" Margin="0,9,0,0"/><TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding SelectedBackup.SizeDisplay, Mode=OneWay}" Margin="0,9,0,0"/>
                                     <TextBlock Grid.Row="4" Text="设备" Style="{DynamicResource GscCaptionStyle}" Margin="0,9,0,0"/><TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding SelectedBackup.SourceDevice, Mode=OneWay}" TextTrimming="CharacterEllipsis" Margin="0,9,0,0" ToolTip="{Binding SelectedBackup.SourceDevice}"/>
                                 </Grid>
-                                <TextBlock Text="版本备注" Style="{DynamicResource GscCaptionStyle}" Margin="0,16,0,6"/>
-                                <TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding BackupComment, UpdateSourceTrigger=PropertyChanged}" MinHeight="64" AcceptsReturn="True" TextWrapping="Wrap"/>
-                                <Grid Margin="0,14,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><StackPanel><TextBlock Text="锁定版本" FontWeight="SemiBold"/><TextBlock Text="保留策略不会清理锁定版本" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel><CheckBox Grid.Column="1" Style="{DynamicResource GscCheckBox}" Content="锁定" IsChecked="{Binding LockSelectedBackup}" VerticalAlignment="Center"/></Grid>
-                                <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding UpdateBackupMetadataCommand}" Content="保存备注与锁定" Margin="0,16,0,0"/>
-                                <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding CompareBackupCommand}" Content="与上一版本比较" Margin="0,8,0,0"/>
                                 <Separator Margin="0,16,0,12"/>
                                 <TextBlock Text="恢复可用性" FontWeight="SemiBold"/>
                                 <TextBlock Text="归档可读取性由隔离校验表示；不代表路径映射已完成，也不代表真实恢复已演练。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0" AutomationProperties.HelpText="恢复可用性巡检只读取隔离目录，不会执行真实恢复。"/>
@@ -227,6 +223,12 @@
                                 <TextBlock Text="{Binding SelectedBackup.RestoreReadinessSummaryDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                                 <TextBlock Text="{Binding SelectedBackup.RestoreReadinessMetricsDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                                 <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding ValidateRestoreReadinessCommand}" Content="验证可恢复性" Margin="0,10,0,0"/>
+                                <Separator Margin="0,16,0,12"/>
+                                <TextBlock Text="版本备注" Style="{DynamicResource GscCaptionStyle}" Margin="0,0,0,6"/>
+                                <TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding BackupComment, UpdateSourceTrigger=PropertyChanged}" MinHeight="64" AcceptsReturn="True" TextWrapping="Wrap"/>
+                                <Grid Margin="0,14,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><StackPanel><TextBlock Text="锁定版本" FontWeight="SemiBold"/><TextBlock Text="保留策略不会清理锁定版本" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel><CheckBox Grid.Column="1" Style="{DynamicResource GscCheckBox}" Content="锁定" IsChecked="{Binding LockSelectedBackup}" VerticalAlignment="Center"/></Grid>
+                                <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding UpdateBackupMetadataCommand}" Content="保存备注与锁定" Margin="0,16,0,0"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding CompareBackupCommand}" Content="与上一版本比较" Margin="0,8,0,0"/>
                                 <Separator Margin="0,16,0,12"/>
                                 <TextBlock Text="恢复操作" FontWeight="SemiBold"/>
                                 <TextBlock Text="恢复前会创建并锁定当前快照，完成后可校验并撤销。" Style="{DynamicResource GscCaptionStyle}" Margin="0,5,0,0" TextWrapping="Wrap"/>
