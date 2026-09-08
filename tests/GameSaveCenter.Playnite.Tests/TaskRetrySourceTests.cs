@@ -27,6 +27,25 @@ public sealed class TaskRetrySourceTests
         Assert.Contains("TaskRetrySummary", view);
     }
 
+    [Fact]
+    public void BulkActionsCaptureStableIdsAndExplainPartialResults()
+    {
+        var root = FindRepositoryRoot();
+        var taskViewModel = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
+        var mediaViewModel = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.Media.cs"));
+
+        Assert.Contains("RetryBatchCandidate", taskViewModel);
+        Assert.Contains("retryableWithStableId", taskViewModel);
+        Assert.Contains("ToTaskSnapshot()", taskViewModel);
+        Assert.Contains("已捕获 {candidates.Count} 个稳定任务 ID", taskViewModel);
+        Assert.Contains("MediaInboxBatchSelection", mediaViewModel);
+        Assert.Contains("CaptureInboxMediaSelection", mediaViewModel);
+        Assert.Contains("selection.SelectionSummary", mediaViewModel);
+        Assert.Contains("selection.MediaIds", mediaViewModel);
+        Assert.Contains("ReportMediaClassificationResult", mediaViewModel);
+        Assert.Contains("跳过/未返回", mediaViewModel);
+    }
+
     private static string FindRepositoryRoot()
     {
         var directory = new DirectoryInfo(AppContext.BaseDirectory);

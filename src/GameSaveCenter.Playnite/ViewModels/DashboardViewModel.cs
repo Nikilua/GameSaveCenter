@@ -3461,31 +3461,69 @@ namespace GameSaveCenter.Playnite.ViewModels
                    || string.Equals(task.TaskType, "MediaSync", StringComparison.OrdinalIgnoreCase);
         }
 
+        private sealed class RetryBatchCandidate
+        {
+            public RetryBatchCandidate(TaskStatusDto task)
+            {
+                TaskId = task.TaskId;
+                TaskType = task.TaskType;
+                GameId = task.GameId;
+                GameName = task.GameName;
+                ErrorCode = task.ErrorCode;
+                CreatedUtc = task.CreatedUtc;
+                TaskTypeDisplay = task.TaskTypeDisplay;
+            }
+
+            public string TaskId { get; }
+            public string TaskType { get; }
+            public string GameId { get; }
+            public string GameName { get; }
+            public string ErrorCode { get; }
+            public DateTime CreatedUtc { get; }
+            public string TaskTypeDisplay { get; }
+
+            public TaskStatusDto ToTaskSnapshot()
+                => new TaskStatusDto
+                {
+                    TaskId = TaskId,
+                    TaskType = TaskType,
+                    GameId = GameId,
+                    GameName = GameName,
+                    ErrorCode = ErrorCode,
+                    CreatedUtc = CreatedUtc
+                };
+        }
+
         private async Task RetryAllTasksAsync()
         {
             var currentResult = TasksView.Cast<TaskStatusDto>().ToList();
             var retryable = currentResult
                 .Where(CanRetryTask)
                 .ToList();
-            var candidates = retryable
+            var retryableWithStableId = retryable
+                .Where(x => !string.IsNullOrWhiteSpace(x.TaskId))
+                .ToList();
+            var candidates = retryableWithStableId
                 .GroupBy(GetRetryGroupKey, StringComparer.OrdinalIgnoreCase)
                 .Select(group => group.OrderByDescending(x => x.CreatedUtc).First())
+                .Select(x => new RetryBatchCandidate(x))
                 .OrderByDescending(x => x.CreatedUtc)
                 .ToList();
-            var duplicateCount = retryable.Count - candidates.Count;
-            var notEligibleCount = currentResult.Count - retryable.Count;
+            var duplicateCount = retryableWithStableId.Count - candidates.Count;
+            var missingStableIdCount = retryable.Count - retryableWithStableId.Count;
+            var notEligibleCount = currentResult.Count - retryable.Count + missingStableIdCount;
             if (candidates.Count == 0)
             {
                 StatusMessage = currentResult.Count == 0
                     ? "当前结果没有任务。"
-                    : $"当前结果没有可安全重试的任务，已跳过 {notEligibleCount} 项。";
+                    : $"当前结果没有带稳定任务 ID 的可安全重试任务，已跳过 {notEligibleCount} 项。";
                 return;
             }
 
             var preview = string.Join("\n", candidates.Take(8).Select(x =>
                 string.IsNullOrWhiteSpace(x.GameName) ? x.TaskTypeDisplay : $"{x.GameName} · {x.TaskTypeDisplay}"));
             if (candidates.Count > 8) preview += $"\n……以及另外 {candidates.Count - 8} 项";
-            var skipped = $"当前结果 {currentResult.Count} 项：实际计划 {candidates.Count} 项；去重 {duplicateCount} 项；未纳入 {notEligibleCount} 项（状态或任务类型不支持安全重试）。";
+            var skipped = $"当前结果 {currentResult.Count} 项：实际计划 {candidates.Count} 项；去重 {duplicateCount} 项；未纳入 {notEligibleCount} 项（状态/任务类型不支持，或缺少稳定任务 ID）。\n已捕获 {candidates.Count} 个稳定任务 ID；确认后按这批任务快照执行，列表随后变化不会改写计划。";
             if (!await plugin.ConfirmAsync(
                     "批量安全重试",
                     $"{skipped}\n\n将按游戏和任务类型各重试一次。\n\n{preview}",
@@ -3504,7 +3542,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 try
                 {
-                    var results = await RetryTaskCoreAsync(candidate);
+                    var results = await RetryTaskCoreAsync(candidate.ToTaskSnapshot());
                     foreach (var result in results) plugin.ShowTaskNotification(result);
                     var failedResult = results.FirstOrDefault(x => x.State == TaskState.Failed || x.State == TaskState.Cancelled);
                     if (failedResult == null && results.Count > 0)
@@ -3516,7 +3554,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                     failed++;
                     var detail = failedResult?.ErrorMessage;
                     if (string.IsNullOrWhiteSpace(detail)) detail = failedResult?.DetailMessage;
-                    failures.Add($"{candidate.GameName} · {candidate.TaskTypeDisplay}：{(string.IsNullOrWhiteSpace(detail) ? "未完成" : detail)}");
+                    failures.Add($"{candidate.GameName} · {candidate.TaskTypeDisplay}（任务 {candidate.TaskId}）：{(string.IsNullOrWhiteSpace(detail) ? "未完成" : detail)}");
                 }
                 catch (OperationCanceledException)
                 {
@@ -3525,7 +3563,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 catch (Exception ex)
                 {
                     failed++;
-                    failures.Add($"{candidate.GameName} · {candidate.TaskTypeDisplay}：{ex.Message}");
+                    failures.Add($"{candidate.GameName} · {candidate.TaskTypeDisplay}（任务 {candidate.TaskId}）：{ex.Message}");
                 }
             }
 
