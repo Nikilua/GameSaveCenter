@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-09
 
+## 2026-09-09 L30 候选安装包与升级/回退
+
+- 候选公共版本固定为 `0.6.73`。`scripts/package.ps1` 必须从当前源码生成插件、Worker、Core、Contracts 的同源构建身份；本轮身份为 `0.6.73+d6feda6e1d96ed7092a61ab277810f9b7bfafca9`。Worker 发布必须是 `win-x64` self-contained，并验证 `runtimeconfig` 的 `includedFrameworks`。
+- 包内最低必需集合包括 manifest、icon、插件 DLL、Contracts/Core、Worker EXE/DLL、Worker runtimeconfig、hostfxr/hostpolicy/coreclr；`.pext` 与 zip 应保持同字节内容。L30 候选两个包 SHA-256 均为 `0D347768AD6AE08CA05CAED61A133B1B00C33F70078F5AC88AFAD19E722A0303`。
+- 数据库迁移采用幂等增量列/表初始化，必要时在事务内重建 `backup_versions` 并保留数据；没有通用 down-migration。升级前必须复制完整隔离配置/状态库，回退先停宿主、保留失败副本、恢复升级前副本再安装旧包，不能让旧版直接打开未知新 schema。
+- L30 只验证候选包与隔离迁移，不等价真实 Playnite 安装；包未安装，宿主加载/FusionX/DPI/用户主题/视频继续由 L31 验收。
+
 ## 2026-09-09 L28 持续更新分页与选择恢复
 
 - `CloudTransferStateService.GetStatusAsync` 和 `MediaSyncService.GetClassificationHistoryAsync` 的 revision/一致性令牌是 offset 分页的正确性边界：请求期间或请求前令牌变化必须返回 `PageResetRequired`，不能继续拼接旧页。当前触发器覆盖云端队列/重试队列、游戏/媒体云状态以及归类批次/批次项的增删改。
