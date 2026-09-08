@@ -48,6 +48,21 @@ function Read-AssemblyInformationalVersion {
                     # Load the matching immutable dependency first. Otherwise
                     # PowerShell may bind Metadata against a different SDK
                     # copy and fail while initializing its generic tables.
+                    $unsafePath = Join-Path (Split-Path -Parent $candidate.Metadata) 'System.Runtime.CompilerServices.Unsafe.dll'
+                    if (Test-Path -LiteralPath $unsafePath) {
+                        # The net472 metadata assembly references an older
+                        # Unsafe assembly identity. Redirect that dependency
+                        # to the matching SDK copy for this short-lived pack
+                        # process; this does not touch the target DLLs.
+                        $unsafeResolver = {
+                            param($sender, $args)
+                            if ($args.Name -like 'System.Runtime.CompilerServices.Unsafe,*') {
+                                return [System.Reflection.Assembly]::LoadFrom($unsafePath)
+                            }
+                            return $null
+                        }
+                        [AppDomain]::CurrentDomain.add_AssemblyResolve($unsafeResolver)
+                    }
                     if (Test-Path -LiteralPath $candidate.Immutable) {
                         Add-Type -Path $candidate.Immutable -ErrorAction Stop
                     }
