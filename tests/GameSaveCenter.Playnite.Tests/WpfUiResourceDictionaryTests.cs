@@ -2127,11 +2127,17 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"SaveCompareRetentionScrollViewer\"", saveText);
         Assert.Contains("x:Name=\"SaveCompareMainScrollViewer\"", saveText);
         Assert.Contains("{Binding LastBackupDiff.Added.Count", saveText);
+        Assert.Contains("{Binding LastBackupDiff.UnchangedCount", saveText);
+        Assert.Contains("{Binding LastBackupDiff.TotalBytesDeltaDisplay", saveText);
+        Assert.Contains("{Binding DiffComparedSummary", saveText);
         Assert.Contains("{Binding LastRetentionPreview.KeepBackupIds.Count", saveText);
         Assert.Contains("Command=\"{Binding CompareBackupCommand}\"", saveText);
         Assert.Contains("Command=\"{Binding PreviewRetentionCommand}\"", saveText);
         Assert.Contains("TargetNullValue=等待比较, FallbackValue=等待比较", saveText);
         Assert.Contains("Text=\"版本比较\" Style=\"{DynamicResource GscSectionTitleStyle}\" VerticalAlignment=\"Center\"", saveText);
+        Assert.Contains("SelectedBackup.SourceDisplay", saveText);
+        Assert.Contains("SelectedBackup.OperatingSystemDisplay", saveText);
+        Assert.Contains("SelectedBackup.RestoreReadinessCheckedDisplay", saveText);
         Assert.Contains("选择两个版本后，比较结果会显示在这里。", saveText);
         Assert.Contains("x:Name=\"SaveComparePageScrollViewer\"", saveText);
         Assert.Contains("MinWidth=\"880\"", saveText);
@@ -2143,6 +2149,15 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("SaveCompareMainScrollViewer.MaxHeight = double.PositiveInfinity;", saveCode);
         Assert.DoesNotContain("var stackCompare =", saveCode);
         Assert.DoesNotContain("MaxHeight=\"260\"", saveText);
+
+        var viewModelPath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs");
+        var viewModelText = File.ReadAllText(viewModelPath);
+        Assert.Contains("var comparedSummary =", viewModelText);
+        Assert.Contains("var backupId = backup.BackupId;", viewModelText);
+        Assert.Contains("PlayniteId = gameId", viewModelText);
+        Assert.Contains("BackupId = backupId", viewModelText);
+        Assert.Contains("var currentIndex = Backups.IndexOf(SelectedBackup);", viewModelText);
+        Assert.Contains("ClearBackupComparison();", viewModelText);
     }
 
     [Fact]

@@ -209,12 +209,14 @@
                                 <Separator Margin="0,14,0,12"/>
                                 <Grid>
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="82"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/></Grid.RowDefinitions>
+                                    <Grid.RowDefinitions><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/></Grid.RowDefinitions>
                                     <TextBlock Text="创建时间" Style="{DynamicResource GscCaptionStyle}"/><TextBlock Grid.Column="1" Text="{Binding SelectedBackup.CreatedLocal, Mode=OneWay, StringFormat={}{0:MM-dd HH:mm}}" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedBackup.CreatedLocal, Mode=OneWay, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"/>
                                     <TextBlock Grid.Row="1" Text="触发方式" Style="{DynamicResource GscCaptionStyle}" Margin="0,9,0,0"/><TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedBackup.BackupTypeDisplay, Mode=OneWay}" Margin="0,9,0,0"/>
                                     <TextBlock Grid.Row="2" Text="文件数量" Style="{DynamicResource GscCaptionStyle}" Margin="0,9,0,0"/><TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SelectedBackup.FileCount, Mode=OneWay}" Margin="0,9,0,0"/>
                                     <TextBlock Grid.Row="3" Text="大小" Style="{DynamicResource GscCaptionStyle}" Margin="0,9,0,0"/><TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding SelectedBackup.SizeDisplay, Mode=OneWay}" Margin="0,9,0,0"/>
-                                    <TextBlock Grid.Row="4" Text="设备" Style="{DynamicResource GscCaptionStyle}" Margin="0,9,0,0"/><TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding SelectedBackup.SourceDevice, Mode=OneWay}" TextTrimming="CharacterEllipsis" Margin="0,9,0,0" ToolTip="{Binding SelectedBackup.SourceDevice}"/>
+                                    <TextBlock Grid.Row="4" Text="设备" Style="{DynamicResource GscCaptionStyle}" Margin="0,9,0,0"/><TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding SelectedBackup.SourceDisplay, Mode=OneWay}" TextTrimming="CharacterEllipsis" Margin="0,9,0,0" ToolTip="{Binding SelectedBackup.SourceDisplay}"/>
+                                    <TextBlock Grid.Row="5" Text="系统" Style="{DynamicResource GscCaptionStyle}" Margin="0,9,0,0"/><TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding SelectedBackup.OperatingSystemDisplay, Mode=OneWay}" TextTrimming="CharacterEllipsis" Margin="0,9,0,0" ToolTip="{Binding SelectedBackup.OperatingSystemDisplay}"/>
+                                    <TextBlock Grid.Row="6" Text="锁定" Style="{DynamicResource GscCaptionStyle}" Margin="0,9,0,0"/><TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding SelectedBackup.LockStateDisplay, Mode=OneWay}" Margin="0,9,0,0"/>
                                 </Grid>
                                 <Separator Margin="0,16,0,12"/>
                                 <TextBlock Text="恢复可用性" FontWeight="SemiBold"/>
@@ -222,7 +224,8 @@
                                 <TextBlock Text="{Binding SelectedBackup.RestoreReadinessStatusDisplay, Mode=OneWay}" Foreground="{DynamicResource GscAccentBrush}" Margin="0,5,0,0"/>
                                 <TextBlock Text="{Binding SelectedBackup.RestoreReadinessSummaryDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                                 <TextBlock Text="{Binding SelectedBackup.RestoreReadinessMetricsDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
-                                <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding ValidateRestoreReadinessCommand}" Content="验证可恢复性" Margin="0,10,0,0"/>
+                                <TextBlock Text="{Binding SelectedBackup.RestoreReadinessCheckedDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding ValidateRestoreReadinessCommand}" Content="验证可恢复性" Margin="0,10,0,0" AutomationProperties.Name="验证所选版本的可恢复性"/>
                                 <Separator Margin="0,16,0,12"/>
                                 <TextBlock Text="版本备注" Style="{DynamicResource GscCaptionStyle}" Margin="0,0,0,6"/>
                                 <TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding BackupComment, UpdateSourceTrigger=PropertyChanged}" MinHeight="64" AcceptsReturn="True" TextWrapping="Wrap"/>
@@ -394,7 +397,7 @@
                         <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                         <Border Grid.Column="0" Style="{DynamicResource GscReadingCardStyle}" Padding="18,14">
                             <Grid>
-                                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                                 <Grid>
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                     <Grid MinWidth="0">
@@ -404,10 +407,11 @@
                                             <TextBlock Text="{Binding LastBackupDiff.ComparisonQualityDisplay, TargetNullValue=等待比较, FallbackValue=等待比较}" Foreground="{DynamicResource GscInfoBrush}" FontSize="10.5" TextTrimming="CharacterEllipsis" ToolTip="{Binding LastBackupDiff.ComparisonQualityDisplay, TargetNullValue=等待比较, FallbackValue=等待比较}" VerticalAlignment="Center"/>
                                         </Border>
                                     </Grid>
-                                    <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding CompareBackupCommand}" Content="比较所选版本" HorizontalAlignment="Right" Margin="12,0,0,0"/>
+                                    <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding CompareBackupCommand}" Content="比较当前与上一版本" HorizontalAlignment="Right" Margin="12,0,0,0" AutomationProperties.Name="比较当前选中版本与上一版本"/>
                                 </Grid>
-                                <Grid Grid.Row="1" Margin="0,12,0,0">
-                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="1" Text="{Binding DiffComparedSummary, TargetNullValue=尚未选择可比较的版本。, FallbackValue=尚未选择可比较的版本。}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,6,0,0"/>
+                                <Grid Grid.Row="2" Margin="0,12,0,0">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                     <StackPanel>
                                         <TextBlock Text="{Binding LastBackupDiff.Added.Count, TargetNullValue=—}" FontSize="24" FontWeight="SemiBold" Foreground="{DynamicResource GscSuccessBrush}"/>
                                         <TextBlock Text="新增文件" Style="{DynamicResource GscCaptionStyle}"/>
@@ -420,19 +424,30 @@
                                         <TextBlock Text="{Binding LastBackupDiff.Removed.Count, TargetNullValue=—}" FontSize="24" FontWeight="SemiBold" Foreground="{DynamicResource GscErrorBrush}"/>
                                         <TextBlock Text="删除文件" Style="{DynamicResource GscCaptionStyle}"/>
                                     </StackPanel>
+                                    <StackPanel Grid.Column="3">
+                                        <TextBlock Text="{Binding LastBackupDiff.UnchangedCount, TargetNullValue=—}" FontSize="24" FontWeight="SemiBold"/>
+                                        <TextBlock Text="未变化" Style="{DynamicResource GscCaptionStyle}"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="4">
+                                        <TextBlock Text="{Binding LastBackupDiff.TotalBytesDeltaDisplay, TargetNullValue=—}" FontSize="18" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding LastBackupDiff.TotalBytesDeltaDisplay, TargetNullValue=—}"/>
+                                        <TextBlock Text="大小变化" Style="{DynamicResource GscCaptionStyle}"/>
+                                    </StackPanel>
                                 </Grid>
-                                <Border Grid.Row="2" Style="{DynamicResource GscRedesignSubCard}" Padding="12" Margin="0,12,0,0">
+                                <Border Grid.Row="3" Style="{DynamicResource GscRedesignSubCard}" Padding="12" Margin="0,12,0,0">
                                     <ScrollViewer x:Name="SaveCompareMainScrollViewer"
                                                   Style="{DynamicResource GscInspectorScrollViewer}"
                                                   VerticalScrollBarVisibility="Auto"
                                                   HorizontalScrollBarVisibility="Disabled">
                                         <StackPanel>
+                                            <TextBlock Text="新增文件" Style="{DynamicResource GscCaptionStyle}" FontWeight="SemiBold"/>
                                             <ItemsControl ItemsSource="{Binding LastBackupDiff.Added}">
                                                 <ItemsControl.ItemTemplate><DataTemplate><TextBlock Text="{Binding}" FontFamily="{DynamicResource GscCodeFontFamily}" FontSize="11" Foreground="{DynamicResource GscSuccessBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding}" Margin="0,0,0,5"/></DataTemplate></ItemsControl.ItemTemplate>
                                             </ItemsControl>
+                                            <TextBlock Text="内容变化" Style="{DynamicResource GscCaptionStyle}" FontWeight="SemiBold" Margin="0,8,0,0"/>
                                             <ItemsControl ItemsSource="{Binding LastBackupDiff.Modified}" Margin="0,3,0,0">
                                                 <ItemsControl.ItemTemplate><DataTemplate><TextBlock Text="{Binding}" FontFamily="{DynamicResource GscCodeFontFamily}" FontSize="11" TextTrimming="CharacterEllipsis" ToolTip="{Binding}" Margin="0,0,0,5"/></DataTemplate></ItemsControl.ItemTemplate>
                                             </ItemsControl>
+                                            <TextBlock Text="删除文件" Style="{DynamicResource GscCaptionStyle}" FontWeight="SemiBold" Margin="0,8,0,0"/>
                                             <ItemsControl ItemsSource="{Binding LastBackupDiff.Removed}" Margin="0,3,0,0">
                                                 <ItemsControl.ItemTemplate><DataTemplate><TextBlock Text="{Binding}" FontFamily="{DynamicResource GscCodeFontFamily}" FontSize="11" Foreground="{DynamicResource GscErrorBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding}" Margin="0,0,0,5"/></DataTemplate></ItemsControl.ItemTemplate>
                                             </ItemsControl>

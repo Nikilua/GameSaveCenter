@@ -113,11 +113,16 @@ namespace GameSaveCenter.Contracts
         public string SizeDisplay => FormatBytes(TotalBytes);
         public string BackupTypeDisplay => IsPreRestore ? "恢复前快照" : "普通备份";
         public string LockStateDisplay => IsLocked ? "已锁定" : "未锁定";
+        public string SourceDisplay => string.IsNullOrWhiteSpace(SourceDevice) ? "未知设备" : SourceDevice;
+        public string OperatingSystemDisplay => string.IsNullOrWhiteSpace(OperatingSystem) ? "未知系统" : OperatingSystem;
         public string RestoreReadinessStatusDisplay => RestoreReadiness?.StatusDisplay ?? "未验证";
         public string RestoreReadinessSummaryDisplay => RestoreReadiness?.Summary ?? "尚未验证该版本的可恢复性。";
         public string RestoreReadinessMetricsDisplay => RestoreReadiness == null
             ? string.Empty
             : $"文件 {RestoreReadiness.ActualFileCount}/{RestoreReadiness.ExpectedFileCount} · 大小 {FormatBytes(RestoreReadiness.ActualTotalSize)}/{FormatBytes(RestoreReadiness.ExpectedTotalSize)}";
+        public string RestoreReadinessCheckedDisplay => RestoreReadiness?.CheckedUtc is DateTime checkedUtc
+            ? $"检查于 {checkedUtc.ToLocalTime():yyyy-MM-dd HH:mm:ss}"
+            : "尚未检查";
 
         private static string FormatBytes(long bytes)
         {
@@ -173,7 +178,20 @@ namespace GameSaveCenter.Contracts
         public string ComparisonQuality { get; set; } = "Estimated";
         public string ComparisonQualityDisplay => string.Equals(ComparisonQuality, "Exact", StringComparison.OrdinalIgnoreCase) ? "精确比较" :
             string.Equals(ComparisonQuality, "InvalidManifest", StringComparison.OrdinalIgnoreCase) ? "Manifest 无效" : "估算比较（缺少完整 Hash）";
+        public string TotalBytesDeltaDisplay => TotalBytesDelta == 0
+            ? "0 B"
+            : TotalBytesDelta > 0
+                ? $"+{FormatBytes(TotalBytesDelta)}"
+                : $"-{FormatBytes(Math.Abs(TotalBytesDelta))}";
         public string Summary { get; set; } = string.Empty;
+
+        private static string FormatBytes(long bytes)
+        {
+            if (bytes < 1024) return $"{bytes} B";
+            if (bytes < 1024L * 1024) return $"{bytes / 1024d:0.##} KiB";
+            if (bytes < 1024L * 1024 * 1024) return $"{bytes / 1024d / 1024d:0.##} MiB";
+            return $"{bytes / 1024d / 1024d / 1024d:0.##} GiB";
+        }
     }
 
     /// <summary>Retention recommendation. Deletion is never implied by this DTO.</summary>

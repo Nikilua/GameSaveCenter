@@ -574,15 +574,18 @@ public sealed class FakeDashboardData
         ProcessMappingTargetGame = Games[0];
         LastBackupDiff = new BackupDiffDto
         {
-            LeftBackupId = Backups[0].BackupId,
-            RightBackupId = Backups[1].BackupId,
+            LeftBackupId = Backups[1].BackupId,
+            RightBackupId = Backups[0].BackupId,
             Added = new System.Collections.Generic.List<string> { "Data/Save.bin" },
             Removed = new System.Collections.Generic.List<string> { "Data/OldSave.bin" },
             Modified = new System.Collections.Generic.List<string> { "Settings.ini" },
             UnchangedCount = 180,
+            TotalBytesDelta = 2_400_000,
+            ComparisonQuality = "Exact",
             Summary = "新备份新增 1 个文件、修改 1 个文件、删除 1 个文件。"
         };
         DiffSummary = "差异摘要：新备份较旧备份有 1 个新增、1 个修改、1 个删除。";
+        DiffComparedSummary = $"比较范围：{Backups[1].CreatedLocal:yyyy-MM-dd HH:mm}（上一版本） → {Backups[0].CreatedLocal:yyyy-MM-dd HH:mm}（当前版本）";
 
         MediaView = CollectionViewSource.GetDefaultView(Media);
         TasksView = CollectionViewSource.GetDefaultView(Tasks);
@@ -873,6 +876,7 @@ public sealed class FakeDashboardData
     public string DeviceDecisionComment { get; set; } = string.Empty;
     public string ProcessMappingExecutable { get; set; } = "skse64.exe";
     public string DiffSummary { get; set; } = string.Empty;
+    public string DiffComparedSummary { get; set; } = string.Empty;
     public bool LockSelectedBackup { get; set; }
     public string BackupComment { get; set; } = string.Empty;
     public string TrainerSearchText { get; set; } = string.Empty;

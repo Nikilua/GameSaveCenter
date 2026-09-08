@@ -41,4 +41,28 @@ public sealed class UiDisplayMappingTests
         Assert.Equal(expected, batch.StateDisplay);
         Assert.Equal(expected, item.StateDisplay);
     }
+
+    [Fact]
+    public void BackupVersionDoesNotInventOriginOrReadinessFacts()
+    {
+        var backup = new BackupVersionDto
+        {
+            SourceDevice = string.Empty,
+            OperatingSystem = string.Empty
+        };
+
+        Assert.Equal("未知设备", backup.SourceDisplay);
+        Assert.Equal("未知系统", backup.OperatingSystemDisplay);
+        Assert.Equal("未验证", backup.RestoreReadinessStatusDisplay);
+        Assert.Equal("尚未检查", backup.RestoreReadinessCheckedDisplay);
+    }
+
+    [Theory]
+    [InlineData(2_400_000, "+2.29 MiB")]
+    [InlineData(-2_400_000, "-2.29 MiB")]
+    [InlineData(0, "0 B")]
+    public void BackupDiffShowsSignedSizeDelta(long delta, string expected)
+    {
+        Assert.Equal(expected, new BackupDiffDto { TotalBytesDelta = delta }.TotalBytesDeltaDisplay);
+    }
 }

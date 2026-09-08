@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-09
 
+## 2026-09-09 L19 存档版本识别、比较与恢复信息
+
+- `BackupVersionDto` 的来源、系统和恢复检查时间必须使用显式展示字段；空值显示未知/尚未检查，不能从创建时间、文件数量或锁定状态推导“健康”或“可恢复”。`BackupDiffDto` 的大小变化使用带符号的人类可读值，比较质量继续沿用 Worker 的 Exact/Estimated/InvalidManifest 事实。
+- `DashboardViewModel.SelectedBackup` 切换到不同稳定 ID 时清掉旧 `LastBackupDiff`；比较响应提交前重新确认当前游戏、选中版本和上一版本 ID 都未变。比较命令的现有语义是“当前选中版本 vs 上一版本”，UI 必须这样表述，不要暗示任意两版本选择。
+- 恢复确认前先复制游戏/版本稳定 ID、创建时间、来源、系统、锁定和就绪摘要；确认后 `RestoreExecute` 只能使用这些快照值。不得因为未知、警告或失败状态在 UI 层猜测健康或替代 Worker 安全阻断；PreRestore 快照与撤销请求保持原协议。
+- L19 验证：Release 0 警告/错误；Core `76/76`、Worker `303/304`（1 跳过）、Playnite `404/466`（62 跳过）；源校验、XAML `19/19`、WPF 静态审查 `0/21/172`、差异检查通过。RenderHarness 的 Save 截图与多尺寸/双主题探针未报本轮新增问题；全量 render-qa 的 Media 小视口/预览列表和 Sidebar rapid-toggle 仍是已知失败。真实 Playnite/FusionX、DPI、不同恢复就绪状态和录屏必须继续标记为宿主待验收。
+
 ## 2026-09-09 L18 批量动作提交前摘要
 
 - 媒体批量命令必须在命令入口捕获 `MediaId`，先去重并统计原始选择、重复项、无稳定 ID 项，再将捕获的 ID 列表交给确认后的 IPC；不得在确认返回后重新读取 `SelectedItems`。目标游戏 ID/名称、归类预览 `BatchId` 和高置信媒体 ID 同样要在确认前保存。

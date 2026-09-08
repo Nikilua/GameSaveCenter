@@ -139,6 +139,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private RetentionSimulationPreviewDto retentionSimulation = new RetentionSimulationPreviewDto { Summary = "尚未生成全局保留预览。" };
         private LocalMirrorStatusDto localMirrorStatus = new LocalMirrorStatusDto { Message = "尚未检查本地镜像。" };
         private string diffSummary = "选择两个版本后，比较结果会显示在这里。";
+        private string diffComparedSummary = "尚未选择可比较的版本。";
         private string retentionSummary = string.Empty;
         private BackupPolicyTemplateDto selectedPolicyTemplate = null!;
         private BackupPolicyTemplateDto policyTemplateDraft = new BackupPolicyTemplateDto();
@@ -940,6 +941,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                     selectedBackup = value!;
                     OnPropertyChanged(nameof(SelectedBackup));
                 }
+                if (!sameBackup)
+                    ClearBackupComparison();
                 SyncBackupEditor(value, sameBackup);
                 RaiseCommandStates();
             }
@@ -1156,6 +1159,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
         }
         public string DiffSummary { get => diffSummary; private set => SetValue(ref diffSummary, value); }
+        public string DiffComparedSummary { get => diffComparedSummary; private set => SetValue(ref diffComparedSummary, value); }
         public string RetentionSummary { get => retentionSummary; private set => SetValue(ref retentionSummary, value); }
         public BackupDiffDto? LastBackupDiff { get => lastBackupDiff; private set => SetValue(ref lastBackupDiff, value); }
         public RetentionPreviewDto? LastRetentionPreview { get => lastRetentionPreview; private set => SetValue(ref lastRetentionPreview, value); }
@@ -3377,16 +3381,38 @@ namespace GameSaveCenter.Playnite.ViewModels
         private async Task CompareBackupAsync()
         {
             var index = Backups.IndexOf(SelectedBackup);
-            if (index < 0 || index + 1 >= Backups.Count) { DiffSummary = "没有可比较的上一个版本。"; return; }
+            if (index < 0 || index + 1 >= Backups.Count)
+            {
+                ClearBackupComparison();
+                DiffSummary = "没有可比较的上一个版本。";
+                DiffComparedSummary = "当前版本没有可比较的上一个版本。";
+                return;
+            }
+
             var gameId = SelectedGame?.PlayniteId ?? throw new InvalidOperationException("请先选择游戏。");
-            var leftBackupId = Backups[index + 1].BackupId;
-            var rightBackupId = SelectedBackup.BackupId;
+            var leftBackup = Backups[index + 1];
+            var rightBackup = SelectedBackup;
+            var leftBackupId = leftBackup.BackupId;
+            var rightBackupId = rightBackup.BackupId;
+            var comparedSummary = $"比较范围：{leftBackup.CreatedLocal:yyyy-MM-dd HH:mm}（上一版本） → {rightBackup.CreatedLocal:yyyy-MM-dd HH:mm}（当前版本）";
             var diff = await plugin.RequestAsync<BackupDiffDto>(MessageTypes.CompareBackups, new BackupCompareRequestDto { PlayniteId = gameId, LeftBackupId = leftBackupId, RightBackupId = rightBackupId });
+            var currentIndex = Backups.IndexOf(SelectedBackup);
             if (CurrentWorkspace != WorkspaceKind.Saves
                 || !IsSelectedGame(gameId)
-                || !string.Equals(SelectedBackup?.BackupId, rightBackupId, StringComparison.OrdinalIgnoreCase)) return;
+                || currentIndex < 0
+                || currentIndex + 1 >= Backups.Count
+                || !string.Equals(SelectedBackup?.BackupId, rightBackupId, StringComparison.OrdinalIgnoreCase)
+                || !string.Equals(Backups[currentIndex + 1].BackupId, leftBackupId, StringComparison.OrdinalIgnoreCase)) return;
             LastBackupDiff = diff;
             DiffSummary = diff.Summary;
+            DiffComparedSummary = comparedSummary;
+        }
+
+        private void ClearBackupComparison()
+        {
+            LastBackupDiff = null;
+            DiffSummary = "选择两个版本后，比较结果会显示在这里。";
+            DiffComparedSummary = "尚未选择可比较的版本。";
         }
 
         private async Task PreviewRetentionAsync()
@@ -3414,15 +3440,28 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task RestoreAsync()
         {
+            var game = SelectedGame ?? throw new InvalidOperationException("请先选择游戏。");
+            var backup = SelectedBackup ?? throw new InvalidOperationException("请先选择备份版本。");
+            var gameId = game.PlayniteId;
+            var gameName = game.Name;
+            var backupId = backup.BackupId;
+            var backupCreated = backup.CreatedLocal.ToString("yyyy-MM-dd HH:mm:ss");
+            var backupType = backup.BackupTypeDisplay;
+            var backupSource = backup.SourceDisplay;
+            var backupOperatingSystem = backup.OperatingSystemDisplay;
+            var backupLockState = backup.LockStateDisplay;
+            var readinessStatus = backup.RestoreReadinessStatusDisplay;
+            var readinessSummary = backup.RestoreReadinessSummaryDisplay;
+            var confirmation = $"游戏：{gameName}\n版本：{backupCreated} · {backupType}\n来源：{backupSource} · {backupOperatingSystem}\n状态：{backupLockState} · 可恢复性：{readinessStatus}\n{readinessSummary}\n\n恢复前会先创建并锁定当前存档的 PreRestore 快照。请确认游戏、启动器和 MOD 管理器均已关闭。\n\n继续恢复选中的历史版本？";
             if (!await plugin.ConfirmAsync(
                     "GameSaveCenter 安全恢复",
-                    "恢复前会先创建并锁定当前存档的 PreRestore 快照。请确认游戏、启动器和 MOD 管理器均已关闭。\n\n继续恢复选中的历史版本？",
+                    confirmation,
                     "开始安全恢复",
                     "取消")) return;
             var task = await plugin.RequestAsync<TaskStatusDto>(MessageTypes.RestoreExecute, new RestoreRequestDto
             {
-                PlayniteId = SelectedGame.PlayniteId,
-                BackupId = SelectedBackup.BackupId,
+                PlayniteId = gameId,
+                BackupId = backupId,
                 ConfirmedCurrentSnapshot = true,
                 ConfirmedGameClosed = true,
                 UserComment = "Playnite restore wizard"
@@ -3433,12 +3472,15 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task UndoRestoreAsync()
         {
+            var game = SelectedGame ?? throw new InvalidOperationException("请先选择游戏。");
+            var gameId = game.PlayniteId;
+            var gameName = game.Name;
             if (!await plugin.ConfirmAsync(
                     "撤销恢复",
-                    "撤销将恢复最近的 PreRestore 快照，并且仍会先保存当前状态。确认继续？",
+                    $"游戏：{gameName}\n撤销将恢复最近的 PreRestore 快照，并且仍会先保存当前状态。确认继续？",
                     "撤销恢复",
                     "取消")) return;
-            var task = await plugin.RequestAsync<TaskStatusDto>(MessageTypes.UndoRestore, new GameQueryDto { PlayniteId = SelectedGame.PlayniteId }, TimeSpan.FromMinutes(30));
+            var task = await plugin.RequestAsync<TaskStatusDto>(MessageTypes.UndoRestore, new GameQueryDto { PlayniteId = gameId }, TimeSpan.FromMinutes(30));
             await RefreshCoreAsync(false);
             NotifyTaskResults(new[] { task });
         }
