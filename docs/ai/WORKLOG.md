@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-08 L07 键盘、焦点与可访问名称
+
+- 先盘点紧凑详情入口：媒体当前详情/收件箱/批次历史、任务、存档版本/候选、维护诊断/进程/设备/云端、工具页均由页面 code-behind 控制展开状态；原实现多数只改可见性，不定义 Esc 或关闭后的焦点归属。
+- 修复为每个真实 inspector ScrollViewer 接入 `PreviewKeyDown`，打开后用 `Focus()`/`Keyboard.Focus()` 进入 inspector，Esc 关闭后把焦点送回可见入口；维护页宽屏常驻 inspector 只有在紧凑状态实际打开时才响应 Esc。未改表格集合、虚拟化、布局尺寸或业务命令。
+- 明确 inspector 不进入 Tab 顺序，紧凑按钮继续保留 `AutomationProperties.Name`。媒体批次历史关闭回到原“批次历史”按钮；任务页详情打开时入口按钮隐藏，Esc 后再恢复并获焦。
+- 新增 `KeyboardFocusSourceTests`：STA 实例化真实 `TaskCenterView` 检查 inspector 可获焦且不在 Tab 序列；源契约覆盖媒体/任务/存档/维护/工具五页事件接线、Esc、焦点和名称。
+- 验证：`dotnet test ...Playnite.Tests.csproj -c Release --no-restore -m:1 -nodeReuse:false -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false` 为 `394 通过 / 62 跳过 / 0 失败`；插件 Release 构建 0 警告/0 错误；`validate-source.py`、`check-xaml.ps1`、WPF 静态检查和 `git diff --check` 通过。没有真实 Playnite/FusionX 键盘录屏，交接保持“宿主待验收”。
+
 ## 2026-09-08 L06 目的导航与返回上下文
 
 - 先复核已有入口：维护动作通过真实 `TransferKey` 分页恢复已经成立；缺口在诊断存档入口找不到目标时会沿用当前游戏，以及失败任务入口把目标游戏名写进用户搜索并造成筛选串扰。

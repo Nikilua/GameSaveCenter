@@ -94,6 +94,7 @@ namespace GameSaveCenter.Playnite.Views
             ApplyResponsiveLayout(
                 responsiveWidth > 0 ? responsiveWidth : ActualWidth,
                 responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+            FocusElement(diagnosticsInspectorOpen ? MaintenanceDiagnosticsInspector : MaintenanceDiagnosticsCompactDetailsButton);
         }
 
         private void OnMaintenanceProcessSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -110,6 +111,7 @@ namespace GameSaveCenter.Playnite.Views
             ApplyResponsiveLayout(
                 responsiveWidth > 0 ? responsiveWidth : ActualWidth,
                 responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+            FocusElement(processInspectorOpen ? MaintenanceProcessInspectorScrollViewer : MaintenanceProcessCompactDetailsButton);
         }
 
         private void OnCompactInspectorPreviewKeyDown(object sender, KeyEventArgs e)
@@ -117,10 +119,35 @@ namespace GameSaveCenter.Playnite.Views
             if (e.Key != Key.Escape)
                 return;
 
+            UIElement? returnFocus;
             if (ReferenceEquals(sender, MaintenanceDiagnosticsInspector))
+            {
+                if (!diagnosticsInspectorOpen)
+                    return;
                 diagnosticsInspectorOpen = false;
+                returnFocus = MaintenanceDiagnosticsCompactDetailsButton;
+            }
             else if (ReferenceEquals(sender, MaintenanceProcessInspectorScrollViewer))
+            {
+                if (!processInspectorOpen)
+                    return;
                 processInspectorOpen = false;
+                returnFocus = MaintenanceProcessCompactDetailsButton;
+            }
+            else if (ReferenceEquals(sender, MaintenanceDeviceInspectorScrollViewer))
+            {
+                if (!deviceInspectorOpen)
+                    return;
+                deviceInspectorOpen = false;
+                returnFocus = MaintenanceDeviceCompactDetailsButton;
+            }
+            else if (ReferenceEquals(sender, CloudTransferInspector))
+            {
+                if (!cloudTransferInspectorOpen)
+                    return;
+                cloudTransferInspectorOpen = false;
+                returnFocus = CloudTransferCompactDetailsButton;
+            }
             else
                 return;
 
@@ -128,6 +155,7 @@ namespace GameSaveCenter.Playnite.Views
             ApplyResponsiveLayout(
                 responsiveWidth > 0 ? responsiveWidth : ActualWidth,
                 responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+            FocusElement(returnFocus);
         }
 
         private void OnMaintenanceDeviceCompactDetailsClick(object sender, RoutedEventArgs e)
@@ -137,6 +165,7 @@ namespace GameSaveCenter.Playnite.Views
             ApplyResponsiveLayout(
                 responsiveWidth > 0 ? responsiveWidth : ActualWidth,
                 responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+            FocusElement(deviceInspectorOpen ? MaintenanceDeviceInspectorScrollViewer : MaintenanceDeviceCompactDetailsButton);
         }
 
         private void OnMaintenanceTabChanged(object sender, SelectionChangedEventArgs e)
@@ -173,6 +202,16 @@ namespace GameSaveCenter.Playnite.Views
             ApplyResponsiveLayout(
                 responsiveWidth > 0 ? responsiveWidth : ActualWidth,
                 responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+            FocusElement(cloudTransferInspectorOpen ? CloudTransferInspector : CloudTransferCompactDetailsButton);
+        }
+
+        private static void FocusElement(UIElement element)
+        {
+            if (!element.IsVisible || !element.IsEnabled)
+                return;
+
+            element.Focus();
+            Keyboard.Focus(element);
         }
 
         public UniformGrid DiagnosticHealthPanelElement => DiagnosticHealthPanel;

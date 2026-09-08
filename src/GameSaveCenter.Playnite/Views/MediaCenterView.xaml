@@ -290,7 +290,7 @@
                         </Grid>
                         </Grid>
                     </Border>
-                    <ScrollViewer x:Name="MediaInboxInspectorScrollViewer" Grid.Column="2" Grid.Row="0" Style="{DynamicResource GscInspectorScrollViewer}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <ScrollViewer x:Name="MediaInboxInspectorScrollViewer" Grid.Column="2" Grid.Row="0" Style="{DynamicResource GscInspectorScrollViewer}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Focusable="True" KeyboardNavigation.IsTabStop="False" PreviewKeyDown="OnMediaInboxInspectorPreviewKeyDown">
                         <Border x:Name="MediaInboxInspectorFrame" Style="{DynamicResource GscReadingCardStyle}" Padding="14">
                             <StackPanel>
                                 <TextBlock Text="媒体详情" Style="{DynamicResource GscSectionTitleStyle}"/>
@@ -578,7 +578,7 @@
                         </Grid>
                     </Border>
                     <Border x:Name="MediaInspectorFrame" Grid.Row="0" Grid.Column="2" Background="Transparent" BorderThickness="0" ClipToBounds="True" Padding="0">
-                    <ScrollViewer x:Name="MediaInspectorScrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0">
+                    <ScrollViewer x:Name="MediaInspectorScrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0" Focusable="True" KeyboardNavigation.IsTabStop="False" PreviewKeyDown="OnMediaInspectorPreviewKeyDown">
                         <ScrollViewer.Style>
                             <Style TargetType="ScrollViewer" BasedOn="{StaticResource GscInspectorScrollViewer}">
                                 <Setter Property="Visibility" Value="Visible"/>

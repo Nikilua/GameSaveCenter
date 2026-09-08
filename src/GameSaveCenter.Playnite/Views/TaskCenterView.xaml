@@ -338,7 +338,7 @@
                 </Border>
             </Grid>
         </Border>
-        <ScrollViewer x:Name="TaskDetailScrollViewer" Grid.Row="3" Grid.Column="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0">
+        <ScrollViewer x:Name="TaskDetailScrollViewer" Grid.Row="3" Grid.Column="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0" Focusable="True" KeyboardNavigation.IsTabStop="False" PreviewKeyDown="OnTaskDetailPreviewKeyDown">
             <ScrollViewer.Style>
                 <Style TargetType="ScrollViewer" BasedOn="{StaticResource GscInspectorScrollViewer}">
                     <Setter Property="Visibility" Value="Visible"/>

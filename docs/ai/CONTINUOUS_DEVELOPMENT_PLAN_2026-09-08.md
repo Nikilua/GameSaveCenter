@@ -109,9 +109,12 @@
 
 ### L07 键盘、焦点与可访问名称
 
+- 状态：已完成（代码与离线 STA/契约测试；真实 Playnite/FusionX 键盘验收待宿主）。
 - 目标：核心路径不用鼠标也能完成，详情打开/关闭后焦点有明确归属。
-- 文件：共享 Button/Tab/Expander 模板、媒体/任务/维护 View、对应 STA/UI Automation 测试。检查 Tab 顺序、Enter/Space、Esc、图标按钮名称与禁用原因。
-- 验收：搜索→选中→打开详情→关闭→回原项；关闭详情不把焦点留在不可见控件；没有键盘陷阱；状态不只靠颜色。复用默认 WPF 导航，不随意劫持宿主快捷键。
+- 文件：媒体、任务、存档、维护、工具 View 的紧凑 inspector 事件接线与对应 `KeyboardFocusSourceTests`；共享 Button/Tab/Expander 模板没有新增全局快捷键劫持。
+- 实现：各 inspector ScrollViewer 显式可获焦但不进入 Tab 顺序；打开详情后焦点进入 inspector，Esc 只关闭当前实际打开的紧凑抽屉并恢复原入口。宽屏常驻详情不响应紧凑关闭逻辑；批次历史回到自己的历史按钮。
+- 验证：STA 实例检查实际 `TaskCenterView` inspector 的 `Focusable`/Tab 状态与自动化名称；源契约覆盖五页 PreviewKeyDown、Esc、Keyboard.Focus 和入口名称。Playnite 全量 `394/456`（62 跳过），Release 构建 0 警告/错误，源码/XAML/差异检查通过；WPF 静态检查 `0 errors/21 warnings/172 info`。
+- 边界：尚未在真实 FusionX/Playnite 窗口执行搜索→选中→打开→Esc→回原项、Enter/Space、DPI/高对比度和宿主录屏；不能把离线 STA/契约结果写成真实宿主验收。
 
 ### L08 可重复诊断与性能采样入口
 

@@ -1,6 +1,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace GameSaveCenter.Playnite.Views
 {
@@ -252,6 +253,7 @@ namespace GameSaveCenter.Playnite.Views
             if (SaveHistoryGrid.SelectedItem == null) return;
             historyInspectorOpen = !historyInspectorOpen;
             ApplyResponsiveLayout(responsiveWidth > 0 ? responsiveWidth : ActualWidth, responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+            FocusElement(historyInspectorOpen ? SaveHistoryActionsScrollViewer : SaveHistoryCompactDetailsButton);
         }
 
         private void OnSaveCandidateCompactDetailsClick(object sender, RoutedEventArgs e)
@@ -259,6 +261,35 @@ namespace GameSaveCenter.Playnite.Views
             if (SaveCandidateGrid.SelectedItem == null) return;
             candidateInspectorOpen = !candidateInspectorOpen;
             ApplyResponsiveLayout(responsiveWidth > 0 ? responsiveWidth : ActualWidth, responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+            FocusElement(candidateInspectorOpen ? SaveCandidateInspectorScrollViewer : SaveCandidateCompactDetailsButton);
+        }
+
+        private void OnSaveInspectorPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Escape)
+                return;
+
+            if (ReferenceEquals(sender, SaveHistoryActionsScrollViewer) && historyInspectorOpen)
+                historyInspectorOpen = false;
+            else if (ReferenceEquals(sender, SaveCandidateInspectorScrollViewer) && candidateInspectorOpen)
+                candidateInspectorOpen = false;
+            else
+                return;
+
+            ApplyResponsiveLayout(responsiveWidth > 0 ? responsiveWidth : ActualWidth, responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+            FocusElement(ReferenceEquals(sender, SaveHistoryActionsScrollViewer)
+                ? SaveHistoryCompactDetailsButton
+                : SaveCandidateCompactDetailsButton);
+            e.Handled = true;
+        }
+
+        private static void FocusElement(UIElement element)
+        {
+            if (!element.IsVisible || !element.IsEnabled)
+                return;
+
+            element.Focus();
+            Keyboard.Focus(element);
         }
     }
 }

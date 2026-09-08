@@ -792,7 +792,8 @@ namespace GameSaveCenter.Playnite.Views
         {
             if (MediaGrid.SelectedItem == null) return;
             mediaInspectorOpen = !mediaInspectorOpen;
-                ApplyResponsiveLayout(responsiveWidth > 0 ? responsiveWidth : ActualWidth, responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+            ApplyResponsiveLayout(responsiveWidth > 0 ? responsiveWidth : ActualWidth, responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+            FocusElement(mediaInspectorOpen ? MediaInspectorScrollViewer : MediaCompactDetailsButton);
         }
 
         private void OnMediaInboxCompactDetailsClick(object sender, RoutedEventArgs e)
@@ -802,8 +803,42 @@ namespace GameSaveCenter.Playnite.Views
             ApplyResponsiveLayout(
                 responsiveWidth > 0 ? responsiveWidth : ActualWidth,
                 responsiveHeight > 0 ? responsiveHeight : ActualHeight);
-            if (mediaInboxInspectorOpen)
-                MediaInboxInspectorScrollViewer.Focus();
+            FocusElement(mediaInboxInspectorOpen ? MediaInboxInspectorScrollViewer : MediaInboxCompactDetailsButton);
+        }
+
+        private void OnMediaInspectorPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Escape || !mediaInspectorOpen)
+                return;
+
+            mediaInspectorOpen = false;
+            ApplyResponsiveLayout(
+                responsiveWidth > 0 ? responsiveWidth : ActualWidth,
+                responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+            FocusElement(MediaCompactDetailsButton);
+            e.Handled = true;
+        }
+
+        private void OnMediaInboxInspectorPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Escape)
+                return;
+
+            var closedHistory = false;
+            if (mediaInboxHistoryOpen)
+            {
+                mediaInboxHistoryOpen = false;
+                closedHistory = true;
+            }
+            else if (mediaInboxInspectorOpen)
+                mediaInboxInspectorOpen = false;
+            else
+                return;
+
+            ApplyResponsiveLayout(
+                responsiveWidth > 0 ? responsiveWidth : ActualWidth,
+                responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+            FocusElement(closedHistory ? MediaInboxHistoryButton : MediaInboxCompactDetailsButton);
             e.Handled = true;
         }
 
@@ -813,9 +848,16 @@ namespace GameSaveCenter.Playnite.Views
             ApplyResponsiveLayout(
                 responsiveWidth > 0 ? responsiveWidth : ActualWidth,
                 responsiveHeight > 0 ? responsiveHeight : ActualHeight);
-            if (mediaInboxHistoryOpen)
-                MediaInboxInspectorScrollViewer.Focus();
-            e.Handled = true;
+            FocusElement(mediaInboxHistoryOpen ? MediaInboxInspectorScrollViewer : MediaInboxHistoryButton);
+        }
+
+        private static void FocusElement(UIElement element)
+        {
+            if (!element.IsVisible || !element.IsEnabled)
+                return;
+
+            element.Focus();
+            Keyboard.Focus(element);
         }
 
     }

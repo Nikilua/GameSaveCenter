@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-08
 
+## 2026-09-08 L07 键盘、焦点与可访问名称
+
+- `MediaCenterView`、`TaskCenterView`、`SaveCenterView`、`MaintenanceView` 和 `TrainerCenterView` 的紧凑 inspector 统一采用“入口打开 → inspector 获焦 → Esc 关闭 → 原入口恢复焦点”的路径；媒体收件箱批次历史单独回到 `MediaInboxHistoryButton`。
+- Inspector ScrollViewer 设置 `Focusable="True"` 与 `KeyboardNavigation.IsTabStop="False"`，PreviewKeyDown 只在对应紧凑状态实际打开时处理 Esc；宽屏常驻详情不会因同一事件处理器而隐藏或把焦点送到折叠按钮。
+- 点击处理器不写入非必要的 `RoutedEventArgs.Handled`，兼容现有直接反射调用布局测试；键盘事件仍在真实 RoutedEvent 上标记已处理。没有加入计时器、强制 UpdateLayout、滚动重置或宿主级快捷键劫持。
+- `KeyboardFocusSourceTests` 的 STA 用例验证实际 `TaskCenterView` inspector 可获焦但不进入 Tab 顺序；源契约覆盖五页 Esc、Keyboard.Focus、焦点入口和自动化名称。真实 Playnite/FusionX 的人工键盘轨迹仍需验收。
+
 ## 2026-09-08 L06 目的导航与返回上下文
 
 - `FindingNavigationTargetResolver` 将诊断目标分为精确游戏、任务名称兜底和不可用三类。存档路径导航只接受当前 `Games` 中存在的稳定 ID；目标消失时不切换当前游戏，直接写入可见状态提示。

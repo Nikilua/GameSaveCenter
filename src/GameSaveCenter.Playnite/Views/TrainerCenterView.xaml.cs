@@ -228,6 +228,27 @@ namespace GameSaveCenter.Playnite.Views
             if (TrainerToolsList.SelectedItem == null) return;
             trainerInspectorOpen = !trainerInspectorOpen;
             ApplyResponsiveLayout(responsiveWidth > 0 ? responsiveWidth : ActualWidth, responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+            FocusElement(trainerInspectorOpen ? TrainerToolsSettingsScrollViewer : TrainerToolsCompactDetailsButton);
+        }
+
+        private void OnTrainerInspectorPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Escape || !trainerInspectorOpen)
+                return;
+
+            trainerInspectorOpen = false;
+            ApplyResponsiveLayout(responsiveWidth > 0 ? responsiveWidth : ActualWidth, responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+            FocusElement(TrainerToolsCompactDetailsButton);
+            e.Handled = true;
+        }
+
+        private static void FocusElement(UIElement element)
+        {
+            if (!element.IsVisible || !element.IsEnabled)
+                return;
+
+            element.Focus();
+            Keyboard.Focus(element);
         }
     }
 }

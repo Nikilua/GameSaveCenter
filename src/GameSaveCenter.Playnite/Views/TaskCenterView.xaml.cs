@@ -291,6 +291,29 @@ namespace GameSaveCenter.Playnite.Views
             ApplyResponsiveLayout(
                 TaskPageScrollSurface.ActualWidth > 0 ? TaskPageScrollSurface.ActualWidth : ActualWidth,
                 TaskPageScrollSurface.ActualHeight > 0 ? TaskPageScrollSurface.ActualHeight : ActualHeight);
+            FocusElement(taskInspectorOpen ? TaskDetailScrollViewer : TaskCompactDetailsButton);
+        }
+
+        private void OnTaskDetailPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Escape || !taskInspectorOpen)
+                return;
+
+            taskInspectorOpen = false;
+            ApplyResponsiveLayout(
+                TaskPageScrollSurface.ActualWidth > 0 ? TaskPageScrollSurface.ActualWidth : ActualWidth,
+                TaskPageScrollSurface.ActualHeight > 0 ? TaskPageScrollSurface.ActualHeight : ActualHeight);
+            FocusElement(TaskCompactDetailsButton);
+            e.Handled = true;
+        }
+
+        private static void FocusElement(UIElement element)
+        {
+            if (!element.IsVisible || !element.IsEnabled)
+                return;
+
+            element.Focus();
+            Keyboard.Focus(element);
         }
     }
 }

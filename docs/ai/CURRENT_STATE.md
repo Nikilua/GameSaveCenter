@@ -2,6 +2,13 @@
 
 > 更新时间：2026-09-08。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-08 L07 键盘、焦点与可访问名称已完成（真实宿主待验收）
+
+- 媒体、任务、存档、维护和工具页的紧凑详情抽屉现在显式接收 Esc：打开时焦点进入真实 inspector ScrollViewer，关闭后回到仍可见的原入口；媒体批次历史回到“批次历史”按钮，宽屏常驻右侧详情不会被 Esc 误关。
+- 抽屉 ScrollViewer 明确 `Focusable=True`、`KeyboardNavigation.IsTabStop=False`，避免隐藏控件残留焦点和 Tab 陷阱；已有紧凑入口按钮继续带 `AutomationProperties.Name`，没有劫持宿主快捷键或改变业务命令。
+- 新增 `KeyboardFocusSourceTests`，包含实际 STA WPF 控件实例检查和五页键盘/自动化契约检查。Playnite 全量 `394/456`，其中 `62` 项历史/离屏项跳过，0 失败；Release 构建、源码、XAML 和差异校验通过。
+- 代码级 STA/契约证据不等于 FusionX/真实 Playnite 人工键盘验收；搜索→选中→开关详情、Enter/Space、Esc、DPI/高对比度和真实宿主焦点轨迹仍待宿主复测。
+
 ## 2026-09-08 L06 目的导航与返回上下文已完成（真实宿主待验收）
 
 - 诊断到存档路径的入口现在必须在当前快照中找到同一 `PlayniteId` 才切换 `SelectedGame`；目标消失时停留原工作区并明确提示，不再悄悄沿用当前游戏。
