@@ -1530,6 +1530,7 @@ public static class Program
             RunDataGridScrollProbes(report);
             RunMediaWrapScrollProbe(report);
             RunSettingsLayoutProbes(report);
+            RunSettingsStateProbes(outputRoot, report);
             RunThemeQa(outputRoot, report);
             RunResizeTransitionProbes(report);
             RunShellChromeProbes(outputRoot, report);
@@ -2273,6 +2274,7 @@ public static class Program
                     host.UpdateLayout();
 
                     var header = FindVisualChildren<FrameworkElement>(host).FirstOrDefault(element => element.Name == "SettingsHeader");
+                    var intro = FindVisualChildren<FrameworkElement>(host).FirstOrDefault(element => element.Name == "SettingsIntroDescription");
                     var tabs = FindVisualChildren<ListBox>(host).FirstOrDefault(element => element.Name == "SettingsSectionTabs");
                     var tabItems = tabs == null
                         ? new List<ListBoxItem>()
@@ -2284,9 +2286,11 @@ public static class Program
                     var minTabWidth = tabItems.Count == 0 ? 0 : tabItems.Min(item => item.ActualWidth);
                     var minTabHeight = tabItems.Count == 0 ? 0 : tabItems.Min(item => item.ActualHeight);
                     report.AppendLine(
-                        $"  SettingsLayout w={width:0} h={height:0} headerH={(header?.ActualHeight ?? double.NaN):0.##} tabs={(tabs == null ? -1 : tabs.Items.Count)} tabItems={tabItems.Count} visible={visibleTabs} minW={minTabWidth:0.##} minH={minTabHeight:0.##} scroller={(categoryScroller == null ? "missing" : categoryScroller.GetType().Name)}");
+                        $"  SettingsLayout w={width:0} h={height:0} headerH={(header?.ActualHeight ?? double.NaN):0.##} intro={(intro?.Visibility.ToString() ?? "missing")} tabs={(tabs == null ? -1 : tabs.Items.Count)} tabItems={tabItems.Count} visible={visibleTabs} minW={minTabWidth:0.##} minH={minTabHeight:0.##} scroller={(categoryScroller == null ? "missing" : categoryScroller.GetType().Name)}");
                     if (header == null || header.ActualHeight <= 0)
                         s_problems.Add($"SettingsLayout w={width:0} h={height:0} header is not visible");
+                    if (intro == null || intro.Visibility != Visibility.Collapsed)
+                        s_problems.Add($"SettingsLayout w={width:0} h={height:0} repeated intro is still visible");
                     if (tabs == null || tabs.Items.Count != 5)
                         s_problems.Add($"SettingsLayout w={width:0} h={height:0} expected 5 categories, got {(tabs == null ? 0 : tabs.Items.Count)}");
                     if (tabItems.Count < 5 || tabItems.Any(item => item.Visibility != Visibility.Visible || item.ActualWidth <= 0 || item.ActualHeight <= 0))
@@ -2319,6 +2323,84 @@ public static class Program
                 {
                     s_problems.Add($"SettingsLayout w={width:0} h={height:0} failed: {ex.Message}");
                 }
+            }
+        }
+    }
+
+    private static void RunSettingsStateProbes(string outputRoot, StringBuilder report)
+    {
+        report.AppendLine();
+        report.AppendLine("Settings first-viewport state fixtures (1040x700)");
+        var refresh = typeof(GameSaveCenterSettingsView).GetMethod(
+            "RefreshValidationSummary",
+            BindingFlags.Instance | BindingFlags.NonPublic);
+        var apply = typeof(GameSaveCenterSettingsView).GetMethod(
+            "ApplyResponsiveLayout",
+            BindingFlags.Instance | BindingFlags.NonPublic);
+        if (refresh == null || apply == null)
+            throw new InvalidOperationException("Settings state probe methods not found.");
+
+        var repositoryRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", ".."));
+        var workerOutputRoot = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Worker", "bin", "Release");
+        var workerPath = Directory.Exists(workerOutputRoot)
+            ? Directory.EnumerateFiles(workerOutputRoot, "GameSaveCenter.Worker.exe", SearchOption.AllDirectories).FirstOrDefault() ?? string.Empty
+            : string.Empty;
+        var fixtures = new[]
+        {
+            (Name: "normal", ExpectedHint: "已保存", Valid: true, Dirty: false),
+            (Name: "dirty", ExpectedHint: "有未保存更改", Valid: true, Dirty: true),
+            (Name: "invalid", ExpectedHint: "存在校验错误", Valid: false, Dirty: false)
+        };
+
+        foreach (var fixture in fixtures)
+        {
+            try
+            {
+                var settings = new GameSaveCenterSettings();
+                settings.ThemeMode = GameSaveCenterThemeMode.Light;
+                if (fixture.Valid)
+                    settings.WorkerExecutable = workerPath;
+                var view = new GameSaveCenterSettingsView { DataContext = settings };
+                var host = new Grid
+                {
+                    Width = 1040,
+                    Height = 700,
+                    Background = CreateHarnessBackground(view),
+                    ClipToBounds = true
+                };
+                host.Children.Add(view);
+                view.ApplyThemeForAudit(GameSaveCenterThemeMode.Light);
+                apply.Invoke(view, new object[] { 1040d, 700d });
+                host.Measure(new Size(1040, 700));
+                host.Arrange(new Rect(0, 0, 1040, 700));
+                host.UpdateLayout();
+                apply.Invoke(view, new object[] { 1040d, 700d });
+                host.UpdateLayout();
+
+                if (fixture.Dirty)
+                    settings.CompressionLevel++;
+                refresh.Invoke(view, null);
+                host.UpdateLayout();
+                var shell = FindVisualChildren<FrameworkElement>(host).FirstOrDefault(element => element.Name == "SettingsShell");
+                if (shell != null)
+                {
+                    shell.BeginAnimation(UIElement.OpacityProperty, null);
+                    shell.Opacity = 1;
+                }
+                var hint = FindVisualChildren<TextBlock>(host).FirstOrDefault(element => element.Name == "SettingsSaveHintText");
+                var summary = FindVisualChildren<TextBlock>(host).FirstOrDefault(element => element.Name == "SettingsValidationSummary");
+                var hintText = hint?.Text ?? string.Empty;
+                var summaryVisible = summary?.Visibility == Visibility.Visible;
+                report.AppendLine($"  SettingsState state={fixture.Name} hint={hintText} summary={summaryVisible} workerPath={(fixture.Valid ? "known" : "empty")}");
+                if (hintText.IndexOf(fixture.ExpectedHint, StringComparison.Ordinal) < 0)
+                    s_problems.Add($"SettingsState {fixture.Name} expected hint '{fixture.ExpectedHint}', got '{hintText}'");
+                if (summaryVisible != !fixture.Valid)
+                    s_problems.Add($"SettingsState {fixture.Name} summary visibility mismatch (visible={summaryVisible})");
+                SavePng(host, Path.Combine(outputRoot, $"Settings-state-{fixture.Name}-1040x700.png"));
+            }
+            catch (Exception ex)
+            {
+                s_problems.Add($"SettingsState {fixture.Name} failed: {ex.Message}");
             }
         }
     }

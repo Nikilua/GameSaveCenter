@@ -128,9 +128,11 @@
 
 ### L09 设置首屏减少重复信息
 
-- 目标：小窗口先看到核心字段与保存状态，校验错误只有一个主要解释位置。
-- 文件：`Settings/GameSaveCenterSettingsView.xaml`、`.xaml.cs`。压缩重复外层容器和长头部说明，保留一行保存状态；错误摘要链接到字段，完整解释就近呈现。
-- 验收：正常/未保存/失败三种配置夹具同画布前后图；核心字段比原图更早可见，字体不缩小；Playnite 原保存/取消契约保留。
+- 状态：已完成（代码/离屏三态夹具；真实宿主待验收）。
+- 文件：`Settings/GameSaveCenterSettingsView.xaml`、`Settings/GameSaveCenterSettingsView.xaml.cs`、`tests/GameSaveCenter.RenderHarness/Program.cs`、`tests/GameSaveCenter.Playnite.Tests/UiLayoutRegressionTests.cs`。
+- 实现：折叠重复的 `SettingsIntroDescription`，缩短 Hero 副标题，保留分类卡片的就地说明、单一保存状态入口和 Playnite 保存/取消契约；修正错误分支传入 `RefreshSaveState` 的反向布尔值。
+- 验证：同一 `1040×700` 画布 normal/dirty/invalid 分别得到“已保存/有未保存更改/存在校验错误”，错误摘要仅在 invalid 可见；760–1400×560–900 的分类/正文布局门禁通过。全量 Release 构建 `0 warning/0 error`；Core `72/72`、Worker `303/304`（1 跳过）、Playnite `395/457`（62 跳过），源码/XAML/差异校验通过。
+- 边界：完整 `render-qa` 仍保留既有媒体小视口/侧栏快速切换失败，不归因于 L09；未运行真实 Playnite/FusionX 设置窗口，不能据此宣称真实 DPI、宿主保存取消或主题验收完成。
 
 ### L10 设置修改、错误定位与取消体验
 

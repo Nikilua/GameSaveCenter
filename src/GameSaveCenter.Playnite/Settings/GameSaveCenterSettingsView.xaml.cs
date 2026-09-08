@@ -185,7 +185,7 @@ namespace GameSaveCenter.Playnite.Settings
             }
             SettingsValidationSummary.Text = "设置需要修正：" + string.Join("；", errors.Take(4));
             SettingsValidationSummary.Visibility = Visibility.Visible;
-            RefreshSaveState(errors.Count != 0);
+            RefreshSaveState(errors.Count == 0);
         }
 
         private void RefreshSaveState()
@@ -587,7 +587,10 @@ namespace GameSaveCenter.Playnite.Settings
             // Compact/short headers stop competing with the settings body: the long
             // description and secondary hero text reduce to the essential title, and
             // the category rail keeps its own readable strip below the header.
-            SettingsIntroDescription.Visibility = compact ? Visibility.Collapsed : Visibility.Visible;
+            // The hero subtitle and the category card descriptions already explain the
+            // settings scope. Keep the old full-width intro out of the first viewport so
+            // the first editable fields and the one-line Playnite save state arrive sooner.
+            SettingsIntroDescription.Visibility = Visibility.Collapsed;
             var compactHeaderHeight = compact && shortHeight;
             SettingsHeader.Padding = compactHeaderHeight
                 ? new Thickness(12, 8, 12, 8)

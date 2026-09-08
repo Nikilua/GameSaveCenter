@@ -56,7 +56,7 @@
                     <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center">
                         <TextBlock Text="SETTINGS" Style="{DynamicResource GscRedesignHeroEyebrow}"/>
                         <TextBlock Text="GameSaveCenter 设置" Style="{DynamicResource GscRedesignHeroTitle}"/>
-                        <TextBlock x:Name="SettingsHeaderSubtitle" Text="工具路径、版本策略、外观效果与自动化安全" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,3,0,0" TextWrapping="Wrap"/>
+                        <TextBlock x:Name="SettingsHeaderSubtitle" Text="工具路径 · 存档策略 · 外观与自动化" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,3,0,0" TextWrapping="Wrap"/>
                         <TextBlock x:Name="SettingsValidationSummary" Foreground="{DynamicResource GscErrorBrush}" TextWrapping="Wrap" Margin="0,6,0,0" Visibility="Collapsed" AutomationProperties.Name="设置验证错误"/>
                     </StackPanel>
                     <Border x:Name="SettingsSaveHint" Grid.Row="0" Grid.Column="2" Style="{StaticResource GscRedesignContextPill}" VerticalAlignment="Center" Margin="14,0,0,0" ToolTip="设置仍由 Playnite 设置窗口的保存和取消按钮提交。">
@@ -64,7 +64,7 @@
                     </Border>
                 </Grid>
                 </Border>
-                <TextBlock x:Name="SettingsIntroDescription" Grid.Row="1" Text="Playnite 管理游戏入口，Worker 执行存档、媒体与云端任务。切换左侧分类只改变显示内容，不会立即保存或执行任何业务操作。"
+                <TextBlock x:Name="SettingsIntroDescription" Grid.Row="1" Visibility="Collapsed" Text="Playnite 管理游戏入口，Worker 执行存档、媒体与云端任务。切换左侧分类只改变显示内容，不会立即保存或执行任何业务操作。"
                            Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,5,0,18" TextWrapping="Wrap"/>
                 <Grid x:Name="SettingsWorkspace" Grid.Row="2" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition x:Name="SettingsCompactContentRow" Height="0"/></Grid.RowDefinitions>

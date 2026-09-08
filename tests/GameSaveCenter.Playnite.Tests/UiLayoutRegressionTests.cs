@@ -454,7 +454,8 @@ namespace GameSaveCenter.Playnite.Tests
             var code = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml.cs"));
 
             Assert.Contains("x:Name=\"SettingsIntroDescription\"", settings);
-            Assert.Contains("SettingsIntroDescription.Visibility = compact ? Visibility.Collapsed : Visibility.Visible;", code);
+            Assert.Contains("x:Name=\"SettingsIntroDescription\" Grid.Row=\"1\" Visibility=\"Collapsed\"", settings);
+            Assert.Contains("SettingsIntroDescription.Visibility = Visibility.Collapsed;", code);
             Assert.Contains("SettingsHeaderSubtitle.Visibility = narrow || shortHeight ? Visibility.Collapsed : Visibility.Visible;", code);
             Assert.Contains("SettingsSaveHint.Visibility = Visibility.Visible;", code);
             Assert.Contains("SettingsHeader.MinHeight = compactHeaderHeight ? 56 : compact ? 68 : 76;", code);

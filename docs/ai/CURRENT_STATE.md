@@ -2,6 +2,13 @@
 
 > 更新时间：2026-09-08。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-08 L09 设置首屏与保存状态已完成（真实宿主待验收）
+
+- 设置页首屏移除重复的全宽说明，Hero 副标题压缩为工具路径/存档策略/外观与自动化；分类卡片内的就地说明和 Playnite 保存/取消语义保留，核心 Worker/Ludusavi 字段在 1040×700 首屏更早可见。
+- 修正校验状态语义：验证摘要出现时，右上角不再误显示“已保存”，而是统一显示“存在校验错误 · 保存前请修正”；正常、未保存、失败三种状态仍只保留一个主要保存状态入口。
+- RenderHarness 增加 1040×700 设置三态夹具和重复说明布局门禁，实测 normal=`已保存`、dirty=`有未保存更改`、invalid=`存在校验错误`；760–1400 DIP/560–900 DIP 分类与正文滚动探针通过。完整 `render-qa` 仍只报告已有媒体小视口/侧栏动效问题，没有新增 Settings 问题。
+- Release 构建 `0 warning/0 error`；全量测试 Core `72/72`、Worker `303/304`（1 跳过）、Playnite `395/457`（62 跳过），源码/XAML/差异校验通过。离屏夹具不等同真实 Playnite/FusionX 设置窗口，主题/DPI/Playnite 保存取消仍待宿主验收。
+
 ## 2026-09-08 L08 可重复诊断与性能采样入口已完成（真实宿主待验收）
 
 - RenderHarness 的 `render-qa`、`gridprobe`、`shellqa` 报告现在带有场景、证据来源、Git 提交/工作树状态、窗口 DIP、主题、数据量和明确的时序字段；布局与渲染时长分开记录，离线 Harness 明确不伪造请求耗时与真实 DPI。

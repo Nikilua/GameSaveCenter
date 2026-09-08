@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-08
 
+## 2026-09-08 L09 设置首屏与保存状态
+
+- `GameSaveCenterSettingsView.xaml` 保留 `SettingsIntroDescription` 作为兼容命名但默认/响应式布局均设为 `Collapsed`；Hero 副标题改成短的“工具路径 · 存档策略 · 外观与自动化”。重复说明不再占用标题与正文之间的首屏高度，完整解释留在对应分类卡片附近。
+- `RefreshValidationSummary` 的错误分支必须调用 `RefreshSaveState(errors.Count == 0)`。旧代码传入 `errors.Count != 0`，会在摘要显示校验错误时把保存胶囊误写成“已保存”；这个布尔语义由三态夹具守护。
+- RenderHarness 的 `RunSettingsLayoutProbes` 检查重复说明不可见、5 个分类项和正文视口；`RunSettingsStateProbes` 在同一 `1040×700` 画布生成 normal/dirty/invalid 状态，分别核验保存文案、错误摘要可见性和截图。
+- L09 全量 Release 构建无警告/错误；Core `72/72`、Worker `303/304`（1 跳过）、Playnite `395/457`（62 跳过）。完整 `render-qa` 的已有媒体小视口/侧栏快速切换门禁仍独立记录，不能归因于设置页；真实 Playnite/FusionX、DPI 和 Playnite 保存/取消仍待验收。
+
 ## 2026-09-08 L08 可重复诊断与性能采样入口
 
 - `RenderHarness` 的 `render-qa`、`gridprobe` 和 `shellqa` 统一写入 `Scenario`、`EvidenceSource`、Git 提交/工作树状态、离线逻辑 DIP、主题、数据量和时序字段；`RenderTabs`/`RenderView` 将 `layout_ms` 与 `render_ms` 分开，离线报告把 `request_ms` 标为不适用，避免把离屏测量冒充真实宿主性能。
