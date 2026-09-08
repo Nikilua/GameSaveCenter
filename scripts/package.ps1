@@ -55,8 +55,8 @@ function Read-AssemblyInformationalVersion {
                         # to the matching SDK copy for this short-lived pack
                         # process; this does not touch the target DLLs.
                         $unsafeResolver = {
-                            param($sender, $args)
-                            if ($args.Name -like 'System.Runtime.CompilerServices.Unsafe,*') {
+                            param($sender, $eventArgs)
+                            if ($eventArgs.Name -like 'System.Runtime.CompilerServices.Unsafe,*') {
                                 return [System.Reflection.Assembly]::LoadFrom($unsafePath)
                             }
                             return $null
