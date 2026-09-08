@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-09 表格滚动诊断补强与离线复现
+
+- 在不改变滚动单位、虚拟化模式、刷新或锚点算法的前提下，诊断器改为优先绑定包含 `DataGridRowsPresenter` 的实际内部 `ScrollViewer`；Media 锚点上下文记录请求、执行、完成、代际失效、容器/ScrollViewer 重试和失败原因。
+- 使用现有 RenderHarness `scaleprobe` 对任务表和媒体表的 200/2000/10000 条数据执行 20 次滑块往返，以及滚轮、PageUp/PageDown、Ctrl+End 和末尾定位。`scaleprobe OK`；离线日志的 `visibleTextRows`、首末行 ID/Y/高度、Presenter 矩形、水平条状态均未出现空正文或选框/文字分离。
+- 诊断确认：直接 `ScrollIntoView(最后一项)` 在插件模板和标准 WPF 对照模板均为 `offscreen-inconclusive`，原因是无宿主窗口的离屏调度，不把它写成通过；末尾滑块路径已验证最后行完整落入实际内容视口。证据：`.tmp/l32-scrollprobe/scaleprobe-report.txt`。
+- 验证：RenderHarness Release 构建 `0/0`，Media 锚点定向 `8/8`，Playnite 全量 `421/484`（63 skip、0 fail），`validate-source.py` 和 `git diff --check` 通过。真实 Playnite/FusionX/DPI/视频仍待 L31。
+
 ## 2026-09-09 L30 候选安装包与升级/回退说明
 
 - 使用 `scripts/package.ps1 -Configuration Release -BuildOutputRoot .tmp/l30-build` 生成隔离候选包；脚本完成 Release 构建和测试、Worker `win-x64` self-contained 发布、六份程序集构建身份同源校验、manifest 版本/必需文件/self-contained 校验。

@@ -15,6 +15,13 @@
 - 本轮没有停止宿主、安装候选包、执行真实 UI 操作或生成真实录屏/滚动诊断；L30 候选包仍未安装，表格视频异常仍未宣称解决。
 - 恢复条件和待执行矩阵见 [`L31_REAL_HOST_BLOCKER_2026-09-09.md`](L31_REAL_HOST_BLOCKER_2026-09-09.md)。
 
+## 2026-09-09 表格滚动诊断补强与离线复现（不等同真实宿主）
+
+- `DataGridScrollDiagnostics` 现在优先选择包含真实 `DataGridRowsPresenter` 的内部 `ScrollViewer`，并记录实际 `ScrollContentPresenter`、`IScrollInfo`、DIP 视口、逻辑 offset/extent、水平条占用、首末可见行、单元格内容/裁剪和异常分类。媒体锚点上下文补充 queued、executing、completed、stale-generation、retry 和失败原因。
+- `scaleprobe` 使用任务表/媒体表相同离线模板，200/2000/10000 条数据分别执行 20 次顶部/底部/中间往返及滚轮、PageUp/PageDown、Ctrl+End；报告为 `scaleprobe OK`，没有稳定空白正文、选中框与文字分离或大块表头间隙，末行在直接滑到末尾时完整落入 Presenter 视口。
+- `ScrollIntoView(最后一项)` 在当前插件模板和标准 WPF 对照模板中都受离屏窗口延迟影响，记录为 `offscreen-inconclusive`，不能用它证明真实宿主行为。证据保留在 `.tmp/l32-scrollprobe/scaleprobe-report.txt`；真实 Playnite/FusionX、视频和 DPI 仍未验证。
+- 本阶段验证：Release RenderHarness 构建 `0 warning/0 error`，锚点定向 `8/8`，Playnite 全量 `421/484`（63 skip），源码校验通过。
+
 ## 2026-09-09 L28 持续更新分页与选择恢复已完成离线收口（真实宿主待验收）
 
 - 云端队列和媒体归类历史继续使用 Worker 的 revision/一致性令牌，不把变化中的 offset 页静默拼接。新增/状态更新导致令牌变化时，旧页请求返回 `PageResetRequired`；没有取消一致性检查。

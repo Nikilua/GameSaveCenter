@@ -15,6 +15,13 @@
 - PowerShell 只读发现 Playnite 位于 `D:\software\Playnite\Playnite.DesktopApp.exe`，但 Windows Computer Use 返回空应用清单，不能绑定窗口，因此没有真实滚动、DPI、键盘、FusionX 或录屏证据。
 - 后续不得把 RenderHarness、源码检查或包内验证当作真实宿主通过；恢复条件和矩阵见 `docs/ai/L31_REAL_HOST_BLOCKER_2026-09-09.md`。
 
+## 2026-09-09 表格滚动诊断补强与离线复现
+
+- `DataGridScrollDiagnostics` 选择实际拥有 `DataGridRowsPresenter` 的内部滚动器，避免宿主模板出现多个 `ScrollViewer` 时把外层页面滚动器误当作表格滚动器；日志仍只记录稳定 ID、数量、尺寸、偏移、代际和状态，不记录文件内容。
+- `MediaCenterView` 的锚点记录不改变恢复语义，只增加 `queued/executing/completed/skipped/retry/failed` 状态与原因；`MediaWindowAnchorContractTests` 锁定这些诊断出口。
+- 离线 `scaleprobe` 的 20 次滑块往返在任务表/媒体表 200、2000、10000 条规模均保持可见行和文字；末尾滑块路径的最后行完整。直接 `ScrollIntoView` 在自定义/标准模板都被离屏调度标为 inconclusive，不能拿来推断 FusionX。
+- 本轮没有真实宿主窗口；后续仍须用 Playnite/FusionX 重复视频动作，不能用该离线报告替代宿主验收。
+
 ## 2026-09-09 L28 持续更新分页与选择恢复
 
 - `CloudTransferStateService.GetStatusAsync` 和 `MediaSyncService.GetClassificationHistoryAsync` 的 revision/一致性令牌是 offset 分页的正确性边界：请求期间或请求前令牌变化必须返回 `PageResetRequired`，不能继续拼接旧页。当前触发器覆盖云端队列/重试队列、游戏/媒体云状态以及归类批次/批次项的增删改。

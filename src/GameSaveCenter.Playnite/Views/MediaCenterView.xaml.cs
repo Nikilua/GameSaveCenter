@@ -33,6 +33,7 @@ namespace GameSaveCenter.Playnite.Views
         private bool restoringSelection;
         private bool selectionRestoreQueued;
         private long anchorRestoreGeneration;
+        private string anchorDiagnostic = "none";
         private readonly DispatcherTimer pendingAnchorExpiryTimer;
 
         public MediaCenterView()
@@ -100,6 +101,7 @@ namespace GameSaveCenter.Playnite.Views
         private void InvalidatePendingAnchorRestore()
         {
             unchecked { anchorRestoreGeneration++; }
+            anchorDiagnostic = $"invalidated:generation={anchorRestoreGeneration}";
             pendingMediaAnchor = null;
             pendingInboxAnchor = null;
             pendingInboxAnchorMode = null;
@@ -175,6 +177,7 @@ namespace GameSaveCenter.Playnite.Views
             pendingInboxAnchorMode = null;
             pendingAnchorExpiryTimer.Stop();
             selectionRestoreQueued = true;
+            MarkAnchorDiagnostic(MediaInboxGrid, $"queued:inbox:{e.Action}:mode={mode}");
             QueueRestore(MediaInboxGrid, anchor, GetInboxSelectionSet(mode), isInbox: true, mode: mode, generation: anchorRestoreGeneration);
         }
 
@@ -200,7 +203,7 @@ namespace GameSaveCenter.Playnite.Views
 
         private string GetScrollDiagnosticContext()
             => (attachedViewModel?.GetMediaScrollDiagnosticContext() ?? "vm=none")
-                + $",anchorGen={anchorRestoreGeneration},pendingMedia={pendingMediaAnchor != null},pendingInbox={pendingInboxAnchor != null},selectionRestoreQueued={selectionRestoreQueued}";
+                + $",anchorGen={anchorRestoreGeneration},anchor={anchorDiagnostic},pendingMedia={pendingMediaAnchor != null},pendingInbox={pendingInboxAnchor != null},selectionRestoreQueued={selectionRestoreQueued}";
 
         private void OnMediaInboxModeSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -528,6 +531,7 @@ namespace GameSaveCenter.Playnite.Views
 
         private void QueueRestore(ItemsControl itemsControl, ScrollAnchor anchor, HashSet<string> selection, bool isInbox, string? mode, long generation)
         {
+            MarkAnchorDiagnostic(itemsControl, $"queued:id={anchor.ItemId}:generation={generation}");
             Dispatcher.BeginInvoke(
                 DispatcherPriority.Loaded,
                 new Action(() => RestoreAnchor(itemsControl, anchor, selection, isInbox, mode, generation, 0)));
@@ -543,12 +547,16 @@ namespace GameSaveCenter.Playnite.Views
             int attempt)
         {
             if (!IsCurrentAnchorRestore(generation, isInbox, mode))
+            {
+                MarkAnchorDiagnostic(itemsControl, $"skipped:stale-generation={generation}");
                 return;
+            }
 
             RestoreSelection(itemsControl, selection);
             var itemIndex = FindItemIndex(itemsControl, anchor.ItemId);
             if (itemIndex < 0)
             {
+                MarkAnchorDiagnostic(itemsControl, $"failed:item-not-found:id={anchor.ItemId}");
                 ShowAnchorNotice(isInbox, selection.Count);
                 return;
             }
@@ -556,10 +564,12 @@ namespace GameSaveCenter.Playnite.Views
             var viewer = FindDescendant<ScrollViewer>(itemsControl);
             if (viewer == null)
             {
+                MarkAnchorDiagnostic(itemsControl, $"retry:scrollviewer-missing:attempt={attempt}");
                 RetryRestore(itemsControl, anchor, selection, isInbox, mode, generation, attempt);
                 return;
             }
 
+            MarkAnchorDiagnostic(itemsControl, $"executing:{anchor.Mode}:attempt={attempt}:reason=collection-refresh");
             if (itemsControl is DataGrid dataGrid)
                 dataGrid.ScrollIntoView(itemsControl.Items[itemIndex]);
             else if (itemsControl is ListBox listBox)
@@ -569,6 +579,7 @@ namespace GameSaveCenter.Playnite.Views
             var container = itemsControl.ItemContainerGenerator.ContainerFromIndex(itemIndex) as FrameworkElement;
             if (container == null)
             {
+                MarkAnchorDiagnostic(itemsControl, $"retry:container-missing:attempt={attempt}");
                 RetryRestore(itemsControl, anchor, selection, isInbox, mode, generation, attempt);
                 return;
             }
@@ -591,6 +602,7 @@ namespace GameSaveCenter.Playnite.Views
             }
 
             HideAnchorNotice(isInbox);
+            MarkAnchorDiagnostic(itemsControl, $"completed:{anchor.Mode}:reason=collection-refresh");
             selectionRestoreQueued = false;
         }
 
@@ -612,6 +624,7 @@ namespace GameSaveCenter.Playnite.Views
         {
             if (attempt >= 4)
             {
+                MarkAnchorDiagnostic(itemsControl, $"failed:retry-exhausted:{anchor.Mode}");
                 ShowAnchorNotice(isInbox, selection.Count);
                 return;
             }
@@ -619,6 +632,13 @@ namespace GameSaveCenter.Playnite.Views
             Dispatcher.BeginInvoke(
                 DispatcherPriority.ContextIdle,
                 new Action(() => RestoreAnchor(itemsControl, anchor, selection, isInbox, mode, generation, attempt + 1)));
+        }
+
+        private void MarkAnchorDiagnostic(ItemsControl itemsControl, string state)
+        {
+            anchorDiagnostic = string.IsNullOrWhiteSpace(state) ? "unknown" : state;
+            if (itemsControl is DataGrid dataGrid)
+                DataGridScrollDiagnostics.MarkTrigger(dataGrid, "锚点恢复:" + anchorDiagnostic);
         }
 
         private void RestoreSelection(ItemsControl itemsControl, HashSet<string> selection)

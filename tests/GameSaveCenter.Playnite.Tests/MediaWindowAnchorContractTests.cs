@@ -82,6 +82,20 @@ public sealed class MediaWindowAnchorContractTests
     }
 
     [Fact]
+    public void AnchorDiagnosticsRecordExecutionAndSkipReasonsWithoutChangingScrollSemantics()
+    {
+        var codeBehind = Read("src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml.cs");
+
+        Assert.Contains("anchorDiagnostic", codeBehind);
+        Assert.Contains("executing:{anchor.Mode}:attempt={attempt}:reason=collection-refresh", codeBehind);
+        Assert.Contains("completed:{anchor.Mode}:reason=collection-refresh", codeBehind);
+        Assert.Contains("skipped:stale-generation", codeBehind);
+        Assert.Contains("retry:scrollviewer-missing", codeBehind);
+        Assert.Contains("failed:retry-exhausted", codeBehind);
+        Assert.Contains("DataGridScrollDiagnostics.MarkTrigger(dataGrid, \"锚点恢复:\" + anchorDiagnostic)", codeBehind);
+    }
+
+    [Fact]
     public void CurrentMediaCardsUseTheBoundedVirtualizingPanel()
     {
         var media = Read("src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml");

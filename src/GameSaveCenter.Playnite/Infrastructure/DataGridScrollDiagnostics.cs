@@ -352,7 +352,15 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 => FindVisualChildren<TextBlock>(cell).Any(text => text.Visibility == Visibility.Visible && !string.IsNullOrWhiteSpace(text.Text));
 
             private ScrollViewer? FindInternalScroller()
-                => FindVisualChildren<ScrollViewer>(grid).FirstOrDefault();
+                => FindVisualChildren<ScrollViewer>(grid)
+                    // A host template may expose more than one ScrollViewer. The
+                    // responsible one is the viewer whose subtree owns the actual
+                    // DataGridRowsPresenter; viewport size alone can select an outer
+                    // page viewer and make the diagnostic offsets meaningless.
+                    .OrderByDescending(viewer => FindDescendant<DataGridRowsPresenter>(viewer) != null)
+                    .ThenByDescending(viewer => viewer.ViewportHeight)
+                    .ThenByDescending(viewer => viewer.ViewportWidth)
+                    .FirstOrDefault();
 
             private static ScrollBar? FindScrollBar(ScrollViewer viewer, Orientation orientation)
                 => FindVisualChildren<ScrollBar>(viewer).FirstOrDefault(bar => bar.Orientation == orientation);
