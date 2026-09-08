@@ -18,10 +18,12 @@ public sealed class BuildIdentityTests
     }
 
     [Fact]
-    public void SameVersionDifferentBuildIsIncompatibleWhenBothIdentitiesAreKnown()
+    public void SameVersionDifferentBuildIsIncompatibleOnlyWhenBothIdentitiesAreKnown()
     {
         Assert.False(WorkerLauncher.IsBuildIdentityCompatible("0.6.73+new-build", "0.6.73+old-build"));
-        Assert.False(WorkerLauncher.IsBuildIdentityCompatible("", "0.6.73+old-build"));
+        Assert.True(WorkerLauncher.IsBuildIdentityCompatible("", "0.6.73+old-build"));
+        Assert.True(WorkerLauncher.IsBuildIdentityCompatible("0.6.73+unknown", "0.6.73+old-build"));
+        Assert.True(WorkerLauncher.IsBuildIdentityCompatible("0.6.73+new-build", "0.6.73+unknown"));
         Assert.True(WorkerLauncher.IsBuildIdentityCompatible("0.6.73+same-build", "0.6.73+same-build"));
     }
 

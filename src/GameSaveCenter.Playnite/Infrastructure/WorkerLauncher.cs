@@ -278,7 +278,10 @@ namespace GameSaveCenter.Playnite.Infrastructure
             public string? ActualVersion { get; }
             public string? ActualBuildIdentity { get; }
             public string Detail { get; }
-            public bool IsHealthy => Status == HealthProbe.Healthy;
+            // An old Worker may not expose BuildIdentity at all. It is still
+            // usable after version/protocol checks, but the log must retain
+            // the explicit unverified status instead of pretending same-source.
+            public bool IsHealthy => Status == HealthProbe.Healthy || Status == HealthProbe.UnknownBuildIdentity;
         }
 
         private async Task<HealthProbeResult> ProbeHealthAsync(TimeSpan timeout, string? expectedVersion, string? expectedBuildIdentity)
@@ -344,7 +347,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
             if (!string.IsNullOrWhiteSpace(expectedBuildIdentity) &&
                 (BuildIdentity.IsUnknown(expectedBuildIdentity) || BuildIdentity.IsUnknown(actualBuildIdentity)))
-                return new HealthProbeResult(HealthProbe.UnknownBuildIdentity, actualVersion, actualBuildIdentity, "Worker 构建身份为空或 unknown，无法证明与插件同源。");
+                return new HealthProbeResult(HealthProbe.UnknownBuildIdentity, actualVersion, actualBuildIdentity, "Worker 构建身份为空或 unknown，按版本/协议兼容，但无法证明与插件同源。");
 
             if (!IsBuildIdentityCompatible(actualBuildIdentity, expectedBuildIdentity))
                 return new HealthProbeResult(HealthProbe.BuildIdentityIncompatible, actualVersion, actualBuildIdentity, "Worker 构建身份不一致。");
@@ -373,8 +376,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
         private static bool IsIncompatible(HealthProbe status)
             => status == HealthProbe.ProtocolIncompatible
                || status == HealthProbe.VersionIncompatible
-               || status == HealthProbe.BuildIdentityIncompatible
-               || status == HealthProbe.UnknownBuildIdentity;
+               || status == HealthProbe.BuildIdentityIncompatible;
 
         private static string DescribeHealth(
             string prefix,
@@ -391,7 +393,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 HealthProbe.ProtocolIncompatible => "协议不兼容",
                 HealthProbe.VersionIncompatible => "版本不兼容",
                 HealthProbe.BuildIdentityIncompatible => "构建身份不兼容",
-                HealthProbe.UnknownBuildIdentity => "构建身份未知",
+                HealthProbe.UnknownBuildIdentity => "构建身份未验证（按版本/协议兼容）",
                 _ => "Worker 拒绝请求"
             };
             return $"{prefix}健康探测：{status}；详情={probe.Detail}；实际版本={Display(probe.ActualVersion)}，期望版本={Display(expectedVersion)}；实际构建身份={Display(probe.ActualBuildIdentity)}，期望构建身份={Display(expectedBuildIdentity)}。";
@@ -405,8 +407,9 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
         internal static bool IsBuildIdentityCompatible(string? actual, string? expected)
             => string.IsNullOrWhiteSpace(expected)
-               || (!string.IsNullOrWhiteSpace(actual) &&
-                   string.Equals(actual, expected, StringComparison.OrdinalIgnoreCase));
+               || BuildIdentity.IsUnknown(actual)
+               || BuildIdentity.IsUnknown(expected)
+               || string.Equals(actual, expected, StringComparison.OrdinalIgnoreCase);
 
         private static void AppendLog(string? path, string? message)
         {

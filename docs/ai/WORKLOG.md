@@ -5598,3 +5598,16 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 为 `LargeLibraryPerformanceTests.GamePicker2000_Benchmark_WritesMeasuredTimings` 增加宽松的 2000 条数据更新上限：首次/单项变化更新及任务首次替换 5 秒，未变化替换 1 秒。
 - 继续保留详细耗时写入 `large-library.txt` 的 profiling 行为；门槛只用于拦截数量级退化或明显卡死，不替代真实 Playnite 帧率验收。
 - 同步更新 `docs/ai/PERFORMANCE_BASELINE.md`，明确自动门禁与离线 profiling 的边界。
+# 2026-09-08 Q6-04 构建身份兼容边界修正
+
+**实现：**
+
+- 修正 `WorkerLauncher` 对旧 Worker 空构建身份和 `+unknown` 的处理：版本/协议通过后允许继续使用，但保留 `UnknownBuildIdentity` 诊断状态；仅两个已知身份不一致时阻止复用。
+- 更新 `BuildIdentityTests`，覆盖已知身份冲突、旧 Worker 无字段、known/unknown 组合和同源身份。
+
+**当前验证：**
+
+- 定向 Playnite 测试 `BuildIdentityTests`：`3/3` 通过。
+- 隔离 `scripts/package.ps1` 正常包、`-SkipBuild` 混合 DLL、脏工作树、无 Git/环境变量恢复验证尚未完成；尚未操作真实 Playnite 安装目录。
+
+**下一步：** 完成隔离包正负例并同步最终构建/打包证据。

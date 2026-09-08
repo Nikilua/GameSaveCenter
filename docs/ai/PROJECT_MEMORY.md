@@ -2,6 +2,11 @@
 
 > 维护时间：2026-09-08
 
+## 2026-09-08 Q6-04 构建身份兼容边界修正（包验收进行中）
+
+- `WorkerLauncher` 仅在实际身份与期望身份都已知且不一致时判定不可复用。旧 Worker 没有 `BuildIdentity`，或任一身份包含 `+unknown`，仍按公共版本/协议继续工作，但健康结果明确标记为“构建身份未验证”，不伪造同源证明。
+- `IsBuildIdentityCompatible` 将空/unknown 视为不可验证而非冲突；同版本两个已知提交不同仍返回不兼容。定向 `BuildIdentityTests` 已覆盖这三类边界，包脚本的隔离负例待本阶段继续完成。
+
 ## 2026-09-08 Q6-03 运维云端告警归并
 
 - `DashboardViewModel.MaintenanceActions.cs` 的云端来源必须先合并再筛告警：`Snapshot.CloudTransfers.Items` 和分页 `CloudTransferItems` 按 `TransferKey` 聚合，`UpdatedUtc` 较新者胜出，同时间分页明细优先。不能先 `Where(IsAttention)` 再 `GroupBy`，否则旧 Failed 会遮住已 Uploaded/RemoteVerified 的新状态。
