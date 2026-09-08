@@ -35,6 +35,7 @@ namespace GameSaveCenter.Playnite.Views
         private bool dialogShowsResult;
         private bool choiceDialog;
         private bool confirmationOpen;
+        private string activeDialogDetailMessage = string.Empty;
         private bool responsiveLayoutPending;
         private bool compactGameBrowserOpen;
         private Size pendingResponsiveSize;
@@ -1076,7 +1077,7 @@ namespace GameSaveCenter.Playnite.Views
             // Keep notifications in the native page-local toast. WPF-UI's SnackbarPresenter
             // contains deferred Border.CornerRadius resources that are unsafe in Playnite's host
             // layout and must never be allowed to destabilize the extension window.
-            ShowToast(e.Title, e.Message, e.Kind);
+            ShowToast(e.Title, e.Message, e.Kind, e.DetailMessage);
         }
 
         private void OnUiConfirmationRequested(object? sender, UiConfirmationEventArgs e)
@@ -1155,7 +1156,9 @@ namespace GameSaveCenter.Playnite.Views
             choiceDialog = false;
             DialogNeverButton.Visibility = Visibility.Collapsed;
             DialogLaterButton.Visibility = Visibility.Collapsed;
+            DialogCopyButton.Visibility = Visibility.Collapsed;
             dialogShowsResult = false;
+            activeDialogDetailMessage = string.Empty;
             DialogTitleText.Text = request.Title;
             DialogMessageText.Text = request.Message;
             DialogCancelButton.Content = request.CancelText;
@@ -1174,6 +1177,7 @@ namespace GameSaveCenter.Playnite.Views
             DialogTitleText.Text = request.Title;
             DialogMessageText.Text = request.Message;
             DialogCancelButton.Visibility = Visibility.Collapsed;
+            DialogCopyButton.Visibility = Visibility.Collapsed;
             DialogLaterButton.Content = request.LaterText;
             DialogLaterButton.Visibility = Visibility.Visible;
             DialogNeverButton.Content = request.NeverText;
@@ -1190,11 +1194,16 @@ namespace GameSaveCenter.Playnite.Views
             activeConfirmation = null;
             confirmationOpen = true;
             dialogShowsResult = true;
+            activeDialogDetailMessage = string.IsNullOrWhiteSpace(message) ? "未知错误" : message;
             DialogTitleText.Text = title;
-            DialogMessageText.Text = message;
+            DialogMessageText.Text = activeDialogDetailMessage;
+            DialogCopyButton.Content = "复制详情";
             DialogCancelButton.Visibility = Visibility.Collapsed;
             DialogLaterButton.Visibility = Visibility.Collapsed;
             DialogNeverButton.Visibility = Visibility.Collapsed;
+            DialogCopyButton.Visibility = string.IsNullOrWhiteSpace(activeDialogDetailMessage)
+                ? Visibility.Collapsed
+                : Visibility.Visible;
             DialogConfirmButton.Content = "关闭";
             DialogConfirmButton.SetResourceReference(Control.BackgroundProperty, "GscAccentBrush");
             DialogConfirmButton.SetResourceReference(Control.BorderBrushProperty, "GscAccentBrush");
@@ -1221,6 +1230,34 @@ namespace GameSaveCenter.Playnite.Views
         }
 
         private void OnDialogCancelClick(object sender, RoutedEventArgs e) => CompleteDialog(false);
+
+        private async void OnDialogCopyClick(object sender, RoutedEventArgs e)
+        {
+            var detail = activeDialogDetailMessage;
+            if (string.IsNullOrWhiteSpace(detail)) return;
+
+            for (var attempt = 0; attempt < 4; attempt++)
+            {
+                try
+                {
+                    Clipboard.SetText(detail);
+                    if (string.Equals(activeDialogDetailMessage, detail, StringComparison.Ordinal))
+                        DialogCopyButton.Content = "已复制";
+                    return;
+                }
+                catch (Exception) when (attempt < 3)
+                {
+                    await Task.Delay(150 + attempt * 100).ConfigureAwait(true);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex, "GameSaveCenter failed to copy notification detail.");
+                    if (string.Equals(activeDialogDetailMessage, detail, StringComparison.Ordinal))
+                        DialogCopyButton.Content = "重试复制";
+                    return;
+                }
+            }
+        }
 
         private void OnDialogLaterClick(object sender, RoutedEventArgs e) => CompleteChoice(ProtectionPromptChoice.Later);
 
@@ -1262,6 +1299,9 @@ namespace GameSaveCenter.Playnite.Views
             confirmationOpen = false;
             dialogShowsResult = false;
             choiceDialog = false;
+            activeDialogDetailMessage = string.Empty;
+            DialogCopyButton.Visibility = Visibility.Collapsed;
+            DialogCopyButton.Content = "复制详情";
             DialogOverlay.Visibility = Visibility.Collapsed;
             DialogCard.BeginAnimation(OpacityProperty, null);
             DialogCard.Opacity = 0;
@@ -1309,7 +1349,7 @@ namespace GameSaveCenter.Playnite.Views
             if (target is TextBox textBox) textBox.SelectAll();
         }
 
-        private void ShowToast(string title, string message, UiNotificationKind kind)
+        private void ShowToast(string title, string message, UiNotificationKind kind, string detailMessage)
         {
             var accentKey = kind == UiNotificationKind.Error ? "GscErrorBrush"
                 : kind == UiNotificationKind.Warning ? "GscWarningBrush"
@@ -1339,11 +1379,13 @@ namespace GameSaveCenter.Playnite.Views
             messageText.ToolTip = message;
             textPanel.Children.Add(titleText);
             textPanel.Children.Add(messageText);
-            if (kind == UiNotificationKind.Error)
+            var hasDistinctDetail = !string.IsNullOrWhiteSpace(detailMessage)
+                && !string.Equals(detailMessage, message, StringComparison.Ordinal);
+            if (kind == UiNotificationKind.Error || hasDistinctDetail)
             {
                 var details = new Button { Content = "查看详情", HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(0, 7, 0, 0), Padding = new Thickness(8, 4, 8, 4), MinHeight = 28 };
                 details.Style = (Style)Resources["GscButtonBase"];
-                details.Click += (_, __) => ShowResultDialog(title, message);
+                details.Click += (_, __) => ShowResultDialog(title, detailMessage);
                 textPanel.Children.Add(details);
             }
             layout.Children.Add(textPanel);

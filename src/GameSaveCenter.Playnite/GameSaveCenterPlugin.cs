@@ -796,6 +796,13 @@ namespace GameSaveCenter.Playnite
                 AddNotification("Info", message, NotificationType.Info);
         }
 
+        public void ShowWarning(string message)
+        {
+            logger.Warn(message);
+            if (!RaiseUiNotification("需要留意", message, UiNotificationKind.Warning))
+                AddNotification("Warning", message, NotificationType.Info);
+        }
+
         public async Task<bool> ConfirmAsync(string title, string message, string confirmText = "确认", string cancelText = "取消", bool isDangerous = false)
         {
             var args = new UiConfirmationEventArgs(title, message, confirmText, cancelText, isDangerous);
@@ -844,7 +851,7 @@ namespace GameSaveCenter.Playnite
             var kind = task.State == TaskState.Failed ? UiNotificationKind.Error
                 : task.State == TaskState.Cancelled ? UiNotificationKind.Warning
                 : UiNotificationKind.Success;
-            if (!RaiseUiNotification(TaskNotificationTitle(task), text, kind))
+            if (!RaiseUiNotification(TaskNotificationTitle(task), text, kind, BuildTaskNotificationDetail(task, game)))
                 AddNotification("Task." + task.TaskId, text, task.State == TaskState.Failed ? NotificationType.Error : NotificationType.Info);
         }
 
@@ -855,11 +862,23 @@ namespace GameSaveCenter.Playnite
             return "后台任务完成";
         }
 
-        private bool RaiseUiNotification(string title, string message, UiNotificationKind kind)
+        private static string BuildTaskNotificationDetail(TaskStatusDto task, string game)
+        {
+            var builder = new StringBuilder();
+            builder.AppendLine($"{game} · {task.TaskTypeDisplay}");
+            builder.AppendLine($"状态：{task.StateDisplay}");
+            if (!string.IsNullOrWhiteSpace(task.DetailMessage)) builder.AppendLine($"详情：{task.DetailMessage}");
+            if (!string.IsNullOrWhiteSpace(task.ErrorCode)) builder.AppendLine($"错误码：{task.ErrorCode}");
+            if (!string.IsNullOrWhiteSpace(task.TaskId)) builder.AppendLine($"任务 ID：{task.TaskId}");
+            return builder.ToString().TrimEnd();
+        }
+
+        private bool RaiseUiNotification(string title, string message, UiNotificationKind kind, string? detailMessage = null)
         {
             var handler = UiNotificationRequested;
             if (handler == null) return false;
-            var args = new UiNotificationEventArgs(title, LimitNotificationText(message), kind);
+            var summaryLength = kind == UiNotificationKind.Success || kind == UiNotificationKind.Information ? 180 : 320;
+            var args = new UiNotificationEventArgs(title, LimitNotificationText(message, summaryLength), kind, detailMessage ?? message);
             if (!TryInvokeUi(() => handler(this, args), "notification request")) return false;
             return args.Handled;
         }
@@ -1021,10 +1040,10 @@ namespace GameSaveCenter.Playnite
             }
         }
 
-        private static string LimitNotificationText(string text)
+        private static string LimitNotificationText(string text, int maximumLength = 320)
         {
             if (string.IsNullOrWhiteSpace(text)) return "未知错误";
-            const int maximumLength = 320;
+            if (maximumLength < 1) maximumLength = 1;
             return text.Length <= maximumLength ? text : text.Substring(0, maximumLength) + "…";
         }
 

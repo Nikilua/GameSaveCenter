@@ -1,6 +1,13 @@
 # GameSaveCenter 当前事实入口
 
-> 更新时间：2026-09-08。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
+> 更新时间：2026-09-09。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
+
+## 2026-09-09 L11 通知、长错误与复制详情已完成（真实宿主待验收）
+
+- 通知事件现在同时携带短摘要和完整 `DetailMessage`：普通成功/信息摘要限制为 180 字符，错误/警告保留 320 字符摘要；任务详情仍保留完整错误码、任务 ID 和原始详情，不再把截断摘要当作唯一证据。
+- Dashboard 错误 Toast 的“查看详情”打开可滚动的完整详情，并提供“复制详情”；复制绑定点击时捕获的详情快照，复制重试完成后会检查当前对话框仍是同一详情，不会改写新错误。长成功/警告消息若有独立详情也可进入同一详情面板，常规反馈不再堆成长卡片。
+- 取消任务使用 `UiNotificationKind.Warning`；未改变任务重试、取消确认、诊断包或 Playnite 宿主保存语义，也没有把所有错误改成模态弹窗。
+- 验证：Release 构建 `0 warning/0 error`；Core `72/72`、Worker `303/304`（1 跳过）、Playnite `398/460`（62 跳过）；`validate-source.py`、XAML `19/19`、`git diff --check` 通过。完整离屏 `render-qa` 仍只报已有媒体小视口/侧栏快速切换问题，未报通知相关问题；真实 Playnite/FusionX 多任务连续完成、长错误复制和宿主通知回退仍待验收。
 
 ## 2026-09-08 L10 设置修改、错误定位与取消体验已完成（真实宿主待验收）
 

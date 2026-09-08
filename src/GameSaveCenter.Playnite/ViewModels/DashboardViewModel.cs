@@ -3578,7 +3578,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                 await plugin.EnsureWorkerAsync();
                 var response = await plugin.RequestAsync<CancelTaskResultDto>(MessageTypes.CancelTask, new CancelTaskRequestDto { TaskId = taskId });
                 StatusMessage = response.Cancelled ? "已发送取消请求" : "任务已经结束或无法取消";
-                plugin.ShowInfo(StatusMessage);
+                if (response.Cancelled) plugin.ShowWarning(StatusMessage);
+                else plugin.ShowInfo(StatusMessage);
                 await RefreshDashboardAsync(false, false);
             }
             catch (OperationCanceledException)

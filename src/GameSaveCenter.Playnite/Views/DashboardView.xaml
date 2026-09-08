@@ -1281,10 +1281,17 @@
                     </Grid.RowDefinitions>
                     <StackPanel>
                         <TextBlock x:Name="DialogTitleText" Style="{StaticResource GscRedesignFeedbackDialogTitle}"/>
-                        <TextBlock x:Name="DialogMessageText" Style="{StaticResource GscRedesignFeedbackDialogMessage}"/>
+                        <ScrollViewer MaxHeight="420"
+                                      Margin="0,10,0,0"
+                                      VerticalScrollBarVisibility="Auto"
+                                      HorizontalScrollBarVisibility="Disabled"
+                                      CanContentScroll="True">
+                            <TextBlock x:Name="DialogMessageText" Style="{StaticResource GscRedesignFeedbackDialogMessage}" Margin="0"/>
+                        </ScrollViewer>
                     </StackPanel>
                     <Border Grid.Row="1" Height="1" Background="{DynamicResource GscDividerBrush}" Margin="0,18,0,16"/>
                     <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button x:Name="DialogCopyButton" Style="{StaticResource GscButtonBase}" Click="OnDialogCopyClick" Content="复制详情" Visibility="Collapsed" Margin="0,0,8,8"/>
                         <Button x:Name="DialogNeverButton" Style="{StaticResource GscButtonBase}" Click="OnDialogNeverClick" Content="不再提醒" Visibility="Collapsed"/>
                         <Button x:Name="DialogLaterButton" Style="{StaticResource GscButtonBase}" Click="OnDialogLaterClick" Content="以后再说" Visibility="Collapsed"/>
                         <Button x:Name="DialogCancelButton" Style="{StaticResource GscButtonBase}" Click="OnDialogCancelClick" Content="取消"/>

@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-09 L11 通知、长错误与复制详情
+
+- 盘点现有反馈链路后确认：插件通知在进入 Dashboard 前统一被截断到 320 字符，错误 Toast 的详情按钮也只拿到截断文本；这会丢失长路径、错误码和任务 ID，成功长消息还会把 Toast 撑成不可扫读的多行卡片。
+- `UiNotificationEventArgs` 新增完整 `DetailMessage`；通知摘要按成功/信息 180 字符、错误/警告 320 字符限长。任务终态建立完整详情文本，保留状态、原始 `DetailMessage`、`ErrorCode` 和 `TaskId`；取消任务通过 `ShowWarning` 保持取消与成功的视觉语义分离。
+- Dashboard 结果对话框的正文改为有限滚动区，错误和有独立详情的长通知显示“查看详情”，对话框提供“复制详情”。复制使用当前详情快照和短暂异步重试，旧 Toast 在对话框切换后不会异步改写新内容；没有把普通错误扩展成全局模态弹窗。
+- 验证：Release 构建 0 warning/0 error；Core `72/72`、Worker `303/304`（1 跳过）、Playnite `398/460`（62 跳过）；`validate-source.py`、`check-xaml.ps1`（19/19）、`git diff --check` 通过。L11 的完整 `render-qa` 仍被既有媒体小视口和侧栏 rapid-toggle 门禁阻断，报告没有新增 Settings/通知问题；真实 Playnite/FusionX 仍待宿主验收。
+
 ## 2026-09-08 L10 设置修改、错误定位与取消体验
 
 - 复核 L09 后发现两个实际缺口：错误摘要只能看，切到隐藏分类需要人工找；ToggleSwitch 和毛玻璃 Slider 改值没有统一排入设置状态刷新。现有 `GameSaveCenterSettings` 模型已经覆盖指纹、DeviceId 排除、CancelEdit 和导入无变异，因此没有重写设置生命周期。

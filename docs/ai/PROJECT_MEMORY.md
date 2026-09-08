@@ -1,6 +1,13 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
-> 维护时间：2026-09-08
+> 维护时间：2026-09-09
+
+## 2026-09-09 L11 通知、长错误与复制详情
+
+- `UiNotificationEventArgs` 的 `Message` 只用于短摘要，`DetailMessage` 保留完整文本。`GameSaveCenterPlugin.RaiseUiNotification` 按成功/信息与错误/警告使用不同摘要上限；任务终态详情额外包含状态、错误码和任务 ID。
+- Dashboard 只在 Toast 位置显示摘要；错误或存在独立详情的长消息通过“查看详情”打开共享结果对话框。对话框消息区使用有限 `ScrollViewer`，复制按钮使用详情快照并在异步重试后确认当前对话框仍对应同一文本，避免旧反馈覆盖新反馈。
+- 取消任务从 `ShowInfo` 改为 `ShowWarning`，宿主没有 `NotificationType.Warning` 时仍回退到现有 Info 通知；没有新增弹窗式错误流程、没有改任务集合/重试/取消业务语义。
+- 新增 `UiFeedbackTests` 与 `NotificationFeedbackSourceTests`。Release 构建 0 警告/错误；全量 Core `72/72`、Worker `303/304`（1 跳过）、Playnite `398/460`（62 跳过）；源码/XAML/差异检查通过。离屏 `render-qa` 的既有媒体小视口/侧栏快速切换问题继续独立记录，真实宿主通知回退、DPI 和录屏未完成。
 
 ## 2026-09-08 L10 设置修改、错误定位与取消体验
 
