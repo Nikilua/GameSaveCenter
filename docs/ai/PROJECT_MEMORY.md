@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-08
 
+## 2026-09-08 Q6-03 运维云端告警归并
+
+- `DashboardViewModel.MaintenanceActions.cs` 的云端来源必须先合并再筛告警：`Snapshot.CloudTransfers.Items` 和分页 `CloudTransferItems` 按 `TransferKey` 聚合，`UpdatedUtc` 较新者胜出，同时间分页明细优先。不能先 `Where(IsAttention)` 再 `GroupBy`，否则旧 Failed 会遮住已 Uploaded/RemoteVerified 的新状态。
+- `MaintenanceCloudTransferMergeResult` 同时给出被新明细解决的快照告警数和明细新增告警数，用于修正“未全部加载”的剩余数量与维护摘要；这避免旧摘要计数在已解决记录消失后继续生成伪造占位。
+- 时间语义固定：恢复巡检使用 `LastVerifiedDisplay`，云端使用 `LastAttemptDisplay`，隔离账本使用 `LedgerUpdatedDisplay`；上传尝试不再显示为远端验证成功。
+- `MaintenanceCloudTransferResolverTests` 5 项通过。真实 Playnite 分页刷新、状态更新、故障注入和维护页录屏仍未完成，代码测试不能替代宿主验收。
+
 ## 2026-09-08 Q6-02 媒体状态按上下文隔离
 
 - `DashboardViewModel.WorkspaceStates.cs` 现在用 `MediaWorkspaceStateCache` 保存媒体详情/收件箱状态，成功时间和错误只属于当前上下文；详情上下文由游戏 ID、媒体筛选、搜索词组成，收件箱上下文由待归类/已忽略模式组成。

@@ -14,6 +14,82 @@ public enum MaintenanceActionKind
     RetentionQuarantine
 }
 
+internal sealed class MaintenanceCloudTransferMergeResult
+{
+    public MaintenanceCloudTransferMergeResult(
+        IReadOnlyList<CloudTransferStatusDto> items,
+        int supersededSnapshotAttentionCount,
+        int addedAttentionCount)
+    {
+        Items = items;
+        SupersededSnapshotAttentionCount = supersededSnapshotAttentionCount;
+        AddedAttentionCount = addedAttentionCount;
+    }
+
+    public IReadOnlyList<CloudTransferStatusDto> Items { get; }
+    public int SupersededSnapshotAttentionCount { get; }
+    public int AddedAttentionCount { get; }
+
+    public int GetEffectiveAttentionCount(int snapshotAttentionCount)
+        => Math.Max(0, snapshotAttentionCount - SupersededSnapshotAttentionCount + AddedAttentionCount);
+}
+
+/// <summary>
+/// Merges the dashboard snapshot and independently paged cloud rows before deciding
+/// whether a transfer still needs attention. The detail page wins ties; otherwise the
+/// durable UpdatedUtc is the source of truth for the latest state.
+/// </summary>
+internal static class MaintenanceCloudTransferResolver
+{
+    public static MaintenanceCloudTransferMergeResult Resolve(
+        IEnumerable<CloudTransferStatusDto>? snapshotItems,
+        IEnumerable<CloudTransferStatusDto>? loadedItems)
+    {
+        var candidates = (snapshotItems ?? Enumerable.Empty<CloudTransferStatusDto>())
+            .Select(item => new Candidate(item, 0))
+            .Concat((loadedItems ?? Enumerable.Empty<CloudTransferStatusDto>())
+                .Select(item => new Candidate(item, 1)))
+            .ToList();
+
+        var merged = new List<CloudTransferStatusDto>();
+        var supersededSnapshotAttention = 0;
+        var addedAttention = 0;
+        foreach (var group in candidates.GroupBy(candidate => candidate.Item.TransferKey, StringComparer.OrdinalIgnoreCase))
+        {
+            var latest = group
+                .OrderBy(candidate => candidate.Item.UpdatedUtc)
+                .ThenBy(candidate => candidate.SourcePriority)
+                .Last();
+            merged.Add(latest.Item);
+
+            var snapshot = group.Where(candidate => candidate.SourcePriority == 0).ToList();
+            var snapshotHadAttention = snapshot.Any(candidate => IsAttention(candidate.Item));
+            var latestNeedsAttention = IsAttention(latest.Item);
+            if (snapshotHadAttention && !latestNeedsAttention && latest.SourcePriority > 0)
+                supersededSnapshotAttention++;
+            else if (latestNeedsAttention && !snapshotHadAttention)
+                addedAttention++;
+        }
+
+        return new MaintenanceCloudTransferMergeResult(merged, supersededSnapshotAttention, addedAttention);
+    }
+
+    public static bool IsAttention(CloudTransferStatusDto item)
+        => item.State is "RetryScheduled" or "AuthenticationRequired" or "CheckFailed" or "Failed";
+
+    private sealed class Candidate
+    {
+        public Candidate(CloudTransferStatusDto item, int sourcePriority)
+        {
+            Item = item;
+            SourcePriority = sourcePriority;
+        }
+
+        public CloudTransferStatusDto Item { get; }
+        public int SourcePriority { get; }
+    }
+}
+
 /// <summary>
 /// One concrete next step in the maintenance overview. The payload identifies the
 /// existing record that the action operates on; the view never invents a bulk repair.
@@ -26,8 +102,15 @@ public sealed class MaintenanceActionItem
     public string StatusDisplay { get; set; } = string.Empty;
     public string Detail { get; set; } = string.Empty;
     public string LastVerifiedDisplay { get; set; } = "尚未验证";
+    public string LastAttemptDisplay { get; set; } = "尚未尝试";
+    public string LedgerUpdatedDisplay { get; set; } = "尚未更新";
     public string NextAttemptDisplay { get; set; } = "待安排";
-    public string TimingDisplay => $"上次验证：{LastVerifiedDisplay} · 下次尝试：{NextAttemptDisplay}";
+    public string TimingDisplay => ActionKind switch
+    {
+        MaintenanceActionKind.CloudTransfer => $"上次尝试：{LastAttemptDisplay} · 下次尝试：{NextAttemptDisplay}",
+        MaintenanceActionKind.RetentionQuarantine => $"账本更新：{LedgerUpdatedDisplay} · 下次尝试：{NextAttemptDisplay}",
+        _ => $"上次验证：{LastVerifiedDisplay} · 下次尝试：{NextAttemptDisplay}"
+    };
     public string ActionText { get; set; } = string.Empty;
     public string ActionToolTip { get; set; } = string.Empty;
     public MaintenanceActionKind ActionKind { get; set; }
@@ -48,7 +131,10 @@ public sealed partial class DashboardViewModel
     {
         get
         {
-            var cloudCount = Snapshot.CloudTransfers?.AttentionCount ?? 0;
+            var cloudMerge = MaintenanceCloudTransferResolver.Resolve(
+                Snapshot.CloudTransfers?.Items,
+                CloudTransferItems);
+            var cloudCount = cloudMerge.GetEffectiveAttentionCount(Snapshot.CloudTransfers?.AttentionCount ?? 0);
             var quarantineCount = PendingQuarantineEntries.Count;
             return $"恢复巡检：{Snapshot.HealthInspection?.LastStatusDisplay ?? "尚未运行"} · 云端待处理：{cloudCount} · 隔离账本：{quarantineCount} 项";
         }
@@ -82,12 +168,12 @@ public sealed partial class DashboardViewModel
             ActionKind = MaintenanceActionKind.HealthInspection
         });
 
+        var cloudMerge = MaintenanceCloudTransferResolver.Resolve(
+            Snapshot.CloudTransfers?.Items,
+            CloudTransferItems);
         var knownCloudKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        var cloudItems = (Snapshot.CloudTransfers?.Items ?? new List<CloudTransferStatusDto>())
-            .Concat(CloudTransferItems)
-            .Where(IsCloudAttentionItem)
-            .GroupBy(item => item.TransferKey, StringComparer.OrdinalIgnoreCase)
-            .Select(group => group.Last())
+        var cloudItems = cloudMerge.Items
+            .Where(MaintenanceCloudTransferResolver.IsAttention)
             .OrderBy(item => item.NextAttemptUtc ?? DateTime.MaxValue)
             .ThenBy(item => item.GameName, StringComparer.OrdinalIgnoreCase)
             .ToList();
@@ -107,7 +193,7 @@ public sealed partial class DashboardViewModel
                 Detail = string.IsNullOrWhiteSpace(transfer.LastError)
                     ? transfer.GuaranteeLevelDisplay
                     : $"{transfer.GuaranteeLevelDisplay} · {transfer.LastError}",
-                LastVerifiedDisplay = transfer.LastAttemptUtc?.ToLocalTime().ToString("yyyy-MM-dd HH:mm") ?? "尚未尝试",
+                LastAttemptDisplay = transfer.LastAttemptUtc?.ToLocalTime().ToString("yyyy-MM-dd HH:mm") ?? "尚未尝试",
                 NextAttemptDisplay = next,
                 ActionText = "打开云队列",
                 ActionToolTip = "打开这条真实云端传输记录；重试或远端 check 仍沿用原有状态与确认边界。",
@@ -118,7 +204,7 @@ public sealed partial class DashboardViewModel
             });
         }
 
-        var totalCloudAttention = Snapshot.CloudTransfers?.AttentionCount ?? 0;
+        var totalCloudAttention = cloudMerge.GetEffectiveAttentionCount(Snapshot.CloudTransfers?.AttentionCount ?? 0);
         if (totalCloudAttention > knownCloudKeys.Count)
         {
             items.Add(new MaintenanceActionItem
@@ -128,7 +214,7 @@ public sealed partial class DashboardViewModel
                 Title = $"还有 {totalCloudAttention - knownCloudKeys.Count} 项云端记录待处理",
                 StatusDisplay = "未全部加载",
                 Detail = "维护页只列当前已加载的真实记录；打开云队列可继续分页查看，不会把加载窗口当成全集。",
-                LastVerifiedDisplay = Snapshot.GeneratedLocal.ToString("yyyy-MM-dd HH:mm"),
+                LastAttemptDisplay = "摘要未列出明细",
                 NextAttemptDisplay = Snapshot.CloudTransfers?.NextAttemptLocal?.ToString("yyyy-MM-dd HH:mm") ?? "按队列状态",
                 ActionText = "查看全部队列",
                 ActionToolTip = "打开云端队列并保留服务端分页、筛选和一致性校验。",
@@ -150,7 +236,7 @@ public sealed partial class DashboardViewModel
                 Title = $"待恢复文件 · {location}",
                 StatusDisplay = GetQuarantineStateDisplay(entry.State),
                 Detail = $"游戏 {DisplayGameName(entry.PlayniteId, entry.PlayniteId)} · {detail}",
-                LastVerifiedDisplay = entry.UpdatedUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm"),
+                LedgerUpdatedDisplay = entry.UpdatedUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm"),
                 NextAttemptDisplay = entry.State == RetentionQuarantineState.RecoveryRequired ? "需人工确认" : "Worker 下次启动时协调",
                 ActionText = "再次协调",
                 ActionToolTip = "只针对这条已持久化账本执行安全检查；遇到路径或文件身份冲突会保留并标记人工处理。",
@@ -204,9 +290,6 @@ public sealed partial class DashboardViewModel
                 return;
         }
     }
-
-    private static bool IsCloudAttentionItem(CloudTransferStatusDto item)
-        => item.State is "RetryScheduled" or "AuthenticationRequired" or "CheckFailed" or "Failed";
 
     private string DisplayGameName(string playniteId, string fallback)
         => Games.FirstOrDefault(game => string.Equals(game.PlayniteId, playniteId, StringComparison.OrdinalIgnoreCase))?.Name

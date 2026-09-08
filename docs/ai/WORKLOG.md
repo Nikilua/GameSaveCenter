@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-08 Q6-03 运维云端告警归并收口
+
+- 复现并确认顺序错误：`Snapshot.CloudTransfers.Items.Concat(CloudTransferItems)` 之后先执行 `Where(IsCloudAttentionItem)`，再按 `TransferKey` 取最后一条；旧快照 Failed 会令新分页 Uploaded 根本不进入分组。`LastAttemptUtc` 同时被写入“上次验证”，时间语义也不准确。
+- 抽出 `MaintenanceCloudTransferResolver`：全部来源先以 `UpdatedUtc` 合并，同一时间由分页明细优先，再筛 `RetryScheduled/AuthenticationRequired/CheckFailed/Failed`。结果记录快照中被解决的告警和明细新增告警，用于同步修正总数/剩余占位。
+- `MaintenanceActionItem.TimingDisplay` 按动作类别区分“上次验证/上次尝试/账本更新”；真实业务命令、分页和安全确认边界未改。
+- 新增 `MaintenanceCloudTransferResolverTests` 5 项：新成功覆盖旧失败、新失败覆盖旧成功、同时间优先、摘要计数修正、时间标签。Release 全量 Core `72/72`、Worker `303/304`（1 跳过）、Playnite `385/447`（62 跳过），构建 0 warning/error，源码校验通过。
+- 本阶段没有 XAML/布局变化，未把本阶段代码测试写成真实 Playnite 告警刷新或录屏证据；宿主故障注入仍待完成。
+
 ## 2026-09-08 Q6-02 媒体状态上下文隔离收口
 
 - 复核确认 `mediaDetailsLastSuccessUtc`、`mediaInboxLastSuccessUtc` 的单值语义会跨游戏、筛选和收件箱模式泄漏：A 成功后切到无缓存 B 首次失败，旧时间会把 B 误报成 Stale；旧 collection 仍在时也不能用 `Count > 0` 证明它属于当前上下文。
