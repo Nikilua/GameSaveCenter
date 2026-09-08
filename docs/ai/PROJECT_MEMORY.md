@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-09
 
+## 2026-09-09 L21 列表虚拟化与滚动规模实测
+
+- 当前游戏媒体卡片列表必须使用项目已有的 `VirtualizingWrapPanel`；普通 `WrapPanel` 即使配了 `VirtualizingPanel.IsVirtualizing=True` 也会在 200/2000/10000 夹具中生成 200/2000/2000 个卡片，不能作为大库实现。当前 XAML 的 `MediaGrid` 保留 `ItemWidth=164`、`ItemHeight=154`、水平/垂直间距 0，选择和 ListBox 滚动契约不变。
+- L21 离屏规模证据：当前媒体窗口上限 2000；200/2000/10000 后端场景顶部、底部、回顶部均约 20 个卡片容器，200 条往返的 extent/viewport/最大偏移为 `6160/345.33/5814.67`。任务 DataGrid 200/2000/10000 保持个位数行容器，收件箱 10000 后端仍保留 2000 条 UI 窗口；选择 ID、末项稳定 ID 和 resize 后容器均受探针检查。
+- `DataGridScrollDiagnostics` 必须继续被动记录真实内部 `ScrollViewer`/`ScrollContentPresenter`、单位、offset/viewport/extent、首末行 ID/Y/height、行/单元格内容、选择和水平条，不以 `DataGrid.ActualHeight` 代替内部证据。离屏 `ScrollIntoView` 在插件模板和标准 WPF 模板中同样 deferred，不能写成 FusionX 已定位或已修复。
+- 当前阶段没有修改宿主 FusionX、全局样式或关闭 DataGrid 虚拟化；无真实 Playnite/FusionX、DPI 和视频回放，相关验收保持宿主待验收。临时探针证据只保留最新目录，不纳入 Git。
+
 ## 2026-09-09 L20 修改器导入与下载结果反馈
 
 - `DashboardViewModel` 的工具导入必须在检测开始时保存目标游戏 ID/名称；多候选 `ImportEntryCandidates` 的确认不能在返回后重新从 `SelectedGame` 推导目标。游戏切换会清理待确认项并要求重新导入；导入请求完成后只有同一游戏仍被选中时才刷新当前工具详情。

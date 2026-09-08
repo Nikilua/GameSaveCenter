@@ -99,6 +99,30 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains(pinnedCollection, item => item.MediaId == "media-2199");
         }
 
+        [Theory]
+        [InlineData(200, 200)]
+        [InlineData(2000, 2000)]
+        [InlineData(10000, 2000)]
+        public void BackendScaleKeepsTheMediaWindowBounded(int backendCount, int expectedCount)
+        {
+            var collection = new BatchObservableCollection<MediaItemDto>();
+            var accumulator = new MediaPageAccumulator(collection);
+
+            for (var start = 0; start < backendCount; start += 200)
+            {
+                var page = Enumerable.Range(start, Math.Min(200, backendCount - start))
+                    .Select(offset => Media("scale-" + offset))
+                    .ToArray();
+                if (start == 0)
+                    accumulator.ReplaceFirstPage(page, null);
+                else
+                    accumulator.AppendPage(page, null);
+            }
+
+            Assert.Equal(expectedCount, collection.Count);
+            Assert.Equal("scale-" + (backendCount - 1), collection[collection.Count - 1].MediaId);
+        }
+
         private static MediaItemDto Media(string id)
             => new MediaItemDto
             {

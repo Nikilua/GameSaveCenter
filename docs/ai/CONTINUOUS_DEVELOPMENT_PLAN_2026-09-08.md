@@ -230,6 +230,8 @@
 - 目标：2000 项保留窗口和更大的后端库不会导致所有行/卡片实例化。
 - 文件：`VirtualizingWrapPanel.cs`、`MediaPageAccumulator.cs`、媒体/任务视图与 Harness。使用 200/2000/10000 项后端模拟（UI 仍按现有窗口上限），记录已实现容器数、滚动偏移、选择和内存。
 - 验收：连续跨页、锚点部分露出、锚点被裁掉、resize、切模式；保留锚点时 ID 与偏移稳定，裁掉时准确提示。只在测出回归的环节优化，不放宽窗口上限掩盖问题。
+- 状态：已完成离屏规模与滚动回归，真实宿主待验收。实测根因是当前游戏 `MediaGrid` 使用普通 `WrapPanel`，导致 200/2000/10000 后端分别生成 200/2000/2000 个卡片；已切回项目 `VirtualizingWrapPanel`，200/2000/10000 场景顶部、底部、回顶部均保持约 20 个卡片容器。任务表和收件箱表的实际内部滚动诊断、20 次滑块往返、滚轮/PageUp/PageDown/Ctrl+End、resize、选择保持和内存比较已记录；直接 `ScrollIntoView(最后一项)` 与标准 WPF 对照同样在离屏 deferred，因此保留为 `offscreen-inconclusive`，不宣称宿主修复完成。
+- 验证：Release 构建 0 warning/0 error；Core `76/76`、Worker `303/304`（1 跳过）、Playnite `409/471`（62 跳过）；scale/wrap probe 通过。完整 render-qa 的卡片回滚探针通过，剩余为既有 Media 小视口/预览列表和 Sidebar rapid-toggle；`validate-source.py`、XAML、WPF 静态审查和差异检查在最终提交前复核。真实 Playnite/FusionX、DPI、视频录屏、真实宿主模板和用户视频中的 DataGrid 异常仍待验收。
 
 ### L22 缩略图加载、取消与缓存边界
 

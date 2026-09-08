@@ -2,6 +2,13 @@
 
 > 更新时间：2026-09-09。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-09 L21 列表虚拟化与滚动规模实测已完成（真实宿主待验收）
+
+- 根因证据不是任务/收件箱 DataGrid 集合或页面整体移动：规模探针发现当前游戏 `MediaGrid` 的 ItemsPanel 是普通 `WrapPanel`，200/2000/10000 后端夹具分别生成 200/2000/2000 个卡片容器。`VirtualizingPanel.IsVirtualizing` 对普通 WrapPanel 不会产生虚拟化。
+- 生产修复仅将当前游戏 `MediaGrid` 的 ItemsPanel 接回现有 `ui:VirtualizingWrapPanel`，固定卡片几何仍为 164×154、0 间距，ListBox 的选择、绑定、滚动条和模板保持不变。修复后 200/2000/10000 后端场景的当前媒体 UI 窗口为 200/2000/2000，顶部/底部/回顶部均约 20 个容器；任务表和收件箱表继续使用原有 Item 滚动、行列虚拟化与 Recycling。
+- 任务表 200/2000/10000、收件箱 200/2000/10000 的离屏滑块往返、滚轮、PageUp/PageDown、Ctrl+End、resize、选择保持均通过；诊断记录实际 `ScrollViewer`、`ScrollContentPresenter`、offset/viewport/extent、首末稳定 ID/Y/height、单元格内容与水平条状态，未报空正文或选中行内容缺失。直接 `ScrollIntoView(最后一项)` 在插件模板与标准 WPF 对照模板中都未在离屏探针即时定位，保持 `offscreen-inconclusive`。
+- 完成证据：`.tmp/l21-scaleprobe-final/scaleprobe-report.txt`、`.tmp/l21-render-qa-final/render-qa-report.txt`。全量 Render QA 的当前媒体卡片回滚已通过；剩余失败是既有 Media 小视口/预览列表门禁和 Sidebar rapid-toggle，不能写成全量通过。无真实 Playnite/FusionX、DPI 或用户视频回归环境，因此视频中的 DataGrid 空白/文字分离仍需宿主按原验收矩阵复测。
+
 ## 2026-09-09 L20 修改器导入与下载结果反馈已完成（真实宿主待验收）
 
 - 修改器导入检测和下载提交都在异步操作开始时捕获稳定的游戏/目录/版本 ID。多候选导入在检测返回或确认期间切换游戏会被丢弃或取消；成功返回后只有仍在同一游戏时才刷新详情，避免把晚到结果写入错误上下文。

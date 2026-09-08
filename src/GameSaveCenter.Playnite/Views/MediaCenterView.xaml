@@ -478,15 +478,18 @@
                             </ui:Button>
                         </Grid>
                         <ListBox Grid.Row="1" x:Name="MediaGrid" Tag="FiniteViewport" ItemsSource="{Binding MediaView}" SelectedItem="{Binding SelectedMedia}" SelectionChanged="OnMediaSelectionChanged" SelectionMode="Extended" BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
-                            <!-- The current-game view is a bounded card surface (the large
-                                 inbox remains a virtualized DataGrid).  Use WPF's stable
-                                 wrap panel here so switching tabs cannot leave recycled
-                                 containers measured but visually empty.  This keeps the
-                                 project's ScrollViewer/ScrollBar resources while avoiding
-                                 a custom IScrollInfo implementation in the card view. -->
+                            <!-- The current-game view is a bounded card surface. Keep the
+                                 production card geometry while using the project's
+                                 IScrollInfo panel so a 2000-item retained window does not
+                                 instantiate every card. The panel owns pixel offsets; the
+                                 surrounding ListBox/ScrollViewer still owns the scrollbar
+                                 chrome and selection contract. -->
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <WrapPanel Orientation="Horizontal"/>
+                                    <ui:VirtualizingWrapPanel ItemWidth="164"
+                                                               ItemHeight="154"
+                                                               HorizontalSpacing="0"
+                                                               VerticalSpacing="0"/>
                                 </ItemsPanelTemplate>
                             </ListBox.ItemsPanel>
                             <ListBox.ItemContainerStyle>

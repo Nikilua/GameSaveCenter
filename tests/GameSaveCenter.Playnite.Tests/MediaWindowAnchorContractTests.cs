@@ -82,6 +82,18 @@ public sealed class MediaWindowAnchorContractTests
     }
 
     [Fact]
+    public void CurrentMediaCardsUseTheBoundedVirtualizingPanel()
+    {
+        var media = Read("src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml");
+
+        Assert.Contains("<ui:VirtualizingWrapPanel", media);
+        Assert.Contains("ItemWidth=\"164\"", media);
+        Assert.Contains("ItemHeight=\"154\"", media);
+        Assert.Contains("HorizontalSpacing=\"0\"", media);
+        Assert.Contains("VerticalSpacing=\"0\"", media);
+    }
+
+    [Fact]
     public void StaleRestoreCallbackCannotSurfaceEvictedAnchorAfterContextInvalidation()
     {
         Exception? exception = null;

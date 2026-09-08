@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-09 L21 列表虚拟化与滚动规模实测
+
+- 先用 200/2000/10000 条后端夹具和 20 次顶部/底部/中间滑块往返，记录任务表、媒体收件箱和当前游戏媒体的实际容器、稳定 ID、行/卡片坐标、高度、选择、滚动范围、视口和内存变化。数据表诊断继续只记录 ID、尺寸和状态，不记录文件内容；未用 `Items.Refresh()`、定时 `UpdateLayout()`、强制回顶或关闭虚拟化。
+- 规模探针确认当前游戏 `MediaGrid` 原先仍使用普通 `WrapPanel`：200/2000/10000 后端场景分别实例化 200/2000/2000 张卡片，说明 `VirtualizingPanel.IsVirtualizing` 在该 ItemsPanel 上没有实际效果。修复只把 ItemsPanel 接回已有的 `VirtualizingWrapPanel`，保留 164×154 卡片尺寸、0 间距、ListBox 的选择/滚动条/绑定契约；不是页面 Margin 或固定底部补偿。
+- 修复后当前媒体在 200/2000/10000 后端夹具中 UI 窗口分别为 200/2000/2000，顶部、滚到底、回顶部均约 20 个卡片容器；200 条往返专门探针的 `ExtentHeight=6160`、`ViewportHeight=345.33`、最大偏移 `5814.67`，三次容器数均为 20。任务表后端 200/2000/10000 均保持约 8～10 个行容器，媒体收件箱 UI 窗口在 10000 后端仍为 2000，选择 ID 在往返和 resize 后保持不变。
+- `DataGridScrollDiagnostics` 的离屏记录未出现可见行全空、选中行内容缺失或首行大间隙；滚动到 `ScrollableHeight` 时最后一个稳定 ID 可见且行底未越过实际 `ScrollContentPresenter` 视口。直接 `ScrollIntoView(最后一项)` 在插件模板和隔离标准 WPF DataGrid 中都出现相同的离屏延迟/未定位结果，归类为 `offscreen-inconclusive`，不能据此断言 FusionX 根因或已解决。
+- 验证：Release 构建 0 warning/0 error；Core `76/76`、Worker `303/304`（1 跳过）、Playnite `409/471`（62 跳过）；媒体卡片 scale/wrap probe 通过；全量 render-qa 的卡片回滚探针通过，剩余失败仅为既有 Media 小视口/预览列表阈值和 Sidebar rapid-toggle。`validate-source.py`、XAML `19/19`、WPF 静态审查 `0 errors/21 warnings/172 info`、`git diff --check` 待本阶段最终命令复核。没有真实 Playnite/FusionX、DPI 或用户视频复测，必须继续标记“宿主待验收”。
+
 ## 2026-09-09 L20 修改器导入与下载结果反馈
 
 - 复核现有导入确认、FLiNG 目录/版本、Worker `TrainerDownload` 任务和安全校验链后，没有新增下载协议、自动运行入口或绕过来源/解压校验。下载请求现在在命令开始时捕获游戏、目录和版本 ID；响应回来后只有仍处于同一游戏上下文才刷新工具详情，避免选择变化把结果写回错误页面。

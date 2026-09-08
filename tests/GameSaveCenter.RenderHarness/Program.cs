@@ -10,6 +10,7 @@ using System.Windows.Automation;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -19,6 +20,7 @@ using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.Settings;
 using GameSaveCenter.Playnite.Views;
 using GameSaveCenter.RenderHarness.UiAudit;
+using VirtualizingWrapPanel = GameSaveCenter.Playnite.Controls.VirtualizingWrapPanel;
 using WorkspaceStatePresenter = GameSaveCenter.Playnite.Controls.WorkspaceStatePresenter;
 
 namespace GameSaveCenter.RenderHarness;
@@ -100,6 +102,32 @@ public static class Program
                 : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "gridprobe");
             var probeExitCode = 0;
             var probeThread = new Thread(() => { probeExitCode = RunGridProbeOnly(outputRoot); });
+            probeThread.SetApartmentState(ApartmentState.STA);
+            probeThread.Start();
+            probeThread.Join();
+            return probeExitCode;
+        }
+
+        if (args.Length > 0 && args[0].Equals("scaleprobe", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "scaleprobe");
+            var probeExitCode = 0;
+            var probeThread = new Thread(() => { probeExitCode = RunScaleProbeOnly(outputRoot); });
+            probeThread.SetApartmentState(ApartmentState.STA);
+            probeThread.Start();
+            probeThread.Join();
+            return probeExitCode;
+        }
+
+        if (args.Length > 0 && args[0].Equals("wrapprobe", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "wrapprobe");
+            var probeExitCode = 0;
+            var probeThread = new Thread(() => { probeExitCode = RunWrapProbeOnly(outputRoot); });
             probeThread.SetApartmentState(ApartmentState.STA);
             probeThread.Start();
             probeThread.Join();
@@ -1602,6 +1630,79 @@ public static class Program
         }
     }
 
+    private static int RunScaleProbeOnly(string outputRoot)
+    {
+        Directory.CreateDirectory(outputRoot);
+        var report = new StringBuilder();
+        report.AppendLine("GameSaveCenter L21 large-list virtualization scale probe");
+        report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+        AppendRunMetadata(report, "scaleprobe", "OffscreenRenderHarness", "production default palette", "backend 200/2000/10000; media UI window 2000");
+        report.AppendLine("EvidenceBoundary: offscreen WPF template chain only; real Playnite/FusionX/DPI/video remains host validation");
+        report.AppendLine("AnchorBoundary: page accumulation and stale-anchor contracts are covered by unit/source tests; this probe does not fake a Worker response");
+        report.AppendLine();
+        s_problems.Clear();
+
+        try
+        {
+            var app = new Application();
+            app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+            RunLargeListScaleProbes(report);
+
+            if (s_problems.Count > 0)
+            {
+                report.AppendLine("scaleprobe FAILED");
+                foreach (var problem in s_problems)
+                    report.AppendLine("  PROBLEM " + problem);
+                File.WriteAllText(Path.Combine(outputRoot, "scaleprobe-report.txt"), report.ToString());
+                Console.WriteLine(report.ToString());
+                return 1;
+            }
+
+            report.AppendLine("scaleprobe OK");
+            File.WriteAllText(Path.Combine(outputRoot, "scaleprobe-report.txt"), report.ToString());
+            Console.WriteLine(report.ToString());
+            return 0;
+        }
+        catch (Exception ex)
+        {
+            report.AppendLine("scaleprobe FAILED");
+            report.AppendLine(ex.ToString());
+            File.WriteAllText(Path.Combine(outputRoot, "scaleprobe-report.txt"), report.ToString());
+            Console.Error.WriteLine(ex);
+            return 1;
+        }
+    }
+
+    private static int RunWrapProbeOnly(string outputRoot)
+    {
+        Directory.CreateDirectory(outputRoot);
+        var report = new StringBuilder();
+        report.AppendLine("GameSaveCenter current-game media wrap probe");
+        report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+        s_problems.Clear();
+
+        try
+        {
+            var app = new Application();
+            app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+            RunMediaWrapScrollProbe(report);
+            report.AppendLine(s_problems.Count == 0 ? "wrapprobe OK" : "wrapprobe FAILED");
+            foreach (var problem in s_problems)
+                report.AppendLine("  PROBLEM " + problem);
+            File.WriteAllText(Path.Combine(outputRoot, "wrapprobe-report.txt"), report.ToString());
+            Console.WriteLine(report.ToString());
+            return s_problems.Count == 0 ? 0 : 1;
+        }
+        catch (Exception ex)
+        {
+            report.AppendLine("wrapprobe FAILED");
+            report.AppendLine(ex.ToString());
+            File.WriteAllText(Path.Combine(outputRoot, "wrapprobe-report.txt"), report.ToString());
+            Console.Error.WriteLine(ex);
+            return 1;
+        }
+    }
+
     private static int RunShellChromeQa(string outputRoot)
     {
         Directory.CreateDirectory(outputRoot);
@@ -2194,7 +2295,7 @@ public static class Program
     {
         try
         {
-            var view = new MediaCenterView { DataContext = new FakeDashboardData(60) };
+            var view = new MediaCenterView { DataContext = CreateMediaCardScaleProbeData(200) };
             var host = new Grid
             {
                 Width = 900,
@@ -2228,12 +2329,22 @@ public static class Program
                 return;
             }
 
+            var panel = FindVisualChildren<VirtualizingWrapPanel>(mediaGrid).FirstOrDefault();
+            var generator = mediaGrid.ItemContainerGenerator;
+            var generatorPosition = ((IItemContainerGenerator)generator).GeneratorPositionFromIndex(0);
+            var selectedTabIndex = mediaTabs?.SelectedIndex.ToString() ?? "none";
+            string DescribePanel()
+                => panel == null
+                    ? "panel=missing"
+                    : $"panelChildren={VisualTreeHelper.GetChildrenCount(panel)} panelOffset={panel.VerticalOffset:0.##} panelViewport={panel.ViewportHeight:0.##} panelExtent={panel.ExtentHeight:0.##}";
+            report.AppendLine($"  Media wrap scroll-back probe initial: tab={selectedTabIndex}, listVisibility={mediaGrid.Visibility}/{mediaGrid.IsVisible}, panelVisibility={(panel == null ? "missing" : panel.Visibility + "/" + panel.IsVisible)}, items={mediaGrid.Items.Count}, generatorStatus={generator.Status}, generatorPosition0={generatorPosition.Index}/{generatorPosition.Offset}, scrollerOffset={scroller.VerticalOffset:0.##}, scrollerViewport={scroller.ViewportHeight:0.##}, scrollerExtent={scroller.ExtentHeight:0.##}, {DescribePanel()}");
             scroller.ScrollToVerticalOffset(scroller.ScrollableHeight);
             host.UpdateLayout();
+            report.AppendLine($"  Media wrap scroll-back probe bottom: scrollerOffset={scroller.VerticalOffset:0.##}, scrollerViewport={scroller.ViewportHeight:0.##}, scrollerExtent={scroller.ExtentHeight:0.##}, {DescribePanel()}");
             scroller.ScrollToVerticalOffset(0);
             host.UpdateLayout();
             var realized = FindVisualChildren<ListBoxItem>(mediaGrid).Count();
-            report.AppendLine($"  Media wrap scroll-back probe: items={mediaGrid.Items.Count}, realized={realized}, scrollable={scroller.ScrollableHeight:0.##}");
+            report.AppendLine($"  Media wrap scroll-back probe: items={mediaGrid.Items.Count}, realized={realized}, scrollable={scroller.ScrollableHeight:0.##}, scrollerOffset={scroller.VerticalOffset:0.##}, scrollerViewport={scroller.ViewportHeight:0.##}, scrollerExtent={scroller.ExtentHeight:0.##}, {DescribePanel()}");
             if (mediaGrid.Items.Count > 0 && realized == 0)
                 s_problems.Add("Media wrap scroll-back probe realized no cards after returning to offset 0");
         }
@@ -2241,6 +2352,488 @@ public static class Program
         {
             s_problems.Add("Media wrap scroll probe failed: " + ex.GetType().Name + ": " + ex.Message);
         }
+    }
+
+    private static void RunLargeListScaleProbes(StringBuilder report)
+    {
+        foreach (var backendCount in new[] { 200, 2000, 10000 })
+        {
+            ProbeScaleGrid(
+                report,
+                "L21-Task",
+                backendCount,
+                () => new TaskCenterView { DataContext = CreateTaskScaleProbeData(backendCount) },
+                view => ((TaskCenterView)view).ApplyResponsiveLayout(1100, 640),
+                width: 1100,
+                height: 640);
+
+            ProbeScaleGrid(
+                report,
+                "L21-Media-Inbox",
+                backendCount,
+                () => new MediaCenterView { DataContext = CreateMediaInboxScaleProbeData(backendCount) },
+                view => ((MediaCenterView)view).ApplyResponsiveLayout(2400, 640),
+                width: 2400,
+                height: 640,
+                switchMediaTabs: true);
+
+            ProbeMediaCardScale(report, backendCount);
+        }
+
+        ProbeStandardDataGridScrollContract(report);
+    }
+
+    private static void ProbeStandardDataGridScrollContract(StringBuilder report)
+    {
+        const int itemCount = 2000;
+        var grid = new DataGrid
+        {
+            Width = 900,
+            Height = 300,
+            AutoGenerateColumns = false,
+            HeadersVisibility = DataGridHeadersVisibility.Column,
+            EnableRowVirtualization = true,
+            EnableColumnVirtualization = true,
+            IsReadOnly = true
+        };
+        VirtualizingPanel.SetIsVirtualizing(grid, true);
+        VirtualizingPanel.SetVirtualizationMode(grid, VirtualizationMode.Recycling);
+        VirtualizingPanel.SetScrollUnit(grid, ScrollUnit.Item);
+        ScrollViewer.SetCanContentScroll(grid, true);
+        ScrollViewer.SetHorizontalScrollBarVisibility(grid, ScrollBarVisibility.Auto);
+        ScrollViewer.SetVerticalScrollBarVisibility(grid, ScrollBarVisibility.Auto);
+        grid.Columns.Add(new DataGridTextColumn { Header = "ID", Binding = new Binding("TaskId"), Width = 220 });
+        grid.ItemsSource = Enumerable.Range(0, itemCount)
+            .Select(index => new TaskStatusDto { TaskId = "standard-" + index.ToString("D4") })
+            .ToArray();
+
+        var host = new Grid { Width = 900, Height = 300, ClipToBounds = true };
+        host.Children.Add(grid);
+        host.Measure(new Size(900, 300));
+        host.Arrange(new Rect(0, 0, 900, 300));
+        host.UpdateLayout();
+        var scroller = FindVisualChildren<ScrollViewer>(grid)
+            .OrderByDescending(candidate => candidate.ViewportHeight)
+            .FirstOrDefault();
+        if (scroller == null)
+        {
+            s_problems.Add("L21 standard DataGrid comparison has no internal ScrollViewer");
+            return;
+        }
+
+        scroller.ScrollToVerticalOffset(scroller.ScrollableHeight);
+        host.UpdateLayout();
+        var before = CaptureScaleGrid(grid, scroller);
+        grid.ScrollIntoView(grid.Items[itemCount - 1]);
+        FlushLayoutDispatcher(host);
+        var after = CaptureScaleGrid(grid, scroller);
+        report.AppendLine(
+            $"  L21-Standard-DataGrid items={itemCount} beforeOffset={scroller.VerticalOffset:0.##} "
+            + $"beforeLast={before.LastIndex}:{before.LastId}@{before.LastBottom:0.##} "
+            + $"afterOffset={scroller.VerticalOffset:0.##} afterLast={after.LastIndex}:{after.LastId}@{after.LastBottom:0.##} "
+            + $"presenterBottom={after.PresenterRect.Bottom:0.##} template={grid.Template?.GetType().Name ?? "theme-default"}");
+        if (after.LastIndex != itemCount - 1 || after.LastBottom > after.PresenterRect.Bottom + 1)
+        {
+            report.AppendLine(
+                "  L21-Standard-DataGrid ScrollIntoView result=offscreen-inconclusive; "
+                + "the isolated standard WPF template has the same deferred behavior");
+        }
+    }
+
+    private static void ProbeMediaCardScale(StringBuilder report, int backendCount)
+    {
+        var data = CreateMediaCardScaleProbeData(backendCount);
+        var view = new MediaCenterView { DataContext = data };
+        var host = new Grid
+        {
+            Width = 900,
+            Height = 640,
+            Background = CreateHarnessBackground(view),
+            ClipToBounds = true
+        };
+        host.Children.Add(view);
+        view.ApplyResponsiveLayout(900, 640);
+        host.Measure(new Size(900, 640));
+        host.Arrange(new Rect(0, 0, 900, 640));
+        host.UpdateLayout();
+
+        var tabs = FindVisualChildren<TabControl>(host).FirstOrDefault();
+        if (tabs != null && tabs.Items.Count > 1)
+            tabs.SelectedIndex = 1;
+        host.UpdateLayout();
+
+        var list = FindVisualChildren<ListBox>(host).FirstOrDefault(candidate => candidate.Name == "MediaGrid");
+        var scroller = list == null
+            ? null
+            : FindVisualChildren<ScrollViewer>(list)
+                .OrderByDescending(candidate => candidate.ViewportHeight)
+                .FirstOrDefault();
+        if (list == null || scroller == null)
+        {
+            s_problems.Add($"L21-Media-Cards backend={backendCount} could not find MediaGrid/ScrollViewer");
+            return;
+        }
+
+        var selectedIndex = Math.Max(0, Math.Min(list.Items.Count - 1, list.Items.Count / 2));
+        list.SelectedIndex = selectedIndex;
+        host.UpdateLayout();
+        var selectedId = GetStableId(list.SelectedItem);
+        var topRealized = FindVisualChildren<ListBoxItem>(list).Count();
+        scroller.ScrollToVerticalOffset(scroller.ScrollableHeight);
+        host.UpdateLayout();
+        var bottomRealized = FindVisualChildren<ListBoxItem>(list).Count();
+        var bottomLast = FindVisualChildren<ListBoxItem>(list)
+            .Where(item => item.Visibility == Visibility.Visible)
+            .Select(item => new
+            {
+                Index = list.ItemContainerGenerator.IndexFromContainer(item),
+                Y = item.TransformToAncestor(scroller).Transform(new Point(0, 0)).Y,
+                Height = item.ActualHeight
+            })
+            .OrderBy(item => item.Y)
+            .LastOrDefault();
+        scroller.ScrollToVerticalOffset(0);
+        host.UpdateLayout();
+        var topAfterReturnRealized = FindVisualChildren<ListBoxItem>(list).Count();
+        var itemsPanel = FindVisualChildren<VirtualizingWrapPanel>(list).Any()
+            ? "VirtualizingWrapPanel"
+            : FindVisualChildren<WrapPanel>(list).Any() ? "WrapPanel" : "unknown";
+        report.AppendLine(
+            $"  L21-Media-Cards backend={backendCount} uiItems={list.Items.Count} "
+            + $"scrollable={scroller.ScrollableHeight:0.##} offset={scroller.VerticalOffset:0.##} "
+            + $"realizedTop={topRealized} realizedBottom={bottomRealized} realizedTopAfterReturn={topAfterReturnRealized} "
+            + $"last={(bottomLast == null ? "none" : bottomLast.Index + "@" + bottomLast.Y.ToString("0.##") + "/" + bottomLast.Height.ToString("0.##"))} "
+            + $"selected={selectedId} currentSelected={GetStableId(list.SelectedItem)} itemsPanel={itemsPanel}");
+        if (list.Items.Count != Math.Min(backendCount, MediaPageAccumulator.DefaultCapacity))
+            s_problems.Add($"L21-Media-Cards backend={backendCount} UI window mismatch (items={list.Items.Count})");
+        if (bottomRealized >= list.Items.Count)
+            s_problems.Add($"L21-Media-Cards backend={backendCount} realized every card ({bottomRealized}/{list.Items.Count})");
+        if (topAfterReturnRealized == 0)
+            s_problems.Add($"L21-Media-Cards backend={backendCount} realized no cards after returning to top");
+        if (!string.Equals(selectedId, GetStableId(list.SelectedItem), StringComparison.Ordinal))
+            s_problems.Add($"L21-Media-Cards backend={backendCount} selection changed after scroll");
+    }
+
+    private static FakeDashboardData CreateMediaCardScaleProbeData(int backendCount)
+    {
+        var data = new FakeDashboardData(60);
+        var retained = new BatchObservableCollection<MediaItemDto>();
+        var accumulator = new MediaPageAccumulator(retained);
+        const int pageSize = 200;
+        for (var start = 0; start < backendCount; start += pageSize)
+        {
+            var page = Enumerable.Range(start, Math.Min(pageSize, backendCount - start))
+                .Select(CreateScaleMediaItem)
+                .ToArray();
+            if (start == 0)
+                accumulator.ReplaceFirstPage(page, null);
+            else
+                accumulator.AppendPage(page, null);
+        }
+
+        data.Media.Clear();
+        foreach (var item in retained)
+        {
+            item.PlayniteId = data.SelectedGame.PlayniteId;
+            data.Media.Add(item);
+        }
+        return data;
+    }
+
+    private static FakeDashboardData CreateTaskScaleProbeData(int targetCount)
+    {
+        var retainedSeed = Math.Min(200, Math.Max(8, targetCount));
+        var data = new FakeDashboardData(retainedSeed);
+        for (var index = data.Tasks.Count + 1; index <= targetCount; index++)
+        {
+            var game = data.Games[(index - 1) % data.Games.Count];
+            data.Tasks.Add(new TaskStatusDto
+            {
+                TaskId = "L21-T-" + index.ToString("D5"),
+                TaskType = index % 3 == 0 ? "MediaSync" : "Backup",
+                GameId = game.PlayniteId,
+                GameName = game.Name,
+                State = index % 4 == 0 ? TaskState.Failed : TaskState.Succeeded,
+                ProgressPercent = index % 4 == 0 ? 0 : 100,
+                Message = index % 4 == 0 ? "L21 scale fixture failure" : "L21 scale fixture completed",
+                CreatedUtc = DateTime.UtcNow.AddMinutes(-index),
+                StartedUtc = DateTime.UtcNow.AddMinutes(-index + 1),
+                FinishedUtc = DateTime.UtcNow.AddMinutes(-index + 2)
+            });
+        }
+
+        return data;
+    }
+
+    private static FakeDashboardData CreateMediaInboxScaleProbeData(int backendCount)
+    {
+        var data = new FakeDashboardData(60);
+        var retained = new BatchObservableCollection<MediaItemDto>();
+        var accumulator = new MediaPageAccumulator(retained);
+        const int pageSize = 200;
+
+        for (var start = 0; start < backendCount; start += pageSize)
+        {
+            var page = Enumerable.Range(start, Math.Min(pageSize, backendCount - start))
+                .Select(CreateScaleMediaItem)
+                .ToArray();
+            if (start == 0)
+                accumulator.ReplaceFirstPage(page, null);
+            else
+                accumulator.AppendPage(page, null);
+        }
+
+        data.UnassignedMedia.Clear();
+        foreach (var item in retained)
+            data.UnassignedMedia.Add(item);
+        return data;
+    }
+
+    private static MediaItemDto CreateScaleMediaItem(int index)
+        => new MediaItemDto
+        {
+            MediaId = "L21-M-" + index.ToString("D5"),
+            Kind = index % 3 == 0 ? MediaKind.VideoClip : MediaKind.Screenshot,
+            Source = index % 3 == 0 ? MediaSourceKind.XboxGameBar : MediaSourceKind.WindowsScreenshot,
+            ArchivePath = $@"D:\Media\L21\archive-{index}.png",
+            OriginalPath = $@"D:\Media\L21\source-{index}.png",
+            CapturedUtc = DateTime.UtcNow.AddMinutes(-index),
+            SizeBytes = 4_000_000L + index,
+            ClassificationState = "Inbox",
+            ClassificationReason = "L21 scale fixture"
+        };
+
+    private static void ProbeScaleGrid(
+        StringBuilder report,
+        string label,
+        int backendCount,
+        Func<UserControl> createView,
+        Action<UserControl> applyLayout,
+        double width,
+        double height,
+        bool switchMediaTabs = false)
+    {
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+        GC.Collect();
+        var process = Process.GetCurrentProcess();
+        var managedBefore = GC.GetTotalMemory(false);
+        var privateBefore = process.PrivateMemorySize64;
+        try
+        {
+            var view = createView();
+            var host = new Grid
+            {
+                Width = width,
+                Height = height,
+                Background = CreateHarnessBackground(view),
+                ClipToBounds = true
+            };
+            host.Children.Add(view);
+            applyLayout(view);
+            host.Measure(new Size(width, height));
+            host.Arrange(new Rect(0, 0, width, height));
+            host.UpdateLayout();
+
+            if (switchMediaTabs)
+            {
+                var tabs = FindVisualChildren<TabControl>(host).FirstOrDefault();
+                if (tabs != null && tabs.Items.Count > 1)
+                {
+                    tabs.SelectedIndex = 1;
+                    host.UpdateLayout();
+                    tabs.SelectedIndex = 0;
+                    host.UpdateLayout();
+                }
+            }
+
+            var gridName = label == "L21-Task" ? "TaskGrid" : "MediaInboxGrid";
+            var grid = FindVisualChildren<DataGrid>(host).FirstOrDefault(candidate => candidate.Name == gridName);
+            if (grid == null)
+            {
+                s_problems.Add($"{label} backend={backendCount} grid {gridName} not found");
+                return;
+            }
+
+            var scroller = FindVisualChildren<ScrollViewer>(grid)
+                .OrderByDescending(candidate => candidate.ViewportHeight)
+                .FirstOrDefault();
+            if (scroller == null)
+            {
+                s_problems.Add($"{label} backend={backendCount} grid {gridName} has no internal ScrollViewer");
+                return;
+            }
+
+            var expectedUiCount = label == "L21-Media-Inbox"
+                ? Math.Min(backendCount, MediaPageAccumulator.DefaultCapacity)
+                : backendCount;
+            report.AppendLine($"  {label} backend={backendCount} uiItems={grid.Items.Count} expectedUiItems={expectedUiCount} "
+                + $"scrollUnit={VirtualizingPanel.GetScrollUnit(grid)} canContentScroll={scroller.CanContentScroll}");
+            if (grid.Items.Count != expectedUiCount)
+                s_problems.Add($"{label} backend={backendCount} UI item window mismatch (actual={grid.Items.Count}, expected={expectedUiCount})");
+
+            var selectedIndex = Math.Max(0, Math.Min(grid.Items.Count - 1, grid.Items.Count / 2));
+            grid.SelectedIndex = selectedIndex;
+            host.UpdateLayout();
+            var selectedId = GetStableId(grid.SelectedItem);
+            var fractions = new[]
+            {
+                0.0, 1.0, 0.0, 1.0, 0.5, 0.0, 1.0, 0.25, 0.75, 0.0,
+                1.0, 0.33, 0.66, 0.0, 1.0, 0.5, 0.1, 0.9, 0.0, 1.0
+            };
+
+            for (var step = 0; step < fractions.Length; step++)
+            {
+                var fraction = fractions[step];
+                scroller.ScrollToVerticalOffset(scroller.ScrollableHeight * fraction);
+                host.UpdateLayout();
+                var snapshot = CaptureScaleGrid(grid, scroller);
+                var diagnostic = DataGridScrollDiagnostics.CaptureNow(grid, "L21-拖动滑块:" + (int)(fraction * 100));
+                report.AppendLine(
+                    $"  {label} backend={backendCount} step={step:00} pos={(int)(fraction * 100)} "
+                    + $"offset={scroller.VerticalOffset:0.##}/{scroller.ScrollableHeight:0.##} "
+                    + $"viewport={snapshot.PresenterRect.Width:0.##}x{snapshot.PresenterRect.Height:0.##} "
+                    + $"extent={scroller.ExtentWidth:0.##}x{scroller.ExtentHeight:0.##} "
+                    + $"realized={snapshot.RealizedCount} visible={snapshot.VisibleCount} "
+                    + $"first={snapshot.FirstId}@{snapshot.FirstY:0.##}/{snapshot.FirstHeight:0.##} "
+                    + $"last={snapshot.LastId}@{snapshot.LastY:0.##}/{snapshot.LastHeight:0.##} "
+                    + $"selected={selectedId} currentSelected={GetStableId(grid.SelectedItem)}");
+                report.AppendLine("  " + diagnostic);
+
+                if (snapshot.VisibleCount == 0 && grid.Items.Count > 0)
+                    s_problems.Add($"{label} backend={backendCount} step={step} has no visible rows");
+                if (!string.Equals(selectedId, GetStableId(grid.SelectedItem), StringComparison.Ordinal))
+                    s_problems.Add($"{label} backend={backendCount} step={step} selection changed from {selectedId} to {GetStableId(grid.SelectedItem)}");
+                if (diagnostic.IndexOf("anomaly=", StringComparison.Ordinal) >= 0)
+                    s_problems.Add($"{label} backend={backendCount} step={step} diagnostics reported {diagnostic}");
+
+                if (fraction >= 1.0)
+                {
+                    if (snapshot.LastIndex != grid.Items.Count - 1)
+                        s_problems.Add($"{label} backend={backendCount} step={step} last item is not visible (lastIndex={snapshot.LastIndex}, itemCount={grid.Items.Count})");
+                    else if (snapshot.LastBottom > snapshot.PresenterRect.Bottom + 1)
+                        s_problems.Add($"{label} backend={backendCount} step={step} last row is clipped (bottom={snapshot.LastBottom:0.##}, presenterBottom={snapshot.PresenterRect.Bottom:0.##})");
+                }
+            }
+
+            RunScaleSemanticProbe(report, label, backendCount, grid, scroller, host, selectedId);
+
+            var originalOffset = scroller.VerticalOffset;
+            host.Width = label == "L21-Task" ? 900 : 1200;
+            host.Height = 520;
+            applyLayout(view);
+            host.Measure(new Size(host.Width, host.Height));
+            host.Arrange(new Rect(0, 0, host.Width, host.Height));
+            host.UpdateLayout();
+            var resizedSnapshot = CaptureScaleGrid(grid, scroller);
+            report.AppendLine(
+                $"  {label} backend={backendCount} resize={host.Width:0}x{host.Height:0} "
+                + $"fromOffset={originalOffset:0.##} offset={scroller.VerticalOffset:0.##}/{scroller.ScrollableHeight:0.##} "
+                + $"realized={resizedSnapshot.RealizedCount} visible={resizedSnapshot.VisibleCount} "
+                + $"presenter={resizedSnapshot.PresenterRect.Left:0.##},{resizedSnapshot.PresenterRect.Top:0.##},{resizedSnapshot.PresenterRect.Width:0.##}x{resizedSnapshot.PresenterRect.Height:0.##} "
+                + $"selected={GetStableId(grid.SelectedItem)}");
+            if (!string.Equals(selectedId, GetStableId(grid.SelectedItem), StringComparison.Ordinal))
+                s_problems.Add($"{label} backend={backendCount} resize lost selection {selectedId}");
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+            var managedAfter = GC.GetTotalMemory(false);
+            var privateAfter = process.PrivateMemorySize64;
+            report.AppendLine(
+                $"  {label} backend={backendCount} memory managedDelta={managedAfter - managedBefore} "
+                + $"privateDelta={privateAfter - privateBefore} bytes (fixture+visual tree, comparative only)");
+        }
+        catch (Exception ex)
+        {
+            s_problems.Add($"{label} backend={backendCount} scale probe failed: {ex.GetType().Name}: {ex.Message}");
+        }
+    }
+
+    private static void RunScaleSemanticProbe(
+        StringBuilder report,
+        string label,
+        int backendCount,
+        DataGrid grid,
+        ScrollViewer scroller,
+        Grid host,
+        string selectedId)
+    {
+        var actions = new (string Name, Action Action)[]
+        {
+            ("滚轮", scroller.LineDown),
+            ("PageDown", scroller.PageDown),
+            ("PageUp", scroller.PageUp),
+            ("Ctrl+End", scroller.ScrollToEnd)
+        };
+        foreach (var action in actions)
+        {
+            action.Action();
+            host.UpdateLayout();
+            var snapshot = CaptureScaleGrid(grid, scroller);
+            report.AppendLine(
+                $"  {label} backend={backendCount} semantic={action.Name} offset={scroller.VerticalOffset:0.##}/{scroller.ScrollableHeight:0.##} "
+                + $"visible={snapshot.VisibleCount} last={snapshot.LastIndex}:{snapshot.LastId}@{snapshot.LastBottom:0.##} selected={GetStableId(grid.SelectedItem)}");
+            if (!string.Equals(selectedId, GetStableId(grid.SelectedItem), StringComparison.Ordinal))
+                s_problems.Add($"{label} backend={backendCount} semantic={action.Name} changed selection");
+            if (snapshot.VisibleCount == 0)
+                s_problems.Add($"{label} backend={backendCount} semantic={action.Name} has no visible rows");
+        }
+
+        grid.ScrollIntoView(grid.Items[grid.Items.Count - 1]);
+        FlushLayoutDispatcher(host);
+        var lastSnapshot = CaptureScaleGrid(grid, scroller);
+        report.AppendLine(
+            $"  {label} backend={backendCount} semantic=定位最后一项 offset={scroller.VerticalOffset:0.##}/{scroller.ScrollableHeight:0.##} "
+            + $"last={lastSnapshot.LastIndex}:{lastSnapshot.LastId}@{lastSnapshot.LastBottom:0.##} presenterBottom={lastSnapshot.PresenterRect.Bottom:0.##}");
+        if (lastSnapshot.LastIndex != grid.Items.Count - 1 || lastSnapshot.LastBottom > lastSnapshot.PresenterRect.Bottom + 1)
+        {
+            report.AppendLine(
+                $"  {label} backend={backendCount} semantic=定位最后一项 result=offscreen-inconclusive "
+                + $"last={lastSnapshot.LastIndex}:{lastSnapshot.LastId}@{lastSnapshot.LastBottom:0.##} "
+                + $"presenterBottom={lastSnapshot.PresenterRect.Bottom:0.##}; standard-template comparison follows");
+        }
+    }
+
+    private static void FlushLayoutDispatcher(FrameworkElement element)
+    {
+        element.UpdateLayout();
+        element.Dispatcher.Invoke(DispatcherPriority.ContextIdle, new Action(element.UpdateLayout));
+        element.UpdateLayout();
+    }
+
+    private static ScaleGridSnapshot CaptureScaleGrid(DataGrid grid, ScrollViewer scroller)
+    {
+        var presenter = FindVisualChildren<ScrollContentPresenter>(scroller).FirstOrDefault();
+        var presenterRect = presenter == null
+            ? new Rect(0, 0, scroller.ViewportWidth, scroller.ViewportHeight)
+            : presenter.TransformToAncestor(scroller).TransformBounds(new Rect(0, 0, presenter.ActualWidth, presenter.ActualHeight));
+        var rows = FindVisualChildren<DataGridRow>(grid)
+            .Where(row => row.Visibility == Visibility.Visible && row.ActualHeight > 0)
+            .Select(row =>
+            {
+                var rect = row.TransformToAncestor(scroller).TransformBounds(new Rect(0, 0, row.ActualWidth, row.ActualHeight));
+                return new ScaleRowSnapshot(row.GetIndex(), GetStableId(row.Item), rect, row.ActualHeight);
+            })
+            .ToList();
+        var visible = rows
+            .Where(row => row.Rect.Bottom > presenterRect.Top && row.Rect.Top < presenterRect.Bottom)
+            .OrderBy(row => row.Rect.Top)
+            .ToList();
+        var first = visible.FirstOrDefault();
+        var last = visible.LastOrDefault();
+        return new ScaleGridSnapshot(
+            presenterRect,
+            rows.Count,
+            visible.Count,
+            first?.Id ?? "none",
+            first?.Rect.Top ?? double.NaN,
+            first?.Height ?? double.NaN,
+            last?.Index ?? -1,
+            last?.Id ?? "none",
+            last?.Rect.Top ?? double.NaN,
+            last?.Rect.Bottom ?? double.NaN,
+            last?.Height ?? double.NaN);
     }
 
     private static void RunSettingsLayoutProbes(StringBuilder report)
@@ -3727,6 +4320,63 @@ public static class Program
         public bool DataContextNull { get; }
     }
 
+    private sealed class ScaleRowSnapshot
+    {
+        public ScaleRowSnapshot(int index, string id, Rect rect, double height)
+        {
+            Index = index;
+            Id = id;
+            Rect = rect;
+            Height = height;
+        }
+
+        public int Index { get; }
+        public string Id { get; }
+        public Rect Rect { get; }
+        public double Height { get; }
+    }
+
+    private sealed class ScaleGridSnapshot
+    {
+        public ScaleGridSnapshot(
+            Rect presenterRect,
+            int realizedCount,
+            int visibleCount,
+            string firstId,
+            double firstY,
+            double firstHeight,
+            int lastIndex,
+            string lastId,
+            double lastY,
+            double lastBottom,
+            double lastHeight)
+        {
+            PresenterRect = presenterRect;
+            RealizedCount = realizedCount;
+            VisibleCount = visibleCount;
+            FirstId = firstId;
+            FirstY = firstY;
+            FirstHeight = firstHeight;
+            LastIndex = lastIndex;
+            LastId = lastId;
+            LastY = lastY;
+            LastBottom = lastBottom;
+            LastHeight = lastHeight;
+        }
+
+        public Rect PresenterRect { get; }
+        public int RealizedCount { get; }
+        public int VisibleCount { get; }
+        public string FirstId { get; }
+        public double FirstY { get; }
+        public double FirstHeight { get; }
+        public int LastIndex { get; }
+        public string LastId { get; }
+        public double LastY { get; }
+        public double LastBottom { get; }
+        public double LastHeight { get; }
+    }
+
     private sealed class ElementMetric
     {
         public string Key { get; set; } = string.Empty;
@@ -3764,5 +4414,21 @@ public static class Program
             foreach (var nested in FindVisualChildren<T>(child))
                 yield return nested;
         }
+    }
+
+    private static string GetStableId(object? item)
+    {
+        if (item == null)
+            return "none";
+        foreach (var propertyName in new[] { "MediaId", "TaskId", "EntryId", "Id" })
+        {
+            var property = item.GetType().GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance);
+            if (property == null)
+                continue;
+            var value = property.GetValue(item, null)?.ToString();
+            if (!string.IsNullOrWhiteSpace(value))
+                return value!;
+        }
+        return "index-only";
     }
 }

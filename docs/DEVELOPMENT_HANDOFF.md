@@ -2,6 +2,10 @@
 
 > 连续实施入口：[32 项、8 阶段计划](ai/CONTINUOUS_DEVELOPMENT_PLAN_2026-09-08.md)。用户要求减少逐项确认；接手后按依赖连续实施并逐项交付，已满足任务跳过，外部阻塞不妨碍独立任务。Q6 质量报告仍是首四项问题依据。
 
+> 2026-09-09 L21 已完成列表虚拟化与滚动规模实测：证据先于参数调整。原当前游戏 `MediaGrid` 使用普通 `WrapPanel`，在 200/2000/10000 后端夹具中生成 200/2000/2000 个卡片；修复仅接回已有 `VirtualizingWrapPanel`，保留 164×154 卡片、选择和 ListBox 滚动契约。修复后顶部→底部→顶部均约 20 个容器，任务表与媒体收件箱的 DataGrid 诊断/20 次滑块往返/语义滚动/resize/选择保持通过。
+
+> L21 证据与边界：最新离屏报告为 `.tmp/l21-scaleprobe-final/scaleprobe-report.txt` 和 `.tmp/l21-render-qa-final/render-qa-report.txt`；全量 Render QA 的卡片回滚探针已通过，仍有既有 Media 小视口/预览列表与 Sidebar rapid-toggle 失败。DataGrid 直接 `ScrollIntoView(最后一项)` 在插件模板和标准 WPF 对照模板中都呈现离屏 deferred，记录为 `offscreen-inconclusive`，不能作为 FusionX 根因。无真实 Playnite/FusionX、DPI 或用户视频复测，视频中的 DataGrid 空白、漂移、选框与文字分离、最后行完整可见仍必须在宿主按验收矩阵复测。
+
 > 2026-09-09 L20 已完成修改器导入与下载结果反馈：导入检测/确认与 FLiNG 下载均捕获稳定游戏/目录/版本 ID；切换游戏不会把晚到结果写回错误上下文。下载状态区分排队、进度、成功、重复绑定、站点拒绝、格式拒绝、版本解析失败、取消和通用失败，并复用 Worker `CancelTask`；下载文件不自动运行，来源/签名/安全解压/临时文件清理由 Worker 保持。真实 Playnite/FusionX、在线 403/离线、真实取消时序、DPI 和视频仍待宿主验收。
 
 > L20 验证：Release 构建 `0 warning/0 error`；Core `76/76`、Worker `303/304`（1 跳过）、Playnite `405/467`（62 跳过）；RenderHarness Release 构建、`validate-source.py`、XAML `19/19`、WPF 静态审查 `0 errors/21 warnings/172 info`、差异检查通过。完整 render-qa 仍只有既有 Media 小视口/预览列表与 Sidebar rapid-toggle 失败，未新增 Trainer/Save 失败。
