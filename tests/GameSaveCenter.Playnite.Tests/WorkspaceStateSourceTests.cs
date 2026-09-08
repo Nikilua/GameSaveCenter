@@ -118,6 +118,31 @@ public sealed class WorkspaceStateSourceTests
     }
 
     [Fact]
+    public void ConsistentPagedViewsPreserveSelectionAndStopAfterRepeatedResets()
+    {
+        var root = FindRepositoryRoot();
+        var cloud = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.CloudTransfers.cs"));
+        var history = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.MediaClassification.cs"));
+        var state = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
+
+        Assert.Contains("pendingCloudTransferKey = selectedKey", cloud);
+        Assert.Contains("var shouldLoadPending = restored == null", cloud);
+        Assert.Contains("response?.HasMore == true", cloud);
+        Assert.Contains("!pageResetReceived && loadPendingSelectionPage", cloud);
+        Assert.Contains("请点击“刷新队列”后继续", cloud);
+        Assert.DoesNotContain("else if (!string.IsNullOrWhiteSpace(pendingCloudTransferKey))", cloud);
+
+        Assert.Contains("pendingMediaClassificationBatchId = selectedBatchId", history);
+        Assert.Contains("var shouldLoadPending = restored == null", history);
+        Assert.Contains("!pageResetReceived && loadPendingSelectionPage", history);
+        Assert.Contains("请点击“刷新”后继续", history);
+        Assert.DoesNotContain("if (restored != null || reset)", history);
+
+        Assert.Contains("CloudTransferNeedsManualRefresh", state);
+        Assert.Contains("MediaClassificationHistoryNeedsManualRefresh", state);
+    }
+
+    [Fact]
     public void MediaAndMaintenanceUseTheSharedRealDataStateContract()
     {
         var root = FindRepositoryRoot();

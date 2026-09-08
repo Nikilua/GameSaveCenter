@@ -45,6 +45,8 @@ public sealed partial class DashboardViewModel
                 cancellationToken: requestCancellation.Token).ConfigureAwait(false);
 
             var retryFromFirstPage = false;
+            var pageResetReceived = false;
+            var loadPendingSelectionPage = false;
             ApplyOnUi(() =>
             {
                 if (generation != Interlocked.Read(ref cloudTransferLoadGeneration))
@@ -53,27 +55,34 @@ public sealed partial class DashboardViewModel
                 if (CurrentWorkspace != WorkspaceKind.Maintenance)
                     return;
 
+                var selectedKey = !string.IsNullOrWhiteSpace(pendingCloudTransferKey)
+                    ? pendingCloudTransferKey
+                    : SelectedCloudTransfer?.TransferKey;
                 if (response?.PageResetRequired == true)
                 {
+                    pageResetReceived = true;
+                    if (!string.IsNullOrWhiteSpace(selectedKey))
+                        pendingCloudTransferKey = selectedKey;
                     CloudTransferItems.ReplaceAll(Array.Empty<CloudTransferStatusDto>(), AreSameCloudTransfer);
                     CloudTransferViewSummary = response;
                     cloudTransferPage = 0;
                     cloudTransferHasMore = false;
                     cloudTransferConsistencyToken = response.ConsistencyToken ?? string.Empty;
                     SelectedCloudTransfer = null!;
-                    StatusMessage = string.IsNullOrWhiteSpace(response.PageResetReason)
-                        ? "云端队列已更新，正在从第一页刷新。"
-                        : response.PageResetReason;
+                    cloudTransferNeedsManualRefresh = !allowConsistencyRetry;
+                    StatusMessage = !allowConsistencyRetry
+                        ? "云端队列仍在持续变化，自动重试已停止，请点击“刷新队列”后继续。"
+                        : string.IsNullOrWhiteSpace(response.PageResetReason)
+                            ? "云端队列已更新，正在从第一页刷新。"
+                            : response.PageResetReason;
                     OnPropertyChanged(nameof(CloudTransferHasMore));
+                    OnPropertyChanged(nameof(CloudTransferNeedsManualRefresh));
                     OnPropertyChanged(nameof(CloudTransferLoadedSummary));
                     RaiseCommandStates();
                     retryFromFirstPage = allowConsistencyRetry;
                     return;
                 }
 
-                var selectedKey = !string.IsNullOrWhiteSpace(pendingCloudTransferKey)
-                    ? pendingCloudTransferKey
-                    : SelectedCloudTransfer?.TransferKey;
                 if (reset)
                 {
                     Replace(CloudTransferItems, response?.Items ?? Enumerable.Empty<CloudTransferStatusDto>(), AreSameCloudTransfer);
@@ -96,26 +105,30 @@ public sealed partial class DashboardViewModel
                 cloudTransferPage = response?.Page ?? page;
                 cloudTransferHasMore = response?.HasMore == true;
                 cloudTransferConsistencyToken = response?.ConsistencyToken ?? string.Empty;
+                cloudTransferNeedsManualRefresh = false;
                 var restored = !string.IsNullOrWhiteSpace(selectedKey)
                     ? CloudTransferItems.FirstOrDefault(x => string.Equals(x.TransferKey, selectedKey, StringComparison.OrdinalIgnoreCase))
                     : null;
                 SelectedCloudTransfer = restored!;
                 var shouldLoadPending = restored == null
-                    && !string.IsNullOrWhiteSpace(pendingCloudTransferKey)
+                    && !string.IsNullOrWhiteSpace(selectedKey)
                     && response?.HasMore == true;
+                if (shouldLoadPending)
+                    pendingCloudTransferKey = selectedKey;
                 if (restored != null && string.Equals(pendingCloudTransferKey, restored.TransferKey, StringComparison.OrdinalIgnoreCase))
                     pendingCloudTransferKey = null;
                 else if (!shouldLoadPending)
                     pendingCloudTransferKey = null;
                 OnPropertyChanged(nameof(CloudTransferHasMore));
+                OnPropertyChanged(nameof(CloudTransferNeedsManualRefresh));
                 OnPropertyChanged(nameof(CloudTransferLoadedSummary));
                 RebuildMaintenanceActionItems();
                 if (shouldLoadPending)
-                    retryFromFirstPage = false;
+                    loadPendingSelectionPage = true;
             });
             if (retryFromFirstPage)
                 await LoadCloudTransferPageAsync(true, false).ConfigureAwait(false);
-            else if (!string.IsNullOrWhiteSpace(pendingCloudTransferKey))
+            else if (!pageResetReceived && loadPendingSelectionPage && !string.IsNullOrWhiteSpace(pendingCloudTransferKey))
                 await LoadCloudTransferPageAsync(false, allowConsistencyRetry).ConfigureAwait(false);
         }
         catch (OperationCanceledException) when (requestCancellation.IsCancellationRequested)

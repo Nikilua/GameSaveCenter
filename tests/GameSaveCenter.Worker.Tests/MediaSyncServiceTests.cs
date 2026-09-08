@@ -521,6 +521,44 @@ BEGIN SELECT RAISE(ABORT, 'injected batch item failure'); END;");
     }
 
     [Fact]
+    public async Task ClassificationHistoryRejectsStaleConsistencyTokenAfterBatchStateChanges()
+    {
+        var now = DateTime.UtcNow;
+        await store.CreateMediaClassificationBatchAsync("history-state-change", now, now.AddHours(1),
+            new[]
+            {
+                new MediaClassificationBatchItemRecord
+                {
+                    BatchId = "history-state-change", MediaId = "history-state-media", OriginalClassificationState = "Inbox",
+                    OriginalClassificationReason = "待归类", OriginalArchivePath = "archive-state",
+                    OriginalPath = "original-state", OriginalCapturedUtc = now, OriginalSha256 = "hash-state",
+                    TargetPlayniteId = "game-state", TargetReason = "来源规则", Confidence = "High"
+                }
+            }, CancellationToken.None);
+
+        var service = CreateService();
+        var firstPage = await service.GetClassificationHistoryAsync(new MediaClassificationHistoryRequestDto
+        {
+            Page = 0,
+            PageSize = 1
+        }, CancellationToken.None);
+
+        await store.UpdateMediaClassificationBatchStateAsync(
+            "history-state-change", "Conflict", "状态已变化", CancellationToken.None);
+
+        var stalePage = await service.GetClassificationHistoryAsync(new MediaClassificationHistoryRequestDto
+        {
+            Page = 1,
+            PageSize = 1,
+            ConsistencyToken = firstPage.ConsistencyToken
+        }, CancellationToken.None);
+
+        Assert.True(stalePage.PageResetRequired);
+        Assert.Empty(stalePage.Items);
+        Assert.NotEqual(firstPage.ConsistencyToken, stalePage.ConsistencyToken);
+    }
+
+    [Fact]
     public async Task ClassificationAuditFailureDoesNotRollbackCommittedBusinessState()
     {
         var prepared = await PrepareClassificationAsync("audit-failure-media");

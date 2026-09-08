@@ -168,6 +168,33 @@ public sealed class CloudTransferStateTests : IDisposable
     }
 
     [Fact]
+    public async Task CloudPagingRejectsStaleConsistencyTokenAfterTransferStateChanges()
+    {
+        var coordinator = new CloudTransferCoordinator(NullLogger<CloudTransferCoordinator>.Instance);
+        var state = CreateState(coordinator);
+        await state.StartNewAsync(CloudTransferKind.Backup, "cloud-page-state", CancellationToken.None);
+
+        var firstPage = await state.GetStatusAsync(new CloudTransferStatusRequestDto
+        {
+            Page = 0,
+            PageSize = 1
+        }, CancellationToken.None);
+
+        await state.MarkUploadedAsync(CloudTransferKind.Backup, "cloud-page-state", CancellationToken.None);
+
+        var stalePage = await state.GetStatusAsync(new CloudTransferStatusRequestDto
+        {
+            Page = 1,
+            PageSize = 1,
+            ConsistencyToken = firstPage.ConsistencyToken
+        }, CancellationToken.None);
+
+        Assert.True(stalePage.PageResetRequired);
+        Assert.Empty(stalePage.Items);
+        Assert.NotEqual(firstPage.ConsistencyToken, stalePage.ConsistencyToken);
+    }
+
+    [Fact]
     public async Task CancelledVerificationRestoresPreviousUploadedGuarantee()
     {
         await PrepareVerificationGameAsync();

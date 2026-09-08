@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-09
 
+## 2026-09-09 L28 持续更新分页与选择恢复
+
+- `CloudTransferStateService.GetStatusAsync` 和 `MediaSyncService.GetClassificationHistoryAsync` 的 revision/一致性令牌是 offset 分页的正确性边界：请求期间或请求前令牌变化必须返回 `PageResetRequired`，不能继续拼接旧页。当前触发器覆盖云端队列/重试队列、游戏/媒体云状态以及归类批次/批次项的增删改。
+- `DashboardViewModel.CloudTransfers` 和 `DashboardViewModel.MediaClassification` 在分页重置前捕获稳定选择 ID。重置后使用第一页结果恢复；首屏没有该 ID 且 `HasMore` 时，设置 pending ID 继续下一页，恢复后清理 pending；到达末页仍未找到则按对象删除/不再可见处理并清理选择。
+- `allowConsistencyRetry` 只允许一次从第一页自动重试。第二次仍然 `PageResetRequired` 时必须禁止 pending selection 的后续自动翻页；保留 pending ID，设置 `*NeedsManualRefresh`，摘要和 `StatusMessage` 引导用户点击现有刷新命令。手动刷新会重新开启一次有界自动重试。
+- L28 Worker 回归覆盖新增记录已有场景，以及云端传输状态更新、归类批次状态更新；Playnite 源契约覆盖选择保留、后页恢复和重复重置停止。不要把离线源契约当成真实宿主行为证据。
+
 ## 2026-09-09 L27 配置、路径与外部文件变化
 
 - `GameSaveCenterSettings.VerifySettings` 对存档目录、媒体目录和启用的本地镜像执行只读路径形状/目标类型检查：缺失的叶目录只要所在驱动器或共享可达就保留为可创建状态；指向文件、无效路径、磁盘/共享不可达或 ACL 访问异常会关联到具体目录字段。不要在文本框校验中调用 `Directory.CreateDirectory` 或写探针。

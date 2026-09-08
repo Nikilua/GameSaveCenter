@@ -123,6 +123,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         private int mediaClassificationHistoryPage;
         private bool mediaClassificationHistoryHasMore;
         private string mediaClassificationHistoryConsistencyToken = string.Empty;
+        private string? pendingMediaClassificationBatchId;
+        private bool mediaClassificationHistoryNeedsManualRefresh;
         private long mediaClassificationHistoryLoadGeneration;
         private const int MediaInboxBatchSize = 500;
         private TaskStatusDto selectedTask = null!;
@@ -219,6 +221,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private int cloudTransferPage;
         private bool cloudTransferHasMore;
         private string cloudTransferConsistencyToken = string.Empty;
+        private bool cloudTransferNeedsManualRefresh;
         private string cloudTransferStateFilter = string.Empty;
         private string cloudTransferKindFilter = string.Empty;
         private int maintenanceTabIndex;
@@ -504,11 +507,16 @@ namespace GameSaveCenter.Playnite.ViewModels
             set { SetValue(ref mediaClassificationHistoryStateFilter, value ?? string.Empty); }
         }
         public bool MediaClassificationHistoryHasMore => mediaClassificationHistoryHasMore;
+        public bool MediaClassificationHistoryNeedsManualRefresh => mediaClassificationHistoryNeedsManualRefresh;
         public string MediaClassificationHistoryLoadedSummary => MediaClassificationHistoryItems.Count == 0
-            ? "暂无归类批次历史"
+            ? mediaClassificationHistoryNeedsManualRefresh
+                ? "数据仍在变化，请点击“刷新”后继续"
+                : "暂无归类批次历史"
             : mediaClassificationHistoryHasMore
                 ? $"已加载 {MediaClassificationHistoryItems.Count} 个批次，还可继续加载"
-                : $"已加载全部 {MediaClassificationHistoryItems.Count} 个批次";
+                : mediaClassificationHistoryNeedsManualRefresh
+                    ? $"数据仍在变化，已暂停自动重试，请点击“刷新”后继续"
+                    : $"已加载全部 {MediaClassificationHistoryItems.Count} 个批次";
         public IReadOnlyList<string> MediaFilterOptions { get; } = new[] { "全部", "截图", "录像", "收藏" };
         public bool MediaHasActiveFilters
             => !string.IsNullOrWhiteSpace(MediaSearchText)
@@ -518,11 +526,16 @@ namespace GameSaveCenter.Playnite.ViewModels
         public CloudTransferSummaryDto CloudTransferViewSummary { get => cloudTransferViewSummary; private set => SetValue(ref cloudTransferViewSummary, value ?? new CloudTransferSummaryDto()); }
         public CloudTransferStatusDto SelectedCloudTransfer { get => selectedCloudTransfer; set { SetValue(ref selectedCloudTransfer, value); RaiseCommandStates(); } }
         public bool CloudTransferHasMore => cloudTransferHasMore;
+        public bool CloudTransferNeedsManualRefresh => cloudTransferNeedsManualRefresh;
         public string CloudTransferLoadedSummary => CloudTransferViewSummary.TotalCount <= 0
-            ? "暂无云端传输记录"
+            ? cloudTransferNeedsManualRefresh
+                ? "数据仍在变化，请点击“刷新队列”后继续"
+                : "暂无云端传输记录"
             : cloudTransferHasMore
                 ? $"已加载 {CloudTransferItems.Count}/{CloudTransferViewSummary.TotalCount} 项"
-                : $"已加载全部 {CloudTransferItems.Count} 项";
+                : cloudTransferNeedsManualRefresh
+                    ? $"数据仍在变化，已暂停自动重试，请点击“刷新队列”后继续"
+                    : $"已加载全部 {CloudTransferItems.Count} 项";
         public string CloudTransferStateFilter { get => cloudTransferStateFilter; set { SetValue(ref cloudTransferStateFilter, value ?? string.Empty); } }
         public string CloudTransferKindFilter { get => cloudTransferKindFilter; set { SetValue(ref cloudTransferKindFilter, value ?? string.Empty); } }
 
