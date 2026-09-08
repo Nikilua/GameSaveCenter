@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-08
 
+## 2026-09-08 L05 六态与运维夹具覆盖
+
+- `FakeDashboardData` 的默认构造保持 Ready 兼容；带 `WorkspaceFixtureState` 的构造可生成六态，非 Ready/Stale 会清空对应媒体、诊断和运维动作集合，Stale 保留旧数据并显示过期提示。Fake 不记录媒体文件内容。
+- `Program statefixtures` 必须渲染真实 `MediaCenterView`/`MaintenanceView`，不能只渲染裸 `WorkspaceStatePresenter`。它检查关键公共绑定反射存在、状态覆盖层可见性、Stale banner、数据表面 DIP 尺寸和 Ready 运维动作数；缺字段直接进入失败报告。
+- 代表性画面已目视复核：Stale 收件箱显示旧行、过期提示和选择框仍在同一行；Error 画面显示失败覆盖层；维护“下一步运维”显示恢复巡检、云端重试和隔离账本三项。错误/离线底层表面仍保留，但状态覆盖层承担不可用语义。
+- 夹具暴露的布局根因是 Stale banner 出现后 `MediaInboxGrid` 被压成零高，不是数据集合丢失。`MediaCenterView.ApplyResponsiveLayout` 现在在 Stale banner 可见时启用外层页面滚动，同时保留内部 DataGrid 有限视口、虚拟化和底部操作区。
+- 证据目录 `.tmp/l05-statefixtures` 为当前可再生输出；完成交付前只保留当前报告/必要证据，禁止将整批 PNG 或临时构建物提交 Git。真实 Playnite/FusionX 仍需用户环境按视频操作复测。
+
 ## 2026-09-08 Q6-04 构建身份闭环（隔离包验收）
 
 - `WorkerLauncher` 仅在实际身份与期望身份都已知且不一致时判定不可复用。旧 Worker 没有 `BuildIdentity`，或任一身份包含 `+unknown`，仍按公共版本/协议继续工作，但健康结果明确标记为“构建身份未验证”，不伪造同源证明。

@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-08 L05 六态与运维夹具覆盖
+
+- 扩展 `FakeDashboardData`：六态、媒体详情/收件箱/维护状态属性、任务页 Loading/Error 映射，以及恢复巡检、云端 RetryScheduled、隔离账本三条 `MaintenanceActionItem`。默认构造仍保持 Ready，Stale 保留旧集合，其余异常态清空对应数据。
+- 新增 RenderHarness `statefixtures`，直接渲染生产 `MediaCenterView` 和 `MaintenanceView`，覆盖 Light/Dark、1040×700/1100×720/1366×768/2560×1440；报告校验关键绑定、实际数据表面尺寸、覆盖层、Stale banner 和运维动作项。
+- 首次运行复现 Stale banner 将 `MediaInboxGrid` 压到 `693×0`；根因为短窗口时外层页滚动被关闭，提示条/工具栏/页脚占满卡片，不是集合 Reset。`MediaCenterView.ApplyResponsiveLayout` 改为 Stale banner 可见时启用外层内容滚动；没有加入固定 20/30 DIP 补偿，也未关闭虚拟化。
+- 目视复核 Stale 收件箱、Error 收件箱和 Ready 运维动作卡；最终 `statefixtures OK`。RenderHarness Release 构建 0 warning/error，定向 `WorkspaceStateSourceTests` `8/8` 通过、1 项历史基线跳过。真实 Playnite/FusionX 仍待按视频录屏。
+
 ## 2026-09-08 Q6-03 运维云端告警归并收口
 
 - 复现并确认顺序错误：`Snapshot.CloudTransfers.Items.Concat(CloudTransferItems)` 之后先执行 `Where(IsCloudAttentionItem)`，再按 `TransferKey` 取最后一条；旧快照 Failed 会令新分页 Uploaded 根本不进入分组。`LastAttemptUtc` 同时被写入“上次验证”，时间语义也不准确。

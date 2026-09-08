@@ -197,6 +197,19 @@ public static class Program
             return stateProbeExitCode;
         }
 
+        if (args.Length > 0 && args[0].Equals("statefixtures", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "statefixtures");
+            var stateFixtureExitCode = 0;
+            var stateFixtureThread = new Thread(() => { stateFixtureExitCode = RunWorkspaceStateFixtures(outputRoot); });
+            stateFixtureThread.SetApartmentState(ApartmentState.STA);
+            stateFixtureThread.Start();
+            stateFixtureThread.Join();
+            return stateFixtureExitCode;
+        }
+
         var exitCode = 0;
         var thread = new Thread(() => { exitCode = Run(args); });
         thread.SetApartmentState(ApartmentState.STA);
@@ -276,6 +289,194 @@ public static class Program
             Console.Error.WriteLine(ex);
             return 1;
         }
+    }
+
+    private static int RunWorkspaceStateFixtures(string outputRoot)
+    {
+        Directory.CreateDirectory(outputRoot);
+        var report = new StringBuilder();
+        report.AppendLine("GameSaveCenter production workspace state fixtures");
+        report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+        report.AppendLine("States: Ready, Empty, Loading, Error, Stale, Offline");
+        report.AppendLine("Pages: MediaInbox, MediaDetails, MaintenanceAudit");
+        report.AppendLine();
+        var problems = new List<string>();
+
+        try
+        {
+            var app = new Application();
+            app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+            VerifyWorkspaceStateFixtureBindingSurface(problems, report);
+            foreach (var (themeName, themeMode) in ThemeModes)
+            {
+                foreach (var (width, height) in ThemeWindowSizes)
+                {
+                    foreach (var state in Enum.GetValues(typeof(WorkspaceFixtureState)).Cast<WorkspaceFixtureState>())
+                    {
+                        CaptureWorkspaceStateFixture(
+                            new MediaCenterView { DataContext = new FakeDashboardData(12, state) },
+                            Path.Combine(outputRoot, $"media-inbox-{themeName}-{width}x{height}-{state}.png"),
+                            "MediaInbox",
+                            "MediaInboxScrollSurface",
+                            width,
+                            height,
+                            themeMode,
+                            state,
+                            view => SelectTab(view, 0),
+                            problems,
+                            report);
+
+                        CaptureWorkspaceStateFixture(
+                            new MediaCenterView { DataContext = new FakeDashboardData(12, state) },
+                            Path.Combine(outputRoot, $"media-details-{themeName}-{width}x{height}-{state}.png"),
+                            "MediaDetails",
+                            "MediaCurrentScrollSurface",
+                            width,
+                            height,
+                            themeMode,
+                            state,
+                            view => SelectTab(view, 1),
+                            problems,
+                            report);
+
+                        CaptureWorkspaceStateFixture(
+                            new MaintenanceView { DataContext = new FakeDashboardData(12, state) },
+                            Path.Combine(outputRoot, $"maintenance-audit-{themeName}-{width}x{height}-{state}.png"),
+                            "MaintenanceAudit",
+                            "MaintenanceAuditScrollSurface",
+                            width,
+                            height,
+                            themeMode,
+                            state,
+                            view => SelectTab(view, 4),
+                            problems,
+                            report);
+
+                        if (state is WorkspaceFixtureState.Ready or WorkspaceFixtureState.Stale)
+                        {
+                            CaptureWorkspaceStateFixture(
+                                new MaintenanceView { DataContext = new FakeDashboardData(12, state) },
+                                Path.Combine(outputRoot, $"maintenance-next-steps-{themeName}-{width}x{height}-{state}.png"),
+                                "MaintenanceNextSteps",
+                                "MaintenanceNextStepsCard",
+                                width,
+                                height,
+                                themeMode,
+                                state,
+                                view =>
+                                {
+                                    SelectTab(view, 0);
+                                    SelectInnerTab(view, "诊断概览");
+                                },
+                                problems,
+                                report);
+                        }
+                    }
+                }
+            }
+
+            report.AppendLine(problems.Count == 0 ? "statefixtures OK" : "statefixtures FAILED");
+            foreach (var problem in problems)
+                report.AppendLine("  PROBLEM " + problem);
+            File.WriteAllText(Path.Combine(outputRoot, "statefixtures-report.txt"), report.ToString());
+            Console.WriteLine(report.ToString());
+            return problems.Count == 0 ? 0 : 1;
+        }
+        catch (Exception ex)
+        {
+            report.AppendLine("statefixtures FAILED");
+            report.AppendLine(ex.ToString());
+            File.WriteAllText(Path.Combine(outputRoot, "statefixtures-report.txt"), report.ToString());
+            Console.Error.WriteLine(ex);
+            return 1;
+        }
+    }
+
+    private static void VerifyWorkspaceStateFixtureBindingSurface(List<string> problems, StringBuilder report)
+    {
+        var required = new[]
+        {
+            "IsWorkerOffline",
+            "MediaDetailsState", "MediaDetailsPresenterState", "MediaDetailsStateTitle", "MediaDetailsStateMessage",
+            "MediaDetailsStateDetail", "MediaDetailsStateOverlayVisible", "MediaDetailsStaleVisible",
+            "MediaInboxState", "MediaInboxPresenterState", "MediaInboxStateTitle", "MediaInboxStateMessage",
+            "MediaInboxStateDetail", "MediaInboxStateOverlayVisible", "MediaInboxStaleVisible",
+            "MediaInboxCountDisplay", "MediaInboxCountCaption",
+            "MaintenanceState", "MaintenancePresenterState", "MaintenanceStateTitle", "MaintenanceStateMessage",
+            "MaintenanceStateDetail", "MaintenanceStateOverlayVisible", "MaintenanceStaleVisible",
+            "MaintenanceActionSummary", "MaintenanceActionItems",
+            "ReloadMediaWindowCommand", "ReloadMediaInboxCommand", "MaintenanceTabIndex", "MediaTabIndex"
+        };
+        var missing = required
+            .Where(name => typeof(FakeDashboardData).GetProperty(name, BindingFlags.Instance | BindingFlags.Public) == null)
+            .ToList();
+        if (missing.Count == 0)
+        {
+            report.AppendLine("  binding-surface: all required media/maintenance state properties present");
+            return;
+        }
+
+        var message = "binding-surface missing: " + string.Join(", ", missing);
+        report.AppendLine("  PROBLEM " + message);
+        problems.Add(message);
+    }
+
+    private static void CaptureWorkspaceStateFixture(
+        UserControl view,
+        string path,
+        string label,
+        string targetName,
+        int windowW,
+        int windowH,
+        GameSaveCenterThemeMode themeMode,
+        WorkspaceFixtureState state,
+        Action<UserControl> beforeCapture,
+        List<string> problems,
+        StringBuilder report)
+    {
+        ApplyThemePalette(view, themeMode);
+        CaptureV3Shot(
+            view,
+            path,
+            targetName,
+            windowW,
+            windowH,
+            ApplySimpleResponsiveV3,
+            problems,
+            report,
+            beforeCapture,
+            metrics: (host, target, fixtureReport) =>
+            {
+                var presenters = FindVisualChildren<WorkspaceStatePresenter>(host).ToList();
+                var visiblePresenters = presenters.Where(presenter => presenter.Visibility == Visibility.Visible).ToList();
+                var staleBanners = FindVisualChildren<FrameworkElement>(host)
+                    .Where(element => element.Name is "MediaInboxStaleBanner" or "MediaCurrentStaleBanner" or "MaintenanceStaleBanner")
+                    .Where(element => element.Visibility == Visibility.Visible)
+                    .ToList();
+                var dataSurface = FindVisualChildren<FrameworkElement>(host)
+                    .FirstOrDefault(element => element.Name is "MediaInboxGrid" or "MediaGrid" or "MaintenanceAuditFindingsGrid");
+                var actionItems = view.DataContext is FakeDashboardData fake
+                    ? fake.MaintenanceActionItems.Count
+                    : -1;
+                fixtureReport.AppendLine(
+                    $"  {label} fixture state={state} theme={themeMode} size={windowW}x{windowH}: target={target.ActualWidth:0}x{target.ActualHeight:0}, " +
+                    $"dataSurface={(dataSurface == null ? "missing" : $"{dataSurface.Name}={dataSurface.ActualWidth:0}x{dataSurface.ActualHeight:0}")}, " +
+                    $"presenters={presenters.Count}, visiblePresenters={visiblePresenters.Count}, staleBanners={staleBanners.Count}, actionItems={actionItems}");
+                if (label != "MaintenanceNextSteps"
+                    && (dataSurface == null || dataSurface.ActualWidth <= 0 || dataSurface.ActualHeight <= 0))
+                    problems.Add($"{label} {state} {themeMode} {windowW}x{windowH} has no measurable data surface");
+
+                var expectsOverlay = state is WorkspaceFixtureState.Loading or WorkspaceFixtureState.Error or WorkspaceFixtureState.Offline;
+                var expectsStale = state == WorkspaceFixtureState.Stale && label != "MaintenanceNextSteps";
+                if (expectsOverlay && visiblePresenters.Count == 0)
+                    problems.Add($"{label} {state} {themeMode} {windowW}x{windowH} has no visible WorkspaceStatePresenter");
+                if (!expectsOverlay && label != "MaintenanceNextSteps" && visiblePresenters.Count > 0)
+                    problems.Add($"{label} {state} {themeMode} {windowW}x{windowH} unexpectedly shows an overlay");
+                if (expectsStale && staleBanners.Count == 0)
+                    problems.Add($"{label} stale {themeMode} {windowW}x{windowH} has no visible stale banner");
+                if (state == WorkspaceFixtureState.Ready && label == "MaintenanceNextSteps" && actionItems < 3)
+                    problems.Add($"MaintenanceNextSteps ready {themeMode} {windowW}x{windowH} is missing maintenance action fixtures ({actionItems})");
+            });
     }
 
     private static int RunV3Shots(string outputRoot)
@@ -1162,7 +1363,17 @@ public static class Program
         var target = FindVisualChildren<FrameworkElement>(host)
             .FirstOrDefault(element => element.Name == elementName);
         if (target == null || target.ActualWidth <= 0 || target.ActualHeight <= 0)
-            throw new InvalidOperationException($"V3 shot target not rendered: {elementName} at {windowW}x{windowH}");
+        {
+            var geometry = string.Join(
+                "; ",
+                FindVisualChildren<FrameworkElement>(host)
+                    .Where(element => element.Name.IndexOf("MediaInbox", StringComparison.Ordinal) >= 0
+                        || element.Name.IndexOf("MediaCurrent", StringComparison.Ordinal) >= 0
+                        || element.Name.IndexOf("MaintenanceAudit", StringComparison.Ordinal) >= 0)
+                    .Take(24)
+                    .Select(element => $"{element.Name}={element.ActualWidth:0}x{element.ActualHeight:0}/{element.Visibility}"));
+            throw new InvalidOperationException($"V3 shot target not rendered: {elementName} at {windowW}x{windowH}; geometry={geometry}");
+        }
 
         metrics?.Invoke(host, target, report);
 

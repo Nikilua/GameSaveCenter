@@ -261,7 +261,14 @@ namespace GameSaveCenter.Playnite.Views
                 // the DataGrid by the current available height so the outer viewer cannot
                 // hand it an infinite measure and turn thousands of rows into one giant
                 // presenter with ScrollableHeight=0.
-                var useInboxPageFallbackScroll = height < 560;
+                // A stale banner is part of the page content, not a bottom overlay.
+                // When it appears at a short-but-not-fallback height, keeping the page
+                // scroller disabled lets the banner, toolbar and footer consume the
+                // entire table frame and measures the DataGrid viewport to zero. Let the
+                // page surface own overflow in that state so the row viewport remains a
+                // real finite surface and the footer stays below it.
+                var staleInboxRequiresPageScroll = MediaInboxStaleBanner.Visibility == Visibility.Visible;
+                var useInboxPageFallbackScroll = height < 560 || staleInboxRequiresPageScroll;
                 MediaInboxPageScrollViewer.VerticalScrollBarVisibility = useInboxPageFallbackScroll
                     ? ScrollBarVisibility.Auto
                     : ScrollBarVisibility.Disabled;

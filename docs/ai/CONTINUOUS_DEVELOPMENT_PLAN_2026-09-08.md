@@ -87,6 +87,13 @@
 - 文件：`tests/GameSaveCenter.RenderHarness/FakeDashboardData.cs`、`Program.cs`、`WorkspaceStateSourceTests.cs`。增加 Loading、Ready/Empty、Error、Stale、Offline、恢复切换，以及完整运维记录夹具；关键绑定缺失进入失败报告，历史无关告警单独列明。
 - 验收：明确场景清单，双主题 1040×700/1366×768/2560×1440；新面板的标题、详情、动作实际渲染；长错误与空数据不裁切、不遮主操作。
 
+#### 2026-09-08 复测结果
+
+- 状态：代码、Fake、生产页离屏夹具和定向契约测试完成；真实 Playnite/FusionX 按视频操作仍待验收。
+- `statefixtures` 直接渲染 `MediaCenterView`、`MaintenanceView`，覆盖六态、双主题和 `1040×700 / 1100×720 / 1366×768 / 2560×1440`；最终报告 `statefixtures OK`。缺少关键绑定会通过反射契约进入失败报告。
+- 首次复现 Stale 提示条导致 `MediaInboxGrid=693×0`，修复为提示条可见时启用外层页面滚动；没有固定底部补偿或关闭虚拟化。目视复核 Stale 收件箱、Error 收件箱和三条运维动作。
+- RenderHarness Release 构建 `0 warning / 0 error`；定向 `WorkspaceStateSourceTests` `8 通过 / 1 跳过`。离屏结果不能写成真实宿主通过。
+
 ### L06 目的导航与返回上下文
 
 - 目标：首页/诊断/任务入口到正确游戏和标签，普通侧栏切换保留上次位置。

@@ -2,6 +2,13 @@
 
 > 更新时间：2026-09-08。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-08 L05 六态与运维页夹具已完成（真实宿主待验收）
+
+- RenderHarness Fake 新增 `Ready/Empty/Loading/Error/Stale/Offline` 六态、媒体详情/收件箱/维护状态绑定、任务页 Loading/Error 映射，以及恢复巡检、云端重试、隔离账本三条真实形状的 `MaintenanceActionItem`。关键绑定缺失会在 `statefixtures` 报告中直接失败。
+- 新增 `statefixtures` 入口，使用生产 `MediaCenterView`、`MaintenanceView`，覆盖浅色/深色和 `1040×700 / 1100×720 / 1366×768 / 2560×1440`；报告检查页面截图、数据表面几何、状态覆盖层、Stale 提示和动作项数量。
+- 夹具首次复现 `Stale` 提示条把媒体 `DataGrid` 测量为 `693×0`：短但非 fallback 高度关闭外层页面滚动，提示条、工具栏和页脚耗尽表卡空间。`MediaCenterView` 现让可见 Stale 提示启用外层内容滚动，恢复有限的 `MediaInboxGrid` 视口；未添加固定底部补偿。
+- L05 离屏结果：`statefixtures OK`；定向 `WorkspaceStateSourceTests` 为 `8 通过 / 1 跳过`；RenderHarness Release 构建 `0 warning / 0 error`。截图只证明插件生产页离屏夹具，不等同真实 Playnite/FusionX 录屏；真实宿主仍待验收。
+
 ## 2026-09-08 Q6-04 构建身份闭环已完成（隔离包验收）
 
 - `WorkerLauncher` 现在只在两个构建身份都已知且不一致时拒绝复用；旧 Worker 缺少 `BuildIdentity`、或任一侧为 `+unknown` 时，先完成版本/协议校验并以“身份未验证”状态兼容，不把未知身份冒充为同源。

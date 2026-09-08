@@ -149,6 +149,34 @@ public sealed class WorkspaceStateSourceTests
     }
 
     [Fact]
+    public void RenderHarnessStateFixturesCoverEveryProductionStateBinding()
+    {
+        var root = FindRepositoryRoot();
+        var fake = File.ReadAllText(Path.Combine(root, "tests", "GameSaveCenter.RenderHarness", "FakeDashboardData.cs"));
+        var harness = File.ReadAllText(Path.Combine(root, "tests", "GameSaveCenter.RenderHarness", "Program.cs"));
+
+        foreach (var state in new[] { "Ready", "Empty", "Loading", "Error", "Stale", "Offline" })
+            Assert.Contains(state, fake);
+
+        foreach (var binding in new[]
+        {
+            "MediaDetailsPresenterState", "MediaDetailsStateOverlayVisible", "MediaDetailsStaleVisible",
+            "MediaInboxPresenterState", "MediaInboxStateOverlayVisible", "MediaInboxStaleVisible",
+            "MediaInboxCountDisplay", "MediaInboxCountCaption",
+            "MaintenancePresenterState", "MaintenanceStateOverlayVisible", "MaintenanceStaleVisible",
+            "MaintenanceActionSummary", "MaintenanceActionItems"
+        })
+            Assert.Contains(binding, fake);
+
+        Assert.Contains("statefixtures", harness);
+        Assert.Contains("VerifyWorkspaceStateFixtureBindingSurface", harness);
+        Assert.Contains("MediaInboxScrollSurface", harness);
+        Assert.Contains("MediaCurrentScrollSurface", harness);
+        Assert.Contains("MaintenanceAuditScrollSurface", harness);
+        Assert.Contains("ThemeWindowSizes", harness);
+    }
+
+    [Fact]
     public void DetailEditorDraftsSurviveRefreshOfTheSameItem()
     {
         var root = FindRepositoryRoot();

@@ -9,12 +9,24 @@ using GameSaveCenter.Playnite.ViewModels;
 
 namespace GameSaveCenter.RenderHarness;
 
+public enum WorkspaceFixtureState
+{
+    Ready,
+    Empty,
+    Loading,
+    Error,
+    Stale,
+    Offline
+}
+
 /// <summary>
 /// Minimal view-model-shaped data for offscreen layout QA. It deliberately mirrors the
 /// public binding surface of DashboardViewModel without starting Worker/IPC services.
 /// </summary>
 public sealed class FakeDashboardData
 {
+    private readonly WorkspaceFixtureState fixtureState;
+
     public string OnboardingTitle => "首次使用：准备环境";
     public string OnboardingDescription => "先确认 Worker、目录、SQLite 与备份工具可用。所有检查都是非破坏性的；你可以跳过，之后随时在维护中心重新运行。";
     public bool IsOnboardingPending => false;
@@ -43,11 +55,17 @@ public sealed class FakeDashboardData
     public ICommand ClearTaskFiltersCommand { get; } = new NoopCommand();
 
     public FakeDashboardData(int rowCount = 8)
+        : this(rowCount, WorkspaceFixtureState.Ready)
     {
+    }
+
+    public FakeDashboardData(int rowCount, WorkspaceFixtureState state)
+    {
+        fixtureState = state;
         rowCount = Math.Max(8, rowCount);
         Snapshot = new DashboardSnapshotDto
         {
-            WorkerHealthy = true,
+            WorkerHealthy = state != WorkspaceFixtureState.Offline,
             WorkerVersion = "0.6.70",
             LudusaviAvailable = true,
             LudusaviVersion = "0.31.0",
@@ -186,7 +204,7 @@ public sealed class FakeDashboardData
 
         for (var i = 1; i <= rowCount; i++)
         {
-            var state = i % 4 == 0 ? TaskState.Failed
+            var taskState = i % 4 == 0 ? TaskState.Failed
                 : i % 4 == 1 ? TaskState.Running
                 : i % 4 == 2 ? TaskState.Succeeded
                 : TaskState.Cancelled;
@@ -196,7 +214,7 @@ public sealed class FakeDashboardData
                 TaskType = i % 3 == 0 ? "MediaSync" : "Backup",
                 GameId = "game-" + i,
                 GameName = Games[i - 1].Name,
-                State = state,
+                State = taskState,
                 ProgressPercent = i % 4 == 0 ? 0 : Math.Min(100, i * 12),
                 Message = i % 4 == 0 ? "远端暂时不可用，本地版本已保留。" : $"任务 {i} 完成",
                 ErrorCode = i % 4 == 0 ? "E_CLOUD" : string.Empty,
@@ -488,13 +506,58 @@ public sealed class FakeDashboardData
             });
         }
 
+        MaintenanceActionItems.Add(new MaintenanceActionItem
+        {
+            ItemId = "inspection-1",
+            CategoryDisplay = "恢复巡检",
+            Title = "检查最近可恢复版本",
+            StatusDisplay = "待确认",
+            Detail = "最近一次验证发现一个可继续检查的版本，建议查看详情。",
+            LastVerifiedDisplay = "今天 09:18",
+            NextAttemptDisplay = "手动触发",
+            ActionText = "查看巡检",
+            ActionToolTip = "查看恢复巡检记录",
+            ActionKind = MaintenanceActionKind.HealthInspection
+        });
+        MaintenanceActionItems.Add(new MaintenanceActionItem
+        {
+            ItemId = "transfer-1",
+            CategoryDisplay = "云端队列",
+            Title = "Baldur's Gate 3 云端上传",
+            StatusDisplay = "等待重试",
+            Detail = "远端暂时不可用，本地版本已保留，不会自动覆盖本地文件。",
+            LastAttemptDisplay = "今天 09:12",
+            NextAttemptDisplay = "18 分钟后",
+            ActionText = "打开任务",
+            ActionToolTip = "查看这条云端队列记录",
+            ActionKind = MaintenanceActionKind.CloudTransfer,
+            TransferKey = "Backup:game-1",
+            TransferState = "RetryScheduled"
+        });
+        MaintenanceActionItems.Add(new MaintenanceActionItem
+        {
+            ItemId = "quarantine-1",
+            CategoryDisplay = "隔离账本",
+            Title = "发现待人工确认的隔离文件",
+            StatusDisplay = "需确认",
+            Detail = "文件身份与当前索引不一致，继续协调前需要明确确认。",
+            LedgerUpdatedDisplay = "昨天 22:41",
+            NextAttemptDisplay = "确认后执行",
+            ActionText = "查看账本",
+            ActionToolTip = "查看隔离账本记录",
+            ActionKind = MaintenanceActionKind.RetentionQuarantine,
+            EntryId = "entry-1"
+        });
+
+        ApplyWorkspaceFixtureState();
+
         SelectedTask = Tasks[0];
         SelectedMedia = Media.Count > 0 ? Media[0] : null;
         SelectedInboxMedia = UnassignedMedia.Count > 0 ? UnassignedMedia[0] : null;
         SelectedFinding = Findings.Count > 0 ? Findings[0] : null;
         SelectedDeviceComparison = DeviceComparisons.Count > 0 ? DeviceComparisons[0] : null;
         SelectedProcessMapping = ProcessMappings.Count > 0 ? ProcessMappings[0] : null;
-        SelectedCloudTransfer = CloudTransferItems[0];
+        SelectedCloudTransfer = CloudTransferItems.Count > 0 ? CloudTransferItems[0] : null;
         SelectedBackup = Backups[0];
         SelectedCandidate = SaveCandidates[0];
         SelectedGameTool = GameTools[0];
@@ -521,6 +584,52 @@ public sealed class FakeDashboardData
         TasksView = CollectionViewSource.GetDefaultView(Tasks);
     }
 
+    private void ApplyWorkspaceFixtureState()
+    {
+        if (fixtureState == WorkspaceFixtureState.Ready || fixtureState == WorkspaceFixtureState.Stale)
+            return;
+
+        Media.Clear();
+        UnassignedMedia.Clear();
+        Findings.Clear();
+        Audit.Clear();
+        MaintenanceActionItems.Clear();
+        Snapshot.UnassignedMediaCount = 0;
+    }
+
+    private string FixtureStateText => fixtureState.ToString();
+    private bool HasFixtureData => fixtureState is WorkspaceFixtureState.Ready or WorkspaceFixtureState.Stale;
+    private bool IsFixtureOffline => fixtureState == WorkspaceFixtureState.Offline;
+    private bool IsFixtureOverlay => fixtureState is WorkspaceFixtureState.Loading or WorkspaceFixtureState.Error or WorkspaceFixtureState.Offline;
+    private string FixtureStateDetail => fixtureState switch
+    {
+        WorkspaceFixtureState.Error => "错误详情：Worker 暂时没有返回完整列表。请稍后重试；这段长错误用于验证详情区域不会裁切。",
+        WorkspaceFixtureState.Stale => "上次成功读取：今天 09:18；本次刷新失败，仍保留旧数据。",
+        WorkspaceFixtureState.Offline => "Worker 当前离线；恢复连接后才能确认最新数量。",
+        WorkspaceFixtureState.Loading => "正在等待 Worker 返回结果。",
+        _ => string.Empty
+    };
+
+    private string FixtureStateTitle(string subject) => fixtureState switch
+    {
+        WorkspaceFixtureState.Loading => $"正在读取{subject}",
+        WorkspaceFixtureState.Empty => $"当前没有{subject}",
+        WorkspaceFixtureState.Stale => $"{subject}显示已过期",
+        WorkspaceFixtureState.Error => $"{subject}读取失败",
+        WorkspaceFixtureState.Offline => "Worker 当前离线",
+        _ => string.Empty
+    };
+
+    private string FixtureStateMessage(string subject) => fixtureState switch
+    {
+        WorkspaceFixtureState.Loading => $"正在读取{subject}；已有内容会保留到新结果确认后。",
+        WorkspaceFixtureState.Empty => $"当前没有{subject}，新的内容会在 Worker 返回后显示。",
+        WorkspaceFixtureState.Stale => $"仍保留上次成功读取的{subject}；本次刷新没有覆盖它。",
+        WorkspaceFixtureState.Error => $"当前{subject}暂时无法读取，请稍后重试。",
+        WorkspaceFixtureState.Offline => $"{subject}暂时不可用；Worker 恢复后可重新读取。",
+        _ => string.Empty
+    };
+
     public DashboardSnapshotDto Snapshot { get; }
     private OverviewPriorityState OverviewPriority => OverviewPriorityResolver.Resolve(Snapshot, IsOnboardingPending);
     public string OverviewPriorityKind => OverviewPriority.Kind;
@@ -546,6 +655,7 @@ public sealed class FakeDashboardData
     public ObservableCollection<ActivityEntryDto> Activities { get; } = new ObservableCollection<ActivityEntryDto>();
     public ObservableCollection<ValidationFindingDto> AttentionFindings { get; } = new ObservableCollection<ValidationFindingDto>();
     public ObservableCollection<MediaItemDto> Media { get; } = new ObservableCollection<MediaItemDto>();
+    public ObservableCollection<MaintenanceActionItem> MaintenanceActionItems { get; } = new ObservableCollection<MaintenanceActionItem>();
     public ICollectionView MediaView { get; }
     public bool MediaPageHasMore => true;
     public string MediaLoadedSummary => $"当前保留 {Media.Count} 条（窗口上限 2000）";
@@ -553,6 +663,40 @@ public sealed class FakeDashboardData
     public ObservableCollection<MediaItemDto> MediaInboxItems => UnassignedMedia;
     public bool MediaInboxPageHasMore => false;
     public string MediaInboxLoadedSummary => $"当前保留 {MediaInboxItems.Count} 条（窗口上限 2000）";
+    public bool IsWorkerOffline => IsFixtureOffline;
+    public string MediaDetailsState => FixtureStateText;
+    public string MediaDetailsPresenterState => IsFixtureOffline ? "Offline" : fixtureState == WorkspaceFixtureState.Stale ? "Degraded" : FixtureStateText;
+    public string MediaDetailsStateTitle => FixtureStateTitle("当前游戏媒体");
+    public string MediaDetailsStateMessage => FixtureStateMessage("当前游戏媒体");
+    public string MediaDetailsStateDetail => FixtureStateDetail;
+    public bool MediaDetailsStateOverlayVisible => IsFixtureOverlay;
+    public bool MediaDetailsStaleVisible => !IsFixtureOffline && fixtureState == WorkspaceFixtureState.Stale;
+    public string MediaInboxState => FixtureStateText;
+    public string MediaInboxPresenterState => IsFixtureOffline ? "Offline" : fixtureState == WorkspaceFixtureState.Stale ? "Degraded" : FixtureStateText;
+    public string MediaInboxStateTitle => FixtureStateTitle("媒体收件箱");
+    public string MediaInboxStateMessage => FixtureStateMessage("媒体收件箱");
+    public string MediaInboxStateDetail => FixtureStateDetail;
+    public bool MediaInboxStateOverlayVisible => IsFixtureOverlay;
+    public bool MediaInboxStaleVisible => !IsFixtureOffline && fixtureState == WorkspaceFixtureState.Stale;
+    public string MediaInboxCountDisplay => HasFixtureData ? MediaInboxItems.Count.ToString() : "—";
+    public string MediaInboxCountCaption => fixtureState switch
+    {
+        WorkspaceFixtureState.Loading => "正在读取 · 来源文件始终保留",
+        WorkspaceFixtureState.Error => "无法读取 · 尚未确认数量",
+        WorkspaceFixtureState.Stale => "缓存 · 上次成功 今天 09:18",
+        WorkspaceFixtureState.Offline => "离线 · 无法读取",
+        _ => "待归类 · 来源文件始终保留"
+    };
+    public string MaintenanceState => FixtureStateText;
+    public string MaintenancePresenterState => IsFixtureOffline ? "Offline" : fixtureState == WorkspaceFixtureState.Stale ? "Degraded" : FixtureStateText;
+    public string MaintenanceStateTitle => FixtureStateTitle("维护信息");
+    public string MaintenanceStateMessage => FixtureStateMessage("维护信息");
+    public string MaintenanceStateDetail => FixtureStateDetail;
+    public bool MaintenanceStateOverlayVisible => IsFixtureOverlay;
+    public bool MaintenanceStaleVisible => !IsFixtureOffline && fixtureState == WorkspaceFixtureState.Stale;
+    public string MaintenanceActionSummary => fixtureState == WorkspaceFixtureState.Ready
+        ? "恢复巡检：待确认 · 云端待处理：2 · 隔离账本：1 项"
+        : FixtureStateMessage("维护信息");
     public ObservableCollection<string> MediaInboxModeOptions { get; } = new ObservableCollection<string> { "待归类", "已忽略" };
     public string MediaInboxMode { get; set; } = "待归类";
     public string MediaInboxTitle => MediaInboxMode == "已忽略" ? "已忽略媒体" : "待归类媒体";
@@ -594,6 +738,7 @@ public sealed class FakeDashboardData
     public string CloudTransferKindFilter { get; set; } = string.Empty;
     public bool CloudTransferHasMore => CloudTransferViewSummary.HasMore;
     public string CloudTransferLoadedSummary => $"已加载全部 {CloudTransferItems.Count} 项";
+    public int MediaTabIndex { get; set; }
     public int MaintenanceTabIndex { get; set; }
     public ObservableCollection<string> TaskStatusFilterOptions { get; } = new ObservableCollection<string> { "全部", "运行中", "等待中", "失败", "已完成" };
     public ObservableCollection<string> TaskGameFilterOptions { get; } = new ObservableCollection<string> { "全部" };
@@ -636,12 +781,18 @@ public sealed class FakeDashboardData
     public string TaskLoadedSummary => $"已加载 {Tasks.Count} / {Tasks.Count} 条 · {TaskHistoryScope}";
     public string TaskActiveFiltersSummary => "当前未设置额外条件";
     public bool TaskPageHasLoaded => true;
-    public bool IsTaskPageLoading => false;
-    public bool TaskPageLoadFailed => false;
-    public bool TaskPageHasItems => Tasks.Count > 0;
-    public string TaskPageState => Tasks.Count > 0 ? "Ready" : "Empty";
+    public bool IsTaskPageLoading => fixtureState == WorkspaceFixtureState.Loading;
+    public bool TaskPageLoadFailed => fixtureState == WorkspaceFixtureState.Error;
+    public bool TaskPageHasItems => (fixtureState is WorkspaceFixtureState.Ready or WorkspaceFixtureState.Stale) && Tasks.Count > 0;
+    public string TaskPageState => fixtureState switch
+    {
+        WorkspaceFixtureState.Loading => "Loading",
+        WorkspaceFixtureState.Error => "Error",
+        WorkspaceFixtureState.Empty => "Empty",
+        _ => Tasks.Count > 0 ? "Ready" : "Empty"
+    };
     public string TaskPageStatusSummary => "最近更新：2026-09-05 00:00:00";
-    public string TaskPageErrorMessage => string.Empty;
+    public string TaskPageErrorMessage => fixtureState == WorkspaceFixtureState.Error ? FixtureStateDetail : string.Empty;
     public TaskStatusDto SelectedTask { get; set; } = null!;
     public BackupVersionDto SelectedBackup { get; set; } = null!;
     public SavePathCandidateDto SelectedCandidate { get; set; } = null!;
