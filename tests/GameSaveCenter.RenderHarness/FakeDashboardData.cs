@@ -807,9 +807,13 @@ public sealed class FakeDashboardData
         Message = "镜像可用：184 个文件，共 128 GiB；最近同步 2026-08-14 00:00。"
     };
     public int RunningTaskCount { get; }
+    public int WaitingTaskCount => Tasks.Count(task => task.State == TaskState.Queued || task.State == TaskState.WaitingForUser);
+    public string TaskWaitingSummary => $"排队/等待确认：{WaitingTaskCount}";
     public int RetryableTaskCount { get; }
+    public string TaskRetrySummary => $"失败 {Tasks.Count(task => task.State == TaskState.Failed)} · 已取消 {Tasks.Count(task => task.State == TaskState.Cancelled)}";
     public int CompletedTaskCount { get; }
     public int TaskTotalCount => Tasks.Count;
+    public string TaskTotalCountLabel => "任务总数（全部历史）";
     public string TaskHistoryScope { get; set; } = "最近任务";
     public string TaskHistoryRange { get; set; } = "全部时间";
     public bool TaskHistoryHasMore => false;

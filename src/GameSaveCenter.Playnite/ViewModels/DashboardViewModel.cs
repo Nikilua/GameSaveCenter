@@ -639,7 +639,10 @@ namespace GameSaveCenter.Playnite.ViewModels
         public int TaskTotalCount => TaskSummary.TotalCount;
         public string TaskTotalCountLabel => taskHistoryActive ? "任务总数（当前筛选）" : "任务总数（全部历史）";
         public int RunningTaskCount => TaskSummary.RunningCount;
+        public int WaitingTaskCount => TaskSummary.QueuedCount + TaskSummary.WaitingForUserCount;
+        public string TaskWaitingSummary => $"排队/等待确认：{WaitingTaskCount}";
         public int RetryableTaskCount => TasksView?.Cast<TaskStatusDto>().Count(CanRetryTask) ?? Tasks.Count(CanRetryTask);
+        public string TaskRetrySummary => $"失败 {TaskSummary.FailedCount} · 已取消 {TaskSummary.CancelledCount}";
         public int CompletedTaskCount => todaySucceededTaskCount;
         public int LoadedTaskCount => Tasks.Count;
         public bool TaskHistoryHasMore { get => taskHistoryHasMore; private set => SetValue(ref taskHistoryHasMore, value); }
@@ -1975,7 +1978,10 @@ namespace GameSaveCenter.Playnite.ViewModels
                 todaySucceededTaskCount = data.TodaySucceededTaskCount;
                 OnPropertyChanged(nameof(TaskTotalCount));
                 OnPropertyChanged(nameof(RunningTaskCount));
+                OnPropertyChanged(nameof(WaitingTaskCount));
+                OnPropertyChanged(nameof(TaskWaitingSummary));
                 OnPropertyChanged(nameof(RetryableTaskCount));
+                OnPropertyChanged(nameof(TaskRetrySummary));
                 OnPropertyChanged(nameof(CompletedTaskCount));
                 OnPropertyChanged(nameof(TaskLoadedSummary));
                 var tasksChanged = taskHistoryActive ? false : Replace(Tasks, data.RecentTasks, SnapshotComparers.Task);
@@ -2378,7 +2384,10 @@ namespace GameSaveCenter.Playnite.ViewModels
                     TaskSummary = page?.Summary ?? new TaskSummaryDto { TotalCount = taskHistoryTotalCount };
                     OnPropertyChanged(nameof(TaskTotalCount));
                     OnPropertyChanged(nameof(RunningTaskCount));
+                    OnPropertyChanged(nameof(WaitingTaskCount));
+                    OnPropertyChanged(nameof(TaskWaitingSummary));
                     OnPropertyChanged(nameof(RetryableTaskCount));
+                    OnPropertyChanged(nameof(TaskRetrySummary));
                     OnPropertyChanged(nameof(CompletedTaskCount));
                     OnPropertyChanged(nameof(LoadedTaskCount));
                     OnPropertyChanged(nameof(TaskLoadedSummary));

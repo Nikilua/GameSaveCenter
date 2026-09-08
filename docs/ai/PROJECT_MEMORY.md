@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-09
 
+## 2026-09-09 L15 任务页查错与范围说明
+
+- 顶部任务摘要保留 `RunningTaskCount`、`RetryableTaskCount` 和今日完成，同时新增 `TaskWaitingSummary`（排队 + 等待确认）与 `TaskRetrySummary`（失败 + 已取消）。快照刷新和历史分页完成时必须一起触发这些派生属性的通知。
+- `TaskQueueFilterSummary` 只在 `TaskHasActiveFilters` 时显示在队列标题区，避免宽屏用户必须展开“更多筛选”才能知道当前查询；`TaskLoadedSummary` 继续表达已加载窗口、服务端总数、最近/全部历史和时间范围。不要把已加载页数写成全历史已处理数。
+- 批量重试按钮的作用域是当前已加载并通过 `TasksView` 的结果，现有 `GetRetryGroupKey` 去重和逐组安全重试保留；文案必须明确这一点。不要因为增加范围说明而改 Worker 协议、游标分页或 `TaskIndexedCollection` 的 200 行窗口。
+- L15 验证：任务定向 `36/42`（6 跳过），全量 Core `72/72`、Worker `303/304`（1 跳过）、Playnite `402/464`（62 跳过）；Release 构建无警告/错误，源码/XAML/差异检查通过。离屏 Task 场景在 1040×700 仍有 6 行首屏，双主题/resize 通过；完整 render-qa 的稳定失败属于既有媒体小视口/媒体壳高度，真实 Playnite/FusionX 仍待验收。
+
 ## 2026-09-09 L14 运维总览按处理顺序组织
 
 - `MaintenanceActionItem.Group` 只按现有动作语义分为 `NeedsManualHandling`、`WaitingForRetry` 和 `Routine`：隔离账本、认证/失败云端记录需要人工处理，`RetryScheduled` 进入等待重试，恢复巡检进入例行巡检。不要依据显示文案另造分类，也不要把云端摘要计数当成已加载明细。

@@ -113,10 +113,12 @@
                 <StackPanel Grid.Column="2" Margin="14,2,14,0">
                     <TextBlock Text="{Binding RunningTaskCount, Mode=OneWay}" Foreground="{DynamicResource GscAccentBrush}" FontSize="26" FontWeight="SemiBold"/>
                     <TextBlock Text="运行中" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0"/>
+                    <TextBlock Text="{Binding TaskWaitingSummary, Mode=OneWay}" Foreground="{DynamicResource GscMutedTextBrush}" FontSize="10" Margin="0,2,0,0"/>
                 </StackPanel>
                 <StackPanel Grid.Column="4" Margin="14,2,14,0">
                     <TextBlock Text="{Binding RetryableTaskCount, Mode=OneWay}" Foreground="{DynamicResource GscWarningBrush}" FontSize="26" FontWeight="SemiBold"/>
-                    <TextBlock Text="当前页可重试" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0"/>
+                    <TextBlock Text="当前结果可重试" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0"/>
+                    <TextBlock Text="{Binding TaskRetrySummary, Mode=OneWay}" Foreground="{DynamicResource GscMutedTextBrush}" FontSize="10" Margin="0,2,0,0"/>
                 </StackPanel>
                 <Rectangle Grid.Column="3" Width="1" Fill="{DynamicResource GscTableDividerBrush}" HorizontalAlignment="Center" VerticalAlignment="Stretch" Margin="0,4"/>
                 <Rectangle Grid.Column="5" Width="1" Fill="{DynamicResource GscTableDividerBrush}" HorizontalAlignment="Center" VerticalAlignment="Stretch" Margin="0,4"/>
@@ -219,7 +221,7 @@
                 <Grid Grid.Row="0" Margin="12,2,12,8">
                     <TextBlock Text="任务队列" FontSize="15" FontWeight="SemiBold"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                        <ui:Button Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding RetryAllTasksCommand}" Content="重试可恢复" ToolTip="按游戏和任务类型各重试一次" AutomationProperties.Name="批量重试可恢复任务" Margin="0,0,10,0"/>
+                        <ui:Button Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding RetryAllTasksCommand}" Content="重试可恢复" ToolTip="只处理当前已加载且符合筛选的记录；按游戏和任务类型各重试一次" AutomationProperties.Name="批量重试当前结果中的可恢复任务" Margin="0,0,10,0"/>
                         <ui:Button Command="{Binding LoadMoreTasksCommand}" Content="加载更多" ToolTip="按稳定游标继续加载历史任务">
                             <ui:Button.Style>
                                 <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiSecondaryButton}">
@@ -230,6 +232,16 @@
                         </ui:Button>
                         <StackPanel VerticalAlignment="Center" Margin="10,0,0,0">
                             <TextBlock Text="{Binding TaskLoadedSummary}" Style="{DynamicResource GscCaptionStyle}"/>
+                            <TextBlock x:Name="TaskQueueFilterSummary" Text="{Binding TaskActiveFiltersSummary}" Foreground="{DynamicResource GscInfoBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding TaskActiveFiltersSummary}" Margin="0,2,0,0">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource GscCaptionStyle}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding TaskHasActiveFilters}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
                             <TextBlock x:Name="TaskQueueLastUpdatedSummary" Text="{Binding TaskPageStatusSummary}" Style="{DynamicResource GscCaptionStyle}" Foreground="{DynamicResource GscMutedTextBrush}" Margin="0,2,0,0" ToolTip="{Binding TaskPageStatusSummary}"/>
                         </StackPanel>
                     </StackPanel>

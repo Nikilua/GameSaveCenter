@@ -646,7 +646,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Equal(3, Regex.Matches(summary, "<Rectangle Grid.Column=\"[135]\" Width=\"1\"").Count);
         Assert.DoesNotMatch("<Rectangle Grid.Column=\"[0246]\"", summary);
         Assert.Contains("{Binding RunningTaskCount, Mode=OneWay}", task);
+        Assert.Contains("{Binding TaskWaitingSummary, Mode=OneWay}", task);
         Assert.Contains("{Binding RetryableTaskCount, Mode=OneWay}", task);
+        Assert.Contains("{Binding TaskRetrySummary, Mode=OneWay}", task);
         Assert.Contains("{Binding CompletedTaskCount, Mode=OneWay}", task);
         Assert.Contains("{Binding TaskTotalCount, Mode=OneWay}", task);
         Assert.Contains("{Binding TaskTotalCountLabel, Mode=OneWay}", task);
