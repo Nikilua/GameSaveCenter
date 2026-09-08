@@ -171,6 +171,9 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string taskStatusFilter = "全部";
         private string taskGameFilter = "全部";
         private string taskTypeFilter = "全部";
+        private string pendingTaskGameFilter = "全部";
+        private string pendingTaskTypeFilter = "全部";
+        private bool pendingTaskDynamicFilterRestore;
         private string taskSearchText = string.Empty;
         private string taskNavigationGameId = string.Empty;
         private string taskNavigationGameName = string.Empty;
@@ -245,9 +248,16 @@ namespace GameSaveCenter.Playnite.ViewModels
             mediaPageQueryRefresh = new DebouncedRefresh(() => Run(LoadFilteredMediaPageAsync), TimeSpan.FromMilliseconds(240));
             uiStateSave = new DebouncedRefresh(SaveUiStateSettings, TimeSpan.FromMilliseconds(500));
             taskStatusFilter = TaskStatusFilterOptions.Contains(plugin.Settings.TaskStatusFilterState) ? plugin.Settings.TaskStatusFilterState : "全部";
+            pendingTaskGameFilter = plugin.Settings.TaskGameFilterState ?? "全部";
+            pendingTaskTypeFilter = plugin.Settings.TaskTypeFilterState ?? "全部";
+            pendingTaskDynamicFilterRestore = true;
             taskGameFilter = "全部";
             taskTypeFilter = "全部";
             taskSearchText = plugin.Settings.TaskSearchTextState ?? string.Empty;
+            taskHistoryScope = TaskHistoryScopeOptions.Contains(plugin.Settings.TaskHistoryScopeState) ? plugin.Settings.TaskHistoryScopeState : "最近任务";
+            taskHistoryRange = TaskHistoryRangeOptions.Contains(plugin.Settings.TaskHistoryRangeState) ? plugin.Settings.TaskHistoryRangeState : "全部时间";
+            taskHistoryActive = !string.Equals(taskHistoryScope, "最近任务", StringComparison.Ordinal)
+                                || !string.Equals(taskHistoryRange, "全部时间", StringComparison.Ordinal);
             mediaFilter = MediaFilterOptions.Contains(plugin.Settings.MediaFilterState) ? plugin.Settings.MediaFilterState : "全部";
             mediaSearchText = plugin.Settings.MediaSearchTextState ?? string.Empty;
             ApplyGameSort();
@@ -277,6 +287,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             ReassignMediaCommand = new RelayCommand(_ => Run(ReassignMediaAsync), _ => !IsBusy && SelectedMedia != null && MediaTargetGame != null);
             LoadMoreMediaCommand = new RelayCommand(_ => Run(LoadMoreMediaPageAsync), _ => !IsBusy && CurrentWorkspace == WorkspaceKind.Media && SelectedGame != null && MediaPageHasMore);
             ReloadMediaWindowCommand = new RelayCommand(_ => Run(ReloadMediaWindowAsync), _ => !IsBusy && CurrentWorkspace == WorkspaceKind.Media && SelectedGame != null);
+            ClearMediaFiltersCommand = new RelayCommand(_ => ClearMediaFilters(), _ => !IsBusy);
             UpdateMediaMetadataCommand = new RelayCommand(_ => Run(UpdateMediaMetadataAsync), _ => !IsBusy && SelectedMedia != null);
             FavoriteSelectedMediaCommand = new RelayCommand(value => Run(() => UpdateMediaMetadataBatchAsync(value, true, false)), _ => !IsBusy);
             UnfavoriteSelectedMediaCommand = new RelayCommand(value => Run(() => UpdateMediaMetadataBatchAsync(value, false, false)), _ => !IsBusy);
@@ -483,6 +494,9 @@ namespace GameSaveCenter.Playnite.ViewModels
                 ? $"已加载 {MediaClassificationHistoryItems.Count} 个批次，还可继续加载"
                 : $"已加载全部 {MediaClassificationHistoryItems.Count} 个批次";
         public IReadOnlyList<string> MediaFilterOptions { get; } = new[] { "全部", "截图", "录像", "收藏" };
+        public bool MediaHasActiveFilters
+            => !string.IsNullOrWhiteSpace(MediaSearchText)
+               || !string.Equals(MediaFilter, "全部", StringComparison.Ordinal);
         public IReadOnlyList<string> GameStatusFilterOptions { get; } = new[] { "全部", "已就绪", "未匹配", "运行中", "需关注", "有历史" };
         public IReadOnlyList<string> GameSortOptions { get; } = new[] { "名称", "运行优先", "匹配优先", "最近备份" };
         public CloudTransferSummaryDto CloudTransferViewSummary { get => cloudTransferViewSummary; private set => SetValue(ref cloudTransferViewSummary, value ?? new CloudTransferSummaryDto()); }
@@ -693,6 +707,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 OnPropertyChanged(nameof(TaskLoadedSummary));
                 OnPropertyChanged(nameof(TaskHasActiveFilters));
                 OnPropertyChanged(nameof(TaskActiveFiltersSummary));
+                uiStateSave?.Schedule();
                 RaiseCommandStates();
             }
         }
@@ -710,6 +725,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 OnPropertyChanged(nameof(TaskLoadedSummary));
                 OnPropertyChanged(nameof(TaskHasActiveFilters));
                 OnPropertyChanged(nameof(TaskActiveFiltersSummary));
+                uiStateSave?.Schedule();
                 RaiseCommandStates();
             }
         }
@@ -746,6 +762,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             get => taskGameFilter;
             set
             {
+                if (!synchronizingTaskFilterOptions)
+                    pendingTaskDynamicFilterRestore = false;
                 ClearTaskNavigationTargetIfUserChangedFilter();
                 SetValue(ref taskGameFilter, string.IsNullOrWhiteSpace(value) ? "全部" : value);
                 RefreshTasksView();
@@ -760,6 +778,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             get => taskTypeFilter;
             set
             {
+                if (!synchronizingTaskFilterOptions)
+                    pendingTaskDynamicFilterRestore = false;
                 ClearTaskNavigationTargetIfUserChangedFilter();
                 SetValue(ref taskTypeFilter, string.IsNullOrWhiteSpace(value) ? "全部" : value);
                 RefreshTasksView();
@@ -1067,6 +1087,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 mediaSearchRefresh.Schedule(value);
                 ScheduleMediaPageQuery();
                 uiStateSave?.Schedule();
+                OnPropertyChanged(nameof(MediaHasActiveFilters));
             }
         }
         public string MediaFilter
@@ -1081,6 +1102,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 MediaView.Refresh();
                 ScheduleMediaPageQuery();
                 uiStateSave?.Schedule();
+                OnPropertyChanged(nameof(MediaHasActiveFilters));
             }
         }
         public IReadOnlyList<string> MediaInboxModeOptions { get; } = new[] { "待归类", "已忽略" };
@@ -1193,6 +1215,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand ReassignMediaCommand { get; }
         public ICommand LoadMoreMediaCommand { get; }
         public ICommand ReloadMediaWindowCommand { get; }
+        public ICommand ClearMediaFiltersCommand { get; }
         public ICommand UpdateMediaMetadataCommand { get; }
         public ICommand FavoriteSelectedMediaCommand { get; }
         public ICommand UnfavoriteSelectedMediaCommand { get; }
@@ -3918,25 +3941,50 @@ namespace GameSaveCenter.Playnite.ViewModels
             // Skip the O(n log n) game/type option rebuild when the visible task order and
             // identity are identical; user filter changes still refresh TasksView directly.
             var fingerprint = ComputeTaskFilterFingerprint(Tasks);
-            if (fingerprint == lastTaskFilterFingerprint)
+            if (fingerprint == lastTaskFilterFingerprint && !pendingTaskDynamicFilterRestore)
                 return;
             lastTaskFilterFingerprint = fingerprint;
 
-            var selectedGame = TaskGameFilter;
-            var selectedType = TaskTypeFilter;
-            TaskFilterOptionsSync.Sync(TaskGameFilterOptions, Tasks.Select(x => x.GameName));
-            TaskFilterOptionsSync.Sync(TaskTypeFilterOptions, Tasks.Select(x => x.TaskTypeDisplay));
-
-            // Only touch the selection when it actually disappeared; the incremental sync
-            // above never Clear()s the option collections, so an existing selection survives.
-            if (string.IsNullOrEmpty(selectedGame) || !TaskGameFilterOptions.Contains(selectedGame))
+            var restoringDynamicFilters = pendingTaskDynamicFilterRestore;
+            var selectedGame = restoringDynamicFilters ? pendingTaskGameFilter : TaskGameFilter;
+            var selectedType = pendingTaskDynamicFilterRestore ? pendingTaskTypeFilter : TaskTypeFilter;
+            var taskGameNames = Tasks.Select(x => x.GameName);
+            if (restoringDynamicFilters
+                && !string.IsNullOrWhiteSpace(selectedGame)
+                && !string.Equals(selectedGame, "全部", StringComparison.Ordinal)
+                && Games.Any(x => string.Equals(x.Name, selectedGame, StringComparison.OrdinalIgnoreCase)))
             {
-                synchronizingTaskFilterOptions = true;
-                try { TaskGameFilter = "全部"; }
-                finally { synchronizingTaskFilterOptions = false; }
+                taskGameNames = taskGameNames.Concat(new[] { selectedGame });
             }
-            if (string.IsNullOrEmpty(selectedType) || !TaskTypeFilterOptions.Contains(selectedType))
-                TaskTypeFilter = "全部";
+            TaskFilterOptionsSync.Sync(TaskGameFilterOptions, taskGameNames);
+            var taskTypeNames = Tasks.Select(x => x.TaskTypeDisplay);
+            if (restoringDynamicFilters
+                && !string.IsNullOrWhiteSpace(selectedType)
+                && !string.Equals(selectedType, "全部", StringComparison.Ordinal))
+            {
+                taskTypeNames = taskTypeNames.Concat(new[] { selectedType });
+            }
+            TaskFilterOptionsSync.Sync(TaskTypeFilterOptions, taskTypeNames);
+
+            // Restore saved dynamic values only after the options are rebuilt. If a game or
+            // task type disappeared since the last run, the safe default is "全部".
+            synchronizingTaskFilterOptions = true;
+            try
+            {
+                TaskGameFilter = !string.IsNullOrEmpty(selectedGame)
+                    && Games.Any(x => string.Equals(x.Name, selectedGame, StringComparison.OrdinalIgnoreCase))
+                    && TaskGameFilterOptions.Contains(selectedGame)
+                    ? selectedGame
+                    : "全部";
+                TaskTypeFilter = !string.IsNullOrEmpty(selectedType) && TaskTypeFilterOptions.Contains(selectedType)
+                    ? selectedType
+                    : "全部";
+            }
+            finally
+            {
+                synchronizingTaskFilterOptions = false;
+                pendingTaskDynamicFilterRestore = false;
+            }
             RefreshTasksView();
         }
 
@@ -4319,6 +4367,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                 plugin.Settings.TaskGameFilterState = TaskGameFilter;
                 plugin.Settings.TaskTypeFilterState = TaskTypeFilter;
                 plugin.Settings.TaskSearchTextState = TaskSearchText;
+                plugin.Settings.TaskHistoryScopeState = TaskHistoryScope;
+                plugin.Settings.TaskHistoryRangeState = TaskHistoryRange;
                 plugin.Settings.MediaFilterState = MediaFilter;
                 plugin.Settings.MediaSearchTextState = MediaSearchText;
                 plugin.SavePluginSettings(plugin.Settings);
@@ -4395,7 +4445,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 PreviewMediaClassificationCommand, ApplyMediaClassificationCommand, UndoMediaClassificationCommand,
                 RefreshMediaClassificationHistoryCommand, LoadMoreMediaClassificationHistoryCommand,
                 LoadMoreMediaInboxCommand, ReloadMediaInboxCommand,
-                CancelTaskCommand, RetryTaskCommand, RetryAllTasksCommand, LoadMoreTasksCommand, CopyTaskErrorCommand, RefreshDiagnosticsCommand, RunMaintenanceActionCommand, DiagnoseGameCommand, SyncGameDescriptorCommand, RetryGameMatchCommand, ClearGamePickerFiltersCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
+                CancelTaskCommand, RetryTaskCommand, RetryAllTasksCommand, LoadMoreTasksCommand, ClearMediaFiltersCommand, CopyTaskErrorCommand, RefreshDiagnosticsCommand, RunMaintenanceActionCommand, DiagnoseGameCommand, SyncGameDescriptorCommand, RetryGameMatchCommand, ClearGamePickerFiltersCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
                 StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,RunHealthInspectionCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,RefreshRetentionSimulationCommand,ApplyRetentionSimulationCommand,RefreshLocalMirrorStatusCommand,SyncLocalMirrorCommand,CopyMaintenanceReportCommand,ExportMaintenanceReportCommand,
                 SaveProcessMappingCommand,DeleteProcessMappingCommand,RunEnvironmentCheckCommand,SkipOnboardingCommand,CompleteOnboardingCommand,OnboardingTestBackupCommand,
                 OpenDataDirectoryCommand, OpenBackupDirectoryCommand, OpenMediaDirectoryCommand, OpenWorkerLogCommand

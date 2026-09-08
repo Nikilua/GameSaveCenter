@@ -48,6 +48,8 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Equal(source.TaskGameFilterState, imported.TaskGameFilterState);
             Assert.Equal(source.TaskTypeFilterState, imported.TaskTypeFilterState);
             Assert.Equal(source.TaskSearchTextState, imported.TaskSearchTextState);
+            Assert.Equal(source.TaskHistoryScopeState, imported.TaskHistoryScopeState);
+            Assert.Equal(source.TaskHistoryRangeState, imported.TaskHistoryRangeState);
             Assert.Equal(source.MediaFilterState, imported.MediaFilterState);
             Assert.Equal(source.MediaSearchTextState, imported.MediaSearchTextState);
             Assert.Equal(source.OnboardingCompleted, imported.OnboardingCompleted);
@@ -103,9 +105,30 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Equal("全部", imported.TaskGameFilterState);
             Assert.Equal("全部", imported.TaskTypeFilterState);
             Assert.Equal(string.Empty, imported.TaskSearchTextState);
+            Assert.Equal("最近任务", imported.TaskHistoryScopeState);
+            Assert.Equal("全部时间", imported.TaskHistoryRangeState);
             Assert.Equal("全部", imported.MediaFilterState);
             Assert.Equal(string.Empty, imported.MediaSearchTextState);
             Assert.Equal(destinationDeviceId, imported.DeviceId);
+        }
+
+        [Fact]
+        public void Import_InvalidTaskHistoryStateFallsBackToDefaults()
+        {
+            const string json = @"{
+  ""SchemaVersion"": 1,
+  ""ExportedUtc"": ""2026-07-01T00:00:00Z"",
+  ""Settings"": {
+    ""TaskHistoryScopeState"": ""removed-scope"",
+    ""TaskHistoryRangeState"": ""removed-range""
+  }
+}";
+
+            var imported = new GameSaveCenterSettings();
+            imported.ImportPortableJson(json);
+
+            Assert.Equal("最近任务", imported.TaskHistoryScopeState);
+            Assert.Equal("全部时间", imported.TaskHistoryRangeState);
         }
 
         [Fact]
@@ -216,6 +239,8 @@ namespace GameSaveCenter.Playnite.Tests
             TaskGameFilterState = "Game One",
             TaskTypeFilterState = "存档备份",
             TaskSearchTextState = "ff",
+            TaskHistoryScopeState = "全部历史",
+            TaskHistoryRangeState = "近7天",
             MediaFilterState = "收藏",
             MediaSearchTextState = "shot",
             AutoStartWorker = false,

@@ -163,6 +163,9 @@ namespace GameSaveCenter.Playnite.ViewModels
             taskStatusFilter = "全部";
             taskGameFilter = "全部";
             taskTypeFilter = "全部";
+            pendingTaskGameFilter = "全部";
+            pendingTaskTypeFilter = "全部";
+            pendingTaskDynamicFilterRestore = false;
             taskHistoryScope = "最近任务";
             taskHistoryRange = "全部时间";
             OnPropertyChanged(nameof(TaskSearchText));

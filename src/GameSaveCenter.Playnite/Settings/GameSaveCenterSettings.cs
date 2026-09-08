@@ -106,6 +106,8 @@ namespace GameSaveCenter.Playnite.Settings
         public string TaskGameFilterState { get; set; } = "全部";
         public string TaskTypeFilterState { get; set; } = "全部";
         public string TaskSearchTextState { get; set; } = string.Empty;
+        public string TaskHistoryScopeState { get; set; } = "最近任务";
+        public string TaskHistoryRangeState { get; set; } = "全部时间";
         public string MediaFilterState { get; set; } = "全部";
         public string MediaSearchTextState { get; set; } = string.Empty;
 
@@ -360,9 +362,14 @@ namespace GameSaveCenter.Playnite.Settings
             TaskGameFilterState = string.IsNullOrWhiteSpace(other.TaskGameFilterState) ? "全部" : other.TaskGameFilterState;
             TaskTypeFilterState = string.IsNullOrWhiteSpace(other.TaskTypeFilterState) ? "全部" : other.TaskTypeFilterState;
             TaskSearchTextState = other.TaskSearchTextState ?? string.Empty;
+            TaskHistoryScopeState = other.TaskHistoryScopeState == "全部历史" ? "全部历史" : "最近任务";
+            TaskHistoryRangeState = IsSupportedTaskHistoryRange(other.TaskHistoryRangeState) ? other.TaskHistoryRangeState : "全部时间";
             MediaFilterState = string.IsNullOrWhiteSpace(other.MediaFilterState) ? "全部" : other.MediaFilterState;
             MediaSearchTextState = other.MediaSearchTextState ?? string.Empty;
         }
+
+        private static bool IsSupportedTaskHistoryRange(string value)
+            => value == "全部时间" || value == "今天" || value == "昨天" || value == "近7天" || value == "近30天";
 
         private static List<string> ValidateValueRanges(GameSaveCenterSettings value)
         {

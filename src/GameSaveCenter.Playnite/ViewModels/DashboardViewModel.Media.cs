@@ -350,6 +350,23 @@ namespace GameSaveCenter.Playnite.ViewModels
                 mediaPageQueryRefresh.Schedule();
         }
 
+        private void ClearMediaFilters()
+        {
+            mediaSearchRefresh.Cancel();
+            mediaPageQueryRefresh.Cancel();
+            var changed = !string.IsNullOrWhiteSpace(mediaSearchText)
+                          || !string.Equals(mediaFilter, "全部", StringComparison.Ordinal);
+            mediaSearchText = string.Empty;
+            mediaFilter = "全部";
+            if (changed) InvalidateMediaDetailsContext();
+            OnPropertyChanged(nameof(MediaSearchText));
+            OnPropertyChanged(nameof(MediaFilter));
+            OnPropertyChanged(nameof(MediaHasActiveFilters));
+            MediaView.Refresh();
+            uiStateSave?.Schedule();
+            if (changed) ScheduleMediaPageQuery();
+        }
+
         private void ResetMediaPageState()
         {
             mediaPageCursor = string.Empty;
