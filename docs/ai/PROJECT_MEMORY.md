@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-09
 
+## 2026-09-09 L13 首页优先级与活动上下文
+
+- `OverviewPriorityResolver` 保持单一 Hero 决策，顺序为 Worker 离线、首次准备、云端待处理、媒体待归类、空库、游戏告警、健康刷新。空库使用 `ManagedGames <= 0` 明确显示“还没有可管理的游戏”，不再把无游戏快照当作健康状态；云端失败/认证/校验/重试仍统一来自 `CloudTransferSummaryDto.AttentionCount`。
+- `ActivityEntryDto` 新增稳定 `PlayniteId`，由 `ActivityTimelineMapper` 从审计详情提取；`DashboardViewModel.OpenActivityCommand` 按活动类型路由到存档、媒体、工具、云端或维护工作区，能命中已加载游戏时先恢复同一 `SelectedGame`。Overview 活动行使用透明但真实的按钮模板，保留虚拟化、时间和对象显示，并支持键盘焦点。
+- 新增空库/云端失败优先级测试，并扩展活动映射测试。Release 构建无警告/错误；Core `72/72`、Worker `303/304`（1 跳过）、Playnite `401/463`（62 跳过）；源码/XAML/差异检查通过。离屏 render-qa 的 Overview 场景通过，媒体小视口/媒体壳表格高度仍是既有失败；没有真实 Playnite/FusionX 交互证据。
+
 ## 2026-09-09 L11 通知、长错误与复制详情
 
 - `UiNotificationEventArgs` 的 `Message` 只用于短摘要，`DetailMessage` 保留完整文本。`GameSaveCenterPlugin.RaiseUiNotification` 按成功/信息与错误/警告使用不同摘要上限；任务终态详情额外包含状态、错误码和任务 ID。

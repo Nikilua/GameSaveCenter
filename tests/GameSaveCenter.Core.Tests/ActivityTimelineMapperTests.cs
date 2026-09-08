@@ -22,6 +22,7 @@ public sealed class ActivityTimelineMapperTests
 
         var activity = ActivityTimelineMapper.Map(entry, games);
 
+        Assert.Equal("g1", activity.PlayniteId);
         Assert.Equal("Backup", activity.Kind);
         Assert.Equal("Succeeded", activity.Result);
         Assert.Equal("Cyberpunk 2077", activity.GameName);

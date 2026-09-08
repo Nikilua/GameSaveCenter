@@ -43,6 +43,8 @@ namespace GameSaveCenter.Contracts
     /// <summary>One curated business activity shown in the Overview timeline.</summary>
     public sealed class ActivityEntryDto
     {
+        /// <summary>Stable Playnite game id when the event is scoped to a game; empty for global events.</summary>
+        public string PlayniteId { get; set; } = string.Empty;
         public string Kind { get; set; } = "Maintenance";
         public string Result { get; set; } = "Info";
         public string GameName { get; set; } = "全局";

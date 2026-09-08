@@ -35,6 +35,7 @@ namespace GameSaveCenter.Core.Services
             var kind = MapKind(entry.Category);
             return new ActivityEntryDto
             {
+                PlayniteId = gameId ?? string.Empty,
                 Kind = kind,
                 Result = MapResult(entry.Message, kind),
                 GameName = gameName,

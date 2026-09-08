@@ -74,6 +74,16 @@ namespace GameSaveCenter.Playnite.ViewModels
                     "打开媒体中心");
             }
 
+            if (snapshot.ManagedGames <= 0)
+            {
+                return new OverviewPriorityState(
+                    "Empty",
+                    "Refresh",
+                    "还没有可管理的游戏",
+                    "当前快照没有读到可管理的 Playnite 游戏；刷新游戏库后再继续。",
+                    "刷新游戏库");
+            }
+
             if (snapshot.WarningGames > 0)
             {
                 return new OverviewPriorityState(

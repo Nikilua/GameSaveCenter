@@ -55,6 +55,7 @@ public sealed class OverviewPriorityResolverTests
         var media = OverviewPriorityResolver.Resolve(new DashboardSnapshotDto
         {
             WorkerHealthy = true,
+            ManagedGames = 10,
             UnassignedMediaCount = 5,
             WarningGames = 2
         }, false);
@@ -62,6 +63,7 @@ public sealed class OverviewPriorityResolverTests
         var attention = OverviewPriorityResolver.Resolve(new DashboardSnapshotDto
         {
             WorkerHealthy = true,
+            ManagedGames = 10,
             WarningGames = 2
         }, false);
 
@@ -78,13 +80,44 @@ public sealed class OverviewPriorityResolverTests
     {
         var state = OverviewPriorityResolver.Resolve(new DashboardSnapshotDto
         {
-            WorkerHealthy = true
+            WorkerHealthy = true,
+            ManagedGames = 10
         }, false);
 
         Assert.Equal("Healthy", state.Kind);
         Assert.Equal("Refresh", state.ActionKind);
         Assert.Equal("整体状态安全", state.Title);
         Assert.Equal("刷新概览", state.ActionText);
+    }
+
+    [Fact]
+    public void EmptyLibraryIsExplicitInsteadOfBeingReportedAsHealthy()
+    {
+        var state = OverviewPriorityResolver.Resolve(new DashboardSnapshotDto
+        {
+            WorkerHealthy = true,
+            ManagedGames = 0
+        }, false);
+
+        Assert.Equal("Empty", state.Kind);
+        Assert.Equal("Refresh", state.ActionKind);
+        Assert.Equal("还没有可管理的游戏", state.Title);
+        Assert.Equal("刷新游戏库", state.ActionText);
+    }
+
+    [Fact]
+    public void CloudFailureIsPromotedWithTheSnapshotAttentionCount()
+    {
+        var state = OverviewPriorityResolver.Resolve(new DashboardSnapshotDto
+        {
+            WorkerHealthy = true,
+            ManagedGames = 24,
+            CloudTransfers = new CloudTransferSummaryDto { FailedCount = 2 }
+        }, false);
+
+        Assert.Equal("Cloud", state.Kind);
+        Assert.Equal("2 项云端任务需要处理", state.Title);
+        Assert.Equal("查看云端队列", state.ActionText);
     }
 
     [Fact]

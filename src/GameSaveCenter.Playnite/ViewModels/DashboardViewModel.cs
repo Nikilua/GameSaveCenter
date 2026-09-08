@@ -305,6 +305,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             OpenMaintenanceCommand = new RelayCommand(_ => OpenMaintenance());
             OpenCloudQueueCommand = new RelayCommand(_ => OpenCloudQueue());
             OpenMediaWorkspaceCommand = new RelayCommand(_ => OpenMediaWorkspace());
+            OpenActivityCommand = new RelayCommand(value => OpenActivity(value as ActivityEntryDto), value => value is ActivityEntryDto);
             OpenAttentionFindingCommand = new RelayCommand(value => OpenAttentionFinding(value as ValidationFindingDto));
             OpenSelectedFindingNavigationCommand = new RelayCommand(_ => OpenSelectedFindingNavigation(), _ => SelectedFindingNavigation.IsAvailable && !IsBusy);
             OpenProtectionGamesCommand = new RelayCommand(_ => OpenProtectionGames());
@@ -1217,6 +1218,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand OpenMaintenanceCommand { get; }
         public ICommand OpenCloudQueueCommand { get; }
         public ICommand OpenMediaWorkspaceCommand { get; }
+        public ICommand OpenActivityCommand { get; }
         public ICommand OpenAttentionFindingCommand { get; }
         public ICommand OpenSelectedFindingNavigationCommand { get; }
         public ICommand OpenProtectionGamesCommand { get; }
@@ -1416,6 +1418,50 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             MediaTabIndex = 0;
             CurrentWorkspace = WorkspaceKind.Media;
+            RequestWorkspaceLoad();
+        }
+
+        /// <summary>
+        /// Routes a curated overview activity to the workspace that owns the event. A
+        /// game-scoped activity carries its stable Playnite id so a renamed game cannot
+        /// make the click land on a similarly named row.
+        /// </summary>
+        private void OpenActivity(ActivityEntryDto? activity)
+        {
+            if (activity == null) return;
+
+            if (!string.IsNullOrWhiteSpace(activity.PlayniteId))
+            {
+                var game = Games.FirstOrDefault(candidate =>
+                    string.Equals(candidate.PlayniteId, activity.PlayniteId, StringComparison.OrdinalIgnoreCase));
+                if (game != null)
+                    SelectedGame = game;
+                else
+                    StatusMessage = "活动对应的游戏当前不在已加载库中，将打开相关工作区。";
+            }
+
+            switch (activity.Kind)
+            {
+                case "Backup":
+                case "Restore":
+                    SaveTabIndex = 0;
+                    CurrentWorkspace = WorkspaceKind.Saves;
+                    break;
+                case "Media":
+                    MediaTabIndex = 0;
+                    CurrentWorkspace = WorkspaceKind.Media;
+                    break;
+                case "GameTool":
+                    CurrentWorkspace = WorkspaceKind.Trainers;
+                    break;
+                case "Cloud":
+                    OpenCloudQueue();
+                    return;
+                default:
+                    CurrentWorkspace = WorkspaceKind.Maintenance;
+                    break;
+            }
+
             RequestWorkspaceLoad();
         }
 
@@ -4335,7 +4381,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 UpdateBackupMetadataCommand, CompareBackupCommand, PreviewRetentionCommand,
                 AddMediaSourceCommand, AcceptCandidateCommand, RejectCandidateCommand, ReassignMediaCommand,
                 UpdateMediaMetadataCommand,OpenSelectedMediaCommand,RevealSelectedMediaCommand,
-                LoadMoreMediaCommand, ReloadMediaWindowCommand, OpenCloudQueueCommand, OpenMediaWorkspaceCommand, OpenSelectedFindingNavigationCommand, RefreshCloudTransfersCommand, LoadMoreCloudTransfersCommand, VerifyCloudTransferCommand, RetryCloudUploadCommand,
+                LoadMoreMediaCommand, ReloadMediaWindowCommand, OpenCloudQueueCommand, OpenMediaWorkspaceCommand, OpenActivityCommand, OpenSelectedFindingNavigationCommand, RefreshCloudTransfersCommand, LoadMoreCloudTransfersCommand, VerifyCloudTransferCommand, RetryCloudUploadCommand,
                 AssignInboxMediaCommand, IgnoreInboxMediaCommand, AssignInboxMediaBatchCommand, IgnoreInboxMediaBatchCommand, RestoreIgnoredMediaBatchCommand,
                 PreviewMediaClassificationCommand, ApplyMediaClassificationCommand, UndoMediaClassificationCommand,
                 RefreshMediaClassificationHistoryCommand, LoadMoreMediaClassificationHistoryCommand,

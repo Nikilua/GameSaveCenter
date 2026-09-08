@@ -2,6 +2,12 @@
 
 > 更新时间：2026-09-09。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-09 L13 首页优先级与活动上下文已完成（真实宿主待验收）
+
+- Hero 继续只有一套 `OverviewPriorityResolver` 优先级入口：Worker 离线、首次准备、云端待处理、媒体待归类、空库、游戏告警、健康刷新按明确顺序决策；空库不再误显示“整体状态安全”，云端失败继续使用快照 `AttentionCount` 统一口径。
+- 全局活动保留真实对象名和本地时间，并携带稳定 `PlayniteId`；活动行现在是可聚焦/可键盘触发的单一命令入口，按备份/恢复、媒体、工具、云端或维护路由到对应工作区，游戏存在时先恢复同一游戏上下文。没有新增第二套 Hero、重复集合刷新或隐藏全局入口。
+- Release 构建 `0 warning/0 error`；Core `72/72`、Worker `303/304`（1 跳过）、Playnite `401/463`（62 跳过）；`validate-source.py`、XAML `19/19`、`git diff --check` 通过。完整 render-qa 的 Overview 双主题/四尺寸与 resize 探针通过，仍只报告既有媒体小视口和媒体壳表格高度问题；真实 Playnite/FusionX 点击路由、主题/DPI 与截图仍待宿主验收。
+
 ## 2026-09-09 L11 通知、长错误与复制详情已完成（真实宿主待验收）
 
 - 通知事件现在同时携带短摘要和完整 `DetailMessage`：普通成功/信息摘要限制为 180 字符，错误/警告保留 320 字符摘要；任务详情仍保留完整错误码、任务 ID 和原始详情，不再把截断摘要当作唯一证据。

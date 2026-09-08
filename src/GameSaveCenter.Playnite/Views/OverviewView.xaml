@@ -203,6 +203,21 @@
                 <Setter Property="BorderThickness" Value="0,0,0,1"/>
                 <Setter Property="Margin" Value="0"/>
             </Style>
+            <Style x:Key="OverviewActivityRowButton"
+                   TargetType="ui:Button"
+                   BasedOn="{StaticResource GscWpfUiButton}">
+                <Setter Property="Appearance" Value="Transparent"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="MinHeight" Value="44"/>
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
+                <Setter Property="ToolTip" Value="打开对应工作区"/>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -527,10 +542,14 @@
                                         <VirtualizingStackPanel/>
                                     </ItemsPanelTemplate>
                                 </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border Style="{StaticResource GscActivityRowBorder}">
-                                        <Grid MinHeight="44">
+                                 <ItemsControl.ItemTemplate>
+                                     <DataTemplate>
+                                         <ui:Button Style="{StaticResource OverviewActivityRowButton}"
+                                                    Command="{Binding DataContext.OpenActivityCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding}"
+                                                    AutomationProperties.Name="打开活动对应工作区">
+                                         <Border Style="{StaticResource GscActivityRowBorder}">
+                                         <Grid MinHeight="44">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="64"/>
                                                 <ColumnDefinition Width="*" MinWidth="140"/>
@@ -546,9 +565,10 @@
                                             </StackPanel>
                                             <Border x:Name="ActivityResultChip" Grid.Column="2" Style="{DynamicResource GscRedesignTableStatusPill}" MinWidth="58" VerticalAlignment="Center" HorizontalAlignment="Center"><TextBlock x:Name="ActivityResultChipText" Text="{Binding ResultDisplay, Mode=OneWay}" Foreground="{DynamicResource GscAccentBrush}" FontSize="12" FontWeight="SemiBold" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding ResultDisplay, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/></Border>
                                             <TextBlock Grid.Column="3" Text="{Binding CreatedDisplay, Mode=OneWay}" FontSize="12" Foreground="{DynamicResource GscSecondaryTextBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="8,0,20,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding CreatedDisplay, Mode=OneWay}"/>
-                                        </Grid>
-                                        </Border>
-                                        <DataTemplate.Triggers>
+                                         </Grid>
+                                         </Border>
+                                         </ui:Button>
+                                         <DataTemplate.Triggers>
                                             <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="Compact">
                                                 <Setter TargetName="ActivityKindPill" Property="Width" Value="52"/>
                                             </DataTrigger>
