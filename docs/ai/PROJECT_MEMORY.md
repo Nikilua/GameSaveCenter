@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-09
 
+## 2026-09-09 L25 IPC 取消、超时与同 ID 复核
+
+- `WorkerIpcClient` 的破坏性请求在超时/断管后只能用原 `IpcEnvelope.RequestId` 复核；不能生成新 ID 直接重发。Worker `ipc_request_ledger` 按请求类型、协议版本和 canonical payload fingerprint 冲突保护，Completed 回放原响应，InProgress 返回“仍在执行”，Interrupted 返回“此前 Worker 已退出，先核对状态”。
+- 复核阶段必须继续使用调用方 Token：连接、读取和 `REQUEST_IN_PROGRESS` 间隔等待都可被调用方取消；但因为原写请求可能已送达，取消异常必须保留 `MayHaveBeenAccepted=true`。宿主退出优先报告 `WorkerIpcCancellationReason.HostShutdown`，只读请求响应读取取消保持 `false`。
+- 既有 VM 请求作用域/代际保护仍是 UI 提交门，不要在旧 IPC 响应到达时弹过期错误或恢复旧选择。写请求回执丢失是“结果未知”，不应自动显示成功，也不应把普通取消当服务器拒绝。
+- L25 证据：本地 Named Pipe 行为测试 `6/6`，Worker 账本测试 `6/6`；测试矩阵包括连接前、只读读响应、宿主关闭、写回执丢失、复核阶段取消和写入中取消。真实 Playnite Worker 启停、页面关闭和录屏仍是宿主验收项。
+
 ## 2026-09-09 L24 隔离账本分页与动效采样
 
 - 隔离账本的 UI 查询入口现在是分页契约，不再把所有未删除行一次性跨 IPC 传到维护页：`RetentionQuarantinePageRequestDto` 限制 `Offset/Limit`，Worker 在 SQLite 侧先给 durable `TotalCount`，再按 `updated_utc DESC, entry_id DESC` 返回最多 100 条并给 `HasMore`。现有 Worker 内部恢复/预览仍可使用完整持久化读取，不把 UI 分页误用于安全协调。

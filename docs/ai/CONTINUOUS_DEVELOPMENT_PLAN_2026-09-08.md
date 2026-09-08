@@ -263,9 +263,12 @@
 
 ### L25 取消、超时与旧响应矩阵
 
+- 状态：代码和本地 Named Pipe/Worker ledger 行为矩阵已完成；真实 Playnite 页面关闭、Worker 实际启停/断管恢复、宿主弹窗和用户录屏仍待宿主验收。
 - 目标：取消是真取消或明确告知结果未知，旧请求不覆盖当前选择。
 - 文件：Worker IPC 客户端、`IpcRequestSemantics`、TaskCoordinator、VM 请求作用域。复用既有取消语义，逐项检查读请求、提交写请求前、写请求已送达但回执丢失三种边界。
-- 验收：隔离管道故障注入；写响应不明时不盲目重发、不虚报成功；退出页面后无过期弹窗。不能为方便统一把取消都当普通失败。
+- 实现：破坏性请求首轮超时/断管后只用原 `RequestId` 进入 ledger 复核；复核连接、读响应和 `REQUEST_IN_PROGRESS` 间隔继承调用方 Token，取消结果保留 `MayHaveBeenAccepted=true`。只读取消、宿主关闭、写入中取消和旧响应提交门保持不同语义，未改变 VM 的 generation/上下文保护。
+- 证据：`WorkerIpcClientBehaviorTests` 本地 Named Pipe `6/6` 通过，覆盖连接前取消、只读响应读取取消、宿主关闭、写回执丢失同 ID 恢复、复核阶段取消和写入中取消不重试；Worker `IpcRequestLedgerTests` `6/6` 通过。Release 构建 `0 warning/0 error`。完整套件的历史 Worker restart 环境 skip 保持原样；真实 Playnite/FusionX 退出页面、实际 Worker 断连/恢复和弹窗时序仍待宿主验收。
+- 验收：取消是真取消或明确说明结果未知；写响应不明时不盲目重发、不虚报成功；旧响应不覆盖当前选择；退出页面的过期弹窗需要真实宿主复测，不能仅以源码包含调用或离线测试宣称通过。
 
 ### L26 Worker 断连、重启与旧构建
 

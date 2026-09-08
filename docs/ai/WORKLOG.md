@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-09 L25 取消、超时与旧响应矩阵
+
+- 先复核已有 IPC 语义：只读请求取消不会被说成已提交写入；破坏性请求在写入/回执边界丢失时由 SQLite `ipc_request_ledger` 按同一 `RequestId` 去重、回放或返回 `REQUEST_IN_PROGRESS`/`REQUEST_INTERRUPTED`，不生成新请求盲目重发。Dashboard 的 L23 最新代际门仍负责旧 UI 响应不回写。
+- 收紧 `WorkerIpcClient` 的复核阶段：首个破坏性请求超时或断管后，自动复核使用原调用方 Token；调用方在复核连接、响应读取或等待重试间隔期间取消时，立即结束等待并保留 `MayHaveBeenAccepted=true`，结果明确为未知而非普通失败。复核继续使用原 `RequestId`，宿主关闭仍单独报告 `HostShutdown`。
+- 真实本地 Named Pipe 行为矩阵 `WorkerIpcClientBehaviorTests` `6/6` 通过：连接前取消、只读响应读取取消、宿主关闭、写回执丢失同 ID 恢复、复核阶段取消、写入中取消不重试。Worker `IpcRequestLedgerTests` `6/6` 通过，覆盖同 ID/规范化 payload、冲突、损坏/旧账本、过期清理和 Worker 重启中断状态。
+- 证据：Release 构建 `0 warning/0 error`；L25 定向测试如上。当前没有 Playnite 窗口退出、真实 Worker 启停/管道断开录屏或用户视频复测，页面弹窗在真实宿主的关闭时序仍待宿主验收；不把测试管道证据写成真实安装环境已解决。
+
 ## 2026-09-09 L24 隔离账本有界分页与动效预算
 
 - 先复核了真实查询/渲染链：隔离账本 IPC 原先一次性读取所有未删除记录，维护动作区再把全部记录构造成 VM 项；页面虽然有分组展开器，但没有数据边界。新增 `RetentionQuarantinePageRequestDto`/`RetentionQuarantinePageDto`，Worker 在 SQLite 侧按 `updated_utc DESC, entry_id DESC` 做 `COUNT + LIMIT/OFFSET`，默认和上限均为每页 100；UI 只首载一页，明确显示 durable 总量与已加载量，继续加载只按稳定 `EntryId` 追加，恢复动作仍使用该 ID。

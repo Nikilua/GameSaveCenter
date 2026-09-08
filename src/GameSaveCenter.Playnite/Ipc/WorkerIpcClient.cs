@@ -198,7 +198,7 @@ namespace GameSaveCenter.Playnite.Ipc
                         return await ExecuteRequestAsync<TResponse>(
                             request,
                             GetReplayTimeout(timeoutValue),
-                            CancellationToken.None,
+                            cancellationToken,
                             hostCancellationToken,
                             replayed: true).ConfigureAwait(false);
                     }
@@ -207,8 +207,11 @@ namespace GameSaveCenter.Playnite.Ipc
                         lastReplayError = replayError;
                         if (replayError.FailureKind != WorkerIpcFailureKind.RequestInProgress || attempt == 3)
                             break;
-                        await Task.Delay(TimeSpan.FromMilliseconds(150 * (attempt + 1)), hostCancellationToken)
-                            .ConfigureAwait(false);
+                        await WaitForReplayDelayAsync(
+                            TimeSpan.FromMilliseconds(150 * (attempt + 1)),
+                            request,
+                            cancellationToken,
+                            hostCancellationToken).ConfigureAwait(false);
                     }
                 }
 
@@ -228,6 +231,26 @@ namespace GameSaveCenter.Playnite.Ipc
             }
         }
 
+        private static async Task WaitForReplayDelayAsync(
+            TimeSpan delay,
+            IpcEnvelope request,
+            CancellationToken callerToken,
+            CancellationToken hostToken)
+        {
+            using (var linkedCancellation = CancellationTokenSource.CreateLinkedTokenSource(callerToken, hostToken))
+            {
+                try
+                {
+                    await Task.Delay(delay, linkedCancellation.Token).ConfigureAwait(false);
+                }
+                catch (OperationCanceledException) when (linkedCancellation.IsCancellationRequested)
+                {
+                    ThrowIfCancellationRequested(request, callerToken, hostToken, mayHaveBeenAccepted: true);
+                    throw;
+                }
+            }
+        }
+
         private static TimeSpan GetReplayTimeout(TimeSpan originalTimeout)
         {
             // A replay of a completed ledger entry is fast. Keep reconciliation bounded
@@ -244,13 +267,14 @@ namespace GameSaveCenter.Playnite.Ipc
             CancellationToken hostToken,
             bool replayed)
         {
-            ThrowIfCancellationRequested(request, callerToken, hostToken, false);
+            var replayMayHaveBeenAccepted = replayed && IpcRequestSemantics.RequiresReplayProtection(request.Type);
+            ThrowIfCancellationRequested(request, callerToken, hostToken, replayMayHaveBeenAccepted);
 
             using (var timeoutCancellation = new CancellationTokenSource(timeoutValue))
             using (var linkedCancellation = CancellationTokenSource.CreateLinkedTokenSource(callerToken, hostToken, timeoutCancellation.Token))
             using (var pipe = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.Asynchronous))
             {
-                var mayHaveBeenAccepted = false;
+                var mayHaveBeenAccepted = replayMayHaveBeenAccepted;
                 try
                 {
                     await AwaitPipeOperationAsync(

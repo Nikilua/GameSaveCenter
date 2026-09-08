@@ -144,6 +144,45 @@ public sealed class WorkerIpcClientBehaviorTests
     }
 
     [NamedPipeFact]
+    public async Task CallerCancellationDuringReplayWaitStopsWithAmbiguousOutcome()
+    {
+        var replayConnected = NewSignal();
+        var server = Task.Run(async () =>
+        {
+            using (var first = CreateServer())
+            {
+                await WaitForConnectionAsync(first);
+                await ReadRequestAsync(first);
+            }
+
+            using (var replay = CreateServer())
+            {
+                await WaitForConnectionAsync(replay);
+                await ReadRequestAsync(replay);
+                replayConnected.TrySetResult(true);
+                try { await Task.Delay(1000); }
+                catch (IOException) { }
+            }
+        });
+
+        using var cancelled = new CancellationTokenSource();
+        var pending = CreateClient().RequestAsync<WorkerPingDto>(
+            MessageTypes.BackupGame,
+            new { },
+            TimeSpan.FromSeconds(2),
+            cancelled.Token);
+        await WaitForSignalAsync(replayConnected.Task, "replay server connection", server, pending);
+        cancelled.Cancel();
+
+        var exception = await Assert.ThrowsAsync<WorkerIpcCancellationException>(() => AwaitWithTimeout(pending, "cancelled replay"));
+        await WaitForSignalAsync(server, "server shutdown");
+
+        Assert.Equal(WorkerIpcCancellationReason.Caller, exception.Reason);
+        Assert.True(exception.MayHaveBeenAccepted);
+        Assert.False(string.IsNullOrWhiteSpace(exception.RequestId));
+    }
+
+    [NamedPipeFact]
     public async Task CancellationDuringLargeWriteIsReportedAsAmbiguousAndIsNotRetried()
     {
         var connected = NewSignal();
