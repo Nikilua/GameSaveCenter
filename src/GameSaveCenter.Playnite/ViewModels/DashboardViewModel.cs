@@ -2546,6 +2546,7 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task CreateDiagnosticsPackageAsync()
         {
+            var windowDip = TryGetMainWindowDipSize();
             var result = await plugin.RequestAsync<DiagnosticsPackageResultDto>(
                 MessageTypes.CreateDiagnosticsPackage,
                 new CreateDiagnosticsPackageRequestDto
@@ -2555,6 +2556,11 @@ namespace GameSaveCenter.Playnite.ViewModels
                     PlayniteVersion = plugin.PlayniteApi.GetType().Assembly.GetName().Version?.ToString() ?? "unknown",
                     ThemeMode = plugin.Settings.ThemeMode.ToString(),
                     CurrentWorkspace = CurrentWorkspace.ToString(),
+                    Scenario = "manual-diagnostics-package",
+                    EvidenceSource = "RealPlaynite",
+                    WindowWidthDip = windowDip.Width,
+                    WindowHeightDip = windowDip.Height,
+                    LoadedItemCount = GetLoadedDiagnosticItemCount(),
                     DpiScale = TryGetDpiScale(),
                     ScreenCount = TryGetScreenCount()
                 },
@@ -2596,6 +2602,32 @@ namespace GameSaveCenter.Playnite.ViewModels
                 return 1;
             }
         }
+
+        private static (double Width, double Height) TryGetMainWindowDipSize()
+        {
+            try
+            {
+                var window = Application.Current?.MainWindow;
+                return window == null
+                    ? (0, 0)
+                    : (Math.Round(window.ActualWidth, 2), Math.Round(window.ActualHeight, 2));
+            }
+            catch
+            {
+                return (0, 0);
+            }
+        }
+
+        private int GetLoadedDiagnosticItemCount()
+            => CurrentWorkspace switch
+            {
+                WorkspaceKind.Media => Media.Count + MediaInboxItems.Count,
+                WorkspaceKind.Tasks => Tasks.Count,
+                WorkspaceKind.Saves => SaveCandidates.Count + Backups.Count,
+                WorkspaceKind.Trainers => GameTools.Count + TrainerCatalogResults.Count,
+                WorkspaceKind.Maintenance => Findings.Count + Audit.Count + CloudTransferItems.Count,
+                _ => 0
+            };
 
         private async Task SyncDeviceStatesAsync()
         {

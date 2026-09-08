@@ -118,9 +118,11 @@
 
 ### L08 可重复诊断与性能采样入口
 
-- 目标：后续性能/稳定性判断有相同输入与可追溯环境。
-- 文件：RenderHarness、`scripts/real-host-audit.ps1`、`DiagnosticsPackageService.cs`。复用已有报告，补场景、提交、窗口 DIP、DPI、主题、数据量、请求/布局耗时字段；只记录必要统计，不输出媒体内容与敏感路径。
-- 验收：同一场景重复执行报告结构稳定；明确离屏/真实宿主；采样不启动实际备份/清理、不制造业务成功。为 F/H 提供基线，不提前声称已优化。
+- 状态：已完成（离线报告/诊断包；真实宿主待验收）。
+- 文件：`tests/GameSaveCenter.RenderHarness/Program.cs`、`scripts/real-host-audit.ps1`、`src/GameSaveCenter.Contracts/DiagnosticsDtos.cs`、`src/GameSaveCenter.Playnite/ViewModels/DashboardViewModel.cs`、`src/GameSaveCenter.Worker/Services/DiagnosticsPackageService.cs` 及对应测试。
+- 实现：RenderHarness 报告写入场景、来源、提交/工作树、窗口 DIP、主题、数据量和 `layout_ms`/`render_ms`；离屏明确不适用请求耗时和真实 DPI。真实宿主运行器写 `runner-metadata.json`，诊断包系统元数据补充场景、来源、窗口 DIP、已加载条目数、数据量、查询耗时和空的布局耗时字段。
+- 验证：RenderHarness 重建后 `gridprobe OK`，报告包含 50/400/2000/4468 数据量声明；Release 构建 `0 warning/0 error`；全量 Core `72/72`、Worker `303/304`（1 跳过）、Playnite `395/457`（62 跳过），源码/XAML/差异检查通过。
+- 边界：本阶段未运行真实 Playnite/FusionX，不能把离屏报告写成实际宿主 FPS、真实 DPI/请求耗时或视频异常已解决；需要宿主按原窗口尺寸、主题、数据量和滚动操作生成真实审计与录屏。
 
 ## C：先做容易看见的设置与共享交互提升
 

@@ -2,6 +2,13 @@
 
 > 更新时间：2026-09-08。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-08 L08 可重复诊断与性能采样入口已完成（真实宿主待验收）
+
+- RenderHarness 的 `render-qa`、`gridprobe`、`shellqa` 报告现在带有场景、证据来源、Git 提交/工作树状态、窗口 DIP、主题、数据量和明确的时序字段；布局与渲染时长分开记录，离线 Harness 明确不伪造请求耗时与真实 DPI。
+- `scripts/real-host-audit.ps1` 增加 `runner-metadata.json`，记录真实宿主审计的提交、配置、窗口 DIP、实际 DPI、主题、生产数据量和采集清单状态；已有真实宿主捕获元数据继续作为实际来源，未修改用户 FusionX 文件。
+- 诊断包 `system.json` 增加场景、证据来源、窗口 DIP、已加载条目数、数据量和 Worker 查询耗时；布局耗时在没有真实布局采样时明确为空，不写入媒体内容、文件内容或敏感路径，不新增业务写入。
+- Release 构建 `0 warning/0 error`；全量测试 Core `72/72`、Worker `303/304`（1 跳过）、Playnite `395/457`（62 跳过），`gridprobe OK`、源码/XAML/差异校验通过。以上是代码与离线证据，不等同真实 Playnite/FusionX 录屏、性能结论或视频异常已解决；真实宿主仍待验收。
+
 ## 2026-09-08 L07 键盘、焦点与可访问名称已完成（真实宿主待验收）
 
 - 媒体、任务、存档、维护和工具页的紧凑详情抽屉现在显式接收 Esc：打开时焦点进入真实 inspector ScrollViewer，关闭后回到仍可见的原入口；媒体批次历史回到“批次历史”按钮，宽屏常驻右侧详情不会被 Esc 误关。

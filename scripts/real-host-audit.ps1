@@ -21,6 +21,7 @@ if (Test-Path -LiteralPath $Output) {
 New-Item -ItemType Directory -Path $Output -Force | Out-Null
 
 $env:GSC_REAL_HOST_AUDIT = $Output
+$auditStartedUtc = [DateTime]::UtcNow.ToString('O')
 try {
     $commit = (& git -C $root rev-parse HEAD 2>$null | Select-Object -First 1).Trim()
     if ($LASTEXITCODE -eq 0 -and $commit) {
@@ -31,6 +32,20 @@ try {
 catch {
     $env:GSC_UI_AUDIT_COMMIT = ''
 }
+$runnerMetadata = [ordered]@{
+    Scenario = 'real-host-audit'
+    EvidenceSource = 'RealPlaynite'
+    Commit = if ([string]::IsNullOrWhiteSpace($env:GSC_UI_AUDIT_COMMIT)) { 'unknown' } else { $env:GSC_UI_AUDIT_COMMIT }
+    Configuration = $Configuration
+    StartedUtc = $auditStartedUtc
+    OutputRoot = $Output
+    WindowDip = 'captured per metadata-*.json; not inferred by runner'
+    DpiScale = 'captured by WPF VisualTreeHelper.GetDpi'
+    Theme = 'captured per metadata-*.json'
+    DataVolume = 'captured from production snapshot/diagnostic metadata when available'
+    Timing = 'capture manifest includes per-surface capture status; host interaction time is not fabricated'
+}
+$runnerMetadata | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $Output 'runner-metadata.json') -Encoding UTF8
 Write-Host "==> Starting Playnite with GSC_REAL_HOST_AUDIT=$Output" -ForegroundColor Cyan
 
 Push-Location $root

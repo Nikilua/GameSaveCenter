@@ -1500,6 +1500,7 @@ public static class Program
         var report = new StringBuilder();
         report.AppendLine("GameSaveCenter render QA report");
         report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+        AppendRunMetadata(report, "render-qa", "OffscreenRenderHarness", "light,dark", "workspace fixtures; scroll probes include 50/400/2000/4468");
         report.AppendLine();
         s_problems.Clear();
 
@@ -1565,6 +1566,7 @@ public static class Program
         var report = new StringBuilder();
         report.AppendLine("GameSaveCenter DataGrid scroll diagnostics");
         report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+        AppendRunMetadata(report, "gridprobe", "OffscreenRenderHarness", "production default palette", "50/400/2000/4468 loaded rows");
         report.AppendLine();
         s_problems.Clear();
 
@@ -1605,6 +1607,7 @@ public static class Program
         var report = new StringBuilder();
         report.AppendLine("GameSaveCenter production shell chrome QA");
         report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+        AppendRunMetadata(report, "shellqa", "OffscreenRenderHarness", "light,dark", "production shell fixtures");
         s_problems.Clear();
 
         try
@@ -1744,12 +1747,14 @@ public static class Program
         };
         host.Children.Add(view);
 
+        var layoutSw = Stopwatch.StartNew();
         applyLayout();
         host.Measure(new Size(contentW, contentH));
         host.Arrange(new Rect(0, 0, contentW, contentH));
         host.UpdateLayout();
         applyLayout();
         host.UpdateLayout();
+        layoutSw.Stop();
 
         // The production workspaces now use the UiLab ListBox segmented shell so
         // the header and content can be measured independently. Keep the harness
@@ -1795,7 +1800,7 @@ public static class Program
             var sw = Stopwatch.StartNew();
             SavePng(host, Path.Combine(outputRoot, $"{name}-{windowW}x{windowH}-tab{i}.png"));
             sw.Stop();
-            report.AppendLine($"  {name} tab{i} render_ms={sw.ElapsedMilliseconds}");
+            report.AppendLine($"  {name} tab{i} layout_ms={layoutSw.ElapsedMilliseconds} render_ms={sw.ElapsedMilliseconds} window_dip={windowW}x{windowH} content_dip={contentW:0}x{contentH:0}");
             CollectScrollDiagnostics(host, report, name, windowW, windowH, i);
         }
     }
@@ -1811,17 +1816,63 @@ public static class Program
         };
         host.Children.Add(view);
 
+        var layoutSw = Stopwatch.StartNew();
         applyLayout();
         host.Measure(new Size(contentW, contentH));
         host.Arrange(new Rect(0, 0, contentW, contentH));
         host.UpdateLayout();
         applyLayout();
         host.UpdateLayout();
+        layoutSw.Stop();
         var sw = Stopwatch.StartNew();
         SavePng(host, Path.Combine(outputRoot, $"{name}-{windowW}x{windowH}.png"));
         sw.Stop();
-        report.AppendLine($"  {name} render_ms={sw.ElapsedMilliseconds}");
+        report.AppendLine($"  {name} layout_ms={layoutSw.ElapsedMilliseconds} render_ms={sw.ElapsedMilliseconds} window_dip={windowW}x{windowH} content_dip={contentW:0}x{contentH:0}");
         CollectScrollDiagnostics(host, report, name, windowW, windowH, -1);
+    }
+
+    private static void AppendRunMetadata(
+        StringBuilder report,
+        string scenario,
+        string sourceKind,
+        string themes,
+        string dataVolumes)
+    {
+        var commit = ResolveGitValue("rev-parse HEAD");
+        var workingTree = ResolveGitValue("status --porcelain");
+        report.AppendLine($"Scenario: {scenario}");
+        report.AppendLine($"EvidenceSource: {sourceKind}");
+        report.AppendLine($"Commit: {commit}");
+        report.AppendLine($"WorkingTreeClean: {workingTree.Length == 0}");
+        report.AppendLine("DpiScale: 1.00 (offscreen logical DIP; real host DPI is not inferred)");
+        report.AppendLine("WindowDip: per-case window_dip/content_dip fields");
+        report.AppendLine($"Themes: {themes}");
+        report.AppendLine($"DataVolumes: {dataVolumes}");
+        report.AppendLine("TimingFields: layout_ms, render_ms; request_ms=not-applicable for offscreen harness");
+    }
+
+    private static string ResolveGitValue(string arguments)
+    {
+        try
+        {
+            var startInfo = new ProcessStartInfo("git", arguments)
+            {
+                CreateNoWindow = true,
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                WorkingDirectory = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", ".."))
+            };
+            using var process = Process.Start(startInfo);
+            if (process == null) return "unknown";
+            var output = process.StandardOutput.ReadToEnd().Trim();
+            process.WaitForExit(3000);
+            return string.IsNullOrWhiteSpace(output) ? "unknown" : output.Replace(Environment.NewLine, " ");
+        }
+        catch
+        {
+            return "unknown";
+        }
     }
 
     private static void CollectScrollDiagnostics(Grid host, StringBuilder report, string name, int windowW, int windowH, int tabIndex)

@@ -44,6 +44,11 @@ public sealed class DiagnosticsPackageServiceTests
                     PlayniteVersion = "10.56",
                     ThemeMode = "Dark",
                     CurrentWorkspace = "Maintenance",
+                    Scenario = "manual-diagnostics-package",
+                    EvidenceSource = "RealPlaynite",
+                    WindowWidthDip = 1366,
+                    WindowHeightDip = 768,
+                    LoadedItemCount = 42,
                     DpiScale = 1.25,
                     ScreenCount = 2
                 }, CancellationToken.None);
@@ -65,6 +70,14 @@ public sealed class DiagnosticsPackageServiceTests
             var contents = string.Join("\n", archive.Entries.Select(ReadEntry));
             Assert.Contains("pluginBuildIdentity", contents);
             Assert.Contains("diagnostic-build-123", contents);
+            Assert.Contains("manual-diagnostics-package", contents);
+            Assert.Contains("RealPlaynite", contents);
+            Assert.Contains("windowWidthDip", contents);
+            Assert.Contains("1366", contents);
+            Assert.Contains("loadedItemCount", contents);
+            Assert.Contains("queryDurationMs", contents);
+            Assert.Contains("layoutDurationMs", contents);
+            Assert.Contains("dataVolume", contents);
             Assert.Contains("\"workerBuildIdentity\"", contents);
             Assert.Contains("\"buildIdentity\"", contents);
             Assert.DoesNotContain("abc123", contents);

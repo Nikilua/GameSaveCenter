@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-08
 
+## 2026-09-08 L08 可重复诊断与性能采样入口
+
+- `RenderHarness` 的 `render-qa`、`gridprobe` 和 `shellqa` 统一写入 `Scenario`、`EvidenceSource`、Git 提交/工作树状态、离线逻辑 DIP、主题、数据量和时序字段；`RenderTabs`/`RenderView` 将 `layout_ms` 与 `render_ms` 分开，离线报告把 `request_ms` 标为不适用，避免把离屏测量冒充真实宿主性能。
+- `scripts/real-host-audit.ps1` 在真实宿主输出旁写 `runner-metadata.json`，包含场景、提交、配置、窗口 DIP、WPF 实际 DPI、主题、生产数据量和采集清单状态。真实宿主元数据仍由插件审计服务捕获，脚本只补充运行器来源，不修改 FusionX 或 Playnite 全局文件。
+- `DiagnosticsPackageService` 的 `system.json` 记录场景、证据来源、窗口 DIP、已加载条目数、数据量和 Worker 查询耗时；没有真实布局采样时 `layoutDurationMs` 保持空值。诊断包不增加媒体/文件内容或敏感路径输出，也没有新增业务写入。
+- `gridprobe` 重建后报告为 `gridprobe OK`，包含 50/400/2000/4468 数据量声明和滚动语义探针；这只能证明离线夹具的可重复性。真实 Playnite/FusionX 的同尺寸操作、实际 DPI、请求/布局采样和视频式回归仍是宿主验收项。
+
 ## 2026-09-08 L07 键盘、焦点与可访问名称
 
 - `MediaCenterView`、`TaskCenterView`、`SaveCenterView`、`MaintenanceView` 和 `TrainerCenterView` 的紧凑 inspector 统一采用“入口打开 → inspector 获焦 → Esc 关闭 → 原入口恢复焦点”的路径；媒体收件箱批次历史单独回到 `MediaInboxHistoryButton`。

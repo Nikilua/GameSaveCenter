@@ -11,6 +11,11 @@ public sealed class CreateDiagnosticsPackageRequestDto
     public string PlayniteVersion { get; set; } = string.Empty;
     public string ThemeMode { get; set; } = string.Empty;
     public string CurrentWorkspace { get; set; } = string.Empty;
+    public string Scenario { get; set; } = string.Empty;
+    public string EvidenceSource { get; set; } = string.Empty;
+    public double WindowWidthDip { get; set; }
+    public double WindowHeightDip { get; set; }
+    public int LoadedItemCount { get; set; }
     public double DpiScale { get; set; } = 1;
     public int ScreenCount { get; set; } = 1;
 }

@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-08 L08 可重复诊断与性能采样入口
+
+- 先复用已有 `RenderHarness`、`real-host-audit.ps1`、`RealHostUiAuditService` 和 `DiagnosticsPackageService`，没有另造第二套诊断链；本阶段只补齐证据来源、提交、工作树、窗口 DIP、主题、数据量和时序边界。
+- RenderHarness 报告头现在区分 `OffscreenRenderHarness` 与 `RealPlaynite`，记录 50/400/2000/4468 数据量声明；`RenderTabs`/`RenderView` 单独测量布局和渲染，`gridprobe` 重建后输出 `gridprobe OK`。离屏 DPI 固定写为逻辑 `1.00` 并明确“不推断真实宿主 DPI”。
+- 真实宿主审计脚本增加 `runner-metadata.json`，真实 WPF 审计仍负责实际窗口/DPI/主题/截图元数据；诊断包补充 `system.json` 的场景、证据来源、窗口 DIP、已加载条目数、数据量、查询耗时和空的布局耗时字段。没有加入媒体内容、敏感路径、备份/清理等业务写入。
+- 验证：RenderHarness Release 定向构建 `0 warning/0 error`；全量 Release 构建 `0 warning/0 error`；Core `72/72`、Worker `303/304`（1 跳过）、Playnite `395/457`（62 跳过）；源码/XAML/差异检查通过。未运行真实 Playnite/FusionX，不能据此声称视频异常或性能问题已解决。
+
 ## 2026-09-08 L07 键盘、焦点与可访问名称
 
 - 先盘点紧凑详情入口：媒体当前详情/收件箱/批次历史、任务、存档版本/候选、维护诊断/进程/设备/云端、工具页均由页面 code-behind 控制展开状态；原实现多数只改可见性，不定义 Esc 或关闭后的焦点归属。

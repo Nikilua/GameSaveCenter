@@ -34,12 +34,14 @@ public sealed class DiagnosticsPackageService
     public async Task<DiagnosticsPackageResultDto> CreateAsync(CreateDiagnosticsPackageRequestDto? request, CancellationToken token)
     {
         var createdUtc = DateTime.UtcNow;
+        var captureTimer = Stopwatch.StartNew();
         var audit = await _store.GetAuditAsync(Math.Clamp(request?.AuditLimit ?? 300, 1, 300), token).ConfigureAwait(false);
         var tasks = await _store.GetRecentTasksAsync(Math.Clamp(request?.TaskLimit ?? 200, 1, 200), token).ConfigureAwait(false);
         var findings = await _store.GetOpenFindingsAsync(100, token).ConfigureAwait(false);
         var counts = await _store.GetCountsAsync(token).ConfigureAwait(false);
         var healthCounts = await _store.GetHealthStateCountsAsync(token).ConfigureAwait(false);
         var dbProbe = await ProbeDatabaseAsync(token).ConfigureAwait(false);
+        var queryDurationMs = captureTimer.ElapsedMilliseconds;
 
         var packageDirectory = Path.Combine(_options.DataDirectory, "Diagnostics");
         Directory.CreateDirectory(packageDirectory);
@@ -52,7 +54,7 @@ public sealed class DiagnosticsPackageService
             using (var archive = ZipFile.Open(temporaryPath, ZipArchiveMode.Create))
             {
                 included += AddText(archive, "README.txt", BuildReadme(createdUtc));
-                included += AddText(archive, "system.json", JsonSerializer.Serialize(BuildSystem(request, createdUtc), JsonOptions));
+                included += AddText(archive, "system.json", JsonSerializer.Serialize(BuildSystem(request, createdUtc, queryDurationMs, counts), JsonOptions));
                 included += AddText(archive, "worker.json", JsonSerializer.Serialize(BuildWorker(createdUtc), JsonOptions));
                 included += AddText(archive, "dependencies.json", JsonSerializer.Serialize(BuildDependencies(), JsonOptions));
                 included += AddText(archive, "database.json", JsonSerializer.Serialize(BuildDatabase(dbProbe), JsonOptions));
@@ -97,7 +99,11 @@ public sealed class DiagnosticsPackageService
         + "\n此包仅包含有限的运行摘要、结构化状态、任务、审计和日志尾部。\n"
         + "未包含真实存档、媒体文件、SQLite 数据库、Rclone 配置或凭据。\n";
 
-    private static object BuildSystem(CreateDiagnosticsPackageRequestDto? request, DateTime createdUtc) => new
+    private static object BuildSystem(
+        CreateDiagnosticsPackageRequestDto? request,
+        DateTime createdUtc,
+        long queryDurationMs,
+        (int Games, int Matched, int Media, int Unassigned) counts) => new
     {
         createdUtc,
         pluginVersion = request?.PluginVersion ?? string.Empty,
@@ -111,7 +117,25 @@ public sealed class DiagnosticsPackageService
         dpiScale = request?.DpiScale ?? 1,
         screenCount = request?.ScreenCount ?? 1,
         theme = request?.ThemeMode ?? string.Empty,
-        currentWorkspace = request?.CurrentWorkspace ?? string.Empty
+        currentWorkspace = request?.CurrentWorkspace ?? string.Empty,
+        scenario = request?.Scenario ?? string.Empty,
+        evidenceSource = request?.EvidenceSource ?? string.Empty,
+        windowWidthDip = request?.WindowWidthDip ?? 0,
+        windowHeightDip = request?.WindowHeightDip ?? 0,
+        loadedItemCount = request?.LoadedItemCount ?? 0,
+        dataVolume = new
+        {
+            games = counts.Games,
+            matchedGames = counts.Matched,
+            media = counts.Media,
+            unassignedMedia = counts.Unassigned
+        },
+        timings = new
+        {
+            queryDurationMs,
+            timingSource = "Worker diagnostics.package.create",
+            layoutDurationMs = (long?)null
+        }
     };
 
     private static object BuildWorker(DateTime createdUtc)
