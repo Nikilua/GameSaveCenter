@@ -22,8 +22,37 @@ function Read-AssemblyInformationalVersion {
     # Read ECMA-335 metadata without loading the assembly into the packaging
     # process. This handles both net462 and net8 Worker binaries and avoids
     # resolving their runtime dependencies merely to inspect one attribute.
-    try { Add-Type -AssemblyName System.Reflection.Metadata -ErrorAction Stop } catch {
-        throw "当前 PowerShell 缺少 System.Reflection.Metadata，无法安全校验程序集构建身份：$AssemblyPath"
+    # PowerShell 7 does not always probe the .NET SDK task assemblies when an
+    # assembly is requested by name, so fall back to the SDK's net472 copy.
+    if (-not ('System.Reflection.Metadata.MetadataReaderProvider' -as [type])) {
+        $metadataLoaded = $false
+        try {
+            Add-Type -AssemblyName System.Reflection.Metadata -ErrorAction Stop
+            $metadataLoaded = $true
+        }
+        catch {
+            $metadataCandidates = @()
+            $dotnetRoot = if ($env:DOTNET_ROOT) { $env:DOTNET_ROOT } else { Join-Path $env:ProgramFiles 'dotnet' }
+            if (Test-Path -LiteralPath (Join-Path $dotnetRoot 'sdk')) {
+                $metadataCandidates += Get-ChildItem -LiteralPath (Join-Path $dotnetRoot 'sdk') -Directory -ErrorAction SilentlyContinue |
+                    Sort-Object Name -Descending |
+                    ForEach-Object { Join-Path $_.FullName 'TestHostNetFramework\System.Reflection.Metadata.dll' }
+            }
+            foreach ($candidate in $metadataCandidates | Where-Object { Test-Path -LiteralPath $_ }) {
+                try {
+                    Add-Type -Path $candidate -ErrorAction Stop
+                    $metadataLoaded = $true
+                    break
+                }
+                catch {
+                    # Try the next installed SDK copy; no assembly is loaded
+                    # from the target plugin or Worker output.
+                }
+            }
+        }
+        if (-not $metadataLoaded -or -not ('System.Reflection.Metadata.MetadataReaderProvider' -as [type])) {
+            throw "当前 PowerShell 无法加载 System.Reflection.Metadata，无法安全校验程序集构建身份：$AssemblyPath"
+        }
     }
 
     $stream = [System.IO.File]::OpenRead($AssemblyPath)
