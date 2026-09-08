@@ -136,9 +136,11 @@
 
 ### L10 设置修改、错误定位与取消体验
 
-- 目标：知道改了哪里、为什么不能保存，取消后界面与模型一致。
-- 文件：设置 View/Settings 指纹与验证逻辑。仅对已有可编辑设置呈现修改/错误状态；校验摘要能定位隐藏分类中的字段；导入后仍标待保存。已有满足条件的部分直接记已满足。
-- 验收：跨分类编辑、导入、错误修正、保存失败、取消；内部 DeviceId 更新不显示用户修改。不要增加绕过 Playnite 生命周期的“保存”入口。
+- 状态：已完成（代码/离屏验证；真实宿主保存失败与取消待验收）。
+- 文件：`Settings/GameSaveCenterSettingsView.xaml`、`.xaml.cs`、`Settings/GameSaveCenterSettings.cs`、`SettingsValidationSourceTests.cs`、`PortableSettingsTests.cs`、`tests/GameSaveCenter.RenderHarness/Program.cs`。
+- 实现：增加可访问的“定位首个错误”按钮，把现有验证错误映射到对应隐藏分类并恢复分类导航焦点；监听 TextBox/ComboBox/CheckBox/ToggleSwitch/Slider 的编辑状态；保持导入后的旧指纹基线、DeviceId 排除和 CancelEdit 恢复，不增加插件保存入口。
+- 验证：RenderHarness 三态和备份错误导航探针通过，报告为 `selectedCategory=1`；源契约、PortableSettings、CancelEdit 与全量测试通过。Release 构建 `0 warning/0 error`；Core `72/72`、Worker `303/304`（1 跳过）、Playnite `395/457`（62 跳过），源码/XAML/差异校验通过。
+- 边界：离屏环境不能证明 Playnite 实际 `SavePluginSettings` 失败时的宿主提示或真实取消按钮行为；完整 render-qa 的既有媒体/侧栏问题独立保留，不能把本阶段写成真实宿主已验收。
 
 ### L11 通知、长错误与复制详情
 

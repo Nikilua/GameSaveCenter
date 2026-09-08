@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-08
 
+## 2026-09-08 L10 设置修改、错误定位与取消体验
+
+- `SettingsValidationSummary` 旁新增 `SettingsValidationLocateButton`。`FindValidationCategoryIndex` 根据 `VerifySettings` 的现有错误文本把压缩/保留量送到备份分类，毛玻璃送到外观，进程/刷新/巡检/通知送到自动化，Worker/Ludusavi/Rclone/镜像送到常规；点击后只改变 `SettingsSectionTabs.SelectedIndex` 并聚焦分类导航。
+- `GameSaveCenterSettingsView` 在构造时监听 `TextBox.TextChanged`、`ComboBox.SelectionChanged`、`CheckBox.Click` 以及 `ToggleButton.Checked/Unchecked`；`OnVisualSettingChanged` 和 `OnGlassStrengthChanged` 也调用 `QueueValidationSummaryUpdate`，所以切换 ToggleSwitch 或拖动 Slider 会更新指纹/校验状态。所有更新仍经 Dispatcher 合并，不加入定时器或保存命令。
+- 导入流程的 `settingsTransferInProgress` 保护和 `settingsBaselineInitialized` 逻辑保持不变：`DataContext` 重绑不会重置旧保存指纹，导入后的可编辑差异继续显示未保存；`CreateSettingsFingerprint` 忽略安装级 `DeviceId`。取消由现有 `CancelEdit` 恢复克隆并触发 `SettingsReverted`。
+- `SettingsValidationSourceTests` 守护定位入口和控件事件；RenderHarness 的设置三态/隐藏分类导航探针实测 `selectedCategory=1`。全量测试为 Playnite `395/457`（62 跳过），构建 0 警告/错误。Playnite 真正的 `SavePluginSettings` 失败提示和宿主取消按钮没有在离屏环境中伪造，仍需宿主验收。
+
 ## 2026-09-08 L09 设置首屏与保存状态
 
 - `GameSaveCenterSettingsView.xaml` 保留 `SettingsIntroDescription` 作为兼容命名但默认/响应式布局均设为 `Collapsed`；Hero 副标题改成短的“工具路径 · 存档策略 · 外观与自动化”。重复说明不再占用标题与正文之间的首屏高度，完整解释留在对应分类卡片附近。

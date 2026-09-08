@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
@@ -25,6 +26,7 @@ namespace GameSaveCenter.Playnite.Settings
         private bool systemParametersSubscribed;
         private bool scrollSelectionPending;
         private bool settingsBaselineInitialized;
+        private int firstValidationCategoryIndex;
         private Size pendingResponsiveSize;
         private GameSaveCenterSettings? observedSettings;
         private string savedSettingsFingerprint = string.Empty;
@@ -40,6 +42,8 @@ namespace GameSaveCenter.Playnite.Settings
             AddHandler(TextBox.TextChangedEvent, new TextChangedEventHandler(OnSettingsFieldChanged));
             AddHandler(ComboBox.SelectionChangedEvent, new SelectionChangedEventHandler(OnSettingsFieldChanged));
             AddHandler(CheckBox.ClickEvent, new RoutedEventHandler(OnSettingsFieldChanged));
+            AddHandler(ToggleButton.CheckedEvent, new RoutedEventHandler(OnSettingsFieldChanged));
+            AddHandler(ToggleButton.UncheckedEvent, new RoutedEventHandler(OnSettingsFieldChanged));
         }
 
         private GameSaveCenterSettings? CurrentSettings => DataContext as GameSaveCenterSettings;
@@ -180,13 +184,66 @@ namespace GameSaveCenter.Playnite.Settings
             if (errors.Count == 0)
             {
                 SettingsValidationSummary.Visibility = Visibility.Collapsed;
+                SettingsValidationLocateButton.Visibility = Visibility.Collapsed;
                 RefreshSaveState(true);
                 return;
             }
+            firstValidationCategoryIndex = FindValidationCategoryIndex(errors);
             SettingsValidationSummary.Text = "设置需要修正：" + string.Join("；", errors.Take(4));
             SettingsValidationSummary.Visibility = Visibility.Visible;
+            SettingsValidationLocateButton.Visibility = Visibility.Visible;
+            SettingsValidationLocateButton.ToolTip = $"切换到“{GetSettingsCategoryName(firstValidationCategoryIndex)}”并查看首个校验错误。";
             RefreshSaveState(errors.Count == 0);
         }
+
+        private void OnSettingsValidationLocateClick(object sender, RoutedEventArgs e)
+        {
+            if (SettingsSectionTabs == null) return;
+            SettingsSectionTabs.SelectedIndex = Math.Max(0, Math.Min(4, firstValidationCategoryIndex));
+            SettingsSectionTabs.Focus();
+            ScrollSelectedCategoryIntoView();
+            e.Handled = true;
+        }
+
+        private static int FindValidationCategoryIndex(IEnumerable<string> errors)
+        {
+            foreach (var error in errors)
+            {
+                if (ContainsOrdinal(error, "压缩")
+                    || ContainsOrdinal(error, "完整备份")
+                    || ContainsOrdinal(error, "差异备份"))
+                    return 1;
+                if (ContainsOrdinal(error, "毛玻璃"))
+                    return 2;
+                if (ContainsOrdinal(error, "进程")
+                    || ContainsOrdinal(error, "刷新")
+                    || ContainsOrdinal(error, "巡检")
+                    || ContainsOrdinal(error, "定时备份")
+                    || ContainsOrdinal(error, "恢复可用性")
+                    || ContainsOrdinal(error, "统计窗口")
+                    || ContainsOrdinal(error, "通知"))
+                    return 3;
+                if (ContainsOrdinal(error, "Worker")
+                    || ContainsOrdinal(error, "Ludusavi")
+                    || ContainsOrdinal(error, "Rclone")
+                    || ContainsOrdinal(error, "镜像"))
+                    return 0;
+            }
+            return 0;
+        }
+
+        private static string GetSettingsCategoryName(int index)
+            => index switch
+            {
+                1 => "备份与恢复",
+                2 => "外观与可访问性",
+                3 => "自动化与媒体",
+                4 => "设置迁移",
+                _ => "常规与目录"
+            };
+
+        private static bool ContainsOrdinal(string value, string token)
+            => value.IndexOf(token, StringComparison.Ordinal) >= 0;
 
         private void RefreshSaveState()
         {
@@ -318,11 +375,13 @@ namespace GameSaveCenter.Playnite.Settings
 
         private void OnVisualSettingChanged(object sender, RoutedEventArgs e)
         {
+            QueueValidationSummaryUpdate();
             QueueAdaptiveThemeUpdate();
         }
 
         private void OnGlassStrengthChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
+            QueueValidationSummaryUpdate();
             QueueAdaptiveThemeUpdate();
         }
 

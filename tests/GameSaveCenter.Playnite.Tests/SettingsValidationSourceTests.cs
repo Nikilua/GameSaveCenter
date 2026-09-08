@@ -15,14 +15,21 @@ public sealed class SettingsValidationSourceTests
 
         Assert.Contains("x:Name=\"SettingsValidationSummary\"", view);
         Assert.Contains("AutomationProperties.Name=\"设置验证错误\"", view);
+        Assert.Contains("x:Name=\"SettingsValidationLocateButton\"", view);
+        Assert.Contains("Click=\"OnSettingsValidationLocateClick\"", view);
+        Assert.Contains("AutomationProperties.Name=\"定位首个设置错误\"", view);
         Assert.Contains("x:Name=\"SettingsSaveHintText\"", view);
         Assert.Contains("AutomationProperties.Name=\"设置保存状态\"", view);
         Assert.Contains("AddHandler(TextBox.TextChangedEvent", code);
         Assert.Contains("AddHandler(ComboBox.SelectionChangedEvent", code);
         Assert.Contains("AddHandler(CheckBox.ClickEvent", code);
+        Assert.Contains("AddHandler(ToggleButton.CheckedEvent", code);
+        Assert.Contains("AddHandler(ToggleButton.UncheckedEvent", code);
         Assert.Contains("QueueValidationSummaryUpdate", code);
         Assert.Contains("DispatcherPriority.Background", code);
         Assert.Contains("RefreshValidationSummary", code);
+        Assert.Contains("FindValidationCategoryIndex", code);
+        Assert.Contains("SettingsSectionTabs.SelectedIndex", code);
         Assert.Contains("settings.VerifySettings(out errors)", code);
         Assert.Contains("有未保存更改 · 使用 Playnite 保存", code);
         Assert.Contains("存在校验错误 · 保存前请修正", code);

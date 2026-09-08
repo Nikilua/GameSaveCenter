@@ -2403,6 +2403,61 @@ public static class Program
                 s_problems.Add($"SettingsState {fixture.Name} failed: {ex.Message}");
             }
         }
+
+        RunSettingsValidationNavigationProbe(workerPath, refresh, apply, report);
+    }
+
+    private static void RunSettingsValidationNavigationProbe(
+        string workerPath,
+        MethodInfo refresh,
+        MethodInfo apply,
+        StringBuilder report)
+    {
+        try
+        {
+            var settings = new GameSaveCenterSettings
+            {
+                ThemeMode = GameSaveCenterThemeMode.Light,
+                WorkerExecutable = workerPath,
+                CompressionLevel = 99
+            };
+            var view = new GameSaveCenterSettingsView { DataContext = settings };
+            var host = new Grid
+            {
+                Width = 1040,
+                Height = 700,
+                Background = CreateHarnessBackground(view),
+                ClipToBounds = true
+            };
+            host.Children.Add(view);
+            view.ApplyThemeForAudit(GameSaveCenterThemeMode.Light);
+            apply.Invoke(view, new object[] { 1040d, 700d });
+            host.Measure(new Size(1040, 700));
+            host.Arrange(new Rect(0, 0, 1040, 700));
+            host.UpdateLayout();
+            apply.Invoke(view, new object[] { 1040d, 700d });
+            refresh.Invoke(view, null);
+            host.UpdateLayout();
+
+            var locator = FindVisualChildren<FrameworkElement>(host)
+                .FirstOrDefault(element => element.Name == "SettingsValidationLocateButton");
+            var tabs = FindVisualChildren<ListBox>(host)
+                .FirstOrDefault(element => element.Name == "SettingsSectionTabs");
+            if (locator == null || tabs == null)
+                throw new InvalidOperationException("Settings validation locator controls did not materialize.");
+
+            locator.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+            host.UpdateLayout();
+            report.AppendLine($"  SettingsValidationNavigation visible={locator.Visibility} selectedCategory={tabs.SelectedIndex}");
+            if (locator.Visibility != Visibility.Visible)
+                s_problems.Add("SettingsValidationNavigation locator is not visible for a backup validation error");
+            if (tabs.SelectedIndex != 1)
+                s_problems.Add($"SettingsValidationNavigation selected category {tabs.SelectedIndex}, expected 1");
+        }
+        catch (Exception ex)
+        {
+            s_problems.Add($"SettingsValidationNavigation failed: {ex.Message}");
+        }
     }
 
     private static void RunThemeQa(string outputRoot, StringBuilder report)

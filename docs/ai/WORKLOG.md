@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-08 L10 设置修改、错误定位与取消体验
+
+- 复核 L09 后发现两个实际缺口：错误摘要只能看，切到隐藏分类需要人工找；ToggleSwitch 和毛玻璃 Slider 改值没有统一排入设置状态刷新。现有 `GameSaveCenterSettings` 模型已经覆盖指纹、DeviceId 排除、CancelEdit 和导入无变异，因此没有重写设置生命周期。
+- 新增可访问的“定位首个错误”按钮。错误文本按已有验证规则映射分类，点击后切换 `SettingsSectionTabs` 并聚焦导航；键盘 Enter/Space 沿用 Button 路由。没有加入插件级保存按钮或绕过 Playnite 的提交。
+- 设置 View 现在监听 ToggleButton Checked/Unchecked，并让外观 Toggle/Slider 事件调用 `QueueValidationSummaryUpdate`；Dispatcher 合并保持不变。源契约测试覆盖定位入口与事件接线，RenderHarness 用有效 Worker + 无效压缩等级实测隐藏分类跳到备份页。
+- 验证：RenderHarness Release 构建 0 warning/0 error；normal/dirty/invalid 和导航探针通过；全量 Release 构建 0 warning/0 error；Core `72/72`、Worker `303/304`（1 跳过）、Playnite `395/457`（62 跳过）；源码/XAML/差异检查通过。完整 render-qa 仍只有既有媒体小视口/侧栏快速切换问题，真实 Playnite 保存失败/取消仍待宿主验收。
+
 ## 2026-09-08 L09 设置首屏与保存状态
 
 - 现状复测发现 1040×700/1366×768 设置页在 Hero 之后仍显示一段跨栏说明，和分类卡片说明重复，导致核心字段在首屏下方；设置页已有独立分类/正文滚动与保存状态胶囊，因此本项只收紧自身首屏，不改 Playnite 外层契约。

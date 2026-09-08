@@ -2,6 +2,13 @@
 
 > 更新时间：2026-09-08。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-08 L10 设置修改、错误定位与取消体验已完成（真实宿主待验收）
+
+- 校验摘要现在有键盘/鼠标均可触发的“定位首个错误”入口，按现有验证消息切换到常规、备份、外观或自动化分类，并把焦点送回分类导航；不新增插件保存命令，Playnite 保存/取消生命周期保持原样。
+- 设置脏状态覆盖 TextBox、ComboBox、CheckBox、ToggleSwitch 和毛玻璃 Slider；此前 ToggleSwitch/Slider 只刷新主题或没有统一刷新摘要，跨分类编辑可能看不到“未保存更改”，现已统一进入校验状态更新队列。
+- 导入继续以原编辑基线比较：导入成功后重绑同一设置对象不会把导入内容伪装成已提交；`DeviceId` 仍排除在用户编辑指纹之外，已有 CancelEdit/导入无变异/无效包测试继续有效。
+- RenderHarness 实测校验备份字段时 `SettingsValidationNavigation selectedCategory=1`，normal/dirty/invalid 三态仍通过；全量 Release 构建 `0 warning/0 error`，Core `72/72`、Worker `303/304`（1 跳过）、Playnite `395/457`（62 跳过）。Playnite 宿主保存失败提示、实际取消按钮和 FusionX/DPI 键盘轨迹仍待真实宿主验收。
+
 ## 2026-09-08 L09 设置首屏与保存状态已完成（真实宿主待验收）
 
 - 设置页首屏移除重复的全宽说明，Hero 副标题压缩为工具路径/存档策略/外观与自动化；分类卡片内的就地说明和 Playnite 保存/取消语义保留，核心 Worker/Ludusavi 字段在 1040×700 首屏更早可见。

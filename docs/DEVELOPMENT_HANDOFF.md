@@ -2,6 +2,8 @@
 
 > 连续实施入口：[32 项、8 阶段计划](ai/CONTINUOUS_DEVELOPMENT_PLAN_2026-09-08.md)。用户要求减少逐项确认；接手后按依赖连续实施并逐项交付，已满足任务跳过，外部阻塞不妨碍独立任务。Q6 质量报告仍是首四项问题依据。
 
+> 2026-09-08 L10 已完成设置编辑状态与错误定位：校验摘要旁可用键盘/鼠标定位到首个错误分类；TextBox/ComboBox/CheckBox/ToggleSwitch/Slider 的编辑都会更新脏状态；导入保留原保存基线，DeviceId 不计入用户指纹，取消仍由 Playnite `CancelEdit` 契约恢复。三态与隐藏分类离线探针通过；真实宿主保存失败、取消按钮和 FusionX/DPI 键盘轨迹仍待验收。
+
 > 2026-09-08 L09 已完成设置首屏与状态收口：重复全宽说明折叠、Hero 副标题压缩，核心字段在小窗口更早出现；修正校验错误分支把保存胶囊误标“已保存”的反向布尔值。RenderHarness 同画布 normal/dirty/invalid 三态与多尺寸布局通过；全量构建/测试通过。完整 render-qa 的媒体小视口/侧栏动效问题仍是既有独立门禁，真实 Playnite/FusionX 设置窗口、DPI 和保存取消仍待宿主验收。
 
 > 2026-09-08 L08 已完成可重复诊断入口：RenderHarness 报告带场景/来源/提交/窗口 DIP/主题/数据量，布局与渲染耗时分开；真实宿主运行器写入 `runner-metadata.json`，诊断包系统元数据补充场景、来源、窗口 DIP、已加载条目数、数据量和查询耗时。`gridprobe OK`，Release 构建和全量测试通过；离屏报告不伪造真实 DPI/请求耗时，真实 Playnite/FusionX 录屏与性能采样仍待宿主验收。
