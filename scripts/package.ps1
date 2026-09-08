@@ -59,8 +59,11 @@ function Read-AssemblyInformationalVersion {
     $pe = [System.Reflection.PortableExecutable.PEReader]::new($stream)
     $provider = $null
     try {
-        $provider = [System.Reflection.Metadata.MetadataReaderProvider]::FromMetadataImage($pe.GetMetadata().GetContent())
-        $reader = $provider.GetMetadataReader()
+        # Use PEReaderExtensions.GetMetadataReader instead of materializing an
+        # ImmutableArray from GetMetadata().GetContent(). The latter can bind
+        # to an incompatible System.Collections.Immutable copy in PowerShell
+        # 7 while inspecting net462 assemblies.
+        $reader = [System.Reflection.Metadata.PEReaderExtensions]::GetMetadataReader($pe)
         $assembly = $reader.GetAssemblyDefinition()
         foreach ($attributeHandle in $assembly.GetCustomAttributes()) {
             $attribute = $reader.GetCustomAttribute($attributeHandle)
