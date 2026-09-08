@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-08 两项截图问题：真实安装与宿主边界复核
+
+- 先修复打包验收脚本自身的环境问题：Windows PowerShell 5.1 下从 .NET SDK 加载 PE 元数据时，预加载匹配的 `System.Collections.Immutable` 并通过 `AssemblyResolve` 重定向 `System.Runtime.CompilerServices.Unsafe`；回调参数避免使用 PowerShell 保留的 `$args`。身份读取仍只读目标 PE，不加载插件/Worker 运行时。
+- 最终包由 `scripts/package.ps1 -SkipBuild -BuildOutputRoot artifacts/gsc-b/final-dbccb01` 严格生成，包内 Plugin、Worker、Plugin/Worker Core、Plugin/Worker Contracts 六个程序集全部为 `0.6.73+dbccb01abe8b3281ab864edf7f33d6edead6c7b8`。脚本在此前遇到环境缺失、元数据依赖错误和临时生成文件时均停止，没有把混合包报成功。
+- 用实际 `scripts/install-dev.ps1` 安装到 Playnite 扩展目录并启动 `D:\software\Playnite\Playnite.DesktopApp.exe`。安装后唯一 Worker 路径来自该目录；真实握手成功，协议 1、Worker 版本 `0.6.73.0`、构建身份与包一致；真实只读 `media.inbox.page` 成功返回 `totalCount=4615`。受控停止 PID 29572 后 1 秒内命名管道不可达，宿主恢复到唯一 Worker PID 27076，恢复握手再次成功。
+- 安装后日志在 14:01:56 仅有一次启动；受控故障之后记录一次 `Worker exited with code -1` 和一次新的同身份启动，没有 `duplicate instance`/退出码 0 循环。不要把旧日志中 12:58～13:01 的 unknown 重复循环归到修复后状态。
+- 媒体页源码/XAML/离屏门禁和完整构建测试已通过；真实 Playnite 窗口内的视觉操作仍未完成，因为本会话没有 CUA 端点。未取得真实同尺寸前后截图、PageHost 实际尺寸/滚动范围，也未宣布两项最终验收；32 项扩展计划保持暂停。
+
 ## 2026-09-08 用户截图反馈：Worker 启动误报与媒体待归类布局
 
 - 复核用户提供的 Worker 日志：首个 Worker 已完成存储初始化并进入 `Application started`，后续启动的是命名互斥锁拦截的重复实例，重复进程按设计返回退出码 0。修正 `WorkerLauncher`：子进程退出码为 0 时，限时探测期望版本/构建身份的现有 Worker；探测健康则记录“复用现有 Worker”、释放本次进程引用并正常返回，避免把重复实例 hand-off 显示为立即退出故障；新增静态回归契约。
