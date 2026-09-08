@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-08 Q4/Q5/X2 完成质量独立复核（文档交付）
+
+- 用户要求检查完成质量并规划后续。审阅干净基线 97131f0，核对上轮 Q4/Q5 与 X2 新代码；独立构建/测试/渲染，未修改生产代码、测试或安装。
+- 新增 `QUALITY_REVIEW_2026-09-08.md`，列出重试命中、跨上下文状态、告警归并、构建身份四项收口任务，以及六态夹具、设置首屏、运维大列表和真实宿主计划。保留四张原始截图与完整渲染报告；使用 STA WPF 父子命中探针确认父级 false 使子按钮不可鼠标命中。
+- Release 0 warning/error；Core 72 通过、Worker 303 通过/1 跳过、Playnite 368 通过/62 跳过；XAML 19/19、源码门禁通过；WPF 静态 src/GameSaveCenter.Playnite 为 0 errors/21 warnings/157 info；render-qa OK。真实 Playnite、上传、安装、DPI/高对比度/完整键盘未验收。
+- 交付前清理本轮 `.tmp/review-0908-*` 构建、渲染和日志，仅保留文档引用证据；中文提交并推送当前 main。
+
 ## 2026-09-08 X2-03 构建身份核验底座
 
 - 新增统一 `BuildIdentity` 解析器和程序集 InformationalVersion 注入：公共版本保持 `0.6.73`，打包时由 `scripts/package.ps1` 将当前 Git HEAD 作为 `GSC_BUILD_COMMIT` 传入，缺失时保留 `unknown`。

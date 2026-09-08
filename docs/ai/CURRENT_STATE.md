@@ -1,6 +1,12 @@
 # GameSaveCenter 当前事实入口
 
-> 更新时间：2026-09-07。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
+> 更新时间：2026-09-08。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
+
+## 2026-09-08 Q4/Q5/X2 独立质量复核（仅文档）
+
+- 基线 `97131f0`，新增 [完成质量与后续计划](QUALITY_REVIEW_2026-09-08.md)。Q4/Q5 主体已落地，维护/任务 Shell 紧凑可见行数改善；X2 仍需收口，不能只凭实现记录判全部验收。
+- 优先 Q6-01 状态面板重试命中、Q6-02 游戏/模式状态隔离、Q6-03 运维告警最新状态归并、Q6-04 SkipBuild/unknown 构建身份；之后完善六态/运维夹具、设置首屏与真实发布验收。
+- 本轮独立实跑 Release 0 warning/error；Core 72 通过、Worker 303 通过/1 跳过、Playnite 368 通过/62 跳过；XAML 19/19、源码门禁、静态 UI 0 errors、render-qa OK。证据 `docs/design/reviews/2026-09-08-quality/`；未安装或验证真实 Playnite。
 
 ## 2026-09-08 X2-03 构建身份核验底座已落地
 
