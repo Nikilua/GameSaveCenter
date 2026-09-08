@@ -299,9 +299,11 @@
 
 ### L29 全量回归与 skip 账本
 
-- 目标：知道哪些路径被验证，哪些 62 项历史 skip 已被替代或仍缺证据。
+- 目标：知道哪些路径被验证，哪些历史 skip 已被替代或仍缺证据。
 - 文件：Core/Worker/Playnite 测试、构建脚本、验证文档。逐类登记 skip 原因、有效替代测试和剩余风险；只在前置条件满足时恢复测试，不为了数字好看删除跳过项。
 - 验收：全量 Release、源码/XAML/静态门禁与必要 UI 矩阵；新功能关键路径有行为证据；失败/跳过数量与原因分开列出，工作树可复现。
+- 状态：已完成。全量 Core `76/76`、Worker `310/311`、Playnite `420/483`；新增 [`SKIP_LEDGER_2026-09-09.md`](SKIP_LEDGER_2026-09-09.md) 拆分旧架构断言、Named Pipe 条件和 Worker 进程条件。修正 E01 `-SkipBuild` 空日志/`0/0` 缺陷，修复后行为矩阵实际 `144/151` 通过、`7/151` 跳过；真实 Playnite继续保留人工门禁。
+- 证据：Release 构建 `0 warning/0 error`，`validate-source.py`、XAML `19/19`、`git diff --check` 通过。剩余 skip 不代表失败：旧架构断言需按当前 Demo-first 重写，Named Pipe/Worker 重启需完整 Windows/Playnite 环境；不以离线替代证据宣称宿主通过。
 
 ### L30 候选安装包与升级/回退说明
 

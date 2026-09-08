@@ -53,7 +53,10 @@ try {
             $arguments = @(
                 'test', $group.Project, '-c', $Configuration, '--no-build', '--no-restore',
                 '--filter', $filter, '-m:1', '-nodeReuse:false', '-p:NuGetAudit=false',
-                '-p:MSBuildEnableWorkloadResolver=false', ('-p:GscBuildOutputRoot=' + $outputRootFull))
+                '-p:MSBuildEnableWorkloadResolver=false')
+            if (-not $SkipBuild) {
+                $arguments += ('-p:GscBuildOutputRoot=' + $outputRootFull)
+            }
             $started = Get-Date
             $output = @(& dotnet @arguments 2>&1)
             $exitCode = $LASTEXITCODE

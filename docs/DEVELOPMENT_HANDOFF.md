@@ -6,6 +6,10 @@
 
 > L28 证据：云端/媒体历史分页定向 `26/26`，新增 Playnite 分页状态契约 `1/1`；Release 构建 `0 warning/0 error`，Core `76/76`、Worker `310/311`（1 项真实重启测试沙箱跳过）、Playnite `420/483`（63 项 UI/宿主条件 skip），源校验、XAML 和差异检查通过。真实 Playnite/FusionX、DPI、用户主题和原视频矩阵仍待宿主验收，不能写成视频问题已解决。
 
+> 2026-09-09 L29 已完成全量回归与 skip 账本：Core `76/76`；Worker `310/311`（1 项 Worker 进程重启受当前 Named Pipe 沙箱条件跳过）；Playnite `420/483`，明确拆分为 57 项旧“今日工作台”架构断言与 6 项 Named Pipe IPC 行为测试。详细原因、替代证据和剩余风险见 [`ai/SKIP_LEDGER_2026-09-09.md`](ai/SKIP_LEDGER_2026-09-09.md)。
+
+> L29 另修正 E01 行为矩阵的 `-SkipBuild` 路径：不向未构建的隔离输出目录发测试请求。修复后实际执行 `151` 项，`144` 通过、`7` 跳过；空日志/`0/0` 不再被接受。真实 Playnite/FusionX、Named Pipe 进程间时序、Worker 硬重启、DPI、用户主题和原视频仍待宿主验收。
+
 > 2026-09-09 L27 已完成配置、路径与外部文件变化的离线收口：设置目录校验只读地进行区分，可创建缺失叶目录、文件目标和不可达盘/共享分别处理；用户媒体来源及附加存档探测根目录不再把消失/拒绝访问伪装成空扫描。新增稳定错误码 `MEDIA_SOURCE_UNAVAILABLE`、`MEDIA_FILE_UNAVAILABLE`、`SAVE_PATH_ROOT_UNAVAILABLE`，占用媒体源文件不会被删除。
 
 > L27 证据：设置/便携导入定向 `11/11`，媒体/存档路径定向 `16/16`（含 Unicode/长文件名、占用文件、缺失来源和缺失附加根）；Release 构建 `0 warning/0 error`，Core `76/76`，Worker `308/309`（1 项真实进程重启测试在沙箱跳过），Playnite `419/482`（63 项 UI/宿主条件 skip），源/XAML/差异门禁通过。当前没有真实 Playnite 保存失败、网络共享 ACL、外置盘断开、DPI 或用户视频证据；本阶段仍标为宿主待验收。

@@ -9,6 +9,13 @@
 - 连续变化导致第二次重置时保留待恢复 ID，但停止自动重试和待选中项递归翻页；摘要与全局状态明确提示“自动重试已停止，请点击刷新”，现有云端/归类刷新命令继续作为人工出口。保留请求 generation、CancellationToken 和 ApplyOnUi 提交门。
 - 验证：Release 解决方案构建 `0 warning/0 error`；Core `76/76`、Worker `310/311`（1 项真实 Worker 进程重启测试在沙箱跳过）、Playnite `420/483`（63 项 UI/宿主条件跳过）；L28 Worker 定向 `26/26`、新增 Playnite 分页契约 `1/1`；`validate-source.py`、XAML `19/19`、`git diff --check` 通过。没有真实 Playnite/FusionX、DPI、用户主题或视频复测，仍待宿主验收。
 
+## 2026-09-09 L29 全量回归与 skip 账本
+
+- 全量 Release 结果重新核对：Core `76/76`；Worker `310/311`（1 项 `[WorkerProcessFact]` 受当前沙箱 Named Pipe 条件跳过）；Playnite `420/483`，其中 `57` 项 `LegacyProductionUiBaselineFact` 旧“今日工作台”架构断言、`6` 项 `[NamedPipeFact]` IPC 时序测试。没有失败，跳过没有计入通过。
+- 新增 [`SKIP_LEDGER_2026-09-09.md`](SKIP_LEDGER_2026-09-09.md)，按原因、文件、数量、当前替代证据和剩余人工风险拆分账本；没有为了降低 skip 数删除历史断言或伪造真实宿主证据。
+- 修正 `scripts/e01-behavior-matrix.ps1` 的 `-SkipBuild` 路径：不再传入未构建的隔离输出目录，避免脚本退出码为 0 但日志为空、汇总为 `0/0`。修复后 E01 实际执行 `151` 项，`144` 通过、`7` 跳过；真实 Playnite继续保留 `MANUAL QA REQUIRED`。
+- 验证：Release 构建、全量测试、`validate-source.py`、XAML `19/19` 和 `git diff --check` 均通过。真实 Playnite/FusionX、DPI、用户主题、Named Pipe 进程间时序、Worker 硬重启和原视频仍待宿主验收。
+
 ## 2026-09-09 L27 配置、路径与外部文件变化
 
 - 先复核设置页 `VerifySettings`、Worker `EnvironmentCheckService`、媒体来源发现/归档和存档路径探测。确认已有环境检查会对存档/媒体目录做写入探针，但设置页对目录只做可读路径判断；媒体同步和存档探测则会把部分用户配置的消失/访问异常过滤或吞成空结果。

@@ -9,6 +9,13 @@
 - `allowConsistencyRetry` 只允许一次从第一页自动重试。第二次仍然 `PageResetRequired` 时必须禁止 pending selection 的后续自动翻页；保留 pending ID，设置 `*NeedsManualRefresh`，摘要和 `StatusMessage` 引导用户点击现有刷新命令。手动刷新会重新开启一次有界自动重试。
 - L28 Worker 回归覆盖新增记录已有场景，以及云端传输状态更新、归类批次状态更新；Playnite 源契约覆盖选择保留、后页恢复和重复重置停止。不要把离线源契约当成真实宿主行为证据。
 
+## 2026-09-09 L29 全量回归与 skip 账本
+
+- 当前全量计数必须按项目和原因拆开记录：Core `76/76`；Worker `310/311`，1 项 `[WorkerProcessFact]` 跳过；Playnite `420/483`，57 项 `[LegacyProductionUiBaselineFact]` 旧架构断言 + 6 项 `[NamedPipeFact]` IPC 行为测试。跳过不计入通过，详细文件/数量/替代证据在 `docs/ai/SKIP_LEDGER_2026-09-09.md`。
+- `LegacyProductionUiBaselineFactAttribute` 不是当前功能失败，而是旧“今日工作台”布局断言与现行 AcrylicFork/Demo-first 生产结构不一致；恢复它们前必须按当前页面契约重写。Named Pipe 和 Worker 进程测试则是环境前置条件缺失，不能用源字符串或普通单元测试宣称行为已通过。
+- `scripts/e01-behavior-matrix.ps1 -SkipBuild` 必须使用既有默认 Release 输出；只有实际构建隔离输出时才传 `GscBuildOutputRoot`。否则会出现空日志/`0/0` 且退出码为 0，污染回归证据。修复后 E01 为 `144/151` 通过、`7/151` 跳过，并明确保留真实 Playnite `MANUAL QA REQUIRED`。
+- L29 的回归只证明当前代码在可用离线/STA 条件下通过；真实 Playnite、FusionX、DPI、Named Pipe 进程间时序、Worker 重启和视频操作仍是宿主验收项。
+
 ## 2026-09-09 L27 配置、路径与外部文件变化
 
 - `GameSaveCenterSettings.VerifySettings` 对存档目录、媒体目录和启用的本地镜像执行只读路径形状/目标类型检查：缺失的叶目录只要所在驱动器或共享可达就保留为可创建状态；指向文件、无效路径、磁盘/共享不可达或 ACL 访问异常会关联到具体目录字段。不要在文本框校验中调用 `Directory.CreateDirectory` 或写探针。
