@@ -1,5 +1,6 @@
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.ViewModels;
+using System.Collections.Generic;
 using Xunit;
 
 namespace GameSaveCenter.Playnite.Tests;
@@ -59,5 +60,54 @@ public sealed class FindingNavigationResolverTests
 
         Assert.Equal(FindingNavigationKind.None, route.Kind);
         Assert.False(route.IsAvailable);
+    }
+
+    [Fact]
+    public void MissingSaveTargetDoesNotFallBackToCurrentGame()
+    {
+        var target = FindingNavigationTargetResolver.ResolveExactGame(
+            new ValidationFindingDto { PlayniteId = "removed-game", Code = "SAVE_PATH_MISSING" },
+            new[] { new GameStatusDto { PlayniteId = "current-game", Name = "当前游戏" } });
+
+        Assert.False(target.IsAvailable);
+        Assert.False(target.IsExact);
+        Assert.Contains("找不到诊断对应的游戏", target.Message);
+    }
+
+    [Fact]
+    public void TaskTargetUsesExactGameIdentityWhenSnapshotContainsIt()
+    {
+        var target = FindingNavigationTargetResolver.ResolveTaskGame(
+            new ValidationFindingDto { PlayniteId = "game-2", GameName = "旧名称", Code = "TASK_FAILED" },
+            new[] { new GameStatusDto { PlayniteId = "game-2", Name = "当前名称" } });
+
+        Assert.True(target.IsAvailable);
+        Assert.True(target.IsExact);
+        Assert.Equal("game-2", target.PlayniteId);
+        Assert.Equal("当前名称", target.GameName);
+    }
+
+    [Fact]
+    public void TaskTargetFallsBackToDiagnosticNameWithoutChangingCurrentGame()
+    {
+        var target = FindingNavigationTargetResolver.ResolveTaskGame(
+            new ValidationFindingDto { PlayniteId = "removed-game", GameName = "已移除游戏", Code = "TASK_FAILED" },
+            new List<GameStatusDto>());
+
+        Assert.True(target.IsAvailable);
+        Assert.False(target.IsExact);
+        Assert.Equal("已移除游戏", target.GameName);
+        Assert.Contains("未修改当前游戏选择", target.Message);
+    }
+
+    [Fact]
+    public void TaskTargetWithoutAnyIdentityIsReportedAsUnavailable()
+    {
+        var target = FindingNavigationTargetResolver.ResolveTaskGame(
+            new ValidationFindingDto { Code = "TASK_FAILED" },
+            new List<GameStatusDto>());
+
+        Assert.False(target.IsAvailable);
+        Assert.True(string.IsNullOrEmpty(target.Message));
     }
 }

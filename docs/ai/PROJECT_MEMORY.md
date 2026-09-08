@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-08
 
+## 2026-09-08 L06 目的导航与返回上下文
+
+- `FindingNavigationTargetResolver` 将诊断目标分为精确游戏、任务名称兜底和不可用三类。存档路径导航只接受当前 `Games` 中存在的稳定 ID；目标消失时不切换当前游戏，直接写入可见状态提示。
+- 失败任务导航在 `DashboardViewModel` 中保存短生命周期的诊断目标 ID/名称，不覆盖用户已有的任务搜索、类型、时间和范围筛选。服务端查询使用目标名称，内存过滤优先稳定 ID，加载完成后按目标选择任务；目标没有记录时明确提示。用户修改任一任务筛选后，诊断目标自动清除。
+- 目的导航会取消输入防抖和旧任务查询，再启动一次代际保护的读取；没有加入 `Task.Delay`、`ScrollIntoView` 或新的全局导航框架。生产 Shell 的工作区页只创建一次，标签 `SelectedIndex` 继续由 VM 双向保留。
+- `FindingNavigationResolverTests` 新增目标缺失、精确 ID、名称兜底和无身份场景；`PurposeNavigationSourceTests` 守护单次显式加载、选中恢复和工作区页/标签上下文。真实宿主仍需验证原用户主题、目标隐藏和快速连续入口。
+
 ## 2026-09-08 L05 六态与运维夹具覆盖
 
 - `FakeDashboardData` 的默认构造保持 Ready 兼容；带 `WorkspaceFixtureState` 的构造可生成六态，非 Ready/Stale 会清空对应媒体、诊断和运维动作集合，Stale 保留旧数据并显示过期提示。Fake 不记录媒体文件内容。

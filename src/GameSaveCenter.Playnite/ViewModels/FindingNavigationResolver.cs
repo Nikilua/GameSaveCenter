@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using GameSaveCenter.Contracts;
 
 namespace GameSaveCenter.Playnite.ViewModels
@@ -80,6 +82,101 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
 
             return false;
+        }
+    }
+
+    /// <summary>
+    /// Resolves the object identity carried by a finding without falling back to the
+    /// dashboard's current selection. A finding can outlive the game snapshot that
+    /// produced it, so callers must distinguish an exact target from a name-only task
+    /// filter and from an unavailable target.
+    /// </summary>
+    public sealed class FindingGameTarget
+    {
+        private FindingGameTarget(
+            string playniteId,
+            string gameName,
+            bool isAvailable,
+            bool isExact,
+            string message)
+        {
+            PlayniteId = playniteId;
+            GameName = gameName;
+            IsAvailable = isAvailable;
+            IsExact = isExact;
+            Message = message;
+        }
+
+        public string PlayniteId { get; }
+        public string GameName { get; }
+        public bool IsAvailable { get; }
+        public bool IsExact { get; }
+        public string Message { get; }
+
+        public static FindingGameTarget Exact(GameStatusDto game)
+            => new FindingGameTarget(
+                game.PlayniteId ?? string.Empty,
+                game.Name ?? string.Empty,
+                isAvailable: true,
+                isExact: true,
+                message: string.Empty);
+
+        public static FindingGameTarget NameOnly(string gameName, string message)
+            => new FindingGameTarget(
+                string.Empty,
+                gameName ?? string.Empty,
+                isAvailable: true,
+                isExact: false,
+                message: message ?? string.Empty);
+
+        public static FindingGameTarget Missing(string message)
+            => new FindingGameTarget(
+                string.Empty,
+                string.Empty,
+                isAvailable: false,
+                isExact: false,
+                message: message ?? string.Empty);
+    }
+
+    public static class FindingNavigationTargetResolver
+    {
+        public static FindingGameTarget ResolveExactGame(
+            ValidationFindingDto? finding,
+            IEnumerable<GameStatusDto>? games)
+        {
+            var playniteId = finding?.PlayniteId?.Trim() ?? string.Empty;
+            if (playniteId.Length == 0)
+                return FindingGameTarget.Missing("该诊断没有稳定的游戏标识，无法安全打开对应游戏。请先刷新诊断。");
+
+            var game = (games ?? Enumerable.Empty<GameStatusDto>())
+                .FirstOrDefault(candidate => string.Equals(candidate.PlayniteId, playniteId, StringComparison.OrdinalIgnoreCase));
+            return game != null
+                ? FindingGameTarget.Exact(game)
+                : FindingGameTarget.Missing($"当前快照中找不到诊断对应的游戏（{playniteId}），未切换到其他游戏。请先刷新面板。");
+        }
+
+        public static FindingGameTarget ResolveTaskGame(
+            ValidationFindingDto? finding,
+            IEnumerable<GameStatusDto>? games)
+        {
+            var playniteId = finding?.PlayniteId?.Trim() ?? string.Empty;
+            var game = (games ?? Enumerable.Empty<GameStatusDto>())
+                .FirstOrDefault(candidate => playniteId.Length > 0
+                    && string.Equals(candidate.PlayniteId, playniteId, StringComparison.OrdinalIgnoreCase));
+            if (game != null)
+                return FindingGameTarget.Exact(game);
+
+            var gameName = finding?.GameName?.Trim() ?? string.Empty;
+            if (gameName.Length > 0)
+                return FindingGameTarget.NameOnly(
+                    gameName,
+                    playniteId.Length == 0
+                        ? $"诊断未提供游戏 ID，任务页将按“{gameName}”筛选失败任务。"
+                        : $"当前快照中暂时找不到该游戏，任务页将按诊断中的名称“{gameName}”筛选失败任务。未修改当前游戏选择。");
+
+            return string.IsNullOrWhiteSpace(playniteId)
+                ? FindingGameTarget.Missing(string.Empty)
+                : FindingGameTarget.Missing($"当前快照中找不到诊断对应的游戏（{playniteId}），无法定位失败任务。请先刷新面板。");
         }
     }
 }

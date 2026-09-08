@@ -172,6 +172,10 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string taskGameFilter = "全部";
         private string taskTypeFilter = "全部";
         private string taskSearchText = string.Empty;
+        private string taskNavigationGameId = string.Empty;
+        private string taskNavigationGameName = string.Empty;
+        private bool applyingTaskNavigation;
+        private bool synchronizingTaskFilterOptions;
         private TaskSummaryDto taskSummary = new TaskSummaryDto();
         private int todaySucceededTaskCount;
         private string taskHistoryScope = "最近任务";
@@ -653,6 +657,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                || !string.Equals(TaskStatusFilter, "全部", StringComparison.Ordinal)
                || !string.Equals(TaskTypeFilter, "全部", StringComparison.Ordinal)
                || !string.Equals(TaskGameFilter, "全部", StringComparison.Ordinal)
+               || !string.IsNullOrWhiteSpace(taskNavigationGameName)
                || !string.Equals(TaskHistoryScope, "最近任务", StringComparison.Ordinal)
                || !string.Equals(TaskHistoryRange, "全部时间", StringComparison.Ordinal);
         public string TaskActiveFiltersSummary
@@ -664,6 +669,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 if (!string.Equals(TaskStatusFilter, "全部", StringComparison.Ordinal)) active.Add($"状态：{TaskStatusFilter}");
                 if (!string.Equals(TaskTypeFilter, "全部", StringComparison.Ordinal)) active.Add($"类型：{TaskTypeFilter}");
                 if (!string.Equals(TaskGameFilter, "全部", StringComparison.Ordinal)) active.Add($"游戏：{TaskGameFilter}");
+                if (!string.IsNullOrWhiteSpace(taskNavigationGameName)) active.Add($"诊断目标：{taskNavigationGameName}");
                 if (!string.Equals(TaskHistoryScope, "最近任务", StringComparison.Ordinal)) active.Add(TaskHistoryScope);
                 if (!string.Equals(TaskHistoryRange, "全部时间", StringComparison.Ordinal)) active.Add(TaskHistoryRange);
                 return TaskHasActiveFilters ? "当前：" + string.Join(" · ", active) : "当前未设置额外条件";
@@ -674,6 +680,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             get => taskHistoryScope;
             set
             {
+                ClearTaskNavigationTargetIfUserChangedFilter();
                 var normalized = value == "全部历史" ? "全部历史" : "最近任务";
                 if (string.Equals(taskHistoryScope, normalized, StringComparison.Ordinal)) return;
                 SetValue(ref taskHistoryScope, normalized);
@@ -690,6 +697,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             get => taskHistoryRange;
             set
             {
+                ClearTaskNavigationTargetIfUserChangedFilter();
                 var normalized = TaskHistoryRangeOptions.Contains(value) ? value : "全部时间";
                 if (string.Equals(taskHistoryRange, normalized, StringComparison.Ordinal)) return;
                 SetValue(ref taskHistoryRange, normalized);
@@ -706,6 +714,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             get => taskSearchText;
             set
             {
+                ClearTaskNavigationTargetIfUserChangedFilter();
                 SetValue(ref taskSearchText, value ?? string.Empty);
                 taskSearchRefresh.Schedule(value);
                 ScheduleTaskHistoryQuery();
@@ -719,6 +728,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             get => taskStatusFilter;
             set
             {
+                ClearTaskNavigationTargetIfUserChangedFilter();
                 SetValue(ref taskStatusFilter, string.IsNullOrWhiteSpace(value) ? "全部" : value);
                 RefreshTasksView();
                 ScheduleTaskHistoryQuery();
@@ -732,6 +742,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             get => taskGameFilter;
             set
             {
+                ClearTaskNavigationTargetIfUserChangedFilter();
                 SetValue(ref taskGameFilter, string.IsNullOrWhiteSpace(value) ? "全部" : value);
                 RefreshTasksView();
                 ScheduleTaskHistoryQuery();
@@ -745,6 +756,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             get => taskTypeFilter;
             set
             {
+                ClearTaskNavigationTargetIfUserChangedFilter();
                 SetValue(ref taskTypeFilter, string.IsNullOrWhiteSpace(value) ? "全部" : value);
                 RefreshTasksView();
                 ScheduleTaskHistoryQuery();
@@ -753,6 +765,28 @@ namespace GameSaveCenter.Playnite.ViewModels
                 OnPropertyChanged(nameof(TaskActiveFiltersSummary));
             }
         }
+
+        internal bool HasTaskNavigationTarget => !string.IsNullOrWhiteSpace(taskNavigationGameName);
+
+        private void ClearTaskNavigationTargetIfUserChangedFilter()
+        {
+            if (applyingTaskNavigation || synchronizingTaskFilterOptions || !HasTaskNavigationTarget)
+                return;
+
+            taskNavigationGameId = string.Empty;
+            taskNavigationGameName = string.Empty;
+            OnPropertyChanged(nameof(TaskHasActiveFilters));
+            OnPropertyChanged(nameof(TaskActiveFiltersSummary));
+        }
+
+        private void SetTaskNavigationTarget(FindingGameTarget target)
+        {
+            taskNavigationGameId = target.IsExact ? target.PlayniteId : string.Empty;
+            taskNavigationGameName = target.GameName ?? string.Empty;
+            OnPropertyChanged(nameof(TaskHasActiveFilters));
+            OnPropertyChanged(nameof(TaskActiveFiltersSummary));
+        }
+
         public int FilteredGameCount { get => filteredGameCount; private set => SetValue(ref filteredGameCount, value); }
         public WorkspaceKind CurrentWorkspace
         {
@@ -1392,26 +1426,50 @@ namespace GameSaveCenter.Playnite.ViewModels
             switch (navigation.Kind)
             {
                 case FindingNavigationKind.Save:
-                    if (finding != null && !string.IsNullOrWhiteSpace(finding.PlayniteId))
+                    var saveTarget = FindingNavigationTargetResolver.ResolveExactGame(finding, Games);
+                    if (!saveTarget.IsAvailable)
                     {
-                        var game = Games.FirstOrDefault(x => string.Equals(x.PlayniteId, finding.PlayniteId, StringComparison.OrdinalIgnoreCase));
-                        if (game != null)
-                            SelectedGame = game;
+                        StatusMessage = saveTarget.Message;
+                        return;
                     }
 
+                    SelectedGame = Games.First(game => string.Equals(
+                        game.PlayniteId,
+                        saveTarget.PlayniteId,
+                        StringComparison.OrdinalIgnoreCase));
                     SaveTabIndex = 1;
                     CurrentWorkspace = WorkspaceKind.Saves;
                     RequestWorkspaceLoad();
                     break;
                 case FindingNavigationKind.FailedTasks:
-                    var taskGameName = finding?.GameName;
-                    if (string.IsNullOrWhiteSpace(taskGameName) && finding != null && !string.IsNullOrWhiteSpace(finding.PlayniteId))
-                        taskGameName = Games.FirstOrDefault(x => string.Equals(x.PlayniteId, finding.PlayniteId, StringComparison.OrdinalIgnoreCase))?.Name;
-                    if (!string.IsNullOrWhiteSpace(taskGameName))
-                        TaskSearchText = taskGameName!;
-                    TaskStatusFilter = "失败";
+                    var taskTarget = FindingNavigationTargetResolver.ResolveTaskGame(finding, Games);
+                    if (!taskTarget.IsAvailable && !string.IsNullOrWhiteSpace(taskTarget.Message))
+                    {
+                        StatusMessage = taskTarget.Message;
+                        return;
+                    }
+
+                    applyingTaskNavigation = true;
+                    try
+                    {
+                        SetTaskNavigationTarget(taskTarget);
+                        TaskStatusFilter = "失败";
+                    }
+                    finally
+                    {
+                        applyingTaskNavigation = false;
+                    }
+
                     CurrentWorkspace = WorkspaceKind.Tasks;
+                    // The filter setters already schedule a debounced query for typing. A
+                    // purpose navigation is an explicit route, so cancel that pending work
+                    // and issue one immediate, generation-protected read instead of racing
+                    // two queries or relying on a timer to make the target appear.
+                    taskSearchRefresh.Cancel();
+                    taskHistoryQueryRefresh.Cancel();
                     Run(() => LoadTaskPageAsync(true));
+                    if (!string.IsNullOrWhiteSpace(taskTarget.Message))
+                        StatusMessage = taskTarget.Message;
                     break;
                 case FindingNavigationKind.CloudQueue:
                     OpenCloudQueue();
@@ -1883,7 +1941,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 Replace(OverviewTasks, data.RecentTasks.Take(8), SnapshotComparers.Task);
                 Replace(Activities, data.RecentActivities.Take(12), SnapshotComparers.Activity);
                 RebuildTaskFilters();
-                SelectedTask = Tasks.FirstOrDefault(x => x.TaskId == selectedTaskId) ?? Tasks.FirstOrDefault();
+                RestoreTaskSelection(selectedTaskId);
                 var previousFindingPlayniteId = SelectedFinding?.PlayniteId;
                 var previousFindingCode = SelectedFinding?.Code;
                 var previousFindingTitle = SelectedFinding?.Title;
@@ -2279,9 +2337,9 @@ namespace GameSaveCenter.Playnite.ViewModels
                     OnPropertyChanged(nameof(LoadedTaskCount));
                     OnPropertyChanged(nameof(TaskLoadedSummary));
                     RebuildTaskFilters();
-                    SelectedTask = Tasks.FirstOrDefault(item => string.Equals(item.TaskId, selectedTaskId, StringComparison.OrdinalIgnoreCase)) ?? Tasks.FirstOrDefault();
                     CompleteTaskPageLoad();
                     StatusMessage = TaskLoadedSummary;
+                    RestoreTaskSelection(selectedTaskId);
                     RaiseCommandStates();
                 });
             }
@@ -2304,7 +2362,12 @@ namespace GameSaveCenter.Playnite.ViewModels
                 Limit = taskHistoryScope == "全部历史" ? 200 : 50,
                 Cursor = cursor ?? string.Empty,
                 Search = TaskSearchText,
-                GameName = TaskGameFilter == "全部" ? string.Empty : TaskGameFilter,
+                // A finding route is an additional, transient target. Keep the user's
+                // visible game/search/type/time filters intact while narrowing the server
+                // query to the diagnostic game when its name is available.
+                GameName = !string.IsNullOrWhiteSpace(taskNavigationGameName)
+                    ? taskNavigationGameName
+                    : TaskGameFilter == "全部" ? string.Empty : TaskGameFilter,
                 TaskType = TaskTypeFilter == "全部" ? string.Empty : TaskTypeFilter switch
                 {
                     "存档备份" => "Backup",
@@ -3706,6 +3769,9 @@ namespace GameSaveCenter.Playnite.ViewModels
                 && !ContainsTaskSearchValue(task.DetailMessage, search)
                 && !ContainsTaskSearchValue(task.ErrorMessage, search)) return false;
             if (TaskGameFilter != "全部" && !string.Equals(task.GameName, TaskGameFilter, StringComparison.OrdinalIgnoreCase)) return false;
+            if (!string.IsNullOrWhiteSpace(taskNavigationGameName)
+                && !string.Equals(task.GameId, taskNavigationGameId, StringComparison.OrdinalIgnoreCase)
+                && !string.Equals(task.GameName, taskNavigationGameName, StringComparison.OrdinalIgnoreCase)) return false;
             if (TaskTypeFilter != "全部" && !string.Equals(task.TaskTypeDisplay, TaskTypeFilter, StringComparison.OrdinalIgnoreCase)) return false;
             return TaskStatusFilter switch
             {
@@ -3716,6 +3782,24 @@ namespace GameSaveCenter.Playnite.ViewModels
                 _ => true
             };
         }
+
+        private void RestoreTaskSelection(string? selectedTaskId)
+        {
+            var restored = !string.IsNullOrWhiteSpace(selectedTaskId)
+                ? Tasks.FirstOrDefault(item => string.Equals(item.TaskId, selectedTaskId, StringComparison.OrdinalIgnoreCase))
+                : null;
+            if (restored == null && !string.IsNullOrWhiteSpace(taskNavigationGameName))
+                restored = Tasks.FirstOrDefault(MatchesTaskNavigationTarget);
+
+            SelectedTask = restored ?? (string.IsNullOrWhiteSpace(taskNavigationGameName) ? Tasks.FirstOrDefault() : null!);
+            if (!string.IsNullOrWhiteSpace(taskNavigationGameName) && restored == null)
+                StatusMessage = $"未找到“{taskNavigationGameName}”的失败任务记录；已保留当前筛选条件。";
+        }
+
+        private bool MatchesTaskNavigationTarget(TaskStatusDto task)
+            => !string.IsNullOrWhiteSpace(taskNavigationGameName)
+               && (string.Equals(task.GameId, taskNavigationGameId, StringComparison.OrdinalIgnoreCase)
+                   || string.Equals(task.GameName, taskNavigationGameName, StringComparison.OrdinalIgnoreCase));
 
         private static bool ContainsTaskSearchValue(string? value, string search)
         {
@@ -3758,7 +3842,11 @@ namespace GameSaveCenter.Playnite.ViewModels
             // Only touch the selection when it actually disappeared; the incremental sync
             // above never Clear()s the option collections, so an existing selection survives.
             if (string.IsNullOrEmpty(selectedGame) || !TaskGameFilterOptions.Contains(selectedGame))
-                TaskGameFilter = "全部";
+            {
+                synchronizingTaskFilterOptions = true;
+                try { TaskGameFilter = "全部"; }
+                finally { synchronizingTaskFilterOptions = false; }
+            }
             if (string.IsNullOrEmpty(selectedType) || !TaskTypeFilterOptions.Contains(selectedType))
                 TaskTypeFilter = "全部";
             RefreshTasksView();
