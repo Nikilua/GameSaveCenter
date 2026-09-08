@@ -4,6 +4,10 @@
 
 > 2026-09-09 L22 已完成缩略图加载、取消与缓存边界收口：`AsyncThumbnailImage` 只为已加载且可见的卡片启动任务，不可见/卸载取消并清空旧图，generation/token 防止旧路径结果回写；`AsyncThumbnailLoader` 保持 `OnLoad` 冻结、3 路并发、96 项 LRU 和预期读取失败空占位。
 
+> 2026-09-09 L23 已完成搜索、刷新与重复 IPC 的代码边界收口：任务历史页和 Dashboard 快照请求使用 `LatestRequestCoordinator` 做取消、generation 和提交前检查；任务 debounce 回调经 UI 投递，忙时保留最新查询，旧响应不能覆盖当前筛选。日志只记录代际、请求号、数量/尺寸和 `hasMore`，不记录搜索文本或文件内容；未修改写请求协议。
+
+> L23 证据：连续搜索夹具 `a→ab→abc` 最终只回调 1 次；协调器覆盖取消、替换、CTS 释放后 Token 状态和 20 次快速替换仅最后作用域可提交。独立 Playnite `417` 通过、`62` 跳过、`0` 失败；Core `76/76`、Worker `303/304`（1 跳过），Release 构建无警告/错误。整套解决方案的一次并行 Playnite 重跑有 8 个既有 WPF `PackagePart.CleanUpRequestedStreamsList` 构造失败，独立重跑通过，保留为测试宿主偶发问题。真实 Playnite/FusionX、DPI、用户视频与实际 IPC 日志计数仍待宿主验收。
+
 > L22 证据为 `.tmp/l22-thumbnailprobe-final/thumbnailprobe-report.txt` 及 Playnite STA 测试：120 项初次窗口 `120` 成功、峰值并发 `3`、缓存 `96/96`；16 项保留窗口全命中；破损/缺失均为空；预取消可观测；100 次 12 项窗口往返后活动解码 `0`；旧 800×800 图替换为新 64×64 图后最终像素标记为新图，输出宽度 `96`。这是合成文件和隐藏 STA Window 证据，不是实际 Playnite/FusionX、DPI、用户目录或视频录屏验收。
 
 > 2026-09-09 L21 已完成列表虚拟化与滚动规模实测：证据先于参数调整。原当前游戏 `MediaGrid` 使用普通 `WrapPanel`，在 200/2000/10000 后端夹具中生成 200/2000/2000 个卡片；修复仅接回已有 `VirtualizingWrapPanel`，保留 164×154 卡片、选择和 ListBox 滚动契约。修复后顶部→底部→顶部均约 20 个容器，任务表与媒体收件箱的 DataGrid 诊断/20 次滑块往返/语义滚动/resize/选择保持通过。

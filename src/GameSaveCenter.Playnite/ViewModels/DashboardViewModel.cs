@@ -57,6 +57,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         private CancellationTokenSource? detailsLoadCancellation;
         private CancellationTokenSource? mediaPageRequestCancellation;
         private CancellationTokenSource? mediaInboxRequestCancellation;
+        private readonly LatestRequestCoordinator taskPageRequests = new LatestRequestCoordinator();
+        private readonly LatestRequestCoordinator dashboardRefreshRequests = new LatestRequestCoordinator();
         private CancellationTokenSource? cloudTransferRequestCancellation;
         private CancellationTokenSource? mediaClassificationHistoryRequestCancellation;
         private CancellationTokenSource? selectedGameBackgroundCancellation;
@@ -176,6 +178,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private long mediaInboxLoadGeneration;
         private long cloudTransferLoadGeneration;
         private long taskPageGeneration;
+        private bool taskHistoryQueryQueued;
         private string? pendingMediaInboxLoadMode;
         private string taskStatusFilter = "全部";
         private string taskGameFilter = "全部";
@@ -254,7 +257,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             ignoredMediaPageAccumulator = new MediaPageAccumulator(IgnoredMedia);
             MediaInboxItems = UnassignedMedia;
             taskSearchRefresh = new DebouncedRefresh(() => ApplyOnUi(RefreshTasksView), TimeSpan.FromMilliseconds(180));
-            taskHistoryQueryRefresh = new DebouncedRefresh(() => Run(() => LoadTaskPageAsync(true)), TimeSpan.FromMilliseconds(240));
+            taskHistoryQueryRefresh = new DebouncedRefresh(() => ApplyOnUi(StartQueuedTaskHistoryQuery), TimeSpan.FromMilliseconds(240));
             mediaSearchRefresh = new DebouncedRefresh(() => ApplyOnUi(RefreshMediaView), TimeSpan.FromMilliseconds(180));
             mediaPageQueryRefresh = new DebouncedRefresh(() => Run(LoadFilteredMediaPageAsync), TimeSpan.FromMilliseconds(240));
             uiStateSave = new DebouncedRefresh(SaveUiStateSettings, TimeSpan.FromMilliseconds(500));
@@ -677,7 +680,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             : $"最近加载 {Tasks.Count} 条 · 全部任务 {TaskTotalCount} 条";
 
         internal string GetTaskScrollDiagnosticContext()
-            => $"taskPage={Interlocked.Read(ref taskPageGeneration)},historyActive={taskHistoryActive},cursor={(string.IsNullOrEmpty(taskHistoryCursor) ? "empty" : "set")},state={TaskPageState}";
+            => $"taskPage={Interlocked.Read(ref taskPageGeneration)},historyActive={taskHistoryActive},queued={taskHistoryQueryQueued},cursor={(string.IsNullOrEmpty(taskHistoryCursor) ? "empty" : "set")},state={TaskPageState}";
 
         internal string GetMediaScrollDiagnosticContext()
             => $"mediaPage={Interlocked.Read(ref mediaPageGeneration)},inboxPage={Interlocked.Read(ref mediaInboxLoadGeneration)},details={Interlocked.Read(ref detailsLoadGeneration)}";
@@ -714,8 +717,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 var normalized = value == "全部历史" ? "全部历史" : "最近任务";
                 if (string.Equals(taskHistoryScope, normalized, StringComparison.Ordinal)) return;
                 SetValue(ref taskHistoryScope, normalized);
-                taskHistoryQueryRefresh.Cancel();
-                Run(() => LoadTaskPageAsync(true));
+                RequestTaskHistoryRefresh(immediate: true, force: true);
                 OnPropertyChanged(nameof(TaskLoadedSummary));
                 OnPropertyChanged(nameof(TaskHasActiveFilters));
                 OnPropertyChanged(nameof(TaskActiveFiltersSummary));
@@ -732,8 +734,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 var normalized = TaskHistoryRangeOptions.Contains(value) ? value : "全部时间";
                 if (string.Equals(taskHistoryRange, normalized, StringComparison.Ordinal)) return;
                 SetValue(ref taskHistoryRange, normalized);
-                taskHistoryQueryRefresh.Cancel();
-                Run(() => LoadTaskPageAsync(true));
+                RequestTaskHistoryRefresh(immediate: true, force: true);
                 OnPropertyChanged(nameof(TaskLoadedSummary));
                 OnPropertyChanged(nameof(TaskHasActiveFilters));
                 OnPropertyChanged(nameof(TaskActiveFiltersSummary));
@@ -749,7 +750,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 ClearTaskNavigationTargetIfUserChangedFilter();
                 SetValue(ref taskSearchText, value ?? string.Empty);
                 taskSearchRefresh.Schedule(value);
-                ScheduleTaskHistoryQuery();
+                RequestTaskHistoryRefresh(immediate: false, force: false);
                 uiStateSave?.Schedule();
                 OnPropertyChanged(nameof(TaskHasActiveFilters));
                 OnPropertyChanged(nameof(TaskActiveFiltersSummary));
@@ -763,7 +764,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 ClearTaskNavigationTargetIfUserChangedFilter();
                 SetValue(ref taskStatusFilter, string.IsNullOrWhiteSpace(value) ? "全部" : value);
                 RefreshTasksView();
-                ScheduleTaskHistoryQuery();
+                RequestTaskHistoryRefresh(immediate: false, force: false);
                 uiStateSave?.Schedule();
                 OnPropertyChanged(nameof(TaskHasActiveFilters));
                 OnPropertyChanged(nameof(TaskActiveFiltersSummary));
@@ -779,7 +780,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 ClearTaskNavigationTargetIfUserChangedFilter();
                 SetValue(ref taskGameFilter, string.IsNullOrWhiteSpace(value) ? "全部" : value);
                 RefreshTasksView();
-                ScheduleTaskHistoryQuery();
+                RequestTaskHistoryRefresh(immediate: false, force: false);
                 uiStateSave?.Schedule();
                 OnPropertyChanged(nameof(TaskHasActiveFilters));
                 OnPropertyChanged(nameof(TaskActiveFiltersSummary));
@@ -795,7 +796,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 ClearTaskNavigationTargetIfUserChangedFilter();
                 SetValue(ref taskTypeFilter, string.IsNullOrWhiteSpace(value) ? "全部" : value);
                 RefreshTasksView();
-                ScheduleTaskHistoryQuery();
+                RequestTaskHistoryRefresh(immediate: false, force: false);
                 uiStateSave?.Schedule();
                 OnPropertyChanged(nameof(TaskHasActiveFilters));
                 OnPropertyChanged(nameof(TaskActiveFiltersSummary));
@@ -1713,7 +1714,11 @@ namespace GameSaveCenter.Playnite.ViewModels
             mediaPageQueryRefresh.Cancel();
             Interlocked.Increment(ref mediaPageGeneration);
             Interlocked.Increment(ref mediaInboxLoadGeneration);
+            Interlocked.Increment(ref taskPageGeneration);
+            taskHistoryQueryQueued = false;
             pendingMediaInboxLoadMode = null;
+            taskPageRequests.Cancel();
+            dashboardRefreshRequests.Cancel();
             CancelMediaPageRequest();
             CancelMediaInboxRequest();
             CancelMediaClassificationHistoryRequest();
@@ -1874,10 +1879,12 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task RefreshCoreAsync(bool synchronize, TimeSpan? snapshotTimeout = null)
         {
+            var refreshRequest = dashboardRefreshRequests.Begin();
             var workspace = CurrentWorkspace;
             var inboxMode = MediaInboxMode;
             ApplyOnUi(() =>
             {
+                if (!dashboardRefreshRequests.IsCurrent(refreshRequest)) return;
                 if (workspace == WorkspaceKind.Media)
                 {
                     BeginMediaInboxLoad(inboxMode);
@@ -1890,10 +1897,11 @@ namespace GameSaveCenter.Playnite.ViewModels
             });
             try
             {
-                await RefreshCoreBodyAsync(synchronize, snapshotTimeout);
+                await RefreshCoreBodyAsync(synchronize, snapshotTimeout, refreshRequest);
             }
             catch (OperationCanceledException)
             {
+                if (!dashboardRefreshRequests.IsCurrent(refreshRequest)) return;
                 ApplyOnUi(() =>
                 {
                     if (workspace == WorkspaceKind.Media)
@@ -1910,6 +1918,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
             catch (Exception ex)
             {
+                if (!dashboardRefreshRequests.IsCurrent(refreshRequest)) return;
                 ApplyOnUi(() =>
                 {
                     if (workspace == WorkspaceKind.Media)
@@ -1924,41 +1933,86 @@ namespace GameSaveCenter.Playnite.ViewModels
                 });
                 throw;
             }
+            finally
+            {
+                dashboardRefreshRequests.End(refreshRequest);
+            }
         }
 
-        private async Task RefreshCoreBodyAsync(bool synchronize, TimeSpan? snapshotTimeout = null)
+        private async Task RefreshCoreBodyAsync(
+            bool synchronize,
+            TimeSpan? snapshotTimeout,
+            LatestRequestCoordinator.RequestScope refreshRequest)
         {
             StatusMessage = synchronize ? "正在同步设置与游戏库…" : "正在读取本地状态…";
-            await RefreshDashboardAsync(synchronize, false, snapshotTimeout);
+            if (!dashboardRefreshRequests.IsCurrent(refreshRequest)) return;
+            await RefreshDashboardAsync(synchronize, false, snapshotTimeout, refreshRequest);
+            if (!dashboardRefreshRequests.IsCurrent(refreshRequest)) return;
             if (taskHistoryActive) await LoadTaskPageAsync(true);
+            if (!dashboardRefreshRequests.IsCurrent(refreshRequest)) return;
             if (!policyTemplatesLoaded) await LoadPolicyTemplatesAsync();
+            if (!dashboardRefreshRequests.IsCurrent(refreshRequest)) return;
             if (CurrentWorkspace == WorkspaceKind.Media)
             {
                 await LoadInboxAsync();
+                if (!dashboardRefreshRequests.IsCurrent(refreshRequest)) return;
                 await LoadMediaClassificationHistoryAsync(true);
+                if (!dashboardRefreshRequests.IsCurrent(refreshRequest)) return;
                 if (MediaInboxMode == "已忽略") await LoadIgnoredMediaAsync();
             }
+            if (!dashboardRefreshRequests.IsCurrent(refreshRequest)) return;
             if (CurrentWorkspace == WorkspaceKind.Maintenance) await LoadDiagnosticsAsync();
+            if (!dashboardRefreshRequests.IsCurrent(refreshRequest)) return;
             if (SelectedGame != null && IsGameScopedWorkspace(CurrentWorkspace)) await LoadDetailsAsync();
             else ClearSelectedGameDetails();
         }
 
         private async Task<bool> RefreshDashboardAsync(bool synchronize, bool notifyTaskChanges, TimeSpan? snapshotTimeout = null)
         {
-            if (synchronize) await plugin.SynchronizeAsync();
+            var refreshRequest = dashboardRefreshRequests.Begin();
+            try
+            {
+                return await RefreshDashboardAsync(synchronize, notifyTaskChanges, snapshotTimeout, refreshRequest);
+            }
+            finally
+            {
+                dashboardRefreshRequests.End(refreshRequest);
+            }
+        }
+
+        private async Task<bool> RefreshDashboardAsync(
+            bool synchronize,
+            bool notifyTaskChanges,
+            TimeSpan? snapshotTimeout,
+            LatestRequestCoordinator.RequestScope refreshRequest)
+        {
+            if (!dashboardRefreshRequests.IsCurrent(refreshRequest)) return false;
+            if (synchronize)
+            {
+                await plugin.SynchronizeAsync();
+                if (!dashboardRefreshRequests.IsCurrent(refreshRequest)) return false;
+            }
+            Logger.Debug($"[IPC] GetDashboard start generation={refreshRequest.Generation} synchronize={synchronize} notify={notifyTaskChanges}");
             var fetchTimer = Stopwatch.StartNew();
             DashboardSnapshotDto data;
             try
             {
-                data = await plugin.RequestAsync<DashboardSnapshotDto>(MessageTypes.GetDashboard, new { }, snapshotTimeout);
+                data = await plugin.RequestAsync<DashboardSnapshotDto>(
+                    MessageTypes.GetDashboard,
+                    new { },
+                    snapshotTimeout,
+                    refreshRequest.Token);
+                if (!dashboardRefreshRequests.IsCurrent(refreshRequest)) return false;
             }
             catch (OperationCanceledException)
             {
+                if (!dashboardRefreshRequests.IsCurrent(refreshRequest)) return false;
                 ApplyOnUi(CancelTaskPageLoad);
                 throw;
             }
             catch (Exception ex)
             {
+                if (!dashboardRefreshRequests.IsCurrent(refreshRequest)) return false;
                 ApplyOnUi(() => FailTaskPageLoad(ex));
                 throw;
             }
@@ -1968,6 +2022,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             var applyTimer = Stopwatch.StartNew();
             ApplyOnUi(() =>
             {
+                if (!dashboardRefreshRequests.IsCurrent(refreshRequest)) return;
                 var selectedGameId = SelectedGame?.PlayniteId;
                 var selectedGamePolicyDraft = CaptureSelectedGamePolicyDraft(selectedGameId);
                 var selectedTaskId = SelectedTask?.TaskId;
@@ -2067,6 +2122,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             });
             applyTimer.Stop();
             Logger.Debug($"[PERF] DashboardSnapshot fetch={fetchTimer.ElapsedMilliseconds}ms apply={applyTimer.ElapsedMilliseconds}ms games={data.Games.Count} tasks={data.RecentTasks.Count} findings={data.Findings.Count}");
+            Logger.Debug($"[IPC] GetDashboard commit generation={refreshRequest.Generation} games={data.Games.Count} tasks={data.RecentTasks.Count} findings={data.Findings.Count}");
             foreach (var task in notifications) plugin.ShowTaskNotification(task);
             lastFullDashboardRefreshUtc=DateTime.UtcNow;
             return selectedTaskCompleted;
@@ -2396,9 +2452,41 @@ namespace GameSaveCenter.Playnite.ViewModels
             });
         }
 
-        private void ScheduleTaskHistoryQuery()
+        private void RequestTaskHistoryRefresh(bool immediate, bool force)
         {
-            if (taskHistoryActive) taskHistoryQueryRefresh.Schedule();
+            InvalidateTaskPageQuery();
+            if (!taskHistoryActive && !force)
+            {
+                taskHistoryQueryQueued = false;
+                return;
+            }
+
+            taskHistoryQueryQueued = true;
+            if (immediate)
+            {
+                taskHistoryQueryRefresh.Cancel();
+                StartQueuedTaskHistoryQuery();
+            }
+            else
+            {
+                taskHistoryQueryRefresh.Schedule();
+            }
+        }
+
+        private void StartQueuedTaskHistoryQuery()
+        {
+            if (!taskHistoryQueryQueued) return;
+            // Keep the latest query pending while another dashboard operation owns the
+            // single UI/Worker slot. RunAsync calls this again after it releases IsBusy.
+            if (IsBusy) return;
+            taskHistoryQueryQueued = false;
+            Run(() => LoadTaskPageAsync(true));
+        }
+
+        private void InvalidateTaskPageQuery()
+        {
+            Interlocked.Increment(ref taskPageGeneration);
+            taskPageRequests.Cancel();
         }
 
         private async Task LoadTaskPageAsync(bool reset)
@@ -2414,17 +2502,24 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
             if (!taskHistoryActive) return;
 
-            Interlocked.Increment(ref taskPageGeneration);
+            var requestGeneration = Interlocked.Increment(ref taskPageGeneration);
+            var request = taskPageRequests.Begin();
+            Logger.Debug($"[IPC] GetTaskPage start generation={requestGeneration} request={request.Generation} reset={reset} cursor={(string.IsNullOrEmpty(taskHistoryCursor) ? "empty" : "set")}");
             ApplyOnUi(BeginTaskPageLoad);
             try
             {
+                if (!taskPageRequests.IsCurrent(request) || requestGeneration != Interlocked.Read(ref taskPageGeneration)) return;
                 var page = await plugin.RequestAsync<TaskPageDto>(
                     MessageTypes.GetTaskPage,
                     BuildTaskQuery(taskHistoryCursor),
-                    TimeSpan.FromMinutes(3));
+                    TimeSpan.FromMinutes(3),
+                    request.Token);
+                if (!taskPageRequests.IsCurrent(request) || requestGeneration != Interlocked.Read(ref taskPageGeneration)) return;
                 ApplyOnUi(() =>
                 {
+                    if (!taskPageRequests.IsCurrent(request) || requestGeneration != Interlocked.Read(ref taskPageGeneration)) return;
                     var incoming = page?.Items ?? new List<TaskStatusDto>();
+                    Logger.Debug($"[IPC] GetTaskPage commit generation={requestGeneration} request={request.Generation} items={incoming.Count} total={page?.TotalCount ?? 0} hasMore={page?.HasMore == true}");
                     var merged = reset
                         ? incoming
                         : Tasks.Concat(incoming.Where(item => !Tasks.Any(existing => string.Equals(existing.TaskId, item.TaskId, StringComparison.OrdinalIgnoreCase)))).ToList();
@@ -2453,13 +2548,21 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
             catch (OperationCanceledException)
             {
+                if (!taskPageRequests.IsCurrent(request) || requestGeneration != Interlocked.Read(ref taskPageGeneration)) return;
+                Logger.Debug($"[IPC] GetTaskPage canceled generation={requestGeneration} request={request.Generation}");
                 ApplyOnUi(CancelTaskPageLoad);
                 throw;
             }
             catch (Exception ex)
             {
+                if (!taskPageRequests.IsCurrent(request) || requestGeneration != Interlocked.Read(ref taskPageGeneration)) return;
+                Logger.Debug(ex, $"[IPC] GetTaskPage failed generation={requestGeneration} request={request.Generation}");
                 ApplyOnUi(() => FailTaskPageLoad(ex));
                 throw;
+            }
+            finally
+            {
+                taskPageRequests.End(request);
             }
         }
 
@@ -4065,6 +4168,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                     IsTrainerReleasesLoading = false;
                 }
                 IsBusy = false;
+                StartQueuedTaskHistoryQuery();
                 StartQueuedTrainerReleaseLoad();
                 StartQueuedMediaInboxLoad();
             }

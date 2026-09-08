@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-09
 
+## 2026-09-09 L23 搜索、刷新与重复 IPC 合并
+
+- `DashboardViewModel` 的任务历史分页与 Dashboard 快照读取必须遵循最新请求提交规则：开始请求时创建稳定 generation/Token，IPC 返回后和 `ApplyOnUi` 回写前再次确认当前作用域；旧响应只允许结束自己的取消/清理，不得清空新请求状态、覆盖新筛选或写入旧页面。`LatestRequestCoordinator.RequestScope.Token` 在取消后仍可安全读取，不能让释放 CTS 反过来制造 `ObjectDisposedException`。
+- 任务搜索/状态/游戏/类型变化先失效当前分页请求，再通过 debounce 合并；历史范围/时间范围和清除筛选是立即查询。debounce 回调必须投递到 UI，若 `IsBusy` 则保留 `taskHistoryQueryQueued`，在 `RunAsync` 释放忙状态后启动最新一次；不可恢复为“直接 `Run`、忙时静默丢失”。
+- Dashboard 刷新代际要覆盖同步、`GetDashboard` IPC、快照应用和后续任务/媒体/维护加载；`CancelDeferredUiWork` 同时取消任务页与快照协调器。后台只读刷新不改变写请求的取消/重试语义，也不能将不同筛选条件复用成同一结果。日志只输出请求代际、请求号、数量/尺寸和 hasMore 等诊断字段，不输出搜索文本或文件内容。
+- L23 证据：debounce 的连续 `a→ab→abc` 夹具为 `1` 次回调；协调器取消、替换、CTS 释放后 Token 和 `20` 次快速替换测试通过。独立 Playnite 测试 `417` 通过、`62` 跳过、`0` 失败；Core `76/76`、Worker `303/304`（1 跳过），Release 构建无警告/错误。真实 Playnite/FusionX、DPI、视频和真实 IPC 日志仍待宿主验收，不能把离线契约测试写成视频问题已解决。
+
 ## 2026-09-09 L22 缩略图加载、取消与缓存边界
 
 - `AsyncThumbnailImage` 的加载入口必须同时满足 `IsLoaded`、`IsVisible` 和非空路径；不可见/卸载先推进 generation、取消并释放旧 `CancellationTokenSource`，同时清空 `Source`。路径或预览宽度变化不能让旧任务回写新卡片。

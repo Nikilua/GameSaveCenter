@@ -179,8 +179,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             TasksView.Refresh();
             NotifyTaskPageStateChanged();
             uiStateSave?.Schedule();
-            if (changed && taskHistoryActive)
-                Run(() => LoadTaskPageAsync(true));
+            if (changed)
+                RequestTaskHistoryRefresh(immediate: true, force: taskHistoryActive);
         }
     }
 }

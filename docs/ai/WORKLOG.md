@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-09 L23 搜索、刷新与重复 IPC 合并
+
+- 先沿现有链路复核任务搜索 debounce、任务历史游标、Dashboard 全量刷新、后台轮询和 `WorkerIpcClient` 取消；没有改写写请求，也没有把不同筛选条件复用成同一个结果。原任务历史请求没有把取消 Token 传入 IPC，且 debounce 回调在 `IsBusy` 时会直接丢弃最新查询；Dashboard 快照响应也缺少统一的最新代际提交门。
+- 新增 `Infrastructure/LatestRequestCoordinator`，统一管理最新请求的 generation、CancellationToken 和提交前检查。任务分页在开始/响应/`ApplyOnUi` 回写前检查作用域，旧请求取消后不再执行 `CancelTaskPageLoad` 或错误覆盖；Dashboard 快照在同步、IPC、回写和后续刷新链之间检查同一代际。保留请求/上下文保护，`CancelDeferredUiWork` 会同时失效任务页与 Dashboard 请求。
+- 任务查询 debounce 回调改为 UI 投递；搜索/状态/游戏/类型变化会失效当前任务查询并防抖，历史范围/时间范围/清除筛选会立即请求。当前有其他操作时保留 `taskHistoryQueryQueued`，待 `RunAsync` 释放 `IsBusy` 后只启动最新一次，避免用户输入被静默丢失。新增 `[IPC] GetTaskPage/GetDashboard` 日志只记录代际、请求号、条目数/总数/hasMore，不记录搜索文本或文件内容。
+- 证据：既有 `DebouncedRefreshTests` 的 `a→ab→abc` 夹具回调 `1` 次；新增 `LatestRequestCoordinatorTests` 覆盖取消、替换、CTS 释放后 Token 状态和 `20` 次快速替换仅最后作用域可提交。Release 构建 `0 warning/0 error`；独立 Playnite 测试 `417` 通过、`62` 跳过、`0` 失败；Core `76/76`、Worker `303/304`（1 跳过）。`validate-source.py`、XAML `19/19`、WPF 静态审查 `0 errors/21 warnings/172 info`、`git diff --check` 通过。
+- 组合解决方案测试重跑中，Playnite WPF 测试偶发 8 个 `System.IO.Packaging.PackagePart.CleanUpRequestedStreamsList` 构造失败；堆栈均在未修改的 `MediaCenterView.xaml` 加载路径，独立 Playnite 重跑已通过，需保留为测试宿主稳定性记录而不是本轮功能证据。没有真实 Playnite/FusionX、DPI 或用户视频复测，L23 的实际 IPC 日志计数和刷新时序仍待宿主验收。
+
 ## 2026-09-09 L22 缩略图加载、取消与缓存边界
 
 - 先复核已有主路径：`AsyncThumbnailLoader` 已有 `OnLoad`/冻结、3 路并发和 96 项 LRU，但此前只有冻结、缺失文件和同路径命中三项测试；`AsyncThumbnailImage` 在不可见控件上也会由依赖属性变更直接启动任务，且缺少可重复的并发/失败/旧图回写证据。
