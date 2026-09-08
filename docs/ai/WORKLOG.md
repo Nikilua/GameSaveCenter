@@ -2,6 +2,15 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-08 任务表/媒体表滚动正确性诊断与修复
+
+- 按视频验收定义先加诊断再改实现：`DataGridScrollDiagnostics` 绑定 `TaskGrid` 与 `MediaInboxGrid`，监听滚轮、滚动条拖动、PageUp/PageDown、Ctrl+End、最后项定位、集合刷新、选择变化、尺寸/布局和实际内部 `ScrollViewer.ScrollChanged`，日志只输出 ID、计数、类型、尺寸、偏移、可见行和代际上下文。
+- 离屏基线确认了布局级错误：媒体 4468 条在未限制短窗口无限测量时为 `viewport=4468x1963.33`、`ScrollableHeight=0`、presenter `196592 DIP`，表格失去有效内部滚动；简单移除 fallback 的对照又为 `gridH=0`、presenter 高度 0。FusionX 文件只做了只读模板检查，没有修改用户主题或全局 Playnite 样式。
+- 修复分两层：Redesign 资源内由插件明确拥有 DataGrid 模板，使用表头 `Auto` / 行内容 `*` / 水平滚动条 `Auto` 的三行结构，并保留 WPF DataGrid parts、选择/排序/键盘、列宽、滚动条绑定与 Recycling/列虚拟化契约；Media 短窗口最终布局按当前高度设置 `MaxHeight`，不使用固定底部补偿。
+- 修复锚点单位：`CaptureAnchor` 用 `ScrollContentPresenter` 实际矩形判断首个可见行；恢复只在视觉树真实为 `VirtualizingStackPanel + ScrollUnit.Item` 时使用逻辑 item 偏移，其他实现使用 DIP 行位置差，保留请求/上下文代际与旧构造兼容。
+- 新增 `gridprobe` 离屏入口。`.tmp/gridprobe-final-20/gridprobe-report.txt` 覆盖任务/媒体 20 次拖动往返、滚轮、PageUp/PageDown、Ctrl+End、最后项定位；覆盖媒体 50/400/2000/4468 条、任务 50/400/2000 条、短高度与 600 DIP 窄宽水平条。最终 `gridprobe OK`，抽取报告诊断异常 `0`；窄宽末行 `bottom=124`，水平条从 `159.33` 开始，未覆盖内容。
+- 验证：RenderHarness/Playnite Release 构建 0 警告/错误；Playnite 全量 `371/433`（62 跳过、0 失败）；`python scripts/validate-source.py`、`scripts/check-xaml.ps1`、`git diff --check` 通过。完整默认 render-qa 仍有既有的非本轮页面保真/小视口告警，未将其误报为滚动探针失败。真实 Playnite/FusionX 录屏与 DPI/缩放人工回归仍标记为“待宿主验收”。
+
 ## 2026-09-08 两项截图问题：真实安装与宿主边界复核
 
 - 先修复打包验收脚本自身的环境问题：Windows PowerShell 5.1 下从 .NET SDK 加载 PE 元数据时，预加载匹配的 `System.Collections.Immutable` 并通过 `AssemblyResolve` 重定向 `System.Runtime.CompilerServices.Unsafe`；回调参数避免使用 PowerShell 保留的 `$args`。身份读取仍只读目标 PE，不加载插件/Worker 运行时。

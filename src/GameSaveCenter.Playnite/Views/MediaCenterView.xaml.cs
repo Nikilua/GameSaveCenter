@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Controls;
+using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.ViewModels;
 
 namespace GameSaveCenter.Playnite.Views
@@ -37,6 +38,7 @@ namespace GameSaveCenter.Playnite.Views
         public MediaCenterView()
         {
             InitializeComponent();
+            DataGridScrollDiagnostics.Attach(MediaInboxGrid, "MediaInboxGrid", GetScrollDiagnosticContext);
             MediaInspectorScrollViewer.IsVisibleChanged += OnMediaInspectorIsVisibleChanged;
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
@@ -183,6 +185,7 @@ namespace GameSaveCenter.Playnite.Views
         private void OnLoadMoreMediaInboxClick(object sender, RoutedEventArgs e)
         {
             if (attachedViewModel == null) return;
+            DataGridScrollDiagnostics.MarkTrigger(MediaInboxGrid, "加载更多");
             var mode = attachedViewModel.MediaInboxMode;
             var selection = GetInboxSelectionSet(mode);
             CaptureSelection(MediaInboxGrid.SelectedItems, selection);
@@ -190,6 +193,10 @@ namespace GameSaveCenter.Playnite.Views
             pendingInboxAnchor = CaptureAnchor(MediaInboxGrid);
             ArmPendingAnchorExpiry();
         }
+
+        private string GetScrollDiagnosticContext()
+            => (attachedViewModel?.GetMediaScrollDiagnosticContext() ?? "vm=none")
+                + $",anchorGen={anchorRestoreGeneration},pendingMedia={pendingMediaAnchor != null},pendingInbox={pendingInboxAnchor != null},selectionRestoreQueued={selectionRestoreQueued}";
 
         private void OnMediaInboxModeSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -249,9 +256,11 @@ namespace GameSaveCenter.Playnite.Views
                 MediaInboxInfoDescription.Visibility = compactHeight
                     ? Visibility.Collapsed
                     : Visibility.Visible;
-                // A normal-height TabItem is already a finite PageHost viewport. Only
-                // extremely short hosts get the page-level escape hatch; normal overflow
-                // belongs to the inbox table and inspector below.
+                // The inbox DataGrid and its inspector own the vertical scroll surfaces.
+                // When the page-level fallback is needed for an extremely short host, cap
+                // the DataGrid by the current available height so the outer viewer cannot
+                // hand it an infinite measure and turn thousands of rows into one giant
+                // presenter with ScrollableHeight=0.
                 var useInboxPageFallbackScroll = height < 560;
                 MediaInboxPageScrollViewer.VerticalScrollBarVisibility = useInboxPageFallbackScroll
                     ? ScrollBarVisibility.Auto
@@ -262,6 +271,9 @@ namespace GameSaveCenter.Playnite.Views
                 MediaInboxScrollSurface.VerticalAlignment = useInboxPageFallbackScroll
                     ? VerticalAlignment.Top
                     : VerticalAlignment.Stretch;
+                MediaInboxGrid.MaxHeight = useInboxPageFallbackScroll
+                    ? Math.Max(1d, height)
+                    : double.PositiveInfinity;
                 var sourceStack = width < 900;
                 MediaSourceFields.Columns = sourceStack ? 1 : 2;
                 MediaSourceLayout.ColumnDefinitions[1].Width = sourceStack ? new GridLength(0) : new GridLength(14);
@@ -343,7 +355,9 @@ namespace GameSaveCenter.Playnite.Views
                 // remaining height after the wrapped toolbar and footer have measured.
                 MediaInboxGrid.MinHeight = 0d;
                 MediaInboxGrid.Height = double.NaN;
-                MediaInboxGrid.MaxHeight = double.PositiveInfinity;
+                MediaInboxGrid.MaxHeight = useInboxPageFallbackScroll
+                    ? Math.Max(1d, height)
+                    : double.PositiveInfinity;
                 MediaGrid.MinHeight = 236d;
                 MediaGrid.Height = double.NaN;
                 MediaGrid.MaxHeight = double.PositiveInfinity;
@@ -541,18 +555,19 @@ namespace GameSaveCenter.Playnite.Views
                 return;
             }
 
-            if (FindDescendant<VirtualizingWrapPanel>(itemsControl) != null)
+            if (anchor.Mode == ScrollAnchorMode.LogicalItems)
             {
-                var currentTop = GetRelativeTop(container, viewer);
-                viewer.ScrollToVerticalOffset(viewer.VerticalOffset + currentTop - anchor.RelativeTop);
-            }
-            else if (viewer.CanContentScroll)
-            {
+                // This branch is only entered when the actual visual tree contains a
+                // VirtualizingStackPanel and ScrollUnit=Item. CanContentScroll by itself
+                // is not proof that VerticalOffset is an item index.
                 var remainder = anchor.LogicalOffset - anchor.ItemIndex;
                 viewer.ScrollToVerticalOffset(itemIndex + Math.Max(0, remainder));
             }
             else
             {
+                // Wrap panels and pixel-based ScrollInfo use DIP geometry. Keep the row at
+                // the captured position relative to the real content presenter, rather
+                // than comparing its Y coordinate with a logical ViewportHeight.
                 var currentTop = GetRelativeTop(container, viewer);
                 viewer.ScrollToVerticalOffset(viewer.VerticalOffset + currentTop - anchor.RelativeTop);
             }
@@ -649,6 +664,11 @@ namespace GameSaveCenter.Playnite.Views
             var viewer = FindDescendant<ScrollViewer>(itemsControl);
             if (viewer == null || itemsControl.Items.Count == 0) return null;
 
+            var mode = GetScrollAnchorMode(itemsControl, viewer);
+            var viewport = GetContentViewport(viewer);
+            if (viewport.IsEmpty || viewport.Height <= 0)
+                return null;
+
             var firstIndex = -1;
             var firstTop = double.MaxValue;
             for (var index = 0; index < itemsControl.Items.Count; index++)
@@ -656,7 +676,8 @@ namespace GameSaveCenter.Playnite.Views
                 if (itemsControl.ItemContainerGenerator.ContainerFromIndex(index) is not FrameworkElement container)
                     continue;
                 var top = GetRelativeTop(container, viewer);
-                if (top + Math.Max(1, container.ActualHeight) <= 0 || top >= viewer.ViewportHeight)
+                var bottom = top + Math.Max(1, container.ActualHeight);
+                if (bottom <= viewport.Top || top >= viewport.Bottom)
                     continue;
                 if (top < firstTop)
                 {
@@ -666,15 +687,41 @@ namespace GameSaveCenter.Playnite.Views
             }
 
             if (firstIndex < 0)
-            {
-                firstIndex = Math.Min(itemsControl.Items.Count - 1, Math.Max(0, (int)Math.Floor(viewer.VerticalOffset)));
-                firstTop = 0;
-            }
+                return null;
 
             var itemId = GetMediaId(itemsControl.Items[firstIndex]);
             return string.IsNullOrWhiteSpace(itemId)
                 ? null
-                : new ScrollAnchor(itemId!, firstIndex, firstTop, viewer.VerticalOffset);
+                : new ScrollAnchor(itemId!, firstIndex, firstTop, viewer.VerticalOffset, mode);
+        }
+
+        private static ScrollAnchorMode GetScrollAnchorMode(ItemsControl itemsControl, ScrollViewer viewer)
+        {
+            if (FindDescendant<VirtualizingWrapPanel>(itemsControl) != null)
+                return ScrollAnchorMode.Pixels;
+
+            var scrollUnit = VirtualizingPanel.GetScrollUnit(itemsControl);
+            var hasVirtualizingStackPanel = FindVisualDescendants(viewer)
+                .OfType<VirtualizingStackPanel>()
+                .Any();
+            var canContentScroll = ScrollViewer.GetCanContentScroll(itemsControl) && viewer.CanContentScroll;
+            return canContentScroll && scrollUnit == ScrollUnit.Item && hasVirtualizingStackPanel
+                ? ScrollAnchorMode.LogicalItems
+                : ScrollAnchorMode.Pixels;
+        }
+
+        private static Rect GetContentViewport(ScrollViewer viewer)
+        {
+            var presenter = FindDescendant<ScrollContentPresenter>(viewer);
+            if (presenter != null)
+            {
+                var rect = presenter.TransformToAncestor(viewer).TransformBounds(
+                    new Rect(0, 0, presenter.ActualWidth, presenter.ActualHeight));
+                if (!rect.IsEmpty && rect.Width > 0 && rect.Height > 0)
+                    return rect;
+            }
+
+            return new Rect(0, 0, viewer.ViewportWidth, viewer.ViewportHeight);
         }
 
         private static double GetRelativeTop(FrameworkElement element, Visual ancestor)
@@ -694,20 +741,44 @@ namespace GameSaveCenter.Playnite.Views
             return null;
         }
 
+        private static IEnumerable<DependencyObject> FindVisualDescendants(DependencyObject root)
+        {
+            for (var index = 0; index < VisualTreeHelper.GetChildrenCount(root); index++)
+            {
+                var child = VisualTreeHelper.GetChild(root, index);
+                yield return child;
+                foreach (var nested in FindVisualDescendants(child))
+                    yield return nested;
+            }
+        }
+
+        private enum ScrollAnchorMode
+        {
+            Pixels,
+            LogicalItems
+        }
+
         private sealed class ScrollAnchor
         {
             public ScrollAnchor(string itemId, int itemIndex, double relativeTop, double logicalOffset)
+                : this(itemId, itemIndex, relativeTop, logicalOffset, ScrollAnchorMode.Pixels)
+            {
+            }
+
+            public ScrollAnchor(string itemId, int itemIndex, double relativeTop, double logicalOffset, ScrollAnchorMode mode)
             {
                 ItemId = itemId;
                 ItemIndex = itemIndex;
                 RelativeTop = relativeTop;
                 LogicalOffset = logicalOffset;
+                Mode = mode;
             }
 
             public string ItemId { get; }
             public int ItemIndex { get; }
             public double RelativeTop { get; }
             public double LogicalOffset { get; }
+            public ScrollAnchorMode Mode { get; }
         }
 
         private void OnMediaCompactDetailsClick(object sender, RoutedEventArgs e)

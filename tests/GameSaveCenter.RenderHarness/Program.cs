@@ -91,6 +91,19 @@ public static class Program
             return auditExitCode;
         }
 
+        if (args.Length > 0 && args[0].Equals("gridprobe", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "gridprobe");
+            var probeExitCode = 0;
+            var probeThread = new Thread(() => { probeExitCode = RunGridProbeOnly(outputRoot); });
+            probeThread.SetApartmentState(ApartmentState.STA);
+            probeThread.Start();
+            probeThread.Join();
+            return probeExitCode;
+        }
+
         if (args.Length > 0 && args[0].Equals("shellqa", StringComparison.OrdinalIgnoreCase))
         {
             var outputRoot = args.Length > 1
@@ -1247,6 +1260,46 @@ public static class Program
         }
     }
 
+    private static int RunGridProbeOnly(string outputRoot)
+    {
+        Directory.CreateDirectory(outputRoot);
+        var report = new StringBuilder();
+        report.AppendLine("GameSaveCenter DataGrid scroll diagnostics");
+        report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+        report.AppendLine();
+        s_problems.Clear();
+
+        try
+        {
+            var app = new Application();
+            app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+            RunDataGridScrollProbes(report);
+            report.AppendLine();
+            if (s_problems.Count > 0)
+            {
+                report.AppendLine("gridprobe FAILED");
+                foreach (var problem in s_problems)
+                    report.AppendLine("  PROBLEM " + problem);
+                File.WriteAllText(Path.Combine(outputRoot, "gridprobe-report.txt"), report.ToString());
+                Console.WriteLine(report.ToString());
+                return 1;
+            }
+
+            report.AppendLine("gridprobe OK");
+            File.WriteAllText(Path.Combine(outputRoot, "gridprobe-report.txt"), report.ToString());
+            Console.WriteLine(report.ToString());
+            return 0;
+        }
+        catch (Exception ex)
+        {
+            report.AppendLine("gridprobe FAILED");
+            report.AppendLine(ex.ToString());
+            File.WriteAllText(Path.Combine(outputRoot, "gridprobe-report.txt"), report.ToString());
+            Console.Error.WriteLine(ex);
+            return 1;
+        }
+    }
+
     private static int RunShellChromeQa(string outputRoot)
     {
         Directory.CreateDirectory(outputRoot);
@@ -1707,7 +1760,7 @@ public static class Program
 
     private static void RunDataGridScrollProbes(StringBuilder report)
     {
-        var heights = new[] { 287d, 311d, 337d, 353d, 419d };
+        var heights = new[] { 287d, 311d, 337d, 353d, 419d, 640d, 840d };
         foreach (var height in heights)
         {
             ProbeGrid(report, "Save", "SaveHistoryGrid", 0, height,
@@ -1722,6 +1775,28 @@ public static class Program
                 width: 2400,
                 expectedVirtualizationMode: VirtualizationMode.Standard,
                 expectedColumnVirtualization: false);
+            if (height == 640d)
+            {
+                ProbeGrid(report, "Media-Inbox-Narrow", "MediaInboxGrid", 0, height,
+                    () => new MediaCenterView { DataContext = CreateMediaInboxProbeData() },
+                    view => ((MediaCenterView)view).ApplyResponsiveLayout(600, height),
+                    width: 600,
+                    expectedVirtualizationMode: VirtualizationMode.Standard,
+                    expectedColumnVirtualization: false);
+
+                foreach (var loadedCount in new[] { 50, 400, 2000 })
+                {
+                    ProbeGrid(report, $"Task-{loadedCount}", "TaskGrid", -1, height,
+                        () => new TaskCenterView { DataContext = new FakeDashboardData(loadedCount) },
+                        view => ((TaskCenterView)view).ApplyResponsiveLayout(900, height));
+                    ProbeGrid(report, $"Media-Inbox-{loadedCount}", "MediaInboxGrid", 0, height,
+                        () => new MediaCenterView { DataContext = CreateMediaInboxProbeData(loadedCount) },
+                        view => ((MediaCenterView)view).ApplyResponsiveLayout(2400, height),
+                        width: 2400,
+                        expectedVirtualizationMode: VirtualizationMode.Standard,
+                        expectedColumnVirtualization: false);
+                }
+            }
             ProbeGrid(report, "Maintenance-Diagnostics", "FindingsGrid", 0, height,
                 () => new MaintenanceView { DataContext = new FakeDashboardData(60) },
                 view => ((MaintenanceView)view).ApplyResponsiveLayout(900, height),
@@ -1737,7 +1812,7 @@ public static class Program
         }
     }
 
-    private static FakeDashboardData CreateMediaInboxProbeData()
+    private static FakeDashboardData CreateMediaInboxProbeData(int targetCount = 4468)
     {
         var data = new FakeDashboardData(60);
         var existing = data.UnassignedMedia.Count;
@@ -1745,7 +1820,7 @@ public static class Program
         // appears once the virtualized extent is large. Keep the probe close to the
         // production upper bound instead of masking a large-data layout failure with
         // the six-row fixture used by the other workspace tables.
-        for (var i = existing + 1; i <= 4468; i++)
+        for (var i = existing + 1; i <= targetCount; i++)
         {
             data.UnassignedMedia.Add(new MediaItemDto
             {
@@ -2884,14 +2959,17 @@ public static class Program
             var scrollFractions = gridName is "MediaInboxGrid" or "TaskGrid"
                 // The production regression is directional: the rows can disappear after
                 // reaching the end and then dragging the thumb back toward the head. Keep
-                // this sequence explicit instead of only sampling monotonically downward.
-                ? new[] { 0.0, 1.0, 0.0, 1.0, 0.5, 0.0, 1.0, 0.0 }
+                // this sequence explicit and long enough to match the manual 20-drag pass.
+                ? new[] { 0.0, 1.0, 0.0, 1.0, 0.5, 0.0, 1.0, 0.25, 0.75, 0.0,
+                    1.0, 0.33, 0.66, 0.0, 1.0, 0.5, 0.1, 0.9, 0.0, 1.0 }
                 : new[] { 0.0, 0.25, 0.5, 0.75, 1.0 };
             var scrollStep = 0;
             foreach (var fraction in scrollFractions)
             {
+                DataGridScrollDiagnostics.MarkTrigger(grid, "拖动滑块");
                 scroller.ScrollToVerticalOffset(scroller.ScrollableHeight * fraction);
                 host.UpdateLayout();
+                var diagnosticLine = DataGridScrollDiagnostics.CaptureNow(grid, $"拖动滑块:{(int)(fraction * 100)}");
                 var rows = FindVisualChildren<DataGridRow>(grid)
                     .Select(row => new RowProbe(
                         row.GetIndex(),
@@ -2907,6 +2985,7 @@ public static class Program
                     $"  {label} {gridName} h={height:0} step={scrollStep++} pos={positionLabel} offset={scroller.VerticalOffset:0.##} " +
                     $"scrollable={scroller.ScrollableHeight:0.##} rows={rows.Count} " +
                     $"firstY={(rows.Count > 0 ? rows[0].Y : double.NaN):0.##} gap={headerGap:0.##} presenterH={(presenter?.ActualHeight ?? double.NaN):0.##} gridH={grid.ActualHeight:0.##}");
+                report.AppendLine($"  {diagnosticLine}");
 
                 if (gridName == "MediaInboxGrid")
                 {
@@ -2980,6 +3059,31 @@ public static class Program
                             s_problems.Add($"{label} {gridName} h={height:0} bottom rows jumped after UpdateLayout (delta={maxDelta:0.##})");
                     }
                 }
+            }
+
+            CaptureSemanticScroll("滚轮", scroller.LineDown);
+            CaptureSemanticScroll("滚轮", scroller.LineUp);
+            CaptureSemanticScroll("PageDown", scroller.PageDown);
+            CaptureSemanticScroll("PageUp", scroller.PageUp);
+            CaptureSemanticScroll("Ctrl+End", scroller.ScrollToEnd);
+            grid.ScrollIntoView(grid.Items[grid.Items.Count - 1]);
+            host.UpdateLayout();
+            CaptureSemanticScroll("定位最后一项", () => { });
+            scroller.ScrollToVerticalOffset(gridName is "MediaInboxGrid" or "TaskGrid"
+                ? 0
+                : scroller.ScrollableHeight);
+            host.UpdateLayout();
+
+            void CaptureSemanticScroll(string trigger, Action action)
+            {
+                action();
+                host.UpdateLayout();
+                var diagnosticLine = DataGridScrollDiagnostics.CaptureNow(grid, trigger);
+                report.AppendLine($"  {label} {gridName} semantic={trigger} offset={scroller.VerticalOffset:0.##} "
+                    + $"scrollable={scroller.ScrollableHeight:0.##}");
+                report.AppendLine($"  {diagnosticLine}");
+                if (diagnosticLine.IndexOf("anomaly=", StringComparison.Ordinal) >= 0)
+                    s_problems.Add($"{label} {gridName} semantic {trigger} reported {diagnosticLine}");
             }
 
             var scrollable = scroller.ScrollableHeight;

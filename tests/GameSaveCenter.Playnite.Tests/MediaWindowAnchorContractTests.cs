@@ -62,6 +62,26 @@ public sealed class MediaWindowAnchorContractTests
     }
 
     [Fact]
+    public void GridScrollTemplateReservesTheRealContentViewport()
+    {
+        var redesign = Read("src", "GameSaveCenter.Playnite", "Themes", "Redesign.xaml");
+        var task = Read("src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml");
+        var mediaCodeBehind = Read("src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml.cs");
+
+        Assert.Contains("GscRedesignDataGridTemplate", redesign);
+        Assert.Contains("PART_ColumnHeadersPresenter", redesign);
+        Assert.Contains("PART_ScrollContentPresenter", redesign);
+        Assert.Contains("PART_VerticalScrollBar", redesign);
+        Assert.Contains("PART_HorizontalScrollBar", redesign);
+        Assert.Contains("<RowDefinition Height=\"*\"/>", redesign);
+        Assert.Contains("Grid.Row=\"2\"", redesign);
+        Assert.DoesNotContain("Padding\" Value=\"0,0,0,12\"", task);
+        Assert.Contains("GetContentViewport", mediaCodeBehind);
+        Assert.Contains("ScrollUnit.Item", mediaCodeBehind);
+        Assert.Contains("VirtualizingStackPanel", mediaCodeBehind);
+    }
+
+    [Fact]
     public void StaleRestoreCallbackCannotSurfaceEvictedAnchorAfterContextInvalidation()
     {
         Exception? exception = null;

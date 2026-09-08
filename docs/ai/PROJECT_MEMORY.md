@@ -2,6 +2,15 @@
 
 > 维护时间：2026-09-08
 
+## 2026-09-08 表格滚动诊断与局部模板修复（当前验收边界）
+
+- 针对用户视频中的任务表/媒体待归类表正文空白、行内容漂移、选中框与文字分离及末行截断，本轮只处理表格滚动正确性，没有扩展功能或继续做页面美化。新增 `DataGridScrollDiagnostics`，只记录稳定 ID、计数、滚动范围、实际 `ScrollViewer`/`IScrollInfo`、`ScrollContentPresenter` 矩形、首末行坐标/高度、单元格内容可见性、滚动条占用和分页/锚点代际，不记录文件内容。
+- 先在离屏相同数据探针中复现布局级坏路径：媒体 4468 条、短高度 287 DIP 时，未限制外层无限测量的版本出现 `items=4468`、`ScrollViewer viewport=4468x1963.33`、`ScrollableHeight=0`、`ScrollContentPresenter height=196592`，所有行被一次性测量，滚动动作不再改变可见窗口；这不是正常的中间滚动。去掉短窗口条件后又出现 `gridH=0`/内容视口高度 0，确认不能靠简单关闭页面 fallback 解决。
+- 静态检查了用户当前 FusionX 的 DataGrid 模板：未修改 FusionX 或 Playnite 全局样式。插件在 `Themes/Redesign.xaml` 增加局部 `GscRedesignDataGridTemplate`，保留 `PART_ColumnHeadersPresenter`、`PART_ScrollContentPresenter`、ItemsPresenter、双向滚动条、列宽/排序/选择/键盘和虚拟化绑定；内部网格为表头 `Auto`、内容 `*`、水平滚动条 `Auto`，垂直滚动条只占内容行区域。
+- `MediaCenterView` 的锚点恢复不再用 `CanContentScroll` 猜单位：捕获/判断可见性使用真实 `ScrollContentPresenter` 的 DIP 矩形；只有实际发现 `VirtualizingStackPanel`、`ScrollUnit=Item` 且双方 `CanContentScroll=true` 时才按逻辑项恢复，否则使用 DIP 像素差；请求/上下文代际保护保留。短窗口最终布局保留有限 `MaxHeight`，避免重新进入无限测量。
+- 当前离屏证据保存在 `.tmp/gridprobe-final-20/gridprobe-report.txt`：任务/媒体执行 20 次顶部、底部和中间往返拖动，并执行滚轮、PageUp/PageDown、Ctrl+End、最后项定位；任务/媒体 50、400、2000 和媒体 4468 条、287/311/337/353/419/640/840 高度、600 DIP 窄宽水平滚动均为 `gridprobe OK`，报告诊断异常数为 0。窄宽媒体底部末两行 `y=80..124`，水平条 `y=159.33..171.33`；普通宽度媒体末行完整落在内容视口内。
+- Release 构建 0 警告/错误；Playnite 全量测试 `371 通过 / 62 跳过 / 0 失败`，源码校验和 XAML 结构校验通过。真实 Playnite FusionX 窗口未在本会话中重播用户视频，也没有真实宿主前后录屏，因此本轮只能写“离屏验证通过，待宿主验收”，不能宣称用户视频问题已在真实宿主解决。
+
 ## 2026-09-08 两项截图问题的当前验收边界
 
 - Worker 身份修复已经过真实打包和安装：包内六个实际程序集、Playnite 扩展目录中的插件/Worker/共享 DLL，以及运行中命名管道握手均为同一个最终打包 HEAD 身份。`scripts/package.ps1` 会在打包前从 PE 元数据读取实际身份，同源不一致或当前工作树不干净时停止，不生成混合包。

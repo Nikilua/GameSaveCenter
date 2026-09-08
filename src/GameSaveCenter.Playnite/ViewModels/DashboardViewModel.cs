@@ -166,6 +166,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string? pendingTrainerReleaseCatalogId;
         private long mediaInboxLoadGeneration;
         private long cloudTransferLoadGeneration;
+        private long taskPageGeneration;
         private string? pendingMediaInboxLoadMode;
         private string taskStatusFilter = "全部";
         private string taskGameFilter = "全部";
@@ -640,6 +641,13 @@ namespace GameSaveCenter.Playnite.ViewModels
         public string TaskLoadedSummary => taskHistoryActive
             ? $"已加载 {Tasks.Count} / {taskHistoryTotalCount} 条 · {TaskHistoryScope}{(TaskHistoryRange == "全部时间" ? string.Empty : " · " + TaskHistoryRange)}"
             : $"最近加载 {Tasks.Count} 条 · 全部任务 {TaskTotalCount} 条";
+
+        internal string GetTaskScrollDiagnosticContext()
+            => $"taskPage={Interlocked.Read(ref taskPageGeneration)},historyActive={taskHistoryActive},cursor={(string.IsNullOrEmpty(taskHistoryCursor) ? "empty" : "set")},state={TaskPageState}";
+
+        internal string GetMediaScrollDiagnosticContext()
+            => $"mediaPage={Interlocked.Read(ref mediaPageGeneration)},inboxPage={Interlocked.Read(ref mediaInboxLoadGeneration)},details={Interlocked.Read(ref detailsLoadGeneration)}";
+
         public bool TaskHasActiveFilters
             => !string.IsNullOrWhiteSpace(TaskSearchText)
                || !string.Equals(TaskStatusFilter, "全部", StringComparison.Ordinal)
@@ -2236,6 +2244,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
             if (!taskHistoryActive) return;
 
+            Interlocked.Increment(ref taskPageGeneration);
             ApplyOnUi(BeginTaskPageLoad);
             try
             {

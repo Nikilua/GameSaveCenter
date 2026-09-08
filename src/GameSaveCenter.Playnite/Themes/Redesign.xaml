@@ -17,6 +17,81 @@
     <Thickness x:Key="GscRedesignPagePadding">18</Thickness>
     <Thickness x:Key="GscRedesignCardPadding">16</Thickness>
 
+    <!-- Own the DataGrid scroll contract inside the plugin. Playnite themes are allowed
+         to replace the implicit DataGrid/ScrollViewer chain; that chain must not decide
+         whether the content presenter overlaps the horizontal or vertical scrollbar.
+         Keep the WPF parts and bindings explicit, with a finite header/*/horizontal-bar
+         grid so the row viewport is the only surface that scrolls. -->
+    <ControlTemplate x:Key="GscRedesignDataGridTemplate" TargetType="{x:Type DataGrid}">
+        <Border x:Name="GscDataGridBorder"
+                SnapsToDevicePixels="True"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                Padding="{TemplateBinding Padding}"
+                Background="{TemplateBinding Background}">
+            <ScrollViewer x:Name="DG_ScrollViewer"
+                          Focusable="False"
+                          CanContentScroll="{TemplateBinding ScrollViewer.CanContentScroll}"
+                          HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                          VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
+                          PanningMode="{TemplateBinding ScrollViewer.PanningMode}">
+                <ScrollViewer.Template>
+                    <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                        <Grid ClipToBounds="True">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Button Focusable="False"
+                                    Command="{x:Static DataGrid.SelectAllCommand}"
+                                    Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.All}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+                                    Width="{Binding CellsPanelHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+                                    Background="Transparent"
+                                    BorderThickness="0"/>
+                            <DataGridColumnHeadersPresenter x:Name="PART_ColumnHeadersPresenter"
+                                                            Grid.Column="1"
+                                                            Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Column}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                            <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
+                                                    Grid.Column="1"
+                                                    Grid.Row="1"
+                                                    CanContentScroll="{TemplateBinding CanContentScroll}"
+                                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            <ScrollBar x:Name="PART_VerticalScrollBar"
+                                       Grid.Column="2"
+                                       Grid.Row="1"
+                                       Orientation="Vertical"
+                                       ViewportSize="{TemplateBinding ViewportHeight}"
+                                       Maximum="{TemplateBinding ScrollableHeight}"
+                                       Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                                       Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            <Grid Grid.Column="1" Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="{Binding NonFrozenColumnsViewportHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <ScrollBar x:Name="PART_HorizontalScrollBar"
+                                           Grid.Column="1"
+                                           Orientation="Horizontal"
+                                           ViewportSize="{TemplateBinding ViewportWidth}"
+                                           Maximum="{TemplateBinding ScrollableWidth}"
+                                           Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+                                           Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            </Grid>
+                        </Grid>
+                    </ControlTemplate>
+                </ScrollViewer.Template>
+                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+            </ScrollViewer>
+        </Border>
+    </ControlTemplate>
+
     <Style x:Key="GscRedesignShellSurface" TargetType="Border">
         <Setter Property="Background" Value="{DynamicResource GscGlassStrongBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
@@ -121,6 +196,7 @@
         <Setter Property="ScrollViewer.VerticalContentAlignment" Value="Top"/>
         <Setter Property="ColumnHeaderStyle" Value="{StaticResource GscDataGridColumnHeaderStyle}"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Template" Value="{StaticResource GscRedesignDataGridTemplate}"/>
     </Style>
 
     <Style x:Key="GscRedesignHeroCard" TargetType="Border" BasedOn="{StaticResource GscRedesignSectionCard}">

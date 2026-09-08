@@ -3,6 +3,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using GameSaveCenter.Playnite.Infrastructure;
+using GameSaveCenter.Playnite.ViewModels;
 
 namespace GameSaveCenter.Playnite.Views
 {
@@ -15,8 +17,14 @@ namespace GameSaveCenter.Playnite.Views
         public TaskCenterView()
         {
             InitializeComponent();
+            DataGridScrollDiagnostics.Attach(TaskGrid, "TaskGrid", GetScrollDiagnosticContext);
             TaskDetailScrollViewer.IsVisibleChanged += OnTaskDetailScrollViewerIsVisibleChanged;
         }
+
+        private string GetScrollDiagnosticContext()
+            => DataContext is DashboardViewModel viewModel
+                ? viewModel.GetTaskScrollDiagnosticContext()
+                : "vm=none";
 
         private void OnClearSearchTextBoxClick(object sender, RoutedEventArgs e)
         {
