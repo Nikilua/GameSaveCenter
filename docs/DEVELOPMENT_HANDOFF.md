@@ -6,6 +6,8 @@
 
 > L30 回退边界：当前数据库迁移是幂等增量，不承诺旧包直接读取已升级 schema；升级前要备份完整隔离配置/状态库，回退先停止宿主、保留失败目录、恢复升级前副本，再安装旧包。详细清单见 `ai/L30_PACKAGE_CHECKLIST_2026-09-09.md`；真实宿主加载、FusionX、DPI、Worker 回收和视频仍待 L31。
 
+> 2026-09-09 L31 外部阻塞：PowerShell 能看到 `D:\software\Playnite\Playnite.DesktopApp.exe`，但 Windows Computer Use 返回 `apps: []`，没有可绑定窗口；本轮未停止或重装现有 Playnite，未生成真实宿主截图/录屏/滚动诊断。详见 `ai/L31_REAL_HOST_BLOCKER_2026-09-09.md`，不能把 L30 离线包证据写成视频问题已解决。
+
 > 2026-09-09 L28 已完成持续更新分页与选择恢复的离线收口：云端队列和媒体归类历史的 revision 令牌继续阻止变化期间拼接 offset 页；云端/归类 VM 在重置前捕获稳定选择 ID，第一页重建后按 `HasMore` 加载到后页恢复，删除或到达末页才清理选择。连续第二次重置会停止自动递归，保留待恢复 ID，并在摘要/状态消息中提示使用已有刷新按钮。
 
 > L28 证据：云端/媒体历史分页定向 `26/26`，新增 Playnite 分页状态契约 `1/1`；Release 构建 `0 warning/0 error`，Core `76/76`、Worker `310/311`（1 项真实重启测试沙箱跳过）、Playnite `420/483`（63 项 UI/宿主条件 skip），源校验、XAML 和差异检查通过。真实 Playnite/FusionX、DPI、用户主题和原视频矩阵仍待宿主验收，不能写成视频问题已解决。

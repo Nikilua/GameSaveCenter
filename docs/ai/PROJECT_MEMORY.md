@@ -9,6 +9,12 @@
 - 数据库迁移采用幂等增量列/表初始化，必要时在事务内重建 `backup_versions` 并保留数据；没有通用 down-migration。升级前必须复制完整隔离配置/状态库，回退先停宿主、保留失败副本、恢复升级前副本再安装旧包，不能让旧版直接打开未知新 schema。
 - L30 只验证候选包与隔离迁移，不等价真实 Playnite 安装；包未安装，宿主加载/FusionX/DPI/用户主题/视频继续由 L31 验收。
 
+## 2026-09-09 L31 真实宿主矩阵阻塞
+
+- `scripts/real-host-audit.ps1` 会停止现有 Playnite并通过 `dev-install-run.ps1` 重装/启动开发扩展；本轮没有执行该有副作用流程。
+- PowerShell 只读发现 Playnite 位于 `D:\software\Playnite\Playnite.DesktopApp.exe`，但 Windows Computer Use 返回空应用清单，不能绑定窗口，因此没有真实滚动、DPI、键盘、FusionX 或录屏证据。
+- 后续不得把 RenderHarness、源码检查或包内验证当作真实宿主通过；恢复条件和矩阵见 `docs/ai/L31_REAL_HOST_BLOCKER_2026-09-09.md`。
+
 ## 2026-09-09 L28 持续更新分页与选择恢复
 
 - `CloudTransferStateService.GetStatusAsync` 和 `MediaSyncService.GetClassificationHistoryAsync` 的 revision/一致性令牌是 offset 分页的正确性边界：请求期间或请求前令牌变化必须返回 `PageResetRequired`，不能继续拼接旧页。当前触发器覆盖云端队列/重试队列、游戏/媒体云状态以及归类批次/批次项的增删改。

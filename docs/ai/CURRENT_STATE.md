@@ -9,6 +9,12 @@
 - 数据库升级/重复初始化定向 `14/14`；当前迁移为幂等增量，回退必须恢复完整升级前隔离配置/状态库副本，不承诺旧包直接读取新 schema。具体步骤见 [`L30_PACKAGE_CHECKLIST_2026-09-09.md`](L30_PACKAGE_CHECKLIST_2026-09-09.md)。
 - 真实 Playnite 加载、FusionX/用户主题、DPI、Worker 进程回收和原视频复测仍待 L31 宿主矩阵。
 
+## 2026-09-09 L31 真实宿主矩阵外部阻塞
+
+- PowerShell 只读检查发现 `D:\software\Playnite\Playnite.DesktopApp.exe` 正在运行，但 Windows Computer Use 当前返回 `apps: []`，没有可安全绑定的 Playnite 窗口。
+- 本轮没有停止宿主、安装候选包、执行真实 UI 操作或生成真实录屏/滚动诊断；L30 候选包仍未安装，表格视频异常仍未宣称解决。
+- 恢复条件和待执行矩阵见 [`L31_REAL_HOST_BLOCKER_2026-09-09.md`](L31_REAL_HOST_BLOCKER_2026-09-09.md)。
+
 ## 2026-09-09 L28 持续更新分页与选择恢复已完成离线收口（真实宿主待验收）
 
 - 云端队列和媒体归类历史继续使用 Worker 的 revision/一致性令牌，不把变化中的 offset 页静默拼接。新增/状态更新导致令牌变化时，旧页请求返回 `PageResetRequired`；没有取消一致性检查。

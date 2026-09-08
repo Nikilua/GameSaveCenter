@@ -9,6 +9,12 @@
 - 现有数据库迁移夹具与云重启持久化定向 `14/14`；升级按完整隔离配置/状态库备份执行，回退先停止宿主并恢复升级前副本，不承诺旧版直接读取新 schema。详细步骤写入 `docs/ai/L30_PACKAGE_CHECKLIST_2026-09-09.md`。
 - L30 证据只覆盖候选包和隔离迁移，不覆盖真实 Playnite/FusionX、用户主题/DPI、Worker 进程回收或原视频操作；这些继续进入 L31 宿主矩阵。
 
+## 2026-09-09 L31 真实宿主矩阵外部阻塞
+
+- 只读检查发现 `D:\software\Playnite\Playnite.DesktopApp.exe` 正在运行；`scripts/real-host-audit.ps1` 会停止宿主并运行开发安装流程，本轮未执行，避免未经确认改变现有 Playnite 状态。
+- Windows Computer Use 返回 `apps: []`，没有可绑定窗口，无法进行真实截图、滚动条拖动、键盘矩阵或录屏；未生成真实宿主 summary/diagnostics。
+- 详见 `docs/ai/L31_REAL_HOST_BLOCKER_2026-09-09.md`。该阶段保持“外部阻塞”，不能把离线证据写成视频问题已解决。
+
 ## 2026-09-09 L28 持续更新分页与选择恢复
 
 - 先核对云端队列和媒体归类历史的 revision/offset 分页链路。Worker 已有一致性令牌和 SQLite 变更触发器，本轮补齐状态更新场景回归：云端传输状态变化、归类批次状态变化都会拒绝旧令牌继续翻页；新增场景与已有新增批次场景一起覆盖了分页期间数据变化。
