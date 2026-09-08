@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-09
 
+## 2026-09-09 L27 配置、路径与外部文件变化
+
+- `GameSaveCenterSettings.VerifySettings` 对存档目录、媒体目录和启用的本地镜像执行只读路径形状/目标类型检查：缺失的叶目录只要所在驱动器或共享可达就保留为可创建状态；指向文件、无效路径、磁盘/共享不可达或 ACL 访问异常会关联到具体目录字段。不要在文本框校验中调用 `Directory.CreateDirectory` 或写探针。
+- `MediaSyncService` 的内置系统来源仍允许缺失；用户在媒体来源规则中配置的目录必须先通过一次可枚举性确认，并在扫描期间异常时抛出 `MEDIA_SOURCE_UNAVAILABLE`。单个媒体文件在稳定性/哈希/复制阶段遇到占用或访问异常时抛出 `MEDIA_FILE_UNAVAILABLE`，保持源文件不删除。`MEDIA_SOURCE_UNAVAILABLE`、`MEDIA_FILE_UNAVAILABLE` 的 diagnostic detail 只带路径/异常摘要，不写入媒体内容。
+- `SavePathDetectionService` 将 `DetectionRequestDto.AdditionalRoots` 置于默认根之前并标为 required：根目录消失、无法枚举或子目录/文件枚举被拒时抛出 `SAVE_PATH_ROOT_UNAVAILABLE`；用户未明确传入的系统根仍按可选扫描处理，避免普通用户目录权限差导致整个探测失败。
+- L27 证据：设置/便携导入定向 `11/11`；媒体与存档路径定向 `16/16`，包含缺失配置来源失败、附加根失败、Unicode/长文件名归档、占用文件失败且源文件仍在。全量 Core `76/76`、Worker `308/309`（1 项隔离 Worker 重启测试在沙箱跳过）、Playnite `419/482`（63 项 UI/宿主条件跳过）；Release `0 warning/0 error`，`validate-source.py`、XAML `19/19`、`git diff --check` 通过。
+- 边界：本轮未改用户 FusionX/全局主题，也未关闭任何虚拟化；没有真实 Playnite 保存失败、网络共享 ACL、外置盘断开后的宿主页面、DPI 或视频录屏证据，不能把离线路径夹具写成真实宿主已验收。
+
 ## 2026-09-09 L26 Worker 启动、断连与恢复边界
 
 - `WorkerLauncher.EnsureStartedAsync` 的生命周期边界：健康握手先分协议/版本/构建身份；同路径已有进程的 transient probe 最多宽限 45 秒，启动新 Worker 的真实就绪截止 30 秒；不能因一次短 Ping 超时杀掉大库 Worker。`StopOwnedWorker` 只回收本插件保存的 `runningWorker`，Playnite 退出不扫描/停止其他实例。

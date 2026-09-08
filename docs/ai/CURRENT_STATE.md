@@ -2,6 +2,13 @@
 
 > 更新时间：2026-09-09。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-09 L27 配置、路径与外部文件变化已完成离线收口（真实宿主待验收）
+
+- 设置页目录校验现在区分可由 Worker 创建的缺失叶目录、指向文件的路径，以及磁盘/网络共享不可访问；校验只读，不为每次输入创建目录。便携设置的无效值仍在复制前拒绝，保留当前编辑值不变。
+- 媒体同步对用户配置的媒体来源做可读性确认；来源消失、访问被拒或扫描期间不可达会产生 `MEDIA_SOURCE_UNAVAILABLE`，占用文件会产生 `MEDIA_FILE_UNAVAILABLE`，源文件不会被删除。默认系统来源仍按可选缺失处理。
+- 存档路径探测对用户明确传入的 `AdditionalRoots` 使用严格错误语义，产生 `SAVE_PATH_ROOT_UNAVAILABLE`，不再把不可访问目录当作空候选；默认系统目录继续跳过不可用路径。补充 Unicode/长文件名、占用文件和缺失来源夹具。
+- 验证：Release 构建 `0 warning/0 error`；Core `76/76`；Worker `308/309`（1 项真实进程重启测试在沙箱跳过）；Playnite `419/482`（63 项 UI/宿主条件跳过）；设置/便携导入定向 `11/11`，媒体/存档路径定向 `16/16`；`validate-source.py`、XAML `19/19`、`git diff --check` 通过。没有真实 Playnite/FusionX、网络共享 ACL、DPI 或用户视频复测，仍待宿主验收。
+
 ## 2026-09-09 L22 缩略图加载、取消与缓存边界已完成（真实宿主待验收）
 
 - `AsyncThumbnailImage` 现在只在已加载且可见时发起加载；不可见/卸载会取消并清空旧图，路径或尺寸变化通过代际号阻止旧结果回写。`AsyncThumbnailLoader` 保留 `OnLoad` 冻结位图、3 路并发和 96 项 LRU，破损/缺失文件返回空占位而不抛出到列表。

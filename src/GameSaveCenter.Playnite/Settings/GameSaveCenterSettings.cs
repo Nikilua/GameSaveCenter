@@ -195,8 +195,12 @@ namespace GameSaveCenter.Playnite.Settings
                 errors.Add("未找到 GameSaveCenter Worker。请先运行打包脚本，或选择正确的 Worker 可执行文件。");
             else if (!IsWorkerExecutable(WorkerExecutable))
                 errors.Add("Worker 路径必须指向 GameSaveCenter.Worker.exe，不能选择 Ludusavi 或其他程序。");
+            AddDirectoryPathError(errors, "存档目录", LudusaviBackupDirectory);
+            AddDirectoryPathError(errors, "媒体目录", MediaArchiveDirectory);
             if (EnableLocalMirror && string.IsNullOrWhiteSpace(LocalMirrorPath))
                 errors.Add("启用本地镜像时必须填写镜像目录。");
+            else if (EnableLocalMirror)
+                AddDirectoryPathError(errors, "本地镜像", LocalMirrorPath);
             if (!string.IsNullOrWhiteSpace(LudusaviExecutable) && !File.Exists(Environment.ExpandEnvironmentVariables(LudusaviExecutable)))
                 errors.Add("Ludusavi 路径不存在。");
             if (!string.IsNullOrWhiteSpace(RcloneExecutable) && !File.Exists(Environment.ExpandEnvironmentVariables(RcloneExecutable)))
@@ -400,6 +404,57 @@ namespace GameSaveCenter.Playnite.Settings
         private static void AddMissingDirectory(SettingsImportReport report, string label, string path)
         {
             if (!string.IsNullOrWhiteSpace(path) && !Directory.Exists(Expand(path))) report.MissingPaths.Add($"{label}：{path}");
+        }
+
+        private static void AddDirectoryPathError(List<string> errors, string label, string path)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                errors.Add($"{label}路径不能为空。");
+                return;
+            }
+
+            try
+            {
+                var fullPath = Path.GetFullPath(Expand(path));
+                if (File.Exists(fullPath))
+                {
+                    errors.Add($"{label}路径指向文件，不能作为目录：{path}");
+                    return;
+                }
+
+                if (Directory.Exists(fullPath)) return;
+
+                // Missing leaf directories are valid: Worker creates them on demand. A
+                // missing/unreachable volume or share is not, and must not be presented as
+                // a healthy configured path.
+                var root = Path.GetPathRoot(fullPath);
+                if (string.IsNullOrWhiteSpace(root) || !Directory.Exists(root))
+                    errors.Add($"{label}所在磁盘或网络共享不可访问：{path}");
+                else
+                {
+                    try
+                    {
+                        var attributes = File.GetAttributes(fullPath);
+                        if ((attributes & FileAttributes.Directory) == 0)
+                            errors.Add($"{label}路径不是目录：{path}");
+                    }
+                    catch (FileNotFoundException) { }
+                    catch (DirectoryNotFoundException) { }
+                    catch (UnauthorizedAccessException)
+                    {
+                        errors.Add($"{label}目录不可访问：{path}");
+                    }
+                    catch (IOException ex)
+                    {
+                        errors.Add($"{label}目录不可访问：{path}（{ex.Message}）");
+                    }
+                }
+            }
+            catch (Exception ex) when (ex is ArgumentException || ex is NotSupportedException || ex is PathTooLongException || ex is IOException || ex is UnauthorizedAccessException)
+            {
+                errors.Add($"{label}路径无效或不可访问：{path}（{ex.Message}）");
+            }
         }
 
         private static string Expand(string value) => string.IsNullOrWhiteSpace(value) ? string.Empty : Environment.ExpandEnvironmentVariables(value);

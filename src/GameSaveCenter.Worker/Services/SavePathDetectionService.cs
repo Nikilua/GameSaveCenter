@@ -65,10 +65,11 @@ public sealed class SavePathDetectionService
         foreach (var root in CandidateRoots(game, request))
         {
             token.ThrowIfCancellationRequested();
-            if (!Directory.Exists(root.Path)) continue;
-            foreach (var directory in EnumerateBoundedDirectories(root.Path, root.Depth))
+            var scanRoot = ResolveScanRoot(root);
+            if (scanRoot == null) continue;
+            foreach (var directory in EnumerateBoundedDirectories(scanRoot, root.Depth, root.Required))
             {
-                var files = ReadDirectoryFiles(directory, 500)
+                var files = ReadDirectoryFiles(directory, 500, root.Required)
                     .Where(x => x.Exists && x.LastWriteTimeUtc > DateTime.UtcNow.AddDays(-14))
                     .ToList();
                 if (files.Count == 0) continue;
@@ -283,6 +284,9 @@ public sealed class SavePathDetectionService
 
     private IEnumerable<RootSpec> CandidateRoots(GameDescriptorDto game, DetectionRequestDto request)
     {
+        foreach (var root in request.AdditionalRoots.Where(x => !string.IsNullOrWhiteSpace(x)))
+            yield return new RootSpec(Environment.ExpandEnvironmentVariables(root), 4, false, true);
+
         var profile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         yield return new RootSpec(Path.Combine(profile, "Saved Games"), 4, false);
         yield return new RootSpec(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), 3, false);
@@ -291,11 +295,38 @@ public sealed class SavePathDetectionService
         if (!string.IsNullOrWhiteSpace(game.InstallDirectory)) yield return new RootSpec(game.InstallDirectory, 4, true);
         if (request.IncludeXboxWgs && game.Platform == GamePlatformKind.Xbox)
             yield return new RootSpec(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Packages"), 6, false);
-        foreach (var root in request.AdditionalRoots)
-            yield return new RootSpec(Environment.ExpandEnvironmentVariables(root), 4, false);
     }
 
-    private static IEnumerable<string> EnumerateBoundedDirectories(string root, int depth)
+    private static string? ResolveScanRoot(RootSpec root)
+    {
+        var expanded = Environment.ExpandEnvironmentVariables(root.Path ?? string.Empty);
+        try
+        {
+            var fullPath = Path.GetFullPath(expanded);
+            if (!Directory.Exists(fullPath))
+            {
+                if (root.Required) throw new DirectoryNotFoundException(fullPath);
+                return null;
+            }
+
+            if (root.Required)
+            {
+                using var entries = Directory.EnumerateFileSystemEntries(fullPath, "*", SearchOption.TopDirectoryOnly).GetEnumerator();
+                _ = entries.MoveNext();
+            }
+            return fullPath;
+        }
+        catch (Exception ex) when (root.Required && (ex is IOException || ex is UnauthorizedAccessException || ex is ArgumentException || ex is NotSupportedException))
+        {
+            throw new WorkerOperationException("SAVE_PATH_ROOT_UNAVAILABLE", "指定的存档扫描目录不可访问或已经消失。", expanded, ex);
+        }
+        catch (Exception) when (!root.Required)
+        {
+            return null;
+        }
+    }
+
+    private static IEnumerable<string> EnumerateBoundedDirectories(string root, int depth, bool failOnAccess = false)
     {
         var queue = new Queue<(string Path, int Depth)>();
         var visitedPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -310,7 +341,11 @@ public sealed class SavePathDetectionService
             if (item.Depth >= depth) continue;
             IEnumerable<string> children;
             try { children = Directory.EnumerateDirectories(item.Path).Take(300).ToList(); }
-            catch { continue; }
+            catch (Exception ex)
+            {
+                if (failOnAccess) throw new WorkerOperationException("SAVE_PATH_ROOT_UNAVAILABLE", "存档扫描目录的子目录不可访问。", item.Path, ex);
+                continue;
+            }
             foreach (var child in children)
             {
                 if (IgnoredDirectoryNames.Any(x => string.Equals(Path.GetFileName(child), x, StringComparison.OrdinalIgnoreCase))) continue;
@@ -324,10 +359,14 @@ public sealed class SavePathDetectionService
         }
     }
 
-    private static IEnumerable<FileInfo> ReadDirectoryFiles(string directory, int limit)
+    private static IEnumerable<FileInfo> ReadDirectoryFiles(string directory, int limit, bool failOnAccess = false)
     {
         try { return Directory.EnumerateFiles(directory, "*", SearchOption.TopDirectoryOnly).Take(limit).Select(x => new FileInfo(x)).Where(x => x.Exists).ToList(); }
-        catch { return Array.Empty<FileInfo>(); }
+        catch (Exception ex)
+        {
+            if (failOnAccess) throw new WorkerOperationException("SAVE_PATH_ROOT_UNAVAILABLE", "存档扫描目录不可读取。", directory, ex);
+            return Array.Empty<FileInfo>();
+        }
     }
 
     private static bool IsPotentialSaveFile(FileInfo file, bool installRoot, bool xboxWgs)
@@ -345,7 +384,7 @@ public sealed class SavePathDetectionService
     private static string NormalizePath(string path) => Path.GetFullPath(path).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
     private static void TryDelete(string path) { try { File.Delete(path); } catch { } }
 
-    private sealed record RootSpec(string Path, int Depth, bool IsInstallRoot);
+    private sealed record RootSpec(string Path, int Depth, bool IsInstallRoot, bool Required = false);
 
     private sealed class SessionSnapshot
     {

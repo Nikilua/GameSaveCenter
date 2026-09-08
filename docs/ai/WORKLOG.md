@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-09 L27 配置、路径与外部文件变化
+
+- 先复核设置页 `VerifySettings`、Worker `EnvironmentCheckService`、媒体来源发现/归档和存档路径探测。确认已有环境检查会对存档/媒体目录做写入探针，但设置页对目录只做可读路径判断；媒体同步和存档探测则会把部分用户配置的消失/访问异常过滤或吞成空结果。
+- 设置校验现在对存档目录、媒体目录和启用的本地镜像区分“缺失叶目录但可由 Worker 创建”和“路径指向文件/路径无效/盘符或共享不可达/属性访问被拒”，不在每次文本变更时创建目录或写入真实路径。现有无效便携设置值在 `CopyFrom` 前拒绝，保持编辑对象不变。
+- `MediaSyncService` 为用户媒体来源规则增加 required 可访问性确认；来源缺失/不可枚举抛出 `MEDIA_SOURCE_UNAVAILABLE`，扫描期间文件占用或读取/复制 I/O 抛出 `MEDIA_FILE_UNAVAILABLE`，不删除源文件。默认 Steam、系统截图等可选来源仍可缺失。`SavePathDetectionService` 对 `AdditionalRoots` 提前严格检查，失败为 `SAVE_PATH_ROOT_UNAVAILABLE`，默认系统根仍容错跳过。
+- 新增夹具：缺失媒体来源失败而不是成功空扫描；Unicode/80 字符文件名成功归档；占用媒体文件失败且源文件存在；缺失 Unicode 附加存档根返回稳定错误；设置目录指向文件被拒、可达驱动器下缺失子目录不误报。测试只使用隔离临时目录。
+- 验证：Release 构建 `0 warning/0 error`；Core `76/76`；Worker `308/309`（1 项真实进程重启测试沙箱跳过）；Playnite `419/482`（63 项 UI/宿主条件跳过）；设置/便携导入 `11/11`、媒体/存档路径 `16/16`；`validate-source.py`、XAML `19/19`、`git diff --check` 通过。真实 Playnite/FusionX、网络共享 ACL、外置盘、DPI、用户视频和真实保存失败仍待宿主验收。
+
 ## 2026-09-09 L26 Worker 断连、重启与旧构建验收记录
 
 - 复核现有 `WorkerLauncher` 与 Worker 启动链：握手先检查协议/版本/构建身份；同路径现有进程先做短探测并在最多 45 秒内等待瞬态忙状态，不能因一次短 Ping 超时就杀掉大库 Worker；新子进程有真实 30 秒就绪截止；退出时只停止本插件持有的 Worker。Worker 启动时恢复 IPC ledger，将上一进程留下的 InProgress 标为 Interrupted，避免旧写请求被重放。

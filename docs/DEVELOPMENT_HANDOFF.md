@@ -2,6 +2,10 @@
 
 > 连续实施入口：[32 项、8 阶段计划](ai/CONTINUOUS_DEVELOPMENT_PLAN_2026-09-08.md)。用户要求减少逐项确认；接手后按依赖连续实施并逐项交付，已满足任务跳过，外部阻塞不妨碍独立任务。Q6 质量报告仍是首四项问题依据。
 
+> 2026-09-09 L27 已完成配置、路径与外部文件变化的离线收口：设置目录校验只读地进行区分，可创建缺失叶目录、文件目标和不可达盘/共享分别处理；用户媒体来源及附加存档探测根目录不再把消失/拒绝访问伪装成空扫描。新增稳定错误码 `MEDIA_SOURCE_UNAVAILABLE`、`MEDIA_FILE_UNAVAILABLE`、`SAVE_PATH_ROOT_UNAVAILABLE`，占用媒体源文件不会被删除。
+
+> L27 证据：设置/便携导入定向 `11/11`，媒体/存档路径定向 `16/16`（含 Unicode/长文件名、占用文件、缺失来源和缺失附加根）；Release 构建 `0 warning/0 error`，Core `76/76`，Worker `308/309`（1 项真实进程重启测试在沙箱跳过），Playnite `419/482`（63 项 UI/宿主条件 skip），源/XAML/差异门禁通过。当前没有真实 Playnite 保存失败、网络共享 ACL、外置盘断开、DPI 或用户视频证据；本阶段仍标为宿主待验收。
+
 > 2026-09-09 L22 已完成缩略图加载、取消与缓存边界收口：`AsyncThumbnailImage` 只为已加载且可见的卡片启动任务，不可见/卸载取消并清空旧图，generation/token 防止旧路径结果回写；`AsyncThumbnailLoader` 保持 `OnLoad` 冻结、3 路并发、96 项 LRU 和预期读取失败空占位。
 
 > 2026-09-09 L23 已完成搜索、刷新与重复 IPC 的代码边界收口：任务历史页和 Dashboard 快照请求使用 `LatestRequestCoordinator` 做取消、generation 和提交前检查；任务 debounce 回调经 UI 投递，忙时保留最新查询，旧响应不能覆盖当前筛选。日志只记录代际、请求号、数量/尺寸和 `hasMore`，不记录搜索文本或文件内容；未修改写请求协议。

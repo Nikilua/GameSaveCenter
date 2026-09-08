@@ -917,9 +917,10 @@ public sealed class MediaSyncService
         _tasks.RunAsync("MediaSync",game.PlayniteId,game.Name,async(progress,ct)=>
         {
             await progress.ReportAsync(5,"正在查找游戏专属媒体来源").ConfigureAwait(false);
-            var sources=(await DiscoverGameSourcesAsync(game,ct).ConfigureAwait(false))
-                .DistinctBy(x=>$"{x.Path}|{x.IncludePattern}",StringComparer.OrdinalIgnoreCase)
-                .Where(x=>Directory.Exists(x.Path)).ToList();
+            var discoveredSources = await DiscoverGameSourcesAsync(game,ct).ConfigureAwait(false);
+            var sources=RequireAvailableSources(discoveredSources
+                .DistinctBy(x=>$"{x.Path}|{x.IncludePattern}",StringComparer.OrdinalIgnoreCase))
+                .ToList();
             var candidates=EnumerateCandidates(sources);
             var copied=0;var index=0;
             foreach(var candidate in candidates.OrderBy(x=>x.Path,StringComparer.OrdinalIgnoreCase))
@@ -961,9 +962,10 @@ public sealed class MediaSyncService
         _tasks.RunAsync("MediaInbox",string.Empty,"公共媒体收件箱",async(progress,ct)=>
         {
             await progress.ReportAsync(5,"正在扫描公共截图与录像目录").ConfigureAwait(false);
-            var sources=(await DiscoverSharedSourcesAsync(ct).ConfigureAwait(false))
-                .DistinctBy(x=>$"{x.Path}|{x.IncludePattern}",StringComparer.OrdinalIgnoreCase)
-                .Where(x=>Directory.Exists(x.Path)).ToList();
+            var discoveredSources = await DiscoverSharedSourcesAsync(ct).ConfigureAwait(false);
+            var sources=RequireAvailableSources(discoveredSources
+                .DistinctBy(x=>$"{x.Path}|{x.IncludePattern}",StringComparer.OrdinalIgnoreCase))
+                .ToList();
             var candidates=EnumerateCandidates(sources)
                 .OrderByDescending(x=>SafeCapturedUtc(x.Path))
                 .ToList();
@@ -1176,6 +1178,14 @@ public sealed class MediaSyncService
             return await ArchiveWithHashAsync(path,current,hash,source,game,classificationReason,token).ConfigureAwait(false);
         }
         catch(OperationCanceledException){throw;}
+        catch (UnauthorizedAccessException ex)
+        {
+            throw new WorkerOperationException("MEDIA_FILE_UNAVAILABLE", "媒体文件在扫描期间不可读取，未删除源文件。", path, ex);
+        }
+        catch (IOException ex)
+        {
+            throw new WorkerOperationException("MEDIA_FILE_UNAVAILABLE", "媒体文件在扫描期间不可读取，未删除源文件。", path, ex);
+        }
         catch(Exception ex)
         {
             _logger.LogWarning(ex,"Could not archive media candidate {Path}",path);
@@ -1266,7 +1276,7 @@ public sealed class MediaSyncService
         if(_options.EnableCustomMedia)
         foreach(var custom in await _store.GetMediaSourcesAsync(game.PlayniteId,token).ConfigureAwait(false))
             if(custom.Enabled&&!custom.SharedDirectory&&!string.IsNullOrWhiteSpace(custom.RootPath))
-                output.Add(new MediaSource(custom.RootPath,custom.SourceKind,string.IsNullOrWhiteSpace(custom.IncludePattern)?"*":custom.IncludePattern));
+                output.Add(new MediaSource(custom.RootPath,custom.SourceKind,string.IsNullOrWhiteSpace(custom.IncludePattern)?"*":custom.IncludePattern,true));
         return output;
     }
 
@@ -1280,8 +1290,36 @@ public sealed class MediaSyncService
         if(_options.EnableCustomMedia)
         foreach(var custom in await _store.GetSharedMediaSourcesAsync(token).ConfigureAwait(false))
             if(!string.IsNullOrWhiteSpace(custom.RootPath))
-                output.Add(new MediaSource(custom.RootPath,custom.SourceKind,string.IsNullOrWhiteSpace(custom.IncludePattern)?"*":custom.IncludePattern));
+                output.Add(new MediaSource(custom.RootPath,custom.SourceKind,string.IsNullOrWhiteSpace(custom.IncludePattern)?"*":custom.IncludePattern,true));
         return output;
+    }
+
+    private static IEnumerable<MediaSource> RequireAvailableSources(IEnumerable<MediaSource> sources)
+    {
+        foreach (var source in sources)
+        {
+            var expanded = Environment.ExpandEnvironmentVariables(source.Path ?? string.Empty);
+            if (!source.Required)
+            {
+                if (Directory.Exists(expanded)) yield return source with { Path = expanded };
+                continue;
+            }
+
+            string fullPath;
+            try
+            {
+                fullPath = Path.GetFullPath(expanded);
+                if (!Directory.Exists(fullPath)) throw new DirectoryNotFoundException(fullPath);
+                using var entries = Directory.EnumerateFileSystemEntries(fullPath, "*", SearchOption.TopDirectoryOnly).GetEnumerator();
+                _ = entries.MoveNext();
+            }
+            catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException || ex is ArgumentException || ex is NotSupportedException)
+            {
+                throw new WorkerOperationException("MEDIA_SOURCE_UNAVAILABLE", "已配置的媒体来源目录不可访问或已经消失。", expanded, ex);
+            }
+
+            yield return source with { Path = fullPath };
+        }
     }
 
     private List<(string Path,MediaSourceKind Source)> EnumerateCandidates(IEnumerable<MediaSource> sources)
@@ -1294,7 +1332,12 @@ public sealed class MediaSyncService
                 output.AddRange(Directory.EnumerateFiles(source.Path,string.IsNullOrWhiteSpace(source.IncludePattern)?"*":source.IncludePattern,SearchOption.AllDirectories)
                     .Where(IsMedia).Select(x=>(x,source.Source)));
             }
-            catch(Exception ex){_logger.LogWarning(ex,"Could not scan media source {Path}",source.Path);}
+            catch(Exception ex)
+            {
+                if (source.Required)
+                    throw new WorkerOperationException("MEDIA_SOURCE_UNAVAILABLE", "已配置的媒体来源目录在扫描期间不可访问。", source.Path, ex);
+                _logger.LogWarning(ex,"Could not scan media source {Path}",source.Path);
+            }
         }
         return output.DistinctBy(x=>x.Path,StringComparer.OrdinalIgnoreCase).ToList();
     }
@@ -1421,7 +1464,10 @@ public sealed class MediaSyncService
             var first=new FileInfo(path).Length;await Task.Delay(350,token).ConfigureAwait(false);var second=new FileInfo(path).Length;
             return first==second&&second>0;
         }
-        catch{return false;}
+        catch (OperationCanceledException) when (token.IsCancellationRequested) { throw; }
+        catch (UnauthorizedAccessException) { throw; }
+        catch (IOException) { throw; }
+        catch { return false; }
     }
 
     private static async Task<string> ComputeSha256Async(string path,CancellationToken token)
@@ -1463,7 +1509,7 @@ public sealed class MediaSyncService
         return string.IsNullOrWhiteSpace(normalized)?"Unknown Game":normalized;
     }
 
-    private sealed record MediaSource(string Path,MediaSourceKind Source,string IncludePattern="*");
+    private sealed record MediaSource(string Path,MediaSourceKind Source,string IncludePattern="*",bool Required=false);
     private sealed record SharedMediaResolution(GameDescriptorDto? Game,string Reason);
 }
 

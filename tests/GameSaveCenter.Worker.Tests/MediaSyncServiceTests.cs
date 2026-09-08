@@ -108,6 +108,109 @@ public sealed class MediaSyncServiceTests : IDisposable
     }
 
     [Fact]
+    public async Task MissingConfiguredMediaSourceFailsTaskInsteadOfLookingLikeAnEmptyScan()
+    {
+        var game = new GameDescriptorDto
+        {
+            PlayniteId = "missing-media-source-game",
+            Name = "Missing Media Source Game",
+            Platform = GamePlatformKind.Unknown
+        };
+        await store.UpsertGamesAsync(new[] { game }, CancellationToken.None);
+        options.EnableSteamMedia = false;
+        options.EnablePlatformAdjacentMedia = false;
+        options.EnableCustomMedia = true;
+        var missingSource = Path.Combine(root, "消失的媒体来源", "Captures");
+        await store.AddMediaSourceAsync(new MediaSourceRuleDto
+        {
+            SourceId = "missing-media-source-rule",
+            PlayniteId = game.PlayniteId,
+            RootPath = missingSource,
+            IncludePattern = "*.png",
+            SourceKind = MediaSourceKind.Custom,
+            Enabled = true,
+            SharedDirectory = false
+        }, CancellationToken.None);
+
+        var tasks = await CreateService().SyncAsync(new MediaSyncRequestDto
+        {
+            PlayniteIds = new List<string> { game.PlayniteId },
+            IncludeUnassignedInbox = false
+        }, CancellationToken.None);
+
+        var task = Assert.Single(tasks);
+        Assert.Equal(TaskState.Failed, task.State);
+        Assert.Equal("MEDIA_SOURCE_UNAVAILABLE", task.ErrorCode);
+        Assert.Contains(missingSource, task.ErrorMessage, StringComparison.Ordinal);
+        Assert.Empty(await store.GetMediaAsync(game.PlayniteId, 50, CancellationToken.None));
+    }
+
+    [Fact]
+    public async Task UnicodeAndLongMediaFileNameIsArchivedWithoutTreatingItAsMissing()
+    {
+        var game = new GameDescriptorDto
+        {
+            PlayniteId = "unicode-media-game",
+            Name = "Unicode Media Game",
+            Platform = GamePlatformKind.Unknown
+        };
+        await store.UpsertGamesAsync(new[] { game }, CancellationToken.None);
+        options.EnableSteamMedia = false;
+        options.EnablePlatformAdjacentMedia = false;
+        options.EnableCustomMedia = true;
+        var sourceRoot = Path.Combine(root, "媒体来源-中文");
+        var sourceFile = Path.Combine(sourceRoot, new string('长', 80) + "-截图.png");
+        Directory.CreateDirectory(sourceRoot);
+        await File.WriteAllBytesAsync(sourceFile, new byte[] { 1, 2, 3, 5, 8, 13 });
+        await AddCustomSourceAsync(game.PlayniteId, sourceRoot, "*.png");
+
+        var tasks = await CreateService().SyncAsync(new MediaSyncRequestDto
+        {
+            PlayniteIds = new List<string> { game.PlayniteId },
+            IncludeUnassignedInbox = false
+        }, CancellationToken.None);
+
+        var task = Assert.Single(tasks);
+        Assert.Equal(TaskState.Succeeded, task.State);
+        var media = Assert.Single(await store.GetMediaAsync(game.PlayniteId, 50, CancellationToken.None));
+        Assert.Equal(sourceFile, media.OriginalPath);
+        Assert.True(File.Exists(media.ArchivePath));
+    }
+
+    [Fact]
+    public async Task LockedMediaFileFailsWithoutDeletingTheSource()
+    {
+        var game = new GameDescriptorDto
+        {
+            PlayniteId = "locked-media-game",
+            Name = "Locked Media Game",
+            Platform = GamePlatformKind.Unknown
+        };
+        await store.UpsertGamesAsync(new[] { game }, CancellationToken.None);
+        options.EnableSteamMedia = false;
+        options.EnablePlatformAdjacentMedia = false;
+        options.EnableCustomMedia = true;
+        var sourceRoot = Path.Combine(root, "locked-media-source");
+        var sourceFile = Path.Combine(sourceRoot, "locked-capture.png");
+        Directory.CreateDirectory(sourceRoot);
+        await File.WriteAllBytesAsync(sourceFile, new byte[] { 21, 34, 55, 89 });
+        await AddCustomSourceAsync(game.PlayniteId, sourceRoot, "*.png");
+        using var fileLock = new FileStream(sourceFile, FileMode.Open, FileAccess.Read, FileShare.None);
+
+        var tasks = await CreateService().SyncAsync(new MediaSyncRequestDto
+        {
+            PlayniteIds = new List<string> { game.PlayniteId },
+            IncludeUnassignedInbox = false
+        }, CancellationToken.None);
+
+        var task = Assert.Single(tasks);
+        Assert.Equal(TaskState.Failed, task.State);
+        Assert.Equal("MEDIA_FILE_UNAVAILABLE", task.ErrorCode);
+        Assert.True(File.Exists(sourceFile));
+        Assert.Empty(await store.GetMediaAsync(game.PlayniteId, 50, CancellationToken.None));
+    }
+
+    [Fact]
     public async Task ClassificationPreviewUsesSourceRuleAndLeavesOverlappingSessionsAmbiguous()
     {
         var captured = DateTime.UtcNow.AddMinutes(-4);
@@ -547,6 +650,18 @@ BEGIN SELECT RAISE(ABORT, 'injected audit failure'); END;");
             new CloudTransferCoordinator(NullLogger<CloudTransferCoordinator>.Instance),tasks,new GameOperationLock(),
             NullLogger<MediaSyncService>.Instance);
     }
+
+    private Task AddCustomSourceAsync(string playniteId, string rootPath, string includePattern)
+        => store.AddMediaSourceAsync(new MediaSourceRuleDto
+        {
+            SourceId = Guid.NewGuid().ToString("N"),
+            PlayniteId = playniteId,
+            RootPath = rootPath,
+            IncludePattern = includePattern,
+            SourceKind = MediaSourceKind.Custom,
+            Enabled = true,
+            SharedDirectory = false
+        }, CancellationToken.None);
 
     public void Dispose()
     {
