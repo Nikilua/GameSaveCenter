@@ -10,8 +10,95 @@ param(
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
 $artifacts = Join-Path $root 'artifacts'
+$previousBuildCommit = [Environment]::GetEnvironmentVariable('GSC_BUILD_COMMIT', 'Process')
+
+function Read-AssemblyInformationalVersion {
+    param([Parameter(Mandatory = $true)][string]$AssemblyPath)
+
+    if (-not (Test-Path -LiteralPath $AssemblyPath -PathType Leaf)) {
+        throw "找不到待校验程序集：$AssemblyPath"
+    }
+
+    # Read ECMA-335 metadata without loading the assembly into the packaging
+    # process. This handles both net462 and net8 Worker binaries and avoids
+    # resolving their runtime dependencies merely to inspect one attribute.
+    try { Add-Type -AssemblyName System.Reflection.Metadata -ErrorAction Stop } catch {
+        throw "当前 PowerShell 缺少 System.Reflection.Metadata，无法安全校验程序集构建身份：$AssemblyPath"
+    }
+
+    $stream = [System.IO.File]::OpenRead($AssemblyPath)
+    $pe = [System.Reflection.PortableExecutable.PEReader]::new($stream)
+    $provider = $null
+    try {
+        $provider = [System.Reflection.Metadata.MetadataReaderProvider]::FromMetadataImage($pe.GetMetadata().GetContent())
+        $reader = $provider.GetMetadataReader()
+        $assembly = $reader.GetAssemblyDefinition()
+        foreach ($attributeHandle in $assembly.GetCustomAttributes()) {
+            $attribute = $reader.GetCustomAttribute($attributeHandle)
+            $constructor = $attribute.Constructor
+            $typeName = ''
+            if ($constructor.Kind -eq [System.Reflection.Metadata.HandleKind]::MemberReference) {
+                $member = $reader.GetMemberReference($constructor)
+                $parent = $member.Parent
+                if ($parent.Kind -eq [System.Reflection.Metadata.HandleKind]::TypeReference) {
+                    $type = $reader.GetTypeReference($parent)
+                    $typeName = $reader.GetString($type.Namespace) + '.' + $reader.GetString($type.Name)
+                }
+                elseif ($parent.Kind -eq [System.Reflection.Metadata.HandleKind]::TypeDefinition) {
+                    $type = $reader.GetTypeDefinition($parent)
+                    $typeName = $reader.GetString($type.Namespace) + '.' + $reader.GetString($type.Name)
+                }
+            }
+            if ($typeName -eq 'System.Reflection.AssemblyInformationalVersionAttribute') {
+                $blob = $reader.GetBlobReader($attribute.Value)
+                if ($blob.ReadUInt16() -ne 1) { throw '程序集属性格式无效' }
+                $value = $blob.ReadSerializedString()
+                if ([string]::IsNullOrWhiteSpace($value)) { throw '程序集构建身份为空' }
+                return $value.Trim()
+            }
+        }
+        throw '程序集缺少 AssemblyInformationalVersionAttribute'
+    }
+    catch {
+        throw "读取程序集构建身份失败：$AssemblyPath；$($_.Exception.Message)"
+    }
+    finally {
+        if ($null -ne $provider) { $provider.Dispose() }
+        $pe.Dispose()
+        $stream.Dispose()
+    }
+}
+
+function Assert-AssemblyIdentitySet {
+    param(
+        [Parameter(Mandatory = $true)][hashtable]$Assemblies,
+        [Parameter(Mandatory = $true)][string]$ExpectedVersion,
+        [Parameter(Mandatory = $true)][string]$ExpectedCommit
+    )
+
+    $expectedIdentity = "$ExpectedVersion+$ExpectedCommit"
+    $identities = @{}
+    foreach ($name in $Assemblies.Keys) {
+        $identity = Read-AssemblyInformationalVersion $Assemblies[$name]
+        $identities[$name] = $identity
+        Write-Host "  $name 构建身份：$identity" -ForegroundColor DarkCyan
+        if ($identity -ne $expectedIdentity) {
+            throw "构建身份不一致：$name 实际为 $identity，期望为 $expectedIdentity。请用当前源码重新构建，不能用 SkipBuild 混用旧 DLL。"
+        }
+    }
+
+    $distinct = @($identities.Values | Select-Object -Unique)
+    if ($distinct.Count -ne 1) {
+        throw "插件与 Worker 构建身份不一致：$($identities.GetEnumerator() | ForEach-Object { "$($_.Key)=$($_.Value)" } -join '; ')"
+    }
+    return $expectedIdentity
+}
+
+try {
 $buildCommit = ''
 try {
+    # Never inherit a caller-provided identity when Git cannot prove the source.
+    $env:GSC_BUILD_COMMIT = ''
     $buildCommit = (& git -C $root rev-parse --verify HEAD 2>$null | Select-Object -First 1).ToString().Trim()
 }
 catch {
@@ -22,6 +109,14 @@ if ($buildCommit -match '^[0-9a-fA-F]{7,40}$') {
     # the plugin and the published Worker. It is diagnostic metadata only; the
     # public extension version remains controlled by extension.yaml/VersionPrefix.
     $env:GSC_BUILD_COMMIT = $buildCommit
+}
+else {
+    throw '无法从当前 Git HEAD 获取有效提交号，已停止打包；不能生成 unknown 构建包。'
+}
+$dirtyFiles = @(& git -C $root status --porcelain --untracked-files=all 2>$null)
+if ($LASTEXITCODE -ne 0) { throw '无法读取 Git 工作树状态，已停止打包。' }
+if ($dirtyFiles.Count -gt 0) {
+    throw "工作树存在未提交改动，已停止打包以避免用 HEAD 冒充实际源码：$($dirtyFiles -join '; ')"
 }
 $stage = Join-Path $artifacts 'GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec'
 $workerStage = Join-Path $stage 'Worker'
@@ -185,6 +280,22 @@ $pluginFileVersion = (Get-Item $pluginDllPath).VersionInfo.FileVersion
 if ($pluginFileVersion -and -not $pluginFileVersion.StartsWith("$sourceVersion.")) {
     throw "已编译 DLL 版本不一致：源码为 $sourceVersion，DLL 为 $pluginFileVersion。请删除 bin/obj 后重新构建。"
 }
+$workerDllPath = Join-Path $workerStage 'GameSaveCenter.Worker.dll'
+$identityPaths = @{
+    Plugin = $pluginDllPath
+    Worker = $workerDllPath
+    PluginContracts = (Join-Path $pluginOutput 'GameSaveCenter.Contracts.dll')
+    PluginCore = (Join-Path $pluginOutput 'GameSaveCenter.Core.dll')
+    WorkerContracts = (Join-Path $workerStage 'GameSaveCenter.Contracts.dll')
+    WorkerCore = (Join-Path $workerStage 'GameSaveCenter.Core.dll')
+}
+foreach ($name in @('PluginContracts','PluginCore','WorkerContracts','WorkerCore')) {
+    if (-not (Test-Path -LiteralPath $identityPaths[$name])) {
+        throw "缺少用于构建身份同源校验的程序集：$name -> $($identityPaths[$name])"
+    }
+}
+Write-Host "`n==> 校验插件、Worker 与共享程序集构建身份" -ForegroundColor Cyan
+$packageIdentity = Assert-AssemblyIdentitySet -Assemblies $identityPaths -ExpectedVersion $sourceVersion -ExpectedCommit $buildCommit
 $required = @(
     'GameSaveCenter.Playnite.dll',
     'GameSaveCenter.Contracts.dll',
@@ -256,3 +367,12 @@ Assert-PackageContents -PackagePath $pext -ExpectedVersion $packageVersion -Expe
 Write-Host "`n打包成功：$zip" -ForegroundColor Green
 Write-Host "Playnite 安装包：$pext" -ForegroundColor Green
 Write-Host '若当前 Playnite 拒绝直接安装 .pext，请使用 scripts/install-dev.ps1。' -ForegroundColor Yellow
+}
+finally {
+    if ($null -eq $previousBuildCommit) {
+        Remove-Item Env:GSC_BUILD_COMMIT -ErrorAction SilentlyContinue
+    }
+    else {
+        $env:GSC_BUILD_COMMIT = $previousBuildCommit
+    }
+}

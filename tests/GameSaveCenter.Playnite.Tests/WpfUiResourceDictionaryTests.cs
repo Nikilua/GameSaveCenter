@@ -4404,7 +4404,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("WaitForHealthAsync", launcherCode);
         Assert.Contains("var startupDeadline = DateTime.UtcNow + TimeSpan.FromSeconds(30);", launcherCode);
         Assert.Contains("while (DateTime.UtcNow < startupDeadline)", launcherCode);
-        Assert.Contains("IsHealthyAsync(TimeSpan.FromMilliseconds(650), expectedVersion, expectedBuildIdentity)", launcherCode);
+        Assert.Contains("ProbeHealthAsync(TimeSpan.FromMilliseconds(650), expectedVersion, expectedBuildIdentity)", launcherCode);
         Assert.DoesNotContain("for (var i = 0; i < 120; i++)", launcherCode);
     }
 
@@ -4453,11 +4453,12 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("expectedBuildIdentity", launcherCode);
         Assert.Contains("IsBuildIdentityCompatible", launcherCode);
         Assert.Contains("ProbeHealthAsync", launcherCode);
-        Assert.Contains("HealthProbe.Incompatible", launcherCode);
         Assert.Contains("expectedVersion: Assembly.GetExecutingAssembly().GetName().Version?.ToString()", pluginCode);
         Assert.Contains("expectedBuildIdentity: BuildIdentity.ForAssembly", pluginCode);
-        Assert.Contains("if (probe != HealthProbe.Incompatible && !terminateUnhealthyProcess)", launcherCode);
-        Assert.Contains("if (probe == HealthProbe.Healthy || probe == HealthProbe.Incompatible)", launcherCode);
+        Assert.Contains("HealthProbe.VersionIncompatible", launcherCode);
+        Assert.Contains("HealthProbe.BuildIdentityIncompatible", launcherCode);
+        Assert.Contains("HealthProbe.UnknownBuildIdentity", launcherCode);
+        Assert.Contains("实际构建身份=", launcherCode);
     }
 
     [Fact]
@@ -4478,10 +4479,11 @@ public sealed class WpfUiResourceDictionaryTests
         var launcherCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Infrastructure", "WorkerLauncher.cs"));
 
         Assert.Contains("var exitCode = worker.ExitCode;", launcherCode);
-        Assert.Contains("if (exitCode == 0 && await WaitForHealthAsync(", launcherCode);
+        Assert.Contains("var existingProbe = await WaitForHealthAsync(", launcherCode);
+        Assert.Contains("if (exitCode == 0 && existingProbe.IsHealthy)", launcherCode);
         Assert.Contains("Worker 启动进程退出码 0，但已有健康实例，复用现有 Worker。", launcherCode);
         Assert.Contains("Interlocked.CompareExchange(ref runningWorker, null, worker);", launcherCode);
-        Assert.Contains("退出码 {exitCode}。日志：{logPath}", launcherCode);
+        Assert.Contains("Worker 启动进程已退出，退出码 {exitCode}", launcherCode);
     }
 
     [Fact]

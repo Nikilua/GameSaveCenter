@@ -41,12 +41,20 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
                 var fullExecutable = Path.GetFullPath(executable);
                 var processName = Path.GetFileNameWithoutExtension(fullExecutable);
+                var logPath = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    "GameSaveCenter", "Logs", "worker-launch.log");
+                workerLogPath = logPath;
+                Directory.CreateDirectory(Path.GetDirectoryName(logPath));
+                var expectedVersionLabel = string.IsNullOrWhiteSpace(expectedVersion) ? "unknown" : expectedVersion;
+                var expectedBuildLabel = string.IsNullOrWhiteSpace(expectedBuildIdentity) ? "unknown" : expectedBuildIdentity;
                 // A Worker can be temporarily unable to answer a two-second Ping while it is
                 // opening SQLite or yielding a large background Ludusavi batch.  Do not kill a
                 // live instance merely because that first probe timed out: doing so loses the
                 // durable request queue and creates the restart/pipe-timeout loop seen in large
                 // Playnite libraries. Give the existing process a bounded grace period first.
                 var existingBusyProcess = false;
+                HealthProbeResult? existingIncompatibleProbe = null;
                 foreach (var process in Process.GetProcessesByName(processName))
                 {
                     try
@@ -65,9 +73,10 @@ namespace GameSaveCenter.Playnite.Infrastructure
                             // current Worker: the former must be replaced, otherwise the new
                             // plugin silently reuses old startup/catalog behavior forever.
                             var probe = await ProbeHealthAsync(TimeSpan.FromSeconds(2), expectedVersion, expectedBuildIdentity).ConfigureAwait(false);
-                            var healthy = probe == HealthProbe.Healthy ||
-                                (probe == HealthProbe.Unavailable && await WaitForHealthAsync(TimeSpan.FromSeconds(45), expectedVersion, expectedBuildIdentity).ConfigureAwait(false));
-                            if (healthy) return;
+                            if (IsTransient(probe.Status))
+                                probe = await WaitForHealthAsync(TimeSpan.FromSeconds(45), expectedVersion, expectedBuildIdentity).ConfigureAwait(false);
+                            if (probe.IsHealthy) return;
+                            AppendLog(logPath, DescribeHealth("Existing Worker health probe", probe, expectedVersion, expectedBuildIdentity));
 
                             // A large-library Worker may be healthy at the process level while
                             // temporarily unable to answer a short Ping during SQLite/Ludusavi
@@ -75,7 +84,13 @@ namespace GameSaveCenter.Playnite.Infrastructure
                             // the caller can surface a bounded unavailable state and retry later.
                             // For small libraries retain the old last-resort recovery path for a
                             // genuinely stale process.
-                            if (probe != HealthProbe.Incompatible && !terminateUnhealthyProcess)
+                            if (IsIncompatible(probe.Status) && !terminateUnhealthyProcess)
+                            {
+                                existingIncompatibleProbe = probe;
+                                continue;
+                            }
+
+                            if (IsTransient(probe.Status) && !terminateUnhealthyProcess)
                             {
                                 existingBusyProcess = !process.HasExited;
                                 continue;
@@ -95,16 +110,12 @@ namespace GameSaveCenter.Playnite.Infrastructure
                     finally { process.Dispose(); }
                 }
 
+                if (existingIncompatibleProbe != null)
+                    throw new InvalidOperationException(
+                        $"Worker 现有实例不兼容，已停止重复拉起。{DescribeHealth("Existing Worker", existingIncompatibleProbe, expectedVersion, expectedBuildIdentity)}");
                 if (existingBusyProcess)
                     throw new TimeoutException("Worker 正在执行后台工作，暂时无法响应健康探测；已保留现有进程，稍后可重试。");
 
-                var logPath = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                    "GameSaveCenter", "Logs", "worker-launch.log");
-                workerLogPath = logPath;
-                Directory.CreateDirectory(Path.GetDirectoryName(logPath));
-                var expectedVersionLabel = string.IsNullOrWhiteSpace(expectedVersion) ? "unknown" : expectedVersion;
-                var expectedBuildLabel = string.IsNullOrWhiteSpace(expectedBuildIdentity) ? "unknown" : expectedBuildIdentity;
                 AppendLog(logPath, $"Starting Worker: {fullExecutable} (expected GameSaveCenter Worker version {expectedVersionLabel}, build {expectedBuildLabel})");
 
                 runningWorker?.Dispose();
@@ -140,6 +151,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 worker.BeginErrorReadLine();
 
                 var startupDeadline = DateTime.UtcNow + TimeSpan.FromSeconds(30);
+                var lastProbe = new HealthProbeResult(HealthProbe.ConnectionFailed, null, null, "尚未完成健康探测。");
                 while (DateTime.UtcNow < startupDeadline)
                 {
                     await Task.Delay(250).ConfigureAwait(false);
@@ -151,8 +163,9 @@ namespace GameSaveCenter.Playnite.Infrastructure
                         // Playnite startup used to misreport that normal hand-off as a failed
                         // cold start. Give the existing instance a short bounded chance to
                         // answer before surfacing a genuine launch failure.
-                        if (exitCode == 0 && await WaitForHealthAsync(
-                                TimeSpan.FromSeconds(5), expectedVersion, expectedBuildIdentity).ConfigureAwait(false))
+                        var existingProbe = await WaitForHealthAsync(
+                            TimeSpan.FromSeconds(5), expectedVersion, expectedBuildIdentity).ConfigureAwait(false);
+                        if (exitCode == 0 && existingProbe.IsHealthy)
                         {
                             AppendLog(logPath, "Worker 启动进程退出码 0，但已有健康实例，复用现有 Worker。");
                             Interlocked.CompareExchange(ref runningWorker, null, worker);
@@ -160,15 +173,20 @@ namespace GameSaveCenter.Playnite.Infrastructure
                             return;
                         }
 
-                        throw new InvalidOperationException($"Worker 启动后立即退出，退出码 {exitCode}。日志：{logPath}");
+                        AppendLog(logPath, DescribeHealth("Worker 启动子进程退出", existingProbe, expectedVersion, expectedBuildIdentity));
+                        throw new InvalidOperationException(
+                            $"Worker 启动进程已退出，退出码 {exitCode}。{DescribeHealth("Worker", existingProbe, expectedVersion, expectedBuildIdentity)}日志：{logPath}");
                     }
                     // A failed pipe connect is expected during cold start. Keep each probe
                     // short and enforce one real wall-clock deadline; the previous fixed
                     // 120-iteration loop multiplied a 2-second probe timeout into several
                     // minutes when the Worker never created its pipe.
-                    if (await IsHealthyAsync(TimeSpan.FromMilliseconds(650), expectedVersion, expectedBuildIdentity).ConfigureAwait(false)) return;
+                    lastProbe = await ProbeHealthAsync(TimeSpan.FromMilliseconds(650), expectedVersion, expectedBuildIdentity).ConfigureAwait(false);
+                    if (lastProbe.IsHealthy) return;
                 }
-                throw new TimeoutException($"Worker 已启动，但 30 秒内未就绪。请查看日志：{logPath}");
+                AppendLog(logPath, DescribeHealth("Worker 启动超时", lastProbe, expectedVersion, expectedBuildIdentity));
+                throw new TimeoutException(
+                    $"Worker 已启动，但 30 秒内未就绪。{DescribeHealth("Worker", lastProbe, expectedVersion, expectedBuildIdentity)}请查看日志：{logPath}");
             }
             finally
             {
@@ -213,73 +231,182 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
         public async Task<bool> IsHealthyAsync(TimeSpan? timeout = null, string? expectedVersion = null, string? expectedBuildIdentity = null)
         {
-            return await ProbeHealthAsync(timeout ?? TimeSpan.FromSeconds(2), expectedVersion, expectedBuildIdentity).ConfigureAwait(false) == HealthProbe.Healthy;
+            return (await ProbeHealthAsync(timeout ?? TimeSpan.FromSeconds(2), expectedVersion, expectedBuildIdentity).ConfigureAwait(false)).IsHealthy;
         }
 
-        private async Task<bool> WaitForHealthAsync(TimeSpan gracePeriod, string? expectedVersion = null, string? expectedBuildIdentity = null)
+        private async Task<HealthProbeResult> WaitForHealthAsync(TimeSpan gracePeriod, string? expectedVersion = null, string? expectedBuildIdentity = null)
         {
             var deadline = DateTime.UtcNow + gracePeriod;
+            var lastProbe = new HealthProbeResult(HealthProbe.ConnectionFailed, null, null, "尚未完成健康探测。");
             do
             {
-                var probe = await ProbeHealthAsync(TimeSpan.FromSeconds(2), expectedVersion, expectedBuildIdentity).ConfigureAwait(false);
-                if (probe == HealthProbe.Healthy || probe == HealthProbe.Incompatible) return probe == HealthProbe.Healthy;
+                lastProbe = await ProbeHealthAsync(TimeSpan.FromSeconds(2), expectedVersion, expectedBuildIdentity).ConfigureAwait(false);
+                if (lastProbe.IsHealthy || IsIncompatible(lastProbe.Status)) return lastProbe;
                 var remaining = deadline - DateTime.UtcNow;
                 if (remaining <= TimeSpan.Zero) break;
                 await Task.Delay(TimeSpan.FromMilliseconds(Math.Min(500, remaining.TotalMilliseconds))).ConfigureAwait(false);
             }
             while (DateTime.UtcNow < deadline);
 
-            return false;
+            return lastProbe;
         }
 
         private enum HealthProbe
         {
             Healthy,
-            Unavailable,
-            Incompatible
+            ConnectionFailed,
+            TimedOut,
+            PipeDisconnected,
+            ProtocolIncompatible,
+            VersionIncompatible,
+            BuildIdentityIncompatible,
+            UnknownBuildIdentity,
+            ServerRejected
         }
 
-        private async Task<HealthProbe> ProbeHealthAsync(TimeSpan timeout, string? expectedVersion, string? expectedBuildIdentity)
+        private sealed class HealthProbeResult
+        {
+            public HealthProbeResult(HealthProbe status, string? actualVersion, string? actualBuildIdentity, string detail)
+            {
+                Status = status;
+                ActualVersion = actualVersion;
+                ActualBuildIdentity = actualBuildIdentity;
+                Detail = detail ?? string.Empty;
+            }
+
+            public HealthProbe Status { get; }
+            public string? ActualVersion { get; }
+            public string? ActualBuildIdentity { get; }
+            public string Detail { get; }
+            public bool IsHealthy => Status == HealthProbe.Healthy;
+        }
+
+        private async Task<HealthProbeResult> ProbeHealthAsync(TimeSpan timeout, string? expectedVersion, string? expectedBuildIdentity)
         {
             try
             {
                 var handshake = await client.HandshakeAsync(timeout).ConfigureAwait(false);
-                if (!string.IsNullOrWhiteSpace(expectedVersion) &&
-                    !string.Equals(handshake.WorkerVersion, expectedVersion, StringComparison.OrdinalIgnoreCase))
-                    return HealthProbe.Incompatible;
-                if (!IsBuildIdentityCompatible(handshake.BuildIdentity, expectedBuildIdentity))
-                    return HealthProbe.Incompatible;
-                return HealthProbe.Healthy;
+                return EvaluateIdentity(handshake.WorkerVersion, handshake.BuildIdentity, expectedVersion, expectedBuildIdentity);
             }
             catch (WorkerRequestException ex) when (string.Equals(ex.Code, "PROTOCOL_MISMATCH", StringComparison.Ordinal))
             {
-                return HealthProbe.Incompatible;
+                return new HealthProbeResult(HealthProbe.ProtocolIncompatible, null, null, ex.Message);
             }
-            catch (WorkerRequestException)
+            catch (WorkerRequestException ex) when (ex.FailureKind == WorkerIpcFailureKind.ServerRejected)
             {
                 // Older Worker builds without the explicit handshake still answer Ping.
-                try
-                {
-                    var ping = await client.RequestAsync<WorkerPingDto>(MessageTypes.Ping, new { }, timeout).ConfigureAwait(false);
-                    if (!string.IsNullOrWhiteSpace(expectedVersion) &&
-                        !string.Equals(ping.Version, expectedVersion, StringComparison.OrdinalIgnoreCase))
-                        return HealthProbe.Incompatible;
-                    if (!IsBuildIdentityCompatible(ping.BuildIdentity, expectedBuildIdentity))
-                        return HealthProbe.Incompatible;
-                    return HealthProbe.Healthy;
-                }
-                catch
-                {
-                    return HealthProbe.Unavailable;
-                }
+                return await ProbeLegacyPingAsync(timeout, expectedVersion, expectedBuildIdentity).ConfigureAwait(false);
             }
-            catch { return HealthProbe.Unavailable; }
+            catch (WorkerRequestException ex)
+            {
+                return ClassifyTransportFailure(ex);
+            }
+            catch (TimeoutException ex)
+            {
+                return new HealthProbeResult(HealthProbe.TimedOut, null, null, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return new HealthProbeResult(HealthProbe.ConnectionFailed, null, null, ex.Message);
+            }
+        }
+
+        private async Task<HealthProbeResult> ProbeLegacyPingAsync(TimeSpan timeout, string? expectedVersion, string? expectedBuildIdentity)
+        {
+            try
+            {
+                var ping = await client.RequestAsync<WorkerPingDto>(MessageTypes.Ping, new { }, timeout).ConfigureAwait(false);
+                return EvaluateIdentity(ping.Version, ping.BuildIdentity, expectedVersion, expectedBuildIdentity);
+            }
+            catch (WorkerRequestException ex)
+            {
+                return ClassifyTransportFailure(ex);
+            }
+            catch (TimeoutException ex)
+            {
+                return new HealthProbeResult(HealthProbe.TimedOut, null, null, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return new HealthProbeResult(HealthProbe.ConnectionFailed, null, null, ex.Message);
+            }
+        }
+
+        private static HealthProbeResult EvaluateIdentity(
+            string? actualVersion,
+            string? actualBuildIdentity,
+            string? expectedVersion,
+            string? expectedBuildIdentity)
+        {
+            if (!string.IsNullOrWhiteSpace(expectedVersion) &&
+                !string.Equals(actualVersion, expectedVersion, StringComparison.OrdinalIgnoreCase))
+                return new HealthProbeResult(HealthProbe.VersionIncompatible, actualVersion, actualBuildIdentity, "Worker 版本不一致。");
+
+            if (!string.IsNullOrWhiteSpace(expectedBuildIdentity) &&
+                (BuildIdentity.IsUnknown(expectedBuildIdentity) || BuildIdentity.IsUnknown(actualBuildIdentity)))
+                return new HealthProbeResult(HealthProbe.UnknownBuildIdentity, actualVersion, actualBuildIdentity, "Worker 构建身份为空或 unknown，无法证明与插件同源。");
+
+            if (!IsBuildIdentityCompatible(actualBuildIdentity, expectedBuildIdentity))
+                return new HealthProbeResult(HealthProbe.BuildIdentityIncompatible, actualVersion, actualBuildIdentity, "Worker 构建身份不一致。");
+
+            return new HealthProbeResult(HealthProbe.Healthy, actualVersion, actualBuildIdentity, "握手成功。");
+        }
+
+        private static HealthProbeResult ClassifyTransportFailure(WorkerRequestException exception)
+        {
+            var status = exception.FailureKind switch
+            {
+                WorkerIpcFailureKind.Timeout => HealthProbe.TimedOut,
+                WorkerIpcFailureKind.PipeDisconnected => HealthProbe.PipeDisconnected,
+                WorkerIpcFailureKind.ConnectionFailed => HealthProbe.ConnectionFailed,
+                _ => HealthProbe.ServerRejected
+            };
+            return new HealthProbeResult(status, null, null, exception.Message);
+        }
+
+        private static bool IsTransient(HealthProbe status)
+            => status == HealthProbe.ConnectionFailed
+               || status == HealthProbe.TimedOut
+               || status == HealthProbe.PipeDisconnected
+               || status == HealthProbe.ServerRejected;
+
+        private static bool IsIncompatible(HealthProbe status)
+            => status == HealthProbe.ProtocolIncompatible
+               || status == HealthProbe.VersionIncompatible
+               || status == HealthProbe.BuildIdentityIncompatible
+               || status == HealthProbe.UnknownBuildIdentity;
+
+        private static string DescribeHealth(
+            string prefix,
+            HealthProbeResult probe,
+            string? expectedVersion,
+            string? expectedBuildIdentity)
+        {
+            var status = probe.Status switch
+            {
+                HealthProbe.Healthy => "健康",
+                HealthProbe.ConnectionFailed => "连接失败",
+                HealthProbe.TimedOut => "超时",
+                HealthProbe.PipeDisconnected => "管道断开",
+                HealthProbe.ProtocolIncompatible => "协议不兼容",
+                HealthProbe.VersionIncompatible => "版本不兼容",
+                HealthProbe.BuildIdentityIncompatible => "构建身份不兼容",
+                HealthProbe.UnknownBuildIdentity => "构建身份未知",
+                _ => "Worker 拒绝请求"
+            };
+            return $"{prefix}健康探测：{status}；详情={probe.Detail}；实际版本={Display(probe.ActualVersion)}，期望版本={Display(expectedVersion)}；实际构建身份={Display(probe.ActualBuildIdentity)}，期望构建身份={Display(expectedBuildIdentity)}。";
+        }
+
+        private static string Display(string? value)
+        {
+            var text = value?.Trim();
+            return string.IsNullOrWhiteSpace(text) ? "<空>" : text!;
         }
 
         internal static bool IsBuildIdentityCompatible(string? actual, string? expected)
             => string.IsNullOrWhiteSpace(expected)
-               || string.IsNullOrWhiteSpace(actual)
-               || string.Equals(actual, expected, StringComparison.OrdinalIgnoreCase);
+               || (!string.IsNullOrWhiteSpace(actual) &&
+                   string.Equals(actual, expected, StringComparison.OrdinalIgnoreCase));
 
         private static void AppendLog(string? path, string? message)
         {

@@ -7,6 +7,16 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
+$previousBuildCommit = [Environment]::GetEnvironmentVariable('GSC_BUILD_COMMIT', 'Process')
+
+function Get-CurrentBuildCommit {
+    try {
+        $commit = (& git -C $root rev-parse --verify HEAD 2>$null | Select-Object -First 1).ToString().Trim()
+        if ($commit -match '^[0-9a-fA-F]{7,40}$') { return $commit }
+    }
+    catch { }
+    return ''
+}
 
 function Invoke-DotNet {
     param(
@@ -24,6 +34,9 @@ function Invoke-DotNet {
 
 Push-Location $root
 try {
+    # Keep ordinary builds and package builds on the same explicit identity input.
+    # A non-Git build remains visibly unknown; package.ps1 rejects it before output.
+    $env:GSC_BUILD_COMMIT = Get-CurrentBuildCommit
     $dotnet = Get-Command dotnet -ErrorAction SilentlyContinue
     if (-not $dotnet) {
         throw '未找到 dotnet。请安装 .NET 8 或更高版本的稳定版 SDK，并确认 dotnet 在 PATH 中。'
@@ -104,5 +117,11 @@ try {
     Write-Host "`n构建与测试全部成功。下一步可运行 scripts/package.ps1" -ForegroundColor Green
 }
 finally {
+    if ($null -eq $previousBuildCommit) {
+        Remove-Item Env:GSC_BUILD_COMMIT -ErrorAction SilentlyContinue
+    }
+    else {
+        $env:GSC_BUILD_COMMIT = $previousBuildCommit
+    }
     Pop-Location
 }

@@ -17,7 +17,14 @@ public static class BuildIdentity
         if (informational != null && informational.Trim().Length > 0)
             return informational.Trim();
 
-        var assemblyName = assembly.GetName();
-        return assemblyName?.Version?.ToString() ?? Unknown;
+        return Unknown;
+    }
+
+    public static bool IsUnknown(string? identity)
+    {
+        var value = identity?.Trim();
+        return string.IsNullOrWhiteSpace(value)
+               || string.Equals(value, Unknown, StringComparison.OrdinalIgnoreCase)
+               || (value != null && value.IndexOf("+unknown", StringComparison.OrdinalIgnoreCase) >= 0);
     }
 }
