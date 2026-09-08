@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-08 Q6-02 媒体状态上下文隔离收口
+
+- 复核确认 `mediaDetailsLastSuccessUtc`、`mediaInboxLastSuccessUtc` 的单值语义会跨游戏、筛选和收件箱模式泄漏：A 成功后切到无缓存 B 首次失败，旧时间会把 B 误报成 Stale；旧 collection 仍在时也不能用 `Count > 0` 证明它属于当前上下文。
+- 新增 `MediaWorkspaceStateCache`，以稳定上下文键管理 Loading/Ready/Empty/Stale/Error 和成功时间。详情键包含 `SelectedGame.PlayniteId`、`MediaFilter`、`MediaSearchText`；收件箱键为 `MediaInboxMode`。同上下文失败保留缓存，新上下文先清空缓存语义。
+- 筛选/搜索/选中游戏变化时立即推进媒体分页代际、取消当前媒体请求、重置分页游标，并通知状态；收件箱模式切换在启动新代际前切换状态上下文。标题/消息的详情离线显示改用有效状态，避免 PresenterState=Offline 而标题仍显示 Ready/Stale。
+- 新增 `MediaWorkspaceStateCacheTests` 4 项，覆盖同上下文 Stale、A/B 首失败、旧响应晚到、两种收件箱模式和无缓存取消。全量 Release：构建 `0 warning/0 error`；Core `72/72`、Worker `303/304`（1 跳过）、Playnite `380/442`（62 跳过）。
+- 本阶段无 XAML 改动，未把上一轮已有 `render-qa` 的 25 个小视口/侧栏问题重新归因于本项；真实 Playnite/FusionX 状态切换和视频式故障注入仍待宿主验收。
+
 ## 2026-09-08 Q6-01 状态面板重试交互收口
 
 - 先用真实 WPF 模板行为测试复现，再改实现：三个带 `RetryCommand` 的面板原来由局部 `IsHitTestVisible="False"` 禁止整个子树命中；共享 `GscWorkspaceStatePresenter` 的空命令 `DataTrigger` 还会把失败态重试按钮保持为 `Collapsed`。测试观测到父命令和按钮 `Command` 都存在，因此没有把问题误写成 IPC、ViewModel 或集合刷新故障。

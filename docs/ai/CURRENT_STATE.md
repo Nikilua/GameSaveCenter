@@ -18,6 +18,13 @@
 - 真实模板 STA 行为测试 `WorkspaceStatePresenterBehaviorTests` 为 `5/5`：Error/Offline 按钮可见、绑定命令且命中目标；Loading 不穿透底层；Enter/Space 各执行一次。双主题 Error/Offline/Loading 状态探针 `stateprobe OK`，截图保存在 `docs/design/reviews/2026-09-08-quality/`。
 - Release 隔离构建/全量测试为 0 warning/error：Core `72/72`、Worker `303/304`（1 跳过）、Playnite `376/438`（62 跳过）。`validate-source.py`、XAML `19/19`、WPF 静态检查均无 error。完整 `render-qa` 本次报告仍有 25 个已有媒体小视口/侧栏快速切换门禁问题，未将其误报为 Q6-01 通过；真实 Playnite 仍待宿主验收。
 
+## 2026-09-08 Q6-02 媒体状态按上下文隔离（代码/测试已完成）
+
+- 根因已确认：媒体详情和收件箱原先各自只有一份全局成功时间/错误；游戏、筛选或收件箱模式切换后，任意旧成功都能把新上下文的首次失败误判为 Stale，并显示旧上下文时间。
+- 修复：新增按上下文键工作的 `MediaWorkspaceStateCache`。媒体详情键包含游戏 ID、媒体筛选和搜索词；收件箱键包含模式。同上下文刷新仍保留成功时间并进入 Stale，新上下文先清空旧缓存语义；筛选/搜索/选中游戏变化立即推进媒体请求代际并取消旧请求，晚到响应不能完成当前上下文。离线标题/消息也统一从有效状态派生。
+- 新增 `MediaWorkspaceStateCacheTests`：同上下文失败保留 Stale 时间、A 成功/B 首失败为 Error、旧响应不能覆盖 B、待归类/已忽略时间隔离、无缓存取消不伪造 Ready，共 `4` 项。
+- Release 隔离构建与全量测试：0 warning/error；Core `72/72`、Worker `303/304`（1 跳过）、Playnite `380/442`（62 跳过）。XAML `19/19` 通过；本项无 XAML 改动，未重复运行完整 `render-qa`，此前 25 个独立小视口/侧栏问题仍按原边界保留。真实 Playnite 状态切换、故障注入与录屏仍待宿主验收，不能据此宣称视频问题已完全解决。
+
 ## 2026-09-08 连续开发队列（32 项）
 
 - 用户要求增加任务计划，减少逐项来回确认。实施入口改为 [32 项 / 8 阶段连续开发计划](CONTINUOUS_DEVELOPMENT_PLAN_2026-09-08.md)，L01～04 承接 Q6，后续覆盖验收底座、设置/共享交互、四个主要页面、常用流程、大库性能、稳定性与发布。

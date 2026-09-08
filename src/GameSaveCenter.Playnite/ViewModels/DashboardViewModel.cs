@@ -1022,7 +1022,10 @@ namespace GameSaveCenter.Playnite.ViewModels
             get => mediaSearchText;
             set
             {
-                SetValue(ref mediaSearchText,value??string.Empty);
+                var normalized = value ?? string.Empty;
+                var changed = !string.Equals(mediaSearchText, normalized, StringComparison.Ordinal);
+                SetValue(ref mediaSearchText, normalized);
+                if (changed) InvalidateMediaDetailsContext();
                 mediaSearchRefresh.Schedule(value);
                 ScheduleMediaPageQuery();
                 uiStateSave?.Schedule();
@@ -1033,7 +1036,10 @@ namespace GameSaveCenter.Playnite.ViewModels
             get => mediaFilter;
             set
             {
-                SetValue(ref mediaFilter,string.IsNullOrWhiteSpace(value)?"全部":value);
+                var normalized = string.IsNullOrWhiteSpace(value) ? "全部" : value;
+                var changed = !string.Equals(mediaFilter, normalized, StringComparison.Ordinal);
+                SetValue(ref mediaFilter, normalized);
+                if (changed) InvalidateMediaDetailsContext();
                 MediaView.Refresh();
                 ScheduleMediaPageQuery();
                 uiStateSave?.Schedule();
@@ -1048,6 +1054,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 var normalized = string.Equals(value, "已忽略", StringComparison.Ordinal) ? "已忽略" : "待归类";
                 if (string.Equals(mediaInboxMode, normalized, StringComparison.Ordinal)) return;
                 SetValue(ref mediaInboxMode, normalized);
+                mediaInboxStateCache.SwitchContext(normalized);
                 OnPropertyChanged(nameof(MediaInboxTitle));
                 OnPropertyChanged(nameof(MediaInboxEmptyText));
                 ApplyMediaInboxMode();
@@ -4159,6 +4166,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             ApplyOnUi(() =>
             {
+                InvalidateMediaDetailsContext();
                 Backups.Clear();
                 Media.Clear();
                 mediaPageAccumulator.Clear();

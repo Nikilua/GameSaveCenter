@@ -14,18 +14,74 @@ namespace GameSaveCenter.Playnite.ViewModels
     }
 
     /// <summary>
+    /// Keeps a workspace's cache timestamp and error scoped to the request context that
+    /// produced them. A successful load for game A must not make a failed first load for
+    /// game B look stale, even when the old collection is still present while the request
+    /// is in flight.
+    /// </summary>
+    internal sealed class MediaWorkspaceStateCache
+    {
+        public WorkspaceDataState State { get; private set; } = WorkspaceDataState.Empty;
+        public DateTime? LastSuccessUtc { get; private set; }
+        public string ErrorMessage { get; private set; } = string.Empty;
+        public string ContextKey { get; private set; } = string.Empty;
+        public bool HasCurrentContextSuccess => LastSuccessUtc.HasValue;
+
+        public bool SwitchContext(string contextKey)
+        {
+            contextKey = contextKey ?? string.Empty;
+            if (string.Equals(ContextKey, contextKey, StringComparison.Ordinal)) return false;
+
+            ContextKey = contextKey;
+            State = WorkspaceDataState.Empty;
+            LastSuccessUtc = null;
+            ErrorMessage = string.Empty;
+            return true;
+        }
+
+        public void Begin(string contextKey)
+        {
+            SwitchContext(contextKey);
+            State = WorkspaceDataState.Loading;
+            ErrorMessage = string.Empty;
+        }
+
+        public void Complete(string contextKey, bool hasItems)
+        {
+            if (!IsCurrent(contextKey)) return;
+            LastSuccessUtc = DateTime.UtcNow;
+            ErrorMessage = string.Empty;
+            State = hasItems ? WorkspaceDataState.Ready : WorkspaceDataState.Empty;
+        }
+
+        public void Fail(string contextKey, string errorMessage)
+        {
+            if (!IsCurrent(contextKey)) return;
+            ErrorMessage = errorMessage ?? "未知错误";
+            State = HasCurrentContextSuccess ? WorkspaceDataState.Stale : WorkspaceDataState.Error;
+        }
+
+        public void Cancel(string contextKey, bool hasItems)
+        {
+            if (!IsCurrent(contextKey)) return;
+            State = HasCurrentContextSuccess
+                ? (hasItems ? WorkspaceDataState.Ready : WorkspaceDataState.Empty)
+                : WorkspaceDataState.Empty;
+        }
+
+        private bool IsCurrent(string contextKey)
+            => string.Equals(ContextKey, contextKey ?? string.Empty, StringComparison.Ordinal);
+    }
+
+    /// <summary>
     /// Real workspace state signals consumed by the shared WorkspaceStatePresenter.
     /// These values are derived from live Worker snapshots and collection state, not
     /// simulated by the UI.
     /// </summary>
     public sealed partial class DashboardViewModel
     {
-        private WorkspaceDataState mediaDetailsState = WorkspaceDataState.Empty;
-        private DateTime? mediaDetailsLastSuccessUtc;
-        private string mediaDetailsErrorMessage = string.Empty;
-        private WorkspaceDataState mediaInboxState = WorkspaceDataState.Empty;
-        private DateTime? mediaInboxLastSuccessUtc;
-        private string mediaInboxErrorMessage = string.Empty;
+        private readonly MediaWorkspaceStateCache mediaDetailsStateCache = new MediaWorkspaceStateCache();
+        private readonly MediaWorkspaceStateCache mediaInboxStateCache = new MediaWorkspaceStateCache();
         private WorkspaceDataState maintenanceState = WorkspaceDataState.Empty;
         private DateTime? maintenanceLastSuccessUtc;
         private string maintenanceErrorMessage = string.Empty;
@@ -37,13 +93,13 @@ namespace GameSaveCenter.Playnite.ViewModels
         public bool IsTrainerCatalogLoading { get => isTrainerCatalogLoading; private set => SetValue(ref isTrainerCatalogLoading, value); }
         public bool IsTrainerReleasesLoading { get => isTrainerReleasesLoading; private set => SetValue(ref isTrainerReleasesLoading, value); }
 
-        public string MediaDetailsState => mediaDetailsState.ToString();
+        public string MediaDetailsState => mediaDetailsStateCache.State.ToString();
         public string MediaDetailsPresenterState => IsWorkerOffline
             ? WorkspaceDataState.Offline.ToString()
-            : mediaDetailsState == WorkspaceDataState.Stale
+            : mediaDetailsStateCache.State == WorkspaceDataState.Stale
                 ? "Degraded"
-                : mediaDetailsState.ToString();
-        public string MediaDetailsStateTitle => mediaDetailsState switch
+                : mediaDetailsStateCache.State.ToString();
+        public string MediaDetailsStateTitle => EffectiveMediaDetailsState switch
         {
             WorkspaceDataState.Loading => "正在读取当前游戏媒体",
             WorkspaceDataState.Empty => "当前筛选条件没有媒体",
@@ -52,7 +108,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             WorkspaceDataState.Offline => "Worker 当前离线",
             _ => string.Empty
         };
-        public string MediaDetailsStateMessage => mediaDetailsState switch
+        public string MediaDetailsStateMessage => EffectiveMediaDetailsState switch
         {
             WorkspaceDataState.Loading => "正在读取媒体、来源规则和归档摘要。",
             WorkspaceDataState.Empty => "导入截图或录像后，它们会显示在这里。",
@@ -61,37 +117,37 @@ namespace GameSaveCenter.Playnite.ViewModels
             WorkspaceDataState.Offline => "媒体列表和归类操作暂时不可用，Worker 恢复后可重新读取。",
             _ => string.Empty
         };
-        public string MediaDetailsStateDetail => FormatStateDetail(mediaDetailsLastSuccessUtc, mediaDetailsErrorMessage);
+        public string MediaDetailsStateDetail => FormatStateDetail(mediaDetailsStateCache.LastSuccessUtc, mediaDetailsStateCache.ErrorMessage);
         public bool MediaDetailsStateOverlayVisible => IsWorkerOffline
-            || mediaDetailsState == WorkspaceDataState.Loading
-            || (mediaDetailsState == WorkspaceDataState.Error && Media.Count == 0);
-        public bool MediaDetailsStaleVisible => !IsWorkerOffline && mediaDetailsState == WorkspaceDataState.Stale;
+            || mediaDetailsStateCache.State == WorkspaceDataState.Loading
+            || (mediaDetailsStateCache.State == WorkspaceDataState.Error && !mediaDetailsStateCache.HasCurrentContextSuccess);
+        public bool MediaDetailsStaleVisible => !IsWorkerOffline && mediaDetailsStateCache.State == WorkspaceDataState.Stale;
 
-        public string MediaInboxState => mediaInboxState.ToString();
+        public string MediaInboxState => mediaInboxStateCache.State.ToString();
         public string MediaInboxCountDisplay
             => IsWorkerOffline
-                ? (mediaInboxLastSuccessUtc.HasValue ? "缓存" : "—")
-                : mediaInboxState == WorkspaceDataState.Loading || mediaInboxState == WorkspaceDataState.Error || !mediaInboxLastSuccessUtc.HasValue
+                ? (mediaInboxStateCache.HasCurrentContextSuccess ? "缓存" : "—")
+                : mediaInboxStateCache.State == WorkspaceDataState.Loading || mediaInboxStateCache.State == WorkspaceDataState.Error || !mediaInboxStateCache.HasCurrentContextSuccess
                     ? "—"
                     : MediaInboxItems.Count.ToString();
         public string MediaInboxCountCaption
             => IsWorkerOffline
-                ? (mediaInboxLastSuccessUtc.HasValue ? $"离线 · 缓存于 {mediaInboxLastSuccessUtc.Value.ToLocalTime():MM-dd HH:mm}" : "离线 · 无法读取")
-                : mediaInboxState == WorkspaceDataState.Loading
+                ? (mediaInboxStateCache.HasCurrentContextSuccess ? $"离线 · 缓存于 {mediaInboxStateCache.LastSuccessUtc.GetValueOrDefault().ToLocalTime():MM-dd HH:mm}" : "离线 · 无法读取")
+                : mediaInboxStateCache.State == WorkspaceDataState.Loading
                     ? "正在读取 · 来源文件始终保留"
-                    : mediaInboxState == WorkspaceDataState.Error || !mediaInboxLastSuccessUtc.HasValue
+                    : mediaInboxStateCache.State == WorkspaceDataState.Error || !mediaInboxStateCache.HasCurrentContextSuccess
                         ? "无法读取 · 尚未确认数量"
-                        : mediaInboxState == WorkspaceDataState.Stale
-                            ? $"缓存 · 上次成功 {mediaInboxLastSuccessUtc.Value.ToLocalTime():MM-dd HH:mm}"
+                        : mediaInboxStateCache.State == WorkspaceDataState.Stale
+                            ? $"缓存 · 上次成功 {mediaInboxStateCache.LastSuccessUtc.GetValueOrDefault().ToLocalTime():MM-dd HH:mm}"
                             : "待归类 · 来源文件始终保留";
         public string MediaInboxPresenterState => IsWorkerOffline
             ? WorkspaceDataState.Offline.ToString()
-            : mediaInboxState == WorkspaceDataState.Stale
+            : mediaInboxStateCache.State == WorkspaceDataState.Stale
                 ? "Degraded"
-                : mediaInboxState.ToString();
+                : mediaInboxStateCache.State.ToString();
         public string MediaInboxStateTitle => IsWorkerOffline
             ? "无法读取待归类媒体"
-            : mediaInboxState switch
+            : mediaInboxStateCache.State switch
         {
             WorkspaceDataState.Loading => "正在读取媒体收件箱",
             WorkspaceDataState.Empty => MediaInboxTitle,
@@ -101,10 +157,10 @@ namespace GameSaveCenter.Playnite.ViewModels
             _ => string.Empty
         };
         public string MediaInboxStateMessage => IsWorkerOffline
-            ? (mediaInboxLastSuccessUtc.HasValue
+            ? (mediaInboxStateCache.HasCurrentContextSuccess
                 ? "Worker 当前离线；列表保留上次成功读取的缓存，恢复连接后才能确认最新数量。"
                 : "Worker 当前离线；恢复连接后才能确认列表是否为空。")
-            : mediaInboxState switch
+            : mediaInboxStateCache.State switch
         {
             WorkspaceDataState.Loading => "正在读取待归类和已忽略媒体；已有内容会保留到新结果确认后。",
             WorkspaceDataState.Empty => MediaInboxEmptyText,
@@ -113,11 +169,24 @@ namespace GameSaveCenter.Playnite.ViewModels
             WorkspaceDataState.Offline => "媒体收件箱暂时不可用；Worker 恢复后可重新读取列表。",
             _ => string.Empty
         };
-        public string MediaInboxStateDetail => FormatStateDetail(mediaInboxLastSuccessUtc, mediaInboxErrorMessage);
+        public string MediaInboxStateDetail => FormatStateDetail(mediaInboxStateCache.LastSuccessUtc, mediaInboxStateCache.ErrorMessage);
         public bool MediaInboxStateOverlayVisible => IsWorkerOffline
-            || mediaInboxState == WorkspaceDataState.Loading
-            || (mediaInboxState == WorkspaceDataState.Error && MediaInboxItems.Count == 0);
-        public bool MediaInboxStaleVisible => !IsWorkerOffline && mediaInboxState == WorkspaceDataState.Stale;
+            || mediaInboxStateCache.State == WorkspaceDataState.Loading
+            || (mediaInboxStateCache.State == WorkspaceDataState.Error && !mediaInboxStateCache.HasCurrentContextSuccess);
+        public bool MediaInboxStaleVisible => !IsWorkerOffline && mediaInboxStateCache.State == WorkspaceDataState.Stale;
+
+        private WorkspaceDataState EffectiveMediaDetailsState => IsWorkerOffline
+            ? WorkspaceDataState.Offline
+            : mediaDetailsStateCache.State;
+
+        private string CurrentMediaDetailsContextKey => string.Join("\u001f", new[]
+        {
+            SelectedGame?.PlayniteId ?? string.Empty,
+            MediaFilter ?? string.Empty,
+            MediaSearchText ?? string.Empty
+        });
+
+        private string CurrentMediaInboxContextKey => MediaInboxMode ?? string.Empty;
 
         public string MaintenanceState => maintenanceState.ToString();
         public string MaintenancePresenterState => IsWorkerOffline
@@ -189,6 +258,20 @@ namespace GameSaveCenter.Playnite.ViewModels
             OnPropertyChanged(nameof(MediaDetailsStaleVisible));
         }
 
+        /// <summary>
+        /// Invalidates the media-detail request context as soon as its game/filter/search
+        /// identity changes. This closes the window where an older same-game request could
+        /// complete before the debounced replacement request increments the generation.
+        /// </summary>
+        private void InvalidateMediaDetailsContext()
+        {
+            Interlocked.Increment(ref mediaPageGeneration);
+            CancelMediaPageRequest();
+            mediaDetailsStateCache.SwitchContext(CurrentMediaDetailsContextKey);
+            ResetMediaPageState();
+            NotifyMediaDetailsStateChanged();
+        }
+
         private void NotifyMediaInboxStateChanged()
         {
             OnPropertyChanged(nameof(MediaInboxState));
@@ -216,36 +299,28 @@ namespace GameSaveCenter.Playnite.ViewModels
         private void BeginMediaDetailsLoad(long generation = 0)
         {
             if (generation != 0 && generation != Interlocked.Read(ref mediaPageGeneration)) return;
-            mediaDetailsState = WorkspaceDataState.Loading;
-            mediaDetailsErrorMessage = string.Empty;
+            mediaDetailsStateCache.Begin(CurrentMediaDetailsContextKey);
             NotifyMediaDetailsStateChanged();
         }
 
         private void CompleteMediaDetailsLoad(long generation = 0)
         {
             if (generation != 0 && generation != Interlocked.Read(ref mediaPageGeneration)) return;
-            mediaDetailsLastSuccessUtc = DateTime.UtcNow;
-            mediaDetailsErrorMessage = string.Empty;
-            mediaDetailsState = Media.Count == 0 ? WorkspaceDataState.Empty : WorkspaceDataState.Ready;
+            mediaDetailsStateCache.Complete(CurrentMediaDetailsContextKey, Media.Count > 0);
             NotifyMediaDetailsStateChanged();
         }
 
         private void FailMediaDetailsLoad(Exception error, long generation = 0)
         {
             if (generation != 0 && generation != Interlocked.Read(ref mediaPageGeneration)) return;
-            mediaDetailsErrorMessage = error?.Message ?? "未知错误";
-            mediaDetailsState = mediaDetailsLastSuccessUtc.HasValue || Media.Count > 0
-                ? WorkspaceDataState.Stale
-                : WorkspaceDataState.Error;
+            mediaDetailsStateCache.Fail(CurrentMediaDetailsContextKey, error?.Message ?? "未知错误");
             NotifyMediaDetailsStateChanged();
         }
 
         private void CancelMediaDetailsLoad(long generation = 0)
         {
             if (generation != 0 && generation != Interlocked.Read(ref mediaPageGeneration)) return;
-            mediaDetailsState = mediaDetailsLastSuccessUtc.HasValue
-                ? (Media.Count == 0 ? WorkspaceDataState.Empty : WorkspaceDataState.Ready)
-                : WorkspaceDataState.Empty;
+            mediaDetailsStateCache.Cancel(CurrentMediaDetailsContextKey, Media.Count > 0);
             NotifyMediaDetailsStateChanged();
         }
 
@@ -253,8 +328,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             if (!string.Equals(MediaInboxMode, mode, StringComparison.Ordinal)
                 || (generation != 0 && generation != Interlocked.Read(ref mediaInboxLoadGeneration))) return;
-            mediaInboxState = WorkspaceDataState.Loading;
-            mediaInboxErrorMessage = string.Empty;
+            mediaInboxStateCache.Begin(CurrentMediaInboxContextKey);
             NotifyMediaInboxStateChanged();
         }
 
@@ -262,9 +336,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             if (!string.Equals(MediaInboxMode, mode, StringComparison.Ordinal)
                 || (generation != 0 && generation != Interlocked.Read(ref mediaInboxLoadGeneration))) return;
-            mediaInboxLastSuccessUtc = DateTime.UtcNow;
-            mediaInboxErrorMessage = string.Empty;
-            mediaInboxState = MediaInboxItems.Count == 0 ? WorkspaceDataState.Empty : WorkspaceDataState.Ready;
+            mediaInboxStateCache.Complete(CurrentMediaInboxContextKey, MediaInboxItems.Count > 0);
             NotifyMediaInboxStateChanged();
         }
 
@@ -272,10 +344,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             if (!string.Equals(MediaInboxMode, mode, StringComparison.Ordinal)
                 || (generation != 0 && generation != Interlocked.Read(ref mediaInboxLoadGeneration))) return;
-            mediaInboxErrorMessage = error?.Message ?? "未知错误";
-            mediaInboxState = mediaInboxLastSuccessUtc.HasValue || MediaInboxItems.Count > 0
-                ? WorkspaceDataState.Stale
-                : WorkspaceDataState.Error;
+            mediaInboxStateCache.Fail(CurrentMediaInboxContextKey, error?.Message ?? "未知错误");
             NotifyMediaInboxStateChanged();
         }
 
@@ -283,9 +352,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             if (!string.Equals(MediaInboxMode, mode, StringComparison.Ordinal)
                 || (generation != 0 && generation != Interlocked.Read(ref mediaInboxLoadGeneration))) return;
-            mediaInboxState = mediaInboxLastSuccessUtc.HasValue
-                ? (MediaInboxItems.Count == 0 ? WorkspaceDataState.Empty : WorkspaceDataState.Ready)
-                : WorkspaceDataState.Empty;
+            mediaInboxStateCache.Cancel(CurrentMediaInboxContextKey, MediaInboxItems.Count > 0);
             NotifyMediaInboxStateChanged();
         }
 
