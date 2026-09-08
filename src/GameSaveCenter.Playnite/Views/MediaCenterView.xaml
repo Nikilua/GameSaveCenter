@@ -158,8 +158,8 @@
                 </StackPanel>
                 <Rectangle Grid.Column="5" Width="1" Fill="{DynamicResource GscTableDividerBrush}" HorizontalAlignment="Center" VerticalAlignment="Stretch" Margin="0,4"/>
                 <StackPanel Grid.Column="6" Margin="14,2,14,0">
-                    <TextBlock Text="{Binding Snapshot.UnassignedMediaCount, Mode=OneWay}" Foreground="{DynamicResource GscWarningBrush}" FontSize="26" FontWeight="SemiBold"/>
-                    <TextBlock Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0" TextWrapping="Wrap" Text="待归类 · 来源文件始终保留"/>
+                    <TextBlock Text="{Binding MediaInboxCountDisplay, Mode=OneWay}" Foreground="{DynamicResource GscWarningBrush}" FontSize="26" FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding MediaInboxCountCaption, Mode=OneWay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0" TextWrapping="Wrap"/>
                 </StackPanel>
             </Grid>
         </Border>
@@ -172,8 +172,8 @@
                  <ScrollViewer x:Name="MediaInboxPageScrollViewer" Style="{DynamicResource GscPageScrollViewer}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
                                HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top">
-                 <Grid x:Name="MediaInboxScrollSurface" HorizontalAlignment="Stretch" VerticalAlignment="Top">
-                 <Grid Margin="0,12,0,0" VerticalAlignment="Stretch">
+                 <Grid x:Name="MediaInboxScrollSurface" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                 <Grid x:Name="MediaInboxPageSurface" Margin="0,12,0,0" VerticalAlignment="Stretch">
                      <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                     <Border x:Name="MediaInboxInfoBand" Style="{DynamicResource GscRedesignInfoBand}" Margin="0,0,0,10">
                         <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
@@ -184,9 +184,9 @@
                     <Grid x:Name="MediaInboxLayout" Grid.Row="1" MinHeight="0" ClipToBounds="True">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscInspectorWidth}"/></Grid.ColumnDefinitions>
                         <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-                        <Border Grid.Column="0" Grid.Row="0" x:Name="MediaInboxTableFrame" Style="{StaticResource MediaTableFrame}" Padding="14,12,14,0" MinHeight="0" ClipToBounds="True" VerticalAlignment="Top">
-                        <Grid VerticalAlignment="Top">
-                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                        <Border Grid.Column="0" Grid.Row="0" x:Name="MediaInboxTableFrame" Style="{StaticResource MediaTableFrame}" Padding="14,12,14,12" MinHeight="0" ClipToBounds="True" VerticalAlignment="Stretch">
+                        <Grid VerticalAlignment="Stretch">
+                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                             <StackPanel Grid.Row="0">
                             <Border x:Name="MediaInboxStaleBanner" Padding="10" Margin="0,0,0,10">
                                 <Border.Style>
@@ -221,7 +221,7 @@
                                 <ui:Button x:Name="MediaInboxCompactDetailsButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="查看预览与归类 ›" ToolTip="打开所选媒体的预览、归类建议和安全操作" AutomationProperties.Name="查看所选媒体预览与归类" Click="OnMediaInboxCompactDetailsClick" Visibility="Collapsed" Margin="8,0,0,4"/>
                             </WrapPanel>
                             </StackPanel>
-                            <DataGrid Grid.Row="1" x:Name="MediaInboxGrid" Tag="FiniteViewport" Style="{StaticResource MediaDataGrid}" MinHeight="236" VerticalAlignment="Top" ItemsSource="{Binding MediaInboxItems}" SelectedItem="{Binding SelectedInboxMedia}"
+                            <DataGrid Grid.Row="1" x:Name="MediaInboxGrid" Tag="FiniteViewport" Style="{StaticResource MediaDataGrid}" MinHeight="0" VerticalAlignment="Stretch" ItemsSource="{Binding MediaInboxItems}" SelectedItem="{Binding SelectedInboxMedia}"
                                       SelectionMode="Extended" SelectionUnit="FullRow" SelectionChanged="OnMediaInboxSelectionChanged"
                                       RowStyle="{StaticResource MediaInboxStableRowStyle}"
                                       VerticalContentAlignment="Top"
@@ -255,12 +255,47 @@
                                 </Style>
                             </ui:WorkspaceStatePresenter.Style>
                         </ui:WorkspaceStatePresenter>
+                        <Grid x:Name="MediaInboxFooter" Grid.Row="2" Margin="0,10,0,0" VerticalAlignment="Center">
+                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                            <WrapPanel Grid.Row="0" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding MediaInboxLoadedSummary, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,10,4" AutomationProperties.Name="媒体收件箱加载统计"/>
+                                <TextBlock x:Name="MediaInboxWindowAnchorNotice" Text="列表窗口已前移，当前位置不可恢复" Style="{DynamicResource GscCaptionStyle}" Foreground="{DynamicResource GscWarningBrush}" VerticalAlignment="Center" Margin="0,0,8,4" Visibility="Collapsed"/>
+                                <ui:Button x:Name="ReloadMediaInboxButton" Content="返回最新" Command="{Binding ReloadMediaInboxCommand}" Click="OnReloadMediaInboxClick" ToolTip="重新载入较新的媒体收件箱内容并回到列表顶部" AutomationProperties.Name="返回最新媒体收件箱内容" Visibility="Collapsed" Margin="0,0,8,4"/>
+                                <TextBlock Text="{Binding MediaClassificationPreviewSummary}" Style="{DynamicResource GscCaptionStyle}" TextTrimming="CharacterEllipsis" Width="220" VerticalAlignment="Center" Margin="0,0,10,4" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" AutomationProperties.Name="媒体归类建议状态"/>
+                                <TextBlock Text="选择媒体后可在右侧预览并归类" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,10,4"/>
+                                <ui:Button x:Name="MediaInboxHistoryButton" Content="批次历史" Style="{DynamicResource GscWpfUiSecondaryButton}" Click="OnMediaInboxHistoryClick" ToolTip="单独打开媒体归类批次历史" AutomationProperties.Name="打开媒体归类批次历史" Margin="0,0,8,4"/>
+                                <ui:Button Content="加载更多" Command="{Binding LoadMoreMediaInboxCommand}" Click="OnLoadMoreMediaInboxClick" ToolTip="加载下一页媒体收件箱项目" AutomationProperties.Name="加载更多媒体收件箱项目" Margin="0,0,0,4">
+                                    <ui:Button.Style>
+                                        <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiSecondaryButton}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers><DataTrigger Binding="{Binding MediaInboxPageHasMore}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                        </Style>
+                                    </ui:Button.Style>
+                                </ui:Button>
+                            </WrapPanel>
+                            <WrapPanel x:Name="MediaInboxSecondaryActions" Grid.Row="1" VerticalAlignment="Center" Margin="0,8,0,0">
+                                <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding IgnoreInboxMediaBatchCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Content="忽略所选" Margin="0,0,8,4"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding PreviewMediaClassificationCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Content="生成归类建议" ToolTip="根据来源规则、游戏会话和进程映射生成可解释预览" Margin="0,0,8,4"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding ApplyMediaClassificationCommand}" Content="应用高置信建议" ToolTip="只应用预览中唯一且高置信的建议" Margin="0,0,8,4"/>
+                                <ui:Button Command="{Binding RestoreIgnoredMediaBatchCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Content="恢复到待归类" AutomationProperties.Name="恢复所选已忽略媒体到待归类" Margin="0,0,8,4">
+                                    <ui:Button.Style>
+                                        <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiPrimaryActionButton}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers><DataTrigger Binding="{Binding MediaInboxMode}" Value="已忽略"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                        </Style>
+                                    </ui:Button.Style>
+                                </ui:Button>
+                                <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding UndoMediaClassificationCommand}" Content="撤销上次建议批次" ToolTip="只撤销未被后续修改的建议项目" Margin="0,0,0,4"/>
+                            </WrapPanel>
+                        </Grid>
                         </Grid>
                     </Border>
                     <ScrollViewer x:Name="MediaInboxInspectorScrollViewer" Grid.Column="2" Grid.Row="0" Style="{DynamicResource GscInspectorScrollViewer}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                         <Border x:Name="MediaInboxInspectorFrame" Style="{DynamicResource GscReadingCardStyle}" Padding="14">
                             <StackPanel>
                                 <TextBlock Text="媒体详情" Style="{DynamicResource GscSectionTitleStyle}"/>
+                                <TextBlock x:Name="MediaInboxNoSelectionHint" Text="选择一项媒体查看预览、归类建议和安全操作；批次历史可单独打开。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,8,0,0" Visibility="Collapsed"/>
+                                <StackPanel x:Name="MediaInboxSelectionDetails">
                                 <TextBlock Text="{Binding SelectedInboxMedia.FileName, TargetNullValue=选择待归类媒体}" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedInboxMedia.FileName}" Margin="0,6,0,0"/>
                                 <TextBlock Text="{Binding SelectedInboxMedia.ArchivePath}" Foreground="{DynamicResource GscMutedTextBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedInboxMedia.ArchivePath}" Margin="0,4,0,0"/>
                                 <Border x:Name="MediaInboxPreviewPanel" Height="178" CornerRadius="12" ClipToBounds="True" Background="{DynamicResource GscControlFillBrush}" Margin="0,14,0,14">
@@ -282,11 +317,12 @@
                                     <StackPanel Grid.Column="1"><TextBlock Text="来源" Style="{DynamicResource GscCaptionStyle}"/><TextBlock Text="{Binding SelectedInboxMedia.SourceDisplay, TargetNullValue=—}" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedInboxMedia.SourceDisplay}" Margin="0,3,0,0"/></StackPanel>
                                 </Grid>
                                 <TextBlock Text="{Binding SelectedInboxMedia.ClassificationReason, TargetNullValue=暂无归类原因}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,12,0,0"/>
+                                </StackPanel>
                                 <Border Style="{DynamicResource GscRedesignInfoBand}" Padding="10" Margin="0,14,0,0">
                                     <StackPanel>
                                         <TextBlock Text="归类建议预览" Style="{DynamicResource GscSectionTitleStyle}"/>
                                         <TextBlock Text="{Binding MediaClassificationPreviewSummary}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/>
-                                        <ListBox x:Name="MediaClassificationPreviewItems" Tag="FiniteViewport" ItemsSource="{Binding MediaClassificationPreview.Items}" MinHeight="236" MaxHeight="260" Margin="0,8,0,0" BorderThickness="0" Background="Transparent" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
+                                        <ListBox x:Name="MediaClassificationPreviewItems" Tag="FiniteViewport" ItemsSource="{Binding MediaClassificationPreview.Items}" MaxHeight="260" Margin="0,8,0,0" BorderThickness="0" Background="Transparent" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
                                             <ListBox.Style>
                                                 <Style TargetType="ListBox">
                                                     <Setter Property="Visibility" Value="Visible"/>
@@ -320,7 +356,7 @@
                                         <ComboBox x:Name="MediaClassificationHistoryStateCombo" ItemsSource="{Binding MediaClassificationHistoryStateOptions}" SelectedValuePath="Code" SelectedValue="{Binding MediaClassificationHistoryStateFilter}" SelectionChanged="OnMediaClassificationHistoryStateChanged" Style="{DynamicResource GscWpfUiComboBox}" Margin="0,8,0,0" AutomationProperties.Name="媒体归类批次状态筛选">
                                             <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Display}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Display}"/></DataTemplate></ComboBox.ItemTemplate>
                                         </ComboBox>
-                                        <ListBox x:Name="MediaClassificationHistoryList" Tag="FiniteViewport" ItemsSource="{Binding MediaClassificationHistoryItems}" SelectedItem="{Binding SelectedMediaClassificationBatch, Mode=TwoWay}" MinHeight="236" MaxHeight="260" Margin="0,8,0,0" BorderThickness="0" Background="Transparent" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" AutomationProperties.Name="媒体归类批次历史">
+                                        <ListBox x:Name="MediaClassificationHistoryList" Tag="FiniteViewport" ItemsSource="{Binding MediaClassificationHistoryItems}" SelectedItem="{Binding SelectedMediaClassificationBatch, Mode=TwoWay}" MaxHeight="260" Margin="0,8,0,0" BorderThickness="0" Background="Transparent" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" AutomationProperties.Name="媒体归类批次历史">
                                             <ListBox.ItemContainerStyle>
                                                 <Style TargetType="ListBoxItem">
                                                     <Setter Property="Padding" Value="0"/>
@@ -379,38 +415,6 @@
                             </StackPanel>
                         </Border>
                     </ScrollViewer>
-                    </Grid>
-                    <Grid x:Name="MediaInboxFooter" Grid.Row="2" Margin="16,12,16,0" VerticalAlignment="Center">
-                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-                        <WrapPanel Grid.Row="0" VerticalAlignment="Center">
-                            <TextBlock Text="{Binding MediaInboxLoadedSummary, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,10,4" AutomationProperties.Name="媒体收件箱加载统计"/>
-                            <TextBlock x:Name="MediaInboxWindowAnchorNotice" Text="列表窗口已前移，当前位置不可恢复" Style="{DynamicResource GscCaptionStyle}" Foreground="{DynamicResource GscWarningBrush}" VerticalAlignment="Center" Margin="0,0,8,4" Visibility="Collapsed"/>
-                            <ui:Button x:Name="ReloadMediaInboxButton" Content="返回最新" Command="{Binding ReloadMediaInboxCommand}" Click="OnReloadMediaInboxClick" ToolTip="重新载入较新的媒体收件箱内容并回到列表顶部" AutomationProperties.Name="返回最新媒体收件箱内容" Visibility="Collapsed" Margin="0,0,8,4"/>
-                            <TextBlock Text="{Binding MediaClassificationPreviewSummary}" Style="{DynamicResource GscCaptionStyle}" TextTrimming="CharacterEllipsis" Width="220" VerticalAlignment="Center" Margin="0,0,10,4" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" AutomationProperties.Name="媒体归类建议状态"/>
-                            <TextBlock Text="选择媒体后可在右侧预览并归类" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,10,4"/>
-                            <ui:Button Content="加载更多" Command="{Binding LoadMoreMediaInboxCommand}" Click="OnLoadMoreMediaInboxClick" ToolTip="加载下一页媒体收件箱项目" AutomationProperties.Name="加载更多媒体收件箱项目" Margin="0,0,0,4">
-                                <ui:Button.Style>
-                                    <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiSecondaryButton}">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                        <Style.Triggers><DataTrigger Binding="{Binding MediaInboxPageHasMore}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
-                                    </Style>
-                                </ui:Button.Style>
-                            </ui:Button>
-                        </WrapPanel>
-                        <WrapPanel x:Name="MediaInboxSecondaryActions" Grid.Row="1" VerticalAlignment="Center" Margin="0,8,0,0">
-                            <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding IgnoreInboxMediaBatchCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Content="忽略所选" Margin="0,0,8,4"/>
-                            <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding PreviewMediaClassificationCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Content="生成归类建议" ToolTip="根据来源规则、游戏会话和进程映射生成可解释预览" Margin="0,0,8,4"/>
-                            <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding ApplyMediaClassificationCommand}" Content="应用高置信建议" ToolTip="只应用预览中唯一且高置信的建议" Margin="0,0,8,4"/>
-                            <ui:Button Command="{Binding RestoreIgnoredMediaBatchCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Content="恢复到待归类" AutomationProperties.Name="恢复所选已忽略媒体到待归类" Margin="0,0,8,4">
-                                <ui:Button.Style>
-                                    <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiPrimaryActionButton}">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                        <Style.Triggers><DataTrigger Binding="{Binding MediaInboxMode}" Value="已忽略"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
-                                    </Style>
-                                </ui:Button.Style>
-                            </ui:Button>
-                            <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding UndoMediaClassificationCommand}" Content="撤销上次建议批次" ToolTip="只撤销未被后续修改的建议项目" Margin="0,0,0,4"/>
-                        </WrapPanel>
                     </Grid>
                  </Grid>
                  </Grid>

@@ -68,12 +68,30 @@ namespace GameSaveCenter.Playnite.ViewModels
         public bool MediaDetailsStaleVisible => !IsWorkerOffline && mediaDetailsState == WorkspaceDataState.Stale;
 
         public string MediaInboxState => mediaInboxState.ToString();
+        public string MediaInboxCountDisplay
+            => IsWorkerOffline
+                ? (mediaInboxLastSuccessUtc.HasValue ? "缓存" : "—")
+                : mediaInboxState == WorkspaceDataState.Loading || mediaInboxState == WorkspaceDataState.Error || !mediaInboxLastSuccessUtc.HasValue
+                    ? "—"
+                    : MediaInboxItems.Count.ToString();
+        public string MediaInboxCountCaption
+            => IsWorkerOffline
+                ? (mediaInboxLastSuccessUtc.HasValue ? $"离线 · 缓存于 {mediaInboxLastSuccessUtc.Value.ToLocalTime():MM-dd HH:mm}" : "离线 · 无法读取")
+                : mediaInboxState == WorkspaceDataState.Loading
+                    ? "正在读取 · 来源文件始终保留"
+                    : mediaInboxState == WorkspaceDataState.Error || !mediaInboxLastSuccessUtc.HasValue
+                        ? "无法读取 · 尚未确认数量"
+                        : mediaInboxState == WorkspaceDataState.Stale
+                            ? $"缓存 · 上次成功 {mediaInboxLastSuccessUtc.Value.ToLocalTime():MM-dd HH:mm}"
+                            : "待归类 · 来源文件始终保留";
         public string MediaInboxPresenterState => IsWorkerOffline
             ? WorkspaceDataState.Offline.ToString()
             : mediaInboxState == WorkspaceDataState.Stale
                 ? "Degraded"
                 : mediaInboxState.ToString();
-        public string MediaInboxStateTitle => mediaInboxState switch
+        public string MediaInboxStateTitle => IsWorkerOffline
+            ? "无法读取待归类媒体"
+            : mediaInboxState switch
         {
             WorkspaceDataState.Loading => "正在读取媒体收件箱",
             WorkspaceDataState.Empty => MediaInboxTitle,
@@ -82,7 +100,11 @@ namespace GameSaveCenter.Playnite.ViewModels
             WorkspaceDataState.Offline => "Worker 当前离线",
             _ => string.Empty
         };
-        public string MediaInboxStateMessage => mediaInboxState switch
+        public string MediaInboxStateMessage => IsWorkerOffline
+            ? (mediaInboxLastSuccessUtc.HasValue
+                ? "Worker 当前离线；列表保留上次成功读取的缓存，恢复连接后才能确认最新数量。"
+                : "Worker 当前离线；恢复连接后才能确认列表是否为空。")
+            : mediaInboxState switch
         {
             WorkspaceDataState.Loading => "正在读取待归类和已忽略媒体；已有内容会保留到新结果确认后。",
             WorkspaceDataState.Empty => MediaInboxEmptyText,
@@ -170,6 +192,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         private void NotifyMediaInboxStateChanged()
         {
             OnPropertyChanged(nameof(MediaInboxState));
+            OnPropertyChanged(nameof(MediaInboxCountDisplay));
+            OnPropertyChanged(nameof(MediaInboxCountCaption));
             OnPropertyChanged(nameof(MediaInboxPresenterState));
             OnPropertyChanged(nameof(MediaInboxStateTitle));
             OnPropertyChanged(nameof(MediaInboxStateMessage));

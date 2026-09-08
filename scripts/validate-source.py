@@ -525,7 +525,9 @@ def check_media_inbox_guards() -> None:
             fail(f"Media inbox service guard missing: {token}")
     if "File.Delete(item.OriginalPath)" in service or "File.Move(item.OriginalPath" in service:
         fail("Media inbox must never delete or move the original capture")
-    for token in ("UnassignedMedia", "AssignInboxMediaCommand", "IgnoreInboxMediaCommand"):
+    if "UnassignedMedia" not in view_model or "MediaInboxItems" not in media:
+        fail("Media inbox UI binding missing: the mode-projected MediaInboxItems source")
+    for token in ("AssignInboxMediaCommand", "IgnoreInboxMediaCommand"):
         if token not in view_model or token not in media:
             fail(f"Media inbox UI binding missing: {token}")
     # AcrylicFork keeps the three media workspaces as real TabItems; their content

@@ -904,11 +904,9 @@ public sealed class WpfUiResourceDictionaryTests
         var document = XDocument.Parse(File.ReadAllText(mediaPath));
         var tabItem = document.Descendants()
             .Single(element => element.Name.LocalName == "TabItem" && element.Attribute("Header")?.Value == "待归类");
+        var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
         var tabGrid = tabItem.Descendants().Single(element => element.Name.LocalName == "Grid"
-            && element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value != "MediaInboxScrollSurface"
-            && element.Elements().Count(descendant => descendant.Name.LocalName == "Grid.RowDefinitions") == 1
-            && element.Elements().Single(descendant => descendant.Name.LocalName == "Grid.RowDefinitions")
-                .Elements().Count(descendant => descendant.Name.LocalName == "RowDefinition") == 3);
+            && element.Attribute(xamlName)?.Value == "MediaInboxPageSurface");
         Assert.Equal("Grid", tabGrid.Name.LocalName);
 
         var rowHeights = tabGrid.Elements().Single(element => element.Name.LocalName == "Grid.RowDefinitions")
@@ -918,7 +916,6 @@ public sealed class WpfUiResourceDictionaryTests
             .ToList();
         Assert.Equal(new[] { "Auto", "*", "Auto" }, rowHeights);
 
-        var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
         var inboxGrid = document.Descendants()
             .Single(element => element.Name.LocalName == "DataGrid" && element.Attribute(xamlName)?.Value == "MediaInboxGrid");
         var tableFrame = inboxGrid.Ancestors()
@@ -960,8 +957,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("SelectionMode=\"Extended\"", media);
         Assert.Contains("SelectionUnit=\"FullRow\"", media);
         Assert.Contains("x:Name=\"MediaInboxBatchActionRow\"", media);
-        Assert.Contains("x:Name=\"MediaInboxTableFrame\" Style=\"{StaticResource MediaTableFrame}\" Padding=\"14,12,14,0\"", media);
-        Assert.Contains("x:Name=\"MediaInboxFooter\" Grid.Row=\"2\" Margin=\"16,12,16,0\"", media);
+        Assert.Contains("x:Name=\"MediaInboxTableFrame\" Style=\"{StaticResource MediaTableFrame}\" Padding=\"14,12,14,12\"", media);
+        Assert.Contains("x:Name=\"MediaInboxFooter\" Grid.Row=\"2\" Margin=\"0,10,0,0\"", media);
         Assert.Contains("x:Name=\"MediaInboxSecondaryActions\" Grid.Row=\"1\" VerticalAlignment=\"Center\" Margin=\"0,8,0,0\"", media);
         Assert.Contains("x:Name=\"MediaTabControl\" Grid.Row=\"1\" SelectedIndex=\"{Binding MediaTabIndex, Mode=TwoWay}\" MinWidth=\"0\" MinHeight=\"0\" Margin=\"8,0,8,0\"", media);
         Assert.Contains("<Setter Property=\"Padding\" Value=\"16,8\"/>", media);
@@ -983,6 +980,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("MediaInboxModeOptions", media);
         Assert.Contains("ItemsSource=\"{Binding MediaInboxItems}\"", media);
         Assert.Contains("OnMediaInboxSelectionChanged", mediaCode);
+        Assert.Contains("OnMediaInboxHistoryClick", mediaCode);
+        Assert.Contains("x:Name=\"MediaInboxHistoryButton\"", media);
         Assert.Contains("GetSelectedInboxMedia(value)", commands);
         Assert.Contains("RestoreIgnoredMediaBatchCommand", commands);
         Assert.Contains("PreviewMediaClassificationCommand", commands);
@@ -2742,8 +2741,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Text=\"归档占用 · 目录可访问\"", media);
         Assert.Contains("Text=\"{Binding MediaSummary.FavoriteCount, Mode=OneWay}\" FontSize=\"26\" FontWeight=\"SemiBold\"", media);
         Assert.Contains("Text=\"收藏 · 支持批量收藏与备注\"", media);
-        Assert.Contains("Text=\"{Binding Snapshot.UnassignedMediaCount, Mode=OneWay}\" Foreground=\"{DynamicResource GscWarningBrush}\"", media);
-        Assert.Contains("Text=\"待归类 · 来源文件始终保留\"", media);
+        Assert.Contains("Text=\"{Binding MediaInboxCountDisplay, Mode=OneWay}\" Foreground=\"{DynamicResource GscWarningBrush}\"", media);
+        Assert.Contains("Text=\"{Binding MediaInboxCountCaption, Mode=OneWay}\"", media);
         Assert.DoesNotContain("MediaSummary.TotalCount, Mode=TwoWay", media);
         Assert.DoesNotContain("MediaSummary.FavoriteCount, Mode=TwoWay", media);
     }
