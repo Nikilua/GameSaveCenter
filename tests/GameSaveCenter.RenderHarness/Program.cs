@@ -2236,14 +2236,25 @@ public static class Program
 
                 var pageScroller = FindVisualChildren<ScrollViewer>(media)
                     .FirstOrDefault(candidate => candidate.Name == "MediaInboxPageScrollViewer");
+                var tableFrame = FindVisualChildren<Border>(media)
+                    .FirstOrDefault(candidate => candidate.Name == "MediaInboxTableFrame");
                 var grid = FindVisualChildren<DataGrid>(media)
                     .FirstOrDefault(candidate => candidate.Name == "MediaInboxGrid");
-                if (pageHost.ActualWidth <= 0 || pageHost.ActualHeight <= 0 || pageScroller == null || grid == null)
+                if (pageHost.ActualWidth <= 0 || pageHost.ActualHeight <= 0 || pageScroller == null || tableFrame == null || grid == null)
                     throw new InvalidOperationException("Production PageHost did not measure the media inbox surface.");
                 if (pageScroller.HorizontalScrollBarVisibility != ScrollBarVisibility.Disabled)
                     s_problems.Add($"Shell Media {windowW}x{windowH} page surface enables horizontal scrolling.");
                 if (grid.ActualHeight < 212)
                     s_problems.Add($"Shell Media {windowW}x{windowH} inbox grid is shorter than four readable rows ({grid.ActualHeight:0} DIP).");
+
+                var frameOrigin = tableFrame.TransformToAncestor(host).Transform(new Point(0, 0));
+                var gridOrigin = grid.TransformToAncestor(host).Transform(new Point(0, 0));
+                var gridTopGap = gridOrigin.Y - frameOrigin.Y;
+                report.AppendLine(
+                    $"  Shell Media {windowW}x{windowH}: tableFrameY={frameOrigin.Y:0}x{tableFrame.ActualHeight:0}, "
+                    + $"gridY={gridOrigin.Y:0}x{grid.ActualHeight:0}, gridTopGap={gridTopGap:0}");
+                if (gridTopGap > 180)
+                    s_problems.Add($"Shell Media {windowW}x{windowH} inbox grid is pushed below the batch row (top gap={gridTopGap:0} DIP).");
 
                 SavePng(host, Path.Combine(outputRoot, $"Shell-Media-{windowW}x{windowH}.png"));
                 report.AppendLine(

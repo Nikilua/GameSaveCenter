@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-08
 
+## 2026-09-08 用户截图反馈修复约束
+
+- Worker 的单实例互斥语义是：重复进程可以以退出码 0 结束，但 Launcher 不能据此直接报告启动失败。启动子进程发现退出码 0 时，必须在有限等待内用期望版本/构建身份探测现有实例；健康则复用并清理本次子进程引用，不健康才保留真实错误。
+- 媒体待归类页的 DataGrid 必须在表格卡片顶部正常出现，不能因外层页面 ScrollViewer 的无限测量和父级 `*` 行被排列到卡片底部。表格卡片/内部布局/DataGrid 使用顶部对齐；DataGrid 仍保持固定的可读最小高度、内部滚动和既有虚拟化契约。
+- Production Shell 媒体探针必须同时检查 PageHost、页面滚动方向、DataGrid 最小高度以及表卡到 DataGrid 的顶部间距；只检查 DataGrid `ActualHeight` 不足以发现“表格被推到首屏之外”的布局回归。
+- 本轮验证：Release 全量 Core `72/72`、Worker `303/304`（1 跳过）、Playnite `369/431`（62 跳过）；XAML `19/19`、源码校验、WPF `0 errors/21 warnings/172 info`、双主题/多尺寸/resize/Production Shell `render-qa OK`。真实 Playnite、DPI/高对比度和完整键盘仍属外部验收边界。
+
 ## 2026-09-08 连续开发执行约定
 
 - 用户希望后续无需完成一点就重新要计划，新增 [32 项连续开发队列](CONTINUOUS_DEVELOPMENT_PLAN_2026-09-08.md)。L01～04 对应已确认 Q6，后续为有依赖/验收条件的增强或验证任务，不能都当作既有缺陷。

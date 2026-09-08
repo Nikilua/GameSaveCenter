@@ -184,8 +184,8 @@
                     <Grid x:Name="MediaInboxLayout" Grid.Row="1" MinHeight="0" ClipToBounds="True">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscInspectorWidth}"/></Grid.ColumnDefinitions>
                         <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-                        <Border Grid.Column="0" Grid.Row="0" x:Name="MediaInboxTableFrame" Style="{StaticResource MediaTableFrame}" Padding="14,12,14,0" MinHeight="0" ClipToBounds="True">
-                        <Grid>
+                        <Border Grid.Column="0" Grid.Row="0" x:Name="MediaInboxTableFrame" Style="{StaticResource MediaTableFrame}" Padding="14,12,14,0" MinHeight="0" ClipToBounds="True" VerticalAlignment="Top">
+                        <Grid VerticalAlignment="Top">
                             <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
                             <StackPanel Grid.Row="0">
                             <Border x:Name="MediaInboxStaleBanner" Padding="10" Margin="0,0,0,10">
@@ -221,7 +221,7 @@
                                 <ui:Button x:Name="MediaInboxCompactDetailsButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="查看预览与归类 ›" ToolTip="打开所选媒体的预览、归类建议和安全操作" AutomationProperties.Name="查看所选媒体预览与归类" Click="OnMediaInboxCompactDetailsClick" Visibility="Collapsed" Margin="8,0,0,4"/>
                             </WrapPanel>
                             </StackPanel>
-                            <DataGrid Grid.Row="1" x:Name="MediaInboxGrid" Tag="FiniteViewport" Style="{StaticResource MediaDataGrid}" MinHeight="236" ItemsSource="{Binding MediaInboxItems}" SelectedItem="{Binding SelectedInboxMedia}"
+                            <DataGrid Grid.Row="1" x:Name="MediaInboxGrid" Tag="FiniteViewport" Style="{StaticResource MediaDataGrid}" MinHeight="236" VerticalAlignment="Top" ItemsSource="{Binding MediaInboxItems}" SelectedItem="{Binding SelectedInboxMedia}"
                                       SelectionMode="Extended" SelectionUnit="FullRow" SelectionChanged="OnMediaInboxSelectionChanged"
                                       RowStyle="{StaticResource MediaInboxStableRowStyle}"
                                       VerticalContentAlignment="Top"

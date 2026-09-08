@@ -4472,6 +4472,19 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void WorkerDuplicateNormalExitReusesHealthyExistingInstance()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var launcherCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Infrastructure", "WorkerLauncher.cs"));
+
+        Assert.Contains("var exitCode = worker.ExitCode;", launcherCode);
+        Assert.Contains("if (exitCode == 0 && await WaitForHealthAsync(", launcherCode);
+        Assert.Contains("Worker 启动进程退出码 0，但已有健康实例，复用现有 Worker。", launcherCode);
+        Assert.Contains("Interlocked.CompareExchange(ref runningWorker, null, worker);", launcherCode);
+        Assert.Contains("退出码 {exitCode}。日志：{logPath}", launcherCode);
+    }
+
+    [Fact]
     public void PlayniteShutdownStopsOnlyTheWorkerOwnedByThisPluginInstance()
     {
         var repositoryRoot = FindRepositoryRoot();

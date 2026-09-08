@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-08 用户截图反馈：Worker 启动误报与媒体待归类布局
+
+- 复核用户提供的 Worker 日志：首个 Worker 已完成存储初始化并进入 `Application started`，后续启动的是命名互斥锁拦截的重复实例，重复进程按设计返回退出码 0。修正 `WorkerLauncher`：子进程退出码为 0 时，限时探测期望版本/构建身份的现有 Worker；探测健康则记录“复用现有 Worker”、释放本次进程引用并正常返回，避免把重复实例 hand-off 显示为立即退出故障；新增静态回归契约。
+- 复现媒体 Production Shell 的 1366×768 几何：`MediaInboxTableFrame` 到 `MediaInboxGrid` 的顶部间距为 477 DIP，1040×700/1100×720 仅 103/63 DIP。原因是外层页面滚动内容在无限高度测量下，让父级 `*` 行把表格内容推到卡片底部；将表卡、内部 Grid 和 DataGrid 顶部对齐后宽屏表头/行回到首屏。RenderHarness 新增顶部间距门禁，修复后 1366×768 为 63 DIP。
+- 验证：定向 Worker 回归 `1/1`；Release 全量 Core `72/72`、Worker `303/304`（1 跳过）、Playnite `369/431`（62 跳过）；XAML `19/19`、`validate-source.py`、WPF 静态 `0 errors/21 warnings/172 info`、双主题/多尺寸/resize/Production Shell `render-qa OK`、`git diff --check` 通过。未运行真实 Playnite。
+
 ## 2026-09-08 扩展连续开发计划（仅文档）
 
 - 用户要求增加任务量，减少每完成一点就重新询问。新增 `CONTINUOUS_DEVELOPMENT_PLAN_2026-09-08.md`：32 项、8 阶段，首四项映射 Q6，后续覆盖 UI/流程/性能/稳定性/发布；每项给出目标、文件范围与验收，阶段明确依赖，并附可直接交给实施 AI 的指令。

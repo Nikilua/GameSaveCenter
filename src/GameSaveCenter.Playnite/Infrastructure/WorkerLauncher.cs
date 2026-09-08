@@ -144,7 +144,24 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 {
                     await Task.Delay(250).ConfigureAwait(false);
                     if (worker.HasExited)
-                        throw new InvalidOperationException($"Worker 启动后立即退出，退出码 {worker.ExitCode}。日志：{logPath}");
+                    {
+                        var exitCode = worker.ExitCode;
+                        // The Worker uses a named mutex and deliberately exits with code 0
+                        // when another current instance already owns the pipe.  A concurrent
+                        // Playnite startup used to misreport that normal hand-off as a failed
+                        // cold start. Give the existing instance a short bounded chance to
+                        // answer before surfacing a genuine launch failure.
+                        if (exitCode == 0 && await WaitForHealthAsync(
+                                TimeSpan.FromSeconds(5), expectedVersion, expectedBuildIdentity).ConfigureAwait(false))
+                        {
+                            AppendLog(logPath, "Worker 启动进程退出码 0，但已有健康实例，复用现有 Worker。");
+                            Interlocked.CompareExchange(ref runningWorker, null, worker);
+                            worker.Dispose();
+                            return;
+                        }
+
+                        throw new InvalidOperationException($"Worker 启动后立即退出，退出码 {exitCode}。日志：{logPath}");
+                    }
                     // A failed pipe connect is expected during cold start. Keep each probe
                     // short and enforce one real wall-clock deadline; the previous fixed
                     // 120-iteration loop multiplied a 2-second probe timeout into several
