@@ -6,8 +6,8 @@
 
 - Worker 使用命名互斥锁时，重复启动实例会以退出码 0 正常结束。`WorkerLauncher` 现在会在发现该退出码后限时探测现有 Worker；确认同版本且健康时复用现有实例并结束本次启动，不再把正常的重复实例退出误报为“Worker 启动后立即退出”。现有实例仍不健康时继续保留真实失败日志与错误提示。
 - 媒体中心“待归类”页的 DataGrid 原先被外层页面滚动内容的 `*` 行安排到表格卡片底部，宽屏下因此出现异常高的空白区域。这不是设计意图；表格卡片、内部布局和 DataGrid 已改为顶部对齐，仍保留 DataGrid 的有限高度、内部滚动和虚拟化。Production Shell 几何门禁新增表卡到表格的顶部间距检查，1366×768 已从 `477` DIP 降至 `63` DIP。
-- Worker 身份修复已完成真实安装链路：`scripts/package.ps1` 在包内读取插件、Worker、Core/Contracts DLL 的实际 InformationalVersion，并要求都等于当前 Git HEAD；当前包/安装目录/运行中握手均为 `0.6.73+dbccb01abe8b3281ab864edf7f33d6edead6c7b8`。安装目录为 `C:\Users\lopmatu\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec`，运行中 Worker 为该目录下的唯一进程。
-- 真实命名管道 `system.handshake` 返回成功、协议 `1`、Worker `0.6.73.0` 和上述构建身份；真实只读 `media.inbox.page` 返回成功（当前数据 `totalCount=4615`）。受控停止并恢复唯一已核实路径的 Worker 时，停止后管道确实不可达，恢复后握手再次成功；恢复日志没有重复实例或退出码 0 循环。
+- Worker 身份修复已完成真实安装链路：`scripts/package.ps1` 在包内读取插件、Worker、Core/Contracts DLL 的实际 InformationalVersion，并要求都等于最终打包时的 Git HEAD。安装目录为 `C:\Users\lopmatu\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec`，运行中 Worker 为该目录下的唯一进程；最终包的完整身份以最后一次打包输出和握手记录为准。
+- 真实命名管道 `system.handshake` 返回成功、协议 `1`、Worker `0.6.73.0` 和包内同一构建身份；真实只读 `media.inbox.page` 返回成功（当前数据 `totalCount=4615`）。受控停止并恢复唯一已核实路径的 Worker 时，停止后管道确实不可达，恢复后握手再次成功；恢复日志没有重复实例或退出码 0 循环。
 - 媒体待归类页已改为有限 PageHost、左侧工具栏/表格/底部操作独立 Grid 行、左右独立滚动、右侧有限详情和离线非零假状态；源码/XAML/离屏几何门禁已通过。最新完整安装流程的构建为 `0 warning/0 error`，Core `72/72`、Worker `304/304`、Playnite `375/432`（57 跳过）。
 - 真实 Playnite 的窗口内视觉操作、宽→窄→宽切换、实际截图及 PageHost/滚动范围采集仍未完成：本会话没有可用的 CUA 端点，不能把 RenderHarness 截图冒充宿主截图。因此 32 项扩展计划继续暂停，两项均不宣布最终验收完成。
 

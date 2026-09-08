@@ -4,7 +4,7 @@
 
 ## 2026-09-08 两项截图问题的当前验收边界
 
-- Worker 身份修复已经过真实打包和安装：包内六个实际程序集、Playnite 扩展目录中的插件/Worker/共享 DLL，以及运行中命名管道握手均为 `0.6.73+dbccb01abe8b3281ab864edf7f33d6edead6c7b8`。`scripts/package.ps1` 会在打包前从 PE 元数据读取实际身份，同源不一致或当前工作树不干净时停止，不生成混合包。
+- Worker 身份修复已经过真实打包和安装：包内六个实际程序集、Playnite 扩展目录中的插件/Worker/共享 DLL，以及运行中命名管道握手均为同一个最终打包 HEAD 身份。`scripts/package.ps1` 会在打包前从 PE 元数据读取实际身份，同源不一致或当前工作树不干净时停止，不生成混合包。
 - 实际 Playnite 安装目录为 `C:\Users\lopmatu\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec`。运行中唯一 Worker 的 `system.handshake` 和 `media.inbox.page` 均成功；后者返回真实数据 `totalCount=4615`。受控停止唯一已核实路径后，管道连接失败，宿主恢复后再次握手成功。
 - 媒体页代码已收口为有限 PageHost 与左右独立滚动；离线状态不再把读取失败显示成真实 0。RenderHarness/源码门禁通过，但真实 Playnite 窗口内的导航、尺寸切换、选择/历史滚动和截图尚未完成。
 - 32 项扩展计划保持暂停。没有 CUA 宿主操作证据时，后续交接必须写“代码修复已完成，真实视觉宿主验收待完成”，不得写“用户截图问题已解决”。
