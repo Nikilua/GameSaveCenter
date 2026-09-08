@@ -274,7 +274,12 @@ namespace GameSaveCenter.Playnite.Views
                 // page surface own overflow in that state so the row viewport remains a
                 // real finite surface and the footer stays below it.
                 var staleInboxRequiresPageScroll = MediaInboxStaleBanner.Visibility == Visibility.Visible;
-                var useInboxPageFallbackScroll = height < 560 || staleInboxRequiresPageScroll;
+                // The production shell can leave the page host at roughly 577–597 DIP
+                // even when the outer window is the supported 1040–1100 DIP layout.
+                // Keep the inbox page finite in that band too, so the table retains a
+                // readable row viewport and the footer remains reachable through the
+                // page surface instead of compressing the star row below two rows.
+                var useInboxPageFallbackScroll = height < 620 || staleInboxRequiresPageScroll;
                 MediaInboxPageScrollViewer.VerticalScrollBarVisibility = useInboxPageFallbackScroll
                     ? ScrollBarVisibility.Auto
                     : ScrollBarVisibility.Disabled;

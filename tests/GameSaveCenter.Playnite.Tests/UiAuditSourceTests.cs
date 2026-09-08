@@ -47,6 +47,8 @@ public sealed class UiAuditSourceTests
         Assert.Contains("PRIMARY_VIEWPORT_UNREACHABLE", layout);
         Assert.Contains("CONTROL_CLIPPED", layout);
         Assert.Contains("RunProductionShellMediaProbe", program);
+        Assert.Contains("MediaInboxFooter", program);
+        Assert.Contains("footer remains unreachable", program);
         Assert.Contains("RunProductionShellMaintenanceProbe", program);
         Assert.Contains("RunProductionShellTaskProbe", program);
         Assert.Contains("%USERPROFILE%", sanitizer);
@@ -71,6 +73,7 @@ public sealed class UiAuditSourceTests
         Assert.Contains("MediaInboxNoSelectionHint", xaml);
         Assert.Contains("MediaInboxGrid.MinHeight = 0d", codeBehind);
         Assert.Contains("MediaInboxGrid.Height = double.NaN", codeBehind);
+        Assert.Contains("height < 620", codeBehind);
         Assert.Contains("ScrollBarVisibility.Disabled", codeBehind);
         Assert.Contains("MediaInboxPageScrollViewer", sourceValidator);
     }

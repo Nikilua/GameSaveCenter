@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-09
 
+## 2026-09-09 L16 媒体收件箱操作可达性
+
+- `MediaCenterView` 的收件箱批量栏只做局部压缩：选择摘要宽度 `112`、模式 `104`、目标游戏 `160`，预览入口与批量动作保持同一操作层级；不得为首屏压缩删除真实归类、预览、批次历史或撤销入口。
+- 生产壳层在 1040/1100 窗口下给媒体页的 PageHost 约 577/597 DIP。`MediaCenterView.ApplyResponsiveLayout` 在 `<620` DIP 或 Stale 时打开 `MediaInboxPageScrollViewer`，让页面内容承接工具栏/有限 DataGrid/footer 的总高度；DataGrid 仍是 `Tag=FiniteViewport`、Item 滚动、Recycling 和行列虚拟化。不要改成无限测量、关闭虚拟化或用固定底部像素补偿。
+- 离屏生产壳层探针的 1040×700/1100×720 网格为 `300 DIP`、顶部间距 `63 DIP`；将页面滚到 `offset==scrollable` 后，`MediaInboxFooter`、`MediaInboxHistoryButton` 和 `MediaInboxSecondaryActions` 均完整处于 PageHost 视口。真实 FusionX 模板和用户录屏仍未验证，不能把该探针称为宿主通过。
+- 完整 render-qa 当前仍会报告直接 Media 场景的预览列表/小视口门禁以及偶发侧栏快速切换；这些与生产壳层底部可达性分开记录，后续不要通过降低门禁或扩大 DataGrid 来掩盖。
+
 ## 2026-09-09 L15 任务页查错与范围说明
 
 - 顶部任务摘要保留 `RunningTaskCount`、`RetryableTaskCount` 和今日完成，同时新增 `TaskWaitingSummary`（排队 + 等待确认）与 `TaskRetrySummary`（失败 + 已取消）。快照刷新和历史分页完成时必须一起触发这些派生属性的通知。

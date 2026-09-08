@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-09 L16 媒体收件箱操作可达性
+
+- 复核收件箱后确认批量命令、选择语义、预览、批次历史和撤销已经存在，当前缺口是 1040/1100 生产壳层的 PageHost 高度让表格与 footer 争抢有限空间，批量栏也会在 1040 内容宽度换行。没有重写业务命令或关闭表格虚拟化。
+- 收紧批量栏四处局部宽度/间距；`MediaCenterView` 在生产壳层约 577–597 DIP 的 PageHost 高度启用页面级 Auto 纵向滚动，DataGrid 继续有限视口。不是底部固定补偿：1040×700/1100×720 壳层实测网格均为 300 DIP、顶部间距 63 DIP。
+- RenderHarness 的 `RunProductionShellMediaProbe` 新增滚到页面末尾的真实动作，检查 footer、批次历史和次级操作的完整视口交集：1040×700 `offset=136.67/136.67`、1100×720 `offset=96.67/96.67`，均通过；1366×768 保持无外层滚动的 231 DIP 网格。新增源门禁断言保护探针和 `<620` 分支。
+- 验证：RenderHarness Release 构建 0 warning/0 error；全量 Release 构建 0 warning/0 error；Core `72/72`、Worker `303/304`（1 跳过）、Playnite `402/464`（62 跳过）；定向 `UiAuditSourceTests` `5/5`；`validate-source.py`、`check-xaml.ps1`（19/19）、`git diff --check` 通过。完整 render-qa 仍有直接 Media 小视口/预览列表与侧栏 rapid-toggle 失败，真实 Playnite/FusionX、DPI、视频式拖动和录屏待验收。
+
 ## 2026-09-09 L15 任务页查错与范围说明
 
 - 复核任务页后确认分页和状态面已经存在，缺口主要是作用域不够直白：宽屏下活跃筛选摘要藏在“更多筛选”里，批量重试的当前结果边界只在确认弹窗中出现，顶部也没有显示排队/等待确认与失败/取消的组合信息。

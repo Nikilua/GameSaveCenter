@@ -2823,6 +2823,60 @@ public static class Program
                     $"  Shell Media {windowW}x{windowH}: PageHost={pageHost.ActualWidth:0}x{pageHost.ActualHeight:0}, "
                     + $"scroll={pageScroller.ActualWidth:0}x{pageScroller.ActualHeight:0} extent={pageScroller.ExtentHeight:0}, "
                     + $"grid={grid.ActualWidth:0}x{grid.ActualHeight:0}");
+
+                var footer = FindVisualChildren<FrameworkElement>(media)
+                    .FirstOrDefault(candidate => candidate.Name == "MediaInboxFooter");
+                var historyButton = FindVisualChildren<FrameworkElement>(media)
+                    .FirstOrDefault(candidate => candidate.Name == "MediaInboxHistoryButton");
+                var secondaryActions = FindVisualChildren<FrameworkElement>(media)
+                    .FirstOrDefault(candidate => candidate.Name == "MediaInboxSecondaryActions");
+                if (footer == null || historyButton == null || secondaryActions == null)
+                {
+                    s_problems.Add($"Shell Media {windowW}x{windowH} footer reachability probe elements are missing.");
+                }
+                else
+                {
+                    var initialOffset = pageScroller.VerticalOffset;
+                    var hasPageScroll = pageScroller.ScrollableHeight > 0.5;
+                    if (hasPageScroll)
+                    {
+                        pageScroller.ScrollToVerticalOffset(pageScroller.ScrollableHeight);
+                        host.UpdateLayout();
+                    }
+
+                    var viewportBounds = pageScroller.TransformToAncestor(host).TransformBounds(
+                        new Rect(0, 0, pageScroller.ActualWidth, pageScroller.ActualHeight));
+                    var GetBounds = (FrameworkElement element) => element.TransformToAncestor(host).TransformBounds(
+                        new Rect(0, 0, element.ActualWidth, element.ActualHeight));
+                    var footerBounds = GetBounds(footer);
+                    var historyBounds = GetBounds(historyButton);
+                    var secondaryBounds = GetBounds(secondaryActions);
+                    report.AppendLine(
+                        $"  Shell Media {windowW}x{windowH} bottom: offset={pageScroller.VerticalOffset:0.##}/{pageScroller.ScrollableHeight:0.##} "
+                        + $"viewport={viewportBounds.Top:0.##}..{viewportBounds.Bottom:0.##} "
+                        + $"footer={footerBounds.Top:0.##}..{footerBounds.Bottom:0.##} "
+                        + $"history={historyBounds.Top:0.##}..{historyBounds.Bottom:0.##} "
+                        + $"secondary={secondaryBounds.Top:0.##}..{secondaryBounds.Bottom:0.##}");
+
+                    static bool IsInside(Rect outer, Rect inner)
+                        => inner.Left >= outer.Left - 1
+                           && inner.Right <= outer.Right + 1
+                           && inner.Top >= outer.Top - 1
+                           && inner.Bottom <= outer.Bottom + 1;
+
+                    if (!IsInside(viewportBounds, footerBounds)
+                        || !IsInside(viewportBounds, historyBounds)
+                        || !IsInside(viewportBounds, secondaryBounds))
+                    {
+                        s_problems.Add($"Shell Media {windowW}x{windowH} footer remains unreachable at page end.");
+                    }
+
+                    if (hasPageScroll)
+                    {
+                        pageScroller.ScrollToVerticalOffset(initialOffset);
+                        host.UpdateLayout();
+                    }
+                }
             }
             catch (Exception ex)
             {
