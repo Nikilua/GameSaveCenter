@@ -72,6 +72,13 @@
 - 文件：`scripts/package.ps1`、`Directory.Build.props`、`Contracts/BuildIdentity.cs`、`Infrastructure/WorkerLauncher.cs`。核对实际包内程序集身份、SkipBuild、dirty 与环境变量恢复。
 - 验收：正常同源、旧插件新 Worker、unknown/known、旧协议无字段、无 Git、脏工作树；错误在报告打包成功前暴露。测试使用隔离包，禁止以安装真实用户环境来验证负例。
 
+#### 2026-09-08 复测结果
+
+- 状态：代码与隔离发布链已完成；最终文档提交后的 HEAD 已重新生成并校验对齐的包。
+- `WorkerLauncher` 对旧 Worker 空字段和 `+unknown` 按版本/协议兼容并显示“身份未验证”；两个已知身份不一致时拒绝复用。`BuildIdentityTests` `3/3` 通过。
+- 正常隔离包读取 Plugin、Worker、Plugin/Worker Core、Plugin/Worker Contracts 六个实际程序集，身份全部一致；旧插件+新 Worker、`+unknown`、脏工作树、无 Git 负例均在成功提示前失败，调用方 `GSC_BUILD_COMMIT` 在异常后恢复。
+- 当前未操作真实 Playnite 安装目录；真实宿主安装、旧协议现场握手和视频式视觉回归仍按发布验收边界处理。
+
 ## B：让测试覆盖用户看到的状态
 
 ### L05 六态与运维夹具覆盖

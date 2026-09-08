@@ -2,10 +2,11 @@
 
 > 维护时间：2026-09-08
 
-## 2026-09-08 Q6-04 构建身份兼容边界修正（包验收进行中）
+## 2026-09-08 Q6-04 构建身份闭环（隔离包验收）
 
 - `WorkerLauncher` 仅在实际身份与期望身份都已知且不一致时判定不可复用。旧 Worker 没有 `BuildIdentity`，或任一身份包含 `+unknown`，仍按公共版本/协议继续工作，但健康结果明确标记为“构建身份未验证”，不伪造同源证明。
-- `IsBuildIdentityCompatible` 将空/unknown 视为不可验证而非冲突；同版本两个已知提交不同仍返回不兼容。定向 `BuildIdentityTests` 已覆盖这三类边界，包脚本的隔离负例待本阶段继续完成。
+- `IsBuildIdentityCompatible` 将空/unknown 视为不可验证而非冲突；同版本两个已知提交不同仍返回不兼容。定向 `BuildIdentityTests` `3/3` 通过。
+- `scripts/package.ps1` 的隔离正例已读取六个实际 PE 程序集并确认同源；同版本旧插件、`+unknown` 插件、脏工作树、无 Git 夹具均在生成成功提示前失败，失败后 `GSC_BUILD_COMMIT` 恢复为调用方值；最终文档提交后的 HEAD 也已重新打包校验。
 
 ## 2026-09-08 Q6-03 运维云端告警归并
 

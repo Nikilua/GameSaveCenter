@@ -2,11 +2,12 @@
 
 > 更新时间：2026-09-08。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
-## 2026-09-08 Q6-04 构建身份兼容边界已修正（包验收进行中）
+## 2026-09-08 Q6-04 构建身份闭环已完成（隔离包验收）
 
 - `WorkerLauncher` 现在只在两个构建身份都已知且不一致时拒绝复用；旧 Worker 缺少 `BuildIdentity`、或任一侧为 `+unknown` 时，先完成版本/协议校验并以“身份未验证”状态兼容，不把未知身份冒充为同源。
 - 未知身份仍会写入健康探测详情，便于诊断区分“可用但未证明同源”和“已知身份冲突”；同版本不同已知提交继续标记为不可复用。
-- 定向 `BuildIdentityTests` 已覆盖已知冲突、旧 Worker 空字段和 unknown 组合（`3/3`）。本阶段的隔离正常打包、`-SkipBuild` 混合产物、脏工作树和环境变量恢复验证尚待完成，未触碰真实 Playnite 安装目录。
+- 定向 `BuildIdentityTests` 已覆盖已知冲突、旧 Worker 空字段和 unknown 组合（`3/3`）。隔离正例包六个程序集同源；`-SkipBuild` 混合 DLL、`+unknown`、脏工作树、无 Git 和环境变量恢复负例均按预期失败或恢复，未触碰真实 Playnite 安装目录。
+- 文档提交后的最终 Git HEAD 已重新完成 Release 打包，包内身份与六个程序集一致；真实安装目录和宿主握手仍不纳入本阶段结论。
 
 ## 2026-09-08 两项截图问题：代码修复与真实安装验收状态
 

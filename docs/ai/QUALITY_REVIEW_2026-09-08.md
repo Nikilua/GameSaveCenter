@@ -17,7 +17,7 @@
 | Q5 设置/动效 | 主体完成 | 保存状态可见、关闭动效有即时终态；真实宿主帧耗时未验证 |
 | X2-01 状态反馈 | Q6-01/Q6-02 已完成代码收口，真实宿主待验收 | 重试面板输入与媒体状态上下文已补代码/离线测试；真实 Playnite 故障注入和录屏仍未完成 |
 | X2-02 运维总览 | 主体完成，状态归并已修 | 云端来源现在先按稳定身份/更新时间合并；真实故障注入和宿主刷新仍待验收 |
-| X2-03 构建身份 | 兼容规则已修正，发布链验收进行中 | 旧/unknown 身份改为“可用但未验证”；隔离包正负例仍待完成 |
+| X2-03 构建身份 | 代码与隔离发布链已收口 | 旧/unknown 身份“可用但未验证”；已知冲突和包混用均拦截 |
 
 ## 独立验证结果
 
@@ -78,15 +78,15 @@
 - 时间语义：恢复巡检展示“上次验证”，云端告警展示“上次尝试”，隔离账本展示“账本更新”；不再把 `LastAttemptUtc` 放入验证字段。
 - 测试：新增归并/时间语义测试 `5/5`；Release 全量 Core `72/72`、Worker `303/304`（1 跳过）、Playnite `385/447`（62 跳过），构建 `0 warning/0 error`，源码校验通过。本项无 XAML 改动，未重复运行完整 `render-qa`。
 
-### Q6-04：构建身份还需覆盖 SkipBuild 与 unknown（P1，发布路径）
+### Q6-04：构建身份覆盖 SkipBuild 与 unknown（已完成代码/隔离验收）
 
-证据：`scripts/package.ps1` 为本次 Worker publish 注入当前 HEAD，但 `-SkipBuild` 直接复制现有插件 DLL，仅校验 FileVersion 是否匹配公共版本。旧插件 A 与当前 Worker B 同为 0.6.73 时可通过打包检查；`WorkerLauncher.IsBuildIdentityCompatible` 又会拒绝两个非空不同身份，导致包可生成而配对不可用。这是脚本调用链推导，本轮未生成混合包、未执行安装。
+证据：`scripts/package.ps1` 现在在 Worker publish 后读取插件、Worker、Plugin/Worker Core、Plugin/Worker Contracts 六个实际 PE 程序集的 InformationalVersion，并要求都等于当前 HEAD 对应身份。隔离 `-SkipBuild` 混合包实测用 `old-build-fixture` 插件与当前 Worker，在“校验构建身份”阶段失败，未生成成功提示。
 
-另外，`Directory.Build.props` 缺提交时生成 `0.6.73+unknown`，但兼容方法只对空字符串放行。known 与 unknown 会被当作两个已知不同构建处理，与“两个身份已知才拒绝复用”的约定不一致。普通本地构建正可能产生 unknown。
+另外，`Directory.Build.props` 缺提交时仍生成 `0.6.73+unknown`。`WorkerLauncher` 现在把空/unknown 分类为“身份未验证”，按版本/协议继续兼容并保留诊断状态；只有两边身份都已知且不同才拒绝复用。隔离 `+unknown` 插件包实测同样在包前校验失败，不会进入压缩包。
 
 实施：读取包内插件、Worker 和共享程序集的实际 InformationalVersion；SkipBuild 必须证明产物同源，否则失败并给出重建指令。unknown 使用显式解析状态，按既定公共版本/协议兼容路径降级并提示身份不可验证；只有两个已知身份不一致才阻止旧 Worker 复用。补工作树有改动时的身份策略（拒绝发布或标 dirty），避免把 HEAD 冒充未提交内容的来源；临时环境变量需 finally 恢复，Git 读取失败不得沿用外部残留身份。
 
-验收：正常构建同身份、同公共版本旧插件+新 Worker、known/unknown、旧 Worker 无字段、无 Git、脏工作树；包内校验在生成成功提示之前完成。使用隔离 stage 和替代产物，不覆盖用户正在使用的安装。
+验收：定向 `BuildIdentityTests` `3/3`；Release 全量 Core `72/72`、Worker `303/304`（1 跳过）、Playnite `385/447`（62 跳过），构建 `0 warning/0 error`；正例隔离包六个程序集同源。旧插件+新 Worker、`+unknown`、脏工作树、无 Git 和环境变量恢复负例均已在隔离目录验证，错误发生在打包成功提示前。未覆盖真实用户安装目录，宿主安装/握手仍待最终发布验收。
 
 ## 让下一轮界面变化可见的计划
 

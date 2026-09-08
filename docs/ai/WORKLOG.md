@@ -5608,6 +5608,6 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 **当前验证：**
 
 - 定向 Playnite 测试 `BuildIdentityTests`：`3/3` 通过。
-- 隔离 `scripts/package.ps1` 正常包、`-SkipBuild` 混合 DLL、脏工作树、无 Git/环境变量恢复验证尚未完成；尚未操作真实 Playnite 安装目录。
+- 隔离 `scripts/package.ps1` 正常包六个程序集同源；`-SkipBuild` 混合 DLL、`+unknown` 插件、脏工作树、无 Git 均按预期停止，环境变量恢复夹具确认调用方值保留。测试只使用 `.tmp` 和 `artifacts`，未操作真实 Playnite 安装目录。
 
-**下一步：** 完成隔离包正负例并同步最终构建/打包证据。
+**结果：** 已按最终文档提交后的 Git HEAD 重跑 Release 打包并清理 `.tmp` 构建目录；真实 Playnite 安装/录屏仍待用户环境验收。
