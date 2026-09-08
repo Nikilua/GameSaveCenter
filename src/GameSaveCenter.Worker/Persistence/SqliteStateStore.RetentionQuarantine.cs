@@ -1,4 +1,5 @@
 using GameSaveCenter.Contracts;
+using Microsoft.Data.Sqlite;
 
 namespace GameSaveCenter.Worker.Persistence;
 
@@ -68,6 +69,44 @@ WHERE batch_id=$batch;",
                 ["$error"] = string.IsNullOrWhiteSpace(lastError) ? null : lastError
             }, token);
 
+    public async Task<RetentionQuarantinePageDto> GetRetentionQuarantinePageAsync(
+        RetentionQuarantinePageRequestDto request,
+        CancellationToken token)
+    {
+        var offset = Math.Max(0, request?.Offset ?? 0);
+        var limit = Math.Clamp(request?.Limit ?? 100, 1, 100);
+        var result = new RetentionQuarantinePageDto
+        {
+            Offset = offset,
+            PageSize = limit
+        };
+
+        await using var connection = Open();
+        await connection.OpenAsync(token).ConfigureAwait(false);
+        var count = connection.CreateCommand();
+        count.CommandText = @"
+SELECT COUNT(*)
+FROM retention_quarantine_entries
+WHERE state <> 'Deleted';";
+        result.TotalCount = Convert.ToInt32(await count.ExecuteScalarAsync(token).ConfigureAwait(false));
+
+        var command = connection.CreateCommand();
+        command.CommandText = @"
+SELECT entry_id,batch_id,playnite_id,backup_id,original_path,quarantine_path,file_bytes,state,created_utc,updated_utc,last_error
+FROM retention_quarantine_entries
+WHERE state <> 'Deleted'
+ORDER BY updated_utc DESC, entry_id DESC
+LIMIT $limit OFFSET $offset;";
+        command.Parameters.AddWithValue("$limit", limit);
+        command.Parameters.AddWithValue("$offset", offset);
+        await using var reader = await command.ExecuteReaderAsync(token).ConfigureAwait(false);
+        while (await reader.ReadAsync(token).ConfigureAwait(false))
+            result.Items.Add(ReadRetentionQuarantineEntry(reader));
+
+        result.HasMore = offset + result.Items.Count < result.TotalCount;
+        return result;
+    }
+
     public async Task<List<RetentionQuarantineEntryDto>> GetRetentionQuarantineEntriesAsync(CancellationToken token)
     {
         var result = new List<RetentionQuarantineEntryDto>();
@@ -80,26 +119,27 @@ FROM retention_quarantine_entries
 ORDER BY updated_utc DESC;";
         await using var reader = await command.ExecuteReaderAsync(token).ConfigureAwait(false);
         while (await reader.ReadAsync(token).ConfigureAwait(false))
-        {
-            result.Add(new RetentionQuarantineEntryDto
-            {
-                EntryId = reader.GetString(0),
-                BatchId = reader.GetString(1),
-                PlayniteId = reader.GetString(2),
-                BackupId = reader.GetString(3),
-                OriginalPath = reader.GetString(4),
-                QuarantinePath = reader.GetString(5),
-                FileBytes = reader.GetInt64(6),
-                State = Enum.TryParse<RetentionQuarantineState>(reader.GetString(7), true, out var state)
-                    ? state
-                    : RetentionQuarantineState.RecoveryRequired,
-                CreatedUtc = ParseUtc(reader.GetString(8)),
-                UpdatedUtc = ParseUtc(reader.GetString(9)),
-                LastError = reader.IsDBNull(10) ? string.Empty : reader.GetString(10)
-            });
-        }
+            result.Add(ReadRetentionQuarantineEntry(reader));
         return result;
     }
+
+    private static RetentionQuarantineEntryDto ReadRetentionQuarantineEntry(SqliteDataReader reader)
+        => new RetentionQuarantineEntryDto
+        {
+            EntryId = reader.GetString(0),
+            BatchId = reader.GetString(1),
+            PlayniteId = reader.GetString(2),
+            BackupId = reader.GetString(3),
+            OriginalPath = reader.GetString(4),
+            QuarantinePath = reader.GetString(5),
+            FileBytes = reader.GetInt64(6),
+            State = Enum.TryParse<RetentionQuarantineState>(reader.GetString(7), true, out var state)
+                ? state
+                : RetentionQuarantineState.RecoveryRequired,
+            CreatedUtc = ParseUtc(reader.GetString(8)),
+            UpdatedUtc = ParseUtc(reader.GetString(9)),
+            LastError = reader.IsDBNull(10) ? string.Empty : reader.GetString(10)
+        };
 
     private static DateTime ParseUtc(string value)
         => DateTime.Parse(value).ToUniversalTime();

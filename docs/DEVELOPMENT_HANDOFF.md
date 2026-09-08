@@ -8,6 +8,10 @@
 
 > L23 证据：连续搜索夹具 `a→ab→abc` 最终只回调 1 次；协调器覆盖取消、替换、CTS 释放后 Token 状态和 20 次快速替换仅最后作用域可提交。独立 Playnite `417` 通过、`62` 跳过、`0` 失败；Core `76/76`、Worker `303/304`（1 跳过），Release 构建无警告/错误。整套解决方案的一次并行 Playnite 重跑有 8 个既有 WPF `PackagePart.CleanUpRequestedStreamsList` 构造失败，独立重跑通过，保留为测试宿主偶发问题。真实 Playnite/FusionX、DPI、用户视频与实际 IPC 日志计数仍待宿主验收。
 
+> 2026-09-09 L24 已完成隔离账本有限加载和动效预算采样：UI IPC 使用 SQLite `COUNT + LIMIT/OFFSET` 分页，默认/上限 100 条；维护页首载一页，显示 durable 总量与已加载量，继续加载按 `EntryId` 追加并保留原单条确认/恢复动作。溢出列表使用共享 Recycling ListBox 和 `MaxHeight=360` 有限视口，未关闭虚拟化或加入定时布局刷新。
+
+> L24 证据：205 条 Worker 夹具返回 `100/100/5`，总量 `205`，稳定 ID 去重 `205`；RenderHarness `shellqa` 单次收起 `288.0ms/layout 46/maxGap 53.2ms`、快速往返 `424.8ms/layout 58/maxGap 31.1ms`、关闭动画终态 `59.6ms/layout 3/maxGap 17.1ms`，均 settled。Release 构建无警告/错误；Core `76/76`、Worker `304/305`（1 跳过）、Playnite `417/479`（62 跳过）；源校验、XAML `19/19`、WPF 静态审查和差异检查通过。报告来自离屏逻辑 DIP，真实 Playnite/FusionX、真实主题/DPI、视频操作和 60fps 仍待宿主验收，不能写成已解决。
+
 > L22 证据为 `.tmp/l22-thumbnailprobe-final/thumbnailprobe-report.txt` 及 Playnite STA 测试：120 项初次窗口 `120` 成功、峰值并发 `3`、缓存 `96/96`；16 项保留窗口全命中；破损/缺失均为空；预取消可观测；100 次 12 项窗口往返后活动解码 `0`；旧 800×800 图替换为新 64×64 图后最终像素标记为新图，输出宽度 `96`。这是合成文件和隐藏 STA Window 证据，不是实际 Playnite/FusionX、DPI、用户目录或视频录屏验收。
 
 > 2026-09-09 L21 已完成列表虚拟化与滚动规模实测：证据先于参数调整。原当前游戏 `MediaGrid` 使用普通 `WrapPanel`，在 200/2000/10000 后端夹具中生成 200/2000/2000 个卡片；修复仅接回已有 `VirtualizingWrapPanel`，保留 164×154 卡片、选择和 ListBox 滚动契约。修复后顶部→底部→顶部均约 20 个容器，任务表与媒体收件箱的 DataGrid 诊断/20 次滑块往返/语义滚动/resize/选择保持通过。

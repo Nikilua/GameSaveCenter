@@ -170,9 +170,22 @@ public sealed partial class DashboardViewModel
 {
     private string? pendingCloudTransferKey;
     private IReadOnlyList<MaintenanceActionSection> maintenanceActionSections = Array.Empty<MaintenanceActionSection>();
+    private int retentionQuarantineTotalCount;
+    private bool retentionQuarantineHasMore;
+    private const int RetentionQuarantinePageSize = 100;
 
     public BatchObservableCollection<RetentionQuarantineEntryDto> PendingQuarantineEntries { get; } = new();
     public BatchObservableCollection<MaintenanceActionItem> MaintenanceActionItems { get; } = new();
+    public bool RetentionQuarantineHasMore
+    {
+        get => retentionQuarantineHasMore;
+        private set { SetValue(ref retentionQuarantineHasMore, value); RaiseCommandStates(); }
+    }
+
+    public string RetentionQuarantineLoadedDisplay
+        => RetentionQuarantineHasMore
+            ? $"已加载 {PendingQuarantineEntries.Count}/{retentionQuarantineTotalCount} 项"
+            : $"已加载全部 {PendingQuarantineEntries.Count} 项";
     public IReadOnlyList<MaintenanceActionSection> MaintenanceActionSections
     {
         get => maintenanceActionSections;
@@ -187,19 +200,36 @@ public sealed partial class DashboardViewModel
                 Snapshot.CloudTransfers?.Items,
                 CloudTransferItems);
             var cloudCount = cloudMerge.GetEffectiveAttentionCount(Snapshot.CloudTransfers?.AttentionCount ?? 0);
-            var quarantineCount = PendingQuarantineEntries.Count;
+            var quarantineCount = retentionQuarantineTotalCount;
             return $"恢复巡检：{Snapshot.HealthInspection?.LastStatusDisplay ?? "尚未运行"} · 云端待处理：{cloudCount} · 隔离账本：{quarantineCount} 项";
         }
     }
 
-    private void UpdatePendingQuarantineEntries(IEnumerable<RetentionQuarantineEntryDto>? entries)
+    private void UpdatePendingQuarantineEntries(RetentionQuarantinePageDto? page, bool reset)
     {
-        var active = (entries ?? Enumerable.Empty<RetentionQuarantineEntryDto>())
-            .Where(entry => entry.State != RetentionQuarantineState.Deleted)
-            .OrderByDescending(entry => entry.UpdatedUtc)
-            .ToList();
+        var incoming = page?.Items ?? new List<RetentionQuarantineEntryDto>();
+        var active = reset
+            ? incoming.ToList()
+            : PendingQuarantineEntries.Concat(incoming.Where(entry => !PendingQuarantineEntries.Any(
+                existing => string.Equals(existing.EntryId, entry.EntryId, StringComparison.OrdinalIgnoreCase)))).ToList();
         Replace(PendingQuarantineEntries, active, AreSameQuarantineEntry);
+        retentionQuarantineTotalCount = page?.TotalCount ?? PendingQuarantineEntries.Count;
+        RetentionQuarantineHasMore = page?.HasMore == true;
+        OnPropertyChanged(nameof(RetentionQuarantineLoadedDisplay));
         RebuildMaintenanceActionItems();
+    }
+
+    private async Task LoadMoreRetentionQuarantineAsync()
+    {
+        if (!RetentionQuarantineHasMore) return;
+        var page = await plugin.RequestAsync<RetentionQuarantinePageDto>(
+            MessageTypes.GetRetentionQuarantineEntries,
+            new RetentionQuarantinePageRequestDto
+            {
+                Offset = PendingQuarantineEntries.Count,
+                Limit = RetentionQuarantinePageSize
+            });
+        ApplyOnUi(() => UpdatePendingQuarantineEntries(page, reset: false));
     }
 
     private void RebuildMaintenanceActionItems()

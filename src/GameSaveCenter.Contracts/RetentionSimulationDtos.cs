@@ -37,6 +37,28 @@ namespace GameSaveCenter.Contracts
         public int RecoveryRequiredCount { get; set; }
     }
 
+    /// <summary>Read-only page request for the maintenance quarantine ledger.</summary>
+    public sealed class RetentionQuarantinePageRequestDto
+    {
+        public int Offset { get; set; }
+        public int Limit { get; set; } = 100;
+    }
+
+    /// <summary>Bounded maintenance quarantine ledger page and its durable total.</summary>
+    public sealed class RetentionQuarantinePageDto
+    {
+        public int Offset { get; set; }
+        public int PageSize { get; set; }
+        public int TotalCount { get; set; }
+        public bool HasMore { get; set; }
+        public List<RetentionQuarantineEntryDto> Items { get; set; } = new List<RetentionQuarantineEntryDto>();
+
+        public int LoadedCount => Offset + Items.Count;
+        public string LoadedDisplay => HasMore
+            ? $"已加载 {LoadedCount}/{TotalCount} 项"
+            : $"已加载全部 {LoadedCount} 项";
+    }
+
     /// <summary>Explicit confirmation for reconciling one durable quarantine ledger entry.</summary>
     public sealed class RetentionQuarantineRecoveryRequestDto
     {

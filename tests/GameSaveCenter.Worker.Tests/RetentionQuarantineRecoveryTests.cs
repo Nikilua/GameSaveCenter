@@ -99,6 +99,32 @@ public sealed class RetentionQuarantineRecoveryTests : IDisposable
         Assert.Equal(RetentionQuarantineState.IndexRemoved, entries.Single(x => x.EntryId == untouched.EntryId).State);
     }
 
+    [Fact]
+    public async Task QuarantinePageKeepsTheLedgerBoundedAndReportsTheDurableTotal()
+    {
+        for (var index = 0; index < 205; index++)
+            await AddEntryAsync(Guid.NewGuid().ToString("N"), "page-" + index, RetentionQuarantineState.IndexRemoved, 1);
+
+        var first = await store.GetRetentionQuarantinePageAsync(
+            new RetentionQuarantinePageRequestDto { Offset = 0, Limit = 100 },
+            CancellationToken.None);
+        var second = await store.GetRetentionQuarantinePageAsync(
+            new RetentionQuarantinePageRequestDto { Offset = 100, Limit = 100 },
+            CancellationToken.None);
+        var last = await store.GetRetentionQuarantinePageAsync(
+            new RetentionQuarantinePageRequestDto { Offset = 200, Limit = 100 },
+            CancellationToken.None);
+
+        Assert.Equal(205, first.TotalCount);
+        Assert.Equal(100, first.Items.Count);
+        Assert.True(first.HasMore);
+        Assert.Equal(100, second.Items.Count);
+        Assert.True(second.HasMore);
+        Assert.Equal(5, last.Items.Count);
+        Assert.False(last.HasMore);
+        Assert.Equal(205, first.Items.Concat(second.Items).Concat(last.Items).Select(x => x.EntryId).Distinct(StringComparer.OrdinalIgnoreCase).Count());
+    }
+
     private async Task<RetentionQuarantineEntryDto> AddEntryAsync(
         string batchId,
         string backupId,

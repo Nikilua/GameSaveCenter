@@ -16,6 +16,17 @@
 <Style x:Key="MaintenanceDataGrid" TargetType="DataGrid" BasedOn="{StaticResource GscRedesignWorkspaceDataGrid}"><Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
             </Style>
             <Style x:Key="MaintenanceLongText" TargetType="TextBlock"><Setter Property="TextTrimming" Value="CharacterEllipsis"/><Setter Property="TextWrapping" Value="NoWrap"/><Setter Property="HorizontalAlignment" Value="Stretch"/><Setter Property="VerticalAlignment" Value="Center"/><Setter Property="TextAlignment" Value="Left"/><Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}"/></Style>
+            <Style x:Key="MaintenanceOverflowList" TargetType="ListBox">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="MaxHeight" Value="360"/>
+                <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+                <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True"/>
+                <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling"/>
+                <Setter Property="ItemsPanel"><Setter.Value><ItemsPanelTemplate><VirtualizingStackPanel/></ItemsPanelTemplate></Setter.Value></Setter>
+            </Style>
             <Style x:Key="GscComboBoxLongText" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockStyle}"><Setter Property="TextTrimming" Value="CharacterEllipsis"/><Setter Property="TextWrapping" Value="NoWrap"/><Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}"/></Style>
             <Style x:Key="MaintenanceTableFrame" TargetType="Border" BasedOn="{StaticResource GscRedesignTableFrame}"/>
             <Style x:Key="MaintenanceFirstColumnHeader" TargetType="DataGridColumnHeader" BasedOn="{StaticResource GscDataGridColumnHeaderStyle}"><Setter Property="Background" Value="{DynamicResource GscTableHeaderBrush}"/><Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/><Setter Property="BorderBrush" Value="{DynamicResource GscTableDividerBrush}"/><Setter Property="Tag"><Setter.Value><CornerRadius>11,0,0,0</CornerRadius></Setter.Value></Setter></Style>
@@ -243,13 +254,25 @@
                                                                             </Style.Triggers>
                                                                         </Style>
                                                                     </Expander.Style>
-                                                                    <ItemsControl ItemsSource="{Binding OverflowItems}" ItemTemplate="{StaticResource MaintenanceActionItemTemplate}"/>
+                                                                    <ListBox Style="{StaticResource MaintenanceOverflowList}" Tag="FiniteViewport" MaxHeight="360" ItemsSource="{Binding OverflowItems}" ItemTemplate="{StaticResource MaintenanceActionItemTemplate}" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling"/>
                                                                 </Expander>
                                                             </StackPanel>
                                                         </Border>
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>
                                             </ItemsControl>
+                                            <Grid Margin="0,4,0,0">
+                                                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                <TextBlock Text="{Binding DataContext.RetentionQuarantineLoadedDisplay, RelativeSource={RelativeSource AncestorType=UserControl}}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center"/>
+                                                <ui:Button Grid.Column="1" Command="{Binding DataContext.LoadMoreRetentionQuarantineCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" Content="加载更多隔离账本" ToolTip="只追加下一页，不刷新或改变已加载记录" AutomationProperties.Name="加载更多隔离账本">
+                                                    <ui:Button.Style>
+                                                        <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiToolbarButton}">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                            <Style.Triggers><DataTrigger Binding="{Binding DataContext.RetentionQuarantineHasMore, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                                        </Style>
+                                                    </ui:Button.Style>
+                                                </ui:Button>
+                                            </Grid>
                                         </StackPanel>
                                     </Border>
                                     <Border x:Name="DiagnosticHealthCard" Style="{DynamicResource GscReadingCardStyle}" Padding="12,10" Margin="0,0,0,6">

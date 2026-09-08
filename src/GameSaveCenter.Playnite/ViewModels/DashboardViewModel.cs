@@ -338,6 +338,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             ApplyRecommendedProtectionCommand = new RelayCommand(_ => Run(ApplyRecommendedProtectionAsync), _ => !IsBusy);
             RefreshDiagnosticsCommand = new RelayCommand(_ => Run(RefreshDiagnosticsAsync), _ => !IsBusy);
             RunMaintenanceActionCommand = new RelayCommand(value => Run(() => RunMaintenanceActionAsync(value)), value => !IsBusy && value is MaintenanceActionItem);
+            LoadMoreRetentionQuarantineCommand = new RelayCommand(_ => Run(LoadMoreRetentionQuarantineAsync), _ => !IsBusy && RetentionQuarantineHasMore);
             RefreshCloudTransfersCommand = new RelayCommand(_ => Run(() => LoadCloudTransferPageAsync(true)), _ => !IsBusy);
             LoadMoreCloudTransfersCommand = new RelayCommand(_ => Run(() => LoadCloudTransferPageAsync(false)), _ => !IsBusy && CloudTransferHasMore);
             VerifyCloudTransferCommand = new RelayCommand(_ => Run(VerifySelectedCloudTransferAsync), _ => !IsBusy && CanVerifySelectedCloudTransfer());
@@ -1281,6 +1282,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand ApplyRecommendedProtectionCommand { get; }
         public ICommand RefreshDiagnosticsCommand { get; }
         public ICommand RunMaintenanceActionCommand { get; }
+        public ICommand LoadMoreRetentionQuarantineCommand { get; }
         public ICommand RefreshCloudTransfersCommand { get; }
         public ICommand LoadMoreCloudTransfersCommand { get; }
         public ICommand VerifyCloudTransferCommand { get; }
@@ -2142,10 +2144,10 @@ namespace GameSaveCenter.Playnite.ViewModels
                     Replace(ProcessMappings,mappings, SnapshotComparers.ProcessMapping);
                     if(ProcessMappingTargetGame==null) ProcessMappingTargetGame=SelectedGame??Games.FirstOrDefault();
                 });
-                var quarantineEntries = await plugin.RequestAsync<List<RetentionQuarantineEntryDto>>(
+                var quarantinePage = await plugin.RequestAsync<RetentionQuarantinePageDto>(
                     MessageTypes.GetRetentionQuarantineEntries,
-                    new { });
-                ApplyOnUi(() => UpdatePendingQuarantineEntries(quarantineEntries));
+                    new RetentionQuarantinePageRequestDto { Limit = 100 });
+                ApplyOnUi(() => UpdatePendingQuarantineEntries(quarantinePage, reset: true));
                 if (MaintenanceTabIndex == 1)
                     await LoadCloudTransferPageAsync(true);
                 if (settings.SafeModeRequested && !safeModePromptShown)
@@ -4844,7 +4846,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 PreviewMediaClassificationCommand, ApplyMediaClassificationCommand, UndoMediaClassificationCommand,
                 RefreshMediaClassificationHistoryCommand, LoadMoreMediaClassificationHistoryCommand,
                 LoadMoreMediaInboxCommand, ReloadMediaInboxCommand,
-                CancelTaskCommand, RetryTaskCommand, RetryAllTasksCommand, LoadMoreTasksCommand, ClearMediaFiltersCommand, CopyTaskErrorCommand, RefreshDiagnosticsCommand, RunMaintenanceActionCommand, DiagnoseGameCommand, SyncGameDescriptorCommand, RetryGameMatchCommand, ClearGamePickerFiltersCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
+                CancelTaskCommand, RetryTaskCommand, RetryAllTasksCommand, LoadMoreTasksCommand, ClearMediaFiltersCommand, CopyTaskErrorCommand, RefreshDiagnosticsCommand, RunMaintenanceActionCommand, LoadMoreRetentionQuarantineCommand, DiagnoseGameCommand, SyncGameDescriptorCommand, RetryGameMatchCommand, ClearGamePickerFiltersCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
                 StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,RunHealthInspectionCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,RefreshRetentionSimulationCommand,ApplyRetentionSimulationCommand,RefreshLocalMirrorStatusCommand,SyncLocalMirrorCommand,CopyMaintenanceReportCommand,ExportMaintenanceReportCommand,
                 SaveProcessMappingCommand,DeleteProcessMappingCommand,RunEnvironmentCheckCommand,SkipOnboardingCommand,CompleteOnboardingCommand,OnboardingTestBackupCommand,
                 OpenDataDirectoryCommand, OpenBackupDirectoryCommand, OpenMediaDirectoryCommand, OpenWorkerLogCommand

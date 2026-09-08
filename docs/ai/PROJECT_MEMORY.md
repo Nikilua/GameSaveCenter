@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-09
 
+## 2026-09-09 L24 隔离账本分页与动效采样
+
+- 隔离账本的 UI 查询入口现在是分页契约，不再把所有未删除行一次性跨 IPC 传到维护页：`RetentionQuarantinePageRequestDto` 限制 `Offset/Limit`，Worker 在 SQLite 侧先给 durable `TotalCount`，再按 `updated_utc DESC, entry_id DESC` 返回最多 100 条并给 `HasMore`。现有 Worker 内部恢复/预览仍可使用完整持久化读取，不把 UI 分页误用于安全协调。
+- `DashboardViewModel` 首次只装载一页；`LoadMoreRetentionQuarantineCommand` 追加下一页并按 `EntryId` 去重，动作请求仍以稳定 EntryId 为准。每次刷新或恢复后从第一页重建，摘要区分“隔离账本总量”和“已加载/全部”，按钮状态必须进入 `RaiseCommandStatesCore`，否则新页到达后可能保持不可用。
+- 维护溢出 `ListBox` 必须保留有限视口（当前 `Tag=FiniteViewport`、`MaxHeight=360`）及 `CanContentScroll=True`、`VirtualizingPanel.IsVirtualizing=True`、`VirtualizationMode=Recycling`；不能用扩大页面、隐藏滚动条或关闭虚拟化掩盖列表规模。`scripts/validate-source.py` 对此有限视口有显式门禁。
+- L24 证据：205 条夹具返回 `100/100/5` 三页、durable total `205`、稳定 ID 去重 `205`；shellqa 的单次/快速/关闭动画布局计数为 `46/58/3`，最大帧间隔为 `53.2/31.1/17.1ms`，均 settled。离屏报告不代表 FusionX、真实 DPI 或真实帧率；新增/删除/状态变化仍须在真实宿主通过刷新/恢复操作复测。
+
 ## 2026-09-09 L23 搜索、刷新与重复 IPC 合并
 
 - `DashboardViewModel` 的任务历史分页与 Dashboard 快照读取必须遵循最新请求提交规则：开始请求时创建稳定 generation/Token，IPC 返回后和 `ApplyOnUi` 回写前再次确认当前作用域；旧响应只允许结束自己的取消/清理，不得清空新请求状态、覆盖新筛选或写入旧页面。`LatestRequestCoordinator.RequestScope.Token` 在取消后仍可安全读取，不能让释放 CTS 反过来制造 `ObjectDisposedException`。

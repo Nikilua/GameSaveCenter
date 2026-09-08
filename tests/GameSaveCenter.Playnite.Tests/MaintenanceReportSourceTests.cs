@@ -32,6 +32,7 @@ public sealed class MaintenanceReportSourceTests
         var viewModel = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
         var messages = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Contracts", "MessageTypes.cs"));
         var dispatcher = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Worker", "Ipc", "IpcRequestDispatcher.cs"));
+        var store = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Worker", "Persistence", "SqliteStateStore.RetentionQuarantine.cs"));
 
         Assert.Contains("ItemsSource=\"{Binding MaintenanceActionSections}\"", maintenance);
         Assert.Contains("ItemsSource=\"{Binding PreviewItems}\"", maintenance);
@@ -40,7 +41,12 @@ public sealed class MaintenanceReportSourceTests
         Assert.Contains("LastVerifiedDisplay", actions);
         Assert.Contains("NextAttemptDisplay", actions);
         Assert.Contains("MessageTypes.GetRetentionQuarantineEntries", viewModel);
+        Assert.Contains("RetentionQuarantinePageRequestDto", viewModel);
+        Assert.Contains("RetentionQuarantineLoadedDisplay", maintenance);
+        Assert.Contains("LoadMoreRetentionQuarantineCommand", maintenance);
         Assert.Contains("GetRetentionQuarantineEntries", messages);
+        Assert.Contains("GetRetentionQuarantinePageAsync", dispatcher);
+        Assert.Contains("LIMIT $limit OFFSET $offset", store);
         Assert.Contains("RecoverRetentionQuarantine", dispatcher);
         Assert.Contains("Confirmed = true", actions);
     }

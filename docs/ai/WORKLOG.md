@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-09 L24 隔离账本有界分页与动效预算
+
+- 先复核了真实查询/渲染链：隔离账本 IPC 原先一次性读取所有未删除记录，维护动作区再把全部记录构造成 VM 项；页面虽然有分组展开器，但没有数据边界。新增 `RetentionQuarantinePageRequestDto`/`RetentionQuarantinePageDto`，Worker 在 SQLite 侧按 `updated_utc DESC, entry_id DESC` 做 `COUNT + LIMIT/OFFSET`，默认和上限均为每页 100；UI 只首载一页，明确显示 durable 总量与已加载量，继续加载只按稳定 `EntryId` 追加，恢复动作仍使用该 ID。
+- 溢出动作列表改为共享 `MaintenanceOverflowList` 的有限 `ListBox`，保留 `CanContentScroll=True`、Recycling 和虚拟化；显式 `MaxHeight=360` 仅用于真实有限视口，不是底部裁剪补偿。刷新/恢复后重新读取第一页，分页按钮纳入统一命令状态刷新；没有 `Items.Refresh()`、定时 `UpdateLayout()`、强制回顶或关闭虚拟化。
+- 动效沿用现有 L08 RenderHarness `shellqa` 采样：单次侧栏收起 `288.0ms / layout 46 / maxFrameGap 53.2ms`，快速往返 `424.8ms / layout 58 / maxFrameGap 31.1ms`，关闭动画的 atomic-final `59.6ms / layout 3 / maxFrameGap 17.1ms`，三项均 `settled=True`，报告为 `.tmp/l24-shellprobe/shell-qa-report.txt`。这些是离屏 DIP/布局采样，不等价于真实宿主 60fps。
+- 证据：205 条隔离账本分页为 `100/100/5`，durable total `205`，三页稳定 ID 去重 `205`；Release 构建 `0 warning/0 error`；Core `76/76`、Worker `304/305`（1 跳过）、Playnite `417/479`（62 跳过）；`validate-source.py`、XAML `19/19`、WPF 静态审查 `0 errors/22 warnings/172 info`、`git diff --check` 通过。没有真实 Playnite/FusionX、用户主题/DPI、视频式拖动或宿主 60fps 复测，仍待宿主验收。
+
 ## 2026-09-09 L23 搜索、刷新与重复 IPC 合并
 
 - 先沿现有链路复核任务搜索 debounce、任务历史游标、Dashboard 全量刷新、后台轮询和 `WorkerIpcClient` 取消；没有改写写请求，也没有把不同筛选条件复用成同一个结果。原任务历史请求没有把取消 Token 传入 IPC，且 debounce 回调在 `IsBusy` 时会直接丢弃最新查询；Dashboard 快照响应也缺少统一的最新代际提交门。
