@@ -14,6 +14,13 @@ public enum MaintenanceActionKind
     RetentionQuarantine
 }
 
+public enum MaintenanceActionGroup
+{
+    NeedsManualHandling,
+    WaitingForRetry,
+    Routine
+}
+
 internal sealed class MaintenanceCloudTransferMergeResult
 {
     public MaintenanceCloudTransferMergeResult(
@@ -118,14 +125,59 @@ public sealed class MaintenanceActionItem
     public CloudTransferKind TransferKind { get; set; }
     public string TransferState { get; set; } = string.Empty;
     public string EntryId { get; set; } = string.Empty;
+
+    public MaintenanceActionGroup Group => ActionKind switch
+    {
+        MaintenanceActionKind.RetentionQuarantine => MaintenanceActionGroup.NeedsManualHandling,
+        MaintenanceActionKind.CloudTransfer when string.Equals(TransferState, "RetryScheduled", StringComparison.OrdinalIgnoreCase)
+            => MaintenanceActionGroup.WaitingForRetry,
+        MaintenanceActionKind.CloudTransfer => MaintenanceActionGroup.NeedsManualHandling,
+        _ => MaintenanceActionGroup.Routine
+    };
+}
+
+/// <summary>
+/// One bounded section in the maintenance overview. The complete records remain available
+/// through the explicit overflow expander; the overview itself does not grow once a group
+/// contains more than its first few actionable records.
+/// </summary>
+public sealed class MaintenanceActionSection
+{
+    public MaintenanceActionSection(
+        MaintenanceActionGroup group,
+        string title,
+        string description,
+        IEnumerable<MaintenanceActionItem> items)
+    {
+        Group = group;
+        Title = title;
+        Description = description;
+        Items = items.ToArray();
+    }
+
+    public MaintenanceActionGroup Group { get; }
+    public string Title { get; }
+    public string Description { get; }
+    public IReadOnlyList<MaintenanceActionItem> Items { get; }
+    public IReadOnlyList<MaintenanceActionItem> PreviewItems => Items.Take(3).ToArray();
+    public IReadOnlyList<MaintenanceActionItem> OverflowItems => Items.Skip(3).ToArray();
+    public int OverflowCount => Math.Max(0, Items.Count - 3);
+    public bool HasOverflow => OverflowCount > 0;
+    public string OverflowHeader => $"显示其余 {OverflowCount} 项";
 }
 
 public sealed partial class DashboardViewModel
 {
     private string? pendingCloudTransferKey;
+    private IReadOnlyList<MaintenanceActionSection> maintenanceActionSections = Array.Empty<MaintenanceActionSection>();
 
     public BatchObservableCollection<RetentionQuarantineEntryDto> PendingQuarantineEntries { get; } = new();
     public BatchObservableCollection<MaintenanceActionItem> MaintenanceActionItems { get; } = new();
+    public IReadOnlyList<MaintenanceActionSection> MaintenanceActionSections
+    {
+        get => maintenanceActionSections;
+        private set => SetValue(ref maintenanceActionSections, value);
+    }
 
     public string MaintenanceActionSummary
     {
@@ -246,10 +298,28 @@ public sealed partial class DashboardViewModel
         }
 
         var ordered = items
-            .OrderBy(item => item.ActionKind == MaintenanceActionKind.RetentionQuarantine ? 0 : item.ActionKind == MaintenanceActionKind.CloudTransfer ? 1 : 2)
+            .OrderBy(item => item.Group)
             .ThenBy(item => item.Title, StringComparer.OrdinalIgnoreCase)
             .ToList();
         Replace(MaintenanceActionItems, ordered, AreSameMaintenanceAction);
+        MaintenanceActionSections = new[]
+        {
+            new MaintenanceActionSection(
+                MaintenanceActionGroup.NeedsManualHandling,
+                "需要人工处理",
+                "冲突、失败或隔离账本不会被自动覆盖；逐条确认后再继续。",
+                ordered.Where(item => item.Group == MaintenanceActionGroup.NeedsManualHandling)),
+            new MaintenanceActionSection(
+                MaintenanceActionGroup.WaitingForRetry,
+                "等待自动重试",
+                "这些记录已有下一次尝试时间，不需要重复点击上传。",
+                ordered.Where(item => item.Group == MaintenanceActionGroup.WaitingForRetry)),
+            new MaintenanceActionSection(
+                MaintenanceActionGroup.Routine,
+                "例行巡检",
+                "按需运行非破坏性检查，结果会回到同一维护上下文。",
+                ordered.Where(item => item.Group == MaintenanceActionGroup.Routine))
+        }.Where(section => section.Items.Count > 0).ToArray();
         OnPropertyChanged(nameof(MaintenanceActionSummary));
     }
 

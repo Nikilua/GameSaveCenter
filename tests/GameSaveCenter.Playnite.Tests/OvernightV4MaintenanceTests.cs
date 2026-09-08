@@ -29,7 +29,10 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.NotEmpty(expanders);
             Assert.All(expanders, expander =>
             {
-                Assert.Contains("GscDisclosureCard", expander.Attribute("Style")?.Value);
+                var style = expander.Attribute("Style")?.Value
+                    ?? expander.Descendants().SingleOrDefault(element => element.Name.LocalName == "Style")?.ToString()
+                    ?? string.Empty;
+                Assert.Contains("GscDisclosureCard", style);
                 Assert.DoesNotContain(">", expander.Attribute("Header")?.Value ?? string.Empty);
             });
             Assert.DoesNotContain("EnvironmentCheckDisclosureScroller", maintenance.ToString());

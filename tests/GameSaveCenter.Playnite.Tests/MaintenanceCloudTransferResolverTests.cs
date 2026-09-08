@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.ViewModels;
@@ -82,6 +83,54 @@ namespace GameSaveCenter.Playnite.Tests
 
             Assert.Equal("上次尝试：2026-09-08 12:00 · 下次尝试：稍后", cloud.TimingDisplay);
             Assert.Equal("账本更新：2026-09-08 12:01 · 下次尝试：人工确认", quarantine.TimingDisplay);
+        }
+
+        [Fact]
+        public void MaintenanceOverviewGroupsActionsAndBoundsTheDefaultPreview()
+        {
+            var items = new List<MaintenanceActionItem>
+            {
+                new MaintenanceActionItem { ActionKind = MaintenanceActionKind.HealthInspection, Title = "巡检" },
+                new MaintenanceActionItem { ActionKind = MaintenanceActionKind.CloudTransfer, TransferState = "RetryScheduled", Title = "等待重试" },
+                new MaintenanceActionItem { ActionKind = MaintenanceActionKind.RetentionQuarantine, Title = "隔离 1" },
+                new MaintenanceActionItem { ActionKind = MaintenanceActionKind.RetentionQuarantine, Title = "隔离 2" },
+                new MaintenanceActionItem { ActionKind = MaintenanceActionKind.RetentionQuarantine, Title = "隔离 3" },
+                new MaintenanceActionItem { ActionKind = MaintenanceActionKind.RetentionQuarantine, Title = "隔离 4" }
+            };
+            for (var index = 5; index <= 20; index++)
+            {
+                items.Add(new MaintenanceActionItem
+                {
+                    ActionKind = MaintenanceActionKind.RetentionQuarantine,
+                    Title = index == 20 ? "隔离 " + new string('x', 180) : $"隔离 {index}"
+                });
+            }
+
+            var manual = new MaintenanceActionSection(
+                MaintenanceActionGroup.NeedsManualHandling,
+                "需要人工处理",
+                "说明",
+                items.Where(item => item.Group == MaintenanceActionGroup.NeedsManualHandling));
+            var waiting = new MaintenanceActionSection(
+                MaintenanceActionGroup.WaitingForRetry,
+                "等待自动重试",
+                "说明",
+                items.Where(item => item.Group == MaintenanceActionGroup.WaitingForRetry));
+
+            Assert.Equal(3, manual.PreviewItems.Count);
+            Assert.Equal(20, manual.Items.Count);
+            Assert.Equal(17, manual.OverflowCount);
+            Assert.True(manual.HasOverflow);
+            Assert.Single(waiting.PreviewItems);
+            Assert.False(waiting.HasOverflow);
+
+            var empty = new MaintenanceActionSection(
+                MaintenanceActionGroup.Routine,
+                "例行巡检",
+                "说明",
+                Enumerable.Empty<MaintenanceActionItem>());
+            Assert.Empty(empty.PreviewItems);
+            Assert.False(empty.HasOverflow);
         }
 
         private static CloudTransferStatusDto Transfer(string key, string state, int minute)

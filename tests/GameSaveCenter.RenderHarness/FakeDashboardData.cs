@@ -1,6 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Data;
 using System.Windows.Input;
 using GameSaveCenter.Contracts;
@@ -33,6 +34,7 @@ public sealed class FakeDashboardData
     public ICommand OpenAttentionCenterCommand { get; } = new NoopCommand();
     public ICommand OpenMaintenanceCommand { get; } = new NoopCommand();
     public ICommand OpenCloudQueueCommand { get; } = new NoopCommand();
+    public ICommand OpenActivityCommand { get; } = new NoopCommand();
     public ICommand OpenMediaWorkspaceCommand { get; } = new NoopCommand();
     public ICommand OpenSelectedFindingNavigationCommand { get; } = new NoopCommand();
     public ICommand RefreshCommand { get; } = new NoopCommand();
@@ -549,6 +551,8 @@ public sealed class FakeDashboardData
             EntryId = "entry-1"
         });
 
+        RebuildMaintenanceActionSections();
+
         ApplyWorkspaceFixtureState();
 
         SelectedTask = Tasks[0];
@@ -594,7 +598,37 @@ public sealed class FakeDashboardData
         Findings.Clear();
         Audit.Clear();
         MaintenanceActionItems.Clear();
+        MaintenanceActionSections.Clear();
         Snapshot.UnassignedMediaCount = 0;
+    }
+
+    private void RebuildMaintenanceActionSections()
+    {
+        MaintenanceActionSections.Clear();
+        var ordered = MaintenanceActionItems
+            .OrderBy(item => item.Group)
+            .ThenBy(item => item.Title, StringComparer.OrdinalIgnoreCase)
+            .ToArray();
+        var sections = new[]
+        {
+            new MaintenanceActionSection(
+            MaintenanceActionGroup.NeedsManualHandling,
+            "需要人工处理",
+            "冲突、失败或隔离账本不会被自动覆盖；逐条确认后再继续。",
+            ordered.Where(item => item.Group == MaintenanceActionGroup.NeedsManualHandling)),
+            new MaintenanceActionSection(
+            MaintenanceActionGroup.WaitingForRetry,
+            "等待自动重试",
+            "这些记录已有下一次尝试时间，不需要重复点击上传。",
+            ordered.Where(item => item.Group == MaintenanceActionGroup.WaitingForRetry)),
+            new MaintenanceActionSection(
+            MaintenanceActionGroup.Routine,
+            "例行巡检",
+            "按需运行非破坏性检查，结果会回到同一维护上下文。",
+            ordered.Where(item => item.Group == MaintenanceActionGroup.Routine))
+        };
+        foreach (var section in sections.Where(section => section.Items.Count > 0))
+            MaintenanceActionSections.Add(section);
     }
 
     private string FixtureStateText => fixtureState.ToString();
@@ -656,6 +690,7 @@ public sealed class FakeDashboardData
     public ObservableCollection<ValidationFindingDto> AttentionFindings { get; } = new ObservableCollection<ValidationFindingDto>();
     public ObservableCollection<MediaItemDto> Media { get; } = new ObservableCollection<MediaItemDto>();
     public ObservableCollection<MaintenanceActionItem> MaintenanceActionItems { get; } = new ObservableCollection<MaintenanceActionItem>();
+    public ObservableCollection<MaintenanceActionSection> MaintenanceActionSections { get; } = new ObservableCollection<MaintenanceActionSection>();
     public ICollectionView MediaView { get; }
     public bool MediaPageHasMore => true;
     public string MediaLoadedSummary => $"当前保留 {Media.Count} 条（窗口上限 2000）";

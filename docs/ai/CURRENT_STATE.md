@@ -2,6 +2,12 @@
 
 > 更新时间：2026-09-09。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-09 L14 运维总览按处理顺序组织已完成（真实宿主待验收）
+
+- 维护诊断概览不再把所有动作渲染成同等权重的长列表：真实动作按“需要人工处理 / 等待自动重试 / 例行巡检”分组，每组默认只展示前 3 条；其余记录通过明确的“显示其余 N 项”展开器保留在同一上下文。没有新增批量自动修复，云端 `TransferKey`、隔离账本 `EntryId` 和巡检命令参数继续沿用原动作对象。
+- 空分组不生成空卡片；分组计数显示该组总量，默认列表与溢出列表分别绑定 `PreviewItems` / `OverflowItems`。长标题仍有省略提示，详情、时间、风险说明和逐条动作入口均保留。RenderHarness Fake 同步使用同一分组形状。
+- 新增分组与 0/1/20 条边界契约（含长标题）并更新维护页静态门禁。Release 构建 `0 warning/0 error`；Core `72/72`、Worker `303/304`（1 跳过）、Playnite `402/464`（62 跳过）；`validate-source.py`、XAML `19/19`、`git diff --check` 通过。离屏维护页双主题/多尺寸/resize 通过；完整 render-qa 的稳定失败仍是既有媒体小视口/媒体壳表格高度，首轮另有一次侧栏 rapid-toggle 未稳定，单独 shellqa 重跑已稳定。真实 Playnite/FusionX、DPI、键盘和宿主模板仍待验收。
+
 ## 2026-09-09 L13 首页优先级与活动上下文已完成（真实宿主待验收）
 
 - Hero 继续只有一套 `OverviewPriorityResolver` 优先级入口：Worker 离线、首次准备、云端待处理、媒体待归类、空库、游戏告警、健康刷新按明确顺序决策；空库不再误显示“整体状态安全”，云端失败继续使用快照 `AttentionCount` 统一口径。

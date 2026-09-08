@@ -33,7 +33,9 @@ public sealed class MaintenanceReportSourceTests
         var messages = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Contracts", "MessageTypes.cs"));
         var dispatcher = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Worker", "Ipc", "IpcRequestDispatcher.cs"));
 
-        Assert.Contains("ItemsSource=\"{Binding MaintenanceActionItems}\"", maintenance);
+        Assert.Contains("ItemsSource=\"{Binding MaintenanceActionSections}\"", maintenance);
+        Assert.Contains("ItemsSource=\"{Binding PreviewItems}\"", maintenance);
+        Assert.Contains("ItemsSource=\"{Binding OverflowItems}\"", maintenance);
         Assert.Contains("RunMaintenanceActionCommand", maintenance);
         Assert.Contains("LastVerifiedDisplay", actions);
         Assert.Contains("NextAttemptDisplay", actions);

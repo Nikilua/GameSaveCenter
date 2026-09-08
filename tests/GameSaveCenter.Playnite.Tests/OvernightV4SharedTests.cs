@@ -32,7 +32,10 @@ namespace GameSaveCenter.Playnite.Tests
                 var expanders = document.Descendants().Where(element => element.Name.LocalName == "Expander").ToList();
                 Assert.All(expanders, expander =>
                 {
-                    Assert.Contains("GscDisclosureCard", expander.Attribute("Style")?.Value ?? string.Empty);
+                    var style = expander.Attribute("Style")?.Value
+                        ?? expander.Descendants().SingleOrDefault(element => element.Name.LocalName == "Style")?.ToString()
+                        ?? string.Empty;
+                    Assert.Contains("GscDisclosureCard", style);
                     Assert.DoesNotContain(">", expander.Attribute("Header")?.Value ?? string.Empty);
                     if (!isOverview)
                     {

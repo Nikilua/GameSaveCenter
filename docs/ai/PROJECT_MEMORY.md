@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-09
 
+## 2026-09-09 L14 运维总览按处理顺序组织
+
+- `MaintenanceActionItem.Group` 只按现有动作语义分为 `NeedsManualHandling`、`WaitingForRetry` 和 `Routine`：隔离账本、认证/失败云端记录需要人工处理，`RetryScheduled` 进入等待重试，恢复巡检进入例行巡检。不要依据显示文案另造分类，也不要把云端摘要计数当成已加载明细。
+- `MaintenanceActionSection` 固定保留完整 `Items`，`PreviewItems` 只取前 3 条，`OverflowItems` 显式取其余记录。概览只展示有记录的分组；每次重建都替换 section 列表，保持集合代际和具体 `TransferKey`/`EntryId` 动作参数不变。
+- `MaintenanceView.xaml` 的单条动作模板集中保留状态、详情、时间和真实 `RunMaintenanceActionCommand`；溢出使用基于 `GscDisclosureCard` 的展开器。不要改成批量自动修复、定时刷新或关闭虚拟化。长文件名依靠省略提示和详情文本可达。
+- L14 验证：分组边界契约覆盖空组、单条、20 条及长标题；Release 构建 0 警告/错误；Core `72/72`、Worker `303/304`（1 跳过）、Playnite `402/464`（62 跳过）；源码/XAML/差异检查通过。离屏维护页通过；完整 render-qa 的稳定失败属于既有媒体小视口/媒体壳高度，首轮另有一次侧栏 rapid-toggle 未稳定，单独 shellqa 重跑已稳定。真实 Playnite/FusionX 仍待验收。
+
 ## 2026-09-09 L13 首页优先级与活动上下文
 
 - `OverviewPriorityResolver` 保持单一 Hero 决策，顺序为 Worker 离线、首次准备、云端待处理、媒体待归类、空库、游戏告警、健康刷新。空库使用 `ManagedGames <= 0` 明确显示“还没有可管理的游戏”，不再把无游戏快照当作健康状态；云端失败/认证/校验/重试仍统一来自 `CloudTransferSummaryDto.AttentionCount`。
