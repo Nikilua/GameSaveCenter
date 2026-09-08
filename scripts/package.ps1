@@ -36,11 +36,22 @@ function Read-AssemblyInformationalVersion {
             if (Test-Path -LiteralPath (Join-Path $dotnetRoot 'sdk')) {
                 $metadataCandidates += Get-ChildItem -LiteralPath (Join-Path $dotnetRoot 'sdk') -Directory -ErrorAction SilentlyContinue |
                     Sort-Object Name -Descending |
-                    ForEach-Object { Join-Path $_.FullName 'TestHostNetFramework\System.Reflection.Metadata.dll' }
+                    ForEach-Object {
+                        [pscustomobject]@{
+                            Immutable = Join-Path $_.FullName 'TestHostNetFramework\System.Collections.Immutable.dll'
+                            Metadata = Join-Path $_.FullName 'TestHostNetFramework\System.Reflection.Metadata.dll'
+                        }
+                    }
             }
-            foreach ($candidate in $metadataCandidates | Where-Object { Test-Path -LiteralPath $_ }) {
+            foreach ($candidate in $metadataCandidates | Where-Object { Test-Path -LiteralPath $_.Metadata }) {
                 try {
-                    Add-Type -Path $candidate -ErrorAction Stop
+                    # Load the matching immutable dependency first. Otherwise
+                    # PowerShell may bind Metadata against a different SDK
+                    # copy and fail while initializing its generic tables.
+                    if (Test-Path -LiteralPath $candidate.Immutable) {
+                        Add-Type -Path $candidate.Immutable -ErrorAction Stop
+                    }
+                    Add-Type -Path $candidate.Metadata -ErrorAction Stop
                     $metadataLoaded = $true
                     break
                 }
