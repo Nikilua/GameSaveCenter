@@ -16,6 +16,10 @@
 
 > L25 证据：本地 Named Pipe 行为矩阵 `6/6` 通过，Worker `IpcRequestLedgerTests` `6/6` 通过，Release 构建无警告/错误。真实 Playnite 页面关闭、Worker 实际启动/中断/恢复、宿主弹窗时序和用户视频仍待验收；Worker 重启总套件的 1 项历史环境 skip 保持不伪造为通过。
 
+> 2026-09-09 L26 已完成 Worker 断连/重启和旧构建的隔离验收记录：`WorkerLauncher` 保留协议/版本/构建身份分类、同路径进程健康宽限、新进程 30 秒就绪截止和只回收本插件持有进程；Worker 初始化恢复旧 IPC ledger，任务硬重启状态标为 `WORKER_RESTARTED_RETRYABLE`，不盲目重放旧写请求。
+
+> L26 证据：独立临时 Worker 真实 Named Pipe 启动→硬停止→重启→durable task 恢复 `1/1` 通过；Worker 全套 `305/305`、0 skip；Playnite 全套 `423/480`（57 个 UI/宿主条件 skip）通过。没有真实 Playnite/FusionX 窗口内启动失败、运行中断连、恢复刷新、DPI 或多实例录屏，仍待宿主验收，不能写成真实安装环境全通过。
+
 > L22 证据为 `.tmp/l22-thumbnailprobe-final/thumbnailprobe-report.txt` 及 Playnite STA 测试：120 项初次窗口 `120` 成功、峰值并发 `3`、缓存 `96/96`；16 项保留窗口全命中；破损/缺失均为空；预取消可观测；100 次 12 项窗口往返后活动解码 `0`；旧 800×800 图替换为新 64×64 图后最终像素标记为新图，输出宽度 `96`。这是合成文件和隐藏 STA Window 证据，不是实际 Playnite/FusionX、DPI、用户目录或视频录屏验收。
 
 > 2026-09-09 L21 已完成列表虚拟化与滚动规模实测：证据先于参数调整。原当前游戏 `MediaGrid` 使用普通 `WrapPanel`，在 200/2000/10000 后端夹具中生成 200/2000/2000 个卡片；修复仅接回已有 `VirtualizingWrapPanel`，保留 164×154 卡片、选择和 ListBox 滚动契约。修复后顶部→底部→顶部均约 20 个容器，任务表与媒体收件箱的 DataGrid 诊断/20 次滑块往返/语义滚动/resize/选择保持通过。

@@ -272,9 +272,12 @@
 
 ### L26 Worker 断连、重启与旧构建
 
+- 状态：WorkerLauncher/ledger/任务恢复代码已有，隔离真实 Worker 重启矩阵已完成；真实 Playnite/FusionX 窗口断连恢复和多实例宿主录屏仍待宿主验收。
 - 目标：后台中断后 UI 进入真实离线/恢复状态，不无限转圈或重复拉起。
 - 文件：WorkerLauncher、握手、任务协调/持久化恢复、状态 VM；依赖 L04/L25。使用隔离 Worker、独立数据库/管道，不停止用户正在使用的 Worker。
-- 验收：启动失败、启动中退出、同版本不同构建、运行中断连、恢复后刷新；有明确截止时间，任务持久化状态可解释，所有产生的进程能回收。
+- 实现：健康探测分类协议/版本/构建身份，旧 Worker 只在 legacy Ping 兼容边界内使用；同路径忙实例最多宽限 45 秒，新实例就绪截止 30 秒；停止只作用于本插件持有进程。Worker 启动恢复旧 IPC ledger，任务协调把硬重启未完成任务标成 `WORKER_RESTARTED_RETRYABLE`。
+- 证据：隔离临时 Worker Named Pipe 启动→硬停止→重启→durable task 恢复 `1/1`；Worker 全量 `305/305`、0 skip；Playnite 全量 `423/480`（57 个 UI/宿主条件 skip），Release 构建 `0 warning/0 error`。BuildIdentity 测试覆盖同版本不同构建、unknown/旧构建兼容分类。
+- 验收：隔离启动/硬停止/重启、任务恢复、进程回收和明确截止时间已通过；真实 Playnite 启动失败、运行中断连、恢复后刷新、DPI、FusionX 和多实例安装仍需宿主复测，不以隔离进程测试代替。
 
 ### L27 配置、路径与外部文件变化
 

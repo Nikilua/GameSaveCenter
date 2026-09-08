@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-09
 
+## 2026-09-09 L26 Worker 启动、断连与恢复边界
+
+- `WorkerLauncher.EnsureStartedAsync` 的生命周期边界：健康握手先分协议/版本/构建身份；同路径已有进程的 transient probe 最多宽限 45 秒，启动新 Worker 的真实就绪截止 30 秒；不能因一次短 Ping 超时杀掉大库 Worker。`StopOwnedWorker` 只回收本插件保存的 `runningWorker`，Playnite 退出不扫描/停止其他实例。
+- Worker SQLite 初始化先 `RecoverIpcRequestLedgerAsync`，把上一个进程遗留的 `InProgress` 写请求变为 `Interrupted`，客户端收到后只能核对状态，不能把旧请求当成可安全重放。任务协调的硬重启恢复会将未完成 durable task 标为 `WORKER_RESTARTED_RETRYABLE`。
+- 构建身份规则：已知 actual/expected 两个身份不一致才是 `BuildIdentityIncompatible`；unknown/空身份在协议/版本兼容时可继续工作，但日志必须明确“构建身份未验证”，不能冒充同源。旧 Worker 没有 handshake 时按受限 legacy Ping 兼容。
+- L26 证据：独立临时 Worker 硬停止/重启测试 `1/1`；完整 Worker `305/305`、0 skip；Playnite 完整 `423/480`、57 个宿主条件 skip。真实 Playnite UI 的启动失败、运行中断连、恢复刷新和多实例安装仍需宿主矩阵。
+
 ## 2026-09-09 L25 IPC 取消、超时与同 ID 复核
 
 - `WorkerIpcClient` 的破坏性请求在超时/断管后只能用原 `IpcEnvelope.RequestId` 复核；不能生成新 ID 直接重发。Worker `ipc_request_ledger` 按请求类型、协议版本和 canonical payload fingerprint 冲突保护，Completed 回放原响应，InProgress 返回“仍在执行”，Interrupted 返回“此前 Worker 已退出，先核对状态”。

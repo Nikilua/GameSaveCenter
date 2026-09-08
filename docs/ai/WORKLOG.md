@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-09 L26 Worker 断连、重启与旧构建验收记录
+
+- 复核现有 `WorkerLauncher` 与 Worker 启动链：握手先检查协议/版本/构建身份；同路径现有进程先做短探测并在最多 45 秒内等待瞬态忙状态，不能因一次短 Ping 超时就杀掉大库 Worker；新子进程有真实 30 秒就绪截止；退出时只停止本插件持有的 Worker。Worker 启动时恢复 IPC ledger，将上一进程留下的 InProgress 标为 Interrupted，避免旧写请求被重放。
+- 以独立临时 Data/Saves/Media 目录和临时 Named Pipe 启动真实 Worker：写入一个 Running 任务，硬停止第一实例，启动第二实例，确认同一 durable 任务变为 `Failed / WORKER_RESTARTED_RETRYABLE`，并在测试 finally 回收两个临时进程和目录。未停止用户正在使用的 Worker，也未使用用户数据目录。
+- 证据：`WorkerProcessRestartTests` 完整 Windows 环境 `1/1` 通过；Worker 全套 `305/305` 通过、`0` skip；L25 后 Release 构建仍为 `0 warning/0 error`，Playnite 全套 `423/480`（57 个 UI/宿主条件 skip）通过。已有 BuildIdentity 规则覆盖同版本不同构建拒绝、unknown/旧 Worker 的兼容分类。
+- 边界：没有真实 Playnite 窗口内启动失败/运行中断连/恢复刷新录屏，也没有用户 FusionX、DPI 或多实例安装环境；这些仍标为宿主验收，不把隔离 Worker 进程证据写成真实宿主已解决。
+
 ## 2026-09-09 L25 取消、超时与旧响应矩阵
 
 - 先复核已有 IPC 语义：只读请求取消不会被说成已提交写入；破坏性请求在写入/回执边界丢失时由 SQLite `ipc_request_ledger` 按同一 `RequestId` 去重、回放或返回 `REQUEST_IN_PROGRESS`/`REQUEST_INTERRUPTED`，不生成新请求盲目重发。Dashboard 的 L23 最新代际门仍负责旧 UI 响应不回写。
