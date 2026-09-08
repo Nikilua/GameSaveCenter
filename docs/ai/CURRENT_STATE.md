@@ -2,6 +2,13 @@
 
 > 更新时间：2026-09-09。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-09 L22 缩略图加载、取消与缓存边界已完成（真实宿主待验收）
+
+- `AsyncThumbnailImage` 现在只在已加载且可见时发起加载；不可见/卸载会取消并清空旧图，路径或尺寸变化通过代际号阻止旧结果回写。`AsyncThumbnailLoader` 保留 `OnLoad` 冻结位图、3 路并发和 96 项 LRU，破损/缺失文件返回空占位而不抛出到列表。
+- 新增内部计数探针记录请求、缓存命中、解码开始/成功、活动/峰值并发、取消、失败和缓存数量；Playnite STA 回归覆盖“不可见不启动”和“旧路径不串图”，RenderHarness `thumbnailprobe` 覆盖 120 项、失败文件、预取消、100 次 12 项窗口往返和文件删除边界。
+- `.tmp/l22-thumbnailprobe-final/thumbnailprobe-report.txt` 实测：120/120 解码成功，峰值并发 `3`，缓存 `96/96`；保留窗口命中 `16` 次且未新增解码；破损/缺失均为空且失败 `2`；预取消 `1` 次；100 次往返请求增量 `1200`、缓存命中增量 `1089`、解码增量 `111`，活动解码归零；800×800→64×64 路径替换最终为新图，解码宽度 `96`，合成像素标记 `231`。
+- 这证明插件加载器、可见性生命周期和缓存边界在合成 STA 夹具中成立，不证明真实 Playnite/FusionX 模板、DPI、用户目录文件系统或视频帧级表现；真实宿主按原视频操作矩阵待验收。
+
 ## 2026-09-09 L21 列表虚拟化与滚动规模实测已完成（真实宿主待验收）
 
 - 根因证据不是任务/收件箱 DataGrid 集合或页面整体移动：规模探针发现当前游戏 `MediaGrid` 的 ItemsPanel 是普通 `WrapPanel`，200/2000/10000 后端夹具分别生成 200/2000/2000 个卡片容器。`VirtualizingPanel.IsVirtualizing` 对普通 WrapPanel 不会产生虚拟化。

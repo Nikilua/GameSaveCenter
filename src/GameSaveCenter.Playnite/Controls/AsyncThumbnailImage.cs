@@ -29,6 +29,7 @@ namespace GameSaveCenter.Playnite.Controls
         {
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
+            IsVisibleChanged += OnIsVisibleChanged;
         }
 
         public string? SourcePath
@@ -51,35 +52,34 @@ namespace GameSaveCenter.Playnite.Controls
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            if (Source == null && !string.IsNullOrWhiteSpace(SourcePath))
+            if (Source == null && IsVisible && !string.IsNullOrWhiteSpace(SourcePath))
                 StartLoad();
+        }
+
+        private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if ((bool)e.NewValue)
+            {
+                if (Source == null && IsLoaded && !string.IsNullOrWhiteSpace(SourcePath))
+                    StartLoad();
+                return;
+            }
+
+            CancelPendingLoad(clearSource: true);
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
-            Interlocked.Increment(ref generation);
-            var previous = pending;
-            pending = null;
-            if (previous != null)
-            {
-                previous.Cancel();
-                previous.Dispose();
-            }
+            CancelPendingLoad(clearSource: true);
         }
 
         private void StartLoad()
         {
+            CancelPendingLoad(clearSource: false);
             var expected = Interlocked.Increment(ref generation);
-            var previous = pending;
-            pending = null;
-            if (previous != null)
-            {
-                previous.Cancel();
-                previous.Dispose();
-            }
 
             var path = SourcePath;
-            if (string.IsNullOrWhiteSpace(path))
+            if (string.IsNullOrWhiteSpace(path) || !IsLoaded || !IsVisible)
             {
                 Source = null;
                 return;
@@ -90,6 +90,20 @@ namespace GameSaveCenter.Playnite.Controls
             var cancellation = new CancellationTokenSource();
             pending = cancellation;
             _ = LoadAsync(path!, width, expected, cancellation.Token);
+        }
+
+        private void CancelPendingLoad(bool clearSource)
+        {
+            Interlocked.Increment(ref generation);
+            var previous = Interlocked.Exchange(ref pending, null);
+            if (previous != null)
+            {
+                previous.Cancel();
+                previous.Dispose();
+            }
+
+            if (clearSource)
+                Source = null;
         }
 
         private async Task LoadAsync(string path, int width, int expected, CancellationToken token)

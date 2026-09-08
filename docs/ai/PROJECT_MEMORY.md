@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-09
 
+## 2026-09-09 L22 缩略图加载、取消与缓存边界
+
+- `AsyncThumbnailImage` 的加载入口必须同时满足 `IsLoaded`、`IsVisible` 和非空路径；不可见/卸载先推进 generation、取消并释放旧 `CancellationTokenSource`，同时清空 `Source`。路径或预览宽度变化不能让旧任务回写新卡片。
+- `AsyncThumbnailLoader` 的稳定边界是 `BitmapCacheOption.OnLoad`、冻结 `BitmapSource`、最大 3 路解码和最多 96 项 LRU；文件元数据、缓存检查和解码均不在调用方 UI 线程执行。宽度先夹到 `48..480` 后参与缓存键，破损/缺失/权限等预期读取错误返回空值，取消继续向上抛出。
+- L22 探针只记录 ID/尺寸/计数：120 项初次窗口 `120` 请求、`120` 成功、峰值并发 `3`、缓存 `96/96`；16 项保留窗口全命中；破损与缺失各返回空；预取消可观测；100 次 12 项窗口往返结束时活动解码为 `0`，实际缓存仍为 `96/96`；旧 800×800 路径替换为新 64×64 路径后最终像素标记为新图且输出宽度 `96`。
+- `tests/GameSaveCenter.Playnite.Tests` 的 WPF 控件回归与 `tests/GameSaveCenter.RenderHarness thumbnailprobe` 只证明合成 STA/文件夹夹具；不把它们写成真实 Playnite/FusionX、DPI、用户目录锁定或视频回放验收。临时报告只保留最新 `.tmp/l22-thumbnailprobe-final`，不进 Git。
+
 ## 2026-09-09 L21 列表虚拟化与滚动规模实测
 
 - 当前游戏媒体卡片列表必须使用项目已有的 `VirtualizingWrapPanel`；普通 `WrapPanel` 即使配了 `VirtualizingPanel.IsVirtualizing=True` 也会在 200/2000/10000 夹具中生成 200/2000/2000 个卡片，不能作为大库实现。当前 XAML 的 `MediaGrid` 保留 `ItemWidth=164`、`ItemHeight=154`、水平/垂直间距 0，选择和 ListBox 滚动契约不变。

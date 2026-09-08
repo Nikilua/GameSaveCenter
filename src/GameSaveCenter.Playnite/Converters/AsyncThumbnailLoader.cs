@@ -10,6 +10,44 @@ using Playnite.SDK;
 
 namespace GameSaveCenter.Playnite.Converters
 {
+    internal sealed class AsyncThumbnailLoaderDiagnostics
+    {
+        public AsyncThumbnailLoaderDiagnostics(
+            int cacheCount,
+            int cacheLimit,
+            int activeDecodes,
+            int peakConcurrentDecodes,
+            long requestCount,
+            long cacheHitCount,
+            long decodeStartCount,
+            long decodeSuccessCount,
+            long cancellationCount,
+            long failureCount)
+        {
+            CacheCount = cacheCount;
+            CacheLimit = cacheLimit;
+            ActiveDecodes = activeDecodes;
+            PeakConcurrentDecodes = peakConcurrentDecodes;
+            RequestCount = requestCount;
+            CacheHitCount = cacheHitCount;
+            DecodeStartCount = decodeStartCount;
+            DecodeSuccessCount = decodeSuccessCount;
+            CancellationCount = cancellationCount;
+            FailureCount = failureCount;
+        }
+
+        public int CacheCount { get; }
+        public int CacheLimit { get; }
+        public int ActiveDecodes { get; }
+        public int PeakConcurrentDecodes { get; }
+        public long RequestCount { get; }
+        public long CacheHitCount { get; }
+        public long DecodeStartCount { get; }
+        public long DecodeSuccessCount { get; }
+        public long CancellationCount { get; }
+        public long FailureCount { get; }
+    }
+
     /// <summary>
     /// Bounded, cached, background thumbnail decoder. File IO and BitmapImage decode never
     /// run on the UI thread; at most three decodes run concurrently and every image is
@@ -24,36 +62,135 @@ namespace GameSaveCenter.Playnite.Converters
         private static readonly object CacheLock = new object();
         private static readonly Dictionary<string, BitmapSource> Cache = new Dictionary<string, BitmapSource>(StringComparer.OrdinalIgnoreCase);
         private static readonly LinkedList<string> Recency = new LinkedList<string>();
+        private static long requestCount;
+        private static long cacheHitCount;
+        private static long decodeStartCount;
+        private static long decodeSuccessCount;
+        private static long cancellationCount;
+        private static long failureCount;
+        private static int activeDecodes;
+        private static int peakConcurrentDecodes;
 
         public static async Task<BitmapSource?> LoadAsync(string path, int width, CancellationToken token)
         {
-            // Task.Run guarantees the file metadata probe never runs on the caller's thread
-            // (normally the WPF Dispatcher), even when the semaphore is immediately available.
-            var request = await Task.Run(() => PrepareRequest(path, width), token).ConfigureAwait(false);
-            if (request == null) return null;
-            if (request.Cached != null) return request.Cached;
-
-            await Gate.WaitAsync(token).ConfigureAwait(false);
+            Interlocked.Increment(ref requestCount);
             try
             {
-                var cached = await Task.Run(() => TryGetCached(request.Key), token).ConfigureAwait(false);
-                if (cached != null) return cached;
-                return await Task.Run(() => Decode(request.Path, request.Width, request.Key, token), token).ConfigureAwait(false);
+                // Task.Run guarantees the file metadata probe never runs on the caller's
+                // thread (normally the WPF Dispatcher), even when the semaphore is
+                // immediately available.
+                var request = await Task.Run(() => PrepareRequest(path, width), token).ConfigureAwait(false);
+                if (request == null)
+                {
+                    Interlocked.Increment(ref failureCount);
+                    return null;
+                }
+
+                if (request.Cached != null)
+                {
+                    Interlocked.Increment(ref cacheHitCount);
+                    return request.Cached;
+                }
+
+                await Gate.WaitAsync(token).ConfigureAwait(false);
+                try
+                {
+                    var cached = await Task.Run(() => TryGetCached(request.Key), token).ConfigureAwait(false);
+                    if (cached != null)
+                    {
+                        Interlocked.Increment(ref cacheHitCount);
+                        return cached;
+                    }
+
+                    Interlocked.Increment(ref decodeStartCount);
+                    var active = Interlocked.Increment(ref activeDecodes);
+                    UpdatePeak(active);
+                    try
+                    {
+                        var image = await Task.Run(() => Decode(request.Path, request.Width, request.Key, token), token).ConfigureAwait(false);
+                        Interlocked.Increment(ref decodeSuccessCount);
+                        return image;
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        throw;
+                    }
+                    catch (Exception ex) when (IsExpectedLoadFailure(ex))
+                    {
+                        Interlocked.Increment(ref failureCount);
+                        return null;
+                    }
+                    finally
+                    {
+                        Interlocked.Decrement(ref activeDecodes);
+                    }
+                }
+                finally
+                {
+                    Gate.Release();
+                }
             }
-            finally
+            catch (OperationCanceledException)
             {
-                Gate.Release();
+                Interlocked.Increment(ref cancellationCount);
+                throw;
             }
+            catch (Exception ex) when (IsExpectedLoadFailure(ex))
+            {
+                Interlocked.Increment(ref failureCount);
+                return null;
+            }
+        }
+
+        internal static AsyncThumbnailLoaderDiagnostics CaptureDiagnostics()
+        {
+            int cacheCount;
+            lock (CacheLock)
+            {
+                cacheCount = Cache.Count;
+            }
+
+            return new AsyncThumbnailLoaderDiagnostics(
+                cacheCount,
+                CacheLimit,
+                Volatile.Read(ref activeDecodes),
+                Volatile.Read(ref peakConcurrentDecodes),
+                Interlocked.Read(ref requestCount),
+                Interlocked.Read(ref cacheHitCount),
+                Interlocked.Read(ref decodeStartCount),
+                Interlocked.Read(ref decodeSuccessCount),
+                Interlocked.Read(ref cancellationCount),
+                Interlocked.Read(ref failureCount));
+        }
+
+        internal static void ResetDiagnostics()
+        {
+            Interlocked.Exchange(ref requestCount, 0);
+            Interlocked.Exchange(ref cacheHitCount, 0);
+            Interlocked.Exchange(ref decodeStartCount, 0);
+            Interlocked.Exchange(ref decodeSuccessCount, 0);
+            Interlocked.Exchange(ref cancellationCount, 0);
+            Interlocked.Exchange(ref failureCount, 0);
+            Interlocked.Exchange(ref activeDecodes, 0);
+            Interlocked.Exchange(ref peakConcurrentDecodes, 0);
         }
 
         private static LoadRequest? PrepareRequest(string path, int width)
         {
-            if (string.IsNullOrWhiteSpace(path) || !File.Exists(path) || !IsImage(path)) return null;
-            var info = new FileInfo(path);
-            var key = string.Concat(path, "|", width.ToString(CultureInfo.InvariantCulture), "|",
-                info.Length.ToString(CultureInfo.InvariantCulture), "|",
-                info.LastWriteTimeUtc.Ticks.ToString(CultureInfo.InvariantCulture));
-            return new LoadRequest(path, Math.Max(48, Math.Min(width, 480)), key, TryGetCached(key));
+            try
+            {
+                if (string.IsNullOrWhiteSpace(path) || !File.Exists(path) || !IsImage(path)) return null;
+                var info = new FileInfo(path);
+                var boundedWidth = Math.Max(48, Math.Min(width, 480));
+                var key = string.Concat(path, "|", boundedWidth.ToString(CultureInfo.InvariantCulture), "|",
+                    info.Length.ToString(CultureInfo.InvariantCulture), "|",
+                    info.LastWriteTimeUtc.Ticks.ToString(CultureInfo.InvariantCulture));
+                return new LoadRequest(path, boundedWidth, key, TryGetCached(key));
+            }
+            catch (Exception ex) when (IsExpectedLoadFailure(ex))
+            {
+                return null;
+            }
         }
 
         private static BitmapSource? TryGetCached(string key)
@@ -93,6 +230,23 @@ namespace GameSaveCenter.Playnite.Converters
                 Recency.Clear();
             }
         }
+
+        private static void UpdatePeak(int active)
+        {
+            while (true)
+            {
+                var observed = Volatile.Read(ref peakConcurrentDecodes);
+                if (observed >= active || Interlocked.CompareExchange(ref peakConcurrentDecodes, active, observed) == observed)
+                    return;
+            }
+        }
+
+        private static bool IsExpectedLoadFailure(Exception exception)
+            => exception is IOException
+                || exception is UnauthorizedAccessException
+                || exception is ArgumentException
+                || exception is NotSupportedException
+                || exception is InvalidOperationException;
 
         private static void AddToCache(string key, BitmapSource image)
         {

@@ -2,6 +2,10 @@
 
 > 连续实施入口：[32 项、8 阶段计划](ai/CONTINUOUS_DEVELOPMENT_PLAN_2026-09-08.md)。用户要求减少逐项确认；接手后按依赖连续实施并逐项交付，已满足任务跳过，外部阻塞不妨碍独立任务。Q6 质量报告仍是首四项问题依据。
 
+> 2026-09-09 L22 已完成缩略图加载、取消与缓存边界收口：`AsyncThumbnailImage` 只为已加载且可见的卡片启动任务，不可见/卸载取消并清空旧图，generation/token 防止旧路径结果回写；`AsyncThumbnailLoader` 保持 `OnLoad` 冻结、3 路并发、96 项 LRU 和预期读取失败空占位。
+
+> L22 证据为 `.tmp/l22-thumbnailprobe-final/thumbnailprobe-report.txt` 及 Playnite STA 测试：120 项初次窗口 `120` 成功、峰值并发 `3`、缓存 `96/96`；16 项保留窗口全命中；破损/缺失均为空；预取消可观测；100 次 12 项窗口往返后活动解码 `0`；旧 800×800 图替换为新 64×64 图后最终像素标记为新图，输出宽度 `96`。这是合成文件和隐藏 STA Window 证据，不是实际 Playnite/FusionX、DPI、用户目录或视频录屏验收。
+
 > 2026-09-09 L21 已完成列表虚拟化与滚动规模实测：证据先于参数调整。原当前游戏 `MediaGrid` 使用普通 `WrapPanel`，在 200/2000/10000 后端夹具中生成 200/2000/2000 个卡片；修复仅接回已有 `VirtualizingWrapPanel`，保留 164×154 卡片、选择和 ListBox 滚动契约。修复后顶部→底部→顶部均约 20 个容器，任务表与媒体收件箱的 DataGrid 诊断/20 次滑块往返/语义滚动/resize/选择保持通过。
 
 > L21 证据与边界：最新离屏报告为 `.tmp/l21-scaleprobe-final/scaleprobe-report.txt` 和 `.tmp/l21-render-qa-final/render-qa-report.txt`；全量 Render QA 的卡片回滚探针已通过，仍有既有 Media 小视口/预览列表与 Sidebar rapid-toggle 失败。DataGrid 直接 `ScrollIntoView(最后一项)` 在插件模板和标准 WPF 对照模板中都呈现离屏 deferred，记录为 `offscreen-inconclusive`，不能作为 FusionX 根因。无真实 Playnite/FusionX、DPI 或用户视频复测，视频中的 DataGrid 空白、漂移、选框与文字分离、最后行完整可见仍必须在宿主按验收矩阵复测。

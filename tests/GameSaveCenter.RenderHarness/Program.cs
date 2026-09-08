@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Automation;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,6 +21,8 @@ using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.Settings;
 using GameSaveCenter.Playnite.Views;
 using GameSaveCenter.RenderHarness.UiAudit;
+using AsyncThumbnailImage = GameSaveCenter.Playnite.Controls.AsyncThumbnailImage;
+using AsyncThumbnailLoader = GameSaveCenter.Playnite.Converters.AsyncThumbnailLoader;
 using VirtualizingWrapPanel = GameSaveCenter.Playnite.Controls.VirtualizingWrapPanel;
 using WorkspaceStatePresenter = GameSaveCenter.Playnite.Controls.WorkspaceStatePresenter;
 
@@ -128,6 +131,19 @@ public static class Program
                 : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "wrapprobe");
             var probeExitCode = 0;
             var probeThread = new Thread(() => { probeExitCode = RunWrapProbeOnly(outputRoot); });
+            probeThread.SetApartmentState(ApartmentState.STA);
+            probeThread.Start();
+            probeThread.Join();
+            return probeExitCode;
+        }
+
+        if (args.Length > 0 && args[0].Equals("thumbnailprobe", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "thumbnailprobe");
+            var probeExitCode = 0;
+            var probeThread = new Thread(() => { probeExitCode = RunThumbnailProbeOnly(outputRoot); });
             probeThread.SetApartmentState(ApartmentState.STA);
             probeThread.Start();
             probeThread.Join();
@@ -1701,6 +1717,246 @@ public static class Program
             Console.Error.WriteLine(ex);
             return 1;
         }
+    }
+
+    private static int RunThumbnailProbeOnly(string outputRoot)
+    {
+        Directory.CreateDirectory(outputRoot);
+        var report = new StringBuilder();
+        report.AppendLine("GameSaveCenter L22 thumbnail loading, cancellation and cache probe");
+        report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+        AppendRunMetadata(report, "thumbnailprobe", "OffscreenRenderHarness", "synthetic PNGs + STA WPF control", "120 thumbnails; 100 loader window cycles");
+        report.AppendLine("EvidenceBoundary: synthetic files and a hidden STA WPF Window; real Playnite/FusionX/DPI/video remains host validation");
+        report.AppendLine("PrivacyBoundary: report contains item IDs, counts and dimensions only; it does not record file contents or paths");
+        report.AppendLine();
+        s_problems.Clear();
+        var reportPath = Path.Combine(outputRoot, "thumbnailprobe-report.txt");
+        var tempRoot = Path.Combine(Path.GetTempPath(), "GameSaveCenter.ThumbnailProbe", Guid.NewGuid().ToString("N"));
+
+        try
+        {
+            Directory.CreateDirectory(tempRoot);
+            var paths = Enumerable.Range(0, 120)
+                .Select(index =>
+                {
+                    var path = Path.Combine(tempRoot, $"item-{index:000}.png");
+                    WriteProbePng(path, 96, 96, (byte)(index + 17));
+                    return path;
+                })
+                .ToArray();
+
+            AsyncThumbnailLoader.ClearCache();
+            AsyncThumbnailLoader.ResetDiagnostics();
+            var initial = Task.WhenAll(paths.Select(path => AsyncThumbnailLoader.LoadAsync(path, 96, CancellationToken.None)))
+                .GetAwaiter()
+                .GetResult();
+            var afterInitial = AsyncThumbnailLoader.CaptureDiagnostics();
+            report.AppendLine(
+                $"InitialWindow items={paths.Length} requested={afterInitial.RequestCount} decoded={afterInitial.DecodeSuccessCount} "
+                + $"failed={afterInitial.FailureCount} active={afterInitial.ActiveDecodes} peak={afterInitial.PeakConcurrentDecodes} "
+                + $"cache={afterInitial.CacheCount}/{afterInitial.CacheLimit} dimensions=96x96");
+
+            if (initial.Any(image => image == null))
+                s_problems.Add("initial thumbnail window returned a null image");
+            if (afterInitial.ActiveDecodes != 0)
+                s_problems.Add($"active decodes did not drain: {afterInitial.ActiveDecodes}");
+            if (afterInitial.PeakConcurrentDecodes < 1 || afterInitial.PeakConcurrentDecodes > 3)
+                s_problems.Add($"decode concurrency exceeded the bounded gate: peak={afterInitial.PeakConcurrentDecodes}");
+            if (afterInitial.CacheCount > afterInitial.CacheLimit)
+                s_problems.Add($"cache exceeded its bound: {afterInitial.CacheCount}/{afterInitial.CacheLimit}");
+            if (afterInitial.DecodeStartCount != afterInitial.DecodeSuccessCount)
+                s_problems.Add($"successful synthetic decodes do not match starts: {afterInitial.DecodeStartCount}/{afterInitial.DecodeSuccessCount}");
+
+            var cachedPaths = paths.Skip(paths.Length - 16).ToArray();
+            Task.WhenAll(cachedPaths.Select(path => AsyncThumbnailLoader.LoadAsync(path, 96, CancellationToken.None)))
+                .GetAwaiter()
+                .GetResult();
+            var afterCache = AsyncThumbnailLoader.CaptureDiagnostics();
+            report.AppendLine(
+                $"CacheWindow items={cachedPaths.Length} requests={afterCache.RequestCount} cacheHits={afterCache.CacheHitCount} "
+                + $"decodeStarts={afterCache.DecodeStartCount} cache={afterCache.CacheCount}/{afterCache.CacheLimit}");
+            if (afterCache.CacheHitCount < cachedPaths.Length)
+                s_problems.Add($"recent thumbnails did not hit the cache: hits={afterCache.CacheHitCount}");
+            if (afterCache.DecodeStartCount != afterInitial.DecodeStartCount)
+                s_problems.Add("cache window started a new decode for a retained thumbnail");
+
+            var corruptPath = Path.Combine(tempRoot, "item-corrupt.png");
+            var missingPath = Path.Combine(tempRoot, "item-missing.png");
+            File.WriteAllText(corruptPath, "not-an-image");
+            var corrupt = AsyncThumbnailLoader.LoadAsync(corruptPath, 96, CancellationToken.None).GetAwaiter().GetResult();
+            var missing = AsyncThumbnailLoader.LoadAsync(missingPath, 96, CancellationToken.None).GetAwaiter().GetResult();
+            var afterFailures = AsyncThumbnailLoader.CaptureDiagnostics();
+            report.AppendLine(
+                $"FailureWindow corrupt=0x0 missing=0x0 returnedNull={corrupt == null && missing == null} "
+                + $"failures={afterFailures.FailureCount} active={afterFailures.ActiveDecodes}");
+            if (corrupt != null || missing != null)
+                s_problems.Add("corrupt or missing thumbnail returned an image");
+
+            var cancellationSource = new CancellationTokenSource();
+            cancellationSource.Cancel();
+            var cancellationObserved = false;
+            try
+            {
+                AsyncThumbnailLoader.LoadAsync(paths[0], 96, cancellationSource.Token).GetAwaiter().GetResult();
+            }
+            catch (OperationCanceledException)
+            {
+                cancellationObserved = true;
+            }
+            finally
+            {
+                cancellationSource.Dispose();
+            }
+
+            var afterCancellation = AsyncThumbnailLoader.CaptureDiagnostics();
+            report.AppendLine(
+                $"CancellationWindow preCancelledObserved={cancellationObserved} cancellations={afterCancellation.CancellationCount} "
+                + $"active={afterCancellation.ActiveDecodes}");
+            if (!cancellationObserved || afterCancellation.CancellationCount < 1)
+                s_problems.Add("pre-cancelled thumbnail request was not observed as cancellation");
+
+            var cyclesBefore = AsyncThumbnailLoader.CaptureDiagnostics();
+            for (var cycle = 0; cycle < 100; cycle++)
+            {
+                var start = cycle % (paths.Length - 12);
+                Task.WhenAll(paths.Skip(start).Take(12).Select(path => AsyncThumbnailLoader.LoadAsync(path, 96, CancellationToken.None)))
+                    .GetAwaiter()
+                    .GetResult();
+            }
+            var afterCycles = AsyncThumbnailLoader.CaptureDiagnostics();
+            report.AppendLine(
+                $"ScrollWindow cycles=100 window=12 requestsDelta={afterCycles.RequestCount - cyclesBefore.RequestCount} "
+                + $"cacheHitsDelta={afterCycles.CacheHitCount - cyclesBefore.CacheHitCount} decodeDelta={afterCycles.DecodeStartCount - cyclesBefore.DecodeStartCount} "
+                + $"peak={afterCycles.PeakConcurrentDecodes} active={afterCycles.ActiveDecodes} cache={afterCycles.CacheCount}/{afterCycles.CacheLimit}");
+            if (afterCycles.ActiveDecodes != 0 || afterCycles.PeakConcurrentDecodes > 3 || afterCycles.CacheCount > afterCycles.CacheLimit)
+                s_problems.Add("100 thumbnail window cycles exceeded the active/cache bounds");
+
+            var oldPath = Path.Combine(tempRoot, "item-old.png");
+            var newPath = Path.Combine(tempRoot, "item-new.png");
+            WriteProbePng(oldPath, 800, 800, 11);
+            WriteProbePng(newPath, 64, 64, 231);
+            AsyncThumbnailLoader.ClearCache();
+            var staleImage = RunThumbnailPathReplacementProbe(oldPath, newPath);
+            report.AppendLine(
+                $"StalePathWindow old=800x800 new=64x64 final={(staleImage.Success ? "new" : "invalid")} "
+                + $"finalWidth={staleImage.Width} finalPixelB={staleImage.FirstBlue}");
+            if (!staleImage.Success || staleImage.FirstBlue != 231)
+                s_problems.Add("replaced thumbnail path left the old image visible");
+
+            report.AppendLine();
+            if (s_problems.Count > 0)
+            {
+                report.AppendLine("thumbnailprobe FAILED");
+                foreach (var problem in s_problems)
+                    report.AppendLine("  PROBLEM " + problem);
+                File.WriteAllText(reportPath, report.ToString());
+                Console.WriteLine(report.ToString());
+                return 1;
+            }
+
+            report.AppendLine("thumbnailprobe OK");
+            File.WriteAllText(reportPath, report.ToString());
+            Console.WriteLine(report.ToString());
+            return 0;
+        }
+        catch (Exception ex)
+        {
+            report.AppendLine("thumbnailprobe FAILED");
+            report.AppendLine(ex.ToString());
+            File.WriteAllText(reportPath, report.ToString());
+            Console.Error.WriteLine(ex);
+            return 1;
+        }
+        finally
+        {
+            try { Directory.Delete(tempRoot, true); }
+            catch { }
+        }
+    }
+
+    private static ThumbnailPathProbeResult RunThumbnailPathReplacementProbe(string oldPath, string newPath)
+    {
+        var result = new ThumbnailPathProbeResult();
+        Window? window = null;
+        try
+        {
+            var image = new AsyncThumbnailImage { PreviewWidth = 96 };
+            window = new Window
+            {
+                Content = image,
+                Width = 120,
+                Height = 120,
+                ShowInTaskbar = false,
+                ShowActivated = false,
+                WindowStyle = WindowStyle.None,
+                Opacity = 0.01
+            };
+            window.Show();
+            window.UpdateLayout();
+            image.SourcePath = oldPath;
+            image.SourcePath = newPath;
+            PumpDispatcherUntil(window.Dispatcher, () => image.Source != null, TimeSpan.FromSeconds(3));
+            var source = image.Source as BitmapSource;
+            if (source == null)
+                return result;
+
+            var stride = source.PixelWidth * 4;
+            var pixels = new byte[stride * source.PixelHeight];
+            source.CopyPixels(pixels, stride, 0);
+            result.Success = source.PixelWidth == 96;
+            result.Width = source.PixelWidth;
+            result.FirstBlue = pixels.Length == 0 ? -1 : pixels[0];
+            return result;
+        }
+        finally
+        {
+            window?.Close();
+        }
+    }
+
+    private static void PumpDispatcherUntil(Dispatcher dispatcher, Func<bool> condition, TimeSpan timeout)
+    {
+        var frame = new DispatcherFrame();
+        var started = DateTime.UtcNow;
+        var timer = new DispatcherTimer(DispatcherPriority.Background, dispatcher)
+        {
+            Interval = TimeSpan.FromMilliseconds(10)
+        };
+        timer.Tick += (_, _) =>
+        {
+            if (condition() || DateTime.UtcNow - started >= timeout)
+            {
+                timer.Stop();
+                frame.Continue = false;
+            }
+        };
+        timer.Start();
+        Dispatcher.PushFrame(frame);
+    }
+
+    private static void WriteProbePng(string path, int width, int height, byte blue)
+    {
+        var pixels = new byte[width * height * 4];
+        for (var index = 0; index < pixels.Length; index += 4)
+        {
+            pixels[index] = blue;
+            pixels[index + 1] = 80;
+            pixels[index + 2] = 160;
+            pixels[index + 3] = 255;
+        }
+
+        var bitmap = BitmapSource.Create(width, height, 96, 96, PixelFormats.Bgra32, null, pixels, width * 4);
+        var encoder = new PngBitmapEncoder();
+        encoder.Frames.Add(BitmapFrame.Create(bitmap));
+        using var stream = File.Create(path);
+        encoder.Save(stream);
+    }
+
+    private sealed class ThumbnailPathProbeResult
+    {
+        public bool Success { get; set; }
+        public int Width { get; set; }
+        public int FirstBlue { get; set; } = -1;
     }
 
     private static int RunShellChromeQa(string outputRoot)
