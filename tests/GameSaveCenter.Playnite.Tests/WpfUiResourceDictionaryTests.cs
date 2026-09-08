@@ -3020,6 +3020,33 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void TrainerDownloadFeedbackKeepsStableRequestContextAndOffersSafeCancellation()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var trainerPath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml");
+        var trainerCodePath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs");
+        var trainer = File.ReadAllText(trainerPath);
+        var trainerCode = File.ReadAllText(trainerCodePath);
+
+        var downloadStart = trainerCode.IndexOf("private async Task DownloadTrainerAsync", StringComparison.Ordinal);
+        var cancelStart = trainerCode.IndexOf("private async Task CancelTrainerDownloadAsync", downloadStart, StringComparison.Ordinal);
+        var downloadCode = trainerCode.Substring(downloadStart, cancelStart - downloadStart);
+
+        Assert.Contains("TrainerDownloadStatus", trainer);
+        Assert.Contains("TrainerDownloadNextStep", trainer);
+        Assert.Contains("TrainerDownloadProgress", trainer);
+        Assert.Contains("CancelTrainerDownloadCommand", trainer);
+        Assert.Contains("var gameId = game.PlayniteId", trainerCode);
+        Assert.Contains("var catalogId = catalog.CatalogId", trainerCode);
+        Assert.Contains("var releaseId = release.ReleaseId", trainerCode);
+        Assert.Contains("PlayniteId=gameId,CatalogId=catalogId,ReleaseId=releaseId", downloadCode);
+        Assert.Contains("MessageTypes.CancelTask", trainerCode);
+        Assert.Contains("FLING_DOWNLOAD_FORBIDDEN", trainerCode);
+        Assert.Contains("FLING_DOWNLOAD_INVALID", trainerCode);
+        Assert.DoesNotContain("Process.Start", downloadCode);
+    }
+
+    [Fact]
     public void DashboardLargeScrollableControlsStayInsideFiniteGridLayouts()
     {
         var repositoryRoot = FindRepositoryRoot();

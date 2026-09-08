@@ -173,6 +173,28 @@
                             <TextBlock Text="{Binding SelectedTrainerRelease.VersionDisplay, TargetNullValue=请选择版本}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedTrainerRelease.VersionDisplay}"/>
                             <TextBlock Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,5,0,0" TextWrapping="Wrap"><Run Text="功能："/><Run Text="{Binding SelectedTrainerRelease.OptionCountDisplay, Mode=OneWay, TargetNullValue=未标注}"/><Run Text=" · 发布时间："/><Run Text="{Binding SelectedTrainerRelease.PublishedDisplay, Mode=OneWay, TargetNullValue=未标注}"/></TextBlock>
                             <Border Style="{DynamicResource GscDiagnosticHintBubble}" Margin="0,16,0,0"><TextBlock Style="{DynamicResource GscDiagnosticHintText}" Text="下载后会先校验并安全解压，再创建当前游戏的工具绑定；旧版本不会被覆盖。"/></Border>
+                            <Border Style="{DynamicResource GscReadingCardStyle}" Padding="12" Margin="0,12,0,0" AutomationProperties.Name="修改器下载状态">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding TrainerDownloadStatus}" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding TrainerDownloadNextStep}" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0" TextWrapping="Wrap"/>
+                                    <ProgressBar Value="{Binding TrainerDownloadProgress}" Minimum="0" Maximum="100" Height="5" Margin="0,10,0,0">
+                                        <ProgressBar.Style>
+                                            <Style TargetType="ProgressBar">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers><DataTrigger Binding="{Binding IsTrainerDownloadActive}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                            </Style>
+                                        </ProgressBar.Style>
+                                    </ProgressBar>
+                                    <ui:Button Command="{Binding CancelTrainerDownloadCommand}" Content="取消下载" HorizontalAlignment="Left" Margin="0,10,0,0" AutomationProperties.Name="取消修改器下载">
+                                        <ui:Button.Style>
+                                            <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiActionButton}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers><DataTrigger Binding="{Binding IsTrainerDownloadActive}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                            </Style>
+                                        </ui:Button.Style>
+                                    </ui:Button>
+                                </StackPanel>
+                            </Border>
                             <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding DownloadTrainerCommand}" Content="下载并绑定" HorizontalAlignment="Stretch" Margin="0,16,0,0"/>
                         </StackPanel>
                     </ScrollViewer>

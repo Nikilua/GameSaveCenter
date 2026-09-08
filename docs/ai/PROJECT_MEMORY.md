@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-09
 
+## 2026-09-09 L20 修改器导入与下载结果反馈
+
+- `DashboardViewModel` 的工具导入必须在检测开始时保存目标游戏 ID/名称；多候选 `ImportEntryCandidates` 的确认不能在返回后重新从 `SelectedGame` 推导目标。游戏切换会清理待确认项并要求重新导入；导入请求完成后只有同一游戏仍被选中时才刷新当前工具详情。
+- FLiNG 下载请求必须捕获 `PlayniteId`、`CatalogId`、`ReleaseId` 后再进行 IPC。页面反馈只消费 Worker 任务事件和终态 `TaskStatusDto`，按状态与 `FLING_DOWNLOAD_FORBIDDEN`、`FLING_DOWNLOAD_INVALID`、`FLING_RELEASE_PARSE_FAILED` 等稳定错误码给出下一步；不要在 VM 重新实现下载、解压、来源校验或启动可执行文件。
+- 取消下载复用现有 `MessageTypes.CancelTask`/`TaskCoordinator.Cancel`。Worker 的取消边界、临时文件清理和不自动运行语义是安全事实；页面只能显示“已发送取消请求/已取消”，不能在取消按钮点击时假定文件已删除或绑定已回滚。
+- `TrainerCenterView` 的新增状态卡只承载进度、结果和下一步，不能以固定高度、隐藏滚动条、关闭虚拟化或改全局主题来掩盖问题。离屏 RenderHarness 只证明 XAML/夹具状态可渲染，不证明 Playnite/FusionX 模板链、在线 403/离线和真实视频操作。
+- L20 验证：Release 构建 `0 warning/0 error`；Core `76/76`、Worker `303/304`（1 跳过）、Playnite `405/467`（62 跳过）；RenderHarness Release 构建、源校验、XAML `19/19`、WPF 静态审查 `0 errors/21 warnings/172 info`、差异检查通过。完整 render-qa 仍有已知 Media 小视口/预览列表与 Sidebar rapid-toggle 失败。
+
 ## 2026-09-09 L19 存档版本识别、比较与恢复信息
 
 - `BackupVersionDto` 的来源、系统和恢复检查时间必须使用显式展示字段；空值显示未知/尚未检查，不能从创建时间、文件数量或锁定状态推导“健康”或“可恢复”。`BackupDiffDto` 的大小变化使用带符号的人类可读值，比较质量继续沿用 Worker 的 Exact/Estimated/InvalidManifest 事实。

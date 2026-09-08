@@ -162,6 +162,14 @@ namespace GameSaveCenter.Playnite.ViewModels
         private bool showTrainerLibrary;
         private bool isTrainerCatalogLoading;
         private bool isTrainerReleasesLoading;
+        private bool isTrainerDownloadActive;
+        private bool isCancellingTrainerDownload;
+        private int trainerDownloadProgress;
+        private string trainerDownloadStatus = "选择一个版本后，下载内容会先校验，再绑定到当前游戏。";
+        private string trainerDownloadNextStep = "下载文件不会自动运行；完成后可在“已绑定工具”页查看。";
+        private string? trainerDownloadTaskId;
+        private string? trainerDownloadGameId;
+        private DateTime trainerDownloadStartedUtc;
         private long trainerReleaseLoadGeneration;
         private string? trainerReleaseLoadCatalogId;
         private string? pendingTrainerReleaseCatalogId;
@@ -200,6 +208,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         private GameToolEntryCandidateDto selectedImportEntryCandidate = null!;
         private string pendingGameToolImportSource = string.Empty;
         private GameToolType pendingGameToolImportType = GameToolType.Trainer;
+        private string pendingGameToolImportPlayniteId = string.Empty;
+        private string pendingGameToolImportGameName = string.Empty;
         private bool hasPendingGameToolEntrySelection;
         private CloudTransferSummaryDto cloudTransferViewSummary = new CloudTransferSummaryDto();
         private CloudTransferStatusDto selectedCloudTransfer = null!;
@@ -379,6 +389,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             SearchTrainerCatalogCommand = new RelayCommand(_ => Run(SearchTrainerCatalogAsync), _ => !IsBusy);
             LoadTrainerReleasesCommand = new RelayCommand(value => RequestTrainerReleasesLoad(value as TrainerCatalogItemDto), _ => SelectedTrainerCatalogItem != null);
             DownloadTrainerCommand = new RelayCommand(_ => Run(DownloadTrainerAsync), _ => !IsBusy && SelectedGame != null && SelectedTrainerRelease != null);
+            CancelTrainerDownloadCommand = new RelayCommand(_ => Observe(CancelTrainerDownloadAsync()), _ => IsTrainerDownloadActive && !string.IsNullOrWhiteSpace(trainerDownloadTaskId) && !IsCancellingTrainerDownload);
             // Initial rendering is cache-first and must not pass through RunAsync: that helper
             // waits for Worker startup before doing anything and marks the whole dashboard busy.
             // On a large Playnite library this made opening the panel look hung even though the
@@ -830,6 +841,19 @@ namespace GameSaveCenter.Playnite.ViewModels
         public LayoutMode LayoutMode { get => layoutMode; set => SetValue(ref layoutMode, value); }
         public bool ShowTrainerLibrary { get => showTrainerLibrary; set => SetValue(ref showTrainerLibrary, value); }
         public string TrainerSearchText { get => trainerSearchText; set => SetValue(ref trainerSearchText, value ?? string.Empty); }
+        public bool IsTrainerDownloadActive
+        {
+            get => isTrainerDownloadActive;
+            private set { SetValue(ref isTrainerDownloadActive, value); RaiseCommandStates(); }
+        }
+        public bool IsCancellingTrainerDownload
+        {
+            get => isCancellingTrainerDownload;
+            private set { SetValue(ref isCancellingTrainerDownload, value); RaiseCommandStates(); }
+        }
+        public int TrainerDownloadProgress { get => trainerDownloadProgress; private set => SetValue(ref trainerDownloadProgress, Math.Max(0, Math.Min(100, value))); }
+        public string TrainerDownloadStatus { get => trainerDownloadStatus; private set => SetValue(ref trainerDownloadStatus, value ?? string.Empty); }
+        public string TrainerDownloadNextStep { get => trainerDownloadNextStep; private set => SetValue(ref trainerDownloadNextStep, value ?? string.Empty); }
         public GameToolDto SelectedGameTool
         {
             get => selectedGameTool;
@@ -1362,6 +1386,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand SearchTrainerCatalogCommand { get; }
         public ICommand LoadTrainerReleasesCommand { get; }
         public ICommand DownloadTrainerCommand { get; }
+        public ICommand CancelTrainerDownloadCommand { get; }
 
         public Task RefreshAsync()
         {
@@ -1729,6 +1754,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 Replace(OverviewTasks, Tasks.OrderByDescending(x => x.CreatedUtc).Take(8), SnapshotComparers.Task);
                 knownTaskStates[change.Task.TaskId] = change.Task.State;
                 taskSnapshotInitialized = true;
+                ApplyTrainerDownloadTaskUpdate(change.Task);
                 if (SelectedTask == null || string.Equals(SelectedTask.TaskId, change.Task.TaskId, StringComparison.OrdinalIgnoreCase))
                     SelectedTask = Tasks.FirstOrDefault(x => string.Equals(x.TaskId, change.Task.TaskId, StringComparison.OrdinalIgnoreCase));
                 RaiseCommandStates();
@@ -2992,11 +3018,19 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task PrepareGameToolImportAsync(string source,GameToolType type)
         {
+            var targetGame = SelectedGame ?? throw new InvalidOperationException("请先选择游戏。");
+            var targetGameId = targetGame.PlayniteId;
+            var targetGameName = targetGame.Name;
             var inspection=await plugin.RequestAsync<GameToolImportInspectionDto>(MessageTypes.InspectGameToolImport,
                 new InspectGameToolImportRequestDto{SourcePath=source,ToolType=type},TimeSpan.FromMinutes(2));
+            if (!IsSelectedGame(targetGameId))
+            {
+                StatusMessage = $"“{targetGameName}”的导入检测已完成，但当前已切换游戏，请重新导入。";
+                return;
+            }
             if(inspection.Candidates.Count==1)
             {
-                await ExecuteGameToolImportAsync(inspection.SourcePath,type,inspection.Candidates[0].RelativePath);
+                await ExecuteGameToolImportAsync(inspection.SourcePath,type,inspection.Candidates[0].RelativePath,true,targetGameId,targetGameName);
                 return;
             }
             ApplyOnUi(() =>
@@ -3006,6 +3040,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                 // update must be applied through the Playnite dispatcher.
                 pendingGameToolImportSource=inspection.SourcePath;
                 pendingGameToolImportType=type;
+                pendingGameToolImportPlayniteId=targetGameId;
+                pendingGameToolImportGameName=targetGameName;
                 Replace(ImportEntryCandidates,inspection.Candidates);
                 SelectedImportEntryCandidate=ImportEntryCandidates.FirstOrDefault();
                 HasPendingGameToolEntrySelection=true;
@@ -3017,36 +3053,54 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             if(!HasPendingGameToolEntrySelection||SelectedImportEntryCandidate==null)
                 throw new InvalidOperationException("请先选择修改器主程序。");
-            return ExecuteGameToolImportAsync(pendingGameToolImportSource,pendingGameToolImportType,SelectedImportEntryCandidate.RelativePath);
+            if (!IsSelectedGame(pendingGameToolImportPlayniteId))
+            {
+                ClearPendingGameToolImport("当前游戏已切换，本次待确认导入已取消，请重新导入。");
+                return Task.CompletedTask;
+            }
+            return ExecuteGameToolImportAsync(pendingGameToolImportSource,pendingGameToolImportType,SelectedImportEntryCandidate.RelativePath,
+                true,pendingGameToolImportPlayniteId,pendingGameToolImportGameName);
         }
 
-        private async Task ExecuteGameToolImportAsync(string source,GameToolType type,string entryFileName,bool copyIntoLibrary=true)
+        private async Task ExecuteGameToolImportAsync(string source,GameToolType type,string entryFileName,bool copyIntoLibrary=true,
+            string? targetGameId=null,string? targetGameName=null)
         {
+            var selectedGame = SelectedGame ?? throw new InvalidOperationException("请先选择游戏。");
+            var requestGameId = string.IsNullOrWhiteSpace(targetGameId) ? selectedGame.PlayniteId : targetGameId!;
+            var requestGameName = string.IsNullOrWhiteSpace(targetGameName) ? selectedGame.Name : targetGameName!;
             var imported=await plugin.RequestAsync<GameToolDto>(MessageTypes.ImportGameTool,new ImportGameToolRequestDto
             {
-                PlayniteId=SelectedGame.PlayniteId,ToolType=type,SourcePath=source,EntryFileName=entryFileName,CopyIntoLibrary=copyIntoLibrary
+                PlayniteId=requestGameId,ToolType=type,SourcePath=source,EntryFileName=entryFileName,CopyIntoLibrary=copyIntoLibrary
             },TimeSpan.FromMinutes(5));
+            var stillSelected = IsSelectedGame(requestGameId);
             ClearPendingGameToolImport();
-            await LoadDetailsAsync();
-            ApplyOnUi(() => SelectedGameTool=GameTools.FirstOrDefault(x=>x.ToolId==imported.ToolId)??GameTools.FirstOrDefault());
+            if (stillSelected)
+            {
+                await LoadDetailsAsync();
+                ApplyOnUi(() => SelectedGameTool=GameTools.FirstOrDefault(x=>x.ToolId==imported.ToolId)??GameTools.FirstOrDefault());
+            }
             var message=type switch
             {
                 GameToolType.CheatTable=>"Cheat Table 已导入，自动启动保持关闭",
                 GameToolType.CustomExecutable=>"自定义启动项已添加，外部路径引用，不复制文件",
                 _=>"修改器已导入，自动启动保持关闭"
             };
+            if (!stillSelected)
+                message = $"已为“{requestGameName}”完成导入；当前已切换游戏，请回到该游戏查看。";
             ConfirmSuccess(message);
         }
 
-        private void ClearPendingGameToolImport()
+        private void ClearPendingGameToolImport(string statusMessage="已取消本次导入")
         {
             ApplyOnUi(() =>
             {
                 pendingGameToolImportSource=string.Empty;
+                pendingGameToolImportPlayniteId=string.Empty;
+                pendingGameToolImportGameName=string.Empty;
                 ImportEntryCandidates.Clear();
                 SelectedImportEntryCandidate=null!;
                 HasPendingGameToolEntrySelection=false;
-                StatusMessage="已取消本次导入";
+                StatusMessage=statusMessage;
             });
         }
 
@@ -3226,10 +3280,171 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task DownloadTrainerAsync()
         {
-            var task=await plugin.RequestAsync<TaskStatusDto>(MessageTypes.DownloadTrainer,new DownloadTrainerRequestDto
-            {PlayniteId=SelectedGame.PlayniteId,CatalogId=SelectedTrainerCatalogItem.CatalogId,ReleaseId=SelectedTrainerRelease.ReleaseId},TimeSpan.FromMinutes(10));
-            NotifyTaskResults(new[]{task});await LoadDetailsAsync();ShowTrainerLibrary=false;
-            StatusMessage="FLiNG 修改器已下载并绑定，自动启动保持关闭";
+            var game = SelectedGame ?? throw new InvalidOperationException("请先选择游戏。");
+            var catalog = SelectedTrainerCatalogItem ?? throw new InvalidOperationException("请先选择 FLiNG 目录项。");
+            var release = SelectedTrainerRelease ?? throw new InvalidOperationException("请先选择要下载的版本。");
+            var gameId = game.PlayniteId;
+            var gameName = game.Name;
+            var catalogId = catalog.CatalogId;
+            var releaseId = release.ReleaseId;
+            trainerDownloadGameId = gameId;
+            trainerDownloadStartedUtc = DateTime.UtcNow;
+            trainerDownloadTaskId = null;
+            IsTrainerDownloadActive = true;
+            IsCancellingTrainerDownload = false;
+            TrainerDownloadProgress = 0;
+            TrainerDownloadStatus = $"正在准备下载“{release.VersionDisplay}”…";
+            TrainerDownloadNextStep = "Worker 会校验来源并安全解压；下载文件不会自动运行。";
+            try
+            {
+                var task=await plugin.RequestAsync<TaskStatusDto>(MessageTypes.DownloadTrainer,new DownloadTrainerRequestDto
+                {PlayniteId=gameId,CatalogId=catalogId,ReleaseId=releaseId},TimeSpan.FromMinutes(10));
+                ApplyTrainerDownloadResult(task);
+                NotifyTaskResults(new[]{task});
+                if (task.State == TaskState.Succeeded)
+                {
+                    if (IsSelectedGame(gameId))
+                    {
+                        await LoadDetailsAsync();
+                        ShowTrainerLibrary=false;
+                        StatusMessage = string.IsNullOrWhiteSpace(task.Message)
+                            ? "FLiNG 修改器已下载并绑定，自动启动保持关闭"
+                            : task.Message;
+                    }
+                    else
+                    {
+                        StatusMessage = $"“{gameName}”的 FLiNG 任务已完成；当前已切换游戏，请回到该游戏查看。";
+                    }
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                TrainerDownloadStatus = "下载请求已取消。";
+                TrainerDownloadNextStep = "未创建新的工具绑定；可重新选择版本重试。";
+                throw;
+            }
+            catch (NotifiedTaskException)
+            {
+                throw;
+            }
+            catch (Exception)
+            {
+                TrainerDownloadStatus = "下载任务未能完成。";
+                TrainerDownloadNextStep = "请刷新版本列表后重试；也可以回到“已绑定工具”页手动导入可信文件。";
+                throw;
+            }
+            finally
+            {
+                if (string.Equals(trainerDownloadGameId, gameId, StringComparison.OrdinalIgnoreCase))
+                {
+                    IsTrainerDownloadActive = false;
+                    trainerDownloadTaskId = null;
+                    RaiseCommandStates();
+                }
+            }
+        }
+
+        private async Task CancelTrainerDownloadAsync()
+        {
+            var taskId = trainerDownloadTaskId;
+            if (!IsTrainerDownloadActive || string.IsNullOrWhiteSpace(taskId) || IsCancellingTrainerDownload) return;
+            if (!await plugin.ConfirmAsync(
+                "取消修改器下载",
+                "取消后 Worker 会在当前安全边界清理临时文件；不会运行或绑定未完成的下载内容。",
+                "取消下载",
+                "继续下载",
+                true).ConfigureAwait(true)) return;
+            try
+            {
+                IsCancellingTrainerDownload = true;
+                await plugin.EnsureWorkerAsync();
+                var response = await plugin.RequestAsync<CancelTaskResultDto>(MessageTypes.CancelTask,
+                    new CancelTaskRequestDto { TaskId = taskId! });
+                TrainerDownloadStatus = response.Cancelled ? "已发送取消请求，正在等待 Worker 收尾。" : "下载任务已经结束或无法取消。";
+                TrainerDownloadNextStep = response.Cancelled
+                    ? "临时下载内容不会创建新的工具绑定；稍后可重新选择版本。"
+                    : "请查看任务中心中的最终状态。";
+                if (!response.Cancelled) IsTrainerDownloadActive = false;
+            }
+            catch (OperationCanceledException)
+            {
+                TrainerDownloadStatus = "取消请求已取消。";
+                TrainerDownloadNextStep = "原下载任务仍由 Worker 管理，请查看任务中心。";
+            }
+            catch (Exception ex)
+            {
+                TrainerDownloadStatus = "取消请求失败。";
+                TrainerDownloadNextStep = "请在任务中心选择该下载任务并重试取消；原下载文件不会被自动运行。";
+                StatusMessage = ex.Message;
+            }
+            finally
+            {
+                IsCancellingTrainerDownload = false;
+            }
+        }
+
+        private void ApplyTrainerDownloadTaskUpdate(TaskStatusDto task)
+        {
+            if (!IsTrainerDownloadActive
+                || !string.Equals(task.TaskType, "TrainerDownload", StringComparison.OrdinalIgnoreCase)
+                || string.IsNullOrWhiteSpace(trainerDownloadGameId)
+                || !string.Equals(task.GameId, trainerDownloadGameId, StringComparison.OrdinalIgnoreCase)
+                || task.CreatedUtc < trainerDownloadStartedUtc.AddSeconds(-2)) return;
+
+            trainerDownloadTaskId = task.TaskId;
+            TrainerDownloadProgress = task.ProgressPercent;
+            if (task.State == TaskState.Queued)
+            {
+                TrainerDownloadStatus = "下载任务已排队。";
+                TrainerDownloadNextStep = "等待 Worker 获取任务；下载文件不会自动运行。";
+            }
+            else if (task.State == TaskState.Running)
+            {
+                TrainerDownloadStatus = string.IsNullOrWhiteSpace(task.Message)
+                    ? $"正在下载（{task.ProgressPercent}%）…"
+                    : $"{task.Message}（{task.ProgressPercent}%）";
+                TrainerDownloadNextStep = "可取消当前任务；Worker 会在安全边界清理临时文件。";
+            }
+            else
+            {
+                ApplyTrainerDownloadResult(task);
+            }
+            RaiseCommandStates();
+        }
+
+        private void ApplyTrainerDownloadResult(TaskStatusDto task)
+        {
+            TrainerDownloadProgress = task.ProgressPercent;
+            switch (task.State)
+            {
+                case TaskState.Succeeded when (task.Message ?? string.Empty).IndexOf("无需重复下载", StringComparison.Ordinal) >= 0:
+                    TrainerDownloadStatus = "该版本已经绑定，无需重复下载。";
+                    TrainerDownloadNextStep = "可以在“已绑定工具”页查看当前版本；不会重复创建绑定。";
+                    break;
+                case TaskState.Succeeded:
+                    var successMessage = task.Message ?? string.Empty;
+                    TrainerDownloadStatus = string.IsNullOrWhiteSpace(successMessage) ? "FLiNG 修改器已下载并绑定。" : successMessage;
+                    TrainerDownloadNextStep = "已创建当前游戏的工具绑定，自动启动保持关闭；可到“已绑定工具”页查看。";
+                    break;
+                case TaskState.Cancelled:
+                    TrainerDownloadStatus = "下载已取消。";
+                    TrainerDownloadNextStep = "未完成的下载不会创建新的工具绑定；可重新选择版本重试。";
+                    break;
+                case TaskState.Failed:
+                    TrainerDownloadStatus = string.IsNullOrWhiteSpace(task.ErrorMessage) ? "下载失败。" : task.ErrorMessage;
+                    TrainerDownloadNextStep = task.ErrorCode switch
+                    {
+                        "FLING_DOWNLOAD_FORBIDDEN" => "站点拒绝了请求；请刷新目录或稍后重试，必要时使用手动导入。",
+                        "FLING_DOWNLOAD_INVALID" => "下载内容未通过格式校验，已拒绝绑定；请换一个版本或手动导入可信文件。",
+                        "FLING_RELEASE_PARSE_FAILED" => "版本信息读取失败；请刷新目录后重新选择版本。",
+                        _ => "请刷新版本列表后重试；必要时查看任务中心的错误详情。"
+                    };
+                    break;
+                default:
+                    TrainerDownloadStatus = task.Message;
+                    TrainerDownloadNextStep = "请等待任务完成；下载文件不会自动运行。";
+                    break;
+            }
         }
 
         private async Task BackupAllAsync()
@@ -4532,7 +4747,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 ,ImportTrainerCommand,ImportCheatTableCommand,ImportCustomLaunchItemCommand,ImportToolFolderCommand,SaveGameToolCommand,LaunchGameToolCommand,
                 ConfirmGameToolImportCommand,CancelGameToolImportCommand,
                 OpenGameToolDirectoryCommand,DeleteGameToolCommand,RelocateGameToolCommand,SyncTrainerCatalogCommand,SearchTrainerCatalogCommand,ApplyRecommendedProtectionCommand,
-                LoadTrainerReleasesCommand,DownloadTrainerCommand
+                LoadTrainerReleasesCommand,DownloadTrainerCommand,CancelTrainerDownloadCommand
             }.OfType<RelayCommand>())
             {
                 command.RaiseCanExecuteChanged();

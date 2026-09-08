@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-09 L20 修改器导入与下载结果反馈
+
+- 复核现有导入确认、FLiNG 目录/版本、Worker `TrainerDownload` 任务和安全校验链后，没有新增下载协议、自动运行入口或绕过来源/解压校验。下载请求现在在命令开始时捕获游戏、目录和版本 ID；响应回来后只有仍处于同一游戏上下文才刷新工具详情，避免选择变化把结果写回错误页面。
+- 多 EXE 导入确认保存目标游戏 ID/名称。检测返回期间切换游戏会丢弃待确认上下文并提示重新导入；确认时再次检查，导入完成后若用户已切换游戏只报告原游戏结果，不从可变的 `SelectedGame` 读取请求目标。取消仍只清理待确认 UI 状态。
+- 修改器下载反馈复用 Worker 真实任务事件和稳定错误码：排队、进度、成功、重复绑定、站点拒绝、格式拒绝、版本解析失败、取消和通用失败分别给出下一步。新增“取消下载”入口复用 `CancelTask`，Worker 负责安全边界和临时文件清理；页面明确下载文件不会自动运行，失败时保留已有手动导入路径。
+- `TrainerCenterView` 只新增下载状态/进度/取消反馈卡，没有改页面信息架构或虚拟化。RenderHarness Fake 和 Playnite 源契约同步覆盖状态绑定、稳定请求 ID、取消接口和不自动运行约束。
+- 验证：Release 构建 `0 warning/0 error`；Core `76/76`、Worker `303/304`（1 跳过）、Playnite `405/467`（62 跳过）；RenderHarness Release 构建 0 warning/error；`validate-source.py`、XAML `19/19`、WPF 静态审查 `0 errors/21 warnings/172 info`、`git diff --check` 通过。完整 render-qa 仍只有既有 Media 小视口/预览列表和 Sidebar rapid-toggle 失败，Trainer 双主题、多尺寸和 resize 探针未新增问题。真实 Playnite/FusionX、离线/403 网络响应、真实取消时序、DPI 和视频复测仍待宿主验收，不能写成已解决。
+
 ## 2026-09-09 L19 存档版本识别、比较与恢复信息
 
 - 先盘点已有 `BackupVersionDto`、`RestoreReadinessDto`、`BackupDiffDto`、存档 Inspector、比较入口和 Worker 恢复安全链；没有新增 diff 引擎，也没有把未验证版本按时间推成健康。

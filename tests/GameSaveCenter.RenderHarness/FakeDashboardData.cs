@@ -53,6 +53,14 @@ public sealed class FakeDashboardData
     public ICommand RetryAllTasksCommand { get; } = new NoopCommand();
     public ICommand RetryTaskCommand { get; } = new NoopCommand();
     public ICommand CancelTaskCommand { get; } = new NoopCommand();
+    public ICommand ImportTrainerCommand { get; } = new NoopCommand();
+    public ICommand ImportToolFolderCommand { get; } = new NoopCommand();
+    public ICommand ImportCheatTableCommand { get; } = new NoopCommand();
+    public ICommand ImportCustomLaunchItemCommand { get; } = new NoopCommand();
+    public ICommand ConfirmGameToolImportCommand { get; } = new NoopCommand();
+    public ICommand CancelGameToolImportCommand { get; } = new NoopCommand();
+    public ICommand DownloadTrainerCommand { get; } = new NoopCommand();
+    public ICommand CancelTrainerDownloadCommand { get; } = new NoopCommand();
     public ICommand CopyTaskErrorCommand { get; } = new NoopCommand();
     public ICommand ClearTaskFiltersCommand { get; } = new NoopCommand();
 
@@ -881,6 +889,10 @@ public sealed class FakeDashboardData
     public string BackupComment { get; set; } = string.Empty;
     public string TrainerSearchText { get; set; } = string.Empty;
     public bool HasPendingGameToolEntrySelection { get; set; } = true;
+    public bool IsTrainerDownloadActive { get; set; }
+    public int TrainerDownloadProgress { get; set; } = 42;
+    public string TrainerDownloadStatus { get; set; } = "上次下载已完成并绑定。";
+    public string TrainerDownloadNextStep { get; set; } = "下载文件不会自动运行；可到“已绑定工具”页查看。";
     public string DiagnosticSummary { get; } = "09:31:12 SUCCESS Worker IPC health check passed.\n09:30:58 INFO Media scan started.\n09:18:06 ERROR Rclone remote unavailable; local source retained.";
     public string RetentionSummary { get; } = "全局保留策略只读预览：当前建议保留 12 个版本，候选清理 3 个版本。";
     public StorageAnalysisDto StorageAnalysis { get; } = new StorageAnalysisDto

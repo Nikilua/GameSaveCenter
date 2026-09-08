@@ -2,6 +2,10 @@
 
 > 连续实施入口：[32 项、8 阶段计划](ai/CONTINUOUS_DEVELOPMENT_PLAN_2026-09-08.md)。用户要求减少逐项确认；接手后按依赖连续实施并逐项交付，已满足任务跳过，外部阻塞不妨碍独立任务。Q6 质量报告仍是首四项问题依据。
 
+> 2026-09-09 L20 已完成修改器导入与下载结果反馈：导入检测/确认与 FLiNG 下载均捕获稳定游戏/目录/版本 ID；切换游戏不会把晚到结果写回错误上下文。下载状态区分排队、进度、成功、重复绑定、站点拒绝、格式拒绝、版本解析失败、取消和通用失败，并复用 Worker `CancelTask`；下载文件不自动运行，来源/签名/安全解压/临时文件清理由 Worker 保持。真实 Playnite/FusionX、在线 403/离线、真实取消时序、DPI 和视频仍待宿主验收。
+
+> L20 验证：Release 构建 `0 warning/0 error`；Core `76/76`、Worker `303/304`（1 跳过）、Playnite `405/467`（62 跳过）；RenderHarness Release 构建、`validate-source.py`、XAML `19/19`、WPF 静态审查 `0 errors/21 warnings/172 info`、差异检查通过。完整 render-qa 仍只有既有 Media 小视口/预览列表与 Sidebar rapid-toggle 失败，未新增 Trainer/Save 失败。
+
 > 2026-09-09 L19 已完成存档版本识别、比较与恢复信息：版本详情明确显示来源设备、系统、锁定状态、恢复就绪状态和检查时间；缺少事实时显示未知/尚未检查，不从时间推断健康。比较页明确“当前版本与上一版本”，补充未变化数量、带符号大小变化和文件分组；选择变化/无上一版本会清掉旧差异，响应返回前校验当前游戏与左右版本 ID。恢复确认前捕获目标游戏/版本稳定 ID 与事实摘要，确认后请求不读取可变选择；PreRestore、锁定当前快照、关闭游戏确认、Worker 安全校验和撤销保持原语义。
 
 > L19 验证：Release 构建 0 warning/error；Core `76/76`、Worker `303/304`（1 跳过）、Playnite `404/466`（62 跳过）；`validate-source.py`、XAML `19/19`、WPF 静态审查 `0 errors/21 warnings/172 info`、差异检查通过。离屏 Save 历史/比较截图与双主题、多尺寸探针没有本轮新增问题；完整 render-qa 仍受既有 Media 小视口/预览列表和 Sidebar rapid-toggle 失败影响。当前无可用真实 Playnite/CUA/FusionX 宿主，因此不同恢复状态、确认期间选择变化、DPI、真实滚动和录屏仍待宿主验收。
