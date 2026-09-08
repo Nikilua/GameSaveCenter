@@ -9,6 +9,12 @@
 - 取消任务从 `ShowInfo` 改为 `ShowWarning`，宿主没有 `NotificationType.Warning` 时仍回退到现有 Info 通知；没有新增弹窗式错误流程、没有改任务集合/重试/取消业务语义。
 - 新增 `UiFeedbackTests` 与 `NotificationFeedbackSourceTests`。Release 构建 0 警告/错误；全量 Core `72/72`、Worker `303/304`（1 跳过）、Playnite `398/460`（62 跳过）；源码/XAML/差异检查通过。离屏 `render-qa` 的既有媒体小视口/侧栏快速切换问题继续独立记录，真实宿主通知回退、DPI 和录屏未完成。
 
+## 2026-09-09 L12 详情展开与选中上下文
+
+- 收件箱紧凑 Inspector 的展开状态不再跨对象泄漏：`OnMediaInboxSelectionChanged` 清除 `mediaInboxInspectorOpen`，`OnMediaInboxModeSelectionChanged` 还会清除 `mediaInboxHistoryOpen`；切换模式/换选后需要显式打开当前对象。其他任务、当前媒体、存档历史/候选和维护诊断/进程/设备/云端路径保留各自已有的选择即关闭旧详情语义。
+- `MaintenanceView` 的 `CloudTransferGrid` 已移除构造函数的重复 `SelectionChanged` 订阅，XAML handler 作为唯一路由；不能再把一次选择触发两次 `ApplyResponsiveLayout` 当成正常行为。
+- `DetailsDisclosureSourceTests` 守护四类 CenterView 的选择清理和云端事件单路由。没有新增通用状态框架、定时器、强制布局或业务命令；真实宿主对象删除、快速换选、窄/宽来回和 FusionX 视觉/键盘轨迹仍待验收。
+
 ## 2026-09-08 L10 设置修改、错误定位与取消体验
 
 - `SettingsValidationSummary` 旁新增 `SettingsValidationLocateButton`。`FindValidationCategoryIndex` 根据 `VerifySettings` 的现有错误文本把压缩/保留量送到备份分类，毛玻璃送到外观，进程/刷新/巡检/通知送到自动化，Worker/Ludusavi/Rclone/镜像送到常规；点击后只改变 `SettingsSectionTabs.SelectedIndex` 并聚焦分类导航。

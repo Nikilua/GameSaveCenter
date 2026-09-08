@@ -9,6 +9,12 @@
 - Dashboard 结果对话框的正文改为有限滚动区，错误和有独立详情的长通知显示“查看详情”，对话框提供“复制详情”。复制使用当前详情快照和短暂异步重试，旧 Toast 在对话框切换后不会异步改写新内容；没有把普通错误扩展成全局模态弹窗。
 - 验证：Release 构建 0 warning/0 error；Core `72/72`、Worker `303/304`（1 跳过）、Playnite `398/460`（62 跳过）；`validate-source.py`、`check-xaml.ps1`（19/19）、`git diff --check` 通过。L11 的完整 `render-qa` 仍被既有媒体小视口和侧栏 rapid-toggle 门禁阻断，报告没有新增 Settings/通知问题；真实 Playnite/FusionX 仍待宿主验收。
 
+## 2026-09-09 L12 详情展开与选中上下文
+
+- 盘点任务、媒体、存档和维护的 Inspector 后确认：大多数页面在选择变化时关闭详情，但媒体收件箱的 `mediaInboxInspectorOpen` 会残留，模式切换还可能把历史抽屉状态带到另一种列表；维护云端表格同时存在 XAML 与构造函数两次事件挂接。
+- 只做局部状态收口：收件箱新选中项清除旧预览，待归类/已忽略切换清除预览与批次历史；删除云端表格重复订阅。没有改变 Inspector 实例、真实 Binding、列表集合、虚拟化、滚动单位、断点或业务命令。
+- 新增 `DetailsDisclosureSourceTests`，定向测试 `1/1` 通过。全量 Release 构建 0 warning/0 error；Core `72/72`、Worker `303/304`（1 跳过）、Playnite `399/461`（62 跳过）；源码/XAML/差异门禁通过。未重复完整 render-qa，真实 Playnite/FusionX 的对象删除、快速换选与窄宽循环仍待验收。
+
 ## 2026-09-08 L10 设置修改、错误定位与取消体验
 
 - 复核 L09 后发现两个实际缺口：错误摘要只能看，切到隐藏分类需要人工找；ToggleSwitch 和毛玻璃 Slider 改值没有统一排入设置状态刷新。现有 `GameSaveCenterSettings` 模型已经覆盖指纹、DeviceId 排除、CancelEdit 和导入无变异，因此没有重写设置生命周期。

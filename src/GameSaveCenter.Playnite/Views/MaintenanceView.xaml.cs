@@ -36,7 +36,6 @@ namespace GameSaveCenter.Playnite.Views
             MaintenanceProcessInspector.IsVisibleChanged += InspectorIsVisibleChanged;
             MaintenanceDeviceInspectorScrollViewer.IsVisibleChanged += InspectorIsVisibleChanged;
             MaintenanceDeviceGrid.SelectionChanged += OnMaintenanceDeviceSelectionChanged;
-            CloudTransferGrid.SelectionChanged += OnCloudTransferSelectionChanged;
         }
 
         private void DataGridLoaded(object sender, RoutedEventArgs e)

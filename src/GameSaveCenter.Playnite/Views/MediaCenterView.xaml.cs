@@ -132,6 +132,10 @@ namespace GameSaveCenter.Playnite.Views
                 return;
             if (!restoringSelection && !selectionRestoreQueued)
                 UpdateSelectionDelta(GetInboxSelectionSet(), e);
+            // A new row is a new inspection context. Do not reopen the previous
+            // compact drawer implicitly after a collection refresh or a mode switch;
+            // the user must explicitly request details for the newly selected item.
+            mediaInboxInspectorOpen = false;
             var count=MediaInboxGrid.SelectedItems.Count;
             var ignored=string.Equals(attachedViewModel?.MediaInboxMode, "已忽略", StringComparison.Ordinal);
             var tracked = GetInboxSelectionSet().Count;
@@ -201,6 +205,8 @@ namespace GameSaveCenter.Playnite.Views
         private void OnMediaInboxModeSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             InvalidatePendingAnchorRestore();
+            mediaInboxInspectorOpen = false;
+            mediaInboxHistoryOpen = false;
             OnMediaInboxSelectionChanged(sender,e);
         }
 
