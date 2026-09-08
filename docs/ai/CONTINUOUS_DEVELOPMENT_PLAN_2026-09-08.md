@@ -34,6 +34,7 @@
 
 ### L01 状态面板重试与输入阻挡（Q6-01）
 
+- 状态：已完成（代码与离屏行为已验收，真实 Playnite 宿主待验收）。
 - 目标：失败/离线可以重试，加载中不会鼠标穿透触发背后的操作。
 - 文件：`Views/MediaCenterView.xaml`、`Views/MaintenanceView.xaml`、`Controls/WorkspaceStatePresenter.cs` 及其共享样式。移除交互面板的局部禁止命中配置，明确 Loading/Ready/Error/Offline/Stale 的显示和输入策略。
 - 验收：三个使用点实例化真实模板；鼠标命中与键盘能触发正确命令且只执行一次；Ready 无遮挡，Loading 不误点底层，失败状态有双主题图。详细依据沿用 Q6-01。

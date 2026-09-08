@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-08
 
+## 2026-09-08 Q6-01 状态面板重试命中修复（代码/离屏已完成）
+
+- 复核确认三处带 `RetryCommand` 的失败状态面板（媒体收件箱、媒体详情、维护审计）不应设置 `IsHitTestVisible="False"`；该父级值会让模板内按钮永远无法鼠标命中。`MaintenanceView` 中没有重试命令的降级提示仍保持非阻塞，不要误删其语义。
+- `Themes/Redesign.xaml` 的重试按钮空命令判断改为针对 `RetryCommand` 依赖属性的模板 `Trigger`；Loading 明确隐藏按钮但仍由可见面板阻挡底层操作。按钮保留共享样式、绑定和键盘行为，并补 `AutomationProperties.Name`。
+- 新增 `WorkspaceStatePresenterBehaviorTests`：实际加载生产 `GscWorkspaceStatePresenter` 模板，在 STA WPF Window 中验证 Error/Offline 的可见性、绑定命令和视觉树命中，Loading 的底层阻挡，以及 Enter/Space 各执行一次；当前 `5/5` 通过。`WorkspaceStateSourceTests` 额外守护三处使用点不重新加父级禁止命中。
+- 新增 RenderHarness `stateprobe`，生成双主题 Error/Offline/Loading 状态图和报告：`docs/design/reviews/2026-09-08-quality/state-*.png`、`stateprobe-report.txt`。这是插件模板的离屏证据，不是真实 Playnite 截图。
+- 本阶段 Release 隔离构建与全量测试为 Core `72/72`、Worker `303/304`（1 跳过）、Playnite `376/438`（62 跳过）；源码/XAML/WPF 静态检查无 error。完整 `render-qa` 本次仍报告 25 个媒体小视口/侧栏快速切换问题，不能写成 render-qa 全部通过；真实宿主复测仍待完成。
+
 ## 2026-09-08 表格滚动诊断与局部模板修复（当前验收边界）
 
 - 针对用户视频中的任务表/媒体待归类表正文空白、行内容漂移、选中框与文字分离及末行截断，本轮只处理表格滚动正确性，没有扩展功能或继续做页面美化。新增 `DataGridScrollDiagnostics`，只记录稳定 ID、计数、滚动范围、实际 `ScrollViewer`/`IScrollInfo`、`ScrollContentPresenter` 矩形、首末行坐标/高度、单元格内容可见性、滚动条占用和分页/锚点代际，不记录文件内容。

@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-08 Q6-01 状态面板重试交互收口
+
+- 先用真实 WPF 模板行为测试复现，再改实现：三个带 `RetryCommand` 的面板原来由局部 `IsHitTestVisible="False"` 禁止整个子树命中；共享 `GscWorkspaceStatePresenter` 的空命令 `DataTrigger` 还会把失败态重试按钮保持为 `Collapsed`。测试观测到父命令和按钮 `Command` 都存在，因此没有把问题误写成 IPC、ViewModel 或集合刷新故障。
+- 生产修复只改插件局部：移除 `MediaInboxView`、媒体详情、维护审计失败面板的禁止命中；`Redesign.xaml` 改为 `Trigger Property="RetryCommand"`，Loading 单独折叠重试按钮，失败/离线让面板接收输入，并为按钮补自动化名称。没有修改 FusionX/Playnite 全局样式、业务命令或虚拟化。
+- 新增 `WorkspaceStatePresenterBehaviorTests`：Error/Offline 真实模板按钮可见、命令已绑定、视觉树 HitTest 命中；Loading 不穿透底层且按钮隐藏；Enter/Space 各执行一次，定向结果 `5/5`。源契约同时检查三处使用点不回归父级 `IsHitTestVisible=false`。
+- 新增 RenderHarness `stateprobe`，双主题各生成 Error/Offline/Loading 图：`docs/design/reviews/2026-09-08-quality/state-light-error.png`、`state-dark-error.png` 等 6 张，报告为 `stateprobe OK`。这些图证明插件模板/主题，不冒充真实 Playnite 截图。
+- 验证：`scripts/build.ps1 -Configuration Release -OutputRoot .tmp/q6-01-build` 成功，Core `72/72`、Worker `303/304`（1 跳过）、Playnite `376/438`（62 跳过），构建 0 warning/error；`validate-source.py`、XAML `19/19`、WPF 静态检查 0 error。完整 `render-qa` 本次未闭合，报告有 25 个媒体小视口/侧栏快速切换门禁问题，保留为独立待处理项；真实 Playnite 复测仍待宿主环境。
+
 ## 2026-09-08 任务表/媒体表滚动正确性诊断与修复
 
 - 按视频验收定义先加诊断再改实现：`DataGridScrollDiagnostics` 绑定 `TaskGrid` 与 `MediaInboxGrid`，监听滚轮、滚动条拖动、PageUp/PageDown、Ctrl+End、最后项定位、集合刷新、选择变化、尺寸/布局和实际内部 `ScrollViewer.ScrollChanged`，日志只输出 ID、计数、类型、尺寸、偏移、可见行和代际上下文。

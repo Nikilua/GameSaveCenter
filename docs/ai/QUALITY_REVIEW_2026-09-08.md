@@ -15,7 +15,7 @@
 | Q4-04 分页一致性 | 核心风险已处理 | 持久化修订号、触发器、stale token 和有界重载，已不再只是客户端去重 |
 | Q4-00 锚点 | 竞态保护与部分行为测试完成 | 已补代际/生命周期失效和 STA 回调测试；大库连续翻页的实际偏移仍需验收 |
 | Q5 设置/动效 | 主体完成 | 保存状态可见、关闭动效有即时终态；真实宿主帧耗时未验证 |
-| X2-01 状态反馈 | 部分完成，需修交互 | 重试面板禁用鼠标命中；成功读取时间没有按游戏/模式隔离 |
+| X2-01 状态反馈 | Q6-01 已完成代码收口，Q6-02 待处理 | 重试面板的输入问题已有真实模板行为测试与双主题状态探针；成功读取时间仍没有按游戏/模式隔离 |
 | X2-02 运维总览 | 主体完成，需修状态归并 | 最新成功状态可能被过滤掉，旧失败项继续显示 |
 | X2-03 构建身份 | 诊断底座完成，发布链未收口 | SkipBuild 可混入旧插件；unknown 身份兼容规则不完整 |
 
@@ -38,6 +38,13 @@
 实施：按交互语义调整共享状态模式与三处使用点。Error/Offline 中提供重试的状态面板允许命中；Loading 若应阻止旧列表操作，使用有界遮罩并禁用重试；Ready 隐藏遮罩；Stale 使用非阻塞提示。不要让可见失败面板的鼠标穿透到背后行按钮。
 
 验收：三处真实模板在 Error/Offline 下按钮能被鼠标命中，键盘 Enter/Space 能触发一次正确命令；Loading 不重复提交、不误触背后操作；Ready 无遮挡。测试实例化 View 和模板并检查 HitTest/命令，不只检查 XAML 字符串。附双主题失败态截图。
+
+#### 2026-09-08 复测结果
+
+- 状态：代码与离屏行为已完成，真实 Playnite 宿主仍待验收。
+- 根因：三处带重试命令的 `WorkspaceStatePresenter` 曾设置父级 `IsHitTestVisible="False"`；共享模板的空命令 `DataTrigger` 在实际模板中把 Error/Offline 的重试按钮保持为 `Collapsed`。行为测试确认命令对象仍存在，故不是 IPC 或集合刷新根因。
+- 修复：移除三处交互面板的局部禁止命中；共享模板改用 `Trigger Property="RetryCommand"`，Loading 明确隐藏重试按钮而保留阻挡面板；补按钮自动化名称。未修改 FusionX 或 Playnite 全局主题。
+- 证据：`WorkspaceStatePresenterBehaviorTests` `5/5`；RenderHarness `stateprobe OK`，双主题 Error/Offline/Loading 图位于 `docs/design/reviews/2026-09-08-quality/state-*.png`。Release 全量为 Core `72/72`、Worker `303/304`（1 跳过）、Playnite `376/438`（62 跳过）。本次完整 `render-qa` 仍有 25 个媒体小视口/侧栏快速切换门禁问题，不能写成全量 Render QA 通过；也没有真实 Playnite 录屏。
 
 ### Q6-02：媒体状态记忆缺少游戏/模式边界（P2）
 

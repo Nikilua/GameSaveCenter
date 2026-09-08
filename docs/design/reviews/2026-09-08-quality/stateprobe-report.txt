@@ -1,0 +1,10 @@
+GameSaveCenter workspace state presenter probe
+Generated: 2026-09-08 18:36:23
+
+  state-light-error.png: 720x420 DIP, 16241 bytes
+  state-light-offline.png: 720x420 DIP, 16511 bytes
+  state-light-loading.png: 720x420 DIP, 14706 bytes
+  state-dark-error.png: 720x420 DIP, 19460 bytes
+  state-dark-offline.png: 720x420 DIP, 19850 bytes
+  state-dark-loading.png: 720x420 DIP, 17602 bytes
+stateprobe OK

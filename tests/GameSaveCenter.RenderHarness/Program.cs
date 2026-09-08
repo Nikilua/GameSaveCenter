@@ -10,6 +10,7 @@ using System.Windows.Automation;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -18,6 +19,7 @@ using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.Settings;
 using GameSaveCenter.Playnite.Views;
 using GameSaveCenter.RenderHarness.UiAudit;
+using WorkspaceStatePresenter = GameSaveCenter.Playnite.Controls.WorkspaceStatePresenter;
 
 namespace GameSaveCenter.RenderHarness;
 
@@ -182,12 +184,98 @@ public static class Program
             return v7ExitCode;
         }
 
+        if (args.Length > 0 && args[0].Equals("stateprobe", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "stateprobe");
+            var stateProbeExitCode = 0;
+            var stateProbeThread = new Thread(() => { stateProbeExitCode = RunWorkspaceStateProbe(outputRoot); });
+            stateProbeThread.SetApartmentState(ApartmentState.STA);
+            stateProbeThread.Start();
+            stateProbeThread.Join();
+            return stateProbeExitCode;
+        }
+
         var exitCode = 0;
         var thread = new Thread(() => { exitCode = Run(args); });
         thread.SetApartmentState(ApartmentState.STA);
         thread.Start();
         thread.Join();
         return exitCode;
+    }
+
+    private static int RunWorkspaceStateProbe(string outputRoot)
+    {
+        Directory.CreateDirectory(outputRoot);
+        var report = new StringBuilder();
+        report.AppendLine("GameSaveCenter workspace state presenter probe");
+        report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+        report.AppendLine();
+        var problems = new List<string>();
+
+        try
+        {
+            var app = new Application();
+            app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+            foreach (var (themeName, themeMode) in ThemeModes)
+            {
+                foreach (var (stateName, state) in new[]
+                {
+                    ("error", "Error"),
+                    ("offline", "Offline"),
+                    ("loading", "Loading")
+                })
+                {
+                    var resourceHost = new MediaCenterView();
+                    ApplyThemePalette(resourceHost, themeMode);
+                    var presenter = new WorkspaceStatePresenter
+                    {
+                        State = state,
+                        Title = state == "Loading" ? "正在读取媒体" : "媒体暂时不可用",
+                        Message = state == "Loading" ? "Worker 正在读取当前内容。" : "可以重试读取，已有内容不会被清除。",
+                        Detail = state == "Loading" ? string.Empty : "状态探针",
+                        RetryText = "重试",
+                        RetryCommand = new ProbeCommand(),
+                        Style = (Style)resourceHost.Resources["GscWorkspaceStatePresenter"]
+                    };
+                    var host = new Border
+                    {
+                        Width = 720,
+                        Height = 420,
+                        Background = resourceHost.TryFindResource("GscBackdropBrush") as Brush
+                            ?? new SolidColorBrush(Color.FromRgb(24, 30, 43))
+                    };
+                    host.Resources.MergedDictionaries.Add(resourceHost.Resources);
+                    host.Child = presenter;
+                    host.Measure(new Size(host.Width, host.Height));
+                    host.Arrange(new Rect(0, 0, host.Width, host.Height));
+                    host.UpdateLayout();
+
+                    var path = Path.Combine(outputRoot, $"state-{themeName}-{stateName}.png");
+                    SavePng(host, path);
+                    var size = new FileInfo(path).Length;
+                    report.AppendLine($"  {Path.GetFileName(path)}: {host.ActualWidth:0}x{host.ActualHeight:0} DIP, {size} bytes");
+                    if (size < 2048)
+                        problems.Add($"{path} looks blank ({size} bytes)");
+                }
+            }
+
+            report.AppendLine(problems.Count == 0 ? "stateprobe OK" : "stateprobe FAILED");
+            foreach (var problem in problems)
+                report.AppendLine("  PROBLEM " + problem);
+            File.WriteAllText(Path.Combine(outputRoot, "stateprobe-report.txt"), report.ToString());
+            Console.WriteLine(report.ToString());
+            return problems.Count == 0 ? 0 : 1;
+        }
+        catch (Exception ex)
+        {
+            report.AppendLine("stateprobe FAILED");
+            report.AppendLine(ex.ToString());
+            File.WriteAllText(Path.Combine(outputRoot, "stateprobe-report.txt"), report.ToString());
+            Console.Error.WriteLine(ex);
+            return 1;
+        }
     }
 
     private static int RunV3Shots(string outputRoot)
@@ -3153,6 +3241,21 @@ public static class Program
         grid.UpdateLayout();
 
         report.AppendLine($"  {label} {grid.Name} header contract: resize=true headers={headers.Count} sort-arrow={(arrow != null ? "visible" : "missing")}");
+    }
+
+    private sealed class ProbeCommand : ICommand
+    {
+        public event EventHandler? CanExecuteChanged
+        {
+            add { }
+            remove { }
+        }
+
+        public bool CanExecute(object parameter) => true;
+
+        public void Execute(object parameter)
+        {
+        }
     }
 
     private sealed class RowProbe

@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using Xunit;
 
 namespace GameSaveCenter.Playnite.Tests;
@@ -141,6 +142,10 @@ public sealed class WorkspaceStateSourceTests
         Assert.Contains("RetryCommand=\"{Binding ReloadMediaWindowCommand}\"", media);
         Assert.Contains("RetryCommand=\"{Binding ReloadMediaInboxCommand}\"", media);
         Assert.Contains("RetryCommand=\"{Binding RefreshDiagnosticsCommand}\"", maintenance);
+        Assert.Contains("<Trigger Property=\"RetryCommand\" Value=\"{x:Null}\">", File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Themes", "Redesign.xaml")));
+        Assert.DoesNotContain("IsHitTestVisible=\"False\"", media.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None).First(line => line.IndexOf("RetryCommand=\"{Binding ReloadMediaInboxCommand}\"", StringComparison.Ordinal) >= 0));
+        Assert.DoesNotContain("IsHitTestVisible=\"False\"", media.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None).First(line => line.IndexOf("RetryCommand=\"{Binding ReloadMediaWindowCommand}\"", StringComparison.Ordinal) >= 0));
+        Assert.DoesNotContain("IsHitTestVisible=\"False\"", maintenance.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None).First(line => line.IndexOf("RetryCommand=\"{Binding RefreshDiagnosticsCommand}\"", StringComparison.Ordinal) >= 0));
     }
 
     [Fact]

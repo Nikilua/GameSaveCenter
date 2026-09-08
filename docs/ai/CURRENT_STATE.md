@@ -8,8 +8,15 @@
 - 媒体中心“待归类”页的 DataGrid 原先被外层页面滚动内容的 `*` 行安排到表格卡片底部，宽屏下因此出现异常高的空白区域。这不是设计意图；表格卡片、内部布局和 DataGrid 已改为顶部对齐，仍保留 DataGrid 的有限高度、内部滚动和虚拟化。Production Shell 几何门禁新增表卡到表格的顶部间距检查，1366×768 已从 `477` DIP 降至 `63` DIP。
 - Worker 身份修复已完成真实安装链路：`scripts/package.ps1` 在包内读取插件、Worker、Core/Contracts DLL 的实际 InformationalVersion，并要求都等于最终打包时的 Git HEAD。安装目录为 `C:\Users\lopmatu\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec`，运行中 Worker 为该目录下的唯一进程；最终包的完整身份以最后一次打包输出和握手记录为准。
 - 真实命名管道 `system.handshake` 返回成功、协议 `1`、Worker `0.6.73.0` 和包内同一构建身份；真实只读 `media.inbox.page` 返回成功（当前数据 `totalCount=4615`）。受控停止并恢复唯一已核实路径的 Worker 时，停止后管道确实不可达，恢复后握手再次成功；恢复日志没有重复实例或退出码 0 循环。
-- 媒体待归类页已改为有限 PageHost、左侧工具栏/表格/底部操作独立 Grid 行、左右独立滚动、右侧有限详情和离线非零假状态；源码/XAML/离屏几何门禁已通过。最新完整安装流程的构建为 `0 warning/0 error`，Core `72/72`、Worker `304/304`、Playnite `375/432`（57 跳过）。
-- 真实 Playnite 的窗口内视觉操作、宽→窄→宽切换、实际截图及 PageHost/滚动范围采集仍未完成：本会话没有可用的 CUA 端点，不能把 RenderHarness 截图冒充宿主截图。因此 32 项扩展计划继续暂停，两项均不宣布最终验收完成。
+- 媒体待归类页已改为有限 PageHost、左侧工具栏/表格/底部操作独立 Grid 行、左右独立滚动、右侧有限详情和离线非零假状态；源码/XAML/离屏几何门禁已通过。最新隔离 Release 构建与全量测试为 `0 warning/0 error`，Core `72/72`、Worker `303/304`（1 跳过）、Playnite `376/438`（62 跳过）。
+- 真实 Playnite 的窗口内视觉操作、宽→窄→宽切换、实际截图及 PageHost/滚动范围采集仍未完成：本会话没有可用的 CUA 端点，不能把 RenderHarness 截图冒充宿主截图。Q6-01 已完成代码与离屏行为收口，真实宿主仍待验收；32 项扩展计划继续按依赖推进。
+
+## 2026-09-08 Q6-01 状态面板重试输入已收口（代码/离屏）
+
+- 根因已由真实 WPF 模板行为测试确认：三个失败态 `WorkspaceStatePresenter` 使用点把整个面板设为 `IsHitTestVisible="False"`；同时共享 `Redesign.xaml` 用 `DataTrigger` 判断 `RetryCommand` 空值时，Failure/Offline 按钮仍被模板触发器保持 `Collapsed`。命令本身没有丢失，不能把现象归因于 ViewModel 或计数。
+- 修复范围仅限插件：移除 MediaInbox、MediaDetails、Maintenance Audit 三个带重试命令面板的局部禁止命中；共享模板改用针对 `RetryCommand` 依赖属性的 `Trigger`，Loading 明确隐藏重试按钮但保留阻挡层，并补齐重试按钮自动化名称。未修改 FusionX、Playnite 全局样式或业务命令。
+- 真实模板 STA 行为测试 `WorkspaceStatePresenterBehaviorTests` 为 `5/5`：Error/Offline 按钮可见、绑定命令且命中目标；Loading 不穿透底层；Enter/Space 各执行一次。双主题 Error/Offline/Loading 状态探针 `stateprobe OK`，截图保存在 `docs/design/reviews/2026-09-08-quality/`。
+- Release 隔离构建/全量测试为 0 warning/error：Core `72/72`、Worker `303/304`（1 跳过）、Playnite `376/438`（62 跳过）。`validate-source.py`、XAML `19/19`、WPF 静态检查均无 error。完整 `render-qa` 本次报告仍有 25 个已有媒体小视口/侧栏快速切换门禁问题，未将其误报为 Q6-01 通过；真实 Playnite 仍待宿主验收。
 
 ## 2026-09-08 连续开发队列（32 项）
 

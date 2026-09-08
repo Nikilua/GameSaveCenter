@@ -247,7 +247,7 @@
                                     </Style>
                                 </TextBlock.Style>
                             </TextBlock>
-                        <ui:WorkspaceStatePresenter Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" State="{Binding MediaInboxPresenterState}" Title="{Binding MediaInboxStateTitle}" Message="{Binding MediaInboxStateMessage, FallbackValue=媒体收件箱暂时不可用}" Detail="{Binding MediaInboxStateDetail}" RetryCommand="{Binding ReloadMediaInboxCommand}" RetryText="重试" IsHitTestVisible="False">
+                        <ui:WorkspaceStatePresenter Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" State="{Binding MediaInboxPresenterState}" Title="{Binding MediaInboxStateTitle}" Message="{Binding MediaInboxStateMessage, FallbackValue=媒体收件箱暂时不可用}" Detail="{Binding MediaInboxStateDetail}" RetryCommand="{Binding ReloadMediaInboxCommand}" RetryText="重试">
                             <ui:WorkspaceStatePresenter.Style>
                                 <Style TargetType="ui:WorkspaceStatePresenter" BasedOn="{StaticResource GscWorkspaceStatePresenter}">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -522,7 +522,7 @@
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
-                        <ui:WorkspaceStatePresenter Grid.Row="1" Grid.RowSpan="3" State="{Binding MediaDetailsPresenterState}" Title="{Binding MediaDetailsStateTitle}" Message="{Binding MediaDetailsStateMessage}" Detail="{Binding MediaDetailsStateDetail}" RetryCommand="{Binding ReloadMediaWindowCommand}" RetryText="重试" IsHitTestVisible="False">
+                        <ui:WorkspaceStatePresenter Grid.Row="1" Grid.RowSpan="3" State="{Binding MediaDetailsPresenterState}" Title="{Binding MediaDetailsStateTitle}" Message="{Binding MediaDetailsStateMessage}" Detail="{Binding MediaDetailsStateDetail}" RetryCommand="{Binding ReloadMediaWindowCommand}" RetryText="重试">
                             <ui:WorkspaceStatePresenter.Style>
                                 <Style TargetType="ui:WorkspaceStatePresenter" BasedOn="{StaticResource GscWorkspaceStatePresenter}">
                                     <Setter Property="Visibility" Value="Collapsed"/>
