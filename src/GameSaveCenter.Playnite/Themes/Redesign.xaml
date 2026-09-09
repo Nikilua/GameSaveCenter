@@ -382,6 +382,9 @@
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="1"/>
+        <!-- The active-game button owns a Grid visual tree. Keep any host-level
+             text template from stringifying it as System.Windows.Controls.Grid. -->
+        <Setter Property="ContentTemplate" Value="{x:Null}"/>
         <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="ToolTipService.ShowDuration" Value="16000"/>

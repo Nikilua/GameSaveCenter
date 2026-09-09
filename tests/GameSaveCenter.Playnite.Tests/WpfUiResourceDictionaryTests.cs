@@ -4792,6 +4792,18 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Key=\"GscRedesignPrimaryHeaderVisualButton\"", redesign);
         Assert.Contains("<Setter Property=\"ContentTemplate\" Value=\"{x:Null}\"/>", redesign);
 
+        var shell = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml"));
+        Assert.Contains("x:Name=\"GameContextButton\" Style=\"{DynamicResource GscRedesignGameContextButton}\"", shell);
+        Assert.Contains("x:Name=\"CompactGameSelector\" Style=\"{StaticResource GscRedesignGameContextButton}\"", dashboard);
+        var redesignDocument = XDocument.Parse(redesign);
+        var gameContextStyle = redesignDocument.Descendants().Single(element =>
+            element.Name.LocalName == "Style" && element.Attribute(XName.Get("Key", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "GscRedesignGameContextButton");
+        Assert.Contains(gameContextStyle.Descendants(), element =>
+            element.Name.LocalName == "Setter"
+            && element.Attribute("Property")?.Value == "ContentTemplate"
+            && element.Attribute("Value")?.Value == "{x:Null}");
+        Assert.Contains(gameContextStyle.Descendants(), element => element.Name.LocalName == "ContentPresenter");
+
         Assert.Contains("SetToolbarLabelsVisible(layout.IsToolbarLabelsVisible);", dashboardCode);
         Assert.Contains("var labelVisibility = visible ? Visibility.Visible : Visibility.Collapsed;", dashboardCode);
     }
