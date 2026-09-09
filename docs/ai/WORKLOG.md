@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-09 L32 FusionX 安装资源只读窗口对照
+
+- 提交 `85b1aeb` 在已有隐藏 WPF `Window` 对照探针中发现本机 Playnite 配置使用 FusionX `2.1.1`，只读加载其 `DefaultControls/DataGrid.xaml`；没有修改 FusionX 文件、Playnite 全局样式或生产滚动参数。隔离解析只补齐 FusionX 在真实共享资源作用域中已有的 `TextColor` 和 `BooleanToVisibilityConverter`，不记录媒体/文件内容。
+- FusionX 夹具使用与前两组相同的 2000 条稳定 ID、`ScrollUnit=Item`、`CanContentScroll=True`、行列虚拟化和 1100×640 DIP 窗口。直接滑块 20 次往返以及 `PageDown/PageUp/Ctrl+End` 均到 `1987/1987`，最后行 `1999:fusionx-1999@608/44` 完整；Presenter 为 `0,36,1078.67x600`，水平条 `Collapsed/0`。插件组同时记录 `hbar=Visible/12`，末行 `@388/44`，说明视口高度由水平条实际占用。
+- FusionX 和标准 WPF 的 deferred `ScrollIntoView(最后一项)` 在该隐藏夹具中都没有结算到末尾，报告明确写为 `offscreen-baseline-inconclusive`；不能据此断言模板有错，也不能把直接滑块结果扩大为真实 Playnite 视频已解决。证据：`.tmp/l32-scrollprobe/scaleprobe-report.txt`，最终 `scaleprobe OK`，RenderHarness Release 构建 `0 warning/0 error`。
+
 ## 2026-09-09 L32 窗口级 ScrollIntoView 对照探针
 
 - 提交 `862742a` 将原先只挂在离屏 `Grid` 的末尾定位比较改为隐藏 WPF `Window`：同一批 2000 条任务数据分别运行插件自有 DataGrid 模板和标准 WPF DataGrid 模板；先回到顶部，再执行 `ScrollIntoView(最后一项)`，随后做 20 次顶部/底部/中间往返，并执行 `PageDown/PageUp/Ctrl+End`。

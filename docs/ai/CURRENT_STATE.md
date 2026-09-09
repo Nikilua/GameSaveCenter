@@ -15,11 +15,12 @@
 - 本轮没有停止宿主、安装候选包、执行真实 UI 操作或生成真实录屏/滚动诊断；L30 候选包仍未安装，表格视频异常仍未宣称解决。
 - 恢复条件和待执行矩阵见 [`L31_REAL_HOST_BLOCKER_2026-09-09.md`](L31_REAL_HOST_BLOCKER_2026-09-09.md)。
 
-## 2026-09-09 表格滚动诊断补强与窗口级离线复现（不等同真实宿主）
+## 2026-09-09 表格滚动诊断补强、窗口级离线复现与 FusionX 只读对照（不等同真实宿主）
 
 - `DataGridScrollDiagnostics` 现在优先选择包含真实 `DataGridRowsPresenter` 的内部 `ScrollViewer`，并记录实际 `ScrollContentPresenter`、`IScrollInfo`、DIP 视口、逻辑 offset/extent、水平条占用、首末可见行、单元格内容/裁剪和异常分类。媒体锚点上下文补充 queued、executing、completed、stale-generation、retry 和失败原因。
 - `scaleprobe` 使用任务表/媒体表相同离线模板，200/2000/10000 条数据分别执行 20 次顶部/底部/中间往返及滚轮、PageUp/PageDown、Ctrl+End；报告为 `scaleprobe OK`，没有稳定空白正文、选中框与文字分离或大块表头间隙，末行在直接滑到末尾时完整落入 Presenter 视口。
 - 新增提交 `862742a` 的隐藏 WPF `Window` 对照：插件模板从顶部执行 `ScrollIntoView(最后一项)` 后为 `1992/1992`，最后行 `1999` 完整落在 `ScrollContentPresenter` 内；随后 20 次滑块往返和 `PageDown/PageUp/Ctrl+End` 仍保持可见、选择稳定。标准 WPF 模板的直接滑块/Ctrl+End 末行完整，但 deferred `ScrollIntoView` 在该夹具中仍记录为 `offscreen-baseline-inconclusive`，不把基线不确定性写成通过。
+- 提交 `85b1aeb` 将本机已安装 FusionX `2.1.1` 的 `DefaultControls/DataGrid.xaml` 只读加载进同一隐藏 `Window` 对照；没有修改用户主题文件。FusionX 直接滑块和 `Ctrl+End` 均到 `1987/1987`，末行 `1999` 为 `@608/44`，Presenter 为 `0,36,1078.67x600`；水平条为 `Collapsed/0`。FusionX 的 deferred `ScrollIntoView` 仍标为 `offscreen-baseline-inconclusive`，所以这只证明当前安装模板在离线直接拖动路径下未复现空白/行框分离，不能替代真实宿主。
 - 证据保留在 `.tmp/l32-scrollprobe/scaleprobe-report.txt`；真实 Playnite/FusionX、视频、DPI、加载更多现场锚点仍未验证。本阶段验证：Release RenderHarness 构建 `0 warning/0 error`、`scaleprobe OK`，锚点定向 `8/8`，Playnite 全量 `421/484`（63 skip），源码校验通过。
 - L32 证据索引见 [`EVIDENCE_INDEX_2026-09-09.md`](EVIDENCE_INDEX_2026-09-09.md)，其中明确当前候选包、离线滚动报告、skip 账本和真实宿主缺口。
 
