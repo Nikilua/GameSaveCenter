@@ -6,9 +6,9 @@
 
 | 范围 | 权威证据 | 当前结果 | 边界 |
 | --- | --- | --- | --- |
-| 表格诊断 | `src/GameSaveCenter.Playnite/Infrastructure/DataGridScrollDiagnostics.cs`、`src/GameSaveCenter.Playnite/Views/MediaCenterView.xaml.cs` | 记录实际表格 `ScrollViewer`、`DataGridRowsPresenter`、Presenter 矩形、offset/extent、首末行、单元格内容/裁剪、锚点执行状态；`f31711c` 让锚点捕获/恢复采用同一实际滚动器选择规则，定向 `9/9` | 仍需真实 Playnite/FusionX 日志；此前候选包 `8d729ab` 未包含该修复 |
+| 表格诊断 | `src/GameSaveCenter.Playnite/Infrastructure/DataGridScrollDiagnostics.cs`、`src/GameSaveCenter.Playnite/Views/MediaCenterView.xaml.cs` | 记录实际表格 `ScrollViewer`、`DataGridRowsPresenter`、Presenter 矩形、offset/extent、首末行、单元格内容/裁剪、锚点执行状态；`f31711c` 让锚点捕获/恢复采用同一实际滚动器选择规则，`1477a37` 用两个后代滚动器的 STA Window 行为测试验证优先级，定向 `10/10` | 仍需真实 Playnite/FusionX 日志；此前候选包 `8d729ab` 未包含该修复 |
 | 任务/媒体离线滚动 | `.tmp/l32-scrollprobe/scaleprobe-report.txt` | 200/2000/10000 条、20 次往返、滚轮、PageUp/PageDown、Ctrl+End；`scaleprobe OK`，报告提交为 `ea18b11` 且 `WorkingTreeClean: True`，未发现空正文/选框分离；末尾滑块路径最后行完整 | 隐藏 WPF `Window` 同时对照插件、标准 WPF 和本机已安装 FusionX `2.1.1` 的 `DefaultControls/DataGrid.xaml`；FusionX 普通视口和水平条显示视口都能直接滑到末尾且末行完整，deferred `ScrollIntoView` 仍基线不确定；均不能替代真实 Playnite |
-| 契约与全量回归 | `MediaWindowAnchorContractTests`、Playnite 全量 | 锚点定向 `9/9`；Playnite `422/485`，`0` 失败、`63` 条件 skip | skip 详见 [`SKIP_LEDGER_2026-09-09.md`](SKIP_LEDGER_2026-09-09.md) |
+| 契约与全量回归 | `MediaWindowAnchorContractTests`、Playnite 全量 | 锚点定向 `10/10`；Playnite `423/486`，`0` 失败、`63` 条件 skip | skip 详见 [`SKIP_LEDGER_2026-09-09.md`](SKIP_LEDGER_2026-09-09.md) |
 | 候选包 | [`L30_PACKAGE_CHECKLIST_2026-09-09.md`](L30_PACKAGE_CHECKLIST_2026-09-09.md)、[`RELEASE_NOTES.md`](../RELEASE_NOTES.md) | `0.6.73+8d729abd...`；`.pext`/`.zip` 各 `43,831,491` 字节，SHA-256 `680E5007...A75B2B7`；迁移定向 `14/14` | 未安装到真实 Playnite |
 | 真实宿主 | [`L31_REAL_HOST_BLOCKER_2026-09-09.md`](L31_REAL_HOST_BLOCKER_2026-09-09.md) | PowerShell 确认 `D:\software\Playnite\Playnite.DesktopApp.exe` 路径；本次复核时进程已退出，Windows Computer Use 仍返回 `apps: []` | 未启动宿主；无真实截图、录屏、FusionX、DPI 或宿主滚动日志 |
 

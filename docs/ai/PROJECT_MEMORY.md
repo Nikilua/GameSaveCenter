@@ -25,7 +25,7 @@
 - 提交 `8775809` 修正 RenderHarness 对空 `git status --porcelain` 的解释；最新 `.tmp/l32-scrollprobe/scaleprobe-report.txt`（canonical 提交 `ea18b11`）记录 `WorkingTreeClean: True`，不再把干净工作树写成 `False`。
 - 提交 `f31711c` 让 `CaptureAnchor`/`RestoreAnchor` 使用与诊断器一致的实际表格 `ScrollViewer` 选择规则：优先含 `DataGridRowsPresenter`，再按 DIP 视口高度/宽度排序。定向锚点契约为 `9/9`；此前候选包身份 `8d729ab` 未包含该生产修复，不能把离线报告写成候选包已验证。
 - 离线 `scaleprobe` 的 20 次滑块往返在任务表/媒体表 200、2000、10000 条规模均保持可见行和文字；末尾滑块路径的最后行完整。真实 Playnite/FusionX、DPI、视频和加载更多现场锚点仍必须复测。
-- 本轮没有真实宿主窗口；后续仍须用 Playnite/FusionX 重复视频动作，不能用该离线报告替代宿主验收。锚点修复后的 Playnite 全量离线回归为 `422/485`（63 skip、0 fail）。
+- 本轮没有真实宿主窗口；后续仍须用 Playnite/FusionX 重复视频动作，不能用该离线报告替代宿主验收。锚点修复和 STA 行为测试后的 Playnite 全量离线回归为 `423/486`（63 skip、0 fail），锚点定向 `10/10`。
 
 ## 2026-09-09 L28 持续更新分页与选择恢复
 

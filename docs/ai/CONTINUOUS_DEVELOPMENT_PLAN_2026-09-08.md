@@ -320,7 +320,7 @@
 - 验收：记录实际完成的组合，不宣称全组合通过；检查窗内滚动、焦点、菜单/详情、错误重试、大库切页及已安装 DLL 身份。宿主工具不可用时标外部阻塞，继续 L32 的可完成部分。
 - 状态：外部阻塞。PowerShell 确认 Playnite 路径但本次复核时进程已退出，Windows Computer Use 应用清单仍为空，无法绑定真实窗口；未启动宿主、未安装候选包、未生成真实截图/录屏/滚动诊断，故不能声称视频问题已解决。
 - 证据：[`L31_REAL_HOST_BLOCKER_2026-09-09.md`](L31_REAL_HOST_BLOCKER_2026-09-09.md)。恢复条件是用户确认可重启当前 Playnite并提供可用宿主控制入口，之后按矩阵逐项记录实际结果。
-- 补充离线证据：滚动诊断器已绑定实际 `DataGridRowsPresenter` 所在 `ScrollViewer`，锚点状态含执行/跳过/失败原因；`scaleprobe` 对任务/媒体表 200、2000、10000 条各执行 20 次往返并通过。提交 `862742a` 的隐藏 WPF `Window` 对照显示插件模板从顶部 `ScrollIntoView` 最后一项可落到 `1992/1992` 且末行完整；提交 `85b1aeb` 又只读加载本机 FusionX `2.1.1` 的 `DefaultControls/DataGrid.xaml`，普通视口直接滑块/Ctrl+End 到 `1987/1987` 且末行完整；提交 `5198c6c` 补充水平条显示场景，`Visible/17.33` 时 Presenter 为 `678.67x582.67`，末行仍完整；提交 `8775809` 修正报告的干净工作树元数据，最新 canonical 报告（`ea18b11`）为 `WorkingTreeClean: True`；提交 `f31711c` 让锚点捕获/恢复采用实际表格滚动器，定向 `9/9`；deferred `ScrollIntoView` 仍为 `offscreen-baseline-inconclusive`。这些结果不解除真实宿主阻塞，且此前 `8d729ab` 候选包未包含 `f31711c`。
+- 补充离线证据：滚动诊断器已绑定实际 `DataGridRowsPresenter` 所在 `ScrollViewer`，锚点状态含执行/跳过/失败原因；`scaleprobe` 对任务/媒体表 200、2000、10000 条各执行 20 次往返并通过。提交 `862742a` 的隐藏 WPF `Window` 对照显示插件模板从顶部 `ScrollIntoView` 最后一项可落到 `1992/1992` 且末行完整；提交 `85b1aeb` 又只读加载本机 FusionX `2.1.1` 的 `DefaultControls/DataGrid.xaml`，普通视口直接滑块/Ctrl+End 到 `1987/1987` 且末行完整；提交 `5198c6c` 补充水平条显示场景，`Visible/17.33` 时 Presenter 为 `678.67x582.67`，末行仍完整；提交 `8775809` 修正报告的干净工作树元数据，最新 canonical 报告（`ea18b11`）为 `WorkingTreeClean: True`；提交 `f31711c` 让锚点捕获/恢复采用实际表格滚动器，提交 `1477a37` 用 STA Window 行为测试验证，定向 `10/10`；deferred `ScrollIntoView` 仍为 `offscreen-baseline-inconclusive`。这些结果不解除真实宿主阻塞，且此前 `8d729ab` 候选包未包含 `f31711c`。
 
 ### L32 发布说明、证据索引与下一轮基线
 
