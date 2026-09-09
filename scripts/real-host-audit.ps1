@@ -1,7 +1,9 @@
 ﻿[CmdletBinding()]
 param(
     [ValidateSet('Debug', 'Release')][string]$Configuration = 'Release',
-    [string]$Output = ''
+    [string]$Output = '',
+    [string]$UserDataDir = '',
+    [string]$PlayniteExecutable = ''
 )
 
 $ErrorActionPreference = 'Stop'
@@ -21,6 +23,8 @@ if (Test-Path -LiteralPath $Output) {
 New-Item -ItemType Directory -Path $Output -Force | Out-Null
 
 $env:GSC_REAL_HOST_AUDIT = $Output
+$previousWorkerDataDirectory = [Environment]::GetEnvironmentVariable('GameSaveCenter__DataDirectory', 'Process')
+$isolatedWorkerDataDirectory = ''
 $auditStartedUtc = [DateTime]::UtcNow.ToString('O')
 try {
     $commit = (& git -C $root rev-parse HEAD 2>$null | Select-Object -First 1).Trim()
@@ -44,17 +48,53 @@ $runnerMetadata = [ordered]@{
     Theme = 'captured per metadata-*.json'
     DataVolume = 'captured from production snapshot/diagnostic metadata when available'
     Timing = 'capture manifest includes per-surface capture status; host interaction time is not fabricated'
+    UserDataMode = if ([string]::IsNullOrWhiteSpace($UserDataDir)) { 'current-user-data' } else { 'isolated-user-data' }
+}
+$installArguments = @{ Configuration = $Configuration }
+if (-not [string]::IsNullOrWhiteSpace($UserDataDir)) {
+    $UserDataDir = [System.IO.Path]::GetFullPath($UserDataDir)
+    if (-not (Test-Path -LiteralPath $UserDataDir -PathType Container)) {
+        throw "UserDataDir must already exist as an isolated Playnite data directory: $UserDataDir"
+    }
+    if ([string]::IsNullOrWhiteSpace($PlayniteExecutable) -or -not (Test-Path -LiteralPath $PlayniteExecutable -PathType Leaf)) {
+        throw "Isolated audit requires an explicit Playnite executable: $PlayniteExecutable"
+    }
+    $PlayniteExecutable = [System.IO.Path]::GetFullPath($PlayniteExecutable)
+    $isolatedExtensionsPath = Join-Path $UserDataDir 'Extensions'
+    New-Item -ItemType Directory -Path $isolatedExtensionsPath -Force | Out-Null
+    $isolatedWorkerDataDirectory = Join-Path $UserDataDir 'GameSaveCenter'
+    New-Item -ItemType Directory -Path $isolatedWorkerDataDirectory -Force | Out-Null
+    [Environment]::SetEnvironmentVariable('GameSaveCenter__DataDirectory', $isolatedWorkerDataDirectory, 'Process')
+    $installArguments.PlayniteExtensionsPath = $isolatedExtensionsPath
+    $installArguments.PlayniteExecutable = $PlayniteExecutable
+    $installArguments.NoStart = $true
+    $runnerMetadata.UserDataDir = $UserDataDir
+    $runnerMetadata.PlayniteExecutable = $PlayniteExecutable
+    $runnerMetadata.WorkerDataDirectory = $isolatedWorkerDataDirectory
 }
 $runnerMetadata | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $Output 'runner-metadata.json') -Encoding UTF8
 Write-Host "==> Starting Playnite with GSC_REAL_HOST_AUDIT=$Output" -ForegroundColor Cyan
 
 Push-Location $root
 try {
-    & (Join-Path $root 'scripts\dev-install-run.ps1') -Configuration $Configuration
+    & (Join-Path $root 'scripts\dev-install-run.ps1') @installArguments
     if ($LASTEXITCODE -ne 0) { throw "dev-install-run failed: $LASTEXITCODE" }
+
+    if (-not [string]::IsNullOrWhiteSpace($UserDataDir)) {
+        Write-Host "==> Starting Playnite with isolated user data: $UserDataDir" -ForegroundColor Cyan
+        Start-Process -FilePath $PlayniteExecutable `
+            -WorkingDirectory (Split-Path -Parent $PlayniteExecutable) `
+            -ArgumentList @('--startdesktop', '--hidesplashscreen', '--userdatadir', $UserDataDir)
+    }
 }
 finally {
     Pop-Location
+    if ($null -eq $previousWorkerDataDirectory) {
+        Remove-Item Env:GameSaveCenter__DataDirectory -ErrorAction SilentlyContinue
+    }
+    else {
+        $env:GameSaveCenter__DataDirectory = $previousWorkerDataDirectory
+    }
 }
 
 function Invoke-GameSaveCenterSidebar {
