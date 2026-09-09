@@ -4,13 +4,13 @@
 
 ## 2026-09-10 当前生产源候选包与发布边界
 
-- `63f4b2d` 是当前候选包的生产源提交；从该提交重新运行 `scripts/package.ps1` 后，六份程序集统一为 `0.6.73+63f4b2d54d0ff69f824a167ac3d62c070c32bf37`，两个候选包均为 `43,837,982` 字节，SHA-256 为 `83FC0C96476B58FD5DC8AA3E97E850B12BB77EC06A5739DE361EA96ACDC17869`。
-- 发布链验证为 Core `76/76`、Worker `310/311`（1 skip）、Playnite `427/490`（63 skip），构建无警告/错误；该提交还为首页顶部复合按钮增加了不字符串化视觉树的共享样式与回归断言。候选包身份应记录实际生产源提交 `63f4b2d`，不能继续把 `fa9af0a` 写成当前包提交。
+- `248d28e` 是当前候选包的生产源提交；从该提交重新运行 `scripts/package.ps1` 后，六份程序集统一为 `0.6.73+248d28eff8c595516a803f8db356952cef54c166`，两个候选包均为 `43,837,966` 字节，SHA-256 为 `628F34B01C478CD30A26260650703C8B77F558561E103D78B24C8A390949DDD3`。
+- 发布链验证为 Core `76/76`、Worker `310/311`（1 skip）、Playnite `427/490`（63 skip），构建无警告/错误；该提交为活动游戏选择器共享按钮补齐 `ContentTemplate={x:Null}` 防护，并增加样式回归断言，连同此前首页活动行、云端整卡和顶部复合按钮的视觉树修复一起进入候选包。
 - staging/隔离构建目录已清理；包仍未安装真实 Playnite，不能把最新包身份校验写成 FusionX、DPI、物理点击或视频验收。
 - 包后又执行 `python scripts/validate-source.py`、`scripts/check-xaml.ps1` 和 `git diff --check`，均通过；这些是源码/交付门禁，不替代 L31 真实宿主证据。
 - 2026-09-10 在当前 `main` 重新执行 `dotnet test GameSaveCenter.sln -c Release --no-restore -m:1`，Core `76/76`、Worker `310/311`（1 skip）、Playnite `427/490`（63 skip），失败 `0`；此前 `AsyncThumbnailLoader` 的 `120`/`122` 并发污染本次未再复现。
-- `render-qa-headerbuttons-20260910/render-qa-report.txt` 的报告提交元数据为 `82e064c`，`WorkingTreeClean: True`、`render-qa OK`；覆盖双主题、多尺寸、resize、云端筛选前景、完整壳层背景和 Media 页尾几何，仍属于离屏证据。
-- L32 文档链接审计共检查 116 个本地 Markdown 链接，缺失 0；旧临时截图不恢复，工作日志改指向当前证据索引。
+- `render-qa-gamecontext-clean-20260910/render-qa-report.txt` 的报告提交元数据为 `248d28e`，`WorkingTreeClean: True`、`render-qa OK`；覆盖双主题、多尺寸、resize、云端筛选前景、完整壳层背景和 Media 页尾几何，仍属于离屏证据。
+- L32 文档链接审计共检查 122 个本地 Markdown 链接，缺失 0；旧临时截图不恢复，工作日志改指向当前证据索引。
 
 ## 2026-09-09 首页活动和云端队列整卡交互验证
 

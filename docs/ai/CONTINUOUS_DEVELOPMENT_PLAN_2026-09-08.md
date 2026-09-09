@@ -8,6 +8,8 @@
 
 > 2026-09-10 当前 main 完整回归：`dotnet test GameSaveCenter.sln -c Release --no-restore -m:1` 通过，Core `76/76`、Worker `310/311`（1 skip）、Playnite `427/490`（63 skip），失败 `0`；此前 `AsyncThumbnailLoader` 的 `120`/`122` 并发污染未再复现。CUA 再次返回 `apps=[]`，L31 仍无真实宿主入口。
 
+> 2026-09-10 游戏选择器模板防护与候选包：生产源提交 `248d28e` 为活动游戏选择器共享按钮显式清空 `ContentTemplate`，补充样式契约断言；干净 RenderHarness 报告为 `.tmp/render-qa-gamecontext-clean-20260910/render-qa-report.txt`，`WorkingTreeClean: True`、`render-qa OK`。候选包六份程序集身份为 `0.6.73+248d28eff8c595516a803f8db356952cef54c166`，包大小 `43,837,966` 字节，SHA-256 `628F34B01C478CD30A26260650703C8B77F558561E103D78B24C8A390949DDD3`；L31 真实宿主仍外部阻塞。
+
 最新缺陷依据见 [质量复核](QUALITY_REVIEW_2026-09-08.md)。L01～04 对应已发现的 Q6 问题；其余是增强或验证任务，不应写成已经复现的缺陷。接手时以最新 Git/源码核对，已满足条件的任务记为“已满足”，不要重复制作同名功能。
 
 ## 执行协议：默认一直推进

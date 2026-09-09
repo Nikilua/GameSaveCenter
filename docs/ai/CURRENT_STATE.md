@@ -2,16 +2,17 @@
 
 > 更新时间：2026-09-10。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
-## 2026-09-10 当前候选包已按生产源提交重新生成
+## 2026-09-10 当前候选包已按最新生产源提交重新生成
 
-- `scripts/package.ps1` 已从生产源提交 `63f4b2d` 在隔离目录完成 Release 构建、测试和 Worker 发布；Core `76/76`、Worker `310/311`（1 skip）、Playnite `427/490`（63 skip），0 失败，构建 0 warning/0 error。
-- 六份程序集身份统一为 `0.6.73+63f4b2d54d0ff69f824a167ac3d62c070c32bf37`；[`.pext`](../../artifacts/GameSaveCenter-0.6.73.pext) 和 [`.zip`](../../artifacts/GameSaveCenter-0.6.73-playnite.zip) 均为 `43,837,982` 字节，SHA-256 均为 `83FC0C96476B58FD5DC8AA3E97E850B12BB77EC06A5739DE361EA96ACDC17869`。
-- `63f4b2d` 同时修复了首页顶部图标+文字复合按钮沿用文本模板、可能显示 `System.Windows.Controls.Grid` 的同类问题，并增加共享视觉按钮样式和回归断言。
-- 当前离屏 RenderHarness 报告为 [`.tmp/render-qa-headerbuttons-20260910/render-qa-report.txt`](../../.tmp/render-qa-headerbuttons-20260910/render-qa-report.txt)，对应文档提交 `82e064c`、工作树干净，`render-qa OK`；双主题/多尺寸/resize、云端队列筛选文字、完整壳层背景层和 Media 页尾可达性均通过。该报告不替代真实 Playnite/FusionX 宿主验收。
+- `scripts/package.ps1` 已从生产源提交 `248d28e` 在隔离目录完成 Release 构建、测试和 Worker 发布；Core `76/76`、Worker `310/311`（1 skip）、Playnite `427/490`（63 skip），0 失败，构建 0 warning/0 error。
+- 六份程序集身份统一为 `0.6.73+248d28eff8c595516a803f8db356952cef54c166`；[`.pext`](../../artifacts/GameSaveCenter-0.6.73.pext) 和 [`.zip`](../../artifacts/GameSaveCenter-0.6.73-playnite.zip) 均为 `43,837,966` 字节，SHA-256 均为 `628F34B01C478CD30A26260650703C8B77F558561E103D78B24C8A390949DDD3`。
+- `248d28e` 为活动游戏选择器共享按钮样式显式清空 `ContentTemplate`，并补充回归断言，防止宿主文本模板把复合 `Grid` 显示成 `System.Windows.Controls.Grid`；此前首页活动行、云端队列整卡及 Dashboard 顶部复合按钮修复仍保留。
+- 当前干净离屏 RenderHarness 报告为 [`.tmp/render-qa-gamecontext-clean-20260910/render-qa-report.txt`](../../.tmp/render-qa-gamecontext-clean-20260910/render-qa-report.txt)，报告提交 `248d28e`、`WorkingTreeClean: True`、`render-qa OK`；双主题/多尺寸/resize、云端队列筛选文字、完整壳层背景层和 Media 页尾可达性均通过。该报告不替代真实 Playnite/FusionX 宿主验收。
 - 临时构建目录和打包 staging 目录已清理；包未安装真实 Playnite。真实宿主/FusionX、用户主题、DPI、物理点击和视频复测仍待 L31 条件恢复。
 - 包后独立门禁：`validate-source.py` 通过，XAML `19/19` 通过，`git diff --check` 通过。
+- 本轮 WPF 静态审查为 `0 errors / 22 warnings / 172 info`；warnings/info 为既有 Canvas、滚动容器和颜色令牌提示，未新增 error。
 - 2026-09-10 在当前 `main` 重新执行 `dotnet test GameSaveCenter.sln -c Release --no-restore -m:1`：Core `76/76`、Worker `310/311`（1 skip）、Playnite `427/490`（63 skip），失败 `0`；此前 `AsyncThumbnailLoader` 的 `120`/`122` 并发污染本次未再复现。
-- L32 链接审计：扫描本地 Markdown 链接 `116` 条，缺失 `0`；当前候选 `.pext/.zip` 均存在。已移除旧工作日志中指向已清理一次性截图的失效链接。
+- L32 链接审计：扫描本地 Markdown 链接 `122` 条，缺失 `0`；当前候选 `.pext/.zip` 均存在。已移除旧工作日志中指向已清理一次性截图的失效链接。
 
 ## 2026-09-09 首页交互行为测试已补齐
 

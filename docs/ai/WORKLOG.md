@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-10 游戏选择器视觉内容模板防护与候选包更新
+
+- 源码审计确认壳层 `GameContextButton` 与 Dashboard 紧凑选择器都把复合 `Grid` 作为 Button 内容；`GscRedesignGameContextButton` 现在显式设置 `ContentTemplate={x:Null}`，避免宿主隐式文本模板把视觉树显示成 `System.Windows.Controls.Grid`。
+- `WpfUiResourceDictionaryTests.CompactToolbarPreservesEveryActionThroughAnAccessibleIconOnlyMode` 增加两处选择器实例和共享样式契约断言；定向测试 `1/1`，完整 Release 回归为 Core `76/76`、Worker `310/311`（1 skip）、Playnite `427/490`（63 skip），失败 `0`。
+- `validate-source.py`、XAML `19/19`、WPF 静态审查 `0 errors / 22 warnings / 172 info`、`git diff --check` 均通过；干净 RenderHarness 报告为 [`.tmp/render-qa-gamecontext-clean-20260910/render-qa-report.txt`](../../.tmp/render-qa-gamecontext-clean-20260910/render-qa-report.txt)，提交 `248d28e`、`WorkingTreeClean: True`、`render-qa OK`。
+- 从 `248d28e` 重新生成候选包：程序集身份 `0.6.73+248d28eff8c595516a803f8db356952cef54c166`，`.pext/.zip` 均 `43,837,966` 字节，SHA-256 `628F34B01C478CD30A26260650703C8B77F558561E103D78B24C8A390949DDD3`；staging/隔离构建目录已清理，未安装真实 Playnite。
+
 ## 2026-09-09 首页活动与云端队列实际 WPF 交互回归
 
 - 新增 `OverviewInteractionTests.OverviewActivityRowsKeepTheirVisualTreeAndCloudQueueCardExecutesOneClickCommand`：在 STA WPF 布局中加载真实 `OverviewView`，验证全局活动行的 `Content` 仍是 `Border` 可视树，云端队列卡片的 `Content` 是 `StackPanel`，没有恢复文本模板字符串化。
@@ -28,7 +35,7 @@
 - 六份程序集身份一致为 `0.6.73+fa9af0ad36db07551bd1c2985258d72eecb9c8e4`；[`.pext`](../../artifacts/GameSaveCenter-0.6.73.pext) 与 [`.zip`](../../artifacts/GameSaveCenter-0.6.73-playnite.zip) 均 `43,837,868` 字节，SHA-256 为 `631615AB7695C46F943D9546A53369C69ADA49F347C4F7CE33D96A33C3831249`。
 - 打包 staging 和隔离构建目录已从 `artifacts/`、`.tmp/` 清理；没有安装真实 Playnite，L31 宿主矩阵和原视频操作仍保持未验收。
 - 打包完成后的独立门禁再次通过：`python scripts/validate-source.py`、`scripts/check-xaml.ps1`（19 文件）和 `git diff --check` 均通过；这只加强源码/交付一致性证据，不改变真实宿主待验收边界。
-- L32 文档链接审计扫描 116 个本地 Markdown 链接，缺失数为 `0`；同时确认当前 `.pext/.zip` 均存在。旧的一次性媒体截图链接已改为当前证据索引，不恢复已清理的临时截图。
+- L32 文档链接审计扫描 122 个本地 Markdown 链接，缺失数为 `0`；同时确认当前 `.pext/.zip` 均存在。旧的一次性媒体截图链接已改为当前证据索引，不恢复已清理的临时截图。
 
 ## 2026-09-10 证据边界与旧临时产物清理
 
