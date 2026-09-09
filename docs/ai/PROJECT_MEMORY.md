@@ -9,6 +9,11 @@
 - Resize 探针改为向 Media 传入 `ContentSize` 的 `contentH`，与生产 PageHost 测量一致；原先 `86 DIP` 的错误结果恢复为 `300 DIP`、`6/4` 完整可读行。提交后的报告为 [`.tmp/render-qa-media-gate-clean-20260909/render-qa-report.txt`](../../.tmp/render-qa-media-gate-clean-20260909/render-qa-report.txt)，`WorkingTreeClean: True`、`render-qa OK`。
 - 这只完成了离屏质量门禁，不证明 Playnite/FusionX 真实模板链、DPI、用户主题或视频式拖动问题已解决；宿主证据边界保持不变。
 
+## 2026-09-09 当前回归基线与宿主边界同步
+
+- 当前 `main` 交接基线为 `580a70f`。此前缩略图并发测试的 `120/122` 失败已由 `c0197e5` 通过测试集合隔离修复；Playnite 全量为 `425/488`（63 skip、0 fail）。
+- `580a70f` 只同步回归证据与离屏审计边界，没有继续修改生产表格模板、滚动单位或虚拟化。真实 Playnite/FusionX 仍没有可绑定窗口，不能把 `render-qa OK` 写成视频问题已解决。
+
 ## 2026-09-09 回归失败与离屏审计夹具修正
 
 - `AsyncThumbnailLoader` 的诊断、缓存和并发闸门是进程级静态状态；`AsyncThumbnailLoaderTests` 在 `ResetDiagnostics()` 后若与 `AsyncThumbnailImageTests` 并行，观察到的 `RequestCount=122` 不代表生产代码多发请求。`c0197e5` 将两个测试类放进同一个禁并行集合，保留原有 `120` 精确断言和生产 3 路/96 项边界；定向 `1/1`，Playnite 全量 `425/488`（63 skip、0 fail）。
