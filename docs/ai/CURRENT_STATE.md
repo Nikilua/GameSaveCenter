@@ -2,11 +2,17 @@
 
 > 更新时间：2026-09-09。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-09 回归失败修复与离屏门禁更新
+
+- `c0197e5` 将 `AsyncThumbnailLoaderTests` 和 `AsyncThumbnailImageTests` 放入禁并行集合。此前两个测试共享进程级诊断/缓存状态，完整套件并发时会把一次应为 `120` 的请求计数污染为 `122`；定向 `1/1`、Playnite 全量 `425/488`（63 skip、0 fail）已通过。
+- `559d64f` 修正 RenderHarness 的 Settings 临时目录夹具、Sidebar 快速切换完成计时器和 Media 主题探针高度。干净工作树报告为 [`.tmp/render-qa-harness-clean-20260909/render-qa-report.txt`](../../.tmp/render-qa-harness-clean-20260909/render-qa-report.txt)，RenderHarness 构建 `0 warning/0 error`；Settings 三态和 Sidebar 第二次点击门禁已恢复正常，生产壳层 Media 1040/1100 DIP 表格视口均为 `300`，页尾 footer/history/secondary 可到达。
+- 完整 render-qa 仍未全绿，但剩余项已收敛为 Media 离屏夹具门禁：嵌套归类预览列表 `126 DIP`、独立 Media 表格 `230 DIP` 以及 resize 步骤 `86 DIP`。这些不是可直接写成生产滚动根因的证据；真实 Playnite/FusionX 和视频式操作仍待宿主验收。
+
 ## 2026-09-09 浅色主题视觉问题修复（离屏验证完成，真实宿主待验收）
 
 - 对应代码提交：`2365a5c`（已推送到 `origin/main`）。
 - 用户截图中的两类问题已按共享层修复：生产壳层不再在内容列重复绘制选中游戏背景；维护中心云端队列及同类有限宽度 ComboBox 的文本显式使用 `GscPrimaryTextBrush`，浅色主题不再继承白色宿主文字。
-- 相关契约测试 `2/2`、源校验、XAML `19/19` 和 WPF 静态审计 `0 errors` 通过；RenderHarness 已成功构建并产出双主题、多尺寸输出，但完整 render-qa 仍有既有 Media/Settings/Sidebar 门禁失败，不能写成全量通过。
+- 相关契约测试 `2/2`、源校验、XAML `19/19` 和 WPF 静态审计 `0 errors` 通过；RenderHarness 已成功构建并产出双主题、多尺寸输出，Settings/Sidebar 的夹具误报已修正，但完整 render-qa 仍有 Media 离屏门禁失败，不能写成全量通过。
 - 目前没有可绑定的真实 Playnite 窗口，未完成 FusionX 宿主截图或浅色主题真实回归；交付时应把真实宿主视觉确认标为待验收。前述表格滚动视频问题的物理操作与录屏边界保持不变。
 
 ## 2026-09-09 L42/L41/L39 表格滚动证据边界（当前最新）

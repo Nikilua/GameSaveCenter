@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-09
 
+## 2026-09-09 回归失败与离屏审计夹具修正
+
+- `AsyncThumbnailLoader` 的诊断、缓存和并发闸门是进程级静态状态；`AsyncThumbnailLoaderTests` 在 `ResetDiagnostics()` 后若与 `AsyncThumbnailImageTests` 并行，观察到的 `RequestCount=122` 不代表生产代码多发请求。`c0197e5` 将两个测试类放进同一个禁并行集合，保留原有 `120` 精确断言和生产 3 路/96 项边界；定向 `1/1`，Playnite 全量 `425/488`（63 skip、0 fail）。
+- `559d64f` 修正 RenderHarness 的三类误报来源：Settings 使用可访问的临时目录、Sidebar 完成探针改为不会被 Render 优先级 tick 饿死、Media 主题响应式探针传入实际 PageHost 高度。干净报告为 [`.tmp/render-qa-harness-clean-20260909/render-qa-report.txt`](../../.tmp/render-qa-harness-clean-20260909/render-qa-report.txt)，构建 `0 warning/0 error`。
+- 修正后 Settings normal/dirty/invalid 和 Sidebar rapid-toggle 通过；生产壳层 Media 1040/1100 表格为 `300 DIP`，页尾 footer/history/secondary 可达。render-qa 仍有嵌套归类预览 `126 DIP`、独立 Media 表格 `230 DIP` 和 resize `86 DIP`，这些离屏组合尚未证明生产问题，也不能被直接删除门禁；真实宿主/FusionX 与视频式操作仍待验收。
+
 ## 2026-09-09 浅色主题背景与云端队列文字对比度修复
 
 - 生产壳层同时存在全壳层选中游戏 `ImageBrush` 与内容列 `UseSelectedGameBackground=True` 的 `AmbientMaterialLayer`；后者会形成截图中侧栏右边及最右侧的矩形图片边界。修复只保留全壳层图片，Shell ambient wash 跨两列且 `UseSelectedGameBackground=False`，页面局部材质仍可继续提供页面光晕。

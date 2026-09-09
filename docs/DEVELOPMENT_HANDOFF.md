@@ -2,7 +2,9 @@
 
 > 连续实施入口：[32 项、8 阶段计划](ai/CONTINUOUS_DEVELOPMENT_PLAN_2026-09-08.md)。用户要求减少逐项确认；接手后按依赖连续实施并逐项交付，已满足任务跳过，外部阻塞不妨碍独立任务。Q6 质量报告仍是首四项问题依据。
 
-> 2026-09-09 浅色主题视觉修复：生产壳层 `ShellAmbientMaterialLayer` 已改为跨完整壳层且不再重复读取选中游戏背景，避免侧栏右侧/页面最右侧出现图片方框；维护中心及 Dashboard 的 `GscComboBoxLongText` 已显式使用 `GscPrimaryTextBrush`，修复浅色云端队列下拉文字不可见。定向测试 `2/2`、源/XAML 门禁和 WPF 静态审计通过；RenderHarness 构建成功但完整 render-qa 仍有既有 Media/Settings/Sidebar 失败。真实 Playnite/FusionX 浅色主题截图尚未取得，不能写成宿主已验收。
+> 2026-09-09 回归与离屏夹具更新：`c0197e5` 隔离了两个共享 `AsyncThumbnailLoader` 静态状态的 xUnit 测试，修复并发套件中 `120` 被污染为 `122` 的失败；定向 `1/1`，Playnite 全量 `425/488`（63 skip、0 fail）。`559d64f` 修正 Settings 临时目录、Sidebar rapid-toggle 调度和 Media PageHost 高度探针。干净报告见 [`.tmp/render-qa-harness-clean-20260909/render-qa-report.txt`](../.tmp/render-qa-harness-clean-20260909/render-qa-report.txt)：Settings/Sidebar 门禁已通过，生产壳层 Media 1040/1100 表格为 `300 DIP` 且页尾可达；完整 render-qa 仍只剩 Media 预览/独立表格离屏尺寸门禁。该报告不替代真实 Playnite/FusionX 与视频式宿主验收。
+
+> 2026-09-09 浅色主题视觉修复：生产壳层 `ShellAmbientMaterialLayer` 已改为跨完整壳层且不再重复读取选中游戏背景，避免侧栏右侧/页面最右侧出现图片方框；维护中心及 Dashboard 的 `GscComboBoxLongText` 已显式使用 `GscPrimaryTextBrush`，修复浅色云端队列下拉文字不可见。定向测试 `2/2`、源/XAML 门禁和 WPF 静态审计通过；后续 `559d64f` 已排除 Settings/Sidebar 的离屏夹具误报，但完整 render-qa 仍有 Media 离屏尺寸门禁。真实 Playnite/FusionX 浅色主题截图尚未取得，不能写成宿主已验收。
 
 > 2026-09-09 L42/L41 真实宿主入口边界：L41 受限启动记录 CEF `拒绝访问 (0x5)`；L42 提升权限后 Playnite 进程仍无可绑定主窗口（`MainWindowHandle=0`），UI Automation 找不到 GameSaveCenter 侧栏，最终没有 `summary.json` 或新的表格 replay。L42 构建/回归为 Core `76/76`、Worker `311/311`、Playnite `431/488（57 skip）`，详见 [`ai/L42_REAL_HOST_SCROLL_REPLAY_2026-09-09.md`](ai/L42_REAL_HOST_SCROLL_REPLAY_2026-09-09.md)。这不是表格根因证据；当前有效宿主端点证据仍为 L39，视频 B 类问题仍待宿主人工验收。
 
