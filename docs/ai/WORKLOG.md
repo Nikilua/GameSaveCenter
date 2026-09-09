@@ -8,6 +8,7 @@
 - 维护中心云端队列的 `GscComboBoxLongText` 继承宿主 `BaseTextBlockStyle`，在浅色主题中把 `TextBlock` 前景色带成白色，覆盖了 ComboBox 的主题文字绑定。维护页和同类 Dashboard 样式均显式绑定 `GscPrimaryTextBrush`，保留截断、提示和现有选择/绑定行为。
 - 定向契约测试 `DemoVisualVocabularyAndWorkspaceStretchContractRemainAvailable` 与 `FiniteWidthComboBoxesUseTheSharedLongTextTemplate` 为 `2/2`；`validate-source.py`、XAML `19/19` 通过；WPF 静态审计为 `0 errors / 22 warnings / 172 info`，警告和信息为既有主题硬编码提示。
 - RenderHarness Release 构建成功并生成双主题、多尺寸截图；完整 `render-qa` 仍被既有 Media 小视口、Settings fixture 和 Sidebar rapid-toggle 门禁判失败，未发现与本轮背景/文字修复直接相关的新门禁。离屏审计不等价真实 Playnite 渲染，当前仍没有真实宿主复测依据。
+- 后续补强了 `FiniteWidthComboBoxesUseTheSharedLongTextTemplate`：现在明确覆盖 `CloudTransferStateOptions` 与 `CloudTransferKindOptions` 两个云端队列筛选源；定向回归 `1/1` 通过。
 
 ## 2026-09-09 L42/L41 真实宿主入口再次未建立
 

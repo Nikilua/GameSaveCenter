@@ -3614,7 +3614,9 @@ public sealed class WpfUiResourceDictionaryTests
             new { Description = "SelectedGameTool.Versions", Match = (Func<XElement, bool>)(element => element.Attribute("ItemsSource")?.Value == "{Binding SelectedGameTool.Versions}") },
             new { Description = "InboxTargetGame", Match = (Func<XElement, bool>)(element => element.Attribute("SelectedItem")?.Value == "{Binding InboxTargetGame}") },
             new { Description = "MediaTargetGame", Match = (Func<XElement, bool>)(element => element.Attribute("SelectedItem")?.Value == "{Binding MediaTargetGame}") },
-            new { Description = "ProcessMappingTargetGame", Match = (Func<XElement, bool>)(element => element.Attribute("SelectedItem")?.Value == "{Binding ProcessMappingTargetGame}") }
+            new { Description = "ProcessMappingTargetGame", Match = (Func<XElement, bool>)(element => element.Attribute("SelectedItem")?.Value == "{Binding ProcessMappingTargetGame}") },
+            new { Description = "CloudTransferStateOptions", Match = (Func<XElement, bool>)(element => element.Attribute("ItemsSource")?.Value == "{Binding CloudTransferStateOptions}") },
+            new { Description = "CloudTransferKindOptions", Match = (Func<XElement, bool>)(element => element.Attribute("ItemsSource")?.Value == "{Binding CloudTransferKindOptions}") }
         };
 
         foreach (var target in targets)
