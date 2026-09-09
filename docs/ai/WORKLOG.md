@@ -17,6 +17,12 @@
 - 打包完成后的独立门禁再次通过：`python scripts/validate-source.py`、`scripts/check-xaml.ps1`（19 文件）和 `git diff --check` 均通过；这只加强源码/交付一致性证据，不改变真实宿主待验收边界。
 - L32 文档链接审计扫描 116 个本地 Markdown 链接，缺失数为 `0`；同时确认当前 `.pext/.zip` 均存在。旧的一次性媒体截图链接已改为当前证据索引，不恢复已清理的临时截图。
 
+## 2026-09-10 证据边界与旧临时产物清理
+
+- 修正文档中把 `fa9af0a` 候选包误称为“最新 HEAD”的表述，明确它是当前生产源包；文档仍保留后续说明性提交与生产包来源的区别。
+- 清理 8 个已确认没有文档引用的旧 `.tmp` 离屏构建/探针目录；保留当前候选包、真实宿主审计目录和用户视频帧，未删除可复核证据。
+- `validate-source.py`、XAML `19/19`、`git diff --check` 通过；当前 `main` 工作树干净，真实 Playnite 仍未绑定，L31 继续保持外部阻塞。
+
 ## 2026-09-09 首页活动内容呈现与云端队列卡片点击入口修复
 
 - 首页全局活动行使用共享 `GscWpfUiButton` 时，按钮默认的文本 `ContentTemplate` 会把行内 `Border/Grid` 可视树绑定到 `TextBlock.Text`，因此显示为 `System.Windows.Controls.Border`。`OverviewActivityRowButton` 现在显式清空 `ContentTemplate`，保留实际行内容和原有活动命令。
