@@ -1,6 +1,12 @@
 # GameSaveCenter 当前事实入口
 
-> 更新时间：2026-09-09。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
+> 更新时间：2026-09-10。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
+
+## 2026-09-10 当前候选包已按生产源提交重新生成
+
+- `scripts/package.ps1` 已从生产源提交 `fa9af0a` 在隔离目录完成 Release 构建、测试和 Worker 发布；Core `76/76`、Worker `310/311`（1 skip）、Playnite `427/490`（63 skip），0 失败，构建 0 warning/0 error。
+- 六份程序集身份统一为 `0.6.73+fa9af0ad36db07551bd1c2985258d72eecb9c8e4`；[`.pext`](../../artifacts/GameSaveCenter-0.6.73.pext) 和 [`.zip`](../../artifacts/GameSaveCenter-0.6.73-playnite.zip) 均为 `43,837,868` 字节，SHA-256 均为 `631615AB7695C46F943D9546A53369C69ADA49F347C4F7CE33D96A33C3831249`。
+- 临时构建目录和打包 staging 目录已清理；包未安装真实 Playnite。真实宿主/FusionX、用户主题、DPI、物理点击和视频复测仍待 L31 条件恢复。
 
 ## 2026-09-09 首页交互行为测试已补齐
 

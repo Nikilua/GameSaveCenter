@@ -2,7 +2,9 @@
 
 > 连续实施入口：[32 项、8 阶段计划](ai/CONTINUOUS_DEVELOPMENT_PLAN_2026-09-08.md)。用户要求减少逐项确认；接手后按依赖连续实施并逐项交付，已满足任务跳过，外部阻塞不妨碍独立任务。Q6 质量报告仍是首四项问题依据。
 
-> 2026-09-09 首页交互测试补齐：`4001d9d` 新增 STA WPF `OverviewInteractionTests`，实际布局验证全局活动行保留 `Border` 可视树，云端队列整卡通过 `ButtonBase.OnClick` 只执行一次 `OpenCloudQueueCommand`。Release 构建 `0 warning / 0 error`，Playnite 全量 `427/490`（63 skip、0 fail）。该提交仅增加测试，不改变当前 `1fdd15e` 生产候选包；真实 Playnite/FusionX、用户主题、DPI、物理点击和视频仍待宿主验收。
+> 2026-09-10 L30/L32 继续推进：从生产源提交 `fa9af0a` 重新生成候选包，六份程序集身份为 `0.6.73+fa9af0ad36db07551bd1c2985258d72eecb9c8e4`，`.pext/.zip` 均 `43,837,868` 字节，SHA-256 为 `631615AB7695C46F943D9546A53369C69ADA49F347C4F7CE33D96A33C3831249`。Core `76/76`、Worker `310/311`、Playnite `427/490`，0 失败；临时 staging 已清理。真实 Playnite/FusionX、用户主题、DPI、物理点击和视频仍待 L31 宿主条件。
+
+> 2026-09-09 首页交互测试补齐：`4001d9d` 新增 STA WPF `OverviewInteractionTests`，实际布局验证全局活动行保留 `Border` 可视树，云端队列整卡通过 `ButtonBase.OnClick` 只执行一次 `OpenCloudQueueCommand`。Release 构建 `0 warning / 0 error`，Playnite 全量 `427/490`（63 skip、0 fail）；随后已从生产源提交 `fa9af0a` 重新生成当前候选包。真实 Playnite/FusionX、用户主题、DPI、物理点击和视频仍待宿主验收。
 
 > 2026-09-09 Media 离屏门禁收口：`d777e65` 将主表视口验收改为实际 DataGrid 行容器的完整可见数（有足够数据时至少 `4/4` 行），并修正 resize 探针向 Media 传入 PageHost `contentH`；Inspector 内 2/3 条的预览/历史列表不再被误当主表。干净报告 [`.tmp/render-qa-media-gate-clean-20260909/render-qa-report.txt`](../.tmp/render-qa-media-gate-clean-20260909/render-qa-report.txt) 为 `WorkingTreeClean: True`、`render-qa OK`，Media resize `300 DIP/readableRows=6/4`。该结果仍是离屏证据，真实宿主/FusionX 与视频操作待验收。
 > 2026-09-09 当前交接基线：文档与证据边界同步提交为 `580a70f`。它没有继续修改生产表格模板；当前 Computer Use 仍返回 `apps: []`，没有新的真实 Playnite 截图、录屏或滚动诊断。`render-qa OK` 仍只能作为离屏门禁证据，L31 真实宿主矩阵保持外部阻塞。

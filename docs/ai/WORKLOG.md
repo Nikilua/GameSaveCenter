@@ -9,6 +9,12 @@
 - 定向行为测试 `1/1`；随后 Release 解决方案构建 `0 warning / 0 error`，Playnite 全量 `427/490`（63 skip、0 fail）。首次并行启动窗口测试曾无输出，已终止该测试进程并改为无顶层 Window 的 STA 布局夹具；改后稳定通过。
 - 该测试只证明插件自己的 WPF 视觉树和命令路由；真实 Playnite/FusionX、浅/深用户主题、DPI 与宿主点击/录屏仍保持人工待验收边界。
 
+## 2026-09-10 最新 HEAD 候选包重新生成
+
+- 从生产源提交 `fa9af0a` 运行 `scripts/package.ps1 -Configuration Release -BuildOutputRoot .tmp/package-current-20260909-latest`；XAML `19/19`，Release 构建 `0 warning / 0 error`，Core `76/76`、Worker `310/311`（1 skip）、Playnite `427/490`（63 skip），均无失败。
+- 六份程序集身份一致为 `0.6.73+fa9af0ad36db07551bd1c2985258d72eecb9c8e4`；[`.pext`](../../artifacts/GameSaveCenter-0.6.73.pext) 与 [`.zip`](../../artifacts/GameSaveCenter-0.6.73-playnite.zip) 均 `43,837,868` 字节，SHA-256 为 `631615AB7695C46F943D9546A53369C69ADA49F347C4F7CE33D96A33C3831249`。
+- 打包 staging 和隔离构建目录已从 `artifacts/`、`.tmp/` 清理；没有安装真实 Playnite，L31 宿主矩阵和原视频操作仍保持未验收。
+
 ## 2026-09-09 首页活动内容呈现与云端队列卡片点击入口修复
 
 - 首页全局活动行使用共享 `GscWpfUiButton` 时，按钮默认的文本 `ContentTemplate` 会把行内 `Border/Grid` 可视树绑定到 `TextBlock.Text`，因此显示为 `System.Windows.Controls.Border`。`OverviewActivityRowButton` 现在显式清空 `ContentTemplate`，保留实际行内容和原有活动命令。
