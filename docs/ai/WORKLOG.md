@@ -7,6 +7,12 @@
 - 交接索引已从 `d777e65` 同步到当前 `580a70f`；最新离屏报告仍明确对应 `d777e65`，避免把仅有文档提交误写成生产 UI 变更。
 - 当前 Computer Use 应用清单再次返回 `apps: []`，未启动或停止 Playnite，也没有生成新的真实截图、录屏或滚动诊断。L31 继续保持外部阻塞；`render-qa OK` 仅代表离屏门禁通过。
 
+## 2026-09-09 顺序 Release 构建与全量测试复验
+
+- 并行启动三套 `dotnet test` 时出现 MSBuild 子进程争用，超过两分钟无测试输出；只终止了本轮创建的测试进程，没有把环境卡死误记为代码失败。
+- 改用 `dotnet build GameSaveCenter.sln -c Release --no-restore -m:1` 后构建 `0 warning / 0 error`；随后以 `--no-build --no-restore -m:1` 顺序执行，Core `76/76`、Worker `310/311`（1 skip）、Playnite `425/488`（63 skip），均 `0` 失败。
+- `python scripts/validate-source.py`、`scripts/check-xaml.ps1`（19 文件）和 `validate_wpf_ui.py` 均通过；WPF 静态审计保持 `0 errors / 22 warnings / 172 info`，警告/信息为既有布局与主题提示。
+
 ## 2026-09-09 Media 离屏门禁改为实际行几何并全量通过
 
 - 旧 `<236 DIP` 固定阈值把 `MediaInboxGrid=230 DIP` 误报为失败；报告中的实际行高为约 `44 DIP`，该视口仍能完整容纳 `4/4` 行。门禁现在以 DataGrid 行容器相对表格边界的完整可见数判断，数据量足够时要求至少 `4` 行，不用高度常数替代内容视口证据。

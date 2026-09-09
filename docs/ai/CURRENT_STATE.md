@@ -7,6 +7,7 @@
 - `c0197e5` 将 `AsyncThumbnailLoaderTests` 和 `AsyncThumbnailImageTests` 放入禁并行集合。此前两个测试共享进程级诊断/缓存状态，完整套件并发时会把一次应为 `120` 的请求计数污染为 `122`；定向 `1/1`、Playnite 全量 `425/488`（63 skip、0 fail）已通过。
 - `559d64f` 修正 RenderHarness 的 Settings 临时目录夹具、Sidebar 快速切换完成计时器和 Media 主题探针高度。干净工作树报告为 [`.tmp/render-qa-harness-clean-20260909/render-qa-report.txt`](../../.tmp/render-qa-harness-clean-20260909/render-qa-report.txt)，RenderHarness 构建 `0 warning/0 error`；Settings 三态和 Sidebar 第二次点击门禁已恢复正常，生产壳层 Media 1040/1100 DIP 表格视口均为 `300`，页尾 footer/history/secondary 可到达。
 - `d777e65` 将 Media 门禁改为按实际 DataGrid 行几何统计完整可读行数，并让 resize 探针传入 Media 的实际 `contentH`；嵌套 Inspector 预览/历史列表不再套用主表四行门禁。最新干净报告为 [`.tmp/render-qa-media-gate-clean-20260909/render-qa-report.txt`](../../.tmp/render-qa-media-gate-clean-20260909/render-qa-report.txt)，`WorkingTreeClean: True`、`render-qa OK`；Media resize 为 `300 DIP`、`readableRows=6/4`，原 `230 DIP` 场景为 `readableRows=4/4`。
+- 当前顺序 Release 复验通过：`dotnet build GameSaveCenter.sln -c Release --no-restore -m:1` 为 `0 warning / 0 error`；Core `76/76`、Worker `310/311`（1 skip）、Playnite `425/488`（63 skip）均为 `0` 失败。源码校验、XAML `19/19` 和 WPF 静态审计 `0 errors / 22 warnings / 172 info` 通过。
 - 该报告仍是离屏 WPF 证据，不替代真实 Playnite/FusionX、DPI、用户主题和视频式拖动；真实宿主仍待验收。
 
 ## 2026-09-09 浅色主题视觉问题修复（离屏验证完成，真实宿主待验收）
