@@ -3432,6 +3432,8 @@ public static class Program
         var workerPath = Directory.Exists(workerOutputRoot)
             ? Directory.EnumerateFiles(workerOutputRoot, "GameSaveCenter.Worker.exe", SearchOption.AllDirectories).FirstOrDefault() ?? string.Empty
             : string.Empty;
+        var settingsFixtureRoot = Path.Combine(Path.GetTempPath(), "GameSaveCenter-render-settings-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(settingsFixtureRoot);
         var fixtures = new[]
         {
             (Name: "normal", ExpectedHint: "已保存", Valid: true, Dirty: false),
@@ -3439,63 +3441,78 @@ public static class Program
             (Name: "invalid", ExpectedHint: "存在校验错误", Valid: false, Dirty: false)
         };
 
-        foreach (var fixture in fixtures)
+        try
+        {
+            foreach (var fixture in fixtures)
+            {
+                try
+                {
+                    var settings = new GameSaveCenterSettings
+                    {
+                        ThemeMode = GameSaveCenterThemeMode.Light,
+                        LudusaviBackupDirectory = settingsFixtureRoot,
+                        MediaArchiveDirectory = settingsFixtureRoot
+                    };
+                    if (fixture.Valid)
+                        settings.WorkerExecutable = workerPath;
+                    var view = new GameSaveCenterSettingsView { DataContext = settings };
+                    var host = new Grid
+                    {
+                        Width = 1040,
+                        Height = 700,
+                        Background = CreateHarnessBackground(view),
+                        ClipToBounds = true
+                    };
+                    host.Children.Add(view);
+                    view.ApplyThemeForAudit(GameSaveCenterThemeMode.Light);
+                    apply.Invoke(view, new object[] { 1040d, 700d });
+                    host.Measure(new Size(1040, 700));
+                    host.Arrange(new Rect(0, 0, 1040, 700));
+                    host.UpdateLayout();
+                    apply.Invoke(view, new object[] { 1040d, 700d });
+                    host.UpdateLayout();
+
+                    if (fixture.Dirty)
+                        settings.CompressionLevel++;
+                    refresh.Invoke(view, null);
+                    host.UpdateLayout();
+                    var shell = FindVisualChildren<FrameworkElement>(host).FirstOrDefault(element => element.Name == "SettingsShell");
+                    if (shell != null)
+                    {
+                        shell.BeginAnimation(UIElement.OpacityProperty, null);
+                        shell.Opacity = 1;
+                    }
+                    var hint = FindVisualChildren<TextBlock>(host).FirstOrDefault(element => element.Name == "SettingsSaveHintText");
+                    var summary = FindVisualChildren<TextBlock>(host).FirstOrDefault(element => element.Name == "SettingsValidationSummary");
+                    var hintText = hint?.Text ?? string.Empty;
+                    var summaryVisible = summary?.Visibility == Visibility.Visible;
+                    report.AppendLine($"  SettingsState state={fixture.Name} hint={hintText} summary={summaryVisible} workerPath={(fixture.Valid ? "known" : "empty")}");
+                    if (hintText.IndexOf(fixture.ExpectedHint, StringComparison.Ordinal) < 0)
+                        s_problems.Add($"SettingsState {fixture.Name} expected hint '{fixture.ExpectedHint}', got '{hintText}'");
+                    if (summaryVisible != !fixture.Valid)
+                        s_problems.Add($"SettingsState {fixture.Name} summary visibility mismatch (visible={summaryVisible})");
+                    SavePng(host, Path.Combine(outputRoot, $"Settings-state-{fixture.Name}-1040x700.png"));
+                }
+                catch (Exception ex)
+                {
+                    s_problems.Add($"SettingsState {fixture.Name} failed: {ex.Message}");
+                }
+            }
+            RunSettingsValidationNavigationProbe(workerPath, settingsFixtureRoot, refresh, apply, report);
+        }
+        finally
         {
             try
             {
-                var settings = new GameSaveCenterSettings();
-                settings.ThemeMode = GameSaveCenterThemeMode.Light;
-                if (fixture.Valid)
-                    settings.WorkerExecutable = workerPath;
-                var view = new GameSaveCenterSettingsView { DataContext = settings };
-                var host = new Grid
-                {
-                    Width = 1040,
-                    Height = 700,
-                    Background = CreateHarnessBackground(view),
-                    ClipToBounds = true
-                };
-                host.Children.Add(view);
-                view.ApplyThemeForAudit(GameSaveCenterThemeMode.Light);
-                apply.Invoke(view, new object[] { 1040d, 700d });
-                host.Measure(new Size(1040, 700));
-                host.Arrange(new Rect(0, 0, 1040, 700));
-                host.UpdateLayout();
-                apply.Invoke(view, new object[] { 1040d, 700d });
-                host.UpdateLayout();
-
-                if (fixture.Dirty)
-                    settings.CompressionLevel++;
-                refresh.Invoke(view, null);
-                host.UpdateLayout();
-                var shell = FindVisualChildren<FrameworkElement>(host).FirstOrDefault(element => element.Name == "SettingsShell");
-                if (shell != null)
-                {
-                    shell.BeginAnimation(UIElement.OpacityProperty, null);
-                    shell.Opacity = 1;
-                }
-                var hint = FindVisualChildren<TextBlock>(host).FirstOrDefault(element => element.Name == "SettingsSaveHintText");
-                var summary = FindVisualChildren<TextBlock>(host).FirstOrDefault(element => element.Name == "SettingsValidationSummary");
-                var hintText = hint?.Text ?? string.Empty;
-                var summaryVisible = summary?.Visibility == Visibility.Visible;
-                report.AppendLine($"  SettingsState state={fixture.Name} hint={hintText} summary={summaryVisible} workerPath={(fixture.Valid ? "known" : "empty")}");
-                if (hintText.IndexOf(fixture.ExpectedHint, StringComparison.Ordinal) < 0)
-                    s_problems.Add($"SettingsState {fixture.Name} expected hint '{fixture.ExpectedHint}', got '{hintText}'");
-                if (summaryVisible != !fixture.Valid)
-                    s_problems.Add($"SettingsState {fixture.Name} summary visibility mismatch (visible={summaryVisible})");
-                SavePng(host, Path.Combine(outputRoot, $"Settings-state-{fixture.Name}-1040x700.png"));
+                Directory.Delete(settingsFixtureRoot, true);
             }
-            catch (Exception ex)
-            {
-                s_problems.Add($"SettingsState {fixture.Name} failed: {ex.Message}");
-            }
+            catch { }
         }
-
-        RunSettingsValidationNavigationProbe(workerPath, refresh, apply, report);
     }
 
     private static void RunSettingsValidationNavigationProbe(
         string workerPath,
+        string settingsFixtureRoot,
         MethodInfo refresh,
         MethodInfo apply,
         StringBuilder report)
@@ -3506,6 +3523,8 @@ public static class Program
             {
                 ThemeMode = GameSaveCenterThemeMode.Light,
                 WorkerExecutable = workerPath,
+                LudusaviBackupDirectory = settingsFixtureRoot,
+                MediaArchiveDirectory = settingsFixtureRoot,
                 CompressionLevel = 99
             };
             var view = new GameSaveCenterSettingsView { DataContext = settings };
@@ -3582,11 +3601,18 @@ public static class Program
                             ClipToBounds = true
                         };
                         host.Children.Add(view);
-                        ApplyThemeResponsive(view, contentW, windowH);
+                        // MediaCenterView receives the measured workspace/page-host height in
+                        // production. Passing the outer window height here skips its compact
+                        // page-scroll path and falsely compresses the inbox grid under the
+                        // wrapped toolbar/footer in the theme probe.
+                        var responsiveHeight = name.Equals("Media", StringComparison.OrdinalIgnoreCase)
+                            ? contentH
+                            : windowH;
+                        ApplyThemeResponsive(view, contentW, responsiveHeight);
                         host.Measure(new Size(contentW, contentH));
                         host.Arrange(new Rect(0, 0, contentW, contentH));
                         host.UpdateLayout();
-                        ApplyThemeResponsive(view, contentW, windowH);
+                        ApplyThemeResponsive(view, contentW, responsiveHeight);
                         if (name == "Settings")
                         {
                             ApplyThemePalette(view, themeMode);
@@ -4300,7 +4326,11 @@ public static class Program
         }
 
         var frame = new DispatcherFrame();
-        var endTimer = new DispatcherTimer(DispatcherPriority.Render)
+        // Keep the completion timer at the same priority as the rapid-toggle timer. A
+        // continuously scheduled Render-priority timer can starve the 60ms second click,
+        // making this probe report the first collapsed state instead of testing the latest
+        // requested expanded state.
+        var endTimer = new DispatcherTimer(DispatcherPriority.Background)
         {
             Interval = TimeSpan.FromMilliseconds(16)
         };
