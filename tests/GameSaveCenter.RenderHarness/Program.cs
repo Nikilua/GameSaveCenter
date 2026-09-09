@@ -2636,63 +2636,195 @@ public static class Program
             ProbeMediaCardScale(report, backendCount);
         }
 
-        ProbeStandardDataGridScrollContract(report);
+        ProbeWindowedDataGridScrollContracts(report);
     }
 
-    private static void ProbeStandardDataGridScrollContract(StringBuilder report)
+    private sealed class WindowedGridProbeFixture
     {
-        const int itemCount = 2000;
-        var grid = new DataGrid
+        public WindowedGridProbeFixture(FrameworkElement root, DataGrid grid)
         {
-            Width = 900,
-            Height = 300,
-            AutoGenerateColumns = false,
-            HeadersVisibility = DataGridHeadersVisibility.Column,
-            EnableRowVirtualization = true,
-            EnableColumnVirtualization = true,
-            IsReadOnly = true
-        };
-        VirtualizingPanel.SetIsVirtualizing(grid, true);
-        VirtualizingPanel.SetVirtualizationMode(grid, VirtualizationMode.Recycling);
-        VirtualizingPanel.SetScrollUnit(grid, ScrollUnit.Item);
-        ScrollViewer.SetCanContentScroll(grid, true);
-        ScrollViewer.SetHorizontalScrollBarVisibility(grid, ScrollBarVisibility.Auto);
-        ScrollViewer.SetVerticalScrollBarVisibility(grid, ScrollBarVisibility.Auto);
-        grid.Columns.Add(new DataGridTextColumn { Header = "ID", Binding = new Binding("TaskId"), Width = 220 });
-        grid.ItemsSource = Enumerable.Range(0, itemCount)
-            .Select(index => new TaskStatusDto { TaskId = "standard-" + index.ToString("D4") })
-            .ToArray();
-
-        var host = new Grid { Width = 900, Height = 300, ClipToBounds = true };
-        host.Children.Add(grid);
-        host.Measure(new Size(900, 300));
-        host.Arrange(new Rect(0, 0, 900, 300));
-        host.UpdateLayout();
-        var scroller = FindVisualChildren<ScrollViewer>(grid)
-            .OrderByDescending(candidate => candidate.ViewportHeight)
-            .FirstOrDefault();
-        if (scroller == null)
-        {
-            s_problems.Add("L21 standard DataGrid comparison has no internal ScrollViewer");
-            return;
+            Root = root;
+            Grid = grid;
         }
 
-        scroller.ScrollToVerticalOffset(scroller.ScrollableHeight);
-        host.UpdateLayout();
-        var before = CaptureScaleGrid(grid, scroller);
-        grid.ScrollIntoView(grid.Items[itemCount - 1]);
-        FlushLayoutDispatcher(host);
-        var after = CaptureScaleGrid(grid, scroller);
-        report.AppendLine(
-            $"  L21-Standard-DataGrid items={itemCount} beforeOffset={scroller.VerticalOffset:0.##} "
-            + $"beforeLast={before.LastIndex}:{before.LastId}@{before.LastBottom:0.##} "
-            + $"afterOffset={scroller.VerticalOffset:0.##} afterLast={after.LastIndex}:{after.LastId}@{after.LastBottom:0.##} "
-            + $"presenterBottom={after.PresenterRect.Bottom:0.##} template={grid.Template?.GetType().Name ?? "theme-default"}");
-        if (after.LastIndex != itemCount - 1 || after.LastBottom > after.PresenterRect.Bottom + 1)
+        public FrameworkElement Root { get; }
+        public DataGrid Grid { get; }
+    }
+
+    private static void ProbeWindowedDataGridScrollContracts(StringBuilder report)
+    {
+        const int itemCount = 2000;
+        report.AppendLine("  L32 ScrollIntoView window probe: same 2000-item data, 1100x640 hidden WPF Window; plugin template vs standard template");
+        ProbeWindowedDataGridScrollContract(
+            report,
+            "L32-Plugin-DataGrid",
+            () =>
+            {
+                var view = new TaskCenterView { DataContext = CreateTaskScaleProbeData(itemCount) };
+                var root = new Grid
+                {
+                    Width = 1100,
+                    Height = 640,
+                    ClipToBounds = true
+                };
+                root.Children.Add(view);
+                view.ApplyResponsiveLayout(1100, 640);
+                root.Measure(new Size(1100, 640));
+                root.Arrange(new Rect(0, 0, 1100, 640));
+                root.UpdateLayout();
+                var grid = FindVisualChildren<DataGrid>(root)
+                    .FirstOrDefault(candidate => candidate.Name == "TaskGrid");
+                if (grid == null)
+                    throw new InvalidOperationException("TaskGrid was not created in the plugin fixture");
+                return new WindowedGridProbeFixture(root, grid);
+            });
+
+        ProbeWindowedDataGridScrollContract(
+            report,
+            "L32-Standard-DataGrid",
+            () =>
+            {
+                var grid = new DataGrid
+                {
+                    Width = 1100,
+                    Height = 640,
+                    AutoGenerateColumns = false,
+                    HeadersVisibility = DataGridHeadersVisibility.Column,
+                    EnableRowVirtualization = true,
+                    EnableColumnVirtualization = true,
+                    IsReadOnly = true
+                };
+                VirtualizingPanel.SetIsVirtualizing(grid, true);
+                VirtualizingPanel.SetVirtualizationMode(grid, VirtualizationMode.Recycling);
+                VirtualizingPanel.SetScrollUnit(grid, ScrollUnit.Item);
+                ScrollViewer.SetCanContentScroll(grid, true);
+                ScrollViewer.SetHorizontalScrollBarVisibility(grid, ScrollBarVisibility.Auto);
+                ScrollViewer.SetVerticalScrollBarVisibility(grid, ScrollBarVisibility.Auto);
+                grid.Columns.Add(new DataGridTextColumn { Header = "ID", Binding = new Binding("TaskId"), Width = 220 });
+                grid.ItemsSource = Enumerable.Range(0, itemCount)
+                    .Select(index => new TaskStatusDto { TaskId = "standard-" + index.ToString("D4") })
+                    .ToArray();
+                var root = new Grid { Width = 1100, Height = 640, ClipToBounds = true };
+                root.Children.Add(grid);
+                return new WindowedGridProbeFixture(root, grid);
+            });
+    }
+
+    private static void ProbeWindowedDataGridScrollContract(
+        StringBuilder report,
+        string label,
+        Func<WindowedGridProbeFixture> createFixture)
+    {
+        const int itemCount = 2000;
+        Window? window = null;
+        try
         {
+            var fixture = createFixture();
+            window = new Window
+            {
+                Content = fixture.Root,
+                Width = 1100,
+                Height = 640,
+                ShowInTaskbar = false,
+                ShowActivated = false,
+                WindowStyle = WindowStyle.None,
+                ResizeMode = ResizeMode.NoResize,
+                Opacity = 0.01
+            };
+            window.Show();
+            fixture.Root.Measure(new Size(1100, 640));
+            fixture.Root.Arrange(new Rect(0, 0, 1100, 640));
+            fixture.Root.UpdateLayout();
+            FlushLayoutDispatcher(window);
+
+            var grid = fixture.Grid;
+            var scroller = FindVisualChildren<ScrollViewer>(grid)
+                .OrderByDescending(candidate => candidate.ViewportHeight)
+                .FirstOrDefault();
+            if (scroller == null)
+            {
+                s_problems.Add($"{label} hidden Window has no internal ScrollViewer");
+                return;
+            }
+
+            grid.SelectedIndex = itemCount / 2;
+            scroller.ScrollToVerticalOffset(0);
+            FlushLayoutDispatcher(window);
+            var topOffset = scroller.VerticalOffset;
+            var top = CaptureScaleGrid(grid, scroller);
+            var lastItem = grid.Items[itemCount - 1];
+            grid.Focus();
+            grid.ScrollIntoView(lastItem);
+            window.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() => grid.ScrollIntoView(lastItem)));
+            FlushLayoutDispatcher(window);
+            var afterScrollIntoView = CaptureScaleGrid(grid, scroller);
             report.AppendLine(
-                "  L21-Standard-DataGrid ScrollIntoView result=offscreen-inconclusive; "
-                + "the isolated standard WPF template has the same deferred behavior");
+                $"  {label} items={itemCount} scrollUnit={VirtualizingPanel.GetScrollUnit(grid)} canContentScroll={scroller.CanContentScroll} "
+                + $"scroller={scroller.GetType().Name} offsetAfterTop={topOffset:0.##} "
+                + $"offsetAfterScrollIntoView={scroller.VerticalOffset:0.##}/{scroller.ScrollableHeight:0.##} "
+                + $"top={top.FirstId}@{top.FirstY:0.##}/{top.FirstHeight:0.##} "
+                + $"last={afterScrollIntoView.LastIndex}:{afterScrollIntoView.LastId}@{afterScrollIntoView.LastBottom:0.##}/{afterScrollIntoView.LastHeight:0.##} "
+                + $"presenter={afterScrollIntoView.PresenterRect.Left:0.##},{afterScrollIntoView.PresenterRect.Top:0.##},{afterScrollIntoView.PresenterRect.Width:0.##}x{afterScrollIntoView.PresenterRect.Height:0.##}");
+
+            var scrollIntoViewFailed = afterScrollIntoView.LastIndex != itemCount - 1
+                || afterScrollIntoView.LastBottom > afterScrollIntoView.PresenterRect.Bottom + 1
+                || (scroller.ScrollableHeight > 0 && scroller.VerticalOffset <= 0);
+            if (scrollIntoViewFailed && label.IndexOf("Standard", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                report.AppendLine(
+                    $"  {label} ScrollIntoView result=offscreen-baseline-inconclusive; "
+                    + "standard WPF template did not settle the deferred call in this hidden-window fixture; "
+                    + "direct slider/Ctrl+End completeness remains checked below");
+            }
+            else
+            {
+                if (afterScrollIntoView.LastIndex != itemCount - 1)
+                    s_problems.Add($"{label} ScrollIntoView did not realize the last item (lastIndex={afterScrollIntoView.LastIndex})");
+                if (afterScrollIntoView.LastBottom > afterScrollIntoView.PresenterRect.Bottom + 1)
+                    s_problems.Add($"{label} ScrollIntoView left the last row clipped (bottom={afterScrollIntoView.LastBottom:0.##}, presenterBottom={afterScrollIntoView.PresenterRect.Bottom:0.##})");
+                if (scroller.ScrollableHeight > 0 && scroller.VerticalOffset <= 0)
+                    s_problems.Add($"{label} ScrollIntoView did not move from the top (offset={scroller.VerticalOffset:0.##})");
+            }
+
+            var fractions = new[] { 0.0, 1.0, 0.0, 1.0, 0.5, 0.0, 1.0, 0.25, 0.75, 0.0, 1.0, 0.5, 0.1, 0.9, 0.0, 1.0, 0.33, 0.66, 0.0, 1.0 };
+            for (var step = 0; step < fractions.Length; step++)
+            {
+                scroller.ScrollToVerticalOffset(scroller.ScrollableHeight * fractions[step]);
+                FlushLayoutDispatcher(window);
+                var snapshot = CaptureScaleGrid(grid, scroller);
+                report.AppendLine(
+                    $"  {label} step={step:00} pos={(int)(fractions[step] * 100)} offset={scroller.VerticalOffset:0.##}/{scroller.ScrollableHeight:0.##} "
+                    + $"visible={snapshot.VisibleCount} first={snapshot.FirstId}@{snapshot.FirstY:0.##}/{snapshot.FirstHeight:0.##} "
+                    + $"last={snapshot.LastIndex}:{snapshot.LastId}@{snapshot.LastBottom:0.##}/{snapshot.LastHeight:0.##} selected={GetStableId(grid.SelectedItem)}");
+                if (snapshot.VisibleCount == 0)
+                    s_problems.Add($"{label} step={step} has no visible rows");
+                if (fractions[step] >= 1.0 && (snapshot.LastIndex != itemCount - 1 || snapshot.LastBottom > snapshot.PresenterRect.Bottom + 1))
+                    s_problems.Add($"{label} step={step} bottom row is incomplete (lastIndex={snapshot.LastIndex}, bottom={snapshot.LastBottom:0.##}, presenterBottom={snapshot.PresenterRect.Bottom:0.##})");
+                if (GetStableId(grid.SelectedItem) != GetStableId(grid.Items[itemCount / 2]))
+                    s_problems.Add($"{label} step={step} changed selection while scrolling");
+            }
+
+            report.AppendLine(
+                $"  {label} semantic=PageDown/PageUp/Ctrl+End beforeOffset={scroller.VerticalOffset:0.##}/{scroller.ScrollableHeight:0.##}");
+            scroller.PageDown();
+            scroller.PageUp();
+            scroller.ScrollToEnd();
+            FlushLayoutDispatcher(window);
+            var semantic = CaptureScaleGrid(grid, scroller);
+            report.AppendLine(
+                $"  {label} semantic=PageDown/PageUp/Ctrl+End offset={scroller.VerticalOffset:0.##}/{scroller.ScrollableHeight:0.##} "
+                + $"last={semantic.LastIndex}:{semantic.LastId}@{semantic.LastBottom:0.##}/{semantic.LastHeight:0.##}");
+            if (semantic.VisibleCount == 0 || semantic.LastIndex != itemCount - 1 || semantic.LastBottom > semantic.PresenterRect.Bottom + 1)
+                s_problems.Add($"{label} semantic end state does not show a complete last row");
+        }
+        catch (Exception ex)
+        {
+            s_problems.Add($"{label} hidden Window scroll probe failed: {ex.GetType().Name}: {ex.Message}");
+        }
+        finally
+        {
+            try { window?.Close(); }
+            catch { }
         }
     }
 
