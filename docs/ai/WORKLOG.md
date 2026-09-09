@@ -16,7 +16,7 @@
 ## 2026-09-09 L32 滚动探针证据元数据修正
 
 - 提交 `8775809` 修正 `RenderHarness.ResolveGitValue`：`git status --porcelain` 在干净工作树下合法返回空字符串，不能被统一替换为 `unknown`。该问题只影响报告元数据，不影响滚动观测。
-- 重新生成 `.tmp/l32-scrollprobe/scaleprobe-report.txt` 后，报告为 `Commit: 8775809...`、`WorkingTreeClean: True`、`scaleprobe OK`；FusionX 普通视口和水平条显示视口的末尾完整性数据保持不变。
+- 重新生成 `.tmp/l32-scrollprobe/scaleprobe-report.txt` 后，canonical 报告为 `Commit: ea18b11...`、`WorkingTreeClean: True`、`scaleprobe OK`；FusionX 普通视口和水平条显示视口的末尾完整性数据保持不变。
 
 ## 2026-09-09 L32 FusionX 水平滚动条显示场景
 

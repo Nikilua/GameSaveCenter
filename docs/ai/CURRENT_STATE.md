@@ -22,7 +22,7 @@
 - 新增提交 `862742a` 的隐藏 WPF `Window` 对照：插件模板从顶部执行 `ScrollIntoView(最后一项)` 后为 `1992/1992`，最后行 `1999` 完整落在 `ScrollContentPresenter` 内；随后 20 次滑块往返和 `PageDown/PageUp/Ctrl+End` 仍保持可见、选择稳定。标准 WPF 模板的直接滑块/Ctrl+End 末行完整，但 deferred `ScrollIntoView` 在该夹具中仍记录为 `offscreen-baseline-inconclusive`，不把基线不确定性写成通过。
 - 提交 `85b1aeb` 将本机已安装 FusionX `2.1.1` 的 `DefaultControls/DataGrid.xaml` 只读加载进同一隐藏 `Window` 对照；没有修改用户主题文件。FusionX 直接滑块和 `Ctrl+End` 均到 `1987/1987`，末行 `1999` 为 `@608/44`，Presenter 为 `0,36,1078.67x600`；水平条为 `Collapsed/0`。FusionX 的 deferred `ScrollIntoView` 仍标为 `offscreen-baseline-inconclusive`，所以这只证明当前安装模板在离线直接拖动路径下未复现空白/行框分离，不能替代真实宿主。
 - 提交 `5198c6c` 又对 FusionX 执行 700×640 DIP 窄视口、1100 DIP 列宽的水平条场景；水平条为 `Visible/17.33`，Presenter 实际缩为 `678.67x582.67`，滑到 `1987/1987` 后末行仍为 `1999@608/44`。20 次往返和 `PageDown/PageUp/Ctrl+End` 均通过，说明离线模板在水平条占用内容视口时也没有把最后一行盖住；仍不等同真实 Playnite。
-- 提交 `8775809` 修正探针元数据：空的 `git status --porcelain` 不再被误报为 `unknown`。最新 canonical 报告的提交为 `8775809`，`WorkingTreeClean: True`，并保留上述两组 FusionX 对照结果。
+- 提交 `8775809` 修正探针元数据：空的 `git status --porcelain` 不再被误报为 `unknown`。最新 canonical 报告的提交为 `ea18b11`，`WorkingTreeClean: True`，并保留上述两组 FusionX 对照结果。
 - 提交 `f31711c` 修正生产锚点路径：`MediaCenterView` 的捕获和恢复不再取第一个后代 `ScrollViewer`，而是优先选择拥有 `DataGridRowsPresenter` 的实际表格滚动器，再按实际视口尺寸兜底；`MediaWindowAnchorContractTests` 定向结果为 `9/9`。该修复尚未进入此前 `8d729ab` 候选包，真实宿主仍需用新构建复测。
 - 证据保留在 `.tmp/l32-scrollprobe/scaleprobe-report.txt`；真实 Playnite/FusionX、视频、DPI、加载更多现场锚点仍未验证。本阶段验证：Release RenderHarness 构建 `0 warning/0 error`、`scaleprobe OK`，锚点定向 `8/8`，Playnite 全量 `421/484`（63 skip），源码校验通过。
 - L32 证据索引见 [`EVIDENCE_INDEX_2026-09-09.md`](EVIDENCE_INDEX_2026-09-09.md)，其中明确当前候选包、离线滚动报告、skip 账本和真实宿主缺口。
