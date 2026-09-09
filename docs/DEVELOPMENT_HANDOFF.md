@@ -2,6 +2,12 @@
 
 > 连续实施入口：[32 项、8 阶段计划](ai/CONTINUOUS_DEVELOPMENT_PLAN_2026-09-08.md)。用户要求减少逐项确认；接手后按依赖连续实施并逐项交付，已满足任务跳过，外部阻塞不妨碍独立任务。Q6 质量报告仍是首四项问题依据。
 
+> 2026-09-09 L39 真实宿主回放：提交 `a9b8bce` 的包已安装到隔离扩展目录并在真实 Playnite/FusionX 中运行。媒体表 400 条、任务表 50 条各 47 个样本，底部各 21 个、上下端点往返 20 次；Media `394/394`、Task `40/40` 到达末端，最后加载行分别在 Presenter `0,36,604×279.33` 与 `0,36,637.33×456` 内完整可见，cell/visual/text 为 `5/5/5`、`6/6/6`。空正文、大间隙、末端水平条覆盖、选中内容缺失和尾项不完整均为 0。详细证据见 [`ai/L39_REAL_HOST_SCROLL_REPLAY_2026-09-09.md`](ai/L39_REAL_HOST_SCROLL_REPLAY_2026-09-09.md)。
+
+> L39 没有凭程序化端点回放猜改生产模板、ScrollUnit、Margin 或虚拟化；代码只补强诊断尾项完整性和开发审计覆盖任务表。任务审计跳过加载更多，因为当前任务命令替换 50 条页面但保持 `HasMore=true`，重复调用会污染回放。
+
+> L39 仍不是视频式人工验收：Computer Use 原生应用返回 `apps: []`，未完成物理滑块拖动、滚轮/PageUp/PageDown/Ctrl+End、DPI/主题矩阵或真实录屏。视频中的 B 类问题必须继续标为“宿主人工待验收”，不能写成已解决；若人工复现，使用同一诊断字段与视频时刻对齐后再决定生产修复范围。
+
 > 2026-09-09 L36 已获得真实 Playnite 嵌入采集：当前提交 `99bc976473d13a92c12d6992dff11dbf807e42b5` 在隔离只读数据目录中由生产扩展完成 EmbeddedPlaynite Dashboard/设置页采集，证据见 [`artifacts/ui-host-audit-isolated-l36/summary.json`](../artifacts/ui-host-audit-isolated-l36/summary.json) 和 [`diagnostics-summary.md`](../artifacts/ui-host-audit-isolated-l36/diagnostics-summary.md)。本次没有修改用户 FusionX 文件、Playnite 全局样式或用户数据目录。
 
 > L36 诊断结论：真实 `MediaInboxGrid`/`TaskGrid` 的行滚动器均为 `ScrollViewer`，`IScrollInfo=ScrollContentPresenter|DataGridRowsPresenter`，`CanContentScroll=True`、`ScrollUnit=Item`；水平条出现时 Presenter 实际矩形已缩小。真实日志出现短暂 `visual>0,text=0` 后约 32ms 恢复，但没有持续 `blank=True`、`gap=True`、`hOverlap=True` 或行漂移，因此不能凭本次运行认定视频根因。媒体表本次 `Items.Count=200`，底层快照 `media=4645`，分页不能混写成全量。

@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-09
 
+## 2026-09-09 L39 真实宿主回放未复现视频 B 类异常
+
+- 当前最新代码提交为 `a9b8bce`；L39 包身份为 `0.6.73+a9b8bcec0c05f7d548d8160119b2b29e9698b1ab`。隔离真实 Playnite/FusionX 嵌入采集成功，Dashboard `1365.33×868 DIP`、DPI `1.5`。
+- `MediaInboxGrid` 400 条和 `TaskGrid` 50 条各完成 47 个程序化回放样本，包含顶部/底部、20 次上下端点往返、水平端点和尾项选择。两表底部尾项均完整：Media `offset=394/scrollable=394`、Presenter `0,36,604×279.33`、尾行 `399@256..300`；Task `40/40`、Presenter `0,36,637.33×456`、尾行 `49@432..476`。尾项 cell/visual/text 为 `5/5/5`、`6/6/6`。
+- 回放 JSON 的空正文、大间隙、末端水平条覆盖、选中内容缺失和尾项不完整均为 0。该证据证明当前模板端点范围和末行视口避让在真实宿主中通过，但不证明物理滑块拖动期间的 B 类视频问题已解决。
+- 任务审计必须保留 50 条页面，不调用加载更多；当前任务分页命令会替换页面并保留 `HasMore=true`，重复调用会造成无限分页回放，不能把它误记为滚动异常。
+- CUA 原生应用仍为 `apps: []`，真实鼠标滑块、滚轮/键盘矩阵、DPI/主题矩阵和录屏保持宿主人工待验收。后续若人工复现，先按 `Items.Count/CollectionChanged/代际/滚动器/Presenter DIP/首末行/cell visual-text-clip/锚点` 分流，禁止先改参数。
+
 ## 2026-09-09 L36 真实 Playnite 嵌入采集已获得，但视频式人工复测仍待宿主
 
 - 当前最新宿主证据为 [`artifacts/ui-host-audit-isolated-l36/summary.json`](../../artifacts/ui-host-audit-isolated-l36/summary.json)、[`metadata.json`](../../artifacts/ui-host-audit-isolated-l36/metadata.json) 和 [`diagnostics-summary.md`](../../artifacts/ui-host-audit-isolated-l36/diagnostics-summary.md)，提交为 `99bc976473d13a92c12d6992dff11dbf807e42b5`。真实 Playnite 生产扩展嵌入 Dashboard/设置页均已采集；没有使用受控专用窗口作为生产宿主证据。

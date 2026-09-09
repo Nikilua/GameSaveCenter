@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-09 L39 真实宿主表格末尾回放与结论边界
+
+- 提交 `81da090` 增强 `DataGridScrollDiagnostics`：在已有实际表格 `ScrollViewer`、Presenter 矩形、offset/extent、首末可见行、cell visual/text/clip 诊断上，增加最后加载项稳定 ID、索引、DIP 位置、完整性和“是否已到垂直末端”字段；因此能区分非末尾半行与真正末项被截断。提交 `a9b8bce` 收紧开发审计，只在 `Tasks` 工作区回放任务表，并跳过会替换 50 条页面却继续报告 `HasMore=true` 的任务加载更多命令。
+- 使用 `0.6.73+a9b8bcec0c05f7d548d8160119b2b29e9698b1ab` 安装到隔离扩展目录，在真实 Playnite/FusionX 宿主中完成 `MediaInboxGrid` 400 条与 `TaskGrid` 50 条回放。两张表各 47 个采样、底部 21 个、上下往返 20 次；媒体 `394/394`、任务 `40/40` 均在实际 Presenter 内，末项 cell/visual/text 为 `5/5/5`、`6/6/6`，末项完整性均为 true。
+- 重新计算回放 JSON：空正文、大块首行间隙、末端水平条覆盖、选中内容缺失、底部尾项不完整均为 `0`。真实宿主当前没有复现视频中的 B 类持续异常；因此没有凭端点回放猜改模板、ScrollUnit、Margin 或虚拟化，未加入固定补偿、刷新、定时布局或强制回顶。
+- 本轮仍不是物理滑块/视频验收：Computer Use 返回 `apps: []`，未执行真实鼠标拖动、滚轮、PageUp/PageDown、Ctrl+End、DPI/主题矩阵或录屏。问题 B 必须继续写“宿主人工待验收”，不能写成已解决。完整数据与限制见 [`L39_REAL_HOST_SCROLL_REPLAY_2026-09-09.md`](L39_REAL_HOST_SCROLL_REPLAY_2026-09-09.md)。
+
 ## 2026-09-09 L36 真实 Playnite 嵌入滚动诊断与复测边界
 
 - 在不修改用户 FusionX 文件、Playnite 全局样式或用户数据目录的前提下，使用隔离数据目录启动真实 Playnite，加载当前提交 `99bc976473d13a92c12d6992dff11dbf807e42b5` 的生产扩展。`artifacts/ui-host-audit-isolated-l36/summary.json` 明确为 `EmbeddedPlaynite`，嵌入 Dashboard 和设置页均采集成功；没有使用受控专用窗口冒充宿主页面。
