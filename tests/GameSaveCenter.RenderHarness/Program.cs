@@ -2226,7 +2226,9 @@ public static class Program
             if (process == null) return "unknown";
             var output = process.StandardOutput.ReadToEnd().Trim();
             process.WaitForExit(3000);
-            return string.IsNullOrWhiteSpace(output) ? "unknown" : output.Replace(Environment.NewLine, " ");
+            if (output.Length == 0 && arguments.StartsWith("status ", StringComparison.OrdinalIgnoreCase))
+                return string.Empty;
+            return output.Length == 0 ? "unknown" : output.Replace(Environment.NewLine, " ");
         }
         catch
         {
