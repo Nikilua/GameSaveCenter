@@ -9,6 +9,13 @@
 - 定向行为测试 `1/1`；随后 Release 解决方案构建 `0 warning / 0 error`，Playnite 全量 `427/490`（63 skip、0 fail）。首次并行启动窗口测试曾无输出，已终止该测试进程并改为无顶层 Window 的 STA 布局夹具；改后稳定通过。
 - 该测试只证明插件自己的 WPF 视觉树和命令路由；真实 Playnite/FusionX、浅/深用户主题、DPI 与宿主点击/录屏仍保持人工待验收边界。
 
+## 2026-09-10 顶部复合按钮视觉树修复与候选包更新
+
+- 源码审计发现 Dashboard 顶部“刷新/全部备份/同步媒体”等 7 个按钮也把图标+文字 `Grid` 作为内容，却继承共享文本模板，存在显示 `System.Windows.Controls.Grid` 的同类风险。
+- `63f4b2d` 新增 `GscRedesignHeaderVisualButton` / `GscRedesignPrimaryHeaderVisualButton`，仅对复合视觉内容清空 `ContentTemplate`，保留普通文本按钮的截断模板；新增工具栏样式映射回归断言。
+- 定向工具栏测试 `1/1`、XAML `19/19`、源码校验通过；完整 Release 回归为 Core `76/76`、Worker `310/311`（1 skip）、Playnite `427/490`（63 skip），失败 `0`。
+- 从 `63f4b2d` 重新生成候选包：程序集身份 `0.6.73+63f4b2d54d0ff69f824a167ac3d62c070c32bf37`，`.pext/.zip` 均 `43,837,982` 字节，SHA-256 `83FC0C96476B58FD5DC8AA3E97E850B12BB77EC06A5739DE361EA96ACDC17869`；staging 已清理，未安装真实 Playnite。
+
 ## 2026-09-10 当前生产源候选包重新生成
 
 - 从生产源提交 `fa9af0a` 运行 `scripts/package.ps1 -Configuration Release -BuildOutputRoot .tmp/package-current-20260909-latest`；XAML `19/19`，Release 构建 `0 warning / 0 error`，Core `76/76`、Worker `310/311`（1 skip）、Playnite `427/490`（63 skip），均无失败。

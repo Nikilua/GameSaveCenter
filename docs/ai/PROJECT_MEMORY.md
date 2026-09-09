@@ -4,8 +4,8 @@
 
 ## 2026-09-10 当前生产源候选包与发布边界
 
-- `fa9af0a` 是当前候选包的生产源提交；从该提交重新运行 `scripts/package.ps1` 后，六份程序集统一为 `0.6.73+fa9af0ad36db07551bd1c2985258d72eecb9c8e4`，两个候选包均为 `43,837,868` 字节，SHA-256 为 `631615AB7695C46F943D9546A53369C69ADA49F347C4F7CE33D96A33C3831249`。
-- 发布链验证为 Core `76/76`、Worker `310/311`（1 skip）、Playnite `427/490`（63 skip），构建无警告/错误；测试和文档提交虽然不改生产 XAML，候选包身份应记录实际生产源提交 `fa9af0a`，不能继续把 `1fdd15e` 写成当前包提交。
+- `63f4b2d` 是当前候选包的生产源提交；从该提交重新运行 `scripts/package.ps1` 后，六份程序集统一为 `0.6.73+63f4b2d54d0ff69f824a167ac3d62c070c32bf37`，两个候选包均为 `43,837,982` 字节，SHA-256 为 `83FC0C96476B58FD5DC8AA3E97E850B12BB77EC06A5739DE361EA96ACDC17869`。
+- 发布链验证为 Core `76/76`、Worker `310/311`（1 skip）、Playnite `427/490`（63 skip），构建无警告/错误；该提交还为首页顶部复合按钮增加了不字符串化视觉树的共享样式与回归断言。候选包身份应记录实际生产源提交 `63f4b2d`，不能继续把 `fa9af0a` 写成当前包提交。
 - staging/隔离构建目录已清理；包仍未安装真实 Playnite，不能把最新包身份校验写成 FusionX、DPI、物理点击或视频验收。
 - 包后又执行 `python scripts/validate-source.py`、`scripts/check-xaml.ps1` 和 `git diff --check`，均通过；这些是源码/交付门禁，不替代 L31 真实宿主证据。
 - 2026-09-10 在当前 `main` 重新执行 `dotnet test GameSaveCenter.sln -c Release --no-restore -m:1`，Core `76/76`、Worker `310/311`（1 skip）、Playnite `427/490`（63 skip），失败 `0`；此前 `AsyncThumbnailLoader` 的 `120`/`122` 并发污染本次未再复现。

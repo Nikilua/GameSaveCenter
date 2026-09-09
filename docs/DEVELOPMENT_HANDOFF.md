@@ -2,6 +2,8 @@
 
 > 连续实施入口：[32 项、8 阶段计划](ai/CONTINUOUS_DEVELOPMENT_PLAN_2026-09-08.md)。用户要求减少逐项确认；接手后按依赖连续实施并逐项交付，已满足任务跳过，外部阻塞不妨碍独立任务。Q6 质量报告仍是首四项问题依据。
 
+> 2026-09-10 顶部复合按钮修复与候选包更新：提交 `63f4b2d` 为 Dashboard 顶部图标+文字按钮增加视觉内容专用样式，避免共享文本模板显示 `System.Windows.Controls.Grid`；定向 `1/1`、全量 Playnite `427/490`（63 skip、0 fail）、Release 构建 `0 warning/0 error`。从该提交生成的 `.pext/.zip` 六份程序集身份为 `0.6.73+63f4b2d54d0ff69f824a167ac3d62c070c32bf37`，均 `43,837,982` 字节，SHA-256 为 `83FC0C96476B58FD5DC8AA3E97E850B12BB77EC06A5739DE361EA96ACDC17869`。真实 Playnite/FusionX、用户主题、DPI、物理点击和视频仍待 L31 宿主条件。
+
 > 2026-09-10 L30/L32 继续推进：从生产源提交 `fa9af0a` 重新生成候选包，六份程序集身份为 `0.6.73+fa9af0ad36db07551bd1c2985258d72eecb9c8e4`，`.pext/.zip` 均 `43,837,868` 字节，SHA-256 为 `631615AB7695C46F943D9546A53369C69ADA49F347C4F7CE33D96A33C3831249`。Core `76/76`、Worker `310/311`、Playnite `427/490`，0 失败；临时 staging 已清理。真实 Playnite/FusionX、用户主题、DPI、物理点击和视频仍待 L31 宿主条件。
 
 > 2026-09-09 首页交互测试补齐：`4001d9d` 新增 STA WPF `OverviewInteractionTests`，实际布局验证全局活动行保留 `Border` 可视树，云端队列整卡通过 `ButtonBase.OnClick` 只执行一次 `OpenCloudQueueCommand`。Release 构建 `0 warning / 0 error`，Playnite 全量 `427/490`（63 skip、0 fail）；随后已从生产源提交 `fa9af0a` 重新生成当前候选包。真实 Playnite/FusionX、用户主题、DPI、物理点击和视频仍待宿主验收。
