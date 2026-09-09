@@ -4,10 +4,14 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.Settings;
 using GameSaveCenter.Playnite.ViewModels;
 using GameSaveCenter.Playnite.Views;
@@ -295,7 +299,7 @@ namespace GameSaveCenter.Playnite.Diagnostics
             if (isEmbedded)
             {
                 session.EmbeddedDashboardCaptured = true;
-                await CaptureEmbeddedCurrentAsync(dashboard, outputRoot, metadata, session.EmbeddedDashboard);
+                await CaptureEmbeddedCurrentAsync(dashboard, outputRoot, metadata, session.EmbeddedDashboard, session);
             }
             else
             {
@@ -328,7 +332,8 @@ namespace GameSaveCenter.Playnite.Diagnostics
             DashboardView dashboard,
             string outputRoot,
             UiHostMetadata metadata,
-            List<CaptureManifestEntry> manifest)
+            List<CaptureManifestEntry> manifest,
+            AuditCaptureSession session)
         {
             // Embedded contract: capture exactly what Playnite hosts right now. Do not resize
             // the Dashboard, do not override the theme, and do not resize any host window.
@@ -368,7 +373,7 @@ namespace GameSaveCenter.Playnite.Diagnostics
                     Path.Combine(layoutDir, $"workspace-{safe}.json"));
             }
 
-            await CaptureAllInnerTabs(dashboard, viewportDir, scrollDir, outputRoot, "embedded-current", metadata, manifest);
+            await CaptureAllInnerTabs(dashboard, viewportDir, scrollDir, outputRoot, "embedded-current", metadata, manifest, session);
         }
 
         private static async System.Threading.Tasks.Task CaptureControlledAtSizeAsync(
@@ -467,7 +472,7 @@ namespace GameSaveCenter.Playnite.Diagnostics
                     Path.Combine(layoutDir, $"workspace-{safe}.json"));
             }
 
-            await CaptureAllInnerTabs(dashboard, viewportDir, scrollDir, outputRoot, "controlled-" + size.Key + "-" + themeKey, metadata, manifest);
+            await CaptureAllInnerTabs(dashboard, viewportDir, scrollDir, outputRoot, "controlled-" + size.Key + "-" + themeKey, metadata, manifest, null);
         }
 
         private static async System.Threading.Tasks.Task<Dictionary<string, object>> StabilizeControlledLayoutAsync(
@@ -519,7 +524,8 @@ namespace GameSaveCenter.Playnite.Diagnostics
             string outputRoot,
             string routePrefix,
             UiHostMetadata metadata,
-            List<CaptureManifestEntry> manifest)
+            List<CaptureManifestEntry> manifest,
+            AuditCaptureSession? session)
         {
             var outer = dashboard.DetailsTabControlForAudit;
             var captured = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -544,7 +550,8 @@ namespace GameSaveCenter.Playnite.Diagnostics
                         workspace.ToString(),
                         captured,
                         metadata,
-                        manifest);
+                        manifest,
+                        session);
                 }
             }
         }
@@ -559,7 +566,8 @@ namespace GameSaveCenter.Playnite.Diagnostics
             string workspace,
             HashSet<string> captured,
             UiHostMetadata metadata,
-            List<CaptureManifestEntry> manifest)
+            List<CaptureManifestEntry> manifest,
+            AuditCaptureSession? session)
         {
             for (var index = 0; index < tabControl.Items.Count; index++)
             {
@@ -586,6 +594,8 @@ namespace GameSaveCenter.Playnite.Diagnostics
                     metadata,
                     manifest);
                 CaptureScrollSurfaces(dashboard, scrollDir, outputRoot, tabRoute, workspace, safe, metadata.CaptureOrigin, manifest, "Dashboard");
+                if (session != null)
+                    await CaptureEmbeddedGridReplayAsync(dashboard, outputRoot, tabRoute, workspace, session);
 
                 var nested = new List<TabControl>();
                 foreach (var candidate in FindVisualChildren<TabControl>(tab))
@@ -613,9 +623,387 @@ namespace GameSaveCenter.Playnite.Diagnostics
                         workspace,
                         captured,
                         metadata,
-                        manifest);
+                        manifest,
+                        session);
                 }
             }
+        }
+
+        /// <summary>
+        /// Drives the real embedded DataGrid scroller only during the developer-only host
+        /// audit. The normal dashboard never calls this method. This is deliberately based
+        /// on the responsible logical scroller rather than an outer page ScrollViewer so a
+        /// passing page screenshot cannot hide a broken row/presenter relationship.
+        /// </summary>
+        private static async System.Threading.Tasks.Task CaptureEmbeddedGridReplayAsync(
+            DashboardView dashboard,
+            string outputRoot,
+            string route,
+            string workspace,
+            AuditCaptureSession session)
+        {
+            var grid = FindVisualChildren<DataGrid>(dashboard)
+                .Where(candidate => candidate.Visibility == Visibility.Visible
+                    && candidate.IsVisible
+                    && candidate.ActualWidth >= 120
+                    && candidate.ActualHeight >= 80)
+                .FirstOrDefault(candidate => string.Equals(candidate.Name, "MediaInboxGrid", StringComparison.Ordinal)
+                    || string.Equals(candidate.Name, "TaskGrid", StringComparison.Ordinal));
+            if (grid == null)
+                return;
+
+            var replayKey = grid.Name + "|" + workspace;
+            lock (session.Sync)
+            {
+                if (!session.GridReplayKeys.Add(replayKey))
+                    return;
+            }
+
+            var replayDir = Path.Combine(outputRoot, "scroll-replay", SafeFileName(grid.Name + "-" + workspace));
+            Directory.CreateDirectory(replayDir);
+            var records = new List<Dictionary<string, object>>();
+            try
+            {
+                await LoadAuditPagesAsync(dashboard, grid);
+                await WaitForRenderAsync(dashboard.Dispatcher);
+
+                var viewer = FindGridScroller(grid);
+                if (viewer == null)
+                {
+                    records.Add(new Dictionary<string, object>
+                    {
+                        ["grid"] = grid.Name,
+                        ["workspace"] = workspace,
+                        ["route"] = route,
+                        ["trigger"] = "宿主审计回放:未找到负责滚动器",
+                        ["itemsCount"] = grid.Items.Count,
+                        ["status"] = "missing-responsible-scroller"
+                    });
+                    return;
+                }
+
+                var originalVerticalOffset = viewer.VerticalOffset;
+                var originalHorizontalOffset = viewer.HorizontalOffset;
+                var originalSelectedItem = grid.SelectedItem;
+                var originalSelectedItems = grid.SelectedItems.Cast<object>().ToList();
+
+                AddGridReplayRecord(grid, viewer, route, workspace, "宿主审计回放:初始", records);
+
+                viewer.ScrollToTop();
+                await WaitForRenderAsync(dashboard.Dispatcher);
+                AddGridReplayRecord(grid, viewer, route, workspace, "宿主审计回放:顶部", records);
+                UiDiagnosticsExporters.SavePng(
+                    grid,
+                    Path.Combine(replayDir, "top.png"),
+                    GetRenderScale(grid));
+
+                viewer.ScrollToBottom();
+                await WaitForRenderAsync(dashboard.Dispatcher);
+                AddGridReplayRecord(grid, viewer, route, workspace, "宿主审计回放:底部", records);
+                UiDiagnosticsExporters.SavePng(
+                    grid,
+                    Path.Combine(replayDir, "bottom.png"),
+                    GetRenderScale(grid));
+
+                for (var round = 1; round <= 20; round++)
+                {
+                    viewer.ScrollToTop();
+                    await WaitForRenderAsync(dashboard.Dispatcher);
+                    AddGridReplayRecord(grid, viewer, route, workspace, $"宿主审计回放:往返{round}:顶部", records);
+
+                    viewer.ScrollToBottom();
+                    await WaitForRenderAsync(dashboard.Dispatcher);
+                    AddGridReplayRecord(grid, viewer, route, workspace, $"宿主审计回放:往返{round}:底部", records);
+                }
+
+                if (viewer.ScrollableWidth > 0.5d)
+                {
+                    viewer.ScrollToHorizontalOffset(0d);
+                    await WaitForRenderAsync(dashboard.Dispatcher);
+                    AddGridReplayRecord(grid, viewer, route, workspace, "宿主审计回放:水平左端", records);
+
+                    viewer.ScrollToHorizontalOffset(viewer.ScrollableWidth);
+                    await WaitForRenderAsync(dashboard.Dispatcher);
+                    AddGridReplayRecord(grid, viewer, route, workspace, "宿主审计回放:水平右端", records);
+                }
+
+                if (grid.Items.Count > 0)
+                {
+                    grid.SelectedItem = grid.Items[grid.Items.Count - 1];
+                    await WaitForRenderAsync(dashboard.Dispatcher);
+                    AddGridReplayRecord(grid, viewer, route, workspace, "宿主审计回放:末项选择", records);
+                    UiDiagnosticsExporters.SavePng(
+                        grid,
+                        Path.Combine(replayDir, "tail-selection.png"),
+                        GetRenderScale(grid));
+                }
+
+                RestoreGridSelection(grid, originalSelectedItem, originalSelectedItems);
+                viewer.ScrollToHorizontalOffset(Math.Min(originalHorizontalOffset, viewer.ScrollableWidth));
+                viewer.ScrollToVerticalOffset(Math.Min(originalVerticalOffset, viewer.ScrollableHeight));
+                await WaitForRenderAsync(dashboard.Dispatcher);
+                AddGridReplayRecord(grid, viewer, route, workspace, "宿主审计回放:恢复原状态", records);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Embedded DataGrid scroll replay failed for " + grid.Name);
+                records.Add(new Dictionary<string, object>
+                {
+                    ["grid"] = grid.Name,
+                    ["workspace"] = workspace,
+                    ["route"] = route,
+                    ["status"] = "failed",
+                    ["errorType"] = ex.GetType().FullName ?? "unknown"
+                });
+            }
+            finally
+            {
+                UiDiagnosticsExporters.WriteJson(records, Path.Combine(replayDir, "replay.json"));
+            }
+        }
+
+        private static async System.Threading.Tasks.Task LoadAuditPagesAsync(DashboardView dashboard, DataGrid grid)
+        {
+            var viewModel = dashboard.ViewModelForAudit;
+            ICommand? command = null;
+            Func<int>? count = null;
+            Func<bool>? hasMore = null;
+            if (string.Equals(grid.Name, "MediaInboxGrid", StringComparison.Ordinal))
+            {
+                command = viewModel.LoadMoreMediaInboxCommand;
+                count = () => viewModel.MediaInboxItems.Count;
+                hasMore = () => viewModel.MediaInboxPageHasMore;
+            }
+            else if (string.Equals(grid.Name, "TaskGrid", StringComparison.Ordinal))
+            {
+                command = viewModel.LoadMoreTasksCommand;
+                count = () => viewModel.Tasks.Count;
+                hasMore = () => viewModel.TaskHistoryHasMore;
+            }
+
+            if (command == null || count == null || hasMore == null)
+                return;
+
+            // 400 rows exercises the virtualized tail without turning the host audit into a
+            // long-running data-volume benchmark. The offline scale probe covers 2000 rows.
+            var deadline = DateTime.UtcNow + TimeSpan.FromSeconds(30);
+            while (count() < 400 && hasMore() && DateTime.UtcNow < deadline)
+            {
+                if (!command.CanExecute(null))
+                    break;
+                var before = count();
+                DataGridScrollDiagnostics.MarkTrigger(grid, "加载更多");
+                command.Execute(null);
+                while (DateTime.UtcNow < deadline
+                    && (viewModel.IsBusy || count() <= before))
+                {
+                    await System.Threading.Tasks.Task.Delay(100);
+                }
+                if (count() <= before && !viewModel.IsBusy)
+                    break;
+            }
+        }
+
+        private static void AddGridReplayRecord(
+            DataGrid grid,
+            ScrollViewer viewer,
+            string route,
+            string workspace,
+            string trigger,
+            List<Dictionary<string, object>> records)
+        {
+            var diagnostic = DataGridScrollDiagnostics.CaptureNow(grid, trigger);
+            var record = BuildGridReplayRecord(grid, viewer, route, workspace, trigger, diagnostic);
+            records.Add(record);
+            Logger.Info(diagnostic);
+        }
+
+        private static Dictionary<string, object> BuildGridReplayRecord(
+            DataGrid grid,
+            ScrollViewer viewer,
+            string route,
+            string workspace,
+            string trigger,
+            string diagnostic)
+        {
+            var presenter = FindDescendant<ScrollContentPresenter>(viewer);
+            var presenterRect = presenter == null ? Rect.Empty : GetRect(presenter, viewer);
+            var horizontalBar = FindVisualChildren<ScrollBar>(viewer)
+                .FirstOrDefault(bar => bar.Orientation == Orientation.Horizontal);
+            var horizontalBarRect = horizontalBar == null ? Rect.Empty : GetRect(horizontalBar, viewer);
+            var rows = FindVisualChildren<DataGridRow>(grid)
+                .Where(row => row.Visibility == Visibility.Visible && row.ActualHeight > 0)
+                .Select(row => BuildRowReplayRecord(row, viewer, presenterRect))
+                .OrderBy(row => (double)row["y"])
+                .ToList();
+            var visibleRows = rows
+                .Where(row => (bool)row["intersectsPresenter"])
+                .ToList();
+            var first = visibleRows.FirstOrDefault();
+            var last = visibleRows.LastOrDefault();
+            var lastLoadedIndex = grid.Items.Count - 1;
+            var lastLoadedRow = rows.FirstOrDefault(row => (int)row["index"] == lastLoadedIndex);
+            var lastRowComplete = lastLoadedRow != null
+                && !presenterRect.IsEmpty
+                && (double)lastLoadedRow["top"] >= presenterRect.Top - 1d
+                && (double)lastLoadedRow["bottom"] <= presenterRect.Bottom + 1d
+                && (int)lastLoadedRow["cells"] > 0
+                && (int)lastLoadedRow["visualCells"] == (int)lastLoadedRow["cells"]
+                && (int)lastLoadedRow["textCells"] > 0;
+
+            return new Dictionary<string, object>
+            {
+                ["grid"] = grid.Name,
+                ["route"] = route,
+                ["workspace"] = workspace,
+                ["trigger"] = trigger,
+                ["itemsCount"] = grid.Items.Count,
+                ["scrollerType"] = viewer.GetType().FullName ?? viewer.GetType().Name,
+                ["scrollInfoTypes"] = FindVisualChildren<DependencyObject>(viewer)
+                    .OfType<IScrollInfo>()
+                    .Select(info => info.GetType().FullName ?? info.GetType().Name)
+                    .Distinct(StringComparer.Ordinal)
+                    .ToArray(),
+                ["verticalOffset"] = Math.Round(viewer.VerticalOffset, 2),
+                ["horizontalOffset"] = Math.Round(viewer.HorizontalOffset, 2),
+                ["viewportHeight"] = Math.Round(viewer.ViewportHeight, 2),
+                ["viewportWidth"] = Math.Round(viewer.ViewportWidth, 2),
+                ["extentHeight"] = Math.Round(viewer.ExtentHeight, 2),
+                ["extentWidth"] = Math.Round(viewer.ExtentWidth, 2),
+                ["scrollableHeight"] = Math.Round(viewer.ScrollableHeight, 2),
+                ["scrollableWidth"] = Math.Round(viewer.ScrollableWidth, 2),
+                ["canContentScroll"] = ScrollViewer.GetCanContentScroll(grid),
+                ["scrollUnit"] = VirtualizingPanel.GetScrollUnit(grid).ToString(),
+                ["presenter"] = BuildRectRecord(presenterRect),
+                ["horizontalBar"] = new Dictionary<string, object>
+                {
+                    ["visible"] = horizontalBar?.Visibility == Visibility.Visible,
+                    ["height"] = horizontalBar?.ActualHeight ?? 0d,
+                    ["rect"] = BuildRectRecord(horizontalBarRect)
+                },
+                ["rowCount"] = rows.Count,
+                ["visibleRowCount"] = visibleRows.Count,
+                ["firstVisibleRow"] = first ?? new Dictionary<string, object>(),
+                ["lastVisibleRow"] = last ?? new Dictionary<string, object>(),
+                ["lastLoadedRow"] = lastLoadedRow ?? new Dictionary<string, object>(),
+                ["lastRowComplete"] = lastRowComplete,
+                ["diagnostic"] = diagnostic
+            };
+        }
+
+        private static Dictionary<string, object> BuildRowReplayRecord(
+            DataGridRow row,
+            ScrollViewer viewer,
+            Rect presenterRect)
+        {
+            var rect = GetRect(row, viewer);
+            var cells = FindVisualChildren<DataGridCell>(row).ToList();
+            var visualCells = cells.Count(HasVisibleCellContent);
+            var textCells = cells.Count(HasVisibleCellText);
+            var clippedCells = cells.Count(cell => cell.Clip != null || cell.ClipToBounds);
+            return new Dictionary<string, object>
+            {
+                ["index"] = row.GetIndex(),
+                ["id"] = GetReplayStableId(row.Item),
+                ["y"] = Math.Round(rect.Top, 2),
+                ["top"] = Math.Round(rect.Top, 2),
+                ["height"] = Math.Round(row.ActualHeight, 2),
+                ["bottom"] = Math.Round(rect.Bottom, 2),
+                ["selected"] = row.IsSelected,
+                ["intersectsPresenter"] = !presenterRect.IsEmpty
+                    && rect.Bottom > presenterRect.Top
+                    && rect.Top < presenterRect.Bottom,
+                ["cells"] = cells.Count,
+                ["visualCells"] = visualCells,
+                ["textCells"] = textCells,
+                ["clippedCells"] = clippedCells
+            };
+        }
+
+        private static Dictionary<string, double> BuildRectRecord(Rect rect)
+            => new Dictionary<string, double>
+            {
+                ["left"] = Math.Round(rect.IsEmpty ? 0d : rect.Left, 2),
+                ["top"] = Math.Round(rect.IsEmpty ? 0d : rect.Top, 2),
+                ["width"] = Math.Round(rect.IsEmpty ? 0d : rect.Width, 2),
+                ["height"] = Math.Round(rect.IsEmpty ? 0d : rect.Height, 2)
+            };
+
+        private static bool HasVisibleCellContent(DataGridCell cell)
+            => cell.Visibility == Visibility.Visible
+                && cell.ActualWidth > 0
+                && cell.ActualHeight > 0
+                && FindVisualChildren<FrameworkElement>(cell).Any(element =>
+                    element.Visibility == Visibility.Visible
+                    && element.ActualWidth > 0
+                    && element.ActualHeight > 0);
+
+        private static bool HasVisibleCellText(DataGridCell cell)
+            => FindVisualChildren<TextBlock>(cell)
+                .Any(text => text.Visibility == Visibility.Visible && !string.IsNullOrWhiteSpace(text.Text));
+
+        private static string GetReplayStableId(object? item)
+        {
+            if (item == null)
+                return "none";
+            foreach (var propertyName in new[] { "MediaId", "TaskId", "EntryId", "Id" })
+            {
+                var property = item.GetType().GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance);
+                if (property == null)
+                    continue;
+                var value = property.GetValue(item);
+                if (value != null)
+                    return value.ToString() ?? "none";
+            }
+            return "unknown";
+        }
+
+        private static ScrollViewer? FindGridScroller(DataGrid grid)
+            => FindVisualChildren<ScrollViewer>(grid)
+                .OrderByDescending(viewer => FindDescendant<DataGridRowsPresenter>(viewer) != null)
+                .ThenByDescending(viewer => viewer.ViewportHeight)
+                .ThenByDescending(viewer => viewer.ViewportWidth)
+                .FirstOrDefault();
+
+        private static void RestoreGridSelection(DataGrid grid, object? selectedItem, IReadOnlyList<object> selectedItems)
+        {
+            if (grid.SelectionMode == DataGridSelectionMode.Extended)
+            {
+                grid.SelectedItems.Clear();
+                foreach (var item in selectedItems)
+                {
+                    if (grid.Items.Contains(item))
+                        grid.SelectedItems.Add(item);
+                }
+            }
+            grid.SelectedItem = selectedItem;
+        }
+
+        private static Rect GetRect(FrameworkElement element, Visual ancestor)
+        {
+            try
+            {
+                return element.TransformToAncestor(ancestor).TransformBounds(
+                    new Rect(0, 0, element.ActualWidth, element.ActualHeight));
+            }
+            catch
+            {
+                return Rect.Empty;
+            }
+        }
+
+        private static T? FindDescendant<T>(DependencyObject root) where T : DependencyObject
+        {
+            for (var i = 0; i < VisualTreeHelper.GetChildrenCount(root); i++)
+            {
+                var child = VisualTreeHelper.GetChild(root, i);
+                if (child is T match)
+                    return match;
+                var nested = FindDescendant<T>(child);
+                if (nested != null)
+                    return nested;
+            }
+            return null;
         }
 
         private static void SaveViewport(
@@ -1615,6 +2003,7 @@ namespace GameSaveCenter.Playnite.Diagnostics
             internal List<CaptureManifestEntry> EmbeddedDashboard { get; } = new List<CaptureManifestEntry>();
             internal List<CaptureManifestEntry> ControlledDashboard { get; } = new List<CaptureManifestEntry>();
             internal List<CaptureManifestEntry> Settings { get; } = new List<CaptureManifestEntry>();
+            internal HashSet<string> GridReplayKeys { get; } = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         }
 
         internal sealed class CaptureManifestEntry

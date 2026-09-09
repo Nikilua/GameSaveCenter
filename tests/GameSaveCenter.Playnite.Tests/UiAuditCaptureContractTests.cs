@@ -120,6 +120,19 @@ public sealed class UiAuditCaptureContractTests
         Assert.Contains("DedicatedAuditWindow", source);
     }
 
+    [Fact]
+    public void EmbeddedGridReplayUsesResponsibleScrollerAndCapturesBottomEvidence()
+    {
+        var source = ReadAuditSource();
+        Assert.Contains("CaptureEmbeddedGridReplayAsync", source);
+        Assert.Contains("FindDescendant<DataGridRowsPresenter>(viewer)", source);
+        Assert.Contains("ScrollToBottom", source);
+        Assert.Contains("宿主审计回放:底部", source);
+        Assert.Contains("lastRowComplete", source);
+        Assert.Contains("tail-selection.png", source);
+        Assert.DoesNotContain("Items.Refresh", source);
+    }
+
     private static ScrollViewer CreateTallScroller()
     {
         return new ScrollViewer
