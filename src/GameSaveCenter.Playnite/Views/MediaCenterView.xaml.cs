@@ -561,7 +561,7 @@ namespace GameSaveCenter.Playnite.Views
                 return;
             }
 
-            var viewer = FindDescendant<ScrollViewer>(itemsControl);
+            var viewer = FindScrollViewer(itemsControl);
             if (viewer == null)
             {
                 MarkAnchorDiagnostic(itemsControl, $"retry:scrollviewer-missing:attempt={attempt}");
@@ -699,7 +699,7 @@ namespace GameSaveCenter.Playnite.Views
 
         private static ScrollAnchor? CaptureAnchor(ItemsControl itemsControl)
         {
-            var viewer = FindDescendant<ScrollViewer>(itemsControl);
+            var viewer = FindScrollViewer(itemsControl);
             if (viewer == null || itemsControl.Items.Count == 0) return null;
 
             var mode = GetScrollAnchorMode(itemsControl, viewer);
@@ -778,6 +778,14 @@ namespace GameSaveCenter.Playnite.Views
             }
             return null;
         }
+
+        private static ScrollViewer? FindScrollViewer(ItemsControl itemsControl)
+            => FindVisualDescendants(itemsControl)
+                .OfType<ScrollViewer>()
+                .OrderByDescending(viewer => FindDescendant<DataGridRowsPresenter>(viewer) != null)
+                .ThenByDescending(viewer => viewer.ViewportHeight)
+                .ThenByDescending(viewer => viewer.ViewportWidth)
+                .FirstOrDefault();
 
         private static IEnumerable<DependencyObject> FindVisualDescendants(DependencyObject root)
         {

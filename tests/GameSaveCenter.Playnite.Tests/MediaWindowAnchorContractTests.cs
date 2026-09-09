@@ -96,6 +96,17 @@ public sealed class MediaWindowAnchorContractTests
     }
 
     [Fact]
+    public void AnchorUsesTheRowsPresenterScrollViewerWhenTemplatesExposeMultipleViewers()
+    {
+        var codeBehind = Read("src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml.cs");
+
+        Assert.Contains("var viewer = FindScrollViewer(itemsControl);", codeBehind);
+        Assert.Contains("OrderByDescending(viewer => FindDescendant<DataGridRowsPresenter>(viewer) != null)", codeBehind);
+        Assert.Contains("ThenByDescending(viewer => viewer.ViewportHeight)", codeBehind);
+        Assert.Contains("ThenByDescending(viewer => viewer.ViewportWidth)", codeBehind);
+    }
+
+    [Fact]
     public void CurrentMediaCardsUseTheBoundedVirtualizingPanel()
     {
         var media = Read("src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml");
