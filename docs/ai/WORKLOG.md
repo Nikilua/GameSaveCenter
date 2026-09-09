@@ -11,7 +11,7 @@
 
 ## 2026-09-09 L42/L41 真实宿主入口再次未建立
 
-- 在当前提交 `398a6f0` 的隔离数据副本上先执行 L41；Playnite/CEF 受限环境出现 `拒绝访问 (0x5)`，没有窗口、扩展日志或 replay。随后用提升权限执行 L42，Release 构建无警告/错误，Core `76/76`、Worker `311/311`、Playnite `431/488`（57 skip）。
+- 在 L42 运行基线 `398a6f0` 的隔离数据副本上先执行 L41；Playnite/CEF 受限环境出现 `拒绝访问 (0x5)`，没有窗口、扩展日志或 replay。随后用提升权限执行 L42，Release 构建无警告/错误，Core `76/76`、Worker `311/311`、Playnite `431/488`（57 skip）。
 - L42 仍只有无主窗口后台 Playnite 进程（`MainWindowHandle=0`），UI Automation 无法定位 GameSaveCenter 侧栏，90 秒等待后没有 `summary.json`、嵌入截图或 `scroll-replay`。该结果已单独写入 [`L42_REAL_HOST_SCROLL_REPLAY_2026-09-09.md`](L42_REAL_HOST_SCROLL_REPLAY_2026-09-09.md)，不把宿主入口阻塞误写成表格根因。
 - 保留 L39 真实嵌入端点回放作为当前有效宿主证据：两表尾项完整、异常计数 0；没有继续猜改模板、单位、Margin 或虚拟化。物理滑块/视频回归仍未完成。
 

@@ -11,7 +11,7 @@
 
 ## 2026-09-09 L42/L41/L39 表格滚动证据边界（当前最新）
 
-- 当前提交为 `398a6f0`；L42 Release 构建身份为 `0.6.73+398a6f095718e2827c3e8bd2a19bbbb5525c1f16`。L42 Core `76/76`、Worker `311/311`、Playnite `431/488`（57 skip），源码和 XAML `19/19` 门禁通过。
+- L42 运行基线为 `398a6f0`；其 Release 构建身份为 `0.6.73+398a6f095718e2827c3e8bd2a19bbbb5525c1f16`。L42 Core `76/76`、Worker `311/311`、Playnite `431/488`（57 skip），源码和 XAML `19/19` 门禁通过。
 - L41 在受限环境中因 Playnite/CEF `拒绝访问` 后退出；L42 提升权限后 Playnite 进程仍无可绑定主窗口（`MainWindowHandle=0`），UI Automation 找不到 GameSaveCenter 侧栏，最终没有 `summary.json` 或 replay JSON。详细边界见 [`L42_REAL_HOST_SCROLL_REPLAY_2026-09-09.md`](L42_REAL_HOST_SCROLL_REPLAY_2026-09-09.md)。
 - L40 使用隔离 Playnite 启动并修正了复制配置中遗留的旧 Worker 绝对路径；Worker 身份确认正确。但最终 `EmbeddedDashboardCaptured=false`、`ControlledDashboardCaptured=true`、`ProductionVisualSourceOfTruthAvailable=false`，没有新的真实嵌入表格 replay JSON，不能作为滚动通过证据。详情见 [`L40_REAL_HOST_SCROLL_REPLAY_2026-09-09.md`](L40_REAL_HOST_SCROLL_REPLAY_2026-09-09.md)。
 - 当前有效的真实嵌入端点证据仍是 L39：`MediaInboxGrid` 400 条、`TaskGrid` 50 条，各 47 个样本，底部各 21 个，20 次上下端点往返；Media `394/394`、Task `40/40`，两表末项均在实际 Presenter 内完整可见，空正文、大块间隙、水平条覆盖、选中内容缺失和尾项不完整均为 0。该证据不覆盖物理滑块/视频。
