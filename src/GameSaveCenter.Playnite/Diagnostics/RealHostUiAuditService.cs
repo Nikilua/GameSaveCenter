@@ -557,7 +557,7 @@ namespace GameSaveCenter.Playnite.Diagnostics
                 // TaskCenterView owns its DataGrid directly and has no inner TabControl.
                 // Run the same developer-only grid replay once at workspace scope so the
                 // task table is not silently omitted from the real-host evidence set.
-                if (session != null)
+                if (session != null && workspace == WorkspaceKind.Tasks)
                 {
                     await CaptureEmbeddedGridReplayAsync(
                         dashboard,
@@ -795,6 +795,12 @@ namespace GameSaveCenter.Playnite.Diagnostics
             }
 
             if (command == null || count == null || hasMore == null)
+                return;
+
+            // TaskCenterView already presents a bounded 50-row page. Its load-more
+            // command replaces that page while retaining HasMore=true, so repeatedly
+            // invoking it would exercise pagination rather than the table scroller.
+            if (string.Equals(grid.Name, "TaskGrid", StringComparison.Ordinal))
                 return;
 
             // 400 rows exercises the virtualized tail without turning the host audit into a

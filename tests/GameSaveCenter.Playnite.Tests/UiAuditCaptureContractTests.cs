@@ -127,6 +127,8 @@ public sealed class UiAuditCaptureContractTests
         Assert.Contains("CaptureEmbeddedGridReplayAsync", source);
         Assert.Contains("TaskCenterView owns its DataGrid directly", source);
         Assert.Contains("routePrefix + \"-\" + workspacePrefix + \"-workspace\"", source);
+        Assert.Contains("workspace == WorkspaceKind.Tasks", source);
+        Assert.Contains("TaskCenterView already presents a bounded 50-row page", source);
         Assert.Contains("FindDescendant<DataGridRowsPresenter>(viewer)", source);
         Assert.Contains("ScrollToBottom", source);
         Assert.Contains("宿主审计回放:底部", source);
