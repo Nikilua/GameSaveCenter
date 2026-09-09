@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-09 L32 FusionX 水平滚动条显示场景
+
+- 提交 `5198c6c` 将已安装 FusionX `DefaultControls/DataGrid.xaml` 的窗口对照扩展为 700×640 DIP 视口、1100 DIP 列宽，确保水平滚动条真实出现；没有修改生产模板、FusionX 文件或全局样式。
+- 诊断结果：水平条 `Visible/17.33`，实际 `ScrollContentPresenter=0,36,678.67x582.67`；直接滑块 20 次往返、`PageDown/PageUp/Ctrl+End` 均保持 `1987/1987`，最后行 `1999:fusionx-1999@608/44` 完整。FusionX 普通视口和水平条视口都未复现空白正文、行框/文字分离或底行被盖住。
+- 证据仍只来自隐藏 WPF `Window`，且 deferred `ScrollIntoView` 明确是不确定基线；真实 Playnite 的窗口尺寸、DPI、FusionX 完整资源链和视频操作继续待 L31 宿主验收。RenderHarness Release 构建 `0 warning/0 error`，报告为 `scaleprobe OK`。
+
 ## 2026-09-09 L32 FusionX 安装资源只读窗口对照
 
 - 提交 `85b1aeb` 在已有隐藏 WPF `Window` 对照探针中发现本机 Playnite 配置使用 FusionX `2.1.1`，只读加载其 `DefaultControls/DataGrid.xaml`；没有修改 FusionX 文件、Playnite 全局样式或生产滚动参数。隔离解析只补齐 FusionX 在真实共享资源作用域中已有的 `TextColor` 和 `BooleanToVisibilityConverter`，不记录媒体/文件内容。
