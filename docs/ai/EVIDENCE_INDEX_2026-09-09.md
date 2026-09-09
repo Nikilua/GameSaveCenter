@@ -1,8 +1,12 @@
 # 2026-09-09 证据索引与验收边界
 
-当前基线：`main`，当前生产源提交为 `63f4b2d`（首页交互测试为 `4001d9d`，生产首页修复为 `1fdd15e`，缩略图测试隔离为 `c0197e5`，Media 离屏门禁收口为 `d777e65`）。当前源码回归为 Playnite `427/490`（63 skip、0 fail）；新增顶部复合按钮视觉内容样式与回归断言，并保留 `OverviewInteractionTests` 对活动行/云端整卡的 STA WPF 验证。当前候选包构建提交为 `63f4b2d`，程序集身份为 `0.6.73+63f4b2d54d0ff69f824a167ac3d62c070c32bf37`，两个包均 `43,837,982` 字节、SHA-256 `83FC0C96476B58FD5DC8AA3E97E850B12BB77EC06A5739DE361EA96ACDC17869`。最新干净 RenderHarness 报告对应 `1fdd15e`，不是宿主安装包。L42 运行基线及构建身份为 `398a6f0` / `0.6.73+398a6f095718e2827c3e8bd2a19bbbb5525c1f16`。L41/L42 均未捕获嵌入 Dashboard，因此当前有效的真实嵌入表格回放仍是 L39 的 `0.6.73+a9b8bcec0c05f7d548d8160119b2b29e9698b1ab`。窗口级滚动探针 canonical 报告仍为 `ea18b11`。本索引只汇总已有证据，不把程序化回放扩大为物理滑块/视频结论。
+当前基线：`main`，当前生产源提交为 `63f4b2d`（首页交互测试为 `4001d9d`，生产首页修复为 `1fdd15e`，缩略图测试隔离为 `c0197e5`，Media 离屏门禁收口为 `d777e65`）。当前源码回归为 Playnite `427/490`（63 skip、0 fail）；新增顶部复合按钮视觉内容样式与回归断言，并保留 `OverviewInteractionTests` 对活动行/云端整卡的 STA WPF 验证。当前候选包构建提交为 `63f4b2d`，程序集身份为 `0.6.73+63f4b2d54d0ff69f824a167ac3d62c070c32bf37`，两个包均 `43,837,982` 字节、SHA-256 `83FC0C96476B58FD5DC8AA3E97E850B12BB77EC06A5739DE361EA96ACDC17869`。当前干净 RenderHarness 报告为 [`.tmp/render-qa-headerbuttons-20260910/render-qa-report.txt`](../../.tmp/render-qa-headerbuttons-20260910/render-qa-report.txt)，报告提交元数据为 `82e064c`，不是宿主安装包。L42 运行基线及构建身份为 `398a6f0` / `0.6.73+398a6f095718e2827c3e8bd2a19bbbb5525c1f16`。L41/L42 均未捕获嵌入 Dashboard，因此当前有效的真实嵌入表格回放仍是 L39 的 `0.6.73+a9b8bcec0c05f7d548d8160119b2b29e9698b1ab`。窗口级滚动探针 canonical 报告仍为 `ea18b11`。本索引只汇总已有证据，不把程序化回放扩大为物理滑块/视频结论。
 
 ## 当前阶段
+
+### 2026-09-10 顶部复合按钮修复后的离屏回归
+
+报告： [`.tmp/render-qa-headerbuttons-20260910/render-qa-report.txt`](../../.tmp/render-qa-headerbuttons-20260910/render-qa-report.txt)。报告提交元数据为 `82e064c`，离屏 RenderHarness `render-qa OK`；双主题、多尺寸、resize、云端筛选文字、完整壳层背景和 Media 页尾几何均通过。该结果不替代真实 Playnite/FusionX、DPI、物理拖动或录屏。
 
 ### 2026-09-10 顶部复合按钮视觉树修复证据
 

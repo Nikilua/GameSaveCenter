@@ -16,6 +16,12 @@
 - 定向工具栏测试 `1/1`、XAML `19/19`、源码校验通过；完整 Release 回归为 Core `76/76`、Worker `310/311`（1 skip）、Playnite `427/490`（63 skip），失败 `0`。
 - 从 `63f4b2d` 重新生成候选包：程序集身份 `0.6.73+63f4b2d54d0ff69f824a167ac3d62c070c32bf37`，`.pext/.zip` 均 `43,837,982` 字节，SHA-256 `83FC0C96476B58FD5DC8AA3E97E850B12BB77EC06A5739DE361EA96ACDC17869`；staging 已清理，未安装真实 Playnite。
 
+## 2026-09-10 顶部复合按钮修复后的离屏视觉回归
+
+- 执行 `scripts/render-qa.ps1 -Configuration Release -Output .tmp/render-qa-headerbuttons-20260910`，RenderHarness 构建 `0 warning/0 error`，报告提交元数据为 `82e064c`、`WorkingTreeClean: True`，最终 `render-qa OK`。
+- Light/Dark 的云端队列两个筛选框均有可见文字；生产壳层背景层两主题均跨完整壳层；Media 1040/1100 的末端 offset 分别为 `136.67/136.67`、`96.67/96.67`，footer/history/secondary 均在可见范围内。
+- 这份报告验证插件离屏视觉和几何回归，不替代真实 Playnite/FusionX、用户 DPI、物理滚动和视频验收。
+
 ## 2026-09-10 当前生产源候选包重新生成
 
 - 从生产源提交 `fa9af0a` 运行 `scripts/package.ps1 -Configuration Release -BuildOutputRoot .tmp/package-current-20260909-latest`；XAML `19/19`，Release 构建 `0 warning / 0 error`，Core `76/76`、Worker `310/311`（1 skip）、Playnite `427/490`（63 skip），均无失败。
