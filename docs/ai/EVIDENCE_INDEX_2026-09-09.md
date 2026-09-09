@@ -1,12 +1,12 @@
 # 2026-09-09 证据索引与验收边界
 
-当前基线：`main`，最新代码提交为 `559d64f`（缩略图测试隔离为 `c0197e5`）；L42 运行基线及构建身份为 `398a6f0` / `0.6.73+398a6f095718e2827c3e8bd2a19bbbb5525c1f16`。L41/L42 均未捕获嵌入 Dashboard，因此当前有效的真实嵌入表格回放仍是 L39 的 `0.6.73+a9b8bcec0c05f7d548d8160119b2b29e9698b1ab`。窗口级滚动探针 canonical 报告仍为 `ea18b11`。本索引只汇总已有证据，不把程序化回放扩大为物理滑块/视频结论。
+当前基线：`main`，最新代码提交为 `d777e65`（缩略图测试隔离为 `c0197e5`）；L42 运行基线及构建身份为 `398a6f0` / `0.6.73+398a6f095718e2827c3e8bd2a19bbbb5525c1f16`。L41/L42 均未捕获嵌入 Dashboard，因此当前有效的真实嵌入表格回放仍是 L39 的 `0.6.73+a9b8bcec0c05f7d548d8160119b2b29e9698b1ab`。窗口级滚动探针 canonical 报告仍为 `ea18b11`。本索引只汇总已有证据，不把程序化回放扩大为物理滑块/视频结论。
 
 ## 当前阶段
 
 ### 2026-09-09 回归与离屏 RenderHarness 证据
 
-证据报告： [`.tmp/render-qa-harness-clean-20260909/render-qa-report.txt`](../../.tmp/render-qa-harness-clean-20260909/render-qa-report.txt)。工作树干净且报告对应 `559d64f`；RenderHarness Release 构建 `0 warning/0 error`。Settings normal/dirty/invalid 三态、Sidebar rapid-toggle 的第二次点击及生产壳层 Media 1040/1100 表格 `300 DIP`/页尾可达均通过。完整 render-qa 仍只报告 Media 离屏组合：嵌套 `MediaClassificationPreviewItems=126 DIP`、独立 `MediaInboxGrid=230 DIP`、resize `MediaInboxGrid=86 DIP`；这些不替代真实 Playnite/FusionX 视频验收，也不能单凭阈值失败认定生产模板根因。
+证据报告： [`.tmp/render-qa-media-gate-clean-20260909/render-qa-report.txt`](../../.tmp/render-qa-media-gate-clean-20260909/render-qa-report.txt)。工作树干净且报告对应 `d777e65`；RenderHarness Release 构建 `0 warning/0 error`、`render-qa OK`。Settings normal/dirty/invalid 三态、Sidebar rapid-toggle 的第二次点击、双主题/多尺寸/resize、生产壳层 Media 1040/1100 表格 `300 DIP`/页尾可达均通过；Media 主表记录实际 `readableRows`，resize 为 `6/4`，原 `230 DIP` 场景为 `4/4`。Inspector 预览/历史列表仍按嵌套小列表处理。这些离屏结果不替代真实 Playnite/FusionX 视频验收。
 
 ### L42/L41 真实宿主启动边界
 

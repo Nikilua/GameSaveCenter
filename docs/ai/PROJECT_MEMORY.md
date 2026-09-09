@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-09
 
+## 2026-09-09 Media 离屏视口门禁按实际行几何收口
+
+- `d777e65` 修正了离屏 RenderHarness 的 Media 误报：DataGrid 不再用固定 `236 DIP` 作为主表通过条件，而是统计行容器相对 DataGrid 边界的完整可见数量；有至少 4 条数据时要求 `4/4` 行完整可读。`230 DIP` 的独立 Media 表格因此得到 `readableRows=4/4`，没有修改生产表格高度或关闭虚拟化。
+- `MediaClassificationPreviewItems`/`MediaClassificationHistoryList` 属于媒体 Inspector 内的小型预览/历史列表，分别只有 2/3 条夹具内容，并受 Inspector 自己的滚动容器管理；它们不适用主工作区四行门禁，但报告仍记录尺寸和条目数。
+- Resize 探针改为向 Media 传入 `ContentSize` 的 `contentH`，与生产 PageHost 测量一致；原先 `86 DIP` 的错误结果恢复为 `300 DIP`、`6/4` 完整可读行。提交后的报告为 [`.tmp/render-qa-media-gate-clean-20260909/render-qa-report.txt`](../../.tmp/render-qa-media-gate-clean-20260909/render-qa-report.txt)，`WorkingTreeClean: True`、`render-qa OK`。
+- 这只完成了离屏质量门禁，不证明 Playnite/FusionX 真实模板链、DPI、用户主题或视频式拖动问题已解决；宿主证据边界保持不变。
+
 ## 2026-09-09 回归失败与离屏审计夹具修正
 
 - `AsyncThumbnailLoader` 的诊断、缓存和并发闸门是进程级静态状态；`AsyncThumbnailLoaderTests` 在 `ResetDiagnostics()` 后若与 `AsyncThumbnailImageTests` 并行，观察到的 `RequestCount=122` 不代表生产代码多发请求。`c0197e5` 将两个测试类放进同一个禁并行集合，保留原有 `120` 精确断言和生产 3 路/96 项边界；定向 `1/1`，Playnite 全量 `425/488`（63 skip、0 fail）。

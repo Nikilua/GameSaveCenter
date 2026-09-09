@@ -6,13 +6,14 @@
 
 - `c0197e5` 将 `AsyncThumbnailLoaderTests` 和 `AsyncThumbnailImageTests` 放入禁并行集合。此前两个测试共享进程级诊断/缓存状态，完整套件并发时会把一次应为 `120` 的请求计数污染为 `122`；定向 `1/1`、Playnite 全量 `425/488`（63 skip、0 fail）已通过。
 - `559d64f` 修正 RenderHarness 的 Settings 临时目录夹具、Sidebar 快速切换完成计时器和 Media 主题探针高度。干净工作树报告为 [`.tmp/render-qa-harness-clean-20260909/render-qa-report.txt`](../../.tmp/render-qa-harness-clean-20260909/render-qa-report.txt)，RenderHarness 构建 `0 warning/0 error`；Settings 三态和 Sidebar 第二次点击门禁已恢复正常，生产壳层 Media 1040/1100 DIP 表格视口均为 `300`，页尾 footer/history/secondary 可到达。
-- 完整 render-qa 仍未全绿，但剩余项已收敛为 Media 离屏夹具门禁：嵌套归类预览列表 `126 DIP`、独立 Media 表格 `230 DIP` 以及 resize 步骤 `86 DIP`。这些不是可直接写成生产滚动根因的证据；真实 Playnite/FusionX 和视频式操作仍待宿主验收。
+- `d777e65` 将 Media 门禁改为按实际 DataGrid 行几何统计完整可读行数，并让 resize 探针传入 Media 的实际 `contentH`；嵌套 Inspector 预览/历史列表不再套用主表四行门禁。最新干净报告为 [`.tmp/render-qa-media-gate-clean-20260909/render-qa-report.txt`](../../.tmp/render-qa-media-gate-clean-20260909/render-qa-report.txt)，`WorkingTreeClean: True`、`render-qa OK`；Media resize 为 `300 DIP`、`readableRows=6/4`，原 `230 DIP` 场景为 `readableRows=4/4`。
+- 该报告仍是离屏 WPF 证据，不替代真实 Playnite/FusionX、DPI、用户主题和视频式拖动；真实宿主仍待验收。
 
 ## 2026-09-09 浅色主题视觉问题修复（离屏验证完成，真实宿主待验收）
 
 - 对应代码提交：`2365a5c`（已推送到 `origin/main`）。
 - 用户截图中的两类问题已按共享层修复：生产壳层不再在内容列重复绘制选中游戏背景；维护中心云端队列及同类有限宽度 ComboBox 的文本显式使用 `GscPrimaryTextBrush`，浅色主题不再继承白色宿主文字。
-- 相关契约测试 `2/2`、源校验、XAML `19/19` 和 WPF 静态审计 `0 errors` 通过；RenderHarness 已成功构建并产出双主题、多尺寸输出，Settings/Sidebar 的夹具误报已修正，但完整 render-qa 仍有 Media 离屏门禁失败，不能写成全量通过。
+- 相关契约测试 `2/2`、源校验、XAML `19/19` 和 WPF 静态审计 `0 errors` 通过；RenderHarness 已成功构建并产出双主题、多尺寸输出，Settings/Sidebar/Media 离屏门禁均已通过。真实 Playnite/FusionX 视觉确认仍待宿主验收。
 - 目前没有可绑定的真实 Playnite 窗口，未完成 FusionX 宿主截图或浅色主题真实回归；交付时应把真实宿主视觉确认标为待验收。前述表格滚动视频问题的物理操作与录屏边界保持不变。
 
 ## 2026-09-09 L42/L41/L39 表格滚动证据边界（当前最新）

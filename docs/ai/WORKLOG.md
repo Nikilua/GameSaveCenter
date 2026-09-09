@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-09 Media 离屏门禁改为实际行几何并全量通过
+
+- 旧 `<236 DIP` 固定阈值把 `MediaInboxGrid=230 DIP` 误报为失败；报告中的实际行高为约 `44 DIP`，该视口仍能完整容纳 `4/4` 行。门禁现在以 DataGrid 行容器相对表格边界的完整可见数判断，数据量足够时要求至少 `4` 行，不用高度常数替代内容视口证据。
+- `MediaClassificationPreviewItems` 和 `MediaClassificationHistoryList` 位于可独立滚动的媒体 Inspector，当前夹具分别为 `2`/`3` 条内容，不是主工作区列表；不再套用主表四行门禁，但仍保留报告中的尺寸和条目记录。
+- resize 探针此前把外层窗口高度 `720` 传给 Media，跳过了生产 PageHost 的紧凑路径并得到错误的 `86 DIP`；现传入 `contentH`，Media resize 表格恢复为 `300 DIP`、`readableRows=6/4`。
+- 提交 `d777e65` 后干净报告 [`.tmp/render-qa-media-gate-clean-20260909/render-qa-report.txt`](../../.tmp/render-qa-media-gate-clean-20260909/render-qa-report.txt) 为 `WorkingTreeClean: True`、`render-qa OK`。这完成了离屏质量门禁，但不把它扩大为真实 Playnite/FusionX 或视频式宿主验收。
+
 ## 2026-09-09 缩略图并发测试与离屏审计夹具修正
 
 - 完整 Playnite 测试曾在 `AsyncThumbnailLoaderTests.LoadAsync_ConcurrentScrollWindowStaysWithinDecodeAndCacheBounds` 报 `Expected 120 / Actual 122`。复核确认生产加载器的 `requestCount`、缓存和信号量是进程级静态状态，`AsyncThumbnailImageTests` 可与它并行修改诊断计数；不是缩略图生产逻辑多发了请求。提交 `c0197e5` 用 `[Collection("ThumbnailLoader", DisableParallelization=true)]` 隔离两个共享状态测试类。
@@ -14,7 +21,7 @@
 - 根据用户提供的浅色主题截图复核生产壳层：`AcrylicProductionShellView` 已经有一次覆盖整个壳层的选中游戏背景，但 `ShellAmbientMaterialLayer` 又在内容列单独绘制一次选中游戏背景，导致侧栏右边和最右侧出现图片方框/接缝。修复为让壳层 Ambient layer 覆盖两列但不再读取选中游戏背景；选中游戏图片只由全壳层 `ImageBrush` 绘制，未修改 FusionX 或 Playnite 全局资源。
 - 维护中心云端队列的 `GscComboBoxLongText` 继承宿主 `BaseTextBlockStyle`，在浅色主题中把 `TextBlock` 前景色带成白色，覆盖了 ComboBox 的主题文字绑定。维护页和同类 Dashboard 样式均显式绑定 `GscPrimaryTextBrush`，保留截断、提示和现有选择/绑定行为。
 - 定向契约测试 `DemoVisualVocabularyAndWorkspaceStretchContractRemainAvailable` 与 `FiniteWidthComboBoxesUseTheSharedLongTextTemplate` 为 `2/2`；`validate-source.py`、XAML `19/19` 通过；WPF 静态审计为 `0 errors / 22 warnings / 172 info`，警告和信息为既有主题硬编码提示。
-- RenderHarness Release 构建成功并生成双主题、多尺寸截图；后续 `559d64f` 已排除 Settings fixture 和 Sidebar rapid-toggle 的夹具误报，当前仍有 Media 小视口/预览列表门禁。离屏审计不等价真实 Playnite 渲染，当前仍没有真实宿主复测依据。
+- RenderHarness Release 构建成功并生成双主题、多尺寸截图；后续 `559d64f` 和 `d777e65` 已排除 Settings、Sidebar 和 Media 的离屏夹具误报，干净 `render-qa` 已通过。离屏审计不等价真实 Playnite 渲染，当前仍没有真实宿主复测依据。
 - 后续补强了 `FiniteWidthComboBoxesUseTheSharedLongTextTemplate`：现在明确覆盖 `CloudTransferStateOptions` 与 `CloudTransferKindOptions` 两个云端队列筛选源；定向回归 `1/1` 通过。
 
 ## 2026-09-09 L42/L41 真实宿主入口再次未建立
