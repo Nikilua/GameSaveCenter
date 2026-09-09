@@ -24,7 +24,7 @@
 - 提交 `5198c6c` 又对 FusionX 执行 700×640 DIP 窄视口、1100 DIP 列宽的水平条场景；水平条为 `Visible/17.33`，Presenter 实际缩为 `678.67x582.67`，滑到 `1987/1987` 后末行仍为 `1999@608/44`。20 次往返和 `PageDown/PageUp/Ctrl+End` 均通过，说明离线模板在水平条占用内容视口时也没有把最后一行盖住；仍不等同真实 Playnite。
 - 提交 `8775809` 修正探针元数据：空的 `git status --porcelain` 不再被误报为 `unknown`。最新 canonical 报告的提交为 `ea18b11`，`WorkingTreeClean: True`，并保留上述两组 FusionX 对照结果。
 - 提交 `f31711c` 修正生产锚点路径：`MediaCenterView` 的捕获和恢复不再取第一个后代 `ScrollViewer`，而是优先选择拥有 `DataGridRowsPresenter` 的实际表格滚动器，再按实际视口尺寸兜底；`MediaWindowAnchorContractTests` 定向结果为 `9/9`。该修复尚未进入此前 `8d729ab` 候选包，真实宿主仍需用新构建复测。
-- 证据保留在 `.tmp/l32-scrollprobe/scaleprobe-report.txt`；真实 Playnite/FusionX、视频、DPI、加载更多现场锚点仍未验证。本阶段验证：Release RenderHarness 构建 `0 warning/0 error`、`scaleprobe OK`，锚点定向 `8/8`，Playnite 全量 `421/484`（63 skip），源码校验通过。
+- 证据保留在 `.tmp/l32-scrollprobe/scaleprobe-report.txt`；真实 Playnite/FusionX、视频、DPI、加载更多现场锚点仍未验证。本阶段验证：Release RenderHarness 构建 `0 warning/0 error`、`scaleprobe OK`，锚点定向 `9/9`，Playnite 全量 `422/485`（63 skip、0 fail），源码校验通过。
 - L32 证据索引见 [`EVIDENCE_INDEX_2026-09-09.md`](EVIDENCE_INDEX_2026-09-09.md)，其中明确当前候选包、离线滚动报告、skip 账本和真实宿主缺口。
 
 ## 2026-09-09 L28 持续更新分页与选择恢复已完成离线收口（真实宿主待验收）

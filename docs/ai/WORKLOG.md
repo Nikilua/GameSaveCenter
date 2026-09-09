@@ -2,6 +2,11 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-09 L32 锚点修复全量回归
+
+- `MediaWindowAnchorContractTests` 定向结果 `9/9`；Playnite Release 全量为 `422 通过 / 63 跳过 / 0 失败`，总计 `485`。新增测试验证多滚动器模板下优先选择含 `DataGridRowsPresenter` 的表格滚动器。
+- RenderHarness 用最新生产 DLL 重建后仍为 `scaleprobe OK`；canonical 报告提交 `ea18b11`、`WorkingTreeClean: True`，FusionX 普通视口与水平条显示视口的最后一行均完整。
+
 ## 2026-09-09 L32 锚点使用实际表格滚动器
 
 - 源码复核发现诊断器已优先绑定含 `DataGridRowsPresenter` 的内部 `ScrollViewer`，但 `MediaCenterView.CaptureAnchor`/`RestoreAnchor` 仍取第一个后代滚动器；在宿主模板暴露多个滚动器时，锚点偏移可能写入错误的 `IScrollInfo`。
