@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-09 当前源码候选包重新生成
+
+- 使用 `scripts/package.ps1 -Configuration Release -BuildOutputRoot .tmp/package-current-20260909` 从当前源码生成候选包；Release 构建 `0 warning / 0 error`，Core `76/76`、Worker `310/311`（1 skip）、Playnite `425/488`（63 skip），均无失败。
+- 六份程序集身份一致为 `0.6.73+1975d2d30164a141f0f2f4d5055c9b0fb84e9b0b`；Worker 为 `win-x64` self-contained；`.pext/.zip` 均 `43,837,688` 字节，SHA-256 为 `D05BBDA6CFD5E323649424A3229C47F2CAEF46A161C432DFF8FC14792A285E12`。
+- 包未安装真实 Playnite；隔离构建目录和包暂存目录已清理，只保留最终包。L31 的宿主/FusionX/DPI/视频矩阵仍是外部待验收。
+
 ## 2026-09-09 当前回归基线与宿主阻塞复核
 
 - 交接索引已从 `d777e65` 同步到当前 `580a70f`；最新离屏报告仍明确对应 `d777e65`，避免把仅有文档提交误写成生产 UI 变更。

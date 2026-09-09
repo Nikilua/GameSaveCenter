@@ -1,7 +1,7 @@
 # 0.6.73 Development Candidate
 
-- 候选包沿用仓库公共版本 `0.6.73`，不因连续开发阶段随意升版本；插件、Worker、Core、Contracts 使用同一构建身份 `0.6.73+01af39ca76129d23f59b0e60b93b1e4ac9974051`。
-- 候选 `.pext`/`.zip` 已由 `scripts/package.ps1` 在隔离输出中生成，Worker 为 self-contained `win-x64`，两个包均为 `43,831,773` 字节，SHA-256 均为 `E58266620809675AE7F909AC572B42931A506EAF7FA77F2864947E3248359B45`；本包包含 `f31711c` 表格锚点修复。
+- 候选包沿用仓库公共版本 `0.6.73`，不因连续开发阶段随意升版本；插件、Worker、Core、Contracts 使用同一构建身份 `0.6.73+1975d2d30164a141f0f2f4d5055c9b0fb84e9b0b`。
+- 候选 `.pext`/`.zip` 已由 `scripts/package.ps1` 在隔离输出中生成，Worker 为 self-contained `win-x64`，两个包均为 `43,837,688` 字节，SHA-256 均为 `D05BBDA6CFD5E323649424A3229C47F2CAEF46A161C432DFF8FC14792A285E12`；本包包含滚动锚点、浅色主题背景和云端筛选文字修复。
 - 升级/回退必须先备份完整隔离配置和状态库；当前迁移是幂等增量，不承诺旧版直接读取已升级数据库。详细清单见 [`L30_PACKAGE_CHECKLIST_2026-09-09.md`](ai/L30_PACKAGE_CHECKLIST_2026-09-09.md)。
 - 表格滚动诊断补充窗口级离线对照：插件模板的 `ScrollIntoView(最后一项)`、20 次往返和末尾完整性在隐藏 WPF `Window` 中通过；标准 WPF 模板的 deferred 定位仍明确标为基线不确定，不能替代 FusionX/真实 Playnite 验收。
 - 进一步只读加载本机 FusionX `2.1.1` 的 `DefaultControls/DataGrid.xaml` 做同数据对照：直接滑块/Ctrl+End 到 `1987/1987`，末行完整；deferred `ScrollIntoView` 仍标为基线不确定，未修改用户 FusionX 文件，也未宣称真实宿主通过。
