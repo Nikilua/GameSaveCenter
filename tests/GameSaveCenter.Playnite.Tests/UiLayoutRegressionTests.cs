@@ -199,7 +199,9 @@ namespace GameSaveCenter.Playnite.Tests
 
             Assert.Equal("Border", strip.Name.LocalName);
             Assert.Contains(strip.Descendants(), element => element.Name.LocalName == "Grid");
-            Assert.Equal(6, strip.Descendants().Count(element => element.Name.LocalName == "Border" && element.Attribute("Style")?.Value == "{StaticResource OverviewStatCard}"));
+            Assert.Equal(5, strip.Descendants().Count(element => element.Name.LocalName == "Border" && element.Attribute("Style")?.Value == "{StaticResource OverviewStatCard}"));
+            Assert.Single(strip.Descendants(), element => element.Name.LocalName == "Button"
+                && element.Attribute("Style")?.Value == "{StaticResource OverviewCloudQueueCardButton}");
             Assert.Equal(5, strip.Descendants().Count(element => element.Name.LocalName == "Rectangle" && element.Attribute("Fill")?.Value == "{DynamicResource GscTableDividerBrush}"));
             Assert.DoesNotContain("OverviewStatStrip.Columns", code);
         }

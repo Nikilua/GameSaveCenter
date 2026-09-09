@@ -206,6 +206,10 @@
             <Style x:Key="OverviewActivityRowButton"
                    TargetType="ui:Button"
                    BasedOn="{StaticResource GscWpfUiButton}">
+                <!-- This row owns a real Border/Grid visual tree. The shared text-only
+                     button template must not stringify that tree as
+                     "System.Windows.Controls.Border". -->
+                <Setter Property="ContentTemplate" Value="{x:Null}"/>
                 <Setter Property="Appearance" Value="Transparent"/>
                 <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="BorderBrush" Value="Transparent"/>
@@ -217,6 +221,29 @@
                 <Setter Property="VerticalContentAlignment" Value="Stretch"/>
                 <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
                 <Setter Property="ToolTip" Value="打开对应工作区"/>
+            </Style>
+            <Style x:Key="OverviewCloudQueueCardButton"
+                   TargetType="ui:Button"
+                   BasedOn="{StaticResource GscWpfUiButton}">
+                <!-- The cloud metric is an action card, not a card containing a
+                     second action button. Keep the content as a visual tree and
+                     make the whole metric surface the command target. -->
+                <Setter Property="ContentTemplate" Value="{x:Null}"/>
+                <Setter Property="Appearance" Value="Transparent"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Padding" Value="14,2"/>
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="MinHeight" Value="0"/>
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="ToolTip" Value="打开维护中心的云端队列"/>
+                <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                <EventSetter Event="MouseEnter" Handler="OnStatCardMouseEnter"/>
+                <EventSetter Event="MouseLeave" Handler="OnStatCardMouseLeave"/>
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -410,7 +437,7 @@
                     </StackPanel>
                 </Border>
                 <Rectangle Grid.Column="7" Width="1" Fill="{DynamicResource GscTableDividerBrush}" VerticalAlignment="Stretch" Margin="0,4"/>
-                            <Border Grid.Column="8" Style="{StaticResource OverviewStatCard}" ToolTip="{Binding Snapshot.CloudTransfers.SummaryDisplay, Mode=OneWay}"><StackPanel><TextBlock Text="{Binding Snapshot.CloudTransfers.QueueCount, Mode=OneWay}" Foreground="{DynamicResource GscInfoBrush}" FontSize="26" FontWeight="SemiBold"/><TextBlock Text="云端队列" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,2,0,0"/><TextBlock Text="{Binding Snapshot.CloudTransfers.QueueControlDisplay, Mode=OneWay}" ToolTip="{Binding Snapshot.PendingCloudTasks, Mode=OneWay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0" TextWrapping="Wrap"/><ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenCloudQueueCommand}" Content="查看明细" Margin="0,6,0,0" HorizontalAlignment="Left" ToolTip="打开维护中心的云端队列明细" AutomationProperties.Name="查看云端队列明细"/></StackPanel></Border>
+                            <ui:Button Grid.Column="8" Style="{StaticResource OverviewCloudQueueCardButton}" Command="{Binding OpenCloudQueueCommand}" AutomationProperties.Name="打开云端队列" ToolTip="{Binding Snapshot.CloudTransfers.SummaryDisplay, Mode=OneWay}"><StackPanel><TextBlock Text="{Binding Snapshot.CloudTransfers.QueueCount, Mode=OneWay}" Foreground="{DynamicResource GscInfoBrush}" FontSize="26" FontWeight="SemiBold"/><TextBlock Text="云端队列" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,2,0,0"/><TextBlock Text="{Binding Snapshot.CloudTransfers.QueueControlDisplay, Mode=OneWay}" ToolTip="{Binding Snapshot.PendingCloudTasks, Mode=OneWay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0" TextWrapping="Wrap"/></StackPanel></ui:Button>
                 <Rectangle Grid.Column="9" Width="1" Fill="{DynamicResource GscTableDividerBrush}" VerticalAlignment="Stretch" Margin="0,4"/>
                 <Border Grid.Column="10" Style="{StaticResource OverviewStatCard}"><StackPanel><TextBlock Text="{Binding Snapshot.UnassignedMediaCount, Mode=OneWay}" Foreground="{DynamicResource GscWarningBrush}" FontSize="26" FontWeight="SemiBold"/><TextBlock Text="待归类媒体" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,2,0,0"/><TextBlock Text="来自共享截图目录" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,4,0,0" TextWrapping="Wrap"/></StackPanel></Border>
                 </Grid>

@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-09
 
+## 2026-09-09 首页活动行可视树与云端队列整卡导航
+
+- 共享 `GscWpfUiButton` 默认通过 `GscWpfUiButtonTextTemplate` 将 `Content` 绑定到 `TextBlock.Text`；当首页全局活动行把 `Border/Grid` 作为按钮内容时，会出现 `System.Windows.Controls.Border`。页面局部的 `OverviewActivityRowButton` 必须设置 `ContentTemplate={x:Null}`，不能修改为关闭全局按钮模板或删除活动命令。
+- 云端队列指标采用 `OverviewCloudQueueCardButton` 作为唯一交互面，直接绑定 `OpenCloudQueueCommand`，不再在卡片内部嵌套“查看明细”按钮。保留 `AutomationProperties.Name`、焦点样式、悬停动效和提示。
+- 这轮离线证据为 Playnite `426/489`（63 skip、0 fail）、Release `0 warning/0 error`、RenderHarness `render-qa OK`、XAML `19/19`、WPF 静态审计 `0 errors / 22 warnings / 157 info`；真实 Playnite/FusionX、用户主题/DPI 和人工点击仍须宿主验收。
+
 ## 2026-09-09 Media 离屏视口门禁按实际行几何收口
 
 - `d777e65` 修正了离屏 RenderHarness 的 Media 误报：DataGrid 不再用固定 `236 DIP` 作为主表通过条件，而是统计行容器相对 DataGrid 边界的完整可见数量；有至少 4 条数据时要求 `4/4` 行完整可读。`230 DIP` 的独立 Media 表格因此得到 `readableRows=4/4`，没有修改生产表格高度或关闭虚拟化。

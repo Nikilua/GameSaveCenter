@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-09 首页活动内容呈现与云端队列卡片点击入口修复
+
+- 首页全局活动行使用共享 `GscWpfUiButton` 时，按钮默认的文本 `ContentTemplate` 会把行内 `Border/Grid` 可视树绑定到 `TextBlock.Text`，因此显示为 `System.Windows.Controls.Border`。`OverviewActivityRowButton` 现在显式清空 `ContentTemplate`，保留实际行内容和原有活动命令。
+- 云端队列指标从 `Border` 内嵌“查看明细”按钮改为整张 `OverviewCloudQueueCardButton`，直接绑定 `OpenCloudQueueCommand`；移除重复按钮，保留整卡键盘/自动化名称、悬停动效和提示。
+- 新增非跳过源回归，锁定活动行/云端卡片必须使用可视树内容且云端卡片只有整卡导航；Playnite 全量 `426/489`（63 skip）通过，0 失败。
+- Release 构建 `0 warning / 0 error`；RenderHarness 双主题、多尺寸、resize、Production Shell QA 为 `render-qa OK`；`validate-source.py`、XAML `19/19` 和 WPF 静态审计 `0 errors / 22 warnings / 157 info` 通过。真实 Playnite/FusionX 仍未启动，宿主人工视觉验收继续待完成。
+
 ## 2026-09-09 当前源码候选包重新生成
 
 - 使用 `scripts/package.ps1 -Configuration Release -BuildOutputRoot .tmp/package-current-20260909` 从当前源码生成候选包；Release 构建 `0 warning / 0 error`，Core `76/76`、Worker `310/311`（1 skip）、Playnite `425/488`（63 skip），均无失败。

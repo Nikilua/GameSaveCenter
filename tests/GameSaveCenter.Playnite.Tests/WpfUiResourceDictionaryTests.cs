@@ -3136,8 +3136,8 @@ public sealed class WpfUiResourceDictionaryTests
         var strip = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewStatStrip");
         var layout = strip.Descendants().Single(element => element.Name.LocalName == "Grid"
             && element.Elements().SingleOrDefault(child => child.Name.LocalName == "Grid.ColumnDefinitions")?.Elements().Count() == 11);
-        var cards = layout.Descendants().Where(element => element.Name.LocalName == "Border"
-            && element.Attribute("Style")?.Value == "{StaticResource OverviewStatCard}")
+        var cardStyles = new[] { "{StaticResource OverviewStatCard}", "{StaticResource OverviewCloudQueueCardButton}" };
+        var cards = layout.Descendants().Where(element => cardStyles.Contains(element.Attribute("Style")?.Value))
             .Select(element => element.Attribute("Grid.Column")?.Value)
             .ToArray();
         var separators = layout.Descendants().Where(element => element.Name.LocalName == "Rectangle"
@@ -3268,11 +3268,16 @@ public sealed class WpfUiResourceDictionaryTests
         var overview = XDocument.Parse(File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml")));
         var strip = overview.Descendants().Single(element => element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "OverviewStatStrip");
         var cards = strip.Descendants().Where(element => element.Name.LocalName == "Border" && element.Attribute("Style")?.Value == "{StaticResource OverviewStatCard}").ToList();
+        var cloudQueueCard = Assert.Single(strip.Descendants(), element => element.Name.LocalName == "Button"
+            && element.Attribute("Style")?.Value == "{StaticResource OverviewCloudQueueCardButton}");
 
         // The six metrics are real Snapshot counters inside one continuous Demo strip,
         // never demo placeholders.
-        Assert.Equal(6, cards.Count);
+        Assert.Equal(5, cards.Count);
         Assert.All(cards, card => Assert.Equal("{StaticResource OverviewStatCard}", card.Attribute("Style")?.Value));
+        Assert.Equal("{Binding OpenCloudQueueCommand}", cloudQueueCard.Attribute("Command")?.Value);
+        Assert.Contains("AutomationProperties.Name=\"打开云端队列\"", cloudQueueCard.ToString());
+        Assert.DoesNotContain("查看明细", cloudQueueCard.ToString());
         Assert.Equal("{DynamicResource GscRedesignSectionCard}", strip.Attribute("Style")?.Value);
         Assert.Equal(5, strip.Descendants().Count(element => element.Name.LocalName == "Rectangle" && element.Attribute("Fill")?.Value == "{DynamicResource GscTableDividerBrush}"));
         Assert.Contains("Binding Snapshot.ManagedGames, Mode=OneWay", strip.ToString());
@@ -3297,6 +3302,32 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("SystemParameters.HighContrast", overviewCode);
         Assert.Contains("SystemParameters.ClientAreaAnimation", overviewCode);
         Assert.Contains("AnimateTranslate(sender as FrameworkElement, 0, -3, 160)", overviewCode);
+    }
+
+    [Fact]
+    public void OverviewActivityRowsAndCloudQueueCardKeepVisualContentAndOneClickNavigation()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var overview = XDocument.Parse(File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml")));
+        var xamlKey = XName.Get("Key", "http://schemas.microsoft.com/winfx/2006/xaml");
+        var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
+        var timeline = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewActivityTimelineList");
+        var activityButton = timeline.Descendants().Single(element => element.Name.LocalName == "Button");
+        var activityStyle = overview.Descendants().Single(element => element.Name.LocalName == "Style"
+            && element.Attribute(xamlKey)?.Value == "OverviewActivityRowButton");
+        var cloudQueueCard = overview.Descendants().Single(element => element.Name.LocalName == "Button"
+            && element.Attribute("Style")?.Value == "{StaticResource OverviewCloudQueueCardButton}");
+        var cloudQueueStyle = overview.Descendants().Single(element => element.Name.LocalName == "Style"
+            && element.Attribute(xamlKey)?.Value == "OverviewCloudQueueCardButton");
+
+        Assert.Equal("{StaticResource OverviewActivityRowButton}", activityButton.Attribute("Style")?.Value);
+        Assert.Contains(activityStyle.Elements().Where(element => element.Name.LocalName == "Setter"), setter =>
+            setter.Attribute("Property")?.Value == "ContentTemplate" && setter.Attribute("Value")?.Value == "{x:Null}");
+        Assert.Equal("{Binding OpenCloudQueueCommand}", cloudQueueCard.Attribute("Command")?.Value);
+        Assert.Contains("AutomationProperties.Name=\"打开云端队列\"", cloudQueueCard.ToString());
+        Assert.DoesNotContain("查看明细", cloudQueueCard.ToString());
+        Assert.Contains(cloudQueueStyle.Elements().Where(element => element.Name.LocalName == "Setter"), setter =>
+            setter.Attribute("Property")?.Value == "ContentTemplate" && setter.Attribute("Value")?.Value == "{x:Null}");
     }
 
     [LegacyProductionUiBaselineFact]

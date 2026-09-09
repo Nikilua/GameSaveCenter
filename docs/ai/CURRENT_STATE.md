@@ -2,6 +2,12 @@
 
 > 更新时间：2026-09-09。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-09 首页全局活动与云端队列卡片修复
+
+- `OverviewActivityRowButton` 已清空共享文本按钮模板的 `ContentTemplate`，避免活动行的 `Border/Grid` 可视树被字符串化为 `System.Windows.Controls.Border`。
+- 云端队列指标已改成整卡 `OverviewCloudQueueCardButton`，直接执行 `OpenCloudQueueCommand`；“查看明细”子按钮已删除，整卡保留可点击、键盘焦点和自动化名称。
+- 当前验证：Playnite `426/489`（63 skip、0 fail）、Release 构建 `0/0`、RenderHarness `render-qa OK`、源校验通过、XAML `19/19`。RenderHarness 和离屏截图不替代真实 Playnite/FusionX 宿主验收。
+
 ## 2026-09-09 回归失败修复与离屏门禁更新
 
 - `c0197e5` 将 `AsyncThumbnailLoaderTests` 和 `AsyncThumbnailImageTests` 放入禁并行集合。此前两个测试共享进程级诊断/缓存状态，完整套件并发时会把一次应为 `120` 的请求计数污染为 `122`；定向 `1/1`、Playnite 全量 `425/488`（63 skip、0 fail）已通过。
