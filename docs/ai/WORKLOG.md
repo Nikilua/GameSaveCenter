@@ -11,8 +11,8 @@
 
 ## 2026-09-09 L30 候选安装包与升级/回退说明
 
-- 使用 `scripts/package.ps1 -Configuration Release -BuildOutputRoot .tmp/l30-build` 生成隔离候选包；脚本完成 Release 构建和测试、Worker `win-x64` self-contained 发布、六份程序集构建身份同源校验、manifest 版本/必需文件/self-contained 校验。
-- 候选公共版本保持 `0.6.73`，身份为 `0.6.73+d6feda6e1d96ed7092a61ab277810f9b7bfafca9`。`.pext` 与 `.zip` 均为 `43,830,595` 字节，SHA-256 为 `0D347768AD6AE08CA05CAED61A133B1B00C33F70078F5AC88AFAD19E722A0303`；只生成包，没有安装到真实 Playnite。
+- 使用 `scripts/package.ps1 -Configuration Release -BuildOutputRoot .tmp/l32-package-build` 重新生成隔离候选包；脚本完成 Release 构建和测试、Worker `win-x64` self-contained 发布、六份程序集构建身份同源校验、manifest 版本/必需文件/self-contained 校验。
+- 候选公共版本保持 `0.6.73`，身份为 `0.6.73+8d729abd1622147910e69135e427e92ae4a6c4b8`。`.pext` 与 `.zip` 均为 `43,831,491` 字节，SHA-256 为 `680E5007AE3E027DDBBE0D37E2DA4EDB2BA9DA06B83F4F384CB4D35C1A75B2B7`；只生成包，没有安装到真实 Playnite。
 - 现有数据库迁移夹具与云重启持久化定向 `14/14`；升级按完整隔离配置/状态库备份执行，回退先停止宿主并恢复升级前副本，不承诺旧版直接读取新 schema。详细步骤写入 `docs/ai/L30_PACKAGE_CHECKLIST_2026-09-09.md`。
 - L30 证据只覆盖候选包和隔离迁移，不覆盖真实 Playnite/FusionX、用户主题/DPI、Worker 进程回收或原视频操作；这些继续进入 L31 宿主矩阵。
 

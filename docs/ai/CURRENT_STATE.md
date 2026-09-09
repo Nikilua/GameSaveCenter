@@ -4,8 +4,8 @@
 
 ## 2026-09-09 L30 候选安装包与升级/回退说明已完成（未安装真实宿主）
 
-- 候选包沿用公共版本 `0.6.73`，插件/Worker/Core/Contracts 六份程序集构建身份一致：`0.6.73+d6feda6e1d96ed7092a61ab277810f9b7bfafca9`。Worker 为 `win-x64` self-contained，manifest、必需文件和包内容校验通过。
-- [`.pext`](../../artifacts/GameSaveCenter-0.6.73.pext) 与 [`.zip`](../../artifacts/GameSaveCenter-0.6.73-playnite.zip) 均 `43,830,595` 字节，SHA-256 均为 `0D347768AD6AE08CA05CAED61A133B1B00C33F70078F5AC88AFAD19E722A0303`。包脚本在隔离输出中构建/测试并生成候选，未安装到真实 Playnite。
+- 候选包沿用公共版本 `0.6.73`，插件/Worker/Core/Contracts 六份程序集构建身份一致：`0.6.73+8d729abd1622147910e69135e427e92ae4a6c4b8`。Worker 为 `win-x64` self-contained，manifest、必需文件和包内容校验通过。
+- [`.pext`](../../artifacts/GameSaveCenter-0.6.73.pext) 与 [`.zip`](../../artifacts/GameSaveCenter-0.6.73-playnite.zip) 均 `43,831,491` 字节，SHA-256 均为 `680E5007AE3E027DDBBE0D37E2DA4EDB2BA9DA06B83F4F384CB4D35C1A75B2B7`。包脚本在隔离输出中构建/测试并生成候选，未安装到真实 Playnite。
 - 数据库升级/重复初始化定向 `14/14`；当前迁移为幂等增量，回退必须恢复完整升级前隔离配置/状态库副本，不承诺旧包直接读取新 schema。具体步骤见 [`L30_PACKAGE_CHECKLIST_2026-09-09.md`](L30_PACKAGE_CHECKLIST_2026-09-09.md)。
 - 真实 Playnite 加载、FusionX/用户主题、DPI、Worker 进程回收和原视频复测仍待 L31 宿主矩阵。
 
