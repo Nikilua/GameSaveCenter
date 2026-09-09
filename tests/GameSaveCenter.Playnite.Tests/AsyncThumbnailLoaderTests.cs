@@ -10,6 +10,7 @@ using Xunit;
 
 namespace GameSaveCenter.Playnite.Tests
 {
+    [Collection("ThumbnailLoader")]
     public sealed class AsyncThumbnailLoaderTests : IDisposable
     {
         private readonly string root = Path.Combine(Path.GetTempPath(), "GameSaveCenter.Thumbnail.Tests", Guid.NewGuid().ToString("N"));
