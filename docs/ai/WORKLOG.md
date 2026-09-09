@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-09 L32 锚点使用实际表格滚动器
+
+- 源码复核发现诊断器已优先绑定含 `DataGridRowsPresenter` 的内部 `ScrollViewer`，但 `MediaCenterView.CaptureAnchor`/`RestoreAnchor` 仍取第一个后代滚动器；在宿主模板暴露多个滚动器时，锚点偏移可能写入错误的 `IScrollInfo`。
+- 提交 `f31711c` 增加统一选择规则：先按是否拥有 `DataGridRowsPresenter`，再按实际 `ViewportHeight/ViewportWidth` 选择；保留 `ScrollUnit` 与逻辑/DIP 恢复分支，不改变刷新、虚拟化或选择语义。
+- 定向 `MediaWindowAnchorContractTests` 为 `9/9`，Release 测试构建通过，`validate-source.py`、XAML `19/19`、`git diff --check` 通过。真实宿主和此前 `8d729ab` 候选包尚未包含/验证该修复。
+
 ## 2026-09-09 L31 宿主状态只读复核
 
 - 只读检查确认 `D:\software\Playnite\Playnite.DesktopApp.exe` 和已安装 GameSaveCenter `0.6.73` 扩展目录仍存在；本次复核时 Playnite 进程已经退出，未由本轮重新启动或安装。
