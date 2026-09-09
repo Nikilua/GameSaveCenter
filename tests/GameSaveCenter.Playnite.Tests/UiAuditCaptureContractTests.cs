@@ -131,6 +131,9 @@ public sealed class UiAuditCaptureContractTests
         Assert.Contains("TaskCenterView already presents a bounded 50-row page", source);
         Assert.Contains("FindDescendant<DataGridRowsPresenter>(viewer)", source);
         Assert.Contains("ScrollToBottom", source);
+        Assert.Contains("PatternInterface.RangeValue", source);
+        Assert.Contains("IRangeValueProvider", source);
+        Assert.Contains("宿主审计回放:滑块等效:底部", source);
         Assert.Contains("宿主审计回放:底部", source);
         Assert.Contains("lastRowComplete", source);
         Assert.Contains("tail-selection.png", source);

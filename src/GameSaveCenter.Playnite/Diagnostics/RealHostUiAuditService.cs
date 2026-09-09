@@ -6,6 +6,8 @@ using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Automation.Peers;
+using System.Windows.Automation.Provider;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
@@ -729,6 +731,21 @@ namespace GameSaveCenter.Playnite.Diagnostics
                     AddGridReplayRecord(grid, viewer, route, workspace, $"宿主审计回放:往返{round}:底部", records);
                 }
 
+                // Exercise the actual ScrollBar.Value automation path as closely as
+                // possible without native pointer injection. This remains developer-only
+                // and is recorded separately from ScrollViewer.ScrollTo* endpoint calls.
+                if (TrySetVerticalScrollBarValue(viewer, 0d))
+                {
+                    await WaitForRenderAsync(dashboard.Dispatcher);
+                    AddGridReplayRecord(grid, viewer, route, workspace, "宿主审计回放:滑块等效:顶部", records);
+
+                    if (TrySetVerticalScrollBarValue(viewer, viewer.ScrollableHeight))
+                    {
+                        await WaitForRenderAsync(dashboard.Dispatcher);
+                        AddGridReplayRecord(grid, viewer, route, workspace, "宿主审计回放:滑块等效:底部", records);
+                    }
+                }
+
                 if (viewer.ScrollableWidth > 0.5d)
                 {
                     viewer.ScrollToHorizontalOffset(0d);
@@ -983,6 +1000,24 @@ namespace GameSaveCenter.Playnite.Diagnostics
                 .ThenByDescending(viewer => viewer.ViewportHeight)
                 .ThenByDescending(viewer => viewer.ViewportWidth)
                 .FirstOrDefault();
+
+        private static bool TrySetVerticalScrollBarValue(ScrollViewer viewer, double value)
+        {
+            var scrollBar = FindVisualChildren<ScrollBar>(viewer)
+                .FirstOrDefault(bar => bar.Orientation == Orientation.Vertical
+                    && bar.Visibility == Visibility.Visible
+                    && bar.ActualHeight > 0);
+            if (scrollBar == null)
+                return false;
+
+            var peer = UIElementAutomationPeer.CreatePeerForElement(scrollBar);
+            var provider = peer?.GetPattern(PatternInterface.RangeValue) as IRangeValueProvider;
+            if (provider == null || provider.IsReadOnly)
+                return false;
+
+            provider.SetValue(Math.Max(provider.Minimum, Math.Min(provider.Maximum, value)));
+            return true;
+        }
 
         private static void RestoreGridSelection(DataGrid grid, object? selectedItem, IReadOnlyList<object> selectedItems)
         {
