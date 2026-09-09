@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-09
 
+## 2026-09-09 浅色主题背景与云端队列文字对比度修复
+
+- 生产壳层同时存在全壳层选中游戏 `ImageBrush` 与内容列 `UseSelectedGameBackground=True` 的 `AmbientMaterialLayer`；后者会形成截图中侧栏右边及最右侧的矩形图片边界。修复只保留全壳层图片，Shell ambient wash 跨两列且 `UseSelectedGameBackground=False`，页面局部材质仍可继续提供页面光晕。
+- `MaintenanceView.xaml`/`DashboardView.xaml` 的 `GscComboBoxLongText` 显式设置 `Foreground` 和 `TextElement.Foreground` 为 `GscPrimaryTextBrush`。这是对 `BaseTextBlockStyle` 覆盖 ComboBox 模板文字绑定的收口，不改变 ItemsSource、SelectedItem、Popup、选择或截断语义。
+- 验证边界：定向契约测试 `2/2`，源校验和 XAML `19/19` 通过，WPF 静态审计 `0 errors`；RenderHarness 构建成功但完整 render-qa 仍报告既有失败。没有真实 Playnite/FusionX 窗口，因此不得把离屏图片或静态契约写成宿主视觉通过。
+
 ## 2026-09-09 L42/L41 真实宿主启动边界
 
 - 当前最新提交为 `398a6f0`。L41 受限启动的 `cef.log` 记录 CEF Mojo channel `拒绝访问 (0x5)`，Playnite 随后退出；L42 在提升权限下完成 Core `76/76`、Worker `311/311`、Playnite `431/488`（57 skip），但 Playnite 进程保持 `MainWindowHandle=0`，UI Automation 无法找到侧栏，最终没有 `summary.json` 或表格 replay。

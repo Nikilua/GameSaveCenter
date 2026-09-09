@@ -2,6 +2,12 @@
 
 > 更新时间：2026-09-09。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-09 浅色主题视觉问题修复（离屏验证完成，真实宿主待验收）
+
+- 用户截图中的两类问题已按共享层修复：生产壳层不再在内容列重复绘制选中游戏背景；维护中心云端队列及同类有限宽度 ComboBox 的文本显式使用 `GscPrimaryTextBrush`，浅色主题不再继承白色宿主文字。
+- 相关契约测试 `2/2`、源校验、XAML `19/19` 和 WPF 静态审计 `0 errors` 通过；RenderHarness 已成功构建并产出双主题、多尺寸输出，但完整 render-qa 仍有既有 Media/Settings/Sidebar 门禁失败，不能写成全量通过。
+- 目前没有可绑定的真实 Playnite 窗口，未完成 FusionX 宿主截图或浅色主题真实回归；交付时应把真实宿主视觉确认标为待验收。前述表格滚动视频问题的物理操作与录屏边界保持不变。
+
 ## 2026-09-09 L42/L41/L39 表格滚动证据边界（当前最新）
 
 - 当前提交为 `398a6f0`；L42 Release 构建身份为 `0.6.73+398a6f095718e2827c3e8bd2a19bbbb5525c1f16`。L42 Core `76/76`、Worker `311/311`、Playnite `431/488`（57 skip），源码和 XAML `19/19` 门禁通过。

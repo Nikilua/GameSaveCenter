@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-09 浅色主题背景边界与下拉文字对比度修复
+
+- 根据用户提供的浅色主题截图复核生产壳层：`AcrylicProductionShellView` 已经有一次覆盖整个壳层的选中游戏背景，但 `ShellAmbientMaterialLayer` 又在内容列单独绘制一次选中游戏背景，导致侧栏右边和最右侧出现图片方框/接缝。修复为让壳层 Ambient layer 覆盖两列但不再读取选中游戏背景；选中游戏图片只由全壳层 `ImageBrush` 绘制，未修改 FusionX 或 Playnite 全局资源。
+- 维护中心云端队列的 `GscComboBoxLongText` 继承宿主 `BaseTextBlockStyle`，在浅色主题中把 `TextBlock` 前景色带成白色，覆盖了 ComboBox 的主题文字绑定。维护页和同类 Dashboard 样式均显式绑定 `GscPrimaryTextBrush`，保留截断、提示和现有选择/绑定行为。
+- 定向契约测试 `DemoVisualVocabularyAndWorkspaceStretchContractRemainAvailable` 与 `FiniteWidthComboBoxesUseTheSharedLongTextTemplate` 为 `2/2`；`validate-source.py`、XAML `19/19` 通过；WPF 静态审计为 `0 errors / 22 warnings / 172 info`，警告和信息为既有主题硬编码提示。
+- RenderHarness Release 构建成功并生成双主题、多尺寸截图；完整 `render-qa` 仍被既有 Media 小视口、Settings fixture 和 Sidebar rapid-toggle 门禁判失败，未发现与本轮背景/文字修复直接相关的新门禁。离屏审计不等价真实 Playnite 渲染，当前仍没有真实宿主复测依据。
+
 ## 2026-09-09 L42/L41 真实宿主入口再次未建立
 
 - 在当前提交 `398a6f0` 的隔离数据副本上先执行 L41；Playnite/CEF 受限环境出现 `拒绝访问 (0x5)`，没有窗口、扩展日志或 replay。随后用提升权限执行 L42，Release 构建无警告/错误，Core `76/76`、Worker `311/311`、Playnite `431/488`（57 skip）。

@@ -234,6 +234,8 @@
 
         <!-- Keep finite-width combo boxes readable without expanding their Popup or toolbar. -->
         <Style x:Key="GscComboBoxLongText" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockStyle}">
+            <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+            <Setter Property="TextElement.Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
             <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
             <Setter Property="TextWrapping" Value="NoWrap"/>
             <Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}"/>

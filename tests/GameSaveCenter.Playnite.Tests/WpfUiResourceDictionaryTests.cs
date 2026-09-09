@@ -2504,12 +2504,12 @@ public sealed class WpfUiResourceDictionaryTests
         var shellAmbientStart = productionShell.IndexOf("x:Name=\"ShellAmbientMaterialLayer\"", StringComparison.Ordinal);
         var shellAmbientEnd = productionShell.IndexOf("/>", shellAmbientStart, StringComparison.Ordinal);
         var shellAmbientMarkup = productionShell.Substring(shellAmbientStart, shellAmbientEnd - shellAmbientStart);
-        Assert.Contains("Grid.Column=\"1\"", shellAmbientMarkup);
+        Assert.Contains("Grid.Column=\"0\"", shellAmbientMarkup);
+        Assert.Contains("Grid.ColumnSpan=\"2\"", shellAmbientMarkup);
         Assert.Contains("Grid.RowSpan=\"2\"", shellAmbientMarkup);
         Assert.Contains("CornerRadius=\"0\"", shellAmbientMarkup);
-        Assert.Contains("UseSelectedGameBackground=\"True\"", shellAmbientMarkup);
+        Assert.Contains("UseSelectedGameBackground=\"False\"", shellAmbientMarkup);
         Assert.DoesNotContain("ShowLeftGlow", shellAmbientMarkup);
-        Assert.DoesNotContain("Grid.ColumnSpan=\"2\"", shellAmbientMarkup);
         Assert.Contains("GscShellAmbientOpacity", productionShell);
         Assert.Contains("GscSidebarMaterialBrush", productionShell);
         Assert.Contains("x:Name=\"SidebarSurface\"", productionShell);
@@ -3600,6 +3600,8 @@ public sealed class WpfUiResourceDictionaryTests
         var combined = dashboard + "\n" + string.Join("\n", workspacePaths.Select(File.ReadAllText));
 
         Assert.Contains("x:Key=\"GscComboBoxLongText\"", combined);
+        Assert.Contains("<Setter Property=\"Foreground\" Value=\"{DynamicResource GscPrimaryTextBrush}\"/>", combined);
+        Assert.Contains("<Setter Property=\"TextElement.Foreground\" Value=\"{DynamicResource GscPrimaryTextBrush}\"/>", combined);
         Assert.Contains("<Setter Property=\"TextTrimming\" Value=\"CharacterEllipsis\"/>", combined);
         Assert.Contains("<Setter Property=\"ToolTip\" Value=\"{Binding Text, RelativeSource={RelativeSource Self}}\"/>", combined);
 
