@@ -2,6 +2,14 @@
 
 > 更新时间：2026-09-09。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-09 L40/L39 表格滚动证据边界（当前最新）
+
+- 当前提交为 `c84107b`，最新文档提交为 `d12b4d8`；最新 Release 构建身份为 `0.6.73+c84107b2f79870133707ed01abd22c521e87e070`。Core `76/76`、Worker `310/311`（1 skip）、Playnite `425/488`（63 skip），源码和 XAML `19/19` 门禁通过。
+- L40 使用隔离 Playnite 启动并修正了复制配置中遗留的旧 Worker 绝对路径；Worker 身份确认正确。但最终 `EmbeddedDashboardCaptured=false`、`ControlledDashboardCaptured=true`、`ProductionVisualSourceOfTruthAvailable=false`，没有新的真实嵌入表格 replay JSON，不能作为滚动通过证据。详情见 [`L40_REAL_HOST_SCROLL_REPLAY_2026-09-09.md`](L40_REAL_HOST_SCROLL_REPLAY_2026-09-09.md)。
+- 当前有效的真实嵌入端点证据仍是 L39：`MediaInboxGrid` 400 条、`TaskGrid` 50 条，各 47 个样本，底部各 21 个，20 次上下端点往返；Media `394/394`、Task `40/40`，两表末项均在实际 Presenter 内完整可见，空正文、大块间隙、水平条覆盖、选中内容缺失和尾项不完整均为 0。该证据不覆盖物理滑块/视频。
+- b100913 的开发审计 RangeValue provider 曾抛出 WPF `NullReferenceException`；c84107b 只在开发审计中隔离该异常，不改变生产 DataGrid 模板、滚动单位、绑定、选择或虚拟化。当前未确认视频异常根因，也没有宣称问题 B 已解决。
+- Computer Use 当前仍返回 `apps=[]`；物理滑块、滚轮、PageUp/PageDown、Ctrl+End、尾部选择、主题/DPI 矩阵、加载更多现场锚点和真实录屏继续标为 `MANUAL QA REQUIRED`。完整索引见 [`EVIDENCE_INDEX_2026-09-09.md`](EVIDENCE_INDEX_2026-09-09.md)。
+
 ## 2026-09-09 L36 真实 Playnite 嵌入采集结果与未完成项
 
 - 当前提交 `99bc976473d13a92c12d6992dff11dbf807e42b5` 已在隔离数据目录中启动真实 Playnite，并由生产扩展自身完成 EmbeddedPlaynite Dashboard/设置页采集；证据入口为 [`artifacts/ui-host-audit-isolated-l36/summary.json`](../../artifacts/ui-host-audit-isolated-l36/summary.json)。本次没有修改用户 FusionX 文件、Playnite 全局样式或用户数据目录。
