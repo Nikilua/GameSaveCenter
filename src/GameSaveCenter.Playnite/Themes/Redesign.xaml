@@ -344,6 +344,20 @@
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
 
+    <!-- Header actions with an icon-plus-label Grid own a visual content tree. Do not let
+         the shared text-only button template stringify that tree as System.Windows.Controls.Grid. -->
+    <Style x:Key="GscRedesignHeaderVisualButton"
+           TargetType="{x:Type ui:Button}"
+           BasedOn="{StaticResource GscRedesignHeaderButton}">
+        <Setter Property="ContentTemplate" Value="{x:Null}"/>
+    </Style>
+
+    <Style x:Key="GscRedesignPrimaryHeaderVisualButton"
+           TargetType="{x:Type ui:Button}"
+           BasedOn="{StaticResource GscRedesignPrimaryHeaderButton}">
+        <Setter Property="ContentTemplate" Value="{x:Null}"/>
+    </Style>
+
     <Style x:Key="GscRedesignGameSelector" TargetType="ComboBox" BasedOn="{StaticResource GscWpfUiComboBox}">
         <Setter Property="MinHeight" Value="54"/>
         <Setter Property="Padding" Value="12,7"/>

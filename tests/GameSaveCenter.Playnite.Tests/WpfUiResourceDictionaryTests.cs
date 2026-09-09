@@ -4771,6 +4771,27 @@ public sealed class WpfUiResourceDictionaryTests
             Assert.Contains($"{action.Item2}.Visibility = labelVisibility;", dashboardCode);
         }
 
+        // These buttons contain an icon-plus-label Grid, so they must opt out of the
+        // shared text-only ContentTemplate or WPF renders the Grid type name.
+        foreach (var visualButton in new[]
+        {
+            ("TopRefreshButton", "GscRedesignHeaderVisualButton"),
+            ("TopBackupAllButton", "GscRedesignPrimaryHeaderVisualButton"),
+            ("TopMediaSyncButton", "GscRedesignHeaderVisualButton"),
+            ("TopTrainerImportButton", "GscRedesignHeaderVisualButton"),
+            ("TopTrainerCatalogButton", "GscRedesignHeaderVisualButton"),
+            ("TopDiagnosticsButton", "GscRedesignHeaderVisualButton"),
+            ("ToggleGameBrowserButton", "GscRedesignHeaderVisualButton")
+        })
+        {
+            Assert.Contains($"x:Name=\"{visualButton.Item1}\" Style=\"{{StaticResource {visualButton.Item2}}}\"", dashboard);
+        }
+
+        var redesign = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "Redesign.xaml"));
+        Assert.Contains("x:Key=\"GscRedesignHeaderVisualButton\"", redesign);
+        Assert.Contains("x:Key=\"GscRedesignPrimaryHeaderVisualButton\"", redesign);
+        Assert.Contains("<Setter Property=\"ContentTemplate\" Value=\"{x:Null}\"/>", redesign);
+
         Assert.Contains("SetToolbarLabelsVisible(layout.IsToolbarLabelsVisible);", dashboardCode);
         Assert.Contains("var labelVisibility = visible ? Visibility.Visible : Visibility.Collapsed;", dashboardCode);
     }
