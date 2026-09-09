@@ -85,7 +85,7 @@ try {
         if (-not (Test-Path -LiteralPath $playniteConfigPath -PathType Leaf)) {
             throw "Isolated Playnite config was not found: $playniteConfigPath"
         }
-        $playniteConfig = Get-Content -LiteralPath $playniteConfigPath -Raw | ConvertFrom-Json
+        $playniteConfig = Get-Content -LiteralPath $playniteConfigPath -Encoding UTF8 -Raw | ConvertFrom-Json
         $playniteConfig.DatabasePath = Join-Path $UserDataDir 'library'
         $playniteConfig.AutoBackupEnabled = $false
         $playniteConfig | ConvertTo-Json -Depth 32 | Set-Content -LiteralPath $playniteConfigPath -Encoding UTF8
@@ -97,7 +97,7 @@ try {
             throw "Isolated GameSaveCenter Worker was not found: $pluginWorker"
         }
         if (Test-Path -LiteralPath $pluginSettingsPath -PathType Leaf) {
-            $pluginSettings = Get-Content -LiteralPath $pluginSettingsPath -Raw | ConvertFrom-Json
+            $pluginSettings = Get-Content -LiteralPath $pluginSettingsPath -Encoding UTF8 -Raw | ConvertFrom-Json
             $pluginSettings.WorkerExecutable = $pluginWorker
             $pluginSettings | ConvertTo-Json -Depth 32 | Set-Content -LiteralPath $pluginSettingsPath -Encoding UTF8
         }
