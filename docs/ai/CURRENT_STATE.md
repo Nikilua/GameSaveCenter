@@ -2,6 +2,12 @@
 
 > 更新时间：2026-09-09。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-09 首页交互行为测试已补齐
+
+- `4001d9d` 新增 STA WPF 行为测试，实际布局 `OverviewView` 后确认全局活动行不会把 `Border/Grid` 字符串化为 `System.Windows.Controls.Border`，云端队列卡片保留 `StackPanel` 内容并通过整卡点击执行 `OpenCloudQueueCommand` 一次。
+- 当前回归：Release 解决方案构建 `0 warning / 0 error`；Playnite `427/490`（63 skip、0 fail）；定向 `OverviewInteractionTests` `1/1`。该测试提交为测试夹具，不改变生产程序集，因此当前候选包仍对应生产修复提交 `1fdd15e`。
+- 真实 Playnite/FusionX 没有可绑定窗口；离屏/STA 测试不等价真实宿主浅色/深色主题、DPI、物理点击和视频复测。
+
 ## 2026-09-09 首页全局活动与云端队列卡片修复
 
 - `OverviewActivityRowButton` 已清空共享文本按钮模板的 `ContentTemplate`，避免活动行的 `Border/Grid` 可视树被字符串化为 `System.Windows.Controls.Border`。

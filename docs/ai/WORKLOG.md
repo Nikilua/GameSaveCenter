@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-09 首页活动与云端队列实际 WPF 交互回归
+
+- 新增 `OverviewInteractionTests.OverviewActivityRowsKeepTheirVisualTreeAndCloudQueueCardExecutesOneClickCommand`：在 STA WPF 布局中加载真实 `OverviewView`，验证全局活动行的 `Content` 仍是 `Border` 可视树，云端队列卡片的 `Content` 是 `StackPanel`，没有恢复文本模板字符串化。
+- 测试通过实际 `ButtonBase.OnClick` 路径验证整卡命令只执行一次；卡片绑定到 `OpenCloudQueueCommand`，不再依赖或保留“查看明细”子按钮。测试放在 `4001d9d`，没有改变生产程序集和候选包内容。
+- 定向行为测试 `1/1`；随后 Release 解决方案构建 `0 warning / 0 error`，Playnite 全量 `427/490`（63 skip、0 fail）。首次并行启动窗口测试曾无输出，已终止该测试进程并改为无顶层 Window 的 STA 布局夹具；改后稳定通过。
+- 该测试只证明插件自己的 WPF 视觉树和命令路由；真实 Playnite/FusionX、浅/深用户主题、DPI 与宿主点击/录屏仍保持人工待验收边界。
+
 ## 2026-09-09 首页活动内容呈现与云端队列卡片点击入口修复
 
 - 首页全局活动行使用共享 `GscWpfUiButton` 时，按钮默认的文本 `ContentTemplate` 会把行内 `Border/Grid` 可视树绑定到 `TextBlock.Text`，因此显示为 `System.Windows.Controls.Border`。`OverviewActivityRowButton` 现在显式清空 `ContentTemplate`，保留实际行内容和原有活动命令。

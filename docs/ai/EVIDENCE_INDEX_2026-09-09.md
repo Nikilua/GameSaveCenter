@@ -1,8 +1,12 @@
 # 2026-09-09 证据索引与验收边界
 
-当前基线：`main`，最新代码提交为 `1fdd15e`（缩略图测试隔离为 `c0197e5`，Media 离屏门禁收口为 `d777e65`）。当前源码回归为 Playnite `426/489`（63 skip、0 fail）；最新干净 RenderHarness 报告对应 `1fdd15e`，不是宿主安装包。L42 运行基线及构建身份为 `398a6f0` / `0.6.73+398a6f095718e2827c3e8bd2a19bbbb5525c1f16`。L41/L42 均未捕获嵌入 Dashboard，因此当前有效的真实嵌入表格回放仍是 L39 的 `0.6.73+a9b8bcec0c05f7d548d8160119b2b29e9698b1ab`。窗口级滚动探针 canonical 报告仍为 `ea18b11`。本索引只汇总已有证据，不把程序化回放扩大为物理滑块/视频结论。
+当前基线：`main`，最新代码提交为 `4001d9d`（生产首页修复为 `1fdd15e`，缩略图测试隔离为 `c0197e5`，Media 离屏门禁收口为 `d777e65`）。当前源码回归为 Playnite `427/490`（63 skip、0 fail）；新增 `OverviewInteractionTests` 在 STA WPF 布局中验证活动行可视树与云端整卡点击命令。最新干净 RenderHarness 报告对应 `1fdd15e`，不是宿主安装包。L42 运行基线及构建身份为 `398a6f0` / `0.6.73+398a6f095718e2827c3e8bd2a19bbbb5525c1f16`。L41/L42 均未捕获嵌入 Dashboard，因此当前有效的真实嵌入表格回放仍是 L39 的 `0.6.73+a9b8bcec0c05f7d548d8160119b2b29e9698b1ab`。窗口级滚动探针 canonical 报告仍为 `ea18b11`。本索引只汇总已有证据，不把程序化回放扩大为物理滑块/视频结论。
 
 ## 当前阶段
+
+### 2026-09-09 首页活动和云端队列整卡行为证据
+
+`tests/GameSaveCenter.Playnite.Tests/OverviewInteractionTests.cs` 在实际 `OverviewView` WPF 视觉树布局后验证：全局活动按钮内容是 `Border`，不是文本模板产生的类型名；云端队列整卡内容是 `StackPanel`，`ContentTemplate` 为空，命令绑定到 `OpenCloudQueueCommand`，实际点击路径只执行一次。定向测试 `1/1`，全量 Playnite `427/490`（63 skip、0 fail）。这是插件层 WPF 行为证据，不替代真实 Playnite/FusionX 主题、DPI、物理拖动或录屏。
 
 ### 2026-09-09 回归与离屏 RenderHarness 证据
 

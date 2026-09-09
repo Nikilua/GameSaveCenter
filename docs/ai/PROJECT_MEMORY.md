@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-09
 
+## 2026-09-09 首页活动和云端队列整卡交互验证
+
+- `4001d9d` 增加真实 WPF STA 行为测试，不再只依靠 XAML 字符串断言：`OverviewView` 完成测量/排列后，活动按钮内容保持 `Border`，云端卡片内容保持 `StackPanel`，共享按钮的文本模板不会把视觉树显示成类型名。
+- 测试通过反射调用 WPF `ButtonBase.OnClick` 的框架点击路径，确认 `OpenCloudQueueCommand` 恰好执行一次；因此“查看明细”被移除后整卡入口仍有行为覆盖。
+- 本地验证为 Release 构建 `0 warning / 0 error`、Playnite `427/490`（63 skip、0 fail）。测试夹具不改变生产包；真实 Playnite/FusionX 主题、DPI、鼠标点击和录屏仍不可由该测试代替。
+
 ## 2026-09-09 首页活动行可视树与云端队列整卡导航
 
 - 共享 `GscWpfUiButton` 默认通过 `GscWpfUiButtonTextTemplate` 将 `Content` 绑定到 `TextBlock.Text`；当首页全局活动行把 `Border/Grid` 作为按钮内容时，会出现 `System.Windows.Controls.Border`。页面局部的 `OverviewActivityRowButton` 必须设置 `ContentTemplate={x:Null}`，不能修改为关闭全局按钮模板或删除活动命令。
