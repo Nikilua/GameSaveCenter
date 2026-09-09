@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-10 按当前 HEAD 重新生成候选包
+
+- 从当前 HEAD `8657654` 运行 `scripts/package.ps1 -Configuration Release -BuildOutputRoot .tmp/package-current-20260910-head`；XAML `19/19`，Release 构建 0 warning/0 error，Core `76/76`、Worker `310/311`（1 skip）、Playnite `428/491`（63 skip），Worker `win-x64` 发布、程序集身份和 self-contained 检查均通过。
+- 六份程序集身份统一为 `0.6.73+8657654310d99e349c120f3bb0484b65ac9f4dc2`；`.pext/.zip` 均 `43,837,912` 字节，SHA-256 均为 `E136B5C6465A5A8933C72B0F9707CFF64D91A02D35115B9A007BF6A749B62AB0`。
+- 本次只在测试文件增加运行时覆盖，生产 XAML 未变；沿用提交 `248d28e` 的干净 RenderHarness 报告。隔离构建目录和 Worker staging 已按规则清理，候选包未安装真实 Playnite。
+
 ## 2026-09-10 游戏选择器视觉树运行时回归补强
 
 - 新增 `WpfUiResourceDictionaryTests.GameContextButtonKeepsCompositeGridContentThroughItsRuntimeTemplate`：在 STA WPF 中实际解析 `DesignTokens.xaml`、`WpfUiProduction.xaml` 和 `Redesign.xaml`，套用 `GscRedesignGameContextButton`，测量/排列后确认 `ContentTemplate` 为空，模板中的 `ContentPresenter` 仍持有原始 `Grid` 内容，不会把复合视觉树渲染成 `System.Windows.Controls.Grid` 文本。
@@ -41,7 +47,7 @@
 - 六份程序集身份一致为 `0.6.73+fa9af0ad36db07551bd1c2985258d72eecb9c8e4`；[`.pext`](../../artifacts/GameSaveCenter-0.6.73.pext) 与 [`.zip`](../../artifacts/GameSaveCenter-0.6.73-playnite.zip) 均 `43,837,868` 字节，SHA-256 为 `631615AB7695C46F943D9546A53369C69ADA49F347C4F7CE33D96A33C3831249`。
 - 打包 staging 和隔离构建目录已从 `artifacts/`、`.tmp/` 清理；没有安装真实 Playnite，L31 宿主矩阵和原视频操作仍保持未验收。
 - 打包完成后的独立门禁再次通过：`python scripts/validate-source.py`、`scripts/check-xaml.ps1`（19 文件）和 `git diff --check` 均通过；这只加强源码/交付一致性证据，不改变真实宿主待验收边界。
-- L32 文档链接审计扫描 122 个本地 Markdown 链接，缺失数为 `0`；同时确认当前 `.pext/.zip` 均存在。旧的一次性媒体截图链接已改为当前证据索引，不恢复已清理的临时截图。
+- L32 文档链接审计扫描 121 个本地 Markdown 链接，缺失数为 `0`；同时确认当前 `.pext/.zip` 均存在。旧的一次性媒体截图链接已改为当前证据索引，不恢复已清理的临时截图。
 
 ## 2026-09-10 证据边界与旧临时产物清理
 

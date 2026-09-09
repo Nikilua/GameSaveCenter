@@ -2,6 +2,8 @@
 
 > 连续实施入口：[32 项、8 阶段计划](ai/CONTINUOUS_DEVELOPMENT_PLAN_2026-09-08.md)。用户要求减少逐项确认；接手后按依赖连续实施并逐项交付，已满足任务跳过，外部阻塞不妨碍独立任务。Q6 质量报告仍是首四项问题依据。
 
+> 2026-09-10 当前 HEAD 候选包：从 `8657654` 重新运行发布链，六份程序集身份统一为 `0.6.73+8657654310d99e349c120f3bb0484b65ac9f4dc2`；`.pext/.zip` 均 `43,837,912` 字节，SHA-256 为 `E136B5C6465A5A8933C72B0F9707CFF64D91A02D35115B9A007BF6A749B62AB0`。Core `76/76`、Worker `310/311`（1 skip）、Playnite `428/491`（63 skip），0 失败，构建 0 warning/0 error；本次只增加测试覆盖，生产 XAML 仍来自 `248d28e`。候选包未安装真实 Playnite，FusionX、用户主题、DPI、物理点击、视频和滚动矩阵仍待 L31 宿主条件。
+
 > 2026-09-10 最新候选包：生产源提交 `248d28e` 补齐活动游戏选择器复合按钮的 `ContentTemplate={x:Null}` 防护，并增加样式契约断言。候选 `.pext/.zip` 六份程序集身份为 `0.6.73+248d28eff8c595516a803f8db356952cef54c166`，均 `43,837,966` 字节，SHA-256 为 `628F34B01C478CD30A26260650703C8B77F558561E103D78B24C8A390949DDD3`；Core `76/76`、Worker `310/311`、Playnite `427/490`，0 失败。干净 RenderHarness 报告为 [`.tmp/render-qa-gamecontext-clean-20260910/render-qa-report.txt`](../.tmp/render-qa-gamecontext-clean-20260910/render-qa-report.txt)，`WorkingTreeClean: True`、`render-qa OK`。真实 Playnite/FusionX、用户主题、DPI、物理点击和视频仍待 L31 宿主条件。
 
 > 2026-09-10 游戏选择器运行时测试补强：新增 STA WPF 测试实际套用 `GscRedesignGameContextButton` 模板并确认 `ContentPresenter` 保留原始 `Grid`，定向 `1/1`；当前 main 全量 Release 回归为 Core `76/76`、Worker `310/311`（1 skip）、Playnite `428/491`（63 skip），0 失败。本次只增加测试覆盖，未改变 `248d28e` 候选包的生产程序集；真实 Playnite/FusionX、用户主题、DPI、物理点击和视频仍待 L31 宿主条件。
