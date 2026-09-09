@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-09 L30 候选包按最新滚动修复重新生成
+
+- 使用 `scripts/package.ps1 -Configuration Release -BuildOutputRoot .tmp/l32-package-build-f31711c` 重新生成候选包；Release 构建、测试、Worker `win-x64` self-contained 发布、六份程序集身份、manifest、必需文件和 self-contained 校验均成功，Playnite 测试最终为 `423/486`，`0` 失败、`63` 跳过。
+- 最新候选包构建提交为 `01af39c`，完整身份为 `0.6.73+01af39ca76129d23f59b0e60b93b1e4ac9974051`；`.pext` 与 `.zip` 均为 `43,831,773` 字节，SHA-256 均为 `E58266620809675AE7F909AC572B42931A506EAF7FA77F2864947E3248359B45`。该包已经包含 `f31711c` 实际表格滚动器锚点修复，覆盖此前不含该修复的 `8d729ab` 候选包。
+- 包只生成并保留在 `artifacts/`，没有安装、替换或启动真实 Playnite；`.tmp/l32-package-build-f31711c` 已在完成校验后清理。真实 FusionX 模板链、DPI、宿主诊断日志和原视频矩阵仍待 L31。
+
 ## 2026-09-09 L32 锚点修复全量回归
 
 - `MediaWindowAnchorContractTests` 定向结果 `10/10`；Playnite Release 全量为 `423 通过 / 63 跳过 / 0 失败`，总计 `486`。新增 STA 隐藏 Window 测试构造两个后代滚动器，验证多滚动器模板下优先选择含 `DataGridRowsPresenter` 的表格滚动器。

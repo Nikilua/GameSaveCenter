@@ -4,8 +4,8 @@
 
 ## 2026-09-09 L30 候选安装包与升级/回退
 
-- 候选公共版本固定为 `0.6.73`。`scripts/package.ps1` 必须从当前源码生成插件、Worker、Core、Contracts 的同源构建身份；本轮身份为 `0.6.73+8d729abd1622147910e69135e427e92ae4a6c4b8`。Worker 发布必须是 `win-x64` self-contained，并验证 `runtimeconfig` 的 `includedFrameworks`。
-- 包内最低必需集合包括 manifest、icon、插件 DLL、Contracts/Core、Worker EXE/DLL、Worker runtimeconfig、hostfxr/hostpolicy/coreclr；`.pext` 与 zip 应保持同字节内容。L30 候选两个包 SHA-256 均为 `680E5007AE3E027DDBBE0D37E2DA4EDB2BA9DA06B83F4F384CB4D35C1A75B2B7`。
+- 候选公共版本固定为 `0.6.73`。`scripts/package.ps1` 必须从当前源码生成插件、Worker、Core、Contracts 的同源构建身份；最新身份为 `0.6.73+01af39ca76129d23f59b0e60b93b1e4ac9974051`。Worker 发布必须是 `win-x64` self-contained，并验证 `runtimeconfig` 的 `includedFrameworks`。
+- 包内最低必需集合包括 manifest、icon、插件 DLL、Contracts/Core、Worker EXE/DLL、Worker runtimeconfig、hostfxr/hostpolicy/coreclr；`.pext` 与 zip 应保持同字节内容。最新候选两个包均为 `43,831,773` 字节，SHA-256 为 `E58266620809675AE7F909AC572B42931A506EAF7FA77F2864947E3248359B45`。
 - 数据库迁移采用幂等增量列/表初始化，必要时在事务内重建 `backup_versions` 并保留数据；没有通用 down-migration。升级前必须复制完整隔离配置/状态库，回退先停宿主、保留失败副本、恢复升级前副本再安装旧包，不能让旧版直接打开未知新 schema。
 - L30 只验证候选包与隔离迁移，不等价真实 Playnite 安装；包未安装，宿主加载/FusionX/DPI/用户主题/视频继续由 L31 验收。
 
@@ -23,7 +23,7 @@
 - 提交 `85b1aeb` 只读加载本机 FusionX `2.1.1` 的 `DefaultControls/DataGrid.xaml` 做同窗体对照；没有写入用户主题。FusionX 直接滑块/Ctrl+End 到 `1987/1987`，末行 `1999@608/44` 完整，Presenter `0,36,1078.67x600`，水平条 `Collapsed/0`；deferred `ScrollIntoView` 仍是不确定基线。该结果不能替代真实 Playnite 内的 FusionX 模板链、DPI 或视频操作。
 - 提交 `5198c6c` 增加 FusionX 水平条显示场景：700×640 DIP 视口、1100 DIP 列宽时水平条为 `Visible/17.33`，Presenter 为 `678.67x582.67`，末尾仍到 `1987/1987` 且最后行 `1999@608/44` 完整；20 次往返和语义滚动没有空正文或末行裁剪。该结果仍是隐藏窗口离线夹具，不是宿主录屏。
 - 提交 `8775809` 修正 RenderHarness 对空 `git status --porcelain` 的解释；最新 `.tmp/l32-scrollprobe/scaleprobe-report.txt`（canonical 提交 `ea18b11`）记录 `WorkingTreeClean: True`，不再把干净工作树写成 `False`。
-- 提交 `f31711c` 让 `CaptureAnchor`/`RestoreAnchor` 使用与诊断器一致的实际表格 `ScrollViewer` 选择规则：优先含 `DataGridRowsPresenter`，再按 DIP 视口高度/宽度排序。定向锚点契约为 `9/9`；此前候选包身份 `8d729ab` 未包含该生产修复，不能把离线报告写成候选包已验证。
+- 提交 `f31711c` 让 `CaptureAnchor`/`RestoreAnchor` 使用与诊断器一致的实际表格 `ScrollViewer` 选择规则：优先含 `DataGridRowsPresenter`，再按 DIP 视口高度/宽度排序；提交 `1477a37` 用 STA 隐藏 Window 行为测试锁定多滚动器选择。定向锚点契约为 `10/10`；最新 `01af39c` 候选包已包含生产修复，但仍不能把离线报告写成真实宿主已验证。
 - 离线 `scaleprobe` 的 20 次滑块往返在任务表/媒体表 200、2000、10000 条规模均保持可见行和文字；末尾滑块路径的最后行完整。真实 Playnite/FusionX、DPI、视频和加载更多现场锚点仍必须复测。
 - 本轮没有真实宿主窗口；后续仍须用 Playnite/FusionX 重复视频动作，不能用该离线报告替代宿主验收。锚点修复和 STA 行为测试后的 Playnite 全量离线回归为 `423/486`（63 skip、0 fail），锚点定向 `10/10`。
 
