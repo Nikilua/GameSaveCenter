@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-09 L32 窗口级 ScrollIntoView 对照探针
+
+- 提交 `862742a` 将原先只挂在离屏 `Grid` 的末尾定位比较改为隐藏 WPF `Window`：同一批 2000 条任务数据分别运行插件自有 DataGrid 模板和标准 WPF DataGrid 模板；先回到顶部，再执行 `ScrollIntoView(最后一项)`，随后做 20 次顶部/底部/中间往返，并执行 `PageDown/PageUp/Ctrl+End`。
+- 插件模板结果为 `offset=1992/1992`、最后行 `1999`，行底位于实际 `ScrollContentPresenter` 内；往返期间可见行、稳定选择和末尾完整性均通过。标准模板的直接滑块/Ctrl+End 末行完整，但 deferred `ScrollIntoView` 在隐藏窗口夹具仍未结算，报告明确标记 `offscreen-baseline-inconclusive`，不把它伪装成通过。
+- 证据：`.tmp/l32-scrollprobe/scaleprobe-report.txt`，`scaleprobe OK`；RenderHarness Release 构建 `0 warning/0 error`。该夹具仍不是真实 Playnite/FusionX、DPI 或视频证据，真实宿主阻塞继续由 L31 记录。
+
 ## 2026-09-09 表格滚动诊断补强与离线复现
 
 - 在不改变滚动单位、虚拟化模式、刷新或锚点算法的前提下，诊断器改为优先绑定包含 `DataGridRowsPresenter` 的实际内部 `ScrollViewer`；Media 锚点上下文记录请求、执行、完成、代际失效、容器/ScrollViewer 重试和失败原因。

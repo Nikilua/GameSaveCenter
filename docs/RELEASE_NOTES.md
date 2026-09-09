@@ -3,6 +3,7 @@
 - 候选包沿用仓库公共版本 `0.6.73`，不因连续开发阶段随意升版本；插件、Worker、Core、Contracts 使用同一构建身份 `0.6.73+8d729abd1622147910e69135e427e92ae4a6c4b8`。
 - 候选 `.pext`/`.zip` 已由 `scripts/package.ps1` 在隔离输出中生成，Worker 为 self-contained `win-x64`，两个包的 SHA-256 均为 `680E5007AE3E027DDBBE0D37E2DA4EDB2BA9DA06B83F4F384CB4D35C1A75B2B7`。
 - 升级/回退必须先备份完整隔离配置和状态库；当前迁移是幂等增量，不承诺旧版直接读取已升级数据库。详细清单见 [`L30_PACKAGE_CHECKLIST_2026-09-09.md`](ai/L30_PACKAGE_CHECKLIST_2026-09-09.md)。
+- 表格滚动诊断补充窗口级离线对照：插件模板的 `ScrollIntoView(最后一项)`、20 次往返和末尾完整性在隐藏 WPF `Window` 中通过；标准 WPF 模板的 deferred 定位仍明确标为基线不确定，不能替代 FusionX/真实 Playnite 验收。
 - 本候选包未安装到真实 Playnite；FusionX、用户主题、DPI、Worker 重启和原视频复测仍待宿主验收。
 
 # 0.6.55 Development Preview

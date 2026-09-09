@@ -19,7 +19,8 @@
 
 - `DataGridScrollDiagnostics` 选择实际拥有 `DataGridRowsPresenter` 的内部滚动器，避免宿主模板出现多个 `ScrollViewer` 时把外层页面滚动器误当作表格滚动器；日志仍只记录稳定 ID、数量、尺寸、偏移、代际和状态，不记录文件内容。
 - `MediaCenterView` 的锚点记录不改变恢复语义，只增加 `queued/executing/completed/skipped/retry/failed` 状态与原因；`MediaWindowAnchorContractTests` 锁定这些诊断出口。
-- 离线 `scaleprobe` 的 20 次滑块往返在任务表/媒体表 200、2000、10000 条规模均保持可见行和文字；末尾滑块路径的最后行完整。直接 `ScrollIntoView` 在自定义/标准模板都被离屏调度标为 inconclusive，不能拿来推断 FusionX。
+- 提交 `862742a` 新增隐藏 WPF `Window` 的同数据对照：插件模板从顶部执行 `ScrollIntoView(最后一项)` 后偏移为 `1992/1992`，最后行完整；随后 20 次往返及 `PageDown/PageUp/Ctrl+End` 保持可见和选择。标准 WPF 模板的滑块/Ctrl+End 末行完整，但 deferred `ScrollIntoView` 在该离线夹具仍为 `offscreen-baseline-inconclusive`，不能拿来推断 FusionX。
+- 离线 `scaleprobe` 的 20 次滑块往返在任务表/媒体表 200、2000、10000 条规模均保持可见行和文字；末尾滑块路径的最后行完整。真实 Playnite/FusionX、DPI、视频和加载更多现场锚点仍必须复测。
 - 本轮没有真实宿主窗口；后续仍须用 Playnite/FusionX 重复视频动作，不能用该离线报告替代宿主验收。
 
 ## 2026-09-09 L28 持续更新分页与选择恢复
