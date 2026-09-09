@@ -15,6 +15,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Markup;
 using System.Windows.Threading;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Infrastructure;
@@ -2708,6 +2709,93 @@ public static class Program
                 root.Children.Add(grid);
                 return new WindowedGridProbeFixture(root, grid);
             });
+
+        var fusionXThemeRoot = FindInstalledFusionXThemeRoot();
+        if (fusionXThemeRoot == null)
+        {
+            report.AppendLine("  L32-FusionX-DataGrid result=not-run; installed FusionX Desktop theme resources were not found");
+        }
+        else
+        {
+            report.AppendLine(
+                $"  L32-FusionX-DataGrid source=installed-desktop-theme root={Path.GetFileName(fusionXThemeRoot)} resource=DefaultControls/DataGrid.xaml");
+            ProbeWindowedDataGridScrollContract(
+                report,
+                "L32-FusionX-DataGrid",
+                () => CreateFusionXGridProbeFixture(itemCount, fusionXThemeRoot));
+        }
+    }
+
+    private static string? FindInstalledFusionXThemeRoot()
+    {
+        var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        var themeRoot = Path.Combine(appData, "Playnite", "Themes", "Desktop");
+        if (!Directory.Exists(themeRoot))
+            return null;
+
+        return Directory.GetDirectories(themeRoot, "FusionX_*", SearchOption.TopDirectoryOnly)
+            .Where(path => File.Exists(Path.Combine(path, "theme.yaml"))
+                && File.Exists(Path.Combine(path, "DefaultControls", "DataGrid.xaml")))
+            .OrderByDescending(path => Directory.GetLastWriteTimeUtc(path))
+            .FirstOrDefault();
+    }
+
+    private static WindowedGridProbeFixture CreateFusionXGridProbeFixture(int itemCount, string themeRoot)
+    {
+        var root = new Grid
+        {
+            Width = 1100,
+            Height = 640,
+            ClipToBounds = true
+        };
+        var dictionaries = root.Resources.MergedDictionaries;
+        dictionaries.Add(new ResourceDictionary
+        {
+            Source = new Uri(Path.Combine(themeRoot, "Constants.xaml"), UriKind.Absolute)
+        });
+        var dataGridPath = Path.Combine(themeRoot, "DefaultControls", "DataGrid.xaml");
+        var dataGridXaml = File.ReadAllText(dataGridPath);
+        var rootEnd = dataGridXaml.IndexOf('>');
+        if (rootEnd < 0)
+            throw new InvalidOperationException("FusionX DataGrid.xaml has no ResourceDictionary root");
+        // FusionX normally loads Constants.xaml into Playnite's shared resource scope before
+        // this dictionary. XamlReader parses one dictionary in isolation, so provide only the
+        // one StaticResource that the DataGrid cell template requires; no theme file is edited.
+        dataGridXaml = dataGridXaml.Insert(
+            rootEnd + 1,
+            "\n    <Color x:Key=\"TextColor\">#CCFFFFFF</Color>"
+            + "\n    <BooleanToVisibilityConverter x:Key=\"BooleanToVisibilityConverter\" />");
+        dictionaries.Add((ResourceDictionary)XamlReader.Parse(dataGridXaml));
+
+        var grid = new DataGrid
+        {
+            Width = 1100,
+            Height = 640,
+            AutoGenerateColumns = false,
+            HeadersVisibility = DataGridHeadersVisibility.Column,
+            EnableRowVirtualization = true,
+            EnableColumnVirtualization = true,
+            IsReadOnly = true,
+            RowHeight = 44,
+            ColumnHeaderHeight = 36
+        };
+        VirtualizingPanel.SetIsVirtualizing(grid, true);
+        VirtualizingPanel.SetVirtualizationMode(grid, VirtualizationMode.Recycling);
+        VirtualizingPanel.SetScrollUnit(grid, ScrollUnit.Item);
+        ScrollViewer.SetCanContentScroll(grid, true);
+        ScrollViewer.SetHorizontalScrollBarVisibility(grid, ScrollBarVisibility.Auto);
+        ScrollViewer.SetVerticalScrollBarVisibility(grid, ScrollBarVisibility.Auto);
+        grid.Columns.Add(new DataGridTextColumn
+        {
+            Header = "ID",
+            Binding = new Binding("TaskId"),
+            Width = 620
+        });
+        grid.ItemsSource = Enumerable.Range(0, itemCount)
+            .Select(index => new TaskStatusDto { TaskId = "fusionx-" + index.ToString("D4") })
+            .ToArray();
+        root.Children.Add(grid);
+        return new WindowedGridProbeFixture(root, grid);
     }
 
     private static void ProbeWindowedDataGridScrollContract(
@@ -2746,6 +2834,8 @@ public static class Program
                 s_problems.Add($"{label} hidden Window has no internal ScrollViewer");
                 return;
             }
+            var horizontalBar = FindVisualChildren<ScrollBar>(scroller)
+                .FirstOrDefault(candidate => candidate.Orientation == Orientation.Horizontal);
 
             grid.SelectedIndex = itemCount / 2;
             scroller.ScrollToVerticalOffset(0);
@@ -2764,16 +2854,19 @@ public static class Program
                 + $"offsetAfterScrollIntoView={scroller.VerticalOffset:0.##}/{scroller.ScrollableHeight:0.##} "
                 + $"top={top.FirstId}@{top.FirstY:0.##}/{top.FirstHeight:0.##} "
                 + $"last={afterScrollIntoView.LastIndex}:{afterScrollIntoView.LastId}@{afterScrollIntoView.LastBottom:0.##}/{afterScrollIntoView.LastHeight:0.##} "
+                + $"hbar={(horizontalBar == null ? "missing" : horizontalBar.Visibility + "/" + horizontalBar.ActualHeight.ToString("0.##"))} "
                 + $"presenter={afterScrollIntoView.PresenterRect.Left:0.##},{afterScrollIntoView.PresenterRect.Top:0.##},{afterScrollIntoView.PresenterRect.Width:0.##}x{afterScrollIntoView.PresenterRect.Height:0.##}");
 
             var scrollIntoViewFailed = afterScrollIntoView.LastIndex != itemCount - 1
                 || afterScrollIntoView.LastBottom > afterScrollIntoView.PresenterRect.Bottom + 1
                 || (scroller.ScrollableHeight > 0 && scroller.VerticalOffset <= 0);
-            if (scrollIntoViewFailed && label.IndexOf("Standard", StringComparison.OrdinalIgnoreCase) >= 0)
+            var isBaselineTemplate = label.IndexOf("Standard", StringComparison.OrdinalIgnoreCase) >= 0
+                || label.IndexOf("FusionX", StringComparison.OrdinalIgnoreCase) >= 0;
+            if (scrollIntoViewFailed && isBaselineTemplate)
             {
                 report.AppendLine(
                     $"  {label} ScrollIntoView result=offscreen-baseline-inconclusive; "
-                    + "standard WPF template did not settle the deferred call in this hidden-window fixture; "
+                    + "baseline template did not settle the deferred call in this hidden-window fixture; "
                     + "direct slider/Ctrl+End completeness remains checked below");
             }
             else
@@ -2819,7 +2912,10 @@ public static class Program
         }
         catch (Exception ex)
         {
-            s_problems.Add($"{label} hidden Window scroll probe failed: {ex.GetType().Name}: {ex.Message}");
+            var detail = ex.InnerException == null
+                ? ex.Message
+                : ex.Message + " | inner=" + ex.InnerException.GetType().Name + ": " + ex.InnerException.Message;
+            s_problems.Add($"{label} hidden Window scroll probe failed: {ex.GetType().Name}: {detail}");
         }
         finally
         {
