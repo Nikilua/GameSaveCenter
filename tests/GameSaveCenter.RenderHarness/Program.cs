@@ -2723,6 +2723,10 @@ public static class Program
                 report,
                 "L32-FusionX-DataGrid",
                 () => CreateFusionXGridProbeFixture(itemCount, fusionXThemeRoot));
+            ProbeWindowedDataGridScrollContract(
+                report,
+                "L32-FusionX-DataGrid-HBar",
+                () => CreateFusionXGridProbeFixture(itemCount, fusionXThemeRoot, 700, 1100));
         }
     }
 
@@ -2740,11 +2744,15 @@ public static class Program
             .FirstOrDefault();
     }
 
-    private static WindowedGridProbeFixture CreateFusionXGridProbeFixture(int itemCount, string themeRoot)
+    private static WindowedGridProbeFixture CreateFusionXGridProbeFixture(
+        int itemCount,
+        string themeRoot,
+        double viewportWidth = 1100,
+        double columnWidth = 620)
     {
         var root = new Grid
         {
-            Width = 1100,
+            Width = viewportWidth,
             Height = 640,
             ClipToBounds = true
         };
@@ -2769,7 +2777,7 @@ public static class Program
 
         var grid = new DataGrid
         {
-            Width = 1100,
+            Width = viewportWidth,
             Height = 640,
             AutoGenerateColumns = false,
             HeadersVisibility = DataGridHeadersVisibility.Column,
@@ -2789,7 +2797,7 @@ public static class Program
         {
             Header = "ID",
             Binding = new Binding("TaskId"),
-            Width = 620
+            Width = columnWidth
         });
         grid.ItemsSource = Enumerable.Range(0, itemCount)
             .Select(index => new TaskStatusDto { TaskId = "fusionx-" + index.ToString("D4") })
