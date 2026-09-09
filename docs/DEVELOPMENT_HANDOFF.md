@@ -5,6 +5,7 @@
 > 2026-09-09 Media 离屏门禁收口：`d777e65` 将主表视口验收改为实际 DataGrid 行容器的完整可见数（有足够数据时至少 `4/4` 行），并修正 resize 探针向 Media 传入 PageHost `contentH`；Inspector 内 2/3 条的预览/历史列表不再被误当主表。干净报告 [`.tmp/render-qa-media-gate-clean-20260909/render-qa-report.txt`](../.tmp/render-qa-media-gate-clean-20260909/render-qa-report.txt) 为 `WorkingTreeClean: True`、`render-qa OK`，Media resize `300 DIP/readableRows=6/4`。该结果仍是离屏证据，真实宿主/FusionX 与视频操作待验收。
 > 2026-09-09 当前交接基线：文档与证据边界同步提交为 `580a70f`。它没有继续修改生产表格模板；当前 Computer Use 仍返回 `apps: []`，没有新的真实 Playnite 截图、录屏或滚动诊断。`render-qa OK` 仍只能作为离屏门禁证据，L31 真实宿主矩阵保持外部阻塞。
 > 2026-09-09 顺序 Release 复验：`dotnet build GameSaveCenter.sln -c Release --no-restore -m:1` 为 `0 warning / 0 error`；Core `76/76`、Worker `310/311`（1 skip）、Playnite `425/488`（63 skip）均无失败。源码/XAML/WPF 静态门禁通过；并行测试启动争用未计入代码失败，详细过程见 `ai/WORKLOG.md`。
+> 2026-09-09 云端队列浅色控件树证据：RenderHarness 新增真实 `MaintenanceView` 云端队列页探针，双主题两个筛选 ComboBox 均找到可见选中文本；Light 前景 `#F21B1F27`、Dark 前景 `#FFF2F4F8`。完整报告和截图在 `.tmp/render-qa-cloud-filter-probe-20260909/`，仍属于离屏证据，真实 FusionX 宿主待验收。
 
 > 2026-09-09 回归与离屏夹具更新：`c0197e5` 隔离了两个共享 `AsyncThumbnailLoader` 静态状态的 xUnit 测试，修复并发套件中 `120` 被污染为 `122` 的失败；定向 `1/1`，Playnite 全量 `425/488`（63 skip、0 fail）。`559d64f` 修正 Settings 临时目录、Sidebar rapid-toggle 调度和 Media PageHost 高度探针。干净报告见 [`.tmp/render-qa-harness-clean-20260909/render-qa-report.txt`](../.tmp/render-qa-harness-clean-20260909/render-qa-report.txt)：Settings/Sidebar 门禁已通过，生产壳层 Media 1040/1100 表格为 `300 DIP` 且页尾可达；完整 render-qa 仍只剩 Media 预览/独立表格离屏尺寸门禁。该报告不替代真实 Playnite/FusionX 与视频式宿主验收。
 

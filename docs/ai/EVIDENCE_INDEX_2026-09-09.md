@@ -8,6 +8,8 @@
 
 证据报告： [`.tmp/render-qa-media-gate-clean-20260909/render-qa-report.txt`](../../.tmp/render-qa-media-gate-clean-20260909/render-qa-report.txt)。工作树干净且报告对应 `d777e65`；RenderHarness Release 构建 `0 warning/0 error`、`render-qa OK`。Settings normal/dirty/invalid 三态、Sidebar rapid-toggle 的第二次点击、双主题/多尺寸/resize、生产壳层 Media 1040/1100 表格 `300 DIP`/页尾可达均通过；Media 主表记录实际 `readableRows`，resize 为 `6/4`，原 `230 DIP` 场景为 `4/4`。Inspector 预览/历史列表仍按嵌套小列表处理。这些离屏结果不替代真实 Playnite/FusionX 视频验收。
 
+新增的 `.tmp/render-qa-cloud-filter-probe-20260909/render-qa-report.txt` 在完整 render-qa 中额外验证了真实 `MaintenanceView` 云端队列页的两个 ComboBox：浅色 `#F21B1F27`、深色 `#FFF2F4F8`，选中文本均已实现并可见；同时保留浅/深主题截图。该报告和截图是离屏 WPF 证据，不替代真实 FusionX/Playnite 嵌入。
+
 ### L42/L41 真实宿主启动边界
 
 证据目录：[`artifacts/ui-host-audit-isolated-l42`](../../artifacts/ui-host-audit-isolated-l42)，详细记录：[`L42_REAL_HOST_SCROLL_REPLAY_2026-09-09.md`](L42_REAL_HOST_SCROLL_REPLAY_2026-09-09.md)。L41 的受限启动记录 CEF `拒绝访问 (0x5)`；L42 提升权限后 Playnite 进程保持响应但 `MainWindowHandle=0`，UI Automation 无法定位侧栏，最终没有 `summary.json`、嵌入截图或 replay JSON。L42 只证明本轮宿主入口未建立，不是表格滚动失败或修复证据。

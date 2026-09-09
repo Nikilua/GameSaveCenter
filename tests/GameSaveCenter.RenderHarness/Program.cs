@@ -1577,6 +1577,7 @@ public static class Program
             RunSettingsLayoutProbes(report);
             RunSettingsStateProbes(outputRoot, report);
             RunThemeQa(outputRoot, report);
+            RunThemeSpecificControlProbes(outputRoot, report);
             RunResizeTransitionProbes(report);
             RunShellChromeProbes(outputRoot, report);
 
@@ -3668,6 +3669,95 @@ public static class Program
                 return new GameSaveCenterSettingsView { DataContext = new GameSaveCenterSettings() };
             default:
                 throw new InvalidOperationException("Unknown theme view " + name);
+        }
+    }
+
+    private static void RunThemeSpecificControlProbes(string outputRoot, StringBuilder report)
+    {
+        report.AppendLine();
+        report.AppendLine("Theme control QA (Maintenance cloud queue filters)");
+
+        foreach (var (themeName, themeMode) in ThemeModes)
+        {
+            const int windowW = 1040;
+            const int windowH = 700;
+            var (contentW, contentH) = ContentSize(windowW, windowH);
+            var label = $"{themeName}/MaintenanceCloudQueue/{windowW}x{windowH}";
+
+            try
+            {
+                var view = new MaintenanceView { DataContext = new FakeDashboardData() };
+                ApplyThemePalette(view, themeMode);
+                view.ApplyResponsiveLayout(contentW, contentH);
+
+                var host = new Grid
+                {
+                    Width = contentW,
+                    Height = contentH,
+                    Background = CreateHarnessBackground(view),
+                    ClipToBounds = true
+                };
+                host.Children.Add(view);
+                host.Measure(new Size(contentW, contentH));
+                host.Arrange(new Rect(0, 0, contentW, contentH));
+                host.UpdateLayout();
+
+                SelectTab(view, 1);
+                view.ApplyResponsiveLayout(contentW, contentH);
+                host.UpdateLayout();
+
+                var expectedTextIsDark = themeMode == GameSaveCenterThemeMode.Light;
+                var comboNames = new[] { "云端队列状态筛选", "云端队列类型筛选" };
+                var combos = FindVisualChildren<ComboBox>(host)
+                    .Where(combo => comboNames.Contains(AutomationProperties.GetName(combo), StringComparer.Ordinal))
+                    .ToList();
+                if (combos.Count != comboNames.Length)
+                {
+                    s_problems.Add($"{label} expected {comboNames.Length} cloud queue filters, found {combos.Count}");
+                }
+
+                foreach (var combo in combos)
+                {
+                    var comboName = AutomationProperties.GetName(combo);
+                    var textBlocks = FindVisualChildren<TextBlock>(combo)
+                        .Where(text => !string.IsNullOrWhiteSpace(text.Text)
+                            && text.ActualWidth > 0
+                            && text.ActualHeight > 0)
+                        .ToList();
+                    if (textBlocks.Count == 0)
+                    {
+                        s_problems.Add($"{label} {comboName} has no realized visible selected text");
+                        continue;
+                    }
+
+                    foreach (var text in textBlocks)
+                    {
+                        if (text.Foreground is not SolidColorBrush brush)
+                        {
+                            s_problems.Add($"{label} {comboName} text '{text.Text}' has no solid foreground");
+                            continue;
+                        }
+
+                        var luminance = (0.2126 * brush.Color.R + 0.7152 * brush.Color.G + 0.0722 * brush.Color.B) / 255d;
+                        var isDarkText = luminance < 0.5;
+                        if (isDarkText != expectedTextIsDark)
+                        {
+                            s_problems.Add(
+                                $"{label} {comboName} text '{text.Text}' has unexpected foreground #{brush.Color.R:X2}{brush.Color.G:X2}{brush.Color.B:X2}");
+                        }
+                    }
+
+                    report.AppendLine(
+                        $"  {label} {comboName} items={combo.Items.Count} visibleText={string.Join("|", textBlocks.Select(text => text.Text))} "
+                        + $"foreground={string.Join("|", textBlocks.Select(text => (text.Foreground as SolidColorBrush)?.Color.ToString() ?? "none"))}");
+                }
+
+                SavePng(host, Path.Combine(outputRoot, "theme", themeName, "Maintenance-CloudQueue-1040x700.png"));
+            }
+            catch (Exception ex)
+            {
+                s_problems.Add($"{label} failed: {ex.Message}");
+            }
         }
     }
 

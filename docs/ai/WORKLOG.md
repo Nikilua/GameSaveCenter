@@ -13,6 +13,12 @@
 - 改用 `dotnet build GameSaveCenter.sln -c Release --no-restore -m:1` 后构建 `0 warning / 0 error`；随后以 `--no-build --no-restore -m:1` 顺序执行，Core `76/76`、Worker `310/311`（1 skip）、Playnite `425/488`（63 skip），均 `0` 失败。
 - `python scripts/validate-source.py`、`scripts/check-xaml.ps1`（19 文件）和 `validate_wpf_ui.py` 均通过；WPF 静态审计保持 `0 errors / 22 warnings / 172 info`，警告/信息为既有布局与主题提示。
 
+## 2026-09-09 云端队列浅色控件树探针
+
+- 之前的主题 QA 只渲染维护页默认诊断页，不能直接覆盖用户截图中的云端队列筛选器；RenderHarness 现在切换到维护页第 2 个工作区，在真实 WPF 视觉树中按 Automation Name 定位“云端队列状态筛选”和“云端队列类型筛选”。
+- 双主题结果均通过：浅色两个选中项分别为“全部状态/全部类型”，实际前景 `#F21B1F27`；深色实际前景 `#FFF2F4F8`。截图和完整报告见 `.tmp/render-qa-cloud-filter-probe-20260909/`，完整 `render-qa OK`。
+- 该探针验证了 ComboBox 模板的实际文字呈现，不证明真实 Playnite/FusionX 的宿主资源覆盖；真实宿主截图仍待 L31。
+
 ## 2026-09-09 Media 离屏门禁改为实际行几何并全量通过
 
 - 旧 `<236 DIP` 固定阈值把 `MediaInboxGrid=230 DIP` 误报为失败；报告中的实际行高为约 `44 DIP`，该视口仍能完整容纳 `4/4` 行。门禁现在以 DataGrid 行容器相对表格边界的完整可见数判断，数据量足够时要求至少 `4` 行，不用高度常数替代内容视口证据。
