@@ -14,8 +14,8 @@
 - staging/隔离构建目录已清理；包仍未安装真实 Playnite，不能把最新包身份校验写成 FusionX、DPI、物理点击或视频验收。
 - 包后又执行 `python scripts/validate-source.py`、`scripts/check-xaml.ps1` 和 `git diff --check`，均通过；这些是源码/交付门禁，不替代 L31 真实宿主证据。
 - 2026-09-10 在当前 `main` 重新执行 `dotnet test GameSaveCenter.sln -c Release --no-restore -m:1`，Core `76/76`、Worker `310/311`（1 skip）、Playnite `428/491`（63 skip），失败 `0`；新增运行时模板测试确认游戏选择器复合 `Grid` 没有被文本模板转换为类型名；此前 `AsyncThumbnailLoader` 的 `120`/`122` 并发污染本次未再复现。
-- `render-qa-gamecontext-clean-20260910/render-qa-report.txt` 的报告提交元数据为 `248d28e`，`WorkingTreeClean: True`、`render-qa OK`；`8657654` 只改测试文件，因此该报告仍覆盖当前生产 XAML；覆盖双主题、多尺寸、resize、云端筛选前景、完整壳层背景和 Media 页尾几何，仍属于离屏证据。
-- L32 文档链接审计共检查 121 个本地 Markdown 链接，缺失 0；旧临时截图不恢复，工作日志改指向当前证据索引。
+- 最新 `render-qa-head-clean-20260910/render-qa-report.txt` 的报告提交元数据为 `5c53e59`，`WorkingTreeClean: True`、`render-qa OK`；`5c53e59` 只改文档，生产 XAML 与 `8657654` 候选包一致；覆盖双主题、多尺寸、resize、云端筛选前景、完整壳层背景和 Media 页尾几何，仍属于离屏证据。
+- L32 文档链接审计共检查 123 个本地 Markdown 链接，缺失 0；旧临时截图不恢复，工作日志改指向当前证据索引。
 
 ## 2026-09-09 首页活动和云端队列整卡交互验证
 
