@@ -7,6 +7,8 @@ using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using System.Windows.Threading;
 using GameSaveCenter.Contracts;
 using Xunit;
@@ -104,6 +106,75 @@ public sealed class MediaWindowAnchorContractTests
         Assert.Contains("OrderByDescending(viewer => FindDescendant<DataGridRowsPresenter>(viewer) != null)", codeBehind);
         Assert.Contains("ThenByDescending(viewer => viewer.ViewportHeight)", codeBehind);
         Assert.Contains("ThenByDescending(viewer => viewer.ViewportWidth)", codeBehind);
+    }
+
+    [Fact]
+    public void AnchorViewerSelectionPrefersRowsPresenterOverALargerOuterViewer()
+    {
+        Exception? exception = null;
+        var selectedResponsibleViewer = false;
+
+        var thread = new Thread(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var items = new ItemsControl
+                {
+                    ItemsSource = new[] { "row" }
+                };
+                var template = new ControlTemplate(typeof(ItemsControl));
+                var root = new FrameworkElementFactory(typeof(Grid));
+                var outerViewer = new FrameworkElementFactory(typeof(ScrollViewer));
+                outerViewer.SetValue(FrameworkElement.HeightProperty, 200d);
+                var responsibleViewer = new FrameworkElementFactory(typeof(ScrollViewer));
+                responsibleViewer.SetValue(FrameworkElement.HeightProperty, 80d);
+                var content = new FrameworkElementFactory(typeof(StackPanel));
+                content.AppendChild(new FrameworkElementFactory(typeof(DataGridRowsPresenter)));
+                responsibleViewer.AppendChild(content);
+                root.AppendChild(outerViewer);
+                root.AppendChild(responsibleViewer);
+                template.VisualTree = root;
+                items.Template = template;
+
+                window = new Window
+                {
+                    Content = items,
+                    Width = 300,
+                    Height = 240,
+                    ShowInTaskbar = false,
+                    ShowActivated = false,
+                    WindowStyle = WindowStyle.None,
+                    Opacity = 0.01
+                };
+                window.Show();
+                window.UpdateLayout();
+                items.UpdateLayout();
+
+                var viewers = FindVisualChildren<ScrollViewer>(items).ToList();
+                var responsible = viewers.Single(viewer => FindVisualChildren<DataGridRowsPresenter>(viewer).Any());
+                var method = typeof(GameSaveCenter.Playnite.Views.MediaCenterView).GetMethod(
+                    "FindScrollViewer",
+                    BindingFlags.Static | BindingFlags.NonPublic)!;
+                var selected = (ScrollViewer)method.Invoke(null, new object[] { items })!;
+                selectedResponsibleViewer = ReferenceEquals(selected, responsible);
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.True(selectedResponsibleViewer);
     }
 
     [Fact]
@@ -274,6 +345,18 @@ public sealed class MediaWindowAnchorContractTests
             CapturedUtc = DateTime.UtcNow,
             ClassificationState = "Assigned"
         };
+
+    private static IEnumerable<T> FindVisualChildren<T>(DependencyObject root) where T : DependencyObject
+    {
+        for (var index = 0; index < VisualTreeHelper.GetChildrenCount(root); index++)
+        {
+            var child = VisualTreeHelper.GetChild(root, index);
+            if (child is T match)
+                yield return match;
+            foreach (var nested in FindVisualChildren<T>(child))
+                yield return nested;
+        }
+    }
 
     private static string Read(params string[] parts)
     {
