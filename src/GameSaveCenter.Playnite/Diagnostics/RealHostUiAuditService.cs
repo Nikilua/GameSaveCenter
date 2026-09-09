@@ -1015,8 +1015,19 @@ namespace GameSaveCenter.Playnite.Diagnostics
             if (provider == null || provider.IsReadOnly)
                 return false;
 
-            provider.SetValue(Math.Max(provider.Minimum, Math.Min(provider.Maximum, value)));
-            return true;
+            try
+            {
+                provider.SetValue(Math.Max(provider.Minimum, Math.Min(provider.Maximum, value)));
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // FusionX/WPF can expose a RangeValue provider before its Track is
+                // fully connected. Do not abort the whole replay; retain the direct
+                // ScrollViewer samples and report this automation path as unavailable.
+                Logger.Debug(ex, "Real host audit ScrollBar RangeValue replay unavailable.");
+                return false;
+            }
         }
 
         private static void RestoreGridSelection(DataGrid grid, object? selectedItem, IReadOnlyList<object> selectedItems)
