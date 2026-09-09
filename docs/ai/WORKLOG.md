@@ -23,6 +23,12 @@
 - 清理 8 个已确认没有文档引用的旧 `.tmp` 离屏构建/探针目录；保留当前候选包、真实宿主审计目录和用户视频帧，未删除可复核证据。
 - `validate-source.py`、XAML `19/19`、`git diff --check` 通过；当前 `main` 工作树干净，真实 Playnite 仍未绑定，L31 继续保持外部阻塞。
 
+## 2026-09-10 当前 main 完整 Release 回归
+
+- 在干净源码上执行 `dotnet test GameSaveCenter.sln -c Release --no-restore -m:1`，Core `76/76`、Worker `310/311`（1 skip）、Playnite `427/490`（63 skip），失败 `0`。
+- 用户之前看到的 `AsyncThumbnailLoaderTests.LoadAsync_ConcurrentScrollWindowStaysWithinDecodeAndCacheBounds` 期望 `120`、实际 `122` 未再复现；该用例本次通过，现有 `c0197e5` 的共享状态隔离仍有效。
+- 这次回归只证明当前源码的 Release 测试稳定，不替代真实 Playnite/FusionX、DPI、物理滑块和视频验收；L31 继续保持外部阻塞。
+
 ## 2026-09-09 首页活动内容呈现与云端队列卡片点击入口修复
 
 - 首页全局活动行使用共享 `GscWpfUiButton` 时，按钮默认的文本 `ContentTemplate` 会把行内 `Border/Grid` 可视树绑定到 `TextBlock.Text`，因此显示为 `System.Windows.Controls.Border`。`OverviewActivityRowButton` 现在显式清空 `ContentTemplate`，保留实际行内容和原有活动命令。
