@@ -6,7 +6,7 @@
 
 > L30 回退边界：当前数据库迁移是幂等增量，不承诺旧包直接读取已升级 schema；升级前要备份完整隔离配置/状态库，回退先停止宿主、保留失败目录、恢复升级前副本，再安装旧包。详细清单见 `ai/L30_PACKAGE_CHECKLIST_2026-09-09.md`；真实宿主加载、FusionX、DPI、Worker 回收和视频仍待 L31。
 
-> 2026-09-09 L31 外部阻塞：PowerShell 能看到 `D:\software\Playnite\Playnite.DesktopApp.exe`，但 Windows Computer Use 返回 `apps: []`，没有可绑定窗口；本轮未停止或重装现有 Playnite，未生成真实宿主截图/录屏/滚动诊断。详见 `ai/L31_REAL_HOST_BLOCKER_2026-09-09.md`，不能把 L30 离线包证据写成视频问题已解决。
+> 2026-09-09 L31 外部阻塞：PowerShell 确认 `D:\software\Playnite\Playnite.DesktopApp.exe` 路径，但本次继续核查时 Playnite 进程已退出，Windows Computer Use 仍返回 `apps: []`，没有可绑定窗口；本轮未启动、停止或重装宿主，未生成真实宿主截图/录屏/滚动诊断。详见 `ai/L31_REAL_HOST_BLOCKER_2026-09-09.md`，不能把 L30 离线包证据写成视频问题已解决。
 
 > 2026-09-09 表格诊断补强：诊断器已优先绑定包含 `DataGridRowsPresenter` 的实际表格 `ScrollViewer`；Media 锚点记录请求、执行、完成、代际跳过、重试和失败原因。提交 `862742a` 新增隐藏 WPF `Window` 对照：插件模板从顶部 `ScrollIntoView(最后一项)` 到 `1992/1992` 且最后行完整，20 次往返和 `PageDown/PageUp/Ctrl+End` 通过；标准模板直接滑块/Ctrl+End 末行完整，但 deferred `ScrollIntoView` 仍为 `offscreen-baseline-inconclusive`。随后提交 `85b1aeb` 只读加载本机 FusionX `2.1.1` 的 `DefaultControls/DataGrid.xaml`：直接滑块/Ctrl+End 到 `1987/1987`、末行 `1999` 完整，deferred 定位仍基线不确定；提交 `5198c6c` 补充 700×640 DIP / 1100 DIP 列宽的水平条场景，`Visible/17.33` 时 Presenter 为 `678.67x582.67`，末行仍完整；提交 `8775809` 修正报告的干净工作树标记，canonical 报告为 `WorkingTreeClean: True`；未修改用户主题文件。这只能缩小离线模板范围，不能替代真实宿主证据。详见 `.tmp/l32-scrollprobe/scaleprobe-report.txt`。
 

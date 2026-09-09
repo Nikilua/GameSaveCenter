@@ -2,6 +2,11 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-09 L31 宿主状态只读复核
+
+- 只读检查确认 `D:\software\Playnite\Playnite.DesktopApp.exe` 和已安装 GameSaveCenter `0.6.73` 扩展目录仍存在；本次复核时 Playnite 进程已经退出，未由本轮重新启动或安装。
+- Computer Use 再次返回 `apps: []`，没有可绑定的宿主窗口，因此没有执行截图、拖动滑块、录屏或真实诊断；L31 仍是外部阻塞。该状态修正了交接中“进程正在运行”的过期描述，不改变离线 FusionX 对照结论。
+
 ## 2026-09-09 L32 滚动探针证据元数据修正
 
 - 提交 `8775809` 修正 `RenderHarness.ResolveGitValue`：`git status --porcelain` 在干净工作树下合法返回空字符串，不能被统一替换为 `unknown`。该问题只影响报告元数据，不影响滚动观测。

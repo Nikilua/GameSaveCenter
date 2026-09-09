@@ -7,9 +7,9 @@
 ## 已核对事实
 
 - `scripts/real-host-audit.ps1` 会调用 `scripts/dev-install-run.ps1`，停止现有 Playnite、安装/启动开发扩展并等待真实 Dashboard capture；本轮未执行，避免中断用户当前宿主或改变其扩展安装状态。
-- PowerShell 只读进程检查发现 `Playnite.DesktopApp.exe` 正在运行，路径为 `D:\software\Playnite\Playnite.DesktopApp.exe`。
+- PowerShell 只读进程检查确认 `Playnite.DesktopApp.exe` 路径为 `D:\software\Playnite\Playnite.DesktopApp.exe`；本次继续核查时该进程已退出。已安装扩展目录仍为 `0.6.73`，但没有由本轮启动。
 - Windows Computer Use 的当前应用清单返回 `apps: []`，没有可绑定的 Playnite 窗口；因此无法安全执行截图、拖动滑块、滚轮、Ctrl+End、键盘焦点或 DPI/主题矩阵。
-- 未生成真实宿主 `summary.json`、滚动诊断日志、录屏或 FusionX 模板链证据；已有离线 RenderHarness/标准模板结果不具备真实宿主证明力。
+- 未生成真实宿主 `summary.json`、滚动诊断日志、录屏或 FusionX 模板链证据；Computer Use 仍返回 `apps: []`，已有离线 RenderHarness/标准模板结果不具备真实宿主证明力。
 
 ## 下次执行条件
 
