@@ -11,7 +11,7 @@
 - 临时构建目录和打包 staging 目录已清理；包未安装真实 Playnite。真实宿主/FusionX、用户主题、DPI、物理点击和视频复测仍待 L31 条件恢复。
 - 包后独立门禁：`validate-source.py` 通过，XAML `19/19` 通过，`git diff --check` 通过。
 - 本轮 WPF 静态审查为 `0 errors / 22 warnings / 172 info`；warnings/info 为既有 Canvas、滚动容器和颜色令牌提示，未新增 error。
-- 2026-09-10 在当前 `main` 重新执行 `dotnet test GameSaveCenter.sln -c Release --no-restore -m:1`：Core `76/76`、Worker `310/311`（1 skip）、Playnite `427/490`（63 skip），失败 `0`；此前 `AsyncThumbnailLoader` 的 `120`/`122` 并发污染本次未再复现。
+- 2026-09-10 在新增 `GameContextButtonKeepsCompositeGridContentThroughItsRuntimeTemplate` 运行时测试后重新执行 `dotnet test GameSaveCenter.sln -c Release --no-restore -m:1`：Core `76/76`、Worker `310/311`（1 skip）、Playnite `428/491`（63 skip），失败 `0`；此前 `AsyncThumbnailLoader` 的 `120`/`122` 并发污染本次未再复现。该测试实际解析并套用了选择器模板，确认 `ContentPresenter` 保留原始 `Grid` 内容。
 - L32 链接审计：扫描本地 Markdown 链接 `122` 条，缺失 `0`；当前候选 `.pext/.zip` 均存在。已移除旧工作日志中指向已清理一次性截图的失效链接。
 
 ## 2026-09-09 首页交互行为测试已补齐

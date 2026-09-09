@@ -5704,6 +5704,59 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void GameContextButtonKeepsCompositeGridContentThroughItsRuntimeTemplate()
+    {
+        Exception? exception = null;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var resources = (ResourceDictionary)XamlReader.Parse(@"
+<ResourceDictionary xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""
+                    xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml"">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source=""/GameSaveCenter.Playnite;component/Themes/DesignTokens.xaml""/>
+        <ResourceDictionary Source=""/GameSaveCenter.Playnite;component/Themes/WpfUiProduction.xaml""/>
+        <ResourceDictionary Source=""/GameSaveCenter.Playnite;component/Themes/Redesign.xaml""/>
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>");
+                var content = new Grid();
+                content.Children.Add(new TextBlock { Text = "游戏" });
+                var button = new System.Windows.Controls.Button
+                {
+                    Style = (Style)resources["GscRedesignGameContextButton"],
+                    Content = content,
+                    Width = 320,
+                    Height = 54
+                };
+                var host = new Grid { Width = 320, Height = 54, Resources = resources };
+                host.Children.Add(button);
+                host.Measure(new Size(320, 54));
+                host.Arrange(new Rect(0, 0, 320, 54));
+                button.ApplyTemplate();
+
+                Assert.Null(button.ContentTemplate);
+                var chrome = Assert.IsType<Border>(button.Template.FindName("Chrome", button));
+                Assert.Equal(1, VisualTreeHelper.GetChildrenCount(chrome));
+                var presenter = Assert.IsType<ContentPresenter>(VisualTreeHelper.GetChild(chrome, 0));
+                Assert.Same(content, presenter.Content);
+                Assert.IsType<Grid>(presenter.Content);
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+    }
+
+    [Fact]
     public void FinalRedesignResourceDictionaryParsesInsideThePluginScope()
     {
         Exception? exception = null;

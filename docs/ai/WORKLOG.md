@@ -2,10 +2,16 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-10 游戏选择器视觉树运行时回归补强
+
+- 新增 `WpfUiResourceDictionaryTests.GameContextButtonKeepsCompositeGridContentThroughItsRuntimeTemplate`：在 STA WPF 中实际解析 `DesignTokens.xaml`、`WpfUiProduction.xaml` 和 `Redesign.xaml`，套用 `GscRedesignGameContextButton`，测量/排列后确认 `ContentTemplate` 为空，模板中的 `ContentPresenter` 仍持有原始 `Grid` 内容，不会把复合视觉树渲染成 `System.Windows.Controls.Grid` 文本。
+- 定向测试 `1/1`；Release 解决方案全量回归为 Core `76/76`、Worker `310/311`（1 skip）、Playnite `428/491`（63 skip），失败 `0`。本阶段只新增测试，不改变生产程序集，因此沿用 `248d28e` 的候选包和 RenderHarness 证据。
+- 首次重跑时旧测试宿主占用测试 DLL，随后使用无构建定向运行确认测试宿主已退出；最终测试通过，`git diff --check` 通过。
+
 ## 2026-09-10 游戏选择器视觉内容模板防护与候选包更新
 
 - 源码审计确认壳层 `GameContextButton` 与 Dashboard 紧凑选择器都把复合 `Grid` 作为 Button 内容；`GscRedesignGameContextButton` 现在显式设置 `ContentTemplate={x:Null}`，避免宿主隐式文本模板把视觉树显示成 `System.Windows.Controls.Grid`。
-- `WpfUiResourceDictionaryTests.CompactToolbarPreservesEveryActionThroughAnAccessibleIconOnlyMode` 增加两处选择器实例和共享样式契约断言；定向测试 `1/1`，完整 Release 回归为 Core `76/76`、Worker `310/311`（1 skip）、Playnite `427/490`（63 skip），失败 `0`。
+- `WpfUiResourceDictionaryTests.CompactToolbarPreservesEveryActionThroughAnAccessibleIconOnlyMode` 增加两处选择器实例和共享样式契约断言；定向测试 `1/1`，当时完整 Release 回归为 Core `76/76`、Worker `310/311`（1 skip）、Playnite `427/490`（63 skip），失败 `0`。
 - `validate-source.py`、XAML `19/19`、WPF 静态审查 `0 errors / 22 warnings / 172 info`、`git diff --check` 均通过；干净 RenderHarness 报告为 [`.tmp/render-qa-gamecontext-clean-20260910/render-qa-report.txt`](../../.tmp/render-qa-gamecontext-clean-20260910/render-qa-report.txt)，提交 `248d28e`、`WorkingTreeClean: True`、`render-qa OK`。
 - 从 `248d28e` 重新生成候选包：程序集身份 `0.6.73+248d28eff8c595516a803f8db356952cef54c166`，`.pext/.zip` 均 `43,837,966` 字节，SHA-256 `628F34B01C478CD30A26260650703C8B77F558561E103D78B24C8A390949DDD3`；staging/隔离构建目录已清理，未安装真实 Playnite。
 

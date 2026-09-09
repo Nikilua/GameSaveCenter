@@ -2,13 +2,18 @@
 
 > 维护时间：2026-09-10
 
+## 2026-09-10 游戏选择器视觉树运行时回归补强
+
+- 新增 `WpfUiResourceDictionaryTests.GameContextButtonKeepsCompositeGridContentThroughItsRuntimeTemplate`，在 STA WPF 线程中解析生产资源并实际套用 `GscRedesignGameContextButton`，测量/排列后验证 `ContentTemplate={x:Null}`、`Chrome` 模板内的 `ContentPresenter` 仍持有原始 `Grid`，从运行时层面覆盖 `System.Windows.Controls.Grid` 字符串化风险。
+- 定向测试 `1/1`；完整 Release 回归为 Core `76/76`、Worker `310/311`（1 skip）、Playnite `428/491`（63 skip），失败 `0`。这是测试覆盖增强，未改变生产程序集，`248d28e` 候选包仍为当前生产候选。
+
 ## 2026-09-10 当前生产源候选包与发布边界
 
 - `248d28e` 是当前候选包的生产源提交；从该提交重新运行 `scripts/package.ps1` 后，六份程序集统一为 `0.6.73+248d28eff8c595516a803f8db356952cef54c166`，两个候选包均为 `43,837,966` 字节，SHA-256 为 `628F34B01C478CD30A26260650703C8B77F558561E103D78B24C8A390949DDD3`。
 - 发布链验证为 Core `76/76`、Worker `310/311`（1 skip）、Playnite `427/490`（63 skip），构建无警告/错误；该提交为活动游戏选择器共享按钮补齐 `ContentTemplate={x:Null}` 防护，并增加样式回归断言，连同此前首页活动行、云端整卡和顶部复合按钮的视觉树修复一起进入候选包。
 - staging/隔离构建目录已清理；包仍未安装真实 Playnite，不能把最新包身份校验写成 FusionX、DPI、物理点击或视频验收。
 - 包后又执行 `python scripts/validate-source.py`、`scripts/check-xaml.ps1` 和 `git diff --check`，均通过；这些是源码/交付门禁，不替代 L31 真实宿主证据。
-- 2026-09-10 在当前 `main` 重新执行 `dotnet test GameSaveCenter.sln -c Release --no-restore -m:1`，Core `76/76`、Worker `310/311`（1 skip）、Playnite `427/490`（63 skip），失败 `0`；此前 `AsyncThumbnailLoader` 的 `120`/`122` 并发污染本次未再复现。
+- 2026-09-10 在当前 `main` 重新执行 `dotnet test GameSaveCenter.sln -c Release --no-restore -m:1`，Core `76/76`、Worker `310/311`（1 skip）、Playnite `428/491`（63 skip），失败 `0`；新增运行时模板测试确认游戏选择器复合 `Grid` 没有被文本模板转换为类型名；此前 `AsyncThumbnailLoader` 的 `120`/`122` 并发污染本次未再复现。
 - `render-qa-gamecontext-clean-20260910/render-qa-report.txt` 的报告提交元数据为 `248d28e`，`WorkingTreeClean: True`、`render-qa OK`；覆盖双主题、多尺寸、resize、云端筛选前景、完整壳层背景和 Media 页尾几何，仍属于离屏证据。
 - L32 文档链接审计共检查 122 个本地 Markdown 链接，缺失 0；旧临时截图不恢复，工作日志改指向当前证据索引。
 
