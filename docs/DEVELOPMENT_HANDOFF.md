@@ -2,6 +2,12 @@
 
 > 连续实施入口：[32 项、8 阶段计划](ai/CONTINUOUS_DEVELOPMENT_PLAN_2026-09-08.md)。用户要求减少逐项确认；接手后按依赖连续实施并逐项交付，已满足任务跳过，外部阻塞不妨碍独立任务。Q6 质量报告仍是首四项问题依据。
 
+> 2026-09-09 L36 已获得真实 Playnite 嵌入采集：当前提交 `99bc976473d13a92c12d6992dff11dbf807e42b5` 在隔离只读数据目录中由生产扩展完成 EmbeddedPlaynite Dashboard/设置页采集，证据见 [`artifacts/ui-host-audit-isolated-l36/summary.json`](../artifacts/ui-host-audit-isolated-l36/summary.json) 和 [`diagnostics-summary.md`](../artifacts/ui-host-audit-isolated-l36/diagnostics-summary.md)。本次没有修改用户 FusionX 文件、Playnite 全局样式或用户数据目录。
+
+> L36 诊断结论：真实 `MediaInboxGrid`/`TaskGrid` 的行滚动器均为 `ScrollViewer`，`IScrollInfo=ScrollContentPresenter|DataGridRowsPresenter`，`CanContentScroll=True`、`ScrollUnit=Item`；水平条出现时 Presenter 实际矩形已缩小。真实日志出现短暂 `visual>0,text=0` 后约 32ms 恢复，但没有持续 `blank=True`、`gap=True`、`hOverlap=True` 或行漂移，因此不能凭本次运行认定视频根因。媒体表本次 `Items.Count=200`，底层快照 `media=4645`，分页不能混写成全量。
+
+> L36 尚未完成视频式人工回归：当前 CUA 无可识别原生 Playnite 窗口，未完成滑块往返 20 次、滚轮/PageUp/PageDown/Ctrl+End、尾部选择、水平条显隐、缩放矩阵和真实录屏；`CapturedAndValidated` 的滚动面清单也不能替代人工确认 MediaInboxGrid 已加载末项完整可见。继续交接时必须保留“待宿主人工验收”，不得写成视频问题已解决。
+
 > 2026-09-09 L30 已完成候选安装包与升级/回退说明：公共版本保持 `0.6.73`，六份程序集身份同源为 `0.6.73+01af39ca76129d23f59b0e60b93b1e4ac9974051`；Worker `win-x64` self-contained；`.pext`/`.zip` 均为 `43,831,773` 字节，SHA-256 均为 `E58266620809675AE7F909AC572B42931A506EAF7FA77F2864947E3248359B45`。该候选包包含 `f31711c` 生产修复，隔离迁移/重复初始化定向 `14/14`，未安装真实 Playnite。
 
 > L30 回退边界：当前数据库迁移是幂等增量，不承诺旧包直接读取已升级 schema；升级前要备份完整隔离配置/状态库，回退先停止宿主、保留失败目录、恢复升级前副本，再安装旧包。详细清单见 `ai/L30_PACKAGE_CHECKLIST_2026-09-09.md`；真实宿主加载、FusionX、DPI、Worker 回收和视频仍待 L31。

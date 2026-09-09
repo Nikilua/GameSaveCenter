@@ -2,6 +2,13 @@
 
 > 更新时间：2026-09-09。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-09 L36 真实 Playnite 嵌入采集结果与未完成项
+
+- 当前提交 `99bc976473d13a92c12d6992dff11dbf807e42b5` 已在隔离数据目录中启动真实 Playnite，并由生产扩展自身完成 EmbeddedPlaynite Dashboard/设置页采集；证据入口为 [`artifacts/ui-host-audit-isolated-l36/summary.json`](../../artifacts/ui-host-audit-isolated-l36/summary.json)。本次没有修改用户 FusionX 文件、Playnite 全局样式或用户数据目录。
+- `MediaInboxGrid` 和 `TaskGrid` 的真实诊断均定位到 `ScrollViewer` + `ScrollContentPresenter|DataGridRowsPresenter`，`CanContentScroll=True`、`ScrollUnit=Item`；水平条显示时 Presenter 矩形实际避开水平条。真实日志出现短暂 `visual>0,text=0` 呈现过渡，约 32ms 后恢复；未出现持续 `blank=True`、`gap=True` 或 `hOverlap=True`，所以视频根因仍不能定案。
+- 这次采集的媒体表为分页 `Items.Count=200`，不是底层 4645 条一次性装载；滚动面清单的 `CapturedAndValidated` 也不能替代“人工拖到已加载末尾、最后行完整可见”的验收。原视频的滑块 20 次往返、滚轮/PageUp/PageDown/Ctrl+End、选择尾部、水平条显隐、尺寸/DPI矩阵和真实录屏仍为 `MANUAL QA REQUIRED`。
+- 真实宿主启动前置修复：`TrainerDownloadProgress` 只读绑定显式 `Mode=OneWay`，见提交 `e98eba2`；`99bc976` 修正隔离配置 UTF-8 读取。不要将该启动修复写成滚动根因。
+
 ## 2026-09-09 L30 候选安装包与升级/回退说明已完成（未安装真实宿主）
 
 - 候选包沿用公共版本 `0.6.73`，插件/Worker/Core/Contracts 六份程序集构建身份一致：`0.6.73+01af39ca76129d23f59b0e60b93b1e4ac9974051`。Worker 为 `win-x64` self-contained，manifest、必需文件和包内容校验通过；本包包含 `f31711c` 生产修复和 `1477a37` 行为测试对应源码。

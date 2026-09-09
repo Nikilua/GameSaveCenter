@@ -2,6 +2,16 @@
 
 > 维护时间：2026-09-09
 
+## 2026-09-09 L36 真实 Playnite 嵌入采集已获得，但视频式人工复测仍待宿主
+
+- 当前最新宿主证据为 [`artifacts/ui-host-audit-isolated-l36/summary.json`](../../artifacts/ui-host-audit-isolated-l36/summary.json)、[`metadata.json`](../../artifacts/ui-host-audit-isolated-l36/metadata.json) 和 [`diagnostics-summary.md`](../../artifacts/ui-host-audit-isolated-l36/diagnostics-summary.md)，提交为 `99bc976473d13a92c12d6992dff11dbf807e42b5`。真实 Playnite 生产扩展嵌入 Dashboard/设置页均已采集；没有使用受控专用窗口作为生产宿主证据。
+- 隔离只读数据库为 `games=3`、`media=4645`、`tasks=4551`、`game_tools=4`；MediaInbox 页面只加载 `200` 条分页数据。宿主 DPI `1.5`、Dashboard `1365.33×868 DIP`、`FollowPlaynite`。当前最新包 `.pext/.zip` 均为 `43,831,773` 字节，SHA-256 为 `099BDC1B69E1BF44E25B7536A15B03342385C116857AB9CE1DBAE202A5B15C06`。
+- 真实日志确认任务表/媒体表行滚动器为 `ScrollViewer`，其 `IScrollInfo` 链包含 `ScrollContentPresenter|DataGridRowsPresenter`，`CanContentScroll=True`、`ScrollUnit=Item`；水平条出现时 Presenter 的实际可见矩形已缩小，当前证据支持现有插件局部模板的“表头 Auto / 行内容 * / 水平条 Auto”方向，不支持继续向页面 Margin 或固定底部补偿扩散。
+- 重要诊断边界：真实宿主在初始尺寸/滚动过渡帧会出现 `visual>0,text=0`，约 32ms 后恢复为 `text=visual`；该帧没有 `blank/gap/hOverlap`，没有行漂移记录。本次没有持续 `blank=True` 或 `gap=True`，因此不能把视频根因提前归结为锚点恢复、集合 Reset 或单位错误。
+- `capture-manifest.json` 对媒体 Inspector/媒体列表滚动面给出 `CapturedAndValidated`，但这不等价于已人工拖到 `MediaInboxGrid` 已加载末尾并确认最后行完整。由于 CUA 当前无可识别原生窗口，必须保留“真实宿主人工 20 次拖动/键盘矩阵/录屏待验收”。后续若人工复现持续空白，优先对照本摘要的 `items/offset/viewport/extent/presenter/rows/text/clip/anchorGen`，按集合是否 Reset、偏移是否越界、容器几何是否错误、单元格是否仅视觉缺失分流。
+
+## 2026-09-09 L36 之前的真实宿主阻塞记录（历史）
+
 ## 2026-09-09 L30 候选安装包与升级/回退
 
 - 候选公共版本固定为 `0.6.73`。`scripts/package.ps1` 必须从当前源码生成插件、Worker、Core、Contracts 的同源构建身份；最新身份为 `0.6.73+01af39ca76129d23f59b0e60b93b1e4ac9974051`。Worker 发布必须是 `win-x64` self-contained，并验证 `runtimeconfig` 的 `includedFrameworks`。

@@ -2,6 +2,17 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-09 L36 真实 Playnite 嵌入滚动诊断与复测边界
+
+- 在不修改用户 FusionX 文件、Playnite 全局样式或用户数据目录的前提下，使用隔离数据目录启动真实 Playnite，加载当前提交 `99bc976473d13a92c12d6992dff11dbf807e42b5` 的生产扩展。`artifacts/ui-host-audit-isolated-l36/summary.json` 明确为 `EmbeddedPlaynite`，嵌入 Dashboard 和设置页均采集成功；没有使用受控专用窗口冒充宿主页面。
+- 隔离只读数据库快照为 `games=3`、`media=4645`、`tasks=4551`、`game_tools=4`；MediaInbox 本次页面加载 `Items.Count=200`，是分页首批，不等于 4645 条全部进入表格。宿主 DPI 为 `1.5`，Dashboard 为 `1365.33×868 DIP`，主题为 `FollowPlaynite`。
+- 实际 `MediaInboxGrid`/`TaskGrid` 日志均找到负责行滚动的 `ScrollViewer`，`IScrollInfo=ScrollContentPresenter|DataGridRowsPresenter`，`CanContentScroll=True`，`ScrollUnit=Item`。水平滚动条出现时，行内容 Presenter 使用缩小后的实际矩形：Media `0,36,604×279.33`、水平条 `0,315.33,604×12`；Task `0,36,637.33×456`、水平条 `0,492,637.33×12`。
+- 真实宿主采集记录了“正常→呈现过渡→恢复”：Media 在 `10:53:16.509` 的尺寸/滚动过渡帧已有 `rows=7/7`、首末行 `@36/44` 到 `@300/44`、`firstGap=0`、`lastBottom=344`、`clip=0`，但 `visual=5,text=0`；约 32 ms 后恢复为 `visual=5,text=5`、`clip=0`、`state=normal`。Task 也有同类初始帧 `visual=6,text=0`，随后恢复为 `visual=6,text=6`。这些帧均为 `blank=False/gap=False/hOverlap=False`，不能直接等同视频中的持续空白或空选中框。
+- 本次真实嵌入日志没有出现 `anomaly=blank:True`、`gap:True`、`hOverlap:True`，没有记录到行从底部漂回表头；因此当前证据不足以认定视频根因，更不能把瞬态文本尚未绘制写成最终根因。诊断原文和结论见 [`artifacts/ui-host-audit-isolated-l36/diagnostics-summary.md`](../../artifacts/ui-host-audit-isolated-l36/diagnostics-summary.md)。
+- `capture-manifest.json` 中媒体收件箱 Inspector、当前游戏媒体列表和 Inspector 的宿主滚动面均为 `CapturedAndValidated`；这证明嵌入滚动面采集完整，但本轮没有通过人工拖动验证“MediaInboxGrid 已加载末项在底部完整可见”。由于当前 Computer Use 没有可识别原生窗口，视频中的滑块 20 次往返、滚轮/PageUp/PageDown/Ctrl+End、选择尾部、水平条显示/隐藏及真实录屏仍标记为 `MANUAL QA REQUIRED`，不能写成已解决。
+- 为使真实宿主启动，修正了 `TrainerCenterView.xaml` 对只读 `TrainerDownloadProgress` 的错误 TwoWay 默认绑定，显式设为 `Mode=OneWay`；这是宿主启动前置错误，不是表格滚动根因。该修复保留在 `e98eba2`，编码读取修正保留在 `99bc976`。
+- L36 运行器已停止隔离 Playnite/Worker；旧 L32/L33/L34/L35 审计目录和克隆数据属于失败/过渡产物，后续清理时只允许删除仓库 `.tmp/`、`artifacts/` 下对应路径，保留 L36 当前证据。
+
 ## 2026-09-09 L31 真实宿主审计授权门槛复核
 
 - 重新核对 Playnite 进程、`D:\software\Playnite\Playnite.DesktopApp.exe` 和 Computer Use：宿主未运行，UI 控制清单仍为 `apps: []`。
