@@ -13,6 +13,7 @@
 
 - `scripts/real-host-audit.ps1` 会停止现有 Playnite并通过 `dev-install-run.ps1` 重装/启动开发扩展；本轮没有执行该有副作用流程。
 - PowerShell 只读发现 Playnite 位于 `D:\software\Playnite\Playnite.DesktopApp.exe`，但 Windows Computer Use 返回空应用清单，不能绑定窗口，因此没有真实滚动、DPI、键盘、FusionX 或录屏证据。
+- 本轮尝试启动既有审计流程时被安全门禁拒绝，因为流程会替换用户扩展目录；未绕过门禁，也未写入 Playnite 用户目录或启动宿主。继续执行需要用户明确授权该替换范围。
 - 后续不得把 RenderHarness、源码检查或包内验证当作真实宿主通过；恢复条件和矩阵见 `docs/ai/L31_REAL_HOST_BLOCKER_2026-09-09.md`。
 
 ## 2026-09-09 表格滚动诊断补强与离线复现

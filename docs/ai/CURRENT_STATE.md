@@ -13,6 +13,7 @@
 
 - PowerShell 只读检查确认宿主程序路径为 `D:\software\Playnite\Playnite.DesktopApp.exe`；本次继续核查时 Playnite 进程已不在，Windows Computer Use 仍返回 `apps: []`，没有可绑定的窗口。
 - 本轮没有启动/重装宿主、安装候选包、执行真实 UI 操作或生成真实录屏/滚动诊断；现有扩展目录仍为已安装的 `0.6.73`，表格视频异常仍未宣称解决。
+- 尝试调用既有 `scripts/real-host-audit.ps1` 时被安全门禁拦截：该流程会替换用户扩展目录并启动宿主，当前没有明确的替换授权；因此未写入用户 Playnite 目录、未启动 Playnite，外部状态没有改变。
 - 恢复条件和待执行矩阵见 [`L31_REAL_HOST_BLOCKER_2026-09-09.md`](L31_REAL_HOST_BLOCKER_2026-09-09.md)。
 
 ## 2026-09-09 表格滚动诊断补强、窗口级离线复现与 FusionX 只读对照（不等同真实宿主）

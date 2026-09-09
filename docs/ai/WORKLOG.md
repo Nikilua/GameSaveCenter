@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-09 L31 真实宿主审计授权门槛复核
+
+- 重新核对 Playnite 进程、`D:\software\Playnite\Playnite.DesktopApp.exe` 和 Computer Use：宿主未运行，UI 控制清单仍为 `apps: []`。
+- 审阅并尝试调用既有 `scripts/real-host-audit.ps1`；安全门禁拒绝了会替换用户扩展目录并启动宿主的流程。没有绕过门禁，也没有写入用户 Playnite 目录、启动/停止宿主或生成虚假真实宿主证据。
+- 只读检查未发现可以同时保留用户安装、FusionX、现有库和主题的独立扩展目录启动参数。下一步需要用户明确授权替换当前 GameSaveCenter 扩展后，才能执行真实视频矩阵；在此之前 L31 继续保持外部阻塞。
+
 ## 2026-09-09 L30 候选包按最新滚动修复重新生成
 
 - 使用 `scripts/package.ps1 -Configuration Release -BuildOutputRoot .tmp/l32-package-build-f31711c` 重新生成候选包；Release 构建、测试、Worker `win-x64` self-contained 发布、六份程序集身份、manifest、必需文件和 self-contained 校验均成功，Playnite 测试最终为 `423/486`，`0` 失败、`63` 跳过。
