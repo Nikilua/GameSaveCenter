@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-09
 
+## 2026-09-09 L42/L41 真实宿主启动边界
+
+- 当前最新提交为 `398a6f0`。L41 受限启动的 `cef.log` 记录 CEF Mojo channel `拒绝访问 (0x5)`，Playnite 随后退出；L42 在提升权限下完成 Core `76/76`、Worker `311/311`、Playnite `431/488`（57 skip），但 Playnite 进程保持 `MainWindowHandle=0`，UI Automation 无法找到侧栏，最终没有 `summary.json` 或表格 replay。
+- L42 只证明当前宿主入口没有形成可绑定的真实窗口，不是视频表格异常的复现，也不是修复通过证据。由审计启动的 Playnite 进程已停止，用户 FusionX、全局 Playnite 样式和用户数据目录未修改。
+- 当前真实嵌入表格证据仍是 L39：实际 `ScrollViewer`/`DataGridRowsPresenter`、`CanContentScroll=True`、`ScrollUnit=Item`，两表程序化端点回放的尾项完整、异常计数为 0。物理视频操作和问题 B 仍待宿主人工验收；没有诊断日志前不选择某个模板、偏移或锚点原因。
+- 详见 [`L42_REAL_HOST_SCROLL_REPLAY_2026-09-09.md`](L42_REAL_HOST_SCROLL_REPLAY_2026-09-09.md)。
+
 ## 2026-09-09 L40 真实宿主捕获未形成新的嵌入滚动证据
 
 - 当前最新代码提交为 `c84107b`，构建身份为 `0.6.73+c84107b2f79870133707ed01abd22c521e87e070`。L40 隔离 Playnite 最终 `EmbeddedDashboardCaptured=false`、`ControlledDashboardCaptured=true`、`ProductionVisualSourceOfTruthAvailable=false`，所以不能覆盖或升级 L39 的真实嵌入证据。

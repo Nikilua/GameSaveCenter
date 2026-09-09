@@ -1,8 +1,12 @@
 # 2026-09-09 证据索引与验收边界
 
-当前基线：`main`，最新代码提交为 `c84107b`；L40 构建身份为 `0.6.73+c84107b2f79870133707ed01abd22c521e87e070`。L40 真实宿主审计未捕获嵌入 Dashboard，因此当前有效的真实嵌入表格回放仍是 L39 的 `0.6.73+a9b8bcec0c05f7d548d8160119b2b29e9698b1ab`。窗口级滚动探针 canonical 报告仍为 `ea18b11`。本索引只汇总已有证据，不把程序化回放扩大为物理滑块/视频结论。
+当前基线：`main`，最新代码提交为 `398a6f0`；L42 构建身份为 `0.6.73+398a6f095718e2827c3e8bd2a19bbbb5525c1f16`。L41/L42 均未捕获嵌入 Dashboard，因此当前有效的真实嵌入表格回放仍是 L39 的 `0.6.73+a9b8bcec0c05f7d548d8160119b2b29e9698b1ab`。窗口级滚动探针 canonical 报告仍为 `ea18b11`。本索引只汇总已有证据，不把程序化回放扩大为物理滑块/视频结论。
 
 ## 当前阶段
+
+### L42/L41 真实宿主启动边界
+
+证据目录：[`artifacts/ui-host-audit-isolated-l42`](../../artifacts/ui-host-audit-isolated-l42)，详细记录：[`L42_REAL_HOST_SCROLL_REPLAY_2026-09-09.md`](L42_REAL_HOST_SCROLL_REPLAY_2026-09-09.md)。L41 的受限启动记录 CEF `拒绝访问 (0x5)`；L42 提升权限后 Playnite 进程保持响应但 `MainWindowHandle=0`，UI Automation 无法定位侧栏，最终没有 `summary.json`、嵌入截图或 replay JSON。L42 只证明本轮宿主入口未建立，不是表格滚动失败或修复证据。
 
 ### L40 真实宿主捕获边界
 
@@ -16,8 +20,8 @@
 | --- | --- | --- | --- |
 | 表格诊断 | `src/GameSaveCenter.Playnite/Infrastructure/DataGridScrollDiagnostics.cs`、`src/GameSaveCenter.Playnite/Views/MediaCenterView.xaml.cs` | 记录实际表格 `ScrollViewer`、`DataGridRowsPresenter`、Presenter 矩形、offset/extent、首末行、单元格内容/裁剪、锚点执行状态；`81da090` 增加最后加载项完整性与末端判定，`a9b8bce` 补齐任务表真实宿主回放，实际 L39 末端两表通过；`c84107b` 隔离开发审计 RangeValue provider 异常 | 物理滑块/视频操作仍需人工宿主验收；不能把程序化端点回放扩大为问题 B 已解决 |
 | 任务/媒体离线滚动 | `.tmp/l32-scrollprobe/scaleprobe-report.txt` | 200/2000/10000 条、20 次往返、滚轮、PageUp/PageDown、Ctrl+End；`scaleprobe OK`，报告提交为 `ea18b11` 且 `WorkingTreeClean: True`，未发现空正文/选框分离；末尾滑块路径最后行完整 | 隐藏 WPF `Window` 同时对照插件、标准 WPF 和本机已安装 FusionX `2.1.1` 的 `DefaultControls/DataGrid.xaml`；FusionX 普通视口和水平条显示视口都能直接滑到末尾且末行完整，deferred `ScrollIntoView` 仍基线不确定；均不能替代真实 Playnite |
-| 契约与全量回归 | `MediaWindowAnchorContractTests`、Playnite 全量 | 最新 c841 回归：Core `76/76`；Worker `310/311`（1 skip）；Playnite `425/488`（63 skip） | skip 详见 [`SKIP_LEDGER_2026-09-09.md`](SKIP_LEDGER_2026-09-09.md) |
-| 候选包 | [`L30_PACKAGE_CHECKLIST_2026-09-09.md`](L30_PACKAGE_CHECKLIST_2026-09-09.md)、[`RELEASE_NOTES.md`](../RELEASE_NOTES.md) | c841 Release 身份 `0.6.73+c84107b2...`，编译/发布/安装校验通过；L40 Worker 启动身份已确认 | L40 没有嵌入 Dashboard replay，不等价用户环境视频验收 |
+| 契约与全量回归 | `MediaWindowAnchorContractTests`、Playnite 全量 | L42 回归：Core `76/76`；Worker `311/311`；Playnite `431/488`（57 skip） | skip 详见 [`SKIP_LEDGER_2026-09-09.md`](SKIP_LEDGER_2026-09-09.md) |
+| 候选包 | [`L30_PACKAGE_CHECKLIST_2026-09-09.md`](L30_PACKAGE_CHECKLIST_2026-09-09.md)、[`RELEASE_NOTES.md`](../RELEASE_NOTES.md) | L42 Release 身份 `0.6.73+398a6f09...`，编译/发布/安装校验通过；Worker 启动路径已写入隔离目录 | L41/L42 没有嵌入 Dashboard replay，不等价用户环境视频验收 |
 | 真实宿主 | [`artifacts/ui-host-audit-isolated-l39`](../../artifacts/ui-host-audit-isolated-l39)、[`L39_REAL_HOST_SCROLL_REPLAY_2026-09-09.md`](L39_REAL_HOST_SCROLL_REPLAY_2026-09-09.md) | `EmbeddedPlaynite=true`；媒体/任务端点回放各 `47` 样本、底部各 `21`，尾项完整，异常计数为 0 | 无物理鼠标拖动、滚轮/键盘矩阵、DPI/主题矩阵或录屏；问题 B 仍宿主人工待验收 |
 
 ## 可复核命令

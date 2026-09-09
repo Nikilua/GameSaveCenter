@@ -2,9 +2,10 @@
 
 > 更新时间：2026-09-09。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
-## 2026-09-09 L40/L39 表格滚动证据边界（当前最新）
+## 2026-09-09 L42/L41/L39 表格滚动证据边界（当前最新）
 
-- 当前提交为 `c84107b`，最新文档提交为 `d12b4d8`；最新 Release 构建身份为 `0.6.73+c84107b2f79870133707ed01abd22c521e87e070`。Core `76/76`、Worker `310/311`（1 skip）、Playnite `425/488`（63 skip），源码和 XAML `19/19` 门禁通过。
+- 当前提交为 `398a6f0`；L42 Release 构建身份为 `0.6.73+398a6f095718e2827c3e8bd2a19bbbb5525c1f16`。L42 Core `76/76`、Worker `311/311`、Playnite `431/488`（57 skip），源码和 XAML `19/19` 门禁通过。
+- L41 在受限环境中因 Playnite/CEF `拒绝访问` 后退出；L42 提升权限后 Playnite 进程仍无可绑定主窗口（`MainWindowHandle=0`），UI Automation 找不到 GameSaveCenter 侧栏，最终没有 `summary.json` 或 replay JSON。详细边界见 [`L42_REAL_HOST_SCROLL_REPLAY_2026-09-09.md`](L42_REAL_HOST_SCROLL_REPLAY_2026-09-09.md)。
 - L40 使用隔离 Playnite 启动并修正了复制配置中遗留的旧 Worker 绝对路径；Worker 身份确认正确。但最终 `EmbeddedDashboardCaptured=false`、`ControlledDashboardCaptured=true`、`ProductionVisualSourceOfTruthAvailable=false`，没有新的真实嵌入表格 replay JSON，不能作为滚动通过证据。详情见 [`L40_REAL_HOST_SCROLL_REPLAY_2026-09-09.md`](L40_REAL_HOST_SCROLL_REPLAY_2026-09-09.md)。
 - 当前有效的真实嵌入端点证据仍是 L39：`MediaInboxGrid` 400 条、`TaskGrid` 50 条，各 47 个样本，底部各 21 个，20 次上下端点往返；Media `394/394`、Task `40/40`，两表末项均在实际 Presenter 内完整可见，空正文、大块间隙、水平条覆盖、选中内容缺失和尾项不完整均为 0。该证据不覆盖物理滑块/视频。
 - b100913 的开发审计 RangeValue provider 曾抛出 WPF `NullReferenceException`；c84107b 只在开发审计中隔离该异常，不改变生产 DataGrid 模板、滚动单位、绑定、选择或虚拟化。当前未确认视频异常根因，也没有宣称问题 B 已解决。
