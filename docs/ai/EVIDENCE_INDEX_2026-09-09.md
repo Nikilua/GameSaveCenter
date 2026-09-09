@@ -10,6 +10,8 @@
 
 新增的 `.tmp/render-qa-cloud-filter-probe-20260909/render-qa-report.txt` 在完整 render-qa 中额外验证了真实 `MaintenanceView` 云端队列页的两个 ComboBox：浅色 `#F21B1F27`、深色 `#FFF2F4F8`，选中文本均已实现并可见；同时保留浅/深主题截图。该报告和截图是离屏 WPF 证据，不替代真实 FusionX/Playnite 嵌入。
 
+同一报告还记录生产壳层背景层的运行时几何：`ShellAmbientMaterialLayer` 在浅/深主题均跨完整两列和 footer 两行，并保持 `UseSelectedGameBackground=False`，但离屏夹具未加载真实 Playnite 游戏背景图片，不能据此宣称真实宿主截图已通过。
+
 ### L42/L41 真实宿主启动边界
 
 证据目录：[`artifacts/ui-host-audit-isolated-l42`](../../artifacts/ui-host-audit-isolated-l42)，详细记录：[`L42_REAL_HOST_SCROLL_REPLAY_2026-09-09.md`](L42_REAL_HOST_SCROLL_REPLAY_2026-09-09.md)。L41 的受限启动记录 CEF `拒绝访问 (0x5)`；L42 提升权限后 Playnite 进程保持响应但 `MainWindowHandle=0`，UI Automation 无法定位侧栏，最终没有 `summary.json`、嵌入截图或 replay JSON。L42 只证明本轮宿主入口未建立，不是表格滚动失败或修复证据。

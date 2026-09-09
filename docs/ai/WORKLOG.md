@@ -18,6 +18,7 @@
 - 之前的主题 QA 只渲染维护页默认诊断页，不能直接覆盖用户截图中的云端队列筛选器；RenderHarness 现在切换到维护页第 2 个工作区，在真实 WPF 视觉树中按 Automation Name 定位“云端队列状态筛选”和“云端队列类型筛选”。
 - 双主题结果均通过：浅色两个选中项分别为“全部状态/全部类型”，实际前景 `#F21B1F27`；深色实际前景 `#FFF2F4F8`。截图和完整报告见 `.tmp/render-qa-cloud-filter-probe-20260909/`，完整 `render-qa OK`。
 - 该探针验证了 ComboBox 模板的实际文字呈现，不证明真实 Playnite/FusionX 的宿主资源覆盖；真实宿主截图仍待 L31。
+- 同轮加入生产壳层背景探针：在浅/深主题的实际视觉树中检查 `ShellAmbientMaterialLayer` 的两列/两行跨越、完整壳层 DIP 边界和 `UseSelectedGameBackground=False`，用于覆盖图片方框问题的结构回归。离屏夹具没有真实 Playnite 背景位图，所以仍不替代宿主截图。
 
 ## 2026-09-09 Media 离屏门禁改为实际行几何并全量通过
 

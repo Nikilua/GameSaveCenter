@@ -3992,7 +3992,77 @@ public static class Program
         RunProductionShellMediaProbe(outputRoot, report);
         RunProductionShellMaintenanceProbe(outputRoot, report);
         RunProductionShellTaskProbe(outputRoot, report);
+        RunProductionShellBackgroundProbe(outputRoot, report);
         RunSidebarTransitionProbe(report);
+    }
+
+    private static void RunProductionShellBackgroundProbe(string outputRoot, StringBuilder report)
+    {
+        report.AppendLine();
+        report.AppendLine("Production shell background material QA (full-shell ambient layer)");
+
+        foreach (var (themeName, themeMode) in ThemeModes)
+        {
+            const int windowW = 1040;
+            const int windowH = 700;
+            var label = $"{themeName}/ShellBackground/{windowW}x{windowH}";
+
+            try
+            {
+                var shell = new AcrylicProductionShellView { DataContext = new FakeDashboardData() };
+                ApplyThemePalette(shell, themeMode);
+                var host = new Grid
+                {
+                    Width = windowW,
+                    Height = windowH,
+                    Background = CreateHarnessBackground(shell),
+                    ClipToBounds = true
+                };
+                host.Children.Add(shell);
+                shell.ApplyResponsiveLayout(windowW, windowH);
+                host.Measure(new Size(windowW, windowH));
+                host.Arrange(new Rect(0, 0, windowW, windowH));
+                host.UpdateLayout();
+                shell.ApplyResponsiveLayout(windowW, windowH);
+                host.UpdateLayout();
+
+                var ambient = FindVisualChildren<FrameworkElement>(shell)
+                    .FirstOrDefault(element => element.Name == "ShellAmbientMaterialLayer");
+                if (ambient == null)
+                {
+                    s_problems.Add($"{label} ShellAmbientMaterialLayer is missing");
+                    continue;
+                }
+
+                var bounds = ambient.TransformToAncestor(host)
+                    .TransformBounds(new Rect(0, 0, ambient.ActualWidth, ambient.ActualHeight));
+                var useSelectedGameBackground = ambient.GetType()
+                    .GetProperty("UseSelectedGameBackground", BindingFlags.Instance | BindingFlags.Public)
+                    ?.GetValue(ambient) as bool?;
+                var fullShell = Grid.GetColumn(ambient) == 0
+                    && Grid.GetColumnSpan(ambient) == 2
+                    && Grid.GetRow(ambient) == 0
+                    && Grid.GetRowSpan(ambient) == 2
+                    && bounds.Width > 1000
+                    && bounds.Height > 650;
+
+                report.AppendLine(
+                    $"  {label} bounds={bounds.X:0.##},{bounds.Y:0.##},{bounds.Width:0.##}x{bounds.Height:0.##} "
+                    + $"grid={Grid.GetRow(ambient)}/{Grid.GetRowSpan(ambient)}/{Grid.GetColumn(ambient)}/{Grid.GetColumnSpan(ambient)} "
+                    + $"UseSelectedGameBackground={useSelectedGameBackground}");
+
+                if (!fullShell)
+                    s_problems.Add($"{label} ambient layer does not cover the full shell/footer ({bounds.Width:0.##}x{bounds.Height:0.##})");
+                if (useSelectedGameBackground != false)
+                    s_problems.Add($"{label} ambient layer still reads the selected game background");
+
+                SavePng(host, Path.Combine(outputRoot, "theme", themeName, "Shell-Background-1040x700.png"));
+            }
+            catch (Exception ex)
+            {
+                s_problems.Add($"{label} failed: {ex.Message}");
+            }
+        }
     }
 
     private static void RunProductionShellMediaProbe(string outputRoot, StringBuilder report)

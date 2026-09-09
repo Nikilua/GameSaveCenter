@@ -9,6 +9,7 @@
 - `d777e65` 将 Media 门禁改为按实际 DataGrid 行几何统计完整可读行数，并让 resize 探针传入 Media 的实际 `contentH`；嵌套 Inspector 预览/历史列表不再套用主表四行门禁。最新干净报告为 [`.tmp/render-qa-media-gate-clean-20260909/render-qa-report.txt`](../../.tmp/render-qa-media-gate-clean-20260909/render-qa-report.txt)，`WorkingTreeClean: True`、`render-qa OK`；Media resize 为 `300 DIP`、`readableRows=6/4`，原 `230 DIP` 场景为 `readableRows=4/4`。
 - 当前顺序 Release 复验通过：`dotnet build GameSaveCenter.sln -c Release --no-restore -m:1` 为 `0 warning / 0 error`；Core `76/76`、Worker `310/311`（1 skip）、Playnite `425/488`（63 skip）均为 `0` 失败。源码校验、XAML `19/19` 和 WPF 静态审计 `0 errors / 22 warnings / 172 info` 通过。
 - RenderHarness 新增云端队列主题控件探针：在真实 WPF `MaintenanceView` 的“云端队列”页中找到两个带 Automation Name 的 ComboBox，浅色选中文本实际为 `#F21B1F27`、深色为 `#FFF2F4F8`，均有可见文字；截图和报告保留在 `.tmp/render-qa-cloud-filter-probe-20260909/`。该证据仍是离屏宿主，不替代真实 FusionX 截图。
+- 同一 RenderHarness 还检查生产壳层的 `ShellAmbientMaterialLayer`：浅深主题都必须跨两列、跨 footer 两行、覆盖完整壳层，并保持 `UseSelectedGameBackground=False`，用于防止图片方框/接缝回归。结果写入同一报告，仍不替代真实 Playnite 图片资源宿主截图。
 - 该报告仍是离屏 WPF 证据，不替代真实 Playnite/FusionX、DPI、用户主题和视频式拖动；真实宿主仍待验收。
 
 ## 2026-09-09 浅色主题视觉问题修复（离屏验证完成，真实宿主待验收）
