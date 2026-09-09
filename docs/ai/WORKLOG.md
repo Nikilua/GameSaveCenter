@@ -2,6 +2,11 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-09 L32 滚动探针证据元数据修正
+
+- 提交 `8775809` 修正 `RenderHarness.ResolveGitValue`：`git status --porcelain` 在干净工作树下合法返回空字符串，不能被统一替换为 `unknown`。该问题只影响报告元数据，不影响滚动观测。
+- 重新生成 `.tmp/l32-scrollprobe/scaleprobe-report.txt` 后，报告为 `Commit: 8775809...`、`WorkingTreeClean: True`、`scaleprobe OK`；FusionX 普通视口和水平条显示视口的末尾完整性数据保持不变。
+
 ## 2026-09-09 L32 FusionX 水平滚动条显示场景
 
 - 提交 `5198c6c` 将已安装 FusionX `DefaultControls/DataGrid.xaml` 的窗口对照扩展为 700×640 DIP 视口、1100 DIP 列宽，确保水平滚动条真实出现；没有修改生产模板、FusionX 文件或全局样式。

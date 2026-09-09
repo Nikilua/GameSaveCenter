@@ -22,6 +22,7 @@
 - 提交 `862742a` 新增隐藏 WPF `Window` 的同数据对照：插件模板从顶部执行 `ScrollIntoView(最后一项)` 后偏移为 `1992/1992`，最后行完整；随后 20 次往返及 `PageDown/PageUp/Ctrl+End` 保持可见和选择。标准 WPF 模板的滑块/Ctrl+End 末行完整，但 deferred `ScrollIntoView` 在该离线夹具仍为 `offscreen-baseline-inconclusive`，不能拿来推断 FusionX。
 - 提交 `85b1aeb` 只读加载本机 FusionX `2.1.1` 的 `DefaultControls/DataGrid.xaml` 做同窗体对照；没有写入用户主题。FusionX 直接滑块/Ctrl+End 到 `1987/1987`，末行 `1999@608/44` 完整，Presenter `0,36,1078.67x600`，水平条 `Collapsed/0`；deferred `ScrollIntoView` 仍是不确定基线。该结果不能替代真实 Playnite 内的 FusionX 模板链、DPI 或视频操作。
 - 提交 `5198c6c` 增加 FusionX 水平条显示场景：700×640 DIP 视口、1100 DIP 列宽时水平条为 `Visible/17.33`，Presenter 为 `678.67x582.67`，末尾仍到 `1987/1987` 且最后行 `1999@608/44` 完整；20 次往返和语义滚动没有空正文或末行裁剪。该结果仍是隐藏窗口离线夹具，不是宿主录屏。
+- 提交 `8775809` 修正 RenderHarness 对空 `git status --porcelain` 的解释；最新 `.tmp/l32-scrollprobe/scaleprobe-report.txt` 记录 `WorkingTreeClean: True`，不再把干净工作树写成 `False`。
 - 离线 `scaleprobe` 的 20 次滑块往返在任务表/媒体表 200、2000、10000 条规模均保持可见行和文字；末尾滑块路径的最后行完整。真实 Playnite/FusionX、DPI、视频和加载更多现场锚点仍必须复测。
 - 本轮没有真实宿主窗口；后续仍须用 Playnite/FusionX 重复视频动作，不能用该离线报告替代宿主验收。
 

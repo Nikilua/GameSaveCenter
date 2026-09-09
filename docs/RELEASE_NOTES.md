@@ -6,6 +6,7 @@
 - 表格滚动诊断补充窗口级离线对照：插件模板的 `ScrollIntoView(最后一项)`、20 次往返和末尾完整性在隐藏 WPF `Window` 中通过；标准 WPF 模板的 deferred 定位仍明确标为基线不确定，不能替代 FusionX/真实 Playnite 验收。
 - 进一步只读加载本机 FusionX `2.1.1` 的 `DefaultControls/DataGrid.xaml` 做同数据对照：直接滑块/Ctrl+End 到 `1987/1987`，末行完整；deferred `ScrollIntoView` 仍标为基线不确定，未修改用户 FusionX 文件，也未宣称真实宿主通过。
 - 补充 FusionX 水平滚动条显示对照：700×640 DIP 视口、1100 DIP 列宽时水平条实际占用 `17.33` DIP，内容 Presenter 缩为 `678.67×582.67`，滑到底后最后一行仍完整；这仍是离线证据，不替代真实 Playnite 录屏。
+- 修正离线报告的工作树元数据读取；当前 canonical `scaleprobe` 报告正确记录提交 `8775809` 与 `WorkingTreeClean: True`。
 - 本候选包未安装到真实 Playnite；FusionX、用户主题、DPI、Worker 重启和原视频复测仍待宿主验收。
 
 # 0.6.55 Development Preview

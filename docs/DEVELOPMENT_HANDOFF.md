@@ -8,7 +8,7 @@
 
 > 2026-09-09 L31 外部阻塞：PowerShell 能看到 `D:\software\Playnite\Playnite.DesktopApp.exe`，但 Windows Computer Use 返回 `apps: []`，没有可绑定窗口；本轮未停止或重装现有 Playnite，未生成真实宿主截图/录屏/滚动诊断。详见 `ai/L31_REAL_HOST_BLOCKER_2026-09-09.md`，不能把 L30 离线包证据写成视频问题已解决。
 
-> 2026-09-09 表格诊断补强：诊断器已优先绑定包含 `DataGridRowsPresenter` 的实际表格 `ScrollViewer`；Media 锚点记录请求、执行、完成、代际跳过、重试和失败原因。提交 `862742a` 新增隐藏 WPF `Window` 对照：插件模板从顶部 `ScrollIntoView(最后一项)` 到 `1992/1992` 且最后行完整，20 次往返和 `PageDown/PageUp/Ctrl+End` 通过；标准模板直接滑块/Ctrl+End 末行完整，但 deferred `ScrollIntoView` 仍为 `offscreen-baseline-inconclusive`。随后提交 `85b1aeb` 只读加载本机 FusionX `2.1.1` 的 `DefaultControls/DataGrid.xaml`：直接滑块/Ctrl+End 到 `1987/1987`、末行 `1999` 完整，deferred 定位仍基线不确定；提交 `5198c6c` 补充 700×640 DIP / 1100 DIP 列宽的水平条场景，`Visible/17.33` 时 Presenter 为 `678.67x582.67`，末行仍完整；未修改用户主题文件。这只能缩小离线模板范围，不能替代真实宿主证据。详见 `.tmp/l32-scrollprobe/scaleprobe-report.txt`。
+> 2026-09-09 表格诊断补强：诊断器已优先绑定包含 `DataGridRowsPresenter` 的实际表格 `ScrollViewer`；Media 锚点记录请求、执行、完成、代际跳过、重试和失败原因。提交 `862742a` 新增隐藏 WPF `Window` 对照：插件模板从顶部 `ScrollIntoView(最后一项)` 到 `1992/1992` 且最后行完整，20 次往返和 `PageDown/PageUp/Ctrl+End` 通过；标准模板直接滑块/Ctrl+End 末行完整，但 deferred `ScrollIntoView` 仍为 `offscreen-baseline-inconclusive`。随后提交 `85b1aeb` 只读加载本机 FusionX `2.1.1` 的 `DefaultControls/DataGrid.xaml`：直接滑块/Ctrl+End 到 `1987/1987`、末行 `1999` 完整，deferred 定位仍基线不确定；提交 `5198c6c` 补充 700×640 DIP / 1100 DIP 列宽的水平条场景，`Visible/17.33` 时 Presenter 为 `678.67x582.67`，末行仍完整；提交 `8775809` 修正报告的干净工作树标记，canonical 报告为 `WorkingTreeClean: True`；未修改用户主题文件。这只能缩小离线模板范围，不能替代真实宿主证据。详见 `.tmp/l32-scrollprobe/scaleprobe-report.txt`。
 
 > L32 证据索引：`ai/EVIDENCE_INDEX_2026-09-09.md` 汇总当前候选包、离线滚动/回归证据、skip 账本和真实宿主缺口；不要把 `scaleprobe` 或 `ScrollIntoView` 离屏结果写成 FusionX/视频通过。
 
