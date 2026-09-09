@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-09 L40 真实宿主捕获边界与 c841 回归
+
+- 使用 `0.6.73+c84107b2f79870133707ed01abd22c521e87e070` 在隔离 Playnite 数据目录重跑真实宿主审计；修正隔离配置中遗留的 L36 Worker 绝对路径后，日志确认 L40 Worker 正常启动。
+- 最终摘要明确为 `EmbeddedDashboardCaptured=false`、`ControlledDashboardCaptured=true`、`ProductionVisualSourceOfTruthAvailable=false`，生成 `REAL_EMBEDDED_DASHBOARD_NOT_CAPTURED` 门禁；本轮没有新的真实嵌入表格 replay JSON，不把受控窗口证据写成滚动通过。
+- 记录了 b100913 的 WPF `RangeValueProvider.SetValue` `NullReferenceException` 边界；c84107b 仅让开发审计隔离该异常并继续，不改变生产表格滚动路径。真实嵌入端点证据仍以 L39 为准，物理滑块/视频仍待宿主人工验收。
+- 最新 Release 回归：Core `76/76`，Worker `310/311`（1 skip），Playnite `425/488`（63 skip），构建 `0 warning/0 error`；完整记录见 [`L40_REAL_HOST_SCROLL_REPLAY_2026-09-09.md`](L40_REAL_HOST_SCROLL_REPLAY_2026-09-09.md)。
+
 ## 2026-09-09 L39 真实宿主表格末尾回放与结论边界
 
 - 提交 `81da090` 增强 `DataGridScrollDiagnostics`：在已有实际表格 `ScrollViewer`、Presenter 矩形、offset/extent、首末可见行、cell visual/text/clip 诊断上，增加最后加载项稳定 ID、索引、DIP 位置、完整性和“是否已到垂直末端”字段；因此能区分非末尾半行与真正末项被截断。提交 `a9b8bce` 收紧开发审计，只在 `Tasks` 工作区回放任务表，并跳过会替换 50 条页面却继续报告 `HasMore=true` 的任务加载更多命令。

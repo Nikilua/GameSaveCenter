@@ -1,8 +1,12 @@
 # 2026-09-09 证据索引与验收边界
 
-当前基线：`main`，最新代码提交为 `a9b8bce`；真实宿主回放包身份为 `0.6.73+a9b8bcec0c05f7d548d8160119b2b29e9698b1ab`。窗口级滚动探针 canonical 报告仍为 `ea18b11`。本索引只汇总已有证据，不把程序化回放扩大为物理滑块/视频结论。
+当前基线：`main`，最新代码提交为 `c84107b`；L40 构建身份为 `0.6.73+c84107b2f79870133707ed01abd22c521e87e070`。L40 真实宿主审计未捕获嵌入 Dashboard，因此当前有效的真实嵌入表格回放仍是 L39 的 `0.6.73+a9b8bcec0c05f7d548d8160119b2b29e9698b1ab`。窗口级滚动探针 canonical 报告仍为 `ea18b11`。本索引只汇总已有证据，不把程序化回放扩大为物理滑块/视频结论。
 
 ## 当前阶段
+
+### L40 真实宿主捕获边界
+
+证据目录：[`artifacts/ui-host-audit-isolated-l40`](../../artifacts/ui-host-audit-isolated-l40)，详细记录：[`L40_REAL_HOST_SCROLL_REPLAY_2026-09-09.md`](L40_REAL_HOST_SCROLL_REPLAY_2026-09-09.md)。隔离 Worker 路径已修正且启动身份正确，但最终 `EmbeddedDashboardCaptured=false`、`ControlledDashboardCaptured=true`，生成 `REAL_EMBEDDED_DASHBOARD_NOT_CAPTURED`；没有新的真实嵌入 replay JSON，因此不覆盖 L39 的真实宿主结论，也不计为视频式滚动通过。c84107b 对开发审计 RangeValue provider 异常做了隔离，生产滚动路径未改变。
 
 ### L39 真实 Playnite/FusionX 表格回放
 
@@ -10,10 +14,10 @@
 
 | 范围 | 权威证据 | 当前结果 | 边界 |
 | --- | --- | --- | --- |
-| 表格诊断 | `src/GameSaveCenter.Playnite/Infrastructure/DataGridScrollDiagnostics.cs`、`src/GameSaveCenter.Playnite/Views/MediaCenterView.xaml.cs` | 记录实际表格 `ScrollViewer`、`DataGridRowsPresenter`、Presenter 矩形、offset/extent、首末行、单元格内容/裁剪、锚点执行状态；`81da090` 增加最后加载项完整性与末端判定，`a9b8bce` 补齐任务表真实宿主回放，实际 l39 末端两表通过 | 物理滑块/视频操作仍需人工宿主验收；不能把程序化端点回放扩大为问题 B 已解决 |
+| 表格诊断 | `src/GameSaveCenter.Playnite/Infrastructure/DataGridScrollDiagnostics.cs`、`src/GameSaveCenter.Playnite/Views/MediaCenterView.xaml.cs` | 记录实际表格 `ScrollViewer`、`DataGridRowsPresenter`、Presenter 矩形、offset/extent、首末行、单元格内容/裁剪、锚点执行状态；`81da090` 增加最后加载项完整性与末端判定，`a9b8bce` 补齐任务表真实宿主回放，实际 L39 末端两表通过；`c84107b` 隔离开发审计 RangeValue provider 异常 | 物理滑块/视频操作仍需人工宿主验收；不能把程序化端点回放扩大为问题 B 已解决 |
 | 任务/媒体离线滚动 | `.tmp/l32-scrollprobe/scaleprobe-report.txt` | 200/2000/10000 条、20 次往返、滚轮、PageUp/PageDown、Ctrl+End；`scaleprobe OK`，报告提交为 `ea18b11` 且 `WorkingTreeClean: True`，未发现空正文/选框分离；末尾滑块路径最后行完整 | 隐藏 WPF `Window` 同时对照插件、标准 WPF 和本机已安装 FusionX `2.1.1` 的 `DefaultControls/DataGrid.xaml`；FusionX 普通视口和水平条显示视口都能直接滑到末尾且末行完整，deferred `ScrollIntoView` 仍基线不确定；均不能替代真实 Playnite |
-| 契约与全量回归 | `MediaWindowAnchorContractTests`、Playnite 全量 | 锚点定向 `10/10`；Playnite `423/486`，`0` 失败、`63` 条件 skip | skip 详见 [`SKIP_LEDGER_2026-09-09.md`](SKIP_LEDGER_2026-09-09.md) |
-| 候选包 | [`L30_PACKAGE_CHECKLIST_2026-09-09.md`](L30_PACKAGE_CHECKLIST_2026-09-09.md)、[`RELEASE_NOTES.md`](../RELEASE_NOTES.md) | l39 包身份 `0.6.73+a9b8bcec...`，Release 编译/发布/安装校验通过；用于真实宿主隔离回放 | 当前包已在隔离真实 Playnite 运行，不等价用户环境视频验收 |
+| 契约与全量回归 | `MediaWindowAnchorContractTests`、Playnite 全量 | 最新 c841 回归：Core `76/76`；Worker `310/311`（1 skip）；Playnite `425/488`（63 skip） | skip 详见 [`SKIP_LEDGER_2026-09-09.md`](SKIP_LEDGER_2026-09-09.md) |
+| 候选包 | [`L30_PACKAGE_CHECKLIST_2026-09-09.md`](L30_PACKAGE_CHECKLIST_2026-09-09.md)、[`RELEASE_NOTES.md`](../RELEASE_NOTES.md) | c841 Release 身份 `0.6.73+c84107b2...`，编译/发布/安装校验通过；L40 Worker 启动身份已确认 | L40 没有嵌入 Dashboard replay，不等价用户环境视频验收 |
 | 真实宿主 | [`artifacts/ui-host-audit-isolated-l39`](../../artifacts/ui-host-audit-isolated-l39)、[`L39_REAL_HOST_SCROLL_REPLAY_2026-09-09.md`](L39_REAL_HOST_SCROLL_REPLAY_2026-09-09.md) | `EmbeddedPlaynite=true`；媒体/任务端点回放各 `47` 样本、底部各 `21`，尾项完整，异常计数为 0 | 无物理鼠标拖动、滚轮/键盘矩阵、DPI/主题矩阵或录屏；问题 B 仍宿主人工待验收 |
 
 ## 可复核命令

@@ -2,6 +2,8 @@
 
 > 连续实施入口：[32 项、8 阶段计划](ai/CONTINUOUS_DEVELOPMENT_PLAN_2026-09-08.md)。用户要求减少逐项确认；接手后按依赖连续实施并逐项交付，已满足任务跳过，外部阻塞不妨碍独立任务。Q6 质量报告仍是首四项问题依据。
 
+> 2026-09-09 L40 真实宿主复核：c84107b 包在隔离 Playnite 中启动并修正了遗留旧 Worker 路径，但最终 `EmbeddedDashboardCaptured=false`，只得到受控 Dashboard；该轮没有新的真实嵌入表格 replay JSON，不能当作滚动通过。b100913 的 RangeValue provider 异常已由 c84107b 在开发审计路径中隔离，生产滚动逻辑未改。最新 Core/Worker/Playnite 回归为 `76/76`、`310/311（1 skip）`、`425/488（63 skip）`，详见 [`ai/L40_REAL_HOST_SCROLL_REPLAY_2026-09-09.md`](ai/L40_REAL_HOST_SCROLL_REPLAY_2026-09-09.md)。
+
 > 2026-09-09 L39 真实宿主回放：提交 `a9b8bce` 的包已安装到隔离扩展目录并在真实 Playnite/FusionX 中运行。媒体表 400 条、任务表 50 条各 47 个样本，底部各 21 个、上下端点往返 20 次；Media `394/394`、Task `40/40` 到达末端，最后加载行分别在 Presenter `0,36,604×279.33` 与 `0,36,637.33×456` 内完整可见，cell/visual/text 为 `5/5/5`、`6/6/6`。空正文、大间隙、末端水平条覆盖、选中内容缺失和尾项不完整均为 0。详细证据见 [`ai/L39_REAL_HOST_SCROLL_REPLAY_2026-09-09.md`](ai/L39_REAL_HOST_SCROLL_REPLAY_2026-09-09.md)。
 
 > L39 没有凭程序化端点回放猜改生产模板、ScrollUnit、Margin 或虚拟化；代码只补强诊断尾项完整性和开发审计覆盖任务表。任务审计跳过加载更多，因为当前任务命令替换 50 条页面但保持 `HasMore=true`，重复调用会污染回放。
