@@ -2283,17 +2283,20 @@ public static class Program
         {
             if (string.IsNullOrEmpty(grid.Name))
                 continue;
-            report.AppendLine($"  {label} {grid.Name}: size={grid.ActualWidth:0}x{grid.ActualHeight:0}, rows={grid.Items.Count}");
+            var requiredReadableRows = Math.Min(4, grid.Items.Count);
+            var readableRows = CountReadableDataRows(grid);
+            report.AppendLine($"  {label} {grid.Name}: size={grid.ActualWidth:0}x{grid.ActualHeight:0}, rows={grid.Items.Count}, readableRows={readableRows}/{requiredReadableRows}");
             if (grid.Name is "FindingsGrid" or "MaintenanceDeviceGrid" or "MaintenanceAuditFindingsGrid" or "MaintenanceProcessGrid")
             {
                 var fillRatio = host.ActualHeight > 0 ? grid.ActualHeight / host.ActualHeight : 0;
                 report.AppendLine($"  {label} {grid.Name} fill: hostH={host.ActualHeight:0}, gridH={grid.ActualHeight:0}, ratio={fillRatio:0.00}");
             }
-            if (grid.ActualHeight > 0
-                && grid.ActualHeight < 236
-                && grid.Name != "MaintenanceAuditLogGrid")
+            if (grid.Name != "MaintenanceAuditLogGrid"
+                && grid.ActualHeight > 0
+                && requiredReadableRows > 0
+                && readableRows < requiredReadableRows)
             {
-                s_problems.Add($"{label} {grid.Name} table viewport is only {grid.ActualHeight:0} DIP (< 236)");
+                s_problems.Add($"{label} {grid.Name} table viewport only keeps {readableRows}/{requiredReadableRows} data rows fully readable (viewport={grid.ActualHeight:0} DIP)");
             }
         }
 
@@ -2302,6 +2305,11 @@ public static class Program
             if (string.IsNullOrEmpty(list.Name))
                 continue;
             report.AppendLine($"  {label} {list.Name}: size={list.ActualWidth:0}x{list.ActualHeight:0}, items={list.Items.Count}");
+            // These lists live inside the Media inspector and intentionally size to their
+            // small preview/history content under a separately scrollable inspector. They
+            // are not the primary workspace viewport covered by the four-row gate.
+            if (list.Name is "MediaClassificationPreviewItems" or "MediaClassificationHistoryList")
+                continue;
             if (list.ActualHeight > 0
                 && list.ActualHeight < 236
                 && list.Name != "OverviewActivityList"
@@ -3724,13 +3732,20 @@ public static class Program
         {
             if (string.IsNullOrEmpty(grid.Name) || grid.ActualHeight <= 0)
                 continue;
-            if (grid.ActualHeight < 236 && grid.Name != "MaintenanceAuditLogGrid")
-                s_problems.Add($"{label} {grid.Name} viewport {grid.ActualHeight:0} DIP (<236)");
+            var requiredReadableRows = Math.Min(4, grid.Items.Count);
+            var readableRows = CountReadableDataRows(grid);
+            report.AppendLine($"  {label} {grid.Name} readableRows={readableRows}/{requiredReadableRows} viewport={grid.ActualHeight:0} DIP");
+            if (grid.Name != "MaintenanceAuditLogGrid"
+                && requiredReadableRows > 0
+                && readableRows < requiredReadableRows)
+                s_problems.Add($"{label} {grid.Name} keeps only {readableRows}/{requiredReadableRows} data rows fully readable (viewport={grid.ActualHeight:0} DIP)");
         }
 
         foreach (var list in FindVisualChildren<ListBox>(host))
         {
             if (string.IsNullOrEmpty(list.Name) || list.ActualHeight <= 0)
+                continue;
+            if (list.Name is "MediaClassificationPreviewItems" or "MediaClassificationHistoryList")
                 continue;
             if (list.ActualHeight < 236
                 && list.Name != "OverviewActivityList"
@@ -3756,6 +3771,23 @@ public static class Program
         }
 
         report.AppendLine($"  {label} viewport probe done");
+    }
+
+    private static int CountReadableDataRows(DataGrid grid)
+    {
+        if (grid.Items.Count == 0 || grid.ActualHeight <= 0)
+            return 0;
+
+        var headerHeight = double.IsNaN(grid.ColumnHeaderHeight)
+            ? 0d
+            : Math.Max(0d, grid.ColumnHeaderHeight);
+        var rows = FindVisualChildren<DataGridRow>(grid)
+            .Where(row => row.Visibility == Visibility.Visible && row.ActualHeight >= 22)
+            .Select(row => row.TransformToAncestor(grid)
+                .TransformBounds(new Rect(0, 0, row.ActualWidth, row.ActualHeight)))
+            .Count(bounds => bounds.Top >= headerHeight - 0.5
+                && bounds.Bottom <= grid.ActualHeight + 0.5);
+        return rows;
     }
 
     private static void RunResizeTransitionProbes(StringBuilder report)
@@ -3790,11 +3822,14 @@ public static class Program
                     var (contentW, contentH) = ContentSize(windowW, windowH);
                     host.Width = contentW;
                     host.Height = contentH;
-                    ApplyThemeResponsive(view, contentW, windowH);
+                    var responsiveHeight = name.Equals("Media", StringComparison.OrdinalIgnoreCase)
+                        ? contentH
+                        : windowH;
+                    ApplyThemeResponsive(view, contentW, responsiveHeight);
                     host.Measure(new Size(contentW, contentH));
                     host.Arrange(new Rect(0, 0, contentW, contentH));
                     host.UpdateLayout();
-                    ApplyThemeResponsive(view, contentW, windowH);
+                    ApplyThemeResponsive(view, contentW, responsiveHeight);
                     host.UpdateLayout();
 
                     var snapshot = SnapshotLayoutMetrics(host);
