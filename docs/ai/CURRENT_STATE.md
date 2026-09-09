@@ -21,6 +21,7 @@
 - `scaleprobe` 使用任务表/媒体表相同离线模板，200/2000/10000 条数据分别执行 20 次顶部/底部/中间往返及滚轮、PageUp/PageDown、Ctrl+End；报告为 `scaleprobe OK`，没有稳定空白正文、选中框与文字分离或大块表头间隙，末行在直接滑到末尾时完整落入 Presenter 视口。
 - `ScrollIntoView(最后一项)` 在当前插件模板和标准 WPF 对照模板中都受离屏窗口延迟影响，记录为 `offscreen-inconclusive`，不能用它证明真实宿主行为。证据保留在 `.tmp/l32-scrollprobe/scaleprobe-report.txt`；真实 Playnite/FusionX、视频和 DPI 仍未验证。
 - 本阶段验证：Release RenderHarness 构建 `0 warning/0 error`，锚点定向 `8/8`，Playnite 全量 `421/484`（63 skip），源码校验通过。
+- L32 证据索引见 [`EVIDENCE_INDEX_2026-09-09.md`](EVIDENCE_INDEX_2026-09-09.md)，其中明确当前候选包、离线滚动报告、skip 账本和真实宿主缺口。
 
 ## 2026-09-09 L28 持续更新分页与选择恢复已完成离线收口（真实宿主待验收）
 
