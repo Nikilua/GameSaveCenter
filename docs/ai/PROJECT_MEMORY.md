@@ -17,7 +17,7 @@
 
 ## 2026-09-09 L40 真实宿主捕获未形成新的嵌入滚动证据
 
-- 当前最新代码提交为 `c84107b`，构建身份为 `0.6.73+c84107b2f79870133707ed01abd22c521e87e070`。L40 隔离 Playnite 最终 `EmbeddedDashboardCaptured=false`、`ControlledDashboardCaptured=true`、`ProductionVisualSourceOfTruthAvailable=false`，所以不能覆盖或升级 L39 的真实嵌入证据。
+- L40 运行代码基线为 `c84107b`，构建身份为 `0.6.73+c84107b2f79870133707ed01abd22c521e87e070`。L40 隔离 Playnite 最终 `EmbeddedDashboardCaptured=false`、`ControlledDashboardCaptured=true`、`ProductionVisualSourceOfTruthAvailable=false`，所以不能覆盖或升级 L39 的真实嵌入证据。
 - L40 启动前修正了隔离配置残留的旧 Worker 绝对路径；这只修复审计环境身份问题。L40 没有新的真实嵌入 `scroll-replay` JSON，受控窗口截图不能当作生产表格滚动通过。
 - b100913 的 RangeValue 滑块等效路径曾在 WPF provider 内抛出 `NullReferenceException`；c84107b 对开发审计调用做异常隔离并继续执行。该路径不是生产滚动逻辑，也不能替代真实鼠标拖拽。
 - 最新回归为 Core `76/76`、Worker `310/311`（1 skip）、Playnite `425/488`（63 skip），构建无警告/错误。L39 的真实嵌入端点结果仍有效：媒体 400 条、任务 50 条、各 47 样本、底部尾项完整、异常计数为 0。
@@ -25,7 +25,7 @@
 
 ## 2026-09-09 L39 真实宿主回放未复现视频 B 类异常
 
-- 当前最新代码提交为 `a9b8bce`；L39 包身份为 `0.6.73+a9b8bcec0c05f7d548d8160119b2b29e9698b1ab`。隔离真实 Playnite/FusionX 嵌入采集成功，Dashboard `1365.33×868 DIP`、DPI `1.5`。
+- L39 运行代码基线为 `a9b8bce`；L39 包身份为 `0.6.73+a9b8bcec0c05f7d548d8160119b2b29e9698b1ab`。隔离真实 Playnite/FusionX 嵌入采集成功，Dashboard `1365.33×868 DIP`、DPI `1.5`。
 - `MediaInboxGrid` 400 条和 `TaskGrid` 50 条各完成 47 个程序化回放样本，包含顶部/底部、20 次上下端点往返、水平端点和尾项选择。两表底部尾项均完整：Media `offset=394/scrollable=394`、Presenter `0,36,604×279.33`、尾行 `399@256..300`；Task `40/40`、Presenter `0,36,637.33×456`、尾行 `49@432..476`。尾项 cell/visual/text 为 `5/5/5`、`6/6/6`。
 - 回放 JSON 的空正文、大间隙、末端水平条覆盖、选中内容缺失和尾项不完整均为 0。该证据证明当前模板端点范围和末行视口避让在真实宿主中通过，但不证明物理滑块拖动期间的 B 类视频问题已解决。
 - 任务审计必须保留 50 条页面，不调用加载更多；当前任务分页命令会替换页面并保留 `HasMore=true`，重复调用会造成无限分页回放，不能把它误记为滚动异常。
