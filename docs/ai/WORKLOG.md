@@ -14,6 +14,7 @@
 - 从生产源提交 `fa9af0a` 运行 `scripts/package.ps1 -Configuration Release -BuildOutputRoot .tmp/package-current-20260909-latest`；XAML `19/19`，Release 构建 `0 warning / 0 error`，Core `76/76`、Worker `310/311`（1 skip）、Playnite `427/490`（63 skip），均无失败。
 - 六份程序集身份一致为 `0.6.73+fa9af0ad36db07551bd1c2985258d72eecb9c8e4`；[`.pext`](../../artifacts/GameSaveCenter-0.6.73.pext) 与 [`.zip`](../../artifacts/GameSaveCenter-0.6.73-playnite.zip) 均 `43,837,868` 字节，SHA-256 为 `631615AB7695C46F943D9546A53369C69ADA49F347C4F7CE33D96A33C3831249`。
 - 打包 staging 和隔离构建目录已从 `artifacts/`、`.tmp/` 清理；没有安装真实 Playnite，L31 宿主矩阵和原视频操作仍保持未验收。
+- 打包完成后的独立门禁再次通过：`python scripts/validate-source.py`、`scripts/check-xaml.ps1`（19 文件）和 `git diff --check` 均通过；这只加强源码/交付一致性证据，不改变真实宿主待验收边界。
 
 ## 2026-09-09 首页活动内容呈现与云端队列卡片点击入口修复
 
