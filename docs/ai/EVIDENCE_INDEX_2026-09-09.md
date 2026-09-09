@@ -1,18 +1,18 @@
 # 2026-09-09 证据索引与验收边界
 
-当前基线：`main`，最新代码提交为 `1975d2d`（缩略图测试隔离为 `c0197e5`，Media 离屏门禁收口为 `d777e65`）。当前源码回归为 Playnite `425/488`（63 skip、0 fail）；最新干净 RenderHarness 报告对应 `9114092`，不是宿主安装包。L42 运行基线及构建身份为 `398a6f0` / `0.6.73+398a6f095718e2827c3e8bd2a19bbbb5525c1f16`。L41/L42 均未捕获嵌入 Dashboard，因此当前有效的真实嵌入表格回放仍是 L39 的 `0.6.73+a9b8bcec0c05f7d548d8160119b2b29e9698b1ab`。窗口级滚动探针 canonical 报告仍为 `ea18b11`。本索引只汇总已有证据，不把程序化回放扩大为物理滑块/视频结论。
+当前基线：`main`，最新代码提交为 `1fdd15e`（缩略图测试隔离为 `c0197e5`，Media 离屏门禁收口为 `d777e65`）。当前源码回归为 Playnite `426/489`（63 skip、0 fail）；最新干净 RenderHarness 报告对应 `1fdd15e`，不是宿主安装包。L42 运行基线及构建身份为 `398a6f0` / `0.6.73+398a6f095718e2827c3e8bd2a19bbbb5525c1f16`。L41/L42 均未捕获嵌入 Dashboard，因此当前有效的真实嵌入表格回放仍是 L39 的 `0.6.73+a9b8bcec0c05f7d548d8160119b2b29e9698b1ab`。窗口级滚动探针 canonical 报告仍为 `ea18b11`。本索引只汇总已有证据，不把程序化回放扩大为物理滑块/视频结论。
 
 ## 当前阶段
 
 ### 2026-09-09 回归与离屏 RenderHarness 证据
 
-证据报告： [`.tmp/render-qa-cloud-filter-probe-20260909/render-qa-report.txt`](../../.tmp/render-qa-cloud-filter-probe-20260909/render-qa-report.txt)。工作树干净且报告对应 `9114092`；RenderHarness Release 构建 `0 warning/0 error`、`render-qa OK`。Settings normal/dirty/invalid 三态、Sidebar rapid-toggle 的第二次点击、双主题/多尺寸/resize、生产壳层 Media 1040/1100 表格 `300 DIP`/页尾可达均通过；Media 主表记录实际 `readableRows`，resize 为 `6/4`，原 `230 DIP` 场景为 `4/4`。Inspector 预览/历史列表仍按嵌套小列表处理。这些离屏结果不替代真实 Playnite/FusionX 视频验收。
+证据报告： [`.tmp/render-qa-overview-cloud-20260909/render-qa-report.txt`](../../.tmp/render-qa-overview-cloud-20260909/render-qa-report.txt)。工作树干净且报告对应 `1fdd15e`；RenderHarness Release 构建 `0 warning/0 error`、`render-qa OK`。Settings normal/dirty/invalid 三态、Sidebar rapid-toggle 的第二次点击、双主题/多尺寸/resize、生产壳层 Media 1040/1100 表格 `300 DIP`/页尾可达均通过；Media 主表记录实际 `readableRows`，resize 为 `6/4`，原 `230 DIP` 场景为 `4/4`。Inspector 预览/历史列表仍按嵌套小列表处理。这些离屏结果不替代真实 Playnite/FusionX 视频验收。
 
 新增的 `.tmp/render-qa-cloud-filter-probe-20260909/render-qa-report.txt` 在完整 render-qa 中额外验证了真实 `MaintenanceView` 云端队列页的两个 ComboBox：浅色 `#F21B1F27`、深色 `#FFF2F4F8`，选中文本均已实现并可见；同时保留浅/深主题截图。该报告和截图是离屏 WPF 证据，不替代真实 FusionX/Playnite 嵌入。
 
 同一报告还记录生产壳层背景层的运行时几何：`ShellAmbientMaterialLayer` 在浅/深主题均跨完整两列和 footer 两行，并保持 `UseSelectedGameBackground=False`，但离屏夹具未加载真实 Playnite 游戏背景图片，不能据此宣称真实宿主截图已通过。
 
-当前候选包：构建提交 `1975d2d`，程序集身份 `0.6.73+1975d2d30164a141f0f2f4d5055c9b0fb84e9b0b`；`.pext/.zip` 均为 `43,837,688` 字节，SHA-256 为 `D05BBDA6CFD5E323649424A3229C47F2CAEF46A161C432DFF8FC14792A285E12`。包未安装真实 Playnite，L31 宿主矩阵仍未解除。
+当前候选包：构建提交 `1fdd15e`，程序集身份 `0.6.73+1fdd15eedfa64bb34292b85cb0e4d14bbfa9dd81`；`.pext/.zip` 均为 `43,837,799` 字节，SHA-256 为 `FD91FB0E0B12ABA2A73F29F76F1E3F90255D6FA4D30798EBA2FEFB53FAD120F9`。包未安装真实 Playnite，L31 宿主矩阵仍未解除。
 
 ### L42/L41 真实宿主启动边界
 

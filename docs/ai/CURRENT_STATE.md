@@ -7,6 +7,7 @@
 - `OverviewActivityRowButton` 已清空共享文本按钮模板的 `ContentTemplate`，避免活动行的 `Border/Grid` 可视树被字符串化为 `System.Windows.Controls.Border`。
 - 云端队列指标已改成整卡 `OverviewCloudQueueCardButton`，直接执行 `OpenCloudQueueCommand`；“查看明细”子按钮已删除，整卡保留可点击、键盘焦点和自动化名称。
 - 当前验证：Playnite `426/489`（63 skip、0 fail）、Release 构建 `0/0`、RenderHarness `render-qa OK`、源校验通过、XAML `19/19`。RenderHarness 和离屏截图不替代真实 Playnite/FusionX 宿主验收。
+- 当前候选包为提交 `1fdd15e`：六份程序集身份 `0.6.73+1fdd15eedfa64bb34292b85cb0e4d14bbfa9dd81`，两个包均 `43,837,799` 字节，SHA-256 为 `FD91FB0E0B12ABA2A73F29F76F1E3F90255D6FA4D30798EBA2FEFB53FAD120F9`；未安装真实 Playnite。
 
 ## 2026-09-09 回归失败修复与离屏门禁更新
 
@@ -43,8 +44,8 @@
 
 ## 2026-09-09 L30 候选安装包与升级/回退说明已完成（未安装真实宿主）
 
-- 候选包沿用公共版本 `0.6.73`，插件/Worker/Core/Contracts 六份程序集构建身份一致：`0.6.73+1975d2d30164a141f0f2f4d5055c9b0fb84e9b0b`。Worker 为 `win-x64` self-contained，manifest、必需文件和包内容校验通过；本包包含滚动锚点、浅色主题背景和云端筛选文字修复。
-- [`.pext`](../../artifacts/GameSaveCenter-0.6.73.pext) 与 [`.zip`](../../artifacts/GameSaveCenter-0.6.73-playnite.zip) 均 `43,837,688` 字节，SHA-256 均为 `D05BBDA6CFD5E323649424A3229C47F2CAEF46A161C432DFF8FC14792A285E12`。`scripts/package.ps1` 在隔离输出中完成 Release 构建、测试、Worker 发布和包校验；候选包未安装到真实 Playnite。
+- 候选包沿用公共版本 `0.6.73`，插件/Worker/Core/Contracts 六份程序集构建身份一致：`0.6.73+1fdd15eedfa64bb34292b85cb0e4d14bbfa9dd81`。Worker 为 `win-x64` self-contained，manifest、必需文件和包内容校验通过；本包包含滚动锚点、浅色主题背景、云端筛选文字和首页活动/云端卡片修复。
+- [`.pext`](../../artifacts/GameSaveCenter-0.6.73.pext) 与 [`.zip`](../../artifacts/GameSaveCenter-0.6.73-playnite.zip) 均 `43,837,799` 字节，SHA-256 均为 `FD91FB0E0B12ABA2A73F29F76F1E3F90255D6FA4D30798EBA2FEFB53FAD120F9`。`scripts/package.ps1` 在隔离输出中完成 Release 构建、测试、Worker 发布和包校验；候选包未安装到真实 Playnite。
 - 数据库升级/重复初始化定向 `14/14`；当前迁移为幂等增量，回退必须恢复完整升级前隔离配置/状态库副本，不承诺旧包直接读取新 schema。具体步骤见 [`L30_PACKAGE_CHECKLIST_2026-09-09.md`](L30_PACKAGE_CHECKLIST_2026-09-09.md)。
 - 真实 Playnite 加载、FusionX/用户主题、DPI、Worker 进程回收和原视频复测仍待 L31 宿主矩阵。
 
@@ -63,7 +64,7 @@
 - 提交 `85b1aeb` 将本机已安装 FusionX `2.1.1` 的 `DefaultControls/DataGrid.xaml` 只读加载进同一隐藏 `Window` 对照；没有修改用户主题文件。FusionX 直接滑块和 `Ctrl+End` 均到 `1987/1987`，末行 `1999` 为 `@608/44`，Presenter 为 `0,36,1078.67x600`；水平条为 `Collapsed/0`。FusionX 的 deferred `ScrollIntoView` 仍标为 `offscreen-baseline-inconclusive`，所以这只证明当前安装模板在离线直接拖动路径下未复现空白/行框分离，不能替代真实宿主。
 - 提交 `5198c6c` 又对 FusionX 执行 700×640 DIP 窄视口、1100 DIP 列宽的水平条场景；水平条为 `Visible/17.33`，Presenter 实际缩为 `678.67x582.67`，滑到 `1987/1987` 后末行仍为 `1999@608/44`。20 次往返和 `PageDown/PageUp/Ctrl+End` 均通过，说明离线模板在水平条占用内容视口时也没有把最后一行盖住；仍不等同真实 Playnite。
 - 提交 `8775809` 修正探针元数据：空的 `git status --porcelain` 不再被误报为 `unknown`。最新 canonical 报告的提交为 `ea18b11`，`WorkingTreeClean: True`，并保留上述两组 FusionX 对照结果。
-- 提交 `f31711c` 修正生产锚点路径：`MediaCenterView` 的捕获和恢复不再取第一个后代 `ScrollViewer`，而是优先选择拥有 `DataGridRowsPresenter` 的实际表格滚动器，再按实际视口尺寸兜底；提交 `1477a37` 增加真实 STA 隐藏 Window 行为测试，`MediaWindowAnchorContractTests` 定向结果为 `10/10`。当前 `1975d2d` 候选包已包含该修复和后续浅色主题修复，真实宿主仍需用该包复测。
+- 提交 `f31711c` 修正生产锚点路径：`MediaCenterView` 的捕获和恢复不再取第一个后代 `ScrollViewer`，而是优先选择拥有 `DataGridRowsPresenter` 的实际表格滚动器，再按实际视口尺寸兜底；提交 `1477a37` 增加真实 STA 隐藏 Window 行为测试，`MediaWindowAnchorContractTests` 定向结果为 `10/10`。当前 `1fdd15e` 候选包已包含该修复和后续首页/浅色主题修复，真实宿主仍需用该包复测。
 - 证据保留在 `.tmp/l32-scrollprobe/scaleprobe-report.txt`；真实 Playnite/FusionX、视频、DPI、加载更多现场锚点仍未验证。本阶段验证：Release RenderHarness 构建 `0 warning/0 error`、`scaleprobe OK`，锚点定向 `10/10`，Playnite 全量 `423/486`（63 skip、0 fail），源码校验通过。
 - L32 证据索引见 [`EVIDENCE_INDEX_2026-09-09.md`](EVIDENCE_INDEX_2026-09-09.md)，其中明确当前候选包、离线滚动报告、skip 账本和真实宿主缺口。
 

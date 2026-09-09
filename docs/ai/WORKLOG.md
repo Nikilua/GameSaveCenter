@@ -9,7 +9,13 @@
 - 新增非跳过源回归，锁定活动行/云端卡片必须使用可视树内容且云端卡片只有整卡导航；Playnite 全量 `426/489`（63 skip）通过，0 失败。
 - Release 构建 `0 warning / 0 error`；RenderHarness 双主题、多尺寸、resize、Production Shell QA 为 `render-qa OK`；`validate-source.py`、XAML `19/19` 和 WPF 静态审计 `0 errors / 22 warnings / 157 info` 通过。真实 Playnite/FusionX 仍未启动，宿主人工视觉验收继续待完成。
 
-## 2026-09-09 当前源码候选包重新生成
+## 2026-09-09 当前首页修复候选包重新生成
+
+- 从提交 `1fdd15e` 重新运行 `scripts/package.ps1 -Configuration Release -BuildOutputRoot .tmp/package-current-20260909`；Release 构建 `0 warning / 0 error`，Core `76/76`、Worker `310/311`（1 skip）、Playnite `426/489`（63 skip），均无失败。
+- 六份程序集身份一致为 `0.6.73+1fdd15eedfa64bb34292b85cb0e4d14bbfa9dd81`；Worker 为 `win-x64` self-contained；`.pext/.zip` 均 `43,837,799` 字节，SHA-256 为 `FD91FB0E0B12ABA2A73F29F76F1E3F90255D6FA4D30798EBA2FEFB53FAD120F9`。
+- 包暂存目录已清理，保留 [`.pext`](../../artifacts/GameSaveCenter-0.6.73.pext) 和 [`.zip`](../../artifacts/GameSaveCenter-0.6.73-playnite.zip)；未安装真实 Playnite，FusionX、DPI 和原视频复测仍待宿主验收。
+
+## 2026-09-09 前一版源码候选包重新生成（1975d2d）
 
 - 使用 `scripts/package.ps1 -Configuration Release -BuildOutputRoot .tmp/package-current-20260909` 从当前源码生成候选包；Release 构建 `0 warning / 0 error`，Core `76/76`、Worker `310/311`（1 skip）、Playnite `425/488`（63 skip），均无失败。
 - 六份程序集身份一致为 `0.6.73+1975d2d30164a141f0f2f4d5055c9b0fb84e9b0b`；Worker 为 `win-x64` self-contained；`.pext/.zip` 均 `43,837,688` 字节，SHA-256 为 `D05BBDA6CFD5E323649424A3229C47F2CAEF46A161C432DFF8FC14792A285E12`。

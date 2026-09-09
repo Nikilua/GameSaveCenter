@@ -3,8 +3,8 @@
 ## 候选包
 
 - 源码公共版本：`0.6.73`，没有为开发阶段递增版本号。
-- 构建提交：`1975d2d`。
-- 完整程序集身份：`0.6.73+1975d2d30164a141f0f2f4d5055c9b0fb84e9b0b`。插件、Worker、Core、Contracts 的六份程序集身份由 `scripts/package.ps1` 逐一校验并一致；本包包含滚动锚点、浅色主题背景/云端筛选文字修复及最新回归覆盖。
+- 构建提交：`1fdd15e`。
+- 完整程序集身份：`0.6.73+1fdd15eedfa64bb34292b85cb0e4d14bbfa9dd81`。插件、Worker、Core、Contracts 的六份程序集身份由 `scripts/package.ps1` 逐一校验并一致；本包包含滚动锚点、浅色主题背景/云端筛选文字修复、首页活动内容和云端整卡导航修复。
 - Worker 发布：`win-x64`、self-contained；包内存在 `GameSaveCenter.Worker.exe/.dll`、`runtimeconfig.json`、`hostfxr.dll`、`hostpolicy.dll`、`coreclr.dll` 和 `includedFrameworks` 标记。
 - manifest：`src/GameSaveCenter.Playnite/extension.yaml` 的 `Id` 为 `66e9f2d7-67bb-43ef-b62a-b8e60734fcec`，`Version` 为 `0.6.73`，`Module` 为 `GameSaveCenter.Playnite.dll`。
 
@@ -13,11 +13,11 @@
 - [GameSaveCenter-0.6.73.pext](../../artifacts/GameSaveCenter-0.6.73.pext)
 - [GameSaveCenter-0.6.73-playnite.zip](../../artifacts/GameSaveCenter-0.6.73-playnite.zip)
 
-两个文件大小均为 `43,837,688` 字节，SHA-256 均为：
+两个文件大小均为 `43,837,799` 字节，SHA-256 均为：
 
-`D05BBDA6CFD5E323649424A3229C47F2CAEF46A161C432DFF8FC14792A285E12`
+`FD91FB0E0B12ABA2A73F29F76F1E3F90255D6FA4D30798EBA2FEFB53FAD120F9`
 
-包脚本完成了 Release 构建、Core `76/76`、Worker `310/311`（1 skip）、Playnite `425/488`（63 skip）测试、Worker `win-x64` 发布、必需文件检查、manifest 版本检查、程序集身份校验和 self-contained 检查。没有安装到真实 Playnite。
+包脚本完成了 Release 构建、Core `76/76`、Worker `310/311`（1 skip）、Playnite `426/489`（63 skip）测试、Worker `win-x64` 发布、必需文件检查、manifest 版本检查、程序集身份校验和 self-contained 检查。没有安装到真实 Playnite。
 
 ## 数据库兼容边界
 

@@ -4,7 +4,7 @@
 
 > 2026-09-09 Media 离屏门禁收口：`d777e65` 将主表视口验收改为实际 DataGrid 行容器的完整可见数（有足够数据时至少 `4/4` 行），并修正 resize 探针向 Media 传入 PageHost `contentH`；Inspector 内 2/3 条的预览/历史列表不再被误当主表。干净报告 [`.tmp/render-qa-media-gate-clean-20260909/render-qa-report.txt`](../.tmp/render-qa-media-gate-clean-20260909/render-qa-report.txt) 为 `WorkingTreeClean: True`、`render-qa OK`，Media resize `300 DIP/readableRows=6/4`。该结果仍是离屏证据，真实宿主/FusionX 与视频操作待验收。
 > 2026-09-09 当前交接基线：文档与证据边界同步提交为 `580a70f`。它没有继续修改生产表格模板；当前 Computer Use 仍返回 `apps: []`，没有新的真实 Playnite 截图、录屏或滚动诊断。`render-qa OK` 仍只能作为离屏门禁证据，L31 真实宿主矩阵保持外部阻塞。
-> 2026-09-09 顺序 Release 复验：`dotnet build GameSaveCenter.sln -c Release --no-restore -m:1` 为 `0 warning / 0 error`；Core `76/76`、Worker `310/311`（1 skip）、Playnite `425/488`（63 skip）均无失败。源码/XAML/WPF 静态门禁通过；并行测试启动争用未计入代码失败，详细过程见 `ai/WORKLOG.md`。
+> 2026-09-09 首页修复后的顺序 Release 复验：`dotnet build GameSaveCenter.sln -c Release --no-restore -m:1` 为 `0 warning / 0 error`；Core `76/76`、Worker `310/311`（1 skip）、Playnite `426/489`（63 skip）均无失败。源码/XAML/WPF 静态门禁通过；RenderHarness 干净报告为 `.tmp/render-qa-overview-cloud-20260909/render-qa-report.txt`，详细过程见 `ai/WORKLOG.md`。
 > 2026-09-09 云端队列浅色控件树证据：RenderHarness 新增真实 `MaintenanceView` 云端队列页探针，双主题两个筛选 ComboBox 均找到可见选中文本；Light 前景 `#F21B1F27`、Dark 前景 `#FFF2F4F8`。完整报告和截图在 `.tmp/render-qa-cloud-filter-probe-20260909/`，仍属于离屏证据，真实 FusionX 宿主待验收。
 > 2026-09-09 壳层背景结构探针：同一报告检查 `ShellAmbientMaterialLayer` 在浅/深主题均跨完整壳层两列与 footer 两行，并保持 `UseSelectedGameBackground=False`；离屏没有真实 Playnite 背景位图，因此只能作为图片方框结构回归证据，不能替代宿主截图。
 
@@ -28,7 +28,7 @@
 
 > L36 尚未完成视频式人工回归：当前 CUA 无可识别原生 Playnite 窗口，未完成滑块往返 20 次、滚轮/PageUp/PageDown/Ctrl+End、尾部选择、水平条显隐、缩放矩阵和真实录屏；`CapturedAndValidated` 的滚动面清单也不能替代人工确认 MediaInboxGrid 已加载末项完整可见。继续交接时必须保留“待宿主人工验收”，不得写成视频问题已解决。
 
-> 2026-09-09 L30 当前候选包已按 `1975d2d` 重新生成：六份程序集身份同源为 `0.6.73+1975d2d30164a141f0f2f4d5055c9b0fb84e9b0b`；Worker `win-x64` self-contained；`.pext`/`.zip` 均为 `43,837,688` 字节，SHA-256 均为 `D05BBDA6CFD5E323649424A3229C47F2CAEF46A161C432DFF8FC14792A285E12`。Core/Worker/Playnite 为 `76/76`、`310/311`、`425/488`（均无失败），未安装真实 Playnite。
+> 2026-09-09 当前候选包已按 `1fdd15e` 重新生成：六份程序集身份同源为 `0.6.73+1fdd15eedfa64bb34292b85cb0e4d14bbfa9dd81`；Worker `win-x64` self-contained；`.pext`/`.zip` 均为 `43,837,799` 字节，SHA-256 均为 `FD91FB0E0B12ABA2A73F29F76F1E3F90255D6FA4D30798EBA2FEFB53FAD120F9`。Core/Worker/Playnite 为 `76/76`、`310/311`、`426/489`（均无失败），包含首页活动内容与云端整卡导航修复，未安装真实 Playnite。
 
 > L30 回退边界：当前数据库迁移是幂等增量，不承诺旧包直接读取已升级 schema；升级前要备份完整隔离配置/状态库，回退先停止宿主、保留失败目录、恢复升级前副本，再安装旧包。详细清单见 `ai/L30_PACKAGE_CHECKLIST_2026-09-09.md`；真实宿主加载、FusionX、DPI、Worker 回收和视频仍待 L31。
 
