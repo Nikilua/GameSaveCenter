@@ -15,6 +15,7 @@
 - 六份程序集身份一致为 `0.6.73+fa9af0ad36db07551bd1c2985258d72eecb9c8e4`；[`.pext`](../../artifacts/GameSaveCenter-0.6.73.pext) 与 [`.zip`](../../artifacts/GameSaveCenter-0.6.73-playnite.zip) 均 `43,837,868` 字节，SHA-256 为 `631615AB7695C46F943D9546A53369C69ADA49F347C4F7CE33D96A33C3831249`。
 - 打包 staging 和隔离构建目录已从 `artifacts/`、`.tmp/` 清理；没有安装真实 Playnite，L31 宿主矩阵和原视频操作仍保持未验收。
 - 打包完成后的独立门禁再次通过：`python scripts/validate-source.py`、`scripts/check-xaml.ps1`（19 文件）和 `git diff --check` 均通过；这只加强源码/交付一致性证据，不改变真实宿主待验收边界。
+- L32 文档链接审计扫描 116 个本地 Markdown 链接，缺失数为 `0`；同时确认当前 `.pext/.zip` 均存在。旧的一次性媒体截图链接已改为当前证据索引，不恢复已清理的临时截图。
 
 ## 2026-09-09 首页活动内容呈现与云端队列卡片点击入口修复
 
@@ -2597,7 +2598,7 @@
 - `validate_wpf_ui.py`：0 error；19 条既有 warning，161 条 info。
 - Playnite 测试：250 通过、61 跳过、0 失败。
 - `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/media-purple`：`render-qa OK`；双主题、多尺寸、媒体内部滚动和 resize 探针通过。
-- 更新后的媒体截图：[Media-1366x768-tab1.png](/D:/workplace/github/GameSaveCenter/artifacts/ui-qa/media-purple/Media-1366x768-tab1.png)。
+- 更新后的媒体截图属于一次性离屏产物，已按临时产物清理规则移除；当前可复核证据统一见 [`EVIDENCE_INDEX_2026-09-09.md`](EVIDENCE_INDEX_2026-09-09.md)。
 
 **验证边界：**
 

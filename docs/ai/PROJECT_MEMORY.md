@@ -8,6 +8,7 @@
 - 发布链验证为 Core `76/76`、Worker `310/311`（1 skip）、Playnite `427/490`（63 skip），构建无警告/错误；测试和文档提交虽然不改生产 XAML，但候选包身份必须仍对齐最新 HEAD，不能继续把 `1fdd15e` 写成当前包提交。
 - staging/隔离构建目录已清理；包仍未安装真实 Playnite，不能把最新包身份校验写成 FusionX、DPI、物理点击或视频验收。
 - 包后又执行 `python scripts/validate-source.py`、`scripts/check-xaml.ps1` 和 `git diff --check`，均通过；这些是源码/交付门禁，不替代 L31 真实宿主证据。
+- L32 文档链接审计共检查 116 个本地 Markdown 链接，缺失 0；旧临时截图不恢复，工作日志改指向当前证据索引。
 
 ## 2026-09-09 首页活动和云端队列整卡交互验证
 

@@ -8,6 +8,7 @@
 - 六份程序集身份统一为 `0.6.73+fa9af0ad36db07551bd1c2985258d72eecb9c8e4`；[`.pext`](../../artifacts/GameSaveCenter-0.6.73.pext) 和 [`.zip`](../../artifacts/GameSaveCenter-0.6.73-playnite.zip) 均为 `43,837,868` 字节，SHA-256 均为 `631615AB7695C46F943D9546A53369C69ADA49F347C4F7CE33D96A33C3831249`。
 - 临时构建目录和打包 staging 目录已清理；包未安装真实 Playnite。真实宿主/FusionX、用户主题、DPI、物理点击和视频复测仍待 L31 条件恢复。
 - 包后独立门禁：`validate-source.py` 通过，XAML `19/19` 通过，`git diff --check` 通过。
+- L32 链接审计：扫描本地 Markdown 链接 `116` 条，缺失 `0`；当前候选 `.pext/.zip` 均存在。已移除旧工作日志中指向已清理一次性截图的失效链接。
 
 ## 2026-09-09 首页交互行为测试已补齐
 
