@@ -81,6 +81,30 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "dev-install-run failed: $LASTEXITCODE" }
 
     if (-not [string]::IsNullOrWhiteSpace($UserDataDir)) {
+        $playniteConfigPath = Join-Path $UserDataDir 'config.json'
+        if (-not (Test-Path -LiteralPath $playniteConfigPath -PathType Leaf)) {
+            throw "Isolated Playnite config was not found: $playniteConfigPath"
+        }
+        $playniteConfig = Get-Content -LiteralPath $playniteConfigPath -Raw | ConvertFrom-Json
+        $playniteConfig.DatabasePath = Join-Path $UserDataDir 'library'
+        $playniteConfig.AutoBackupEnabled = $false
+        $playniteConfig | ConvertTo-Json -Depth 32 | Set-Content -LiteralPath $playniteConfigPath -Encoding UTF8
+
+        $pluginId = '66e9f2d7-67bb-43ef-b62a-b8e60734fcec'
+        $pluginWorker = Join-Path $isolatedExtensionsPath "GameSaveCenter_$pluginId\Worker\GameSaveCenter.Worker.exe"
+        $pluginSettingsPath = Join-Path $UserDataDir "ExtensionsData\$pluginId\config.json"
+        if (-not (Test-Path -LiteralPath $pluginWorker -PathType Leaf)) {
+            throw "Isolated GameSaveCenter Worker was not found: $pluginWorker"
+        }
+        if (Test-Path -LiteralPath $pluginSettingsPath -PathType Leaf) {
+            $pluginSettings = Get-Content -LiteralPath $pluginSettingsPath -Raw | ConvertFrom-Json
+            $pluginSettings.WorkerExecutable = $pluginWorker
+            $pluginSettings | ConvertTo-Json -Depth 32 | Set-Content -LiteralPath $pluginSettingsPath -Encoding UTF8
+        }
+
+        $runnerMetadata.DatabasePath = Join-Path $UserDataDir 'library'
+        $runnerMetadata.WorkerExecutable = $pluginWorker
+        $runnerMetadata | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $Output 'runner-metadata.json') -Encoding UTF8
         Write-Host "==> Starting Playnite with isolated user data: $UserDataDir" -ForegroundColor Cyan
         Start-Process -FilePath $PlayniteExecutable `
             -WorkingDirectory (Split-Path -Parent $PlayniteExecutable) `

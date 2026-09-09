@@ -3034,7 +3034,7 @@ public sealed class WpfUiResourceDictionaryTests
 
         Assert.Contains("TrainerDownloadStatus", trainer);
         Assert.Contains("TrainerDownloadNextStep", trainer);
-        Assert.Contains("TrainerDownloadProgress", trainer);
+        Assert.Contains("Value=\"{Binding TrainerDownloadProgress, Mode=OneWay}\"", trainer);
         Assert.Contains("CancelTrainerDownloadCommand", trainer);
         Assert.Contains("var gameId = game.PlayniteId", trainerCode);
         Assert.Contains("var catalogId = catalog.CatalogId", trainerCode);
