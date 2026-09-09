@@ -553,6 +553,19 @@ namespace GameSaveCenter.Playnite.Diagnostics
                         manifest,
                         session);
                 }
+
+                // TaskCenterView owns its DataGrid directly and has no inner TabControl.
+                // Run the same developer-only grid replay once at workspace scope so the
+                // task table is not silently omitted from the real-host evidence set.
+                if (session != null)
+                {
+                    await CaptureEmbeddedGridReplayAsync(
+                        dashboard,
+                        outputRoot,
+                        routePrefix + "-" + workspacePrefix + "-workspace",
+                        workspace.ToString(),
+                        session);
+                }
             }
         }
 

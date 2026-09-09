@@ -259,11 +259,33 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 var firstGap = visibleRows.Count == 0 ? double.NaN : visibleRows[0].Y - presenterRect.Top;
                 var largeGap = visibleRows.Count > 0 && firstGap > Math.Max(32d, visibleRows[0].Height * 1.5d);
                 var lastRowBottom = visibleRows.Count == 0 ? double.NaN : visibleRows[visibleRows.Count - 1].Bottom;
+                var lastVisibleRow = visibleRows.LastOrDefault();
+                var lastVisibleRowComplete = lastVisibleRow != null
+                    && !presenterRect.IsEmpty
+                    && lastVisibleRow.Bottom <= presenterRect.Bottom + 0.5d;
+                var lastLoadedIndex = grid.Items.Count - 1;
+                var lastLoadedRow = rows.FirstOrDefault(row => row.Index == lastLoadedIndex);
+                var lastLoadedId = grid.Items.Count == 0
+                    ? "none"
+                    : GetStableId(grid.Items[lastLoadedIndex]);
+                var lastLoadedRowComplete = lastLoadedRow != null
+                    && !presenterRect.IsEmpty
+                    && lastLoadedRow.Y >= presenterRect.Top - 0.5d
+                    && lastLoadedRow.Bottom <= presenterRect.Bottom + 0.5d
+                    && lastLoadedRow.CellCount > 0
+                    && lastLoadedRow.ContentVisualCount == lastLoadedRow.CellCount
+                    && lastLoadedRow.ContentTextCount > 0;
+                var atVerticalEnd = viewer != null
+                    && viewer.VerticalOffset >= viewer.ScrollableHeight - 0.5d;
+                var lastLoadedRowIncomplete = atVerticalEnd
+                    && grid.Items.Count > 0
+                    && lastLoadedRow != null
+                    && !lastLoadedRowComplete;
                 var horizontalOverlap = horizontalBar != null
                     && horizontalBar.Visibility == Visibility.Visible
                     && !presenterRect.IsEmpty
                     && visibleRows.Any(row => Math.Min(row.Bottom, presenterRect.Bottom) > hBarRect.Top + 0.5d);
-                var anomaly = blank || selectedContentMissing || largeGap || horizontalOverlap;
+                var anomaly = blank || selectedContentMissing || largeGap || horizontalOverlap || lastLoadedRowIncomplete;
                 var signature = string.Join("|", new[]
                 {
                     grid.Items.Count.ToString(),
@@ -306,6 +328,11 @@ namespace GameSaveCenter.Playnite.Infrastructure
                     selectedContentMissing,
                     largeGap,
                     horizontalOverlap,
+                    lastVisibleRowComplete,
+                    lastLoadedRow,
+                    lastLoadedId,
+                    lastLoadedRowComplete,
+                    lastLoadedRowIncomplete,
                     anomaly,
                     signature,
                     VirtualizingPanel.GetScrollUnit(grid),
@@ -389,6 +416,11 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 bool selectedContentMissing,
                 bool largeGap,
                 bool horizontalOverlap,
+                bool lastVisibleRowComplete,
+                RowSnapshot? lastLoadedRow,
+                string lastLoadedId,
+                bool lastLoadedRowComplete,
+                bool lastLoadedRowIncomplete,
                 bool anomaly,
                 string signature,
                 ScrollUnit scrollUnit,
@@ -415,6 +447,11 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 SelectedContentMissing = selectedContentMissing;
                 LargeGap = largeGap;
                 HorizontalOverlap = horizontalOverlap;
+                LastVisibleRowComplete = lastVisibleRowComplete;
+                LastLoadedRow = lastLoadedRow;
+                LastLoadedId = lastLoadedId;
+                LastLoadedRowComplete = lastLoadedRowComplete;
+                LastLoadedRowIncomplete = lastLoadedRowIncomplete;
                 IsAnomaly = anomaly;
                 Signature = signature;
                 ScrollUnit = scrollUnit;
@@ -442,6 +479,11 @@ namespace GameSaveCenter.Playnite.Infrastructure
             internal bool SelectedContentMissing { get; }
             internal bool LargeGap { get; }
             internal bool HorizontalOverlap { get; }
+            internal bool LastVisibleRowComplete { get; }
+            internal RowSnapshot? LastLoadedRow { get; }
+            internal string LastLoadedId { get; }
+            internal bool LastLoadedRowComplete { get; }
+            internal bool LastLoadedRowIncomplete { get; }
             internal bool IsAnomaly { get; }
             internal string Signature { get; }
             internal ScrollUnit ScrollUnit { get; }
@@ -458,6 +500,9 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 var selectedText = selected == null
                     ? "none"
                     : $"{selected.Index}:{selected.Id},cells={selected.CellCount},visual={selected.ContentVisualCount},text={selected.ContentTextCount},clip={selected.ClippedCellCount}";
+                var lastLoadedText = LastLoadedRow == null
+                    ? (ItemCount == 0 ? "none" : $"{ItemCount - 1}:{LastLoadedId}:not-realized")
+                    : $"{LastLoadedRow.Index}:{LastLoadedRow.Id}@{LastLoadedRow.Y:0.##}/{LastLoadedRow.Height:0.##},cells={LastLoadedRow.CellCount},visual={LastLoadedRow.ContentVisualCount},text={LastLoadedRow.ContentTextCount},clip={LastLoadedRow.ClippedCellCount}";
                 var viewerText = Viewer == null
                     ? "none"
                     : $"{Viewer.GetType().Name},off={Viewer.VerticalOffset:0.##}/{Viewer.HorizontalOffset:0.##},viewport={Viewer.ViewportHeight:0.##}x{Viewer.ViewportWidth:0.##},extent={Viewer.ExtentHeight:0.##}x{Viewer.ExtentWidth:0.##},scrollable={Viewer.ScrollableHeight:0.##}x{Viewer.ScrollableWidth:0.##}";
@@ -470,13 +515,14 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 var verticalText = VerticalBar == null ? "none" : VerticalBar.Visibility.ToString();
                 var scrollInfoType = ScrollInfoTypes.Count == 0 ? "none" : string.Join("|", ScrollInfoTypes);
                 var state = IsAnomaly
-                    ? $"anomaly=blank:{Blank},selectedMissing:{SelectedContentMissing},gap:{LargeGap},hOverlap:{HorizontalOverlap}"
+                    ? $"anomaly=blank:{Blank},selectedMissing:{SelectedContentMissing},gap:{LargeGap},hOverlap:{HorizontalOverlap},lastLoadedIncomplete:{LastLoadedRowIncomplete}"
                     : "state=normal";
                 return $"[GSC-GRID-DIAGNOSTIC] grid={Name} trigger={Trigger} items={ItemCount} context={Context} "
                     + $"scroller={viewerText},iscrollinfo={scrollInfoType},canContentScroll={CanContentScroll},scrollUnit={ScrollUnit}, "
                     + $"presenter={presenterText},hbar={horizontalText},vbar={verticalText},rows={VisibleRows.Count}/{Rows.Count},visibleTextRows={VisibleTextRows}, "
-                    + $"first={firstText},last={lastText},selected={selectedText},firstGap={FirstGap:0.##},lastBottom={LastRowBottom:0.##}, {state}";
+                    + $"first={firstText},last={lastText},lastLoaded={lastLoadedText},lastVisibleComplete={LastVisibleRowComplete},lastLoadedComplete={LastLoadedRowComplete},selected={selectedText},firstGap={FirstGap:0.##},lastBottom={LastRowBottom:0.##}, {state}";
             }
+
         }
 
         private sealed class RowSnapshot

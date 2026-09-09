@@ -125,12 +125,31 @@ public sealed class UiAuditCaptureContractTests
     {
         var source = ReadAuditSource();
         Assert.Contains("CaptureEmbeddedGridReplayAsync", source);
+        Assert.Contains("TaskCenterView owns its DataGrid directly", source);
+        Assert.Contains("routePrefix + \"-\" + workspacePrefix + \"-workspace\"", source);
         Assert.Contains("FindDescendant<DataGridRowsPresenter>(viewer)", source);
         Assert.Contains("ScrollToBottom", source);
         Assert.Contains("宿主审计回放:底部", source);
         Assert.Contains("lastRowComplete", source);
         Assert.Contains("tail-selection.png", source);
         Assert.DoesNotContain("Items.Refresh", source);
+    }
+
+    [Fact]
+    public void GridDiagnosticsDistinguishVisibleTailFromLoadedTailCompleteness()
+    {
+        var source = File.ReadAllText(Path.Combine(
+            FindRepositoryRoot(),
+            "src",
+            "GameSaveCenter.Playnite",
+            "Infrastructure",
+            "DataGridScrollDiagnostics.cs"));
+
+        Assert.Contains("lastLoadedRowComplete", source);
+        Assert.Contains("lastVisibleRowComplete", source);
+        Assert.Contains("lastLoadedIncomplete", source);
+        Assert.Contains("presenterRect.Bottom", source);
+        Assert.Contains("GetStableId(grid.Items[lastLoadedIndex])", source);
     }
 
     private static ScrollViewer CreateTallScroller()
