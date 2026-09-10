@@ -12,7 +12,7 @@
 
 - 第二张图中的页面外围矩形来自页面级 `AmbientMaterialLayer` 的圆角宽域渐变，不是需要再次铺开的图片层；Shell 已经拥有跨侧栏、页面和 footer 的单一环境坐标系。
 - `AmbientMaterialLayer` 新增 `IsShellLayer`。页面实例保持挂载但通过 `GscAmbientPageOpacity=0` 透明；Shell 实例标记为 `True`，内部洗色保持可见并由外层 `GscShellAmbientOpacity` 控制。不要重新让页面层和 Shell 层同时绘制宽域洗色。
-- 本轮资源/壳层定向测试通过，Release 全量为 Core `76/76`、Worker `310/311`（1 skip）、Playnite `429/492`（63 skip），构建 0 warning/0 error；RenderHarness 双主题通过，真实宿主截图和 DPI 仍是验收边界。
+- 本轮资源/壳层定向测试通过，Release 全量为 Core `76/76`、Worker `310/311`（1 skip）、Playnite `429/492`（63 skip），构建 0 warning/0 error；干净 RenderHarness 报告 [`.tmp/qa-table-ambient-20260910/render-qa-report.txt`](../../.tmp/qa-table-ambient-20260910/render-qa-report.txt) 为 `fc3c7d5`、`WorkingTreeClean: True`、`render-qa OK`，真实宿主截图和 DPI 仍是验收边界。
 
 ## 2026-09-10 生产壳层整页游戏背景与边界缝
 

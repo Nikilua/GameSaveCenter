@@ -12,7 +12,7 @@
 
 - 各生产页面的 `AmbientMaterialLayer` 仍保留，但共享 `GscAmbientPageOpacity` 在运行时固定为 `0`；这样页面不会再各自绘制一个带圆角的整面渐变矩形。
 - `AcrylicProductionShellView` 的唯一可见 `ShellAmbientMaterialLayer` 通过 `IsShellLayer="True"` 使用 `GscShellAmbientOpacity`，继续覆盖侧栏、右侧页面和 footer；选中游戏背景 `ImageBrush` 与可读性遮罩不变。
-- 资源测试、Release 构建、全量测试、源码/XAML 门禁、WPF 静态审计和双主题 RenderHarness 均已通过。真实 Playnite/FusionX 和宿主 DPI 仍需人工截图确认。
+- 资源测试、Release 构建、全量测试、源码/XAML 门禁、WPF 静态审计和双主题 RenderHarness 均已通过；干净报告 [`.tmp/qa-table-ambient-20260910/render-qa-report.txt`](../../.tmp/qa-table-ambient-20260910/render-qa-report.txt) 为 `fc3c7d5`、`WorkingTreeClean: True`、`render-qa OK`。真实 Playnite/FusionX 和宿主 DPI 仍需人工截图确认。
 
 ## 2026-09-10 生产壳层背景已覆盖整页并去除边界缝
 
