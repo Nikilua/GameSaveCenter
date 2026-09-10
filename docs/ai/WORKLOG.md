@@ -2,12 +2,18 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-10 实际宿主扩展刷新
+
+- 用户反馈“按钮仍没有变化”后，先比较源码与实际 Playnite 扩展目录，确认旧安装目录的 `GameSaveCenter.Playnite.dll`（15:45）和 `icon.png`（8 月 2 日）均不同于当前源码/资产；问题是宿主仍加载旧包，不能归因于用户观察。
+- 使用仓库内 `scripts/dev-install-run.ps1 -Configuration Release -NoStart` 完成隔离 Release 构建、XAML 检查、Core `76/76`、Worker `311/311`、Playnite `440/497`（57 skip，0 fail）和 Worker 发布；安装器随后原子替换实际 Playnite 扩展目录。
+- 安装后 `extension.yaml`、插件/共享程序集、Worker DLL 和 `icon.png` 均与包 staging 的 SHA-256 完全一致，插件构建身份为 `0.6.73+c757ffe5ff8b678d69cdca1386cf89be10f7a831`。安装采用 `-NoStart`，未擅自保持 Playnite 运行；用户需完全启动/重启宿主后观察按钮样式和主题侧栏图标。
+
 ## 2026-09-10 共享按钮实际生效与 Playnite 主题图标
 
 - 复核用户反馈后确认，上一轮只新增了 `ButtonStyles.xaml` 的语义别名，而生产页面仍使用既有 `GscWpfUi...` 样式，因此用户看不到明显变化；本轮直接修复共享 `GscWpfUiButton` 基础模板，将现有按钮表面和边框切换到 `GscGlassFillBrush` / `GscGlassStrokeBrush`，并让 Primary/Danger 使用已有自适应效果资源，未改命令、Binding、尺寸布局或焦点语义。
 - 侧边栏插件图标采用用户 ZIP 中 `plugin-main.svg` 的手柄线稿 Geometry，`SidebarItem.Icon` 改为 WPF `Path`，描边通过 DynamicResource `GlyphBrush` 交给 Playnite 主题提供，因此浅色/深色主题切换时会自动使用对应的黑/白色；`src/GameSaveCenter.Playnite/icon.png` 同步替换为压缩包的 `plugin-main-256.png` 透明黑色线稿，`extension.yaml` 继续指向该文件。
 - 新增 WPF 回归断言，确认现有按钮使用玻璃令牌、侧栏图标使用主题画笔且 PNG 资产存在。Release 解决方案构建 `0 warning / 0 error`；Core `76/76`、Worker `310/311`（1 skip）、Playnite `434/497`（63 skip），0 失败；源码校验、XAML `21/21`、WPF 静态审查 `0 error / 22 warnings / 172 info` 通过。
-- 代码阶段提交为 `83dc1c4`（中文提交“按钮样式与插件图标跟随主题”）。提交后 RenderHarness 双主题、多尺寸、窗口缩放及生产壳层检查通过，干净报告 [`.tmp/icon-button-qa-clean-20260910/render-qa-report.txt`](../../.tmp/icon-button-qa-clean-20260910/render-qa-report.txt) 为 `WorkingTreeClean: True`、`render-qa OK`。该报告仍是离屏 WPF 证据，真实 Playnite/FusionX、用户主题、DPI 和侧栏人工截图尚未执行。
+- 代码阶段提交为 `83dc1c4`（中文提交“按钮样式与插件图标跟随主题”）。提交后 RenderHarness 双主题、多尺寸、窗口缩放及生产壳层检查通过，干净报告 [`.tmp/icon-button-qa-clean-20260910/render-qa-report.txt`](../../.tmp/icon-button-qa-clean-20260910/render-qa-report.txt) 为 `WorkingTreeClean: True`、`render-qa OK`。随后已完成真实扩展目录安装，但真实 Playnite/FusionX、用户主题、DPI 和侧栏人工截图仍需用户重启宿主后确认。
 
 ## 2026-09-10 主题感知线性图标包接入
 

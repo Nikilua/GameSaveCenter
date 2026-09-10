@@ -2,18 +2,24 @@
 
 > 更新时间：2026-09-10。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-10 实际 Playnite 扩展已刷新
+
+- 复核用户反馈后确认，之前的源码改动没有进入 Playnite 正在使用的扩展目录：源码 Release DLL 与安装目录 DLL 哈希不同，安装目录 DLL 时间为 15:45，`icon.png` 仍为 8 月 2 日旧资产。因此“按钮没有变化”首先是旧 DLL 被宿主加载，不是用户误判。
+- 已使用 `scripts/dev-install-run.ps1 -Configuration Release -NoStart` 从当前 HEAD `c757ffe` 重新构建、运行 Core `76/76`、Worker `311/311`、Playnite `440/497`（57 skip，0 fail），并原子替换实际目录 `C:\Users\lopmatu\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec`。
+- 安装后包 staging 与宿主目录的 `extension.yaml`、插件 DLL、Contracts/Core、Worker DLL、`icon.png` 哈希全部一致；插件构建身份为 `0.6.73+c757ffe5ff8b678d69cdca1386cf89be10f7a831`。本次使用 `-NoStart`，当前没有运行中的 Playnite；需要完全启动/重启 Playnite 后观察按钮和侧栏图标。
+
 ## 2026-09-10 主题感知线性图标包
 
 - 当前生产 UI 使用 `Controls/ThemeAwareIcon.cs` 和 `Themes/GscIconPack.xaml` 的共享 Geometry/Path 线稿资源，来源为用户提供的 `GameSaveCenter_IconPack_v2_round-flat.zip`；不依赖 SVG 渲染器，图标透明底并从主题/父控件继承 `Foreground`。
 - 生产壳导航、设置分组（含常规与目录、设置迁移）、首页状态、媒体/维护/修改器/任务局部图标以及兼容 Dashboard 对应图标已接入；状态颜色、选中前景、真实命令/绑定/虚拟化和自动化语义保持。
-- `src/GameSaveCenter.Playnite/icon.png` 暂不替换，因为压缩包 plugin PNG 为透明线稿导出，不能安全承担 Playnite 清单可见图标；plugin-main 已作为界面内 fallback 矢量资源。
-- 最新验证：本轮补齐 ZIP 中两个设置分类图标；Playnite Release `432/495`（63 skip，0 fail），构建 0 warning/0 error，源码/XAML/WPF 门禁通过，`.tmp/icon-qa-settings-icons-20260910/render-qa-report.txt` 为 `render-qa OK`。离屏报告仍不代表真实 Playnite 的用户主题、Follow、DPI 和清单图标验收。
+- `src/GameSaveCenter.Playnite/icon.png` 已替换为 ZIP 中 `plugin-main-256.png` 的透明线稿；运行时侧栏则由 `CreateThemeAwareSidebarIcon()` 使用 `plugin-main.svg` 几何，并将 Stroke 绑定 Playnite `GlyphBrush`，跟随宿主主题切换黑/白色。
+- 最新安装验证：Playnite 扩展目录已与当前包逐项哈希一致；此前的离屏报告仍不代表真实 Playnite 的用户主题、Follow、DPI 和物理侧栏截图验收。
 
 ## 2026-09-10 统一 Glass 按钮组件语义
 
 - 生产按钮继续使用已有的 `ui:Button` 兼容控件和 `GscWpfUiButton` 共享模板；`Themes/ButtonStyles.xaml` 提供 `GlassButton`、`PrimaryGlassButton`、`DangerGlassButton`、`IconButton`、`SegmentedButton` 语义别名，避免重复的独立控件实现。
 - 共享模板具备 Primary/Secondary/Danger/Disabled 状态、主题动态颜色、Hover/Focus/Pressed 状态和 `0.97` 按压缩放；不改变业务命令、Binding、布局或虚拟化，也不使用大面积逐控件 Blur。
-- 最新验证：解决方案构建 `0 warning/0 error`，Core `76/76`、Worker `310/311`（1 skip）、Playnite `433/496`（63 skip，0 fail），源码/XAML/WPF 门禁通过；提交后 `.tmp/button-system-qa-20260910/render-qa-report.txt` 为 `render-qa OK`。真实 Playnite 用户主题、DPI 和安装仍需宿主验收。
+- 最新验证：共享模板的源码修改已安装到真实 Playnite 扩展目录；安装前用户看到的旧按钮来自旧 DLL。离屏报告 [`.tmp/icon-button-qa-clean-20260910/render-qa-report.txt`](../../.tmp/icon-button-qa-clean-20260910/render-qa-report.txt) 仍只用于双主题结构检查，按钮最终视觉需要在 Playnite 完全重启后复核。
 
 ## 2026-09-10 表格内容视口与末行可见性继续修正
 

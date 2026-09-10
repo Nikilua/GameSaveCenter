@@ -1,5 +1,7 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-10 实际宿主安装核对：用户反馈按钮无变化后，比较发现 Playnite 扩展目录的旧 DLL 与源码哈希不同，且目录内 `icon.png` 仍是旧资产。已用 `scripts/dev-install-run.ps1 -Configuration Release -NoStart` 从 HEAD `c757ffe` 重新构建并原子替换 `C:\Users\lopmatu\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec`；安装后插件/Worker/共享程序集/清单/icon 与包 staging 逐项哈希一致，Playnite `440/497`（57 skip，0 fail）。当前没有运行 Playnite，用户需要完全启动/重启后才能看到新按钮和侧栏图标。
+
 > 2026-09-10 按钮与插件侧栏图标实际接入：确认上一轮只增加语义别名、没有影响现有页面；本轮在共享 `GscWpfUiButton` 基础模板启用 `GscGlassFillBrush` / `GscGlassStrokeBrush`，所以既有 `GscWpfUi...` 页面按钮会直接获得玻璃表面，Primary/Danger 继续跟随主题效果资源。`SidebarItem.Icon` 改为 ZIP 中 `plugin-main.svg` 的 WPF Path，并将 Stroke 绑定 Playnite `GlyphBrush`，由宿主主题自动切换黑/白；`icon.png` 已替换为 `plugin-main-256.png` 透明线稿。代码提交 `83dc1c4`；全量构建/测试无失败，干净离屏报告 [`.tmp/icon-button-qa-clean-20260910/render-qa-report.txt`](../.tmp/icon-button-qa-clean-20260910/render-qa-report.txt) 为 `render-qa OK`。真实 Playnite/FusionX、DPI、用户主题和侧栏截图仍需宿主人工验收。
 
 > 2026-09-10 主题图标包接入：用户提供的 `GameSaveCenter_IconPack_v2_round-flat.zip` 已转换为共享 `ThemeAwareIcon` + `GscIconPack.xaml` 原生 Geometry/Path 资源，并补齐设置页 `section-general-directory`、`section-migration` 映射。生产导航、设置、首页状态、媒体/维护/修改器/任务局部图标和兼容 Dashboard 图标均改为透明底、继承 `Foreground` 的线稿，真实命令/Binding/虚拟化/自动化语义保持。压缩包 plugin PNG 未直接覆盖清单 `icon.png`，因为透明导出不适合 Playnite 清单显示；plugin-main 仅作为界面 fallback。Release 构建 0 warning/0 error，Playnite `432/495`（63 skip，0 fail），双主题 RenderHarness 为 `render-qa OK`；真实 Playnite 用户主题、Follow、DPI 和清单图标仍需人工验收。

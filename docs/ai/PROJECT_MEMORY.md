@@ -2,18 +2,24 @@
 
 > 维护时间：2026-09-10
 
+## 2026-09-10 旧安装包导致按钮视觉未更新
+
+- 用户复核按钮无变化后，必须先比较 `src/.../bin/Release/net462/GameSaveCenter.Playnite.dll` 与 `%APPDATA%\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Playnite.dll` 的哈希；本次两者不同，且实际目录的 DLL/icon 时间明显更旧，证明宿主加载的是旧安装包。
+- 已用 `scripts/dev-install-run.ps1 -Configuration Release -NoStart` 从当前 HEAD `c757ffe` 完成构建、测试与原子安装。安装后包 staging 与实际扩展目录的插件 DLL、Worker DLL、共享程序集、清单和 `icon.png` 逐项 SHA-256 一致，构建身份为 `0.6.73+c757ffe5ff8b678d69cdca1386cf89be10f7a831`。
+- 下一次视觉复核前必须完全重启 Playnite；仅重新打开插件页面不能替换已经加载到进程内的旧程序集。不要把离屏 RenderHarness 的截图当作真实宿主已经加载新 DLL 的证据。
+
 ## 2026-09-10 共享按钮实际生效与 Playnite 侧栏图标
 
 - 上一轮的 `ButtonStyles.xaml` 别名没有被现有页面引用，不能作为“按钮已改版”的证据；后续按钮视觉修改应优先落在 `WpfUiProduction.xaml` 的 `GscWpfUiButton` 共享基础模板，当前默认表面使用 `GscGlassFillBrush` / `GscGlassStrokeBrush`，Primary/Danger 复用 `GscPrimaryButtonEffect` / `GscSurfaceEffect`，避免逐页替换样式名。
 - `GameSaveCenterPlugin.GetSidebarItems()` 的 `SidebarItem.Icon` 可以接收 WPF `Path`。当前使用 ZIP 中 `plugin-main.svg` 的几何线稿，并将 Stroke 设置为 Playnite 的 DynamicResource `GlyphBrush`；这样由宿主主题控制黑/白色，不能改回静态固定色或彩色填充图标。扩展清单的 `icon.png` 已替换为 ZIP 的 `plugin-main-256.png` 透明黑色线稿，静态清单场景本身不承担主题切换，运行时侧栏 Path 才是主题感知实现。
-- 代码阶段提交 `83dc1c4` 已通过 Release 构建、全量测试和 WPF/XAML/source 门禁；离屏证据为 [`.tmp/icon-button-qa-clean-20260910/render-qa-report.txt`](../.tmp/icon-button-qa-clean-20260910/render-qa-report.txt)，报告记录 `WorkingTreeClean: True` 与 `render-qa OK`。真实 Playnite 侧栏主题切换、FusionX 具体模板、用户 DPI/主题和 PNG 清单显示仍需人工验收，不能把离屏结果写成宿主已验证。
+- 代码阶段提交 `83dc1c4` 已通过 Release 构建、全量测试和 WPF/XAML/source 门禁；离屏证据为 [`.tmp/icon-button-qa-clean-20260910/render-qa-report.txt`](../.tmp/icon-button-qa-clean-20260910/render-qa-report.txt)，报告记录 `WorkingTreeClean: True` 与 `render-qa OK`。真实 Playnite 侧栏主题切换、FusionX 具体模板、用户 DPI/主题和物理截图仍需人工验收；本轮已完成扩展目录安装，但使用 `-NoStart`，不能把安装验证写成宿主已经重新加载并显示。
 
 ## 2026-09-10 主题感知线性图标包
 
 - 用户提供的 `GameSaveCenter_IconPack_v2_round-flat.zip` 的 SVG 是 24×24、透明底、`currentColor`、低线密度线稿；WPF 生产端通过 `Controls/ThemeAwareIcon.cs` + `Themes/GscIconPack.xaml` 的 Geometry/Path 渲染，不能改回依赖 Segoe MDL2 字形或引入只支持单色/固定底图的 PNG。
 - `GscLineIcon` 是共享样式，Path 的 Stroke/可选 Fill 绑定控件 `Foreground`；导航图标从 RadioButton 前景继承，状态图标继续使用 `Gsc*Brush` 语义色。资源由 `WpfUiProduction.xaml` 统一合并，页面不应逐个复制图标 Geometry。
 - 当前接入范围包括生产导航与侧栏品牌、设置标题/分组（含常规与目录、设置迁移）、首页活动状态、媒体来源、维护目录、修改器列表、任务搜索、共享游戏图标 fallback、Disclosure chevron 及隐藏兼容 Dashboard 的对应操作；真实命令、Binding、分页/虚拟化、焦点和自动化名称未改。
-- 不把压缩包中的 plugin PNG 直接覆盖 `src/GameSaveCenter.Playnite/icon.png`：它是透明线稿导出，不适合作为 Playnite 清单图标。扩展清单图标仍保留现有可见 PNG，界面内 plugin-main fallback 使用矢量 Geometry。
+- 压缩包中的 `plugin-main-256.png` 已覆盖 `src/GameSaveCenter.Playnite/icon.png`；它是透明黑色线稿，运行时侧栏主题感知颜色使用 WPF `Path` + `GlyphBrush`。
 - 本轮又补齐 ZIP 中 `section-general-directory` 与 `section-migration` 到设置页对应标题；Release Playnite 构建 `0 warning/0 error`，Playnite `432/495`（432 通过、63 跳过、0 失败），源码/XAML 门禁通过；`.tmp/icon-qa-settings-icons-20260910/render-qa-report.txt` 为双主题、多尺寸 `render-qa OK`。这是离屏 WPF 证据，不能写成真实 Playnite 用户主题/DPI/清单图标已验收。
 
 ## 2026-09-10 统一 Glass 按钮组件语义
