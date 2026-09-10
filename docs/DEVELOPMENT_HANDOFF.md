@@ -1,6 +1,6 @@
 # GameSaveCenter 持续维护交接与开发入口
 
-> 2026-09-10 Media 待归类表格空白区修正：共享 `GscRedesignDataGridTemplate` 的 `PART_ScrollContentPresenter` 已补上 `HorizontalContentAlignment` / `VerticalContentAlignment` 绑定，修复 `VerticalContentAlignment=Top` 未作用到真实内容视口的问题。Media 的大数据例外（`Standard` 行虚拟化、`Item` 滚动、关闭列虚拟化、禁用 `DataGridStarFill`）保持不变；最终全量回归为 Core `76/76`、Worker `310/311`（1 skip）、Playnite `429/492`（63 skip），0 失败，离屏 `render-qa OK`，真实宿主物理滚动仍待人工验收。
+> 2026-09-10 Media 待归类表格空白区继续修正：共享 `GscRedesignDataGridTemplate` 的外层 `DG_ScrollViewer` 与内层 `PART_ScrollContentPresenter` 均已补上 `HorizontalContentAlignment` / `VerticalContentAlignment` 绑定，修复 `VerticalContentAlignment=Top` 未贯穿到真实内容视口的问题。Media 的大数据例外（`Standard` 行虚拟化、`Item` 滚动、关闭列虚拟化、禁用 `DataGridStarFill`）保持不变；本阶段定向契约测试 `10/10`，两个视觉修复完成后统一更新全量回归结果，真实宿主物理滚动仍待人工验收。
 
 > 2026-09-10 生产壳层背景去缝：图二长方形是选中游戏背景 `ImageBrush`，其图片层/ambient 层保持跨两列两行；已去掉 `DemoShell` 外边距和外框、侧栏右侧 6 DIP 缝以及 footer 独立描边/边距，让侧栏与右侧页面成为连续整页背景。离屏双主题与 Shell Media 几何通过，真实 Playnite 图片资源/FusionX/DPI 仍待宿主人工验收。
 

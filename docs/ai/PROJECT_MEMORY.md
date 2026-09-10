@@ -5,7 +5,7 @@
 ## 2026-09-10 Media 待归类表格内容视口对齐
 
 - 用户反馈的“滚到底后中下部有数据、上部空白”不是 Media 专属数据分页或 `Standard` 虚拟化本身造成；共享 `GscRedesignDataGridTemplate` 的 `ScrollContentPresenter` 原先未绑定 `HorizontalContentAlignment` / `VerticalContentAlignment`，导致 `VerticalContentAlignment=Top` 没有落到真实内容视口。
-- `Redesign.xaml` 已为 `PART_ScrollContentPresenter` 补上两项 `TemplateBinding`。Media 的大数据保护策略仍原样保留：`VirtualizationMode=Standard`、`ScrollUnit=Item`、`EnableColumnVirtualization=False`、`DataGridStarFill.Enabled=False`。
+- `Redesign.xaml` 已为外层 `DG_ScrollViewer` 和内层 `PART_ScrollContentPresenter` 补上两项 `TemplateBinding`，使 DataGrid 的 `Top` 对齐贯穿真实内容视口。Media 的大数据保护策略仍原样保留：`VirtualizationMode=Standard`、`ScrollUnit=Item`、`EnableColumnVirtualization=False`、`DataGridStarFill.Enabled=False`。
 - `MediaWindowAnchorContractTests` 增加源契约断言；定向契约测试 `18/18`，最终全量 Release 回归为 Core `76/76`、Worker `310/311`（1 skip）、Playnite `429/492`（63 skip），0 失败，`render-qa` 报告为 `OK`。这只证明离屏 WPF 端点和模板结构，真实 Playnite/FusionX 的物理拖动仍需人工验收。
 
 ## 2026-09-10 生产壳层整页游戏背景与边界缝

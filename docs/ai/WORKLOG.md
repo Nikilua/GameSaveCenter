@@ -2,11 +2,11 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
-## 2026-09-10 修正待归类媒体表格内容视口对齐
+## 2026-09-10 补齐待归类媒体表格内容视口对齐链
 
-- 根因定位为共享 `GscRedesignDataGridTemplate` 的自定义 `ScrollViewer` 模板没有把 `ScrollContentPresenter` 的水平/垂直对齐继承给真实内容视口；在 Media 大数据表的虚拟化端点上，这会留下上方空白而把行推到中下部。
-- 为 `PART_ScrollContentPresenter` 增加 `HorizontalAlignment` / `VerticalAlignment` 的 `TemplateBinding`，让现有 `HorizontalContentAlignment=Stretch`、`VerticalContentAlignment=Top` 真正作用于内容视口。Media 为大数据回归保留的 `Standard` 行虚拟化、`Item` 滚动和关闭列虚拟化没有改动。
-- 增加模板契约断言；定向 WPF 契约测试（含本轮表格/壳层变更）`18/18`，最终全量 Release 回归为 Core `76/76`、Worker `310/311`（1 skip）、Playnite `429/492`（63 skip），0 失败；XAML `19/19`、源码校验和 `git diff --check` 通过。离屏报告 [`.tmp/qa-table-shell-20260910/render-qa-report.txt`](../../.tmp/qa-table-shell-20260910/render-qa-report.txt) 最终为 `render-qa OK`，但物理滑块拖动和真实 Playnite 仍待宿主人工验收。
+- 根因定位为共享 `GscRedesignDataGridTemplate` 的自定义 `ScrollViewer` 模板只把对齐绑定写到了内层 `PART_ScrollContentPresenter`，外层 `DG_ScrollViewer` 没有把 DataGrid 的内容对齐继续传入自己的模板；在 Media 大数据表的虚拟化端点上，这会留下上方空白而把行推到中下部。
+- 为外层 `DG_ScrollViewer` 和内层 `PART_ScrollContentPresenter` 补齐水平/垂直对齐绑定，让现有 `HorizontalContentAlignment=Stretch`、`VerticalContentAlignment=Top` 贯穿真实内容视口。Media 为大数据回归保留的 `Standard` 行虚拟化、`Item` 滚动和关闭列虚拟化没有改动。
+- 增加外层/内层模板契约断言；本阶段定向 WPF 契约测试 `10/10`。全量 Release 回归、XAML/源码门禁和 RenderHarness 将在本轮两个视觉修复完成后统一复验；真实物理滑块拖动和 Playnite 仍待宿主人工验收。
 
 ## 2026-09-10 让选中游戏背景覆盖整个生产壳层
 

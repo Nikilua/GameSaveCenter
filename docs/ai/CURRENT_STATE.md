@@ -4,7 +4,7 @@
 
 ## 2026-09-10 待归类媒体表格视口对齐已修正
 
-- 共享 `GscRedesignDataGridTemplate` 的真实内容视口现在显式绑定 `HorizontalContentAlignment` / `VerticalContentAlignment`；`MediaInboxGrid` 的 `Top` 对齐不再只停留在外层 `ScrollViewer` 属性上，避免大数据虚拟化表格滚到底后上方出现大块空白。
+- 共享 `GscRedesignDataGridTemplate` 的外层 `DG_ScrollViewer` 与内层 `PART_ScrollContentPresenter` 现在都显式绑定 `HorizontalContentAlignment` / `VerticalContentAlignment`；`MediaInboxGrid` 的 `Top` 对齐贯穿到真实内容视口，避免大数据虚拟化表格滚到底后上方出现大块空白。
 - Media 的 `Standard` 行虚拟化、`Item` 滚动、关闭列虚拟化和 `DataGridStarFill.Enabled=False` 仍是已验证的大数据例外，没有恢复成其他工作区的共享 Recycling 配置。
 - 最终全量 Release 回归为 Core `76/76`、Worker `310/311`（1 skip）、Playnite `429/492`（63 skip），0 失败；当前离屏报告 [`.tmp/qa-table-shell-20260910/render-qa-report.txt`](../../.tmp/qa-table-shell-20260910/render-qa-report.txt) 为 `render-qa OK`。真实 Playnite 的物理滚轮/滑块和视频式回归仍保持待验收边界。
 
