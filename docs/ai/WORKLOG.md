@@ -7,7 +7,7 @@
 - 接入用户提供的 `GameSaveCenter_IconPack_v2_round-flat.zip`：其 SVG 使用透明底、`currentColor` 和 24×24 线稿；由于 WPF 没有原生 SVG 渲染器，新增 `ThemeAwareIcon` 原生控件及 `GscIconPack.xaml` Geometry 资源，不引入第三方渲染依赖。
 - 导航、设置分类/标题、首页活动状态、媒体来源、维护目录操作、修改器列表、任务搜索、共享游戏图标 fallback、Disclosure chevron 和兼容 Dashboard 操作图标统一改为 `Path` 线稿；`Foreground` 由父控件/主题 DynamicResource 提供，保留选中态、状态色、命令、Binding、虚拟化和 UI Automation。
 - 未替换扩展清单的 `icon.png`：压缩包中的 plugin PNG 是透明线稿导出，作为 Playnite 扩展图标存在不可见/黑底风险；当前只将 plugin-main 作为界面内主题感知 fallback 使用。
-- Release Playnite 构建 `0 warning / 0 error`；Playnite 测试 `432 passed / 63 skipped / 0 failed`；`validate-source.py`、XAML 结构检查和 `git diff --check` 通过。RenderHarness 双主题、多尺寸和 resize 报告 [`.tmp/icon-qa-20260910/render-qa-report.txt`](../../.tmp/icon-qa-20260910/render-qa-report.txt) 为 `render-qa OK`，报告生成时工作树因本阶段改动未提交。
+- Release Playnite 构建 `0 warning / 0 error`；Playnite 测试 `432 passed / 63 skipped / 0 failed`；`validate-source.py`、XAML 结构检查和 `git diff --check` 通过。提交 `460b992` 后重跑的 RenderHarness 双主题、多尺寸和 resize 报告 [`.tmp/icon-qa-clean-20260910/render-qa-report.txt`](../../.tmp/icon-qa-clean-20260910/render-qa-report.txt) 为 `WorkingTreeClean: True`、`render-qa OK`。
 - 离屏报告不替代真实 Playnite 中的 Light/Dark/Follow、用户主题色、125%/150% DPI、键盘焦点和插件清单图标人工验收。
 
 ## 2026-09-10 固定共享表格行内容视口

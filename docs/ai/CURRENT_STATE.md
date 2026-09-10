@@ -7,7 +7,7 @@
 - 当前生产 UI 使用 `Controls/ThemeAwareIcon.cs` 和 `Themes/GscIconPack.xaml` 的共享 Geometry/Path 线稿资源，来源为用户提供的 `GameSaveCenter_IconPack_v2_round-flat.zip`；不依赖 SVG 渲染器，图标透明底并从主题/父控件继承 `Foreground`。
 - 生产壳导航、设置分组、首页状态、媒体/维护/修改器/任务局部图标以及兼容 Dashboard 对应图标已接入；状态颜色、选中前景、真实命令/绑定/虚拟化和自动化语义保持。
 - `src/GameSaveCenter.Playnite/icon.png` 暂不替换，因为压缩包 plugin PNG 为透明线稿导出，不能安全承担 Playnite 清单可见图标；plugin-main 已作为界面内 fallback 矢量资源。
-- 最新验证：Playnite Release `432/495`（63 skip，0 fail），构建 0 warning/0 error，源码/XAML 门禁通过，`.tmp/icon-qa-20260910/render-qa-report.txt` 为 `render-qa OK`。离屏报告仍不代表真实 Playnite 的用户主题、Follow、DPI 和清单图标验收。
+- 最新验证：Playnite Release `432/495`（63 skip，0 fail），构建 0 warning/0 error，源码/XAML 门禁通过；提交 `460b992` 后重跑的 `.tmp/icon-qa-clean-20260910/render-qa-report.txt` 为 `WorkingTreeClean: True`、`render-qa OK`。离屏报告仍不代表真实 Playnite 的用户主题、Follow、DPI 和清单图标验收。
 
 ## 2026-09-10 表格内容视口与末行可见性继续修正
 
