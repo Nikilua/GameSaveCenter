@@ -162,7 +162,7 @@ public sealed class WpfUiResourceDictionaryTests
             "GscIconActionBackup", "GscIconActionBrowseFolder", "GscIconActionHistory",
             "GscIconActionRefresh", "GscIconActionRestore", "GscIconActionRun",
             "GscIconSectionAppearance", "GscIconSectionAutomation", "GscIconSectionBackupRestore",
-            "GscIconSectionMigration", "GscIconStatusError", "GscIconStatusInfo",
+            "GscIconSectionGeneralDirectory", "GscIconSectionMigration", "GscIconStatusError", "GscIconStatusInfo",
             "GscIconStatusSuccess", "GscIconStatusWarning"
         })
         {

@@ -6,9 +6,9 @@
 
 - 用户提供的 `GameSaveCenter_IconPack_v2_round-flat.zip` 的 SVG 是 24×24、透明底、`currentColor`、低线密度线稿；WPF 生产端通过 `Controls/ThemeAwareIcon.cs` + `Themes/GscIconPack.xaml` 的 Geometry/Path 渲染，不能改回依赖 Segoe MDL2 字形或引入只支持单色/固定底图的 PNG。
 - `GscLineIcon` 是共享样式，Path 的 Stroke/可选 Fill 绑定控件 `Foreground`；导航图标从 RadioButton 前景继承，状态图标继续使用 `Gsc*Brush` 语义色。资源由 `WpfUiProduction.xaml` 统一合并，页面不应逐个复制图标 Geometry。
-- 当前接入范围包括生产导航与侧栏品牌、设置标题/分组、首页活动状态、媒体来源、维护目录、修改器列表、任务搜索、共享游戏图标 fallback、Disclosure chevron 及隐藏兼容 Dashboard 的对应操作；真实命令、Binding、分页/虚拟化、焦点和自动化名称未改。
+- 当前接入范围包括生产导航与侧栏品牌、设置标题/分组（含常规与目录、设置迁移）、首页活动状态、媒体来源、维护目录、修改器列表、任务搜索、共享游戏图标 fallback、Disclosure chevron 及隐藏兼容 Dashboard 的对应操作；真实命令、Binding、分页/虚拟化、焦点和自动化名称未改。
 - 不把压缩包中的 plugin PNG 直接覆盖 `src/GameSaveCenter.Playnite/icon.png`：它是透明线稿导出，不适合作为 Playnite 清单图标。扩展清单图标仍保留现有可见 PNG，界面内 plugin-main fallback 使用矢量 Geometry。
-- 证据：Release Playnite 构建 `0 warning/0 error`，Playnite `432/495`（432 通过、63 跳过、0 失败），源码/XAML 门禁通过；提交 `460b992` 后重跑的 `.tmp/icon-qa-clean-20260910/render-qa-report.txt` 为双主题、多尺寸 `WorkingTreeClean: True`、`render-qa OK`。这是离屏 WPF 证据，不能写成真实 Playnite 用户主题/DPI/清单图标已验收。
+- 本轮又补齐 ZIP 中 `section-general-directory` 与 `section-migration` 到设置页对应标题；Release Playnite 构建 `0 warning/0 error`，Playnite `432/495`（432 通过、63 跳过、0 失败），源码/XAML 门禁通过；`.tmp/icon-qa-settings-icons-20260910/render-qa-report.txt` 为双主题、多尺寸 `render-qa OK`。这是离屏 WPF 证据，不能写成真实 Playnite 用户主题/DPI/清单图标已验收。
 
 ## 2026-09-10 共享表格内容视口固定到顶部
 

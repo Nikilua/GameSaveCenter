@@ -1,6 +1,6 @@
 # GameSaveCenter 持续维护交接与开发入口
 
-> 2026-09-10 主题图标包接入：用户提供的 `GameSaveCenter_IconPack_v2_round-flat.zip` 已转换为共享 `ThemeAwareIcon` + `GscIconPack.xaml` 原生 Geometry/Path 资源。生产导航、设置、首页状态、媒体/维护/修改器/任务局部图标和兼容 Dashboard 图标均改为透明底、继承 `Foreground` 的线稿，真实命令/Binding/虚拟化/自动化语义保持。压缩包 plugin PNG 未直接覆盖清单 `icon.png`，因为透明导出不适合 Playnite 清单显示；plugin-main 仅作为界面 fallback。Release 构建 0 warning/0 error，Playnite `432/495`（63 skip，0 fail），双主题 RenderHarness 为 `render-qa OK`；真实 Playnite 用户主题、Follow、DPI 和清单图标仍需人工验收。
+> 2026-09-10 主题图标包接入：用户提供的 `GameSaveCenter_IconPack_v2_round-flat.zip` 已转换为共享 `ThemeAwareIcon` + `GscIconPack.xaml` 原生 Geometry/Path 资源，并补齐设置页 `section-general-directory`、`section-migration` 映射。生产导航、设置、首页状态、媒体/维护/修改器/任务局部图标和兼容 Dashboard 图标均改为透明底、继承 `Foreground` 的线稿，真实命令/Binding/虚拟化/自动化语义保持。压缩包 plugin PNG 未直接覆盖清单 `icon.png`，因为透明导出不适合 Playnite 清单显示；plugin-main 仅作为界面 fallback。Release 构建 0 warning/0 error，Playnite `432/495`（63 skip，0 fail），双主题 RenderHarness 为 `render-qa OK`；真实 Playnite 用户主题、Follow、DPI 和清单图标仍需人工验收。
 
 > 2026-09-10 设置主题跟随与导航对齐：FollowPlaynite 主题资源解析现在优先读取实际承载设置页的 Window/Owner，再落到控件局部资源和 Application，避免设置窗口误用旧深色值；`AcrylicNavItem` 及七个生产导航内容组补齐图标/文字垂直居中。定向 Playnite WPF 测试 `130 passed / 39 skipped / 0 failed`；真实 Playnite 设置窗口、用户主题和 DPI 截图仍待宿主验收。
 

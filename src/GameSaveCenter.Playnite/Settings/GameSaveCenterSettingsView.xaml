@@ -88,7 +88,7 @@
                             <Grid x:Name="SettingsGeneralPanel" Visibility="Visible">
                                 <ui:Card Style="{StaticResource SettingsCard}">
                 <StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10"><Border Width="30" Height="30" CornerRadius="10" Background="{DynamicResource GscAccentIconFillBrush}" Margin="0,0,9,0"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconNavMods}" Width="20" Height="20" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Text="核心工具" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/></StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10"><Border Width="30" Height="30" CornerRadius="10" Background="{DynamicResource GscAccentIconFillBrush}" Margin="0,0,9,0"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconSectionGeneralDirectory}" Width="20" Height="20" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Text="核心工具" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/></StackPanel>
                     <TextBlock Text="Worker 执行任务；Playnite 负责设置入口和游戏事件。路径支持环境变量与相对路径，保存后由 Worker 校验。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,0,0,12"/>
                     <StackPanel x:Name="CoreToolFields">
                         <Grid Margin="0,0,0,12"><Grid.ColumnDefinitions><ColumnDefinition Width="{StaticResource GscSettingsFieldColumnWidth}"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="Worker" VerticalAlignment="Center"/><TextBox Grid.Column="1" Style="{StaticResource GscWpfUiTextBox}" Text="{Binding WorkerExecutable, UpdateSourceTrigger=PropertyChanged}" ToolTip="Worker 可执行文件路径"/></Grid>
@@ -322,7 +322,7 @@
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                         <Border Width="30" Height="30" CornerRadius="10" Background="{DynamicResource GscAccentTintBrush}" Margin="0,0,9,0">
-                            <ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconActionRun}" Width="20" Height="20" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconSectionMigration}" Width="20" Height="20" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <TextBlock Text="设置迁移" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
                     </StackPanel>
