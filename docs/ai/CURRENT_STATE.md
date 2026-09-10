@@ -8,6 +8,12 @@
 - Media 的 `Standard` 行虚拟化、`Item` 滚动、关闭列虚拟化和 `DataGridStarFill.Enabled=False` 仍是已验证的大数据例外，没有恢复成其他工作区的共享 Recycling 配置。
 - 最终全量 Release 回归为 Core `76/76`、Worker `310/311`（1 skip）、Playnite `429/492`（63 skip），0 失败；当前离屏报告 [`.tmp/qa-table-shell-20260910/render-qa-report.txt`](../../.tmp/qa-table-shell-20260910/render-qa-report.txt) 为 `render-qa OK`。真实 Playnite 的物理滚轮/滑块和视频式回归仍保持待验收边界。
 
+## 2026-09-10 页面外围重复材质已移除
+
+- 各生产页面的 `AmbientMaterialLayer` 仍保留，但共享 `GscAmbientPageOpacity` 在运行时固定为 `0`；这样页面不会再各自绘制一个带圆角的整面渐变矩形。
+- `AcrylicProductionShellView` 的唯一可见 `ShellAmbientMaterialLayer` 通过 `IsShellLayer="True"` 使用 `GscShellAmbientOpacity`，继续覆盖侧栏、右侧页面和 footer；选中游戏背景 `ImageBrush` 与可读性遮罩不变。
+- 资源测试、Release 构建、全量测试、源码/XAML 门禁、WPF 静态审计和双主题 RenderHarness 均已通过。真实 Playnite/FusionX 和宿主 DPI 仍需人工截图确认。
+
 ## 2026-09-10 生产壳层背景已覆盖整页并去除边界缝
 
 - 图二中的长方形是选中游戏背景 `ImageBrush`，现在继续覆盖整个生产壳层（侧栏 + 右侧页面 + footer），同时由跨壳层 ambient 层和页面表面负责可读性。

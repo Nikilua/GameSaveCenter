@@ -35,6 +35,7 @@ public sealed class ProductionShellChromeSourceTests
         Assert.Contains("Grid.Row=\"0\" Grid.Column=\"0\" Grid.ColumnSpan=\"2\"", shell);
         Assert.Contains("Grid.RowSpan=\"2\"", shell);
         Assert.Contains("UseSelectedGameBackground=\"False\"", shell);
+        Assert.Contains("IsShellLayer=\"True\"", shell);
         Assert.Contains("x:Name=\"SidebarSurface\"", shell);
         Assert.Contains("Margin=\"0\"", shell);
         Assert.DoesNotContain("Margin=\"0,0,6,0\"", shell);

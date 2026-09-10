@@ -301,9 +301,10 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscPopupAllowsTransparency"] = glassEnabled;
             resources["GscPopupAnimation"] = motionEnabled ? PopupAnimation.Fade : PopupAnimation.None;
             var glassStrength = Math.Max(0.2, Math.Min(1, palette.GlassStrength));
-            resources["GscAmbientPageOpacity"] = glassEnabled
-                ? (palette.IsDark ? 0.74 + (0.26 * glassStrength) : 0.84 + (0.16 * glassStrength))
-                : 0d;
+            // The production shell owns the one ambient wash across sidebar, pages and footer.
+            // Page-local AmbientMaterialLayer instances remain for compatibility and game
+            // material routing, but must not paint a second rounded page-sized rectangle.
+            resources["GscAmbientPageOpacity"] = 0d;
             resources["GscShellAmbientOpacity"] = glassEnabled
                 ? 0.68 + (0.32 * glassStrength)
                 : 0d;

@@ -6,15 +6,24 @@
              IsHitTestVisible="False"
              ClipToBounds="True"
              SnapsToDevicePixels="True">
-    <!-- Shared material is one pane-wide, multi-color linear wash. It has no circular light
-         sources and no effect tree, so pages, text, lists and virtualized rows stay cheap.
-         The rounded chrome clips the wash at workspace edges so the layer cannot leak a
-         sharp rectangle between the page cards and the host shell. -->
+    <!-- Shared material is one pane-wide, multi-color linear wash. The production shell uses
+         the single visible instance; page-local instances stay mounted for compatibility but
+         are transparent through GscAmbientPageOpacity, preventing a nested rounded rectangle. -->
     <Border x:Name="MaterialChrome"
             CornerRadius="{Binding CornerRadius, RelativeSource={RelativeSource AncestorType={x:Type ui:AmbientMaterialLayer}}}"
             ClipToBounds="True"
             Background="Transparent">
-        <Grid Opacity="{DynamicResource GscAmbientPageOpacity}">
+        <Grid x:Name="MaterialWash">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Opacity" Value="{DynamicResource GscAmbientPageOpacity}"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsShellLayer, RelativeSource={RelativeSource AncestorType={x:Type ui:AmbientMaterialLayer}}}" Value="True">
+                            <Setter Property="Opacity" Value="1"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
             <Rectangle x:Name="ThemeAmbientWash" Fill="{DynamicResource GscAmbientWideWashBrush}"/>
             <Rectangle x:Name="GameBackgroundAmbientWash"/>
         </Grid>

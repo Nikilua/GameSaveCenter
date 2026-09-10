@@ -65,15 +65,16 @@
                        IsHitTestVisible="False"
                        Panel.ZIndex="0"/>
 
-            <!-- Keep the ambient wash in the same full-shell coordinate space as the one real
-                 game-background ImageBrush above. A page-column-only game wash creates a
-                 visible rectangular seam beside the sidebar and at the far edge in light
-                 themes; page-local layers still provide page-specific light below. -->
+            <!-- Keep the only visible ambient wash in the same full-shell coordinate space as
+                 the one real game-background ImageBrush above. Page-local layers remain mounted
+                 for compatibility but are transparent, so no page-sized rounded rectangle can
+                 form a second boundary beside the sidebar or at the far edge. -->
             <ui:AmbientMaterialLayer x:Name="ShellAmbientMaterialLayer"
                                      Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
                                      Grid.RowSpan="2"
                                      CornerRadius="0"
                                      Opacity="{DynamicResource GscShellAmbientOpacity}"
+                                     IsShellLayer="True"
                                      UseSelectedGameBackground="False"
                                      Panel.ZIndex="1"/>
 

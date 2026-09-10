@@ -8,6 +8,12 @@
 - 为外层 `DG_ScrollViewer` 和内层 `PART_ScrollContentPresenter` 补齐水平/垂直对齐绑定，让现有 `HorizontalContentAlignment=Stretch`、`VerticalContentAlignment=Top` 贯穿真实内容视口。Media 为大数据回归保留的 `Standard` 行虚拟化、`Item` 滚动和关闭列虚拟化没有改动。
 - 增加外层/内层模板契约断言；本阶段定向 WPF 契约测试 `10/10`。全量 Release 回归、XAML/源码门禁和 RenderHarness 将在本轮两个视觉修复完成后统一复验；真实物理滑块拖动和 Playnite 仍待宿主人工验收。
 
+## 2026-09-10 去除各页面重复环境材质矩形
+
+- 复核第二张图后确认，页面外围的长方形不是图片本身，而是每个生产页面都挂载的 `AmbientMaterialLayer` 绘制的圆角宽域渐变；生产壳层已经有一个跨侧栏、页面和 footer 的统一环境层，两个坐标系叠加后就会出现边界。
+- 新增 `AmbientMaterialLayer.IsShellLayer`：页面实例继续保留以维持现有兼容性和游戏材质路由，但通过 `GscAmbientPageOpacity=0` 透明；唯一可见的 Shell 实例通过该标记跳过页面透明度，并继续使用 `GscShellAmbientOpacity`。背景图片、遮罩、命令、绑定和页面布局未改。
+- 定向 WPF 资源/壳层测试 `176` 项中通过 `137`、跳过 `39`；Release 构建 `0 warning/0 error`，全量回归为 Core `76/76`、Worker `310/311`（1 skip）、Playnite `429/492`（63 skip），失败 `0`。源码、XAML `19/19`、WPF 静态审计（0 error）和 RenderHarness 均通过；报告路径为 [`.tmp/qa-table-ambient-20260910/render-qa-report.txt`](../../.tmp/qa-table-ambient-20260910/render-qa-report.txt)。真实 Playnite/FusionX、DPI 和物理滚动仍待宿主人工验收。
+
 ## 2026-09-10 让选中游戏背景覆盖整个生产壳层
 
 - 确认图二右侧页面/侧栏后方的长方形就是选中游戏背景的 `ImageBrush` 层；它原本已经跨壳层两列两行，但外壳、侧栏和 footer 的边距/描边又制造了明显的边界缝。

@@ -23,10 +23,23 @@ namespace GameSaveCenter.Playnite.Controls
                 typeof(AmbientMaterialLayer),
                 new PropertyMetadata(false, OnUseSelectedGameBackgroundChanged));
 
+        public static readonly DependencyProperty IsShellLayerProperty =
+            DependencyProperty.Register(
+                nameof(IsShellLayer),
+                typeof(bool),
+                typeof(AmbientMaterialLayer),
+                new PropertyMetadata(false));
+
         public bool UseSelectedGameBackground
         {
             get => (bool)GetValue(UseSelectedGameBackgroundProperty);
             set => SetValue(UseSelectedGameBackgroundProperty, value);
+        }
+
+        public bool IsShellLayer
+        {
+            get => (bool)GetValue(IsShellLayerProperty);
+            set => SetValue(IsShellLayerProperty, value);
         }
 
         public CornerRadius CornerRadius

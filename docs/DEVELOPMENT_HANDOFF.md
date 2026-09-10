@@ -2,6 +2,8 @@
 
 > 2026-09-10 Media 待归类表格空白区继续修正：共享 `GscRedesignDataGridTemplate` 的外层 `DG_ScrollViewer` 与内层 `PART_ScrollContentPresenter` 均已补上 `HorizontalContentAlignment` / `VerticalContentAlignment` 绑定，修复 `VerticalContentAlignment=Top` 未贯穿到真实内容视口的问题。Media 的大数据例外（`Standard` 行虚拟化、`Item` 滚动、关闭列虚拟化、禁用 `DataGridStarFill`）保持不变；本阶段定向契约测试 `10/10`，两个视觉修复完成后统一更新全量回归结果，真实宿主物理滚动仍待人工验收。
 
+> 2026-09-10 页面外围矩形继续修正：用户图二中各页面都有的长方形来自页面级 `AmbientMaterialLayer`，不是需要重复绘制的图片。页面层现在通过 `GscAmbientPageOpacity=0` 保持兼容挂载但透明；Shell 的单一 `ShellAmbientMaterialLayer` 通过 `IsShellLayer="True"` 继续绘制跨侧栏、右侧页面和 footer 的统一环境材质。Release 构建/全量测试、源码/XAML/WPF 门禁和 RenderHarness 均通过；真实 Playnite/FusionX、DPI、物理滚动仍待宿主人工验收。
+
 > 2026-09-10 生产壳层背景去缝：图二长方形是选中游戏背景 `ImageBrush`，其图片层/ambient 层保持跨两列两行；已去掉 `DemoShell` 外边距和外框、侧栏右侧 6 DIP 缝以及 footer 独立描边/边距，让侧栏与右侧页面成为连续整页背景。离屏双主题与 Shell Media 几何通过，真实 Playnite 图片资源/FusionX/DPI 仍待宿主人工验收。
 
 > 连续实施入口：[32 项、8 阶段计划](ai/CONTINUOUS_DEVELOPMENT_PLAN_2026-09-08.md)。用户要求减少逐项确认；接手后按依赖连续实施并逐项交付，已满足任务跳过，外部阻塞不妨碍独立任务。Q6 质量报告仍是首四项问题依据。

@@ -8,6 +8,12 @@
 - `Redesign.xaml` 已为外层 `DG_ScrollViewer` 和内层 `PART_ScrollContentPresenter` 补上两项 `TemplateBinding`，使 DataGrid 的 `Top` 对齐贯穿真实内容视口。Media 的大数据保护策略仍原样保留：`VirtualizationMode=Standard`、`ScrollUnit=Item`、`EnableColumnVirtualization=False`、`DataGridStarFill.Enabled=False`。
 - `MediaWindowAnchorContractTests` 增加源契约断言；定向契约测试 `18/18`，最终全量 Release 回归为 Core `76/76`、Worker `310/311`（1 skip）、Playnite `429/492`（63 skip），0 失败，`render-qa` 报告为 `OK`。这只证明离屏 WPF 端点和模板结构，真实 Playnite/FusionX 的物理拖动仍需人工验收。
 
+## 2026-09-10 页面外围重复环境材质矩形
+
+- 第二张图中的页面外围矩形来自页面级 `AmbientMaterialLayer` 的圆角宽域渐变，不是需要再次铺开的图片层；Shell 已经拥有跨侧栏、页面和 footer 的单一环境坐标系。
+- `AmbientMaterialLayer` 新增 `IsShellLayer`。页面实例保持挂载但通过 `GscAmbientPageOpacity=0` 透明；Shell 实例标记为 `True`，内部洗色保持可见并由外层 `GscShellAmbientOpacity` 控制。不要重新让页面层和 Shell 层同时绘制宽域洗色。
+- 本轮资源/壳层定向测试通过，Release 全量为 Core `76/76`、Worker `310/311`（1 skip）、Playnite `429/492`（63 skip），构建 0 warning/0 error；RenderHarness 双主题通过，真实宿主截图和 DPI 仍是验收边界。
+
 ## 2026-09-10 生产壳层整页游戏背景与边界缝
 
 - 图二右侧页面/侧栏后方的长方形确实来自选中游戏背景 `ImageBrush`。现有图片层和 `ShellAmbientMaterialLayer` 均为 `Grid.Row=0`、跨两列、跨两行，背景已经是整壳层层级；问题在于外壳 `Margin=4`、侧栏右 `Margin=6`、footer 独立描边/边距形成了视觉缝。

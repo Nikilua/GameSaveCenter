@@ -154,11 +154,10 @@ public sealed class WpfUiResourceDictionaryTests
 
                 materialResources.Invoke(null, new object[] { localResources, palette, true, true });
                 var mediumAmbientOpacity = Assert.IsType<double>(localResources["GscAmbientPageOpacity"]);
+                Assert.Equal(0d, mediumAmbientOpacity);
                 var strongerMaterialResources = new ResourceDictionary();
                 materialResources.Invoke(null, new object[] { strongerMaterialResources, strongerPalette, true, false });
-                Assert.True(
-                    Assert.IsType<double>(strongerMaterialResources["GscAmbientPageOpacity"])
-                    > mediumAmbientOpacity);
+                Assert.Equal(0d, Assert.IsType<double>(strongerMaterialResources["GscAmbientPageOpacity"]));
                 Assert.IsType<DropShadowEffect>(localResources["GscSurfaceEffect"]);
                 Assert.IsType<DropShadowEffect>(localResources["GscPrimaryButtonEffect"]);
                 Assert.IsType<DropShadowEffect>(localResources["GscSidebarEffect"]);
@@ -2511,6 +2510,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("UseSelectedGameBackground=\"False\"", shellAmbientMarkup);
         Assert.DoesNotContain("ShowLeftGlow", shellAmbientMarkup);
         Assert.Contains("GscShellAmbientOpacity", productionShell);
+        Assert.Contains("IsShellLayer=\"True\"", productionShell);
         Assert.Contains("GscSidebarMaterialBrush", productionShell);
         Assert.Contains("x:Name=\"SidebarSurface\"", productionShell);
         Assert.Contains("Property=\"CornerRadius\" Value=\"{StaticResource GscRedesignSidebarCorner}\"", redesign);
@@ -2529,6 +2529,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("CornerRadius=\"{Binding CornerRadius", ambient);
         Assert.Contains("CornerRadiusProperty", ambientCode);
         Assert.Contains("UseSelectedGameBackground", ambientCode);
+        Assert.Contains("IsShellLayer", ambientCode);
         Assert.Contains("<Rectangle", ambient);
         Assert.DoesNotContain("RadialGradientBrush", ambient);
         Assert.DoesNotContain("BlurEffect", ambient);

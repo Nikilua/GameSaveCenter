@@ -37,7 +37,10 @@
     </LinearGradientBrush>
     <Color x:Key="GscSoftShadowColor">#22000000</Color>
     <Color x:Key="GscPopupShadowColor">#5C000000</Color>
-    <sys:Double x:Key="GscAmbientPageOpacity">0.86</sys:Double>
+    <!-- Production pages sit inside the single full-shell ambient surface. Keep their
+         compatibility layers present but visually transparent so every page shares one
+         background coordinate space instead of painting a second rounded rectangle. -->
+    <sys:Double x:Key="GscAmbientPageOpacity">0</sys:Double>
     <sys:Double x:Key="GscShellAmbientOpacity">0.86</sys:Double>
     <!-- The selected game's local background is only an ambient source. A zero fallback
          keeps the normal theme background unchanged when no image is available. -->
