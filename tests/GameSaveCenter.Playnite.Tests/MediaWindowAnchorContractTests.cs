@@ -77,6 +77,8 @@ public sealed class MediaWindowAnchorContractTests
         Assert.Contains("PART_HorizontalScrollBar", redesign);
         Assert.Contains("<RowDefinition Height=\"*\"/>", redesign);
         Assert.Contains("Grid.Row=\"2\"", redesign);
+        Assert.Contains("HorizontalAlignment=\"{TemplateBinding HorizontalContentAlignment}\"", redesign);
+        Assert.Contains("VerticalAlignment=\"{TemplateBinding VerticalContentAlignment}\"", redesign);
         Assert.DoesNotContain("Padding\" Value=\"0,0,0,12\"", task);
         Assert.Contains("GetContentViewport", mediaCodeBehind);
         Assert.Contains("ScrollUnit.Item", mediaCodeBehind);

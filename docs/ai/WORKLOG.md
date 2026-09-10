@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-10 修正待归类媒体表格内容视口对齐
+
+- 根因定位为共享 `GscRedesignDataGridTemplate` 的自定义 `ScrollViewer` 模板没有把 `ScrollContentPresenter` 的水平/垂直对齐继承给真实内容视口；在 Media 大数据表的虚拟化端点上，这会留下上方空白而把行推到中下部。
+- 为 `PART_ScrollContentPresenter` 增加 `HorizontalAlignment` / `VerticalAlignment` 的 `TemplateBinding`，让现有 `HorizontalContentAlignment=Stretch`、`VerticalContentAlignment=Top` 真正作用于内容视口。Media 为大数据回归保留的 `Standard` 行虚拟化、`Item` 滚动和关闭列虚拟化没有改动。
+- 增加模板契约断言；定向 WPF 契约测试（含本轮表格/壳层变更）`18/18`，XAML `19/19`、源码校验和 `git diff --check` 通过。离屏报告 [`.tmp/qa-table-shell-20260910/render-qa-report.txt`](../../.tmp/qa-table-shell-20260910/render-qa-report.txt) 最终为 `render-qa OK`，但物理滑块拖动和真实 Playnite 仍待宿主人工验收。
+
 ## 2026-09-10 按当前 HEAD 重新生成候选包
 
 - 从当前 HEAD `8657654` 运行 `scripts/package.ps1 -Configuration Release -BuildOutputRoot .tmp/package-current-20260910-head`；XAML `19/19`，Release 构建 0 warning/0 error，Core `76/76`、Worker `310/311`（1 skip）、Playnite `428/491`（63 skip），Worker `win-x64` 发布、程序集身份和 self-contained 检查均通过。

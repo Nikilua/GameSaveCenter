@@ -1,5 +1,7 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-10 Media 待归类表格空白区修正：共享 `GscRedesignDataGridTemplate` 的 `PART_ScrollContentPresenter` 已补上 `HorizontalContentAlignment` / `VerticalContentAlignment` 绑定，修复 `VerticalContentAlignment=Top` 未作用到真实内容视口的问题。Media 的大数据例外（`Standard` 行虚拟化、`Item` 滚动、关闭列虚拟化、禁用 `DataGridStarFill`）保持不变；离屏 `render-qa OK`，真实宿主物理滚动仍待人工验收。
+
 > 连续实施入口：[32 项、8 阶段计划](ai/CONTINUOUS_DEVELOPMENT_PLAN_2026-09-08.md)。用户要求减少逐项确认；接手后按依赖连续实施并逐项交付，已满足任务跳过，外部阻塞不妨碍独立任务。Q6 质量报告仍是首四项问题依据。
 
 > 2026-09-10 当前 HEAD 候选包：从 `8657654` 重新运行发布链，六份程序集身份统一为 `0.6.73+8657654310d99e349c120f3bb0484b65ac9f4dc2`；`.pext/.zip` 均 `43,837,912` 字节，SHA-256 为 `E136B5C6465A5A8933C72B0F9707CFF64D91A02D35115B9A007BF6A749B62AB0`。Core `76/76`、Worker `310/311`（1 skip）、Playnite `428/491`（63 skip），0 失败，构建 0 warning/0 error；本次只增加测试覆盖，生产 XAML 仍来自 `248d28e`。当前离屏报告为 [`.tmp/render-qa-head-clean-20260910/render-qa-report.txt`](../.tmp/render-qa-head-clean-20260910/render-qa-report.txt)，`render-qa OK`。候选包未安装真实 Playnite，FusionX、用户主题、DPI、物理点击、视频和滚动矩阵仍待 L31 宿主条件。

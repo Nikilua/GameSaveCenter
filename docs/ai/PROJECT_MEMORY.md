@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-10
 
+## 2026-09-10 Media 待归类表格内容视口对齐
+
+- 用户反馈的“滚到底后中下部有数据、上部空白”不是 Media 专属数据分页或 `Standard` 虚拟化本身造成；共享 `GscRedesignDataGridTemplate` 的 `ScrollContentPresenter` 原先未绑定 `HorizontalContentAlignment` / `VerticalContentAlignment`，导致 `VerticalContentAlignment=Top` 没有落到真实内容视口。
+- `Redesign.xaml` 已为 `PART_ScrollContentPresenter` 补上两项 `TemplateBinding`。Media 的大数据保护策略仍原样保留：`VirtualizationMode=Standard`、`ScrollUnit=Item`、`EnableColumnVirtualization=False`、`DataGridStarFill.Enabled=False`。
+- `MediaWindowAnchorContractTests` 增加源契约断言；当前定向契约测试 `18/18`，`render-qa` 报告为 `OK`。这只证明离屏 WPF 端点和模板结构，真实 Playnite/FusionX 的物理拖动仍需人工验收。
+
 ## 2026-09-10 游戏选择器视觉树运行时回归补强
 
 - 新增 `WpfUiResourceDictionaryTests.GameContextButtonKeepsCompositeGridContentThroughItsRuntimeTemplate`，在 STA WPF 线程中解析生产资源并实际套用 `GscRedesignGameContextButton`，测量/排列后验证 `ContentTemplate={x:Null}`、`Chrome` 模板内的 `ContentPresenter` 仍持有原始 `Grid`，从运行时层面覆盖 `System.Windows.Controls.Grid` 字符串化风险。

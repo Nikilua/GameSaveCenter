@@ -62,6 +62,8 @@
                                                     Grid.Column="1"
                                                     Grid.Row="1"
                                                     CanContentScroll="{TemplateBinding CanContentScroll}"
+                                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                             <ScrollBar x:Name="PART_VerticalScrollBar"
                                        Grid.Column="2"
