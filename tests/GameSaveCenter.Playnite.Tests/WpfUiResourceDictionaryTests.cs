@@ -72,6 +72,83 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void FollowPlaynitePrefersTheDisplayingWindowOverAChildFallbackResource()
+    {
+        Exception? exception = null;
+        var followsWindowTheme = false;
+
+        var thread = new Thread(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var page = new Border();
+                page.Resources["WindowBackgroundBrush"] = new SolidColorBrush(Color.FromRgb(20, 20, 20));
+                page.Resources["TextBrush"] = new SolidColorBrush(Colors.White);
+                page.Resources["TextBrushDark"] = new SolidColorBrush(Colors.Black);
+                page.Resources["ThemeDarkStyle"] = true;
+
+                window = new Window
+                {
+                    Width = 240,
+                    Height = 160,
+                    WindowStyle = WindowStyle.None,
+                    ShowInTaskbar = false,
+                    ShowActivated = false,
+                    Opacity = 0.01,
+                    Content = page
+                };
+                window.Resources["WindowBackgroundBrush"] = new SolidColorBrush(Color.FromRgb(248, 249, 252));
+                window.Resources["DarkWindowBackgroundBrush"] = new SolidColorBrush(Color.FromRgb(22, 23, 30));
+                window.Resources["TextBrush"] = new SolidColorBrush(Colors.Black);
+                window.Resources["TextBrushDark"] = new SolidColorBrush(Colors.White);
+                window.Resources["ThemeDarkStyle"] = false;
+                window.Show();
+                window.UpdateLayout();
+
+                var factoryType = typeof(DashboardView).Assembly.GetType(
+                    "GameSaveCenter.Playnite.Infrastructure.AdaptiveThemePaletteFactory",
+                    throwOnError: true)!;
+                var palette = factoryType.GetMethod("Create", BindingFlags.Public | BindingFlags.Static)!.Invoke(
+                    null,
+                    new object[] { page, true, 78, GameSaveCenterThemeMode.FollowPlaynite })!;
+                followsWindowTheme = !(bool)palette.GetType().GetProperty("IsDark")!.GetValue(palette)!;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.True(followsWindowTheme);
+    }
+
+    [Fact]
+    public void ProductionNavigationCentersEachIconAndLabelOnTheSameRow()
+    {
+        var root = FindRepositoryRoot();
+        var shell = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml"));
+        var resources = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Themes", "AcrylicProductionResources.xaml"));
+
+        Assert.Contains("<Setter Property=\"VerticalContentAlignment\" Value=\"Center\"/>", resources);
+        foreach (var name in new[] { "Overview", "Saves", "Trainers", "Media", "Tasks", "Maintenance", "Settings" })
+        {
+            Assert.Contains($"x:Name=\"Nav{name}Content\" Orientation=\"Horizontal\" VerticalAlignment=\"Center\"", shell);
+            Assert.Contains($"x:Name=\"Nav{name}Label\"", shell);
+        }
+        Assert.Equal(7, Regex.Matches(shell, "FontFamily=\"Segoe MDL2 Assets\" Width=\"26\" TextAlignment=\"Center\" VerticalAlignment=\"Center\"").Count);
+    }
+
+    [Fact]
     public void LocalAccentTokensFollowTheHostPaletteWithoutStaticThemeCapture()
     {
         Exception? exception = null;

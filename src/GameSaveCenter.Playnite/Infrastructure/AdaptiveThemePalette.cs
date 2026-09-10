@@ -967,40 +967,58 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
         private static Color? ResolveResourceColor(FrameworkElement host, string key)
         {
-            var color = ExtractUsableColor(host.TryFindResource(key) as Brush);
-            if (color.HasValue) return color;
-
-            // Settings can be presented by Playnite in a separate Window whose resource
-            // dictionary is not part of the plugin UserControl's logical tree. Check the
-            // actual owner and application scopes explicitly instead of relying on only one
-            // WPF resource lookup path.
-            var window = Window.GetWindow(host);
-            while (window != null)
-            {
-                color = ExtractUsableColor(window.TryFindResource(key) as Brush);
-                if (color.HasValue) return color;
-                window = window.Owner;
-            }
-
-            return ExtractUsableColor(Application.Current?.TryFindResource(key) as Brush);
+            return TryResolveResource(host, key, out var value)
+                ? ExtractUsableColor(value as Brush)
+                : null;
         }
 
         private static bool? ResolveResourceBoolean(FrameworkElement host, string key)
         {
-            var value = host.TryFindResource(key);
-            if (value is bool hostValue) return hostValue;
+            return TryResolveResource(host, key, out var value) && value is bool boolValue
+                ? boolValue
+                : null;
+        }
 
+        private static bool TryResolveResource(FrameworkElement host, string key, out object? value)
+        {
+            // A Playnite settings page is a UserControl hosted by a separate Window. A
+            // normal TryFindResource(host, key) can walk through Application.Current before
+            // the active settings Window and therefore return a stale default-theme value.
+            // Resolve the concrete Window scope first, then its owner chain, followed by
+            // local visual scopes and finally the application scope. This keeps FollowPlaynite
+            // aligned with the window that is actually displaying the page without changing
+            // explicit Light/Dark overrides.
             var window = Window.GetWindow(host);
             while (window != null)
             {
-                if (window.Resources.Contains(key) && window.Resources[key] is bool windowValue)
-                    return windowValue;
+                if (window.Resources.Contains(key))
+                {
+                    value = window.Resources[key];
+                    return true;
+                }
                 window = window.Owner;
             }
 
-            return Application.Current?.TryFindResource(key) is bool applicationValue
-                ? applicationValue
-                : null;
+            DependencyObject? current = host;
+            while (current != null)
+            {
+                if (current is FrameworkElement element && element.Resources.Contains(key))
+                {
+                    value = element.Resources[key];
+                    return true;
+                }
+                current = VisualTreeHelper.GetParent(current);
+            }
+
+            var application = Application.Current;
+            if (application?.Resources.Contains(key) == true)
+            {
+                value = application.Resources[key];
+                return true;
+            }
+
+            value = null;
+            return false;
         }
 
         private static bool IsDark(Color color) => RelativeLuminance(color) < 0.5;

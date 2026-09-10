@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-10
 
+## 2026-09-10 设置窗口主题优先级与生产导航对齐
+
+- 设置页是 Playnite 的 `UserControl`，实际可能位于独立设置 `Window`。`AdaptiveThemePaletteFactory` 的 FollowPlaynite 资源解析必须先检查当前 Window 及 Owner 链，再检查控件局部视觉资源和 `Application.Current`；不能让 `TryFindResource` 先穿过应用范围拿到旧深色值。
+- 这一优先级只影响 FollowPlaynite；`GameSaveCenterThemeMode.Light/Dark` 仍是用户明确选择的覆盖模式。窗口资源不存在时，控件本地资源和应用资源仍提供兼容回退。
+- `AcrylicNavItem` 与生产壳层七个导航内容组均显式 `VerticalAlignment=Center`；图标和文字保持同一水平行，收起状态只改变可见性和内容对齐，不改变导航命令。
+
 ## 2026-09-10 Media 待归类表格内容视口对齐
 
 - 用户反馈的“滚到底后中下部有数据、上部空白”不是 Media 专属数据分页或 `Standard` 虚拟化本身造成；共享 `GscRedesignDataGridTemplate` 的 `ScrollContentPresenter` 原先未绑定 `HorizontalContentAlignment` / `VerticalContentAlignment`，导致 `VerticalContentAlignment=Top` 没有落到真实内容视口。

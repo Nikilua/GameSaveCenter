@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-10 设置主题跟随与导航对齐
+
+- 现象对应两个共享层问题：设置页的 `TryFindResource` 解析路径可能先命中应用/遗留深色资源，导航 `RadioButton` 内容模板缺少显式垂直居中。
+- `AdaptiveThemePaletteFactory` 改为 Window/Owner → 控件局部资源 → Application 的优先级；补充 STA WPF 回归夹具，子页面放置深色回退资源、承载 Window 放置浅色主题时，FollowPlaynite 必须识别为浅色。
+- `AcrylicNavItem`、七个导航内容组及图标/文字子元素全部补齐居中约束；增加七项源契约断言。定向 Playnite WPF 测试 `130 passed / 39 skipped / 0 failed`。
+- 本阶段不改变显式 Light/Dark 覆盖、导航命令、自动化名称或侧栏收起逻辑；真实 Playnite 用户主题仍待宿主截图确认。
+
 ## 2026-09-10 补齐待归类媒体表格内容视口对齐链
 
 - 根因定位为共享 `GscRedesignDataGridTemplate` 的自定义 `ScrollViewer` 模板只把对齐绑定写到了内层 `PART_ScrollContentPresenter`，外层 `DG_ScrollViewer` 没有把 DataGrid 的内容对齐继续传入自己的模板；在 Media 大数据表的虚拟化端点上，这会留下上方空白而把行推到中下部。

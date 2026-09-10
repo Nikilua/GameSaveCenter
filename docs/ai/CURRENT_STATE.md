@@ -2,6 +2,12 @@
 
 > 更新时间：2026-09-10。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-10 设置主题资源与导航对齐已修正
+
+- `AdaptiveThemePaletteFactory` 解析 FollowPlaynite 资源时现在先读取实际承载页面的 Window/Owner，再读取控件局部资源和 Application 资源，避免设置窗口先命中遗留深色默认值；显式“浅色/深色”覆盖行为不变。
+- 生产壳层导航样式补齐 `VerticalContentAlignment=Center`，全部图标、文字组和子元素显式垂直居中，保持收起导航栏、键盘和自动化名称不变。
+- 新增设置窗口优先级与七项导航内容对齐回归断言；Playnite 定向 WPF 测试 `130 passed / 39 skipped / 0 failed`。真实 Playnite 设置窗口和用户主题的物理截图仍需宿主验收。
+
 ## 2026-09-10 待归类媒体表格视口对齐已修正
 
 - 共享 `GscRedesignDataGridTemplate` 的外层 `DG_ScrollViewer` 与内层 `PART_ScrollContentPresenter` 现在都显式绑定 `HorizontalContentAlignment` / `VerticalContentAlignment`；`MediaInboxGrid` 的 `Top` 对齐贯穿到真实内容视口，避免大数据虚拟化表格滚到底后上方出现大块空白。

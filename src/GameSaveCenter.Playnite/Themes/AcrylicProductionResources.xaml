@@ -19,6 +19,7 @@
         <Setter Property="Padding" Value="12,10"/>
         <Setter Property="Margin" Value="0,0,0,5"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Template">
             <Setter.Value>

@@ -1,5 +1,7 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-10 设置主题跟随与导航对齐：FollowPlaynite 主题资源解析现在优先读取实际承载设置页的 Window/Owner，再落到控件局部资源和 Application，避免设置窗口误用旧深色值；`AcrylicNavItem` 及七个生产导航内容组补齐图标/文字垂直居中。定向 Playnite WPF 测试 `130 passed / 39 skipped / 0 failed`；真实 Playnite 设置窗口、用户主题和 DPI 截图仍待宿主验收。
+
 > 2026-09-10 Media 待归类表格空白区继续修正：共享 `GscRedesignDataGridTemplate` 的外层 `DG_ScrollViewer` 与内层 `PART_ScrollContentPresenter` 均已补上 `HorizontalContentAlignment` / `VerticalContentAlignment` 绑定，修复 `VerticalContentAlignment=Top` 未贯穿到真实内容视口的问题。Media 的大数据例外（`Standard` 行虚拟化、`Item` 滚动、关闭列虚拟化、禁用 `DataGridStarFill`）保持不变；本阶段定向契约测试 `10/10`，两个视觉修复完成后统一更新全量回归结果，真实宿主物理滚动仍待人工验收。
 
 > 2026-09-10 页面外围矩形继续修正：用户图二中各页面都有的长方形来自页面级 `AmbientMaterialLayer`，不是需要重复绘制的图片。页面层现在通过 `GscAmbientPageOpacity=0` 保持兼容挂载但透明；Shell 的单一 `ShellAmbientMaterialLayer` 通过 `IsShellLayer="True"` 继续绘制跨侧栏、右侧页面和 footer 的统一环境材质。Release 构建/全量测试、源码/XAML/WPF 门禁和 RenderHarness 均通过；干净报告 [`.tmp/qa-table-ambient-20260910/render-qa-report.txt`](../.tmp/qa-table-ambient-20260910/render-qa-report.txt) 为 `fc3c7d5`、`WorkingTreeClean: True`、`render-qa OK`。真实 Playnite/FusionX、DPI、物理滚动仍待宿主人工验收。
