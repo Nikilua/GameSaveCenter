@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-10
 
+## 2026-09-10 共享按钮实际生效与 Playnite 侧栏图标
+
+- 上一轮的 `ButtonStyles.xaml` 别名没有被现有页面引用，不能作为“按钮已改版”的证据；后续按钮视觉修改应优先落在 `WpfUiProduction.xaml` 的 `GscWpfUiButton` 共享基础模板，当前默认表面使用 `GscGlassFillBrush` / `GscGlassStrokeBrush`，Primary/Danger 复用 `GscPrimaryButtonEffect` / `GscSurfaceEffect`，避免逐页替换样式名。
+- `GameSaveCenterPlugin.GetSidebarItems()` 的 `SidebarItem.Icon` 可以接收 WPF `Path`。当前使用 ZIP 中 `plugin-main.svg` 的几何线稿，并将 Stroke 设置为 Playnite 的 DynamicResource `GlyphBrush`；这样由宿主主题控制黑/白色，不能改回静态固定色或彩色填充图标。扩展清单的 `icon.png` 已替换为 ZIP 的 `plugin-main-256.png` 透明黑色线稿，静态清单场景本身不承担主题切换，运行时侧栏 Path 才是主题感知实现。
+- 代码阶段提交 `83dc1c4` 已通过 Release 构建、全量测试和 WPF/XAML/source 门禁；离屏证据为 [`.tmp/icon-button-qa-clean-20260910/render-qa-report.txt`](../.tmp/icon-button-qa-clean-20260910/render-qa-report.txt)，报告记录 `WorkingTreeClean: True` 与 `render-qa OK`。真实 Playnite 侧栏主题切换、FusionX 具体模板、用户 DPI/主题和 PNG 清单显示仍需人工验收，不能把离屏结果写成宿主已验证。
+
 ## 2026-09-10 主题感知线性图标包
 
 - 用户提供的 `GameSaveCenter_IconPack_v2_round-flat.zip` 的 SVG 是 24×24、透明底、`currentColor`、低线密度线稿；WPF 生产端通过 `Controls/ThemeAwareIcon.cs` + `Themes/GscIconPack.xaml` 的 Geometry/Path 渲染，不能改回依赖 Segoe MDL2 字形或引入只支持单色/固定底图的 PNG。

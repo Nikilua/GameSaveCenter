@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-10 共享按钮实际生效与 Playnite 主题图标
+
+- 复核用户反馈后确认，上一轮只新增了 `ButtonStyles.xaml` 的语义别名，而生产页面仍使用既有 `GscWpfUi...` 样式，因此用户看不到明显变化；本轮直接修复共享 `GscWpfUiButton` 基础模板，将现有按钮表面和边框切换到 `GscGlassFillBrush` / `GscGlassStrokeBrush`，并让 Primary/Danger 使用已有自适应效果资源，未改命令、Binding、尺寸布局或焦点语义。
+- 侧边栏插件图标采用用户 ZIP 中 `plugin-main.svg` 的手柄线稿 Geometry，`SidebarItem.Icon` 改为 WPF `Path`，描边通过 DynamicResource `GlyphBrush` 交给 Playnite 主题提供，因此浅色/深色主题切换时会自动使用对应的黑/白色；`src/GameSaveCenter.Playnite/icon.png` 同步替换为压缩包的 `plugin-main-256.png` 透明黑色线稿，`extension.yaml` 继续指向该文件。
+- 新增 WPF 回归断言，确认现有按钮使用玻璃令牌、侧栏图标使用主题画笔且 PNG 资产存在。Release 解决方案构建 `0 warning / 0 error`；Core `76/76`、Worker `310/311`（1 skip）、Playnite `434/497`（63 skip），0 失败；源码校验、XAML `21/21`、WPF 静态审查 `0 error / 22 warnings / 172 info` 通过。
+- 代码阶段提交为 `83dc1c4`（中文提交“按钮样式与插件图标跟随主题”）。提交后 RenderHarness 双主题、多尺寸、窗口缩放及生产壳层检查通过，干净报告 [`.tmp/icon-button-qa-clean-20260910/render-qa-report.txt`](../../.tmp/icon-button-qa-clean-20260910/render-qa-report.txt) 为 `WorkingTreeClean: True`、`render-qa OK`。该报告仍是离屏 WPF 证据，真实 Playnite/FusionX、用户主题、DPI 和侧栏人工截图尚未执行。
+
 ## 2026-09-10 主题感知线性图标包接入
 
 - 接入用户提供的 `GameSaveCenter_IconPack_v2_round-flat.zip`：其 SVG 使用透明底、`currentColor` 和 24×24 线稿；由于 WPF 没有原生 SVG 渲染器，新增 `ThemeAwareIcon` 原生控件及 `GscIconPack.xaml` Geometry 资源，不引入第三方渲染依赖。
