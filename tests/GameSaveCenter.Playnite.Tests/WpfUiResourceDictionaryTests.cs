@@ -176,6 +176,26 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void SharedGlassButtonAliasesKeepThemeStatesAndPressFeedback()
+    {
+        var root = FindRepositoryRoot();
+        var buttonStyles = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Themes", "ButtonStyles.xaml"));
+        var production = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml"));
+        var redesign = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Themes", "Redesign.xaml"));
+
+        Assert.Contains("x:Key=\"GlassButton\"", buttonStyles);
+        Assert.Contains("x:Key=\"PrimaryGlassButton\"", buttonStyles);
+        Assert.Contains("x:Key=\"DangerGlassButton\"", buttonStyles);
+        Assert.Contains("x:Key=\"IconButton\"", buttonStyles);
+        Assert.Contains("x:Key=\"SegmentedButton\"", buttonStyles);
+        Assert.Contains("Appearance\" Value=\"Danger\"", production);
+        Assert.Contains("RenderTransform.(ScaleTransform.ScaleX)", production);
+        Assert.Contains("RenderTransform.(ScaleTransform.ScaleY)", production);
+        Assert.Contains("Themes/ButtonStyles.xaml", redesign);
+        Assert.DoesNotContain("BlurEffect", buttonStyles);
+    }
+
+    [Fact]
     public void LocalAccentTokensFollowTheHostPaletteWithoutStaticThemeCapture()
     {
         Exception? exception = null;

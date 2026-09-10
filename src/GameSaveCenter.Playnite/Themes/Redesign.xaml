@@ -5,6 +5,7 @@
         <!-- Keep the WPF-UI adapters in this dictionary's parse scope.  The color/material
              tokens remain page-local and are consumed through DynamicResource. -->
         <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/WpfUiProduction.xaml"/>
+        <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/ButtonStyles.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <!-- Final redesign geometry.  These values intentionally form a small, reusable scale

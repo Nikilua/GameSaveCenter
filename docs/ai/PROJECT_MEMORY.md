@@ -10,6 +10,12 @@
 - 不把压缩包中的 plugin PNG 直接覆盖 `src/GameSaveCenter.Playnite/icon.png`：它是透明线稿导出，不适合作为 Playnite 清单图标。扩展清单图标仍保留现有可见 PNG，界面内 plugin-main fallback 使用矢量 Geometry。
 - 本轮又补齐 ZIP 中 `section-general-directory` 与 `section-migration` 到设置页对应标题；Release Playnite 构建 `0 warning/0 error`，Playnite `432/495`（432 通过、63 跳过、0 失败），源码/XAML 门禁通过；`.tmp/icon-qa-settings-icons-20260910/render-qa-report.txt` 为双主题、多尺寸 `render-qa OK`。这是离屏 WPF 证据，不能写成真实 Playnite 用户主题/DPI/清单图标已验收。
 
+## 2026-09-10 统一 Glass 按钮组件语义
+
+- 用户粘贴的 Glass UI 方案与现有生产架构的等价实现是 `ui:Button` + `GscWpfUiButton`，因此新增 `Themes/ButtonStyles.xaml` 作为共享语义入口，而不是再造一个会与 Playnite/WPF-UI 冲突的 `GlassButton` 模板。别名覆盖 `GlassButton`、`PrimaryGlassButton`、`DangerGlassButton`、`IconButton`、`SegmentedButton`。
+- `GscWpfUiButton` 现在支持 `Secondary`、`Primary`、`Danger`、`Disabled`；按压状态以模板实例级 `ScaleTransform` 缩小到 `0.97`，继续保留 `FocusVisualStyle`、内容模板、命令和现有布局约束。主题颜色全部使用现有动态令牌，未对滚动内容添加 `BlurEffect`。
+- 证据：Release 构建 `0 warning/0 error`，Core `76/76`、Worker `310/311`（1 skip）、Playnite `433/496`（63 skip、0 fail）；提交后 `.tmp/button-system-qa-20260910/render-qa-report.txt` 为双主题、多尺寸 `render-qa OK`。这是离屏 WPF 证据，不能写成真实 Playnite 用户主题/DPI/安装验收。
+
 ## 2026-09-10 共享表格内容视口固定到顶部
 
 - 用户现场仍能看到待归类表格列头下方的大块空白，因此仅靠 `DataGrid` 的 `VerticalContentAlignment=Top` 和宿主属性绑定不够；Playnite/FusionX 的短窗口测量或滑块端点可能重新安排真实 `ItemsPresenter`。

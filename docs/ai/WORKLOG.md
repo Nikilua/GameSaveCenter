@@ -11,6 +11,12 @@
 - Release Playnite 构建 `0 warning / 0 error`；Playnite 测试 `432 passed / 63 skipped / 0 failed`；`validate-source.py`、XAML 结构检查和 `git diff --check` 通过。提交 `460b992` 后重跑的 RenderHarness 双主题、多尺寸和 resize 报告 [`.tmp/icon-qa-clean-20260910/render-qa-report.txt`](../../.tmp/icon-qa-clean-20260910/render-qa-report.txt) 为 `WorkingTreeClean: True`、`render-qa OK`。
 - 离屏报告 [`.tmp/icon-qa-settings-icons-20260910/render-qa-report.txt`](../../.tmp/icon-qa-settings-icons-20260910/render-qa-report.txt) 通过；它不替代真实 Playnite 中的 Light/Dark/Follow、用户主题色、125%/150% DPI、键盘焦点和插件清单图标人工验收。
 
+## 2026-09-10 统一 Glass 按钮组件语义
+
+- 复核用户粘贴的 Glass UI 方案后，沿用项目已有的 `ui:Button` 兼容控件和 `GscWpfUiButton` 共享模板，新增 `Themes/ButtonStyles.xaml` 语义别名：`GlassButton`、`PrimaryGlassButton`、`DangerGlassButton`、`IconButton`、`SegmentedButton`；不重复引入第二套 WPF/Playnite 控件树。
+- 共享按钮模板新增 `Danger` 外观、禁用态和按压 `0.97` 缩放反馈；按压只动画模板实例自己的 `RenderTransform`，不改变布局、不关闭键盘焦点或命令绑定。颜色继续由 `DesignTokens.xaml` 与 `AdaptiveThemePalette` 的 `DynamicResource` 提供，未加入逐按钮 `BlurEffect`。
+- Release 解决方案构建 `0 warning / 0 error`；Core `76/76`、Worker `310/311`（1 skip）、Playnite `433/496`（63 skip），0 失败；源码、XAML 和 WPF 静态审查通过。提交后 RenderHarness 报告记录在 `.tmp/button-system-qa-20260910/render-qa-report.txt`。
+
 ## 2026-09-10 固定共享表格行内容视口
 
 - 现场截图仍显示待归类表格的已实现行被推到中下部，且窗口化时部分表格末行不可完整显示；复核自定义 `GscRedesignDataGridTemplate` 后，发现内容承载器仍保留宿主可重解释的对齐链。

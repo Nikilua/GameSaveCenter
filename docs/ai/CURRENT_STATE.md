@@ -9,6 +9,12 @@
 - `src/GameSaveCenter.Playnite/icon.png` 暂不替换，因为压缩包 plugin PNG 为透明线稿导出，不能安全承担 Playnite 清单可见图标；plugin-main 已作为界面内 fallback 矢量资源。
 - 最新验证：本轮补齐 ZIP 中两个设置分类图标；Playnite Release `432/495`（63 skip，0 fail），构建 0 warning/0 error，源码/XAML/WPF 门禁通过，`.tmp/icon-qa-settings-icons-20260910/render-qa-report.txt` 为 `render-qa OK`。离屏报告仍不代表真实 Playnite 的用户主题、Follow、DPI 和清单图标验收。
 
+## 2026-09-10 统一 Glass 按钮组件语义
+
+- 生产按钮继续使用已有的 `ui:Button` 兼容控件和 `GscWpfUiButton` 共享模板；`Themes/ButtonStyles.xaml` 提供 `GlassButton`、`PrimaryGlassButton`、`DangerGlassButton`、`IconButton`、`SegmentedButton` 语义别名，避免重复的独立控件实现。
+- 共享模板具备 Primary/Secondary/Danger/Disabled 状态、主题动态颜色、Hover/Focus/Pressed 状态和 `0.97` 按压缩放；不改变业务命令、Binding、布局或虚拟化，也不使用大面积逐控件 Blur。
+- 最新验证：解决方案构建 `0 warning/0 error`，Core `76/76`、Worker `310/311`（1 skip）、Playnite `433/496`（63 skip，0 fail），源码/XAML/WPF 门禁通过；提交后 `.tmp/button-system-qa-20260910/render-qa-report.txt` 为 `render-qa OK`。真实 Playnite 用户主题、DPI 和安装仍需宿主验收。
+
 ## 2026-09-10 表格内容视口与末行可见性继续修正
 
 - 共享 `GscRedesignDataGridTemplate` 现在把 `DG_ScrollViewer` 内的 `PART_ScrollContentPresenter` 与真实 `ItemsPresenter` 都固定为 `HorizontalAlignment=Stretch`、`VerticalAlignment=Top`；不再依赖宿主模板在短窗口或拖动滑块后的间接对齐值，已实现行从列头下方开始排列。

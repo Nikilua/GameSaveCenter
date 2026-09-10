@@ -746,7 +746,13 @@
                             Padding="0"
                             CornerRadius="11"
                             ClipToBounds="True"
+                            RenderTransformOrigin="0.5,0.5"
                             SnapsToDevicePixels="True">
+                        <Border.RenderTransform>
+                            <!-- The transform belongs to each template instance, so press feedback
+                                 never mutates a shared Style Freezable or triggers layout. -->
+                            <ScaleTransform ScaleX="1" ScaleY="1"/>
+                        </Border.RenderTransform>
                         <Grid ClipToBounds="True">
                             <!-- Focus is a complete selected-like surface; the shared focus
                                  adorner remains active as the high-contrast keyboard ring. -->
@@ -788,6 +794,14 @@
                             <Setter TargetName="PressedOverlay" Property="Background" Value="{DynamicResource GscOnAccentPressedOverlayBrush}"/>
                             <Setter Property="Foreground" Value="{DynamicResource GscOnAccentTextBrush}"/>
                         </Trigger>
+                        <Trigger Property="Appearance" Value="Danger">
+                            <Setter TargetName="ButtonChrome" Property="Background" Value="{DynamicResource GscErrorBrush}"/>
+                            <Setter TargetName="ButtonChrome" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/>
+                            <Setter TargetName="FocusOverlay" Property="Background" Value="{DynamicResource GscOnAccentHoverOverlayBrush}"/>
+                            <Setter TargetName="HoverOverlay" Property="Background" Value="{DynamicResource GscOnAccentHoverOverlayBrush}"/>
+                            <Setter TargetName="PressedOverlay" Property="Background" Value="{DynamicResource GscOnAccentPressedOverlayBrush}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource GscOnAccentTextBrush}"/>
+                        </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="ButtonChrome" Property="BorderBrush" Value="{DynamicResource GscAccentTintStrongBrush}"/>
                             <Trigger.EnterActions>
@@ -811,6 +825,8 @@
                                 <BeginStoryboard>
                                     <Storyboard>
                                         <DoubleAnimation Storyboard.TargetName="PressedOverlay" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.08"/>
+                                        <DoubleAnimation Storyboard.TargetName="ButtonChrome" Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)" To="0.97" Duration="0:0:0.08"/>
+                                        <DoubleAnimation Storyboard.TargetName="ButtonChrome" Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)" To="0.97" Duration="0:0:0.08"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.EnterActions>
@@ -818,6 +834,8 @@
                                 <BeginStoryboard>
                                     <Storyboard>
                                         <DoubleAnimation Storyboard.TargetName="PressedOverlay" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.1"/>
+                                        <DoubleAnimation Storyboard.TargetName="ButtonChrome" Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.1"/>
+                                        <DoubleAnimation Storyboard.TargetName="ButtonChrome" Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)" To="1" Duration="0:0:0.1"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.ExitActions>
@@ -845,6 +863,13 @@
            TargetType="{x:Type ui:Button}"
            BasedOn="{StaticResource GscWpfUiButton}">
         <Setter Property="Appearance" Value="Primary"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+    </Style>
+
+    <Style x:Key="GscWpfUiDangerButton"
+           TargetType="{x:Type ui:Button}"
+           BasedOn="{StaticResource GscWpfUiButton}">
+        <Setter Property="Appearance" Value="Danger"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
     </Style>
 

@@ -1,0 +1,37 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ui="clr-namespace:GameSaveCenter.Playnite.Controls">
+    <!-- The project already owns a native WPF compatibility Button (`ui:Button`) whose
+         production template is the Glass UI primitive. These semantic aliases expose the
+         requested component vocabulary without introducing a second template or changing
+         the generated Playnite control tree. -->
+    <Style x:Key="GlassButton"
+           TargetType="{x:Type ui:Button}"
+           BasedOn="{StaticResource GscWpfUiSecondaryButton}"/>
+
+    <Style x:Key="PrimaryGlassButton"
+           TargetType="{x:Type ui:Button}"
+           BasedOn="{StaticResource GscWpfUiPrimaryButton}"/>
+
+    <Style x:Key="DangerGlassButton"
+           TargetType="{x:Type ui:Button}"
+           BasedOn="{StaticResource GscWpfUiDangerButton}"/>
+
+    <Style x:Key="IconButton"
+           TargetType="{x:Type ui:Button}"
+           BasedOn="{StaticResource GlassButton}">
+        <Setter Property="MinWidth" Value="34"/>
+        <Setter Property="Width" Value="34"/>
+        <Setter Property="Height" Value="34"/>
+        <Setter Property="MinHeight" Value="34"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="ContentTemplate" Value="{x:Null}"/>
+    </Style>
+
+    <Style x:Key="SegmentedButton"
+           TargetType="{x:Type ui:Button}"
+           BasedOn="{StaticResource GlassButton}">
+        <Setter Property="MinHeight" Value="32"/>
+        <Setter Property="Padding" Value="10,5"/>
+    </Style>
+</ResourceDictionary>
