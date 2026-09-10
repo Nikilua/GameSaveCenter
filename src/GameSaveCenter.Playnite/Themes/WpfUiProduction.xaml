@@ -723,8 +723,11 @@
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="ContentTemplate" Value="{StaticResource GscWpfUiButtonTextTemplate}"/>
         <Setter Property="ui:Button.CornerRadius" Value="11"/>
-        <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
+        <!-- Use the shared glass surface for every existing ui:Button style. Pages already
+             inherit this primitive, so the visual refresh is applied consistently without
+             renaming hundreds of command bindings or changing their layout contracts. -->
+        <Setter Property="Background" Value="{DynamicResource GscGlassFillBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
         <Setter Property="FontWeight" Value="Medium"/>
@@ -789,6 +792,7 @@
                         <Trigger Property="Appearance" Value="Primary">
                             <Setter TargetName="ButtonChrome" Property="Background" Value="{DynamicResource GscPrimaryButtonBrush}"/>
                             <Setter TargetName="ButtonChrome" Property="BorderBrush" Value="{DynamicResource GscPrimaryButtonBorderBrush}"/>
+                            <Setter TargetName="ButtonChrome" Property="Effect" Value="{DynamicResource GscPrimaryButtonEffect}"/>
                             <Setter TargetName="FocusOverlay" Property="Background" Value="{DynamicResource GscOnAccentHoverOverlayBrush}"/>
                             <Setter TargetName="HoverOverlay" Property="Background" Value="{DynamicResource GscOnAccentHoverOverlayBrush}"/>
                             <Setter TargetName="PressedOverlay" Property="Background" Value="{DynamicResource GscOnAccentPressedOverlayBrush}"/>
@@ -797,6 +801,7 @@
                         <Trigger Property="Appearance" Value="Danger">
                             <Setter TargetName="ButtonChrome" Property="Background" Value="{DynamicResource GscErrorBrush}"/>
                             <Setter TargetName="ButtonChrome" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/>
+                            <Setter TargetName="ButtonChrome" Property="Effect" Value="{DynamicResource GscSurfaceEffect}"/>
                             <Setter TargetName="FocusOverlay" Property="Background" Value="{DynamicResource GscOnAccentHoverOverlayBrush}"/>
                             <Setter TargetName="HoverOverlay" Property="Background" Value="{DynamicResource GscOnAccentHoverOverlayBrush}"/>
                             <Setter TargetName="PressedOverlay" Property="Background" Value="{DynamicResource GscOnAccentPressedOverlayBrush}"/>

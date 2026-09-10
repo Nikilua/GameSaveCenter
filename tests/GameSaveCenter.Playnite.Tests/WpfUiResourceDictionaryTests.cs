@@ -12,9 +12,12 @@ using System.Windows.Media;
 using System.Windows.Media.Effects;
 using System.Windows.Controls.Primitives;
 using System.Xml.Linq;
+using GameSaveCenter.Playnite;
 using GameSaveCenter.Playnite.Settings;
 using GameSaveCenter.Playnite.Views;
 using GameSaveCenter.Playnite.Controls;
+using WpfPath = System.Windows.Shapes.Path;
+using WpfShape = System.Windows.Shapes.Shape;
 using Xunit;
 
 namespace GameSaveCenter.Playnite.Tests;
@@ -193,6 +196,52 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("RenderTransform.(ScaleTransform.ScaleY)", production);
         Assert.Contains("Themes/ButtonStyles.xaml", redesign);
         Assert.DoesNotContain("BlurEffect", buttonStyles);
+    }
+
+    [Fact]
+    public void ExistingButtonsUseGlassSurfaceAndSidebarIconUsesPlayniteGlyphBrush()
+    {
+        var root = FindRepositoryRoot();
+        var production = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml"));
+        var buttonStyles = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Themes", "ButtonStyles.xaml"));
+        var plugin = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "GameSaveCenterPlugin.cs"));
+
+        Assert.Contains("Value=\"{DynamicResource GscGlassFillBrush}\"", production);
+        Assert.Contains("Value=\"{DynamicResource GscGlassStrokeBrush}\"", production);
+        Assert.Contains("x:Key=\"GlassButton\"", buttonStyles);
+        Assert.Contains("Background\" Value=\"{DynamicResource GscGlassFillBrush}\"", buttonStyles);
+        Assert.Contains("Icon = CreateThemeAwareSidebarIcon()", plugin);
+        Assert.Contains("GlyphBrush", plugin);
+
+        Exception? exception = null;
+        WpfPath? icon = null;
+        double iconWidth = 0;
+        double iconHeight = 0;
+        bool hasThemeStrokeReference = false;
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                icon = GameSaveCenterPlugin.CreateThemeAwareSidebarIcon();
+                iconWidth = icon.Width;
+                iconHeight = icon.Height;
+                hasThemeStrokeReference = icon.ReadLocalValue(WpfShape.StrokeProperty) != DependencyProperty.UnsetValue;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.NotNull(icon);
+        Assert.Equal(24, iconWidth);
+        Assert.Equal(24, iconHeight);
+        Assert.True(hasThemeStrokeReference);
+        Assert.True(File.Exists(Path.Combine(root, "src", "GameSaveCenter.Playnite", "icon.png")));
     }
 
     [Fact]

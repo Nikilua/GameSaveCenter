@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Threading;
 using System.Windows.Controls;
 using GameSaveCenter.Contracts;
@@ -23,6 +24,8 @@ using Playnite.SDK;
 using Playnite.SDK.Events;
 using Playnite.SDK.Models;
 using Playnite.SDK.Plugins;
+using WpfPath = System.Windows.Shapes.Path;
+using WpfShape = System.Windows.Shapes.Shape;
 
 namespace GameSaveCenter.Playnite
 {
@@ -256,13 +259,39 @@ namespace GameSaveCenter.Playnite
             {
                 Title = "GameSaveCenter",
                 Type = SiderbarItemType.View,
-                Icon = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "icon.png"),
+                // SidebarItem.Icon accepts an object. A themed Path lets Playnite's own
+                // GlyphBrush recolor the supplied line icon when the desktop theme changes;
+                // a static black PNG would disappear in dark themes.
+                Icon = CreateThemeAwareSidebarIcon(),
                 // A malformed XAML resource must not bring down Playnite's extension host. The
                 // fallback keeps the sidebar usable and exposes the real exception in the
                 // extension log instead of letting Playnite show its generic crash dialog.
                 Opened = CreateDashboardViewSafely
             };
             yield return item;
+        }
+
+        internal static WpfPath CreateThemeAwareSidebarIcon()
+        {
+            var icon = new WpfPath
+            {
+                Data = Geometry.Parse(
+                    "M12 3.8v5.1 M9.9 6.8L12 8.9l2.1-2.1 " +
+                    "M6.8 10.9h10.4c1.25 0 2.35.82 2.72 2.02l.72 2.34a2.13 2.13 0 0 1-1.41 2.64c-.93.29-1.94-.04-2.51-.82l-.99-1.37a2.23 2.23 0 0 0-1.8-.93h-3.5c-.71 0-1.39.34-1.8.93l-.99 1.37c-.57.78-1.58 1.11-2.51.82a2.13 2.13 0 0 1-1.41-2.64l.72-2.34a2.85 2.85 0 0 1 2.72-2.02Z"),
+                Width = 24,
+                Height = 24,
+                Stretch = Stretch.Uniform,
+                StrokeThickness = 1.85,
+                StrokeStartLineCap = PenLineCap.Round,
+                StrokeEndLineCap = PenLineCap.Round,
+                StrokeLineJoin = PenLineJoin.Round,
+                Fill = Brushes.Transparent,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                SnapsToDevicePixels = true
+            };
+            icon.SetResourceReference(WpfShape.StrokeProperty, "GlyphBrush");
+            return icon;
         }
 
         public override IEnumerable<GameMenuItem> GetGameMenuItems(GetGameMenuItemsArgs args)

@@ -7,7 +7,10 @@
          the generated Playnite control tree. -->
     <Style x:Key="GlassButton"
            TargetType="{x:Type ui:Button}"
-           BasedOn="{StaticResource GscWpfUiSecondaryButton}"/>
+           BasedOn="{StaticResource GscWpfUiSecondaryButton}">
+        <Setter Property="Background" Value="{DynamicResource GscGlassFillBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
+    </Style>
 
     <Style x:Key="PrimaryGlassButton"
            TargetType="{x:Type ui:Button}"
@@ -34,4 +37,5 @@
         <Setter Property="MinHeight" Value="32"/>
         <Setter Property="Padding" Value="10,5"/>
     </Style>
+
 </ResourceDictionary>
