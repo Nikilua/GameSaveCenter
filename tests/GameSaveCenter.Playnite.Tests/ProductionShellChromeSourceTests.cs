@@ -25,6 +25,24 @@ public sealed class ProductionShellChromeSourceTests
     }
 
     [Fact]
+    public void GameBackgroundCoversTheWholeShellWithoutAColumnGutter()
+    {
+        var shell = ReadSource("src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml");
+
+        Assert.Contains("x:Name=\"DemoShell\" Margin=\"0\"", shell);
+        Assert.Contains("Grid.Row=\"0\" Grid.RowSpan=\"2\" Grid.Column=\"0\" Grid.ColumnSpan=\"2\"", shell);
+        Assert.Contains("x:Name=\"ShellAmbientMaterialLayer\"", shell);
+        Assert.Contains("Grid.Row=\"0\" Grid.Column=\"0\" Grid.ColumnSpan=\"2\"", shell);
+        Assert.Contains("Grid.RowSpan=\"2\"", shell);
+        Assert.Contains("UseSelectedGameBackground=\"False\"", shell);
+        Assert.Contains("x:Name=\"SidebarSurface\"", shell);
+        Assert.Contains("Margin=\"0\"", shell);
+        Assert.DoesNotContain("Margin=\"0,0,6,0\"", shell);
+        Assert.Contains("BorderBrush=\"Transparent\"", shell);
+        Assert.Contains("x:Name=\"FooterSurface\" Grid.Row=\"1\" Grid.Column=\"0\" Grid.ColumnSpan=\"2\"", shell);
+    }
+
+    [Fact]
     public void ProductionHeaderUsesRoundedSharedChrome()
     {
         var shell = ReadSource("src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml");

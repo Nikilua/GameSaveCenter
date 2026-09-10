@@ -6,7 +6,13 @@
 
 - 共享 `GscRedesignDataGridTemplate` 的真实内容视口现在显式绑定 `HorizontalContentAlignment` / `VerticalContentAlignment`；`MediaInboxGrid` 的 `Top` 对齐不再只停留在外层 `ScrollViewer` 属性上，避免大数据虚拟化表格滚到底后上方出现大块空白。
 - Media 的 `Standard` 行虚拟化、`Item` 滚动、关闭列虚拟化和 `DataGridStarFill.Enabled=False` 仍是已验证的大数据例外，没有恢复成其他工作区的共享 Recycling 配置。
-- 当前离屏报告 [`.tmp/qa-table-shell-20260910/render-qa-report.txt`](../../.tmp/qa-table-shell-20260910/render-qa-report.txt) 为 `render-qa OK`；真实 Playnite 的物理滚轮/滑块和视频式回归仍保持待验收边界。
+- 最终全量 Release 回归为 Core `76/76`、Worker `310/311`（1 skip）、Playnite `429/492`（63 skip），0 失败；当前离屏报告 [`.tmp/qa-table-shell-20260910/render-qa-report.txt`](../../.tmp/qa-table-shell-20260910/render-qa-report.txt) 为 `render-qa OK`。真实 Playnite 的物理滚轮/滑块和视频式回归仍保持待验收边界。
+
+## 2026-09-10 生产壳层背景已覆盖整页并去除边界缝
+
+- 图二中的长方形是选中游戏背景 `ImageBrush`，现在继续覆盖整个生产壳层（侧栏 + 右侧页面 + footer），同时由跨壳层 ambient 层和页面表面负责可读性。
+- `DemoShell` 去掉 4 DIP 外边距和外框描边；侧栏去掉右侧 6 DIP 缝；footer 去掉独立边框/外边距，避免图片在侧栏和页面之间被切出丑的竖向边界线。功能绑定、命令和导航未改。
+- 离屏报告 [`.tmp/qa-table-shell-20260910/render-qa-report.txt`](../../.tmp/qa-table-shell-20260910/render-qa-report.txt) 的双主题完整壳层背景和 Shell Media 多尺寸几何门禁通过；真实宿主图片资源与用户主题仍待验收。
 
 ## 2026-09-10 当前候选包已按最新生产源提交重新生成
 

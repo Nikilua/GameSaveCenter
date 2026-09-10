@@ -6,7 +6,13 @@
 
 - 用户反馈的“滚到底后中下部有数据、上部空白”不是 Media 专属数据分页或 `Standard` 虚拟化本身造成；共享 `GscRedesignDataGridTemplate` 的 `ScrollContentPresenter` 原先未绑定 `HorizontalContentAlignment` / `VerticalContentAlignment`，导致 `VerticalContentAlignment=Top` 没有落到真实内容视口。
 - `Redesign.xaml` 已为 `PART_ScrollContentPresenter` 补上两项 `TemplateBinding`。Media 的大数据保护策略仍原样保留：`VirtualizationMode=Standard`、`ScrollUnit=Item`、`EnableColumnVirtualization=False`、`DataGridStarFill.Enabled=False`。
-- `MediaWindowAnchorContractTests` 增加源契约断言；当前定向契约测试 `18/18`，`render-qa` 报告为 `OK`。这只证明离屏 WPF 端点和模板结构，真实 Playnite/FusionX 的物理拖动仍需人工验收。
+- `MediaWindowAnchorContractTests` 增加源契约断言；定向契约测试 `18/18`，最终全量 Release 回归为 Core `76/76`、Worker `310/311`（1 skip）、Playnite `429/492`（63 skip），0 失败，`render-qa` 报告为 `OK`。这只证明离屏 WPF 端点和模板结构，真实 Playnite/FusionX 的物理拖动仍需人工验收。
+
+## 2026-09-10 生产壳层整页游戏背景与边界缝
+
+- 图二右侧页面/侧栏后方的长方形确实来自选中游戏背景 `ImageBrush`。现有图片层和 `ShellAmbientMaterialLayer` 均为 `Grid.Row=0`、跨两列、跨两行，背景已经是整壳层层级；问题在于外壳 `Margin=4`、侧栏右 `Margin=6`、footer 独立描边/边距形成了视觉缝。
+- `AcrylicProductionShellView.xaml` 现在移除这些外层缝隙和独立描边：`DemoShell` 零边距/零边框，`SidebarSurface` 零边距并保留左圆角，`FooterSurface` 跨完整宽度且无独立边框。背景仍被半透明 sidebar/page 表面覆盖，避免原图干扰文字。
+- `ProductionShellChromeSourceTests` 增加整壳层背景契约；RenderHarness 双主题及 1040/1100/1366 Shell Media 几何回归通过。离屏没有真实 Playnite 图片资源，不能替代宿主截图。
 
 ## 2026-09-10 游戏选择器视觉树运行时回归补强
 

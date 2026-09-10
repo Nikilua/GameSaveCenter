@@ -2497,7 +2497,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Key=\"GscCaptionStyle\"", redesign);
         Assert.Contains("x:Key=\"GscBodyStyle\"", redesign);
         Assert.Contains("x:Name=\"ProductionShellView\"", dashboard);
-        Assert.Contains("x:Name=\"DemoShell\" Margin=\"4\"", productionShell);
+        Assert.Contains("x:Name=\"DemoShell\" Margin=\"0\"", productionShell);
         Assert.Contains("x:Name=\"MainPageHost\"", productionShell);
         Assert.Contains("x:Name=\"PageHost\"", productionShell);
         Assert.Contains("x:Name=\"ShellAmbientMaterialLayer\"", productionShell);
@@ -2515,7 +2515,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"SidebarSurface\"", productionShell);
         Assert.Contains("Property=\"CornerRadius\" Value=\"{StaticResource GscRedesignSidebarCorner}\"", redesign);
         Assert.Contains("x:Name=\"FooterSurface\"", productionShell);
-        Assert.Contains("CornerRadius=\"12\"", productionShell);
+        Assert.Contains("CornerRadius=\"0\"", productionShell);
         Assert.Contains("x:Name=\"SidebarLayout\"", productionShell);
         Assert.Contains("Background=\"{DynamicResource GscSidebarMaterialBrush}\"", productionShell);
         Assert.DoesNotContain("SidebarSeamMaterial", productionShell);

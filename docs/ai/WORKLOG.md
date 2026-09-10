@@ -6,7 +6,13 @@
 
 - 根因定位为共享 `GscRedesignDataGridTemplate` 的自定义 `ScrollViewer` 模板没有把 `ScrollContentPresenter` 的水平/垂直对齐继承给真实内容视口；在 Media 大数据表的虚拟化端点上，这会留下上方空白而把行推到中下部。
 - 为 `PART_ScrollContentPresenter` 增加 `HorizontalAlignment` / `VerticalAlignment` 的 `TemplateBinding`，让现有 `HorizontalContentAlignment=Stretch`、`VerticalContentAlignment=Top` 真正作用于内容视口。Media 为大数据回归保留的 `Standard` 行虚拟化、`Item` 滚动和关闭列虚拟化没有改动。
-- 增加模板契约断言；定向 WPF 契约测试（含本轮表格/壳层变更）`18/18`，XAML `19/19`、源码校验和 `git diff --check` 通过。离屏报告 [`.tmp/qa-table-shell-20260910/render-qa-report.txt`](../../.tmp/qa-table-shell-20260910/render-qa-report.txt) 最终为 `render-qa OK`，但物理滑块拖动和真实 Playnite 仍待宿主人工验收。
+- 增加模板契约断言；定向 WPF 契约测试（含本轮表格/壳层变更）`18/18`，最终全量 Release 回归为 Core `76/76`、Worker `310/311`（1 skip）、Playnite `429/492`（63 skip），0 失败；XAML `19/19`、源码校验和 `git diff --check` 通过。离屏报告 [`.tmp/qa-table-shell-20260910/render-qa-report.txt`](../../.tmp/qa-table-shell-20260910/render-qa-report.txt) 最终为 `render-qa OK`，但物理滑块拖动和真实 Playnite 仍待宿主人工验收。
+
+## 2026-09-10 让选中游戏背景覆盖整个生产壳层
+
+- 确认图二右侧页面/侧栏后方的长方形就是选中游戏背景的 `ImageBrush` 层；它原本已经跨壳层两列两行，但外壳、侧栏和 footer 的边距/描边又制造了明显的边界缝。
+- 生产壳层改为零外边距、零外框描边；侧栏取消右侧 6 DIP 缝并保留左侧圆角，footer 改为跨完整宽度的无缝底部表面。图片与跨壳层 ambient 层继续位于所有页面表面之下，保留可读性遮罩，不改变导航、绑定或命令。
+- 新增壳层源契约测试；`render-qa` 在浅/深主题下确认背景层 `0,0` 跨两列两行，Shell Media 1040/1100/1366 的几何门禁通过。真实 Playnite 图片资源、FusionX、DPI 和宿主截图仍待人工验收。
 
 ## 2026-09-10 按当前 HEAD 重新生成候选包
 
