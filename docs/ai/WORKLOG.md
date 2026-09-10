@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-10 固定共享表格行内容视口
+
+- 现场截图仍显示待归类表格的已实现行被推到中下部，且窗口化时部分表格末行不可完整显示；复核自定义 `GscRedesignDataGridTemplate` 后，发现内容承载器仍保留宿主可重解释的对齐链。
+- 将 `PART_ScrollContentPresenter` 与 `ItemsPresenter` 都明确为 `Stretch/Top`，让列头下方的真实内容视口从首端开始排列；所有基于共享模板的表格同步受益，Media 的大数据虚拟化例外未改。
+- 新增模板源契约断言；定向 WPF 测试 `10/10`，Release RenderHarness 通过 `render-qa OK`（`.tmp/qa-table-scroll-20260910-final/`）。该阶段仍没有真实 Playnite/FusionX 窗口和 125%/150% DPI 物理证据。
+
 ## 2026-09-10 设置主题跟随与导航对齐
 
 - 现象对应两个共享层问题：设置页的 `TryFindResource` 解析路径可能先命中应用/遗留深色资源，导航 `RadioButton` 内容模板缺少显式垂直居中。

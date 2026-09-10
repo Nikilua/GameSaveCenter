@@ -81,6 +81,12 @@ public sealed class MediaWindowAnchorContractTests
         Assert.Contains("VerticalContentAlignment=\"{TemplateBinding VerticalContentAlignment}\"", redesign);
         Assert.Contains("HorizontalAlignment=\"{TemplateBinding HorizontalContentAlignment}\"", redesign);
         Assert.Contains("VerticalAlignment=\"{TemplateBinding VerticalContentAlignment}\"", redesign);
+        Assert.Contains("<ItemsPresenter SnapsToDevicePixels=\"{TemplateBinding SnapsToDevicePixels}\"", redesign);
+        var itemsPresenter = redesign.Substring(redesign.IndexOf("<ItemsPresenter", StringComparison.Ordinal));
+        Assert.Contains("HorizontalAlignment=\"Stretch\"", itemsPresenter);
+        Assert.Contains("VerticalAlignment=\"Top\"", itemsPresenter);
+        Assert.Contains("HorizontalAlignment=\"Stretch\"", redesign.Substring(redesign.IndexOf("<ScrollContentPresenter", StringComparison.Ordinal)));
+        Assert.Contains("VerticalAlignment=\"Top\"", redesign.Substring(redesign.IndexOf("<ScrollContentPresenter", StringComparison.Ordinal)));
         Assert.DoesNotContain("Padding\" Value=\"0,0,0,12\"", task);
         Assert.Contains("GetContentViewport", mediaCodeBehind);
         Assert.Contains("ScrollUnit.Item", mediaCodeBehind);

@@ -2,6 +2,12 @@
 
 > 更新时间：2026-09-10。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-10 表格内容视口与末行可见性继续修正
+
+- 共享 `GscRedesignDataGridTemplate` 现在把 `DG_ScrollViewer` 内的 `PART_ScrollContentPresenter` 与真实 `ItemsPresenter` 都固定为 `HorizontalAlignment=Stretch`、`VerticalAlignment=Top`；不再依赖宿主模板在短窗口或拖动滑块后的间接对齐值，已实现行从列头下方开始排列。
+- 该修复覆盖 Saves、Media、Tasks、Maintenance 等共用模板的表格；Media 的 `Standard` 行虚拟化、`Item` 滚动、关闭列虚拟化和 `DataGridStarFill.Enabled=False` 例外保持不变。
+- 定向 `MediaWindowAnchorContractTests` 为 `10/10`，最新离屏报告 [`.tmp/qa-table-scroll-20260910-final/render-qa-report.txt`](../../.tmp/qa-table-scroll-20260910-final/render-qa-report.txt) 为 `render-qa OK`，覆盖短高度、滚动端点、页尾几何与双主题。真实 Playnite 宿主、物理 DPI 缩放和用户现场滑块仍需验收。
+
 ## 2026-09-10 设置主题资源与导航对齐已修正
 
 - `AdaptiveThemePaletteFactory` 解析 FollowPlaynite 资源时现在先读取实际承载页面的 Window/Owner，再读取控件局部资源和 Application 资源，避免设置窗口先命中遗留深色默认值；显式“浅色/深色”覆盖行为不变。

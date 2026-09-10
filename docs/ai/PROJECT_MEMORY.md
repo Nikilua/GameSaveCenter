@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-10
 
+## 2026-09-10 共享表格内容视口固定到顶部
+
+- 用户现场仍能看到待归类表格列头下方的大块空白，因此仅靠 `DataGrid` 的 `VerticalContentAlignment=Top` 和宿主属性绑定不够；Playnite/FusionX 的短窗口测量或滑块端点可能重新安排真实 `ItemsPresenter`。
+- `Redesign.xaml` 的共享 DataGrid 模板现将外层 `PART_ScrollContentPresenter` 和外层 ScrollViewer 的 `ItemsPresenter` 显式设为横向拉伸、纵向顶部对齐，保证虚拟化行在有限内容视口的首端布局；不会改变命令、Binding、Selection、Item 滚动或 Media 大数据例外。
+- 证据：`MediaWindowAnchorContractTests` `10/10`；`.tmp/qa-table-scroll-20260910-final/render-qa-report.txt` `render-qa OK`。离屏证据使用 1.00 DIP，不能替代真实 Playnite 窗口化/2K 与非 100% DPI 复验。
+
 ## 2026-09-10 设置窗口主题优先级与生产导航对齐
 
 - 设置页是 Playnite 的 `UserControl`，实际可能位于独立设置 `Window`。`AdaptiveThemePaletteFactory` 的 FollowPlaynite 资源解析必须先检查当前 Window 及 Owner 链，再检查控件局部视觉资源和 `Application.Current`；不能让 `TryFindResource` 先穿过应用范围拿到旧深色值。

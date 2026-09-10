@@ -64,8 +64,8 @@
                                                     Grid.Column="1"
                                                     Grid.Row="1"
                                                     CanContentScroll="{TemplateBinding CanContentScroll}"
-                                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                    HorizontalAlignment="Stretch"
+                                                    VerticalAlignment="Top"
                                                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                             <ScrollBar x:Name="PART_VerticalScrollBar"
                                        Grid.Column="2"
@@ -91,7 +91,13 @@
                         </Grid>
                     </ControlTemplate>
                 </ScrollViewer.Template>
-                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                <!-- The presenter is the actual DataGrid content inside DG_ScrollViewer.
+                     Keep both presenters at the leading edge explicitly; indirect host
+                     alignment bindings can re-center a short realized item set after a
+                     thumb drag or a short-height measure pass. -->
+                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Top"/>
             </ScrollViewer>
         </Border>
     </ControlTemplate>
