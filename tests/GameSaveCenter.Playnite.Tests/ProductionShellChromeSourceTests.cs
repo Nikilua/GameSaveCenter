@@ -84,7 +84,7 @@ public sealed class ProductionShellChromeSourceTests
         Assert.Contains("Click=\"OnSidebarCollapseClick\"", shell);
         Assert.Contains("AutomationProperties.Name=\"收起导航栏\"", shell);
         Assert.Contains("x:Name=\"NavOverviewContent\"", shell);
-        Assert.Contains("TextAlignment=\"Center\"", shell);
+        Assert.Contains("IconData=\"{StaticResource GscIconNavHome}\"", shell);
         Assert.Contains("x:Name=\"SidebarProductionVersionText\"", shell);
         Assert.Contains("sidebarCollapsed = !sidebarCollapsed", shellCode);
         Assert.Contains("sidebarTransitionRunning", shellCode);

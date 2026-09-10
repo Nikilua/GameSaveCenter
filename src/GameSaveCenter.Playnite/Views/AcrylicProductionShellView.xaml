@@ -108,9 +108,11 @@
                             <Grid x:Name="SidebarHeaderLayout" Margin="14,0,8,0">
                                 <StackPanel x:Name="SidebarBrandContent" Orientation="Horizontal" VerticalAlignment="Center">
                                     <Border x:Name="SidebarBrandIcon" Width="26" Height="26" CornerRadius="8" Background="{DynamicResource GscAccentBrush}">
-                                        <TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" FontSize="12"
-                                                   Foreground="{DynamicResource GscOnAccentTextBrush}"
-                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}"
+                                                           IconData="{StaticResource GscIconPluginMain}"
+                                                           Width="19" Height="19"
+                                                           Foreground="{DynamicResource GscOnAccentTextBrush}"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Border>
                                     <TextBlock x:Name="SidebarBrandText" Text="GameSaveCenter" FontSize="12.5" FontWeight="SemiBold"
                                                Margin="9,0,0,0" VerticalAlignment="Center"/>
@@ -136,33 +138,33 @@
                                         <RadioButton x:Name="NavOverview" GroupName="DemoWorkspaceNavigation"
                                                      Style="{StaticResource AcrylicNavItem}"
                                                      Tag="Overview" Checked="OnNavChecked" ToolTip="首页" AutomationProperties.Name="打开首页">
-                                            <StackPanel x:Name="NavOverviewContent" Orientation="Horizontal" VerticalAlignment="Center"><TextBlock Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" Width="26" TextAlignment="Center" VerticalAlignment="Center"/><TextBlock x:Name="NavOverviewLabel" Text="首页" FontWeight="SemiBold" VerticalAlignment="Center"/></StackPanel>
+                                            <StackPanel x:Name="NavOverviewContent" Orientation="Horizontal" VerticalAlignment="Center"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconNavHome}" Width="26" Height="26" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" Margin="0,0,0,0"/><TextBlock x:Name="NavOverviewLabel" Text="首页" FontWeight="SemiBold" VerticalAlignment="Center"/></StackPanel>
                                         </RadioButton>
                                         <RadioButton x:Name="NavSaves" GroupName="DemoWorkspaceNavigation"
                                                      Style="{StaticResource AcrylicNavItem}" Tag="Saves" Checked="OnNavChecked" ToolTip="存档中心" AutomationProperties.Name="打开存档中心">
-                                            <StackPanel x:Name="NavSavesContent" Orientation="Horizontal" VerticalAlignment="Center"><TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" Width="26" TextAlignment="Center" VerticalAlignment="Center"/><TextBlock x:Name="NavSavesLabel" Text="存档中心" VerticalAlignment="Center"/></StackPanel>
+                                            <StackPanel x:Name="NavSavesContent" Orientation="Horizontal" VerticalAlignment="Center"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconNavSaves}" Width="26" Height="26" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"/><TextBlock x:Name="NavSavesLabel" Text="存档中心" VerticalAlignment="Center"/></StackPanel>
                                         </RadioButton>
                                         <RadioButton x:Name="NavTrainers" GroupName="DemoWorkspaceNavigation"
                                                      Style="{StaticResource AcrylicNavItem}" Tag="Trainers" Checked="OnNavChecked" ToolTip="修改器中心" AutomationProperties.Name="打开修改器中心">
-                                            <StackPanel x:Name="NavTrainersContent" Orientation="Horizontal" VerticalAlignment="Center"><TextBlock Text="&#xE90F;" FontFamily="Segoe MDL2 Assets" Width="26" TextAlignment="Center" VerticalAlignment="Center"/><TextBlock x:Name="NavTrainersLabel" Text="修改器中心" VerticalAlignment="Center"/></StackPanel>
+                                            <StackPanel x:Name="NavTrainersContent" Orientation="Horizontal" VerticalAlignment="Center"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconNavMods}" Width="26" Height="26" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"/><TextBlock x:Name="NavTrainersLabel" Text="修改器中心" VerticalAlignment="Center"/></StackPanel>
                                         </RadioButton>
                                         <RadioButton x:Name="NavMedia" GroupName="DemoWorkspaceNavigation"
                                                      Style="{StaticResource AcrylicNavItem}" Tag="Media" Checked="OnNavChecked" ToolTip="媒体中心" AutomationProperties.Name="打开媒体中心">
-                                            <StackPanel x:Name="NavMediaContent" Orientation="Horizontal" VerticalAlignment="Center"><TextBlock Text="&#xEB9F;" FontFamily="Segoe MDL2 Assets" Width="26" TextAlignment="Center" VerticalAlignment="Center"/><TextBlock x:Name="NavMediaLabel" Text="媒体中心" VerticalAlignment="Center"/></StackPanel>
+                                            <StackPanel x:Name="NavMediaContent" Orientation="Horizontal" VerticalAlignment="Center"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconNavMedia}" Width="26" Height="26" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"/><TextBlock x:Name="NavMediaLabel" Text="媒体中心" VerticalAlignment="Center"/></StackPanel>
                                         </RadioButton>
                                         <RadioButton x:Name="NavTasks" GroupName="DemoWorkspaceNavigation"
                                                      Style="{StaticResource AcrylicNavItem}" Tag="Tasks" Checked="OnNavChecked" ToolTip="任务中心" AutomationProperties.Name="打开任务中心">
-                                            <StackPanel x:Name="NavTasksContent" Orientation="Horizontal" VerticalAlignment="Center"><TextBlock Text="&#xE9D5;" FontFamily="Segoe MDL2 Assets" Width="26" TextAlignment="Center" VerticalAlignment="Center"/><TextBlock x:Name="NavTasksLabel" Text="任务中心" VerticalAlignment="Center"/></StackPanel>
+                                            <StackPanel x:Name="NavTasksContent" Orientation="Horizontal" VerticalAlignment="Center"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconNavTasks}" Width="26" Height="26" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"/><TextBlock x:Name="NavTasksLabel" Text="任务中心" VerticalAlignment="Center"/></StackPanel>
                                         </RadioButton>
                                         <RadioButton x:Name="NavMaintenance" GroupName="DemoWorkspaceNavigation"
                                                      Style="{StaticResource AcrylicNavItem}" Tag="Maintenance" Checked="OnNavChecked" ToolTip="维护中心" AutomationProperties.Name="打开维护中心">
-                                            <StackPanel x:Name="NavMaintenanceContent" Orientation="Horizontal" VerticalAlignment="Center"><TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" Width="26" TextAlignment="Center" VerticalAlignment="Center"/><TextBlock x:Name="NavMaintenanceLabel" Text="维护中心" VerticalAlignment="Center"/></StackPanel>
+                                            <StackPanel x:Name="NavMaintenanceContent" Orientation="Horizontal" VerticalAlignment="Center"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconNavMaintenance}" Width="26" Height="26" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"/><TextBlock x:Name="NavMaintenanceLabel" Text="维护中心" VerticalAlignment="Center"/></StackPanel>
                                         </RadioButton>
                                         <Rectangle Height="1" Fill="{DynamicResource GscDividerBrush}" Margin="4,8,4,12"/>
                                         <RadioButton x:Name="NavSettings" GroupName="DemoWorkspaceNavigation"
                                                      Style="{StaticResource AcrylicNavItem}" Tag="Settings" Checked="OnNavChecked" ToolTip="设置"
                                                      AutomationProperties.Name="打开 GameSaveCenter 设置">
-                                            <StackPanel x:Name="NavSettingsContent" Orientation="Horizontal" VerticalAlignment="Center"><TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" Width="26" TextAlignment="Center" VerticalAlignment="Center"/><TextBlock x:Name="NavSettingsLabel" Text="设置" VerticalAlignment="Center"/></StackPanel>
+                                            <StackPanel x:Name="NavSettingsContent" Orientation="Horizontal" VerticalAlignment="Center"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconNavSettings}" Width="26" Height="26" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"/><TextBlock x:Name="NavSettingsLabel" Text="设置" VerticalAlignment="Center"/></StackPanel>
                                         </RadioButton>
                                     </StackPanel>
                                 </ScrollViewer>
@@ -240,14 +242,20 @@
                                                FontSize="10" Foreground="{DynamicResource GscSecondaryTextBrush}"
                                                Margin="0,2,0,0" TextTrimming="CharacterEllipsis"/>
                                 </StackPanel>
-                                <TextBlock Grid.Column="2" Text="&#xE70D;" FontFamily="Segoe MDL2 Assets"
-                                           FontSize="10" Foreground="{DynamicResource GscSecondaryTextBrush}"
-                                           VerticalAlignment="Center"/>
+                                <Path Grid.Column="2" Data="M 1,2 L 5,6 L 9,2" Stretch="None"
+                                      Stroke="{DynamicResource GscSecondaryTextBrush}" StrokeThickness="1.5"
+                                      StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                      VerticalAlignment="Center" Margin="0,0,2,0"/>
                             </Grid>
                         </Button>
                         <ui:Button x:Name="HeaderRefreshButton" Style="{DynamicResource GscRedesignHeaderButton}"
-                                   Command="{Binding RefreshCommand}" Content="&#xE72C;" FontFamily="Segoe MDL2 Assets"
-                                   ToolTip="刷新" AutomationProperties.Name="刷新"/>
+                                   ContentTemplate="{x:Null}" Command="{Binding RefreshCommand}"
+                                   ToolTip="刷新" AutomationProperties.Name="刷新">
+                            <ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}"
+                                               IconData="{StaticResource GscIconActionRefresh}"
+                                               Width="20" Height="20"
+                                               Foreground="{DynamicResource GscPrimaryTextBrush}"/>
+                        </ui:Button>
                         <ui:Button x:Name="HeaderMediaButton" Style="{DynamicResource GscRedesignHeaderButton}"
                                    Command="{Binding SyncMediaCommand}" Content="同步媒体" ToolTip="同步媒体"/>
                         <ui:Button x:Name="HeaderBackupSelectedButton" Style="{DynamicResource GscRedesignPrimaryHeaderButton}"

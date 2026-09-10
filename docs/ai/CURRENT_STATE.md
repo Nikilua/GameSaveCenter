@@ -2,6 +2,13 @@
 
 > 更新时间：2026-09-10。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-10 主题感知线性图标包
+
+- 当前生产 UI 使用 `Controls/ThemeAwareIcon.cs` 和 `Themes/GscIconPack.xaml` 的共享 Geometry/Path 线稿资源，来源为用户提供的 `GameSaveCenter_IconPack_v2_round-flat.zip`；不依赖 SVG 渲染器，图标透明底并从主题/父控件继承 `Foreground`。
+- 生产壳导航、设置分组、首页状态、媒体/维护/修改器/任务局部图标以及兼容 Dashboard 对应图标已接入；状态颜色、选中前景、真实命令/绑定/虚拟化和自动化语义保持。
+- `src/GameSaveCenter.Playnite/icon.png` 暂不替换，因为压缩包 plugin PNG 为透明线稿导出，不能安全承担 Playnite 清单可见图标；plugin-main 已作为界面内 fallback 矢量资源。
+- 最新验证：Playnite Release `432/495`（63 skip，0 fail），构建 0 warning/0 error，源码/XAML 门禁通过，`.tmp/icon-qa-20260910/render-qa-report.txt` 为 `render-qa OK`。离屏报告仍不代表真实 Playnite 的用户主题、Follow、DPI 和清单图标验收。
+
 ## 2026-09-10 表格内容视口与末行可见性继续修正
 
 - 共享 `GscRedesignDataGridTemplate` 现在把 `DG_ScrollViewer` 内的 `PART_ScrollContentPresenter` 与真实 `ItemsPresenter` 都固定为 `HorizontalAlignment=Stretch`、`VerticalAlignment=Top`；不再依赖宿主模板在短窗口或拖动滑块后的间接对齐值，已实现行从列头下方开始排列。

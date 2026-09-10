@@ -411,7 +411,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("x:Key=\"GscPageTitleStyle\"", redesign);
             Assert.Contains("<Setter Property=\"FontFamily\" Value=\"{DynamicResource GscDisplayFontFamily}\"/>", redesign);
             Assert.Contains("FontFamily=\"Segoe MDL2 Assets\"", dashboard);
-            Assert.Contains("FontFamily=\"Segoe MDL2 Assets\"", overview);
+            Assert.Contains("IconData=\"{StaticResource GscIconActionHistory}\"", overview);
             Assert.Contains("FontFamily=\"Consolas\"", maintenance);
 
             Assert.Contains("<Setter Property=\"FontWeight\" Value=\"Medium\"/>", production);

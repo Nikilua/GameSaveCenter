@@ -145,7 +145,34 @@ public sealed class WpfUiResourceDictionaryTests
             Assert.Contains($"x:Name=\"Nav{name}Content\" Orientation=\"Horizontal\" VerticalAlignment=\"Center\"", shell);
             Assert.Contains($"x:Name=\"Nav{name}Label\"", shell);
         }
-        Assert.Equal(7, Regex.Matches(shell, "FontFamily=\"Segoe MDL2 Assets\" Width=\"26\" TextAlignment=\"Center\" VerticalAlignment=\"Center\"").Count);
+        Assert.Equal(7, Regex.Matches(shell, "GscIconNav").Count);
+    }
+
+    [Fact]
+    public void ThemeAwareIconPackUsesSharedGeometryAndInheritableForeground()
+    {
+        var root = FindRepositoryRoot();
+        var iconPack = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Themes", "GscIconPack.xaml"));
+        var iconControl = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Controls", "ThemeAwareIcon.cs"));
+
+        foreach (var key in new[]
+        {
+            "GscIconNavHome", "GscIconNavSaves", "GscIconNavMods", "GscIconNavMedia",
+            "GscIconNavTasks", "GscIconNavMaintenance", "GscIconNavSettings",
+            "GscIconActionBackup", "GscIconActionBrowseFolder", "GscIconActionHistory",
+            "GscIconActionRefresh", "GscIconActionRestore", "GscIconActionRun",
+            "GscIconSectionAppearance", "GscIconSectionAutomation", "GscIconSectionBackupRestore",
+            "GscIconSectionMigration", "GscIconStatusError", "GscIconStatusInfo",
+            "GscIconStatusSuccess", "GscIconStatusWarning"
+        })
+        {
+            Assert.Contains($"x:Key=\"{key}\"", iconPack);
+        }
+
+        Assert.Contains("IconDataProperty", iconControl);
+        Assert.Contains("Foreground}", iconPack);
+        Assert.Contains("Fill=\"Transparent\"", iconPack);
+        Assert.DoesNotContain("Segoe MDL2 Assets", iconPack);
     }
 
     [Fact]

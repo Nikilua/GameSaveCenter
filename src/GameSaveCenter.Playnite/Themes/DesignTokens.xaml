@@ -409,17 +409,19 @@
                                             Padding="{TemplateBinding Padding}"
                                             SnapsToDevicePixels="True">
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock x:Name="Chevron"
-                                                       Text="&#xE70D;"
-                                                       FontFamily="Segoe MDL2 Assets"
-                                                       FontSize="10"
-                                                       Foreground="{DynamicResource GscMutedTextBrush}"
-                                                       VerticalAlignment="Center"
-                                                       RenderTransformOrigin="0.5,0.5">
-                                                <TextBlock.RenderTransform>
+                                            <Path x:Name="Chevron"
+                                                  Data="M 1,2 L 5,6 L 9,2"
+                                                  Stretch="None"
+                                                  Stroke="{DynamicResource GscMutedTextBrush}"
+                                                  StrokeThickness="1.5"
+                                                  StrokeStartLineCap="Round"
+                                                  StrokeEndLineCap="Round"
+                                                  VerticalAlignment="Center"
+                                                  RenderTransformOrigin="0.5,0.5">
+                                                <Path.RenderTransform>
                                                     <RotateTransform Angle="-90"/>
-                                                </TextBlock.RenderTransform>
-                                            </TextBlock>
+                                                </Path.RenderTransform>
+                                            </Path>
                                             <ContentPresenter ContentSource="Content"
                                                               Margin="10,0,0,0"
                                                               VerticalAlignment="Center"
@@ -442,7 +444,7 @@
                                                 <BeginStoryboard>
                                                     <Storyboard>
                                                         <DoubleAnimation Storyboard.TargetName="Chevron"
-                                                                         Storyboard.TargetProperty="(TextBlock.RenderTransform).(RotateTransform.Angle)"
+                                                                         Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)"
                                                                          To="0" Duration="0:0:0.15"/>
                                                     </Storyboard>
                                                 </BeginStoryboard>
@@ -451,7 +453,7 @@
                                                 <BeginStoryboard>
                                                     <Storyboard>
                                                         <DoubleAnimation Storyboard.TargetName="Chevron"
-                                                                         Storyboard.TargetProperty="(TextBlock.RenderTransform).(RotateTransform.Angle)"
+                                                                         Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)"
                                                                          To="-90" Duration="0:0:0.15"/>
                                                     </Storyboard>
                                                 </BeginStoryboard>

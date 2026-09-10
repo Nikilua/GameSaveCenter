@@ -560,7 +560,7 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <Border Grid.Column="0" Width="40" Height="40" CornerRadius="12" Background="{DynamicResource GscAccentTintStrongBrush}" VerticalAlignment="Center">
-                                <TextBlock Text="&#xE8F1;" FontFamily="Segoe MDL2 Assets" Foreground="{DynamicResource GscAccentBrush}" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconActionBrowseFolder}" Width="22" Height="22" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
                             <StackPanel Grid.Column="1" Margin="12,0,18,0" VerticalAlignment="Center">
                                 <TextBlock Text="多设备云目录" Style="{DynamicResource GscSectionTitleStyle}"/>

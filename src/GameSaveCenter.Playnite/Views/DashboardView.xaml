@@ -620,22 +620,22 @@
                                   KeyboardNavigation.TabNavigation="Local">
                     <StackPanel>
                         <RadioButton x:Name="NavOverview" GroupName="WorkspaceNavigation" Style="{StaticResource GscNavItem}" IsChecked="True" Tag="Overview" Checked="OnNavigationChecked" ToolTip="首页">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center"><TextBlock VerticalAlignment="Center" FontFamily="Segoe MDL2 Assets" Text="&#xE80F;" Width="27" FontSize="16"/><TextBlock x:Name="NavOverviewLabel" Text="首页" FontWeight="SemiBold" VerticalAlignment="Center"/></StackPanel>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconNavHome}" Width="27" Height="27" Foreground="{DynamicResource GscPrimaryTextBrush}" VerticalAlignment="Center"/><TextBlock x:Name="NavOverviewLabel" Text="首页" FontWeight="SemiBold" VerticalAlignment="Center"/></StackPanel>
                         </RadioButton>
                         <RadioButton x:Name="NavSaves" GroupName="WorkspaceNavigation" Style="{StaticResource GscNavItem}" Tag="Saves" Checked="OnNavigationChecked" ToolTip="存档中心">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center"><TextBlock VerticalAlignment="Center" FontFamily="Segoe MDL2 Assets" Text="&#xE74E;" Width="27" FontSize="16"/><TextBlock x:Name="NavSavesLabel" Text="存档中心" VerticalAlignment="Center"/></StackPanel>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconNavSaves}" Width="27" Height="27" Foreground="{DynamicResource GscPrimaryTextBrush}" VerticalAlignment="Center"/><TextBlock x:Name="NavSavesLabel" Text="存档中心" VerticalAlignment="Center"/></StackPanel>
                         </RadioButton>
                         <RadioButton x:Name="NavTrainers" GroupName="WorkspaceNavigation" Style="{StaticResource GscNavItem}" Tag="Trainers" Checked="OnNavigationChecked" ToolTip="修改器中心">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center"><TextBlock VerticalAlignment="Center" FontFamily="Segoe MDL2 Assets" Text="&#xE90F;" Width="27" FontSize="16"/><TextBlock x:Name="NavTrainersLabel" Text="修改器中心" VerticalAlignment="Center"/></StackPanel>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconNavMods}" Width="27" Height="27" Foreground="{DynamicResource GscPrimaryTextBrush}" VerticalAlignment="Center"/><TextBlock x:Name="NavTrainersLabel" Text="修改器中心" VerticalAlignment="Center"/></StackPanel>
                         </RadioButton>
                         <RadioButton x:Name="NavMedia" GroupName="WorkspaceNavigation" Style="{StaticResource GscNavItem}" Tag="Media" Checked="OnNavigationChecked" ToolTip="媒体中心">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center"><TextBlock VerticalAlignment="Center" FontFamily="Segoe MDL2 Assets" Text="&#xEB9F;" Width="27" FontSize="16"/><TextBlock x:Name="NavMediaLabel" Text="媒体中心" VerticalAlignment="Center"/></StackPanel>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconNavMedia}" Width="27" Height="27" Foreground="{DynamicResource GscPrimaryTextBrush}" VerticalAlignment="Center"/><TextBlock x:Name="NavMediaLabel" Text="媒体中心" VerticalAlignment="Center"/></StackPanel>
                         </RadioButton>
                         <RadioButton x:Name="NavTasks" GroupName="WorkspaceNavigation" Style="{StaticResource GscNavItem}" Tag="Tasks" Checked="OnNavigationChecked" ToolTip="任务中心">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center"><TextBlock VerticalAlignment="Center" FontFamily="Segoe MDL2 Assets" Text="&#xE9D5;" Width="27" FontSize="16"/><TextBlock x:Name="NavTasksLabel" Text="任务中心" VerticalAlignment="Center"/></StackPanel>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconNavTasks}" Width="27" Height="27" Foreground="{DynamicResource GscPrimaryTextBrush}" VerticalAlignment="Center"/><TextBlock x:Name="NavTasksLabel" Text="任务中心" VerticalAlignment="Center"/></StackPanel>
                         </RadioButton>
                         <RadioButton x:Name="NavMaintenance" GroupName="WorkspaceNavigation" Style="{StaticResource GscNavItem}" Tag="Maintenance" Checked="OnNavigationChecked" ToolTip="维护中心">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center"><TextBlock VerticalAlignment="Center" FontFamily="Segoe MDL2 Assets" Text="&#xE9D9;" Width="27" FontSize="16"/><TextBlock x:Name="NavMaintenanceLabel" Text="维护中心" VerticalAlignment="Center"/></StackPanel>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconNavMaintenance}" Width="27" Height="27" Foreground="{DynamicResource GscPrimaryTextBrush}" VerticalAlignment="Center"/><TextBlock x:Name="NavMaintenanceLabel" Text="维护中心" VerticalAlignment="Center"/></StackPanel>
                         </RadioButton>
                     </StackPanel>
                     </ScrollViewer>
@@ -776,26 +776,26 @@
                           CanContentScroll="False" Focusable="False">
                 <StackPanel x:Name="TopActionsPanel" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
                     <ui:Button x:Name="TopRefreshButton" Style="{StaticResource GscRedesignHeaderVisualButton}" AutomationProperties.Name="刷新全部状态" ToolTip="刷新全部状态" Command="{Binding RefreshCommand}">
-                        <Grid VerticalAlignment="Center"><Grid.ColumnDefinitions><ColumnDefinition Width="18"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE72C;" HorizontalAlignment="Center" VerticalAlignment="Center"/><TextBlock x:Name="TopRefreshLabel" Grid.Column="1" Text="刷新" Margin="8,0,0,0" VerticalAlignment="Center"/></Grid>
+                        <Grid VerticalAlignment="Center"><Grid.ColumnDefinitions><ColumnDefinition Width="18"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconActionRefresh}" Width="18" Height="18" Foreground="{DynamicResource GscPrimaryTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/><TextBlock x:Name="TopRefreshLabel" Grid.Column="1" Text="刷新" Margin="8,0,0,0" VerticalAlignment="Center"/></Grid>
                     </ui:Button>
                     <ui:Button x:Name="TopBackupAllButton" Style="{StaticResource GscRedesignPrimaryHeaderVisualButton}" AutomationProperties.Name="备份全部游戏" ToolTip="备份全部游戏" Command="{Binding BackupAllCommand}">
-                        <Grid VerticalAlignment="Center"><Grid.ColumnDefinitions><ColumnDefinition Width="18"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE8B7;" HorizontalAlignment="Center" VerticalAlignment="Center"/><TextBlock x:Name="TopBackupAllLabel" Grid.Column="1" Text="全部备份" Margin="8,0,0,0" VerticalAlignment="Center"/></Grid>
+                        <Grid VerticalAlignment="Center"><Grid.ColumnDefinitions><ColumnDefinition Width="18"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconActionBackup}" Width="18" Height="18" Foreground="{DynamicResource GscInfoBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/><TextBlock x:Name="TopBackupAllLabel" Grid.Column="1" Text="全部备份" Margin="8,0,0,0" VerticalAlignment="Center"/></Grid>
                     </ui:Button>
                     <ui:Button x:Name="TopMediaSyncButton" Style="{StaticResource GscRedesignHeaderVisualButton}" AutomationProperties.Name="同步媒体" ToolTip="同步媒体" Command="{Binding SyncMediaCommand}">
-                        <Grid VerticalAlignment="Center"><Grid.ColumnDefinitions><ColumnDefinition Width="18"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE753;" HorizontalAlignment="Center" VerticalAlignment="Center"/><TextBlock x:Name="TopMediaSyncLabel" Grid.Column="1" Text="同步媒体" Margin="8,0,0,0" VerticalAlignment="Center"/></Grid>
+                        <Grid VerticalAlignment="Center"><Grid.ColumnDefinitions><ColumnDefinition Width="18"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconActionRefresh}" Width="18" Height="18" Foreground="{DynamicResource GscPrimaryTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/><TextBlock x:Name="TopMediaSyncLabel" Grid.Column="1" Text="同步媒体" Margin="8,0,0,0" VerticalAlignment="Center"/></Grid>
                     </ui:Button>
                     <ui:Button x:Name="TopTrainerImportButton" Style="{StaticResource GscRedesignHeaderVisualButton}" AutomationProperties.Name="导入修改器" ToolTip="导入修改器" Command="{Binding ImportTrainerCommand}" Visibility="Collapsed">
-                        <Grid VerticalAlignment="Center"><Grid.ColumnDefinitions><ColumnDefinition Width="18"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE8B5;" HorizontalAlignment="Center" VerticalAlignment="Center"/><TextBlock x:Name="TopTrainerImportLabel" Grid.Column="1" Text="导入修改器" Margin="8,0,0,0" VerticalAlignment="Center"/></Grid>
+                        <Grid VerticalAlignment="Center"><Grid.ColumnDefinitions><ColumnDefinition Width="18"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconActionBrowseFolder}" Width="18" Height="18" Foreground="{DynamicResource GscPrimaryTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/><TextBlock x:Name="TopTrainerImportLabel" Grid.Column="1" Text="导入修改器" Margin="8,0,0,0" VerticalAlignment="Center"/></Grid>
                     </ui:Button>
                     <ui:Button x:Name="TopTrainerCatalogButton" Style="{StaticResource GscRedesignHeaderVisualButton}" AutomationProperties.Name="刷新目录" ToolTip="刷新目录" Command="{Binding SyncTrainerCatalogCommand}" Visibility="Collapsed">
-                        <Grid VerticalAlignment="Center"><Grid.ColumnDefinitions><ColumnDefinition Width="18"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE72C;" HorizontalAlignment="Center" VerticalAlignment="Center"/><TextBlock x:Name="TopTrainerCatalogLabel" Grid.Column="1" Text="刷新目录" Margin="8,0,0,0" VerticalAlignment="Center"/></Grid>
+                        <Grid VerticalAlignment="Center"><Grid.ColumnDefinitions><ColumnDefinition Width="18"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconActionRefresh}" Width="18" Height="18" Foreground="{DynamicResource GscPrimaryTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/><TextBlock x:Name="TopTrainerCatalogLabel" Grid.Column="1" Text="刷新目录" Margin="8,0,0,0" VerticalAlignment="Center"/></Grid>
                     </ui:Button>
                     <ui:Button x:Name="TopDiagnosticsButton" Style="{StaticResource GscRedesignHeaderVisualButton}" AutomationProperties.Name="刷新诊断" ToolTip="刷新诊断" Command="{Binding RefreshDiagnosticsCommand}" Visibility="Collapsed">
-                        <Grid VerticalAlignment="Center"><Grid.ColumnDefinitions><ColumnDefinition Width="18"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE9D9;" HorizontalAlignment="Center" VerticalAlignment="Center"/><TextBlock x:Name="TopDiagnosticsLabel" Grid.Column="1" Text="刷新诊断" Margin="8,0,0,0" VerticalAlignment="Center"/></Grid>
+                        <Grid VerticalAlignment="Center"><Grid.ColumnDefinitions><ColumnDefinition Width="18"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconNavMaintenance}" Width="18" Height="18" Foreground="{DynamicResource GscPrimaryTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/><TextBlock x:Name="TopDiagnosticsLabel" Grid.Column="1" Text="刷新诊断" Margin="8,0,0,0" VerticalAlignment="Center"/></Grid>
                     </ui:Button>
                     <ui:Button x:Name="ToggleGameBrowserButton" Style="{StaticResource GscRedesignHeaderVisualButton}"
                                AutomationProperties.Name="打开游戏库" ToolTip="打开游戏搜索、状态筛选和排序" Click="OnToggleGameBrowserClick" Visibility="Collapsed">
-                        <Grid VerticalAlignment="Center"><Grid.ColumnDefinitions><ColumnDefinition Width="18"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE8F1;" HorizontalAlignment="Center" VerticalAlignment="Center"/><TextBlock x:Name="ToggleGameBrowserLabel" Grid.Column="1" Text="游戏库" Margin="8,0,0,0" VerticalAlignment="Center"/></Grid>
+                        <Grid VerticalAlignment="Center"><Grid.ColumnDefinitions><ColumnDefinition Width="18"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconActionBrowseFolder}" Width="18" Height="18" Foreground="{DynamicResource GscPrimaryTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/><TextBlock x:Name="ToggleGameBrowserLabel" Grid.Column="1" Text="游戏库" Margin="8,0,0,0" VerticalAlignment="Center"/></Grid>
                     </ui:Button>
                 </StackPanel>
             </ScrollViewer>
@@ -820,13 +820,13 @@
                             </TextBlock>
                         </StackPanel>
                         <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,10,0">
-                            <TextBlock Text="&#xE8B7;" FontFamily="Segoe MDL2 Assets" Foreground="{DynamicResource GscInfoBrush}" Margin="0,0,4,0"/>
+                            <ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconStatusInfo}" Width="18" Height="18" Foreground="{DynamicResource GscInfoBrush}" Margin="0,0,4,0"/>
                             <TextBlock Text="{Binding SelectedGame.BackupVersionCount, Mode=OneWay}" FontSize="11" Foreground="{DynamicResource GscInfoBrush}"/>
-                            <TextBlock Text="&#xE91B;" FontFamily="Segoe MDL2 Assets" Foreground="{DynamicResource GscWarningBrush}" Margin="10,0,4,0"/>
+                            <ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconStatusWarning}" Width="18" Height="18" Foreground="{DynamicResource GscWarningBrush}" Margin="10,0,4,0"/>
                             <TextBlock Text="{Binding SelectedGame.MediaCount, Mode=OneWay}" FontSize="11" Foreground="{DynamicResource GscWarningBrush}"/>
                         </StackPanel>
                         <TextBlock Grid.Column="3" Text="{Binding SelectedGame.CloudStateDisplay, Mode=OneWay}" FontSize="11" Foreground="{DynamicResource GscInfoBrush}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,0,8,0"/>
-                        <TextBlock Grid.Column="4" FontFamily="Segoe MDL2 Assets" Text="&#xE70D;" Foreground="{DynamicResource GscSecondaryTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Path Grid.Column="4" Data="M 1,2 L 5,6 L 9,2" Stretch="None" Stroke="{DynamicResource GscSecondaryTextBrush}" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
                 </Button>
             </Border>
@@ -1135,7 +1135,7 @@
                     </Border>
                     <Border x:Name="RestoreSafetyBanner" Grid.Row="1" Background="{DynamicResource GscRestoreInfoFillBrush}" BorderBrush="{DynamicResource GscRestoreInfoStrokeBrush}" BorderThickness="1" CornerRadius="11" Padding="12" Margin="0,14,0,12">
                         <DockPanel>
-                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE946;" Foreground="{DynamicResource GscInfoBrush}" FontSize="16" Margin="0,0,9,0" DockPanel.Dock="Left"/>
+                            <ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconStatusInfo}" Width="18" Height="18" Foreground="{DynamicResource GscInfoBrush}" Margin="0,0,9,0" DockPanel.Dock="Left"/>
                             <TextBlock Text="自动恢复默认关闭。恢复前会创建并锁定当前快照，恢复后校验，失败时尝试回滚。" TextWrapping="Wrap"/>
                         </DockPanel>
                     </Border>
