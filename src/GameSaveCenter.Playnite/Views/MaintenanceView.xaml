@@ -128,7 +128,8 @@
                                             </StackPanel>
                                             <StackPanel Grid.Column="1" Orientation="Horizontal">
                                                 <ui:Button x:Name="MaintenanceDiagnosticsCompactDetailsButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="查看详情 ›" Visibility="Collapsed" Click="OnMaintenanceDiagnosticsCompactDetailsClick" AutomationProperties.Name="查看或收起所选诊断详情" Margin="0,0,8,0"/>
-                                                <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RefreshDiagnosticsCommand}" Content="刷新诊断"/>
+                                                <!-- Icon-only: refresh diagnostics. -->
+                                                <ui:Button Style="{DynamicResource GscIconOnlyToolbarButton}" Command="{Binding RefreshDiagnosticsCommand}" ToolTip="刷新诊断" AutomationProperties.Name="刷新诊断"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconBtnRefresh}" Width="18" Height="18"/></ui:Button>
                                             </StackPanel>
                                         </Grid>
                                         <Grid Grid.Row="1">
@@ -199,7 +200,8 @@
                                                     <TextBlock Style="{DynamicResource GscDiagnosticHintText}" Text="{Binding SelectedFinding.SuggestedAction, TargetNullValue=暂无建议处理方式}"/>
                                                 </Border>
                                                 <WrapPanel Margin="0,14,0,0">
-                                                    <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding DataContext.CopyDiagnosticsCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" Content="复制诊断" Margin="0,0,8,8"/>
+                                                    <!-- Icon-only: copy diagnostics. -->
+                                                    <ui:Button Style="{DynamicResource GscIconOnlyButtonBase}" Command="{Binding DataContext.CopyDiagnosticsCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" ToolTip="复制诊断" AutomationProperties.Name="复制诊断" Margin="0,0,8,8"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconBtnCopy}" Width="18" Height="18"/></ui:Button>
                                                     <ui:Button Command="{Binding DataContext.OpenSelectedFindingNavigationCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" Content="{Binding DataContext.SelectedFindingNavigationText, RelativeSource={RelativeSource AncestorType=UserControl}}" ToolTip="{Binding DataContext.SelectedFindingNavigationToolTip, RelativeSource={RelativeSource AncestorType=UserControl}}" AutomationProperties.Name="{Binding DataContext.SelectedFindingNavigationText, RelativeSource={RelativeSource AncestorType=UserControl}}" Margin="0,0,0,8">
                                                         <ui:Button.Style>
                                                             <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiContextButton}">
@@ -228,7 +230,8 @@
                                                     <TextBlock Text="下一步运维" Style="{DynamicResource GscSectionTitleStyle}"/>
                                                     <TextBlock Text="{Binding MaintenanceActionSummary}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                                                 </StackPanel>
-                                                <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RefreshDiagnosticsCommand}" Content="刷新状态" Margin="12,0,0,0" ToolTip="重新读取巡检、云端队列和清理隔离账本，不执行修复"/>
+                                                <!-- Icon-only: refreshes the read-only maintenance status. -->
+                                                <ui:Button Grid.Column="1" Style="{DynamicResource GscIconOnlyToolbarButton}" Command="{Binding RefreshDiagnosticsCommand}" ToolTip="刷新状态：重新读取巡检、云端队列和清理隔离账本，不执行修复" AutomationProperties.Name="刷新维护状态" Margin="12,0,0,0"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconBtnRefresh}" Width="18" Height="18"/></ui:Button>
                                             </Grid>
                                             <ItemsControl ItemsSource="{Binding MaintenanceActionSections}" Margin="0,10,0,0">
                                                 <ItemsControl.ItemTemplate>
@@ -356,9 +359,10 @@
                                                 <StackPanel Margin="0,6,0,0">
                                                     <Expander Grid.Row="2" Grid.ColumnSpan="2" Style="{StaticResource GscDisclosureCard}" Header="目录与日志" Margin="0,14,0,0">
                                                         <WrapPanel Margin="0,8,0,0">
-                                                            <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenDataDirectoryCommand}" Content="打开数据目录" Margin="0,0,8,8"/>
-                                                            <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenBackupDirectoryCommand}" Content="打开存档目录" Margin="0,0,8,8"/>
-                                                            <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenMediaDirectoryCommand}" Content="打开媒体目录" Margin="0,0,8,8"/>
+                                                            <!-- Icon-only: open local folders without consuming layout width. -->
+                                                            <ui:Button Style="{DynamicResource GscIconOnlyButtonBase}" Command="{Binding OpenDataDirectoryCommand}" ToolTip="打开数据目录" AutomationProperties.Name="打开数据目录" Margin="0,0,8,8"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconBtnFolder}" Width="18" Height="18"/></ui:Button>
+                                                            <ui:Button Style="{DynamicResource GscIconOnlyButtonBase}" Command="{Binding OpenBackupDirectoryCommand}" ToolTip="打开存档目录" AutomationProperties.Name="打开存档目录" Margin="0,0,8,8"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconBtnFolder}" Width="18" Height="18"/></ui:Button>
+                                                            <ui:Button Style="{DynamicResource GscIconOnlyButtonBase}" Command="{Binding OpenMediaDirectoryCommand}" ToolTip="打开媒体目录" AutomationProperties.Name="打开媒体目录" Margin="0,0,8,8"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconBtnFolder}" Width="18" Height="18"/></ui:Button>
                                                             <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenWorkerLogCommand}" Content="Worker 日志" Margin="0,0,0,8"/>
                                                         </WrapPanel>
                                                     </Expander>

@@ -248,11 +248,12 @@
                                       VerticalAlignment="Center" Margin="0,0,2,0"/>
                             </Grid>
                         </Button>
-                        <ui:Button x:Name="HeaderRefreshButton" Style="{DynamicResource GscRedesignHeaderButton}"
-                                   ContentTemplate="{x:Null}" Command="{Binding RefreshCommand}"
+                        <!-- Icon-only: shell refresh has tooltip and UI Automation text. -->
+                        <ui:Button x:Name="HeaderRefreshButton" Style="{DynamicResource GscIconOnlyToolbarButton}"
+                                   Command="{Binding RefreshCommand}"
                                    ToolTip="刷新" AutomationProperties.Name="刷新">
                             <ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}"
-                                               IconData="{StaticResource GscIconActionRefresh}"
+                                               IconData="{StaticResource GscIconBtnRefresh}"
                                                Width="20" Height="20"
                                                Foreground="{DynamicResource GscPrimaryTextBrush}"/>
                         </ui:Button>

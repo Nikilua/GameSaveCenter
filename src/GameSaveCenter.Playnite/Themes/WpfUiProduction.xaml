@@ -8,6 +8,7 @@
              sibling merge at the UserControl level is too late in Playnite's XAML loader. -->
         <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/WpfUiBase.xaml"/>
         <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/GscIconPack.xaml"/>
+        <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/GscIconButtonPack.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <!-- Production adapters keep WPF-UI templates while applying GameSaveCenter's spacing,
@@ -1097,4 +1098,14 @@
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
     </Style>
+    <!-- Icon-only controls are defined after the production button primitive so they retain
+         its focus, hover, pressed and disabled behavior while hiding only the text chrome. -->
+    <Style x:Key="GscIconOnlyButtonBase" TargetType="{x:Type ui:Button}" BasedOn="{StaticResource GscWpfUiButton}">
+        <Setter Property="Width" Value="34"/><Setter Property="Height" Value="34"/><Setter Property="MinWidth" Value="34"/><Setter Property="MinHeight" Value="34"/><Setter Property="Padding" Value="0"/><Setter Property="Margin" Value="0,0,6,0"/>
+        <Setter Property="ContentTemplate" Value="{x:Null}"/><Setter Property="ui:Button.CornerRadius" Value="12"/><Setter Property="ToolTipService.ShowOnDisabled" Value="True"/>
+        <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/><Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
+    </Style>
+    <Style x:Key="GscIconOnlyToolbarButton" TargetType="{x:Type ui:Button}" BasedOn="{StaticResource GscIconOnlyButtonBase}"><Setter Property="Width" Value="36"/><Setter Property="Height" Value="36"/></Style>
+    <Style x:Key="GscIconOnlyAccentButton" TargetType="{x:Type ui:Button}" BasedOn="{StaticResource GscIconOnlyButtonBase}"><Setter Property="Background" Value="{DynamicResource GscAccentTintBrush}"/><Setter Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/></Style>
+    <Style x:Key="GscIconOnlyDangerButton" TargetType="{x:Type ui:Button}" BasedOn="{StaticResource GscIconOnlyButtonBase}"><Setter Property="Background" Value="{DynamicResource GscErrorTintBrush}"/><Setter Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/><Setter Property="Foreground" Value="{DynamicResource GscErrorBrush}"/></Style>
 </ResourceDictionary>

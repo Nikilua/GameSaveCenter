@@ -270,9 +270,10 @@
                                 <TextBlock Style="{StaticResource SaveHealthStateText}" HorizontalAlignment="Center"><Run Text="校验状态："/><Run Text="{Binding SelectedGame.HealthStateDisplay, Mode=OneWay, TargetNullValue=尚未校验}" FontWeight="SemiBold"/></TextBlock>
                             </Border>
                             <WrapPanel x:Name="SaveCurrentRuleActions" Grid.Column="3" Margin="14,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Right">
-                                <ui:Button x:Name="SaveDetectPathsButton" Style="{DynamicResource GscWpfUiCompactButton}" Appearance="Primary" Command="{Binding DetectPathsCommand}" Content="立即扫描" MinWidth="100" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                                <ui:Button x:Name="SaveValidateButton" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding ValidateCommand}" Content="重新校验" MinWidth="100" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                                <ui:Button x:Name="SaveLoadDetailsButton" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding LoadDetailsCommand}" Content="刷新详情" MinWidth="100" VerticalAlignment="Center"/>
+                                <!-- Icon-only: repeated inspection actions keep a named tooltip for compact layouts. -->
+                                <ui:Button x:Name="SaveDetectPathsButton" Style="{DynamicResource GscIconOnlyAccentButton}" Command="{Binding DetectPathsCommand}" ToolTip="立即扫描" AutomationProperties.Name="立即扫描存档路径" Margin="0,0,8,0" VerticalAlignment="Center"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconBtnDiagnostics}" Width="18" Height="18"/></ui:Button>
+                                <ui:Button x:Name="SaveValidateButton" Style="{DynamicResource GscIconOnlyButtonBase}" Command="{Binding ValidateCommand}" ToolTip="重新校验" AutomationProperties.Name="重新校验存档路径" Margin="0,0,8,0" VerticalAlignment="Center"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconBtnDiagnostics}" Width="18" Height="18"/></ui:Button>
+                                <ui:Button x:Name="SaveLoadDetailsButton" Style="{DynamicResource GscIconOnlyButtonBase}" Command="{Binding LoadDetailsCommand}" ToolTip="刷新详情" AutomationProperties.Name="刷新存档详情" VerticalAlignment="Center"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconBtnRefresh}" Width="18" Height="18"/></ui:Button>
                             </WrapPanel>
                         </Grid>
                     </Border>
@@ -374,7 +375,8 @@
                                             <TextBlock Text="自动恢复不属于模板可编辑项，始终保持关闭。" Style="{DynamicResource GscCaptionStyle}" Margin="0,10,0,0" TextWrapping="Wrap"/>
                                         </StackPanel>
                                     </Expander>
-                                    <WrapPanel Margin="0,12,0,0"><ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding CreatePolicyTemplateCommand}" Content="新建副本" Margin="0,0,8,8"/><ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding SavePolicyTemplateCommand}" Content="保存" Margin="0,0,8,8"/><ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding ApplyPolicyTemplateCommand}" Content="应用" Margin="0,0,8,8"/><ui:Button Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding DeletePolicyTemplateCommand}" Content="删除" Margin="0,0,0,8"/></WrapPanel>
+                                    <!-- Icon-only: template deletion remains visibly dangerous and accessible. -->
+                                    <WrapPanel Margin="0,12,0,0"><ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding CreatePolicyTemplateCommand}" Content="新建副本" Margin="0,0,8,8"/><ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding SavePolicyTemplateCommand}" Content="保存" Margin="0,0,8,8"/><ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding ApplyPolicyTemplateCommand}" Content="应用" Margin="0,0,8,8"/><ui:Button Style="{DynamicResource GscIconOnlyDangerButton}" Command="{Binding DeletePolicyTemplateCommand}" ToolTip="删除策略模板" AutomationProperties.Name="删除策略模板" Margin="0,0,0,8"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconBtnDelete}" Width="18" Height="18"/></ui:Button></WrapPanel>
                                     <Border Style="{DynamicResource GscRedesignSubCard}" Padding="12" Margin="0,6,0,0"><TextBlock Text="内置模板不可修改或删除；恢复操作永远不会被模板自动启用。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap"/></Border>
                                 </StackPanel>
                             </Border>
@@ -463,7 +465,8 @@
                                 <Grid>
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                     <TextBlock Text="保留预览" Style="{DynamicResource GscSectionTitleStyle}"/>
-                                    <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding PreviewRetentionCommand}" Content="刷新预览" HorizontalAlignment="Right"/>
+                                    <!-- Icon-only: refreshes the existing retention preview. -->
+                                    <ui:Button Grid.Column="1" Style="{DynamicResource GscIconOnlyButtonBase}" Command="{Binding PreviewRetentionCommand}" ToolTip="刷新预览" AutomationProperties.Name="刷新保留预览" HorizontalAlignment="Right"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconBtnRefresh}" Width="18" Height="18"/></ui:Button>
                                 </Grid>
                                 <ScrollViewer x:Name="SaveCompareRetentionScrollViewer"
                                               Grid.Row="1"

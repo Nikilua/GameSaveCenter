@@ -6084,6 +6084,19 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 为 `LargeLibraryPerformanceTests.GamePicker2000_Benchmark_WritesMeasuredTimings` 增加宽松的 2000 条数据更新上限：首次/单项变化更新及任务首次替换 5 秒，未变化替换 1 秒。
 - 继续保留详细耗时写入 `large-library.txt` 的 profiling 行为；门槛只用于拦截数量级退化或明显卡死，不替代真实 Playnite 帧率验收。
 - 同步更新 `docs/ai/PERFORMANCE_BASELINE.md`，明确自动门禁与离线 profiling 的边界。
+# 2026-09-11 UI-图标按钮收口
+
+**实现内容：**
+
+- 新增 `GscIconButtonPack.xaml`，以主题资源拥有颜色的线条 Geometry 提供刷新、目录、复制、播放、重试、取消、折叠、收藏、删除、清除、打开、诊断等图标。
+- 在生产按钮模板之后增加 `GscIconOnlyButtonBase`、Toolbar、Accent、Danger 四种共享样式；均复用既有焦点、悬停、按下与禁用状态，并启用禁用状态 ToolTip。
+- 将任务、存档、媒体、维护与壳层的高频刷新、复制、目录、详情、取消及删除操作收口为带 ToolTip 与 `AutomationProperties.Name` 的图标按钮；主 CTA、保存及需二次确认操作保留文字。
+
+**验证与边界：**
+
+- `check-xaml.ps1` 通过（23 个 XAML）；WPF 静态审查为 0 error，已有布局告警未新增。
+- 本机 `dotnet build ...GameSaveCenter.Playnite.csproj -c Release` 在 Restore 目标以 0 error 失败，未产生可诊断的 NuGet/编译信息；未将其表述为构建通过。真实 Playnite 宿主主题、DPI 与禁用 ToolTip 仍待人工验收。
+
 # 2026-09-08 Q6-04 构建身份兼容边界修正
 
 **实现：**
