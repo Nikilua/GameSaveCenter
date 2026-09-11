@@ -569,12 +569,11 @@ namespace GameSaveCenter.Playnite.Views
 
         private void SetToolbarLabelsVisible(bool visible)
         {
-            if (TopRefreshLabel == null || TopBackupAllLabel == null || TopMediaSyncLabel == null
+            if (TopBackupAllLabel == null || TopMediaSyncLabel == null
                 || TopTrainerImportLabel == null || TopTrainerCatalogLabel == null
                 || TopDiagnosticsLabel == null || ToggleGameBrowserLabel == null) return;
 
             var labelVisibility = visible ? Visibility.Visible : Visibility.Collapsed;
-            TopRefreshLabel.Visibility = labelVisibility;
             TopBackupAllLabel.Visibility = labelVisibility;
             TopMediaSyncLabel.Visibility = labelVisibility;
             TopTrainerImportLabel.Visibility = labelVisibility;
@@ -585,7 +584,7 @@ namespace GameSaveCenter.Playnite.Views
             var width = visible ? double.NaN : 44;
             foreach (var button in new[]
             {
-                TopRefreshButton, TopBackupAllButton, TopMediaSyncButton,
+                TopBackupAllButton, TopMediaSyncButton,
                 TopTrainerImportButton, TopTrainerCatalogButton, TopDiagnosticsButton,
                 ToggleGameBrowserButton
             })

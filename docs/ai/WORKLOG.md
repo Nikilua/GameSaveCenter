@@ -6095,7 +6095,8 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 **验证与边界：**
 
 - `check-xaml.ps1` 通过（23 个 XAML）；WPF 静态审查为 0 error，已有布局告警未新增。
-- 本机 `dotnet build ...GameSaveCenter.Playnite.csproj -c Release` 在 Restore 目标以 0 error 失败，未产生可诊断的 NuGet/编译信息；未将其表述为构建通过。真实 Playnite 宿主主题、DPI 与禁用 ToolTip 仍待人工验收。
+- 首次移除 Dashboard 顶栏文字时遗漏了响应式 `TopRefreshLabel` 引用，已在后续修复中从该布局分支移除；图标刷新按钮保持自身固定尺寸。
+- `scripts/build.ps1 -Configuration Release -SkipTests -OutputRoot artifacts/icon-button-fix-20260911` 通过：Release 0 warning / 0 error。真实 Playnite 宿主主题、DPI 与禁用 ToolTip 仍待人工验收。
 
 # 2026-09-08 Q6-04 构建身份兼容边界修正
 

@@ -7,6 +7,7 @@
 - `Themes/GscIconButtonPack.xaml` 只包含由用户提供图标包改写的 Geometry；颜色必须继续由主题资源决定，不能把 PNG/SVG 颜色或硬编码色值带回生产 XAML。
 - `GscIconOnlyButtonBase`、Toolbar、Accent、Danger 位于 `WpfUiProduction.xaml` 中 `GscWpfUiButton` 之后。图标按钮必须保留 `ToolTip`、`AutomationProperties.Name`，且基础样式必须设 `ToolTipService.ShowOnDisabled=True`；不要为压缩空间而移除禁用操作的说明。
 - 只将刷新、复制、目录、打开、删除、取消、折叠等短而明确的操作改为图标；主 CTA、保存及需确认/复杂语义操作必须保持文字。所有新页面实例须复用 `ThemeAwareIcon` + `GscLineIcon`。
+- Dashboard 的 `SetToolbarLabelsVisible` 只管理仍含文字的顶栏操作；新增图标专用顶栏按钮时，必须同时从其空引用检查、可见性切换和宽度覆写集合中排除，避免生成字段缺失或覆盖 36 DIP 尺寸。
 
 ## 2026-09-11 表格/字体迁移测试契约
 
