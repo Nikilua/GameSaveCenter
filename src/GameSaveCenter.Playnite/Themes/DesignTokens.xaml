@@ -31,6 +31,12 @@
     <SolidColorBrush x:Key="GscOnAccentHoverOverlayBrush" Color="#22FFFFFF"/>
     <SolidColorBrush x:Key="GscOnAccentPressedOverlayBrush" Color="#22000000"/>
     <SolidColorBrush x:Key="GscMutedStatusBrush" Color="#828A99"/>
+    <LinearGradientBrush x:Key="GscButtonGlassBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#D02E3444" Offset="0"/>
+        <GradientStop Color="#B82A303D" Offset="1"/>
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="GscButtonGlassBorderBrush" Color="#38FFFFFF"/>
+    <SolidColorBrush x:Key="GscButtonGlassHighlightBrush" Color="#2DFFFFFF"/>
     <LinearGradientBrush x:Key="GscPrimaryButtonBrush" StartPoint="0,0" EndPoint="1,1">
         <GradientStop Color="#7C8CF8" Offset="0"/>
         <GradientStop Color="#6A78DD" Offset="1"/>
@@ -502,7 +508,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <Border CornerRadius="11" BorderThickness="2"
+                    <Border CornerRadius="13" BorderThickness="2"
                             BorderBrush="{DynamicResource GscAccentBrush}" Opacity="0.72"/>
                 </ControlTemplate>
             </Setter.Value>
@@ -517,8 +523,8 @@
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
-        <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource GscDividerBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource GscButtonGlassBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource GscButtonGlassBorderBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Padding" Value="15,8"/>
         <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
@@ -530,7 +536,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="Chrome"
-                            CornerRadius="11"
+                            CornerRadius="13"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"

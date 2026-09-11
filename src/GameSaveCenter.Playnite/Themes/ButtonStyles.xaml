@@ -8,8 +8,8 @@
     <Style x:Key="GlassButton"
            TargetType="{x:Type ui:Button}"
            BasedOn="{StaticResource GscWpfUiSecondaryButton}">
-        <Setter Property="Background" Value="{DynamicResource GscGlassFillBrush}"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource GscButtonGlassBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource GscButtonGlassBorderBrush}"/>
     </Style>
 
     <Style x:Key="PrimaryGlassButton"

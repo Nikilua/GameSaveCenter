@@ -37,6 +37,7 @@ namespace GameSaveCenter.Playnite.Diagnostics
                 "GscTableHeaderBrush", "GscTableDividerBrush",
                 "GscPrimaryTextBrush", "GscSecondaryTextBrush", "GscMutedTextBrush",
                 "GscAccentBrush", "GscAccentTintBrush", "GscAccentTintStrongBrush",
+                "GscButtonGlassBrush", "GscButtonGlassBorderBrush", "GscButtonGlassHighlightBrush",
                 "GscPrimaryButtonBrush", "GscPrimaryButtonBorderBrush",
                 "GscSurfaceEffect", "GscDialogEffect"
             };

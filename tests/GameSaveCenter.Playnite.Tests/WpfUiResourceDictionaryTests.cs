@@ -208,8 +208,11 @@ public sealed class WpfUiResourceDictionaryTests
 
         Assert.Contains("Value=\"{DynamicResource GscGlassFillBrush}\"", production);
         Assert.Contains("Value=\"{DynamicResource GscGlassStrokeBrush}\"", production);
+        Assert.Contains("Value=\"{DynamicResource GscButtonGlassBrush}\"", production);
+        Assert.Contains("Value=\"{DynamicResource GscButtonGlassBorderBrush}\"", production);
         Assert.Contains("x:Key=\"GlassButton\"", buttonStyles);
-        Assert.Contains("Background\" Value=\"{DynamicResource GscGlassFillBrush}\"", buttonStyles);
+        Assert.Contains("Background\" Value=\"{DynamicResource GscButtonGlassBrush}\"", buttonStyles);
+        Assert.Contains("BorderBrush\" Value=\"{DynamicResource GscButtonGlassBorderBrush}\"", buttonStyles);
         Assert.Contains("Icon = CreateThemeAwareSidebarIcon()", plugin);
         Assert.Contains("GlyphBrush", plugin);
 
@@ -274,6 +277,7 @@ public sealed class WpfUiResourceDictionaryTests
                     new object[] { host, true, 78, GameSaveCenterThemeMode.FollowPlaynite })!;
 
                 Assert.False((bool)palette.GetType().GetProperty("IsDark")!.GetValue(palette)!);
+                Assert.True((bool)palette.GetType().GetProperty("GlassEnabled")!.GetValue(palette)!);
                 Assert.Equal(Colors.Black, (Color)palette.GetType().GetProperty("PrimaryText")!.GetValue(palette)!);
                 Assert.Equal(hostAccent, (Color)palette.GetType().GetProperty("Accent")!.GetValue(palette)!);
                 Assert.Equal(Colors.White, (Color)palette.GetType().GetProperty("OnAccentText")!.GetValue(palette)!);
@@ -294,6 +298,12 @@ public sealed class WpfUiResourceDictionaryTests
                 Assert.IsType<SolidColorBrush>(localResources["GscSafetyFillBrush"]);
                 Assert.IsType<SolidColorBrush>(localResources["GscSafetyStrokeBrush"]);
                 Assert.IsType<SolidColorBrush>(localResources["GscMutedStatusBrush"]);
+                var buttonGlass = Assert.IsType<LinearGradientBrush>(localResources["GscButtonGlassBrush"]);
+                Assert.All(buttonGlass.GradientStops, stop => Assert.InRange(stop.Color.A, (byte)1, (byte)254));
+                var primaryButton = Assert.IsType<LinearGradientBrush>(localResources["GscPrimaryButtonBrush"]);
+                Assert.All(primaryButton.GradientStops, stop => Assert.InRange(stop.Color.A, (byte)1, (byte)254));
+                Assert.IsType<SolidColorBrush>(localResources["GscButtonGlassBorderBrush"]);
+                Assert.IsType<SolidColorBrush>(localResources["GscButtonGlassHighlightBrush"]);
                 var strongerPalette = factoryType.GetMethod("Create", BindingFlags.Public | BindingFlags.Static)!.Invoke(
                     null,
                     new object[] { host, true, 100, GameSaveCenterThemeMode.FollowPlaynite })!;
@@ -5142,7 +5152,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("CornerRadius\" Value=\"13\"", redesign);
         Assert.Contains("x:Key=\"GscFloatingCardStyle\"", redesign);
         Assert.Contains("CornerRadius\" Value=\"18\"", redesign);
-        Assert.Contains("CornerRadius=\"10\" Padding=\"{TemplateBinding Padding}\"", redesign);
+        Assert.Contains("CornerRadius=\"13\" Padding=\"{TemplateBinding Padding}\"", redesign);
     }
 
     [Fact]

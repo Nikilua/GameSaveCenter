@@ -49,6 +49,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
         public Color WarningIconFill { get; set; }
         public Color ErrorIconFill { get; set; }
         public double GlassStrength { get; set; }
+        public bool GlassEnabled { get; set; }
     }
 
     internal static class AdaptiveThemePaletteFactory
@@ -194,6 +195,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             {
                 IsDark = isDark,
                 GlassStrength = strength,
+                GlassEnabled = glassEnabled,
                 Background = stableBase,
                 PrimaryText = primaryText,
                 SecondaryText = WithAlpha(primaryText, 0.74),
@@ -261,8 +263,40 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscAccentIconFillBrush"] = Brush(palette.AccentIconFill);
             resources["GscOnAccentTextBrush"] = Brush(palette.OnAccentText);
             resources["GscSelectionTextBrush"] = Brush(SystemParameters.HighContrast ? SystemColors.HighlightTextColor : palette.PrimaryText);
-            resources["GscPrimaryButtonBrush"] = Gradient(palette.Accent, palette.AccentPressed);
-            resources["GscPrimaryButtonBorderBrush"] = Brush(palette.AccentHover);
+            // Buttons use the live Playnite accent as a tint, not a hard-coded blue fill. The
+            // translucent stops let the shared material show through while keeping the accent
+            // recognizable on every Playnite theme. High contrast and an explicit glass-off
+            // setting intentionally fall back to opaque colors for readable keyboard/UIA states.
+            var buttonGlassTop = Blend(Opaque(palette.StrongSurfaceTop), Opaque(palette.Accent), palette.IsDark ? 0.06 : 0.035);
+            var buttonGlassBottom = Blend(Opaque(palette.StrongSurfaceBottom), Opaque(palette.AccentPressed), palette.IsDark ? 0.045 : 0.025);
+            var buttonGlassTopOpacity = SystemParameters.HighContrast || !palette.GlassEnabled
+                ? 1
+                : palette.IsDark ? 0.86 : 0.91;
+            var buttonGlassBottomOpacity = SystemParameters.HighContrast || !palette.GlassEnabled
+                ? 1
+                : palette.IsDark ? 0.80 : 0.87;
+            resources["GscButtonGlassBrush"] = Gradient(
+                WithAlpha(buttonGlassTop, buttonGlassTopOpacity),
+                WithAlpha(buttonGlassBottom, buttonGlassBottomOpacity));
+            resources["GscButtonGlassBorderBrush"] = Brush(
+                SystemParameters.HighContrast || !palette.GlassEnabled
+                    ? Opaque(palette.ControlStroke)
+                    : WithAlpha(Opaque(palette.PrimaryText), palette.IsDark ? 0.22 : 0.16));
+            resources["GscButtonGlassHighlightBrush"] = Brush(
+                SystemParameters.HighContrast || !palette.GlassEnabled
+                    ? Opaque(palette.PrimaryText)
+                    : WithAlpha(Opaque(palette.PrimaryText), palette.IsDark ? 0.18 : 0.20));
+            var primaryButtonTop = SystemParameters.HighContrast || !palette.GlassEnabled
+                ? Opaque(palette.Accent)
+                : WithAlpha(Blend(Opaque(palette.Accent), Opaque(palette.StrongSurfaceTop), palette.IsDark ? 0.10 : 0.08), palette.IsDark ? 0.84 : 0.88);
+            var primaryButtonBottom = SystemParameters.HighContrast || !palette.GlassEnabled
+                ? Opaque(palette.AccentPressed)
+                : WithAlpha(Blend(Opaque(palette.AccentPressed), Opaque(palette.StrongSurfaceBottom), palette.IsDark ? 0.16 : 0.12), palette.IsDark ? 0.78 : 0.84);
+            resources["GscPrimaryButtonBrush"] = Gradient(primaryButtonTop, primaryButtonBottom);
+            resources["GscPrimaryButtonBorderBrush"] = Brush(
+                SystemParameters.HighContrast || !palette.GlassEnabled
+                    ? Opaque(palette.AccentHover)
+                    : WithAlpha(Opaque(palette.AccentHover), palette.IsDark ? 0.94 : 0.86));
             // The strength slider used to affect mostly surface opacity, so a value of 100
             // could actually hide the ambient light behind the reading surfaces. Keep the
             // pane-wide material tied to the same value while its alpha remains bounded.
