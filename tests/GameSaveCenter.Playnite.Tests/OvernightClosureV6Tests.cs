@@ -51,7 +51,9 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("x:Key=\"GscDataGridColumnHeaderStyle\"", production);
             Assert.Contains("OverridesDefaultStyle\" Value=\"True\"", production);
             Assert.Contains("TargetType=\"DataGridColumnHeadersPresenter\"", production);
-            Assert.Contains("GscTableHeaderBrush", production);
+            Assert.Contains("A table frame owns one continuous reading surface", production);
+            Assert.Contains("<Setter Property=\"Background\" Value=\"Transparent\"/>", production);
+            Assert.Contains("<Setter Property=\"BorderThickness\" Value=\"0\"/>", production);
             Assert.Contains("MaintenanceFirstColumnHeader", maintenance);
             Assert.Contains("MaintenanceLastColumnHeader", maintenance);
         }

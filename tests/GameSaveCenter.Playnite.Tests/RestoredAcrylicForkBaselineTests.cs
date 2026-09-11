@@ -176,10 +176,10 @@ public sealed class RestoredAcrylicForkBaselineTests
     [Fact]
     public void WorkspaceDiagnosticTextUsesTheSharedCascadiaMonoFallback()
     {
-        var tokens = ReadSource("Themes", "DesignTokens.xaml");
+        var typography = ReadSource("Themes", "Typography.xaml");
         var maintenance = ReadSource("Views", "MaintenanceView.xaml");
 
-        Assert.Contains("x:Key=\"GscCodeFontFamily\">Cascadia Mono, Consolas, Microsoft YaHei UI", tokens);
+        Assert.Contains("x:Key=\"GscCodeFontFamily\">Cascadia Mono, Consolas", typography);
         Assert.Contains("FontFamily=\"{DynamicResource GscCodeFontFamily}\"", maintenance);
     }
 

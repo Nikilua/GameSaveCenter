@@ -2,6 +2,11 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-11 对齐迁移测试与新资源契约
+
+- 用户运行完整 Playnite 设置迁移测试后发现两项遗漏的源码断言仍要求旧实现：Maintenance 测试要求表头重新使用 `GscTableHeaderBrush`，诊断字体测试要求 `GscCodeFontFamily` 仍定义在 `DesignTokens.xaml`。两者都与本轮的连续表面表头及 `Typography.xaml` 单一字体入口相冲突。
+- 已将断言改为验证透明无分隔表头以及 Typography 中的 Cascadia Mono 回退链；原失败的两项定向测试 `2/2` 通过，Release 测试项目构建保持 0 warnings / 0 errors。后续全量 Playnite 测试必须使用此提交及之后的源码，不能复用上一提交生成的 staging 测试程序集。
+
 ## 2026-09-11 统一无缝表格表头与字体资源
 
 - 存档历史版本的表头观感来自共享表格表面；任务、媒体、维护和兼容 Dashboard 又在本地写入 `GscTableHeaderBrush` 与底部 1 DIP 描边，因而形成独立深色表头带。已将共享 `GscDataGridColumnHeaderStyle`、表头 presenter 及这些局部覆写改为透明无边框，表头直接继承 DataGrid/表格框的同一阅读表面；行级选择、排序箭头、列拖拽热区、虚拟化与绑定不变。

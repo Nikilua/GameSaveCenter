@@ -2,6 +2,11 @@
 
 > 维护时间：2026-09-11
 
+## 2026-09-11 表格/字体迁移测试契约
+
+- `OvernightClosureV6Tests.MaintenanceHeadersUseSharedThemeResources` 必须验证共享表头为透明、无底部分隔线，不能再断言 `GscTableHeaderBrush` 出现在 Maintenance 表头实现中。
+- `RestoredAcrylicForkBaselineTests.WorkspaceDiagnosticTextUsesTheSharedCascadiaMonoFallback` 的 `GscCodeFontFamily` 来源是 `Themes/Typography.xaml`，不是 `DesignTokens.xaml`；维护页仍通过 DynamicResource 使用它。
+
 ## 2026-09-11 无缝表格与字体系统
 
 - 所有生产 DataGrid 的表头必须与其 DataGrid/表格框共用同一连续阅读表面：`GscDataGridColumnHeaderStyle` 与 `DataGridColumnHeadersPresenter` 保持透明、无底部分隔线；任务、媒体、维护和兼容 Dashboard 不得局部恢复 `GscTableHeaderBrush` 或 `0,0,0,1` 表头描边。行间弱分隔、状态胶囊、排序箭头和列拖拽热区仍可保留。
