@@ -2,6 +2,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:primitives="clr-namespace:System.Windows.Controls.Primitives;assembly=PresentationFramework">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/Typography.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
     <!-- Shared defaults. Runtime palette adaptation replaces the theme-sensitive brushes locally. -->
     <!-- Deterministic fallback values mirror the standalone demo. Runtime Playnite theme
          adaptation may replace these locally, but parsing must never depend on host resources. -->
@@ -158,16 +161,6 @@
     <GridLength x:Key="GscInspectorWidth">360</GridLength>
     <!-- Form pages keep a readable content column instead of stretching across the host. -->
     <sys:Double x:Key="GscFormMaxWidth">1120</sys:Double>
-
-    <!-- Unified font family. Latin text stays on Segoe UI Variable, Simplified Chinese
-         falls back to Microsoft YaHei UI so mixed strings share one visual system instead
-         of WPF picking an arbitrary CJK fallback per glyph. -->
-    <FontFamily x:Key="GscUiFontFamily">Segoe UI Variable Text, Segoe UI, Microsoft YaHei UI</FontFamily>
-    <FontFamily x:Key="GscDisplayFontFamily">Segoe UI Variable Display, Segoe UI, Microsoft YaHei UI</FontFamily>
-    <FontFamily x:Key="GscCodeFontFamily">Cascadia Mono, Consolas, Microsoft YaHei UI</FontFamily>
-    <sys:Double x:Key="GscSectionFontSize">15</sys:Double>
-    <sys:Double x:Key="GscBodyFontSize">13.5</sys:Double>
-    <sys:Double x:Key="GscCaptionFontSize">12</sys:Double>
 
     <!-- Shared table geometry. Each workspace keeps its DataGrid in a finite Grid row, while
          these tokens provide one readable density across light, dark and host themes. -->

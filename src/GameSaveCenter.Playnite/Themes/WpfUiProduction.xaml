@@ -458,17 +458,20 @@
            TargetType="DataGridColumnHeader"
            BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
-        <Setter Property="Background" Value="{DynamicResource GscTableHeaderBrush}"/>
+        <!-- A table frame owns one continuous reading surface. Headers therefore inherit
+             the grid surface instead of painting a second band or separator line. -->
+        <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="TextElement.Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource GscTableDividerBrush}"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
     </Style>
 
     <!-- The column-header presenter owns WPF's generated filler header.  Styling only real
          DataGridColumnHeader instances leaves that unused strip to the Playnite host theme,
          which is why the final header could remain white. -->
     <Style TargetType="DataGridColumnHeadersPresenter">
-        <Setter Property="Background" Value="{DynamicResource GscTableHeaderBrush}"/>
+        <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="TextElement.Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
     </Style>

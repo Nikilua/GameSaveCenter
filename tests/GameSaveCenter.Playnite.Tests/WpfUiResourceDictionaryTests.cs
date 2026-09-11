@@ -5103,16 +5103,45 @@ public sealed class WpfUiResourceDictionaryTests
     {
         var repositoryRoot = FindRepositoryRoot();
         var tokens = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml"));
+        var typography = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "Typography.xaml"));
         var production = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml"));
 
-        Assert.Contains("<sys:Double x:Key=\"GscBodyFontSize\">13.5</sys:Double>", tokens);
-        Assert.Contains("<sys:Double x:Key=\"GscCaptionFontSize\">12</sys:Double>", tokens);
+        Assert.Contains("Themes/Typography.xaml", tokens);
+        Assert.Contains("Noto Sans CJK SC", typography);
+        Assert.Contains("Inter, Segoe UI Variable Text", typography);
+        Assert.Contains("x:Key=\"GscPageTitleFontSize\">22", typography);
+        Assert.Contains("x:Key=\"GscSectionFontSize\">16", typography);
+        Assert.Contains("x:Key=\"GscBodyFontSize\">14", typography);
+        Assert.Contains("x:Key=\"GscCaptionFontSize\">12", typography);
+        Assert.Contains("x:Key=\"GscTypographyPageTitle\"", typography);
+        Assert.Contains("x:Key=\"GscTypographySectionTitle\"", typography);
+        Assert.Contains("x:Key=\"GscTypographyBody\"", typography);
+        Assert.Contains("x:Key=\"GscTypographyCaption\"", typography);
+        Assert.Contains("<Style TargetType=\"TextBlock\">", typography);
+        Assert.Contains("<Style TargetType=\"Button\">", typography);
+        Assert.Contains("<Style TargetType=\"TextBox\">", typography);
         Assert.Contains("<Setter Property=\"FontFamily\" Value=\"{DynamicResource GscUiFontFamily}\"/>", production);
         Assert.Contains("<Setter Property=\"FontSize\" Value=\"{DynamicResource GscBodyFontSize}\"/>", production);
         Assert.Contains("<Setter Property=\"FontSize\" Value=\"{DynamicResource GscCaptionFontSize}\"/>", production);
         Assert.Contains("<Setter Property=\"FontWeight\" Value=\"Medium\"/>", production);
         Assert.Contains("<Setter Property=\"FontFamily\" Value=\"{DynamicResource GscUiFontFamily}\"/>", production);
         Assert.Contains("<Setter Property=\"FontSize\" Value=\"{DynamicResource GscBodyFontSize}\"/>", production);
+    }
+
+    [Fact]
+    public void WorkspaceTableHeadersShareTheReadingSurfaceWithoutDividerBands()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var production = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml"));
+        var task = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml"));
+        var media = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
+        var maintenance = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+        var dashboard = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml"));
+
+        Assert.Contains("A table frame owns one continuous reading surface", production);
+        Assert.Contains("<Setter Property=\"Background\" Value=\"Transparent\"/>", production);
+        Assert.Contains("<Setter Property=\"BorderThickness\" Value=\"0\"/>", production);
+        Assert.DoesNotContain("<Setter Property=\"Background\" Value=\"{DynamicResource GscTableHeaderBrush}\"/>", task + media + maintenance + dashboard);
     }
 
     [Fact]

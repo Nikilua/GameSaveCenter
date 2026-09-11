@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-11
 
+## 2026-09-11 无缝表格与字体系统
+
+- 所有生产 DataGrid 的表头必须与其 DataGrid/表格框共用同一连续阅读表面：`GscDataGridColumnHeaderStyle` 与 `DataGridColumnHeadersPresenter` 保持透明、无底部分隔线；任务、媒体、维护和兼容 Dashboard 不得局部恢复 `GscTableHeaderBrush` 或 `0,0,0,1` 表头描边。行间弱分隔、状态胶囊、排序箭头和列拖拽热区仍可保留。
+- `Themes/Typography.xaml` 是唯一字体/字号语义入口，`DesignTokens.xaml` 合并它以覆盖所有视图；Noto Sans CJK SC 与 Inter 是优选，Segoe UI Variable/Microsoft YaHei UI 为运行时缺字或未安装字体的回退。页面标题 22 SemiBold，Section 16 SemiBold，正文 14 Regular，辅助 12 Regular；数字使用 `GscNumericFontFamily`。不要新增 `FontWeight=Bold`，新的 TextBlock/Button/TextBox 使用隐式基样式或 `GscTypography*`/现有 Gsc 语义样式。
+- `Redesign.xaml` 也要直接合并 Typography：其中的页面/Section 样式通过 `StaticResource` 解析，不能只依赖 DesignTokens 的嵌套合并，否则真实 WPF 视图构造会报找不到 `GscTypographySectionTitle`。完整 WPF 资源测试已覆盖该资源链。
+
 ## 2026-09-11 任务窄窗与设置主题同步
 
 - 任务中心筛选栏的紧凑断点为 980 DIP，不能退回 760：760–980 DIP 时完整筛选行的 Auto 列会挤压搜索框，视觉上像右缘缺失。紧凑行保留搜索、状态与刷新，类型、历史范围和时间范围必须仍可通过“更多筛选”完成。

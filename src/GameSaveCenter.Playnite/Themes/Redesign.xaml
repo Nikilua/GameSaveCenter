@@ -4,6 +4,9 @@
     <ResourceDictionary.MergedDictionaries>
         <!-- Keep the WPF-UI adapters in this dictionary's parse scope.  The color/material
              tokens remain page-local and are consumed through DynamicResource. -->
+        <!-- Redesign's semantic aliases use StaticResource, so Typography must be in this
+             dictionary's own parse scope rather than only nested under DesignTokens. -->
+        <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/Typography.xaml"/>
         <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/WpfUiProduction.xaml"/>
         <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/ButtonStyles.xaml"/>
     </ResourceDictionary.MergedDictionaries>
@@ -499,10 +502,7 @@
     </Style>
 
 
-    <Style x:Key="GscRedesignSectionTitle" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="17"/>
-        <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+    <Style x:Key="GscRedesignSectionTitle" TargetType="TextBlock" BasedOn="{StaticResource GscTypographySectionTitle}">
         <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
         <Setter Property="TextWrapping" Value="NoWrap"/>
     </Style>
@@ -808,22 +808,10 @@
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="UseLayoutRounding" Value="True"/>
     </Style>
-    <Style x:Key="GscPageTitleStyle" TargetType="TextBlock">
-        <Setter Property="FontFamily" Value="{DynamicResource GscDisplayFontFamily}"/>
-        <Setter Property="FontSize" Value="26"/>
-        <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
-        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
-    </Style>
+    <Style x:Key="GscPageTitleStyle" TargetType="TextBlock" BasedOn="{StaticResource GscTypographyPageTitle}"/>
     <Style x:Key="GscSectionTitleStyle" TargetType="TextBlock" BasedOn="{StaticResource GscRedesignSectionTitle}"/>
-    <Style x:Key="GscCaptionStyle" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="12"/>
-        <Setter Property="Foreground" Value="{DynamicResource GscMutedTextBrush}"/>
-        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
-    </Style>
-    <Style x:Key="GscBodyStyle" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="13"/>
-        <Setter Property="Foreground" Value="{DynamicResource GscSecondaryTextBrush}"/>
+    <Style x:Key="GscCaptionStyle" TargetType="TextBlock" BasedOn="{StaticResource GscTypographyCaption}"/>
+    <Style x:Key="GscBodyStyle" TargetType="TextBlock" BasedOn="{StaticResource GscTypographyBody}">
         <Setter Property="TextWrapping" Value="Wrap"/>
         <Setter Property="LineHeight" Value="20"/>
     </Style>

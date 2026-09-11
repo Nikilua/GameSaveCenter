@@ -586,6 +586,10 @@ namespace GameSaveCenter.Playnite.Settings
             // selected-game artwork behind it. This prevents a newly added shell token from
             // silently remaining on the static fallback in the settings window.
             AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(Resources, palette, glassEnabled, MotionEnabled);
+            // Keep the same host-neutral baseline used by DashboardView. The settings
+            // material below only changes structural surfaces; it must not leave core
+            // semantic brushes inherited from a Playnite host dictionary.
+            AdaptiveThemePaletteFactory.ApplyDemoCoreResources(Resources, palette.IsDark);
             AdaptiveThemePaletteFactory.ApplySettingsMaterialResources(Resources, palette, glassEnabled);
 
             // Keep the fixed background ambient layer out of the render tree when glass is

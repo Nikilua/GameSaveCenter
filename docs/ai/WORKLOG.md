@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-11 统一无缝表格表头与字体资源
+
+- 存档历史版本的表头观感来自共享表格表面；任务、媒体、维护和兼容 Dashboard 又在本地写入 `GscTableHeaderBrush` 与底部 1 DIP 描边，因而形成独立深色表头带。已将共享 `GscDataGridColumnHeaderStyle`、表头 presenter 及这些局部覆写改为透明无边框，表头直接继承 DataGrid/表格框的同一阅读表面；行级选择、排序箭头、列拖拽热区、虚拟化与绑定不变。
+- 新增 `Themes/Typography.xaml`：提供 Inter/Segoe UI Variable/Noto Sans CJK SC 的安全回退链、22 DIP 页面标题、16 DIP Section 标题、14 DIP 正文、12 DIP 辅助文案及数字字体资源。`DesignTokens` 将其作为全局基础资源合并，隐式 TextBlock/Button/TextBox 与既有 `GscPageTitleStyle`、`GscSectionTitleStyle`、`GscBodyStyle`、`GscCaptionStyle` 都接入同一语义层；新样式只使用 Normal/Medium/SemiBold，不新增 Bold。
+- 上一提交的完整资源测试失败已修复：设置页在完整运行时色板后补回 `ApplyDemoCoreResources`，保证没有从 Playnite 宿主继承中性核心色；完整 `WpfUiResourceDictionaryTests` 为 `135 passed / 39 skipped / 0 failed`。源码/XAML 校验、Release 构建（0 warnings / 0 errors）、WPF 静态审查（0 errors / 22 warnings / 175 info）和双主题、多尺寸 RenderHarness 均通过 `render-qa OK`。真实 Playnite 的字体安装、宿主主题和物理 DPI 仍需人工复核。
+
 ## 2026-09-11 任务筛选窄窗与设置色板同步
 
 - 用户提供的非全屏任务中心截图确认筛选栏在 760–980 DIP 区间仍将全部 Auto 列留在主行，挤压搜索框并造成右侧像被截断；`TaskCenterView` 现以 980 DIP 提前折叠次级筛选，主行始终保留搜索、状态与刷新，类型/范围/时间继续通过“更多筛选”访问，命令和绑定未变。
