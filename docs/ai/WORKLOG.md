@@ -6084,6 +6084,20 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 为 `LargeLibraryPerformanceTests.GamePicker2000_Benchmark_WritesMeasuredTimings` 增加宽松的 2000 条数据更新上限：首次/单项变化更新及任务首次替换 5 秒，未变化替换 1 秒。
 - 继续保留详细耗时写入 `large-library.txt` 的 profiling 行为；门槛只用于拦截数量级退化或明显卡死，不替代真实 Playnite 帧率验收。
 - 同步更新 `docs/ai/PERFORMANCE_BASELINE.md`，明确自动门禁与离线 profiling 的边界。
+# 2026-09-12 UI-高级动效系统
+
+**实现内容：**
+
+- 完成全仓 `Storyboard`、`TranslateTransform`、`RenderTransform` 审计：现有动效集中在 Dashboard、设置、Overview、生产壳与共享控件模板，未向列表行或布局属性新增动画。
+- 新增 `Themes/MotionTokens.xaml`：Fast 120ms、Press 100ms、Normal 200ms、Slow 320ms，统一使用 Cubic EaseOut；生产按钮与 Toggle 模板改为读取 Token。
+- 新增 `Infrastructure/GscMotion.cs`：统一系统动画/高对比度降级、实例级 Freezable 克隆、微位移与入场淡入。Dashboard、Overview、设置页及生产侧栏接入，Dashboard 不再单独创建入口 Storyboard。
+- 更新运行时回归测试，验证共享 Motion Primitive 对冻结的 Translate/Scale Transform 创建实例级可动画副本。
+
+**验证与边界：**
+
+- `check-xaml.ps1` 通过（24 个 XAML）。`GameSaveCenter.Playnite` Release 构建通过，0 warning / 0 error。
+- 未运行真实 Playnite 宿主；系统“关闭动画”、高对比度、各 DPI 及主题下的实际节奏仍待人工验收。
+
 # 2026-09-11 UI-图标按钮收口
 
 **实现内容：**

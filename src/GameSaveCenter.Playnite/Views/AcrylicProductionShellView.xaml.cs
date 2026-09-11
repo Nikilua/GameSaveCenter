@@ -321,8 +321,8 @@ namespace GameSaveCenter.Playnite.Views
             {
                 From = new GridLength(currentWidth, GridUnitType.Pixel),
                 To = new GridLength(targetWidth, GridUnitType.Pixel),
-                Duration = new Duration(TimeSpan.FromMilliseconds(210)),
-                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+                Duration = new Duration(GscMotion.Normal),
+                EasingFunction = GscMotion.CreateEaseOut()
             };
             widthAnimation.Completed += (_, _) =>
             {
@@ -339,14 +339,14 @@ namespace GameSaveCenter.Playnite.Views
             };
             SidebarColumn.BeginAnimation(ColumnDefinition.WidthProperty, widthAnimation);
             SidebarContentLayer.BeginAnimation(UIElement.OpacityProperty,
-                new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(190))
+                new DoubleAnimation(0, 1, GscMotion.Normal)
                 {
-                    EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+                    EasingFunction = GscMotion.CreateEaseOut()
                 });
             translate.BeginAnimation(TranslateTransform.XProperty,
-                new DoubleAnimation(sidebarCollapsed ? -4 : 4, 0, TimeSpan.FromMilliseconds(190))
+                new DoubleAnimation(sidebarCollapsed ? -4 : 4, 0, GscMotion.Normal)
                 {
-                    EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+                    EasingFunction = GscMotion.CreateEaseOut()
                 });
             SidebarCollapseButton.Focus();
             e.Handled = true;
@@ -377,9 +377,7 @@ namespace GameSaveCenter.Playnite.Views
         }
 
         private bool IsSidebarMotionEnabled
-            => (MotionEnabledProvider?.Invoke() ?? true)
-               && !SystemParameters.HighContrast
-               && SystemParameters.ClientAreaAnimation;
+            => GscMotion.IsEnabled(MotionEnabledProvider?.Invoke() ?? true);
 
         internal bool SidebarMotionEnabledForAudit => IsSidebarMotionEnabled;
         internal GameSaveCenter.Playnite.Controls.Button SidebarCollapseButtonForAudit => SidebarCollapseButton;

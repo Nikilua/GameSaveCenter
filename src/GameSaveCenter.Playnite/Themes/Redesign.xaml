@@ -7,6 +7,7 @@
         <!-- Redesign's semantic aliases use StaticResource, so Typography must be in this
              dictionary's own parse scope rather than only nested under DesignTokens. -->
         <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/Typography.xaml"/>
+        <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/MotionTokens.xaml"/>
         <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/WpfUiProduction.xaml"/>
         <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/ButtonStyles.xaml"/>
     </ResourceDictionary.MergedDictionaries>

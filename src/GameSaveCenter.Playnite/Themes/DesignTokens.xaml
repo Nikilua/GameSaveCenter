@@ -4,6 +4,7 @@
                     xmlns:primitives="clr-namespace:System.Windows.Controls.Primitives;assembly=PresentationFramework">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/Typography.xaml"/>
+        <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/MotionTokens.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     <!-- Shared defaults. Runtime palette adaptation replaces the theme-sensitive brushes locally. -->
     <!-- Deterministic fallback values mirror the standalone demo. Runtime Playnite theme

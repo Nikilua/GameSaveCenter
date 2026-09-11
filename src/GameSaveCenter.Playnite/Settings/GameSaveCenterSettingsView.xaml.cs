@@ -48,7 +48,7 @@ namespace GameSaveCenter.Playnite.Settings
 
         private GameSaveCenterSettings? CurrentSettings => DataContext as GameSaveCenterSettings;
 
-        private bool MotionEnabled => (CurrentSettings?.EnableUiAnimations ?? true) && !SystemParameters.HighContrast && SystemParameters.ClientAreaAnimation;
+        private bool MotionEnabled => GscMotion.IsEnabled(CurrentSettings?.EnableUiAnimations ?? true);
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
@@ -559,18 +559,7 @@ namespace GameSaveCenter.Playnite.Settings
                 return;
             }
 
-            var translate = new TranslateTransform(0, 14);
-            SettingsShell.RenderTransform = translate;
-            SettingsShell.BeginAnimation(UIElement.OpacityProperty,
-                new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(270))
-                {
-                    EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
-                });
-            translate.BeginAnimation(TranslateTransform.YProperty,
-                new DoubleAnimation(14, 0, TimeSpan.FromMilliseconds(310))
-                {
-                    EasingFunction = new QuarticEase { EasingMode = EasingMode.EaseOut }
-                });
+            GscMotion.AnimateEntrance(SettingsShell, 12);
         }
 
         private void ApplyAdaptiveTheme()

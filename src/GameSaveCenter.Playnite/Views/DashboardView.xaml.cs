@@ -69,7 +69,7 @@ namespace GameSaveCenter.Playnite.Views
             PreviewKeyDown += OnPreviewKeyDown;
         }
 
-        private bool MotionEnabled => plugin.Settings.EnableUiAnimations && !SystemParameters.HighContrast && SystemParameters.ClientAreaAnimation;
+        private bool MotionEnabled => GscMotion.IsEnabled(plugin.Settings.EnableUiAnimations);
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
@@ -926,20 +926,17 @@ namespace GameSaveCenter.Playnite.Views
         }
 
         private void OnNavigationMouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-            => AnimateTranslate(sender as FrameworkElement, 3, 0, 140);
+            => AnimateTranslate(sender as FrameworkElement, 3, 0, GscMotion.Fast);
 
         private void OnNavigationMouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
-            => AnimateTranslate(sender as FrameworkElement, 0, 0, 160);
+            => AnimateTranslate(sender as FrameworkElement, 0, 0, GscMotion.Fast);
 
-        private void AnimateTranslate(FrameworkElement? element, double x, double y, int milliseconds)
+        private void AnimateTranslate(FrameworkElement? element, double x, double y, TimeSpan duration)
         {
             try
             {
                 if (element == null || !MotionEnabled) return;
-                var translate = GetMutableTranslateTransform(element);
-                var easing = new CubicEase { EasingMode = EasingMode.EaseOut };
-                translate.BeginAnimation(TranslateTransform.XProperty, new DoubleAnimation(x, TimeSpan.FromMilliseconds(milliseconds)) { EasingFunction = easing });
-                translate.BeginAnimation(TranslateTransform.YProperty, new DoubleAnimation(y, TimeSpan.FromMilliseconds(milliseconds)) { EasingFunction = easing });
+                GscMotion.AnimateTranslate(element, x, y, duration);
             }
             catch (Exception ex)
             {
@@ -954,9 +951,9 @@ namespace GameSaveCenter.Playnite.Views
             try
             {
                 if (element == null || !MotionEnabled) return;
-                var scale = GetMutableScaleTransform(element);
+                var scale = GscMotion.GetMutableScaleTransform(element);
                 element.RenderTransformOrigin = new Point(0.5, 0.5);
-                var easing = new CubicEase { EasingMode = EasingMode.EaseOut };
+                var easing = GscMotion.CreateEaseOut();
                 scale.BeginAnimation(ScaleTransform.ScaleXProperty, new DoubleAnimation(scaleValue, TimeSpan.FromMilliseconds(milliseconds)) { EasingFunction = easing });
                 scale.BeginAnimation(ScaleTransform.ScaleYProperty, new DoubleAnimation(scaleValue, TimeSpan.FromMilliseconds(milliseconds)) { EasingFunction = easing });
             }
@@ -975,23 +972,7 @@ namespace GameSaveCenter.Playnite.Views
                 return;
             }
 
-            MainShell.RenderTransform = new TranslateTransform(0, 16);
-            var storyboard = new Storyboard();
-            var fade = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(280))
-            {
-                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
-            };
-            var move = new DoubleAnimation(16, 0, TimeSpan.FromMilliseconds(320))
-            {
-                EasingFunction = new QuarticEase { EasingMode = EasingMode.EaseOut }
-            };
-            Storyboard.SetTarget(fade, MainShell);
-            Storyboard.SetTargetProperty(fade, new PropertyPath(UIElement.OpacityProperty));
-            Storyboard.SetTarget(move, MainShell);
-            Storyboard.SetTargetProperty(move, new PropertyPath("(UIElement.RenderTransform).(TranslateTransform.Y)"));
-            storyboard.Children.Add(fade);
-            storyboard.Children.Add(move);
-            storyboard.Begin(this, HandoffBehavior.SnapshotAndReplace, true);
+            GscMotion.AnimateEntrance(MainShell, 12);
         }
 
         private void AnimateElement(FrameworkElement element, double offsetX, double offsetY, double seconds)
@@ -1003,13 +984,13 @@ namespace GameSaveCenter.Playnite.Views
                 return;
             }
 
-            var translate = GetMutableTranslateTransform(element);
+            var translate = GscMotion.GetMutableTranslateTransform(element);
 
             translate.X = offsetX;
             translate.Y = offsetY;
             element.Opacity = 0.72;
             var duration = TimeSpan.FromSeconds(seconds);
-            var easing = new CubicEase { EasingMode = EasingMode.EaseOut };
+            var easing = GscMotion.CreateEaseOut();
             element.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(0.72, 1, duration) { EasingFunction = easing });
             translate.BeginAnimation(TranslateTransform.XProperty, new DoubleAnimation(offsetX, 0, duration) { EasingFunction = easing });
             translate.BeginAnimation(TranslateTransform.YProperty, new DoubleAnimation(offsetY, 0, duration) { EasingFunction = easing });
@@ -1018,54 +999,14 @@ namespace GameSaveCenter.Playnite.Views
         private void AnimateStatusPill()
         {
             if (StatusPill == null || !MotionEnabled) return;
-            var scale = GetMutableScaleTransform(StatusPill);
+            var scale = GscMotion.GetMutableScaleTransform(StatusPill);
             StatusPill.RenderTransformOrigin = new Point(0, 0.5);
 
-            var duration = TimeSpan.FromMilliseconds(180);
-            var easing = new CubicEase { EasingMode = EasingMode.EaseOut };
+            var duration = GscMotion.Normal;
+            var easing = GscMotion.CreateEaseOut();
             StatusPill.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(0.58, 1, duration) { EasingFunction = easing });
             scale.BeginAnimation(ScaleTransform.ScaleXProperty, new DoubleAnimation(0.985, 1, duration) { EasingFunction = easing });
             scale.BeginAnimation(ScaleTransform.ScaleYProperty, new DoubleAnimation(0.985, 1, duration) { EasingFunction = easing });
-        }
-
-        private static TranslateTransform GetMutableTranslateTransform(FrameworkElement element)
-        {
-            var translate = element.RenderTransform as TranslateTransform;
-            if (translate == null)
-            {
-                translate = new TranslateTransform();
-                element.RenderTransform = translate;
-                return translate;
-            }
-
-            // Freezables declared in a Style setter are shared and frozen by WPF. They cannot be
-            // animated directly, so every element must receive its own mutable clone first.
-            if (translate.IsFrozen)
-            {
-                translate = (TranslateTransform)translate.CloneCurrentValue();
-                element.RenderTransform = translate;
-            }
-
-            return translate;
-        }
-
-        private static ScaleTransform GetMutableScaleTransform(FrameworkElement element)
-        {
-            var scale = element.RenderTransform as ScaleTransform;
-            if (scale == null)
-            {
-                scale = new ScaleTransform(1, 1);
-                element.RenderTransform = scale;
-                return scale;
-            }
-
-            if (scale.IsFrozen)
-            {
-                scale = (ScaleTransform)scale.CloneCurrentValue();
-                element.RenderTransform = scale;
-            }
-
-            return scale;
         }
 
         private void OnUiNotificationRequested(object? sender, UiNotificationEventArgs e)
@@ -1213,12 +1154,12 @@ namespace GameSaveCenter.Playnite.Views
         {
             DialogOverlay.Visibility = Visibility.Visible;
             DialogCard.Opacity = MotionEnabled ? 0 : 1;
-            var translate = GetMutableTranslateTransform(DialogCard);
+            var translate = GscMotion.GetMutableTranslateTransform(DialogCard);
             translate.Y = MotionEnabled ? 14 : 0;
             if (MotionEnabled)
             {
-                var duration = TimeSpan.FromMilliseconds(210);
-                var easing = new CubicEase { EasingMode = EasingMode.EaseOut };
+                var duration = GscMotion.Normal;
+                var easing = GscMotion.CreateEaseOut();
                 DialogCard.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, duration) { EasingFunction = easing });
                 translate.BeginAnimation(TranslateTransform.YProperty, new DoubleAnimation(14, 0, duration) { EasingFunction = easing });
             }
@@ -1410,8 +1351,8 @@ namespace GameSaveCenter.Playnite.Views
 
             if (MotionEnabled)
             {
-                var duration = TimeSpan.FromMilliseconds(230);
-                var easing = new CubicEase { EasingMode = EasingMode.EaseOut };
+                var duration = GscMotion.Normal;
+                var easing = GscMotion.CreateEaseOut();
                 card.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, duration) { EasingFunction = easing });
                 ((TranslateTransform)card.RenderTransform).BeginAnimation(TranslateTransform.XProperty, new DoubleAnimation(18, 0, duration) { EasingFunction = easing });
             }

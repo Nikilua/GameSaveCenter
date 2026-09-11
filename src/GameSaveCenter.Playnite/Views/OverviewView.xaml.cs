@@ -5,6 +5,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using GameSaveCenter.Playnite.Infrastructure;
 
 namespace GameSaveCenter.Playnite.Views
 {
@@ -25,39 +26,15 @@ namespace GameSaveCenter.Playnite.Views
         public OverviewView() => InitializeComponent();
 
         private void OnStatCardMouseEnter(object sender, MouseEventArgs e)
-            => AnimateTranslate(sender as FrameworkElement, 0, -3, 160);
+            => AnimateTranslate(sender as FrameworkElement, 0, -3, GscMotion.Normal);
 
         private void OnStatCardMouseLeave(object sender, MouseEventArgs e)
-            => AnimateTranslate(sender as FrameworkElement, 0, 0, 180);
+            => AnimateTranslate(sender as FrameworkElement, 0, 0, GscMotion.Normal);
 
-        private void AnimateTranslate(FrameworkElement? element, double x, double y, int milliseconds)
+        private void AnimateTranslate(FrameworkElement? element, double x, double y, TimeSpan duration)
         {
-            if (element == null || !UiAnimationsEnabled || SystemParameters.HighContrast || !SystemParameters.ClientAreaAnimation) return;
-            var translate = GetMutableTranslateTransform(element);
-            var easing = new CubicEase { EasingMode = EasingMode.EaseOut };
-            translate.BeginAnimation(TranslateTransform.XProperty, new DoubleAnimation(x, TimeSpan.FromMilliseconds(milliseconds)) { EasingFunction = easing });
-            translate.BeginAnimation(TranslateTransform.YProperty, new DoubleAnimation(y, TimeSpan.FromMilliseconds(milliseconds)) { EasingFunction = easing });
-        }
-
-        private static TranslateTransform GetMutableTranslateTransform(FrameworkElement element)
-        {
-            var translate = element.RenderTransform as TranslateTransform;
-            if (translate == null)
-            {
-                translate = new TranslateTransform();
-                element.RenderTransform = translate;
-                return translate;
-            }
-
-            // Freezables declared in a Style setter are shared and frozen by WPF. They cannot be
-            // animated directly, so every element must receive its own mutable clone first.
-            if (translate.IsFrozen)
-            {
-                translate = (TranslateTransform)translate.CloneCurrentValue();
-                element.RenderTransform = translate;
-            }
-
-            return translate;
+            if (element == null || !GscMotion.IsEnabled(UiAnimationsEnabled)) return;
+            GscMotion.AnimateTranslate(element, x, y, duration);
         }
 
         public GridLength OverviewCompactSecondaryRowHeight

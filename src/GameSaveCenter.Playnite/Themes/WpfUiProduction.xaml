@@ -7,6 +7,7 @@
              type-keyed defaults in the same resource scope as the production adapters; a
              sibling merge at the UserControl level is too late in Playnite's XAML loader. -->
         <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/WpfUiBase.xaml"/>
+        <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/MotionTokens.xaml"/>
         <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/GscIconPack.xaml"/>
         <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/GscIconButtonPack.xaml"/>
     </ResourceDictionary.MergedDictionaries>
@@ -816,14 +817,14 @@
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="HoverOverlay" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.12"/>
+                                        <DoubleAnimation Storyboard.TargetName="HoverOverlay" Storyboard.TargetProperty="Opacity" To="1" Duration="{StaticResource GscMotionFast}" EasingFunction="{StaticResource GscMotionEaseOut}"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.EnterActions>
                             <Trigger.ExitActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="HoverOverlay" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.16"/>
+                                        <DoubleAnimation Storyboard.TargetName="HoverOverlay" Storyboard.TargetProperty="Opacity" To="0" Duration="{StaticResource GscMotionFast}" EasingFunction="{StaticResource GscMotionEaseOut}"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.ExitActions>
@@ -833,18 +834,18 @@
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="PressedOverlay" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.08"/>
-                                        <DoubleAnimation Storyboard.TargetName="ButtonChrome" Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)" To="0.97" Duration="0:0:0.08"/>
-                                        <DoubleAnimation Storyboard.TargetName="ButtonChrome" Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)" To="0.97" Duration="0:0:0.08"/>
+                                        <DoubleAnimation Storyboard.TargetName="PressedOverlay" Storyboard.TargetProperty="Opacity" To="1" Duration="{StaticResource GscMotionPress}" EasingFunction="{StaticResource GscMotionEaseOut}"/>
+                                        <DoubleAnimation Storyboard.TargetName="ButtonChrome" Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)" To="0.97" Duration="{StaticResource GscMotionPress}" EasingFunction="{StaticResource GscMotionEaseOut}"/>
+                                        <DoubleAnimation Storyboard.TargetName="ButtonChrome" Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)" To="0.97" Duration="{StaticResource GscMotionPress}" EasingFunction="{StaticResource GscMotionEaseOut}"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.EnterActions>
                             <Trigger.ExitActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="PressedOverlay" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.1"/>
-                                        <DoubleAnimation Storyboard.TargetName="ButtonChrome" Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.1"/>
-                                        <DoubleAnimation Storyboard.TargetName="ButtonChrome" Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)" To="1" Duration="0:0:0.1"/>
+                                        <DoubleAnimation Storyboard.TargetName="PressedOverlay" Storyboard.TargetProperty="Opacity" To="0" Duration="{StaticResource GscMotionPress}" EasingFunction="{StaticResource GscMotionEaseOut}"/>
+                                        <DoubleAnimation Storyboard.TargetName="ButtonChrome" Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)" To="1" Duration="{StaticResource GscMotionPress}" EasingFunction="{StaticResource GscMotionEaseOut}"/>
+                                        <DoubleAnimation Storyboard.TargetName="ButtonChrome" Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)" To="1" Duration="{StaticResource GscMotionPress}" EasingFunction="{StaticResource GscMotionEaseOut}"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.ExitActions>
@@ -996,14 +997,14 @@
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="Thumb" Storyboard.TargetProperty="RenderTransform.(TranslateTransform.X)" To="17" Duration="0:0:0.14"/>
+                                        <DoubleAnimation Storyboard.TargetName="Thumb" Storyboard.TargetProperty="RenderTransform.(TranslateTransform.X)" To="17" Duration="{StaticResource GscMotionFast}" EasingFunction="{StaticResource GscMotionEaseOut}"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.EnterActions>
                             <Trigger.ExitActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="Thumb" Storyboard.TargetProperty="RenderTransform.(TranslateTransform.X)" To="0" Duration="0:0:0.14"/>
+                                        <DoubleAnimation Storyboard.TargetName="Thumb" Storyboard.TargetProperty="RenderTransform.(TranslateTransform.X)" To="0" Duration="{StaticResource GscMotionFast}" EasingFunction="{StaticResource GscMotionEaseOut}"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.ExitActions>

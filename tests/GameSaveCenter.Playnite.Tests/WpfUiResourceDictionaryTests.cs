@@ -16,6 +16,7 @@ using GameSaveCenter.Playnite;
 using GameSaveCenter.Playnite.Settings;
 using GameSaveCenter.Playnite.Views;
 using GameSaveCenter.Playnite.Controls;
+using GameSaveCenter.Playnite.Infrastructure;
 using WpfPath = System.Windows.Shapes.Path;
 using WpfShape = System.Windows.Shapes.Shape;
 using Xunit;
@@ -729,7 +730,7 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
-    public void DashboardAnimationsCloneFrozenTransformsBeforeTheyAreAnimated()
+    public void SharedMotionPrimitivesCloneFrozenTransformsBeforeTheyAreAnimated()
     {
         Exception? exception = null;
 
@@ -745,10 +746,10 @@ public sealed class WpfUiResourceDictionaryTests
                 var frozenScale = (ScaleTransform)scaleElement.RenderTransform;
                 frozenScale.Freeze();
 
-                var translateMethod = typeof(DashboardView).GetMethod(
+                var translateMethod = typeof(GscMotion).GetMethod(
                     "GetMutableTranslateTransform",
                     BindingFlags.Static | BindingFlags.NonPublic);
-                var scaleMethod = typeof(DashboardView).GetMethod(
+                var scaleMethod = typeof(GscMotion).GetMethod(
                     "GetMutableScaleTransform",
                     BindingFlags.Static | BindingFlags.NonPublic);
 
@@ -3481,15 +3482,13 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("<EventSetter Event=\"MouseLeave\" Handler=\"OnStatCardMouseLeave\"/>", overviewText);
         Assert.Contains("RenderTransformOrigin", overviewText);
 
-        // The dashboard motion gate must reach the overview cards so animations are
-        // disabled when the user turns off animations, enables High Contrast, or the
-        // system disables client-area animation.
+        // The dashboard motion gate must reach the overview cards. The shared service
+        // disables animation for the user setting, High Contrast and system preferences.
         var dashboardCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml.cs"));
         Assert.Contains("OverviewWorkspaceView.UiAnimationsEnabled = MotionEnabled;", dashboardCode);
         var overviewCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml.cs"));
-        Assert.Contains("SystemParameters.HighContrast", overviewCode);
-        Assert.Contains("SystemParameters.ClientAreaAnimation", overviewCode);
-        Assert.Contains("AnimateTranslate(sender as FrameworkElement, 0, -3, 160)", overviewCode);
+        Assert.Contains("GscMotion.IsEnabled(UiAnimationsEnabled)", overviewCode);
+        Assert.Contains("AnimateTranslate(sender as FrameworkElement, 0, -3, GscMotion.Normal)", overviewCode);
     }
 
     [Fact]
