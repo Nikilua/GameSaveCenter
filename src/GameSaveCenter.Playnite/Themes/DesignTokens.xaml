@@ -32,14 +32,17 @@
     <SolidColorBrush x:Key="GscOnAccentPressedOverlayBrush" Color="#22000000"/>
     <SolidColorBrush x:Key="GscMutedStatusBrush" Color="#828A99"/>
     <LinearGradientBrush x:Key="GscButtonGlassBrush" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Color="#D02E3444" Offset="0"/>
-        <GradientStop Color="#B82A303D" Offset="1"/>
+        <!-- A control needs enough of the shell to show through to read as material.
+             The runtime palette replaces these stops for every theme; these values are
+             the safe dark fallback used before the Playnite palette is available. -->
+        <GradientStop Color="#60343D52" Offset="0"/>
+        <GradientStop Color="#50404A60" Offset="1"/>
     </LinearGradientBrush>
     <SolidColorBrush x:Key="GscButtonGlassBorderBrush" Color="#38FFFFFF"/>
     <SolidColorBrush x:Key="GscButtonGlassHighlightBrush" Color="#2DFFFFFF"/>
     <LinearGradientBrush x:Key="GscPrimaryButtonBrush" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Color="#7C8CF8" Offset="0"/>
-        <GradientStop Color="#6A78DD" Offset="1"/>
+        <GradientStop Color="#7085B4FF" Offset="0"/>
+        <GradientStop Color="#6085FFB0" Offset="1"/>
     </LinearGradientBrush>
     <Color x:Key="GscSoftShadowColor">#22000000</Color>
     <Color x:Key="GscPopupShadowColor">#5C000000</Color>
@@ -536,22 +539,30 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="Chrome"
-                            CornerRadius="13"
+                            CornerRadius="14"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             Padding="{TemplateBinding Padding}"
                             RenderTransformOrigin="0.5,0.5">
                         <Border.RenderTransform><ScaleTransform ScaleX="1" ScaleY="1"/></Border.RenderTransform>
-                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                          RecognizesAccessKey="True"
-                                          SnapsToDevicePixels="True"/>
+                        <Grid>
+                            <Border x:Name="TopHighlight"
+                                    Height="1"
+                                    VerticalAlignment="Top"
+                                    Background="{DynamicResource GscButtonGlassHighlightBrush}"
+                                    Opacity="0.72"
+                                    IsHitTestVisible="False"/>
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              RecognizesAccessKey="True"
+                                              SnapsToDevicePixels="True"/>
+                        </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Chrome" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
                             <Setter TargetName="Chrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
+                            <Setter TargetName="TopHighlight" Property="Opacity" Value="1"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
                             <Setter TargetName="Chrome" Property="RenderTransform">
@@ -575,14 +586,21 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border x:Name="Chrome" CornerRadius="12" Background="{TemplateBinding Background}"
+                    <Border x:Name="Chrome" CornerRadius="14" Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1"
                             Padding="{TemplateBinding Padding}" RenderTransformOrigin="0.5,0.5"
                             Effect="{DynamicResource GscPrimaryButtonEffect}">
                         <Border.RenderTransform><ScaleTransform ScaleX="1" ScaleY="1"/></Border.RenderTransform>
-                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                          RecognizesAccessKey="True" SnapsToDevicePixels="True"/>
+                        <Grid>
+                            <Border Height="1"
+                                    VerticalAlignment="Top"
+                                    Background="{DynamicResource GscOnAccentHoverOverlayBrush}"
+                                    Opacity="0.62"
+                                    IsHitTestVisible="False"/>
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              RecognizesAccessKey="True" SnapsToDevicePixels="True"/>
+                        </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Chrome" Property="Opacity" Value="0.9"/></Trigger>

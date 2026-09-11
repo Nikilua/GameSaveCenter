@@ -271,10 +271,10 @@ namespace GameSaveCenter.Playnite.Infrastructure
             var buttonGlassBottom = Blend(Opaque(palette.StrongSurfaceBottom), Opaque(palette.AccentPressed), palette.IsDark ? 0.045 : 0.025);
             var buttonGlassTopOpacity = SystemParameters.HighContrast || !palette.GlassEnabled
                 ? 1
-                : palette.IsDark ? 0.86 : 0.91;
+                : palette.IsDark ? 0.60 : 0.66;
             var buttonGlassBottomOpacity = SystemParameters.HighContrast || !palette.GlassEnabled
                 ? 1
-                : palette.IsDark ? 0.80 : 0.87;
+                : palette.IsDark ? 0.50 : 0.58;
             resources["GscButtonGlassBrush"] = Gradient(
                 WithAlpha(buttonGlassTop, buttonGlassTopOpacity),
                 WithAlpha(buttonGlassBottom, buttonGlassBottomOpacity));
@@ -288,10 +288,10 @@ namespace GameSaveCenter.Playnite.Infrastructure
                     : WithAlpha(Opaque(palette.PrimaryText), palette.IsDark ? 0.18 : 0.20));
             var primaryButtonTop = SystemParameters.HighContrast || !palette.GlassEnabled
                 ? Opaque(palette.Accent)
-                : WithAlpha(Blend(Opaque(palette.Accent), Opaque(palette.StrongSurfaceTop), palette.IsDark ? 0.10 : 0.08), palette.IsDark ? 0.84 : 0.88);
+                : WithAlpha(Blend(Opaque(palette.Accent), Opaque(palette.StrongSurfaceTop), palette.IsDark ? 0.10 : 0.08), palette.IsDark ? 0.72 : 0.76);
             var primaryButtonBottom = SystemParameters.HighContrast || !palette.GlassEnabled
                 ? Opaque(palette.AccentPressed)
-                : WithAlpha(Blend(Opaque(palette.AccentPressed), Opaque(palette.StrongSurfaceBottom), palette.IsDark ? 0.16 : 0.12), palette.IsDark ? 0.78 : 0.84);
+                : WithAlpha(Blend(Opaque(palette.AccentPressed), Opaque(palette.StrongSurfaceBottom), palette.IsDark ? 0.16 : 0.12), palette.IsDark ? 0.64 : 0.70);
             resources["GscPrimaryButtonBrush"] = Gradient(primaryButtonTop, primaryButtonBottom);
             resources["GscPrimaryButtonBorderBrush"] = Brush(
                 SystemParameters.HighContrast || !palette.GlassEnabled
@@ -327,7 +327,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
         public static void ApplyMaterialResources(ResourceDictionary resources, AdaptiveThemePalette palette, bool glassEnabled, bool motionEnabled)
         {
             resources["GscSurfaceEffect"] = CreateShadowEffect(glassEnabled, Colors.Black, 14, 2, palette.IsDark ? 0.34 : 0.24);
-            resources["GscPrimaryButtonEffect"] = CreateShadowEffect(glassEnabled, palette.Accent, 12, 2, palette.IsDark ? 0.32 : 0.28);
+            resources["GscPrimaryButtonEffect"] = CreateShadowEffect(glassEnabled, palette.Accent, 18, 0, 0.40);
             resources["GscSidebarEffect"] = CreateShadowEffect(glassEnabled, Colors.Black, 24, 3, palette.IsDark ? 0.42 : 0.30);
             resources["GscPopupEffect"] = CreateShadowEffect(glassEnabled, Colors.Black, 20, 5, palette.IsDark ? 0.46 : 0.38);
             resources["GscDialogEffect"] = CreateShadowEffect(glassEnabled, Colors.Black, 34, 8, palette.IsDark ? 0.52 : 0.44);
@@ -598,7 +598,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             var canvasMiddle = isDark ? Color.FromRgb(23, 26, 32) : Color.FromRgb(233, 234, 240);
             var canvasEnd = isDark ? Color.FromRgb(19, 21, 25) : Color.FromRgb(228, 230, 237);
             var card = isDark ? Color.FromArgb(0xEE, 0x26, 0x2B, 0x36) : Color.FromArgb(0xF5, 0xFF, 0xFF, 0xFF);
-            var cardStroke = isDark ? Color.FromArgb(0x17, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x12, 0x00, 0x00, 0x00);
+            var cardStroke = isDark ? Color.FromArgb(0x12, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x0F, 0x00, 0x00, 0x00);
             var cardHoverStroke = isDark ? Color.FromArgb(0x2E, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x24, 0x00, 0x00, 0x00);
             var header = isDark ? Color.FromArgb(0xA0, 0x20, 0x24, 0x30) : Color.FromArgb(0x8C, 0xF2, 0xF4, 0xFA);
             var sidebar = isDark ? Color.FromArgb(0x8C, 0x1B, 0x1F, 0x2A) : Color.FromArgb(0xA9, 0xF4, 0xF6, 0xFB);

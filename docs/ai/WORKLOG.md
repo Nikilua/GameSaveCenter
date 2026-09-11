@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-11 Glass 材质层透明度与层次收敛
+
+- 未新增第二套 UI：保留 `GlassButton → GscWpfUiSecondaryButton → GscWpfUiButton`，在 `AdaptiveThemePalette` 的运行时令牌中把普通按钮的玻璃停靠在深色 `60%→50%`、浅色 `66%→58%` 透明度区间；高对比度和关闭玻璃仍保持不透明回退。
+- `GscWpfUiButton` 与原生 `GscButtonBase` 同步为 14 DIP 圆角和 1 DIP 顶部高光；现有 Hover、键盘焦点、Disabled 与模板实例级 0.97 Pressed 缩放不改，命令、Binding、布局均未改变。`GscWpfUiToggleSwitch` 已是生产自定义胶囊开关，无须再新增控件。
+- Primary 改为半透明主题蓝渐变，并仅在玻璃可用时使用 18 DIP、零偏移、40% 不透明度的强调色辉光；表格框改用低对比卡片描边，运行时卡片描边也从 `#17/#12` 降至 `#12/#0F`（深/浅），降低硬边感。
+- `validate-source.py`、XAML 结构检查、`git diff --check` 均通过；Release 单进程构建为 `0 warnings / 0 errors`，定向 `WpfUiResourceDictionaryTests` 通过（既有布局基线项按约定跳过）。WPF 静态审查 `0 errors / 22 warnings / 176 info`，warnings/info 为既有 Canvas、有限视口和令牌字典提示。真实 Playnite/FusionX、用户背景、DPI 与透明开关仍需重启宿主后人工复核。
+
 ## 2026-09-10 实际宿主扩展刷新
 
 - 用户反馈“按钮仍没有变化”后，先比较源码与实际 Playnite 扩展目录，确认旧安装目录的 `GameSaveCenter.Playnite.dll`（15:45）和 `icon.png`（8 月 2 日）均不同于当前源码/资产；问题是宿主仍加载旧包，不能归因于用户观察。

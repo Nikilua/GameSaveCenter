@@ -722,7 +722,7 @@
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="ContentTemplate" Value="{StaticResource GscWpfUiButtonTextTemplate}"/>
-        <Setter Property="ui:Button.CornerRadius" Value="13"/>
+        <Setter Property="ui:Button.CornerRadius" Value="14"/>
         <!-- Use the shared button glass surface for every existing ui:Button style. Pages already
              inherit this primitive, so the visual refresh is applied consistently without
              renaming hundreds of command bindings or changing their layout contracts. -->
@@ -747,7 +747,7 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             Padding="0"
-                            CornerRadius="13"
+                            CornerRadius="14"
                             ClipToBounds="True"
                             RenderTransformOrigin="0.5,0.5"
                             SnapsToDevicePixels="True">
@@ -761,26 +761,26 @@
                                  adorner remains active as the high-contrast keyboard ring. -->
                             <Border x:Name="FocusOverlay"
                                     Background="{DynamicResource GscAccentTintBrush}"
-                                    CornerRadius="13"
+                                    CornerRadius="14"
                                     Opacity="0"
                                     IsHitTestVisible="False"/>
                             <!-- Demo LabBtn state layers animate only overlay opacity, never
                                  layout dimensions, and now cover the entire rounded chrome. -->
                             <Border x:Name="HoverOverlay"
                                     Background="{DynamicResource GscAccentTintBrush}"
-                                    CornerRadius="13"
+                                    CornerRadius="14"
                                     Opacity="0"
                                     IsHitTestVisible="False"/>
                             <Border x:Name="PressedOverlay"
                                     Background="{DynamicResource GscAccentTintStrongBrush}"
-                                    CornerRadius="13"
+                                    CornerRadius="14"
                                     Opacity="0"
                                     IsHitTestVisible="False"/>
                             <Border x:Name="ButtonHighlight"
-                                    BorderBrush="{DynamicResource GscButtonGlassHighlightBrush}"
-                                    BorderThickness="1,1,1,0"
-                                    CornerRadius="13"
-                                    Opacity="1"
+                                    Height="1"
+                                    VerticalAlignment="Top"
+                                    Background="{DynamicResource GscButtonGlassHighlightBrush}"
+                                    Opacity="0.72"
                                     IsHitTestVisible="False"/>
                             <!-- Stretch gives the shared text template a bounded measure so
                                  its ellipsis can work at narrow responsive widths. -->
@@ -803,6 +803,7 @@
                             <Setter TargetName="HoverOverlay" Property="Background" Value="{DynamicResource GscOnAccentHoverOverlayBrush}"/>
                             <Setter TargetName="PressedOverlay" Property="Background" Value="{DynamicResource GscOnAccentPressedOverlayBrush}"/>
                             <Setter TargetName="ButtonHighlight" Property="BorderBrush" Value="{DynamicResource GscOnAccentHoverOverlayBrush}"/>
+                            <Setter TargetName="ButtonHighlight" Property="Background" Value="{DynamicResource GscOnAccentHoverOverlayBrush}"/>
                             <Setter Property="Foreground" Value="{DynamicResource GscOnAccentTextBrush}"/>
                         </Trigger>
                         <Trigger Property="Appearance" Value="Danger">
@@ -813,6 +814,7 @@
                             <Setter TargetName="HoverOverlay" Property="Background" Value="{DynamicResource GscOnAccentHoverOverlayBrush}"/>
                             <Setter TargetName="PressedOverlay" Property="Background" Value="{DynamicResource GscOnAccentPressedOverlayBrush}"/>
                             <Setter TargetName="ButtonHighlight" Property="BorderBrush" Value="{DynamicResource GscOnAccentHoverOverlayBrush}"/>
+                            <Setter TargetName="ButtonHighlight" Property="Background" Value="{DynamicResource GscOnAccentHoverOverlayBrush}"/>
                             <Setter Property="Foreground" Value="{DynamicResource GscOnAccentTextBrush}"/>
                         </Trigger>
                         <Trigger Property="Appearance" Value="Transparent">
@@ -820,6 +822,7 @@
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="ButtonChrome" Property="BorderBrush" Value="{DynamicResource GscAccentTintStrongBrush}"/>
+                            <Setter TargetName="ButtonHighlight" Property="Opacity" Value="1"/>
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>

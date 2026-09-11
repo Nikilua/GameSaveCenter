@@ -155,7 +155,7 @@
          and keeps rounded frames consistent across Saves, Media, Trainers and Maintenance. -->
     <Style x:Key="GscRedesignTableFrame" TargetType="Border" BasedOn="{StaticResource GscRedesignSectionCard}">
         <Setter Property="Background" Value="{DynamicResource GscGlassStrongBrush}"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CornerRadius" Value="12"/>
         <Setter Property="Padding" Value="0"/>

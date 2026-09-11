@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-10
 
+## 2026-09-11 Glass 材质层收敛
+
+- 普通生产按钮的最终视觉由 `AdaptiveThemePaletteFactory.ApplyAccentResources` 的 `GscButtonGlassBrush` 决定，不能只改 `DesignTokens.xaml` 静态 fallback；运行时深色为 `60%→50%`、浅色为 `66%→58%`，高对比度/关闭玻璃仍是完全不透明的安全回退。
+- `GscWpfUiButton` 和 `GscButtonBase` 统一使用 14 DIP 圆角及顶部 1 DIP 高光；共享 `ui:Button` 已保留 Hover、Focus、Disabled 与模板实例 `0.97` pressed scale。`GscWpfUiToggleSwitch` 已覆盖生产设置页与工作区，不应新建平行 Toggle 控件。
+- Primary 的 `GscPrimaryButtonEffect` 仅在玻璃可用时使用 18 DIP、零偏移、0.40 opacity 的主题强调色阴影；表格/卡片边界应使用 `GscGlassStrokeBrush` 的低对比层，避免恢复为 `GscControlStrokeBrush` 的输入框级硬边。Release 构建和定向 `WpfUiResourceDictionaryTests` 已通过；真实 Playnite/FusionX、DPI 和用户背景材质仍需人工验收。
+
 ## 2026-09-10 旧安装包导致按钮视觉未更新
 
 - 用户复核按钮无变化后，必须先比较 `src/.../bin/Release/net462/GameSaveCenter.Playnite.dll` 与 `%APPDATA%\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Playnite.dll` 的哈希；本次两者不同，且实际目录的 DLL/icon 时间明显更旧，证明宿主加载的是旧安装包。

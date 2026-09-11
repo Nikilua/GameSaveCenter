@@ -300,8 +300,10 @@ public sealed class WpfUiResourceDictionaryTests
                 Assert.IsType<SolidColorBrush>(localResources["GscMutedStatusBrush"]);
                 var buttonGlass = Assert.IsType<LinearGradientBrush>(localResources["GscButtonGlassBrush"]);
                 Assert.All(buttonGlass.GradientStops, stop => Assert.InRange(stop.Color.A, (byte)1, (byte)254));
+                Assert.All(buttonGlass.GradientStops, stop => Assert.InRange(stop.Color.A, (byte)1, (byte)170));
                 var primaryButton = Assert.IsType<LinearGradientBrush>(localResources["GscPrimaryButtonBrush"]);
                 Assert.All(primaryButton.GradientStops, stop => Assert.InRange(stop.Color.A, (byte)1, (byte)254));
+                Assert.All(primaryButton.GradientStops, stop => Assert.InRange(stop.Color.A, (byte)1, (byte)195));
                 Assert.IsType<SolidColorBrush>(localResources["GscButtonGlassBorderBrush"]);
                 Assert.IsType<SolidColorBrush>(localResources["GscButtonGlassHighlightBrush"]);
                 var strongerPalette = factoryType.GetMethod("Create", BindingFlags.Public | BindingFlags.Static)!.Invoke(
@@ -342,7 +344,10 @@ public sealed class WpfUiResourceDictionaryTests
                 materialResources.Invoke(null, new object[] { strongerMaterialResources, strongerPalette, true, false });
                 Assert.Equal(0d, Assert.IsType<double>(strongerMaterialResources["GscAmbientPageOpacity"]));
                 Assert.IsType<DropShadowEffect>(localResources["GscSurfaceEffect"]);
-                Assert.IsType<DropShadowEffect>(localResources["GscPrimaryButtonEffect"]);
+                var primaryButtonEffect = Assert.IsType<DropShadowEffect>(localResources["GscPrimaryButtonEffect"]);
+                Assert.Equal(18d, primaryButtonEffect.BlurRadius);
+                Assert.Equal(0d, primaryButtonEffect.ShadowDepth);
+                Assert.Equal(0.40d, primaryButtonEffect.Opacity, 3);
                 Assert.IsType<DropShadowEffect>(localResources["GscSidebarEffect"]);
                 var wideWash = Assert.IsType<LinearGradientBrush>(localResources["GscAmbientWideWashBrush"]);
                 Assert.Equal(new Point(0, 0), wideWash.StartPoint);
