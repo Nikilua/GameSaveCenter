@@ -776,12 +776,6 @@
                                     CornerRadius="14"
                                     Opacity="0"
                                     IsHitTestVisible="False"/>
-                            <Border x:Name="ButtonHighlight"
-                                    Height="1"
-                                    VerticalAlignment="Top"
-                                    Background="{DynamicResource GscButtonGlassHighlightBrush}"
-                                    Opacity="0.72"
-                                    IsHitTestVisible="False"/>
                             <!-- Stretch gives the shared text template a bounded measure so
                                  its ellipsis can work at narrow responsive widths. -->
                             <ContentPresenter Content="{TemplateBinding Content}"
@@ -802,8 +796,6 @@
                             <Setter TargetName="FocusOverlay" Property="Background" Value="{DynamicResource GscOnAccentHoverOverlayBrush}"/>
                             <Setter TargetName="HoverOverlay" Property="Background" Value="{DynamicResource GscOnAccentHoverOverlayBrush}"/>
                             <Setter TargetName="PressedOverlay" Property="Background" Value="{DynamicResource GscOnAccentPressedOverlayBrush}"/>
-                            <Setter TargetName="ButtonHighlight" Property="BorderBrush" Value="{DynamicResource GscOnAccentHoverOverlayBrush}"/>
-                            <Setter TargetName="ButtonHighlight" Property="Background" Value="{DynamicResource GscOnAccentHoverOverlayBrush}"/>
                             <Setter Property="Foreground" Value="{DynamicResource GscOnAccentTextBrush}"/>
                         </Trigger>
                         <Trigger Property="Appearance" Value="Danger">
@@ -813,16 +805,10 @@
                             <Setter TargetName="FocusOverlay" Property="Background" Value="{DynamicResource GscOnAccentHoverOverlayBrush}"/>
                             <Setter TargetName="HoverOverlay" Property="Background" Value="{DynamicResource GscOnAccentHoverOverlayBrush}"/>
                             <Setter TargetName="PressedOverlay" Property="Background" Value="{DynamicResource GscOnAccentPressedOverlayBrush}"/>
-                            <Setter TargetName="ButtonHighlight" Property="BorderBrush" Value="{DynamicResource GscOnAccentHoverOverlayBrush}"/>
-                            <Setter TargetName="ButtonHighlight" Property="Background" Value="{DynamicResource GscOnAccentHoverOverlayBrush}"/>
                             <Setter Property="Foreground" Value="{DynamicResource GscOnAccentTextBrush}"/>
-                        </Trigger>
-                        <Trigger Property="Appearance" Value="Transparent">
-                            <Setter TargetName="ButtonHighlight" Property="Opacity" Value="0"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="ButtonChrome" Property="BorderBrush" Value="{DynamicResource GscAccentTintStrongBrush}"/>
-                            <Setter TargetName="ButtonHighlight" Property="Opacity" Value="1"/>
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>

@@ -39,7 +39,6 @@
         <GradientStop Color="#50404A60" Offset="1"/>
     </LinearGradientBrush>
     <SolidColorBrush x:Key="GscButtonGlassBorderBrush" Color="#38FFFFFF"/>
-    <SolidColorBrush x:Key="GscButtonGlassHighlightBrush" Color="#2DFFFFFF"/>
     <LinearGradientBrush x:Key="GscPrimaryButtonBrush" StartPoint="0,0" EndPoint="1,1">
         <GradientStop Color="#7085B4FF" Offset="0"/>
         <GradientStop Color="#6085FFB0" Offset="1"/>
@@ -546,23 +545,14 @@
                             Padding="{TemplateBinding Padding}"
                             RenderTransformOrigin="0.5,0.5">
                         <Border.RenderTransform><ScaleTransform ScaleX="1" ScaleY="1"/></Border.RenderTransform>
-                        <Grid>
-                            <Border x:Name="TopHighlight"
-                                    Height="1"
-                                    VerticalAlignment="Top"
-                                    Background="{DynamicResource GscButtonGlassHighlightBrush}"
-                                    Opacity="0.72"
-                                    IsHitTestVisible="False"/>
-                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              RecognizesAccessKey="True"
-                                              SnapsToDevicePixels="True"/>
-                        </Grid>
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          RecognizesAccessKey="True"
+                                          SnapsToDevicePixels="True"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="Chrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
-                            <Setter TargetName="TopHighlight" Property="Opacity" Value="1"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
                             <Setter TargetName="Chrome" Property="RenderTransform">
@@ -591,16 +581,9 @@
                             Padding="{TemplateBinding Padding}" RenderTransformOrigin="0.5,0.5"
                             Effect="{DynamicResource GscPrimaryButtonEffect}">
                         <Border.RenderTransform><ScaleTransform ScaleX="1" ScaleY="1"/></Border.RenderTransform>
-                        <Grid>
-                            <Border Height="1"
-                                    VerticalAlignment="Top"
-                                    Background="{DynamicResource GscOnAccentHoverOverlayBrush}"
-                                    Opacity="0.62"
-                                    IsHitTestVisible="False"/>
-                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              RecognizesAccessKey="True" SnapsToDevicePixels="True"/>
-                        </Grid>
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          RecognizesAccessKey="True" SnapsToDevicePixels="True"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Chrome" Property="Opacity" Value="0.9"/></Trigger>

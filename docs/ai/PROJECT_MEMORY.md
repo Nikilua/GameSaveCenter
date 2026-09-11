@@ -2,6 +2,11 @@
 
 > 维护时间：2026-09-10
 
+## 2026-09-11 按钮顶部横线回归修复
+
+- 真实任务中心截图中的白色长横线由 `GscWpfUiButton` 的 `ButtonHighlight` 和原生 `GscButtonBase` 的 `TopHighlight` 两个独立 1 DIP 高光层造成；它们与设计概念图不符，已从两条模板和 Primary 模板完全移除。不得以独立横向 `Border` 重新实现按钮高光。
+- 玻璃按钮的可见层次只保留透明渐变、低对比轮廓、Hover/Pressed 覆层和 Primary 的主题辉光；所有命令、Binding、键盘焦点、Disabled 和模板实例级按压缩放不受影响。定向资源测试 `2/2` 与 Release Playnite 构建通过；真实宿主重启后应复核横线不再出现。
+
 ## 2026-09-11 Glass 材质层收敛
 
 - 普通生产按钮的最终视觉由 `AdaptiveThemePaletteFactory.ApplyAccentResources` 的 `GscButtonGlassBrush` 决定，不能只改 `DesignTokens.xaml` 静态 fallback；运行时深色为 `60%→50%`、浅色为 `66%→58%`，高对比度/关闭玻璃仍是完全不透明的安全回退。

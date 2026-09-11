@@ -282,10 +282,6 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 SystemParameters.HighContrast || !palette.GlassEnabled
                     ? Opaque(palette.ControlStroke)
                     : WithAlpha(Opaque(palette.PrimaryText), palette.IsDark ? 0.22 : 0.16));
-            resources["GscButtonGlassHighlightBrush"] = Brush(
-                SystemParameters.HighContrast || !palette.GlassEnabled
-                    ? Opaque(palette.PrimaryText)
-                    : WithAlpha(Opaque(palette.PrimaryText), palette.IsDark ? 0.18 : 0.20));
             var primaryButtonTop = SystemParameters.HighContrast || !palette.GlassEnabled
                 ? Opaque(palette.Accent)
                 : WithAlpha(Blend(Opaque(palette.Accent), Opaque(palette.StrongSurfaceTop), palette.IsDark ? 0.10 : 0.08), palette.IsDark ? 0.72 : 0.76);

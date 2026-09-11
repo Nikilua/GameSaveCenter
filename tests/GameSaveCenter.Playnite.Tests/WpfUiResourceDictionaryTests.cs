@@ -305,7 +305,6 @@ public sealed class WpfUiResourceDictionaryTests
                 Assert.All(primaryButton.GradientStops, stop => Assert.InRange(stop.Color.A, (byte)1, (byte)254));
                 Assert.All(primaryButton.GradientStops, stop => Assert.InRange(stop.Color.A, (byte)1, (byte)195));
                 Assert.IsType<SolidColorBrush>(localResources["GscButtonGlassBorderBrush"]);
-                Assert.IsType<SolidColorBrush>(localResources["GscButtonGlassHighlightBrush"]);
                 var strongerPalette = factoryType.GetMethod("Create", BindingFlags.Public | BindingFlags.Static)!.Invoke(
                     null,
                     new object[] { host, true, 100, GameSaveCenterThemeMode.FollowPlaynite })!;
@@ -594,6 +593,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"FocusOverlay\"", production);
         Assert.Contains("x:Name=\"HoverOverlay\"", production);
         Assert.Contains("x:Name=\"PressedOverlay\"", production);
+        Assert.DoesNotContain("x:Name=\"ButtonHighlight\"", production);
+        Assert.DoesNotContain("x:Name=\"TopHighlight\"", tokens);
         Assert.Contains("Padding=\"0\"", production);
         Assert.Contains("Margin=\"{TemplateBinding Padding}\"", production);
         Assert.Contains("Property=\"IsKeyboardFocusWithin\" Value=\"True\"", production);

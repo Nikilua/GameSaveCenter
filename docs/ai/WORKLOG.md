@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-11 移除按钮顶部伪高光线
+
+- 用户提供的真实任务中心截图确认顶部白色横线来自上一阶段 `GscWpfUiButton` 的 `ButtonHighlight` 与原生 `GscButtonBase` 的 `TopHighlight`：两者都是独立 1 DIP `Border`，会在深色 Playnite 宿主中读成突兀的长白线，不是概念图中的受控反光。
+- 已从两条按钮模板及 Primary 模板移除该装饰层，并清理未再使用的 `GscButtonGlassHighlightBrush` 运行时令牌和诊断导出；玻璃质感继续使用透明渐变、低对比边框、Hover/Pressed 覆层和 Primary 的柔和辉光，不改命令、Binding、焦点或页面布局。
+- 新增防回归断言，禁止两个模板名重新出现；`validate-source.py`、XAML 结构检查、Release Playnite 构建（0 warnings / 0 errors）、定向资源测试 `2/2` 与 WPF 静态审查（0 errors / 22 warnings / 175 info）均通过。真实 Playnite 重启后的截图仍应确认该横线已消失。
+
 ## 2026-09-11 Glass 材质层透明度与层次收敛
 
 - 未新增第二套 UI：保留 `GlassButton → GscWpfUiSecondaryButton → GscWpfUiButton`，在 `AdaptiveThemePalette` 的运行时令牌中把普通按钮的玻璃停靠在深色 `60%→50%`、浅色 `66%→58%` 透明度区间；高对比度和关闭玻璃仍保持不透明回退。
