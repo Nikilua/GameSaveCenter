@@ -109,6 +109,7 @@ public sealed class RestoredAcrylicForkBaselineTests
         Assert.Contains("Padding=\"30,7,38,7\"", tasks);
         Assert.Contains("Margin=\"30,0,12,0\"", tasks);
         Assert.Contains("TaskSearchBoxHost.MinWidth = 420", taskCode);
+        Assert.Contains("var compactFilters = width < 980", taskCode);
         Assert.DoesNotContain("x:Name=\"TaskSearchLabel\"", tasks);
     }
 

@@ -433,9 +433,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(Resources, palette", dashboardCode);
         Assert.Contains("AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(ProductionShellView.Resources, palette", dashboardCode);
         Assert.Contains("foreach (var workspaceView in ProductionShellView.WorkspaceViews)", dashboardCode);
-        Assert.Contains("AdaptiveThemePaletteFactory.ApplyAccentResources(Resources, palette)", settingsCode);
-        Assert.Contains("AdaptiveThemePaletteFactory.ApplyMaterialResources(Resources, palette, glassEnabled, MotionEnabled)", settingsCode);
-        Assert.Contains("AdaptiveThemePaletteFactory.ApplyWpfUiResources(Resources, palette)", settingsCode);
+        Assert.Contains("AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(Resources, palette, glassEnabled, MotionEnabled)", settingsCode);
         Assert.Contains("AdaptiveThemePaletteFactory.ApplySettingsMaterialResources(Resources, palette, glassEnabled)", settingsCode);
 
         foreach (var xamlPath in new[]

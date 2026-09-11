@@ -581,20 +581,11 @@ namespace GameSaveCenter.Playnite.Settings
             var strength = CurrentSettings?.GlassEffectStrength ?? 78;
             var palette = AdaptiveThemePaletteFactory.Create(this, glassEnabled, strength, CurrentSettings?.ThemeMode ?? GameSaveCenterThemeMode.FollowPlaynite);
 
-            AdaptiveThemePaletteFactory.ApplyAccentResources(Resources, palette);
-            AdaptiveThemePaletteFactory.ApplyMaterialResources(Resources, palette, glassEnabled, MotionEnabled);
-            AdaptiveThemePaletteFactory.ApplyWpfUiResources(Resources, palette);
-            Resources["GscPrimaryTextBrush"] = AdaptiveThemePaletteFactory.Brush(palette.PrimaryText);
-            Resources["GscSecondaryTextBrush"] = AdaptiveThemePaletteFactory.Brush(palette.SecondaryText);
-            Resources["GscMutedTextBrush"] = AdaptiveThemePaletteFactory.Brush(palette.MutedText);
-            Resources["GscControlFillBrush"] = AdaptiveThemePaletteFactory.Brush(palette.ControlFill);
-            Resources["GscControlStrokeBrush"] = AdaptiveThemePaletteFactory.Brush(palette.ControlStroke);
-            Resources["GscDividerBrush"] = AdaptiveThemePaletteFactory.Brush(palette.Divider);
-            Resources["GscGlassFillBrush"] = AdaptiveThemePaletteFactory.Gradient(palette.SurfaceTop, palette.SurfaceBottom);
-            Resources["GscGlassStrokeBrush"] = AdaptiveThemePaletteFactory.Brush(palette.ControlStroke);
-            Resources["GscBackdropBrush"] = AdaptiveThemePaletteFactory.Brush(palette.Backdrop);
-            WpfUiThemeScope.Apply(Resources, palette.IsDark);
-            AdaptiveThemePaletteFactory.ApplyDemoCoreResources(Resources, palette.IsDark);
+            // Apply exactly the same complete semantic palette as the production shell.
+            // Settings then overrides only its structural surfaces below, because it has no
+            // selected-game artwork behind it. This prevents a newly added shell token from
+            // silently remaining on the static fallback in the settings window.
+            AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(Resources, palette, glassEnabled, MotionEnabled);
             AdaptiveThemePaletteFactory.ApplySettingsMaterialResources(Resources, palette, glassEnabled);
 
             // Keep the fixed background ambient layer out of the render tree when glass is

@@ -1,6 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
-> 维护时间：2026-09-10
+> 维护时间：2026-09-11
+
+## 2026-09-11 任务窄窗与设置主题同步
+
+- 任务中心筛选栏的紧凑断点为 980 DIP，不能退回 760：760–980 DIP 时完整筛选行的 Auto 列会挤压搜索框，视觉上像右缘缺失。紧凑行保留搜索、状态与刷新，类型、历史范围和时间范围必须仍可通过“更多筛选”完成。
+- 设置和生产壳共享持久化 `ThemeMode` 与 `VisualSettingsChanged`；设置页应用主题时必须先使用 `AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources` 注入完整公共令牌，再调用 `ApplySettingsMaterialResources` 覆写无选中游戏背景的结构表面。不得恢复手工列举一小部分资源的方式，否则新令牌会与主界面漂移。
 
 ## 2026-09-11 按钮顶部横线回归修复
 

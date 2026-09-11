@@ -88,7 +88,12 @@ namespace GameSaveCenter.Playnite.Views
                 // The primary toolbar is a finite Grid rather than a WrapPanel. The
                 // game selector is intentionally kept in the optional disclosure so
                 // the primary controls never reflow into each other.
-                var compactFilters = width < 760;
+                // The non-fullscreen Playnite pane commonly has 760–980 DIP available.
+                // Keeping all six filters in that width gave the auto columns priority and
+                // clipped the right edge of the search field.  Move secondary filters into
+                // the disclosure before the toolbar overflows, leaving search, status and
+                // refresh as one complete primary row.
+                var compactFilters = width < 980;
                 TaskMoreFiltersExpander.Visibility = compactFilters ? Visibility.Visible : Visibility.Collapsed;
                 TaskFilterBar.Padding = compactFilters ? new Thickness(8, 6, 8, 6) : new Thickness(10, 8, 10, 8);
                 TaskMoreFiltersExpander.Margin = compactFilters ? new Thickness(0, 0, 0, 4) : new Thickness(0, 0, 0, 8);

@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-11 任务筛选窄窗与设置色板同步
+
+- 用户提供的非全屏任务中心截图确认筛选栏在 760–980 DIP 区间仍将全部 Auto 列留在主行，挤压搜索框并造成右侧像被截断；`TaskCenterView` 现以 980 DIP 提前折叠次级筛选，主行始终保留搜索、状态与刷新，类型/范围/时间继续通过“更多筛选”访问，命令和绑定未变。
+- 已确认设置与插件主界面使用同一个持久化 `ThemeMode`，并通过 `VisualSettingsChanged` 刷新生产壳；但设置页此前只逐项注入部分运行时令牌，新令牌可能落回静态 fallback，存在同一颜色模式下的材质漂移。设置页改为先调用与主界面相同的 `ApplyRuntimeThemeResources`，再仅覆写其无游戏背景的结构材质。
+- `validate-source.py`、XAML 结构检查、Release Playnite 测试项目构建（0 warnings / 0 errors）、两项定向回归测试 `2/2`、`git diff --check` 与 WPF 静态审查（0 errors / 22 warnings / 175 info）均通过。真实 Playnite 中仍应在非全屏宽度与两种主题下人工复核；设置页没有选中游戏背景导致的环境层差异是刻意保留的。
+
 ## 2026-09-11 移除按钮顶部伪高光线
 
 - 用户提供的真实任务中心截图确认顶部白色横线来自上一阶段 `GscWpfUiButton` 的 `ButtonHighlight` 与原生 `GscButtonBase` 的 `TopHighlight`：两者都是独立 1 DIP `Border`，会在深色 Playnite 宿主中读成突兀的长白线，不是概念图中的受控反光。
