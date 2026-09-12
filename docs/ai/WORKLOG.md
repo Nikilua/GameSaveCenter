@@ -6131,3 +6131,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 隔离 `scripts/package.ps1` 正常包六个程序集同源；`-SkipBuild` 混合 DLL、`+unknown` 插件、脏工作树、无 Git 均按预期停止，环境变量恢复夹具确认调用方值保留。测试只使用 `.tmp` 和 `artifacts`，未操作真实 Playnite 安装目录。
 
 **结果：** 已按最终文档提交后的 Git HEAD 重跑 Release 打包并清理 `.tmp` 构建目录；真实 Playnite 安装/录屏仍待用户环境验收。
+
+## 2026-09-12 UI 显示审查与十项后续计划
+
+- 核对 HEAD 0ede445 与已有未提交的按钮语义调整，读取共享样式和响应式逻辑，补充 `UI_DISPLAY_REVIEW_2026-09-12.md`；未修改生产代码，未安装或启动 Playnite。
+- 实际离屏观察：待归类短窗 fallback 导致底栏离开首屏；设置多错误摘要占用大量高度；任务/首页可压缩概览以增加工作内容。提供十项任务的入口、边界、执行次序与验收标准，并保留四张原始截图。
+- Release 0 warning/0 error；Core 76/76、Worker 310/311（1 skip）、Playnite 435/498（63 skip），失败 0；源码验证通过；WPF 静态检查 24 XAML，0 errors/22 warnings/160 info（本轮未修改 XAML，非零提示未宣称已清理）。
+- 完整 render-qa 退出 -1，239 张部分截图不能代表流程通过；单独 shellqa 首次缺少主题输出目录，补建 theme/light、theme/dark 后通过。旧空表/漂移及物理 DPI/宿主主题仍待真实验收，已列 D12-10。
+- Git 交付只包含本轮文档、证据和本条日志/记忆，不带入其他人的未提交修改。

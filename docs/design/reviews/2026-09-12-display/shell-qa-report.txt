@@ -1,0 +1,50 @@
+GameSaveCenter production shell chrome QA
+Generated: 2026-09-12 12:05:59
+Scenario: shellqa
+EvidenceSource: OffscreenRenderHarness
+Commit: 0ede4457250ea614237b14f3f866d6219ed1d481
+WorkingTreeClean: False
+DpiScale: 1.00 (offscreen logical DIP; real host DPI is not inferred)
+WindowDip: per-case window_dip/content_dip fields
+Themes: light,dark
+DataVolumes: production shell fixtures
+TimingFields: layout_ms, render_ms; request_ms=not-applicable for offscreen harness
+
+Production shell chrome QA (compact header)
+  Shell 720x640 header=137.3 actions=409.3x82.0
+  Shell 960x640 header=101.3 actions=649.3x46.0
+  Shell 980x640 header=68.0 actions=590.0x46.0
+  Shell 1040x700 header=68.0 actions=590.0x46.0
+
+Production shell PageHost geometry QA (media inbox)
+  Shell Media 1040x700: tableFrameY=281x496, gridY=346x300, gridTopGap=65
+  Shell Media 1040x700: PageHost=726x588, scroll=710x454 extent=575, grid=663x300
+  Shell Media 1040x700 bottom: offset=127.33/127.33 viewport=202..656 footer=528.67..636.67 history=548.67..584.67 secondary=596.67..636.67
+  Shell Media 1100x720: tableFrameY=281x476, gridY=346x300, gridTopGap=65
+  Shell Media 1100x720: PageHost=786x608, scroll=770x474 extent=555, grid=723x300
+  Shell Media 1100x720 bottom: offset=87.33/87.33 viewport=202..676 footer=568.67..656.67 history=568.67..604.67 secondary=616.67..656.67
+  Shell Media 1366x768: tableFrameY=281x437, gridY=346x241, gridTopGap=65
+  Shell Media 1366x768: PageHost=1052x656, scroll=1036x522 extent=516, grid=627x241
+  Shell Media 1366x768 bottom: offset=0/0 viewport=202..724 footer=596.67..704.67 history=616.67..652.67 secondary=664.67..704.67
+
+Production shell PageHost geometry QA (maintenance compact inspectors)
+  Shell Maintenance 1040x700: PageHost=726x588, compact=True, diagnosticsRows=10, processRows=8, closed=Collapsed/Collapsed, opened=Visible/Visible
+  Shell Maintenance 1100x720: PageHost=786x608, compact=True, diagnosticsRows=10, processRows=8, closed=Collapsed/Collapsed, opened=Visible/Visible
+  Shell Maintenance 1366x768: PageHost=1052x656, compact=False, diagnosticsRows=11, processRows=10, closed=Visible/Visible, opened=Visible/Visible
+
+Production shell PageHost geometry QA (task workspace)
+    openedRows=4, closeAction=Visible
+  Shell Tasks 1040x700: PageHost=726x588, compact=True, rows=7, queue=726x221, gridScroll=709x180, grid=709x180, inspector=Visible/726x160, filters=Visible
+    openedRows=4, closeAction=Visible
+  Shell Tasks 1100x720: PageHost=786x608, compact=True, rows=7, queue=786x241, gridScroll=769x183, grid=769x183, inspector=Visible/786x160, filters=Visible
+  Shell Tasks 1366x768: PageHost=1052x656, compact=False, rows=8, queue=678x496, gridScroll=661x427, grid=661x427, inspector=Visible/360x496, filters=Collapsed
+
+Production shell background material QA (full-shell ambient layer)
+  light/ShellBackground/1040x700 bounds=0,0,1040x700 grid=0/2/0/2 UseSelectedGameBackground=False
+  dark/ShellBackground/1040x700 bounds=0,0,1040x700 grid=0/2/0/2 UseSelectedGameBackground=False
+
+Sidebar transition performance probe (2000x1100 host)
+  single-toggle motion=True duration=318.3ms layout=27 measure=4/0.0ms arrange=4/11.4ms frames=26 maxFrameGap=76.7ms secondClick=False finalWidth=72.0 collapsed=True settled=True
+  rapid-toggle motion=True duration=435.7ms layout=36 measure=8/0.0ms arrange=8/30.9ms frames=33 maxFrameGap=41.4ms secondClick=True finalWidth=270.0 collapsed=False settled=True
+  atomic-final motion=False duration=91.1ms layout=3 measure=2/0.0ms arrange=2/5.8ms frames=5 maxFrameGap=36.3ms secondClick=False finalWidth=72.0 collapsed=True settled=True
+shell-qa OK

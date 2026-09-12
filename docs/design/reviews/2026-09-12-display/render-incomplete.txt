@@ -1,0 +1,14 @@
+==> Building render harness (Release)
+  正在确定要还原的项目…
+  所有项目均是最新的，无法还原。
+  GameSaveCenter.Contracts -> D:\workplace\github\GameSaveCenter\src\GameSaveCenter.Contracts\bin\Release\netstandard2.0\GameSaveCenter.Contracts.dll
+  GameSaveCenter.Core -> D:\workplace\github\GameSaveCenter\src\GameSaveCenter.Core\bin\Release\netstandard2.0\GameSaveCenter.Core.dll
+  GameSaveCenter.Playnite -> D:\workplace\github\GameSaveCenter\src\GameSaveCenter.Playnite\bin\Release\net462\GameSaveCenter.Playnite.dll
+  GameSaveCenter.RenderHarness -> D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.RenderHarness\bin\Release\net472\GameSaveCenter.RenderHarness.exe
+
+已成功生成。
+    0 个警告
+    0 个错误
+
+已用时间 00:00:04.39
+==> Rendering workspace views to D:/workplace/github/GameSaveCenter/.tmp/ui-review-20260912

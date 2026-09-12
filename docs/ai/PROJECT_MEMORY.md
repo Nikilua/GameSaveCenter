@@ -2680,3 +2680,10 @@
 
 - `LargeLibraryPerformanceTests.GamePicker2000_Benchmark_WritesMeasuredTimings` 不仅写 profiling，还必须保持 2000 条首次/单项变化更新和任务首次替换低于 5 秒、未变化替换低于 1 秒；阈值刻意宽松，只拦截数量级退化。
 - 详细基准仍写入 `large-library.txt`，不得把这些离线集合耗时扩写为真实 Playnite 渲染帧率。
+
+## 2026-09-12 UI 显示审查后续任务
+
+- 新入口：`docs/ai/UI_DISPLAY_REVIEW_2026-09-12.md`，10 项显示任务，优先待归类短窗、设置错误摘要与任务首屏密度；其余为首页、表格阅读、详情、预览状态和反馈。
+- 本轮为文档审查，未修改生产 UI。旧滚动漂移未在真实 Playnite 复验；不能把离屏部分行截图当作末条不可达的证明。
+- 完整 render-qa 运行退出 -1 且未产出最终报告；单独 shellqa 首次缺少 theme/light、theme/dark 目录，补建后通过。完整 UI 验收仍未闭环，详见 D12-10。
+- 全量构建测试零失败：Core 76/76、Worker 310/311（1 skip）、Playnite 435/498（63 skip）。4 张原始截图与 Shell 报告保存在 `docs/design/reviews/2026-09-12-display/`。
