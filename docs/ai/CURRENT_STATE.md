@@ -49,6 +49,11 @@
 
 - 共享 `GscWorkspaceStatePresenter` 为 `FilterEmpty` 增加独立“无结果”状态标签；任务页继续提供“清除筛选”下一步，真实数据状态、选择与滚动保持不变。
 
+## 2026-09-12 U12-09 动效、焦点与可访问性审计
+
+- 无障碍/键盘/壳层动效组合定向测试 13/13，动效原语、减动效终态与列表焦点契约 3/3；源码/XAML 门禁通过，WPF 静态审查 0 error。
+- 共享 `GscMotion`/`MotionTokens`、高对比度/关闭动画终态、AutomationProperties、Tooltip 和键盘路径保持现有实现；详细证据见 [`UI_ACCESSIBILITY_AUDIT_2026-09-12.md`](UI_ACCESSIBILITY_AUDIT_2026-09-12.md)。真实 Playnite/FusionX、物理 DPI 和高对比度宿主仍待人工验收。
+
 ## 2026-09-12 一键构建回归已恢复
 
 - `scripts/build.cmd` 的完整运行曾在 Playnite 测试阶段失败 4 项；原因不是编译或运行时故障，而是近期图标按钮、共享动效 token 的生产迁移完成后，四个源码回归测试仍断言旧的文字按钮样式与硬编码时长。

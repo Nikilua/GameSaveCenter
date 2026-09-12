@@ -6181,6 +6181,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 共享状态 Presenter 为 `FilterEmpty` 增加“无结果”标签，与真正的“空数据”区分；任务筛选状态仍绑定真实集合并保留“清除筛选”命令。
 - 新增定向源码回归测试；不改变后台刷新、选择、滚动或业务数据来源。
 
+# 2026-09-12 U12-09 动效、焦点与可访问性审计
+
+- `AccessibilitySourceTests`、`KeyboardFocusSourceTests`、`ProductionShellChromeSourceTests` 13/13 通过；共享动效原语、减动效终态和列表焦点契约 3/3 通过。
+- 新增 `UI_ACCESSIBILITY_AUDIT_2026-09-12.md` 固化 token、焦点、AutomationProperties、禁用 Tooltip 和状态 Presenter 的证据与宿主边界；WPF 静态审查 0 error。
+
 **实现内容：**
 
 - 完成全仓 `Storyboard`、`TranslateTransform`、`RenderTransform` 审计：现有动效集中在 Dashboard、设置、Overview、生产壳与共享控件模板，未向列表行或布局属性新增动画。
