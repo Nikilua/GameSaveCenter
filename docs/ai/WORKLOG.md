@@ -6105,6 +6105,14 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 同步更新 `docs/ai/PERFORMANCE_BASELINE.md`，明确自动门禁与离线 profiling 的边界。
 # 2026-09-12 UI-高级动效系统
 
+# 2026-09-12 U12-00 共享 UI 审计与 Demo 基准定位
+
+**实现内容：**
+
+- 新增 `docs/ai/UI_SHARED_AUDIT_2026-09-12.md`，审计并记录生产资源合并顺序、字体/动效/图标/控件入口、硬编码颜色边界、表格虚拟化契约和后续页面使用规则。
+- 当前工作树不含原始 AcrylicFork Design 目录；将 `3c12b2c` 与 `RestoredAcrylicForkBaselineTests.cs` 作为已恢复 Demo-first 结构的可追溯锚点，避免伪造或依赖丢失素材。
+- 未修改生产 XAML/C#、业务命令或运行时资源；后续从 U12-02 设置错误摘要继续。
+
 **实现内容：**
 
 - 完成全仓 `Storyboard`、`TranslateTransform`、`RenderTransform` 审计：现有动效集中在 Dashboard、设置、Overview、生产壳与共享控件模板，未向列表行或布局属性新增动画。

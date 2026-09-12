@@ -2692,3 +2692,8 @@
 - 本轮为文档审查，未修改生产 UI。旧滚动漂移未在真实 Playnite 复验；不能把离屏部分行截图当作末条不可达的证明。
 - 完整 render-qa 运行退出 -1 且未产出最终报告；单独 shellqa 首次缺少 theme/light、theme/dark 目录，补建后通过。完整 UI 验收仍未闭环，详见 D12-10。
 - 全量构建测试零失败：Core 76/76、Worker 310/311（1 skip）、Playnite 435/498（63 skip）。4 张原始截图与 Shell 报告保存在 `docs/design/reviews/2026-09-12-display/`。
+
+## 2026-09-12 U12-00 共享 UI 审计
+
+- 资源入口、审计结果及页面使用约束记录于 `docs/ai/UI_SHARED_AUDIT_2026-09-12.md`。后续 UI 不新增第二套玻璃、按钮、字体、图标或动效系统；共享入口依次为 DesignTokens/Typography/MotionTokens、WpfUiProduction/Redesign/ButtonStyles 和两套 Gsc 图标包。
+- 原始 AcrylicFork Design 目录不在当前工作树；当前 Demo-first 结构的可追溯锚点是提交 `3c12b2c` 和 `RestoredAcrylicForkBaselineTests.cs`。找回原始素材前不要把它作为编译依赖或换用其他视觉体系。

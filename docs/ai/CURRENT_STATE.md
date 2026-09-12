@@ -7,6 +7,12 @@
 - 新增 [`UI_CONSOLIDATED_BACKLOG_2026-09-12.md`](UI_CONSOLIDATED_BACKLOG_2026-09-12.md)，合并本项目的 D12 显示复核任务与用户提供的 GPT UI 建议。后续 UI 工作从该队列执行；它明确了已有共享系统只审计不重建、Demo-first 优先及真实业务边界。
 - 近期优先项为共享审计/Demo 基准恢复、媒体短窗、设置错误摘要和 RenderHarness/真实宿主证据入口；其他页面、状态、表格与动效任务按 U12-03～U12-09 顺序推进。
 
+## 2026-09-12 U12-00 共享资源审计完成
+
+- 审计结论和资源入口已固化在 [`UI_SHARED_AUDIT_2026-09-12.md`](UI_SHARED_AUDIT_2026-09-12.md)：现有 `DesignTokens`、Typography、WPF-UI/Redesign、图标和 Motion 系统均为后续唯一共享入口，不新增平行控件或玻璃体系。
+- 当前工作树不存在原始 `GameSaveCenter.AcrylicFork/.../Design/` 文件；Demo-first 结构的可追溯锚点为 `3c12b2c` 和 `RestoredAcrylicForkBaselineTests.cs`。原始素材找回前不将其作为构建依赖，也不以其他视觉体系替代。
+- 页面/设置层仅发现媒体预览图片遮罩的局部透明黑硬编码；它不承担主题职责，保持不变。下一项按队列进入 U12-02 设置错误摘要与首屏。
+
 ## 2026-09-12 一键构建回归已恢复
 
 - `scripts/build.cmd` 的完整运行曾在 Playnite 测试阶段失败 4 项；原因不是编译或运行时故障，而是近期图标按钮、共享动效 token 的生产迁移完成后，四个源码回归测试仍断言旧的文字按钮样式与硬编码时长。
