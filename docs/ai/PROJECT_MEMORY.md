@@ -6,6 +6,8 @@
 
 - 后续 UI 排期以 `docs/ai/UI_CONSOLIDATED_BACKLOG_2026-09-12.md` 为入口：它将 D12 显示复核和用户提供的 GPT 建议映射为 U12-00～U12-10，避免重新实现已存在的令牌、按钮、图标、字体、玻璃或动效系统。
 - GPT 类建议必须先映射到当前共享入口和 Demo-first 基准；不修改 ViewModel、命令、Worker、备份、数据库或业务行为。U12-10 的离屏/宿主验收贯穿其他所有 UI 项。
+- U12-01 的直接主题化 1366×768 内容区仅有 528 DIP；`MediaInboxPageScrollViewer` 必须在低于 560 DIP 或收件箱过期时承担页面级滚动，避免有限、虚拟化的 `MediaInboxGrid` 从四行阅读底线跌至三行。紧凑高度可收起重复的 `MediaInboxInfoBand`，但不得隐藏批量命令、Inspector、历史、选择或页尾操作。
+- 本轮完整 RenderHarness 已得到 `render-qa OK`（Release 构建 0 warning / 0 error）；它覆盖离屏双主题、多尺寸与表格视口，不构成真实 Playnite/DPI/键盘或宿主主题验收。
 
 ## 2026-09-12 Premium Motion System
 
@@ -2706,8 +2708,8 @@
 
 ## 2026-09-12 U12-01 待归类媒体短窗
 
-- `MediaInboxInfoBand` 在页面高度低于 620 DIP 时折叠，因为页面指标已提供相同的数量上下文；不要在同一短窗重新加回重复标题/数量带。
-- `MediaInboxPageScrollViewer` 仅在高度低于 520 DIP 或过期横幅可见时启用整页 fallback。过期状态不能仅为追求首屏而关闭 fallback；DataGrid 的有限视口、Recycling/Item 滚动、选择与批量操作保持不变。
+- `MediaInboxInfoBand` 在紧凑高度（低于 800 DIP）折叠，因为页面指标已提供相同的数量上下文；不要在同一短窗重新加回重复标题/数量带。
+- `MediaInboxPageScrollViewer` 仅在高度低于 560 DIP 或过期横幅可见时启用整页 fallback。528 DIP 的主题化 1366×768 内容区已证明 520 DIP 不足以保护四行阅读底线；过期状态不能仅为追求首屏而关闭 fallback；DataGrid 的有限视口、Recycling/Item 滚动、选择与批量操作保持不变。
 
 ## 2026-09-12 U12-03 任务短窗
 

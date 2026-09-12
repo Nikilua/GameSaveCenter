@@ -254,7 +254,11 @@ namespace GameSaveCenter.Playnite.Views
                 // summary information at short heights. Local list/inspector surfaces own
                 // overflow so the whole workspace does not become a scroll canvas.
                 MediaSummaryPanel.Visibility = Visibility.Visible;
-                var compactHeight = height < 760;
+                // A themed 1366x768 host has less content height after shell chrome than
+                // the raw window number suggests. Keep the primary inbox grid at its
+                // four-row reading floor by entering the compact metric treatment before
+                // the table star row has to surrender a row.
+                var compactHeight = height > 0 && height < 800;
                 MediaSummaryPanel.MinHeight = compactHeight ? 68 : 84;
                 MediaSummaryPanel.Padding = compactHeight
                     ? new Thickness(6, 8, 6, 8)
@@ -264,7 +268,10 @@ namespace GameSaveCenter.Playnite.Views
                 // was duplicate context that pushed batch actions and five table rows below
                 // the fold. Keep it for normal-height orientation, but release that space
                 // before using the whole-page overflow fallback.
-                var compactInbox = height < 620;
+                // The inbox band repeats the metric strip's count/title. The themed
+                // 1366x768 content host is only 528 DIP tall, so keeping that duplicate
+                // band would reduce the virtualized table below its four-row floor.
+                var compactInbox = compactHeight;
                 MediaInboxInfoBand.Visibility = compactInbox ? Visibility.Collapsed : Visibility.Visible;
                 MediaInboxInfoBand.Padding = compactHeight
                     ? new Thickness(10, 6, 10, 6)
@@ -289,10 +296,12 @@ namespace GameSaveCenter.Playnite.Views
                 // Keep the inbox page finite in that band too, so the table retains a
                 // readable row viewport and the footer remains reachable through the
                 // page surface instead of compressing the star row below two rows.
-                // A 520 DIP page host is the actual lower bound after the compact info band
-                // is removed. Above it, preserve the finite star-sized table viewport so
-                // batch actions and the primary grid stay in the first screen.
-                var useInboxPageFallbackScroll = height < 520 || staleInboxRequiresPageScroll;
+                // The direct themed 1366x768 content host is 528 DIP. At that size the
+                // wrapped action strip would otherwise leave only three readable rows, so
+                // keep 560 DIP as the calibrated lower bound for the page overflow path.
+                // Above it, preserve the finite star-sized table viewport so batch actions
+                // and the primary grid stay in the first screen.
+                var useInboxPageFallbackScroll = height < 560 || staleInboxRequiresPageScroll;
                 MediaInboxPageScrollViewer.VerticalScrollBarVisibility = useInboxPageFallbackScroll
                     ? ScrollBarVisibility.Auto
                     : ScrollBarVisibility.Disabled;

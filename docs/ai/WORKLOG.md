@@ -6167,6 +6167,12 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `CopyTaskErrorCommand` 不再只依赖技术详情；失败原因、错误码或技术详情任一存在时即可复制完整诊断载荷。
 - 新增定向源码回归测试，防止后续失败卡片的视觉去重意外禁用复制入口。失败原因优先展示与可展开技术详情仍在后续阶段完成。
 
+# 2026-09-12 U12-01 媒体四行视口与 U12-10 离屏门禁
+
+- RenderHarness 首轮在直接主题化 1366×768 内容宿主发现 `MediaInboxGrid` 只有 `3/4` 行完整可读；该宿主实测为 528 DIP，而原 520 DIP fallback 下限未覆盖它。
+- 以 560 DIP 作为页面 fallback 的校准下限，并在紧凑高度收起重复的收件箱标题/数量带；没有固定表格高度、没有关闭虚拟化，也没有删除批量操作或 Inspector。
+- 清理失败轮次 `.tmp` 证据后完整重跑：RenderHarness Release 构建 0 warning / 0 error，最终 `render-qa OK`。真实 Playnite/DPI/键盘验收仍未执行。
+
 **实现内容：**
 
 - 完成全仓 `Storyboard`、`TranslateTransform`、`RenderTransform` 审计：现有动效集中在 Dashboard、设置、Overview、生产壳与共享控件模板，未向列表行或布局属性新增动画。
