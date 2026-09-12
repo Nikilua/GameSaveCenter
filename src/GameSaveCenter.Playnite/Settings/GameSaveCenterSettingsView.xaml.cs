@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -178,20 +179,34 @@ namespace GameSaveCenter.Playnite.Settings
         private void RefreshValidationSummary()
         {
             var settings = CurrentSettings;
-            if (settings == null || SettingsValidationSummary == null) return;
+            if (settings == null || SettingsValidationSummary == null || SettingsValidationDetails == null
+                || SettingsValidationDetailsText == null || SettingsGeneralValidationHint == null) return;
             var errors = new List<string>();
             settings.VerifySettings(out errors);
             if (errors.Count == 0)
             {
                 SettingsValidationSummary.Visibility = Visibility.Collapsed;
                 SettingsValidationLocateButton.Visibility = Visibility.Collapsed;
+                SettingsValidationDetails.Visibility = Visibility.Collapsed;
+                SettingsGeneralValidationHint.Visibility = Visibility.Collapsed;
                 RefreshSaveState(true);
                 return;
             }
             firstValidationCategoryIndex = FindValidationCategoryIndex(errors);
-            SettingsValidationSummary.Text = "设置需要修正：" + string.Join("；", errors.Take(4));
+            // Keep the header as a compact status and leave the full messages either beside
+            // their fields or behind an explicit disclosure.  Joining path-heavy errors here
+            // used most of a small settings host before the user reached a single field.
+            SettingsValidationSummary.Text = $"有 {errors.Count} 项设置需要修正";
+            SettingsValidationSummary.ToolTip = string.Join(Environment.NewLine, errors);
             SettingsValidationSummary.Visibility = Visibility.Visible;
             SettingsValidationLocateButton.Visibility = Visibility.Visible;
+            SettingsValidationDetailsText.Text = string.Join(Environment.NewLine, errors.Select(error => "• " + error));
+            SettingsValidationDetails.Visibility = Visibility.Visible;
+            var generalErrors = errors.Where(error => FindValidationCategoryIndex(new[] { error }) == 0).ToArray();
+            SettingsGeneralValidationHint.Text = generalErrors.Length == 0
+                ? string.Empty
+                : string.Join(Environment.NewLine, generalErrors.Select(error => "需要修正：" + error));
+            SettingsGeneralValidationHint.Visibility = generalErrors.Length == 0 ? Visibility.Collapsed : Visibility.Visible;
             SettingsValidationLocateButton.ToolTip = $"切换到“{GetSettingsCategoryName(firstValidationCategoryIndex)}”并查看首个校验错误。";
             RefreshSaveState(errors.Count == 0);
         }
@@ -604,7 +619,7 @@ namespace GameSaveCenter.Playnite.Settings
                 || SettingsHeaderSubtitle == null || SettingsSaveHint == null || SettingsSectionTabs == null
                 || SettingsWorkspace == null || SettingsCategoryRail == null || SettingsScroller == null
                 || SettingsCompactContentRow == null || SettingsIntroDescription == null
-                || SettingsHeaderIcon == null || SettingsHeader == null) return;
+                || SettingsHeaderIcon == null || SettingsHeader == null || SettingsHeaderEyebrow == null) return;
 
             // SettingsShell is the real layout surface.  The Playnite settings host can be
             // wider than this shell because the shell is capped at 1360 DIP and inset by the
@@ -657,6 +672,7 @@ namespace GameSaveCenter.Playnite.Settings
             // visible at every height; only constrain their width so compact headers wrap
             // instead of silently removing information.
             SettingsHeaderSubtitle.Visibility = narrow || shortHeight ? Visibility.Collapsed : Visibility.Visible;
+            SettingsHeaderEyebrow.Visibility = shortHeight ? Visibility.Collapsed : Visibility.Visible;
             SettingsHeaderSubtitle.MaxWidth = narrow ? 300 : double.PositiveInfinity;
             SettingsSaveHint.Visibility = Visibility.Visible;
             SettingsSaveHint.MaxWidth = layoutWidth >= 1040 ? 320 : narrow ? 180 : 230;

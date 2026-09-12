@@ -6113,6 +6113,19 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 当前工作树不含原始 AcrylicFork Design 目录；将 `3c12b2c` 与 `RestoredAcrylicForkBaselineTests.cs` 作为已恢复 Demo-first 结构的可追溯锚点，避免伪造或依赖丢失素材。
 - 未修改生产 XAML/C#、业务命令或运行时资源；后续从 U12-02 设置错误摘要继续。
 
+# 2026-09-12 U12-02 设置错误摘要与首屏
+
+**实现内容：**
+
+- 页头错误从路径型长字符串收口为“有 N 项设置需要修正”；完整信息保留为可展开的“查看错误详情”以及 Tooltip。
+- 常规与目录分类的校验信息显示在字段区前；“定位首个错误”沿用真实分类切换和焦点路径。短高度隐藏装饰性眉题，不隐藏错误或保存状态。
+- 保存阻断、`VerifySettings`、字段校验、真实设置提交/回滚和主题资源均未改动。
+
+**验证与边界：**
+
+- `validate-source.py`、`check-xaml.ps1` 和 Release Playnite 项目构建通过（0 warning / 0 error）；WPF 静态审查为 0 error / 22 warnings / 175 info，均为既有有限视口或参考资源提示。
+- 定向测试在当前工具会话超过 30 秒未返回结果，未将其写为通过；真实 Playnite、物理 DPI 和键盘逐项验证仍待宿主验收。
+
 **实现内容：**
 
 - 完成全仓 `Storyboard`、`TranslateTransform`、`RenderTransform` 审计：现有动效集中在 Dashboard、设置、Overview、生产壳与共享控件模板，未向列表行或布局属性新增动画。

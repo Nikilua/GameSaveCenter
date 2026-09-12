@@ -2697,3 +2697,9 @@
 
 - 资源入口、审计结果及页面使用约束记录于 `docs/ai/UI_SHARED_AUDIT_2026-09-12.md`。后续 UI 不新增第二套玻璃、按钮、字体、图标或动效系统；共享入口依次为 DesignTokens/Typography/MotionTokens、WpfUiProduction/Redesign/ButtonStyles 和两套 Gsc 图标包。
 - 原始 AcrylicFork Design 目录不在当前工作树；当前 Demo-first 结构的可追溯锚点是提交 `3c12b2c` 和 `RestoredAcrylicForkBaselineTests.cs`。找回原始素材前不要把它作为编译依赖或换用其他视觉体系。
+
+## 2026-09-12 U12-02 设置错误摘要
+
+- `GameSaveCenterSettingsView` 页头错误必须保持紧凑摘要；完整错误由 `SettingsValidationDetails` 可展开呈现。不要恢复把多条路径错误直接拼接到页头的做法。
+- 常规与目录错误通过 `SettingsGeneralValidationHint` 靠近字段显示；其他分类仍由 `SettingsValidationLocateButton` 跳转。`VerifySettings`、保存阻断、真实提交/回滚与字段级校验不能改成静态提示。
+- 短高度下 `SettingsHeaderEyebrow` 可隐藏，但标题、保存状态、错误摘要和定位入口必须保留；真实 Playnite/DPI/键盘复核仍未完成。

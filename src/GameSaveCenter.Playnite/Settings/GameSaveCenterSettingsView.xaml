@@ -58,11 +58,14 @@
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center">
-                        <TextBlock Text="SETTINGS" Style="{DynamicResource GscRedesignHeroEyebrow}"/>
+                        <TextBlock x:Name="SettingsHeaderEyebrow" Text="SETTINGS" Style="{DynamicResource GscRedesignHeroEyebrow}"/>
                         <TextBlock Text="GameSaveCenter 设置" Style="{DynamicResource GscRedesignHeroTitle}"/>
                         <TextBlock x:Name="SettingsHeaderSubtitle" Text="工具路径 · 存档策略 · 外观与自动化" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,3,0,0" TextWrapping="Wrap"/>
                         <TextBlock x:Name="SettingsValidationSummary" Foreground="{DynamicResource GscErrorBrush}" TextWrapping="Wrap" Margin="0,6,0,0" Visibility="Collapsed" AutomationProperties.Name="设置验证错误"/>
                         <ui:Button x:Name="SettingsValidationLocateButton" Style="{StaticResource GscWpfUiToolbarButton}" Content="定位首个错误" MinWidth="104" Padding="8,3" Margin="0,6,0,0" HorizontalAlignment="Left" Visibility="Collapsed" Click="OnSettingsValidationLocateClick" AutomationProperties.Name="定位首个设置错误" ToolTip="切换到包含首个校验错误的设置分类"/>
+                        <Expander x:Name="SettingsValidationDetails" Header="查看错误详情" Margin="0,4,0,0" Visibility="Collapsed" AutomationProperties.Name="设置验证错误详情">
+                            <TextBlock x:Name="SettingsValidationDetailsText" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                        </Expander>
                     </StackPanel>
                     <Border x:Name="SettingsSaveHint" Grid.Row="0" Grid.Column="2" Style="{StaticResource GscRedesignContextPill}" VerticalAlignment="Center" Margin="14,0,0,0" ToolTip="设置仍由 Playnite 设置窗口的保存和取消按钮提交。">
                         <TextBlock x:Name="SettingsSaveHintText" Text="已保存 · 由 Playnite 保存按钮提交" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" AutomationProperties.Name="设置保存状态"/>
@@ -90,6 +93,7 @@
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10"><Border Width="30" Height="30" CornerRadius="10" Background="{DynamicResource GscAccentIconFillBrush}" Margin="0,0,9,0"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconSectionGeneralDirectory}" Width="20" Height="20" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Text="核心工具" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/></StackPanel>
                     <TextBlock Text="Worker 执行任务；Playnite 负责设置入口和游戏事件。路径支持环境变量与相对路径，保存后由 Worker 校验。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,0,0,12"/>
+                    <TextBlock x:Name="SettingsGeneralValidationHint" Foreground="{DynamicResource GscErrorBrush}" TextWrapping="Wrap" Margin="0,0,0,10" Visibility="Collapsed" AutomationProperties.Name="常规与目录校验说明"/>
                     <StackPanel x:Name="CoreToolFields">
                         <Grid Margin="0,0,0,12"><Grid.ColumnDefinitions><ColumnDefinition Width="{StaticResource GscSettingsFieldColumnWidth}"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="Worker" VerticalAlignment="Center"/><TextBox Grid.Column="1" Style="{StaticResource GscWpfUiTextBox}" Text="{Binding WorkerExecutable, UpdateSourceTrigger=PropertyChanged}" ToolTip="Worker 可执行文件路径"/></Grid>
                         <Grid Margin="0,0,0,12"><Grid.ColumnDefinitions><ColumnDefinition Width="{StaticResource GscSettingsFieldColumnWidth}"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="Ludusavi" VerticalAlignment="Center"/><TextBox Grid.Column="1" Style="{StaticResource GscWpfUiTextBox}" Text="{Binding LudusaviExecutable, UpdateSourceTrigger=PropertyChanged}" ToolTip="例如 D:\GameSaveCenterTools\Ludusavi\ludusavi.exe"/></Grid>
