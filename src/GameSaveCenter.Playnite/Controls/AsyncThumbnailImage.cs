@@ -14,6 +14,8 @@ namespace GameSaveCenter.Playnite.Controls
     /// </summary>
     public sealed class AsyncThumbnailImage : System.Windows.Controls.Image
     {
+        public static readonly DependencyProperty PreviewStateProperty = DependencyProperty.Register(
+            nameof(PreviewState), typeof(string), typeof(AsyncThumbnailImage), new PropertyMetadata("Idle"));
         public static readonly DependencyProperty SourcePathProperty = DependencyProperty.Register(
             nameof(SourcePath), typeof(string), typeof(AsyncThumbnailImage),
             new PropertyMetadata(null, OnSourcePathChanged));
@@ -42,6 +44,12 @@ namespace GameSaveCenter.Playnite.Controls
         {
             get => (int)GetValue(PreviewWidthProperty);
             set => SetValue(PreviewWidthProperty, value);
+        }
+
+        public string PreviewState
+        {
+            get => (string)GetValue(PreviewStateProperty);
+            private set => SetValue(PreviewStateProperty, value);
         }
 
         private static void OnSourcePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -82,10 +90,12 @@ namespace GameSaveCenter.Playnite.Controls
             if (string.IsNullOrWhiteSpace(path) || !IsLoaded || !IsVisible)
             {
                 Source = null;
+                PreviewState = string.IsNullOrWhiteSpace(path) ? "Idle" : "Unavailable";
                 return;
             }
 
             Source = null;
+            PreviewState = "Loading";
             var width = Math.Max(48, Math.Min(PreviewWidth, 480));
             var cancellation = new CancellationTokenSource();
             pending = cancellation;
@@ -116,6 +126,7 @@ namespace GameSaveCenter.Playnite.Controls
                 {
                     if (expected != Volatile.Read(ref generation) || token.IsCancellationRequested) return;
                     Source = image;
+                    PreviewState = image == null ? "Unavailable" : "Ready";
                 }, DispatcherPriority.Background);
             }
             catch (OperationCanceledException)
@@ -125,6 +136,8 @@ namespace GameSaveCenter.Playnite.Controls
             catch
             {
                 // Keep the placeholder; missing/corrupt media never tears down the list.
+                if (expected == Volatile.Read(ref generation))
+                    await Dispatcher.InvokeAsync(() => PreviewState = "Failed", DispatcherPriority.Background);
             }
         }
     }

@@ -6158,6 +6158,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `CopySelectedTaskErrorAsync` 现在复制失败原因、错误码、技术详情和任务 ID；此前只复制 DetailMessage，不能作为去重详情后的完整诊断出口。
 - 视觉层的失败原因优先与可展开技术详情仍在实施，当前不将 U12-06 标记为完成。
 
+# 2026-09-12 U12-07 媒体预览状态
+
+- `AsyncThumbnailImage` 新增真实 `PreviewState`（Idle/Loading/Ready/Unavailable/Failed）；Media Inbox 据此显示空选择、加载、不可访问、失败和成功状态。原有取消与 generation 校验保持。
+
 **实现内容：**
 
 - 完成全仓 `Storyboard`、`TranslateTransform`、`RenderTransform` 审计：现有动效集中在 Dashboard、设置、Overview、生产壳与共享控件模板，未向列表行或布局属性新增动画。
