@@ -2703,3 +2703,8 @@
 - `GameSaveCenterSettingsView` 页头错误必须保持紧凑摘要；完整错误由 `SettingsValidationDetails` 可展开呈现。不要恢复把多条路径错误直接拼接到页头的做法。
 - 常规与目录错误通过 `SettingsGeneralValidationHint` 靠近字段显示；其他分类仍由 `SettingsValidationLocateButton` 跳转。`VerifySettings`、保存阻断、真实提交/回滚与字段级校验不能改成静态提示。
 - 短高度下 `SettingsHeaderEyebrow` 可隐藏，但标题、保存状态、错误摘要和定位入口必须保留；真实 Playnite/DPI/键盘复核仍未完成。
+
+## 2026-09-12 U12-01 待归类媒体短窗
+
+- `MediaInboxInfoBand` 在页面高度低于 620 DIP 时折叠，因为页面指标已提供相同的数量上下文；不要在同一短窗重新加回重复标题/数量带。
+- `MediaInboxPageScrollViewer` 仅在高度低于 520 DIP 或过期横幅可见时启用整页 fallback。过期状态不能仅为追求首屏而关闭 fallback；DataGrid 的有限视口、Recycling/Item 滚动、选择与批量操作保持不变。

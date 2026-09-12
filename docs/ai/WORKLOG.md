@@ -6126,6 +6126,18 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `validate-source.py`、`check-xaml.ps1` 和 Release Playnite 项目构建通过（0 warning / 0 error）；WPF 静态审查为 0 error / 22 warnings / 175 info，均为既有有限视口或参考资源提示。
 - 定向测试在当前工具会话超过 30 秒未返回结果，未将其写为通过；真实 Playnite、物理 DPI 和键盘逐项验证仍待宿主验收。
 
+# 2026-09-12 U12-01 待归类媒体短窗布局
+
+**实现内容：**
+
+- 在 620 DIP 以下隐藏与页面指标重复的 `MediaInboxInfoBand`，不删除信息或操作；正常高度仍显示完整说明和数量。
+- 将正常状态的 page fallback 阈值收紧到 520 DIP，保留过期横幅出现时的安全 fallback。DataGrid 继续是有限、虚拟化的星号行，批量工具栏/操作、详情入口和历史入口不变。
+
+**验证与边界：**
+
+- `validate-source.py` 通过；Release Playnite 项目构建 0 warning / 0 error；差异检查通过。
+- 还未在真实 Playnite 的 1040×700/1100×720、过期/离线与物理末端滚动场景逐项复测；不能把本次静态/构建结果表述为宿主像素验收。
+
 **实现内容：**
 
 - 完成全仓 `Storyboard`、`TranslateTransform`、`RenderTransform` 审计：现有动效集中在 Dashboard、设置、Overview、生产壳与共享控件模板，未向列表行或布局属性新增动画。

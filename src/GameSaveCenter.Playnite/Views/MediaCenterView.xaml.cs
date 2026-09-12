@@ -259,6 +259,13 @@ namespace GameSaveCenter.Playnite.Views
                 MediaSummaryPanel.Padding = compactHeight
                     ? new Thickness(6, 8, 6, 8)
                     : new Thickness(6, 14, 6, 14);
+                // The page-level metric strip already supplies the inbox count. At the
+                // short heights used by the production shell, the second title/count band
+                // was duplicate context that pushed batch actions and five table rows below
+                // the fold. Keep it for normal-height orientation, but release that space
+                // before using the whole-page overflow fallback.
+                var compactInbox = height < 620;
+                MediaInboxInfoBand.Visibility = compactInbox ? Visibility.Collapsed : Visibility.Visible;
                 MediaInboxInfoBand.Padding = compactHeight
                     ? new Thickness(10, 6, 10, 6)
                     : new Thickness(14, 11, 14, 11);
@@ -282,7 +289,10 @@ namespace GameSaveCenter.Playnite.Views
                 // Keep the inbox page finite in that band too, so the table retains a
                 // readable row viewport and the footer remains reachable through the
                 // page surface instead of compressing the star row below two rows.
-                var useInboxPageFallbackScroll = height < 620 || staleInboxRequiresPageScroll;
+                // A 520 DIP page host is the actual lower bound after the compact info band
+                // is removed. Above it, preserve the finite star-sized table viewport so
+                // batch actions and the primary grid stay in the first screen.
+                var useInboxPageFallbackScroll = height < 520 || staleInboxRequiresPageScroll;
                 MediaInboxPageScrollViewer.VerticalScrollBarVisibility = useInboxPageFallbackScroll
                     ? ScrollBarVisibility.Auto
                     : ScrollBarVisibility.Disabled;
