@@ -6153,6 +6153,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 审计 Media/Task/Maintenance 的长文本、Tooltip、列宽、横向滚动和虚拟化。补齐 Media 收件箱“来源”列的 `MediaLongText`，使截断来源提供完整 Tooltip 并保持单行表格节奏。
 - `validate-source.py` 与 `check-xaml.ps1` 通过；真实 Playnite 的 200% DPI、列拖拽和横向两端阅读尚待人工验收。
 
+# 2026-09-12 U12-06 任务诊断复制载荷补齐（进行中）
+
+- `CopySelectedTaskErrorAsync` 现在复制失败原因、错误码、技术详情和任务 ID；此前只复制 DetailMessage，不能作为去重详情后的完整诊断出口。
+- 视觉层的失败原因优先与可展开技术详情仍在实施，当前不将 U12-06 标记为完成。
+
 **实现内容：**
 
 - 完成全仓 `Storyboard`、`TranslateTransform`、`RenderTransform` 审计：现有动效集中在 Dashboard、设置、Overview、生产壳与共享控件模板，未向列表行或布局属性新增动画。

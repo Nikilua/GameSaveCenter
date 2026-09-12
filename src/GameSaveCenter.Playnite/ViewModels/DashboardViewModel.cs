@@ -4022,7 +4022,11 @@ namespace GameSaveCenter.Playnite.ViewModels
         private async Task CopySelectedTaskErrorAsync()
         {
             if (SelectedTask == null) return;
-            var text = $"{SelectedTask.GameName} · {SelectedTask.TaskType}\r\n{SelectedTask.DetailMessage}\r\n任务 ID：{SelectedTask.TaskId}";
+            var text = $"{SelectedTask.GameName} · {SelectedTask.TaskType}\r\n"
+                       + $"失败原因：{SelectedTask.ErrorMessage}\r\n"
+                       + $"错误码：{SelectedTask.ErrorCode}\r\n"
+                       + $"技术详情：{SelectedTask.DetailMessage}\r\n"
+                       + $"任务 ID：{SelectedTask.TaskId}";
             await CopyTextWithRetryAsync(text, "任务详情已复制", "任务详情已复制到剪贴板。");
         }
 

@@ -2720,3 +2720,7 @@
 ## 2026-09-12 U12-05 表格阅读
 
 - Media 收件箱的全部文本列（含“来源”）必须使用 `MediaLongText` 或等效的省略号和完整 Tooltip 契约。保持稳定时间/类型列、名称/原因弹性列，以及共享 DataGrid 的横向滚动、排序、拖拽和虚拟化。
+
+## 2026-09-12 U12-06 诊断复制边界
+
+- `CopyTaskErrorCommand` 的复制内容必须包括 `ErrorMessage`、`ErrorCode`、`DetailMessage` 和任务 ID；视觉详情去重不能削弱完整诊断复制能力。U12-06 的可展开技术详情尚未完成。
