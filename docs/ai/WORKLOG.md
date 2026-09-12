@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-12 收紧图标按钮语义边界
+
+- 用户复核后确认，图标只应承载刷新、重试、删除等低歧义高频操作；扫描、校验和多个“打开”目标仅靠图标辨识成本过高。
+- 存档页已恢复“立即扫描 / 重新校验”，媒体 Inspector 恢复“打开媒体 / 打开所在目录”，维护目录区恢复“数据目录 / 存档目录 / 媒体目录”；保留刷新、重试、删除、复制、取消、折叠等图标按钮。所有现有命令、Tooltip、自动化名称、禁用反馈及窄屏 Wrap 不变。
+- XAML 结构检查与 `SaveCurrentRuleStatusIsOneLineBadgeWithAlignedActions` 定向回归通过；`validate-source.py`、WPF 静态审查（0 error / 22 warnings / 175 info）和 `render-qa OK` 通过。首次 RenderHarness 构建被遗留的同名测试进程占用输出文件；停止该项目内测试进程后重跑成功。
+- 完整 `scripts/build.cmd` 退出码 0：Release 0 warning / 0 error，Core `76/76`、Worker `310/311`（1 skip）、Playnite `435/498`（63 skip），失败 0。
+
 ## 2026-09-12 修复一键构建过期 UI 回归断言
 
 - 用户反馈一键构建失败后，直接运行 `scripts/build.cmd` 复现：Release 编译为 0 warning / 0 error，Core `76/76`、Worker `310/311`（1 skip）均通过，Playnite 源码回归有 4 项失败。
