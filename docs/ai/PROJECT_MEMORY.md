@@ -4,6 +4,12 @@
 
 ## 2026-09-12 Premium Motion System
 
+## 2026-09-12 一键构建测试契约同步
+
+- `scripts/build.cmd` 必须作为完整交付门禁运行；它依次执行 XAML 检查、Release 编译和 Core/Worker/Playnite 三组测试。Worker 测试在禁并行模式下可超过一分半，不应因终端的短输出窗口误判为卡死。
+- 高频图标操作的测试应验证共享图标按钮样式、`ToolTip`、`AutomationProperties.Name` 和 `ThemeAwareIcon`，不能把旧 `GscWpfUiCompactButton` 及固定最小宽度当作契约。
+- 动效测试应验证 `GscMotion` 与 `MotionTokens.xaml`，而非重新断言页面中的毫秒字面量；共享 token 仍是唯一时长来源。
+
 - 动效时长唯一来源为 `Themes/MotionTokens.xaml`：Fast 120ms、Press 100ms、Normal 200ms、Slow 320ms，统一 Cubic EaseOut。不要在页面或模板重新发明时长、Bounce、Elastic 或大幅位移。
 - `Infrastructure/GscMotion` 是 UI 代码中动画 Transform 的唯一实例化入口；它会尊重用户动画设置、`SystemParameters.ClientAreaAnimation` 与高对比度，并为 Style/资源冻结的 Freezable 生成实例级副本。不要恢复共享资源 Transform 的直接动画。
 - 允许的反馈限于 opacity、轻微 translate/scale、图标旋转与选择状态；不得把 Width、Height、Margin、GridLength 或 DataGrid/虚拟列表行作为常规高级动效。侧栏伸缩是既有导航例外，仍须使用 `GscMotion.Normal` 和终态规范化。

@@ -313,11 +313,13 @@ namespace GameSaveCenter.Playnite.Tests
             var actions = save.Descendants().Single(element => element.Attribute(xamlName)?.Value == "SaveCurrentRuleActions");
             var buttons = actions.Elements().Where(element => element.Name.LocalName == "Button").ToList();
             Assert.Equal(3, buttons.Count);
+            Assert.Contains("GscIconOnlyAccentButton", buttons[0].Attribute("Style")?.Value);
+            Assert.All(buttons.Skip(1), button => Assert.Contains("GscIconOnlyButtonBase", button.Attribute("Style")?.Value));
             Assert.All(buttons, button =>
             {
-                Assert.Contains("GscWpfUiCompactButton", button.Attribute("Style")?.Value);
-                Assert.Null(button.Attribute("MinHeight"));
-                Assert.Equal("100", button.Attribute("MinWidth")?.Value);
+                Assert.NotNull(button.Attribute("ToolTip"));
+                Assert.Contains("AutomationProperties.Name=", button.ToString());
+                Assert.Single(button.Descendants(), element => element.Name.LocalName == "ThemeAwareIcon");
             });
         }
 

@@ -1,6 +1,12 @@
 # GameSaveCenter 当前事实入口
 
-> 更新时间：2026-09-10。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
+> 更新时间：2026-09-12。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
+
+## 2026-09-12 一键构建回归已恢复
+
+- `scripts/build.cmd` 的完整运行曾在 Playnite 测试阶段失败 4 项；原因不是编译或运行时故障，而是近期图标按钮、共享动效 token 的生产迁移完成后，四个源码回归测试仍断言旧的文字按钮样式与硬编码时长。
+- 测试现改为验证图标按钮的 `ToolTip`、自动化名称和主题图标、Dashboard 刷新按钮的无标签图标语义，以及 `GscMotion`/`MotionTokens.xaml` 的统一时长和 easing 契约，未回退生产 UI。
+- 完整一键构建已通过：Release `0 warning / 0 error`；Core `76/76`、Worker `310/311`（1 skip）、Playnite `435/498`（63 skip），失败均为 0。
 
 ## 2026-09-10 实际 Playnite 扩展已刷新
 

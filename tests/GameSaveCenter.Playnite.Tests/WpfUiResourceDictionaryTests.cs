@@ -597,8 +597,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Padding=\"0\"", production);
         Assert.Contains("Margin=\"{TemplateBinding Padding}\"", production);
         Assert.Contains("Property=\"IsKeyboardFocusWithin\" Value=\"True\"", production);
-        Assert.Contains("Duration=\"0:0:0.12\"", production);
-        Assert.Contains("Duration=\"0:0:0.08\"", production);
+        Assert.Contains("Themes/MotionTokens.xaml", production);
+        Assert.Contains("Duration=\"{StaticResource GscMotionFast}\"", production);
+        Assert.Contains("Duration=\"{StaticResource GscMotionPress}\"", production);
         Assert.Contains("GscOnAccentHoverOverlayBrush", production);
         Assert.Contains("GscOnAccentPressedOverlayBrush", production);
         Assert.Contains("<SolidColorBrush x:Key=\"GscOnAccentHoverOverlayBrush\"", tokens);
@@ -607,7 +608,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("<ColumnDefinition Width=\"46\"/>", production);
         Assert.Contains("Width=\"40\" Height=\"23\" CornerRadius=\"11.5\"", production);
         Assert.Contains("RenderTransform.(TranslateTransform.X)", production);
-        Assert.Contains("Duration=\"0:0:0.14\"", production);
+        Assert.Contains("EasingFunction=\"{StaticResource GscMotionEaseOut}\"", production);
     }
 
     [Fact]
@@ -4940,9 +4941,15 @@ public sealed class WpfUiResourceDictionaryTests
         var dashboard = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml"));
         var dashboardCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml.cs"));
 
+        Assert.Contains("x:Name=\"TopRefreshButton\"", dashboard);
+        Assert.Contains("Style=\"{DynamicResource GscIconOnlyToolbarButton}\"", dashboard);
+        Assert.DoesNotContain("x:Name=\"TopRefreshLabel\"", dashboard);
+        Assert.Contains("AutomationProperties.Name=\"刷新全部状态\"", dashboard);
+        Assert.Contains("ToolTip=\"刷新全部状态\"", dashboard);
+        Assert.Contains("Command=\"{Binding RefreshCommand}\"", dashboard);
+
         foreach (var action in new[]
         {
-            ("TopRefreshButton", "TopRefreshLabel", "刷新全部状态", "RefreshCommand"),
             ("TopBackupAllButton", "TopBackupAllLabel", "备份全部游戏", "BackupAllCommand"),
             ("TopMediaSyncButton", "TopMediaSyncLabel", "同步媒体", "SyncMediaCommand"),
             ("TopTrainerImportButton", "TopTrainerImportLabel", "导入修改器", "ImportTrainerCommand"),
@@ -4962,7 +4969,6 @@ public sealed class WpfUiResourceDictionaryTests
         // shared text-only ContentTemplate or WPF renders the Grid type name.
         foreach (var visualButton in new[]
         {
-            ("TopRefreshButton", "GscRedesignHeaderVisualButton"),
             ("TopBackupAllButton", "GscRedesignPrimaryHeaderVisualButton"),
             ("TopMediaSyncButton", "GscRedesignHeaderVisualButton"),
             ("TopTrainerImportButton", "GscRedesignHeaderVisualButton"),

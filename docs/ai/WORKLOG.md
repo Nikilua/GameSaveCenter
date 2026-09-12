@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-12 修复一键构建过期 UI 回归断言
+
+- 用户反馈一键构建失败后，直接运行 `scripts/build.cmd` 复现：Release 编译为 0 warning / 0 error，Core `76/76`、Worker `310/311`（1 skip）均通过，Playnite 源码回归有 4 项失败。
+- 四项失败均为测试停留在旧 UI 契约：存档页仍期待紧凑文字按钮、壳层仍期待 210/190ms 字面时长、Dashboard 仍期待刷新文字标签、共享按钮仍期待模板内的固定 Duration。生产代码已改为可访问图标按钮与 `GscMotion`/`MotionTokens`，因此更新测试验证新共享语义而不回退实现。
+- 修复后定向 4/4 通过；完整 `scripts/build.cmd` 退出码 0：Release 0 warning / 0 error，Core `76/76`、Worker `310/311`（1 skip）、Playnite `435/498`（63 skip），失败 0。`git diff --check` 通过。
+
 ## 2026-09-11 对齐迁移测试与新资源契约
 
 - 用户运行完整 Playnite 设置迁移测试后发现两项遗漏的源码断言仍要求旧实现：Maintenance 测试要求表头重新使用 `GscTableHeaderBrush`，诊断字体测试要求 `GscCodeFontFamily` 仍定义在 `DesignTokens.xaml`。两者都与本轮的连续表面表头及 `Typography.xaml` 单一字体入口相冲突。

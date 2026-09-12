@@ -89,13 +89,13 @@ public sealed class ProductionShellChromeSourceTests
         Assert.Contains("sidebarCollapsed = !sidebarCollapsed", shellCode);
         Assert.Contains("sidebarTransitionRunning", shellCode);
         Assert.Contains("GridLengthAnimation", shellCode);
-        Assert.Contains("TimeSpan.FromMilliseconds(210)", shellCode);
-        Assert.Contains("CubicEase", shellCode);
+        Assert.Contains("Duration = new Duration(GscMotion.Normal)", shellCode);
+        Assert.Contains("GscMotion.CreateEaseOut()", shellCode);
         Assert.Contains("MotionEnabledProvider", shellCode);
         Assert.Contains("new GridLength(sidebarCollapsed ? 72 : 270, GridUnitType.Pixel)", shellCode);
         Assert.Contains("ApplySidebarLayout(updateColumnWidth: false)", shellCode);
         Assert.Contains("SidebarContentLayer.BeginAnimation(UIElement.OpacityProperty", shellCode);
-        Assert.Contains("TimeSpan.FromMilliseconds(190)", shellCode);
+        Assert.Contains("new DoubleAnimation(0, 1, GscMotion.Normal)", shellCode);
         Assert.Contains("translate.X = sidebarCollapsed ? -4 : 4", shellCode);
         Assert.Contains("SidebarColumn.BeginAnimation(ColumnDefinition.WidthProperty, null)", shellCode);
         Assert.Contains("SidebarCollapsedProvider", shellCode);
