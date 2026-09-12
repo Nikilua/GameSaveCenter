@@ -331,7 +331,7 @@
                              second full-size wash here: it creates a square inner background and
                              makes the rounded card look like a panel inside another panel. -->
                         <StackPanel Grid.Row="0" MinWidth="0" VerticalAlignment="Center" Margin="0,0,0,14">
-                            <TextBlock Style="{DynamicResource GscRedesignHeroEyebrow}" Text="TODAY"/>
+                            <TextBlock x:Name="OverviewTodayHeroEyebrow" Style="{DynamicResource GscRedesignHeroEyebrow}" Text="TODAY"/>
                             <TextBlock FontSize="30" FontWeight="SemiBold" Margin="0,8,0,0" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding OverviewPriorityDescription}">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
@@ -344,7 +344,7 @@
                                     </Style>
                                 </TextBlock.Style>
                             </TextBlock>
-                            <TextBlock Text="{Binding OverviewPriorityDescription}" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" FontSize="12" Margin="0,8,0,0"/>
+                            <TextBlock x:Name="OverviewTodayHeroDescription" Text="{Binding OverviewPriorityDescription}" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" FontSize="12" Margin="0,8,0,0"/>
                             <ui:Button Style="{DynamicResource GscWpfUiPrimaryButton}" Command="{Binding OverviewPriorityActionCommand}" Content="{Binding OverviewPriorityActionText}" ToolTip="{Binding OverviewPriorityActionToolTip}" AutomationProperties.Name="{Binding OverviewPriorityActionText}" Margin="0,10,0,0" HorizontalAlignment="Left" MinWidth="116"/>
                         </StackPanel>
                         <WrapPanel Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0">

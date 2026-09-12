@@ -180,6 +180,18 @@ namespace GameSaveCenter.Playnite.Views
             // without limit or cover the controls below it.
             OverviewStackScrollSurface.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
 
+            // On a compact page host, preserve the actionable priority title/button but
+            // reduce the decorative eyebrow, explanatory copy and minimum card height.
+            // This moves the real workbench into the first viewport without changing the
+            // selected-game or all-games command scope.
+            var compactFirstViewport = height > 0 && height < 560;
+            OverviewTodayHeroCard.MinHeight = compactFirstViewport ? 132 : 205;
+            OverviewTodayHeroCard.Padding = compactFirstViewport
+                ? new Thickness(16, 10, 16, 10)
+                : OverviewTodayHeroCard.Padding;
+            OverviewTodayHeroEyebrow.Visibility = compactFirstViewport ? Visibility.Collapsed : Visibility.Visible;
+            OverviewTodayHeroDescription.Visibility = compactFirstViewport ? Visibility.Collapsed : Visibility.Visible;
+
             // Give the risk rail a useful reading window on tall/maximized hosts while
             // keeping a finite viewport on short windows. The Demo uses one compact list
             // surface in the risk card, so this is the only local scroll boundary; the

@@ -2712,3 +2712,7 @@
 ## 2026-09-12 U12-03 任务短窗
 
 - `TaskWaitingSummaryText` 与 `TaskRetrySummaryText` 仅在 720 DIP 以下收起；任务总数、运行中、可重试和今日完成四个统计入口不隐藏。不要为增加行数缩小 TaskGrid 字体或关闭虚拟化。
+
+## 2026-09-12 U12-04 首页短内容区
+
+- `OverviewTodayHeroCard` 在低于 560 DIP 的内容区降到 132 DIP，并隐藏 `OverviewTodayHeroEyebrow` 与说明；优先事项标题和操作必须保留。不要改变当前游戏备份与工作台“全部备份”的真实作用域。

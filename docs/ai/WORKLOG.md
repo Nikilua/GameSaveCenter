@@ -6143,6 +6143,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 短于 720 DIP 时 `TaskSummaryPanel` 从 64 DIP 收紧为 52 DIP，收起两条辅助统计说明；四个统计数值、标签、筛选和操作均保留。
 - `TaskGrid` 的有限星号视口、Recycling、行高和 Inspector 逻辑未变。`validate-source.py` 通过；真实宿主行数、筛选/详情操作和 DPI 仍待验收。
 
+# 2026-09-12 U12-04 首页首屏工作内容优先
+
+- 560 DIP 以下 Hero 仅保留优先事项标题与操作，隐藏眉题和重复说明，最小高度由 205 收紧为 132 DIP。
+- 当前游戏与工作台的真实命令、作用域、页面滚动和风险有限视口未改；`validate-source.py` 通过，宿主/DPI 验收待补。
+
 **实现内容：**
 
 - 完成全仓 `Storyboard`、`TranslateTransform`、`RenderTransform` 审计：现有动效集中在 Dashboard、设置、Overview、生产壳与共享控件模板，未向列表行或布局属性新增动画。
