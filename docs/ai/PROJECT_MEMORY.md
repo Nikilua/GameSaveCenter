@@ -2730,3 +2730,6 @@
 - `CopyTaskErrorCommand` 的复制内容必须包括 `ErrorMessage`、`ErrorCode`、`DetailMessage` 和任务 ID；视觉详情去重不能削弱完整诊断复制能力。U12-06 已完成失败优先与可展开技术详情结构。
 - 命令可执行条件也必须接受三种字段中的任一项，不能因 `DetailMessage` 缺失而让用户无法复制失败原因或错误码。
 - `TaskInspectorErrorCard` 必须位于 `TaskTechnicalDetailsExpander` 之前，Expander 默认收起；失败原因和错误码优先可见，技术详情只在用户展开后出现。
+# 提交前一键门禁
+
+每次提交前必须运行仓库根目录的 `GameSaveCenter-一键构建安装运行.cmd`，确认隔离 Release 构建、Core/Worker/Playnite 全量测试、打包、安装验证和 Playnite 启动均成功。局部测试或 RenderHarness 通过不能替代该门禁；若输出超时，需后台运行并轮询到最终退出结果后再判断。
