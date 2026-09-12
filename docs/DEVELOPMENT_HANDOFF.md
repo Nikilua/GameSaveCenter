@@ -1,5 +1,7 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-12 UI 排期入口：后续 UI 工作优先读取 [`ai/UI_CONSOLIDATED_BACKLOG_2026-09-12.md`](ai/UI_CONSOLIDATED_BACKLOG_2026-09-12.md)。它已将项目 D12 显示复核任务与用户提供的 GPT 建议整合为 U12-00～U12-10，并明确已有共享 UI 系统仅审计/补齐、Demo-first 和真实业务边界；旧 32 项计划仍用于稳定性、发布与宿主验收依赖。
+
 > 2026-09-10 实际宿主安装核对：用户反馈按钮无变化后，比较发现 Playnite 扩展目录的旧 DLL 与源码哈希不同，且目录内 `icon.png` 仍是旧资产。已用 `scripts/dev-install-run.ps1 -Configuration Release -NoStart` 从 HEAD `c757ffe` 重新构建并原子替换 `C:\Users\lopmatu\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec`；安装后插件/Worker/共享程序集/清单/icon 与包 staging 逐项哈希一致，Playnite `440/497`（57 skip，0 fail）。当前没有运行 Playnite，用户需要完全启动/重启后才能看到新按钮和侧栏图标。
 
 > 2026-09-10 按钮与插件侧栏图标实际接入：确认上一轮只增加语义别名、没有影响现有页面；本轮在共享 `GscWpfUiButton` 基础模板启用 `GscGlassFillBrush` / `GscGlassStrokeBrush`，所以既有 `GscWpfUi...` 页面按钮会直接获得玻璃表面，Primary/Danger 继续跟随主题效果资源。`SidebarItem.Icon` 改为 ZIP 中 `plugin-main.svg` 的 WPF Path，并将 Stroke 绑定 Playnite `GlyphBrush`，由宿主主题自动切换黑/白；`icon.png` 已替换为 `plugin-main-256.png` 透明线稿。代码提交 `83dc1c4`；全量构建/测试无失败，干净离屏报告 [`.tmp/icon-button-qa-clean-20260910/render-qa-report.txt`](../.tmp/icon-button-qa-clean-20260910/render-qa-report.txt) 为 `render-qa OK`。真实 Playnite/FusionX、DPI、用户主题和侧栏截图仍需宿主人工验收。
