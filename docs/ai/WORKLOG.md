@@ -6148,6 +6148,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 560 DIP 以下 Hero 仅保留优先事项标题与操作，隐藏眉题和重复说明，最小高度由 205 收紧为 132 DIP。
 - 当前游戏与工作台的真实命令、作用域、页面滚动和风险有限视口未改；`validate-source.py` 通过，宿主/DPI 验收待补。
 
+# 2026-09-12 U12-05 表格阅读与排版审计
+
+- 审计 Media/Task/Maintenance 的长文本、Tooltip、列宽、横向滚动和虚拟化。补齐 Media 收件箱“来源”列的 `MediaLongText`，使截断来源提供完整 Tooltip 并保持单行表格节奏。
+- `validate-source.py` 与 `check-xaml.ps1` 通过；真实 Playnite 的 200% DPI、列拖拽和横向两端阅读尚待人工验收。
+
 **实现内容：**
 
 - 完成全仓 `Storyboard`、`TranslateTransform`、`RenderTransform` 审计：现有动效集中在 Dashboard、设置、Overview、生产壳与共享控件模板，未向列表行或布局属性新增动画。
