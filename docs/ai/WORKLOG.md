@@ -6138,6 +6138,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `validate-source.py` 通过；Release Playnite 项目构建 0 warning / 0 error；差异检查通过。
 - 还未在真实 Playnite 的 1040×700/1100×720、过期/离线与物理末端滚动场景逐项复测；不能把本次静态/构建结果表述为宿主像素验收。
 
+# 2026-09-12 U12-03 任务统计与筛选紧凑化
+
+- 短于 720 DIP 时 `TaskSummaryPanel` 从 64 DIP 收紧为 52 DIP，收起两条辅助统计说明；四个统计数值、标签、筛选和操作均保留。
+- `TaskGrid` 的有限星号视口、Recycling、行高和 Inspector 逻辑未变。`validate-source.py` 通过；真实宿主行数、筛选/详情操作和 DPI 仍待验收。
+
 **实现内容：**
 
 - 完成全仓 `Storyboard`、`TranslateTransform`、`RenderTransform` 审计：现有动效集中在 Dashboard、设置、Overview、生产壳与共享控件模板，未向列表行或布局属性新增动画。

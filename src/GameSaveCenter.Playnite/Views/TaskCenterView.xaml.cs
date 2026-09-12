@@ -77,10 +77,15 @@ namespace GameSaveCenter.Playnite.Views
                 // short window, tighten only the secondary summary chrome so the queue still
                 // gets a useful first viewport; the table and inspector keep their own scroll
                 // surfaces instead of scrolling the whole workspace.
-                var shortHeight = height > 0 && height < 700;
+                var shortHeight = height > 0 && height < 720;
                 TaskSummaryPanel.Visibility = Visibility.Visible;
-                TaskSummaryPanel.MinHeight = shortHeight ? 64 : 84;
-                TaskSummaryPanel.Padding = shortHeight ? new Thickness(6, 8, 6, 8) : new Thickness(6, 14, 6, 14);
+                TaskSummaryPanel.MinHeight = shortHeight ? 52 : 84;
+                TaskSummaryPanel.Padding = shortHeight ? new Thickness(6, 5, 6, 5) : new Thickness(6, 14, 6, 14);
+                // Keep the four count/action entry points, but move their explanatory
+                // sublines out of a short first viewport. Toolbars retain their ToolTip
+                // and filter semantics; this only frees vertical room for real task rows.
+                TaskWaitingSummaryText.Visibility = shortHeight ? Visibility.Collapsed : Visibility.Visible;
+                TaskRetrySummaryText.Visibility = shortHeight ? Visibility.Collapsed : Visibility.Visible;
                 // The action row stays horizontal on all common compact widths; only a
                 // genuinely narrow pane stacks the three commands vertically.
                 TaskDetailActions.Orientation = width < 520 ? Orientation.Vertical : Orientation.Horizontal;

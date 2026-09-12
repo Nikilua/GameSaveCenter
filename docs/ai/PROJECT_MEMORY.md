@@ -2708,3 +2708,7 @@
 
 - `MediaInboxInfoBand` 在页面高度低于 620 DIP 时折叠，因为页面指标已提供相同的数量上下文；不要在同一短窗重新加回重复标题/数量带。
 - `MediaInboxPageScrollViewer` 仅在高度低于 520 DIP 或过期横幅可见时启用整页 fallback。过期状态不能仅为追求首屏而关闭 fallback；DataGrid 的有限视口、Recycling/Item 滚动、选择与批量操作保持不变。
+
+## 2026-09-12 U12-03 任务短窗
+
+- `TaskWaitingSummaryText` 与 `TaskRetrySummaryText` 仅在 720 DIP 以下收起；任务总数、运行中、可重试和今日完成四个统计入口不隐藏。不要为增加行数缩小 TaskGrid 字体或关闭虚拟化。
