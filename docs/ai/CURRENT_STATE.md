@@ -8,6 +8,12 @@
 - 测试现改为验证图标按钮的 `ToolTip`、自动化名称和主题图标、Dashboard 刷新按钮的无标签图标语义，以及 `GscMotion`/`MotionTokens.xaml` 的统一时长和 easing 契约，未回退生产 UI。
 - 完整一键构建已通过：Release `0 warning / 0 error`；Core `76/76`、Worker `310/311`（1 skip）、Playnite `435/498`（63 skip），失败均为 0。
 
+## 2026-09-12 图标按钮语义边界收紧
+
+- 图标按钮仅用于刷新、重试、删除、复制、取消、折叠等低歧义且高频的上下文操作；Tooltip、`AutomationProperties.Name` 和禁用态提示仍为必需。
+- 会触发业务判断或存在多个明确目标的操作保留文字：存档页“立即扫描 / 重新校验”、媒体“打开媒体 / 打开所在目录”、维护“数据/存档/媒体目录”均已恢复文字按钮。命令、绑定、窄屏 Wrap 和真实数据流不变。
+- 本轮 `validate-source.py`、XAML 结构检查、WPF 静态审查（`0 error / 22 warnings / 175 info`）和 `render-qa OK` 均通过；完整一键构建为 Release `0 warning / 0 error`、Core `76/76`、Worker `310/311`（1 skip）、Playnite `435/498`（63 skip），失败为 0。
+
 ## 2026-09-10 实际 Playnite 扩展已刷新
 
 - 复核用户反馈后确认，之前的源码改动没有进入 Playnite 正在使用的扩展目录：源码 Release DLL 与安装目录 DLL 哈希不同，安装目录 DLL 时间为 15:45，`icon.png` 仍为 8 月 2 日旧资产。因此“按钮没有变化”首先是旧 DLL 被宿主加载，不是用户误判。

@@ -359,10 +359,10 @@
                                                 <StackPanel Margin="0,6,0,0">
                                                     <Expander Grid.Row="2" Grid.ColumnSpan="2" Style="{StaticResource GscDisclosureCard}" Header="目录与日志" Margin="0,14,0,0">
                                                         <WrapPanel Margin="0,8,0,0">
-                                                            <!-- Icon-only: open local folders without consuming layout width. -->
-                                                            <ui:Button Style="{DynamicResource GscIconOnlyButtonBase}" Command="{Binding OpenDataDirectoryCommand}" ToolTip="打开数据目录" AutomationProperties.Name="打开数据目录" Margin="0,0,8,8"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconBtnFolder}" Width="18" Height="18"/></ui:Button>
-                                                            <ui:Button Style="{DynamicResource GscIconOnlyButtonBase}" Command="{Binding OpenBackupDirectoryCommand}" ToolTip="打开存档目录" AutomationProperties.Name="打开存档目录" Margin="0,0,8,8"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconBtnFolder}" Width="18" Height="18"/></ui:Button>
-                                                            <ui:Button Style="{DynamicResource GscIconOnlyButtonBase}" Command="{Binding OpenMediaDirectoryCommand}" ToolTip="打开媒体目录" AutomationProperties.Name="打开媒体目录" Margin="0,0,8,8"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconBtnFolder}" Width="18" Height="18"/></ui:Button>
+                                                            <!-- Folder names are distinct destinations, so retain explicit text. -->
+                                                            <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenDataDirectoryCommand}" Content="数据目录" ToolTip="打开数据目录" AutomationProperties.Name="打开数据目录" Margin="0,0,8,8"/>
+                                                            <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenBackupDirectoryCommand}" Content="存档目录" ToolTip="打开存档目录" AutomationProperties.Name="打开存档目录" Margin="0,0,8,8"/>
+                                                            <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenMediaDirectoryCommand}" Content="媒体目录" ToolTip="打开媒体目录" AutomationProperties.Name="打开媒体目录" Margin="0,0,8,8"/>
                                                             <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding OpenWorkerLogCommand}" Content="Worker 日志" Margin="0,0,0,8"/>
                                                         </WrapPanel>
                                                     </Expander>

@@ -1122,7 +1122,8 @@ def check_responsive_ui_layout_guards() -> None:
     redesign = (ROOT / "src/GameSaveCenter.Playnite/Themes/Redesign.xaml").read_text(encoding="utf-8")
     for token in ("VerticalScrollBarVisibility=\"Auto\"", "KeyboardNavigation.TabNavigation=\"Local\"",
                   "x:Name=\"AmbientGlowLayer\"", "{DynamicResource GscAmbientWideWashBrush}",
-                  "AutomationProperties.Name=\"刷新全部状态\"", "x:Name=\"TopRefreshLabel\""):
+                  "AutomationProperties.Name=\"刷新全部状态\"", "x:Name=\"TopRefreshButton\"",
+                  "Style=\"{DynamicResource GscIconOnlyToolbarButton}\""):
         if token not in dashboard:
             fail(f"Dashboard responsive layout guard missing: {token}")
     for token in ("x:Name=\"SettingsHeaderSubtitle\"", "AutomationProperties.Name=\"毛玻璃强度\"",
@@ -1137,7 +1138,7 @@ def check_responsive_ui_layout_guards() -> None:
                   "SettingsHeaderSubtitle.Visibility", "layoutWidth < 520"):
         if token not in settings_code:
             fail(f"Settings responsive behavior guard missing: {token}")
-    for token in ("SetToolbarLabelsVisible(layout.IsToolbarLabelsVisible)", "TopRefreshLabel.Visibility"):
+    for token in ("SetToolbarLabelsVisible(layout.IsToolbarLabelsVisible)", "TopBackupAllLabel.Visibility"):
         if token not in dashboard_code:
             fail(f"Dashboard responsive behavior guard missing: {token}")
 

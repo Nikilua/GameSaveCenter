@@ -313,14 +313,18 @@ namespace GameSaveCenter.Playnite.Tests
             var actions = save.Descendants().Single(element => element.Attribute(xamlName)?.Value == "SaveCurrentRuleActions");
             var buttons = actions.Elements().Where(element => element.Name.LocalName == "Button").ToList();
             Assert.Equal(3, buttons.Count);
-            Assert.Contains("GscIconOnlyAccentButton", buttons[0].Attribute("Style")?.Value);
-            Assert.All(buttons.Skip(1), button => Assert.Contains("GscIconOnlyButtonBase", button.Attribute("Style")?.Value));
+            Assert.Contains("GscWpfUiPrimaryActionButton", buttons[0].Attribute("Style")?.Value);
+            Assert.Equal("立即扫描", buttons[0].Attribute("Content")?.Value);
+            Assert.Contains("GscWpfUiActionButton", buttons[1].Attribute("Style")?.Value);
+            Assert.Equal("重新校验", buttons[1].Attribute("Content")?.Value);
+            Assert.Contains("GscIconOnlyButtonBase", buttons[2].Attribute("Style")?.Value);
             Assert.All(buttons, button =>
             {
                 Assert.NotNull(button.Attribute("ToolTip"));
                 Assert.Contains("AutomationProperties.Name=", button.ToString());
-                Assert.Single(button.Descendants(), element => element.Name.LocalName == "ThemeAwareIcon");
             });
+            Assert.DoesNotContain(buttons.Take(2).SelectMany(button => button.Descendants()), element => element.Name.LocalName == "ThemeAwareIcon");
+            Assert.Single(buttons[2].Descendants(), element => element.Name.LocalName == "ThemeAwareIcon");
         }
 
         [Fact]
