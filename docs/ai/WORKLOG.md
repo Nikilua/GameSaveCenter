@@ -6176,6 +6176,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 以 560 DIP 作为页面 fallback 的校准下限，并在紧凑高度收起重复的收件箱标题/数量带；没有固定表格高度、没有关闭虚拟化，也没有删除批量操作或 Inspector。
 - 清理失败轮次 `.tmp` 证据后完整重跑：RenderHarness Release 构建 0 warning / 0 error，最终 `render-qa OK`。真实 Playnite/DPI/键盘验收仍未执行。
 
+# 2026-09-12 U12-08 筛选无结果状态
+
+- 共享状态 Presenter 为 `FilterEmpty` 增加“无结果”标签，与真正的“空数据”区分；任务筛选状态仍绑定真实集合并保留“清除筛选”命令。
+- 新增定向源码回归测试；不改变后台刷新、选择、滚动或业务数据来源。
+
 **实现内容：**
 
 - 完成全仓 `Storyboard`、`TranslateTransform`、`RenderTransform` 审计：现有动效集中在 Dashboard、设置、Overview、生产壳与共享控件模板，未向列表行或布局属性新增动画。

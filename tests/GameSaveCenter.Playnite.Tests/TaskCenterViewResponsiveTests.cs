@@ -94,6 +94,17 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         [Fact]
+        public void FilterEmptyStateUsesDistinctNoResultsLabel()
+        {
+            var root = FindRepositoryRoot();
+            var redesign = System.IO.File.ReadAllText(System.IO.Path.Combine(
+                root, "src", "GameSaveCenter.Playnite", "Themes", "Redesign.xaml"));
+
+            Assert.Contains("<Trigger Property=\"State\" Value=\"FilterEmpty\">", redesign);
+            Assert.Contains("Property=\"Text\" Value=\"无结果\"", redesign);
+        }
+
+        [Fact]
         public void CopyTaskDiagnosticIsEnabledForAnyAvailableFailureField()
         {
             var root = FindRepositoryRoot();

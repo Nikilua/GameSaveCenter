@@ -8,6 +8,7 @@
 - GPT 类建议必须先映射到当前共享入口和 Demo-first 基准；不修改 ViewModel、命令、Worker、备份、数据库或业务行为。U12-10 的离屏/宿主验收贯穿其他所有 UI 项。
 - U12-01 的直接主题化 1366×768 内容区仅有 528 DIP；`MediaInboxPageScrollViewer` 必须在低于 560 DIP 或收件箱过期时承担页面级滚动，避免有限、虚拟化的 `MediaInboxGrid` 从四行阅读底线跌至三行。紧凑高度可收起重复的 `MediaInboxInfoBand`，但不得隐藏批量命令、Inspector、历史、选择或页尾操作。
 - 本轮完整 RenderHarness 已得到 `render-qa OK`（Release 构建 0 warning / 0 error）；它覆盖离屏双主题、多尺寸与表格视口，不构成真实 Playnite/DPI/键盘或宿主主题验收。
+- `GscWorkspaceStatePresenter` 的 `FilterEmpty` 必须显示“无结果”而不是复用“空”，并保留绑定的清除筛选下一步；真正空数据、加载、错误、降级和离线状态仍由各页真实状态字段驱动。
 
 ## 2026-09-12 Premium Motion System
 

@@ -945,6 +945,11 @@
                             <Setter TargetName="StateGlyphText" Property="Foreground" Value="{DynamicResource GscMutedStatusBrush}"/>
                             <Setter TargetName="StateDisplayText" Property="Text" Value="已禁用"/>
                         </Trigger>
+                        <Trigger Property="State" Value="FilterEmpty">
+                            <Setter TargetName="StateGlyphText" Property="IconData" Value="{StaticResource GscIconStatusInfo}"/>
+                            <Setter TargetName="StateGlyphText" Property="Foreground" Value="{DynamicResource GscInfoBrush}"/>
+                            <Setter TargetName="StateDisplayText" Property="Text" Value="无结果"/>
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
