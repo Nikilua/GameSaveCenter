@@ -34,7 +34,7 @@ namespace GameSaveCenter.Playnite.Tests
                     shortSummaryTopPadding = summary.Padding.Top;
                     taskGridMinHeight = grid.MinHeight;
 
-                    view.ApplyResponsiveLayout(744, 700);
+                    view.ApplyResponsiveLayout(744, 720);
                     regularSummaryMinHeight = summary.MinHeight;
                     regularSummaryTopPadding = summary.Padding.Top;
                 }
@@ -49,8 +49,8 @@ namespace GameSaveCenter.Playnite.Tests
             thread.Join();
 
             Assert.Null(exception);
-            Assert.Equal(64, shortSummaryMinHeight);
-            Assert.Equal(8, shortSummaryTopPadding);
+            Assert.Equal(52, shortSummaryMinHeight);
+            Assert.Equal(5, shortSummaryTopPadding);
             Assert.Equal(84, regularSummaryMinHeight);
             Assert.Equal(14, regularSummaryTopPadding);
             Assert.Equal(236, taskGridMinHeight);
@@ -76,6 +76,19 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("TaskPageStatusSummary", state);
             Assert.Contains("TaskHasActiveFilters", dashboard);
             Assert.Contains("TaskCompactCloseDetailsButton", view);
+        }
+
+        [Fact]
+        public void CopyTaskDiagnosticIsEnabledForAnyAvailableFailureField()
+        {
+            var root = FindRepositoryRoot();
+            var dashboard = System.IO.File.ReadAllText(System.IO.Path.Combine(
+                root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
+
+            Assert.Contains("CopyTaskErrorCommand = new RelayCommand(", dashboard);
+            Assert.Contains("!string.IsNullOrWhiteSpace(SelectedTask.ErrorMessage)", dashboard);
+            Assert.Contains("!string.IsNullOrWhiteSpace(SelectedTask.ErrorCode)", dashboard);
+            Assert.Contains("!string.IsNullOrWhiteSpace(SelectedTask.DetailMessage)", dashboard);
         }
 
         [Fact]

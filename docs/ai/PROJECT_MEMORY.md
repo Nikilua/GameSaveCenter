@@ -2724,3 +2724,4 @@
 ## 2026-09-12 U12-06 诊断复制边界
 
 - `CopyTaskErrorCommand` 的复制内容必须包括 `ErrorMessage`、`ErrorCode`、`DetailMessage` 和任务 ID；视觉详情去重不能削弱完整诊断复制能力。U12-06 的可展开技术详情尚未完成。
+- 命令可执行条件也必须接受三种字段中的任一项，不能因 `DetailMessage` 缺失而让用户无法复制失败原因或错误码。

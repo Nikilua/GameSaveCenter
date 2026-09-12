@@ -328,7 +328,12 @@ namespace GameSaveCenter.Playnite.ViewModels
             RetryAllTasksCommand = new RelayCommand(_ => Run(RetryAllTasksAsync), _ => !IsBusy && RetryableTaskCount > 0);
             LoadMoreTasksCommand = new RelayCommand(_ => Run(() => LoadTaskPageAsync(false)), _ => !IsBusy && taskHistoryActive && TaskHistoryHasMore);
             ClearTaskFiltersCommand = new RelayCommand(_ => ClearTaskFilters(), _ => !IsBusy);
-            CopyTaskErrorCommand = new RelayCommand(_ => Run(CopySelectedTaskErrorAsync), _ => SelectedTask != null && !string.IsNullOrWhiteSpace(SelectedTask.DetailMessage));
+            CopyTaskErrorCommand = new RelayCommand(
+                _ => Run(CopySelectedTaskErrorAsync),
+                _ => SelectedTask != null
+                     && (!string.IsNullOrWhiteSpace(SelectedTask.ErrorMessage)
+                         || !string.IsNullOrWhiteSpace(SelectedTask.ErrorCode)
+                         || !string.IsNullOrWhiteSpace(SelectedTask.DetailMessage)));
             OpenAttentionCenterCommand = new RelayCommand(_ => OpenAttentionCenter());
             OpenMaintenanceCommand = new RelayCommand(_ => OpenMaintenance());
             OpenCloudQueueCommand = new RelayCommand(_ => OpenCloudQueue());
