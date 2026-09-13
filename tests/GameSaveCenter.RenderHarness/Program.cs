@@ -1780,7 +1780,7 @@ public static class Program
         var report = new StringBuilder();
         report.AppendLine("GameSaveCenter L21 large-list virtualization scale probe");
         report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
-        AppendRunMetadata(report, "scaleprobe", "OffscreenRenderHarness", "production default palette", "backend 200/2000/10000; media UI window 2000");
+        AppendRunMetadata(report, "scaleprobe", "OffscreenRenderHarness", "production default palette", "backend 1000/5000/20000; media UI window 2000");
         report.AppendLine("EvidenceBoundary: offscreen WPF template chain only; real Playnite/FusionX/DPI/video remains host validation");
         report.AppendLine("AnchorBoundary: page accumulation and stale-anchor contracts are covered by unit/source tests; this probe does not fake a Worker response");
         report.AppendLine();
@@ -2750,7 +2750,7 @@ public static class Program
 
     private static void RunLargeListScaleProbes(StringBuilder report)
     {
-        foreach (var backendCount in new[] { 200, 2000, 10000 })
+        foreach (var backendCount in new[] { 1000, 5000, 20000 })
         {
             ProbeScaleGrid(
                 report,
@@ -4182,7 +4182,9 @@ public static class Program
                 if (useSelectedGameBackground != false)
                     s_problems.Add($"{label} ambient layer still reads the selected game background");
 
-                SavePng(host, Path.Combine(outputRoot, "theme", themeName, "Shell-Background-1040x700.png"));
+                var themeOutputRoot = Path.Combine(outputRoot, "theme", themeName);
+                Directory.CreateDirectory(themeOutputRoot);
+                SavePng(host, Path.Combine(themeOutputRoot, "Shell-Background-1040x700.png"));
             }
             catch (Exception ex)
             {
