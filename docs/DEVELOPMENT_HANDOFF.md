@@ -1,6 +1,6 @@
 # GameSaveCenter 持续维护交接与开发入口
 
-> 2026-09-13 UI 精修账本收口续跑：当前提交 `da7730f` 已完成 P03、P05～P09 的共享实现/受控证据复核，并完成 P06-03、P06-04、P08-02、P09-02、P11-02、P11-04 的受控签收；最终 RenderHarness、状态/网格/缩略图/壳层探针均为 `OK`。P08-03、P10-01/02/04、P11-03 仍外部阻塞，其他依赖真实宿主的项为代码完成待验收。最终一键链与真实宿主审计已在文档提交后重试，均因唯一的 `?? src.zip` 在安装/采集前按 clean-tree 安全策略停止；构建与测试仍通过（Core `76/76`、Worker `311/311`、Playnite `455/512`，57 skip）。真实宿主没有 `summary.json`，专用窗口不能替代嵌入 Dashboard；根目录用户未跟踪 `src.zip` 不能擅自处理。详细证据见 [`docs/design/reviews/ui-finesse-20260913/PROGRESS.md`](design/reviews/ui-finesse-20260913/PROGRESS.md) 和 `BASELINE.md`。
+> 2026-09-13 UI 精修账本收口续跑：本轮代码基线为 `6c3c238`，源码门禁修正为 `592d7a0`，最终 Render QA 报告对应提交 `cacdaff`；已完成 P03、P05～P09 的共享实现/受控证据复核，并完成 P06-03、P06-04、P08-02、P09-02、P11-02、P11-04 的受控签收；最终 RenderHarness、状态/网格/缩略图/壳层探针均为 `OK`。P08-03、P10-01/02/04、P11-03 仍外部阻塞，其他依赖真实宿主的项为代码完成待验收。最终一键链与真实宿主审计已在文档提交后重试，均因唯一的 `?? src.zip` 在安装/采集前按 clean-tree 安全策略停止；构建与测试仍通过（Core `76/76`、Worker `311/311`、Playnite `455/512`，57 skip）。真实宿主没有 `summary.json`，专用窗口不能替代嵌入 Dashboard；根目录用户未跟踪 `src.zip` 不能擅自处理。详细证据见 [`docs/design/reviews/ui-finesse-20260913/PROGRESS.md`](design/reviews/ui-finesse-20260913/PROGRESS.md) 和 `BASELINE.md`。
 
 > 2026-09-13 UI 精修规划入口：[12 阶段、52 项实施提示词](design/UI_FINESSE_IMPLEMENTATION_PROMPTS_2026-09-13.md)。按用户最新关注点覆盖中英文排版、色彩材质、共享控件、动画中断/终态、响应性能、逐页精修、DPI/键盘和真实宿主验收。本轮仅文档交付，52 项未开始；建议从 P00 建立基线，复用已完成 U12 工作。源码新复核确认 MotionTokens 220/300ms 与 GscMotion 200/320ms 尚有差异，Caption Muted 色叠加 0.65 Opacity 需测量，不能继续泛称动效完全统一或小字对比已全部达标。详细事实见 CURRENT_STATE，实施与签收使用新提示词包。
 
