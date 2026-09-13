@@ -1,6 +1,12 @@
 # GameSaveCenter 当前事实入口
 
-> 更新时间：2026-09-12。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
+> 更新时间：2026-09-13。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
+
+## 2026-09-13 真实宿主审计复跑（受控证据边界）
+
+- 在当前 HEAD `d59a6a6` 使用 `scripts/real-host-audit.ps1 -Configuration Release -Output artifacts/ui-host-audit-live-20260913 -PlayniteExecutable D:\software\Playnite\Playnite.DesktopApp.exe` 完成构建、安装和宿主启动。Release 构建为 `0 warning / 0 error`；Core `76/76`、Worker `311/311`、Playnite `444 passed / 57 skipped / 0 failed`。
+- Playnite 扩展目录已安装并加载 `GameSaveCenter 0.6.73`；清单与六份程序集身份为当前提交 `0.6.73+d59a6a6...`。审计输出覆盖 1366×768、1600×1000 和最大化的浅/深主题，记录 150% DPI、真实视口、表格诊断及 `RealFixedLayoutOverflow=[]`。
+- 自动 UIAutomation 未找到 Playnite 的 GameSaveCenter 侧栏项，宿主进程 `MainWindowHandle=0`；输出没有 `summary.json`，所有 PNG 的 `CaptureOrigin=DedicatedAuditWindow`、`DashboardWasAlreadyHostedByPlaynite=false`。因此本轮只能作为当前生产程序集的受控窗口证据，不能宣称真实嵌入 Dashboard、物理键盘/滚轮或宿主主题验收已完成。
 
 ## 2026-09-12 UI 任务已合并
 

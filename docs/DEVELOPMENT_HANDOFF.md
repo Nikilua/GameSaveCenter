@@ -1,5 +1,7 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-13 真实宿主审计复跑：在 HEAD `d59a6a6` 运行 `scripts/real-host-audit.ps1`，Release 构建 `0 warning / 0 error`，Core `76/76`、Worker `311/311`、Playnite `444 passed / 57 skipped / 0 failed`；当前用户 Playnite 扩展目录已安装并加载 `GameSaveCenter 0.6.73`。审计目录为 [`artifacts/ui-host-audit-live-20260913`](../artifacts/ui-host-audit-live-20260913)，受控矩阵覆盖 1366×768、1600×1000、最大化和浅/深主题，metadata 记录 150% DPI 且 `RealFixedLayoutOverflow=[]`。UIAutomation 未找到 GameSaveCenter 侧栏，宿主 `MainWindowHandle=0`，未生成 `summary.json`；因此截图均为 `DedicatedAuditWindow`，不能替代真实嵌入 Dashboard、物理滚轮/键盘和宿主主题验收。
+
 > 2026-09-12 UI 排期入口：后续 UI 工作优先读取 [`ai/UI_CONSOLIDATED_BACKLOG_2026-09-12.md`](ai/UI_CONSOLIDATED_BACKLOG_2026-09-12.md)。它已将项目 D12 显示复核任务与用户提供的 GPT 建议整合为 U12-00～U12-10，并明确已有共享 UI 系统仅审计/补齐、Demo-first 和真实业务边界；旧 32 项计划仍用于稳定性、发布与宿主验收依赖。
 
 > 2026-09-10 实际宿主安装核对：用户反馈按钮无变化后，比较发现 Playnite 扩展目录的旧 DLL 与源码哈希不同，且目录内 `icon.png` 仍是旧资产。已用 `scripts/dev-install-run.ps1 -Configuration Release -NoStart` 从 HEAD `c757ffe` 重新构建并原子替换 `C:\Users\lopmatu\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec`；安装后插件/Worker/共享程序集/清单/icon 与包 staging 逐项哈希一致，Playnite `440/497`（57 skip，0 fail）。当前没有运行 Playnite，用户需要完全启动/重启后才能看到新按钮和侧栏图标。

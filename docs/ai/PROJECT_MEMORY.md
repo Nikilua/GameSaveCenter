@@ -1,6 +1,12 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
-> 维护时间：2026-09-12
+> 维护时间：2026-09-13
+
+## 2026-09-13 真实宿主审计复跑边界
+
+- 当前 HEAD `d59a6a6` 已通过 `scripts/real-host-audit.ps1` 的 Release 构建、安装和启动流程：构建 `0 warning / 0 error`，Core `76/76`、Worker `311/311`、Playnite `444 passed / 57 skipped / 0 failed`；日志确认 Playnite 加载 `GameSaveCenter 0.6.73`。
+- `artifacts/ui-host-audit-live-20260913` 保存 1366×768、1600×1000、最大化、浅/深主题的受控窗口矩阵，metadata 记录 150% DPI 和 `RealFixedLayoutOverflow=[]`。这些证据可用于确认当前程序集及新增 UI 在专用宿主窗口的渲染状态。
+- 自动 UIAutomation 仍无法定位 Playnite GameSaveCenter 侧栏（`MainWindowHandle=0`），未生成 `summary.json`；PNG 的 `CaptureOrigin` 全为 `DedicatedAuditWindow` 且 `DashboardWasAlreadyHostedByPlaynite=false`。不得把本轮受控截图写成真实嵌入 Dashboard、物理 DPI、键盘或滚轮验收。
 
 ## 2026-09-12 合并 UI 任务队列
 

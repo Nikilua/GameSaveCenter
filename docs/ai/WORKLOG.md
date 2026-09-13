@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-13 真实 Playnite 宿主审计复跑
+
+- 用户允许使用电脑后，按项目既有入口运行 `scripts/real-host-audit.ps1`，输出目录为 `artifacts/ui-host-audit-live-20260913`，源码基线为 `d59a6a6`，安装目标为当前用户的 Playnite 扩展目录。
+- Release 构建 `0 warning / 0 error`；Core `76/76`、Worker `311/311`、Playnite `444 passed / 57 skipped / 0 failed`。Playnite 日志确认 `GameSaveCenter 0.6.73` 加载，表格诊断记录 Media 200 项、Task 50 项及可见行/滚动条信息。
+- 受控窗口矩阵覆盖 1366×768、1600×1000、最大化以及浅/深主题，metadata 记录 150% DPI，`RealFixedLayoutOverflow=[]`。Overview、Task、Media 等页面截图显示新增压缩、真实游戏信息、状态胶囊、失败详情折叠和表格阅读改动均已进入当前程序集。
+- UIAutomation 仍无法定位 Playnite GameSaveCenter 侧栏，进程 `MainWindowHandle=0`，最终未生成 `summary.json`；全部审计 PNG 标记为 `DedicatedAuditWindow`。这轮证明“当前包已构建、安装并可在受控宿主窗口渲染”，不改变真实嵌入 Dashboard、物理 DPI/键盘/滚轮仍待人工宿主复核的边界。
+
 ## 2026-09-12 合并项目与 GPT UI 后续任务
 
 - 读取项目新提交的 `UI_DISPLAY_REVIEW_2026-09-12.md`（D12-01～D12-10）和用户提供的 GPT UI 建议；将两者整理为 `UI_CONSOLIDATED_BACKLOG_2026-09-12.md` 的 U12-00～U12-10 队列。
