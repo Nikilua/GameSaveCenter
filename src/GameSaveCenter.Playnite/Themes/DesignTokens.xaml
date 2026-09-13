@@ -1,7 +1,8 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
-                    xmlns:primitives="clr-namespace:System.Windows.Controls.Primitives;assembly=PresentationFramework">
+                    xmlns:primitives="clr-namespace:System.Windows.Controls.Primitives;assembly=PresentationFramework"
+                    xmlns:ui="clr-namespace:GameSaveCenter.Playnite.Controls">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/Typography.xaml"/>
         <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/MotionTokens.xaml"/>
@@ -121,6 +122,9 @@
     <SolidColorBrush x:Key="GscTableRowBrush" Color="#08000000"/>
     <SolidColorBrush x:Key="GscTableAlternateRowBrush" Color="#00000000"/>
     <SolidColorBrush x:Key="GscRowHoverBrush" Color="#0CFFFFFF"/>
+    <!-- Shared status text cue. The converter only adds a glyph to known status
+         words; values outside that vocabulary remain untouched. -->
+    <ui:StatusGlyphConverter x:Key="GscStatusGlyphConverter"/>
     <SolidColorBrush x:Key="GscScrollTrackBrush" Color="#00000000"/>
     <SolidColorBrush x:Key="GscScrollThumbBrush" Color="#38FFFFFF"/>
     <SolidColorBrush x:Key="GscScrollThumbHoverBrush" Color="#52FFFFFF"/>
@@ -142,6 +146,16 @@
     <sys:Double x:Key="GscSpacing5">20</sys:Double>
     <sys:Double x:Key="GscSpacing6">24</sys:Double>
     <sys:Double x:Key="GscSpacing8">32</sys:Double>
+    <!-- Unprefixed aliases mirror the design brief while the Gsc-prefixed keys remain
+         the compatibility vocabulary consumed by existing pages. -->
+    <sys:Double x:Key="Spacing4">4</sys:Double>
+    <sys:Double x:Key="Spacing8">8</sys:Double>
+    <sys:Double x:Key="Spacing12">12</sys:Double>
+    <sys:Double x:Key="Spacing16">16</sys:Double>
+    <sys:Double x:Key="Spacing20">20</sys:Double>
+    <sys:Double x:Key="Spacing24">24</sys:Double>
+    <sys:Double x:Key="Spacing32">32</sys:Double>
+    <sys:Double x:Key="Spacing40">40</sys:Double>
     <!-- Ordinary actions and fields share one 36 DIP control height. Compact actions
          have their own token so dense toolbars do not need page-level overrides. -->
     <sys:Double x:Key="GscButtonHeight">36</sys:Double>
@@ -168,7 +182,7 @@
     <!-- Keep rows comfortably readable instead of collapsing a table to two or three lines.
          The surrounding page owns the overflow channel, while the DataGrid keeps its own
          virtualized scrollbar for the remaining rows. -->
-    <sys:Double x:Key="GscTableRowHeight">44</sys:Double>
+    <sys:Double x:Key="GscTableRowHeight">52</sys:Double>
     <!-- A readable table should expose several rows at normal window sizes. Legacy and
          dashboard-hosted tables can still use the large viewport token below; extracted
          workspaces use the adaptive minimum so the page itself does not need a vertical
@@ -185,7 +199,7 @@
          each breakpoint so normal hosts show several readable rows without clipping. -->
     <sys:Double x:Key="GscTableViewportHeight">720</sys:Double>
     <sys:Double x:Key="GscListViewportHeight">720</sys:Double>
-    <sys:Double x:Key="GscTableHeaderHeight">36</sys:Double>
+    <sys:Double x:Key="GscTableHeaderHeight">42</sys:Double>
 
     <!-- Page-level scrolling is deliberately keyed instead of implicit.  A page owns one
          vertical scroll channel; tables and lists own their own internal channels.  Keeping

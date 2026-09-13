@@ -38,4 +38,16 @@
         <Setter Property="Padding" Value="10,5"/>
     </Style>
 
+    <!-- Explicit design-system names for callers that do not need to know the
+         historical WpfUi style vocabulary. All aliases still resolve to the one
+         production template, preserving focus, disabled and command behavior. -->
+    <Style x:Key="GscSecondaryButton"
+           TargetType="{x:Type ui:Button}"
+           BasedOn="{StaticResource GscWpfUiSecondaryButton}"/>
+    <Style x:Key="GscDangerButton"
+           TargetType="{x:Type ui:Button}"
+           BasedOn="{StaticResource GscWpfUiDangerButton}"/>
+    <Style x:Key="GscIconButton"
+           TargetType="{x:Type ui:Button}"
+           BasedOn="{StaticResource GscIconOnlyToolbarButton}"/>
 </ResourceDictionary>

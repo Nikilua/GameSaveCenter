@@ -243,7 +243,9 @@ namespace GameSaveCenter.Playnite.Views
             var environmentPanel = FindVisualChild<UniformGrid>(EnvironmentCheckItems);
             if (environmentPanel != null)
                 environmentPanel.Columns = environmentColumns;
-            const double tableMinHeight = 236d;
+            // Keep four full 52-DIP rows plus the 42-DIP header readable after the
+            // shared table density was raised from the compact legacy baseline.
+            const double tableMinHeight = 260d;
             FindingsGrid.MinHeight = tableMinHeight;
             FindingsGrid.Height = double.NaN;
             FindingsGrid.MaxHeight = double.PositiveInfinity;

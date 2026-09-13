@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-13 对齐 GPT UI 设计契约
+
+- 将补充方案中的设计基础映射到现有 Demo-first 资源：新增间距、字体、玻璃表面、按钮语义别名；将共享表格密度提升为 52 DIP 行/42 DIP 表头，并保留任务页 236 DIP 紧凑视口。
+- 新增 `Controls/StatusGlyphConverter.cs`，仅在任务状态胶囊上为已知成功/失败/警告文本添加 `✓/×/⚠`，未知值透传；没有修改 ViewModel、命令、Worker、备份、数据库或业务行为。维护页最小表格高度同步为 260 DIP，避免新行高在短窗口丢失第四行。
+- 验证：`validate-source.py` 通过；`check-xaml.ps1` 通过；Release 构建 0 warning/0 error；Core `76/76`、Worker `310/311`（1 skip）、Playnite `445/508`（63 skip、0 fail）；全量 RenderHarness `render-qa OK`。真实 Playnite 仍只有受控窗口证据，未宣称嵌入式宿主验收。
+
 ## 2026-09-13 真实 Playnite 宿主审计复跑
 
 - 用户允许使用电脑后，按项目既有入口运行 `scripts/real-host-audit.ps1`，输出目录为 `artifacts/ui-host-audit-live-20260913`，源码基线为 `d59a6a6`，安装目标为当前用户的 Playnite 扩展目录。

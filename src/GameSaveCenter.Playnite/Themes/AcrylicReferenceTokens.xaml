@@ -22,8 +22,8 @@
     <sys:Double x:Key="TitleBarHeight">48</sys:Double>
     <GridLength x:Key="InspectorWidth">348</GridLength>
     <sys:Double x:Key="ControlHeight">36</sys:Double>
-    <sys:Double x:Key="RowHeight">44</sys:Double>
-    <sys:Double x:Key="HeaderRowHeight">36</sys:Double>
+    <sys:Double x:Key="RowHeight">52</sys:Double>
+    <sys:Double x:Key="HeaderRowHeight">42</sys:Double>
 
     <!-- ═══════════════ 字阶 ═══════════════ -->
     <FontFamily x:Key="UiFont">Segoe UI Variable Text, Segoe UI, Microsoft YaHei UI</FontFamily>
@@ -38,5 +38,4 @@
     <sys:Double x:Key="SizeCaption">12</sys:Double>
 
 </ResourceDictionary>
-
 

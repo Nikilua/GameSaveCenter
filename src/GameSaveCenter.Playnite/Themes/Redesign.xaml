@@ -154,6 +154,21 @@
         <Setter Property="Effect" Value="{x:Null}"/>
     </Style>
 
+    <!-- Semantic material aliases from the design brief. They deliberately reuse
+         the existing Demo-first surfaces instead of introducing a second glass
+         rendering system. -->
+    <Style x:Key="GscGlassSurface" TargetType="Border" BasedOn="{StaticResource GscRedesignShellSurface}">
+        <Setter Property="CornerRadius" Value="20"/>
+    </Style>
+    <Style x:Key="GscGlassCard" TargetType="Border" BasedOn="{StaticResource GscRedesignSectionCard}">
+        <Setter Property="CornerRadius" Value="20"/>
+        <Setter Property="Padding" Value="20"/>
+    </Style>
+    <Style x:Key="GscGlassPanel" TargetType="Border" BasedOn="{StaticResource GscRedesignSectionCard}">
+        <Setter Property="CornerRadius" Value="16"/>
+        <Setter Property="Padding" Value="12"/>
+    </Style>
+
     <!-- All workspace tables share one opaque reading surface. Keeping this in the shared
          dictionary prevents a host theme from falling back to square/default DataGrid chrome
          and keeps rounded frames consistent across Saves, Media, Trainers and Maintenance. -->

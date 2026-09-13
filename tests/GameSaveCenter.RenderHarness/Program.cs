@@ -2795,8 +2795,8 @@ public static class Program
             EnableRowVirtualization = true,
             EnableColumnVirtualization = true,
             IsReadOnly = true,
-            RowHeight = 44,
-            ColumnHeaderHeight = 36
+            RowHeight = 52,
+            ColumnHeaderHeight = 42
         };
         VirtualizingPanel.SetIsVirtualizing(grid, true);
         VirtualizingPanel.SetVirtualizationMode(grid, VirtualizationMode.Recycling);

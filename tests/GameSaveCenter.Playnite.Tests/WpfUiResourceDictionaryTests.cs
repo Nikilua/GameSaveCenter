@@ -192,6 +192,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Key=\"DangerGlassButton\"", buttonStyles);
         Assert.Contains("x:Key=\"IconButton\"", buttonStyles);
         Assert.Contains("x:Key=\"SegmentedButton\"", buttonStyles);
+        Assert.Contains("x:Key=\"GscSecondaryButton\"", buttonStyles);
+        Assert.Contains("x:Key=\"GscDangerButton\"", buttonStyles);
+        Assert.Contains("x:Key=\"GscIconButton\"", buttonStyles);
         Assert.Contains("Appearance\" Value=\"Danger\"", production);
         Assert.Contains("RenderTransform.(ScaleTransform.ScaleX)", production);
         Assert.Contains("RenderTransform.(ScaleTransform.ScaleY)", production);
@@ -946,7 +949,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Key=\"GscTableRowHeight\"", designTokens);
         Assert.Contains("x:Key=\"GscTableMinHeight\"", designTokens);
         Assert.Contains("x:Key=\"GscTableViewportHeight\"", designTokens);
-        Assert.Contains("x:Key=\"GscTableRowHeight\">48</sys:Double>", designTokens);
+        Assert.Contains("x:Key=\"GscTableRowHeight\">52</sys:Double>", designTokens);
         Assert.Contains("x:Key=\"GscTableMinHeight\">0</sys:Double>", designTokens);
         Assert.Contains("x:Key=\"GscTableViewportHeight\">720</sys:Double>", designTokens);
         Assert.Contains("x:Key=\"GscTableHeaderHeight\">42</sys:Double>", designTokens);
@@ -1342,7 +1345,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"MaintenanceDeviceScrollSurface\"", maintenance);
         Assert.Contains("x:Name=\"MaintenanceAuditScrollSurface\"", maintenance);
         Assert.Contains("x:Name=\"MaintenanceProcessScrollSurface\"", maintenance);
-        Assert.Contains("const double tableMinHeight = 236d", maintenanceCode);
+        Assert.Contains("const double tableMinHeight = 260d", maintenanceCode);
         Assert.DoesNotContain("tableViewportHeight", maintenanceCode);
         Assert.Contains("FindingsGrid.Height = double.NaN", maintenanceCode);
         Assert.Contains("FindingsGrid.MaxHeight = double.PositiveInfinity", maintenanceCode);
@@ -1672,7 +1675,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Equal("Disabled", auditInspector.Attribute("HorizontalScrollBarVisibility")?.Value);
         Assert.Null(auditInspector.Attribute("MaxHeight"));
         var maintenanceCode = File.ReadAllText(maintenancePath + ".cs");
-        Assert.Contains("const double tableMinHeight = 236d", maintenanceCode);
+        Assert.Contains("const double tableMinHeight = 260d", maintenanceCode);
         Assert.Contains("MaintenanceAuditFindingsGrid.MinHeight = tableMinHeight", maintenanceCode);
         Assert.Contains("MaintenanceAuditFindingsGrid.Height = double.NaN", maintenanceCode);
         Assert.Contains("MaintenanceAuditFindingsGrid.MaxHeight = double.PositiveInfinity", maintenanceCode);
@@ -5115,6 +5118,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Noto Sans CJK SC", typography);
         Assert.Contains("Inter, Segoe UI Variable Text", typography);
         Assert.Contains("x:Key=\"GscPageTitleFontSize\">22", typography);
+        Assert.Contains("x:Key=\"GscDisplayTitleFontSize\">28", typography);
         Assert.Contains("x:Key=\"GscSectionFontSize\">16", typography);
         Assert.Contains("x:Key=\"GscBodyFontSize\">14", typography);
         Assert.Contains("x:Key=\"GscCaptionFontSize\">12", typography);
@@ -5122,6 +5126,13 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Key=\"GscTypographySectionTitle\"", typography);
         Assert.Contains("x:Key=\"GscTypographyBody\"", typography);
         Assert.Contains("x:Key=\"GscTypographyCaption\"", typography);
+        Assert.Contains("x:Key=\"GscDisplayTitle\"", typography);
+        Assert.Contains("x:Key=\"GscPageTitle\"", typography);
+        Assert.Contains("x:Key=\"GscSectionTitle\"", typography);
+        Assert.Contains("x:Key=\"GscBodyText\"", typography);
+        Assert.Contains("x:Key=\"GscCaptionText\"", typography);
+        Assert.Contains("x:Key=\"GscNumericText\"", typography);
+        Assert.Contains("<Setter Property=\"Opacity\" Value=\"0.65\"/>", typography);
         Assert.Contains("<Style TargetType=\"TextBlock\">", typography);
         Assert.Contains("<Style TargetType=\"Button\">", typography);
         Assert.Contains("<Style TargetType=\"TextBox\">", typography);
