@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-13 开发提示词包全量门禁复核
+
+- 逐项复核用户提示词 Phase 0～12、最终验收和报告字段；当前生产实现继续复用现有 WPF/Playnite 架构与 Demo-first 资源，未改 ViewModel、命令、Worker、IPC、备份/恢复或数据库。
+- 重新运行 `validate-source.py`、`check-xaml.ps1`、WPF 静态审查和 `scripts/render-qa.ps1 -Configuration Release -Output .tmp/ui-prompt-qa-20260913`；构建与 XAML 为 0 error，RenderHarness `render-qa OK`，覆盖双主题、1040×700～3840×2160、多页面、状态夹具、滚动、缩放恢复和性能探针。
+- 当前工作区存在现有未跟踪根目录 `src.zip`（未由本阶段创建、修改或提交），因此本次 RenderHarness 报告标记 `WorkingTreeClean=False`；代码改动仍保持已提交状态。真实 Playnite 仍有 PID 824 无主窗口进程，最新包安装和嵌入式宿主/物理交互验收需用户先退出 Playnite。
+
 ## 2026-09-13 b470bf9 发布包复核
 
 - 从干净 HEAD `b470bf9` 重新执行 `scripts/package.ps1 -Configuration Release`；XAML 检查、Release 编译和 Core/Worker/Playnite 全量测试均通过（Core `76/76`、Worker `310/311`，Playnite `447/510`，63 项跳过、0 失败）。

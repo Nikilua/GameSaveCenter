@@ -4,6 +4,26 @@
 > 基线：`17ac57d`（`origin/main`）
 > 本文把 `GameSaveCenter_UI_Refactor_Implementation_Pack_v1/06_ACCEPTANCE_CHECKLIST.md` 逐项映射到当前仓库证据，并严格区分 `AUTO VERIFIED` 与 `MANUAL QA REQUIRED`。
 
+## 2026-09-13 开发提示词包复核附录
+
+本附录以当前 `origin/main` 的 HEAD `10ecd3a` 为准，复核用户提供的完整开发提示词包（Phase 0～12、构建/安装、最终验收与报告要求）。项目实际采用 `net462 + WPF UserControl` 的 Playnite `GenericPlugin`；入口为 `GameSaveCenterPlugin` 创建的 `DashboardView`，可见生产壳层为 `AcrylicProductionShellView`。Core、Worker、IPC、备份/恢复、Ludusavi、Rclone、媒体、云端、任务和设置业务层均保持不变，插件 ID 仍为 `66e9f2d7-67bb-43ef-b62a-b8e60734fcec`。未引入第三方 UI 框架、HTML 或 WebView。
+
+### 当前实现映射
+
+- Phase 0～4/11：共享 `DesignTokens.xaml`、`Typography.xaml`、`Redesign.xaml`、`ButtonStyles.xaml`、`MotionTokens.xaml` 已作为唯一资源入口；间距、字体、玻璃表面、按钮语义、状态字形、动效时长和回退效果均集中管理。
+- Phase 5～8：Overview、Save、Trainer、Media、Task、Maintenance、Settings 均保留真实绑定、命令、空/加载/错误/筛选无结果状态、ToolTip、键盘焦点和有限虚拟化列表；任务/存档/维护状态统一显示 `✓/×/⚠` 文字提示，失败技术详情默认折叠。
+- Phase 9～12：Demo-first 页面层级与响应式断点已落地；共享表格为 52 DIP 行/42 DIP 表头，任务页紧凑视口 236 DIP、维护页最小表格视口 260 DIP；Motion Normal/Slow 为 220/300ms，关闭动画、高对比度、关闭透明和无原生材质时均有终态回退。
+
+### 当前自动证据
+
+- `python scripts/validate-source.py`、`scripts/check-xaml.ps1` 和 `python .codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py .`：0 error；静态审查保留 22 个已登记 warning（Canvas/滚动容器等兼容性提示）。
+- `scripts/render-qa.ps1 -Configuration Release -Output .tmp/ui-prompt-qa-20260913`：`render-qa OK`；双主题覆盖 1040×700 至 3840×2160、多页面、多数据量、缩放恢复、表格滚动、状态夹具和性能探针。报告中的 `WorkingTreeClean=False` 仅因工作区已有未跟踪的根目录 `src.zip`，该文件未由本阶段修改或提交。
+- `scripts/package.ps1 -Configuration Release`：Release 0 warning/0 error；Core `76/76`、Worker `310/311`（1 skip）、Playnite `447/510`（63 skip、0 fail）。`.pext/.zip` 均为 `43,809,091` 字节，六份程序集身份统一为 `0.6.73+b470bf97f53ec0012da165cb4eb954d6b2e18e6f`，SHA-256 为 `9E6F4BB11B812DB824D8E3EA4EBFCD45A2490FEA5C907996301ABD9F21A55F8A`。
+
+### 仍需真实宿主确认
+
+当前用户 Playnite 扩展目录为 `C:\Users\lopmatu\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec`，其中已安装程序集仍是此前 `d59a6a6` 构建；最新 `b470bf9` 包尚未覆盖。Playnite 进程 PID 824 没有可绑定主窗口（`MainWindowHandle=0`），Computer Use 返回 `apps=[]`，安全安装器拒绝强制结束或覆盖该宿主。因此以下项目不能写成已验收：真实嵌入 Dashboard、Playnite 用户主题/Accent、100%～200% 物理 DPI、连续窗口缩放、真实鼠标滚轮/键盘和真实大库帧率。关闭 Playnite 后，使用 `scripts/dev-install-run.ps1 -Configuration Release -NoStart -PlayniteExecutable D:\software\Playnite\Playnite.DesktopApp.exe` 可继续完成安装核验。
+
 ## 1. 结论摘要
 
 - 自动化验收：功能保真、GamePicker 锁定、窗口/DPI 等效尺寸、滚动契约、表格视口、Light/Dark 主题渲染、Resize 恢复、测试与审计门禁、真实宿主 reload 与无新 crash log 均通过。

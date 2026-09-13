@@ -1,5 +1,7 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-13 开发提示词包全量门禁复核：用户提供的 Phase 0～12 及最终验收要求已逐项对照当前生产实现；最新 RenderHarness `render-qa OK`（双主题、多尺寸、状态夹具、滚动/缩放恢复、性能探针），静态审查 0 error。报告 `WorkingTreeClean=False` 仅由现有未跟踪根目录 `src.zip` 导致，未纳入提交。真实 Playnite PID 824 仍无主窗口，最新包安装、嵌入 Dashboard、用户主题/DPI/物理键盘滚轮和大库帧率需宿主退出后继续。
+
 > 2026-09-13 GPT UI 契约与发布包复核：在不改 MVVM/业务层的前提下，补齐现有共享 DesignTokens/Typography/Redesign/ButtonStyles 的间距、字体、玻璃、按钮语义别名；统一表格为 52 DIP 行、42 DIP 表头，维护页最小表格 260 DIP，任务/存档/维护状态胶囊接入 `StatusGlyphConverter` 的 `✓/×/⚠` 显示，Motion Normal/Slow 校准为 220/300ms。验证为 Release 0 warning/error、Core `76/76`、Worker `310/311`（1 skip）、Playnite `447/510`（63 skip）、RenderHarness `render-qa OK`；干净 HEAD `b470bf9` 已重新生成 `.pext/.zip`，六份程序集身份统一为 `0.6.73+b470bf97f53ec0012da165cb4eb954d6b2e18e6f`，包 SHA-256 为 `9E6F4BB11B812DB824D8E3EA4EBFCD45A2490FEA5C907996301ABD9F21A55F8A`。任务页 236 DIP 紧凑视口是有意保留的页面级契约。真实 Playnite 嵌入 Dashboard、宿主 DPI/主题、物理键盘/滚轮仍以紧随其后的真实宿主审计边界为准；当前运行中的无窗口宿主需先关闭后才能安全安装最新包。
 
 > 2026-09-13 真实宿主审计复跑：在 HEAD `d59a6a6` 运行 `scripts/real-host-audit.ps1`，Release 构建 `0 warning / 0 error`，Core `76/76`、Worker `311/311`、Playnite `444 passed / 57 skipped / 0 failed`；当前用户 Playnite 扩展目录已安装并加载 `GameSaveCenter 0.6.73`。审计目录为 [`artifacts/ui-host-audit-live-20260913`](../artifacts/ui-host-audit-live-20260913)，受控矩阵覆盖 1366×768、1600×1000、最大化和浅/深主题，metadata 记录 150% DPI 且 `RealFixedLayoutOverflow=[]`。UIAutomation 未找到 GameSaveCenter 侧栏，宿主 `MainWindowHandle=0`，未生成 `summary.json`；因此截图均为 `DedicatedAuditWindow`，不能替代真实嵌入 Dashboard、物理滚轮/键盘和宿主主题验收。
