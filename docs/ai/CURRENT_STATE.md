@@ -5,7 +5,7 @@
 ## 2026-09-13 开发提示词包全量门禁复核
 
 - 用户提供的完整开发提示词包已按 Phase 0～12 和最终验收逐项映射；实现仍是 `net462` WPF `GenericPlugin`，生产入口为 `DashboardView` / `AcrylicProductionShellView`，业务层与插件 ID 未改。
-- 最新 RenderHarness 报告为 [`ui-prompt-qa-final-20260913`](../../.tmp/ui-prompt-qa-final-20260913/render-qa-report.txt) 的 `render-qa OK`，覆盖双主题、多尺寸、状态夹具、表格滚动、Resize 恢复和性能探针；静态审查 0 error，22 个 warning 为既有 Canvas/有限滚动兼容提示。
+- 最新 RenderHarness 报告为 [`ui-prompt-qa-final2-20260913`](../../.tmp/ui-prompt-qa-final2-20260913/render-qa-report.txt) 的 `render-qa OK`，对应当前 HEAD `108ae0f`，覆盖双主题、多尺寸、状态夹具、表格滚动、Resize 恢复和性能探针；静态审查 0 error，22 个 warning 为既有 Canvas/有限滚动兼容提示。
 - 报告的 `WorkingTreeClean=False` 只对应工作区现有未跟踪根目录 `src.zip`；本阶段不删除用户文件。真实 Playnite 进程仍无可绑定主窗口，最新 `b470bf9` 包的安装与真实嵌入/DPI/物理交互仍待宿主退出后复核。
 
 ## 2026-09-13 GPT UI 契约与发布包复核完成

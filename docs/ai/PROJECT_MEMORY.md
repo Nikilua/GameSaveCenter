@@ -5,7 +5,7 @@
 ## 2026-09-13 开发提示词包全量门禁复核
 
 - 已阅读并复核用户提供的完整 WPF/Playnite 开发提示词包及其 Phase 0～12、构建安装和最终报告要求；当前实现以 Demo-first 现有共享资源为视觉真值，不新增第二套 UI 框架或业务层。
-- 当前 `scripts/render-qa.ps1 -Configuration Release -Output .tmp/ui-prompt-qa-20260913` 返回 `render-qa OK`，覆盖双主题、多尺寸、多页面、状态/空错误夹具、表格虚拟化滚动、Resize 恢复和性能探针；WPF 静态审查无 error。
+- 当前 HEAD `108ae0f` 的 `scripts/render-qa.ps1 -Configuration Release -Output .tmp/ui-prompt-qa-final2-20260913` 返回 `render-qa OK`，覆盖双主题、多尺寸、多页面、状态/空错误夹具、表格虚拟化滚动、Resize 恢复和性能探针；WPF 静态审查无 error。
 - 报告的工作树非 clean 是因为现有根目录 `src.zip` 未跟踪文件，不能擅自删除或提交。当前 Playnite PID 824 无主窗口，最新包尚未安全安装到该运行中宿主；真实嵌入、用户主题、物理 DPI、键盘/滚轮和大库帧率继续标记为宿主人工验收。
 
 ## 2026-09-13 GPT UI 契约与发布包复核

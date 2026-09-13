@@ -6,7 +6,7 @@
 
 ## 2026-09-13 开发提示词包复核附录
 
-本附录以当前 `origin/main` 的 HEAD `23f2ef5` 为准，复核用户提供的完整开发提示词包（Phase 0～12、构建/安装、最终验收与报告要求）。项目实际采用 `net462 + WPF UserControl` 的 Playnite `GenericPlugin`；入口为 `GameSaveCenterPlugin` 创建的 `DashboardView`，可见生产壳层为 `AcrylicProductionShellView`。Core、Worker、IPC、备份/恢复、Ludusavi、Rclone、媒体、云端、任务和设置业务层均保持不变，插件 ID 仍为 `66e9f2d7-67bb-43ef-b62a-b8e60734fcec`。未引入第三方 UI 框架、HTML 或 WebView。
+本附录以当前 `origin/main` 的 HEAD `108ae0f` 为准，复核用户提供的完整开发提示词包（Phase 0～12、构建/安装、最终验收与报告要求）。项目实际采用 `net462 + WPF UserControl` 的 Playnite `GenericPlugin`；入口为 `GameSaveCenterPlugin` 创建的 `DashboardView`，可见生产壳层为 `AcrylicProductionShellView`。Core、Worker、IPC、备份/恢复、Ludusavi、Rclone、媒体、云端、任务和设置业务层均保持不变，插件 ID 仍为 `66e9f2d7-67bb-43ef-b62a-b8e60734fcec`。未引入第三方 UI 框架、HTML 或 WebView。
 
 ### 当前实现映射
 
@@ -17,7 +17,7 @@
 ### 当前自动证据
 
 - `python scripts/validate-source.py`、`scripts/check-xaml.ps1` 和 `python .codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py .`：0 error；静态审查保留 22 个已登记 warning（Canvas/滚动容器等兼容性提示）。
-- `scripts/render-qa.ps1 -Configuration Release -Output .tmp/ui-prompt-qa-final-20260913`：`render-qa OK`；双主题覆盖 1040×700 至 3840×2160、多页面、多数据量、缩放恢复、表格滚动、状态夹具和性能探针。报告中的 `WorkingTreeClean=False` 仅因工作区已有未跟踪的根目录 `src.zip`，该文件未由本阶段修改或提交。
+- `scripts/render-qa.ps1 -Configuration Release -Output .tmp/ui-prompt-qa-final2-20260913`：`render-qa OK`，报告对应 HEAD `108ae0f`；双主题覆盖 1040×700 至 3840×2160、多页面、多数据量、缩放恢复、表格滚动、状态夹具和性能探针。报告中的 `WorkingTreeClean=False` 仅因工作区已有未跟踪的根目录 `src.zip`，该文件未由本阶段修改或提交。
 - `scripts/package.ps1 -Configuration Release`：Release 0 warning/0 error；Core `76/76`、Worker `310/311`（1 skip）、Playnite `447/510`（63 skip、0 fail）。`.pext/.zip` 均为 `43,809,091` 字节，六份程序集身份统一为 `0.6.73+b470bf97f53ec0012da165cb4eb954d6b2e18e6f`，SHA-256 为 `9E6F4BB11B812DB824D8E3EA4EBFCD45A2490FEA5C907996301ABD9F21A55F8A`。
 
 ### 仍需真实宿主确认
