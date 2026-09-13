@@ -6,7 +6,7 @@
 
 ## 2026-09-13 开发提示词包复核附录
 
-本附录以当前 `origin/main` 的 HEAD `108ae0f` 为准，复核用户提供的完整开发提示词包（Phase 0～12、构建/安装、最终验收与报告要求）。项目实际采用 `net462 + WPF UserControl` 的 Playnite `GenericPlugin`；入口为 `GameSaveCenterPlugin` 创建的 `DashboardView`，可见生产壳层为 `AcrylicProductionShellView`。Core、Worker、IPC、备份/恢复、Ludusavi、Rclone、媒体、云端、任务和设置业务层均保持不变，插件 ID 仍为 `66e9f2d7-67bb-43ef-b62a-b8e60734fcec`。未引入第三方 UI 框架、HTML 或 WebView。
+本附录以当前 `origin/main` 的 HEAD `eddfbda` 为准，复核用户提供的完整开发提示词包（Phase 0～12、构建/安装、最终验收与报告要求）。项目实际采用 `net462 + WPF UserControl` 的 Playnite `GenericPlugin`；入口为 `GameSaveCenterPlugin` 创建的 `DashboardView`，可见生产壳层为 `AcrylicProductionShellView`。Core、Worker、IPC、备份/恢复、Ludusavi、Rclone、媒体、云端、任务和设置业务层均保持不变，插件 ID 仍为 `66e9f2d7-67bb-43ef-b62a-b8e60734fcec`。未引入第三方 UI 框架、HTML 或 WebView。
 
 ### 当前实现映射
 
@@ -18,11 +18,12 @@
 
 - `python scripts/validate-source.py`、`scripts/check-xaml.ps1` 和 `python .codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py .`：0 error；静态审查保留 22 个已登记 warning（Canvas/滚动容器等兼容性提示）。
 - `scripts/render-qa.ps1 -Configuration Release -Output .tmp/ui-prompt-qa-final2-20260913`：`render-qa OK`，报告对应 HEAD `108ae0f`；双主题覆盖 1040×700 至 3840×2160、多页面、多数据量、缩放恢复、表格滚动、状态夹具和性能探针。报告中的 `WorkingTreeClean=False` 仅因工作区已有未跟踪的根目录 `src.zip`，该文件未由本阶段修改或提交。
-- `scripts/package.ps1 -Configuration Release`：Release 0 warning/0 error；Core `76/76`、Worker `310/311`（1 skip）、Playnite `447/510`（63 skip、0 fail）。`.pext/.zip` 均为 `43,809,091` 字节，六份程序集身份统一为 `0.6.73+b470bf97f53ec0012da165cb4eb954d6b2e18e6f`，SHA-256 为 `9E6F4BB11B812DB824D8E3EA4EBFCD45A2490FEA5C907996301ABD9F21A55F8A`。
+- `scripts/package.ps1 -Configuration Release`：Release 0 warning/0 error；Core `76/76`、Worker `310/311`（1 skip）、Playnite `447/510`（63 skip、0 fail）。历史正式包 `.pext/.zip` 均为 `43,809,091` 字节，六份程序集身份统一为 `0.6.73+b470bf97f53ec0012da165cb4eb954d6b2e18e6f`，SHA-256 为 `9E6F4BB11B812DB824D8E3EA4EBFCD45A2490FEA5C907996301ABD9F21A55F8A`；本轮在 Playnite 退出后又完成了当前源码快照的安全安装，安装报告为 `artifacts/last-dev-install-current-20260913.txt`。
+- 当前交付目录中的 `.pext/.zip` 均为 `43,809,213` 字节，SHA-256 为 `20C8FA5D19A61D4378FFDE9E93BBAFAD889F40C9C0F93FEBA3E92E62F376D4C3`；安装 DLL 构建身份为 `0.6.73+a81403478539ec1036aa135198c88e752e7d41d8`。该身份来自为绕开既有未跟踪 `src.zip` 而建立的干净源码快照，源码内容与 `eddfbda` 生产树一致，未改变业务实现。
 
 ### 仍需真实宿主确认
 
-当前用户 Playnite 扩展目录为 `C:\Users\lopmatu\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec`，其中已安装程序集仍是此前 `d59a6a6` 构建；最新 `b470bf9` 包尚未覆盖。Playnite 进程 PID 824 没有可绑定主窗口（`MainWindowHandle=0`），Computer Use 返回 `apps=[]`，安全安装器拒绝强制结束或覆盖该宿主。因此以下项目不能写成已验收：真实嵌入 Dashboard、Playnite 用户主题/Accent、100%～200% 物理 DPI、连续窗口缩放、真实鼠标滚轮/键盘和真实大库帧率。关闭 Playnite 后，使用 `scripts/dev-install-run.ps1 -Configuration Release -NoStart -PlayniteExecutable D:\software\Playnite\Playnite.DesktopApp.exe` 可继续完成安装核验。
+当前用户 Playnite 扩展目录为 `C:\Users\lopmatu\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec`，本轮已由安全安装器覆盖并通过 `extension.yaml=0.6.73`、DLL `0.6.73.0` 校验；Playnite 日志确认插件已加载。`real-host-audit.ps1` 输出 [`artifacts/ui-host-audit-current-20260913`](../../artifacts/ui-host-audit-current-20260913/)，但仍因 `MainWindowHandle=0` 无法定位侧栏，未生成 `summary.json`。因此以下项目不能写成已验收：真实嵌入 Dashboard、Playnite 用户主题/Accent、100%～200% 物理 DPI、连续窗口缩放、真实鼠标滚轮/键盘和真实大库帧率；当前宿主已用官方 `--shutdown` 优雅关闭，后续需在可见桌面会话继续。
 
 ## 1. 结论摘要
 

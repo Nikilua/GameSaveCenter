@@ -6,7 +6,9 @@
 
 - 用户提供的完整开发提示词包已按 Phase 0～12 和最终验收逐项映射；实现仍是 `net462` WPF `GenericPlugin`，生产入口为 `DashboardView` / `AcrylicProductionShellView`，业务层与插件 ID 未改。
 - 最新 RenderHarness 报告为 [`ui-prompt-qa-final2-20260913`](../../.tmp/ui-prompt-qa-final2-20260913/render-qa-report.txt) 的 `render-qa OK`，对应当前 HEAD `108ae0f`，覆盖双主题、多尺寸、状态夹具、表格滚动、Resize 恢复和性能探针；静态审查 0 error，22 个 warning 为既有 Canvas/有限滚动兼容提示。
-- 报告的 `WorkingTreeClean=False` 只对应工作区现有未跟踪根目录 `src.zip`；本阶段不删除用户文件。真实 Playnite 进程仍无可绑定主窗口，最新 `b470bf9` 包的安装与真实嵌入/DPI/物理交互仍待宿主退出后复核。
+- 报告的 `WorkingTreeClean=False` 只对应工作区现有未跟踪根目录 `src.zip`；本阶段不删除用户文件。已在 Playnite 退出后通过安全安装器完成最新插件安装，安装验证报告保存在 `artifacts/last-dev-install-current-20260913.txt`。
+- Playnite 日志已确认实际加载 `GameSaveCenter 0.6.73`；真实宿主审计生成了 [`ui-host-audit-current-20260913`](../../artifacts/ui-host-audit-current-20260913/)，但当前自动化会话仍枚举不到 Playnite 主窗口（`MainWindowHandle=0`），未生成 `summary.json`，所以嵌入 Dashboard、用户主题、物理 DPI、键盘/滚轮和大库帧率仍未宣称通过。
+- 当前 `artifacts/GameSaveCenter-0.6.73.pext` 与 `GameSaveCenter-0.6.73-playnite.zip` 均为 `43,809,213` 字节，SHA-256 为 `20C8FA5D19A61D4378FFDE9E93BBAFAD889F40C9C0F93FEBA3E92E62F376D4C3`；已安装 DLL 构建身份为 `0.6.73+a81403478539ec1036aa135198c88e752e7d41d8`。
 
 ## 2026-09-13 GPT UI 契约与发布包复核完成
 

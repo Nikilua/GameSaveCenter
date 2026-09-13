@@ -2,11 +2,18 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-13 真实宿主安装与审计复核
+
+- Playnite 原后台进程已退出；使用短路径隔离源码快照运行 `dev-install-run.ps1 -Configuration Release -NoStart`，XAML 24 文件、Release 构建和测试全部通过：Core `76/76`、Worker `311/311`、Playnite `453/510`（57 skip、0 fail）。
+- 安全安装器已将 `GameSaveCenter 0.6.73` 写入当前用户扩展目录，并生成 `artifacts/last-dev-install-current-20260913.txt`；Playnite `playnite.log` 随后记录 `Loaded plugin: GameSaveCenter, version 0.6.73`。
+- 本轮包文件已同步到 `artifacts/GameSaveCenter-0.6.73.pext` 与 `GameSaveCenter-0.6.73-playnite.zip`，均为 `43,809,213` 字节、SHA-256 `20C8FA5D19A61D4378FFDE9E93BBAFAD889F40C9C0F93FEBA3E92E62F376D4C3`；安装 DLL 构建身份为 `0.6.73+a81403478539ec1036aa135198c88e752e7d41d8`。
+- `real-host-audit.ps1` 生成 [`artifacts/ui-host-audit-current-20260913`](../../artifacts/ui-host-audit-current-20260913/) 的真实宿主/受控证据，但 `MainWindowHandle=0` 导致 UI Automation 找不到侧栏、未生成 `summary.json`；审计后已用官方 `--shutdown` 优雅关闭宿主。不得把该轮受控矩阵写成真实嵌入 Dashboard 或物理交互通过。
+
 ## 2026-09-13 开发提示词包全量门禁复核
 
 - 逐项复核用户提示词 Phase 0～12、最终验收和报告字段；当前生产实现继续复用现有 WPF/Playnite 架构与 Demo-first 资源，未改 ViewModel、命令、Worker、IPC、备份/恢复或数据库。
 - 从当前 HEAD `108ae0f` 再次运行 `scripts/render-qa.ps1 -Configuration Release -Output .tmp/ui-prompt-qa-final2-20260913`；构建与 XAML 为 0 error，RenderHarness `render-qa OK`，覆盖双主题、1040×700～3840×2160、多页面、状态夹具、滚动、缩放恢复和性能探针。
-- 当前工作区存在现有未跟踪根目录 `src.zip`（未由本阶段创建、修改或提交），因此本次 RenderHarness 报告标记 `WorkingTreeClean=False`；代码改动仍保持已提交状态。真实 Playnite 仍有 PID 824 无主窗口进程，最新包安装和嵌入式宿主/物理交互验收需用户先退出 Playnite。
+- 当前工作区存在现有未跟踪根目录 `src.zip`（未由本阶段创建、修改或提交），因此本次 RenderHarness 报告标记 `WorkingTreeClean=False`；代码改动仍保持已提交状态。宿主安装复核已另行记录在上方，真实嵌入式宿主/物理交互仍受窗口不可枚举限制。
 
 ## 2026-09-13 b470bf9 发布包复核
 

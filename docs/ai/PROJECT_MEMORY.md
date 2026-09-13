@@ -6,14 +6,15 @@
 
 - 已阅读并复核用户提供的完整 WPF/Playnite 开发提示词包及其 Phase 0～12、构建安装和最终报告要求；当前实现以 Demo-first 现有共享资源为视觉真值，不新增第二套 UI 框架或业务层。
 - 当前 HEAD `108ae0f` 的 `scripts/render-qa.ps1 -Configuration Release -Output .tmp/ui-prompt-qa-final2-20260913` 返回 `render-qa OK`，覆盖双主题、多尺寸、多页面、状态/空错误夹具、表格虚拟化滚动、Resize 恢复和性能探针；WPF 静态审查无 error。
-- 报告的工作树非 clean 是因为现有根目录 `src.zip` 未跟踪文件，不能擅自删除或提交。当前 Playnite PID 824 无主窗口，最新包尚未安全安装到该运行中宿主；真实嵌入、用户主题、物理 DPI、键盘/滚轮和大库帧率继续标记为宿主人工验收。
+- 报告的工作树非 clean 是因为现有根目录 `src.zip` 未跟踪文件，不能擅自删除或提交。Playnite 已退出后完成安全安装，安装验证报告为 `artifacts/last-dev-install-current-20260913.txt`，日志确认插件版本 `0.6.73` 已加载。
+- 真实宿主审计输出为 `artifacts/ui-host-audit-current-20260913`；由于当前会话仍无可枚举主窗口（`MainWindowHandle=0`），没有 `summary.json`，嵌入 Dashboard、用户主题、物理 DPI、键盘/滚轮和大库帧率继续保持未验收状态。
 
 ## 2026-09-13 GPT UI 契约与发布包复核
 
 - 用户补充的 GPT UI 方案已完成与现有资源的契约对齐，不新增第二套玻璃、按钮或字体系统。`DesignTokens.xaml` 现在提供无前缀间距别名、状态字形转换器及 52 DIP 行/42 DIP 表头；Typography、Redesign、ButtonStyles 提供对应语义别名并继续复用生产模板。
 - `StatusGlyphConverter` 是纯显示层转换：成功/失败/警告文本分别增加 `✓/×/⚠`，未知状态和已有字形原样返回；任务、存档和维护状态胶囊接入后不改变状态字段、命令或绑定。MotionTokens 的 Normal/Slow 为 220/300ms，维护表格最小高度 260 DIP；任务紧凑表格仍保留 236 DIP 以避免详情抽屉被挤压。
 - 验证基线：Release `dotnet build` 0 warning/error；Core `76/76`、Worker `310/311`（1 skip）、Playnite `447/510`（63 skip、0 fail）；`validate-source.py`、`check-xaml.ps1` 与 RenderHarness `render-qa OK` 全部通过。真实 Playnite 的嵌入 Dashboard、宿主 DPI/主题、物理滚轮和键盘仍按真实宿主审计边界处理。
-- 干净 HEAD `b470bf9` 已重新执行 `scripts/package.ps1 -Configuration Release`；`.pext/.zip` 均为 `43,809,091` 字节、SHA-256 `9E6F4BB11B812DB824D8E3EA4EBFCD45A2490FEA5C907996301ABD9F21A55F8A`，六份程序集身份统一为 `0.6.73+b470bf97f53ec0012da165cb4eb954d6b2e18e6f`。当前运行中的无窗口 Playnite 进程使安全安装仍待用户先关闭宿主。
+- 历史正式包来自干净 HEAD `b470bf9`（`.pext/.zip` 均为 `43,809,091` 字节，SHA-256 `9E6F4BB11B812DB824D8E3EA4EBFCD45A2490FEA5C907996301ABD9F21A55F8A`）；本轮已在 Playnite 退出后完成当前源码快照的安全安装，安装 DLL 身份为 `0.6.73+a81403478539ec1036aa135198c88e752e7d41d8`，日志确认插件加载成功。
 
 ## 2026-09-13 真实宿主审计复跑边界
 
