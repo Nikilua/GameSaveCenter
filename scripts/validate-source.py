@@ -1038,7 +1038,10 @@ def check_wpf_ui_probe_guards() -> None:
     for token in ("Do not merge WPF-UI's ui:ControlsDictionary", "ui:ThemesDictionary", "ui:ControlsDictionary"):
         if token not in base:
             fail(f"WPF-UI local resource guard missing: {token}")
-    for token in ("UserControl.Resources", "WpfUiBase.xaml", "SnackbarPresenter", "UiFrameworkProbeView"):
+    # The development-only probe deliberately follows the production resource
+    # chain now. Keep the scope guard, but do not require the retired standalone
+    # WPF-UI dictionary marker after the probe migrated to Acrylic resources.
+    for token in ("UserControl.Resources", "AcrylicProductionResources.xaml", "SnackbarPresenter", "UiFrameworkProbeView"):
         if token not in probe and token not in dashboard:
             fail(f"WPF-UI probe surface guard missing: {token}")
     for source, label in ((probe, "WPF-UI probe"), (dashboard, "Dashboard")):
