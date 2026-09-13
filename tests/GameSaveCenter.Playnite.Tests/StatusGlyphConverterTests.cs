@@ -12,8 +12,10 @@ namespace GameSaveCenter.Playnite.Tests
 
         [Theory]
         [InlineData("成功", "✓ 成功")]
+        [InlineData("已锁定", "✓ 已锁定")]
         [InlineData("备份失败", "× 备份失败")]
         [InlineData("待处理", "⚠ 待处理")]
+        [InlineData("设备冲突", "⚠ 设备冲突")]
         public void KnownStatusesReceiveAccessibleTextCue(string status, string expected)
         {
             var converter = new StatusGlyphConverter();

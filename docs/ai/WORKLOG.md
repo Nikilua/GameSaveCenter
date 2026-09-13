@@ -8,6 +8,11 @@
 - 新增 `Controls/StatusGlyphConverter.cs`，仅在任务状态胶囊上为已知成功/失败/警告文本添加 `✓/×/⚠`，未知值透传；没有修改 ViewModel、命令、Worker、备份、数据库或业务行为。维护页最小表格高度同步为 260 DIP，避免新行高在短窗口丢失第四行。
 - 验证：`validate-source.py` 通过；`check-xaml.ps1` 通过；Release 构建 0 warning/0 error；Core `76/76`、Worker `310/311`（1 skip）、Playnite `445/508`（63 skip、0 fail）；全量 RenderHarness `render-qa OK`。真实 Playnite 仍只有受控窗口证据，未宣称嵌入式宿主验收。
 
+## 2026-09-13 统一状态徽章显示
+
+- 存档历史、维护诊断/云端/设备状态和任务详情均复用 `StatusGlyphConverter`，已知成功/失败/警告文本显示 `✓/×/⚠`，未知文本透传；状态数据、颜色触发器、命令和绑定保持不变。
+- Release 构建 0 warning/0 error；Playnite `447/510`（63 skip、0 fail）；状态字形定向测试 9/9，完整离屏 RenderHarness `render-qa OK`。真实 Playnite 运行中的最新 DLL 安装仍需先关闭宿主。
+
 ## 2026-09-13 真实 Playnite 宿主审计复跑
 
 - 用户允许使用电脑后，按项目既有入口运行 `scripts/real-host-audit.ps1`，输出目录为 `artifacts/ui-host-audit-live-20260913`，源码基线为 `d59a6a6`，安装目标为当前用户的 Playnite 扩展目录。

@@ -139,7 +139,7 @@
                                                         <DataGridTemplateColumn.CellTemplate>
                                                             <DataTemplate>
                                                                 <Border x:Name="SeverityPill" Style="{DynamicResource GscRedesignTableStatusPill}">
-                                                                    <TextBlock Text="{Binding SeverityDisplay, Mode=OneWay}" Foreground="{DynamicResource GscPrimaryTextBrush}" HorizontalAlignment="Center"/>
+                                                                    <TextBlock Text="{Binding SeverityDisplay, Mode=OneWay, Converter={StaticResource GscStatusGlyphConverter}}" Foreground="{DynamicResource GscPrimaryTextBrush}" HorizontalAlignment="Center"/>
                                                                 </Border>
                                                                 <DataTemplate.Triggers>
                                                                     <DataTrigger Binding="{Binding Severity}" Value="Info"><Setter TargetName="SeverityPill" Property="Background" Value="{DynamicResource GscInfoIconFillBrush}"/><Setter TargetName="SeverityPill" Property="BorderBrush" Value="{DynamicResource GscInfoBrush}"/></DataTrigger>
@@ -188,7 +188,7 @@
                                                                 </Style.Triggers>
                                                             </Style>
                                                         </Border.Style>
-                                                        <TextBlock Text="{Binding SelectedFinding.SeverityDisplay, TargetNullValue=提示}" Foreground="{DynamicResource GscPrimaryTextBrush}"/>
+                                                        <TextBlock Text="{Binding SelectedFinding.SeverityDisplay, TargetNullValue=提示, Converter={StaticResource GscStatusGlyphConverter}}" Foreground="{DynamicResource GscPrimaryTextBrush}"/>
                                                     </Border>
                                                 </Grid>
                                                 <TextBlock Text="{Binding SelectedFinding.GameName, TargetNullValue=选择一条诊断项查看详情}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,8,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
@@ -322,7 +322,7 @@
                                                                             <TextBlock Text="{Binding Summary}" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                                                                             <TextBlock Text="{Binding Detail}" Foreground="{DynamicResource GscSecondaryTextBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Detail}" FontSize="11" Margin="0,3,0,0"/>
                                                                         </StackPanel>
-                                                                        <TextBlock Grid.Column="2" Text="{Binding StateDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" VerticalAlignment="Top"/>
+                                                                        <TextBlock Grid.Column="2" Text="{Binding StateDisplay, Converter={StaticResource GscStatusGlyphConverter}}" Foreground="{DynamicResource GscSecondaryTextBrush}" VerticalAlignment="Top"/>
                                                                     </Grid>
                                                                 </Border>
                                                             </DataTemplate>
@@ -510,7 +510,7 @@
                                 <Grid Grid.Row="1">
                                     <DataGrid x:Name="CloudTransferGrid" Style="{StaticResource MaintenanceDataGrid}" RowStyle="{StaticResource GscStableDataGridRow}" ItemsSource="{Binding CloudTransferItems}" SelectedItem="{Binding SelectedCloudTransfer, Mode=TwoWay}" EnableRowVirtualization="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" ScrollViewer.CanContentScroll="True" SelectionChanged="OnCloudTransferSelectionChanged">
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn HeaderStyle="{StaticResource MaintenanceFirstColumnHeader}" Header="状态" Binding="{Binding StateDisplay}" Width="112" MinWidth="102"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
+                                            <DataGridTextColumn HeaderStyle="{StaticResource MaintenanceFirstColumnHeader}" Header="状态" Binding="{Binding StateDisplay, Converter={StaticResource GscStatusGlyphConverter}}" Width="112" MinWidth="102"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
                                             <DataGridTextColumn Header="类型" Binding="{Binding KindDisplay}" Width="70" MinWidth="60"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
                                             <DataGridTextColumn Header="游戏" Binding="{Binding GameName}" Width="150" MinWidth="120"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
                                             <DataGridTextColumn Header="保证级别" Binding="{Binding GuaranteeLevelDisplay}" Width="*" MinWidth="190"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
@@ -587,7 +587,7 @@
                             </Grid>
                             <DataGrid x:Name="MaintenanceDeviceGrid" Grid.Row="1" Style="{StaticResource MaintenanceDataGrid}" ItemsSource="{Binding DeviceComparisons}" SelectedItem="{Binding SelectedDeviceComparison}">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn HeaderStyle="{StaticResource MaintenanceFirstColumnHeader}" Header="状态" Binding="{Binding StateDisplay}" Width="118" MinWidth="104"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
+                                    <DataGridTextColumn HeaderStyle="{StaticResource MaintenanceFirstColumnHeader}" Header="状态" Binding="{Binding StateDisplay, Converter={StaticResource GscStatusGlyphConverter}}" Width="118" MinWidth="104"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
                                     <DataGridTextColumn Header="游戏" Binding="{Binding GameName}" Width="180" MinWidth="140"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
                                     <DataGridTextColumn Header="其他设备" Binding="{Binding RemoteDevice}" Width="170" MinWidth="140"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
                                     <DataGridTextColumn Header="原因" Binding="{Binding ReasonDisplay}" Width="*" MinWidth="280"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>

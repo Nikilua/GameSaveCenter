@@ -5,8 +5,8 @@
 ## 2026-09-13 GPT UI 契约对齐完成
 
 - 已将用户补充的 Phase 1～5、11 设计契约对齐到现有 Demo-first 共享系统：`DesignTokens.xaml` 补齐 `Spacing4`～`Spacing40`、状态字形转换器和 52/42 DIP 表格行/表头密度；`Typography.xaml` 补齐 Display/Page/Section/Body/Caption/Numeric 语义别名；`Redesign.xaml` 补齐 `GscGlassSurface`、`GscGlassCard`、`GscGlassPanel`；`ButtonStyles.xaml` 补齐 Secondary/Danger/Icon 语义别名。
-- `StatusGlyphConverter` 只为已知状态文本添加 `✓/×/⚠`，未知值原样保留；任务状态胶囊已接入，命令、绑定、业务状态与可访问性不变。动效令牌已明确为 Normal 220ms、Slow 300ms，继续使用共享 `GscMotion`/EaseOut；维护页表格最小高度同步到 260 DIP，任务页紧凑 236 DIP 视口保持既有契约。
-- Release 解决方案构建 `0 warning / 0 error`；Core `76/76`、Worker `310/311`（1 skip）、Playnite `445/508`（63 skip、0 fail）；`validate-source.py`、XAML 结构检查和全量 RenderHarness 均通过，最新报告为 `render-qa OK`（双主题、多尺寸、缩放恢复、表格滚动和性能探针）。
+- `StatusGlyphConverter` 只为已知状态文本添加 `✓/×/⚠`，未知值原样保留；任务、存档和维护状态胶囊已接入，命令、绑定、业务状态与可访问性不变。动效令牌已明确为 Normal 220ms、Slow 300ms，继续使用共享 `GscMotion`/EaseOut；维护页表格最小高度同步到 260 DIP，任务页紧凑 236 DIP 视口保持既有契约。
+- Release 解决方案构建 `0 warning / 0 error`；Core `76/76`、Worker `310/311`（1 skip）、Playnite `447/510`（63 skip、0 fail）；`validate-source.py`、XAML 结构检查和全量 RenderHarness 均通过，最新报告为 `render-qa OK`（双主题、多尺寸、缩放恢复、表格滚动和性能探针）。
 - 本项仍不宣称真实 Playnite 嵌入 Dashboard、物理 DPI/键盘/滚轮已验收；真实宿主边界沿用下方 2026-09-13 审计记录。
 
 ## 2026-09-13 真实宿主审计复跑（受控证据边界）

@@ -15,11 +15,11 @@ namespace GameSaveCenter.Playnite.Controls
             var text = value?.ToString()?.Trim() ?? string.Empty;
             if (text.Length == 0 || StartsWithStatusGlyph(text)) return text;
 
-            if (ContainsAny(text, "成功", "完成", "通过", "可用", "正常", "健康", "已配置"))
+            if (ContainsAny(text, "成功", "完成", "通过", "可用", "正常", "健康", "已配置", "已锁定", "已上传", "已校验", "就绪"))
                 return "✓ " + text;
             if (ContainsAny(text, "失败", "错误", "严重", "拒绝", "不可用"))
                 return "× " + text;
-            if (ContainsAny(text, "警告", "需关注", "注意", "待", "等待", "未配置", "未找到", "跳过", "异常"))
+            if (ContainsAny(text, "警告", "需关注", "注意", "待", "等待", "未配置", "未找到", "未锁定", "尚未", "未知", "冲突", "跳过", "异常"))
                 return "⚠ " + text;
 
             return text;
