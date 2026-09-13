@@ -5069,7 +5069,8 @@ public sealed class WpfUiResourceDictionaryTests
         {
             Assert.Contains($"yield return {workspaceName};", dashboardCode);
         }
-        Assert.Contains("highContrast ? primaryText", palette);
+        Assert.Contains("var warning = highContrast", palette);
+        Assert.Contains("? primaryText", palette);
     }
 
     [Fact]
@@ -5115,7 +5116,7 @@ public sealed class WpfUiResourceDictionaryTests
         var production = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml"));
 
         Assert.Contains("Themes/Typography.xaml", tokens);
-        Assert.Contains("Noto Sans CJK SC", typography);
+        Assert.Contains("Noto Sans SC", typography);
         Assert.Contains("Inter, Segoe UI Variable Text", typography);
         Assert.Contains("x:Key=\"GscPageTitleFontSize\">22", typography);
         Assert.Contains("x:Key=\"GscDisplayTitleFontSize\">28", typography);
@@ -5126,13 +5127,18 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Key=\"GscTypographySectionTitle\"", typography);
         Assert.Contains("x:Key=\"GscTypographyBody\"", typography);
         Assert.Contains("x:Key=\"GscTypographyCaption\"", typography);
+        Assert.Contains("x:Key=\"GscTypographyCode\"", typography);
         Assert.Contains("x:Key=\"GscDisplayTitle\"", typography);
         Assert.Contains("x:Key=\"GscPageTitle\"", typography);
         Assert.Contains("x:Key=\"GscSectionTitle\"", typography);
         Assert.Contains("x:Key=\"GscBodyText\"", typography);
         Assert.Contains("x:Key=\"GscCaptionText\"", typography);
         Assert.Contains("x:Key=\"GscNumericText\"", typography);
-        Assert.Contains("<Setter Property=\"Opacity\" Value=\"0.65\"/>", typography);
+        Assert.Contains("x:Key=\"GscCodeText\"", typography);
+        Assert.Contains("<Setter Property=\"Opacity\" Value=\"1\"/>", typography);
+        Assert.Contains("<Setter Property=\"TextOptions.TextHintingMode\" Value=\"Fixed\"/>", typography);
+        Assert.Contains("<Setter Property=\"SnapsToDevicePixels\" Value=\"True\"/>", typography);
+        Assert.Contains("<Setter Property=\"UseLayoutRounding\" Value=\"True\"/>", typography);
         Assert.Contains("<Style TargetType=\"TextBlock\">", typography);
         Assert.Contains("<Style TargetType=\"Button\">", typography);
         Assert.Contains("<Style TargetType=\"TextBox\">", typography);

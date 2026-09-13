@@ -159,12 +159,16 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 : ChooseBestText(accent, Colors.White, Colors.Black, RelativeLuminance(accent) < 0.5);
             var info = highContrast
                 ? EnsureContrast(SystemColors.HighlightColor, stableBase, isDark)
-                : Color.FromRgb(92, 170, 240);
+                : isDark ? Color.FromRgb(92, 170, 240) : Color.FromRgb(37, 111, 189);
             var success = highContrast
                 ? EnsureContrast(SystemColors.HotTrackColor, stableBase, isDark)
-                : Color.FromRgb(76, 219, 142);
-            var warning = highContrast ? primaryText : Color.FromRgb(240, 178, 78);
-            var error = highContrast ? primaryText : Color.FromRgb(242, 109, 126);
+                : isDark ? Color.FromRgb(76, 219, 142) : Color.FromRgb(18, 138, 76);
+            var warning = highContrast
+                ? primaryText
+                : isDark ? Color.FromRgb(240, 178, 78) : Color.FromRgb(154, 106, 20);
+            var error = highContrast
+                ? primaryText
+                : isDark ? Color.FromRgb(242, 109, 126) : Color.FromRgb(199, 65, 82);
 
             // A larger strength should reveal more of the bounded ambient material instead
             // of making every card an opaque mask. Keep the low end stable and readable, then
@@ -198,8 +202,8 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 GlassEnabled = glassEnabled,
                 Background = stableBase,
                 PrimaryText = primaryText,
-                SecondaryText = WithAlpha(primaryText, 0.74),
-                MutedText = WithAlpha(primaryText, 0.56),
+                SecondaryText = EnsureTextContrast(primaryText, stableBase, 4.5, isDark, 0.74),
+                MutedText = EnsureTextContrast(primaryText, stableBase, 4.5, isDark, 0.56),
                 DisabledText = WithAlpha(primaryText, 0.38),
                 ControlFill = WithAlpha(controlFill, glassEnabled
                     ? 0.78 + (0.10 * (1 - strength))
@@ -603,7 +607,12 @@ namespace GameSaveCenter.Playnite.Infrastructure
             var floating = isDark ? Color.FromArgb(0xF0, 0x26, 0x2C, 0x3A) : Color.FromArgb(0xF2, 0xFF, 0xFF, 0xFF);
             var primaryText = isDark ? Color.FromRgb(0xF2, 0xF4, 0xF8) : Color.FromArgb(0xF2, 0x1B, 0x1F, 0x27);
             var secondaryText = isDark ? Color.FromRgb(0xB9, 0xC0, 0xCC) : Color.FromArgb(0xF2, 0x4E, 0x56, 0x66);
-            var tertiaryText = isDark ? Color.FromRgb(0x82, 0x8A, 0x99) : Color.FromArgb(0xF2, 0x8A, 0x92, 0xA1);
+            // The caption style is intentionally opaque now, so this semantic color must
+            // carry the full readability contract on the final demo card surface. The old
+            // light value was a decorative gray (roughly 3:1 on white), not ordinary 12 DIP
+            // text. Keep dark mode calm while giving light mode enough luminance separation.
+            var tertiaryText = isDark ? Color.FromRgb(0xA8, 0xB0, 0xBE) : Color.FromRgb(0x65, 0x70, 0x86);
+            var disabledText = isDark ? Color.FromRgb(0x70, 0x79, 0x89) : Color.FromRgb(0x8B, 0x93, 0xA0);
             var divider = isDark ? Color.FromArgb(0x12, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x12, 0x00, 0x00, 0x00);
             var tableHeader = isDark ? Color.FromArgb(0x0D, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x0A, 0x00, 0x00, 0x00);
             var rowHover = isDark ? Color.FromArgb(0x0C, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x08, 0x00, 0x00, 0x00);
@@ -629,7 +638,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscPrimaryTextBrush"] = Brush(primaryText);
             resources["GscSecondaryTextBrush"] = Brush(secondaryText);
             resources["GscMutedTextBrush"] = Brush(tertiaryText);
-            resources["GscDisabledTextBrush"] = Brush(tertiaryText);
+            resources["GscDisabledTextBrush"] = Brush(disabledText);
             resources["GscControlFillBrush"] = Brush(field);
             resources["GscControlFocusFillBrush"] = Brush(isDark ? Color.FromArgb(0x8C, 0x1A, 0x1E, 0x2B) : Color.FromArgb(0xF9, 0xFF, 0xFF, 0xFF));
             resources["GscControlStrokeBrush"] = Brush(fieldStroke);
@@ -673,7 +682,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["TextFillColorPrimaryBrush"] = Brush(primaryText);
             resources["TextFillColorSecondaryBrush"] = Brush(secondaryText);
             resources["TextFillColorTertiaryBrush"] = Brush(tertiaryText);
-            resources["TextFillColorDisabledBrush"] = Brush(tertiaryText);
+            resources["TextFillColorDisabledBrush"] = Brush(disabledText);
             resources["ControlFillColorDefaultBrush"] = Brush(field);
             resources["ControlFillColorSecondaryBrush"] = Brush(isDark ? Color.FromArgb(0xD9, 0x20, 0x25, 0x31) : Color.FromArgb(0x66, 0xF2, 0xF4, 0xF9));
             resources["ControlFillColorTertiaryBrush"] = Brush(isDark ? Color.FromArgb(0x8C, 0x1A, 0x1E, 0x2B) : Color.FromArgb(0xF9, 0xFF, 0xFF, 0xFF));
@@ -1123,6 +1132,33 @@ namespace GameSaveCenter.Playnite.Infrastructure
         {
             var alpha = (byte)Math.Round(Math.Max(0, Math.Min(1, opacity)) * 255);
             return Color.FromArgb(alpha, color.R, color.G, color.B);
+        }
+
+        private static Color EnsureTextContrast(
+            Color text,
+            Color background,
+            double minimum,
+            bool darkBackground,
+            double initialOpacity)
+        {
+            var opaqueText = Opaque(text);
+            for (var opacity = Math.Max(0.1, Math.Min(1, initialOpacity)); opacity <= 1.0001; opacity += 0.04)
+            {
+                var composite = Composite(opaqueText, background, opacity);
+                if (ContrastRatio(composite, background) + 0.001 >= minimum)
+                    return WithAlpha(opaqueText, opacity);
+            }
+
+            return darkBackground ? Colors.White : Colors.Black;
+        }
+
+        private static Color Composite(Color foreground, Color background, double opacity)
+        {
+            opacity = Math.Max(0, Math.Min(1, opacity));
+            return Color.FromRgb(
+                (byte)Math.Round(foreground.R * opacity + background.R * (1 - opacity)),
+                (byte)Math.Round(foreground.G * opacity + background.G * (1 - opacity)),
+                (byte)Math.Round(foreground.B * opacity + background.B * (1 - opacity)));
         }
 
         private static Color SemanticTint(Color color, double opacity)

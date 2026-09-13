@@ -9,6 +9,14 @@
 - `validate-source.py`、`check-xaml.ps1`（24 个 XAML）、WPF 静态检查和 `git diff --check` 通过；RenderHarness Release 构建 0 warning / 0 error。WPF 检查仍为 0 error、23 warnings、175 info，新增夹具的有限滚动提示与既有提示一并记录，未将其误报为缺陷。
 - P00-03 继续外部阻塞：真实宿主审计保留 `MainWindowHandle=0`、无 `summary.json` 的事实；受控窗口和离屏夹具不等同嵌入 Dashboard、物理 DPI、键盘/滚轮或屏幕帧率验收。账本与基线证据见 `docs/design/reviews/ui-finesse-20260913/`。
 
+## 2026-09-13 UI 精修 P01/P02/P04 共享底座
+
+- P01：根据目标机字体枚举将 `Noto Sans CJK SC` 修正为实际可解析的 `Noto Sans SC`；夹具报告记录 CJK、Latin、数字、箭头命中，Inter 未安装且 U+20BB7 罕见字未在显式链命中。新增 Code 语义样式用于路径/诊断，Caption 透明度固定为 1，所有共享文本层统一 Fixed hinting、像素对齐和布局取整。
+- P02：Adaptive palette 的浅色状态色切换为合成后至少 3:1 可读的深色值；ContrastGuard 以 `Measure` 输出 11 个检查，普通 Secondary/Muted 和 OnAccent 用 4.5，状态色用 3.0，表面/控件保留各自非文字阈值。
+- P04：`GscMotion` 从 `MotionTokens.xaml` 读取 Fast/Press/Normal/Slow，并在无资源宿主时确定回退 120/100/220/300ms；宿主局部资源可覆盖，现有 C# 调用入口和 EaseOut 保持。新增 `UiFinesseFoundationTests` 覆盖令牌契约和覆盖行为。
+- 当前验证：定向测试 8/8、完整 Playnite 测试 449 通过/63 跳过/0 失败；RenderHarness 双主题夹具和完整 `render-qa OK` 通过；XAML 24/24、源码门禁、差异检查通过，WPF 静态检查 0 error/23 warnings/175 info。提交前一键门禁已完成隔离编译、Core 76/76、Worker 311/311、Playnite 455/512，但因工作树未提交按安全策略在打包前停止，提交后需重跑。
+- 真实 Playnite、跨机字体分发、物理 DPI/键盘/读屏、系统动画设置切换与屏幕呈现帧时间仍未被本阶段代理证据替代。
+
 ## 2026-09-13 编写 UI 精修实施提示词包（仅文档）
 
 - 按用户对字体、色彩、动画和细节完成度的优先要求，新增 [UI 精修实施提示词包](../design/UI_FINESSE_IMPLEMENTATION_PROMPTS_2026-09-13.md)：12 阶段、52 项任务，每项包含执行要求和验收；另有可复制总提示词、混排校对样本、性能测量定义、建议 4～6 周顺序与续跑账本模板。

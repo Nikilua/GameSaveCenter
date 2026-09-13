@@ -2,7 +2,15 @@
 
 > 维护时间：2026-09-13
 
-## 2026-09-13 UI 精修计划与源码差异
+## 2026-09-13 UI 精修 P01/P02/P04 共享底座
+
+- `Typography.xaml` 仍是唯一字体入口，实际机器盘点为 `Inter` 未安装、`Segoe UI Variable Text/Display`、`Noto Sans SC`、`Microsoft YaHei UI`、`Cascadia Mono` 和 `Consolas` 可用；固定夹具报告了 CJK→Noto Sans SC、Latin/数字/箭头→Segoe UI Variable Text，`𠮷`（U+20BB7）在显式优选链未命中。没有随包分发字体，因此跨机器一致性继续是待验收边界。
+- Caption 共享样式已改为 `Opacity=1`，页面层级由语义色表达；正文/按钮/TextBox/代码/数字语义样式统一 Fixed hinting、`SnapsToDevicePixels` 和 `UseLayoutRounding`。新增 `GscTypographyCode`/`GscCodeText`，校对夹具路径使用 Code，Numeric 样本保留真实单位与变化。
+- Adaptive palette 的浅色 Info/Success/Warning/Error 改为深色可读值；ContrastGuard 现在按最终合成测量 Secondary/Muted 4.5、OnAccent 4.5、状态色 3.0，并保留表面/控件的非文字门槛。双主题夹具 11 项均通过，Light 最低 Muted 4.854:1，Dark 最低状态/文字比值高于门槛。
+- `MotionTokens.xaml` 是 XAML 权威时长 120/100/220/300ms；`GscMotion` 通过资源读取、宿主局部覆盖和无资源确定回退消费同一语义。定向 `UiFinesseFoundationTests` 8/8，完整 Playnite 代码测试 449 通过/63 跳过/0 失败。
+- 当前阶段 RenderHarness Release 构建 0 warning/0 error，双主题完整 `render-qa OK`；rapid-toggle 代理探针 `settled=True`。这仍不等同真实 Playnite 帧时间、DPI 或物理交互。
+
+## 2026-09-13 UI 精修计划与源码差异（P00 前置记录）
 
 ## 2026-09-13 UI 精修 P00 基线夹具
 
@@ -71,7 +79,7 @@
 ## 2026-09-11 无缝表格与字体系统
 
 - 所有生产 DataGrid 的表头必须与其 DataGrid/表格框共用同一连续阅读表面：`GscDataGridColumnHeaderStyle` 与 `DataGridColumnHeadersPresenter` 保持透明、无底部分隔线；任务、媒体、维护和兼容 Dashboard 不得局部恢复 `GscTableHeaderBrush` 或 `0,0,0,1` 表头描边。行间弱分隔、状态胶囊、排序箭头和列拖拽热区仍可保留。
-- `Themes/Typography.xaml` 是唯一字体/字号语义入口，`DesignTokens.xaml` 合并它以覆盖所有视图；Noto Sans CJK SC 与 Inter 是优选，Segoe UI Variable/Microsoft YaHei UI 为运行时缺字或未安装字体的回退。页面标题 22 SemiBold，Section 16 SemiBold，正文 14 Regular，辅助 12 Regular；数字使用 `GscNumericFontFamily`。不要新增 `FontWeight=Bold`，新的 TextBlock/Button/TextBox 使用隐式基样式或 `GscTypography*`/现有 Gsc 语义样式。
+- `Themes/Typography.xaml` 是唯一字体/字号语义入口，`DesignTokens.xaml` 合并它以覆盖所有视图；当前目标机实际可解析的优选/回退链为 Inter（未安装时跳过）、Segoe UI Variable、Noto Sans SC、Microsoft YaHei UI，代码链保留 Cascadia Mono/Consolas。页面标题 22 SemiBold，Section 16 SemiBold，正文 14 Regular，辅助 12 Regular；数字使用 `GscNumericFontFamily`。不要新增 `FontWeight=Bold`，新的 TextBlock/Button/TextBox 使用隐式基样式或 `GscTypography*`/现有 Gsc 语义样式。
 - `Redesign.xaml` 也要直接合并 Typography：其中的页面/Section 样式通过 `StaticResource` 解析，不能只依赖 DesignTokens 的嵌套合并，否则真实 WPF 视图构造会报找不到 `GscTypographySectionTitle`。完整 WPF 资源测试已覆盖该资源链。
 
 ## 2026-09-11 任务窄窗与设置主题同步

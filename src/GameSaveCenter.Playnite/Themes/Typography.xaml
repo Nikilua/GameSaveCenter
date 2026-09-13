@@ -2,12 +2,12 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:ui="clr-namespace:GameSaveCenter.Playnite.Controls"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
-    <!-- Inter supplies the compact Latin/numeric rhythm; Noto Sans CJK SC is preferred when
+    <!-- Inter supplies the compact Latin/numeric rhythm; Noto Sans SC is preferred when
          installed for Chinese glyphs, with Windows UI fonts as dependable Playnite fallbacks. -->
-    <FontFamily x:Key="GscUiFontFamily">Inter, Segoe UI Variable Text, Noto Sans CJK SC, Microsoft YaHei UI</FontFamily>
-    <FontFamily x:Key="GscDisplayFontFamily">Inter, Segoe UI Variable Display, Noto Sans CJK SC, Microsoft YaHei UI</FontFamily>
+    <FontFamily x:Key="GscUiFontFamily">Inter, Segoe UI Variable Text, Noto Sans SC, Microsoft YaHei UI</FontFamily>
+    <FontFamily x:Key="GscDisplayFontFamily">Inter, Segoe UI Variable Display, Noto Sans SC, Microsoft YaHei UI</FontFamily>
     <FontFamily x:Key="GscNumericFontFamily">Inter, Segoe UI Variable Text, Segoe UI, Microsoft YaHei UI</FontFamily>
-    <FontFamily x:Key="GscCodeFontFamily">Cascadia Mono, Consolas, Noto Sans CJK SC, Microsoft YaHei UI</FontFamily>
+    <FontFamily x:Key="GscCodeFontFamily">Cascadia Mono, Consolas, Noto Sans SC, Microsoft YaHei UI</FontFamily>
 
     <sys:Double x:Key="GscPageTitleFontSize">22</sys:Double>
     <sys:Double x:Key="GscDisplayTitleFontSize">28</sys:Double>
@@ -22,24 +22,36 @@
         <Setter Property="FontSize" Value="{DynamicResource GscBodyFontSize}"/>
         <Setter Property="FontWeight" Value="Normal"/>
         <Setter Property="TextOptions.TextFormattingMode" Value="Ideal"/>
+        <Setter Property="TextOptions.TextHintingMode" Value="Fixed"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
     </Style>
     <Style TargetType="Button">
         <Setter Property="FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
         <Setter Property="FontSize" Value="{DynamicResource GscBodyFontSize}"/>
         <Setter Property="FontWeight" Value="Medium"/>
         <Setter Property="TextOptions.TextFormattingMode" Value="Ideal"/>
+        <Setter Property="TextOptions.TextHintingMode" Value="Fixed"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
     </Style>
     <Style TargetType="TextBox">
         <Setter Property="FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
         <Setter Property="FontSize" Value="{DynamicResource GscBodyFontSize}"/>
         <Setter Property="FontWeight" Value="Normal"/>
         <Setter Property="TextOptions.TextFormattingMode" Value="Ideal"/>
+        <Setter Property="TextOptions.TextHintingMode" Value="Fixed"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
     </Style>
     <Style TargetType="{x:Type ui:Button}">
         <Setter Property="FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
         <Setter Property="FontSize" Value="{DynamicResource GscBodyFontSize}"/>
         <Setter Property="FontWeight" Value="Medium"/>
         <Setter Property="TextOptions.TextFormattingMode" Value="Ideal"/>
+        <Setter Property="TextOptions.TextHintingMode" Value="Fixed"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
     </Style>
 
     <Style x:Key="GscTypographyPageTitle" TargetType="TextBlock">
@@ -48,6 +60,9 @@
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        <Setter Property="TextOptions.TextHintingMode" Value="Fixed"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
     </Style>
     <Style x:Key="GscTypographySectionTitle" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{DynamicResource GscDisplayFontFamily}"/>
@@ -55,25 +70,50 @@
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        <Setter Property="TextOptions.TextHintingMode" Value="Fixed"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
     </Style>
     <Style x:Key="GscTypographyBody" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
         <Setter Property="FontSize" Value="{DynamicResource GscBodyFontSize}"/>
         <Setter Property="FontWeight" Value="Normal"/>
         <Setter Property="Foreground" Value="{DynamicResource GscSecondaryTextBrush}"/>
+        <Setter Property="TextOptions.TextHintingMode" Value="Fixed"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
     </Style>
     <Style x:Key="GscTypographyCaption" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
         <Setter Property="FontSize" Value="{DynamicResource GscCaptionFontSize}"/>
         <Setter Property="FontWeight" Value="Normal"/>
-        <Setter Property="Opacity" Value="0.65"/>
+        <!-- Caption hierarchy is expressed by its semantic color, not a second opacity
+             multiplier. A TextBlock ancestor may already be translucent on a material
+             surface; keeping this style opaque avoids turning CJK strokes into gray dust. -->
+        <Setter Property="Opacity" Value="1"/>
         <Setter Property="Foreground" Value="{DynamicResource GscMutedTextBrush}"/>
         <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        <Setter Property="TextOptions.TextHintingMode" Value="Fixed"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
     </Style>
     <Style x:Key="GscTypographyNumeric" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{DynamicResource GscNumericFontFamily}"/>
         <Setter Property="FontSize" Value="{DynamicResource GscBodyFontSize}"/>
         <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="TextOptions.TextHintingMode" Value="Fixed"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
+    </Style>
+    <Style x:Key="GscTypographyCode" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{DynamicResource GscCodeFontFamily}"/>
+        <Setter Property="FontSize" Value="{DynamicResource GscCaptionFontSize}"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="Foreground" Value="{DynamicResource GscSecondaryTextBrush}"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        <Setter Property="TextOptions.TextHintingMode" Value="Fixed"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
     </Style>
 
     <!-- Design-brief vocabulary. These aliases intentionally reuse the existing
@@ -84,10 +124,14 @@
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        <Setter Property="TextOptions.TextHintingMode" Value="Fixed"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
     </Style>
     <Style x:Key="GscPageTitle" TargetType="TextBlock" BasedOn="{StaticResource GscTypographyPageTitle}"/>
     <Style x:Key="GscSectionTitle" TargetType="TextBlock" BasedOn="{StaticResource GscTypographySectionTitle}"/>
     <Style x:Key="GscBodyText" TargetType="TextBlock" BasedOn="{StaticResource GscTypographyBody}"/>
     <Style x:Key="GscCaptionText" TargetType="TextBlock" BasedOn="{StaticResource GscTypographyCaption}"/>
     <Style x:Key="GscNumericText" TargetType="TextBlock" BasedOn="{StaticResource GscTypographyNumeric}"/>
+    <Style x:Key="GscCodeText" TargetType="TextBlock" BasedOn="{StaticResource GscTypographyCode}"/>
 </ResourceDictionary>

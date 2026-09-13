@@ -1214,6 +1214,14 @@ public static class Program
                 Height = 980
             };
             ApplyThemePalette(view, themeMode);
+            var palette = AdaptiveThemePaletteFactory.Create(view, false, 50, themeMode);
+            var contrastMeasurements = AdaptiveThemePaletteContrastGuard.Measure(palette, palette.Background);
+            var contrastViolations = AdaptiveThemePaletteContrastGuard.Validate(palette, palette.Background);
+            report.AppendLine($"ContrastGuard: checks={contrastMeasurements.Count} violations={contrastViolations.Count}");
+            foreach (var measurement in contrastMeasurements)
+                report.AppendLine($"  {measurement.Check}: actual={measurement.Actual:0.###} minimum={measurement.Minimum:0.###}");
+            if (contrastViolations.Count > 0)
+                throw new InvalidOperationException("ContrastGuard found " + contrastViolations.Count + " violation(s).");
             var host = new Grid
             {
                 Width = 1120,
@@ -1239,6 +1247,7 @@ public static class Program
             report.AppendLine($"Buttons: {buttons}");
             report.AppendLine($"DataGrid: rows={dataGrid?.Items.Count ?? 0} actual={dataGrid?.ActualWidth:0.##}x{dataGrid?.ActualHeight:0.##}");
             report.AppendLine($"CaptionOpacity: {captionOpacity ?? "unset"}");
+            AppendFontResolutionEvidence(report);
             report.AppendLine("Samples: mixed CJK/Latin, numeric, path, diagnostic, success/warning/error glyphs");
             report.AppendLine("InteractionStates: normal/hover/pressed/disabled/focus represented by shared template; pressed/focus require behavior probe");
             report.AppendLine("finesse-fixture OK");
@@ -1253,6 +1262,44 @@ public static class Program
             File.WriteAllText(Path.Combine(outputRoot, "ui-finesse-fixture-report.txt"), report.ToString());
             Console.Error.WriteLine(report.ToString());
             return 1;
+        }
+    }
+
+    private static void AppendFontResolutionEvidence(StringBuilder report)
+    {
+        var chain = new[] { "Inter", "Segoe UI Variable Text", "Noto Sans SC", "Microsoft YaHei UI" };
+        var samples = new[]
+        {
+            (Label: "CJK", CodePoint: 0x5B58),
+            (Label: "Latin", CodePoint: 0x0053),
+            (Label: "Digit", CodePoint: 0x0039),
+            (Label: "Arrow", CodePoint: 0x2192),
+            (Label: "RareCJK", CodePoint: 0x20BB7)
+        };
+
+        report.AppendLine($"FontChain: {string.Join(" -> ", chain)}");
+        foreach (var sample in samples)
+        {
+            var resolved = chain.FirstOrDefault(font => FontHasGlyph(font, sample.CodePoint)) ?? "unresolved";
+            report.AppendLine($"FontGlyph {sample.Label}=U+{sample.CodePoint:X5} resolved={resolved}");
+        }
+    }
+
+    private static bool FontHasGlyph(string fontName, int codePoint)
+    {
+        try
+        {
+            var typeface = new Typeface(
+                new FontFamily(fontName),
+                FontStyles.Normal,
+                FontWeights.Normal,
+                FontStretches.Normal);
+            return typeface.TryGetGlyphTypeface(out var glyphTypeface)
+                && glyphTypeface.CharacterToGlyphMap.ContainsKey(codePoint);
+        }
+        catch
+        {
+            return false;
         }
     }
 

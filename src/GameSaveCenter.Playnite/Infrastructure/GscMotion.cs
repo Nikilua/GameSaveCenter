@@ -12,9 +12,70 @@ namespace GameSaveCenter.Playnite.Infrastructure
     /// </summary>
     internal static class GscMotion
     {
-        internal static readonly TimeSpan Fast = TimeSpan.FromMilliseconds(120);
-        internal static readonly TimeSpan Normal = TimeSpan.FromMilliseconds(200);
-        internal static readonly TimeSpan Slow = TimeSpan.FromMilliseconds(320);
+        private static readonly Lazy<ResourceDictionary> CanonicalTokens =
+            new Lazy<ResourceDictionary>(LoadCanonicalTokens);
+
+        // XAML owns the timing values. The explicit fallbacks only cover a host that cannot
+        // load a pack URI (for example an isolated unit test or an early shutdown path); they
+        // intentionally match the same semantic values instead of introducing a second table.
+        internal static TimeSpan Fast => GetDuration(null, MotionDurationKind.Fast);
+        internal static TimeSpan Press => GetDuration(null, MotionDurationKind.Press);
+        internal static TimeSpan Normal => GetDuration(null, MotionDurationKind.Normal);
+        internal static TimeSpan Slow => GetDuration(null, MotionDurationKind.Slow);
+
+        internal enum MotionDurationKind
+        {
+            Fast,
+            Press,
+            Normal,
+            Slow
+        }
+
+        internal static TimeSpan GetDuration(FrameworkElement? resourceHost, MotionDurationKind kind)
+        {
+            var key = kind switch
+            {
+                MotionDurationKind.Fast => "GscMotionFast",
+                MotionDurationKind.Press => "GscMotionPress",
+                MotionDurationKind.Normal => "GscMotionNormal",
+                MotionDurationKind.Slow => "GscMotionSlow",
+                _ => "GscMotionNormal"
+            };
+            var fallback = kind switch
+            {
+                MotionDurationKind.Fast => TimeSpan.FromMilliseconds(120),
+                MotionDurationKind.Press => TimeSpan.FromMilliseconds(100),
+                MotionDurationKind.Normal => TimeSpan.FromMilliseconds(220),
+                MotionDurationKind.Slow => TimeSpan.FromMilliseconds(300),
+                _ => TimeSpan.FromMilliseconds(220)
+            };
+
+            try
+            {
+                var value = resourceHost?.TryFindResource(key);
+                if (value is Duration hostDuration && hostDuration.HasTimeSpan)
+                    return hostDuration.TimeSpan;
+
+                var canonicalValue = CanonicalTokens.Value[key];
+                if (canonicalValue is Duration canonicalDuration && canonicalDuration.HasTimeSpan)
+                    return canonicalDuration.TimeSpan;
+            }
+            catch
+            {
+                // A missing resource host must not make a notification or shutdown path fail.
+            }
+
+            return fallback;
+        }
+
+        private static ResourceDictionary LoadCanonicalTokens()
+        {
+            var dictionary = new ResourceDictionary
+            {
+                Source = new Uri("/GameSaveCenter.Playnite;component/Themes/MotionTokens.xaml", UriKind.Relative)
+            };
+            return dictionary;
+        }
 
         internal static bool IsEnabled(bool requested)
             => requested && !SystemParameters.HighContrast && SystemParameters.ClientAreaAnimation;
