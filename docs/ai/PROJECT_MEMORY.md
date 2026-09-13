@@ -10,6 +10,7 @@
 - 所有报告都必须保留证据边界：离屏 `DpiScale=1.00` 是逻辑 DIP；rapid-toggle/maxFrameGap 是代理而非 presented-frame；L32 `ScrollIntoView` 离屏结果 inconclusive；synthetic thumbnail/隐藏 STA 不等同真实 Playnite 视频；专用审计窗口不等同嵌入 Dashboard。
 - 真实宿主当前仍为 `MainWindowHandle=0`、无 `summary.json`，PNG 标记 `DedicatedAuditWindow` 且 `DashboardWasAlreadyHostedByPlaynite=false`。根目录 `src.zip` 是用户未跟踪文件，安全打包链不可绕过它；不要删除、移动或提交。
 - 最终一键门禁已完成构建与测试：XAML `24/24`、Release `0/0`、Core `76/76`、Worker `311/311`、Playnite `455/512`（57 skip、0 fail）。包装阶段因本轮文档改动和 `src.zip` 使工作树非 clean 而按安全策略停止；以后若用户处理 `src.zip`，可从 `scripts/package.ps1` 重新生成签收包。
+- 文档提交后已在 HEAD `da7730f` 再次重试：Render QA 仍 `OK`；一键链只剩 `?? src.zip` 仍被打包门禁停止，真实宿主审计也因此只生成 runner metadata、没有 `summary.json`，不改变嵌入 Dashboard 的外部阻塞结论。
 
 ## 2026-09-13 UI 精修 P01/P02/P04 共享底座
 

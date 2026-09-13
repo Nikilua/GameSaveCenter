@@ -17,6 +17,7 @@
 - 当前宿主边界不可扩大：`MainWindowHandle=0`、无 `summary.json`，PNG 是 `DedicatedAuditWindow` 且 `DashboardWasAlreadyHostedByPlaynite=false`；不能把专用窗口、代理帧时间、离屏 DPI 或 synthetic thumbnail 写成真实嵌入 Dashboard、物理 DPI、屏幕帧预算或 Playnite 视频验收。
 - 工作区唯一变化外的用户文件是根目录未跟踪 `src.zip`；打包脚本按安全策略拒绝 dirty tree，本轮不删除、移动或提交它。最终一键链结果必须如实记录。
 - 最终一键链已通过 XAML `24/24`、Release `0 warning/0 error`、Core `76/76`、Worker `311/311`、Playnite `455/512`（57 skip、0 fail）；在包装阶段按 clean-tree 保护停止，日志为 `artifacts/one-click-install.log`，因此不宣称本轮新包已生成、安装或运行。
+- 文档提交后已重试一键链与真实宿主审计：当前工作树仅剩 `?? src.zip`，两者均在安装/采集前按同一 clean-tree 保护停止；最终 Render QA 已在 HEAD `da7730f` 重跑为 `render-qa OK`。宿主重试仅生成 runner metadata，无 `summary.json`，不能宣称嵌入 Dashboard。
 
 ## 2026-09-13 开发提示词包全量门禁复核
 

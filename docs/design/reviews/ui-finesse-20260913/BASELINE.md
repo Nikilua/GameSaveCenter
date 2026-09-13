@@ -74,3 +74,4 @@
 - P08-03、P10-01、P10-02、P10-04、P11-03 仍是外部阻塞。最近自动宿主审计的 `MainWindowHandle=0`、无 `summary.json`，PNG 为 `DedicatedAuditWindow` 且 `DashboardWasAlreadyHostedByPlaynite=false`；不以专用窗口替代嵌入 Dashboard。
 - P11-03 的安全打包链必须看到 clean working tree；当前只剩用户未跟踪 `src.zip`，本轮不删除、不移动、不提交它。代码/测试/离屏证据完成不等同新包可签收。
 - 最终一键链（`GameSaveCenter-一键构建安装运行.cmd`）已在文档改动和 `src.zip` 存在时执行：XAML `24/24`、Release `0 warning/0 error`、Core `76/76`、Worker `311/311`、Playnite `455/512`（57 skip、0 fail）；随后按 `scripts/package.ps1` 的 clean-tree 安全门禁停止，详见 `artifacts/one-click-install.log`。没有伪造新包、安装或运行成功。
+- 文档提交后已按用户要求重试一次：一键链仍为 XAML `24/24`、Release `0 warning/0 error`、Core `76/76`、Worker `311/311`、Playnite `455/512`（57 skip、0 fail），并且只剩 `?? src.zip`，随后仍在打包前停止。真实宿主审计重试同样在安装前被该 clean-tree 门禁阻止，仅生成 [`runner-metadata.json`](../../artifacts/ui-host-audit-finesse-final-20260913/runner-metadata.json)，没有新的 `summary.json` 或嵌入截图。

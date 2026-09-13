@@ -10,6 +10,7 @@
 - 大数据夹具已实际扩大为 backend `1000/5000/20000`、Media UI window `2000`；scaleprobe 的离屏 `ScrollIntoView` 基线明确为 inconclusive，不能替代真实宿主端点。Render QA 的 rapid-toggle、layout/render 和 shell maxFrameGap 仍是代理字段，不能写成屏幕 presented-frame p50/p95/max。
 - P10-01/P10-02/P10-04、P08-03 和 P11-03 继续外部阻塞：没有可枚举的 Playnite 主窗口（`MainWindowHandle=0`、无 `summary.json`，自动审计 PNG 为 `DedicatedAuditWindow`），没有真实 30 分钟耐久或物理 DPI/键盘/读屏/滚轮采样；安全打包仍被用户现有未跟踪 `src.zip` 阻止。本轮不删除、移动或提交该文件。
 - 已同步 `docs/design/reviews/ui-finesse-20260913/PROGRESS.md`、`BASELINE.md`、当前事实入口、项目记忆和交接。最终运行 `GameSaveCenter-一键构建安装运行.cmd`：XAML `24/24`，Release `0 warning/0 error`，Core `76/76`，Worker `311/311`，Playnite `455/512`（57 skip、0 fail）。构建与测试全部成功，但 `scripts/package.ps1` 按 clean-tree 安全策略因本轮 6 份文档改动与用户未跟踪 `src.zip` 停止；未绕过、未删除用户文件，完整日志为 `artifacts/one-click-install.log`。
+- 文档提交后按用户要求重试阻塞任务：最终 HEAD `da7730f` 的 Render QA 重新生成并返回 `render-qa OK`；一键链在仅有 `?? src.zip` 时仍于打包前停止，未生成新包/安装/运行。真实宿主审计重试也在安装前被同一 clean-tree 门禁拦截，仅保留 `artifacts/ui-host-audit-finesse-final-20260913/runner-metadata.json`，无 `summary.json`，因此真实嵌入 Dashboard 仍外部阻塞。
 
 ## 2026-09-13 UI 精修 P00 基线夹具
 
