@@ -10,49 +10,58 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/WpfUiBase.xaml"/>
-                <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/DesignTokens.xaml"/>
+                <!-- This view is a development-only audit surface. Use the same production
+                     dictionary chain as Dashboard/workspaces so measurements cannot pass on
+                     a WPF-UI-only fallback that users never see. -->
+                <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/AcrylicProductionResources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <Style x:Key="ProbeLabel" TargetType="TextBlock" BasedOn="{StaticResource GscTypographyCaption}">
+                <Setter Property="Opacity" Value="1"/>
+                <Setter Property="Foreground" Value="{DynamicResource GscSecondaryTextBrush}"/>
+                <Setter Property="TextWrapping" Value="Wrap"/>
+            </Style>
+            <Style x:Key="ProbeDataGrid" TargetType="DataGrid" BasedOn="{StaticResource GscRedesignWorkspaceDataGrid}">
+                <Setter Property="Height" Value="246"/>
+                <Setter Property="MinHeight" Value="246"/>
+                <Setter Property="ColumnHeaderHeight" Value="{DynamicResource GscTableHeaderHeight}"/>
+                <Setter Property="RowHeight" Value="{DynamicResource GscTableRowHeight}"/>
+                <Setter Property="ItemsSource" Value="{Binding ProbeRows}"/>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid Background="{DynamicResource GscBackdropBrush}">
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-            <Grid Margin="20" MaxWidth="980" HorizontalAlignment="Left">
+            <Grid Margin="20" MaxWidth="1120" HorizontalAlignment="Left">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <StackPanel>
-                    <TextBlock Text="WPF-UI 4.3.0 兼容性探针" FontSize="22" FontWeight="SemiBold"
-                               Foreground="{DynamicResource GscPrimaryTextBrush}"/>
+                    <TextBlock Text="UI 精修校对夹具" Style="{StaticResource GscTypographyPageTitle}"/>
                     <TextBlock Margin="0,5,0,18"
-                               Text="仅验证控件、资源作用域、焦点和插件内浮层；不代表备份、恢复、云端或媒体任务状态。"
-                               TextWrapping="Wrap" Foreground="{DynamicResource GscSecondaryTextBrush}"/>
+                               Text="仅在开发审计入口验证生产资源、混排、控件状态、有限表格和主题降级；不代表备份、恢复、云端或媒体任务状态。"
+                               Style="{StaticResource GscTypographyBody}"/>
                 </StackPanel>
 
-                <ui:Card Grid.Row="1" Padding="20">
+                <Border Grid.Row="1" Style="{StaticResource GscReadingCardStyle}" Padding="20">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="24"/>
+                            <ColumnDefinition Width="20"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <StackPanel>
-                            <TextBlock Text="输入与选择" FontSize="16" FontWeight="SemiBold"/>
-                            <ui:Button Margin="0,12,0,0" Appearance="Primary" Content="带图标的框架按钮" ToolTip="WPF-UI Button">
-                                <ui:Button.Icon><ui:SymbolIcon Symbol="Save24"/></ui:Button.Icon>
-                            </ui:Button>
-                            <ui:ToggleSwitch Margin="0,12,0,0" Content="测试开关" IsChecked="True" OnContent="开" OffContent="关"/>
-                            <TextBox Margin="0,12,0,0" Text="可编辑文本" ToolTip="标准 TextBox 使用局部 WPF-UI 字典"/>
-                            <ui:NumberBox Margin="0,12,0,0" Value="30" Minimum="1" Maximum="1440" MaxDecimalPlaces="0"
-                                          ToolTip="WPF-UI NumberBox：1–1440"/>
-                            <ComboBox Margin="0,12,0,0" SelectedIndex="0" ToolTip="Popup 必须保持在插件局部主题作用域">
-                                <ComboBoxItem Content="全部项目"/>
-                                <ComboBoxItem Content="已就绪"/>
-                                <ComboBoxItem Content="需要处理"/>
-                            </ComboBox>
+                            <TextBlock Text="中英混排与技术文本" Style="{StaticResource GscTypographySectionTitle}"/>
+                            <TextBlock Margin="0,12,0,0" Text="存档中心  Save Center    媒体归类  Media Inbox" Style="{StaticResource GscTypographyBody}"/>
+                            <TextBlock Margin="0,6,0,0" Text="备份完成，云端校验失败。可以稍后重试。" Style="{StaticResource GscTypographyBody}" TextWrapping="Wrap"/>
+                            <TextBlock Margin="0,6,0,0" Text="赛博朋克 2077：往日之影 / Cyberpunk 2077: Phantom Liberty" Style="{StaticResource GscTypographyBody}" TextWrapping="Wrap"/>
+                            <TextBlock Margin="0,6,0,0" Text="AgjQy  Il1 O0  0123456789  1,024 / 99,999  9% → 100%" Style="{StaticResource GscTypographyNumeric}"/>
+                            <TextBlock Margin="0,6,0,0" Text="罕见字：𠮷；外文标题：NieR Replicant / Pokémon / 龍が如く" Style="{StaticResource GscTypographyBody}" TextWrapping="Wrap"/>
+                            <TextBlock Margin="0,10,0,0" Text="D:\Games\中文目录\Cyberpunk 2077\一个非常长的备份文件名.zip" Style="{StaticResource GscTypographyCaption}" ToolTip="D:\Games\中文目录\Cyberpunk 2077\一个非常长的备份文件名.zip" TextWrapping="Wrap"/>
+                            <TextBlock Margin="0,6,0,0" Text="任务部分完成  FLING_DOWNLOAD_FORBIDDEN  ✓ × ⚠" Style="{StaticResource ProbeLabel}"/>
                         </StackPanel>
                         <Grid Grid.Column="2">
                             <Grid.RowDefinitions>
@@ -62,28 +71,61 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="列表、进度与反馈" FontSize="16" FontWeight="SemiBold"/>
-                            <ListBox x:Name="ProbeChecklist" Grid.Row="1" Margin="0,12,0,0" SelectedIndex="0">
+                            <TextBlock Text="输入、选择与焦点状态" Style="{StaticResource GscTypographySectionTitle}"/>
+                            <ListBox x:Name="ProbeChecklist" Grid.Row="1" Margin="0,12,0,0" SelectedIndex="0"
+                                     AutomationProperties.Name="校对夹具键盘清单">
                                 <ListBoxItem Content="焦点与方向键"/>
                                 <ListBoxItem Content="局部资源隔离"/>
                                 <ListBoxItem Content="缩放与滚动检查"/>
                             </ListBox>
-                            <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,14,0,0">
-                                <ui:ProgressRing Width="28" Height="28" IsIndeterminate="True" Margin="0,0,10,0"/>
-                                <ProgressBar Width="170" Height="6" Value="62" Maximum="100" VerticalAlignment="Center"/>
-                            </StackPanel>
-                            <WrapPanel Grid.Row="3" Margin="0,18,0,0">
-                                <ui:Button Appearance="Secondary" Content="Dialog 兼容性说明" Click="OnShowDialogClick" Margin="0,0,8,8"/>
-                                <ui:Button Appearance="Secondary" Content="显示 Snackbar" Click="OnShowSnackbarClick" Margin="0,0,8,8"/>
+                            <Grid Grid.Row="2" Margin="0,12,0,0">
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="12"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0" Text="可编辑文本" Style="{StaticResource GscWpfUiTextBox}" ToolTip="输入、光标、选择和 IME 组合文字" AutomationProperties.Name="校对文本框"/>
+                                <ComboBox Grid.Column="2" SelectedIndex="0" Style="{StaticResource GscWpfUiComboBox}" ToolTip="Popup 与长选项主题" AutomationProperties.Name="校对选择器">
+                                    <ComboBoxItem Content="全部项目"/>
+                                    <ComboBoxItem Content="已就绪"/>
+                                    <ComboBoxItem Content="需要处理"/>
+                                </ComboBox>
+                            </Grid>
+                            <WrapPanel Grid.Row="3" Margin="0,12,0,0">
+                                <ui:Button Style="{StaticResource GscWpfUiPrimaryButton}" Content="主操作" ToolTip="正常、Hover、Pressed 和焦点状态" AutomationProperties.Name="校对主操作">
+                                </ui:Button>
+                                <ui:Button Style="{StaticResource GscWpfUiSecondaryButton}" Content="次要操作" Margin="8,0,0,0" AutomationProperties.Name="校对次要操作"/>
+                                <ui:Button Style="{StaticResource GscWpfUiSecondaryButton}" Content="禁用操作" IsEnabled="False" Margin="8,0,0,0" ToolTip="禁用原因仍需可读" AutomationProperties.Name="校对禁用操作"/>
                             </WrapPanel>
-                            <TextBlock Grid.Row="4" Text="DataGrid 继续由 GameSaveCenter 模板接管；后续阶段会在保留虚拟化和列宽行为的前提下迁移。"
-                                       TextWrapping="Wrap" Foreground="{DynamicResource GscSecondaryTextBrush}"/>
+                            <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,10,0,0">
+                                <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" Content="开关" IsChecked="True" OnContent="开" OffContent="关" AutomationProperties.Name="校对开关"/>
+                                <ui:Button Style="{StaticResource GscIconOnlyToolbarButton}" ContentTemplate="{x:Null}" Margin="8,0,0,0" ToolTip="复制诊断" AutomationProperties.Name="复制诊断">
+                                    <ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconBtnCopy}" Width="18" Height="18"/>
+                                </ui:Button>
+                            </StackPanel>
                         </Grid>
                     </Grid>
-                </ui:Card>
-                <TextBlock Grid.Row="2" Margin="0,14,0,0" TextWrapping="Wrap"
-                           Foreground="{DynamicResource GscSecondaryTextBrush}"
-                           Text="资源由此视图的 UserControl.Resources 合并，不写入 Playnite Application.Current.Resources。此页面将在全量迁移后移除或转换为正式诊断组件。"/>
+                </Border>
+
+                <Border Grid.Row="2" Style="{StaticResource GscReadingCardStyle}" Padding="20" Margin="0,14,0,0">
+                    <Grid>
+                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="246"/></Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="16"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                        <TextBlock Text="状态徽章、进度与表格阅读面" Style="{StaticResource GscTypographySectionTitle}"/>
+                        <WrapPanel Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right">
+                            <Border Style="{StaticResource GscRedesignTableStatusPill}" Background="{DynamicResource GscSuccessIconFillBrush}" BorderBrush="{DynamicResource GscSuccessBrush}"><StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconStatusSuccess}" Width="16" Height="16" Foreground="{DynamicResource GscSuccessBrush}"/><TextBlock Text="已完成" Margin="6,0,0,0"/></StackPanel></Border>
+                            <Border Style="{StaticResource GscRedesignTableStatusPill}" Background="{DynamicResource GscWarningIconFillBrush}" BorderBrush="{DynamicResource GscWarningBrush}" Margin="8,0,0,0"><StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconStatusWarning}" Width="16" Height="16" Foreground="{DynamicResource GscWarningBrush}"/><TextBlock Text="需关注" Margin="6,0,0,0"/></StackPanel></Border>
+                            <Border Style="{StaticResource GscRedesignTableStatusPill}" Background="{DynamicResource GscErrorIconFillBrush}" BorderBrush="{DynamicResource GscErrorBrush}" Margin="8,0,0,0"><StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconStatusError}" Width="16" Height="16" Foreground="{DynamicResource GscErrorBrush}"/><TextBlock Text="失败" Margin="6,0,0,0"/></StackPanel></Border>
+                        </WrapPanel>
+                        <DataGrid x:Name="ProbeGrid" Grid.Row="1" Grid.ColumnSpan="3" Margin="0,12,0,0" Style="{StaticResource ProbeDataGrid}" AutomationProperties.Name="校对数据表">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="名称" Binding="{Binding Name}" Width="2*"/>
+                                <DataGridTextColumn Header="数值" Binding="{Binding Value}" Width="110"/>
+                                <DataGridTextColumn Header="状态" Binding="{Binding State}" Width="110"/>
+                                <DataGridTextColumn Header="路径/诊断" Binding="{Binding Detail}" Width="3*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Border>
+
+                <TextBlock Grid.Row="3" Margin="0,14,0,0" TextWrapping="Wrap" Style="{StaticResource GscTypographyCaption}"
+                           Text="资源由此视图的 UserControl.Resources 合并，不写入 Playnite Application.Current.Resources。按钮按压态、键盘焦点、输入法组合和表格端点需结合行为探针/真机验收。"/>
             </Grid>
         </ScrollViewer>
         <Border x:Name="ProbeFailurePanel" Panel.ZIndex="10" Visibility="Collapsed" HorizontalAlignment="Stretch"

@@ -2,10 +2,10 @@
 
 > 更新时间：2026-09-13。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
-## 2026-09-13 UI 精修提示词计划（尚未实施）
+## 2026-09-13 UI 精修提示词计划（P00 已启动）
 
 - 新增 [UI 精修实施提示词包](../design/UI_FINESSE_IMPLEMENTATION_PROMPTS_2026-09-13.md)，包含 12 阶段、52 项任务、可复制总提示词、混排样本、色彩/动效/性能目标、逐页精修和续跑账本。它补充 U12 后的精修与体感验收，不将已完成工作重新列为待重建。
-- 本轮仅交付文档，未修改生产 UI、版本、安装包或 Playnite；52 项任务未启动。后续实施从 P00 建立基线，再处理字体、色彩、共享控件和动效。
+- P00-01/P00-04 已建立资源映射、问题台账与 52 项账本；P00-02 已新增仅开发入口可见的生产资源校对夹具，P00-03 的真实宿主入口仍受窗口不可枚举限制。P01～P04 的共享修复将在 P00 独立提交后继续验收。
 - 源码复核发现：`MotionTokens.xaml` Normal/Slow 为 220/300ms，但 `GscMotion.cs` 仍为 200/320ms；`GscTypographyCaption` 同时使用 Muted 色和 0.65 Opacity；ContrastGuard 的 SecondaryText 阈值为 3.0。它们已进入计划，尚未修复；历史“动效时长已统一”的叙述不能覆盖此处代码事实。
 - 文档阶段隔离 Release 构建与三组测试通过，真实宿主视觉/物理交互仍沿用下方待验收边界；具体验证记录见 WORKLOG。
 

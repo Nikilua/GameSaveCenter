@@ -4,6 +4,12 @@
 
 ## 2026-09-13 UI 精修计划与源码差异
 
+## 2026-09-13 UI 精修 P00 基线夹具
+
+- P00-02 已完成：`UiFrameworkProbeView` 现在只在开发入口合并生产 `AcrylicProductionResources.xaml`，固定混排、路径、错误码、状态徽章、输入/选择、共享按钮状态、Toggle、图标按钮和 4 行有限 DataGrid 样本；RenderHarness `finesseprobe <output> <dark|light>` 在 1120×980 DIP 下双主题通过。
+- 当前双主题原始证据位于 `.tmp/ui-finesse-probe-20260913-dark/` 和 `.tmp/ui-finesse-probe-20260913-light/`：均为 4 行、22 个按钮、`CaptionOpacity=1`、`finesse-fixture OK`。这是生产资源离屏校对证据，Pressed/Focus 的行为以及真实 Playnite 嵌入仍未验收。
+- P00-03 仍是外部阻塞：真实宿主审计的 `MainWindowHandle=0` 且没有 `summary.json`；不循环重装替代真实取证。阶段账本和资源映射在 `docs/design/reviews/ui-finesse-20260913/`。
+
 - 用户近期优先关注 UI 精细度、中英文字体、色彩和动画流畅度，已请求将详细实施提示词交给其他 Agent 读取。入口为 [UI_FINESSE_IMPLEMENTATION_PROMPTS_2026-09-13.md](../design/UI_FINESSE_IMPLEMENTATION_PROMPTS_2026-09-13.md)：12 阶段、52 项任务；本轮仅规划，未启动这些任务或新增安装授权。
 - 后续 UI 精修沿用 Demo-first 和既有共享入口；优先完成 P00 基线、字体实际回退/Caption 对比、动效双来源及真实性能采样。所有视觉数值和性能阈值是待验收目标，不能写成已达成。U12 已完成内容作为依赖复用。
 - 当前 `MotionTokens.xaml` Normal/Slow=220/300ms，`GscMotion.cs` 静态字段仍为 200/320ms，故历史“时长唯一来源”的描述是目标而非完整实现事实。P04-01 负责统一，本轮未改代码。

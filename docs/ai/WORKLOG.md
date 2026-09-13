@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-13 UI 精修 P00 基线夹具
+
+- 扩展开发专用 `UiFrameworkProbeView`，改为合并生产 `AcrylicProductionResources.xaml`，固定混排、中文/拉丁/数字、路径、错误码、状态字形、输入/选择、按钮状态、Toggle、图标按钮和有限 DataGrid 样本；不写入 Playnite 全局资源，也不注入真实业务数据。
+- RenderHarness 新增 `finesseprobe <output> <dark|light>` 入口。Dark/Light 均以 1120×980 DIP 完成 `finesse-fixture OK`：4 行表格、22 个按钮、CaptionOpacity=1；截图和原始报告保留在 `.tmp/ui-finesse-probe-20260913-dark/` 与 `...-light/`。
+- `validate-source.py`、`check-xaml.ps1`（24 个 XAML）、WPF 静态检查和 `git diff --check` 通过；RenderHarness Release 构建 0 warning / 0 error。WPF 检查仍为 0 error、23 warnings、175 info，新增夹具的有限滚动提示与既有提示一并记录，未将其误报为缺陷。
+- P00-03 继续外部阻塞：真实宿主审计保留 `MainWindowHandle=0`、无 `summary.json` 的事实；受控窗口和离屏夹具不等同嵌入 Dashboard、物理 DPI、键盘/滚轮或屏幕帧率验收。账本与基线证据见 `docs/design/reviews/ui-finesse-20260913/`。
+
 ## 2026-09-13 编写 UI 精修实施提示词包（仅文档）
 
 - 按用户对字体、色彩、动画和细节完成度的优先要求，新增 [UI 精修实施提示词包](../design/UI_FINESSE_IMPLEMENTATION_PROMPTS_2026-09-13.md)：12 阶段、52 项任务，每项包含执行要求和验收；另有可复制总提示词、混排校对样本、性能测量定义、建议 4～6 周顺序与续跑账本模板。

@@ -151,6 +151,22 @@ public static class Program
             return probeExitCode;
         }
 
+        if (args.Length > 0 && args[0].Equals("finesseprobe", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "ui-finesse-probe");
+            var themeMode = args.Length > 2 && args[2].Equals("light", StringComparison.OrdinalIgnoreCase)
+                ? GameSaveCenterThemeMode.Light
+                : GameSaveCenterThemeMode.Dark;
+            var probeExitCode = 0;
+            var probeThread = new Thread(() => { probeExitCode = RunFinesseProbeOnly(outputRoot, themeMode); });
+            probeThread.SetApartmentState(ApartmentState.STA);
+            probeThread.Start();
+            probeThread.Join();
+            return probeExitCode;
+        }
+
         if (args.Length > 0 && args[0].Equals("shellqa", StringComparison.OrdinalIgnoreCase))
         {
             var outputRoot = args.Length > 1
@@ -1173,6 +1189,69 @@ public static class Program
             report.AppendLine("v6-2-shots FAILED");
             report.AppendLine(ex.ToString());
             File.WriteAllText(Path.Combine(outputRoot, "v6-2-shots-report.txt"), report.ToString());
+            return 1;
+        }
+    }
+
+    private static int RunFinesseProbeOnly(string outputRoot, GameSaveCenterThemeMode themeMode)
+    {
+        Directory.CreateDirectory(outputRoot);
+        var report = new StringBuilder();
+        report.AppendLine("GameSaveCenter UI finesse fixture");
+        report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+        report.AppendLine("EvidenceSource: DevelopmentOnlyProductionResourceProbe");
+        report.AppendLine("WindowDip: 1120x980");
+        report.AppendLine($"Theme: {themeMode}");
+        report.AppendLine("Data: synthetic mixed-language, status, diagnostic and table rows");
+
+        try
+        {
+            var app = new Application();
+            app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+            var view = new GameSaveCenter.Playnite.Views.Development.UiFrameworkProbeView
+            {
+                Width = 1120,
+                Height = 980
+            };
+            ApplyThemePalette(view, themeMode);
+            var host = new Grid
+            {
+                Width = 1120,
+                Height = 980,
+                Background = CreateHarnessBackground(view),
+                ClipToBounds = true
+            };
+            host.Children.Add(view);
+            host.Measure(new Size(host.Width, host.Height));
+            host.Arrange(new Rect(0, 0, host.Width, host.Height));
+            host.UpdateLayout();
+
+            var path = Path.Combine(outputRoot, "ui-finesse-fixture.png");
+            SavePng(host, path);
+            var captionStyle = view.FindResource("GscTypographyCaption") as Style;
+            var captionOpacity = captionStyle?.Setters
+                .OfType<Setter>()
+                .FirstOrDefault(setter => setter.Property == UIElement.OpacityProperty)?.Value;
+            var dataGrid = FindVisualChildren<DataGrid>(host).FirstOrDefault();
+            var buttons = FindVisualChildren<ButtonBase>(host).Count();
+            report.AppendLine($"Screenshot: {path}");
+            report.AppendLine($"ProbeRows: {view.ProbeRows.Count}");
+            report.AppendLine($"Buttons: {buttons}");
+            report.AppendLine($"DataGrid: rows={dataGrid?.Items.Count ?? 0} actual={dataGrid?.ActualWidth:0.##}x{dataGrid?.ActualHeight:0.##}");
+            report.AppendLine($"CaptionOpacity: {captionOpacity ?? "unset"}");
+            report.AppendLine("Samples: mixed CJK/Latin, numeric, path, diagnostic, success/warning/error glyphs");
+            report.AppendLine("InteractionStates: normal/hover/pressed/disabled/focus represented by shared template; pressed/focus require behavior probe");
+            report.AppendLine("finesse-fixture OK");
+            File.WriteAllText(Path.Combine(outputRoot, "ui-finesse-fixture-report.txt"), report.ToString());
+            Console.WriteLine(report.ToString());
+            return 0;
+        }
+        catch (Exception ex)
+        {
+            report.AppendLine("finesse-fixture FAILED");
+            report.AppendLine(ex.ToString());
+            File.WriteAllText(Path.Combine(outputRoot, "ui-finesse-fixture-report.txt"), report.ToString());
+            Console.Error.WriteLine(report.ToString());
             return 1;
         }
     }
