@@ -1,0 +1,32 @@
+GameSaveCenter UI finesse fixture
+Generated: 2026-09-14 00:07:29
+EvidenceSource: DevelopmentOnlyProductionResourceProbe
+WindowDip: 1120x980
+Theme: Dark
+Data: synthetic mixed-language, status, diagnostic and table rows
+ContrastGuard: checks=11 violations=0
+  PrimaryText vs Background: actual=18.201 minimum=4.5
+  SecondaryText vs Background: actual=10.234 minimum=4.5
+  MutedText vs Background: actual=6.327 minimum=4.5
+  OnAccentText vs Accent: actual=6.964 minimum=4.5
+  Info vs Background: actual=7.335 minimum=3
+  Success vs Background: actual=10.254 minimum=3
+  Warning vs Background: actual=9.693 minimum=3
+  Error vs Background: actual=6.296 minimum=3
+  ControlStroke vs Surface: actual=13.531 minimum=1.15
+  Surface vs Background: actual=0.02 minimum=0.016
+  ControlFill vs Surface: actual=0.007 minimum=0.005
+Screenshot: D:\workplace\github\GameSaveCenter\.tmp\ui-finesse-review-fresh-dark\ui-finesse-fixture.png
+ProbeRows: 4
+Buttons: 22
+DataGrid: rows=4 actual=1037.33x246
+CaptionOpacity: 1
+FontChain: Inter -> Segoe UI Variable Text -> Noto Sans SC -> Microsoft YaHei UI
+FontGlyph CJK=U+05B58 resolved=Noto Sans SC
+FontGlyph Latin=U+00053 resolved=Segoe UI Variable Text
+FontGlyph Digit=U+00039 resolved=Segoe UI Variable Text
+FontGlyph Arrow=U+02192 resolved=Segoe UI Variable Text
+FontGlyph RareCJK=U+20BB7 resolved=unresolved
+Samples: mixed CJK/Latin, numeric, path, diagnostic, success/warning/error glyphs
+InteractionStates: normal/hover/pressed/disabled/focus represented by shared template; pressed/focus require behavior probe
+finesse-fixture OK

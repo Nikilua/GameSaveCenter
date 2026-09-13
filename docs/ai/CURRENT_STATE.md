@@ -2,6 +2,13 @@
 
 > 更新时间：2026-09-13。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-14 UI 精修独立复核与第二轮 208 项
+
+- 最新复核入口为 [第一轮独立复核](../design/UI_FINESSE_REVIEW_2026-09-13.md)，审阅 `fd573e4..2fc40ce`。旧 52 项实际为 14 已验收、1 已满足、31 代码完成待验收、6 外部阻塞，不能以“待开始=0”认定全部完成；部分正向签收也因夹具/证据缺口需要重开。
+- 已确认暗色校对 PNG 的 Numeric、部分按钮/开关/徽章存在黑字，而 `finesse-fixture OK` 不检查最终控件前景；状态色 3.0 门槛仍被用于 11 DIP 文本；字体候选可用性不是实际 WPF 落字，数据 4 行不是完整可读 4 行。下一轮优先修这些门禁与可读性问题，不能把旧泛化验收描述覆盖本次复核。
+- 新增 [208 项控件与细节任务](../design/UI_FINESSE_ROUND2_208_TASKS_2026-09-13.md) 和 [分维度账本](../design/reviews/ui-finesse-round2-20260913/ROUND2_PROGRESS.md)，26 组、前轮任务数量 4 倍；全部新任务待开始，由用户要求的新 5.6 Luna/max 任务持续实施。
+- 本轮仅审计/文档；独立 Release 构建 0 warning/error，Core 76/76、Worker 310/311（1 skip）、Playnite 449/512（63 skip），0 fail。主工作区 `src.zip` 保留；后续干净 worktree 可解决打包源码边界，不削弱 clean-tree 保护，真实宿主取证仍独立验收。
+
 ## 2026-09-13 UI 精修提示词计划（P00、P01、P02、P04 共享底座与受控收口已完成）
 
 - 新增 [UI 精修实施提示词包](../design/UI_FINESSE_IMPLEMENTATION_PROMPTS_2026-09-13.md)，包含 12 阶段、52 项任务、可复制总提示词、混排样本、色彩/动效/性能目标、逐页精修和续跑账本。它补充 U12 后的精修与体感验收，不将已完成工作重新列为待重建。
