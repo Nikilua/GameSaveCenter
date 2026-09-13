@@ -57,3 +57,20 @@
 - 字体报告同时记录了 `FontChain` 和五个 Unicode 样本的实际解析：CJK、Latin、数字、箭头命中，`U+20BB7` 罕见字在显式链未命中；这不是跨机器分发成功证明。
 - `finesseprobe` 的 ContrastGuard 输出每主题 11 项配对。Light：Primary 19.433、Secondary 9.626、Muted 4.854、OnAccent 5.086、Info 4.754、Success 4.078、Warning 4.371、Error 4.513；Dark：Primary 18.201、Secondary 10.234、Muted 6.327、OnAccent 6.964、Info 7.335、Success 10.254、Warning 9.693、Error 6.296；装饰表面/控件检查也通过。
 - P04 的 `UiFinesseFoundationTests` 验证 120/100/220/300ms 语义和宿主资源覆盖；RenderHarness 全量报告 `render-qa OK`，rapid-toggle 代理探针为 `settled=True`。该代理测量不替代物理屏幕帧时间。
+
+## P03 / P05～P11 当前收口证据（2026-09-13）
+
+- 当前代码与报告基线为 `6c3c238b8ba0c7ce3a010e4234e18cfc34f10ee1`。`tests/GameSaveCenter.RenderHarness/bin/Release/net472/GameSaveCenter.RenderHarness.exe` 已在当前提交重新执行 `statefixtures`、`gridprobe`、`thumbnailprobe`；三项均返回 `OK`，报告中的 `WorkingTreeClean=False` 仅来自根目录用户文件 `src.zip`。
+- [`ui-finesse-qa-final-20260913`](../../.tmp/ui-finesse-qa-final-20260913/render-qa-report.txt) 返回 `render-qa OK`。它覆盖 Light/Dark、1040/1100/1366/2560 等页面尺寸、Overview/Save/Trainer/Media/Maintenance/Task/Settings、状态/筛选/表格/resize、生产壳层 Media/Maintenance/Task 几何和 ambient 层；逻辑 DIP 的离屏渲染不推导物理 DPI 或宿主帧率。
+- [`ui-finesse-statefixtures-20260913-head`](../../.tmp/ui-finesse-statefixtures-20260913-head/statefixtures-report.txt) 覆盖 Ready、Empty、Loading、Error、Stale、Offline 六状态，MediaInbox、MediaDetails、MaintenanceAudit、MaintenanceNextSteps 四个入口，Light/Dark 与 1040×700、1100×720、1366×768、2560×1440；真实状态字段、presenter、stale banner 和 actionItems 随夹具变化。
+- [`ui-finesse-gridprobe-20260913-head`](../../.tmp/ui-finesse-gridprobe-20260913-head/gridprobe-report.txt) 覆盖 Save/Task/Media/Maintenance 各数据表，以及 50/400/2000/4468 条行的滑块 0/25/50/75/100%、滚轮、PageUp/PageDown、Ctrl+End、表头 resize、Item scrolling、Recycling 和末行完整性；报告中的 `state=not-attached` 是离屏诊断边界，不能当作真实 UIAutomation 结果。
+- [`ui-finesse-scaleprobe-20260913-head`](../../.tmp/ui-finesse-scaleprobe-20260913-head/scaleprobe-report.txt) 使用 backend 1000/5000/20000 与 Media UI window 2000 条规模，验证 bounded window、recycling、端点、选择/resize 和表格末项可达；L32 `ScrollIntoView` 在离屏基线中明确为 inconclusive，不把它写成宿主通过。
+- [`ui-finesse-thumbnailprobe-20260913-head`](../../.tmp/ui-finesse-thumbnailprobe-20260913-head/thumbnailprobe-report.txt) 使用 synthetic PNG 与隐藏 STA WPF Window：120 项初始请求、peak=3、active=0、cache=96/96、100 次滚动窗口、坏图/缺图返回空、预取消和陈旧路径保护均通过。这是加载器契约证据，不是 Playnite 视频或物理 DPI 证据。
+- [`ui-finesse-shellqa-20260913-head`](../../.tmp/ui-finesse-shellqa-20260913-head/shell-qa-report.txt) 覆盖 720×640、960×640、980×640、1040×700 壳层，以及 Media/Maintenance/Task 在 1040/1100/1366 下的 PageHost、footer、Inspector、ambient 和 rapid-toggle 终态。rapid-toggle 的 `maxFrameGap` 仅为代理时间字段，不能代替 presented-frame 采样。
+
+### 真实宿主与最终门禁边界
+
+- P03、P05、P07～P09 的“代码完成待验收”代表共享实现和受控证据已闭环，但真实 Pressed/Focus、IME、Popup、键盘/读屏、用户主题、物理 DPI、真实备份/归类/忽略操作仍需要可见 Playnite 宿主。
+- P08-03、P10-01、P10-02、P10-04、P11-03 仍是外部阻塞。最近自动宿主审计的 `MainWindowHandle=0`、无 `summary.json`，PNG 为 `DedicatedAuditWindow` 且 `DashboardWasAlreadyHostedByPlaynite=false`；不以专用窗口替代嵌入 Dashboard。
+- P11-03 的安全打包链必须看到 clean working tree；当前只剩用户未跟踪 `src.zip`，本轮不删除、不移动、不提交它。代码/测试/离屏证据完成不等同新包可签收。
+- 最终一键链（`GameSaveCenter-一键构建安装运行.cmd`）已在文档改动和 `src.zip` 存在时执行：XAML `24/24`、Release `0 warning/0 error`、Core `76/76`、Worker `311/311`、Playnite `455/512`（57 skip、0 fail）；随后按 `scripts/package.ps1` 的 clean-tree 安全门禁停止，详见 `artifacts/one-click-install.log`。没有伪造新包、安装或运行成功。

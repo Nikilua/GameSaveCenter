@@ -2,12 +2,21 @@
 
 > 更新时间：2026-09-13。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
-## 2026-09-13 UI 精修提示词计划（P00、P01、P02、P04 共享底座已完成）
+## 2026-09-13 UI 精修提示词计划（P00、P01、P02、P04 共享底座与受控收口已完成）
 
 - 新增 [UI 精修实施提示词包](../design/UI_FINESSE_IMPLEMENTATION_PROMPTS_2026-09-13.md)，包含 12 阶段、52 项任务、可复制总提示词、混排样本、色彩/动效/性能目标、逐页精修和续跑账本。它补充 U12 后的精修与体感验收，不将已完成工作重新列为待重建。
 - P00-01/P00-04 已建立资源映射、问题台账与 52 项账本；P00-02 已新增仅开发入口可见的生产资源校对夹具，P00-03 的真实宿主入口仍受窗口不可枚举限制。
 - P01 已按本机实际字体命中校准共享链、移除 Caption 二次透明并统一文本像素属性；P02 已补齐最终合成对比度检查与浅色状态色；P04 已让 C# 动效消费 XAML 令牌并保留无资源回退。具体数值和未完成的多机/真实宿主边界见 `BASELINE.md` 与 `PROJECT_MEMORY.md`。
-- 当前阶段隔离 Release 构建、Playnite 测试、双主题夹具和完整 RenderHarness 均通过；真实宿主视觉/物理交互、DPI、读屏及屏幕帧时间仍沿用下方待验收边界，具体验证记录见 WORKLOG。
+- 当前阶段隔离 Release 构建、Playnite 测试、双主题夹具、状态/网格/缩略图/壳层探针和完整 RenderHarness 均通过；P03、P05～P09 的共享实现与受控证据已登记，真实宿主视觉/物理交互、DPI、读屏及屏幕帧时间仍沿用下方待验收边界，具体验证记录见 WORKLOG。
+
+## 2026-09-13 UI 精修 P03 / P05～P11 当前事实
+
+- 当前证据基线是 `6c3c238b8ba0c7ce3a010e4234e18cfc34f10ee1`。最终 RenderHarness [`ui-finesse-qa-final-20260913`](../../.tmp/ui-finesse-qa-final-20260913/render-qa-report.txt) 为 `render-qa OK`，覆盖双主题、多尺寸、八入口、状态、表格、resize 和生产壳层几何；离屏 `DpiScale=1.00` 仅代表逻辑 DIP。
+- `statefixtures`、`gridprobe`、`scaleprobe`、`thumbnailprobe`、`shellqa` 均已在当前提交执行并通过。大数据规模为 backend 1000/5000/20000、Media UI window 2000；缩略图窗口 peak=3、active=0、cache=96/96。Grid 的 `ScrollIntoView` 离屏基线仍为 inconclusive。
+- 已同步 52 项账本：P06-03/P06-04、P08-02、P09-02、P11-02 标为已验收；共享代码和受控证据已具备但依赖真实宿主的项目标为代码完成待验收；多屏/物理呈现/耐久/真实路径/打包等标为外部阻塞。
+- 当前宿主边界不可扩大：`MainWindowHandle=0`、无 `summary.json`，PNG 是 `DedicatedAuditWindow` 且 `DashboardWasAlreadyHostedByPlaynite=false`；不能把专用窗口、代理帧时间、离屏 DPI 或 synthetic thumbnail 写成真实嵌入 Dashboard、物理 DPI、屏幕帧预算或 Playnite 视频验收。
+- 工作区唯一变化外的用户文件是根目录未跟踪 `src.zip`；打包脚本按安全策略拒绝 dirty tree，本轮不删除、移动或提交它。最终一键链结果必须如实记录。
+- 最终一键链已通过 XAML `24/24`、Release `0 warning/0 error`、Core `76/76`、Worker `311/311`、Playnite `455/512`（57 skip、0 fail）；在包装阶段按 clean-tree 保护停止，日志为 `artifacts/one-click-install.log`，因此不宣称本轮新包已生成、安装或运行。
 
 ## 2026-09-13 开发提示词包全量门禁复核
 

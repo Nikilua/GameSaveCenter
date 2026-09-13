@@ -2,6 +2,15 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-13 UI 精修 P03 / P05～P11 证据收口
+
+- 在当前提交 `6c3c238b8ba0c7ce3a010e4234e18cfc34f10ee1` 复用了既有 WPF-UI、Redesign、IconPack、WorkspaceStatePresenter、真实页面命令/绑定和 U12 页面结构；没有新增第二套控件、业务状态或页面滚动模型。P03、P05、P07～P09 的代码项因此按“代码完成待验收”登记，真实宿主交互边界保持单列。
+- 当前 RenderHarness Release 构建为 `0 warning / 0 error`。最终 [`ui-finesse-qa-final-20260913`](../.tmp/ui-finesse-qa-final-20260913/render-qa-report.txt) 返回 `render-qa OK`，覆盖双主题、多尺寸、八入口、状态/筛选/表格、resize 和壳层 PageHost/footer/Inspector 几何；报告中的 `DpiScale=1.00` 是离屏逻辑 DIP。
+- 当前探针全部通过：`statefixtures OK`（6 状态 × 4 入口 × 双主题 × 4 尺寸）；`gridprobe OK`（50/400/2000/4468 行，端点/滑块/滚轮/PageUp/PageDown/Ctrl+End、Item/Recycling、表头 resize）；`thumbnailprobe OK`（120 项、100 次窗口、peak=3、active=0、cache=96/96、取消/坏图/陈旧路径）；`shellqa OK`（720～1040 壳层、Media/Maintenance/Task PageHost 和终态）。对应报告均在 `.tmp/ui-finesse-*` 的 `*-report.txt`。
+- 大数据夹具已实际扩大为 backend `1000/5000/20000`、Media UI window `2000`；scaleprobe 的离屏 `ScrollIntoView` 基线明确为 inconclusive，不能替代真实宿主端点。Render QA 的 rapid-toggle、layout/render 和 shell maxFrameGap 仍是代理字段，不能写成屏幕 presented-frame p50/p95/max。
+- P10-01/P10-02/P10-04、P08-03 和 P11-03 继续外部阻塞：没有可枚举的 Playnite 主窗口（`MainWindowHandle=0`、无 `summary.json`，自动审计 PNG 为 `DedicatedAuditWindow`），没有真实 30 分钟耐久或物理 DPI/键盘/读屏/滚轮采样；安全打包仍被用户现有未跟踪 `src.zip` 阻止。本轮不删除、移动或提交该文件。
+- 已同步 `docs/design/reviews/ui-finesse-20260913/PROGRESS.md`、`BASELINE.md`、当前事实入口、项目记忆和交接。最终运行 `GameSaveCenter-一键构建安装运行.cmd`：XAML `24/24`，Release `0 warning/0 error`，Core `76/76`，Worker `311/311`，Playnite `455/512`（57 skip、0 fail）。构建与测试全部成功，但 `scripts/package.ps1` 按 clean-tree 安全策略因本轮 6 份文档改动与用户未跟踪 `src.zip` 停止；未绕过、未删除用户文件，完整日志为 `artifacts/one-click-install.log`。
+
 ## 2026-09-13 UI 精修 P00 基线夹具
 
 - 扩展开发专用 `UiFrameworkProbeView`，改为合并生产 `AcrylicProductionResources.xaml`，固定混排、中文/拉丁/数字、路径、错误码、状态字形、输入/选择、按钮状态、Toggle、图标按钮和有限 DataGrid 样本；不写入 Playnite 全局资源，也不注入真实业务数据。

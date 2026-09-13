@@ -2,6 +2,15 @@
 
 > 维护时间：2026-09-13
 
+## 2026-09-13 UI 精修 P03 / P05～P11 收口记忆
+
+- 当前精修基线为提交 `6c3c238b8ba0c7ce3a010e4234e18cfc34f10ee1`。P03 控件、P05 反馈/过渡、P07 页面、P08 逻辑尺寸、P09 状态/术语/可访问性均继续复用既有共享资源和真实命令绑定；没有引入平行 UI 系统。
+- 可重复的受控证据：最终 `render-qa OK` 报告 `.tmp/ui-finesse-qa-final-20260913/`；`statefixtures OK` 覆盖 Ready/Empty/Loading/Error/Stale/Offline；`gridprobe OK` 覆盖 50/400/2000/4468 行及端点/分页；`scaleprobe OK` 覆盖 1000/5000/20000 backend 和 2000 media window；`thumbnailprobe OK` 覆盖 120 项、100 次窗口、peak=3、active=0、cache=96/96；`shellqa OK` 覆盖紧凑壳层和三类 PageHost。
+- P06-03/P06-04 与 P08-02/P09-02/P11-02 的受控门禁已足够签收；P03、P05、P06-01/02、P07、P08-01/04、P09-01/03/04、P10-03、P11-01/04 记录为代码完成待验收，因为仍需真实宿主交互。P08-03、P10-01/02/04、P11-03 记录为外部阻塞。
+- 所有报告都必须保留证据边界：离屏 `DpiScale=1.00` 是逻辑 DIP；rapid-toggle/maxFrameGap 是代理而非 presented-frame；L32 `ScrollIntoView` 离屏结果 inconclusive；synthetic thumbnail/隐藏 STA 不等同真实 Playnite 视频；专用审计窗口不等同嵌入 Dashboard。
+- 真实宿主当前仍为 `MainWindowHandle=0`、无 `summary.json`，PNG 标记 `DedicatedAuditWindow` 且 `DashboardWasAlreadyHostedByPlaynite=false`。根目录 `src.zip` 是用户未跟踪文件，安全打包链不可绕过它；不要删除、移动或提交。
+- 最终一键门禁已完成构建与测试：XAML `24/24`、Release `0/0`、Core `76/76`、Worker `311/311`、Playnite `455/512`（57 skip、0 fail）。包装阶段因本轮文档改动和 `src.zip` 使工作树非 clean 而按安全策略停止；以后若用户处理 `src.zip`，可从 `scripts/package.ps1` 重新生成签收包。
+
 ## 2026-09-13 UI 精修 P01/P02/P04 共享底座
 
 - `Typography.xaml` 仍是唯一字体入口，实际机器盘点为 `Inter` 未安装、`Segoe UI Variable Text/Display`、`Noto Sans SC`、`Microsoft YaHei UI`、`Cascadia Mono` 和 `Consolas` 可用；固定夹具报告了 CJK→Noto Sans SC、Latin/数字/箭头→Segoe UI Variable Text，`𠮷`（U+20BB7）在显式优选链未命中。没有随包分发字体，因此跨机器一致性继续是待验收边界。
