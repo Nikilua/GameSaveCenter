@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-13 b470bf9 发布包复核
+
+- 从干净 HEAD `b470bf9` 重新执行 `scripts/package.ps1 -Configuration Release`；XAML 检查、Release 编译和 Core/Worker/Playnite 全量测试均通过（Core `76/76`、Worker `310/311`，Playnite `447/510`，63 项跳过、0 失败）。
+- 插件、Core、Contracts、Worker 六份程序集的构建身份均为 `0.6.73+b470bf97f53ec0012da165cb4eb954d6b2e18e6f`；`.pext` 与 `.zip` 均为 `43,809,091` 字节，SHA-256 为 `9E6F4BB11B812DB824D8E3EA4EBFCD45A2490FEA5C907996301ABD9F21A55F8A`。
+- 最新包已生成在 `artifacts/`，但当前 Playnite 仍有无主窗口进程，安装器按安全策略未覆盖运行中宿主；关闭 Playnite 后可用该包或 `scripts/dev-install-run.ps1` 完成安装，真实嵌入页面/物理交互边界仍未宣称通过。
+
 ## 2026-09-13 对齐 GPT UI 设计契约
 
 - 将补充方案中的设计基础映射到现有 Demo-first 资源：新增间距、字体、玻璃表面、按钮语义别名；将共享表格密度提升为 52 DIP 行/42 DIP 表头，并保留任务页 236 DIP 紧凑视口。

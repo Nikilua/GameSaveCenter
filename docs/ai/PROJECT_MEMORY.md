@@ -2,11 +2,12 @@
 
 > 维护时间：2026-09-13
 
-## 2026-09-13 GPT UI 契约对齐
+## 2026-09-13 GPT UI 契约与发布包复核
 
 - 用户补充的 GPT UI 方案已完成与现有资源的契约对齐，不新增第二套玻璃、按钮或字体系统。`DesignTokens.xaml` 现在提供无前缀间距别名、状态字形转换器及 52 DIP 行/42 DIP 表头；Typography、Redesign、ButtonStyles 提供对应语义别名并继续复用生产模板。
 - `StatusGlyphConverter` 是纯显示层转换：成功/失败/警告文本分别增加 `✓/×/⚠`，未知状态和已有字形原样返回；任务、存档和维护状态胶囊接入后不改变状态字段、命令或绑定。MotionTokens 的 Normal/Slow 为 220/300ms，维护表格最小高度 260 DIP；任务紧凑表格仍保留 236 DIP 以避免详情抽屉被挤压。
 - 验证基线：Release `dotnet build` 0 warning/error；Core `76/76`、Worker `310/311`（1 skip）、Playnite `447/510`（63 skip、0 fail）；`validate-source.py`、`check-xaml.ps1` 与 RenderHarness `render-qa OK` 全部通过。真实 Playnite 的嵌入 Dashboard、宿主 DPI/主题、物理滚轮和键盘仍按真实宿主审计边界处理。
+- 干净 HEAD `b470bf9` 已重新执行 `scripts/package.ps1 -Configuration Release`；`.pext/.zip` 均为 `43,809,091` 字节、SHA-256 `9E6F4BB11B812DB824D8E3EA4EBFCD45A2490FEA5C907996301ABD9F21A55F8A`，六份程序集身份统一为 `0.6.73+b470bf97f53ec0012da165cb4eb954d6b2e18e6f`。当前运行中的无窗口 Playnite 进程使安全安装仍待用户先关闭宿主。
 
 ## 2026-09-13 真实宿主审计复跑边界
 
