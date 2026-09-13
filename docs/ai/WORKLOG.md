@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-13 编写 UI 精修实施提示词包（仅文档）
+
+- 按用户对字体、色彩、动画和细节完成度的优先要求，新增 [UI 精修实施提示词包](../design/UI_FINESSE_IMPLEMENTATION_PROMPTS_2026-09-13.md)：12 阶段、52 项任务，每项包含执行要求和验收；另有可复制总提示词、混排校对样本、性能测量定义、建议 4～6 周顺序与续跑账本模板。
+- 已读取当前记忆、交接、Git、UI 门禁/技能和生产资源，核对微软 WPF 与 W3C 官方资料。将 XAML/C# 动效 220/300 与 200/320ms 不一致、Caption 色彩叠加透明度及辅助文字对比门禁不足登记为未实施任务，同步当前事实入口，未修改生产源代码。
+- 本轮 `scripts/build.cmd -Configuration Release -OutputRoot .tmp/ui-polish-doc-build-20260913` 退出 0：Release 构建与 XAML 检查通过，Core `76/76`、Worker `310/311`（1 skip）、Playnite `447/510`（63 skip），失败均为 0。文档任务不运行会替换扩展和启停宿主的一键安装链，不把构建结果记为安装或真实视觉通过；未重跑 RenderHarness，沿用此前证据边界。
+- 本轮未触碰用户未跟踪文件 `src.zip`；仅同步文档并提交推送。临时隔离构建与过程日志在核对结果后清理，验证摘要保留于本条。
+- `validate-source.py` 与 `git diff --check` 通过；文档结构检查确认 12 阶段、52 个连续且唯一任务 ID、52 段实施要求、52 段验收要求、代码围栏成对和 5 个本地链接有效。Release 构建为 0 warning / 0 error。
+
 ## 2026-09-13 真实宿主安装与审计复核
 
 - Playnite 原后台进程已退出；使用短路径隔离源码快照运行 `dev-install-run.ps1 -Configuration Release -NoStart`，XAML 24 文件、Release 构建和测试全部通过：Core `76/76`、Worker `311/311`、Playnite `453/510`（57 skip、0 fail）。

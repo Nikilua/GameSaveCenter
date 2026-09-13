@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-13
 
+## 2026-09-13 UI 精修计划与源码差异
+
+- 用户近期优先关注 UI 精细度、中英文字体、色彩和动画流畅度，已请求将详细实施提示词交给其他 Agent 读取。入口为 [UI_FINESSE_IMPLEMENTATION_PROMPTS_2026-09-13.md](../design/UI_FINESSE_IMPLEMENTATION_PROMPTS_2026-09-13.md)：12 阶段、52 项任务；本轮仅规划，未启动这些任务或新增安装授权。
+- 后续 UI 精修沿用 Demo-first 和既有共享入口；优先完成 P00 基线、字体实际回退/Caption 对比、动效双来源及真实性能采样。所有视觉数值和性能阈值是待验收目标，不能写成已达成。U12 已完成内容作为依赖复用。
+- 当前 `MotionTokens.xaml` Normal/Slow=220/300ms，`GscMotion.cs` 静态字段仍为 200/320ms，故历史“时长唯一来源”的描述是目标而非完整实现事实。P04-01 负责统一，本轮未改代码。
+- `GscTypographyCaption` 使用 Muted 色并设 0.65 Opacity，存在二次变淡风险；ContrastGuard 的 SecondaryText 仅检查 3.0，不能作为普通小字 4.5:1 的完整证据。实际合成对比、字体命中和目标机呈现效果待 P01/P02 测量。
+
 ## 2026-09-13 开发提示词包全量门禁复核
 
 - 已阅读并复核用户提供的完整 WPF/Playnite 开发提示词包及其 Phase 0～12、构建安装和最终报告要求；当前实现以 Demo-first 现有共享资源为视觉真值，不新增第二套 UI 框架或业务层。
