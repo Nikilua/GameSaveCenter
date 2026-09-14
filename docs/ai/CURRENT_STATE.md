@@ -2,6 +2,12 @@
 
 > 更新时间：2026-09-15。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-15 UI 精修 Q20-08 首页边界状态
+
+- 当前交付基线为 `5a2ed09`。Overview 全局活动空态新增 `OverviewActivityEmptyState` 和 `MinHeight="120"`，修复空活动时 `Auto` 行把状态压成不可见区域的真实布局缺口。
+- RenderHarness 新增 `overviewedges`：空活动、多风险、96 字符超长标题、Worker 离线四种夹具，浅/深色各覆盖 `1040×700` 与 `1600×900`；干净报告为 [`.tmp/overviewedges-clean-20260915/overviewedges-report.txt`](../../.tmp/overviewedges-clean-20260915/overviewedges-report.txt)，`WorkingTreeClean=True`、16/16 首屏输出通过，空态高度 160 DIP，另有页面尾部空态截图。
+- 标准干净 RenderHarness [`.tmp/ui-qa-overview-empty-clean-20260915/render-qa-report.txt`](../../.tmp/ui-qa-overview-empty-clean-20260915/render-qa-report.txt) 为 `render-qa OK`、无 `PROBLEM`；Core `83/83`、Playnite `474/537`（63 skip、0 fail），定向 Overview/边界静态契约 `8/8`。真实 Playnite 状态切换、Hover/Focus、物理 DPI/多屏、IME/读屏仍待宿主条件。
+
 ## 2026-09-15 UI 精修游戏选框键盘与自动化名称
 
 - 当前交付基线为 `dea74f7`。生产壳层游戏选框现在在打开时聚焦搜索框，Esc/已选游戏 Enter、点外部和选中游戏都会关闭选框并把焦点返回当前游戏按钮；导航、Header、筛选器、列表、footer 和 Overview 主要动作已补充稳定 UI Automation 名称。

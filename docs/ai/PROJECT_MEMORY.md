@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-15
 
+## 2026-09-15 UI 精修 Q20-08 首页边界状态
+
+- 当前交付基线为 `5a2ed09`。Overview 全局活动空态新增 `OverviewActivityEmptyState` 与 `MinHeight="120"`，修复 `Activities.Count == 0` 时 `Auto` 行把 `WorkspaceStatePresenter` 压成不可读区域的真实布局缺口。
+- RenderHarness 新增 `overviewedges`，覆盖空活动、多风险、96 字符超长标题和 Worker 离线四个夹具；浅/深色各覆盖 `1040×700` 与 `1600×900`，16/16 首屏输出通过，空态实测高度 `160 DIP`，并生成页面尾部截图。报告记录 `WorkingTreeClean=True`。
+- 标准干净 RenderHarness 为 `render-qa OK` 且无 `PROBLEM`；Core `83/83`、Playnite `474/537`（63 skip、0 fail），定向 Overview/边界静态契约 `8/8`。真实 Playnite 状态切换、Hover/Focus、物理 DPI/多屏、IME/读屏仍待宿主条件；证据见 `Q20-08-OVERVIEW-EDGE-STATES-20260915.md`。
+
 ## 2026-09-15 UI 精修游戏选框键盘与自动化名称
 
 - 当前交付基线为 `dea74f7`。`AcrylicProductionShellView` 的生产游戏选框增加了共享 `PreviewKeyDown` 关闭入口：Esc、已有选中游戏时 Enter、点外部和选择游戏都统一关闭，并将焦点返回 `GameContextButton`；打开时搜索框获得键盘焦点。

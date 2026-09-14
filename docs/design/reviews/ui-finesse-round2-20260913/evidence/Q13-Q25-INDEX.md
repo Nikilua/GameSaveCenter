@@ -1,6 +1,6 @@
 # Q13–Q25 交互、页面、宿主与交付证据
 
-采集日期：2026-09-15（Asia/Shanghai）。当前代码基线：`f01dfe9`。证据来自共享 XAML/C# 源码、Playnite 设置迁移测试、RenderHarness Offscreen Regression Audit、隔离 Playnite 真实宿主加载日志和已提交 HEAD 的打包/安装记录；本次已取得 `EmbeddedPlaynite` Dashboard 生产像素，并修正 150% 宿主截图的 DPI 叠加，离屏证据仍不冒充 IME、物理跨屏、读屏或 ETW 帧时间。
+采集日期：2026-09-15（Asia/Shanghai）。当前代码基线：`5a2ed09`。证据来自共享 XAML/C# 源码、Playnite 设置迁移测试、RenderHarness Offscreen Regression Audit、隔离 Playnite 真实宿主加载日志和已提交 HEAD 的打包/安装记录；本次已取得 `EmbeddedPlaynite` Dashboard 生产像素，并修正 150% 宿主截图的 DPI 叠加，补齐 Overview 空活动/多风险/超长标题/离线边界夹具，离屏证据仍不冒充 IME、物理跨屏、读屏或 ETW 帧时间。
 
 ## 本阶段真实修复
 
@@ -9,6 +9,7 @@
 - 新增源代码门禁覆盖媒体 212 DIP 阅读底线；`UiAuditSourceTests` 同步验证页面滚动和 Inspector 证据分类。
 - 生产壳层游戏选框补齐 Esc/已选游戏 Enter、点外部和选中后的关闭及焦点返回；导航、Header 动作、筛选器、游戏列表、footer 和 Overview 主要动作补充稳定 UI Automation 名称。真实 WPF STA 行为与源码契约见 [`Q09-Q24-KEYBOARD-FOCUS-AUTOMATION-20260915.md`](q13-q25/Q09-Q24-KEYBOARD-FOCUS-AUTOMATION-20260915.md)。
 - Overview 云端队列整卡补充 `已上传 N · 已校验 M` 的独立保证级别显示，保留队列运行/暂停状态与单次导航命令；真实 WPF 视觉树和双主题 RenderHarness 证据见 [`Q20-07-CLOUD-GUARANTEE-20260915.md`](q13-q25/Q20-07-CLOUD-GUARANTEE-20260915.md)。
+- Overview 全局活动空态补齐 `MinHeight=120` 阅读下限，并新增 `overviewedges` 夹具覆盖空活动、多风险、超长标题和离线首屏；双主题/1040×700 与 1600×900 视口、页面尾部空态和完整标准 RenderHarness 证据见 [`Q20-08-OVERVIEW-EDGE-STATES-20260915.md`](q13-q25/Q20-08-OVERVIEW-EDGE-STATES-20260915.md)。
 
 ## 受控审计摘要
 
@@ -34,7 +35,7 @@
 | Q17 | WorkspaceStatePresenter、ProgressBar、Toast 队列上限、Banner/错误摘要与复制 | `SessionNotificationAccumulatorTests`、`NotificationFeedbackSourceTests`、`UiFeedbackTests`、`BatchObservableCollectionTests` | 真实悬停暂停、动画终态和多任务并发像素待宿主复核 |
 | Q18 | GscMotion token、资源 Host override、冻结 Transform 克隆、卸载清理和 reduced-motion 分支 | `UiFinesseFoundationTests`、`WpfUiResourceDictionaryTests`、`ProductionShellChromeSourceTests` | 实机热切换动画偏好、Rendering/ETW 生命周期待宿主/性能工具复核 |
 | Q19 | AsyncThumbnailImage/Loader generation、3 路并发、96 项 LRU、DecodePixelWidth、媒体占位/预览容器 | `AsyncThumbnailImageTests`、`AsyncThumbnailLoaderTests`、`MediaThumbnailConverterTests`、布局审计 | 真机视频/图片解码帧率与跨 DPI 清晰度待宿主复核 |
-| Q20 | AcrylicProductionShell、Overview 六页壳层、footer/header/hero/metric/activity/云队列入口和边界状态 | `ProductionShellChromeSourceTests`、`OverviewInteractionTests`、`OverviewPriorityResolverTests`、`UiDisplayMappingTests`、`UiFinesseRound2ControlSourceTests`、全审计、隔离宿主加载日志；`4f1dbb4` 在非空 3 游戏隔离库取得 `EmbeddedPlaynite` 当前深色 150% Dashboard 视口与滚动面，并修正审计截图 DPI 叠加；Q20-07 的上传/远端校验分开显示见 `Q20-07-CLOUD-GUARANTEE-20260915.md` | 当前宿主像素已可追溯且右边界完整；Hover/Focus/单次导航、低于 560 DIP、空活动/多风险/超长标题/离线边界及其他主题仍需宿主操作复核 |
+| Q20 | AcrylicProductionShell、Overview 六页壳层、footer/header/hero/metric/activity/云队列入口和边界状态 | `ProductionShellChromeSourceTests`、`OverviewInteractionTests`、`OverviewPriorityResolverTests`、`UiDisplayMappingTests`、`UiFinesseRound2ControlSourceTests`、`overviewedges`、全审计、隔离宿主加载日志；`4f1dbb4` 在非空 3 游戏隔离库取得 `EmbeddedPlaynite` 当前深色 150% Dashboard 视口与滚动面，并修正审计截图 DPI 叠加；Q20-07 的上传/远端校验分开显示见 `Q20-07-CLOUD-GUARANTEE-20260915.md`，Q20-08 边界夹具见 `Q20-08-OVERVIEW-EDGE-STATES-20260915.md` | 当前宿主像素已可追溯且右边界完整；Hover/Focus/单次导航、低于 560 DIP、空活动/多风险/超长标题/离线边界的真实宿主操作，以及其他主题仍需宿主复核 |
 | Q21 | SaveCenter/TrainerCenter 状态胶囊、长路径、恢复确认、工具来源失败和风险选项 | `MetadataBackupSourceTests`、`MetadataRestoreCoordinatorTests`、`DeviceConflictStateSourceTests`、`WpfUiResourceDictionaryTests` | 危险恢复路径只允许隔离测试；真实文件/修改器动作不执行 |
 | Q22 | TaskCenter/Maintenance 统计条、筛选、失败详情、云队列、诊断日志、短窗 Inspector | `TaskRetrySourceTests`、`FindingNavigationResolverTests`、`DiagnosticSummaryNoClipTests`、`MaintenanceReportSourceTests`、全审计 | 真窗口长日志复制、队列悬停和短窗输入序列待宿主复核 |
 | Q23 | Settings 分类导航、字段校验、目录只读检测、保存/回滚/主题预览和底部动作 | `SettingsValidationSourceTests`、`SettingsPathValidationTests`、`PortableSettingsTests`、`WpfUiResourceDictionaryTests` | 独立设置窗口的真实键盘和保存回滚序列待宿主复核 |

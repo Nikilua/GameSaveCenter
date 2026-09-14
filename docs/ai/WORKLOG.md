@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-15 UI 精修 Q20-08 首页边界状态
+
+- 修复 Overview 全局活动空态的真实布局缺口：`WorkspaceStatePresenter` 增加 `MinHeight="120"`，避免 `Activities.Count == 0` 时所在 `Auto` 行塌缩；新夹具实测空态高度 `160 DIP`。
+- `overviewedges` 覆盖空活动、多风险、96 字符超长标题和 Worker 离线四种状态，双主题、`1040×700`/`1600×900` 共 16/16 首屏通过，并生成空活动页面尾部截图；干净报告记录提交 `5a2ed09` 和 `WorkingTreeClean=True`。
+- 标准 RenderHarness 为 `render-qa OK`，Core `83/83`、Playnite `474/537`（63 skip、0 fail）、定向 Overview/边界静态契约 `8/8`，源码验证和 WPF 静态审查无错误。真实宿主状态切换、Hover/Focus、物理 DPI/多屏、IME/读屏仍保持待验收，证据新增 `Q20-08-OVERVIEW-EDGE-STATES-20260915.md`。
+
 ## 2026-09-15 UI 精修游戏选框键盘与自动化名称
 
 - 修复生产壳层游戏选框的真实交互缺口：打开聚焦搜索框，Esc/已选游戏 Enter、点遮罩和选中游戏均关闭并返回当前游戏按钮焦点；补充导航、Header、筛选器、列表、footer 与 Overview 动作的自动化名称。
