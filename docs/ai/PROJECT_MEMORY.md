@@ -2,6 +2,11 @@
 
 > 维护时间：2026-09-15
 
+## 2026-09-15 UI 精修 Q25-01 热态响应专项复核
+
+- 当前基线 `1a58e4b` 在干净工作树上重跑 `LargeLibraryPerformanceTests`：2000 项 GamePicker 预热 5 次、采样 30 次，专项 `4/4` 通过；`search_p50/p95/max=45/46/60 ms`，固化的 `p95≤100 ms` 门禁通过。
+- 证据为 `Q25-01-HOT-RESPONSE-20260915.md`，原始结果保留在 `.tmp/q25-01-clean-20260915/ui-qa/benchmarks/large-library.txt`。只签收受控 ViewModel 输入到反馈自动验证，不把它扩展成真实页面导航、屏幕呈现帧、30 分钟耐久或低 Tier 证据。
+
 ## 2026-09-15 UI 精修 Q20-08 首页边界状态
 
 - 当前交付基线为 `5a2ed09`。Overview 全局活动空态新增 `OverviewActivityEmptyState` 与 `MinHeight="120"`，修复 `Activities.Count == 0` 时 `Auto` 行把 `WorkspaceStatePresenter` 压成不可读区域的真实布局缺口。

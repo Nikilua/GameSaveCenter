@@ -2,6 +2,11 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-15 UI 精修 Q25-01 热态响应专项复核
+
+- 在当前干净提交 `1a58e4b` 上重跑 2000 项 GamePicker 专项测试，预热 5 次、采样 30 次，`4/4` 通过；结果为 `p50=45 ms`、`p95=46 ms`、`max=60 ms`，自动 `p95≤100 ms` 门禁通过。
+- 原始采样写入 `.tmp/q25-01-clean-20260915/ui-qa/benchmarks/large-library.txt`，新增 `Q25-01-HOT-RESPONSE-20260915.md`。该阶段只闭环受控 ViewModel 输入到反馈，不宣称真实页面导航、屏幕帧、ETW、耐久或低性能 Tier。
+
 ## 2026-09-15 UI 精修 Q20-08 首页边界状态
 
 - 修复 Overview 全局活动空态的真实布局缺口：`WorkspaceStatePresenter` 增加 `MinHeight="120"`，避免 `Activities.Count == 0` 时所在 `Auto` 行塌缩；新夹具实测空态高度 `160 DIP`。

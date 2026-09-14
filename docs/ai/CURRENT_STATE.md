@@ -2,6 +2,11 @@
 
 > 更新时间：2026-09-15。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-15 UI 精修 Q25-01 热态响应专项复核
+
+- 当前交付基线为 `1a58e4b`。在干净提交上重跑 `LargeLibraryPerformanceTests` 专项，2000 项 GamePicker 先预热 5 次、再采样 30 次，`4/4` 通过；`p50=45ms`、`p95=46ms`、`max=60ms`，`p95≤100ms` 回归门禁通过。
+- 原始结果为 [`.tmp/q25-01-clean-20260915/ui-qa/benchmarks/large-library.txt`](../../.tmp/q25-01-clean-20260915/ui-qa/benchmarks/large-library.txt)，证据见 `Q25-01-HOT-RESPONSE-20260915.md`。这只是 ViewModel 输入到 `FilteredCount` 的受控热路径，不替代页面导航、真实输入、呈现帧、30 分钟耐久或低 Tier 实测。
+
 ## 2026-09-15 UI 精修 Q20-08 首页边界状态
 
 - 当前交付基线为 `5a2ed09`。Overview 全局活动空态新增 `OverviewActivityEmptyState` 和 `MinHeight="120"`，修复空活动时 `Auto` 行把状态压成不可见区域的真实布局缺口。
