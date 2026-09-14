@@ -181,10 +181,13 @@
                             <Border Grid.Column="1" Style="{StaticResource MediaStatusPill}" VerticalAlignment="Center"><TextBlock Text="{Binding MediaInboxItems.Count, Mode=OneWay}" FontSize="18" FontWeight="SemiBold"/></Border>
                         </Grid>
                     </Border>
-                    <Grid x:Name="MediaInboxLayout" Grid.Row="1" MinHeight="0" ClipToBounds="True">
+                    <!-- Keep the primary inbox readable in compact windows. The page
+                         ScrollViewer owns the overflow; the grid itself must still show
+                         the header plus roughly four rows before that fallback is used. -->
+                    <Grid x:Name="MediaInboxLayout" Grid.Row="1" MinHeight="212" ClipToBounds="True">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscInspectorWidth}"/></Grid.ColumnDefinitions>
                         <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-                        <Border Grid.Column="0" Grid.Row="0" x:Name="MediaInboxTableFrame" Style="{StaticResource MediaTableFrame}" Padding="14,12,14,12" MinHeight="0" ClipToBounds="True" VerticalAlignment="Stretch">
+                        <Border Grid.Column="0" Grid.Row="0" x:Name="MediaInboxTableFrame" Style="{StaticResource MediaTableFrame}" Padding="14,12,14,12" MinHeight="212" ClipToBounds="True" VerticalAlignment="Stretch">
                         <Grid VerticalAlignment="Stretch">
                             <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                             <StackPanel Grid.Row="0">

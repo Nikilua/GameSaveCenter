@@ -274,10 +274,14 @@ public static class UiLayoutAnalyzer
                 var approvedMediaInboxPageScroll = report.RouteId == "media-center"
                     && string.Equals(report.TabHeader, "待归类", StringComparison.Ordinal)
                     && string.Equals(scroller.Name, "MediaInboxPageScrollViewer", StringComparison.Ordinal);
+                var approvedMediaInboxInspectorScroll = report.RouteId == "media-center"
+                    && string.Equals(report.TabHeader, "待归类", StringComparison.Ordinal)
+                    && string.Equals(scroller.Name, "MediaInboxInspectorScrollViewer", StringComparison.Ordinal);
                 var trueParentChild = containsList
                     && !isInternal
                     && !approvedOverviewPageScroll
                     && !approvedMediaInboxPageScroll
+                    && !approvedMediaInboxInspectorScroll
                     && scroller.VerticalScrollBarVisibility != ScrollBarVisibility.Disabled
                     && scroller.VerticalScrollBarVisibility != ScrollBarVisibility.Hidden
                     && HasContainedListWithOwnVerticalScroll(scroller);

@@ -6348,3 +6348,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 新增 `UiFinesseRound2ControlSourceTests` 2 项，验证半选模板和开发夹具入口；source validation、XAML 24 文件检查、该定向测试 2/2、RenderHarness Release 0 warning/0 error、双主题 `finesseprobe` 均退出 0。两张 Q04-Q12 PNG 已打开复核。
 - 证据索引为 `docs/design/reviews/ui-finesse-round2-20260913/evidence/Q04-Q12-INDEX.md`；证据明确保留 IME、真实 Popup 定位/移屏、物理 DPI、读屏、宿主命令序列和六页短窗导航为待验。
 - 阶段提交前再次运行根目录一键门禁：XAML 24/24、Release 构建 0 警告/0 错误、Core 76/76、Worker 310/311（1 skip）、Playnite 459/522（63 skip）全部通过；随后因证据索引仍有未提交身份变更而按设计停止打包，未把安装/启动写成已验证。
+
+## 2026-09-14 UI 精修第二轮 Q13 表格滚动与审计边界
+
+- 离屏全页面审计首次捕获真实阻断：MediaCenter“待归类”主表在 compact/narrow 下只有 190/150/130 DIP，且页面纵向通道被禁用，四行阅读底线实际失败。生产 `MediaCenterView` 现在为主表和表格壳保留 212 DIP 最小可读高度，并让外层 `MediaInboxPageScrollViewer` 使用有限、可达的 Auto 滚动；DataGrid 仍保持 Item ScrollUnit、Recycling 和现有选择/命令契约。
+- 复跑 `scripts/capture-ui-audit.ps1 -Configuration Release -Output artifacts/ui-audit-round2`：构建 0 warning/0 error，10 View、32 Tab、161 runtime snapshots；Fidelity failures=0，failed routes=0，HIGH=none。Media Inspector 明确是页面内独立有限详情面，分析器将其记录为 NESTED_VERTICAL_SCROLL 信息，不把真实职责边界伪报为父子滚动冲突。
+- 新增媒体短窗源代码门禁、审计来源门禁和 Q13–Q25 受控证据索引；定向 `UiFinesseRound2ControlSourceTests` + `UiAuditSourceTests` 为 8/8，source validation、XAML 24/24 与 `git diff --check` 通过。
+- Q13 账本已回填为“代码完成/自动与受控视觉通过/真实宿主待验”；Q14–Q25 仍按未实施或宿主/性能边界保留，不能用现有入口或离屏审计冒充 208 项最终完成。Q24 的物理 DPI、IME、读屏，Q25 的 ETW/30 分钟耐久/低性能实机仍未签收。

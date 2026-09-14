@@ -45,6 +45,7 @@ public sealed class UiAuditSourceTests
         Assert.Contains("TABLE_VIEWPORT_TOO_SHORT", layout);
         Assert.Contains("TOOLBAR_VERTICAL_EXPANSION", layout);
         Assert.Contains("PRIMARY_VIEWPORT_UNREACHABLE", layout);
+        Assert.Contains("approvedMediaInboxInspectorScroll", layout);
         Assert.Contains("CONTROL_CLIPPED", layout);
         Assert.Contains("RunProductionShellMediaProbe", program);
         Assert.Contains("MediaInboxFooter", program);
@@ -73,7 +74,7 @@ public sealed class UiAuditSourceTests
         Assert.Contains("mediaInboxHistoryOpen", codeBehind);
         Assert.Contains("MediaInboxSelectionDetails", xaml);
         Assert.Contains("MediaInboxNoSelectionHint", xaml);
-        Assert.Contains("MediaInboxGrid.MinHeight = 0d", codeBehind);
+        Assert.Contains("MediaInboxGrid.MinHeight = 212d", codeBehind);
         Assert.Contains("MediaInboxGrid.Height = double.NaN", codeBehind);
         Assert.Contains("var compactInbox = compactHeight;", codeBehind);
         Assert.Contains("ScrollBarVisibility.Disabled", codeBehind);

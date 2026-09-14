@@ -302,15 +302,13 @@ namespace GameSaveCenter.Playnite.Views
                 // Above it, preserve the finite star-sized table viewport so batch actions
                 // and the primary grid stay in the first screen.
                 var useInboxPageFallbackScroll = height < 560 || staleInboxRequiresPageScroll;
-                MediaInboxPageScrollViewer.VerticalScrollBarVisibility = useInboxPageFallbackScroll
-                    ? ScrollBarVisibility.Auto
-                    : ScrollBarVisibility.Disabled;
-                MediaInboxPageScrollViewer.VerticalContentAlignment = useInboxPageFallbackScroll
-                    ? VerticalAlignment.Top
-                    : VerticalAlignment.Stretch;
-                MediaInboxScrollSurface.VerticalAlignment = useInboxPageFallbackScroll
-                    ? VerticalAlignment.Top
-                    : VerticalAlignment.Stretch;
+                // Keep the page channel available at every size. Auto does not paint a
+                // thumb when the content fits, but it lets the 212 DIP reading floor
+                // escape the compact PageHost instead of being clipped by a disabled
+                // outer viewer.
+                MediaInboxPageScrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+                MediaInboxPageScrollViewer.VerticalContentAlignment = VerticalAlignment.Top;
+                MediaInboxScrollSurface.VerticalAlignment = VerticalAlignment.Top;
                 MediaInboxGrid.MaxHeight = useInboxPageFallbackScroll
                     ? Math.Max(1d, height)
                     : double.PositiveInfinity;
@@ -393,11 +391,9 @@ namespace GameSaveCenter.Playnite.Views
                 // The inbox table is the star-sized row inside MediaInboxTableFrame. Do not
                 // impose a synthetic 236/420 DIP viewport: WPF now gives it exactly the
                 // remaining height after the wrapped toolbar and footer have measured.
-                MediaInboxGrid.MinHeight = 0d;
+                MediaInboxGrid.MinHeight = 212d;
                 MediaInboxGrid.Height = double.NaN;
-                MediaInboxGrid.MaxHeight = useInboxPageFallbackScroll
-                    ? Math.Max(1d, height)
-                    : double.PositiveInfinity;
+                MediaInboxGrid.MaxHeight = Math.Max(212d, height);
                 MediaGrid.MinHeight = 236d;
                 MediaGrid.Height = double.NaN;
                 MediaGrid.MaxHeight = double.PositiveInfinity;

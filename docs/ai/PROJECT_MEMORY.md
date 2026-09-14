@@ -2818,6 +2818,13 @@
 - `UiFrameworkProbeView` 当前额外包含半选 CheckBox 和 Slider；RenderHarness 双主题报告实际测得 1 TextBox、1 ComboBox、4 个按钮、1 Toggle、2 个 CheckBox、1 Slider、1 ListBox，记录输入 padding/caret/selection、Combo Popup 模板、按钮 36 DIP 高度、半选 mark 可见和列表虚拟化。
 - Q04-Q12 证据索引为 `docs/design/reviews/ui-finesse-round2-20260913/evidence/Q04-Q12-INDEX.md`，截图与原始报告位于 `evidence/q04-q12/{dark,light}/`。IME、Popup 真定位/移屏、物理 DPI、读屏、真实命令单次执行、六页导航与短窗宿主仍是外部待验边界。
 - 阶段提交前一键门禁第二次结果：XAML 24/24、Release 构建 0 警告/0 错误、Core 76/76、Worker 310/311（1 skip）、Playnite 459/522（63 skip）通过；因证据索引仍未提交而按设计停止打包，不能宣称本次已完成安装/启动验证。
+
+## 2026-09-14 Round2 Q13 当前事实
+
+- MediaCenter“待归类”短窗是本阶段发现的真实布局缺陷：compact/narrow 主表实际高度为 190/150/130 DIP，页面滚动又被关闭，无法稳定看到四行。生产修复固定主表/表格壳 212 DIP 最小可读高度，外层 `MediaInboxPageScrollViewer` 保留有限 Auto 通道；不要通过缩小正文、关闭 DataGrid 虚拟化或改写现有命令来规避。
+- `MediaInboxInspectorScrollViewer` 是页面内有意保留的详情滚动面，不能与主表页面滚动混为同一职责。布局分析器仅对 `media-center/待归类` 的这个命名边界记录 NESTED_VERTICAL_SCROLL 信息；主表仍单独要求 PRIMARY_SCROLL_ACCESS，避免审计器用“全局禁止嵌套滚动”制造假门禁。
+- Q13 证据由媒体锚点/滚动诊断、DataGrid 模板来源、短窗源代码门禁和全量离屏审计组成。审计当前为 Fidelity=0、failed routes=0、HIGH=none；这只覆盖逻辑 DIP/离屏事实，不等同于真实 Playnite 鼠标、触控或像素验收。
+- Q14–Q25 尚未因本条记忆而关闭。真实宿主视觉、物理 DPI、IME、读屏、ETW 帧、>100ms 调用栈、30 分钟耐久和低性能 Tier 仍是明确阻塞边界；阶段证据索引必须在提交后写入真实代码提交身份。
 # 提交前一键门禁
 
 每次提交前必须运行仓库根目录的 `GameSaveCenter-一键构建安装运行.cmd`，确认隔离 Release 构建、Core/Worker/Playnite 全量测试、打包、安装验证和 Playnite 启动均成功。局部测试或 RenderHarness 通过不能替代该门禁；若输出超时，需后台运行并轮询到最终退出结果后再判断。
