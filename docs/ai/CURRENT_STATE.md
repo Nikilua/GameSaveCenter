@@ -14,6 +14,7 @@
 - Dark/Light 当前 clean-tree 夹具均 `finesse-fixture OK`：有效文本对比 12 个样本 0 violation，黑字负例 1 violation，行完整性 4/4、压缩负例 3/4，`PunctuationSamples`、`NumericMetrics`、混排路径和状态样本均重新记录。
 - Q01-04、Q02-03、Q02-08 的视觉列已据此升级；物理 DPI、真实 GlyphRun、IME、Tooltip 和八入口宿主列观感仍保持边界。
 - 随后全量 Release 门禁仍为 XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `310/311`（1 skip）、Playnite `481/544`（63 skip、0 fail）；报告已脱离 `.tmp` 临时截图路径并随证据目录保存。
+- 当前生产 `SaveHistoryGrid` audit 又确认文件数/大小 16 个数值 TextBlock 全部右对齐，大小样本无裁切；Q02-02 视觉列已更新，真实宿主字体/DPI 与排序点击仍待验。
 
 ## 2026-09-15 UI 精修 Q12-07 表头排序箭头双状态夹具
 

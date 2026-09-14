@@ -34,6 +34,11 @@
 
 当前报告再次记录：`PunctuationSamples` 保留全角引号/书名号/破折号/省略号，`NumericMetrics` 覆盖等宽数字、时间、秒/分钟和 0，`NumericTypography=styleResolved=True tabularSetter=True`，并保留中英产品名、路径和状态混排的可见样本。该复核仍是离屏 DIP；实际宿主字体/GlyphRun、IME、Tooltip 和物理 DPI 继续按边界记录。
 
+## Q02-02 当前生产表格对齐复核
+
+- [SaveHistoryGrid 数值列截图与视觉树测量](q02/Q02-SAVE-HISTORY-ALIGNMENT-20260915.md) 来自提交 `94dc203` 的 clean-tree `RenderHarness audit`：文件数/大小共 16 个可见数值 TextBlock 全部 `HorizontalAlignment=Right`，大小短值无裁切。
+- 该证据只升级离屏生产视图的视觉列；真实 Playnite 字体/DPI、列宽调整和排序点击继续保持宿主边界。
+
 ## 证据边界
 
 - 截图和报告是受控 DIP/离屏证据，不能证明 125/150/175/200% 物理 DPI、真实宿主字体安装差异、IME 组合过程或最终 GlyphRun。

@@ -21,6 +21,12 @@
 - clean-tree Dark/Light 运行均通过：`SortFixture` 报告升序 `名称`、降序 `数值`，两者宽度 `14 DIP`，降序旋转 `180°`；截图中箭头未压缩表头文字，深浅主题均清晰。
 - 目标 RenderHarness 构建为 `0 警告/0 错误`；真实业务排序点击、结果和宿主输入序列继续保留待验，不能由离屏夹具替代。
 
+## 2026-09-15 UI 精修 Q02-02 存档历史数值列对齐
+
+- 在 clean-tree `94dc203` 上运行 `RenderHarness audit`；audit summary 为 0 HIGH、0 MEDIUM、0 Fidelity warning，standard SaveHistoryGrid 视觉树记录文件数/大小 16 个数值 TextBlock 全部 `HorizontalAlignment=Right`。
+- 文件数样本 `121–128` 文本宽度均 `23.33 DIP`；大小样本 `24.6 MiB` 至 `31.28 MiB` 宽度 `55.33–63.33 DIP`，实际列宽 `64/78 DIP`，无短值裁切；已保存当前生产页截图和测量摘要。
+- Q02-02 视觉列升级为通过；真实字体/DPI、用户拖拽列宽和排序点击仍保留宿主验收边界。
+
 ## 2026-09-15 UI 精修 Q15 Tooltip、Popup 与浮层主题自动门禁
 
 - 提交 `86ac336` 收紧三类浮层边界：Dashboard/生产壳层/Settings 的 Tooltip 初次延迟 `350 ms`、快速移动间隔 `100 ms`；DesignTokens 与 WpfUiProduction 的 Combo Popup 显式 `StaysOpen=False`，并保留 Bottom、有限高度、自动滚动与动态材质资源。
