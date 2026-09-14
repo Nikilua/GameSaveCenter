@@ -62,6 +62,7 @@
                             <TextBlock Margin="0,6,0,0" Text="赛博朋克 2077：往日之影 / Cyberpunk 2077: Phantom Liberty" Style="{StaticResource GscTypographyBody}" TextWrapping="Wrap"/>
                             <TextBlock Margin="0,6,0,0" Text="AgjQy  Il1 O0  0123456789  1,024 / 99,999  9% → 100%" Style="{StaticResource GscTypographyNumeric}"/>
                             <TextBlock Margin="0,6,0,0" Text="罕见字：𠮷；外文标题：NieR Replicant / Pokémon / 龍が如く" Style="{StaticResource GscTypographyBody}" TextWrapping="Wrap"/>
+                            <TextBlock Margin="0,6,0,0" Text="组合与代理对：Café / Ångström / が / 🧭 🎮 / 𠮷" Style="{StaticResource GscTypographyBody}" TextWrapping="Wrap"/>
                             <TextBlock Margin="0,10,0,0" Text="D:\Games\中文目录\Cyberpunk 2077\一个非常长的备份文件名.zip" Style="{StaticResource GscTypographyCode}" ToolTip="D:\Games\中文目录\Cyberpunk 2077\一个非常长的备份文件名.zip" TextWrapping="Wrap"/>
                             <TextBlock Margin="0,6,0,0" Text="任务部分完成  FLING_DOWNLOAD_FORBIDDEN  ✓ × ⚠" Style="{StaticResource ProbeLabel}"/>
                         </StackPanel>

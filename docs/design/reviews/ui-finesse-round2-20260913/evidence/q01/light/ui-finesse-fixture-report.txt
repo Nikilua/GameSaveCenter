@@ -1,0 +1,73 @@
+GameSaveCenter UI finesse fixture
+Generated: 2026-09-14 09:57:37
+EvidenceSource: DevelopmentOnlyProductionResourceProbe
+WindowDip: 1120x980
+Theme: Light
+Data: synthetic mixed-language, status, diagnostic and table rows
+Palette: accent=#FF5B74E6 onAccent=#FF000000 primary=#FF000000
+ContrastGuard: checks=11 violations=0
+  PrimaryText vs Background: actual=19.433 minimum=4.5
+  SecondaryText vs Background: actual=9.626 minimum=4.5
+  MutedText vs Background: actual=4.854 minimum=4.5
+  OnAccentText vs Accent: actual=5.086 minimum=4.5
+  Info vs Background: actual=4.754 minimum=3
+  Success vs Background: actual=4.078 minimum=3
+  Warning vs Background: actual=4.371 minimum=3
+  Error vs Background: actual=4.513 minimum=3
+  ControlStroke vs Surface: actual=18.594 minimum=1.15
+  Surface vs Background: actual=0.042 minimum=0.016
+  ControlFill vs Surface: actual=0.033 minimum=0.005
+EffectiveColors: source=realized-visual-tree rendered-pixel-samples
+  Numeric: text=AgjQy  Il1 O0  0123456789  1,024 / 99,999  9% → 100% rawForeground=#F21B1F27 effectiveOpacity=1 effectiveForeground=#F21B1F27 backgroundSample=#FFFEFEFE composite=#FF272A32 contrast=14.227 bounds=41.33,225.33..550,244
+  Button[Primary] 主操作: text=主操作 rawForeground=#FF000000 effectiveOpacity=1 effectiveForeground=#FF000000 backgroundSample=#FF5B74E6 composite=#FF000000 contrast=5.086 bounds=585.33,337.33..621.33,353.33
+  Button[Secondary] 次要操作: text=次要操作 rawForeground=#F21B1F27 effectiveOpacity=1 effectiveForeground=#F21B1F27 backgroundSample=#FFEAEBF2 composite=#FF262931 contrast=12.233 bounds=660,337.33..708,353.33
+  Button[Secondary] 禁用操作: text=禁用操作 rawForeground=#F21B1F27 effectiveOpacity=0.72 effectiveForeground=#AE1B1F27 backgroundSample=#FFEFF0F5 composite=#FF5E6168 contrast=5.45 bounds=746.67,337.33..794.67,353.33
+  Button[Secondary] <composite>: missing
+  Toggle 开关: text=开关 rawForeground=#F21B1F27 effectiveOpacity=1 effectiveForeground=#F21B1F27 backgroundSample=#FFFEFEFE composite=#FF272A32 contrast=14.227 bounds=616,384..640,400
+  Status 已完成: text=已完成 rawForeground=#F21B1F27 effectiveOpacity=1 effectiveForeground=#F21B1F27 backgroundSample=#FFE1F0E8 composite=#FF252A31 contrast=12.262 bounds=871.33,468..913.33,488
+  Status 需关注: text=需关注 rawForeground=#F21B1F27 effectiveOpacity=1 effectiveForeground=#F21B1F27 backgroundSample=#FFF1EADF composite=#FF262930 contrast=12.186 bounds=957.33,468..999.33,488
+  Status 失败: text=失败 rawForeground=#F21B1F27 effectiveOpacity=1 effectiveForeground=#F21B1F27 backgroundSample=#FFF7E6E8 composite=#FF262931 contrast=12.077 bounds=1043.33,468..1071.33,488
+  Status 已完成: text=已完成 rawForeground=#F21B1F27 effectiveOpacity=1 effectiveForeground=#F21B1F27 backgroundSample=#FFF8F8F8 composite=#FF262A32 contrast=13.547 bounds=492,560..534,578.67
+  Status 需关注: text=需关注 rawForeground=#F21B1F27 effectiveOpacity=1 effectiveForeground=#F21B1F27 backgroundSample=#FFF8F8F8 composite=#FF262A32 contrast=13.547 bounds=492,612..534,630.67
+  Status 失败: text=失败 rawForeground=#F21B1F27 effectiveOpacity=1 effectiveForeground=#F21B1F27 backgroundSample=#FFF8F8F8 composite=#FF262A32 contrast=13.547 bounds=492,664..520,682.67
+  Status 已完成: text=已完成 rawForeground=#F21B1F27 effectiveOpacity=1 effectiveForeground=#F21B1F27 backgroundSample=#FFF8F8F8 composite=#FF262A32 contrast=13.547 bounds=492,716..534,734.67
+EffectiveContrastGuard: samples=12 minimum=4.5 violations=0
+NegativeFixture: invalid-black-on-dark violations=1 must-fail=passed
+RowsEffective: realized=4 completeInsideGrid=4 grid=41.33,501.33..1078.67,751.33 rows=41.33,543.33..1078.67,595.33;41.33,595.33..1078.67,647.33;41.33,647.33..1078.67,699.33;41.33,699.33..1078.67,751.33
+RowsNegativeFixture: viewport=41.33,501.33..1078.67,747.33 completeInsideGrid=3 must-fail=passed
+Screenshot: C:\Users\lopmatu\.codex\worktrees\1aa8\GameSaveCenter\docs\design\reviews\ui-finesse-round2-20260913\evidence\q01\light\ui-finesse-fixture.png
+ProbeRows: 4
+Buttons: 18
+DataGrid: rows=4 actual=1037.33x250
+CaptionOpacity: 1
+FontChain: Inter -> Segoe UI Variable Text -> Segoe UI -> Noto Sans SC -> Noto Sans CJK SC -> Microsoft YaHei UI -> Microsoft YaHei
+FontCandidate CJK=U+05B58 candidate=Noto Sans SC requestedWeight=Normal actualWeight=Normal
+FontCandidate Latin=U+00053 candidate=Segoe UI Variable Text requestedWeight=Normal actualWeight=Normal
+FontCandidate Digit=U+00039 candidate=Segoe UI Variable Text requestedWeight=Normal actualWeight=Normal
+FontCandidate Arrow=U+02192 candidate=Segoe UI Variable Text requestedWeight=Normal actualWeight=Normal
+FontCandidate RareCJK=U+20BB7 candidate=unresolved requestedWeight=Normal actualWeight=Normal
+FontCandidate Combining=U+00301 candidate=Segoe UI Variable Text requestedWeight=Normal actualWeight=Normal
+FontCandidate Emoji=U+1F9ED candidate=unresolved requestedWeight=Normal actualWeight=Normal
+FontWeightCandidate Chinese requested=Normal family=Noto Sans SC actual=Normal
+FontWeightCandidate Chinese requested=Medium family=Noto Sans SC actual=Medium
+FontWeightCandidate Chinese requested=SemiBold family=Noto Sans SC actual=Bold
+UnicodeMetric text=Café utf16Length=5 width=27.49 height=16.8 baseline=12.6 unpairedSurrogate=False
+UnicodeMetric text=Ångström utf16Length=8 width=61.01 height=16.8 baseline=12.6 unpairedSurrogate=False
+UnicodeMetric text=が utf16Length=2 width=11.7 height=16.8 baseline=12.6 unpairedSurrogate=False
+UnicodeMetric text=🧭 🎮 utf16Length=5 width=42.28 height=16.8 baseline=12.6 unpairedSurrogate=False
+UnicodeMetric text=𠮷 utf16Length=2 width=14 height=16.8 baseline=12.6 unpairedSurrogate=False
+FontActualGlyphRun: unknown (this offscreen fixture does not capture WPF GlyphRun fallback)
+FontEvidence: FontCandidate reports actual candidate coverage and requested/actual weight; host GlyphRun remains unknown
+NumericMetrics: 1=7.33x15.33, 8=7.33x15.33, 99=14x15.33, 100=21.33x15.33, 00:09=31.33x15.33, 12:59=31.33x15.33, 59 秒=29.33x15.33, 1 分钟=34.67x15.33, 0=7.33x15.33, —=12.67x15.33
+NumericTypography: styleResolved=True tabularSetter=True
+LineMetric text=备份完成，云端校验失败。可以稍后重试。 wrapping=Wrap lineHeight=20 actual=508.67x20
+LineMetric text=赛博朋克 2077：往日之影 / Cyberpunk 2077: Phantom Liberty wrapping=Wrap lineHeight=20 actual=508.67x20
+LineMetric text=罕见字：𠮷；外文标题：NieR Replicant / Pokémon / 龍が如く wrapping=Wrap lineHeight=20 actual=508.67x20
+LineMetric text=组合与代理对：Café / Ångström / が / 🧭 🎮 / 𠮷 wrapping=Wrap lineHeight=20 actual=508.67x20
+LineMetric text=D:\Games\中文目录\Cyberpunk 2077\一个非常长的备份文件名.zip wrapping=Wrap lineHeight=NaN actual=508.67x14
+LineMetric text=任务部分完成  FLING_DOWNLOAD_FORBIDDEN  ✓ × ⚠ wrapping=Wrap lineHeight=18 actual=508.67x18
+LineMetric text=资源由此视图的 UserControl.Resources 合并，不写入 Playnite Application.Current.Resources。按钮按压态、键盘焦点、输入法组合和表格端点需结合行为探针/真机验收。 wrapping=Wrap lineHeight=18 actual=1080x18.67
+PunctuationSamples: preserved=全角引号“存档” | 《存档中心》 | 路径——待检查 | 稍后重试…… containsUnpairedSurrogate=False
+Samples: mixed CJK/Latin, numeric, path, diagnostic, success/warning/error glyphs
+InteractionStates: normal captured; shared template declares hover/pressed/disabled/focus; input behavior requires a separate probe
+finesse-fixture OK

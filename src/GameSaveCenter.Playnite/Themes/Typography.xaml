@@ -4,10 +4,10 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
     <!-- Inter supplies the compact Latin/numeric rhythm; Noto Sans SC is preferred when
          installed for Chinese glyphs, with Windows UI fonts as dependable Playnite fallbacks. -->
-    <FontFamily x:Key="GscUiFontFamily">Inter, Segoe UI Variable Text, Noto Sans SC, Microsoft YaHei UI</FontFamily>
-    <FontFamily x:Key="GscDisplayFontFamily">Inter, Segoe UI Variable Display, Noto Sans SC, Microsoft YaHei UI</FontFamily>
-    <FontFamily x:Key="GscNumericFontFamily">Inter, Segoe UI Variable Text, Segoe UI, Microsoft YaHei UI</FontFamily>
-    <FontFamily x:Key="GscCodeFontFamily">Cascadia Mono, Consolas, Noto Sans SC, Microsoft YaHei UI</FontFamily>
+    <FontFamily x:Key="GscUiFontFamily">Inter, Segoe UI Variable Text, Segoe UI, Noto Sans SC, Noto Sans CJK SC, Microsoft YaHei UI, Microsoft YaHei</FontFamily>
+    <FontFamily x:Key="GscDisplayFontFamily">Inter, Segoe UI Variable Display, Segoe UI, Noto Sans SC, Noto Sans CJK SC, Microsoft YaHei UI, Microsoft YaHei</FontFamily>
+    <FontFamily x:Key="GscNumericFontFamily">Inter, Segoe UI Variable Text, Segoe UI, Noto Sans SC, Noto Sans CJK SC, Microsoft YaHei UI, Microsoft YaHei</FontFamily>
+    <FontFamily x:Key="GscCodeFontFamily">Cascadia Mono, Consolas, Noto Sans SC, Noto Sans CJK SC, Microsoft YaHei UI, Microsoft YaHei</FontFamily>
 
     <sys:Double x:Key="GscPageTitleFontSize">22</sys:Double>
     <sys:Double x:Key="GscDisplayTitleFontSize">28</sys:Double>
@@ -78,6 +78,8 @@
         <Setter Property="FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
         <Setter Property="FontSize" Value="{DynamicResource GscBodyFontSize}"/>
         <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="LineHeight" Value="20"/>
+        <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
         <Setter Property="Foreground" Value="{DynamicResource GscSecondaryTextBrush}"/>
         <Setter Property="TextOptions.TextHintingMode" Value="Fixed"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
@@ -87,6 +89,8 @@
         <Setter Property="FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
         <Setter Property="FontSize" Value="{DynamicResource GscCaptionFontSize}"/>
         <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="LineHeight" Value="18"/>
+        <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
         <!-- Caption hierarchy is expressed by its semantic color, not a second opacity
              multiplier. A TextBlock ancestor may already be translucent on a material
              surface; keeping this style opaque avoids turning CJK strokes into gray dust. -->
@@ -101,6 +105,7 @@
         <Setter Property="FontFamily" Value="{DynamicResource GscNumericFontFamily}"/>
         <Setter Property="FontSize" Value="{DynamicResource GscBodyFontSize}"/>
         <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Typography.NumeralAlignment" Value="Tabular"/>
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="TextOptions.TextHintingMode" Value="Fixed"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>

@@ -11,6 +11,7 @@
 <Style x:Key="SaveDataGrid" TargetType="DataGrid" BasedOn="{StaticResource GscRedesignWorkspaceDataGrid}"/>
             <Style x:Key="SaveTableFrame" TargetType="Border" BasedOn="{StaticResource GscRedesignTableFrame}"/>
             <Style x:Key="SaveLongText" TargetType="TextBlock"><Setter Property="TextTrimming" Value="CharacterEllipsis"/><Setter Property="TextWrapping" Value="NoWrap"/><Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}"/></Style>
+            <Style x:Key="SavePathText" TargetType="TextBlock" BasedOn="{StaticResource GscTypographyCode}"><Setter Property="TextTrimming" Value="CharacterEllipsis"/><Setter Property="TextWrapping" Value="NoWrap"/><Setter Property="ToolTip" Value="{Binding Path}"/></Style>
             <Style x:Key="SaveHistoryTimeText" TargetType="TextBlock" BasedOn="{StaticResource SaveLongText}"><Setter Property="ToolTip" Value="{Binding CreatedLocal, Mode=OneWay, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"/></Style>
             <Style x:Key="SaveSizeValue" TargetType="TextBlock" BasedOn="{StaticResource SaveLongText}"><Setter Property="TextTrimming" Value="None"/><Setter Property="Tag" Value="SaveHistorySize"/></Style>
             <Style x:Key="SaveHealthStateBadge" TargetType="Border" BasedOn="{StaticResource GscRedesignContextPill}">

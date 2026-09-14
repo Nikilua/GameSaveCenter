@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -1250,6 +1251,7 @@ public static class Program
             report.AppendLine($"DataGrid: rows={dataGrid?.Items.Count ?? 0} actual={dataGrid?.ActualWidth:0.##}x{dataGrid?.ActualHeight:0.##}");
             report.AppendLine($"CaptionOpacity: {captionOpacity ?? "unset"}");
             AppendFontResolutionEvidence(report);
+            AppendTypographyMetricEvidence(report, view);
             report.AppendLine("Samples: mixed CJK/Latin, numeric, path, diagnostic, success/warning/error glyphs");
             report.AppendLine("InteractionStates: normal captured; shared template declares hover/pressed/disabled/focus; input behavior requires a separate probe");
             report.AppendLine("finesse-fixture OK");
@@ -1519,44 +1521,93 @@ public static class Program
 
     private static void AppendFontResolutionEvidence(StringBuilder report)
     {
-        var chain = new[] { "Inter", "Segoe UI Variable Text", "Noto Sans SC", "Microsoft YaHei UI" };
+        var chain = TypographyDiagnostics.UiFontChain;
         var samples = new[]
         {
             (Label: "CJK", CodePoint: 0x5B58),
             (Label: "Latin", CodePoint: 0x0053),
             (Label: "Digit", CodePoint: 0x0039),
             (Label: "Arrow", CodePoint: 0x2192),
-            (Label: "RareCJK", CodePoint: 0x20BB7)
+            (Label: "RareCJK", CodePoint: 0x20BB7),
+            (Label: "Combining", CodePoint: 0x0301),
+            (Label: "Emoji", CodePoint: 0x1F9ED)
         };
 
         report.AppendLine($"FontChain: {string.Join(" -> ", chain)}");
         foreach (var sample in samples)
         {
-            var candidate = chain.FirstOrDefault(font => FontHasGlyph(font, sample.CodePoint)) ?? "unresolved";
-            report.AppendLine($"FontCandidate {sample.Label}=U+{sample.CodePoint:X5} candidate={candidate}");
+            var candidate = TypographyDiagnostics.FindCandidate(chain, sample.CodePoint, FontWeights.Normal);
+            report.AppendLine(
+                $"FontCandidate {sample.Label}=U+{sample.CodePoint:X5} "
+                + $"candidate={(candidate.HasGlyph ? candidate.Family : "unresolved")} "
+                + $"requestedWeight={candidate.RequestedWeight} actualWeight={candidate.ActualWeight}");
+        }
+
+        foreach (var weight in new[] { FontWeights.Normal, FontWeights.Medium, FontWeights.SemiBold })
+        {
+            var candidate = TypographyDiagnostics.FindCandidate(chain, 0x5B58, weight);
+            report.AppendLine(
+                $"FontWeightCandidate Chinese requested={weight} "
+                + $"family={(candidate.HasGlyph ? candidate.Family : "unresolved")} actual={candidate.ActualWeight}");
+        }
+
+        var unicodeSamples = new[]
+        {
+            "Cafe\u0301", "Ångström", "か\u3099", "🧭 🎮", TypographyDiagnostics.CodePointText(0x20BB7)
+        };
+        foreach (var sample in unicodeSamples)
+        {
+            var metric = TypographyDiagnostics.Measure(sample, chain.First(), 14, FontWeights.Normal);
+            report.AppendLine(
+                $"UnicodeMetric text={sample} utf16Length={sample.Length} width={metric.Width:0.##} "
+                + $"height={metric.Height:0.##} baseline={metric.Baseline:0.##} "
+                + $"unpairedSurrogate={metric.HasUnpairedSurrogate}");
         }
 
         report.AppendLine("FontActualGlyphRun: unknown (this offscreen fixture does not capture WPF GlyphRun fallback)");
-        report.AppendLine("FontEvidence: FontHasGlyph candidate coverage only; a rare glyph remains unknown until actual WPF layout inspection");
+        report.AppendLine("FontEvidence: FontCandidate reports actual candidate coverage and requested/actual weight; host GlyphRun remains unknown");
     }
 
-    private static bool FontHasGlyph(string fontName, int codePoint)
+    private static void AppendTypographyMetricEvidence(StringBuilder report, FrameworkElement resourceScope)
     {
-        try
+        var numericStyle = resourceScope.FindResource("GscTypographyNumeric") as Style;
+        var numericSamples = new[] { "1", "8", "99", "100", "00:09", "12:59", "59 秒", "1 分钟", "0", "—" };
+        var numericMetrics = new List<(string Text, double Width, double Height)>();
+        foreach (var value in numericSamples)
         {
-            var typeface = new Typeface(
-                new FontFamily(fontName),
-                FontStyles.Normal,
-                FontWeights.Normal,
-                FontStretches.Normal);
-            return typeface.TryGetGlyphTypeface(out var glyphTypeface)
-                && glyphTypeface.CharacterToGlyphMap.ContainsKey(codePoint);
+            var text = new TextBlock { Text = value, Style = numericStyle, Opacity = 0 };
+            text.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            numericMetrics.Add((value, text.DesiredSize.Width, text.DesiredSize.Height));
         }
-        catch
+
+        report.AppendLine(
+            "NumericMetrics: "
+            + string.Join(", ", numericMetrics.Select(metric => $"{metric.Text}={metric.Width:0.##}x{metric.Height:0.##}")));
+        report.AppendLine(
+            $"NumericTypography: styleResolved={(numericStyle != null)} tabularSetter="
+            + $"{HasSetter(numericStyle, Typography.NumeralAlignmentProperty)}");
+
+        var wrapped = FindVisualChildren<TextBlock>(resourceScope)
+            .Where(text => text.Visibility == Visibility.Visible
+                && text.TextWrapping != TextWrapping.NoWrap
+                && !string.IsNullOrWhiteSpace(text.Text))
+            .Take(8)
+            .ToList();
+        foreach (var text in wrapped)
         {
-            return false;
+            report.AppendLine(
+                $"LineMetric text={text.Text} wrapping={text.TextWrapping} lineHeight={text.LineHeight:0.##} "
+                + $"actual={text.ActualWidth:0.##}x{text.ActualHeight:0.##}");
         }
+
+        var punctuation = new[] { "全角引号“存档”", "《存档中心》", "路径——待检查", "稍后重试……" };
+        report.AppendLine(
+            $"PunctuationSamples: preserved={string.Join(" | ", punctuation)} "
+            + $"containsUnpairedSurrogate={punctuation.Any(TypographyDiagnostics.ContainsUnpairedSurrogate)}");
     }
+
+    private static bool HasSetter(Style? style, DependencyProperty property)
+        => style?.Setters.OfType<Setter>().Any(setter => setter.Property == property) == true;
 
     private static int RunV7ProgressProbe(string outputRoot)
     {

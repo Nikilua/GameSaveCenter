@@ -6323,3 +6323,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 验证：RenderHarness Release 0 warning/0 error；`finesseprobe` Light/Dark 均退出 0；定向 `UiDiagnosticsExporterTests` 6/6 与共享模板测试 1/1 通过；两张 PNG 已实际打开复核。真实 Playnite 宿主仍为 `MainWindowHandle=0`，物理 DPI、Hover/Pressed/Keyboard Focus 行为尚未宣称通过。
 - 提交前一键门禁首次在 Playnite 设置迁移测试阶段失败，独立复现根因是隔离构建目录使用 32 位 GUID，导致 .NET Framework xUnit 适配器加载路径超过 Windows 260 字符限制；已将 `dev-install-run.ps1` 的隔离 token 缩短为 8 位，待在提交后复跑完整门禁。
 - 提交 `87a40c8` 后以 8 位隔离 token 重跑完整门禁：XAML 24/24、Release 构建、Core 76/76、Worker 与 Playnite 450/513（63 skip）完成；Playnite 行为测试 `WorkspaceStatePresenterBehaviorTests.RetryButtonKeyboardActivationExecutesOnce` 出现一次非确定性失败（Expected 1 / Actual 0），独立定向重跑 2/2 通过，尚不能把该次完整门禁记为通过。
+
+## 2026-09-14 UI 精修第二轮 Q01-Q02 字体与数字可读性
+
+- 统一 Typography 字体链：`Inter`、`Segoe UI Variable`、`Segoe UI`、`Noto Sans SC`、`Noto Sans CJK SC`、`Microsoft YaHei UI`、`Microsoft YaHei`；没有把字体文件嵌入包体，避免未经许可的开发机资产依赖。
+- 正文/说明共享样式增加 20/18 DIP 行高与 `BlockLineHeight`；数字样式启用 `Typography.NumeralAlignment=Tabular`；开发夹具加入组合字符、重音、日文组合、代理对、扩展 CJK、emoji、全角标点与长路径样本。
+- 新增 `TypographyDiagnostics` 与 4 项测试：报告候选字体覆盖、Normal/Medium/SemiBold 实际权重、FormattedText 宽高基线、合法/悬空代理对；报告明确实际 WPF GlyphRun 仍需宿主证据。当前受控机中文候选为 Noto Sans SC，Latin/数字为 Segoe UI Variable Text，扩展 CJK/emoji unresolved 被如实保留。
+- 新增双主题 Q01-Q02 证据：NumericMetrics 中 `1`/`8` 与 `00:09`/`12:59` 宽度稳定；正文 LineMetric 为 20 DIP，说明为 18 DIP；截图与报告保存在 `docs/design/reviews/ui-finesse-round2-20260913/evidence/q01/`，索引为 `Q01-Q02-INDEX.md`。
+- 验证：Playnite 定向 Typography 测试 4/4、RenderHarness Release 0 warning/0 error、双主题 `finesseprobe` 均退出 0、source validation 通过、XAML 24 文件通过、`git diff --check` 通过；真实宿主/物理 DPI/IME/最终 GlyphRun 未宣称通过。
