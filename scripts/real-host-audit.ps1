@@ -90,6 +90,27 @@ try {
         $playniteConfig.AutoBackupEnabled = $false
         $playniteConfig | ConvertTo-Json -Depth 32 | Set-Content -LiteralPath $playniteConfigPath -Encoding UTF8
 
+        # A copied config can reference a user desktop theme that is not present in the
+        # isolated profile.  Playnite then starts with a black/empty client window and the
+        # host audit loses the very surface it is meant to inspect.  Copy only the configured
+        # theme into the isolated profile; never alter the user's theme or global config.
+        $configuredTheme = [string]$playniteConfig.Theme
+        if (-not [string]::IsNullOrWhiteSpace($configuredTheme)) {
+            $sourceTheme = Join-Path (Join-Path $env:APPDATA 'Playnite\Themes\Desktop') $configuredTheme
+            $isolatedTheme = Join-Path (Join-Path $UserDataDir 'Themes\Desktop') $configuredTheme
+            if (Test-Path -LiteralPath $sourceTheme -PathType Container) {
+                New-Item -ItemType Directory -Path (Split-Path -Parent $isolatedTheme) -Force | Out-Null
+                Copy-Item -LiteralPath $sourceTheme -Destination $isolatedTheme -Recurse -Force
+                $runnerMetadata.ConfiguredDesktopTheme = $configuredTheme
+                $runnerMetadata.ConfiguredDesktopThemeCopied = $true
+            }
+            else {
+                $runnerMetadata.ConfiguredDesktopTheme = $configuredTheme
+                $runnerMetadata.ConfiguredDesktopThemeCopied = $false
+                Write-Warning "Configured Playnite desktop theme was not found in the current user profile: $configuredTheme"
+            }
+        }
+
         $pluginId = '66e9f2d7-67bb-43ef-b62a-b8e60734fcec'
         $pluginWorker = Join-Path $isolatedExtensionsPath "GameSaveCenter_$pluginId\Worker\GameSaveCenter.Worker.exe"
         $pluginSettingsPath = Join-Path $UserDataDir "ExtensionsData\$pluginId\config.json"
