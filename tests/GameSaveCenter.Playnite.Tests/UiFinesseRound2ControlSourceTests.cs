@@ -138,6 +138,18 @@ public sealed class UiFinesseRound2ControlSourceTests
         Assert.Contains("workspace navigation, Media preview segment", probe);
     }
 
+    [Fact]
+    public void RenderingProxyReportsPercentileAndSlowFrameRatioSeparately()
+    {
+        var harness = Read("tests", "GameSaveCenter.RenderHarness", "Program.cs");
+
+        Assert.Contains("CompositionTarget.Rendering", harness);
+        Assert.Contains("frameGapP95", harness);
+        Assert.Contains("slowFrameRatio", harness);
+        Assert.Contains("1000d / 60d", harness);
+        Assert.Contains("CalculatePercentile", harness);
+    }
+
     private static string Read(params string[] parts)
     {
         var directory = new DirectoryInfo(AppContext.BaseDirectory);

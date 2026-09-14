@@ -5799,7 +5799,8 @@ public static class Program
                 $"  {label} motion={measurement.MotionEnabled} duration={measurement.DurationMs:0.0}ms "
                 + $"layout={measurement.LayoutUpdates} measure={measurement.MeasureCount}/{measurement.MeasureMs:0.0}ms "
                 + $"arrange={measurement.ArrangeCount}/{measurement.ArrangeMs:0.0}ms "
-                + $"frames={measurement.RenderingFrames} maxFrameGap={measurement.MaxFrameGapMs:0.0}ms "
+                + $"frames={measurement.RenderingFrames} frameGapP95={measurement.FrameGapP95Ms:0.0}ms "
+                + $"maxFrameGap={measurement.MaxFrameGapMs:0.0}ms slowFrameRatio={measurement.SlowFrameRatio:0.000} "
                 + $"secondClick={measurement.SecondClickFired} finalWidth={measurement.FinalWidth:0.0} "
                 + $"collapsed={measurement.FinalCollapsed} settled={measurement.Settled}");
             if (!measurement.Settled)
@@ -5836,6 +5837,7 @@ public static class Program
 
         var layoutUpdates = 0;
         var renderingFrames = 0;
+        var frameGapsMs = new List<double>();
         var maxFrameGapMs = 0d;
         long lastFrameTimestamp = 0;
         var stopwatch = Stopwatch.StartNew();
@@ -5846,7 +5848,11 @@ public static class Program
             renderingFrames++;
             var now = stopwatch.ElapsedTicks;
             if (lastFrameTimestamp != 0)
-                maxFrameGapMs = Math.Max(maxFrameGapMs, ToMilliseconds(now - lastFrameTimestamp));
+            {
+                var frameGapMs = ToMilliseconds(now - lastFrameTimestamp);
+                frameGapsMs.Add(frameGapMs);
+                maxFrameGapMs = Math.Max(maxFrameGapMs, frameGapMs);
+            }
             lastFrameTimestamp = now;
         };
         CompositionTarget.Rendering += renderingHandler;
@@ -5910,7 +5916,11 @@ public static class Program
             ArrangeCount = host.ArrangeCount,
             ArrangeMs = ToMilliseconds(host.ArrangeTicks),
             RenderingFrames = renderingFrames,
+            FrameGapP95Ms = CalculatePercentile(frameGapsMs, 0.95),
             MaxFrameGapMs = maxFrameGapMs,
+            SlowFrameRatio = frameGapsMs.Count == 0
+                ? 0
+                : frameGapsMs.Count(gap => gap > 1000d / 60d) / (double)frameGapsMs.Count,
             FinalWidth = shell.SidebarWidthForAudit,
             FinalCollapsed = shell.SidebarCollapsedForAudit,
             SecondClickFired = secondClickFired,
@@ -5923,6 +5933,16 @@ public static class Program
     private static double ToMilliseconds(long stopwatchTicks)
         => stopwatchTicks * 1000d / Stopwatch.Frequency;
 
+    private static double CalculatePercentile(IReadOnlyList<double> values, double percentile)
+    {
+        if (values.Count == 0)
+            return 0;
+
+        var sorted = values.OrderBy(value => value).ToArray();
+        var index = (int)Math.Ceiling(Math.Max(0, Math.Min(1, percentile)) * sorted.Length) - 1;
+        return sorted[Math.Max(0, Math.Min(sorted.Length - 1, index))];
+    }
+
     private sealed class SidebarTransitionMeasurement
     {
         public bool MotionEnabled { get; set; }
@@ -5933,7 +5953,9 @@ public static class Program
         public int ArrangeCount { get; set; }
         public double ArrangeMs { get; set; }
         public int RenderingFrames { get; set; }
+        public double FrameGapP95Ms { get; set; }
         public double MaxFrameGapMs { get; set; }
+        public double SlowFrameRatio { get; set; }
         public double FinalWidth { get; set; }
         public bool FinalCollapsed { get; set; }
         public bool SecondClickFired { get; set; }
