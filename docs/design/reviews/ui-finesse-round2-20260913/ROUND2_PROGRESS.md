@@ -13,7 +13,7 @@
 | Q00-05 | 字体证据命名 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [候选字体与实际 GlyphRun 边界](evidence/Q00-INDEX.md#q00-05)；候选覆盖不再标为 resolved，实际 GlyphRun 保持 unknown |
 | Q00-06 | 旧账本复审 | 代码完成 | 通过 | 不适用 | 不适用 | 已验收 | [52 项复审证据](evidence/Q00-LEGACY-52-MAPPING.md)；测试确认恰好 52 个唯一旧 ID，逐行保留旧状态、复核结论、依据/下一步与新任务映射；原有外部阻塞仍由对应 Q 任务承接 |
 | Q00-07 | 证据身份索引 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [Q00 证据索引](evidence/Q00-INDEX.md)；历史截图/报告明确绑定代码与夹具提交 `87a40c8`，旧 BASELINE 本地链接已修正且全目录链接复核为 0 个缺失；真实宿主边界仍由相关任务承接 |
-| Q00-08 | 干净交付路径 | 实施中 | 通过 | 待验 | 外部阻塞 | 未完成 | 当前提交 `5f60404` 的完整门禁为构建、Core 76/76、Worker 311/311、Playnite 468/525（57 skip、0 fail），但因工作树存在文档/测试变更在打包前停止；实际 clean install/start 证据仍对应前一干净提交 `6450f6e`，不冒充当前源码包；不修改主工作区 `src.zip` |
+| Q00-08 | 干净交付路径 | 实施中 | 通过 | 待验 | 外部阻塞 | 未完成 | 阶段提交 `5f60404` 曾完成构建门禁但在非 clean 工作树于打包前停止；当前 `dde9045` 的非宿主全量门禁为 XAML 24/24、构建 0/0、Core 82/82、Worker 310/311（1 skip）、Playnite 468/531（63 skip），一键链未重跑，用户未跟踪 `src.zip` 仍阻止 clean package/install/start；实际 clean install/start 证据仍对应 `6450f6e`，不冒充当前源码包 |
 | Q01-01 | 中文家族名称 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [Q01–Q02 受控证据](evidence/Q01-Q02-INDEX.md)；commit `db43230`；候选链命中 Noto Sans SC，扩展缺字如实记录 |
 | Q01-02 | 英文视觉重量 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [字体候选/字重报告](evidence/Q01-Q02-INDEX.md)；Latin 使用 Segoe UI Variable Text，真实宿主仍待验 |
 | Q01-03 | 中英基线 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [双主题截图与 LineMetric](evidence/Q01-Q02-INDEX.md)；共享行高 20 DIP，物理 DPI 待验 |

@@ -22,7 +22,7 @@
 - `UiDisplayMappingTests.MixedLanguageDisplaySurfacesKeepSemanticSpacingAndProductTerms` 构造云端、媒体归类、恢复指标、最近保护、媒体来源和 Trainer 版本的真实 DTO，锁定上表中的中英混排、单位、产品名和 ` · ` 分隔符；同时拒绝 `··`、分隔符两侧重复空格。
 - 同一测试类已有路径样本 `MixedPathAndProductTermsKeepOriginalPathAndSemanticSeparator`，确认 `FLiNG Trainer` 路径原值和 `1 KiB` 单位不被格式化破坏。
 - `GamePickerViewModelTests.PickerItemsExposeDemoStylePresentationFieldsLocally` 继续分别确认游戏选框的平台、安装和匹配字段都进入 `MetaDisplay`；它不改变真实游戏名称。
-- 本次 Core 定向测试：`UiDisplayMappingTests` 共 17/17 通过；Core Release 串行构建 0 errors，保留 3 个 NU1900 网络漏洞源告警。
+- 本次 Core 定向测试：`UiDisplayMappingTests` 共 17/17 通过；串行 Core Release 构建 0 errors，直接构建保留 3 个 NU1900 网络漏洞源告警。随后完整 `scripts/build.ps1 -Configuration Release` 门禁为 XAML 24/24、解决方案 0 warning/0 error、Core 82/82、Worker 310/311（1 skip）、Playnite 468/531（63 skip），无失败。
 
 ## 证据边界
 
