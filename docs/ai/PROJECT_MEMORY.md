@@ -7,6 +7,7 @@
 - 在 `ed42868` 上再次运行 `scripts/real-host-audit.ps1 -Configuration Release`。审计脚本已把原 Playnite 配置中的 `FusionX_54244ec8-29ec-418e-bce7-415250c8d67b` 主题复制到隔离用户数据，最新 `runner-metadata.json` 为 `ConfiguredDesktopThemeCopied=true`；Playnite 日志不再出现主题缺失错误，并确认 `GameSaveCenter 0.6.73` 加载及 `WindowFactory:Show window`。
 - 最新输出为 `artifacts/ui-host-audit-theme-20260914`，隔离数据为 `.tmp/ui-host-userdata-theme-20260914`。Release 构建 0 warning/0 error，Worker `311/311`，Playnite `474/531`（57 skip，0 fail），程序集身份为 `0.6.73+ed428687f5cdedc64c753e22b85abfa411405be2`；150% DPI 与 `1706.67×912 DIP` Dashboard metadata 保持可追溯。
 - 主题修复没有改变捕获边界：`EmbeddedDashboardCaptured=false`、`EmbeddedSettingsCaptured=true`、`ControlledDashboardCaptured=true`、`ProductionVisualSourceOfTruthAvailable=false`、`EmbeddedDashboardOrigin=None`。刷新有效句柄后，UIA 仍只有无后代的 `EmptyWindowAutomationPeer`，没有 `GameSaveCenter` 侧栏项；因此 Dashboard 生产像素、Q24-03 物理跨屏和 Q25-02～05 的 ETW/调用栈/30 分钟耐久/低 Tier 仍未完成。原始结果与两次复核记录在 `evidence/q13-q25/REAL_HOST_AUDIT-20260914.md`。
+- 物理前置检查只枚举到主屏 `\\.\\DISPLAY1`（2560×1440，工作区 2560×1368），没有第二物理屏；Q24-03 本轮不执行窗口/Popup 跨屏迁移，继续标为未完成/待宿主条件，不能用单屏事实替代多屏证据。
 
 ## 2026-09-14 UI 精修隔离 Playnite 真实宿主审计
 

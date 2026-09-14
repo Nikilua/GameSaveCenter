@@ -37,3 +37,8 @@
 本次复核排除了“隔离宿主缺少用户主题目录”这一脚本缺陷，但没有改变真实 Dashboard 未捕获的结论。Q00-08/Q25-07 的主题复制、构建、打包、隔离安装和插件启动事实已更新；真实 Dashboard 页面、物理跨屏、IME/读屏以及 Q25-02～Q25-05 的 ETW/调用栈/30 分钟耐久/低 Tier 证据仍未完成。
 
 最新输出：`artifacts/ui-host-audit-theme-20260914/summary.json`、`metadata.json`、`runner-metadata.json`、`capture-manifest.json`、`settings/embedded-current/viewport/settings.png`、`.tmp/ui-host-userdata-theme-20260914/playnite.log` 与 `extensions.log`。
+
+## 物理显示器前置检查
+
+- 在同一台实际 Windows 主机上通过 `System.Windows.Forms.Screen.AllScreens` 枚举显示器，结果只有主屏 `\\.\\DISPLAY1`，边界 `2560×1440`、工作区 `2560×1368`；没有第二个物理显示器或可迁移的跨屏目标。
+- 因此本轮没有执行“迁移宿主窗口并在打开态 Popup 中跨屏”的操作，也没有生成跨屏通过结论。Q24-03 继续保留为未完成/待宿主条件，不以单屏枚举替代多屏行为证据。
