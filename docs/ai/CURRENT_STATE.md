@@ -2,6 +2,12 @@
 
 > 更新时间：2026-09-15。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-15 UI 精修 Q25-03 UI 动作热点边界专项
+
+- 当前代码基线为 `ed97d2c`。`RenderHarness enduranceprobe` 现在记录每个动作周期耗时、p95、最大值和 `>100 ms` 计数，并在超阈值动作完成后最多保留 8 条当前线程栈。
+- 干净 120 秒受控 WPF 运行完成 `120.4s/120s`、`254` 循环、`886` 动作、`13` 样本、0 动作异常；动作 p95/max=`249.94/483.44 ms`，`>100ms=254/254`。原始报告为 [`.tmp/q25-03-hotspot-clean-20260915/enduranceprobe-report.txt`](../../.tmp/q25-03-hotspot-clean-20260915/enduranceprobe-report.txt)，专项说明见 [`Q25-03-UI-HOTSPOT-20260915.md`](../design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q25-03-UI-HOTSPOT-20260915.md)。
+- 栈在动作返回后的 `finally` 中读取，报告明确写作 `captured after action completion`；它不是 ETW/PerfView 停顿期间采样调用栈。Q25-03 的受控动作边界已补齐，但真实 Playnite 宿主热点、前后同环境优化回归仍受 ETW/等价性能工具条件阻塞。
+
 ## 2026-09-15 UI 精修 Q25-02 呈现回调代理专项
 
 - 当前代码基线为 `a1462ee`。生产壳层 `shellqa` 现在记录 `CompositionTarget.Rendering` 相邻回调的 p95、最大间隔和 60Hz 慢帧比例；干净报告的单次侧栏为 `66.1/193.2/0.147`，快速二次切换为 `15.3/28.5/0.038`，无动画原子终态为 `36.1/36.1/0.250`。

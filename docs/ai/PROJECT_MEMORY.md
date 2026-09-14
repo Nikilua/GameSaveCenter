@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-15
 
+## 2026-09-15 UI 精修 Q25-03 UI 动作热点边界专项
+
+- 提交 `ed97d2c` 为 `RenderHarness enduranceprobe` 增加动作周期耗时、p95、最大值、`>100 ms` 计数和最多 8 条超阈值后的当前线程栈；契约测试 `EnduranceProbeRecordsUiActionHotspotBoundariesWithoutClaimingEtwStacks` 同步加入。
+- 干净 120 秒受控运行完成 `120.4s/120s`、`254` 循环、`886` 动作、`13` 样本、0 动作异常；动作 p95/max=`249.94/483.44 ms`，`>100ms=254/254`。原始报告为 `.tmp/q25-03-hotspot-clean-20260915/enduranceprobe-report.txt`，证据为 `Q25-03-UI-HOTSPOT-20260915.md`。
+- 栈是在动作完成后的 `finally` 中取到的，不能冒充 ETW/PerfView 停顿期间调用栈；共同路径主要是 `RunActionCycle`/`DispatcherTimer`/WPF Dispatcher。真实 Playnite 宿主热点与优化前后对照仍外部阻塞，不能由该代理数据签收 Q25-03 最终结论。
+
 ## 2026-09-15 UI 精修 Q25-02 呈现回调代理专项
 
 - 提交 `a1462ee` 为生产壳层侧栏 Rendering 代理补齐 `frameGapP95`、`maxFrameGap` 和 `slowFrameRatio`；干净 shellqa 的单次切换为 `66.1/193.2/0.147`，快速二次切换为 `15.3/28.5/0.038`，无动画原子终态为 `36.1/36.1/0.250`。
