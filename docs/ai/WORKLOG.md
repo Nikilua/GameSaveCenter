@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-14 UI 精修隔离 Playnite 真实宿主审计
+
+- 在干净 HEAD `6bae7c1` 上运行 `scripts/real-host-audit.ps1 -Configuration Release`，使用隔离用户数据和 `D:\software\Playnite\Playnite.DesktopApp.exe`；Release 构建 0 warning/0 error，Worker `311/311`，Playnite `474/531`（57 skip，0 fail），程序集身份一致，日志确认 `GameSaveCenter 0.6.73` 已加载。
+- 本轮取得 `EmbeddedSettingsCaptured=true`、`EmbeddedSettingsOrigin=EmbeddedPlaynite`、150% WPF DPI 和 Settings 截图；Playnite 与 Worker 在审计结束后已停止，原用户数据未修改。证据见 `docs/design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/REAL_HOST_AUDIT-20260914.md`。
+- UI Automation 90 秒内未定位 GameSaveCenter 侧栏，`EmbeddedDashboardCaptured=false`、`ControlledDashboardCaptured=true`、`ProductionVisualSourceOfTruthAvailable=false`。受控 Dashboard 截图不作为生产真值，Q00-08/Q25-07 的 Dashboard 视觉、Q24-03 物理跨屏与 Q25-02～05 性能/耐久边界继续未完成。
+
 ## 2026-09-14 UI 精修 Q25-08 交付回查
 
 - 完成当前分支的无宿主交付回查：XAML 24/24、Release 构建 0 warning/0 error、Core 82/82、Worker 310/311（1 skip）、Playnite 468/531（63 skip），无失败；提交 `eabfc43` 已推送，远端 ref 已核对。

@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-14
 
+## 2026-09-14 UI 精修隔离 Playnite 真实宿主审计
+
+- 在干净 HEAD `6bae7c1` 上以 `scripts/real-host-audit.ps1 -Configuration Release` 完成隔离用户数据的 Release 构建、打包、安装和真实 Playnite 启动；Playnite 日志确认 `GameSaveCenter 0.6.73` 已加载。构建 0 warning/0 error，Worker `311/311`，Playnite `474/531`（57 skip，0 fail），程序集身份为 `0.6.73+6bae7c14cb93cfad992c230aedd5a458a10c0f34`。
+- 真实宿主 metadata 取得 `EmbeddedSettingsCaptured=true`、`EmbeddedSettingsOrigin=EmbeddedPlaynite`，并记录 `DpiScale=1.5`、`PixelsPerDip=1.5`；审计输出为 `artifacts/ui-host-audit-current-20260914`，持久边界说明见 `evidence/q13-q25/REAL_HOST_AUDIT-20260914.md`。隔离 Playnite 与 Worker 已在审计后停止，用户 Playnite 数据未修改。
+- `EmbeddedDashboardCaptured=false`、`ControlledDashboardCaptured=true`、`ProductionVisualSourceOfTruthAvailable=false`；UI Automation 90 秒内未定位 GameSaveCenter 侧栏，受控窗口截图仍标记 `DedicatedAuditWindow`。因此 Q00-08/Q25-07 的当前包安装/启动事实已补齐，但 Dashboard 宿主视觉、Q24-03 物理跨屏、Q25-02～05 ETW/调用栈/30 分钟耐久/低 Tier 仍未完成。
+
 ## 2026-09-14 UI 精修 Q25-08 交付回查
 
 - 当前源码基线为 `eabfc43`；Q25-08 的自动交付门禁已通过：XAML 24/24、Release 构建 0 warning/0 error、Core 82/82、Worker 310/311（1 skip）、Playnite 468/531（63 skip），无失败。

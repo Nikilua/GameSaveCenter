@@ -1,6 +1,6 @@
 # Q13–Q25 交互、页面、宿主与交付证据
 
-采集日期：2026-09-14（Asia/Shanghai）。当前代码基线：`dde9045`。证据来自共享 XAML/C# 源码、Playnite 设置迁移测试、RenderHarness Offscreen Regression Audit 和已提交 HEAD 的打包/安装记录；离屏证据不冒充真实 Playnite 像素、IME、物理 DPI、读屏或 ETW 帧时间。
+采集日期：2026-09-14（Asia/Shanghai）。当前代码基线：`6bae7c1`。证据来自共享 XAML/C# 源码、Playnite 设置迁移测试、RenderHarness Offscreen Regression Audit、隔离 Playnite 真实宿主加载日志和已提交 HEAD 的打包/安装记录；离屏证据不冒充真实 Playnite 像素、IME、物理 DPI、读屏或 ETW 帧时间。
 
 ## 本阶段真实修复
 
@@ -15,6 +15,12 @@
 - `LAYOUT_REPORT.md`：全尺寸布局 JSON/滚动链/表格端点记录；其中媒体待归类主表在短窗通过 `MediaInboxPageScrollViewer` 可达完整表格。
 - `UI_MANIFEST.md`：静态入口、条件 UI、按钮、表格和滚动面盘点。
 
+## 隔离 Playnite 真实宿主审计
+
+- [REAL_HOST_AUDIT-20260914.md](q13-q25/REAL_HOST_AUDIT-20260914.md) 记录了 `6bae7c1` 的 Release 构建、打包、隔离安装和真实 Playnite 启动：构建 0 warning/0 error、Worker `311/311`、Playnite `474/531`（57 skipped，0 failed）；日志确认插件 `0.6.73` 已加载。
+- 同一轮 metadata 取得 `EmbeddedSettingsCaptured=true`、`EmbeddedSettingsOrigin=EmbeddedPlaynite`，并记录 150% DPI；Dashboard 仍为 `EmbeddedDashboardCaptured=false`，受控窗口为 `DedicatedAuditWindow`，`ProductionVisualSourceOfTruthAvailable=false`。
+- UI Automation 未定位侧栏入口，90 秒等待后由脚本以部分结果收尾；因此 Q20 的真实 Dashboard 视觉、Q24-03 物理跨屏和 Q25-02～Q25-05 的性能/耐久证据仍保持未完成。
+
 ## Q13–Q25 覆盖映射
 
 | 组 | 已落地/已复核的真实入口 | 自动证据 | 当前宿主边界 |
@@ -26,15 +32,15 @@
 | Q17 | WorkspaceStatePresenter、ProgressBar、Toast 队列上限、Banner/错误摘要与复制 | `SessionNotificationAccumulatorTests`、`NotificationFeedbackSourceTests`、`UiFeedbackTests`、`BatchObservableCollectionTests` | 真实悬停暂停、动画终态和多任务并发像素待宿主复核 |
 | Q18 | GscMotion token、资源 Host override、冻结 Transform 克隆、卸载清理和 reduced-motion 分支 | `UiFinesseFoundationTests`、`WpfUiResourceDictionaryTests`、`ProductionShellChromeSourceTests` | 实机热切换动画偏好、Rendering/ETW 生命周期待宿主/性能工具复核 |
 | Q19 | AsyncThumbnailImage/Loader generation、3 路并发、96 项 LRU、DecodePixelWidth、媒体占位/预览容器 | `AsyncThumbnailImageTests`、`AsyncThumbnailLoaderTests`、`MediaThumbnailConverterTests`、布局审计 | 真机视频/图片解码帧率与跨 DPI 清晰度待宿主复核 |
-| Q20 | AcrylicProductionShell、Overview 六页壳层、footer/header/hero/metric/activity/云队列入口和边界状态 | `ProductionShellChromeSourceTests`、`OverviewInteractionTests`、`OverviewPriorityResolverTests`、全审计 | 真实 Playnite 视觉树已完成安装启动，但当前未取得可签收的宿主截图 |
+| Q20 | AcrylicProductionShell、Overview 六页壳层、footer/header/hero/metric/activity/云队列入口和边界状态 | `ProductionShellChromeSourceTests`、`OverviewInteractionTests`、`OverviewPriorityResolverTests`、全审计、隔离宿主加载日志 | 真实 Playnite 与插件已启动，Settings 有一次嵌入截图；Dashboard 仍未取得可签收的宿主截图 |
 | Q21 | SaveCenter/TrainerCenter 状态胶囊、长路径、恢复确认、工具来源失败和风险选项 | `MetadataBackupSourceTests`、`MetadataRestoreCoordinatorTests`、`DeviceConflictStateSourceTests`、`WpfUiResourceDictionaryTests` | 危险恢复路径只允许隔离测试；真实文件/修改器动作不执行 |
 | Q22 | TaskCenter/Maintenance 统计条、筛选、失败详情、云队列、诊断日志、短窗 Inspector | `TaskRetrySourceTests`、`FindingNavigationResolverTests`、`DiagnosticSummaryNoClipTests`、`MaintenanceReportSourceTests`、全审计 | 真窗口长日志复制、队列悬停和短窗输入序列待宿主复核 |
 | Q23 | Settings 分类导航、字段校验、目录只读检测、保存/回滚/主题预览和底部动作 | `SettingsValidationSourceTests`、`SettingsPathValidationTests`、`PortableSettingsTests`、`WpfUiResourceDictionaryTests` | 独立设置窗口的真实键盘和保存回滚序列待宿主复核 |
 | Q24 | AutomationProperties、焦点视觉、Tab/Shift+Tab 源码契约、高对比/无玻璃路径和 1040/1100/1366 布局矩阵 | `AccessibilitySourceTests`、`KeyboardFocusSourceTests`、`UiAuditTruthfulnessTests`、全审计 | 100/125/150/175/200% 物理 DPI、跨屏 Popup、中文 IME、真实读屏待宿主复核；电脑自动化助手本轮不可用 |
-| Q25 | 大库批量更新、缩略图并发/缓存边界、审计性能字段、构建身份、打包/安装验证 | `LargeLibraryPerformanceTests`、`AsyncThumbnailLoaderTests`、`DiagnosticsEvidenceSourceTests`、`BuildIdentityTests`；`Q25-PERFORMANCE-BENCHMARK-20260914.txt` 记录 5 次预热、30 次输入到反馈采样及 p50/p95/max；当前 `dde9045` 的非宿主全量门禁为 XAML 24/24、Release 0 warning/0 error、Core 82/82、Worker 310/311（1 skip）、Playnite 468/531（63 skip）；`Q25-HOST-PERFORMANCE-BOUNDARY-20260914.txt` 仍记录 6450f6e 干净 HEAD 安装/启动和 WPR 策略拒绝，已提交 HEAD 一键包体身份一致 | 30 分钟耐久、ETW 呈现帧、>100ms 调用栈和低性能 Tier 尚未签收；Q25-08 需在最终阶段清理并回查 |
+| Q25 | 大库批量更新、缩略图并发/缓存边界、审计性能字段、构建身份、打包/安装验证 | `LargeLibraryPerformanceTests`、`AsyncThumbnailLoaderTests`、`DiagnosticsEvidenceSourceTests`、`BuildIdentityTests`；`Q25-PERFORMANCE-BENCHMARK-20260914.txt` 记录 5 次预热、30 次输入到反馈采样及 p50/p95/max；`REAL_HOST_AUDIT-20260914.md` 记录 `6bae7c1` 隔离包体、安装和 Playnite 加载；当前全量门禁为 XAML 24/24、Release 0 warning/0 error、Core 82/82、Worker 310/311（1 skip）、Playnite 468/531（63 skip） | 30 分钟耐久、ETW 呈现帧、>100ms 调用栈和低性能 Tier 尚未签收；Q25-08 需在最终阶段清理并回查 |
 
 ## 运行身份与边界
 
 - 运行命令：`scripts/capture-ui-audit.ps1 -Configuration Release -Output artifacts/ui-audit-round2`；构建 0 warning/0 error，审计退出 0。
-- Q25-07 的干净 HEAD 一键流程已完成打包、程序集身份核对、安装验证和 Playnite 启动；当前 6450f6e 运行是 468/525（57 skip，失败 0）。
+- Q25-07 的干净 HEAD 隔离宿主流程已完成打包、程序集身份核对、安装验证和 Playnite 启动；`6bae7c1` 运行是 Worker 311/311、Playnite 474/531（57 skip，失败 0）。此次仍未取得 Dashboard 的嵌入视觉截图。
 - 本索引不把 `artifacts/ui-audit-round2` 的离屏事实升级为真实宿主视觉真值；阶段结束前仍须保留 Q24/Q25 的待验收项，不得为了填满 208 行而改成“完成”。
