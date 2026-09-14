@@ -306,8 +306,11 @@ public sealed class WpfUiResourceDictionaryTests
                 Assert.All(buttonGlass.GradientStops, stop => Assert.InRange(stop.Color.A, (byte)1, (byte)254));
                 Assert.All(buttonGlass.GradientStops, stop => Assert.InRange(stop.Color.A, (byte)1, (byte)170));
                 var primaryButton = Assert.IsType<LinearGradientBrush>(localResources["GscPrimaryButtonBrush"]);
-                Assert.All(primaryButton.GradientStops, stop => Assert.InRange(stop.Color.A, (byte)1, (byte)254));
-                Assert.All(primaryButton.GradientStops, stop => Assert.InRange(stop.Color.A, (byte)1, (byte)195));
+                // Text-bearing CTA chrome must not expose a glass alpha stop: an artwork or
+                // shell backdrop otherwise changes the effective OnAccent contrast at the
+                // gradient midpoint. The brush remains a gradient resource for state/template
+                // compatibility, but every stop is intentionally opaque.
+                Assert.All(primaryButton.GradientStops, stop => Assert.Equal(255, stop.Color.A));
                 Assert.IsType<SolidColorBrush>(localResources["GscButtonGlassBorderBrush"]);
                 var strongerPalette = factoryType.GetMethod("Create", BindingFlags.Public | BindingFlags.Static)!.Invoke(
                     null,

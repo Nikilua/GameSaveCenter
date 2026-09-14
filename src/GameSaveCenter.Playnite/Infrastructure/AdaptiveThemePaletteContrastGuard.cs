@@ -49,6 +49,15 @@ namespace GameSaveCenter.Playnite.Infrastructure
             public double Minimum { get; set; }
         }
 
+        public sealed class LayeredTextContrastSample
+        {
+            public string Check { get; set; } = string.Empty;
+            public Color Foreground { get; set; }
+            public Color Backdrop { get; set; }
+            public IReadOnlyList<Color> SurfaceLayers { get; set; } = Array.Empty<Color>();
+            public double Minimum { get; set; } = 4.5;
+        }
+
         /// <summary>
         /// Measures text after applying the foreground alpha over the sampled background.
         /// Callers must provide a realized surface sample rather than a token color.
@@ -82,6 +91,78 @@ namespace GameSaveCenter.Playnite.Infrastructure
                     Minimum = measurement.Minimum
                 })
                 .ToList();
+        }
+
+        public static List<TextContrastMeasurement> MeasureLayeredTextContrast(
+            IEnumerable<LayeredTextContrastSample> samples)
+        {
+            if (samples == null) throw new ArgumentNullException(nameof(samples));
+
+            return samples.Select(sample =>
+            {
+                var surface = sample.SurfaceLayers == null
+                    ? sample.Backdrop
+                    : sample.SurfaceLayers.Aggregate(
+                        sample.Backdrop,
+                        (background, layer) => Composite(layer, background));
+                return new TextContrastMeasurement
+                {
+                    Check = sample.Check,
+                    EffectiveForeground = Composite(sample.Foreground, surface),
+                    Background = surface,
+                    Actual = ContrastRatio(Composite(sample.Foreground, surface), surface),
+                    Minimum = sample.Minimum
+                };
+            }).ToList();
+        }
+
+        public static List<Violation> ValidateLayeredTextContrast(
+            IEnumerable<LayeredTextContrastSample> samples)
+        {
+            return MeasureLayeredTextContrast(samples)
+                .Where(measurement => measurement.Actual + 0.001 < measurement.Minimum)
+                .Select(measurement => new Violation
+                {
+                    Check = measurement.Check,
+                    Actual = measurement.Actual,
+                    Minimum = measurement.Minimum
+                })
+                .ToList();
+        }
+
+        /// <summary>
+        /// Samples every gradient stop and midpoint through the same alpha compositing
+        /// path used for a button's normal, hover and pressed surface. The pressed
+        /// opacity is applied to both content and chrome before comparing against the
+        /// parent backdrop, so a passing opaque-stop check cannot hide a real state loss.
+        /// </summary>
+        public static List<TextContrastMeasurement> MeasureGradientTextContrast(
+            string checkPrefix,
+            Color foreground,
+            Color backdrop,
+            IEnumerable<Color> gradientStops,
+            Color hoverOverlay,
+            Color pressedOverlay,
+            double pressedOpacity = 0.96,
+            double minimum = 4.5)
+        {
+            if (checkPrefix == null) throw new ArgumentNullException(nameof(checkPrefix));
+            if (gradientStops == null) throw new ArgumentNullException(nameof(gradientStops));
+
+            var stops = gradientStops.ToArray();
+            if (stops.Length == 0) throw new ArgumentException("At least one gradient stop is required.", nameof(gradientStops));
+
+            var samples = new List<TextContrastSample>();
+            for (var step = 0; step <= 10; step++)
+            {
+                var offset = step / 10.0;
+                var baseSurface = Composite(SampleGradient(stops, offset), backdrop);
+                AddButtonStateSample(samples, checkPrefix, "normal", offset, foreground, baseSurface, 1, minimum);
+                AddButtonStateSample(samples, checkPrefix, "hover", offset, foreground, Composite(hoverOverlay, baseSurface), 1, minimum);
+                AddButtonStateSample(samples, checkPrefix, "pressed", offset, foreground, Composite(pressedOverlay, baseSurface), pressedOpacity, minimum);
+            }
+
+            return MeasureTextContrast(samples);
         }
 
         public static List<Violation> Validate(AdaptiveThemePalette palette, Color background)
@@ -141,6 +222,50 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 (byte)Math.Round(color.G * alpha + background.G * (1 - alpha)),
                 (byte)Math.Round(color.B * alpha + background.B * (1 - alpha)));
         }
+
+        private static void AddButtonStateSample(
+            List<TextContrastSample> samples,
+            string prefix,
+            string state,
+            double offset,
+            Color foreground,
+            Color background,
+            double opacity,
+            double minimum)
+        {
+            samples.Add(new TextContrastSample
+            {
+                Check = $"{prefix}.{state}@{offset:0.0}",
+                Foreground = WithOpacity(foreground, opacity),
+                Background = background,
+                Minimum = minimum
+            });
+        }
+
+        private static Color SampleGradient(IReadOnlyList<Color> stops, double offset)
+        {
+            if (stops.Count == 1)
+                return stops[0];
+            var scaled = Math.Max(0, Math.Min(1, offset)) * (stops.Count - 1);
+            var lower = (int)Math.Floor(scaled);
+            var upper = Math.Min(stops.Count - 1, lower + 1);
+            var fraction = scaled - lower;
+            return Color.FromArgb(
+                Interpolate(stops[lower].A, stops[upper].A, fraction),
+                Interpolate(stops[lower].R, stops[upper].R, fraction),
+                Interpolate(stops[lower].G, stops[upper].G, fraction),
+                Interpolate(stops[lower].B, stops[upper].B, fraction));
+        }
+
+        private static byte Interpolate(byte first, byte second, double fraction)
+            => (byte)Math.Round(first + (second - first) * fraction);
+
+        private static Color WithOpacity(Color color, double opacity)
+            => Color.FromArgb(
+                (byte)Math.Round(Math.Max(0, Math.Min(1, color.A / 255.0 * opacity)) * 255),
+                color.R,
+                color.G,
+                color.B);
 
         private static double ContrastRatio(Color first, Color second)
         {

@@ -2804,6 +2804,12 @@
 - `GscTypographyBody`/`Caption` 使用 20/18 DIP 的共享 BlockLineHeight，`GscTypographyNumeric` 使用 Tabular numeral alignment。报告已覆盖 CJK、Latin、下伸部、全角标点、重音、组合字符、代理对、扩展 CJK、emoji、零、破折号、秒/分钟和时间宽度。
 - `TypographyDiagnosticsTests` 当前 4/4 通过；Q01-Q02 受控双主题截图/报告位于 `docs/design/reviews/ui-finesse-round2-20260913/evidence/q01/`。扩展 CJK 与 emoji 缺字保持 unresolved 是真实缺字记录，不得改写成 resolved。
 - Q02 的生产路径全面挂接、重要 FontSize 10/11 逐入口清点、八入口术语/单位盘点和真实宿主 Tooltip/复制仍是未完成项；当前进度账本已按“代码/自动/视觉/宿主/最终结论”分别记录，不能用夹具结果替代宿主验收。
+
+## 2026-09-14 Round2 Q03 当前事实
+
+- 主按钮 contrast 不能只测 token accent：玻璃 alpha、渐变 stop、中点、hover/pressed wash 和 pressed chrome opacity 都会改变最终文字对比度。当前 guard 对每主题 33 个状态样本逐点测量；共享 CTA stops 已收敛为 opaque accent，pressed opacity 为 0.96。
+- OnAccent 状态层现在按黑/白前景极性选择 wash；Danger 单独使用 `GscOnDangerTextBrush`，不能把错误红底机械复用主 accent 前景。选中、输入正文/placeholder、复杂背景合成也有独立样本和阈值。
+- Q03 双主题受控证据位于 `docs/design/reviews/ui-finesse-round2-20260913/evidence/q03/`，索引 `Q03-INDEX.md`；semantic button/layer/complex 三类报告均 0 violation。真实主题切换中的 Popup/Tooltip/Dialog、IME、宿主输入序列和物理 DPI仍未完成。
 # 提交前一键门禁
 
 每次提交前必须运行仓库根目录的 `GameSaveCenter-一键构建安装运行.cmd`，确认隔离 Release 构建、Core/Worker/Playnite 全量测试、打包、安装验证和 Playnite 启动均成功。局部测试或 RenderHarness 通过不能替代该门禁；若输出超时，需后台运行并轮询到最终退出结果后再判断。

@@ -6331,3 +6331,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 新增 `TypographyDiagnostics` 与 4 项测试：报告候选字体覆盖、Normal/Medium/SemiBold 实际权重、FormattedText 宽高基线、合法/悬空代理对；报告明确实际 WPF GlyphRun 仍需宿主证据。当前受控机中文候选为 Noto Sans SC，Latin/数字为 Segoe UI Variable Text，扩展 CJK/emoji unresolved 被如实保留。
 - 新增双主题 Q01-Q02 证据：NumericMetrics 中 `1`/`8` 与 `00:09`/`12:59` 宽度稳定；正文 LineMetric 为 20 DIP，说明为 18 DIP；截图与报告保存在 `docs/design/reviews/ui-finesse-round2-20260913/evidence/q01/`，索引为 `Q01-Q02-INDEX.md`。
 - 验证：Playnite 定向 Typography 测试 4/4、RenderHarness Release 0 warning/0 error、双主题 `finesseprobe` 均退出 0、source validation 通过、XAML 24 文件通过、`git diff --check` 通过；真实宿主/物理 DPI/IME/最终 GlyphRun 未宣称通过。
+
+## 2026-09-14 UI 精修第二轮 Q03 语义色与主题对比度
+
+- `AdaptiveThemePaletteContrastGuard` 新增分层表面与渐变状态测量：每个渐变 stop/中点均覆盖 normal、hover、pressed，并在按压父层透明度后再算有效前景；修复了分层 `Aggregate` 参数方向错误，避免把背景层反向合成后制造假通过。
+- 生产主按钮渐变 stops 改为 opaque accent，避免玻璃/游戏背景改变 CTA 文字对比度；按压 chrome 透明度从 0.88 调整到 0.96，保留 overlay 与 scale 反馈但不把浅色黑字压到阈值下。Hover/Pressed wash 按 OnAccent 黑/白极性动态选择。
+- 危险按钮新增 `GscOnDangerTextBrush`，按实际错误色选择白/黑前景；输入正文/placeholder、选中前景和复杂图片背景纳入同一分层测量。此前新增的 Q03 负例先确实捕获了浅色按压和危险按钮低对比度，再完成修复。
+- RenderHarness 双主题报告新增 `SemanticButtonContrast=33 samples`、`SemanticLayerContrast=4 samples` 与 `ComplexBackdropContrast=4 samples`，均 0 violation；两张 Q03 PNG 已实际打开复核，保留真实宿主/Popup/IME/物理 DPI 边界。
+- 定向 Q03 测试 3/3 通过；RenderHarness Release 0 warning/0 error，双主题 `finesseprobe` 均退出 0。Q03 证据索引为 `docs/design/reviews/ui-finesse-round2-20260913/evidence/Q03-INDEX.md`。

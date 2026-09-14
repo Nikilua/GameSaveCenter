@@ -266,7 +266,21 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscAccentTintStrongBrush"] = Brush(palette.AccentTintStrong);
             resources["GscAccentIconFillBrush"] = Brush(palette.AccentIconFill);
             resources["GscOnAccentTextBrush"] = Brush(palette.OnAccentText);
+            resources["GscOnDangerTextBrush"] = Brush(
+                ChooseBestText(
+                    palette.Error,
+                    Colors.White,
+                    Colors.Black,
+                    RelativeLuminance(palette.Error) < 0.5));
             resources["GscSelectionTextBrush"] = Brush(SystemParameters.HighContrast ? SystemColors.HighlightTextColor : palette.PrimaryText);
+            // Pressed/hover layers must move the surface away from the actual OnAccent
+            // polarity. A fixed white wash is helpful for black text but reduces contrast
+            // for white text on a dark accent; derive both state layers from the live choice.
+            var stateWash = palette.OnAccentText.R < 128 && palette.OnAccentText.G < 128 && palette.OnAccentText.B < 128
+                ? Colors.White
+                : Colors.Black;
+            resources["GscOnAccentHoverOverlayBrush"] = Brush(Color.FromArgb(0x22, stateWash.R, stateWash.G, stateWash.B));
+            resources["GscOnAccentPressedOverlayBrush"] = Brush(Color.FromArgb(0x22, stateWash.R, stateWash.G, stateWash.B));
             // Buttons use the live Playnite accent as a tint, not a hard-coded blue fill. The
             // translucent stops let the shared material show through while keeping the accent
             // recognizable on every Playnite theme. High contrast and an explicit glass-off
@@ -286,14 +300,13 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 SystemParameters.HighContrast || !palette.GlassEnabled
                     ? Opaque(palette.ControlStroke)
                     : WithAlpha(Opaque(palette.PrimaryText), palette.IsDark ? 0.22 : 0.16));
-            var primaryButtonTop = SystemParameters.HighContrast || !palette.GlassEnabled
-                ? Opaque(palette.Accent)
-                : WithAlpha(Blend(Opaque(palette.Accent), Opaque(palette.StrongSurfaceTop), palette.IsDark ? 0.10 : 0.08), palette.IsDark ? 0.72 : 0.76);
+            // A primary CTA is text-bearing chrome, not ambient material. Keeping both
+            // gradient stops opaque prevents a bright/dark artwork or glass backdrop from
+            // changing the effective OnAccent contrast at the stop or midpoint of the button.
+            var primaryButtonTop = Opaque(palette.Accent);
             var primaryButtonBottom = SystemParameters.HighContrast
                 ? Opaque(palette.AccentPressed)
-                : !palette.GlassEnabled
-                    ? Opaque(palette.Accent)
-                : WithAlpha(Blend(Opaque(palette.AccentPressed), Opaque(palette.StrongSurfaceBottom), palette.IsDark ? 0.16 : 0.12), palette.IsDark ? 0.64 : 0.70);
+                : Opaque(palette.Accent);
             resources["GscPrimaryButtonBrush"] = Gradient(primaryButtonTop, primaryButtonBottom);
             resources["GscPrimaryButtonBorderBrush"] = Brush(
                 SystemParameters.HighContrast || !palette.GlassEnabled

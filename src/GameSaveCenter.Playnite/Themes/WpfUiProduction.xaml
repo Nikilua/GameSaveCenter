@@ -811,7 +811,7 @@
                             <Setter TargetName="FocusOverlay" Property="Background" Value="{DynamicResource GscOnAccentHoverOverlayBrush}"/>
                             <Setter TargetName="HoverOverlay" Property="Background" Value="{DynamicResource GscOnAccentHoverOverlayBrush}"/>
                             <Setter TargetName="PressedOverlay" Property="Background" Value="{DynamicResource GscOnAccentPressedOverlayBrush}"/>
-                            <Setter Property="Foreground" Value="{DynamicResource GscOnAccentTextBrush}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource GscOnDangerTextBrush}"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="ButtonChrome" Property="BorderBrush" Value="{DynamicResource GscAccentTintStrongBrush}"/>
@@ -831,7 +831,10 @@
                             </Trigger.ExitActions>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="ButtonChrome" Property="Opacity" Value="0.88"/>
+                            <!-- Keep the pressed dim subtle: the overlay and scale already
+                                 carry the tactile state, while a large parent opacity can
+                                 push black OnAccent text below the light-theme threshold. -->
+                            <Setter TargetName="ButtonChrome" Property="Opacity" Value="0.96"/>
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
@@ -889,7 +892,7 @@
            TargetType="{x:Type ui:Button}"
            BasedOn="{StaticResource GscWpfUiButton}">
         <Setter Property="Appearance" Value="Danger"/>
-        <Setter Property="Foreground" Value="{DynamicResource GscOnAccentTextBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource GscOnDangerTextBrush}"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
     </Style>
 

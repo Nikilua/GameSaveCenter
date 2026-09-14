@@ -152,4 +152,158 @@ public sealed class UiDiagnosticsExporterTests
         Assert.Single(invalidViolations);
         Assert.Equal("black-on-dark-negative", invalidViolations[0].Check);
     }
+
+    [Theory]
+    [InlineData(GameSaveCenterThemeMode.Light)]
+    [InlineData(GameSaveCenterThemeMode.Dark)]
+    public void SemanticStateContrastCoversGradientButtonSelectionInputDangerAndComplexSurfaces(GameSaveCenterThemeMode mode)
+    {
+        Exception? exception = null;
+        var allStatesReadable = false;
+        var selectionAndInputReadable = false;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var host = new Grid();
+                var palette = AdaptiveThemePaletteFactory.Create(host, true, 50, mode);
+                var resources = new ResourceDictionary();
+                AdaptiveThemePaletteFactory.ApplyAccentResources(resources, palette);
+                var primaryBrush = Assert.IsType<LinearGradientBrush>(resources["GscPrimaryButtonBrush"]);
+                var gradientColors = primaryBrush.GradientStops.Select(stop => stop.Color).ToArray();
+                var hoverOverlay = Assert.IsType<SolidColorBrush>(resources["GscOnAccentHoverOverlayBrush"]).Color;
+                var pressedOverlay = Assert.IsType<SolidColorBrush>(resources["GscOnAccentPressedOverlayBrush"]).Color;
+                var buttonMeasurements = AdaptiveThemePaletteContrastGuard.MeasureGradientTextContrast(
+                    "primary-button",
+                    palette.OnAccentText,
+                    palette.Background,
+                    gradientColors,
+                    hoverOverlay,
+                    pressedOverlay);
+
+                Assert.NotEmpty(buttonMeasurements);
+                Assert.All(buttonMeasurements, measurement =>
+                    Assert.True(
+                        measurement.Actual + 0.001 >= measurement.Minimum,
+                        $"{measurement.Check} measured {measurement.Actual:0.###}, expected {measurement.Minimum:0.###}."));
+
+                var layeredSamples = new[]
+                {
+                    new AdaptiveThemePaletteContrastGuard.LayeredTextContrastSample
+                    {
+                        Check = "selection-text",
+                        Foreground = palette.PrimaryText,
+                        Backdrop = palette.Background,
+                        SurfaceLayers = new[] { palette.AccentTint },
+                        Minimum = 4.5
+                    },
+                    new AdaptiveThemePaletteContrastGuard.LayeredTextContrastSample
+                    {
+                        Check = "input-text",
+                        Foreground = palette.PrimaryText,
+                        Backdrop = palette.Background,
+                        SurfaceLayers = new[] { palette.ControlFill },
+                        Minimum = 4.5
+                    },
+                    new AdaptiveThemePaletteContrastGuard.LayeredTextContrastSample
+                    {
+                        Check = "input-placeholder",
+                        Foreground = palette.MutedText,
+                        Backdrop = palette.Background,
+                        SurfaceLayers = new[] { palette.ControlFill },
+                        Minimum = 3.0
+                    },
+                    new AdaptiveThemePaletteContrastGuard.LayeredTextContrastSample
+                    {
+                        Check = "danger-button",
+                        Foreground = Assert.IsType<SolidColorBrush>(resources["GscOnDangerTextBrush"]).Color,
+                        Backdrop = palette.Background,
+                        SurfaceLayers = new[] { palette.Error },
+                        Minimum = 4.5
+                    }
+                };
+                var layeredMeasurements = AdaptiveThemePaletteContrastGuard.MeasureLayeredTextContrast(layeredSamples);
+                Assert.All(layeredMeasurements, measurement =>
+                    Assert.True(
+                        measurement.Actual + 0.001 >= measurement.Minimum,
+                        $"{measurement.Check} measured {measurement.Actual:0.###}, expected {measurement.Minimum:0.###}."));
+
+                var complexBackgrounds = new[]
+                {
+                    Color.FromRgb(255, 255, 255),
+                    Color.FromRgb(8, 8, 12),
+                    Color.FromRgb(214, 35, 70),
+                    Color.FromRgb(28, 130, 198)
+                };
+                var complexSamples = complexBackgrounds.Select((background, index) => new AdaptiveThemePaletteContrastGuard.LayeredTextContrastSample
+                {
+                    Check = $"complex-surface-{index}",
+                    Foreground = palette.PrimaryText,
+                    Backdrop = background,
+                    SurfaceLayers = new[] { palette.SurfaceTop, palette.ControlFill },
+                    Minimum = 4.5
+                }).ToArray();
+                var complexMeasurements = AdaptiveThemePaletteContrastGuard.MeasureLayeredTextContrast(complexSamples);
+                Assert.All(complexMeasurements, measurement =>
+                    Assert.True(
+                        measurement.Actual + 0.001 >= measurement.Minimum,
+                        $"{measurement.Check} measured {measurement.Actual:0.###}, expected {measurement.Minimum:0.###}."));
+
+                allStatesReadable = true;
+                selectionAndInputReadable = true;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.True(allStatesReadable);
+        Assert.True(selectionAndInputReadable);
+    }
+
+    [Fact]
+    public void ThemeResourceSwitchReplacesStateBrushesWithoutLeavingStaticFallbacks()
+    {
+        Exception? exception = null;
+        var switched = false;
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var host = new Grid();
+                var light = AdaptiveThemePaletteFactory.Create(host, true, 50, GameSaveCenterThemeMode.Light);
+                var dark = AdaptiveThemePaletteFactory.Create(host, true, 50, GameSaveCenterThemeMode.Dark);
+                var lightResources = new ResourceDictionary();
+                var darkResources = new ResourceDictionary();
+                AdaptiveThemePaletteFactory.ApplyAccentResources(lightResources, light);
+                AdaptiveThemePaletteFactory.ApplyAccentResources(darkResources, dark);
+
+                var lightSelection = Assert.IsType<SolidColorBrush>(lightResources["GscSelectionTextBrush"]).Color;
+                var darkSelection = Assert.IsType<SolidColorBrush>(darkResources["GscSelectionTextBrush"]).Color;
+                var lightButton = Assert.IsType<LinearGradientBrush>(lightResources["GscPrimaryButtonBrush"]);
+                var darkButton = Assert.IsType<LinearGradientBrush>(darkResources["GscPrimaryButtonBrush"]);
+                switched = lightSelection != darkSelection
+                    && lightButton.GradientStops.Select(stop => stop.Color).SequenceEqual(
+                        lightButton.GradientStops.Select(stop => stop.Color))
+                    && !darkButton.GradientStops.Select(stop => stop.Color).SequenceEqual(
+                        lightButton.GradientStops.Select(stop => stop.Color));
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.True(switched);
+    }
 }

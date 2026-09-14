@@ -1239,6 +1239,7 @@ public static class Program
             var path = Path.Combine(outputRoot, "ui-finesse-fixture.png");
             SavePng(host, path);
             AppendEffectiveFixtureEvidence(report, host);
+            AppendSemanticContrastEvidence(report, palette, view);
             var captionStyle = view.FindResource("GscTypographyCaption") as Style;
             var captionOpacity = captionStyle?.Setters
                 .OfType<Setter>()
@@ -1604,6 +1605,108 @@ public static class Program
         report.AppendLine(
             $"PunctuationSamples: preserved={string.Join(" | ", punctuation)} "
             + $"containsUnpairedSurrogate={punctuation.Any(TypographyDiagnostics.ContainsUnpairedSurrogate)}");
+    }
+
+    private static void AppendSemanticContrastEvidence(
+        StringBuilder report,
+        AdaptiveThemePalette palette,
+        FrameworkElement resourceScope)
+    {
+        var primaryBrush = resourceScope.FindResource("GscPrimaryButtonBrush") as LinearGradientBrush;
+        var hoverBrush = resourceScope.FindResource("GscOnAccentHoverOverlayBrush") as SolidColorBrush;
+        var pressedBrush = resourceScope.FindResource("GscOnAccentPressedOverlayBrush") as SolidColorBrush;
+        var onAccentBrush = resourceScope.FindResource("GscOnAccentTextBrush") as SolidColorBrush;
+        var onDangerBrush = resourceScope.FindResource("GscOnDangerTextBrush") as SolidColorBrush;
+        if (primaryBrush == null || hoverBrush == null || pressedBrush == null || onAccentBrush == null || onDangerBrush == null)
+            throw new InvalidOperationException("Semantic state resources were not resolved in the production fixture.");
+
+        var buttonMeasurements = AdaptiveThemePaletteContrastGuard.MeasureGradientTextContrast(
+            "primary-button",
+            onAccentBrush.Color,
+            palette.Background,
+            primaryBrush.GradientStops.Select(stop => stop.Color),
+            hoverBrush.Color,
+            pressedBrush.Color);
+        var buttonViolations = buttonMeasurements
+            .Where(measurement => measurement.Actual + 0.001 < measurement.Minimum)
+            .ToList();
+        report.AppendLine(
+            $"SemanticButtonContrast: samples={buttonMeasurements.Count} "
+            + $"normal/hover/pressed=all-stops violations={buttonViolations.Count}");
+        foreach (var violation in buttonViolations)
+            report.AppendLine($"  violation {violation.Check}: actual={violation.Actual:0.###} minimum={violation.Minimum:0.###}");
+        if (buttonViolations.Count > 0)
+            throw new InvalidOperationException("Primary button state contrast guard found a violation.");
+
+        var layeredSamples = new[]
+        {
+            new AdaptiveThemePaletteContrastGuard.LayeredTextContrastSample
+            {
+                Check = "selection-text",
+                Foreground = palette.PrimaryText,
+                Backdrop = palette.Background,
+                SurfaceLayers = new[] { palette.AccentTint },
+                Minimum = 4.5
+            },
+            new AdaptiveThemePaletteContrastGuard.LayeredTextContrastSample
+            {
+                Check = "input-text",
+                Foreground = palette.PrimaryText,
+                Backdrop = palette.Background,
+                SurfaceLayers = new[] { palette.ControlFill },
+                Minimum = 4.5
+            },
+            new AdaptiveThemePaletteContrastGuard.LayeredTextContrastSample
+            {
+                Check = "input-placeholder",
+                Foreground = palette.MutedText,
+                Backdrop = palette.Background,
+                SurfaceLayers = new[] { palette.ControlFill },
+                Minimum = 3.0
+            },
+            new AdaptiveThemePaletteContrastGuard.LayeredTextContrastSample
+            {
+                Check = "danger-button",
+                Foreground = onDangerBrush.Color,
+                Backdrop = palette.Background,
+                SurfaceLayers = new[] { palette.Error },
+                Minimum = 4.5
+            }
+        };
+        var layeredMeasurements = AdaptiveThemePaletteContrastGuard.MeasureLayeredTextContrast(layeredSamples);
+        var layeredViolations = layeredMeasurements
+            .Where(measurement => measurement.Actual + 0.001 < measurement.Minimum)
+            .ToList();
+        report.AppendLine(
+            $"SemanticLayerContrast: samples={layeredMeasurements.Count} violations={layeredViolations.Count} "
+            + string.Join(", ", layeredMeasurements.Select(measurement => $"{measurement.Check}={measurement.Actual:0.###}")));
+        if (layeredViolations.Count > 0)
+            throw new InvalidOperationException("Selection/input/danger contrast guard found a violation.");
+
+        var complexBackgrounds = new[]
+        {
+            Color.FromRgb(255, 255, 255),
+            Color.FromRgb(8, 8, 12),
+            Color.FromRgb(214, 35, 70),
+            Color.FromRgb(28, 130, 198)
+        };
+        var complexSamples = complexBackgrounds.Select((background, index) => new AdaptiveThemePaletteContrastGuard.LayeredTextContrastSample
+        {
+            Check = $"complex-surface-{index}",
+            Foreground = palette.PrimaryText,
+            Backdrop = background,
+            SurfaceLayers = new[] { palette.SurfaceTop, palette.ControlFill },
+            Minimum = 4.5
+        });
+        var complexMeasurements = AdaptiveThemePaletteContrastGuard.MeasureLayeredTextContrast(complexSamples).ToList();
+        var complexViolations = complexMeasurements
+            .Where(measurement => measurement.Actual + 0.001 < measurement.Minimum)
+            .ToList();
+        report.AppendLine(
+            $"ComplexBackdropContrast: samples={complexMeasurements.Count} violations={complexViolations.Count} "
+            + string.Join(", ", complexMeasurements.Select(measurement => $"{measurement.Check}={measurement.Actual:0.###}")));
+        if (complexViolations.Count > 0)
+            throw new InvalidOperationException("Complex backdrop contrast guard found a violation.");
     }
 
     private static bool HasSetter(Style? style, DependencyProperty property)
