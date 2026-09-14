@@ -65,7 +65,7 @@
                         <TextBlock x:Name="SettingsHeaderSubtitle" Text="工具路径 · 存档策略 · 外观与自动化" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,3,0,0" TextWrapping="Wrap"/>
                         <TextBlock x:Name="SettingsValidationSummary" Foreground="{DynamicResource GscErrorBrush}" TextWrapping="Wrap" Margin="0,6,0,0" Visibility="Collapsed" AutomationProperties.Name="设置验证错误"/>
                         <ui:Button x:Name="SettingsValidationLocateButton" Style="{StaticResource GscWpfUiToolbarButton}" Content="定位首个错误" MinWidth="104" Padding="8,3" Margin="0,6,0,0" HorizontalAlignment="Left" Visibility="Collapsed" Click="OnSettingsValidationLocateClick" AutomationProperties.Name="定位首个设置错误" ToolTip="切换到包含首个校验错误的设置分类"/>
-                        <Expander x:Name="SettingsValidationDetails" Header="查看错误详情" Margin="0,4,0,0" Visibility="Collapsed" AutomationProperties.Name="设置验证错误详情">
+                        <Expander x:Name="SettingsValidationDetails" Header="查看错误详情" Foreground="{DynamicResource GscPrimaryTextBrush}" Margin="0,4,0,0" Visibility="Collapsed" AutomationProperties.Name="设置验证错误详情">
                             <TextBlock x:Name="SettingsValidationDetailsText" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,4,0,0"/>
                         </Expander>
                     </StackPanel>

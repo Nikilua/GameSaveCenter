@@ -18,7 +18,7 @@ public sealed class SettingsValidationSourceTests
         Assert.Contains("x:Name=\"SettingsValidationLocateButton\"", view);
         Assert.Contains("Click=\"OnSettingsValidationLocateClick\"", view);
         Assert.Contains("AutomationProperties.Name=\"定位首个设置错误\"", view);
-        Assert.Contains("x:Name=\"SettingsValidationDetails\"", view);
+        Assert.Contains("x:Name=\"SettingsValidationDetails\" Header=\"查看错误详情\" Foreground=\"{DynamicResource GscPrimaryTextBrush}\"", view);
         Assert.Contains("x:Name=\"SettingsValidationDetailsText\"", view);
         Assert.Contains("AutomationProperties.Name=\"设置验证错误详情\"", view);
         Assert.Contains("x:Name=\"SettingsGeneralValidationHint\"", view);
