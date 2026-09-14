@@ -91,6 +91,10 @@ namespace GameSaveCenter.Playnite.Tests
             var save = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "SaveCenterView.xaml"));
             var media = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
             var maintenance = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+            var typography = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Themes", "Typography.xaml"));
+            var productionControls = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml"));
+            var settings = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml"));
+            var trainer = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml"));
 
             Assert.Contains("x:Name=\"SaveHistorySizeColumn\"", save);
             Assert.Contains("Width=\"116\"", save);
@@ -102,6 +106,16 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("Header=\"拍摄时间\"", media);
             Assert.Contains("TargetNullValue=—", media);
             Assert.Contains("StringFormat={}{0} 项", maintenance);
+            Assert.Contains("x:Key=\"GscPathText\"", typography);
+            Assert.Contains("BasedOn=\"{StaticResource GscTypographyCode}\"", typography);
+            Assert.Contains("x:Key=\"GscWpfUiPathTextBox\"", productionControls);
+            Assert.Contains("FontFamily\" Value=\"{DynamicResource GscCodeFontFamily}\"", productionControls);
+            Assert.Equal(7, settings.Split(new[] { "Style=\"{StaticResource GscWpfUiPathTextBox}\"" }, StringSplitOptions.None).Length - 1);
+            Assert.Contains("x:Key=\"MediaPathText\"", media);
+            Assert.Contains("x:Key=\"MaintenancePathText\"", maintenance);
+            Assert.Contains("Style=\"{StaticResource GscPathText}\"", save);
+            Assert.Contains("BasedOn=\"{StaticResource GscPathText}\"", trainer);
+            Assert.Contains("Style=\"{DynamicResource GscWpfUiPathTextBox}\"", trainer);
         }
 
         [Fact]

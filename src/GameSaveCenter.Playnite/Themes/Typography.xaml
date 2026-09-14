@@ -121,6 +121,12 @@
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="UseLayoutRounding" Value="True"/>
     </Style>
+    <Style x:Key="GscPathText" TargetType="TextBlock" BasedOn="{StaticResource GscTypographyCode}">
+        <!-- Technical paths are readable as data, not prose: keep one line in the
+             available column and let the existing Tooltip/copy entry expose the value. -->
+        <Setter Property="TextWrapping" Value="NoWrap"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+    </Style>
 
     <!-- Design-brief vocabulary. These aliases intentionally reuse the existing
          typography styles so there is one font and hierarchy source of truth. -->

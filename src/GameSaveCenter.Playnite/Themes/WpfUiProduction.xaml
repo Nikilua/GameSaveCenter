@@ -1069,6 +1069,15 @@
         <Setter Property="Template" Value="{StaticResource GscWpfUiTextBoxTemplate}"/>
     </Style>
 
+    <Style x:Key="GscWpfUiPathTextBox"
+           TargetType="TextBox"
+           BasedOn="{StaticResource GscWpfUiTextBox}">
+        <!-- Keep editable technical paths visually distinct without changing the
+             native TextBox selection, caret, validation or copy semantics. -->
+        <Setter Property="FontFamily" Value="{DynamicResource GscCodeFontFamily}"/>
+        <Setter Property="FontSize" Value="{DynamicResource GscBodyFontSize}"/>
+    </Style>
+
     <Style x:Key="GscWpfUiComboBox"
            TargetType="ComboBox"
            BasedOn="{StaticResource {x:Type ComboBox}}">
