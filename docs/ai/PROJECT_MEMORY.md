@@ -8,6 +8,13 @@
 - 当前 clean-tree RenderHarness 身份为 `0648689a1ac74f43ec918e051f80037a4ff2d20d`，`WorkingTreeClean=True`，Light/Dark 多尺寸及 normal/dirty/invalid Settings 夹具 `render-qa OK`。该证据仍是 96 DPI/1.00 的离屏逻辑 DIP，不能替代实机窗口 DPI、屏幕帧或输入序列。
 - 页面截图实证覆盖 Save 差异/备份策略、Trainer 已绑定工具、Settings 分类导航和错误摘要；账本只升级 Q21-03/Q21-07/Q21-08 与 Q23-01/Q23-04 的视觉列，保存中/失败、恢复对话、主题切换 Owner、键盘和宿主边界继续保守记录。
 
+## 2026-09-15 UI 精修 Q01/Q02 当前字体与数字夹具身份复核
+
+- 提交 `8493c1a` 为 `finesseprobe` 报告统一补充 `Commit`、`WorkingTreeClean`、DPI、主题和数据范围元数据；该改动不改变生产 UI，只修复证据身份缺口。
+- 当前 clean-tree Dark/Light 夹具均通过：有效文本对比 `12/12`、黑字负例 `1`、行交集 `4/4`，压缩视口负例 `3/4`；报告中的标点、数字/单位、路径和中英混排样本可直接回溯到当前提交。
+- 全量 Release 门禁复核为 XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `310/311`（1 skip）、Playnite `481/544`（63 skip、0 fail）；持久报告只引用证据目录内的相对截图名，已清理本轮 `.tmp` 输出。
+- 账本视觉列据此升级 Q01-04、Q02-03、Q02-08；Q02-02 数值列实际锚点、Q02-04 未知值、Q02-06 真实路径 Tooltip 与其它宿主行为仍需更针对性的页面/宿主证据。
+
 ## 2026-09-15 UI 精修 Q15 Tooltip、Popup 与浮层主题自动门禁
 
 - 提交 `86ac336` 将 Dashboard、AcrylicProductionShellView 和独立 Settings 的 Tooltip 宿主边界统一为 `InitialShowDelay=350 ms`、`BetweenShowDelay=100 ms`；共享 Combo Popup 两套模板显式声明 `StaysOpen=False`，避免把点外部关闭留给默认样式推断。

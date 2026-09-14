@@ -25,6 +25,15 @@
 - 存档历史的文件数/大小列现在分别使用 `SaveCountValue`/`SaveSizeValue`（共享 Tabular 数字、右锚点、禁止数值截断）；时间、状态、备注列保持各自文本语义。该列级事实由 `ProductionColumnsKeepNumericAndPathSemantics` 锁定。
 - `UiDisplayMappingTests` 现在锁定真实零值（`0 B`、`文件 0/0`）、未知大小（`未知大小`）、未检查时间和路径/产品名混排分隔符；本次 Core 定向测试 17/17 通过，不改变排序键，也不改写用户路径。八类混排入口与短术语样本见 [Q02-08 混排空格与术语覆盖](q02/Q02-MIXED-LANGUAGE-TERMS-COVERAGE.md)。
 
+## 2026-09-15 当前 clean-tree 复核
+
+为避免把历史 `db43230` 截图当作当前代码证据，已在提交 `8493c1acce095336ed89462c668f1a9f71057381` 的 clean-tree 上重新运行 Dark/Light `finesseprobe`。报告现在自带 `Commit`、`WorkingTreeClean=True`、`DpiScale=1.00`、主题和数据范围：
+
+- [当前深色夹具截图](q01/current-20260915/ui-finesse-fixture-dark.png) / [报告](q01/current-20260915/ui-finesse-fixture-dark-report.txt)
+- [当前浅色夹具截图](q01/current-20260915/ui-finesse-fixture-light.png) / [报告](q01/current-20260915/ui-finesse-fixture-light-report.txt)
+
+当前报告再次记录：`PunctuationSamples` 保留全角引号/书名号/破折号/省略号，`NumericMetrics` 覆盖等宽数字、时间、秒/分钟和 0，`NumericTypography=styleResolved=True tabularSetter=True`，并保留中英产品名、路径和状态混排的可见样本。该复核仍是离屏 DIP；实际宿主字体/GlyphRun、IME、Tooltip 和物理 DPI 继续按边界记录。
+
 ## 证据边界
 
 - 截图和报告是受控 DIP/离屏证据，不能证明 125/150/175/200% 物理 DPI、真实宿主字体安装差异、IME 组合过程或最终 GlyphRun。
