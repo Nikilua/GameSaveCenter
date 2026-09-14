@@ -2,6 +2,11 @@
 
 > 更新时间：2026-09-15。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-15 UI 精修 Q25-05 低性能回退专项
+
+- 当前代码基线为 `97dd0cd`。新增 `lowcostprobe`，在 `glass=false`、`motion=false` 下覆盖 Overview、Save、Trainer、Media、Maintenance、Task 六页，浅/深色各覆盖 `1040×700` 与 `1600×900`，24/24 输出通过。
+- 干净报告为 [`.tmp/lowcostprobe-20260915/lowcostprobe-report.txt`](../../.tmp/lowcostprobe-20260915/lowcostprobe-report.txt)，所有可见效果为 0，Popup 透明/动画关闭，环境光和游戏背景透明度为 0；`DG_ScrollViewer` 的有界表格水平滚动被保留，非表格溢出为 0。真实低 Tier/宿主合成仍待验。
+
 ## 2026-09-15 UI 精修 Q25-01 热态响应专项复核
 
 - 当前交付基线为 `1a58e4b`。在干净提交上重跑 `LargeLibraryPerformanceTests` 专项，2000 项 GamePicker 先预热 5 次、再采样 30 次，`4/4` 通过；`p50=45ms`、`p95=46ms`、`max=60ms`，`p95≤100ms` 回归门禁通过。
