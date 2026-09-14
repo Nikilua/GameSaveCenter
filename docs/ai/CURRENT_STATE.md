@@ -15,6 +15,12 @@
 - Q01-04、Q02-03、Q02-08 的视觉列已据此升级；物理 DPI、真实 GlyphRun、IME、Tooltip 和八入口宿主列观感仍保持边界。
 - 随后全量 Release 门禁仍为 XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `310/311`（1 skip）、Playnite `481/544`（63 skip、0 fail）；报告已脱离 `.tmp` 临时截图路径并随证据目录保存。
 
+## 2026-09-15 UI 精修 Q12-07 表头排序箭头双状态夹具
+
+- 当前代码基线为 `2f3d17b`。RenderHarness `finesseprobe ... sorted` 只在开发夹具中设置第一列升序、第二列降序，不改变生产排序逻辑；共享生产表头保留 22 DIP 排序槽，实际箭头宽度 14 DIP，降序旋转 `180°`。
+- Dark/Light clean-tree 报告均为 `finesse-fixture OK`、`WorkingTreeClean=True`，截图可见 `名称` 上箭头与 `数值` 下箭头，未压缩表头文字。
+- Q12-07 视觉列已更新；真实业务排序点击、排序键/结果和宿主输入序列仍保持待验。
+
 ## 2026-09-15 UI 精修 Q15 Tooltip、Popup 与浮层主题自动门禁
 
 - 当前代码基线为 `86ac336`。Dashboard、生产壳层和独立设置页统一声明 Tooltip 初次延迟 `350 ms`、快速切换间隔 `100 ms`；Combo Popup 两套生产模板显式 `StaysOpen=False`，并保留 Bottom 定位、有限高度、自动滚动、键盘方向导航隔离和动态主题资源。

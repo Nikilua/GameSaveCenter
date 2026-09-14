@@ -15,6 +15,12 @@
 - 随后全量 Release 门禁为 XAML `24/24`、构建 `0 警告/0 错误`、Core `83/83`、Worker `310/311`（1 skip）、Playnite `481/544`（63 skip、0 fail）；报告中的截图引用改为证据目录相对路径，并清理了本轮 `.tmp` 夹具和构建目录。
 - 账本仅升级 Q01-04、Q02-03、Q02-08 的视觉列，未把数字列业务锚点、未知值、Tooltip、IME 或宿主字体行为冒充完成。
 
+## 2026-09-15 UI 精修 Q12-07 表头排序箭头双状态夹具
+
+- 提交 `2f3d17b` 增加 RenderHarness 的 `finesseprobe ... sorted` 开关；只在开发夹具中设置两列升/降序状态，验证共享生产 `SortGlyph` 不改变实际排序逻辑。
+- clean-tree Dark/Light 运行均通过：`SortFixture` 报告升序 `名称`、降序 `数值`，两者宽度 `14 DIP`，降序旋转 `180°`；截图中箭头未压缩表头文字，深浅主题均清晰。
+- 目标 RenderHarness 构建为 `0 警告/0 错误`；真实业务排序点击、结果和宿主输入序列继续保留待验，不能由离屏夹具替代。
+
 ## 2026-09-15 UI 精修 Q15 Tooltip、Popup 与浮层主题自动门禁
 
 - 提交 `86ac336` 收紧三类浮层边界：Dashboard/生产壳层/Settings 的 Tooltip 初次延迟 `350 ms`、快速移动间隔 `100 ms`；DesignTokens 与 WpfUiProduction 的 Combo Popup 显式 `StaysOpen=False`，并保留 Bottom、有限高度、自动滚动与动态材质资源。

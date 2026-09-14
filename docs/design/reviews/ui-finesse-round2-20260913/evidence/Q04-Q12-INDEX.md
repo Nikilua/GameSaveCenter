@@ -1,6 +1,6 @@
 # Q04–Q12 共享控件与表面受控证据
 
-采集日期：2026-09-14（Asia/Shanghai）。本索引记录 Q04–Q12 对共享表面、按钮、图标、输入、选择器、选择控件、导航/页签和表格的专项复核。代码基线为提交 `fc5dba8`（补齐共享控件状态与表面审计）；夹具仍是 STA、1120×980 DIP、96 DPI、DpiScale=1.00 的开发专用 WPF 离屏窗口，不替代真实 Playnite、Popup/IME、物理 DPI 或屏幕读屏验收。
+采集日期：2026-09-15（Asia/Shanghai）。本索引记录 Q04–Q12 对共享表面、按钮、图标、输入、选择器、选择控件、导航/页签和表格的专项复核。当前代码基线为提交 `2f3d17b`（补齐排序箭头双状态受控夹具）；夹具仍是 STA、1120×980 DIP、96 DPI、DpiScale=1.00 的开发专用 WPF 离屏窗口，不替代真实 Playnite、Popup/IME、物理 DPI 或屏幕读屏验收。
 
 ## 运行身份与产物
 
@@ -17,6 +17,12 @@
 - 新增半选状态：`GscCheckBox` 与 `GscDataGridCheckBox` 都拥有独立 `IndeterminateMark`，`IsChecked=null` 时显示 accent 背景与短横线；报告为 `indeterminate=True mark=visible`。
 - `ListContract` 记录 3 个选项、选中索引 0 与虚拟化开关；DataGrid 报告保持 4/4 行完整，压缩 4 DIP 视口负例为 3/4，并与 Q00/Q03 的裁剪门禁一致。
 - 双主题有效文本对比均为 12 个样本 0 violation；按钮 33 个渐变/状态样本、语义层 4 个样本、复杂背景 4 个样本均 0 violation。截图复核确认暗/浅主题下没有黑字、方角漏裁、状态胶囊或半选标记缺失。
+
+## 2026-09-15 Q12-07 排序箭头双状态复核
+
+- 在提交 `2f3d17b8a34780546039aa6b7b07ecbb1c6a2ec6` 的 clean tree 上运行 `finesseprobe <output> dark sorted` 与 `light sorted`；报告身份均为 `WorkingTreeClean=True`、`DpiScale=1.00`，并记录 `SortFixture: ascending="名称" visible=True width=14; descending="数值" visible=True width=14 angle=180`。
+- [当前深色排序夹具截图](q04-q12/sort-20260915/ui-finesse-fixture-dark.png) / [报告](q04-q12/sort-20260915/ui-finesse-fixture-dark-report.txt)；[当前浅色排序夹具截图](q04-q12/sort-20260915/ui-finesse-fixture-light.png) / [报告](q04-q12/sort-20260915/ui-finesse-fixture-light-report.txt)。截图确认升序/降序箭头各自保留 22 DIP 槽位，不压缩表头文字，深浅主题均清晰可辨。
+- 本证据只签收共享表头的双方向可见性和旋转状态；真实业务排序点击、排序键/结果和宿主输入序列仍保留为 Q12-07 的宿主边界。
 
 ## 逐组边界
 

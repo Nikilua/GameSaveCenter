@@ -15,6 +15,12 @@
 - 全量 Release 门禁复核为 XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `310/311`（1 skip）、Playnite `481/544`（63 skip、0 fail）；持久报告只引用证据目录内的相对截图名，已清理本轮 `.tmp` 输出。
 - 账本视觉列据此升级 Q01-04、Q02-03、Q02-08；Q02-02 数值列实际锚点、Q02-04 未知值、Q02-06 真实路径 Tooltip 与其它宿主行为仍需更针对性的页面/宿主证据。
 
+## 2026-09-15 UI 精修 Q12-07 表头排序箭头双状态夹具
+
+- 提交 `2f3d17b` 为 RenderHarness 增加 `finesseprobe ... sorted` 开关：仅在开发夹具内给两列设置升/降序状态，读取共享 `SortGlyph` 的可见宽度与降序 `180°` 旋转，不触碰业务排序逻辑。
+- Dark/Light clean-tree 报告均记录 `ascending="名称" visible=True width=14`、`descending="数值" visible=True width=14 angle=180`；双主题截图证明箭头未压缩表头文字且对比清晰。
+- Q12-07 视觉可签收，真实排序点击、排序结果和宿主输入序列仍是外部边界。
+
 ## 2026-09-15 UI 精修 Q15 Tooltip、Popup 与浮层主题自动门禁
 
 - 提交 `86ac336` 将 Dashboard、AcrylicProductionShellView 和独立 Settings 的 Tooltip 宿主边界统一为 `InitialShowDelay=350 ms`、`BetweenShowDelay=100 ms`；共享 Combo Popup 两套模板显式声明 `StaysOpen=False`，避免把点外部关闭留给默认样式推断。
