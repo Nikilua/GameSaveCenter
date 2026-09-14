@@ -6559,3 +6559,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 新增持久证据 `docs/design/reviews/ui-finesse-round2-20260913/evidence/q02/Q02-PATH-STYLE-COVERAGE.md`，并将 Q02-06 账本链接切换到该覆盖清单。WPF 定向测试 7/7，RenderHarness 深浅主题夹具均退出 0。
 - `git diff --check`、`python scripts/validate-source.py`、`check-xaml.ps1`（24 个 XAML）通过；RenderHarness/WPF 构建 0 错误。Core NU1900 网络警告仍来自 NuGet 漏洞源不可达，不写作代码警告清零。
 - 当前提交前未重跑根目录一键脚本：该脚本会停止/安装/启动 Playnite，受当前主机安全边界约束，不能用局部验证替代 clean install/start。
+
+## 2026-09-15 Round2 Q24-03 物理跨屏前置采集
+
+- 在 `70935fe` 增加 `real-host-audit.ps1` 的 `System.Windows.Forms.Screen.AllScreens` 前置采集，将显示器边界/工作区和 Q24-03 可执行状态写入 `runner-metadata.json`；当前机器仅有 `DISPLAY1`，状态为单屏阻塞。
+- 新增 Q24-03 源码契约：游戏选框继续是 Dashboard 内浮层，不创建独立 Window/WPF Popup；共享 ComboBox Popup 继续由模板负责定位、关闭、主题和有限滚动。台账将 Q24-03 从“实施中”推进为“代码完成”，但自动/视觉仍待真实双屏宿主。
+- `python scripts/validate-source.py`、PowerShell 语法解析、显示器枚举和 `git diff --check` 通过。定向 `dotnet test` 在当前 SDK/工程解析阶段长时间无输出，停止等待后不写入通过结论。
+- 持久证据：`docs/design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q24-03-PHYSICAL-CROSS-SCREEN-20260915.md`；未生成虚假的第二屏截图，也未运行会覆盖用户 Playnite 的非隔离宿主流程。
