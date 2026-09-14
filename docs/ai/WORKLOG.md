@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-14 UI 精修隔离 Playnite 主题复制复核
+
+- 在 `ed42868` 上重新执行隔离真实宿主审计；脚本从原配置识别并复制 FusionX Desktop Theme，`runner-metadata.json` 的 `ConfiguredDesktopThemeCopied=true`，Playnite 日志不再出现主题缺失错误，插件 `0.6.73` 已加载并记录 `WindowFactory:Show window`。
+- 最新结果：Release 0 warning/0 error，Worker `311/311`，Playnite `474/531`（57 skip，0 fail），150% DPI；输出 `artifacts/ui-host-audit-theme-20260914`，原用户数据未修改。Settings 仍有一次 `EmbeddedPlaynite` 截图。
+- 主题复制修复后 `EmbeddedDashboardCaptured` 仍为 false；刷新有效 Playnite 句柄后 UIA 仍是没有后代节点的 `EmptyWindowAutomationPeer`，未定位 GameSaveCenter 侧栏。受控 Dashboard 不升级为生产真值，Q00-08/Q25-07 仅更新为启动已验证，Q24-03 与 Q25-02～05 继续未完成。证据已追加至 `REAL_HOST_AUDIT-20260914.md`。
+
 ## 2026-09-14 UI 精修隔离 Playnite 真实宿主审计
 
 - 在干净 HEAD `6bae7c1` 上运行 `scripts/real-host-audit.ps1 -Configuration Release`，使用隔离用户数据和 `D:\software\Playnite\Playnite.DesktopApp.exe`；Release 构建 0 warning/0 error，Worker `311/311`，Playnite `474/531`（57 skip，0 fail），程序集身份一致，日志确认 `GameSaveCenter 0.6.73` 已加载。
