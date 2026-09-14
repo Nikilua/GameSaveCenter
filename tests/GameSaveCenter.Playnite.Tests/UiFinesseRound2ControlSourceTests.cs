@@ -96,6 +96,16 @@ public sealed class UiFinesseRound2ControlSourceTests
         Assert.Contains("AutomationProperties.Name=\"打开云端队列\"", overview);
     }
 
+    [Fact]
+    public void OverviewEmptyActivityStateKeepsAReadableViewport()
+    {
+        var overview = Read("src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml");
+
+        Assert.Contains("x:Name=\"OverviewActivityEmptyState\"", overview);
+        Assert.Contains("MinHeight=\"120\"", overview);
+        Assert.Contains("DataTrigger Binding=\"{Binding Activities.Count}\" Value=\"0\"", overview);
+    }
+
     private static string Read(params string[] parts)
     {
         var directory = new DirectoryInfo(AppContext.BaseDirectory);

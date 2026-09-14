@@ -20,6 +20,14 @@ public enum WorkspaceFixtureState
     Offline
 }
 
+public enum OverviewFixtureProfile
+{
+    Default,
+    EmptyActivity,
+    ManyRisks,
+    LongTitle
+}
+
 /// <summary>
 /// Minimal view-model-shaped data for offscreen layout QA. It deliberately mirrors the
 /// public binding surface of DashboardViewModel without starting Worker/IPC services.
@@ -65,11 +73,16 @@ public sealed class FakeDashboardData
     public ICommand ClearTaskFiltersCommand { get; } = new NoopCommand();
 
     public FakeDashboardData(int rowCount = 8)
-        : this(rowCount, WorkspaceFixtureState.Ready)
+        : this(rowCount, WorkspaceFixtureState.Ready, OverviewFixtureProfile.Default)
     {
     }
 
     public FakeDashboardData(int rowCount, WorkspaceFixtureState state)
+        : this(rowCount, state, OverviewFixtureProfile.Default)
+    {
+    }
+
+    public FakeDashboardData(int rowCount, WorkspaceFixtureState state, OverviewFixtureProfile overviewProfile)
     {
         fixtureState = state;
         rowCount = Math.Max(8, rowCount);
@@ -597,6 +610,7 @@ public sealed class FakeDashboardData
 
         MediaView = CollectionViewSource.GetDefaultView(Media);
         TasksView = CollectionViewSource.GetDefaultView(Tasks);
+        ApplyOverviewFixtureProfile(overviewProfile);
     }
 
     private void ApplyWorkspaceFixtureState()
@@ -611,6 +625,57 @@ public sealed class FakeDashboardData
         MaintenanceActionItems.Clear();
         MaintenanceActionSections.Clear();
         Snapshot.UnassignedMediaCount = 0;
+    }
+
+    private void ApplyOverviewFixtureProfile(OverviewFixtureProfile profile)
+    {
+        switch (profile)
+        {
+            case OverviewFixtureProfile.EmptyActivity:
+                OverviewTasks.Clear();
+                Activities.Clear();
+                break;
+
+            case OverviewFixtureProfile.ManyRisks:
+                Snapshot.PendingCloudTasks = 0;
+                Snapshot.UnassignedMediaCount = 0;
+                Snapshot.WarningGames = 48;
+                Snapshot.AttentionGames = 48;
+                Snapshot.CloudTransfers = new CloudTransferSummaryDto();
+                CloudTransferItems.Clear();
+                CloudTransferViewSummary = Snapshot.CloudTransfers;
+                var riskItems = Enumerable.Range(1, 18)
+                    .Select(index => new RecentProtectionItem
+                    {
+                        PlayniteId = $"risk-game-{index}",
+                        GameName = $"风险游戏 {index:00}",
+                        LastPlayedUtc = DateTime.UtcNow.AddDays(-index),
+                        IssueKind = index % 3 == 0
+                            ? RecentProtectionIssueKind.UnrecognizedSave
+                            : RecentProtectionIssueKind.NeverBackedUp,
+                        Priority = 100 - index,
+                        Title = index % 3 == 0 ? "未识别存档" : "存档未保护",
+                        Detail = "最近游玩记录仍在，但尚未确认可恢复的保护版本。",
+                        IsSelected = false
+                    })
+                    .ToList();
+                RecentProtection = new RecentProtectionSummary(
+                    30,
+                    48,
+                    0,
+                    48,
+                    6,
+                    riskItems,
+                    riskItems);
+                break;
+
+            case OverviewFixtureProfile.LongTitle:
+                var longTitle = "Baldur's Gate 3 · 超长游戏标题用于验证首页当前游戏卡不会挤压状态、指标和操作入口 · Deluxe Edition · Windows PC Complete Edition";
+                SelectedGame.Name = longTitle;
+                if (Games.Count > 0)
+                    Games[0].Name = longTitle;
+                break;
+        }
     }
 
     private void RebuildMaintenanceActionSections()
@@ -692,7 +757,7 @@ public sealed class FakeDashboardData
     };
     public EnvironmentCheckReportDto EnvironmentCheck { get; }
     public GameStatusDto SelectedGame { get; }
-    public RecentProtectionSummary RecentProtection { get; }
+    public RecentProtectionSummary RecentProtection { get; private set; }
     public ObservableCollection<GameStatusDto> Games { get; } = new ObservableCollection<GameStatusDto>();
     public ObservableCollection<TaskStatusDto> Tasks { get; } = new ObservableCollection<TaskStatusDto>();
     public ICollectionView TasksView { get; }

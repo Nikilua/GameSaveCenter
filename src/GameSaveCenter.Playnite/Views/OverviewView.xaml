@@ -624,7 +624,7 @@
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
-                            <ui:WorkspaceStatePresenter State="Empty" Title="暂无全局活动" Message="备份、同步、维护或健康事件完成后会显示在这里。" IsHitTestVisible="False">
+                            <ui:WorkspaceStatePresenter x:Name="OverviewActivityEmptyState" State="Empty" Title="暂无全局活动" Message="备份、同步、维护或健康事件完成后会显示在这里。" MinHeight="120" IsHitTestVisible="False">
                                 <ui:WorkspaceStatePresenter.Style>
                                     <Style TargetType="ui:WorkspaceStatePresenter" BasedOn="{StaticResource GscWorkspaceStatePresenter}">
                                         <Setter Property="Visibility" Value="Collapsed"/>

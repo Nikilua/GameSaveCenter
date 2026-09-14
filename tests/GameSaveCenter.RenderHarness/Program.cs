@@ -272,6 +272,19 @@ public static class Program
             return stateFixtureExitCode;
         }
 
+        if (args.Length > 0 && args[0].Equals("overviewedges", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "overviewedges");
+            var overviewEdgeExitCode = 0;
+            var overviewEdgeThread = new Thread(() => { overviewEdgeExitCode = RunOverviewEdgeFixtures(outputRoot); });
+            overviewEdgeThread.SetApartmentState(ApartmentState.STA);
+            overviewEdgeThread.Start();
+            overviewEdgeThread.Join();
+            return overviewEdgeExitCode;
+        }
+
         var exitCode = 0;
         var thread = new Thread(() => { exitCode = Run(args); });
         thread.SetApartmentState(ApartmentState.STA);
@@ -350,6 +363,201 @@ public static class Program
             File.WriteAllText(Path.Combine(outputRoot, "stateprobe-report.txt"), report.ToString());
             Console.Error.WriteLine(ex);
             return 1;
+        }
+    }
+
+    private static int RunOverviewEdgeFixtures(string outputRoot)
+    {
+        Directory.CreateDirectory(outputRoot);
+        var report = new StringBuilder();
+        report.AppendLine("GameSaveCenter Overview boundary-state fixtures");
+        report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+        report.AppendLine("Profiles: empty-activity, many-risks, long-title, offline");
+        report.AppendLine("Themes: light, dark; viewports: 1040x700, 1600x900");
+        AppendRunMetadata(report, "overviewedges", "OffscreenRenderHarness", "light,dark", "empty-activity; many-risks; long-title; offline; 1040x700/1600x900");
+        report.AppendLine();
+        var problems = new List<string>();
+
+        try
+        {
+            var app = new Application();
+            app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+            var cases = new[]
+            {
+                (Name: "empty-activity", State: WorkspaceFixtureState.Ready, Profile: OverviewFixtureProfile.EmptyActivity),
+                (Name: "many-risks", State: WorkspaceFixtureState.Ready, Profile: OverviewFixtureProfile.ManyRisks),
+                (Name: "long-title", State: WorkspaceFixtureState.Ready, Profile: OverviewFixtureProfile.LongTitle),
+                (Name: "offline", State: WorkspaceFixtureState.Offline, Profile: OverviewFixtureProfile.Default)
+            };
+
+            foreach (var (themeName, themeMode) in ThemeModes)
+            {
+                foreach (var (windowW, windowH) in new[] { (1040, 700), (1600, 900) })
+                {
+                    foreach (var fixture in cases)
+                    {
+                        var view = new OverviewView
+                        {
+                            DataContext = new FakeDashboardData(18, fixture.State, fixture.Profile)
+                        };
+                        ApplyThemePalette(view, themeMode);
+                        CaptureOverviewEdgeFixture(
+                            view,
+                            Path.Combine(outputRoot, $"overview-{fixture.Name}-{themeName}-{windowW}x{windowH}.png"),
+                            fixture.Name,
+                            windowW,
+                            windowH,
+                            themeMode,
+                            problems,
+                            report);
+                    }
+                }
+            }
+
+            report.AppendLine(problems.Count == 0 ? "overviewedges OK" : "overviewedges FAILED");
+            foreach (var problem in problems)
+                report.AppendLine("  PROBLEM " + problem);
+            File.WriteAllText(Path.Combine(outputRoot, "overviewedges-report.txt"), report.ToString());
+            Console.WriteLine(report.ToString());
+            return problems.Count == 0 ? 0 : 1;
+        }
+        catch (Exception ex)
+        {
+            report.AppendLine("overviewedges FAILED");
+            report.AppendLine(ex.ToString());
+            File.WriteAllText(Path.Combine(outputRoot, "overviewedges-report.txt"), report.ToString());
+            Console.Error.WriteLine(ex);
+            return 1;
+        }
+    }
+
+    private static void CaptureOverviewEdgeFixture(
+        OverviewView view,
+        string path,
+        string fixtureName,
+        int windowW,
+        int windowH,
+        GameSaveCenterThemeMode themeMode,
+        List<string> problems,
+        StringBuilder report)
+    {
+        var data = (FakeDashboardData)view.DataContext;
+        var (contentW, contentH) = ContentSize(windowW, windowH);
+        var host = new Grid
+        {
+            Width = contentW,
+            Height = contentH,
+            Background = CreateHarnessBackground(view),
+            ClipToBounds = true
+        };
+        host.Children.Add(view);
+        ApplyOverviewV3(view, windowW, windowH);
+        host.Measure(new Size(contentW, contentH));
+        host.Arrange(new Rect(0, 0, contentW, contentH));
+        host.UpdateLayout();
+        ApplyOverviewV3(view, windowW, windowH);
+        host.UpdateLayout();
+
+        var page = FindVisualChildren<ScrollViewer>(host)
+            .FirstOrDefault(element => element.Name == "OverviewStackScrollSurface");
+        var hero = FindVisualChildren<FrameworkElement>(host)
+            .FirstOrDefault(element => element.Name == "OverviewTodayHeroCard");
+        var currentGame = FindVisualChildren<FrameworkElement>(host)
+            .FirstOrDefault(element => element.Name == "OverviewCurrentGameCard");
+        var statStrip = FindVisualChildren<FrameworkElement>(host)
+            .FirstOrDefault(element => element.Name == "OverviewStatStrip");
+        var activityCard = FindVisualChildren<FrameworkElement>(host)
+            .FirstOrDefault(element => element.Name == "OverviewRecentActivityCard");
+        var riskCard = FindVisualChildren<FrameworkElement>(host)
+            .FirstOrDefault(element => element.Name == "OverviewRiskCard");
+        var findingsCard = FindVisualChildren<FrameworkElement>(host)
+            .FirstOrDefault(element => element.Name == "OverviewFindingsCard");
+        var heroAction = hero == null
+            ? null
+            : FindVisualChildren<Button>(hero).FirstOrDefault(button => button.Visibility == Visibility.Visible);
+        var activityTexts = FindVisualChildren<TextBlock>(host).ToArray();
+        var activityPresenters = FindVisualChildren<WorkspaceStatePresenter>(host).ToArray();
+        var activityEmptyPresenter = activityPresenters.FirstOrDefault(presenter => presenter.Visibility == Visibility.Visible);
+        var activityEmpty = activityEmptyPresenter != null
+            || activityTexts.Any(text => text.Visibility == Visibility.Visible
+                && text.Text.IndexOf("暂无全局活动", StringComparison.Ordinal) >= 0);
+        var taskEmpty = activityCard != null
+            && activityTexts.Any(text => text.Visibility == Visibility.Visible
+                && text.Text.IndexOf("暂无任务记录", StringComparison.Ordinal) >= 0);
+        var riskViewport = FindVisualChildren<ScrollViewer>(host)
+            .FirstOrDefault(element => element.Name == "OverviewRiskViewport");
+        var titleText = currentGame == null
+            ? null
+            : FindVisualChildren<TextBlock>(currentGame)
+                .FirstOrDefault(text => text.Text == data.SelectedGame.Name);
+        var horizontalOverflow = page != null && page.ExtentWidth > page.ViewportWidth + 0.5;
+        var primarySurfaceCount = new[] { hero, currentGame, statStrip, activityCard, riskCard, findingsCard }
+            .Count(element => element != null && element.ActualWidth > 0 && element.ActualHeight > 0);
+        var riskRows = riskCard == null
+            ? 0
+            : FindVisualChildren<ListBoxItem>(riskCard).Count(item => item.Visibility == Visibility.Visible);
+        var actionText = heroAction == null ? string.Empty : heroAction.Content?.ToString() ?? string.Empty;
+        report.AppendLine(
+            $"  {fixtureName} theme={themeMode} size={windowW}x{windowH}: " +
+            $"surfaces={primarySurfaceCount}/6 heroAction='{actionText}' " +
+            $"activityEmpty={activityEmpty} taskEmpty={taskEmpty} emptyHeight={(activityEmptyPresenter == null ? "missing" : $"{activityEmptyPresenter.ActualHeight:0}")} presenters={activityPresenters.Length} tasks={data.OverviewTasks.Count} activities={data.Activities.Count} " +
+            $"riskRows={riskRows} riskItems={data.RecentProtection.Items.Count} " +
+            $"riskExtent={(riskViewport == null ? "missing" : $"{riskViewport.ExtentHeight:0}/{riskViewport.ViewportHeight:0}")} " +
+            $"pageExtent={(page == null ? "missing" : $"{page.ExtentHeight:0}/{page.ViewportHeight:0}")} " +
+            $"titleChars={data.SelectedGame.Name.Length} titleTrim={titleText?.TextTrimming} " +
+            $"pageOverflowH={horizontalOverflow} priority={data.OverviewPriorityKind}");
+
+        if (primarySurfaceCount != 6)
+            problems.Add($"{fixtureName} {themeMode} {windowW}x{windowH} missing one or more Overview primary surfaces");
+        if (hero == null || hero.ActualWidth <= 0 || hero.ActualHeight <= 0 || heroAction == null || heroAction.ActualWidth <= 0)
+            problems.Add($"{fixtureName} {themeMode} {windowW}x{windowH} has no reachable hero action");
+        if (page == null || page.ActualWidth <= 0 || page.ActualHeight <= 0 || horizontalOverflow)
+            problems.Add($"{fixtureName} {themeMode} {windowW}x{windowH} has invalid page viewport or horizontal overflow");
+        if (fixtureName == "empty-activity"
+            && (!activityEmpty
+                || activityEmptyPresenter == null
+                || activityEmptyPresenter.ActualHeight < 100
+                || data.OverviewTasks.Count != 0
+                || data.Activities.Count != 0))
+            problems.Add($"empty-activity {themeMode} {windowW}x{windowH} did not expose the empty activity state");
+        if (fixtureName == "many-risks"
+            && (data.RecentProtection.Items.Count < 6
+                || riskRows < 6
+                || (riskRows < data.RecentProtection.Items.Count
+                    && (riskViewport == null
+                        || riskViewport.VerticalScrollBarVisibility == ScrollBarVisibility.Hidden
+                        || riskViewport.ExtentHeight <= riskViewport.ViewportHeight + 0.5))))
+            problems.Add($"many-risks {themeMode} {windowW}x{windowH} does not expose a reachable finite risk viewport");
+        if (fixtureName == "long-title"
+            && (data.SelectedGame.Name.Length < 80
+                || titleText == null
+                || titleText.TextTrimming != TextTrimming.CharacterEllipsis
+                || titleText.ToolTip == null))
+            problems.Add($"long-title {themeMode} {windowW}x{windowH} lost title ellipsis or tooltip reachability");
+        if (fixtureName == "offline"
+            && (data.Snapshot.WorkerHealthy
+                || data.OverviewPriorityKind != "Worker"
+                || !string.Equals(actionText, "打开维护中心", StringComparison.Ordinal)))
+            problems.Add($"offline {themeMode} {windowW}x{windowH} lost Worker-first hero action");
+
+        SavePng(host, path);
+        var size = new FileInfo(path).Length;
+        report.AppendLine($"  {Path.GetFileName(path)}: {contentW:0}x{contentH:0} DIP, {size} bytes");
+        if (size < 2048)
+            problems.Add($"{path} looks blank ({size} bytes)");
+
+        if (fixtureName == "empty-activity" && page != null && page.ExtentHeight > page.ViewportHeight + 0.5)
+        {
+            page.ScrollToEnd();
+            host.UpdateLayout();
+            var tailPath = Path.Combine(
+                Path.GetDirectoryName(path) ?? string.Empty,
+                Path.GetFileNameWithoutExtension(path) + "-tail.png");
+            SavePng(host, tailPath);
+            var tailSize = new FileInfo(tailPath).Length;
+            report.AppendLine($"  {Path.GetFileName(tailPath)}: tail offset={page.VerticalOffset:0}/{page.ScrollableHeight:0}, {tailSize} bytes");
+            if (tailSize < 2048)
+                problems.Add($"{tailPath} looks blank ({tailSize} bytes)");
         }
     }
 
