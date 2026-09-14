@@ -10,7 +10,7 @@
 
 ## 受控审计摘要
 
-- `AUDIT_SUMMARY.md`：10 个 View、32 个 Tab、234 个 Button/ToggleButton、14 个 DataGrid、34 个 ScrollViewer、161 个运行时快照；`Fidelity 警告数量=0`、`失败路由=0`、`HIGH=无`。剩余 Medium 为 Trainer 已绑定工具的五项工具栏在宽屏保持两行节奏，不是裁切或不可达门禁。
+- `AUDIT_SUMMARY.md`：10 个 View、32 个 Tab、234 个 Button/ToggleButton、14 个 DataGrid、34 个 ScrollViewer、161 个运行时快照；`Fidelity 警告数量=0`、`失败路由=0`、`HIGH=无`、`MEDIUM=无`。Trainer Inspector 的五项设置选项是有意的内部设置簇，审计器按命名祖先边界排除它，不把 WrapPanel 的多行设置布局冒充页面工具栏。
 - `UI_FIDELITY_MATRIX.md`：逐页面/Tab/尺寸的主元素、滚动、裁剪、虚拟化和关键控件结果。
 - `LAYOUT_REPORT.md`：全尺寸布局 JSON/滚动链/表格端点记录；其中媒体待归类主表在短窗通过 `MediaInboxPageScrollViewer` 可达完整表格。
 - `UI_MANIFEST.md`：静态入口、条件 UI、按钮、表格和滚动面盘点。
@@ -20,7 +20,7 @@
 | 组 | 已落地/已复核的真实入口 | 自动证据 | 当前宿主边界 |
 | --- | --- | --- | --- |
 | Q13 | DataGridScrollDiagnostics、稳定 ID 锚点、Item ScrollUnit、表头 resize/sort 部件、媒体主表 212 DIP 修复 | `MediaWindowAnchorContractTests`、`UiAuditCaptureContractTests`、`WpfUiResourceDictionaryTests`、全审计 0 HIGH | 真实鼠标拖拽列宽、Ctrl/Shift 跨页手势仍需宿主操作 |
-| Q14 | Dashboard/各页筛选、批量计数、刷新/更多筛选和响应式布局入口 | `DebouncedRefreshTests`、`TaskFilterOptionsSyncTests`、`ResponsiveLayoutCoordinatorTests`、布局矩阵 | 真实 760/980 DIP 屏幕输入序列与工具栏 Medium 项待宿主复核 |
+| Q14 | Dashboard/各页筛选、批量计数、刷新/更多筛选和响应式布局入口 | `DebouncedRefreshTests`、`TaskFilterOptionsSyncTests`、`ResponsiveLayoutCoordinatorTests`、布局矩阵 | 真实 760/980 DIP 屏幕输入序列待宿主复核；当前审计无工具栏 Medium |
 | Q15 | 共享 Tooltip、Combo Popup、菜单/轻浮层资源和复制入口 | `GamePickerShellSourceTests`、`WpfUiResourceDictionaryTests`、源代码审计 | 边缘定位、Esc/点外部、独立窗口主题 Owner 待宿主复核 |
 | Q16 | Dialog/Inspector/Expander 层级、详情滚动、焦点返回和失败详情顺序 | `KeyboardFocusSourceTests`、`DetailsDisclosureSourceTests`、`DiagnosticSummaryNoClipTests`、`TaskCenterViewResponsiveTests` | 真窗口模态 Tab 圈和快速开合时序待宿主复核 |
 | Q17 | WorkspaceStatePresenter、ProgressBar、Toast 队列上限、Banner/错误摘要与复制 | `SessionNotificationAccumulatorTests`、`NotificationFeedbackSourceTests`、`UiFeedbackTests`、`BatchObservableCollectionTests` | 真实悬停暂停、动画终态和多任务并发像素待宿主复核 |

@@ -2824,6 +2824,7 @@
 - MediaCenter“待归类”短窗是本阶段发现的真实布局缺陷：compact/narrow 主表实际高度为 190/150/130 DIP，页面滚动又被关闭，无法稳定看到四行。生产修复固定主表/表格壳 212 DIP 最小可读高度，外层 `MediaInboxPageScrollViewer` 保留有限 Auto 通道；不要通过缩小正文、关闭 DataGrid 虚拟化或改写现有命令来规避。
 - `MediaInboxInspectorScrollViewer` 是页面内有意保留的详情滚动面，不能与主表页面滚动混为同一职责。布局分析器仅对 `media-center/待归类` 的这个命名边界记录 NESTED_VERTICAL_SCROLL 信息；主表仍单独要求 PRIMARY_SCROLL_ACCESS，避免审计器用“全局禁止嵌套滚动”制造假门禁。
 - Q13 证据由媒体锚点/滚动诊断、DataGrid 模板来源、短窗源代码门禁和全量离屏审计组成。审计当前为 Fidelity=0、failed routes=0、HIGH=none；这只覆盖逻辑 DIP/离屏事实，不等同于真实 Playnite 鼠标、触控或像素验收。
+- Trainer 审计的 126 DIP Medium 已查明是 `TrainerToolsSettingsScrollViewer` 内的五项设置 WrapPanel，不是页面工具栏；`UiLayoutAnalyzer` 仅按该命名祖先排除此内部设置簇，复跑结果 MEDIUM=none。若未来新增真实页面工具栏，不能依赖这个例外绕过告警。
 - Q14–Q25 尚未因本条记忆而关闭。真实宿主视觉、物理 DPI、IME、读屏、ETW 帧、>100ms 调用栈、30 分钟耐久和低性能 Tier 仍是明确阻塞边界；阶段证据索引必须在提交后写入真实代码提交身份。
 # 提交前一键门禁
 

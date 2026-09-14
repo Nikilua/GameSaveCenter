@@ -44,6 +44,8 @@ public sealed class UiAuditSourceTests
         Assert.Contains("NESTED_VERTICAL_SCROLL", layout);
         Assert.Contains("TABLE_VIEWPORT_TOO_SHORT", layout);
         Assert.Contains("TOOLBAR_VERTICAL_EXPANSION", layout);
+        Assert.Contains("TrainerToolsSettingsScrollViewer", layout);
+        Assert.Contains("IsInsideNamedAncestor", layout);
         Assert.Contains("PRIMARY_VIEWPORT_UNREACHABLE", layout);
         Assert.Contains("approvedMediaInboxInspectorScroll", layout);
         Assert.Contains("CONTROL_CLIPPED", layout);

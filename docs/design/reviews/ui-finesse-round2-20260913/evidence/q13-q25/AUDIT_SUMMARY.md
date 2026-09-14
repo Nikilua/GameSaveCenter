@@ -1,7 +1,7 @@
 # Audit Summary
 
-生成时间：2026-09-14T06:40:04.6632601Z
-Commit：7539787
+生成时间：2026-09-14T06:54:23.7652039Z
+Commit：1b5a7d3
 
 ## 发现
 
@@ -12,7 +12,7 @@ Commit：7539787
 - 静态 ScrollViewer：34
 - 条件 UI：235
 - 运行时快照数量：161
-- 运行时警告数量：77
+- 运行时警告数量：73
 - Fidelity 警告数量：0
 - 失败路由：0
 
@@ -21,11 +21,7 @@ Commit：7539787
 无。
 ## MEDIUM
 
-- [TOOLBAR_VERTICAL_EXPANSION] trainer-center/已绑定工具/maximized:  高度 126 DIP，包含 5 个子元素
-- [TOOLBAR_VERTICAL_EXPANSION] trainer-center/已绑定工具/2k:  高度 126 DIP，包含 5 个子元素
-- [TOOLBAR_VERTICAL_EXPANSION] trainer-center/已绑定工具/wide:  高度 126 DIP，包含 5 个子元素
-- [TOOLBAR_VERTICAL_EXPANSION] trainer-center/已绑定工具/standard:  高度 126 DIP，包含 5 个子元素
-
+无。
 ## INFO
 
 - [EXPECTED_INTERNAL_SCROLL] maintenance/云端队列/maximized: 控件内部滚动上下文：DG_ScrollViewer (chain=MaintenanceView > Border > ContentPresenter > Grid > MaintenanceTabControl (TabControl) > Grid > PART_SelectedContentHost (ContentPresenter) > CloudTransfersSurface (Grid) > CloudTransfersLayout (Grid) > CloudTransferTableFrame (Border) > Grid > Grid > CloudTransferGrid (DataGrid) > GscDataGridBorder (Border))

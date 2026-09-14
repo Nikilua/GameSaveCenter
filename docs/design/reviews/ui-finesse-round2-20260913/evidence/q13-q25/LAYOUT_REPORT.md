@@ -313,9 +313,6 @@ Warnings:
 - ScrollViewer PART_ContentHost: 315x33, viewport=27, extent=19, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 81x31, viewport=23, extent=19, scrollable=0, nested=True
 - ListBox TrainerToolsList: 1859x991, items=8
-- Toolbar : 126 DIP, children=5
-Warnings:
-- [MEDIUM] TOOLBAR_VERTICAL_EXPANSION:  高度 126 DIP，包含 5 个子元素
 
 ### compact 904x520
 
@@ -340,10 +337,8 @@ Warnings:
 - ScrollViewer PART_ContentHost: 315x33, viewport=27, extent=19, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 81x31, viewport=23, extent=19, scrollable=0, nested=True
 - ListBox TrainerToolsList: 1006x463, items=8
-- Toolbar : 126 DIP, children=5
 Warnings:
 - [INFO] EXPECTED_INTERNAL_SCROLL: 控件内部滚动上下文： (chain=TrainerCenterView > Border > ContentPresenter > Grid > TabControl > Grid > PART_SelectedContentHost (ContentPresenter) > InstalledToolsLayout (Grid) > TrainerToolsTable (Border) > Grid > TrainerToolsList (ListBox) > Bd (Border))
-- [MEDIUM] TOOLBAR_VERTICAL_EXPANSION:  高度 126 DIP，包含 5 个子元素
 
 ### narrow 744x460
 
@@ -381,10 +376,8 @@ Warnings:
 - ScrollViewer PART_ContentHost: 315x33, viewport=27, extent=19, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 81x31, viewport=23, extent=19, scrollable=0, nested=True
 - ListBox TrainerToolsList: 739x451, items=8
-- Toolbar : 126 DIP, children=5
 Warnings:
 - [INFO] EXPECTED_INTERNAL_SCROLL: 控件内部滚动上下文： (chain=TrainerCenterView > Border > ContentPresenter > Grid > TabControl > Grid > PART_SelectedContentHost (ContentPresenter) > InstalledToolsLayout (Grid) > TrainerToolsTable (Border) > Grid > TrainerToolsList (ListBox) > Bd (Border))
-- [MEDIUM] TOOLBAR_VERTICAL_EXPANSION:  高度 126 DIP，包含 5 个子元素
 
 ### wide 1596x840
 
@@ -396,9 +389,6 @@ Warnings:
 - ScrollViewer PART_ContentHost: 315x33, viewport=27, extent=19, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 81x31, viewport=23, extent=19, scrollable=0, nested=True
 - ListBox TrainerToolsList: 1219x631, items=8
-- Toolbar : 126 DIP, children=5
-Warnings:
-- [MEDIUM] TOOLBAR_VERTICAL_EXPANSION:  高度 126 DIP，包含 5 个子元素
 
 ## trainer-center / 导入确认
 

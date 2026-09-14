@@ -668,6 +668,7 @@ public static class UiLayoutAnalyzer
         foreach (var panel in FindVisualChildren<Panel>(root)
                      .Where(panel =>
                          !IsInside(panel, root, typeof(DataGrid), typeof(ListBox))
+                         && !IsInsideNamedAncestor(panel, root, "TrainerToolsSettingsScrollViewer")
                          && (panel is WrapPanel
                              || (panel is StackPanel stack && stack.Orientation == Orientation.Horizontal))))
         {
@@ -1141,6 +1142,19 @@ public static class UiLayoutAnalyzer
                 if (type.IsAssignableFrom(parentType))
                     return true;
             }
+            parent = VisualTreeHelper.GetParent(parent);
+        }
+        return false;
+    }
+
+    private static bool IsInsideNamedAncestor(DependencyObject current, DependencyObject root, params string[] names)
+    {
+        var parent = VisualTreeHelper.GetParent(current);
+        while (parent != null && !ReferenceEquals(parent, root))
+        {
+            if (parent is FrameworkElement element
+                && names.Any(name => string.Equals(element.Name, name, StringComparison.Ordinal)))
+                return true;
             parent = VisualTreeHelper.GetParent(parent);
         }
         return false;

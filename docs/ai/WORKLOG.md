@@ -6353,5 +6353,6 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 
 - 离屏全页面审计首次捕获真实阻断：MediaCenter“待归类”主表在 compact/narrow 下只有 190/150/130 DIP，且页面纵向通道被禁用，四行阅读底线实际失败。生产 `MediaCenterView` 现在为主表和表格壳保留 212 DIP 最小可读高度，并让外层 `MediaInboxPageScrollViewer` 使用有限、可达的 Auto 滚动；DataGrid 仍保持 Item ScrollUnit、Recycling 和现有选择/命令契约。
 - 复跑 `scripts/capture-ui-audit.ps1 -Configuration Release -Output artifacts/ui-audit-round2`：构建 0 warning/0 error，10 View、32 Tab、161 runtime snapshots；Fidelity failures=0，failed routes=0，HIGH=none。Media Inspector 明确是页面内独立有限详情面，分析器将其记录为 NESTED_VERTICAL_SCROLL 信息，不把真实职责边界伪报为父子滚动冲突。
+- 第二次复跑发现原先唯一的 Trainer 126 DIP “toolbar” Medium 实际来自 `TrainerToolsSettingsScrollViewer` 内五项设置选项的 WrapPanel；布局分析器现在只按这个明确命名的 Inspector 祖先排除内部设置簇，审计结果为 MEDIUM=none，不隐藏真实页面工具栏告警。
 - 新增媒体短窗源代码门禁、审计来源门禁和 Q13–Q25 受控证据索引；定向 `UiFinesseRound2ControlSourceTests` + `UiAuditSourceTests` 为 8/8，source validation、XAML 24/24 与 `git diff --check` 通过。
 - Q13 账本已回填为“代码完成/自动与受控视觉通过/真实宿主待验”；Q14–Q25 仍按未实施或宿主/性能边界保留，不能用现有入口或离屏审计冒充 208 项最终完成。Q24 的物理 DPI、IME、读屏，Q25 的 ETW/30 分钟耐久/低性能实机仍未签收。
