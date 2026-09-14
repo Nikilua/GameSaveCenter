@@ -2,6 +2,11 @@
 
 > 更新时间：2026-09-15。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-15 UI 精修 Q25-02 呈现回调代理专项
+
+- 当前代码基线为 `a1462ee`。生产壳层 `shellqa` 现在记录 `CompositionTarget.Rendering` 相邻回调的 p95、最大间隔和 60Hz 慢帧比例；干净报告的单次侧栏为 `66.1/193.2/0.147`，快速二次切换为 `15.3/28.5/0.038`，无动画原子终态为 `36.1/36.1/0.250`。
+- 该数据明确标记为 WPF Rendering 回调代理，不是屏幕呈现帧；当前主机 xperf DWM 会话仍被 `0x5 / Access denied` 拒绝，Q25-02 真实呈现 p95/最大值/慢帧比例和 Q25-03 调用栈仍待性能工具条件。
+
 ## 2026-09-15 UI 精修 Q25-04 30 分钟耐久专项
 
 - 当前代码基线为 `7d7e2cb`。新增 `enduranceprobe`，在真实 WPF STA Window 中循环六个生产工作区、Light/Dark 主题、Media 预览分段、列表/表格选择和详情入口；默认 1800 秒运行完成 `1800.4s`、`3847` 循环、`13462` 动作、`176` 样本、0 动作异常，耐久探针本身不调用强制 GC。

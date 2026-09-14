@@ -2,6 +2,11 @@
 
 > 维护时间：2026-09-15
 
+## 2026-09-15 UI 精修 Q25-02 呈现回调代理专项
+
+- 提交 `a1462ee` 为生产壳层侧栏 Rendering 代理补齐 `frameGapP95`、`maxFrameGap` 和 `slowFrameRatio`；干净 shellqa 的单次切换为 `66.1/193.2/0.147`，快速二次切换为 `15.3/28.5/0.038`，无动画原子终态为 `36.1/36.1/0.250`。
+- 这是 `CompositionTarget.Rendering` 回调间隔，不是 DWM/PresentMon 屏幕帧；单次切换的 `193.2ms` 只说明代理有慢间隔，不能转写成显示器丢帧，也没有把它扩展成 Q25-03 调用栈。真实 ETW 仍受 `0x5 / Access denied` 阻塞，证据为 `Q25-02-RENDERING-PROXY-20260915.md`。
+
 ## 2026-09-15 UI 精修 Q25-04 30 分钟耐久专项
 
 - 提交 `7d7e2cb` 新增 `RenderHarness enduranceprobe`。当前干净提交以真实 WPF STA Window 承载生产壳和六页工作区，按 250 ms 循环导航、主题、Media 预览分段、列表/DataGrid 选择和详情入口；1800.4 秒完成 `3847` 循环、`13462` 动作、`176` 资源样本，`actionFailures=0`。
