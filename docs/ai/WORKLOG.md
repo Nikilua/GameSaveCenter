@@ -6371,3 +6371,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 随后按 Q13–Q25 索引筛选 Q16–Q25 的焦点/详情、通知、动效、缩略图、首页、存档、任务维护、设置、可访问性、性能和构建身份专项测试，结果为 77/77 通过、0 跳过、0 失败；该结果仍不替代真实宿主、DPI、IME、读屏、ETW 和耐久验收。
 - Q25-01 先用基准暴露 2000 项搜索 p95=201ms 超过 100ms 目标，随后修复 `GamePickerViewModel` 的 180ms debounce 和每项诊断列表分配：debounce 改 60ms，热路径改直接谓词，诊断仍按需生成。复测预热 5 次、采样 30 次为 p50/p95/max=75/90/91ms；Q25-01 自动目标通过，宿主页面导航待验。
 - 基准变更后的提交前一键门禁完成 XAML 24/24、Release 构建 0 警告/0 错误、Core 76/76、Worker 311/311、Playnite 467/524（57 skip，失败 0）；脚本随后因本轮代码、证据和文档未提交而停止打包，未把本次运行写成安装/启动通过。
+
+## 2026-09-14 Q25 宿主性能边界复核
+
+- 在已提交 HEAD `6450f6e` 上重新运行根目录一键脚本：XAML 24/24，Release 0 warning/0 error，Core 76/76，Worker 311/311，Playnite 468/525（57 skip，0 fail）；包体构建身份、安装验证和 Playnite 启动均通过，随后用官方 `--shutdown` 收尾。
+- 电脑自动化助手初始化仍因 kernel assets 路径缺失失败，未产生真实截图、滚动、动画、DPI、IME、焦点或读屏证据。WPR 虽能列出 GPU/DesktopComposition/XAMLActivity profile，但启动记录被系统策略拒绝（`0xc5585011`），`wpr -status` 确认未录制。
+- 新增 `Q25-HOST-PERFORMANCE-BOUNDARY-20260914.txt` 记录这次边界：没有 ETW/PresentMon 呈现帧、>100ms 宿主调用栈或 30 分钟时间序列；Q25-02～04、Q25-05 低 Tier 与 Q24 物理 DPI/跨屏/IME/读屏仍不可签收。

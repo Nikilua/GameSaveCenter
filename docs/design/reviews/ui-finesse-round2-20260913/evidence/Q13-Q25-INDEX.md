@@ -1,6 +1,6 @@
 # Q13–Q25 交互、页面、宿主与交付证据
 
-采集日期：2026-09-14（Asia/Shanghai）。代码基线：`f49358c`。证据来自共享 XAML/C# 源码、Playnite 设置迁移测试、RenderHarness Offscreen Regression Audit 和已提交 HEAD 的打包/安装记录；离屏证据不冒充真实 Playnite 像素、IME、物理 DPI、读屏或 ETW 帧时间。
+采集日期：2026-09-14（Asia/Shanghai）。代码基线：`6450f6e`。证据来自共享 XAML/C# 源码、Playnite 设置迁移测试、RenderHarness Offscreen Regression Audit 和已提交 HEAD 的打包/安装记录；离屏证据不冒充真实 Playnite 像素、IME、物理 DPI、读屏或 ETW 帧时间。
 
 ## 本阶段真实修复
 
@@ -31,10 +31,10 @@
 | Q22 | TaskCenter/Maintenance 统计条、筛选、失败详情、云队列、诊断日志、短窗 Inspector | `TaskRetrySourceTests`、`FindingNavigationResolverTests`、`DiagnosticSummaryNoClipTests`、`MaintenanceReportSourceTests`、全审计 | 真窗口长日志复制、队列悬停和短窗输入序列待宿主复核 |
 | Q23 | Settings 分类导航、字段校验、目录只读检测、保存/回滚/主题预览和底部动作 | `SettingsValidationSourceTests`、`SettingsPathValidationTests`、`PortableSettingsTests`、`WpfUiResourceDictionaryTests` | 独立设置窗口的真实键盘和保存回滚序列待宿主复核 |
 | Q24 | AutomationProperties、焦点视觉、Tab/Shift+Tab 源码契约、高对比/无玻璃路径和 1040/1100/1366 布局矩阵 | `AccessibilitySourceTests`、`KeyboardFocusSourceTests`、`UiAuditTruthfulnessTests`、全审计 | 100/125/150/175/200% 物理 DPI、跨屏 Popup、中文 IME、真实读屏待宿主复核；电脑自动化助手本轮不可用 |
-| Q25 | 大库批量更新、缩略图并发/缓存边界、审计性能字段、构建身份、打包/安装验证 | `LargeLibraryPerformanceTests`、`AsyncThumbnailLoaderTests`、`DiagnosticsEvidenceSourceTests`、`BuildIdentityTests`；`Q25-PERFORMANCE-BENCHMARK-20260914.txt` 记录 5 次预热、30 次输入到反馈采样及 p50/p95/max；已提交 HEAD 一键包体身份一致 | 30 分钟耐久、ETW 呈现帧、>100ms 调用栈和低性能 Tier 尚未签收；Q25-08 需在最终阶段清理并回查 |
+| Q25 | 大库批量更新、缩略图并发/缓存边界、审计性能字段、构建身份、打包/安装验证 | `LargeLibraryPerformanceTests`、`AsyncThumbnailLoaderTests`、`DiagnosticsEvidenceSourceTests`、`BuildIdentityTests`；`Q25-PERFORMANCE-BENCHMARK-20260914.txt` 记录 5 次预热、30 次输入到反馈采样及 p50/p95/max；`Q25-HOST-PERFORMANCE-BOUNDARY-20260914.txt` 记录 6450f6e 干净 HEAD 安装/启动和 WPR 策略拒绝；已提交 HEAD 一键包体身份一致 | 30 分钟耐久、ETW 呈现帧、>100ms 调用栈和低性能 Tier 尚未签收；Q25-08 需在最终阶段清理并回查 |
 
 ## 运行身份与边界
 
 - 运行命令：`scripts/capture-ui-audit.ps1 -Configuration Release -Output artifacts/ui-audit-round2`；构建 0 warning/0 error，审计退出 0。
-- Q25-07 的干净 HEAD 一键流程已完成打包、程序集身份核对、安装验证和 Playnite 启动；Playnite 全量测试在不同运行中出现 459/522（63 skip）或 465/522（57 skip）的跳过数差异，但失败为 0 的完整运行已取得，独立复跑也为 459/522（63 skip）。
+- Q25-07 的干净 HEAD 一键流程已完成打包、程序集身份核对、安装验证和 Playnite 启动；当前 6450f6e 运行是 468/525（57 skip，失败 0）。
 - 本索引不把 `artifacts/ui-audit-round2` 的离屏事实升级为真实宿主视觉真值；阶段结束前仍须保留 Q24/Q25 的待验收项，不得为了填满 208 行而改成“完成”。

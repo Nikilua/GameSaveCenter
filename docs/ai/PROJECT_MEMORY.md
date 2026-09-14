@@ -2842,6 +2842,12 @@
 - 随后按索引筛选 Q16–Q25 专项测试，焦点/详情、通知、动效、缩略图、首页、存档、任务维护、设置、可访问性、性能和构建身份共 77/77 通过、0 跳过、0 失败；仍不能替代真实宿主、DPI、IME、读屏、ETW 和耐久验收。
 - Q25-01 基准曾捕获 2000 项搜索 p95=201ms；修复 `GamePickerViewModel` 的 180ms debounce（改为 60ms）和每项诊断列表分配后，预热 5 次、采样 30 次复测 p50/p95/max=75/90/91ms。它只覆盖 ViewModel 过滤输入到反馈，不冒充页面导航或屏幕帧。
 - 基准变更后的提交前一键门禁完成 XAML 24/24、Release 0 警告/0 错误、Core 76/76、Worker 311/311、Playnite 467/524（57 skip，失败 0）；脚本因本轮代码、证据和文档未提交而停止打包，不能把本次运行当作安装/启动通过。
+
+## 2026-09-14 Round2 Q25 宿主性能边界复核
+
+- 已提交 HEAD `6450f6e` 的干净一键流程真实完成 XAML 24/24、Release 0 warning/0 error、Core 76/76、Worker 311/311、Playnite 468/525（57 skip，0 fail），包体身份、安装验证和 Playnite 启动成功；本轮宿主随后按官方 `--shutdown` 关闭。
+- Computer Use 初始化因 kernel assets 路径缺失失败；WPR 的 GPU/DesktopComposition/XAMLActivity 记录又因系统性能分析策略拒绝（`0xc5585011`）无法启动，`wpr -status` 为未录制。因此没有把离屏/Rendering 代理升级成 ETW 呈现帧，也没有伪造 >100ms 调用栈、30 分钟耐久或低 Tier 实机数据。
+- 证据文件：`docs/design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q25-HOST-PERFORMANCE-BOUNDARY-20260914.txt`；Q24 物理 DPI、跨屏 Popup、中文 IME、读屏和 Q25-02～05 的真实宿主性能仍开放。
 # 提交前一键门禁
 
 每次提交前必须运行仓库根目录的 `GameSaveCenter-一键构建安装运行.cmd`，确认隔离 Release 构建、Core/Worker/Playnite 全量测试、打包、安装验证和 Playnite 启动均成功。局部测试或 RenderHarness 通过不能替代该门禁；若输出超时，需后台运行并轮询到最终退出结果后再判断。
