@@ -28,7 +28,7 @@
 | Q02-04 | 未知与零 | 实施中 | 通过 | 待验 | 外部阻塞 | 未完成 | [NumericMetrics](evidence/Q01-Q02-INDEX.md)；零与破折号样本已覆盖，业务入口仍需盘点 |
 | Q02-05 | 时间宽度 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [NumericMetrics](evidence/Q01-Q02-INDEX.md)；00:09 与 12:59 宽度一致 |
 | Q02-06 | 路径阅读 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [路径证据](evidence/Q01-Q02-INDEX.md)；存档候选路径列已挂接 `SavePathText` 代码字体、CharacterEllipsis 与原值 Tooltip；其他入口全面盘点及宿主复制/Tooltip 待验 |
-| Q02-07 | 正文尺寸下限 | 实施中 | 待验 | 待验 | 外部阻塞 | 未完成 | 受控夹具正文层级已复核；生产 FontSize 10/11 仍需按重要诊断逐入口清点 |
+| Q02-07 | 正文尺寸下限 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [Q01–Q02 字体与数字证据](evidence/Q01-Q02-INDEX.md)；Trainer 设置 Inspector 的重要标签、路径、风险提示已迁移到共享 Caption/Code 样式并由源码测试锁定；其余入口清点与宿主小窗观感待验 |
 | Q02-08 | 混排空格术语 | 实施中 | 通过 | 待验 | 外部阻塞 | 未完成 | [混排与路径截图](evidence/Q01-Q02-INDEX.md)；术语入口盘点尚未完成 |
 | Q03-01 | 正文三层色 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [Q03 受控证据](evidence/Q03-INDEX.md)；Primary/Secondary/Muted 双主题均达 4.5:1 |
 | Q03-02 | 主按钮前景 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [渐变 33 样本](evidence/Q03-INDEX.md)；normal/hover/pressed 全部 0 violation |

@@ -102,6 +102,22 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("StringFormat={}{0} 项", maintenance);
         }
 
+        [Fact]
+        public void ImportantTrainerDiagnosticsUseReadableSharedStyles()
+        {
+            var root = FindRepositoryRoot();
+            var trainer = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml"));
+
+            Assert.Contains("x:Key=\"TrainerDiagnosticLabel\"", trainer);
+            Assert.Contains("x:Key=\"TrainerDiagnosticPath\"", trainer);
+            Assert.Contains("x:Key=\"TrainerDiagnosticWarning\"", trainer);
+            Assert.Contains("Text=\"名称\" Style=\"{StaticResource TrainerDiagnosticLabel}\"", trainer);
+            Assert.Contains("SelectedGameToolVersion.EntryPath, TargetNullValue=未选择版本}\" Style=\"{StaticResource TrainerDiagnosticPath}\"", trainer);
+            Assert.Contains("SelectedGameTool.AutoStartRiskHint}\" Style=\"{StaticResource TrainerDiagnosticWarning}\"", trainer);
+            Assert.DoesNotContain("Text=\"名称\" Foreground=\"{DynamicResource GscSecondaryTextBrush}\" FontSize=\"10\"", trainer);
+            Assert.DoesNotContain("Text=\"启动延迟\" Foreground=\"{DynamicResource GscSecondaryTextBrush}\" FontSize=\"10\"", trainer);
+        }
+
         private static string FindRepositoryRoot()
         {
             var directory = new DirectoryInfo(AppContext.BaseDirectory);

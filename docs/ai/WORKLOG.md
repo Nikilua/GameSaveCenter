@@ -6382,8 +6382,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 
 ## 2026-09-14 Round2 Q00–Q02 账本与字体证据补强
 
-- Q00-06 新增 52 项旧账本结构门禁 `Legacy52ReviewTableKeepsEveryOriginalStateReasonAndNewMapping`，定向 Release 测试与 `TypographyDiagnosticsTests` 共 8/8 通过；原状态、复核结论、依据/下一步和 Q 映射均保持可追溯。
+- Q00-06 新增 52 项旧账本结构门禁 `Legacy52ReviewTableKeepsEveryOriginalStateReasonAndNewMapping`，定向 Release 测试与 `TypographyDiagnosticsTests` 共 9/9 通过；原状态、复核结论、依据/下一步和 Q 映射均保持可追溯。
 - 修正旧 `BASELINE.md` 的 7 个已清理临时产物链接，统一指向持久化 Q04–Q12/Q13–Q25 证据；重新扫描 `docs/design` 本地 Markdown 链接为 `MISSING_COUNT=0`。
-- Q01-04/Q01-06 补齐双主题标点保留、代理对边界和 SemiBold→Bold 候选字重的源码门禁；Q02 数值/未知值/路径 Tooltip 契约也加入测试。路径全面迁移、真实 GlyphRun、宿主列布局与 Q02-07 10pt 清点仍未签收。
+- Q01-04/Q01-06 补齐双主题标点保留、代理对边界和 SemiBold→Bold 候选字重的源码门禁；Q02 数值/未知值/路径 Tooltip 契约也加入测试。路径全面迁移、真实 GlyphRun、宿主列布局与 Q02-07 其余入口清点仍未签收。
 - Q02-06 将存档候选路径列从普通长文本样式迁移到共享 `SavePathText` 代码字体样式，保留 CharacterEllipsis 与原始路径 Tooltip；其他路径入口仍待盘点。
+- Q02-07 将 Trainer 设置 Inspector 的重要 10pt 标签、工具路径和风险提示迁移到共享 Caption/Code 诊断样式，并加入源码门禁；其余生产入口与宿主小窗观感仍待验。
 - 当前提交前一键脚本未重跑：它会在 dirty worktree 时进入打包/安装宿主边界，已有 `5f60404` 的全量构建测试记录与 `6450f6e` 的 clean install/start 记录继续按各自源码身份保留。
