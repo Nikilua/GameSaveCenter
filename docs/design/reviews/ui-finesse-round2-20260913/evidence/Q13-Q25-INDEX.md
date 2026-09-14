@@ -1,6 +1,6 @@
 # Q13–Q25 交互、页面、宿主与交付证据
 
-采集日期：2026-09-14（Asia/Shanghai）。代码基线在阶段提交后补入。证据来自共享 XAML/C# 源码、Playnite 设置迁移测试、RenderHarness Offscreen Regression Audit 和已提交 HEAD 的打包/安装记录；离屏证据不冒充真实 Playnite 像素、IME、物理 DPI、读屏或 ETW 帧时间。
+采集日期：2026-09-14（Asia/Shanghai）。代码基线：`7539787`。证据来自共享 XAML/C# 源码、Playnite 设置迁移测试、RenderHarness Offscreen Regression Audit 和已提交 HEAD 的打包/安装记录；离屏证据不冒充真实 Playnite 像素、IME、物理 DPI、读屏或 ETW 帧时间。
 
 ## 本阶段真实修复
 
