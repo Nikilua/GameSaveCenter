@@ -5,7 +5,7 @@
 ## 运行身份
 
 - 夹具窗口：1120×980 DIP，RenderTargetBitmap 96 DPI，DpiScale=1.00；数据为合成中英文、扩展 CJK、组合字符、代理对、路径、数值、状态与四行表格。
-- 代码基线：当前工作提交前的 Q01/Q02 变更；提交 SHA 在本索引随阶段提交补入。
+- 代码基线：`db43230`（Q01/Q02 字体与数字排版审计）。
 - 双主题截图：[dark/ui-finesse-fixture.png](q01/dark/ui-finesse-fixture.png)、[light/ui-finesse-fixture.png](q01/light/ui-finesse-fixture.png)。原始报告：[dark/ui-finesse-fixture-report.txt](q01/dark/ui-finesse-fixture-report.txt)、[light/ui-finesse-fixture-report.txt](q01/light/ui-finesse-fixture-report.txt)。
 
 ## 结果

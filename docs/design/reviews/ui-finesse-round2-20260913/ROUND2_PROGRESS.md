@@ -14,7 +14,7 @@
 | Q00-06 | 旧账本复审 | 实施中 | 待验 | 待验 | 外部阻塞 | 未完成 | 已读取上一轮复核；52 项逐项映射尚未补完 |
 | Q00-07 | 证据身份索引 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [Q00 证据索引](evidence/Q00-INDEX.md)；代码提交 `87a40c8`，旧 BASELINE 修正待统一复核 |
 | Q00-08 | 干净交付路径 | 实施中 | 待验 | 待验 | 外部阻塞 | 未完成 | 8 位隔离 token 已修复路径长度问题；提交后完整门禁已通过构建、Core 76/76、Worker、Playnite 450/513（63 skip），但 `WorkspaceStatePresenterBehaviorTests.RetryButtonKeyboardActivationExecutesOnce` 出现一次非确定性 0/1 失败，待稳定复跑；不修改主工作区 `src.zip` |
-| Q01-01 | 中文家族名称 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [Q01–Q02 受控证据](evidence/Q01-Q02-INDEX.md)；候选链命中 Noto Sans SC，扩展缺字如实记录 |
+| Q01-01 | 中文家族名称 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [Q01–Q02 受控证据](evidence/Q01-Q02-INDEX.md)；commit `db43230`；候选链命中 Noto Sans SC，扩展缺字如实记录 |
 | Q01-02 | 英文视觉重量 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [字体候选/字重报告](evidence/Q01-Q02-INDEX.md)；Latin 使用 Segoe UI Variable Text，真实宿主仍待验 |
 | Q01-03 | 中英基线 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [双主题截图与 LineMetric](evidence/Q01-Q02-INDEX.md)；共享行高 20 DIP，物理 DPI 待验 |
 | Q01-04 | 中文标点 | 实施中 | 通过 | 待验 | 外部阻塞 | 未完成 | [标点样本报告](evidence/Q01-Q02-INDEX.md)；句首换行与宿主字体仍需真实窗口复核 |
