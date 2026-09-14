@@ -2862,6 +2862,12 @@
 - Q02-04/Q02-08 的 DTO 门禁已覆盖真实零、未知大小、未检查时间、路径原值和语义分隔符；仍需八入口术语盘点与宿主观感验证。
 - Core `UiDisplayMappingTests` 当前为 16/16；若 NuGet 漏洞源不可达，记录 3 条 NU1900 网络警告，不能写成代码警告清零。
 - 当前阶段提交前若不能安全运行会停止用户 Playnite 的一键脚本，不得把局部编译/测试或旧提交的 clean install/start 记录改写为当前提交的安装证据。
+
+## 2026-09-14 Round2 Q02-06 技术路径入口覆盖
+
+- 提交 `d97d87b` 新增共享 `GscPathText` 与 `GscWpfUiPathTextBox`：技术路径只读文本统一代码字体/单行省略，编辑框仅切换代码字体，保留原生 TextBox 的选择、光标、校验和编辑语义。
+- 设置页 7 个路径类编辑框、Trainer 工作目录、存档候选详情、媒体文件/归档/来源路径、维护诊断路径与进程 EXE 已接入；原始值 Tooltip 和数据绑定没有改写。
+- Q02-06 持久证据为 `docs/design/reviews/ui-finesse-round2-20260913/evidence/q02/Q02-PATH-STYLE-COVERAGE.md`；WPF 定向测试 7/7、RenderHarness 深浅主题退出 0。宿主复制/Tooltip、最终截断、物理 DPI 仍保持未完成边界。
 # 提交前一键门禁
 
 每次提交前必须运行仓库根目录的 `GameSaveCenter-一键构建安装运行.cmd`，确认隔离 Release 构建、Core/Worker/Playnite 全量测试、打包、安装验证和 Playnite 启动均成功。局部测试或 RenderHarness 通过不能替代该门禁；若输出超时，需后台运行并轮询到最终退出结果后再判断。

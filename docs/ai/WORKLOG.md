@@ -6391,3 +6391,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - Q02-04/Q02-08 增加 DTO 回归门禁，区分真实零与未知大小/未检查时间，并锁定路径原值和中文/产品名的语义分隔符；八入口术语盘点仍未完成。
 - 本次 Core 定向 `UiDisplayMappingTests` 为 16/16；构建 0 错误但因无法访问 NuGet 漏洞源产生 3 条 NU1900 警告，WPF 定向构建/测试仍为 0 警告、9/9 通过。
 - 当前提交前一键脚本未重跑：它会在 dirty worktree 时进入打包/安装宿主边界，已有 `5f60404` 的全量构建测试记录与 `6450f6e` 的 clean install/start 记录继续按各自源码身份保留。
+
+## 2026-09-14 Round2 Q02-06 技术路径入口覆盖
+
+- 提交 `d97d87b`：新增 `GscPathText`/`GscWpfUiPathTextBox` 共享路径样式，接入设置页 7 个技术路径编辑框以及 Save、Media、Maintenance、Trainer 的路径/EXE 入口；保留绑定、原始 Tooltip、编辑选择与校验行为。
+- 新增持久证据 `docs/design/reviews/ui-finesse-round2-20260913/evidence/q02/Q02-PATH-STYLE-COVERAGE.md`，并将 Q02-06 账本链接切换到该覆盖清单。WPF 定向测试 7/7，RenderHarness 深浅主题夹具均退出 0。
+- `git diff --check`、`python scripts/validate-source.py`、`check-xaml.ps1`（24 个 XAML）通过；RenderHarness/WPF 构建 0 错误。Core NU1900 网络警告仍来自 NuGet 漏洞源不可达，不写作代码警告清零。
+- 当前提交前未重跑根目录一键脚本：该脚本会停止/安装/启动 Playnite，受当前主机安全边界约束，不能用局部验证替代 clean install/start。
