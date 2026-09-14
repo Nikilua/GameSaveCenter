@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-15
 
+## 2026-09-15 UI 精修 Q15 Tooltip、Popup 与浮层主题自动门禁
+
+- 提交 `86ac336` 将 Dashboard、AcrylicProductionShellView 和独立 Settings 的 Tooltip 宿主边界统一为 `InitialShowDelay=350 ms`、`BetweenShowDelay=100 ms`；共享 Combo Popup 两套模板显式声明 `StaysOpen=False`，避免把点外部关闭留给默认样式推断。
+- Popup 仍使用 Bottom 定位、动态 `GscPopupBrush/GscPopupEffect/GscPopupAllowsTransparency/GscPopupAnimation`、有限高度和自动滚动；键盘方向导航为 Contained。该改动没有复制业务控件或改变 Combo Binding/DropDownClosed 语义。
+- `FloatingThemeResourcesStayLocalToDashboardAndSettingsOwners` 在 STA 中验证浅色 Dashboard 与深色 Settings 的 Popup 资源差异、Settings 材质只在 Settings 字典、Owner 字典不被反向写入；源码测试同时锁定 Tooltip 自动化名称与共享 Popup 几何。Playnite 全量 `481/544`（63 skip），Release `0/0`，WPF 静态审查 0 error。
+- 证据为 `Q15-TOOLTIP-POPUP-THEME-20260915.md`。自动列可签收，但真实 Playnite 悬停时序、Combo 边缘翻转/点外部/子菜单、独立窗口打开态主题切换和物理跨屏继续是宿主边界。
+
 ## 2026-09-15 UI 精修 Q25-03 UI 动作热点边界专项
 
 - 提交 `ed97d2c` 为 `RenderHarness enduranceprobe` 增加动作周期耗时、p95、最大值、`>100 ms` 计数和最多 8 条超阈值后的当前线程栈；契约测试 `EnduranceProbeRecordsUiActionHotspotBoundariesWithoutClaimingEtwStacks` 同步加入。

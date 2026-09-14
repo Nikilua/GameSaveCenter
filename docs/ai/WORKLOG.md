@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-15 UI 精修 Q15 Tooltip、Popup 与浮层主题自动门禁
+
+- 提交 `86ac336` 收紧三类浮层边界：Dashboard/生产壳层/Settings 的 Tooltip 初次延迟 `350 ms`、快速移动间隔 `100 ms`；DesignTokens 与 WpfUiProduction 的 Combo Popup 显式 `StaysOpen=False`，并保留 Bottom、有限高度、自动滚动与动态材质资源。
+- 新增 `FloatingShellsUseOneTooltipDelayContractForQuickPointerMoves`、`ComboPopupClosesOutsideAndKeepsItsReadingSurfaceBounded` 和 `FloatingThemeResourcesStayLocalToDashboardAndSettingsOwners`；完整构建/测试为 XAML `24/24`、Release `0/0`、Core `83/83`、Worker `310/311`（1 skip）、Playnite `481/544`（63 skip，0 fail）。
+- WPF 技能静态审查为 `0 error / 151 warnings / 548 info`，警告为既有 `.tmp` 宿主资源/共享资源提示；`git diff --check` 通过。证据新增 `Q15-TOOLTIP-POPUP-THEME-20260915.md`。
+- 账本仅把 Q15-03/Q15-07/Q15-08 的自动列更新为通过；视觉和宿主列仍待验，真实悬停、屏幕边缘、子菜单、独立 Settings 打开态热切换和跨屏 Popup 不由本阶段冒充完成。
+
 ## 2026-09-15 UI 精修 Q25-03 UI 动作热点边界专项
 
 - 提交 `ed97d2c` 增加 `enduranceprobe` 动作周期耗时、p95、最大值、`>100 ms` 计数和超阈值后的有限栈记录；契约测试定向集合 `11/11` 通过，源码校验通过。

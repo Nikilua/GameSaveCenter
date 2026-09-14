@@ -30,7 +30,7 @@
 | --- | --- | --- | --- |
 | Q13 | DataGridScrollDiagnostics、稳定 ID 锚点、Item ScrollUnit、表头 resize/sort 部件、媒体主表 212 DIP 修复 | `MediaWindowAnchorContractTests`、`UiAuditCaptureContractTests`、`WpfUiResourceDictionaryTests`、全审计 0 HIGH | 真实鼠标拖拽列宽、Ctrl/Shift 跨页手势仍需宿主操作 |
 | Q14 | Dashboard/各页筛选、批量计数、刷新/更多筛选和响应式布局入口 | `DebouncedRefreshTests`、`TaskFilterOptionsSyncTests`、`ResponsiveLayoutCoordinatorTests`、`UiFinesseRound2ControlSourceTests`、布局矩阵 | 真实 760/980 DIP 屏幕输入序列待宿主复核；当前审计无工具栏 Medium |
-| Q15 | 共享 Tooltip、Combo Popup、菜单/轻浮层资源和复制入口 | `GamePickerShellSourceTests`、`WpfUiResourceDictionaryTests`、`UiFinesseRound2ControlSourceTests`、`KeyboardFocusSourceTests`、源代码审计；游戏选框关闭/焦点返回见 `Q09-Q24-KEYBOARD-FOCUS-AUTOMATION-20260915.md` | Combo/菜单边缘定位、独立窗口主题 Owner 和真实宿主时序仍待复核 |
+| Q15 | 共享 Tooltip、Combo Popup、菜单/轻浮层资源和复制入口 | `GamePickerShellSourceTests`、`WpfUiResourceDictionaryTests`、`UiFinesseRound2ControlSourceTests`、`KeyboardFocusSourceTests`、源代码审计；Q15-03/Q15-07/Q15-08 自动门禁与窗口级资源隔离见 `Q15-TOOLTIP-POPUP-THEME-20260915.md`；游戏选框关闭/焦点返回见 `Q09-Q24-KEYBOARD-FOCUS-AUTOMATION-20260915.md` | Combo/菜单边缘定位、独立窗口真实主题 Owner/打开态切换和真实宿主时序仍待复核 |
 | Q16 | Dialog/Inspector/Expander 层级、详情滚动、焦点返回和失败详情顺序 | `KeyboardFocusSourceTests`、`DetailsDisclosureSourceTests`、`DiagnosticSummaryNoClipTests`、`TaskCenterViewResponsiveTests` | 真窗口模态 Tab 圈和快速开合时序待宿主复核 |
 | Q17 | WorkspaceStatePresenter、ProgressBar、Toast 队列上限、Banner/错误摘要与复制 | `SessionNotificationAccumulatorTests`、`NotificationFeedbackSourceTests`、`UiFeedbackTests`、`BatchObservableCollectionTests` | 真实悬停暂停、动画终态和多任务并发像素待宿主复核 |
 | Q18 | GscMotion token、资源 Host override、冻结 Transform 克隆、卸载清理和 reduced-motion 分支 | `UiFinesseFoundationTests`、`WpfUiResourceDictionaryTests`、`ProductionShellChromeSourceTests` | 实机热切换动画偏好、Rendering/ETW 生命周期待宿主/性能工具复核 |

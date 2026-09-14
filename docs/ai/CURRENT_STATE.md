@@ -2,6 +2,12 @@
 
 > 更新时间：2026-09-15。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-15 UI 精修 Q15 Tooltip、Popup 与浮层主题自动门禁
+
+- 当前代码基线为 `86ac336`。Dashboard、生产壳层和独立设置页统一声明 Tooltip 初次延迟 `350 ms`、快速切换间隔 `100 ms`；Combo Popup 两套生产模板显式 `StaysOpen=False`，并保留 Bottom 定位、有限高度、自动滚动、键盘方向导航隔离和动态主题资源。
+- 新增 Tooltip/Popup 源码契约与 WPF STA 主题隔离测试：浅色 Dashboard、深色 Settings 使用独立资源字典，Popup 资源随 Owner 变化，设置材质不写入 Dashboard 或 Owner 外部字典。Playnite 全量 `481/544`（63 skip，0 fail），Release `0/0`，XAML `24/24`。
+- 证据见 [`Q15-TOOLTIP-POPUP-THEME-20260915.md`](../design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q15-TOOLTIP-POPUP-THEME-20260915.md)。Q15-03/Q15-07/Q15-08 自动验证已更新为通过；真实悬停/边缘定位/子菜单/打开态主题热切换/跨屏宿主仍待验，不能由 STA 或源码测试替代。
+
 ## 2026-09-15 UI 精修 Q25-03 UI 动作热点边界专项
 
 - 当前代码基线为 `ed97d2c`。`RenderHarness enduranceprobe` 现在记录每个动作周期耗时、p95、最大值和 `>100 ms` 计数，并在超阈值动作完成后最多保留 8 条当前线程栈。
