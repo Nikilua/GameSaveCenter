@@ -65,6 +65,26 @@ public sealed class UiFinesseRound2ControlSourceTests
         Assert.Contains("TrainerToolsToolbar.HorizontalAlignment = stackInstalled", trainer);
     }
 
+    [Fact]
+    public void TransientSurfacesKeepThemeSensitiveResourcesDynamic()
+    {
+        var tokens = Read("src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml");
+        var production = Read("src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml");
+        var redesign = Read("src", "GameSaveCenter.Playnite", "Themes", "Redesign.xaml");
+        var dashboard = Read("src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml.cs");
+
+        Assert.Contains("AllowsTransparency=\"{DynamicResource GscPopupAllowsTransparency}\"", production);
+        Assert.Contains("PopupAnimation=\"{DynamicResource GscPopupAnimation}\"", production);
+        Assert.Contains("Background=\"{DynamicResource GscPopupBrush}\"", production);
+        Assert.Contains("Effect=\"{DynamicResource GscPopupEffect}\"", production);
+        Assert.Contains("<Style TargetType=\"ToolTip\">", tokens);
+        Assert.Contains("Background\" Value=\"{DynamicResource GscPopupBrush}\"", tokens);
+        Assert.Contains("Effect\" Value=\"{DynamicResource GscDialogEffect}\"", redesign);
+        Assert.Contains("Effect\" Value=\"{DynamicResource GscPopupEffect}\"", redesign);
+        Assert.Contains("AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(ProductionShellView.Resources", dashboard);
+        Assert.Contains("foreach (var workspaceView in ProductionShellView.WorkspaceViews)", dashboard);
+    }
+
     private static string Read(params string[] parts)
     {
         var directory = new DirectoryInfo(AppContext.BaseDirectory);

@@ -284,13 +284,17 @@ public sealed class UiDiagnosticsExporterTests
                 AdaptiveThemePaletteFactory.ApplyAccentResources(lightResources, light);
                 AdaptiveThemePaletteFactory.ApplyAccentResources(darkResources, dark);
 
-                var lightSelection = Assert.IsType<SolidColorBrush>(lightResources["GscSelectionTextBrush"]).Color;
-                var darkSelection = Assert.IsType<SolidColorBrush>(darkResources["GscSelectionTextBrush"]).Color;
+                var lightSelectionBrush = Assert.IsType<SolidColorBrush>(lightResources["GscSelectionTextBrush"]);
+                var darkSelectionBrush = Assert.IsType<SolidColorBrush>(darkResources["GscSelectionTextBrush"]);
                 var lightButton = Assert.IsType<LinearGradientBrush>(lightResources["GscPrimaryButtonBrush"]);
                 var darkButton = Assert.IsType<LinearGradientBrush>(darkResources["GscPrimaryButtonBrush"]);
-                switched = lightSelection != darkSelection
-                    && lightButton.GradientStops.Select(stop => stop.Color).SequenceEqual(
-                        lightButton.GradientStops.Select(stop => stop.Color))
+                var lightStops = lightButton.GradientStops.Select(stop => stop.Color).ToArray();
+                var darkStops = darkButton.GradientStops.Select(stop => stop.Color).ToArray();
+                switched = lightSelectionBrush.Color != darkSelectionBrush.Color
+                    && !ReferenceEquals(lightSelectionBrush, darkSelectionBrush)
+                    && lightStops.Length == darkStops.Length
+                    && !lightStops.SequenceEqual(darkStops)
+                    && !ReferenceEquals(lightButton, darkButton)
                     && !darkButton.GradientStops.Select(stop => stop.Color).SequenceEqual(
                         lightButton.GradientStops.Select(stop => stop.Color));
             }
