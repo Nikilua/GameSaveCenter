@@ -6322,3 +6322,4 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 受控证据保存于 `docs/design/reviews/ui-finesse-round2-20260913/evidence/q00-after-dark.*` 与 `q00-after-light.*`，索引为 `Q00-INDEX.md`。1120×980 DIP、96 DPI、DpiScale=1.00、合成 4 行数据；浅/深主题均 12 个文本样本 0 violation，黑字负例各 1 violation，行容器 4/4 完整、压缩视口 3/4。
 - 验证：RenderHarness Release 0 warning/0 error；`finesseprobe` Light/Dark 均退出 0；定向 `UiDiagnosticsExporterTests` 6/6 与共享模板测试 1/1 通过；两张 PNG 已实际打开复核。真实 Playnite 宿主仍为 `MainWindowHandle=0`，物理 DPI、Hover/Pressed/Keyboard Focus 行为尚未宣称通过。
 - 提交前一键门禁首次在 Playnite 设置迁移测试阶段失败，独立复现根因是隔离构建目录使用 32 位 GUID，导致 .NET Framework xUnit 适配器加载路径超过 Windows 260 字符限制；已将 `dev-install-run.ps1` 的隔离 token 缩短为 8 位，待在提交后复跑完整门禁。
+- 提交 `87a40c8` 后以 8 位隔离 token 重跑完整门禁：XAML 24/24、Release 构建、Core 76/76、Worker 与 Playnite 450/513（63 skip）完成；Playnite 行为测试 `WorkspaceStatePresenterBehaviorTests.RetryButtonKeyboardActivationExecutesOnce` 出现一次非确定性失败（Expected 1 / Actual 0），独立定向重跑 2/2 通过，尚不能把该次完整门禁记为通过。

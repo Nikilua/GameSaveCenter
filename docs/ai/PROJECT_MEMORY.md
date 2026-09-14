@@ -2796,6 +2796,7 @@
 - `UiFrameworkProbeView` 的 DataGrid 由 246 调整为 250 DIP，受控报告以实际 `DataGridRow` 与有效裁剪交集证明 4/4 完整；故意减 4 DIP 得到 3/4。报告只把 `FontHasGlyph` 记为 `FontCandidate`，实际 GlyphRun 明确 unknown。
 - 证据索引为 `docs/design/reviews/ui-finesse-round2-20260913/evidence/Q00-INDEX.md`，当前分支 `codex/ui-finesse-round2`。受控截图是 1120×980 DIP/96 DPI 离屏证据，不代表物理 DPI 或真实 Playnite 宿主；当前宿主边界仍是 `MainWindowHandle=0`。
 - 提交前一键门禁首次在 Playnite 设置迁移测试阶段失败，独立复现为隔离构建根目录带 32 位 GUID 时 .NET Framework xUnit 适配器加载路径超过 Windows 260 字符；`scripts/dev-install-run.ps1` 已改为 8 位隔离 token，必须在后续完整门禁中确认修复。
+- 提交 `87a40c8` 后完整门禁已验证短路径问题消失：XAML 24/24、Release、Core 76/76、Worker 和 Playnite 450/513（63 skip）完成；唯一失败为 `WorkspaceStatePresenterBehaviorTests.RetryButtonKeyboardActivationExecutesOnce` 的一次非确定性 0/1，独立定向重跑 2/2 通过，完整链仍未签收。
 # 提交前一键门禁
 
 每次提交前必须运行仓库根目录的 `GameSaveCenter-一键构建安装运行.cmd`，确认隔离 Release 构建、Core/Worker/Playnite 全量测试、打包、安装验证和 Playnite 启动均成功。局部测试或 RenderHarness 通过不能替代该门禁；若输出超时，需后台运行并轮询到最终退出结果后再判断。

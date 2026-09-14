@@ -6,7 +6,7 @@
 
 - 来源：`tests/GameSaveCenter.RenderHarness` 的 `finesseprobe`，ProductionResourceDictionary/`UiFrameworkProbeView`，STA 离屏布局。
 - 窗体：1120×980 DIP；RenderTargetBitmap 96 DPI，DpiScale=1.00；数据为合成中英文、数字、路径、诊断、状态与 4 行表格。
-- 代码基线：`f501476` 之后的 Q00 工作树改动；阶段提交 SHA 在提交完成后回填本索引与账本。
+- 代码基线：提交 `87a40c8`（父提交 `f501476`）；包含 Q00 共享前景修复、有效视觉树对比门禁、四行裁剪负例和 8 位隔离构建 token 修复。
 - 采样方式：从已排列的 WPF 视觉树读取最终 `TextBlock.Foreground`，累乘祖先 `Opacity`，以渲染像素四角采样表面，先做 alpha 合成，再以未舍入值计算对比度。
 - 负例：固定注入 `#000000` 文字到 `#252A34` 暗底，必须得到 1 个低于 4.5:1 的 violation。
 
