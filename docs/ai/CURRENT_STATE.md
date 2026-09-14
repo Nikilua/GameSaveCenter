@@ -7,6 +7,12 @@
 - 当前交付基线为 `dea74f7`。生产壳层游戏选框现在在打开时聚焦搜索框，Esc/已选游戏 Enter、点外部和选中游戏都会关闭选框并把焦点返回当前游戏按钮；导航、Header、筛选器、列表、footer 和 Overview 主要动作已补充稳定 UI Automation 名称。
 - 真实 WPF STA 行为测试已验证 Esc 关闭、事件处理和焦点返回；RenderHarness 双主题、多尺寸回归仍为 `render-qa OK`。完整六页 Tab/Shift+Tab、IME、读屏、物理跨屏与真实 Playnite UIA Pattern 仍待宿主条件。
 
+## 2026-09-15 UI 精修云端上传与远端校验语义
+
+- 当前交付基线为 `f01dfe9`。Overview 云端队列整卡在保留自动队列运行/暂停状态的同时，明确显示 `已上传 N · 已校验 M`；`RemoteVerified` 不再与普通上传共用一个含义。
+- Core `UiDisplayMappingTests`、真实 WPF `OverviewInteractionTests` 和 Playnite 源码契约均覆盖该显示/命令边界；Core 全量 `83/83`、Playnite 全量 `473/536`（63 skip，0 fail），干净双主题多尺寸 RenderHarness 为 `render-qa OK` 且无 `PROBLEM`。
+- 真实 Playnite Hover/Focus/单次导航及多状态宿主像素仍待可操作宿主条件；当前证据见 `Q20-07-CLOUD-GUARANTEE-20260915.md`。
+
 ## 2026-09-15 UI 精修 150% 宿主截图渲染修复
 
 - 当前交付基线为 `4f1dbb4`。已修正真实宿主 150% 捕获中 RenderTargetBitmap 的宿主 DPI 与显式缩放叠加问题，并用回归测试锁定 1.5 倍输出不再被错误绘制为 2.25 倍。

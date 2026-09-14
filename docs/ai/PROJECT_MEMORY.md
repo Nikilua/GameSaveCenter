@@ -8,6 +8,12 @@
 - 壳层导航、Header 媒体/备份动作、筛选 ComboBox、游戏列表、footer 状态区和 Overview 主要动作新增稳定 `AutomationProperties.Name`；Overview 优先事项标题提供完整标题 Tooltip。
 - 定向 WPF 行为/源码测试 `17/17`、RenderHarness 双主题多尺寸 `render-qa OK`、源码验证和 WPF 技能审查 `0 errors` 通过。Q09-06、Q15-07、Q24-04～06 的真实宿主 Popup/Tab/读屏/IME 边界仍未签收，证据见 `Q09-Q24-KEYBOARD-FOCUS-AUTOMATION-20260915.md`。
 
+## 2026-09-15 UI 精修 Q20-07 云端保证级别
+
+- `CloudTransferSummaryDto.GuaranteeDisplay` 固定分开显示 `已上传 N · 已校验 M`；Overview 云端卡以 `Run` 保留 `QueueControlDisplay`，不丢失队列暂停/运行语义，也不把远端校验降格为普通上传。
+- `OverviewInteractionTests` 在真实 WPF STA 视觉树中读取绑定后的状态行并继续验证整卡 `OpenCloudQueueCommand` 单次执行；`UiDisplayMappingTests` 和 `UiFinesseRound2ControlSourceTests` 分别锁定 DTO 与 XAML 契约。源码提交为 `f01dfe9`。
+- Core 全量 `83/83`、Playnite 全量 `473/536`（63 skip，0 fail）；干净 RenderHarness `f01dfe9` 为 0 warning/0 error、无 `PROBLEM`、`render-qa OK`，Light/Dark 1040×700 实际查看无裁切。Q20-07 真实宿主 Hover/Focus/单次导航仍待验收。
+
 ## 2026-09-15 UI 精修 150% 宿主截图渲染修复
 
 - 在提交 `4f1dbb4` 中修正 `UiDiagnosticsExporters.RenderBitmap` 的 DPI 叠加：RenderTargetBitmap 改用 96 DPI 基线，显式 `renderScale` 单独负责高 DPI 像素输出；新增 `HighDpiPngUsesExplicitScaleWithoutApplyingHostDpiTwice` 回归测试，验证 1.5 倍输出不再按 2.25 倍绘制并裁掉右/下边界。

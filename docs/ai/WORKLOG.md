@@ -8,6 +8,12 @@
 - 真实 WPF STA 回归与源码契约合计 `17/17` 通过；RenderHarness 构建 `0/0`、双主题多尺寸报告 `render-qa OK` 且无 `PROBLEM`；源码验证与 WPF 技能审查 `0 errors` 通过。
 - 证据新增 `Q09-Q24-KEYBOARD-FOCUS-AUTOMATION-20260915.md`。完整六页键盘次序、Combo/菜单边缘、IME、读屏和 Playnite 宿主 UIA Pattern 继续如实保持待验收。
 
+## 2026-09-15 UI 精修 Q20-07 云端上传与远端校验语义
+
+- Overview 云端队列整卡新增 `CloudTransferSummaryDto.GuaranteeDisplay`，明确显示 `已上传 N · 已校验 M`；`QueueControlDisplay` 继续显示自动队列运行/暂停/时段状态，真实 `OpenCloudQueueCommand` 和整卡单次导航保持不变。
+- Core 全量 `83/83`、Playnite 全量 `473/536`（63 skip，0 fail）；真实 WPF STA 视觉树测试读取到 `已上传 2 · 已校验 3`，RenderHarness 干净 HEAD `f01dfe9` 双主题、多尺寸和壳层 QA 为 `render-qa OK`，无 `PROBLEM`；Light/Dark 1040×700 PNG 已实际查看。
+- 证据新增 `Q20-07-CLOUD-GUARANTEE-20260915.md`；真实 Playnite Hover/Focus/单次导航和多状态宿主像素仍未宣称通过。
+
 ## 2026-09-15 UI 精修 150% 宿主截图渲染修复
 
 - 修正 `UiDiagnosticsExporters` 在真实 150% 宿主捕获时把宿主 DPI 与显式 1.5 倍变换叠加的问题：RenderTargetBitmap 使用 96 DPI 基线，显式变换独立承担像素放大；新增回归测试，定向 WPF 门禁 `9/9` 通过。
