@@ -627,6 +627,69 @@ public sealed class FakeDashboardData
         Snapshot.UnassignedMediaCount = 0;
     }
 
+    /// <summary>
+    /// Clears every collection that backs a production table/list while retaining the
+    /// selected game shell. This is development-only data for empty-surface screenshots;
+    /// it does not change any production view or business command.
+    /// </summary>
+    public void ClearTableDataForFixture()
+    {
+        Tasks.Clear();
+        OverviewTasks.Clear();
+        Activities.Clear();
+        AttentionFindings.Clear();
+        Media.Clear();
+        UnassignedMedia.Clear();
+        MediaSources.Clear();
+        Findings.Clear();
+        Audit.Clear();
+        DeviceComparisons.Clear();
+        ProcessMappings.Clear();
+        Backups.Clear();
+        SaveCandidates.Clear();
+        GameTools.Clear();
+        TrainerCatalogResults.Clear();
+        TrainerReleases.Clear();
+        ImportEntryCandidates.Clear();
+        CloudTransferItems.Clear();
+        MediaClassificationHistoryItems.Clear();
+        MediaClassificationPreview.Items.Clear();
+        LastRetentionPreview.KeepBackupIds.Clear();
+        LastRetentionPreview.ProtectedHealthBackupIds.Clear();
+        LastRetentionPreview.DeleteCandidateIds.Clear();
+        StorageAnalysis.Trends.Clear();
+        StorageAnalysis.TopGames.Clear();
+        RetentionSimulation.Items.Clear();
+        MaintenanceActionItems.Clear();
+        MaintenanceActionSections.Clear();
+
+        RunningTaskCount = 0;
+        RetryableTaskCount = 0;
+        CompletedTaskCount = 0;
+        SelectedTask = null!;
+        SelectedBackup = null!;
+        SelectedCandidate = null!;
+        SelectedGameTool = null!;
+        SelectedGameToolVersion = null!;
+        SelectedTrainerCatalogItem = null!;
+        SelectedTrainerRelease = null!;
+        SelectedImportEntryCandidate = null!;
+        SelectedMedia = null;
+        SelectedInboxMedia = null;
+        SelectedFinding = null;
+        SelectedDeviceComparison = null;
+        SelectedProcessMapping = null;
+        SelectedCloudTransfer = null;
+        SelectedMediaClassificationBatch = null;
+        HasPendingGameToolEntrySelection = false;
+        MediaSummary.TotalCount = 0;
+        MediaSummary.ScreenshotCount = 0;
+        MediaSummary.VideoCount = 0;
+        MediaSummary.FavoriteCount = 0;
+        MediaSummary.TotalBytes = 0;
+        CloudTransferViewSummary = new CloudTransferSummaryDto();
+    }
+
     private void ApplyOverviewFixtureProfile(OverviewFixtureProfile profile)
     {
         switch (profile)
@@ -775,6 +838,9 @@ public sealed class FakeDashboardData
     public bool MediaInboxPageHasMore => false;
     public string MediaInboxLoadedSummary => $"当前保留 {MediaInboxItems.Count} 条（窗口上限 2000）";
     public bool IsWorkerOffline => IsFixtureOffline;
+    public bool IsTrainerToolsLoading => fixtureState == WorkspaceFixtureState.Loading;
+    public bool IsTrainerCatalogLoading => fixtureState == WorkspaceFixtureState.Loading;
+    public bool IsTrainerReleasesLoading => fixtureState == WorkspaceFixtureState.Loading;
     public string MediaDetailsState => FixtureStateText;
     public string MediaDetailsPresenterState => IsFixtureOffline ? "Offline" : fixtureState == WorkspaceFixtureState.Stale ? "Degraded" : FixtureStateText;
     public string MediaDetailsStateTitle => FixtureStateTitle("当前游戏媒体");
@@ -882,12 +948,12 @@ public sealed class FakeDashboardData
         TotalBytes = 128L * 1024 * 1024 * 1024,
         Message = "镜像可用：184 个文件，共 128 GiB；最近同步 2026-08-14 00:00。"
     };
-    public int RunningTaskCount { get; }
+    public int RunningTaskCount { get; private set; }
     public int WaitingTaskCount => Tasks.Count(task => task.State == TaskState.Queued || task.State == TaskState.WaitingForUser);
     public string TaskWaitingSummary => $"排队/等待确认：{WaitingTaskCount}";
-    public int RetryableTaskCount { get; }
+    public int RetryableTaskCount { get; private set; }
     public string TaskRetrySummary => $"失败 {Tasks.Count(task => task.State == TaskState.Failed)} · 已取消 {Tasks.Count(task => task.State == TaskState.Cancelled)}";
-    public int CompletedTaskCount { get; }
+    public int CompletedTaskCount { get; private set; }
     public int TaskTotalCount => Tasks.Count;
     public string TaskTotalCountLabel => "任务总数（全部历史）";
     public string TaskHistoryScope { get; set; } = "最近任务";

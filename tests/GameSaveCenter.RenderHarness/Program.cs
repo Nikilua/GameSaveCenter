@@ -278,6 +278,19 @@ public static class Program
             return stateFixtureExitCode;
         }
 
+        if (args.Length > 0 && args[0].Equals("emptytables", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "emptytables");
+            var emptyTableExitCode = 0;
+            var emptyTableThread = new Thread(() => { emptyTableExitCode = RunEmptyTableFixtures(outputRoot); });
+            emptyTableThread.SetApartmentState(ApartmentState.STA);
+            emptyTableThread.Start();
+            emptyTableThread.Join();
+            return emptyTableExitCode;
+        }
+
         if (args.Length > 0 && args[0].Equals("overviewedges", StringComparison.OrdinalIgnoreCase))
         {
             var outputRoot = args.Length > 1
@@ -1230,6 +1243,149 @@ public static class Program
             Console.Error.WriteLine(ex);
             return 1;
         }
+    }
+
+    private static int RunEmptyTableFixtures(string outputRoot)
+    {
+        Directory.CreateDirectory(outputRoot);
+        var report = new StringBuilder();
+        report.AppendLine("GameSaveCenter production empty table fixtures");
+        report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+        AppendRunMetadata(report, "emptytables", "OffscreenRenderHarness", "light,dark", "all production table/list collections cleared; selected game shell retained");
+        report.AppendLine();
+        s_problems.Clear();
+
+        try
+        {
+            var app = new Application();
+            app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+            var sizes = new[] { (Width: 1040, Height: 700), (Width: 1600, Height: 900) };
+            foreach (var (themeName, themeMode) in ThemeModes)
+            {
+                foreach (var (windowW, windowH) in sizes)
+                {
+                    var (contentW, contentH) = ContentSize(windowW, windowH);
+                    var saveData = EmptyTableData();
+                    var save = new SaveCenterView { DataContext = saveData };
+                    ApplyThemePalette(save, themeMode);
+                    RenderTabs(save, outputRoot, $"save-empty-{themeName}", windowW, windowH, contentW, contentH, report, () => save.ApplyResponsiveLayout(contentW, windowH),
+                        (host, tabIndex, fixtureReport) => VerifyEmptyTableSurface(host, $"Save tab{tabIndex}", fixtureReport));
+
+                    var taskData = EmptyTableData();
+                    var task = new TaskCenterView { DataContext = taskData };
+                    ApplyThemePalette(task, themeMode);
+                    RenderViewWithVerification(task, outputRoot, $"task-empty-{themeName}", windowW, windowH, contentW, contentH, report, () => task.ApplyResponsiveLayout(contentW, windowH),
+                        (host, fixtureReport) => VerifyEmptyTableSurface(host, "Task", fixtureReport));
+
+                    var trainerData = EmptyTableData();
+                    var trainer = new TrainerCenterView { DataContext = trainerData };
+                    ApplyThemePalette(trainer, themeMode);
+                    RenderTabs(trainer, outputRoot, $"trainer-empty-{themeName}", windowW, windowH, contentW, contentH, report, () => trainer.ApplyResponsiveLayout(contentW, windowH),
+                        (host, tabIndex, fixtureReport) => VerifyEmptyTableSurface(host, $"Trainer tab{tabIndex}", fixtureReport));
+
+                    var mediaData = EmptyTableData();
+                    var media = new MediaCenterView { DataContext = mediaData };
+                    ApplyThemePalette(media, themeMode);
+                    RenderTabs(media, outputRoot, $"media-empty-{themeName}", windowW, windowH, contentW, contentH, report, () => media.ApplyResponsiveLayout(contentW, contentH),
+                        (host, tabIndex, fixtureReport) => VerifyEmptyTableSurface(host, $"Media tab{tabIndex}", fixtureReport));
+
+                    var maintenanceData = EmptyTableData();
+                    var maintenance = new MaintenanceView { DataContext = maintenanceData };
+                    ApplyThemePalette(maintenance, themeMode);
+                    RenderTabs(maintenance, outputRoot, $"maintenance-empty-{themeName}", windowW, windowH, contentW, contentH, report, () => maintenance.ApplyResponsiveLayout(contentW, windowH),
+                        (host, tabIndex, fixtureReport) => VerifyEmptyTableSurface(host, $"Maintenance tab{tabIndex}", fixtureReport));
+                }
+            }
+
+            report.AppendLine(s_problems.Count == 0 ? "emptytables OK" : "emptytables FAILED");
+            foreach (var problem in s_problems)
+                report.AppendLine("  PROBLEM " + problem);
+            File.WriteAllText(Path.Combine(outputRoot, "emptytables-report.txt"), report.ToString());
+            Console.WriteLine(report.ToString());
+            return s_problems.Count == 0 ? 0 : 1;
+        }
+        catch (Exception ex)
+        {
+            report.AppendLine("emptytables FAILED");
+            report.AppendLine(ex.ToString());
+            File.WriteAllText(Path.Combine(outputRoot, "emptytables-report.txt"), report.ToString());
+            Console.Error.WriteLine(ex);
+            return 1;
+        }
+    }
+
+    private static FakeDashboardData EmptyTableData()
+    {
+        var data = new FakeDashboardData(18, WorkspaceFixtureState.Empty);
+        data.ClearTableDataForFixture();
+        return data;
+    }
+
+    private static void VerifyEmptyTableSurface(Grid host, string label, StringBuilder report)
+    {
+        var grids = FindVisualChildren<DataGrid>(host)
+            .Where(grid => !string.IsNullOrEmpty(grid.Name))
+            .ToList();
+        foreach (var grid in grids)
+        {
+            report.AppendLine($"  {label} empty-grid={grid.Name} items={grid.Items.Count} size={grid.ActualWidth:0}x{grid.ActualHeight:0}");
+            if (grid.Items.Count != 0)
+                s_problems.Add($"{label} {grid.Name} still has {grid.Items.Count} rows in empty fixture");
+        }
+
+        var lists = FindVisualChildren<ListBox>(host)
+            .Where(list => !string.IsNullOrEmpty(list.Name))
+            .Where(list => !list.Name.EndsWith("SegmentTabs", StringComparison.Ordinal)
+                && list.Name != "SettingsSectionTabs"
+                && list.Name != "MaintenanceDiagnosticsSubTabs")
+            .ToList();
+        foreach (var list in lists)
+        {
+            report.AppendLine($"  {label} empty-list={list.Name} items={list.Items.Count} size={list.ActualWidth:0}x{list.ActualHeight:0}");
+            if (list.Items.Count != 0)
+                s_problems.Add($"{label} {list.Name} still has {list.Items.Count} items in empty fixture");
+        }
+
+        var emptyText = FindVisualChildren<TextBlock>(host)
+            .Where(text => text.Visibility == Visibility.Visible && !string.IsNullOrWhiteSpace(text.Text))
+            .Where(text => text.Text.IndexOf("暂无", StringComparison.Ordinal) >= 0 || text.Text.IndexOf("没有", StringComparison.Ordinal) >= 0)
+            .Select(text => text.Text.Replace(Environment.NewLine, " / "))
+            .Distinct()
+            .ToArray();
+        var presenters = FindVisualChildren<WorkspaceStatePresenter>(host)
+            .Where(presenter => presenter.Visibility == Visibility.Visible)
+            .Select(presenter => presenter.State)
+            .Distinct()
+            .ToArray();
+        report.AppendLine($"  {label} empty-text={string.Join(" | ", emptyText)} presenters={string.Join(",", presenters)}");
+        if ((grids.Count > 0 || lists.Count > 0) && emptyText.Length == 0 && presenters.Length == 0)
+            s_problems.Add($"{label} has empty data surfaces but no visible empty-state text or presenter");
+    }
+
+    private static void RenderViewWithVerification(UserControl view, string outputRoot, string name, int windowW, int windowH, double contentW, double contentH, StringBuilder report, Action applyLayout, Action<Grid, StringBuilder> verify)
+    {
+        var host = new Grid
+        {
+            Width = contentW,
+            Height = contentH,
+            Background = CreateHarnessBackground(view),
+            ClipToBounds = true
+        };
+        host.Children.Add(view);
+        var layoutSw = Stopwatch.StartNew();
+        applyLayout();
+        host.Measure(new Size(contentW, contentH));
+        host.Arrange(new Rect(0, 0, contentW, contentH));
+        host.UpdateLayout();
+        applyLayout();
+        host.UpdateLayout();
+        layoutSw.Stop();
+        verify(host, report);
+        var sw = Stopwatch.StartNew();
+        SavePng(host, Path.Combine(outputRoot, $"{name}-{windowW}x{windowH}.png"));
+        sw.Stop();
+        report.AppendLine($"  {name} layout_ms={layoutSw.ElapsedMilliseconds} render_ms={sw.ElapsedMilliseconds} window_dip={windowW}x{windowH} content_dip={contentW:0}x{contentH:0}");
+        CollectScrollDiagnostics(host, report, name, windowW, windowH, -1);
     }
 
     private static void VerifyWorkspaceStateFixtureBindingSurface(List<string> problems, StringBuilder report)
@@ -3538,7 +3694,7 @@ public static class Program
         RenderView(view, outputRoot, "Task", windowW, windowH, contentW, contentH, report, () => view.ApplyResponsiveLayout(contentW, windowH));
     }
 
-    private static void RenderTabs(UserControl view, string outputRoot, string name, int windowW, int windowH, double contentW, double contentH, StringBuilder report, Action applyLayout)
+    private static void RenderTabs(UserControl view, string outputRoot, string name, int windowW, int windowH, double contentW, double contentH, StringBuilder report, Action applyLayout, Action<Grid, int, StringBuilder>? verify = null)
     {
         var host = new Grid
         {
@@ -3599,6 +3755,7 @@ public static class Program
                     settingsShell.Opacity = 1;
                 }
             }
+            verify?.Invoke(host, i, report);
             var sw = Stopwatch.StartNew();
             SavePng(host, Path.Combine(outputRoot, $"{name}-{windowW}x{windowH}-tab{i}.png"));
             sw.Stop();
