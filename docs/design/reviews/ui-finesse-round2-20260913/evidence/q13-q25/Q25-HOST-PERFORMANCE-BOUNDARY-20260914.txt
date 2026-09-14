@@ -1,7 +1,7 @@
 Q25-02～Q25-05 宿主性能边界记录
 
 采集日期：2026-09-14（Asia/Shanghai）
-代码基线：6450f6e（修复 Q25 搜索热态响应后）
+采集代码基线：6450f6e（修复 Q25 搜索热态响应后，最终 20ms debounce 门禁提交 5f60404 之前）
 
 已取得的宿主事实：
 - 在干净 HEAD 运行 `GameSaveCenter-一键构建安装运行.cmd`：Release 0 warning/0 error；Core 76/76；Worker 311/311；Playnite 468/525，57 skipped，0 failed。
@@ -12,4 +12,4 @@ Q25-02～Q25-05 宿主性能边界记录
 - Windows Performance Recorder 可见 `GPU`、`DesktopComposition`、`XAMLActivity` profile，但启动组合记录被系统拒绝：`Failed to enable the policy to profile system performance`，错误码 `0xc5585011`；随后 `wpr -status` 确认 `WPR is not recording`。
 - 因没有 ETW/PresentMon 呈现帧数据，不能报告 60Hz p95/最大帧间隔或慢帧比例；没有可重复的 >100ms 宿主调用栈，也没有 30 分钟导航/预览/主题/详情时间序列。
 
-结论：这份文件只证明本机干净 HEAD 的安装/启动边界和性能工具阻塞，不把 ViewModel 过滤基准、CompositionTarget.Rendering 代理或离屏 RenderHarness 结果冒充 Q25-02～Q25-05 的真实屏幕性能验收。Q24 的物理 DPI/跨屏/IME/读屏边界同样继续待宿主复核。
+结论：这份文件只证明 6450f6e 本机干净 HEAD 的安装/启动边界和性能工具阻塞；5f60404 后续只收紧搜索 debounce 并增加自动门禁，最近一次全量门禁验证了编译/测试但因工作树文档改动按保护规则停止打包，不能把旧安装冒充最新源码。文件不把 ViewModel 过滤基准、CompositionTarget.Rendering 代理或离屏 RenderHarness 结果冒充 Q25-02～Q25-05 的真实屏幕性能验收。Q24 的物理 DPI/跨屏/IME/读屏边界同样继续待宿主复核。
