@@ -2,6 +2,12 @@
 
 > 更新时间：2026-09-15。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-15 UI 精修 Q12-08 双主题业务空表复核
+
+- 当前 clean-tree 提交 `77f4dc5` 新增 RenderHarness 的 `emptytables` 夹具入口、全量空表数据清理和空态断言；Fake 数据使用 `WorkspaceFixtureState.Empty`，补齐 Trainer 的三个 loading 绑定，避免测试夹具制造假空白。
+- 受本机仅有 .NET 9 SDK、项目要求 .NET 8 SDK 且 ProjectReference workload 解析失败的环境限制，本轮用临时 direct-reference WPF runner 重建 Fake 数据并加载 production views/XAML；Light/Dark、1040×700 与 1600×900 均运行 `emptytables OK`。
+- Q12-08 视觉列已更新为通过；证据见 [`Q12-08-EMPTY-TABLES-20260915.md`](../design/reviews/ui-finesse-round2-20260913/evidence/q04-q12/Q12-08-EMPTY-TABLES-20260915.md)。真实 Playnite/Worker 空结果、Popup、物理 DPI、键盘和读屏仍保持宿主边界。
+
 ## 2026-09-15 UI 精修 Q02-06 生产路径视觉复核
 
 - 当前 clean-tree 提交 `82cf066` 的 `RenderHarness audit` 在 1440×900 与 1040×700 DIP 下复核 SaveCenterView“路径与校验”页；候选路径列和右侧详情均能读到完整技术路径，路径 TextBlock 为 260 DIP，详情路径为 321.33 DIP。

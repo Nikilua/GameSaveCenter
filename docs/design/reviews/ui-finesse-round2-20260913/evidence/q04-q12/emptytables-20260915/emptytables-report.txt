@@ -1,0 +1,234 @@
+GameSaveCenter production empty table fixtures
+Generated: 2026-09-15 07:24:36
+Scenario: all production table/list collections cleared; selected game shell retained
+Renderer: temporary direct-reference harness using production views and XAML
+
+  save-empty-light tab0 grid=SaveHistoryGrid items=0
+  save-empty-light tab0 empty-text=暂无存档历史
+完成一次备份后，历史版本会显示在这里。
+  capture=save-empty-light-1040x700-tab0.png dip=744x460
+  save-empty-light tab1 grid=SaveCandidateGrid items=0
+  save-empty-light tab1 empty-text=暂无待处理的存档路径候选
+可以点击“立即扫描”重新检测候选目录。
+  capture=save-empty-light-1040x700-tab1.png dip=744x460
+  save-empty-light tab2 empty-text=
+  capture=save-empty-light-1040x700-tab2.png dip=744x460
+  save-empty-light tab3 empty-text=
+  capture=save-empty-light-1040x700-tab3.png dip=744x460
+  task-empty-light grid=TaskGrid items=0
+  task-empty-light empty-text=暂无任务记录
+  capture=task-empty-light-1040x700.png dip=744x460
+  trainer-empty-light tab0 list=TrainerToolsList items=0
+  trainer-empty-light tab0 empty-text=暂无已安装工具
+  capture=trainer-empty-light-1040x700-tab0.png dip=744x460
+  trainer-empty-light tab1 empty-text=暂无待确认导入 | 如果当前没有待确认项目，请先从“已绑定工具”页导入 EXE、ZIP 或目录。
+  capture=trainer-empty-light-1040x700-tab1.png dip=744x460
+  trainer-empty-light tab2 empty-text=没有匹配的 FLiNG 条目
+先搜索本地缓存，或点击“刷新目录”同步最新目录。
+  capture=trainer-empty-light-1040x700-tab2.png dip=744x460
+  trainer-empty-light tab3 empty-text=
+  capture=trainer-empty-light-1040x700-tab3.png dip=744x460
+  media-empty-light tab0 grid=MediaInboxGrid items=0
+  media-empty-light tab0 empty-text=当前没有媒体收件箱 | 当前没有等待归类的媒体。
+  capture=media-empty-light-1040x700-tab0.png dip=744x460
+  media-empty-light tab1 list=MediaGrid items=0
+  media-empty-light tab1 empty-text=当前游戏还没有媒体
+导入截图或录像后，它们会显示在这里。 | 当前没有当前游戏媒体
+  capture=media-empty-light-1040x700-tab1.png dip=744x460
+  media-empty-light tab2 empty-text=暂无媒体来源规则
+添加公共截图或录像目录后，来源会显示在这里。
+  capture=media-empty-light-1040x700-tab2.png dip=744x460
+  maintenance-empty-light tab0 grid=FindingsGrid items=0
+  maintenance-empty-light tab0 empty-text=当前没有需要处理的诊断项。
+Worker、备份和媒体状态正常时，这里会保持为空。
+  capture=maintenance-empty-light-1040x700-tab0.png dip=744x460
+  maintenance-empty-light tab1 grid=CloudTransferGrid items=0
+  maintenance-empty-light tab1 empty-text=暂无符合筛选条件的云端传输记录。
+上传成功不代表远端已校验，请选择记录查看保证级别。
+  capture=maintenance-empty-light-1040x700-tab1.png dip=744x460
+  maintenance-empty-light tab2 grid=MaintenanceDeviceGrid items=0
+  maintenance-empty-light tab2 empty-text=暂无设备冲突记录。
+同步设备摘要后，有差异的游戏会显示在这里。
+  capture=maintenance-empty-light-1040x700-tab2.png dip=744x460
+  maintenance-empty-light tab3 empty-text=暂无保留明细，点击“刷新预览”生成。 | 暂无排行数据。点击“刷新存储分析”生成。 | 暂无候选明细。点击“刷新全局预览”生成。
+  capture=maintenance-empty-light-1040x700-tab3.png dip=744x460
+  maintenance-empty-light tab4 grid=MaintenanceAuditFindingsGrid items=0
+  maintenance-empty-light tab4 empty-text=当前没有维护信息 | 当前没有需要处理的诊断项。
+Worker、备份和媒体状态正常时，这里会保持为空。
+  capture=maintenance-empty-light-1040x700-tab4.png dip=744x460
+  maintenance-empty-light tab5 grid=MaintenanceProcessGrid items=0
+  maintenance-empty-light tab5 empty-text=暂无进程映射。
+绑定 EXE 文件名后，MOD 启动器等进程会被识别为对应游戏。
+  capture=maintenance-empty-light-1040x700-tab5.png dip=744x460
+  save-empty-light tab0 grid=SaveHistoryGrid items=0
+  save-empty-light tab0 empty-text=暂无存档历史
+完成一次备份后，历史版本会显示在这里。
+  capture=save-empty-light-1600x900-tab0.png dip=1276x660
+  save-empty-light tab1 grid=SaveCandidateGrid items=0
+  save-empty-light tab1 empty-text=暂无待处理的存档路径候选
+可以点击“立即扫描”重新检测候选目录。
+  capture=save-empty-light-1600x900-tab1.png dip=1276x660
+  save-empty-light tab2 empty-text=
+  capture=save-empty-light-1600x900-tab2.png dip=1276x660
+  save-empty-light tab3 empty-text=
+  capture=save-empty-light-1600x900-tab3.png dip=1276x660
+  task-empty-light grid=TaskGrid items=0
+  task-empty-light empty-text=暂无任务记录
+  capture=task-empty-light-1600x900.png dip=1276x660
+  trainer-empty-light tab0 list=TrainerToolsList items=0
+  trainer-empty-light tab0 empty-text=暂无已安装工具
+  capture=trainer-empty-light-1600x900-tab0.png dip=1276x660
+  trainer-empty-light tab1 empty-text=暂无待确认导入 | 如果当前没有待确认项目，请先从“已绑定工具”页导入 EXE、ZIP 或目录。
+  capture=trainer-empty-light-1600x900-tab1.png dip=1276x660
+  trainer-empty-light tab2 empty-text=没有匹配的 FLiNG 条目
+先搜索本地缓存，或点击“刷新目录”同步最新目录。
+  capture=trainer-empty-light-1600x900-tab2.png dip=1276x660
+  trainer-empty-light tab3 empty-text=
+  capture=trainer-empty-light-1600x900-tab3.png dip=1276x660
+  media-empty-light tab0 grid=MediaInboxGrid items=0
+  media-empty-light tab0 empty-text=当前没有媒体收件箱 | 当前没有等待归类的媒体。
+  capture=media-empty-light-1600x900-tab0.png dip=1276x660
+  media-empty-light tab1 list=MediaGrid items=0
+  media-empty-light tab1 empty-text=当前游戏还没有媒体
+导入截图或录像后，它们会显示在这里。 | 当前没有当前游戏媒体
+  capture=media-empty-light-1600x900-tab1.png dip=1276x660
+  media-empty-light tab2 empty-text=暂无媒体来源规则
+添加公共截图或录像目录后，来源会显示在这里。
+  capture=media-empty-light-1600x900-tab2.png dip=1276x660
+  maintenance-empty-light tab0 grid=FindingsGrid items=0
+  maintenance-empty-light tab0 empty-text=当前没有需要处理的诊断项。
+Worker、备份和媒体状态正常时，这里会保持为空。
+  capture=maintenance-empty-light-1600x900-tab0.png dip=1276x660
+  maintenance-empty-light tab1 grid=CloudTransferGrid items=0
+  maintenance-empty-light tab1 empty-text=暂无符合筛选条件的云端传输记录。
+上传成功不代表远端已校验，请选择记录查看保证级别。
+  capture=maintenance-empty-light-1600x900-tab1.png dip=1276x660
+  maintenance-empty-light tab2 grid=MaintenanceDeviceGrid items=0
+  maintenance-empty-light tab2 empty-text=暂无设备冲突记录。
+同步设备摘要后，有差异的游戏会显示在这里。
+  capture=maintenance-empty-light-1600x900-tab2.png dip=1276x660
+  maintenance-empty-light tab3 empty-text=暂无保留明细，点击“刷新预览”生成。 | 暂无排行数据。点击“刷新存储分析”生成。 | 暂无候选明细。点击“刷新全局预览”生成。
+  capture=maintenance-empty-light-1600x900-tab3.png dip=1276x660
+  maintenance-empty-light tab4 grid=MaintenanceAuditFindingsGrid items=0
+  maintenance-empty-light tab4 empty-text=当前没有维护信息 | 当前没有需要处理的诊断项。
+Worker、备份和媒体状态正常时，这里会保持为空。
+  capture=maintenance-empty-light-1600x900-tab4.png dip=1276x660
+  maintenance-empty-light tab5 grid=MaintenanceProcessGrid items=0
+  maintenance-empty-light tab5 empty-text=暂无进程映射。
+绑定 EXE 文件名后，MOD 启动器等进程会被识别为对应游戏。
+  capture=maintenance-empty-light-1600x900-tab5.png dip=1276x660
+  save-empty-dark tab0 grid=SaveHistoryGrid items=0
+  save-empty-dark tab0 empty-text=暂无存档历史
+完成一次备份后，历史版本会显示在这里。
+  capture=save-empty-dark-1040x700-tab0.png dip=744x460
+  save-empty-dark tab1 grid=SaveCandidateGrid items=0
+  save-empty-dark tab1 empty-text=暂无待处理的存档路径候选
+可以点击“立即扫描”重新检测候选目录。
+  capture=save-empty-dark-1040x700-tab1.png dip=744x460
+  save-empty-dark tab2 empty-text=
+  capture=save-empty-dark-1040x700-tab2.png dip=744x460
+  save-empty-dark tab3 empty-text=
+  capture=save-empty-dark-1040x700-tab3.png dip=744x460
+  task-empty-dark grid=TaskGrid items=0
+  task-empty-dark empty-text=暂无任务记录
+  capture=task-empty-dark-1040x700.png dip=744x460
+  trainer-empty-dark tab0 list=TrainerToolsList items=0
+  trainer-empty-dark tab0 empty-text=暂无已安装工具
+  capture=trainer-empty-dark-1040x700-tab0.png dip=744x460
+  trainer-empty-dark tab1 empty-text=暂无待确认导入 | 如果当前没有待确认项目，请先从“已绑定工具”页导入 EXE、ZIP 或目录。
+  capture=trainer-empty-dark-1040x700-tab1.png dip=744x460
+  trainer-empty-dark tab2 empty-text=没有匹配的 FLiNG 条目
+先搜索本地缓存，或点击“刷新目录”同步最新目录。
+  capture=trainer-empty-dark-1040x700-tab2.png dip=744x460
+  trainer-empty-dark tab3 empty-text=
+  capture=trainer-empty-dark-1040x700-tab3.png dip=744x460
+  media-empty-dark tab0 grid=MediaInboxGrid items=0
+  media-empty-dark tab0 empty-text=当前没有媒体收件箱 | 当前没有等待归类的媒体。
+  capture=media-empty-dark-1040x700-tab0.png dip=744x460
+  media-empty-dark tab1 list=MediaGrid items=0
+  media-empty-dark tab1 empty-text=当前游戏还没有媒体
+导入截图或录像后，它们会显示在这里。 | 当前没有当前游戏媒体
+  capture=media-empty-dark-1040x700-tab1.png dip=744x460
+  media-empty-dark tab2 empty-text=暂无媒体来源规则
+添加公共截图或录像目录后，来源会显示在这里。
+  capture=media-empty-dark-1040x700-tab2.png dip=744x460
+  maintenance-empty-dark tab0 grid=FindingsGrid items=0
+  maintenance-empty-dark tab0 empty-text=当前没有需要处理的诊断项。
+Worker、备份和媒体状态正常时，这里会保持为空。
+  capture=maintenance-empty-dark-1040x700-tab0.png dip=744x460
+  maintenance-empty-dark tab1 grid=CloudTransferGrid items=0
+  maintenance-empty-dark tab1 empty-text=暂无符合筛选条件的云端传输记录。
+上传成功不代表远端已校验，请选择记录查看保证级别。
+  capture=maintenance-empty-dark-1040x700-tab1.png dip=744x460
+  maintenance-empty-dark tab2 grid=MaintenanceDeviceGrid items=0
+  maintenance-empty-dark tab2 empty-text=暂无设备冲突记录。
+同步设备摘要后，有差异的游戏会显示在这里。
+  capture=maintenance-empty-dark-1040x700-tab2.png dip=744x460
+  maintenance-empty-dark tab3 empty-text=暂无保留明细，点击“刷新预览”生成。 | 暂无排行数据。点击“刷新存储分析”生成。 | 暂无候选明细。点击“刷新全局预览”生成。
+  capture=maintenance-empty-dark-1040x700-tab3.png dip=744x460
+  maintenance-empty-dark tab4 grid=MaintenanceAuditFindingsGrid items=0
+  maintenance-empty-dark tab4 empty-text=当前没有维护信息 | 当前没有需要处理的诊断项。
+Worker、备份和媒体状态正常时，这里会保持为空。
+  capture=maintenance-empty-dark-1040x700-tab4.png dip=744x460
+  maintenance-empty-dark tab5 grid=MaintenanceProcessGrid items=0
+  maintenance-empty-dark tab5 empty-text=暂无进程映射。
+绑定 EXE 文件名后，MOD 启动器等进程会被识别为对应游戏。
+  capture=maintenance-empty-dark-1040x700-tab5.png dip=744x460
+  save-empty-dark tab0 grid=SaveHistoryGrid items=0
+  save-empty-dark tab0 empty-text=暂无存档历史
+完成一次备份后，历史版本会显示在这里。
+  capture=save-empty-dark-1600x900-tab0.png dip=1276x660
+  save-empty-dark tab1 grid=SaveCandidateGrid items=0
+  save-empty-dark tab1 empty-text=暂无待处理的存档路径候选
+可以点击“立即扫描”重新检测候选目录。
+  capture=save-empty-dark-1600x900-tab1.png dip=1276x660
+  save-empty-dark tab2 empty-text=
+  capture=save-empty-dark-1600x900-tab2.png dip=1276x660
+  save-empty-dark tab3 empty-text=
+  capture=save-empty-dark-1600x900-tab3.png dip=1276x660
+  task-empty-dark grid=TaskGrid items=0
+  task-empty-dark empty-text=暂无任务记录
+  capture=task-empty-dark-1600x900.png dip=1276x660
+  trainer-empty-dark tab0 list=TrainerToolsList items=0
+  trainer-empty-dark tab0 empty-text=暂无已安装工具
+  capture=trainer-empty-dark-1600x900-tab0.png dip=1276x660
+  trainer-empty-dark tab1 empty-text=暂无待确认导入 | 如果当前没有待确认项目，请先从“已绑定工具”页导入 EXE、ZIP 或目录。
+  capture=trainer-empty-dark-1600x900-tab1.png dip=1276x660
+  trainer-empty-dark tab2 empty-text=没有匹配的 FLiNG 条目
+先搜索本地缓存，或点击“刷新目录”同步最新目录。
+  capture=trainer-empty-dark-1600x900-tab2.png dip=1276x660
+  trainer-empty-dark tab3 empty-text=
+  capture=trainer-empty-dark-1600x900-tab3.png dip=1276x660
+  media-empty-dark tab0 grid=MediaInboxGrid items=0
+  media-empty-dark tab0 empty-text=当前没有媒体收件箱 | 当前没有等待归类的媒体。
+  capture=media-empty-dark-1600x900-tab0.png dip=1276x660
+  media-empty-dark tab1 list=MediaGrid items=0
+  media-empty-dark tab1 empty-text=当前游戏还没有媒体
+导入截图或录像后，它们会显示在这里。 | 当前没有当前游戏媒体
+  capture=media-empty-dark-1600x900-tab1.png dip=1276x660
+  media-empty-dark tab2 empty-text=暂无媒体来源规则
+添加公共截图或录像目录后，来源会显示在这里。
+  capture=media-empty-dark-1600x900-tab2.png dip=1276x660
+  maintenance-empty-dark tab0 grid=FindingsGrid items=0
+  maintenance-empty-dark tab0 empty-text=当前没有需要处理的诊断项。
+Worker、备份和媒体状态正常时，这里会保持为空。
+  capture=maintenance-empty-dark-1600x900-tab0.png dip=1276x660
+  maintenance-empty-dark tab1 grid=CloudTransferGrid items=0
+  maintenance-empty-dark tab1 empty-text=暂无符合筛选条件的云端传输记录。
+上传成功不代表远端已校验，请选择记录查看保证级别。
+  capture=maintenance-empty-dark-1600x900-tab1.png dip=1276x660
+  maintenance-empty-dark tab2 grid=MaintenanceDeviceGrid items=0
+  maintenance-empty-dark tab2 empty-text=暂无设备冲突记录。
+同步设备摘要后，有差异的游戏会显示在这里。
+  capture=maintenance-empty-dark-1600x900-tab2.png dip=1276x660
+  maintenance-empty-dark tab3 empty-text=暂无保留明细，点击“刷新预览”生成。 | 暂无排行数据。点击“刷新存储分析”生成。 | 暂无候选明细。点击“刷新全局预览”生成。
+  capture=maintenance-empty-dark-1600x900-tab3.png dip=1276x660
+  maintenance-empty-dark tab4 grid=MaintenanceAuditFindingsGrid items=0
+  maintenance-empty-dark tab4 empty-text=当前没有维护信息 | 当前没有需要处理的诊断项。
+Worker、备份和媒体状态正常时，这里会保持为空。
+  capture=maintenance-empty-dark-1600x900-tab4.png dip=1276x660
+  maintenance-empty-dark tab5 grid=MaintenanceProcessGrid items=0
+  maintenance-empty-dark tab5 empty-text=暂无进程映射。
+绑定 EXE 文件名后，MOD 启动器等进程会被识别为对应游戏。
+  capture=maintenance-empty-dark-1600x900-tab5.png dip=1276x660
+emptytables OK

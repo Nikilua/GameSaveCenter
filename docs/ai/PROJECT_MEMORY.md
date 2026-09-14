@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-15
 
+## 2026-09-15 UI 精修 Q12-08 双主题业务空表复核
+
+- 提交 `77f4dc5` 为 RenderHarness 增加 `emptytables` 入口和 `FakeDashboardData.ClearTableDataForFixture()`，只清空开发夹具数据，不改生产命令、Binding 或页面行为；夹具状态使用 `WorkspaceFixtureState.Empty`，并暴露 Trainer 工具/目录/版本读取状态。
+- clean-tree 上用临时 direct-reference WPF runner 加载 production views/XAML，覆盖 Light/Dark、`1040×700` 与 `1600×900`；报告确认 Save/Task/Trainer/Media/Maintenance 所有目标表/列表为 0 项且有空态文案，结果 `emptytables OK`。
+- Q12-08 的离屏视觉列已签收；真实 Worker/Playnite 生命周期、Popup/Tooltip、物理 DPI、键盘/读屏继续不由离屏证据替代。由于本机缺少项目要求的 .NET 8 SDK，常规 ProjectReference 构建仍需在具备正确 SDK 的环境补跑。
+
 ## 2026-09-15 UI 精修 Q02-06 生产路径视觉复核
 
 - 提交 `82cf066` 的 clean-tree `RenderHarness audit` 复核了 SaveCenterView“路径与校验”页；1440×900 与 1040×700 DIP 下候选路径列和详情面板均可读到完整 `D:\Games\Baldur's Gate 3\Save\N\SlotN`，路径单元格为 `260 DIP`，详情为 `321.33 DIP`。

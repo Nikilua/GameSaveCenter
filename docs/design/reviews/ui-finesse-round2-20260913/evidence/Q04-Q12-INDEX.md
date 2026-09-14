@@ -1,6 +1,6 @@
 # Q04–Q12 共享控件与表面受控证据
 
-采集日期：2026-09-15（Asia/Shanghai）。本索引记录 Q04–Q12 对共享表面、按钮、图标、输入、选择器、选择控件、导航/页签和表格的专项复核。当前代码基线为提交 `2f3d17b`（补齐排序箭头双状态受控夹具）；夹具仍是 STA、1120×980 DIP、96 DPI、DpiScale=1.00 的开发专用 WPF 离屏窗口，不替代真实 Playnite、Popup/IME、物理 DPI 或屏幕读屏验收。
+采集日期：2026-09-15（Asia/Shanghai）。本索引记录 Q04–Q12 对共享表面、按钮、图标、输入、选择器、选择控件、导航/页签和表格的专项复核。当前代码基线为提交 `77f4dc5`（补齐业务空表视觉夹具）；夹具仍是 STA、96 DPI、DpiScale=1.00 的开发专用 WPF 离屏窗口，不替代真实 Playnite、Popup/IME、物理 DPI 或屏幕读屏验收。
 
 ## 运行身份与产物
 
@@ -33,7 +33,13 @@
 - Q09：ComboBox 选中内容、Chevron、3 项 Popup 与有限滚动模板已专项记录；Popup 真定位、键盘关闭不写回、游戏选框 DropDownClosed 同步和移屏主题切换待真实窗口验收。
 - Q10：CheckBox 勾形/半选、ToggleSwitch、Slider 的共享几何与实际边界已记录；本仓库没有额外 RadioButton 业务组，导航 RadioButton 继续沿用 `GscNavItem`/`AcrylicNavItem` 的真实导航入口，不新增控件。绑定拒绝、连续切换和键盘步进仍需宿主行为验收。
 - Q11：当前导航 RadioButton、TabControl/TabItem 的共享入口已核对来源；本夹具只对 ListBox 选中/焦点节奏做受控检查，不把离屏截图冒充六页导航状态保持或真实页签溢出验收。
-- Q12：DataGrid 表头、行、状态胶囊、数字/路径列、排序槽和 4 行端点在截图/报告中复核；完整名称 Tooltip、最坏列宽、排序点击和空表业务数据仍需各工作区宿主回归。
+- Q12：DataGrid 表头、行、状态胶囊、数字/路径列、排序槽、4 行端点和双主题业务空表在截图/报告中复核；完整名称 Tooltip、最坏列宽、排序点击和真实 Worker/Playnite 数据生命周期仍需各工作区宿主回归。
+
+## 2026-09-15 Q12-08 业务空表双主题复核
+
+- 在 clean-tree `77f4dc5d7766751f007621d2db15b66dff2afbd2` 上，使用开发专用 `FakeDashboardData(18, WorkspaceFixtureState.Empty)` 清空所有生产表/列表数据，覆盖 Light/Dark 与 `1040×700`、`1600×900` 逻辑窗口；production views/XAML 的 direct-reference runner 报告为 `emptytables OK`。
+- 报告逐页记录 Save 历史/候选、Task、Trainer 工具/在线库/版本、Media 收件箱/当前媒体/来源规则、Maintenance 诊断/云队列/设备/保留分析/审计/进程映射均为 0 项，并记录相应空态文案。代表截图和完整报告见 [Q12-08 空表证据](q04-q12/Q12-08-EMPTY-TABLES-20260915.md)。
+- 本证据只升级 Q12-08 的离屏视觉列；真实 Playnite/Worker 空结果、Popup/Tooltip、物理 DPI、读屏和键盘操作仍保持宿主边界。
 
 ## 证据边界
 

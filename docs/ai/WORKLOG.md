@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-15 UI 精修 Q12-08 双主题业务空表复核
+
+- 提交并推送 `77f4dc5`，新增 RenderHarness `emptytables` 入口、空表数据清理方法、Trainer loading 夹具绑定和“任一空表/列表必须有空态”断言。
+- 由于本机只安装 .NET 9 SDK，项目要求的 .NET 8 SDK 不在机器上，常规 ProjectReference 构建在 workload 解析阶段失败；用临时 direct-reference WPF 项目成功重建 Fake 数据并运行 production views/XAML，Light/Dark × `1040×700`/`1600×900` 报告均 `emptytables OK`。
+- 新增 Q12-08 证据页及代表截图/完整报告；Q12-08 视觉列升级为通过，宿主真实 Worker 数据生命周期、Popup、物理 DPI、键盘和读屏边界保留未完成。
+
 ## 2026-09-15 UI 精修 Q02-06 生产路径视觉复核
 
 - 在 clean-tree `82cf066` 运行 `RenderHarness audit`，查看 SaveCenterView“路径与校验”页的标准 1440×900 与窄 1040×700 DIP 截图；候选表与详情均保留完整技术路径，路径单元格测量为 `260 DIP`，详情为 `321.33 DIP`。
