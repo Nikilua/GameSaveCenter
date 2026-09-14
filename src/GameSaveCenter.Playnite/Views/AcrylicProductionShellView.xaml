@@ -239,7 +239,7 @@
                                     <TextBlock Text="{Binding SelectedGame.Name, TargetNullValue=请选择游戏}"
                                                FontSize="12" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
                                     <TextBlock Text="{Binding SelectedGame.PlatformDisplay, TargetNullValue=未选择游戏}"
-                                               FontSize="10" Foreground="{DynamicResource GscSecondaryTextBrush}"
+                                               FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscSecondaryTextBrush}"
                                                Margin="0,2,0,0" TextTrimming="CharacterEllipsis"/>
                                 </StackPanel>
                                 <Path Grid.Column="2" Data="M 1,2 L 5,6 L 9,2" Stretch="None"
@@ -337,8 +337,8 @@
                                         <Grid>
                                             <Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                             <Border Width="32" Height="32" CornerRadius="8" Background="{DynamicResource GscAccentIconFillBrush}"><TextBlock Text="{Binding Initials}" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="SemiBold"/></Border>
-                                            <StackPanel Grid.Column="1" Margin="8,0,8,0" VerticalAlignment="Center"><TextBlock Text="{Binding Name}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/><TextBlock Text="{Binding MetaDisplay}" FontSize="10" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,2,0,0" TextTrimming="CharacterEllipsis"/></StackPanel>
-                                            <TextBlock Grid.Column="2" Text="{Binding HealthStateDisplay}" FontSize="10" Foreground="{DynamicResource GscSecondaryTextBrush}" VerticalAlignment="Center"/>
+                                            <StackPanel Grid.Column="1" Margin="8,0,8,0" VerticalAlignment="Center"><TextBlock Text="{Binding Name}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/><TextBlock Text="{Binding MetaDisplay}" FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,2,0,0" TextTrimming="CharacterEllipsis"/></StackPanel>
+                                            <TextBlock Grid.Column="2" Text="{Binding HealthStateDisplay}" FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscSecondaryTextBrush}" VerticalAlignment="Center"/>
                                         </Grid>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>

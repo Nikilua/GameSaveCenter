@@ -175,21 +175,21 @@
                                      IsChecked="{Binding EnableUiAnimations}" Margin="0,6" Checked="OnVisualSettingChanged" Unchecked="OnVisualSettingChanged" AutomationProperties.Name="启用界面动画">
                         <StackPanel>
                             <TextBlock Text="启用界面动画" FontWeight="SemiBold"/>
-                            <TextBlock Text="页面淡入、滑动、悬停与按钮按压反馈" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                            <TextBlock Text="页面淡入、滑动、悬停与按钮按压反馈" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                         </StackPanel>
                     </ui:ToggleSwitch>
                     <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关"
                                      IsChecked="{Binding EnableGlassEffects}" Margin="0,6" Checked="OnVisualSettingChanged" Unchecked="OnVisualSettingChanged" AutomationProperties.Name="启用毛玻璃与环境光效果">
                         <StackPanel>
                             <TextBlock Text="启用毛玻璃与环境光效果" FontWeight="SemiBold"/>
-                            <TextBlock Text="只用于侧栏、浮层和固定环境光，不应用到滚动内容" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                            <TextBlock Text="只用于侧栏、浮层和固定环境光，不应用到滚动内容" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                         </StackPanel>
                     </ui:ToggleSwitch>
                     <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关"
                                      IsChecked="{Binding FollowSelectedGameBackground}" Margin="0,6" Checked="OnVisualSettingChanged" Unchecked="OnVisualSettingChanged" AutomationProperties.Name="跟随当前游戏背景">
                         <StackPanel>
                             <TextBlock Text="跟随当前游戏背景" FontWeight="SemiBold"/>
-                            <TextBlock Text="根据当前游戏封面更新环境色和背景模糊；关闭后不再解码封面，减少性能消耗" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                            <TextBlock Text="根据当前游戏封面更新环境色和背景模糊；关闭后不再解码封面，减少性能消耗" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                         </StackPanel>
                     </ui:ToggleSwitch>
                 </StackPanel>
@@ -202,25 +202,25 @@
                     <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关" IsChecked="{Binding AutoStartWorker}" Margin="0,5" AutomationProperties.Name="随 Playnite 启动 Worker">
                         <StackPanel>
                             <TextBlock Text="随 Playnite 启动 Worker" FontWeight="SemiBold"/>
-                            <TextBlock Text="管理面板未打开时也可执行已配置任务" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                            <TextBlock Text="管理面板未打开时也可执行已配置任务" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                         </StackPanel>
                     </ui:ToggleSwitch>
                     <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关" IsChecked="{Binding EnableProcessDetection}" Margin="0,5" AutomationProperties.Name="检测外部启动的游戏">
                         <StackPanel>
                             <TextBlock Text="检测外部启动的游戏" FontWeight="SemiBold"/>
-                            <TextBlock Text="识别 Steam、Xbox、启动器和 MOD 管理器外部启动" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                            <TextBlock Text="识别 Steam、Xbox、启动器和 MOD 管理器外部启动" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                         </StackPanel>
                     </ui:ToggleSwitch>
                     <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关" IsChecked="{Binding EnableSessionSavePathDetection}" Margin="0,5" AutomationProperties.Name="会话存档路径检测">
                         <StackPanel>
                             <TextBlock Text="会话存档路径检测" FontWeight="SemiBold"/>
-                            <TextBlock Text="对未匹配游戏记录启动前/退出后文件差异，生成候选路径" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                            <TextBlock Text="对未匹配游戏记录启动前/退出后文件差异，生成候选路径" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                         </StackPanel>
                     </ui:ToggleSwitch>
                     <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关" IsChecked="{Binding EnableMediaSync}" Margin="0,5" AutomationProperties.Name="同步新增截图和录像">
                         <StackPanel>
                             <TextBlock Text="同步新增截图和录像" FontWeight="SemiBold"/>
-                            <TextBlock Text="源文件删除不会删除归档" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                            <TextBlock Text="源文件删除不会删除归档" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                         </StackPanel>
                     </ui:ToggleSwitch>
                     <WrapPanel Margin="22,1,0,5" IsEnabled="{Binding EnableMediaSync}">
@@ -236,11 +236,11 @@
                             <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关" IsChecked="{Binding CloudUploadQueuePaused}" AutomationProperties.Name="暂停云端自动重试">
                                 <StackPanel>
                                     <TextBlock Text="暂停云端自动重试队列" FontWeight="SemiBold"/>
-                                    <TextBlock Text="只暂停后台自动重试，手动备份/媒体同步仍可执行；恢复开关后会继续处理已保存队列。" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                    <TextBlock Text="只暂停后台自动重试，手动备份/媒体同步仍可执行；恢复开关后会继续处理已保存队列。" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                                 </StackPanel>
                             </ui:ToggleSwitch>
                             <TextBlock Text="自动上传允许时段（本地时间）" FontWeight="SemiBold" Margin="0,10,0,0"/>
-                            <TextBlock Text="填写当天分钟数（0–1439 / 1–1440）；起始晚于结束表示跨午夜，默认 0–1440 为全天。" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,7"/>
+                            <TextBlock Text="填写当天分钟数（0–1439 / 1–1440）；起始晚于结束表示跨午夜，默认 0–1440 为全天。" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,7"/>
                             <UniformGrid Columns="2">
                                 <StackPanel Margin="0,0,10,0">
                                     <TextBlock Text="起始分钟" Margin="0,0,0,4"/>
@@ -257,7 +257,7 @@
                     <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关" IsChecked="{Binding EnableTaskNotifications}" Margin="0,5" AutomationProperties.Name="任务完成或失败时显示 Playnite 通知">
                         <StackPanel>
                             <TextBlock Text="任务完成或失败时显示 Playnite 通知" FontWeight="SemiBold"/>
-                            <TextBlock Text="管理面板关闭时也会监测" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                            <TextBlock Text="管理面板关闭时也会监测" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                         </StackPanel>
                     </ui:ToggleSwitch>
                     <Border Style="{DynamicResource GscRedesignSubCard}" Padding="12" Margin="0,2,0,0" IsEnabled="{Binding EnableTaskNotifications}">
@@ -265,7 +265,7 @@
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                             <StackPanel Margin="0,0,14,0">
                                 <TextBlock Text="通知级别" FontWeight="SemiBold"/>
-                                <TextBlock Text="仅重要通知、退出摘要或包含每个任务的详细通知" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                <TextBlock Text="仅重要通知、退出摘要或包含每个任务的详细通知" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                             </StackPanel>
                             <ComboBox Grid.Column="1" MinWidth="160" Style="{StaticResource GscWpfUiComboBox}" SelectedValue="{Binding NotificationLevel, Mode=TwoWay, TargetNullValue={x:Static contracts:NotificationLevel.Summary}, FallbackValue={x:Static contracts:NotificationLevel.Summary}}" SelectedValuePath="Tag" AutomationProperties.Name="通知级别">
                                 <ComboBoxItem Content="仅重要通知" Tag="{x:Static contracts:NotificationLevel.ImportantOnly}"/>
@@ -277,13 +277,13 @@
                     <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关" IsChecked="{Binding SafeModeEnabled}" Margin="0,5" AutomationProperties.Name="安全模式">
                         <StackPanel>
                             <TextBlock Text="安全模式" FontWeight="SemiBold"/>
-                            <TextBlock Text="暂停自动备份、自动媒体同步、云端上传和工具自动启动；手动操作仍可用" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                            <TextBlock Text="暂停自动备份、自动媒体同步、云端上传和工具自动启动；手动操作仍可用" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                         </StackPanel>
                     </ui:ToggleSwitch>
                     <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关" IsChecked="{Binding SafeModeRequested}" Margin="0,5" AutomationProperties.Name="下次以安全模式启动">
                         <StackPanel>
                             <TextBlock Text="下次以安全模式启动" FontWeight="SemiBold"/>
-                            <TextBlock Text="手动请求下一次启动进入安全模式；连续启动失败时也会自动请求确认" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                            <TextBlock Text="手动请求下一次启动进入安全模式；连续启动失败时也会自动请求确认" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                         </StackPanel>
                     </ui:ToggleSwitch>
                     <UniformGrid x:Name="AutomationIntervalFields" Columns="3" Margin="0,10,0,0">
@@ -294,7 +294,7 @@
                     <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关" IsChecked="{Binding HealthInspectionEnabled}" Margin="0,2,0,5" AutomationProperties.Name="启用恢复可用性巡检">
                         <StackPanel>
                             <TextBlock Text="自动巡检备份的恢复可用性" FontWeight="SemiBold"/>
-                            <TextBlock Text="只在隔离目录解包并核对清单/哈希，不会写入真实存档；游戏运行或同游戏有操作时自动推迟。" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                            <TextBlock Text="只在隔离目录解包并核对清单/哈希，不会写入真实存档；游戏运行或同游戏有操作时自动推迟。" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                         </StackPanel>
                     </ui:ToggleSwitch>
                     <UniformGrid x:Name="HealthInspectionIntervalFields" Columns="2" Margin="0,8,0,0" IsEnabled="{Binding HealthInspectionEnabled}">
@@ -306,7 +306,7 @@
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                             <StackPanel Margin="0,0,14,0">
                                 <TextBlock Text="最近保护统计窗口" FontWeight="SemiBold"/>
-                                <TextBlock Text="首页按最近游玩记录统计需要处理的游戏" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                <TextBlock Text="首页按最近游玩记录统计需要处理的游戏" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                             </StackPanel>
                             <ComboBox Grid.Column="1" MinWidth="160" Style="{StaticResource GscWpfUiComboBox}" SelectedValue="{Binding RecentProtectionWindowDays, Mode=TwoWay}" SelectedValuePath="Tag" ToolTip="选择首页保护摘要的最近游玩时间范围。" AutomationProperties.Name="最近保护统计窗口">
                                 <ComboBoxItem Content="最近 7 天" Tag="7"/>

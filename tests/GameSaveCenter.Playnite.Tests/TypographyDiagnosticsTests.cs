@@ -134,6 +134,32 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.DoesNotContain("Text=\"启动延迟\" Foreground=\"{DynamicResource GscSecondaryTextBrush}\" FontSize=\"10\"", trainer);
         }
 
+        [Fact]
+        public void ProductionTenAndElevenPointTextUsesSharedCaptionToken()
+        {
+            var root = FindRepositoryRoot();
+            var productionRoots = new[]
+            {
+                Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views"),
+                Path.Combine(root, "src", "GameSaveCenter.Playnite", "Settings")
+            };
+            var files = productionRoots
+                .SelectMany(path => Directory.EnumerateFiles(path, "*.xaml", SearchOption.AllDirectories))
+                .Where(path => path.IndexOf(Path.DirectorySeparatorChar + "Development" + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase) < 0)
+                .ToArray();
+
+            Assert.NotEmpty(files);
+            foreach (var file in files)
+            {
+                var source = File.ReadAllText(file);
+                Assert.DoesNotContain("FontSize=\"10\"", source);
+                Assert.DoesNotContain("FontSize=\"11\"", source);
+            }
+
+            var productionSources = files.Select(File.ReadAllText).ToArray();
+            Assert.Contains(productionSources, source => source.IndexOf("FontSize=\"{DynamicResource GscCaptionFontSize}\"", StringComparison.Ordinal) >= 0);
+        }
+
         private static string FindRepositoryRoot()
         {
             var directory = new DirectoryInfo(AppContext.BaseDirectory);

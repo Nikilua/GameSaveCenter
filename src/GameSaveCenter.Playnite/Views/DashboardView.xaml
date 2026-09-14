@@ -608,7 +608,7 @@
                             </Border>
                             <StackPanel x:Name="SidebarBrandText" Margin="10,0,0,0" VerticalAlignment="Center">
                                 <TextBlock Text="GameSaveCenter" FontWeight="SemiBold" FontSize="14"/>
-<TextBlock x:Name="SidebarVersionText" Text="v0.6.73" FontSize="11" Foreground="{DynamicResource GscSecondaryTextBrush}"/>
+<TextBlock x:Name="SidebarVersionText" Text="v0.6.73" FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscSecondaryTextBrush}"/>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
@@ -668,7 +668,7 @@
                                            HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
                                 <StackPanel x:Name="SidebarWorkerStatusText" Grid.Column="1">
                                     <TextBlock Text="Worker" FontSize="12" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
-                                    <TextBlock FontSize="11" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,3,0,0">
+                                    <TextBlock FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,3,0,0">
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockStyle}">
                                                 <Setter Property="Foreground" Value="{DynamicResource GscSuccessBrush}"/>
@@ -707,7 +707,7 @@
                                            HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
                                 <StackPanel x:Name="SidebarLudusaviStatusText" Grid.Column="1">
                                     <TextBlock Text="Ludusavi" FontSize="12" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
-                                    <TextBlock FontSize="11" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,3,0,0" TextTrimming="CharacterEllipsis"
+                                    <TextBlock FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,3,0,0" TextTrimming="CharacterEllipsis"
                                                ToolTip="{Binding Snapshot.LudusaviVersion}">
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockStyle}">
@@ -816,17 +816,17 @@
                         <ContentControl Style="{StaticResource GscSelectedGameIconControl}" Width="32" Height="32" Content="{Binding SelectedGameIcon}"/>
                         <StackPanel Grid.Column="1" Margin="8,0,12,0" MinWidth="0">
                             <TextBlock Style="{StaticResource GscComboBoxLongText}" Text="{Binding SelectedGame.Name, TargetNullValue=请选择游戏}" FontWeight="SemiBold"/>
-                            <TextBlock Style="{StaticResource GscComboBoxLongText}" FontSize="11" Foreground="{DynamicResource GscSecondaryTextBrush}">
+                            <TextBlock Style="{StaticResource GscComboBoxLongText}" FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscSecondaryTextBrush}">
                                 <Run Text="{Binding SelectedGame.PlatformDisplay, Mode=OneWay}"/><Run Text=" · "/><Run Text="{Binding SelectedGame.InstallStateDisplay, Mode=OneWay}"/><Run Text=" · "/><Run Text="{Binding SelectedGame.MatchStateDisplay, Mode=OneWay}"/><Run Text=" · "/><Run Text="{Binding SelectedGame.HealthStateDisplay, Mode=OneWay}"/>
                             </TextBlock>
                         </StackPanel>
                         <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,10,0">
                             <ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconStatusInfo}" Width="18" Height="18" Foreground="{DynamicResource GscInfoBrush}" Margin="0,0,4,0"/>
-                            <TextBlock Text="{Binding SelectedGame.BackupVersionCount, Mode=OneWay}" FontSize="11" Foreground="{DynamicResource GscInfoBrush}"/>
+                            <TextBlock Text="{Binding SelectedGame.BackupVersionCount, Mode=OneWay}" FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscInfoBrush}"/>
                             <ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconStatusWarning}" Width="18" Height="18" Foreground="{DynamicResource GscWarningBrush}" Margin="10,0,4,0"/>
-                            <TextBlock Text="{Binding SelectedGame.MediaCount, Mode=OneWay}" FontSize="11" Foreground="{DynamicResource GscWarningBrush}"/>
+                            <TextBlock Text="{Binding SelectedGame.MediaCount, Mode=OneWay}" FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscWarningBrush}"/>
                         </StackPanel>
-                        <TextBlock Grid.Column="3" Text="{Binding SelectedGame.CloudStateDisplay, Mode=OneWay}" FontSize="11" Foreground="{DynamicResource GscInfoBrush}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,0,8,0"/>
+                        <TextBlock Grid.Column="3" Text="{Binding SelectedGame.CloudStateDisplay, Mode=OneWay}" FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscInfoBrush}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,0,8,0"/>
                         <Path Grid.Column="4" Data="M 1,2 L 5,6 L 9,2" Stretch="None" Stroke="{DynamicResource GscSecondaryTextBrush}" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
                 </Button>
@@ -997,13 +997,13 @@
                                     </Border>
                                     <StackPanel Grid.Column="1" Margin="10,0,14,0" VerticalAlignment="Center" MinWidth="0">
                                         <TextBlock Text="{Binding Name}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/>
-                                        <TextBlock Text="{Binding MetaDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding MetaDisplay}"/>
+                                        <TextBlock Text="{Binding MetaDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding MetaDisplay}"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
                                         <Border x:Name="HealthPill" Background="{DynamicResource GscControlFillBrush}" BorderBrush="{DynamicResource GscControlStrokeBrush}" BorderThickness="1" CornerRadius="9" Padding="8,5">
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                                 <Border x:Name="StateDot" Width="8" Height="8" CornerRadius="4" Background="{DynamicResource GscWarningBrush}" Margin="0,0,7,0"/>
-                                                <TextBlock x:Name="HealthLabel" Text="{Binding HealthStateDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="11"/>
+                                                <TextBlock x:Name="HealthLabel" Text="{Binding HealthStateDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}"/>
                                             </StackPanel>
                                         </Border>
                                     </StackPanel>
@@ -1111,18 +1111,18 @@
                                                         </Style>
                                                     </Border.Style>
                                                 </Border>
-                                                <TextBlock Text="{Binding SelectedGame.HealthStateDisplay, Mode=OneWay}" FontSize="11"/>
+                                                <TextBlock Text="{Binding SelectedGame.HealthStateDisplay, Mode=OneWay}" FontSize="{DynamicResource GscCaptionFontSize}"/>
                                             </StackPanel>
                                         </Border>
                                     </StackPanel>
-                                    <TextBlock FontSize="11" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,3,0,0" TextTrimming="CharacterEllipsis">
+                                    <TextBlock FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,3,0,0" TextTrimming="CharacterEllipsis">
                                         <Run Text="{Binding SelectedGame.PlatformDisplay, Mode=OneWay}"/><Run Text=" · Ludusavi："/><Run Text="{Binding SelectedGame.LudusaviName, Mode=OneWay, TargetNullValue=未匹配}"/>
                                     </TextBlock>
                                 </StackPanel>
                                 <UniformGrid x:Name="SelectedGameMetricPanel" Grid.Column="2" Columns="3" Margin="16,0,0,0" VerticalAlignment="Center">
-                                    <Border Style="{StaticResource GscRedesignContextPill}" Margin="0,0,8,0"><StackPanel><TextBlock Text="版本" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10"/><TextBlock Text="{Binding SelectedGame.BackupVersionCount, Mode=OneWay}" FontWeight="SemiBold" Margin="0,3,0,0"/></StackPanel></Border>
-                                    <Border Style="{StaticResource GscRedesignContextPill}" Margin="0,0,8,0"><StackPanel><TextBlock Text="媒体" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10"/><TextBlock Text="{Binding SelectedGame.MediaCount, Mode=OneWay}" FontWeight="SemiBold" Margin="0,3,0,0"/></StackPanel></Border>
-                                    <Border Style="{StaticResource GscRedesignContextPill}"><StackPanel><TextBlock Text="云端" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10"/><TextBlock Text="{Binding SelectedGame.CloudStateDisplay, Mode=OneWay}" FontWeight="SemiBold" Margin="0,3,0,0" TextTrimming="CharacterEllipsis"/></StackPanel></Border>
+                                    <Border Style="{StaticResource GscRedesignContextPill}" Margin="0,0,8,0"><StackPanel><TextBlock Text="版本" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}"/><TextBlock Text="{Binding SelectedGame.BackupVersionCount, Mode=OneWay}" FontWeight="SemiBold" Margin="0,3,0,0"/></StackPanel></Border>
+                                    <Border Style="{StaticResource GscRedesignContextPill}" Margin="0,0,8,0"><StackPanel><TextBlock Text="媒体" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}"/><TextBlock Text="{Binding SelectedGame.MediaCount, Mode=OneWay}" FontWeight="SemiBold" Margin="0,3,0,0"/></StackPanel></Border>
+                                    <Border Style="{StaticResource GscRedesignContextPill}"><StackPanel><TextBlock Text="云端" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}"/><TextBlock Text="{Binding SelectedGame.CloudStateDisplay, Mode=OneWay}" FontWeight="SemiBold" Margin="0,3,0,0" TextTrimming="CharacterEllipsis"/></StackPanel></Border>
                                 </UniformGrid>
                             </Grid>
                             <WrapPanel x:Name="GameHeaderActions" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="16,0,0,0">
