@@ -75,7 +75,6 @@ $runnerMetadata.Q24_03PhysicalCrossScreen = [ordered]@{
     Status = if ($displayTopology.Count -ge 2) { 'ready-for-host-replay' } else { 'blocked-single-display' }
     Requirement = 'requires two physical displays and an open Popup while the host window crosses displays'
 }
-$runnerMetadata | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $Output 'runner-metadata.json') -Encoding UTF8
 if ($displayTopology.Count -lt 2) {
     Write-Warning "Q24-03 physical cross-screen replay is blocked: only $($displayTopology.Count) display detected."
 }
@@ -101,7 +100,7 @@ if (-not [string]::IsNullOrWhiteSpace($UserDataDir)) {
     $runnerMetadata.PlayniteExecutable = $PlayniteExecutable
     $runnerMetadata.WorkerDataDirectory = $isolatedWorkerDataDirectory
 }
-$runnerMetadata | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $Output 'runner-metadata.json') -Encoding UTF8
+$runnerMetadata | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $Output 'runner-metadata.json') -Encoding UTF8
 Write-Host "==> Starting Playnite with GSC_REAL_HOST_AUDIT=$Output" -ForegroundColor Cyan
 
 Push-Location $root
