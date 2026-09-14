@@ -412,7 +412,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 // The picker filter is local and synchronous once scheduled. Keep the
                 // coalescing window below the 100 ms hot-input budget so typing feels
                 // immediate without refreshing once per key in a large library.
-                await Task.Delay(60, token).ConfigureAwait(false);
+                await Task.Delay(20, token).ConfigureAwait(false);
                 if (token.IsCancellationRequested || disposed) return;
                 if (synchronizationContext == null) ApplyViewRefresh();
                 else synchronizationContext.Post(_ =>

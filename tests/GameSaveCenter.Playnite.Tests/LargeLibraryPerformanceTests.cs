@@ -149,7 +149,10 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.InRange(taskFirstReplaceMs, 0, 5000);
             Assert.InRange(taskUnchangedReplaceMs, 0, 1000);
             Assert.InRange(searchP50Ms, 0, 5000);
-            Assert.InRange(searchP95Ms, 0, 5000);
+            // Q25-01's hot-input budget is p95 <= 100 ms. Keep this as a
+            // regression guard instead of leaving the requirement only in the
+            // checked-in benchmark artifact.
+            Assert.InRange(searchP95Ms, 0, 100);
             Assert.InRange(searchMaxMs, 0, 5000);
 
             var artifactRoot = Environment.GetEnvironmentVariable("GSC_TEST_ARTIFACT_ROOT");
