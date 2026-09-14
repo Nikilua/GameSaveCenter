@@ -2,6 +2,11 @@
 
 > 更新时间：2026-09-15。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-15 UI 精修 Q25-04 30 分钟耐久专项
+
+- 当前代码基线为 `7d7e2cb`。新增 `enduranceprobe`，在真实 WPF STA Window 中循环六个生产工作区、Light/Dark 主题、Media 预览分段、列表/表格选择和详情入口；默认 1800 秒运行完成 `1800.4s`、`3847` 循环、`13462` 动作、`176` 样本、0 动作异常，耐久探针本身不调用强制 GC。
+- 干净报告为 [`.tmp/endurance-clean-20260915/enduranceprobe-report.txt`](../../.tmp/endurance-clean-20260915/enduranceprobe-report.txt)，私有字节趋势约 `348,564.72 bytes/min`，预热后线程 `22–25`、句柄 `1170–1177`，中后段资源为有界波动。该证据是受控 WPF Window，不等于 Playnite 嵌入宿主、真实输入/图片/网络任务或目标机合成；Q25-04 自动验证通过，宿主仍外部阻塞。
+
 ## 2026-09-15 UI 精修 Q25-05 低性能回退专项
 
 - 当前代码基线为 `97dd0cd`。新增 `lowcostprobe`，在 `glass=false`、`motion=false` 下覆盖 Overview、Save、Trainer、Media、Maintenance、Task 六页，浅/深色各覆盖 `1040×700` 与 `1600×900`，24/24 输出通过。
@@ -33,7 +38,7 @@
 
 - 当前交付基线为 `4f1dbb4`。已修正真实宿主 150% 捕获中 RenderTargetBitmap 的宿主 DPI 与显式缩放叠加问题，并用回归测试锁定 1.5 倍输出不再被错误绘制为 2.25 倍。
 - 非空隔离 Playnite 库保留原库数据并观察到 3 个游戏；真实嵌入 Dashboard 取得 27 个视口、2 个完整滚动面和 1 个 Settings 视口，右侧内容完整。全量门禁为 XAML 24/24、Release 0/0、Core 82/82、Worker 311/311、Playnite 475/532（57 skip，0 fail）。
-- 仍未签收的边界包括 Q20 真实 Hover/Focus/导航与窄窗状态、Q24 物理多屏/DPI/IME/读屏，以及 Q25-02～05 的 ETW 呈现帧、>100ms 调用栈、30 分钟耐久和低 Tier 实测；这些不能由离屏或单次宿主截图替代。
+- 仍未签收的边界包括 Q20 真实 Hover/Focus/导航与窄窗状态、Q24 物理多屏/DPI/IME/读屏，以及 Q25-02/Q25-03 的 ETW 呈现帧与 >100ms 调用栈、Q25-05 的真实低 Tier/宿主合成和 Q25-04 的 Playnite 宿主耐久；受控 WPF 30 分钟时间序列已单独记录，不能由它替代真实宿主。
 
 ## 2026-09-14 UI 精修独立复核与第二轮 208 项
 
