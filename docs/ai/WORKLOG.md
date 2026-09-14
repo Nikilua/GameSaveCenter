@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-14 UI 精修 Q02-08 混排空格与术语
+
+- 在 `UiDisplayMappingTests` 增加真实 DTO/ViewModel 的混排样本门禁：云端状态/数量、媒体归类建议与批次、恢复文件/大小、最近保护摘要、媒体来源和 Trainer 版本；结合既有游戏选框元信息与 Trainer 导入路径，整理为 8 类入口。
+- 测试锁定 ` · ` 分隔符、中文单位和产品名原样，并拒绝重复/两侧多余空格。Core 串行 Release 构建 0 errors、定向 `UiDisplayMappingTests` 17/17 通过；构建保留 3 个 NU1900 网络漏洞源告警。
+- 新增证据 `docs/design/reviews/ui-finesse-round2-20260913/evidence/q02/Q02-MIXED-LANGUAGE-TERMS-COVERAGE.md`，账本 Q02-08 更新为代码完成/自动通过/视觉宿主待验。未声称真实宿主折行、字体、IME、屏幕阅读器、物理 DPI 或最终观感通过。
+
 ## 2026-09-14 UI 精修 Q02-07 正文尺寸下限
 
 - 在生产 `Views`/`Settings`（排除 `Views/Development`）中将 109 处显式 `FontSize="10"`/`FontSize="11"` 迁移到共享 `GscCaptionFontSize`，保留 10.5、12.5 等明确中间层级；代码提交为 `d22928a`。

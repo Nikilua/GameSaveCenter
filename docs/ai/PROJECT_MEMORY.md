@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-14
 
+## 2026-09-14 UI 精修 Q02-08 混排空格与术语
+
+- Q02-08 新增 `UiDisplayMappingTests.MixedLanguageDisplaySurfacesKeepSemanticSpacingAndProductTerms`，覆盖云端摘要、媒体归类建议/批次、恢复指标、最近保护、媒体来源和 Trainer 版本的真实 DTO 显示值；与已有游戏选框 `MetaDisplay`、Trainer 导入候选路径测试合计形成 8 类入口的短术语样本。
+- 门禁锁定 ` · ` 两侧单空格、中文量词/单位、`Xbox Game Bar`、`FLiNG Trainer`、`Cyberpunk 2077` 和 `+30 项` 等产品/版本语义，并拒绝重复分隔符；Core 定向测试为 17/17，串行 Release 构建 0 errors。
+- 证据见 `docs/design/reviews/ui-finesse-round2-20260913/evidence/q02/Q02-MIXED-LANGUAGE-TERMS-COVERAGE.md`。这仍只是源码映射证据；宿主小窗口折行、真实字形、屏幕阅读器/IME、物理 DPI 和最终视觉继续保持 Q02-08 未完成边界。
+
 ## 2026-09-14 UI 精修 Q02-07 正文尺寸下限
 
 - 生产 `Views`/`Settings`（排除 `Views/Development`）中的 109 处显式 `FontSize="10"`/`FontSize="11"` 已在提交 `d22928a` 统一到 `DynamicResource GscCaptionFontSize`；保留 10.5、12.5 等有明确语义的中间层级，技术路径继续使用代码字体入口。

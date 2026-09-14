@@ -23,7 +23,7 @@
 - `TypographyDiagnosticsTests.ImportantTrainerDiagnosticsUseReadableSharedStyles` 锁定 Trainer 设置 Inspector 的重要标签、工具路径和风险提示使用共享可读样式，不再由显式 10pt 覆盖；普通状态密度文本与真实宿主小窗口观感仍需单独复核。
 - `TypographyDiagnosticsTests.ProductionTenAndElevenPointTextUsesSharedCaptionToken` 遍历生产 Views/Settings（排除 Development），确认显式 `FontSize="10"`/`FontSize="11"` 已清零；提交 `d22928a` 的 109 处替换统一到 `GscCaptionFontSize`。完整范围和未机械抹平的 10.5/12.5 层级见 [Q02-07 正文尺寸覆盖](q02/Q02-TEXT-SIZE-COVERAGE.md)。
 - 存档历史的文件数/大小列现在分别使用 `SaveCountValue`/`SaveSizeValue`（共享 Tabular 数字、右锚点、禁止数值截断）；时间、状态、备注列保持各自文本语义。该列级事实由 `ProductionColumnsKeepNumericAndPathSemantics` 锁定。
-- `UiDisplayMappingTests` 现在锁定真实零值（`0 B`、`文件 0/0`）、未知大小（`未知大小`）、未检查时间和路径/产品名混排分隔符；本次 Core 定向测试 16/16 通过，不改变排序键，也不改写用户路径。
+- `UiDisplayMappingTests` 现在锁定真实零值（`0 B`、`文件 0/0`）、未知大小（`未知大小`）、未检查时间和路径/产品名混排分隔符；本次 Core 定向测试 17/17 通过，不改变排序键，也不改写用户路径。八类混排入口与短术语样本见 [Q02-08 混排空格与术语覆盖](q02/Q02-MIXED-LANGUAGE-TERMS-COVERAGE.md)。
 
 ## 证据边界
 
