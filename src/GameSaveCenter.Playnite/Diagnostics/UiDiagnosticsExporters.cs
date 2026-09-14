@@ -227,14 +227,17 @@ namespace GameSaveCenter.Playnite.Diagnostics
 
         private static RenderTargetBitmap RenderBitmap(Visual visual, double width, double height, double renderScale)
         {
-            var dpi = VisualTreeHelper.GetDpi(visual);
             var scaleX = renderScale > 0 ? renderScale : 1d;
             var scaleY = renderScale > 0 ? renderScale : 1d;
             var bitmap = new RenderTargetBitmap(
                 (int)Math.Ceiling(width * scaleX),
                 (int)Math.Ceiling(height * scaleY),
-                dpi.PixelsPerInchX,
-                dpi.PixelsPerInchY,
+                // The explicit ScaleTransform below owns the high-DPI pixel conversion.
+                // Keeping the bitmap in the 96-DPI WPF coordinate baseline prevents the
+                // host's 144-DPI context from being applied a second time, which otherwise
+                // makes a 1.5x capture render at 2.25x and clips the right/bottom edge.
+                96,
+                96,
                 PixelFormats.Pbgra32);
             if (Math.Abs(scaleX - 1d) > 0.01 || Math.Abs(scaleY - 1d) > 0.01)
             {

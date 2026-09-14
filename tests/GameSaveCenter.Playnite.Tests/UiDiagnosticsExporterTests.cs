@@ -1,10 +1,12 @@
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
+using System.Windows.Media.Imaging;
 using GameSaveCenter.Playnite.Diagnostics;
 using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.Settings;
@@ -94,6 +96,70 @@ public sealed class UiDiagnosticsExporterTests
 
         Assert.Null(exception);
         Assert.True(matched, "Fingerprint mismatch; no Border record with the expected effective values was exported.");
+    }
+
+    [Fact]
+    public void HighDpiPngUsesExplicitScaleWithoutApplyingHostDpiTwice()
+    {
+        Exception? exception = null;
+        var pixelWidth = 0;
+        var redMaxX = -1;
+        var path = Path.Combine(Path.GetTempPath(), "gsc-ui-dpi-capture-" + Guid.NewGuid().ToString("N") + ".png");
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var root = new Grid { Width = 100, Height = 40, Background = Brushes.Blue };
+                root.Children.Add(new Border
+                {
+                    Width = 20,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    Background = Brushes.Red
+                });
+                root.Measure(new Size(100, 40));
+                root.Arrange(new Rect(0, 0, 100, 40));
+                root.UpdateLayout();
+
+                UiDiagnosticsExporters.SavePng(root, path, 1.5);
+                using var stream = File.OpenRead(path);
+                var frame = BitmapDecoder.Create(
+                    stream,
+                    BitmapCreateOptions.PreservePixelFormat,
+                    BitmapCacheOption.OnLoad).Frames[0];
+                pixelWidth = frame.PixelWidth;
+                var pixels = new byte[frame.PixelWidth * frame.PixelHeight * 4];
+                frame.CopyPixels(pixels, frame.PixelWidth * 4, 0);
+                for (var y = 0; y < frame.PixelHeight; y++)
+                {
+                    for (var x = 0; x < frame.PixelWidth; x++)
+                    {
+                        var offset = (y * frame.PixelWidth + x) * 4;
+                        if (pixels[offset + 2] > 200 && pixels[offset + 1] < 100 && pixels[offset] < 100)
+                            redMaxX = Math.Max(redMaxX, x);
+                    }
+                }
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        try
+        {
+            Assert.Null(exception);
+            Assert.Equal(150, pixelWidth);
+            Assert.InRange(redMaxX, 25, 35);
+        }
+        finally
+        {
+            if (File.Exists(path))
+                File.Delete(path);
+        }
     }
 
     [Theory]
