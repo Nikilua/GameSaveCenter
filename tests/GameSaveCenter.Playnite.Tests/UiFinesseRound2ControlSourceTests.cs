@@ -150,6 +150,19 @@ public sealed class UiFinesseRound2ControlSourceTests
         Assert.Contains("CalculatePercentile", harness);
     }
 
+    [Fact]
+    public void EnduranceProbeRecordsUiActionHotspotBoundariesWithoutClaimingEtwStacks()
+    {
+        var harness = Read("tests", "GameSaveCenter.RenderHarness", "Program.cs");
+
+        Assert.Contains("actionDurationsMs", harness);
+        Assert.Contains("ui_action_p95_ms", harness);
+        Assert.Contains("ui_action_slow_over_100ms", harness);
+        Assert.Contains("slowActionStacks", harness);
+        Assert.Contains("captured after action completion", harness);
+        Assert.Contains("no reproducible >100ms action", harness);
+    }
+
     private static string Read(params string[] parts)
     {
         var directory = new DirectoryInfo(AppContext.BaseDirectory);

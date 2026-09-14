@@ -706,6 +706,8 @@ public static class Program
             var pageIndex = 0;
             var themeIndex = 0;
             var actionFailureCount = 0;
+            var actionDurationsMs = new List<double>();
+            var slowActionStacks = new List<string>();
             DispatcherTimer? actionTimer = null;
 
             void RecordSample(bool final)
@@ -797,6 +799,7 @@ public static class Program
 
             void RunActionCycle()
             {
+                var cycleStopwatch = Stopwatch.StartNew();
                 try
                 {
                     var current = pages[pageIndex];
@@ -814,6 +817,18 @@ public static class Program
                 {
                     actionFailureCount++;
                     problems.Add($"cycle={cycle} page={currentPage} failed: {ex.GetType().Name}: {ex.Message}");
+                }
+                finally
+                {
+                    cycleStopwatch.Stop();
+                    var durationMs = cycleStopwatch.Elapsed.TotalMilliseconds;
+                    actionDurationsMs.Add(durationMs);
+                    if (durationMs > 100 && slowActionStacks.Count < 8)
+                    {
+                        slowActionStacks.Add(
+                            $"cycle={cycle} page={currentPage} duration_ms={durationMs:0.0}\n"
+                            + Environment.StackTrace);
+                    }
                 }
             }
 
@@ -857,7 +872,15 @@ public static class Program
             if (actionFailureCount != 0)
                 problems.Add($"actionFailures={actionFailureCount}");
 
-            AppendEnduranceSummary(report, samples, cycle, completedActions, actionFailureCount, durationSeconds);
+            AppendEnduranceSummary(
+                report,
+                samples,
+                actionDurationsMs,
+                slowActionStacks,
+                cycle,
+                completedActions,
+                actionFailureCount,
+                durationSeconds);
             report.AppendLine(problems.Count == 0 ? "enduranceprobe OK" : "enduranceprobe FAILED");
             foreach (var problem in problems)
                 report.AppendLine("  PROBLEM " + problem);
@@ -878,6 +901,8 @@ public static class Program
     private static void AppendEnduranceSummary(
         StringBuilder report,
         IReadOnlyList<EnduranceSample> samples,
+        IReadOnlyList<double> actionDurationsMs,
+        IReadOnlyList<string> slowActionStacks,
         int cycles,
         int completedActions,
         int actionFailures,
@@ -913,6 +938,25 @@ public static class Program
         report.AppendLine(
             $"SUMMARY resources_first=threads:{first.ThreadCount},handles:{first.HandleCount} "
             + $"resources_last=threads:{last.ThreadCount},handles:{last.HandleCount}");
+        if (actionDurationsMs.Count > 0)
+        {
+            var actionP95 = CalculatePercentile(actionDurationsMs, 0.95);
+            var actionMax = actionDurationsMs.Max();
+            var slowActions = actionDurationsMs.Count(duration => duration > 100);
+            report.AppendLine(
+                $"SUMMARY ui_action_p95_ms={actionP95:0.##} ui_action_max_ms={actionMax:0.##} "
+                + $"ui_action_slow_over_100ms={slowActions}/{actionDurationsMs.Count}");
+            if (slowActionStacks.Count == 0)
+            {
+                report.AppendLine("SUMMARY ui_action_hotspot_stacks=none (no reproducible >100ms action in this controlled run)");
+            }
+            else
+            {
+                report.AppendLine($"SUMMARY ui_action_hotspot_stacks={slowActionStacks.Count} (captured after action completion)");
+                foreach (var stack in slowActionStacks)
+                    report.AppendLine("HOTSPOT " + stack.Replace(Environment.NewLine, Environment.NewLine + "HOTSPOT "));
+            }
+        }
         report.AppendLine(
             "SUMMARY interpretation=bounded-window observation; trend fields are evidence, "
             + "not proof of Playnite-host or mathematically unbounded behavior");
