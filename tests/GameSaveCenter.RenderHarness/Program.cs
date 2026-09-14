@@ -21,6 +21,7 @@ using System.Windows.Threading;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.Settings;
+using GameSaveCenter.Playnite.ViewModels;
 using GameSaveCenter.Playnite.Views;
 using GameSaveCenter.RenderHarness.UiAudit;
 using AsyncThumbnailImage = GameSaveCenter.Playnite.Controls.AsyncThumbnailImage;
@@ -296,6 +297,26 @@ public static class Program
             lowCostThread.Start();
             lowCostThread.Join();
             return lowCostExitCode;
+        }
+
+        if (args.Length > 0 && args[0].Equals("enduranceprobe", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "enduranceprobe");
+            var durationSeconds = 1800;
+            if (args.Length > 2 && (!int.TryParse(args[2], out durationSeconds) || durationSeconds < 1))
+                durationSeconds = 1800;
+
+            var enduranceExitCode = 0;
+            var enduranceThread = new Thread(() =>
+            {
+                enduranceExitCode = RunEnduranceProbe(outputRoot, durationSeconds);
+            });
+            enduranceThread.SetApartmentState(ApartmentState.STA);
+            enduranceThread.Start();
+            enduranceThread.Join();
+            return enduranceExitCode;
         }
 
         var exitCode = 0;
@@ -605,6 +626,330 @@ public static class Program
             $"  {label} resources: effects=null popupTransparency={allowsTransparency?.ToString() ?? "missing"} "
             + $"popupAnimation={popupAnimation ?? "missing"} shellOpacity={shellOpacity?.ToString("0.###") ?? "missing"} "
             + $"gameOpacity={gameOpacity?.ToString("0.###") ?? "missing"}");
+    }
+
+    private static int RunEnduranceProbe(string outputRoot, int durationSeconds)
+    {
+        Directory.CreateDirectory(outputRoot);
+        var reportPath = Path.Combine(outputRoot, "enduranceprobe-report.txt");
+        var report = new StringBuilder();
+        report.AppendLine("GameSaveCenter 30-minute endurance probe");
+        report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+        report.AppendLine("Host: real WPF STA Window with opacity 0.01; Playnite host and user input are not inferred");
+        report.AppendLine("Actions: workspace navigation, Media preview segment, selected details/inspector, Light/Dark theme");
+        report.AppendLine("Memory: GC.GetTotalMemory(false), PrivateMemorySize64, WorkingSet64; no forced GC in this probe");
+        report.AppendLine($"DurationTargetSeconds: {durationSeconds}");
+        AppendRunMetadata(
+            report,
+            "enduranceprobe",
+            "ControlledWpfWindow",
+            "light,dark",
+            "six workspaces; 1040x700 DIP; sample every 10s; no forced GC");
+        report.AppendLine();
+
+        var problems = new List<string>();
+        var samples = new List<EnduranceSample>();
+        var reportLock = new object();
+        var reportFlush = new Action(() =>
+        {
+            lock (reportLock)
+                File.WriteAllText(reportPath, report.ToString());
+        });
+
+        try
+        {
+            var app = new Application
+            {
+                ShutdownMode = ShutdownMode.OnExplicitShutdown
+            };
+            app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+
+            var data = new FakeDashboardData(60);
+            var shell = new AcrylicProductionShellView
+            {
+                DataContext = data,
+                MotionEnabledProvider = () => true
+            };
+            var pages = new (WorkspaceKind Kind, string Name, UserControl View)[]
+            {
+                (WorkspaceKind.Overview, "Overview", new OverviewView { DataContext = data }),
+                (WorkspaceKind.Saves, "Save", new SaveCenterView { DataContext = data }),
+                (WorkspaceKind.Trainers, "Trainer", new TrainerCenterView { DataContext = data }),
+                (WorkspaceKind.Media, "Media", new MediaCenterView { DataContext = data }),
+                (WorkspaceKind.Tasks, "Task", new TaskCenterView { DataContext = data }),
+                (WorkspaceKind.Maintenance, "Maintenance", new MaintenanceView { DataContext = data })
+            };
+            var pageHost = shell.PageHostForAudit as ContentControl
+                ?? throw new InvalidOperationException("Production shell PageHost is not a ContentControl.");
+            var window = new Window
+            {
+                Width = 1040,
+                Height = 700,
+                WindowStyle = WindowStyle.None,
+                ResizeMode = ResizeMode.NoResize,
+                ShowInTaskbar = false,
+                ShowActivated = false,
+                Left = -32000,
+                Top = -32000,
+                Opacity = 0.01,
+                Content = shell
+            };
+
+            var process = Process.GetCurrentProcess();
+            var stopwatch = Stopwatch.StartNew();
+            var cycle = 0;
+            var completedActions = 0;
+            var currentPage = "Overview";
+            var currentTheme = "light";
+            var lastSampleAt = TimeSpan.Zero;
+            var lastProgressAt = TimeSpan.Zero;
+            var pageIndex = 0;
+            var themeIndex = 0;
+            var actionFailureCount = 0;
+            DispatcherTimer? actionTimer = null;
+
+            void RecordSample(bool final)
+            {
+                process.Refresh();
+                var sample = new EnduranceSample
+                {
+                    ElapsedSeconds = stopwatch.Elapsed.TotalSeconds,
+                    Cycle = cycle,
+                    Page = currentPage,
+                    Theme = currentTheme,
+                    ManagedBytes = GC.GetTotalMemory(false),
+                    PrivateBytes = process.PrivateMemorySize64,
+                    WorkingSetBytes = process.WorkingSet64,
+                    ThreadCount = process.Threads.Count,
+                    HandleCount = process.HandleCount
+                };
+                samples.Add(sample);
+                report.AppendLine(
+                    $"SAMPLE elapsed_s={sample.ElapsedSeconds:0.0} cycle={sample.Cycle} "
+                    + $"page={sample.Page} theme={sample.Theme} managed={sample.ManagedBytes} "
+                    + $"private={sample.PrivateBytes} workingSet={sample.WorkingSetBytes} "
+                    + $"threads={sample.ThreadCount} handles={sample.HandleCount} final={final}");
+                lastSampleAt = stopwatch.Elapsed;
+                reportFlush();
+            }
+
+            void LayoutCurrentPage(UserControl page, GameSaveCenterThemeMode themeMode)
+            {
+                ApplyThemePalette(shell, themeMode, glassEnabled: true, motionEnabled: true);
+                ApplyThemePalette(page, themeMode, glassEnabled: true, motionEnabled: true);
+                pageHost.Content = page;
+                shell.ApplyResponsiveLayout(window.Width, window.Height);
+                ApplyThemeResponsive(page, pageHost.ActualWidth > 0 ? pageHost.ActualWidth : 1040, pageHost.ActualHeight > 0 ? pageHost.ActualHeight : 700);
+                window.UpdateLayout();
+                shell.ApplyResponsiveLayout(window.ActualWidth, window.ActualHeight);
+                ApplyThemeResponsive(page, pageHost.ActualWidth, pageHost.ActualHeight);
+                window.UpdateLayout();
+            }
+
+            void ExercisePreviewAndDetails(UserControl page)
+            {
+                var mediaTabs = page is MediaCenterView
+                    ? FindVisualChildren<TabControl>(page).FirstOrDefault()
+                    : null;
+                if (mediaTabs != null && mediaTabs.Items.Count > 0)
+                {
+                    mediaTabs.SelectedIndex = cycle % mediaTabs.Items.Count;
+                    window.UpdateLayout();
+                    completedActions++;
+                }
+
+                foreach (var list in FindVisualChildren<ListBox>(page)
+                    .Where(candidate => candidate.Items.Count > 0)
+                    .Take(2))
+                {
+                    list.SelectedIndex = Math.Min(list.Items.Count - 1, cycle % Math.Max(1, list.Items.Count));
+                    window.UpdateLayout();
+                    completedActions++;
+                }
+
+                foreach (var grid in FindVisualChildren<DataGrid>(page)
+                    .Where(candidate => candidate.Items.Count > 0)
+                    .Take(2))
+                {
+                    grid.SelectedIndex = Math.Min(grid.Items.Count - 1, cycle % Math.Max(1, grid.Items.Count));
+                    grid.ScrollIntoView(grid.SelectedItem);
+                    window.UpdateLayout();
+                    completedActions++;
+                }
+
+                var detailButton = FindVisualChildren<Button>(page)
+                    .FirstOrDefault(button => button.Visibility == Visibility.Visible
+                        && button.IsEnabled
+                        && (button.Name.EndsWith("CompactDetailsButton", StringComparison.Ordinal)
+                            || button.Name == "TaskDetailsButton"));
+                if (detailButton != null)
+                {
+                    detailButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                    window.UpdateLayout();
+                    completedActions++;
+                    var close = FindVisualChildren<Button>(page)
+                        .FirstOrDefault(button => button.Visibility == Visibility.Visible
+                            && button.Name.EndsWith("CloseDetailsButton", StringComparison.Ordinal));
+                    close?.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                    window.UpdateLayout();
+                }
+            }
+
+            void RunActionCycle()
+            {
+                try
+                {
+                    var current = pages[pageIndex];
+                    currentPage = current.Name;
+                    currentTheme = ThemeModes[themeIndex].Name;
+                    LayoutCurrentPage(current.View, ThemeModes[themeIndex].Mode);
+                    ExercisePreviewAndDetails(current.View);
+                    completedActions++;
+                    cycle++;
+                    pageIndex = (pageIndex + 1) % pages.Length;
+                    if (pageIndex == 0)
+                        themeIndex = (themeIndex + 1) % ThemeModes.Length;
+                }
+                catch (Exception ex)
+                {
+                    actionFailureCount++;
+                    problems.Add($"cycle={cycle} page={currentPage} failed: {ex.GetType().Name}: {ex.Message}");
+                }
+            }
+
+            window.Show();
+            window.UpdateLayout();
+            LayoutCurrentPage(pages[0].View, ThemeModes[0].Mode);
+            RecordSample(final: false);
+
+            actionTimer = new DispatcherTimer(DispatcherPriority.Background, window.Dispatcher)
+            {
+                Interval = TimeSpan.FromMilliseconds(250)
+            };
+            actionTimer.Tick += (_, _) =>
+            {
+                RunActionCycle();
+                var elapsed = stopwatch.Elapsed;
+                if (elapsed - lastSampleAt >= TimeSpan.FromSeconds(10))
+                    RecordSample(final: false);
+                if (elapsed - lastProgressAt >= TimeSpan.FromSeconds(60))
+                {
+                    Console.WriteLine($"enduranceprobe progress elapsed={elapsed.TotalSeconds:0}s cycles={cycle} samples={samples.Count}");
+                    lastProgressAt = elapsed;
+                }
+
+                if (elapsed >= TimeSpan.FromSeconds(durationSeconds))
+                {
+                    actionTimer!.Stop();
+                    RecordSample(final: true);
+                    window.Close();
+                    app.Shutdown();
+                }
+            };
+            actionTimer.Start();
+            app.Run();
+            stopwatch.Stop();
+
+            if (samples.Count < 2)
+                problems.Add($"only {samples.Count} resource samples were recorded");
+            if (cycle == 0 || completedActions == 0)
+                problems.Add("no endurance action cycle completed");
+            if (actionFailureCount != 0)
+                problems.Add($"actionFailures={actionFailureCount}");
+
+            AppendEnduranceSummary(report, samples, cycle, completedActions, actionFailureCount, durationSeconds);
+            report.AppendLine(problems.Count == 0 ? "enduranceprobe OK" : "enduranceprobe FAILED");
+            foreach (var problem in problems)
+                report.AppendLine("  PROBLEM " + problem);
+            reportFlush();
+            Console.WriteLine(report.ToString());
+            return problems.Count == 0 ? 0 : 1;
+        }
+        catch (Exception ex)
+        {
+            report.AppendLine("enduranceprobe FAILED");
+            report.AppendLine(ex.ToString());
+            reportFlush();
+            Console.Error.WriteLine(ex);
+            return 1;
+        }
+    }
+
+    private static void AppendEnduranceSummary(
+        StringBuilder report,
+        IReadOnlyList<EnduranceSample> samples,
+        int cycles,
+        int completedActions,
+        int actionFailures,
+        int durationSeconds)
+    {
+        if (samples.Count == 0)
+            return;
+
+        var first = samples[0];
+        var last = samples[samples.Count - 1];
+        var tailStart = Math.Max(0, samples.Count - Math.Min(10, samples.Count));
+        var headEnd = Math.Min(10, samples.Count);
+        var headPrivate = samples.Take(headEnd).Average(sample => sample.PrivateBytes);
+        var tailPrivate = samples.Skip(tailStart).Average(sample => sample.PrivateBytes);
+        var headManaged = samples.Take(headEnd).Average(sample => sample.ManagedBytes);
+        var tailManaged = samples.Skip(tailStart).Average(sample => sample.ManagedBytes);
+        var privateSlope = CalculateSlopePerMinute(samples, sample => sample.PrivateBytes);
+        var managedSlope = CalculateSlopePerMinute(samples, sample => sample.ManagedBytes);
+        var maxPrivate = samples.Max(sample => sample.PrivateBytes);
+        var maxManaged = samples.Max(sample => sample.ManagedBytes);
+        report.AppendLine();
+        report.AppendLine(
+            $"SUMMARY duration_s={last.ElapsedSeconds:0.0}/{durationSeconds} cycles={cycles} "
+            + $"completedActions={completedActions} samples={samples.Count} actionFailures={actionFailures}");
+        report.AppendLine(
+            $"SUMMARY private_delta={last.PrivateBytes - first.PrivateBytes} private_peak_delta={maxPrivate - first.PrivateBytes} "
+            + $"private_head_avg={headPrivate:0} private_tail_avg={tailPrivate:0} "
+            + $"private_slope_bytes_per_min={privateSlope:0.##}");
+        report.AppendLine(
+            $"SUMMARY managed_delta={last.ManagedBytes - first.ManagedBytes} managed_peak_delta={maxManaged - first.ManagedBytes} "
+            + $"managed_head_avg={headManaged:0} managed_tail_avg={tailManaged:0} "
+            + $"managed_slope_bytes_per_min={managedSlope:0.##}");
+        report.AppendLine(
+            $"SUMMARY resources_first=threads:{first.ThreadCount},handles:{first.HandleCount} "
+            + $"resources_last=threads:{last.ThreadCount},handles:{last.HandleCount}");
+        report.AppendLine(
+            "SUMMARY interpretation=bounded-window observation; trend fields are evidence, "
+            + "not proof of Playnite-host or mathematically unbounded behavior");
+    }
+
+    private static double CalculateSlopePerMinute(
+        IReadOnlyList<EnduranceSample> samples,
+        Func<EnduranceSample, long> selector)
+    {
+        if (samples.Count < 2)
+            return 0;
+
+        var meanX = samples.Average(sample => sample.ElapsedSeconds);
+        var meanY = samples.Average(selector);
+        var numerator = 0d;
+        var denominator = 0d;
+        foreach (var sample in samples)
+        {
+            var x = sample.ElapsedSeconds - meanX;
+            numerator += x * (selector(sample) - meanY);
+            denominator += x * x;
+        }
+
+        return denominator <= double.Epsilon ? 0 : numerator / denominator * 60d;
+    }
+
+    private sealed class EnduranceSample
+    {
+        public double ElapsedSeconds { get; set; }
+        public int Cycle { get; set; }
+        public string Page { get; set; } = string.Empty;
+        public string Theme { get; set; } = string.Empty;
+        public long ManagedBytes { get; set; }
+        public long PrivateBytes { get; set; }
+        public long WorkingSetBytes { get; set; }
+        public int ThreadCount { get; set; }
+        public int HandleCount { get; set; }
     }
 
     private static void CaptureOverviewEdgeFixture(

@@ -119,6 +119,25 @@ public sealed class UiFinesseRound2ControlSourceTests
         Assert.Contains("unexpectedHorizontalOverflow", harness);
     }
 
+    [Fact]
+    public void EnduranceProbeUsesARealDispatcherWindowWithoutForcedGc()
+    {
+        var harness = Read("tests", "GameSaveCenter.RenderHarness", "Program.cs");
+        var start = harness.IndexOf("private static int RunEnduranceProbe", StringComparison.Ordinal);
+        var end = harness.IndexOf("private static void AppendEnduranceSummary", start, StringComparison.Ordinal);
+
+        Assert.True(start >= 0);
+        Assert.True(end > start);
+        var probe = harness.Substring(start, end - start);
+        Assert.Contains("args[0].Equals(\"enduranceprobe\"", harness);
+        Assert.Contains("durationSeconds = 1800", harness);
+        Assert.Contains("new Window", probe);
+        Assert.Contains("new DispatcherTimer", probe);
+        Assert.Contains("GC.GetTotalMemory(false)", probe);
+        Assert.DoesNotContain("GC.Collect", probe);
+        Assert.Contains("workspace navigation, Media preview segment", probe);
+    }
+
     private static string Read(params string[] parts)
     {
         var directory = new DirectoryInfo(AppContext.BaseDirectory);
