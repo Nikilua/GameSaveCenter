@@ -8,6 +8,12 @@
 - 新增 `ProductionTenAndElevenPointTextUsesSharedCaptionToken` 源码门禁，当前精确 10/11 扫描为 0。`validate-source.py`、`check-xaml.ps1`、`git diff --check` 通过；WPF/RenderHarness Release 构建成功，Typography 定向测试 `8/8`，明暗 `finesseprobe` 均退出 0、`finesse-fixture OK`、对比度 0 violations。
 - 构建记录 Contracts/Core 的 NU1900 网络漏洞源告警；未重跑会安装/启停 Playnite 的一键链，继续保留真实宿主小窗、物理 DPI、IME、GlyphRun 与最终视觉为待验收边界。Q02-07 证据见 `docs/design/reviews/ui-finesse-round2-20260913/evidence/q02/Q02-TEXT-SIZE-COVERAGE.md`。
 
+## 2026-09-14 UI 精修 Q03-07 主题切换覆盖
+
+- 修复主题资源切换测试把浅色渐变与自身比较的假阳性，改为比较 Light/Dark 的实际前景、渐变、实例和长度；新增 Popup/Tooltip/Dialog 动态资源及生产壳层广播源码门禁，提交 `46ece40`。
+- WPF 源校验、Release 构建通过，Q03-07 相关定向测试 `14/14` 通过。测试只证明受控资源替换和依赖链，不证明真实打开态热切换的屏幕帧、Popup 跨屏、Playnite 主题跟随或物理 DPI。
+- 证据见 `docs/design/reviews/ui-finesse-round2-20260913/evidence/q03/Q03-THEME-SWITCH-COVERAGE.md`；真实宿主测试仍因窗口枚举/安全安装边界未关闭。
+
 ## 2026-09-14 独立复核精修任务并扩展 208 项
 
 - 用户要求检查 Luna 的“全部完成”并增加数倍任务。对照 `fd573e4..2fc40ce`、读取原任务最终回复与 52 行账本，统计为 14 已验收、1 已满足、31 代码完成待验收、6 外部阻塞；审阅报告逐项覆盖 52 项，不以登记状态替代完成。

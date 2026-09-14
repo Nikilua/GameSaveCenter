@@ -15,6 +15,7 @@
 - `SemanticLayerContrast`：选中前景、输入正文、placeholder、危险按钮各 1 个样本，双主题均 0 violation。输入资源仍明确提供 `Foreground`、`CaretBrush`、`SelectionBrush`，placeholder 单独使用 Muted 层级。
 - `ComplexBackdropContrast`：对白、黑、高频红、饱和蓝四种合成背景逐项经过 `SurfaceTop + ControlFill` 壳层，双主题 4/4 通过；深色选中/输入等读面不靠黑字默认值。
 - 主题资源切换测试确认 Light/Dark 各自重新写入 selection、button gradient 和 state brushes，未沿用上一主题画刷实例。
+- 当前提交 `46ece40` 修正了主题切换测试的自比较假阳性，并新增 Popup/Tooltip/Dialog 的动态资源链与生产壳层广播源码门禁；详见 [Q03-07 主题切换覆盖](q03/Q03-THEME-SWITCH-COVERAGE.md)。测试通过不代表打开态热切换的真实屏幕帧已通过。
 
 ## 证据边界
 

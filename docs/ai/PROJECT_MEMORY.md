@@ -8,6 +8,12 @@
 - 新增 `TypographyDiagnosticsTests.ProductionTenAndElevenPointTextUsesSharedCaptionToken`，遍历生产 XAML 并锁定 10/11 精确字号为 0。`validate-source.py`、`check-xaml.ps1`、`git diff --check` 通过；WPF/RenderHarness Release 构建成功，定向 Typography 测试 `8/8`，明暗 `finesseprobe` 均 `finesse-fixture OK`、对比度 0 violations。
 - 本阶段构建仍有 Contracts/Core 各 1 个 NU1900 网络漏洞源告警；未将离屏 `DpiScale=1.00`、`FontActualGlyphRun=unknown` 或探针通过扩大为真实 Playnite 小窗口、物理 DPI、IME、宿主字体或最终视觉通过。一键安装/启停链未因安全策略重跑。
 
+## 2026-09-14 UI 精修 Q03-07 主题切换覆盖
+
+- 修正 `UiDiagnosticsExporterTests.ThemeResourceSwitchReplacesStateBrushesWithoutLeavingStaticFallbacks` 的自比较假阳性：现在实际比较 Light/Dark 选中前景、按钮渐变颜色、渐变长度和画刷实例；新增 `UiFinesseRound2ControlSourceTests.TransientSurfacesKeepThemeSensitiveResourcesDynamic`，锁定 Popup/Tooltip/Dialog 动态资源与生产壳层向所有生产工作区广播运行时资源。测试提交为 `46ece40`。
+- 相关定向测试 `14/14` 通过；Popup 动画/阴影/透明度、Tooltip 前景/浮层背景和 Dialog 效果都由 `DynamicResource` 读取，主题刷新继续保持在局部视图资源，不污染 Playnite 全局字典。
+- 打开态热切换的真实屏幕帧、Popup 跨屏定位、宿主主题跟随和物理 DPI 仍未取得，不把资源测试或离屏夹具写成 Q03-07 最终完成。
+
 ## 2026-09-14 精修验收口径修正与第二轮
 
 - 第一轮不能称全部完成：原账本 14 已验收/1 已满足/31 待验收/6 阻塞；“52/52 已更新”只是登记完整。独立复核和下一轮入口分别为 `docs/design/UI_FINESSE_REVIEW_2026-09-13.md`、`UI_FINESSE_ROUND2_208_TASKS_2026-09-13.md`。52 项都有独立审阅结论，208 项按实现/自动/视觉/宿主分开记账。
