@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-15 UI 精修真实宿主原生命令复核
+
+- 在 `2250719` 干净 HEAD 上运行隔离 Playnite 审计，新增审计专用入口通过 Playnite 的 `SelectSidebarViewCommand` 选择 GameSaveCenter；宿主日志确认嵌入 Dashboard 捕获，未使用专用窗口 fallback。
+- 门禁结果为 XAML `24/24`、Release `0/0`、Core `82/82`、Worker `311/311`、Playnite `474/531`（57 skip，0 fail），包身份一致，FusionX 主题复制成功，宿主 150% DPI；真实嵌入产物为 Dashboard 27 个视口、2 个完整滚动面、Settings 1 个视口。
+- `summary.json` 已升级为 Embedded Dashboard true、Controlled Dashboard false、Production visual source true。运行器的 UIA 未找到侧栏旧警告保留为非权威诊断；原生命令、插件日志和 Window.GetWindow 元数据形成最终真实性闭环。审计后 Playnite/Worker 已停止，无残留。
+- Q00-08、Q25-07 和本轮 Q25-08 交付记录可签收；Q20 完整边界状态/交互、Q24-03 物理跨屏和 Q25-02～05 ETW/呈现帧/调用栈/耐久/低 Tier 仍不可签收。证据追加至 `REAL_HOST_AUDIT-20260914.md`。
+
 ## 2026-09-14 Q25 ETW 工具边界确认
 
 - 盘点到 `xperf`、`wpr`、`wpa`、`wpaexporter` 和 DWM Core present 相关 provider metadata；PresentMon、dotnet-trace、PerfView 缺失。

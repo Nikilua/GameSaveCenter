@@ -1,6 +1,14 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
-> 维护时间：2026-09-14
+> 维护时间：2026-09-15
+
+## 2026-09-15 UI 精修真实宿主原生命令复核
+
+- 在干净 HEAD `2250719b728f6ddee32233f9ff456b8ea1b8fc7d` 上完成第四次隔离 Playnite 真实宿主审计。插件启动后通过 Playnite 自身 `SelectSidebarViewCommand` 选择 `GameSaveCenter`，日志确认 `EmbeddedPlaynite Dashboard capture`，没有使用专用 Dashboard fallback 冒充嵌入来源。
+- 本轮完成 XAML `24/24`、Release `0 warning/0 error`、Core `82/82`、Worker `311/311`、Playnite `474/531`（57 skip，0 fail），打包/安装/启动成功；程序集身份为 `0.6.73+2250719b728f6ddee32233f9ff456b8ea1b8fc7d`，隔离配置的 FusionX 主题复制为 true，宿主 DPI 为 150%。
+- `summary.json` 为 `EmbeddedDashboardCaptured=true`、`EmbeddedSettingsCaptured=true`、`ControlledDashboardCaptured=false`、`ProductionVisualSourceOfTruthAvailable=true`、`EmbeddedDashboardOrigin=EmbeddedPlaynite`；`capture-manifest.json` 保存 27 个 Dashboard 视口、2 个完整滚动面和 1 个 Settings 视口，当前 Dashboard/Settings 均为真实 Playnite 嵌入来源。该结果首次使当前深色宿主 Dashboard 具备可签收的生产像素来源。
+- 运行器的 UIA 侧栏未定位警告仍保留，但不再作为最终判定依据：宿主原生命令调用、插件日志与 Window.GetWindow 真实性元数据共同形成成功闭环。没有取得 Hover/Focus、键盘/IME、读屏、浅色/高对比、物理跨屏、ETW 呈现帧、>100ms 调用栈、30 分钟耐久或低 Tier 实测。
+- 隔离 Playnite 与 Worker 已在审计后停止且无残留；原用户数据未修改。Q20 的完整边界状态/交互、Q24-03 的第二物理屏和 Q25-02～05 的性能边界继续保持未完成。证据见 `docs/design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/REAL_HOST_AUDIT-20260914.md`。
 
 ## 2026-09-14 Q25 ETW 工具边界确认
 

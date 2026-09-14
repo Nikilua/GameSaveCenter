@@ -1,6 +1,6 @@
 # Q13–Q25 交互、页面、宿主与交付证据
 
-采集日期：2026-09-14（Asia/Shanghai）。当前代码基线：`ed42868`。证据来自共享 XAML/C# 源码、Playnite 设置迁移测试、RenderHarness Offscreen Regression Audit、隔离 Playnite 真实宿主加载日志和已提交 HEAD 的打包/安装记录；离屏证据不冒充真实 Playnite 像素、IME、物理 DPI、读屏或 ETW 帧时间。
+采集日期：2026-09-14（Asia/Shanghai）。当前代码基线：`2250719`。证据来自共享 XAML/C# 源码、Playnite 设置迁移测试、RenderHarness Offscreen Regression Audit、隔离 Playnite 真实宿主加载日志和已提交 HEAD 的打包/安装记录；本次已取得 `EmbeddedPlaynite` Dashboard 生产像素，但离屏证据仍不冒充 IME、物理 DPI、读屏或 ETW 帧时间。
 
 ## 本阶段真实修复
 
@@ -17,9 +17,9 @@
 
 ## 隔离 Playnite 真实宿主审计
 
-- [REAL_HOST_AUDIT-20260914.md](q13-q25/REAL_HOST_AUDIT-20260914.md) 记录了 `a04a824` 的第三次 Release 构建、打包、隔离安装和真实 Playnite 启动：构建 0 warning/0 error、Worker `311/311`、Playnite `474/531`（57 skipped，0 failed）；日志确认插件 `0.6.73` 已加载，FusionX 主题复制成功，且侧栏探测已加入句柄刷新。
-- 最新 metadata 取得 `EmbeddedSettingsCaptured=true`、`EmbeddedSettingsOrigin=EmbeddedPlaynite`，并记录 150% DPI；Dashboard 仍为 `EmbeddedDashboardCaptured=false`，受控窗口为 `DedicatedAuditWindow`，`ProductionVisualSourceOfTruthAvailable=false`。
-- 刷新有效窗口句柄后，UI Automation 仍只得到无后代节点的 `EmptyWindowAutomationPeer`，未定位侧栏入口；因此 Q20 的真实 Dashboard 视觉、Q24-03 物理跨屏和 Q25-02～Q25-05 的性能/耐久证据仍保持未完成。
+- [REAL_HOST_AUDIT-20260914.md](q13-q25/REAL_HOST_AUDIT-20260914.md) 记录了 `2250719` 的第四次 Release 构建、打包、隔离安装和真实 Playnite 启动：构建 0 warning/0 error、Worker `311/311`、Playnite `474/531`（57 skipped，0 failed）；日志确认插件 `0.6.73` 已加载，FusionX 主题复制成功，并由 Playnite 自身 `SelectSidebarViewCommand` 选择 GameSaveCenter。
+- 最新 `summary.json` 取得 `EmbeddedDashboardCaptured=true`、`EmbeddedSettingsCaptured=true`、`EmbeddedDashboardOrigin=EmbeddedPlaynite`、`EmbeddedSettingsOrigin=EmbeddedPlaynite`、`ControlledDashboardCaptured=false`、`ProductionVisualSourceOfTruthAvailable=true`；150% DPI 下保存 27 个 Dashboard 视口、2 个完整滚动面和 1 个 Settings 视口。
+- 运行器的 UIA 侧栏未定位警告仍被保留为非权威诊断信息；宿主原生命令日志和嵌入捕获元数据已证明当前深色 Dashboard 的生产像素来源。Q20 的完整状态/交互矩阵、Q24-03 物理跨屏和 Q25-02～Q25-05 的性能/耐久证据仍保持未完成。
 
 ## Q13–Q25 覆盖映射
 
@@ -32,15 +32,15 @@
 | Q17 | WorkspaceStatePresenter、ProgressBar、Toast 队列上限、Banner/错误摘要与复制 | `SessionNotificationAccumulatorTests`、`NotificationFeedbackSourceTests`、`UiFeedbackTests`、`BatchObservableCollectionTests` | 真实悬停暂停、动画终态和多任务并发像素待宿主复核 |
 | Q18 | GscMotion token、资源 Host override、冻结 Transform 克隆、卸载清理和 reduced-motion 分支 | `UiFinesseFoundationTests`、`WpfUiResourceDictionaryTests`、`ProductionShellChromeSourceTests` | 实机热切换动画偏好、Rendering/ETW 生命周期待宿主/性能工具复核 |
 | Q19 | AsyncThumbnailImage/Loader generation、3 路并发、96 项 LRU、DecodePixelWidth、媒体占位/预览容器 | `AsyncThumbnailImageTests`、`AsyncThumbnailLoaderTests`、`MediaThumbnailConverterTests`、布局审计 | 真机视频/图片解码帧率与跨 DPI 清晰度待宿主复核 |
-| Q20 | AcrylicProductionShell、Overview 六页壳层、footer/header/hero/metric/activity/云队列入口和边界状态 | `ProductionShellChromeSourceTests`、`OverviewInteractionTests`、`OverviewPriorityResolverTests`、全审计、隔离宿主加载日志 | 真实 Playnite 与插件已启动，Settings 有一次嵌入截图；Dashboard 仍未取得可签收的宿主截图 |
+| Q20 | AcrylicProductionShell、Overview 六页壳层、footer/header/hero/metric/activity/云队列入口和边界状态 | `ProductionShellChromeSourceTests`、`OverviewInteractionTests`、`OverviewPriorityResolverTests`、全审计、隔离宿主加载日志；`2250719` 已取得 `EmbeddedPlaynite` 当前深色 150% Dashboard 视口与滚动面 | 当前宿主像素已可追溯；Hover/Focus/单次导航、低于 560 DIP、空活动/多风险/超长标题/离线边界及其他主题仍需宿主操作复核 |
 | Q21 | SaveCenter/TrainerCenter 状态胶囊、长路径、恢复确认、工具来源失败和风险选项 | `MetadataBackupSourceTests`、`MetadataRestoreCoordinatorTests`、`DeviceConflictStateSourceTests`、`WpfUiResourceDictionaryTests` | 危险恢复路径只允许隔离测试；真实文件/修改器动作不执行 |
 | Q22 | TaskCenter/Maintenance 统计条、筛选、失败详情、云队列、诊断日志、短窗 Inspector | `TaskRetrySourceTests`、`FindingNavigationResolverTests`、`DiagnosticSummaryNoClipTests`、`MaintenanceReportSourceTests`、全审计 | 真窗口长日志复制、队列悬停和短窗输入序列待宿主复核 |
 | Q23 | Settings 分类导航、字段校验、目录只读检测、保存/回滚/主题预览和底部动作 | `SettingsValidationSourceTests`、`SettingsPathValidationTests`、`PortableSettingsTests`、`WpfUiResourceDictionaryTests` | 独立设置窗口的真实键盘和保存回滚序列待宿主复核 |
 | Q24 | AutomationProperties、焦点视觉、Tab/Shift+Tab 源码契约、高对比/无玻璃路径和 1040/1100/1366 布局矩阵 | `AccessibilitySourceTests`、`KeyboardFocusSourceTests`、`UiAuditTruthfulnessTests`、全审计 | 当前主机仅枚举到 `DISPLAY1` 单屏，100/125/150/175/200% 物理 DPI、跨屏 Popup、中文 IME、真实读屏仍待满足宿主条件后复核；电脑自动化助手本轮不可用 |
-| Q25 | 大库批量更新、缩略图并发/缓存边界、审计性能字段、构建身份、打包/安装验证 | `LargeLibraryPerformanceTests`、`AsyncThumbnailLoaderTests`、`DiagnosticsEvidenceSourceTests`、`BuildIdentityTests`；`Q25-PERFORMANCE-BENCHMARK-20260914.txt` 记录 5 次预热、30 次输入到反馈采样及 p50/p95/max；`REAL_HOST_AUDIT-20260914.md` 记录 `a04a824` 隔离包体、主题复制、句柄刷新、安装和 Playnite 加载；`Q25-ETW-TOOL-BOUNDARY-20260914.md` 记录 xperf DWM 会话被 `0x5 / Access denied` 拒绝；当前全量门禁为 XAML 24/24、Release 0 warning/0 error、Core 82/82、Worker 311/311、Playnite 474/531（57 skip） | 30 分钟耐久、ETW 呈现帧、>100ms 调用栈和低性能 Tier 尚未签收；Q25-08 需在最终阶段清理并回查 |
+| Q25 | 大库批量更新、缩略图并发/缓存边界、审计性能字段、构建身份、打包/安装验证 | `LargeLibraryPerformanceTests`、`AsyncThumbnailLoaderTests`、`DiagnosticsEvidenceSourceTests`、`BuildIdentityTests`；`Q25-PERFORMANCE-BENCHMARK-20260914.txt` 记录 5 次预热、30 次输入到反馈采样及 p50/p95/max；`REAL_HOST_AUDIT-20260914.md` 记录 `2250719` 隔离包体、主题复制、宿主原生命令、27/2/1 嵌入捕获、安装和 Playnite 加载；`Q25-ETW-TOOL-BOUNDARY-20260914.md` 记录 xperf DWM 会话被 `0x5 / Access denied` 拒绝；当前全量门禁为 XAML 24/24、Release 0 warning/0 error、Core 82/82、Worker 311/311、Playnite 474/531（57 skip） | 30 分钟耐久、ETW 呈现帧、>100ms 调用栈和低性能 Tier 尚未签收；Q25-08 需在最终阶段清理并回查 |
 
 ## 运行身份与边界
 
 - 运行命令：`scripts/capture-ui-audit.ps1 -Configuration Release -Output artifacts/ui-audit-round2`；构建 0 warning/0 error，审计退出 0。
-- Q25-07 的干净 HEAD 隔离宿主流程已完成打包、程序集身份核对、安装验证和 Playnite 启动；最新 `a04a824` 运行是 Worker 311/311、Playnite 474/531（57 skip，失败 0），并确认隔离配置主题已复制及句柄刷新探测生效。此次仍未取得 Dashboard 的嵌入视觉截图。Q25 ETW 工具边界见 [`Q25-ETW-TOOL-BOUNDARY-20260914.md`](q13-q25/Q25-ETW-TOOL-BOUNDARY-20260914.md)。
-- 本索引不把 `artifacts/ui-audit-round2` 的离屏事实升级为真实宿主视觉真值；阶段结束前仍须保留 Q24/Q25 的待验收项，不得为了填满 208 行而改成“完成”。
+- Q25-07 的干净 HEAD 隔离宿主流程已完成打包、程序集身份核对、安装验证、真实打开和嵌入 Dashboard 捕获；最新 `2250719` 运行是 Worker 311/311、Playnite 474/531（57 skip，失败 0），确认隔离配置主题已复制，并由宿主原生命令成功进入 GameSaveCenter。Dashboard 27 个视口、2 个滚动面和 Settings 1 个视口均保留 `EmbeddedPlaynite` 来源。Q25 ETW 工具边界见 [`Q25-ETW-TOOL-BOUNDARY-20260914.md`](q13-q25/Q25-ETW-TOOL-BOUNDARY-20260914.md)。
+- 本索引只把 `2250719` 明确标记为 `EmbeddedPlaynite` 的当前宿主像素升级为生产视觉真值；不把它升级为 Hover/Focus、键盘/IME、读屏、物理跨屏、浅色/高对比、ETW 帧时间、30 分钟耐久或低 Tier 通过。阶段结束前仍须保留 Q24/Q25 的待验收项，不得为了填满 208 行而改成“完成”。
