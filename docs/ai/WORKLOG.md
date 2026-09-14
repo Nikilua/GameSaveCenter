@@ -6379,3 +6379,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 在已提交 HEAD `6450f6e` 上重新运行根目录一键脚本：XAML 24/24，Release 0 warning/0 error，Core 76/76，Worker 311/311，Playnite 468/525（57 skip，0 fail）；包体构建身份、安装验证和 Playnite 启动均通过，随后用官方 `--shutdown` 收尾。
 - 电脑自动化助手初始化仍因 kernel assets 路径缺失失败，未产生真实截图、滚动、动画、DPI、IME、焦点或读屏证据。WPR 虽能列出 GPU/DesktopComposition/XAMLActivity profile，但启动记录被系统策略拒绝（`0xc5585011`），`wpr -status` 确认未录制。
 - 新增 `Q25-HOST-PERFORMANCE-BOUNDARY-20260914.txt` 记录这次边界：没有 ETW/PresentMon 呈现帧、>100ms 宿主调用栈或 30 分钟时间序列；Q25-02～04、Q25-05 低 Tier 与 Q24 物理 DPI/跨屏/IME/读屏仍不可签收。
+
+## 2026-09-14 Round2 Q00–Q02 账本与字体证据补强
+
+- Q00-06 新增 52 项旧账本结构门禁 `Legacy52ReviewTableKeepsEveryOriginalStateReasonAndNewMapping`，定向 Release 测试与 `TypographyDiagnosticsTests` 共 8/8 通过；原状态、复核结论、依据/下一步和 Q 映射均保持可追溯。
+- 修正旧 `BASELINE.md` 的 7 个已清理临时产物链接，统一指向持久化 Q04–Q12/Q13–Q25 证据；重新扫描 `docs/design` 本地 Markdown 链接为 `MISSING_COUNT=0`。
+- Q01-04/Q01-06 补齐双主题标点保留、代理对边界和 SemiBold→Bold 候选字重的源码门禁；Q02 数值/未知值/路径 Tooltip 契约也加入测试。路径全面迁移、真实 GlyphRun、宿主列布局与 Q02-07 10pt 清点仍未签收。
+- 当前提交前一键脚本未重跑：它会在 dirty worktree 时进入打包/安装宿主边界，已有 `5f60404` 的全量构建测试记录与 `6450f6e` 的 clean install/start 记录继续按各自源码身份保留。

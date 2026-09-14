@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using Xunit;
 
 namespace GameSaveCenter.Playnite.Tests;
@@ -22,6 +23,35 @@ public sealed class DiagnosticsEvidenceSourceTests
         Assert.Contains("EvidenceSource = 'RealPlaynite'", hostScript);
         Assert.Contains("DpiScale = 'captured by WPF VisualTreeHelper.GetDpi'", hostScript);
         Assert.Contains("Timing = 'capture manifest includes", hostScript);
+    }
+
+    [Fact]
+    public void Legacy52ReviewTableKeepsEveryOriginalStateReasonAndNewMapping()
+    {
+        var root = FindRepositoryRoot();
+        var review = File.ReadAllLines(Path.Combine(root, "docs", "design", "UI_FINESSE_REVIEW_2026-09-13.md"));
+        var rows = review
+            .Where(line => line.StartsWith("| P", StringComparison.Ordinal))
+            .Select(line => line.Split('|').Select(cell => cell.Trim()).ToArray())
+            .ToArray();
+
+        Assert.Equal(52, rows.Length);
+        Assert.Equal(52, rows.Select(row => row[1]).Distinct(StringComparer.Ordinal).Count());
+        Assert.All(rows, row =>
+        {
+            Assert.True(row.Length >= 6);
+            Assert.StartsWith("P", row[1], StringComparison.Ordinal);
+            Assert.NotEqual(string.Empty, row[2]);
+            Assert.NotEqual(string.Empty, row[3]);
+            Assert.NotEqual(string.Empty, row[4]);
+            Assert.StartsWith("Q", row[5], StringComparison.Ordinal);
+        });
+
+        var states = rows.GroupBy(row => row[2]).ToDictionary(group => group.Key, group => group.Count(), StringComparer.Ordinal);
+        Assert.Equal(14, states["已验收"]);
+        Assert.Equal(1, states["已满足无需修改"]);
+        Assert.Equal(31, states["代码完成待验收"]);
+        Assert.Equal(6, states["外部阻塞"]);
     }
 
     private static string FindRepositoryRoot()

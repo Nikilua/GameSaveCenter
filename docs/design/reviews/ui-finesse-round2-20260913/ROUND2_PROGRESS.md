@@ -11,15 +11,15 @@
 | Q00-03 | 状态小字阈值 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [状态徽章样本](evidence/Q00-INDEX.md#q00-01q00-05)；浅/深色状态文字均按 4.5:1 检查 |
 | Q00-04 | 真实四行门禁 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [行容器与压缩视口负例](evidence/Q00-INDEX.md#q00-04)；4/4 完整，压缩后 3/4 |
 | Q00-05 | 字体证据命名 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [候选字体与实际 GlyphRun 边界](evidence/Q00-INDEX.md#q00-05)；候选覆盖不再标为 resolved，实际 GlyphRun 保持 unknown |
-| Q00-06 | 旧账本复审 | 实施中 | 待验 | 待验 | 外部阻塞 | 未完成 | 已读取上一轮复核；52 项逐项映射尚未补完 |
-| Q00-07 | 证据身份索引 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [Q00 证据索引](evidence/Q00-INDEX.md)；代码提交 `87a40c8`，旧 BASELINE 修正待统一复核 |
-| Q00-08 | 干净交付路径 | 实施中 | 待验 | 待验 | 外部阻塞 | 未完成 | 8 位隔离 token 已修复路径长度问题；提交后完整门禁已通过构建、Core 76/76、Worker、Playnite 450/513（63 skip），但 `WorkspaceStatePresenterBehaviorTests.RetryButtonKeyboardActivationExecutesOnce` 出现一次非确定性 0/1 失败，待稳定复跑；不修改主工作区 `src.zip` |
+| Q00-06 | 旧账本复审 | 代码完成 | 通过 | 不适用 | 不适用 | 已验收 | [52 项复审证据](evidence/Q00-LEGACY-52-MAPPING.md)；测试确认恰好 52 个唯一旧 ID，逐行保留旧状态、复核结论、依据/下一步与新任务映射；原有外部阻塞仍由对应 Q 任务承接 |
+| Q00-07 | 证据身份索引 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [Q00 证据索引](evidence/Q00-INDEX.md)；历史截图/报告明确绑定代码与夹具提交 `87a40c8`，旧 BASELINE 本地链接已修正且全目录链接复核为 0 个缺失；真实宿主边界仍由相关任务承接 |
+| Q00-08 | 干净交付路径 | 实施中 | 通过 | 待验 | 外部阻塞 | 未完成 | 当前提交 `5f60404` 的完整门禁为构建、Core 76/76、Worker 311/311、Playnite 468/525（57 skip、0 fail），但因工作树存在文档/测试变更在打包前停止；实际 clean install/start 证据仍对应前一干净提交 `6450f6e`，不冒充当前源码包；不修改主工作区 `src.zip` |
 | Q01-01 | 中文家族名称 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [Q01–Q02 受控证据](evidence/Q01-Q02-INDEX.md)；commit `db43230`；候选链命中 Noto Sans SC，扩展缺字如实记录 |
 | Q01-02 | 英文视觉重量 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [字体候选/字重报告](evidence/Q01-Q02-INDEX.md)；Latin 使用 Segoe UI Variable Text，真实宿主仍待验 |
 | Q01-03 | 中英基线 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [双主题截图与 LineMetric](evidence/Q01-Q02-INDEX.md)；共享行高 20 DIP，物理 DPI 待验 |
-| Q01-04 | 中文标点 | 实施中 | 通过 | 待验 | 外部阻塞 | 未完成 | [标点样本报告](evidence/Q01-Q02-INDEX.md)；句首换行与宿主字体仍需真实窗口复核 |
+| Q01-04 | 中文标点 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [标点样本报告](evidence/Q01-Q02-INDEX.md)；双主题报告与源码测试确认原文标点、代理对边界保持不变；句首换行与宿主字体仍需真实窗口复核 |
 | Q01-05 | 扩展 Unicode | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [UnicodeMetric/缺字记录](evidence/Q01-Q02-INDEX.md)；代理对不拆分，扩展 CJK/emoji 缺字保持 unknown |
-| Q01-06 | 中等字重 | 实施中 | 通过 | 通过 | 外部阻塞 | 未完成 | [实际请求/候选字重](evidence/Q01-Q02-INDEX.md)；SemiBold→Bold 映射已记录，真实字形观感待验 |
+| Q01-06 | 中等字重 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [实际请求/候选字重](evidence/Q01-Q02-INDEX.md)；测试锁定 SemiBold→Bold 的真实候选映射；最终 GlyphRun/宿主字形观感仍待验 |
 | Q01-07 | 回退包装决策 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [回退链与许可边界](evidence/Q01-Q02-INDEX.md)；未捆绑字体，宿主安装差异待验 |
 | Q01-08 | 正文行距 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [LineMetric](evidence/Q01-Q02-INDEX.md)；正文 20、说明 18 DIP，短窗宿主待验 |
 | Q02-01 | 数字等宽特性 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [NumericMetrics](evidence/Q01-Q02-INDEX.md)；Tabular setter 生效，宿主 DPI 待验 |

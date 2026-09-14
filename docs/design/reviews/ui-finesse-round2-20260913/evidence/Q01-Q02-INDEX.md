@@ -16,6 +16,11 @@
 - 数字样式启用 `Typography.NumeralAlignment=Tabular`；报告中 `1` 与 `8`、`00:09` 与 `12:59` 宽度一致，并覆盖 `0`、破折号、秒/分钟单位样本。
 - 生产存档候选表仍保留原始路径字符串、CharacterEllipsis 与 Tooltip 取值；路径专用样式已建立，路径列的全面迁移和真实复制/Tooltip 宿主验收仍单独保留为未完成项。
 
+## 当前源码门禁
+
+- `TypographyDiagnosticsTests.ControlledReportsKeepPunctuationAndWeightEvidenceTruthful` 对深色/浅色报告同时锁定全角引号、书名号、破折号、省略号原文保留、无未配对代理项，以及 `SemiBold → Bold` 的真实候选字重映射；`FontActualGlyphRun` 继续明确为 `unknown`。
+- `TypographyDiagnosticsTests.ProductionColumnsKeepNumericAndPathSemantics` 锁定存档大小列的固定宽度与 `SaveSizeValue`、媒体拍摄时间列、未知值破折号、维护数量单位和媒体原始路径 Tooltip 契约。它不替代完整八入口盘点，也不把离屏报告升级成宿主列布局通过。
+
 ## 证据边界
 
 - 截图和报告是受控 DIP/离屏证据，不能证明 125/150/175/200% 物理 DPI、真实宿主字体安装差异、IME 组合过程或最终 GlyphRun。

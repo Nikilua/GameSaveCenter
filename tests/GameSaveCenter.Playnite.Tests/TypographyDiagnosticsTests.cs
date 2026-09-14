@@ -66,6 +66,41 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("Noto Sans CJK SC", typography);
         }
 
+        [Fact]
+        public void ControlledReportsKeepPunctuationAndWeightEvidenceTruthful()
+        {
+            var root = FindRepositoryRoot();
+            var reports = new[]
+            {
+                File.ReadAllText(Path.Combine(root, "docs", "design", "reviews", "ui-finesse-round2-20260913", "evidence", "q01", "dark", "ui-finesse-fixture-report.txt")),
+                File.ReadAllText(Path.Combine(root, "docs", "design", "reviews", "ui-finesse-round2-20260913", "evidence", "q01", "light", "ui-finesse-fixture-report.txt"))
+            };
+
+            foreach (var report in reports)
+            {
+                Assert.Contains("PunctuationSamples: preserved=全角引号“存档” | 《存档中心》 | 路径——待检查 | 稍后重试…… containsUnpairedSurrogate=False", report);
+                Assert.Contains("FontWeightCandidate Chinese requested=SemiBold family=Noto Sans SC actual=Bold", report);
+                Assert.Contains("FontActualGlyphRun: unknown", report);
+            }
+        }
+
+        [Fact]
+        public void ProductionColumnsKeepNumericAndPathSemantics()
+        {
+            var root = FindRepositoryRoot();
+            var save = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "SaveCenterView.xaml"));
+            var media = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
+            var maintenance = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+
+            Assert.Contains("x:Name=\"SaveHistorySizeColumn\"", save);
+            Assert.Contains("Width=\"116\"", save);
+            Assert.Contains("BasedOn=\"{StaticResource SaveSizeValue}\"", save);
+            Assert.Contains("ToolTip\" Value=\"{Binding OriginalPath}\"", media);
+            Assert.Contains("Header=\"拍摄时间\"", media);
+            Assert.Contains("TargetNullValue=—", media);
+            Assert.Contains("StringFormat={}{0} 项", maintenance);
+        }
+
         private static string FindRepositoryRoot()
         {
             var directory = new DirectoryInfo(AppContext.BaseDirectory);

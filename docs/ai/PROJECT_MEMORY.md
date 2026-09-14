@@ -2850,6 +2850,13 @@
 - 已提交 HEAD `6450f6e` 的干净一键流程真实完成 XAML 24/24、Release 0 warning/0 error、Core 76/76、Worker 311/311、Playnite 468/525（57 skip，0 fail），包体身份、安装验证和 Playnite 启动成功；本轮宿主随后按官方 `--shutdown` 关闭。
 - Computer Use 初始化因 kernel assets 路径缺失失败；WPR 的 GPU/DesktopComposition/XAMLActivity 记录又因系统性能分析策略拒绝（`0xc5585011`）无法启动，`wpr -status` 为未录制。因此没有把离屏/Rendering 代理升级成 ETW 呈现帧，也没有伪造 >100ms 调用栈、30 分钟耐久或低 Tier 实机数据。
 - 证据文件：`docs/design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q25-HOST-PERFORMANCE-BOUNDARY-20260914.txt`；Q24 物理 DPI、跨屏 Popup、中文 IME、读屏和 Q25-02～05 的真实宿主性能仍开放。
+
+## 2026-09-14 Round2 Q00–Q02 增量记忆
+
+- Q00-06 已用测试锁定旧账本恰好 52 个唯一 P 行，并保留每行原状态、结论、依据/下一步和 Q 映射；这只证明追溯结构，不关闭对应外部阻塞。
+- 旧 BASELINE 的临时报告链接已改为持久证据索引/宿主边界记录；`docs/design` Markdown 本地链接扫描结果为 0 缺失。
+- Q01 标点与字重、Q02 数值/未知值/原始路径 Tooltip 已有双主题报告与 8 项定向测试证据；实际 GlyphRun、完整路径样式迁移、重要 10/11pt 文本清点和真实宿主布局仍开放。
+- 当前阶段提交前若不能安全运行会停止用户 Playnite 的一键脚本，不得把局部编译/测试或旧提交的 clean install/start 记录改写为当前提交的安装证据。
 # 提交前一键门禁
 
 每次提交前必须运行仓库根目录的 `GameSaveCenter-一键构建安装运行.cmd`，确认隔离 Release 构建、Core/Worker/Playnite 全量测试、打包、安装验证和 Playnite 启动均成功。局部测试或 RenderHarness 通过不能替代该门禁；若输出超时，需后台运行并轮询到最终退出结果后再判断。
