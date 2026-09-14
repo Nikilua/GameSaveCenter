@@ -106,4 +106,66 @@ public sealed class UiDisplayMappingTests
         Assert.Equal("启动器.exe", candidate.FileName);
         Assert.Equal("工具/FLiNG Trainer v1.2/启动器.exe · 1 KiB", candidate.Display);
     }
+
+    [Fact]
+    public void MixedLanguageDisplaySurfacesKeepSemanticSpacingAndProductTerms()
+    {
+        var cloud = new CloudTransferSummaryDto
+        {
+            TotalCount = 2,
+            FailedCount = 2
+        };
+        var suggestion = new MediaClassificationSuggestionDto
+        {
+            Confidence = "High",
+            SuggestedGameName = "Cyberpunk 2077",
+            Reason = "来源含 FLiNG Trainer"
+        };
+        var batch = new MediaClassificationBatchSummaryDto
+        {
+            State = "AppliedWithConflicts"
+        };
+        var backup = new BackupVersionDto
+        {
+            RestoreReadiness = new RestoreReadinessDto
+            {
+                ActualFileCount = 2,
+                ExpectedFileCount = 3,
+                ActualTotalSize = 1024,
+                ExpectedTotalSize = 2048
+            }
+        };
+        var protection = new GameSaveCenter.Core.Services.RecentProtectionSummary(
+            windowDays: 7,
+            recentlyPlayedGames: 3,
+            protectedGames: 1,
+            attentionGames: 2,
+            unrecognizedSaveGames: 0,
+            items: System.Array.Empty<GameSaveCenter.Core.Services.RecentProtectionItem>());
+        var media = new MediaItemDto { Source = MediaSourceKind.XboxGameBar };
+        var trainer = new TrainerReleaseDto { DisplayName = "FLiNG Trainer v1.2 Plus 30" };
+
+        var separated = new[]
+        {
+            cloud.SummaryDisplay,
+            suggestion.SummaryDisplay,
+            batch.StateDisplay,
+            backup.RestoreReadinessMetricsDisplay,
+            protection.SummaryDisplay
+        };
+
+        Assert.Equal("上传失败 · 2 项", cloud.SummaryDisplay);
+        Assert.Equal("高置信 · Cyberpunk 2077 · 来源含 FLiNG Trainer", suggestion.SummaryDisplay);
+        Assert.Equal("已应用 · 有冲突", batch.StateDisplay);
+        Assert.Equal("文件 2/3 · 大小 1 KiB/2 KiB", backup.RestoreReadinessMetricsDisplay);
+        Assert.Equal("共 3 个 · 已保护 1 个 · 需处理 2 个", protection.SummaryDisplay);
+        Assert.Equal("Xbox Game Bar", media.SourceDisplay);
+        Assert.Equal("+30 项", trainer.OptionCountDisplay);
+        Assert.All(separated, value =>
+        {
+            Assert.DoesNotContain("··", value);
+            Assert.DoesNotContain("  ·", value);
+            Assert.DoesNotContain("·  ", value);
+        });
+    }
 }
