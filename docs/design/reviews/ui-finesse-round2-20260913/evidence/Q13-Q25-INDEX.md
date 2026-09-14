@@ -1,6 +1,6 @@
 # Q13–Q25 交互、页面、宿主与交付证据
 
-采集日期：2026-09-15（Asia/Shanghai）。当前代码基线：`70935fe`。证据来自共享 XAML/C# 源码、Playnite 设置迁移测试、RenderHarness Offscreen Regression Audit、隔离 Playnite 真实宿主加载日志和已提交 HEAD 的打包/安装记录；本次已取得 `EmbeddedPlaynite` Dashboard 生产像素，并修正 150% 宿主截图的 DPI 叠加，补齐 Overview 空活动/多风险/超长标题/离线边界夹具和 Q25-03 受控 UI 动作耗时边界，离屏/受控证据仍不冒充 IME、物理跨屏、读屏、ETW 帧时间或停顿期间调用栈。
+采集日期：2026-09-15（Asia/Shanghai）。当前代码基线：`3851228`。证据来自共享 XAML/C# 源码、Playnite 设置迁移测试、RenderHarness Offscreen Regression Audit、隔离 Playnite 真实宿主加载日志和已提交 HEAD 的打包/安装记录；本次已取得 `EmbeddedPlaynite` Dashboard 生产像素，并修正 150% 宿主截图的 DPI 叠加，补齐 Overview 空活动/多风险/超长标题/离线边界夹具和 Q25-03 受控 UI 动作耗时边界，离屏/受控证据仍不冒充 IME、物理跨屏、读屏、ETW 帧时间或停顿期间调用栈。
 
 ## 本阶段真实修复
 

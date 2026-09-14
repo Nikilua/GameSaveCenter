@@ -6562,7 +6562,7 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 
 ## 2026-09-15 Round2 Q24-03 物理跨屏前置采集
 
-- 在 `70935fe` 增加 `real-host-audit.ps1` 的 `System.Windows.Forms.Screen.AllScreens` 前置采集，将显示器边界/工作区和 Q24-03 可执行状态写入 `runner-metadata.json`；当前机器仅有 `DISPLAY1`，状态为单屏阻塞。
+- 在 `70935fe` 增加 `real-host-audit.ps1` 的 `System.Windows.Forms.Screen.AllScreens` 前置采集，并在 `3851228` 修正最终 JSON 深度写入，将显示器边界/工作区和 Q24-03 可执行状态写入 `runner-metadata.json`；当前机器仅有 `DISPLAY1`，状态为单屏阻塞。
 - 新增 Q24-03 源码契约：游戏选框继续是 Dashboard 内浮层，不创建独立 Window/WPF Popup；共享 ComboBox Popup 继续由模板负责定位、关闭、主题和有限滚动。台账将 Q24-03 从“实施中”推进为“代码完成”，但自动/视觉仍待真实双屏宿主。
 - `python scripts/validate-source.py`、PowerShell 语法解析、显示器枚举和 `git diff --check` 通过。定向 `dotnet test` 在当前 SDK/工程解析阶段长时间无输出，停止等待后不写入通过结论。
 - 持久证据：`docs/design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q24-03-PHYSICAL-CROSS-SCREEN-20260915.md`；未生成虚假的第二屏截图，也未运行会覆盖用户 Playnite 的非隔离宿主流程。

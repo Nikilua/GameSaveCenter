@@ -774,7 +774,7 @@
 
 ## 2026-09-15 Round2 Q24-03 物理跨屏前置采集
 
-- 提交 `70935fe` 为 Q24-03 的当前代码基线：`scripts/real-host-audit.ps1` 在启动前采集 `System.Windows.Forms.Screen.AllScreens`，将 `DisplayCount`、边界/工作区和 `Q24_03PhysicalCrossScreen.Status` 写入 `runner-metadata.json`；单屏状态明确为 `blocked-single-display`，双屏才进入宿主回放前置。
+- 提交 `70935fe` 首次加入 Q24-03 拓扑采集，`3851228` 修正最终 JSON 深度写入，当前代码基线为 `3851228`：`scripts/real-host-audit.ps1` 在启动前采集 `System.Windows.Forms.Screen.AllScreens`，将 `DisplayCount`、边界/工作区和 `Q24_03PhysicalCrossScreen.Status` 写入 `runner-metadata.json`；单屏状态明确为 `blocked-single-display`，双屏才进入宿主回放前置。
 - `DashboardView` 的游戏选框补充了宿主内浮层契约：`GameBrowserPanel`/`GameBrowserScrim` 不创建独立 Window 或 WPF Popup；共享 ComboBox Popup 继续使用 Bottom 定位、StaysOpen=False、动态主题资源和有限内部滚动。新增 `DiagnosticsEvidenceSourceTests` 与 `UiFinesseRound2ControlSourceTests` 源码契约。
 - 当前机器前置枚举只有 `DISPLAY1`（2560×1440，工作区 2560×1368），因此真实跨屏迁移和打开态 Popup 仍外部阻塞；证据见 `docs/design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q24-03-PHYSICAL-CROSS-SCREEN-20260915.md`。未将源码门禁或离屏结果写成物理跨屏通过。
 - `python scripts/validate-source.py`、PowerShell 脚本语法解析和 `git diff --check` 通过；定向 `dotnet test` 在当前 SDK/工程解析阶段长时间无输出，未得到测试结果。

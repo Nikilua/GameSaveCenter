@@ -3027,7 +3027,7 @@
 
 ## 2026-09-15 Round2 Q24-03 物理跨屏前置采集
 
-- `70935fe` 将真实宿主运行器的显示器拓扑写入 `runner-metadata.json`：包含 `DisplayCount`、每个显示器的 Bounds/WorkArea，以及 `Q24_03PhysicalCrossScreen.Status`（`ready-for-host-replay` 或 `blocked-single-display`）。这只是执行前置，不替代第二物理屏上的窗口迁移与 Popup 截图。
+- `70935fe` 将真实宿主运行器的显示器拓扑写入 `runner-metadata.json`，`3851228` 修正最终 JSON 深度写入；当前代码包含 `DisplayCount`、每个显示器的 Bounds/WorkArea，以及 `Q24_03PhysicalCrossScreen.Status`（`ready-for-host-replay` 或 `blocked-single-display`）。这只是执行前置，不替代第二物理屏上的窗口迁移与 Popup 截图。
 - 游戏选框保持 Dashboard 宿主内 `GameBrowserPanel`/`GameBrowserScrim`，不创建独立 Window；ComboBox 的共享 Popup 模板保留 Bottom 定位、动态主题资源、关闭语义和有限内部滚动。对应源代码契约和证据在 `docs/design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q24-03-PHYSICAL-CROSS-SCREEN-20260915.md`。
 - 当前 `System.Windows.Forms.Screen.AllScreens` 只有 `DISPLAY1`，边界 `2560×1440`、工作区 `2560×1368`；Q24-03 仍在台账中保持“代码完成/自动待验/视觉待验/外部阻塞/未完成”。
 - `python scripts/validate-source.py` 和 PowerShell 语法解析通过；定向 `dotnet test` 在当前 SDK 工程解析阶段无输出，未计为通过。不要运行未经隔离和授权的 `real-host-audit.ps1` 来替代本前置。
