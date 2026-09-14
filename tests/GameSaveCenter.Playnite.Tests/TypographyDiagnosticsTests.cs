@@ -95,6 +95,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("x:Name=\"SaveHistorySizeColumn\"", save);
             Assert.Contains("Width=\"116\"", save);
             Assert.Contains("BasedOn=\"{StaticResource SaveSizeValue}\"", save);
+            Assert.Contains("BasedOn=\"{StaticResource SavePathText}\"", save);
             Assert.Contains("ToolTip\" Value=\"{Binding OriginalPath}\"", media);
             Assert.Contains("Header=\"拍摄时间\"", media);
             Assert.Contains("TargetNullValue=—", media);

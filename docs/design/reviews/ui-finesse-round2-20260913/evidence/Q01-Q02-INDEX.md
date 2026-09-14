@@ -14,7 +14,7 @@
 - 中文 Normal/Medium/SemiBold 均有候选权重记录；当前 Noto Sans SC 的 SemiBold 请求映射到其 Bold 字形，已记录为实际结果，不假称存在独立 SemiBold 文件。
 - 正文共享行高为 20 DIP，说明文字为 18 DIP；报告包含中英混排、下伸部 `g/j/y`、全角标点、重音、组合字符、代理对、扩展 CJK 和 emoji 的实测宽高/基线。
 - 数字样式启用 `Typography.NumeralAlignment=Tabular`；报告中 `1` 与 `8`、`00:09` 与 `12:59` 宽度一致，并覆盖 `0`、破折号、秒/分钟单位样本。
-- 生产存档候选表仍保留原始路径字符串、CharacterEllipsis 与 Tooltip 取值；路径专用样式已建立，路径列的全面迁移和真实复制/Tooltip 宿主验收仍单独保留为未完成项。
+- 生产存档候选表仍保留原始路径字符串、CharacterEllipsis 与 Tooltip 取值；候选路径列已挂接 `SavePathText` 代码字体样式，其他路径入口的全面迁移和真实复制/Tooltip 宿主验收仍单独保留为未完成项。
 
 ## 当前源码门禁
 
