@@ -161,8 +161,9 @@ public static class Program
             var themeMode = args.Length > 2 && args[2].Equals("light", StringComparison.OrdinalIgnoreCase)
                 ? GameSaveCenterThemeMode.Light
                 : GameSaveCenterThemeMode.Dark;
+            var sortedHeaderFixture = args.Length > 3 && args[3].Equals("sorted", StringComparison.OrdinalIgnoreCase);
             var probeExitCode = 0;
-            var probeThread = new Thread(() => { probeExitCode = RunFinesseProbeOnly(outputRoot, themeMode); });
+            var probeThread = new Thread(() => { probeExitCode = RunFinesseProbeOnly(outputRoot, themeMode, sortedHeaderFixture); });
             probeThread.SetApartmentState(ApartmentState.STA);
             probeThread.Start();
             probeThread.Join();
@@ -1967,7 +1968,10 @@ public static class Program
         }
     }
 
-    private static int RunFinesseProbeOnly(string outputRoot, GameSaveCenterThemeMode themeMode)
+    private static int RunFinesseProbeOnly(
+        string outputRoot,
+        GameSaveCenterThemeMode themeMode,
+        bool sortedHeaderFixture = false)
     {
         Directory.CreateDirectory(outputRoot);
         var report = new StringBuilder();
@@ -1975,7 +1979,7 @@ public static class Program
         report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
         AppendRunMetadata(
             report,
-            "finesseprobe",
+            sortedHeaderFixture ? "finesseprobe-sorted" : "finesseprobe",
             "DevelopmentOnlyProductionResourceProbe",
             themeMode == GameSaveCenterThemeMode.Light ? "light" : "dark",
             "synthetic mixed-language/status/diagnostic/table rows");
@@ -2014,6 +2018,9 @@ public static class Program
             host.Arrange(new Rect(0, 0, host.Width, host.Height));
             host.UpdateLayout();
 
+            if (sortedHeaderFixture)
+                AppendSortedHeaderFixtureEvidence(report, host);
+
             var path = Path.Combine(outputRoot, "ui-finesse-fixture.png");
             SavePng(host, path);
             AppendEffectiveFixtureEvidence(report, host);
@@ -2047,6 +2054,43 @@ public static class Program
             Console.Error.WriteLine(report.ToString());
             return 1;
         }
+    }
+
+    private static void AppendSortedHeaderFixtureEvidence(StringBuilder report, Grid host)
+    {
+        var dataGrid = FindVisualChildren<DataGrid>(host).FirstOrDefault();
+        if (dataGrid == null || dataGrid.Columns.Count < 2)
+            throw new InvalidOperationException("Sorted header fixture requires a realized DataGrid with two columns.");
+
+        dataGrid.Columns[0].SortDirection = System.ComponentModel.ListSortDirection.Ascending;
+        dataGrid.Columns[1].SortDirection = System.ComponentModel.ListSortDirection.Descending;
+        dataGrid.UpdateLayout();
+
+        var headers = FindVisualChildren<DataGridColumnHeader>(dataGrid)
+            .Where(header => header.Visibility == Visibility.Visible && header.Column != null)
+            .ToList();
+        var ascendingHeader = headers.FirstOrDefault(header => header.Column == dataGrid.Columns[0]);
+        var descendingHeader = headers.FirstOrDefault(header => header.Column == dataGrid.Columns[1]);
+        var ascendingGlyph = ascendingHeader == null
+            ? null
+            : FindVisualChildren<FrameworkElement>(ascendingHeader)
+                .FirstOrDefault(element => element.Name == "SortGlyph");
+        var descendingGlyph = descendingHeader == null
+            ? null
+            : FindVisualChildren<FrameworkElement>(descendingHeader)
+                .FirstOrDefault(element => element.Name == "SortGlyph");
+        var descendingAngle = (descendingGlyph?.RenderTransform as RotateTransform)?.Angle ?? double.NaN;
+        var ascendingVisible = ascendingGlyph?.Visibility == Visibility.Visible && ascendingGlyph.ActualWidth >= 8;
+        var descendingVisible = descendingGlyph?.Visibility == Visibility.Visible
+            && descendingGlyph.ActualWidth >= 8
+            && Math.Abs(descendingAngle - 180) < 0.1;
+
+        report.AppendLine(
+            $"SortFixture: ascending=\"{ascendingHeader?.Content}\" visible={ascendingVisible} "
+            + $"width={ascendingGlyph?.ActualWidth:0.##}; descending=\"{descendingHeader?.Content}\" "
+            + $"visible={descendingVisible} width={descendingGlyph?.ActualWidth:0.##} angle={descendingAngle:0.##}");
+        if (!ascendingVisible || !descendingVisible)
+            throw new InvalidOperationException("Sorted header fixture did not expose both non-clipped sort glyph states.");
     }
 
     private static void AppendEffectiveFixtureEvidence(StringBuilder report, Grid host)
