@@ -9,7 +9,9 @@
              TextElement.FontFamily="{DynamicResource GscUiFontFamily}"
              UseLayoutRounding="True" SnapsToDevicePixels="True"
              TextOptions.TextFormattingMode="Ideal" TextOptions.TextRenderingMode="ClearType"
-             TextOptions.TextHintingMode="Fixed" RenderOptions.ClearTypeHint="Enabled">
+             TextOptions.TextHintingMode="Fixed" RenderOptions.ClearTypeHint="Enabled"
+             ToolTipService.InitialShowDelay="350"
+             ToolTipService.BetweenShowDelay="100">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

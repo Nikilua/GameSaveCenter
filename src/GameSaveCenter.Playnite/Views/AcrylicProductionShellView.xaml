@@ -12,6 +12,8 @@
              TextOptions.TextRenderingMode="ClearType"
              TextOptions.TextHintingMode="Fixed"
              RenderOptions.ClearTypeHint="Enabled"
+             ToolTipService.InitialShowDelay="350"
+             ToolTipService.BetweenShowDelay="100"
              SizeChanged="OnShellSizeChanged">
     <UserControl.Resources>
         <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/AcrylicProductionResources.xaml"/>

@@ -66,6 +66,50 @@ public sealed class UiFinesseRound2ControlSourceTests
     }
 
     [Fact]
+    public void FloatingShellsUseOneTooltipDelayContractForQuickPointerMoves()
+    {
+        var dashboard = Read("src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml");
+        var shell = Read("src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml");
+        var settings = Read("src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml");
+
+        foreach (var view in new[] { dashboard, shell, settings })
+        {
+            Assert.Contains("ToolTipService.InitialShowDelay=\"350\"", view);
+            Assert.Contains("ToolTipService.BetweenShowDelay=\"100\"", view);
+        }
+
+        Assert.Contains("ToolTipService.ShowDuration=\"18000\"", dashboard);
+        Assert.Contains("MaxWidth\" Value=\"420\"", Read("src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml"));
+        Assert.Contains("AutomationProperties.Name=\"游戏选择器\"", shell);
+        Assert.Contains("AutomationProperties.Name=\"选择当前游戏\"", dashboard);
+    }
+
+    [Fact]
+    public void ComboPopupClosesOutsideAndKeepsItsReadingSurfaceBounded()
+    {
+        var tokens = Read("src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml");
+        var production = Read("src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml");
+
+        foreach (var template in new[] { tokens, production })
+        {
+            Assert.Contains("Placement=\"Bottom\"", template);
+            Assert.Contains("Focusable=\"False\"", template);
+            Assert.Contains("StaysOpen=\"False\"", template);
+            Assert.Contains("AllowsTransparency=\"{DynamicResource GscPopupAllowsTransparency}\"", template);
+            Assert.Contains("PopupAnimation=\"{DynamicResource GscPopupAnimation}\"", template);
+            Assert.Contains("Background=\"{DynamicResource GscPopupBrush}\"", template);
+            Assert.Contains("Effect=\"{DynamicResource GscPopupEffect}\"", template);
+        }
+
+        Assert.Contains("MaxHeight=\"320\"", tokens);
+        Assert.Contains("MaxHeight=\"{TemplateBinding MaxDropDownHeight}\"", production);
+        Assert.Contains("VerticalScrollBarVisibility=\"Auto\"", tokens);
+        Assert.Contains("VerticalScrollBarVisibility=\"Auto\"", production);
+        Assert.Contains("KeyboardNavigation.DirectionalNavigation=\"Contained\"", tokens);
+        Assert.Contains("KeyboardNavigation.DirectionalNavigation=\"Contained\"", production);
+    }
+
+    [Fact]
     public void TransientSurfacesKeepThemeSensitiveResourcesDynamic()
     {
         var tokens = Read("src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml");

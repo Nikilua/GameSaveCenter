@@ -10,7 +10,7 @@
              UseLayoutRounding="True" SnapsToDevicePixels="True"
              TextOptions.TextFormattingMode="Ideal" TextOptions.TextRenderingMode="ClearType"
              TextOptions.TextHintingMode="Fixed" RenderOptions.ClearTypeHint="Enabled"
-             ToolTipService.InitialShowDelay="350" ToolTipService.ShowDuration="18000">
+             ToolTipService.InitialShowDelay="350" ToolTipService.BetweenShowDelay="100" ToolTipService.ShowDuration="18000">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

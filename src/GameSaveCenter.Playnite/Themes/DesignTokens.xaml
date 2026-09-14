@@ -985,6 +985,7 @@
                                AllowsTransparency="{DynamicResource GscPopupAllowsTransparency}"
                                IsOpen="{TemplateBinding IsDropDownOpen}"
                                Focusable="False"
+                               StaysOpen="False"
                                PopupAnimation="{DynamicResource GscPopupAnimation}">
                             <Border MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}" MaxHeight="320" Margin="0,6,0,8" Padding="5"
                                     Background="{DynamicResource GscPopupBrush}" BorderBrush="{DynamicResource GscGlassStrokeBrush}" BorderThickness="1" CornerRadius="11"

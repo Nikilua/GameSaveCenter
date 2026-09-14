@@ -169,6 +169,7 @@
                    AllowsTransparency="{DynamicResource GscPopupAllowsTransparency}"
                    IsOpen="{TemplateBinding IsDropDownOpen}"
                    Focusable="False"
+                   StaysOpen="False"
                    PopupAnimation="{DynamicResource GscPopupAnimation}">
                 <Border MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
                         MaxHeight="{TemplateBinding MaxDropDownHeight}"

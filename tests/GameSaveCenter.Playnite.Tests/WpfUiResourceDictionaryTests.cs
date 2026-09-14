@@ -137,6 +137,65 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
+    public void FloatingThemeResourcesStayLocalToDashboardAndSettingsOwners()
+    {
+        Exception? exception = null;
+        var dashboardPopup = Colors.Transparent;
+        var settingsPopup = Colors.Transparent;
+        var dashboardSettingsSurface = false;
+        var settingsSettingsSurface = false;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var dashboardOwner = new Border();
+                var settingsOwner = new Border();
+                var factoryType = typeof(DashboardView).Assembly.GetType(
+                    "GameSaveCenter.Playnite.Infrastructure.AdaptiveThemePaletteFactory",
+                    throwOnError: true)!;
+                var create = factoryType.GetMethod("Create", BindingFlags.Public | BindingFlags.Static)!;
+                var applyRuntime = factoryType.GetMethod("ApplyRuntimeThemeResources", BindingFlags.Public | BindingFlags.Static)!;
+                var applySettings = factoryType.GetMethod("ApplySettingsMaterialResources", BindingFlags.Public | BindingFlags.Static)!;
+
+                var dashboardPalette = create.Invoke(
+                    null,
+                    new object[] { dashboardOwner, true, 78, GameSaveCenterThemeMode.Light })!;
+                var settingsPalette = create.Invoke(
+                    null,
+                    new object[] { settingsOwner, true, 78, GameSaveCenterThemeMode.Dark })!;
+                var dashboardResources = new ResourceDictionary();
+                var settingsResources = new ResourceDictionary();
+
+                applyRuntime.Invoke(null, new object[] { dashboardResources, dashboardPalette, true, true });
+                applyRuntime.Invoke(null, new object[] { settingsResources, settingsPalette, true, true });
+                applySettings.Invoke(null, new object[] { settingsResources, settingsPalette, true });
+
+                dashboardPopup = Assert.IsType<SolidColorBrush>(dashboardResources["GscPopupBrush"]).Color;
+                settingsPopup = Assert.IsType<SolidColorBrush>(settingsResources["GscPopupBrush"]).Color;
+                dashboardSettingsSurface = dashboardResources["GscSettingsShellBrush"] == null;
+                settingsSettingsSurface = settingsResources["GscSettingsShellBrush"] != null;
+
+                Assert.Null(dashboardOwner.Resources["GscPopupBrush"]);
+                Assert.Null(settingsOwner.Resources["GscPopupBrush"]);
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.NotEqual(dashboardPopup, settingsPopup);
+        Assert.True(dashboardSettingsSurface);
+        Assert.True(settingsSettingsSurface);
+    }
+
+    [Fact]
     public void ProductionNavigationCentersEachIconAndLabelOnTheSameRow()
     {
         var root = FindRepositoryRoot();
