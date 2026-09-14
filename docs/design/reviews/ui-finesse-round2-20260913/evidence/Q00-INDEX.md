@@ -1,6 +1,16 @@
 # Q00 受控证据索引
 
-采集日期：2026-09-14（Asia/Shanghai）。本索引只收录 Q00 的受控 WPF 证据；它不替代真实 Playnite 宿主、物理 DPI、读屏或屏幕呈现帧证据。
+采集日期：2026-09-15（Asia/Shanghai）。本索引只收录 Q00 的受控 WPF 证据；它不替代真实 Playnite 宿主、物理 DPI、读屏或屏幕呈现帧证据。
+
+## 2026-09-15 深色设置校验标题回归
+
+当前提交 `0648689a1ac74f43ec918e051f80037a4ff2d20d` 的 clean-tree RenderHarness 发现并修复了一个真实暗色漏检：设置页 `SettingsValidationDetails` 的 Expander 标题没有显式主题前景，虽然页面根节点已有前景，模板仍可能回落为暗色默认黑字。修复在该共享节点直接使用 `DynamicResource GscPrimaryTextBrush`，并由 `SettingsValidationSourceTests` 锁定同节点属性。
+
+- [深色设置页 1040×700](q00/Q00-settings-dark-1040x700.png)：错误摘要、定位按钮和“查看错误详情”标题在暗底上保持可读；这是修复后的当前提交截图。
+- [浅色无效状态 1040×700](q00/Q00-settings-invalid-light-1040x700.png)：同一错误摘要状态的浅色对照。
+- [完整 RenderHarness 报告](q00/Q00-render-qa-20260915.txt)：`Commit=0648689a1ac74f43ec918e051f80037a4ff2d20d`、`WorkingTreeClean=True`、`DpiScale=1.00`；Light/Dark 的 Settings 1040×700、1100×720、1366×768、2560×1440 均为 `OK`，并包含 normal/dirty/invalid 设置状态夹具。
+
+这组新截图证明的是离屏 DIP 视觉修复，不是 Playnite 实机窗口、物理缩放、读屏或打开态交互证明；宿主边界仍按本索引末尾记录。
 
 ## 运行身份
 

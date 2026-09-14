@@ -2,6 +2,12 @@
 
 > 更新时间：2026-09-15。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-15 UI 精修 Q00 深色设置前景回归与 Q21/Q23 视觉证据
+
+- 当前代码基线为 `0648689`，已推送 `codex/ui-finesse-round2`。设置页错误详情 Expander 标题已显式使用 `GscPrimaryTextBrush`，修复了页面根前景存在但标题模板仍可能落回暗色默认黑字的真实漏检。
+- Release 全量验证为 XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `310/311`（1 skip）、Playnite `481/544`（63 skip、0 fail）。当前 clean-tree RenderHarness 双主题、多窗口尺寸和设置 normal/dirty/invalid 夹具 `render-qa OK`，DPI 仅为离屏 DIP `1.00`。
+- 证据见 [`Q00-INDEX.md`](../design/reviews/ui-finesse-round2-20260913/evidence/Q00-INDEX.md) 和 [`Q21-Q23-RENDER-20260915.md`](../design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q21-Q23-RENDER-20260915.md)。Q21-03/07/08、Q23-01/04 的视觉列已更新；真实 Playnite、物理 DPI、键盘完整路径、IME、读屏、保存中/失败过渡与主题 Owner 生命周期仍不能由离屏证据替代。
+
 ## 2026-09-15 UI 精修 Q15 Tooltip、Popup 与浮层主题自动门禁
 
 - 当前代码基线为 `86ac336`。Dashboard、生产壳层和独立设置页统一声明 Tooltip 初次延迟 `350 ms`、快速切换间隔 `100 ms`；Combo Popup 两套生产模板显式 `StaysOpen=False`，并保留 Bottom 定位、有限高度、自动滚动、键盘方向导航隔离和动态主题资源。

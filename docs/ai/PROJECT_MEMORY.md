@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-15
 
+## 2026-09-15 UI 精修 Q00 深色设置前景回归与 Q21/Q23 视觉证据
+
+- 提交 `0648689` 修复设置页 `SettingsValidationDetails` Expander Header 的主题前景漏检：不要因为 `UserControl.Foreground` 已设置，就假定控件模板 Header 会继承正确画刷；共享节点现在明确绑定 `DynamicResource GscPrimaryTextBrush`，源代码回归测试锁定节点级契约。
+- 当前 clean-tree RenderHarness 身份为 `0648689a1ac74f43ec918e051f80037a4ff2d20d`，`WorkingTreeClean=True`，Light/Dark 多尺寸及 normal/dirty/invalid Settings 夹具 `render-qa OK`。该证据仍是 96 DPI/1.00 的离屏逻辑 DIP，不能替代实机窗口 DPI、屏幕帧或输入序列。
+- 页面截图实证覆盖 Save 差异/备份策略、Trainer 已绑定工具、Settings 分类导航和错误摘要；账本只升级 Q21-03/Q21-07/Q21-08 与 Q23-01/Q23-04 的视觉列，保存中/失败、恢复对话、主题切换 Owner、键盘和宿主边界继续保守记录。
+
 ## 2026-09-15 UI 精修 Q15 Tooltip、Popup 与浮层主题自动门禁
 
 - 提交 `86ac336` 将 Dashboard、AcrylicProductionShellView 和独立 Settings 的 Tooltip 宿主边界统一为 `InitialShowDelay=350 ms`、`BetweenShowDelay=100 ms`；共享 Combo Popup 两套模板显式声明 `StaysOpen=False`，避免把点外部关闭留给默认样式推断。

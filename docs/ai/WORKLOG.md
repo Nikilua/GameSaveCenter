@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-15 UI 精修 Q00 深色设置前景回归与 Q21/Q23 视觉证据
+
+- 当前 clean-tree 提交 `0648689` 修复真实离屏复核发现的暗色设置页 `SettingsValidationDetails` Expander 标题前景漏检：节点显式绑定 `DynamicResource GscPrimaryTextBrush`，并由 `SettingsValidationSourceTests` 锁定同节点属性；修复提交已推送到 `codex/ui-finesse-round2`。
+- Release 全量验证：XAML `24/24`，构建 `0 警告/0 错误`，Core `83/83`，Worker `310/311`（1 skip），Playnite `481/544`（63 skip、0 fail）。clean-tree RenderHarness 报告为 `0648689a1ac74f43ec918e051f80037a4ff2d20d`、`WorkingTreeClean=True`、双主题多尺寸 `render-qa OK`。
+- 新增 Q00 当前深色设置截图/报告；新增 Q21/Q23 页面截图证据，将 Q21-03/Q21-07/Q21-08 与 Q23-01/Q23-04 的视觉列升级为通过。Q23 保存中/失败、视觉设置真实切换、Q21 恢复对话、键盘/宿主操作仍明确保持待验。
+
 ## 2026-09-15 UI 精修 Q15 Tooltip、Popup 与浮层主题自动门禁
 
 - 提交 `86ac336` 收紧三类浮层边界：Dashboard/生产壳层/Settings 的 Tooltip 初次延迟 `350 ms`、快速移动间隔 `100 ms`；DesignTokens 与 WpfUiProduction 的 Combo Popup 显式 `StaysOpen=False`，并保留 Bottom、有限高度、自动滚动与动态材质资源。
