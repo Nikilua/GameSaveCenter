@@ -1,12 +1,13 @@
 # Q13–Q25 交互、页面、宿主与交付证据
 
-采集日期：2026-09-15（Asia/Shanghai）。当前代码基线：`4f1dbb4`。证据来自共享 XAML/C# 源码、Playnite 设置迁移测试、RenderHarness Offscreen Regression Audit、隔离 Playnite 真实宿主加载日志和已提交 HEAD 的打包/安装记录；本次已取得 `EmbeddedPlaynite` Dashboard 生产像素，并修正 150% 宿主截图的 DPI 叠加，离屏证据仍不冒充 IME、物理跨屏、读屏或 ETW 帧时间。
+采集日期：2026-09-15（Asia/Shanghai）。当前代码基线：`dea74f7`。证据来自共享 XAML/C# 源码、Playnite 设置迁移测试、RenderHarness Offscreen Regression Audit、隔离 Playnite 真实宿主加载日志和已提交 HEAD 的打包/安装记录；本次已取得 `EmbeddedPlaynite` Dashboard 生产像素，并修正 150% 宿主截图的 DPI 叠加，离屏证据仍不冒充 IME、物理跨屏、读屏或 ETW 帧时间。
 
 ## 本阶段真实修复
 
 - `MediaCenterView` 的“待归类”主表在 compact/narrow 下曾实际只有 190/150/130 DIP，且页面纵向滚动被禁用，审计产生 `PRIMARY_VIEWPORT_TOO_SHORT`。现在主表/表格壳保留 212 DIP 阅读下限，页面 ScrollViewer 使用有限、可达的 Auto 通道，DataGrid 继续使用 Item ScrollUnit 和虚拟化；审计复跑后 Fidelity failures 为 0、失败路由为 0。
 - 媒体 Inspector 是表格页面内的独立有限详情滚动面。审计器按实际布局将它记录为 `NESTED_VERTICAL_SCROLL` 信息，而不是把有明确职责边界的详情滚动误报为父子冲突；媒体主表的页面滚动仍单独记录 `PRIMARY_SCROLL_ACCESS`。
 - 新增源代码门禁覆盖媒体 212 DIP 阅读底线；`UiAuditSourceTests` 同步验证页面滚动和 Inspector 证据分类。
+- 生产壳层游戏选框补齐 Esc/已选游戏 Enter、点外部和选中后的关闭及焦点返回；导航、Header 动作、筛选器、游戏列表、footer 和 Overview 主要动作补充稳定 UI Automation 名称。真实 WPF STA 行为与源码契约见 [`Q09-Q24-KEYBOARD-FOCUS-AUTOMATION-20260915.md`](q13-q25/Q09-Q24-KEYBOARD-FOCUS-AUTOMATION-20260915.md)。
 
 ## 受控审计摘要
 
@@ -27,7 +28,7 @@
 | --- | --- | --- | --- |
 | Q13 | DataGridScrollDiagnostics、稳定 ID 锚点、Item ScrollUnit、表头 resize/sort 部件、媒体主表 212 DIP 修复 | `MediaWindowAnchorContractTests`、`UiAuditCaptureContractTests`、`WpfUiResourceDictionaryTests`、全审计 0 HIGH | 真实鼠标拖拽列宽、Ctrl/Shift 跨页手势仍需宿主操作 |
 | Q14 | Dashboard/各页筛选、批量计数、刷新/更多筛选和响应式布局入口 | `DebouncedRefreshTests`、`TaskFilterOptionsSyncTests`、`ResponsiveLayoutCoordinatorTests`、`UiFinesseRound2ControlSourceTests`、布局矩阵 | 真实 760/980 DIP 屏幕输入序列待宿主复核；当前审计无工具栏 Medium |
-| Q15 | 共享 Tooltip、Combo Popup、菜单/轻浮层资源和复制入口 | `GamePickerShellSourceTests`、`WpfUiResourceDictionaryTests`、`UiFinesseRound2ControlSourceTests`、源代码审计 | 边缘定位、Esc/点外部、独立窗口主题 Owner 待宿主复核 |
+| Q15 | 共享 Tooltip、Combo Popup、菜单/轻浮层资源和复制入口 | `GamePickerShellSourceTests`、`WpfUiResourceDictionaryTests`、`UiFinesseRound2ControlSourceTests`、`KeyboardFocusSourceTests`、源代码审计；游戏选框关闭/焦点返回见 `Q09-Q24-KEYBOARD-FOCUS-AUTOMATION-20260915.md` | Combo/菜单边缘定位、独立窗口主题 Owner 和真实宿主时序仍待复核 |
 | Q16 | Dialog/Inspector/Expander 层级、详情滚动、焦点返回和失败详情顺序 | `KeyboardFocusSourceTests`、`DetailsDisclosureSourceTests`、`DiagnosticSummaryNoClipTests`、`TaskCenterViewResponsiveTests` | 真窗口模态 Tab 圈和快速开合时序待宿主复核 |
 | Q17 | WorkspaceStatePresenter、ProgressBar、Toast 队列上限、Banner/错误摘要与复制 | `SessionNotificationAccumulatorTests`、`NotificationFeedbackSourceTests`、`UiFeedbackTests`、`BatchObservableCollectionTests` | 真实悬停暂停、动画终态和多任务并发像素待宿主复核 |
 | Q18 | GscMotion token、资源 Host override、冻结 Transform 克隆、卸载清理和 reduced-motion 分支 | `UiFinesseFoundationTests`、`WpfUiResourceDictionaryTests`、`ProductionShellChromeSourceTests` | 实机热切换动画偏好、Rendering/ETW 生命周期待宿主/性能工具复核 |
@@ -36,7 +37,7 @@
 | Q21 | SaveCenter/TrainerCenter 状态胶囊、长路径、恢复确认、工具来源失败和风险选项 | `MetadataBackupSourceTests`、`MetadataRestoreCoordinatorTests`、`DeviceConflictStateSourceTests`、`WpfUiResourceDictionaryTests` | 危险恢复路径只允许隔离测试；真实文件/修改器动作不执行 |
 | Q22 | TaskCenter/Maintenance 统计条、筛选、失败详情、云队列、诊断日志、短窗 Inspector | `TaskRetrySourceTests`、`FindingNavigationResolverTests`、`DiagnosticSummaryNoClipTests`、`MaintenanceReportSourceTests`、全审计 | 真窗口长日志复制、队列悬停和短窗输入序列待宿主复核 |
 | Q23 | Settings 分类导航、字段校验、目录只读检测、保存/回滚/主题预览和底部动作 | `SettingsValidationSourceTests`、`SettingsPathValidationTests`、`PortableSettingsTests`、`WpfUiResourceDictionaryTests` | 独立设置窗口的真实键盘和保存回滚序列待宿主复核 |
-| Q24 | AutomationProperties、焦点视觉、Tab/Shift+Tab 源码契约、高对比/无玻璃路径和 1040/1100/1366 布局矩阵 | `AccessibilitySourceTests`、`KeyboardFocusSourceTests`、`UiAuditTruthfulnessTests`、全审计 | 当前主机仅枚举到 `DISPLAY1` 单屏，100/125/150/175/200% 物理 DPI、跨屏 Popup、中文 IME、真实读屏仍待满足宿主条件后复核；电脑自动化助手本轮不可用 |
+| Q24 | AutomationProperties、焦点视觉、Tab/Shift+Tab 源码契约、高对比/无玻璃路径和 1040/1100/1366 布局矩阵 | `AccessibilitySourceTests`、`KeyboardFocusSourceTests`、`UiAuditTruthfulnessTests`、全审计；`dea74f7` 新增生产选框真实 WPF STA Esc→焦点返回和壳层/Overview 自动化名称契约，详见 `Q09-Q24-KEYBOARD-FOCUS-AUTOMATION-20260915.md` | 当前主机仅枚举到 `DISPLAY1` 单屏，100/125/150/175/200% 物理 DPI、完整六页 Tab/Shift+Tab、跨屏 Popup、中文 IME、真实读屏仍待满足宿主条件后复核；电脑自动化助手本轮不可用 |
 | Q25 | 大库批量更新、缩略图并发/缓存边界、审计性能字段、构建身份、打包/安装验证 | `LargeLibraryPerformanceTests`、`AsyncThumbnailLoaderTests`、`DiagnosticsEvidenceSourceTests`、`BuildIdentityTests`；`Q25-PERFORMANCE-BENCHMARK-20260914.txt` 记录 5 次预热、30 次输入到反馈采样及 p50/p95/max；`REAL_HOST_AUDIT-20260914.md` 记录 `4f1dbb4` 非空隔离包体、主题复制、宿主原生命令、27/2/1 嵌入捕获、DPI 截图修正、安装和 Playnite 加载；`Q25-ETW-TOOL-BOUNDARY-20260914.md` 记录 xperf DWM 会话被 `0x5 / Access denied` 拒绝；当前全量门禁为 XAML 24/24、Release 0 warning/0 error、Core 82/82、Worker 311/311、Playnite 475/532（57 skip） | 30 分钟耐久、ETW 呈现帧、>100ms 调用栈和低性能 Tier 尚未签收；Q25-08 需在最终阶段清理并回查 |
 
 ## 运行身份与边界

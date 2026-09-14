@@ -2,6 +2,11 @@
 
 > 更新时间：2026-09-15。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-15 UI 精修游戏选框键盘与自动化名称
+
+- 当前交付基线为 `dea74f7`。生产壳层游戏选框现在在打开时聚焦搜索框，Esc/已选游戏 Enter、点外部和选中游戏都会关闭选框并把焦点返回当前游戏按钮；导航、Header、筛选器、列表、footer 和 Overview 主要动作已补充稳定 UI Automation 名称。
+- 真实 WPF STA 行为测试已验证 Esc 关闭、事件处理和焦点返回；RenderHarness 双主题、多尺寸回归仍为 `render-qa OK`。完整六页 Tab/Shift+Tab、IME、读屏、物理跨屏与真实 Playnite UIA Pattern 仍待宿主条件。
+
 ## 2026-09-15 UI 精修 150% 宿主截图渲染修复
 
 - 当前交付基线为 `4f1dbb4`。已修正真实宿主 150% 捕获中 RenderTargetBitmap 的宿主 DPI 与显式缩放叠加问题，并用回归测试锁定 1.5 倍输出不再被错误绘制为 2.25 倍。

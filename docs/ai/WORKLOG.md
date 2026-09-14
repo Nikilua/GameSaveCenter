@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-15 UI 精修游戏选框键盘与自动化名称
+
+- 修复生产壳层游戏选框的真实交互缺口：打开聚焦搜索框，Esc/已选游戏 Enter、点遮罩和选中游戏均关闭并返回当前游戏按钮焦点；补充导航、Header、筛选器、列表、footer 与 Overview 动作的自动化名称。
+- 真实 WPF STA 回归与源码契约合计 `17/17` 通过；RenderHarness 构建 `0/0`、双主题多尺寸报告 `render-qa OK` 且无 `PROBLEM`；源码验证与 WPF 技能审查 `0 errors` 通过。
+- 证据新增 `Q09-Q24-KEYBOARD-FOCUS-AUTOMATION-20260915.md`。完整六页键盘次序、Combo/菜单边缘、IME、读屏和 Playnite 宿主 UIA Pattern 继续如实保持待验收。
+
 ## 2026-09-15 UI 精修 150% 宿主截图渲染修复
 
 - 修正 `UiDiagnosticsExporters` 在真实 150% 宿主捕获时把宿主 DPI 与显式 1.5 倍变换叠加的问题：RenderTargetBitmap 使用 96 DPI 基线，显式变换独立承担像素放大；新增回归测试，定向 WPF 门禁 `9/9` 通过。

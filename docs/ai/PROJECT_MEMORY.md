@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-15
 
+## 2026-09-15 UI 精修游戏选框键盘与自动化名称
+
+- 当前交付基线为 `dea74f7`。`AcrylicProductionShellView` 的生产游戏选框增加了共享 `PreviewKeyDown` 关闭入口：Esc、已有选中游戏时 Enter、点外部和选择游戏都统一关闭，并将焦点返回 `GameContextButton`；打开时搜索框获得键盘焦点。
+- 壳层导航、Header 媒体/备份动作、筛选 ComboBox、游戏列表、footer 状态区和 Overview 主要动作新增稳定 `AutomationProperties.Name`；Overview 优先事项标题提供完整标题 Tooltip。
+- 定向 WPF 行为/源码测试 `17/17`、RenderHarness 双主题多尺寸 `render-qa OK`、源码验证和 WPF 技能审查 `0 errors` 通过。Q09-06、Q15-07、Q24-04～06 的真实宿主 Popup/Tab/读屏/IME 边界仍未签收，证据见 `Q09-Q24-KEYBOARD-FOCUS-AUTOMATION-20260915.md`。
+
 ## 2026-09-15 UI 精修 150% 宿主截图渲染修复
 
 - 在提交 `4f1dbb4` 中修正 `UiDiagnosticsExporters.RenderBitmap` 的 DPI 叠加：RenderTargetBitmap 改用 96 DPI 基线，显式 `renderScale` 单独负责高 DPI 像素输出；新增 `HighDpiPngUsesExplicitScaleWithoutApplyingHostDpiTwice` 回归测试，验证 1.5 倍输出不再按 2.25 倍绘制并裁掉右/下边界。
