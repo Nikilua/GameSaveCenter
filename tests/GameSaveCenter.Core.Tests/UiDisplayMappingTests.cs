@@ -65,4 +65,45 @@ public sealed class UiDisplayMappingTests
     {
         Assert.Equal(expected, new BackupDiffDto { TotalBytesDelta = delta }.TotalBytesDeltaDisplay);
     }
+
+    [Theory]
+    [InlineData(0, "未知大小")]
+    [InlineData(-1, "未知大小")]
+    [InlineData(1024, "1 KiB")]
+    public void TrainerReleaseKeepsUnknownSizeDistinctFromMeasuredSize(long sizeBytes, string expected)
+    {
+        Assert.Equal(expected, new TrainerReleaseDto { SizeBytes = sizeBytes }.SizeDisplay);
+    }
+
+    [Fact]
+    public void BackupZeroAndReadinessZeroRemainVisibleAsRealValues()
+    {
+        var backup = new BackupVersionDto
+        {
+            TotalBytes = 0,
+            RestoreReadiness = new RestoreReadinessDto
+            {
+                ActualFileCount = 0,
+                ExpectedFileCount = 0,
+                ActualTotalSize = 0,
+                ExpectedTotalSize = 0
+            }
+        };
+
+        Assert.Equal("0 B", backup.SizeDisplay);
+        Assert.Equal("文件 0/0 · 大小 0 B/0 B", backup.RestoreReadinessMetricsDisplay);
+    }
+
+    [Fact]
+    public void MixedPathAndProductTermsKeepOriginalPathAndSemanticSeparator()
+    {
+        var candidate = new GameToolEntryCandidateDto
+        {
+            RelativePath = "工具/FLiNG Trainer v1.2/启动器.exe",
+            SizeBytes = 1024
+        };
+
+        Assert.Equal("启动器.exe", candidate.FileName);
+        Assert.Equal("工具/FLiNG Trainer v1.2/启动器.exe · 1 KiB", candidate.Display);
+    }
 }
