@@ -42,3 +42,14 @@
 
 - 在同一台实际 Windows 主机上通过 `System.Windows.Forms.Screen.AllScreens` 枚举显示器，结果只有主屏 `\\.\\DISPLAY1`，边界 `2560×1440`、工作区 `2560×1368`；没有第二个物理显示器或可迁移的跨屏目标。
 - 因此本轮没有执行“迁移宿主窗口并在打开态 Popup 中跨屏”的操作，也没有生成跨屏通过结论。Q24-03 继续保留为未完成/待宿主条件，不以单屏枚举替代多屏行为证据。
+
+## 窗口句柄刷新修复后的第三次复核（a04a824）
+
+- 在提交 `a04a8249a2411c78f0580d67ff195ef27afaa40d` 上运行干净隔离流程，输出为 `artifacts/ui-host-audit-refresh-final-20260914`，隔离用户数据为 `.tmp/ui-host-userdata-refresh-final-20260914`。本轮在侧栏 UIA 探测前对 Playnite 进程调用 `Process.Refresh()`，用来排除启动早期缓存 `MainWindowHandle=0` 的脚本误判。
+- 干净流程完成 XAML `24/24`、Release 构建 `0 warning / 0 error`、Core `82/82`、Worker `311/311`、Playnite `474/531`（57 skipped，0 failed）；打包、程序集身份核对和隔离安装均成功，身份为 `0.6.73+a04a8249a2411c78f0580d67ff195ef27afaa40d`。主题元数据仍为 `ConfiguredDesktopThemeCopied=true`，150% DPI 与 Dashboard `1706.67×912 DIP` 可追溯。
+- Playnite 日志确认 `GameSaveCenter 0.6.73` 加载并出现 `WindowFactory:Show window`；插件审计日志确认先等待真实侧栏，之后进入受控专用窗口 fallback。侧栏探测在刷新句柄后仍未找到 `GameSaveCenter`，但这次延迟生成的 `summary.json` 已完整记录：`EmbeddedDashboardCaptured=false`、`EmbeddedSettingsCaptured=true`、`ControlledDashboardCaptured=true`、`ProductionVisualSourceOfTruthAvailable=false`、`EmbeddedDashboardOrigin=None`、`EmbeddedSettingsOrigin=EmbeddedPlaynite`、`HighGateCount=3`。
+- 本轮 Playnite 还记录了联网更新清单/Addon blacklist 的 TLS 失败；这没有阻止插件加载或审计服务运行，也不被记作插件代码错误。审计结束后已停止本轮隔离 Playnite 与 Worker，原用户数据未修改。
+
+该复核排除了“启动早期句柄缓存导致未探测”的审计脚本缺口，但没有改变真实 Dashboard 未捕获的结论；受控窗口仍标记 `DedicatedAuditWindow`，不升级为生产视觉真值。Q24-03 的单屏条件边界以及 Q25-02～Q25-05 的实际呈现帧、调用栈、30 分钟耐久和低性能 Tier 证据仍未完成。
+
+最新输出：`artifacts/ui-host-audit-refresh-final-20260914/summary.json`、`metadata.json`、`runner-metadata.json`、`capture-manifest.json`、`settings/embedded-current/viewport/settings.png`、`.tmp/ui-host-userdata-refresh-final-20260914/playnite.log` 与 `extensions.log`。

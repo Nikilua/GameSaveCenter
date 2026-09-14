@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-14 UI 精修隔离 Playnite 句柄刷新复核
+
+- 在 `a04a824` 干净 HEAD 上完成 XAML 24/24、Release 0/0、Core 82/82、Worker 311/311、Playnite 474/531（57 skip）以及打包、隔离安装、真实 Playnite 启动；程序集身份一致，主题复制成功。
+- 侧栏探测加入 `Process.Refresh()` 后仍未找到 `GameSaveCenter`；插件日志确认真实 Playnite 加载、窗口显示、等待侧栏和 fallback 专用窗口。最终 `summary.json` 仍为 Embedded Dashboard false、Embedded Settings true、Controlled Dashboard true。
+- 结束时停止了本轮明确隔离的 Playnite/Worker 进程；无第二物理屏，Q24-03 不执行跨屏迁移。该轮只排除探测时序缺口，真实 Dashboard、ETW/调用栈/耐久/低 Tier 仍未验收。
+
 ## 2026-09-14 UI 精修隔离 Playnite 主题复制复核
 
 - 在 `ed42868` 上重新执行隔离真实宿主审计；脚本从原配置识别并复制 FusionX Desktop Theme，`runner-metadata.json` 的 `ConfiguredDesktopThemeCopied=true`，Playnite 日志不再出现主题缺失错误，插件 `0.6.73` 已加载并记录 `WindowFactory:Show window`。

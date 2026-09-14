@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-14
 
+## 2026-09-14 UI 精修隔离 Playnite 句柄刷新后的复核
+
+- 在 `a04a824` 上完成干净隔离宿主流程：XAML `24/24`、Release `0 warning/0 error`、Core `82/82`、Worker `311/311`、Playnite `474/531`（57 skip，0 fail），打包/程序集身份/隔离安装成功，身份为 `0.6.73+a04a8249a2411c78f0580d67ff195ef27afaa40d`。
+- `scripts/real-host-audit.ps1` 的侧栏探测现在会对进程调用 `Process.Refresh()`；最新 `runner-metadata.json` 仍为 `ConfiguredDesktopThemeCopied=true`。Playnite 日志确认插件加载和 `WindowFactory:Show window`，但刷新后仍未找到 `GameSaveCenter` 侧栏，随后由插件进入专用窗口 fallback。
+- 最新输出为 `artifacts/ui-host-audit-refresh-final-20260914`，`summary.json` 为 `EmbeddedDashboardCaptured=false`、`EmbeddedSettingsCaptured=true`、`ControlledDashboardCaptured=true`、`ProductionVisualSourceOfTruthAvailable=false`、`EmbeddedDashboardOrigin=None`。隔离进程已停止，原用户数据未修改；网络更新清单 TLS 失败只记作宿主噪声，不改变插件加载事实。
+- 这轮只排除了句柄缓存造成的审计脚本误判，没有取得真实 Dashboard。Q24-03 仍受单屏条件限制；Q25-02～05 的 ETW 呈现帧、>100ms 调用栈、30 分钟真实窗口耐久和低性能 Tier 仍未完成。三次宿主结果见 `evidence/q13-q25/REAL_HOST_AUDIT-20260914.md`。
+
 ## 2026-09-14 UI 精修隔离 Playnite 主题修复后的复核
 
 - 在 `ed42868` 上再次运行 `scripts/real-host-audit.ps1 -Configuration Release`。审计脚本已把原 Playnite 配置中的 `FusionX_54244ec8-29ec-418e-bce7-415250c8d67b` 主题复制到隔离用户数据，最新 `runner-metadata.json` 为 `ConfiguredDesktopThemeCopied=true`；Playnite 日志不再出现主题缺失错误，并确认 `GameSaveCenter 0.6.73` 加载及 `WindowFactory:Show window`。

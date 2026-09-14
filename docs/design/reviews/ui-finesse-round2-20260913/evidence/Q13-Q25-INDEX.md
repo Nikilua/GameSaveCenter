@@ -17,7 +17,7 @@
 
 ## 隔离 Playnite 真实宿主审计
 
-- [REAL_HOST_AUDIT-20260914.md](q13-q25/REAL_HOST_AUDIT-20260914.md) 记录了 `ed42868` 的第二次 Release 构建、打包、隔离安装和真实 Playnite 启动：构建 0 warning/0 error、Worker `311/311`、Playnite `474/531`（57 skipped，0 failed）；日志确认插件 `0.6.73` 已加载，且隔离配置的 FusionX 主题复制成功。
+- [REAL_HOST_AUDIT-20260914.md](q13-q25/REAL_HOST_AUDIT-20260914.md) 记录了 `a04a824` 的第三次 Release 构建、打包、隔离安装和真实 Playnite 启动：构建 0 warning/0 error、Worker `311/311`、Playnite `474/531`（57 skipped，0 failed）；日志确认插件 `0.6.73` 已加载，FusionX 主题复制成功，且侧栏探测已加入句柄刷新。
 - 最新 metadata 取得 `EmbeddedSettingsCaptured=true`、`EmbeddedSettingsOrigin=EmbeddedPlaynite`，并记录 150% DPI；Dashboard 仍为 `EmbeddedDashboardCaptured=false`，受控窗口为 `DedicatedAuditWindow`，`ProductionVisualSourceOfTruthAvailable=false`。
 - 刷新有效窗口句柄后，UI Automation 仍只得到无后代节点的 `EmptyWindowAutomationPeer`，未定位侧栏入口；因此 Q20 的真实 Dashboard 视觉、Q24-03 物理跨屏和 Q25-02～Q25-05 的性能/耐久证据仍保持未完成。
 
@@ -37,10 +37,10 @@
 | Q22 | TaskCenter/Maintenance 统计条、筛选、失败详情、云队列、诊断日志、短窗 Inspector | `TaskRetrySourceTests`、`FindingNavigationResolverTests`、`DiagnosticSummaryNoClipTests`、`MaintenanceReportSourceTests`、全审计 | 真窗口长日志复制、队列悬停和短窗输入序列待宿主复核 |
 | Q23 | Settings 分类导航、字段校验、目录只读检测、保存/回滚/主题预览和底部动作 | `SettingsValidationSourceTests`、`SettingsPathValidationTests`、`PortableSettingsTests`、`WpfUiResourceDictionaryTests` | 独立设置窗口的真实键盘和保存回滚序列待宿主复核 |
 | Q24 | AutomationProperties、焦点视觉、Tab/Shift+Tab 源码契约、高对比/无玻璃路径和 1040/1100/1366 布局矩阵 | `AccessibilitySourceTests`、`KeyboardFocusSourceTests`、`UiAuditTruthfulnessTests`、全审计 | 当前主机仅枚举到 `DISPLAY1` 单屏，100/125/150/175/200% 物理 DPI、跨屏 Popup、中文 IME、真实读屏仍待满足宿主条件后复核；电脑自动化助手本轮不可用 |
-| Q25 | 大库批量更新、缩略图并发/缓存边界、审计性能字段、构建身份、打包/安装验证 | `LargeLibraryPerformanceTests`、`AsyncThumbnailLoaderTests`、`DiagnosticsEvidenceSourceTests`、`BuildIdentityTests`；`Q25-PERFORMANCE-BENCHMARK-20260914.txt` 记录 5 次预热、30 次输入到反馈采样及 p50/p95/max；`REAL_HOST_AUDIT-20260914.md` 记录 `ed42868` 隔离包体、主题复制、安装和 Playnite 加载；当前全量门禁为 XAML 24/24、Release 0 warning/0 error、Core 82/82、Worker 310/311（1 skip）、Playnite 468/531（63 skip） | 30 分钟耐久、ETW 呈现帧、>100ms 调用栈和低性能 Tier 尚未签收；Q25-08 需在最终阶段清理并回查 |
+| Q25 | 大库批量更新、缩略图并发/缓存边界、审计性能字段、构建身份、打包/安装验证 | `LargeLibraryPerformanceTests`、`AsyncThumbnailLoaderTests`、`DiagnosticsEvidenceSourceTests`、`BuildIdentityTests`；`Q25-PERFORMANCE-BENCHMARK-20260914.txt` 记录 5 次预热、30 次输入到反馈采样及 p50/p95/max；`REAL_HOST_AUDIT-20260914.md` 记录 `a04a824` 隔离包体、主题复制、句柄刷新、安装和 Playnite 加载；当前全量门禁为 XAML 24/24、Release 0 warning/0 error、Core 82/82、Worker 311/311、Playnite 474/531（57 skip） | 30 分钟耐久、ETW 呈现帧、>100ms 调用栈和低性能 Tier 尚未签收；Q25-08 需在最终阶段清理并回查 |
 
 ## 运行身份与边界
 
 - 运行命令：`scripts/capture-ui-audit.ps1 -Configuration Release -Output artifacts/ui-audit-round2`；构建 0 warning/0 error，审计退出 0。
-- Q25-07 的干净 HEAD 隔离宿主流程已完成打包、程序集身份核对、安装验证和 Playnite 启动；最新 `ed42868` 运行是 Worker 311/311、Playnite 474/531（57 skip，失败 0），并确认隔离配置主题已复制。此次仍未取得 Dashboard 的嵌入视觉截图。
+- Q25-07 的干净 HEAD 隔离宿主流程已完成打包、程序集身份核对、安装验证和 Playnite 启动；最新 `a04a824` 运行是 Worker 311/311、Playnite 474/531（57 skip，失败 0），并确认隔离配置主题已复制及句柄刷新探测生效。此次仍未取得 Dashboard 的嵌入视觉截图。
 - 本索引不把 `artifacts/ui-audit-round2` 的离屏事实升级为真实宿主视觉真值；阶段结束前仍须保留 Q24/Q25 的待验收项，不得为了填满 208 行而改成“完成”。
