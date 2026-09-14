@@ -1,6 +1,12 @@
 # GameSaveCenter 当前事实入口
 
-> 更新时间：2026-09-13。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
+> 更新时间：2026-09-15。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
+
+## 2026-09-15 UI 精修 150% 宿主截图渲染修复
+
+- 当前交付基线为 `4f1dbb4`。已修正真实宿主 150% 捕获中 RenderTargetBitmap 的宿主 DPI 与显式缩放叠加问题，并用回归测试锁定 1.5 倍输出不再被错误绘制为 2.25 倍。
+- 非空隔离 Playnite 库保留原库数据并观察到 3 个游戏；真实嵌入 Dashboard 取得 27 个视口、2 个完整滚动面和 1 个 Settings 视口，右侧内容完整。全量门禁为 XAML 24/24、Release 0/0、Core 82/82、Worker 311/311、Playnite 475/532（57 skip，0 fail）。
+- 仍未签收的边界包括 Q20 真实 Hover/Focus/导航与窄窗状态、Q24 物理多屏/DPI/IME/读屏，以及 Q25-02～05 的 ETW 呈现帧、>100ms 调用栈、30 分钟耐久和低 Tier 实测；这些不能由离屏或单次宿主截图替代。
 
 ## 2026-09-14 UI 精修独立复核与第二轮 208 项
 

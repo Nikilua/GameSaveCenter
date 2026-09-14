@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-15 UI 精修 150% 宿主截图渲染修复
+
+- 修正 `UiDiagnosticsExporters` 在真实 150% 宿主捕获时把宿主 DPI 与显式 1.5 倍变换叠加的问题：RenderTargetBitmap 使用 96 DPI 基线，显式变换独立承担像素放大；新增回归测试，定向 WPF 门禁 `9/9` 通过。
+- 用已提交 `4f1dbb4` 在非空隔离 Playnite 库复跑真实宿主：观察到 3 个游戏，XAML `24/24`，Release `0/0`，Core `82/82`，Worker `311/311`，Playnite `475/532`（57 skip，0 fail）；150% DPI 下 Dashboard 27 视口、2 个完整滚动面和 Settings 1 视口均捕获并通过完整性校验，右侧裁切假象消失。
+- 审计后隔离 Playnite/Worker 已停止且无残留；原 Playnite 数据未修改。Q20 的 Hover/Focus/边界交互、Q24-03 物理跨屏和 Q25-02～05 的 ETW/呈现帧/调用栈/耐久/低 Tier 仍保持待验收。证据追加至 `REAL_HOST_AUDIT-20260914.md`。
+
 ## 2026-09-15 UI 精修真实宿主原生命令复核
 
 - 在 `2250719` 干净 HEAD 上运行隔离 Playnite 审计，新增审计专用入口通过 Playnite 的 `SelectSidebarViewCommand` 选择 GameSaveCenter；宿主日志确认嵌入 Dashboard 捕获，未使用专用窗口 fallback。

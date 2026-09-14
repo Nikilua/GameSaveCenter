@@ -64,3 +64,13 @@
 - 审计结束后已明确停止隔离 Playnite 与 Worker，进程复查无残留；原用户 Playnite 数据未修改。Q24-03 仍受当前仅有 `DISPLAY1` 单屏限制，Q25-02～Q25-05 仍受 ETW/呈现帧、调用栈、30 分钟时间序列和低 Tier 实测边界限制。
 
 最新输出：`artifacts/ui-host-audit-reflection-final-20260914/summary.json`、`metadata.json`、`runner-metadata.json`、`capture-manifest.json`、`embedded-current/dashboard/viewport/`、`embedded-current/dashboard/scroll-surfaces/`、`settings/embedded-current/viewport/settings.png`、`.tmp/ui-host-userdata-reflection-final-20260914/playnite.log` 与 `extensions.log`。
+
+## 审计渲染器高 DPI 修复后的非空库第五次复核（4f1dbb4）
+
+- 在提交 `4f1dbb46e750572862ac954be6d1485b1a6683a9` 上复跑 `scripts/real-host-audit.ps1 -Configuration Release`，输出为 `artifacts/ui-host-audit-dpi-fixed-20260915`。隔离用户数据为 `.tmp/ui-host-userdata-library-final-20260915`：在不修改原用户数据的前提下，向既有隔离基线复制了原 Playnite `library` 内容（24 个文件）；插件日志确认实际观察到 3 个 Playnite 游戏，Dashboard 快照为 `games=3`、`tasks=0`、`findings=0`。
+- 干净流程完成 XAML `24/24`、Release 构建 `0 warning / 0 error`、Core `82/82`、Worker `311/311`、Playnite `475/532`（57 skipped，0 failed）；打包、程序集身份核对、隔离安装和真实 Playnite 启动均成功，包身份为 `0.6.73+4f1dbb46e750572862ac954be6d1485b1a6683a9`。`runner-metadata.json` 继续记录 `ConfiguredDesktopThemeCopied=true`。
+- 本轮发现并修正审计渲染器的 DPI 叠加：`RenderTargetBitmap` 原先同时使用宿主 144 DPI 与显式 `1.5` 倍变换，导致输出图像内的布局按 `2.25` 倍绘制并产生假裁切；现在使用 96 DPI 基线，由显式变换单独负责高 DPI 像素输出。新增回归测试 `HighDpiPngUsesExplicitScaleWithoutApplyingHostDpiTwice`，定向 WPF 回归 `9/9` 通过。
+- 修复后宿主 metadata 仍为 150% DPI（`DpiScaleX/Y=1.5`、`PixelsPerDip=1.5`），Dashboard `1298.67×900 DIP` 的 27 个视口全部输出 `1948×1350 px` 且 `CompletenessValidated=true`；2 个完整滚动面和 1 个 Settings 视口同样完成捕获验证。Overview 真实嵌入截图中的当前游戏卡片、六项指标、工具栏和底部活动面板均完整落在右边界内；Overview 完整滚动面为 `1471×1932 px`（2 段），Maintenance 诊断完整滚动面为 `5016×2085 px`（3 段），均为 `CapturedAndValidated`。
+- `summary.json` 明确为 `EmbeddedDashboardCaptured=true`、`EmbeddedSettingsCaptured=true`、`ControlledDashboardCaptured=false`、`ProductionVisualSourceOfTruthAvailable=true`、`EmbeddedDashboardOrigin=EmbeddedPlaynite`、`EmbeddedSettingsOrigin=EmbeddedPlaynite`、`HighGateCount=1`。UIA 侧栏旧警告仍保留为非权威诊断；审计结束后隔离 Playnite 与 Worker 已停止且无残留。该修复只校正证据生成，不把它扩大解释为 Hover/Focus、键盘/IME、读屏、多屏 Popup、浅色/高对比或 Q25-02～Q25-05 性能通过。
+
+最新输出：`artifacts/ui-host-audit-dpi-fixed-20260915/summary.json`、`metadata.json`、`runner-metadata.json`、`embedded-current/dashboard/capture-manifest.json`、`embedded-current/dashboard/viewport/`、`embedded-current/dashboard/scroll-surfaces/`、`settings/embedded-current/viewport/settings.png`、`.tmp/ui-host-userdata-library-final-20260915/playnite.log` 与 `extensions.log`。

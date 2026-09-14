@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-15
 
+## 2026-09-15 UI 精修 150% 宿主截图渲染修复
+
+- 在提交 `4f1dbb4` 中修正 `UiDiagnosticsExporters.RenderBitmap` 的 DPI 叠加：RenderTargetBitmap 改用 96 DPI 基线，显式 `renderScale` 单独负责高 DPI 像素输出；新增 `HighDpiPngUsesExplicitScaleWithoutApplyingHostDpiTwice` 回归测试，验证 1.5 倍输出不再按 2.25 倍绘制并裁掉右/下边界。
+- 真实宿主 `artifacts/ui-host-audit-dpi-fixed-20260915` 在非空隔离库（复制原 Playnite library 的 24 个文件，未修改原数据）中观察到 3 个游戏；150% DPI 下 27 个 Dashboard 视口均为 1948×1350 px 且完整性通过，Overview 与 Maintenance 两个完整滚动面、Settings 视口也均通过捕获验证。当前真实 Dashboard 的右侧当前游戏卡片、六项指标、工具栏和底部活动面板不再出现审计渲染器造成的假裁切。
+- 本轮全量门禁为 XAML `24/24`、Release `0/0`、Core `82/82`、Worker `311/311`、Playnite `475/532`（57 skip，0 fail），包身份为 `0.6.73+4f1dbb46e750572862ac954be6d1485b1a6683a9`；审计后隔离 Playnite/Worker 已停止。Q20 交互边界、Q24-03 多屏物理条件、Q25-02～05 ETW/呈现帧/耐久/低 Tier 仍未完成。
+- 证据追加至 `docs/design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/REAL_HOST_AUDIT-20260914.md`；截图修复属于证据生成正确性修复，不扩大既有真实宿主覆盖结论。
+
 ## 2026-09-15 UI 精修真实宿主原生命令复核
 
 - 在干净 HEAD `2250719b728f6ddee32233f9ff456b8ea1b8fc7d` 上完成第四次隔离 Playnite 真实宿主审计。插件启动后通过 Playnite 自身 `SelectSidebarViewCommand` 选择 `GameSaveCenter`，日志确认 `EmbeddedPlaynite Dashboard capture`，没有使用专用 Dashboard fallback 冒充嵌入来源。
