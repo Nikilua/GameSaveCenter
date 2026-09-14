@@ -676,9 +676,14 @@
                         <Grid.ColumnDefinitions><ColumnDefinition Width="20"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                         <Border x:Name="Box" Width="17" Height="17" CornerRadius="5" BorderThickness="1"
                                 BorderBrush="{DynamicResource GscControlStrokeBrush}" Background="{DynamicResource GscControlFillBrush}" VerticalAlignment="Center">
-                            <Path x:Name="Check" Data="M 3 8 L 7 12 L 14 4" Stretch="None" Stroke="{DynamicResource GscOnAccentTextBrush}" StrokeThickness="2"
-                                  StrokeStartLineCap="Round" StrokeEndLineCap="Round" Visibility="Collapsed"
-                                  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <Grid>
+                                <Path x:Name="Check" Data="M 3 8 L 7 12 L 14 4" Stretch="None" Stroke="{DynamicResource GscOnAccentTextBrush}" StrokeThickness="2"
+                                      StrokeStartLineCap="Round" StrokeEndLineCap="Round" Visibility="Collapsed"
+                                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <Border x:Name="IndeterminateMark" Width="9" Height="2" CornerRadius="1"
+                                        Background="{DynamicResource GscOnAccentTextBrush}" Visibility="Collapsed"
+                                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
                         </Border>
                         <ContentPresenter Grid.Column="1" Margin="7,0,0,0" VerticalAlignment="Center"
                                           TextElement.Foreground="{TemplateBinding Foreground}" RecognizesAccessKey="True"/>
@@ -688,6 +693,11 @@
                             <Setter TargetName="Box" Property="Background" Value="{DynamicResource GscAccentBrush}"/>
                             <Setter TargetName="Box" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
                             <Setter TargetName="Check" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="{x:Null}">
+                            <Setter TargetName="Box" Property="Background" Value="{DynamicResource GscAccentBrush}"/>
+                            <Setter TargetName="Box" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
+                            <Setter TargetName="IndeterminateMark" Property="Visibility" Value="Visible"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Box" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/></Trigger>
                         <Trigger Property="IsPressed" Value="True"><Setter TargetName="Box" Property="Opacity" Value="0.78"/></Trigger>
@@ -717,29 +727,39 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="CheckBox">
-                    <Border x:Name="Box"
-                            Width="18"
-                            Height="18"
-                            CornerRadius="5"
-                            BorderThickness="1"
-                            BorderBrush="{DynamicResource GscControlStrokeBrush}"
-                            Background="{DynamicResource GscControlFillBrush}">
-                        <Path x:Name="Check"
-                              Data="M 3.5 8.5 L 7 12 L 14.5 4.5"
-                              Stretch="None"
-                              Stroke="{DynamicResource GscOnAccentTextBrush}"
-                              StrokeThickness="2"
-                              StrokeStartLineCap="Round"
-                              StrokeEndLineCap="Round"
-                              Visibility="Collapsed"
-                              HorizontalAlignment="Center"
-                              VerticalAlignment="Center"/>
+                        <Border x:Name="Box"
+                                Width="18"
+                                Height="18"
+                                CornerRadius="5"
+                                BorderThickness="1"
+                                BorderBrush="{DynamicResource GscControlStrokeBrush}"
+                                Background="{DynamicResource GscControlFillBrush}">
+                            <Grid>
+                                <Path x:Name="Check"
+                                      Data="M 3.5 8.5 L 7 12 L 14.5 4.5"
+                                      Stretch="None"
+                                      Stroke="{DynamicResource GscOnAccentTextBrush}"
+                                      StrokeThickness="2"
+                                      StrokeStartLineCap="Round"
+                                      StrokeEndLineCap="Round"
+                                      Visibility="Collapsed"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                                <Border x:Name="IndeterminateMark" Width="9" Height="2" CornerRadius="1"
+                                        Background="{DynamicResource GscOnAccentTextBrush}" Visibility="Collapsed"
+                                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
                             <Setter TargetName="Box" Property="Background" Value="{DynamicResource GscAccentBrush}"/>
                             <Setter TargetName="Box" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
                             <Setter TargetName="Check" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="{x:Null}">
+                            <Setter TargetName="Box" Property="Background" Value="{DynamicResource GscAccentBrush}"/>
+                            <Setter TargetName="Box" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
+                            <Setter TargetName="IndeterminateMark" Property="Visibility" Value="Visible"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="Box" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>

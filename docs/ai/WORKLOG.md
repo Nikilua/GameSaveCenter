@@ -6339,3 +6339,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 危险按钮新增 `GscOnDangerTextBrush`，按实际错误色选择白/黑前景；输入正文/placeholder、选中前景和复杂图片背景纳入同一分层测量。此前新增的 Q03 负例先确实捕获了浅色按压和危险按钮低对比度，再完成修复。
 - RenderHarness 双主题报告新增 `SemanticButtonContrast=33 samples`、`SemanticLayerContrast=4 samples` 与 `ComplexBackdropContrast=4 samples`，均 0 violation；两张 Q03 PNG 已实际打开复核，保留真实宿主/Popup/IME/物理 DPI 边界。
 - 定向 Q03 测试 3/3 通过；RenderHarness Release 0 warning/0 error，双主题 `finesseprobe` 均退出 0。Q03 证据索引为 `docs/design/reviews/ui-finesse-round2-20260913/evidence/Q03-INDEX.md`。
+
+## 2026-09-14 UI 精修第二轮 Q04-Q12 共享控件与表面复核
+
+- 复核生产共享入口 `DesignTokens.xaml`、`WpfUiProduction.xaml`、`GscIconPack.xaml`、`Redesign.xaml`、`DashboardView.xaml` 与开发校对夹具，覆盖表面/圆角/阴影、按钮状态、线性图标、TextBox/ComboBox、CheckBox/Toggle/Slider、导航/页签和 DataGrid。
+- 修复一个真实共享控件缺口：`GscCheckBox` 与 `GscDataGridCheckBox` 原先没有 Indeterminate 视觉；现在在 `IsChecked=null` 时显示 accent 背景与独立 `IndeterminateMark`，不伪造全选勾号。
+- 校对夹具增加真实半选 CheckBox 与 Slider；RenderHarness 新增 `ControlSurfaceCounts`、`TextInputContract`、`ComboContract`、`ButtonGeometry`、`SelectionControlContract`、`ListContract` 和宿主边界报告。双主题均实际实现 `textboxes=1 combos=1 buttons=4 toggles=1 checkboxes=2 sliders=1 listboxes=1`，半选报告 `mark=visible`。
+- 新增 `UiFinesseRound2ControlSourceTests` 2 项，验证半选模板和开发夹具入口；source validation、XAML 24 文件检查、该定向测试 2/2、RenderHarness Release 0 warning/0 error、双主题 `finesseprobe` 均退出 0。两张 Q04-Q12 PNG 已打开复核。
+- 证据索引为 `docs/design/reviews/ui-finesse-round2-20260913/evidence/Q04-Q12-INDEX.md`；证据明确保留 IME、真实 Popup 定位/移屏、物理 DPI、读屏、宿主命令序列和六页短窗导航为待验。

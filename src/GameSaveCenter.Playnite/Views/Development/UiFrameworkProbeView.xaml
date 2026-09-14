@@ -73,6 +73,7 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <TextBlock Text="输入、选择与焦点状态" Style="{StaticResource GscTypographySectionTitle}"/>
                             <ListBox x:Name="ProbeChecklist" Grid.Row="1" Margin="0,12,0,0" SelectedIndex="0"
@@ -102,6 +103,10 @@
                                     <ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconBtnCopy}" Width="18" Height="18"/>
                                 </ui:Button>
                             </StackPanel>
+                            <WrapPanel Grid.Row="5" Margin="0,10,0,0" VerticalAlignment="Center">
+                                <CheckBox Style="{StaticResource GscCheckBox}" Content="半选" IsThreeState="True" IsChecked="{x:Null}" AutomationProperties.Name="校对半选框"/>
+                                <Slider Style="{StaticResource GscSlider}" Width="150" Margin="14,0,0,0" Minimum="0" Maximum="100" Value="58" AutomationProperties.Name="校对滑杆"/>
+                            </WrapPanel>
                         </Grid>
                     </Grid>
                 </Border>

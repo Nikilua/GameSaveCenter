@@ -1239,6 +1239,7 @@ public static class Program
             var path = Path.Combine(outputRoot, "ui-finesse-fixture.png");
             SavePng(host, path);
             AppendEffectiveFixtureEvidence(report, host);
+            AppendControlSurfaceEvidence(report, host);
             AppendSemanticContrastEvidence(report, palette, view);
             var captionStyle = view.FindResource("GscTypographyCaption") as Style;
             var captionOpacity = captionStyle?.Setters
@@ -1366,6 +1367,79 @@ public static class Program
         if (fullyInside < rowBounds.Count || clippedComplete >= fullyInside)
             throw new InvalidOperationException(
                 $"Row clipping guard failed: realized={rowBounds.Count}, complete={fullyInside}, compressed={clippedComplete}.");
+    }
+
+    private static void AppendControlSurfaceEvidence(StringBuilder report, Grid host)
+    {
+        var textBoxes = FindVisualChildren<TextBox>(host).Where(control => control.Visibility == Visibility.Visible).ToList();
+        var combos = FindVisualChildren<ComboBox>(host).Where(control => control.Visibility == Visibility.Visible).ToList();
+        var buttons = FindVisualChildren<GameSaveCenter.Playnite.Controls.Button>(host)
+            .Where(control => control.Visibility == Visibility.Visible)
+            .ToList();
+        var toggles = FindVisualChildren<GameSaveCenter.Playnite.Controls.ToggleSwitch>(host)
+            .Where(control => control.Visibility == Visibility.Visible)
+            .ToList();
+        var checkBoxes = FindVisualChildren<CheckBox>(host).Where(control => control.Visibility == Visibility.Visible).ToList();
+        var sliders = FindVisualChildren<Slider>(host).Where(control => control.Visibility == Visibility.Visible).ToList();
+        var listBoxes = FindVisualChildren<ListBox>(host).Where(control => control.Visibility == Visibility.Visible).ToList();
+
+        report.AppendLine(
+            $"ControlSurfaceCounts: textboxes={textBoxes.Count} combos={combos.Count} buttons={buttons.Count} "
+            + $"toggles={toggles.Count} checkboxes={checkBoxes.Count} sliders={sliders.Count} listboxes={listBoxes.Count}");
+        if (textBoxes.Count == 0 || combos.Count == 0 || buttons.Count < 3 || toggles.Count == 0
+            || checkBoxes.Count == 0 || sliders.Count == 0 || listBoxes.Count == 0)
+        {
+            throw new InvalidOperationException("The control-state fixture did not realize all required shared controls.");
+        }
+
+        var textBox = textBoxes[0];
+        report.AppendLine(
+            $"TextInputContract: bounds={FormatRect(GetBounds(textBox, host))} padding={FormatThickness(textBox.Padding)} "
+            + $"caret={FormatBrush(textBox.CaretBrush)} selection={FormatBrush(textBox.SelectionBrush)} "
+            + $"horizontal={textBox.HorizontalContentAlignment} vertical={textBox.VerticalContentAlignment}");
+
+        var combo = combos[0];
+        combo.ApplyTemplate();
+        report.AppendLine(
+            $"ComboContract: bounds={FormatRect(GetBounds(combo, host))} selectedIndex={combo.SelectedIndex} "
+            + $"items={combo.Items.Count} maxDropDownHeight={combo.MaxDropDownHeight:0.##} "
+            + $"popupTemplate={(!string.IsNullOrWhiteSpace(combo.Template?.ToString()) ? "declared" : "unknown")}");
+
+        var disabledButton = buttons.FirstOrDefault(button => !button.IsEnabled);
+        var enabledButton = buttons.FirstOrDefault(button => button.IsEnabled);
+        report.AppendLine(
+            $"ButtonGeometry: enabled={FormatRect(enabledButton == null ? Rect.Empty : GetBounds(enabledButton, host))} "
+            + $"disabled={FormatRect(disabledButton == null ? Rect.Empty : GetBounds(disabledButton, host))} "
+            + $"enabledPadding={FormatThickness(enabledButton?.Padding ?? default(Thickness))} "
+            + $"minHeight={enabledButton?.MinHeight:0.##}");
+        report.AppendLine("ButtonStateContract: normal=realized disabled=realized hover/pressed/focus=shared-template-triggers; no command fired by fixture");
+
+        var indeterminate = checkBoxes.FirstOrDefault(checkBox => checkBox.IsThreeState && checkBox.IsChecked == null);
+        if (indeterminate == null)
+            throw new InvalidOperationException("The indeterminate checkbox fixture was not realized.");
+        indeterminate.ApplyTemplate();
+        var mark = indeterminate.Template?.FindName("IndeterminateMark", indeterminate) as FrameworkElement;
+        report.AppendLine(
+            $"SelectionControlContract: indeterminate={indeterminate.IsChecked == null} "
+            + $"mark={(mark?.Visibility == Visibility.Visible ? "visible" : "missing")} "
+            + $"checkboxBounds={FormatRect(GetBounds(indeterminate, host))} sliderBounds={FormatRect(GetBounds(sliders[0], host))}");
+        if (mark?.Visibility != Visibility.Visible)
+            throw new InvalidOperationException("The indeterminate checkbox mark was not visible after template application.");
+
+        report.AppendLine(
+            $"ListContract: items={listBoxes[0].Items.Count} selectedIndex={listBoxes[0].SelectedIndex} "
+            + $"virtualization={VirtualizingPanel.GetIsVirtualizing(listBoxes[0])}");
+        report.AppendLine("ControlEvidenceBoundary: offscreen realized templates and DIP geometry; IME, real Popup placement, physical DPI and Playnite input remain host checks");
+    }
+
+    private static string FormatThickness(Thickness thickness)
+        => $"{thickness.Left:0.##},{thickness.Top:0.##},{thickness.Right:0.##},{thickness.Bottom:0.##}";
+
+    private static string FormatBrush(Brush? brush)
+    {
+        if (brush is SolidColorBrush solid)
+            return FormatColor(solid.Color);
+        return brush?.GetType().Name ?? "unset";
     }
 
     private static void AppendTextElementEvidence(
