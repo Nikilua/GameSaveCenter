@@ -2,6 +2,11 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-15 UI 精修 Q02-06 生产路径视觉复核
+
+- 在 clean-tree `82cf066` 运行 `RenderHarness audit`，查看 SaveCenterView“路径与校验”页的标准 1440×900 与窄 1040×700 DIP 截图；候选表与详情均保留完整技术路径，路径单元格测量为 `260 DIP`，详情为 `321.33 DIP`。
+- 新增 `Q02-PATH-RENDER-20260915.md` 及两张持久化截图，Q02-06 视觉列升级为通过；自动列、真实宿主 Tooltip/复制、中文长路径、物理 DPI 与字体差异仍按证据边界保持未完成。
+
 ## 2026-09-15 UI 精修 Q00 深色设置前景回归与 Q21/Q23 视觉证据
 
 - 当前 clean-tree 提交 `0648689` 修复真实离屏复核发现的暗色设置页 `SettingsValidationDetails` Expander 标题前景漏检：节点显式绑定 `DynamicResource GscPrimaryTextBrush`，并由 `SettingsValidationSourceTests` 锁定同节点属性；修复提交已推送到 `codex/ui-finesse-round2`。
