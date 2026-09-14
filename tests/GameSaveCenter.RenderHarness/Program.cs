@@ -285,6 +285,19 @@ public static class Program
             return overviewEdgeExitCode;
         }
 
+        if (args.Length > 0 && args[0].Equals("lowcostprobe", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "lowcostprobe");
+            var lowCostExitCode = 0;
+            var lowCostThread = new Thread(() => { lowCostExitCode = RunLowCostProbeOnly(outputRoot); });
+            lowCostThread.SetApartmentState(ApartmentState.STA);
+            lowCostThread.Start();
+            lowCostThread.Join();
+            return lowCostExitCode;
+        }
+
         var exitCode = 0;
         var thread = new Thread(() => { exitCode = Run(args); });
         thread.SetApartmentState(ApartmentState.STA);
@@ -429,6 +442,169 @@ public static class Program
             Console.Error.WriteLine(ex);
             return 1;
         }
+    }
+
+    private static int RunLowCostProbeOnly(string outputRoot)
+    {
+        Directory.CreateDirectory(outputRoot);
+        var report = new StringBuilder();
+        report.AppendLine("GameSaveCenter low-cost fallback fixtures");
+        report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+        report.AppendLine("Glass: disabled; motion: disabled; system high contrast is not inferred");
+        report.AppendLine("Pages: Overview, Save, Trainer, Media, Maintenance, Task");
+        report.AppendLine("Themes: light, dark; viewports: 1040x700, 1600x900");
+        AppendRunMetadata(report, "lowcostprobe", "OffscreenRenderHarness", "light,dark", "six workspaces; glass=false; motion=false; 1040x700/1600x900");
+        report.AppendLine();
+        var problems = new List<string>();
+        var pageNames = new[] { "Overview", "Save", "Trainer", "Media", "Maintenance", "Task" };
+
+        try
+        {
+            var app = new Application();
+            app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+            foreach (var (themeName, themeMode) in ThemeModes)
+            {
+                foreach (var (windowW, windowH) in new[] { (1040, 700), (1600, 900) })
+                {
+                    foreach (var pageName in pageNames)
+                    {
+                        var label = $"{pageName}/{themeName}/{windowW}x{windowH}";
+                        try
+                        {
+                            var view = CreateThemeView(pageName);
+                            ApplyThemePalette(view, themeMode, glassEnabled: false, motionEnabled: false);
+                            var (contentW, contentH) = ContentSize(windowW, windowH);
+                            var host = new Grid
+                            {
+                                Width = contentW,
+                                Height = contentH,
+                                Background = CreateHarnessBackground(view),
+                                ClipToBounds = true
+                            };
+                            host.Children.Add(view);
+                            ApplyThemeResponsive(view, contentW, contentH);
+                            host.Measure(new Size(contentW, contentH));
+                            host.Arrange(new Rect(0, 0, contentW, contentH));
+                            host.UpdateLayout();
+                            ApplyThemeResponsive(view, contentW, contentH);
+                            host.UpdateLayout();
+
+                            VerifyLowCostResources(view, label, problems, report);
+                            var visibleEffects = FindVisualChildren<UIElement>(host)
+                                .Count(element => element.Visibility == Visibility.Visible && element.Effect != null);
+                            if (visibleEffects != 0)
+                                problems.Add($"{label} retained {visibleEffects} visible Effect visuals with glass disabled.");
+
+                            var visibleText = FindVisualChildren<TextBlock>(host)
+                                .Count(text => text.Visibility == Visibility.Visible
+                                    && text.ActualWidth > 0
+                                    && text.ActualHeight > 0
+                                    && !string.IsNullOrWhiteSpace(text.Text));
+                            if (visibleText < 2)
+                                problems.Add($"{label} retained too little readable text ({visibleText} visible TextBlocks).");
+
+                            var horizontalOverflowScrolls = FindVisualChildren<ScrollViewer>(host)
+                                .Where(scroll => scroll.ExtentWidth > scroll.ViewportWidth + 0.5)
+                                .ToArray();
+                            var horizontalOverflow = horizontalOverflowScrolls.Length;
+                            var unexpectedHorizontalOverflow = horizontalOverflowScrolls
+                                .Count(scroll => !scroll.Name.StartsWith("DG_", StringComparison.Ordinal));
+                            if (horizontalOverflow != 0)
+                            {
+                                report.AppendLine(
+                                    $"  {label} overflow: "
+                                    + string.Join(", ", horizontalOverflowScrolls.Select(scroll =>
+                                        $"{(string.IsNullOrWhiteSpace(scroll.Name) ? "unnamed" : scroll.Name)} extent={scroll.ExtentWidth:0} viewport={scroll.ViewportWidth:0} hbar={scroll.ComputedHorizontalScrollBarVisibility}")));
+                            }
+                            if (unexpectedHorizontalOverflow != 0)
+                                problems.Add($"{label} has {unexpectedHorizontalOverflow} unexpected horizontal-overflow ScrollViewer(s) in low-cost mode.");
+
+                            var outputPath = Path.Combine(outputRoot, $"{pageName.ToLowerInvariant()}-{themeName}-{windowW}x{windowH}.png");
+                            var sw = Stopwatch.StartNew();
+                            SavePng(host, outputPath);
+                            sw.Stop();
+                            report.AppendLine(
+                                $"  {label}: visibleText={visibleText} visibleEffects={visibleEffects} horizontalOverflow={horizontalOverflow} unexpectedOverflow={unexpectedHorizontalOverflow} "
+                                + $"size={host.ActualWidth:0}x{host.ActualHeight:0} render_ms={sw.ElapsedMilliseconds} bytes={new FileInfo(outputPath).Length}");
+                        }
+                        catch (Exception ex)
+                        {
+                            problems.Add($"{label} failed: {ex.Message}");
+                            report.AppendLine($"  {label}: FAILED {ex.Message}");
+                        }
+                    }
+                }
+            }
+
+            report.AppendLine(problems.Count == 0 ? "lowcostprobe OK" : "lowcostprobe FAILED");
+            foreach (var problem in problems)
+                report.AppendLine("  PROBLEM " + problem);
+            File.WriteAllText(Path.Combine(outputRoot, "lowcostprobe-report.txt"), report.ToString());
+            Console.WriteLine(report.ToString());
+            return problems.Count == 0 ? 0 : 1;
+        }
+        catch (Exception ex)
+        {
+            report.AppendLine("lowcostprobe FAILED");
+            report.AppendLine(ex.ToString());
+            File.WriteAllText(Path.Combine(outputRoot, "lowcostprobe-report.txt"), report.ToString());
+            Console.Error.WriteLine(ex);
+            return 1;
+        }
+    }
+
+    private static void VerifyLowCostResources(
+        UserControl view,
+        string label,
+        List<string> problems,
+        StringBuilder report)
+    {
+        foreach (var key in new[]
+                 {
+                     "GscSurfaceEffect",
+                     "GscPrimaryButtonEffect",
+                     "GscSidebarEffect",
+                     "GscPopupEffect",
+                     "GscDialogEffect",
+                     "GscSliderThumbEffect",
+                     "GscGameBackgroundEffect"
+                 })
+        {
+            if (view.TryFindResource(key) != null)
+                problems.Add($"{label} resource {key} is not null in low-cost mode.");
+        }
+
+        var allowsTransparency = view.TryFindResource("GscPopupAllowsTransparency") as bool?;
+        if (allowsTransparency != false)
+            problems.Add($"{label} GscPopupAllowsTransparency={allowsTransparency?.ToString() ?? "missing"}, expected False.");
+
+        var popupAnimation = view.TryFindResource("GscPopupAnimation");
+        if (!(popupAnimation is PopupAnimation.None))
+            problems.Add($"{label} GscPopupAnimation={popupAnimation ?? "missing"}, expected None.");
+
+        var shellOpacity = view.TryFindResource("GscShellAmbientOpacity") as double?;
+        if (shellOpacity == null || Math.Abs(shellOpacity.Value) > 0.0001)
+            problems.Add($"{label} GscShellAmbientOpacity={shellOpacity?.ToString("0.###") ?? "missing"}, expected 0.");
+
+        var gameOpacity = view.TryFindResource("GscGameBackgroundOpacity") as double?;
+        if (gameOpacity == null || Math.Abs(gameOpacity.Value) > 0.0001)
+            problems.Add($"{label} GscGameBackgroundOpacity={gameOpacity?.ToString("0.###") ?? "missing"}, expected 0.");
+
+        if (view.TryFindResource("GscGameBackgroundTintBrush") is not SolidColorBrush tint
+            || tint.Color.A != 0)
+            problems.Add($"{label} GscGameBackgroundTintBrush is not fully transparent.");
+
+        if (view.TryFindResource("GscAmbientWideWashBrush") is not LinearGradientBrush wash
+            || wash.GradientStops.Any(stop => stop.Color.A != 0))
+            problems.Add($"{label} GscAmbientWideWashBrush still contains visible alpha.");
+
+        if (view is OverviewView overview && overview.UiAnimationsEnabled)
+            problems.Add($"{label} OverviewView.UiAnimationsEnabled remained True in low-cost mode.");
+
+        report.AppendLine(
+            $"  {label} resources: effects=null popupTransparency={allowsTransparency?.ToString() ?? "missing"} "
+            + $"popupAnimation={popupAnimation ?? "missing"} shellOpacity={shellOpacity?.ToString("0.###") ?? "missing"} "
+            + $"gameOpacity={gameOpacity?.ToString("0.###") ?? "missing"}");
     }
 
     private static void CaptureOverviewEdgeFixture(
@@ -4579,6 +4755,13 @@ public static class Program
     }
 
     private static void ApplyThemePalette(UserControl view, GameSaveCenterThemeMode mode)
+        => ApplyThemePalette(view, mode, glassEnabled: false, motionEnabled: false);
+
+    private static void ApplyThemePalette(
+        UserControl view,
+        GameSaveCenterThemeMode mode,
+        bool glassEnabled,
+        bool motionEnabled)
     {
         // Settings owns a separate material hierarchy and must use the same runtime path as
         // the Playnite settings host. The generic Dashboard resource injection would leave its
@@ -4589,8 +4772,10 @@ public static class Program
             return;
         }
 
-        var palette = AdaptiveThemePaletteFactory.Create(view, false, 50, mode);
-        AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(view.Resources, palette, false, false);
+        var palette = AdaptiveThemePaletteFactory.Create(view, glassEnabled, 50, mode);
+        AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(view.Resources, palette, glassEnabled, motionEnabled);
+        if (view is OverviewView overview)
+            overview.UiAnimationsEnabled = motionEnabled;
     }
 
     private static Brush CreateHarnessBackground(FrameworkElement view)

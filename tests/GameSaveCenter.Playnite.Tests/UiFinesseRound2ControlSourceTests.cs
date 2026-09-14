@@ -106,6 +106,19 @@ public sealed class UiFinesseRound2ControlSourceTests
         Assert.Contains("DataTrigger Binding=\"{Binding Activities.Count}\" Value=\"0\"", overview);
     }
 
+    [Fact]
+    public void LowCostProbeLocksReducedMaterialAndMotionCoverage()
+    {
+        var harness = Read("tests", "GameSaveCenter.RenderHarness", "Program.cs");
+
+        Assert.Contains("args[0].Equals(\"lowcostprobe\"", harness);
+        Assert.Contains("glassEnabled: false, motionEnabled: false", harness);
+        Assert.Contains("GscPopupAllowsTransparency", harness);
+        Assert.Contains("GscPopupAnimation", harness);
+        Assert.Contains("visibleEffects", harness);
+        Assert.Contains("unexpectedHorizontalOverflow", harness);
+    }
+
     private static string Read(params string[] parts)
     {
         var directory = new DirectoryInfo(AppContext.BaseDirectory);
