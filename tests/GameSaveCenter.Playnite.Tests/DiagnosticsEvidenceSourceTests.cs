@@ -23,6 +23,10 @@ public sealed class DiagnosticsEvidenceSourceTests
         Assert.Contains("EvidenceSource = 'RealPlaynite'", hostScript);
         Assert.Contains("DpiScale = 'captured by WPF VisualTreeHelper.GetDpi'", hostScript);
         Assert.Contains("Timing = 'capture manifest includes", hostScript);
+        Assert.Contains("System.Windows.Forms.Screen]::AllScreens", hostScript);
+        Assert.Contains("DisplayTopology", hostScript);
+        Assert.Contains("Q24_03PhysicalCrossScreen", hostScript);
+        Assert.Contains("blocked-single-display", hostScript);
         Assert.Contains("try { $_.Refresh() } catch { }", hostScript);
         Assert.Contains("Where-Object { $_.MainWindowHandle -ne 0 }", hostScript);
     }

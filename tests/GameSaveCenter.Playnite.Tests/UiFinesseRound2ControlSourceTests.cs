@@ -110,6 +110,23 @@ public sealed class UiFinesseRound2ControlSourceTests
     }
 
     [Fact]
+    public void CrossScreenSurfaceStaysHostOwnedAndPopupResourcesRemainReflowSafe()
+    {
+        var dashboard = Read("src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml");
+        var dashboardCode = Read("src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml.cs");
+
+        Assert.Contains("x:Name=\"GameBrowserScrim\"", dashboard);
+        Assert.Contains("x:Name=\"GameBrowserPanel\"", dashboard);
+        Assert.DoesNotContain("<Popup", dashboard);
+        Assert.Contains("Grid.SetRowSpan(GameBrowserPanel, 2)", dashboardCode);
+        Assert.Contains("GameBrowserPanel.Visibility = gameBrowserVisibility", dashboardCode);
+        Assert.Contains("GameBrowserScrim.Visibility = gameBrowserVisibility", dashboardCode);
+        Assert.Contains("never a WPF Popup", dashboardCode);
+        Assert.DoesNotContain("WindowStartupLocation", dashboardCode);
+        Assert.DoesNotContain("new Window", dashboardCode);
+    }
+
+    [Fact]
     public void TransientSurfacesKeepThemeSensitiveResourcesDynamic()
     {
         var tokens = Read("src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml");

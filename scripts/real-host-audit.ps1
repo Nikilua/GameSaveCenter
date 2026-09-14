@@ -50,6 +50,35 @@ $runnerMetadata = [ordered]@{
     Timing = 'capture manifest includes per-surface capture status; host interaction time is not fabricated'
     UserDataMode = if ([string]::IsNullOrWhiteSpace($UserDataDir)) { 'current-user-data' } else { 'isolated-user-data' }
 }
+Add-Type -AssemblyName System.Windows.Forms
+$displayTopology = @([System.Windows.Forms.Screen]::AllScreens | ForEach-Object {
+    [ordered]@{
+        DeviceName = $_.DeviceName
+        Primary = $_.Primary
+        Bounds = [ordered]@{
+            Left = $_.Bounds.Left
+            Top = $_.Bounds.Top
+            Width = $_.Bounds.Width
+            Height = $_.Bounds.Height
+        }
+        WorkArea = [ordered]@{
+            Left = $_.WorkingArea.Left
+            Top = $_.WorkingArea.Top
+            Width = $_.WorkingArea.Width
+            Height = $_.WorkingArea.Height
+        }
+    }
+})
+$runnerMetadata.DisplayCount = $displayTopology.Count
+$runnerMetadata.DisplayTopology = $displayTopology
+$runnerMetadata.Q24_03PhysicalCrossScreen = [ordered]@{
+    Status = if ($displayTopology.Count -ge 2) { 'ready-for-host-replay' } else { 'blocked-single-display' }
+    Requirement = 'requires two physical displays and an open Popup while the host window crosses displays'
+}
+$runnerMetadata | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $Output 'runner-metadata.json') -Encoding UTF8
+if ($displayTopology.Count -lt 2) {
+    Write-Warning "Q24-03 physical cross-screen replay is blocked: only $($displayTopology.Count) display detected."
+}
 $installArguments = @{ Configuration = $Configuration }
 if (-not [string]::IsNullOrWhiteSpace($UserDataDir)) {
     $UserDataDir = [System.IO.Path]::GetFullPath($UserDataDir)
