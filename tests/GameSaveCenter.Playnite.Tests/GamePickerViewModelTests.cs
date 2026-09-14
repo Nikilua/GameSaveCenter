@@ -63,6 +63,24 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         [Fact]
+        public void SearchWhitespaceKeepsTheSameTrimmedFilterSemantics()
+        {
+            using var picker = new GamePickerViewModel();
+            picker.StatusFilter = "全部";
+            picker.SetItems(new[]
+            {
+                Game("Steam Adventure", platform: GamePlatformKind.Steam),
+                Game("Other Title", platform: GamePlatformKind.Other)
+            });
+
+            picker.SearchText = "  Adventure  ";
+            picker.RefreshNow();
+
+            Assert.Equal(1, picker.FilteredCount);
+            Assert.Equal("Steam Adventure", picker.ItemsView.Cast<GamePickerItem>().Single().Name);
+        }
+
+        [Fact]
         public void AllFilterIncludesUninstalledGameThatHasMatchOrBackup()
         {
             using var picker = new GamePickerViewModel();

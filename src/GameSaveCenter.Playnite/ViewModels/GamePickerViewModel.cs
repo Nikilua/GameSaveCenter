@@ -26,6 +26,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private CancellationTokenSource? refreshCancellation;
         private GamePickerItem? selectedItem;
         private string searchText = string.Empty;
+        private string normalizedSearchText = string.Empty;
         private string statusFilter = "已安装";
         private string platformFilter = "全部";
         private string sortMode = "名称";
@@ -79,6 +80,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 value ??= string.Empty;
                 if (string.Equals(searchText, value, StringComparison.Ordinal)) return;
                 searchText = value;
+                normalizedSearchText = value.Trim();
                 OnPropertyChanged(nameof(SearchText));
                 ScheduleRefresh();
                 StateChanged?.Invoke(this, EventArgs.Empty);
@@ -148,6 +150,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public void ApplyPersistedState(string? search, string? status, string? platform, string? sort)
         {
             searchText = search ?? string.Empty;
+            normalizedSearchText = searchText.Trim();
             statusFilter = string.IsNullOrWhiteSpace(status) || !StatusFilterOptions.Contains(status) ? "已安装" : status!;
             platformFilter = string.IsNullOrWhiteSpace(platform) ? "全部" : platform!;
             sortMode = string.IsNullOrWhiteSpace(sort) ? "名称" : sort!;
@@ -280,7 +283,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 && !string.Equals(game.PlatformDisplay, PlatformFilter, StringComparison.OrdinalIgnoreCase))
                 reasons.Add($"平台筛选为“{PlatformFilter}”，游戏平台为“{game.PlatformDisplay}”。");
 
-            var query = SearchText.Trim();
+            var query = normalizedSearchText;
             if (query.Length > 0 && game.SearchText.IndexOf(query, StringComparison.CurrentCultureIgnoreCase) < 0)
                 reasons.Add($"搜索“{query}”未命中名称、匹配名、平台、健康或云端状态。");
 
@@ -319,7 +322,27 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             var game = item as GamePickerItem;
             if (game == null) return false;
-            return GetFilterExclusionReasons(game).Count == 0;
+
+            // Filtering runs once per item on every keystroke. Do not allocate the
+            // diagnostic reason list on this hot path; the public diagnostic method
+            // still builds the user-facing explanations on demand.
+            if (!string.Equals(PlatformFilter, "全部", StringComparison.OrdinalIgnoreCase)
+                && !string.Equals(game.PlatformDisplay, PlatformFilter, StringComparison.OrdinalIgnoreCase))
+                return false;
+            if (normalizedSearchText.Length > 0
+                && game.SearchText.IndexOf(normalizedSearchText, StringComparison.CurrentCultureIgnoreCase) < 0)
+                return false;
+
+            switch (StatusFilter)
+            {
+                case "已安装" when !game.IsInstalled:
+                case "已匹配" when !game.IsMatched:
+                case "有备份" when !game.HasBackups:
+                case "需处理" when !game.NeedsAttention:
+                case "未匹配" when game.IsMatched:
+                    return false;
+            }
+            return true;
         }
 
         private void ClearFilters()
@@ -386,7 +409,10 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             try
             {
-                await Task.Delay(180, token).ConfigureAwait(false);
+                // The picker filter is local and synchronous once scheduled. Keep the
+                // coalescing window below the 100 ms hot-input budget so typing feels
+                // immediate without refreshing once per key in a large library.
+                await Task.Delay(60, token).ConfigureAwait(false);
                 if (token.IsCancellationRequested || disposed) return;
                 if (synchronizationContext == null) ApplyViewRefresh();
                 else synchronizationContext.Post(_ =>

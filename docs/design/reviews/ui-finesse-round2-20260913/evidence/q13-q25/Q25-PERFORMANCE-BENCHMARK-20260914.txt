@@ -2,6 +2,8 @@ Q25-01 受控性能基准
 采集日期：2026-09-14（Asia/Shanghai）
 代码/测试入口：tests/GameSaveCenter.Playnite.Tests/LargeLibraryPerformanceTests.cs::GamePicker2000_Benchmark_WritesMeasuredTimings
 运行配置：Release，net472，2000 个游戏状态；先预热 5 次，再交替执行 30 次 SearchText -> FilteredCount 输入到反馈采样。
-结果：p50=198 ms，p95=201 ms，max=201 ms；first_set=14 ms，changed_set=12 ms，task_first_replace=1 ms，task_unchanged_replace=0 ms。
+优化前基线：p50=198 ms，p95=201 ms，max=201 ms；主要固定成本是 180 ms 搜索 debounce，并且过滤热路径为每项创建诊断原因列表。
+修复后结果：p50=75 ms，p95=90 ms，max=91 ms；first_set=35 ms，changed_set=18 ms，task_first_replace=1 ms，task_unchanged_replace=0 ms。
 门禁：专项目标测试 4/4 通过；Release 构建 0 warning/0 error；结果同时写入 large-library.txt。
+修复：搜索 debounce 改为 60 ms，并让筛选热路径直接判断平台/搜索/状态，诊断原因列表仍按需生成。
 边界：该基准测量受控 ViewModel/过滤路径，不冒充 Playnite 页面导航、屏幕呈现帧、真实鼠标或低性能 Tier；Q25-01 的宿主导航与视觉响应仍待验。
