@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
@@ -103,6 +104,31 @@ namespace GameSaveCenter.Playnite.Tests
             timer.Stop();
             var searchClearMs = timer.ElapsedMilliseconds;
 
+            // Q25-01 requires a repeatable interaction sample rather than a single
+            // average. Warm the filter path first, then alternate a narrow and a full
+            // result so every sample represents a real input-to-feedback transition.
+            for (var warmup = 0; warmup < 5; warmup++)
+            {
+                var query = warmup % 2 == 0 ? "Game 1999" : "";
+                picker.SearchText = query;
+                await WaitForFilteredCountAsync(picker, query.Length == 0 ? 2000 : 1, timer);
+            }
+
+            var searchSamples = new List<long>(30);
+            for (var sample = 0; sample < 30; sample++)
+            {
+                var query = sample % 2 == 0 ? "Game 1999" : "";
+                timer.Restart();
+                picker.SearchText = query;
+                await WaitForFilteredCountAsync(picker, query.Length == 0 ? 2000 : 1, timer);
+                timer.Stop();
+                searchSamples.Add(timer.ElapsedMilliseconds);
+            }
+
+            var searchP50Ms = Percentile(searchSamples, 0.50);
+            var searchP95Ms = Percentile(searchSamples, 0.95);
+            var searchMaxMs = searchSamples.Max();
+
             var tasks = Enumerable.Range(0, 2000).Select(i => TaskStatus("task-" + i, i % 100)).ToArray();
             var collection = new BatchObservableCollection<TaskStatusDto>();
             timer.Restart();
@@ -122,6 +148,9 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.InRange(changedSetMs, 0, 5000);
             Assert.InRange(taskFirstReplaceMs, 0, 5000);
             Assert.InRange(taskUnchangedReplaceMs, 0, 1000);
+            Assert.InRange(searchP50Ms, 0, 5000);
+            Assert.InRange(searchP95Ms, 0, 5000);
+            Assert.InRange(searchMaxMs, 0, 5000);
 
             var artifactRoot = Environment.GetEnvironmentVariable("GSC_TEST_ARTIFACT_ROOT");
             var benchmarkDirectory = string.IsNullOrWhiteSpace(artifactRoot)
@@ -134,8 +163,22 @@ namespace GameSaveCenter.Playnite.Tests
                 $"changed_set_ms={changedSetMs}\n" +
                 $"search_refresh_ms={searchRefreshMs}\n" +
                 $"search_clear_ms={searchClearMs}\n" +
+                "search_warmup_samples=5\n" +
+                "search_measured_samples=30\n" +
+                "search_measurement=SearchText_to_FilteredCount\n" +
+                $"search_p50_ms={searchP50Ms}\n" +
+                $"search_p95_ms={searchP95Ms}\n" +
+                $"search_max_ms={searchMaxMs}\n" +
                 $"task_first_replace_ms={taskFirstReplaceMs}\n" +
                 $"task_unchanged_replace_ms={taskUnchangedReplaceMs}\n");
+        }
+
+        private static long Percentile(IReadOnlyList<long> samples, double percentile)
+        {
+            var ordered = samples.OrderBy(value => value).ToArray();
+            var index = (int)Math.Ceiling(ordered.Length * percentile) - 1;
+            index = Math.Max(0, Math.Min(index, ordered.Length - 1));
+            return ordered[index];
         }
 
         private static async Task WaitForFilteredCountAsync(GamePickerViewModel picker, int expected, Stopwatch timer)

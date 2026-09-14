@@ -31,7 +31,7 @@
 | Q22 | TaskCenter/Maintenance 统计条、筛选、失败详情、云队列、诊断日志、短窗 Inspector | `TaskRetrySourceTests`、`FindingNavigationResolverTests`、`DiagnosticSummaryNoClipTests`、`MaintenanceReportSourceTests`、全审计 | 真窗口长日志复制、队列悬停和短窗输入序列待宿主复核 |
 | Q23 | Settings 分类导航、字段校验、目录只读检测、保存/回滚/主题预览和底部动作 | `SettingsValidationSourceTests`、`SettingsPathValidationTests`、`PortableSettingsTests`、`WpfUiResourceDictionaryTests` | 独立设置窗口的真实键盘和保存回滚序列待宿主复核 |
 | Q24 | AutomationProperties、焦点视觉、Tab/Shift+Tab 源码契约、高对比/无玻璃路径和 1040/1100/1366 布局矩阵 | `AccessibilitySourceTests`、`KeyboardFocusSourceTests`、`UiAuditTruthfulnessTests`、全审计 | 100/125/150/175/200% 物理 DPI、跨屏 Popup、中文 IME、真实读屏待宿主复核；电脑自动化助手本轮不可用 |
-| Q25 | 大库批量更新、缩略图并发/缓存边界、审计性能字段、构建身份、打包/安装验证 | `LargeLibraryPerformanceTests`、`AsyncThumbnailLoaderTests`、`DiagnosticsEvidenceSourceTests`、`BuildIdentityTests`；已提交 HEAD 一键包体身份一致 | 30 分钟耐久、ETW 呈现帧、>100ms 调用栈和低性能 Tier 尚未签收；Q25-08 需在最终阶段清理并回查 |
+| Q25 | 大库批量更新、缩略图并发/缓存边界、审计性能字段、构建身份、打包/安装验证 | `LargeLibraryPerformanceTests`、`AsyncThumbnailLoaderTests`、`DiagnosticsEvidenceSourceTests`、`BuildIdentityTests`；`Q25-PERFORMANCE-BENCHMARK-20260914.txt` 记录 5 次预热、30 次输入到反馈采样及 p50/p95/max；已提交 HEAD 一键包体身份一致 | 30 分钟耐久、ETW 呈现帧、>100ms 调用栈和低性能 Tier 尚未签收；Q25-08 需在最终阶段清理并回查 |
 
 ## 运行身份与边界
 
