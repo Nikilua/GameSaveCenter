@@ -15,7 +15,7 @@
 - `KeyboardFocusSourceTests.ProductionHeaderAndPickerActionsHaveStableAutomationNames` 锁定导航、Header、筛选器、列表、footer 和 Overview 主要动作的自动化名称。
 - 定向 WPF 回归：`KeyboardFocusSourceTests`、`AccessibilitySourceTests`、`OverviewInteractionTests`、`ProductionShellChromeSourceTests` 合计 `17/17` 通过。
 - 完整 `GameSaveCenter.Playnite.Tests` 回归：`472 passed / 63 skipped / 0 failed`，进程退出码为 0；本次新增的 3 个测试已包含在总数中。
-- `scripts/render-qa.ps1 -Configuration Release -Output .tmp/ui-qa-picker-20260915`：提交前 RenderHarness 构建 `0 warning / 0 error`，双主题、多尺寸、壳层紧凑 Header、页面滚动和 Resize 场景均输出 `render-qa OK`；报告无 `PROBLEM`。提交 `dea74f7` 后将以干净 HEAD 复跑确认，并回填最终报告身份。
+- `scripts/render-qa.ps1 -Configuration Release -Output .tmp/ui-qa-picker-clean-20260915`：干净 HEAD `e6ddd5c278873013286303db3fa5a142b9296172` 的 RenderHarness 构建 `0 warning / 0 error`，`WorkingTreeClean: True`；双主题、多尺寸、壳层紧凑 Header、页面滚动和 Resize 场景均输出 `render-qa OK`，报告无 `PROBLEM`。
 - `python .codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py .`：扫描 326 个 XAML，`0 errors`；151 warnings / 548 info 来自宿主 FusionX/历史主题资源及既有共享资源提示，未出现本次改动引入的 error。`python scripts/validate-source.py` 与 `git diff --check` 通过。
 
 ## 尚未签收
