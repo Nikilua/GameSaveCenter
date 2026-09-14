@@ -1973,7 +1973,12 @@ public static class Program
         var report = new StringBuilder();
         report.AppendLine("GameSaveCenter UI finesse fixture");
         report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
-        report.AppendLine("EvidenceSource: DevelopmentOnlyProductionResourceProbe");
+        AppendRunMetadata(
+            report,
+            "finesseprobe",
+            "DevelopmentOnlyProductionResourceProbe",
+            themeMode == GameSaveCenterThemeMode.Light ? "light" : "dark",
+            "synthetic mixed-language/status/diagnostic/table rows");
         report.AppendLine("WindowDip: 1120x980");
         report.AppendLine($"Theme: {themeMode}");
         report.AppendLine("Data: synthetic mixed-language, status, diagnostic and table rows");
