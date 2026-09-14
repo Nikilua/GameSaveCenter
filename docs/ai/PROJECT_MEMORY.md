@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-14
 
+## 2026-09-14 Q25 ETW 工具边界确认
+
+- 本机可定位 `xperf`/`wpr`/`wpa`/`wpaexporter`，并能查询 Microsoft-Windows-Dwm-Core 的 `SCHEDULE_RENDER`、`SCHEDULE_PRESENT`、`SCHEDULE_GETPRESENTSTATS` metadata；没有 PresentMon、dotnet-trace 或 PerfView。
+- 5 秒 xperf DWM 会话冒烟在 `-start` 阶段返回 `0x5 / Access denied`，没有 ETL、事件样本或残留会话。Q25-02/Q25-03 的呈现帧统计和 `>100ms` 调用栈仍缺证；Worker `[PERF]` 刷新日志不替代 ETW。Q25-04/Q25-05 也不能由此推导通过。
+- 证据见 `docs/design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q25-ETW-TOOL-BOUNDARY-20260914.md`，后续需要主机允许 ETW 或提供等价呈现采集工具。
+
 ## 2026-09-14 UI 精修隔离 Playnite 句柄刷新后的复核
 
 - 在 `a04a824` 上完成干净隔离宿主流程：XAML `24/24`、Release `0 warning/0 error`、Core `82/82`、Worker `311/311`、Playnite `474/531`（57 skip，0 fail），打包/程序集身份/隔离安装成功，身份为 `0.6.73+a04a8249a2411c78f0580d67ff195ef27afaa40d`。

@@ -2,6 +2,11 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-14 Q25 ETW 工具边界确认
+
+- 盘点到 `xperf`、`wpr`、`wpa`、`wpaexporter` 和 DWM Core present 相关 provider metadata；PresentMon、dotnet-trace、PerfView 缺失。
+- 5 秒 `xperf -start` DWM 冒烟返回 `0x5 / Access denied`，无 ETL/事件样本。没有把 `[PERF]` 业务刷新耗时冒充屏幕帧，也没有把工具拒绝写成性能通过；Q25-02～05 保持未完成。证据见 `Q25-ETW-TOOL-BOUNDARY-20260914.md`。
+
 ## 2026-09-14 UI 精修隔离 Playnite 句柄刷新复核
 
 - 在 `a04a824` 干净 HEAD 上完成 XAML 24/24、Release 0/0、Core 82/82、Worker 311/311、Playnite 474/531（57 skip）以及打包、隔离安装、真实 Playnite 启动；程序集身份一致，主题复制成功。
