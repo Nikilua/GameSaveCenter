@@ -498,19 +498,26 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnGameContextClick(object sender, RoutedEventArgs e)
         {
-            PickerOverlay.Visibility = PickerOverlay.Visibility == Visibility.Visible
-                ? Visibility.Collapsed
-                : Visibility.Visible;
+            var opening = PickerOverlay.Visibility != Visibility.Visible;
+            PickerOverlay.Visibility = opening ? Visibility.Visible : Visibility.Collapsed;
+            if (!opening)
+            {
+                FocusGameContextButton();
+                e.Handled = true;
+                return;
+            }
+
             if (PickerOverlay.Visibility == Visibility.Visible)
             {
                 QueueGamePickerFilterDefaults();
                 GameSearchTextBox.Focus();
+                Keyboard.Focus(GameSearchTextBox);
             }
         }
 
         private void OnPickerScrimMouseDown(object sender, MouseButtonEventArgs e)
         {
-            PickerOverlay.Visibility = Visibility.Collapsed;
+            ClosePickerAndRestoreFocus();
             e.Handled = true;
         }
 
@@ -520,8 +527,35 @@ namespace GameSaveCenter.Playnite.Views
             if (e.AddedItems[0] is GamePickerItem item)
             {
                 viewModel.SelectedGame = item.Game;
-                PickerOverlay.Visibility = Visibility.Collapsed;
+                ClosePickerAndRestoreFocus();
             }
+        }
+
+        private void OnPickerPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (PickerOverlay.Visibility != Visibility.Visible)
+                return;
+
+            if (e.Key == Key.Escape || (e.Key == Key.Enter && viewModel?.SelectedGame != null))
+            {
+                ClosePickerAndRestoreFocus();
+                e.Handled = true;
+            }
+        }
+
+        private void ClosePickerAndRestoreFocus()
+        {
+            PickerOverlay.Visibility = Visibility.Collapsed;
+            FocusGameContextButton();
+        }
+
+        private void FocusGameContextButton()
+        {
+            if (!GameContextButton.IsVisible || !GameContextButton.Focusable)
+                return;
+
+            GameContextButton.Focus();
+            Keyboard.Focus(GameContextButton);
         }
 
         private void OnShellSizeChanged(object sender, SizeChangedEventArgs e)
