@@ -19,6 +19,7 @@ using GameSaveCenter.Playnite.ViewModels;
 using GameSaveCenter.Playnite.Views;
 using Newtonsoft.Json;
 using Playnite.SDK;
+using Playnite.SDK.Plugins;
 
 namespace GameSaveCenter.Playnite.Diagnostics
 {
@@ -40,6 +41,87 @@ namespace GameSaveCenter.Playnite.Diagnostics
         private static string? requestedOutputRoot;
         private static Window? auditDashboardWindow;
         private static Window? auditSettingsWindow;
+
+        /// <summary>
+        /// Attempts the same sidebar selection that Playnite performs for a real View item.
+        /// The public SDK does not expose a navigation method, so this reflection bridge is
+        /// deliberately restricted to the developer-only audit switch. It never creates a
+        /// Dashboard or marks a capture as embedded; the Dashboard's loaded visual is still
+        /// the sole source of truth for that classification.
+        /// </summary>
+        internal static bool TryOpenEmbeddedDashboardForAudit()
+        {
+            if (string.IsNullOrWhiteSpace(ResolveRequestedOutput()))
+                return false;
+
+            try
+            {
+                var desktopApplicationType = Type.GetType(
+                    "Playnite.DesktopApp.DesktopApplication, Playnite.DesktopApp",
+                    throwOnError: false);
+                var currentProperty = desktopApplicationType?.GetProperty(
+                    "Current",
+                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+                var desktopApplication = currentProperty?.GetValue(null, null);
+                var mainModel = desktopApplication?.GetType().GetProperty(
+                    "MainModel",
+                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(desktopApplication, null);
+                var sidebarItems = mainModel?.GetType().GetProperty(
+                    "SidebarItems",
+                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(mainModel, null) as System.Collections.IEnumerable;
+                if (mainModel == null || sidebarItems == null)
+                {
+                    Logger.Info("Real host audit could not resolve Playnite's desktop sidebar model; keeping the manual prompt.");
+                    return false;
+                }
+
+                object? target = null;
+                foreach (var wrapper in sidebarItems)
+                {
+                    if (wrapper == null)
+                        continue;
+                    var sideItem = wrapper.GetType().GetProperty(
+                        "SideItem",
+                        BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(wrapper, null);
+                    var title = sideItem?.GetType().GetProperty(
+                        "Title",
+                        BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(sideItem, null) as string;
+                    var type = sideItem?.GetType().GetProperty(
+                        "Type",
+                        BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(sideItem, null);
+                    if (string.Equals(title, "GameSaveCenter", StringComparison.Ordinal) &&
+                        string.Equals(type?.ToString(), SiderbarItemType.View.ToString(), StringComparison.Ordinal))
+                    {
+                        target = wrapper;
+                        break;
+                    }
+                }
+
+                if (target == null)
+                {
+                    Logger.Info("Real host audit found Playnite's sidebar model but no GameSaveCenter View item; keeping the manual prompt.");
+                    return false;
+                }
+
+                var command = mainModel.GetType().GetProperty(
+                    "SelectSidebarViewCommand",
+                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(mainModel, null) as ICommand;
+                if (command == null || !command.CanExecute(target))
+                {
+                    Logger.Info("Real host audit resolved GameSaveCenter but Playnite's sidebar command was unavailable or not executable; keeping the manual prompt.");
+                    return false;
+                }
+
+                Logger.Info("Real host audit invoking Playnite's own SelectSidebarViewCommand for GameSaveCenter.");
+                command.Execute(target);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.Debug(ex, "Real host audit could not invoke Playnite's internal sidebar selection; keeping the manual prompt.");
+                return false;
+            }
+        }
 
         internal static void NotifyUserToOpenDashboard(GameSaveCenterPlugin plugin)
         {

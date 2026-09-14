@@ -120,9 +120,11 @@ namespace GameSaveCenter.Playnite
                         {
                             if (lifetimeCancellation.IsCancellationRequested) return;
                             // SidebarItemType.View is opened by Playnite through Opened, not by
-                            // invoking Activated. Ask the user to click the sidebar entry so the
-                            // real embedded DashboardView.OnLoaded can capture production truth.
-                            RealHostUiAuditService.NotifyUserToOpenDashboard(this);
+                            // invoking Activated. Use Playnite's own host command when the
+                            // developer-only audit switch is active; otherwise ask the user to
+                            // click the sidebar entry so DashboardView.OnLoaded captures truth.
+                            if (!RealHostUiAuditService.TryOpenEmbeddedDashboardForAudit())
+                                RealHostUiAuditService.NotifyUserToOpenDashboard(this);
                             // If the user never opens the sidebar, still produce controlled-host
                             // evidence after a short grace period. This fallback is explicitly
                             // marked controlled-host-window and never claims embedded truth.
