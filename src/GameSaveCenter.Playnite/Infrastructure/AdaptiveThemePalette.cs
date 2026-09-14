@@ -289,8 +289,10 @@ namespace GameSaveCenter.Playnite.Infrastructure
             var primaryButtonTop = SystemParameters.HighContrast || !palette.GlassEnabled
                 ? Opaque(palette.Accent)
                 : WithAlpha(Blend(Opaque(palette.Accent), Opaque(palette.StrongSurfaceTop), palette.IsDark ? 0.10 : 0.08), palette.IsDark ? 0.72 : 0.76);
-            var primaryButtonBottom = SystemParameters.HighContrast || !palette.GlassEnabled
+            var primaryButtonBottom = SystemParameters.HighContrast
                 ? Opaque(palette.AccentPressed)
+                : !palette.GlassEnabled
+                    ? Opaque(palette.Accent)
                 : WithAlpha(Blend(Opaque(palette.AccentPressed), Opaque(palette.StrongSurfaceBottom), palette.IsDark ? 0.16 : 0.12), palette.IsDark ? 0.64 : 0.70);
             resources["GscPrimaryButtonBrush"] = Gradient(primaryButtonTop, primaryButtonBottom);
             resources["GscPrimaryButtonBorderBrush"] = Brush(

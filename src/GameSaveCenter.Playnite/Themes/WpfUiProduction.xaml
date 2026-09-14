@@ -721,6 +721,7 @@
     <Style x:Key="GscWpfUiButton"
            TargetType="{x:Type ui:Button}">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
         <Setter Property="MinWidth" Value="42"/>
         <Setter Property="Padding" Value="14,7"/>
@@ -855,7 +856,11 @@
                             <Setter TargetName="ButtonChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="ButtonChrome" Property="Opacity" Value="0.46"/>
+                            <!-- Keep disabled labels readable after the chrome alpha is
+                                 composited over a dark surface. Context actions use this
+                                 same template, so the shared value must be sufficient on
+                                 its own rather than relying on a second control opacity. -->
+                            <Setter TargetName="ButtonChrome" Property="Opacity" Value="0.72"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -873,6 +878,10 @@
            TargetType="{x:Type ui:Button}"
            BasedOn="{StaticResource GscWpfUiButton}">
         <Setter Property="Appearance" Value="Primary"/>
+        <!-- Keep the semantic foreground on the derived style as well as the template
+             trigger. WPF style inheritance does not reliably re-apply a base-template
+             trigger when the control is created from a BasedOn adapter. -->
+        <Setter Property="Foreground" Value="{DynamicResource GscOnAccentTextBrush}"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
     </Style>
 
@@ -880,6 +889,7 @@
            TargetType="{x:Type ui:Button}"
            BasedOn="{StaticResource GscWpfUiButton}">
         <Setter Property="Appearance" Value="Danger"/>
+        <Setter Property="Foreground" Value="{DynamicResource GscOnAccentTextBrush}"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
     </Style>
 
@@ -922,7 +932,8 @@
         <Setter Property="Margin" Value="0,0,8,8"/>
         <!-- Keep unavailable contextual actions in the layout. Collapsing them made a
              row jump when selection changed and hid the existence of a safe next step;
-             the shared button template already exposes a readable disabled state. -->
+             the shared button template owns the label foreground while the contextual
+             group retains its softer disabled treatment. -->
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Opacity" Value="0.48"/>
@@ -957,6 +968,7 @@
     <Style x:Key="GscWpfUiToggleSwitch"
            TargetType="{x:Type ui:ToggleSwitch}">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="MinHeight" Value="34"/>
         <Setter Property="FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
@@ -988,7 +1000,8 @@
                                           ContentTemplate="{TemplateBinding ContentTemplate}"
                                           ContentStringFormat="{TemplateBinding ContentStringFormat}"
                                           VerticalAlignment="Center"
-                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          TextElement.Foreground="{TemplateBinding Foreground}"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
@@ -1016,7 +1029,7 @@
                             <Setter TargetName="Track" Property="Opacity" Value="0.86"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Opacity" Value="0.46"/>
+                            <Setter Property="Opacity" Value="0.72"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

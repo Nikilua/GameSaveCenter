@@ -6312,3 +6312,13 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - Release 0 warning/0 error；Core 76/76、Worker 310/311（1 skip）、Playnite 435/498（63 skip），失败 0；源码验证通过；WPF 静态检查 24 XAML，0 errors/22 warnings/160 info（本轮未修改 XAML，非零提示未宣称已清理）。
 - 完整 render-qa 退出 -1，239 张部分截图不能代表流程通过；单独 shellqa 首次缺少主题输出目录，补建 theme/light、theme/dark 后通过。旧空表/漂移及物理 DPI/宿主主题仍待真实验收，已列 D12-10。
 - Git 交付只包含本轮文档、证据和本条日志/记忆，不带入其他人的未提交修改。
+
+## 2026-09-14 UI 精修第二轮 Q00 共享前景与证据门禁
+
+- 复现并修复深色校对夹具的真实问题：Numeric、按钮、Toggle 和状态胶囊原先从 WPF 默认继承 `#000000`；共享 `Typography`、`WpfUiProduction`、`Redesign` 样式现在提供动态主题前景，Toggle 内容模板也绑定最终 `Foreground`。
+- 共享按钮的 Primary/Danger 派生样式补直接前景 Setter；禁用态不再叠加 ContextButton 控件级透明度，按钮/Toggle 的模板 alpha 调整为在浅深主题合成后仍可读。无玻璃主按钮渐变端点收敛到同一 accent，避免浅色主题按最暗端点测量掉到 4.5:1 以下。
+- `AdaptiveThemePaletteContrastGuard` 新增最终文本样本的 alpha 合成测量与负例校验，并停止在内部比较前提前舍入。RenderHarness 现在从已排列视觉树读取祖先透明度、像素表面、实际行矩形；四行完整门禁和压缩 4 DIP 的反例均可失败。
+- 字体报告将 `FontGlyph ... resolved` 改为 `FontCandidate`，并明确 `FontActualGlyphRun=unknown`；Typeface 候选覆盖不再冒充 WPF 实际落字。
+- 受控证据保存于 `docs/design/reviews/ui-finesse-round2-20260913/evidence/q00-after-dark.*` 与 `q00-after-light.*`，索引为 `Q00-INDEX.md`。1120×980 DIP、96 DPI、DpiScale=1.00、合成 4 行数据；浅/深主题均 12 个文本样本 0 violation，黑字负例各 1 violation，行容器 4/4 完整、压缩视口 3/4。
+- 验证：RenderHarness Release 0 warning/0 error；`finesseprobe` Light/Dark 均退出 0；定向 `UiDiagnosticsExporterTests` 6/6 与共享模板测试 1/1 通过；两张 PNG 已实际打开复核。真实 Playnite 宿主仍为 `MainWindowHandle=0`，物理 DPI、Hover/Pressed/Keyboard Focus 行为尚未宣称通过。
+- 提交前一键门禁首次在 Playnite 设置迁移测试阶段失败，独立复现根因是隔离构建目录使用 32 位 GUID，导致 .NET Framework xUnit 适配器加载路径超过 Windows 260 字符限制；已将 `dev-install-run.ps1` 的隔离 token 缩短为 8 位，待在提交后复跑完整门禁。

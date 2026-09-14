@@ -454,6 +454,7 @@
         <Setter Property="Padding" Value="8,2"/>
         <Setter Property="MinHeight" Value="22"/>
         <Setter Property="CornerRadius" Value="6"/>
+        <Setter Property="TextElement.Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <!-- Context/stat cards are reading surfaces, not primary actions.  Keep their
              default neutral and let status-specific cards opt into a semantic tint. -->
         <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>

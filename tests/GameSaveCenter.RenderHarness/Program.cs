@@ -1217,6 +1217,7 @@ public static class Program
             var palette = AdaptiveThemePaletteFactory.Create(view, false, 50, themeMode);
             var contrastMeasurements = AdaptiveThemePaletteContrastGuard.Measure(palette, palette.Background);
             var contrastViolations = AdaptiveThemePaletteContrastGuard.Validate(palette, palette.Background);
+            report.AppendLine($"Palette: accent={FormatColor(palette.Accent)} onAccent={FormatColor(palette.OnAccentText)} primary={FormatColor(palette.PrimaryText)}");
             report.AppendLine($"ContrastGuard: checks={contrastMeasurements.Count} violations={contrastViolations.Count}");
             foreach (var measurement in contrastMeasurements)
                 report.AppendLine($"  {measurement.Check}: actual={measurement.Actual:0.###} minimum={measurement.Minimum:0.###}");
@@ -1236,6 +1237,7 @@ public static class Program
 
             var path = Path.Combine(outputRoot, "ui-finesse-fixture.png");
             SavePng(host, path);
+            AppendEffectiveFixtureEvidence(report, host);
             var captionStyle = view.FindResource("GscTypographyCaption") as Style;
             var captionOpacity = captionStyle?.Setters
                 .OfType<Setter>()
@@ -1249,7 +1251,7 @@ public static class Program
             report.AppendLine($"CaptionOpacity: {captionOpacity ?? "unset"}");
             AppendFontResolutionEvidence(report);
             report.AppendLine("Samples: mixed CJK/Latin, numeric, path, diagnostic, success/warning/error glyphs");
-            report.AppendLine("InteractionStates: normal/hover/pressed/disabled/focus represented by shared template; pressed/focus require behavior probe");
+            report.AppendLine("InteractionStates: normal captured; shared template declares hover/pressed/disabled/focus; input behavior requires a separate probe");
             report.AppendLine("finesse-fixture OK");
             File.WriteAllText(Path.Combine(outputRoot, "ui-finesse-fixture-report.txt"), report.ToString());
             Console.WriteLine(report.ToString());
@@ -1263,6 +1265,256 @@ public static class Program
             Console.Error.WriteLine(report.ToString());
             return 1;
         }
+    }
+
+    private static void AppendEffectiveFixtureEvidence(StringBuilder report, Grid host)
+    {
+        var bitmap = RenderVisual(host);
+        var textSamples = new List<AdaptiveThemePaletteContrastGuard.TextContrastSample>();
+        var controls = FindVisualChildren<GameSaveCenter.Playnite.Controls.Button>(host)
+            .Where(button => button.Visibility == Visibility.Visible)
+            .ToList();
+        var toggles = FindVisualChildren<GameSaveCenter.Playnite.Controls.ToggleSwitch>(host)
+            .Where(toggle => toggle.Visibility == Visibility.Visible)
+            .ToList();
+        var statusTexts = FindVisualChildren<TextBlock>(host)
+            .Where(text => text.Visibility == Visibility.Visible
+                && (text.Text == "已完成" || text.Text == "需关注" || text.Text == "失败"))
+            .ToList();
+        var numeric = FindVisualChildren<TextBlock>(host)
+            .FirstOrDefault(text => text.Visibility == Visibility.Visible
+                && text.Text.IndexOf("0123456789", StringComparison.Ordinal) >= 0);
+
+        report.AppendLine("EffectiveColors: source=realized-visual-tree rendered-pixel-samples");
+        AppendTextElementEvidence(report, host, bitmap, "Numeric", numeric, textSamples);
+        foreach (var button in controls)
+        {
+            var buttonText = FindVisualChildren<TextBlock>(button)
+                .FirstOrDefault(text => !string.IsNullOrWhiteSpace(text.Text));
+            AppendTextElementEvidence(
+                report,
+                host,
+                bitmap,
+                $"Button[{button.Appearance}] {buttonText?.Text ?? "<composite>"}",
+                buttonText,
+                textSamples);
+        }
+
+        foreach (var toggle in toggles)
+        {
+            var toggleText = FindVisualChildren<TextBlock>(toggle)
+                .FirstOrDefault(text => !string.IsNullOrWhiteSpace(text.Text));
+            AppendTextElementEvidence(
+                report,
+                host,
+                bitmap,
+                $"Toggle {toggleText?.Text ?? "<composite>"}",
+                toggleText,
+                textSamples);
+        }
+
+        foreach (var statusText in statusTexts)
+            AppendTextElementEvidence(report, host, bitmap, $"Status {statusText.Text}", statusText, textSamples);
+
+        var effectiveMeasurements = AdaptiveThemePaletteContrastGuard.MeasureTextContrast(textSamples);
+        var effectiveViolations = AdaptiveThemePaletteContrastGuard.ValidateTextContrast(textSamples);
+        report.AppendLine(
+            $"EffectiveContrastGuard: samples={effectiveMeasurements.Count} minimum=4.5 "
+            + $"violations={effectiveViolations.Count}");
+        foreach (var violation in effectiveViolations)
+            report.AppendLine($"  violation {violation.Check}: actual={violation.Actual:0.###} minimum={violation.Minimum:0.###}");
+        if (effectiveMeasurements.Count == 0 || effectiveViolations.Count > 0)
+            throw new InvalidOperationException(
+                $"Effective text contrast guard found {effectiveViolations.Count} violation(s) across {effectiveMeasurements.Count} sample(s).");
+
+        var negativeSamples = new[]
+        {
+            new AdaptiveThemePaletteContrastGuard.TextContrastSample
+            {
+                Check = "negative-black-on-dark",
+                Foreground = Colors.Black,
+                Background = Color.FromRgb(37, 42, 52),
+                Minimum = 4.5
+            }
+        };
+        var negativeViolations = AdaptiveThemePaletteContrastGuard.ValidateTextContrast(negativeSamples);
+        report.AppendLine(
+            $"NegativeFixture: invalid-black-on-dark violations={negativeViolations.Count} "
+            + $"must-fail={(negativeViolations.Count > 0 ? "passed" : "FAILED")}");
+        if (negativeViolations.Count == 0)
+            throw new InvalidOperationException("The invalid black-on-dark contrast fixture unexpectedly passed.");
+
+        var rowBounds = FindVisualChildren<DataGridRow>(host)
+            .Where(row => row.Visibility == Visibility.Visible && row.ActualHeight > 0)
+            .Select(row => GetBounds(row, host))
+            .ToList();
+        var dataGrid = FindVisualChildren<DataGrid>(host).FirstOrDefault();
+        var gridBounds = dataGrid == null ? Rect.Empty : GetBounds(dataGrid, host);
+        var fullyInside = CountCompleteRows(rowBounds, gridBounds);
+        report.AppendLine(
+            $"RowsEffective: realized={rowBounds.Count} completeInsideGrid={fullyInside} "
+            + $"grid={FormatRect(gridBounds)} rows={string.Join(";", rowBounds.Select(FormatRect))}");
+        var clippedViewport = gridBounds;
+        clippedViewport.Height = Math.Max(0, clippedViewport.Height - 4);
+        var clippedComplete = CountCompleteRows(rowBounds, clippedViewport);
+        report.AppendLine(
+            $"RowsNegativeFixture: viewport={FormatRect(clippedViewport)} completeInsideGrid={clippedComplete} "
+            + $"must-fail={(clippedComplete < fullyInside ? "passed" : "FAILED")}");
+        if (fullyInside < rowBounds.Count || clippedComplete >= fullyInside)
+            throw new InvalidOperationException(
+                $"Row clipping guard failed: realized={rowBounds.Count}, complete={fullyInside}, compressed={clippedComplete}.");
+    }
+
+    private static void AppendTextElementEvidence(
+        StringBuilder report,
+        Grid host,
+        RenderTargetBitmap bitmap,
+        string label,
+        TextBlock? text,
+        List<AdaptiveThemePaletteContrastGuard.TextContrastSample> samples)
+    {
+        if (text == null)
+        {
+            report.AppendLine($"  {label}: missing");
+            return;
+        }
+
+        var foreground = text.Foreground as SolidColorBrush;
+        if (foreground == null)
+        {
+            report.AppendLine($"  {label}: unresolved foreground brush");
+            return;
+        }
+
+        var bounds = GetBounds(text, host);
+        var sample = SampleAround(bitmap, bounds);
+        var effectiveOpacity = GetEffectiveOpacity(text, host);
+        var foregroundColor = WithOpacity(foreground.Color, effectiveOpacity);
+        var composite = Composite(foregroundColor, sample);
+        var ratio = ContrastRatio(composite, sample);
+        samples.Add(new AdaptiveThemePaletteContrastGuard.TextContrastSample
+        {
+            Check = label,
+            Foreground = foregroundColor,
+            Background = sample,
+            Minimum = 4.5
+        });
+        report.AppendLine(
+            $"  {label}: text={text.Text} rawForeground={FormatColor(foreground.Color)} "
+            + $"effectiveOpacity={effectiveOpacity:0.###} effectiveForeground={FormatColor(foregroundColor)} "
+            + $"backgroundSample={FormatColor(sample)} composite={FormatColor(composite)} "
+            + $"contrast={ratio:0.###} bounds={FormatRect(bounds)}");
+    }
+
+    private static int CountCompleteRows(IReadOnlyList<Rect> rows, Rect viewport)
+    {
+        var complete = 0;
+        foreach (var row in rows)
+        {
+            var intersection = row;
+            intersection.Intersect(viewport);
+            if (!intersection.IsEmpty
+                && intersection.Width >= row.Width - 0.5
+                && intersection.Height >= row.Height - 0.5)
+                complete++;
+        }
+
+        return complete;
+    }
+
+    private static double GetEffectiveOpacity(DependencyObject element, DependencyObject stop)
+    {
+        var opacity = 1d;
+        for (DependencyObject? current = element; current != null; current = VisualTreeHelper.GetParent(current))
+        {
+            if (current is UIElement visual)
+                opacity *= visual.Opacity;
+            if (ReferenceEquals(current, stop))
+                break;
+        }
+
+        return Math.Max(0, Math.Min(1, opacity));
+    }
+
+    private static RenderTargetBitmap RenderVisual(Visual visual)
+    {
+        var element = (FrameworkElement)visual;
+        var bitmap = new RenderTargetBitmap(
+            (int)Math.Ceiling(element.ActualWidth),
+            (int)Math.Ceiling(element.ActualHeight),
+            96,
+            96,
+            PixelFormats.Pbgra32);
+        bitmap.Render(visual);
+        return bitmap;
+    }
+
+    private static Color SampleAround(RenderTargetBitmap bitmap, Rect bounds)
+    {
+        var points = new[]
+        {
+            new Point(bounds.Left + Math.Min(2, Math.Max(0, bounds.Width / 3)), bounds.Top + Math.Min(2, Math.Max(0, bounds.Height / 3))),
+            new Point(bounds.Right - Math.Min(2, Math.Max(0, bounds.Width / 3)), bounds.Top + Math.Min(2, Math.Max(0, bounds.Height / 3))),
+            new Point(bounds.Left + Math.Min(2, Math.Max(0, bounds.Width / 3)), bounds.Bottom - Math.Min(2, Math.Max(0, bounds.Height / 3))),
+            new Point(bounds.Right - Math.Min(2, Math.Max(0, bounds.Width / 3)), bounds.Bottom - Math.Min(2, Math.Max(0, bounds.Height / 3)))
+        };
+        var colors = points.Select(point => GetPixel(bitmap, point)).ToList();
+        return Color.FromRgb(
+            (byte)Math.Round(colors.Average(color => color.R)),
+            (byte)Math.Round(colors.Average(color => color.G)),
+            (byte)Math.Round(colors.Average(color => color.B)));
+    }
+
+    private static Color GetPixel(RenderTargetBitmap bitmap, Point point)
+    {
+        var x = Math.Max(0, Math.Min(bitmap.PixelWidth - 1, (int)Math.Round(point.X)));
+        var y = Math.Max(0, Math.Min(bitmap.PixelHeight - 1, (int)Math.Round(point.Y)));
+        var pixels = new byte[4];
+        bitmap.CopyPixels(new Int32Rect(x, y, 1, 1), pixels, 4, 0);
+        return Color.FromArgb(pixels[3], pixels[2], pixels[1], pixels[0]);
+    }
+
+    private static Rect GetBounds(FrameworkElement element, FrameworkElement ancestor)
+        => element.TransformToAncestor(ancestor).TransformBounds(new Rect(0, 0, element.ActualWidth, element.ActualHeight));
+
+    private static string FormatRect(Rect rect)
+        => rect.IsEmpty ? "empty" : $"{rect.Left:0.##},{rect.Top:0.##}..{rect.Right:0.##},{rect.Bottom:0.##}";
+
+    private static string FormatColor(Color color)
+        => $"#{color.A:X2}{color.R:X2}{color.G:X2}{color.B:X2}";
+
+    private static Color Composite(Color foreground, Color background)
+    {
+        var alpha = foreground.A / 255d;
+        return Color.FromRgb(
+            (byte)Math.Round(foreground.R * alpha + background.R * (1 - alpha)),
+            (byte)Math.Round(foreground.G * alpha + background.G * (1 - alpha)),
+            (byte)Math.Round(foreground.B * alpha + background.B * (1 - alpha)));
+    }
+
+    private static Color WithOpacity(Color color, double opacity)
+        => Color.FromArgb(
+            (byte)Math.Round(Math.Max(0, Math.Min(1, color.A / 255d * opacity)) * 255),
+            color.R,
+            color.G,
+            color.B);
+
+    private static double ContrastRatio(Color first, Color second)
+    {
+        var lighter = Math.Max(RelativeLuminance(first), RelativeLuminance(second));
+        var darker = Math.Min(RelativeLuminance(first), RelativeLuminance(second));
+        return (lighter + 0.05) / (darker + 0.05);
+    }
+
+    private static double RelativeLuminance(Color color)
+    {
+        double Convert(byte channel)
+        {
+            var value = channel / 255d;
+            return value <= 0.03928 ? value / 12.92 : Math.Pow((value + 0.055) / 1.055, 2.4);
+        }
+
+        return 0.2126 * Convert(color.R) + 0.7152 * Convert(color.G) + 0.0722 * Convert(color.B);
     }
 
     private static void AppendFontResolutionEvidence(StringBuilder report)
@@ -1280,9 +1532,12 @@ public static class Program
         report.AppendLine($"FontChain: {string.Join(" -> ", chain)}");
         foreach (var sample in samples)
         {
-            var resolved = chain.FirstOrDefault(font => FontHasGlyph(font, sample.CodePoint)) ?? "unresolved";
-            report.AppendLine($"FontGlyph {sample.Label}=U+{sample.CodePoint:X5} resolved={resolved}");
+            var candidate = chain.FirstOrDefault(font => FontHasGlyph(font, sample.CodePoint)) ?? "unresolved";
+            report.AppendLine($"FontCandidate {sample.Label}=U+{sample.CodePoint:X5} candidate={candidate}");
         }
+
+        report.AppendLine("FontActualGlyphRun: unknown (this offscreen fixture does not capture WPF GlyphRun fallback)");
+        report.AppendLine("FontEvidence: FontHasGlyph candidate coverage only; a rare glyph remains unknown until actual WPF layout inspection");
     }
 
     private static bool FontHasGlyph(string fontName, int codePoint)

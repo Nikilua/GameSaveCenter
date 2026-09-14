@@ -4,6 +4,8 @@
              xmlns:ui="clr-namespace:GameSaveCenter.Playnite.Controls"
              UseLayoutRounding="True"
              SnapsToDevicePixels="True"
+             Foreground="{DynamicResource GscPrimaryTextBrush}"
+             TextElement.Foreground="{DynamicResource GscPrimaryTextBrush}"
              TextOptions.TextFormattingMode="Ideal"
              TextOptions.TextRenderingMode="ClearType"
              TextOptions.TextHintingMode="Fixed">
@@ -21,8 +23,8 @@
                 <Setter Property="TextWrapping" Value="Wrap"/>
             </Style>
             <Style x:Key="ProbeDataGrid" TargetType="DataGrid" BasedOn="{StaticResource GscRedesignWorkspaceDataGrid}">
-                <Setter Property="Height" Value="246"/>
-                <Setter Property="MinHeight" Value="246"/>
+                <Setter Property="Height" Value="250"/>
+                <Setter Property="MinHeight" Value="250"/>
                 <Setter Property="ColumnHeaderHeight" Value="{DynamicResource GscTableHeaderHeight}"/>
                 <Setter Property="RowHeight" Value="{DynamicResource GscTableRowHeight}"/>
                 <Setter Property="ItemsSource" Value="{Binding ProbeRows}"/>
@@ -105,7 +107,7 @@
 
                 <Border Grid.Row="2" Style="{StaticResource GscReadingCardStyle}" Padding="20" Margin="0,14,0,0">
                     <Grid>
-                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="246"/></Grid.RowDefinitions>
+                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="250"/></Grid.RowDefinitions>
                         <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="16"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                         <TextBlock Text="状态徽章、进度与表格阅读面" Style="{StaticResource GscTypographySectionTitle}"/>
                         <WrapPanel Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right">

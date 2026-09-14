@@ -1,0 +1,53 @@
+GameSaveCenter UI finesse fixture
+Generated: 2026-09-14 01:06:28
+EvidenceSource: DevelopmentOnlyProductionResourceProbe
+WindowDip: 1120x980
+Theme: Dark
+Data: synthetic mixed-language, status, diagnostic and table rows
+Palette: accent=#FF7C8CF8 onAccent=#FF000000 primary=#FFFFFFFF
+ContrastGuard: checks=11 violations=0
+  PrimaryText vs Background: actual=18.201 minimum=4.5
+  SecondaryText vs Background: actual=10.234 minimum=4.5
+  MutedText vs Background: actual=6.327 minimum=4.5
+  OnAccentText vs Accent: actual=6.964 minimum=4.5
+  Info vs Background: actual=7.335 minimum=3
+  Success vs Background: actual=10.254 minimum=3
+  Warning vs Background: actual=9.693 minimum=3
+  Error vs Background: actual=6.296 minimum=3
+  ControlStroke vs Surface: actual=13.531 minimum=1.15
+  Surface vs Background: actual=0.02 minimum=0.016
+  ControlFill vs Surface: actual=0.007 minimum=0.005
+EffectiveColors: source=realized-visual-tree rendered-pixel-samples
+  Numeric: text=AgjQy  Il1 O0  0123456789  1,024 / 99,999  9% → 100% rawForeground=#FFF2F4F8 effectiveOpacity=1 effectiveForeground=#FFF2F4F8 backgroundSample=#FF252A34 composite=#FFF2F4F8 contrast=13.068 bounds=41.33,220..550,238.67
+  Button[Primary] 主操作: text=主操作 rawForeground=#FF000000 effectiveOpacity=1 effectiveForeground=#FF000000 backgroundSample=#FF7C8CF8 composite=#FF000000 contrast=6.964 bounds=585.33,336..621.33,352
+  Button[Secondary] 次要操作: text=次要操作 rawForeground=#FFF2F4F8 effectiveOpacity=1 effectiveForeground=#FFF2F4F8 backgroundSample=#FF2E303A composite=#FFF2F4F8 contrast=11.919 bounds=660,336..708,352
+  Button[Secondary] 禁用操作: text=禁用操作 rawForeground=#FFF2F4F8 effectiveOpacity=0.72 effectiveForeground=#B8F2F4F8 backgroundSample=#FF2B2E39 composite=#FFBBBDC3 contrast=7.201 bounds=746.67,336..794.67,352
+  Button[Secondary] <composite>: missing
+  Toggle 开关: text=开关 rawForeground=#FFF2F4F8 effectiveOpacity=1 effectiveForeground=#FFF2F4F8 backgroundSample=#FF252A34 composite=#FFF2F4F8 contrast=13.068 bounds=616,382.67..640,398.67
+  Status 已完成: text=已完成 rawForeground=#FFF2F4F8 effectiveOpacity=1 effectiveForeground=#FFF2F4F8 backgroundSample=#FF294240 composite=#FFF2F4F8 contrast=9.792 bounds=871.33,466.67..913.33,486.67
+  Status 需关注: text=需关注 rawForeground=#FFF2F4F8 effectiveOpacity=1 effectiveForeground=#FFF2F4F8 backgroundSample=#FF433E39 composite=#FFF2F4F8 contrast=9.599 bounds=957.33,466.67..999.33,486.67
+  Status 失败: text=失败 rawForeground=#FFF2F4F8 effectiveOpacity=1 effectiveForeground=#FFF2F4F8 backgroundSample=#FF433340 composite=#FFF2F4F8 contrast=10.677 bounds=1043.33,466.67..1071.33,486.67
+  Status 已完成: text=已完成 rawForeground=#FFF2F4F8 effectiveOpacity=1 effectiveForeground=#FFF2F4F8 backgroundSample=#FF2D323C composite=#FFF2F4F8 contrast=11.678 bounds=492,558.67..534,577.33
+  Status 需关注: text=需关注 rawForeground=#FFF2F4F8 effectiveOpacity=1 effectiveForeground=#FFF2F4F8 backgroundSample=#FF2D323C composite=#FFF2F4F8 contrast=11.678 bounds=492,610.67..534,629.33
+  Status 失败: text=失败 rawForeground=#FFF2F4F8 effectiveOpacity=1 effectiveForeground=#FFF2F4F8 backgroundSample=#FF40444E composite=#FFF2F4F8 contrast=8.85 bounds=492,662.67..520,681.33
+  Status 已完成: text=已完成 rawForeground=#FFF2F4F8 effectiveOpacity=1 effectiveForeground=#FFF2F4F8 backgroundSample=#FF2D323C composite=#FFF2F4F8 contrast=11.678 bounds=492,714.67..534,733.33
+EffectiveContrastGuard: samples=12 minimum=4.5 violations=0
+NegativeFixture: invalid-black-on-dark violations=1 must-fail=passed
+RowsEffective: realized=4 completeInsideGrid=4 grid=41.33,500..1078.67,750 rows=41.33,542..1078.67,594;41.33,594..1078.67,646;41.33,646..1078.67,698;41.33,698..1078.67,750
+RowsNegativeFixture: viewport=41.33,500..1078.67,746 completeInsideGrid=3 must-fail=passed
+Screenshot: C:\Users\lopmatu\.codex\worktrees\1aa8\GameSaveCenter\.tmp\q00-after-dark\ui-finesse-fixture.png
+ProbeRows: 4
+Buttons: 18
+DataGrid: rows=4 actual=1037.33x250
+CaptionOpacity: 1
+FontChain: Inter -> Segoe UI Variable Text -> Noto Sans SC -> Microsoft YaHei UI
+FontCandidate CJK=U+05B58 candidate=Noto Sans SC
+FontCandidate Latin=U+00053 candidate=Segoe UI Variable Text
+FontCandidate Digit=U+00039 candidate=Segoe UI Variable Text
+FontCandidate Arrow=U+02192 candidate=Segoe UI Variable Text
+FontCandidate RareCJK=U+20BB7 candidate=unresolved
+FontActualGlyphRun: unknown (this offscreen fixture does not capture WPF GlyphRun fallback)
+FontEvidence: FontHasGlyph candidate coverage only; a rare glyph remains unknown until actual WPF layout inspection
+Samples: mixed CJK/Latin, numeric, path, diagnostic, success/warning/error glyphs
+InteractionStates: normal captured; shared template declares hover/pressed/disabled/focus; input behavior requires a separate probe
+finesse-fixture OK

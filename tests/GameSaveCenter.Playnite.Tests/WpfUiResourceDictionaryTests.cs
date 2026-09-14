@@ -607,6 +607,10 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("GscOnAccentPressedOverlayBrush", production);
         Assert.Contains("<SolidColorBrush x:Key=\"GscOnAccentHoverOverlayBrush\"", tokens);
         Assert.Contains("<SolidColorBrush x:Key=\"GscOnAccentPressedOverlayBrush\"", tokens);
+        Assert.Contains("<Setter Property=\"Foreground\" Value=\"{DynamicResource GscPrimaryTextBrush}\"/>", production);
+        Assert.Contains("<Setter Property=\"Foreground\" Value=\"{DynamicResource GscOnAccentTextBrush}\"/>", production);
+        Assert.Contains("TextElement.Foreground=\"{TemplateBinding Foreground}\"", production);
+        Assert.Contains("<Setter Property=\"Foreground\" Value=\"{DynamicResource GscPrimaryTextBrush}\"/>", File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "Typography.xaml")));
 
         Assert.Contains("<ColumnDefinition Width=\"46\"/>", production);
         Assert.Contains("Width=\"40\" Height=\"23\" CornerRadius=\"11.5\"", production);

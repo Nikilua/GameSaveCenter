@@ -125,4 +125,31 @@ public sealed class UiDiagnosticsExporterTests
         Assert.Null(exception);
         Assert.Empty(violations);
     }
+
+    [Fact]
+    public void TextContrastGuardCompositesEffectiveAlphaAndRejectsTheFormerDarkFixtureFalsePositive()
+    {
+        var readable = new AdaptiveThemePaletteContrastGuard.TextContrastSample
+        {
+            Check = "disabled-light-label",
+            Foreground = Color.FromArgb(0xAE, 0x1B, 0x1F, 0x27),
+            Background = Color.FromRgb(0xEF, 0xF0, 0xF5),
+            Minimum = 4.5
+        };
+        var invalid = new AdaptiveThemePaletteContrastGuard.TextContrastSample
+        {
+            Check = "black-on-dark-negative",
+            Foreground = Colors.Black,
+            Background = Color.FromRgb(0x25, 0x2A, 0x34),
+            Minimum = 4.5
+        };
+
+        var readableMeasurements = AdaptiveThemePaletteContrastGuard.MeasureTextContrast(new[] { readable });
+        var invalidViolations = AdaptiveThemePaletteContrastGuard.ValidateTextContrast(new[] { invalid });
+
+        Assert.Single(readableMeasurements);
+        Assert.True(readableMeasurements[0].Actual >= 4.5, $"Expected effective alpha-composited text to pass, got {readableMeasurements[0].Actual:0.###}.");
+        Assert.Single(invalidViolations);
+        Assert.Equal("black-on-dark-negative", invalidViolations[0].Check);
+    }
 }

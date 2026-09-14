@@ -26,6 +26,64 @@ namespace GameSaveCenter.Playnite.Infrastructure
             public double Minimum { get; set; }
         }
 
+        /// <summary>
+        /// Describes a text sample using the colors that are actually effective at the
+        /// sampled surface. This is intentionally separate from palette-level semantic
+        /// colors: a status foreground may be readable on one tinted pill and fail on
+        /// another surface after alpha compositing.
+        /// </summary>
+        public sealed class TextContrastSample
+        {
+            public string Check { get; set; } = string.Empty;
+            public Color Foreground { get; set; }
+            public Color Background { get; set; }
+            public double Minimum { get; set; } = 4.5;
+        }
+
+        public sealed class TextContrastMeasurement
+        {
+            public string Check { get; set; } = string.Empty;
+            public Color EffectiveForeground { get; set; }
+            public Color Background { get; set; }
+            public double Actual { get; set; }
+            public double Minimum { get; set; }
+        }
+
+        /// <summary>
+        /// Measures text after applying the foreground alpha over the sampled background.
+        /// Callers must provide a realized surface sample rather than a token color.
+        /// </summary>
+        public static List<TextContrastMeasurement> MeasureTextContrast(IEnumerable<TextContrastSample> samples)
+        {
+            if (samples == null) throw new ArgumentNullException(nameof(samples));
+
+            return samples.Select(sample =>
+            {
+                var effectiveForeground = Composite(sample.Foreground, sample.Background);
+                return new TextContrastMeasurement
+                {
+                    Check = sample.Check,
+                    EffectiveForeground = effectiveForeground,
+                    Background = sample.Background,
+                    Actual = ContrastRatio(effectiveForeground, sample.Background),
+                    Minimum = sample.Minimum
+                };
+            }).ToList();
+        }
+
+        public static List<Violation> ValidateTextContrast(IEnumerable<TextContrastSample> samples)
+        {
+            return MeasureTextContrast(samples)
+                .Where(measurement => measurement.Actual + 0.001 < measurement.Minimum)
+                .Select(measurement => new Violation
+                {
+                    Check = measurement.Check,
+                    Actual = measurement.Actual,
+                    Minimum = measurement.Minimum
+                })
+                .ToList();
+        }
+
         public static List<Violation> Validate(AdaptiveThemePalette palette, Color background)
         {
             return Measure(palette, background)
@@ -64,13 +122,13 @@ namespace GameSaveCenter.Playnite.Infrastructure
         private static void AddContrast(List<Measurement> measurements, string name, Color first, Color second, double minimum)
         {
             var actual = ContrastRatio(first, second);
-            measurements.Add(new Measurement { Check = name, Actual = Math.Round(actual, 3), Minimum = minimum });
+            measurements.Add(new Measurement { Check = name, Actual = actual, Minimum = minimum });
         }
 
         private static void AddLuminance(List<Measurement> measurements, string name, Color first, Color second, double minimum)
         {
             var actual = Math.Abs(RelativeLuminance(first) - RelativeLuminance(second));
-            measurements.Add(new Measurement { Check = name, Actual = Math.Round(actual, 4), Minimum = minimum });
+            measurements.Add(new Measurement { Check = name, Actual = actual, Minimum = minimum });
         }
 
         private static Color Composite(Color color, Color background)

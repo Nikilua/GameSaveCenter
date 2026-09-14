@@ -101,6 +101,7 @@
         <Setter Property="FontFamily" Value="{DynamicResource GscNumericFontFamily}"/>
         <Setter Property="FontSize" Value="{DynamicResource GscBodyFontSize}"/>
         <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="TextOptions.TextHintingMode" Value="Fixed"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="UseLayoutRounding" Value="True"/>
