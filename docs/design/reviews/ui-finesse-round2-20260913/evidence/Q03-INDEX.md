@@ -4,7 +4,7 @@
 
 ## 运行身份
 
-- 代码基线：本阶段提交 SHA 在提交后补入；夹具为 `tests/GameSaveCenter.RenderHarness` 的 `finesseprobe`，STA、1120×980 DIP、96 DPI、DpiScale=1.00。
+- 代码基线：`ebb0a58`（补齐语义色与主题对比度审计）；夹具为 `tests/GameSaveCenter.RenderHarness` 的 `finesseprobe`，STA、1120×980 DIP、96 DPI、DpiScale=1.00。
 - 双主题截图：[dark/ui-finesse-fixture.png](q03/dark/ui-finesse-fixture.png)、[light/ui-finesse-fixture.png](q03/light/ui-finesse-fixture.png)。原始报告：[dark/ui-finesse-fixture-report.txt](q03/dark/ui-finesse-fixture-report.txt)、[light/ui-finesse-fixture-report.txt](q03/light/ui-finesse-fixture-report.txt)。
 - 测量先保留原始 alpha，按层合成后再计算对比度；报告不把格式化后的三位小数当作门禁输入。
 
