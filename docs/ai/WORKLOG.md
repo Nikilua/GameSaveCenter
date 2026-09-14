@@ -6355,9 +6355,16 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 复跑 `scripts/capture-ui-audit.ps1 -Configuration Release -Output artifacts/ui-audit-round2`：构建 0 warning/0 error，10 View、32 Tab、161 runtime snapshots；Fidelity failures=0，failed routes=0，HIGH=none。Media Inspector 明确是页面内独立有限详情面，分析器将其记录为 NESTED_VERTICAL_SCROLL 信息，不把真实职责边界伪报为父子滚动冲突。
 - 第二次复跑发现原先唯一的 Trainer 126 DIP “toolbar” Medium 实际来自 `TrainerToolsSettingsScrollViewer` 内五项设置选项的 WrapPanel；布局分析器现在只按这个明确命名的 Inspector 祖先排除内部设置簇，审计结果为 MEDIUM=none，不隐藏真实页面工具栏告警。
 - 新增媒体短窗源代码门禁、审计来源门禁和 Q13–Q25 受控证据索引；定向 `UiFinesseRound2ControlSourceTests` + `UiAuditSourceTests` 为 8/8，source validation、XAML 24/24 与 `git diff --check` 通过。
-- Q13 账本已回填为“代码完成/自动与受控视觉通过/真实宿主待验”；Q14–Q25 仍按未实施或宿主/性能边界保留，不能用现有入口或离屏审计冒充 208 项最终完成。Q24 的物理 DPI、IME、读屏，Q25 的 ETW/30 分钟耐久/低性能实机仍未签收。
+- Q13 账本已回填为“代码完成/自动与受控视觉通过/真实宿主待验”；当时 Q14–Q25 仍按未实施或宿主/性能边界保留。后续账本回填只把已有源码、测试和受控审计事实映射到具体行，未把它们改写为最终完成；Q24 的物理 DPI、IME、读屏，Q25 的 ETW/30 分钟耐久/低性能实机仍未签收。
 
 ## 2026-09-14 UI 精修第二轮 Q14–Q15 共享入口门禁
 
 - 新增 `UiFinesseRound2ControlSourceTests.ToolbarAndTooltipContractsKeepTheirSharedResponsiveBoundaries`：验证 DesignTokens 的主题 ToolTip 字体、420 DIP 长提示上限、10/7 DIP 内边距、Dashboard 初始显示时序，以及 Trainer 低于 980 DIP 时把四个导入命令移到标题下方的真实响应式代码；定向测试 4/4 通过。
 - Q14-01/Q14-07 与 Q15-01/Q15-02 已在账本回填为“已复核/自动与受控视觉通过/真实宿主待验”。没有把菜单越屏、Esc/点外部、独立设置窗口 Owner、物理 DPI 或真实字体回退写成通过。
+
+## 2026-09-14 UI 精修第二轮 Q14–Q25 账本边界回填
+
+- 依据 `evidence/Q13-Q25-INDEX.md` 的逐组映射，将 Q14–Q23 已存在的生产入口、专项测试和全量离屏审计结果回填到 88 行账本；涉及真实鼠标/Popup/模态焦点/动画终态/媒体解码/设置窗口的行保留“待验”，不以源代码存在替代行为验收。
+- Q24 保留“物理跨屏”实施中，并将键盘、焦点、UI Automation、高对比与长文案行的自动事实和真实宿主边界分开记录；电脑自动化助手本轮不可用，未生成伪造屏幕证据。
+- Q25 保留性能与耐久边界：大库/缓存/审计字段和干净 HEAD 打包安装启动有受控证据，30 分钟耐久、ETW 呈现帧、>100ms 调用栈、低性能 Tier 仍未完成；Q25-08 继续处于收尾实施中。
+- 本阶段提交前一键门禁再次完成 XAML 24/24、Release 构建 0 警告/0 错误、Core 76/76、Worker 311/311、Playnite 467/524（57 skip，失败 0）；随后按脚本保护在工作树有三份文档未提交时停止打包，未把本次运行写成新的安装/启动验证。

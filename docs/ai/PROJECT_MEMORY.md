@@ -2825,13 +2825,20 @@
 - `MediaInboxInspectorScrollViewer` 是页面内有意保留的详情滚动面，不能与主表页面滚动混为同一职责。布局分析器仅对 `media-center/待归类` 的这个命名边界记录 NESTED_VERTICAL_SCROLL 信息；主表仍单独要求 PRIMARY_SCROLL_ACCESS，避免审计器用“全局禁止嵌套滚动”制造假门禁。
 - Q13 证据由媒体锚点/滚动诊断、DataGrid 模板来源、短窗源代码门禁和全量离屏审计组成。审计当前为 Fidelity=0、failed routes=0、HIGH=none；这只覆盖逻辑 DIP/离屏事实，不等同于真实 Playnite 鼠标、触控或像素验收。
 - Trainer 审计的 126 DIP Medium 已查明是 `TrainerToolsSettingsScrollViewer` 内的五项设置 WrapPanel，不是页面工具栏；`UiLayoutAnalyzer` 仅按该命名祖先排除此内部设置簇，复跑结果 MEDIUM=none。若未来新增真实页面工具栏，不能依赖这个例外绕过告警。
-- Q14–Q25 尚未因本条记忆而关闭。真实宿主视觉、物理 DPI、IME、读屏、ETW 帧、>100ms 调用栈、30 分钟耐久和低性能 Tier 仍是明确阻塞边界；阶段证据索引必须在提交后写入真实代码提交身份。
+- Q14–Q25 尚未因本条记忆而关闭。真实宿主视觉、物理 DPI、IME、读屏、ETW 帧、>100ms 调用栈、30 分钟耐久和低性能 Tier 仍是明确阻塞边界；阶段证据索引必须写入真实代码提交身份。
 
 ## 2026-09-14 Round2 Q14–Q15 当前事实
 
 - `UiFinesseRound2ControlSourceTests` 现在覆盖共享 ToolTip 主题字体、Caption 尺寸、420 DIP 长提示上限、显示时序和 Trainer 980 DIP 工具栏重排；它验证的是生产资源/代码契约，不代替真实鼠标、Popup、IME 或独立窗口验收。
 - Trainer 四个导入命令在 `width < 980` 时移到标题下方，并让拖放提示继续跟随，避免窄宿主右侧自动列裁掉最后一个命中区；普通布局仍保留同一批真实命令和绑定。
 - Q14/Q15 的宿主边界继续开放：真实 760/980 DIP 输入序列、Tooltip 边缘定位/关闭时序、菜单 Esc/点外部、设置窗口 Owner 主题隔离、物理 DPI 和字体回退尚未签收。
+
+## 2026-09-14 Round2 Q14–Q25 账本回填事实
+
+- `Q13-Q25-INDEX.md` 已按组列出 Q14–Q23 的生产入口、专项测试和全量离屏审计映射；账本的“已复核”只表示这些受控事实已核对，最终列仍为“未完成”，涉及真实输入、Popup、模态、动画、解码和设置窗口的行继续标记宿主待验。
+- Q24 的物理跨屏仍是实施中；键盘次序、焦点语义、UI Automation、高对比与长文案仅有源码/受控证据，不能替代 100/125/150/175/200% DPI、跨屏 Popup、中文 IME 和真实读屏。
+- Q25 的受控证据覆盖大库/缩略图并发边界、审计性能字段、构建身份和干净 HEAD 的打包/安装/启动；30 分钟耐久、ETW 呈现帧、超过 100ms 调用栈、低性能 Tier 与收尾回查仍开放。
+- 本阶段提交前一键门禁实际完成 XAML 24/24、Release 0 警告/0 错误、Core 76/76、Worker 311/311、Playnite 467/524（57 skip，失败 0）；因三份文档仍未提交，脚本按保护逻辑停止打包，不能把这次运行当作新的安装/启动验证。
 # 提交前一键门禁
 
 每次提交前必须运行仓库根目录的 `GameSaveCenter-一键构建安装运行.cmd`，确认隔离 Release 构建、Core/Worker/Playnite 全量测试、打包、安装验证和 Playnite 启动均成功。局部测试或 RenderHarness 通过不能替代该门禁；若输出超时，需后台运行并轮询到最终退出结果后再判断。
