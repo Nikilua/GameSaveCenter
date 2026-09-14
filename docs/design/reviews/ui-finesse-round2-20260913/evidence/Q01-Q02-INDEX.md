@@ -39,6 +39,11 @@
 - [SaveHistoryGrid 数值列截图与视觉树测量](q02/Q02-SAVE-HISTORY-ALIGNMENT-20260915.md) 来自提交 `94dc203` 的 clean-tree `RenderHarness audit`：文件数/大小共 16 个可见数值 TextBlock 全部 `HorizontalAlignment=Right`，大小短值无裁切。
 - 该证据只升级离屏生产视图的视觉列；真实 Playnite 字体/DPI、列宽调整和排序点击继续保持宿主边界。
 
+## Q02-04 当前语义边界复核
+
+- [零值/未知值/未检查双主题夹具](q02/Q02-SEMANTIC-EDGE-20260915.md) 来自提交 `a26ef49` 的 clean-tree edgevalues 模式，报告明确记录 `0 B`、`未知大小`、`尚未检查` 与 `文件 0/0 · 大小 0 B/0 B`，双主题行均完整可读。
+- 该证据只升级离屏夹具中的语义视觉列；真实八入口业务盘点、排序键、字体/DPI 与宿主状态切换仍待验。
+
 ## 证据边界
 
 - 截图和报告是受控 DIP/离屏证据，不能证明 125/150/175/200% 物理 DPI、真实宿主字体安装差异、IME 组合过程或最终 GlyphRun。

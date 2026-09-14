@@ -4,7 +4,7 @@
 
 ## 2026-09-15 UI 精修 Q00 深色设置前景回归与 Q21/Q23 视觉证据
 
-- 当前交付基线为 `3480d78`，已推送 `codex/ui-finesse-round2`。设置页错误详情 Expander 标题已显式使用 `GscPrimaryTextBrush`，修复了页面根前景存在但标题模板仍可能落回暗色默认黑字的真实漏检；随后补齐了精修夹具的提交身份元数据与排序箭头双状态证据。
+- 当前交付基线为 `a26ef49`，已推送 `codex/ui-finesse-round2`。设置页错误详情 Expander 标题已显式使用 `GscPrimaryTextBrush`，修复了页面根前景存在但标题模板仍可能落回暗色默认黑字的真实漏检；随后补齐了精修夹具的提交身份元数据、排序箭头双状态证据和零值/未知值语义证据。
 - Release 全量验证为 XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `310/311`（1 skip）、Playnite `481/544`（63 skip、0 fail）。当前 clean-tree RenderHarness 双主题、多窗口尺寸和设置 normal/dirty/invalid 夹具 `render-qa OK`，DPI 仅为离屏 DIP `1.00`。
 - 证据见 [`Q00-INDEX.md`](../design/reviews/ui-finesse-round2-20260913/evidence/Q00-INDEX.md) 和 [`Q21-Q23-RENDER-20260915.md`](../design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q21-Q23-RENDER-20260915.md)。Q21-03/07/08、Q23-01/04 的视觉列已更新；真实 Playnite、物理 DPI、键盘完整路径、IME、读屏、保存中/失败过渡与主题 Owner 生命周期仍不能由离屏证据替代。
 
@@ -15,6 +15,7 @@
 - Q01-04、Q02-03、Q02-08 的视觉列已据此升级；物理 DPI、真实 GlyphRun、IME、Tooltip 和八入口宿主列观感仍保持边界。
 - 随后全量 Release 门禁仍为 XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `310/311`（1 skip）、Playnite `481/544`（63 skip、0 fail）；报告已脱离 `.tmp` 临时截图路径并随证据目录保存。
 - 当前生产 `SaveHistoryGrid` audit 又确认文件数/大小 16 个数值 TextBlock 全部右对齐，大小样本无裁切；Q02-02 视觉列已更新，真实宿主字体/DPI 与排序点击仍待验。
+- `edgevalues` 双主题夹具又覆盖 `0 B`、`未知大小`、`尚未检查` 与 `文件 0/0 · 大小 0 B/0 B`；Q02-04 视觉列已更新，八入口业务盘点和宿主状态切换仍待验。
 
 ## 2026-09-15 UI 精修 Q12-07 表头排序箭头双状态夹具
 
