@@ -1,8 +1,8 @@
 GameSaveCenter UI finesse fixture
-Generated: 2026-09-15 05:38:28
+Generated: 2026-09-15 06:07:13
 Scenario: finesseprobe
 EvidenceSource: DevelopmentOnlyProductionResourceProbe
-Commit: 8493c1acce095336ed89462c668f1a9f71057381
+Commit: 3480d78201bbb85f9fbc33cd781cd58ec7cf88f7
 WorkingTreeClean: True
 DpiScale: 1.00 (offscreen logical DIP; real host DPI is not inferred)
 WindowDip: per-case window_dip/content_dip fields

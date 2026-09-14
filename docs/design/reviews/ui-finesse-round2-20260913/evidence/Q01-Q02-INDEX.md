@@ -1,6 +1,6 @@
 # Q01–Q02 字体、数字与路径受控证据
 
-采集日期：2026-09-14（Asia/Shanghai）。证据来自 `tests/GameSaveCenter.RenderHarness` 的 STA 离屏 ProductionResourceDictionary 夹具；它证明共享资源与 DIP 布局，不替代真实 Playnite 宿主、物理 DPI 或 IME 证据。
+采集日期：2026-09-15（Asia/Shanghai）。证据来自 `tests/GameSaveCenter.RenderHarness` 的 STA 离屏 ProductionResourceDictionary 夹具；它证明共享资源与 DIP 布局，不替代真实 Playnite 宿主、物理 DPI 或 IME 证据。
 
 ## 运行身份
 
@@ -27,7 +27,7 @@
 
 ## 2026-09-15 当前 clean-tree 复核
 
-为避免把历史 `db43230` 截图当作当前代码证据，已在提交 `8493c1acce095336ed89462c668f1a9f71057381` 的 clean-tree 上重新运行 Dark/Light `finesseprobe`。报告现在自带 `Commit`、`WorkingTreeClean=True`、`DpiScale=1.00`、主题和数据范围：
+为避免把历史 `db43230` 截图当作当前代码证据，已在提交 `3480d78201bbb85f9fbc33cd781cd58ec7cf88f7` 的 clean-tree 上重新运行 Dark/Light `finesseprobe`。报告现在自带 `Commit`、`WorkingTreeClean=True`、`DpiScale=1.00`、主题和数据范围：
 
 - [当前深色夹具截图](q01/current-20260915/ui-finesse-fixture-dark.png) / [报告](q01/current-20260915/ui-finesse-fixture-dark-report.txt)
 - [当前浅色夹具截图](q01/current-20260915/ui-finesse-fixture-light.png) / [报告](q01/current-20260915/ui-finesse-fixture-light-report.txt)
