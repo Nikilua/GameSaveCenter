@@ -5,7 +5,7 @@
 ## 2026-09-14 UI 精修 Q25-08 交付回查
 
 - 当前源码基线为 `eabfc43`；Q25-08 的自动交付门禁已通过：XAML 24/24、Release 构建 0 warning/0 error、Core 82/82、Worker 310/311（1 skip）、Playnite 468/531（63 skip），无失败。
-- 证据、208 行账本、项目记忆和工作日志已同步，阶段临时输出已清理；提交已推送并通过 `git ls-remote` 核对远端分支。Q00-08 的 clean package/install/start、Q24-03 物理跨屏、Q25-02～05 的 ETW/耐久/低 Tier 仍保持未完成，不以全量单元测试替代宿主证据。
+- 证据、208 行账本、项目记忆和工作日志已同步，阶段临时输出已清理；提交已推送并通过 `git ls-remote` 核对远端分支。最终账本审计确认 208/208 唯一任务 ID、0 缺失/异常、0 个缺失相对证据链接，`validate-source.py` 与 `git diff --check` 通过。Q00-08 的 clean package/install/start、Q24-03 物理跨屏、Q25-02～05 的 ETW/耐久/低 Tier 仍保持未完成，不以全量单元测试替代宿主证据。
 
 ## 2026-09-14 UI 精修 Q02-08 混排空格与术语
 
