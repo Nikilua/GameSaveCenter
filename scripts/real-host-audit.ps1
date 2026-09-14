@@ -149,6 +149,10 @@ function Invoke-GameSaveCenterSidebar {
     $deadline = (Get-Date).AddSeconds(60)
     while ((Get-Date) -lt $deadline) {
         $process = Get-Process -Name 'Playnite.DesktopApp' -ErrorAction SilentlyContinue |
+            ForEach-Object {
+                try { $_.Refresh() } catch { }
+                $_
+            } |
             Where-Object { $_.MainWindowHandle -ne 0 } |
             Select-Object -First 1
         if ($process) {

@@ -23,6 +23,8 @@ public sealed class DiagnosticsEvidenceSourceTests
         Assert.Contains("EvidenceSource = 'RealPlaynite'", hostScript);
         Assert.Contains("DpiScale = 'captured by WPF VisualTreeHelper.GetDpi'", hostScript);
         Assert.Contains("Timing = 'capture manifest includes", hostScript);
+        Assert.Contains("try { $_.Refresh() } catch { }", hostScript);
+        Assert.Contains("Where-Object { $_.MainWindowHandle -ne 0 }", hostScript);
     }
 
     [Fact]
