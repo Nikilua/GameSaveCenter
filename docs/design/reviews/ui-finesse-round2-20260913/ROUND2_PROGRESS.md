@@ -23,8 +23,8 @@
 | Q01-07 | 回退包装决策 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [回退链与许可边界](evidence/Q01-Q02-INDEX.md)；未捆绑字体，宿主安装差异待验 |
 | Q01-08 | 正文行距 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [LineMetric](evidence/Q01-Q02-INDEX.md)；正文 20、说明 18 DIP，短窗宿主待验 |
 | Q02-01 | 数字等宽特性 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [NumericMetrics](evidence/Q01-Q02-INDEX.md)；Tabular setter 生效，宿主 DPI 待验 |
-| Q02-02 | 数值列对齐 | 实施中 | 通过 | 待验 | 外部阻塞 | 未完成 | [双主题表格截图](evidence/Q01-Q02-INDEX.md)；关键生产列统一迁移尚未完成 |
-| Q02-03 | 单位分组 | 实施中 | 通过 | 待验 | 外部阻塞 | 未完成 | [NumericMetrics](evidence/Q01-Q02-INDEX.md)；秒/分钟样本已覆盖，八入口仍需盘点 |
+| Q02-02 | 数值列对齐 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [双主题表格截图](evidence/Q01-Q02-INDEX.md)；存档历史文件数/大小列统一使用右锚点 Tabular 数字样式，时间/状态/备注不混用；宿主列呈现待验 |
+| Q02-03 | 单位分组 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [NumericMetrics](evidence/Q01-Q02-INDEX.md)；秒/分钟与存档大小样本已覆盖，文件数/大小列禁止数值截断；八入口宿主盘点待验 |
 | Q02-04 | 未知与零 | 实施中 | 通过 | 待验 | 外部阻塞 | 未完成 | [NumericMetrics](evidence/Q01-Q02-INDEX.md)；零与破折号样本已覆盖，业务入口仍需盘点 |
 | Q02-05 | 时间宽度 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [NumericMetrics](evidence/Q01-Q02-INDEX.md)；00:09 与 12:59 宽度一致 |
 | Q02-06 | 路径阅读 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [路径证据](evidence/Q01-Q02-INDEX.md)；存档候选路径列已挂接 `SavePathText` 代码字体、CharacterEllipsis 与原值 Tooltip；其他入口全面盘点及宿主复制/Tooltip 待验 |

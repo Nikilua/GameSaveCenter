@@ -13,7 +13,8 @@
             <Style x:Key="SaveLongText" TargetType="TextBlock"><Setter Property="TextTrimming" Value="CharacterEllipsis"/><Setter Property="TextWrapping" Value="NoWrap"/><Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}"/></Style>
             <Style x:Key="SavePathText" TargetType="TextBlock" BasedOn="{StaticResource GscTypographyCode}"><Setter Property="TextTrimming" Value="CharacterEllipsis"/><Setter Property="TextWrapping" Value="NoWrap"/><Setter Property="ToolTip" Value="{Binding Path}"/></Style>
             <Style x:Key="SaveHistoryTimeText" TargetType="TextBlock" BasedOn="{StaticResource SaveLongText}"><Setter Property="ToolTip" Value="{Binding CreatedLocal, Mode=OneWay, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"/></Style>
-            <Style x:Key="SaveSizeValue" TargetType="TextBlock" BasedOn="{StaticResource SaveLongText}"><Setter Property="TextTrimming" Value="None"/><Setter Property="Tag" Value="SaveHistorySize"/></Style>
+            <Style x:Key="SaveCountValue" TargetType="TextBlock" BasedOn="{StaticResource GscTypographyNumeric}"><Setter Property="HorizontalAlignment" Value="Right"/><Setter Property="TextAlignment" Value="Right"/><Setter Property="TextTrimming" Value="None"/></Style>
+            <Style x:Key="SaveSizeValue" TargetType="TextBlock" BasedOn="{StaticResource GscTypographyNumeric}"><Setter Property="HorizontalAlignment" Value="Right"/><Setter Property="TextAlignment" Value="Right"/><Setter Property="TextTrimming" Value="None"/><Setter Property="Tag" Value="SaveHistorySize"/></Style>
             <Style x:Key="SaveHealthStateBadge" TargetType="Border" BasedOn="{StaticResource GscRedesignContextPill}">
                 <Setter Property="Padding" Value="10,5"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
@@ -126,7 +127,7 @@
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTextColumn x:Name="SaveHistoryFileCountColumn" Header="文件数" Binding="{Binding FileCount, Mode=OneWay}" Width="82"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource SaveLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
+                                <DataGridTextColumn x:Name="SaveHistoryFileCountColumn" Header="文件数" Binding="{Binding FileCount, Mode=OneWay}" Width="82"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource SaveCountValue}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
                                 <DataGridTextColumn x:Name="SaveHistorySizeColumn" Header="大小" Binding="{Binding SizeDisplay, Mode=OneWay}" Width="116"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource SaveSizeValue}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
                                 <DataGridTextColumn x:Name="SaveHistoryDeviceColumn" Header="设备" Binding="{Binding SourceDevice, Mode=OneWay}" Width="120"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource SaveLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
                                 <DataGridTextColumn x:Name="SaveHistoryNoteColumn" Header="备注" Binding="{Binding Comment, Mode=OneWay}" Width="*" MinWidth="180">

@@ -21,6 +21,7 @@
 - `TypographyDiagnosticsTests.ControlledReportsKeepPunctuationAndWeightEvidenceTruthful` 对深色/浅色报告同时锁定全角引号、书名号、破折号、省略号原文保留、无未配对代理项，以及 `SemiBold → Bold` 的真实候选字重映射；`FontActualGlyphRun` 继续明确为 `unknown`。
 - `TypographyDiagnosticsTests.ProductionColumnsKeepNumericAndPathSemantics` 锁定存档大小列的固定宽度与 `SaveSizeValue`、媒体拍摄时间列、未知值破折号、维护数量单位和媒体原始路径 Tooltip 契约。它不替代完整八入口盘点，也不把离屏报告升级成宿主列布局通过。
 - `TypographyDiagnosticsTests.ImportantTrainerDiagnosticsUseReadableSharedStyles` 锁定 Trainer 设置 Inspector 的重要标签、工具路径和风险提示使用共享可读样式，不再由显式 10pt 覆盖；普通状态密度文本与真实宿主小窗口观感仍需单独复核。
+- 存档历史的文件数/大小列现在分别使用 `SaveCountValue`/`SaveSizeValue`（共享 Tabular 数字、右锚点、禁止数值截断）；时间、状态、备注列保持各自文本语义。该列级事实由 `ProductionColumnsKeepNumericAndPathSemantics` 锁定。
 
 ## 证据边界
 
