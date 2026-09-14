@@ -85,6 +85,17 @@ public sealed class UiFinesseRound2ControlSourceTests
         Assert.Contains("foreach (var workspaceView in ProductionShellView.WorkspaceViews)", dashboard);
     }
 
+    [Fact]
+    public void OverviewCloudCardKeepsQueueAndGuaranteeStatesDistinct()
+    {
+        var overview = Read("src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml");
+
+        Assert.Contains("Snapshot.CloudTransfers.QueueControlDisplay", overview);
+        Assert.Contains("Snapshot.CloudTransfers.GuaranteeDisplay", overview);
+        Assert.Contains("<Run Text=\" · \"/>", overview);
+        Assert.Contains("AutomationProperties.Name=\"打开云端队列\"", overview);
+    }
+
     private static string Read(params string[] parts)
     {
         var directory = new DirectoryInfo(AppContext.BaseDirectory);

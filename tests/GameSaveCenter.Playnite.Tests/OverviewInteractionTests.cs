@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Windows;
@@ -28,6 +29,12 @@ public sealed class OverviewInteractionTests
             try
             {
                 var data = new OverviewInteractionData(() => cloudQueueClicks++);
+                data.Snapshot.CloudTransfers = new CloudTransferSummaryDto
+                {
+                    PendingCount = 1,
+                    UploadedCount = 2,
+                    VerifiedCount = 3
+                };
                 data.Activities.Add(new ActivityEntryDto
                 {
                     GameName = "全局",
@@ -63,6 +70,14 @@ public sealed class OverviewInteractionTests
                 Assert.IsType<StackPanel>(cloudQueueCard!.Content);
                 Assert.Null(cloudQueueCard.ContentTemplate);
                 Assert.Same(data.OpenCloudQueueCommand, cloudQueueCard.Command);
+
+                var cloudStatusLine = ((StackPanel)cloudQueueCard.Content).Children
+                    .OfType<TextBlock>()
+                    .Last();
+                var cloudStatusText = string.Concat(cloudStatusLine.Inlines
+                    .OfType<System.Windows.Documents.Run>()
+                    .Select(run => run.Text));
+                Assert.Contains("已上传 2 · 已校验 3", cloudStatusText);
 
                 // Invoke the framework's protected click path so ButtonBase performs its
                 // normal CanExecute/Execute handling rather than calling the command directly.

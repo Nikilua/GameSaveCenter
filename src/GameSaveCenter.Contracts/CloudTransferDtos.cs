@@ -189,4 +189,10 @@ public sealed class CloudTransferSummaryDto
         : OutsideAllowedWindow
             ? "当前不在允许时段"
             : "自动队列运行中";
+
+    /// <summary>
+    /// Keeps a successful upload distinct from a remote verification. A remote
+    /// verification is a stronger guarantee, not an alias for an upload.
+    /// </summary>
+    public string GuaranteeDisplay => $"已上传 {UploadedCount} · 已校验 {VerifiedCount}";
 }

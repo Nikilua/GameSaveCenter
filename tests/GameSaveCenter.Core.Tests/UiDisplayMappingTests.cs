@@ -22,6 +22,18 @@ public sealed class UiDisplayMappingTests
     }
 
     [Fact]
+    public void CloudSummaryKeepsUploadedAndRemoteVerifiedCountersSeparate()
+    {
+        var summary = new CloudTransferSummaryDto
+        {
+            UploadedCount = 2,
+            VerifiedCount = 3
+        };
+
+        Assert.Equal("已上传 2 · 已校验 3", summary.GuaranteeDisplay);
+    }
+
+    [Fact]
     public void UnknownCloudStateDoesNotLeakInternalValue()
     {
         var transfer = new CloudTransferStatusDto { State = "FutureProviderState" };
