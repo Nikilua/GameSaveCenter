@@ -1,6 +1,12 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
-> 维护时间：2026-09-13
+> 维护时间：2026-09-14
+
+## 2026-09-14 UI 精修 Q02-07 正文尺寸下限
+
+- 生产 `Views`/`Settings`（排除 `Views/Development`）中的 109 处显式 `FontSize="10"`/`FontSize="11"` 已在提交 `d22928a` 统一到 `DynamicResource GscCaptionFontSize`；保留 10.5、12.5 等有明确语义的中间层级，技术路径继续使用代码字体入口。
+- 新增 `TypographyDiagnosticsTests.ProductionTenAndElevenPointTextUsesSharedCaptionToken`，遍历生产 XAML 并锁定 10/11 精确字号为 0。`validate-source.py`、`check-xaml.ps1`、`git diff --check` 通过；WPF/RenderHarness Release 构建成功，定向 Typography 测试 `8/8`，明暗 `finesseprobe` 均 `finesse-fixture OK`、对比度 0 violations。
+- 本阶段构建仍有 Contracts/Core 各 1 个 NU1900 网络漏洞源告警；未将离屏 `DpiScale=1.00`、`FontActualGlyphRun=unknown` 或探针通过扩大为真实 Playnite 小窗口、物理 DPI、IME、宿主字体或最终视觉通过。一键安装/启停链未因安全策略重跑。
 
 ## 2026-09-14 精修验收口径修正与第二轮
 
