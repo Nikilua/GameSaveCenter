@@ -47,6 +47,24 @@ public sealed class UiFinesseRound2ControlSourceTests
         Assert.Contains("VirtualizingPanel.ScrollUnit=\"Item\"", view);
     }
 
+    [Fact]
+    public void ToolbarAndTooltipContractsKeepTheirSharedResponsiveBoundaries()
+    {
+        var tokens = Read("src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml");
+        var dashboard = Read("src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml");
+        var trainer = Read("src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml.cs");
+
+        Assert.Contains("<Style TargetType=\"ToolTip\">", tokens);
+        Assert.Contains("FontFamily\" Value=\"{DynamicResource GscUiFontFamily}\"", tokens);
+        Assert.Contains("MaxWidth\" Value=\"420\"", tokens);
+        Assert.Contains("Padding\" Value=\"10,7\"", tokens);
+        Assert.Contains("ToolTipService.InitialShowDelay=\"350\"", dashboard);
+        Assert.Contains("ToolTipService.ShowDuration=\"18000\"", dashboard);
+        Assert.Contains("var stackInstalled = width < 980", trainer);
+        Assert.Contains("Grid.SetRow(TrainerToolsToolbar, stackInstalled ? 1 : 0)", trainer);
+        Assert.Contains("TrainerToolsToolbar.HorizontalAlignment = stackInstalled", trainer);
+    }
+
     private static string Read(params string[] parts)
     {
         var directory = new DirectoryInfo(AppContext.BaseDirectory);

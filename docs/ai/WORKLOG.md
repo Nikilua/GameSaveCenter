@@ -6356,3 +6356,8 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 第二次复跑发现原先唯一的 Trainer 126 DIP “toolbar” Medium 实际来自 `TrainerToolsSettingsScrollViewer` 内五项设置选项的 WrapPanel；布局分析器现在只按这个明确命名的 Inspector 祖先排除内部设置簇，审计结果为 MEDIUM=none，不隐藏真实页面工具栏告警。
 - 新增媒体短窗源代码门禁、审计来源门禁和 Q13–Q25 受控证据索引；定向 `UiFinesseRound2ControlSourceTests` + `UiAuditSourceTests` 为 8/8，source validation、XAML 24/24 与 `git diff --check` 通过。
 - Q13 账本已回填为“代码完成/自动与受控视觉通过/真实宿主待验”；Q14–Q25 仍按未实施或宿主/性能边界保留，不能用现有入口或离屏审计冒充 208 项最终完成。Q24 的物理 DPI、IME、读屏，Q25 的 ETW/30 分钟耐久/低性能实机仍未签收。
+
+## 2026-09-14 UI 精修第二轮 Q14–Q15 共享入口门禁
+
+- 新增 `UiFinesseRound2ControlSourceTests.ToolbarAndTooltipContractsKeepTheirSharedResponsiveBoundaries`：验证 DesignTokens 的主题 ToolTip 字体、420 DIP 长提示上限、10/7 DIP 内边距、Dashboard 初始显示时序，以及 Trainer 低于 980 DIP 时把四个导入命令移到标题下方的真实响应式代码；定向测试 4/4 通过。
+- Q14-01/Q14-07 与 Q15-01/Q15-02 已在账本回填为“已复核/自动与受控视觉通过/真实宿主待验”。没有把菜单越屏、Esc/点外部、独立设置窗口 Owner、物理 DPI 或真实字体回退写成通过。
