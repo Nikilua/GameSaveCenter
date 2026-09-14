@@ -49,6 +49,11 @@
 - [路径与校验生产页截图](q02/Q02-PATH-RENDER-20260915.md) 来自提交 `82cf066` 的 clean-tree `RenderHarness audit`；1440×900 与 1040×700 DIP 下，候选路径列和右侧详情均可读到完整技术路径，路径单元格为 `260 DIP`。
 - 该证据只升级 Q02-06 的离屏视觉列；`GscPathText` 的代码字体/省略号和原值 Tooltip 由源码覆盖证据锁定，真实宿主 Tooltip、复制、中文长路径截断、字体/DPI 与输入行为仍待验。
 
+## Q02-07 当前窄窗正文尺寸复核
+
+- [六页窄窗生产截图](q02/Q02-TEXT-SIZE-RENDER-20260915.md) 来自提交 `3811673` 的 clean-tree `RenderHarness audit`；Overview、Save、Media、Maintenance、Trainer、Task 在 1040×700 DIP 下的重要标题、正文、状态、数字和操作均可读，审计为 `HIGH=0 / MEDIUM=0 / Fidelity=0`。
+- 本证据只升级 Q02-07 的离屏视觉列；Settings 路由本次审计未加载有效内容，真实宿主小窗口、物理 DPI、字形和输入行为仍待验。
+
 ## 证据边界
 
 - 截图和报告是受控 DIP/离屏证据，不能证明 125/150/175/200% 物理 DPI、真实宿主字体安装差异、IME 组合过程或最终 GlyphRun。

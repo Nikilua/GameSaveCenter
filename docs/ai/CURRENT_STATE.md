@@ -7,6 +7,11 @@
 - 当前 clean-tree 提交 `82cf066` 的 `RenderHarness audit` 在 1440×900 与 1040×700 DIP 下复核 SaveCenterView“路径与校验”页；候选路径列和右侧详情均能读到完整技术路径，路径 TextBlock 为 260 DIP，详情路径为 321.33 DIP。
 - Q02-06 视觉列已更新为通过；真实 Playnite Tooltip、复制原值、中文长路径最终截断、物理 DPI 和宿主字体差异仍保持外部边界。证据见 [`Q02-PATH-RENDER-20260915.md`](../design/reviews/ui-finesse-round2-20260913/evidence/q02/Q02-PATH-RENDER-20260915.md)。
 
+## 2026-09-15 UI 精修 Q02-07 窄窗正文尺寸视觉复核
+
+- 当前 clean-tree 提交 `3811673` 的 `RenderHarness audit` 复核了 1040×700 DIP 下 Overview、Save、Media、Maintenance、Trainer、Task 六个生产工作区；重要标题、正文、状态、数字和操作保持可读，审计 `HIGH=0 / MEDIUM=0 / Fidelity=0`。
+- Q02-07 视觉列已更新为通过；Settings 专页本次审计路由未加载有效内容，因此不扩大结论。真实宿主小窗口、物理 DPI、字形和 IME 仍保持外部边界。证据见 [`Q02-TEXT-SIZE-RENDER-20260915.md`](../design/reviews/ui-finesse-round2-20260913/evidence/q02/Q02-TEXT-SIZE-RENDER-20260915.md)。
+
 ## 2026-09-15 UI 精修 Q00 深色设置前景回归与 Q21/Q23 视觉证据
 
 - 当前交付基线为 `f193423`，已推送 `codex/ui-finesse-round2`。设置页错误详情 Expander 标题已显式使用 `GscPrimaryTextBrush`，修复了页面根前景存在但标题模板仍可能落回暗色默认黑字的真实漏检；随后补齐了精修夹具的提交身份元数据、排序箭头双状态证据和零值/未知值语义证据。

@@ -7,6 +7,11 @@
 - 提交 `82cf066` 的 clean-tree `RenderHarness audit` 复核了 SaveCenterView“路径与校验”页；1440×900 与 1040×700 DIP 下候选路径列和详情面板均可读到完整 `D:\Games\Baldur's Gate 3\Save\N\SlotN`，路径单元格为 `260 DIP`，详情为 `321.33 DIP`。
 - Q02-06 只签收离屏视觉列。`GscPathText`/`SavePathText` 的共享代码字体、CharacterEllipsis 和原值 Tooltip 仍由源码证据覆盖；真实宿主 Tooltip、复制、中文长路径截断、字体/DPI 和 IME 不由该审计替代。证据见 `Q02-PATH-RENDER-20260915.md`。
 
+## 2026-09-15 UI 精修 Q02-07 窄窗正文尺寸视觉复核
+
+- 提交 `3811673` 的 clean-tree `RenderHarness audit` 取得 1040×700 DIP 的 Overview、Save、Media、Maintenance、Trainer、Task 六页截图；人工复核确认重要文本、状态、数字和操作仍可读，汇总为 `HIGH=0 / MEDIUM=0 / Fidelity=0`。
+- Q02-07 只签收六页离屏视觉列；Settings 路由未加载有效内容，不把空白页算作证据。源码 10/11 DIP 门禁、真实宿主小窗、物理 DPI、GlyphRun 与 IME 仍分别保持原有边界。
+
 ## 2026-09-15 UI 精修 Q00 深色设置前景回归与 Q21/Q23 视觉证据
 
 - 提交 `0648689` 修复设置页 `SettingsValidationDetails` Expander Header 的主题前景漏检：不要因为 `UserControl.Foreground` 已设置，就假定控件模板 Header 会继承正确画刷；共享节点现在明确绑定 `DynamicResource GscPrimaryTextBrush`，源代码回归测试锁定节点级契约。
