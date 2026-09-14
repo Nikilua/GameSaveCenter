@@ -6347,3 +6347,4 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 校对夹具增加真实半选 CheckBox 与 Slider；RenderHarness 新增 `ControlSurfaceCounts`、`TextInputContract`、`ComboContract`、`ButtonGeometry`、`SelectionControlContract`、`ListContract` 和宿主边界报告。双主题均实际实现 `textboxes=1 combos=1 buttons=4 toggles=1 checkboxes=2 sliders=1 listboxes=1`，半选报告 `mark=visible`。
 - 新增 `UiFinesseRound2ControlSourceTests` 2 项，验证半选模板和开发夹具入口；source validation、XAML 24 文件检查、该定向测试 2/2、RenderHarness Release 0 warning/0 error、双主题 `finesseprobe` 均退出 0。两张 Q04-Q12 PNG 已打开复核。
 - 证据索引为 `docs/design/reviews/ui-finesse-round2-20260913/evidence/Q04-Q12-INDEX.md`；证据明确保留 IME、真实 Popup 定位/移屏、物理 DPI、读屏、宿主命令序列和六页短窗导航为待验。
+- 阶段提交前再次运行根目录一键门禁：XAML 24/24、Release 构建 0 警告/0 错误、Core 76/76、Worker 310/311（1 skip）、Playnite 459/522（63 skip）全部通过；随后因证据索引仍有未提交身份变更而按设计停止打包，未把安装/启动写成已验证。

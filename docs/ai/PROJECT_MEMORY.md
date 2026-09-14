@@ -2817,6 +2817,7 @@
 - 已修复共享 CheckBox 的真实缺口：`GscCheckBox`、`GscDataGridCheckBox` 都有 `IndeterminateMark`，`IsChecked=null` 时显示半选短横线；批量选择不能再用普通勾号冒充半选。
 - `UiFrameworkProbeView` 当前额外包含半选 CheckBox 和 Slider；RenderHarness 双主题报告实际测得 1 TextBox、1 ComboBox、4 个按钮、1 Toggle、2 个 CheckBox、1 Slider、1 ListBox，记录输入 padding/caret/selection、Combo Popup 模板、按钮 36 DIP 高度、半选 mark 可见和列表虚拟化。
 - Q04-Q12 证据索引为 `docs/design/reviews/ui-finesse-round2-20260913/evidence/Q04-Q12-INDEX.md`，截图与原始报告位于 `evidence/q04-q12/{dark,light}/`。IME、Popup 真定位/移屏、物理 DPI、读屏、真实命令单次执行、六页导航与短窗宿主仍是外部待验边界。
+- 阶段提交前一键门禁第二次结果：XAML 24/24、Release 构建 0 警告/0 错误、Core 76/76、Worker 310/311（1 skip）、Playnite 459/522（63 skip）通过；因证据索引仍未提交而按设计停止打包，不能宣称本次已完成安装/启动验证。
 # 提交前一键门禁
 
 每次提交前必须运行仓库根目录的 `GameSaveCenter-一键构建安装运行.cmd`，确认隔离 Release 构建、Core/Worker/Playnite 全量测试、打包、安装验证和 Playnite 启动均成功。局部测试或 RenderHarness 通过不能替代该门禁；若输出超时，需后台运行并轮询到最终退出结果后再判断。
