@@ -162,8 +162,12 @@ public static class Program
                 ? GameSaveCenterThemeMode.Light
                 : GameSaveCenterThemeMode.Dark;
             var sortedHeaderFixture = args.Length > 3 && args[3].Equals("sorted", StringComparison.OrdinalIgnoreCase);
+            var semanticEdgeCaseFixture = args.Length > 3 && args[3].Equals("edgevalues", StringComparison.OrdinalIgnoreCase);
             var probeExitCode = 0;
-            var probeThread = new Thread(() => { probeExitCode = RunFinesseProbeOnly(outputRoot, themeMode, sortedHeaderFixture); });
+            var probeThread = new Thread(() =>
+            {
+                probeExitCode = RunFinesseProbeOnly(outputRoot, themeMode, sortedHeaderFixture, semanticEdgeCaseFixture);
+            });
             probeThread.SetApartmentState(ApartmentState.STA);
             probeThread.Start();
             probeThread.Join();
@@ -1971,7 +1975,8 @@ public static class Program
     private static int RunFinesseProbeOnly(
         string outputRoot,
         GameSaveCenterThemeMode themeMode,
-        bool sortedHeaderFixture = false)
+        bool sortedHeaderFixture = false,
+        bool semanticEdgeCaseFixture = false)
     {
         Directory.CreateDirectory(outputRoot);
         var report = new StringBuilder();
@@ -1979,10 +1984,14 @@ public static class Program
         report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
         AppendRunMetadata(
             report,
-            sortedHeaderFixture ? "finesseprobe-sorted" : "finesseprobe",
+            sortedHeaderFixture
+                ? "finesseprobe-sorted"
+                : semanticEdgeCaseFixture ? "finesseprobe-edgevalues" : "finesseprobe",
             "DevelopmentOnlyProductionResourceProbe",
             themeMode == GameSaveCenterThemeMode.Light ? "light" : "dark",
-            "synthetic mixed-language/status/diagnostic/table rows");
+            semanticEdgeCaseFixture
+                ? "synthetic table rows with zero/unknown/uninspected semantic values"
+                : "synthetic mixed-language/status/diagnostic/table rows");
         report.AppendLine("WindowDip: 1120x980");
         report.AppendLine($"Theme: {themeMode}");
         report.AppendLine("Data: synthetic mixed-language, status, diagnostic and table rows");
@@ -1991,7 +2000,7 @@ public static class Program
         {
             var app = new Application();
             app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
-            var view = new GameSaveCenter.Playnite.Views.Development.UiFrameworkProbeView
+            var view = new GameSaveCenter.Playnite.Views.Development.UiFrameworkProbeView(semanticEdgeCaseFixture)
             {
                 Width = 1120,
                 Height = 980
@@ -2020,6 +2029,8 @@ public static class Program
 
             if (sortedHeaderFixture)
                 AppendSortedHeaderFixtureEvidence(report, host);
+            if (semanticEdgeCaseFixture)
+                report.AppendLine("SemanticEdgeValues: 0 B | 未知大小 | 尚未检查 | 文件 0/0 · 大小 0 B/0 B");
 
             var path = Path.Combine(outputRoot, "ui-finesse-fixture.png");
             SavePng(host, path);

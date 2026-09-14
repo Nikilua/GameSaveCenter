@@ -14,7 +14,7 @@ public partial class UiFrameworkProbeView : UserControl
     private static readonly ILogger Logger = LogManager.GetLogger();
     private readonly UiFrameworkProbeFeedback feedback;
 
-    public UiFrameworkProbeView()
+    public UiFrameworkProbeView(bool includeSemanticEdgeCases = false)
     {
         InitializeComponent();
         ProbeRows = new ObservableCollection<ProbeRow>
@@ -24,6 +24,14 @@ public partial class UiFrameworkProbeView : UserControl
             new ProbeRow("NieR Replicant / Pokémon / 龍が如く", "128 KB", "失败", "备份完成，云端校验失败。可以稍后重试。"),
             new ProbeRow("罕见字：𠮷；中文标点，。！？；：「」《》", "1.25 GB", "已完成", "2026-09-13 09:41 · 00:09 / 12:59")
         };
+        if (includeSemanticEdgeCases)
+        {
+            ProbeRows[2] = new ProbeRow(
+                "无变化 / 尚未检查",
+                "0 B · 未知大小",
+                "尚未检查",
+                "文件 0/0 · 大小 0 B/0 B");
+        }
         DataContext = this;
         feedback = new UiFrameworkProbeFeedback(
             exception => Logger.Error(exception, "GameSaveCenter WPF-UI probe dialog failed."),
