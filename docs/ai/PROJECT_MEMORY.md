@@ -8,6 +8,7 @@
 - `DesignTokens.xaml` 的不确定进度扫过动画现在由测试明确锁定 `StopStoryboard`，终态不会继续保留循环状态动画；定向门禁共 `18/18` 通过。
 - 当前 Release RenderHarness 状态夹具为 `statefixtures OK`，`160` 条 fixture/PNG 记录覆盖 MediaInbox、MediaDetails、MaintenanceAudit、MaintenanceNextSteps 的适用六态、Light/Dark、`1040×700`/`1100×720`/`1366×768`/`2560×1440`。持久证据仅保留报告和 4 张代表截图，不提交整批生成物。
 - 状态夹具只能证明状态覆盖层/提示/表面几何；真实 Worker 进度节奏、动画中途取值、宿主卸载和 Playnite 像素仍需宿主复核，Q17-04/Q18-03 的视觉/宿主列不提前签收。
+- 当前修复代码的串行 Release 全量测试通过：Core `83/83`、Worker `310/311`（1 skip）、Playnite `484/547`（63 skip），失败 `0`；Playnite 总数的增加来自本阶段两个回归测试，不是跳过项变化。
 
 ## 2026-09-15 UI 精修 Q12-08 双主题业务空表复核
 

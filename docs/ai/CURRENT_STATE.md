@@ -7,6 +7,7 @@
 - 当前交付提交为 `c76ce62`，已推送 `codex/ui-finesse-round2`。`GscMotion.AnimateEntrance` 现在只在没有活动动画时初始化起点；重入时先捕获有效 Transform/Opacity、移除旧时钟，再从当前值继续，避免快速切换闪回。
 - `ProgressBar` 的不确定进度模板补齐 `StopStoryboard` 回归门禁；定向 `UiFinesseFoundationTests` + `UiFinesseRound2ControlSourceTests` 为 `18/18` 通过。
 - RenderHarness Release 重建为 `0 warning / 0 error`，当前代码重新执行 `statefixtures` 得到 `statefixtures OK`：160 条记录/160 张截图，覆盖四个生产状态页、适用的六态、双主题和四个尺寸；代表证据见 [`Q17-04-STATE-FIXTURES-20260915.md`](../design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q17-04-STATE-FIXTURES-20260915.md)。真实进度节奏、宿主动画时序和 Playnite 像素仍保持待验。
+- 随后在当前修复代码上执行串行 Release 全量测试：Core `83/83`、Worker `310/311`（1 skip）、Playnite `484/547`（63 skip），失败 `0`；新增两项回归门禁使 Playnite 总数从历史 `545` 增至 `547`。
 
 ## 2026-09-15 UI 精修 Q12-08 双主题业务空表复核
 

@@ -8,6 +8,7 @@
 - `DesignTokens.xaml` 的不确定进度循环扫过补充 `StopStoryboard` 源门禁；`UiFinesseFoundationTests` + `UiFinesseRound2ControlSourceTests` 定向测试 `18/18` 通过，`python scripts/validate-source.py` 通过。
 - RenderHarness Release 构建 `0 warning / 0 error`；用当前提交重跑 `statefixtures`，结果 `statefixtures OK`，160 条记录/160 张截图，覆盖四个生产状态页、适用六态、双主题和四个 DIP 尺寸。只保留报告和四张代表截图为 [`Q17-04-STATE-FIXTURES-20260915.md`](../design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q17-04-STATE-FIXTURES-20260915.md)，随后清理 `.tmp/statefixtures-round2-20260915-q17`。
 - 真实 Worker 进度节奏、悬停/卸载动画、Playnite 宿主像素、ETW/Rendering 生命周期仍不由该夹具替代；账本保持 Q17-04/Q18-03 视觉或宿主待验。
+- 修复后串行 Release 全量测试通过：Core `83/83`、Worker `310/311`（1 skip）、Playnite `484/547`（63 skip），失败 `0`；新增的 2 个 Playnite 回归门禁已纳入当前 Q25-08 证据页，历史 `d8fad48` 计数保留作对照。
 
 ## 2026-09-15 UI 精修 Q12-08 双主题业务空表复核
 

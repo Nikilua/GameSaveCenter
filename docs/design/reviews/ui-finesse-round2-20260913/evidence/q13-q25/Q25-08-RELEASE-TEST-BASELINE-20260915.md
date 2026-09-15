@@ -3,6 +3,18 @@
 采集日期：2026-09-15（Asia/Shanghai）  
 代码基线：`d8fad48`（`更新跨屏证据最终代码基线`）
 
+## 最新修复后跟进
+
+`c76ce62`（`修复重入动画与不确定进度停机`）在同一命令下再次通过：退出码 `0`，失败 `0`。新增的两个回归门禁使 Playnite 测试总数变为 `547`，不是测试减少或跳过增加。
+
+| 测试程序集 | 通过 | 跳过 | 总计 |
+| --- | ---: | ---: | ---: |
+| GameSaveCenter.Core.Tests | 83 | 0 | 83 |
+| GameSaveCenter.Worker.Tests | 310 | 1 | 311 |
+| GameSaveCenter.Playnite.Tests | 484 | 63 | 547 |
+
+这次跟进仍只证明 Release 构建与自动测试通过；真实 Playnite 宿主屏幕像素、物理 DPI、IME、读屏、跨屏 Popup、进度节奏和 ETW 性能边界继续保持未验。
+
 ## 命令与结果
 
 在干净工作树上使用单 MSBuild 节点执行：
@@ -23,4 +35,4 @@ dotnet test GameSaveCenter.sln --no-restore -c Release -m:1 --logger "console;ve
 
 ## 与 Q25-08 的关系
 
-本次结果补齐了 `d8fad48` 的可复现 Release 测试身份，支持 Q25-08 的代码/自动化收尾；真实宿主边界仍按 `ROUND2_PROGRESS.md` 和 `Q13-Q25-INDEX.md` 保留，不把自动测试升级成宿主验收。
+本页同时保留 `d8fad48` 历史基线和 `c76ce62` 修复后跟进，支持 Q25-08 的代码/自动化收尾；真实宿主边界仍按 `ROUND2_PROGRESS.md` 和 `Q13-Q25-INDEX.md` 保留，不把自动测试升级成宿主验收。
