@@ -18,7 +18,7 @@
 | `real-host-audit.ps1` PowerShell 语法 | 通过 | `System.Management.Automation.Language.Parser` 未报告错误 |
 | 显示器拓扑前置枚举 | 前置通过/条件阻塞 | `System.Windows.Forms.Screen.AllScreens` 可执行，但当前仅 1 个显示器 |
 | Q24-03 源码契约 | 已加入 | `DiagnosticsEvidenceSourceTests`、`UiFinesseRound2ControlSourceTests` 锁定运行器拓扑字段和宿主内浮层边界 |
-| 定向 `dotnet test` | 未产生结果 | 当前 .NET SDK/工程解析阶段长时间无输出；未将未执行命令计作测试通过 |
+| 定向 `dotnet test` | 通过 | 单节点重试后 `DiagnosticsEvidenceSourceTests` + `UiFinesseRound2ControlSourceTests` 共 `16/16`，失败 0 |
 | 真实双屏窗口迁移与打开态 Popup | 待宿主 | 需要第二个物理显示器，并在 Playnite 可见宿主中完成迁移、回迁和截图核对 |
 
 ## 证据边界

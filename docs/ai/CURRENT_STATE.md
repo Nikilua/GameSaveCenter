@@ -778,3 +778,4 @@
 - `DashboardView` 的游戏选框补充了宿主内浮层契约：`GameBrowserPanel`/`GameBrowserScrim` 不创建独立 Window 或 WPF Popup；共享 ComboBox Popup 继续使用 Bottom 定位、StaysOpen=False、动态主题资源和有限内部滚动。新增 `DiagnosticsEvidenceSourceTests` 与 `UiFinesseRound2ControlSourceTests` 源码契约。
 - 当前机器前置枚举只有 `DISPLAY1`（2560×1440，工作区 2560×1368），因此真实跨屏迁移和打开态 Popup 仍外部阻塞；证据见 `docs/design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q24-03-PHYSICAL-CROSS-SCREEN-20260915.md`。未将源码门禁或离屏结果写成物理跨屏通过。
 - `python scripts/validate-source.py`、PowerShell 脚本语法解析和 `git diff --check` 通过；定向 `dotnet test` 在当前 SDK/工程解析阶段长时间无输出，未得到测试结果。
+- 随后使用 `dotnet test GameSaveCenter.sln --no-restore -c Release -m:1 --logger "console;verbosity=minimal"` 在 `d8fad48` 通过 Release 全量测试：Core `83/83`、Worker `310/311`（1 skip）、Playnite `482/545`（63 skip），失败 0；定向 Q24-03 源码测试为 `16/16`，替换此前未收敛的并发节点尝试。

@@ -6566,3 +6566,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 新增 Q24-03 源码契约：游戏选框继续是 Dashboard 内浮层，不创建独立 Window/WPF Popup；共享 ComboBox Popup 继续由模板负责定位、关闭、主题和有限滚动。台账将 Q24-03 从“实施中”推进为“代码完成”，但自动/视觉仍待真实双屏宿主。
 - `python scripts/validate-source.py`、PowerShell 语法解析、显示器枚举和 `git diff --check` 通过。定向 `dotnet test` 在当前 SDK/工程解析阶段长时间无输出，停止等待后不写入通过结论。
 - 持久证据：`docs/design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q24-03-PHYSICAL-CROSS-SCREEN-20260915.md`；未生成虚假的第二屏截图，也未运行会覆盖用户 Playnite 的非隔离宿主流程。
+
+## 2026-09-15 Round2 Release 自动基线复核
+
+- 先用 `-m:1` 重跑 Q24-03 定向测试，`DiagnosticsEvidenceSourceTests` 与 `UiFinesseRound2ControlSourceTests` 共 `16/16` 通过。
+- 随后在当前 HEAD `d8fad48` 运行 Release 全量测试：Core `83/83`、Worker `310/311`（1 skip）、Playnite `482/545`（63 skip），失败 0；持久证据为 `docs/design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q25-08-RELEASE-TEST-BASELINE-20260915.md`。
+- 该门禁只证明当前代码构建/自动测试身份；Windows 宿主自动化仍因内核资产路径错误不可用，显示器仍为单屏，未把真实交互、跨屏 Popup 或屏幕像素写成通过。
