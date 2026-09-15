@@ -1,0 +1,5 @@
+Production dangerous dialog layout probe (controlled STA WPF surface)
+Dialog[light] cancelFocused=True dialogWidth=560 cancel=404.67,202.67..480.67,246.67 danger=488.67,202.67..588.67,238.67 gap=8 dangerFirstFocus=false
+Dialog[dark] cancelFocused=True dialogWidth=560 cancel=404.67,202.67..480.67,246.67 danger=488.67,202.67..588.67,238.67 gap=8 dangerFirstFocus=false
+DangerDialogBoundary: production resource layout and cancel-first focus are covered; business confirmation completion and real Playnite host input remain host checks
+DangerDialogProbe OK

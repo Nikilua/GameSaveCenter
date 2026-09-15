@@ -6,7 +6,7 @@
 
 - `4947539` 已推送 `codex/ui-finesse-round2`：生产 `ui:Button` 新增 `IsBusy` 依赖属性和共享 indeterminate `BusyIndicatorHost`，Dashboard 顶部刷新、全部备份、媒体同步复用真实 `DashboardViewModel.IsBusy`；原 ContentPresenter 与按钮测量槽保持不变。
 - `buttonbusyprobe` 在 STA、96 DPI 下完成 Light/Dark 双主题运行，两个主题均报告宽度 `180→180`、指示层可见、indeterminate、文字保持“全部备份”；源码定向测试 `17/17`，RenderHarness Release `0 warning/0 error`，截图与报告见 Q04–Q12 证据索引。
-- 该阶段只升级 Q05-05 共享模板/受控视觉列；真实 Playnite 命令耗时、宿主输入、真实 DPI 和其它 Q06 状态序列仍不宣称完成。当前账本仍有 57 行视觉待验、196 行宿主外部阻塞。
+- 该阶段只升级 Q05-05/Q05-06 共享模板/受控视觉列；真实 Playnite 命令耗时、宿主输入、真实 DPI 和其它 Q06 状态序列仍不宣称完成。当前账本统计需以 `ROUND2_PROGRESS.md` 的逐列解析为准。
 
 ## 当前最近阶段：设置主题打开态运行时夹具
 

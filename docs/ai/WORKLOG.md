@@ -8,6 +8,12 @@
 - `buttonbusyprobe` 使用真实生产资源完成 Light/Dark 受控 STA WPF 夹具；报告两主题均 `normalWidth=180`、`busyWidth=180`、`widthStable=True`、`indicatorVisible=True`、`indeterminate=True`、`contentStable=True`，四张截图人工复核可读。
 - 验证：RenderHarness Release `0 warning/0 error`；`UiFinesseRound2ControlSourceTests` `17/17`；`validate-source.py`、XAML `24/24`、`git diff --check` 通过。Q05-05 视觉列升级为通过，宿主列仍为外部阻塞；真实 Hover/Pressed/鼠标输入探针因当前会话没有桌面鼠标句柄未固化，继续按宿主边界记录。
 
+## 2026-09-15 Q05-06 危险确认按钮组复核
+
+- 提交并推送 `624ece6`（`补充危险对话框焦点复核`）：增加 `dangerdialogprobe`，用生产对话框卡片、按钮模板和动态 Light/Dark 资源复核取消优先焦点、危险色按钮顺序与 8 DIP 间距；第一版夹具暴露静态画刷假阳性，改为 DynamicResource 后两主题截图均可读。
+- 报告：两主题 `cancelFocused=True`、`dialogWidth=560`、`gap=8`、`dangerFirstFocus=false`；人工复核浅/深危险确认截图。源契约测试 `18/18`，RenderHarness Release `0 warning/0 error`。
+- Q05-06 视觉列升级为通过；真实业务确认结果、宿主焦点、鼠标/键盘输入仍为外部阻塞，不以受控资源夹具代替 Playnite 交互。
+
 ## 2026-09-15 Q03-07/Q23-07 设置主题打开态视觉夹具
 
 - 提交 `a1f3cae`（`补充设置主题切换开放态夹具`）新增 `settingsthemeprobe`：在真实 STA WPF Settings view 中打开 ComboBox Popup 与 ToolTip，保持打开并执行 Light→Dark 资源切换；同步新增源契约测试，定向 `16/16` 通过。

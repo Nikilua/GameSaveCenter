@@ -8,6 +8,12 @@
 - `RenderHarness.exe buttonbusyprobe` 使用真实生产按钮模板与资源，在 Light/Dark、STA、96 DPI、DpiScale=1.00 下均报告 `normalWidth=180`、`busyWidth=180`、`indicatorVisible=True`、`indeterminate=True`、`contentStable=True`；四张 PNG 和原始报告已复制到 `evidence/q04-q12/button-busy-20260915/`。
 - `UiFinesseRound2ControlSourceTests` 本阶段为 `17/17`，RenderHarness Release 编译 `0/0`；该证据只升级 Q05-05 视觉列，真实业务命令耗时与 Playnite 输入/宿主仍保留外部边界。不要把底部指示层当作已完成 Hover/Pressed/IME/物理 DPI 验收。
 
+## 2026-09-15 Q05-06 危险确认按钮组复核
+
+- `624ece6` 新增 `dangerdialogprobe` 和源契约断言，夹具直接使用生产 `GscRedesignFeedbackDialogCard`、`GscButtonBase` 以及动态主题资源；危险确认的生产路径仍将危险按钮设为错误色，并把取消按钮传给 `OpenDialog` 作为初始焦点。
+- Light/Dark 受控 STA WPF 报告均为 `cancelFocused=True`、`dialogWidth=560`、按钮 `gap=8`、`dangerFirstFocus=false`；浅/深截图已复制到 `evidence/q04-q12/danger-dialog-20260915/`，人工复核通过。夹具修正了第一版静态画刷假阳性，标题/说明现在使用 DynamicResource 跟随主题。
+- `UiFinesseRound2ControlSourceTests` 升至 `18/18`，RenderHarness Release `0 warning/0 error`；该阶段只升级 Q05-06 受控视觉列，业务确认完成/取消、Playnite 宿主焦点和真实鼠标/键盘输入仍是外部边界。
+
 ## 2026-09-15 Q03-07/Q23-07 设置主题打开态运行时夹具
 
 - `a1f3cae` 新增 `RenderHarness` 的 `settingsthemeprobe` 和完整 QA 调用：真实 `GameSaveCenterSettingsView` 放入 STA WPF 隐藏 `Window`，进入外观页，打开生产 ComboBox 的 `PART_Popup` 与设置保存提示 `ToolTip`，在打开态切换 Light→Dark。
