@@ -24,7 +24,13 @@ New-Item -ItemType Directory -Path $Output -Force | Out-Null
 
 $env:GSC_REAL_HOST_AUDIT = $Output
 $previousWorkerDataDirectory = [Environment]::GetEnvironmentVariable('GameSaveCenter__DataDirectory', 'Process')
+$previousWorkerPipeName = [Environment]::GetEnvironmentVariable('GameSaveCenter__PipeName', 'Process')
+$previousWorkerEventPipeName = [Environment]::GetEnvironmentVariable('GameSaveCenter__EventPipeName', 'Process')
+$previousAuditPipeName = [Environment]::GetEnvironmentVariable('GSC_UI_AUDIT_PIPE_NAME', 'Process')
+$previousAuditEventPipeName = [Environment]::GetEnvironmentVariable('GSC_UI_AUDIT_EVENT_PIPE_NAME', 'Process')
 $isolatedWorkerDataDirectory = ''
+$isolatedPipeName = ''
+$isolatedEventPipeName = ''
 $auditStartedUtc = [DateTime]::UtcNow.ToString('O')
 try {
     $commit = (& git -C $root rev-parse HEAD 2>$null | Select-Object -First 1).Trim()
@@ -94,13 +100,28 @@ if (-not [string]::IsNullOrWhiteSpace($UserDataDir)) {
     New-Item -ItemType Directory -Path $isolatedExtensionsPath -Force | Out-Null
     $isolatedWorkerDataDirectory = Join-Path $UserDataDir 'GameSaveCenter'
     New-Item -ItemType Directory -Path $isolatedWorkerDataDirectory -Force | Out-Null
+    # The production pipe names stay fixed, but an isolated audit must not connect to
+    # another user-data profile's Worker. The plugin and the Worker inherit these process
+    # variables, so the audit gets a private IPC pair without touching user processes.
+    $auditPipeToken = [Guid]::NewGuid().ToString('N')
+    $isolatedPipeName = "GameSaveCenter.Worker.Audit.$auditPipeToken"
+    $isolatedEventPipeName = "$isolatedPipeName.Events"
     [Environment]::SetEnvironmentVariable('GameSaveCenter__DataDirectory', $isolatedWorkerDataDirectory, 'Process')
+    [Environment]::SetEnvironmentVariable('GameSaveCenter__PipeName', $isolatedPipeName, 'Process')
+    [Environment]::SetEnvironmentVariable('GameSaveCenter__EventPipeName', $isolatedEventPipeName, 'Process')
+    [Environment]::SetEnvironmentVariable('GSC_UI_AUDIT_PIPE_NAME', $isolatedPipeName, 'Process')
+    [Environment]::SetEnvironmentVariable('GSC_UI_AUDIT_EVENT_PIPE_NAME', $isolatedEventPipeName, 'Process')
     $installArguments.PlayniteExtensionsPath = $isolatedExtensionsPath
     $installArguments.PlayniteExecutable = $PlayniteExecutable
     $installArguments.NoStart = $true
     $runnerMetadata.UserDataDir = $UserDataDir
     $runnerMetadata.PlayniteExecutable = $PlayniteExecutable
     $runnerMetadata.WorkerDataDirectory = $isolatedWorkerDataDirectory
+    $runnerMetadata.IpcIsolation = [ordered]@{
+        PipeName = $isolatedPipeName
+        EventPipeName = $isolatedEventPipeName
+        Scope = 'isolated-audit-process'
+    }
 }
 $runnerMetadata | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $Output 'runner-metadata.json') -Encoding UTF8
 Write-Host "==> Starting Playnite with GSC_REAL_HOST_AUDIT=$Output" -ForegroundColor Cyan
@@ -169,6 +190,19 @@ finally {
     }
     else {
         $env:GameSaveCenter__DataDirectory = $previousWorkerDataDirectory
+    }
+    foreach ($entry in @(
+        @{ Name = 'GameSaveCenter__PipeName'; Value = $previousWorkerPipeName },
+        @{ Name = 'GameSaveCenter__EventPipeName'; Value = $previousWorkerEventPipeName },
+        @{ Name = 'GSC_UI_AUDIT_PIPE_NAME'; Value = $previousAuditPipeName },
+        @{ Name = 'GSC_UI_AUDIT_EVENT_PIPE_NAME'; Value = $previousAuditEventPipeName }
+    )) {
+        if ($null -eq $entry.Value) {
+            Remove-Item ("Env:" + $entry.Name) -ErrorAction SilentlyContinue
+        }
+        else {
+            Set-Item ("Env:" + $entry.Name) $entry.Value
+        }
     }
 }
 

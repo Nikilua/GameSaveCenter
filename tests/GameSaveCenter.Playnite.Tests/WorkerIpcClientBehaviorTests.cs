@@ -13,6 +13,32 @@ namespace GameSaveCenter.Playnite.Tests;
 public sealed class WorkerIpcClientBehaviorTests
 {
     private static readonly string TestPipeName = "GameSaveCenterTest" + Guid.NewGuid().ToString("N");
+
+    [Fact]
+    public void IsolatedAuditEnvironmentOverridesTheProductionPipePair()
+    {
+        const string pipeVariable = "GSC_UI_AUDIT_PIPE_NAME";
+        const string eventPipeVariable = "GSC_UI_AUDIT_EVENT_PIPE_NAME";
+        var originalPipe = Environment.GetEnvironmentVariable(pipeVariable);
+        var originalEventPipe = Environment.GetEnvironmentVariable(eventPipeVariable);
+        var pipeName = "GameSaveCenterAuditTest" + Guid.NewGuid().ToString("N");
+        var eventPipeName = pipeName + ".Events";
+        try
+        {
+            Environment.SetEnvironmentVariable(pipeVariable, pipeName);
+            Environment.SetEnvironmentVariable(eventPipeVariable, eventPipeName);
+            var client = new WorkerIpcClient();
+
+            Assert.Equal(pipeName, client.PipeNameForDiagnostics);
+            Assert.Equal(eventPipeName, client.EventPipeNameForDiagnostics);
+        }
+        finally
+        {
+            Environment.SetEnvironmentVariable(pipeVariable, originalPipe);
+            Environment.SetEnvironmentVariable(eventPipeVariable, originalEventPipe);
+        }
+    }
+
     [NamedPipeFact]
     public async Task CallerCancellationBeforeConnectDoesNotOpenARequest()
     {

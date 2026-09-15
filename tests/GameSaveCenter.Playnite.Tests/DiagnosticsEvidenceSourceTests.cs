@@ -27,6 +27,10 @@ public sealed class DiagnosticsEvidenceSourceTests
         Assert.Contains("DisplayTopology", hostScript);
         Assert.Contains("Q24_03PhysicalCrossScreen", hostScript);
         Assert.Contains("blocked-single-display", hostScript);
+        Assert.Contains("GSC_UI_AUDIT_PIPE_NAME", hostScript);
+        Assert.Contains("GSC_UI_AUDIT_EVENT_PIPE_NAME", hostScript);
+        Assert.Contains("GameSaveCenter.Worker.Audit.", hostScript);
+        Assert.Contains("IpcIsolation", hostScript);
         Assert.Contains("try { $_.Refresh() } catch { }", hostScript);
         Assert.Contains("Where-Object { $_.MainWindowHandle -ne 0 }", hostScript);
         Assert.Contains("if ($commit) {", hostScript);

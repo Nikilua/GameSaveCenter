@@ -110,12 +110,23 @@ namespace GameSaveCenter.Playnite.Ipc
         };
 
         public WorkerIpcClient()
-            : this(ProtocolConstants.PipeName, ProtocolConstants.EventPipeName) { }
+            : this(
+                ResolveEnvironmentPipeName("GSC_UI_AUDIT_PIPE_NAME", ProtocolConstants.PipeName),
+                ResolveEnvironmentPipeName("GSC_UI_AUDIT_EVENT_PIPE_NAME", ProtocolConstants.EventPipeName)) { }
 
         internal WorkerIpcClient(string pipeName, string eventPipeName)
         {
             this.pipeName = string.IsNullOrWhiteSpace(pipeName) ? ProtocolConstants.PipeName : pipeName;
             this.eventPipeName = string.IsNullOrWhiteSpace(eventPipeName) ? ProtocolConstants.EventPipeName : eventPipeName;
+        }
+
+        internal string PipeNameForDiagnostics => pipeName;
+        internal string EventPipeNameForDiagnostics => eventPipeName;
+
+        private static string ResolveEnvironmentPipeName(string variableName, string fallback)
+        {
+            var configured = Environment.GetEnvironmentVariable(variableName);
+            return string.IsNullOrWhiteSpace(configured) ? fallback : configured.Trim();
         }
 
         public async Task<WorkerHandshakeDto> HandshakeAsync(
