@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-15 当前提交真实宿主嵌入复核
+
+- 在 `37f92f7` 上用全新隔离 UserData/扩展目录/Worker IPC 运行 `scripts/real-host-audit.ps1 -Configuration Release`，构建、全量测试、打包、安装和真实 Playnite 捕获均成功；XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `501/558`（57 skip）、失败 `0`。
+- 当前产物 [`artifacts/ui-host-audit-round2-fp-final6-20260915`](../../artifacts/ui-host-audit-round2-fp-final6-20260915/) 的 summary 为 Dashboard/Settings `EmbeddedPlaynite=true`、`HighGateCount=0`，capture manifest 为 29 个 Dashboard 视口、2 个滚动面、1 个 Settings 视口；34 张 PNG 中代表 Overview、维护诊断概览和 Settings 已人工检查，150% DPI 与完整 SHA 均写入 metadata。
+- Settings 资源快照确认 `GscPrimaryTextBrush=#FFF2F4F8`、`GscSecondaryTextBrush=#FFB9C0CC`，说明 Q00 暗色前景修复在当前真实嵌入路径得到宿主资源证据。`overflow-classification.json` 仍是唯一分类文件且 `AuditFalsePositive=[]`，不计阻断门禁。
+- Playnite/隔离 Worker 已用官方 shutdown 清理，用户 Worker `23304` 未结束。第二物理屏、低于 560 DIP 短窗、IME/读屏、真实输入组合、ETW 帧与耐久仍按账本保留外部边界。
+
 ## 2026-09-15 真实宿主启动阻断结构化
 
 - 在 `9654c05` 之后增强 `scripts/real-host-audit.ps1`：隔离启动保存 `Start-Process -PassThru` 句柄；如果 Playnite 在主窗口前退出且尾部日志命中 CEF `platform_channel`/拒绝访问或启动标记，则生成根目录 `host-startup-blocker.json`，审计仍保持 partial/退出码 2。

@@ -3,6 +3,20 @@
 采集日期：2026-09-15（Asia/Shanghai）  
 代码基线：`39e37b1`（`补充侧栏卸载清理回归`）
 
+## `37f92f7` 当前提交 Release 与宿主收尾
+
+在当前 clean tree 执行 `scripts/real-host-audit.ps1 -Configuration Release`，使用全新隔离 UserData、扩展目录和 Worker IPC；构建、测试、打包、安装与真实 Playnite 捕获均退出成功。
+
+| 测试程序集 | 通过 | 跳过 | 总计 |
+| --- | ---: | ---: | ---: |
+| GameSaveCenter.Core.Tests | 83 | 0 | 83 |
+| GameSaveCenter.Worker.Tests | 311 | 0 | 311 |
+| GameSaveCenter.Playnite.Tests | 501 | 57 | 558 |
+
+XAML `24/24`，构建 `0 warning/0 error`；程序集身份为 `0.6.73+37f92f7f107880bb5a33f61c82eee11fe1344874`。`artifacts/ui-host-audit-round2-fp-final6-20260915/summary.json` 记录 Dashboard/Settings 均为 `EmbeddedPlaynite`、`HighGateCount=0`；capture manifest 为 29 个 Dashboard 视口、2 个滚动面和 1 个 Settings 视口，150% DPI；审计结束后已用官方 shutdown 清理隔离宿主，用户 Worker 未触碰。
+
+该当前提交证据仍不替代第二物理屏、低于 560 DIP 短窗、IME、读屏、真实鼠标/键盘组合输入、ETW 呈现帧或真实宿主耐久验收。
+
 ## 69e1f84 最终真实宿主审计构建基线
 
 `69e1f84`（`补齐宿主审计提交身份`）的 clean-tree `real-host-audit.ps1 -Configuration Release` 完成打包、隔离安装和真实 Playnite 宿主捕获；构建与测试退出码 `0`，失败 `0`。该次运行同时覆盖了 Settings 入场截图时序修复和审计 SHA 元数据修复。

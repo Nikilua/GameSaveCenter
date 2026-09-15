@@ -2,11 +2,17 @@
 
 > 更新时间：2026-09-15。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
-## 当前最近阶段：真实宿主启动阻断结构化
+## 当前最近阶段：当前提交真实宿主嵌入复核
+
+- `37f92f7` 已在全新隔离 UserData、扩展目录和 Worker IPC 下完成 Release 真实宿主审计；当前程序集身份统一为 `0.6.73+37f92f7f107880bb5a33f61c82eee11fe1344874`。
+- `artifacts/ui-host-audit-round2-fp-final6-20260915/summary.json` 记录 Dashboard/Settings 均为 `EmbeddedPlaynite`，`ProductionVisualSourceOfTruthAvailable=true`、`HighGateCount=0`；捕获 29 个 Dashboard 视口、2 个滚动面、1 个 Settings 视口，150% DPI，代表 PNG 已人工复核。
+- 本次宿主使用隔离 Worker，结束后调用 Playnite 官方 `--shutdown --userdatadir` 清理；用户扩展目录旧 Worker PID `23304` 未触碰。Q24-03 仍因仅有 `DISPLAY1` 外部阻塞，短窗、IME/读屏、真实组合输入和 ETW 边界继续保留。
+
+## 上一阶段：真实宿主启动阻断结构化
 
 - 在 `9654c05` 之后增强 `scripts/real-host-audit.ps1`：保留隔离 Playnite 启动进程句柄，检测“主窗口前退出 + CEF 启动日志”并写出 `host-startup-blocker.json`；报告明确 `VisualEvidenceCaptured=false`、`CountsAsVisualPass=false`，不写入 `gates/`。
 - 2026-09-15 受控诊断额外使用 `--no-sandbox --disable-gpu` 仍复现 CEF `mojo platform_channel` `Access denied (0x5)`；该参数只用于根因隔离，没有进入生产配置。PowerShell AST 解析和新增宿主证据源契约测试通过。
-- 该阶段只改善证据可追溯性，不把宿主失败写成视觉通过；历史 `69e1f84` 嵌入像素基线和 `Q24-03` 单屏外部阻塞保持有效。
+- 该阶段改善了早退证据可追溯性；`cc63523` 的 CEF 早退记录仍保留为失败边界，但已被 `37f92f7` 的成功隔离宿主捕获 supersede，不把失败目录写成当前视觉证据。
 
 ## 当前最近阶段：生产按钮忙态反馈
 
@@ -882,4 +888,4 @@
 
 - `f1ea52a` 修正真实宿主 `HighGateCount` 统计：`overflow-classification.json` 仅是分类诊断，不再算阻断门禁；当前 Release truthfulness 定向回归 `1/1`，已有隔离产物按新规则为 `BlockingGateFiles=0`，但旧摘要原文仍是 `HighGateCount=1`。
 - `cc63523` 自动门禁与打包安装通过：XAML `24/24`、Core `83/83`、Worker `310/311`（1 skip）、Playnite `495/558`（63 skip），失败 `0`。
-- 最新隔离 Playnite 在 CEF `mojo platform_channel` 访问拒绝后退出，没有产生新的 Embedded 视口；历史 `69e1f84` 的 Dashboard/Settings 真实宿主证据保持有效但不升级为 `cc63523` 的新捕获。Q24-03 仍受单屏限制，用户 Worker PID `23304` 未终止。
+- `cc63523` 的早期隔离 Playnite 曾在 CEF `mojo platform_channel` 访问拒绝后退出；该失败边界已由 `37f92f7` 的成功隔离重跑补充。当前成功产物绑定完整 SHA、`HighGateCount=0`，但 Q24-03 仍受单屏限制，用户 Worker PID `23304` 未终止。

@@ -22,6 +22,15 @@
 
 本次结构化改动的源契约回归 `DiagnosticsEvidenceSourceTests.RenderAndHostAuditEntriesDeclareEvidenceBoundariesAndTimingFields` 为 `1/1`，PowerShell AST 解析通过；既有 `cc63523` Release 全量门禁结果仍作为本轮生产代码基线，不因该次宿主失败被改写。
 
+## `37f92f7` 当前提交成功重跑
+
+- `scripts/real-host-audit.ps1 -Configuration Release` 使用全新隔离 UserData、隔离扩展目录、隔离 Worker 数据目录和唯一 Pipe/EventPipe 成功完成构建、测试、打包、安装和真实 Playnite 宿主捕获；安装与程序集身份均为 `0.6.73+37f92f7f107880bb5a33f61c82eee11fe1344874`。
+- 产物为 `artifacts/ui-host-audit-round2-fp-final6-20260915`。`summary.json` 明确记录 `EmbeddedDashboardCaptured=true`、`EmbeddedSettingsCaptured=true`、两者 `Origin=EmbeddedPlaynite`、`ProductionVisualSourceOfTruthAvailable=true`、`HighGateCount=0`。
+- `capture-manifest.json` 记录 29 个 Dashboard 视口、2 个完整滚动面和 1 个 Settings 视口，均为 `EmbeddedPlaynite`、`CompletenessValidated=true`；输出目录另保留 4 张滚动回放端点图，总计 34 张 PNG。Dashboard 视口为 `1298.67×900 DIP`、150% DPI、1948×1350 像素；Settings 为 `1278×762 DIP`、150% DPI、1917×1143 像素。
+- 资源与视觉树快照记录 Settings 的 `GscPrimaryTextBrush=#FFF2F4F8`、`GscSecondaryTextBrush=#FFB9C0CC`、`SettingsScroller` 和 `TabChrome`；Dashboard/Settings metadata 均绑定当前完整 SHA。代表性的 Overview、维护诊断概览和 Settings PNG 已人工检查，中文标题、深色前景、主按钮、空态、表头和设置表单保持可读。
+- `gates/` 仍只有 `overflow-classification.json`，其 `AuditFalsePositive=[]`；该分类文件按 `f1ea52a` 规则不计阻断门禁。审计结束后使用 Playnite 官方 `--shutdown --userdatadir` 关闭本轮隔离宿主；用户扩展目录旧 Worker PID `23304` 保持未触碰。
+- 本次成功证据仍不覆盖第二物理屏、低于 560 DIP 的短窗、IME/读屏、真实鼠标/键盘组合输入、ETW 呈现帧和真实宿主耐久；`runner-metadata.json` 明确记录当前仅有 `DISPLAY1`，Q24-03 继续外部阻塞。
+
 ## 交付解释
 
-Q00 的共享前景修复、审计计数修复、宿主启动阻断结构化和自动回归已完成；Q00-07/Q00-08 及 Q25-07/Q25-08 的状态仍按账本既有证据处理。真实宿主的最新一次重跑未捕获像素，不能覆盖历史 `69e1f84` 已签收的隔离宿主证据，也不能把 `HighGateCount=1` 的旧摘要改称当前提交通过。
+Q00 的共享前景修复、审计计数修复、宿主启动阻断结构化和自动回归已完成；`37f92f7` 已补齐当前提交的真实 Embedded Dashboard/Settings、SHA、资源和门禁证据，Q00-07 可据此完成证据身份收口，Q00-08 及 Q25-07/Q25-08 继续保留交付基线与当前重跑双重证据。此前 `cc63523` 的 CEF 早退记录仍作为失败边界保留，不覆盖本次成功捕获，也不把历史 `HighGateCount=1` 旧摘要改称当前通过。

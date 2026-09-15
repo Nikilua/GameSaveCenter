@@ -16,7 +16,7 @@
 
 `f1ea52a` 修正 `RealHostUiAuditService` 对 `gates/*.json` 的统计：`overflow-classification.json` 是诊断分类报告，不再计为阻断门禁；`UiAuditTruthfulnessTests.OverflowClassificationReportIsNotCountedAsBlockingGate` 在当前 Release 二进制下 `1/1` 通过。既有真实宿主产物的 `gates/` 目录只有该文件，因此按修复规则阻断门禁数为 `0`，但旧 `summary.json` 的 `HighGateCount=1` 原始值保持不变。
 
-最新 `cc63523` 宿主重跑因 Playnite CEF 初始化访问拒绝未生成 Dashboard/Settings，不替代历史 `69e1f84` 的真实宿主像素，也不能把未捕获的宿主启动写成 Q00 最终视觉通过；详见 [`REAL_HOST_AUDIT-FP-FIX-20260915.md`](q13-q25/REAL_HOST_AUDIT-FP-FIX-20260915.md)。
+`37f92f7` 已在全新隔离 UserData 中取得当前提交的真实 Embedded Dashboard/Settings：summary 为两者 `true`、`Origin=EmbeddedPlaynite`、`HighGateCount=0`，metadata 与资源快照绑定完整 SHA；29 个 Dashboard 视口、2 个滚动面和 1 个 Settings 视口均为 150% DPI。此前 `cc63523` 的 CEF 早退仍作为失败边界保留；完整成功/失败对照见 [`REAL_HOST_AUDIT-FP-FIX-20260915.md`](q13-q25/REAL_HOST_AUDIT-FP-FIX-20260915.md)。
 
 ## 运行身份
 
@@ -49,5 +49,5 @@
 
 ## 尚未取得的证据
 
-- 当前未运行成功的真实 Playnite 宿主仍为 `MainWindowHandle=0`，不能宣称宿主呈现或真实窗口 DPI 通过。
+- 当前 `37f92f7` 已成功取得真实 Playnite 嵌入像素和 150% 宿主 DPI；Q00 本索引仍不把它扩大解释为 125/175/200% 物理 DPI、Hover/Pressed/Keyboard Focus 输入序列、读屏或跨屏 Popup 证据。
 - 截图为 DIP/离屏结果，不是 125/150/175/200% 物理 DPI 证据；Hover、Pressed、Keyboard Focus 的输入序列仍需独立行为探针。

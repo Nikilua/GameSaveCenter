@@ -1,6 +1,6 @@
 # Q13–Q25 交互、页面、宿主与交付证据
 
-采集日期：2026-09-15（Asia/Shanghai）。当前代码基线：`cc63523`。证据来自共享 XAML/C# 源码、Playnite 设置迁移测试、RenderHarness Offscreen Regression Audit、受控 STA WPF Window 运行时测试、隔离 Playnite 真实宿主加载日志和已提交 HEAD 的打包/安装记录；已签收的 `69e1f84` 真实嵌入 Dashboard/Settings 仍是历史宿主像素基线，后续 `f1ea52a` 修正了审计门禁统计假阳性，`cc63523` 又隔离了 Playnite WPF 测试调度竞争；最新宿主重跑因 Playnite CEF 启动失败未产生新的 Embedded 像素。离屏/受控证据仍不冒充 IME、物理跨屏、读屏、ETW 帧时间或停顿期间调用栈。
+采集日期：2026-09-15（Asia/Shanghai）。当前代码基线：`37f92f7`。证据来自共享 XAML/C# 源码、Playnite 设置迁移测试、RenderHarness Offscreen Regression Audit、受控 STA WPF Window 运行时测试、隔离 Playnite 真实宿主加载日志和已提交 HEAD 的打包/安装记录；`37f92f7` 已在隔离 UserData 中重新捕获当前提交的 Embedded Dashboard/Settings，后续 `f1ea52a` 修正了审计门禁统计假阳性，`cc63523` 的测试调度隔离仍保留在父级自动基线。离屏/受控证据仍不冒充 IME、物理跨屏、读屏、ETW 帧时间或停顿期间调用栈。
 
 ## 本阶段真实修复
 
@@ -15,7 +15,7 @@
 - Q24-03 的生产浮层继续保持宿主内 `GameBrowserPanel`，共享 ComboBox Popup 继续使用模板定位与动态主题资源；真实宿主运行器新增 `DisplayTopology` 与 `Q24_03PhysicalCrossScreen` 前置字段。当前单屏边界和执行要求见 [`Q24-03-PHYSICAL-CROSS-SCREEN-20260915.md`](q13-q25/Q24-03-PHYSICAL-CROSS-SCREEN-20260915.md)。
 - Settings 真实宿主审计修复：`RealHostUiAuditService` 等待最长入场动效结束后再取嵌入视口；`real-host-audit.ps1` 以非空 Git SHA 写入 runner/plugin metadata，避免 PowerShell `$LASTEXITCODE` 管道假阴性。最终可追溯证据见 [`REAL_HOST_AUDIT-20260914.md`](q13-q25/REAL_HOST_AUDIT-20260914.md#settings-入场时序与提交身份修复后的最终复核69e1f84)。
 
-## 当前提交宿主审计边界（2026-09-15）
+## 历史隔离宿主审计对照（`c5a2997`，2026-09-15）
 
 `c5a2997` 的隔离宿主审计已捕获当前提交的 EmbeddedPlaynite Dashboard/Settings 像素（29 个 Dashboard 视口、2 个滚动面、1 个 Settings 视口，150% DPI），但隔离启动时复用了用户扩展目录内旧版 Worker `0.6.73+6450f6...`，与当前插件 `0.6.73+c5a2997...` 不一致，真实截图出现 Worker 退出 Toast，`HighGateCount=1`。因此本轮只作为当前像素与阻断事实记录，不升级任何 Worker 相关宿主项；完整边界和重跑条件见 [`REAL_HOST_AUDIT-CURRENT-20260915.md`](q13-q25/REAL_HOST_AUDIT-CURRENT-20260915.md)。
 
@@ -23,7 +23,7 @@
 
 `f1ea52a` 的 `CountBlockingGateFiles` 排除 `overflow-classification.json`，定向回归 `UiAuditTruthfulnessTests.OverflowClassificationReportIsNotCountedAsBlockingGate` 为 `1/1`；既有隔离产物只有该诊断文件，按新规则阻断门禁数为 `0`，但旧 `summary.json` 的 `HighGateCount=1` 原文保留。完整说明见 [`REAL_HOST_AUDIT-FP-FIX-20260915.md`](q13-q25/REAL_HOST_AUDIT-FP-FIX-20260915.md)。
 
-提交 `cc63523` 的最新隔离宿主重跑已完成 Release 构建、Core/Worker/Playnite 测试、打包和安装验证，但 Playnite 在 `Application started` 后因 CEF `mojo platform_channel` `Access denied (0x5)` 退出，未生成 `summary.json` 或 Embedded Dashboard/Settings；随后用 `--no-sandbox --disable-gpu` 做隔离诊断仍复现同一边界。该次只记录为宿主启动阻断，不覆盖 `69e1f84` 的历史视觉真值，也不把旧 Worker `23304` 结束或改写为成功。`real-host-audit.ps1` 已增加 `host-startup-blocker.json` 结构化输出，明确不计入视觉通过。
+提交 `cc63523` 的早期隔离宿主尝试在 `Application started` 后因 CEF `mojo platform_channel` `Access denied (0x5)` 退出；该次及 `--no-sandbox --disable-gpu` 诊断作为失败边界保留。随后 `37f92f7` 在全新隔离 UserData 中成功捕获 `EmbeddedPlaynite` Dashboard/Settings，`HighGateCount=0`，身份、资源、滚动面和截图均绑定当前完整 SHA；审计脚本仍保留 `host-startup-blocker.json` 作为未来早退场景的结构化报告，不把失败目录计入视觉通过。
 
 ## 受控审计摘要
 

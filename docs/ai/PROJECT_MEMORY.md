@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-15
 
+## 2026-09-15 当前提交真实宿主嵌入复核
+
+- `37f92f7` 在全新隔离 UserData、扩展目录、Worker 数据目录和唯一 Pipe/EventPipe 下完成 `real-host-audit.ps1 -Configuration Release`；源码、Plugin、Worker、Contracts 构建身份统一为 `0.6.73+37f92f7f107880bb5a33f61c82eee11fe1344874`。
+- `artifacts/ui-host-audit-round2-fp-final6-20260915/summary.json` 为 `EmbeddedDashboardCaptured=true`、`EmbeddedSettingsCaptured=true`、两者 `Origin=EmbeddedPlaynite`、`ProductionVisualSourceOfTruthAvailable=true`、`HighGateCount=0`；capture manifest 为 29 个 Dashboard 视口、2 个完整滚动面、1 个 Settings 视口，150% DPI，资源/视觉树/metadata 绑定当前 SHA。
+- 本轮 Release 门禁：XAML `24/24`、构建 `0 warning/0 error`、Core `83/83`、Worker `311/311`、Playnite `501/558`（57 skip）、失败 `0`。Settings 的 `GscPrimaryTextBrush=#FFF2F4F8` 与 `GscSecondaryTextBrush=#FFB9C0CC` 可在当前资源快照复核，代表 Overview、维护诊断概览和 Settings PNG 已人工检查。
+- 审计结束后以 Playnite 官方 `--shutdown --userdatadir` 关闭隔离宿主；用户 Worker PID `23304` 未触碰。当前仍只有 `DISPLAY1`，因此 Q24-03 物理跨屏、低于 560 DIP 短窗、IME/读屏、真实组合输入和 ETW 性能边界不升级为完成。
+
 ## 2026-09-15 真实宿主启动阻断结构化
 
 - 在 `9654c05` 之后，`scripts/real-host-audit.ps1` 的隔离 Playnite 启动改为保留 `Start-Process -PassThru` 进程句柄；进程在主窗口前退出且 `playnite.log`/`cef.log` 尾部命中启动标记时，输出根目录新增 `host-startup-blocker.json`。
