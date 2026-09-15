@@ -130,6 +130,21 @@ public sealed class UiAuditBlockerTests
     }
 
     [Fact]
+    public void SettingsAuditWaitsForEntranceMotionBeforeTakingTheViewport()
+    {
+        var source = ReadAuditSource();
+        var wait = source.IndexOf("await WaitForSettingsEntranceAsync(settingsView);", StringComparison.Ordinal);
+        var capture = wait < 0
+            ? -1
+            : source.IndexOf("CaptureSettings(settingsView, settingsRoot, session);", wait, StringComparison.Ordinal);
+
+        Assert.True(wait >= 0);
+        Assert.True(capture > wait);
+        Assert.Contains("GscMotion.MotionDurationKind.Slow", source);
+        Assert.Contains("Task.Delay(duration + TimeSpan.FromMilliseconds(90))", source);
+    }
+
+    [Fact]
     public void EmbeddedIdentityUsesHostWindowNotStaticNull()
     {
         var source = ReadAuditSource();

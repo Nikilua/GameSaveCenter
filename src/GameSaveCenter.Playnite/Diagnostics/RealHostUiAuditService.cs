@@ -298,10 +298,15 @@ namespace GameSaveCenter.Playnite.Diagnostics
             var session = GetOrCreateSession(root);
 
             var dispatcher = settingsView.Dispatcher;
-            dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+            dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(async () =>
             {
                 try
                 {
+                    // Settings starts with an opacity/translate entrance transition. A
+                    // single Render pass can still land inside that transition and turn a
+                    // valid host screenshot into a false low-contrast finding. Let the
+                    // real view finish its longest entrance motion before capturing it.
+                    await WaitForSettingsEntranceAsync(settingsView);
                     CaptureSettings(settingsView, settingsRoot, session);
                 }
                 catch (Exception ex)
@@ -1935,6 +1940,17 @@ namespace GameSaveCenter.Playnite.Diagnostics
             // pass so the audit does not report a transient pre-convergence DesiredSize.
             await dispatcher.InvokeAsync(() => { }, DispatcherPriority.ApplicationIdle);
             await System.Threading.Tasks.Task.Delay(90);
+        }
+
+        private static async System.Threading.Tasks.Task WaitForSettingsEntranceAsync(
+            GameSaveCenterSettingsView settingsView)
+        {
+            await WaitForRenderAsync(settingsView.Dispatcher);
+            var duration = GscMotion.GetDuration(
+                settingsView,
+                GscMotion.MotionDurationKind.Slow);
+            await System.Threading.Tasks.Task.Delay(duration + TimeSpan.FromMilliseconds(90));
+            await WaitForRenderAsync(settingsView.Dispatcher);
         }
 
         private static Rect ComputeAuditWindowBounds(FrameworkElement reference)

@@ -2,6 +2,12 @@
 
 > 更新时间：2026-09-15。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 当前最近阶段：真实 Settings 宿主截图时序
+
+- 本阶段修复真实 Playnite 审计过早截图的问题：Settings 的入场动画从 `Opacity=0` 开始，审计现在等待实际 Slow motion token 完成后才捕获稳定终态；正常用户动画和 Settings 绑定未改变。
+- Release 串行编译 0 警告/0 错误；`UiAuditBlockerTests` `8/8`；审计构建阶段 Core `83/83`、Worker `311/311`、Playnite `494/551`（57 skip）、0 失败。提交后还需重新安装 clean tree 并复核 Settings PNG。
+- 旧真实审计的 Settings 暗图是本次问题复现对照；不能把旧图作为最终视觉签收。Q24-03 当前机器仍只有 `\\.\DISPLAY1`，物理跨屏继续阻塞。
+
 ## 2026-09-15 Q24-03 物理跨屏前置复核
 
 - 当前分支生产代码基线为 `39e37b1`，本次前置复核时文档 HEAD 为 `7609c4a`；`System.Windows.Forms.Screen.AllScreens` 仍只发现 `\\.\DISPLAY1`，边界 2560×1440、工作区 2560×1368。

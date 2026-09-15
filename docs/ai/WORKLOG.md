@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-15 UI 精修真实 Settings 宿主截图时序修复
+
+- 真实 Playnite 审计发现 Settings 截图偏暗并非主题前景丢失：视图首次加载从 `SettingsShell.Opacity=0` 开始，审计只等待一个 Render pass，可能在最长入场动效结束前取到中间帧。
+- `RealHostUiAuditService.TryCaptureSettings` 现在等待 Settings 的 Render/ApplicationIdle 收敛、按实际宿主读取的 Slow motion token 加 90ms 余量，再执行截图；新增 `UiAuditBlockerTests.SettingsAuditWaitsForEntranceMotionBeforeTakingTheViewport` 锁定等待发生在 `CaptureSettings` 之前。
+- 当前验证：Release 串行编译 0 警告/0 错误；Playnite 定向 `UiAuditBlockerTests` 为 `8/8`；真实审计构建阶段为 Core `83/83`、Worker `311/311`、Playnite `494/551`（57 skip），0 失败。下一步在提交后的 clean tree 重新安装并复核真实 Settings 截图；Q24-03 仍因单显示器保持阻塞。
+
 ## 2026-09-15 Q24-03 物理跨屏前置复核
 
 - 在 `39e37b1` 代码基线和 `7609c4a` 文档 HEAD 上复核 Q24-03：本机 `Screen.AllScreens` 仍只有 `\\.\DISPLAY1`，2560×1440，工作区 2560×1368。

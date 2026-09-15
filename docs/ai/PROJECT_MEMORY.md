@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-15
 
+## 2026-09-15 真实 Settings 宿主截图等待完整入场动效
+
+- 本轮真实 Playnite 审计把 Settings 截图抓在 `SettingsShell` 入场动画中间态，造成整体低对比度的视觉假阳性；Style fingerprint 中的前景和各层 `Opacity=1` 已证明不是主题资源缺失。
+- `RealHostUiAuditService` 的 Settings capture 现在先等待 `WaitForRenderAsync`，再等待 `GscMotion.GetDuration(settingsView, MotionDurationKind.Slow)` 加 90ms，最后再执行 `CaptureSettings` 并重新等待 Render；这样不修改真实用户入场行为，只让开发审计取稳定终态。
+- 新增源回归断言锁定 capture 顺序；Release 编译和 `UiAuditBlockerTests` 已通过。提交后的 real-host audit 必须以新 SHA 和新的 `settings/embedded-current/viewport/settings.png` 为准，旧的 `ui-host-audit-round2-current-20260915` 截图只作为问题复现对照，不可继续作为最终 Settings 视觉证据。
+
 ## 2026-09-15 Q24-03 物理跨屏前置复核
 
 - 在当前分支生产代码基线 `39e37b1`、文档 HEAD `7609c4a` 上重新检查 Q24-03 前置：`System.Windows.Forms.Screen.AllScreens` 仍只有 `\\.\DISPLAY1`，边界为 2560×1440，工作区为 2560×1368。
