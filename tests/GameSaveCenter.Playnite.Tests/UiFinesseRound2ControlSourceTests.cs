@@ -48,6 +48,21 @@ public sealed class UiFinesseRound2ControlSourceTests
     }
 
     [Fact]
+    public void DashboardBusyButtonsKeepTheirContentSlotAndExposeTheSharedIndicator()
+    {
+        var controls = Read("src", "GameSaveCenter.Playnite", "Controls", "NativeWpfControls.cs");
+        var production = Read("src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml");
+        var dashboard = Read("src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml");
+
+        Assert.Contains("IsBusyProperty", controls);
+        Assert.Contains("x:Name=\"BusyIndicatorHost\"", production);
+        Assert.Contains("<Trigger Property=\"IsBusy\" Value=\"True\">", production);
+        Assert.Contains("ContentPresenter Content=\"{TemplateBinding Content}\"", production);
+        Assert.Contains("IsBusy=\"{Binding IsBusy}\"", dashboard);
+        Assert.Equal(3, dashboard.Split(new[] { "IsBusy=\"{Binding IsBusy}\"" }, StringSplitOptions.None).Length - 1);
+    }
+
+    [Fact]
     public void MediaInboxKeepsAReadablePrimaryViewportBeforePageOverflow()
     {
         var view = Read("src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml");

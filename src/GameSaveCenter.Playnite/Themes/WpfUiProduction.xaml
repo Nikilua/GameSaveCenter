@@ -783,6 +783,25 @@
                                     CornerRadius="14"
                                     Opacity="0"
                                     IsHitTestVisible="False"/>
+                            <!-- Busy is an overlay rather than a content swap: the command's
+                                 label and measured slot remain stable while the real dashboard
+                                 busy state is active. This keeps the visual acknowledgment from
+                                 delaying or changing the command's layout contract. -->
+                            <Border x:Name="BusyIndicatorHost"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom"
+                                    Margin="0,0,9,5"
+                                    IsHitTestVisible="False"
+                                    Visibility="Collapsed">
+                                <ProgressBar Width="20"
+                                             Height="3"
+                                             Minimum="0"
+                                             Maximum="1"
+                                             IsIndeterminate="True"
+                                             Foreground="{DynamicResource GscAccentBrush}"
+                                             Background="{DynamicResource GscAccentTintBrush}"
+                                             BorderThickness="0"/>
+                            </Border>
                             <!-- Stretch gives the shared text template a bounded measure so
                                  its ellipsis can work at narrow responsive widths. -->
                             <ContentPresenter Content="{TemplateBinding Content}"
@@ -858,6 +877,9 @@
                         <Trigger Property="IsKeyboardFocusWithin" Value="True">
                             <Setter TargetName="FocusOverlay" Property="Opacity" Value="1"/>
                             <Setter TargetName="ButtonChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsBusy" Value="True">
+                            <Setter TargetName="BusyIndicatorHost" Property="Visibility" Value="Visible"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <!-- Keep disabled labels readable after the chrome alpha is

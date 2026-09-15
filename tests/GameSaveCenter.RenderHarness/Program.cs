@@ -315,6 +315,30 @@ public static class Program
             return probeExitCode;
         }
 
+        if (args.Length > 0 && args[0].Equals("buttonbusyprobe", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "button-busy-probe");
+            Directory.CreateDirectory(outputRoot);
+            var probeExitCode = 0;
+            var probeThread = new Thread(() =>
+            {
+                var app = new Application();
+                app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+                var report = new StringBuilder();
+                s_problems.Clear();
+                RunButtonBusyProbe(outputRoot, report);
+                File.WriteAllText(Path.Combine(outputRoot, "button-busy-probe-report.txt"), report.ToString());
+                Console.WriteLine(report.ToString());
+                probeExitCode = s_problems.Count == 0 ? 0 : 1;
+            });
+            probeThread.SetApartmentState(ApartmentState.STA);
+            probeThread.Start();
+            probeThread.Join();
+            return probeExitCode;
+        }
+
         if (args.Length > 0 && args[0].Equals("overviewedges", StringComparison.OrdinalIgnoreCase))
         {
             var outputRoot = args.Length > 1
@@ -5140,6 +5164,73 @@ public static class Program
                 Directory.Delete(settingsFixtureRoot, true);
             }
             catch { }
+        }
+    }
+
+    private static void RunButtonBusyProbe(string outputRoot, StringBuilder report)
+    {
+        report.AppendLine("Production button busy-state probe (controlled STA WPF surface)");
+        var resourceHost = new GameSaveCenter.Playnite.Views.Development.UiFrameworkProbeView();
+        var host = new Grid
+        {
+            Width = 520,
+            Height = 160,
+            ClipToBounds = true
+        };
+        host.Resources.MergedDictionaries.Add(resourceHost.Resources);
+        var button = new GameSaveCenter.Playnite.Controls.Button
+        {
+            Width = 180,
+            Height = 44,
+            Margin = new Thickness(24, 54, 0, 0),
+            HorizontalAlignment = HorizontalAlignment.Left,
+            VerticalAlignment = VerticalAlignment.Top,
+            Content = "全部备份",
+            Style = (Style)resourceHost.Resources["GscWpfUiPrimaryButton"]
+        };
+        host.Children.Add(button);
+
+        try
+        {
+            foreach (var (themeName, themeMode) in ThemeModes)
+            {
+                ApplyThemePalette(resourceHost, themeMode, glassEnabled: true, motionEnabled: true);
+                host.Background = CreateHarnessBackground(resourceHost);
+                host.Measure(new Size(host.Width, host.Height));
+                host.Arrange(new Rect(0, 0, host.Width, host.Height));
+                host.UpdateLayout();
+                button.ApplyTemplate();
+                var normalWidth = button.ActualWidth;
+                var contentText = FindVisualChildren<TextBlock>(button)
+                    .FirstOrDefault(text => text.Text == "全部备份");
+                SavePng(host, Path.Combine(outputRoot, $"button-busy-{themeName}-normal.png"));
+
+                button.IsBusy = true;
+                host.UpdateLayout();
+                var indicatorHost = button.Template?.FindName("BusyIndicatorHost", button) as FrameworkElement;
+                var indicator = FindVisualChildren<ProgressBar>(button).FirstOrDefault(progress => progress.IsIndeterminate);
+                var busyWidth = button.ActualWidth;
+                var stable = Math.Abs(normalWidth - busyWidth) < 0.01;
+                var visible = indicatorHost?.Visibility == Visibility.Visible;
+                var contentStable = contentText != null && contentText.Text == "全部备份";
+                SavePng(host, Path.Combine(outputRoot, $"button-busy-{themeName}-busy.png"));
+                report.AppendLine(
+                    $"Busy[{themeName}] normalWidth={normalWidth:0.##} busyWidth={busyWidth:0.##} "
+                    + $"widthStable={stable} indicatorVisible={visible} indeterminate={indicator?.IsIndeterminate == true} "
+                    + $"contentStable={contentStable}");
+                if (!stable || !visible || indicator == null || !contentStable)
+                    throw new InvalidOperationException($"Busy button contract failed for {themeName}.");
+                button.IsBusy = false;
+            }
+
+            report.AppendLine("BusyStateBoundary: production IsBusy binding is covered for the dashboard header; real command timing and Playnite host input remain host checks");
+            report.AppendLine("ButtonBusyProbe OK");
+        }
+        catch (Exception ex)
+        {
+            s_problems.Add("ButtonBusyProbe failed: " + ex.Message);
+            report.AppendLine("ButtonBusyProbe FAILED");
+            report.AppendLine(ex.ToString());
         }
     }
 

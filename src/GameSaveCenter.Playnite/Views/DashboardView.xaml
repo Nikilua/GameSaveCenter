@@ -776,13 +776,13 @@
                           CanContentScroll="False" Focusable="False">
                 <StackPanel x:Name="TopActionsPanel" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
                     <!-- Icon-only: global refresh remains discoverable to mouse, keyboard and automation. -->
-                    <ui:Button x:Name="TopRefreshButton" Style="{DynamicResource GscIconOnlyToolbarButton}" AutomationProperties.Name="刷新全部状态" ToolTip="刷新全部状态" Command="{Binding RefreshCommand}">
+                    <ui:Button x:Name="TopRefreshButton" Style="{DynamicResource GscIconOnlyToolbarButton}" IsBusy="{Binding IsBusy}" AutomationProperties.Name="刷新全部状态" ToolTip="刷新全部状态" Command="{Binding RefreshCommand}">
                         <ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconBtnRefresh}" Width="18" Height="18"/>
                     </ui:Button>
-                    <ui:Button x:Name="TopBackupAllButton" Style="{StaticResource GscRedesignPrimaryHeaderVisualButton}" AutomationProperties.Name="备份全部游戏" ToolTip="备份全部游戏" Command="{Binding BackupAllCommand}">
+                    <ui:Button x:Name="TopBackupAllButton" Style="{StaticResource GscRedesignPrimaryHeaderVisualButton}" IsBusy="{Binding IsBusy}" AutomationProperties.Name="备份全部游戏" ToolTip="备份全部游戏" Command="{Binding BackupAllCommand}">
                         <Grid VerticalAlignment="Center"><Grid.ColumnDefinitions><ColumnDefinition Width="18"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconActionBackup}" Width="18" Height="18" Foreground="{DynamicResource GscInfoBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/><TextBlock x:Name="TopBackupAllLabel" Grid.Column="1" Text="全部备份" Margin="8,0,0,0" VerticalAlignment="Center"/></Grid>
                     </ui:Button>
-                    <ui:Button x:Name="TopMediaSyncButton" Style="{StaticResource GscRedesignHeaderVisualButton}" AutomationProperties.Name="同步媒体" ToolTip="同步媒体" Command="{Binding SyncMediaCommand}">
+                    <ui:Button x:Name="TopMediaSyncButton" Style="{StaticResource GscRedesignHeaderVisualButton}" IsBusy="{Binding IsBusy}" AutomationProperties.Name="同步媒体" ToolTip="同步媒体" Command="{Binding SyncMediaCommand}">
                         <Grid VerticalAlignment="Center"><Grid.ColumnDefinitions><ColumnDefinition Width="18"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconActionRefresh}" Width="18" Height="18" Foreground="{DynamicResource GscPrimaryTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/><TextBlock x:Name="TopMediaSyncLabel" Grid.Column="1" Text="同步媒体" Margin="8,0,0,0" VerticalAlignment="Center"/></Grid>
                     </ui:Button>
                     <ui:Button x:Name="TopTrainerImportButton" Style="{StaticResource GscRedesignHeaderVisualButton}" AutomationProperties.Name="导入修改器" ToolTip="导入修改器" Command="{Binding ImportTrainerCommand}" Visibility="Collapsed">

@@ -39,6 +39,15 @@ namespace GameSaveCenter.Playnite.Controls
             get => GetValue(IconProperty);
             set => SetValue(IconProperty, value);
         }
+
+        public static readonly DependencyProperty IsBusyProperty =
+            DependencyProperty.Register("IsBusy", typeof(bool), typeof(Button), new PropertyMetadata(false));
+
+        public bool IsBusy
+        {
+            get => (bool)GetValue(IsBusyProperty);
+            set => SetValue(IsBusyProperty, value);
+        }
     }
 
     public class Card : ContentControl
