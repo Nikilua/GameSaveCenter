@@ -417,6 +417,33 @@ public static class Program
             return probeExitCode;
         }
 
+        if (args.Length > 0 && args[0].Equals("motioncycleprobe", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "motion-cycle-probe");
+            Directory.CreateDirectory(outputRoot);
+            var probeExitCode = 0;
+            var probeThread = new Thread(() =>
+            {
+                var app = new Application
+                {
+                    ShutdownMode = ShutdownMode.OnExplicitShutdown
+                };
+                app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+                var report = new StringBuilder();
+                s_problems.Clear();
+                RunMotionCycleProbe(outputRoot, report);
+                File.WriteAllText(Path.Combine(outputRoot, "motion-cycle-probe-report.txt"), report.ToString());
+                Console.WriteLine(report.ToString());
+                probeExitCode = s_problems.Count == 0 ? 0 : 1;
+            });
+            probeThread.SetApartmentState(ApartmentState.STA);
+            probeThread.Start();
+            probeThread.Join();
+            return probeExitCode;
+        }
+
         if (args.Length > 0 && args[0].Equals("overviewedges", StringComparison.OrdinalIgnoreCase))
         {
             var outputRoot = args.Length > 1
@@ -5681,6 +5708,113 @@ public static class Program
         {
             s_problems.Add("MotionHotChangeProbe failed: " + ex.Message);
             report.AppendLine("MotionHotChangeProbe FAILED");
+            report.AppendLine(ex.ToString());
+        }
+        finally
+        {
+            window?.Close();
+        }
+    }
+
+    private static void RunMotionCycleProbe(string outputRoot, StringBuilder report)
+    {
+        report.AppendLine("Production shell Loaded/Unloaded motion cycle probe (controlled STA WPF Window)");
+        AppendRunMetadata(report, "motioncycleprobe", "ControlledWpfWindow", "light,dark", "production shell; 100 Loaded/Unloaded cycles; audit-only GscMotionNormal=700ms override; 900x640 DIP");
+        Window? window = null;
+        try
+        {
+            foreach (var (themeName, themeMode) in ThemeModes)
+            {
+                var shell = new AcrylicProductionShellView
+                {
+                    DataContext = new FakeDashboardData(8),
+                    MotionEnabledProvider = () => true,
+                    SidebarCollapsedProvider = () => false
+                };
+                var host = new ContentControl
+                {
+                    Content = shell
+                };
+                var loadedCount = 0;
+                var unloadedCount = 0;
+                shell.Loaded += (_, __) => loadedCount++;
+                shell.Unloaded += (_, __) => unloadedCount++;
+                window = new Window
+                {
+                    Width = 900,
+                    Height = 640,
+                    WindowStyle = WindowStyle.None,
+                    ResizeMode = ResizeMode.NoResize,
+                    ShowInTaskbar = false,
+                    ShowActivated = false,
+                    Left = -32000,
+                    Top = -32000,
+                    Opacity = 0.01,
+                    Content = host
+                };
+                window.Show();
+                window.UpdateLayout();
+                var layer = shell.FindName("SidebarContentLayer") as FrameworkElement
+                    ?? throw new InvalidOperationException("Motion cycle probe could not find SidebarContentLayer.");
+                var button = shell.SidebarCollapseButtonForAudit;
+                ApplyThemePalette(shell, themeMode, glassEnabled: true, motionEnabled: true);
+                shell.Resources["GscMotionNormal"] = new Duration(TimeSpan.FromMilliseconds(700));
+                window.UpdateLayout();
+                SavePng(shell, Path.Combine(outputRoot, $"motion-cycle-{themeName}-loaded.png"));
+
+                for (var cycle = 0; cycle < 100; cycle++)
+                {
+                    button.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                    PumpDispatcher(35);
+                    if (!shell.SidebarTransitionRunningForAudit)
+                        throw new InvalidOperationException($"Motion cycle {themeName} #{cycle + 1} did not start a transition.");
+                    if (cycle == 0)
+                        SavePng(shell, Path.Combine(outputRoot, $"motion-cycle-{themeName}-active.png"));
+
+                    host.Content = null;
+                    window.UpdateLayout();
+                    PumpDispatcher(5);
+                    var unloadedTranslate = layer.RenderTransform as TranslateTransform;
+                    var unloadedAnimated = DependencyPropertyHelper.GetValueSource(layer, UIElement.OpacityProperty).IsAnimated
+                        || (unloadedTranslate != null && DependencyPropertyHelper.GetValueSource(unloadedTranslate, TranslateTransform.XProperty).IsAnimated);
+                    if (shell.IsLoaded || shell.SidebarTransitionRunningForAudit || unloadedAnimated
+                        || Math.Abs(layer.Opacity - 1) > 0.001
+                        || (unloadedTranslate != null && Math.Abs(unloadedTranslate.X) > 0.001))
+                    {
+                        throw new InvalidOperationException($"Motion cycle {themeName} #{cycle + 1} left an active visual after unload.");
+                    }
+
+                    host.Content = shell;
+                    window.UpdateLayout();
+                    PumpDispatcher(5);
+                    if (!shell.IsLoaded || shell.SidebarTransitionRunningForAudit)
+                        throw new InvalidOperationException($"Motion cycle {themeName} #{cycle + 1} did not reload cleanly.");
+                }
+
+                SavePng(shell, Path.Combine(outputRoot, $"motion-cycle-{themeName}-reloaded.png"));
+                host.Content = null;
+                window.UpdateLayout();
+                PumpDispatcher(5);
+                report.AppendLine(
+                    $"Cycle[{themeName}] cycles=100 loaded={loadedCount} unloaded={unloadedCount} "
+                    + $"finalLoaded={shell.IsLoaded} transitionRunning={shell.SidebarTransitionRunningForAudit} opacity={layer.Opacity:0.###}");
+                if (loadedCount != 101 || unloadedCount != 101 || shell.IsLoaded
+                    || shell.SidebarTransitionRunningForAudit)
+                {
+                    throw new InvalidOperationException($"Motion cycle {themeName} event counts did not return to the expected baseline.");
+                }
+
+                window.Close();
+                window = null;
+            }
+
+            report.AppendLine("MotionCycleBoundary: 100 controlled production shell Loaded/Unloaded cycles returned event counts to 101/101 and left no sidebar animation clocks; shell has no Timer/Rendering subscription, while Dashboard/Playnite host notification and physical screen evidence remain separate checks");
+            report.AppendLine("MotionCycleProbe OK");
+        }
+        catch (Exception ex)
+        {
+            s_problems.Add("MotionCycleProbe failed: " + ex.Message);
+            report.AppendLine("MotionCycleProbe FAILED");
             report.AppendLine(ex.ToString());
         }
         finally

@@ -289,6 +289,19 @@ public sealed class UiFinesseRound2ControlSourceTests
     }
 
     [Fact]
+    public void MotionCycleProbeCoversOneHundredLoadedAndUnloadedProductionShellCycles()
+    {
+        var harness = Read("tests", "GameSaveCenter.RenderHarness", "Program.cs");
+
+        Assert.Contains("args[0].Equals(\"motioncycleprobe\", StringComparison.OrdinalIgnoreCase)", harness);
+        Assert.Contains("RunMotionCycleProbe(outputRoot, report)", harness);
+        Assert.Contains("for (var cycle = 0; cycle < 100; cycle++)", harness);
+        Assert.Contains("host.Content = null;", harness);
+        Assert.Contains("loadedCount != 101 || unloadedCount != 101", harness);
+        Assert.Contains("MotionCycleBoundary", harness);
+    }
+
+    [Fact]
     public void EnduranceProbeUsesARealDispatcherWindowWithoutForcedGc()
     {
         var harness = Read("tests", "GameSaveCenter.RenderHarness", "Program.cs");
