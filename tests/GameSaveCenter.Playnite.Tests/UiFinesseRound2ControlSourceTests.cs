@@ -63,6 +63,16 @@ public sealed class UiFinesseRound2ControlSourceTests
     }
 
     [Fact]
+    public void DangerousConfirmationKeepsCancelAsTheInitialFocusTarget()
+    {
+        var dashboardCode = Read("src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml.cs");
+
+        Assert.Contains("DialogConfirmButton.SetResourceReference(Control.BackgroundProperty, request.IsDangerous ? \"GscErrorBrush\" : \"GscAccentBrush\")", dashboardCode);
+        Assert.Contains("OpenDialog(request.IsDangerous ? DialogCancelButton : DialogConfirmButton)", dashboardCode);
+        Assert.Contains("if (IsLoaded && DialogOverlay.Visibility == Visibility.Visible) initialFocus.Focus();", dashboardCode);
+    }
+
+    [Fact]
     public void MediaInboxKeepsAReadablePrimaryViewportBeforePageOverflow()
     {
         var view = Read("src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml");

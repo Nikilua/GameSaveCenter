@@ -339,6 +339,30 @@ public static class Program
             return probeExitCode;
         }
 
+        if (args.Length > 0 && args[0].Equals("dangerdialogprobe", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "danger-dialog-probe");
+            Directory.CreateDirectory(outputRoot);
+            var probeExitCode = 0;
+            var probeThread = new Thread(() =>
+            {
+                var app = new Application();
+                app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+                var report = new StringBuilder();
+                s_problems.Clear();
+                RunDangerDialogProbe(outputRoot, report);
+                File.WriteAllText(Path.Combine(outputRoot, "danger-dialog-probe-report.txt"), report.ToString());
+                Console.WriteLine(report.ToString());
+                probeExitCode = s_problems.Count == 0 ? 0 : 1;
+            });
+            probeThread.SetApartmentState(ApartmentState.STA);
+            probeThread.Start();
+            probeThread.Join();
+            return probeExitCode;
+        }
+
         if (args.Length > 0 && args[0].Equals("overviewedges", StringComparison.OrdinalIgnoreCase))
         {
             var outputRoot = args.Length > 1
@@ -5232,6 +5256,156 @@ public static class Program
             report.AppendLine("ButtonBusyProbe FAILED");
             report.AppendLine(ex.ToString());
         }
+    }
+
+    private static void RunDangerDialogProbe(string outputRoot, StringBuilder report)
+    {
+        report.AppendLine("Production dangerous dialog layout probe (controlled STA WPF surface)");
+        var application = Application.Current;
+        var previousShutdownMode = application?.ShutdownMode;
+        Window? window = null;
+        try
+        {
+            if (application != null)
+                application.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+
+            var resourceHost = new GameSaveCenter.Playnite.Views.Development.UiFrameworkProbeView();
+            var root = new Grid
+            {
+                Width = 680,
+                Height = 360,
+                ClipToBounds = true
+            };
+            root.Resources.MergedDictionaries.Add(resourceHost.Resources);
+            var dialog = new Border
+            {
+                Width = 560,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Style = (Style)resourceHost.Resources["GscRedesignFeedbackDialogCard"],
+                Padding = new Thickness(22),
+                Opacity = 1
+            };
+            var layout = new Grid();
+            layout.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            layout.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            layout.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            layout.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            var title = new TextBlock
+            {
+                Text = "确认删除存档",
+                FontSize = 18,
+                FontWeight = FontWeights.SemiBold
+            };
+            title.SetResourceReference(TextElement.ForegroundProperty, "GscPrimaryTextBrush");
+            var message = new TextBlock
+            {
+                Text = "此操作将删除当前选中的本地归档，但不会影响 Playnite 游戏库。",
+                TextWrapping = TextWrapping.Wrap,
+                Margin = new Thickness(0, 12, 0, 0)
+            };
+            message.SetResourceReference(TextElement.ForegroundProperty, "GscSecondaryTextBrush");
+            var divider = new Border
+            {
+                Height = 1,
+                Margin = new Thickness(0, 18, 0, 16)
+            };
+            divider.SetResourceReference(Control.BackgroundProperty, "GscDividerBrush");
+            var actions = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                HorizontalAlignment = HorizontalAlignment.Right
+            };
+            var cancel = new System.Windows.Controls.Button
+            {
+                Content = "取消",
+                MinWidth = 76,
+                Style = (Style)resourceHost.Resources["GscButtonBase"],
+                Margin = new Thickness(0, 0, 8, 0)
+            };
+            var danger = new System.Windows.Controls.Button
+            {
+                Content = "删除存档",
+                MinWidth = 100,
+                Style = (Style)resourceHost.Resources["GscButtonBase"]
+            };
+            danger.SetResourceReference(Control.BackgroundProperty, "GscErrorBrush");
+            danger.SetResourceReference(Control.BorderBrushProperty, "GscErrorBrush");
+            actions.Children.Add(cancel);
+            actions.Children.Add(danger);
+            layout.Children.Add(title);
+            Grid.SetRow(message, 1);
+            layout.Children.Add(message);
+            Grid.SetRow(divider, 2);
+            layout.Children.Add(divider);
+            Grid.SetRow(actions, 3);
+            layout.Children.Add(actions);
+            dialog.Child = layout;
+            root.Children.Add(dialog);
+            window = new Window
+            {
+                Width = root.Width,
+                Height = root.Height,
+                WindowStyle = WindowStyle.None,
+                ResizeMode = ResizeMode.NoResize,
+                ShowInTaskbar = false,
+                ShowActivated = false,
+                Opacity = 1,
+                Content = root
+            };
+            window.Show();
+            window.UpdateLayout();
+
+            foreach (var (themeName, themeMode) in ThemeModes)
+            {
+                ApplyThemePalette(resourceHost, themeMode, glassEnabled: true, motionEnabled: true);
+                root.Background = CreateHarnessBackground(resourceHost);
+                window.UpdateLayout();
+                cancel.Focus();
+                PumpDispatcher(80);
+                var cancelBounds = cancel.TransformToAncestor(root).TransformBounds(new Rect(0, 0, cancel.ActualWidth, cancel.ActualHeight));
+                var dangerBounds = danger.TransformToAncestor(root).TransformBounds(new Rect(0, 0, danger.ActualWidth, danger.ActualHeight));
+                var cancelFocused = cancel.IsKeyboardFocusWithin;
+                var gap = dangerBounds.Left - cancelBounds.Right;
+                SavePng(root, Path.Combine(outputRoot, $"danger-dialog-{themeName}.png"));
+                report.AppendLine(
+                    $"Dialog[{themeName}] cancelFocused={cancelFocused} dialogWidth={dialog.ActualWidth:0.##} "
+                    + $"cancel={FormatRect(cancelBounds)} danger={FormatRect(dangerBounds)} gap={gap:0.##} dangerFirstFocus=false");
+                if (!cancelFocused || dialog.ActualWidth <= 0 || gap <= 0)
+                    throw new InvalidOperationException($"Danger dialog layout contract failed for {themeName}.");
+            }
+
+            report.AppendLine("DangerDialogBoundary: production resource layout and cancel-first focus are covered; business confirmation completion and real Playnite host input remain host checks");
+            report.AppendLine("DangerDialogProbe OK");
+        }
+        catch (Exception ex)
+        {
+            s_problems.Add("DangerDialogProbe failed: " + ex.Message);
+            report.AppendLine("DangerDialogProbe FAILED");
+            report.AppendLine(ex.ToString());
+        }
+        finally
+        {
+            window?.Close();
+            if (application != null && previousShutdownMode.HasValue)
+                application.ShutdownMode = previousShutdownMode.Value;
+        }
+    }
+
+    private static void PumpDispatcher(int milliseconds)
+    {
+        var frame = new DispatcherFrame();
+        var timer = new DispatcherTimer(DispatcherPriority.Background)
+        {
+            Interval = TimeSpan.FromMilliseconds(Math.Max(1, milliseconds))
+        };
+        timer.Tick += (_, __) =>
+        {
+            timer.Stop();
+            frame.Continue = false;
+        };
+        timer.Start();
+        Dispatcher.PushFrame(frame);
     }
 
     private static void RunSettingsThemeTransitionProbe(string outputRoot, StringBuilder report)
