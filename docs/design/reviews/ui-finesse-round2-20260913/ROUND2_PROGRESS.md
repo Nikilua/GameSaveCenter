@@ -220,3 +220,4 @@
 - 当前代码基线为 `37f92f7`。隔离 Release 构建与全量测试通过：XAML `24/24`、构建 `0 warning/0 error`、Core `83/83`、Worker `311/311`、Playnite `501/558`（57 skip），失败 `0`；Q00 假阳性回归和新的宿主证据源契约均通过。
 - `37f92f7` 的真实宿主产物为 `artifacts/ui-host-audit-round2-fp-final6-20260915`：summary 的 Dashboard/Settings 均为 `EmbeddedPlaynite`，`HighGateCount=0`，29 个 Dashboard 视口、2 个滚动面、1 个 Settings 视口，metadata/资源快照绑定完整 SHA，官方 shutdown 已清理隔离进程。
 - `cc63523` 早期 CEF 初始化失败和 `--no-sandbox --disable-gpu` 诊断仍作为失败边界保留；本次成功重跑不覆盖 Q24-03 单屏、低于 560 DIP 短窗、IME/读屏、真实输入和 ETW 性能边界。
+- 本阶段在文档 HEAD `0fb597e` 以隔离 3 游戏库重跑非空首页宿主：第一次整目录复制带入旧运行态，第二次改用干净配置/主题/扩展数据与 `library`，仍在主窗口前命中 CEF `mojo platform_channel` `Access denied (0x5)`；`artifacts/ui-host-audit-round2-fp-data2-20260915/host-startup-blocker.json` 固定 `VisualEvidenceCaptured=false`、`CountsAsVisualPass=false`，没有升级 Q20-01～Q20-08，208 行状态保持不变。
