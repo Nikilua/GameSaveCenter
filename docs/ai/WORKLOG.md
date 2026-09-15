@@ -9,6 +9,7 @@
 - RenderHarness Release 构建 `0 warning / 0 error`；用当前提交重跑 `statefixtures`，结果 `statefixtures OK`，160 条记录/160 张截图，覆盖四个生产状态页、适用六态、双主题和四个 DIP 尺寸。只保留报告和四张代表截图为 [`Q17-04-STATE-FIXTURES-20260915.md`](../design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q17-04-STATE-FIXTURES-20260915.md)，随后清理 `.tmp/statefixtures-round2-20260915-q17`。
 - 真实 Worker 进度节奏、悬停/卸载动画、Playnite 宿主像素、ETW/Rendering 生命周期仍不由该夹具替代；账本保持 Q17-04/Q18-03 视觉或宿主待验。
 - 修复后串行 Release 全量测试通过：Core `83/83`、Worker `310/311`（1 skip）、Playnite `484/547`（63 skip），失败 `0`；新增的 2 个 Playnite 回归门禁已纳入当前 Q25-08 证据页，历史 `d8fad48` 计数保留作对照。
+- 机械回查 `ROUND2_PROGRESS.md`：208/208 个预期 ID 唯一存在，无缺失、重复或多余；最终 `204 未完成 / 4 已验收`，视觉 `59 待验`，宿主 `196 外部阻塞 / 8 待验`。这些统计保留真实宿主边界，不把本轮离屏夹具升级为全账本完成。
 
 ## 2026-09-15 UI 精修 Q12-08 双主题业务空表复核
 
