@@ -20,6 +20,19 @@ public sealed class UiFinesseRound2ControlSourceTests
     }
 
     [Fact]
+    public void IndeterminateProgressStopsItsSweepWhenTheStateEnds()
+    {
+        var tokens = Read("src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml");
+
+        Assert.Contains("<Trigger Property=\"IsIndeterminate\" Value=\"True\">", tokens);
+        Assert.Contains("<BeginStoryboard x:Name=\"GscIndeterminateSweep\">", tokens);
+        Assert.Contains("<Storyboard RepeatBehavior=\"Forever\">", tokens);
+        Assert.Contains("<StopStoryboard BeginStoryboardName=\"GscIndeterminateSweep\"/>", tokens);
+        Assert.Contains("<Trigger Property=\"IsIndeterminate\" Value=\"True\">", tokens);
+        Assert.Contains("正在进行；完成时间取决于实际任务。", tokens);
+    }
+
+    [Fact]
     public void DevelopmentFixtureCoversSelectionInputPopupButtonToggleAndSliderStates()
     {
         var fixture = Read("src", "GameSaveCenter.Playnite", "Views", "Development", "UiFrameworkProbeView.xaml");

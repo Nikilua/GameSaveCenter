@@ -79,6 +79,20 @@ public sealed class UiFinesseFoundationTests
         Assert.Equal(TimeSpan.FromMilliseconds(220), canonicalDuration);
     }
 
+    [Fact]
+    public void EntranceMotionTakesOverFromTheCurrentEffectiveValue()
+    {
+        var motion = File.ReadAllText(Path.Combine(FindRepositoryRoot(), "src", "GameSaveCenter.Playnite", "Infrastructure", "GscMotion.cs"));
+
+        Assert.Contains("DependencyPropertyHelper.GetValueSource(translate, TranslateTransform.YProperty)", motion);
+        Assert.Contains("DependencyPropertyHelper.GetValueSource(element, UIElement.OpacityProperty)", motion);
+        Assert.Contains("translate.BeginAnimation(TranslateTransform.YProperty, null);", motion);
+        Assert.Contains("element.BeginAnimation(UIElement.OpacityProperty, null);", motion);
+        Assert.Contains("new DoubleAnimation(currentOpacity, 1, Normal)", motion);
+        Assert.Contains("new DoubleAnimation(currentY, 0, Slow)", motion);
+        Assert.Contains("rapid re-entry", motion);
+    }
+
     private static string FindRepositoryRoot()
     {
         var directory = new DirectoryInfo(AppContext.BaseDirectory);

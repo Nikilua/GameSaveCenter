@@ -160,11 +160,32 @@ namespace GameSaveCenter.Playnite.Infrastructure
         internal static void AnimateEntrance(FrameworkElement element, double offsetY)
         {
             var translate = GetMutableTranslateTransform(element);
-            translate.Y = offsetY;
-            element.Opacity = 0;
+            var translateSource = DependencyPropertyHelper.GetValueSource(translate, TranslateTransform.YProperty);
+            var opacitySource = DependencyPropertyHelper.GetValueSource(element, UIElement.OpacityProperty);
+            var hasActiveAnimation = translateSource.IsAnimated || opacitySource.IsAnimated;
+            var currentY = translate.Y;
+            var currentOpacity = element.Opacity;
+
+            if (hasActiveAnimation)
+            {
+                // Capture the effective values before removing the old clocks. This prevents
+                // a rapid re-entry from flashing back to the original entrance offset.
+                translate.BeginAnimation(TranslateTransform.YProperty, null);
+                element.BeginAnimation(UIElement.OpacityProperty, null);
+                translate.Y = currentY;
+                element.Opacity = currentOpacity;
+            }
+            else
+            {
+                currentY = offsetY;
+                currentOpacity = 0;
+                translate.Y = currentY;
+                element.Opacity = currentOpacity;
+            }
+
             var easing = CreateEaseOut();
-            element.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(0, 1, Normal) { EasingFunction = easing });
-            translate.BeginAnimation(TranslateTransform.YProperty, new DoubleAnimation(offsetY, 0, Slow) { EasingFunction = easing });
+            element.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(currentOpacity, 1, Normal) { EasingFunction = easing });
+            translate.BeginAnimation(TranslateTransform.YProperty, new DoubleAnimation(currentY, 0, Slow) { EasingFunction = easing });
         }
     }
 }
