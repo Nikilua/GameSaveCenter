@@ -444,6 +444,33 @@ public static class Program
             return probeExitCode;
         }
 
+        if (args.Length > 0 && args[0].Equals("motionreentryprobe", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "motion-reentry-probe");
+            Directory.CreateDirectory(outputRoot);
+            var probeExitCode = 0;
+            var probeThread = new Thread(() =>
+            {
+                var app = new Application
+                {
+                    ShutdownMode = ShutdownMode.OnExplicitShutdown
+                };
+                app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+                var report = new StringBuilder();
+                s_problems.Clear();
+                RunMotionReentryProbe(outputRoot, report);
+                File.WriteAllText(Path.Combine(outputRoot, "motion-reentry-probe-report.txt"), report.ToString());
+                Console.WriteLine(report.ToString());
+                probeExitCode = s_problems.Count == 0 ? 0 : 1;
+            });
+            probeThread.SetApartmentState(ApartmentState.STA);
+            probeThread.Start();
+            probeThread.Join();
+            return probeExitCode;
+        }
+
         if (args.Length > 0 && args[0].Equals("overviewedges", StringComparison.OrdinalIgnoreCase))
         {
             var outputRoot = args.Length > 1
@@ -5815,6 +5842,96 @@ public static class Program
         {
             s_problems.Add("MotionCycleProbe failed: " + ex.Message);
             report.AppendLine("MotionCycleProbe FAILED");
+            report.AppendLine(ex.ToString());
+        }
+        finally
+        {
+            window?.Close();
+        }
+    }
+
+    private static void RunMotionReentryProbe(string outputRoot, StringBuilder report)
+    {
+        report.AppendLine("Production shell motion reentry current-value probe (controlled STA WPF Window)");
+        AppendRunMetadata(report, "motionreentryprobe", "ControlledWpfWindow", "light,dark", "production shell; audit-only GscMotionNormal=700ms override; interrupted transition takeover; 900x640 DIP");
+        Window? window = null;
+        try
+        {
+            foreach (var (themeName, themeMode) in ThemeModes)
+            {
+                var shell = new AcrylicProductionShellView
+                {
+                    DataContext = new FakeDashboardData(8),
+                    MotionEnabledProvider = () => true,
+                    SidebarCollapsedProvider = () => false
+                };
+                window = new Window
+                {
+                    Width = 900,
+                    Height = 640,
+                    WindowStyle = WindowStyle.None,
+                    ResizeMode = ResizeMode.NoResize,
+                    ShowInTaskbar = false,
+                    ShowActivated = false,
+                    Left = -32000,
+                    Top = -32000,
+                    Opacity = 0.01,
+                    Content = shell
+                };
+                window.Show();
+                window.UpdateLayout();
+                var layer = shell.FindName("SidebarContentLayer") as FrameworkElement
+                    ?? throw new InvalidOperationException("Motion reentry probe could not find SidebarContentLayer.");
+                var button = shell.SidebarCollapseButtonForAudit;
+                ApplyThemePalette(shell, themeMode, glassEnabled: true, motionEnabled: true);
+                shell.Resources["GscMotionNormal"] = new Duration(TimeSpan.FromMilliseconds(700));
+                window.UpdateLayout();
+
+                button.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                PumpDispatcher(210);
+                var interruptedWidth = shell.SidebarWidthForAudit;
+                if (!shell.SidebarTransitionRunningForAudit || interruptedWidth <= 78 || interruptedWidth >= 270)
+                    throw new InvalidOperationException($"Motion reentry probe did not reach an active interrupted {themeName} state.");
+                SavePng(shell, Path.Combine(outputRoot, $"motion-reentry-{themeName}-interrupted.png"));
+
+                button.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                var immediateWidth = shell.SidebarWidthForAudit;
+                SavePng(shell, Path.Combine(outputRoot, $"motion-reentry-{themeName}-takeover.png"));
+                if (!shell.SidebarTransitionRunningForAudit || Math.Abs(immediateWidth - interruptedWidth) > 1.5)
+                    throw new InvalidOperationException($"Motion reentry probe jumped from the current {themeName} value before the new animation.");
+
+                PumpDispatcher(210);
+                var reentryMidWidth = shell.SidebarWidthForAudit;
+                SavePng(shell, Path.Combine(outputRoot, $"motion-reentry-{themeName}-mid.png"));
+                PumpDispatcher(570);
+                var finalTranslate = layer.RenderTransform as TranslateTransform;
+                var finalAnimated = DependencyPropertyHelper.GetValueSource(layer, UIElement.OpacityProperty).IsAnimated
+                    || (finalTranslate != null && DependencyPropertyHelper.GetValueSource(finalTranslate, TranslateTransform.XProperty).IsAnimated);
+                SavePng(shell, Path.Combine(outputRoot, $"motion-reentry-{themeName}-final.png"));
+                report.AppendLine(
+                    $"Reentry[{themeName}] interruptedWidth={interruptedWidth:0.##} immediateWidth={immediateWidth:0.##} "
+                    + $"midWidth={reentryMidWidth:0.##} finalWidth={shell.SidebarWidthForAudit:0.##} "
+                    + $"finalX={finalTranslate?.X:0.###} finalAnimated={finalAnimated}");
+                if (reentryMidWidth <= interruptedWidth + 5
+                    || shell.SidebarWidthForAudit != 270
+                    || shell.SidebarTransitionRunningForAudit
+                    || (finalTranslate != null && Math.Abs(finalTranslate.X) > 0.001)
+                    || finalAnimated)
+                {
+                    throw new InvalidOperationException($"Motion reentry probe did not reach the latest {themeName} target cleanly.");
+                }
+
+                window.Close();
+                window = null;
+            }
+
+            report.AppendLine("MotionReentryBoundary: the second production sidebar intent started from the currently rendered width without a reset to the obsolete endpoint; real Playnite input and physical screen frames remain host checks");
+            report.AppendLine("MotionReentryProbe OK");
+        }
+        catch (Exception ex)
+        {
+            s_problems.Add("MotionReentryProbe failed: " + ex.Message);
+            report.AppendLine("MotionReentryProbe FAILED");
             report.AppendLine(ex.ToString());
         }
         finally

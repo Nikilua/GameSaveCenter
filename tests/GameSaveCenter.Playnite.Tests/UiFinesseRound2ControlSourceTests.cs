@@ -302,6 +302,19 @@ public sealed class UiFinesseRound2ControlSourceTests
     }
 
     [Fact]
+    public void MotionReentryProbeStartsTheLatestIntentFromTheRenderedWidth()
+    {
+        var harness = Read("tests", "GameSaveCenter.RenderHarness", "Program.cs");
+
+        Assert.Contains("args[0].Equals(\"motionreentryprobe\", StringComparison.OrdinalIgnoreCase)", harness);
+        Assert.Contains("RunMotionReentryProbe(outputRoot, report)", harness);
+        Assert.Contains("var immediateWidth = shell.SidebarWidthForAudit;", harness);
+        Assert.Contains("Math.Abs(immediateWidth - interruptedWidth) > 1.5", harness);
+        Assert.Contains("motion-reentry-{themeName}-takeover.png", harness);
+        Assert.Contains("MotionReentryBoundary", harness);
+    }
+
+    [Fact]
     public void EnduranceProbeUsesARealDispatcherWindowWithoutForcedGc()
     {
         var harness = Read("tests", "GameSaveCenter.RenderHarness", "Program.cs");
