@@ -88,6 +88,18 @@ public sealed class UiFinesseRound2ControlSourceTests
     }
 
     [Fact]
+    public void SelectedAcrylicNavigationKeepsItsStrongStateWhenHovered()
+    {
+        var resources = Read("src", "GameSaveCenter.Playnite", "Themes", "AcrylicProductionResources.xaml");
+
+        Assert.Contains("<MultiTrigger>", resources);
+        Assert.Contains("<Condition Property=\"IsChecked\" Value=\"True\"/>", resources);
+        Assert.Contains("<Condition Property=\"IsMouseOver\" Value=\"True\"/>", resources);
+        Assert.Contains("GscAccentTintStrongBrush", resources);
+        Assert.Contains("GscSelectionTextBrush", resources);
+    }
+
+    [Fact]
     public void MediaInboxKeepsAReadablePrimaryViewportBeforePageOverflow()
     {
         var view = Read("src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml");

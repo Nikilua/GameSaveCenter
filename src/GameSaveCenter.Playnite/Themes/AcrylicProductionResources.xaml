@@ -40,6 +40,18 @@
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="NavChrome" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
                         </Trigger>
+                        <!-- Selection owns the stronger fill even while the pointer is over
+                             the current page.  Keeping this as the last state rule prevents
+                             the hover tint from washing out the selected navigation item. -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked" Value="True"/>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="NavChrome" Property="Background" Value="{DynamicResource GscAccentTintStrongBrush}"/>
+                            <Setter TargetName="NavChrome" Property="BorderBrush" Value="{DynamicResource GscAccentTintStrongBrush}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
+                        </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
