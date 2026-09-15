@@ -1,0 +1,327 @@
+GameSaveCenter production workspace state fixtures
+Generated: 2026-09-15 08:22:23
+States: Ready, Empty, Loading, Error, Stale, Offline
+Pages: MediaInbox, MediaDetails, MaintenanceAudit
+
+  binding-surface: all required media/maintenance state properties present
+  MediaInbox fixture state=Ready theme=Light size=1040x700: target=712x544, dataSurface=MediaInboxGrid=681x354, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  media-inbox-light-1040x700-Ready.png: 712x544 DIP, 99984 bytes
+  MediaDetails fixture state=Ready theme=Light size=1040x700: target=728x325, dataSurface=MediaGrid=697x236, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  media-details-light-1040x700-Ready.png: 728x325 DIP, 42977 bytes
+  MaintenanceAudit fixture state=Ready theme=Light size=1040x700: target=744x389, dataSurface=MaintenanceAuditFindingsGrid=741x260, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-audit-light-1040x700-Ready.png: 744x389 DIP, 39765 bytes
+  MaintenanceNextSteps fixture state=Ready theme=Light size=1040x700: target=728x621, dataSurface=missing, presenters=0, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-next-steps-light-1040x700-Ready.png: 728x621 DIP, 102500 bytes
+  MediaInbox fixture state=Empty theme=Light size=1040x700: target=712x402, dataSurface=MediaInboxGrid=681x212, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  media-inbox-light-1040x700-Empty.png: 712x402 DIP, 45362 bytes
+  MediaDetails fixture state=Empty theme=Light size=1040x700: target=728x325, dataSurface=MediaGrid=697x236, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  media-details-light-1040x700-Empty.png: 728x325 DIP, 34120 bytes
+  MaintenanceAudit fixture state=Empty theme=Light size=1040x700: target=744x389, dataSurface=MaintenanceAuditFindingsGrid=741x345, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  maintenance-audit-light-1040x700-Empty.png: 744x389 DIP, 21554 bytes
+  MediaInbox fixture state=Loading theme=Light size=1040x700: target=712x402, dataSurface=MediaInboxGrid=681x212, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-light-1040x700-Loading.png: 712x402 DIP, 55964 bytes
+  MediaDetails fixture state=Loading theme=Light size=1040x700: target=728x325, dataSurface=MediaGrid=697x236, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-light-1040x700-Loading.png: 728x325 DIP, 41459 bytes
+  MaintenanceAudit fixture state=Loading theme=Light size=1040x700: target=744x389, dataSurface=MaintenanceAuditFindingsGrid=741x345, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-light-1040x700-Loading.png: 744x389 DIP, 24328 bytes
+  MediaInbox fixture state=Error theme=Light size=1040x700: target=712x402, dataSurface=MediaInboxGrid=681x212, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-light-1040x700-Error.png: 712x402 DIP, 63420 bytes
+  MediaDetails fixture state=Error theme=Light size=1040x700: target=728x325, dataSurface=MediaGrid=697x236, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-light-1040x700-Error.png: 728x325 DIP, 48126 bytes
+  MaintenanceAudit fixture state=Error theme=Light size=1040x700: target=744x389, dataSurface=MaintenanceAuditFindingsGrid=741x345, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-light-1040x700-Error.png: 744x389 DIP, 29797 bytes
+  MediaInbox fixture state=Stale theme=Light size=1040x700: target=712x616, dataSurface=MediaInboxGrid=681x354, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  media-inbox-light-1040x700-Stale.png: 712x616 DIP, 114855 bytes
+  MediaDetails fixture state=Stale theme=Light size=1040x700: target=728x325, dataSurface=MediaGrid=697x236, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  media-details-light-1040x700-Stale.png: 728x325 DIP, 46813 bytes
+  MaintenanceAudit fixture state=Stale theme=Light size=1040x700: target=744x389, dataSurface=MaintenanceAuditFindingsGrid=741x260, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  maintenance-audit-light-1040x700-Stale.png: 744x389 DIP, 43083 bytes
+  MaintenanceNextSteps fixture state=Stale theme=Light size=1040x700: target=728x621, dataSurface=missing, presenters=0, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-next-steps-light-1040x700-Stale.png: 728x621 DIP, 102859 bytes
+  MediaInbox fixture state=Offline theme=Light size=1040x700: target=712x402, dataSurface=MediaInboxGrid=681x212, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-light-1040x700-Offline.png: 712x402 DIP, 59716 bytes
+  MediaDetails fixture state=Offline theme=Light size=1040x700: target=728x325, dataSurface=MediaGrid=697x236, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-light-1040x700-Offline.png: 728x325 DIP, 44888 bytes
+  MaintenanceAudit fixture state=Offline theme=Light size=1040x700: target=744x389, dataSurface=MaintenanceAuditFindingsGrid=741x345, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-light-1040x700-Offline.png: 744x389 DIP, 26548 bytes
+  MediaInbox fixture state=Ready theme=Light size=1100x720: target=772x544, dataSurface=MediaInboxGrid=741x354, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  media-inbox-light-1100x720-Ready.png: 772x544 DIP, 100984 bytes
+  MediaDetails fixture state=Ready theme=Light size=1100x720: target=788x345, dataSurface=MediaGrid=757x236, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  media-details-light-1100x720-Ready.png: 788x345 DIP, 44241 bytes
+  MaintenanceAudit fixture state=Ready theme=Light size=1100x720: target=804x409, dataSurface=MaintenanceAuditFindingsGrid=801x260, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-audit-light-1100x720-Ready.png: 804x409 DIP, 42278 bytes
+  MaintenanceNextSteps fixture state=Ready theme=Light size=1100x720: target=788x621, dataSurface=missing, presenters=0, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-next-steps-light-1100x720-Ready.png: 788x621 DIP, 103302 bytes
+  MediaInbox fixture state=Empty theme=Light size=1100x720: target=772x402, dataSurface=MediaInboxGrid=741x212, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  media-inbox-light-1100x720-Empty.png: 772x402 DIP, 45748 bytes
+  MediaDetails fixture state=Empty theme=Light size=1100x720: target=788x345, dataSurface=MediaGrid=757x236, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  media-details-light-1100x720-Empty.png: 788x345 DIP, 34549 bytes
+  MaintenanceAudit fixture state=Empty theme=Light size=1100x720: target=804x409, dataSurface=MaintenanceAuditFindingsGrid=801x365, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  maintenance-audit-light-1100x720-Empty.png: 804x409 DIP, 21847 bytes
+  MediaInbox fixture state=Loading theme=Light size=1100x720: target=772x402, dataSurface=MediaInboxGrid=741x212, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-light-1100x720-Loading.png: 772x402 DIP, 56446 bytes
+  MediaDetails fixture state=Loading theme=Light size=1100x720: target=788x345, dataSurface=MediaGrid=757x236, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-light-1100x720-Loading.png: 788x345 DIP, 42993 bytes
+  MaintenanceAudit fixture state=Loading theme=Light size=1100x720: target=804x409, dataSurface=MaintenanceAuditFindingsGrid=801x365, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-light-1100x720-Loading.png: 804x409 DIP, 24771 bytes
+  MediaInbox fixture state=Error theme=Light size=1100x720: target=772x402, dataSurface=MediaInboxGrid=741x212, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-light-1100x720-Error.png: 772x402 DIP, 63836 bytes
+  MediaDetails fixture state=Error theme=Light size=1100x720: target=788x345, dataSurface=MediaGrid=757x236, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-light-1100x720-Error.png: 788x345 DIP, 48527 bytes
+  MaintenanceAudit fixture state=Error theme=Light size=1100x720: target=804x409, dataSurface=MaintenanceAuditFindingsGrid=801x365, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-light-1100x720-Error.png: 804x409 DIP, 30339 bytes
+  MediaInbox fixture state=Stale theme=Light size=1100x720: target=772x616, dataSurface=MediaInboxGrid=741x354, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  media-inbox-light-1100x720-Stale.png: 772x616 DIP, 115977 bytes
+  MediaDetails fixture state=Stale theme=Light size=1100x720: target=788x345, dataSurface=MediaGrid=757x236, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  media-details-light-1100x720-Stale.png: 788x345 DIP, 49090 bytes
+  MaintenanceAudit fixture state=Stale theme=Light size=1100x720: target=804x409, dataSurface=MaintenanceAuditFindingsGrid=801x260, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  maintenance-audit-light-1100x720-Stale.png: 804x409 DIP, 45526 bytes
+  MaintenanceNextSteps fixture state=Stale theme=Light size=1100x720: target=788x621, dataSurface=missing, presenters=0, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-next-steps-light-1100x720-Stale.png: 788x621 DIP, 103682 bytes
+  MediaInbox fixture state=Offline theme=Light size=1100x720: target=772x402, dataSurface=MediaInboxGrid=741x212, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-light-1100x720-Offline.png: 772x402 DIP, 61055 bytes
+  MediaDetails fixture state=Offline theme=Light size=1100x720: target=788x345, dataSurface=MediaGrid=757x236, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-light-1100x720-Offline.png: 788x345 DIP, 45370 bytes
+  MaintenanceAudit fixture state=Offline theme=Light size=1100x720: target=804x409, dataSurface=MaintenanceAuditFindingsGrid=801x365, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-light-1100x720-Offline.png: 804x409 DIP, 27098 bytes
+  MediaInbox fixture state=Ready theme=Light size=1366x768: target=1010x590, dataSurface=MediaInboxGrid=605x378, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  media-inbox-light-1366x768-Ready.png: 1010x590 DIP, 131815 bytes
+  MediaDetails fixture state=Ready theme=Light size=1366x768: target=1026x393, dataSurface=MediaGrid=621x270, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  media-details-light-1366x768-Ready.png: 1026x393 DIP, 55356 bytes
+  MaintenanceAudit fixture state=Ready theme=Light size=1366x768: target=1042x457, dataSurface=MaintenanceAuditFindingsGrid=665x413, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-audit-light-1366x768-Ready.png: 1042x457 DIP, 101089 bytes
+  MaintenanceNextSteps fixture state=Ready theme=Light size=1366x768: target=1026x621, dataSurface=missing, presenters=0, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-next-steps-light-1366x768-Ready.png: 1026x621 DIP, 106422 bytes
+  MediaInbox fixture state=Empty theme=Light size=1366x768: target=1010x402, dataSurface=MediaInboxGrid=979x212, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  media-inbox-light-1366x768-Empty.png: 1010x402 DIP, 47305 bytes
+  MediaDetails fixture state=Empty theme=Light size=1366x768: target=1026x393, dataSurface=MediaGrid=995x270, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  media-details-light-1366x768-Empty.png: 1026x393 DIP, 35313 bytes
+  MaintenanceAudit fixture state=Empty theme=Light size=1366x768: target=1042x457, dataSurface=MaintenanceAuditFindingsGrid=1039x413, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  maintenance-audit-light-1366x768-Empty.png: 1042x457 DIP, 23308 bytes
+  MediaInbox fixture state=Loading theme=Light size=1366x768: target=1010x402, dataSurface=MediaInboxGrid=979x212, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-light-1366x768-Loading.png: 1010x402 DIP, 58393 bytes
+  MediaDetails fixture state=Loading theme=Light size=1366x768: target=1026x393, dataSurface=MediaGrid=995x270, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-light-1366x768-Loading.png: 1026x393 DIP, 44085 bytes
+  MaintenanceAudit fixture state=Loading theme=Light size=1366x768: target=1042x457, dataSurface=MaintenanceAuditFindingsGrid=1039x413, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-light-1366x768-Loading.png: 1042x457 DIP, 26172 bytes
+  MediaInbox fixture state=Error theme=Light size=1366x768: target=1010x402, dataSurface=MediaInboxGrid=979x212, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-light-1366x768-Error.png: 1010x402 DIP, 65936 bytes
+  MediaDetails fixture state=Error theme=Light size=1366x768: target=1026x393, dataSurface=MediaGrid=995x270, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-light-1366x768-Error.png: 1026x393 DIP, 51924 bytes
+  MaintenanceAudit fixture state=Error theme=Light size=1366x768: target=1042x457, dataSurface=MaintenanceAuditFindingsGrid=1039x413, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-light-1366x768-Error.png: 1042x457 DIP, 32136 bytes
+  MediaInbox fixture state=Stale theme=Light size=1366x768: target=1010x638, dataSurface=MediaInboxGrid=605x354, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  media-inbox-light-1366x768-Stale.png: 1010x638 DIP, 145713 bytes
+  MediaDetails fixture state=Stale theme=Light size=1366x768: target=1026x393, dataSurface=MediaGrid=621x236, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  media-details-light-1366x768-Stale.png: 1026x393 DIP, 65806 bytes
+  MaintenanceAudit fixture state=Stale theme=Light size=1366x768: target=1042x457, dataSurface=MaintenanceAuditFindingsGrid=665x341, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  maintenance-audit-light-1366x768-Stale.png: 1042x457 DIP, 100542 bytes
+  MaintenanceNextSteps fixture state=Stale theme=Light size=1366x768: target=1026x621, dataSurface=missing, presenters=0, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-next-steps-light-1366x768-Stale.png: 1026x621 DIP, 106774 bytes
+  MediaInbox fixture state=Offline theme=Light size=1366x768: target=1010x402, dataSurface=MediaInboxGrid=979x212, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-light-1366x768-Offline.png: 1010x402 DIP, 62723 bytes
+  MediaDetails fixture state=Offline theme=Light size=1366x768: target=1026x393, dataSurface=MediaGrid=995x270, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-light-1366x768-Offline.png: 1026x393 DIP, 47818 bytes
+  MaintenanceAudit fixture state=Offline theme=Light size=1366x768: target=1042x457, dataSurface=MaintenanceAuditFindingsGrid=1039x413, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-light-1366x768-Offline.png: 1042x457 DIP, 28443 bytes
+  MediaInbox fixture state=Ready theme=Light size=2560x1440: target=2204x1301, dataSurface=MediaInboxGrid=1799x1032, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  media-inbox-light-2560x1440-Ready.png: 2204x1301 DIP, 236880 bytes
+  MediaDetails fixture state=Ready theme=Light size=2560x1440: target=2220x1053, dataSurface=MediaGrid=1815x930, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  media-details-light-2560x1440-Ready.png: 2220x1053 DIP, 82365 bytes
+  MaintenanceAudit fixture state=Ready theme=Light size=2560x1440: target=2236x1129, dataSurface=MaintenanceAuditFindingsGrid=1859x1085, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-audit-light-2560x1440-Ready.png: 2236x1129 DIP, 179624 bytes
+  MaintenanceNextSteps fixture state=Ready theme=Light size=2560x1440: target=2220x621, dataSurface=missing, presenters=0, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-next-steps-light-2560x1440-Ready.png: 2220x621 DIP, 116231 bytes
+  MediaInbox fixture state=Empty theme=Light size=2560x1440: target=2216x481, dataSurface=MediaInboxGrid=2185x212, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  media-inbox-light-2560x1440-Empty.png: 2216x481 DIP, 67672 bytes
+  MediaDetails fixture state=Empty theme=Light size=2560x1440: target=2220x1053, dataSurface=MediaGrid=2189x930, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  media-details-light-2560x1440-Empty.png: 2220x1053 DIP, 47205 bytes
+  MaintenanceAudit fixture state=Empty theme=Light size=2560x1440: target=2236x1129, dataSurface=MaintenanceAuditFindingsGrid=2233x1085, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  maintenance-audit-light-2560x1440-Empty.png: 2236x1129 DIP, 34070 bytes
+  MediaInbox fixture state=Loading theme=Light size=2560x1440: target=2216x481, dataSurface=MediaInboxGrid=2185x212, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-light-2560x1440-Loading.png: 2216x481 DIP, 79962 bytes
+  MediaDetails fixture state=Loading theme=Light size=2560x1440: target=2220x1053, dataSurface=MediaGrid=2189x930, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-light-2560x1440-Loading.png: 2220x1053 DIP, 56843 bytes
+  MaintenanceAudit fixture state=Loading theme=Light size=2560x1440: target=2236x1129, dataSurface=MaintenanceAuditFindingsGrid=2233x1085, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-light-2560x1440-Loading.png: 2236x1129 DIP, 37297 bytes
+  MediaInbox fixture state=Error theme=Light size=2560x1440: target=2216x481, dataSurface=MediaInboxGrid=2185x212, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-light-2560x1440-Error.png: 2216x481 DIP, 88264 bytes
+  MediaDetails fixture state=Error theme=Light size=2560x1440: target=2220x1053, dataSurface=MediaGrid=2189x930, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-light-2560x1440-Error.png: 2220x1053 DIP, 65212 bytes
+  MaintenanceAudit fixture state=Error theme=Light size=2560x1440: target=2236x1129, dataSurface=MaintenanceAuditFindingsGrid=2233x1085, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-light-2560x1440-Error.png: 2236x1129 DIP, 43735 bytes
+  MediaInbox fixture state=Stale theme=Light size=2560x1440: target=2204x1301, dataSurface=MediaInboxGrid=1799x960, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  media-inbox-light-2560x1440-Stale.png: 2204x1301 DIP, 251826 bytes
+  MediaDetails fixture state=Stale theme=Light size=2560x1440: target=2220x1053, dataSurface=MediaGrid=1815x856, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  media-details-light-2560x1440-Stale.png: 2220x1053 DIP, 98510 bytes
+  MaintenanceAudit fixture state=Stale theme=Light size=2560x1440: target=2236x1129, dataSurface=MaintenanceAuditFindingsGrid=1859x1013, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  maintenance-audit-light-2560x1440-Stale.png: 2236x1129 DIP, 194899 bytes
+  MaintenanceNextSteps fixture state=Stale theme=Light size=2560x1440: target=2220x621, dataSurface=missing, presenters=0, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-next-steps-light-2560x1440-Stale.png: 2220x621 DIP, 116655 bytes
+  MediaInbox fixture state=Offline theme=Light size=2560x1440: target=2216x481, dataSurface=MediaInboxGrid=2185x212, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-light-2560x1440-Offline.png: 2216x481 DIP, 83812 bytes
+  MediaDetails fixture state=Offline theme=Light size=2560x1440: target=2220x1053, dataSurface=MediaGrid=2189x930, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-light-2560x1440-Offline.png: 2220x1053 DIP, 60306 bytes
+  MaintenanceAudit fixture state=Offline theme=Light size=2560x1440: target=2236x1129, dataSurface=MaintenanceAuditFindingsGrid=2233x1085, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-light-2560x1440-Offline.png: 2236x1129 DIP, 39874 bytes
+  MediaInbox fixture state=Ready theme=Dark size=1040x700: target=712x544, dataSurface=MediaInboxGrid=681x354, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  media-inbox-dark-1040x700-Ready.png: 712x544 DIP, 103413 bytes
+  MediaDetails fixture state=Ready theme=Dark size=1040x700: target=728x325, dataSurface=MediaGrid=697x236, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  media-details-dark-1040x700-Ready.png: 728x325 DIP, 44625 bytes
+  MaintenanceAudit fixture state=Ready theme=Dark size=1040x700: target=744x389, dataSurface=MaintenanceAuditFindingsGrid=741x260, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-audit-dark-1040x700-Ready.png: 744x389 DIP, 40659 bytes
+  MaintenanceNextSteps fixture state=Ready theme=Dark size=1040x700: target=728x621, dataSurface=missing, presenters=0, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-next-steps-dark-1040x700-Ready.png: 728x621 DIP, 107121 bytes
+  MediaInbox fixture state=Empty theme=Dark size=1040x700: target=712x402, dataSurface=MediaInboxGrid=681x212, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  media-inbox-dark-1040x700-Empty.png: 712x402 DIP, 47036 bytes
+  MediaDetails fixture state=Empty theme=Dark size=1040x700: target=728x325, dataSurface=MediaGrid=697x236, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  media-details-dark-1040x700-Empty.png: 728x325 DIP, 35946 bytes
+  MaintenanceAudit fixture state=Empty theme=Dark size=1040x700: target=744x389, dataSurface=MaintenanceAuditFindingsGrid=741x345, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  maintenance-audit-dark-1040x700-Empty.png: 744x389 DIP, 22141 bytes
+  MediaInbox fixture state=Loading theme=Dark size=1040x700: target=712x402, dataSurface=MediaInboxGrid=681x212, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-dark-1040x700-Loading.png: 712x402 DIP, 58639 bytes
+  MediaDetails fixture state=Loading theme=Dark size=1040x700: target=728x325, dataSurface=MediaGrid=697x236, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-dark-1040x700-Loading.png: 728x325 DIP, 43541 bytes
+  MaintenanceAudit fixture state=Loading theme=Dark size=1040x700: target=744x389, dataSurface=MaintenanceAuditFindingsGrid=741x345, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-dark-1040x700-Loading.png: 744x389 DIP, 25171 bytes
+  MediaInbox fixture state=Error theme=Dark size=1040x700: target=712x402, dataSurface=MediaInboxGrid=681x212, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-dark-1040x700-Error.png: 712x402 DIP, 66448 bytes
+  MediaDetails fixture state=Error theme=Dark size=1040x700: target=728x325, dataSurface=MediaGrid=697x236, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-dark-1040x700-Error.png: 728x325 DIP, 50881 bytes
+  MaintenanceAudit fixture state=Error theme=Dark size=1040x700: target=744x389, dataSurface=MaintenanceAuditFindingsGrid=741x345, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-dark-1040x700-Error.png: 744x389 DIP, 31352 bytes
+  MediaInbox fixture state=Stale theme=Dark size=1040x700: target=712x616, dataSurface=MediaInboxGrid=681x354, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  media-inbox-dark-1040x700-Stale.png: 712x616 DIP, 118739 bytes
+  MediaDetails fixture state=Stale theme=Dark size=1040x700: target=728x325, dataSurface=MediaGrid=697x236, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  media-details-dark-1040x700-Stale.png: 728x325 DIP, 48531 bytes
+  MaintenanceAudit fixture state=Stale theme=Dark size=1040x700: target=744x389, dataSurface=MaintenanceAuditFindingsGrid=741x260, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  maintenance-audit-dark-1040x700-Stale.png: 744x389 DIP, 44010 bytes
+  MaintenanceNextSteps fixture state=Stale theme=Dark size=1040x700: target=728x621, dataSurface=missing, presenters=0, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-next-steps-dark-1040x700-Stale.png: 728x621 DIP, 107524 bytes
+  MediaInbox fixture state=Offline theme=Dark size=1040x700: target=712x402, dataSurface=MediaInboxGrid=681x212, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-dark-1040x700-Offline.png: 712x402 DIP, 63045 bytes
+  MediaDetails fixture state=Offline theme=Dark size=1040x700: target=728x325, dataSurface=MediaGrid=697x236, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-dark-1040x700-Offline.png: 728x325 DIP, 47332 bytes
+  MaintenanceAudit fixture state=Offline theme=Dark size=1040x700: target=744x389, dataSurface=MaintenanceAuditFindingsGrid=741x345, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-dark-1040x700-Offline.png: 744x389 DIP, 27892 bytes
+  MediaInbox fixture state=Ready theme=Dark size=1100x720: target=772x544, dataSurface=MediaInboxGrid=741x354, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  media-inbox-dark-1100x720-Ready.png: 772x544 DIP, 104431 bytes
+  MediaDetails fixture state=Ready theme=Dark size=1100x720: target=788x345, dataSurface=MediaGrid=757x236, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  media-details-dark-1100x720-Ready.png: 788x345 DIP, 45923 bytes
+  MaintenanceAudit fixture state=Ready theme=Dark size=1100x720: target=804x409, dataSurface=MaintenanceAuditFindingsGrid=801x260, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-audit-dark-1100x720-Ready.png: 804x409 DIP, 43218 bytes
+  MaintenanceNextSteps fixture state=Ready theme=Dark size=1100x720: target=788x621, dataSurface=missing, presenters=0, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-next-steps-dark-1100x720-Ready.png: 788x621 DIP, 107897 bytes
+  MediaInbox fixture state=Empty theme=Dark size=1100x720: target=772x402, dataSurface=MediaInboxGrid=741x212, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  media-inbox-dark-1100x720-Empty.png: 772x402 DIP, 47382 bytes
+  MediaDetails fixture state=Empty theme=Dark size=1100x720: target=788x345, dataSurface=MediaGrid=757x236, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  media-details-dark-1100x720-Empty.png: 788x345 DIP, 36376 bytes
+  MaintenanceAudit fixture state=Empty theme=Dark size=1100x720: target=804x409, dataSurface=MaintenanceAuditFindingsGrid=801x365, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  maintenance-audit-dark-1100x720-Empty.png: 804x409 DIP, 22448 bytes
+  MediaInbox fixture state=Loading theme=Dark size=1100x720: target=772x402, dataSurface=MediaInboxGrid=741x212, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-dark-1100x720-Loading.png: 772x402 DIP, 58990 bytes
+  MediaDetails fixture state=Loading theme=Dark size=1100x720: target=788x345, dataSurface=MediaGrid=757x236, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-dark-1100x720-Loading.png: 788x345 DIP, 45270 bytes
+  MaintenanceAudit fixture state=Loading theme=Dark size=1100x720: target=804x409, dataSurface=MaintenanceAuditFindingsGrid=801x365, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-dark-1100x720-Loading.png: 804x409 DIP, 25575 bytes
+  MediaInbox fixture state=Error theme=Dark size=1100x720: target=772x402, dataSurface=MediaInboxGrid=741x212, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-dark-1100x720-Error.png: 772x402 DIP, 67015 bytes
+  MediaDetails fixture state=Error theme=Dark size=1100x720: target=788x345, dataSurface=MediaGrid=757x236, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-dark-1100x720-Error.png: 788x345 DIP, 51073 bytes
+  MaintenanceAudit fixture state=Error theme=Dark size=1100x720: target=804x409, dataSurface=MaintenanceAuditFindingsGrid=801x365, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-dark-1100x720-Error.png: 804x409 DIP, 31993 bytes
+  MediaInbox fixture state=Stale theme=Dark size=1100x720: target=772x616, dataSurface=MediaInboxGrid=741x354, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  media-inbox-dark-1100x720-Stale.png: 772x616 DIP, 119873 bytes
+  MediaDetails fixture state=Stale theme=Dark size=1100x720: target=788x345, dataSurface=MediaGrid=757x236, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  media-details-dark-1100x720-Stale.png: 788x345 DIP, 50429 bytes
+  MaintenanceAudit fixture state=Stale theme=Dark size=1100x720: target=804x409, dataSurface=MaintenanceAuditFindingsGrid=801x260, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  maintenance-audit-dark-1100x720-Stale.png: 804x409 DIP, 46508 bytes
+  MaintenanceNextSteps fixture state=Stale theme=Dark size=1100x720: target=788x621, dataSurface=missing, presenters=0, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-next-steps-dark-1100x720-Stale.png: 788x621 DIP, 108314 bytes
+  MediaInbox fixture state=Offline theme=Dark size=1100x720: target=772x402, dataSurface=MediaInboxGrid=741x212, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-dark-1100x720-Offline.png: 772x402 DIP, 63950 bytes
+  MediaDetails fixture state=Offline theme=Dark size=1100x720: target=788x345, dataSurface=MediaGrid=757x236, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-dark-1100x720-Offline.png: 788x345 DIP, 47815 bytes
+  MaintenanceAudit fixture state=Offline theme=Dark size=1100x720: target=804x409, dataSurface=MaintenanceAuditFindingsGrid=801x365, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-dark-1100x720-Offline.png: 804x409 DIP, 28676 bytes
+  MediaInbox fixture state=Ready theme=Dark size=1366x768: target=1010x590, dataSurface=MediaInboxGrid=605x378, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  media-inbox-dark-1366x768-Ready.png: 1010x590 DIP, 135865 bytes
+  MediaDetails fixture state=Ready theme=Dark size=1366x768: target=1026x393, dataSurface=MediaGrid=621x270, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  media-details-dark-1366x768-Ready.png: 1026x393 DIP, 56769 bytes
+  MaintenanceAudit fixture state=Ready theme=Dark size=1366x768: target=1042x457, dataSurface=MaintenanceAuditFindingsGrid=665x413, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-audit-dark-1366x768-Ready.png: 1042x457 DIP, 104235 bytes
+  MaintenanceNextSteps fixture state=Ready theme=Dark size=1366x768: target=1026x621, dataSurface=missing, presenters=0, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-next-steps-dark-1366x768-Ready.png: 1026x621 DIP, 110952 bytes
+  MediaInbox fixture state=Empty theme=Dark size=1366x768: target=1010x402, dataSurface=MediaInboxGrid=979x212, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  media-inbox-dark-1366x768-Empty.png: 1010x402 DIP, 49262 bytes
+  MediaDetails fixture state=Empty theme=Dark size=1366x768: target=1026x393, dataSurface=MediaGrid=995x270, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  media-details-dark-1366x768-Empty.png: 1026x393 DIP, 36957 bytes
+  MaintenanceAudit fixture state=Empty theme=Dark size=1366x768: target=1042x457, dataSurface=MaintenanceAuditFindingsGrid=1039x413, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  maintenance-audit-dark-1366x768-Empty.png: 1042x457 DIP, 23891 bytes
+  MediaInbox fixture state=Loading theme=Dark size=1366x768: target=1010x402, dataSurface=MediaInboxGrid=979x212, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-dark-1366x768-Loading.png: 1010x402 DIP, 61329 bytes
+  MediaDetails fixture state=Loading theme=Dark size=1366x768: target=1026x393, dataSurface=MediaGrid=995x270, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-dark-1366x768-Loading.png: 1026x393 DIP, 45822 bytes
+  MaintenanceAudit fixture state=Loading theme=Dark size=1366x768: target=1042x457, dataSurface=MaintenanceAuditFindingsGrid=1039x413, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-dark-1366x768-Loading.png: 1042x457 DIP, 27090 bytes
+  MediaInbox fixture state=Error theme=Dark size=1366x768: target=1010x402, dataSurface=MediaInboxGrid=979x212, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-dark-1366x768-Error.png: 1010x402 DIP, 69564 bytes
+  MediaDetails fixture state=Error theme=Dark size=1366x768: target=1026x393, dataSurface=MediaGrid=995x270, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-dark-1366x768-Error.png: 1026x393 DIP, 54314 bytes
+  MaintenanceAudit fixture state=Error theme=Dark size=1366x768: target=1042x457, dataSurface=MaintenanceAuditFindingsGrid=1039x413, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-dark-1366x768-Error.png: 1042x457 DIP, 33550 bytes
+  MediaInbox fixture state=Stale theme=Dark size=1366x768: target=1010x638, dataSurface=MediaInboxGrid=605x354, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  media-inbox-dark-1366x768-Stale.png: 1010x638 DIP, 150130 bytes
+  MediaDetails fixture state=Stale theme=Dark size=1366x768: target=1026x393, dataSurface=MediaGrid=621x236, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  media-details-dark-1366x768-Stale.png: 1026x393 DIP, 67222 bytes
+  MaintenanceAudit fixture state=Stale theme=Dark size=1366x768: target=1042x457, dataSurface=MaintenanceAuditFindingsGrid=665x341, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  maintenance-audit-dark-1366x768-Stale.png: 1042x457 DIP, 102988 bytes
+  MaintenanceNextSteps fixture state=Stale theme=Dark size=1366x768: target=1026x621, dataSurface=missing, presenters=0, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-next-steps-dark-1366x768-Stale.png: 1026x621 DIP, 111373 bytes
+  MediaInbox fixture state=Offline theme=Dark size=1366x768: target=1010x402, dataSurface=MediaInboxGrid=979x212, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-dark-1366x768-Offline.png: 1010x402 DIP, 66408 bytes
+  MediaDetails fixture state=Offline theme=Dark size=1366x768: target=1026x393, dataSurface=MediaGrid=995x270, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-dark-1366x768-Offline.png: 1026x393 DIP, 50235 bytes
+  MaintenanceAudit fixture state=Offline theme=Dark size=1366x768: target=1042x457, dataSurface=MaintenanceAuditFindingsGrid=1039x413, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-dark-1366x768-Offline.png: 1042x457 DIP, 29789 bytes
+  MediaInbox fixture state=Ready theme=Dark size=2560x1440: target=2204x1301, dataSurface=MediaInboxGrid=1799x1032, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  media-inbox-dark-2560x1440-Ready.png: 2204x1301 DIP, 242673 bytes
+  MediaDetails fixture state=Ready theme=Dark size=2560x1440: target=2220x1053, dataSurface=MediaGrid=1815x930, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  media-details-dark-2560x1440-Ready.png: 2220x1053 DIP, 85629 bytes
+  MaintenanceAudit fixture state=Ready theme=Dark size=2560x1440: target=2236x1129, dataSurface=MaintenanceAuditFindingsGrid=1859x1085, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-audit-dark-2560x1440-Ready.png: 2236x1129 DIP, 184161 bytes
+  MaintenanceNextSteps fixture state=Ready theme=Dark size=2560x1440: target=2220x621, dataSurface=missing, presenters=0, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-next-steps-dark-2560x1440-Ready.png: 2220x621 DIP, 120893 bytes
+  MediaInbox fixture state=Empty theme=Dark size=2560x1440: target=2216x481, dataSurface=MediaInboxGrid=2185x212, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  media-inbox-dark-2560x1440-Empty.png: 2216x481 DIP, 69908 bytes
+  MediaDetails fixture state=Empty theme=Dark size=2560x1440: target=2220x1053, dataSurface=MediaGrid=2189x930, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  media-details-dark-2560x1440-Empty.png: 2220x1053 DIP, 48760 bytes
+  MaintenanceAudit fixture state=Empty theme=Dark size=2560x1440: target=2236x1129, dataSurface=MaintenanceAuditFindingsGrid=2233x1085, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  maintenance-audit-dark-2560x1440-Empty.png: 2236x1129 DIP, 34709 bytes
+  MediaInbox fixture state=Loading theme=Dark size=2560x1440: target=2216x481, dataSurface=MediaInboxGrid=2185x212, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-dark-2560x1440-Loading.png: 2216x481 DIP, 82802 bytes
+  MediaDetails fixture state=Loading theme=Dark size=2560x1440: target=2220x1053, dataSurface=MediaGrid=2189x930, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-dark-2560x1440-Loading.png: 2220x1053 DIP, 58788 bytes
+  MaintenanceAudit fixture state=Loading theme=Dark size=2560x1440: target=2236x1129, dataSurface=MaintenanceAuditFindingsGrid=2233x1085, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-dark-2560x1440-Loading.png: 2236x1129 DIP, 38141 bytes
+  MediaInbox fixture state=Error theme=Dark size=2560x1440: target=2216x481, dataSurface=MediaInboxGrid=2185x212, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-dark-2560x1440-Error.png: 2216x481 DIP, 91697 bytes
+  MediaDetails fixture state=Error theme=Dark size=2560x1440: target=2220x1053, dataSurface=MediaGrid=2189x930, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-dark-2560x1440-Error.png: 2220x1053 DIP, 67408 bytes
+  MaintenanceAudit fixture state=Error theme=Dark size=2560x1440: target=2236x1129, dataSurface=MaintenanceAuditFindingsGrid=2233x1085, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-dark-2560x1440-Error.png: 2236x1129 DIP, 45170 bytes
+  MediaInbox fixture state=Stale theme=Dark size=2560x1440: target=2204x1301, dataSurface=MediaInboxGrid=1799x960, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  media-inbox-dark-2560x1440-Stale.png: 2204x1301 DIP, 257545 bytes
+  MediaDetails fixture state=Stale theme=Dark size=2560x1440: target=2220x1053, dataSurface=MediaGrid=1815x856, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  media-details-dark-2560x1440-Stale.png: 2220x1053 DIP, 102152 bytes
+  MaintenanceAudit fixture state=Stale theme=Dark size=2560x1440: target=2236x1129, dataSurface=MaintenanceAuditFindingsGrid=1859x1013, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  maintenance-audit-dark-2560x1440-Stale.png: 2236x1129 DIP, 198933 bytes
+  MaintenanceNextSteps fixture state=Stale theme=Dark size=2560x1440: target=2220x621, dataSurface=missing, presenters=0, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-next-steps-dark-2560x1440-Stale.png: 2220x621 DIP, 121361 bytes
+  MediaInbox fixture state=Offline theme=Dark size=2560x1440: target=2216x481, dataSurface=MediaInboxGrid=2185x212, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-dark-2560x1440-Offline.png: 2216x481 DIP, 87937 bytes
+  MediaDetails fixture state=Offline theme=Dark size=2560x1440: target=2220x1053, dataSurface=MediaGrid=2189x930, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-dark-2560x1440-Offline.png: 2220x1053 DIP, 62542 bytes
+  MaintenanceAudit fixture state=Offline theme=Dark size=2560x1440: target=2236x1129, dataSurface=MaintenanceAuditFindingsGrid=2233x1085, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-dark-2560x1440-Offline.png: 2236x1129 DIP, 41272 bytes
+statefixtures OK

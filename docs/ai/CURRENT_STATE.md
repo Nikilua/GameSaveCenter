@@ -2,6 +2,12 @@
 
 > 更新时间：2026-09-15。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-15 UI 精修 Q17-04/Q18-03 状态夹具与动画重入修复
+
+- 当前交付提交为 `c76ce62`，已推送 `codex/ui-finesse-round2`。`GscMotion.AnimateEntrance` 现在只在没有活动动画时初始化起点；重入时先捕获有效 Transform/Opacity、移除旧时钟，再从当前值继续，避免快速切换闪回。
+- `ProgressBar` 的不确定进度模板补齐 `StopStoryboard` 回归门禁；定向 `UiFinesseFoundationTests` + `UiFinesseRound2ControlSourceTests` 为 `18/18` 通过。
+- RenderHarness Release 重建为 `0 warning / 0 error`，当前代码重新执行 `statefixtures` 得到 `statefixtures OK`：160 条记录/160 张截图，覆盖四个生产状态页、适用的六态、双主题和四个尺寸；代表证据见 [`Q17-04-STATE-FIXTURES-20260915.md`](../design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q17-04-STATE-FIXTURES-20260915.md)。真实进度节奏、宿主动画时序和 Playnite 像素仍保持待验。
+
 ## 2026-09-15 UI 精修 Q12-08 双主题业务空表复核
 
 - 当前 clean-tree 提交 `77f4dc5` 新增 RenderHarness 的 `emptytables` 夹具入口、全量空表数据清理和空态断言；Fake 数据使用 `WorkspaceFixtureState.Empty`，补齐 Trainer 的三个 loading 绑定，避免测试夹具制造假空白。

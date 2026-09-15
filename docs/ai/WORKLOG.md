@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-15 UI 精修 Q17-04/Q18-03 状态夹具与动画重入修复
+
+- 在当前 `d8fad48` 之后先复核生产代码：`AnimateEntrance` 会无条件写入起点，快速重入可能闪回；已在 `c76ce62` 改为捕获活动动画的当前有效值，停止旧时钟后继续向终态动画。
+- `DesignTokens.xaml` 的不确定进度循环扫过补充 `StopStoryboard` 源门禁；`UiFinesseFoundationTests` + `UiFinesseRound2ControlSourceTests` 定向测试 `18/18` 通过，`python scripts/validate-source.py` 通过。
+- RenderHarness Release 构建 `0 warning / 0 error`；用当前提交重跑 `statefixtures`，结果 `statefixtures OK`，160 条记录/160 张截图，覆盖四个生产状态页、适用六态、双主题和四个 DIP 尺寸。只保留报告和四张代表截图为 [`Q17-04-STATE-FIXTURES-20260915.md`](../design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q17-04-STATE-FIXTURES-20260915.md)，随后清理 `.tmp/statefixtures-round2-20260915-q17`。
+- 真实 Worker 进度节奏、悬停/卸载动画、Playnite 宿主像素、ETW/Rendering 生命周期仍不由该夹具替代；账本保持 Q17-04/Q18-03 视觉或宿主待验。
+
 ## 2026-09-15 UI 精修 Q12-08 双主题业务空表复核
 
 - 提交并推送 `77f4dc5`，新增 RenderHarness `emptytables` 入口、空表数据清理方法、Trainer loading 夹具绑定和“任一空表/列表必须有空态”断言。
