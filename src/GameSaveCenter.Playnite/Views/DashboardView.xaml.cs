@@ -926,17 +926,17 @@ namespace GameSaveCenter.Playnite.Views
         }
 
         private void OnNavigationMouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-            => AnimateTranslate(sender as FrameworkElement, 3, 0, GscMotion.Fast);
+            => AnimateTranslate(sender as FrameworkElement, 3, 0, GscMotion.MotionDurationKind.Fast);
 
         private void OnNavigationMouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
-            => AnimateTranslate(sender as FrameworkElement, 0, 0, GscMotion.Fast);
+            => AnimateTranslate(sender as FrameworkElement, 0, 0, GscMotion.MotionDurationKind.Fast);
 
-        private void AnimateTranslate(FrameworkElement? element, double x, double y, TimeSpan duration)
+        private void AnimateTranslate(FrameworkElement? element, double x, double y, GscMotion.MotionDurationKind kind)
         {
             try
             {
                 if (element == null || !MotionEnabled) return;
-                GscMotion.AnimateTranslate(element, x, y, duration);
+                GscMotion.AnimateTranslate(element, x, y, kind);
             }
             catch (Exception ex)
             {
@@ -1002,7 +1002,7 @@ namespace GameSaveCenter.Playnite.Views
             var scale = GscMotion.GetMutableScaleTransform(StatusPill);
             StatusPill.RenderTransformOrigin = new Point(0, 0.5);
 
-            var duration = GscMotion.Normal;
+            var duration = GscMotion.GetDuration(StatusPill, GscMotion.MotionDurationKind.Normal);
             var easing = GscMotion.CreateEaseOut();
             StatusPill.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(0.58, 1, duration) { EasingFunction = easing });
             scale.BeginAnimation(ScaleTransform.ScaleXProperty, new DoubleAnimation(0.985, 1, duration) { EasingFunction = easing });
@@ -1158,7 +1158,7 @@ namespace GameSaveCenter.Playnite.Views
             translate.Y = MotionEnabled ? 14 : 0;
             if (MotionEnabled)
             {
-                var duration = GscMotion.Normal;
+                var duration = GscMotion.GetDuration(DialogCard, GscMotion.MotionDurationKind.Normal);
                 var easing = GscMotion.CreateEaseOut();
                 DialogCard.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, duration) { EasingFunction = easing });
                 translate.BeginAnimation(TranslateTransform.YProperty, new DoubleAnimation(14, 0, duration) { EasingFunction = easing });
@@ -1351,7 +1351,7 @@ namespace GameSaveCenter.Playnite.Views
 
             if (MotionEnabled)
             {
-                var duration = GscMotion.Normal;
+                var duration = GscMotion.GetDuration(ToastHost, GscMotion.MotionDurationKind.Normal);
                 var easing = GscMotion.CreateEaseOut();
                 card.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, duration) { EasingFunction = easing });
                 ((TranslateTransform)card.RenderTransform).BeginAnimation(TranslateTransform.XProperty, new DoubleAnimation(18, 0, duration) { EasingFunction = easing });

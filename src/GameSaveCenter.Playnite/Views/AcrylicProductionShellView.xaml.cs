@@ -316,12 +316,13 @@ namespace GameSaveCenter.Playnite.Views
             translate.X = sidebarCollapsed ? -4 : 4;
             ApplySidebarLayout(updateColumnWidth: false);
             SidebarColumn.Width = new GridLength(currentWidth, GridUnitType.Pixel);
+            var motionDuration = GscMotion.GetDuration(SidebarContentLayer, GscMotion.MotionDurationKind.Normal);
 
             var widthAnimation = new GridLengthAnimation
             {
                 From = new GridLength(currentWidth, GridUnitType.Pixel),
                 To = new GridLength(targetWidth, GridUnitType.Pixel),
-                Duration = new Duration(GscMotion.Normal),
+                Duration = new Duration(motionDuration),
                 EasingFunction = GscMotion.CreateEaseOut()
             };
             widthAnimation.Completed += (_, _) =>
@@ -339,12 +340,12 @@ namespace GameSaveCenter.Playnite.Views
             };
             SidebarColumn.BeginAnimation(ColumnDefinition.WidthProperty, widthAnimation);
             SidebarContentLayer.BeginAnimation(UIElement.OpacityProperty,
-                new DoubleAnimation(0, 1, GscMotion.Normal)
+                new DoubleAnimation(0, 1, motionDuration)
                 {
                     EasingFunction = GscMotion.CreateEaseOut()
                 });
             translate.BeginAnimation(TranslateTransform.XProperty,
-                new DoubleAnimation(sidebarCollapsed ? -4 : 4, 0, GscMotion.Normal)
+                new DoubleAnimation(sidebarCollapsed ? -4 : 4, 0, motionDuration)
                 {
                     EasingFunction = GscMotion.CreateEaseOut()
                 });

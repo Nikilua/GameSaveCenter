@@ -26,15 +26,15 @@ namespace GameSaveCenter.Playnite.Views
         public OverviewView() => InitializeComponent();
 
         private void OnStatCardMouseEnter(object sender, MouseEventArgs e)
-            => AnimateTranslate(sender as FrameworkElement, 0, -3, GscMotion.Normal);
+            => AnimateTranslate(sender as FrameworkElement, 0, -3, GscMotion.MotionDurationKind.Normal);
 
         private void OnStatCardMouseLeave(object sender, MouseEventArgs e)
-            => AnimateTranslate(sender as FrameworkElement, 0, 0, GscMotion.Normal);
+            => AnimateTranslate(sender as FrameworkElement, 0, 0, GscMotion.MotionDurationKind.Normal);
 
-        private void AnimateTranslate(FrameworkElement? element, double x, double y, TimeSpan duration)
+        private void AnimateTranslate(FrameworkElement? element, double x, double y, GscMotion.MotionDurationKind kind)
         {
             if (element == null || !GscMotion.IsEnabled(UiAnimationsEnabled)) return;
-            GscMotion.AnimateTranslate(element, x, y, duration);
+            GscMotion.AnimateTranslate(element, x, y, kind);
         }
 
         public GridLength OverviewCompactSecondaryRowHeight

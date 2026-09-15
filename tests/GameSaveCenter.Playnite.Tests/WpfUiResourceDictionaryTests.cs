@@ -3558,7 +3558,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("OverviewWorkspaceView.UiAnimationsEnabled = MotionEnabled;", dashboardCode);
         var overviewCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml.cs"));
         Assert.Contains("GscMotion.IsEnabled(UiAnimationsEnabled)", overviewCode);
-        Assert.Contains("AnimateTranslate(sender as FrameworkElement, 0, -3, GscMotion.Normal)", overviewCode);
+        Assert.Contains("AnimateTranslate(sender as FrameworkElement, 0, -3, GscMotion.MotionDurationKind.Normal)", overviewCode);
     }
 
     [Fact]

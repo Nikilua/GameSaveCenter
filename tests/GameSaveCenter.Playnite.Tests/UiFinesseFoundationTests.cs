@@ -88,9 +88,28 @@ public sealed class UiFinesseFoundationTests
         Assert.Contains("DependencyPropertyHelper.GetValueSource(element, UIElement.OpacityProperty)", motion);
         Assert.Contains("translate.BeginAnimation(TranslateTransform.YProperty, null);", motion);
         Assert.Contains("element.BeginAnimation(UIElement.OpacityProperty, null);", motion);
-        Assert.Contains("new DoubleAnimation(currentOpacity, 1, Normal)", motion);
-        Assert.Contains("new DoubleAnimation(currentY, 0, Slow)", motion);
+        Assert.Contains("new DoubleAnimation(currentOpacity, 1, GetDuration(element, MotionDurationKind.Normal))", motion);
+        Assert.Contains("new DoubleAnimation(currentY, 0, GetDuration(element, MotionDurationKind.Slow))", motion);
         Assert.Contains("rapid re-entry", motion);
+    }
+
+    [Fact]
+    public void ProductionMotionCallsResolveDurationsFromTheirVisualHost()
+    {
+        var root = FindRepositoryRoot();
+        var motion = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Infrastructure", "GscMotion.cs"));
+        var overview = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml.cs"));
+        var dashboard = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml.cs"));
+        var shell = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml.cs"));
+
+        Assert.Contains("=> AnimateTranslate(element, x, y, GetDuration(element, kind));", motion);
+        Assert.Contains("GetDuration(element, MotionDurationKind.Normal)", motion);
+        Assert.Contains("GscMotion.MotionDurationKind.Normal", overview);
+        Assert.Contains("GscMotion.MotionDurationKind.Fast", dashboard);
+        Assert.Contains("GscMotion.GetDuration(StatusPill, GscMotion.MotionDurationKind.Normal)", dashboard);
+        Assert.Contains("GscMotion.GetDuration(DialogCard, GscMotion.MotionDurationKind.Normal)", dashboard);
+        Assert.Contains("GscMotion.GetDuration(ToastHost, GscMotion.MotionDurationKind.Normal)", dashboard);
+        Assert.Contains("GscMotion.GetDuration(SidebarContentLayer, GscMotion.MotionDurationKind.Normal)", shell);
     }
 
     private static string FindRepositoryRoot()

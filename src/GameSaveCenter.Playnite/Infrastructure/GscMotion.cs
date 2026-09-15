@@ -157,6 +157,9 @@ namespace GameSaveCenter.Playnite.Infrastructure
             translate.BeginAnimation(TranslateTransform.YProperty, new DoubleAnimation(y, duration) { EasingFunction = easing });
         }
 
+        internal static void AnimateTranslate(FrameworkElement element, double x, double y, MotionDurationKind kind)
+            => AnimateTranslate(element, x, y, GetDuration(element, kind));
+
         internal static void AnimateEntrance(FrameworkElement element, double offsetY)
         {
             var translate = GetMutableTranslateTransform(element);
@@ -184,8 +187,8 @@ namespace GameSaveCenter.Playnite.Infrastructure
             }
 
             var easing = CreateEaseOut();
-            element.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(currentOpacity, 1, Normal) { EasingFunction = easing });
-            translate.BeginAnimation(TranslateTransform.YProperty, new DoubleAnimation(currentY, 0, Slow) { EasingFunction = easing });
+            element.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(currentOpacity, 1, GetDuration(element, MotionDurationKind.Normal)) { EasingFunction = easing });
+            translate.BeginAnimation(TranslateTransform.YProperty, new DoubleAnimation(currentY, 0, GetDuration(element, MotionDurationKind.Slow)) { EasingFunction = easing });
         }
     }
 }
