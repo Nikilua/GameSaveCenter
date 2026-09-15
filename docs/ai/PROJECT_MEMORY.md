@@ -2,12 +2,12 @@
 
 > 维护时间：2026-09-15
 
-## 2026-09-15 UI 精修 Q18-04/Q18-07 动效时钟与卸载清理
+## 2026-09-15 UI 精修 Q16-08/Q17-07/Q18-04/Q18-07 动效时钟与卸载清理
 
 - `4414f05` 修复完成态动效生命周期：`GscMotion.AnimateTranslate`/`AnimateEntrance` 捕获当前有效值后以显式 `FillBehavior.HoldEnd` 运行动画，并在完成回调中移除时钟、写回目标 Transform/Opacity；Dashboard 的页面切换、状态胶囊、缩放、对话框和 Toast 入场也采用有界完成清理，生产侧栏保持完成/取消/卸载清理。
 - Dashboard 对话框新增 `dialogMotionGeneration` 和 `StopDialogMotion()`，关闭或卸载时会使旧回调失效并清理透明度/Y 位移；`ClearToasts()` 复制当前 Border 后逐一调用 `RemoveToast()`，因此卸载不再绕过 DispatcherTimer 和 Toast 动画清理。
 - 验证：Debug 构建 0/0；定向 148 通过、39 跳过、0 失败；Release Core `83/83`、Worker `310/311`（1 skip）、Playnite `485/548`（63 skip），失败 `0`；`validate-source.py` 与 `check-xaml.ps1` 通过。
-- 这只签收源码级完成/取消/卸载契约。真实 Playnite 100 次 Loaded/Unloaded、窗口关闭、Rendering/ETW 采样、动画热切换和物理屏幕帧没有运行，Q18-04/Q18-07 的宿主/视觉列必须保持待验。证据见 `Q18-04-07-MOTION-CLEANUP-20260915.md`。
+- 这只签收源码级完成/取消/卸载契约。真实 Playnite 100 次 Loaded/Unloaded、窗口关闭、Rendering/ETW 采样、动画热切换和物理屏幕帧没有运行，Q16-08/Q17-07/Q18-04/Q18-07 的宿主/视觉列必须保持待验。证据见 `Q18-04-07-MOTION-CLEANUP-20260915.md`。
 
 ## 2026-09-15 UI 精修 Q17-04/Q18-03 状态夹具与动画重入修复
 
