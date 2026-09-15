@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-15
 
+## 2026-09-15 Q18-03 动效当前值接管受控证据
+
+- `bdb99b9` 新增 `RenderHarness.exe motionreentryprobe` 和 `UiFinesseRound2ControlSourceTests` 门禁；clean-tree 报告绑定完整 SHA、`WorkingTreeClean=True`、双主题、900×640 DIP 和受控 `GscMotionNormal=700ms` 审计覆盖。
+- 探针在侧栏收起动画中断后立即触发展开，比较新动画起点与当前有效宽度：Light `105.35→105.33 DIP`、Dark `153.17→153.33 DIP`，重入中间态分别 `214.15/233.13 DIP`，终态均为 `270 DIP / X=0 / 无活动动画`；没有回闪到旧的 72 DIP 收起端点。
+- 人工查看八张 PNG；RenderHarness Release `0 warning/0 error`，`UiFinesseRound2ControlSourceTests` `24/24`。Q18-03 受控视觉列升级为通过，但真实 Playnite 快速鼠标/键盘切换、宿主时序、物理 DPI 与屏幕帧仍保持外部边界。
+
 ## 2026-09-15 Q18-07 动效 Loaded/Unloaded 生命周期受控证据
 
 - `0815871` 新增 `RenderHarness.exe motioncycleprobe` 和 `UiFinesseRound2ControlSourceTests` 门禁；clean-tree 报告绑定完整 SHA、`WorkingTreeClean=True`、Light/Dark、900×640 DIP 和 100 次 Loaded/Unloaded 循环。

@@ -2,7 +2,12 @@
 
 > 更新时间：2026-09-15。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
-## 当前最近阶段：Q18-07 动效 Loaded/Unloaded 生命周期受控证据
+## 当前最近阶段：Q18-03 动效当前值接管受控证据
+
+- `bdb99b9` 的 clean-tree `motionreentryprobe` 使用真实生产 `AcrylicProductionShellView` 在 Light/Dark、900×640 DIP 中先中断收起动画，再立即触发展开意图；即时宽度与中断宽度差异仅 `0.02/0.16 DIP`，重入中间态继续向 `270` DIP 展开，终态 X=0 且无活动动画。
+- 八张截图和原始报告见 [`Q18-03-MOTION-REENTRY-20260915.md`](../design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q18-03-MOTION-REENTRY-20260915.md)。Q18-03 受控视觉列已通过；真实 Playnite 快速输入、宿主时序、物理 DPI 和屏幕帧仍未签收。
+
+## 上一阶段：Q18-07 动效 Loaded/Unloaded 生命周期受控证据
 
 - `0815871` 的 clean-tree `motioncycleprobe` 使用同一真实生产 `AcrylicProductionShellView` 在 Light/Dark、900×640 DIP 各执行 100 次 Loaded/Unloaded 循环；每次在侧栏动画中间态卸载并重载，事件计数均为 `101/101`，最终 `finalLoaded=False`、`transitionRunning=False`、Opacity `1`，没有活动侧栏时钟。
 - 六张截图和原始报告见 [`Q18-07-MOTION-CYCLE-20260915.md`](../design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q18-07-MOTION-CYCLE-20260915.md)。Q18-07 受控视觉列已通过；夹具未构造真实 Dashboard VM/Worker 订阅，真实 Playnite 宿主关闭、物理 DPI/屏幕帧和 ETW 生命周期仍未签收。

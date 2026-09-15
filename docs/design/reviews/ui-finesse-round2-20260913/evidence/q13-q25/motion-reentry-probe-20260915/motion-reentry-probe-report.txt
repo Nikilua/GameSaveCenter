@@ -1,0 +1,14 @@
+Production shell motion reentry current-value probe (controlled STA WPF Window)
+Scenario: motionreentryprobe
+EvidenceSource: ControlledWpfWindow
+Commit: bdb99b930be12abc967df365fb82194733125a16
+WorkingTreeClean: True
+DpiScale: 1.00 (offscreen logical DIP; real host DPI is not inferred)
+WindowDip: per-case window_dip/content_dip fields
+Themes: light,dark
+DataVolumes: production shell; audit-only GscMotionNormal=700ms override; interrupted transition takeover; 900x640 DIP
+TimingFields: layout_ms, render_ms; request_ms=not-applicable for offscreen harness
+Reentry[light] interruptedWidth=105.35 immediateWidth=105.33 midWidth=214.15 finalWidth=270 finalX=0 finalAnimated=False
+Reentry[dark] interruptedWidth=153.17 immediateWidth=153.33 midWidth=233.13 finalWidth=270 finalX=0 finalAnimated=False
+MotionReentryBoundary: the second production sidebar intent started from the currently rendered width without a reset to the obsolete endpoint; real Playnite input and physical screen frames remain host checks
+MotionReentryProbe OK
