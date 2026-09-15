@@ -1,5 +1,14 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-15 第二轮质量复查与第三轮 192 项任务
+
+- 本轮是审查与规划交付。审查主基线 `35b82761c60b8ec8a3fedc283545e670bdf05127`，位于 Luna 的 `codex/ui-finesse-round2`；main 的旧生产源码尚未合并该分支。详情见[独立质量复查](design/UI_FINESSE_QUALITY_REVIEW_2026-09-15.md)。
+- 独立副本 Release 构建 0 warning/error，Core 83/83、Worker 310/311（1 skip）、Playnite 485/548（63 skip），0 fail；独立 Harness 与双主题 finesseprobe 通过。仍复现按压合成、组合变换复用、212 DIP 四行门禁、数字列裁切和基准样本/超时等问题。`4414f05` 后续已补动画清理，本轮仅读 diff，需针对该新提交补行为复验。
+- 固定基线第二轮账本为 124 代码完成、84 已复核；最终 4 已验收/204 未完成，不等于只实现 4 项。历史 `4f1dbb4` 已有真实深色 Playnite 嵌入图，本轮复看原图/summary，未把旧宿主图扩展为最新代码全场景验收。
+- 新增[192 项实施提示词](design/UI_FINESSE_ROUND3_192_TASKS_2026-09-15.md)与[第三轮账本](design/reviews/ui-finesse-round3-20260915/ROUND3_PROGRESS.md)，24 组×8 项，全部待开始。先 R00/R01 校正质量与证据，再推进控件、功能、性能和辅助功能；旧 Q 队列继续保留，已有能力先去重。
+- 审查证据已归档到 `docs/design/reviews/ui-finesse-round3-20260915/evidence/`。保留用户 `src.zip`；未修改真实存档、云端或现有实现工作区。后续沿用既有 Luna 任务接续，不另建线程或自动合并未验收整轮源码。
+
+
 > 2026-09-14 最新精修入口：[第一轮独立复核](design/UI_FINESSE_REVIEW_2026-09-13.md) 与 [第二轮 208 项](design/UI_FINESSE_ROUND2_208_TASKS_2026-09-13.md)。旧 52 项不是全部完成（14 已验收、1 已满足、31 待验收、6 阻塞，且有需重开项）；暗色夹具黑字仍报告 OK、状态小字对比与字体/完整行证据缺口优先进入 Q00。新任务先读复核，再从 208 行分维度账本持续实现，不沿用“待开始为零=全部完成”的口径。本轮独立构建测试零失败，未修改生产 UI 或安装宿主；新 Luna/max 任务使用干净 worktree，主目录 src.zip 保留。
 
 > 2026-09-13 UI 精修账本收口续跑：本轮代码基线为 `6c3c238`，源码门禁修正为 `592d7a0`，最终 Render QA 报告对应提交 `cacdaff`；已完成 P03、P05～P09 的共享实现/受控证据复核，并完成 P06-03、P06-04、P08-02、P09-02、P11-02、P11-04 的受控签收；最终 RenderHarness、状态/网格/缩略图/壳层探针均为 `OK`。P08-03、P10-01/02/04、P11-03 仍外部阻塞，其他依赖真实宿主的项为代码完成待验收。最终一键链与真实宿主审计已在文档提交后重试，均因唯一的 `?? src.zip` 在安装/采集前按 clean-tree 安全策略停止；构建与测试仍通过（Core `76/76`、Worker `311/311`、Playnite `455/512`，57 skip）。真实宿主没有 `summary.json`，专用窗口不能替代嵌入 Dashboard；根目录用户未跟踪 `src.zip` 不能擅自处理。详细证据见 [`docs/design/reviews/ui-finesse-20260913/PROGRESS.md`](design/reviews/ui-finesse-20260913/PROGRESS.md) 和 `BASELINE.md`。
