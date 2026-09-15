@@ -10,7 +10,8 @@
 
 ## 当前最近阶段：按钮卸载状态清理
 
-- `7804431` 已推送：生产自定义 Button 订阅 `Unloaded`，清除 `ButtonChrome` 的活动 Opacity/Scale 动画，并将 Hover/Pressed/Focus 覆盖层动画与 Opacity 归零；源契约测试 `19/19`、RenderHarness Release `0/0`、源码/XAML 门禁通过。
+- `7804431` 已推送：生产自定义 Button 订阅 `Unloaded`，清除 `ButtonChrome` 的活动 Opacity/Scale 动画，并将 Hover/Pressed/Focus 覆盖层动画与 Opacity 归零；随后 `132e6d5` 增加冻结 `ScaleTransform` 保护，避免无活动动画的模板实例在卸载清理时抛异常。
+- `132e6d5` 已推送：完整 clean-tree RenderHarness `render-qa OK`，解决方案 Release 构建 `0/0`，`UiFinesseRound2ControlSourceTests=19/19`，源码/XAML 门禁通过。
 - 这是 Q06-02 的生命周期实现修复，不等价真实鼠标按下/移出/失焦/禁用/卸载序列；当前视觉待验与宿主外部边界继续按账本记录。
 
 ## 当前最近阶段：设置主题打开态运行时夹具

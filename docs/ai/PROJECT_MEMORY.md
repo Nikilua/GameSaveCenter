@@ -17,7 +17,8 @@
 ## 2026-09-15 Q06-02 按钮卸载状态清理
 
 - `7804431` 在自定义生产 `Button` 构造器订阅 `Unloaded` 路由事件；卸载时清掉 `ButtonChrome` Opacity/ScaleX/ScaleY 动画并写回 Scale=1，同时清掉 Hover/Pressed/Focus 三个 overlay 的活动动画和 Opacity。实现只处理模板交互层，不触碰 Command 或业务状态。
-- `UiFinesseRound2ControlSourceTests` 为 `19/19`，RenderHarness Release `0 warning/0 error`，`validate-source.py` 与 XAML `24/24` 通过；该阶段提升 Q06-02 的代码/自动门禁，真实输入顺序和宿主渲染仍不可由静态证据签收。
+- `132e6d5` 修复完整 RenderHarness 暴露的冻结变换边界：卸载清理仅对未冻结 `ScaleTransform` 取消动画并写回 Scale=1；clean-tree 完整 RenderHarness 为 `render-qa OK`。
+- `UiFinesseRound2ControlSourceTests` 为 `19/19`，解决方案 Release、RenderHarness Release 均 `0 warning/0 error`，`validate-source.py` 与 XAML `24/24` 通过；该阶段提升 Q06-02 的代码/自动门禁，真实输入顺序和宿主渲染仍不可由静态证据签收。
 
 ## 2026-09-15 Q03-07/Q23-07 设置主题打开态运行时夹具
 

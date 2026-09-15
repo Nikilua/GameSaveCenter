@@ -36,6 +36,7 @@
 
 - 提交 `7804431` 为 Q06-02 生命周期修复：`GameSaveCenter.Playnite.Controls.Button` 订阅真实 `Unloaded` 路由事件，在模板仍可用时清除 `ButtonChrome` 的 Opacity/Scale 动画，并将 `HoverOverlay`、`PressedOverlay`、`FocusOverlay` 的活动动画与 Opacity 归零；不会触发或延迟任何业务命令。
 - 源契约测试覆盖 `Unloaded` 订阅、ScaleX/ScaleY 归一和三个交互覆盖层；本阶段 `UiFinesseRound2ControlSourceTests=19/19`、RenderHarness Release `0 warning/0 error`、源码/XAML 门禁通过。
+- 提交 `132e6d5` 修复了真实 RenderHarness 卸载路径暴露的冻结 `ScaleTransform` 回归：无活动动画的模板实例可能被冻结，清理逻辑现在只对未冻结变换取消动画并写回 `ScaleX/ScaleY=1`；clean-tree RenderHarness 报告绑定 `132e6d5`，完整 `render-qa OK`。
 - 该阶段只升级 Q06-02 的生命周期实现与自动门禁，不把卸载路径静态复核写成真实按下→移出→失焦→禁用→卸载输入截图；真实宿主输入序列仍保留视觉/宿主边界。
 
 ## 2026-09-15 Q12-07 排序箭头双状态复核
