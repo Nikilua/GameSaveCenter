@@ -1,6 +1,6 @@
 # Q13–Q25 交互、页面、宿主与交付证据
 
-采集日期：2026-09-15（Asia/Shanghai）。当前代码基线：`69e1f84`。证据来自共享 XAML/C# 源码、Playnite 设置迁移测试、RenderHarness Offscreen Regression Audit、受控 STA WPF Window 运行时测试、隔离 Playnite 真实宿主加载日志和已提交 HEAD 的打包/安装记录；本次已取得 `EmbeddedPlaynite` Dashboard 与 Settings 生产像素，修正 150% 宿主截图的 DPI 叠加和 Settings 入场动画中间帧，并补齐真实审计提交 SHA 元数据；同时保留 Overview 空活动/多风险/超长标题/离线边界夹具、Q25-03 受控 UI 动作耗时边界、六态生产状态夹具、重入动画接管、完成态时钟释放和生产侧栏窗口关闭卸载清理门禁；离屏/受控证据仍不冒充 IME、物理跨屏、读屏、ETW 帧时间或停顿期间调用栈。
+采集日期：2026-09-15（Asia/Shanghai）。当前代码基线：`cc63523`。证据来自共享 XAML/C# 源码、Playnite 设置迁移测试、RenderHarness Offscreen Regression Audit、受控 STA WPF Window 运行时测试、隔离 Playnite 真实宿主加载日志和已提交 HEAD 的打包/安装记录；已签收的 `69e1f84` 真实嵌入 Dashboard/Settings 仍是历史宿主像素基线，后续 `f1ea52a` 修正了审计门禁统计假阳性，`cc63523` 又隔离了 Playnite WPF 测试调度竞争；最新宿主重跑因 Playnite CEF 启动失败未产生新的 Embedded 像素。离屏/受控证据仍不冒充 IME、物理跨屏、读屏、ETW 帧时间或停顿期间调用栈。
 
 ## 本阶段真实修复
 
@@ -18,6 +18,12 @@
 ## 当前提交宿主审计边界（2026-09-15）
 
 `c5a2997` 的隔离宿主审计已捕获当前提交的 EmbeddedPlaynite Dashboard/Settings 像素（29 个 Dashboard 视口、2 个滚动面、1 个 Settings 视口，150% DPI），但隔离启动时复用了用户扩展目录内旧版 Worker `0.6.73+6450f6...`，与当前插件 `0.6.73+c5a2997...` 不一致，真实截图出现 Worker 退出 Toast，`HighGateCount=1`。因此本轮只作为当前像素与阻断事实记录，不升级任何 Worker 相关宿主项；完整边界和重跑条件见 [`REAL_HOST_AUDIT-CURRENT-20260915.md`](q13-q25/REAL_HOST_AUDIT-CURRENT-20260915.md)。
+
+## 统计假阳性修复与最新宿主边界（2026-09-15）
+
+`f1ea52a` 的 `CountBlockingGateFiles` 排除 `overflow-classification.json`，定向回归 `UiAuditTruthfulnessTests.OverflowClassificationReportIsNotCountedAsBlockingGate` 为 `1/1`；既有隔离产物只有该诊断文件，按新规则阻断门禁数为 `0`，但旧 `summary.json` 的 `HighGateCount=1` 原文保留。完整说明见 [`REAL_HOST_AUDIT-FP-FIX-20260915.md`](q13-q25/REAL_HOST_AUDIT-FP-FIX-20260915.md)。
+
+提交 `cc63523` 的最新隔离宿主重跑已完成 Release 构建、Core/Worker/Playnite 测试、打包和安装验证，但 Playnite 在 `Application started` 后因 CEF `mojo platform_channel` `Access denied (0x5)` 退出，未生成 `summary.json` 或 Embedded Dashboard/Settings；该次只记录为宿主启动阻断，不覆盖 `69e1f84` 的历史视觉真值，也不把旧 Worker `23304` 结束或改写为成功。
 
 ## 受控审计摘要
 

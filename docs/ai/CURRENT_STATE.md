@@ -871,3 +871,9 @@
 - 当前工作树新增 `tests/GameSaveCenter.Playnite.Tests/AssemblyInfo.cs`，关闭 Playnite 测试程序集并行化；原因是多个真实 STA WPF Window/Dispatcher 测试在完整套件中偶发争用，单独重跑同一 Release 二进制均可通过。
 - 修改后 `scripts/build.ps1 -Configuration Release` 通过：XAML `24/24`、Release `0 warning/0 error`、Core `83/83`、Worker `310/311`（1 skip）、Playnite `495/558`（63 skip），失败 `0`。
 - 该变更只收紧测试运行隔离，不改变生产 UI 行为；下一步宿主证据必须使用包含该测试门禁修复的提交身份重新建立。
+
+## 2026-09-15 Round2 Q00 审计门禁假阳性修复复核
+
+- `f1ea52a` 修正真实宿主 `HighGateCount` 统计：`overflow-classification.json` 仅是分类诊断，不再算阻断门禁；当前 Release truthfulness 定向回归 `1/1`，已有隔离产物按新规则为 `BlockingGateFiles=0`，但旧摘要原文仍是 `HighGateCount=1`。
+- `cc63523` 自动门禁与打包安装通过：XAML `24/24`、Core `83/83`、Worker `310/311`（1 skip）、Playnite `495/558`（63 skip），失败 `0`。
+- 最新隔离 Playnite 在 CEF `mojo platform_channel` 访问拒绝后退出，没有产生新的 Embedded 视口；历史 `69e1f84` 的 Dashboard/Settings 真实宿主证据保持有效但不升级为 `cc63523` 的新捕获。Q24-03 仍受单屏限制，用户 Worker PID `23304` 未终止。

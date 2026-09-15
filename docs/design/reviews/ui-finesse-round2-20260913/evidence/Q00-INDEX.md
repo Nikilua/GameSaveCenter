@@ -12,6 +12,12 @@
 
 这组新截图证明的是离屏 DIP 视觉修复，不是 Playnite 实机窗口、物理缩放、读屏或打开态交互证明；宿主边界仍按本索引末尾记录。
 
+## 2026-09-15 审计门禁统计假阳性修复
+
+`f1ea52a` 修正 `RealHostUiAuditService` 对 `gates/*.json` 的统计：`overflow-classification.json` 是诊断分类报告，不再计为阻断门禁；`UiAuditTruthfulnessTests.OverflowClassificationReportIsNotCountedAsBlockingGate` 在当前 Release 二进制下 `1/1` 通过。既有真实宿主产物的 `gates/` 目录只有该文件，因此按修复规则阻断门禁数为 `0`，但旧 `summary.json` 的 `HighGateCount=1` 原始值保持不变。
+
+最新 `cc63523` 宿主重跑因 Playnite CEF 初始化访问拒绝未生成 Dashboard/Settings，不替代历史 `69e1f84` 的真实宿主像素，也不能把未捕获的宿主启动写成 Q00 最终视觉通过；详见 [`REAL_HOST_AUDIT-FP-FIX-20260915.md`](q13-q25/REAL_HOST_AUDIT-FP-FIX-20260915.md)。
+
 ## 运行身份
 
 - 来源：`tests/GameSaveCenter.RenderHarness` 的 `finesseprobe`，ProductionResourceDictionary/`UiFrameworkProbeView`，STA 离屏布局。

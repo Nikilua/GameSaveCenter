@@ -3131,3 +3131,9 @@
 - Playnite 测试程序集包含多个真实 STA WPF Window/Dispatcher 回归。完整套件曾在短时动画终态或侧栏卸载时钟断言上偶发失败，而同一 Release 二进制单独重跑通过；这属于测试调度竞争，不能把一次失败写成宿主或产品确定性阻断。
 - 新增 `tests/GameSaveCenter.Playnite.Tests/AssemblyInfo.cs` 的 `[assembly: CollectionBehavior(DisableTestParallelization = true)]`，与 Worker 测试策略一致，确保 WPF 测试串行运行；不改变生产命令、绑定、动画或资源。
 - 修改后的 Release 全量门禁为 XAML `24/24`、Core `83/83`、Worker `310/311`（1 skip）、Playnite `495/558`（63 skip），失败 `0`。
+
+## 2026-09-15 Round2 Q00 审计门禁假阳性修复复核
+
+- `RealHostUiAuditService.CountBlockingGateFiles` 现在排除 `overflow-classification.json` 诊断分类报告；定向 truthfulness 回归 `1/1` 通过。已有隔离产物只有该 JSON，因此修复规则下阻断门禁为 `0`；旧 `summary.json` 的 `HighGateCount=1` 不被篡改。
+- 当前 `cc63523` 的 Release 自动门禁为 XAML `24/24`、Core `83/83`、Worker `310/311`（1 skip）、Playnite `495/558`（63 skip），失败 `0`；打包、隔离安装和构建身份检查也通过。
+- 最新宿主启动在 Playnite CEF 初始化时以 `Access denied (0x5)` 退出，未生成新的真实 Dashboard/Settings 证据；历史 `69e1f84` 真实嵌入像素继续作为签收基线，Q00/Q25 账本未把未捕获宿主写成通过。旧 Worker `23304` 保持未触碰。

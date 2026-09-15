@@ -6673,3 +6673,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 完整宿主门禁在 Playnite WPF 测试阶段先后出现短时动画终态与侧栏卸载时钟的偶发失败；单独重跑同一 Release 二进制可通过，确认不是编译、安装或产品行为的确定性失败。
 - 新增 `tests/GameSaveCenter.Playnite.Tests/AssemblyInfo.cs`，关闭 Playnite 测试程序集并行化，与 Worker 测试既有策略一致，避免多个 STA Window/Dispatcher 测试同时争用 WPF 宿主调度。
 - 修改后根目录 `scripts/build.ps1 -Configuration Release` 通过：XAML `24/24`、构建 `0 warning/0 error`、Core `83/83`、Worker `310/311`（1 skip）、Playnite `495/558`（63 skip），失败 `0`。
+
+## 2026-09-15 Round2 Q00 审计门禁假阳性修复复核
+
+- `f1ea52a` 将真实宿主汇总的阻断门禁统计改为排除 `gates/overflow-classification.json`；定向 `UiAuditTruthfulnessTests.OverflowClassificationReportIsNotCountedAsBlockingGate` 为 `1/1`。既有 `95d37cc` 隔离宿主产物只有该诊断 JSON，按新规则阻断门禁为 `0`，但旧摘要的 `HighGateCount=1` 原文保留。
+- `cc63523` 的 Release 构建、打包、隔离安装和全量自动测试通过：XAML `24/24`、Core `83/83`、Worker `310/311`（1 skip）、Playnite `495/558`（63 skip），失败 `0`。
+- `cc63523` 最新真实宿主重跑在 Playnite `Application started` 后因 CEF `mojo platform_channel` `Access denied (0x5)` 退出，没有 `summary.json` 或 Embedded Dashboard/Settings；该次只记录为宿主启动边界，不改写历史 `69e1f84` 真实嵌入证据，也未结束用户扩展目录 Worker PID `23304`。详见 `evidence/q13-q25/REAL_HOST_AUDIT-FP-FIX-20260915.md`。
