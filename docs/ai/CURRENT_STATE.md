@@ -2,10 +2,16 @@
 
 > 更新时间：2026-09-15。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-15 UI 精修 Q18 动效终态运行时门禁
+
+- 当前交付提交为 `68b49a1`，已推送 `codex/ui-finesse-round2`。新增 `UiFinesseFoundationTests.MotionAnimationsReleaseClocksAtTheirFinalValues`，在 STA WPF `Window`/PresentationSource 宿主中实际推进 `AnimateTranslate` 与 `AnimateEntrance`，完成后确认 X/Y/Opacity 为终值且不再有活动动画时钟。
+- 定向 Playnite 门禁为 `164` 通过、`39` 跳过、0 失败（203 总计）；最终 Release 全量为 Core `83/83`、Worker `310/311`（1 skip）、Playnite `486/549`（63 skip），失败 `0`；源码和 XAML 门禁通过。
+- Q18-04/Q18-07 因新增受控 WPF 运行时证据得到加强，但真实 Playnite Loaded/Unloaded 循环、窗口关闭、Rendering/ETW 与物理屏幕帧仍保持待验。证据见 [`Q18-04-07-MOTION-CLEANUP-20260915.md`](../design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q18-04-07-MOTION-CLEANUP-20260915.md)。
+
 ## 2026-09-15 UI 精修 Q16-08/Q17-07/Q18-04/Q18-07 动效生命周期收口
 
-- 当前交付提交为 `4414f05`，已推送 `codex/ui-finesse-round2`。`GscMotion`、Dashboard 和生产壳层动效在完成回调中清理时钟并写回终态；对话框关闭/重开使用代际失效，Dashboard 卸载归一化页面动效，Toast 卸载逐卡释放 Timer/动画。
-- 最终 Release 全量为 Core `83/83`、Worker `310/311`（1 skip）、Playnite `485/548`（63 skip），失败 `0`；定向动效/WPF 源码测试 `148` 通过、`39` 跳过、0 失败，源码和 XAML 门禁通过。
+- 当前生产实现提交为 `4414f05`，运行时回归提交为 `68b49a1`，均已推送 `codex/ui-finesse-round2`。`GscMotion`、Dashboard 和生产壳层动效在完成回调中清理时钟并写回终态；对话框关闭/重开使用代际失效，Dashboard 卸载归一化页面动效，Toast 卸载逐卡释放 Timer/动画。
+- 最终 Release 全量为 Core `83/83`、Worker `310/311`（1 skip）、Playnite `486/549`（63 skip），失败 `0`；定向动效/WPF 源码与受控运行时测试 `164` 通过、`39` 跳过、0 失败，源码和 XAML 门禁通过。
 - Q16-08/Q17-07/Q18-04/Q18-07 仅实现列升级为代码完成；真实 Playnite Loaded/Unloaded 循环、窗口 close、宿主动画时序、Rendering/ETW 与物理屏幕帧仍保持待验。证据见 [`Q18-04-07-MOTION-CLEANUP-20260915.md`](../design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q18-04-07-MOTION-CLEANUP-20260915.md)。
 
 ## 2026-09-15 UI 精修 Q17-04/Q18-03 状态夹具与动画重入修复

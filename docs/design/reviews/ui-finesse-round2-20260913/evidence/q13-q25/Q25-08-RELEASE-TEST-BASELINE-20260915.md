@@ -1,7 +1,19 @@
 # Q25-08 当前 Release 测试基线
 
 采集日期：2026-09-15（Asia/Shanghai）  
-代码基线：`4414f05`（`修复动效完成与卸载清理`）
+代码基线：`68b49a1`（`补充动效时钟终态运行时回归`）
+
+## 68b49a1 动效终态运行时跟进
+
+`68b49a1`（`补充动效时钟终态运行时回归`）在同一命令下再次通过：退出码 `0`，失败 `0`。新增的 STA WPF Window 测试实际推进 `AnimateTranslate`/`AnimateEntrance`，并在完成后确认终值写回且 `DependencyProperty` 不再处于动画状态；Playnite 测试总数变为 `549`。
+
+| 测试程序集 | 通过 | 跳过 | 总计 |
+| --- | ---: | ---: | ---: |
+| GameSaveCenter.Core.Tests | 83 | 0 | 83 |
+| GameSaveCenter.Worker.Tests | 310 | 1 | 311 |
+| GameSaveCenter.Playnite.Tests | 486 | 63 | 549 |
+
+该运行时门禁仍是受控 WPF Window，不等价于真实 Playnite Loaded/Unloaded 循环、宿主窗口关闭、Rendering/ETW 采样或物理屏幕帧验收。
 
 ## 最新修复后跟进
 
@@ -59,4 +71,4 @@ dotnet test GameSaveCenter.sln --no-restore -c Release -m:1 --logger "console;ve
 
 ## 与 Q25-08 的关系
 
-本页同时保留 `d8fad48` 历史基线、`c76ce62` 重入动画跟进、`8dfe7fa` 资源宿主修复跟进和 `4414f05` 动效清理跟进，支持 Q25-08 的代码/自动化收尾；真实宿主边界仍按 `ROUND2_PROGRESS.md` 和 `Q13-Q25-INDEX.md` 保留，不把自动测试升级成宿主验收。
+本页同时保留 `d8fad48` 历史基线、`c76ce62` 重入动画跟进、`8dfe7fa` 资源宿主修复跟进、`4414f05` 动效清理跟进和 `68b49a1` 动效终态运行时跟进，支持 Q25-08 的代码/自动化收尾；真实宿主边界仍按 `ROUND2_PROGRESS.md` 和 `Q13-Q25-INDEX.md` 保留，不把自动测试升级成宿主验收。
