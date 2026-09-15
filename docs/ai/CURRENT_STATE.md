@@ -865,3 +865,9 @@
 - 新增 `SelectedAcrylicNavigationKeepsItsStrongStateWhenHovered` 源码契约；定向 `UiFinesseRound2ControlSourceTests` 为 `20/20`，`check-xaml.ps1` 为 `24/24`，`python scripts/validate-source.py` 通过。
 - clean-tree RenderHarness 使用提交 `513ac5f2528e0706fde194d977f03fd8bd798e5d`，浅/深主题全量报告 `render-qa OK`、0 warning/0 error、`WorkingTreeClean=True`；证据见 `evidence/q04-q12/nav-priority-20260915.md`。
 - Q06-05 账本仍保留真实宿主输入序列待验：当前修复解决共享资源优先级，不把离屏状态或本轮 Playnite 导航观察冒充按压/失焦/禁用序列的最终像素验收。
+
+## 2026-09-15 Round2 WPF 测试调度隔离
+
+- 当前工作树新增 `tests/GameSaveCenter.Playnite.Tests/AssemblyInfo.cs`，关闭 Playnite 测试程序集并行化；原因是多个真实 STA WPF Window/Dispatcher 测试在完整套件中偶发争用，单独重跑同一 Release 二进制均可通过。
+- 修改后 `scripts/build.ps1 -Configuration Release` 通过：XAML `24/24`、Release `0 warning/0 error`、Core `83/83`、Worker `310/311`（1 skip）、Playnite `495/558`（63 skip），失败 `0`。
+- 该变更只收紧测试运行隔离，不改变生产 UI 行为；下一步宿主证据必须使用包含该测试门禁修复的提交身份重新建立。

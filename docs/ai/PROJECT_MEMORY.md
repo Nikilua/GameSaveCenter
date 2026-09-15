@@ -3125,3 +3125,9 @@
 - `c5a2997` 的隔离审计使用 Release、隔离 UserData，捕获当前提交 EmbeddedPlaynite Dashboard 29 个视口、2 个滚动面和 Settings 1 个视口；构建 0/0，Core `83/83`、Worker `311/311`、Playnite `499 passed / 57 skipped / 0 failed`，提交 SHA 与 metadata 一致。
 - 启动时复用了用户扩展目录内的旧 Worker PID `23304`，精确路径为 `C:\Users\lopmatu\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Worker.exe`，身份 `0.6.73+6450f6...`；当前插件为 `0.6.73+c5a2997...`，截图出现构建身份不兼容 Toast，`HighGateCount=1`。
 - 运行器不会结束其他扩展目录的用户 Worker；未获用户明确授权前不强制停止该 PID，也不把本轮截图写成当前提交的宿主全链路通过。重跑条件与证据见 `docs/design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/REAL_HOST_AUDIT-CURRENT-20260915.md`。
+
+## 2026-09-15 Round2 WPF 测试调度隔离
+
+- Playnite 测试程序集包含多个真实 STA WPF Window/Dispatcher 回归。完整套件曾在短时动画终态或侧栏卸载时钟断言上偶发失败，而同一 Release 二进制单独重跑通过；这属于测试调度竞争，不能把一次失败写成宿主或产品确定性阻断。
+- 新增 `tests/GameSaveCenter.Playnite.Tests/AssemblyInfo.cs` 的 `[assembly: CollectionBehavior(DisableTestParallelization = true)]`，与 Worker 测试策略一致，确保 WPF 测试串行运行；不改变生产命令、绑定、动画或资源。
+- 修改后的 Release 全量门禁为 XAML `24/24`、Core `83/83`、Worker `310/311`（1 skip）、Playnite `495/558`（63 skip），失败 `0`。

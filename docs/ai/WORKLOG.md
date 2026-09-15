@@ -6667,3 +6667,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 在 `c5a2997` 上运行隔离 `real-host-audit.ps1`：构建 0 warning/0 error，Core `83/83`、Worker `311/311`、Playnite `499 passed / 57 skipped / 0 failed`；当前提交的 EmbeddedPlaynite Dashboard/Settings 已捕获，目录保留 35 张 PNG（Dashboard 29 视口、2 滚动面、Settings 1 视口）。
 - 审计发现隔离宿主复用了用户扩展目录旧 Worker PID `23304`（`0.6.73+6450f6...`），与当前插件 `0.6.73+c5a2997...` 不一致，真实截图出现 Worker 失败 Toast，汇总 `HighGateCount=1`。这是宿主环境阻断，不是 UI 代码通过证据。
 - 已将边界写入 `evidence/q13-q25/REAL_HOST_AUDIT-CURRENT-20260915.md`；不强制终止未获授权的用户 Worker。后续需用户明确允许停止精确路径旧 Worker 后，按相同隔离参数重跑并要求 `HighGateCount=0`。
+
+## 2026-09-15 Round2 WPF 测试调度隔离
+
+- 完整宿主门禁在 Playnite WPF 测试阶段先后出现短时动画终态与侧栏卸载时钟的偶发失败；单独重跑同一 Release 二进制可通过，确认不是编译、安装或产品行为的确定性失败。
+- 新增 `tests/GameSaveCenter.Playnite.Tests/AssemblyInfo.cs`，关闭 Playnite 测试程序集并行化，与 Worker 测试既有策略一致，避免多个 STA Window/Dispatcher 测试同时争用 WPF 宿主调度。
+- 修改后根目录 `scripts/build.ps1 -Configuration Release` 通过：XAML `24/24`、构建 `0 warning/0 error`、Core `83/83`、Worker `310/311`（1 skip）、Playnite `495/558`（63 skip），失败 `0`。
