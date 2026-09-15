@@ -10,6 +10,10 @@
 - `scripts/real-host-audit.ps1` 现在在启动前自动写入 `runner-metadata.json` 的 `DisplayCount`、`DisplayTopology` 和 `Q24_03PhysicalCrossScreen.Status`。双屏时状态为 `ready-for-host-replay`，单屏时明确为 `blocked-single-display`。
 - 当前机器的 PowerShell 前置检查结果为：`screen-count=1`，仅 `\\.\DISPLAY1`，边界 `0,0,2560×1440`，工作区 `0,0,2560×1368`。因此没有执行“迁移宿主窗口并保持打开态 Popup”的动作，也没有生成跨屏通过结论。
 
+## 当前分支前置复核
+
+本次在已推送代码基线 `39e37b1`、文档基线 `7609c4a` 上重新执行前置检查：显示器仍只有 `\\.\DISPLAY1`（2560×1440，工作区 2560×1368），因此 Q24-03 的真实迁移动作继续不执行。`DiagnosticsEvidenceSourceTests` + `UiFinesseRound2ControlSourceTests` 共 `17/17` 通过；`real-host-audit.ps1` 语法解析通过。该结果只更新条件阻塞的现状，不增加第二屏或打开态 Popup 的截图证据。
+
 ## 可复核检查
 
 | 检查 | 结果 | 说明 |

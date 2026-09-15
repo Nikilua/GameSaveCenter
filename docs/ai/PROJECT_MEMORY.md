@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-15
 
+## 2026-09-15 Q24-03 物理跨屏前置复核
+
+- 在当前分支生产代码基线 `39e37b1`、文档 HEAD `7609c4a` 上重新检查 Q24-03 前置：`System.Windows.Forms.Screen.AllScreens` 仍只有 `\\.\DISPLAY1`，边界为 2560×1440，工作区为 2560×1368。
+- `DiagnosticsEvidenceSourceTests` + `UiFinesseRound2ControlSourceTests` 为 `17/17`，`real-host-audit.ps1` 语法解析通过；没有运行真实窗口跨屏迁移，也没有生成第二屏或打开态 Popup 的截图。
+- 该复核只确认 Q24-03 的条件阻塞仍然真实，不改变账本的自动/视觉/宿主结论；第二个物理显示器和可见 Playnite 宿主满足后才能继续。证据页为 `Q24-03-PHYSICAL-CROSS-SCREEN-20260915.md`。
+
 ## 2026-09-15 UI 精修 Q18 生产侧栏卸载清理回归
 
 - `39e37b1`（`补充侧栏卸载清理回归`）修正 `AcrylicProductionShellView.OnUnloaded` 的真实缺口：取消 `TranslateTransform.X` 动画后写回 `X = 0`，避免窗口卸载中途留下 `4` DIP 位移残留；同一提交新增 `ProductionShellChromeSourceTests.SidebarTransitionReleasesClocksOnCompletionAndUnloadInAnActualWpfWindow`，用实际 STA WPF `Window` 触发生产按钮、推进完成态，再在长动画中关闭窗口并验证过渡结束、Opacity/X 无活动时钟和位移归零。

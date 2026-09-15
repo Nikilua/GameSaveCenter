@@ -2,6 +2,12 @@
 
 > 更新时间：2026-09-15。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-15 Q24-03 物理跨屏前置复核
+
+- 当前分支生产代码基线为 `39e37b1`，本次前置复核时文档 HEAD 为 `7609c4a`；`System.Windows.Forms.Screen.AllScreens` 仍只发现 `\\.\DISPLAY1`，边界 2560×1440、工作区 2560×1368。
+- `DiagnosticsEvidenceSourceTests` + `UiFinesseRound2ControlSourceTests` 共 `17/17` 通过，`real-host-audit.ps1` PowerShell 语法解析通过；没有执行或伪造第二屏宿主迁移、打开态 Popup 和截图。
+- Q24-03 仍是条件阻塞：需要第二个物理显示器和可见 Playnite 宿主；证据见 [`Q24-03-PHYSICAL-CROSS-SCREEN-20260915.md`](../design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q24-03-PHYSICAL-CROSS-SCREEN-20260915.md)。
+
 ## 2026-09-15 UI 精修 Q18 生产侧栏卸载清理回归
 
 - 当前交付提交为 `39e37b1`，已推送 `codex/ui-finesse-round2`。`AcrylicProductionShellView.OnUnloaded` 现在取消侧栏位移动画后写回 `TranslateTransform.X = 0`；新增 `ProductionShellChromeSourceTests.SidebarTransitionReleasesClocksOnCompletionAndUnloadInAnActualWpfWindow`，在真实 STA WPF `Window` 中覆盖侧栏动画完成和窗口关闭卸载清理。

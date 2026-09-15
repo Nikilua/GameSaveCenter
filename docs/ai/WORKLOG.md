@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-15 Q24-03 物理跨屏前置复核
+
+- 在 `39e37b1` 代码基线和 `7609c4a` 文档 HEAD 上复核 Q24-03：本机 `Screen.AllScreens` 仍只有 `\\.\DISPLAY1`，2560×1440，工作区 2560×1368。
+- 源契约定向门禁 `DiagnosticsEvidenceSourceTests` + `UiFinesseRound2ControlSourceTests` 为 `17/17`，`real-host-audit.ps1` 语法解析通过；单屏条件下不启动迁移动作，不生成跨屏通过截图。
+- Q24-03 继续保留外部条件阻塞，后续需要第二个物理显示器、可见 Playnite 宿主和打开态 Popup 才能完成真实证据。证据：[`Q24-03-PHYSICAL-CROSS-SCREEN-20260915.md`](../design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q24-03-PHYSICAL-CROSS-SCREEN-20260915.md)。
+
 ## 2026-09-15 UI 精修 Q18 生产侧栏卸载清理回归
 
 - 提交并推送 `39e37b1`：`AcrylicProductionShellView.OnUnloaded` 在移除侧栏位移动画后写回 `TranslateTransform.X = 0`；新增真实 STA WPF `Window` 回归，覆盖侧栏动画完成，以及长动画期间关闭窗口后的 Unloaded 清理。
