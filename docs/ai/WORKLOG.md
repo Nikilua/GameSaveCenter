@@ -2,6 +2,11 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-15 Q17-04 受控状态夹具视觉复核
+
+- 人工查看 `statefixtures-20260915` 的浅色 Loading、深色 Stale、深色 Offline 和浅色 Stale 下一步运维代表图；Loading 覆盖层、Stale 横幅、Offline 说明、按钮和正文均可读，无黑色前景或明显裁切。报告同时记录双主题/多尺寸共 `160` 张截图、`160` 条 fixture 记录。
+- Q17-04 的受控视觉列升级为通过；这不替代真实 Worker 进度节奏、动画完成/停止、悬停/卸载时序或 Playnite 宿主像素，因此宿主列保持外部阻塞、结论仍未完成。代码门禁仍以该证据页记录的 RenderHarness Release `0 warning / 0 error` 与定向 `18/18` 为准。
+
 ## 2026-09-15 非空隔离库宿主边界复核
 
 - 为补强 Q20 首页统计/活动数据，在当前文档 HEAD `0fb597e` 上以隔离 `games.db`（3 个游戏）重跑 `scripts/real-host-audit.ps1 -Configuration Release`；第一次整目录复制带入旧 `safestart.flag`，第二次改用成功启动过的干净配置、主题、扩展数据与非空 library。

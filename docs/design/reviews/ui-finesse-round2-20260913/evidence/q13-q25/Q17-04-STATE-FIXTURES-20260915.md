@@ -23,8 +23,14 @@ tests/GameSaveCenter.RenderHarness/bin/Release/net472/GameSaveCenter.RenderHarne
 - [深色 Offline 媒体详情](statefixtures-20260915/media-details-dark-1040x700-Offline.png)
 - [浅色 Stale 下一步运维](statefixtures-20260915/maintenance-next-steps-light-1040x700-Stale.png)
 
+## 2026-09-15 受控视觉复核
+
+人工查看上述四张代表图：浅色 Loading 收件箱的进度覆盖层、深色 Stale 收件箱的过期横幅与重试动作、深色 Offline 媒体详情的离线说明，以及浅色 Stale 下一步运维的后续操作卡片均清晰可读；标题、正文、状态文字、按钮和数据表面没有出现黑色前景或明显裁切。结合报告中的 160 张截图/160 条 fixture 记录，本阶段将 Q17-04 的受控视觉列记为通过。
+
+这只是固定 STA/WPF 状态夹具的视觉复核，不证明真实 Worker 的进度节奏、动画完成/停止、悬停与卸载时序，也不证明 Playnite 宿主像素。因此宿主列仍保持外部阻塞，结论仍未完成。
+
 ## 结论边界
 
-这组证据确认了生产页的状态可见性、状态覆盖层、Stale 提示和不同尺寸的数据表面几何；它不替代真实 Worker 进度节奏、悬停/卸载期间的动画时序或 Playnite 宿主像素验收，因此 Q17-04 的视觉/宿主列仍保持待验。
+这组证据确认了生产页的状态可见性、状态覆盖层、Stale 提示和不同尺寸的数据表面几何；受控视觉列已由代表图人工复核为通过，但它不替代真实 Worker 进度节奏、悬停/卸载期间的动画时序或 Playnite 宿主像素验收。
 
 代码门禁同时锁定 `ProgressBar.IsIndeterminate` 的循环扫过动画存在 `StopStoryboard`，终态不会继续持有该状态动画；`UiFinesseRound2ControlSourceTests` 与 `UiFinesseFoundationTests` 定向测试共 `18/18` 通过。

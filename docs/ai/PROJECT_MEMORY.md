@@ -2,6 +2,11 @@
 
 > 维护时间：2026-09-15
 
+## 2026-09-15 Q17-04 受控状态夹具视觉复核
+
+- `statefixtures-20260915` 在 RenderHarness Release 下产出双主题、`1040×700 / 1100×720 / 1366×768 / 2560×1440 DIP` 四尺寸共 `160` 张截图和 `160` 条 fixture 记录；人工复核浅色 Loading、深色 Stale、深色 Offline、浅色 Stale 下一步运维代表图，进度覆盖层、过期/离线提示、按钮与正文均可读。
+- 账本仅将 Q17-04 的受控视觉列升级为通过；真实 Worker 进度节奏、动画完成/停止、悬停/卸载期间的时序和 Playnite 宿主像素仍不可由夹具证明，宿主列继续外部阻塞，结论继续未完成。
+
 ## 2026-09-15 当前提交真实宿主嵌入复核
 
 - `37f92f7` 在全新隔离 UserData、扩展目录、Worker 数据目录和唯一 Pipe/EventPipe 下完成 `real-host-audit.ps1 -Configuration Release`；源码、Plugin、Worker、Contracts 构建身份统一为 `0.6.73+37f92f7f107880bb5a33f61c82eee11fe1344874`。

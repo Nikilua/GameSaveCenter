@@ -2,7 +2,12 @@
 
 > 更新时间：2026-09-15。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
-## 当前最近阶段：当前提交真实宿主嵌入复核
+## 当前最近阶段：Q17-04 受控状态夹具视觉复核
+
+- `Q17-04-STATE-FIXTURES-20260915.md` 的 RenderHarness Release 报告包含双主题、四种 DIP 尺寸下 `160` 张截图/`160` 条 fixture 记录；已人工查看浅色 Loading、深色 Stale、深色 Offline 和浅色 Stale 下一步运维四张代表图，状态覆盖层、横幅、说明、按钮和正文可读。
+- 因此 Q17-04 视觉列已升级为通过；真实 Worker 进度节奏、动画停止、悬停/卸载时序和 Playnite 宿主像素仍是外部阻塞，结论仍未完成。真实宿主事实继续以下方 `37f92f7` 成功 Embedded 证据为准。
+
+## 上一阶段：当前提交真实宿主嵌入复核
 
 - `37f92f7` 已在全新隔离 UserData、扩展目录和 Worker IPC 下完成 Release 真实宿主审计；当前程序集身份统一为 `0.6.73+37f92f7f107880bb5a33f61c82eee11fe1344874`。
 - `artifacts/ui-host-audit-round2-fp-final6-20260915/summary.json` 记录 Dashboard/Settings 均为 `EmbeddedPlaynite`，`ProductionVisualSourceOfTruthAvailable=true`、`HighGateCount=0`；捕获 29 个 Dashboard 视口、2 个滚动面、1 个 Settings 视口，150% DPI，代表 PNG 已人工复核。
