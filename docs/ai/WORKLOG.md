@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-15 Q18-07 Loaded/Unloaded 动效循环探针
+
+- 提交并推送 `0815871`（`补充动效加载卸载循环探针`）：新增 `motioncycleprobe`，在真实生产 `AcrylicProductionShellView` 上执行 100 次移出/重新加载循环，并新增源契约测试；定向门禁为 `23/23`。
+- clean-tree Release 探针绑定 `08158713ac9d575c98636f57525e876f47df370d`，Light/Dark 均记录 `loaded=101/unloaded=101`、最终未加载、无运行中过渡、Opacity=1；每轮卸载后检查侧栏动画时钟，六张截图和原始报告写入 `Q18-07-MOTION-CYCLE-20260915.md`，代表图已人工查看。
+- Q18-07 受控视觉列升级为通过。壳层本身没有 Timer/Rendering 订阅，但夹具没有构造真实 Dashboard VM/Worker 订阅；Playnite 宿主 close、物理 DPI、屏幕帧和 ETW 仍不宣称完成。RenderHarness Release `0/0`，`git diff --check` 通过。
+
 ## 2026-09-15 Q18-05 系统动画热切换探针
 
 - 提交并推送 `dc1dd67`（`补充动效偏好热切换探针`）：新增 `motionhotprobe`，使用真实生产 `AcrylicProductionShellView`，不是伪造 Dashboard 或 Playnite 宿主；新增源契约测试后定向门禁为 `22/22`。

@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-15
 
+## 2026-09-15 Q18-07 动效 Loaded/Unloaded 生命周期受控证据
+
+- `0815871` 新增 `RenderHarness.exe motioncycleprobe` 和 `UiFinesseRound2ControlSourceTests` 门禁；clean-tree 报告绑定完整 SHA、`WorkingTreeClean=True`、Light/Dark、900×640 DIP 和 100 次 Loaded/Unloaded 循环。
+- 同一真实生产 `AcrylicProductionShellView` 每次先启动侧栏过渡，再移出 `ContentControl` 触发 `Unloaded`，检查时钟/Opacity/位移归一后重新加载；两主题均为 `cycles=100 loaded=101 unloaded=101 finalLoaded=False transitionRunning=False opacity=1`，每次循环无残留侧栏动画。
+- 人工查看六张 PNG；RenderHarness Release `0 warning/0 error`，`UiFinesseRound2ControlSourceTests` `23/23`。Q18-07 受控视觉列升级为通过，但该夹具使用 Fake 数据上下文且未构造真实 Dashboard VM/Worker 订阅，Playnite 宿主、真实窗口关闭、物理 DPI/屏幕帧和 ETW 仍保持外部边界。
+
 ## 2026-09-15 Q18-05 系统动画热变更受控证据
 
 - `dc1dd67` 新增 `RenderHarness.exe motionhotprobe` 和 `UiFinesseRound2ControlSourceTests` 契约门禁；clean-tree 报告绑定完整 SHA、`WorkingTreeClean=True`、双主题、900×640 DIP 和受控 `GscMotionNormal=700ms` 审计覆盖。

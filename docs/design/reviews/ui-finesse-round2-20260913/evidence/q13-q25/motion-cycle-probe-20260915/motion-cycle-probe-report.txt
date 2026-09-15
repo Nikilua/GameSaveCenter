@@ -1,0 +1,14 @@
+Production shell Loaded/Unloaded motion cycle probe (controlled STA WPF Window)
+Scenario: motioncycleprobe
+EvidenceSource: ControlledWpfWindow
+Commit: 08158713ac9d575c98636f57525e876f47df370d
+WorkingTreeClean: True
+DpiScale: 1.00 (offscreen logical DIP; real host DPI is not inferred)
+WindowDip: per-case window_dip/content_dip fields
+Themes: light,dark
+DataVolumes: production shell; 100 Loaded/Unloaded cycles; audit-only GscMotionNormal=700ms override; 900x640 DIP
+TimingFields: layout_ms, render_ms; request_ms=not-applicable for offscreen harness
+Cycle[light] cycles=100 loaded=101 unloaded=101 finalLoaded=False transitionRunning=False opacity=1
+Cycle[dark] cycles=100 loaded=101 unloaded=101 finalLoaded=False transitionRunning=False opacity=1
+MotionCycleBoundary: 100 controlled production shell Loaded/Unloaded cycles returned event counts to 101/101 and left no sidebar animation clocks; shell has no Timer/Rendering subscription, while Dashboard/Playnite host notification and physical screen evidence remain separate checks
+MotionCycleProbe OK
