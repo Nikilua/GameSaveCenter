@@ -2,7 +2,10 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
 using Xunit;
 using GameSaveCenter.Playnite.Infrastructure;
 
@@ -80,6 +83,69 @@ public sealed class UiFinesseFoundationTests
     }
 
     [Fact]
+    public void MotionAnimationsReleaseClocksAtTheirFinalValues()
+    {
+        Exception? exception = null;
+        var thread = new Thread(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var host = new Border
+                {
+                    Width = 40,
+                    Height = 40,
+                    Background = Brushes.Transparent
+                };
+                host.Resources["GscMotionFast"] = new Duration(TimeSpan.FromMilliseconds(30));
+                host.Resources["GscMotionNormal"] = new Duration(TimeSpan.FromMilliseconds(30));
+                host.Resources["GscMotionSlow"] = new Duration(TimeSpan.FromMilliseconds(30));
+
+                window = new Window
+                {
+                    Content = host,
+                    Width = 80,
+                    Height = 80,
+                    ShowInTaskbar = false,
+                    ShowActivated = false,
+                    WindowStyle = WindowStyle.None,
+                    Opacity = 0.01
+                };
+                window.Show();
+                window.UpdateLayout();
+
+                var translate = GscMotion.GetMutableTranslateTransform(host);
+                GscMotion.AnimateTranslate(host, 6, -2, GscMotion.MotionDurationKind.Fast);
+                PumpDispatcher(TimeSpan.FromMilliseconds(120));
+                Assert.False(DependencyPropertyHelper.GetValueSource(translate, TranslateTransform.XProperty).IsAnimated);
+                Assert.False(DependencyPropertyHelper.GetValueSource(translate, TranslateTransform.YProperty).IsAnimated);
+                Assert.Equal(6, translate.X);
+                Assert.Equal(-2, translate.Y);
+
+                GscMotion.AnimateEntrance(host, 10);
+                PumpDispatcher(TimeSpan.FromMilliseconds(120));
+                Assert.False(DependencyPropertyHelper.GetValueSource(host, UIElement.OpacityProperty).IsAnimated);
+                Assert.False(DependencyPropertyHelper.GetValueSource(translate, TranslateTransform.YProperty).IsAnimated);
+                Assert.Equal(1, host.Opacity);
+                Assert.Equal(0, translate.Y);
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+    }
+
+    [Fact]
     public void EntranceMotionTakesOverFromTheCurrentEffectiveValue()
     {
         var motion = File.ReadAllText(Path.Combine(FindRepositoryRoot(), "src", "GameSaveCenter.Playnite", "Infrastructure", "GscMotion.cs"));
@@ -125,5 +191,18 @@ public sealed class UiFinesseFoundationTests
         while (directory != null && !File.Exists(Path.Combine(directory.FullName, "GameSaveCenter.sln")))
             directory = directory.Parent;
         return directory?.FullName ?? throw new InvalidOperationException("Repository root not found.");
+    }
+
+    private static void PumpDispatcher(TimeSpan duration)
+    {
+        var frame = new DispatcherFrame();
+        var timer = new DispatcherTimer { Interval = duration };
+        timer.Tick += (_, __) =>
+        {
+            timer.Stop();
+            frame.Continue = false;
+        };
+        timer.Start();
+        Dispatcher.PushFrame(frame);
     }
 }
