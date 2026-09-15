@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-15
 
+## 2026-09-15 Q05-05 生产按钮忙态反馈
+
+- `4947539` 新增 `GameSaveCenter.Playnite.Controls.Button.IsBusy` 与 `WpfUiProduction` 的 `BusyIndicatorHost`；忙态只叠加底部 indeterminate 指示，不交换按钮 Content，不改变宽度，也不在模板中延迟命令。Dashboard 顶部刷新、全部备份、媒体同步绑定现有 `DashboardViewModel.IsBusy`，命令可执行性仍由原 RelayCommand 控制。
+- `RenderHarness.exe buttonbusyprobe` 使用真实生产按钮模板与资源，在 Light/Dark、STA、96 DPI、DpiScale=1.00 下均报告 `normalWidth=180`、`busyWidth=180`、`indicatorVisible=True`、`indeterminate=True`、`contentStable=True`；四张 PNG 和原始报告已复制到 `evidence/q04-q12/button-busy-20260915/`。
+- `UiFinesseRound2ControlSourceTests` 本阶段为 `17/17`，RenderHarness Release 编译 `0/0`；该证据只升级 Q05-05 视觉列，真实业务命令耗时与 Playnite 输入/宿主仍保留外部边界。不要把底部指示层当作已完成 Hover/Pressed/IME/物理 DPI 验收。
+
 ## 2026-09-15 Q03-07/Q23-07 设置主题打开态运行时夹具
 
 - `a1f3cae` 新增 `RenderHarness` 的 `settingsthemeprobe` 和完整 QA 调用：真实 `GameSaveCenterSettingsView` 放入 STA WPF 隐藏 `Window`，进入外观页，打开生产 ComboBox 的 `PART_Popup` 与设置保存提示 `ToolTip`，在打开态切换 Light→Dark。

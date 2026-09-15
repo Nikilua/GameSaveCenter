@@ -1,0 +1,5 @@
+Production button busy-state probe (controlled STA WPF surface)
+Busy[light] normalWidth=180 busyWidth=180 widthStable=True indicatorVisible=True indeterminate=True contentStable=True
+Busy[dark] normalWidth=180 busyWidth=180 widthStable=True indicatorVisible=True indeterminate=True contentStable=True
+BusyStateBoundary: production IsBusy binding is covered for the dashboard header; real command timing and Playnite host input remain host checks
+ButtonBusyProbe OK

@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-15 Q05-05 生产按钮忙态反馈
+
+- 提交并推送 `4947539`（`补充生产按钮忙态反馈`）：自定义生产按钮增加 `IsBusy`，共享模板增加不占布局的 indeterminate 指示层；Dashboard 顶部刷新、全部备份、媒体同步绑定真实 `IsBusy`。
+- `buttonbusyprobe` 使用真实生产资源完成 Light/Dark 受控 STA WPF 夹具；报告两主题均 `normalWidth=180`、`busyWidth=180`、`widthStable=True`、`indicatorVisible=True`、`indeterminate=True`、`contentStable=True`，四张截图人工复核可读。
+- 验证：RenderHarness Release `0 warning/0 error`；`UiFinesseRound2ControlSourceTests` `17/17`；`validate-source.py`、XAML `24/24`、`git diff --check` 通过。Q05-05 视觉列升级为通过，宿主列仍为外部阻塞；真实 Hover/Pressed/鼠标输入探针因当前会话没有桌面鼠标句柄未固化，继续按宿主边界记录。
+
 ## 2026-09-15 Q03-07/Q23-07 设置主题打开态视觉夹具
 
 - 提交 `a1f3cae`（`补充设置主题切换开放态夹具`）新增 `settingsthemeprobe`：在真实 STA WPF Settings view 中打开 ComboBox Popup 与 ToolTip，保持打开并执行 Light→Dark 资源切换；同步新增源契约测试，定向 `16/16` 通过。
