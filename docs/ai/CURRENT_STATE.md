@@ -4,7 +4,7 @@
 
 ## 2026-09-15 UI 精修 Q18 动效终态运行时门禁
 
-- 当前交付提交为 `68b49a1`，已推送 `codex/ui-finesse-round2`。新增 `UiFinesseFoundationTests.MotionAnimationsReleaseClocksAtTheirFinalValues`，在 STA WPF `Window`/PresentationSource 宿主中实际推进 `AnimateTranslate` 与 `AnimateEntrance`，完成后确认 X/Y/Opacity 为终值且不再有活动动画时钟。
+- 当前交付提交为 `68b49a1`，已推送 `codex/ui-finesse-round2`。新增 `UiFinesseFoundationTests.MotionAnimationsReleaseClocksAtTheirFinalValues`，在 STA WPF `Window`/PresentationSource 宿主中实际推进 `AnimateTranslate` 与 `AnimateEntrance`，完成后确认 X/Y/Opacity 为终值且不再有活动动画时钟；Release 连续回放 `5/5` 通过。
 - 定向 Playnite 门禁为 `164` 通过、`39` 跳过、0 失败（203 总计）；最终 Release 全量为 Core `83/83`、Worker `310/311`（1 skip）、Playnite `486/549`（63 skip），失败 `0`；源码和 XAML 门禁通过。
 - Q18-04/Q18-07 因新增受控 WPF 运行时证据得到加强，但真实 Playnite Loaded/Unloaded 循环、窗口关闭、Rendering/ETW 与物理屏幕帧仍保持待验。证据见 [`Q18-04-07-MOTION-CLEANUP-20260915.md`](../design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q18-04-07-MOTION-CLEANUP-20260915.md)。
 

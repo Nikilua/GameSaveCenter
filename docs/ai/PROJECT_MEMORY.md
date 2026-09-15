@@ -5,7 +5,7 @@
 ## 2026-09-15 UI 精修 Q18 动效终态运行时回归
 
 - `68b49a1`（`补充动效时钟终态运行时回归`）新增 `UiFinesseFoundationTests.MotionAnimationsReleaseClocksAtTheirFinalValues`：创建真实 STA WPF `Window`/PresentationSource 宿主，使用局部 30ms motion token 推进 `AnimateTranslate` 和 `AnimateEntrance`，完成后断言 Transform/Opacity 为目标值，`DependencyPropertyHelper` 不再报告活动动画。
-- Debug 构建 0 warning/0 error；动效运行时测试 `1/1`；定向 Playnite 门禁 `164` 通过、`39` 跳过、0 失败（203 总计）；Release Core `83/83`、Worker `310/311`（1 skip）、Playnite `486/549`（63 skip），失败 `0`；源码、XAML、`git diff --check` 均通过。
+- Debug 构建 0 warning/0 error；动效运行时测试 `1/1`，Release 独立回放连续 `5/5`；定向 Playnite 门禁 `164` 通过、`39` 跳过、0 失败（203 总计）；Release Core `83/83`、Worker `310/311`（1 skip）、Playnite `486/549`（63 skip），失败 `0`；源码、XAML、`git diff --check` 均通过。
 - 该测试是受控 WPF Window，不等价真实 Playnite Loaded/Unloaded 100 次、宿主窗口关闭、Rendering/ETW 采样或物理屏幕帧；Q18-04/Q18-07 的宿主/视觉列继续待验。证据页为 `Q18-04-07-MOTION-CLEANUP-20260915.md`。
 
 ## 2026-09-15 UI 精修 Q16-08/Q17-07/Q18-04/Q18-07 动效时钟与卸载清理

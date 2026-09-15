@@ -5,7 +5,7 @@
 ## 2026-09-15 UI 精修 Q18 动效终态运行时回归
 
 - 提交并推送 `68b49a1`：新增 `UiFinesseFoundationTests.MotionAnimationsReleaseClocksAtTheirFinalValues`，在真实 STA WPF `Window`/PresentationSource 宿主上推进短时 `AnimateTranslate` 与 `AnimateEntrance`，完成后断言 Transform/Opacity 终值及无活动动画时钟；此前脱离视觉树的失败测试已改为可运行窗口宿主，避免误判产品实现。
-- 验证：Debug 构建 0 warning/0 error；运行时测试 `1/1`；定向 Playnite `164` 通过、`39` 跳过、0 失败（203 总计）；Release 全量 Core `83/83`、Worker `310/311`（1 skip）、Playnite `486/549`（63 skip），失败 `0`；`validate-source.py`、XAML `24/24` 和 `git diff --check` 通过。
+- 验证：Debug 构建 0 warning/0 error；运行时测试 `1/1`，Release 独立连续回放 `5/5`；定向 Playnite `164` 通过、`39` 跳过、0 失败（203 总计）；Release 全量 Core `83/83`、Worker `310/311`（1 skip）、Playnite `486/549`（63 skip），失败 `0`；`validate-source.py`、XAML `24/24` 和 `git diff --check` 通过。
 - 该证据只加强受控 WPF 的完成态时钟释放，不扩写为真实 Playnite Loaded/Unloaded、Rendering/ETW 或物理屏幕验收；Q18-04/Q18-07 的宿主/视觉列仍按账本保留待验。证据见 [`Q18-04-07-MOTION-CLEANUP-20260915.md`](../design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q18-04-07-MOTION-CLEANUP-20260915.md)。
 
 ## 2026-09-15 UI 精修 Q16-08/Q17-07/Q18-04/Q18-07 动效完成态与卸载清理

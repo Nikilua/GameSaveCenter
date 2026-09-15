@@ -13,7 +13,7 @@
 | GameSaveCenter.Worker.Tests | 310 | 1 | 311 |
 | GameSaveCenter.Playnite.Tests | 486 | 63 | 549 |
 
-该运行时门禁仍是受控 WPF Window，不等价于真实 Playnite Loaded/Unloaded 循环、宿主窗口关闭、Rendering/ETW 采样或物理屏幕帧验收。
+该运行时门禁仍是受控 WPF Window；专门的 Release 回放连续 `5/5` 通过，但不等价于真实 Playnite Loaded/Unloaded 循环、宿主窗口关闭、Rendering/ETW 采样或物理屏幕帧验收。
 
 ## 最新修复后跟进
 
