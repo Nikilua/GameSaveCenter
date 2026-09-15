@@ -1424,6 +1424,21 @@ namespace GameSaveCenter.Playnite.Diagnostics
                 : full;
         }
 
+        internal static int CountBlockingGateFiles(string outputRoot)
+        {
+            var gatesDirectory = Path.Combine(outputRoot, "gates");
+            if (!Directory.Exists(gatesDirectory))
+                return 0;
+
+            // overflow-classification.json is an always-written diagnostic report. It
+            // describes the scan and is not itself a blocking gate produced by WriteGate.
+            return Directory.GetFiles(gatesDirectory, "*.json")
+                .Count(path => !string.Equals(
+                    Path.GetFileName(path),
+                    "overflow-classification.json",
+                    StringComparison.OrdinalIgnoreCase));
+        }
+
         private static void WriteGate(string code, string message, string outputRoot)
         {
             try
@@ -1628,9 +1643,7 @@ namespace GameSaveCenter.Playnite.Diagnostics
                         outputRoot);
                     highGates++;
                 }
-                var gateFiles = Directory.Exists(Path.Combine(outputRoot, "gates"))
-                    ? Directory.GetFiles(Path.Combine(outputRoot, "gates"), "*.json").Length
-                    : 0;
+                var gateFiles = CountBlockingGateFiles(outputRoot);
                 Directory.CreateDirectory(Path.Combine(outputRoot, "embedded-current", "dashboard"));
                 Directory.CreateDirectory(Path.Combine(outputRoot, "controlled"));
                 if (session.EmbeddedDashboard.Count > 0)

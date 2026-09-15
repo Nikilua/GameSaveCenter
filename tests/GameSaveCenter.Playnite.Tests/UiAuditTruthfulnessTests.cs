@@ -57,6 +57,26 @@ public sealed class UiAuditTruthfulnessTests
     }
 
     [Fact]
+    public void OverflowClassificationReportIsNotCountedAsBlockingGate()
+    {
+        var tempDir = Path.Combine(Path.GetTempPath(), "gsc-audit-gates-" + Guid.NewGuid().ToString("N"));
+        var gatesDirectory = Path.Combine(tempDir, "gates");
+        Directory.CreateDirectory(gatesDirectory);
+        try
+        {
+            File.WriteAllText(Path.Combine(gatesDirectory, "overflow-classification.json"), "{}");
+            Assert.Equal(0, RealHostUiAuditService.CountBlockingGateFiles(tempDir));
+
+            File.WriteAllText(Path.Combine(gatesDirectory, "CHILD_LAYOUT_OVERFLOW.json"), "{}");
+            Assert.Equal(1, RealHostUiAuditService.CountBlockingGateFiles(tempDir));
+        }
+        finally
+        {
+            try { Directory.Delete(tempDir, true); } catch { }
+        }
+    }
+
+    [Fact]
     public void VirtualizedDataGridScrollerIsSkipped()
     {
         Exception? exception = null;
