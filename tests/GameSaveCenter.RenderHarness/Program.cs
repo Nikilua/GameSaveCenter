@@ -5422,6 +5422,7 @@ public static class Program
     private static void RunMotionProbe(string outputRoot, StringBuilder report)
     {
         report.AppendLine("Production shell motion probe (controlled STA WPF Window)");
+        AppendRunMetadata(report, "motionprobe", "ControlledWpfWindow", "light,dark", "production shell; audit-only GscMotionNormal=700ms override; 900x640 DIP");
         Window? window = null;
         try
         {
