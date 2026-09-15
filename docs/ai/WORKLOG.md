@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-15 UI 精修 Q18-04/Q18-07 动效完成态与卸载清理
+
+- 提交并推送 `4414f05`：`GscMotion`、Dashboard 和 AcrylicProductionShellView 的代码动效显式声明完成态策略，完成回调清除时钟并写回终态；对话框用代际令牌处理快速关闭/重开，卸载时归一化可见页面和 Toast。
+- 具体修复了此前 Dashboard 对话框只清透明度不清 Y 位移、`ClearToasts()` 直接清 Children 绕过逐卡 Timer/动画清理，以及通用 Translate/Entrance/Status/页面切换完成态时钟可能长留的问题。
+- Debug 构建 0 warning/0 error；定向 Playnite 148 通过、39 跳过、0 失败；Release 全量 Core `83/83`、Worker `310/311`（1 skip）、Playnite `485/548`（63 skip），失败 `0`；源代码/XAML 门禁通过。
+- Q18-04/Q18-07 已将实现列升级为“代码完成”，视觉/真实宿主列仍保留待验；未运行真实 Playnite 100 次 Loaded/Unloaded、Rendering/ETW 或物理屏幕帧，不把源码门禁扩写成宿主结论。证据见 [`Q18-04-07-MOTION-CLEANUP-20260915.md`](../design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q18-04-07-MOTION-CLEANUP-20260915.md)。
+
 ## 2026-09-15 UI 精修 Q17-04/Q18-03 状态夹具与动画重入修复
 
 - 在当前 `d8fad48` 之后先复核生产代码：`AnimateEntrance` 会无条件写入起点，快速重入可能闪回；已在 `c76ce62` 改为捕获活动动画的当前有效值，停止旧时钟后继续向终态动画。

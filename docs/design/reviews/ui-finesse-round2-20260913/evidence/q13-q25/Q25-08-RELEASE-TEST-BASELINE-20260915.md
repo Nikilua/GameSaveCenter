@@ -1,7 +1,7 @@
 # Q25-08 当前 Release 测试基线
 
 采集日期：2026-09-15（Asia/Shanghai）  
-代码基线：`d8fad48`（`更新跨屏证据最终代码基线`）
+代码基线：`4414f05`（`修复动效完成与卸载清理`）
 
 ## 最新修复后跟进
 
@@ -27,6 +27,18 @@
 
 真实动画热切换、系统动画偏好变化、宿主屏幕像素和 ETW 性能边界仍未由自动测试替代。
 
+## Q18-04/Q18-07 动效清理跟进
+
+`4414f05`（`修复动效完成与卸载清理`）在同一命令下再次通过：退出码 `0`，失败 `0`。本次将完成态 `FillBehavior`、完成回调、对话框取消代际、Toast 逐卡清理和 Dashboard/壳层卸载清理纳入代码门禁；测试数量与上一跟进保持一致。
+
+| 测试程序集 | 通过 | 跳过 | 总计 |
+| --- | ---: | ---: | ---: |
+| GameSaveCenter.Core.Tests | 83 | 0 | 83 |
+| GameSaveCenter.Worker.Tests | 310 | 1 | 311 |
+| GameSaveCenter.Playnite.Tests | 485 | 63 | 548 |
+
+真实 Playnite Loaded/Unloaded 循环、窗口关闭、Rendering/ETW 采样和物理屏幕帧仍是外部边界；本跟进不把源码门禁写成宿主验收。
+
 ## 命令与结果
 
 在干净工作树上使用单 MSBuild 节点执行：
@@ -47,4 +59,4 @@ dotnet test GameSaveCenter.sln --no-restore -c Release -m:1 --logger "console;ve
 
 ## 与 Q25-08 的关系
 
-本页同时保留 `d8fad48` 历史基线、`c76ce62` 重入动画跟进和 `8dfe7fa` 资源宿主修复跟进，支持 Q25-08 的代码/自动化收尾；真实宿主边界仍按 `ROUND2_PROGRESS.md` 和 `Q13-Q25-INDEX.md` 保留，不把自动测试升级成宿主验收。
+本页同时保留 `d8fad48` 历史基线、`c76ce62` 重入动画跟进、`8dfe7fa` 资源宿主修复跟进和 `4414f05` 动效清理跟进，支持 Q25-08 的代码/自动化收尾；真实宿主边界仍按 `ROUND2_PROGRESS.md` 和 `Q13-Q25-INDEX.md` 保留，不把自动测试升级成宿主验收。
