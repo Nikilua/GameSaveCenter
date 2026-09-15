@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-15 Q03-07/Q23-07 设置主题打开态视觉夹具
+
+- 提交 `a1f3cae`（`补充设置主题切换开放态夹具`）新增 `settingsthemeprobe`：在真实 STA WPF Settings view 中打开 ComboBox Popup 与 ToolTip，保持打开并执行 Light→Dark 资源切换；同步新增源契约测试，定向 `16/16` 通过。
+- 聚焦探针输出 `popupOpen=True`、`tooltipOpen=True`、主文字 `#F21B1F27→#FFF2F4F8`，6 张截图人工复核；提交后 clean-tree 完整 RenderHarness `render-qa OK`，Release 构建 0 警告/0 错误。
+- 受控夹具的隐藏窗口为测量打开态临时覆盖 Popup `StaysOpen`，不替代真实 Playnite 的关闭、保存/取消、Dialog/Inspector、宿主主题跟随、物理 DPI 或屏幕帧；Q03-07/Q23-07 视觉列通过，宿主列仍按边界保留。
+
 ## 2026-09-15 UI 精修真实宿主最终复核
 
 - `69e1f84` clean-tree Release real-host audit 完成：XAML `24/24`，0 warning/0 error，Core `83/83`、Worker `311/311`、Playnite `494/551`（57 skip）、0 fail；程序集身份为 `0.6.73+69e1f844f8b20b1fcf1667d2b8a6af2772eb0ed4`。

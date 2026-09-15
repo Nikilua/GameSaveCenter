@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-15
 
+## 2026-09-15 Q03-07/Q23-07 设置主题打开态运行时夹具
+
+- `a1f3cae` 新增 `RenderHarness` 的 `settingsthemeprobe` 和完整 QA 调用：真实 `GameSaveCenterSettingsView` 放入 STA WPF 隐藏 `Window`，进入外观页，打开生产 ComboBox 的 `PART_Popup` 与设置保存提示 `ToolTip`，在打开态切换 Light→Dark。
+- 聚焦探针和 clean-tree 完整 RenderHarness 均通过；报告为 `popupOpen=True`、`tooltipOpen=True`、主文字资源 `#F21B1F27→#FFF2F4F8`，并人工复核 Settings、Popup、ToolTip 共 6 张 PNG。`UiFinesseRound2ControlSourceTests` 定向 `16/16` 通过，RenderHarness Release `0 warning/0 error`。
+- 隐藏窗口没有真实鼠标激活，夹具仅临时将已绑定 Popup 设为 `StaysOpen=True` 以保持可测；生产模板的 `StaysOpen=False`、点外部关闭和真实 Playnite 生命周期仍由源门禁/宿主边界负责。该阶段只升级 Q03-07/Q23-07 视觉列，不升级真实宿主列。
+
 ## 2026-09-15 真实宿主最终复核结论
 
 - 最终交付基线为 `69e1f84`，clean-tree Release 隔离审计通过：XAML `24/24`、Core `83/83`、Worker `311/311`、Playnite `494/551`（57 skip）、0 fail；包身份和三份审计身份均为 `0.6.73+69e1f844f8b20b1fcf1667d2b8a6af2772eb0ed4`。

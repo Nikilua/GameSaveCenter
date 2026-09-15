@@ -2,6 +2,12 @@
 
 > 更新时间：2026-09-15。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 当前最近阶段：设置主题打开态运行时夹具
+
+- `a1f3cae` 已推送 `codex/ui-finesse-round2`：新增 `settingsthemeprobe` 与完整 RenderHarness 调用，使用真实 Settings view 在 STA WPF 隐藏宿主窗口中打开 ComboBox Popup 和 ToolTip，在保持打开时执行 Light→Dark 切换。
+- 聚焦输出与 clean-tree 完整 `render-qa` 均通过；探针报告 `popupOpen=True`、`tooltipOpen=True`、主文字 `#F21B1F27→#FFF2F4F8`，并人工复核 6 张截图。Q03-07/Q23-07 视觉列已升级为通过。
+- 这是受控 WPF 视觉证据，不等价真实 Playnite Dialog/Inspector、屏幕闪白帧、宿主主题跟随、保存/取消提交、物理 DPI 或跨屏 Popup；Q24-03 单屏阻塞和其余宿主边界保持不变。
+
 ## 当前最近阶段：真实宿主最终复核已完成
 
 - 当前交付基线为 `69e1f84`，已推送 `codex/ui-finesse-round2`。clean-tree Release real-host audit 通过：XAML `24/24`、Core `83/83`、Worker `311/311`、Playnite `494/551`（57 skip）、0 fail。
