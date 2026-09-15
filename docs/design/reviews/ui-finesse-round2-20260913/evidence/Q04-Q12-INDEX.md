@@ -32,6 +32,12 @@
 - 代表截图：[浅色危险确认](q04-q12/danger-dialog-20260915/danger-dialog-light.png)、[深色危险确认](q04-q12/danger-dialog-20260915/danger-dialog-dark.png)。截图复核确认危险色、取消优先顺序、按钮间距与标题/说明在两主题均可读。
 - 本证据升级 Q05-06 的受控资源布局与视觉列；真实业务确认完成/取消结果、实际 Playnite 宿主焦点和鼠标/键盘输入仍保留宿主边界。
 
+## 2026-09-15 Q06-02 卸载状态清理门禁
+
+- 提交 `7804431` 为 Q06-02 生命周期修复：`GameSaveCenter.Playnite.Controls.Button` 订阅真实 `Unloaded` 路由事件，在模板仍可用时清除 `ButtonChrome` 的 Opacity/Scale 动画，并将 `HoverOverlay`、`PressedOverlay`、`FocusOverlay` 的活动动画与 Opacity 归零；不会触发或延迟任何业务命令。
+- 源契约测试覆盖 `Unloaded` 订阅、ScaleX/ScaleY 归一和三个交互覆盖层；本阶段 `UiFinesseRound2ControlSourceTests=19/19`、RenderHarness Release `0 warning/0 error`、源码/XAML 门禁通过。
+- 该阶段只升级 Q06-02 的生命周期实现与自动门禁，不把卸载路径静态复核写成真实按下→移出→失焦→禁用→卸载输入截图；真实宿主输入序列仍保留视觉/宿主边界。
+
 ## 2026-09-15 Q12-07 排序箭头双状态复核
 
 - 在提交 `2f3d17b8a34780546039aa6b7b07ecbb1c6a2ec6` 的 clean tree 上运行 `finesseprobe <output> dark sorted` 与 `light sorted`；报告身份均为 `WorkingTreeClean=True`、`DpiScale=1.00`，并记录 `SortFixture: ascending="名称" visible=True width=14; descending="数值" visible=True width=14 angle=180`。
@@ -41,7 +47,7 @@
 ## 逐组边界
 
 - Q04：卡片/输入/弹层/表格使用共享圆角、描边和阴影资源；截图检查嵌套表面、表格壳层和无玻璃视觉层级。滚动行不新增逐行 Effect，真实窗口接缝与关闭玻璃后的宿主组合仍待验。
-- Q05–Q06：按钮高度、padding、文本模板、复合内容、忙态占位、危险确认布局和禁用/按压/焦点共享模板已被夹具与源码测试覆盖；Q05-05/Q05-06 另有 Light/Dark 证据。命令单次执行、键盘与鼠标序列、卸载清理需在真实输入/宿主窗口继续验收。
+- Q05–Q06：按钮高度、padding、文本模板、复合内容、忙态占位、危险确认布局、卸载清理和禁用/按压/焦点共享模板已被夹具与源码测试覆盖；Q05-05/Q05-06 另有 Light/Dark 证据。命令单次执行、键盘与鼠标序列及真实宿主状态序列仍需继续验收。
 - Q07：`ThemeAwareIcon` 的 Path stroke/fill 绑定控件最终 Foreground，状态图标和复制图标在双主题截图中可见；分数 DPI 的实际线宽、完整图标包去重和读屏命名仍不能由离屏 PNG 宣称完成。
 - Q08：TextBox 内容视口、CaretBrush、SelectionBrush、只读/禁用资源和长路径 Tooltip 已专项记录；中文 IME 组合、候选确认、撤销和粘贴原值属于宿主输入验收。
 - Q09：ComboBox 选中内容、Chevron、3 项 Popup 与有限滚动模板已专项记录；Popup 真定位、键盘关闭不写回、游戏选框 DropDownClosed 同步和移屏主题切换待真实窗口验收。

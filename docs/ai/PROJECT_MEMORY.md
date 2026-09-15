@@ -14,6 +14,11 @@
 - Light/Dark 受控 STA WPF 报告均为 `cancelFocused=True`、`dialogWidth=560`、按钮 `gap=8`、`dangerFirstFocus=false`；浅/深截图已复制到 `evidence/q04-q12/danger-dialog-20260915/`，人工复核通过。夹具修正了第一版静态画刷假阳性，标题/说明现在使用 DynamicResource 跟随主题。
 - `UiFinesseRound2ControlSourceTests` 升至 `18/18`，RenderHarness Release `0 warning/0 error`；该阶段只升级 Q05-06 受控视觉列，业务确认完成/取消、Playnite 宿主焦点和真实鼠标/键盘输入仍是外部边界。
 
+## 2026-09-15 Q06-02 按钮卸载状态清理
+
+- `7804431` 在自定义生产 `Button` 构造器订阅 `Unloaded` 路由事件；卸载时清掉 `ButtonChrome` Opacity/ScaleX/ScaleY 动画并写回 Scale=1，同时清掉 Hover/Pressed/Focus 三个 overlay 的活动动画和 Opacity。实现只处理模板交互层，不触碰 Command 或业务状态。
+- `UiFinesseRound2ControlSourceTests` 为 `19/19`，RenderHarness Release `0 warning/0 error`，`validate-source.py` 与 XAML `24/24` 通过；该阶段提升 Q06-02 的代码/自动门禁，真实输入顺序和宿主渲染仍不可由静态证据签收。
+
 ## 2026-09-15 Q03-07/Q23-07 设置主题打开态运行时夹具
 
 - `a1f3cae` 新增 `RenderHarness` 的 `settingsthemeprobe` 和完整 QA 调用：真实 `GameSaveCenterSettingsView` 放入 STA WPF 隐藏 `Window`，进入外观页，打开生产 ComboBox 的 `PART_Popup` 与设置保存提示 `ToolTip`，在打开态切换 Light→Dark。

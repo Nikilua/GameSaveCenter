@@ -8,6 +8,11 @@
 - `buttonbusyprobe` 在 STA、96 DPI 下完成 Light/Dark 双主题运行，两个主题均报告宽度 `180→180`、指示层可见、indeterminate、文字保持“全部备份”；源码定向测试 `17/17`，RenderHarness Release `0 warning/0 error`，截图与报告见 Q04–Q12 证据索引。
 - 该阶段只升级 Q05-05/Q05-06 共享模板/受控视觉列；真实 Playnite 命令耗时、宿主输入、真实 DPI 和其它 Q06 状态序列仍不宣称完成。当前账本统计需以 `ROUND2_PROGRESS.md` 的逐列解析为准。
 
+## 当前最近阶段：按钮卸载状态清理
+
+- `7804431` 已推送：生产自定义 Button 订阅 `Unloaded`，清除 `ButtonChrome` 的活动 Opacity/Scale 动画，并将 Hover/Pressed/Focus 覆盖层动画与 Opacity 归零；源契约测试 `19/19`、RenderHarness Release `0/0`、源码/XAML 门禁通过。
+- 这是 Q06-02 的生命周期实现修复，不等价真实鼠标按下/移出/失焦/禁用/卸载序列；当前视觉待验与宿主外部边界继续按账本记录。
+
 ## 当前最近阶段：设置主题打开态运行时夹具
 
 - `a1f3cae` 已推送 `codex/ui-finesse-round2`：新增 `settingsthemeprobe` 与完整 RenderHarness 调用，使用真实 Settings view 在 STA WPF 隐藏宿主窗口中打开 ComboBox Popup 和 ToolTip，在保持打开时执行 Light→Dark 切换。

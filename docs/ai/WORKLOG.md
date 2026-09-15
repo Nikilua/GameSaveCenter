@@ -14,6 +14,11 @@
 - 报告：两主题 `cancelFocused=True`、`dialogWidth=560`、`gap=8`、`dangerFirstFocus=false`；人工复核浅/深危险确认截图。源契约测试 `18/18`，RenderHarness Release `0 warning/0 error`。
 - Q05-06 视觉列升级为通过；真实业务确认结果、宿主焦点、鼠标/键盘输入仍为外部阻塞，不以受控资源夹具代替 Playnite 交互。
 
+## 2026-09-15 Q06-02 按钮卸载状态清理
+
+- 提交并推送 `7804431`（`清理按钮卸载交互状态`）：自定义生产 Button 在 `Unloaded` 路由事件中清除 Pressed/Focus/Hover 覆盖层动画、ScaleTransform 活动时钟并归零，避免复用模板实例时残留按压形变；不改变 Command。
+- 验证：`UiFinesseRound2ControlSourceTests` `19/19`，RenderHarness Release `0 warning/0 error`，`validate-source.py`、XAML `24/24`、`git diff --check` 通过。Q06-02 仍保留真实输入视觉/宿主待验，不把源门禁写成输入截图。
+
 ## 2026-09-15 Q03-07/Q23-07 设置主题打开态视觉夹具
 
 - 提交 `a1f3cae`（`补充设置主题切换开放态夹具`）新增 `settingsthemeprobe`：在真实 STA WPF Settings view 中打开 ComboBox Popup 与 ToolTip，保持打开并执行 Light→Dark 资源切换；同步新增源契约测试，定向 `16/16` 通过。
