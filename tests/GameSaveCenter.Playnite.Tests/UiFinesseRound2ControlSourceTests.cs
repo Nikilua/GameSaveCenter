@@ -275,6 +275,20 @@ public sealed class UiFinesseRound2ControlSourceTests
     }
 
     [Fact]
+    public void MotionHotChangeProbeNormalizesAnActiveTransitionAndKeepsDisabledReentryImmediate()
+    {
+        var harness = Read("tests", "GameSaveCenter.RenderHarness", "Program.cs");
+
+        Assert.Contains("args[0].Equals(\"motionhotprobe\", StringComparison.OrdinalIgnoreCase)", harness);
+        Assert.Contains("RunMotionHotChangeProbe(outputRoot, report)", harness);
+        Assert.Contains("motionEnabled = false;", harness);
+        Assert.Contains("shell.NormalizeMotionIfDisabled();", harness);
+        Assert.Contains("motion-hot-{themeName}-disabled-final.png", harness);
+        Assert.Contains("disabledReentryAnimated", harness);
+        Assert.Contains("MotionHotChangeBoundary", harness);
+    }
+
+    [Fact]
     public void EnduranceProbeUsesARealDispatcherWindowWithoutForcedGc()
     {
         var harness = Read("tests", "GameSaveCenter.RenderHarness", "Program.cs");

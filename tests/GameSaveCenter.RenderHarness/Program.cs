@@ -390,6 +390,33 @@ public static class Program
             return probeExitCode;
         }
 
+        if (args.Length > 0 && args[0].Equals("motionhotprobe", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "motion-hot-probe");
+            Directory.CreateDirectory(outputRoot);
+            var probeExitCode = 0;
+            var probeThread = new Thread(() =>
+            {
+                var app = new Application
+                {
+                    ShutdownMode = ShutdownMode.OnExplicitShutdown
+                };
+                app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+                var report = new StringBuilder();
+                s_problems.Clear();
+                RunMotionHotChangeProbe(outputRoot, report);
+                File.WriteAllText(Path.Combine(outputRoot, "motion-hot-probe-report.txt"), report.ToString());
+                Console.WriteLine(report.ToString());
+                probeExitCode = s_problems.Count == 0 ? 0 : 1;
+            });
+            probeThread.SetApartmentState(ApartmentState.STA);
+            probeThread.Start();
+            probeThread.Join();
+            return probeExitCode;
+        }
+
         if (args.Length > 0 && args[0].Equals("overviewedges", StringComparison.OrdinalIgnoreCase))
         {
             var outputRoot = args.Length > 1
@@ -5545,6 +5572,115 @@ public static class Program
         {
             s_problems.Add("MotionProbe failed: " + ex.Message);
             report.AppendLine("MotionProbe FAILED");
+            report.AppendLine(ex.ToString());
+        }
+        finally
+        {
+            window?.Close();
+        }
+    }
+
+    private static void RunMotionHotChangeProbe(string outputRoot, StringBuilder report)
+    {
+        report.AppendLine("Production shell motion hot-change probe (controlled STA WPF Window)");
+        AppendRunMetadata(report, "motionhotprobe", "ControlledWpfWindow", "light,dark", "production shell; audit-only GscMotionNormal=700ms override; runtime motion preference toggle; 900x640 DIP");
+        Window? window = null;
+        try
+        {
+            foreach (var (themeName, themeMode) in ThemeModes)
+            {
+                var motionEnabled = true;
+                var shell = new AcrylicProductionShellView
+                {
+                    DataContext = new FakeDashboardData(8),
+                    MotionEnabledProvider = () => motionEnabled,
+                    SidebarCollapsedProvider = () => false
+                };
+                window = new Window
+                {
+                    Width = 900,
+                    Height = 640,
+                    WindowStyle = WindowStyle.None,
+                    ResizeMode = ResizeMode.NoResize,
+                    ShowInTaskbar = false,
+                    ShowActivated = false,
+                    Left = -32000,
+                    Top = -32000,
+                    Opacity = 0.01,
+                    Content = shell
+                };
+                window.Show();
+                window.UpdateLayout();
+                shell.ApplyResponsiveLayout(window.Width, window.Height);
+                window.UpdateLayout();
+                var layer = shell.FindName("SidebarContentLayer") as FrameworkElement
+                    ?? throw new InvalidOperationException("Motion hot-change probe could not find SidebarContentLayer.");
+                var button = shell.SidebarCollapseButtonForAudit;
+                ApplyThemePalette(shell, themeMode, glassEnabled: true, motionEnabled: true);
+                shell.Resources["GscMotionNormal"] = new Duration(TimeSpan.FromMilliseconds(700));
+                shell.ApplyResponsiveLayout(window.Width, window.Height);
+                window.UpdateLayout();
+
+                button.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                PumpDispatcher(210);
+                var duringTranslate = layer.RenderTransform as TranslateTransform;
+                var duringAnimated = DependencyPropertyHelper.GetValueSource(layer, UIElement.OpacityProperty).IsAnimated
+                    || (duringTranslate != null && DependencyPropertyHelper.GetValueSource(duringTranslate, TranslateTransform.XProperty).IsAnimated);
+                var duringWidth = shell.SidebarWidthForAudit;
+                var duringOpacity = layer.Opacity;
+                SavePng(shell, Path.Combine(outputRoot, $"motion-hot-{themeName}-enabled-mid.png"));
+
+                motionEnabled = false;
+                shell.NormalizeMotionIfDisabled();
+                window.UpdateLayout();
+                var disabledTranslate = layer.RenderTransform as TranslateTransform;
+                var disabledAnimated = DependencyPropertyHelper.GetValueSource(layer, UIElement.OpacityProperty).IsAnimated
+                    || (disabledTranslate != null && DependencyPropertyHelper.GetValueSource(disabledTranslate, TranslateTransform.XProperty).IsAnimated);
+                var disabledFinalWidth = shell.SidebarWidthForAudit;
+                SavePng(shell, Path.Combine(outputRoot, $"motion-hot-{themeName}-disabled-final.png"));
+
+                if (!duringAnimated || duringWidth <= 78 || duringWidth >= 270 || duringOpacity <= 0.05 || duringOpacity >= 0.95
+                    || shell.SidebarMotionEnabledForAudit
+                    || shell.SidebarTransitionRunningForAudit
+                    || shell.SidebarWidthForAudit != 72
+                    || Math.Abs(layer.Opacity - 1) > 0.001
+                    || (disabledTranslate != null && Math.Abs(disabledTranslate.X) > 0.001)
+                    || disabledAnimated)
+                {
+                    throw new InvalidOperationException($"Motion hot-change probe did not normalize the active {themeName} transition.");
+                }
+
+                button.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                PumpDispatcher(40);
+                var disabledReentryTranslate = layer.RenderTransform as TranslateTransform;
+                var disabledReentryAnimated = DependencyPropertyHelper.GetValueSource(layer, UIElement.OpacityProperty).IsAnimated
+                    || (disabledReentryTranslate != null && DependencyPropertyHelper.GetValueSource(disabledReentryTranslate, TranslateTransform.XProperty).IsAnimated);
+                SavePng(shell, Path.Combine(outputRoot, $"motion-hot-{themeName}-disabled-reentry.png"));
+                report.AppendLine(
+                    $"HotChange[{themeName}] duringWidth={duringWidth:0.##} duringOpacity={duringOpacity:0.###} duringAnimated={duringAnimated} "
+                    + $"disabledFinalWidth={disabledFinalWidth:0.##} disabledOpacity={layer.Opacity:0.###} "
+                    + $"disabledReentryWidth={shell.SidebarWidthForAudit:0.##} "
+                    + $"disabledX={disabledReentryTranslate?.X:0.###} disabledReentryAnimated={disabledReentryAnimated}");
+                if (shell.SidebarWidthForAudit != 270
+                    || shell.SidebarTransitionRunningForAudit
+                    || disabledReentryAnimated
+                    || Math.Abs(layer.Opacity - 1) > 0.001
+                    || (disabledReentryTranslate != null && Math.Abs(disabledReentryTranslate.X) > 0.001))
+                {
+                    throw new InvalidOperationException($"Motion hot-change probe did not keep the disabled {themeName} path immediate.");
+                }
+
+                window.Close();
+                window = null;
+            }
+
+            report.AppendLine("MotionHotChangeBoundary: active production sidebar transition was normalized immediately after a runtime motion toggle; disabled re-entry remained immediate; real Windows preference notification and Playnite host pixels remain host checks");
+            report.AppendLine("MotionHotChangeProbe OK");
+        }
+        catch (Exception ex)
+        {
+            s_problems.Add("MotionHotChangeProbe failed: " + ex.Message);
+            report.AppendLine("MotionHotChangeProbe FAILED");
             report.AppendLine(ex.ToString());
         }
         finally
