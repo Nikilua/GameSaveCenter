@@ -1,0 +1,18 @@
+Production shell motion probe (controlled STA WPF Window)
+Scenario: motionprobe
+EvidenceSource: ControlledWpfWindow
+Commit: af9b1dd0279d58240bc53128e211fb3a7e210ecd
+WorkingTreeClean: True
+DpiScale: 1.00 (offscreen logical DIP; real host DPI is not inferred)
+WindowDip: per-case window_dip/content_dip fields
+Themes: light,dark
+DataVolumes: production shell; audit-only GscMotionNormal=700ms override; 900x640 DIP
+TimingFields: layout_ms, render_ms; request_ms=not-applicable for offscreen harness
+Motion[light] duration_ms=700 midpoint_ms=210 midWidth=100.05 midOpacity=0.858 midAnimated=True endWidth=72 endOpacity=1 endX=0 endAnimated=False
+Reentry[light] interruptedWidth=208.84 finalWidth=72 finalX=0 running=False
+Unload[light] running=False opacity=1 x=0 animated=False
+Motion[dark] duration_ms=700 midpoint_ms=210 midWidth=152.81 midOpacity=0.592 midAnimated=True endWidth=72 endOpacity=1 endX=0 endAnimated=False
+Reentry[dark] interruptedWidth=209.98 finalWidth=72 finalX=0 running=False
+Unload[dark] running=False opacity=1 x=0 animated=False
+MotionProbeBoundary: controlled production shell screenshots and clock cleanup are covered; real Playnite Loaded/Unloaded cadence and ETW frame evidence remain host/performance checks
+MotionProbe OK

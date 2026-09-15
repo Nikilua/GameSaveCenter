@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-15
 
+## 2026-09-15 Q18-04 生产壳层动效视觉序列
+
+- `af9b1dd0279d58240bc53128e211fb3a7e210ecd` 的 clean-tree RenderHarness `motionprobe` 直接使用生产 `AcrylicProductionShellView`，在 Light/Dark、900×640 DIP 下生成展开、收起中间态、收起终态和快速重入终态 PNG，并在关闭窗口后读取卸载清理状态；报告含 `WorkingTreeClean=True`、DPI `1.00` 和完整数据范围。
+- 两主题中间态分别约为 `100.05/0.858` 与 `152.81/0.592`（width/Opacity），终态均为宽度 `72`、Opacity `1`、X `0`、无活动动画；卸载后 `running=False` 且无活动时钟。700ms 是为稳定截取中间帧的审计覆盖值，生产 `GscMotionNormal` 没有改变。
+- 人工查看四张代表图后仅升级 Q18-04 受控视觉列；真实 Playnite Loaded/Unloaded 耐久、Rendering/ETW、物理屏幕帧和 Q18-07 宿主/视觉边界仍不可由该夹具签收。
+
 ## 2026-09-15 Q17-04 受控状态夹具视觉复核
 
 - `statefixtures-20260915` 在 RenderHarness Release 下产出双主题、`1040×700 / 1100×720 / 1366×768 / 2560×1440 DIP` 四尺寸共 `160` 张截图和 `160` 条 fixture 记录；人工复核浅色 Loading、深色 Stale、深色 Offline、浅色 Stale 下一步运维代表图，进度覆盖层、过期/离线提示、按钮与正文均可读。

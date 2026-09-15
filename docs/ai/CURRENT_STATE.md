@@ -2,7 +2,12 @@
 
 > 更新时间：2026-09-15。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
-## 当前最近阶段：Q17-04 受控状态夹具视觉复核
+## 当前最近阶段：Q18-04 生产壳层动效视觉序列
+
+- `af9b1dd` clean tree 的 `motionprobe` 以真实生产 `AcrylicProductionShellView` 运行 Light/Dark、900×640 DIP，报告绑定完整 SHA 与 `WorkingTreeClean=True`；两主题均保留中间态、终态、快速重入终态及卸载后检查，代表 PNG 已人工查看。
+- 审计报告记录中间态宽度约 `100/153 DIP`、Opacity `0.858/0.592`，终态/卸载均为 `72/1/0` 且无活动动画；700ms 只覆盖审计资源，不改变生产动画 token。Q18-04 视觉列已通过；真实宿主 Loaded/Unloaded、ETW 和物理屏幕帧，以及 Q18-07 的宿主边界仍未完成。
+
+## 上一阶段：Q17-04 受控状态夹具视觉复核
 
 - `Q17-04-STATE-FIXTURES-20260915.md` 的 RenderHarness Release 报告包含双主题、四种 DIP 尺寸下 `160` 张截图/`160` 条 fixture 记录；已人工查看浅色 Loading、深色 Stale、深色 Offline 和浅色 Stale 下一步运维四张代表图，状态覆盖层、横幅、说明、按钮和正文可读。
 - 因此 Q17-04 视觉列已升级为通过；真实 Worker 进度节奏、动画停止、悬停/卸载时序和 Playnite 宿主像素仍是外部阻塞，结论仍未完成。真实宿主事实继续以下方 `37f92f7` 成功 Embedded 证据为准。
