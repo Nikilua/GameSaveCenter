@@ -15,6 +15,10 @@
 - Q24-03 的生产浮层继续保持宿主内 `GameBrowserPanel`，共享 ComboBox Popup 继续使用模板定位与动态主题资源；真实宿主运行器新增 `DisplayTopology` 与 `Q24_03PhysicalCrossScreen` 前置字段。当前单屏边界和执行要求见 [`Q24-03-PHYSICAL-CROSS-SCREEN-20260915.md`](q13-q25/Q24-03-PHYSICAL-CROSS-SCREEN-20260915.md)。
 - Settings 真实宿主审计修复：`RealHostUiAuditService` 等待最长入场动效结束后再取嵌入视口；`real-host-audit.ps1` 以非空 Git SHA 写入 runner/plugin metadata，避免 PowerShell `$LASTEXITCODE` 管道假阴性。最终可追溯证据见 [`REAL_HOST_AUDIT-20260914.md`](q13-q25/REAL_HOST_AUDIT-20260914.md#settings-入场时序与提交身份修复后的最终复核69e1f84)。
 
+## 当前提交宿主审计边界（2026-09-15）
+
+`c5a2997` 的隔离宿主审计已捕获当前提交的 EmbeddedPlaynite Dashboard/Settings 像素（29 个 Dashboard 视口、2 个滚动面、1 个 Settings 视口，150% DPI），但隔离启动时复用了用户扩展目录内旧版 Worker `0.6.73+6450f6...`，与当前插件 `0.6.73+c5a2997...` 不一致，真实截图出现 Worker 退出 Toast，`HighGateCount=1`。因此本轮只作为当前像素与阻断事实记录，不升级任何 Worker 相关宿主项；完整边界和重跑条件见 [`REAL_HOST_AUDIT-CURRENT-20260915.md`](q13-q25/REAL_HOST_AUDIT-CURRENT-20260915.md)。
+
 ## 受控审计摘要
 
 - `AUDIT_SUMMARY.md`：10 个 View、32 个 Tab、234 个 Button/ToggleButton、14 个 DataGrid、34 个 ScrollViewer、161 个运行时快照；`Fidelity 警告数量=0`、`失败路由=0`、`HIGH=无`、`MEDIUM=无`。Trainer Inspector 的五项设置选项是有意的内部设置簇，审计器按命名祖先边界排除它，不把 WrapPanel 的多行设置布局冒充页面工具栏。

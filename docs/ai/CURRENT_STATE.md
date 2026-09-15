@@ -10,6 +10,12 @@
 
 ## 当前最近阶段：按钮卸载状态清理
 
+## 2026-09-15 当前提交真实宿主审计边界
+
+- `c5a2997` 的隔离 `real-host-audit.ps1` 已捕获当前提交 EmbeddedPlaynite Dashboard/Settings：Dashboard 29 个视口、2 个滚动面、Settings 1 个视口，150% DPI；构建 0/0，Core `83/83`、Worker `311/311`、Playnite `499/556`（57 skip），提交 SHA 已写入 metadata。
+- 本轮隔离启动复用了用户扩展目录内仍运行的旧 Worker PID `23304`，路径为 `C:\Users\lopmatu\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Worker.exe`，身份 `0.6.73+6450f6...`，与当前插件 `0.6.73+c5a2997...` 不一致；截图出现真实 Worker 失败 Toast，`HighGateCount=1`。
+- 不把这组带旧 Worker 的截图写成当前提交全链路通过；只有在用户明确允许停止该精确旧 Worker 后，才重跑审计并要求 `HighGateCount=0`。持久边界证据见 `docs/design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/REAL_HOST_AUDIT-CURRENT-20260915.md`。
+
 - `7804431` 已推送：生产自定义 Button 订阅 `Unloaded`，清除 `ButtonChrome` 的活动 Opacity/Scale 动画，并将 Hover/Pressed/Focus 覆盖层动画与 Opacity 归零；随后 `132e6d5` 增加冻结 `ScaleTransform` 保护，避免无活动动画的模板实例在卸载清理时抛异常。
 - `132e6d5` 已推送：完整 clean-tree RenderHarness `render-qa OK`，解决方案 Release 构建 `0/0`，`UiFinesseRound2ControlSourceTests=19/19`，源码/XAML 门禁通过。
 - 这是 Q06-02 的生命周期实现修复，不等价真实鼠标按下/移出/失焦/禁用/卸载序列；当前视觉待验与宿主外部边界继续按账本记录。

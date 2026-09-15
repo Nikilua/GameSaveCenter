@@ -6661,3 +6661,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 在共享模板加入最后执行的 `MultiTrigger(IsChecked=True, IsMouseOver=True)`，提交 `513ac5f`；保留真实导航 RadioButton、绑定和命令语义，只修复状态优先级。
 - 验证：`UiFinesseRound2ControlSourceTests=20/20`、`check-xaml.ps1=24/24`、`python scripts/validate-source.py` 通过；clean-tree `scripts/render-qa.ps1 -Configuration Release` 双主题 `render-qa OK`，0 warning/0 error，提交身份 `513ac5f2528e0706fde194d977f03fd8bd798e5d`。
 - 按项目边界清理本阶段 `.tmp` RenderHarness 输出前，保留持久证据 `evidence/q04-q12/nav-priority-20260915.md`；真实 Playnite 的完整组合输入序列仍未写成通过。
+
+## 2026-09-15 当前提交真实宿主审计边界
+
+- 在 `c5a2997` 上运行隔离 `real-host-audit.ps1`：构建 0 warning/0 error，Core `83/83`、Worker `311/311`、Playnite `499 passed / 57 skipped / 0 failed`；当前提交的 EmbeddedPlaynite Dashboard/Settings 已捕获，目录保留 35 张 PNG（Dashboard 29 视口、2 滚动面、Settings 1 视口）。
+- 审计发现隔离宿主复用了用户扩展目录旧 Worker PID `23304`（`0.6.73+6450f6...`），与当前插件 `0.6.73+c5a2997...` 不一致，真实截图出现 Worker 失败 Toast，汇总 `HighGateCount=1`。这是宿主环境阻断，不是 UI 代码通过证据。
+- 已将边界写入 `evidence/q13-q25/REAL_HOST_AUDIT-CURRENT-20260915.md`；不强制终止未获授权的用户 Worker。后续需用户明确允许停止精确路径旧 Worker 后，按相同隔离参数重跑并要求 `HighGateCount=0`。

@@ -3119,3 +3119,9 @@
 - 生产 `AcrylicNavItem` 的选中/悬停状态必须由共享模板确定性收口：`IsChecked=True` 与 `IsMouseOver=True` 的最后 `MultiTrigger` 恢复 `GscAccentTintStrongBrush`、强边框和 `GscSelectionTextBrush`，不能让普通悬停 tint 稀释当前页选中层级。
 - 提交 `513ac5f` 已补实现和源契约；`UiFinesseRound2ControlSourceTests=20/20`、XAML `24/24`、source validation 通过；clean-tree RenderHarness 双主题 `render-qa OK`，报告身份为 `513ac5f2528e0706fde194d977f03fd8bd798e5d`。
 - 该事实只关闭共享状态代码缺口。真实 Playnite 中保持悬停、焦点/禁用/按压的输入序列和最终像素仍必须单独验收，账本继续保留 Q06-05 外部待验。
+
+## 2026-09-15 当前提交真实宿主审计边界
+
+- `c5a2997` 的隔离审计使用 Release、隔离 UserData，捕获当前提交 EmbeddedPlaynite Dashboard 29 个视口、2 个滚动面和 Settings 1 个视口；构建 0/0，Core `83/83`、Worker `311/311`、Playnite `499 passed / 57 skipped / 0 failed`，提交 SHA 与 metadata 一致。
+- 启动时复用了用户扩展目录内的旧 Worker PID `23304`，精确路径为 `C:\Users\lopmatu\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Worker.exe`，身份 `0.6.73+6450f6...`；当前插件为 `0.6.73+c5a2997...`，截图出现构建身份不兼容 Toast，`HighGateCount=1`。
+- 运行器不会结束其他扩展目录的用户 Worker；未获用户明确授权前不强制停止该 PID，也不把本轮截图写成当前提交的宿主全链路通过。重跑条件与证据见 `docs/design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/REAL_HOST_AUDIT-CURRENT-20260915.md`。
