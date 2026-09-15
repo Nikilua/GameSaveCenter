@@ -10,6 +10,12 @@
 - 状态夹具只能证明状态覆盖层/提示/表面几何；真实 Worker 进度节奏、动画中途取值、宿主卸载和 Playnite 像素仍需宿主复核，Q17-04/Q18-03 的视觉/宿主列不提前签收。
 - 当前修复代码的串行 Release 全量测试通过：Core `83/83`、Worker `310/311`（1 skip）、Playnite `484/547`（63 skip），失败 `0`；Playnite 总数的增加来自本阶段两个回归测试，不是跳过项变化。
 
+## 2026-09-15 UI 精修 Q18-01 资源宿主解析收口
+
+- `8dfe7fa` 修复了 Q18-01 的证据假阳性：`GetDuration(host, ...)` 原本虽有单测，生产调用却使用静态时长；现在所有生产动效入口按 `FrameworkElement`/壳层视觉宿主解析局部资源，入口不再绕过 Host override。
+- 当前验证为定向 `202/202`（39 项既有宿主布局测试跳过）、Release Core `83/83`、Worker `310/311`（1 skip）、Playnite `485/548`（63 skip），失败 `0`；`validate-source.py` 与 XAML 结构门禁通过。
+- 真实系统动画偏好热变更、宿主卸载时序、物理屏幕帧与 ETW 生命周期仍需外部宿主/性能工具，不将本次资源路径门禁写成视觉验收。
+
 ## 2026-09-15 UI 精修 Q12-08 双主题业务空表复核
 
 - 提交 `77f4dc5` 为 RenderHarness 增加 `emptytables` 入口和 `FakeDashboardData.ClearTableDataForFixture()`，只清空开发夹具数据，不改生产命令、Binding 或页面行为；夹具状态使用 `WorkspaceFixtureState.Empty`，并暴露 Trainer 工具/目录/版本读取状态。

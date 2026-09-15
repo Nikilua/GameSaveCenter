@@ -11,6 +11,11 @@
 - 修复后串行 Release 全量测试通过：Core `83/83`、Worker `310/311`（1 skip）、Playnite `484/547`（63 skip），失败 `0`；新增的 2 个 Playnite 回归门禁已纳入当前 Q25-08 证据页，历史 `d8fad48` 计数保留作对照。
 - 机械回查 `ROUND2_PROGRESS.md`：208/208 个预期 ID 唯一存在，无缺失、重复或多余；最终 `204 未完成 / 4 已验收`，视觉 `59 待验`，宿主 `196 外部阻塞 / 8 待验`。这些统计保留真实宿主边界，不把本轮离屏夹具升级为全账本完成。
 
+## 2026-09-15 UI 精修 Q18-01 资源宿主解析收口
+
+- 复核发现 Q18-01 的旧门禁只测 `GetDuration(host, ...)`，生产动画仍可绕过局部 token；`8dfe7fa` 新增按实际视觉宿主解析的 `MotionDurationKind` 调用路径，覆盖 Overview/Dashboard/侧栏/状态胶囊/对话框/Toast/Entrance。
+- 定向 `202/202`、Release Core `83/83`、Worker `310/311`（1 skip）、Playnite `485/548`（63 skip）均通过；源代码和 XAML 结构门禁通过。Q18-01 视觉/宿主列仍待真实热切换与屏幕复核。
+
 ## 2026-09-15 UI 精修 Q12-08 双主题业务空表复核
 
 - 提交并推送 `77f4dc5`，新增 RenderHarness `emptytables` 入口、空表数据清理方法、Trainer loading 夹具绑定和“任一空表/列表必须有空态”断言。

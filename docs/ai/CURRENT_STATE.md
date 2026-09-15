@@ -9,6 +9,12 @@
 - RenderHarness Release 重建为 `0 warning / 0 error`，当前代码重新执行 `statefixtures` 得到 `statefixtures OK`：160 条记录/160 张截图，覆盖四个生产状态页、适用的六态、双主题和四个尺寸；代表证据见 [`Q17-04-STATE-FIXTURES-20260915.md`](../design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q17-04-STATE-FIXTURES-20260915.md)。真实进度节奏、宿主动画时序和 Playnite 像素仍保持待验。
 - 随后在当前修复代码上执行串行 Release 全量测试：Core `83/83`、Worker `310/311`（1 skip）、Playnite `484/547`（63 skip），失败 `0`；新增两项回归门禁使 Playnite 总数从历史 `545` 增至 `547`。
 
+## 2026-09-15 UI 精修 Q18-01 资源宿主解析收口
+
+- 当前交付提交为 `8dfe7fa`，生产动画入口不再把 `GscMotion.Fast/Normal/Slow/Press` 静态时长直接传入 UI；`AnimateTranslate`、`AnimateEntrance`、侧栏、状态胶囊、对话框和 Toast 均按实际视觉宿主读取局部 motion token。
+- 定向测试覆盖 `202/202`（其中 39 项既有宿主布局边界按规则跳过），Release 全量为 Core `83/83`、Worker `310/311`（1 skip）、Playnite `485/548`（63 skip），失败 `0`；源代码和 XAML 门禁均通过。
+- 证据见 [`Q18-01-MOTION-HOST-20260915.md`](../design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q18-01-MOTION-HOST-20260915.md)。真实热切换、系统动画偏好和宿主像素仍保持待验。
+
 ## 2026-09-15 UI 精修 Q12-08 双主题业务空表复核
 
 - 当前 clean-tree 提交 `77f4dc5` 新增 RenderHarness 的 `emptytables` 夹具入口、全量空表数据清理和空态断言；Fake 数据使用 `WorkspaceFixtureState.Empty`，补齐 Trainer 的三个 loading 绑定，避免测试夹具制造假空白。
