@@ -291,6 +291,30 @@ public static class Program
             return emptyTableExitCode;
         }
 
+        if (args.Length > 0 && args[0].Equals("settingsthemeprobe", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "settings-theme-probe");
+            Directory.CreateDirectory(outputRoot);
+            var probeExitCode = 0;
+            var probeThread = new Thread(() =>
+            {
+                var app = new Application();
+                app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+                var report = new StringBuilder();
+                s_problems.Clear();
+                RunSettingsThemeTransitionProbe(outputRoot, report);
+                File.WriteAllText(Path.Combine(outputRoot, "settings-theme-probe-report.txt"), report.ToString());
+                Console.WriteLine(report.ToString());
+                probeExitCode = s_problems.Count == 0 ? 0 : 1;
+            });
+            probeThread.SetApartmentState(ApartmentState.STA);
+            probeThread.Start();
+            probeThread.Join();
+            return probeExitCode;
+        }
+
         if (args.Length > 0 && args[0].Equals("overviewedges", StringComparison.OrdinalIgnoreCase))
         {
             var outputRoot = args.Length > 1
@@ -3174,6 +3198,7 @@ public static class Program
             RunMediaWrapScrollProbe(report);
             RunSettingsLayoutProbes(report);
             RunSettingsStateProbes(outputRoot, report);
+            RunSettingsThemeTransitionProbe(outputRoot, report);
             RunThemeQa(outputRoot, report);
             RunThemeSpecificControlProbes(outputRoot, report);
             RunResizeTransitionProbes(report);
@@ -5115,6 +5140,137 @@ public static class Program
                 Directory.Delete(settingsFixtureRoot, true);
             }
             catch { }
+        }
+    }
+
+    private static void RunSettingsThemeTransitionProbe(string outputRoot, StringBuilder report)
+    {
+        report.AppendLine();
+        report.AppendLine("Settings open-surface theme transition probe (1040x700)");
+        Window? window = null;
+        ToolTip? toolTip = null;
+        var application = Application.Current;
+        var previousShutdownMode = application?.ShutdownMode;
+        try
+        {
+            if (application != null)
+                application.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            var settings = new GameSaveCenterSettings
+            {
+                ThemeMode = GameSaveCenterThemeMode.Light
+            };
+            var view = new GameSaveCenterSettingsView { DataContext = settings };
+            var host = new Grid
+            {
+                Width = 1040,
+                Height = 700,
+                Background = CreateHarnessBackground(view),
+                ClipToBounds = true
+            };
+            host.Children.Add(view);
+            window = new Window
+            {
+                Width = 1040,
+                Height = 700,
+                WindowStyle = WindowStyle.None,
+                ResizeMode = ResizeMode.NoResize,
+                ShowInTaskbar = false,
+                ShowActivated = false,
+                Opacity = 0.01,
+                Content = host
+            };
+            window.Show();
+
+            ApplyThemePalette(view, GameSaveCenterThemeMode.Light);
+            ApplyThemeResponsive(view, 1040, 700);
+            window.UpdateLayout();
+            var shell = FindVisualChildren<FrameworkElement>(host)
+                .FirstOrDefault(element => element.Name == "SettingsShell");
+            if (shell != null)
+            {
+                shell.BeginAnimation(UIElement.OpacityProperty, null);
+                shell.Opacity = 1;
+            }
+            SelectTab(view, 2);
+            window.UpdateLayout();
+
+            var selector = FindVisualChildren<ComboBox>(host)
+                .FirstOrDefault(combo => combo.Name == "ThemeModeSelector");
+            var hint = FindVisualChildren<FrameworkElement>(host)
+                .FirstOrDefault(element => element.Name == "SettingsSaveHint");
+            if (selector == null || hint == null)
+                throw new InvalidOperationException("Settings theme transition controls did not materialize.");
+
+            selector.ApplyTemplate();
+            selector.Focus();
+            selector.SetCurrentValue(ComboBox.IsDropDownOpenProperty, true);
+            window.UpdateLayout();
+            window.Dispatcher.Invoke(DispatcherPriority.ContextIdle, new Action(() => { }));
+            var popup = selector.Template?.FindName("PART_Popup", selector) as Popup;
+            if (popup == null || popup.Child is not FrameworkElement popupChild)
+                throw new InvalidOperationException("Theme selector Popup did not materialize as a WPF Popup child.");
+            // A hidden, non-activated audit window has no mouse capture. WPF therefore
+            // immediately closes the production StaysOpen=False popup even though the
+            // ComboBox IsDropDownOpen binding is true. Keep the production binding, but
+            // hold this audit surface open long enough to inspect its dynamic resources.
+            popup.StaysOpen = true;
+            popup.IsOpen = true;
+            window.Dispatcher.Invoke(DispatcherPriority.ContextIdle, new Action(() => { }));
+            popupChild.UpdateLayout();
+            if (!popup.IsOpen || popupChild.ActualWidth <= 0 || popupChild.ActualHeight <= 0)
+                throw new InvalidOperationException($"Theme selector Popup is not measurable (open={popup.IsOpen}, size={popupChild.ActualWidth:0.##}x{popupChild.ActualHeight:0.##}).");
+
+            var lightPrimary = (view.TryFindResource("GscPrimaryTextBrush") as SolidColorBrush)?.Color;
+            SavePng(host, Path.Combine(outputRoot, "Settings-theme-switch-light-open-1040x700.png"));
+            SavePng(popupChild, Path.Combine(outputRoot, "Settings-theme-switch-light-popup.png"));
+
+            toolTip = new ToolTip
+            {
+                Content = "当前设置主题预览提示",
+                PlacementTarget = hint,
+                Placement = PlacementMode.Bottom,
+                StaysOpen = true
+            };
+            hint.ToolTip = toolTip;
+            toolTip.IsOpen = true;
+            window.UpdateLayout();
+            window.Dispatcher.Invoke(DispatcherPriority.ContextIdle, new Action(() => { }));
+            if (!toolTip.IsOpen || toolTip.ActualWidth <= 0 || toolTip.ActualHeight <= 0)
+                throw new InvalidOperationException($"Settings ToolTip is not measurable (open={toolTip.IsOpen}, size={toolTip.ActualWidth:0.##}x{toolTip.ActualHeight:0.##}).");
+            SavePng(toolTip, Path.Combine(outputRoot, "Settings-theme-switch-light-tooltip.png"));
+
+            settings.ThemeMode = GameSaveCenterThemeMode.Dark;
+            selector.SelectedValue = GameSaveCenterThemeMode.Dark;
+            ApplyThemePalette(view, GameSaveCenterThemeMode.Dark);
+            ApplyThemeResponsive(view, 1040, 700);
+            window.UpdateLayout();
+            popupChild.UpdateLayout();
+            toolTip.UpdateLayout();
+            var darkPrimary = (view.TryFindResource("GscPrimaryTextBrush") as SolidColorBrush)?.Color;
+            if (!lightPrimary.HasValue || !darkPrimary.HasValue || lightPrimary.Value == darkPrimary.Value)
+                s_problems.Add($"SettingsThemeTransition primary text did not change ({lightPrimary?.ToString() ?? "none"} -> {darkPrimary?.ToString() ?? "none"})");
+            if (!popup.IsOpen)
+                s_problems.Add("SettingsThemeTransition selector Popup closed during the Light -> Dark switch");
+            if (selector.SelectedValue is not GameSaveCenterThemeMode selectedMode
+                || selectedMode != GameSaveCenterThemeMode.Dark)
+                s_problems.Add($"SettingsThemeTransition selector did not reflect Dark after the switch (value={selector.SelectedValue ?? "none"})");
+            VerifyThemePalette(view, "settings/open-surfaces/dark", GameSaveCenterThemeMode.Dark);
+            SavePng(host, Path.Combine(outputRoot, "Settings-theme-switch-dark-open-1040x700.png"));
+            SavePng(popupChild, Path.Combine(outputRoot, "Settings-theme-switch-dark-popup.png"));
+            SavePng(toolTip, Path.Combine(outputRoot, "Settings-theme-switch-dark-tooltip.png"));
+            report.AppendLine($"  SettingsThemeTransition popupOpen={popup.IsOpen} tooltipOpen={toolTip.IsOpen} primary={lightPrimary?.ToString() ?? "none"}->{darkPrimary?.ToString() ?? "none"} screenshots=6");
+        }
+        catch (Exception ex)
+        {
+            s_problems.Add("SettingsThemeTransition failed: " + ex.Message);
+        }
+        finally
+        {
+            if (toolTip != null)
+                toolTip.IsOpen = false;
+            window?.Close();
+            if (application != null && previousShutdownMode.HasValue)
+                application.ShutdownMode = previousShutdownMode.Value;
         }
     }
 

@@ -194,6 +194,21 @@ public sealed class UiFinesseRound2ControlSourceTests
     }
 
     [Fact]
+    public void SettingsThemeTransitionProbeCapturesOpenPopupAndTooltipAcrossModes()
+    {
+        var harness = Read("tests", "GameSaveCenter.RenderHarness", "Program.cs");
+
+        Assert.Contains("RunSettingsThemeTransitionProbe(outputRoot, report)", harness);
+        Assert.Contains("args[0].Equals(\"settingsthemeprobe\", StringComparison.OrdinalIgnoreCase)", harness);
+        Assert.Contains("selector.SetCurrentValue(ComboBox.IsDropDownOpenProperty, true)", harness);
+        Assert.Contains("Template?.FindName(\"PART_Popup\", selector)", harness);
+        Assert.Contains("new ToolTip", harness);
+        Assert.Contains("Settings-theme-switch-light-open-1040x700.png", harness);
+        Assert.Contains("Settings-theme-switch-dark-open-1040x700.png", harness);
+        Assert.Contains("GameSaveCenterThemeMode.Dark", harness);
+    }
+
+    [Fact]
     public void EnduranceProbeUsesARealDispatcherWindowWithoutForcedGc()
     {
         var harness = Read("tests", "GameSaveCenter.RenderHarness", "Program.cs");
