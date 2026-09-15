@@ -35,6 +35,7 @@ namespace GameSaveCenter.Playnite.Views
         private bool dialogShowsResult;
         private bool choiceDialog;
         private bool confirmationOpen;
+        private int dialogMotionGeneration;
         private string activeDialogDetailMessage = string.Empty;
         private bool responsiveLayoutPending;
         private bool compactGameBrowserOpen;
@@ -150,7 +151,10 @@ namespace GameSaveCenter.Playnite.Views
             activeChoice = null;
             confirmationOpen = false;
             responsiveLayoutPending = false;
+            dialogMotionGeneration++;
+            NormalizeDashboardMotion();
             DialogOverlay.Visibility = Visibility.Collapsed;
+            DialogCard.Opacity = 0;
             ClearToasts();
         }
 
@@ -954,8 +958,25 @@ namespace GameSaveCenter.Playnite.Views
                 var scale = GscMotion.GetMutableScaleTransform(element);
                 element.RenderTransformOrigin = new Point(0.5, 0.5);
                 var easing = GscMotion.CreateEaseOut();
-                scale.BeginAnimation(ScaleTransform.ScaleXProperty, new DoubleAnimation(scaleValue, TimeSpan.FromMilliseconds(milliseconds)) { EasingFunction = easing });
-                scale.BeginAnimation(ScaleTransform.ScaleYProperty, new DoubleAnimation(scaleValue, TimeSpan.FromMilliseconds(milliseconds)) { EasingFunction = easing });
+                var scaleXAnimation = new DoubleAnimation(scaleValue, TimeSpan.FromMilliseconds(milliseconds))
+                {
+                    EasingFunction = easing,
+                    FillBehavior = FillBehavior.HoldEnd
+                };
+                var scaleYAnimation = new DoubleAnimation(scaleValue, TimeSpan.FromMilliseconds(milliseconds))
+                {
+                    EasingFunction = easing,
+                    FillBehavior = FillBehavior.HoldEnd
+                };
+                scaleYAnimation.Completed += (_, __) =>
+                {
+                    scale.BeginAnimation(ScaleTransform.ScaleXProperty, null);
+                    scale.BeginAnimation(ScaleTransform.ScaleYProperty, null);
+                    scale.ScaleX = scaleValue;
+                    scale.ScaleY = scaleValue;
+                };
+                scale.BeginAnimation(ScaleTransform.ScaleXProperty, scaleXAnimation);
+                scale.BeginAnimation(ScaleTransform.ScaleYProperty, scaleYAnimation);
             }
             catch (Exception ex)
             {
@@ -991,9 +1012,33 @@ namespace GameSaveCenter.Playnite.Views
             element.Opacity = 0.72;
             var duration = TimeSpan.FromSeconds(seconds);
             var easing = GscMotion.CreateEaseOut();
-            element.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(0.72, 1, duration) { EasingFunction = easing });
-            translate.BeginAnimation(TranslateTransform.XProperty, new DoubleAnimation(offsetX, 0, duration) { EasingFunction = easing });
-            translate.BeginAnimation(TranslateTransform.YProperty, new DoubleAnimation(offsetY, 0, duration) { EasingFunction = easing });
+            var fade = new DoubleAnimation(0.72, 1, duration)
+            {
+                EasingFunction = easing,
+                FillBehavior = FillBehavior.HoldEnd
+            };
+            var slideX = new DoubleAnimation(offsetX, 0, duration)
+            {
+                EasingFunction = easing,
+                FillBehavior = FillBehavior.HoldEnd
+            };
+            var slideY = new DoubleAnimation(offsetY, 0, duration)
+            {
+                EasingFunction = easing,
+                FillBehavior = FillBehavior.HoldEnd
+            };
+            slideY.Completed += (_, __) =>
+            {
+                element.BeginAnimation(UIElement.OpacityProperty, null);
+                translate.BeginAnimation(TranslateTransform.XProperty, null);
+                translate.BeginAnimation(TranslateTransform.YProperty, null);
+                element.Opacity = 1;
+                translate.X = 0;
+                translate.Y = 0;
+            };
+            element.BeginAnimation(UIElement.OpacityProperty, fade);
+            translate.BeginAnimation(TranslateTransform.XProperty, slideX);
+            translate.BeginAnimation(TranslateTransform.YProperty, slideY);
         }
 
         private void AnimateStatusPill()
@@ -1004,9 +1049,33 @@ namespace GameSaveCenter.Playnite.Views
 
             var duration = GscMotion.GetDuration(StatusPill, GscMotion.MotionDurationKind.Normal);
             var easing = GscMotion.CreateEaseOut();
-            StatusPill.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(0.58, 1, duration) { EasingFunction = easing });
-            scale.BeginAnimation(ScaleTransform.ScaleXProperty, new DoubleAnimation(0.985, 1, duration) { EasingFunction = easing });
-            scale.BeginAnimation(ScaleTransform.ScaleYProperty, new DoubleAnimation(0.985, 1, duration) { EasingFunction = easing });
+            var fade = new DoubleAnimation(0.58, 1, duration)
+            {
+                EasingFunction = easing,
+                FillBehavior = FillBehavior.HoldEnd
+            };
+            var scaleXAnimation = new DoubleAnimation(0.985, 1, duration)
+            {
+                EasingFunction = easing,
+                FillBehavior = FillBehavior.HoldEnd
+            };
+            var scaleYAnimation = new DoubleAnimation(0.985, 1, duration)
+            {
+                EasingFunction = easing,
+                FillBehavior = FillBehavior.HoldEnd
+            };
+            scaleYAnimation.Completed += (_, __) =>
+            {
+                StatusPill.BeginAnimation(UIElement.OpacityProperty, null);
+                scale.BeginAnimation(ScaleTransform.ScaleXProperty, null);
+                scale.BeginAnimation(ScaleTransform.ScaleYProperty, null);
+                StatusPill.Opacity = 1;
+                scale.ScaleX = 1;
+                scale.ScaleY = 1;
+            };
+            StatusPill.BeginAnimation(UIElement.OpacityProperty, fade);
+            scale.BeginAnimation(ScaleTransform.ScaleXProperty, scaleXAnimation);
+            scale.BeginAnimation(ScaleTransform.ScaleYProperty, scaleYAnimation);
         }
 
         private void OnUiNotificationRequested(object? sender, UiNotificationEventArgs e)
@@ -1152,6 +1221,8 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OpenDialog(Control initialFocus)
         {
+            var motionGeneration = ++dialogMotionGeneration;
+            StopDialogMotion();
             DialogOverlay.Visibility = Visibility.Visible;
             DialogCard.Opacity = MotionEnabled ? 0 : 1;
             var translate = GscMotion.GetMutableTranslateTransform(DialogCard);
@@ -1160,8 +1231,26 @@ namespace GameSaveCenter.Playnite.Views
             {
                 var duration = GscMotion.GetDuration(DialogCard, GscMotion.MotionDurationKind.Normal);
                 var easing = GscMotion.CreateEaseOut();
-                DialogCard.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, duration) { EasingFunction = easing });
-                translate.BeginAnimation(TranslateTransform.YProperty, new DoubleAnimation(14, 0, duration) { EasingFunction = easing });
+                var fade = new DoubleAnimation(0, 1, duration)
+                {
+                    EasingFunction = easing,
+                    FillBehavior = FillBehavior.HoldEnd
+                };
+                var slide = new DoubleAnimation(14, 0, duration)
+                {
+                    EasingFunction = easing,
+                    FillBehavior = FillBehavior.HoldEnd
+                };
+                slide.Completed += (_, __) =>
+                {
+                    if (motionGeneration != dialogMotionGeneration || DialogOverlay.Visibility != Visibility.Visible)
+                        return;
+
+                    StopDialogMotion();
+                    DialogCard.Opacity = 1;
+                };
+                DialogCard.BeginAnimation(OpacityProperty, fade);
+                translate.BeginAnimation(TranslateTransform.YProperty, slide);
             }
             BeginUiSafely(() =>
             {
@@ -1243,8 +1332,19 @@ namespace GameSaveCenter.Playnite.Views
             DialogCopyButton.Visibility = Visibility.Collapsed;
             DialogCopyButton.Content = "复制详情";
             DialogOverlay.Visibility = Visibility.Collapsed;
-            DialogCard.BeginAnimation(OpacityProperty, null);
+            dialogMotionGeneration++;
+            StopDialogMotion();
             DialogCard.Opacity = 0;
+        }
+
+        private void StopDialogMotion()
+        {
+            DialogCard.BeginAnimation(OpacityProperty, null);
+            if (DialogCard.RenderTransform is TranslateTransform translate)
+            {
+                translate.BeginAnimation(TranslateTransform.YProperty, null);
+                translate.Y = 0;
+            }
         }
 
         private void OnPreviewKeyDown(object sender, KeyEventArgs e)
@@ -1353,8 +1453,26 @@ namespace GameSaveCenter.Playnite.Views
             {
                 var duration = GscMotion.GetDuration(ToastHost, GscMotion.MotionDurationKind.Normal);
                 var easing = GscMotion.CreateEaseOut();
-                card.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, duration) { EasingFunction = easing });
-                ((TranslateTransform)card.RenderTransform).BeginAnimation(TranslateTransform.XProperty, new DoubleAnimation(18, 0, duration) { EasingFunction = easing });
+                var fade = new DoubleAnimation(0, 1, duration)
+                {
+                    EasingFunction = easing,
+                    FillBehavior = FillBehavior.HoldEnd
+                };
+                var translate = (TranslateTransform)card.RenderTransform;
+                var slide = new DoubleAnimation(18, 0, duration)
+                {
+                    EasingFunction = easing,
+                    FillBehavior = FillBehavior.HoldEnd
+                };
+                fade.Completed += (_, __) =>
+                {
+                    card.BeginAnimation(OpacityProperty, null);
+                    translate.BeginAnimation(TranslateTransform.XProperty, null);
+                    card.Opacity = 1;
+                    translate.X = 0;
+                };
+                card.BeginAnimation(OpacityProperty, fade);
+                translate.BeginAnimation(TranslateTransform.XProperty, slide);
             }
         }
 
@@ -1369,16 +1487,30 @@ namespace GameSaveCenter.Playnite.Views
             }
 
             var duration = TimeSpan.FromMilliseconds(180);
-            var fade = new DoubleAnimation(card.Opacity, 0, duration);
+            var fade = new DoubleAnimation(card.Opacity, 0, duration)
+            {
+                FillBehavior = FillBehavior.HoldEnd
+            };
             fade.Completed += (_, __) => RemoveToast(card);
             card.BeginAnimation(OpacityProperty, fade);
             var translate = card.RenderTransform as TranslateTransform ?? new TranslateTransform();
             card.RenderTransform = translate;
-            translate.BeginAnimation(TranslateTransform.XProperty, new DoubleAnimation(0, 16, duration));
+            translate.BeginAnimation(TranslateTransform.XProperty, new DoubleAnimation(0, 16, duration)
+            {
+                FillBehavior = FillBehavior.HoldEnd
+            });
         }
 
         private void ClearToasts()
         {
+            var cards = new List<Border>();
+            foreach (var child in ToastHost.Children)
+            {
+                if (child is Border card)
+                    cards.Add(card);
+            }
+            foreach (var card in cards)
+                RemoveToast(card);
             foreach (var timer in toastTimers.Values) timer.Stop();
             toastTimers.Clear();
             ToastHost.Children.Clear();
@@ -1454,7 +1586,13 @@ namespace GameSaveCenter.Playnite.Views
             if (MotionEnabled)
                 return;
 
+            NormalizeDashboardMotion();
+        }
+
+        private void NormalizeDashboardMotion()
+        {
             NormalizeAnimatedElement(MainShell);
+            NormalizeAnimatedElement(ProductionShellView.PageHostForAudit);
             NormalizeAnimatedElement(GameBrowserPanel);
             NormalizeAnimatedElement(DetailsTabControl);
             NormalizeAnimatedElement(StatusPill);

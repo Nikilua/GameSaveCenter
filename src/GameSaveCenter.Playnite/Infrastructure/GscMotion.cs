@@ -152,9 +152,32 @@ namespace GameSaveCenter.Playnite.Infrastructure
         internal static void AnimateTranslate(FrameworkElement element, double x, double y, TimeSpan duration)
         {
             var translate = GetMutableTranslateTransform(element);
+            var currentX = translate.X;
+            var currentY = translate.Y;
+            translate.BeginAnimation(TranslateTransform.XProperty, null);
+            translate.BeginAnimation(TranslateTransform.YProperty, null);
+            translate.X = currentX;
+            translate.Y = currentY;
             var easing = CreateEaseOut();
-            translate.BeginAnimation(TranslateTransform.XProperty, new DoubleAnimation(x, duration) { EasingFunction = easing });
-            translate.BeginAnimation(TranslateTransform.YProperty, new DoubleAnimation(y, duration) { EasingFunction = easing });
+            var xAnimation = new DoubleAnimation(currentX, x, duration)
+            {
+                EasingFunction = easing,
+                FillBehavior = FillBehavior.HoldEnd
+            };
+            var yAnimation = new DoubleAnimation(currentY, y, duration)
+            {
+                EasingFunction = easing,
+                FillBehavior = FillBehavior.HoldEnd
+            };
+            xAnimation.Completed += (_, __) =>
+            {
+                translate.BeginAnimation(TranslateTransform.XProperty, null);
+                translate.BeginAnimation(TranslateTransform.YProperty, null);
+                translate.X = x;
+                translate.Y = y;
+            };
+            translate.BeginAnimation(TranslateTransform.XProperty, xAnimation);
+            translate.BeginAnimation(TranslateTransform.YProperty, yAnimation);
         }
 
         internal static void AnimateTranslate(FrameworkElement element, double x, double y, MotionDurationKind kind)
@@ -187,8 +210,25 @@ namespace GameSaveCenter.Playnite.Infrastructure
             }
 
             var easing = CreateEaseOut();
-            element.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(currentOpacity, 1, GetDuration(element, MotionDurationKind.Normal)) { EasingFunction = easing });
-            translate.BeginAnimation(TranslateTransform.YProperty, new DoubleAnimation(currentY, 0, GetDuration(element, MotionDurationKind.Slow)) { EasingFunction = easing });
+            var opacityAnimation = new DoubleAnimation(currentOpacity, 1, GetDuration(element, MotionDurationKind.Normal))
+            {
+                EasingFunction = easing,
+                FillBehavior = FillBehavior.HoldEnd
+            };
+            var translateAnimation = new DoubleAnimation(currentY, 0, GetDuration(element, MotionDurationKind.Slow))
+            {
+                EasingFunction = easing,
+                FillBehavior = FillBehavior.HoldEnd
+            };
+            translateAnimation.Completed += (_, __) =>
+            {
+                element.BeginAnimation(UIElement.OpacityProperty, null);
+                translate.BeginAnimation(TranslateTransform.YProperty, null);
+                element.Opacity = 1;
+                translate.Y = 0;
+            };
+            element.BeginAnimation(UIElement.OpacityProperty, opacityAnimation);
+            translate.BeginAnimation(TranslateTransform.YProperty, translateAnimation);
         }
     }
 }

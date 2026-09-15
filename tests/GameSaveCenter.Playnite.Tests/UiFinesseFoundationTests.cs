@@ -91,6 +91,8 @@ public sealed class UiFinesseFoundationTests
         Assert.Contains("new DoubleAnimation(currentOpacity, 1, GetDuration(element, MotionDurationKind.Normal))", motion);
         Assert.Contains("new DoubleAnimation(currentY, 0, GetDuration(element, MotionDurationKind.Slow))", motion);
         Assert.Contains("rapid re-entry", motion);
+        Assert.Contains("FillBehavior = FillBehavior.HoldEnd", motion);
+        Assert.Contains("translateAnimation.Completed", motion);
     }
 
     [Fact]
@@ -109,6 +111,11 @@ public sealed class UiFinesseFoundationTests
         Assert.Contains("GscMotion.GetDuration(StatusPill, GscMotion.MotionDurationKind.Normal)", dashboard);
         Assert.Contains("GscMotion.GetDuration(DialogCard, GscMotion.MotionDurationKind.Normal)", dashboard);
         Assert.Contains("GscMotion.GetDuration(ToastHost, GscMotion.MotionDurationKind.Normal)", dashboard);
+        Assert.Contains("StopDialogMotion();", dashboard);
+        Assert.Contains("slide.Completed", dashboard);
+        Assert.Contains("dialogMotionGeneration", dashboard);
+        Assert.Contains("foreach (var card in cards)\n                RemoveToast(card);", dashboard);
+        Assert.Contains("fade.Completed", dashboard);
         Assert.Contains("GscMotion.GetDuration(SidebarContentLayer, GscMotion.MotionDurationKind.Normal)", shell);
     }
 

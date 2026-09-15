@@ -323,7 +323,8 @@ namespace GameSaveCenter.Playnite.Views
                 From = new GridLength(currentWidth, GridUnitType.Pixel),
                 To = new GridLength(targetWidth, GridUnitType.Pixel),
                 Duration = new Duration(motionDuration),
-                EasingFunction = GscMotion.CreateEaseOut()
+                EasingFunction = GscMotion.CreateEaseOut(),
+                FillBehavior = FillBehavior.HoldEnd
             };
             widthAnimation.Completed += (_, _) =>
             {
@@ -342,12 +343,14 @@ namespace GameSaveCenter.Playnite.Views
             SidebarContentLayer.BeginAnimation(UIElement.OpacityProperty,
                 new DoubleAnimation(0, 1, motionDuration)
                 {
-                    EasingFunction = GscMotion.CreateEaseOut()
+                    EasingFunction = GscMotion.CreateEaseOut(),
+                    FillBehavior = FillBehavior.HoldEnd
                 });
             translate.BeginAnimation(TranslateTransform.XProperty,
                 new DoubleAnimation(sidebarCollapsed ? -4 : 4, 0, motionDuration)
                 {
-                    EasingFunction = GscMotion.CreateEaseOut()
+                    EasingFunction = GscMotion.CreateEaseOut(),
+                    FillBehavior = FillBehavior.HoldEnd
                 });
             SidebarCollapseButton.Focus();
             e.Handled = true;

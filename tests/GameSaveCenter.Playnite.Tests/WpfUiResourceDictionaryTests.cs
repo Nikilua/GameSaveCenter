@@ -5083,6 +5083,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("foreach (var timer in toastTimers.Values) timer.Stop();", dashboardCode);
         Assert.Contains("toastTimers.Clear();", dashboardCode);
         Assert.Contains("StopToastTimer(card, timer);", dashboardCode);
+        Assert.Contains("foreach (var card in cards)\n                RemoveToast(card);", dashboardCode);
+        Assert.Contains("card.BeginAnimation(OpacityProperty, null);", dashboardCode);
+        Assert.Contains("translate.BeginAnimation(TranslateTransform.XProperty, null);", dashboardCode);
     }
 
     [Fact]
