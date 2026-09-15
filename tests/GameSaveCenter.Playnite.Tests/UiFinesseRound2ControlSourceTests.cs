@@ -80,6 +80,7 @@ public sealed class UiFinesseRound2ControlSourceTests
         Assert.Contains("Unloaded += OnButtonUnloaded;", controls);
         Assert.Contains("private void OnButtonUnloaded(object sender, RoutedEventArgs e)", controls);
         Assert.Contains("ResetInteractionLayers();", controls);
+        Assert.Contains("chrome.RenderTransform is ScaleTransform scale && !scale.IsFrozen", controls);
         Assert.Contains("scale.ScaleX = 1;", controls);
         Assert.Contains("scale.ScaleY = 1;", controls);
         Assert.Contains("ResetOverlay(\"PressedOverlay\")", controls);

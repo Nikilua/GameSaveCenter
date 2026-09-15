@@ -62,7 +62,7 @@ namespace GameSaveCenter.Playnite.Controls
             if (Template?.FindName("ButtonChrome", this) is Border chrome)
             {
                 chrome.BeginAnimation(UIElement.OpacityProperty, null);
-                if (chrome.RenderTransform is ScaleTransform scale)
+                if (chrome.RenderTransform is ScaleTransform scale && !scale.IsFrozen)
                 {
                     scale.BeginAnimation(ScaleTransform.ScaleXProperty, null);
                     scale.BeginAnimation(ScaleTransform.ScaleYProperty, null);
