@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-15
 
+## 2026-09-15 真实宿主最终复核结论
+
+- 最终交付基线为 `69e1f84`，clean-tree Release 隔离审计通过：XAML `24/24`、Core `83/83`、Worker `311/311`、Playnite `494/551`（57 skip）、0 fail；包身份和三份审计身份均为 `0.6.73+69e1f844f8b20b1fcf1667d2b8a6af2772eb0ed4`。
+- `artifacts/ui-host-audit-round2-final-20260915` 的真实 `EmbeddedPlaynite` Dashboard/Settings 捕获为 29/2/1（视口/完整滚动面/Settings），Settings `1278×762 DIP`、150% DPI，截图稳定可读。Settings capture 现在等待最长入场动画，审计脚本也不会再因 `$LASTEXITCODE` 管道判断丢失 SHA。
+- 这只升级当前深色真实宿主像素来源与交付追溯性；不替代 Hover/Focus、保存回滚、主题切换、物理跨屏 Popup、中文 IME、读屏、ETW 呈现帧、Playnite 长时间耐久或低 Tier 实测。Q24-03 仍单屏阻塞。
+
 ## 2026-09-15 真实宿主审计必须保留提交身份
 
 - 真实 Settings 图像在 `5b8a87a` 上已恢复稳定亮度，但该次审计的构建身份虽正确，`runner-metadata.json` 和 Settings metadata 的 `CommitSha` 因 PowerShell 管道后的 `$LASTEXITCODE` 判断而为 `unknown`。

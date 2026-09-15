@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-15 UI 精修真实宿主最终复核
+
+- `69e1f84` clean-tree Release real-host audit 完成：XAML `24/24`，0 warning/0 error，Core `83/83`、Worker `311/311`、Playnite `494/551`（57 skip）、0 fail；程序集身份为 `0.6.73+69e1f844f8b20b1fcf1667d2b8a6af2772eb0ed4`。
+- 非空隔离 Playnite 中真实 `EmbeddedPlaynite` Dashboard/Settings 均捕获成功，清单为 Dashboard `29` 个视口 + `2` 个完整滚动面、Settings `1` 个视口；Settings 为 `1278×762 DIP`、150% DPI，最终截图确认标题、中文正文、字段、rail 和保存提示稳定可读。
+- 这次复核同时确认 Settings 暗图是入场动画中间帧，SHA `unknown` 是 PowerShell 审计脚本的 `$LASTEXITCODE` 管道判断缺陷；两者已分别由 `5b8a87a` 与 `69e1f84` 修复。UIA 侧栏旧警告保留为非权威诊断，Q24-03 仍因单显示器阻塞。
+
 ## 2026-09-15 真实宿主审计提交身份修复
 
 - 真实 Playnite 审计截图已在 `5b8a87a` 代码上恢复为稳定可读的 Settings 终态；复核同时发现 `real-host-audit.ps1` 在 PowerShell 管道后依赖 `$LASTEXITCODE`，导致 `runner-metadata.json` 与 Settings metadata 的 SHA 被写成 `unknown`。

@@ -2,6 +2,12 @@
 
 > 更新时间：2026-09-15。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 当前最近阶段：真实宿主最终复核已完成
+
+- 当前交付基线为 `69e1f84`，已推送 `codex/ui-finesse-round2`。clean-tree Release real-host audit 通过：XAML `24/24`、Core `83/83`、Worker `311/311`、Playnite `494/551`（57 skip）、0 fail。
+- 最终证据目录为 `artifacts/ui-host-audit-round2-final-20260915`：真实 `EmbeddedPlaynite` Dashboard/Settings 均捕获，29 个 Dashboard 视口、2 个完整滚动面、1 个 Settings 视口；runner metadata、Settings metadata、构建身份均绑定完整 SHA `69e1f844f8b20b1fcf1667d2b8a6af2772eb0ed4`。
+- Settings 150% DPI `1278×762 DIP` 截图已人工复核为稳定可读；Q24-03 仍只有 `\\.\DISPLAY1`，因此物理跨屏 Popup、完整键盘/IME/读屏、ETW 呈现帧和真实耐久边界不能升级为完成。
+
 ## 当前最近阶段：真实宿主审计身份
 
 - 已发现并修复 `real-host-audit.ps1` 在 PowerShell pipeline 后误用 `$LASTEXITCODE` 的证据问题；下一轮审计必须将 Git SHA 写入 runner metadata、插件 Settings metadata 和构建身份。

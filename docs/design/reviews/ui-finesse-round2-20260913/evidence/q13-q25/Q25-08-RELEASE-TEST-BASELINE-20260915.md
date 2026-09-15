@@ -3,6 +3,18 @@
 采集日期：2026-09-15（Asia/Shanghai）  
 代码基线：`39e37b1`（`补充侧栏卸载清理回归`）
 
+## 69e1f84 最终真实宿主审计构建基线
+
+`69e1f84`（`补齐宿主审计提交身份`）的 clean-tree `real-host-audit.ps1 -Configuration Release` 完成打包、隔离安装和真实 Playnite 宿主捕获；构建与测试退出码 `0`，失败 `0`。该次运行同时覆盖了 Settings 入场截图时序修复和审计 SHA 元数据修复。
+
+| 测试程序集 | 通过 | 跳过 | 总计 |
+| --- | ---: | ---: | ---: |
+| GameSaveCenter.Core.Tests | 83 | 0 | 83 |
+| GameSaveCenter.Worker.Tests | 311 | 0 | 311 |
+| GameSaveCenter.Playnite.Tests | 494 | 57 | 551 |
+
+构建身份为 `0.6.73+69e1f844f8b20b1fcf1667d2b8a6af2772eb0ed4`；XAML `24/24`；真实宿主 summary 的 Dashboard/Settings 均为 `EmbeddedPlaynite`，Q24-03 仅记录单屏阻塞。该 Release 审计仍不等价于物理跨屏、IME、读屏、ETW 呈现帧或真实宿主耐久验收。
+
 ## 39e37b1 生产侧栏卸载清理跟进
 
 `39e37b1`（`补充侧栏卸载清理回归`）在同一命令下通过：退出码 `0`，失败 `0`。新增的生产侧栏 STA WPF Window 回归实际触发侧栏完成动画，再在长动画中关闭窗口并推进 Dispatcher，确认完成/卸载路径释放 Opacity/X 时钟、结束过渡并将位移归零；Playnite 测试总数变为 `550`。

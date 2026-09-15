@@ -74,3 +74,11 @@
 - `summary.json` 明确为 `EmbeddedDashboardCaptured=true`、`EmbeddedSettingsCaptured=true`、`ControlledDashboardCaptured=false`、`ProductionVisualSourceOfTruthAvailable=true`、`EmbeddedDashboardOrigin=EmbeddedPlaynite`、`EmbeddedSettingsOrigin=EmbeddedPlaynite`、`HighGateCount=1`。UIA 侧栏旧警告仍保留为非权威诊断；审计结束后隔离 Playnite 与 Worker 已停止且无残留。该修复只校正证据生成，不把它扩大解释为 Hover/Focus、键盘/IME、读屏、多屏 Popup、浅色/高对比或 Q25-02～Q25-05 性能通过。
 
 最新输出：`artifacts/ui-host-audit-dpi-fixed-20260915/summary.json`、`metadata.json`、`runner-metadata.json`、`embedded-current/dashboard/capture-manifest.json`、`embedded-current/dashboard/viewport/`、`embedded-current/dashboard/scroll-surfaces/`、`settings/embedded-current/viewport/settings.png`、`.tmp/ui-host-userdata-library-final-20260915/playnite.log` 与 `extensions.log`。
+
+## Settings 入场时序与提交身份修复后的最终复核（69e1f84）
+
+- 在提交 `69e1f844f8b20b1fcf1667d2b8a6af2772eb0ed4` 上执行 clean-tree Release 隔离审计，输出为 `artifacts/ui-host-audit-round2-final-20260915`，继续使用 `.tmp/ui-host-userdata-library-final-20260915` 与 `D:\software\Playnite\Playnite.DesktopApp.exe`；原用户 Playnite 数据未修改，结束后隔离 Playnite 进程已停止。
+- 构建与安装：XAML `24/24`，0 warning / 0 error，Core `83/83`，Worker `311/311`，Playnite `494/551`（57 skipped，0 failed）；包与程序集身份为 `0.6.73+69e1f844f8b20b1fcf1667d2b8a6af2772eb0ed4`。
+- `summary.json` 明确记录 `EmbeddedDashboardCaptured=true`、`EmbeddedSettingsCaptured=true`、`ControlledDashboardCaptured=false`、`ProductionVisualSourceOfTruthAvailable=true`；Dashboard 为真实 `EmbeddedPlaynite`，捕获清单为 `29` 个视口与 `2` 个完整滚动面，Settings 为 `1` 个嵌入视口，均 `CompletenessValidated=true`。
+- Settings metadata 与 runner metadata 均绑定同一完整 SHA，Settings 为 `1278×762 DIP`、`DpiScaleX/Y=1.5`、`PixelsPerDip=1.5`。最终 [`settings.png`](../../../../../../artifacts/ui-host-audit-round2-final-20260915/settings/embedded-current/viewport/settings.png) 人工复核确认标题、中文正文、字段标签、输入值、分类 rail 和保存提示均已恢复稳定可读；这证明前一轮偏暗图是入场动画中间帧而非主题前景缺失。
+- 证据生成脚本现在等待 Settings 最长入场动效结束后再截图，并修正 PowerShell 管道后 `$LASTEXITCODE` 导致 SHA `unknown` 的问题。UIA 侧栏未定位警告仍保留为非权威诊断；Q24-03 仍因仅有 `DISPLAY1` 单屏无法执行物理跨屏 Popup 迁移。
