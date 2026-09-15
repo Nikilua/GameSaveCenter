@@ -1,0 +1,14 @@
+Production shell motion hot-change probe (controlled STA WPF Window)
+Scenario: motionhotprobe
+EvidenceSource: ControlledWpfWindow
+Commit: dc1dd6708cef9d86c1d6576d440402acbf0c5df0
+WorkingTreeClean: True
+DpiScale: 1.00 (offscreen logical DIP; real host DPI is not inferred)
+WindowDip: per-case window_dip/content_dip fields
+Themes: light,dark
+DataVolumes: production shell; audit-only GscMotionNormal=700ms override; runtime motion preference toggle; 900x640 DIP
+TimingFields: layout_ms, render_ms; request_ms=not-applicable for offscreen harness
+HotChange[light] duringWidth=100.09 duringOpacity=0.858 duringAnimated=True disabledFinalWidth=72 disabledOpacity=1 disabledReentryWidth=270 disabledX=0 disabledReentryAnimated=False
+HotChange[dark] duringWidth=143.26 duringOpacity=0.64 duringAnimated=True disabledFinalWidth=72 disabledOpacity=1 disabledReentryWidth=270 disabledX=0 disabledReentryAnimated=False
+MotionHotChangeBoundary: active production sidebar transition was normalized immediately after a runtime motion toggle; disabled re-entry remained immediate; real Windows preference notification and Playnite host pixels remain host checks
+MotionHotChangeProbe OK

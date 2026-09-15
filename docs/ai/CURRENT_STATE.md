@@ -2,7 +2,12 @@
 
 > 更新时间：2026-09-15。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
-## 当前最近阶段：Q18-04 生产壳层动效视觉序列
+## 当前最近阶段：Q18-05 系统动画热变更受控证据
+
+- `dc1dd67` 的 clean-tree `motionhotprobe` 使用真实生产 `AcrylicProductionShellView` 在 Light/Dark、900×640 DIP 中启动侧栏动画，再在活动中间态切换 MotionEnabled 为关闭；两主题均确认中间态存在活动动画，归一化后宽度 `72`、Opacity `1`、X `0` 且无活动时钟，禁用重入立即恢复到 `270` DIP。
+- 报告绑定完整 SHA、`WorkingTreeClean=True`、DPI `1.00`，六张截图和原始报告见 [`Q18-05-MOTION-HOT-CHANGE-20260915.md`](../design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q18-05-MOTION-HOT-CHANGE-20260915.md)。Q18-05 受控视觉列已通过；真实 Windows 偏好通知、Playnite 宿主、物理 DPI/屏幕帧和性能边界仍未签收。
+
+## 上一阶段：Q18-04 生产壳层动效视觉序列
 
 - `af9b1dd` clean tree 的 `motionprobe` 以真实生产 `AcrylicProductionShellView` 运行 Light/Dark、900×640 DIP，报告绑定完整 SHA 与 `WorkingTreeClean=True`；两主题均保留中间态、终态、快速重入终态及卸载后检查，代表 PNG 已人工查看。
 - 审计报告记录中间态宽度约 `100/153 DIP`、Opacity `0.858/0.592`，终态/卸载均为 `72/1/0` 且无活动动画；700ms 只覆盖审计资源，不改变生产动画 token。Q18-04 视觉列已通过；真实宿主 Loaded/Unloaded、ETW 和物理屏幕帧，以及 Q18-07 的宿主边界仍未完成。

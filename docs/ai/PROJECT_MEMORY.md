@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-15
 
+## 2026-09-15 Q18-05 系统动画热变更受控证据
+
+- `dc1dd67` 新增 `RenderHarness.exe motionhotprobe` 和 `UiFinesseRound2ControlSourceTests` 契约门禁；clean-tree 报告绑定完整 SHA、`WorkingTreeClean=True`、双主题、900×640 DIP 和受控 `GscMotionNormal=700ms` 审计覆盖。
+- 探针直接使用生产 `AcrylicProductionShellView`，在侧栏收起动画的活动中间态把 `MotionEnabledProvider` 从 true 切到 false，再调用生产 `NormalizeMotionIfDisabled()`：Light/Dark 中间宽度约 `100/143 DIP`、Opacity `0.858/0.640` 且活动动画为 true；归一化终态均为 `72/1/X=0`、无活动时钟，禁用重入均同步恢复 `270 DIP`。
+- 人工查看六张双主题 PNG；RenderHarness Release `0 warning/0 error`，`UiFinesseRound2ControlSourceTests` `22/22`。Q18-05 受控视觉列升级为通过，但真实 Windows `SystemParameters` 通知链、Playnite 宿主时序、物理 DPI/屏幕帧和 ETW 仍保持外部边界。
+
 ## 2026-09-15 Q18-04 生产壳层动效视觉序列
 
 - `af9b1dd0279d58240bc53128e211fb3a7e210ecd` 的 clean-tree RenderHarness `motionprobe` 直接使用生产 `AcrylicProductionShellView`，在 Light/Dark、900×640 DIP 下生成展开、收起中间态、收起终态和快速重入终态 PNG，并在关闭窗口后读取卸载清理状态；报告含 `WorkingTreeClean=True`、DPI `1.00` 和完整数据范围。

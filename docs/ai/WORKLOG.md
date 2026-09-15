@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-15 Q18-05 系统动画热切换探针
+
+- 提交并推送 `dc1dd67`（`补充动效偏好热切换探针`）：新增 `motionhotprobe`，使用真实生产 `AcrylicProductionShellView`，不是伪造 Dashboard 或 Playnite 宿主；新增源契约测试后定向门禁为 `22/22`。
+- clean-tree Release 探针绑定 `dc1dd6708cef9d86c1d6576d440402acbf0c5df0`，双主题/900×640 DIP 均观察到活动中间态；运行中禁用动画后立即归一化到 `72 DIP / Opacity 1 / X 0`、无活动时钟，禁用重入到 `270 DIP` 仍无动画。六张 PNG 和原始报告写入 `Q18-05-MOTION-HOT-CHANGE-20260915.md`，代表图已人工查看。
+- Q18-05 受控视觉列升级为通过；真实 Windows 偏好通知、Playnite Loaded/Unloaded、物理 DPI、屏幕帧和 ETW 不由受控窗口替代，宿主列继续外部阻塞。RenderHarness Release `0/0`，`git diff --check` 通过。
+
 ## 2026-09-15 Q18-04 生产壳层动效视觉序列
 
 - 提交并推送 `af9b1dd`（`补齐动效探针身份信息`）后，在 clean tree 上运行 `RenderHarness.exe motionprobe`；报告绑定完整 SHA、`WorkingTreeClean=True`、双主题、900×640 DIP，审计目录保留 8 张序列图和完整报告。
