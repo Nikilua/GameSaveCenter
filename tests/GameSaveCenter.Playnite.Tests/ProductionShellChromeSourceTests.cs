@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls.Primitives;
+using System.Windows.Media;
+using System.Windows.Threading;
 using Xunit;
 
 namespace GameSaveCenter.Playnite.Tests;
@@ -192,6 +194,82 @@ public sealed class ProductionShellChromeSourceTests
     }
 
     [Fact]
+    public void SidebarTransitionReleasesClocksOnCompletionAndUnloadInAnActualWpfWindow()
+    {
+        Exception? exception = null;
+
+        var thread = new Thread(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var shell = new GameSaveCenter.Playnite.Views.AcrylicProductionShellView
+                {
+                    MotionEnabledProvider = () => true,
+                    SidebarCollapsedProvider = () => false
+                };
+                shell.Resources["GscMotionNormal"] = new Duration(TimeSpan.FromMilliseconds(30));
+                window = new Window
+                {
+                    Content = shell,
+                    Width = 900,
+                    Height = 640,
+                    ShowInTaskbar = false,
+                    ShowActivated = false,
+                    WindowStyle = WindowStyle.None,
+                    Opacity = 0.01
+                };
+                window.Show();
+                window.UpdateLayout();
+                shell.UpdateLayout();
+
+                var layer = Assert.IsAssignableFrom<FrameworkElement>(shell.FindName("SidebarContentLayer"));
+                shell.SidebarCollapseButtonForAudit.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                PumpDispatcher(TimeSpan.FromMilliseconds(120));
+
+                Assert.False(shell.SidebarTransitionRunningForAudit);
+                Assert.Equal(72d, shell.SidebarWidthForAudit);
+                Assert.False(DependencyPropertyHelper.GetValueSource(layer, UIElement.OpacityProperty).IsAnimated);
+                Assert.Equal(1, layer.Opacity);
+                if (layer.RenderTransform is TranslateTransform translate)
+                {
+                    Assert.False(DependencyPropertyHelper.GetValueSource(translate, TranslateTransform.XProperty).IsAnimated);
+                    Assert.Equal(0, translate.X);
+                }
+
+                shell.Resources["GscMotionNormal"] = new Duration(TimeSpan.FromSeconds(1));
+                shell.SidebarCollapseButtonForAudit.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                Assert.True(shell.SidebarTransitionRunningForAudit);
+                window.Close();
+                PumpDispatcher(TimeSpan.FromMilliseconds(50));
+
+                Assert.False(shell.SidebarTransitionRunningForAudit);
+                Assert.False(DependencyPropertyHelper.GetValueSource(layer, UIElement.OpacityProperty).IsAnimated);
+                Assert.Equal(1, layer.Opacity);
+                if (layer.RenderTransform is TranslateTransform unloadedTranslate)
+                {
+                    Assert.False(DependencyPropertyHelper.GetValueSource(unloadedTranslate, TranslateTransform.XProperty).IsAnimated);
+                    Assert.Equal(0, unloadedTranslate.X);
+                }
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+    }
+
+    [Fact]
     public void SettingsViewRequestsAUsableDefaultWindowSize()
     {
         var settings = ReadSource("src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml");
@@ -229,5 +307,18 @@ public sealed class ProductionShellChromeSourceTests
         if (directory == null)
             throw new InvalidOperationException("无法定位仓库根目录");
         return File.ReadAllText(Path.Combine(new[] { directory.FullName }.Concat(segments).ToArray()));
+    }
+
+    private static void PumpDispatcher(TimeSpan duration)
+    {
+        var frame = new DispatcherFrame();
+        var timer = new DispatcherTimer { Interval = duration };
+        timer.Tick += (_, __) =>
+        {
+            timer.Stop();
+            frame.Continue = false;
+        };
+        timer.Start();
+        Dispatcher.PushFrame(frame);
     }
 }

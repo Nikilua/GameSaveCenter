@@ -160,7 +160,10 @@ namespace GameSaveCenter.Playnite.Views
             SidebarColumn.BeginAnimation(ColumnDefinition.WidthProperty, null);
             SidebarContentLayer.BeginAnimation(UIElement.OpacityProperty, null);
             if (SidebarContentLayer.RenderTransform is TranslateTransform translate)
+            {
                 translate.BeginAnimation(TranslateTransform.XProperty, null);
+                translate.X = 0;
+            }
             SidebarContentLayer.Opacity = 1;
             sidebarTransitionRunning = false;
             responsiveLayoutPending = false;
