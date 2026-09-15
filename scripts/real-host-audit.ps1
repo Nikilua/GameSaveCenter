@@ -28,7 +28,9 @@ $isolatedWorkerDataDirectory = ''
 $auditStartedUtc = [DateTime]::UtcNow.ToString('O')
 try {
     $commit = (& git -C $root rev-parse HEAD 2>$null | Select-Object -First 1).Trim()
-    if ($LASTEXITCODE -eq 0 -and $commit) {
+    # The native exit code is not reliable after a PowerShell pipeline has consumed
+    # git's output. The non-empty SHA is the evidence we need to pass to the plugin.
+    if ($commit) {
         $env:GSC_UI_AUDIT_COMMIT = $commit
         Write-Host "Audit commit: $commit" -ForegroundColor Cyan
     }

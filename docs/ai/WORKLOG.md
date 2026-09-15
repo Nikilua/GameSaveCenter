@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-15 真实宿主审计提交身份修复
+
+- 真实 Playnite 审计截图已在 `5b8a87a` 代码上恢复为稳定可读的 Settings 终态；复核同时发现 `real-host-audit.ps1` 在 PowerShell 管道后依赖 `$LASTEXITCODE`，导致 `runner-metadata.json` 与 Settings metadata 的 SHA 被写成 `unknown`。
+- 脚本现在以管道得到的非空 SHA 作为证据身份，并新增 `DiagnosticsEvidenceSourceTests` 断言不再使用该错误判断；这只修复证据元数据，不改变插件行为。
+- 验证：Release Playnite 编译 0 警告/0 错误；`DiagnosticsEvidenceSourceTests` + `UiAuditBlockerTests` `10/10`；`validate-source.py`、XAML `24/24`、`git diff --check` 通过。提交后需再跑一次 clean-tree real-host audit，确认元数据为新 SHA。
+
 ## 2026-09-15 UI 精修真实 Settings 宿主截图时序修复
 
 - 真实 Playnite 审计发现 Settings 截图偏暗并非主题前景丢失：视图首次加载从 `SettingsShell.Opacity=0` 开始，审计只等待一个 Render pass，可能在最长入场动效结束前取到中间帧。

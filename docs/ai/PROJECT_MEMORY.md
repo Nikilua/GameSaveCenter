@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-15
 
+## 2026-09-15 真实宿主审计必须保留提交身份
+
+- 真实 Settings 图像在 `5b8a87a` 上已恢复稳定亮度，但该次审计的构建身份虽正确，`runner-metadata.json` 和 Settings metadata 的 `CommitSha` 因 PowerShell 管道后的 `$LASTEXITCODE` 判断而为 `unknown`。
+- `scripts/real-host-audit.ps1` 现在只以 `git rev-parse HEAD` 的非空输出设置 `GSC_UI_AUDIT_COMMIT`；`DiagnosticsEvidenceSourceTests` 锁定这个契约，后续证据必须同时检查 runner、metadata 和 build identity。
+- 本修复不扩展视觉结论；仍需用提交后的 clean tree 重新安装隔离 Playnite，确认新 Settings screenshot 与 SHA 可追溯。Q24-03 继续受单显示器条件阻塞。
+
 ## 2026-09-15 真实 Settings 宿主截图等待完整入场动效
 
 - 本轮真实 Playnite 审计把 Settings 截图抓在 `SettingsShell` 入场动画中间态，造成整体低对比度的视觉假阳性；Style fingerprint 中的前景和各层 `Opacity=1` 已证明不是主题资源缺失。

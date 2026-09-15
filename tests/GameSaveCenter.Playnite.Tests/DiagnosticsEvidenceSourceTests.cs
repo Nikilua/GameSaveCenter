@@ -29,6 +29,8 @@ public sealed class DiagnosticsEvidenceSourceTests
         Assert.Contains("blocked-single-display", hostScript);
         Assert.Contains("try { $_.Refresh() } catch { }", hostScript);
         Assert.Contains("Where-Object { $_.MainWindowHandle -ne 0 }", hostScript);
+        Assert.Contains("if ($commit) {", hostScript);
+        Assert.DoesNotContain("if ($LASTEXITCODE -eq 0 -and $commit)", hostScript);
     }
 
     [Fact]

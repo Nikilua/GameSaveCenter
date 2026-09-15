@@ -2,6 +2,12 @@
 
 > 更新时间：2026-09-15。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 当前最近阶段：真实宿主审计身份
+
+- 已发现并修复 `real-host-audit.ps1` 在 PowerShell pipeline 后误用 `$LASTEXITCODE` 的证据问题；下一轮审计必须将 Git SHA 写入 runner metadata、插件 Settings metadata 和构建身份。
+- 当前未提交改动仅为该脚本、证据源回归测试和 AI 记忆更新；Release Playnite 编译、定向 `10/10`、源码/XAML/diff 门禁均已通过。
+- 上一轮 `ui-host-audit-round2-settled-20260915` 的 Settings 图像视觉稳定可读，但因 metadata SHA 为 `unknown` 只能作为时序修复复核，不作为最终可追溯证据；提交后会重跑。
+
 ## 当前最近阶段：真实 Settings 宿主截图时序
 
 - 本阶段修复真实 Playnite 审计过早截图的问题：Settings 的入场动画从 `Opacity=0` 开始，审计现在等待实际 Slow motion token 完成后才捕获稳定终态；正常用户动画和 Settings 绑定未改变。
