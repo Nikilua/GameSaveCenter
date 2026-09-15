@@ -1,7 +1,19 @@
 # Q25-08 当前 Release 测试基线
 
 采集日期：2026-09-15（Asia/Shanghai）  
-代码基线：`68b49a1`（`补充动效时钟终态运行时回归`）
+代码基线：`39e37b1`（`补充侧栏卸载清理回归`）
+
+## 39e37b1 生产侧栏卸载清理跟进
+
+`39e37b1`（`补充侧栏卸载清理回归`）在同一命令下通过：退出码 `0`，失败 `0`。新增的生产侧栏 STA WPF Window 回归实际触发侧栏完成动画，再在长动画中关闭窗口并推进 Dispatcher，确认完成/卸载路径释放 Opacity/X 时钟、结束过渡并将位移归零；Playnite 测试总数变为 `550`。
+
+| 测试程序集 | 通过 | 跳过 | 总计 |
+| --- | ---: | ---: | ---: |
+| GameSaveCenter.Core.Tests | 83 | 0 | 83 |
+| GameSaveCenter.Worker.Tests | 310 | 1 | 311 |
+| GameSaveCenter.Playnite.Tests | 487 | 63 | 550 |
+
+该生产壳层回归在 Release 下独立连续回放 `5/5` 通过。它仍是受控 WPF Window，不等价于真实 Playnite Loaded/Unloaded 100 次、宿主窗口关闭、Rendering/ETW 采样或物理屏幕帧验收。
 
 ## 68b49a1 动效终态运行时跟进
 

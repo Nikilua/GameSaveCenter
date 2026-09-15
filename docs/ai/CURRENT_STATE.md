@@ -2,6 +2,12 @@
 
 > 更新时间：2026-09-15。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 2026-09-15 UI 精修 Q18 生产侧栏卸载清理回归
+
+- 当前交付提交为 `39e37b1`，已推送 `codex/ui-finesse-round2`。`AcrylicProductionShellView.OnUnloaded` 现在取消侧栏位移动画后写回 `TranslateTransform.X = 0`；新增 `ProductionShellChromeSourceTests.SidebarTransitionReleasesClocksOnCompletionAndUnloadInAnActualWpfWindow`，在真实 STA WPF `Window` 中覆盖侧栏动画完成和窗口关闭卸载清理。
+- Debug 构建 0 warning/0 error；定向 Playnite 门禁为 `165` 通过、`39` 跳过、0 失败（204 总计）；最终 Release 全量为 Core `83/83`、Worker `310/311`（1 skip）、Playnite `487/550`（63 skip），失败 `0`；侧栏回归 Release 独立回放 `5/5`，源码、XAML 和 diff 门禁通过。
+- 该证据仍是受控 WPF Window，不等价真实 Playnite 100 次 Loaded/Unloaded、宿主窗口关闭、Rendering/ETW 或物理屏幕帧；Q18-04/Q18-07 的真实宿主/视觉列继续待验。证据见 [`Q18-04-07-MOTION-CLEANUP-20260915.md`](../design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q18-04-07-MOTION-CLEANUP-20260915.md)。
+
 ## 2026-09-15 UI 精修 Q18 动效终态运行时门禁
 
 - 当前交付提交为 `68b49a1`，已推送 `codex/ui-finesse-round2`。新增 `UiFinesseFoundationTests.MotionAnimationsReleaseClocksAtTheirFinalValues`，在 STA WPF `Window`/PresentationSource 宿主中实际推进 `AnimateTranslate` 与 `AnimateEntrance`，完成后确认 X/Y/Opacity 为终值且不再有活动动画时钟；Release 连续回放 `5/5` 通过。

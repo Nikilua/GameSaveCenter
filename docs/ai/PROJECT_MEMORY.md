@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-15
 
+## 2026-09-15 UI 精修 Q18 生产侧栏卸载清理回归
+
+- `39e37b1`（`补充侧栏卸载清理回归`）修正 `AcrylicProductionShellView.OnUnloaded` 的真实缺口：取消 `TranslateTransform.X` 动画后写回 `X = 0`，避免窗口卸载中途留下 `4` DIP 位移残留；同一提交新增 `ProductionShellChromeSourceTests.SidebarTransitionReleasesClocksOnCompletionAndUnloadInAnActualWpfWindow`，用实际 STA WPF `Window` 触发生产按钮、推进完成态，再在长动画中关闭窗口并验证过渡结束、Opacity/X 无活动时钟和位移归零。
+- Debug 构建 0 warning/0 error；定向 Playnite `165` 通过、`39` 跳过、0 失败（204 总计）；Release 全量 Core `83/83`、Worker `310/311`（1 skip）、Playnite `487/550`（63 skip），失败 `0`；侧栏回归在 Release 下连续独立回放 `5/5`，`validate-source.py`、XAML `24/24` 和 `git diff --check` 通过。
+- 这是受控 WPF Window 的完成/关闭卸载证据，不等价真实 Playnite Loaded/Unloaded 100 次、宿主窗口关闭、Rendering/ETW 或物理屏幕帧；Q18-04/Q18-07 视觉和真实宿主列继续待验。证据页为 `Q18-04-07-MOTION-CLEANUP-20260915.md`，Release 汇总为 `Q25-08-RELEASE-TEST-BASELINE-20260915.md`。
+
 ## 2026-09-15 UI 精修 Q18 动效终态运行时回归
 
 - `68b49a1`（`补充动效时钟终态运行时回归`）新增 `UiFinesseFoundationTests.MotionAnimationsReleaseClocksAtTheirFinalValues`：创建真实 STA WPF `Window`/PresentationSource 宿主，使用局部 30ms motion token 推进 `AnimateTranslate` 和 `AnimateEntrance`，完成后断言 Transform/Opacity 为目标值，`DependencyPropertyHelper` 不再报告活动动画。

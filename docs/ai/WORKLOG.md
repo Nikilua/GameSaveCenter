@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-15 UI 精修 Q18 生产侧栏卸载清理回归
+
+- 提交并推送 `39e37b1`：`AcrylicProductionShellView.OnUnloaded` 在移除侧栏位移动画后写回 `TranslateTransform.X = 0`；新增真实 STA WPF `Window` 回归，覆盖侧栏动画完成，以及长动画期间关闭窗口后的 Unloaded 清理。
+- 回归先暴露并确认了一个真实残留：卸载路径原本清时钟但保留 `X = 4`；修复后完成态和卸载态均断言过渡结束、Opacity/X 无活动动画时钟、位移归零。Release 独立连续回放 `5/5` 通过。
+- 验证：Debug 构建 0 warning/0 error；定向 Playnite `165` 通过、`39` 跳过、0 失败（204 总计）；Release 全量 Core `83/83`、Worker `310/311`（1 skip）、Playnite `487/550`（63 skip），失败 `0`；`validate-source.py`、XAML `24/24` 和 `git diff --check` 通过。该证据仍不扩写为真实 Playnite 100 次 Loaded/Unloaded、Rendering/ETW 或物理屏幕帧验收，Q18-04/Q18-07 宿主/视觉列按账本保持待验。
+- 证据：[`Q18-04-07-MOTION-CLEANUP-20260915.md`](../design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q18-04-07-MOTION-CLEANUP-20260915.md)、[`Q25-08-RELEASE-TEST-BASELINE-20260915.md`](../design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q25-08-RELEASE-TEST-BASELINE-20260915.md)。
+
 ## 2026-09-15 UI 精修 Q18 动效终态运行时回归
 
 - 提交并推送 `68b49a1`：新增 `UiFinesseFoundationTests.MotionAnimationsReleaseClocksAtTheirFinalValues`，在真实 STA WPF `Window`/PresentationSource 宿主上推进短时 `AnimateTranslate` 与 `AnimateEntrance`，完成后断言 Transform/Opacity 终值及无活动动画时钟；此前脱离视觉树的失败测试已改为可运行窗口宿主，避免误判产品实现。
