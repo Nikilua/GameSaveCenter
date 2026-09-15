@@ -261,6 +261,20 @@ public sealed class UiFinesseRound2ControlSourceTests
     }
 
     [Fact]
+    public void MotionProbeCapturesProductionTransitionAndUnloadCleanup()
+    {
+        var harness = Read("tests", "GameSaveCenter.RenderHarness", "Program.cs");
+
+        Assert.Contains("args[0].Equals(\"motionprobe\", StringComparison.OrdinalIgnoreCase)", harness);
+        Assert.Contains("RunMotionProbe(outputRoot, report)", harness);
+        Assert.Contains("motion-{themeName}-collapsed-mid.png", harness);
+        Assert.Contains("motion-{themeName}-reentry-end.png", harness);
+        Assert.Contains("DependencyPropertyHelper.GetValueSource(layer, UIElement.OpacityProperty).IsAnimated", harness);
+        Assert.Contains("window.Close();", harness);
+        Assert.Contains("MotionProbeBoundary", harness);
+    }
+
+    [Fact]
     public void EnduranceProbeUsesARealDispatcherWindowWithoutForcedGc()
     {
         var harness = Read("tests", "GameSaveCenter.RenderHarness", "Program.cs");

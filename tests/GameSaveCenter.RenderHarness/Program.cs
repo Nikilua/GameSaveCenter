@@ -363,6 +363,33 @@ public static class Program
             return probeExitCode;
         }
 
+        if (args.Length > 0 && args[0].Equals("motionprobe", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "motion-probe");
+            Directory.CreateDirectory(outputRoot);
+            var probeExitCode = 0;
+            var probeThread = new Thread(() =>
+            {
+                var app = new Application
+                {
+                    ShutdownMode = ShutdownMode.OnExplicitShutdown
+                };
+                app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+                var report = new StringBuilder();
+                s_problems.Clear();
+                RunMotionProbe(outputRoot, report);
+                File.WriteAllText(Path.Combine(outputRoot, "motion-probe-report.txt"), report.ToString());
+                Console.WriteLine(report.ToString());
+                probeExitCode = s_problems.Count == 0 ? 0 : 1;
+            });
+            probeThread.SetApartmentState(ApartmentState.STA);
+            probeThread.Start();
+            probeThread.Join();
+            return probeExitCode;
+        }
+
         if (args.Length > 0 && args[0].Equals("overviewedges", StringComparison.OrdinalIgnoreCase))
         {
             var outputRoot = args.Length > 1
@@ -5389,6 +5416,139 @@ public static class Program
             window?.Close();
             if (application != null && previousShutdownMode.HasValue)
                 application.ShutdownMode = previousShutdownMode.Value;
+        }
+    }
+
+    private static void RunMotionProbe(string outputRoot, StringBuilder report)
+    {
+        report.AppendLine("Production shell motion probe (controlled STA WPF Window)");
+        Window? window = null;
+        try
+        {
+            foreach (var (themeName, themeMode) in ThemeModes)
+            {
+                var data = new FakeDashboardData(8);
+                var shell = new AcrylicProductionShellView
+                {
+                    DataContext = data,
+                    MotionEnabledProvider = () => true,
+                    SidebarCollapsedProvider = () => false
+                };
+                window = new Window
+                {
+                    Width = 900,
+                    Height = 640,
+                    WindowStyle = WindowStyle.None,
+                    ResizeMode = ResizeMode.NoResize,
+                    ShowInTaskbar = false,
+                    ShowActivated = false,
+                    Left = -32000,
+                    Top = -32000,
+                    Opacity = 0.01,
+                    Content = shell
+                };
+                window.Show();
+                window.UpdateLayout();
+                shell.ApplyResponsiveLayout(window.Width, window.Height);
+                window.UpdateLayout();
+                var layer = shell.FindName("SidebarContentLayer") as FrameworkElement
+                    ?? throw new InvalidOperationException("Motion probe could not find SidebarContentLayer.");
+                var button = shell.SidebarCollapseButtonForAudit;
+                ApplyThemePalette(shell, themeMode, glassEnabled: true, motionEnabled: true);
+                // Extend only the audit clock so the intermediate frame remains
+                // observable on a busy WPF desktop; production tokens stay unchanged.
+                shell.Resources["GscMotionNormal"] = new Duration(TimeSpan.FromMilliseconds(700));
+                shell.ApplyResponsiveLayout(window.Width, window.Height);
+                window.UpdateLayout();
+                button.ApplyTemplate();
+                if (shell.SidebarCollapsedForAudit)
+                    throw new InvalidOperationException($"Motion probe started {themeName} in collapsed state.");
+
+                var duration = GscMotion.GetDuration(layer, GscMotion.MotionDurationKind.Normal);
+                var midpoint = Math.Max(20, (int)Math.Round(duration.TotalMilliseconds * 0.30));
+                SavePng(shell, Path.Combine(outputRoot, $"motion-{themeName}-expanded.png"));
+
+                button.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                PumpDispatcher(midpoint);
+                var midTranslate = layer.RenderTransform as TranslateTransform;
+                var midWidth = shell.SidebarWidthForAudit;
+                var midOpacity = layer.Opacity;
+                var midAnimated = DependencyPropertyHelper.GetValueSource(layer, UIElement.OpacityProperty).IsAnimated
+                    || (midTranslate != null && DependencyPropertyHelper.GetValueSource(midTranslate, TranslateTransform.XProperty).IsAnimated);
+                SavePng(shell, Path.Combine(outputRoot, $"motion-{themeName}-collapsed-mid.png"));
+
+                PumpDispatcher((int)Math.Ceiling(duration.TotalMilliseconds) + 80);
+                var endTranslate = layer.RenderTransform as TranslateTransform;
+                var endAnimated = DependencyPropertyHelper.GetValueSource(layer, UIElement.OpacityProperty).IsAnimated
+                    || (endTranslate != null && DependencyPropertyHelper.GetValueSource(endTranslate, TranslateTransform.XProperty).IsAnimated);
+                SavePng(shell, Path.Combine(outputRoot, $"motion-{themeName}-collapsed-end.png"));
+                report.AppendLine(
+                    $"Motion[{themeName}] duration_ms={duration.TotalMilliseconds:0} midpoint_ms={midpoint} "
+                    + $"midWidth={midWidth:0.##} midOpacity={midOpacity:0.###} midAnimated={midAnimated} "
+                    + $"endWidth={shell.SidebarWidthForAudit:0.##} endOpacity={layer.Opacity:0.###} "
+                    + $"endX={endTranslate?.X:0.###} endAnimated={endAnimated}");
+                if (!midAnimated || midWidth <= 78 || midWidth >= 260 || midOpacity <= 0.05 || midOpacity >= 0.95
+                    || shell.SidebarWidthForAudit != 72
+                    || Math.Abs(layer.Opacity - 1) > 0.001
+                    || (endTranslate != null && Math.Abs(endTranslate.X) > 0.001)
+                    || endAnimated)
+                {
+                    throw new InvalidOperationException($"Motion probe did not observe a clean {themeName} transition.");
+                }
+
+                button.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                PumpDispatcher(midpoint);
+                var interruptedWidth = shell.SidebarWidthForAudit;
+                button.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                PumpDispatcher((int)Math.Ceiling(duration.TotalMilliseconds) + 80);
+                var reentryTranslate = layer.RenderTransform as TranslateTransform;
+                SavePng(shell, Path.Combine(outputRoot, $"motion-{themeName}-reentry-end.png"));
+                report.AppendLine(
+                    $"Reentry[{themeName}] interruptedWidth={interruptedWidth:0.##} "
+                    + $"finalWidth={shell.SidebarWidthForAudit:0.##} finalX={reentryTranslate?.X:0.###} "
+                    + $"running={shell.SidebarTransitionRunningForAudit}");
+                if (interruptedWidth <= 72 || interruptedWidth >= 270
+                    || shell.SidebarWidthForAudit != 72
+                    || shell.SidebarTransitionRunningForAudit
+                    || (reentryTranslate != null && Math.Abs(reentryTranslate.X) > 0.001))
+                {
+                    throw new InvalidOperationException($"Motion probe did not preserve the latest {themeName} reentry target.");
+                }
+
+                button.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                if (!shell.SidebarTransitionRunningForAudit)
+                    throw new InvalidOperationException($"Motion probe could not start unload transition for {themeName}.");
+                window.Close();
+                PumpDispatcher((int)Math.Ceiling(duration.TotalMilliseconds) + 80);
+                var unloadedTranslate = layer.RenderTransform as TranslateTransform;
+                var unloadedAnimated = DependencyPropertyHelper.GetValueSource(layer, UIElement.OpacityProperty).IsAnimated
+                    || (unloadedTranslate != null && DependencyPropertyHelper.GetValueSource(unloadedTranslate, TranslateTransform.XProperty).IsAnimated);
+                report.AppendLine(
+                    $"Unload[{themeName}] running={shell.SidebarTransitionRunningForAudit} "
+                    + $"opacity={layer.Opacity:0.###} x={unloadedTranslate?.X:0.###} animated={unloadedAnimated}");
+                if (shell.SidebarTransitionRunningForAudit || Math.Abs(layer.Opacity - 1) > 0.001
+                    || (unloadedTranslate != null && Math.Abs(unloadedTranslate.X) > 0.001)
+                    || unloadedAnimated)
+                {
+                    throw new InvalidOperationException($"Motion probe did not clean the unloaded {themeName} shell.");
+                }
+
+                window.Close();
+                window = null;
+            }
+
+            report.AppendLine("MotionProbeBoundary: controlled production shell screenshots and clock cleanup are covered; real Playnite Loaded/Unloaded cadence and ETW frame evidence remain host/performance checks");
+            report.AppendLine("MotionProbe OK");
+        }
+        catch (Exception ex)
+        {
+            s_problems.Add("MotionProbe failed: " + ex.Message);
+            report.AppendLine("MotionProbe FAILED");
+            report.AppendLine(ex.ToString());
+        }
+        finally
+        {
+            window?.Close();
         }
     }
 
