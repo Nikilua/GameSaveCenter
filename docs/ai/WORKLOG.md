@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-15 真实宿主启动阻断结构化
+
+- 在 `9654c05` 之后增强 `scripts/real-host-audit.ps1`：隔离启动保存 `Start-Process -PassThru` 句柄；如果 Playnite 在主窗口前退出且尾部日志命中 CEF `platform_channel`/拒绝访问或启动标记，则生成根目录 `host-startup-blocker.json`，审计仍保持 partial/退出码 2。
+- 该报告固定标记 `VisualEvidenceCaptured=false`、`CountsAsVisualPass=false`，不写入 `gates/`；新增 `DiagnosticsEvidenceSourceTests` 源契约断言，PowerShell AST 解析通过，Release 定向测试 `1/1`。
+- 使用 `--no-sandbox --disable-gpu` 的一次性隔离诊断仍复现 `cef.log` 的 `platform_channel` `Access denied (0x5)`，`playnite.log` 只到 `Application started`；没有生成新的 `summary.json` 或 Embedded 截图，不升级任何视觉/宿主状态，也未结束用户旧 Worker `23304`。
+
 ## 2026-09-15 Q05-05 生产按钮忙态反馈
 
 - 提交并推送 `4947539`（`补充生产按钮忙态反馈`）：自定义生产按钮增加 `IsBusy`，共享模板增加不占布局的 indeterminate 指示层；Dashboard 顶部刷新、全部备份、媒体同步绑定真实 `IsBusy`。

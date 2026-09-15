@@ -2,6 +2,12 @@
 
 > 更新时间：2026-09-15。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 当前最近阶段：真实宿主启动阻断结构化
+
+- 在 `9654c05` 之后增强 `scripts/real-host-audit.ps1`：保留隔离 Playnite 启动进程句柄，检测“主窗口前退出 + CEF 启动日志”并写出 `host-startup-blocker.json`；报告明确 `VisualEvidenceCaptured=false`、`CountsAsVisualPass=false`，不写入 `gates/`。
+- 2026-09-15 受控诊断额外使用 `--no-sandbox --disable-gpu` 仍复现 CEF `mojo platform_channel` `Access denied (0x5)`；该参数只用于根因隔离，没有进入生产配置。PowerShell AST 解析和新增宿主证据源契约测试通过。
+- 该阶段只改善证据可追溯性，不把宿主失败写成视觉通过；历史 `69e1f84` 嵌入像素基线和 `Q24-03` 单屏外部阻塞保持有效。
+
 ## 当前最近阶段：生产按钮忙态反馈
 
 - `4947539` 已推送 `codex/ui-finesse-round2`：生产 `ui:Button` 新增 `IsBusy` 依赖属性和共享 indeterminate `BusyIndicatorHost`，Dashboard 顶部刷新、全部备份、媒体同步复用真实 `DashboardViewModel.IsBusy`；原 ContentPresenter 与按钮测量槽保持不变。

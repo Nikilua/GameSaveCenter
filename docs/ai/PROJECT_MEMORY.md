@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-15
 
+## 2026-09-15 真实宿主启动阻断结构化
+
+- 在 `9654c05` 之后，`scripts/real-host-audit.ps1` 的隔离 Playnite 启动改为保留 `Start-Process -PassThru` 进程句柄；进程在主窗口前退出且 `playnite.log`/`cef.log` 尾部命中启动标记时，输出根目录新增 `host-startup-blocker.json`。
+- 该 JSON 只记录 `RealPlaynite` 启动事实、日志匹配行和进程状态，并固定写入 `VisualEvidenceCaptured=false`、`CountsAsVisualPass=false`；不放入 `gates/`，不得被 `RealHostUiAuditService.CountBlockingGateFiles` 计为视觉通过或阻断门禁。
+- 当前隔离诊断以 `--no-sandbox --disable-gpu` 启动仍复现 CEF `mojo platform_channel` `Access denied (0x5)`，说明问题仍在本机宿主/CEF 初始化边界；这些参数不进入生产脚本默认参数。PowerShell AST 与 `DiagnosticsEvidenceSourceTests` 定向测试通过。
+- 后续真实宿主重跑应优先检查 `host-startup-blocker.json`，避免等待完整超时或把没有 `summary.json` 的目录误作视觉证据；只有真实 Embedded Dashboard/Settings 捕获后才可更新对应视觉/宿主列。
+
 ## 2026-09-15 Q05-05 生产按钮忙态反馈
 
 - `4947539` 新增 `GameSaveCenter.Playnite.Controls.Button.IsBusy` 与 `WpfUiProduction` 的 `BusyIndicatorHost`；忙态只叠加底部 indeterminate 指示，不交换按钮 Content，不改变宽度，也不在模板中延迟命令。Dashboard 顶部刷新、全部备份、媒体同步绑定现有 `DashboardViewModel.IsBusy`，命令可执行性仍由原 RelayCommand 控制。

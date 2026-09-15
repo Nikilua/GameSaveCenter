@@ -125,6 +125,7 @@ if (-not [string]::IsNullOrWhiteSpace($UserDataDir)) {
 }
 $runnerMetadata | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $Output 'runner-metadata.json') -Encoding UTF8
 Write-Host "==> Starting Playnite with GSC_REAL_HOST_AUDIT=$Output" -ForegroundColor Cyan
+$startedPlayniteProcess = $null
 
 Push-Location $root
 try {
@@ -178,9 +179,10 @@ try {
         $runnerMetadata.WorkerExecutable = $pluginWorker
         $runnerMetadata | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $Output 'runner-metadata.json') -Encoding UTF8
         Write-Host "==> Starting Playnite with isolated user data: $UserDataDir" -ForegroundColor Cyan
-        Start-Process -FilePath $PlayniteExecutable `
+        $startedPlayniteProcess = Start-Process -FilePath $PlayniteExecutable `
             -WorkingDirectory (Split-Path -Parent $PlayniteExecutable) `
-            -ArgumentList @('--startdesktop', '--hidesplashscreen', '--userdatadir', $UserDataDir)
+            -ArgumentList @('--startdesktop', '--hidesplashscreen', '--userdatadir', $UserDataDir) `
+            -PassThru
     }
 }
 finally {
@@ -204,6 +206,78 @@ finally {
             Set-Item ("Env:" + $entry.Name) $entry.Value
         }
     }
+}
+
+function Get-RealHostStartupBlocker {
+    param(
+        [string]$HostUserDataDir,
+        [System.Diagnostics.Process]$StartedProcess
+    )
+
+    if ($null -eq $StartedProcess) {
+        return $null
+    }
+
+    try {
+        $StartedProcess.Refresh()
+        if (-not $StartedProcess.HasExited) {
+            return $null
+        }
+        $processState = 'exited-before-main-window'
+    }
+    catch {
+        $processState = 'process-state-unavailable'
+    }
+
+    if ([string]::IsNullOrWhiteSpace($HostUserDataDir)) {
+        $HostUserDataDir = Join-Path $env:APPDATA 'Playnite'
+    }
+
+    $playniteLogPath = Join-Path $HostUserDataDir 'playnite.log'
+    $cefLogPath = Join-Path $HostUserDataDir 'cef.log'
+    $playniteTail = @()
+    $cefTail = @()
+    if (Test-Path -LiteralPath $playniteLogPath -PathType Leaf) {
+        $playniteTail = @(Get-Content -LiteralPath $playniteLogPath -Tail 200 -ErrorAction SilentlyContinue)
+    }
+    if (Test-Path -LiteralPath $cefLogPath -PathType Leaf) {
+        $cefTail = @(Get-Content -LiteralPath $cefLogPath -Tail 200 -ErrorAction SilentlyContinue)
+    }
+
+    $cefMatches = @($cefTail | Where-Object { $_ -match 'platform_channel|FATAL|Access denied|拒绝访问|0x5' })
+    $playniteMatches = @($playniteTail | Where-Object { $_ -match 'Application started|MainWindow|WindowFactory' })
+    if ($cefMatches.Count -eq 0 -and $playniteMatches.Count -eq 0) {
+        return $null
+    }
+
+    $classification = 'host-exited-before-main-window'
+    if ($cefMatches | Where-Object { $_ -match 'platform_channel|Access denied|拒绝访问|0x5' }) {
+        $classification = 'cef-startup-access-denied-before-main-window'
+    }
+
+    return [ordered]@{
+        Scenario = 'real-host-startup'
+        EvidenceSource = 'RealPlaynite'
+        Classification = $classification
+        ProcessState = $processState
+        ProcessId = $StartedProcess.Id
+        HostUserDataDir = $HostUserDataDir
+        PlayniteLog = $playniteLogPath
+        CefLog = $cefLogPath
+        PlayniteLogMatches = @($playniteMatches | Select-Object -Last 20)
+        CefLogMatches = @($cefMatches | Select-Object -Last 20)
+        ObservedUtc = (Get-Date).ToUniversalTime().ToString('o')
+        VisualEvidenceCaptured = $false
+        CountsAsVisualPass = $false
+    }
+}
+
+function Write-RealHostStartupBlocker {
+    param([object]$Blocker)
+
+    $path = Join-Path $Output 'host-startup-blocker.json'
+    $Blocker | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $path -Encoding UTF8
+    Write-Warning "Detected real-host startup blocker: $($Blocker.Classification). Evidence: $path"
 }
 
 function Invoke-GameSaveCenterSidebar {
@@ -254,14 +328,24 @@ function Invoke-GameSaveCenterSidebar {
 Invoke-GameSaveCenterSidebar
 
 $summary = Join-Path $Output 'summary.json'
-Write-Host "[WAITING] 请在 Playnite 左侧点击 GameSaveCenter。将在检测到真实 DashboardView.Loaded 后继续；超时：90 秒。" -ForegroundColor Yellow
-$deadline = (Get-Date).AddSeconds(90)
-while (-not (Test-Path -LiteralPath $summary)) {
-    if ((Get-Date) -gt $deadline) {
-        Write-Warning "Timed out waiting for $summary. Check Playnite extension logs."
-        break
+$startupBlocker = Get-RealHostStartupBlocker -HostUserDataDir $UserDataDir -StartedProcess $startedPlayniteProcess
+if ($startupBlocker) {
+    Write-RealHostStartupBlocker -Blocker $startupBlocker
+}
+if ($null -eq $startupBlocker) {
+    Write-Host "[WAITING] 请在 Playnite 左侧点击 GameSaveCenter。将在检测到真实 DashboardView.Loaded 后继续；超时：90 秒。" -ForegroundColor Yellow
+    $deadline = (Get-Date).AddSeconds(90)
+    while (-not (Test-Path -LiteralPath $summary)) {
+        if ((Get-Date) -gt $deadline) {
+            Write-Warning "Timed out waiting for $summary. Check Playnite extension logs."
+            break
+        }
+        Start-Sleep -Seconds 2
+        $startupBlocker = Get-RealHostStartupBlocker -HostUserDataDir $UserDataDir -StartedProcess $startedPlayniteProcess
+        if ($startupBlocker) {
+            Write-RealHostStartupBlocker -Blocker $startupBlocker
+        }
     }
-    Start-Sleep -Seconds 2
 }
 
 $zip = Join-Path $artifactsRoot 'GameSaveCenter-ui-host-audit.zip'

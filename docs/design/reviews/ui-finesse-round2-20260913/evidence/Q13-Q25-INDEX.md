@@ -23,7 +23,7 @@
 
 `f1ea52a` 的 `CountBlockingGateFiles` 排除 `overflow-classification.json`，定向回归 `UiAuditTruthfulnessTests.OverflowClassificationReportIsNotCountedAsBlockingGate` 为 `1/1`；既有隔离产物只有该诊断文件，按新规则阻断门禁数为 `0`，但旧 `summary.json` 的 `HighGateCount=1` 原文保留。完整说明见 [`REAL_HOST_AUDIT-FP-FIX-20260915.md`](q13-q25/REAL_HOST_AUDIT-FP-FIX-20260915.md)。
 
-提交 `cc63523` 的最新隔离宿主重跑已完成 Release 构建、Core/Worker/Playnite 测试、打包和安装验证，但 Playnite 在 `Application started` 后因 CEF `mojo platform_channel` `Access denied (0x5)` 退出，未生成 `summary.json` 或 Embedded Dashboard/Settings；该次只记录为宿主启动阻断，不覆盖 `69e1f84` 的历史视觉真值，也不把旧 Worker `23304` 结束或改写为成功。
+提交 `cc63523` 的最新隔离宿主重跑已完成 Release 构建、Core/Worker/Playnite 测试、打包和安装验证，但 Playnite 在 `Application started` 后因 CEF `mojo platform_channel` `Access denied (0x5)` 退出，未生成 `summary.json` 或 Embedded Dashboard/Settings；随后用 `--no-sandbox --disable-gpu` 做隔离诊断仍复现同一边界。该次只记录为宿主启动阻断，不覆盖 `69e1f84` 的历史视觉真值，也不把旧 Worker `23304` 结束或改写为成功。`real-host-audit.ps1` 已增加 `host-startup-blocker.json` 结构化输出，明确不计入视觉通过。
 
 ## 受控审计摘要
 

@@ -33,6 +33,9 @@ public sealed class DiagnosticsEvidenceSourceTests
         Assert.Contains("IpcIsolation", hostScript);
         Assert.Contains("try { $_.Refresh() } catch { }", hostScript);
         Assert.Contains("Where-Object { $_.MainWindowHandle -ne 0 }", hostScript);
+        Assert.Contains("host-startup-blocker.json", hostScript);
+        Assert.Contains("cef-startup-access-denied-before-main-window", hostScript);
+        Assert.Contains("CountsAsVisualPass = $false", hostScript);
         Assert.Contains("if ($commit) {", hostScript);
         Assert.DoesNotContain("if ($LASTEXITCODE -eq 0 -and $commit)", hostScript);
     }
