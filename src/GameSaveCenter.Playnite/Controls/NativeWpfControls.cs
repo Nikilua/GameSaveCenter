@@ -1,6 +1,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace GameSaveCenter.Playnite.Controls
@@ -14,6 +15,11 @@ namespace GameSaveCenter.Playnite.Controls
         static Button()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(Button), new FrameworkPropertyMetadata(typeof(System.Windows.Controls.Button)));
+        }
+
+        public Button()
+        {
+            Unloaded += OnButtonUnloaded;
         }
 
         public static readonly DependencyProperty CornerRadiusProperty =
@@ -47,6 +53,36 @@ namespace GameSaveCenter.Playnite.Controls
         {
             get => (bool)GetValue(IsBusyProperty);
             set => SetValue(IsBusyProperty, value);
+        }
+
+        private void OnButtonUnloaded(object sender, RoutedEventArgs e) => ResetInteractionLayers();
+
+        private void ResetInteractionLayers()
+        {
+            if (Template?.FindName("ButtonChrome", this) is Border chrome)
+            {
+                chrome.BeginAnimation(UIElement.OpacityProperty, null);
+                if (chrome.RenderTransform is ScaleTransform scale)
+                {
+                    scale.BeginAnimation(ScaleTransform.ScaleXProperty, null);
+                    scale.BeginAnimation(ScaleTransform.ScaleYProperty, null);
+                    scale.ScaleX = 1;
+                    scale.ScaleY = 1;
+                }
+            }
+
+            ResetOverlay("HoverOverlay");
+            ResetOverlay("PressedOverlay");
+            ResetOverlay("FocusOverlay");
+        }
+
+        private void ResetOverlay(string name)
+        {
+            if (Template?.FindName(name, this) is Border overlay)
+            {
+                overlay.BeginAnimation(UIElement.OpacityProperty, null);
+                overlay.Opacity = 0;
+            }
         }
     }
 

@@ -73,6 +73,20 @@ public sealed class UiFinesseRound2ControlSourceTests
     }
 
     [Fact]
+    public void ProductionButtonClearsPressedLayersWhenItsTemplateIsUnloaded()
+    {
+        var controls = Read("src", "GameSaveCenter.Playnite", "Controls", "NativeWpfControls.cs");
+
+        Assert.Contains("Unloaded += OnButtonUnloaded;", controls);
+        Assert.Contains("private void OnButtonUnloaded(object sender, RoutedEventArgs e)", controls);
+        Assert.Contains("ResetInteractionLayers();", controls);
+        Assert.Contains("scale.ScaleX = 1;", controls);
+        Assert.Contains("scale.ScaleY = 1;", controls);
+        Assert.Contains("ResetOverlay(\"PressedOverlay\")", controls);
+        Assert.Contains("ResetOverlay(\"FocusOverlay\")", controls);
+    }
+
+    [Fact]
     public void MediaInboxKeepsAReadablePrimaryViewportBeforePageOverflow()
     {
         var view = Read("src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml");
