@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-15 非空隔离库宿主边界复核
+
+- 为补强 Q20 首页统计/活动数据，在当前文档 HEAD `0fb597e` 上以隔离 `games.db`（3 个游戏）重跑 `scripts/real-host-audit.ps1 -Configuration Release`；第一次整目录复制带入旧 `safestart.flag`，第二次改用成功启动过的干净配置、主题、扩展数据与非空 library。
+- 两次均未生成 `summary.json`：第二次在 Playnite 主窗口前再次命中 CEF `mojo platform_channel` `Access denied (0x5)`，产物 [`host-startup-blocker.json`](../../artifacts/ui-host-audit-round2-fp-data2-20260915/host-startup-blocker.json) 明确 `VisualEvidenceCaptured=false`、`CountsAsVisualPass=false`。
+- 没有把这次失败当作 Q20 视觉通过，也没有修改用户库或结束用户 Worker `23304`；`37f92f7` 的空库 Embedded Dashboard/Settings 成功证据仍是当前唯一真实像素来源。
+
 ## 2026-09-15 当前提交真实宿主嵌入复核
 
 - 在 `37f92f7` 上用全新隔离 UserData/扩展目录/Worker IPC 运行 `scripts/real-host-audit.ps1 -Configuration Release`，构建、全量测试、打包、安装和真实 Playnite 捕获均成功；XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `501/558`（57 skip）、失败 `0`。

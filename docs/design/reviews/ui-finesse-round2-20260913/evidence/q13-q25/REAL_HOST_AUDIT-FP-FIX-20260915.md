@@ -31,6 +31,12 @@
 - `gates/` 仍只有 `overflow-classification.json`，其 `AuditFalsePositive=[]`；该分类文件按 `f1ea52a` 规则不计阻断门禁。审计结束后使用 Playnite 官方 `--shutdown --userdatadir` 关闭本轮隔离宿主；用户扩展目录旧 Worker PID `23304` 保持未触碰。
 - 本次成功证据仍不覆盖第二物理屏、低于 560 DIP 的短窗、IME/读屏、真实鼠标/键盘组合输入、ETW 呈现帧和真实宿主耐久；`runner-metadata.json` 明确记录当前仅有 `DISPLAY1`，Q24-03 继续外部阻塞。
 
+## 当前文档 HEAD 的非空隔离库重跑边界
+
+- 为补强 Q20 首页数据态，曾在当前文档 HEAD `0fb597e42d59f3e0b1371276731437178dda03e1` 上，把隔离基线中的 `library`（包含 3 个游戏）注入到不带旧运行态标记的全新 UserData，再执行 `scripts/real-host-audit.ps1 -Configuration Release`。
+- 第一次整目录复制错误地带入旧 `safestart.flag`、CEF 缓存和日志，窗口标题为 `Startup Error`；按官方 `--shutdown --userdatadir` 关闭后未结束用户 Worker `23304`。第二次只复制成功启动过的干净配置、Theme/ExtensionsData 和非空 `library`，仍在主窗口前触发 `cef.log` 的 `mojo platform_channel ... Access denied (0x5)`，产物为 `artifacts/ui-host-audit-round2-fp-data2-20260915/host-startup-blocker.json`。
+- 两次重跑均没有 `summary.json`、Embedded Dashboard 或 Embedded Settings；结构化报告固定为 `VisualEvidenceCaptured=false`、`CountsAsVisualPass=false`，不升级 Q20-01～Q20-08，也不覆盖 `37f92f7` 已有的空库 Embedded 证据。非空数据的真实首页视觉仍需宿主能在当前机器正常启动后再取证。
+
 ## 交付解释
 
 Q00 的共享前景修复、审计计数修复、宿主启动阻断结构化和自动回归已完成；`37f92f7` 已补齐当前提交的真实 Embedded Dashboard/Settings、SHA、资源和门禁证据，Q00-07 可据此完成证据身份收口，Q00-08 及 Q25-07/Q25-08 继续保留交付基线与当前重跑双重证据。此前 `cc63523` 的 CEF 早退记录仍作为失败边界保留，不覆盖本次成功捕获，也不把历史 `HighGateCount=1` 旧摘要改称当前通过。

@@ -9,6 +9,12 @@
 - 本轮 Release 门禁：XAML `24/24`、构建 `0 warning/0 error`、Core `83/83`、Worker `311/311`、Playnite `501/558`（57 skip）、失败 `0`。Settings 的 `GscPrimaryTextBrush=#FFF2F4F8` 与 `GscSecondaryTextBrush=#FFB9C0CC` 可在当前资源快照复核，代表 Overview、维护诊断概览和 Settings PNG 已人工检查。
 - 审计结束后以 Playnite 官方 `--shutdown --userdatadir` 关闭隔离宿主；用户 Worker PID `23304` 未触碰。当前仍只有 `DISPLAY1`，因此 Q24-03 物理跨屏、低于 560 DIP 短窗、IME/读屏、真实组合输入和 ETW 性能边界不升级为完成。
 
+## 2026-09-15 非空隔离库宿主边界复核
+
+- 当前文档 HEAD `0fb597e` 使用隔离 3 游戏 `library` 重跑真实宿主；第一次整目录复制旧运行态后改为只复制成功启动过的配置、主题、扩展数据和 library，仍在主窗口前命中 CEF `mojo platform_channel` `Access denied (0x5)`。
+- `artifacts/ui-host-audit-round2-fp-data2-20260915/host-startup-blocker.json` 没有 `summary.json`、Embedded 截图，并固定为 `VisualEvidenceCaptured=false` / `CountsAsVisualPass=false`。Q20-01～08 不能用空库或失败启动证据签收；继续保留 `37f92f7` 空库真实嵌入证据与该非空宿主边界。
+- 失败实验只写隔离 `.tmp`/`artifacts`，按官方 shutdown/精确进程清理，未修改用户 Playnite 库，用户 Worker `23304` 未触碰。
+
 ## 2026-09-15 真实宿主启动阻断结构化
 
 - 在 `9654c05` 之后，`scripts/real-host-audit.ps1` 的隔离 Playnite 启动改为保留 `Start-Process -PassThru` 进程句柄；进程在主窗口前退出且 `playnite.log`/`cef.log` 尾部命中启动标记时，输出根目录新增 `host-startup-blocker.json`。

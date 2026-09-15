@@ -8,6 +8,11 @@
 - `artifacts/ui-host-audit-round2-fp-final6-20260915/summary.json` 记录 Dashboard/Settings 均为 `EmbeddedPlaynite`，`ProductionVisualSourceOfTruthAvailable=true`、`HighGateCount=0`；捕获 29 个 Dashboard 视口、2 个滚动面、1 个 Settings 视口，150% DPI，代表 PNG 已人工复核。
 - 本次宿主使用隔离 Worker，结束后调用 Playnite 官方 `--shutdown --userdatadir` 清理；用户扩展目录旧 Worker PID `23304` 未触碰。Q24-03 仍因仅有 `DISPLAY1` 外部阻塞，短窗、IME/读屏、真实组合输入和 ETW 边界继续保留。
 
+## 当前补充：非空隔离库宿主边界复核
+
+- 在文档 HEAD `0fb597e` 上以只写入 `.tmp` 的 3 个游戏库重跑真实宿主审计；清理旧运行态后仍在 Playnite 主窗口前触发 CEF `mojo platform_channel` `Access denied (0x5)`。
+- `artifacts/ui-host-audit-round2-fp-data2-20260915/host-startup-blocker.json` 明确无视觉证据、无 `summary.json`，因此 Q20-01～Q20-08 不升级；这次失败不覆盖 `37f92f7` 的空库 Embedded 成功证据。用户 Worker `23304` 未结束。
+
 ## 上一阶段：真实宿主启动阻断结构化
 
 - 在 `9654c05` 之后增强 `scripts/real-host-audit.ps1`：保留隔离 Playnite 启动进程句柄，检测“主窗口前退出 + CEF 启动日志”并写出 `host-startup-blocker.json`；报告明确 `VisualEvidenceCaptured=false`、`CountsAsVisualPass=false`，不写入 `gates/`。
