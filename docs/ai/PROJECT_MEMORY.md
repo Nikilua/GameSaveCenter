@@ -3113,3 +3113,9 @@
 - 当前 `System.Windows.Forms.Screen.AllScreens` 只有 `DISPLAY1`，边界 `2560×1440`、工作区 `2560×1368`；Q24-03 仍在台账中保持“代码完成/自动待验/视觉待验/外部阻塞/未完成”。
 - `python scripts/validate-source.py` 和 PowerShell 语法解析通过；定向 `dotnet test` 在当前 SDK 工程解析阶段无输出，未计为通过。不要运行未经隔离和授权的 `real-host-audit.ps1` 来替代本前置。
 - 后续改用 `-m:1` 重试后，Q24-03 定向源测试 `16/16` 通过；并在 `d8fad48` 执行 `dotnet test GameSaveCenter.sln --no-restore -c Release -m:1`，Core `83/83`、Worker `310/311`（1 skip）、Playnite `482/545`（63 skip），失败 0。该 Release 自动基线仍不替代真实宿主跨屏、DPI、IME、读屏和 ETW 证据。
+
+## 2026-09-15 Round2 Q06-05 选中悬停状态优先级
+
+- 生产 `AcrylicNavItem` 的选中/悬停状态必须由共享模板确定性收口：`IsChecked=True` 与 `IsMouseOver=True` 的最后 `MultiTrigger` 恢复 `GscAccentTintStrongBrush`、强边框和 `GscSelectionTextBrush`，不能让普通悬停 tint 稀释当前页选中层级。
+- 提交 `513ac5f` 已补实现和源契约；`UiFinesseRound2ControlSourceTests=20/20`、XAML `24/24`、source validation 通过；clean-tree RenderHarness 双主题 `render-qa OK`，报告身份为 `513ac5f2528e0706fde194d977f03fd8bd798e5d`。
+- 该事实只关闭共享状态代码缺口。真实 Playnite 中保持悬停、焦点/禁用/按压的输入序列和最终像素仍必须单独验收，账本继续保留 Q06-05 外部待验。

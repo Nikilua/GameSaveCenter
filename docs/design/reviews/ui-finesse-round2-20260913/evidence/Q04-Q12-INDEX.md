@@ -64,4 +64,9 @@
 
 ## 证据边界
 
+## 2026-09-15 Q06-05 选中悬停优先级
+
+- [选中悬停优先级证据](q04-q12/nav-priority-20260915.md) 对应提交 `513ac5f`：共享 `AcrylicNavItem` 追加 `Selected+Hover` 最后 `MultiTrigger`，避免普通悬停 tint 覆盖当前页强选中层级。
+- 定向 `UiFinesseRound2ControlSourceTests=20/20`、XAML `24/24`、source validation 和 clean-tree 双主题 RenderHarness 均通过；真实宿主组合输入仍待验。
+
 报告区分“共享模板声明/受控实现”和“实际输入/宿主表现”。未宣称 IME、Popup 跨屏、真实 Playnite 主题 Owner、物理 100/125/150/175/200% DPI、读屏或屏幕帧率已通过。

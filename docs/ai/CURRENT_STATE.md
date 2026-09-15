@@ -852,3 +852,10 @@
 - 当前机器前置枚举只有 `DISPLAY1`（2560×1440，工作区 2560×1368），因此真实跨屏迁移和打开态 Popup 仍外部阻塞；证据见 `docs/design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q24-03-PHYSICAL-CROSS-SCREEN-20260915.md`。未将源码门禁或离屏结果写成物理跨屏通过。
 - `python scripts/validate-source.py`、PowerShell 脚本语法解析和 `git diff --check` 通过；定向 `dotnet test` 在当前 SDK/工程解析阶段长时间无输出，未得到测试结果。
 - 随后使用 `dotnet test GameSaveCenter.sln --no-restore -c Release -m:1 --logger "console;verbosity=minimal"` 在 `d8fad48` 通过 Release 全量测试：Core `83/83`、Worker `310/311`（1 skip）、Playnite `482/545`（63 skip），失败 0；定向 Q24-03 源码测试为 `16/16`，替换此前未收敛的并发节点尝试。
+
+## 2026-09-15 Round2 Q06-05 选中悬停状态优先级
+
+- `AcrylicProductionResources.xaml` 的生产 `AcrylicNavItem` 以前让普通 `IsMouseOver` 覆盖 `IsChecked` 强选中背景；提交 `513ac5f` 增加最后执行的 `MultiTrigger(IsChecked=True, IsMouseOver=True)`，恢复强背景、强边框和选中前景。
+- 新增 `SelectedAcrylicNavigationKeepsItsStrongStateWhenHovered` 源码契约；定向 `UiFinesseRound2ControlSourceTests` 为 `20/20`，`check-xaml.ps1` 为 `24/24`，`python scripts/validate-source.py` 通过。
+- clean-tree RenderHarness 使用提交 `513ac5f2528e0706fde194d977f03fd8bd798e5d`，浅/深主题全量报告 `render-qa OK`、0 warning/0 error、`WorkingTreeClean=True`；证据见 `evidence/q04-q12/nav-priority-20260915.md`。
+- Q06-05 账本仍保留真实宿主输入序列待验：当前修复解决共享资源优先级，不把离屏状态或本轮 Playnite 导航观察冒充按压/失焦/禁用序列的最终像素验收。

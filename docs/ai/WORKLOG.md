@@ -6654,3 +6654,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 先用 `-m:1` 重跑 Q24-03 定向测试，`DiagnosticsEvidenceSourceTests` 与 `UiFinesseRound2ControlSourceTests` 共 `16/16` 通过。
 - 随后在当前 HEAD `d8fad48` 运行 Release 全量测试：Core `83/83`、Worker `310/311`（1 skip）、Playnite `482/545`（63 skip），失败 0；持久证据为 `docs/design/reviews/ui-finesse-round2-20260913/evidence/q13-q25/Q25-08-RELEASE-TEST-BASELINE-20260915.md`。
 - 该门禁只证明当前代码构建/自动测试身份；Windows 宿主自动化仍因内核资产路径错误不可用，显示器仍为单屏，未把真实交互、跨屏 Popup 或屏幕像素写成通过。
+
+## 2026-09-15 Round2 Q06-05 选中悬停状态优先级
+
+- 审计发现 `AcrylicNavItem` 的触发器顺序存在确定性缺口：选中项被鼠标悬停时，普通 `GscAccentTintBrush` 会覆盖选中态的强背景。
+- 在共享模板加入最后执行的 `MultiTrigger(IsChecked=True, IsMouseOver=True)`，提交 `513ac5f`；保留真实导航 RadioButton、绑定和命令语义，只修复状态优先级。
+- 验证：`UiFinesseRound2ControlSourceTests=20/20`、`check-xaml.ps1=24/24`、`python scripts/validate-source.py` 通过；clean-tree `scripts/render-qa.ps1 -Configuration Release` 双主题 `render-qa OK`，0 warning/0 error，提交身份 `513ac5f2528e0706fde194d977f03fd8bd798e5d`。
+- 按项目边界清理本阶段 `.tmp` RenderHarness 输出前，保留持久证据 `evidence/q04-q12/nav-priority-20260915.md`；真实 Playnite 的完整组合输入序列仍未写成通过。
