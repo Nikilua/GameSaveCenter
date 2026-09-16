@@ -1,11 +1,20 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮阶段：R02-08 动作文案动词化
+
+- `43ea843` 先盘点实际 Binding 后收口动作标签：旧 Dashboard/Overview/Save Center 的 `LoadDetailsCommand` 入口统一为“重新加载详情”，旧 `ValidateCommand` 为“重新校验”；错误状态保留“重试”，不把重试冒充普通刷新。
+- 远端恢复第一步明确为“下载到隔离区并校验”，第二步为“快照并恢复”；云端详情区明确区分“校验远端内容”和“重试上传”。CloudTransfer DTO、Playnite 提示和 Worker 失败消息统一使用“远端校验”，协议内部 `Check*` 状态名和 rclone 参数未改。
+- `R02ActionCopyTests` `4/4`，连同相关既有可用性/焦点测试定向 `13/13`；最终干净 Release 为 XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `545/602` 通过、`57` 跳过、`0` 失败；源码校验通过。
+- RenderHarness 报告绑定 `43ea843613daf3eb3b1378d31181a712d3a10c05` 且工作树干净，Light/Dark 均 `render-qa OK`；人工查看 Save 与 Maintenance CloudQueue 1040×700 双主题代表图。未启动真实 Playnite、未执行外部云端/备份操作；宿主字体/输入、物理 DPI、IME、读屏、presented frame、ETW 和性能仍未验。下一可执行项为 R03-01 真实落字证据。
+
+## 当前第三轮阶段：R02-07 异步菜单上下文
+
 ## 当前第三轮阶段：R02-07 异步菜单上下文
 
 - `4d4bb93` 在 `GameMenuItem` 生成时保存不可变目标 Guid 快照；立即备份、同步媒体、查看备份历史、验证最新恢复点和游戏工具在异步执行前都按当前 `PlayniteApi.Database.Games` 重新解析，不跟随已刷新的旧 `Game` 引用，也不从当前选中行猜测目标。
 - 列表刷新正例解析到替换后的对象并保持菜单原顺序；删除负例返回缺失 ID 和空结果。失效或无法确认时走既有提示/日志路径，在 Worker/Upsert 前明确提示“上下文菜单目标已失效……未执行操作”，然后中止。
 - `R02MenuActionContextTests` 与 `R02MenuHostContractTests` 合计定向 `4/4`；最终干净 Release 为 XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `541/598` 通过、`57` 跳过、`0` 失败；源码校验通过。首轮只发现并校正一条过期源码断言，独立提交为 `4d4bb93`，干净复跑通过。
-- 本阶段无生产 XAML/样式改动，不把已有 RenderHarness 结果冒充菜单宿主呈现证据；未启动真实 Playnite、未执行菜单 Action、未写真实存档/媒体/云端。宿主打开后事件时序、菜单视觉/输入、OS 键盘/IME、屏幕阅读器、物理 DPI、presented frame、ETW 和宿主性能仍未验。下一可执行项为 R02-08 动作文案动词化。
+- 本阶段无生产 XAML/样式改动，不把已有 RenderHarness 结果冒充菜单宿主呈现证据；未启动真实 Playnite、未执行菜单 Action、未写真实存档/媒体/云端。宿主打开后事件时序、菜单视觉/输入、OS 键盘/IME、屏幕阅读器、物理 DPI、presented frame、ETW 和宿主性能仍未验。R02-08 已收口动作标签，下一可执行项为 R03-01 真实落字证据。
 
 ## 当前第三轮阶段：R02-06 菜单状态完整（外部宿主阻塞）
 

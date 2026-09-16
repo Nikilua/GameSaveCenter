@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-17
 
+## 2026-09-17 R02-08 动作文案动词化
+
+- `43ea843` 先核对命令 Binding 后只修正文案：LoadDetails 入口统一“重新加载详情”，Validate 入口统一“重新校验”，错误状态保留“重试”；远端恢复明确分成“下载到隔离区并校验”和“快照并恢复”，云端动作明确区分“校验远端内容”和“重试上传”。
+- 同步修改了 CloudTransfer DTO、Playnite 提示、Worker 失败消息和源码守卫；生产可见信息不再使用英文 `远端 check`/`只读 check`，协议 `Check*` 状态名和 rclone `check` 参数保留。没有改命令、Binding、取消/错误、安全或数据流程。
+- `R02ActionCopyTests` 4/4，相关定向合计 13/13；干净 Release 为 XAML 24/24、构建 0/0、Core 83、Worker 311、Playnite 545/602（57 skip/0 fail）；源码校验通过。RenderHarness Light/Dark `render-qa OK`，人工查看 Save/CloudQueue 双主题 1040×700 代表图。
+- 证据是生产源码、合成状态和隔离 WPF offscreen logical DIP；未启动真实 Playnite 或云端/备份操作，真实宿主字体、物理 DPI、OS 输入/IME、读屏、presented frame、ETW 和宿主性能仍未验。下一项为 R03-01 真实落字证据。
+
 ## 2026-09-17 R02-07 异步菜单上下文
 
 - 菜单入口仍是 Playnite `GameMenuItem`，不存在可由本项目控制的 WPF `ContextMenu/MenuItem`。`4d4bb93` 新增 `GameMenuActionContext`：生成菜单时固定目标 Guid，异步 Action 执行前按当前数据库重新解析，保留原顺序，不追随可变旧引用或当前选中行。

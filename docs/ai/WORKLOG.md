@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-17 R02-08 动作文案动词化
+
+- 盘点发现实际入口中有三类漂移：部分 LoadDetails 仍写“刷新详情”、旧 Validate 写“校验”、云端状态/失败消息混用英文 `check`；远端第一步只写“下载并校验”，没有直接说写入隔离区。
+- `43ea843` 按真实命令绑定统一标签和提示：重新加载、重新校验、下载到隔离区并校验、快照并恢复、校验远端内容、重试上传。同步 DTO/Playnite/Worker 的远端结果消息和 `validate-source.py` 守卫；未改协议、命令、恢复保护、取消/错误或数据路径。
+- 新增 `R02ActionCopyTests` 4/4，解析真实 XAML 检查命令—标签—提示—Automation 关系，并运行时检查云端 DTO 的校验结果；相关既有可用性/焦点测试合计定向 13/13。完整隔离 Release XAML 24/24、构建 0/0、Core 83、Worker 311、Playnite 545/602（57 跳过/0 失败），源码校验通过。
+- RenderHarness 构建 0/0，Light/Dark 全场景 `render-qa OK`；人工查看 Save 与 Maintenance CloudQueue 1040×700 双主题图。`.tmp` 输出待文档提交后清理；未启动真实 Playnite、未执行云端/备份操作。宿主字体/输入、物理 DPI/IME/读屏、presented frame、ETW 和性能仍未验。下一项为 R03-01 真实落字证据。
+
 ## 2026-09-17 R02-07 异步菜单上下文
 
 - 先查到当前菜单是 Playnite `GameMenuItem`，没有本地 WPF 菜单树；因此只处理插件动作真正能控制的对象身份，不引入替代菜单。
