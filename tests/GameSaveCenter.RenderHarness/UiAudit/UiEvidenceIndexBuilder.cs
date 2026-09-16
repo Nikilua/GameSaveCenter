@@ -28,16 +28,26 @@ public static class UiEvidenceIndexBuilder
 
         var gridEntries = entries
             .Where(entry => entry.Control.StartsWith("DataGrid ", StringComparison.Ordinal))
-            .OrderBy(entry => entry.Surface.StartsWith("dev-probe / ", StringComparison.Ordinal) ? 1 : 0)
-            .ThenBy(entry => ControlPriority(entry))
+            .OrderBy(entry => ControlPriority(entry))
             .ThenBy(entry => entry.Surface, StringComparer.Ordinal)
-            .ThenBy(entry => entry.Control, StringComparer.Ordinal);
-        var controlEntries = entries
+            .ThenBy(entry => entry.Control, StringComparer.Ordinal)
+            .Where(entry => !entry.Surface.StartsWith("dev-probe / ", StringComparison.Ordinal))
+            .ToList();
+        var controlGroups = entries
             .Where(entry => !entry.Control.StartsWith("DataGrid ", StringComparison.Ordinal))
-            .GroupBy(entry => entry.Surface, StringComparer.Ordinal)
+            .GroupBy(RouteId, StringComparer.Ordinal)
             .OrderBy(group => ControlPriority(group.First()))
             .ThenBy(group => group.Key, StringComparer.Ordinal)
-            .SelectMany(group => group.Take(2));
+            .Select(group => group.OrderBy(entry => entry.Surface, StringComparer.Ordinal)
+                .ThenBy(entry => entry.Control, StringComparer.Ordinal)
+                .ToList())
+            .ToList();
+        var controlSlots = Math.Max(0, RequiredSampleCount - gridEntries.Count);
+        var controlEntries = controlGroups
+            .SelectMany(group => group.Take(1))
+            .Concat(controlGroups.SelectMany(group => group.Skip(1).Take(1)))
+            .Take(controlSlots)
+            .ToList();
         var selected = gridEntries
             .Concat(controlEntries)
             .Take(RequiredSampleCount)
@@ -155,7 +165,7 @@ public static class UiEvidenceIndexBuilder
 
     private static int ControlPriority(UiEvidenceIndexEntry entry)
     {
-        var routeId = entry.Surface.Split(new[] { " / " }, StringSplitOptions.None)[0];
+        var routeId = RouteId(entry);
         switch (routeId)
         {
             case "maintenance":
@@ -180,6 +190,9 @@ public static class UiEvidenceIndexBuilder
                 return 9;
         }
     }
+
+    private static string RouteId(UiEvidenceIndexEntry entry)
+        => entry.Surface.Split(new[] { " / " }, StringSplitOptions.None)[0];
 
     private static string Surface(UiRouteNode route, UiTabRecord tab)
         => route.RouteId + " / " + (string.IsNullOrWhiteSpace(tab.Header) ? "Tab " + tab.Index : tab.Header);
