@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-16 R02-02 忙碌宽度稳定
+
+- 先核对既有 `4947539`：自定义生产按钮已经有 `IsBusy` 依赖属性、共享 indeterminate 指示层和不替换 Content 的模板，但实际 AcrylicProductionShell/workspace 页面没有统一绑定。没有重建按钮系统，`473cf3a` 只在 `GscWpfUiButton` 共享基元接入最近页面 `DataContext.IsBusy`，保留无该属性夹具的 false 默认和旧 Dashboard 本地绑定。
+- `DashboardViewModel.RunAsync` 现在委托 `BusyOperationCoordinator`，原子拒绝第二次进入；定向测试实际验证重复执行不增加计数、异常/取消都恢复 busy false，并验证共享真实 WPF 模板切换时 180 DIP 宽度、中文文本和焦点保持，指示器可见且不定。不是只增加 `Assert.Contains`。
+- 按项目脚本执行隔离 Release：XAML `24/24`，构建 `0 warning/0 error`，Core `83/83`、Worker `311/311`、Playnite `528` 通过/`57` 跳过/`0` 失败；RenderHarness build `0/0`，Light/Dark `buttonbusyprobe` 均通过。截图仅人工目检的 `.tmp` 产物，文档同步后清理；真实 Playnite/Worker 时序、物理 DPI/OS 输入/presented frame/ETW/宿主性能未验。下一可执行项为 R02-03 禁用原因可达。
+
 ## 2026-09-16 R02-01 动作优先级
 
 - 先核对当前分支最新代码：共享 Danger 外观资源已存在，但普通业务页没有文本危险动作实例；因此补充基于现有 PrimaryAction/ContextButton 几何的两个共享危险变体，没有迁移 main 旧实现或新增业务服务/DTO。

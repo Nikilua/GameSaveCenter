@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-16
 
+## 2026-09-16 R02-02 忙碌宽度稳定
+
+- 前序 `4947539` 已有 `Button.IsBusy`、共享 indeterminate `BusyIndicatorHost` 和旧 Dashboard 三个顶栏绑定；当前实际 Acrylic 壳层/工作区按钮未统一接状态。`473cf3a` 在共享 `GscWpfUiButton` 基元增加最近 `UserControl.DataContext.IsBusy` 绑定，派生 Primary/Action/Context/IconOnly/Redesign header 角色自动覆盖，设置/校对夹具无 `IsBusy` 时保持 false。
+- `BusyOperationCoordinator` 接入 `DashboardViewModel.RunAsync`，用 `Interlocked` 单槽拒绝并发进入；异常/取消统一走原有错误/取消语义，`finally` 复位并继续原 Trainer 清理和排队刷新。R02 定向 `3/3` 不只是源码字符串：一个测试实际执行协调器的重复/失败/取消负例，另一个在真实生产 WPF 资源链中验证宽度、文本、焦点和不定进度层。
+- 最终隔离 Release：XAML `24/24`，构建 `0/0`，Core `83/83`，Worker `311/311`，Playnite `528` 通过/`57` 跳过/`0` 失败；Light/Dark buttonbusyprobe 均 `180→180`、indicator visible/indeterminate/content stable。未启动真实 Playnite 或 Worker 业务，不写真实存档/媒体/云端；真实命令时序、物理 DPI、OS 输入、presented frame、ETW、宿主性能仍未验。下一项 R02-03。
+
 ## 2026-09-16 R02-01 动作优先级
 
 - 当前生产按钮系统已有 Primary/Context/IconOnlyDanger 能力；`89c9cc3` 只补共享 `GscWpfUiDangerActionButton`、`GscWpfUiContextDangerButton` 两个角色变体，避免各页重复造危险样式。生产页面的高影响动作应使用 Danger 语义，普通区域维持一个主动作，其余用次要/上下文动作。

@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮阶段：R02-02 忙碌宽度稳定
+
+- `473cf3a` 在核对前序 `4947539` 忙态模板后，将共享 `GscWpfUiButton` 的 `IsBusy` 绑定接到最近生产页面 `UserControl.DataContext.IsBusy`，所以 Acrylic 壳层与 Overview/Save/Media 工作区的派生按钮承接真实 Dashboard 命令状态；无该属性的设置/校对夹具回到 `false`，旧 Dashboard 本地绑定继续优先。
+- `BusyOperationCoordinator` 已接入 `DashboardViewModel.RunAsync`，以原子单槽拒绝重复执行，并保持真实 Worker 准备、取消文案、错误通知、Trainer 清理和 queued refresh 的原有顺序。R02 定向行为测试 `3/3`：重复/异常/取消负例和实际 STA WPF 模板状态均通过。
+- 最终隔离 Release 为 XAML `24/24`、构建 `0 warning/0 error`、Core `83/83`、Worker `311/311`、Playnite `528/585` 通过、`57` 跳过、`0` 失败；Light/Dark `buttonbusyprobe` 均 `180→180`、指示器可见且 indeterminate、文本稳定。证据见 [`R02-02-BUSY-WIDTH-20260916.md`](../design/reviews/ui-finesse-round3-20260915/evidence/R02-02-BUSY-WIDTH-20260916.md)。
+- 以上是合成 fake 生命周期、真实生产 WPF 样式和 offscreen logical DIP 证据；未验真实 Playnite/Worker 耗时与宿主输入、物理 DPI/跨屏、OS 键盘/IME、presented frame、屏幕阅读器、ETW 或宿主性能。游戏选框、滚动条、命令绑定、取消/错误、恢复保护和 net462 兼容未改。下一可执行项为 R02-03 禁用原因可达。
+
 ## 当前第三轮阶段：R02-01 动作优先级
 
 - `89c9cc3` 在当前 `codex/ui-finesse-round2` 分支复用现有按钮族，新增 `GscWpfUiDangerActionButton` 与 `GscWpfUiContextDangerButton`，并将 Save 恢复、Media 来源移除接入共享危险外观；Overview 主页工具栏、当前游戏卡片和 Media Inbox 批量栏各保留一个 Primary 角色。
