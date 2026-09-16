@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-16 R02-03 禁用原因可达
+
+- 先盘点当前命令：Restore 仍要求游戏/备份/Ludusavi，Media Inbox 仍要求模式/选中项/目标游戏，云传输 Verify/Retry 仍由状态门禁，远端恢复仍要求暂存且校验；本项没有把危险命令强行启用。
+- `627f864` 新增纯状态 `ActionAvailabilityHints`，接入 Dashboard 状态通知和共享 `GscActionAvailabilityHintText`；Save、Media、Maintenance 通过相邻说明和既有 `OpenMaintenanceCommand` 提供解决路径。说明 TextBlock 真实可聚焦，并有 Automation Name/HelpText。
+- 定向 Release `R02ActionAvailabilityHintTests` 为 `4/4`；隔离 Release XAML `24/24`、构建 `0/0`、Core `83`、Worker `311`、Playnite `532` 通过/`57` 跳过/`0` 失败；RenderHarness 绑定 `627f864`，Light/Dark 56 场景 `render-qa OK`；源码校验通过，WPF 扫描 0 errors/342 warnings/1106 info。
+- 受控截图只人工检查逻辑 DIP 下说明可见与列表/滚动未被挤压；没有启动真实 Playnite、写存档/媒体/云端或发诊断。屏幕阅读器朗读、物理 DPI/跨屏、OS 输入/IME、presented frame、ETW、真实 Worker 时序和宿主性能仍未验。下一项为 R02-04 图文光学居中。
+
 ## 2026-09-16 R02-02 忙碌宽度稳定
 
 - 先核对既有 `4947539`：自定义生产按钮已经有 `IsBusy` 依赖属性、共享 indeterminate 指示层和不替换 Content 的模板，但实际 AcrylicProductionShell/workspace 页面没有统一绑定。没有重建按钮系统，`473cf3a` 只在 `GscWpfUiButton` 共享基元接入最近页面 `DataContext.IsBusy`，保留无该属性夹具的 false 默认和旧 Dashboard 本地绑定。

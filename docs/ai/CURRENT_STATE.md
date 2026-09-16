@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮阶段：R02-03 禁用原因可达
+
+- `627f864` 在核对既有 Restore、Media Inbox、Cloud Transfer 和 Remote Restore 命令门禁后，只增加共享 `ActionAvailabilityHints` 状态说明、生产样式和相邻维护路径；没有放宽危险命令，没有新增服务/DTO，也没有覆盖 main 旧实现。
+- Save、Media、Maintenance 的说明使用可聚焦 TextBlock，Name/HelpText 与可见文案一致；需要 Worker/配置时复用既有 `OpenMaintenanceCommand`。命令 Binding、恢复保护、取消/错误、游戏选框、滚动条、有限列表和 net462 继续保留。
+- 最终隔离 Release：XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `532/589` 通过/`57` 跳过/`0` 失败；R02 定向 `4/4`；RenderHarness 双主题 56 个视图/尺寸场景均 `OK`，源码校验通过。
+- 证据来自合成状态、fake 服务、真实生产 WPF 样式、STA Window 和 offscreen logical DIP；没有真实 Playnite、用户云端或诊断写入。未验真实屏幕阅读器、物理 DPI/跨屏、OS 键盘/IME、presented frame、ETW、Worker 时序和宿主性能。下一可执行项为 R02-04 图文光学居中。
+
 ## 当前第三轮阶段：R02-02 忙碌宽度稳定
 
 - `473cf3a` 在核对前序 `4947539` 忙态模板后，将共享 `GscWpfUiButton` 的 `IsBusy` 绑定接到最近生产页面 `UserControl.DataContext.IsBusy`，所以 Acrylic 壳层与 Overview/Save/Media 工作区的派生按钮承接真实 Dashboard 命令状态；无该属性的设置/校对夹具回到 `false`，旧 Dashboard 本地绑定继续优先。

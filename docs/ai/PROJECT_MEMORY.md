@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-16
 
+## 2026-09-16 R02-03 禁用原因可达
+
+- `627f864` 先复用已有命令门禁和 `OpenMaintenanceCommand`，通过 `ActionAvailabilityHints` 把 Restore、Media Inbox、Cloud Transfer、Remote Restore 的第一阻塞条件显示在相邻位置；没有把危险恢复、未校验远端恢复或不可重试云状态放行。
+- `GscActionAvailabilityHintText` 是共享生产样式，说明本身可聚焦并设置 Automation Name/HelpText；Redesign 只复用既有诊断气泡几何。Save 无选中状态、Media 批量/检查器、Maintenance 云/远端检查器均有可达说明。
+- 真实 STA WPF 定向 `4/4` 覆盖正向、忙态和负例；最终隔离 Release 为 XAML `24/24`、构建 `0/0`、Core `83`、Worker `311`、Playnite `532/589`（57 skip/0 fail）；双主题 RenderHarness 56 场景通过。
+- 证据边界仍是合成状态/fake 服务、offscreen logical DIP 和生产资源链；不宣称真实 Playnite/屏幕阅读器/物理 DPI/OS 输入/IME/presented frame/ETW/宿主性能。下一项为 R02-04 图文光学居中。
+
 ## 2026-09-16 R02-02 忙碌宽度稳定
 
 - 前序 `4947539` 已有 `Button.IsBusy`、共享 indeterminate `BusyIndicatorHost` 和旧 Dashboard 三个顶栏绑定；当前实际 Acrylic 壳层/工作区按钮未统一接状态。`473cf3a` 在共享 `GscWpfUiButton` 基元增加最近 `UserControl.DataContext.IsBusy` 绑定，派生 Primary/Action/Context/IconOnly/Redesign header 角色自动覆盖，设置/校对夹具无 `IsBusy` 时保持 false。
