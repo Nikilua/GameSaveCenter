@@ -1673,16 +1673,177 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.DoesNotContain("Color.FromRgb(28, 30, 38)", safeView);
     }
 
-    [Fact]
-    public void ContextActionsRemainInLayoutWhenDisabled()
+    [Theory]
+    [InlineData(GameSaveCenterThemeMode.Light)]
+    [InlineData(GameSaveCenterThemeMode.Dark)]
+    public void ContextActionsUseSingleDisabledChromeOpacityAcrossDerivedStyles(GameSaveCenterThemeMode mode)
     {
+        Exception? exception = null;
+        var controlOpacities = new double[3];
+        var chromeOpacities = new double[3];
+        var enabledHeights = new double[3];
+        var disabledHeights = new double[3];
+        var labelColors = new Color[3];
+        var explanationColor = Colors.Transparent;
+        var minimumLabelContrast = double.MaxValue;
+
+        var thread = new Thread(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var resources = (ResourceDictionary)XamlReader.Parse(@"
+<ResourceDictionary xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""
+                    xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml""><ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source=""/GameSaveCenter.Playnite;component/Themes/DesignTokens.xaml""/>
+    <ResourceDictionary Source=""/GameSaveCenter.Playnite;component/Themes/WpfUiProduction.xaml""/>
+</ResourceDictionary.MergedDictionaries></ResourceDictionary>");
+
+                var host = new StackPanel { Width = 420, Resources = resources };
+                var palette = AdaptiveThemePaletteFactory.Create(host, true, 50, mode);
+                AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(resources, palette, true, true);
+
+                var styles = new[]
+                {
+                    "GscWpfUiContextButton",
+                    "GscWpfUiRemoteRestoreButton",
+                    "GscWpfUiMediaBatchButton"
+                };
+                var labels = new[] { "撤销最近恢复", "1 · 下载并校验", "收藏所选" };
+                var buttons = styles.Select((styleKey, index) =>
+                {
+                    var content = new StackPanel { Orientation = Orientation.Horizontal };
+                    content.Children.Add(new TextBlock
+                    {
+                        Text = "✓",
+                        Foreground = new SolidColorBrush(palette.Accent),
+                        Margin = new Thickness(0, 0, 6, 0)
+                    });
+                    content.Children.Add(new TextBlock
+                    {
+                        Text = labels[index],
+                        Foreground = new SolidColorBrush(palette.PrimaryText)
+                    });
+
+                    return new GameSaveCenter.Playnite.Controls.Button
+                    {
+                        Style = Assert.IsType<Style>(resources[styleKey]),
+                        Content = content,
+                        ContentTemplate = null,
+                        IsEnabled = false
+                    };
+                }).ToArray();
+                foreach (var button in buttons)
+                    host.Children.Add(button);
+
+                var explanation = new TextBlock
+                {
+                    Text = "禁用操作仍保留位置，重新选择对象后可继续。",
+                    Foreground = (Brush)resources["GscSecondaryTextBrush"],
+                    TextWrapping = TextWrapping.Wrap,
+                    Margin = new Thickness(0, 8, 0, 0)
+                };
+                host.Children.Add(explanation);
+
+                window = new Window
+                {
+                    Width = 420,
+                    Height = 220,
+                    WindowStyle = WindowStyle.None,
+                    ShowInTaskbar = false,
+                    ShowActivated = false,
+                    Opacity = 0.01,
+                    Background = new SolidColorBrush(palette.Background),
+                    Resources = resources,
+                    Content = host
+                };
+                window.Show();
+                window.UpdateLayout();
+
+                for (var index = 0; index < buttons.Length; index++)
+                {
+                    var button = buttons[index];
+                    button.IsEnabled = true;
+                    window.UpdateLayout();
+                    enabledHeights[index] = button.ActualHeight;
+                    button.IsEnabled = false;
+                    window.UpdateLayout();
+                    disabledHeights[index] = button.ActualHeight;
+                    button.ApplyTemplate();
+
+                    controlOpacities[index] = button.Opacity;
+                    var chrome = Assert.IsType<Border>(button.Template.FindName("ButtonChrome", button));
+                    chromeOpacities[index] = chrome.Opacity;
+                    var label = FindVisualDescendant<TextBlock>(button);
+                    Assert.NotNull(label);
+                    labelColors[index] = ((SolidColorBrush)label!.Foreground).Color;
+                }
+
+                explanationColor = ((SolidColorBrush)explanation.Foreground).Color;
+                var glass = Assert.IsType<LinearGradientBrush>(resources["GscButtonGlassBrush"]);
+                minimumLabelContrast = AdaptiveThemePaletteContrastGuard.MeasureGradientTextContrast(
+                    "context-disabled",
+                    palette.PrimaryText,
+                    palette.Background,
+                    glass.GradientStops,
+                    Colors.Transparent,
+                    Colors.Transparent,
+                    0.72,
+                    3.0).Min(measurement => measurement.Actual);
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.All(controlOpacities, opacity => Assert.Equal(1d, opacity, 3));
+        Assert.All(chromeOpacities, opacity => Assert.Equal(0.72d, opacity, 3));
+        Assert.Equal(new[] { 1, 1, 1 }, enabledHeights.Zip(disabledHeights, (enabled, disabled) => Math.Abs(enabled - disabled) < 0.01 ? 1 : 0));
+        Assert.All(labelColors, color => Assert.NotEqual(Colors.Transparent, color));
+        Assert.NotEqual(Colors.Transparent, explanationColor);
+        Assert.True(minimumLabelContrast >= 3.0, $"Disabled context label contrast fell below 3.0: {minimumLabelContrast:0.###}.");
+
         var repositoryRoot = FindRepositoryRoot();
+        var saveCenter = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "SaveCenterView.xaml"));
+        var mediaCenter = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
+        var maintenance = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
         var production = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml"));
+        Assert.Contains("GscWpfUiContextButton", saveCenter);
+        Assert.Contains("GscWpfUiContextButton", mediaCenter);
+        Assert.Contains("GscWpfUiRemoteRestoreButton", maintenance);
+        Assert.Contains("GscWpfUiMediaBatchButton", mediaCenter);
         var contextStyleStart = production.IndexOf("x:Key=\"GscWpfUiContextButton\"", StringComparison.Ordinal);
         Assert.True(contextStyleStart >= 0);
         var contextStyle = production.Substring(contextStyleStart, Math.Min(900, production.Length - contextStyleStart));
-        Assert.Contains("<Setter Property=\"Opacity\" Value=\"0.48\"/>", contextStyle);
+        Assert.DoesNotContain("<Setter Property=\"Opacity\" Value=\"0.48\"/>", contextStyle);
         Assert.DoesNotContain("<Setter Property=\"Visibility\" Value=\"Collapsed\"/>", contextStyle);
+        Assert.Contains("<Setter TargetName=\"ButtonChrome\" Property=\"Opacity\" Value=\"0.72\"/>", production);
+    }
+
+    private static T? FindVisualDescendant<T>(DependencyObject root) where T : DependencyObject
+    {
+        for (var index = 0; index < VisualTreeHelper.GetChildrenCount(root); index++)
+        {
+            var child = VisualTreeHelper.GetChild(root, index);
+            if (child is T match)
+                return match;
+
+            var descendant = FindVisualDescendant<T>(child);
+            if (descendant != null)
+                return descendant;
+        }
+
+        return null;
     }
 
     [LegacyProductionUiBaselineFact]

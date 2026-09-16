@@ -957,14 +957,11 @@
            BasedOn="{StaticResource GscWpfUiCompactButton}">
         <Setter Property="Margin" Value="0,0,8,8"/>
         <!-- Keep unavailable contextual actions in the layout. Collapsing them made a
-             row jump when selection changed and hid the existence of a safe next step;
-             the shared button template owns the label foreground while the contextual
-             group retains its softer disabled treatment. -->
-        <Style.Triggers>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Opacity" Value="0.48"/>
-            </Trigger>
-        </Style.Triggers>
+             row jump when selection changed and hid the existence of a safe next step.
+             Disabled chrome opacity is owned once by the shared template below; a
+             control-level opacity here would multiply the label, icon and explanation
+             alpha a second time. The shared template's 0.72 chrome layer is the one
+             disabled treatment for this whole contextual action family. -->
     </Style>
 
     <!-- These command groups are deliberately fixed as groups, not globally. Their labels
