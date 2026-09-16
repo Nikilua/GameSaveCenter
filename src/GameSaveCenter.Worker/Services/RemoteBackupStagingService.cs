@@ -87,13 +87,13 @@ public sealed class RemoteBackupStagingService : IRemoteBackupStageProvider
         if(!IsOpaqueId(stagingId))throw new WorkerOperationException("REMOTE_STAGE_ID_INVALID","远端暂存标识无效。",stagingId);
         var root=ResolveStagingRoot(stagingId);
         var manifestPath=Path.Combine(root,"manifest.json");
-        if(!File.Exists(manifestPath))throw new WorkerOperationException("REMOTE_STAGE_NOT_FOUND","远端暂存已不存在，请重新下载并校验。",stagingId);
+        if(!File.Exists(manifestPath))throw new WorkerOperationException("REMOTE_STAGE_NOT_FOUND","远端暂存已不存在，请重新下载到隔离区并校验。",stagingId);
         RemoteBackupStageResultDto? manifest;
         try { manifest=JsonSerializer.Deserialize<RemoteBackupStageResultDto>(File.ReadAllText(manifestPath),JsonOptions); }
         catch(JsonException ex){throw new WorkerOperationException("REMOTE_STAGE_MANIFEST_INVALID","远端暂存清单损坏，请重新下载。",ex.Message);}
         if(manifest==null||!manifest.Verified||!string.Equals(manifest.StagingId,stagingId,StringComparison.Ordinal)||
            manifest.ExpiresUtc<=DateTime.UtcNow||!IsSafeDeviceName(manifest.RemoteDevice))
-            throw new WorkerOperationException("REMOTE_STAGE_EXPIRED","远端暂存无效或已过期，请重新下载并校验。",stagingId);
+            throw new WorkerOperationException("REMOTE_STAGE_EXPIRED","远端暂存无效或已过期，请重新下载到隔离区并校验。",stagingId);
         var vault=Path.Combine(root,"Vault");
         if(!Directory.Exists(vault))throw new WorkerOperationException("REMOTE_STAGE_VAULT_MISSING","远端暂存目录不完整，请重新下载。",stagingId);
         return new RemoteBackupStage(manifest,vault);
@@ -106,7 +106,7 @@ public sealed class RemoteBackupStagingService : IRemoteBackupStageProvider
         var check=await cloudTransfers.RunUploadAsync("remote backup restore revalidation",
             ct=>rclone.ChecksumCheckAsync(stage.VaultPath,remoteSubPath,ct),token).ConfigureAwait(false);
         if(!check.Success)
-            throw new WorkerOperationException("REMOTE_STAGE_CHANGED","远端或本机隔离备份在暂存后发生变化，已阻止恢复；请重新下载并校验。",check.StandardError);
+            throw new WorkerOperationException("REMOTE_STAGE_CHANGED","远端或本机隔离备份在暂存后发生变化，已阻止恢复；请重新下载到隔离区并校验。",check.StandardError);
         var matches=await catalog.GetMatchesAsync(token).ConfigureAwait(false);
         if(!matches.TryGetValue(stage.Manifest.PlayniteId,out var match)||string.IsNullOrWhiteSpace(match.Name))
             throw new WorkerOperationException("REMOTE_GAME_UNMATCHED","该游戏当前未匹配到 Ludusavi，已阻止远端恢复。",stage.Manifest.PlayniteId);
@@ -115,7 +115,7 @@ public sealed class RemoteBackupStagingService : IRemoteBackupStageProvider
             ?LudusaviResultParser.ParseBackupList(listed.Json.Value,stage.Manifest.PlayniteId,match.Name)
             :new List<BackupVersionDto>();
         if(!versions.Any(x=>string.Equals(x.BackupId,stage.Manifest.BackupId,StringComparison.OrdinalIgnoreCase)))
-            throw new WorkerOperationException("REMOTE_BACKUP_CHANGED","隔离库不再包含所选备份版本，已阻止恢复；请重新下载并校验。",stage.Manifest.BackupId);
+            throw new WorkerOperationException("REMOTE_BACKUP_CHANGED","隔离库不再包含所选备份版本，已阻止恢复；请重新下载到隔离区并校验。",stage.Manifest.BackupId);
         return stage;
     }
 

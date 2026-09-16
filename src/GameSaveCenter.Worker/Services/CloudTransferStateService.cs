@@ -172,7 +172,7 @@ public sealed class CloudTransferStateService
                 finalized = await TryFinalizeVerificationAsync(operation, state, code, result.StandardError).ConfigureAwait(false);
                 if (!finalized) throw CreateSupersededException(operation);
                 await PersistGameCloudStateBestEffortAsync(request.Kind, request.PlayniteId, state).ConfigureAwait(false);
-                throw new WorkerOperationException(code, "远端 check 未通过；本地副本保持不变。", result.StandardError);
+                throw new WorkerOperationException(code, "远端校验未通过；本地副本保持不变。", result.StandardError);
             }
 
             finalized = await TryFinalizeVerificationAsync(operation, "RemoteVerified", string.Empty, string.Empty).ConfigureAwait(false);
@@ -194,7 +194,7 @@ public sealed class CloudTransferStateService
         catch (Exception ex)
         {
             if (!finalized) await RestoreVerificationBestEffortAsync(operation, "CLOUD_CHECK_EXCEPTION").ConfigureAwait(false);
-            throw new WorkerOperationException("RCLONE_CHECK_EXCEPTION", "远端 check 执行失败；此前云端保证未被提升。", ex.Message);
+            throw new WorkerOperationException("RCLONE_CHECK_EXCEPTION", "远端校验执行失败；此前云端保证未被提升。", ex.Message);
         }
     }
 

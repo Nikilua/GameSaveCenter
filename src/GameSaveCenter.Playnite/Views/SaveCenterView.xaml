@@ -111,7 +111,7 @@
                                     <WrapPanel x:Name="SaveHistorySummaryActions" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="14,0,0,0">
                                         <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Appearance="Primary" Command="{Binding DetectPathsCommand}" Content="立即扫描" MinWidth="100" Margin="0,0,8,0"/>
                                         <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding ValidateCommand}" Content="重新校验" MinWidth="100" Margin="0,0,8,0"/>
-                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding LoadDetailsCommand}" Content="刷新详情" MinWidth="100"/>
+                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding LoadDetailsCommand}" Content="重新加载详情" MinWidth="100" AutomationProperties.Name="重新加载存档详情"/>
                                     </WrapPanel>
                                 </Grid>
                             </Border>
@@ -294,7 +294,7 @@
                                 <!-- Scan and validation have distinct outcomes, so retain explicit text. -->
                                 <ui:Button x:Name="SaveDetectPathsButton" Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding DetectPathsCommand}" Content="立即扫描" ToolTip="扫描并重新识别存档路径" AutomationProperties.Name="立即扫描存档路径" Margin="0,0,8,0" VerticalAlignment="Center"/>
                                 <ui:Button x:Name="SaveValidateButton" Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding ValidateCommand}" Content="重新校验" ToolTip="重新校验当前存档规则" AutomationProperties.Name="重新校验存档路径" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                                <ui:Button x:Name="SaveLoadDetailsButton" Style="{DynamicResource GscIconOnlyButtonBase}" Command="{Binding LoadDetailsCommand}" ToolTip="刷新详情" AutomationProperties.Name="刷新存档详情" VerticalAlignment="Center"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconBtnRefresh}" Width="18" Height="18"/></ui:Button>
+                                <ui:Button x:Name="SaveLoadDetailsButton" Style="{DynamicResource GscIconOnlyButtonBase}" Command="{Binding LoadDetailsCommand}" ToolTip="重新加载存档详情" AutomationProperties.Name="重新加载存档详情" VerticalAlignment="Center"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconBtnRefresh}" Width="18" Height="18"/></ui:Button>
                             </WrapPanel>
                         </Grid>
                     </Border>

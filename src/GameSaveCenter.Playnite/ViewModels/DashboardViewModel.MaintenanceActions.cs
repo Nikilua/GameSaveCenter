@@ -278,7 +278,7 @@ public sealed partial class DashboardViewModel
                 LastAttemptDisplay = transfer.LastAttemptUtc?.ToLocalTime().ToString("yyyy-MM-dd HH:mm") ?? "尚未尝试",
                 NextAttemptDisplay = next,
                 ActionText = "打开云队列",
-                ActionToolTip = "打开这条真实云端传输记录；重试或远端 check 仍沿用原有状态与确认边界。",
+                ActionToolTip = "打开这条真实云端传输记录；上传重试或远端校验仍沿用原有状态与确认边界。",
                 ActionKind = MaintenanceActionKind.CloudTransfer,
                 TransferKey = transfer.TransferKey,
                 TransferKind = transfer.Kind,

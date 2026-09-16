@@ -171,7 +171,7 @@ public sealed class KeyboardFocusSourceTests
 
         Assert.Contains("AutomationProperties.Name=\"{Binding OverviewPriorityTitle}\"", overview);
         Assert.Contains("AutomationProperties.Name=\"刷新概览\"", overview);
-        Assert.Contains("AutomationProperties.Name=\"刷新当前游戏详情\"", overview);
+        Assert.Contains("AutomationProperties.Name=\"重新加载当前游戏详情\"", overview);
     }
 
     private static Window CreateWindow(UIElement content)

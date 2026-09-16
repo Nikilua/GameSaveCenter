@@ -1709,7 +1709,7 @@ public sealed class WpfUiResourceDictionaryTests
                     "GscWpfUiRemoteRestoreButton",
                     "GscWpfUiMediaBatchButton"
                 };
-                var labels = new[] { "撤销最近恢复", "1 · 下载并校验", "收藏所选" };
+                var labels = new[] { "撤销最近恢复", "1 · 下载到隔离区并校验", "收藏所选" };
                 var buttons = styles.Select((styleKey, index) =>
                 {
                     var content = new StackPanel { Orientation = Orientation.Horizontal };

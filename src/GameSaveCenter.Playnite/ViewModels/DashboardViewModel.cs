@@ -2905,7 +2905,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             if(!await plugin.ConfirmAsync(
                    "下载远端备份到隔离区",
                    $"将从设备“{selected.RemoteDevice}”下载完整 Ludusavi 备份库，并在本机隔离区校验版本“{selected.RemoteBackupId}”。\n\n此步骤不会恢复或覆盖当前存档，但下载量可能较大。是否继续？",
-                   "下载并校验",
+                   "下载到隔离区并校验",
                    "取消"))return;
             var staged=await plugin.RequestAsync<RemoteBackupStageResultDto>(MessageTypes.StageRemoteBackup,
                 new RemoteBackupStageRequestDto
@@ -2919,7 +2919,7 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task RestoreStagedRemoteBackupAsync()
         {
-            var staged=StagedRemoteBackup??throw new InvalidOperationException("请先下载并校验远端备份。");
+            var staged=StagedRemoteBackup??throw new InvalidOperationException("请先下载到隔离区并校验远端备份。");
             if(!await plugin.ConfirmAsync(
                    "从已校验的远端备份恢复",
                    $"即将恢复“{staged.GameName}”在设备“{staged.RemoteDevice}”上的版本“{staged.BackupId}”。\n\n恢复前会创建并锁定本机当前存档的 PreRestore 快照。请确认游戏、启动器和 MOD 管理器均已关闭。",

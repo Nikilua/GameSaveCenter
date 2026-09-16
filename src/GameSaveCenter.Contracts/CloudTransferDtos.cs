@@ -101,9 +101,9 @@ public sealed class CloudTransferStatusDto
     /// <summary>Explains what has actually been established about the remote copy.</summary>
     public string GuaranteeLevelDisplay => State switch
     {
-        "RemoteVerified" => "远端 check 成功",
-        "Uploaded" => "上传命令成功，尚未远端 check",
-        "CheckFailed" => "远端 check 未通过",
+        "RemoteVerified" => "远端校验成功",
+        "Uploaded" => "上传命令成功，尚未远端校验",
+        "CheckFailed" => "远端校验未通过",
         _ => "仅确认本地副本已保留"
     };
 

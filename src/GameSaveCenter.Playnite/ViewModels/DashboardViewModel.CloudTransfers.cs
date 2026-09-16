@@ -149,8 +149,8 @@ public sealed partial class DashboardViewModel
             new CloudTransferVerifyRequestDto { PlayniteId = selected.PlayniteId, Kind = selected.Kind },
             TimeSpan.FromHours(2));
         StatusMessage = result?.State == "RemoteVerified"
-            ? "远端 check 已成功；本地副本未被修改。"
-            : "远端 check 已完成，但未提升为远端已校验。";
+            ? "远端校验已成功；本地副本未被修改。"
+            : "远端校验已完成，但未提升为远端已校验。";
         await LoadCloudTransferPageAsync(true);
     }
 

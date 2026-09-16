@@ -66,23 +66,23 @@ internal static class ActionAvailabilityHints
         if (!rcloneAvailable)
             return "云端上传暂不可用：Rclone 不可用或远端未配置。请到维护中心运行环境检查；上传/校验动作保持受限。";
         if (selected == null)
-            return "请先在云端队列选中一条记录；详情中的 check 和重试会按记录状态启用。";
+            return "请先在云端队列选中一条记录；详情中的远端校验和上传重试会按记录状态启用。";
 
         var state = selected.State ?? string.Empty;
         return state switch
         {
-            "Pending" => "该记录仍待上传；请等待队列处理完成，远端 check 需在上传后进行。",
+            "Pending" => "该记录仍待上传；请等待队列处理完成，远端校验需在上传后进行。",
             "Transferring" => "该记录正在传输；请等待本次上传完成，暂不能重复提交。",
-            "Verifying" => "该记录正在进行远端 check；请等待只读校验完成。",
-            "RetryScheduled" => "该记录已安排下次上传；当前可重试上传，上传成功后仍需执行远端 check。",
+            "Verifying" => "该记录正在进行远端校验；请等待只读校验完成。",
+            "RetryScheduled" => "该记录已安排下次上传；当前可重试上传，上传成功后仍需执行远端校验。",
             "AuthenticationRequired" => "该记录需要先处理远端认证；请到维护中心检查认证配置，认证失败不会自动重试。",
-            "Uploaded" => "该记录已上传但尚未远端 check；可以执行只读 check，不会上传或覆盖本地副本。",
-            "RemoteVerified" => "该记录已完成远端 check；本地副本未被修改，无需重复上传。",
-            "CheckFailed" => "该记录的远端 check 未通过；可以重新执行只读 check，确认前不会覆盖本地副本。",
-            "CheckCancelled" => "该记录的远端 check 已取消；可以重新执行只读 check。",
-            "Failed" => "该记录上传失败；当前可重试上传，上传成功后仍需执行远端 check。",
+            "Uploaded" => "该记录已上传但尚未远端校验；可以执行只读校验，不会上传或覆盖本地副本。",
+            "RemoteVerified" => "该记录已完成远端校验；本地副本未被修改，无需重复上传。",
+            "CheckFailed" => "该记录的远端校验未通过；可以重新执行只读校验，确认前不会覆盖本地副本。",
+            "CheckCancelled" => "该记录的远端校验已取消；可以重新执行只读校验。",
+            "Failed" => "该记录上传失败；当前可重试上传，上传成功后仍需执行远端校验。",
             "Paused" => "云端队列已暂停；请到维护中心检查队列策略，当前不会把本地副本当作远端已校验。",
-            _ => $"当前记录状态为“{selected.StateDisplay}”；请先确认状态后再执行远端 check。"
+            _ => $"当前记录状态为“{selected.StateDisplay}”；请先确认状态后再执行远端校验。"
         };
     }
 
@@ -112,9 +112,9 @@ internal static class ActionAvailabilityHints
         if (!hasRemoteBackupId)
             return "该设备记录没有远端备份标识，不能开始隔离下载；请刷新设备状态后再确认。";
         if (!hasStagedBackup)
-            return "请先执行“1 · 下载并校验”；只有隔离区结果准备好后，才会开放“2 · 快照并恢复”。";
+            return "请先执行“1 · 下载到隔离区并校验”；只有隔离区结果准备好后，才会开放“2 · 快照并恢复”。";
         if (!stagedBackupVerified)
-            return "隔离下载结果尚未通过校验，恢复命令保持禁用；请重新下载并校验。";
+            return "隔离下载结果尚未通过校验，恢复命令保持禁用；请重新下载到隔离区并校验。";
 
         return "隔离备份已校验；执行恢复前会创建并锁定本机当前快照，并要求确认游戏已关闭。";
     }

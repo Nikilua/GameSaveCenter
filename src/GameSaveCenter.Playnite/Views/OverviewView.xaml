@@ -378,7 +378,7 @@
                         </WrapPanel>
                         <WrapPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="0,10,0,0">
                             <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Appearance="Primary" Command="{Binding BackupSelectedCommand}" Content="立即备份" MinWidth="88" Margin="0,0,4,4" VerticalAlignment="Center" AutomationProperties.Name="立即备份当前游戏"/>
-                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding LoadDetailsCommand}" Content="刷新详情" MinWidth="88" Margin="0,0,4,4" VerticalAlignment="Center" AutomationProperties.Name="刷新当前游戏详情"/>
+                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding LoadDetailsCommand}" Content="重新加载详情" MinWidth="88" Margin="0,0,4,4" VerticalAlignment="Center" AutomationProperties.Name="重新加载当前游戏详情"/>
                         </WrapPanel>
                     </Grid>
                 </Border>

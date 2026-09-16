@@ -114,7 +114,7 @@ public sealed class FlingTrainerCatalogSource : ITrainerCatalogSource
         using var response=await _http.SendAsync(request,HttpCompletionOption.ResponseHeadersRead,token).ConfigureAwait(false);
         EnsureFlingUri(response.RequestMessage?.RequestUri?.ToString()??string.Empty);
         if(response.StatusCode==HttpStatusCode.Forbidden)
-            throw new WorkerOperationException("FLING_DOWNLOAD_FORBIDDEN","FLiNG 拒绝了后台下载请求。已刷新详情页会话并携带来源信息，请从最新版本列表重试。",release.DownloadUrl);
+            throw new WorkerOperationException("FLING_DOWNLOAD_FORBIDDEN","FLiNG 拒绝了后台下载请求。已重新加载详情页会话并携带来源信息，请从最新版本列表重试。",release.DownloadUrl);
         response.EnsureSuccessStatusCode();
         if(response.Content.Headers.ContentLength is long declaredLength&&declaredLength>MaxDownloadBytes)
             throw new WorkerOperationException("FLING_DOWNLOAD_TOO_LARGE","修改器下载文件超过安全大小上限，已拒绝下载。",$"{declaredLength} bytes");

@@ -43,7 +43,7 @@ public sealed class R02ActionAvailabilityHintTests
 
         Assert.Contains("云端上传未启用", ViewModels.ActionAvailabilityHints.CloudTransfer(true, false, false, null, false));
         Assert.Contains("选中一条记录", ViewModels.ActionAvailabilityHints.CloudTransfer(true, true, true, null, false));
-        Assert.Contains("尚未远端 check", ViewModels.ActionAvailabilityHints.CloudTransfer(true, true, true, Transfer("Uploaded"), false));
+        Assert.Contains("尚未远端校验", ViewModels.ActionAvailabilityHints.CloudTransfer(true, true, true, Transfer("Uploaded"), false));
         Assert.Contains("重试上传", ViewModels.ActionAvailabilityHints.CloudTransfer(true, true, true, Transfer("Failed"), false));
         Assert.Contains("认证", ViewModels.ActionAvailabilityHints.CloudTransfer(true, true, true, Transfer("AuthenticationRequired"), false));
         Assert.Contains("其他操作", ViewModels.ActionAvailabilityHints.CloudTransfer(true, true, true, Transfer("Uploaded"), true));
@@ -56,7 +56,7 @@ public sealed class R02ActionAvailabilityHintTests
     {
         Assert.Contains("选中一条记录", ViewModels.ActionAvailabilityHints.RemoteRestore(false, false, false, false, false));
         Assert.Contains("没有远端备份标识", ViewModels.ActionAvailabilityHints.RemoteRestore(true, false, false, false, false));
-        Assert.Contains("1 · 下载并校验", ViewModels.ActionAvailabilityHints.RemoteRestore(true, true, false, false, false));
+        Assert.Contains("1 · 下载到隔离区并校验", ViewModels.ActionAvailabilityHints.RemoteRestore(true, true, false, false, false));
         Assert.Contains("恢复命令保持禁用", ViewModels.ActionAvailabilityHints.RemoteRestore(true, true, true, false, false));
         Assert.Contains("创建并锁定本机当前快照", ViewModels.ActionAvailabilityHints.RemoteRestore(true, true, true, true, false));
     }

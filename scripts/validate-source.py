@@ -895,7 +895,7 @@ def check_0613_remote_restore_guards() -> None:
     for token in ("ExecuteRemoteAsync", "PreRestore", "RestoreFromPathAsync", "PauseForRestoreAsync"):
         if token not in restore:
             fail(f"Remote restore state-machine guard missing: {token}")
-    for token in ("StageRemoteBackupCommand", "RestoreStagedRemoteBackupCommand", "下载并校验", "创建快照并恢复"):
+    for token in ("StageRemoteBackupCommand", "RestoreStagedRemoteBackupCommand", "下载到隔离区并校验", "创建快照并恢复"):
         if token not in view_model + ui:
             fail(f"Two-step remote restore UI guard missing: {token}")
     if not test.exists() or "DeviceName_RejectsTraversalAndSeparators" not in test.read_text(encoding="utf-8"):
