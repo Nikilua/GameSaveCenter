@@ -251,11 +251,17 @@ namespace GameSaveCenter.Playnite.Infrastructure
         {
             for (var index = 0; index < text.Length; index++)
             {
-                var current = char.ConvertToUtf32(text, index);
-                if (current == codePoint)
-                    return index;
-                if (char.IsHighSurrogate(text[index]) && index + 1 < text.Length && char.IsLowSurrogate(text[index + 1]))
+                var startIndex = index;
+                var current = (int)text[index];
+                if (char.IsHighSurrogate(text[index])
+                    && index + 1 < text.Length
+                    && char.IsLowSurrogate(text[index + 1]))
+                {
+                    current = char.ConvertToUtf32(text, index);
                     index++;
+                }
+                if (current == codePoint)
+                    return startIndex;
             }
 
             return -1;
