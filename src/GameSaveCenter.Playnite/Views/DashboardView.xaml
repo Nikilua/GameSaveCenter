@@ -268,7 +268,6 @@
             <Setter Property="AlternatingRowBackground" Value="{DynamicResource GscTableAlternateRowBrush}"/>
             <Setter Property="RowHeight" Value="{DynamicResource GscTableRowHeight}"/>
             <Setter Property="MinHeight" Value="{DynamicResource GscTableMinHeight}"/>
-            <Setter Property="ColumnHeaderHeight" Value="{DynamicResource GscTableHeaderHeight}"/>
             <Setter Property="RowHeaderWidth" Value="0"/>
             <Setter Property="SelectionUnit" Value="FullRow"/>
             <Setter Property="CanUserAddRows" Value="False"/>

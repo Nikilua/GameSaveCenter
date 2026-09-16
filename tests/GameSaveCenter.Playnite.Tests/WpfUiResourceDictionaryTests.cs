@@ -5935,7 +5935,8 @@ public sealed class WpfUiResourceDictionaryTests
         thread.Join();
 
         Assert.Null(exception);
-        Assert.Equal(36, textBoxHeight);
+        Assert.True(textBoxHeight >= 36,
+            $"Task search text box should keep its baseline minimum while allowing natural growth: height={textBoxHeight}");
         Assert.True(contentViewportHeight >= contentExtentHeight,
             $"Task search text is vertically clipped: viewport={contentViewportHeight}, extent={contentExtentHeight}");
         Assert.NotNull(contentForeground);
@@ -6058,7 +6059,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("<Setter Property=\"MinHeight\" Value=\"{DynamicResource GscButtonHeight}\"/>", production);
         Assert.Contains("<Style x:Key=\"GscWpfUiCompactButton\"", production);
         Assert.Contains("<Setter Property=\"MinHeight\" Value=\"{DynamicResource GscCompactButtonHeight}\"/>", production);
-        Assert.Contains("<Setter Property=\"Height\" Value=\"{DynamicResource GscButtonHeight}\"/>", production);
+        Assert.DoesNotContain("<Setter Property=\"Height\" Value=\"{DynamicResource GscButtonHeight}\"/>", production);
         Assert.Contains("<ControlTemplate x:Key=\"GscWpfUiTextBoxTemplate\"", production);
         Assert.Contains("TextElement.Foreground=\"{TemplateBinding Foreground}\"", production);
         Assert.Contains("TextElement.FontFamily=\"{TemplateBinding FontFamily}\"", production);

@@ -1092,10 +1092,11 @@ def check_shared_wpf_control_guards() -> None:
             fail(f"Shared WPF-UI production adapter guard missing: {token}")
     for token in ("AlternatingRowBackground\" Value=\"{DynamicResource GscTableAlternateRowBrush}\"",
                   "RowHeight\" Value=\"{DynamicResource GscTableRowHeight}\"",
-                  "ColumnHeaderHeight\" Value=\"{DynamicResource GscTableHeaderHeight}\"",
+                  "MinHeight\" Value=\"{DynamicResource GscTableHeaderHeight}\"",
+                  "x:Key=\"GscDataGridHeaderTextTemplate\"",
                   "HorizontalGridLinesBrush\" Value=\"{DynamicResource GscTableDividerBrush}\""):
         if token not in production:
-            fail(f"Shared DataGrid geometry/theme guard missing: {token}")
+            fail(f"Shared DataGrid geometry/theme or natural-header guard missing: {token}")
     redesign = (ROOT / "src/GameSaveCenter.Playnite/Themes/Redesign.xaml").read_text(encoding="utf-8")
     if "x:Key=\"GscRedesignTableFrame\"" not in redesign:
         fail("Shared rounded table frame guard missing")

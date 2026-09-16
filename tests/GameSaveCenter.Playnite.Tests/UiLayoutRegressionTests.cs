@@ -119,7 +119,7 @@ namespace GameSaveCenter.Playnite.Tests
 
             Assert.Contains("CornerRadius=\"10\"", production);
             Assert.Contains("VerticalAlignment=\"Center\"", production);
-            Assert.Contains("<Setter Property=\"Height\" Value=\"{DynamicResource GscButtonHeight}\"/>", production);
+            Assert.Contains("<Setter Property=\"MinHeight\" Value=\"{DynamicResource GscButtonHeight}\"/>", production);
             Assert.Contains("VerticalAlignment=\"Center\"", tokens);
             Assert.Contains("<Setter Property=\"Height\" Value=\"{DynamicResource GscButtonHeight}\"/>", tokens);
             Assert.Contains("Padding=\"0\"", redesign);

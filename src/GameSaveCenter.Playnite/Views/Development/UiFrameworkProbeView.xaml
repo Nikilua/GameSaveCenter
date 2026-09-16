@@ -25,7 +25,6 @@
             <Style x:Key="ProbeDataGrid" TargetType="DataGrid" BasedOn="{StaticResource GscRedesignWorkspaceDataGrid}">
                 <Setter Property="Height" Value="250"/>
                 <Setter Property="MinHeight" Value="250"/>
-                <Setter Property="ColumnHeaderHeight" Value="{DynamicResource GscTableHeaderHeight}"/>
                 <Setter Property="RowHeight" Value="{DynamicResource GscTableRowHeight}"/>
                 <Setter Property="ItemsSource" Value="{Binding ProbeRows}"/>
             </Style>
