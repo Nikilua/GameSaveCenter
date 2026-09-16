@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-17 R04-01 组合输入状态
+
+- 先核对已有能力：R00-08 已覆盖 visible production picker 的无结果 Enter、`ImeProcessed`、方向键、Escape 焦点回返和有效候选 Enter；`GamePickerViewModel` 已提供本地缓存、短 debounce 与英文即时搜索，未新增 Worker 搜索路径。
+- `40c7f9a` 为 `GameSearchTextBox` 接入 WPF `TextComposition` start/update/预览与冒泡 commit 事件；composition active 时不让选择变化执行 `SelectedGame`/关闭，也不处理 Enter；commit 后沿用 `ItemsView` 候选确认和焦点回返。卸载时清零状态。新增行为测试后 `GamePickerKeyboardBehaviorTests` 为 `4/4`。
+- clean Release：XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `569/626`（57 skip/0 fail），源码校验通过。未提交工作树首次全量有 2 条一次性失败，同一隔离输出复跑和 clean commit 全量均 0 失败，未绕过门禁。
+- clean RenderHarness 双主题、多尺寸、滚动/虚拟化、Shell/resize `render-qa OK`，`WorkingTreeClean=True`，357 PNG；人工抽查 Light/Dark Task 与 Shell。只用合成 DTO、隔离 Window、STA WPF/offscreen logical DIP，未写真实存档/媒体/云端。真实 Windows IME 候选 UI、物理键盘/候选翻页、Playnite 嵌入输入、读屏、物理 DPI/跨屏、presented frame、ETW、宿主性能仍未验；R18-01 负责连续输入/IME/debounce 时延与分配。下一可执行任务为 R04-02 错误摘要导航。
+
 ## 2026-09-17 R03-08 用户文本缩放
 
 - 先查已有能力：字体和控件尺寸均已有共享 DynamicResource；修复点是生产 TextBox、文本按钮、路径详情框和页面级按钮的硬高，以及 DataGrid 表头的固定高度覆盖。保留游戏选框、滚动条、命令/Binding、取消错误、恢复保护、有限列表与 net462。

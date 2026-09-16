@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R04-01 组合输入状态
+
+- `40c7f9a` 先复核 R00-08 的可见生产游戏选框、`ItemsView` 候选确认、无结果/`ImeProcessed`/方向键/Escape 焦点行为和现有本地搜索；没有从 main 带入旧实现，也没有替换 picker/滚动条/设计体系。`AcrylicProductionShellView` 为 `GameSearchTextBox` 接入 WPF `TextComposition` start/update/预览与冒泡 commit 事件，卸载时清除状态。
+- 组合期间 `SelectionChanged` 不进入 `SelectedGame`/关闭流程，`PreviewKeyDown` 不处理 Enter；提交事件到达后恢复原有可见 `ItemsView` 候选确认与焦点回返。`GamePickerKeyboardBehaviorTests` 实际 `4/4`，包含 start/update + Enter 负例、commit + Enter 正例，以及既有无结果/IMEProcessed/方向键/焦点回归。英文即时反馈仍由 `GamePickerViewModel` 本地缓存/现有测试承担，未转发 Worker。
+- clean commit 隔离 Release XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `569/626`（57 跳过、0 失败），源码校验通过。首次未提交工作树全量曾有 2 条一次性失败；同一隔离输出复跑及 clean commit 全量均 0 失败，未放宽门禁。
+- RenderHarness clean `40c7f9a` 双主题、多尺寸、滚动/虚拟化、Shell/resize 为 `render-qa OK`，`WorkingTreeClean=True`，357 PNG；人工抽查 Light/Dark Task 与 Shell。证据只代表合成 DTO、隔离 STA WPF/offscreen logical DIP；真实 Windows IME 候选 UI/物理键盘/Playnite 嵌入输入链、屏幕阅读器、物理 DPI/跨屏、presented frame、ETW、宿主性能仍未验。下一可执行项为 R04-02 错误摘要导航。
+
 ## 当前第三轮 R03-08 用户文本缩放
 
 - `981b600` 先核对现有 `GscBodyFontSize`/`GscCaptionFontSize`、按钮/输入框模板和表头样式，未引入新字体体系，也没有从 main 带入旧实现。共享 TextBox、远程恢复/媒体批处理按钮、只读完整路径框和 Overview 两个保护按钮去掉硬 `Height`，保留 `MinHeight`、现有模板与命令/安全语义。

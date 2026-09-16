@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-17
 
+## 2026-09-17 R04-01 组合输入状态
+
+- `40c7f9a` 复核并复用 R00-08 的可见生产 picker 行为：无结果 Enter、`ImeProcessed`、方向键、Escape 焦点回返和有效 `ItemsView` 候选 Enter 已存在；本阶段只在 `AcrylicProductionShellView.GameSearchTextBox` 上补 WPF `TextComposition` start/update/preview+bubble commit 状态，未改 picker/滚动条/设计体系。
+- 组合期间阻止选择变化进入 `SelectedGame`/关闭流程，并让 Enter 留给 IME；commit 后恢复候选确认、弹层关闭和焦点回返。卸载清除组合状态。`GamePickerKeyboardBehaviorTests` 实际 `4/4`，覆盖 start/update + Enter 负例、commit + Enter 正例及原有键盘回归；英文即时搜索继续使用本地缓存和已有测试。
+- clean Release 全量：XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `569/626`（57 skip/0 fail），源码校验通过。初次未提交工作树出现 2 条一次性失败，复跑与 clean commit 全量均 0 失败，未改写为通过或放宽门禁。
+- RenderHarness clean `40c7f9a` 双主题、多尺寸、滚动/虚拟化和 Shell/resize `render-qa OK`，357 PNG，`WorkingTreeClean=True`；人工抽查 Task/Shell。边界：合成 DTO、隔离 WPF/offscreen logical DIP，不等价真实 Windows IME 候选窗口、物理键盘/候选翻页时序、Playnite 嵌入输入、读屏、物理 DPI/跨屏、presented frame、ETW 或宿主性能；R18-01 继续连续输入/IME/debounce 时延与分配验证。下一项 R04-02 错误摘要导航。
+
 ## 2026-09-17 R03-08 用户文本缩放
 
 - `981b600` 复用现有 DynamicResource 字体和尺寸 token；共享文本输入、文本按钮、只读路径框不再用硬 `Height`，表头不再用 `ColumnHeaderHeight`，只保留最小节奏和既有模板。表头文字模板设为 `Wrap + Trimming=None`，不通过缩小字号适配。
