@@ -9,6 +9,12 @@
 - 当前 `e216e9bf0d2ed18adced62936d6897b8d84f0d58` clean-tree：定向 WPF 测试 `5/5`；双主题 RenderHarness `finesseprobe` 均 `88` 个状态样本/`0` violation/`finesse-fixture OK`。记录见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R00-01-02-CONTRAST-SCALE-20260916.md`。
 - 受控输出的 `DpiScale=1.00` 是 offscreen logical DIP；没有写成真实 Playnite、鼠标/IME、物理 DPI、屏幕呈现帧或 R08-08 可变共享 Freezable 验收。下一执行点是 R00-03 Dispatcher 完成/取消/卸载/重入行为。
 
+## 2026-09-16 R00-03 动效完成态与生命周期行为复核
+
+- 现有 `4414f05` 的完成回调/卸载和代际保护保持不变；`cda168c` 新增真实 WPF Dispatcher 测试，覆盖完成、入口重入、reduced-motion 活动取消、窗口卸载及旧时钟不晚写。R00-03 不再用字符串门禁替代核心行为。
+- clean-tree `cda168ca410bee0a4b0416664452010c9246db96`：Release 单节点构建 `0/0`，5 项定向测试 `5/5`；生产壳层 `motionreentryprobe` / `motionhotprobe` 双主题均 exit 0。重入起点差异约 `0.08 DIP`，热取消后保持 `72/Opacity=1/X=0`，禁用重入 `270 DIP`。
+- 证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R00-03-MOTION-LIFECYCLE-20260916.md`。受控 Window 不等价真实 Playnite/Windows 偏好通知、鼠标键盘快速输入、ETW 或物理呈现帧；下一执行点为 R00-04 搜索基准真实性。
+
 ## 2026-09-15 Q18-03 动效当前值接管受控证据
 
 - `bdb99b9` 新增 `RenderHarness.exe motionreentryprobe` 和 `UiFinesseRound2ControlSourceTests` 门禁；clean-tree 报告绑定完整 SHA、`WorkingTreeClean=True`、双主题、900×640 DIP 和受控 `GscMotionNormal=700ms` 审计覆盖。

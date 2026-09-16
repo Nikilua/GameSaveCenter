@@ -6,7 +6,13 @@
 
 - 当前工作区为 `codex/ui-finesse-round2`，最新实现提交 `a95e900`，非等距渐变负例测试补充为 `e216e9b`；没有合并 `main` 的旧实现。R00-01 按整组 chrome opacity 与真实父背景计算，保留 `GradientStop.Offset` 并覆盖 focus/hover/pressed 组合；R00-02 对已有组合变换递归复用 ScaleTransform，冻结树只在第一次接入时克隆。
 - 当前 SHA `e216e9bf0d2ed18adced62936d6897b8d84f0d58` 的 Release 定向 Playnite WPF 测试为 `5/5`，RenderHarness 双主题 `finesseprobe` 均 `WorkingTreeClean=True`、`SemanticButtonContrast samples=88`、`violations=0`、`finesse-fixture OK`。证据见 [`R00-01-02-CONTRAST-SCALE-20260916.md`](../design/reviews/ui-finesse-round3-20260915/evidence/R00-01-02-CONTRAST-SCALE-20260916.md)。
-- 这些是受控 STA/offscreen logical DIP 证据，不替代真实 Playnite 鼠标按压、IME、物理 DPI、屏幕呈现帧或可变 Freezable 跨实例所有权；下一项为 R00-03 完成/取消/卸载/重入 Dispatcher 复核，之后处理 R00-04 搜索基准。
+- 这些是受控 STA/offscreen logical DIP 证据，不替代真实 Playnite 鼠标按压、IME、物理 DPI、屏幕呈现帧或可变 Freezable 跨实例所有权；R00-03 已补完成/取消/卸载/重入 Dispatcher 复核，下一项为 R00-04 搜索基准。
+
+## 当前第三轮阶段：R00-03 动效生命周期行为收口
+
+- `4414f05` 的生产终态实现通过 `cda168c` 新增行为测试：真实 WPF Window/Dispatcher 上完成后清钟并保持 `Opacity=1/Y=0`，中途重入从当前有效值接续，活动侧栏切换 reduced motion 后立即归一，等待旧时长不会晚写覆盖；完成与卸载回归继续覆盖。
+- 当前 clean-tree `cda168ca410bee0a4b0416664452010c9246db96` 的 R00-03 定向测试为 `5/5`；`motionreentryprobe` 与 `motionhotprobe` 双主题均 exit 0，终态/取消态分别为 `270/X=0` 与 `72/Opacity=1/X=0`，证据见 [`R00-03-MOTION-LIFECYCLE-20260916.md`](../design/reviews/ui-finesse-round3-20260915/evidence/R00-03-MOTION-LIFECYCLE-20260916.md)。
+- 仍未宣称真实 Playnite 输入、Windows 偏好通知、ETW、物理 DPI/呈现帧；下一可执行任务是 R00-04。
 
 ## 当前最近阶段：Q18-03 动效当前值接管受控证据
 

@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-16 R00-03 动效完成态与生命周期行为复核
+
+- 保留 `4414f05` 已有的完成回调和卸载清理，在 `cda168c` 增加真实 WPF Window/Dispatcher 行为测试：完成、当前值重入、reduced-motion 活动取消、卸载和旧时钟晚写均覆盖；不重复造新的动效体系。
+- Release 单节点构建 `0/0`，R00-03 定向 `5/5`；clean-tree `motionreentryprobe`、`motionhotprobe` 双主题均 exit 0。重入 Light/Dark 的中断→立即值差异为 `0.08/0.07 DIP`，热取消归一到 `72/1/0`，关闭动效后重入 `270/0`。
+- 证据同步到 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R00-03-MOTION-LIFECYCLE-20260916.md`；受控窗口不替代真实 Playnite 输入、Windows 偏好通知、物理 DPI、ETW 或屏幕帧。下一可执行任务 R00-04。
+
 ## 2026-09-16 R00-01/R00-02 按压合成与组合缩放
 
 - 在 `codex/ui-finesse-round2` 完成 `a95e900`（`修正按压合成并复用组合缩放`），没有把 `main` 的旧实现带入；`e216e9b`（`补强非等距渐变负例`）补足了 offset 行为负例。
