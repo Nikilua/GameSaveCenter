@@ -147,6 +147,70 @@ public sealed class UiFinesseFoundationTests
     }
 
     [Fact]
+    public void EntranceMotionReentryKeepsTheCurrentDispatcherValue()
+    {
+        Exception? exception = null;
+        var thread = new Thread(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var host = new Border
+                {
+                    Width = 40,
+                    Height = 40,
+                    Background = Brushes.Transparent
+                };
+                host.Resources["GscMotionNormal"] = new Duration(TimeSpan.FromMilliseconds(220));
+                host.Resources["GscMotionSlow"] = new Duration(TimeSpan.FromMilliseconds(260));
+                window = new Window
+                {
+                    Content = host,
+                    Width = 80,
+                    Height = 80,
+                    ShowInTaskbar = false,
+                    ShowActivated = false,
+                    WindowStyle = WindowStyle.None,
+                    Opacity = 0.01
+                };
+                window.Show();
+                window.UpdateLayout();
+
+                var translate = GscMotion.GetMutableTranslateTransform(host);
+                GscMotion.AnimateEntrance(host, 12);
+                PumpDispatcher(TimeSpan.FromMilliseconds(55));
+                var interruptedY = translate.Y;
+                var interruptedOpacity = host.Opacity;
+                Assert.True(DependencyPropertyHelper.GetValueSource(translate, TranslateTransform.YProperty).IsAnimated);
+                Assert.True(DependencyPropertyHelper.GetValueSource(host, UIElement.OpacityProperty).IsAnimated);
+
+                GscMotion.AnimateEntrance(host, 24);
+                Assert.InRange(Math.Abs(translate.Y - interruptedY), 0, 0.8);
+                Assert.InRange(Math.Abs(host.Opacity - interruptedOpacity), 0, 0.08);
+
+                PumpDispatcher(TimeSpan.FromMilliseconds(420));
+                Assert.False(DependencyPropertyHelper.GetValueSource(translate, TranslateTransform.YProperty).IsAnimated);
+                Assert.False(DependencyPropertyHelper.GetValueSource(host, UIElement.OpacityProperty).IsAnimated);
+                Assert.Equal(0, translate.Y);
+                Assert.Equal(1, host.Opacity);
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+    }
+
+    [Fact]
     public void ScaleTransformIsReusedInAStableCompositeTree()
     {
         Exception? exception = null;

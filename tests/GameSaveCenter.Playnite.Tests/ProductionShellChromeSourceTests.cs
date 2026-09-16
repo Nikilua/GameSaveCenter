@@ -194,6 +194,76 @@ public sealed class ProductionShellChromeSourceTests
     }
 
     [Fact]
+    public void ReducedMotionCancelsAnActiveSidebarTransitionWithoutLateClockWrites()
+    {
+        Exception? exception = null;
+        var motionEnabled = true;
+
+        var thread = new Thread(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var shell = new GameSaveCenter.Playnite.Views.AcrylicProductionShellView
+                {
+                    MotionEnabledProvider = () => motionEnabled,
+                    SidebarCollapsedProvider = () => false
+                };
+                shell.Resources["GscMotionNormal"] = new Duration(TimeSpan.FromSeconds(1));
+                window = new Window
+                {
+                    Content = shell,
+                    Width = 900,
+                    Height = 640,
+                    ShowInTaskbar = false,
+                    ShowActivated = false,
+                    WindowStyle = WindowStyle.None,
+                    Opacity = 0.01
+                };
+                window.Show();
+                window.UpdateLayout();
+                shell.UpdateLayout();
+
+                var layer = Assert.IsAssignableFrom<FrameworkElement>(shell.FindName("SidebarContentLayer"));
+                shell.SidebarCollapseButtonForAudit.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                PumpDispatcher(TimeSpan.FromMilliseconds(55));
+                Assert.True(shell.SidebarTransitionRunningForAudit);
+                Assert.True(DependencyPropertyHelper.GetValueSource(layer, UIElement.OpacityProperty).IsAnimated);
+
+                motionEnabled = false;
+                shell.NormalizeMotionIfDisabled();
+                Assert.False(shell.SidebarTransitionRunningForAudit);
+                Assert.Equal(72d, shell.SidebarWidthForAudit);
+                Assert.False(DependencyPropertyHelper.GetValueSource(layer, UIElement.OpacityProperty).IsAnimated);
+                Assert.Equal(1, layer.Opacity);
+                var translate = Assert.IsType<TranslateTransform>(layer.RenderTransform);
+                Assert.False(DependencyPropertyHelper.GetValueSource(translate, TranslateTransform.XProperty).IsAnimated);
+                Assert.Equal(0, translate.X);
+
+                PumpDispatcher(TimeSpan.FromMilliseconds(1100));
+                Assert.False(shell.SidebarTransitionRunningForAudit);
+                Assert.Equal(72d, shell.SidebarWidthForAudit);
+                Assert.Equal(1, layer.Opacity);
+                Assert.Equal(0, translate.X);
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+    }
+
+    [Fact]
     public void SidebarTransitionReleasesClocksOnCompletionAndUnloadInAnActualWpfWindow()
     {
         Exception? exception = null;
