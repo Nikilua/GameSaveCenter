@@ -20,9 +20,9 @@ public partial class UiFrameworkProbeView : UserControl
         ProbeRows = new ObservableCollection<ProbeRow>
         {
             new ProbeRow("赛博朋克 2077：往日之影 / Cyberpunk 2077", "1,024 / 99,999", "已完成", @"D:\Games\中文目录\Cyberpunk 2077\一个非常长的备份文件名.zip"),
-            new ProbeRow("最终幻想 XIV：黄金的遗产 / FINAL FANTASY XIV", "9% → 100%", "需关注", "FLING_DOWNLOAD_FORBIDDEN · 可复制完整诊断"),
-            new ProbeRow("NieR Replicant / Pokémon / 龍が如く", "128 KB", "失败", "备份完成，云端校验失败。可以稍后重试。"),
-            new ProbeRow("罕见字：𠮷；中文标点，。！？；：「」《》", "1.25 GB", "已完成", "2026-09-13 09:41 · 00:09 / 12:59")
+            new ProbeRow("最终幻想 XIV：黄金的遗产 / FINAL FANTASY XIV", "-9,999,999,999", "需关注", "FLING_DOWNLOAD_FORBIDDEN · 可复制完整诊断"),
+            new ProbeRow("NieR Replicant / Pokémon / 龍が如く", "512 GiB", "失败", "备份完成，云端校验失败。可以稍后重试。"),
+            new ProbeRow("罕见字：𠮷；中文标点，。！？；：「」《》", "1.25 TiB", "已完成", "2026-09-13 09:41 · 00:09 / 12:59")
         };
         if (includeSemanticEdgeCases)
         {

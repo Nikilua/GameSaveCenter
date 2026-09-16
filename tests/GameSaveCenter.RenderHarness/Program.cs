@@ -2725,6 +2725,7 @@ public static class Program
 
             var path = Path.Combine(outputRoot, "ui-finesse-fixture.png");
             SavePng(host, path);
+            AppendNumericCellReadabilityEvidence(report, host, view);
             AppendEffectiveFixtureEvidence(report, host);
             AppendControlSurfaceEvidence(report, host);
             AppendSemanticContrastEvidence(report, palette, view);
@@ -2756,6 +2757,112 @@ public static class Program
             Console.Error.WriteLine(report.ToString());
             return 1;
         }
+    }
+
+    private static void AppendNumericCellReadabilityEvidence(
+        StringBuilder report,
+        Grid host,
+        GameSaveCenter.Playnite.Views.Development.UiFrameworkProbeView view)
+    {
+        var grid = FindVisualChildren<DataGrid>(host)
+            .SingleOrDefault(candidate => AutomationProperties.GetName(candidate) == "校对数据表");
+        if (grid == null)
+            throw new InvalidOperationException("Numeric readability fixture requires the realized ProbeGrid.");
+
+        var expectedValues = view.ProbeRows.Select(row => row.Value).ToArray();
+        var measurements = NumericCellReadability.Measure(grid);
+        var missingValues = expectedValues
+            .Except(measurements.Select(measurement => measurement.Text), StringComparer.Ordinal)
+            .ToArray();
+        var readable = measurements.Count == expectedValues.Length
+            && missingValues.Length == 0
+            && measurements.All(measurement => measurement.IsReadable);
+
+        report.AppendLine(
+            $"NumericReadability: expected={expectedValues.Length} realized={measurements.Count} "
+            + $"horizontalFit={measurements.Count(measurement => measurement.HorizontalFit)} "
+            + $"verticalFit={measurements.Count(measurement => measurement.VerticalFit)} "
+            + $"allReadable={readable}");
+        foreach (var measurement in measurements)
+        {
+            report.AppendLine(
+                $"  NumericCell row={measurement.RowIndex} text=\"{measurement.Text}\" "
+                + $"textWidth={measurement.TextWidth:0.##} availableWidth={measurement.AvailableWidth:0.##} "
+                + $"textHeight={measurement.TextHeight:0.##} cellHeight={measurement.CellHeight:0.##} "
+                + $"wrapping={measurement.Wrapping} trimming={measurement.Trimming} "
+                + $"horizontalFit={measurement.HorizontalFit} verticalFit={measurement.VerticalFit}");
+        }
+
+        if (!readable)
+        {
+            var missing = missingValues.Length == 0 ? string.Empty : $" missing={string.Join(" | ", missingValues)}";
+            throw new InvalidOperationException("Numeric cells are not fully readable." + missing);
+        }
+
+        var negativeHost = new Grid
+        {
+            Width = 180,
+            Height = 110,
+            Background = host.Background,
+            ClipToBounds = true
+        };
+        var negativeGrid = new DataGrid
+        {
+            Width = 180,
+            Height = 110,
+            AutoGenerateColumns = false,
+            CanUserAddRows = false,
+            HeadersVisibility = DataGridHeadersVisibility.Column,
+            MinColumnWidth = 0,
+            RowHeight = 52,
+            ColumnHeaderHeight = 42,
+            ItemsSource = new[]
+            {
+                new GameSaveCenter.Playnite.Views.Development.UiFrameworkProbeView.ProbeRow(
+                    "负例",
+                    "-99,999,999,999,999",
+                    "失败",
+                    "列宽不足")
+            }
+        };
+        negativeGrid.Columns.Add(new DataGridTextColumn
+        {
+            Header = "数值",
+            Binding = new Binding("Value"),
+            Width = 56,
+            MinWidth = 0,
+            ElementStyle = CreateNumericCellStyle(view)
+        });
+        negativeHost.Children.Add(negativeGrid);
+        negativeHost.Measure(new Size(negativeHost.Width, negativeHost.Height));
+        negativeHost.Arrange(new Rect(0, 0, negativeHost.Width, negativeHost.Height));
+        negativeHost.UpdateLayout();
+
+        var negativeMeasurement = NumericCellReadability.Measure(negativeGrid).SingleOrDefault();
+        var negativeMustFail = negativeMeasurement != null
+            && negativeMeasurement.VerticalFit
+            && !negativeMeasurement.HorizontalFit;
+        report.AppendLine(
+            negativeMeasurement == null
+                ? "NumericNegativeFixture: missing realized cell must-fail=failed"
+                : $"NumericNegativeFixture: text=\"{negativeMeasurement.Text}\" "
+                    + $"textWidth={negativeMeasurement.TextWidth:0.##} availableWidth={negativeMeasurement.AvailableWidth:0.##} "
+                    + $"textHeight={negativeMeasurement.TextHeight:0.##} cellHeight={negativeMeasurement.CellHeight:0.##} "
+                    + $"horizontalFit={negativeMeasurement.HorizontalFit} verticalFit={negativeMeasurement.VerticalFit} "
+                    + $"must-fail={(negativeMustFail ? "passed" : "failed")}");
+        if (!negativeMustFail)
+            throw new InvalidOperationException("Numeric negative fixture did not expose horizontal clipping while row height remained valid.");
+    }
+
+    private static Style CreateNumericCellStyle(FrameworkElement resourceScope)
+    {
+        var style = new Style(
+            typeof(TextBlock),
+            resourceScope.FindResource("GscTypographyNumeric") as Style);
+        style.Setters.Add(new Setter(TextBlock.HorizontalAlignmentProperty, HorizontalAlignment.Left));
+        style.Setters.Add(new Setter(TextBlock.TextWrappingProperty, TextWrapping.NoWrap));
+        style.Setters.Add(new Setter(TextBlock.TextTrimmingProperty, TextTrimming.None));
+        return style;
     }
 
     private static void AppendSortedHeaderFixtureEvidence(StringBuilder report, Grid host)

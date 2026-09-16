@@ -124,7 +124,15 @@
                         <DataGrid x:Name="ProbeGrid" Grid.Row="1" Grid.ColumnSpan="3" Margin="0,12,0,0" Style="{StaticResource ProbeDataGrid}" AutomationProperties.Name="校对数据表">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="名称" Binding="{Binding Name}" Width="2*"/>
-                                <DataGridTextColumn Header="数值" Binding="{Binding Value}" Width="110"/>
+                                <DataGridTextColumn Header="数值" Binding="{Binding Value}" Width="160" MinWidth="160">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource GscTypographyNumeric}">
+                                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                                            <Setter Property="TextWrapping" Value="NoWrap"/>
+                                            <Setter Property="TextTrimming" Value="None"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
                                 <DataGridTextColumn Header="状态" Binding="{Binding State}" Width="110"/>
                                 <DataGridTextColumn Header="路径/诊断" Binding="{Binding Detail}" Width="3*"/>
                             </DataGrid.Columns>
