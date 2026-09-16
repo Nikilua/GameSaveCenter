@@ -94,36 +94,48 @@ namespace GameSaveCenter.Playnite.Tests
 
             timer.Restart();
             picker.SearchText = "Game 1999";
-            await WaitForFilteredCountAsync(picker, 1, timer);
+            Assert.True(await WaitForFilteredCountAsync(picker, 1, TimeSpan.FromSeconds(5)));
             timer.Stop();
             var searchRefreshMs = timer.ElapsedMilliseconds;
 
             timer.Restart();
             picker.SearchText = "";
-            await WaitForFilteredCountAsync(picker, 2000, timer);
+            Assert.True(await WaitForFilteredCountAsync(picker, 2000, TimeSpan.FromSeconds(5)));
             timer.Stop();
             var searchClearMs = timer.ElapsedMilliseconds;
 
             // Q25-01 requires a repeatable interaction sample rather than a single
-            // average. Warm the filter path first, then alternate a narrow and a full
-            // result so every sample represents a real input-to-feedback transition.
+            // average. Warm the filter path first, then use a new matching game name
+            // for every formal sample so each input changes the visible result set.
             for (var warmup = 0; warmup < 5; warmup++)
             {
-                var query = warmup % 2 == 0 ? "Game 1999" : "";
+                var query = warmup % 2 == 0 ? "" : "Game 1999";
                 picker.SearchText = query;
-                await WaitForFilteredCountAsync(picker, query.Length == 0 ? 2000 : 1, timer);
+                Assert.True(await WaitForFilteredCountAsync(picker, query.Length == 0 ? 2000 : 1, TimeSpan.FromSeconds(5)));
             }
 
             var searchSamples = new List<long>(30);
+            var searchQueries = new List<string>(30);
+            var previousVisibleIds = picker.ItemsView.Cast<GamePickerItem>().Select(item => item.PlayniteId).ToArray();
+            var changedResultSets = 0;
             for (var sample = 0; sample < 30; sample++)
             {
-                var query = sample % 2 == 0 ? "Game 1999" : "";
+                var query = "Game " + (1999 - sample);
+                searchQueries.Add(query);
                 timer.Restart();
                 picker.SearchText = query;
-                await WaitForFilteredCountAsync(picker, query.Length == 0 ? 2000 : 1, timer);
+                Assert.True(await WaitForFilteredIdsAsync(picker, new[] { query }, TimeSpan.FromSeconds(5)),
+                    "FilteredCount did not reach the expected result for " + query + ".");
                 timer.Stop();
                 searchSamples.Add(timer.ElapsedMilliseconds);
+
+                var visibleIds = picker.ItemsView.Cast<GamePickerItem>().Select(item => item.PlayniteId).ToArray();
+                if (!visibleIds.SequenceEqual(previousVisibleIds))
+                    changedResultSets++;
+                previousVisibleIds = visibleIds;
             }
+
+            Assert.Equal(30, changedResultSets);
 
             var searchP50Ms = Percentile(searchSamples, 0.50);
             var searchP95Ms = Percentile(searchSamples, 0.95);
@@ -172,8 +184,24 @@ namespace GameSaveCenter.Playnite.Tests
                 $"search_p50_ms={searchP50Ms}\n" +
                 $"search_p95_ms={searchP95Ms}\n" +
                 $"search_max_ms={searchMaxMs}\n" +
+                $"search_queries={string.Join("|", searchQueries)}\n" +
+                $"search_samples_ms={string.Join(",", searchSamples)}\n" +
+                $"search_changed_result_sets={changedResultSets}\n" +
                 $"task_first_replace_ms={taskFirstReplaceMs}\n" +
                 $"task_unchanged_replace_ms={taskUnchangedReplaceMs}\n");
+        }
+
+        [Fact]
+        public async Task GamePickerBenchmarkWaitTimesOutOnAnImpossibleExpectedCount()
+        {
+            using var picker = new GamePickerViewModel();
+            picker.SetItems(new[] { Game("Game 1") });
+
+            var timer = Stopwatch.StartNew();
+            var reached = await WaitForFilteredCountAsync(picker, 0, TimeSpan.FromMilliseconds(75));
+
+            Assert.False(reached);
+            Assert.InRange(timer.ElapsedMilliseconds, 0, 1000);
         }
 
         private static long Percentile(IReadOnlyList<long> samples, double percentile)
@@ -184,11 +212,27 @@ namespace GameSaveCenter.Playnite.Tests
             return ordered[index];
         }
 
-        private static async Task WaitForFilteredCountAsync(GamePickerViewModel picker, int expected, Stopwatch timer)
+        private static async Task<bool> WaitForFilteredCountAsync(GamePickerViewModel picker, int expected, TimeSpan timeout)
         {
-            while (picker.FilteredCount != expected && timer.ElapsedMilliseconds < 5000)
+            var timeoutTimer = Stopwatch.StartNew();
+            while (picker.FilteredCount != expected && timeoutTimer.Elapsed < timeout)
                 await Task.Delay(10);
-            Assert.Equal(expected, picker.FilteredCount);
+            return picker.FilteredCount == expected;
+        }
+
+        private static async Task<bool> WaitForFilteredIdsAsync(GamePickerViewModel picker, IReadOnlyList<string> expectedIds, TimeSpan timeout)
+        {
+            var timeoutTimer = Stopwatch.StartNew();
+            while (timeoutTimer.Elapsed < timeout)
+            {
+                var visibleIds = picker.ItemsView.Cast<GamePickerItem>().Select(item => item.PlayniteId).ToArray();
+                if (visibleIds.SequenceEqual(expectedIds))
+                    return true;
+
+                await Task.Delay(10);
+            }
+
+            return picker.ItemsView.Cast<GamePickerItem>().Select(item => item.PlayniteId).SequenceEqual(expectedIds);
         }
 
         private static GameStatusDto Game(string name)
