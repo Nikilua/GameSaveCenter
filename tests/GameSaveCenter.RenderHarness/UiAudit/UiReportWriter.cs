@@ -16,6 +16,7 @@ public static class UiReportWriter
         WriteLayoutReport(result, outputRoot);
         WriteAuditSummary(result, outputRoot);
         WriteFidelityMatrix(result, outputRoot);
+        WriteEvidenceIndex(result, outputRoot);
         WriteReadme(result, outputRoot);
 
         File.WriteAllText(
@@ -250,6 +251,7 @@ public static class UiReportWriter
         builder.AppendLine($"- 条件 UI：{result.Manifest.Summary.ConditionalUiCount}");
         builder.AppendLine($"- 运行时快照数量：{result.Snapshots.Count}");
         builder.AppendLine($"- 运行时警告数量：{result.Warnings.Count}");
+        builder.AppendLine($"- 具体证据索引：`EVIDENCE_INDEX.md`（{UiEvidenceIndexBuilder.RequiredSampleCount} 个控件/状态样本）");
         var fidelityCodes = new[] { "TEXT_FIT", "HEADER_CONTENT_FIDELITY", "ACTIVE_TAB_VISIBILITY", "CONTROL_USABILITY_GEOMETRY", "ESSENTIAL_COLUMN_VISIBILITY", "SHORT_SEMANTIC_VALUE_TRIMMING", "INTERACTIVE_INSPECTOR_USABILITY" };
         builder.AppendLine($"- Fidelity 警告数量：{result.Warnings.Count(warning => fidelityCodes.Contains(warning.Code))}");
         builder.AppendLine($"- 失败路由：{result.FailedRoutes.Count}");
@@ -285,6 +287,11 @@ public static class UiReportWriter
         }
 
         WriteFile(outputRoot, "AUDIT_SUMMARY.md", builder.ToString());
+    }
+
+    private static void WriteEvidenceIndex(UiAuditRunResult result, string outputRoot)
+    {
+        WriteFile(outputRoot, "EVIDENCE_INDEX.md", UiEvidenceIndexBuilder.Build(result));
     }
 
     private static void WriteFidelityMatrix(UiAuditRunResult result, string outputRoot)
@@ -340,6 +347,7 @@ public static class UiReportWriter
         builder.AppendLine("- `UI_FIDELITY_MATRIX.md`：每个入口在截图中是否可见的逐项对照。");
         builder.AppendLine("- `LAYOUT_REPORT.md`：运行时滚动容器和 DataGrid 几何。");
         builder.AppendLine("- `AUDIT_SUMMARY.md`：自动检测到的高/中/低风险与失败路由。");
+        builder.AppendLine("- `EVIDENCE_INDEX.md`：20 个具体控件/状态样本的结果入口、代码身份、样本条件和未验边界；用于抽查，不把一条聚合通过文案扩展成全量签收。");
         builder.AppendLine("- `screenshots/`：窗口视口截图；`-full-*.png` 是从顶到底拼接的整页滚动截图；`-scroll-*.png` 是表格/列表内部滚动内容的完整拼接。");
         builder.AppendLine("- `visual-tree/` / `layout/`：按页面、Tab、窗口尺寸导出的 JSON。");
         builder.AppendLine();
