@@ -76,7 +76,11 @@ public sealed class UiAuditSourceTests
         Assert.Contains("mediaInboxHistoryOpen", codeBehind);
         Assert.Contains("MediaInboxSelectionDetails", xaml);
         Assert.Contains("MediaInboxNoSelectionHint", xaml);
-        Assert.Contains("MediaInboxGrid.MinHeight = 212d", codeBehind);
+        Assert.Contains("var readableGridHeight = GetMediaInboxReadableGridHeight();", codeBehind);
+        Assert.Contains("MediaInboxGrid.MinHeight = readableGridHeight", codeBehind);
+        Assert.Contains("MediaInboxLayout.MinHeight = readableFrameHeight", codeBehind);
+        Assert.Contains("MediaInboxTableFrame.MinHeight = readableFrameHeight", codeBehind);
+        Assert.Contains("MediaInboxGeometry.CalculateReadableGridHeight", codeBehind);
         Assert.Contains("MediaInboxGrid.Height = double.NaN", codeBehind);
         Assert.Contains("var compactInbox = compactHeight;", codeBehind);
         Assert.Contains("ScrollBarVisibility.Disabled", codeBehind);

@@ -946,6 +946,8 @@ public static class UiLayoutAnalyzer
             .FirstOrDefault(candidate => candidate.Name == "MediaInboxGrid");
         var actionRow = FindVisualChildren<FrameworkElement>(root)
             .FirstOrDefault(element => element.Name == "MediaInboxBatchActionRow");
+        var tableFrame = FindVisualChildren<Border>(root)
+            .FirstOrDefault(element => element.Name == "MediaInboxTableFrame");
 
         if (pageScroller == null)
         {
@@ -963,15 +965,98 @@ public static class UiLayoutAnalyzer
             var visibleBounds = GetVisibleBounds(grid, visualRoot);
             var clippedByPageScroll = IsClippedOnlyByAncestor(grid, visualRoot, pageScroller);
             var hasPageAccess = clippedByPageScroll && pageScroller != null && pageScroller.ScrollableHeight > 0.5;
-            if (grid.ActualHeight < 212)
+
+            var headerPresenter = FindVisualChildren<DataGridColumnHeadersPresenter>(grid)
+                .FirstOrDefault(candidate => candidate.ActualHeight > 0);
+            var headerBounds = headerPresenter == null
+                ? Rect.Empty
+                : GetRootBounds(headerPresenter, visualRoot);
+            var visibleHeaderBounds = headerPresenter == null
+                ? Rect.Empty
+                : GetVisibleBounds(headerPresenter, visualRoot);
+            var headerHeight = headerPresenter?.ActualHeight > 0
+                ? headerPresenter.ActualHeight
+                : grid.ColumnHeaderHeight > 0
+                    ? grid.ColumnHeaderHeight
+                    : MediaInboxGeometry.DefaultHeaderHeight;
+            var realizedRows = FindVisualChildren<DataGridRow>(grid)
+                .Where(row => row.Visibility == Visibility.Visible && row.ActualHeight > 0)
+                .ToList();
+            var rowHeight = realizedRows.Select(row => row.ActualHeight).FirstOrDefault();
+            if (rowHeight <= 0)
+                rowHeight = MediaInboxGeometry.DefaultRowHeight;
+            var horizontalScrollBar = FindVisualChildren<ScrollBar>(grid)
+                .FirstOrDefault(scrollBar => scrollBar.Orientation == Orientation.Horizontal
+                    && scrollBar.Visibility == Visibility.Visible
+                    && scrollBar.ActualHeight > 0);
+            var horizontalScrollBarHeight = horizontalScrollBar?.ActualHeight ?? 0;
+            var fullyVisibleRows = realizedRows.Count(row =>
             {
-                AddGeometryWarning(report, "PRIMARY_VIEWPORT_TOO_SHORT", "HIGH", $"MediaInboxGrid 视口 {grid.ActualHeight:0} DIP，不足表头加约四行可读内容");
+                var rowBounds = GetRootBounds(row, visualRoot);
+                var visibleRowBounds = GetVisibleBounds(row, visualRoot);
+                return visibleRowBounds.Height > 0
+                    && visibleRowBounds.Height + 0.5 >= rowBounds.Height;
+            });
+            var requiredGridHeight = MediaInboxGeometry.CalculateReadableGridHeight(
+                headerHeight,
+                rowHeight,
+                horizontalScrollBarHeight);
+            var framePaddingHeight = tableFrame == null
+                ? 0
+                : Math.Max(0, tableFrame.Padding.Top) + Math.Max(0, tableFrame.Padding.Bottom);
+            var frameBorderHeight = tableFrame == null
+                ? 0
+                : Math.Max(0, tableFrame.BorderThickness.Top) + Math.Max(0, tableFrame.BorderThickness.Bottom);
+            var requiredFrameHeight = MediaInboxGeometry.CalculateReadableFrameHeight(
+                requiredGridHeight,
+                tableFrame?.Padding ?? new Thickness(),
+                tableFrame?.BorderThickness ?? new Thickness());
+            var headerFullyVisible = headerPresenter != null
+                && visibleHeaderBounds.Height > 0
+                && visibleHeaderBounds.Height + 0.5 >= headerBounds.Height;
+            var isReadable = grid.Items.Count == 0
+                || (headerFullyVisible && fullyVisibleRows >= MediaInboxGeometry.MinimumCompleteRows);
+
+            report.MediaInboxGeometry = new UiRuntimeMediaInboxGeometry
+            {
+                GridLayoutHeight = Math.Round(gridBounds.Height, 2),
+                GridVisibleHeight = Math.Round(visibleBounds.Height, 2),
+                HeaderHeight = Math.Round(headerHeight, 2),
+                HeaderVisibleHeight = Math.Round(visibleHeaderBounds.Height, 2),
+                HeaderFullyVisible = headerFullyVisible,
+                RowHeight = Math.Round(rowHeight, 2),
+                RealizedRowCount = realizedRows.Count,
+                FullyVisibleRowCount = fullyVisibleRows,
+                RequiredCompleteRows = MediaInboxGeometry.MinimumCompleteRows,
+                HorizontalScrollBarHeight = Math.Round(horizontalScrollBarHeight, 2),
+                FramePaddingHeight = Math.Round(framePaddingHeight, 2),
+                FrameBorderHeight = Math.Round(frameBorderHeight, 2),
+                RequiredGridHeight = Math.Round(requiredGridHeight, 2),
+                RequiredFrameHeight = Math.Round(requiredFrameHeight, 2),
+                GridClippedByPageScroll = clippedByPageScroll,
+                PageScrollAvailable = hasPageAccess,
+                Status = grid.Items.Count == 0
+                    ? "empty-or-overlay"
+                    : isReadable
+                        ? "readable"
+                        : hasPageAccess
+                            ? "short-window-page-fallback"
+                            : "unreachable-or-too-short"
+            };
+
+            if (!isReadable && !hasPageAccess)
+            {
+                AddGeometryWarning(
+                    report,
+                    "PRIMARY_VIEWPORT_TOO_SHORT",
+                    "HIGH",
+                    $"MediaInboxGrid 有 {grid.Items.Count} 项，但有效裁剪区域只有表头完整={headerFullyVisible}、完整行={fullyVisibleRows}/{MediaInboxGeometry.MinimumCompleteRows}；layout={gridBounds.Height:0} DIP，要求至少 {requiredGridHeight:0} DIP");
             }
             if (visibleBounds.Height + 0.5 < gridBounds.Height && !hasPageAccess)
             {
-                AddGeometryWarning(report, "PRIMARY_VIEWPORT_UNREACHABLE", "HIGH", $"MediaInboxGrid 可见交集 {visibleBounds.Width:0}x{visibleBounds.Height:0} / 布局 {gridBounds.Width:0}x{gridBounds.Height:0}，裁剪祖先不可滚动");
+                AddGeometryWarning(report, "PRIMARY_VIEWPORT_UNREACHABLE", "HIGH", $"MediaInboxGrid 可见交集 {visibleBounds.Width:0}x{visibleBounds.Height:0} / 布局 {gridBounds.Width:0}x{gridBounds.Height:0}，裁剪祖先不可滚动；完整行={fullyVisibleRows}/{MediaInboxGeometry.MinimumCompleteRows}");
             }
-            else if (visibleBounds.Height + 0.5 < gridBounds.Height)
+            else if (hasPageAccess && (!isReadable || visibleBounds.Height + 0.5 < gridBounds.Height))
             {
                 report.Warnings.Add(new UiAuditWarning
                 {
@@ -980,7 +1065,7 @@ public static class UiLayoutAnalyzer
                     RouteId = report.RouteId,
                     Tab = report.TabHeader,
                     SizeKey = report.SizeKey,
-                    Message = $"MediaInboxGrid 超出首屏，但可通过 MediaInboxPageScrollViewer 滚动到完整表格：visible={visibleBounds.Height:0} / layout={gridBounds.Height:0}"
+                    Message = $"MediaInboxGrid 当前有效裁剪区域为表头完整={headerFullyVisible}、完整行={fullyVisibleRows}/{MediaInboxGeometry.MinimumCompleteRows}，可通过 MediaInboxPageScrollViewer 滚动到完整表格：visible={visibleBounds.Height:0} / layout={gridBounds.Height:0}"
                 });
             }
         }

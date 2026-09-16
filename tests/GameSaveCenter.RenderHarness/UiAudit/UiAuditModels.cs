@@ -196,6 +196,7 @@ public sealed class UiLayoutReport
     public List<UiRuntimeDataGrid> DataGrids { get; } = new List<UiRuntimeDataGrid>();
     public List<UiRuntimeListBox> ListBoxes { get; } = new List<UiRuntimeListBox>();
     public List<UiRuntimeToolbar> Toolbars { get; } = new List<UiRuntimeToolbar>();
+    public UiRuntimeMediaInboxGeometry? MediaInboxGeometry { get; set; }
     public List<UiAuditWarning> Warnings { get; } = new List<UiAuditWarning>();
 }
 
@@ -236,6 +237,27 @@ public sealed class UiRuntimeDataGrid
     public string Virtualization { get; set; } = string.Empty;
     public List<UiRuntimeDataGridColumn> Columns { get; } = new List<UiRuntimeDataGridColumn>();
     public List<string> Warnings { get; } = new List<string>();
+}
+
+public sealed class UiRuntimeMediaInboxGeometry
+{
+    public double GridLayoutHeight { get; set; }
+    public double GridVisibleHeight { get; set; }
+    public double HeaderHeight { get; set; }
+    public double HeaderVisibleHeight { get; set; }
+    public bool HeaderFullyVisible { get; set; }
+    public double RowHeight { get; set; }
+    public int RealizedRowCount { get; set; }
+    public int FullyVisibleRowCount { get; set; }
+    public int RequiredCompleteRows { get; set; }
+    public double HorizontalScrollBarHeight { get; set; }
+    public double FramePaddingHeight { get; set; }
+    public double FrameBorderHeight { get; set; }
+    public double RequiredGridHeight { get; set; }
+    public double RequiredFrameHeight { get; set; }
+    public bool GridClippedByPageScroll { get; set; }
+    public bool PageScrollAvailable { get; set; }
+    public string Status { get; set; } = string.Empty;
 }
 
 public sealed class UiRuntimeDataGridColumn

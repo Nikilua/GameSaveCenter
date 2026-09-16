@@ -188,6 +188,18 @@ public static class UiReportWriter
                     foreach (var warning in grid.Warnings.Distinct())
                         builder.AppendLine("  - " + warning);
                 }
+                if (report.MediaInboxGeometry != null)
+                {
+                    var geometry = report.MediaInboxGeometry;
+                    builder.AppendLine(
+                        $"- MediaInbox 几何：grid visible/layout={geometry.GridVisibleHeight:0.##}/{geometry.GridLayoutHeight:0.##} DIP，"
+                        + $"header={geometry.HeaderVisibleHeight:0.##}/{geometry.HeaderHeight:0.##} DIP，"
+                        + $"完整行={geometry.FullyVisibleRowCount}/{geometry.RequiredCompleteRows}，"
+                        + $"row={geometry.RowHeight:0.##} DIP，horizontalBar={geometry.HorizontalScrollBarHeight:0.##} DIP，"
+                        + $"frame padding/border={geometry.FramePaddingHeight:0.##}/{geometry.FrameBorderHeight:0.##} DIP，"
+                        + $"required grid/frame={geometry.RequiredGridHeight:0.##}/{geometry.RequiredFrameHeight:0.##} DIP，"
+                        + $"status={geometry.Status}，pageScroll={geometry.PageScrollAvailable}");
+                }
                 foreach (var list in report.ListBoxes)
                 {
                     builder.AppendLine(

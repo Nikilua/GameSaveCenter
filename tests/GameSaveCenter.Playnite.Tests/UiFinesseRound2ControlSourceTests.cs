@@ -105,9 +105,9 @@ public sealed class UiFinesseRound2ControlSourceTests
         var view = Read("src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml");
 
         Assert.Contains("x:Name=\"MediaInboxPageScrollViewer\"", view);
-        Assert.Contains("x:Name=\"MediaInboxLayout\" Grid.Row=\"1\" MinHeight=\"212\"", view);
+        Assert.Contains("x:Name=\"MediaInboxLayout\" Grid.Row=\"1\" MinHeight=\"0\"", view);
         Assert.Contains("x:Name=\"MediaInboxTableFrame\"", view);
-        Assert.Contains("Padding=\"14,12,14,12\" MinHeight=\"212\"", view);
+        Assert.Contains("Padding=\"14,12,14,12\" MinHeight=\"0\"", view);
         Assert.Contains("x:Name=\"MediaInboxGrid\"", view);
         Assert.Contains("VirtualizingPanel.ScrollUnit=\"Item\"", view);
     }

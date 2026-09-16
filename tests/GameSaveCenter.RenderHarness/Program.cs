@@ -278,6 +278,19 @@ public static class Program
             return stateFixtureExitCode;
         }
 
+        if (args.Length > 0 && args[0].Equals("mediageometryprobe", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "media-geometry-probe");
+            var geometryExitCode = 0;
+            var geometryThread = new Thread(() => { geometryExitCode = RunMediaInboxGeometryProbe(outputRoot); });
+            geometryThread.SetApartmentState(ApartmentState.STA);
+            geometryThread.Start();
+            geometryThread.Join();
+            return geometryExitCode;
+        }
+
         if (args.Length > 0 && args[0].Equals("emptytables", StringComparison.OrdinalIgnoreCase))
         {
             var outputRoot = args.Length > 1
@@ -1422,6 +1435,161 @@ public static class Program
             File.WriteAllText(Path.Combine(outputRoot, "statefixtures-report.txt"), report.ToString());
             Console.Error.WriteLine(ex);
             return 1;
+        }
+    }
+
+    private static int RunMediaInboxGeometryProbe(string outputRoot)
+    {
+        Directory.CreateDirectory(outputRoot);
+        var report = new StringBuilder();
+        report.AppendLine("GameSaveCenter media inbox geometry probe");
+        report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+        report.AppendLine("EvidenceSource: synthetic WPF production view; no Playnite host or real media paths");
+        report.AppendLine("Cases: normal readable viewport, horizontal scrollbar, alternate density, short-window page fallback, intentionally blocked parent");
+        report.AppendLine();
+        var problems = new List<string>();
+
+        try
+        {
+            var app = new Application();
+            app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+            foreach (var (themeName, themeMode) in ThemeModes)
+            {
+                RunMediaInboxGeometryCase(themeName, themeMode, "normal", 760, 600, false, problems, report);
+                RunMediaInboxGeometryCase(themeName, themeMode, "horizontal-scroll", 620, 600, false, problems, report);
+                RunMediaInboxGeometryCase(themeName, themeMode, "alternate-density", 760, 600, false, problems, report, alternateDensity: true);
+                RunMediaInboxGeometryCase(themeName, themeMode, "short-fallback", 760, 340, false, problems, report);
+                RunMediaInboxGeometryCase(themeName, themeMode, "blocked-parent", 760, 340, true, problems, report);
+            }
+
+            report.AppendLine(problems.Count == 0 ? "mediageometryprobe OK" : "mediageometryprobe FAILED");
+            foreach (var problem in problems)
+                report.AppendLine("  PROBLEM " + problem);
+            File.WriteAllText(Path.Combine(outputRoot, "media-geometry-report.txt"), report.ToString());
+            Console.WriteLine(report.ToString());
+            return problems.Count == 0 ? 0 : 1;
+        }
+        catch (Exception ex)
+        {
+            report.AppendLine("mediageometryprobe FAILED");
+            report.AppendLine(ex.ToString());
+            File.WriteAllText(Path.Combine(outputRoot, "media-geometry-report.txt"), report.ToString());
+            Console.Error.WriteLine(ex);
+            return 1;
+        }
+    }
+
+    private static void RunMediaInboxGeometryCase(
+        string themeName,
+        GameSaveCenterThemeMode themeMode,
+        string caseName,
+        double width,
+        double height,
+        bool blockPageScroll,
+        List<string> problems,
+        StringBuilder report,
+        bool alternateDensity = false)
+    {
+        var view = new MediaCenterView { DataContext = new FakeDashboardData(24) };
+        ApplyThemePalette(view, themeMode);
+        var grid = (DataGrid)typeof(MediaCenterView)
+            .GetField("MediaInboxGrid", BindingFlags.Instance | BindingFlags.NonPublic)!
+            .GetValue(view)!;
+        if (alternateDensity)
+        {
+            grid.ColumnHeaderHeight = 36;
+            var rowStyle = new Style(typeof(DataGridRow), grid.RowStyle);
+            rowStyle.Setters.Add(new Setter(FrameworkElement.HeightProperty, 44d));
+            rowStyle.Setters.Add(new Setter(FrameworkElement.MinHeightProperty, 44d));
+            grid.RowStyle = rowStyle;
+        }
+        var host = new Grid
+        {
+            Width = width,
+            Height = height,
+            Background = CreateHarnessBackground(view),
+            ClipToBounds = true
+        };
+        host.Children.Add(view);
+        view.ApplyResponsiveLayout(width, height);
+        host.Measure(new Size(width, height));
+        host.Arrange(new Rect(0, 0, width, height));
+        host.UpdateLayout();
+        view.ApplyResponsiveLayout(width, height);
+        host.UpdateLayout();
+
+        var pageScroller = FindVisualChildren<ScrollViewer>(host)
+            .Single(candidate => candidate.Name == "MediaInboxPageScrollViewer");
+        if (blockPageScroll)
+        {
+            pageScroller.VerticalScrollBarVisibility = ScrollBarVisibility.Disabled;
+            host.UpdateLayout();
+        }
+
+        var layout = UiLayoutAnalyzer.Analyze(
+            host,
+            "media-center",
+            "待归类",
+            caseName,
+            width,
+            height,
+            "media-inbox",
+            "MediaInboxScrollSurface",
+            "MediaInboxScrollSurface");
+        var geometry = layout.MediaInboxGeometry;
+        if (geometry == null)
+        {
+            problems.Add($"{themeName}/{caseName} did not produce MediaInbox geometry");
+            return;
+        }
+
+        report.AppendLine(
+            $"  {themeName}/{caseName} {width:0}x{height:0}: "
+            + $"grid={geometry.GridVisibleHeight:0.##}/{geometry.GridLayoutHeight:0.##}, "
+            + $"header={geometry.HeaderVisibleHeight:0.##}/{geometry.HeaderHeight:0.##}, "
+            + $"rows={geometry.FullyVisibleRowCount}/{geometry.RequiredCompleteRows}, "
+            + $"rowHeight={geometry.RowHeight:0.##}, horizontalBar={geometry.HorizontalScrollBarHeight:0.##}, "
+            + $"framePadding={geometry.FramePaddingHeight:0.##}, frameBorder={geometry.FrameBorderHeight:0.##}, "
+            + $"required={geometry.RequiredGridHeight:0.##}/{geometry.RequiredFrameHeight}, "
+            + $"pageScroll={geometry.PageScrollAvailable}, status={geometry.Status}, "
+            + $"warnings={string.Join(",", layout.Warnings.Select(warning => warning.Code + "/" + warning.Severity))}");
+
+        var primaryHighWarnings = layout.Warnings
+            .Where(warning => warning.Severity == "HIGH"
+                && warning.Code is "PRIMARY_VIEWPORT_TOO_SHORT" or "PRIMARY_VIEWPORT_UNREACHABLE")
+            .ToList();
+        if (caseName == "normal")
+        {
+            if (geometry.FullyVisibleRowCount < geometry.RequiredCompleteRows)
+                problems.Add($"{themeName}/{caseName} has only {geometry.FullyVisibleRowCount} complete rows");
+            if (primaryHighWarnings.Count > 0)
+                problems.Add($"{themeName}/{caseName} unexpectedly has primary geometry HIGH warnings");
+        }
+        else if (caseName == "horizontal-scroll")
+        {
+            if (geometry.HorizontalScrollBarHeight <= 0)
+                problems.Add($"{themeName}/{caseName} did not realize a horizontal scrollbar");
+            if (geometry.FullyVisibleRowCount < geometry.RequiredCompleteRows)
+                problems.Add($"{themeName}/{caseName} has only {geometry.FullyVisibleRowCount} complete rows");
+        }
+        else if (caseName == "alternate-density")
+        {
+            if (Math.Abs(geometry.HeaderHeight - 36) > 0.5 || Math.Abs(geometry.RowHeight - 44) > 0.5)
+                problems.Add($"{themeName}/{caseName} did not use measured density header={geometry.HeaderHeight:0.##}, row={geometry.RowHeight:0.##}");
+            if (geometry.RequiredGridHeight < 212 || geometry.FullyVisibleRowCount < geometry.RequiredCompleteRows)
+                problems.Add($"{themeName}/{caseName} did not keep the measured four-row floor");
+        }
+        else if (caseName == "short-fallback")
+        {
+            if (!geometry.PageScrollAvailable)
+                problems.Add($"{themeName}/{caseName} did not expose page fallback scroll");
+            if (primaryHighWarnings.Count > 0)
+                problems.Add($"{themeName}/{caseName} treated reachable short window as HIGH");
+        }
+        else if (caseName == "blocked-parent")
+        {
+            if (primaryHighWarnings.Count == 0)
+                problems.Add($"{themeName}/{caseName} did not catch blocked primary viewport");
         }
     }
 

@@ -388,12 +388,21 @@ namespace GameSaveCenter.Playnite.Views
                     ? "收起预览与归类 ›"
                     : "查看预览与归类 ›";
 
-                // The inbox table is the star-sized row inside MediaInboxTableFrame. Do not
-                // impose a synthetic 236/420 DIP viewport: WPF now gives it exactly the
-                // remaining height after the wrapped toolbar and footer have measured.
-                MediaInboxGrid.MinHeight = 212d;
+                // The inbox table is the star-sized row inside MediaInboxTableFrame. Its
+                // floor is derived from the measured table chrome, not a stale single
+                // constant: the header, four complete rows, and a possible horizontal
+                // scrollbar all have to fit inside the DataGrid before page overflow is
+                // used. The frame floor adds only its actual padding and border.
+                var readableGridHeight = GetMediaInboxReadableGridHeight();
+                var readableFrameHeight = MediaInboxGeometry.CalculateReadableFrameHeight(
+                    readableGridHeight,
+                    MediaInboxTableFrame.Padding,
+                    MediaInboxTableFrame.BorderThickness);
+                MediaInboxGrid.MinHeight = readableGridHeight;
+                MediaInboxLayout.MinHeight = readableFrameHeight;
+                MediaInboxTableFrame.MinHeight = readableFrameHeight;
                 MediaInboxGrid.Height = double.NaN;
-                MediaInboxGrid.MaxHeight = Math.Max(212d, height);
+                MediaInboxGrid.MaxHeight = Math.Max(readableGridHeight, height);
                 MediaGrid.MinHeight = 236d;
                 MediaGrid.Height = double.NaN;
                 MediaGrid.MaxHeight = double.PositiveInfinity;
@@ -485,6 +494,44 @@ namespace GameSaveCenter.Playnite.Views
             {
                 isApplyingLayout = false;
             }
+        }
+
+        private double GetMediaInboxReadableGridHeight()
+        {
+            var headerHeight = MediaInboxGrid.ColumnHeaderHeight;
+            if (double.IsNaN(headerHeight) || double.IsInfinity(headerHeight) || headerHeight <= 0)
+                headerHeight = MediaInboxGeometry.DefaultHeaderHeight;
+
+            var rowHeight = FindVisualDescendants(MediaInboxGrid)
+                .OfType<DataGridRow>()
+                .Where(row => row.Visibility == Visibility.Visible && row.ActualHeight > 0)
+                .Select(row => row.ActualHeight)
+                .FirstOrDefault();
+            if (rowHeight <= 0)
+                rowHeight = MediaInboxGeometry.DefaultRowHeight;
+
+            var horizontalScrollBarHeight = FindVisualDescendants(MediaInboxGrid)
+                .OfType<ScrollBar>()
+                .Where(scrollBar => scrollBar.Orientation == Orientation.Horizontal
+                    && scrollBar.Visibility == Visibility.Visible
+                    && scrollBar.ActualHeight > 0)
+                .Select(scrollBar => scrollBar.ActualHeight)
+                .FirstOrDefault();
+            if (horizontalScrollBarHeight <= 0
+                && MediaInboxGrid.HorizontalScrollBarVisibility != ScrollBarVisibility.Disabled)
+            {
+                // Auto scrollbars are created after the first arrange. Reserve the
+                // system metric on the first pass so a narrow table cannot briefly
+                // surrender its fourth row before the scrollbar is realized.
+                horizontalScrollBarHeight = SystemParameters.HorizontalScrollBarHeight;
+                if (horizontalScrollBarHeight <= 0)
+                    horizontalScrollBarHeight = MediaInboxGeometry.DefaultHorizontalScrollBarHeight;
+            }
+
+            return MediaInboxGeometry.CalculateReadableGridHeight(
+                headerHeight,
+                rowHeight,
+                horizontalScrollBarHeight);
         }
 
         private void OnMediaSelectionChanged(object sender, SelectionChangedEventArgs e)
