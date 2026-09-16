@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-16 R01-02 数字单元格裁切
+
+- 质量审查 F07 的真实缺口是夹具门禁：旧 `110 DIP` 数值列的 Light/Dark 图像中，`1,024 / 99,999` 的末位碰到列边界并被裁切，但报告只检查四行垂直布局和独立对比度，因此仍写出 `finesse-fixture OK`。没有据此扩大为“所有生产表格均裁切”。
+- `acfe1ea` 新增 `NumericCellReadability`，基于 realized `DataGridCell` 的实际 padding/内容宽度与 `FormattedText` 非约束宽度，拆分 `HorizontalFit`、`VerticalFit`、`IsReadable`；Demo 数值列调整到 `160 DIP`，测试值和文本样式明确固定，避免 TextBlock 自身自适应宽度掩盖父列溢出。
+- 先遇到 net472 的 `init`/`IsExternalInit` 编译错误，改为兼容的可写测量结果属性后重新构建。最终实际 STA WPF 定向测试 `2/2`；双主题 clean-tree probe 四个样本 `4/4` 横向和纵向通过，窄列长负数负例保持纵向通过但横向失败；完整 Release 构建 `0/0`，Core `83/83`、Worker `311/311`、Playnite `520` 通过/`57` 跳过/`0` 失败。
+- Light/Dark 离屏图像已人工检查，DPI 只记录为逻辑 `1.00`；没有声称真实 Playnite、物理 DPI、IME、presented frame、ETW 或宿主性能。证据写入 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-02-NUMERIC-CELL-READABILITY-20260916.md`。下一可执行小批量为 R01-03 每项证据直达。
+
 ## 2026-09-16 R01-01 测试源码根绑定
 
 - F10 的错根问题在最新代码中确认为 37 个 `FindRepositoryRoot` 加 6 个直接回溯 reader；`abb5589` 用 `TestRepositoryContext`、`GscSourceRoot`/`GscBuildCommit` 元数据和 `GSC_SOURCE_ROOT` 构建传播统一收口。源码根结构、Git HEAD、程序集身份缺一即阻断并给出路径/commit 诊断。

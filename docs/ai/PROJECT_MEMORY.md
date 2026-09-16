@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-16
 
+## 2026-09-16 R01-02 数字单元格裁切
+
+- `acfe1ea` 完成 F07/R01-02 的可读性门禁校正：新增 `NumericCellReadability`，使用真实 realized `DataGridCell` 测量 `TextBlock` 非约束宽度、扣 padding 后的内容宽度和文本高度，分别暴露横向/纵向 fit；不以“行高足够”代替“最后一位未被列宽裁切”。
+- `UiFrameworkProbeView` 的数值列从 `110 DIP` 调整到 `160 DIP`，夹具固定包含 `1,024 / 99,999`、`-9,999,999,999`、`512 GiB`、`1.25 TiB`，显式 `NoWrap`/无 trimming。旧基线 Light/Dark 报告能通过四行和对比度，但图像显示第一行数值列末位被边界截断，且没有水平完整性数据；这只确认夹具/门禁缺口，不推断所有生产表格均有同样缺陷。
+- 实际 STA WPF 测试 `2/2`：四个生产夹具样本均 `HorizontalFit=True`、`VerticalFit=True`；`56 DIP` 数值列的长负数负例 `VerticalFit=True`、`HorizontalFit=False`、`IsReadable=False`。clean-tree 双主题探针均为 `expected=4 realized=4 horizontalFit=4 verticalFit=4 allReadable=True`，负例通过，contrast violation `0`。全流程 Release 为构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `520/57/0`。
+- 只改诊断 helper、Demo-first 校对夹具和测试；生产业务命令、绑定、picker、滚动条、取消/错误、恢复保护、有限列表路径及 net462 兼容未改。证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-02-NUMERIC-CELL-READABILITY-20260916.md`。
+- 边界：WPF Window/离屏 logical DIP 与合成 DTO 不等于 Playnite 嵌入、物理 DPI、用户输入/IME、presented frame、ETW 或真实宿主性能；临时输出须在证据同步后清理。下一项 R01-03“每项证据直达”。
+
 ## 2026-09-16 R01-01 测试源码根绑定
 
 - `abb5589` 完成 F10/R01-01：Playnite 测试程序集嵌入 `GscSourceRoot` 与 `GscBuildCommit`，`TestRepositoryContext.Root` 只使用构建时根并校验源码根结构、Git HEAD 和程序集身份；不再从 `AppContext.BaseDirectory` 向上回溯。37 个 `FindRepositoryRoot` 与 6 个直接 reader 已统一。

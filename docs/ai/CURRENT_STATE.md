@@ -2,6 +2,13 @@
 
 > 更新时间：2026-09-16。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 当前第三轮阶段：R01-02 数字单元格裁切
+
+- `acfe1ea` 新增 `NumericCellReadability`，在实际 WPF `DataGridCell` 上分别测量非约束文本宽度、扣除 padding 后的可用内容宽度和行内文本高度；`HorizontalFit`、`VerticalFit` 与 `IsReadable` 不再把仅有行高通过误当成数字完整可读。Demo 校对表将数值列设为 `160 DIP`，固定覆盖 `1,024 / 99,999`、长负数、容量和 TiB 样本，并显式 `NoWrap`/无裁切。
+- 新增实际 STA WPF 行为测试 `2/2`：生产校对夹具四个数值全部横向/纵向通过；`56 DIP` 窄列中的长负数保持纵向通过但横向失败，`IsReadable=False`，作为明确负例。Release 全流程为构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `520` 通过/`57` 跳过/`0` 失败。
+- clean-tree `acfe1eab48572e538c9d17cbb45b7bdc116942ed` 的 Light/Dark `finesseprobe` 均为 `expected=4 realized=4 horizontalFit=4 verticalFit=4 allReadable=True`，长负数负例 `textWidth=115.26 / available=56 / textHeight=15.33 / cellHeight=52` 且 `horizontalFit=False, verticalFit=True`；对照度违规为 `0`，离屏图像已人工检查。旧 `110 DIP` 基线曾出现首行末位裁切，但原报告没有水平完整性门禁。
+- 证据见 [`R01-02-NUMERIC-CELL-READABILITY-20260916.md`](../design/reviews/ui-finesse-round3-20260915/evidence/R01-02-NUMERIC-CELL-READABILITY-20260916.md)。范围是合成 DTO、真实 WPF 控件、隔离窗口与 offscreen logical DIP；不宣称真实 Playnite 嵌入、物理 DPI、IME、呈现帧、ETW 或宿主大库性能。下一可执行项为 R01-03 每项证据直达。
+
 ## 当前第三轮阶段：R01-01 测试源码根绑定
 
 - `abb5589` 为 Playnite 源码型测试引入 `GscSourceRoot`/`GscBuildCommit` 程序集元数据和 `TestRepositoryContext`；37 个重复根 helper 与 6 个直接回溯 reader 均改为使用构建绑定根，未知、无效或 checkout/程序集 commit 不一致时清晰失败。
