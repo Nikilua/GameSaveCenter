@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-16
 
+## 2026-09-16 R00-04 搜索基准真实性
+
+- `df884b0` 修正 `LargeLibraryPerformanceTests`：每个正式样本使用不同的 `SearchText`，等待函数按真实可见 `PlayniteId` 集合确认过滤已完成；计时器在每次等待内部独立启动，增加不可能期望结果的有限超时负例。
+- 当前隔离 worktree 的 Release 构建 `0/0`，R00-04 定向测试 `2/2`；2,000 个合成游戏的 30 个查询全部产生集合变化，p50/p95/max=`45/60/60ms`，原始查询/样本写入证据文档。
+- 第一次重跑曾发现只判断 `FilteredCount=1` 会导致后续样本提前返回，实际只变化 1 次；修正为等待可见 ID 集合后 `30/30` 通过。该事实作为门禁校正记录保留。
+- 证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R00-04-SEARCH-BENCHMARK-20260916.md`。范围仍是 fake/合成/受控 WPF，真实 Playnite、连续输入、IME、物理 DPI、屏幕帧和 ETW 未验；下一执行点为 R00-05。
+
 ## 2026-09-16 R00-01/R00-02 按压合成与组合缩放复核
 
 - `a95e900` 修正 `AdaptiveThemePaletteContrastGuard.MeasureGradientTextContrast`：整组 chrome opacity 现在先合成文字/表面，再与真实父背景混合；新增带 offset 的 `GradientStop` API，并对 normal、hover、focus、pressed 及组合状态采样。`e216e9b` 增加 `opacity=0.5` 黑父/白 chrome/黑字的灰背景负例，以及非等距 `0/0.9/1` stop 行为断言。

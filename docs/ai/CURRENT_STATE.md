@@ -2,6 +2,14 @@
 
 > 更新时间：2026-09-16。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 当前第三轮阶段：R00-04 搜索基准真实性
+
+- `df884b0` 修正搜索基准：正式 30 次输入使用不同的 `SearchText`，等待条件核对真实可见 `PlayniteId` 集合而不是只核对计数；每次等待拥有独立运行的超时计时器，并保留不可能结果的有限超时负例。
+- 当前隔离 worktree 的 Release 构建为 `0 warning / 0 error`，R00-04 定向测试 `2/2`；合成 2,000 项结果集合 `30/30` 发生变化，原始查询和时延样本已记录，p50/p95/max=`45/60/60ms`。
+- 这是 fake 服务/合成数据下的受控 WPF 逻辑证据，不替代真实 Playnite 输入、连续打字、IME、物理 DPI、屏幕呈现帧或 ETW；R18-01 继续补 debounce/分配和 IME，下一执行点为 R00-05 上下文禁用透明度。
+
+证据：[`R00-04-SEARCH-BENCHMARK-20260916.md`](../design/reviews/ui-finesse-round3-20260915/evidence/R00-04-SEARCH-BENCHMARK-20260916.md)。
+
 ## 当前第三轮阶段：R00-01/R00-02 代码收口
 
 - 当前工作区为 `codex/ui-finesse-round2`，最新实现提交 `a95e900`，非等距渐变负例测试补充为 `e216e9b`；没有合并 `main` 的旧实现。R00-01 按整组 chrome opacity 与真实父背景计算，保留 `GradientStop.Offset` 并覆盖 focus/hover/pressed 组合；R00-02 对已有组合变换递归复用 ScaleTransform，冻结树只在第一次接入时克隆。
