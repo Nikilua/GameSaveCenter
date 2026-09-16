@@ -2,6 +2,13 @@
 
 > 更新时间：2026-09-16。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 当前第三轮阶段：R01-04 动效行为替代字符串
+
+- `74abb10` 在现有真实 WPF 动效覆盖上新增 `EntranceMotionReentryKeepsTheRenderedBaseWhenLatestClockIsCancelled`：实际 STA `Window` 中启动入场、Dispatcher 采样、重入并清除最新时钟，Y/Opacity 必须保持采样时的有效值；既有完成终态、重入连续性和壳层清理测试继续保留。
+- `EntranceMotionTakesOverFromTheCurrentEffectiveValue` 已收窄为结构门禁，只检查 `AnimateEntrance`、活动动画分支、清钟、动画对象、HoldEnd 和 Completed，不再用 `currentY/currentOpacity` 局部源码字符串签收行为。对隔离突变分别删除 Y/Opacity 基值写回后，新增行为测试按预期失败，偏差约 `8.33 DIP` / `0.745`。
+- 以 `74abb10096df77cb77ef59128f1898e621475a51` 为身份的 Release 全流程：XAML `24/24`，构建 `0/0`，Core `83/83`，Worker `311/311`，Playnite `522/579`（`57` 跳过、`0` 失败）；动效过滤 `4/4`。证据见 [`R01-04-MOTION-BEHAVIOR-20260916.md`](../design/reviews/ui-finesse-round3-20260915/evidence/R01-04-MOTION-BEHAVIOR-20260916.md)。
+- 这是合成 WPF 控件、隔离 Window 与 offscreen logical DIP；不等价真实 Playnite 嵌入、物理 DPI、输入、presented frame、ETW 或宿主性能。下一可执行项为 R01-05 负例注册表。
+
 ## 当前第三轮阶段：R01-03 每项证据直达
 
 - `3875f88` 在共享 `UiReportWriter` 接入 `EVIDENCE_INDEX.md`；`UiEvidenceIndexBuilder` 从实际 `UI_MANIFEST`、运行时 `LAYOUT_REPORT` 和 `UI_FIDELITY_MATRIX` 数据抽取具体控件/状态，不复用一条聚合 `passed` 文案覆盖整页。索引固定至少 20 项，优先覆盖生产 DataGrid，再按 route 分散抽取交互控件；`2eb4c46`、`591deae` 校准了生产页面优先、分散抽样、运行时边界方向和源码文件回退。

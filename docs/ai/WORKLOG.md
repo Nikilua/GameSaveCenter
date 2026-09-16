@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-16 R01-04 动效行为替代字符串
+
+- 最新代码盘点确认 `GscMotion.AnimateEntrance` 的完成态写回、活动时钟清理和重入接管已由前序 R00-03 实现；本阶段不重复改生产动效，只把 `UiFinesseFoundationTests.EntranceMotionTakesOverFromTheCurrentEffectiveValue` 收窄为结构门禁。
+- 新增实际 STA WPF `Window` 行为测试：入场 `12 DIP`、Dispatcher 等待 `120 ms`、采样有效 Y/Opacity、重入后清除最新时钟，分别以 `0.8 DIP` / `0.08` 容差校验仍保持渲染基值。删除 Y 写回的隔离突变失败偏差 `8.332255396871652 DIP`，删除 Opacity 写回失败偏差 `0.74548606462788181`；两次突变源码均已恢复。
+- 提交 `74abb10` 已推送。提交后完整 Release：XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `522/579`（57 跳过、0 失败）；`EntranceMotion` 定向 `4/4`。`.tmp/r01-04-*` 突变/构建输出在证据同步后清理计划中。
+- 首次直接 `dotnet test` 未注入 `GscBuildCommit` 时，源码型测试按 R01-01 门禁清晰失败；随后使用 `scripts/build.ps1` 的构建身份重新运行，未将配置错误记为产品失败。
+- 证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-04-MOTION-BEHAVIOR-20260916.md`。受控 WPF 结果不等价真实 Playnite 输入、物理 DPI、presented frame、ETW 或宿主性能；下一可执行小批量为 R01-05 负例注册表。
+
 ## 2026-09-16 R01-03 每项证据直达
 
 - 盘点确认现有聚合审计已有 `UI_MANIFEST`、`LAYOUT_REPORT`、`UI_FIDELITY_MATRIX`，但没有共同索引；单独写“finesse passed”无法定位某个控件、状态、源码身份、样本或未验边界。`3875f88` 接入 `EVIDENCE_INDEX.md`，从实际结果对象抽取条目；`2eb4c46`/`591deae` 依次修正生产 DataGrid 优先、静态/runtime 边界方向、XAML 路径回退和跨页面控制抽样。

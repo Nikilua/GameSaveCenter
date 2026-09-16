@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-16
 
+## 2026-09-16 R01-04 动效行为替代字符串
+
+- `74abb10` 延续已有 `GscMotion.AnimateEntrance` 生产实现，新增实际 STA WPF 负向敏感行为测试：入场中途采样有效 Y/Opacity，重入后清除最新时钟，必须回到采样基值附近；这覆盖了删除重入分支基值写回时会出现的真实状态回归。
+- 原动效源码测试已改为结构用途，只检查方法/活动分支/清钟/动画/终态回调，不再把局部变量名、注释或精确构造字符串当作行为证据。两次隔离突变分别删除 Y/Opacity 写回，测试按预期失败，差值 `8.332255396871652 DIP` 与 `0.74548606462788181`。
+- 绑定提交 `74abb10096df77cb77ef59128f1898e621475a51` 的完整 Release 为 XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `522/579`（57 skip/0 fail），动效定向 `4/4`；突变 `.tmp` 已清理，代码已推送。
+- 范围是合成 WPF `Window`、Dispatcher 与 offscreen logical DIP；不宣称真实 Playnite、物理 DPI、OS 输入/IME、presented frame、ETW 或宿主帧率。生产命令、绑定、picker、滚动条、取消/错误、恢复保护、有限列表和 net462 未改。下一项 R01-05。
+
 ## 2026-09-16 R01-03 每项证据直达
 
 - `3875f88` 为共享 UI 审计报告增加 `EVIDENCE_INDEX.md`，`UiEvidenceIndexBuilder` 从 manifest、layout 和 fidelity 的实际数据生成具体控件/状态索引；不是把一条自动通过句子复制到几十项。`2eb4c46` 修正生产 DataGrid 优先和源码回退，`591deae` 使控件样本按页面分散，避免 20 项被 maintenance 单页吞没。
