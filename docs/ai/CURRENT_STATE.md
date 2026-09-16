@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R03-08 用户文本缩放
+
+- `981b600` 先核对现有 `GscBodyFontSize`/`GscCaptionFontSize`、按钮/输入框模板和表头样式，未引入新字体体系，也没有从 main 带入旧实现。共享 TextBox、远程恢复/媒体批处理按钮、只读完整路径框和 Overview 两个保护按钮去掉硬 `Height`，保留 `MinHeight`、现有模板与命令/安全语义。
+- 共享 DataGrid 去掉 `ColumnHeaderHeight` 覆盖；生产 `DataGridColumnHeader` 通过 `GscTableHeaderHeight` 最小高度和 `GscDataGridHeaderTextTemplate` 的 `Wrap + Trimming=None` 允许较大文本自然增长。Task、Media、Dashboard、Redesign 和开发探针的重复覆盖同步移除。
+- `R03TextScaleTests` 实际 STA WPF `2/2`：窗口资源将正文/说明字号覆盖为 `24/20 DIP`，输入框、文本按钮、表头均按需求测量且内容宿主不裁切；既有相关断言已改为检查最小高度/可见性，不放宽负例。隔离 Release XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `568/625`（57 跳过、0 失败），源码校验通过。
+- RenderHarness clean commit `981b600` 双主题、多尺寸、滚动/虚拟化、Shell/resize 为 `render-qa OK`，`WorkingTreeClean=True`，357 PNG；人工抽查 Light/Dark Task、Light Media、Dark Save。证据来自合成文本、隔离 WPF/offscreen logical DIP；真实用户文本设置/宿主字体替换、Playnite presented frame、物理 DPI/跨屏、OS 输入/IME、读屏、ETW、宿主性能仍未验。下一可执行项为 R04-01 组合输入状态。
+
 ## 当前第三轮 R03-07 文案标点统一
 
 - `5a07eda` 先盘点当前生产可见文案，确认半角冒号集中在 Task 状态/类型/范围/时间四个标签，失败 `DetailMessage` 仍生成 `ErrorCode: ErrorMessage`；没有从 main 带入旧实现，也没有重建设计体系。四个真实 Task TextBlock 已改为全角冒号；失败详情和整库聚合使用“错误码：…；…”/“游戏：…；…”展示分隔。

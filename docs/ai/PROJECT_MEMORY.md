@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-17
 
+## 2026-09-17 R03-08 用户文本缩放
+
+- `981b600` 复用现有 DynamicResource 字体和尺寸 token；共享文本输入、文本按钮、只读路径框不再用硬 `Height`，表头不再用 `ColumnHeaderHeight`，只保留最小节奏和既有模板。表头文字模板设为 `Wrap + Trimming=None`，不通过缩小字号适配。
+- `R03TextScaleTests` `2/2` 在真实生产资源链 STA WPF 中将正文/说明字号覆盖为 `24/20 DIP`，实测输入框、按钮、DataGrid 表头自然增长且内容宿主不裁切；源代码门禁覆盖相关样式区段，合法图标按钮固定尺寸不误报。既有搜索/共享样式断言按原责任校正为最小高度、居中和内容可见性。
+- 隔离 Release XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `568/625`（57 skip/0 fail），`validate-source.py` 通过。RenderHarness clean `981b600` 双主题 `render-qa OK`、357 PNG，人工抽查 Task/Media/Save。
+- 边界：RenderHarness 默认字号，不等价真实用户文本缩放、自选/宿主字体或 Playnite presented frame；真实物理 DPI/跨屏、OS 输入/IME、读屏、ETW、宿主性能仍未验。未改 picker、滚动条、命令/Binding、取消错误、恢复保护、有限列表和 net462；未写真实存档、媒体、云端。下一项 R04-01 组合输入状态。
+
 ## 2026-09-17 R03-07 文案标点统一
 
 - `5a07eda` 只收口了已确认的生产可见不一致：Task 状态/类型/范围/时间标签由半角冒号改为全角冒号；失败 `DetailMessage` 和整库失败聚合改为全角字段分隔。没有重建文案服务或设计体系。

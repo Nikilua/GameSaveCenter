@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-17 R03-08 用户文本缩放
+
+- 先查已有能力：字体和控件尺寸均已有共享 DynamicResource；修复点是生产 TextBox、文本按钮、路径详情框和页面级按钮的硬高，以及 DataGrid 表头的固定高度覆盖。保留游戏选框、滚动条、命令/Binding、取消错误、恢复保护、有限列表与 net462。
+- `981b600` 让相关文本控件改用 `MinHeight`/自然测量，表头使用共享最小高度和 `Wrap + Trimming=None`。`R03TextScaleTests` 通过 `24/20 DIP` 资源覆盖验证输入、按钮、表头的实际 STA WPF 行为；同步校正原本要求固定 36 DIP 或硬高字符串的旧断言，并保留图标 34 DIP 合法固定尺寸负例边界。
+- 隔离 Release XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `568/625`（57 跳过、0 失败）；源码校验通过。clean RenderHarness 双主题、多尺寸、滚动/虚拟化、Shell/resize `render-qa OK`，`WorkingTreeClean=True`，357 PNG，人工抽查 Task 明暗、Media Light、Save Dark。
+- `.tmp/r03-08-build`、`.tmp/r03-08-render-final` 在文档提交后清理；验证只用合成文本、隔离输出和 offscreen logical DIP。真实用户文本设置、宿主字体替换、Playnite presented frame、物理 DPI/跨屏、OS 输入/IME、读屏、ETW、宿主性能仍未验。下一可执行任务为 R04-01 组合输入状态。
+
 ## 2026-09-17 R03-07 文案标点统一
 
 - 先查已有能力：生产 Task 筛选标签中只有状态/类型/范围/时间四处半角冒号；`TaskStatusDto.DetailMessage` 是失败详情的展示层组合，路径复制和路径预览已有 R03-05 原值保护，不重复实现。
