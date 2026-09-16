@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-17
 
+## 2026-09-17 R03-07 文案标点统一
+
+- `5a07eda` 只收口了已确认的生产可见不一致：Task 状态/类型/范围/时间标签由半角冒号改为全角冒号；失败 `DetailMessage` 和整库失败聚合改为全角字段分隔。没有重建文案服务或设计体系。
+- 失败展示格式化只作用于外层分隔符：`ErrorCode`、`ErrorMessage` 属性不变；错误码为空不输出孤立 `错误码：`；含 `C:\Saves\A:1` 的正文原样保留。`CopyPathCommand`、路径预览和 R03-05 的原始复制语义未改。
+- 术语表：中文字段标签用 `：`；生成详情字段间用 `；`；中文上下文括号用 `（…）`；产品名/缩写保留 `Worker`、`Playnite`、`FLiNG Trainer`、`任务 ID`、`EXE / CT` 的现有大小写和语义空格；单位保持 `1 KiB`、`1 秒`、`2 项`、`12%`。
+- `R03CopySafePunctuationTests` `3/3`，全量隔离 Release XAML `24/24`、Core `83/83`、Worker `311/311`、Playnite `566/623`（57 skip/0 fail）。RenderHarness clean `5a07eda` 双主题 `render-qa OK`，357 PNG；证据限于合成 DTO、STA WPF/offscreen logical DIP，真实宿主 presented frame、字体/物理 DPI、OS 输入/IME、读屏、ETW、性能和剪贴板仍未验。下一项 R03-08 用户文本缩放。
+
 ## 2026-09-17 R03-06 双语长度压力
 
 - `52527b6` 复用现有标题省略/Tooltip 和长文本样式，修复共享 `GscWpfUiButtonTextTemplate`：动作文字在窄槽允许换行且不做省略，避免“打开/保存”等核心命令只显示歧义前缀；Tooltip 仍以完整绑定值为内容。

@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R03-07 文案标点统一
+
+- `5a07eda` 先盘点当前生产可见文案，确认半角冒号集中在 Task 状态/类型/范围/时间四个标签，失败 `DetailMessage` 仍生成 `ErrorCode: ErrorMessage`；没有从 main 带入旧实现，也没有重建设计体系。四个真实 Task TextBlock 已改为全角冒号；失败详情和整库聚合使用“错误码：…；…”/“游戏：…；…”展示分隔。
+- `TaskStatusDto` 只在展示层格式化失败详情：`ErrorCode`、`ErrorMessage` 保持原值；错误码为空时直接返回错误正文，避免孤立标签。R03-05 的 `CopyPathCommand`/路径转换/完整路径绑定未改，路径原值不经过本轮标点格式化。
+- `R03CopySafePunctuationTests` 实际 STA WPF 定向 `3/3`，覆盖四个生产标签、含 `C:\Saves\A:1` 的错误正文原样保留、空错误码和非失败原消息负例。全量隔离 Release XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `566/623`（57 跳过、0 失败），源码校验通过。
+- RenderHarness 绑定 clean commit `5a07eda`，Light/Dark 多尺寸页面、滚动/虚拟化、Shell/resize 均 `render-qa OK`，`WorkingTreeClean=True`，357 PNG；人工抽查 Task `1040×700`、`1366×768` 明暗图。证据使用合成 DTO、受控 STA WPF、offscreen logical DIP；真实 Playnite presented frame、宿主字体/物理 DPI/跨屏、OS 输入/IME、读屏、ETW、宿主性能和真实剪贴板仍未验。下一可执行项为 R03-08 用户文本缩放。
+
 ## 当前第三轮阶段：R03-06 双语长度压力
 
 - `52527b6` 先核对已有标题 `CharacterEllipsis + Tooltip`、长文本表格样式和 RenderHarness `LongTitle` profile；确认真正缺口是共享文字动作模板的 `NoWrap + CharacterEllipsis`，没有把 main 旧实现覆盖到当前分支。

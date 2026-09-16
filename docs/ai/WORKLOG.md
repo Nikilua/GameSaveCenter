@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-17 R03-07 文案标点统一
+
+- 先查已有能力：生产 Task 筛选标签中只有状态/类型/范围/时间四处半角冒号；`TaskStatusDto.DetailMessage` 是失败详情的展示层组合，路径复制和路径预览已有 R03-05 原值保护，不重复实现。
+- `5a07eda` 将四个标签改为全角冒号；失败详情改为 `错误码：{ErrorCode}；{ErrorMessage}`，错误码为空时返回原错误正文；整库备份失败聚合改为 `游戏：{GameName}；{DetailMessage}`。技术错误码、错误正文、用户名称和路径不做全局替换。
+- 明确本轮术语表：中文标签 `：`、生成详情 `；`、中文上下文括号 `（…）`；英文产品名/缩写保持原大小写与语义空格；单位沿用 `1 KiB`、`1 秒`、`2 项`、`12%`。`R03CopySafePunctuationTests` 实际 STA WPF `3/3`，含路径半角冒号、空错误码、非失败原消息负例。
+- Release 全量 XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `566/623`（57 跳过、0 失败）；clean commit RenderHarness 双主题、多尺寸、滚动/虚拟化和 Shell/resize `render-qa OK`，`WorkingTreeClean=True`，357 PNG，人工抽查 Task 明暗图。`.tmp/r03-07-*` 文档提交后清理；真实 Playnite presented frame、宿主字体/物理 DPI/跨屏、OS 输入/IME、读屏、ETW、宿主性能和真实剪贴板未验。下一可执行任务为 R03-08 用户文本缩放。
+
 ## 2026-09-17 R03-06 双语长度压力
 
 - 先查已有能力：Overview 已有标题 `CharacterEllipsis + Tooltip`，表格长文本已有共享样式；真正发现的缺口是共享动作按钮模板把核心文案设成 `NoWrap + CharacterEllipsis`。未从 main 带入旧实现。
