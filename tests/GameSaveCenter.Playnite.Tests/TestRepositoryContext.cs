@@ -84,7 +84,7 @@ internal static class TestRepositoryContext
         var startInfo = new ProcessStartInfo
         {
             FileName = "git.exe",
-            Arguments = $"-C \"{root.Replace("\"", "\\\"")}\" rev-parse --verify HEAD",
+            Arguments = "-C " + QuoteProcessArgument(root) + " rev-parse --verify HEAD",
             WorkingDirectory = root,
             UseShellExecute = false,
             CreateNoWindow = true,
@@ -100,6 +100,13 @@ internal static class TestRepositoryContext
                 $"无法读取源码根 HEAD：{root}；git 输出：{output}；错误：{error}。" +
                 "源码型测试已停止，避免把其他 checkout 的源码当作当前程序集的测试对象。");
         return output;
+    }
+
+    private static string QuoteProcessArgument(string value)
+    {
+        var quote = ((char)34).ToString();
+        var slash = ((char)92).ToString();
+        return quote + value.Replace(quote, slash + quote) + quote;
     }
 
     private static string? ReadInformationalCommit(Assembly assembly)

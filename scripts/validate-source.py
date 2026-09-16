@@ -1087,7 +1087,7 @@ def check_shared_wpf_control_guards() -> None:
                   "<ControlTemplate TargetType=\"{x:Type ui:Button}\">",
                   "<ControlTemplate TargetType=\"{x:Type ui:ToggleSwitch}\">",
                   "<Trigger Property=\"IsEnabled\" Value=\"False\">",
-                  "<Setter Property=\"Opacity\" Value=\"0.48\"/>"):
+                  "<Setter TargetName=\"ButtonChrome\" Property=\"Opacity\" Value=\"0.72\"/>"):
         if token not in production:
             fail(f"Shared WPF-UI production adapter guard missing: {token}")
     for token in ("AlternatingRowBackground\" Value=\"{DynamicResource GscTableAlternateRowBrush}\"",
