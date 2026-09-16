@@ -3322,6 +3322,29 @@ public static class Program
         report.AppendLine(
             $"PunctuationSamples: preserved={string.Join(" | ", punctuation)} "
             + $"containsUnpairedSurrogate={punctuation.Any(TypographyDiagnostics.ContainsUnpairedSurrogate)}");
+
+        var mixedBaselineSamples = new[]
+        {
+            "存档中心 Save Center",
+            "日期：2026-09-17 · 时间 03:02",
+            "容量：1.71 GiB · 24.6 MiB",
+            "中文标点：全角引号“存档”、书名号《中心》……"
+        };
+        foreach (var sample in mixedBaselineSamples)
+        {
+            var evidence = TypographyDiagnostics.CaptureMixedBaseline(
+                sample,
+                TypographyDiagnostics.UiFontChain,
+                14,
+                FontWeights.Normal);
+            report.AppendLine(
+                $"MixedBaseline text={sample} runs={evidence.GlyphRunCount} glyphs={evidence.GlyphCount} "
+                + $"line={evidence.LineBaseline:0.###} min={evidence.MinimumGlyphBaseline:0.###} "
+                + $"max={evidence.MaximumGlyphBaseline:0.###} spread={evidence.BaselineSpread:0.###} "
+                + $"stable={evidence.IsStable} unpairedSurrogate={evidence.HasUnpairedSurrogate}");
+            if (!evidence.IsStable)
+                throw new InvalidOperationException("Mixed typography baseline probe detected vertical drift.");
+        }
     }
 
     private static void AppendSemanticContrastEvidence(

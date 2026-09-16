@@ -45,6 +45,24 @@ namespace GameSaveCenter.Playnite.Infrastructure
             public bool HasUnpairedSurrogate { get; set; }
         }
 
+        public sealed class MixedBaselineEvidence
+        {
+            public string Text { get; set; } = string.Empty;
+            public double LineBaseline { get; set; }
+            public double MinimumGlyphBaseline { get; set; }
+            public double MaximumGlyphBaseline { get; set; }
+            public double BaselineSpread { get; set; }
+            public int GlyphRunCount { get; set; }
+            public int GlyphCount { get; set; }
+            public bool HasUnpairedSurrogate { get; set; }
+
+            public bool IsStable
+                => GlyphRunCount > 0
+                    && GlyphCount > 0
+                    && !HasUnpairedSurrogate
+                    && BaselineSpread <= 0.5;
+        }
+
         public sealed class GlyphRunEvidence
         {
             public int CodePoint { get; set; }
@@ -140,6 +158,55 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 Baseline = formatted.Baseline,
                 HasUnpairedSurrogate = ContainsUnpairedSurrogate(text)
             };
+        }
+
+        public static MixedBaselineEvidence CaptureMixedBaseline(
+            string text,
+            IEnumerable<string> familyChain,
+            double fontSize,
+            FontWeight weight)
+        {
+            if (text == null) throw new ArgumentNullException(nameof(text));
+            if (familyChain == null) throw new ArgumentNullException(nameof(familyChain));
+            if (fontSize <= 0) throw new ArgumentOutOfRangeException(nameof(fontSize));
+
+            var chain = familyChain.ToArray();
+            var typeface = new Typeface(
+                new FontFamily(string.Join(", ", chain)),
+                FontStyles.Normal,
+                weight,
+                FontStretches.Normal);
+            var runProperties = new ProbeTextRunProperties(typeface, fontSize);
+            var source = new ProbeTextSource(text, runProperties);
+            var paragraph = new ProbeTextParagraphProperties(runProperties);
+            var result = new MixedBaselineEvidence
+            {
+                Text = text,
+                HasUnpairedSurrogate = ContainsUnpairedSurrogate(text)
+            };
+
+            using (var formatter = TextFormatter.Create())
+            using (var line = formatter.FormatLine(source, 0, 4096, paragraph, null))
+            {
+                var runs = line.GetIndexedGlyphRuns()
+                    .Where(run => run.GlyphRun != null)
+                    .Select(run => run.GlyphRun)
+                    .ToArray();
+                var baselines = runs
+                    .Select(run => run.BaselineOrigin.Y)
+                    .ToArray();
+                result.LineBaseline = line.Baseline;
+                result.GlyphRunCount = runs.Length;
+                result.GlyphCount = runs.Sum(run => run.GlyphIndices?.Count ?? 0);
+                if (baselines.Length > 0)
+                {
+                    result.MinimumGlyphBaseline = baselines.Min();
+                    result.MaximumGlyphBaseline = baselines.Max();
+                    result.BaselineSpread = result.MaximumGlyphBaseline - result.MinimumGlyphBaseline;
+                }
+            }
+
+            return result;
         }
 
         public static GlyphRunEvidence CaptureGlyphRun(

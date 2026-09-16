@@ -55,6 +55,31 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         [Fact]
+        public void MixedChineseLatinDateAndCapacityRunsShareOneBaseline()
+        {
+            TypographyDiagnostics.MixedBaselineEvidence[] evidence = null!;
+            RunSta(() =>
+            {
+                evidence = new[]
+                {
+                    TypographyDiagnostics.CaptureMixedBaseline("存档中心 Save Center", TypographyDiagnostics.UiFontChain, 14, FontWeights.Normal),
+                    TypographyDiagnostics.CaptureMixedBaseline("日期：2026-09-17 · 时间 03:02", TypographyDiagnostics.UiFontChain, 14, FontWeights.Normal),
+                    TypographyDiagnostics.CaptureMixedBaseline("容量：1.71 GiB · 24.6 MiB", TypographyDiagnostics.UiFontChain, 14, FontWeights.Normal),
+                    TypographyDiagnostics.CaptureMixedBaseline("中文标点：全角引号“存档”、书名号《中心》……", TypographyDiagnostics.UiFontChain, 14, FontWeights.Normal)
+                };
+            });
+
+            Assert.NotNull(evidence);
+            Assert.Equal(4, evidence.Length);
+            Assert.All(evidence, item =>
+            {
+                Assert.True(item.GlyphRunCount > 0);
+                Assert.True(item.GlyphCount > 0);
+                Assert.True(item.IsStable, $"Mixed baseline drifted for '{item.Text}': spread={item.BaselineSpread:0.###}.");
+            });
+        }
+
+        [Fact]
         public void GlyphRunProbeSeparatesCandidateCoverageFromFinalLayoutEvidence()
         {
             TypographyDiagnostics.GlyphRunEvidence[] evidence = null!;
