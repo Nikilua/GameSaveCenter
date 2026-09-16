@@ -1,5 +1,7 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-16 第三轮 R01-01 已收口：`abb5589` 为 Playnite 源码型测试嵌入 `GscSourceRoot`/`GscBuildCommit`，统一 37 个重复 root helper 与 6 个直接 reader；`TestRepositoryContext` 校验源码根、Git HEAD 与程序集身份，错根直接失败。当前 worktree 的隔离 OutputRoot 全流程构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `518` 通过/`57` 跳过/`0` 失败；输出移到 main `.tmp` 复跑相同，main 源码和 `src.zip` 未改，临时目录已清理。证据见 `design/reviews/ui-finesse-round3-20260915/evidence/R01-01-REPOSITORY-IDENTITY-20260916.md`。下一可执行任务为 R01-02 数字单元格裁切；真实 Playnite 宿主、物理 DPI、IME、presented frame 和性能仍未验。
+
 > 2026-09-16 第三轮 R00-08 已收口代码：`8435d80` 修正游戏选框 Enter/IME 路由，Enter 只确认仍在 `ItemsView` 的当前可见候选，无结果不确认旧游戏，`Key.ImeProcessed` 和方向键不关闭，Escape/有效 Enter 返回 `GameContextButton` 焦点。当前分支 `codex/ui-finesse-round2` 已完成 Release Playnite `0/0` 和相关 STA WPF 测试 `28/28`，文档证据见 `design/reviews/ui-finesse-round3-20260915/evidence/R00-08-PICKER-ENTER-IME-20260916.md`。测试使用合成 DTO、隔离 Window 和最小 Dashboard 状态承载；真实 Windows OS IME、Playnite 嵌入、物理键盘/DPI、presented frame、ETW 与宿主性能仍未验。下一可执行任务为 R01-01 测试源码根绑定。
 
 > 2026-09-16 第三轮 R00-07 已收口：`42f9dca` 将工具栏审计从 `TrainerToolsSettingsScrollViewer` 整棵排除改为动作/表单/内容流分类，报告保留排除理由与几何/滚动可达数据；当前分支 `codex/ui-finesse-round2` clean-tree，已推送。RenderHarness 构建 `0/0`、审计源/既有精修定向 `29/29`；`toolbarprobe` 三场景通过；全量审计 161 快照、0 Fidelity、0 失败路由、0 HIGH/0 MEDIUM。证据见 `design/reviews/ui-finesse-round3-20260915/evidence/R00-07-TOOLBAR-EXCLUSION-20260916.md`。

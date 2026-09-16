@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-16
 
+## 2026-09-16 R01-01 测试源码根绑定
+
+- `abb5589` 完成 F10/R01-01：Playnite 测试程序集嵌入 `GscSourceRoot` 与 `GscBuildCommit`，`TestRepositoryContext.Root` 只使用构建时根并校验源码根结构、Git HEAD 和程序集身份；不再从 `AppContext.BaseDirectory` 向上回溯。37 个 `FindRepositoryRoot` 与 6 个直接 reader 已统一。
+- 当前 worktree 的 `scripts/build.ps1 -OutputRoot .tmp\r01-01-isolated` 全流程构建 `0/0`，Core `83/83`、Worker `311/311`、Playnite `518` 通过/`57` 跳过/`0` 失败；输出移到 main checkout 的 `.tmp` 后仍相同，证实不会静默读 main 源码。两个临时目录均已清理，main 源码和 `src.zip` 未触碰。
+- 首次短 SHA 定向比较产生预期错配诊断，改为安全前缀匹配后身份/代表性测试 `14/14`；未知或不匹配仍阻断。证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-01-REPOSITORY-IDENTITY-20260916.md`。下一项 R01-02。
+
 ## 2026-09-16 R00-08 搜索框 Enter/IME
 
 - `8435d80` 收窄 `AcrylicProductionShellView` 的选框键盘确认：`Key.ImeProcessed`/IME 处理键不关闭；Enter 只接受 `PickerList.SelectedItem` 且通过 `GamePicker.ItemsView.Contains` 的可见候选；无结果保持旧 `SelectedGame` 和弹层，Escape 仍返回 `GameContextButton` 焦点，方向键继续默认路由。

@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-16 R01-01 测试源码根绑定
+
+- F10 的错根问题在最新代码中确认为 37 个 `FindRepositoryRoot` 加 6 个直接回溯 reader；`abb5589` 用 `TestRepositoryContext`、`GscSourceRoot`/`GscBuildCommit` 元数据和 `GSC_SOURCE_ROOT` 构建传播统一收口。源码根结构、Git HEAD、程序集身份缺一即阻断并给出路径/commit 诊断。
+- 当前 worktree 隔离构建全流程：XAML 24 文件通过，构建 `0/0`，Core `83/83`、Worker `311/311`、Playnite `518` 通过/`57` 跳过/`0` 失败；输出改放 main checkout `.tmp` 后相同，说明没有从输出目录误读 main 源码。临时输出已关闭编译服务器后清理。
+- 首次短 SHA 严格比较的失败暴露了身份格式差异，改为 7～40 位安全前缀匹配后代表性身份/源码测试 `14/14`。不涉及生产 UI 或真实宿主；下一可执行小批量为 R01-02 数字单元格裁切。
+
 ## 2026-09-16 R00-08 搜索框 Enter/IME
 
 - 质量审查所指的风险已在代码链中确认：`GamePickerViewModel` 会保留筛选隐藏的旧选择，而旧 Shell handler 只检查 `viewModel.SelectedGame != null`。`8435d80` 将 Enter 收窄为当前 `PickerList.SelectedItem` + `ItemsView.Contains`，并先放行 `Key.ImeProcessed`；Escape 与默认方向键路由保持。

@@ -2,6 +2,12 @@
 
 > 更新时间：2026-09-16。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 当前第三轮阶段：R01-01 测试源码根绑定
+
+- `abb5589` 为 Playnite 源码型测试引入 `GscSourceRoot`/`GscBuildCommit` 程序集元数据和 `TestRepositoryContext`；37 个重复根 helper 与 6 个直接回溯 reader 均改为使用构建绑定根，未知、无效或 checkout/程序集 commit 不一致时清晰失败。
+- `scripts/build.ps1` 现在显式传播并恢复 `GSC_SOURCE_ROOT`。当前 worktree 隔离 OutputRoot 全流程为构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `518` 通过/`57` 跳过/`0` 失败；把同一输出放到 main checkout 的 `.tmp` 复跑仍相同，main 源码与 `src.zip` 未改。证据见 [`R01-01-REPOSITORY-IDENTITY-20260916.md`](../design/reviews/ui-finesse-round3-20260915/evidence/R01-01-REPOSITORY-IDENTITY-20260916.md)。
+- 代表性身份/源码测试 `14/14`，定向初跑曾发现 7 位短 SHA 与完整 HEAD 的比较校准，改为安全前缀匹配后通过；不是放宽到任意身份。下一可执行项为 R01-02 数字单元格裁切。
+
 ## 当前第三轮阶段：R00-08 搜索框 Enter/IME
 
 - `8435d80` 修正生产 `AcrylicProductionShellView.OnPickerPreviewKeyDown`：IME 处理事件先放行；Enter 只确认 `PickerList.SelectedItem` 且该项仍在共享 `GamePicker.ItemsView` 中的候选，不再因旧 `SelectedGame` 存在而关闭；Escape 保持焦点返回，方向键不拦截。
