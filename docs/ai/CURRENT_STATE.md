@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮阶段：R03-05 长路径分层
+
+- `2b8612f` 先核对现有 `GscPathText`、Tooltip 和复制重试：原有表格路径只有尾部省略，详情没有统一的可选择完整值/路径复制命令；没有把 main 旧实现覆盖到当前分支。
+- 新增 `PathDisplayConverter`/`GscPathDisplayConverter`，长预览保留盘符/根路径和文件名尾部；新增共享 `GscWpfUiPathDetailTextBox`（只读、NoWrap、隐藏横向滚动、原生选择/Ctrl+C）；`CopyPathCommand` 直接复用现有 `CopyTextWithRetryAsync`，复制值不经过预览转换。
+- Save 候选、Media 待归类/媒体详情、Trainer 选中版本均接入预览、完整可选框和复制按钮。`R03LongPathTests` `3/3`：超过 260 字符的合成路径在 340 DIP 内不撑宽，SelectedText 与原始路径完全一致；首轮过期的 Trainer 源码断言已校准，不改 skip。
+- 最终隔离 Release：XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `561/618` 通过、`57` 跳过、`0` 失败；源码校验通过。RenderHarness 绑定 `2b8612f` 且 `WorkingTreeClean=True`，Light/Dark 多尺寸 `render-qa OK`，共 297 张 PNG；人工查看 Save/Media/Trainer 1366×768 选中详情。
+- 证据来自合成路径、受控 STA WPF、offscreen logical DIP；未验真实 Playnite presented frame、真实 OS 剪贴板/键盘/IME、读屏、宿主字体、物理 DPI/跨屏、ETW 或宿主性能。Maintenance 摘要路径仍只保留 Tooltip/只读摘要，未宣称有独立复制详情；未写真实存档/媒体/云端。下一可执行项为 R03-06 双语长度压力。
+
 ## 当前第三轮阶段：R03-04 数字列对齐
 
 - `9fa68ef` 先核对现有 `GscTypographyNumeric`、Save 数字样式和各页时间/百分比列；保留已有 Tabular 数字、游戏选框、滚动条和生产业务契约，没有把 main 旧实现覆盖到当前分支。

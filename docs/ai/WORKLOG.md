@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-17 R03-05 长路径分层
+
+- 先核对生产能力：`GscPathText` 已有代码字体、单行和 Tooltip，`CopyTextWithRetryAsync` 已有剪贴板重试，但没有路径专用复制/可选详情；没有覆盖 main 旧实现。
+- `2b8612f` 新增共享 `PathDisplayConverter`、`GscWpfUiPathDetailTextBox` 和参数化 `CopyPathCommand`。中间省略只用于预览，保留盘符/根路径与文件名尾部；详情框只读、NoWrap、可选，复制直接使用原始绑定值。Save 候选、Media 两类详情、Trainer 选中版本接入；命令、Binding、取消/错误、安全恢复、picker、滚动条、有限列表和 net462 保持。
+- `R03LongPathTests` 实际 `3/3`；超过 260 字符合成路径在 340 DIP 宿主内布局不撑宽，`SelectAll().SelectedText` 完全等于原始路径，预览不含 CR/LF。完整隔离 Release XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `561/618`（57 跳过、0 失败），源码校验通过。
+- RenderHarness 最终绑定 `2b8612f`、`WorkingTreeClean=True`，Light/Dark 多尺寸 `render-qa OK`，297 张 PNG；人工查看 Save/Media/Trainer 1366×768 详情。首轮测试缺身份环境，完整测试首轮暴露一条随真实 Trainer 绑定变化的过期断言，修正后干净复跑；不改写 skip。`.tmp/r03-05-*` 文档同步后清理。
+- 边界：未验真实 Playnite presented frame、OS 剪贴板/键盘/IME、读屏、宿主字体、物理 DPI/跨屏、ETW/宿主性能；Maintenance 摘要路径仍是 Tooltip/只读摘要，未冒充独立复制详情。下一可执行任务为 R03-06 双语长度压力。
+
 ## 2026-09-17 R03-04 数字列对齐
 
 - 先查现有能力：`GscTypographyNumeric` 已有 Tabular 数字，Save 计数/容量已有右对齐；时间列和 Task 百分比仍是普通文本/直接格式化。没有把 main 旧实现带入当前分支。
