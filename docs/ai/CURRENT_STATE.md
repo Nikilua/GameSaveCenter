@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮阶段：R02-05 命中区与间距
+
+- 当前提交 `f03b4dd` 核对确认生产共享图标按钮链已满足本项实现方向：`GscIconOnlyButtonBase` 为 `34×34 DIP`、最小宽高 `34`、相邻 `6 DIP`；工具条变体为 `36×36 DIP`，文字动作继续使用 `GscButtonHeight=36`/`GscCompactButtonHeight=30`。本阶段只增加行为门禁，没有覆盖 main 旧实现或重建业务控件。
+- `R02HitAreaSpacingTests` 定向 `2/2`：真实 STA WPF Window 中复制/删除中心分别命中各自 Button，6 DIP 间隔不命中任一按钮；宽 `82 DIP` 的 WrapPanel 排布为 `34+6+34` 同行，第三动作换到下一行，三者无正面积重叠且中心命中身份正确。
+- 最终隔离 Release：XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `537/594` 通过/`57` 跳过/`0` 失败；源码校验通过。RenderHarness 绑定 `f03b4dd` 且工作树干净，Light/Dark 56 场景均 `OK`；人工对照 Media `1040×700` 双主题图，批量动作组和列表滚动完整。
+- 证据来自真实生产 WPF 资源、合成图标、隔离 STA Window、`VisualTreeHelper.HitTest` 和 offscreen logical DIP；未验真实 Playnite、OS 鼠标/键盘输入、屏幕阅读器、物理 DPI/跨屏、IME、presented frame、ETW 或宿主性能。未写真实存档/媒体/云端。下一可执行项为 R02-06 菜单状态完整。
+
 ## 当前第三轮阶段：R02-04 图文光学居中
 
 - 当前提交 `d296ce0` 未改生产按钮体系；既有 `GscWpfUiButtonTextTemplate`、共享内容居中属性和 `ContentTemplate={x:Null}` 复合图标路径已满足实现方向，本阶段新增 `R02OpticalAlignmentTests` 作为实际几何门禁。

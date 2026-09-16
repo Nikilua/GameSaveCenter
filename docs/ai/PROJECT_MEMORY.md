@@ -1,6 +1,13 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
-> 维护时间：2026-09-16
+> 维护时间：2026-09-17
+
+## 2026-09-17 R02-05 命中区与间距
+
+- 先核对当前生产实现：`GscIconOnlyButtonBase` 已继承共享按钮模板，实际尺寸 `34×34 DIP`、右侧逻辑间隔 `6 DIP`；`GscIconOnlyToolbarButton` 为 `36×36 DIP`，文字动作复用 `GscButtonHeight=36` 与 `GscCompactButtonHeight=30`。Task/Save 的复制、重试、取消、删除和 Media 批量栏均已有对应入口，因此没有重建服务、DTO 或页面布局。
+- `f03b4dd` 新增 `R02HitAreaSpacingTests` 两条实际 STA WPF 行为门禁：复制/删除中心命中各自 Button，6 DIP 间隔不落入任一按钮；窄 `82 DIP` WrapPanel 保持复制/删除同行，第三按钮换行，三个命中矩形无正面积重叠且中心身份正确。
+- 完整隔离 Release 为 XAML `24/24`、构建 `0/0`、Core `83`、Worker `311`、Playnite `537/594`（57 skip/0 fail）；RenderHarness 当前 commit 工作树干净，Light/Dark 56 场景 `OK`；源码校验通过。没有修改游戏选框、滚动条、命令/绑定、取消/错误、恢复保护和 net462 契约。
+- 证据范围是合成图标、真实生产 WPF 资源、隔离 Window、VisualTreeHelper 命中和 offscreen logical DIP；未验真实 Playnite、物理 DPI/OS 输入/IME/屏幕阅读器/presented frame/ETW/宿主性能，也没有真实数据写入。下一项为 R02-06 菜单状态完整。
 
 ## 2026-09-17 R02-04 图文光学居中
 

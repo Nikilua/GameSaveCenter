@@ -1,5 +1,7 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-17 第三轮 R02-05 已满足：核对确认当前生产共享图标按钮链已经提供 `34×34 DIP` 紧凑命中区、6 DIP 邻间距和 36 DIP 工具条变体；`f03b4dd` 只新增真实 STA WPF 命中/布局行为门禁。复制/删除中心分别命中各自 Button，间隔不命中；窄 `82 DIP` WrapPanel 下复制/删除同行、第三动作换行且无正面积重叠，定向 `2/2`。最终隔离 Release 为 XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `537/594`（57 跳过、0 失败），源码校验通过；双主题 RenderHarness 56 场景均 `OK`，人工对照 Media 1040×700 双主题图。证据来自真实生产 WPF/合成图标/隔离 Window/offscreen logical DIP；未验真实 Playnite、物理 DPI、读屏、OS 输入/IME、presented frame、ETW/宿主性能，未写真实存档、媒体或云端。下一可执行任务为 R02-06 菜单状态完整。
+
 > 2026-09-17 第三轮 R02-04 已满足：核对确认生产共享文字模板、统一 Center 对齐和复合图标内容路径已存在，`d296ce0` 只补真实 STA WPF 几何门禁。同样式中文四字/英文双词基线差 `<0.5 DIP`，16/20 DIP 图标与数字间距 `8 DIP`、中心差 `≤1.5 DIP`，定向 `3/3`；最终隔离 Release 为 XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `535/592`（57 跳过、0 失败），双主题 RenderHarness 56 场景均 `OK`。首次全量的一条既有 IPC 取消时序用例失败，单项 `1/1` 复跑后完整脚本通过，事实已记录。证据来自生产 WPF/合成 Geometry/offscreen logical DIP；未验真实 Playnite、物理 DPI、读屏、OS 输入/IME、presented frame、ETW、宿主性能。下一可执行任务为 R02-05 命中区与间距。
 
 > 2026-09-16 第三轮 R02-03 已满足：`627f864` 在既有命令门禁基础上增加 Restore、Media Inbox、Cloud Transfer、Remote Restore 的相邻禁用原因说明；说明可聚焦，Automation Name/HelpText 与文案一致，需要维护时复用 `OpenMaintenanceCommand`，未放宽危险/未校验恢复命令。R02 定向 `4/4`，隔离 Release 为 XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `532/589`（57 跳过、0 失败）；双主题 RenderHarness 56 个视图/尺寸场景均 `OK`，源码校验通过。证据来自合成 fake、真实生产 WPF/offscreen logical DIP；未验真实 Playnite/屏幕阅读器/物理 DPI/OS 输入/IME/presented frame/ETW/宿主性能，未写真实存档/媒体/云端。下一可执行任务为 R02-04 图文光学居中。
