@@ -1,5 +1,7 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-16 第三轮 R02-01 已满足：`89c9cc3` 在当前 `codex/ui-finesse-round2` 接入共享 DangerAction/ContextDanger 变体，收口 Overview 三个动作区域的单一 Primary 角色；Save 恢复和 Media 来源移除明确使用危险语义；Media Inbox 待归类/已忽略批量主动作按真实 DataTrigger 互斥。Release 为 XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `525/582`（57 跳过、0 失败），R02 定向 `2/2`；RenderHarness 为 161 快照、0 Fidelity、0 失败路由、0 HIGH/0 MEDIUM。证据见 `design/reviews/ui-finesse-round3-20260915/evidence/R02-01-ACTION-PRIORITY-20260916.md`。证据是受控 WPF/offscreen logical DIP，不等价真实 Playnite、用户主题、物理 DPI/IME、presented frame、ETW 或宿主性能；未改 picker、滚动条、命令绑定、取消/错误、恢复保护、有限列表和 net462。下一可执行任务为 R02-02 忙碌宽度稳定。
+
 > 2026-09-16 第三轮 R01-08 已满足：隔离 Release 为 Core 83/83/0、Worker 311/311/0、Playnite 523/580 通过、57 跳过、0 失败；XAML 24/24、构建 0/0。Playnite 计划中的 63 条是 57 条撤销 UI 基线 + 6 条 NamedPipe gated，本机 Named Pipe 可用所以 6 条 IPC/取消/恢复实际通过；Worker 重启 gated 1 条也通过。成功/失败/跳过、补测步骤和真实宿主边界已写入 R01-08 证据，不把能力限制改成通过；下一可执行任务为 R02-01 动作优先级。
 
 > 2026-09-16 第三轮 R01-07 已满足：e1324fe 新增 freshness 脚本、三分支 smoke 和版本化 UI_EVIDENCE_BASELINE.json；当前源码扫描 14 条记录为 7 stale / 7 fresh，明确列出需重跑的旧证据及关联 scopes。纯文档变更为 0 重跑/0 重装；共享 Redesign.xaml 变更命中 R00-01-02/R00-05 的 shared-controls/all-pages；源码与包身份分开输出，当前真实包身份为 not-provided，合成 mismatch 只验证重装分支。源码校验和 smoke 已通过，证据见 design/reviews/ui-finesse-round3-20260915/evidence/R01-07-EVIDENCE-FRESHNESS-20260916.md；下一可执行任务为 R01-08 跳过测试说明。

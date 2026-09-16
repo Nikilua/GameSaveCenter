@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-16
 
+## 2026-09-16 R02-01 动作优先级
+
+- 当前生产按钮系统已有 Primary/Context/IconOnlyDanger 能力；`89c9cc3` 只补共享 `GscWpfUiDangerActionButton`、`GscWpfUiContextDangerButton` 两个角色变体，避免各页重复造危险样式。生产页面的高影响动作应使用 Danger 语义，普通区域维持一个主动作，其余用次要/上下文动作。
+- Overview 的 HomeToolbar、CurrentGameCard、MediaInboxBatchActionRow 均由结构测试确认一个 Primary。Media Inbox 的 Apply/Restore 批量主动作按 `MediaInboxMode` 互斥，两个 Restore 入口都默认隐藏、已忽略时显示；不要以静态出现两个按钮升级为多个同时高亮。
+- Save Restore 的真实 `RestoreCommand`、Media 删除来源的 `DeleteMediaSourceCommand` 与既有策略删除绑定未改变；游戏选框、滚动条、取消/错误、恢复保护、有限列表性能和 net462 兼容继续是不可回归契约。
+- R02-01 定向 `2/2`、完整 Release Core `83`、Worker `311`、Playnite `525/582`（57 skip/0 fail）、XAML `24/24`、RenderHarness `161/0/0` 通过。离屏 logical DIP 证据不代表真实 Playnite、物理 DPI、IME、presented frame、ETW 或宿主性能。下一项 R02-02。
+
 ## 2026-09-16 R01-08 跳过测试说明
 
 - 当前隔离 Release 全流程实际结果：Core 83 通过/0 失败/0 跳过，Worker 311/0/0，Playnite 523/0/57（总计 580），合计 917/0/57；XAML 24/24、构建 0 warning/0 error。

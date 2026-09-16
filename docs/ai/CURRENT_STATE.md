@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮阶段：R02-01 动作优先级
+
+- `89c9cc3` 在当前 `codex/ui-finesse-round2` 分支复用现有按钮族，新增 `GscWpfUiDangerActionButton` 与 `GscWpfUiContextDangerButton`，并将 Save 恢复、Media 来源移除接入共享危险外观；Overview 主页工具栏、当前游戏卡片和 Media Inbox 批量栏各保留一个 Primary 角色。
+- Media Inbox 的待归类/已忽略批量主动作通过真实 XAML 条件互斥：已忽略隐藏 `ApplyMediaClassification`，只显示 `RestoreIgnoredMediaBatch`；列表和检查器两处均覆盖。命令、Binding、恢复保护、撤销、picker、滚动条、有限列表和 net462 未改。
+- 当前提交 Release 全流程为 Core `83/83/0`、Worker `311/311/0`、Playnite `525/582` 通过、`57` 跳过、`0` 失败；XAML `24/24`，构建 `0/0`；R02 定向行为/样式测试 `2/2`。RenderHarness 绑定 `89c9cc3` 为 `161` 快照、`0` Fidelity、`0` 失败路由、`0 HIGH/0 MEDIUM`。
+- 证据见 [`R02-01-ACTION-PRIORITY-20260916.md`](../design/reviews/ui-finesse-round3-20260915/evidence/R02-01-ACTION-PRIORITY-20260916.md)。范围是合成数据、真实生产 WPF 样式和 offscreen logical DIP；未验真实 Playnite 嵌入、用户主题、物理 DPI/跨屏、OS 输入/IME、presented frame、ETW、屏幕阅读器或宿主性能。下一可执行项为 R02-02 忙碌宽度稳定。
+
 ## 当前第三轮阶段：R01-08 跳过测试说明
 
 - 当前隔离 Release 全流程为 Core 83/83/0、Worker 311/311/0、Playnite 523/580 通过/57 跳过/0 失败，合计 917 通过、0 失败、57 跳过；XAML 24/24，构建 0 warning/0 error。

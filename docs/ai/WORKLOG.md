@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-16 R02-01 动作优先级
+
+- 先核对当前分支最新代码：共享 Danger 外观资源已存在，但普通业务页没有文本危险动作实例；因此补充基于现有 PrimaryAction/ContextButton 几何的两个共享危险变体，没有迁移 main 旧实现或新增业务服务/DTO。
+- `89c9cc3` 将 Save 恢复接入 DangerAction，将 Media 来源移除接入 ContextDanger，并让 Media Inbox 待归类/已忽略批量主动作按真实 `DataTrigger` 互斥；Overview 主页工具栏、当前游戏卡片和批量栏各保留一个 Primary。R02 定向测试不是单纯 `Assert.Contains`：XML 结构验证条件可见性，STA WPF 实例验证资源、Appearance 和尺寸差异。
+- 稳定 Release 全流程：XAML `24/24`，构建 `0 warning/0 error`，Core `83/83`，Worker `311/311`，Playnite `525` 通过/`57` 跳过/`0` 失败；R02 定向 `2/2`。RenderHarness 提交绑定 `89c9cc3`，161 快照、0 Fidelity、0 失败路由、0 HIGH/0 MEDIUM；源码校验通过，WPF 质量扫描 0 errors（warnings/info 仍含历史临时/宿主资源提示）。
+- 受控截图仅作为 offscreen logical DIP 复核，不宣称真实 Playnite 嵌入、物理 DPI/跨屏、OS 键盘/IME、presented frame、屏幕阅读器、ETW 或宿主性能。未写真实存档/媒体/云端；本阶段临时输出在文档同步后清理。下一可执行项为 R02-02 忙碌宽度稳定。
+
 ## 2026-09-16 R01-08 跳过测试说明
 
 - 运行 scripts/build.ps1 -Configuration Release -OutputRoot .tmp/r01-08-skip-build：XAML 24/24，构建 0 warning/0 error；Core 83/83，Worker 311/311，Playnite 523 通过、57 跳过、0 失败，总计 917 通过、57 跳过、0 失败。
