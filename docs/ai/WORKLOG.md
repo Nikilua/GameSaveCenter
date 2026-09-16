@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-17 R03-04 数字列对齐
+
+- 先查现有能力：`GscTypographyNumeric` 已有 Tabular 数字，Save 计数/容量已有右对齐；时间列和 Task 百分比仍是普通文本/直接格式化。没有把 main 旧实现带入当前分支。
+- `9fa68ef` 增加共享数字/时间/百分比单元格样式，接入 Save、Media、Maintenance、Task；为 Task 增加不回写数据的 `ProgressValue/ProgressDisplay`，排队默认 0 和负数用 `—`，超界只在显示层钳制。命令、Binding、取消/错误、恢复保护、picker、滚动条、有限列表和 net462 未改。
+- 实际 STA WPF 定向 `R03NumericAlignmentTests` `10/10`：120 DIP 生产列中 `9/10/99/100` 右锚点稳定，8 个进度边界通过。最终隔离 Release XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `558/615`（57 跳过、0 失败），源码校验通过。
+- RenderHarness 构建 `0/0`，Light/Dark 1040×700 生产页面 `render-qa OK`，人工抽查 Task/Save/Media。第一次全量暴露的旧局部样式断言和夹具列宽问题已校正后干净复跑；`.tmp/r03-04-*` 文档同步后清理。未启动真实 Playnite、未写真实存档/媒体/云端；宿主最终 frame、字体替换、物理 DPI/跨屏、OS 输入/IME、读屏、ETW 和宿主性能仍未验。下一可执行任务为 R03-05 长路径分层。
+
 ## 2026-09-17 R03-03 双语混排基线
 
 - 先核对现有生产 Save Center/存档中心标题、日期容量列与中文标点入口，确认已有 Typography/数字样式统一承载混排，没有整行垂直偏移或需要新字体体系的事实；main checkout 和 `src.zip` 未改。

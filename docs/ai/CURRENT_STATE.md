@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮阶段：R03-04 数字列对齐
+
+- `9fa68ef` 先核对现有 `GscTypographyNumeric`、Save 数字样式和各页时间/百分比列；保留已有 Tabular 数字、游戏选框、滚动条和生产业务契约，没有把 main 旧实现覆盖到当前分支。
+- 新增共享数字/时间/百分比单元格样式，并让 Save、Media、Maintenance、Task 的对应列统一右锚点；`TaskStatusDto.ProgressValue/ProgressDisplay` 只提供安全的显示层钳制与未知占位，原始 `ProgressPercent` 保留。
+- `R03NumericAlignmentTests` `10/10`：真实 STA WPF 120 DIP 列中 `9/10/99/100` 右边界均在 `119.5～120.5 DIP`；排队 0/负数显示 `—`，正常百分比与超界钳制通过。最终隔离 Release：XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `558/615` 通过、`57` 跳过、`0` 失败；源码校验通过。
+- RenderHarness 绑定 clean commit，Light/Dark 生产 1040×700 页面 `render-qa OK`，人工抽查 Task/Save/Media。证据来自合成 DTO、受控 WPF/offscreen logical DIP，不等价真实 Playnite presented frame、宿主字体替换、物理 DPI/跨屏、OS 输入/IME、读屏、ETW 或宿主性能；未写真实数据。下一可执行项为 R03-05 长路径分层。
+
 ## 当前第三轮阶段：R03-03 双语混排基线
 
 - `466c2f5` 先核对当前生产 Save Center/存档中心、日期容量和中文标点入口，确认现有 Typography/数字样式已经统一承载混排，没有生产 XAML 需要通过行级位移修复；没有从 main 带入旧实现或重建设计体系。

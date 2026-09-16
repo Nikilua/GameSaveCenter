@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-17
 
+## 2026-09-17 R03-04 数字列对齐
+
+- `9fa68ef` 先复用已有 Tabular 数字能力：新增 `GscTypographyNumericCell`/`TimeCell`/`PercentCell`，统一右对齐、NoWrap 和数字不裁切；Save、Media、Maintenance、Task 只替换对应单元格样式，未重建设计体系或改命令/Binding。
+- `TaskStatusDto` 保留原始 `ProgressPercent`，新增 `ProgressValue`（0～100 显示钳制）和 `ProgressDisplay`（排队默认 0、负数为 `—`，其余为百分比）。这只影响呈现，不把未知/无效值写回数据，也不改变非空计数/容量的零值含义。
+- `R03NumericAlignmentTests` 最终 `10/10`，其中实际 STA WPF 生产资源 120 DIP 列对 `9/10/99/100` 的右边界均为 `119.5～120.5 DIP`；8 个 DTO 边界覆盖未知、负数、0、9、10、99、100、120。隔离 Release 为 XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `558/615`（57 skip/0 fail），源码校验通过。
+- RenderHarness clean commit 的 Light/Dark 生产 1040×700 页面 `render-qa OK`，人工抽查 Task/Save/Media。第一次全量的两个夹具/既有断言问题已修正后重跑，不改写 skip 或放宽门禁；`.tmp/r03-04-*` 为可再生验证输出，文档提交后清理。证据见 `design/reviews/ui-finesse-round3-20260915/evidence/R03-04-NUMERIC-ALIGNMENT-20260917.md`。
+- 证据只代表合成数据、受控 WPF 和 offscreen logical DIP；未验真实 Playnite presented frame、宿主字体替换、物理 DPI/跨屏、OS 输入/IME、读屏、ETW 或宿主性能。下一项为 R03-05 长路径分层。
+
 ## 2026-09-17 R03-03 双语混排基线
 
 - `466c2f5` 先查明当前生产 Save Center/存档中心标题、日期容量和中文标点都复用现有字体/数字资源；没有生产布局偏移或新设计体系需要引入，因此只补证据，不改生产 XAML。
