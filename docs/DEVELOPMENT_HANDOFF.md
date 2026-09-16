@@ -1,5 +1,7 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-16 第三轮 R01-06 已满足：受控 RenderHarness 审计绑定 3929ed7，构建 0/0，运行时 161 快照、0 Fidelity、0 失败路由、0 HIGH/0 MEDIUM；关键 manifest、summary、metadata、路由/交互矩阵、布局报告、20 行具体索引和 6 张精选图已归档到 design/reviews/ui-finesse-round3-20260915/evidence/R01-06-host-evidence-20260916/。完整图集不入 Git，由归档 README 在固定 commit 上重现；metadata 不再只依赖绝对临时路径。归档前人工查看壳层、首页、维护诊断代表图。范围是受控 WPF 离屏 logical DIP，不等价真实 Playnite 嵌入、用户主题、物理 DPI、OS 输入/IME、presented frame、ETW 或宿主性能；下一可执行任务为 R01-07 基线失效规则。
+
 > 2026-09-16 第三轮 R01-05 已满足：`5e6d64a` 新增测试侧负例注册表，N01～N05 分别覆盖对比度、裁切、焦点、层级、状态；实际检测结果均 `detected=True`，没有把夹具放进生产入口。完整 Release 构建 `0/0`，Core `83/83`、Worker `311/311`、Playnite `523/580`（57 跳过、0 失败），注册表定向 `1/1`，源码校验通过。代码已推送 `origin/codex/ui-finesse-round2`。证据见 `design/reviews/ui-finesse-round3-20260915/evidence/R01-05-NEGATIVE-REGISTRY-20260916.md`。范围是合成数据、受控 WPF Window 和 offscreen logical DIP，不等价真实 Playnite、OS 输入/IME、物理 DPI、presented frame、ETW 或宿主性能；下一可执行任务为 R01-06 宿主证据保全。
 
 > 2026-09-16 第三轮 R01-04 已满足受控行为门禁：`74abb10` 新增真实 STA WPF 重入后清钟基值测试，并将动效源码断言收窄为结构约束；Y/Opacity 基值写回的两次隔离突变均按预期使行为测试失败。以完整提交身份构建时 XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `522/579`（57 跳过、0 失败），`EntranceMotion` 定向 `4/4`。代码已推送 `origin/codex/ui-finesse-round2`。证据见 `design/reviews/ui-finesse-round3-20260915/evidence/R01-04-MOTION-BEHAVIOR-20260916.md`。范围是合成 WPF/隔离 Window/offscreen logical DIP，不等价真实 Playnite、物理 DPI、用户输入、presented frame、ETW 或宿主性能；下一可执行任务为 R01-05 负例注册表。

@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-16
 
+## 2026-09-16 R01-06 宿主证据保全
+
+- R01-06 已满足：在不触碰 artifacts/ 旧用户产物的前提下，用隔离 .tmp/r01-06-audit 运行当前 RenderHarness 审计，绑定 3929ed73e1056a964d7ceacc54a6046abcc9983e，得到 161 个运行时快照、0 Fidelity、0 失败路由、0 HIGH/0 MEDIUM，以及 73 条已分类 INFO。
+- 关键 manifest、summary、metadata、route/fidelity matrix、layout report、20 行具体索引和 6 张精选图已提交到 docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-host-evidence-20260916/。metadata 中输出根/ZIP 已便携化为相对路径；完整 353 张图、视觉树 JSON 和大体积机器 manifest 不入 Git，由 README 的固定 checkout 命令重现。
+- 标准尺寸壳层、首页和维护诊断图已人工检查；图片只作为受控 WPF 离屏暗色样本。未执行真实业务写入，不宣称 Playnite 嵌入、物理 DPI、OS 输入/IME、presented frame、ETW 或宿主性能。下一项 R01-07 基线失效规则。
+
 ## 2026-09-16 R01-05 负例注册表
 
 - `5e6d64a` 新增测试侧 `UiNegativeFixtureRegistryTests`，五项注册表分别调用对比度、数值可读性、生产选框键盘路由、子级布局溢出和 Loading 状态命中检测；N01～N05 全部 `detected=True`，每项都记录明确 expected-failure，不把负例夹具放进生产入口。

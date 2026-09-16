@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-16 R01-06 宿主证据保全
+
+- 在不调用会覆盖现有 artifacts/GameSaveCenter-ui-audit.zip 的默认脚本路径下，使用隔离 .tmp/r01-06-harness-build 与 .tmp/r01-06-audit 构建/运行 RenderHarness。审计绑定 3929ed73e1056a964d7ceacc54a6046abcc9983e，构建 0 warning / 0 error，输出 161 快照、0 Fidelity、0 失败路由、0 HIGH/0 MEDIUM。
+- 归档关键 AUDIT_SUMMARY、audit-metadata、UI_MANIFEST、UI_ROUTE_MAP、UI_FIDELITY_MATRIX、LAYOUT_REPORT、EVIDENCE_INDEX 和 6 张精选图；metadata 已移除本机绝对输出根，README 给出固定 commit 和 scripts/build.ps1/RenderHarness 的全量重现命令。
+- 归档前人工检查标准尺寸壳层、首页和维护诊断图；完整截图/视觉树 JSON 不提交，临时审计目录和 ZIP 在文档提交前清理。真实 Playnite 嵌入、用户主题、物理 DPI、OS 输入/IME、presented frame、ETW、宿主性能未验；生产 UI/命令/绑定/安全契约未改。
+- 证据见 docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-HOST-EVIDENCE-20260916.md。下一可执行小批量为 R01-07 基线失效规则。
+
 ## 2026-09-16 R01-05 负例注册表
 
 - 盘点确认对比度、数值裁切、选框焦点、布局层级和 Loading 状态的检测能力均已存在，但原来没有统一 expected-failure 注册表。`5e6d64a` 新增测试侧 `UiNegativeFixtureRegistryTests`，N01～N05 各由实际检测器/受控 WPF probe 捕获，不新增生产入口。

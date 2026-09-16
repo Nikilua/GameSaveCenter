@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮阶段：R01-06 宿主证据保全
+
+- 受控 RenderHarness 审计绑定 3929ed73e1056a964d7ceacc54a6046abcc9983e：运行时快照 161、Fidelity 警告 0、失败路由 0、HIGH 0、MEDIUM 0；关键静态计数为 View 10、Tab 32、Button/Toggle 234、DataGrid 14、ScrollViewer 34、条件 UI 235。
+- R01-06 已将 AUDIT_SUMMARY、audit-metadata、UI_MANIFEST、UI_ROUTE_MAP、UI_FIDELITY_MATRIX、LAYOUT_REPORT、20 行 EVIDENCE_INDEX 和 6 张精选截图归档到 R01-06-host-evidence-20260916。metadata 的输出路径已改为仓库相对路径，README 给出固定 commit 的全量截图/JSON 重现命令。
+- 本项只保全证据，没有修改生产 UI；完整截图与视觉树 JSON 仍为可再生临时输出。证据是受控 WPF 离屏 logical DIP，不等价真实 Playnite 嵌入、用户主题、物理 DPI、OS 输入/IME、presented frame、ETW 或宿主性能。下一可执行项为 R01-07 基线失效规则。
+
 > 更新时间：2026-09-16。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
 ## 当前第三轮阶段：R01-05 负例注册表
