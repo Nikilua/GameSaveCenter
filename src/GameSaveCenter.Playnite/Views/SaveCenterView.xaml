@@ -427,7 +427,7 @@
                                         <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0" Text="版本比较" Style="{DynamicResource GscSectionTitleStyle}" VerticalAlignment="Center"/>
                                         <Border Grid.Column="1" Style="{DynamicResource GscRedesignContextPill}" Background="{DynamicResource GscInfoIconFillBrush}" Margin="10,0,0,0" VerticalAlignment="Center" Height="28" MinHeight="28" Padding="9,0" MaxWidth="210" SnapsToDevicePixels="True">
-                                            <TextBlock Text="{Binding LastBackupDiff.ComparisonQualityDisplay, TargetNullValue=等待比较, FallbackValue=等待比较}" Foreground="{DynamicResource GscInfoBrush}" FontSize="10.5" TextTrimming="CharacterEllipsis" ToolTip="{Binding LastBackupDiff.ComparisonQualityDisplay, TargetNullValue=等待比较, FallbackValue=等待比较}" VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding LastBackupDiff.ComparisonQualityDisplay, TargetNullValue=等待比较, FallbackValue=等待比较}" Foreground="{DynamicResource GscInfoBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextTrimming="CharacterEllipsis" ToolTip="{Binding LastBackupDiff.ComparisonQualityDisplay, TargetNullValue=等待比较, FallbackValue=等待比较}" VerticalAlignment="Center"/>
                                         </Border>
                                     </Grid>
                                     <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding CompareBackupCommand}" Content="比较当前与上一版本" HorizontalAlignment="Right" Margin="12,0,0,0" AutomationProperties.Name="比较当前选中版本与上一版本"/>

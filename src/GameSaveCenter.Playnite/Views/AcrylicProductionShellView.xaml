@@ -116,11 +116,11 @@
                                                            Foreground="{DynamicResource GscOnAccentTextBrush}"
                                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Border>
-                                    <TextBlock x:Name="SidebarBrandText" Text="GameSaveCenter" FontSize="12.5" FontWeight="SemiBold"
+                                    <TextBlock x:Name="SidebarBrandText" Text="GameSaveCenter" FontSize="{DynamicResource GscBodyFontSize}" FontWeight="SemiBold"
                                                Margin="9,0,0,0" VerticalAlignment="Center"/>
                                     <Border x:Name="SidebarProductionBadge" Background="{DynamicResource GscAccentTintBrush}" CornerRadius="8"
                                             Padding="8,4" Margin="8,0,0,0" VerticalAlignment="Center">
-                                        <TextBlock x:Name="SidebarProductionVersionText" Text="v0.6.73" FontSize="10.5" Foreground="{DynamicResource GscAccentBrush}"/>
+                                        <TextBlock x:Name="SidebarProductionVersionText" Text="v0.6.73" FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscAccentBrush}"/>
                                     </Border>
                                 </StackPanel>
                             </Grid>
@@ -380,8 +380,8 @@
                                     </Style>
                                 </Ellipse.Style>
                             </Ellipse>
-                            <TextBlock Text="Worker" FontSize="10.5" Margin="7,0,0,0"/>
-                            <TextBlock FontSize="10.5" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="4,0,0,0">
+                            <TextBlock Text="Worker" FontSize="{DynamicResource GscCaptionFontSize}" Margin="7,0,0,0"/>
+                            <TextBlock FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="4,0,0,0">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Text" Value="· 不可用"/>
@@ -403,8 +403,8 @@
                                     </Style>
                                 </Ellipse.Style>
                             </Ellipse>
-                            <TextBlock Text="Ludusavi" FontSize="10.5" Margin="7,0,0,0"/>
-                            <TextBlock FontSize="10.5" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="4,0,0,0">
+                            <TextBlock Text="Ludusavi" FontSize="{DynamicResource GscCaptionFontSize}" Margin="7,0,0,0"/>
+                            <TextBlock FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="4,0,0,0">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Text" Value="· 不可用"/>

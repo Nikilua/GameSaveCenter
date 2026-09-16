@@ -197,6 +197,44 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains(productionSources, source => source.IndexOf("FontSize=\"{DynamicResource GscCaptionFontSize}\"", StringComparison.Ordinal) >= 0);
         }
 
+        [Fact]
+        public void ProductionTypographyUsesSharedHierarchyWithoutMicroSizeDrift()
+        {
+            var root = FindRepositoryRoot();
+            var productionRoots = new[]
+            {
+                Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views"),
+                Path.Combine(root, "src", "GameSaveCenter.Playnite", "Settings")
+            };
+            var files = productionRoots
+                .SelectMany(path => Directory.EnumerateFiles(path, "*.xaml", SearchOption.AllDirectories))
+                .Where(path => path.IndexOf(Path.DirectorySeparatorChar + "Development" + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase) < 0)
+                .ToArray();
+
+            var microVariants = files
+                .SelectMany(file => File.ReadAllLines(file)
+                    .Select((line, index) => new { File = file, Line = index + 1, Text = line })
+                    .Where(item => item.Text.IndexOf("FontSize=\"9.5\"", StringComparison.Ordinal) >= 0
+                                   || item.Text.IndexOf("FontSize=\"10.5\"", StringComparison.Ordinal) >= 0
+                                   || item.Text.IndexOf("FontSize=\"12.5\"", StringComparison.Ordinal) >= 0))
+                .ToArray();
+
+            Assert.Empty(microVariants);
+
+            var shell = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml"));
+            var media = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
+            var overview = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml"));
+            var save = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "SaveCenterView.xaml"));
+
+            Assert.Contains("x:Name=\"SidebarBrandText\" Text=\"GameSaveCenter\" FontSize=\"{DynamicResource GscBodyFontSize}\"", shell);
+            Assert.Contains("x:Name=\"SidebarProductionVersionText\" Text=\"v0.6.73\" FontSize=\"{DynamicResource GscCaptionFontSize}\"", shell);
+            Assert.Contains("Text=\"{Binding FileName}\" FontSize=\"{DynamicResource GscBodyFontSize}\"", media);
+            Assert.Contains("StringFormat={}{0:MM-dd HH:mm}}\" FontSize=\"{DynamicResource GscCaptionFontSize}\"", media);
+            Assert.Contains("Text=\"{Binding TaskTypeDisplay, Mode=OneWay}\" Foreground=\"{DynamicResource GscPrimaryTextBrush}\" FontSize=\"{DynamicResource GscBodyFontSize}\"", overview);
+            Assert.Contains("Text=\"{Binding DetailMessage, Mode=OneWay}\" FontSize=\"{DynamicResource GscCaptionFontSize}\"", overview);
+            Assert.Contains("ComparisonQualityDisplay, TargetNullValue=等待比较, FallbackValue=等待比较}\" Foreground=\"{DynamicResource GscInfoBrush}\" FontSize=\"{DynamicResource GscCaptionFontSize}\"", save);
+        }
+
         private static string FindRepositoryRoot()
             => TestRepositoryContext.Root;
 

@@ -488,13 +488,13 @@
                                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                                     <Grid Grid.Column="0" MinWidth="0">
                                                         <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                                                        <TextBlock Text="{Binding TaskTypeDisplay, Mode=OneWay}" Foreground="{DynamicResource GscPrimaryTextBrush}" FontSize="12.5" FontWeight="SemiBold" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding TaskTypeDisplay, Mode=OneWay}"/>
-                                                        <TextBlock Grid.Column="1" Text="{Binding GameName, Mode=OneWay, TargetNullValue=全局}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="12.5" Margin="6,0,0,0" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/>
+                                                        <TextBlock Text="{Binding TaskTypeDisplay, Mode=OneWay}" Foreground="{DynamicResource GscPrimaryTextBrush}" FontSize="{DynamicResource GscBodyFontSize}" FontWeight="SemiBold" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding TaskTypeDisplay, Mode=OneWay}"/>
+                                                        <TextBlock Grid.Column="1" Text="{Binding GameName, Mode=OneWay, TargetNullValue=全局}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" Margin="6,0,0,0" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/>
                                                     </Grid>
                                                 </Grid>
                                                 <Grid Margin="0,3,0,0" MinWidth="0">
                                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                                                    <TextBlock Text="{Binding DetailMessage, Mode=OneWay}" FontSize="10.5" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding DetailMessage}" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="{Binding DetailMessage, Mode=OneWay}" FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding DetailMessage}" VerticalAlignment="Center"/>
                                                     <ProgressBar x:Name="OverviewTaskProgressBar" Grid.Column="1" Style="{StaticResource OverviewTaskProgressBar}" Width="150" Margin="10,0,0,0" Minimum="0" Maximum="100" Value="{Binding ProgressPercent, Mode=OneWay}" VerticalAlignment="Center"/>
                                                 </Grid>
                                             </StackPanel>
@@ -587,7 +587,7 @@
                                                 <TextBlock x:Name="ActivityKindChipText" Text="{Binding KindDisplay, Mode=OneWay}" Foreground="{DynamicResource GscAccentBrush}" FontSize="12" FontWeight="SemiBold" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding KindDisplay, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
                                             </Border>
                                             <StackPanel Grid.Column="1" Margin="0,0,12,0" VerticalAlignment="Center" MinWidth="0">
-                                                <TextBlock Text="{Binding GameName, Mode=OneWay, TargetNullValue=全局}" FontSize="12.5" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/>
+                                                <TextBlock Text="{Binding GameName, Mode=OneWay, TargetNullValue=全局}" FontSize="{DynamicResource GscBodyFontSize}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/>
                                                 <TextBlock Text="{Binding Summary, Mode=OneWay}" FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscSecondaryTextBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Summary}" Margin="0,2,0,0"/>
                                             </StackPanel>
                                             <Border x:Name="ActivityResultChip" Grid.Column="2" Style="{DynamicResource GscRedesignTableStatusPill}" MinWidth="58" VerticalAlignment="Center" HorizontalAlignment="Center"><TextBlock x:Name="ActivityResultChipText" Text="{Binding ResultDisplay, Mode=OneWay}" Foreground="{DynamicResource GscAccentBrush}" FontSize="12" FontWeight="SemiBold" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding ResultDisplay, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/></Border>
@@ -786,8 +786,8 @@
                                             <TextBlock x:Name="AttentionFindingGlyph" Text="!" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource GscWarningBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Border>
                                         <StackPanel Grid.Column="1" Margin="0,0,12,0" VerticalAlignment="Center" MinWidth="0">
-                                            <TextBlock Text="{Binding Title, Mode=OneWay}" FontSize="12.5" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding Detail}"/>
-                                            <TextBlock Text="{Binding GameName, Mode=OneWay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="10.5" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/>
+                                            <TextBlock Text="{Binding Title, Mode=OneWay}" FontSize="{DynamicResource GscBodyFontSize}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding Detail}"/>
+                                            <TextBlock Text="{Binding GameName, Mode=OneWay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/>
                                         </StackPanel>
                                         <TextBlock Grid.Column="2" Text="{Binding SuggestedAction, Mode=OneWay}" Foreground="{DynamicResource GscAccentBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextTrimming="CharacterEllipsis" ToolTip="{Binding SuggestedAction, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Right" TextAlignment="Right"/>
                                         </Grid>
