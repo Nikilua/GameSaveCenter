@@ -1,5 +1,7 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-16 第三轮 R00-08 已收口代码：`8435d80` 修正游戏选框 Enter/IME 路由，Enter 只确认仍在 `ItemsView` 的当前可见候选，无结果不确认旧游戏，`Key.ImeProcessed` 和方向键不关闭，Escape/有效 Enter 返回 `GameContextButton` 焦点。当前分支 `codex/ui-finesse-round2` 已完成 Release Playnite `0/0` 和相关 STA WPF 测试 `28/28`，文档证据见 `design/reviews/ui-finesse-round3-20260915/evidence/R00-08-PICKER-ENTER-IME-20260916.md`。测试使用合成 DTO、隔离 Window 和最小 Dashboard 状态承载；真实 Windows OS IME、Playnite 嵌入、物理键盘/DPI、presented frame、ETW 与宿主性能仍未验。下一可执行任务为 R01-01 测试源码根绑定。
+
 > 2026-09-16 第三轮 R00-07 已收口：`42f9dca` 将工具栏审计从 `TrainerToolsSettingsScrollViewer` 整棵排除改为动作/表单/内容流分类，报告保留排除理由与几何/滚动可达数据；当前分支 `codex/ui-finesse-round2` clean-tree，已推送。RenderHarness 构建 `0/0`、审计源/既有精修定向 `29/29`；`toolbarprobe` 三场景通过；全量审计 161 快照、0 Fidelity、0 失败路由、0 HIGH/0 MEDIUM。证据见 `design/reviews/ui-finesse-round3-20260915/evidence/R00-07-TOOLBAR-EXCLUSION-20260916.md`。
 
 > R00-07 校准边界：首轮 `Rect.Empty.Width=-∞` 误报已在同阶段修正，最终横向溢出只按有效需求宽度与可用宽度判断；隐藏生产详情父级不再产生动作栏 HIGH。探针使用合成 WPF 面板和 offscreen logical DIP，不能替代真实 Playnite 嵌入、物理 DPI、用户输入/滚轮、ETW、presented frame 或宿主帧率。生产命令、绑定、滚动、安全语义和 net462 未改；下一可执行任务为 R00-08 搜索框 Enter/IME。

@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-16 R00-08 搜索框 Enter/IME
+
+- 质量审查所指的风险已在代码链中确认：`GamePickerViewModel` 会保留筛选隐藏的旧选择，而旧 Shell handler 只检查 `viewModel.SelectedGame != null`。`8435d80` 将 Enter 收窄为当前 `PickerList.SelectedItem` + `ItemsView.Contains`，并先放行 `Key.ImeProcessed`；Escape 与默认方向键路由保持。
+- 新增 `GamePickerKeyboardBehaviorTests`，通过真实生产 Shell、STA Window、WPF routed `PreviewKeyDown`、焦点 API 和合成 DTO 覆盖无结果 Enter、IME/四向键、可见候选 Enter、焦点返回；既有 Escape 行为也在同一 Release 选择集内通过。结果 `28/28`，构建 `0/0`。
+- 这证明受控 WPF 事件行为，不宣称真实 Windows 中文输入法候选、物理键盘、Playnite 嵌入或 presented frame；未触碰 Worker、真实存档/媒体/云端。下一可执行小批量为 R01-01 测试源码根绑定。
+
 ## 2026-09-16 R00-07 审计排除项收窄
 
 - `42f9dca` 完成审计分类：删除 Trainer 设置滚动区整棵排除，动作栏按用途识别，表单/内容流记录排除理由，动作栏记录需求/可用宽度、可见交集和滚动祖先，并检测横向溢出与不可达。

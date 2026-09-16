@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-16
 
+## 2026-09-16 R00-08 搜索框 Enter/IME
+
+- `8435d80` 收窄 `AcrylicProductionShellView` 的选框键盘确认：`Key.ImeProcessed`/IME 处理键不关闭；Enter 只接受 `PickerList.SelectedItem` 且通过 `GamePicker.ItemsView.Contains` 的可见候选；无结果保持旧 `SelectedGame` 和弹层，Escape 仍返回 `GameContextButton` 焦点，方向键继续默认路由。
+- `GamePickerViewModel` 原有“筛选隐藏仍保留选择”的恢复语义被保留，但不再被 Enter 误当成当前候选。真实生产 Shell 的 STA WPF 行为测试覆盖无结果、IME/方向键、有效 Enter 和 Escape 焦点回返；定向 Release 构建 `0/0`，相关测试 `28/28`。
+- 证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R00-08-PICKER-ENTER-IME-20260916.md`。合成 DTO 和最小测试 Dashboard 承载不等价 Windows OS IME、Playnite 嵌入、物理键盘/屏幕/ETW；下一项 R01-01 测试源码根绑定。
+
 ## 2026-09-16 R00-07 审计排除项收窄
 
 - `42f9dca` 将 `AnalyzeToolbars` 从 Trainer 设置滚动祖先整棵排除改为用途分类：显式 Toolbar/ActionRow 或足够命令按钮为 `action-toolbar`，输入流和非动作内容保留为 `settings-form`/`content-flow` 并写明 `ExclusionReason`；报告新增有效宽度、可见交集、滚动祖先和可达性。

@@ -2,6 +2,12 @@
 
 > 更新时间：2026-09-16。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 当前第三轮阶段：R00-08 搜索框 Enter/IME
+
+- `8435d80` 修正生产 `AcrylicProductionShellView.OnPickerPreviewKeyDown`：IME 处理事件先放行；Enter 只确认 `PickerList.SelectedItem` 且该项仍在共享 `GamePicker.ItemsView` 中的候选，不再因旧 `SelectedGame` 存在而关闭；Escape 保持焦点返回，方向键不拦截。
+- 当前提交的 Release Playnite `net462` 构建为 `0 warning / 0 error`，R00-08 相关 STA WPF 测试 `28/28`；覆盖无结果 Enter 负例、`Key.ImeProcessed`、四向键、可见候选 Enter、Esc 关闭和 `GameContextButton` 焦点返回。证据见 [`R00-08-PICKER-ENTER-IME-20260916.md`](../design/reviews/ui-finesse-round3-20260915/evidence/R00-08-PICKER-ENTER-IME-20260916.md)。
+- 测试使用真实生产 Shell、WPF Window/路由和合成 DTO；最小测试承载未启动 Worker/Playnite，也不等价真实 Windows 中文输入法候选、物理键盘、物理 DPI、presented frame 或 ETW。下一可执行项为 R01-01 测试源码根绑定。
+
 ## 当前第三轮阶段：R00-07 审计排除项收窄
 
 - `42f9dca` 删除按 `TrainerToolsSettingsScrollViewer` 整棵子树静默排除的逻辑，按动作按钮/输入控件/显式 Toolbar 语义分类，并在报告保留排除理由、布局/需求宽度、可见交集、溢出和滚动祖先；隐藏状态父级单独记录为状态隐藏。
