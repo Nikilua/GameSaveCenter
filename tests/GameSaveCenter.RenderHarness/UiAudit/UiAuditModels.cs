@@ -282,8 +282,21 @@ public sealed class UiRuntimeToolbar
 {
     public string Name { get; set; } = string.Empty;
     public string Type { get; set; } = string.Empty;
+    public string Purpose { get; set; } = string.Empty;
+    public bool Excluded { get; set; }
+    public string ExclusionReason { get; set; } = string.Empty;
+    public double ActualWidth { get; set; }
     public double ActualHeight { get; set; }
+    public double DesiredWidth { get; set; }
+    public double VisibleWidth { get; set; }
+    public double VisibleHeight { get; set; }
+    public double AvailableWidth { get; set; }
     public int ChildrenCount { get; set; }
+    public int ActionControlCount { get; set; }
+    public int InputControlCount { get; set; }
+    public bool HorizontalOverflow { get; set; }
+    public bool Reachable { get; set; }
+    public string ScrollableAncestor { get; set; } = string.Empty;
     public bool Expanded { get; set; }
 }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
@@ -665,33 +666,200 @@ public static class UiLayoutAnalyzer
 
     private static void AnalyzeToolbars(DependencyObject root, UiLayoutReport report)
     {
+        if (root is not Visual visualRoot)
+            return;
+
         foreach (var panel in FindVisualChildren<Panel>(root)
                      .Where(panel =>
                          !IsInside(panel, root, typeof(DataGrid), typeof(ListBox))
-                         && !IsInsideNamedAncestor(panel, root, "TrainerToolsSettingsScrollViewer")
                          && (panel is WrapPanel
                              || (panel is StackPanel stack && stack.Orientation == Orientation.Horizontal))))
         {
-            if (panel.ActualHeight <= 90 || panel.Children.Count < 2)
+            if (panel.Children.Count < 2)
                 continue;
+
+            var descendants = FindVisualChildren<FrameworkElement>(panel).ToList();
+            var actionControls = descendants.Count(element => element is Button && element is not ToggleButton);
+            var inputControls = descendants.Count(element =>
+                element is TextBoxBase || element is Selector || element is ToggleButton);
+            var explicitToolbar = IsExplicitToolbar(panel);
+            var purpose = explicitToolbar || actionControls >= 2
+                ? "action-toolbar"
+                : actionControls == 0 && inputControls > 0
+                    ? "settings-form"
+                    : "content-flow";
+            var visibleInTree = IsVisibleInTree(panel, root);
+            var excluded = !visibleInTree || purpose != "action-toolbar";
+            var exclusionReason = excluded
+                ? !visibleInTree
+                    ? "状态隐藏：工具栏所在的父级当前不可见"
+                    : purpose == "settings-form"
+                        ? "表单输入流：包含输入控件但没有命令按钮"
+                        : "非动作内容流：没有足够的命令按钮"
+                : string.Empty;
+            var layoutBounds = GetRootBounds(panel, visualRoot);
+            var visibleBounds = GetVisibleBounds(panel, visualRoot);
+            var visibleWidth = NormalizeVisibleLength(visibleBounds.Width);
+            var visibleHeight = NormalizeVisibleLength(visibleBounds.Height);
+            var scrollOwner = FindNearestScrollViewer(panel, root);
+            var scrollOwnerName = scrollOwner?.Name ?? string.Empty;
+            var verticalScrollEnabled = scrollOwner != null
+                && scrollOwner.VerticalScrollBarVisibility != ScrollBarVisibility.Disabled
+                && scrollOwner.VerticalScrollBarVisibility != ScrollBarVisibility.Hidden;
+            var clippedVertically = visibleBounds.Height + 0.5 < layoutBounds.Height;
+            var reachable = visibleInTree
+                && (!clippedVertically
+                    || (verticalScrollEnabled && scrollOwner != null && scrollOwner.ScrollableHeight > 0.5));
+            var availableWidth = GetToolbarAvailableWidth(panel, root, visualRoot, scrollOwner);
+            var desiredWidth = Math.Max(layoutBounds.Width, panel.DesiredSize.Width);
+            var horizontalScrollingEnabled = scrollOwner != null
+                && scrollOwner.HorizontalScrollBarVisibility != ScrollBarVisibility.Disabled
+                && scrollOwner.HorizontalScrollBarVisibility != ScrollBarVisibility.Hidden;
+            var horizontalOverflow = visibleInTree && !horizontalScrollingEnabled
+                && desiredWidth > availableWidth + 2;
+            var expanded = panel.ActualHeight > 90;
+
             report.Toolbars.Add(new UiRuntimeToolbar
             {
                 Name = panel.Name ?? string.Empty,
                 Type = panel.GetType().Name,
+                Purpose = purpose,
+                Excluded = excluded,
+                ExclusionReason = exclusionReason,
+                ActualWidth = Math.Round(layoutBounds.Width, 2),
                 ActualHeight = Math.Round(panel.ActualHeight, 2),
+                DesiredWidth = Math.Round(desiredWidth, 2),
+                VisibleWidth = Math.Round(visibleWidth, 2),
+                VisibleHeight = Math.Round(visibleHeight, 2),
+                AvailableWidth = Math.Round(Math.Max(0, availableWidth), 2),
                 ChildrenCount = panel.Children.Count,
-                Expanded = true
+                ActionControlCount = actionControls,
+                InputControlCount = inputControls,
+                HorizontalOverflow = horizontalOverflow,
+                Reachable = reachable,
+                ScrollableAncestor = scrollOwnerName,
+                Expanded = expanded
             });
-            report.Warnings.Add(new UiAuditWarning
+
+            if (excluded)
+                continue;
+
+            if (horizontalOverflow)
             {
-                Severity = "MEDIUM",
-                Code = "TOOLBAR_VERTICAL_EXPANSION",
-                RouteId = report.RouteId,
-                Tab = report.TabHeader,
-                SizeKey = report.SizeKey,
-                Message = $"{panel.Name ?? panel.GetType().Name} 高度 {panel.ActualHeight:0} DIP，包含 {panel.Children.Count} 个子元素"
-            });
+                report.Warnings.Add(new UiAuditWarning
+                {
+                    Severity = "HIGH",
+                    Code = "TOOLBAR_HORIZONTAL_OVERFLOW",
+                    RouteId = report.RouteId,
+                    Tab = report.TabHeader,
+                    SizeKey = report.SizeKey,
+                    Message = $"{panel.Name ?? panel.GetType().Name} 动作工具栏横向超出可用宽度：desired={desiredWidth:0} / available={availableWidth:0} DIP，visible={visibleWidth:0} / layout={layoutBounds.Width:0} DIP"
+                });
+            }
+
+            if (!reachable)
+            {
+                report.Warnings.Add(new UiAuditWarning
+                {
+                    Severity = "HIGH",
+                    Code = "TOOLBAR_UNREACHABLE",
+                    RouteId = report.RouteId,
+                    Tab = report.TabHeader,
+                    SizeKey = report.SizeKey,
+                    Message = $"{panel.Name ?? panel.GetType().Name} 动作工具栏不在有效可达区域：visible={visibleWidth:0}x{visibleHeight:0} / layout={layoutBounds.Width:0}x{layoutBounds.Height:0} DIP，scrollableAncestor={scrollOwnerName}"
+                });
+            }
+
+            if (expanded)
+            {
+                report.Warnings.Add(new UiAuditWarning
+                {
+                    Severity = "MEDIUM",
+                    Code = "TOOLBAR_VERTICAL_EXPANSION",
+                    RouteId = report.RouteId,
+                    Tab = report.TabHeader,
+                    SizeKey = report.SizeKey,
+                    Message = $"{panel.Name ?? panel.GetType().Name} 动作工具栏高度 {panel.ActualHeight:0} DIP，包含 {panel.Children.Count} 个子元素"
+                });
+            }
         }
+    }
+
+    private static bool IsExplicitToolbar(FrameworkElement panel)
+    {
+        var name = panel.Name ?? string.Empty;
+        if (name.IndexOf("toolbar", StringComparison.OrdinalIgnoreCase) >= 0
+            || name.IndexOf("工具栏", StringComparison.Ordinal) >= 0)
+            return true;
+
+        if (panel.Tag is string tag
+            && (string.Equals(tag, "Toolbar", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(tag, "ActionRow", StringComparison.OrdinalIgnoreCase)))
+            return true;
+
+        var automationName = AutomationProperties.GetName(panel) ?? string.Empty;
+        return automationName.IndexOf("toolbar", StringComparison.OrdinalIgnoreCase) >= 0
+            || automationName.IndexOf("工具栏", StringComparison.Ordinal) >= 0;
+    }
+
+    private static double NormalizeVisibleLength(double value)
+    {
+        return double.IsNaN(value) || double.IsInfinity(value)
+            ? 0
+            : Math.Max(0, value);
+    }
+
+    private static bool IsVisibleInTree(DependencyObject current, DependencyObject root)
+    {
+        var element = current as FrameworkElement;
+        if (element != null && element.Visibility != Visibility.Visible)
+            return false;
+
+        var parent = VisualTreeHelper.GetParent(current);
+        while (parent != null)
+        {
+            if (parent is FrameworkElement ancestor && ancestor.Visibility != Visibility.Visible)
+                return false;
+            if (ReferenceEquals(parent, root))
+                return true;
+            parent = VisualTreeHelper.GetParent(parent);
+        }
+
+        return ReferenceEquals(current, root);
+    }
+
+    private static ScrollViewer? FindNearestScrollViewer(DependencyObject current, DependencyObject root)
+    {
+        var parent = VisualTreeHelper.GetParent(current);
+        while (parent != null && !ReferenceEquals(parent, root))
+        {
+            if (parent is ScrollViewer scroller)
+                return scroller;
+            parent = VisualTreeHelper.GetParent(parent);
+        }
+        return null;
+    }
+
+    private static double GetToolbarAvailableWidth(
+        FrameworkElement panel,
+        DependencyObject root,
+        Visual visualRoot,
+        ScrollViewer? scrollOwner)
+    {
+        if (scrollOwner != null && scrollOwner.ViewportWidth > 0)
+            return scrollOwner.ViewportWidth;
+
+        var parent = VisualTreeHelper.GetParent(panel);
+        while (parent != null && !ReferenceEquals(parent, root))
+        {
+            if (parent is FrameworkElement element && element.ActualWidth > 0)
+                return element.ActualWidth;
+            parent = VisualTreeHelper.GetParent(parent);
+        }
+
+        return visualRoot is FrameworkElement rootElement && rootElement.ActualWidth > 0
+            ? rootElement.ActualWidth
+            : panel.ActualWidth;
     }
 
     private static void AnalyzeClipping(DependencyObject root, UiLayoutReport report)
@@ -1227,19 +1395,6 @@ public static class UiLayoutAnalyzer
                 if (type.IsAssignableFrom(parentType))
                     return true;
             }
-            parent = VisualTreeHelper.GetParent(parent);
-        }
-        return false;
-    }
-
-    private static bool IsInsideNamedAncestor(DependencyObject current, DependencyObject root, params string[] names)
-    {
-        var parent = VisualTreeHelper.GetParent(current);
-        while (parent != null && !ReferenceEquals(parent, root))
-        {
-            if (parent is FrameworkElement element
-                && names.Any(name => string.Equals(element.Name, name, StringComparison.Ordinal)))
-                return true;
             parent = VisualTreeHelper.GetParent(parent);
         }
         return false;

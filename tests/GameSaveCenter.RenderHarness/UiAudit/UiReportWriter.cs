@@ -208,7 +208,13 @@ public static class UiReportWriter
                 foreach (var toolbar in report.Toolbars)
                 {
                     builder.AppendLine(
-                        $"- Toolbar {toolbar.Name}: {toolbar.ActualHeight:0} DIP, children={toolbar.ChildrenCount}");
+                        $"- Toolbar {toolbar.Name}: purpose={toolbar.Purpose}, excluded={toolbar.Excluded}, "
+                        + $"reason={toolbar.ExclusionReason}, layout={toolbar.ActualWidth:0.##}x{toolbar.ActualHeight:0.##} DIP, "
+                        + $"desiredWidth={toolbar.DesiredWidth:0.##}, visible={toolbar.VisibleWidth:0.##}x{toolbar.VisibleHeight:0.##}, "
+                        + $"availableWidth={toolbar.AvailableWidth:0.##}, children={toolbar.ChildrenCount}, "
+                        + $"actions/inputs={toolbar.ActionControlCount}/{toolbar.InputControlCount}, "
+                        + $"horizontalOverflow={toolbar.HorizontalOverflow}, reachable={toolbar.Reachable}, "
+                        + $"scrollableAncestor={toolbar.ScrollableAncestor}");
                 }
                 var tabWarnings = report.Warnings
                     .Where(warning => warning.RouteId == report.RouteId && warning.Tab == report.TabHeader && warning.SizeKey == report.SizeKey)

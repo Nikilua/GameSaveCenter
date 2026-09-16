@@ -30,6 +30,7 @@ public sealed class UiAuditSourceTests
         var screenshot = File.ReadAllText(Path.Combine(harnessRoot, "UiAudit", "UiScreenshotService.cs"));
         var visualTree = File.ReadAllText(Path.Combine(harnessRoot, "UiAudit", "UiVisualTreeInspector.cs"));
         var layout = File.ReadAllText(Path.Combine(harnessRoot, "UiAudit", "UiLayoutAnalyzer.cs"));
+        var models = File.ReadAllText(Path.Combine(harnessRoot, "UiAudit", "UiAuditModels.cs"));
         var sanitizer = File.ReadAllText(Path.Combine(harnessRoot, "UiAudit", "UiAuditSanitizer.cs"));
 
         Assert.Contains("UiAuditRunner", program);
@@ -44,8 +45,14 @@ public sealed class UiAuditSourceTests
         Assert.Contains("NESTED_VERTICAL_SCROLL", layout);
         Assert.Contains("TABLE_VIEWPORT_TOO_SHORT", layout);
         Assert.Contains("TOOLBAR_VERTICAL_EXPANSION", layout);
-        Assert.Contains("TrainerToolsSettingsScrollViewer", layout);
-        Assert.Contains("IsInsideNamedAncestor", layout);
+        Assert.Contains("FindNearestScrollViewer", layout);
+        Assert.Contains("IsExplicitToolbar", layout);
+        Assert.Contains("TOOLBAR_HORIZONTAL_OVERFLOW", layout);
+        Assert.Contains("TOOLBAR_UNREACHABLE", layout);
+        Assert.DoesNotContain("!IsInsideNamedAncestor(panel", layout);
+        Assert.Contains("ExclusionReason", models);
+        Assert.Contains("ScrollableAncestor", models);
+        Assert.Contains("toolbarprobe", program);
         Assert.Contains("PRIMARY_VIEWPORT_UNREACHABLE", layout);
         Assert.Contains("approvedMediaInboxInspectorScroll", layout);
         Assert.Contains("CONTROL_CLIPPED", layout);

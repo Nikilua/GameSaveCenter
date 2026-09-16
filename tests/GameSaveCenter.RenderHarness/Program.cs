@@ -291,6 +291,19 @@ public static class Program
             return geometryExitCode;
         }
 
+        if (args.Length > 0 && args[0].Equals("toolbarprobe", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "toolbar-probe");
+            var toolbarExitCode = 0;
+            var toolbarThread = new Thread(() => { toolbarExitCode = RunToolbarClassificationProbe(outputRoot); });
+            toolbarThread.SetApartmentState(ApartmentState.STA);
+            toolbarThread.Start();
+            toolbarThread.Join();
+            return toolbarExitCode;
+        }
+
         if (args.Length > 0 && args[0].Equals("emptytables", StringComparison.OrdinalIgnoreCase))
         {
             var outputRoot = args.Length > 1
@@ -1483,6 +1496,174 @@ public static class Program
             Console.Error.WriteLine(ex);
             return 1;
         }
+    }
+
+    private static int RunToolbarClassificationProbe(string outputRoot)
+    {
+        Directory.CreateDirectory(outputRoot);
+        var report = new StringBuilder();
+        report.AppendLine("GameSaveCenter toolbar classification probe");
+        report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+        report.AppendLine("EvidenceSource: synthetic WPF panels under a named TrainerToolsSettingsScrollViewer");
+        report.AppendLine("Cases: normal long form, same-ancestor wide toolbar, same-ancestor unreachable toolbar");
+        AppendRunMetadata(
+            report,
+            "toolbarprobe",
+            "OffscreenRenderHarness",
+            "default WPF palette",
+            "synthetic TextBox/ComboBox form and Button action rows; 440x240 DIP");
+        report.AppendLine();
+        var problems = new List<string>();
+
+        try
+        {
+            var app = new Application();
+            app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+            foreach (var caseName in new[] { "normal-form", "wide-toolbar", "unreachable-toolbar" })
+            {
+                var layout = CreateToolbarProbeLayout(caseName);
+                var records = layout.Toolbars;
+                foreach (var toolbar in records)
+                {
+                    report.AppendLine(
+                        $"  {caseName}/{toolbar.Name}: purpose={toolbar.Purpose}, excluded={toolbar.Excluded}, "
+                        + $"reason={toolbar.ExclusionReason}, layout={toolbar.ActualWidth:0.##}x{toolbar.ActualHeight:0.##}, "
+                        + $"desiredWidth={toolbar.DesiredWidth:0.##}, visible={toolbar.VisibleWidth:0.##}x{toolbar.VisibleHeight:0.##}, "
+                        + $"availableWidth={toolbar.AvailableWidth:0.##}, horizontalOverflow={toolbar.HorizontalOverflow}, "
+                        + $"reachable={toolbar.Reachable}, scrollableAncestor={toolbar.ScrollableAncestor}");
+                }
+
+                if (caseName == "normal-form")
+                {
+                    var formRecord = records.FirstOrDefault(toolbar => toolbar.Name == "NormalFormRow");
+                    if (formRecord == null || !formRecord.Excluded || formRecord.Purpose != "settings-form")
+                        problems.Add("normal-form was not classified as an excluded settings form");
+                    if (layout.Warnings.Any(warning => warning.Code.StartsWith("TOOLBAR_", StringComparison.Ordinal)))
+                        problems.Add("normal-form produced a toolbar warning");
+                }
+                else if (caseName == "wide-toolbar")
+                {
+                    var toolbarRecord = records.FirstOrDefault(toolbar => toolbar.Name == "InjectedWideToolbar");
+                    if (toolbarRecord == null || toolbarRecord.Excluded || !toolbarRecord.HorizontalOverflow)
+                        problems.Add("wide-toolbar did not retain the action classification and overflow geometry");
+                    if (!layout.Warnings.Any(warning => warning.Code == "TOOLBAR_HORIZONTAL_OVERFLOW"))
+                        problems.Add("wide-toolbar did not produce TOOLBAR_HORIZONTAL_OVERFLOW");
+                }
+                else
+                {
+                    var toolbarRecord = records.FirstOrDefault(toolbar => toolbar.Name == "InjectedUnreachableToolbar");
+                    if (toolbarRecord == null || toolbarRecord.Excluded || toolbarRecord.Reachable)
+                        problems.Add("unreachable-toolbar did not retain the action classification and unreachable geometry");
+                    if (!layout.Warnings.Any(warning => warning.Code == "TOOLBAR_UNREACHABLE"))
+                        problems.Add("unreachable-toolbar did not produce TOOLBAR_UNREACHABLE");
+                }
+            }
+
+            report.AppendLine(problems.Count == 0 ? "toolbarprobe OK" : "toolbarprobe FAILED");
+            foreach (var problem in problems)
+                report.AppendLine("  PROBLEM " + problem);
+            File.WriteAllText(Path.Combine(outputRoot, "toolbar-probe-report.txt"), report.ToString());
+            Console.WriteLine(report.ToString());
+            return problems.Count == 0 ? 0 : 1;
+        }
+        catch (Exception ex)
+        {
+            report.AppendLine("toolbarprobe FAILED");
+            report.AppendLine(ex.ToString());
+            File.WriteAllText(Path.Combine(outputRoot, "toolbar-probe-report.txt"), report.ToString());
+            Console.Error.WriteLine(ex);
+            return 1;
+        }
+    }
+
+    private static UiLayoutReport CreateToolbarProbeLayout(string caseName)
+    {
+        var content = new StackPanel();
+        switch (caseName)
+        {
+            case "normal-form":
+                for (var index = 0; index < 8; index++)
+                {
+                    var row = new WrapPanel
+                    {
+                        Name = index == 0 ? "NormalFormRow" : string.Empty,
+                        Margin = new Thickness(0, 0, 0, 6)
+                    };
+                    row.Children.Add(new TextBox { Width = 150, Height = 28, Margin = new Thickness(0, 0, 6, 0) });
+                    row.Children.Add(new ComboBox { Width = 150, Height = 28 });
+                    content.Children.Add(row);
+                }
+                break;
+            case "wide-toolbar":
+                content.Children.Add(CreateProbeToolbar("InjectedWideToolbar", 700));
+                break;
+            case "unreachable-toolbar":
+                content.Children.Add(new Border
+                {
+                    Height = 60,
+                    ClipToBounds = true,
+                    Child = new StackPanel
+                    {
+                        Height = 220,
+                        Children =
+                        {
+                            new Border { Height = 150 },
+                            CreateProbeToolbar("InjectedUnreachableToolbar", 300)
+                        }
+                    }
+                });
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(caseName), caseName, "Unknown toolbar probe case.");
+        }
+
+        var scroller = new ScrollViewer
+        {
+            Name = "TrainerToolsSettingsScrollViewer",
+            Width = 360,
+            Height = caseName == "unreachable-toolbar" ? 80 : 160,
+            VerticalScrollBarVisibility = caseName == "unreachable-toolbar"
+                ? ScrollBarVisibility.Disabled
+                : ScrollBarVisibility.Auto,
+            HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled,
+            Content = content
+        };
+        var host = new Grid
+        {
+            Width = 440,
+            Height = 240,
+            Background = Brushes.White,
+            ClipToBounds = true
+        };
+        host.Children.Add(scroller);
+        host.Measure(new Size(host.Width, host.Height));
+        host.Arrange(new Rect(0, 0, host.Width, host.Height));
+        host.UpdateLayout();
+        return UiLayoutAnalyzer.Analyze(
+            host,
+            "trainer-center",
+            "工具设置",
+            caseName,
+            host.Width,
+            host.Height,
+            "toolbar-fixture",
+            string.Empty,
+            string.Empty);
+    }
+
+    private static StackPanel CreateProbeToolbar(string name, double width)
+    {
+        var toolbar = new StackPanel
+        {
+            Name = name,
+            Tag = "Toolbar",
+            Width = width,
+            Orientation = Orientation.Horizontal
+        };
+        toolbar.Children.Add(new Button { Content = "动作一", Width = 220, Height = 36 });
+        toolbar.Children.Add(new Button { Content = "动作二", Width = 220, Height = 36 });
+        toolbar.Children.Add(new Button { Content = "动作三", Width = 220, Height = 36 });
+        return toolbar;
     }
 
     private static void RunMediaInboxGeometryCase(
