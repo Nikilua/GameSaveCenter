@@ -2,6 +2,13 @@
 
 > 更新时间：2026-09-16。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 当前第三轮阶段：R00-07 审计排除项收窄
+
+- `42f9dca` 删除按 `TrainerToolsSettingsScrollViewer` 整棵子树静默排除的逻辑，按动作按钮/输入控件/显式 Toolbar 语义分类，并在报告保留排除理由、布局/需求宽度、可见交集、溢出和滚动祖先；隐藏状态父级单独记录为状态隐藏。
+- 当前 clean-tree `42f9dca61eb23b92e1cf80a615b764e844d5a1d7`：RenderHarness Release 构建 `0/0`，审计源与既有精修定向 `29/29`；`toolbarprobe` 的正常长表单、同祖先超宽动作栏、同祖先不可达动作栏三场景通过，输出 `toolbarprobe OK`。全量审计 `161` 快照、`0` Fidelity、`0` 失败路由、`0 HIGH / 0 MEDIUM`。
+- 首轮审计曾把页面滚动位置外的合法动作栏的 `Rect.Empty.Width=-∞` 误作横向溢出；最终只按有效需求宽度与可用宽度判定，并以 clean-tree 全量审计校准通过。真实生产页面未改，现有命令/绑定、滚动与安全语义保持。
+- 证据见 [`R00-07-TOOLBAR-EXCLUSION-20260916.md`](../design/reviews/ui-finesse-round3-20260915/evidence/R00-07-TOOLBAR-EXCLUSION-20260916.md)。这是合成/离屏逻辑 DIP 与受控生产视图审计，不等价真实 Playnite 嵌入、物理 DPI、输入、presented frame、ETW 或宿主帧率；下一可执行项为 R00-08 搜索框 Enter/IME。
+
 ## 当前第三轮阶段：R00-06 媒体四行门禁
 
 - `7d57575` 将媒体主表的 `212 DIP` 固定门禁改为按实际表头、行高、水平滚动条、边框和 padding 计算的运行时 floor；`UiLayoutAnalyzer` 按真实 `DataGridColumnHeadersPresenter`、`DataGridRow` 与有效裁剪交集计数完整行，另有短窗回退和父级不可达的明确诊断。`db5d483` 让几何探针报告记录完整提交号与工作树状态。

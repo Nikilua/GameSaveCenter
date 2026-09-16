@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-16 R00-07 审计排除项收窄
+
+- `42f9dca` 完成审计分类：删除 Trainer 设置滚动区整棵排除，动作栏按用途识别，表单/内容流记录排除理由，动作栏记录需求/可用宽度、可见交集和滚动祖先，并检测横向溢出与不可达。
+- `toolbarprobe` 通过正常长表单、同祖先超宽和同祖先不可达三场景；源契约/既有精修定向 `29/29`，RenderHarness Release `0/0`。首轮全量审计发现 `Rect.Empty=-∞` 误报，修正后 clean-tree 全量 `161` 快照、0 Fidelity、0 失败路由、0 HIGH/0 MEDIUM。
+- 这是审计/测试设施改动，生产视图和业务语义未改；只使用合成 WPF/离屏逻辑 DIP，不宣称真实 Playnite 输入、物理 DPI、ETW、presented frame 或宿主帧率。证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R00-07-TOOLBAR-EXCLUSION-20260916.md`。
+- 下一可执行小批量为 R00-08：核对选框 `PreviewKeyDown` 现有 Enter/IME/焦点契约，再补行为与负例。
+
 ## 2026-09-16 R00-06 媒体四行门禁
 
 - `7d57575` 完成媒体几何收口：新增共享 `MediaInboxGeometry`，生产视图不再依赖 `212 DIP` 常量；分析器从真实列头、行容器、水平滚动条和有效裁剪交集推导“表头 + 四行”，并保留页级短窗回退与父级不可达 HIGH 负例。`db5d483` 补充几何探针的完整 SHA、`WorkingTreeClean`、主题和数据量元数据。

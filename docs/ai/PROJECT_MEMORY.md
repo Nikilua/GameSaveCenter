@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-16
 
+## 2026-09-16 R00-07 审计排除项收窄
+
+- `42f9dca` 将 `AnalyzeToolbars` 从 Trainer 设置滚动祖先整棵排除改为用途分类：显式 Toolbar/ActionRow 或足够命令按钮为 `action-toolbar`，输入流和非动作内容保留为 `settings-form`/`content-flow` 并写明 `ExclusionReason`；报告新增有效宽度、可见交集、滚动祖先和可达性。
+- clean-tree `42f9dca61eb23b92e1cf80a615b764e844d5a1d7`：RenderHarness Release 构建 `0/0`，审计源/既有精修定向 `29/29`；`toolbarprobe` 正常长表单无 `TOOLBAR_*` 告警，同一 `TrainerToolsSettingsScrollViewer` 下超宽和垂直滚动禁用的动作栏分别命中 `TOOLBAR_HORIZONTAL_OVERFLOW` / `TOOLBAR_UNREACHABLE`。完整审计 `161` 快照、0 Fidelity、0 失败路由、0 HIGH/0 MEDIUM。
+- 首轮发现检测器把 `Rect.Empty` 的 `-∞` 宽度当成横向溢出，已修正为有效需求宽度比较并以最终全量审计复核；未修改生产视图或业务契约。证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R00-07-TOOLBAR-EXCLUSION-20260916.md`。
+- 边界仍是合成 WPF/受控生产视图、隔离目录、offscreen logical DIP；真实 Playnite 嵌入、物理 DPI、输入滚轮、ETW、presented frame 和宿主帧率未验。下一执行点为 R00-08。
+
 ## 2026-09-16 R00-06 媒体四行门禁
 
 - `7d57575` 在不替换 `main` 旧实现的前提下，新增 `MediaInboxGeometry` 公式并让生产 `MediaCenterView` 按运行时实测表头、行高、水平条和表格框边界设置 floor；`UiLayoutAnalyzer` 改用真实行容器与有效裁剪交集，覆盖短窗页级回退和父级不可达失败。`db5d483` 补齐 `mediageometryprobe` 的场景/提交号/工作树元数据。

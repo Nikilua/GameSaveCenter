@@ -1,5 +1,9 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-16 第三轮 R00-07 已收口：`42f9dca` 将工具栏审计从 `TrainerToolsSettingsScrollViewer` 整棵排除改为动作/表单/内容流分类，报告保留排除理由与几何/滚动可达数据；当前分支 `codex/ui-finesse-round2` clean-tree，已推送。RenderHarness 构建 `0/0`、审计源/既有精修定向 `29/29`；`toolbarprobe` 三场景通过；全量审计 161 快照、0 Fidelity、0 失败路由、0 HIGH/0 MEDIUM。证据见 `design/reviews/ui-finesse-round3-20260915/evidence/R00-07-TOOLBAR-EXCLUSION-20260916.md`。
+
+> R00-07 校准边界：首轮 `Rect.Empty.Width=-∞` 误报已在同阶段修正，最终横向溢出只按有效需求宽度与可用宽度判断；隐藏生产详情父级不再产生动作栏 HIGH。探针使用合成 WPF 面板和 offscreen logical DIP，不能替代真实 Playnite 嵌入、物理 DPI、用户输入/滚轮、ETW、presented frame 或宿主帧率。生产命令、绑定、滚动、安全语义和 net462 未改；下一可执行任务为 R00-08 搜索框 Enter/IME。
+
 > 2026-09-16 第三轮 R00-06 已收口：`7d57575` 将媒体表格 `212 DIP` 固定门禁改为运行时实际几何公式与行交集判定，`db5d483` 补齐几何探针元数据；当前分支 `codex/ui-finesse-round2` clean-tree SHA 为 `db5d483d8ac6460ac7c3a07fe64cec5c7fe417d3`，已推送。Playnite 定向构建 `0/0`、R00-06 定向 `4/4`、RenderHarness 构建 `0/0`；双主题几何探针 10/10、完整审计 161 快照且 0 Fidelity/0 失败路由/0 HIGH/0 MEDIUM、Shell QA exit 0。证据见 `design/reviews/ui-finesse-round3-20260915/evidence/R00-06-MEDIA-FOUR-ROWS-20260916.md`。
 
 > 交接边界：证据来自合成媒体数据、真实生产 WPF 视图、隔离输出目录和 offscreen logical DIP；短窗页级回退与父级裁剪 HIGH 负例已覆盖，但真实 Playnite 嵌入 Dashboard、用户主题/物理 DPI、鼠标滚轮与键盘、presented frame、ETW 和宿主帧率仍未验。保留现有游戏选框、滚动条系统、命令/绑定、取消/错误/恢复保护和 net462 兼容。临时 `.tmp/r00-06-*` 输出在文档提交后清理；下一可执行任务为 R00-07 审计排除项收窄。
