@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-16
 
+## 2026-09-16 R01-03 每项证据直达
+
+- `3875f88` 为共享 UI 审计报告增加 `EVIDENCE_INDEX.md`，`UiEvidenceIndexBuilder` 从 manifest、layout 和 fidelity 的实际数据生成具体控件/状态索引；不是把一条自动通过句子复制到几十项。`2eb4c46` 修正生产 DataGrid 优先和源码回退，`591deae` 使控件样本按页面分散，避免 20 项被 maintenance 单页吞没。
+- `f6a3209` 增加 `validate-ui-evidence-index.ps1`，`9d5146d` 修正 Windows PowerShell BOM、源码身份命令参数和当前共享 `ButtonChrome=0.72` 守卫；校验器逐行检查前 20 个 E01～E20、结果文件 + `source=src\...`、40 位 commit、非空样本和未验边界。最新完整受控审计 `20/20`，其中 13 个生产 DataGrid、7 个跨页面交互控件；`LAYOUT_REPORT` 运行时结果 7 条，其余静态-only 条目明确标注无运行时几何样本。
+- 最新审计报告绑定完整 SHA `9d5146d4a4d604b2779f933f3dee00e730c68b71`，校验 `references/identities/samples/boundaries=20/20`，`Fidelity=0`、失败路由 `0`。全流程 Release 构建 `0/0`，Core `83/83`、Worker `311/311`、Playnite `521` 通过/`57` 跳过/`0` 失败；源码契约定向 `6/6`，源码校验通过。
+- 读取索引时，静态 manifest 只说明结构和源码，不能升级成运行时可见/可操作；条件、禁用、错误分支仍需各自行为证据。范围不涉及真实 Playnite、物理 DPI、IME、presented frame、ETW 或宿主性能。证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-03-EVIDENCE-INDEX-20260916.md`。下一项 R01-04。
+
 ## 2026-09-16 R01-02 数字单元格裁切
 
 - `acfe1ea` 完成 F07/R01-02 的可读性门禁校正：新增 `NumericCellReadability`，使用真实 realized `DataGridCell` 测量 `TextBlock` 非约束宽度、扣 padding 后的内容宽度和文本高度，分别暴露横向/纵向 fit；不以“行高足够”代替“最后一位未被列宽裁切”。

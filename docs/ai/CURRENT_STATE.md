@@ -2,6 +2,13 @@
 
 > 更新时间：2026-09-16。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 当前第三轮阶段：R01-03 每项证据直达
+
+- `3875f88` 在共享 `UiReportWriter` 接入 `EVIDENCE_INDEX.md`；`UiEvidenceIndexBuilder` 从实际 `UI_MANIFEST`、运行时 `LAYOUT_REPORT` 和 `UI_FIDELITY_MATRIX` 数据抽取具体控件/状态，不复用一条聚合 `passed` 文案覆盖整页。索引固定至少 20 项，优先覆盖生产 DataGrid，再按 route 分散抽取交互控件；`2eb4c46`、`591deae` 校准了生产页面优先、分散抽样、运行时边界方向和源码文件回退。
+- `f6a3209` 增加 `scripts/validate-ui-evidence-index.ps1` 及源码契约测试，`9d5146d` 校准 Windows PowerShell BOM、源码身份命令参数和当前 `ButtonChrome=0.72` 守卫。最新提交完整审计生成 20 行：13 个生产 DataGrid + 7 个来自 maintenance/media/save/task/trainer/settings/overview 的控件；每行均有具体结果文件与 `source=src\...` 检索入口、40 位 commit、样本字段和未验边界，校验输出为 `references=20/20, identities=20/20, samples=20/20, boundaries=20/20`。
+- 最新受控审计的 `EVIDENCE_INDEX.md`、`AUDIT_SUMMARY.md` 使用完整身份 `9d5146d4a4d604b2779f933f3dee00e730c68b71`；审计 `Fidelity=0`、失败路由 `0`，并明确静态-only 条目没有运行时几何样本。全流程 Release 为构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `521` 通过/`57` 跳过/`0` 失败。
+- 证据见 [`R01-03-EVIDENCE-INDEX-20260916.md`](../design/reviews/ui-finesse-round3-20260915/evidence/R01-03-EVIDENCE-INDEX-20260916.md)。这是报告/测试基础设施，不改变生产命令、绑定、picker、滚动条、取消/错误、恢复保护、有限列表或 net462；不等价真实 Playnite 嵌入、物理 DPI、IME、presented frame、ETW 或宿主性能。下一可执行项为 R01-04 动效行为替代字符串。
+
 ## 当前第三轮阶段：R01-02 数字单元格裁切
 
 - `acfe1ea` 新增 `NumericCellReadability`，在实际 WPF `DataGridCell` 上分别测量非约束文本宽度、扣除 padding 后的可用内容宽度和行内文本高度；`HorizontalFit`、`VerticalFit` 与 `IsReadable` 不再把仅有行高通过误当成数字完整可读。Demo 校对表将数值列设为 `160 DIP`，固定覆盖 `1,024 / 99,999`、长负数、容量和 TiB 样本，并显式 `NoWrap`/无裁切。

@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-16 R01-03 每项证据直达
+
+- 盘点确认现有聚合审计已有 `UI_MANIFEST`、`LAYOUT_REPORT`、`UI_FIDELITY_MATRIX`，但没有共同索引；单独写“finesse passed”无法定位某个控件、状态、源码身份、样本或未验边界。`3875f88` 接入 `EVIDENCE_INDEX.md`，从实际结果对象抽取条目；`2eb4c46`/`591deae` 依次修正生产 DataGrid 优先、静态/runtime 边界方向、XAML 路径回退和跨页面控制抽样。
+- 最新完整审计绑定 `9d5146d4a4d604b2779f933f3dee00e730c68b71`，输出 20 行：13 个生产 DataGrid + 7 个跨页面控件。`scripts/validate-ui-evidence-index.ps1` 校验为 `rows=20, references=20/20, identities=20/20, samples=20/20, boundaries=20/20`；审计 summary 为 Fidelity `0`、失败路由 `0`，`scripts/validate-source.py` 也通过。
+- 校验器首跑发现两类脚本缺陷：PowerShell 多行 `if` 语法错误，以及把合法 `ItemsSource=unknown` 细项误判为整行无样本；修正后再跑通过。源码契约测试 `6/6`，完整隔离 Release 为构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `521` 通过/`57` 跳过/`0` 失败。
+- 证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-03-EVIDENCE-INDEX-20260916.md`。这是受控审计基础设施；静态-only 条目不等价运行时呈现，真实 Playnite 嵌入、物理 DPI、IME、presented frame、ETW 和宿主性能未验。下一可执行小批量为 R01-04 动效行为替代字符串。
+
 ## 2026-09-16 R01-02 数字单元格裁切
 
 - 质量审查 F07 的真实缺口是夹具门禁：旧 `110 DIP` 数值列的 Light/Dark 图像中，`1,024 / 99,999` 的末位碰到列边界并被裁切，但报告只检查四行垂直布局和独立对比度，因此仍写出 `finesse-fixture OK`。没有据此扩大为“所有生产表格均裁切”。
