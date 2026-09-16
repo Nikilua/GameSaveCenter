@@ -630,9 +630,9 @@ public static class Program
         var report = new StringBuilder();
         report.AppendLine("GameSaveCenter Overview boundary-state fixtures");
         report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
-        report.AppendLine("Profiles: empty-activity, many-risks, long-title, offline");
-        report.AppendLine("Themes: light, dark; viewports: 1040x700, 1600x900");
-        AppendRunMetadata(report, "overviewedges", "OffscreenRenderHarness", "light,dark", "empty-activity; many-risks; long-title; offline; 1040x700/1600x900");
+        report.AppendLine("Profiles: empty-activity, many-risks, long-title, bilingual-length, offline");
+        report.AppendLine("Themes: light, dark; viewports: 820x700 (bilingual), 1040x700, 1600x900");
+        AppendRunMetadata(report, "overviewedges", "OffscreenRenderHarness", "light,dark", "empty-activity; many-risks; long-title; bilingual-length; offline; bilingual 820x700; 1040x700/1600x900");
         report.AppendLine();
         var problems = new List<string>();
 
@@ -645,15 +645,18 @@ public static class Program
                 (Name: "empty-activity", State: WorkspaceFixtureState.Ready, Profile: OverviewFixtureProfile.EmptyActivity),
                 (Name: "many-risks", State: WorkspaceFixtureState.Ready, Profile: OverviewFixtureProfile.ManyRisks),
                 (Name: "long-title", State: WorkspaceFixtureState.Ready, Profile: OverviewFixtureProfile.LongTitle),
+                (Name: "bilingual-length", State: WorkspaceFixtureState.Ready, Profile: OverviewFixtureProfile.BilingualLengthStress),
                 (Name: "offline", State: WorkspaceFixtureState.Offline, Profile: OverviewFixtureProfile.Default)
             };
 
             foreach (var (themeName, themeMode) in ThemeModes)
             {
-                foreach (var (windowW, windowH) in new[] { (1040, 700), (1600, 900) })
+                foreach (var (windowW, windowH) in new[] { (820, 700), (1040, 700), (1600, 900) })
                 {
                     foreach (var fixture in cases)
                     {
+                        if (windowW == 820 && fixture.Profile != OverviewFixtureProfile.BilingualLengthStress)
+                            continue;
                         var view = new OverviewView
                         {
                             DataContext = new FakeDashboardData(18, fixture.State, fixture.Profile)
@@ -1279,6 +1282,13 @@ public static class Program
             ? null
             : FindVisualChildren<TextBlock>(currentGame)
                 .FirstOrDefault(text => text.Text == data.SelectedGame.Name);
+        var longEnglishText = activityCard == null
+            ? null
+            : FindVisualChildren<TextBlock>(activityCard)
+                .FirstOrDefault(text => text.Text == data.BilingualLongEnglishSentence);
+        var currentGameButtons = currentGame == null
+            ? Array.Empty<Button>()
+            : FindVisualChildren<Button>(currentGame).Where(button => button.Visibility == Visibility.Visible).ToArray();
         var horizontalOverflow = page != null && page.ExtentWidth > page.ViewportWidth + 0.5;
         var primarySurfaceCount = new[] { hero, currentGame, statStrip, activityCard, riskCard, findingsCard }
             .Count(element => element != null && element.ActualWidth > 0 && element.ActualHeight > 0);
@@ -1293,7 +1303,9 @@ public static class Program
             $"riskRows={riskRows} riskItems={data.RecentProtection.Items.Count} " +
             $"riskExtent={(riskViewport == null ? "missing" : $"{riskViewport.ExtentHeight:0}/{riskViewport.ViewportHeight:0}")} " +
             $"pageExtent={(page == null ? "missing" : $"{page.ExtentHeight:0}/{page.ViewportHeight:0}")} " +
-            $"titleChars={data.SelectedGame.Name.Length} titleTrim={titleText?.TextTrimming} " +
+            $"titleChars={data.SelectedGame.Name.Length} titleTrim={titleText?.TextTrimming} titleTooltip={titleText?.ToolTip != null} " +
+            $"englishChars={data.BilingualLongEnglishSentence.Length} englishVisible={longEnglishText?.Visibility == Visibility.Visible} " +
+            $"currentGameButtons={currentGameButtons.Length} buttonHeights={string.Join(",", currentGameButtons.Select(button => button.ActualHeight.ToString("0.##")))} " +
             $"pageOverflowH={horizontalOverflow} priority={data.OverviewPriorityKind}");
 
         if (primarySurfaceCount != 6)
@@ -1323,6 +1335,17 @@ public static class Program
                 || titleText.TextTrimming != TextTrimming.CharacterEllipsis
                 || titleText.ToolTip == null))
             problems.Add($"long-title {themeMode} {windowW}x{windowH} lost title ellipsis or tooltip reachability");
+        if (fixtureName == "bilingual-length"
+            && (data.SelectedGame.Name.Length < 30
+                || titleText == null
+                || titleText.TextTrimming != TextTrimming.CharacterEllipsis
+                || !string.Equals(titleText.ToolTip as string, data.SelectedGame.Name, StringComparison.Ordinal)
+                || longEnglishText == null
+                || longEnglishText.Visibility != Visibility.Visible
+                || longEnglishText.TextTrimming != TextTrimming.CharacterEllipsis
+                || currentGameButtons.Length < 2
+                || currentGameButtons.Any(button => button.ActualWidth <= 0 || button.ActualHeight < 30)))
+            problems.Add($"bilingual-length {themeMode} {windowW}x{windowH} lost full-value reachability or action geometry");
         if (fixtureName == "offline"
             && (data.Snapshot.WorkerHealthy
                 || data.OverviewPriorityKind != "Worker"

@@ -626,8 +626,8 @@
 
     <!-- Keep text-only action buttons bounded by their actual chrome.  The production
          pages intentionally use text content for commands; rendering that content through
-         a shared TextBlock keeps long localized labels and game-derived actions centered
-         and ellipsized instead of expanding past a toolbar or inspector boundary. -->
+         a shared TextBlock keeps localized labels centered while allowing a narrow action
+         region to wrap the complete command instead of reducing it to an ambiguous prefix. -->
     <DataTemplate x:Key="GscWpfUiButtonTextTemplate">
         <TextBlock Text="{Binding}"
                    Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
@@ -637,8 +637,8 @@
                    HorizontalAlignment="Stretch"
                    VerticalAlignment="Center"
                    TextAlignment="Center"
-                   TextWrapping="NoWrap"
-                   TextTrimming="CharacterEllipsis"
+                   TextWrapping="Wrap"
+                   TextTrimming="None"
                    ToolTip="{Binding}"
                    SnapsToDevicePixels="True"/>
     </DataTemplate>

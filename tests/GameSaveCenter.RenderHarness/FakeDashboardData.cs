@@ -25,7 +25,8 @@ public enum OverviewFixtureProfile
     Default,
     EmptyActivity,
     ManyRisks,
-    LongTitle
+    LongTitle,
+    BilingualLengthStress
 }
 
 /// <summary>
@@ -738,8 +739,34 @@ public sealed class FakeDashboardData
                 if (Games.Count > 0)
                     Games[0].Name = longTitle;
                 break;
+
+            case OverviewFixtureProfile.BilingualLengthStress:
+                var chineseLongName = "中文长游戏名：星海远征·终焉回响 完整版与资料片合集 Windows PC 典藏收藏版";
+                var englishLongSentence = "This deliberately long English sentence verifies that a readable task explanation remains inspectable when the overview is measured inside a narrow bilingual layout.";
+                SelectedGame.Name = chineseLongName;
+                if (Games.Count > 0)
+                    Games[0].Name = chineseLongName;
+                if (Tasks.Count > 0)
+                {
+                    Tasks[0].GameName = chineseLongName;
+                    Tasks[0].Message = englishLongSentence;
+                }
+                if (Activities.Count > 0)
+                {
+                    Activities[0].GameName = chineseLongName;
+                    Activities[0].Summary = englishLongSentence;
+                }
+                if (AttentionFindings.Count > 0)
+                {
+                    AttentionFindings[0].GameName = chineseLongName;
+                    AttentionFindings[0].SuggestedAction = englishLongSentence;
+                }
+                break;
         }
     }
+
+    public string BilingualLongEnglishSentence
+        => "This deliberately long English sentence verifies that a readable task explanation remains inspectable when the overview is measured inside a narrow bilingual layout.";
 
     private void RebuildMaintenanceActionSections()
     {
