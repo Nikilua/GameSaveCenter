@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-17
 
+## 2026-09-17 R03-01 真实落字证据
+
+- `855e727` 先复用既有 `UiFontFamily`/`FindCandidate`，新增 `TypographyDiagnostics.CaptureGlyphRun`：在 STA 中通过 WPF `TextFormatter.GetIndexedGlyphRuns()` 取实际排版运行，记录最终 `GlyphTypeface`，不把候选 `CharacterToGlyphMap` 当作最终命中。
+- 证据等级有明确分层：捕获到目标码点且最终 Typeface 映射非零、无 `.notdef` 才是 `GlyphRunCaptured`；无法获取为 `CandidateOnly`/`Unknown`，`.notdef` 或最终码点不可映射为 `GlyphRunNotdefOrUnresolved`。当前 clean Light/Dark 报告中中文、英文、数字、`𠮷`、组合重音均为 `GlyphRunCaptured`；`𠮷` 候选 unresolved 但最终为 `MingLiU-ExtB`。
+- 新增实际 STA 行为测试 `GlyphRunProbeSeparatesCandidateCoverageFromFinalLayoutEvidence` `1/1`；`TypographyDiagnosticsTests` 类 `9/9`。最终隔离 Release XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `546/603`（57 skip/0 fail），源码校验通过；RenderHarness Light/Dark `WorkingTreeClean=True`、`finesse-fixture OK`，人工查看 `1120×980` 双主题夹具图。
+- 本项没有改生产 XAML、字体链、命令/Binding、picker、滚动、取消/错误、恢复保护或业务数据路径。证据是受控 WPF 排版与 offscreen logical DIP，不等价真实 Playnite 最终 frame、宿主字体替换、物理 DPI/IME/读屏/ETW/宿主性能；下一项为 R03-02 阅读层级校准。
+
 ## 2026-09-17 R02-08 动作文案动词化
 
 - `43ea843` 先核对命令 Binding 后只修正文案：LoadDetails 入口统一“重新加载详情”，Validate 入口统一“重新校验”，错误状态保留“重试”；远端恢复明确分成“下载到隔离区并校验”和“快照并恢复”，云端动作明确区分“校验远端内容”和“重试上传”。

@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-17 R03-01 真实落字证据
+
+- 先查到已有 `TypographyDiagnostics` 只有候选字体链、`FormattedText` 尺寸和 `FontActualGlyphRun: unknown` 报告；没有重建字体体系。`855e727` 实现 `CaptureGlyphRun`，复用现有字体链，在实际 STA WPF `TextFormatter` 中读取 `TextLine.GetIndexedGlyphRuns()`，输出候选覆盖、最终 Typeface、glyph 数和 `.notdef` 状态。
+- RenderHarness 对 CJK、Latin、数字、箭头、罕见 CJK、组合重音和 emoji 逐项输出 `GlyphRunEvidence`。clean commit Light/Dark 关键五项均为 `GlyphRunCaptured`；`𠮷` 的候选是 unresolved，但最终落到 `MingLiU-ExtB`，没有把候选未命中写成缺字或把静态候选写成最终命中。
+- `GlyphRunProbeSeparatesCandidateCoverageFromFinalLayoutEvidence` 实际 STA 定向 `1/1`，整个 `TypographyDiagnosticsTests` 类 `9/9`；隔离 Release XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `546/603`（57 跳过、0 失败），源码校验通过。
+- RenderHarness 构建 `0/0`，浅/深 `finesseprobe` 均 `WorkingTreeClean=True`、`finesse-fixture OK`；人工查看两张 `1120×980` 逻辑 DIP 图。`.tmp/r03-01-*` 仅为本阶段报告/构建/截图，文档提交后清理；未启动真实 Playnite、未写真实存档/媒体/云端。
+- 真实宿主最终 frame、宿主字体替换、用户物理 DPI/跨屏、OS 输入/IME、读屏、ETW 和宿主性能仍未验。下一可执行任务为 R03-02 阅读层级校准。
+
 ## 2026-09-17 R02-08 动作文案动词化
 
 - 盘点发现实际入口中有三类漂移：部分 LoadDetails 仍写“刷新详情”、旧 Validate 写“校验”、云端状态/失败消息混用英文 `check`；远端第一步只写“下载并校验”，没有直接说写入隔离区。

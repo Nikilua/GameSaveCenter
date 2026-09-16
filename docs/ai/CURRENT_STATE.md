@@ -1,10 +1,17 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮阶段：R03-01 真实落字证据
+
+- `855e727` 在不改生产字体链和页面布局的前提下，为现有 `TypographyDiagnostics` 增加 WPF `TextFormatter.GetIndexedGlyphRuns()` 诊断；候选 `FontCandidate` 与最终 `GlyphRunEvidence` 分开记录，未捕获或 `.notdef` 不会被推定为命中。
+- clean commit 的 Light/Dark `finesseprobe` 对中文 U+5B58、英文 U+0053、数字 U+0039、`𠮷` U+20BB7、组合重音 U+0301 均输出 `GlyphRunCaptured`；`𠮷` 候选为 unresolved，但最终 Typeface 为 `MingLiU-ExtB`。真实 STA 定向 `1/1`，`TypographyDiagnosticsTests` 类 `9/9`。
+- 最终隔离 Release：XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `546/603` 通过、`57` 跳过、`0` 失败；源码校验通过；RenderHarness Light/Dark 均 `WorkingTreeClean=True`、`finesse-fixture OK`，人工查看两张 `1120×980` 逻辑 DIP 夹具图。
+- 证据只代表受控 WPF 排版/离屏 logical DIP，不等价真实 Playnite 最终呈现、宿主字体替换、物理 DPI、OS 输入/IME、屏幕阅读器、presented frame、ETW 或宿主性能。下一可执行项为 R03-02 阅读层级校准。
+
 ## 当前第三轮阶段：R02-08 动作文案动词化
 
 - `43ea843` 先盘点实际 Binding 后收口动作标签：旧 Dashboard/Overview/Save Center 的 `LoadDetailsCommand` 入口统一为“重新加载详情”，旧 `ValidateCommand` 为“重新校验”；错误状态保留“重试”，不把重试冒充普通刷新。
 - 远端恢复第一步明确为“下载到隔离区并校验”，第二步为“快照并恢复”；云端详情区明确区分“校验远端内容”和“重试上传”。CloudTransfer DTO、Playnite 提示和 Worker 失败消息统一使用“远端校验”，协议内部 `Check*` 状态名和 rclone 参数未改。
-- `R02ActionCopyTests` `4/4`，连同相关既有可用性/焦点测试定向 `13/13`；最终干净 Release 为 XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `545/602` 通过、`57` 跳过、`0` 失败；源码校验通过。
+- `R02ActionCopyTests` `4/4`，连同相关既有可用性/焦点测试定向 `13/13`；最终干净 Release 为 XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `545/602` 通过、`57` 跳过、`0` 失败；源码校验通过。R03-01 已继续补齐真实 WPF GlyphRun 证据。
 - RenderHarness 报告绑定 `43ea843613daf3eb3b1378d31181a712d3a10c05` 且工作树干净，Light/Dark 均 `render-qa OK`；人工查看 Save 与 Maintenance CloudQueue 1040×700 双主题代表图。未启动真实 Playnite、未执行外部云端/备份操作；宿主字体/输入、物理 DPI、IME、读屏、presented frame、ETW 和性能仍未验。下一可执行项为 R03-01 真实落字证据。
 
 ## 当前第三轮阶段：R02-07 异步菜单上下文
