@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-17 R02-04 图文光学居中
+
+- 现有生产共享按钮已经提供文字模板 Center、统一 36 DIP 高度和复合 Grid 的 `ContentTemplate={x:Null}`；没有重复造控件或改变命令。`d296ce0` 只增加 R02-04 运行时几何测试。
+- 定向 Release `R02OpticalAlignmentTests` `3/3`：同一样式中文/英文 `BaselineOffset` 相对差 `<0.5 DIP`；16/20 DIP 图标与数字 `8 DIP` 间距、中心差 `≤1.5 DIP`。不是源码字符串签收。
+- 最终完整脚本 XAML `24/24`、构建 `0/0`、Core `83`、Worker `311`、Playnite `535` 通过/`57` 跳过/`0` 失败；首跑一条既有 IPC 时序失败，单项复跑 `1/1` 后完整复跑通过。RenderHarness `d296ce0` 双主题 56 场景 `render-qa OK`，源码校验通过。
+- 人工对照 Light/Dark Save 代表图确认同高按钮图文与列表/滚动完整；截图和构建输出在文档同步后清理。真实 Playnite、物理 DPI、读屏、OS 输入/IME、presented frame、ETW 和宿主性能未验。下一项为 R02-05 命中区与间距。
+
 ## 2026-09-16 R02-03 禁用原因可达
 
 - 先盘点当前命令：Restore 仍要求游戏/备份/Ludusavi，Media Inbox 仍要求模式/选中项/目标游戏，云传输 Verify/Retry 仍由状态门禁，远端恢复仍要求暂存且校验；本项没有把危险命令强行启用。

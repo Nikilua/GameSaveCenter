@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-16
 
+## 2026-09-17 R02-04 图文光学居中
+
+- 先核对生产实现：`WpfUiProduction.xaml` 已有共享文字 `DataTemplate`、Center 对齐和 bounded ellipsis；`Redesign.xaml` 已有 Header Visual 的 `ContentTemplate={x:Null}`，所以本项无需生产代码重建。
+- `d296ce0` 新增真实 STA WPF 几何测试：同一共享文字样式的中文四字/英文双词基线差 `<0.5 DIP`；16/20 DIP 图标复合内容与数字间距 `8 DIP`、中心差 `≤1.5 DIP`，定向 `3/3`。
+- 最终完整隔离 Release 为 XAML `24/24`、构建 `0/0`、Core `83`、Worker `311`、Playnite `535/592`（57 skip/0 fail）；首跑既有 IPC 取消时序用例失败，单项 `1/1` 复跑、随后完整脚本通过。RenderHarness 双主题 56 场景通过，源码校验通过。
+- 范围是生产资源、合成 Geometry、offscreen logical DIP；不宣称真实 Playnite/物理 DPI/屏幕阅读器/OS 输入/IME/presented frame/ETW/宿主性能。下一项为 R02-05 命中区与间距。
+
 ## 2026-09-16 R02-03 禁用原因可达
 
 - `627f864` 先复用已有命令门禁和 `OpenMaintenanceCommand`，通过 `ActionAvailabilityHints` 把 Restore、Media Inbox、Cloud Transfer、Remote Restore 的第一阻塞条件显示在相邻位置；没有把危险恢复、未校验远端恢复或不可重试云状态放行。

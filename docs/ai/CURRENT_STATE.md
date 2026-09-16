@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮阶段：R02-04 图文光学居中
+
+- 当前提交 `d296ce0` 未改生产按钮体系；既有 `GscWpfUiButtonTextTemplate`、共享内容居中属性和 `ContentTemplate={x:Null}` 复合图标路径已满足实现方向，本阶段新增 `R02OpticalAlignmentTests` 作为实际几何门禁。
+- R02 定向 Release `3/3`，同样式中文四字/英文双词基线差 `<0.5 DIP`；16/20 DIP 图标与数字间距 `8 DIP`、中心差 `≤1.5 DIP`。Light/Dark RenderHarness 56 个视图/尺寸场景均 `OK`，报告绑定 `d296ce0` 且工作树干净。
+- 最终完整隔离 Release：XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `535/592` 通过/`57` 跳过/`0` 失败；一次既有 IPC 取消时序用例先失败，立即单项 `1/1` 复跑并随后完整脚本通过，未改写 skip/失败事实。
+- 证据来自真实生产 WPF 资源、合成 Geometry、隔离 STA Window 和 offscreen logical DIP；未验真实 Playnite、物理 DPI/跨屏、屏幕阅读器、OS 输入/IME、presented frame、ETW 或宿主性能。下一可执行项为 R02-05 命中区与间距。
+
 ## 当前第三轮阶段：R02-03 禁用原因可达
 
 - `627f864` 在核对既有 Restore、Media Inbox、Cloud Transfer 和 Remote Restore 命令门禁后，只增加共享 `ActionAvailabilityHints` 状态说明、生产样式和相邻维护路径；没有放宽危险命令，没有新增服务/DTO，也没有覆盖 main 旧实现。
