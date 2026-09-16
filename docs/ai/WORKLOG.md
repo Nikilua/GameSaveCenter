@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-17 R03-02 阅读层级校准
+
+- 先盘点当前生产 Views/Settings，确认 `Typography.xaml` 已有标题 22/16/28、正文 14、Caption/技术 12 共享令牌；发现 12.5×5、10.5×9、9.5×2 个局部微字号。没有把 main 旧实现带入当前分支，也没有重建字体或设计体系。
+- `e889b04` 将壳层品牌、媒体文件名、Overview 任务/活动/问题主标题接到正文令牌，将版本/Worker/Ludusavi 状态、媒体时间/云端状态、任务详情、Save 比较徽标接到 Caption 令牌；路径保持 `GscPathText`/Tooltip/复制语义。新增逐行微字号负例和关键入口映射测试，最终定向 `10/10`。
+- 最终 clean 隔离 Release：XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `547/604`（57 跳过、0 失败），源码校验通过。Light/Dark 1040×700 生产窄窗 RenderHarness `render-qa OK`，人工查看 Overview、Media、Save、Maintenance 代表图未见挤压或歧义截断。
+- `.tmp/r03-02-build-final` 与 `.tmp/r03-02-render-initial` 仅为本阶段可再生验证输出，文档同步后清理；未启动真实 Playnite、未写真实存档/媒体/云端。宿主最终 frame、字体替换、物理 DPI/跨屏、OS 输入/IME、读屏、ETW 和宿主性能仍未验。下一可执行任务为 R03-03 双语基线。
+
 ## 2026-09-17 R03-01 真实落字证据
 
 - 先查到已有 `TypographyDiagnostics` 只有候选字体链、`FormattedText` 尺寸和 `FontActualGlyphRun: unknown` 报告；没有重建字体体系。`855e727` 实现 `CaptureGlyphRun`，复用现有字体链，在实际 STA WPF `TextFormatter` 中读取 `TextLine.GetIndexedGlyphRuns()`，输出候选覆盖、最终 Typeface、glyph 数和 `.notdef` 状态。

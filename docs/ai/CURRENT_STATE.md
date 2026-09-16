@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮阶段：R03-02 阅读层级校准
+
+- `e889b04` 先核对现有 `Typography.xaml`/`Redesign.xaml` 共享层级，再清理生产 Views/Settings 中 5 处 `12.5`、9 处 `10.5`、2 处 `9.5` 微字号：壳层品牌、媒体文件名、Overview 主标题归入 `GscBodyFontSize=14`；版本/状态/时间/详情/比较徽标归入 `GscCaptionFontSize=12`。路径继续复用 `GscTypographyCode`/`GscPathText`，未引入新设计体系。
+- 新增 `ProductionTypographyUsesSharedHierarchyWithoutMicroSizeDrift`，逐行拒绝生产微字号并校对关键页面语义映射；最终 clean 隔离程序集定向 `10/10`。生产 Views/Settings 直接扫描没有 TextBlock 局部低透明度，剩余透明度只在 ambient 装饰层。
+- 最终隔离 Release：XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `547/604` 通过、`57` 跳过、`0` 失败；源码校验通过。RenderHarness 绑定 `e889b04...` 且 `WorkingTreeClean=True`，Light/Dark 1040×700 生产窄窗均 `render-qa OK`，人工查看 Overview、Media、Save、Maintenance 代表图。
+- 本项保留游戏选框、滚动条、命令/绑定、取消/错误、恢复保护、有限列表性能与 net462 契约，未写真实数据。证据只代表受控 WPF/offscreen logical DIP，不等价真实 Playnite presented frame、宿主字体替换、物理 DPI/跨屏、OS 输入/IME、读屏、ETW 或宿主性能。下一可执行项为 R03-03 双语基线。
+
 ## 当前第三轮阶段：R03-01 真实落字证据
 
 - `855e727` 在不改生产字体链和页面布局的前提下，为现有 `TypographyDiagnostics` 增加 WPF `TextFormatter.GetIndexedGlyphRuns()` 诊断；候选 `FontCandidate` 与最终 `GlyphRunEvidence` 分开记录，未捕获或 `.notdef` 不会被推定为命中。

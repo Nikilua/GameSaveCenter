@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-17
 
+## 2026-09-17 R03-02 阅读层级校准
+
+- `e889b04` 先盘点实际生产 Views/Settings 的文字入口，复用 `Typography.xaml` 的标题、正文、Caption、Code/Path 层级；删除 5 个 12.5、9 个 10.5、2 个 9.5 字面微变体。壳层品牌、媒体文件名、Overview 任务/活动/问题主标题使用 `GscBodyFontSize=14`；版本、状态、时间、详情和比较质量使用 `GscCaptionFontSize=12`。
+- 技术路径仍走 `GscTypographyCode`/`GscPathText`，保留 Tooltip、复制、单行省略；未改游戏选框、滚动条、命令/Binding、取消/错误、安全恢复或 net462 契约。直接扫描生产 Views/Settings 未发现 TextBlock 局部低透明度，现存 0.22/0.9 仅为 ambient 装饰层。
+- `ProductionTypographyUsesSharedHierarchyWithoutMicroSizeDrift` 最终 clean 定向 `10/10`；隔离 Release XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `547/604`（57 skip/0 fail），源码校验通过。RenderHarness Light/Dark 1040×700 均 `render-qa OK`，人工查看生产 Overview、Media、Save、Maintenance 窄窗代表图。
+- 证据是合成数据、生产 WPF 资源和 offscreen logical DIP；未启动真实 Playnite、未写真实存档/媒体/云端。真实 presented frame、宿主字体替换、物理 DPI/跨屏、OS 输入/IME、读屏、ETW 和宿主性能仍未验。下一项为 R03-03 双语基线。
+
 ## 2026-09-17 R03-01 真实落字证据
 
 - `855e727` 先复用既有 `UiFontFamily`/`FindCandidate`，新增 `TypographyDiagnostics.CaptureGlyphRun`：在 STA 中通过 WPF `TextFormatter.GetIndexedGlyphRuns()` 取实际排版运行，记录最终 `GlyphTypeface`，不把候选 `CharacterToGlyphMap` 当作最终命中。
