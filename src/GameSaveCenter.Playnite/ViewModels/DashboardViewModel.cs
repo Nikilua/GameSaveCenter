@@ -335,6 +335,12 @@ namespace GameSaveCenter.Playnite.ViewModels
                      && (!string.IsNullOrWhiteSpace(SelectedTask.ErrorMessage)
                          || !string.IsNullOrWhiteSpace(SelectedTask.ErrorCode)
                          || !string.IsNullOrWhiteSpace(SelectedTask.DetailMessage)));
+            CopyPathCommand = new RelayCommand(
+                value =>
+                {
+                    if (value is string path && !string.IsNullOrWhiteSpace(path)) Run(() => CopyPathAsync(path));
+                },
+                value => !IsBusy && value is string path && !string.IsNullOrWhiteSpace(path));
             OpenAttentionCenterCommand = new RelayCommand(_ => OpenAttentionCenter());
             OpenMaintenanceCommand = new RelayCommand(_ => OpenMaintenance());
             OpenCloudQueueCommand = new RelayCommand(_ => OpenCloudQueue());
@@ -1297,6 +1303,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand LoadMoreTasksCommand { get; }
         public ICommand ClearTaskFiltersCommand { get; }
         public ICommand CopyTaskErrorCommand { get; }
+        public ICommand CopyPathCommand { get; }
         public ICommand OpenAttentionCenterCommand { get; }
         public ICommand OpenMaintenanceCommand { get; }
         public ICommand OpenCloudQueueCommand { get; }
@@ -4046,6 +4053,13 @@ namespace GameSaveCenter.Playnite.ViewModels
             await CopyTextWithRetryAsync(text, "任务详情已复制", "任务详情已复制到剪贴板。");
         }
 
+        private async Task CopyPathAsync(string path)
+        {
+            // Copy the bound source value directly. Preview converters and visual
+            // ellipsis must never leak into the clipboard payload.
+            await CopyTextWithRetryAsync(path, "路径已复制", "完整路径已复制到剪贴板。");
+        }
+
         private async Task CopyTextWithRetryAsync(string text, string statusMessage, string infoMessage)
         {
             for (var attempt = 0; attempt < 4; attempt++)
@@ -4881,7 +4895,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 PreviewMediaClassificationCommand, ApplyMediaClassificationCommand, UndoMediaClassificationCommand,
                 RefreshMediaClassificationHistoryCommand, LoadMoreMediaClassificationHistoryCommand,
                 LoadMoreMediaInboxCommand, ReloadMediaInboxCommand,
-                CancelTaskCommand, RetryTaskCommand, RetryAllTasksCommand, LoadMoreTasksCommand, ClearMediaFiltersCommand, CopyTaskErrorCommand, RefreshDiagnosticsCommand, RunMaintenanceActionCommand, LoadMoreRetentionQuarantineCommand, DiagnoseGameCommand, SyncGameDescriptorCommand, RetryGameMatchCommand, ClearGamePickerFiltersCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
+                CancelTaskCommand, RetryTaskCommand, RetryAllTasksCommand, LoadMoreTasksCommand, ClearMediaFiltersCommand, CopyTaskErrorCommand, CopyPathCommand, RefreshDiagnosticsCommand, RunMaintenanceActionCommand, LoadMoreRetentionQuarantineCommand, DiagnoseGameCommand, SyncGameDescriptorCommand, RetryGameMatchCommand, ClearGamePickerFiltersCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
                 StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,RunHealthInspectionCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,RefreshRetentionSimulationCommand,ApplyRetentionSimulationCommand,RefreshLocalMirrorStatusCommand,SyncLocalMirrorCommand,CopyMaintenanceReportCommand,ExportMaintenanceReportCommand,
                 SaveProcessMappingCommand,DeleteProcessMappingCommand,RunEnvironmentCheckCommand,SkipOnboardingCommand,CompleteOnboardingCommand,OnboardingTestBackupCommand,
                 OpenDataDirectoryCommand, OpenBackupDirectoryCommand, OpenMediaDirectoryCommand, OpenWorkerLogCommand

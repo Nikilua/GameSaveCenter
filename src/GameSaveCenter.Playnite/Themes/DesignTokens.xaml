@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:primitives="clr-namespace:System.Windows.Controls.Primitives;assembly=PresentationFramework"
+                    xmlns:converters="clr-namespace:GameSaveCenter.Playnite.Converters"
                     xmlns:ui="clr-namespace:GameSaveCenter.Playnite.Controls">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/Typography.xaml"/>
@@ -126,6 +127,7 @@
     <!-- Shared status text cue. The converter only adds a glyph to known status
          words; values outside that vocabulary remain untouched. -->
     <ui:StatusGlyphConverter x:Key="GscStatusGlyphConverter"/>
+    <converters:PathDisplayConverter x:Key="GscPathDisplayConverter"/>
     <SolidColorBrush x:Key="GscScrollTrackBrush" Color="#00000000"/>
     <SolidColorBrush x:Key="GscScrollThumbBrush" Color="#38FFFFFF"/>
     <SolidColorBrush x:Key="GscScrollThumbHoverBrush" Color="#52FFFFFF"/>

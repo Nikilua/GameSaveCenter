@@ -1140,6 +1140,24 @@
         <Setter Property="FontSize" Value="{DynamicResource GscBodyFontSize}"/>
     </Style>
 
+    <Style x:Key="GscWpfUiPathDetailTextBox"
+           TargetType="TextBox"
+           BasedOn="{StaticResource GscWpfUiPathTextBox}">
+        <!-- Read-only keeps the source path safe while native TextBox selection and
+             Ctrl+C make the complete, non-ellipsized value available to the user. -->
+        <Setter Property="IsReadOnly" Value="True"/>
+        <Setter Property="TextWrapping" Value="NoWrap"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="10,3"/>
+        <Setter Property="Height" Value="34"/>
+        <Setter Property="MinHeight" Value="34"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}"/>
+        <Setter Property="AutomationProperties.HelpText" Value="可选择完整路径；按 Ctrl+C 复制"/>
+    </Style>
+
     <Style x:Key="GscWpfUiComboBox"
            TargetType="ComboBox"
            BasedOn="{StaticResource {x:Type ComboBox}}">
