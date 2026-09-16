@@ -11,7 +11,7 @@
 | R00-03 | 动画结束基值 | 代码完成待验收 | 4414f05 / cda168c | Release 单节点构建 0/0；完成/重入/取消/卸载定向 `5/5` | `motionreentryprobe`、`motionhotprobe` 双主题 clean-tree 均通过；真实输入/屏幕帧未验 | 受控生产壳层通过；真实 Playnite/ETW/物理呈现未验 | [R00-03 动效证据](evidence/R00-03-MOTION-LIFECYCLE-20260916.md)；继续 R00-04 |
 | R00-04 | 搜索基准真实性 | 代码完成待验收 | df884b0 | Release 单节点构建 `0/0`；合成 2,000 项定向 `2/2`；30 个不同查询均等待到对应可见 ID 集合，错误期望 `75ms` 超时负例通过 | 受控 WPF/Dispatcher 集合变化通过；未验真实 Playnite 输入、IME 或屏幕帧 | 合成 2,000 项 p50/p95/max 为 `45/60/60ms`，不宣称宿主帧性能 | [R00-04 证据](evidence/R00-04-SEARCH-BENCHMARK-20260916.md)；R18-01 继续覆盖连续输入/IME/debounce 分配 |
 | R00-05 | 上下文禁用透明度 | 代码完成待验收 | aebcefc | Release 单节点构建 `0/0`；Light/Dark 真实 WPF 派生样式定向 `2/2`；Context/RemoteRestore/MediaBatch 均只保留模板 `ButtonChrome=0.72` | 复合标签/图标/解释文字非透明，启用/禁用高度差 `<0.01 DIP`；受控主题合成最低对比度 `3.0`；未验真实宿主像素 | 样式无独立库性能影响；命令/绑定/安全语义未改，不宣称宿主呈现 | [R00-05 证据](evidence/R00-05-CONTEXT-DISABLED-20260916.md)；R00-06 继续媒体四行门禁 |
-| R00-06 | 媒体四行门禁 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
+| R00-06 | 媒体四行门禁 | 代码完成待验收 | 7d57575 / db5d483 | Release 单节点构建 `0/0`；Media 几何、审计源契约定向 `4/4`；双主题 `mediageometryprobe` 5 场景/主题均通过，含水平条、不同密度和父级裁剪负例 | 受控生产 `MediaCenterView` 的实际表头/行/水平条/裁剪交集验证；正常与不同密度可读，短窗明确页级回退，阻断父级报 HIGH；未替代真实鼠标滚动/Playnite 嵌入屏幕 | `shellqa` exit 0，1040/1100/1366 DIP Media 表格和页尾可达；全量审计 161 快照、0 Fidelity、0 失败路由、0 HIGH/0 MEDIUM；仅 offscreen logical DIP，不宣称物理 DPI/ETW/宿主帧率 | [R00-06 证据](evidence/R00-06-MEDIA-FOUR-ROWS-20260916.md)；下一项 R00-07 审计排除项收窄 |
 | R00-07 | 审计排除项收窄 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R00-08 | 搜索框 Enter/IME | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R01-01 | 测试源码根绑定 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |

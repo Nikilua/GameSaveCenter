@@ -2,6 +2,13 @@
 
 > 更新时间：2026-09-16。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 当前第三轮阶段：R00-06 媒体四行门禁
+
+- `7d57575` 将媒体主表的 `212 DIP` 固定门禁改为按实际表头、行高、水平滚动条、边框和 padding 计算的运行时 floor；`UiLayoutAnalyzer` 按真实 `DataGridColumnHeadersPresenter`、`DataGridRow` 与有效裁剪交集计数完整行，另有短窗回退和父级不可达的明确诊断。`db5d483` 让几何探针报告记录完整提交号与工作树状态。
+- 当前 clean-tree `db5d483d8ac6460ac7c3a07fe64cec5c7fe417d3`：Playnite 定向构建 `0/0`，R00-06 几何/源契约定向 `4/4`，RenderHarness 构建 `0/0`；双主题 `mediageometryprobe` 的正常、水平条、不同密度、短窗回退和父级裁剪负例共 10 场景通过，输出 `mediageometryprobe OK`。完整审计 `161` 快照、`0` Fidelity、`0` 失败路由、`0 HIGH / 0 MEDIUM`；`shellqa` exit 0。
+- 默认密度有水平条时所需主表为 `262 DIP`（`42 + 4×52 + 12`），表格框为 `288 DIP`（另加 `24` padding 与 `2` border）；不同密度实际测到 `36/44 DIP` 并按公式得到 `212 DIP`，不是恢复旧固定值。短窗保留页级可达性并记录 INFO；阻断父级的 `pageScroll=False` 记录 HIGH 负例。
+- 证据见 [`R00-06-MEDIA-FOUR-ROWS-20260916.md`](../design/reviews/ui-finesse-round3-20260915/evidence/R00-06-MEDIA-FOUR-ROWS-20260916.md)。这些是合成数据、真实生产 WPF 视图和离屏 logical DIP 证据，不等价真实 Playnite 嵌入 Dashboard、物理 DPI、鼠标滚轮/键盘输入、presented frame、ETW 或宿主帧率；下一可执行项为 R00-07 审计排除项收窄。
+
 ## 当前第三轮阶段：R00-04 搜索基准真实性
 
 - `df884b0` 修正搜索基准：正式 30 次输入使用不同的 `SearchText`，等待条件核对真实可见 `PlayniteId` 集合而不是只核对计数；每次等待拥有独立运行的超时计时器，并保留不可能结果的有限超时负例。

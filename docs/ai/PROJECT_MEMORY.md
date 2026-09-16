@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-16
 
+## 2026-09-16 R00-06 媒体四行门禁
+
+- `7d57575` 在不替换 `main` 旧实现的前提下，新增 `MediaInboxGeometry` 公式并让生产 `MediaCenterView` 按运行时实测表头、行高、水平条和表格框边界设置 floor；`UiLayoutAnalyzer` 改用真实行容器与有效裁剪交集，覆盖短窗页级回退和父级不可达失败。`db5d483` 补齐 `mediageometryprobe` 的场景/提交号/工作树元数据。
+- 当前 clean-tree SHA `db5d483d8ac6460ac7c3a07fe64cec5c7fe417d3`：Playnite Release 单节点构建 `0/0`，R00-06 几何、审计源契约和控件源契约定向 `4/4`，RenderHarness Release 构建 `0/0`。双主题各覆盖 normal、horizontal-scroll、alternate-density、short-fallback、blocked-parent，10/10 通过；默认有水平条时主表/表格框要求 `262/288 DIP`，不同密度 `212/238 DIP` 按实际 `36/44 DIP` 计算。
+- 当前提交上的全量审计为 `161` 快照、`0` Fidelity、`0` 失败路由、`0 HIGH / 0 MEDIUM`；`shellqa` exit 0，1040/1100/1366 DIP Media 页尾可达。审计保留嵌套滚动与页级回退 INFO，不把短窗信息误报为问题，也不把离屏几何写成宿主呈现验收。
+- 证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R00-06-MEDIA-FOUR-ROWS-20260916.md`。范围仍为合成数据、隔离目录、STA/offscreen logical DIP；真实 Playnite Dashboard、物理 DPI、输入/滚轮、ETW、presented frame 和大库宿主帧率未验。下一执行点为 R00-07 审计排除项收窄。
+
 ## 2026-09-16 R00-04 搜索基准真实性
 
 - `df884b0` 修正 `LargeLibraryPerformanceTests`：每个正式样本使用不同的 `SearchText`，等待函数按真实可见 `PlayniteId` 集合确认过滤已完成；计时器在每次等待内部独立启动，增加不可能期望结果的有限超时负例。

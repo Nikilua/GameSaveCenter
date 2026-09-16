@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-16 R00-06 媒体四行门禁
+
+- `7d57575` 完成媒体几何收口：新增共享 `MediaInboxGeometry`，生产视图不再依赖 `212 DIP` 常量；分析器从真实列头、行容器、水平滚动条和有效裁剪交集推导“表头 + 四行”，并保留页级短窗回退与父级不可达 HIGH 负例。`db5d483` 补充几何探针的完整 SHA、`WorkingTreeClean`、主题和数据量元数据。
+- 验证：Playnite Release 单节点 `0 warning / 0 error`；R00-06 定向几何/审计源/控件源测试 `4/4`；RenderHarness Release `0/0`；双主题 `mediageometryprobe` 10 个场景全部通过。normal 为 42/52，水平条场景为 `262/288 DIP` 所需主表/表格框，不同密度实际 36/44 并通过公式，短窗与 blocked-parent 负例命中预期。
+- 当前提交的全量审计 `161` 快照、0 Fidelity、0 失败路由、0 HIGH/0 MEDIUM；`shellqa` exit 0，1040/1100/1366 DIP 的 Media 表格和页尾滚动路径保持可达。全部为受控生产 WPF 离屏逻辑 DIP，未宣称 Playnite 嵌入、物理 DPI、输入、ETW 或物理屏幕帧。
+- 持久证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R00-06-MEDIA-FOUR-ROWS-20260916.md`。临时输出只用于本次重跑，下一可执行小批量为 R00-07：收窄 TrainerToolsSettingsScrollViewer 的整棵子树排除并补同祖先异常工具条负例。
+
 ## 2026-09-16 R00-04 搜索基准真实性
 
 - 提交 `df884b0`（`校正搜索基准样本`）：正式 30 个查询各自等待目标可见 `PlayniteId` 集合，超时计时器不再复用已停止的业务测量计时器；新增错误期望结果的有限超时负例。

@@ -1,5 +1,9 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-16 第三轮 R00-06 已收口：`7d57575` 将媒体表格 `212 DIP` 固定门禁改为运行时实际几何公式与行交集判定，`db5d483` 补齐几何探针元数据；当前分支 `codex/ui-finesse-round2` clean-tree SHA 为 `db5d483d8ac6460ac7c3a07fe64cec5c7fe417d3`，已推送。Playnite 定向构建 `0/0`、R00-06 定向 `4/4`、RenderHarness 构建 `0/0`；双主题几何探针 10/10、完整审计 161 快照且 0 Fidelity/0 失败路由/0 HIGH/0 MEDIUM、Shell QA exit 0。证据见 `design/reviews/ui-finesse-round3-20260915/evidence/R00-06-MEDIA-FOUR-ROWS-20260916.md`。
+
+> 交接边界：证据来自合成媒体数据、真实生产 WPF 视图、隔离输出目录和 offscreen logical DIP；短窗页级回退与父级裁剪 HIGH 负例已覆盖，但真实 Playnite 嵌入 Dashboard、用户主题/物理 DPI、鼠标滚轮与键盘、presented frame、ETW 和宿主帧率仍未验。保留现有游戏选框、滚动条系统、命令/绑定、取消/错误/恢复保护和 net462 兼容。临时 `.tmp/r00-06-*` 输出在文档提交后清理；下一可执行任务为 R00-07 审计排除项收窄。
+
 > 2026-09-16 第三轮 R00-04 已收口：`df884b0` 修正搜索基准为 30 个不同查询，并等待真实可见 ID 集合；不可能结果的独立超时负例通过。当前隔离 worktree Release 构建 `0/0`、定向测试 `2/2`，合成 2,000 项集合变化 `30/30`，p50/p95/max=`45/60/60ms`。证据见 `design/reviews/ui-finesse-round3-20260915/evidence/R00-04-SEARCH-BENCHMARK-20260916.md`。受控 fake/Dispatcher 证据不等价真实 Playnite 连续输入、IME、物理 DPI、屏幕帧或 ETW；下一可执行任务为 R00-05，R18-01 继续补连续输入/debounce 分配边界。
 
 > 2026-09-16 第三轮 R00-05 已收口：`aebcefc` 删除 ContextButton 外层 `0.48`，统一复用共享模板 `ButtonChrome=0.72`；Light/Dark 的 Context、RemoteRestore、MediaBatch 真实 WPF 派生样式测试 `2/2`，启用/禁用高度差 `<0.01 DIP`，复合标签/图标/解释文字非透明，最低受控对比度 `3.0`。证据见 `design/reviews/ui-finesse-round3-20260915/evidence/R00-05-CONTEXT-DISABLED-20260916.md`。这是受控 Window/逻辑合成，不等价真实 Playnite/物理 DPI/屏幕像素；下一可执行任务为 R00-06 媒体四行门禁。
