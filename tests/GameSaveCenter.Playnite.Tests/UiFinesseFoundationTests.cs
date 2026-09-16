@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -146,6 +147,74 @@ public sealed class UiFinesseFoundationTests
     }
 
     [Fact]
+    public void ScaleTransformIsReusedInAStableCompositeTree()
+    {
+        Exception? exception = null;
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var first = new Border();
+                var firstGroup = new TransformGroup();
+                firstGroup.Children.Add(new TranslateTransform(12, -4));
+                var nested = new TransformGroup();
+                nested.Children.Add(new RotateTransform(7));
+                firstGroup.Children.Add(nested);
+                firstGroup.Freeze();
+                first.RenderTransform = firstGroup;
+
+                ScaleTransform? firstScale = null;
+                var initialCount = 0;
+                var initialDepth = 0;
+                for (var iteration = 0; iteration < 1000; iteration++)
+                {
+                    var current = GscMotion.GetMutableScaleTransform(first);
+                    firstScale ??= current;
+                    Assert.Same(firstScale, current);
+                    if (iteration == 0)
+                    {
+                        initialCount = CountTransformNodes(first.RenderTransform);
+                        initialDepth = TransformDepth(first.RenderTransform);
+                    }
+                    else
+                    {
+                        Assert.Equal(initialCount, CountTransformNodes(first.RenderTransform));
+                        Assert.Equal(initialDepth, TransformDepth(first.RenderTransform));
+                    }
+                }
+
+                var resolvedGroup = Assert.IsType<TransformGroup>(first.RenderTransform);
+                var translation = Assert.IsType<TranslateTransform>(resolvedGroup.Children[0]);
+                Assert.Equal(12, translation.X);
+                Assert.Equal(-4, translation.Y);
+                var resolvedNested = Assert.IsType<TransformGroup>(resolvedGroup.Children[1]);
+                Assert.Equal(7, Assert.IsType<RotateTransform>(resolvedNested.Children[0]).Angle);
+
+                var second = new Border
+                {
+                    RenderTransform = new TransformGroup
+                    {
+                        Children = { new RotateTransform(-5) }
+                    }
+                };
+                var secondScale = GscMotion.GetMutableScaleTransform(second);
+                Assert.NotSame(firstScale, secondScale);
+                firstScale!.ScaleX = 1.12;
+                Assert.Equal(1, secondScale.ScaleX);
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+    }
+
+    [Fact]
     public void EntranceMotionTakesOverFromTheCurrentEffectiveValue()
     {
         var motion = File.ReadAllText(Path.Combine(FindRepositoryRoot(), "src", "GameSaveCenter.Playnite", "Infrastructure", "GscMotion.cs"));
@@ -204,5 +273,19 @@ public sealed class UiFinesseFoundationTests
         };
         timer.Start();
         Dispatcher.PushFrame(frame);
+    }
+
+    private static int CountTransformNodes(Transform? transform)
+    {
+        if (transform is not TransformGroup group)
+            return transform == null ? 0 : 1;
+        return 1 + group.Children.Cast<Transform>().Sum(CountTransformNodes);
+    }
+
+    private static int TransformDepth(Transform? transform)
+    {
+        if (transform is not TransformGroup group)
+            return transform == null ? 0 : 1;
+        return 1 + (group.Children.Count == 0 ? 0 : group.Children.Cast<Transform>().Max(TransformDepth));
     }
 }

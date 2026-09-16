@@ -135,18 +135,67 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 return scale;
             }
 
+            var group = element.RenderTransform as TransformGroup;
+            if (group != null)
+            {
+                if (group.IsFrozen)
+                {
+                    group = (TransformGroup)group.CloneCurrentValue();
+                    element.RenderTransform = group;
+                }
+
+                var existing = FindMutableScaleTransform(group);
+                if (existing != null)
+                    return existing;
+
+                var appended = new ScaleTransform(1, 1);
+                group.Children.Add(appended);
+                return appended;
+            }
+
             var mutable = new ScaleTransform(1, 1);
             if (element.RenderTransform != null && element.RenderTransform != Transform.Identity)
             {
-                var group = new TransformGroup();
-                group.Children.Add(element.RenderTransform.IsFrozen
+                var replacement = new TransformGroup();
+                replacement.Children.Add(element.RenderTransform.IsFrozen
                     ? element.RenderTransform.CloneCurrentValue()
                     : element.RenderTransform);
-                group.Children.Add(mutable);
-                element.RenderTransform = group;
+                replacement.Children.Add(mutable);
+                element.RenderTransform = replacement;
             }
             else element.RenderTransform = mutable;
             return mutable;
+        }
+
+        private static ScaleTransform? FindMutableScaleTransform(TransformGroup group)
+        {
+            for (var index = 0; index < group.Children.Count; index++)
+            {
+                var child = group.Children[index];
+                if (child is ScaleTransform scale)
+                {
+                    if (scale.IsFrozen)
+                    {
+                        scale = (ScaleTransform)scale.CloneCurrentValue();
+                        group.Children[index] = scale;
+                    }
+                    return scale;
+                }
+
+                if (child is TransformGroup nested)
+                {
+                    if (nested.IsFrozen)
+                    {
+                        nested = (TransformGroup)nested.CloneCurrentValue();
+                        group.Children[index] = nested;
+                    }
+                    var found = FindMutableScaleTransform(nested);
+                    if (found != null)
+                        return found;
+                }
+            }
+
+            return null;
         }
 
         internal static void AnimateTranslate(FrameworkElement element, double x, double y, TimeSpan duration)

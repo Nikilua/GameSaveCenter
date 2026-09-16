@@ -219,6 +219,36 @@ public sealed class UiDiagnosticsExporterTests
         Assert.Equal("black-on-dark-negative", invalidViolations[0].Check);
     }
 
+    [Fact]
+    public void GradientContrastModelsWholeChromeOpacityAndNonUniformStops()
+    {
+        var stops = new[]
+        {
+            new GradientStop(Colors.White, 0),
+            new GradientStop(Colors.White, 0.9),
+            new GradientStop(Colors.Black, 1)
+        };
+
+        var measurements = AdaptiveThemePaletteContrastGuard.MeasureGradientTextContrast(
+            "composite",
+            Colors.Black,
+            Colors.Black,
+            stops,
+            Colors.Transparent,
+            Colors.Transparent,
+            Colors.Transparent,
+            0.5,
+            4.5);
+
+        var pressed = measurements.Single(measurement => measurement.Check == "composite.pressed@0.0");
+        var lateStop = measurements.Single(measurement => measurement.Check == "composite.normal@1.0");
+
+        Assert.Equal(Color.FromRgb(128, 128, 128), pressed.Background);
+        Assert.Equal(Colors.Black, pressed.EffectiveForeground);
+        Assert.True(pressed.Actual >= 4.5, $"Expected black text on gray chrome to pass, got {pressed.Actual:0.###}.");
+        Assert.Equal(Colors.Black, lateStop.Background);
+    }
+
     [Theory]
     [InlineData(GameSaveCenterThemeMode.Light)]
     [InlineData(GameSaveCenterThemeMode.Dark)]
@@ -237,18 +267,20 @@ public sealed class UiDiagnosticsExporterTests
                 var resources = new ResourceDictionary();
                 AdaptiveThemePaletteFactory.ApplyAccentResources(resources, palette);
                 var primaryBrush = Assert.IsType<LinearGradientBrush>(resources["GscPrimaryButtonBrush"]);
-                var gradientColors = primaryBrush.GradientStops.Select(stop => stop.Color).ToArray();
                 var hoverOverlay = Assert.IsType<SolidColorBrush>(resources["GscOnAccentHoverOverlayBrush"]).Color;
                 var pressedOverlay = Assert.IsType<SolidColorBrush>(resources["GscOnAccentPressedOverlayBrush"]).Color;
                 var buttonMeasurements = AdaptiveThemePaletteContrastGuard.MeasureGradientTextContrast(
                     "primary-button",
                     palette.OnAccentText,
                     palette.Background,
-                    gradientColors,
+                    primaryBrush.GradientStops,
+                    hoverOverlay,
                     hoverOverlay,
                     pressedOverlay);
 
                 Assert.NotEmpty(buttonMeasurements);
+                Assert.Equal(88, buttonMeasurements.Count);
+                Assert.Contains(buttonMeasurements, measurement => measurement.Check == "primary-button.hover+pressed+focus@0.0");
                 Assert.All(buttonMeasurements, measurement =>
                     Assert.True(
                         measurement.Actual + 0.001 >= measurement.Minimum,

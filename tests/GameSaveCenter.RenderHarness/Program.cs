@@ -2867,7 +2867,8 @@ public static class Program
             "primary-button",
             onAccentBrush.Color,
             palette.Background,
-            primaryBrush.GradientStops.Select(stop => stop.Color),
+            primaryBrush.GradientStops,
+            hoverBrush.Color,
             hoverBrush.Color,
             pressedBrush.Color);
         var buttonViolations = buttonMeasurements
@@ -2875,7 +2876,7 @@ public static class Program
             .ToList();
         report.AppendLine(
             $"SemanticButtonContrast: samples={buttonMeasurements.Count} "
-            + $"normal/hover/pressed=all-stops violations={buttonViolations.Count}");
+            + $"normal/hover/focus/pressed-combinations=all-stops violations={buttonViolations.Count}");
         foreach (var violation in buttonViolations)
             report.AppendLine($"  violation {violation.Check}: actual={violation.Actual:0.###} minimum={violation.Minimum:0.###}");
         if (buttonViolations.Count > 0)
