@@ -237,7 +237,7 @@
                                 <Separator Margin="0,16,0,12"/>
                                 <TextBlock Text="恢复操作" FontWeight="SemiBold"/>
                                 <TextBlock Text="恢复前会创建并锁定当前快照，完成后可校验并撤销。" Style="{DynamicResource GscCaptionStyle}" Margin="0,5,0,0" TextWrapping="Wrap"/>
-                                <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding RestoreCommand}" Content="安全恢复" Margin="0,12,0,0"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiDangerActionButton}" Command="{Binding RestoreCommand}" Content="安全恢复" ToolTip="恢复前先创建并锁定当前快照；完成后可撤销" AutomationProperties.Name="安全恢复所选版本" Margin="0,12,0,0"/>
                                 <ui:Button Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding UndoRestoreCommand}" Content="撤销最近恢复" Margin="0,8,0,0"/>
                             </StackPanel>
                         </Border>

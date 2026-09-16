@@ -964,6 +964,26 @@
              disabled treatment for this whole contextual action family. -->
     </Style>
 
+    <!-- Action-role variants keep the geometry of their existing primary/context
+         families while making destructive commands resolve through the shared danger
+         appearance. Pages should choose one primary role per action region and use these
+         variants for irreversible or high-impact commands. -->
+    <Style x:Key="GscWpfUiDangerActionButton"
+           TargetType="{x:Type ui:Button}"
+           BasedOn="{StaticResource GscWpfUiPrimaryActionButton}">
+        <Setter Property="Appearance" Value="Danger"/>
+        <Setter Property="Foreground" Value="{DynamicResource GscOnDangerTextBrush}"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+    </Style>
+
+    <Style x:Key="GscWpfUiContextDangerButton"
+           TargetType="{x:Type ui:Button}"
+           BasedOn="{StaticResource GscWpfUiContextButton}">
+        <Setter Property="Appearance" Value="Danger"/>
+        <Setter Property="Foreground" Value="{DynamicResource GscOnDangerTextBrush}"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+    </Style>
+
     <!-- These command groups are deliberately fixed as groups, not globally. Their labels
          are different lengths, but the Demo presents the paired restore actions and the
          media batch actions as aligned controls. Keep the shared button states, focus ring
