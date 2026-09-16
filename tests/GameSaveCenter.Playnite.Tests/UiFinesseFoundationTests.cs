@@ -211,6 +211,67 @@ public sealed class UiFinesseFoundationTests
     }
 
     [Fact]
+    public void EntranceMotionReentryKeepsTheRenderedBaseWhenLatestClockIsCancelled()
+    {
+        Exception? exception = null;
+        var thread = new Thread(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var host = new Border
+                {
+                    Width = 40,
+                    Height = 40,
+                    Background = Brushes.Transparent
+                };
+                host.Resources["GscMotionNormal"] = new Duration(TimeSpan.FromMilliseconds(500));
+                host.Resources["GscMotionSlow"] = new Duration(TimeSpan.FromMilliseconds(600));
+                window = new Window
+                {
+                    Content = host,
+                    Width = 80,
+                    Height = 80,
+                    ShowInTaskbar = false,
+                    ShowActivated = false,
+                    WindowStyle = WindowStyle.None,
+                    Opacity = 0.01
+                };
+                window.Show();
+                window.UpdateLayout();
+
+                var translate = GscMotion.GetMutableTranslateTransform(host);
+                GscMotion.AnimateEntrance(host, 12);
+                PumpDispatcher(TimeSpan.FromMilliseconds(120));
+                var renderedY = translate.Y;
+                var renderedOpacity = host.Opacity;
+                Assert.InRange(renderedY, 0.5, 11.5);
+                Assert.InRange(renderedOpacity, 0.05, 0.95);
+
+                GscMotion.AnimateEntrance(host, 24);
+                translate.BeginAnimation(TranslateTransform.YProperty, null);
+                host.BeginAnimation(UIElement.OpacityProperty, null);
+
+                Assert.InRange(Math.Abs(translate.Y - renderedY), 0, 0.8);
+                Assert.InRange(Math.Abs(host.Opacity - renderedOpacity), 0, 0.08);
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+    }
+
+    [Fact]
     public void ScaleTransformIsReusedInAStableCompositeTree()
     {
         Exception? exception = null;
@@ -283,13 +344,11 @@ public sealed class UiFinesseFoundationTests
     {
         var motion = File.ReadAllText(Path.Combine(FindRepositoryRoot(), "src", "GameSaveCenter.Playnite", "Infrastructure", "GscMotion.cs"));
 
-        Assert.Contains("DependencyPropertyHelper.GetValueSource(translate, TranslateTransform.YProperty)", motion);
-        Assert.Contains("DependencyPropertyHelper.GetValueSource(element, UIElement.OpacityProperty)", motion);
-        Assert.Contains("translate.BeginAnimation(TranslateTransform.YProperty, null);", motion);
-        Assert.Contains("element.BeginAnimation(UIElement.OpacityProperty, null);", motion);
-        Assert.Contains("new DoubleAnimation(currentOpacity, 1, GetDuration(element, MotionDurationKind.Normal))", motion);
-        Assert.Contains("new DoubleAnimation(currentY, 0, GetDuration(element, MotionDurationKind.Slow))", motion);
-        Assert.Contains("rapid re-entry", motion);
+        Assert.Contains("internal static void AnimateEntrance(FrameworkElement element, double offsetY)", motion);
+        Assert.Contains("hasActiveAnimation", motion);
+        Assert.Contains("BeginAnimation(TranslateTransform.YProperty, null)", motion);
+        Assert.Contains("BeginAnimation(UIElement.OpacityProperty, null)", motion);
+        Assert.Contains("DoubleAnimation", motion);
         Assert.Contains("FillBehavior = FillBehavior.HoldEnd", motion);
         Assert.Contains("translateAnimation.Completed", motion);
     }
