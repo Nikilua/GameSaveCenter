@@ -1446,6 +1446,12 @@ public static class Program
         report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
         report.AppendLine("EvidenceSource: synthetic WPF production view; no Playnite host or real media paths");
         report.AppendLine("Cases: normal readable viewport, horizontal scrollbar, alternate density, short-window page fallback, intentionally blocked parent");
+        AppendRunMetadata(
+            report,
+            "mediageometryprobe",
+            "OffscreenRenderHarness",
+            "light,dark",
+            "production MediaCenterView; 20 synthetic media rows; normal/horizontal/alternate-density/short-fallback/blocked-parent");
         report.AppendLine();
         var problems = new List<string>();
 
