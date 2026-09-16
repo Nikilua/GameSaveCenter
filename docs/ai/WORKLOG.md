@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-17 R02-07 异步菜单上下文
+
+- 先查到当前菜单是 Playnite `GameMenuItem`，没有本地 WPF 菜单树；因此只处理插件动作真正能控制的对象身份，不引入替代菜单。
+- `4d4bb93` 让菜单保存不可变 Guid 快照。立即备份、同步媒体、备份历史、恢复点校验和游戏工具在异步入口先按当前数据库重解析；刷新会使用新对象且保留原顺序，删除/无法确认会提示并在 Worker/Upsert 前中止。设置入口无目标，保持原行为。
+- `R02MenuActionContextTests` 与 `R02MenuHostContractTests` 真实定向 `4/4`，覆盖刷新正例、删除负例、空选择和六项宿主契约；不是只加 `Assert.Contains`。最终干净 Release XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `541` 通过/`57` 跳过/`0` 失败，源码校验通过。
+- 首轮全量暴露一个随参数重命名过期的 `QuickActionSourceTests` 断言，已单独提交 `4d4bb93` 后以干净树完整复跑通过。`.tmp` 输出待本阶段文档提交后按规则清理；未启动真实 Playnite、不执行菜单 Action、不写真实存档/媒体/云端。宿主事件时序、菜单输入/视觉、物理 DPI/IME/读屏/presented frame/ETW/性能仍未验。下一项为 R02-08 动作文案动词化。
+
 ## 2026-09-17 R02-06 菜单状态完整（外部宿主阻塞）
 
 - 核对发现当前插件没有 WPF ContextMenu/MenuItem，只有 Playnite `GameMenuItem` 入口；没有新增替代菜单，也没有把 main 旧实现带入分支。

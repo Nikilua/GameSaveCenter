@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-17
 
+## 2026-09-17 R02-07 异步菜单上下文
+
+- 菜单入口仍是 Playnite `GameMenuItem`，不存在可由本项目控制的 WPF `ContextMenu/MenuItem`。`4d4bb93` 新增 `GameMenuActionContext`：生成菜单时固定目标 Guid，异步 Action 执行前按当前数据库重新解析，保留原顺序，不追随可变旧引用或当前选中行。
+- 五个目标相关 Action 都在 `EnsureWorkerAsync`/`UpsertGames` 之前做解析；列表刷新正例解析到替换后的 `Game` 实例，删除负例返回缺失 ID、空结果并中止。失效/无法确认时复用既有提示和日志，不写数据。
+- `R02MenuActionContextTests` + `R02MenuHostContractTests` 定向 `4/4`；最终干净 Release 为 XAML `24/24`、构建 `0/0`、Core `83`、Worker `311`、Playnite `541/598`（57 skip/0 fail）；源码校验通过。首轮过期字符串断言已单独校准并纳入干净提交。
+- 未启动真实 Playnite、未执行菜单 Action、未写真实存档/媒体/云端；宿主实际打开后刷新/删除时序、菜单视觉和 OS 输入/IME/物理 DPI/读屏/presented frame/ETW/性能仍未验。下一项为 R02-08 动作文案动词化。
+
 ## 2026-09-17 R02-06 菜单状态完整（外部宿主阻塞）
 
 - 先查当前代码：没有 WPF `ContextMenu/MenuItem`；插件只实现 `GetGameMenuItems`，空选择返回空，有选择时按固定顺序生成六个 `GameSaveCenter` 宿主动作。不能凭空加一套本地菜单来替代 Playnite 的渲染职责。
