@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Media.TextFormatting;
 
 namespace GameSaveCenter.Playnite.Infrastructure
 {
@@ -42,6 +43,20 @@ namespace GameSaveCenter.Playnite.Infrastructure
             public double Height { get; set; }
             public double Baseline { get; set; }
             public bool HasUnpairedSurrogate { get; set; }
+        }
+
+        public sealed class GlyphRunEvidence
+        {
+            public int CodePoint { get; set; }
+            public bool CandidateHasGlyph { get; set; }
+            public string CandidateFamily { get; set; } = string.Empty;
+            public string FinalFamily { get; set; } = string.Empty;
+            public bool HasGlyphRun { get; set; }
+            public bool HasNotdefGlyph { get; set; }
+            public bool FinalTypefaceHasCodePoint { get; set; }
+            public int GlyphRunCount { get; set; }
+            public int GlyphCount { get; set; }
+            public string EvidenceLevel { get; set; } = "Unknown";
         }
 
         public static GlyphCandidate FindCandidate(
@@ -127,6 +142,81 @@ namespace GameSaveCenter.Playnite.Infrastructure
             };
         }
 
+        public static GlyphRunEvidence CaptureGlyphRun(
+            string text,
+            int codePoint,
+            IEnumerable<string> familyChain,
+            double fontSize,
+            FontWeight weight)
+        {
+            if (text == null) throw new ArgumentNullException(nameof(text));
+            if (familyChain == null) throw new ArgumentNullException(nameof(familyChain));
+            if (fontSize <= 0) throw new ArgumentOutOfRangeException(nameof(fontSize));
+
+            var chain = familyChain.ToArray();
+            var candidate = FindCandidate(chain, codePoint, weight);
+            var evidence = new GlyphRunEvidence
+            {
+                CodePoint = codePoint,
+                CandidateHasGlyph = candidate.HasGlyph,
+                CandidateFamily = candidate.HasGlyph ? candidate.Family : string.Empty
+            };
+
+            var targetIndex = FindCodePointIndex(text, codePoint);
+            if (targetIndex < 0)
+                return evidence;
+
+            try
+            {
+                var typeface = new Typeface(
+                    new FontFamily(string.Join(", ", chain)),
+                    FontStyles.Normal,
+                    weight,
+                    FontStretches.Normal);
+                var runProperties = new ProbeTextRunProperties(typeface, fontSize);
+                var source = new ProbeTextSource(text, runProperties);
+                var paragraph = new ProbeTextParagraphProperties(runProperties);
+                using (var formatter = TextFormatter.Create())
+                using (var line = formatter.FormatLine(source, 0, 4096, paragraph, null))
+                {
+                    var runs = line.GetIndexedGlyphRuns()
+                        .Where(run => run.GlyphRun != null
+                            && Intersects(
+                                run.TextSourceCharacterIndex,
+                                run.TextSourceLength,
+                                targetIndex,
+                                CodePointLength(codePoint)))
+                        .Select(run => run.GlyphRun)
+                        .ToArray();
+                    evidence.HasGlyphRun = runs.Length > 0;
+                    evidence.GlyphRunCount = runs.Length;
+                    evidence.GlyphCount = runs.Sum(run => run.GlyphIndices?.Count ?? 0);
+                    evidence.HasNotdefGlyph = runs.Any(run => run.GlyphIndices != null && run.GlyphIndices.Any(index => index == 0));
+                    evidence.FinalFamily = string.Join(
+                        " + ",
+                        runs.Select(GetFamilyName)
+                            .Where(name => !string.IsNullOrWhiteSpace(name))
+                            .Distinct(StringComparer.OrdinalIgnoreCase));
+                    evidence.FinalTypefaceHasCodePoint = runs.Any(run =>
+                        run.GlyphTypeface != null
+                        && run.GlyphTypeface.CharacterToGlyphMap.TryGetValue(codePoint, out var glyphIndex)
+                        && glyphIndex != 0);
+                }
+            }
+            catch
+            {
+                return evidence;
+            }
+
+            if (!evidence.HasGlyphRun)
+                evidence.EvidenceLevel = candidate.HasGlyph ? "CandidateOnly" : "Unknown";
+            else if (evidence.HasNotdefGlyph || !evidence.FinalTypefaceHasCodePoint)
+                evidence.EvidenceLevel = "GlyphRunNotdefOrUnresolved";
+            else
+                evidence.EvidenceLevel = "GlyphRunCaptured";
+            return evidence;
+        }
+
         public static bool ContainsUnpairedSurrogate(string value)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
@@ -155,6 +245,106 @@ namespace GameSaveCenter.Playnite.Infrastructure
             if (codePoint < 0 || codePoint > 0x10FFFF)
                 throw new ArgumentOutOfRangeException(nameof(codePoint));
             return char.ConvertFromUtf32(codePoint);
+        }
+
+        private static int FindCodePointIndex(string text, int codePoint)
+        {
+            for (var index = 0; index < text.Length; index++)
+            {
+                var current = char.ConvertToUtf32(text, index);
+                if (current == codePoint)
+                    return index;
+                if (char.IsHighSurrogate(text[index]) && index + 1 < text.Length && char.IsLowSurrogate(text[index + 1]))
+                    index++;
+            }
+
+            return -1;
+        }
+
+        private static int CodePointLength(int codePoint)
+            => codePoint > 0xFFFF ? 2 : 1;
+
+        private static bool Intersects(int firstIndex, int length, int targetIndex, int targetLength)
+            => firstIndex < targetIndex + targetLength && targetIndex < firstIndex + length;
+
+        private static string GetFamilyName(GlyphRun run)
+        {
+            if (run?.GlyphTypeface == null)
+                return string.Empty;
+            return run.GlyphTypeface.Win32FamilyNames.Values.FirstOrDefault()
+                ?? run.GlyphTypeface.FamilyNames.Values.FirstOrDefault()
+                ?? string.Empty;
+        }
+
+        private sealed class ProbeTextSource : TextSource
+        {
+            private readonly string _text;
+            private readonly TextRunProperties _runProperties;
+
+            public ProbeTextSource(string text, TextRunProperties runProperties)
+            {
+                _text = text;
+                _runProperties = runProperties;
+            }
+
+            public override TextRun GetTextRun(int textSourceCharacterIndex)
+            {
+                if (textSourceCharacterIndex >= _text.Length)
+                    return new TextEndOfParagraph(1);
+                return new TextCharacters(_text, textSourceCharacterIndex, _text.Length - textSourceCharacterIndex, _runProperties);
+            }
+
+            public override TextSpan<CultureSpecificCharacterBufferRange> GetPrecedingText(int textSourceCharacterIndexLimit)
+            {
+                var length = Math.Max(0, Math.Min(textSourceCharacterIndexLimit, _text.Length));
+                var range = new CharacterBufferRange(_text, 0, length);
+                return new TextSpan<CultureSpecificCharacterBufferRange>(
+                    length,
+                    new CultureSpecificCharacterBufferRange(CultureInfo.InvariantCulture, range));
+            }
+
+            public override int GetTextEffectCharacterIndexFromTextSourceCharacterIndex(int textSourceCharacterIndex)
+                => textSourceCharacterIndex;
+        }
+
+        private sealed class ProbeTextRunProperties : TextRunProperties
+        {
+            private readonly Typeface _typeface;
+            private readonly double _fontSize;
+
+            public ProbeTextRunProperties(Typeface typeface, double fontSize)
+            {
+                _typeface = typeface;
+                _fontSize = fontSize;
+            }
+
+            public override Typeface Typeface => _typeface;
+            public override double FontRenderingEmSize => _fontSize;
+            public override double FontHintingEmSize => _fontSize;
+            public override TextDecorationCollection TextDecorations => null!;
+            public override Brush ForegroundBrush => Brushes.Black;
+            public override Brush BackgroundBrush => null!;
+            public override CultureInfo CultureInfo => CultureInfo.InvariantCulture;
+            public override TextEffectCollection TextEffects => null!;
+        }
+
+        private sealed class ProbeTextParagraphProperties : TextParagraphProperties
+        {
+            private readonly TextRunProperties _runProperties;
+
+            public ProbeTextParagraphProperties(TextRunProperties runProperties)
+            {
+                _runProperties = runProperties;
+            }
+
+            public override FlowDirection FlowDirection => FlowDirection.LeftToRight;
+            public override TextAlignment TextAlignment => TextAlignment.Left;
+            public override double LineHeight => _runProperties.FontRenderingEmSize;
+            public override bool FirstLineInParagraph => true;
+            public override TextRunProperties DefaultTextRunProperties => _runProperties;
+            public override TextWrapping TextWrapping => TextWrapping.NoWrap;
+            public override TextMarkerProperties TextMarkerProperties => null!;
+            public override double Indent => 0;
         }
     }
 }

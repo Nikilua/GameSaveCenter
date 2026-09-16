@@ -3230,13 +3230,13 @@ public static class Program
         var chain = TypographyDiagnostics.UiFontChain;
         var samples = new[]
         {
-            (Label: "CJK", CodePoint: 0x5B58),
-            (Label: "Latin", CodePoint: 0x0053),
-            (Label: "Digit", CodePoint: 0x0039),
-            (Label: "Arrow", CodePoint: 0x2192),
-            (Label: "RareCJK", CodePoint: 0x20BB7),
-            (Label: "Combining", CodePoint: 0x0301),
-            (Label: "Emoji", CodePoint: 0x1F9ED)
+            (Label: "CJK", CodePoint: 0x5B58, Text: "存"),
+            (Label: "Latin", CodePoint: 0x0053, Text: "S"),
+            (Label: "Digit", CodePoint: 0x0039, Text: "9"),
+            (Label: "Arrow", CodePoint: 0x2192, Text: "→"),
+            (Label: "RareCJK", CodePoint: 0x20BB7, Text: TypographyDiagnostics.CodePointText(0x20BB7)),
+            (Label: "Combining", CodePoint: 0x0301, Text: "e\u0301"),
+            (Label: "Emoji", CodePoint: 0x1F9ED, Text: "🧭")
         };
 
         report.AppendLine($"FontChain: {string.Join(" -> ", chain)}");
@@ -3247,6 +3247,18 @@ public static class Program
                 $"FontCandidate {sample.Label}=U+{sample.CodePoint:X5} "
                 + $"candidate={(candidate.HasGlyph ? candidate.Family : "unresolved")} "
                 + $"requestedWeight={candidate.RequestedWeight} actualWeight={candidate.ActualWeight}");
+            var glyphRun = TypographyDiagnostics.CaptureGlyphRun(
+                sample.Text,
+                sample.CodePoint,
+                chain,
+                14,
+                FontWeights.Normal);
+            report.AppendLine(
+                $"GlyphRunEvidence {sample.Label}=U+{sample.CodePoint:X5} "
+                + $"level={glyphRun.EvidenceLevel} candidate={(glyphRun.CandidateHasGlyph ? glyphRun.CandidateFamily : "unresolved")} "
+                + $"final={(string.IsNullOrWhiteSpace(glyphRun.FinalFamily) ? "unknown" : glyphRun.FinalFamily)} "
+                + $"runs={glyphRun.GlyphRunCount} glyphs={glyphRun.GlyphCount} "
+                + $"finalTypefaceHasCodePoint={glyphRun.FinalTypefaceHasCodePoint} notdef={glyphRun.HasNotdefGlyph}");
         }
 
         foreach (var weight in new[] { FontWeights.Normal, FontWeights.Medium, FontWeights.SemiBold })
@@ -3270,8 +3282,8 @@ public static class Program
                 + $"unpairedSurrogate={metric.HasUnpairedSurrogate}");
         }
 
-        report.AppendLine("FontActualGlyphRun: unknown (this offscreen fixture does not capture WPF GlyphRun fallback)");
-        report.AppendLine("FontEvidence: FontCandidate reports actual candidate coverage and requested/actual weight; host GlyphRun remains unknown");
+        report.AppendLine("FontActualGlyphRun: captured per sample with WPF TextFormatter.GetIndexedGlyphRuns");
+        report.AppendLine("FontEvidence: FontCandidate is candidate coverage; GlyphRunEvidence is captured WPF layout output; unresolved or .notdef remains non-hit");
     }
 
     private static void AppendTypographyMetricEvidence(StringBuilder report, FrameworkElement resourceScope)

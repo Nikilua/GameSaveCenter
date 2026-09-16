@@ -1,8 +1,10 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Threading;
 using GameSaveCenter.Playnite.Infrastructure;
 using Xunit;
 
@@ -50,6 +52,41 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.True(metric.Height > 0);
             Assert.True(metric.Baseline > 0);
             Assert.False(metric.HasUnpairedSurrogate);
+        }
+
+        [Fact]
+        public void GlyphRunProbeSeparatesCandidateCoverageFromFinalLayoutEvidence()
+        {
+            TypographyDiagnostics.GlyphRunEvidence[] evidence = null!;
+            RunSta(() =>
+            {
+                evidence = new[]
+                {
+                    TypographyDiagnostics.CaptureGlyphRun("存", 0x5B58, TypographyDiagnostics.UiFontChain, 14, FontWeights.Normal),
+                    TypographyDiagnostics.CaptureGlyphRun("S", 0x0053, TypographyDiagnostics.UiFontChain, 14, FontWeights.Normal),
+                    TypographyDiagnostics.CaptureGlyphRun("9", 0x0039, TypographyDiagnostics.UiFontChain, 14, FontWeights.Normal),
+                    TypographyDiagnostics.CaptureGlyphRun(TypographyDiagnostics.CodePointText(0x20BB7), 0x20BB7, TypographyDiagnostics.UiFontChain, 14, FontWeights.Normal),
+                    TypographyDiagnostics.CaptureGlyphRun("e\u0301", 0x0301, TypographyDiagnostics.UiFontChain, 14, FontWeights.Normal)
+                };
+            });
+
+            Assert.NotNull(evidence);
+            Assert.Equal(5, evidence.Length);
+            Assert.All(evidence, item =>
+            {
+                if (item.EvidenceLevel == "GlyphRunCaptured")
+                {
+                    Assert.NotEmpty(item.FinalFamily);
+                    Assert.True(item.FinalTypefaceHasCodePoint);
+                }
+                if (item.EvidenceLevel == "CandidateOnly" || item.EvidenceLevel == "Unknown")
+                    Assert.False(item.HasGlyphRun);
+            });
+
+            Assert.Contains(evidence, item => item.CodePoint == 0x5B58 && item.HasGlyphRun);
+            Assert.Contains(evidence, item => item.CodePoint == 0x0053 && item.HasGlyphRun);
+            Assert.Contains(evidence, item => item.CodePoint == 0x0039 && item.HasGlyphRun);
+            Assert.DoesNotContain(evidence, item => item.EvidenceLevel == "GlyphRunCaptured" && item.HasNotdefGlyph);
         }
 
         [Fact]
@@ -162,5 +199,27 @@ namespace GameSaveCenter.Playnite.Tests
 
         private static string FindRepositoryRoot()
             => TestRepositoryContext.Root;
+
+        private static void RunSta(Action action)
+        {
+            Exception? failure = null;
+            var thread = new Thread(() =>
+            {
+                try
+                {
+                    action();
+                    Dispatcher.CurrentDispatcher.InvokeShutdown();
+                }
+                catch (Exception exception)
+                {
+                    failure = exception;
+                }
+            });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+            thread.Join();
+            if (failure != null)
+                throw new Xunit.Sdk.XunitException(failure.ToString());
+        }
     }
 }
