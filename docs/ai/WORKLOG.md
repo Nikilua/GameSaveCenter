@@ -8,6 +8,12 @@
 - 首次修正版定向运行真实暴露只看 `FilteredCount` 的缺口（30 次中仅 1 次集合变化）；等待集合身份后重跑通过，当前 Release 构建 `0/0`、定向 `2/2`，合成 2,000 项 `30/30` 变化，p50/p95/max=`45/60/60ms`。
 - 原始查询/时延和失败→修正过程见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R00-04-SEARCH-BENCHMARK-20260916.md`。这是受控 fake/Dispatcher 证据，不升级真实宿主/IME/物理 DPI/屏幕帧/ETW；下一项 R00-05。
 
+## 2026-09-16 R00-05 上下文按钮禁用透明度
+
+- 提交 `aebcefc`（`校准上下文按钮禁用透明度`）：移除 ContextButton 外层 `0.48`，复用共享模板的单一 `ButtonChrome=0.72`，没有改变命令、绑定、布局占位或恢复安全语义。
+- Light/Dark 生产资源字典 + 真实 WPF Window/Dispatcher 定向 `2/2`；覆盖 Context、RemoteRestore、MediaBatch 三类派生样式，禁用控件 `Opacity=1`、chrome `0.72`，启用/禁用高度差小于 `0.01 DIP`，复合标签/图标/解释文字非透明，最低受控对比度 `3.0`。
+- 证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R00-05-CONTEXT-DISABLED-20260916.md`。没有把低不透明度测试窗口写成屏幕呈现或真实宿主复核；下一项 R00-06 媒体四行门禁。
+
 ## 2026-09-16 R00-03 动效完成态与生命周期行为复核
 
 - 保留 `4414f05` 已有的完成回调和卸载清理，在 `cda168c` 增加真实 WPF Window/Dispatcher 行为测试：完成、当前值重入、reduced-motion 活动取消、卸载和旧时钟晚写均覆盖；不重复造新的动效体系。

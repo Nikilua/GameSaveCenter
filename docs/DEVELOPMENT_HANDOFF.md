@@ -2,6 +2,8 @@
 
 > 2026-09-16 第三轮 R00-04 已收口：`df884b0` 修正搜索基准为 30 个不同查询，并等待真实可见 ID 集合；不可能结果的独立超时负例通过。当前隔离 worktree Release 构建 `0/0`、定向测试 `2/2`，合成 2,000 项集合变化 `30/30`，p50/p95/max=`45/60/60ms`。证据见 `design/reviews/ui-finesse-round3-20260915/evidence/R00-04-SEARCH-BENCHMARK-20260916.md`。受控 fake/Dispatcher 证据不等价真实 Playnite 连续输入、IME、物理 DPI、屏幕帧或 ETW；下一可执行任务为 R00-05，R18-01 继续补连续输入/debounce 分配边界。
 
+> 2026-09-16 第三轮 R00-05 已收口：`aebcefc` 删除 ContextButton 外层 `0.48`，统一复用共享模板 `ButtonChrome=0.72`；Light/Dark 的 Context、RemoteRestore、MediaBatch 真实 WPF 派生样式测试 `2/2`，启用/禁用高度差 `<0.01 DIP`，复合标签/图标/解释文字非透明，最低受控对比度 `3.0`。证据见 `design/reviews/ui-finesse-round3-20260915/evidence/R00-05-CONTEXT-DISABLED-20260916.md`。这是受控 Window/逻辑合成，不等价真实 Playnite/物理 DPI/屏幕像素；下一可执行任务为 R00-06 媒体四行门禁。
+
 > 2026-09-16 第三轮 R00-01/R00-02 已在 `codex/ui-finesse-round2` 收口：`a95e900` 修正整组 chrome opacity 对比度合成并复用组合 ScaleTransform，`e216e9b` 增加非等距 stop 负例。当前 clean-tree `e216e9b` 定向 WPF `5/5`，双主题 RenderHarness `88` 状态样本均无 violation；证据见 `design/reviews/ui-finesse-round3-20260915/evidence/R00-01-02-CONTRAST-SCALE-20260916.md`。这是受控 offscreen logical DIP 结果，不等价真实 Playnite/IME/物理 DPI/屏幕帧；下一项执行 R00-03 的完成、取消、卸载和重入 Dispatcher 复核，R08-08 可变共享 Freezable 仍待单独验证。
 
 > 2026-09-16 第三轮 R00-03 已收口：`4414f05` 的现有生产终态实现由 `cda168c` 补齐真实 Dispatcher 行为测试；当前 clean-tree `cda168ca410bee0a4b0416664452010c9246db96` 的完成/重入/取消/卸载定向测试 `5/5`，`motionreentryprobe` 与 `motionhotprobe` 双主题均通过。证据见 `design/reviews/ui-finesse-round3-20260915/evidence/R00-03-MOTION-LIFECYCLE-20260916.md`。受控窗口仍不等价真实 Playnite/Windows 偏好通知/ETW/物理呈现，下一项为 R00-04 搜索基准真实性。

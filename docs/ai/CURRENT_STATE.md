@@ -10,6 +10,14 @@
 
 证据：[`R00-04-SEARCH-BENCHMARK-20260916.md`](../design/reviews/ui-finesse-round3-20260915/evidence/R00-04-SEARCH-BENCHMARK-20260916.md)。
 
+## 当前第三轮阶段：R00-05 上下文按钮禁用透明度
+
+- `aebcefc` 移除 `GscWpfUiContextButton` 的控件级 `Opacity=0.48`，保留共享模板唯一的 `ButtonChrome.Opacity=0.72`；因此 Context/RemoteRestore/MediaBatch 派生动作的禁用标签、图标和解释文字不再二次淡化，仍保留布局位置。
+- Light/Dark 真实 WPF Window/Dispatcher 定向 `2/2`；三类生产派生样式启用/禁用高度差 `<0.01 DIP`，复合内容前景非透明，受控运行时渐变合成的最低禁用文本对比度为 `3.0`。SaveCenter/MediaCenter/Maintenance 引用校验通过。
+- 这是受控模板/逻辑与语义合成证据，不是 Playnite 宿主屏幕像素、物理 DPI 或鼠标交互证据；命令、绑定、恢复保护和布局契约未改。下一执行点为 R00-06 媒体四行门禁。
+
+证据：[`R00-05-CONTEXT-DISABLED-20260916.md`](../design/reviews/ui-finesse-round3-20260915/evidence/R00-05-CONTEXT-DISABLED-20260916.md)。
+
 ## 当前第三轮阶段：R00-01/R00-02 代码收口
 
 - 当前工作区为 `codex/ui-finesse-round2`，最新实现提交 `a95e900`，非等距渐变负例测试补充为 `e216e9b`；没有合并 `main` 的旧实现。R00-01 按整组 chrome opacity 与真实父背景计算，保留 `GradientStop.Offset` 并覆盖 focus/hover/pressed 组合；R00-02 对已有组合变换递归复用 ScaleTransform，冻结树只在第一次接入时克隆。

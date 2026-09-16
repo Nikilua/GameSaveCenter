@@ -9,6 +9,12 @@
 - 第一次重跑曾发现只判断 `FilteredCount=1` 会导致后续样本提前返回，实际只变化 1 次；修正为等待可见 ID 集合后 `30/30` 通过。该事实作为门禁校正记录保留。
 - 证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R00-04-SEARCH-BENCHMARK-20260916.md`。范围仍是 fake/合成/受控 WPF，真实 Playnite、连续输入、IME、物理 DPI、屏幕帧和 ETW 未验；下一执行点为 R00-05。
 
+## 2026-09-16 R00-05 上下文按钮禁用透明度
+
+- `aebcefc` 删除 `GscWpfUiContextButton` 的控件级 `Opacity=0.48`；禁用态统一由共享 `ButtonChrome` 的 `0.72` 一次处理，避免标签/图标/解释文字的 `0.48 × 0.72` 二次淡化，同时保留按钮布局位置。
+- 真实 WPF Window/Dispatcher 的 Light/Dark 定向测试 `2/2`；Context、RemoteRestore、MediaBatch 三类实际派生样式均为控件 `1` / chrome `0.72`，启用/禁用高度差小于 `0.01 DIP`，受控合成最低禁用文本对比度 `3.0`。
+- 存档、媒体、维护视图引用和命令绑定保持不变。证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R00-05-CONTEXT-DISABLED-20260916.md`。测试窗口不等价真实 Playnite/屏幕像素/物理 DPI；下一执行点为 R00-06。
+
 ## 2026-09-16 R00-01/R00-02 按压合成与组合缩放复核
 
 - `a95e900` 修正 `AdaptiveThemePaletteContrastGuard.MeasureGradientTextContrast`：整组 chrome opacity 现在先合成文字/表面，再与真实父背景混合；新增带 offset 的 `GradientStop` API，并对 normal、hover、focus、pressed 及组合状态采样。`e216e9b` 增加 `opacity=0.5` 黑父/白 chrome/黑字的灰背景负例，以及非等距 `0/0.9/1` stop 行为断言。
