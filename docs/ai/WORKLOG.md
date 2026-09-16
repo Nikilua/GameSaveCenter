@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-17 R03-06 双语长度压力
+
+- 先查已有能力：Overview 已有标题 `CharacterEllipsis + Tooltip`，表格长文本已有共享样式；真正发现的缺口是共享动作按钮模板把核心文案设成 `NoWrap + CharacterEllipsis`。未从 main 带入旧实现。
+- `52527b6` 将共享动作文字改为可换行、无省略；RenderHarness 新增 `BilingualLengthStress`，包含中文长游戏名、165 字符英文句和 820 DIP 窄宽度组合。`R03BilingualLengthTests` 实际 STA WPF `2/2`，154 DIP 动作槽两个语言样本均保留全文、Tooltip 和增长高度。
+- clean commit `overviewedges` Light/Dark 820/1040/1600 DIP 均 `surfaces=6/6`、标题 Tooltip 可达、英文长句可见、2 个动作有尺寸、无横向溢出；统一 `render-qa` 绑定 clean commit、297 PNG、`render-qa OK`。全量 Release XAML `24/24`、构建 `0/0`、Core `83/83`、Playnite `563/620`（57 跳过、0 失败），源码校验通过；Worker 未改，最近完整基线 `311/311`。
+- 保留 picker、滚动条、命令/Binding、取消错误、恢复保护、有限列表和 net462；只使用合成数据/隔离输出，未写真实存档、媒体、云端。真实 Playnite presented frame、宿主字体、物理 DPI/跨屏、OS 输入/IME、读屏、ETW/宿主性能未验。`.tmp/r03-06-*` 文档提交后清理。下一可执行任务为 R03-07 文案标点统一。
+
 ## 2026-09-17 R03-05 长路径分层
 
 - 先核对生产能力：`GscPathText` 已有代码字体、单行和 Tooltip，`CopyTextWithRetryAsync` 已有剪贴板重试，但没有路径专用复制/可选详情；没有覆盖 main 旧实现。

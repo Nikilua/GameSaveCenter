@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-17
 
+## 2026-09-17 R03-06 双语长度压力
+
+- `52527b6` 复用现有标题省略/Tooltip 和长文本样式，修复共享 `GscWpfUiButtonTextTemplate`：动作文字在窄槽允许换行且不做省略，避免“打开/保存”等核心命令只显示歧义前缀；Tooltip 仍以完整绑定值为内容。
+- `BilingualLengthStress` 只属于 RenderHarness 合成数据：中文长游戏名贯穿当前游戏/任务/活动/关注项，165 字符英文句进入任务详情等文本位。实际 STA WPF `R03BilingualLengthTests` 为 `2/2`，154 DIP 槽中英文动作的 `TextWrapping/Trimming/Tooltip/高度` 均按预期。
+- clean commit 的双主题 `overviewedges` 在 820/1040/1600 DIP 全部 `OK`：6/6 首页表面、标题可省略且完整 Tooltip、英文长句可见、当前游戏 2 个动作可测、无横向溢出；统一 `render-qa` `WorkingTreeClean=True`、297 PNG、`render-qa OK`。全量 Release XAML `24/24`、Core `83/83`、Playnite `563/620`（57 skip/0 fail），Worker 未改且同分支最近完整基线为 `311/311`。
+- 只涉及共享按钮显示模板、合成夹具和测试；未改命令/Binding、取消错误、安全恢复、游戏选框、滚动条、有限列表、net462 业务契约。证据不等价真实 Playnite presented frame、宿主字体/物理 DPI/跨屏、OS 输入/IME、读屏、ETW 或宿主性能；未写真实数据。下一项 R03-07 文案标点统一。
+
 ## 2026-09-17 R03-05 长路径分层
 
 - `2b8612f` 复用现有 `GscPathText`/Tooltip 和 `CopyTextWithRetryAsync`，没有重建服务或复制流程。新增 `PathDisplayConverter`，预览中间省略并保留盘符/根路径开头与文件名尾部；只在显示层去除 CR/LF，原始路径绑定值不变。

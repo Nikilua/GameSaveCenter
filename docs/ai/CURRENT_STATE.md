@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮阶段：R03-06 双语长度压力
+
+- `52527b6` 先核对已有标题 `CharacterEllipsis + Tooltip`、长文本表格样式和 RenderHarness `LongTitle` profile；确认真正缺口是共享文字动作模板的 `NoWrap + CharacterEllipsis`，没有把 main 旧实现覆盖到当前分支。
+- 共享 `GscWpfUiButtonTextTemplate` 改为 `TextWrapping=Wrap`、`TextTrimming=None`；新增 `BilingualLengthStress` 合成 profile，把英文长句和中文长游戏名放入实际 Overview 任务/活动/关注项数据。`R03BilingualLengthTests` `2/2`，154 DIP 窄槽实际测量两个动作均保留完整文案、Tooltip 和可增长高度。
+- clean commit 的 `overviewedges` 覆盖 Light/Dark、820/1040/1600 DIP：双语样本 `surfaces=6/6`、标题省略且 `titleTooltip=True`、英文长句可见、当前游戏动作 2 个、无横向溢出；统一 `render-qa` 绑定 `52527b6`、`WorkingTreeClean=True`、297 PNG、`render-qa OK`。全量 Release XAML `24/24`、构建 `0/0`、Core `83/83`、Playnite `563/620`（57 跳过、0 失败），源码校验通过。
+- 证据来自合成数据、受控 STA WPF 和 offscreen logical DIP；未验真实 Playnite presented frame、宿主字体替换、物理 DPI/跨屏、OS 输入/IME、屏幕阅读器、ETW 或宿主性能。Worker 本阶段未改，沿用同分支最近完整基线 `311/311`；未写真实存档/媒体/云端。下一可执行项为 R03-07 文案标点统一。
+
 ## 当前第三轮阶段：R03-05 长路径分层
 
 - `2b8612f` 先核对现有 `GscPathText`、Tooltip 和复制重试：原有表格路径只有尾部省略，详情没有统一的可选择完整值/路径复制命令；没有把 main 旧实现覆盖到当前分支。
