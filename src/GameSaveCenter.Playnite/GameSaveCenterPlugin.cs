@@ -298,38 +298,38 @@ namespace GameSaveCenter.Playnite
 
         public override IEnumerable<GameMenuItem> GetGameMenuItems(GetGameMenuItemsArgs args)
         {
-            var games = (args?.Games ?? new List<Game>()).Where(x => x != null).ToList();
-            if (games.Count == 0) yield break;
+            var context = GameMenuActionContext.Capture(args?.Games);
+            if (context.IsEmpty) yield break;
 
             yield return new GameMenuItem
             {
                 Description = "立即备份",
                 MenuSection = "GameSaveCenter",
-                Action = _ => FireAndForget(() => BackupFromQuickActionAsync(games))
+                Action = _ => FireAndForget(() => BackupFromQuickActionAsync(context))
             };
             yield return new GameMenuItem
             {
                 Description = "同步媒体",
                 MenuSection = "GameSaveCenter",
-                Action = _ => FireAndForget(() => SyncMediaFromQuickActionAsync(games))
+                Action = _ => FireAndForget(() => SyncMediaFromQuickActionAsync(context))
             };
             yield return new GameMenuItem
             {
                 Description = "查看备份历史",
                 MenuSection = "GameSaveCenter",
-                Action = _ => FireAndForget(() => ShowBackupHistoryQuickActionAsync(games[0]))
+                Action = _ => FireAndForget(() => ShowBackupHistoryQuickActionAsync(context))
             };
             yield return new GameMenuItem
             {
                 Description = "验证最新恢复点",
                 MenuSection = "GameSaveCenter",
-                Action = _ => FireAndForget(() => ValidateLatestReadinessQuickActionAsync(games[0]))
+                Action = _ => FireAndForget(() => ValidateLatestReadinessQuickActionAsync(context))
             };
             yield return new GameMenuItem
             {
                 Description = "游戏工具",
                 MenuSection = "GameSaveCenter",
-                Action = _ => FireAndForget(() => ShowGameToolsQuickActionAsync(games[0]))
+                Action = _ => FireAndForget(() => ShowGameToolsQuickActionAsync(context))
             };
             yield return new GameMenuItem
             {
@@ -339,8 +339,9 @@ namespace GameSaveCenter.Playnite
             };
         }
 
-        private async Task BackupFromQuickActionAsync(IReadOnlyList<Game> games)
+        private async Task BackupFromQuickActionAsync(GameMenuActionContext context)
         {
+            if (!TryResolveMenuGames(context, out var games)) return;
             await EnsureWorkerAsync().ConfigureAwait(false);
             await ApplySettingsCoreAsync().ConfigureAwait(false);
             var descriptors = games.Select(adapter.Convert).ToList();
@@ -354,8 +355,9 @@ namespace GameSaveCenter.Playnite
             ShowInfo($"已提交 {descriptors.Count} 个游戏的备份任务。");
         }
 
-        private async Task SyncMediaFromQuickActionAsync(IReadOnlyList<Game> games)
+        private async Task SyncMediaFromQuickActionAsync(GameMenuActionContext context)
         {
+            if (!TryResolveMenuGames(context, out var games)) return;
             if (!Settings.EnableMediaSync)
             {
                 ShowInfo("媒体归档已关闭；请在插件设置中启用后再同步。");
@@ -374,8 +376,9 @@ namespace GameSaveCenter.Playnite
             ShowInfo($"已提交 {descriptors.Count} 个游戏的媒体同步任务。");
         }
 
-        private async Task ShowBackupHistoryQuickActionAsync(Game game)
+        private async Task ShowBackupHistoryQuickActionAsync(GameMenuActionContext context)
         {
+            if (!TryResolveMenuGame(context, out var game)) return;
             await EnsureWorkerAsync().ConfigureAwait(false);
             var descriptor = adapter.Convert(game);
             await RequestAsync<object>(MessageTypes.UpsertGames, new[] { descriptor }).ConfigureAwait(false);
@@ -391,8 +394,9 @@ namespace GameSaveCenter.Playnite
             ShowInfo($"{game.Name} 共 {versions.Count} 个备份版本：\n" + string.Join("\n", lines));
         }
 
-        private async Task ValidateLatestReadinessQuickActionAsync(Game game)
+        private async Task ValidateLatestReadinessQuickActionAsync(GameMenuActionContext context)
         {
+            if (!TryResolveMenuGame(context, out var game)) return;
             await EnsureWorkerAsync().ConfigureAwait(false);
             var descriptor = adapter.Convert(game);
             await RequestAsync<object>(MessageTypes.UpsertGames, new[] { descriptor }).ConfigureAwait(false);
@@ -411,8 +415,9 @@ namespace GameSaveCenter.Playnite
             ShowInfo($"{game.Name} 最新恢复点：{readiness.StatusDisplay}\n{readiness.Summary}");
         }
 
-        private async Task ShowGameToolsQuickActionAsync(Game game)
+        private async Task ShowGameToolsQuickActionAsync(GameMenuActionContext context)
         {
+            if (!TryResolveMenuGame(context, out var game)) return;
             await EnsureWorkerAsync().ConfigureAwait(false);
             var descriptor = adapter.Convert(game);
             var tools = await RequestAsync<List<GameToolDto>>(
@@ -425,6 +430,37 @@ namespace GameSaveCenter.Playnite
             }
             var lines = tools.Select(x => $"{x.DisplayName} · {x.TypeDisplay} · {(x.Enabled ? "已启用" : "已禁用")}");
             ShowInfo($"{game.Name} 共 {tools.Count} 个工具：\n" + string.Join("\n", lines));
+        }
+
+        private bool TryResolveMenuGames(GameMenuActionContext context, out IReadOnlyList<Game> games)
+        {
+            try
+            {
+                if (context.TryResolve(PlayniteApi.Database.Games, out games, out var missingGameId))
+                    return true;
+
+                ShowWarning($"上下文菜单目标已失效（{missingGameId:D}），未执行操作。请重新打开菜单后重试。");
+            }
+            catch (Exception ex) when (!(ex is OutOfMemoryException) && !(ex is StackOverflowException))
+            {
+                logger.Warn(ex, "Could not resolve the captured game-menu target before starting its action.");
+                ShowWarning("上下文菜单目标当前无法确认，未执行操作。请重新打开菜单后重试。");
+            }
+
+            games = Array.Empty<Game>();
+            return false;
+        }
+
+        private bool TryResolveMenuGame(GameMenuActionContext context, out Game game)
+        {
+            if (TryResolveMenuGames(context, out var games) && games.Count > 0)
+            {
+                game = games[0];
+                return true;
+            }
+
+            game = null!;
+            return false;
         }
 
         public override ISettings GetSettings(bool firstRunSettings) => Settings;
