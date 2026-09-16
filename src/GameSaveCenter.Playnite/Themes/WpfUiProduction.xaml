@@ -948,6 +948,18 @@
         <Setter Property="Margin" Value="0,0,8,8"/>
     </Style>
 
+    <!-- Availability explanations are real text stops in the keyboard order. They
+         remain readable when the related command is disabled and do not depend on
+         a disabled control's ToolTip or automation exposure. -->
+    <Style x:Key="GscActionAvailabilityHintText"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource GscSecondaryTextBrush}"/>
+        <Setter Property="FontSize" Value="{DynamicResource GscCaptionFontSize}"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="Focusable" Value="True"/>
+        <Setter Property="KeyboardNavigation.IsTabStop" Value="True"/>
+    </Style>
+
     <Style x:Key="GscWpfUiToolbarButton"
            TargetType="{x:Type ui:Button}"
            BasedOn="{StaticResource GscWpfUiSecondaryButton}">

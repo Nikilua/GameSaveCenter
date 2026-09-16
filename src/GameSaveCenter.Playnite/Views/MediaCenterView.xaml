@@ -226,6 +226,23 @@
                                 </StackPanel>
                                 <ui:Button x:Name="MediaInboxCompactDetailsButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="查看预览与归类 ›" ToolTip="打开所选媒体的预览、归类建议和安全操作" AutomationProperties.Name="查看所选媒体预览与归类" Click="OnMediaInboxCompactDetailsClick" Visibility="Collapsed" Margin="2,0,0,4"/>
                             </WrapPanel>
+                            <Border Style="{DynamicResource GscActionAvailabilityHintBubble}" Padding="10,8" Margin="0,0,0,10">
+                                <Grid>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding MediaInboxAvailabilityHint, Mode=OneWay}"
+                                               Style="{DynamicResource GscActionAvailabilityHintText}"
+                                               AutomationProperties.Name="{Binding MediaInboxAvailabilityHint, Mode=OneWay}"
+                                               AutomationProperties.HelpText="{Binding MediaInboxAvailabilityHint, Mode=OneWay}"/>
+                                    <ui:Button Grid.Column="1" Content="去维护中心检查" Command="{Binding OpenMaintenanceCommand}" Margin="10,0,0,0" VerticalAlignment="Center" AutomationProperties.Name="去维护中心检查媒体环境">
+                                        <ui:Button.Style>
+                                            <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiContextButton}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers><DataTrigger Binding="{Binding MediaInboxNeedsMaintenance}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                            </Style>
+                                        </ui:Button.Style>
+                                    </ui:Button>
+                                </Grid>
+                            </Border>
                             </StackPanel>
                             <DataGrid Grid.Row="1" x:Name="MediaInboxGrid" Tag="FiniteViewport" Style="{StaticResource MediaDataGrid}" MinHeight="0" VerticalAlignment="Stretch" ItemsSource="{Binding MediaInboxItems}" SelectedItem="{Binding SelectedInboxMedia}"
                                       SelectionMode="Extended" SelectionUnit="FullRow" SelectionChanged="OnMediaInboxSelectionChanged"
@@ -333,6 +350,12 @@
                                 </Grid>
                                 <TextBlock Text="{Binding SelectedInboxMedia.ClassificationReason, TargetNullValue=暂无归类原因}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,12,0,0"/>
                                 </StackPanel>
+                                <Border Style="{DynamicResource GscActionAvailabilityHintBubble}" Padding="10,8" Margin="0,14,0,0">
+                                    <TextBlock Text="{Binding MediaInboxAvailabilityHint, Mode=OneWay}"
+                                               Style="{DynamicResource GscActionAvailabilityHintText}"
+                                               AutomationProperties.Name="{Binding MediaInboxAvailabilityHint, Mode=OneWay}"
+                                               AutomationProperties.HelpText="{Binding MediaInboxAvailabilityHint, Mode=OneWay}"/>
+                                </Border>
                                 <Border Style="{DynamicResource GscRedesignInfoBand}" Padding="10" Margin="0,14,0,0">
                                     <StackPanel>
                                         <TextBlock Text="归类建议预览" Style="{DynamicResource GscSectionTitleStyle}"/>

@@ -838,6 +838,7 @@ public sealed class FakeDashboardData
     public bool MediaInboxPageHasMore => false;
     public string MediaInboxLoadedSummary => $"当前保留 {MediaInboxItems.Count} 条（窗口上限 2000）";
     public bool IsWorkerOffline => IsFixtureOffline;
+    public bool IsBusy => false;
     public bool IsTrainerToolsLoading => fixtureState == WorkspaceFixtureState.Loading;
     public bool IsTrainerCatalogLoading => fixtureState == WorkspaceFixtureState.Loading;
     public bool IsTrainerReleasesLoading => fixtureState == WorkspaceFixtureState.Loading;
@@ -878,6 +879,10 @@ public sealed class FakeDashboardData
     public string MediaInboxMode { get; set; } = "待归类";
     public string MediaInboxTitle => MediaInboxMode == "已忽略" ? "已忽略媒体" : "待归类媒体";
     public string MediaInboxEmptyText => MediaInboxMode == "已忽略" ? "当前没有已忽略的媒体。" : "当前没有等待归类的媒体。";
+    public string RestoreAvailabilityHint => ActionAvailabilityHints.Restore(SelectedGame != null, SelectedBackup != null, Snapshot.LudusaviAvailable, IsBusy);
+    public bool RestoreAvailabilityNeedsMaintenance => ActionAvailabilityHints.RestoreNeedsMaintenance(SelectedGame != null, SelectedBackup != null, Snapshot.LudusaviAvailable, IsBusy);
+    public string MediaInboxAvailabilityHint => ActionAvailabilityHints.MediaInbox(Snapshot.WorkerHealthy, MediaInboxMode, SelectedInboxMedia != null, InboxTargetGame != null, IsBusy);
+    public bool MediaInboxNeedsMaintenance => ActionAvailabilityHints.MediaInboxNeedsMaintenance(Snapshot.WorkerHealthy, IsBusy);
     public ObservableCollection<MediaSourceRuleDto> MediaSources { get; } = new ObservableCollection<MediaSourceRuleDto>();
     public ObservableCollection<ValidationFindingDto> Findings { get; } = new ObservableCollection<ValidationFindingDto>();
     public ObservableCollection<AuditLogEntryDto> Audit { get; } = new ObservableCollection<AuditLogEntryDto>();
@@ -913,6 +918,8 @@ public sealed class FakeDashboardData
     };
     public string CloudTransferStateFilter { get; set; } = string.Empty;
     public string CloudTransferKindFilter { get; set; } = string.Empty;
+    public string CloudTransferAvailabilityHint => ActionAvailabilityHints.CloudTransfer(Snapshot.WorkerHealthy, EffectiveSettings.EnableCloudUpload, Snapshot.RcloneAvailable, SelectedCloudTransfer, IsBusy);
+    public bool CloudTransferNeedsMaintenance => ActionAvailabilityHints.CloudTransferNeedsMaintenance(Snapshot.WorkerHealthy, EffectiveSettings.EnableCloudUpload, Snapshot.RcloneAvailable, SelectedCloudTransfer, IsBusy);
     public bool CloudTransferHasMore => CloudTransferViewSummary.HasMore;
     public string CloudTransferLoadedSummary => $"已加载全部 {CloudTransferItems.Count} 项";
     public int MediaTabIndex { get; set; }
@@ -935,7 +942,8 @@ public sealed class FakeDashboardData
         MediaArchiveDirectory = @"D:\GameSaveCenter\media"
         ,
         EnableLocalMirror = true,
-        LocalMirrorPath = @"H:\GameSaveCenter-Mirror"
+        LocalMirrorPath = @"H:\GameSaveCenter-Mirror",
+        EnableCloudUpload = true
     };
     public LocalMirrorStatusDto LocalMirrorStatus { get; } = new LocalMirrorStatusDto
     {
@@ -990,6 +998,8 @@ public sealed class FakeDashboardData
     public string SelectedFindingNavigationToolTip => FindingNavigationResolver.Resolve(SelectedFinding).ToolTip;
     public bool HasSelectedFindingNavigation => FindingNavigationResolver.Resolve(SelectedFinding).IsAvailable;
     public DeviceConflictStatusDto? SelectedDeviceComparison { get; set; }
+    public RemoteBackupStageResultDto? StagedRemoteBackup { get; set; }
+    public string RemoteRestoreAvailabilityHint => ActionAvailabilityHints.RemoteRestore(SelectedDeviceComparison != null, !string.IsNullOrWhiteSpace(SelectedDeviceComparison?.RemoteBackupId), StagedRemoteBackup != null, StagedRemoteBackup?.Verified == true, IsBusy);
     public ProcessMappingDto? SelectedProcessMapping { get; set; }
     public GameStatusDto MediaTargetGame { get; set; } = null!;
     public GameStatusDto InboxTargetGame { get; set; } = null!;

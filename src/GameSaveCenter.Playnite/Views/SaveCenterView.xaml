@@ -181,16 +181,35 @@
                                     </Style>
                                 </ui:WorkspaceStatePresenter.Style>
                             </ui:WorkspaceStatePresenter>
-                            <ui:Button x:Name="SaveHistoryCompactDetailsButton"
-                                       Grid.Row="2"
-                                       Style="{DynamicResource GscWpfUiSecondaryButton}"
-                                       Content="查看版本详情 ›"
-                                       HorizontalAlignment="Right"
-                                       VerticalAlignment="Center"
-                                       Margin="0,8,8,0"
-                                       Visibility="Collapsed"
-                                       Click="OnSaveHistoryCompactDetailsClick"
-                                       AutomationProperties.Name="查看或收起所选版本详情"/>
+                            <Grid Grid.Row="2" Margin="0,8,8,0">
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Style="{DynamicResource GscActionAvailabilityHintBubble}" Padding="10,8" Margin="0,0,8,0">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding RestoreAvailabilityHint, Mode=OneWay}"
+                                                   Style="{DynamicResource GscActionAvailabilityHintText}"
+                                                   AutomationProperties.Name="{Binding RestoreAvailabilityHint, Mode=OneWay}"
+                                                   AutomationProperties.HelpText="{Binding RestoreAvailabilityHint, Mode=OneWay}"/>
+                                        <ui:Button Grid.Column="1" Content="去维护中心检查" Command="{Binding OpenMaintenanceCommand}" Margin="10,0,0,0" VerticalAlignment="Center" AutomationProperties.Name="去维护中心检查恢复环境">
+                                            <ui:Button.Style>
+                                                <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiContextButton}">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers><DataTrigger Binding="{Binding RestoreAvailabilityNeedsMaintenance}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                                </Style>
+                                            </ui:Button.Style>
+                                        </ui:Button>
+                                    </Grid>
+                                </Border>
+                                <ui:Button x:Name="SaveHistoryCompactDetailsButton"
+                                           Grid.Column="1"
+                                           Style="{DynamicResource GscWpfUiSecondaryButton}"
+                                           Content="查看版本详情 ›"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Center"
+                                           Visibility="Collapsed"
+                                           Click="OnSaveHistoryCompactDetailsClick"
+                                           AutomationProperties.Name="查看或收起所选版本详情"/>
+                            </Grid>
                         </Grid>
                     </Border>
                     <ScrollViewer x:Name="SaveHistoryActionsScrollViewer" Grid.Column="2" Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Focusable="True" KeyboardNavigation.IsTabStop="False" PreviewKeyDown="OnSaveInspectorPreviewKeyDown">

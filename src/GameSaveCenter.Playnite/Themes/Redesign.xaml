@@ -493,6 +493,11 @@
         <Setter Property="TextWrapping" Value="Wrap"/>
     </Style>
 
+    <Style x:Key="GscActionAvailabilityHintBubble" TargetType="Border" BasedOn="{StaticResource GscDiagnosticHintBubble}">
+        <Setter Property="Margin" Value="0,10,0,0"/>
+        <Setter Property="Padding" Value="10,8"/>
+    </Style>
+
     <Style x:Key="GscRedesignSubCard" TargetType="Border">
         <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>

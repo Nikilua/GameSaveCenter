@@ -530,7 +530,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public IReadOnlyList<string> GameStatusFilterOptions { get; } = new[] { "全部", "已就绪", "未匹配", "运行中", "需关注", "有历史" };
         public IReadOnlyList<string> GameSortOptions { get; } = new[] { "名称", "运行优先", "匹配优先", "最近备份" };
         public CloudTransferSummaryDto CloudTransferViewSummary { get => cloudTransferViewSummary; private set => SetValue(ref cloudTransferViewSummary, value ?? new CloudTransferSummaryDto()); }
-        public CloudTransferStatusDto SelectedCloudTransfer { get => selectedCloudTransfer; set { SetValue(ref selectedCloudTransfer, value); RaiseCommandStates(); } }
+        public CloudTransferStatusDto SelectedCloudTransfer { get { return selectedCloudTransfer; } set { SetValue(ref selectedCloudTransfer, value); OnPropertyChanged(nameof(CloudTransferAvailabilityHint)); OnPropertyChanged(nameof(CloudTransferNeedsMaintenance)); RaiseCommandStates(); } }
         public bool CloudTransferHasMore => cloudTransferHasMore;
         public bool CloudTransferNeedsManualRefresh => cloudTransferNeedsManualRefresh;
         public string CloudTransferLoadedSummary => CloudTransferViewSummary.TotalCount <= 0
@@ -989,6 +989,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                 if (!sameBackup)
                     ClearBackupComparison();
                 SyncBackupEditor(value, sameBackup);
+                OnPropertyChanged(nameof(RestoreAvailabilityHint));
+                OnPropertyChanged(nameof(RestoreAvailabilityNeedsMaintenance));
                 RaiseCommandStates();
             }
         }
@@ -1171,6 +1173,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                 var requestGeneration = Interlocked.Increment(ref mediaInboxLoadGeneration);
                 BeginMediaInboxLoad(normalized, requestGeneration);
                 StartQueuedMediaInboxLoad();
+                OnPropertyChanged(nameof(MediaInboxAvailabilityHint));
+                OnPropertyChanged(nameof(MediaInboxNeedsMaintenance));
                 RaiseCommandStates();
             }
         }
@@ -1191,6 +1195,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             set
             {
                 SetValue(ref selectedInboxMedia, value);
+                OnPropertyChanged(nameof(MediaInboxAvailabilityHint));
+                OnPropertyChanged(nameof(MediaInboxNeedsMaintenance));
                 RaiseCommandStates();
             }
         }
@@ -1200,6 +1206,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             set
             {
                 SetValue(ref inboxTargetGame, value);
+                OnPropertyChanged(nameof(MediaInboxAvailabilityHint));
+                OnPropertyChanged(nameof(MediaInboxNeedsMaintenance));
                 RaiseCommandStates();
             }
         }
@@ -1358,6 +1366,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                    !string.Equals(StagedRemoteBackup.RemoteDevice,value.RemoteDevice,StringComparison.OrdinalIgnoreCase)||
                    !string.Equals(StagedRemoteBackup.BackupId,value.RemoteBackupId,StringComparison.OrdinalIgnoreCase)))
                     StagedRemoteBackup=null;
+                OnPropertyChanged(nameof(RemoteRestoreAvailabilityHint));
                 RaiseCommandStates();
             }
         }
@@ -1370,6 +1379,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 StagedRemoteBackupStatus=value==null
                     ?"尚未下载远端存档。下载只会写入本机隔离区，不会覆盖当前存档。"
                     :$"已校验：{value.GameName} / {value.RemoteDevice} / {value.BackupId}；{value.ExpiresUtc.ToLocalTime():yyyy-MM-dd HH:mm} 前有效。";
+                OnPropertyChanged(nameof(RemoteRestoreAvailabilityHint));
                 RaiseCommandStates();
             }
         }
@@ -4482,6 +4492,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             if (string.Equals(e.PropertyName, nameof(GamePickerViewModel.SelectedGame), StringComparison.Ordinal))
             {
                 OnPropertyChanged(nameof(SelectedGame));
+                OnPropertyChanged(nameof(RestoreAvailabilityHint));
+                OnPropertyChanged(nameof(RestoreAvailabilityNeedsMaintenance));
                 return;
             }
             // SelectedItem raises both SelectedItem and SelectedGame notifications. Respond once
@@ -4493,6 +4505,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                 GameDiagnosticPlayniteId = selected.PlayniteId;
             UpdateSelectedGamePolicyBaseline(selected);
             OnPropertyChanged(nameof(SelectedGame));
+            OnPropertyChanged(nameof(RestoreAvailabilityHint));
+            OnPropertyChanged(nameof(RestoreAvailabilityNeedsMaintenance));
             if (!suppressSelectionLoad)
             {
                 RefreshSelectedGameIcon();

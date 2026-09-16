@@ -88,6 +88,41 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         public bool IsWorkerOffline => !Snapshot.WorkerHealthy;
         public bool IsCloudDegraded => Snapshot.WorkerHealthy && EffectiveSettings.EnableCloudUpload && !Snapshot.RcloneAvailable;
+        public string RestoreAvailabilityHint => ActionAvailabilityHints.Restore(
+            SelectedGame != null,
+            SelectedBackup != null,
+            Snapshot.LudusaviAvailable,
+            IsBusy);
+        public bool RestoreAvailabilityNeedsMaintenance => ActionAvailabilityHints.RestoreNeedsMaintenance(
+            SelectedGame != null,
+            SelectedBackup != null,
+            Snapshot.LudusaviAvailable,
+            IsBusy);
+        public string MediaInboxAvailabilityHint => ActionAvailabilityHints.MediaInbox(
+            Snapshot.WorkerHealthy,
+            MediaInboxMode,
+            SelectedInboxMedia != null,
+            InboxTargetGame != null,
+            IsBusy);
+        public bool MediaInboxNeedsMaintenance => ActionAvailabilityHints.MediaInboxNeedsMaintenance(Snapshot.WorkerHealthy, IsBusy);
+        public string CloudTransferAvailabilityHint => ActionAvailabilityHints.CloudTransfer(
+            Snapshot.WorkerHealthy,
+            EffectiveSettings.EnableCloudUpload,
+            Snapshot.RcloneAvailable,
+            SelectedCloudTransfer,
+            IsBusy);
+        public bool CloudTransferNeedsMaintenance => ActionAvailabilityHints.CloudTransferNeedsMaintenance(
+            Snapshot.WorkerHealthy,
+            EffectiveSettings.EnableCloudUpload,
+            Snapshot.RcloneAvailable,
+            SelectedCloudTransfer,
+            IsBusy);
+        public string RemoteRestoreAvailabilityHint => ActionAvailabilityHints.RemoteRestore(
+            SelectedDeviceComparison != null,
+            !string.IsNullOrWhiteSpace(SelectedDeviceComparison?.RemoteBackupId),
+            StagedRemoteBackup != null,
+            StagedRemoteBackup?.Verified == true,
+            IsBusy);
         public bool IsSaveHistoryLoading => IsBusy && Backups.Count == 0;
         public bool IsTrainerToolsLoading => IsBusy && GameTools.Count == 0;
         public bool IsTrainerCatalogLoading { get => isTrainerCatalogLoading; private set => SetValue(ref isTrainerCatalogLoading, value); }
@@ -229,12 +264,24 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             OnPropertyChanged(nameof(IsWorkerOffline));
             OnPropertyChanged(nameof(IsCloudDegraded));
+            NotifyActionAvailabilityHints();
             OnPropertyChanged(nameof(IsSaveHistoryLoading));
             OnPropertyChanged(nameof(IsTrainerToolsLoading));
             NotifyMediaDetailsStateChanged();
             NotifyMediaInboxStateChanged();
             NotifyMaintenanceStateChanged();
             RebuildMaintenanceActionItems();
+        }
+
+        private void NotifyActionAvailabilityHints()
+        {
+            OnPropertyChanged(nameof(RestoreAvailabilityHint));
+            OnPropertyChanged(nameof(RestoreAvailabilityNeedsMaintenance));
+            OnPropertyChanged(nameof(MediaInboxAvailabilityHint));
+            OnPropertyChanged(nameof(MediaInboxNeedsMaintenance));
+            OnPropertyChanged(nameof(CloudTransferAvailabilityHint));
+            OnPropertyChanged(nameof(CloudTransferNeedsMaintenance));
+            OnPropertyChanged(nameof(RemoteRestoreAvailabilityHint));
         }
 
         private static string FormatStateDetail(DateTime? lastSuccessUtc, string errorMessage)
