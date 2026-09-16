@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-17 R03-03 双语混排基线
+
+- 先核对现有生产 Save Center/存档中心标题、日期容量列与中文标点入口，确认已有 Typography/数字样式统一承载混排，没有整行垂直偏移或需要新字体体系的事实；main checkout 和 `src.zip` 未改。
+- `466c2f5` 新增 `MixedBaselineEvidence`，通过 STA WPF `TextFormatter.GetIndexedGlyphRuns()` 读取实际 run 的 baseline，并在 RenderHarness 输出四组中英文/日期/容量/中文标点样本；Light/Dark 均为 `runs/glyphs 3/16、9/24、3/22、6/23`、`spread=0`、`stable=True`。新增行为测试 `1/1`。
+- 干净隔离 Release：XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `548/605`（57 跳过、0 失败），Typography `11/11`，源码校验通过。生产双主题 `render-qa OK`，人工抽查 Overview/Media 1040×700 图；`finesseprobe` 双主题均 clean。
+- 本阶段仅补诊断/测试/报告，不改 picker、滚动条、命令绑定、取消错误、恢复保护、有限列表或 net462；未写真实数据。`.tmp/r03-03-*` 是可再生证据，文档提交后清理。真实宿主最终 frame、字体替换、物理 DPI/跨屏、OS 输入/IME、读屏、ETW 和宿主性能仍未验。下一可执行任务为 R03-04 数字列对齐。
+
 ## 2026-09-17 R03-02 阅读层级校准
 
 - 先盘点当前生产 Views/Settings，确认 `Typography.xaml` 已有标题 22/16/28、正文 14、Caption/技术 12 共享令牌；发现 12.5×5、10.5×9、9.5×2 个局部微字号。没有把 main 旧实现带入当前分支，也没有重建字体或设计体系。

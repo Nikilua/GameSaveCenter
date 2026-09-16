@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-17
 
+## 2026-09-17 R03-03 双语混排基线
+
+- `466c2f5` 先查明当前生产 Save Center/存档中心标题、日期容量和中文标点都复用现有字体/数字资源；没有生产布局偏移或新设计体系需要引入，因此只补证据，不改生产 XAML。
+- `TypographyDiagnostics.CaptureMixedBaseline` 复用 `UiFontChain`，以 WPF `TextFormatter.GetIndexedGlyphRuns()` 读取实际混排 run，记录 line baseline、GlyphRun baseline spread、glyph 数和未配对 surrogate。四组样本的 `runs/glyphs` 为 `3/16、9/24、3/22、6/23`，Light/Dark 均 `spread=0`、`stable=True`；行为测试 `1/1`，Typography 类 `11/11`。
+- 最终隔离 Release 为 XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `548/605`（57 skip/0 fail），源码校验通过；RenderHarness Light/Dark `WorkingTreeClean=True` 且 `finesse-fixture OK`，生产 1040×700 双主题 `render-qa OK`，人工抽查 Overview/Media。
+- 只使用合成文本、受控 WPF 和 offscreen logical DIP，未写真实存档/媒体/云端，未改 picker/滚动/命令/Binding/取消错误/恢复保护/net462。真实 Playnite presented frame、宿主字体替换、物理 DPI/跨屏、OS 输入/IME、读屏、ETW 和宿主性能仍未验。下一项为 R03-04 数字列对齐。
+
 ## 2026-09-17 R03-02 阅读层级校准
 
 - `e889b04` 先盘点实际生产 Views/Settings 的文字入口，复用 `Typography.xaml` 的标题、正文、Caption、Code/Path 层级；删除 5 个 12.5、9 个 10.5、2 个 9.5 字面微变体。壳层品牌、媒体文件名、Overview 任务/活动/问题主标题使用 `GscBodyFontSize=14`；版本、状态、时间、详情和比较质量使用 `GscCaptionFontSize=12`。

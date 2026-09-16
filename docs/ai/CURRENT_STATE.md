@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮阶段：R03-03 双语混排基线
+
+- `466c2f5` 先核对当前生产 Save Center/存档中心、日期容量和中文标点入口，确认现有 Typography/数字样式已经统一承载混排，没有生产 XAML 需要通过行级位移修复；没有从 main 带入旧实现或重建设计体系。
+- 新增 `MixedBaselineEvidence`/`CaptureMixedBaseline`，在 STA WPF `TextFormatter.GetIndexedGlyphRuns()` 中读取实际 run 的 baseline，`MixedChineseLatinDateAndCapacityRunsShareOneBaseline` 独立 `1/1`；Light/Dark 四组样本均有实际 glyph、`spread=0`、`stable=True`。
+- 最终隔离 Release：XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `548/605` 通过、`57` 跳过、`0` 失败；`TypographyDiagnosticsTests` `11/11`；源码校验通过。RenderHarness Light/Dark `finesse-fixture OK`，生产 1040×700 双主题 `render-qa OK`，人工抽查 Overview/Media。
+- 保留游戏选框、滚动条、命令/绑定、取消/错误、恢复保护、有限列表性能与 net462 契约，未写真实数据。证据仅代表受控 WPF/offscreen logical DIP，不等价真实 Playnite presented frame、宿主字体替换、物理 DPI/跨屏、OS 输入/IME、读屏、ETW 或宿主性能。下一可执行项为 R03-04 数字列对齐。
+
 ## 当前第三轮阶段：R03-02 阅读层级校准
 
 - `e889b04` 先核对现有 `Typography.xaml`/`Redesign.xaml` 共享层级，再清理生产 Views/Settings 中 5 处 `12.5`、9 处 `10.5`、2 处 `9.5` 微字号：壳层品牌、媒体文件名、Overview 主标题归入 `GscBodyFontSize=14`；版本/状态/时间/详情/比较徽标归入 `GscCaptionFontSize=12`。路径继续复用 `GscTypographyCode`/`GscPathText`，未引入新设计体系。
