@@ -1,5 +1,7 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-16 第三轮 R00-01/R00-02 已在 `codex/ui-finesse-round2` 收口：`a95e900` 修正整组 chrome opacity 对比度合成并复用组合 ScaleTransform，`e216e9b` 增加非等距 stop 负例。当前 clean-tree `e216e9b` 定向 WPF `5/5`，双主题 RenderHarness `88` 状态样本均无 violation；证据见 `design/reviews/ui-finesse-round3-20260915/evidence/R00-01-02-CONTRAST-SCALE-20260916.md`。这是受控 offscreen logical DIP 结果，不等价真实 Playnite/IME/物理 DPI/屏幕帧；下一项执行 R00-03 的完成、取消、卸载和重入 Dispatcher 复核，R08-08 可变共享 Freezable 仍待单独验证。
+
 > 2026-09-14 最新精修入口：[第一轮独立复核](design/UI_FINESSE_REVIEW_2026-09-13.md) 与 [第二轮 208 项](design/UI_FINESSE_ROUND2_208_TASKS_2026-09-13.md)。旧 52 项不是全部完成（14 已验收、1 已满足、31 待验收、6 阻塞，且有需重开项）；暗色夹具黑字仍报告 OK、状态小字对比与字体/完整行证据缺口优先进入 Q00。新任务先读复核，再从 208 行分维度账本持续实现，不沿用“待开始为零=全部完成”的口径。本轮独立构建测试零失败，未修改生产 UI 或安装宿主；新 Luna/max 任务使用干净 worktree，主目录 src.zip 保留。
 
 > 2026-09-13 UI 精修账本收口续跑：本轮代码基线为 `6c3c238`，源码门禁修正为 `592d7a0`，最终 Render QA 报告对应提交 `cacdaff`；已完成 P03、P05～P09 的共享实现/受控证据复核，并完成 P06-03、P06-04、P08-02、P09-02、P11-02、P11-04 的受控签收；最终 RenderHarness、状态/网格/缩略图/壳层探针均为 `OK`。P08-03、P10-01/02/04、P11-03 仍外部阻塞，其他依赖真实宿主的项为代码完成待验收。最终一键链与真实宿主审计已在文档提交后重试，均因唯一的 `?? src.zip` 在安装/采集前按 clean-tree 安全策略停止；构建与测试仍通过（Core `76/76`、Worker `311/311`、Playnite `455/512`，57 skip）。真实宿主没有 `summary.json`，专用窗口不能替代嵌入 Dashboard；根目录用户未跟踪 `src.zip` 不能擅自处理。详细证据见 [`docs/design/reviews/ui-finesse-20260913/PROGRESS.md`](design/reviews/ui-finesse-20260913/PROGRESS.md) 和 `BASELINE.md`。

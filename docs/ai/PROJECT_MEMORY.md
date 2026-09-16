@@ -1,6 +1,13 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
-> 维护时间：2026-09-15
+> 维护时间：2026-09-16
+
+## 2026-09-16 R00-01/R00-02 按压合成与组合缩放复核
+
+- `a95e900` 修正 `AdaptiveThemePaletteContrastGuard.MeasureGradientTextContrast`：整组 chrome opacity 现在先合成文字/表面，再与真实父背景混合；新增带 offset 的 `GradientStop` API，并对 normal、hover、focus、pressed 及组合状态采样。`e216e9b` 增加 `opacity=0.5` 黑父/白 chrome/黑字的灰背景负例，以及非等距 `0/0.9/1` stop 行为断言。
+- `GscMotion.GetMutableScaleTransform` 现在递归寻找并复用组合树中的 ScaleTransform；冻结 root/nested group 或 ScaleTransform 只克隆替换一次，既有 Translate/Rotate 值和变换顺序保留。受控测试连续调用 1000 次并检查节点数、深度、独立控件实例。
+- 当前 `e216e9bf0d2ed18adced62936d6897b8d84f0d58` clean-tree：定向 WPF 测试 `5/5`；双主题 RenderHarness `finesseprobe` 均 `88` 个状态样本/`0` violation/`finesse-fixture OK`。记录见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R00-01-02-CONTRAST-SCALE-20260916.md`。
+- 受控输出的 `DpiScale=1.00` 是 offscreen logical DIP；没有写成真实 Playnite、鼠标/IME、物理 DPI、屏幕呈现帧或 R08-08 可变共享 Freezable 验收。下一执行点是 R00-03 Dispatcher 完成/取消/卸载/重入行为。
 
 ## 2026-09-15 Q18-03 动效当前值接管受控证据
 

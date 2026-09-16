@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-16 R00-01/R00-02 按压合成与组合缩放
+
+- 在 `codex/ui-finesse-round2` 完成 `a95e900`（`修正按压合成并复用组合缩放`），没有把 `main` 的旧实现带入；`e216e9b`（`补强非等距渐变负例`）补足了 offset 行为负例。
+- `AdaptiveThemePaletteContrastGuard` 现在保留真实 `GradientStop.Offset`，对完整 chrome opacity 建模，并覆盖 hover/focus/pressed 组合；`GscMotion` 对已有 Translate/Rotate/TransformGroup 复用 ScaleTransform，冻结组合安全克隆且不再嵌套增长。原有命令、绑定、选框/滚动系统和 net462 目标未改动。
+- 验证：Release 单节点构建 0 警告/0 错误；当前 SHA 定向 WPF 测试 `5/5`；clean-tree 双主题 RenderHarness `finesseprobe` 均 exit 0、`WorkingTreeClean=True`、88 状态样本 0 violation。证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R00-01-02-CONTRAST-SCALE-20260916.md`。
+- 边界：探针为合成数据、STA/offscreen logical DIP，未宣称真实 Playnite 输入/物理 DPI/屏幕帧；R08-08 的两个控件共享可变 Freezable 尚未验。下一可执行任务为 R00-03 Dispatcher 行为复核。
+
 ## 2026-09-15 Q18-03 动效重入当前值探针
 
 - 提交并推送 `bdb99b9`（`补充动效重入运行时探针`）：新增 `motionreentryprobe`，在真实生产壳层执行中断收起→立即展开的双主题运行时检查，并新增源契约测试；定向门禁为 `24/24`。
