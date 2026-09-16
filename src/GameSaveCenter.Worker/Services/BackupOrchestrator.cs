@@ -409,7 +409,7 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
                             $"整库备份已处理，但有 {failed} 个游戏失败、{cancelled} 个游戏取消。",
                             string.Join("；", results.Where(x => x.State is TaskState.Failed or TaskState.Cancelled)
                                 .Take(8)
-                                .Select(x => $"{x.GameName}: {x.DetailMessage}")));
+                                .Select(x => $"游戏：{x.GameName}；{x.DetailMessage}")));
                     }
 
                     await progress.ReportAsync(100, results.Count == 0 ? "整库备份没有发现可执行的匹配游戏" : "整库备份已完成").ConfigureAwait(false);

@@ -126,8 +126,13 @@ namespace GameSaveCenter.Contracts
             _ => string.IsNullOrWhiteSpace(TaskType) ? "后台任务" : TaskType
         };
         public string DetailMessage => State == TaskState.Failed && !string.IsNullOrWhiteSpace(ErrorMessage)
-            ? $"{ErrorCode}: {ErrorMessage}"
+            ? FormatFailureDetail(ErrorCode, ErrorMessage)
             : Message;
+
+        private static string FormatFailureDetail(string errorCode, string errorMessage)
+            => string.IsNullOrWhiteSpace(errorCode)
+                ? errorMessage
+                : $"错误码：{errorCode}；{errorMessage}";
         public bool CanCancel => State == TaskState.Queued || State == TaskState.Running;
         public DateTime? StartedLocal => StartedUtc?.ToLocalTime();
         public DateTime? FinishedLocal => FinishedUtc?.ToLocalTime();
