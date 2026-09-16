@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-16 R01-07 基线失效规则
+
+- 盘点确认已有构建/审计身份字段，但没有“按旧证据关联源码路径判断是否需重跑”的规则。e1324fe 新增 check-ui-evidence-freshness.ps1、三分支行为 smoke 和 UI_EVIDENCE_BASELINE.json，记录 14 条 R00/R01 evidence 的源码提交、关联路径、页面范围、运行类型和包基线。
+- 以当前源码 e1324fee0e60b7369aeceeaf11eddf606bd094f8 运行真实 Git 扫描：7 stale、7 fresh。stale 为 R00-01-02/R00-04/R00-06/R00-07/R00-08/R01-01/R01-02；命中测试路径也会保守要求相关证据重跑。纯 docs path 场景为 0 stale/0 reinstall；共享 Redesign.xaml 场景命中 all-pages shared-controls 证据并排除无关 Media。
+- package identity 使用独立输入；当前为 not-provided。隔离 baseline fixture 以不同 package commit 验证 mismatch 会给 package-host 记录设置 reinstallRequired=True，没有构建、安装或修改真实包。
+- python scripts/validate-source.py、scripts/test-ui-evidence-freshness.ps1 通过；证据和 JSON 报告见 docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-07-EVIDENCE-FRESHNESS-20260916.md 与 R01-07-freshness-report-20260916.json。下一可执行小批量为 R01-08 跳过测试说明。
+
 ## 2026-09-16 R01-06 宿主证据保全
 
 - 在不调用会覆盖现有 artifacts/GameSaveCenter-ui-audit.zip 的默认脚本路径下，使用隔离 .tmp/r01-06-harness-build 与 .tmp/r01-06-audit 构建/运行 RenderHarness。审计绑定 3929ed73e1056a964d7ceacc54a6046abcc9983e，构建 0 warning / 0 error，输出 161 快照、0 Fidelity、0 失败路由、0 HIGH/0 MEDIUM。

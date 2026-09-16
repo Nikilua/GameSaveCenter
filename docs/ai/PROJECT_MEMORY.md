@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-16
 
+## 2026-09-16 R01-07 基线失效规则
+
+- e1324fe 新增 check-ui-evidence-freshness.ps1，从 UI_EVIDENCE_BASELINE.json 读取每条证据的 sourceCommit、sourcePaths、scopes、runtimeKind 和 packageCommit；按 Git diff 命中关联路径后输出 fresh/stale、需要重跑范围、包状态和是否需要重装。配套 test-ui-evidence-freshness.ps1 不是 Assert.Contains 字符串门禁，而是实际运行三种路径/身份场景。
+- 当前源码提交 e1324fee0e60b7369aeceeaf11eddf606bd094f8 扫描 14 条记录：7 stale（R00-01-02、R00-04、R00-06、R00-07、R00-08、R01-01、R01-02），7 fresh（R00-03、R00-05、R01-03～R01-07）。这是“旧证据关联源码变了需重跑”，不等于产品缺陷。
+- smoke 事实：docs-only 变更 0 rerun/0 reinstall；Redesign.xaml 共享资源变更命中 R00-01-02/R00-05 shared-controls/all-pages 且不命中无关 Media；合成包基线 mismatch 得到 packageStatus=mismatch/reinstallRequired=True，并保持 source/package 身份独立。当前真实 package 身份为 not-provided，没有安装或宿主写入。
+- python scripts/validate-source.py 和 freshness smoke 通过；证据见 docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-07-EVIDENCE-FRESHNESS-20260916.md。下一项 R01-08 跳过测试说明。
+
 ## 2026-09-16 R01-06 宿主证据保全
 
 - R01-06 已满足：在不触碰 artifacts/ 旧用户产物的前提下，用隔离 .tmp/r01-06-audit 运行当前 RenderHarness 审计，绑定 3929ed73e1056a964d7ceacc54a6046abcc9983e，得到 161 个运行时快照、0 Fidelity、0 失败路由、0 HIGH/0 MEDIUM，以及 73 条已分类 INFO。

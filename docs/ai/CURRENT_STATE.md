@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮阶段：R01-07 基线失效规则
+
+- e1324fe 新增 check-ui-evidence-freshness.ps1、test-ui-evidence-freshness.ps1 和版本化 UI_EVIDENCE_BASELINE.json；按证据源码提交与关联 sourcePaths/scopes 扫描 Git 变更，当前 14 条记录为 7 stale / 7 fresh。
+- 真实扫描标记 R00-01-02、R00-04、R00-06、R00-07、R00-08、R01-01、R01-02 需重跑；R01-03～R01-07 当前无匹配源码变更。共享 Redesign.xaml 合成变更只命中 shared-controls/all-pages 的 R00-01-02/R00-05；纯文档变更为 0 重跑、0 重装。
+- 输出单独展示 currentSourceCommit 和 currentPackageCommit；当前包身份为 not-provided，合成包 mismatch 只证明分支会要求重装，不是实际 package-host 证据。源码校验和三分支 smoke 通过；下一可执行项为 R01-08 跳过测试说明。
+
 ## 当前第三轮阶段：R01-06 宿主证据保全
 
 - 受控 RenderHarness 审计绑定 3929ed73e1056a964d7ceacc54a6046abcc9983e：运行时快照 161、Fidelity 警告 0、失败路由 0、HIGH 0、MEDIUM 0；关键静态计数为 View 10、Tab 32、Button/Toggle 234、DataGrid 14、ScrollViewer 34、条件 UI 235。

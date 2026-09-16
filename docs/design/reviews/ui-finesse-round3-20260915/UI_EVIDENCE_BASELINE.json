@@ -170,7 +170,7 @@
     {
       "id": "R01-07",
       "evidence": "evidence/R01-07-EVIDENCE-FRESHNESS-20260916.md",
-      "sourceCommit": "2975a6e",
+      "sourceCommit": "e1324fe",
       "packageCommit": null,
       "runtimeKind": "infrastructure",
       "scopes": ["audit", "evidence-freshness"],
