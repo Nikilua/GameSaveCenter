@@ -39,6 +39,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private readonly SynchronizationContext? uiSynchronizationContext = SynchronizationContext.Current;
         private readonly Dictionary<string, TaskState> knownTaskStates = new Dictionary<string, TaskState>(StringComparer.OrdinalIgnoreCase);
         private readonly TaskIndexedCollection taskIndex = new TaskIndexedCollection();
+        private readonly BusyOperationCoordinator busyOperationCoordinator = new BusyOperationCoordinator();
         private readonly DateTime dashboardOpenedUtc = DateTime.UtcNow;
         private bool isBusy;
         private bool isBackgroundRefreshing;
@@ -4165,37 +4166,35 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task RunAsync(Func<Task> action)
         {
-            if (IsBusy) return;
-            IsBusy = true;
-            try
-            {
-                await plugin.EnsureWorkerAsync();
-                await action();
-            }
-            catch (OperationCanceledException)
-            {
-                StatusMessage = "操作已取消";
-            }
-            catch (NotifiedTaskException ex)
-            {
-                ReportDashboardFailure(ex, !plugin.Settings.EnableTaskNotifications);
-            }
-            catch (Exception ex)
-            {
-                ReportDashboardFailure(ex, true);
-            }
-            finally
-            {
-                if (trainerReleaseLoadCatalogId != null && IsTrainerReleasesLoading)
+            await busyOperationCoordinator.TryRunAsync(
+                plugin.EnsureWorkerAsync,
+                action,
+                SetBusyState,
+                message => StatusMessage = message,
+                error =>
                 {
-                    trainerReleaseLoadCatalogId = null;
-                    IsTrainerReleasesLoading = false;
-                }
-                IsBusy = false;
-                StartQueuedTaskHistoryQuery();
-                StartQueuedTrainerReleaseLoad();
-                StartQueuedMediaInboxLoad();
+                    if (error is NotifiedTaskException notified)
+                        ReportDashboardFailure(notified, !plugin.Settings.EnableTaskNotifications);
+                    else
+                        ReportDashboardFailure(error, true);
+                },
+                () =>
+                {
+                    StartQueuedTaskHistoryQuery();
+                    StartQueuedTrainerReleaseLoad();
+                    StartQueuedMediaInboxLoad();
+                });
+        }
+
+        private void SetBusyState(bool busy)
+        {
+            if (!busy && trainerReleaseLoadCatalogId != null && IsTrainerReleasesLoading)
+            {
+                trainerReleaseLoadCatalogId = null;
+                IsTrainerReleasesLoading = false;
             }
+
+            IsBusy = busy;
         }
 
         private void RunLocal(Action action)

@@ -5818,7 +5818,7 @@ public static class Program
                 button.IsBusy = false;
             }
 
-            report.AppendLine("BusyStateBoundary: production IsBusy binding is covered for the dashboard header; real command timing and Playnite host input remain host checks");
+            report.AppendLine("BusyStateBoundary: shared production IsBusy binding covers the Acrylic shell and workspace style chain; real command timing and Playnite host input remain host checks");
             report.AppendLine("ButtonBusyProbe OK");
         }
         catch (Exception ex)

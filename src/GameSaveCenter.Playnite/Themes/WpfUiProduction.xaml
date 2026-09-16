@@ -741,6 +741,16 @@
         <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
         <Setter Property="ToolTipService.ShowDuration" Value="12000"/>
         <Setter Property="UseLayoutRounding" Value="True"/>
+        <!-- The Acrylic shell and each real workspace page share DashboardViewModel as their
+             DataContext. Bind the shared primitive once so derived Demo-first button roles
+             acknowledge the real command slot without requiring page-specific busy plumbing.
+             Settings/probe hosts without IsBusy simply resolve to the dependency property's
+             false default. A local IsBusy binding still wins for the legacy Dashboard header. -->
+        <Setter Property="IsBusy"
+                Value="{Binding DataContext.IsBusy,
+                                RelativeSource={RelativeSource AncestorType={x:Type UserControl}},
+                                FallbackValue=False,
+                                TargetNullValue=False}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ui:Button}">
