@@ -99,6 +99,10 @@ namespace GameSaveCenter.Contracts
         public string ErrorCode { get; set; } = string.Empty;
         public string ErrorMessage { get; set; } = string.Empty;
         public DateTime CreatedLocal => CreatedUtc.ToLocalTime();
+        public int ProgressValue => Math.Max(0, Math.Min(100, ProgressPercent));
+        public string ProgressDisplay => ProgressPercent < 0 || (State == TaskState.Queued && ProgressPercent == 0)
+            ? "—"
+            : $"{ProgressValue}%";
         public string StateDisplay => State switch
         {
             TaskState.Queued => "等待中",

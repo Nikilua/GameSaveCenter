@@ -111,6 +111,22 @@
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="UseLayoutRounding" Value="True"/>
     </Style>
+    <Style x:Key="GscTypographyNumericCell" TargetType="TextBlock" BasedOn="{StaticResource GscTypographyNumeric}">
+        <!-- Numeric table cells share a stable right anchor so digit-count changes
+             do not move the column edge. Keep the value itself untrimmed. -->
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="TextAlignment" Value="Right"/>
+        <Setter Property="TextWrapping" Value="NoWrap"/>
+        <Setter Property="TextTrimming" Value="None"/>
+    </Style>
+    <Style x:Key="GscTypographyTimeCell" TargetType="TextBlock" BasedOn="{StaticResource GscTypographyNumericCell}">
+        <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+    </Style>
+    <Style x:Key="GscTypographyPercentCell" TargetType="TextBlock" BasedOn="{StaticResource GscTypographyNumericCell}">
+        <Setter Property="FontSize" Value="{DynamicResource GscCaptionFontSize}"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+    </Style>
     <Style x:Key="GscTypographyCode" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{DynamicResource GscCodeFontFamily}"/>
         <Setter Property="FontSize" Value="{DynamicResource GscCaptionFontSize}"/>

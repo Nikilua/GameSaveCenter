@@ -99,6 +99,9 @@
                 <Setter Property="TextWrapping" Value="NoWrap"/>
                 <Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}"/>
             </Style>
+            <Style x:Key="MediaTimeCell" TargetType="TextBlock" BasedOn="{StaticResource GscTypographyTimeCell}">
+                <Setter Property="ToolTip" Value="{Binding CapturedLocal, Mode=OneWay, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"/>
+            </Style>
             <Style x:Key="MediaPathText" TargetType="TextBlock" BasedOn="{StaticResource GscPathText}">
                 <Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}"/>
             </Style>
@@ -252,7 +255,7 @@
                                       VirtualizingPanel.ScrollUnit="Item"
                                       ClipToBounds="True">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn HeaderStyle="{StaticResource MediaFirstColumnHeader}" Header="拍摄时间" Binding="{Binding CapturedLocal, Mode=OneWay, StringFormat={}{0:MM-dd HH:mm}}" Width="110"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MediaLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
+                                    <DataGridTextColumn HeaderStyle="{StaticResource MediaFirstColumnHeader}" Header="拍摄时间" Binding="{Binding CapturedLocal, Mode=OneWay, StringFormat={}{0:MM-dd HH:mm}}" Width="110"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MediaTimeCell}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
                                     <DataGridTextColumn HeaderStyle="{StaticResource MediaMiddleColumnHeader}" Header="类型" Binding="{Binding KindDisplay, Mode=OneWay}" Width="72"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MediaLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
                                     <DataGridTextColumn HeaderStyle="{StaticResource MediaMiddleColumnHeader}" Header="来源" Binding="{Binding SourceDisplay, Mode=OneWay}" Width="115"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MediaLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
                                     <DataGridTextColumn HeaderStyle="{StaticResource MediaMiddleColumnHeader}" Header="文件" Binding="{Binding FileName, Mode=OneWay}" Width="*" MinWidth="220"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MediaPathText}"><Setter Property="ToolTip" Value="{Binding OriginalPath}"/></Style></DataGridTextColumn.ElementStyle></DataGridTextColumn>
