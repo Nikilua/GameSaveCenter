@@ -369,11 +369,5 @@ public sealed class MediaWindowAnchorContractTests
     }
 
     private static string Read(params string[] parts)
-    {
-        var directory = new DirectoryInfo(AppContext.BaseDirectory);
-        while (directory != null && !File.Exists(Path.Combine(directory.FullName, "GameSaveCenter.sln")))
-            directory = directory.Parent;
-        if (directory == null) throw new DirectoryNotFoundException("无法定位仓库根目录。");
-        return File.ReadAllText(Path.Combine(new[] { directory.FullName }.Concat(parts).ToArray()));
-    }
+        => File.ReadAllText(Path.Combine(new[] { TestRepositoryContext.Root }.Concat(parts).ToArray()));
 }

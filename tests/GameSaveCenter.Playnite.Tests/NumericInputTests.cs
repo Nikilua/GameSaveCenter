@@ -31,12 +31,5 @@ public sealed class NumericInputTests
     }
 
     private static string FindRepositoryRoot()
-    {
-        for (var directory = new DirectoryInfo(AppContext.BaseDirectory); directory != null; directory = directory.Parent)
-        {
-            if (File.Exists(Path.Combine(directory.FullName, "GameSaveCenter.sln"))) return directory.FullName;
-        }
-
-        throw new DirectoryNotFoundException("Could not locate the GameSaveCenter repository root for the numeric input regression test.");
-    }
+        => TestRepositoryContext.Root;
 }

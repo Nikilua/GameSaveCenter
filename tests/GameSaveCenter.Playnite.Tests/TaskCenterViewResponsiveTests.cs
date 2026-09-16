@@ -231,11 +231,6 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         private static string FindRepositoryRoot()
-        {
-            var directory = new System.IO.DirectoryInfo(AppContext.BaseDirectory);
-            while (directory != null && !System.IO.File.Exists(System.IO.Path.Combine(directory.FullName, "GameSaveCenter.sln")))
-                directory = directory.Parent;
-            return directory?.FullName ?? throw new InvalidOperationException("Repository root not found.");
-        }
+            => TestRepositoryContext.Root;
     }
 }

@@ -23,11 +23,6 @@ public sealed class SettingsSelectionStateSourceTests
         Assert.Contains("AutomationProperties.Name=\"界面主题\"", settings);
     }
 
-    private static string FindRepositoryRoot()
-    {
-        var directory = new DirectoryInfo(AppContext.BaseDirectory);
-        while (directory != null && !File.Exists(Path.Combine(directory.FullName, "GameSaveCenter.sln")))
-            directory = directory.Parent;
-        return directory?.FullName ?? throw new InvalidOperationException("Repository root not found.");
-    }
+        private static string FindRepositoryRoot()
+            => TestRepositoryContext.Root;
 }

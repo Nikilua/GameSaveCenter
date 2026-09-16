@@ -283,18 +283,5 @@ public sealed class RestoredAcrylicForkBaselineTests
     }
 
     private static string ReadSource(params string[] relativePath)
-    {
-        var directory = new DirectoryInfo(AppContext.BaseDirectory);
-        while (directory != null && !File.Exists(Path.Combine(directory.FullName, "GameSaveCenter.sln")))
-        {
-            directory = directory.Parent;
-        }
-
-        if (directory == null)
-        {
-            throw new DirectoryNotFoundException("无法定位 GameSaveCenter 仓库根目录。");
-        }
-
-        return File.ReadAllText(Path.Combine(new[] { directory.FullName, "src", "GameSaveCenter.Playnite" }.Concat(relativePath).ToArray()));
-    }
+        => File.ReadAllText(Path.Combine(new[] { TestRepositoryContext.Root, "src", "GameSaveCenter.Playnite" }.Concat(relativePath).ToArray()));
 }

@@ -189,11 +189,5 @@ public sealed class UiAuditBlockerTests
     }
 
     private static string ReadAuditSource()
-    {
-        var directory = new DirectoryInfo(AppContext.BaseDirectory);
-        while (directory != null && !File.Exists(Path.Combine(directory.FullName, "GameSaveCenter.sln")))
-            directory = directory.Parent;
-        var root = directory?.FullName ?? throw new InvalidOperationException("Repository root not found.");
-        return File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Diagnostics", "RealHostUiAuditService.cs"));
-    }
+        => File.ReadAllText(Path.Combine(TestRepositoryContext.Root, "src", "GameSaveCenter.Playnite", "Diagnostics", "RealHostUiAuditService.cs"));
 }

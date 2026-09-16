@@ -3,7 +3,13 @@
     <TargetFramework>net472</TargetFramework>
     <UseWPF>true</UseWPF>
     <IsPackable>false</IsPackable>
+    <GscSourceRoot Condition="'$(GscSourceRoot)' == ''">$(GSC_SOURCE_ROOT)</GscSourceRoot>
+    <GscSourceRoot Condition="'$(GscSourceRoot)' == ''">$(MSBuildProjectDirectory)\..\..</GscSourceRoot>
   </PropertyGroup>
+  <ItemGroup>
+    <AssemblyMetadata Include="GscBuildCommit" Value="$(GscBuildCommit)" />
+    <AssemblyMetadata Include="GscSourceRoot" Value="$(GscSourceRoot)" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite.csproj" />
   </ItemGroup>

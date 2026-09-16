@@ -370,14 +370,7 @@ public sealed class ProductionShellChromeSourceTests
     }
 
     private static string ReadSource(params string[] segments)
-    {
-        var directory = new DirectoryInfo(AppContext.BaseDirectory);
-        while (directory != null && !File.Exists(Path.Combine(directory.FullName, "GameSaveCenter.sln")))
-            directory = directory.Parent;
-        if (directory == null)
-            throw new InvalidOperationException("无法定位仓库根目录");
-        return File.ReadAllText(Path.Combine(new[] { directory.FullName }.Concat(segments).ToArray()));
-    }
+        => File.ReadAllText(Path.Combine(new[] { TestRepositoryContext.Root }.Concat(segments).ToArray()));
 
     private static void PumpDispatcher(TimeSpan duration)
     {

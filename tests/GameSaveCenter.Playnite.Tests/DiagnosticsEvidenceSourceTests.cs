@@ -70,10 +70,5 @@ public sealed class DiagnosticsEvidenceSourceTests
     }
 
     private static string FindRepositoryRoot()
-    {
-        var directory = new DirectoryInfo(AppContext.BaseDirectory);
-        while (directory != null && !File.Exists(Path.Combine(directory.FullName, "GameSaveCenter.sln")))
-            directory = directory.Parent;
-        return directory?.FullName ?? throw new InvalidOperationException("Repository root not found.");
-    }
+        => TestRepositoryContext.Root;
 }

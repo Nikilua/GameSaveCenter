@@ -8,6 +8,7 @@ param(
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
 $previousBuildCommit = [Environment]::GetEnvironmentVariable('GSC_BUILD_COMMIT', 'Process')
+$previousSourceRoot = [Environment]::GetEnvironmentVariable('GSC_SOURCE_ROOT', 'Process')
 
 function Get-CurrentBuildCommit {
     try {
@@ -37,6 +38,7 @@ try {
     # Keep ordinary builds and package builds on the same explicit identity input.
     # A non-Git build remains visibly unknown; package.ps1 rejects it before output.
     $env:GSC_BUILD_COMMIT = Get-CurrentBuildCommit
+    $env:GSC_SOURCE_ROOT = $root
     $dotnet = Get-Command dotnet -ErrorAction SilentlyContinue
     if (-not $dotnet) {
         throw '未找到 dotnet。请安装 .NET 8 或更高版本的稳定版 SDK，并确认 dotnet 在 PATH 中。'
@@ -122,6 +124,12 @@ finally {
     }
     else {
         $env:GSC_BUILD_COMMIT = $previousBuildCommit
+    }
+    if ($null -eq $previousSourceRoot) {
+        Remove-Item Env:GSC_SOURCE_ROOT -ErrorAction SilentlyContinue
+    }
+    else {
+        $env:GSC_SOURCE_ROOT = $previousSourceRoot
     }
     Pop-Location
 }

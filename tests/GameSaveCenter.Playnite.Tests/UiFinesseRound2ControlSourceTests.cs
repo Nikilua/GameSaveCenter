@@ -359,13 +359,5 @@ public sealed class UiFinesseRound2ControlSourceTests
     }
 
     private static string Read(params string[] parts)
-    {
-        var directory = new DirectoryInfo(AppContext.BaseDirectory);
-        while (directory != null && !File.Exists(Path.Combine(directory.FullName, "GameSaveCenter.sln")))
-            directory = directory.Parent;
-        if (directory == null)
-            throw new InvalidOperationException("Repository root not found.");
-
-        return File.ReadAllText(Path.Combine(new[] { directory.FullName }.Concat(parts).ToArray()));
-    }
+        => File.ReadAllText(Path.Combine(new[] { TestRepositoryContext.Root }.Concat(parts).ToArray()));
 }
