@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-17
 
+## 2026-09-17 R02-06 菜单状态完整（外部宿主阻塞）
+
+- 先查当前代码：没有 WPF `ContextMenu/MenuItem`；插件只实现 `GetGameMenuItems`，空选择返回空，有选择时按固定顺序生成六个 `GameSaveCenter` 宿主动作。不能凭空加一套本地菜单来替代 Playnite 的渲染职责。
+- `8e48ac8` 新增 `R02MenuHostContractTests` 两条实际插件契约测试，合成多选验证六项描述、分组和 Action 非空，空选择验证零项；完全不执行 Action，所以没有 Worker/真实存档/媒体/云端副作用。
+- 完整隔离 Release 为 XAML `24/24`、构建 `0/0`、Core `83`、Worker `311`、Playnite `539/596`（57 skip/0 fail）；源码校验通过。R02-06 的 WPF 菜单状态、键盘导航、快捷键列和宿主定位/关闭属于外部 Playnite，记录为外部阻塞而不是通过。
+- 未启动真实 Playnite 或写真实数据；真实宿主菜单、OS 输入、屏幕阅读器、物理 DPI/IME、presented frame、ETW、宿主性能未验。下一项为 R02-07 异步菜单上下文。
+
 ## 2026-09-17 R02-05 命中区与间距
 
 - 先核对当前生产实现：`GscIconOnlyButtonBase` 已继承共享按钮模板，实际尺寸 `34×34 DIP`、右侧逻辑间隔 `6 DIP`；`GscIconOnlyToolbarButton` 为 `36×36 DIP`，文字动作复用 `GscButtonHeight=36` 与 `GscCompactButtonHeight=30`。Task/Save 的复制、重试、取消、删除和 Media 批量栏均已有对应入口，因此没有重建服务、DTO 或页面布局。

@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮阶段：R02-06 菜单状态完整（外部宿主阻塞）
+
+- 当前提交 `8e48ac8` 核对确认生产代码没有 WPF `ContextMenu/MenuItem`；唯一菜单入口是交给 Playnite 渲染的 `GameMenuItem`。本阶段没有凭空新增菜单体系，也没有把 main 的旧实现覆盖到当前分支。
+- `R02MenuHostContractTests` 定向 `2/2`：空选择不产生菜单；两项合成游戏按固定顺序生成六个 `GameSaveCenter` 分组动作，均有非空 Action，但测试不执行 Action，因此不启动 Worker、不写真实数据。
+- 完整隔离 Release：XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `539/596` 通过/`57` 跳过/`0` 失败；源码校验通过。
+- 禁用/勾选/危险/子菜单/快捷键列、键盘上下左右/Enter/Esc、边缘翻转、点外关闭和焦点返回由 Playnite 宿主控制，当前工作区没有可测 visual tree，不能签收这些条件；没有启动真实宿主或触碰真实库。下一可执行项为 R02-07 异步菜单上下文。
+
 ## 当前第三轮阶段：R02-05 命中区与间距
 
 - 当前提交 `f03b4dd` 核对确认生产共享图标按钮链已满足本项实现方向：`GscIconOnlyButtonBase` 为 `34×34 DIP`、最小宽高 `34`、相邻 `6 DIP`；工具条变体为 `36×36 DIP`，文字动作继续使用 `GscButtonHeight=36`/`GscCompactButtonHeight=30`。本阶段只增加行为门禁，没有覆盖 main 旧实现或重建业务控件。
