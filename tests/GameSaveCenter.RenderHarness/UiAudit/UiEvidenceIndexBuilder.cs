@@ -26,7 +26,24 @@ public static class UiEvidenceIndexBuilder
                 $"证据索引需要至少 {RequiredSampleCount} 个具体控件/状态样本，当前只有 {entries.Count} 个。" );
         }
 
-        var selected = entries.Take(RequiredSampleCount).ToList();
+        var gridEntries = entries
+            .Where(entry => entry.Control.StartsWith("DataGrid ", StringComparison.Ordinal))
+            .OrderBy(entry => entry.Surface.StartsWith("dev-probe / ", StringComparison.Ordinal) ? 1 : 0)
+            .ThenBy(entry => ControlPriority(entry))
+            .ThenBy(entry => entry.Surface, StringComparer.Ordinal)
+            .ThenBy(entry => entry.Control, StringComparer.Ordinal);
+        var controlEntries = entries
+            .Where(entry => !entry.Control.StartsWith("DataGrid ", StringComparison.Ordinal))
+            .GroupBy(entry => entry.Surface, StringComparer.Ordinal)
+            .OrderBy(group => ControlPriority(group.First()))
+            .ThenBy(group => group.Key, StringComparer.Ordinal)
+            .SelectMany(group => group.Take(2));
+        var selected = gridEntries
+            .Concat(controlEntries)
+            .Take(RequiredSampleCount)
+            .ToList();
+        for (var i = 0; i < selected.Count; i++)
+            selected[i].Id = "E" + (i + 1).ToString("00");
         var builder = new StringBuilder();
         builder.AppendLine("# UI Evidence Index");
         builder.AppendLine();
@@ -68,8 +85,6 @@ public static class UiEvidenceIndexBuilder
     private static List<UiEvidenceIndexEntry> CollectEntries(UiAuditRunResult result)
     {
         var entries = new List<UiEvidenceIndexEntry>();
-        var entryNumber = 1;
-
         foreach (var route in result.Manifest.Routes.OrderBy(item => item.RouteId, StringComparer.Ordinal))
         {
             foreach (var tab in route.Tabs.OrderBy(item => item.Index).ThenBy(item => item.Header, StringComparer.Ordinal))
@@ -79,22 +94,22 @@ public static class UiEvidenceIndexBuilder
                 {
                     var runtimeGrid = layout?.DataGrids.FirstOrDefault(item => item.Name == grid.Name);
                     var resultEntry = runtimeGrid == null
-                        ? "UI_MANIFEST.md -> " + Surface(route, tab) + " -> DataGrid=" + grid.Name + " -> static source=" + Source(grid.SourceFile, grid.SourceLine)
-                        : "LAYOUT_REPORT.md -> " + Surface(route, tab) + " -> size=" + layout!.SizeKey + " -> DataGrid=" + grid.Name;
+                        ? "UI_MANIFEST.md -> " + Surface(route, tab) + " -> DataGrid=" + grid.Name + " -> static source=" + Source(grid.SourceFile, grid.SourceLine, route.ViewFile)
+                        : "LAYOUT_REPORT.md -> " + Surface(route, tab) + " -> size=" + layout!.SizeKey + " -> DataGrid=" + grid.Name
+                            + " -> source=" + Source(grid.SourceFile, grid.SourceLine, route.ViewFile);
                     var sample = runtimeGrid == null
                         ? "静态列数=" + grid.ColumnCount + "; ItemsSource=" + EmptyAsUnknown(grid.ItemsSource)
                         : "items=" + runtimeGrid.ItemsCount + "; visible~=" + runtimeGrid.EstimatedVisibleRows.ToString("0.0") + "; virtualization=" + EmptyAsUnknown(runtimeGrid.Virtualization);
 
                     entries.Add(new UiEvidenceIndexEntry
                     {
-                        Id = "E" + entryNumber++.ToString("00"),
                         Surface = Surface(route, tab),
                         Control = "DataGrid " + grid.Name,
                         State = runtimeGrid == null ? "静态结构" : "运行时布局 / " + layout!.SizeKey,
                         Result = resultEntry,
                         Commit = Commit(result),
                         Sample = sample,
-                        Boundary = Boundary(runtimeGrid == null, conditional: false)
+                        Boundary = Boundary(runtimeObserved: runtimeGrid != null, conditional: false)
                     });
                 }
 
@@ -109,12 +124,11 @@ public static class UiEvidenceIndexBuilder
                     var snapshots = result.Snapshots.Count(snapshot => snapshot.RouteId == route.RouteId);
                     entries.Add(new UiEvidenceIndexEntry
                     {
-                        Id = "E" + entryNumber++.ToString("00"),
                         Surface = Surface(route, tab),
                         Control = element.Type + " " + name,
                         State = conditional ? "条件状态" : "默认状态",
                         Result = "UI_FIDELITY_MATRIX.md -> " + Surface(route, tab) + " -> element=" + name
-                            + "; UI_MANIFEST.md -> source=" + Source(element.SourceFile, element.SourceLine),
+                            + "; UI_MANIFEST.md -> source=" + Source(element.SourceFile, element.SourceLine, route.ViewFile),
                         Commit = Commit(result),
                         Sample = "snapshots=" + snapshots
                             + "; command=" + EmptyAsUnknown(element.Command)
@@ -139,6 +153,34 @@ public static class UiEvidenceIndexBuilder
         => element.Type is "Button" or "ToggleButton" or "CheckBox" or "ComboBox" or "TextBox"
             or "PasswordBox" or "Slider" or "Expander";
 
+    private static int ControlPriority(UiEvidenceIndexEntry entry)
+    {
+        var routeId = entry.Surface.Split(new[] { " / " }, StringSplitOptions.None)[0];
+        switch (routeId)
+        {
+            case "maintenance":
+                return 0;
+            case "media-center":
+                return 1;
+            case "save-center":
+                return 2;
+            case "task-center":
+                return 3;
+            case "trainer-center":
+                return 4;
+            case "settings":
+                return 5;
+            case "overview":
+                return 6;
+            case "acrylicproductionshellview":
+                return 7;
+            case "dev-probe":
+                return 8;
+            default:
+                return 9;
+        }
+    }
+
     private static string Surface(UiRouteNode route, UiTabRecord tab)
         => route.RouteId + " / " + (string.IsNullOrWhiteSpace(tab.Header) ? "Tab " + tab.Index : tab.Header);
 
@@ -149,8 +191,11 @@ public static class UiEvidenceIndexBuilder
                 ? element.Text
                 : "unnamed";
 
-    private static string Source(string file, int line)
-        => (string.IsNullOrWhiteSpace(file) ? "unknown" : file) + ":" + line;
+    private static string Source(string file, int line, string fallbackFile)
+        => (string.IsNullOrWhiteSpace(file)
+                ? (string.IsNullOrWhiteSpace(fallbackFile) ? "unknown" : fallbackFile)
+                : file)
+            + ":" + line;
 
     private static string Commit(UiAuditRunResult result)
         => string.IsNullOrWhiteSpace(result.Metadata.CommitSha) ? "unknown" : result.Metadata.CommitSha;
