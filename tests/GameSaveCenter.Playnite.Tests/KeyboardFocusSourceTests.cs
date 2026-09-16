@@ -91,8 +91,11 @@ public sealed class KeyboardFocusSourceTests
         Assert.Contains("PreviewKeyDown=\"OnPickerPreviewKeyDown\"", xaml);
         Assert.Contains("AutomationProperties.Name=\"游戏选择器\"", xaml);
         Assert.Contains("private void OnPickerPreviewKeyDown", code);
+        Assert.Contains("e.Key == Key.ImeProcessed", code);
         Assert.Contains("e.Key == Key.Escape", code);
-        Assert.Contains("e.Key == Key.Enter && viewModel?.SelectedGame != null", code);
+        Assert.Contains("PickerList.SelectedItem as GamePickerItem", code);
+        Assert.Contains("viewModel.GamePicker.ItemsView.Contains(candidate)", code);
+        Assert.DoesNotContain("e.Key == Key.Enter && viewModel?.SelectedGame != null", code);
         Assert.Contains("ClosePickerAndRestoreFocus();", code);
         Assert.Contains("Keyboard.Focus(GameContextButton);", code);
         Assert.Contains("OnPickerScrimMouseDown", code);

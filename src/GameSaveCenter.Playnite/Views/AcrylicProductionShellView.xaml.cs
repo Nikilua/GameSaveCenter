@@ -543,11 +543,29 @@ namespace GameSaveCenter.Playnite.Views
             if (PickerOverlay.Visibility != Visibility.Visible)
                 return;
 
-            if (e.Key == Key.Escape || (e.Key == Key.Enter && viewModel?.SelectedGame != null))
+            // An IME candidate confirmation is delivered as ImeProcessed. Let the
+            // TextBox/IME consume it; closing here would commit the previously selected
+            // game while the user is still composing a new search term.
+            if (e.Key == Key.ImeProcessed || e.ImeProcessedKey != Key.None)
+                return;
+
+            if (e.Key == Key.Escape)
             {
                 ClosePickerAndRestoreFocus();
                 e.Handled = true;
+                return;
             }
+
+            if (e.Key != Key.Enter)
+                return;
+
+            var candidate = PickerList.SelectedItem as GamePickerItem;
+            if (candidate == null || viewModel?.GamePicker == null || !viewModel.GamePicker.ItemsView.Contains(candidate))
+                return;
+
+            viewModel.SelectedGame = candidate.Game;
+            ClosePickerAndRestoreFocus();
+            e.Handled = true;
         }
 
         private void ClosePickerAndRestoreFocus()
