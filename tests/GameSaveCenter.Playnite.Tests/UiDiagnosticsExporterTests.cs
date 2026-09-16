@@ -241,11 +241,13 @@ public sealed class UiDiagnosticsExporterTests
             4.5);
 
         var pressed = measurements.Single(measurement => measurement.Check == "composite.pressed@0.0");
+        var earlyEnd = measurements.Single(measurement => measurement.Check == "composite.normal@0.9");
         var lateStop = measurements.Single(measurement => measurement.Check == "composite.normal@1.0");
 
         Assert.Equal(Color.FromRgb(128, 128, 128), pressed.Background);
         Assert.Equal(Colors.Black, pressed.EffectiveForeground);
         Assert.True(pressed.Actual >= 4.5, $"Expected black text on gray chrome to pass, got {pressed.Actual:0.###}.");
+        Assert.Equal(Colors.White, earlyEnd.Background);
         Assert.Equal(Colors.Black, lateStop.Background);
     }
 
