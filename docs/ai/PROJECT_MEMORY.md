@@ -2,6 +2,15 @@
 
 > 维护时间：2026-09-16
 
+## 2026-09-16 R01-05 负例注册表
+
+- `5e6d64a` 新增测试侧 `UiNegativeFixtureRegistryTests`，五项注册表分别调用对比度、数值可读性、生产选框键盘路由、子级布局溢出和 Loading 状态命中检测；N01～N05 全部 `detected=True`，每项都记录明确 expected-failure，不把负例夹具放进生产入口。
+- 实际 probe 结果：N01 `violations=1`；N02 长负数窄列 `horizontalFit=False/verticalFit=True/isReadable=False`；N03 `handled=False/overlay=Visible/selectionPreserved=True`；N04 `CHILD_LAYOUT_OVERFLOW.json` 存在；N05 `retry=Collapsed/underlyingHit=False`。N02/N03/N05 是受控真实 WPF Window/视觉树状态采样。
+- 绑定提交 `5e6d64aea3a64bc3fcde85627a84ce7cff5759e2` 的 Release 全流程为 XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `523/580`（57 skip/0 fail），注册表 `1/1`，源码校验通过；代码已推送。
+- 临时 gate/构建输出在证据同步后清理；未执行真实存档、媒体、云端或诊断外发，未改 picker/滚动/命令绑定/取消错误/恢复保护/有限列表/net462。下一项 R01-06。
+
+## 2026-09-16 R01-04 动效行为替代字符串
+
 ## 2026-09-16 R01-04 动效行为替代字符串
 
 - `74abb10` 延续已有 `GscMotion.AnimateEntrance` 生产实现，新增实际 STA WPF 负向敏感行为测试：入场中途采样有效 Y/Opacity，重入后清除最新时钟，必须回到采样基值附近；这覆盖了删除重入分支基值写回时会出现的真实状态回归。

@@ -2,6 +2,13 @@
 
 > 更新时间：2026-09-16。本文是新一轮开发的短入口；历史细节仍保留在 [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)、[`WORKLOG.md`](WORKLOG.md) 和 [`DEVELOPMENT_HANDOFF.md`](../DEVELOPMENT_HANDOFF.md)，但与本文冲突时以本文和最新代码为准。
 
+## 当前第三轮阶段：R01-05 负例注册表
+
+- `5e6d64a` 在测试项目新增 `UiNegativeFixtureRegistryTests`，统一登记 N01～N05 五类有意不合格夹具：对比度 `violations=1`、数值裁切 `horizontalFit=False/verticalFit=True/isReadable=False`、无结果 Enter `handled=False/overlay=Visible/selectionPreserved=True`、子级溢出写 gate、Loading 隐藏重试并阻断底层命中。
+- 注册表每项调用实际检测器或受控 WPF Window probe，要求 `detected=True`；夹具只在测试项目和随机隔离临时目录使用，未新增生产入口。它证明检测器能抓住指定错误，不把“检测到问题”误写成产品测试失败。
+- 以 `5e6d64aea3a64bc3fcde85627a84ce7cff5759e2` 为身份的 Release 全流程：XAML `24/24`，构建 `0/0`，Core `83/83`，Worker `311/311`，Playnite `523/580`（`57` 跳过、`0` 失败）；注册表定向 `1/1`，源码校验通过。证据见 [`R01-05-NEGATIVE-REGISTRY-20260916.md`](../design/reviews/ui-finesse-round3-20260915/evidence/R01-05-NEGATIVE-REGISTRY-20260916.md)。
+- 范围是合成数据、实际 WPF 控件、隔离 Window 和 offscreen logical DIP；不等价真实 Playnite、物理 DPI、OS 输入/IME、presented frame、ETW 或宿主性能。下一可执行项为 R01-06 宿主证据保全。
+
 ## 当前第三轮阶段：R01-04 动效行为替代字符串
 
 - `74abb10` 在现有真实 WPF 动效覆盖上新增 `EntranceMotionReentryKeepsTheRenderedBaseWhenLatestClockIsCancelled`：实际 STA `Window` 中启动入场、Dispatcher 采样、重入并清除最新时钟，Y/Opacity 必须保持采样时的有效值；既有完成终态、重入连续性和壳层清理测试继续保留。

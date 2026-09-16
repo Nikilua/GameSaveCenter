@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-16 R01-05 负例注册表
+
+- 盘点确认对比度、数值裁切、选框焦点、布局层级和 Loading 状态的检测能力均已存在，但原来没有统一 expected-failure 注册表。`5e6d64a` 新增测试侧 `UiNegativeFixtureRegistryTests`，N01～N05 各由实际检测器/受控 WPF probe 捕获，不新增生产入口。
+- 定向注册表 `1/1` 输出：N01 `violations=1`；N02 `horizontalFit=False/verticalFit=True/isReadable=False`；N03 `handled=False/overlay=Visible/selectionPreserved=True`；N04 溢出 gate 存在；N05 `retry=Collapsed/underlyingHit=False`。这里 expected-failure 是夹具应被拒绝，不是健康测试应退出失败。
+- 提交身份 `5e6d64aea3a64bc3fcde85627a84ce7cff5759e2` 的完整 Release：XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `523/580`（57 跳过、0 失败）；`python scripts/validate-source.py` 通过。代码已推送，临时构建/gate 目录待文档同步后清理。
+- 证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-05-NEGATIVE-REGISTRY-20260916.md`。合成数据/隔离 WPF 证据不等价真实 Playnite 嵌入、OS 输入/IME、物理 DPI、presented frame、ETW 或宿主性能；下一可执行小批量为 R01-06 宿主证据保全。
+
 ## 2026-09-16 R01-04 动效行为替代字符串
 
 - 最新代码盘点确认 `GscMotion.AnimateEntrance` 的完成态写回、活动时钟清理和重入接管已由前序 R00-03 实现；本阶段不重复改生产动效，只把 `UiFinesseFoundationTests.EntranceMotionTakesOverFromTheCurrentEffectiveValue` 收窄为结构门禁。
