@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-16 R01-08 跳过测试说明
+
+- 运行 scripts/build.ps1 -Configuration Release -OutputRoot .tmp/r01-08-skip-build：XAML 24/24，构建 0 warning/0 error；Core 83/83，Worker 311/311，Playnite 523 通过、57 跳过、0 失败，总计 917 通过、57 跳过、0 失败。
+- 源码盘点把 Playnite 计划中的 63 条 gated 解释为 57 条 LegacyProductionUiBaselineFact + 6 条 NamedPipeFact；本机 Named Pipe 可用，6 条 IPC/取消/恢复测试均实际通过。Worker 的 1 条 WorkerProcessFact 同样实际通过，当前 Worker 无 skip。
+- 57 条 legacy 按文件计数为 WpfUiResourceDictionary 39、UiLayoutRegression 11、OvernightClosureV6 3、SettingsAndAutoSelect 2、OvernightV4 1、WorkspaceStateSource 1；它们针对撤销的旧 UI 架构，不改成当前 UI 通过。
+- 证据见 docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-08-SKIP-INVENTORY-20260916.md。IPC 测试覆盖 caller/host cancellation、request id replay、ambiguous write；Worker 测试覆盖硬重启恢复。真实 Playnite/用户数据/物理交互边界未验；下一项 R02-01。
+
 ## 2026-09-16 R01-07 基线失效规则
 
 - 盘点确认已有构建/审计身份字段，但没有“按旧证据关联源码路径判断是否需重跑”的规则。e1324fe 新增 check-ui-evidence-freshness.ps1、三分支行为 smoke 和 UI_EVIDENCE_BASELINE.json，记录 14 条 R00/R01 evidence 的源码提交、关联路径、页面范围、运行类型和包基线。

@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮阶段：R01-08 跳过测试说明
+
+- 当前隔离 Release 全流程为 Core 83/83/0、Worker 311/311/0、Playnite 523/580 通过/57 跳过/0 失败，合计 917 通过、0 失败、57 跳过；XAML 24/24，构建 0 warning/0 error。
+- Playnite 计划中常说的 63 项由 57 条 LegacyProductionUiBaselineFact（已撤销今日工作台架构）+ 6 条 NamedPipeFact（IPC/取消/恢复）组成；当前 Named Pipe 可用，6 条实际通过，当前 skip 只有 57。Worker 的 1 条 WorkerProcessFact 也实际通过。
+- 证据已明确成功/失败/跳过分开、gated 能力和补测命令；不能为消除 skip 修改业务断言。下一可执行项为 R02-01 动作优先级。
+
 ## 当前第三轮阶段：R01-07 基线失效规则
 
 - e1324fe 新增 check-ui-evidence-freshness.ps1、test-ui-evidence-freshness.ps1 和版本化 UI_EVIDENCE_BASELINE.json；按证据源码提交与关联 sourcePaths/scopes 扫描 Git 变更，当前 14 条记录为 7 stale / 7 fresh。

@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-16
 
+## 2026-09-16 R01-08 跳过测试说明
+
+- 当前隔离 Release 全流程实际结果：Core 83 通过/0 失败/0 跳过，Worker 311/0/0，Playnite 523/0/57（总计 580），合计 917/0/57；XAML 24/24、构建 0 warning/0 error。
+- 57 条 Playnite skip 全来自 LegacyProductionUiBaselineFact，分布为 WpfUiResourceDictionary 39、UiLayoutRegression 11、OvernightClosureV6 3、SettingsAndAutoSelect 2、OvernightV4 1、WorkspaceStateSource 1；这是已撤销 UI 架构的历史基线，不应强行改为通过。
+- 另有 6 条 NamedPipeFact 与 1 条 WorkerProcessFact 受环境能力 gated，分别覆盖 IPC/调用方取消/宿主关闭/重放恢复/大写入 ambiguous，以及 Worker 硬重启 durable task 恢复。本机 Named Pipe 可用，7 条实际通过；若换机能力不可用，应保留 skip 并记录补测步骤。
+- 任务表的 63 项估算对应 Playnite 57 legacy + 6 IPC；Worker gated 单独计入其项目。本阶段不启动真实 Playnite、不写真实数据、不宣称物理 DPI/OS 输入/IME/presented frame/ETW/宿主性能。下一项 R02-01。
+
 ## 2026-09-16 R01-07 基线失效规则
 
 - e1324fe 新增 check-ui-evidence-freshness.ps1，从 UI_EVIDENCE_BASELINE.json 读取每条证据的 sourceCommit、sourcePaths、scopes、runtimeKind 和 packageCommit；按 Git diff 命中关联路径后输出 fresh/stale、需要重跑范围、包状态和是否需要重装。配套 test-ui-evidence-freshness.ps1 不是 Assert.Contains 字符串门禁，而是实际运行三种路径/身份场景。

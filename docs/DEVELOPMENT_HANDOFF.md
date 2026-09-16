@@ -1,5 +1,7 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-16 第三轮 R01-08 已满足：隔离 Release 为 Core 83/83/0、Worker 311/311/0、Playnite 523/580 通过、57 跳过、0 失败；XAML 24/24、构建 0/0。Playnite 计划中的 63 条是 57 条撤销 UI 基线 + 6 条 NamedPipe gated，本机 Named Pipe 可用所以 6 条 IPC/取消/恢复实际通过；Worker 重启 gated 1 条也通过。成功/失败/跳过、补测步骤和真实宿主边界已写入 R01-08 证据，不把能力限制改成通过；下一可执行任务为 R02-01 动作优先级。
+
 > 2026-09-16 第三轮 R01-07 已满足：e1324fe 新增 freshness 脚本、三分支 smoke 和版本化 UI_EVIDENCE_BASELINE.json；当前源码扫描 14 条记录为 7 stale / 7 fresh，明确列出需重跑的旧证据及关联 scopes。纯文档变更为 0 重跑/0 重装；共享 Redesign.xaml 变更命中 R00-01-02/R00-05 的 shared-controls/all-pages；源码与包身份分开输出，当前真实包身份为 not-provided，合成 mismatch 只验证重装分支。源码校验和 smoke 已通过，证据见 design/reviews/ui-finesse-round3-20260915/evidence/R01-07-EVIDENCE-FRESHNESS-20260916.md；下一可执行任务为 R01-08 跳过测试说明。
 
 > 2026-09-16 第三轮 R01-06 已满足：受控 RenderHarness 审计绑定 3929ed7，构建 0/0，运行时 161 快照、0 Fidelity、0 失败路由、0 HIGH/0 MEDIUM；关键 manifest、summary、metadata、路由/交互矩阵、布局报告、20 行具体索引和 6 张精选图已归档到 design/reviews/ui-finesse-round3-20260915/evidence/R01-06-host-evidence-20260916/。完整图集不入 Git，由归档 README 在固定 commit 上重现；metadata 不再只依赖绝对临时路径。归档前人工查看壳层、首页、维护诊断代表图。范围是受控 WPF 离屏 logical DIP，不等价真实 Playnite 嵌入、用户主题、物理 DPI、OS 输入/IME、presented frame、ETW 或宿主性能；下一可执行任务为 R01-07 基线失效规则。
