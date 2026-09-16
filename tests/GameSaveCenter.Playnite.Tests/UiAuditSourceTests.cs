@@ -65,6 +65,23 @@ public sealed class UiAuditSourceTests
     }
 
     [Fact]
+    public void AggregateAuditExposesConcreteEvidenceIndexAndValidator()
+    {
+        var root = FindRepositoryRoot();
+        var writer = File.ReadAllText(Path.Combine(root, "tests", "GameSaveCenter.RenderHarness", "UiAudit", "UiReportWriter.cs"));
+        var builder = File.ReadAllText(Path.Combine(root, "tests", "GameSaveCenter.RenderHarness", "UiAudit", "UiEvidenceIndexBuilder.cs"));
+        var validator = File.ReadAllText(Path.Combine(root, "scripts", "validate-ui-evidence-index.ps1"));
+
+        Assert.Contains("EVIDENCE_INDEX.md", writer);
+        Assert.Contains("RequiredSampleCount = 20", builder);
+        Assert.Contains("LAYOUT_REPORT.md", builder);
+        Assert.Contains("UI_FIDELITY_MATRIX.md", builder);
+        Assert.Contains("source=src\\", validator);
+        Assert.Contains("identities=", validator);
+        Assert.Contains("boundaries=", validator);
+    }
+
+    [Fact]
     public void MediaInboxKeepsFiniteGridAndCompactInspectorContracts()
     {
         var root = FindRepositoryRoot();
