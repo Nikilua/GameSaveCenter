@@ -64,6 +64,37 @@ public sealed class GamePickerKeyboardBehaviorTests
     }
 
     [Fact]
+    public void ActiveTextCompositionKeepsPickerOpenUntilCompositionCommits()
+    {
+        RunSta(() =>
+        {
+            using var picker = CreatePicker("旧游戏", "中文游戏");
+            var previousGame = picker.SelectedGame;
+            var candidate = picker.Items.Single(item => item.Name == "中文游戏");
+            using var host = CreatePickerHost(picker, out var shell, out var overlay, out var search, out var list);
+            list.SelectedItem = candidate;
+            overlay.Visibility = Visibility.Visible;
+            AttachPickerForInput(shell, picker);
+            Keyboard.Focus(search);
+
+            RaiseTextComposition(search, host.Window, TextCompositionManager.PreviewTextInputStartEvent, "zhong");
+            RaiseTextComposition(search, host.Window, TextCompositionManager.PreviewTextInputUpdateEvent, "zhongg");
+            var compositionEnter = RaisePreviewKey(search, host.Window, Key.Enter);
+
+            Assert.False(compositionEnter.Handled);
+            Assert.Equal(Visibility.Visible, overlay.Visibility);
+            Assert.Same(previousGame, picker.SelectedGame);
+
+            RaiseTextComposition(search, host.Window, TextCompositionManager.PreviewTextInputEvent, "中");
+            var committedEnter = RaisePreviewKey(search, host.Window, Key.Enter);
+
+            Assert.True(committedEnter.Handled);
+            Assert.Equal(Visibility.Collapsed, overlay.Visibility);
+            Assert.Same(candidate.Game, picker.SelectedGame);
+        });
+    }
+
+    [Fact]
     public void EnterConfirmsTheVisibleListCandidateAndReturnsFocusToTheContextButton()
     {
         RunSta(() =>
@@ -161,6 +192,20 @@ public sealed class GamePickerKeyboardBehaviorTests
         };
         source.RaiseEvent(key);
         return key;
+    }
+
+    private static void RaiseTextComposition(
+        FrameworkElement source,
+        Window host,
+        RoutedEvent routedEvent,
+        string text)
+    {
+        var composition = new TextComposition(InputManager.Current, source, text);
+        var args = new TextCompositionEventArgs(Keyboard.PrimaryDevice, composition)
+        {
+            RoutedEvent = routedEvent
+        };
+        source.RaiseEvent(args);
     }
 
     private static void RunSta(Action action)

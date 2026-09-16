@@ -31,10 +31,15 @@ namespace GameSaveCenter.Playnite.Views
         private bool responsiveLayoutPending;
         private double pendingResponsiveWidth;
         private bool pickerFilterRestorePending;
+        private bool gameSearchCompositionActive;
 
         public AcrylicProductionShellView()
         {
             InitializeComponent();
+            TextCompositionManager.AddPreviewTextInputStartHandler(GameSearchTextBox, OnGameSearchCompositionStarted);
+            TextCompositionManager.AddPreviewTextInputUpdateHandler(GameSearchTextBox, OnGameSearchCompositionUpdated);
+            TextCompositionManager.AddPreviewTextInputHandler(GameSearchTextBox, OnGameSearchTextInput);
+            TextCompositionManager.AddTextInputHandler(GameSearchTextBox, OnGameSearchTextInput);
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
         }
@@ -168,6 +173,7 @@ namespace GameSaveCenter.Playnite.Views
             sidebarTransitionRunning = false;
             responsiveLayoutPending = false;
             pickerFilterRestorePending = false;
+            gameSearchCompositionActive = false;
             if (viewModel != null && viewModelSubscribed)
             {
                 viewModel.PropertyChanged -= OnViewModelPropertyChanged;
@@ -530,12 +536,27 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnPickerSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (viewModel == null || e.AddedItems.Count == 0) return;
+            if (viewModel == null || gameSearchCompositionActive || e.AddedItems.Count == 0) return;
             if (e.AddedItems[0] is GamePickerItem item)
             {
                 viewModel.SelectedGame = item.Game;
                 ClosePickerAndRestoreFocus();
             }
+        }
+
+        private void OnGameSearchCompositionStarted(object sender, TextCompositionEventArgs e)
+        {
+            gameSearchCompositionActive = true;
+        }
+
+        private void OnGameSearchCompositionUpdated(object sender, TextCompositionEventArgs e)
+        {
+            gameSearchCompositionActive = true;
+        }
+
+        private void OnGameSearchTextInput(object sender, TextCompositionEventArgs e)
+        {
+            gameSearchCompositionActive = false;
         }
 
         private void OnPickerPreviewKeyDown(object sender, KeyEventArgs e)
@@ -546,7 +567,7 @@ namespace GameSaveCenter.Playnite.Views
             // An IME candidate confirmation is delivered as ImeProcessed. Let the
             // TextBox/IME consume it; closing here would commit the previously selected
             // game while the user is still composing a new search term.
-            if (e.Key == Key.ImeProcessed || e.ImeProcessedKey != Key.None)
+            if (gameSearchCompositionActive || e.Key == Key.ImeProcessed || e.ImeProcessedKey != Key.None)
                 return;
 
             if (e.Key == Key.Escape)
