@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-18 R06-05 列头说明
+
+- 先审计现有共享列头和 Q02 数值/单位能力：`GscDataGridHeaderTextTemplate` 已有 Wrap/None，排序箭头和列宽拖拽部件已存在；容量 DTO 已统一 B/KiB/MiB/GiB，缺口是表头说明和同名状态语义。
+- `7527e638` 新增共享列头说明 attached behavior，说明挂在 DataGridColumn，生成 header 同步 Tooltip + Automation HelpText；未替换字符串 Header、排序或拖拽热区，也未引入表头按钮。Save/Task/Media/Maintenance Findings 的时间、容量、百分比、类型/来源、状态/等级和详情列接入说明。
+- `R06ColumnHeaderHelpTests 2/2` 实际 STA WPF 生成列头通过；R06-04 `3/3`、R06-03 `2/2`、R06-02 + R06-01 `9/9`；XAML `24/24`、Release `0/0`、源校验/diff check 通过。
+- clean RenderHarness 绑定 `7527e638`，生产主要表格 header contract 均 `resize=true/sort-arrow=visible`，双主题 357 PNG，滚动/虚拟化/resize 和 50/400/2000/4468 数据量通过；人工查看 Save/Task/Maintenance Light/Dark 图。当前代码 SHA 的 `.tmp/r06-05-render-final` 已保留为证据。
+- 真实 Playnite 悬停/排序/拖拽、UIA/读屏、物理 DPI/跨屏、presented frame、ETW、宿主性能未验；未写真实存档/媒体/云端/诊断数据。下一小批量为 R06-06 行内进度稳定，先核对 `ProgressPercent/Value/Display` 与刷新上下文。
+
 ## 2026-09-18 R06-04 复制单元格与整行
 
 - 先收口现有能力：复用路径/任务错误/诊断/维护报告复制命令、`CopyTextWithRetryAsync` 和生产 DTO；新增共享 DataGrid 行列复制行为，不把 main 旧实现或不存在的原始 Demo 页面带入当前 checkout。

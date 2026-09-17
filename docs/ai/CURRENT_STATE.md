@@ -1,5 +1,14 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R06-05 列头说明
+
+- `7527e6381e531331d658166f0917487c03a0e7` 先核对已有共享 `GscDataGridHeaderTextTemplate`、22 DIP 排序箭头槽、透明列宽拖拽 Thumb 和容量格式化路径；新增 `DataGridColumnHeaderHelpBehavior`，说明挂在 `DataGridColumn` 上，生成 header 将说明同步到 Tooltip 与 `AutomationProperties.HelpText`。
+- Save History/Candidates、Task Queue、Media Inbox、Maintenance Findings 的时间、数量/百分比、容量、路径、类型/来源、状态/等级和详情摘要列均有短说明；Header 保持原始字符串，不插入按钮或独立点击路由，因此排序、键盘导航、列宽拖拽和 `DataGridStableSortController` 保持。
+- `B/KiB/MiB/GiB` 1024 进制单位复用既有 DTO 格式化逻辑；共享表头继续 `Wrap + TextTrimming=None`，长表头可换行而不遮挡排序箭头。原始 Demo `DesignShellView.xaml`/`Pages` 当前 checkout 仍不存在，继续沿用恢复生产基线。
+- `R06ColumnHeaderHelpTests 2/2`；R06-04 复制 `3/3`；R06-03 选中焦点 `2/2`；R06-02 排序 + R06-01 列宽 `9/9`；Release XAML `24/24`、编译 `0 warning/0 error`、源校验与 diff check 通过。
+- clean RenderHarness `.tmp/r06-05-render-final/render-qa-report.txt` 绑定该代码 SHA，Light/Dark 357 PNG、生产主要表格 header contract `resize=true/sort-arrow=visible`、50/400/2000/4468 数据量、滚动/虚拟化和 2560×1440 → 1100×720 → 2560×1440 resize，`WorkingTreeClean=True`、`render-qa OK`；Save/Task/Maintenance 代表图已抽查。
+- 边界：证据使用合成 DTO、隔离 STA WPF 和 offscreen logical DIP，不等价真实 Playnite 悬停/排序/拖拽、UIA/读屏、物理 DPI/跨屏、presented frame、ETW 或宿主性能；未写真实存档、媒体、云端或诊断数据。下一可执行任务为 R06-06 行内进度稳定。
+
 ## 当前第三轮 R06-04 复制单元格与整行
 
 - `afe4aa55a24e306bbe219da1ce76d8675325c35e` 先核对并复用既有 `CopyPathCommand`、诊断/错误/维护报告复制入口、`CopyTextWithRetryAsync` 和五类生产 DTO；新增共享 `DataGridClipboardBehavior`，为 Save History/Candidates、Task Queue、Media Inbox、Maintenance Findings 提供显式复制 profile。

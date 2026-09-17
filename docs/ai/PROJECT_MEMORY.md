@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-18
 
+## 2026-09-18 R06-05 列头说明
+
+- 先核对既有共享列头模板、排序箭头/拖拽部件和容量格式化：表头已有 `Wrap + TextTrimming=None`、22 DIP sort slot、透明 8 DIP resize thumbs；生产 DTO 已统一输出 `B/KiB/MiB/GiB` 1024 进制。缺口是单位、缩写和同名状态列没有可达解释。
+- `7527e638` 新增 `DataGridColumnHeaderHelpBehavior`，说明挂在 `DataGridColumn`，生成 header 在 Loaded 时设置 Tooltip 和 `AutomationProperties.HelpText`；Header 仍是字符串，未加按钮/独立事件，排序、重排和拖拽继续走原生列头。Save/Task/Media/Maintenance Findings 主要列已补说明。
+- `R06ColumnHeaderHelpTests 2/2`：实际 WPF 生成列头验证说明、原始 Header、可排序/重排和无嵌套按钮；R06-04 `3/3`、R06-03 `2/2`、R06-02 + R06-01 `9/9`；XAML `24/24`、Release `0/0`、源校验/diff check 通过。
+- clean RenderHarness `.tmp/r06-05-render-final/render-qa-report.txt` 绑定完整 SHA，双主题 357 PNG、生产主要表格 header contract `resize=true/sort-arrow=visible`、50/400/2000/4468 数据量、滚动/虚拟化/resize、`WorkingTreeClean=True`、`render-qa OK`；Save/Task/Maintenance 代表图已抽查。
+- 边界仍是合成数据、隔离 STA WPF/offscreen logical DIP；未验真实 Playnite 悬停/排序/拖拽、UIA/读屏、物理 DPI/跨屏、presented frame、ETW 或宿主性能；未写真实存档、媒体、云端或诊断数据。下一项 R06-06 先核对任务进度值/显示/刷新路径和选择滚动保持。
+
 ## 2026-09-18 R06-04 复制单元格与整行
 
 - 先盘点现有复制能力：复用 `DashboardViewModel` 的路径、任务错误、诊断和维护报告命令，以及 `CopyTextWithRetryAsync`；复用 `TaskStatusDto`、`BackupVersionDto`、`SavePathCandidateDto`、`MediaItemDto`、`ValidationFindingDto`。没有从 main 复制旧实现，原始 Demo 页面目录在当前 checkout 不存在，继续以恢复的生产基线为准。
