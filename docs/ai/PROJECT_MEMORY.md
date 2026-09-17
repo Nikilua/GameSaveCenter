@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-17
 
+## 2026-09-17 R04-02 错误摘要导航
+
+- `6524f94` 复用现有设置 VerifySettings、字段校验模板、页头摘要/详情和分类/滚动系统；设置页登记路径、备份、外观和自动化字段目标，把可识别错误变成详情 Hyperlink。点击后先选分类，再对字段 `BringIntoView` 并聚焦；字段 HelpText、链接 Automation Name/HelpText 保留具体原因，命令/Binding 不变。
+- `HealthInspectionEnabled=false` 时，恢复巡检间隔和重新验证有效期的无效值不阻止模型保存校验；启用状态下仍执行原范围检查。`SettingsValidationNavigationBehaviorTests` 使用隔离 Worker/目录和真实 STA Window 验证链接跨 Tab、焦点、滚动、自动化原因；设置路径/源校验及禁用字段负例合计 `5/5`。
+- clean commit 隔离 Release XAML `24/24`、构建 `0/0`、源码校验通过。RenderHarness 绑定完整 `6524f944f05921f02f0b32b7f5aa3dfa702ac165`，`WorkingTreeClean=True`、双主题、多尺寸和既有滚动/虚拟化/Shell/resize `render-qa OK`、357 PNG；人工抽查 Light/Dark 设置页。探针只作为离屏布局/链接/HelpText 证据，字段真实焦点/滚动以 STA Window 为准。
+- 同代码全量 Playnite testhost 两次复跑分别为 `553/628` 通过、18 失败、57 跳过，以及 `548/628` 通过、23 失败、57 跳过；失败为既有 PresentationSource/Visual 上级/缩略图/动效环境性问题，R04-02 定向全通过，未放宽门禁。真实屏幕阅读器、Playnite 嵌入、物理 DPI/跨屏、OS 输入、ETW、宿主性能仍未验；下一项 R04-03 未保存离开保护。
+
 ## 2026-09-17 R04-01 组合输入状态
 
 - `40c7f9a` 复核并复用 R00-08 的可见生产 picker 行为：无结果 Enter、`ImeProcessed`、方向键、Escape 焦点回返和有效 `ItemsView` 候选 Enter 已存在；本阶段只在 `AcrylicProductionShellView.GameSearchTextBox` 上补 WPF `TextComposition` start/update/preview+bubble commit 状态，未改 picker/滚动条/设计体系。

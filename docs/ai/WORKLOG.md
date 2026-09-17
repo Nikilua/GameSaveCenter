@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-17 R04-02 错误摘要导航
+
+- 先查已有能力：设置页已有 `VerifySettings`、字段验证模板、页头摘要/详情、分类 ListBox 和 `SettingsScroller`；本阶段没有把 main 旧实现覆盖到当前分支，也没有重建导航/滚动体系。为真实字段登记 x:Name，按当前错误文案复用目标映射。
+- `6524f94` 将详情消息中的可定位错误生成 Hyperlink；点击后选中分类、`BringIntoView`、`Focus`、`Keyboard.Focus`，字段 HelpText 与链接 Automation Name/HelpText 读出原因。`HealthInspectionEnabled=false` 时跳过两个隐藏巡检数值的 VerifySettings 范围错误，启用时原校验保持。
+- clean commit 隔离 Release XAML `24/24`、构建 `0/0`，源码校验通过；R04-02 定向 `5/5`。真实 STA WPF Window 测试确认恢复巡检间隔错误链接跨到自动化 Tab，字段可见、取得键盘焦点且滚动偏移大于 0；禁用字段模型负例通过。
+- clean RenderHarness 绑定 `6524f944f05921f02f0b32b7f5aa3dfa702ac165`，`WorkingTreeClean=True`、双主题、多尺寸、滚动/虚拟化/Shell/resize `render-qa OK`、357 PNG；探针记录链接/分类/字段 Visibility/HelpText，人工抽查 Light/Dark Settings 图。离屏报告中 `fieldIsVisible=False`/`fieldFocused=False`/`scrollOffset=0` 是无 PresentationSource 的事实，不替代 STA Window。
+- 同代码全量 Playnite testhost 复跑出现 18 和 23 个既有 WPF 环境性失败，分别为 553/548 通过、57 跳过；没有伪装为全通过。真实屏幕阅读器、Playnite 嵌入、物理 DPI/跨屏、presented frame、ETW、宿主性能仍未验；未写真实存档、媒体、云端。下一可执行任务为 R04-03 未保存离开保护。
+
 ## 2026-09-17 R04-01 组合输入状态
 
 - 先核对已有能力：R00-08 已覆盖 visible production picker 的无结果 Enter、`ImeProcessed`、方向键、Escape 焦点回返和有效候选 Enter；`GamePickerViewModel` 已提供本地缓存、短 debounce 与英文即时搜索，未新增 Worker 搜索路径。

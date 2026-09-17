@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R04-02 错误摘要导航
+
+- `6524f94` 先核对并复用现有 `GameSaveCenterSettings.VerifySettings`、字段 Validation 模板、页头摘要/详情、设置分类 ListBox 与 `SettingsScroller`；没有从 main 带入旧实现，也没有替换游戏选框或滚动条。设置校验错误现在按真实文案映射到已命名字段，详情中的可定位消息使用 Hyperlink。
+- 点击错误链接或“定位首个错误”会选择对应分类，并对目标字段执行 `BringIntoView`、`Focus` 与 `Keyboard.Focus`；目标字段的 Automation HelpText 含具体错误原因，链接的 Automation Name/HelpText 含定位说明。`HealthInspectionEnabled=false` 时，禁用的巡检间隔/有效期旧值不进入 `VerifySettings`，保存仍保持原有阻断与提交语义。
+- clean commit 隔离 Release XAML `24/24`、构建 `0/0`、源码校验通过；R04-02 定向 `5/5`，其中真实 STA WPF Window 验证跨 Tab、字段焦点、滚动和读出原因，模型负例验证隐藏巡检字段不阻止保存。
+- clean RenderHarness 绑定完整 SHA `6524f944f05921f02f0b32b7f5aa3dfa702ac165`，双主题、多尺寸、滚动/虚拟化、Shell/resize `render-qa OK`，357 PNG，探针记录 `links=1`、分类切换、字段可见性和 HelpText；人工抽查设置页明暗代表图。全量 Playnite testhost 同代码两次复跑出现 18/23 个既有 WPF 环境性失败，未改写为通过；后续需在稳定宿主复测。
+- 边界：合成设置/fake Worker、隔离目录、STA WPF 与 offscreen logical DIP；RenderHarness 未连接 PresentationSource，不代表真实桌面焦点/滚动或 presented frame。真实屏幕阅读器、Playnite 嵌入、物理 DPI/跨屏、OS 输入、ETW、宿主性能仍未验；未写真实存档、媒体或云端。证据见 [`R04-02-VALIDATION-NAVIGATION-20260917.md`](../design/reviews/ui-finesse-round3-20260915/evidence/R04-02-VALIDATION-NAVIGATION-20260917.md)。下一可执行任务为 R04-03 未保存离开保护。
+
 ## 当前第三轮 R04-01 组合输入状态
 
 - `40c7f9a` 先复核 R00-08 的可见生产游戏选框、`ItemsView` 候选确认、无结果/`ImeProcessed`/方向键/Escape 焦点行为和现有本地搜索；没有从 main 带入旧实现，也没有替换 picker/滚动条/设计体系。`AcrylicProductionShellView` 为 `GameSearchTextBox` 接入 WPF `TextComposition` start/update/预览与冒泡 commit 事件，卸载时清除状态。
