@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-18 R07-01 滚动所有权
+
+- 审计确认页面主滚动、DataGrid 内部 `DG_ScrollViewer`、详情 Inspector 和既有滚动条系统已存在，但缺少统一的滚轮边界传递；未接线的旧 Dashboard 固定三行处理器会吞边界事件，因此移除并迁移源码门禁到共享行为。
+- `9c878b9c` 新增 `ScrollBoundaryRoutingBehavior`，通过 `GscPageScrollViewer`、`GscInspectorScrollViewer`、`GscRedesignWorkspaceDataGrid` 共享样式启用。内层继续可滚时不拦截，方向边界才把一格交给最近外层；没有改横向滚动、虚拟化、选框或命令绑定。
+- `R07ScrollOwnershipBehaviorTests 2/2`：STA WPF 普通嵌套上下边界 + 实际 DataGrid 到页面边界；最终提交重新编译后相邻回归 `14/14`。Release XAML `24/24`、编译 `0/0`、`validate-source.py`、`git diff --check` 通过。
+- clean RenderHarness `.tmp/r07-01-scroll-final/render-qa-report.txt` 绑定最终 SHA、`WorkingTreeClean=True`、双主题多尺寸/resize `render-qa OK`；1040×700 四类工作页至少四行、1366 Task `4/4`，已查看 Task/Media/Maintenance 图。
+- 证据边界仍是合成 DTO、隔离 STA WPF/offscreen logical DIP；真实 Playnite/Worker、设备滚轮/触控板、UIA/读屏、物理 DPI/跨屏、presented frame、ETW/宿主性能未验，未写真实存档/媒体/云端/诊断数据。下一小批量为 R07-02 锚点删除回退。
+
 ## 2026-09-18 R06-08 详情与行高预算
 
 - 先审计并复用现有详情结构：Task 的独立详情 ScrollViewer/折叠技术详情、Media/Maintenance Inspector、Save 候选详情和紧凑 DataGrid 行高均已存在；没有重建页面或改变滚动条系统。

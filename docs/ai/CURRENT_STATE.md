@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R07-01 滚动所有权
+
+- `9c878b9cb9a8cd07075ede332c9534e1d957f6b3` 先核对既有页面主滚动、DataGrid 模板 `DG_ScrollViewer` 和 Inspector 详情滚动；保留 `CanContentScroll`、虚拟化、水平/垂直滚动条和游戏选框。当前 checkout 没有原始 Demo `DesignShellView.xaml`/`Pages`，沿用恢复生产基线。
+- 新增共享 `ScrollBoundaryRoutingBehavior`，接入 `GscPageScrollViewer`/`GscInspectorScrollViewer` 和 `GscRedesignWorkspaceDataGrid`。内层还能滚时不抢事件；到方向边界才按滚轮增量转给最近可滚动外层，DataGrid 从实际模板内部 ScrollViewer 判定，不在外层与表格间同步跳动。移除未接线且固定三行的旧 Dashboard 处理器；源码门禁迁移为检查共享行为与两个样式的真实接线。
+- `R07ScrollOwnershipBehaviorTests 2/2`：实际 STA WPF 嵌套 ScrollViewer 上/下边界和实际 DataGrid → 页面边界转发；最终提交重建后相邻 Task 响应式、Media 四行、详情 disclosure、R06 详情合计 `14/14`。XAML `24/24`、Release 编译 `0 warning/0 error`、源码校验/diff check 通过。
+- clean `.tmp/r07-01-scroll-final/render-qa-report.txt` 绑定该 SHA，`WorkingTreeClean=True`、Light/Dark、多尺寸与 resize `render-qa OK`；1040×700 Save/Media/Maintenance/Task 至少四行，1366 Task `4/4`；Task/Media/Maintenance 代表图已查看。
+- 边界：真实 Playnite/Worker、设备滚轮/触控板轨迹、UIA/读屏、OS 输入/IME、物理 DPI/跨屏、presented frame、ETW、宿主性能和主题额外 routed event 未验；未写真实存档、媒体、云端或诊断数据。下一项为 R07-02 锚点删除回退，先检查刷新/删除/筛选/加载更多的稳定 ID 视口恢复。
+
 ## 当前第三轮 R06-08 详情与行高预算
 
 - `07376adb1d52a394137853896efe1b4589f983d1` 先核对已有 Task/Media/Save/Maintenance 详情区、选中绑定、独立 ScrollViewer 和紧凑行高预算；Task 长诊断已在详情区/折叠技术详情中展开，未扩张所有列表行。唯一发现的行为缺口是 Save 刷新后候选总是优先回到第一个 Pending 项，因此新增按 `PlayniteId + Path` 恢复原候选，找不到时才回退 Pending/首项。

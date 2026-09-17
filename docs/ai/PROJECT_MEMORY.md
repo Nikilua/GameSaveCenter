@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-18
 
+## 2026-09-18 R07-01 滚动所有权
+
+- 先盘点已有契约：`GscPageScrollViewer` 管页面垂直主滚动，`GscRedesignWorkspaceDataGrid` 模板的 `DG_ScrollViewer` 管虚拟化表格，`GscInspectorScrollViewer` 管详情；水平端点和当前滚动条系统不改。
+- `9c878b9c` 新增 `ScrollBoundaryRoutingBehavior` 并接入两个共享 ScrollViewer 样式与共享 DataGrid 样式。最近内层能沿滚轮方向移动时保持 WPF 原生处理；到边界才寻找最近外层并转发一格，外层也不可动则不伪造移动。DataGrid 行源通过模板内实际 ScrollViewer 解析，避免页面/表格同步跳动。
+- `R07ScrollOwnershipBehaviorTests 2/2` 覆盖普通嵌套上/下边界和实际 DataGrid 边界；最终身份正确重建后的相邻回归 `14/14`；XAML `24/24`、Release `0/0`、源校验/diff check 通过。
+- clean `.tmp/r07-01-scroll-final/render-qa-report.txt` 绑定完整 SHA，双主题、多尺寸、resize `render-qa OK`，1040×700 各工作页保留至少四行，1366 Task `4/4`。代表图已查看。证据限于合成数据、隔离 STA WPF/offscreen logical DIP。
+- 未验真实 Playnite/Worker 和物理滚轮/触控板、UIA/读屏、物理 DPI/跨屏、presented frame、ETW、宿主性能；Demo 原始目录仍缺失，未写真实存档/媒体/云端/诊断数据。下一项 R07-02 锚点删除回退。
+
 ## 2026-09-18 R06-08 详情与行高预算
 
 - 先查已有实现：Task/Media/Save/Maintenance 都已有详情对象、独立详情滚动或 Inspector、选中绑定和紧凑布局预算；Task 还有折叠技术详情。没有把长诊断塞进所有列表行，也没有替换游戏选框或滚动条。
