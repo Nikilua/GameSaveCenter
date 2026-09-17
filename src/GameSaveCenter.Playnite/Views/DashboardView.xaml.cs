@@ -1609,6 +1609,11 @@ namespace GameSaveCenter.Playnite.Views
             AmbientGlowLayer.Opacity = glassEnabled
                 ? (palette.IsDark ? 0.46 : 0.56) * Math.Max(0.2, Math.Min(1, plugin.Settings.GlassEffectStrength / 100d))
                 : 0;
+
+            // Detached WPF ToolTips do not inherit the workspace ResourceDictionary reliably.
+            // Refresh open transient surfaces after all shell/workspace palettes are current.
+            GscToolTipBehavior.RefreshOpenTransientSurfaces(this);
+            GscToolTipBehavior.RefreshOpenTransientSurfaces(ProductionShellView);
         }
 
         private void NormalizeDashboardMotionIfDisabled()

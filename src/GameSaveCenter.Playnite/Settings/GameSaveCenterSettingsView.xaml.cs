@@ -1060,6 +1060,11 @@ namespace GameSaveCenter.Playnite.Settings
             SettingsAmbientLayer.Opacity = glassEnabled
                 ? (palette.IsDark ? 0.82 : 0.64) * Math.Max(0.2, Math.Min(1, strength / 100.0))
                 : 0;
+
+            // ToolTip is hosted in a detached WPF window and cannot reliably resolve the page's
+            // DynamicResource chain after a theme switch. Keep already-open Popup/ToolTip
+            // instances on the same scoped palette without mutating Application resources.
+            GscToolTipBehavior.RefreshOpenTransientSurfaces(this);
         }
 
         internal void ApplyThemeForAudit(GameSaveCenterThemeMode mode)

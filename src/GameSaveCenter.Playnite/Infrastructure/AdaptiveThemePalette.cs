@@ -620,6 +620,17 @@ namespace GameSaveCenter.Playnite.Infrastructure
             var field = isDark ? Color.FromArgb(0x66, 0x13, 0x16, 0x20) : Color.FromArgb(0x80, 0xFF, 0xFF, 0xFF);
             var fieldStroke = isDark ? Color.FromArgb(0x1C, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x17, 0x00, 0x00, 0x00);
             var floating = isDark ? Color.FromArgb(0xF0, 0x26, 0x2C, 0x3A) : Color.FromArgb(0xF2, 0xFF, 0xFF, 0xFF);
+            var subFill = isDark ? Color.FromArgb(0xD9, 0x20, 0x25, 0x31) : Color.FromArgb(0xE6, 0xF2, 0xF4, 0xF9);
+            var subStroke = isDark ? Color.FromArgb(0x10, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x16, 0x00, 0x00, 0x00);
+            var sidebarStroke = isDark ? Color.FromArgb(0x14, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x18, 0x00, 0x00, 0x00);
+            var floatingStroke = isDark ? Color.FromArgb(0x33, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x22, 0x00, 0x00, 0x00);
+            var buttonFill = isDark ? Color.FromArgb(0x16, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x14, 0x00, 0x00, 0x00);
+            var buttonHoverFill = isDark ? Color.FromArgb(0x24, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x1A, 0x00, 0x00, 0x00);
+            var buttonPressedFill = isDark ? Color.FromArgb(0x0D, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x10, 0x00, 0x00, 0x00);
+            var buttonStroke = isDark ? Color.FromArgb(0x14, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x18, 0x00, 0x00, 0x00);
+            var neutralChipFill = isDark ? Color.FromArgb(0x14, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x12, 0x00, 0x00, 0x00);
+            var shadowColor = isDark ? Color.FromArgb(0x59, 0x00, 0x00, 0x00) : Color.FromArgb(0x33, 0x00, 0x00, 0x00);
+            var windowShadowColor = isDark ? Color.FromArgb(0x6B, 0x00, 0x00, 0x00) : Color.FromArgb(0x45, 0x00, 0x00, 0x00);
             var primaryText = isDark ? Color.FromRgb(0xF2, 0xF4, 0xF8) : Color.FromArgb(0xF2, 0x1B, 0x1F, 0x27);
             var secondaryText = isDark ? Color.FromRgb(0xB9, 0xC0, 0xCC) : Color.FromArgb(0xF2, 0x4E, 0x56, 0x66);
             // The caption style is intentionally opaque now, so this semantic color must
@@ -693,6 +704,73 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscErrorIconFillBrush"] = Brush(errorFill);
             resources["GscErrorTintBrush"] = Brush(errorFill);
             resources["GscMutedStatusBrush"] = Brush(neutral);
+
+            // AcrylicReferenceControls is still the shared template source for production
+            // ComboBox/ToolTip/secondary surfaces. Keep its legacy keys on the same palette as
+            // the Gsc-prefixed resources so a detached Popup cannot fall back to the static dark
+            // dictionary during a live theme switch.
+            resources["CanvasBrush"] = CanvasGradient(canvasStart, canvasMiddle, canvasEnd);
+            resources["CardFillBrush"] = Brush(card);
+            resources["CardStrokeBrush"] = Brush(cardStroke);
+            resources["CardHoverStrokeBrush"] = Brush(cardHoverStroke);
+            resources["SubFillBrush"] = Brush(subFill);
+            resources["SubStrokeBrush"] = Brush(subStroke);
+            resources["SidebarFillBrush"] = Brush(sidebar);
+            resources["SidebarStrokeBrush"] = Brush(sidebarStroke);
+            resources["HeaderFillBrush"] = Brush(header);
+            resources["SidebarBaseColor"] = Opaque(sidebar);
+            resources["HeaderBaseColor"] = Opaque(header);
+            resources["FieldFillBrush"] = Brush(field);
+            resources["FieldFocusFillBrush"] = Brush(isDark
+                ? Color.FromArgb(0x8C, 0x1A, 0x1E, 0x2B)
+                : Color.FromArgb(0xF9, 0xFF, 0xFF, 0xFF));
+            resources["FieldStrokeBrush"] = Brush(fieldStroke);
+            resources["FloatingFillBrush"] = Brush(floating);
+            resources["FloatingStrokeBrush"] = Brush(floatingStroke);
+            resources["ScrimBrush"] = Brush(scrim);
+            resources["TextPrimaryBrush"] = Brush(primaryText);
+            resources["TextSecondaryBrush"] = Brush(secondaryText);
+            resources["TextTertiaryBrush"] = Brush(tertiaryText);
+            resources["TextOnAccentBrush"] = Brush(Colors.White);
+            resources["DividerBrush"] = Brush(divider);
+            resources["DividerStrongBrush"] = Brush(isDark
+                ? Color.FromArgb(0x20, 0xFF, 0xFF, 0xFF)
+                : Color.FromArgb(0x20, 0x00, 0x00, 0x00));
+            resources["BtnFillBrush"] = Brush(buttonFill);
+            resources["BtnFillHoverBrush"] = Brush(buttonHoverFill);
+            resources["BtnFillPressedBrush"] = Brush(buttonPressedFill);
+            resources["BtnStrokeBrush"] = Brush(buttonStroke);
+            resources["SegmentFillBrush"] = Brush(isDark
+                ? Color.FromArgb(0x59, 0xFF, 0xFF, 0xFF)
+                : Color.FromArgb(0x26, 0x00, 0x00, 0x00));
+            resources["SegmentItemFillBrush"] = Brush(isDark
+                ? Color.FromArgb(0xF2, 0x37, 0x3D, 0x4C)
+                : Color.FromArgb(0xF0, 0xFF, 0xFF, 0xFF));
+            resources["SegmentItemStrokeBrush"] = Brush(isDark
+                ? Color.FromArgb(0x1C, 0xFF, 0xFF, 0xFF)
+                : Color.FromArgb(0x14, 0x00, 0x00, 0x00));
+            resources["TableHeaderFillBrush"] = Brush(tableHeader);
+            resources["RowHoverFillBrush"] = Brush(rowHover);
+            resources["ScrollThumbBrush"] = Brush(scrollThumb);
+            resources["ScrollThumbHoverBrush"] = Brush(scrollThumbHover);
+            resources["SuccessBrush"] = Brush(success);
+            resources["SuccessFillBrush"] = Brush(successFill);
+            resources["WarningBrush"] = Brush(warning);
+            resources["WarningFillBrush"] = Brush(warningFill);
+            resources["ErrorBrush"] = Brush(error);
+            resources["ErrorFillBrush"] = Brush(errorFill);
+            resources["InfoBrush"] = Brush(info);
+            resources["InfoFillBrush"] = Brush(infoFill);
+            resources["NeutralChipBrush"] = Brush(neutral);
+            resources["NeutralChipFillBrush"] = Brush(neutralChipFill);
+            resources["ItemHoverFillBrush"] = Brush(isDark
+                ? Color.FromArgb(0x0A, 0xFF, 0xFF, 0xFF)
+                : Color.FromArgb(0x08, 0x00, 0x00, 0x00));
+            resources["ItemHoverStrokeBrush"] = Brush(isDark
+                ? Color.FromArgb(0x22, 0xFF, 0xFF, 0xFF)
+                : Color.FromArgb(0x22, 0x00, 0x00, 0x00));
+            resources["ShadowColor"] = shadowColor;
+            resources["WindowShadowColor"] = windowShadowColor;
 
             resources["TextFillColorPrimaryBrush"] = Brush(primaryText);
             resources["TextFillColorSecondaryBrush"] = Brush(secondaryText);
