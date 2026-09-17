@@ -1,5 +1,14 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R06-04 复制单元格与整行
+
+- `afe4aa55a24e306bbe219da1ce76d8675325c35e` 先核对并复用既有 `CopyPathCommand`、诊断/错误/维护报告复制入口、`CopyTextWithRetryAsync` 和五类生产 DTO；新增共享 `DataGridClipboardBehavior`，为 Save History/Candidates、Task Queue、Media Inbox、Maintenance Findings 提供显式复制 profile。
+- `Ctrl+C` 复制当前显示顺序的 Extended 选中行，`Ctrl+Shift+C` 复制当前单元格；稳定 ID 去重，TSV 使用 TAB/CRLF 和明确转义，技术字段保留完整原值；密码、token、secret、API key、Authorization Bearer 等凭据统一输出 `[已隐藏]`。公共文本写入点同步脱敏，未复制隐藏凭据。
+- 保留 FullRow/滚动/虚拟化、游戏选框、命令/Binding、取消/错误/恢复保护、有限列表和 net462；没有从 main 带入旧实现。原始 Demo `DesignShellView.xaml`/`Pages` 当前 checkout 仍不存在，继续沿用恢复生产基线。
+- `R06ClipboardBehaviorTests 3/3`；R06-03 选中焦点 `2/2`；R06-02 排序 + R06-01 列宽 `9/9`；Release XAML `24/24`、编译 `0 warning/0 error`、源校验与 diff check 通过。全量 Playnite 合跑观察到 `573/679` 通过、`57` 跳过、`49` 既有 WPF 环境性失败，未计为绿色。
+- clean RenderHarness `.tmp/r06-04-render-final/render-qa-report.txt` 绑定该代码 SHA，Light/Dark 357 PNG、50/400/2000/4468 数据量、滚动/虚拟化和 2560×1440 → 1100×720 → 2560×1440 resize，`WorkingTreeClean=True`、`render-qa OK`；Task/Media/Maintenance 代表图已抽查。
+- 边界：证据使用合成 DTO、隔离 STA WPF、验证 seam 和 offscreen logical DIP，不等价真实 Playnite 选择、OS 剪贴板、UIA/读屏、IME、物理 DPI/跨屏、presented frame、ETW 或宿主性能；未写真实存档、媒体、云端或诊断数据。下一可执行任务为 R06-05 列头说明，先盘点表头单位、Tooltip/Automation 和可复用资源。
+
 ## 当前第三轮 R06-03 选中焦点区分
 
 - `d83c73785c15b72af11c6b8897f359129ba66c26` 收口共享 `ListBoxItem` 与 `DataGridRow` 状态：活动选中、键盘当前、悬停、失焦选中和 `TaskState.Failed` 错误行各有独立 surface/outline；键盘当前使用 2 DIP accent outline，失焦选中使用 `GscSelectionInactiveBrush`/muted border，失败行复用 `GscErrorTintBrush`/`GscErrorBrush`。DataGridCell 选中内容面保持透明，Media Inbox 删除会覆盖共享状态的本地 hover/selected trigger。

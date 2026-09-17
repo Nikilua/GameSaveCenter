@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-18
 
+## 2026-09-18 R06-04 复制单元格与整行
+
+- 先盘点现有复制能力：复用 `DashboardViewModel` 的路径、任务错误、诊断和维护报告命令，以及 `CopyTextWithRetryAsync`；复用 `TaskStatusDto`、`BackupVersionDto`、`SavePathCandidateDto`、`MediaItemDto`、`ValidationFindingDto`。没有从 main 复制旧实现，原始 Demo 页面目录在当前 checkout 不存在，继续以恢复的生产基线为准。
+- `afe4aa55` 新增共享 `DataGridClipboardBehavior` 与五类 DataGrid profile。`Ctrl+C` 复制 Extended 选中行，`Ctrl+Shift+C` 复制当前单元格；按显示顺序输出稳定 TSV/CRLF，稳定 ID 去重；完整技术字段不使用视觉省略值；凭据语法统一 `[已隐藏]`，公共文本写入点也做脱敏。
+- `R06ClipboardBehaviorTests 3/3`、R06-03 选中焦点 `2/2`、R06-02 排序 + R06-01 列宽 `9/9`；XAML `24/24`、Release 编译 `0/0`、源校验/diff check 通过。全量 Playnite 合跑观察值 `573/679`、`57` 跳过、`49` 既有 WPF 环境失败，未当作全量通过。
+- clean RenderHarness `.tmp/r06-04-render-final/render-qa-report.txt` 绑定完整 SHA，双主题 357 PNG、50/400/2000/4468 数据量、滚动/虚拟化/resize、`WorkingTreeClean=True`、`render-qa OK`；保留当前 R06-03/R06-04 证据，旧 `.tmp` 构建/审计/渲染目录已清理。
+- 边界仍是合成数据、隔离 STA WPF、验证 seam 和 offscreen logical DIP；未验真实 Playnite 选择/OS 剪贴板/UIA/读屏/IME、物理 DPI/跨屏、presented frame、ETW 或宿主性能；未写真实存档、媒体、云端或诊断数据。下一项 R06-05 先盘点生产表头说明、单位、Tooltip/Automation 和共享资源。
+
 ## 2026-09-18 R06-03 选中焦点区分
 
 - 先盘点共享 `ListBoxItem`/`DataGridRow` 模板和 Media Inbox 本地行样式：现有 active selected、hover 和 DataGridCell 透明内容面可复用，真正缺口是失焦选中、键盘当前边框、错误行以及本地 Media trigger 会覆盖共享状态。没有从 main 复制旧实现，也没有替换游戏选框或滚动条。

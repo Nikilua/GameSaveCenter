@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-18 R06-04 复制单元格与整行
+
+- 先收口现有能力：复用路径/任务错误/诊断/维护报告复制命令、`CopyTextWithRetryAsync` 和生产 DTO；新增共享 DataGrid 行列复制行为，不把 main 旧实现或不存在的原始 Demo 页面带入当前 checkout。
+- `afe4aa55` 接入五类生产表的显式 profile：`Ctrl+C` 复制显示顺序的 Extended 选中行，`Ctrl+Shift+C` 复制当前单元格；稳定 TSV/CRLF、稳定 ID 去重、完整技术值和密码/token/secret/Bearer 等凭据脱敏。公共旧复制入口同步经过脱敏写入点，保留 FullRow、滚动/虚拟化、命令/Binding、取消/错误/恢复和 net462。
+- `R06ClipboardBehaviorTests 3/3`、R06-03 `2/2`、R06-02 + R06-01 `9/9`；XAML `24/24`、Release 编译 `0/0`、源校验/diff check 通过。全量观察值 `573/679` 通过、`57` 跳过、`49` 既有 WPF 环境失败，未宣称全量绿色。
+- clean RenderHarness 绑定 `afe4aa55`，双主题 357 PNG、50/400/2000/4468 数据量、滚动/虚拟化/resize、`WorkingTreeClean=True`、`render-qa OK`；Task/Media/Maintenance 图已抽查。旧 `.tmp` 中未被证据引用的构建/审计/渲染目录已清理，只保留当前 R06-03/R06-04 证据。
+- 真实 Playnite 选择、OS 剪贴板、UIA/读屏、IME、物理 DPI/跨屏、presented frame、ETW、宿主性能未验，未写真实存档/媒体/云端/诊断数据。下一小批量为 R06-05 列头说明，先盘点表头、单位和 Tooltip/Automation。
+
 ## 2026-09-18 R06-03 选中焦点区分
 
 - 先查现有共享行模板、`TaskStatusDto.State` 和 Media Inbox 本地样式；复用已有 active selected/hover、透明 DataGridCell 内容面和任务状态徽章，只补失焦选中、键盘当前和失败行，不把表格状态逻辑分散到单个视觉实例。
