@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-17
 
+## 2026-09-17 R04-06 清空与撤销
+
+- `0d3f71af27f00c34cbfc5d012f5f7dde39a4625c` 先核对现有 Shell/Dashboard/Trainer/Task/Media 搜索清空和游戏选框 Escape 路由，没有重建 VM 或危险命令。Dashboard 空状态清除按钮保留 `GamePicker.ClearSearchCommand`，补目标 TextBox Tag/Click，复用现有 `Clear`/`Focus`/`Keyboard.Focus` 并标记事件已处理。
+- 普通编辑继续使用 WPF 默认 Undo/Redo 栈；实际 TextBox 测试走 `ApplicationCommands.SelectAll/Undo/Redo` 与标准粘贴事件，Undo 恢复原值和选区，Redo 恢复修改。游戏选框 Esc 只关闭并回焦上下文按钮。
+- clean Release XAML `24/24`、构建 `0/0`、源码校验通过；R04-06 行为测试 `3/3`。clean RenderHarness 双主题 `297` PNG、工作树 clean、`render-qa OK`，Task/Shell `1040×700` 已抽查。
+- 证据仍限于合成数据、隔离 STA WPF、offscreen logical DIP；真实 Playnite 系统输入/剪贴板/IME/读屏/物理 DPI/跨屏/presented frame/ETW/宿主性能未验，未写真实存档、媒体或云端。下一项 R04-07 异步校验竞态。
+
 ## 2026-09-17 R04-05 数字输入边界
 
 - `8d56eb5a050a5c2db2718a42cf928b7d43d6f897` 在最新生产实现上复用 `GscNumericTextBox`、`IntegerRangeValidationRule` 和服务侧安全边界；没有从 main 覆盖旧实现，也没有虚构当前不存在的重试/端口/容量字段。

@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R04-06 清空与撤销
+
+- `0d3f71af27f00c34cbfc5d012f5f7dde39a4625c` 复用 Shell、Dashboard、Trainer、Task、Media 现有搜索清空处理和 WPF 原生编辑命令；Dashboard 空状态“清除搜索”现在保留 `GamePicker.ClearSearchCommand`，并通过目标 TextBox Tag/Click 复用清空与焦点回返，事件已处理。
+- 游戏选框 Esc 仍只执行关闭和上下文按钮焦点恢复；普通 TextBox 通过 WPF `ApplicationCommands.SelectAll/Undo/Redo` 与标准粘贴事件保持选择区和重做，不接触保存/恢复/删除等危险命令。
+- clean Release 构建 XAML `24/24`、构建 `0/0`，源码校验/diff check 通过；R04-06 实际 STA WPF 行为 `3/3`。clean RenderHarness 绑定完整 SHA、双主题、297 PNG、`WorkingTreeClean=True`、`render-qa OK`，Task/Shell `1040×700` 已抽查。
+- 边界：合成搜索数据、隔离 STA WPF、offscreen logical DIP；真实 Playnite 系统输入/剪贴板/IME/读屏/物理 DPI/跨屏/presented frame/ETW/宿主性能仍未验，未写真实存档、媒体或云端。下一可执行任务为 R04-07 异步校验竞态。
+
 ## 当前第三轮 R04-05 数字输入边界
 
 - `8d56eb5a050a5c2db2718a42cf928b7d43d6f897` 先复用现有 `GscNumericTextBox`、`IntegerRangeValidationRule` 和服务侧安全边界；没有把 main 旧实现带入当前分支，也没有为当前不存在的重试/端口/容量字段扩展 DTO 或 UI。

@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-17 R04-06 清空与撤销
+
+- 先查已有能力：五个生产页面已有搜索清空事件和焦点回返，游戏选框已有 Escape 关闭/回焦，WPF TextBox 已有原生 Undo；缺口是 Dashboard 空状态清除按钮只执行 VM 命令，且缺少 Redo/选择区行为证据。
+- `0d3f71a` 保留 `GamePicker.ClearSearchCommand`，为 Dashboard 空状态按钮补 Tag/Click/Automation Name，复用 `OnClearTextBoxClick`，并将清空点击标记 handled；Shell 清空按钮增加稳定名称供行为夹具定位。
+- 实际 STA WPF 行为 `3/3`：搜索清空后焦点回到输入框，Esc 关闭选框并回焦上下文按钮，标准 SelectAll/Undo/Redo 在标准粘贴替换后恢复选区并支持重做。没有新增业务危险命令。
+- clean Release XAML `24/24`、构建 `0/0`、`validate-source.py` 和 diff check 通过；RenderHarness 双主题 `297` PNG、`WorkingTreeClean=True`、`render-qa OK`，Task/Shell `1040×700` 图已抽查。
+- 边界：合成搜索数据、隔离 STA WPF/offscreen logical DIP；真实 Playnite 系统键盘/剪贴板/IME/读屏/物理 DPI/跨屏/presented frame/ETW/宿主性能未验，未写真实存档/媒体/云端。下一可执行任务为 R04-07 异步校验竞态。
+
 ## 2026-09-17 R04-05 数字输入边界
 
 - 先查已有能力：共享 `GscNumericTextBox`/整数规则和服务侧安全边界已存在；Save 策略模板与 Trainer 启动延迟尚未接入完整 UI 规则，当前模型没有可编辑重试/端口/容量字段，因此没有新增 DTO 或业务入口。
