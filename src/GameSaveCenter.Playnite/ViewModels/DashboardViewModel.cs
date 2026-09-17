@@ -4068,6 +4068,10 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task CopyTextWithRetryAsync(string text, string statusMessage, string infoMessage)
         {
+            // Keep every existing copy entry point behind the same allowlist-safe
+            // credential redaction used by DataGrid rows. Local paths and normal
+            // diagnostic values remain byte-for-byte unchanged.
+            text = ClipboardValueSanitizer.Sanitize(text ?? string.Empty);
             for (var attempt = 0; attempt < 4; attempt++)
             {
                 try

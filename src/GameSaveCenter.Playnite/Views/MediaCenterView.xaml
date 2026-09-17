@@ -239,7 +239,7 @@
                             </Border>
                             </StackPanel>
                             <DataGrid Grid.Row="1" x:Name="MediaInboxGrid" Tag="FiniteViewport" Style="{StaticResource MediaDataGrid}" MinHeight="0" VerticalAlignment="Stretch" ItemsSource="{Binding MediaInboxItems}" SelectedItem="{Binding SelectedInboxMedia}"
-                                      SelectionMode="Extended" SelectionUnit="FullRow" SelectionChanged="OnMediaInboxSelectionChanged"
+                                      SelectionMode="Extended" SelectionUnit="FullRow" SelectionChanged="OnMediaInboxSelectionChanged" infra:DataGridClipboardBehavior.Enabled="True" infra:DataGridClipboardBehavior.Profile="MediaInbox" ToolTip="Ctrl+C 复制所选行；Ctrl+Shift+C 复制当前单元格" AutomationProperties.HelpText="Ctrl+C 复制所选媒体行；Ctrl+Shift+C 复制当前单元格"
                                       RowStyle="{StaticResource MediaInboxStableRowStyle}"
                                       VerticalContentAlignment="Top"
                                       HorizontalContentAlignment="Stretch"
