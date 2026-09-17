@@ -19,6 +19,28 @@ namespace GameSaveCenter.Playnite.Settings
         private string deviceId = Guid.NewGuid().ToString("N");
         private bool deviceIdWasLoaded;
         private int settingsSaveInProgress;
+        private bool enableLocalMirror;
+        private bool autoStartWorker = true;
+        private bool onboardingCompleted;
+        private bool enableProcessDetection = true;
+        private bool enableSessionSavePathDetection = true;
+        private bool enableMediaSync = true;
+        private bool enableSteamMedia = true;
+        private bool enableXboxGameBarMedia = true;
+        private bool enableWindowsScreenshotMedia = true;
+        private bool enablePlatformAdjacentMedia = true;
+        private bool enableCustomMedia = true;
+        private bool enableCloudUpload;
+        private bool cloudUploadQueuePaused;
+        private bool enableDashboardAutoRefresh = true;
+        private bool enableTaskNotifications = true;
+        private bool safeModeEnabled;
+        private bool safeModeRequested;
+        private bool enableUiAnimations = true;
+        private bool enableGlassEffects = true;
+        private bool followSelectedGameBackground = true;
+        private bool sidebarCollapsed;
+        private bool healthInspectionEnabled = true;
 
         /// <summary>Raised after Playnite commits the current edit buffer.</summary>
         public event EventHandler? SettingsCommitted;
@@ -67,36 +89,36 @@ namespace GameSaveCenter.Playnite.Settings
         public string RcloneExecutable { get; set; } = string.Empty;
         public string RcloneDestination { get; set; } = string.Empty;
         public string MediaArchiveDirectory { get; set; } = string.Empty;
-        public bool EnableLocalMirror { get; set; }
+        public bool EnableLocalMirror { get => enableLocalMirror; set => SetBoolean(ref enableLocalMirror, value, nameof(EnableLocalMirror)); }
         public string LocalMirrorPath { get; set; } = string.Empty;
-        public bool AutoStartWorker { get; set; } = true;
+        public bool AutoStartWorker { get => autoStartWorker; set => SetBoolean(ref autoStartWorker, value, nameof(AutoStartWorker)); }
         /// <summary>Whether the first-use environment preparation card was completed or skipped.</summary>
-        public bool OnboardingCompleted { get; set; }
-        public bool EnableProcessDetection { get; set; } = true;
-        public bool EnableSessionSavePathDetection { get; set; } = true;
-        public bool EnableMediaSync { get; set; } = true;
-        public bool EnableSteamMedia { get; set; } = true;
-        public bool EnableXboxGameBarMedia { get; set; } = true;
-        public bool EnableWindowsScreenshotMedia { get; set; } = true;
-        public bool EnablePlatformAdjacentMedia { get; set; } = true;
-        public bool EnableCustomMedia { get; set; } = true;
-        public bool EnableCloudUpload { get; set; }
-        public bool CloudUploadQueuePaused { get; set; }
+        public bool OnboardingCompleted { get => onboardingCompleted; set => SetBoolean(ref onboardingCompleted, value, nameof(OnboardingCompleted)); }
+        public bool EnableProcessDetection { get => enableProcessDetection; set => SetBoolean(ref enableProcessDetection, value, nameof(EnableProcessDetection)); }
+        public bool EnableSessionSavePathDetection { get => enableSessionSavePathDetection; set => SetBoolean(ref enableSessionSavePathDetection, value, nameof(EnableSessionSavePathDetection)); }
+        public bool EnableMediaSync { get => enableMediaSync; set => SetBoolean(ref enableMediaSync, value, nameof(EnableMediaSync)); }
+        public bool EnableSteamMedia { get => enableSteamMedia; set => SetBoolean(ref enableSteamMedia, value, nameof(EnableSteamMedia)); }
+        public bool EnableXboxGameBarMedia { get => enableXboxGameBarMedia; set => SetBoolean(ref enableXboxGameBarMedia, value, nameof(EnableXboxGameBarMedia)); }
+        public bool EnableWindowsScreenshotMedia { get => enableWindowsScreenshotMedia; set => SetBoolean(ref enableWindowsScreenshotMedia, value, nameof(EnableWindowsScreenshotMedia)); }
+        public bool EnablePlatformAdjacentMedia { get => enablePlatformAdjacentMedia; set => SetBoolean(ref enablePlatformAdjacentMedia, value, nameof(EnablePlatformAdjacentMedia)); }
+        public bool EnableCustomMedia { get => enableCustomMedia; set => SetBoolean(ref enableCustomMedia, value, nameof(EnableCustomMedia)); }
+        public bool EnableCloudUpload { get => enableCloudUpload; set => SetBoolean(ref enableCloudUpload, value, nameof(EnableCloudUpload)); }
+        public bool CloudUploadQueuePaused { get => cloudUploadQueuePaused; set => SetBoolean(ref cloudUploadQueuePaused, value, nameof(CloudUploadQueuePaused)); }
         public int CloudUploadAllowedStartMinute { get; set; }
         public int CloudUploadAllowedEndMinute { get; set; } = 1440;
-        public bool EnableDashboardAutoRefresh { get; set; } = true;
-        public bool EnableTaskNotifications { get; set; } = true;
+        public bool EnableDashboardAutoRefresh { get => enableDashboardAutoRefresh; set => SetBoolean(ref enableDashboardAutoRefresh, value, nameof(EnableDashboardAutoRefresh)); }
+        public bool EnableTaskNotifications { get => enableTaskNotifications; set => SetBoolean(ref enableTaskNotifications, value, nameof(EnableTaskNotifications)); }
         public NotificationLevel NotificationLevel { get; set; } = NotificationLevel.Summary;
-        public bool SafeModeEnabled { get; set; }
-        public bool SafeModeRequested { get; set; }
+        public bool SafeModeEnabled { get => safeModeEnabled; set => SetBoolean(ref safeModeEnabled, value, nameof(SafeModeEnabled)); }
+        public bool SafeModeRequested { get => safeModeRequested; set => SetBoolean(ref safeModeRequested, value, nameof(SafeModeRequested)); }
         public GameSaveCenterThemeMode ThemeMode { get; set; } = GameSaveCenterThemeMode.FollowPlaynite;
-        public bool EnableUiAnimations { get; set; } = true;
-        public bool EnableGlassEffects { get; set; } = true;
+        public bool EnableUiAnimations { get => enableUiAnimations; set => SetBoolean(ref enableUiAnimations, value, nameof(EnableUiAnimations)); }
+        public bool EnableGlassEffects { get => enableGlassEffects; set => SetBoolean(ref enableGlassEffects, value, nameof(EnableGlassEffects)); }
         public int GlassEffectStrength { get; set; } = 78;
         /// <summary>Whether the shell may decode and follow the selected game's background image.</summary>
-        public bool FollowSelectedGameBackground { get; set; } = true;
+        public bool FollowSelectedGameBackground { get => followSelectedGameBackground; set => SetBoolean(ref followSelectedGameBackground, value, nameof(FollowSelectedGameBackground)); }
         /// <summary>Whether the production shell navigation rail is currently collapsed.</summary>
-        public bool SidebarCollapsed { get; set; }
+        public bool SidebarCollapsed { get => sidebarCollapsed; set => SetBoolean(ref sidebarCollapsed, value, nameof(SidebarCollapsed)); }
         public int DashboardRefreshSeconds { get; set; } = 10;
         public int RecentProtectionWindowDays { get; set; } = 30;
         public int ProcessPollingSeconds { get; set; } = 5;
@@ -106,7 +128,7 @@ namespace GameSaveCenter.Playnite.Settings
         public int CompressionLevel { get; set; } = 3;
         public int FullBackupLimit { get; set; } = 3;
         public int DifferentialBackupLimit { get; set; } = 5;
-        public bool HealthInspectionEnabled { get; set; } = true;
+        public bool HealthInspectionEnabled { get => healthInspectionEnabled; set => SetBoolean(ref healthInspectionEnabled, value, nameof(HealthInspectionEnabled)); }
         public int HealthInspectionIntervalMinutes { get; set; } = 1440;
         public int HealthInspectionStaleAfterDays { get; set; } = 30;
         // Lightweight global game-picker state. These values are UI preferences only;
@@ -378,6 +400,13 @@ namespace GameSaveCenter.Playnite.Settings
         }
 
         private GameSaveCenterSettings Clone() => JsonConvert.DeserializeObject<GameSaveCenterSettings>(JsonConvert.SerializeObject(this)) ?? new GameSaveCenterSettings();
+
+        private void SetBoolean(ref bool field, bool value, string propertyName)
+        {
+            if (field == value) return;
+            field = value;
+            OnPropertyChanged(propertyName);
+        }
 
         private void CopyFrom(GameSaveCenterSettings other)
         {
