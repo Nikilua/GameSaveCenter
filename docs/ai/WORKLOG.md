@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-17 R04-08 保存反馈闭环
+
+- 先查已有能力：Playnite `ISettings.EndEdit` 已负责同步持久化，插件已有 Worker live apply，但异步完成/失败不会回到设置页，原提示面也无法区分保存中与部分失败；当前字段没有仅重启生效项。
+- `c735905a` 在最新代码上增加保存闸门和四个设置事件；`ApplySettingsAsync` 增加完成/异常回调；保存页以 `SettingsSaveFeedbackState` 驱动稳定提示。重复保存不会并发；本地写入失败保留编辑克隆，Worker 应用失败显示“已写入 Playnite · Worker 应用失败”，编辑后清除旧失败态。
+- 相关选择集 `20/20`；clean Release XAML `24/24`、构建 `0/0`、`validate-source.py` 和 diff check 通过。RenderHarness 绑定 `c735905a`，双主题、297 PNG、`WorkingTreeClean=True`、`render-qa OK`；Settings normal/dirty/invalid `1040×700` 图已抽查。临时构建目录在文档提交后清理，保留 `.tmp/r04-08-render-final` 作为当前证据引用。
+- 边界：没有真实 Playnite 宿主故障注入或保存/取消/关闭自动化；受控状态机/fake 服务/隔离目录/STA WPF/offscreen logical DIP 不等价真实宿主输入、IME/剪贴板、读屏、物理 DPI/跨屏、presented frame、ETW 或宿主性能。未写真实存档、媒体或云端。下一可执行小批量为 R05-01 弹层焦点范围。
+
 ## 2026-09-17 R04-07 异步校验竞态
 
 - 先查已有能力：设置模型已有完整 `VerifySettings` 和路径/数值安全规则，设置页已有 Dispatcher 合并与宿主 `Loaded`/`Unloaded`/`DataContextChanged` 生命周期；实际缺口是编辑期路径检查仍同步命中 UI 线程，且合并期间没有明确的最新字段版本。

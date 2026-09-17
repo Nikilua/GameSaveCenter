@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R04-08 保存反馈闭环
+
+- `c735905aa1092f409bc7ddf9de1272f1d77dc084` 在最新设置保存链上补齐稳定反馈：`GameSaveCenterSettings` 发出保存开始、应用开始、应用完成和保存失败事件；`GameSaveCenterPlugin` 把既有 Worker 异步应用完成/异常回传设置页；并发 `EndEdit` 被 `Interlocked.CompareExchange` 抑制。
+- 设置页统一提示面现在区分正在保存、已写入 Playnite/正在应用 Worker、Worker 应用失败、本地保存失败、校验中、校验错误、脏草稿和已保存。Worker 失败不伪报成功；本地写入失败保留编辑克隆。当前生产字段均 live apply，没有真实的仅重启生效项，因此不生成虚构重启态。
+- R04-08 相关选择集 `20/20`；clean Release XAML `24/24`、构建 `0/0`、源码校验与 diff check 通过。RenderHarness 绑定完整 SHA、双主题、297 PNG、`WorkingTreeClean=True`、`render-qa OK`，Settings normal/dirty/invalid 图已抽查。证据见 [`R04-08-SAVE-FEEDBACK-20260917.md`](../design/reviews/ui-finesse-round3-20260915/evidence/R04-08-SAVE-FEEDBACK-20260917.md)。
+- 边界：尚未在真实 Playnite 宿主注入本地保存或 Worker 失败，也未验真实保存/取消/关闭时序；渲染和行为证据仍是合成设置/fake 服务/隔离目录/STA WPF/offscreen logical DIP。真实 Playnite 嵌入、系统输入/IME/剪贴板、读屏、物理 DPI/跨屏、presented frame、ETW、宿主性能仍未验，未写真实存档、媒体或云端。下一可执行任务为 R05-01 弹层焦点范围。
+
 ## 当前第三轮 R04-07 异步校验竞态
 
 - `b1d5b68f` 将设置页编辑期路径可用性检查拆为不可变 `SettingsPathValidationSnapshot`、后台 `SettingsPathValidationService` 和递增版本的 `LatestAsyncValidationCoordinator`；复用 `GameSaveCenterSettings.VerifySettings` 的原有文件/目录规则，完整同步校验仍保留用于保存状态/最终安全路径。

@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-17
 
+## 2026-09-17 R04-08 保存反馈闭环
+
+- `c735905aa1092f409bc7ddf9de1272f1d77dc084` 先核对 `ISettings.EndEdit`、`GameSaveCenterPlugin.ApplySettingsAsync` 和现有 `SettingsSaveHintText`，复用真实保存与 Worker live apply 链，没有把 main 旧实现覆盖到当前分支。
+- `GameSaveCenterSettings` 以原子保存闸门拒绝重复 `EndEdit`，并区分保存开始、应用开始、应用完成和保存失败；本地写入成功后才清除编辑克隆。插件异步回调失败表示 Playnite 已持久化但 Worker 未应用，设置页显示对应失败态；本地写入失败保留草稿。
+- `SettingsSaveFeedbackState` 只承载可控反馈状态；设置页的稳定提示面在保存/应用/失败/编辑/校验状态间切换。当前字段都支持 live apply，没有“需重启”字段，未来新增此类字段必须由真实设置契约驱动。
+- 相关选择集 `20/20`，clean Release XAML `24/24`、构建 `0/0`、源码校验/diff check 通过；clean RenderHarness 双主题 297 PNG、工作树 clean、`render-qa OK`，Settings normal/dirty/invalid 已抽查。真实 Playnite 故障注入、宿主保存/取消/关闭时序、物理 DPI/跨屏、IME/剪贴板/读屏、presented frame、ETW、宿主性能未验；未写真实存档、媒体或云端。证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R04-08-SAVE-FEEDBACK-20260917.md`。下一项 R05-01 弹层焦点范围。
+
 ## 2026-09-17 R04-07 异步校验竞态
 
 - `b1d5b68f` 先核对当前 `GameSaveCenterSettings.VerifySettings`、设置页 Dispatcher 合并和宿主生命周期；没有从 main 覆盖旧实现。完整 `VerifySettings` 保留原路径/数值安全规则，编辑期新增 `VerifySettingsWithoutPathAvailability` 只做轻量范围检查。
