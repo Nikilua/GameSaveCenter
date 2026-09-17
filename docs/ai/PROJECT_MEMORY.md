@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-18
 
+## 2026-09-18 R06-03 选中焦点区分
+
+- 先盘点共享 `ListBoxItem`/`DataGridRow` 模板和 Media Inbox 本地行样式：现有 active selected、hover 和 DataGridCell 透明内容面可复用，真正缺口是失焦选中、键盘当前边框、错误行以及本地 Media trigger 会覆盖共享状态。没有从 main 复制旧实现，也没有替换游戏选框或滚动条。
+- `d83c7378` 在 `WpfUiProduction.xaml` 统一补 active/inactive/keyboard/error 状态，失败态用 `GameSaveCenter.Contracts.TaskState.Failed` 强类型值；`DesignTokens.xaml`/`AdaptiveThemePalette` 增加 `GscSelectionInactiveBrush` 的静态与活动调色板路径；Media Inbox 回到共享行状态。原始 Demo `DesignShellView.xaml`/`Pages` 在当前 checkout 不存在，按事实沿用恢复生产基线。
+- `R06SelectionStateBehaviorTests 2/2` 使用合成 `TaskStatusDto`、真实生产资源和隔离 STA WPF，实际验证失败色、键盘焦点 2 DIP 边框、失焦色/边框；资源回归 `137 passed / 39 skipped / 0 failed`，R06-02 排序 `4/4`、R06-01 列宽 `5/5`，XAML `24/24`、编译 `0/0`、源校验/diff check 通过。
+- clean RenderHarness 报告 `.tmp/r06-03-render-final/render-qa-report.txt` 绑定 `d83c7378...`，双主题 357 PNG、`WorkingTreeClean=True`、`render-qa OK`；Task/Media/Save 代表图已抽查，数据量 50/400/2000/4468、滚动/虚拟化和 resize 恢复通过。证据为 `R06-03-SELECTION-FOCUS-20260918.md`。
+- 边界仍是合成数据、隔离 WPF/offscreen logical DIP；未验真实 Playnite 输入、UIA/读屏、物理 DPI/跨屏、IME、presented frame、ETW、宿主性能；未写真实存档、媒体、云端或诊断数据。下一项 R06-04 先盘点复制命令、DTO/诊断字段和隔离剪贴板能力。
+
 ## 2026-09-18 R06-02 排序提示与稳定性
 
 - 先核对现有能力：共享 DataGrid 已提供排序箭头和用户排序开关，生产 Save/Task/Media 表格已有 DTO 绑定但缺少统一原始值/未知值/稳定次键契约；因此只新增控制器和 profile，没有把 main 旧实现带入当前分支，也没有替换游戏选框或滚动条。

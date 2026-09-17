@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R06-03 选中焦点区分
+
+- `d83c73785c15b72af11c6b8897f359129ba66c26` 收口共享 `ListBoxItem` 与 `DataGridRow` 状态：活动选中、键盘当前、悬停、失焦选中和 `TaskState.Failed` 错误行各有独立 surface/outline；键盘当前使用 2 DIP accent outline，失焦选中使用 `GscSelectionInactiveBrush`/muted border，失败行复用 `GscErrorTintBrush`/`GscErrorBrush`。DataGridCell 选中内容面保持透明，Media Inbox 删除会覆盖共享状态的本地 hover/selected trigger。
+- 先核对已有能力后只修共享生产资源和真实行为门禁，没有带入 main 旧实现；游戏选框、滚动条、命令/Binding、取消/错误/安全恢复、有限列表和 net462 未改。当前 checkout 没有原始 Demo `DesignShellView.xaml`/`Pages` 目录，本阶段记录事实并沿用恢复的 `DesignTokens.xaml`/`WpfUiProduction.xaml` 生产基线。
+- `R06SelectionStateBehaviorTests 2/2`；`WpfUiResourceDictionaryTests 137/137`（39 skip、0 fail）；R06-02 排序 `4/4`、R06-01 列宽 `5/5`；Release XAML `24/24`、编译 `0/0`、源校验和 diff check 通过。最终 RenderHarness `.tmp/r06-03-render-final/render-qa-report.txt` 绑定该 SHA，双主题 357 PNG、`WorkingTreeClean=True`、`render-qa OK`；Task/Media/Save 代表图已抽查，覆盖滚动、多数据量和 2560×1440 → 1100×720 → 2560×1440 resize。
+- 证据见 [`R06-03-SELECTION-FOCUS-20260918.md`](../design/reviews/ui-finesse-round3-20260915/evidence/R06-03-SELECTION-FOCUS-20260918.md)。边界：行为与视觉均为合成 DTO、隔离 STA WPF 和 offscreen logical DIP，不等价真实 Playnite 鼠标/键盘/UIA/读屏、物理 DPI/跨屏、IME、presented frame、ETW 或宿主性能；未写真实存档、媒体、云端或诊断数据。下一可执行任务为 R06-04 复制单元格与整行。
+
 ## 当前第三轮 R06-02 排序提示与稳定性
 
 - `c577afc587a63acd7c8fbe73183812f574008f7d` 新增共享 `DataGridStableSortController`，复用现有 DataGrid、DTO、绑定和 `WpfUiProduction.xaml` 的 SortDirection 箭头。Save History/Candidates、Task Queue、Media Inbox 绑定原始时间/数字/枚举/文本值，稳定次键分别为 BackupId、Path+PlayniteId、TaskId、MediaId；默认时间/置信度降序，其余按 profile 默认方向。

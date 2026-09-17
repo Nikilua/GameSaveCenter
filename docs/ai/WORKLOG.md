@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-18 R06-03 选中焦点区分
+
+- 先查现有共享行模板、`TaskStatusDto.State` 和 Media Inbox 本地样式；复用已有 active selected/hover、透明 DataGridCell 内容面和任务状态徽章，只补失焦选中、键盘当前和失败行，不把表格状态逻辑分散到单个视觉实例。
+- `d83c7378` 更新 `WpfUiProduction.xaml`、主题令牌/活动调色板和 Media 行样式；共享资源区分 active、keyboard focus（2 DIP）、inactive selection、hover 和 `TaskState.Failed`。当前 checkout 没有原始 Demo 页面目录，记录事实并继续使用生产基线。
+- `R06SelectionStateBehaviorTests 2/2` 在合成 DTO/隔离 STA WPF 中实际通过：失败色不被失焦选中吞掉，成功行键盘边框命中，失焦选中使用 inactive brush/muted border。资源字典 `137/137`（39 skip、0 fail），R06-02 排序 `4/4`，R06-01 列宽 `5/5`；XAML `24/24`、编译 `0/0`、源校验、diff check 通过。
+- clean RenderHarness 报告绑定 `d83c7378`，双主题 357 PNG、`WorkingTreeClean=True`、`render-qa OK`；人工查看 Light/Dark Task、Light Media、Dark Save。R06-03 构建中间目录在写入证据前清理，未保留未引用副本。证据：`R06-03-SELECTION-FOCUS-20260918.md`。
+- 真实 Playnite 悬停/键盘/UIA/读屏、物理 DPI/跨屏、IME、presented frame、ETW、宿主性能未验；未写真实存档、媒体、云端或诊断数据。下一小批量为 R06-04 复制单元格与整行。
+
 ## 2026-09-18 R06-02 排序提示与稳定性
 
 - 先查到共享列头已有箭头模板，真实缺口是三类生产表没有统一 raw-value sort、unknown-last 和 stable tie-break 规则；本阶段沿用现有 DataGrid/DTO/滚动条/命令链。
