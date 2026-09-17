@@ -36,6 +36,7 @@ namespace GameSaveCenter.Playnite.Views
         private string anchorDiagnostic = "none";
         private readonly DispatcherTimer pendingAnchorExpiryTimer;
         private DataGridColumnLayoutController? inboxColumnLayout;
+        private DataGridStableSortController? inboxSort;
 
         public MediaCenterView()
         {
@@ -63,7 +64,9 @@ namespace GameSaveCenter.Playnite.Views
             InvalidatePendingAnchorRestore();
             pendingAnchorExpiryTimer.Stop();
             inboxColumnLayout?.Dispose();
+            inboxSort?.Dispose();
             inboxColumnLayout = null;
+            inboxSort = null;
             DetachViewModel();
         }
 
@@ -73,7 +76,9 @@ namespace GameSaveCenter.Playnite.Views
             if (IsLoaded)
             {
                 inboxColumnLayout?.Dispose();
+                inboxSort?.Dispose();
                 inboxColumnLayout = null;
+                inboxSort = null;
                 AttachColumnLayout();
             }
         }
@@ -87,6 +92,7 @@ namespace GameSaveCenter.Playnite.Views
                 new[] { "captured-time", "type", "source", "file", "reason" },
                 viewModel.PluginSettings,
                 viewModel.PersistUiPreference);
+            inboxSort = ProductionDataGridSortProfiles.AttachMediaInbox(MediaInboxGrid);
         }
 
         private void AttachViewModel(DashboardViewModel? viewModel)

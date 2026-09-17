@@ -16,6 +16,8 @@ namespace GameSaveCenter.Playnite.Views
         private bool candidateInspectorOpen;
         private DataGridColumnLayoutController? historyColumnLayout;
         private DataGridColumnLayoutController? candidateColumnLayout;
+        private DataGridStableSortController? historySort;
+        private DataGridStableSortController? candidateSort;
 
         public SaveCenterView()
         {
@@ -53,14 +55,20 @@ namespace GameSaveCenter.Playnite.Views
                 new[] { "confidence", "status", "path", "reason" },
                 viewModel.PluginSettings,
                 viewModel.PersistUiPreference);
+            historySort = ProductionDataGridSortProfiles.AttachSaveHistory(SaveHistoryGrid);
+            candidateSort = ProductionDataGridSortProfiles.AttachSaveCandidates(SaveCandidateGrid);
         }
 
         private void DetachColumnLayouts()
         {
             candidateColumnLayout?.Dispose();
             historyColumnLayout?.Dispose();
+            candidateSort?.Dispose();
+            historySort?.Dispose();
             candidateColumnLayout = null;
             historyColumnLayout = null;
+            candidateSort = null;
+            historySort = null;
         }
 
         private void InspectorIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)

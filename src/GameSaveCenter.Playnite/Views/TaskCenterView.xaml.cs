@@ -14,6 +14,7 @@ namespace GameSaveCenter.Playnite.Views
         private bool isApplyingLayout;
         private bool taskInspectorOpen;
         private DataGridColumnLayoutController? columnLayout;
+        private DataGridStableSortController? sortController;
 
         public TaskCenterView()
         {
@@ -34,12 +35,15 @@ namespace GameSaveCenter.Playnite.Views
                 new[] { "local-time", "task", "game", "state", "progress", "detail" },
                 viewModel.PluginSettings,
                 viewModel.PersistUiPreference);
+            sortController = ProductionDataGridSortProfiles.AttachTasks(TaskGrid);
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
             columnLayout?.Dispose();
+            sortController?.Dispose();
             columnLayout = null;
+            sortController = null;
         }
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
