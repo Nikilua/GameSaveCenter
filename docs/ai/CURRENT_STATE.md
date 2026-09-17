@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R04-03 未保存离开保护
+
+- `58e1734` 先核对并复用现有 Playnite `ISettings` 编辑克隆、三态保存提示、设置分类和滚动入口；模型新增 `HasPendingEdit`/`GetEditBaselineFingerprint()`，`CancelEdit`/`EndEdit` 明确清空编辑缓冲，未新增保存服务，也没有从 main 带入旧实现。
+- 设置页在宿主 `Window.Closing` 只对当前编辑会话的有效脏草稿进入现有原生消息框：选择“是”调用既有 `CancelEdit` 后关闭；选择“否”取消关闭，保留草稿并恢复离开前分类、字段焦点；确认异常时保守保留窗口和草稿。临时卸载/重挂同一视图会继续使用 Playnite 编辑基线并恢复原焦点。
+- clean Release XAML `24/24`、构建 `0 warning / 0 error`、源码校验通过；R04-03 定向 `12/12`。真实 STA WPF Window 测试验证草稿分离/重挂、分类/字段焦点恢复和显式 CancelEdit 回滚；模型测试验证编辑基线与单次撤销。
+- clean RenderHarness 绑定完整 SHA `58e1734f0bf84b82d0fd95077327122e9b99cbf3`，`WorkingTreeClean=True`，Light/Dark、多尺寸、设置 normal/dirty/invalid、滚动/虚拟化、Shell/resize `render-qa OK`，357 PNG；人工抽查设置状态图。离屏证据不代表真实关闭确认 UI。
+- 边界：合成设置/fake Worker、隔离目录、STA WPF 与 offscreen logical DIP；没有真实 Playnite 原生关闭按钮/确认框 UIA 操作，真实宿主保存/取消/关闭时序、屏幕阅读器、物理 DPI/跨屏、presented frame、ETW、宿主性能仍未验；未写真实存档、媒体或云端。证据见 [`R04-03-DRAFT-LIFECYCLE-20260917.md`](../design/reviews/ui-finesse-round3-20260915/evidence/R04-03-DRAFT-LIFECYCLE-20260917.md)。下一可执行任务为 R04-04 粘贴标准化。
+
 ## 当前第三轮 R04-02 错误摘要导航
 
 - `6524f94` 先核对并复用现有 `GameSaveCenterSettings.VerifySettings`、字段 Validation 模板、页头摘要/详情、设置分类 ListBox 与 `SettingsScroller`；没有从 main 带入旧实现，也没有替换游戏选框或滚动条。设置校验错误现在按真实文案映射到已命名字段，详情中的可定位消息使用 Hyperlink。

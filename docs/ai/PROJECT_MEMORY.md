@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-17
 
+## 2026-09-17 R04-03 未保存离开保护
+
+- `58e1734f0bf84b82d0fd95077327122e9b99cbf3` 复用 `GameSaveCenterSettings` 的 Playnite `ISettings` 编辑克隆和 `CreateSettingsFingerprint`；`HasPendingEdit` 与 `GetEditBaselineFingerprint` 让设置视图重建后仍以 Playnite 捕获的编辑基线判断 dirty。`CancelEdit` 恢复一次并清空克隆，`EndEdit` 成功提交后清空克隆，失败不丢草稿。
+- `GameSaveCenterSettingsView` 在 Loaded 挂接宿主 Window Closing，在 Unloaded 解除；有有效脏草稿时复用原生消息框，“是”显式放弃并关闭，“否”取消关闭、保留值并恢复原分类/字段焦点；确认异常时 fail-safe 保留窗口和草稿。临时分离/重挂使用同一编辑对象，并用 `BringIntoView`/`Keyboard.Focus` 恢复。
+- `SettingsDraftLifecycleBehaviorTests` 实际 STA WPF `1/1`，与 `PortableSettingsTests`、`SettingsValidationSourceTests` 合计 `12/12`；clean Release XAML `24/24`、构建 `0/0`、源码校验通过。RenderHarness 完整 SHA `58e1734f0bf84b82d0fd95077327122e9b99cbf3`、`WorkingTreeClean=True`、357 PNG、双主题/多尺寸/设置三态/滚动/虚拟化/Shell/resize `render-qa OK`。
+- 边界：没有自动点击真实 Playnite 原生关闭确认和 UIA，真实宿主保存/取消/关闭时序、物理 DPI/跨屏、读屏、presented frame、ETW、宿主性能仍未验；测试使用合成设置/fake Worker/隔离目录，未写真实存档、媒体或云端。下一项 R04-04 粘贴标准化。
+
 ## 2026-09-17 R04-02 错误摘要导航
 
 - `6524f94` 复用现有设置 VerifySettings、字段校验模板、页头摘要/详情和分类/滚动系统；设置页登记路径、备份、外观和自动化字段目标，把可识别错误变成详情 Hyperlink。点击后先选分类，再对字段 `BringIntoView` 并聚焦；字段 HelpText、链接 Automation Name/HelpText 保留具体原因，命令/Binding 不变。
