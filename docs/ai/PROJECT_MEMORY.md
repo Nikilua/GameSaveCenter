@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-17
 
+## 2026-09-17 R04-04 粘贴标准化
+
+- `d7e92f1467648f045ff94fb30da5ac9712cd402b` 先盘点最新生产输入：设置页只有本地路径/云端目标，MediaCenter 有自定义媒体目录/文件模式；当前没有可编辑端口或独立 Exclude 字段，因此不扩展不存在的 DTO/业务模型。
+- `PasteNormalization` 是共享 WPF attached behavior，输入类型为 `Path`、`RemoteTarget`、`Port`、`ExcludePattern`。统一规则只处理外层空白、成对单/双引号和单值尾随 shell 换行；剩余换行表示多值粘贴，直接拒绝并保留字段/剪贴板。Port 类型仅保留未来真实字段接入点。
+- 标准化以 `TextBox.SelectedText` 写入，让 WPF 维护正常 Undo；本次 raw paste 和结果说明只保存在 TextBox attached state，不落盘、不进 Worker、不改剪贴板。Tooltip/Automation HelpText 告知标准化变化和 Ctrl+Z 恢复语义。
+- `PasteNormalizationTests` 6 个、生产 XAML source/既有 settings source 2 个合计 `8/8`；Release XAML `24/24`、构建 `0/0`、`validate-source.py` 通过。clean RenderHarness `d7e92f1` 双主题、297 PNG、`WorkingTreeClean=True`、`render-qa OK`，人工抽查 Settings/Media。
+- 证据只代表合成数据、隔离目录、STA WPF 和 offscreen logical DIP；真实 Playnite 剪贴板/输入链、IME、读屏、物理 DPI/跨屏、presented frame、ETW、宿主性能和未来真实端口/Exclude 字段仍未验。未写真实存档、媒体、云端。下一项 R04-05 数字输入边界。
+
 ## 2026-09-17 R04-03 未保存离开保护
 
 - `58e1734f0bf84b82d0fd95077327122e9b99cbf3` 复用 `GameSaveCenterSettings` 的 Playnite `ISettings` 编辑克隆和 `CreateSettingsFingerprint`；`HasPendingEdit` 与 `GetEditBaselineFingerprint` 让设置视图重建后仍以 Playnite 捕获的编辑基线判断 dirty。`CancelEdit` 恢复一次并清空克隆，`EndEdit` 成功提交后清空克隆，失败不丢草稿。

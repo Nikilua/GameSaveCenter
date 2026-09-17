@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R04-04 粘贴标准化
+
+- `d7e92f1` 先核对当前生产字段：设置页有本地路径和 Rclone 云端目标，MediaCenter 有自定义媒体目录与文件模式；当前没有可编辑端口字段，也没有独立 Exclude 设置字段，没有从 main 带入旧实现。
+- 新增共享 `PasteNormalization` attached behavior，按 `Path`、`RemoteTarget`、`Port`、`ExcludePattern` 类型保留语义边界。已接入设置 6 个路径、云端目标、媒体目录和媒体文件模式；Port 类型只作为未来真实字段的可复用合同，不新增业务 UI。
+- 单值粘贴去除外层空白/成对引号及尾随 shell 换行；内部仍有换行的多行粘贴被拒绝，字段保持原值，剪贴板不改写。标准化结果通过 Tooltip/Automation HelpText 解释，并用 `TextBox.SelectedText` 保留原生 Ctrl+Z 恢复粘贴前字段值。
+- `PasteNormalizationTests`、`PasteNormalizationSourceTests`、`SettingsValidationSourceTests` 定向 `8/8`；clean Release XAML `24/24`、构建 `0/0`、源码校验通过。clean RenderHarness 绑定完整 `d7e92f1467648f045ff94fb30da5ac9712cd402b`，`WorkingTreeClean=True`、双主题、297 PNG、`render-qa OK`；人工抽查 Settings/Media `1040×700`。
+- 边界：合成文本/设置/fake Worker、隔离目录、STA WPF、offscreen logical DIP；未验真实 Playnite 剪贴板/输入链、IME、读屏、物理 DPI/跨屏、presented frame、ETW、宿主性能，也没有真实端口/排除字段可做宿主验证。未写真实存档、媒体或云端。下一可执行任务为 R04-05 数字输入边界。
+
 ## 当前第三轮 R04-03 未保存离开保护
 
 - `58e1734` 先核对并复用现有 Playnite `ISettings` 编辑克隆、三态保存提示、设置分类和滚动入口；模型新增 `HasPendingEdit`/`GetEditBaselineFingerprint()`，`CancelEdit`/`EndEdit` 明确清空编辑缓冲，未新增保存服务，也没有从 main 带入旧实现。

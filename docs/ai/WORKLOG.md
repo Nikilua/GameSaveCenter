@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-17 R04-04 粘贴标准化
+
+- 先核对最新实现：设置页没有端口/独立 Exclude 字段，真实范围是 6 个路径、Rclone 云端目标、MediaCenter 自定义媒体目录和文件模式；没有把 main 旧实现覆盖到当前分支，也没有新建业务 DTO。
+- `d7e92f1` 新增共享 `PasteNormalization` attached behavior。Path/RemoteTarget/Port/ExcludePattern 分开标识；外层空白、成对引号和单值尾随 shell 换行可标准化，剩余内部换行拒绝，字段和剪贴板保持不变；标准化用 `SelectedText` 写入并保留原生 Undo，Tooltip/Automation HelpText 解释前后结果。Port 只保留未来真实字段的接入类型。
+- `PasteNormalizationTests`、source 集成测试和既有 settings source 测试定向 `8/8`；clean Release XAML `24/24`、构建 `0/0`、`validate-source.py` 通过。clean RenderHarness 绑定完整 SHA，`WorkingTreeClean=True`、双主题、297 PNG、`render-qa OK`；Settings/Media `1040×700` 图人工抽查，新增提示可读且未造成横向溢出。
+- 边界：证据来自合成文本/设置/fake Worker、隔离目录、STA WPF、offscreen logical DIP；未验真实 Playnite 剪贴板/输入链、IME、读屏、物理 DPI/跨屏、presented frame、ETW、宿主性能；当前没有真实端口/排除字段可做宿主验证。未写真实存档、媒体或云端。下一可执行任务为 R04-05 数字输入边界。
+
 ## 2026-09-17 R04-03 未保存离开保护
 
 - 先核对已有能力：Playnite `ISettings` 已有编辑克隆、保存/取消入口、指纹和设置状态提示；设置分类切换只改现有面板可见性，不会替换编辑对象。本阶段没有引入第二套设置保存服务，也没有改游戏选框或滚动条。
