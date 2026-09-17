@@ -220,6 +220,10 @@ namespace GameSaveCenter.Playnite.ViewModels
             var ignored = string.Equals(collectionMode, "已忽略", StringComparison.Ordinal);
             var incoming = page.Items ?? new List<MediaItemDto>();
             var accumulator = ignored ? ignoredMediaPageAccumulator : unassignedMediaPageAccumulator;
+            var previousSelectedIndex = string.Equals(MediaInboxMode, collectionMode, StringComparison.Ordinal)
+                && SelectedInboxMedia != null
+                ? MediaInboxItems.IndexOf(SelectedInboxMedia)
+                : -1;
             if (reset)
                 accumulator.ReplaceFirstPage(incoming, selectedId);
             else
@@ -247,7 +251,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             var keepSelectedId = string.Equals(currentSelectedId, selectedId, StringComparison.OrdinalIgnoreCase)
                 ? selectedId
                 : currentSelectedId;
-            ApplyMediaInboxMode(keepSelectedId);
+            ApplyMediaInboxMode(keepSelectedId, previousSelectedIndex);
 
             var currentTargetId = InboxTargetGame?.PlayniteId;
             var keepTargetId = string.Equals(currentTargetId, targetId, StringComparison.OrdinalIgnoreCase)
@@ -334,6 +338,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private void ApplyMediaPage(MediaPageDto page, bool reset, string? selectedId)
         {
             var incoming = page.Items ?? new List<MediaItemDto>();
+            var previousSelectedIndex = SelectedMedia == null ? -1 : Media.IndexOf(SelectedMedia);
             if (reset)
                 mediaPageAccumulator.ReplaceFirstPage(incoming, selectedId);
             else
@@ -343,8 +348,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             mediaPageHasMore = page.HasMore;
             OnPropertyChanged(nameof(MediaPageHasMore));
             OnPropertyChanged(nameof(MediaLoadedSummary));
-            SelectedMedia = Media.FirstOrDefault(x => string.Equals(x.MediaId, selectedId, StringComparison.OrdinalIgnoreCase))
-                            ?? Media.FirstOrDefault();
+            SelectedMedia = SelectionAnchorResolver.Restore(Media, selectedId, previousSelectedIndex, item => item.MediaId)!;
             MediaView.Refresh();
             RaiseCommandStates();
         }
@@ -419,12 +423,11 @@ namespace GameSaveCenter.Playnite.ViewModels
             RaiseCommandStates();
         }
 
-        private void ApplyMediaInboxMode(string? selectedId = null)
+        private void ApplyMediaInboxMode(string? selectedId = null, int previousSelectedIndex = -1)
         {
             var keepId = selectedId ?? SelectedInboxMedia?.MediaId;
             MediaInboxItems = MediaInboxMode == "已忽略" ? IgnoredMedia : UnassignedMedia;
-            SelectedInboxMedia = MediaInboxItems.FirstOrDefault(x => string.Equals(x.MediaId, keepId, StringComparison.OrdinalIgnoreCase))
-                                 ?? MediaInboxItems.FirstOrDefault();
+            SelectedInboxMedia = SelectionAnchorResolver.Restore(MediaInboxItems, keepId, previousSelectedIndex, item => item.MediaId)!;
             RaiseCommandStates();
         }
 

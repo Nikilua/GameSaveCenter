@@ -17,7 +17,7 @@ public sealed class PurposeNavigationSourceTests
         Assert.Contains("taskSearchRefresh.Cancel();", viewModel);
         Assert.Contains("taskHistoryQueryRefresh.Cancel();", viewModel);
         Assert.Contains("Run(() => LoadTaskPageAsync(true));", viewModel);
-        Assert.Contains("RestoreTaskSelection(selectedTaskId);", viewModel);
+        Assert.Contains("RestoreTaskSelection(selectedTaskId, selectedTaskIndex);", viewModel);
         Assert.Contains("taskNavigationGameName", viewModel);
     }
 

@@ -2069,6 +2069,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 if (!dashboardRefreshRequests.IsCurrent(refreshRequest)) return;
                 var selectedGameId = SelectedGame?.PlayniteId;
                 var selectedGamePolicyDraft = CaptureSelectedGamePolicyDraft(selectedGameId);
+                var selectedTaskIndex = SelectedTask == null ? -1 : Tasks.IndexOf(SelectedTask);
                 var selectedTaskId = SelectedTask?.TaskId;
                 var mediaTargetId = MediaTargetGame?.PlayniteId;
                 if (taskSnapshotInitialized)
@@ -2145,16 +2146,16 @@ namespace GameSaveCenter.Playnite.ViewModels
                 Replace(OverviewTasks, data.RecentTasks.Take(8), SnapshotComparers.Task);
                 Replace(Activities, data.RecentActivities.Take(12), SnapshotComparers.Activity);
                 RebuildTaskFilters();
-                RestoreTaskSelection(selectedTaskId);
+                RestoreTaskSelection(selectedTaskId, selectedTaskIndex);
+                var previousFindingIndex = SelectedFinding == null ? -1 : Findings.IndexOf(SelectedFinding);
                 var previousFindingPlayniteId = SelectedFinding?.PlayniteId;
                 var previousFindingCode = SelectedFinding?.Code;
                 var previousFindingTitle = SelectedFinding?.Title;
                 Replace(Findings, data.Findings, SnapshotComparers.Finding);
-                SelectedFinding = Findings.FirstOrDefault(x =>
-                        !string.IsNullOrWhiteSpace(previousFindingCode)
-                        && string.Equals(x.PlayniteId, previousFindingPlayniteId, StringComparison.OrdinalIgnoreCase)
-                        && string.Equals(x.Code, previousFindingCode, StringComparison.OrdinalIgnoreCase)
-                        && string.Equals(x.Title, previousFindingTitle, StringComparison.Ordinal));
+                var previousFindingKey = BuildFindingSelectionKey(previousFindingPlayniteId, previousFindingCode, previousFindingTitle);
+                SelectedFinding = previousFindingIndex >= 0 || !string.IsNullOrWhiteSpace(previousFindingKey)
+                    ? SelectionAnchorResolver.Restore(Findings, previousFindingKey, previousFindingIndex, BuildFindingSelectionKey)!
+                    : null!;
                 // OverviewView gives this projection its own finite viewport. Keep the
                 // complete attention set here so additional findings scroll inside the
                 // card instead of being silently discarded before the view can render them.
@@ -2183,7 +2184,12 @@ namespace GameSaveCenter.Playnite.ViewModels
                 {
                     EffectiveSettings = settings;
                     DiagnosticSummary = BuildDiagnosticSummary(settings);
+                    var previousMappingIndex = SelectedProcessMapping == null ? -1 : ProcessMappings.IndexOf(SelectedProcessMapping);
+                    var selectedMappingExecutable = SelectedProcessMapping?.ExecutableName;
                     Replace(ProcessMappings,mappings, SnapshotComparers.ProcessMapping);
+                    SelectedProcessMapping = previousMappingIndex >= 0 || !string.IsNullOrWhiteSpace(selectedMappingExecutable)
+                        ? SelectionAnchorResolver.Restore(ProcessMappings, selectedMappingExecutable, previousMappingIndex, mapping => mapping.ExecutableName)!
+                        : null!;
                     if(ProcessMappingTargetGame==null) ProcessMappingTargetGame=SelectedGame??Games.FirstOrDefault();
                 });
                 var quarantinePage = await plugin.RequestAsync<RetentionQuarantinePageDto>(
@@ -2567,6 +2573,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                     var merged = reset
                         ? incoming
                         : Tasks.Concat(incoming.Where(item => !Tasks.Any(existing => string.Equals(existing.TaskId, item.TaskId, StringComparison.OrdinalIgnoreCase)))).ToList();
+                    var selectedTaskIndex = SelectedTask == null ? -1 : Tasks.IndexOf(SelectedTask);
                     var selectedTaskId = SelectedTask?.TaskId;
                     var changed = Replace(Tasks, merged, SnapshotComparers.Task);
                     if (changed) taskIndex.Rebuild(Tasks);
@@ -2586,7 +2593,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                     RebuildTaskFilters();
                     CompleteTaskPageLoad();
                     StatusMessage = TaskLoadedSummary;
-                    RestoreTaskSelection(selectedTaskId);
+                    RestoreTaskSelection(selectedTaskId, selectedTaskIndex);
                     RaiseCommandStates();
                 });
             }
@@ -2951,18 +2958,29 @@ namespace GameSaveCenter.Playnite.ViewModels
         internal static SavePathCandidateDto? RestoreSaveCandidateSelection(
             IEnumerable<SavePathCandidateDto> candidates,
             SavePathCandidateDto? previouslySelected)
+            => RestoreSaveCandidateSelection(candidates, previouslySelected, -1);
+
+        internal static SavePathCandidateDto? RestoreSaveCandidateSelection(
+            IEnumerable<SavePathCandidateDto> candidates,
+            SavePathCandidateDto? previouslySelected,
+            int previousIndex)
         {
+            var list = candidates is IList<SavePathCandidateDto> typed
+                ? typed
+                : candidates.ToList();
             if (previouslySelected != null)
             {
-                var restored = candidates.FirstOrDefault(candidate =>
+                var restored = list.FirstOrDefault(candidate =>
                     string.Equals(candidate.PlayniteId, previouslySelected.PlayniteId, StringComparison.OrdinalIgnoreCase)
                     && string.Equals(candidate.Path, previouslySelected.Path, StringComparison.OrdinalIgnoreCase));
                 if (restored != null)
                     return restored;
+                if (previousIndex >= 0 && list.Count > 0)
+                    return SelectionAnchorResolver.Restore(list, null, previousIndex, _ => null);
             }
 
-            return candidates.FirstOrDefault(candidate => string.Equals(candidate.Status, "Pending", StringComparison.OrdinalIgnoreCase))
-                ?? candidates.FirstOrDefault();
+            return list.FirstOrDefault(candidate => string.Equals(candidate.Status, "Pending", StringComparison.OrdinalIgnoreCase))
+                ?? list.FirstOrDefault();
         }
 
         private async Task LoadDetailsAsync(bool forceBackupHistory = false, CancellationToken cancellationToken = default(CancellationToken), long expectedGeneration = 0, string? expectedGameId = null)
@@ -2985,13 +3003,14 @@ namespace GameSaveCenter.Playnite.ViewModels
                         ApplyOnUi(() =>
                         {
                             if (!IsCurrentDetailsLoad(id, cancellationToken, expectedGeneration)) return;
+                            var selectedBackupIndex = SelectedBackup == null ? -1 : Backups.IndexOf(SelectedBackup);
                             var selectedBackupId = SelectedBackup?.BackupId;
                             var selectedCandidateBeforeRefresh = SelectedCandidate;
+                            var selectedCandidateIndex = SelectedCandidate == null ? -1 : SaveCandidates.IndexOf(SelectedCandidate);
                             Replace(Backups, backupsTask.Result, SnapshotComparers.Backup);
                             Replace(SaveCandidates, candidatesTask.Result, SnapshotComparers.SaveCandidate);
-                            SelectedBackup = Backups.FirstOrDefault(x => string.Equals(x.BackupId, selectedBackupId, StringComparison.OrdinalIgnoreCase))
-                                             ?? Backups.FirstOrDefault();
-                            SelectedCandidate = RestoreSaveCandidateSelection(SaveCandidates, selectedCandidateBeforeRefresh)!;
+                            SelectedBackup = SelectionAnchorResolver.Restore(Backups, selectedBackupId, selectedBackupIndex, backup => backup.BackupId)!;
+                            SelectedCandidate = RestoreSaveCandidateSelection(SaveCandidates, selectedCandidateBeforeRefresh, selectedCandidateIndex)!;
                             CompleteSaveDetailsLoad();
                             RaiseCommandStates();
                         });
@@ -4385,16 +4404,33 @@ namespace GameSaveCenter.Playnite.ViewModels
         }
 
         private void RestoreTaskSelection(string? selectedTaskId)
+            => RestoreTaskSelection(selectedTaskId, -1);
+
+        private void RestoreTaskSelection(string? selectedTaskId, int previousIndex)
         {
             var restored = !string.IsNullOrWhiteSpace(selectedTaskId)
                 ? Tasks.FirstOrDefault(item => string.Equals(item.TaskId, selectedTaskId, StringComparison.OrdinalIgnoreCase))
                 : null;
             if (restored == null && !string.IsNullOrWhiteSpace(taskNavigationGameName))
                 restored = Tasks.FirstOrDefault(MatchesTaskNavigationTarget);
+            if (restored == null)
+                restored = SelectionAnchorResolver.Restore(Tasks, null, previousIndex, item => item.TaskId);
 
-            SelectedTask = restored ?? (string.IsNullOrWhiteSpace(taskNavigationGameName) ? Tasks.FirstOrDefault() : null!);
+            SelectedTask = restored!;
             if (!string.IsNullOrWhiteSpace(taskNavigationGameName) && restored == null)
                 StatusMessage = $"未找到“{taskNavigationGameName}”的失败任务记录；已保留当前筛选条件。";
+        }
+
+        private static string? BuildFindingSelectionKey(ValidationFindingDto? finding)
+            => finding == null ? null : BuildFindingSelectionKey(finding.PlayniteId, finding.Code, finding.Title);
+
+        private static string? BuildFindingSelectionKey(string? playniteId, string? code, string? title)
+        {
+            if (string.IsNullOrWhiteSpace(playniteId)
+                && string.IsNullOrWhiteSpace(code)
+                && string.IsNullOrWhiteSpace(title))
+                return null;
+            return $"{playniteId}\u001f{code}\u001f{title}";
         }
 
         private bool MatchesTaskNavigationTarget(TaskStatusDto task)

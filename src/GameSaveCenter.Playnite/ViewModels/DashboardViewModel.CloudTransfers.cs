@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using GameSaveCenter.Contracts;
+using GameSaveCenter.Playnite.Infrastructure;
 
 namespace GameSaveCenter.Playnite.ViewModels;
 
@@ -58,6 +59,7 @@ public sealed partial class DashboardViewModel
                 var selectedKey = !string.IsNullOrWhiteSpace(pendingCloudTransferKey)
                     ? pendingCloudTransferKey
                     : SelectedCloudTransfer?.TransferKey;
+                var previousSelectedIndex = SelectedCloudTransfer == null ? -1 : CloudTransferItems.IndexOf(SelectedCloudTransfer);
                 if (response?.PageResetRequired == true)
                 {
                     pageResetReceived = true;
@@ -109,10 +111,12 @@ public sealed partial class DashboardViewModel
                 var restored = !string.IsNullOrWhiteSpace(selectedKey)
                     ? CloudTransferItems.FirstOrDefault(x => string.Equals(x.TransferKey, selectedKey, StringComparison.OrdinalIgnoreCase))
                     : null;
-                SelectedCloudTransfer = restored!;
                 var shouldLoadPending = restored == null
                     && !string.IsNullOrWhiteSpace(selectedKey)
                     && response?.HasMore == true;
+                if (restored == null && !shouldLoadPending && (previousSelectedIndex >= 0 || !string.IsNullOrWhiteSpace(selectedKey)))
+                    restored = SelectionAnchorResolver.Restore(CloudTransferItems, selectedKey, previousSelectedIndex, item => item.TransferKey);
+                SelectedCloudTransfer = restored!;
                 if (shouldLoadPending)
                     pendingCloudTransferKey = selectedKey;
                 if (restored != null && string.Equals(pendingCloudTransferKey, restored.TransferKey, StringComparison.OrdinalIgnoreCase))
