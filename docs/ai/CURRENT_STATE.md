@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R05-02 选项虚拟化焦点
+
+- `7a4ede84667d916ad61d382302b742cca8fd4704` 先复现生产 Shell 游戏选框第一次 `Down` 会因 `SelectionChanged` 误关闭弹层，再以最小范围补键盘导航保护：方向键、PageUp/PageDown、Home/End 更新活动项时不关闭；鼠标预览点击清除保护，保留原有点击选择提交和关闭语义；卸载清理代际状态。
+- 实际生产 Shell + 隔离 STA WPF 的 2000 项行为 `R05OptionVirtualizationBehaviorTests 3/3`：有限窗口保持虚拟化，PageDown/End/Home 后活动项均在实际 DIP 可见范围；过滤到无结果时保留有效隐藏选择并可用已有恢复命令，删除当前项后回退首个有效项。未改 `GamePickerViewModel`、过滤契约、滚动条、命令/Binding、取消错误/恢复保护、有限列表或 net462。
+- clean Release XAML `24/24`、构建 `0/0`；clean artifact R05-02 `3/3`、R05-01 回归 `3/3`、既有选框键盘 `6/6`。clean RenderHarness 绑定完整 SHA，Light/Dark、297 PNG、`WorkingTreeClean=True`、`render-qa OK`，Shell/Settings/Task 代表图已抽查。证据见 [`R05-02-OPTION-VIRTUALIZATION-20260917.md`](../design/reviews/ui-finesse-round3-20260915/evidence/R05-02-OPTION-VIRTUALIZATION-20260917.md)。
+- 边界：键盘是生产视觉树隔离 STA WPF 的合成路由，不等价真实 Playnite、物理键盘/IME、读屏或 UIA；渲染的 `DpiScale=1.00` 仅 logical DIP，真实物理 DPI/跨屏、presented frame、ETW、宿主性能仍未验；未写真实存档、媒体或云端。下一可执行任务为 R05-03 弹层边缘适配。
+
 ## 当前第三轮 R05-01 弹层焦点范围
 
 - `0004999507d0cf27f483ea1234a7a60b4ad7f9b7` 在最新生产 Shell 上收口弹层焦点边界：`PickerOverlay` 和 Dashboard `DialogOverlay` 声明本地焦点范围、Tab 循环和方向键包含；游戏选框打开后进入 `GameSearchTextBox`，关闭仍回焦 `GameContextButton`。共享 `ComboBoxItem` 明确 `IsTabStop=False`，选项导航仍由原生方向键/Enter/Escape 负责。

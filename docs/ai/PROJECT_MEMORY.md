@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-17
 
+## 2026-09-17 R05-02 选项虚拟化焦点
+
+- `7a4ede84667d916ad61d382302b742cca8fd4704` 先复现实际缺口：生产 Shell ListBox 的键盘 Down 会被 `OnPickerSelectionChanged` 误认为选择提交并关闭弹层。修复只在选框预览键路由为方向键、PageUp/PageDown、Home/End 设置短暂保护；鼠标预览点击重置保护并保留旧的点击即提交路径。
+- 生产 `PickerList` 原有 Auto 垂直滚动、Recycling 虚拟化、`GamePickerViewModel` 的隐藏选择保留/恢复命令/删除回退均复用，没有改 VM 或滚动系统。实际 STA WPF 2000 项行为证明活动项可见，过滤无结果仍可恢复，删除选中项回退首项。
+- clean artifact 定向：R05-02 `3/3`、R05-01 `3/3`、既有 `GamePickerKeyboardBehaviorTests 6/6`；clean Release XAML `24/24`、构建 `0/0`；RenderHarness 双主题 297 PNG、工作树 clean、`render-qa OK`。证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R05-02-OPTION-VIRTUALIZATION-20260917.md`。
+- 边界仍是隔离 STA WPF/offscreen logical DIP；真实 Playnite/OS 输入、IME、读屏、物理 DPI/跨屏、presented frame、ETW、宿主性能未验，未写真实存档、媒体或云端。下一项 R05-03 弹层边缘适配。
+
 ## 2026-09-17 R05-01 弹层焦点范围
 
 - `0004999507d0cf27f483ea1234a7a60b4ad7f9b7` 先复现并修复生产 Shell 游戏选框的 Tab 越界：`PickerOverlay` 现在是独立 focus scope，Tab/Shift+Tab 循环且方向导航包含；打开即聚焦搜索框，关闭复用原有路径回焦上下文按钮。Dashboard `DialogOverlay` 同步声明本地循环并在关闭时恢复保存的打开触发器。

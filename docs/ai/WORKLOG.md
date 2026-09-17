@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-17 R05-02 选项虚拟化焦点
+
+- 先核对现有能力：`PickerList` 已有 Auto 垂直滚动和 Recycling 虚拟化，`GamePickerViewModel` 已有 `ICollectionView` 过滤、隐藏选择保留、恢复命令和 `SetItems` 首项回退；实际缺口是键盘移动也触发了“选择即关闭”。
+- 用真实生产 Shell + 2000 项隔离 STA WPF 先得到负例：ListBoxItem `Down` 改变索引后弹层变为 Collapsed。`7a4ede84` 在 Shell PreviewKeyDown 增加方向键/PageUp/PageDown/Home/End 的短暂导航保护，在 ListBox PreviewMouseDown 清除保护并保持鼠标提交，卸载清理状态；没有改 VM/滚动/命令契约。
+- `R05OptionVirtualizationBehaviorTests` `3/3`：方向键、PageDown、End、Home 均保持打开且活动项实际位于 DIP 可见范围；过滤无结果保留选择并可恢复，删除选中项回退首个有效项，初始 2000 项只实现有限窗口。clean artifact R05-02 `3/3`、R05-01 回归 `3/3`、既有选框键盘 `6/6`。
+- clean Release XAML `24/24`、构建 `0/0`；RenderHarness 绑定 clean `7a4ede84`，双主题 297 PNG、`WorkingTreeClean=True`、`render-qa OK`，Shell/Settings/Task 图已抽查。边界为合成 WPF 键盘路由/offscreen logical DIP，不推断真实 Playnite/物理键盘/IME/读屏/物理 DPI/presented frame/ETW/宿主性能。下一可执行小批量为 R05-03 弹层边缘适配。
+
 ## 2026-09-17 R05-01 弹层焦点范围
 
 - 先查现有能力：生产 Shell 游戏选框已经有打开/关闭/搜索焦点/滚动/命令链，缺口是容器级 Tab 边界；共享 ComboBox 选项没有显式 Tab 停靠契约；Dashboard 关闭详情/确认层没有统一回焦触发器。
