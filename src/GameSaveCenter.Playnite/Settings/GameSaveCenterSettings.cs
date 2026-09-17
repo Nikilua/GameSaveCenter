@@ -219,10 +219,13 @@ namespace GameSaveCenter.Playnite.Settings
                 errors.Add("完整备份保留数量必须为 1–255。");
             if (DifferentialBackupLimit < 0 || DifferentialBackupLimit > 255)
                 errors.Add("差异备份保留数量必须为 0–255。");
-            if (HealthInspectionIntervalMinutes < 15 || HealthInspectionIntervalMinutes > 10080)
-                errors.Add("恢复可用性巡检间隔必须为 15–10080 分钟。");
-            if (HealthInspectionStaleAfterDays < 1 || HealthInspectionStaleAfterDays > 3650)
-                errors.Add("恢复可用性验证有效期必须为 1–3650 天。");
+            if (HealthInspectionEnabled)
+            {
+                if (HealthInspectionIntervalMinutes < 15 || HealthInspectionIntervalMinutes > 10080)
+                    errors.Add("恢复可用性巡检间隔必须为 15–10080 分钟。");
+                if (HealthInspectionStaleAfterDays < 1 || HealthInspectionStaleAfterDays > 3650)
+                    errors.Add("恢复可用性验证有效期必须为 1–3650 天。");
+            }
             if (CompressionLevel < -7 || CompressionLevel > 22)
                 errors.Add("压缩等级必须为 -7–22；zstd 建议使用 3。");
             return errors.Count == 0;

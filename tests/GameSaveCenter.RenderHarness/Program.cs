@@ -6643,20 +6643,29 @@ public static class Program
             refresh.Invoke(view, null);
             host.UpdateLayout();
 
-            var locator = FindVisualChildren<FrameworkElement>(host)
-                .FirstOrDefault(element => element.Name == "SettingsValidationLocateButton");
-            var tabs = FindVisualChildren<ListBox>(host)
-                .FirstOrDefault(element => element.Name == "SettingsSectionTabs");
-            if (locator == null || tabs == null)
+            var locator = view.FindName("SettingsValidationLocateButton") as FrameworkElement;
+            var tabs = view.FindName("SettingsSectionTabs") as ListBox;
+            var details = view.FindName("SettingsValidationDetailsText") as TextBlock;
+            var field = view.FindName("CompressionLevelTextBox") as TextBox;
+            var links = details?.Inlines.OfType<Hyperlink>().ToArray() ?? Array.Empty<Hyperlink>();
+            if (locator == null || tabs == null || details == null || field == null || links.Length == 0)
                 throw new InvalidOperationException("Settings validation locator controls did not materialize.");
 
-            locator.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+            var compressionLink = links.Single(link => link.Inlines.OfType<Run>()
+                .Any(run => run.Text.IndexOf("压缩等级", StringComparison.Ordinal) >= 0));
+            compressionLink.RaiseEvent(new RoutedEventArgs(Hyperlink.ClickEvent));
             host.UpdateLayout();
-            report.AppendLine($"  SettingsValidationNavigation visible={locator.Visibility} selectedCategory={tabs.SelectedIndex}");
+            var helpText = AutomationProperties.GetHelpText(field) ?? string.Empty;
+            var settingsScroller = FindVisualChildren<ScrollViewer>(host)
+                .FirstOrDefault(element => element.Name == "SettingsScroller");
+            var scrollOffset = settingsScroller?.VerticalOffset ?? -1;
+            report.AppendLine($"  SettingsValidationNavigation visible={locator.Visibility} links={links.Length} selectedCategory={tabs.SelectedIndex} fieldVisibility={field.Visibility} fieldIsVisible={field.IsVisible} fieldFocused={field.IsKeyboardFocusWithin} scrollOffset={scrollOffset:0.##} help={helpText}");
             if (locator.Visibility != Visibility.Visible)
                 s_problems.Add("SettingsValidationNavigation locator is not visible for a backup validation error");
             if (tabs.SelectedIndex != 1)
                 s_problems.Add($"SettingsValidationNavigation selected category {tabs.SelectedIndex}, expected 1");
+            if (field.Visibility != Visibility.Visible || helpText.IndexOf("压缩等级", StringComparison.Ordinal) < 0)
+                s_problems.Add("SettingsValidationNavigation did not expose the linked compression field and reason");
         }
         catch (Exception ex)
         {

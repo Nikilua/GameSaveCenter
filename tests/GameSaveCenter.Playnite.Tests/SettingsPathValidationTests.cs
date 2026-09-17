@@ -56,6 +56,28 @@ public sealed class SettingsPathValidationTests
         }
     }
 
+    [Fact]
+    public void DisabledHealthInspectionFieldsDoNotBlockSettingsValidation()
+    {
+        var root = Path.Combine(Path.GetTempPath(), "gsc-settings-health-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(root);
+        try
+        {
+            File.WriteAllText(Path.Combine(root, "GameSaveCenter.Worker.exe"), "worker");
+            var settings = CreateValidSettings(root);
+            settings.HealthInspectionEnabled = false;
+            settings.HealthInspectionIntervalMinutes = 1;
+            settings.HealthInspectionStaleAfterDays = 0;
+
+            Assert.True(settings.VerifySettings(out var errors), string.Join("；", errors));
+            Assert.DoesNotContain("恢复可用性", string.Join("；", errors));
+        }
+        finally
+        {
+            try { Directory.Delete(root, true); } catch { }
+        }
+    }
+
     private static GameSaveCenterSettings CreateValidSettings(string root) => new()
     {
         WorkerExecutable = Path.Combine(root, "GameSaveCenter.Worker.exe"),

@@ -4,8 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
@@ -31,10 +34,41 @@ namespace GameSaveCenter.Playnite.Settings
         private Size pendingResponsiveSize;
         private GameSaveCenterSettings? observedSettings;
         private string savedSettingsFingerprint = string.Empty;
+        private readonly List<ValidationFieldTarget> validationFieldTargets = new();
+        private ValidationFieldTarget? firstValidationTarget;
+
+        private sealed class ValidationFieldTarget
+        {
+            private readonly Func<FrameworkElement?> resolveElement;
+
+            public ValidationFieldTarget(int categoryIndex, string displayName, Func<FrameworkElement?> resolveElement)
+            {
+                CategoryIndex = categoryIndex;
+                DisplayName = displayName;
+                this.resolveElement = resolveElement;
+            }
+
+            public int CategoryIndex { get; }
+            public string DisplayName { get; }
+            public FrameworkElement? Element => resolveElement();
+        }
+
+        private sealed class ValidationSummaryEntry
+        {
+            public ValidationSummaryEntry(string message, ValidationFieldTarget? target)
+            {
+                Message = message;
+                Target = target;
+            }
+
+            public string Message { get; }
+            public ValidationFieldTarget? Target { get; }
+        }
 
         public GameSaveCenterSettingsView()
         {
             InitializeComponent();
+            RegisterValidationFieldTargets();
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
             IsVisibleChanged += OnIsVisibleChanged;
@@ -45,6 +79,27 @@ namespace GameSaveCenter.Playnite.Settings
             AddHandler(CheckBox.ClickEvent, new RoutedEventHandler(OnSettingsFieldChanged));
             AddHandler(ToggleButton.CheckedEvent, new RoutedEventHandler(OnSettingsFieldChanged));
             AddHandler(ToggleButton.UncheckedEvent, new RoutedEventHandler(OnSettingsFieldChanged));
+            AddHandler(Validation.ErrorEvent, new RoutedEventHandler(OnSettingsValidationErrorChanged));
+        }
+
+        private void RegisterValidationFieldTargets()
+        {
+            validationFieldTargets.Add(new ValidationFieldTarget(0, "Worker 可执行文件", () => WorkerExecutableTextBox));
+            validationFieldTargets.Add(new ValidationFieldTarget(0, "Ludusavi 可执行文件", () => LudusaviExecutableTextBox));
+            validationFieldTargets.Add(new ValidationFieldTarget(0, "存档目录", () => LudusaviBackupDirectoryTextBox));
+            validationFieldTargets.Add(new ValidationFieldTarget(0, "Rclone 可执行文件", () => RcloneExecutableTextBox));
+            validationFieldTargets.Add(new ValidationFieldTarget(0, "媒体目录", () => MediaArchiveDirectoryTextBox));
+            validationFieldTargets.Add(new ValidationFieldTarget(0, "本地镜像目录", () => LocalMirrorPathTextBox));
+            validationFieldTargets.Add(new ValidationFieldTarget(1, "完整备份保留数量", () => FullBackupLimitTextBox));
+            validationFieldTargets.Add(new ValidationFieldTarget(1, "差异备份保留数量", () => DifferentialBackupLimitTextBox));
+            validationFieldTargets.Add(new ValidationFieldTarget(1, "压缩等级", () => CompressionLevelTextBox));
+            validationFieldTargets.Add(new ValidationFieldTarget(2, "毛玻璃强度", () => GlassStrengthSlider));
+            validationFieldTargets.Add(new ValidationFieldTarget(3, "默认游玩中备份间隔", () => DefaultBackupIntervalMinutesTextBox));
+            validationFieldTargets.Add(new ValidationFieldTarget(3, "进程检测间隔", () => ProcessPollingSecondsTextBox));
+            validationFieldTargets.Add(new ValidationFieldTarget(3, "管理面板刷新间隔", () => DashboardRefreshSecondsTextBox));
+            validationFieldTargets.Add(new ValidationFieldTarget(3, "最近保护统计窗口", () => RecentProtectionWindowComboBox));
+            validationFieldTargets.Add(new ValidationFieldTarget(3, "恢复巡检间隔", () => HealthInspectionIntervalMinutesTextBox));
+            validationFieldTargets.Add(new ValidationFieldTarget(3, "重新验证有效期", () => HealthInspectionStaleAfterDaysTextBox));
         }
 
         private GameSaveCenterSettings? CurrentSettings => DataContext as GameSaveCenterSettings;
@@ -159,6 +214,9 @@ namespace GameSaveCenter.Playnite.Settings
 
         private void OnSettingsFieldChanged(object sender, RoutedEventArgs e) => QueueValidationSummaryUpdate();
 
+        private void OnSettingsValidationErrorChanged(object sender, RoutedEventArgs e)
+            => QueueValidationSummaryUpdate();
+
         // VerifySettings checks executable paths and other file-backed values. Coalesce
         // per-keystroke notifications so typing a long path does not synchronously hit the
         // filesystem on every character or compete with the input caret/layout pass.
@@ -183,8 +241,29 @@ namespace GameSaveCenter.Playnite.Settings
                 || SettingsValidationDetailsText == null || SettingsGeneralValidationHint == null) return;
             var errors = new List<string>();
             settings.VerifySettings(out errors);
-            if (errors.Count == 0)
+            var entries = errors
+                .Select(error => new ValidationSummaryEntry(error, ResolveValidationTarget(error)))
+                .ToList();
+            foreach (var target in validationFieldTargets)
             {
+                var element = target.Element;
+                if (element == null || !element.IsEnabled) continue;
+                foreach (var validationError in Validation.GetErrors(element))
+                {
+                    var message = validationError.ErrorContent?.ToString();
+                    if (string.IsNullOrWhiteSpace(message)
+                        || entries.Any(entry => ReferenceEquals(entry.Target, target)
+                            && string.Equals(entry.Message, message, StringComparison.Ordinal)))
+                        continue;
+                    entries.Add(new ValidationSummaryEntry(message!, target));
+                }
+            }
+
+            UpdateValidationFieldHelp(entries);
+            firstValidationTarget = entries.Select(entry => entry.Target).FirstOrDefault(target => target != null);
+            if (entries.Count == 0)
+            {
+                firstValidationTarget = null;
                 SettingsValidationSummary.Visibility = Visibility.Collapsed;
                 SettingsValidationLocateButton.Visibility = Visibility.Collapsed;
                 SettingsValidationDetails.Visibility = Visibility.Collapsed;
@@ -192,32 +271,148 @@ namespace GameSaveCenter.Playnite.Settings
                 RefreshSaveState(true);
                 return;
             }
-            firstValidationCategoryIndex = FindValidationCategoryIndex(errors);
+            firstValidationCategoryIndex = firstValidationTarget?.CategoryIndex
+                ?? FindValidationCategoryIndex(entries.Select(entry => entry.Message));
             // Keep the header as a compact status and leave the full messages either beside
             // their fields or behind an explicit disclosure.  Joining path-heavy errors here
             // used most of a small settings host before the user reached a single field.
-            SettingsValidationSummary.Text = $"有 {errors.Count} 项设置需要修正";
-            SettingsValidationSummary.ToolTip = string.Join(Environment.NewLine, errors);
+            SettingsValidationSummary.Text = $"有 {entries.Count} 项设置需要修正";
+            SettingsValidationSummary.ToolTip = string.Join(Environment.NewLine, entries.Select(entry => entry.Message));
             SettingsValidationSummary.Visibility = Visibility.Visible;
             SettingsValidationLocateButton.Visibility = Visibility.Visible;
-            SettingsValidationDetailsText.Text = string.Join(Environment.NewLine, errors.Select(error => "• " + error));
+            RebuildValidationDetails(entries);
             SettingsValidationDetails.Visibility = Visibility.Visible;
-            var generalErrors = errors.Where(error => FindValidationCategoryIndex(new[] { error }) == 0).ToArray();
+            var generalErrors = entries
+                .Where(entry => (entry.Target?.CategoryIndex ?? FindValidationCategoryIndex(new[] { entry.Message })) == 0)
+                .Select(entry => entry.Message)
+                .ToArray();
             SettingsGeneralValidationHint.Text = generalErrors.Length == 0
                 ? string.Empty
                 : string.Join(Environment.NewLine, generalErrors.Select(error => "需要修正：" + error));
             SettingsGeneralValidationHint.Visibility = generalErrors.Length == 0 ? Visibility.Collapsed : Visibility.Visible;
-            SettingsValidationLocateButton.ToolTip = $"切换到“{GetSettingsCategoryName(firstValidationCategoryIndex)}”并查看首个校验错误。";
-            RefreshSaveState(errors.Count == 0);
+            SettingsValidationLocateButton.ToolTip = firstValidationTarget == null
+                ? $"切换到“{GetSettingsCategoryName(firstValidationCategoryIndex)}”并查看首个校验错误。"
+                : $"切换到“{GetSettingsCategoryName(firstValidationCategoryIndex)}”并聚焦{firstValidationTarget.DisplayName}。";
+            RefreshSaveState(false);
         }
 
         private void OnSettingsValidationLocateClick(object sender, RoutedEventArgs e)
         {
-            if (SettingsSectionTabs == null) return;
-            SettingsSectionTabs.SelectedIndex = Math.Max(0, Math.Min(4, firstValidationCategoryIndex));
-            SettingsSectionTabs.Focus();
-            ScrollSelectedCategoryIntoView();
+            FocusValidationTarget(firstValidationTarget);
             e.Handled = true;
+        }
+
+        private ValidationFieldTarget? ResolveValidationTarget(string error)
+        {
+            if (ContainsOrdinal(error, "Worker")) return FindValidationTarget("Worker 可执行文件");
+            if (ContainsOrdinal(error, "存档目录")) return FindValidationTarget("存档目录");
+            if (ContainsOrdinal(error, "媒体目录")) return FindValidationTarget("媒体目录");
+            if (ContainsOrdinal(error, "镜像")) return FindValidationTarget("本地镜像目录");
+            if (ContainsOrdinal(error, "Ludusavi")) return FindValidationTarget("Ludusavi 可执行文件");
+            if (ContainsOrdinal(error, "Rclone")) return FindValidationTarget("Rclone 可执行文件");
+            if (ContainsOrdinal(error, "定时备份")) return FindValidationTarget("默认游玩中备份间隔");
+            if (ContainsOrdinal(error, "进程检测")) return FindValidationTarget("进程检测间隔");
+            if (ContainsOrdinal(error, "管理面板") || ContainsOrdinal(error, "面板刷新")) return FindValidationTarget("管理面板刷新间隔");
+            if (ContainsOrdinal(error, "统计窗口") || ContainsOrdinal(error, "保护窗口")) return FindValidationTarget("最近保护统计窗口");
+            if (ContainsOrdinal(error, "毛玻璃")) return FindValidationTarget("毛玻璃强度");
+            if (ContainsOrdinal(error, "完整备份") || ContainsOrdinal(error, "完整版本")) return FindValidationTarget("完整备份保留数量");
+            if (ContainsOrdinal(error, "差异备份") || ContainsOrdinal(error, "差异版本")) return FindValidationTarget("差异备份保留数量");
+            if (ContainsOrdinal(error, "巡检间隔")) return FindValidationTarget("恢复巡检间隔");
+            if (ContainsOrdinal(error, "验证有效期")) return FindValidationTarget("重新验证有效期");
+            if (ContainsOrdinal(error, "压缩")) return FindValidationTarget("压缩等级");
+            return null;
+        }
+
+        private ValidationFieldTarget? FindValidationTarget(string displayName)
+            => validationFieldTargets.FirstOrDefault(target => string.Equals(target.DisplayName, displayName, StringComparison.Ordinal));
+
+        private void UpdateValidationFieldHelp(IEnumerable<ValidationSummaryEntry> entries)
+        {
+            foreach (var target in validationFieldTargets)
+            {
+                var element = target.Element;
+                if (element == null) continue;
+                var messages = entries
+                    .Where(entry => ReferenceEquals(entry.Target, target))
+                    .Select(entry => entry.Message)
+                    .Distinct(StringComparer.Ordinal)
+                    .ToArray();
+                if (messages.Length == 0)
+                    AutomationProperties.SetHelpText(element, string.Empty);
+                else
+                    AutomationProperties.SetHelpText(element, string.Join("；", messages));
+            }
+        }
+
+        private void RebuildValidationDetails(IReadOnlyList<ValidationSummaryEntry> entries)
+        {
+            SettingsValidationDetailsText.Inlines.Clear();
+            for (var index = 0; index < entries.Count; index++)
+            {
+                var entry = entries[index];
+                SettingsValidationDetailsText.Inlines.Add(new Run("• "));
+                if (entry.Target == null)
+                {
+                    SettingsValidationDetailsText.Inlines.Add(new Run(entry.Message));
+                }
+                else
+                {
+                    var link = new Hyperlink(new Run(entry.Message))
+                    {
+                        Tag = entry.Target,
+                        ToolTip = $"切换到“{GetSettingsCategoryName(entry.Target.CategoryIndex)}”并聚焦{entry.Target.DisplayName}"
+                    };
+                    AutomationProperties.SetName(link, $"定位错误：{entry.Message}");
+                    AutomationProperties.SetHelpText(link, link.ToolTip?.ToString() ?? string.Empty);
+                    link.Click += OnSettingsValidationErrorLinkClick;
+                    SettingsValidationDetailsText.Inlines.Add(link);
+                }
+
+                if (index < entries.Count - 1)
+                    SettingsValidationDetailsText.Inlines.Add(new LineBreak());
+            }
+        }
+
+        private void OnSettingsValidationErrorLinkClick(object sender, RoutedEventArgs e)
+        {
+            if (sender is Hyperlink link && link.Tag is ValidationFieldTarget target)
+            {
+                FocusValidationTarget(target);
+                e.Handled = true;
+            }
+        }
+
+        private void FocusValidationTarget(ValidationFieldTarget? target)
+        {
+            if (SettingsSectionTabs == null) return;
+            if (target == null)
+            {
+                SettingsSectionTabs.SelectedIndex = Math.Max(0, Math.Min(4, firstValidationCategoryIndex));
+                SettingsSectionTabs.Focus();
+                ScrollSelectedCategoryIntoView();
+                return;
+            }
+
+            SettingsSectionTabs.SelectedIndex = Math.Max(0, Math.Min(4, target.CategoryIndex));
+            ScrollSelectedCategoryIntoView();
+            void FocusField()
+            {
+                var field = target.Element;
+                if (field == null || !field.IsEnabled || !field.Focusable) return;
+                try
+                {
+                    field.BringIntoView();
+                }
+                catch (InvalidOperationException)
+                {
+                    // A category can still be completing its visibility/layout pass.
+                }
+                field.Focus();
+                Keyboard.Focus(field);
+            }
+
+            FocusField();
+            BeginUiSafely(FocusField, DispatcherPriority.Loaded);
         }
 
         private static int FindValidationCategoryIndex(IEnumerable<string> errors)

@@ -20,6 +20,8 @@ public sealed class SettingsValidationSourceTests
         Assert.Contains("AutomationProperties.Name=\"定位首个设置错误\"", view);
         Assert.Contains("x:Name=\"SettingsValidationDetails\" Header=\"查看错误详情\" Foreground=\"{DynamicResource GscPrimaryTextBrush}\"", view);
         Assert.Contains("x:Name=\"SettingsValidationDetailsText\"", view);
+        Assert.Contains("x:Name=\"HealthInspectionStaleAfterDaysTextBox\"", view);
+        Assert.Contains("x:Name=\"RecentProtectionWindowComboBox\"", view);
         Assert.Contains("AutomationProperties.Name=\"设置验证错误详情\"", view);
         Assert.Contains("x:Name=\"SettingsGeneralValidationHint\"", view);
         Assert.Contains("x:Name=\"SettingsSaveHintText\"", view);
@@ -29,12 +31,17 @@ public sealed class SettingsValidationSourceTests
         Assert.Contains("AddHandler(CheckBox.ClickEvent", code);
         Assert.Contains("AddHandler(ToggleButton.CheckedEvent", code);
         Assert.Contains("AddHandler(ToggleButton.UncheckedEvent", code);
+        Assert.Contains("AddHandler(Validation.ErrorEvent", code);
         Assert.Contains("QueueValidationSummaryUpdate", code);
         Assert.Contains("DispatcherPriority.Background", code);
         Assert.Contains("RefreshValidationSummary", code);
         Assert.Contains("FindValidationCategoryIndex", code);
-        Assert.Contains("有 {errors.Count} 项设置需要修正", code);
-        Assert.Contains("SettingsValidationDetailsText.Text", code);
+        Assert.Contains("有 {entries.Count} 项设置需要修正", code);
+        Assert.Contains("SettingsValidationDetailsText.Inlines.Clear()", code);
+        Assert.Contains("new Hyperlink(new Run(entry.Message))", code);
+        Assert.Contains("FocusValidationTarget", code);
+        Assert.Contains("field.BringIntoView()", code);
+        Assert.Contains("Keyboard.Focus(field)", code);
         Assert.Contains("SettingsGeneralValidationHint", code);
         Assert.Contains("SettingsSectionTabs.SelectedIndex", code);
         Assert.Contains("settings.VerifySettings(out errors)", code);
