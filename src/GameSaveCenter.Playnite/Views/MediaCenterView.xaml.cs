@@ -138,18 +138,47 @@ namespace GameSaveCenter.Playnite.Views
             // compact drawer implicitly after a collection refresh or a mode switch;
             // the user must explicitly request details for the newly selected item.
             mediaInboxInspectorOpen = false;
-            var count=MediaInboxGrid.SelectedItems.Count;
-            var ignored=string.Equals(attachedViewModel?.MediaInboxMode, "已忽略", StringComparison.Ordinal);
-            var tracked = GetInboxSelectionSet().Count;
-            var evicted = Math.Max(0, tracked - count);
-            MediaInboxBatchSelectionSummary.Text=count==0 && evicted == 0
-                ? "可按住 Ctrl / Shift 多选"
-                : ignored
-                    ? evicted > 0 ? $"当前窗口 {count} 项；另有 {evicted} 项已裁掉，不参与本次操作" : $"已选择 {count} 项；可恢复到待归类"
-                    : evicted > 0 ? $"当前窗口 {count} 项；另有 {evicted} 项已裁掉，不参与本次操作" : $"已选择 {count} 项；目标游戏可在此处调整";
+            UpdateMediaInboxSelectionSummary();
             CommandManager.InvalidateRequerySuggested();
             if (IsLoaded && responsiveWidth > 0 && responsiveHeight > 0)
                 ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
+        }
+
+        private void OnClearMediaInboxSelectionClick(object sender, RoutedEventArgs e)
+        {
+            restoringSelection = true;
+            try
+            {
+                MediaInboxGrid.SelectedItems.Clear();
+                GetInboxSelectionSet().Clear();
+            }
+            finally
+            {
+                restoringSelection = false;
+            }
+
+            UpdateMediaInboxSelectionSummary();
+            CommandManager.InvalidateRequerySuggested();
+            e.Handled = true;
+        }
+
+        private void UpdateMediaInboxSelectionSummary()
+        {
+            var visibleCount = MediaInboxGrid.SelectedItems.Count;
+            var totalCount = GetInboxSelectionSet().Count;
+            var unavailableCount = Math.Max(0, totalCount - visibleCount);
+            var ignored = string.Equals(attachedViewModel?.MediaInboxMode, "已忽略", StringComparison.Ordinal);
+
+            MediaInboxBatchSelectionSummary.Text = totalCount == 0
+                ? "未选择媒体 · Ctrl / Shift 多选"
+                : unavailableCount > 0
+                    ? $"已选 {totalCount} 项 · 当前窗口 {visibleCount} 项可操作 · 另 {unavailableCount} 项暂不可见"
+                    : ignored
+                        ? $"已选 {totalCount} 项 · 可恢复到待归类"
+                        : $"已选 {totalCount} 项 · 可批量处理";
+            MediaInboxClearSelectionButton.Visibility = totalCount > 0
+                ? Visibility.Visible
+                : Visibility.Collapsed;
         }
 
         private void OnMediaCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)

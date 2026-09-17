@@ -211,8 +211,9 @@
                             <WrapPanel x:Name="MediaInboxBatchActionRow" Margin="0,0,0,10" VerticalAlignment="Center">
                                 <StackPanel Margin="0,0,8,4">
                                     <TextBlock Text="批量处理" FontWeight="SemiBold"/>
-                                    <TextBlock x:Name="MediaInboxBatchSelectionSummary" Text="可按住 Ctrl / Shift 多选" Style="{DynamicResource GscCaptionStyle}" Width="112" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" Margin="0,3,0,0"/>
+                                    <TextBlock x:Name="MediaInboxBatchSelectionSummary" Text="未选择媒体 · Ctrl / Shift 多选" Style="{DynamicResource GscCaptionStyle}" Width="160" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" AutomationProperties.Name="批量选择摘要" Margin="0,3,0,0"/>
                                 </StackPanel>
+                                <ui:Button x:Name="MediaInboxClearSelectionButton" Style="{DynamicResource GscWpfUiActionButton}" Content="清空选择" ToolTip="只清空当前媒体收件箱视图的选择，不改变视图或筛选条件" AutomationProperties.Name="清空媒体批量选择" Click="OnClearMediaInboxSelectionClick" Visibility="Collapsed" Margin="0,0,8,4"/>
                                 <ComboBox x:Name="MediaInboxModeCombo" Width="104" Style="{DynamicResource GscWpfUiFilterComboBox}" ItemsSource="{Binding MediaInboxModeOptions}" SelectedItem="{Binding MediaInboxMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="OnMediaInboxModeSelectionChanged" ToolTip="切换媒体收件箱视图" AutomationProperties.Name="媒体收件箱视图" Margin="0,0,8,4"/>
                                 <StackPanel x:Name="MediaInboxTargetActions" Orientation="Horizontal">
                                     <StackPanel.Style>
