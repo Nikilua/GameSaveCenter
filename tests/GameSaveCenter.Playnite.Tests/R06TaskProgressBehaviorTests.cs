@@ -7,12 +7,14 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Threading;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Infrastructure;
+using GameSaveCenter.Playnite.Views;
 using Xunit;
 
 namespace GameSaveCenter.Playnite.Tests;
@@ -134,6 +136,43 @@ public sealed class R06TaskProgressBehaviorTests
         Assert.Contains("public int TaskTotalCount => TaskSummary.TotalCount", viewModel);
     }
 
+    [Fact]
+    public void CancellationStatusTextFollowsTheRealTaskCenterBinding()
+    {
+        RunSta(() =>
+        {
+            var state = new CancellationState();
+            var view = new TaskCenterView { DataContext = state };
+            var status = (TextBlock)view.FindName("TaskCancellationStatusText")!;
+            var window = new Window
+            {
+                Width = 720,
+                Height = 480,
+                Content = view,
+                ShowInTaskbar = false,
+                WindowStyle = WindowStyle.None
+            };
+
+            try
+            {
+                window.Show();
+                PumpLayout(window);
+                Assert.Equal(Visibility.Collapsed, status.Visibility);
+
+                state.IsCancellingTask = true;
+                PumpLayout(window);
+
+                Assert.Equal(Visibility.Visible, status.Visibility);
+                Assert.Equal("正在取消…", status.Text);
+                Assert.Contains("Worker", AutomationProperties.GetHelpText(status));
+            }
+            finally
+            {
+                window.Close();
+            }
+        });
+    }
+
     private static TaskStatusDto Task(string id, TaskState state, int progress)
         => new TaskStatusDto
         {
@@ -157,6 +196,24 @@ public sealed class R06TaskProgressBehaviorTests
                 if (ReferenceEquals(selectedTask, value)) return;
                 selectedTask = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTask)));
+            }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+    }
+
+    private sealed class CancellationState : INotifyPropertyChanged
+    {
+        private bool isCancellingTask;
+
+        public bool IsCancellingTask
+        {
+            get => isCancellingTask;
+            set
+            {
+                if (isCancellingTask == value) return;
+                isCancellingTask = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsCancellingTask)));
             }
         }
 
