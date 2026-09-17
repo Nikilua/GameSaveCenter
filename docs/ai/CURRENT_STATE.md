@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R05-06 开关保存语义
+
+- `cf9a250f5020de056d070c785fc00f92a81cdc2a` 修复生产 `GameSaveCenterSettings` 布尔属性在 `CopyFrom`/`CancelEdit`/导入时不发 `PropertyChanged` 的绑定缺口：所有布尔设置改用字段和去重 `SetBoolean`，真实变化通知 WPF，同值不重复通知；没有改 Playnite 持久化协议、Worker live apply、命令、取消/错误或安全语义。
+- 实际生产 `GameSaveCenterSettingsView` STA WPF 行为 `R05TogglePersistenceBehaviorTests 1/1`：外观开关切换后模型值、实际 `ToggleSwitch.IsChecked`、模板 Track 颜色、脏保存提示和隔离 `ExportPortableJson` 快照一致；`CancelEdit` 恢复模型/显示/依赖面板。自动化页媒体来源和恢复巡检参数的 `IsEnabled` 随开关关闭/回滚正确变化。
+- 提交后 clean Release：XAML `24/24`、构建 `0/0`；`SettingsSaveFeedbackTests 2/2`、`SettingsDraftLifecycleBehaviorTests 1/1`、`UiFinesseRound2ControlSourceTests 24/24`，`git diff --check` 通过。RenderHarness 绑定完整 SHA，Light/Dark、297 PNG、`WorkingTreeClean=True`、`render-qa OK`，Settings 外观/自动化代表图已抽查。
+- R04-08 的保存中、Playnite 已写入/Worker 应用失败、本地保存失败稳定提示继续复用；当前字段没有仅重启生效项。证据见 [`R05-06-TOGGLE-SAVE-20260917.md`](../design/reviews/ui-finesse-round3-20260915/evidence/R05-06-TOGGLE-SAVE-20260917.md)。边界仍是合成设置/隔离目录/STA WPF/offscreen logical DIP；未在真实 Playnite 注入保存或 Worker 失败，未验宿主保存取消关闭、OS 输入/IME、读屏/UIA、物理 DPI/跨屏、presented frame、ETW 或宿主性能，未写真实存档/媒体/云端。下一可执行任务为 R05-07 Tooltip 时序。
+
 ## 当前第三轮 R05-05 复选框三态边界
 
 - R05-05 核对结论为“不适用”：当前生产媒体批量入口是 `MediaCenterView` 的 Extended DataGrid，批量命令消费 `SelectedItems`，没有代表“当前页/全部结果”的全选或半选 CheckBox。R05-04 已覆盖真实模型的总选择、当前窗口可操作数、暂不可见例外和当前模式清空语义。

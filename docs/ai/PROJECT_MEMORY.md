@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-17
 
+## 2026-09-17 R05-06 开关保存语义
+
+- 先复核 R04-08 已有 `ISettings.EndEdit`、Worker live apply、`SettingsSaveFeedbackState` 和稳定 `SettingsSaveHintText`；当前生产字段没有仅重启生效项，因此本轮不另造“即时/重启”模型。
+- `cf9a250f5020de056d070c785fc00f92a81cdc2a` 修复设置布尔自动属性在 `CopyFrom`/`CancelEdit`/导入时不通知 WPF 的真实缺口。所有布尔设置使用字段和去重 `SetBoolean`，值变化才发 `PropertyChanged`，让 ToggleSwitch、`IsEnabled` 依赖面板和保存提示跟随实际模型值。
+- 真实 `GameSaveCenterSettingsView`/隔离目录/STA WPF 行为 `R05TogglePersistenceBehaviorTests 1/1` 覆盖外观开关的模型/显示/Track/脏提示/`ExportPortableJson` 快照和 `CancelEdit` 回滚，以及自动化页媒体来源与巡检依赖面板的关闭/恢复。回归：`SettingsSaveFeedbackTests 2/2`、`SettingsDraftLifecycleBehaviorTests 1/1`、`UiFinesseRound2ControlSourceTests 24/24`。
+- 提交后 clean Release XAML `24/24`、构建 `0/0`、`git diff --check` 通过；RenderHarness 绑定完整 SHA、双主题、297 PNG、工作树 clean、`render-qa OK`，Settings 外观/自动化图已人工抽查。证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R05-06-TOGGLE-SAVE-20260917.md`。
+- 真实 Playnite 本地写入异常、Worker 应用失败和宿主保存/取消/关闭时序仍未注入；离屏 logical DIP 不等价 presented frame、无闪屏、物理 DPI/跨屏或宿主性能。未写真实存档、媒体或云端。下一项 R05-07 Tooltip 时序。
+
 ## 2026-09-17 R05-05 复选框三态边界
 
 - 先查实际消费点：生产媒体批量操作使用 Extended DataGrid、按模式媒体 ID 集合和 `SelectedItems`，不存在“当前页/全部结果”的批量 CheckBox。当前生产 CheckBox 仅是设置项/锁定等标量值，开发夹具的三态 CheckBox 不应升级为产品能力。

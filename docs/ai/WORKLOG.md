@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-17 R05-06 开关保存语义
+
+- 先核对 R04-08 的真实保存链：Playnite `ISettings.EndEdit` 负责持久化，Worker live apply 和 `SettingsSaveFeedbackState` 已有保存中/失败原因；当前没有仅重启字段。本轮实际发现 `GameSaveCenterSettings` 多个布尔自动属性在 `CopyFrom`/`CancelEdit` 时不通知 WPF，可能使 ToggleSwitch 与依赖面板显示滞后。
+- `cf9a250f` 将所有布尔设置改为字段 + 去重 `SetBoolean`，只在值变化时触发 `PropertyChanged`，未改变持久化协议、命令、取消/错误、安全、游戏选框、滚动条或 Playnite/net462。
+- `R05TogglePersistenceBehaviorTests` 使用真实生产设置页、实际 ToggleSwitch 模板、隔离目录和 STA Window 验证模型/显示/Track/脏提示/隔离 `ExportPortableJson` 快照、CancelEdit 回滚，以及媒体来源/巡检依赖面板的关闭与恢复，`1/1`。回归 `SettingsSaveFeedbackTests 2/2`、`SettingsDraftLifecycleBehaviorTests 1/1`、`UiFinesseRound2ControlSourceTests 24/24`。
+- 提交后 `scripts/build.ps1 -Configuration Release -SkipTests` 为 XAML `24/24`、构建 `0/0`；clean RenderHarness 绑定完整 `cf9a250f`，Light/Dark、297 PNG、`WorkingTreeClean=True`、`render-qa OK`，Settings 外观/自动化代表图已抽查。证据：`R05-06-TOGGLE-SAVE-20260917.md`。
+- 测试夹具曾错误查找不存在的 `MediaSourceFields` 名称，已改为按实际视觉树中包含“Steam 截图”的 `WrapPanel` 定位；该修正后测试通过。期间确认 C 盘临时空间耗尽，按路径核对仅清理未被文档引用的匿名旧构建缓存 `artifacts/gsc-b/1965b663`，未清理当前 Round3 证据目录。下一项：R05-07 Tooltip 时序。
+
 ## 2026-09-17 R05-05 复选框三态边界
 
 - 盘点最新生产源码后确认：媒体批量入口是 Extended DataGrid，不是批量 CheckBox；现有生产 CheckBox 为设置项/锁定标量绑定，开发校对页才显式使用三态。
