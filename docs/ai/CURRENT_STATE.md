@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R04-05 数字输入边界
+
+- `8d56eb5a050a5c2db2718a42cf928b7d43d6f897` 先复用现有 `GscNumericTextBox`、`IntegerRangeValidationRule` 和服务侧安全边界；没有把 main 旧实现带入当前分支，也没有为当前不存在的重试/端口/容量字段扩展 DTO 或 UI。
+- 共享验证现在明确拒绝空值、非整数、`Int32` 溢出和字段上下界之外的输入。存档策略页间隔/保留周期模板与 Trainer 启动延迟已接入同一绑定规则：分别为 `1–1440`、`0–2147483647`、`0–300`。
+- 共享 `NumericInput` attached behavior 让滚轮按同一规则以 ±1 步进；非法当前值、越界候选或更新源验证错误保持文本/源值不变，不静默 clamp，越界滚轮不吞掉以便现有页面滚动继续工作。键盘/粘贴仍沿用 WPF binding validation，未改命令、取消/错误、安全、游戏选框或滚动条。
+- clean commit 定向 `20/20`；Release XAML `24/24`、构建 `0/0`、源码校验和 diff check 通过。RenderHarness 绑定完整 SHA、双主题、297 PNG、`WorkingTreeClean=True`、`render-qa OK`，Save `1040×700` 图已抽查。
+- 边界：证据来自合成设置/fake 服务、隔离目录、STA WPF、offscreen logical DIP；真实 Playnite 系统输入/IME/读屏/物理 DPI/跨屏/presented frame/ETW/宿主性能仍未验，未写真实存档、媒体或云端。下一可执行任务为 R04-06 清空与撤销。
+
 ## 当前第三轮 R04-04 粘贴标准化
 
 - `d7e92f1` 先核对当前生产字段：设置页有本地路径和 Rclone 云端目标，MediaCenter 有自定义媒体目录与文件模式；当前没有可编辑端口字段，也没有独立 Exclude 设置字段，没有从 main 带入旧实现。

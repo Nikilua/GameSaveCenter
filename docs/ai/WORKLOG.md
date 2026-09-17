@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-17 R04-05 数字输入边界
+
+- 先查已有能力：共享 `GscNumericTextBox`/整数规则和服务侧安全边界已存在；Save 策略模板与 Trainer 启动延迟尚未接入完整 UI 规则，当前模型没有可编辑重试/端口/容量字段，因此没有新增 DTO 或业务入口。
+- `8d56eb5` 新增 `IntegerRangeValidationRule.ValidateValue` 的空值、非整数、上下界和 `Int32` 溢出错误；共享 `NumericInput` 按绑定规则对滚轮执行 ±1 步进。非法当前值、越界候选和更新源错误均保留原值、不静默 clamp；越界滚轮不吞事件，页面现有滚动条继续工作。
+- Save 间隔/保留周期与 Trainer 启动延迟已接入验证，范围为 `1–1440`、`0–2147483647`、`0–300`。键盘/粘贴仍走原有 WPF binding validation，命令/取消/错误/安全/游戏选框/滚动条未改。
+- clean commit 定向 `20/20`；Release XAML `24/24`、构建 `0/0`、`validate-source.py` 和 diff check 通过。RenderHarness 双主题 `297` PNG、`WorkingTreeClean=True`、`render-qa OK`；人工抽查 Save `1040×700` 数字提示和滚动条。
+- 边界：合成设置/fake 服务/隔离目录/STA WPF/offscreen logical DIP；未验真实 Playnite 系统输入、IME、读屏、物理 DPI/跨屏、presented frame、ETW、宿主性能，未写真实存档/媒体/云端。下一可执行任务为 R04-06 清空与撤销。
+
 ## 2026-09-17 R04-04 粘贴标准化
 
 - 先核对最新实现：设置页没有端口/独立 Exclude 字段，真实范围是 6 个路径、Rclone 云端目标、MediaCenter 自定义媒体目录和文件模式；没有把 main 旧实现覆盖到当前分支，也没有新建业务 DTO。

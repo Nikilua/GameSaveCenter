@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-17
 
+## 2026-09-17 R04-05 数字输入边界
+
+- `8d56eb5a050a5c2db2718a42cf928b7d43d6f897` 在最新生产实现上复用 `GscNumericTextBox`、`IntegerRangeValidationRule` 和服务侧安全边界；没有从 main 覆盖旧实现，也没有虚构当前不存在的重试/端口/容量字段。
+- `ValidateValue` 统一处理空白、非整数、`Int32` 溢出和上下界错误。Save 存档策略的间隔/保留模板与 Trainer 启动延迟接入同一规则，范围为 `1–1440`、`0–2147483647`、`0–300`。
+- `NumericInput` attached behavior 用绑定规则验证滚轮当前值和 ±1 候选；非法当前值或越界候选保持文本/源值不变，不静默 clamp，并把未改值的越界事件留给页面滚动。普通键盘/粘贴仍通过原有 WPF binding validation。
+- 相关定向测试 `20/20`，含真实 STA WPF 滚轮行为和溢出/非法输入负例；clean Release XAML `24/24`、构建 `0/0`、源码校验通过。clean RenderHarness 双主题 `297` PNG、工作树 clean、`render-qa OK`，Save `1040×700` 已抽查。
+- 边界仍是合成数据/fake 服务/隔离目录/STA WPF/offscreen logical DIP；真实 Playnite 系统输入、IME、读屏、物理 DPI/跨屏、presented frame、ETW、宿主性能未验，也未写真实存档、媒体或云端。下一项 R04-06 清空与撤销。
+
 ## 2026-09-17 R04-04 粘贴标准化
 
 - `d7e92f1467648f045ff94fb30da5ac9712cd402b` 先盘点最新生产输入：设置页只有本地路径/云端目标，MediaCenter 有自定义媒体目录/文件模式；当前没有可编辑端口或独立 Exclude 字段，因此不扩展不存在的 DTO/业务模型。
