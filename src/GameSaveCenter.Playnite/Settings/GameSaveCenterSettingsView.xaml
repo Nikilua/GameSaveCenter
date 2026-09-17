@@ -11,7 +11,8 @@
              TextOptions.TextFormattingMode="Ideal" TextOptions.TextRenderingMode="ClearType"
              TextOptions.TextHintingMode="Fixed" RenderOptions.ClearTypeHint="Enabled"
              ToolTipService.InitialShowDelay="350"
-             ToolTipService.BetweenShowDelay="100">
+             ToolTipService.BetweenShowDelay="100"
+             infra:GscToolTipBehavior.EnableEscapeClose="True">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

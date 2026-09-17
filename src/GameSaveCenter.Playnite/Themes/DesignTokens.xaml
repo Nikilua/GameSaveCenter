@@ -1202,6 +1202,7 @@
     </Style>
 
     <Style TargetType="ToolTip">
+        <Setter Property="Focusable" Value="False"/>
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="Background" Value="{DynamicResource GscPopupBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
@@ -1209,17 +1210,25 @@
         <Setter Property="FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
         <Setter Property="FontSize" Value="{DynamicResource GscCaptionFontSize}"/>
         <Setter Property="Padding" Value="10,7"/>
+        <Setter Property="Placement" Value="Mouse"/>
         <Setter Property="VerticalOffset" Value="4"/>
         <Setter Property="MaxWidth" Value="420"/>
         <Setter Property="HasDropShadow" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToolTip">
+                    <ControlTemplate.Resources>
+                        <DataTemplate DataType="{x:Type sys:String}">
+                            <TextBlock Text="{Binding}" TextWrapping="Wrap" TextTrimming="None"/>
+                        </DataTemplate>
+                    </ControlTemplate.Resources>
                     <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="8"
-                            Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+                            Padding="{TemplateBinding Padding}" MaxWidth="{TemplateBinding MaxWidth}" SnapsToDevicePixels="True">
                         <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"
-                                          ContentStringFormat="{TemplateBinding ContentStringFormat}"/>
+                                          ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
