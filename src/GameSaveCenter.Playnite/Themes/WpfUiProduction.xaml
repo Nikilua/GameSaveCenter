@@ -405,6 +405,7 @@
         <Setter Property="Padding" Value="12,0,8,0"/>
         <Setter Property="MinHeight" Value="{DynamicResource GscTableHeaderHeight}"/>
         <Setter Property="ContentTemplate" Value="{StaticResource GscDataGridHeaderTextTemplate}"/>
+        <Setter Property="infra:DataGridColumnHeaderHelpBehavior.Enabled" Value="True"/>
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Tag"><Setter.Value><CornerRadius>0</CornerRadius></Setter.Value></Setter>

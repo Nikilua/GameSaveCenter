@@ -138,7 +138,7 @@
                                         <Grid Grid.Row="1">
                                             <DataGrid x:Name="FindingsGrid" Style="{StaticResource MaintenanceDataGrid}" RowStyle="{StaticResource GscStableDataGridRow}" ItemsSource="{Binding Findings}" SelectedItem="{Binding SelectedFinding}" SelectionMode="Extended" SelectionChanged="OnMaintenanceDiagnosticsSelectionChanged" infra:DataGridClipboardBehavior.Enabled="True" infra:DataGridClipboardBehavior.Profile="Finding" ToolTip="Ctrl+C 复制所选诊断行；Ctrl+Shift+C 复制当前单元格" AutomationProperties.HelpText="Ctrl+C 复制所选诊断行；Ctrl+Shift+C 复制当前单元格">
                                                 <DataGrid.Columns>
-                                                    <DataGridTemplateColumn HeaderStyle="{StaticResource MaintenanceFirstColumnHeader}" Header="等级" Width="{StaticResource GscSeverityColumnWidth}">
+                                                    <DataGridTemplateColumn HeaderStyle="{StaticResource MaintenanceFirstColumnHeader}" Header="等级" infra:DataGridColumnHeaderHelpBehavior.Description="诊断严重级别；错误和严重项需要先查看详情再处理。" Width="{StaticResource GscSeverityColumnWidth}">
                                                         <DataGridTemplateColumn.CellTemplate>
                                                             <DataTemplate>
                                                                 <Border x:Name="SeverityPill" Style="{DynamicResource GscRedesignTableStatusPill}">
@@ -153,10 +153,10 @@
                                                             </DataTemplate>
                                                         </DataGridTemplateColumn.CellTemplate>
                                                     </DataGridTemplateColumn>
-                                                    <DataGridTextColumn Header="游戏" Binding="{Binding GameName}" Width="120">
+                                                    <DataGridTextColumn Header="游戏" infra:DataGridColumnHeaderHelpBehavior.Description="关联游戏；用于将诊断导航到对应工作区。" Binding="{Binding GameName}" Width="120">
                                                         <DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle>
                                                     </DataGridTextColumn>
-                                                    <DataGridTextColumn HeaderStyle="{StaticResource MaintenanceLastColumnHeader}" Header="问题" Binding="{Binding Title}" Width="*" MinWidth="180">
+                                                    <DataGridTextColumn HeaderStyle="{StaticResource MaintenanceLastColumnHeader}" Header="问题" infra:DataGridColumnHeaderHelpBehavior.Description="问题摘要；完整详情和建议操作在选中项详情区域查看。" Binding="{Binding Title}" Width="*" MinWidth="180">
                                                         <DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle>
                                                     </DataGridTextColumn>
                                                 </DataGrid.Columns>
