@@ -5,7 +5,9 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Infrastructure;
+using GameSaveCenter.Playnite.ViewModels;
 using Xunit;
 
 namespace GameSaveCenter.Playnite.Tests;
@@ -48,6 +50,26 @@ public sealed class R07SelectionAnchorBehaviorTests
 
         Assert.Equal("after", restored?.Id);
         Assert.NotEqual("before", restored?.Id);
+    }
+
+    [Fact]
+    public void SaveCandidateRestoreUsesNeighborWhenStablePathWasRemoved()
+    {
+        var refreshed = new List<SavePathCandidateDto>
+        {
+            new SavePathCandidateDto { PlayniteId = "game", Path = "before", Status = "Rejected" },
+            new SavePathCandidateDto { PlayniteId = "game", Path = "after", Status = "Rejected" }
+        };
+        var previouslySelected = new SavePathCandidateDto
+        {
+            PlayniteId = "game",
+            Path = "deleted",
+            Status = "Accepted"
+        };
+
+        var restored = DashboardViewModel.RestoreSaveCandidateSelection(refreshed, previouslySelected, previousIndex: 1);
+
+        Assert.Equal("after", restored?.Path);
     }
 
     [Fact]
