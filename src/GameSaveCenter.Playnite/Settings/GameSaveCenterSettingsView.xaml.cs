@@ -264,9 +264,9 @@ namespace GameSaveCenter.Playnite.Settings
         }
 
         private void RefreshValidationSummary()
-            => RefreshValidationSummary(!IsLoaded);
+            => RefreshValidationSummaryCore(!IsLoaded);
 
-        private void RefreshValidationSummary(bool includeSynchronousPathValidation)
+        private void RefreshValidationSummaryCore(bool includeSynchronousPathValidation)
         {
             var settings = CurrentSettings;
             if (settings == null || SettingsValidationSummary == null || SettingsValidationDetails == null
