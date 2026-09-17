@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R05-07 Tooltip 时序
+
+- `2fc8c0d67c1d6cf585c85b984607efefb4b129a3` 修复实际生产资源覆盖缺口：`AcrylicReferenceControls.xaml` 不再丢失 Tooltip 的 `MaxWidth=420`，并与 `DesignTokens.xaml` 一起明确 `Focusable=False`、`Placement=Mouse`、字符串换行/不省略；壳层和独立设置页接入局部 `GscToolTipBehavior`，Esc 关闭当前插件范围 Tooltip，不移动输入焦点。
+- `R05TooltipTimingBehaviorTests 1/1` 使用真实生产 Shell、生产路径 TextBox/Tooltip 样式和 STA WPF Window 验证 350/100ms 时序、420 DIP 宽度、长合成路径完整换行、Escape 关闭和焦点保持；相邻 R05 Popup `2/2`、焦点 `3/3`、开关 `1/1`，源契约 `24/24`。
+- clean RenderHarness 绑定完整 SHA：Light/Dark、297 PNG、`WorkingTreeClean=True`、`render-qa OK`；Settings Popup/Tooltip 开面探针、Overview/Settings 代表图已抽查。标准构建 XAML `24/24`、编译 `0/0`、Core `83/83`；Worker 全集 `309/311`，2 条既有健康状态断言在隔离环境返回 Warning 而失败。
+- 受控边界仍未包含真实 Playnite 悬停轨迹/气泡雨、ShowDuration 消失时序、屏幕边缘翻转与遮挡、物理 DPI/跨屏、宿主字体、OS 输入/IME、读屏/UIA、presented frame、ETW 或宿主性能；未写真实存档、媒体、云端或诊断数据。证据见 [`R05-07-TOOLTIP-TIMING-20260917.md`](../design/reviews/ui-finesse-round3-20260915/evidence/R05-07-TOOLTIP-TIMING-20260917.md)。下一可执行任务为 R05-08 弹层资源热切换。
+
 ## 当前第三轮 R05-06 开关保存语义
 
 - `cf9a250f5020de056d070c785fc00f92a81cdc2a` 修复生产 `GameSaveCenterSettings` 布尔属性在 `CopyFrom`/`CancelEdit`/导入时不发 `PropertyChanged` 的绑定缺口：所有布尔设置改用字段和去重 `SetBoolean`，真实变化通知 WPF，同值不重复通知；没有改 Playnite 持久化协议、Worker live apply、命令、取消/错误或安全语义。

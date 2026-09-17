@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-17 R05-07 Tooltip 时序
+
+- 核对 Q15 与当前资源合并顺序后发现：`AcrylicReferenceControls.xaml` 是实际生产覆盖样式，缺少 `MaxWidth`，不能仅凭 `DesignTokens.xaml` 的源断言签收长 Tooltip。本轮两套共享样式都补齐不可聚焦、Mouse placement、420 DIP 上限和字符串换行/不省略模板。
+- 新增 `GscToolTipBehavior`，只在 Shell/独立 Settings 局部接入。真实 STA WPF 生产行为 `R05TooltipTimingBehaviorTests 1/1` 覆盖 350/100ms、合成长路径完整换行/宽度、Esc 关闭和原 TextBox 焦点保持；没有用 Assert.Contains 代替交互验证。
+- 代码提交 `2fc8c0d6` 已推送。标准构建 XAML `24/24`、编译 `0/0`、Core `83/83`；Worker `309/311`，两条既有健康状态断言因隔离依赖实际 `Warning` 失败。标准产物上的源契约 `24/24`、R05 Popup `2/2`、焦点 `3/3`、开关 `1/1` 均通过。
+- clean RenderHarness 297 PNG、Light/Dark、`WorkingTreeClean=True`、`render-qa OK`；人工查看 Settings tab2/tab3 与 Overview 代表图。下一项 R05-08 弹层资源热切换；真实 Playnite 悬停/消失、边缘遮挡、物理 DPI/跨屏、OS 输入/IME、读屏/UIA、presented frame、ETW、宿主性能仍未验。
+
 ## 2026-09-17 R05-06 开关保存语义
 
 - 先核对 R04-08 的真实保存链：Playnite `ISettings.EndEdit` 负责持久化，Worker live apply 和 `SettingsSaveFeedbackState` 已有保存中/失败原因；当前没有仅重启字段。本轮实际发现 `GameSaveCenterSettings` 多个布尔自动属性在 `CopyFrom`/`CancelEdit` 时不通知 WPF，可能使 ToggleSwitch 与依赖面板显示滞后。

@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-17
 
+## 2026-09-17 R05-07 Tooltip 时序
+
+- 先复核 Q15-03/Q15-07/Q15-08 与当前资源合并顺序；实际生产页面最后覆盖 Tooltip 的是 `AcrylicReferenceControls.xaml`，不能只看 `DesignTokens.xaml` 的 `MaxWidth=420`。本轮统一两套隐式样式的 `Focusable=False`、`Placement=Mouse`、420 DIP 上限和字符串换行/不省略模板。
+- `2fc8c0d6` 新增局部 `GscToolTipBehavior`，仅挂在生产 Shell 与独立 Settings 根节点；按 `PlacementTarget` 找当前插件范围内的打开 Tooltip，Esc 关闭并将事件消费，焦点仍留在原输入控件，不进入瞬时 Popup。
+- 实际生产 STA 行为 `R05TooltipTimingBehaviorTests 1/1`：Shell `InitialShowDelay=350`、`BetweenShowDelay=100`；合成长路径完整保留，Tooltip/TextBlock 宽度不超过 420 DIP 且实际换行；`Focusable=False`、`Placement=Mouse`、Esc 关闭、原 TextBox 焦点不变。回归源契约 `24/24`、Popup `2/2`、焦点 `3/3`、开关 `1/1`。
+- clean RenderHarness 绑定完整提交，双主题 297 PNG、工作树 clean、`render-qa OK`；Settings Popup/Tooltip 开面探针、Settings/Overview 代表图已检查。标准脚本编译与 XAML 通过，Worker 仍有两条既有 `Healthy`/`Skipped` 对 `Warning` 的隔离环境失败，不能误写成全量通过。
+- 不把显式打开的生产 Tooltip 样式实例当成真实 Playnite 悬停录像；鼠标快速经过、ShowDuration 消失、屏幕边缘遮挡/翻转、物理 DPI/跨屏、宿主字体、OS 输入/IME、读屏/UIA、presented frame、ETW 和宿主性能仍未验。下一项 R05-08 弹层资源热切换。
+
 ## 2026-09-17 R05-06 开关保存语义
 
 - 先复核 R04-08 已有 `ISettings.EndEdit`、Worker live apply、`SettingsSaveFeedbackState` 和稳定 `SettingsSaveHintText`；当前生产字段没有仅重启生效项，因此本轮不另造“即时/重启”模型。
