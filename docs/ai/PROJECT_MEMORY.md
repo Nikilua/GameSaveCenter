@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-18
 
+## 2026-09-18 R06-01 列宽用户记忆
+
+- 先核对当前主要入口的真实 DataGrid：Save History/Candidates、Task Queue、Media Inbox 已有用户调整能力、最小宽度和自动横向滚动，但没有持久化；Media 主库是 ListBox，Maintenance 表格不在本项主要入口范围。没有从 main 带入旧实现，也没有改游戏选框或滚动条系统。
+- `75a6e6d8` 新增版本化 `DataGridColumnWidths` 和内部 `DataGridColumnLayoutController`。稳定键按视图区隔离；只在用户改变为 Pixel 宽度时捕获，忽略 Star/初始化/响应式赋值，统一按列最小/最大宽度归一化；400ms 防抖、卸载 flush、当前视图区重置并立即保存。旧 `v0` 和未知列键不会污染当前布局。
+- 生产接线范围：`save-history` 7 列、`save-candidates` 4 列、`tasks` 6 列、`media-inbox` 5 列；四个页面的“重置列宽”均位于既有操作区。`R06ColumnWidthPersistenceBehaviorTests` 使用隔离设置和合成 DataGrid 实际 `5/5`，包含控制器重建恢复、视图区隔离、版本/未知键负例、最小宽度、重置持久化和窄窗滚动条。
+- clean Release XAML `24/24`、编译 `0/0`、源校验/diff check 通过；R05 独立回归全通过。clean RenderHarness 绑定 `75a6e6d8...`，Light/Dark、357 PNG、工作树 clean、`render-qa OK`，报告覆盖多数据量/滚动/resizing，Save/Task/Media `1040×700` 已抽查。证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R06-01-COLUMN-WIDTH-PERSISTENCE-20260918.md`。
+- “重启恢复”只在隔离设置对象上验证控制器销毁/重建，不能写成真实 Playnite 进程重启或用户拖拽录像；物理 DPI/跨屏、UIA/读屏、OS 输入/IME、presented frame、ETW、宿主性能和实际宿主配置迁移仍未验。Maintenance 表格本轮不记忆化。下一项 R06-02 排序提示与稳定性。
+
 ## 2026-09-18 R05-08 弹层资源热切换
 
 - 先复核真实生产 Settings 的 ComboBox `PART_Popup`、Tooltip 样式合并顺序和既有 `GscToolTipBehavior`；缺口不是“没有 Popup”，而是脱离页面资源链的 Tooltip 会从静态 Acrylic 字典拿到旧深色背景。

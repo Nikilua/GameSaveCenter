@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-18 R06-01 列宽用户记忆
+
+- 收口前先核对 R06 主要入口和已有能力：Save History/Candidates、Task Queue、Media Inbox 是本批实际接入的生产 DataGrid；Maintenance 表格不在列宽记忆范围，Media 主库为 ListBox。没有覆盖 main 旧实现。
+- `75a6e6d8` 新增版本化设置字典和 `DataGridColumnLayoutController`，稳定视图区键分别为 `save-history`、`save-candidates`、`tasks`、`media-inbox`。仅捕获用户 Pixel 宽度，初始化/响应式 Star 宽度不写入；应用时约束最小/最大宽度，控制器重建恢复，400ms 防抖并在卸载 flush；四个页面提供重置并只清当前视图区。
+- `R06ColumnWidthPersistenceBehaviorTests` 实际 `5/5`，覆盖恢复/隔离、旧版本和未知键负例、最小宽度、重置持久化、窄窗主列与既有横向滚动条；标准 Release XAML `24/24`、编译 `0/0`、源校验/diff check 通过。R05 Popup/Tooltip/边界/焦点/开关/选项虚拟化/源契约独立回归分别 `1/1`、`1/1`、`2/2`、`3/3`、`1/1`、`3/3`、`24/24`。
+- clean RenderHarness 报告绑定完整 `75a6e6d8...`，双主题 357 PNG、`WorkingTreeClean=True`、`render-qa OK`，含多数据量、滚动和 2560×1440 ↔ 1100×720 resize；Save/Task/Media `1040×700` 图已查看。证据：`R06-01-COLUMN-WIDTH-PERSISTENCE-20260918.md`。
+- 真实 Playnite 进程重启、用户实际拖拽、宿主配置迁移、物理 DPI/跨屏、UIA/读屏、OS 输入/IME、presented frame、ETW、宿主性能仍未验；未写真实存档、媒体、云端或诊断数据。下一项 R06-02 排序提示与稳定性。
+
 ## 2026-09-18 R05-08 弹层资源热切换
 
 - 先复核实际生产 Settings Popup/Tooltip 的资源链和卸载路径，确认 Tooltip 脱离页面视觉树后会从静态 Acrylic 字典拿到旧深色背景；没有重复造 Popup，也没有替换游戏选框或滚动条系统。

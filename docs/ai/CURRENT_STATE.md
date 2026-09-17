@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R06-01 列宽用户记忆
+
+- `75a6e6d826e39fe5a7f06438d7aefd1985ad1692` 在不覆盖 main 旧实现的前提下，复用现有 Playnite 设置保存链新增 `DataGridColumnLayoutController`。Save History/Candidates、Task Queue、Media Inbox 分别使用稳定 `v1/{view}/{column}` 键保存有效 Pixel 列宽；初始化/响应式默认布局不误写，Star 宽度不被当作用户偏好，卸载 flush，四处均有“重置列宽”。游戏选框、滚动条、命令/绑定、取消/错误、安全恢复、有限列表和 net462 保持。
+- `R06ColumnWidthPersistenceBehaviorTests` 实际 `5/5`：控制器重建恢复且视图区隔离、`v0`/未知键忽略、最小宽度约束、重置删除当前键并持久化、窄 WPF Window 主列与横向滚动条负例/接线均通过。clean Release XAML `24/24`、编译 `0/0`，源码校验和 diff check 通过；R05 独立回归 Popup `1/1`、Tooltip `1/1`、边界 `2/2`、焦点 `3/3`、开关 `1/1`、选项虚拟化 `3/3`、源契约 `24/24`。
+- clean RenderHarness 绑定完整 SHA，Light/Dark、357 PNG、`WorkingTreeClean=True`、`render-qa OK`；报告覆盖 50/400/2000/4468 数据量、纵横向滚动和 2560×1440 ↔ 1100×720 resize 恢复。Save/Task/Media `1040×700` 图已抽查。证据见 [`R06-01-COLUMN-WIDTH-PERSISTENCE-20260918.md`](../design/reviews/ui-finesse-round3-20260915/evidence/R06-01-COLUMN-WIDTH-PERSISTENCE-20260918.md)。
+- 边界：恢复证据是隔离设置对象上的控制器销毁/重建，不等价真实 Playnite 进程重启、用户拖拽录像或宿主配置迁移；未验真实宿主、UIA/读屏、OS 输入/IME、物理 DPI/跨屏、presented frame、ETW、宿主性能。Maintenance DataGrid 本批仅参与既有回归，不纳入列宽记忆。未写真实存档、媒体、云端或诊断数据。下一可执行任务为 R06-02 排序提示与稳定性。
+
 ## 当前第三轮 R05-08 弹层资源热切换
 
 - `599a8fd96f2808f5879f7eee7dd1d564e054db8a` + `bebde2fed18f3ad891d6fe4123c6b5a6757b96fd` 收口实际生产 Settings Popup/Tooltip 的主题与生命周期：Light→Dark 时两个附属层保持打开并使用活动资源，父窗 `Hide()` 后视图不可见且两层关闭；`GscToolTipBehavior` 仅做局部范围同步，卸载时解除显式 Tooltip 处理器，不改全局静态资源订阅。
