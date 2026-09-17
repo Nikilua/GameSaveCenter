@@ -2948,6 +2948,23 @@ namespace GameSaveCenter.Playnite.ViewModels
             NotifyTaskResults(new[]{task});
         }
 
+        internal static SavePathCandidateDto? RestoreSaveCandidateSelection(
+            IEnumerable<SavePathCandidateDto> candidates,
+            SavePathCandidateDto? previouslySelected)
+        {
+            if (previouslySelected != null)
+            {
+                var restored = candidates.FirstOrDefault(candidate =>
+                    string.Equals(candidate.PlayniteId, previouslySelected.PlayniteId, StringComparison.OrdinalIgnoreCase)
+                    && string.Equals(candidate.Path, previouslySelected.Path, StringComparison.OrdinalIgnoreCase));
+                if (restored != null)
+                    return restored;
+            }
+
+            return candidates.FirstOrDefault(candidate => string.Equals(candidate.Status, "Pending", StringComparison.OrdinalIgnoreCase))
+                ?? candidates.FirstOrDefault();
+        }
+
         private async Task LoadDetailsAsync(bool forceBackupHistory = false, CancellationToken cancellationToken = default(CancellationToken), long expectedGeneration = 0, string? expectedGameId = null)
         {
             if (SelectedGame == null) return;
@@ -2969,12 +2986,12 @@ namespace GameSaveCenter.Playnite.ViewModels
                         {
                             if (!IsCurrentDetailsLoad(id, cancellationToken, expectedGeneration)) return;
                             var selectedBackupId = SelectedBackup?.BackupId;
+                            var selectedCandidateBeforeRefresh = SelectedCandidate;
                             Replace(Backups, backupsTask.Result, SnapshotComparers.Backup);
                             Replace(SaveCandidates, candidatesTask.Result, SnapshotComparers.SaveCandidate);
                             SelectedBackup = Backups.FirstOrDefault(x => string.Equals(x.BackupId, selectedBackupId, StringComparison.OrdinalIgnoreCase))
                                              ?? Backups.FirstOrDefault();
-                            SelectedCandidate = SaveCandidates.FirstOrDefault(x => string.Equals(x.Status, "Pending", StringComparison.OrdinalIgnoreCase))
-                                                ?? SaveCandidates.FirstOrDefault();
+                            SelectedCandidate = RestoreSaveCandidateSelection(SaveCandidates, selectedCandidateBeforeRefresh)!;
                             CompleteSaveDetailsLoad();
                             RaiseCommandStates();
                         });
