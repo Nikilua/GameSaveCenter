@@ -50,6 +50,11 @@ public sealed class SettingsValidationSourceTests
         Assert.Contains("CreateSettingsFingerprint", code);
         Assert.Contains("SettingsCommitted", code);
         Assert.Contains("SettingsReverted", code);
+        Assert.Contains("OnHostWindowClosing", code);
+        Assert.Contains("继续编辑并返回当前字段", code);
+        Assert.Contains("CurrentSettings?.CancelEdit();", code);
+        Assert.Contains("RestoreDraftFocus", code);
+        Assert.Contains("GetEditBaselineFingerprint", code);
     }
 
     private static string FindRepositoryRoot()

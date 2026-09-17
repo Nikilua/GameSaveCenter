@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,6 +12,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Media3D;
 using System.Windows.Threading;
 using GameSaveCenter.Playnite.Diagnostics;
 using GameSaveCenter.Playnite.Infrastructure;
@@ -30,9 +32,14 @@ namespace GameSaveCenter.Playnite.Settings
         private bool systemParametersSubscribed;
         private bool scrollSelectionPending;
         private bool settingsBaselineInitialized;
+        private bool settingsClosePromptOpen;
+        private bool restoreDraftFocusOnLoad;
         private int firstValidationCategoryIndex;
         private Size pendingResponsiveSize;
         private GameSaveCenterSettings? observedSettings;
+        private Window? observedHostWindow;
+        private FrameworkElement? draftFocusTarget;
+        private int draftFocusCategoryIndex;
         private string savedSettingsFingerprint = string.Empty;
         private readonly List<ValidationFieldTarget> validationFieldTargets = new();
         private ValidationFieldTarget? firstValidationTarget;
@@ -116,10 +123,16 @@ namespace GameSaveCenter.Playnite.Settings
             ApplyAdaptiveTheme();
             ApplyResponsiveLayout(ActualWidth, ActualHeight);
             EnsureHostWindowSize();
+            AttachHostWindowClosingHandler();
             BeginUiSafely(EnsureHostWindowSize, DispatcherPriority.ContextIdle);
             RealHostUiAuditService.TryCaptureSettings(this);
             RefreshValidationSummary();
             RefreshSaveState();
+            if (restoreDraftFocusOnLoad && HasUnsavedSettings)
+            {
+                restoreDraftFocusOnLoad = false;
+                BeginUiSafely(RestoreDraftFocus, DispatcherPriority.Loaded);
+            }
             if (entrancePlayed)
             {
                 SettingsShell.Opacity = 1;
@@ -186,7 +199,7 @@ namespace GameSaveCenter.Playnite.Settings
             observedSettings.SettingsReverted += OnSettingsReverted;
             if (!settingsTransferInProgress || !settingsBaselineInitialized)
             {
-                savedSettingsFingerprint = observedSettings.CreateSettingsFingerprint();
+                savedSettingsFingerprint = observedSettings.GetEditBaselineFingerprint();
                 settingsBaselineInitialized = true;
             }
 
@@ -468,7 +481,7 @@ namespace GameSaveCenter.Playnite.Settings
             if (settings == null || SettingsSaveHintText == null) return;
             if (!settingsBaselineInitialized)
             {
-                savedSettingsFingerprint = settings.CreateSettingsFingerprint();
+                savedSettingsFingerprint = settings.GetEditBaselineFingerprint();
                 settingsBaselineInitialized = true;
             }
 
@@ -490,10 +503,125 @@ namespace GameSaveCenter.Playnite.Settings
                     : "当前设置已保存；继续修改后请使用 Playnite 的保存或取消按钮。";
         }
 
+        private bool HasUnsavedSettings
+        {
+            get
+            {
+                var settings = CurrentSettings;
+                return settings?.HasPendingEdit == true
+                    && settingsBaselineInitialized
+                    && !string.Equals(savedSettingsFingerprint, settings.CreateSettingsFingerprint(), StringComparison.Ordinal);
+            }
+        }
+
+        private void AttachHostWindowClosingHandler()
+        {
+            var hostWindow = Window.GetWindow(this);
+            if (ReferenceEquals(hostWindow, observedHostWindow)) return;
+            DetachHostWindowClosingHandler();
+            observedHostWindow = hostWindow;
+            if (observedHostWindow != null)
+                observedHostWindow.Closing += OnHostWindowClosing;
+        }
+
+        private void DetachHostWindowClosingHandler()
+        {
+            if (observedHostWindow == null) return;
+            observedHostWindow.Closing -= OnHostWindowClosing;
+            observedHostWindow = null;
+        }
+
+        private void OnHostWindowClosing(object? sender, CancelEventArgs e)
+        {
+            if (settingsClosePromptOpen || !HasUnsavedSettings) return;
+
+            RememberDraftFocus();
+            settingsClosePromptOpen = true;
+            try
+            {
+                // Reuse the existing native settings feedback path. Yes is the destructive
+                // choice; No keeps the window open and returns the user to the edited field.
+                var result = MessageBox.Show(
+                    observedHostWindow,
+                    "设置有未保存更改。选择“否”继续编辑并返回当前字段；选择“是”放弃更改并关闭设置窗口。",
+                    "GameSaveCenter 设置",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    CurrentSettings?.CancelEdit();
+                    return;
+                }
+
+                e.Cancel = true;
+                RestoreDraftFocus();
+            }
+            catch (Exception ex)
+            {
+                // A disappearing host must not turn an unavailable dialog into silent draft
+                // loss. Keep the window open and preserve the edit buffer for a later retry.
+                Logger.Error(ex, "GameSaveCenter could not confirm closing settings with unsaved changes.");
+                e.Cancel = true;
+                RestoreDraftFocus();
+            }
+            finally
+            {
+                settingsClosePromptOpen = false;
+            }
+        }
+
+        private void RememberDraftFocus()
+        {
+            if (Keyboard.FocusedElement is not FrameworkElement focused
+                || !focused.Focusable
+                || !focused.IsEnabled
+                || !IsDescendantOf(focused, this))
+                return;
+
+            draftFocusTarget = focused;
+            draftFocusCategoryIndex = Math.Max(0, Math.Min(4, SettingsSectionTabs?.SelectedIndex ?? 0));
+        }
+
+        private void RestoreDraftFocus()
+        {
+            var target = draftFocusTarget;
+            if (target == null || !target.Focusable || !target.IsEnabled) return;
+
+            SettingsSectionTabs.SelectedIndex = draftFocusCategoryIndex;
+            ScrollSelectedCategoryIntoView();
+            try
+            {
+                target.BringIntoView();
+            }
+            catch (InvalidOperationException)
+            {
+                // The selected category may still be completing its layout pass.
+            }
+
+            if (target.Focus())
+                Keyboard.Focus(target);
+        }
+
+        private static bool IsDescendantOf(DependencyObject child, DependencyObject ancestor)
+        {
+            var current = child;
+            while (current != null)
+            {
+                if (ReferenceEquals(current, ancestor)) return true;
+                current = current is Visual || current is Visual3D
+                    ? VisualTreeHelper.GetParent(current)
+                    : LogicalTreeHelper.GetParent(current);
+            }
+            return false;
+        }
+
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
             // A detached Playnite settings page must not keep an entrance animation clock alive.
             // Import/export can still finish in the background; only its visual feedback is gated.
+            RememberDraftFocus();
+            restoreDraftFocusOnLoad = HasUnsavedSettings && draftFocusTarget != null;
+            DetachHostWindowClosingHandler();
             SettingsShell.BeginAnimation(UIElement.OpacityProperty, null);
             if (SettingsShell.RenderTransform is TranslateTransform translate)
             {

@@ -173,6 +173,24 @@ namespace GameSaveCenter.Playnite.Tests
 
             Assert.Equal(originalDestination, settings.RcloneDestination);
             Assert.Equal(1, notifications);
+            Assert.False(settings.HasPendingEdit);
+        }
+
+        [Fact]
+        public void EditBaselineSurvivesDetachedViewAndCommitClearsTheBuffer()
+        {
+            var settings = CreateSettings();
+            var baseline = settings.CreateSettingsFingerprint();
+
+            settings.BeginEdit();
+            settings.RcloneDestination = "temporary-remote:GameSaveCenter";
+
+            Assert.True(settings.HasPendingEdit);
+            Assert.Equal(baseline, settings.GetEditBaselineFingerprint());
+
+            // A detached view must compare the live draft with the Playnite-owned baseline;
+            // this is the same path a recreated settings page uses after navigation.
+            Assert.NotEqual(settings.GetEditBaselineFingerprint(), settings.CreateSettingsFingerprint());
         }
 
         [Fact]

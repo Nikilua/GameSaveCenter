@@ -160,10 +160,23 @@ namespace GameSaveCenter.Playnite.Settings
 
         public void BeginEdit() => editingClone = Clone();
 
+        /// <summary>Returns whether Playnite currently owns an editable settings buffer.</summary>
+        public bool HasPendingEdit => editingClone != null;
+
+        /// <summary>
+        /// Returns the baseline captured by Playnite for the current edit session. A detached
+        /// settings view uses this value so recreating the view does not make a live draft look
+        /// saved merely because the new view was bound after the user had already typed.
+        /// </summary>
+        public string GetEditBaselineFingerprint()
+            => editingClone?.CreateSettingsFingerprint() ?? CreateSettingsFingerprint();
+
         public void CancelEdit()
         {
             if (editingClone == null) return;
-            CopyFrom(editingClone);
+            var clone = editingClone;
+            editingClone = null;
+            CopyFrom(clone);
             SettingsReverted?.Invoke(this, EventArgs.Empty);
         }
 
@@ -173,6 +186,7 @@ namespace GameSaveCenter.Playnite.Settings
             plugin.SavePluginSettings(this);
             plugin.NotifyVisualSettingsChanged();
             plugin.ApplySettingsAsync();
+            editingClone = null;
             SettingsCommitted?.Invoke(this, EventArgs.Empty);
         }
 
