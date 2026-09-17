@@ -1,5 +1,14 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R06-07 空表保留结构
+
+- `5046bf8f30920065660d38ea03613edb1ea7aaa4` 先核对状态覆盖：Task、Media、Maintenance 已有首次空、筛选/已处理完、加载中、失败和旧数据降级 presenter；Save 原先只有 `IsBusy + Count == 0`，读取失败会落入空文案，因此只补 Save 的状态边界，没有重建已有页面。
+- Save 详情请求现在区分 Loading、Empty、Ready、Error 和已有数据失败时的 Stale；历史/候选 DataGrid 表头、列宽、排序、滚动和 `LoadDetailsCommand` 保持。加载中隐藏空文案，首次历史为空与候选处理完成/本次扫描无新结果分开表达，失败提供可重试 presenter，旧数据失败保留行并显示降级提示。
+- `R06EmptyStateBehaviorTests 2/2` 使用真实 `SaveCenterView`、生产绑定和合成状态验证 7 个历史表头、4 个候选表头、Loading/Empty/Ready/Error、错误优先级及重试命令；RenderHarness fake 已同步状态绑定。
+- Release XAML `24/24`、构建 `0 warning/0 error`、`WorkspaceStateSourceTests 9 passed / 1 intentional legacy skip`、`TaskCenterViewResponsiveTests 7/7`、`R06TaskProgressBehaviorTests 4/4`、源校验和 diff check 通过。
+- clean `.tmp/r06-07-emptytables/emptytables-report.txt` 绑定 `5046bf8f...`，`WorkingTreeClean=True`，Light/Dark、1040×700/1600×900 `emptytables OK`；Save/Task/Media/Maintenance 结构保留，Save 明暗代表图已查看。
+- 边界：合成数据、fake 服务、隔离 STA WPF 和 offscreen logical DIP；未验真实 Playnite/Worker 时序、UIA/读屏、OS 输入/IME、物理 DPI/跨屏、presented frame、ETW 或宿主性能；未写真实存档、媒体、云端或诊断数据。下一可执行任务为 R06-08 详情与行高预算，先核对现有详情区、选中对象同步和四行门禁。
+
 ## 当前第三轮 R06-06 行内进度稳定
 
 - `72fd6d9aeb74890b86ec11b2ef8e4d3954546803` 先复核既有 `TaskStatusDto.ProgressPercent/ProgressValue/ProgressDisplay`、`SnapshotComparers.Task`、`TaskIndexedCollection.Merge` 和任务分页 `TaskSummary`；实时事件更新已有行只走索引器 `Replace`，不是全表 `Reset`，分页总数仍来自服务端汇总，不由当前可见页倒推。

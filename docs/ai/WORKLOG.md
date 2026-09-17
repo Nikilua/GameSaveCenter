@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-18 R06-07 空表保留结构
+
+- 先审计四类页面已有能力：Task/Media/Maintenance 已有真实首次空、筛选/已处理完、加载和失败/旧数据降级状态；Save 只有全局忙态加集合数量判断，失败会被误显为空，因此只补 Save 的 presenter 状态生命周期。
+- `5046bf8f` 为 Save 详情增加 Loading/Empty/Ready/Error/Stale，历史/候选 DataGrid 保留表头、排序、列宽、滚动和 `LoadDetailsCommand`；加载中隐藏空文本，首次历史空与候选处理完成使用不同文案，失败可重试，已有数据失败保留旧行并提示降级。
+- `R06EmptyStateBehaviorTests 2/2` 覆盖真实生产 `SaveCenterView` 的 7/4 表头、Loading/Empty/Ready/Error、错误优先级和重试命令；`WorkspaceStateSourceTests 9 passed / 1 intentional legacy skip`、`TaskCenterViewResponsiveTests 7/7`、`R06TaskProgressBehaviorTests 4/4` 回归通过。XAML `24/24`、Release `0/0`、源码校验/diff check 通过。
+- `.tmp/r06-07-emptytables/emptytables-report.txt` 绑定 `5046bf8f...`、`WorkingTreeClean=True`，双主题 1040×700/1600×900 `emptytables OK`；Task/Media/Maintenance 与 Save 的空表/列表保留结构，人工检查 Save Light 历史和 Dark 路径核验图。只保留该被引用的证据目录。
+- 真实 Playnite/Worker、UIA/读屏、OS 输入/IME、物理 DPI/跨屏、presented frame、ETW、宿主性能和真实服务失败时序仍未验；使用合成数据/fake/隔离 STA WPF/offscreen logical DIP，未写真实存档、媒体、云端或诊断数据。下一小批量为 R06-08 详情与行高预算，先盘点详情区、选中对象同步和四行门禁。
+
 ## 2026-09-18 R06-06 行内进度稳定
 
 - 先收口既有进度能力：`ProgressValue/ProgressDisplay` 已负责钳制与未知占位，`TaskIndexedCollection.Merge` 已按 ID 行级替换，分页总数/完成汇总使用 `TaskSummary`；没有把 main 旧实现或不存在的 Demo 页面带入当前分支。

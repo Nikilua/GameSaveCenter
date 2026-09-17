@@ -2,6 +2,15 @@
 
 > 维护时间：2026-09-18
 
+## 2026-09-18 R06-07 空表保留结构
+
+- 先核对已有状态 presenter：Task 的 Empty/FilterEmpty/Loading/Error、Media 的 `WorkspaceDataState` 与 stale、Maintenance 的诊断状态均已覆盖本任务；唯一生产缺口是 Save 以 `IsBusy + Count == 0` 判断空态，加载或失败时会误显“暂无存档历史/候选”。
+- `5046bf8f` 为 Save 详情增加 `WorkspaceDataState` 生命周期和 presenter 绑定：首次空、候选处理完成/本次扫描无新结果、加载中、无旧数据失败、已有数据失败分别表达；失败时保留旧行并显示降级提示，重试复用 `LoadDetailsCommand`。没有修改服务契约、真实表格滚动模型或候选状态查询语义。
+- `R06EmptyStateBehaviorTests 2/2` 实际加载生产 `SaveCenterView` 和合成状态，验证历史 7 列、候选 4 列、Loading/Empty/Ready/Error 状态可见性及重试命令；Release XAML `24/24`、编译 `0/0`，相邻状态/响应式/进度回归通过。
+- `.tmp/r06-07-emptytables/emptytables-report.txt` 绑定 `5046bf8f...`、`WorkingTreeClean=True`，双主题 1040×700/1600×900 `emptytables OK`；人工查看 Save 历史 Light 与路径核验 Dark 图。该目录是当前保留的 R06-07 离屏证据。
+- Demo 原始目录在当前 checkout 仍不存在，沿用恢复生产基线；保留游戏选框、滚动条、命令/Binding、取消/错误/恢复保护、有限列表和 net462。未验真实宿主 UIA/读屏、OS 输入/IME、物理 DPI/跨屏、presented frame、ETW、宿主性能和真实服务失败时序；未写真实存档、媒体、云端或诊断数据。
+- 下一项：R06-08 详情与行高预算，先确认长诊断使用现有详情区而非扩张所有列表行，并验证选中项更新后详情对象及四行门禁。
+
 ## 2026-09-18 R06-06 行内进度稳定
 
 - 先核对已有能力：`TaskStatusDto` 已提供进度钳制/未知显示层，`SnapshotComparers.Task` 比较进度和状态，`TaskIndexedCollection.Merge` 按 `TaskId` 更新现有行；任务分页的总数/完成汇总来自 `TaskPageDto.Summary`，不能从当前加载页推断。
