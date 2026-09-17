@@ -1270,6 +1270,9 @@
         <Grid x:Name="DialogOverlay"
               Panel.ZIndex="100"
               Visibility="Collapsed"
+              FocusManager.IsFocusScope="True"
+              KeyboardNavigation.TabNavigation="Cycle"
+              KeyboardNavigation.DirectionalNavigation="Contained"
               Style="{StaticResource GscRedesignFeedbackDialogOverlay}">
             <Border x:Name="DialogCard"
                     HorizontalAlignment="Center"

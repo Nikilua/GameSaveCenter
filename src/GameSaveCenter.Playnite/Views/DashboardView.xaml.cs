@@ -37,6 +37,7 @@ namespace GameSaveCenter.Playnite.Views
         private bool confirmationOpen;
         private int dialogMotionGeneration;
         private string activeDialogDetailMessage = string.Empty;
+        private UIElement? dialogReturnFocus;
         private bool responsiveLayoutPending;
         private bool compactGameBrowserOpen;
         private Size pendingResponsiveSize;
@@ -150,6 +151,7 @@ namespace GameSaveCenter.Playnite.Views
             activeChoice?.Completion.TrySetResult(ProtectionPromptChoice.Later);
             activeChoice = null;
             confirmationOpen = false;
+            dialogReturnFocus = null;
             responsiveLayoutPending = false;
             dialogMotionGeneration++;
             NormalizeDashboardMotion();
@@ -1222,6 +1224,10 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OpenDialog(Control initialFocus)
         {
+            var currentFocus = Keyboard.FocusedElement as UIElement;
+            dialogReturnFocus = currentFocus != null && !IsDescendantOf(currentFocus, DialogOverlay)
+                ? currentFocus
+                : null;
             var motionGeneration = ++dialogMotionGeneration;
             StopDialogMotion();
             DialogOverlay.Visibility = Visibility.Visible;
@@ -1326,6 +1332,8 @@ namespace GameSaveCenter.Playnite.Views
 
         private void CloseDialog()
         {
+            var returnFocus = dialogReturnFocus;
+            dialogReturnFocus = null;
             confirmationOpen = false;
             dialogShowsResult = false;
             choiceDialog = false;
@@ -1336,6 +1344,27 @@ namespace GameSaveCenter.Playnite.Views
             dialogMotionGeneration++;
             StopDialogMotion();
             DialogCard.Opacity = 0;
+            if (returnFocus != null)
+            {
+                BeginUiSafely(() =>
+                {
+                    if (!returnFocus.IsVisible || !returnFocus.IsEnabled || !returnFocus.Focusable)
+                        return;
+                    returnFocus.Focus();
+                    Keyboard.Focus(returnFocus);
+                }, DispatcherPriority.Input);
+            }
+        }
+
+        private static bool IsDescendantOf(DependencyObject element, DependencyObject ancestor)
+        {
+            var current = element;
+            while (current != null)
+            {
+                if (ReferenceEquals(current, ancestor)) return true;
+                current = VisualTreeHelper.GetParent(current);
+            }
+            return false;
         }
 
         private void StopDialogMotion()

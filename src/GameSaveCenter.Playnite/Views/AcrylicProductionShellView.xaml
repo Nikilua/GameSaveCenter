@@ -274,7 +274,14 @@
                 <Border Background="Transparent">
                     <ContentControl x:Name="PageHost" Focusable="False"/>
                 </Border>
-                <Grid x:Name="PickerOverlay" Visibility="Collapsed" Panel.ZIndex="40" PreviewKeyDown="OnPickerPreviewKeyDown" AutomationProperties.Name="游戏选择器">
+                <Grid x:Name="PickerOverlay"
+                      Visibility="Collapsed"
+                      Panel.ZIndex="40"
+                      FocusManager.IsFocusScope="True"
+                      KeyboardNavigation.TabNavigation="Cycle"
+                      KeyboardNavigation.DirectionalNavigation="Contained"
+                      PreviewKeyDown="OnPickerPreviewKeyDown"
+                      AutomationProperties.Name="游戏选择器">
                     <Rectangle Fill="{DynamicResource GscPickerScrimBrush}" MouseLeftButtonDown="OnPickerScrimMouseDown"/>
                     <Border x:Name="PickerPanel" Style="{DynamicResource GscRedesignFloatingPickerCard}"
                             Width="460" MaxHeight="500" HorizontalAlignment="Right" VerticalAlignment="Top"

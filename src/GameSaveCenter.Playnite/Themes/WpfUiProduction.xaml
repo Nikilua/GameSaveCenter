@@ -198,6 +198,10 @@
          automation semantics of ComboBoxItem. -->
     <Style TargetType="ComboBoxItem">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <!-- ComboBox options are selected with the directional route. Keep Tab and
+             Shift+Tab on the owning ComboBox/form instead of exposing every option as a
+             separate form stop. -->
+        <Setter Property="KeyboardNavigation.IsTabStop" Value="False"/>
         <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="Background" Value="Transparent"/>
