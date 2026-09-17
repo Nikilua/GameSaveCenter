@@ -44,6 +44,7 @@ namespace GameSaveCenter.Playnite.Settings
         private string savedSettingsFingerprint = string.Empty;
         private long pathValidationGeneration;
         private IReadOnlyList<string> pathValidationErrors = Array.Empty<string>();
+        private readonly SettingsSaveFeedbackState saveFeedback = new();
         private readonly LatestAsyncValidationCoordinator<SettingsPathValidationSnapshot, IReadOnlyList<string>> pathValidationCoordinator = new();
         private readonly List<ValidationFieldTarget> validationFieldTargets = new();
         private ValidationFieldTarget? firstValidationTarget;
@@ -188,10 +189,15 @@ namespace GameSaveCenter.Playnite.Settings
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             InvalidatePathValidation();
+            saveFeedback.Reset();
             if (observedSettings != null)
             {
                 observedSettings.SettingsCommitted -= OnSettingsCommitted;
                 observedSettings.SettingsReverted -= OnSettingsReverted;
+                observedSettings.SettingsSaveStarted -= OnSettingsSaveStarted;
+                observedSettings.SettingsApplyStarted -= OnSettingsApplyStarted;
+                observedSettings.SettingsApplyCompleted -= OnSettingsApplyCompleted;
+                observedSettings.SettingsSaveFailed -= OnSettingsSaveFailed;
             }
 
             observedSettings = e.NewValue as GameSaveCenterSettings;
@@ -203,6 +209,10 @@ namespace GameSaveCenter.Playnite.Settings
 
             observedSettings.SettingsCommitted += OnSettingsCommitted;
             observedSettings.SettingsReverted += OnSettingsReverted;
+            observedSettings.SettingsSaveStarted += OnSettingsSaveStarted;
+            observedSettings.SettingsApplyStarted += OnSettingsApplyStarted;
+            observedSettings.SettingsApplyCompleted += OnSettingsApplyCompleted;
+            observedSettings.SettingsSaveFailed += OnSettingsSaveFailed;
             if (!settingsTransferInProgress || !settingsBaselineInitialized)
             {
                 savedSettingsFingerprint = observedSettings.GetEditBaselineFingerprint();
@@ -227,11 +237,44 @@ namespace GameSaveCenter.Playnite.Settings
             RefreshSaveState();
         }
 
+        private void OnSettingsSaveStarted(object? sender, EventArgs e)
+        {
+            saveFeedback.BeginSave();
+            if (IsLoaded) RefreshSaveState();
+        }
+
+        private void OnSettingsApplyStarted(object? sender, EventArgs e)
+        {
+            saveFeedback.BeginApply();
+            if (IsLoaded) RefreshSaveState();
+        }
+
+        private void OnSettingsApplyCompleted(object? sender, EventArgs e)
+        {
+            BeginUiSafely(() =>
+            {
+                if (!IsLoaded) return;
+                saveFeedback.CompleteApply();
+                RefreshSaveState();
+            }, DispatcherPriority.Background);
+        }
+
+        private void OnSettingsSaveFailed(object? sender, SettingsSaveFailedEventArgs e)
+        {
+            BeginUiSafely(() =>
+            {
+                if (!IsLoaded) return;
+                saveFeedback.Fail(e);
+                RefreshSaveState();
+            }, DispatcherPriority.Background);
+        }
+
         private void OnSettingsReverted(object? sender, EventArgs e)
         {
             if (sender is not GameSaveCenterSettings settings) return;
             savedSettingsFingerprint = settings.CreateSettingsFingerprint();
             settingsBaselineInitialized = true;
+            saveFeedback.Reset();
             InvalidatePathValidation();
             if (IsLoaded)
                 StartPathValidation(pathValidationGeneration);
@@ -249,6 +292,7 @@ namespace GameSaveCenter.Playnite.Settings
         private void QueueValidationSummaryUpdate()
         {
             if (!IsLoaded) return;
+            saveFeedback.ResetFailureAfterEdit();
             pathValidationGeneration++;
             if (validationPending) return;
             validationPending = true;
@@ -558,27 +602,39 @@ namespace GameSaveCenter.Playnite.Settings
             }
 
             var isDirty = !string.Equals(savedSettingsFingerprint, settings.CreateSettingsFingerprint(), StringComparison.Ordinal);
-            SettingsSaveHintText.Text = pathValidationPending
-                ? "正在校验路径 · 保存前请稍候"
-                : !settingsValid
-                    ? "存在校验错误 · 保存前请修正"
-                    : isDirty
-                        ? "有未保存更改 · 使用 Playnite 保存"
-                        : "已保存 · 由 Playnite 保存按钮提交";
-            SettingsSaveHintText.Foreground = FindResource(pathValidationPending
+            SettingsSaveHintText.Text = saveFeedback.IsSaving
+                ? "正在保存设置 · 请稍候"
+                : saveFeedback.IsApplying
+                    ? "已写入 Playnite · 正在应用到 Worker"
+                    : saveFeedback.HasFailure
+                        ? "已保存 · Worker 应用失败"
+                        : pathValidationPending
+                            ? "正在校验路径 · 保存前请稍候"
+                            : !settingsValid
+                                ? "存在校验错误 · 保存前请修正"
+                                : isDirty
+                                    ? "有未保存更改 · 使用 Playnite 保存"
+                                    : "已保存 · 由 Playnite 保存按钮提交";
+            SettingsSaveHintText.Foreground = FindResource(saveFeedback.IsSaving || saveFeedback.IsApplying
                 ? "GscWarningBrush"
-                : !settingsValid
+                : saveFeedback.HasFailure || !settingsValid
                     ? "GscErrorBrush"
                     : isDirty
                         ? "GscWarningBrush"
                         : "GscSecondaryTextBrush") as Brush;
-            SettingsSaveHintText.ToolTip = pathValidationPending
-                ? "路径正在后台校验；校验完成前不要提交设置。"
-                : !settingsValid
-                    ? "存在设置校验错误，Playnite 保存前请先修正。"
-                    : isDirty
-                        ? "设置已修改但尚未提交；请使用 Playnite 设置窗口的保存按钮，或使用取消按钮放弃修改。"
-                        : "当前设置已保存；继续修改后请使用 Playnite 的保存或取消按钮。";
+            SettingsSaveHintText.ToolTip = saveFeedback.IsSaving
+                ? "Playnite 正在写入设置；请等待本次保存完成。重复保存请求会被忽略。"
+                : saveFeedback.IsApplying
+                    ? "设置已写入 Playnite，正在异步应用到 Worker；当前页面不会重复发起应用请求。"
+                    : saveFeedback.HasFailure
+                        ? saveFeedback.FailureMessage + " 请确认 Worker 和路径后重新打开设置并保存。"
+                        : pathValidationPending
+                            ? "路径正在后台校验；校验完成前不要提交设置。"
+                            : !settingsValid
+                                ? "存在设置校验错误，Playnite 保存前请先修正。"
+                                : isDirty
+                                    ? "设置已修改但尚未提交；请使用 Playnite 设置窗口的保存按钮，或使用取消按钮放弃修改。"
+                                    : "当前设置已保存；继续修改后请使用 Playnite 的保存或取消按钮。";
         }
 
         private bool HasUnsavedSettings

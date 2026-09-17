@@ -13,6 +13,8 @@ public sealed class SettingsValidationSourceTests
         var view = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml"));
         var code = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml.cs"));
         var pathValidation = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Infrastructure", "SettingsPathValidationService.cs"));
+        var settings = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettings.cs"));
+        var plugin = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "GameSaveCenterPlugin.cs"));
 
         Assert.Contains("x:Name=\"SettingsValidationSummary\"", view);
         Assert.Contains("AutomationProperties.Name=\"设置验证错误\"", view);
@@ -52,6 +54,13 @@ public sealed class SettingsValidationSourceTests
         Assert.Contains("pathValidationGeneration", code);
         Assert.Contains("InvalidatePathValidation", code);
         Assert.Contains("CancellationToken", pathValidation);
+        Assert.Contains("SettingsSaveFeedbackState", code);
+        Assert.Contains("正在保存设置 · 请稍候", code);
+        Assert.Contains("已写入 Playnite · 正在应用到 Worker", code);
+        Assert.Contains("已保存 · Worker 应用失败", code);
+        Assert.Contains("Interlocked.CompareExchange", settings);
+        Assert.Contains("SettingsSaveFailed", settings);
+        Assert.Contains("ApplySettingsAsync(Action<Exception?>? completion)", plugin);
         Assert.Contains("有未保存更改 · 使用 Playnite 保存", code);
         Assert.Contains("存在校验错误 · 保存前请修正", code);
         Assert.Contains("CreateSettingsFingerprint", code);

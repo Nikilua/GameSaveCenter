@@ -548,11 +548,47 @@ namespace GameSaveCenter.Playnite
 
         public void ApplySettingsAsync()
         {
+            ApplySettingsAsync(null);
+        }
+
+        public void ApplySettingsAsync(Action<Exception?>? completion)
+        {
             // Settings changes do not change the Playnite game descriptors. Sending the
             // settings directly avoids turning every settings save into a 900-game Ludusavi
             // catalog refresh. Library callbacks and the explicit Dashboard refresh remain the
             // only paths that request catalog synchronization.
-            FireAndForget(ApplySettingsAndAwaitAsync);
+            if (lifetimeCancellation.IsCancellationRequested)
+            {
+                completion?.Invoke(new OperationCanceledException("GameSaveCenter plugin is shutting down."));
+                return;
+            }
+
+            FireAndForget(async () =>
+            {
+                try
+                {
+                    await ApplySettingsAndAwaitAsync().ConfigureAwait(false);
+                    NotifySettingsApplyCompletion(completion, null);
+                }
+                catch (Exception ex)
+                {
+                    NotifySettingsApplyCompletion(completion, ex);
+                    throw;
+                }
+            });
+        }
+
+        private void NotifySettingsApplyCompletion(Action<Exception?>? completion, Exception? exception)
+        {
+            if (completion == null) return;
+            try
+            {
+                completion(exception);
+            }
+            catch (Exception callbackException)
+            {
+                logger.Error(callbackException, "GameSaveCenter settings apply feedback callback failed.");
+            }
         }
 
         public Task ApplySettingsAndAwaitAsync()

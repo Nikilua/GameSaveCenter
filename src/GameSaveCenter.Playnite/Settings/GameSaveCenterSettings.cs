@@ -18,12 +18,25 @@ namespace GameSaveCenter.Playnite.Settings
         private GameSaveCenterSettings? editingClone;
         private string deviceId = Guid.NewGuid().ToString("N");
         private bool deviceIdWasLoaded;
+        private int settingsSaveInProgress;
 
         /// <summary>Raised after Playnite commits the current edit buffer.</summary>
         public event EventHandler? SettingsCommitted;
 
         /// <summary>Raised after Playnite cancels the current edit buffer.</summary>
         public event EventHandler? SettingsReverted;
+
+        /// <summary>Raised when Playnite begins writing the current edit buffer.</summary>
+        public event EventHandler? SettingsSaveStarted;
+
+        /// <summary>Raised when the saved settings are being applied to Worker.</summary>
+        public event EventHandler? SettingsApplyStarted;
+
+        /// <summary>Raised when the Worker accepts the saved settings.</summary>
+        public event EventHandler? SettingsApplyCompleted;
+
+        /// <summary>Raised when writing settings or applying them to Worker fails.</summary>
+        public event EventHandler<SettingsSaveFailedEventArgs>? SettingsSaveFailed;
 
         public GameSaveCenterSettings() { }
 
@@ -184,12 +197,41 @@ namespace GameSaveCenter.Playnite.Settings
 
         public void EndEdit()
         {
-            if (plugin == null) return;
-            plugin.SavePluginSettings(this);
-            plugin.NotifyVisualSettingsChanged();
-            plugin.ApplySettingsAsync();
-            editingClone = null;
-            SettingsCommitted?.Invoke(this, EventArgs.Empty);
+            if (plugin == null || editingClone == null
+                || Interlocked.CompareExchange(ref settingsSaveInProgress, 1, 0) != 0)
+                return;
+
+            var settingsPersisted = false;
+            SettingsSaveStarted?.Invoke(this, EventArgs.Empty);
+            try
+            {
+                plugin.SavePluginSettings(this);
+                settingsPersisted = true;
+                plugin.NotifyVisualSettingsChanged();
+                editingClone = null;
+                SettingsCommitted?.Invoke(this, EventArgs.Empty);
+                SettingsApplyStarted?.Invoke(this, EventArgs.Empty);
+                plugin.ApplySettingsAsync(exception =>
+                {
+                    try
+                    {
+                        if (exception == null)
+                            SettingsApplyCompleted?.Invoke(this, EventArgs.Empty);
+                        else
+                            SettingsSaveFailed?.Invoke(this, new SettingsSaveFailedEventArgs(exception, true));
+                    }
+                    finally
+                    {
+                        Volatile.Write(ref settingsSaveInProgress, 0);
+                    }
+                });
+            }
+            catch (Exception exception)
+            {
+                SettingsSaveFailed?.Invoke(this, new SettingsSaveFailedEventArgs(exception, settingsPersisted));
+                Volatile.Write(ref settingsSaveInProgress, 0);
+                throw;
+            }
         }
 
         /// <summary>
