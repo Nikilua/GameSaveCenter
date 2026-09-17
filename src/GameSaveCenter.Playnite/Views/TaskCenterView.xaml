@@ -232,6 +232,7 @@
                                 </Style>
                             </ui:Button.Style>
                         </ui:Button>
+                        <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Content="重置列宽" ToolTip="恢复任务表格的默认列宽" AutomationProperties.Name="重置任务表格列宽" Click="OnResetColumnLayoutClick" Margin="10,0,0,0"/>
                         <StackPanel VerticalAlignment="Center" Margin="10,0,0,0">
                             <TextBlock Text="{Binding TaskLoadedSummary}" Style="{DynamicResource GscCaptionStyle}"/>
                             <TextBlock x:Name="TaskQueueFilterSummary" Text="{Binding TaskActiveFiltersSummary}" Foreground="{DynamicResource GscInfoBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding TaskActiveFiltersSummary}" Margin="0,2,0,0">

@@ -568,6 +568,12 @@ namespace GameSaveCenter.Playnite.ViewModels
         public int SaveTabIndex { get => saveTabIndex; set { SetValue(ref saveTabIndex, Math.Max(0, Math.Min(3, value))); } }
         public EnvironmentCheckReportDto EnvironmentCheck { get => environmentCheck; private set { SetValue(ref environmentCheck, value ?? new EnvironmentCheckReportDto()); RaiseCommandStates(); } }
         public bool IsOnboardingPending => !plugin.Settings.OnboardingCompleted;
+        /// <summary>Provides the existing Playnite settings store to view-local UI preference controllers.</summary>
+        internal GameSaveCenterSettings PluginSettings => plugin.Settings;
+
+        /// <summary>Persists a debounced view preference without entering the settings editor.</summary>
+        internal void PersistUiPreference() => plugin.SavePluginSettings(plugin.Settings);
+
         public string OnboardingTitle => IsOnboardingPending ? "首次使用：准备环境" : "环境检查";
         public string OnboardingDescription => IsOnboardingPending
             ? "先确认 Worker、目录、SQLite 与备份工具可用。所有检查都是非破坏性的；你可以跳过，之后随时在维护中心重新运行。"

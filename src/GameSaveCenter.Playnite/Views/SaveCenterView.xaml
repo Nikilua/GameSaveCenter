@@ -112,7 +112,8 @@
                                     <WrapPanel x:Name="SaveHistorySummaryActions" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="14,0,0,0">
                                         <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Appearance="Primary" Command="{Binding DetectPathsCommand}" Content="立即扫描" MinWidth="100" Margin="0,0,8,0"/>
                                         <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding ValidateCommand}" Content="重新校验" MinWidth="100" Margin="0,0,8,0"/>
-                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding LoadDetailsCommand}" Content="重新加载详情" MinWidth="100" AutomationProperties.Name="重新加载存档详情"/>
+                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding LoadDetailsCommand}" Content="重新加载详情" MinWidth="100" AutomationProperties.Name="重新加载存档详情" Margin="0,0,8,0"/>
+                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="重置列宽" ToolTip="恢复存档历史和候选路径表格的默认列宽" AutomationProperties.Name="重置存档表格列宽" Click="OnResetColumnLayoutClick"/>
                                     </WrapPanel>
                                 </Grid>
                             </Border>

@@ -41,6 +41,7 @@ namespace GameSaveCenter.Playnite.Settings
         private bool followSelectedGameBackground = true;
         private bool sidebarCollapsed;
         private bool healthInspectionEnabled = true;
+        private Dictionary<string, double> dataGridColumnWidths = new Dictionary<string, double>(StringComparer.Ordinal);
 
         /// <summary>Raised after Playnite commits the current edit buffer.</summary>
         public event EventHandler? SettingsCommitted;
@@ -147,6 +148,44 @@ namespace GameSaveCenter.Playnite.Settings
         public string TaskHistoryRangeState { get; set; } = "全部时间";
         public string MediaFilterState { get; set; } = "全部";
         public string MediaSearchTextState { get; set; } = string.Empty;
+
+        /// <summary>
+        /// User-adjusted DataGrid widths keyed by the versioned view/column identity.
+        /// Unknown keys are intentionally retained for forward-compatible imports but
+        /// are ignored by the current column layout controller.
+        /// </summary>
+        public Dictionary<string, double> DataGridColumnWidths
+        {
+            get => dataGridColumnWidths;
+            set => dataGridColumnWidths = CloneDataGridColumnWidths(value);
+        }
+
+        internal bool TryGetDataGridColumnWidth(string viewKey, string columnKey, out double width)
+        {
+            width = 0;
+            if (string.IsNullOrWhiteSpace(viewKey) || string.IsNullOrWhiteSpace(columnKey)) return false;
+            return dataGridColumnWidths.TryGetValue(BuildDataGridColumnWidthKey(viewKey, columnKey), out width)
+                && IsFinite(width)
+                && width > 0;
+        }
+
+        internal void SetDataGridColumnWidth(string viewKey, string columnKey, double width)
+        {
+            if (string.IsNullOrWhiteSpace(viewKey) || string.IsNullOrWhiteSpace(columnKey) || !IsFinite(width) || width <= 0)
+                return;
+            dataGridColumnWidths[BuildDataGridColumnWidthKey(viewKey, columnKey)] = width;
+        }
+
+        internal void ResetDataGridColumnWidths(string viewKey)
+        {
+            if (string.IsNullOrWhiteSpace(viewKey)) return;
+            var prefix = BuildDataGridColumnWidthKey(viewKey, string.Empty);
+            foreach (var key in new List<string>(dataGridColumnWidths.Keys))
+            {
+                if (key.StartsWith(prefix, StringComparison.Ordinal))
+                    dataGridColumnWidths.Remove(key);
+            }
+        }
 
         public string ExportPortableJson()
         {
@@ -473,7 +512,27 @@ namespace GameSaveCenter.Playnite.Settings
             TaskHistoryRangeState = IsSupportedTaskHistoryRange(other.TaskHistoryRangeState) ? other.TaskHistoryRangeState : "全部时间";
             MediaFilterState = string.IsNullOrWhiteSpace(other.MediaFilterState) ? "全部" : other.MediaFilterState;
             MediaSearchTextState = other.MediaSearchTextState ?? string.Empty;
+            DataGridColumnWidths = other.DataGridColumnWidths;
         }
+
+        private static string BuildDataGridColumnWidthKey(string viewKey, string columnKey)
+            => "v1/" + viewKey.Trim() + "/" + columnKey.Trim();
+
+        private static Dictionary<string, double> CloneDataGridColumnWidths(Dictionary<string, double>? source)
+        {
+            var result = new Dictionary<string, double>(StringComparer.Ordinal);
+            if (source == null) return result;
+            foreach (var pair in source)
+            {
+                if (result.Count >= 256 || string.IsNullOrWhiteSpace(pair.Key) || pair.Key.Length > 180 || !IsFinite(pair.Value) || pair.Value <= 0)
+                    continue;
+                result[pair.Key] = pair.Value;
+            }
+            return result;
+        }
+
+        private static bool IsFinite(double value)
+            => !double.IsNaN(value) && !double.IsInfinity(value);
 
         private static bool IsSupportedTaskHistoryRange(string value)
             => value == "全部时间" || value == "今天" || value == "昨天" || value == "近7天" || value == "近30天";

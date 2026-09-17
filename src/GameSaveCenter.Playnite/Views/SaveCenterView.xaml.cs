@@ -2,6 +2,8 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using GameSaveCenter.Playnite.Infrastructure;
+using GameSaveCenter.Playnite.ViewModels;
 
 namespace GameSaveCenter.Playnite.Views
 {
@@ -12,12 +14,53 @@ namespace GameSaveCenter.Playnite.Views
         private bool isApplyingLayout;
         private bool historyInspectorOpen;
         private bool candidateInspectorOpen;
+        private DataGridColumnLayoutController? historyColumnLayout;
+        private DataGridColumnLayoutController? candidateColumnLayout;
 
         public SaveCenterView()
         {
             InitializeComponent();
             SaveHistoryActionsScrollViewer.IsVisibleChanged += InspectorIsVisibleChanged;
             SaveCandidateInspectorScrollViewer.IsVisibleChanged += InspectorIsVisibleChanged;
+            Loaded += OnLoaded;
+            Unloaded += OnUnloaded;
+            DataContextChanged += OnDataContextChanged;
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e) => AttachColumnLayouts();
+
+        private void OnUnloaded(object sender, RoutedEventArgs e) => DetachColumnLayouts();
+
+        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (!IsLoaded) return;
+            DetachColumnLayouts();
+            AttachColumnLayouts();
+        }
+
+        private void AttachColumnLayouts()
+        {
+            if (historyColumnLayout != null || !(DataContext is DashboardViewModel viewModel)) return;
+            historyColumnLayout = new DataGridColumnLayoutController(
+                SaveHistoryGrid,
+                "save-history",
+                new[] { "time", "type", "file-count", "size", "device", "note", "state" },
+                viewModel.PluginSettings,
+                viewModel.PersistUiPreference);
+            candidateColumnLayout = new DataGridColumnLayoutController(
+                SaveCandidateGrid,
+                "save-candidates",
+                new[] { "confidence", "status", "path", "reason" },
+                viewModel.PluginSettings,
+                viewModel.PersistUiPreference);
+        }
+
+        private void DetachColumnLayouts()
+        {
+            candidateColumnLayout?.Dispose();
+            historyColumnLayout?.Dispose();
+            candidateColumnLayout = null;
+            historyColumnLayout = null;
         }
 
         private void InspectorIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -32,6 +75,8 @@ namespace GameSaveCenter.Playnite.Views
         {
             if (isApplyingLayout) return;
             isApplyingLayout = true;
+            historyColumnLayout?.BeginLayoutPass();
+            candidateColumnLayout?.BeginLayoutPass();
             try
             {
                 responsiveWidth = width;
@@ -230,8 +275,19 @@ namespace GameSaveCenter.Playnite.Views
             }
             finally
             {
+                candidateColumnLayout?.EndLayoutPass();
+                historyColumnLayout?.EndLayoutPass();
                 isApplyingLayout = false;
             }
+        }
+
+        private void OnResetColumnLayoutClick(object sender, RoutedEventArgs e)
+        {
+            historyColumnLayout?.ResetToDefaults();
+            candidateColumnLayout?.ResetToDefaults();
+            if (responsiveWidth > 0 && responsiveHeight > 0)
+                ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
+            e.Handled = true;
         }
 
         private void OnSaveHistorySelectionChanged(object sender, SelectionChangedEventArgs e)

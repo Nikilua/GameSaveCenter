@@ -35,6 +35,7 @@ namespace GameSaveCenter.Playnite.Views
         private long anchorRestoreGeneration;
         private string anchorDiagnostic = "none";
         private readonly DispatcherTimer pendingAnchorExpiryTimer;
+        private DataGridColumnLayoutController? inboxColumnLayout;
 
         public MediaCenterView()
         {
@@ -51,17 +52,42 @@ namespace GameSaveCenter.Playnite.Views
             pendingAnchorExpiryTimer.Tick += OnPendingAnchorExpiry;
         }
 
-        private void OnLoaded(object sender, RoutedEventArgs e) => AttachViewModel(DataContext as DashboardViewModel);
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            AttachViewModel(DataContext as DashboardViewModel);
+            AttachColumnLayout();
+        }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
             InvalidatePendingAnchorRestore();
             pendingAnchorExpiryTimer.Stop();
+            inboxColumnLayout?.Dispose();
+            inboxColumnLayout = null;
             DetachViewModel();
         }
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-            => AttachViewModel(e.NewValue as DashboardViewModel);
+        {
+            AttachViewModel(e.NewValue as DashboardViewModel);
+            if (IsLoaded)
+            {
+                inboxColumnLayout?.Dispose();
+                inboxColumnLayout = null;
+                AttachColumnLayout();
+            }
+        }
+
+        private void AttachColumnLayout()
+        {
+            if (inboxColumnLayout != null || !(DataContext is DashboardViewModel viewModel)) return;
+            inboxColumnLayout = new DataGridColumnLayoutController(
+                MediaInboxGrid,
+                "media-inbox",
+                new[] { "captured-time", "type", "source", "file", "reason" },
+                viewModel.PluginSettings,
+                viewModel.PersistUiPreference);
+        }
 
         private void AttachViewModel(DashboardViewModel? viewModel)
         {
@@ -159,6 +185,12 @@ namespace GameSaveCenter.Playnite.Views
 
             UpdateMediaInboxSelectionSummary();
             CommandManager.InvalidateRequerySuggested();
+            e.Handled = true;
+        }
+
+        private void OnResetColumnLayoutClick(object sender, RoutedEventArgs e)
+        {
+            inboxColumnLayout?.ResetToDefaults();
             e.Handled = true;
         }
 

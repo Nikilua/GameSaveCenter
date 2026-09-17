@@ -13,12 +13,40 @@ namespace GameSaveCenter.Playnite.Views
     {
         private bool isApplyingLayout;
         private bool taskInspectorOpen;
+        private DataGridColumnLayoutController? columnLayout;
 
         public TaskCenterView()
         {
             InitializeComponent();
             DataGridScrollDiagnostics.Attach(TaskGrid, "TaskGrid", GetScrollDiagnosticContext);
             TaskDetailScrollViewer.IsVisibleChanged += OnTaskDetailScrollViewerIsVisibleChanged;
+            Loaded += OnLoaded;
+            Unloaded += OnUnloaded;
+            DataContextChanged += OnDataContextChanged;
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            if (columnLayout != null || !(DataContext is DashboardViewModel viewModel)) return;
+            columnLayout = new DataGridColumnLayoutController(
+                TaskGrid,
+                "tasks",
+                new[] { "local-time", "task", "game", "state", "progress", "detail" },
+                viewModel.PluginSettings,
+                viewModel.PersistUiPreference);
+        }
+
+        private void OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            columnLayout?.Dispose();
+            columnLayout = null;
+        }
+
+        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (!IsLoaded) return;
+            OnUnloaded(this, new RoutedEventArgs());
+            OnLoaded(this, new RoutedEventArgs());
         }
 
         private string GetScrollDiagnosticContext()
@@ -238,6 +266,12 @@ namespace GameSaveCenter.Playnite.Views
                 ApplyResponsiveLayout(
                     TaskPageScrollSurface.ActualWidth > 0 ? TaskPageScrollSurface.ActualWidth : TaskWorkspaceLayout.ActualWidth,
                     TaskPageScrollSurface.ActualHeight > 0 ? TaskPageScrollSurface.ActualHeight : TaskWorkspaceLayout.ActualHeight);
+        }
+
+        private void OnResetColumnLayoutClick(object sender, RoutedEventArgs e)
+        {
+            columnLayout?.ResetToDefaults();
+            e.Handled = true;
         }
 
         private void OnClearTaskFiltersClick(object sender, RoutedEventArgs e)
