@@ -877,21 +877,6 @@ namespace GameSaveCenter.Playnite.Views
             }
         }
 
-        private void OnInspectorPreviewMouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            var scrollViewer = sender as ScrollViewer;
-            if (scrollViewer == null || scrollViewer.ScrollableHeight <= 0) return;
-
-            // Playnite themes can route the wheel to an outer host before nested inspectors
-            // consume it. Move the finite inspector explicitly and mark the event handled.
-            for (var index = 0; index < 3; index++)
-            {
-                if (e.Delta < 0) scrollViewer.LineDown();
-                else scrollViewer.LineUp();
-            }
-            e.Handled = true;
-        }
-
         private static void SetVisibility(UIElement element, bool visible)
             => element.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
 

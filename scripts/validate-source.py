@@ -1154,6 +1154,7 @@ def check_final_redesign_guards() -> None:
     settings_path = ROOT / "src/GameSaveCenter.Playnite/Settings/GameSaveCenterSettingsView.xaml"
     settings_code_path = ROOT / "src/GameSaveCenter.Playnite/Settings/GameSaveCenterSettingsView.xaml.cs"
     redesign_path = ROOT / "src/GameSaveCenter.Playnite/Themes/Redesign.xaml"
+    scroll_boundary_behavior_path = ROOT / "src/GameSaveCenter.Playnite/Infrastructure/ScrollBoundaryRoutingBehavior.cs"
     if not redesign_path.exists():
         fail("Final redesign resource dictionary is missing: Themes/Redesign.xaml")
         return
@@ -1164,6 +1165,7 @@ def check_final_redesign_guards() -> None:
     settings = settings_path.read_text(encoding="utf-8")
     settings_code = settings_code_path.read_text(encoding="utf-8")
     redesign = redesign_path.read_text(encoding="utf-8")
+    scroll_boundary_behavior = scroll_boundary_behavior_path.read_text(encoding="utf-8")
     design_tokens_text = (ROOT / "src/GameSaveCenter.Playnite/Themes/DesignTokens.xaml").read_text(encoding="utf-8")
     wpf_ui_production_text = (ROOT / "src/GameSaveCenter.Playnite/Themes/WpfUiProduction.xaml").read_text(encoding="utf-8")
     workspace_views = read_workspace_views()
@@ -1234,8 +1236,10 @@ def check_final_redesign_guards() -> None:
           'GameBrowserPanel.Width = layout.IsCompactGameBrowser ? double.NaN : floatingPickerWidth',
           'GameBrowserPanel.MaxHeight = double.PositiveInfinity',
            'GameSwitcherHost.Visibility = gameScopedWorkspace',
-          'ToggleGameBrowserButton.Visibility = Visibility.Collapsed',
-          'scrollViewer.LineDown()', 'scrollViewer.LineUp()')),
+          'ToggleGameBrowserButton.Visibility = Visibility.Collapsed')),
+        (scroll_boundary_behavior, "Scroll boundary routing behavior",
+         ('class ScrollBoundaryRoutingBehavior', 'FindParentScrollViewer', 'CanScroll',
+          'ScrollByWheelDelta', 'sender is DataGrid', 'args.Handled = true')),
         (settings, "Settings final redesign",
          ('Themes/Redesign.xaml', 'x:Name="SettingsWorkspace"',
           'x:Name="SettingsCategoryRail"', 'x:Name="SettingsScroller"',
@@ -1259,7 +1263,11 @@ def check_final_redesign_guards() -> None:
          ('x:Key="GscRedesignSectionCard"', 'x:Key="GscRedesignHeroCard"',
           'x:Key="GscRedesignMetricCard"', 'x:Key="GscRedesignMetricBorder"',
           'x:Key="GscRedesignGameContextButton"', 'x:Key="GscRedesignStatusCard"',
-          'x:Key="GscRedesignSettingsTabControl"', 'x:Key="GscRedesignSettingsTabItem"')),
+          'x:Key="GscRedesignSettingsTabControl"', 'x:Key="GscRedesignSettingsTabItem"',
+          'infra:ScrollBoundaryRoutingBehavior.Enabled')),
+        (design_tokens_text, "Page scroll ownership resources",
+         ('x:Key="GscPageScrollViewer"', 'x:Key="GscInspectorScrollViewer"',
+          'infra:ScrollBoundaryRoutingBehavior.Enabled')),
     ):
         for token in required:
             if token not in source:
