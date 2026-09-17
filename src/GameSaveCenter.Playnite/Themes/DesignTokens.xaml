@@ -3,6 +3,7 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:primitives="clr-namespace:System.Windows.Controls.Primitives;assembly=PresentationFramework"
                     xmlns:converters="clr-namespace:GameSaveCenter.Playnite.Converters"
+                    xmlns:infra="clr-namespace:GameSaveCenter.Playnite.Infrastructure"
                     xmlns:ui="clr-namespace:GameSaveCenter.Playnite.Controls">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/Typography.xaml"/>
@@ -848,6 +849,7 @@
         <Setter Property="MinWidth" Value="84"/>
         <Setter Property="Padding" Value="9,4"/>
         <Setter Property="TextAlignment" Value="Right"/>
+        <Setter Property="infra:NumericInput.Enabled" Value="True"/>
         <Setter Property="ToolTipService.ShowDuration" Value="12000"/>
         <Setter Property="Validation.ErrorTemplate">
             <Setter.Value>
