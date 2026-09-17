@@ -2,6 +2,15 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-18 R05-08 弹层资源热切换
+
+- 先复核实际生产 Settings Popup/Tooltip 的资源链和卸载路径，确认 Tooltip 脱离页面视觉树后会从静态 Acrylic 字典拿到旧深色背景；没有重复造 Popup，也没有替换游戏选框或滚动条系统。
+- `599a8fd9` 收口活动 Demo 主题到旧 Acrylic 资源键的兼容别名，并让局部 `GscToolTipBehavior` 在打开/主题变化时同步当前范围资源、卸载时关闭附属层并解除显式 Tooltip 处理器；`bebde2fe` 修正测试夹具复用 `Application.Current`，避免同一 AppDomain 重复创建 Application。
+- `R05PopupLifecycleBehaviorTests 1/1` 实际生产 STA WPF 验证 Popup/Tooltip Light→Dark 仍打开且颜色改变，父窗 Hide 后两层关闭。最终标准产物相邻 R05 定向：Tooltip `1/1`、Popup `2/2`、焦点 `3/3`、开关 `1/1`、选项虚拟化 `3/3`、源契约 `24/24`；XAML `24/24`、编译 `0/0`。
+- 实现提交上的完整标准运行记录为 Core `83/83`、Worker `311/311`、Playnite `573/665`、57 skip、35 fail，失败是并行 WPF Application/隐藏窗口/布局夹具环境假设；最终夹具提交后只把隔离定向结果写成通过，不把全量写成绿色。
+- clean RenderHarness 绑定 `bebde2fe`，双主题 357 PNG、`WorkingTreeClean=True`、`render-qa OK`；Settings 1040×700 开面和双主题 Popup/Tooltip 图已抽查。证据：`R05-08-POPUP-LIFECYCLE-20260918.md`。下一项 R06-01 列宽用户记忆。
+- 未验真实 Playnite 关闭/重建、泄漏 profiler、物理 DPI/跨屏、OS 输入/IME、读屏/UIA、presented frame、ETW 和宿主性能；未写真实存档、媒体、云端或诊断数据。
+
 ## 2026-09-17 R05-07 Tooltip 时序
 
 - 核对 Q15 与当前资源合并顺序后发现：`AcrylicReferenceControls.xaml` 是实际生产覆盖样式，缺少 `MaxWidth`，不能仅凭 `DesignTokens.xaml` 的源断言签收长 Tooltip。本轮两套共享样式都补齐不可聚焦、Mouse placement、420 DIP 上限和字符串换行/不省略模板。

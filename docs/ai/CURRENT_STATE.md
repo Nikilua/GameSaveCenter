@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R05-08 弹层资源热切换
+
+- `599a8fd96f2808f5879f7eee7dd1d564e054db8a` + `bebde2fed18f3ad891d6fe4123c6b5a6757b96fd` 收口实际生产 Settings Popup/Tooltip 的主题与生命周期：Light→Dark 时两个附属层保持打开并使用活动资源，父窗 `Hide()` 后视图不可见且两层关闭；`GscToolTipBehavior` 仅做局部范围同步，卸载时解除显式 Tooltip 处理器，不改全局静态资源订阅。
+- `AdaptiveThemePalette` 为生产 `AcrylicReferenceControls.xaml` 仍消费的旧 Acrylic 键补齐活动 Demo 主题别名，修复脱离页面视觉树的 Tooltip 在浅色主题回退静态深色资源的真实缺口；命令/Binding、游戏选框、滚动条、取消/错误、安全/恢复和 net462 保持。
+- 最终标准产物 XAML `24/24`、编译 `0/0`；隔离进程定向 R05-08 `1/1`、Tooltip `1/1`、Popup `2/2`、焦点 `3/3`、开关 `1/1`、选项虚拟化 `3/3`、源契约 `24/24`。实现提交上的完整记录为 Core `83/83`、Worker `311/311`、Playnite `573/665`、57 跳过、35 条并行 WPF 环境性失败；最终夹具提交后没有把全量并行结果改写成绿色。
+- clean RenderHarness 绑定最终 SHA，Light/Dark、357 PNG、`WorkingTreeClean=True`、`render-qa OK`；Settings 1040×700 开面、Popup/Tooltip 双主题图已抽查。报告 `.tmp/r05-08-render-clean/render-qa-report.txt`，证据见 [`R05-08-POPUP-LIFECYCLE-20260918.md`](../design/reviews/ui-finesse-round3-20260915/evidence/R05-08-POPUP-LIFECYCLE-20260918.md)。
+- 边界仍是隔离合成数据/隐藏 WPF Window/offscreen logical DIP：未验真实 Playnite 关闭/重建、泄漏 profiler、物理 DPI/跨屏、OS 输入/IME、读屏/UIA、presented frame、ETW 或宿主性能；未写真实存档、媒体、云端或诊断数据。下一可执行任务为 R06-01 列宽用户记忆。
+
 ## 当前第三轮 R05-07 Tooltip 时序
 
 - `2fc8c0d67c1d6cf585c85b984607efefb4b129a3` 修复实际生产资源覆盖缺口：`AcrylicReferenceControls.xaml` 不再丢失 Tooltip 的 `MaxWidth=420`，并与 `DesignTokens.xaml` 一起明确 `Focusable=False`、`Placement=Mouse`、字符串换行/不省略；壳层和独立设置页接入局部 `GscToolTipBehavior`，Esc 关闭当前插件范围 Tooltip，不移动输入焦点。

@@ -1,6 +1,14 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
-> 维护时间：2026-09-17
+> 维护时间：2026-09-18
+
+## 2026-09-18 R05-08 弹层资源热切换
+
+- 先复核真实生产 Settings 的 ComboBox `PART_Popup`、Tooltip 样式合并顺序和既有 `GscToolTipBehavior`；缺口不是“没有 Popup”，而是脱离页面资源链的 Tooltip 会从静态 Acrylic 字典拿到旧深色背景。
+- `599a8fd9` 在 `AdaptiveThemePalette` 中补旧 Acrylic 兼容键到活动 Demo 主题的别名，并扩展局部 `GscToolTipBehavior`：打开/主题变化同步当前作用域资源，父根卸载时关闭 Popup/Tooltip，解除显式 Tooltip 处理器；没有 Application 级静态订阅或全局资源污染。`bebde2fe` 只稳固了隔离夹具对 `Application.Current` 的复用。
+- 实际生产 STA WPF `R05PopupLifecycleBehaviorTests 1/1` 验证 Light→Dark 后 Popup/Tooltip 均保持打开且颜色改变，父窗 `Hide()` 后两层关闭；最终标准产物相邻 R05 定向为 Tooltip `1/1`、Popup `2/2`、焦点 `3/3`、开关 `1/1`、选项虚拟化 `3/3`，共享源契约 `24/24`。
+- clean RenderHarness 绑定 `bebde2fe`，双主题 357 PNG、工作树 clean、`render-qa OK`；Settings 1040×700 开面和 Light/Dark Popup/Tooltip 图已检查。完整并行 WPF 记录仍为实现提交上的 Playnite `573/665`、57 skip、35 fail，不能写成全量绿色。
+- 不把隐藏夹具当成真实 Playnite 关闭/重建或内存泄漏证明；真实宿主、物理 DPI/跨屏、presented frame、OS 输入/IME、读屏/UIA、泄漏 profiler、ETW、宿主性能仍未验。下一项 R06-01 列宽用户记忆。
 
 ## 2026-09-17 R05-07 Tooltip 时序
 
