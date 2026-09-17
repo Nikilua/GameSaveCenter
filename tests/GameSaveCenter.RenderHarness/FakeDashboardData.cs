@@ -59,6 +59,7 @@ public sealed class FakeDashboardData
     public ICommand ReloadMediaInboxCommand { get; } = new NoopCommand();
     public ICommand UndoMediaClassificationCommand { get; } = new NoopCommand();
     public ICommand LoadMoreTasksCommand { get; } = new NoopCommand();
+    public ICommand LoadDetailsCommand { get; } = new NoopCommand();
     public ICommand RetryAllTasksCommand { get; } = new NoopCommand();
     public ICommand RetryTaskCommand { get; } = new NoopCommand();
     public ICommand CancelTaskCommand { get; } = new NoopCommand();
@@ -869,6 +870,21 @@ public sealed class FakeDashboardData
     public bool IsTrainerToolsLoading => fixtureState == WorkspaceFixtureState.Loading;
     public bool IsTrainerCatalogLoading => fixtureState == WorkspaceFixtureState.Loading;
     public bool IsTrainerReleasesLoading => fixtureState == WorkspaceFixtureState.Loading;
+    public string SaveDetailsState => FixtureStateText;
+    public string SaveDetailsPresenterState => IsFixtureOffline ? "Offline" : fixtureState == WorkspaceFixtureState.Stale ? "Degraded" : FixtureStateText;
+    public string SaveDetailsStateTitle => FixtureStateTitle("存档列表");
+    public string SaveDetailsStateMessage => FixtureStateMessage("存档列表");
+    public string SaveDetailsStateDetail => FixtureStateDetail;
+    public bool SaveHistoryStateOverlayVisible => (fixtureState == WorkspaceFixtureState.Loading && Backups.Count == 0)
+        || (fixtureState == WorkspaceFixtureState.Error && Backups.Count == 0)
+        || IsFixtureOffline;
+    public bool SaveCandidateStateOverlayVisible => (fixtureState == WorkspaceFixtureState.Loading && SaveCandidates.Count == 0)
+        || (fixtureState == WorkspaceFixtureState.Error && SaveCandidates.Count == 0)
+        || IsFixtureOffline;
+    public bool SaveDetailsStaleVisible => !IsFixtureOffline && fixtureState == WorkspaceFixtureState.Stale;
+    public string SaveCandidateEmptyText => fixtureState == WorkspaceFixtureState.Empty
+        ? "暂无待处理的存档路径候选\n首次读取为空；可以点击“立即扫描”重新检测候选目录。"
+        : "当前没有新的待处理存档路径候选\n候选处理完成或本次扫描没有新结果；可以点击“立即扫描”重新检测。";
     public string MediaDetailsState => FixtureStateText;
     public string MediaDetailsPresenterState => IsFixtureOffline ? "Offline" : fixtureState == WorkspaceFixtureState.Stale ? "Degraded" : FixtureStateText;
     public string MediaDetailsStateTitle => FixtureStateTitle("当前游戏媒体");

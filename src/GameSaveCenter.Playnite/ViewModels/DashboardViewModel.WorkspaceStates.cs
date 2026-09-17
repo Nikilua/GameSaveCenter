@@ -82,6 +82,9 @@ namespace GameSaveCenter.Playnite.ViewModels
     {
         private readonly MediaWorkspaceStateCache mediaDetailsStateCache = new MediaWorkspaceStateCache();
         private readonly MediaWorkspaceStateCache mediaInboxStateCache = new MediaWorkspaceStateCache();
+        private WorkspaceDataState saveDetailsState = WorkspaceDataState.Empty;
+        private DateTime? saveDetailsLastSuccessUtc;
+        private string saveDetailsErrorMessage = string.Empty;
         private WorkspaceDataState maintenanceState = WorkspaceDataState.Empty;
         private DateTime? maintenanceLastSuccessUtc;
         private string maintenanceErrorMessage = string.Empty;
@@ -123,10 +126,40 @@ namespace GameSaveCenter.Playnite.ViewModels
             StagedRemoteBackup != null,
             StagedRemoteBackup?.Verified == true,
             IsBusy);
-        public bool IsSaveHistoryLoading => IsBusy && Backups.Count == 0;
+        public bool IsSaveHistoryLoading => saveDetailsState == WorkspaceDataState.Loading && Backups.Count == 0;
         public bool IsTrainerToolsLoading => IsBusy && GameTools.Count == 0;
         public bool IsTrainerCatalogLoading { get => isTrainerCatalogLoading; private set => SetValue(ref isTrainerCatalogLoading, value); }
         public bool IsTrainerReleasesLoading { get => isTrainerReleasesLoading; private set => SetValue(ref isTrainerReleasesLoading, value); }
+
+        public string SaveDetailsState => saveDetailsState.ToString();
+        public string SaveDetailsPresenterState => saveDetailsState == WorkspaceDataState.Stale
+            ? "Degraded"
+            : saveDetailsState.ToString();
+        public string SaveDetailsStateTitle => saveDetailsState switch
+        {
+            WorkspaceDataState.Loading => "正在读取存档列表",
+            WorkspaceDataState.Empty => "暂无存档记录",
+            WorkspaceDataState.Stale => "存档列表显示已过期",
+            WorkspaceDataState.Error => "存档列表读取失败",
+            _ => string.Empty
+        };
+        public string SaveDetailsStateMessage => saveDetailsState switch
+        {
+            WorkspaceDataState.Loading => "正在读取当前游戏的历史版本和存档路径候选。",
+            WorkspaceDataState.Empty => "完成一次备份后，历史版本会显示在这里；可以点击“立即扫描”重新检测候选目录。",
+            WorkspaceDataState.Stale => "仍保留上次成功读取的历史版本和候选路径；本次刷新没有覆盖它。",
+            WorkspaceDataState.Error => "Worker 暂时没有返回存档历史和候选路径；可以重试，现有数据不会被清除。",
+            _ => string.Empty
+        };
+        public string SaveDetailsStateDetail => FormatStateDetail(saveDetailsLastSuccessUtc, saveDetailsErrorMessage);
+        public bool SaveHistoryStateOverlayVisible => (saveDetailsState == WorkspaceDataState.Loading && Backups.Count == 0)
+            || (saveDetailsState == WorkspaceDataState.Error && !saveDetailsLastSuccessUtc.HasValue && Backups.Count == 0);
+        public bool SaveCandidateStateOverlayVisible => (saveDetailsState == WorkspaceDataState.Loading && SaveCandidates.Count == 0)
+            || (saveDetailsState == WorkspaceDataState.Error && !saveDetailsLastSuccessUtc.HasValue && SaveCandidates.Count == 0);
+        public bool SaveDetailsStaleVisible => saveDetailsState == WorkspaceDataState.Stale;
+        public string SaveCandidateEmptyText => saveDetailsState == WorkspaceDataState.Empty
+            ? "暂无待处理的存档路径候选\n首次读取为空；可以点击“立即扫描”重新检测候选目录。"
+            : "当前没有新的待处理存档路径候选\n候选处理完成或本次扫描没有新结果；可以点击“立即扫描”重新检测。";
 
         public string MediaDetailsState => mediaDetailsStateCache.State.ToString();
         public string MediaDetailsPresenterState => IsWorkerOffline
@@ -255,7 +288,8 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         partial void OnWorkspaceStateInitialize()
         {
-            Backups.CollectionChanged += (_, _) => OnPropertyChanged(nameof(IsSaveHistoryLoading));
+            Backups.CollectionChanged += (_, _) => NotifySaveDetailsStateChanged();
+            SaveCandidates.CollectionChanged += (_, _) => NotifySaveDetailsStateChanged();
             GameTools.CollectionChanged += (_, _) => OnPropertyChanged(nameof(IsTrainerToolsLoading));
             Media.CollectionChanged += (_, _) => NotifyMediaDetailsStateChanged();
         }
@@ -265,7 +299,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             OnPropertyChanged(nameof(IsWorkerOffline));
             OnPropertyChanged(nameof(IsCloudDegraded));
             NotifyActionAvailabilityHints();
-            OnPropertyChanged(nameof(IsSaveHistoryLoading));
+            NotifySaveDetailsStateChanged();
             OnPropertyChanged(nameof(IsTrainerToolsLoading));
             NotifyMediaDetailsStateChanged();
             NotifyMediaInboxStateChanged();
@@ -303,6 +337,20 @@ namespace GameSaveCenter.Playnite.ViewModels
             OnPropertyChanged(nameof(MediaDetailsStateDetail));
             OnPropertyChanged(nameof(MediaDetailsStateOverlayVisible));
             OnPropertyChanged(nameof(MediaDetailsStaleVisible));
+        }
+
+        private void NotifySaveDetailsStateChanged()
+        {
+            OnPropertyChanged(nameof(IsSaveHistoryLoading));
+            OnPropertyChanged(nameof(SaveDetailsState));
+            OnPropertyChanged(nameof(SaveDetailsPresenterState));
+            OnPropertyChanged(nameof(SaveDetailsStateTitle));
+            OnPropertyChanged(nameof(SaveDetailsStateMessage));
+            OnPropertyChanged(nameof(SaveDetailsStateDetail));
+            OnPropertyChanged(nameof(SaveHistoryStateOverlayVisible));
+            OnPropertyChanged(nameof(SaveCandidateStateOverlayVisible));
+            OnPropertyChanged(nameof(SaveDetailsStaleVisible));
+            OnPropertyChanged(nameof(SaveCandidateEmptyText));
         }
 
         /// <summary>
@@ -348,6 +396,48 @@ namespace GameSaveCenter.Playnite.ViewModels
             if (generation != 0 && generation != Interlocked.Read(ref mediaPageGeneration)) return;
             mediaDetailsStateCache.Begin(CurrentMediaDetailsContextKey);
             NotifyMediaDetailsStateChanged();
+        }
+
+        private void BeginSaveDetailsLoad()
+        {
+            saveDetailsState = WorkspaceDataState.Loading;
+            saveDetailsErrorMessage = string.Empty;
+            NotifySaveDetailsStateChanged();
+        }
+
+        private void CompleteSaveDetailsLoad()
+        {
+            saveDetailsLastSuccessUtc = DateTime.UtcNow;
+            saveDetailsErrorMessage = string.Empty;
+            saveDetailsState = Backups.Count == 0 && SaveCandidates.Count == 0
+                ? WorkspaceDataState.Empty
+                : WorkspaceDataState.Ready;
+            NotifySaveDetailsStateChanged();
+        }
+
+        private void FailSaveDetailsLoad(Exception error)
+        {
+            saveDetailsErrorMessage = error?.Message ?? "未知错误";
+            saveDetailsState = saveDetailsLastSuccessUtc.HasValue || Backups.Count > 0 || SaveCandidates.Count > 0
+                ? WorkspaceDataState.Stale
+                : WorkspaceDataState.Error;
+            NotifySaveDetailsStateChanged();
+        }
+
+        private void CancelSaveDetailsLoad()
+        {
+            saveDetailsState = saveDetailsLastSuccessUtc.HasValue
+                ? (Backups.Count == 0 && SaveCandidates.Count == 0 ? WorkspaceDataState.Empty : WorkspaceDataState.Ready)
+                : WorkspaceDataState.Empty;
+            NotifySaveDetailsStateChanged();
+        }
+
+        private void ResetSaveDetailsState()
+        {
+            saveDetailsLastSuccessUtc = null;
+            saveDetailsErrorMessage = string.Empty;
+            saveDetailsState = WorkspaceDataState.Empty;
+            NotifySaveDetailsStateChanged();
         }
 
         private void CompleteMediaDetailsLoad(long generation = 0)

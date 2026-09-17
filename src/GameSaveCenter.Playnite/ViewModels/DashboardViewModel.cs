@@ -2958,22 +2958,39 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 case WorkspaceKind.Saves:
                 {
-                    var backupsTask = plugin.RequestAsync<BackupVersionDto[]>(MessageTypes.ListBackups, new GameQueryDto { PlayniteId = id, Limit = 500, ForceRefresh = forceBackupHistory }, cancellationToken: cancellationToken);
-                    var candidatesTask = plugin.RequestAsync<SavePathCandidateDto[]>(MessageTypes.ListSaveCandidates, new GameQueryDto { PlayniteId = id }, cancellationToken: cancellationToken);
-                    await Task.WhenAll(backupsTask, candidatesTask);
-                    if (!IsCurrentDetailsLoad(id, cancellationToken, expectedGeneration)) return;
-                    ApplyOnUi(() =>
+                    ApplyOnUi(BeginSaveDetailsLoad);
+                    try
                     {
+                        var backupsTask = plugin.RequestAsync<BackupVersionDto[]>(MessageTypes.ListBackups, new GameQueryDto { PlayniteId = id, Limit = 500, ForceRefresh = forceBackupHistory }, cancellationToken: cancellationToken);
+                        var candidatesTask = plugin.RequestAsync<SavePathCandidateDto[]>(MessageTypes.ListSaveCandidates, new GameQueryDto { PlayniteId = id }, cancellationToken: cancellationToken);
+                        await Task.WhenAll(backupsTask, candidatesTask);
                         if (!IsCurrentDetailsLoad(id, cancellationToken, expectedGeneration)) return;
-                        var selectedBackupId = SelectedBackup?.BackupId;
-                        Replace(Backups, backupsTask.Result, SnapshotComparers.Backup);
-                        Replace(SaveCandidates, candidatesTask.Result, SnapshotComparers.SaveCandidate);
-                        SelectedBackup = Backups.FirstOrDefault(x => string.Equals(x.BackupId, selectedBackupId, StringComparison.OrdinalIgnoreCase))
-                                         ?? Backups.FirstOrDefault();
-                        SelectedCandidate = SaveCandidates.FirstOrDefault(x => string.Equals(x.Status, "Pending", StringComparison.OrdinalIgnoreCase))
-                                            ?? SaveCandidates.FirstOrDefault();
-                        RaiseCommandStates();
-                    });
+                        ApplyOnUi(() =>
+                        {
+                            if (!IsCurrentDetailsLoad(id, cancellationToken, expectedGeneration)) return;
+                            var selectedBackupId = SelectedBackup?.BackupId;
+                            Replace(Backups, backupsTask.Result, SnapshotComparers.Backup);
+                            Replace(SaveCandidates, candidatesTask.Result, SnapshotComparers.SaveCandidate);
+                            SelectedBackup = Backups.FirstOrDefault(x => string.Equals(x.BackupId, selectedBackupId, StringComparison.OrdinalIgnoreCase))
+                                             ?? Backups.FirstOrDefault();
+                            SelectedCandidate = SaveCandidates.FirstOrDefault(x => string.Equals(x.Status, "Pending", StringComparison.OrdinalIgnoreCase))
+                                                ?? SaveCandidates.FirstOrDefault();
+                            CompleteSaveDetailsLoad();
+                            RaiseCommandStates();
+                        });
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        if ((expectedGeneration == 0 || expectedGeneration == Interlocked.Read(ref detailsLoadGeneration)) && IsSelectedGame(id))
+                            ApplyOnUi(CancelSaveDetailsLoad);
+                        throw;
+                    }
+                    catch (Exception ex)
+                    {
+                        if ((expectedGeneration == 0 || expectedGeneration == Interlocked.Read(ref detailsLoadGeneration)) && IsSelectedGame(id))
+                            ApplyOnUi(() => FailSaveDetailsLoad(ex));
+                        throw;
+                    }
                     break;
                 }
                 case WorkspaceKind.Media:
@@ -4853,6 +4870,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             ApplyOnUi(() =>
             {
                 InvalidateMediaDetailsContext();
+                ResetSaveDetailsState();
                 Backups.Clear();
                 Media.Clear();
                 mediaPageAccumulator.Clear();
