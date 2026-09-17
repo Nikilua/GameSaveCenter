@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R05-01 弹层焦点范围
+
+- `0004999507d0cf27f483ea1234a7a60b4ad7f9b7` 在最新生产 Shell 上收口弹层焦点边界：`PickerOverlay` 和 Dashboard `DialogOverlay` 声明本地焦点范围、Tab 循环和方向键包含；游戏选框打开后进入 `GameSearchTextBox`，关闭仍回焦 `GameContextButton`。共享 `ComboBoxItem` 明确 `IsTabStop=False`，选项导航仍由原生方向键/Enter/Escape 负责。
+- 实际生产 Shell STA WPF 行为 `R05FocusBoundaryBehaviorTests 3/3`：此前已复现第一次 Tab 落到遮挡层后的 `RadioButton`（`Focus=RadioButton, inside=False`），修复后前进/后退焦点均留在选框、Shift+Tab 回到最后访问选项、Escape 关闭并回焦上下文按钮；ComboBox 选项不成为表单 Tab 停靠点。未改 `GamePickerViewModel`、滚动条、命令/Binding、取消错误/恢复保护、有限列表或 net462。
+- clean Release XAML `24/24`、构建 `0/0`；clean RenderHarness 绑定完整 SHA，Light/Dark、297 PNG、`WorkingTreeClean=True`、`render-qa OK`，Settings normal/dirty 和 Overview 图已抽查。证据见 [`R05-01-FOCUS-BOUNDARY-20260917.md`](../design/reviews/ui-finesse-round3-20260915/evidence/R05-01-FOCUS-BOUNDARY-20260917.md)。
+- 边界：Dashboard 真实宿主模态事件顺序未启动 Playnite，仅有生产代码契约/源审查；ComboBox 与渲染均为隔离 STA WPF/offscreen logical DIP（`DpiScale=1.00`），真实 OS 输入/IME、读屏、物理 DPI/跨屏、presented frame、ETW、宿主性能仍未验；未写真实存档、媒体或云端。下一可执行任务为 R05-02 选项虚拟化焦点。
+
 ## 当前第三轮 R04-08 保存反馈闭环
 
 - `c735905aa1092f409bc7ddf9de1272f1d77dc084` 在最新设置保存链上补齐稳定反馈：`GameSaveCenterSettings` 发出保存开始、应用开始、应用完成和保存失败事件；`GameSaveCenterPlugin` 把既有 Worker 异步应用完成/异常回传设置页；并发 `EndEdit` 被 `Interlocked.CompareExchange` 抑制。

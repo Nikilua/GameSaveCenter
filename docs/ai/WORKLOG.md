@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-17 R05-01 弹层焦点范围
+
+- 先查现有能力：生产 Shell 游戏选框已经有打开/关闭/搜索焦点/滚动/命令链，缺口是容器级 Tab 边界；共享 ComboBox 选项没有显式 Tab 停靠契约；Dashboard 关闭详情/确认层没有统一回焦触发器。
+- 首轮实际行为回归确认第一次 Tab 会落到遮挡层后的 `RadioButton`（`Focus=RadioButton, inside=False`）。`00049995` 在 `PickerOverlay`、`DialogOverlay` 补 focus scope + `Cycle`/`Contained`，在共享 ComboBoxItem 设置 `IsTabStop=False`，并让 Dashboard 保存/恢复打开时焦点；保留现有选框、滚动条、命令/Binding 和关闭语义。
+- `R05FocusBoundaryBehaviorTests` 生产 Shell STA WPF `3/3`；clean Release XAML `24/24`、构建 `0/0`；clean RenderHarness 双主题 297 PNG、`WorkingTreeClean=True`、`render-qa OK`，Settings normal/dirty、Overview 图已抽查。证据：`R05-01-FOCUS-BOUNDARY-20260917.md`。
+- 边界：Dashboard 真实 Playnite 宿主模态顺序未验；其余焦点证据为隔离 STA WPF，渲染为 offscreen logical DIP，不推断 OS IME/物理键盘/读屏/物理 DPI/跨屏/presented frame/ETW/宿主性能。未写真实存档、媒体或云端。下一可执行小批量为 R05-02 选项虚拟化焦点。
+
 ## 2026-09-17 R04-08 保存反馈闭环
 
 - 先查已有能力：Playnite `ISettings.EndEdit` 已负责同步持久化，插件已有 Worker live apply，但异步完成/失败不会回到设置页，原提示面也无法区分保存中与部分失败；当前字段没有仅重启生效项。

@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-17
 
+## 2026-09-17 R05-01 弹层焦点范围
+
+- `0004999507d0cf27f483ea1234a7a60b4ad7f9b7` 先复现并修复生产 Shell 游戏选框的 Tab 越界：`PickerOverlay` 现在是独立 focus scope，Tab/Shift+Tab 循环且方向导航包含；打开即聚焦搜索框，关闭复用原有路径回焦上下文按钮。Dashboard `DialogOverlay` 同步声明本地循环并在关闭时恢复保存的打开触发器。
+- 共享 ComboBox 只把 `ComboBoxItem` 从表单 Tab 停靠点移除，未替换原生选项导航、弹层滚动或 Escape 语义。`GamePickerViewModel`、命令/Binding、取消/错误、恢复保护、有限列表、Playnite/net462 未改。
+- `R05FocusBoundaryBehaviorTests` 实际生产 Shell STA WPF `3/3`；clean Release XAML `24/24`、构建 `0/0`；clean RenderHarness 双主题 297 PNG、工作树 clean、`render-qa OK`。证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R05-01-FOCUS-BOUNDARY-20260917.md`。
+- 本阶段范围：弹层焦点和共享 ComboBox 合成行为；Dashboard 真实宿主模态时序、OS 键盘/IME、屏幕阅读器、Playnite 嵌入、物理 DPI/跨屏、presented frame、ETW、宿主性能未验，离屏报告中的 `DpiScale=1.00` 仅 logical DIP。未写真实存档、媒体或云端。下一项 R05-02 选项虚拟化焦点。
+
 ## 2026-09-17 R04-08 保存反馈闭环
 
 - `c735905aa1092f409bc7ddf9de1272f1d77dc084` 先核对 `ISettings.EndEdit`、`GameSaveCenterPlugin.ApplySettingsAsync` 和现有 `SettingsSaveHintText`，复用真实保存与 Worker live apply 链，没有把 main 旧实现覆盖到当前分支。
