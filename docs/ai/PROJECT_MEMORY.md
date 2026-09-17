@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-18
 
+## 2026-09-18 R06-08 详情与行高预算
+
+- 先查已有实现：Task/Media/Save/Maintenance 都已有详情对象、独立详情滚动或 Inspector、选中绑定和紧凑布局预算；Task 还有折叠技术详情。没有把长诊断塞进所有列表行，也没有替换游戏选框或滚动条。
+- `07376adb` 修复 Save 详情刷新时选中候选的实际缺口：在替换集合前保留旧对象，按大小写不敏感的 `PlayniteId + Path` 恢复刷新后的同一候选，再按 Pending/首项回退；因此 Accepted/Rejected 选中项不会因为 Pending 排在前面而跳变。
+- `R06DetailsBudgetBehaviorTests 2/2` 覆盖稳定候选恢复和真实生产 TaskCenter 长详情切换、折叠详情展开、详情滚动与列表行高；相邻 Task 响应式/Media 四行/详情 disclosure `10/10`。XAML `24/24`、Release `0/0`、源校验/diff check 通过。
+- clean `.tmp/r06-08-render-final/render-qa-report.txt` 绑定完整 SHA、`WorkingTreeClean=True`、双主题和 1040/1100/1366/2560 DIP/resize `render-qa OK`；Task 紧凑详情 `160 DIP`、宽详情 `360×516`，最窄 Task `4/4`，Media/Maintenance/Save 四行门禁通过。代表图已查看。仅为合成数据、隔离 STA WPF/offscreen logical DIP。
+- 真实 Playnite/Worker、UIA/读屏、OS 输入/IME、物理 DPI/跨屏、presented frame、ETW、宿主性能和真实服务失败时序未验；未写真实存档、媒体、云端或诊断数据。Demo 原始目录仍缺失，沿用恢复生产基线。下一项为 R07-01 滚动所有权，先梳理页面/表格/详情/弹层 ScrollViewer 所有权。
+
 ## 2026-09-18 R06-07 空表保留结构
 
 - 先核对已有状态 presenter：Task 的 Empty/FilterEmpty/Loading/Error、Media 的 `WorkspaceDataState` 与 stale、Maintenance 的诊断状态均已覆盖本任务；唯一生产缺口是 Save 以 `IsBusy + Count == 0` 判断空态，加载或失败时会误显“暂无存档历史/候选”。

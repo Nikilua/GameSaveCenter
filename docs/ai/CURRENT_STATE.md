@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R06-08 详情与行高预算
+
+- `07376adb1d52a394137853896efe1b4589f983d1` 先核对已有 Task/Media/Save/Maintenance 详情区、选中绑定、独立 ScrollViewer 和紧凑行高预算；Task 长诊断已在详情区/折叠技术详情中展开，未扩张所有列表行。唯一发现的行为缺口是 Save 刷新后候选总是优先回到第一个 Pending 项，因此新增按 `PlayniteId + Path` 恢复原候选，找不到时才回退 Pending/首项。
+- `R06DetailsBudgetBehaviorTests 2/2` 实际 STA WPF 生产 `TaskCenterView` 验证第一项切换到带长诊断的第二项后详情对象正确、技术详情可展开、详情滚动可用、列表仍保留行高预算；同一测试也验证 Save Accepted/Rejected 候选刷新后的稳定选择恢复。相邻 `TaskCenterViewResponsiveTests` + `MediaInboxGeometryTests` + `DetailsDisclosureSourceTests` `10/10`。
+- Release XAML `24/24`、编译 `0 warning/0 error`、源码校验与 diff check 通过。clean `.tmp/r06-08-render-final/render-qa-report.txt` 绑定该 SHA，`WorkingTreeClean=True`，Light/Dark、1040/1100/1366/2560 DIP 与 resize 均 `render-qa OK`；Task 最窄窗口 `4/4` 可读行，紧凑详情 `160 DIP`，宽布局独立 `360×516` 详情侧栏；Media/Maintenance/Save 也保留至少四行门禁。
+- 已查看 `Task-1040x700.png`、`Task-1366x768.png`、`Save-1040x700-tab1.png`；Demo 原始 `DesignShellView.xaml`/`Pages` 当前 checkout 仍不存在，继续沿用恢复生产基线，保留游戏选框、滚动条、命令/Binding、取消/错误/恢复保护、有限列表和 net462。
+- 边界：证据为合成 DTO、fake/probe、隔离 STA WPF 和 offscreen logical DIP；未验真实 Playnite/Worker 时序、UIA/读屏、OS 输入/IME、物理 DPI/跨屏、presented frame、ETW、宿主性能或真实服务失败时序，未写真实存档、媒体、云端或诊断数据。下一项为 R07-01 滚动所有权，先盘点多层 ScrollViewer 的所有权与事件边界。
+
 ## 当前第三轮 R06-07 空表保留结构
 
 - `5046bf8f30920065660d38ea03613edb1ea7aaa4` 先核对状态覆盖：Task、Media、Maintenance 已有首次空、筛选/已处理完、加载中、失败和旧数据降级 presenter；Save 原先只有 `IsBusy + Count == 0`，读取失败会落入空文案，因此只补 Save 的状态边界，没有重建已有页面。

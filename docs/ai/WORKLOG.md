@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-18 R06-08 详情与行高预算
+
+- 先审计并复用现有详情结构：Task 的独立详情 ScrollViewer/折叠技术详情、Media/Maintenance Inspector、Save 候选详情和紧凑 DataGrid 行高均已存在；没有重建页面或改变滚动条系统。
+- 发现并修复 Save 刷新后的真实选择同步缺口：原逻辑始终优先首个 Pending，现按旧候选 `PlayniteId + Path` 恢复刷新对象，找不到才回退 Pending/首项。`07376adb` 为代码与测试提交。
+- `R06DetailsBudgetBehaviorTests 2/2`；长诊断 Task 通过实际生产视图切换选中项、展开技术详情并确认详情 ScrollViewer 可滚动、列表仍有可读行；相邻 `TaskCenterViewResponsiveTests`、`MediaInboxGeometryTests`、`DetailsDisclosureSourceTests` `10/10`。Release XAML `24/24`、编译 `0/0`、源校验/diff check 通过。
+- 干净渲染报告 `.tmp/r06-08-render-final/render-qa-report.txt` 绑定 `07376adb...`、`WorkingTreeClean=True`、Light/Dark 和多尺寸 `render-qa OK`；Task 1040/1100 紧凑详情 160 DIP，1366 宽布局侧栏 360×516，最窄表格 `4/4`，Save/Media/Maintenance 也通过四行门禁。已查看 Task 紧凑/宽布局与 Save 候选代表图。
+- 事实边界保持：合成 DTO/fake、隔离 STA WPF、offscreen logical DIP；未验真实 Playnite/Worker、UIA/读屏、物理 DPI/跨屏、presented frame、ETW/宿主性能，未写真实存档/媒体/云端/诊断数据。下一小批量为 R07-01 滚动所有权，先盘点重复 ScrollViewer 与事件边界。
+
 ## 2026-09-18 R06-07 空表保留结构
 
 - 先审计四类页面已有能力：Task/Media/Maintenance 已有真实首次空、筛选/已处理完、加载和失败/旧数据降级状态；Save 只有全局忙态加集合数量判断，失败会被误显为空，因此只补 Save 的 presenter 状态生命周期。
