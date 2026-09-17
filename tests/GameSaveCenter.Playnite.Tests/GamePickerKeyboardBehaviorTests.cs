@@ -122,6 +122,50 @@ public sealed class GamePickerKeyboardBehaviorTests
         });
     }
 
+    [Fact]
+    public void ProductionSearchClearButtonClearsTextAndReturnsFocusToTheSearchBox()
+    {
+        RunSta(() =>
+        {
+            using var picker = CreatePicker("旧游戏", "目标游戏");
+            using var host = CreatePickerHost(picker, out var shell, out var overlay, out var search, out _, showActivated: true);
+            var clearButton = (Button)shell.FindName("GameSearchClearButton")!;
+
+            search.Text = "目标";
+            overlay.Visibility = Visibility.Visible;
+            host.Window.Activate();
+            Keyboard.Focus(search);
+
+            var click = new RoutedEventArgs(Button.ClickEvent);
+            clearButton.RaiseEvent(click);
+
+            Assert.True(click.Handled);
+            Assert.Equal(string.Empty, search.Text);
+            Assert.Same(search, Keyboard.FocusedElement);
+        });
+    }
+
+    [Fact]
+    public void EscapeClosesTheProductionPickerAndReturnsFocusToTheContextButton()
+    {
+        RunSta(() =>
+        {
+            using var picker = CreatePicker("旧游戏", "目标游戏");
+            using var host = CreatePickerHost(picker, out var shell, out var overlay, out var search, out _, showActivated: true);
+            AttachPickerForInput(shell, picker);
+            overlay.Visibility = Visibility.Visible;
+            host.Window.Activate();
+            Keyboard.Focus(search);
+
+            var key = RaisePreviewKey(search, host.Window, Key.Escape);
+            var contextButton = (Button)shell.FindName("GameContextButton")!;
+
+            Assert.True(key.Handled);
+            Assert.Equal(Visibility.Collapsed, overlay.Visibility);
+            Assert.Same(contextButton, Keyboard.FocusedElement);
+        });
+    }
+
     private static GamePickerViewModel CreatePicker(params string[] names)
     {
         var picker = new GamePickerViewModel();
@@ -145,7 +189,8 @@ public sealed class GamePickerKeyboardBehaviorTests
         out AcrylicProductionShellView shell,
         out Grid overlay,
         out TextBox search,
-        out ListBox list)
+        out ListBox list,
+        bool showActivated = false)
     {
         shell = new AcrylicProductionShellView();
         var window = new Window
@@ -154,7 +199,7 @@ public sealed class GamePickerKeyboardBehaviorTests
             Width = 900,
             Height = 640,
             ShowInTaskbar = false,
-            ShowActivated = false,
+            ShowActivated = showActivated,
             WindowStyle = WindowStyle.None,
             Opacity = 0.01
         };

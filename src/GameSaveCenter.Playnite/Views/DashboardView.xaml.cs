@@ -621,6 +621,7 @@ namespace GameSaveCenter.Playnite.Views
             textBox.Clear();
             textBox.Focus();
             Keyboard.Focus(textBox);
+            e.Handled = true;
         }
 
         private void OnNavigationChecked(object sender, RoutedEventArgs e)

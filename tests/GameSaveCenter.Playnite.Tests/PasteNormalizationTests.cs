@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using GameSaveCenter.Playnite.Infrastructure;
 using Xunit;
 
@@ -82,7 +83,7 @@ public sealed class PasteNormalizationTests
                 window.Show();
                 window.UpdateLayout();
                 Assert.True(textBox.Focus());
-                textBox.SelectAll();
+                ApplicationCommands.SelectAll.Execute(null, textBox);
                 RaisePaste(textBox, "  \"new-value\"  ");
 
                 Assert.Equal("new-value", textBox.Text);
@@ -104,6 +105,51 @@ public sealed class PasteNormalizationTests
             {
                 if (window.IsVisible) window.Close();
                 application.Shutdown();
+            }
+        });
+    }
+
+    [Fact]
+    public void WpfTextBoxKeepsSelectionAcrossUndoAndSupportsRedoForOrdinaryEditing()
+    {
+        RunSta(() =>
+        {
+            var textBox = new TextBox { Text = "old-value" };
+            PasteNormalization.SetKind(textBox, PasteNormalizationKind.Path);
+            var window = new Window
+            {
+                Content = textBox,
+                Width = 240,
+                Height = 80,
+                ShowInTaskbar = false,
+                ShowActivated = false,
+                WindowStyle = WindowStyle.None,
+                Opacity = 0.01
+            };
+
+            try
+            {
+                window.Show();
+                window.UpdateLayout();
+                Assert.True(textBox.Focus());
+                ApplicationCommands.SelectAll.Execute(null, textBox);
+                RaisePaste(textBox, "  \"new-value\"  ");
+
+                Assert.Equal("new-value", textBox.Text);
+                Assert.True(textBox.CanUndo);
+
+                ApplicationCommands.Undo.Execute(null, textBox);
+                Assert.Equal("old-value", textBox.Text);
+                Assert.Equal(0, textBox.SelectionStart);
+                Assert.Equal(9, textBox.SelectionLength);
+                Assert.True(textBox.CanRedo);
+
+                ApplicationCommands.Redo.Execute(null, textBox);
+                Assert.Equal("new-value", textBox.Text);
+            }
+            finally
+            {
+                if (window.IsVisible) window.Close();
             }
         });
     }
