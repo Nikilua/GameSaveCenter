@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R04-07 异步校验竞态
+
+- `b1d5b68f` 将设置页编辑期路径可用性检查拆为不可变 `SettingsPathValidationSnapshot`、后台 `SettingsPathValidationService` 和递增版本的 `LatestAsyncValidationCoordinator`；复用 `GameSaveCenterSettings.VerifySettings` 的原有文件/目录规则，完整同步校验仍保留用于保存状态/最终安全路径。
+- `GameSaveCenterSettingsView` 在字段事件合并后读取最新快照，旧请求取消或晚返回均不能覆盖新版本；DataContext 替换、提交、回滚和 Unloaded 使旧结果失效。校验中保存提示明确等待，后台异常变成可修复提示，不同步阻塞 UI 线程。`df6f8083` 修复内部验证摘要重载与 RenderHarness 无参数反射入口冲突。
+- clean Release XAML `24/24`、构建 `0/0`、源码校验通过；R04-07 定向 `7/7`。RenderHarness clean `df6f8083` 双主题、297 PNG、`WorkingTreeClean=True`、`render-qa OK`，Settings normal/dirty/invalid 图已抽查。
+- 边界：测试使用合成设置/隔离目录/任务完成源/STA WPF 与 offscreen logical DIP；真实 Playnite 宿主输入/关闭时序、慢网络共享、IME/剪贴板、读屏、物理 DPI/跨屏、presented frame、ETW、宿主线程/帧率性能仍未验；不可中断的单次文件系统调用只能取消结果应用，未写真实存档、媒体或云端。下一可执行任务为 R04-08 保存反馈闭环。
+
 ## 当前第三轮 R04-06 清空与撤销
 
 - `0d3f71af27f00c34cbfc5d012f5f7dde39a4625c` 复用 Shell、Dashboard、Trainer、Task、Media 现有搜索清空处理和 WPF 原生编辑命令；Dashboard 空状态“清除搜索”现在保留 `GamePicker.ClearSearchCommand`，并通过目标 TextBox Tag/Click 复用清空与焦点回返，事件已处理。

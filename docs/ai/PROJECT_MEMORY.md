@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-17
 
+## 2026-09-17 R04-07 异步校验竞态
+
+- `b1d5b68f` 先核对当前 `GameSaveCenterSettings.VerifySettings`、设置页 Dispatcher 合并和宿主生命周期；没有从 main 覆盖旧实现。完整 `VerifySettings` 保留原路径/数值安全规则，编辑期新增 `VerifySettingsWithoutPathAvailability` 只做轻量范围检查。
+- `SettingsPathValidationSnapshot` 固定当前字段版本，`SettingsPathValidationService` 在后台复用 Worker/目录/环境变量/缺失叶目录/不可达卷/权限错误规则；`LatestAsyncValidationCoordinator` 递增版本、取消旧任务并抑制旧结果，DataContext/提交/回滚/Unloaded 都会失效旧结果。单次不可中断文件系统调用只保证结果不回写。
+- R04-07 定向 `7/7`，覆盖慢 A 晚于 B 返回、取消后晚回调、真实隔离目录负例和源码接线；clean Release XAML `24/24`、构建 `0/0`、源码校验通过。`df6f8083` 只修复 RenderHarness 对 `RefreshValidationSummary` 的无参数反射兼容。
+- clean RenderHarness 绑定完整 `df6f8083`，双主题、297 PNG、`WorkingTreeClean=True`、`render-qa OK`；人工抽查 Settings normal/dirty/invalid。证据范围为合成设置、隔离目录、TaskCompletionSource、STA WPF/offscreen logical DIP，真实 Playnite/IME/剪贴板/读屏/物理 DPI/跨屏/presented frame/ETW/宿主性能仍未验；未写真实存档、媒体或云端。下一项 R04-08 保存反馈闭环。
+
 ## 2026-09-17 R04-06 清空与撤销
 
 - `0d3f71af27f00c34cbfc5d012f5f7dde39a4625c` 先核对现有 Shell/Dashboard/Trainer/Task/Media 搜索清空和游戏选框 Escape 路由，没有重建 VM 或危险命令。Dashboard 空状态清除按钮保留 `GamePicker.ClearSearchCommand`，补目标 TextBox Tag/Click，复用现有 `Clear`/`Focus`/`Keyboard.Focus` 并标记事件已处理。

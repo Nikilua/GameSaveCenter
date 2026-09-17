@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-17 R04-07 异步校验竞态
+
+- 先查已有能力：设置模型已有完整 `VerifySettings` 和路径/数值安全规则，设置页已有 Dispatcher 合并与宿主 `Loaded`/`Unloaded`/`DataContextChanged` 生命周期；实际缺口是编辑期路径检查仍同步命中 UI 线程，且合并期间没有明确的最新字段版本。
+- `b1d5b68f` 新增不可变 `SettingsPathValidationSnapshot`、后台 `SettingsPathValidationService` 与 `LatestAsyncValidationCoordinator`。设置页编辑事件在 Dispatcher 阶段读取最新快照；新版本取消旧版本并在 UI 回写前再次检查版本，DataContext 替换、提交、回滚、Unloaded 均取消/失效旧结果。完整 `VerifySettings` 未删除，编辑期仅拆出轻量值校验；进行中/失败状态使用可读保存提示。
+- 实际 R04-07 定向 `7/7`：慢 A 晚于 B 不覆盖、取消后晚回调不回写、后台服务真实隔离路径负例，以及既有路径/源码门禁。clean Release XAML `24/24`、构建 `0/0`、源码校验通过。首次 RenderHarness 发现重载反射歧义，`df6f8083` 改名内部 Core 后复跑；clean RenderHarness 双主题 `297` PNG、`WorkingTreeClean=True`、`render-qa OK`，设置 normal/dirty/invalid 图已抽查。
+- 边界：合成设置、隔离目录、TaskCompletionSource、STA WPF/offscreen logical DIP；未验真实 Playnite 输入/关闭时序、慢网络共享、系统 IME/剪贴板、读屏、物理 DPI/跨屏、presented frame、ETW、宿主线程/帧率性能。不可中断的单次文件系统调用不能强制终止，但结果不会回写；未写真实存档、媒体或云端。下一可执行任务为 R04-08 保存反馈闭环。
+
 ## 2026-09-17 R04-06 清空与撤销
 
 - 先查已有能力：五个生产页面已有搜索清空事件和焦点回返，游戏选框已有 Escape 关闭/回焦，WPF TextBox 已有原生 Undo；缺口是 Dashboard 空状态清除按钮只执行 VM 命令，且缺少 Redo/选择区行为证据。
