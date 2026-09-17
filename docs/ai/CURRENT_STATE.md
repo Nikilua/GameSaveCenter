@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R05-05 复选框三态边界
+
+- R05-05 核对结论为“不适用”：当前生产媒体批量入口是 `MediaCenterView` 的 Extended DataGrid，批量命令消费 `SelectedItems`，没有代表“当前页/全部结果”的全选或半选 CheckBox。R05-04 已覆盖真实模型的总选择、当前窗口可操作数、暂不可见例外和当前模式清空语义。
+- 当前生产 CheckBox 只有设置项/锁定等标量布尔绑定；`UiFrameworkProbeView` 的显式三态 CheckBox 是开发校对夹具。共享 `GscCheckBox` 与 `GscDataGridCheckBox` 已定义 `IndeterminateMark`，Q10-02 既有 `indeterminate=True mark=visible` 只证明共享视觉，不代表批量集合语义。
+- 以文档提交后的当前 HEAD `a3c4a67` 重新执行标准 Release：XAML `24/24`、构建 `0/0`；`UiFinesseRound2ControlSourceTests 24/24`。之前直接复跑的 24 个失败是程序集仍绑定 `52900815` 而源码 HEAD 已变的身份不一致，已通过标准构建消除。
+- 不为凑三态新增不存在的全选模型；未来若出现当前页/全部结果 CheckBox，应先固定集合来源，再补 Space、UIA、筛选/分页/部分失败行为。边界仍是不启动真实 Playnite、不验证真实 OS 输入/读屏/UIA/物理 DPI/跨屏/presented frame/ETW/宿主性能，不写真实存档/媒体/云端。证据见 [`R05-05-CHECKBOX-THREESTATE-20260917.md`](../design/reviews/ui-finesse-round3-20260915/evidence/R05-05-CHECKBOX-THREESTATE-20260917.md)。下一可执行任务为 R05-06 开关保存语义。
+
 ## 当前第三轮 R05-04 多选摘要
 
 - `52900815c1fb8a16550446b9ee8d5318b8238a25` 先复用媒体收件箱已有 Extended DataGrid、按媒体 ID 保留当前模式的选择集合、加载更多恢复和批量提交前去重/无效项统计；只补齐摘要的总数/当前窗口范围/不可见例外表达，并增加独立“清空选择”入口。

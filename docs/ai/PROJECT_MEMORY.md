@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-17
 
+## 2026-09-17 R05-05 复选框三态边界
+
+- 先查实际消费点：生产媒体批量操作使用 Extended DataGrid、按模式媒体 ID 集合和 `SelectedItems`，不存在“当前页/全部结果”的批量 CheckBox。当前生产 CheckBox 仅是设置项/锁定等标量值，开发夹具的三态 CheckBox 不应升级为产品能力。
+- Q10-02 的共享 `GscCheckBox`/`GscDataGridCheckBox` 半选标记已经由既有 Light/Dark 夹具记录为 `mark=visible`；这只覆盖模板视觉。R05-05 因没有真实复选框集合而记“不适用”，不新增全选模型；真实批量选择边界由 R05-04 记录。
+- 文档提交后先用标准 Release 构建刷新程序集身份，再跑 `UiFinesseRound2ControlSourceTests 24/24`。不能把源码 HEAD 与旧程序集不一致造成的失败记成产品回归。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R05-05-CHECKBOX-THREESTATE-20260917.md`。下一项 R05-06 开关保存语义。
+
 ## 2026-09-17 R05-04 多选摘要
 
 - `52900815c1fb8a16550446b9ee8d5318b8238a25` 核对后确认真实批量消费点是媒体收件箱 DataGrid，不是当前游戏媒体卡片；原有 `selectedInboxIdsByMode`、加载更多恢复和 `CaptureInboxMediaSelection` 已提供按 ID/去重/无效项能力。

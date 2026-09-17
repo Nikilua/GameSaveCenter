@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-17 R05-05 复选框三态边界
+
+- 盘点最新生产源码后确认：媒体批量入口是 Extended DataGrid，不是批量 CheckBox；现有生产 CheckBox 为设置项/锁定标量绑定，开发校对页才显式使用三态。
+- 共享 `GscCheckBox`/`GscDataGridCheckBox` 的 `IndeterminateMark` 由 Q10-02 既有证据确认可见，但没有真实批量集合可验证当前页/全部结果、Space 或 UIA 状态，因此 R05-05 记“不适用”，不新增伪全选模型。
+- 文档 HEAD 变更后按标准 Release 流程刷新身份：XAML `24/24`、构建 `0/0`、`UiFinesseRound2ControlSourceTests 24/24`；此前 24 个失败仅为旧程序集与新源码 HEAD 身份不一致。
+- 证据：`R05-05-CHECKBOX-THREESTATE-20260917.md`。下一项：R05-06 开关保存语义。
+
 ## 2026-09-17 R05-04 多选摘要
 
 - 先查实媒体收件箱已有 Extended DataGrid、`selectedInboxIdsByMode` 按 ID 保留、加载更多恢复和批量捕获去重；当前游戏媒体卡片没有批量动作消费点，不扩展不存在的功能。
