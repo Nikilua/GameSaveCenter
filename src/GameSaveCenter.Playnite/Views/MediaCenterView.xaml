@@ -35,16 +35,6 @@
                 <Setter Property="BorderThickness" Value="0"/>
                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                 <Setter Property="VerticalContentAlignment" Value="Center"/>
-                <Style.Triggers>
-                    <Trigger Property="IsSelected" Value="True">
-                        <Setter Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
-                        <Setter Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
-                        <Setter Property="BorderThickness" Value="1"/>
-                    </Trigger>
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background" Value="{DynamicResource GscAccentTintStrongBrush}"/>
-                    </Trigger>
-                </Style.Triggers>
             </Style>
             <converters:MediaThumbnailConverter x:Key="MediaThumbnailConverter"/>
             <converters:MediaVideoSourceConverter x:Key="MediaVideoSourceConverter"/>

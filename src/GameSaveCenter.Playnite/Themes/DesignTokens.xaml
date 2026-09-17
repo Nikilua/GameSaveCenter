@@ -25,6 +25,7 @@
     <SolidColorBrush x:Key="GscOnAccentTextBrush" Color="#FFFFFFFF"/>
     <SolidColorBrush x:Key="GscOnDangerTextBrush" Color="#FFFFFFFF"/>
     <SolidColorBrush x:Key="GscSelectionTextBrush" Color="#F2FFFFFF"/>
+    <SolidColorBrush x:Key="GscSelectionInactiveBrush" Color="#1A7C8CF8"/>
     <SolidColorBrush x:Key="GscAccentIconFillBrush" Color="#297C8CF8"/>
     <SolidColorBrush x:Key="GscInfoIconFillBrush" Color="#215CAAF0"/>
     <SolidColorBrush x:Key="GscSuccessIconFillBrush" Color="#234CDB8E"/>

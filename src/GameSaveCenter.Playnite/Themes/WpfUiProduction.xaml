@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:ui="clr-namespace:GameSaveCenter.Playnite.Controls"
-                    xmlns:infra="clr-namespace:GameSaveCenter.Playnite.Infrastructure">
+                    xmlns:infra="clr-namespace:GameSaveCenter.Playnite.Infrastructure"
+                    xmlns:contracts="clr-namespace:GameSaveCenter.Contracts;assembly=GameSaveCenter.Contracts">
     <ResourceDictionary.MergedDictionaries>
         <!-- StaticResource resolution happens while this dictionary is parsed. Keep WPF-UI's
              type-keyed defaults in the same resource scope as the production adapters; a
@@ -273,6 +274,8 @@
         <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Padding" Value="10,8"/>
         <Setter Property="Margin" Value="0,0,0,4"/>
         <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
@@ -286,6 +289,8 @@
                          and crashes WPF during Border.Arrange. -->
                     <Border x:Name="ItemChrome"
                             Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="8"
                             Padding="{TemplateBinding Padding}">
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -298,7 +303,23 @@
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="ItemChrome" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
+                            <Setter TargetName="ItemChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
+                            <Setter TargetName="ItemChrome" Property="BorderThickness" Value="1"/>
                             <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True"/>
+                                <Condition Property="Selector.IsSelectionActive" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="ItemChrome" Property="Background" Value="{DynamicResource GscSelectionInactiveBrush}"/>
+                            <Setter TargetName="ItemChrome" Property="BorderBrush" Value="{DynamicResource GscMutedStatusBrush}"/>
+                            <Setter TargetName="ItemChrome" Property="BorderThickness" Value="1"/>
+                            <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+                        </MultiTrigger>
+                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                            <Setter TargetName="ItemChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
+                            <Setter TargetName="ItemChrome" Property="BorderThickness" Value="2"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="ItemChrome" Property="Opacity" Value="0.42"/>
@@ -581,9 +602,36 @@
                 <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
                 <Setter Property="TextElement.Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
             </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsSelected" Value="True"/>
+                    <Condition Property="Selector.IsSelectionActive" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter TargetName="RowChrome" Property="Background" Value="{DynamicResource GscSelectionInactiveBrush}"/>
+                <Setter TargetName="RowChrome" Property="BorderBrush" Value="{DynamicResource GscMutedStatusBrush}"/>
+                <Setter TargetName="RowChrome" Property="BorderThickness" Value="1"/>
+                <Setter TargetName="RowChrome" Property="CornerRadius" Value="14"/>
+                <Setter TargetName="RowChrome" Property="Margin" Value="4,2,12,2"/>
+                <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+                <Setter Property="TextElement.Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+            </MultiTrigger>
+            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                <Setter TargetName="RowChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
+                <Setter TargetName="RowChrome" Property="BorderThickness" Value="2"/>
+                <Setter TargetName="RowChrome" Property="Margin" Value="3,1,11,1"/>
+            </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter TargetName="RowChrome" Property="Opacity" Value="0.42"/>
             </Trigger>
+            <DataTrigger Binding="{Binding Path=DataContext.State, RelativeSource={RelativeSource Self}}" Value="{x:Static contracts:TaskState.Failed}">
+                <Setter TargetName="RowChrome" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/>
+                <Setter TargetName="RowChrome" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/>
+                <Setter TargetName="RowChrome" Property="BorderThickness" Value="1"/>
+                <Setter TargetName="RowChrome" Property="CornerRadius" Value="14"/>
+                <Setter TargetName="RowChrome" Property="Margin" Value="4,2,12,2"/>
+                <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+                <Setter Property="TextElement.Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+            </DataTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
@@ -609,6 +657,26 @@
                 <Setter Property="BorderThickness" Value="1"/>
                 <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
                 <Setter Property="TextElement.Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsSelected" Value="True"/>
+                    <Condition Property="Selector.IsSelectionActive" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{DynamicResource GscSelectionInactiveBrush}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource GscMutedStatusBrush}"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+                <Setter Property="TextElement.Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+            </MultiTrigger>
+            <DataTrigger Binding="{Binding Path=DataContext.State, RelativeSource={RelativeSource Self}}" Value="{x:Static contracts:TaskState.Failed}">
+                <Setter Property="Background" Value="{DynamicResource GscErrorTintBrush}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/>
+                <Setter Property="BorderThickness" Value="1"/>
+            </DataTrigger>
+            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
+                <Setter Property="BorderThickness" Value="2"/>
             </Trigger>
         </Style.Triggers>
     </Style>

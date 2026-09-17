@@ -264,6 +264,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscAccentPressedBrush"] = Brush(palette.AccentPressed);
             resources["GscAccentTintBrush"] = Brush(palette.AccentTint);
             resources["GscAccentTintStrongBrush"] = Brush(palette.AccentTintStrong);
+            resources["GscSelectionInactiveBrush"] = Brush(SemanticTint(palette.Accent, palette.IsDark ? 0.12 : 0.08));
             resources["GscAccentIconFillBrush"] = Brush(palette.AccentIconFill);
             resources["GscOnAccentTextBrush"] = Brush(palette.OnAccentText);
             resources["GscOnDangerTextBrush"] = Brush(
@@ -680,6 +681,9 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 : Color.FromArgb(0x0C, 0x00, 0x00, 0x00));
             resources["GscRowHoverBrush"] = Brush(rowHover);
             resources["GscRowHoverStrongBrush"] = Brush(rowHover);
+            resources["GscSelectionInactiveBrush"] = Brush(isDark
+                ? Color.FromArgb(0x1A, 0x7C, 0x8C, 0xF8)
+                : Color.FromArgb(0x14, 0x7C, 0x8C, 0xF8));
             resources["GscScrollTrackBrush"] = Brush(Colors.Transparent);
             resources["GscScrollThumbBrush"] = Brush(scrollThumb);
             resources["GscScrollThumbHoverBrush"] = Brush(scrollThumbHover);
