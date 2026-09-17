@@ -125,9 +125,9 @@ public sealed class R05PopupLifecycleBehaviorTests
 
     private static void EnsureApplicationResources()
     {
-        var application = new Application();
-        application.Resources = new ResourceDictionary();
-        application.Resources.Add("BaseTextBlockStyle", new Style(typeof(TextBlock)));
+        var application = Application.Current ?? new Application();
+        if (!application.Resources.Contains("BaseTextBlockStyle"))
+            application.Resources.Add("BaseTextBlockStyle", new Style(typeof(TextBlock)));
     }
 
     private static void DrainDispatcher()
