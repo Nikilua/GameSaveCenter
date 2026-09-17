@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-18 R06-06 行内进度稳定
+
+- 先收口既有进度能力：`ProgressValue/ProgressDisplay` 已负责钳制与未知占位，`TaskIndexedCollection.Merge` 已按 ID 行级替换，分页总数/完成汇总使用 `TaskSummary`；没有把 main 旧实现或不存在的 Demo 页面带入当前分支。
+- `72fd6d9a` 在任务详情动作区加入局部“正在取消…”提示，绑定既有 `IsCancellingTask`，使用兼容 net462 的 `AutomationProperties.HelpText`；取消命令、确认、Worker 请求、终态、选框、滚动条和安全语义保持。`fd9326d7` 补实际 TaskCenter 可见性测试。
+- `R06TaskProgressBehaviorTests 4/4`：真实 STA WPF DataGrid 80 行进度更新只收到 `Replace`，无 `Reset`；第 42 行按 ID 恢复后选择索引、滚动偏移、行数不变。未知/排队/超界进度、取消与成功状态、行/详情绑定和取消中提示均覆盖。相邻 TaskIndexed `4/4`、Batch `3/3`、R03 数值 `10/10`、R06 选中焦点 `2/2`、排序 `4/4`。
+- 标准 Release XAML `24/24`、编译 `0 warning/0 error`、`validate-source.py`、`git diff --check` 通过。clean RenderHarness 绑定生产代码 `72fd6d9a`，`.tmp/r06-06-render-final/render-qa-report.txt` 双主题 357 PNG，任务页多尺寸/滚动/虚拟化/resize 均 `render-qa OK`；Light/Dark Task 1040×700 已查看。
+- 未验真实 Playnite 长任务/取消竞争、UIA/读屏、物理 DPI/跨屏、presented frame、ETW、宿主性能；未写真实存档、媒体、云端/诊断数据。下一小批量为 R06-07 空表保留结构，先盘点四类空态与恢复命令。
+
 ## 2026-09-18 R06-05 列头说明
 
 - 先审计现有共享列头和 Q02 数值/单位能力：`GscDataGridHeaderTextTemplate` 已有 Wrap/None，排序箭头和列宽拖拽部件已存在；容量 DTO 已统一 B/KiB/MiB/GiB，缺口是表头说明和同名状态语义。

@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R06-06 行内进度稳定
+
+- `72fd6d9aeb74890b86ec11b2ef8e4d3954546803` 先复核既有 `TaskStatusDto.ProgressPercent/ProgressValue/ProgressDisplay`、`SnapshotComparers.Task`、`TaskIndexedCollection.Merge` 和任务分页 `TaskSummary`；实时事件更新已有行只走索引器 `Replace`，不是全表 `Reset`，分页总数仍来自服务端汇总，不由当前可见页倒推。
+- `TaskCenterView.xaml` 新增局部 `TaskCancellationStatusText`：绑定既有 `IsCancellingTask`，取消请求等待期间显示“正在取消…”，另有兼容 net462 的 Automation HelpText；没有改任务协议、取消确认、Worker 请求、终态或滚动模型。游戏选框、滚动条、命令/Binding、错误/恢复语义、有限列表和 Playnite/net462 保持。
+- `fd9326d7` 补齐 `R06TaskProgressBehaviorTests` 的真实生产 TaskCenter 取消提示可见性行为；当前定向 `4/4`，另有 TaskIndexed `4/4`、Batch `3/3`、R03 数值 `10/10`、R06 选中焦点 `2/2`、排序 `4/4`。
+- Release XAML `24/24`、编译 `0 warning/0 error`、`validate-source.py`、`git diff --check` 通过。clean RenderHarness `.tmp/r06-06-render-final/render-qa-report.txt` 绑定生产代码 `72fd6d9a`，双主题 357 PNG、任务页多尺寸/滚动/虚拟化/resize、`WorkingTreeClean=True`、`render-qa OK`；Light/Dark Task 1040×700 已抽查。
+- 边界：合成任务、隔离 STA WPF 和 offscreen logical DIP，不等价真实 Playnite 长任务/取消竞争、UIA/读屏、物理 DPI/跨屏、presented frame、ETW 或宿主性能；未写真实存档、媒体、云端或诊断数据。下一可执行任务为 R06-07 空表保留结构。
+
 ## 当前第三轮 R06-05 列头说明
 
 - `7527e6381e531331d658166f0917487c03a0e7` 先核对已有共享 `GscDataGridHeaderTextTemplate`、22 DIP 排序箭头槽、透明列宽拖拽 Thumb 和容量格式化路径；新增 `DataGridColumnHeaderHelpBehavior`，说明挂在 `DataGridColumn` 上，生成 header 将说明同步到 Tooltip 与 `AutomationProperties.HelpText`。

@@ -2,6 +2,15 @@
 
 > 维护时间：2026-09-18
 
+## 2026-09-18 R06-06 行内进度稳定
+
+- 先核对已有能力：`TaskStatusDto` 已提供进度钳制/未知显示层，`SnapshotComparers.Task` 比较进度和状态，`TaskIndexedCollection.Merge` 按 `TaskId` 更新现有行；任务分页的总数/完成汇总来自 `TaskPageDto.Summary`，不能从当前加载页推断。
+- `72fd6d9a` 只补真实生产 TaskCenter 的取消中表达：`TaskCancellationStatusText` 按既有 `IsCancellingTask` 显示“正在取消…”，并设置兼容 net462 的 `AutomationProperties.HelpText`。没有另造 Cancelling 状态、没有改取消请求/Worker/终态协议、没有替换游戏选框或滚动条。
+- 真实 STA WPF `R06TaskProgressBehaviorTests` 验证 80 行 DataGrid 的第 42 行进度更新只产生 `Replace` 而无 `Reset`；按 ID 回写后选择索引、任务 ID、逻辑滚动偏移和行数保持。排队/未知/0/超界进度与取消/成功状态边界也通过；`fd9326d7` 再验证实际 TaskCenter 提示的折叠→可见、文本和 HelpText。
+- 定向结果：R06-06 `4/4`；TaskIndexed `4/4`、Batch `3/3`、R03 数值 `10/10`、R06 选中焦点 `2/2`、排序 `4/4`；XAML `24/24`、Release 编译 `0/0`、源码校验/diff check 通过。
+- clean RenderHarness `.tmp/r06-06-render-final/render-qa-report.txt` 绑定生产代码 `72fd6d9a...`，双主题 357 PNG、任务页 1040/1100/1366/2560 DIP、多数据量、滚动/虚拟化/resize、`WorkingTreeClean=True`、`render-qa OK`；Light/Dark Task 1040×700 已抽查。
+- 证据范围仍是合成数据、隔离 STA WPF/offscreen logical DIP；未验真实 Playnite 长任务/取消竞争、UIA/读屏、物理 DPI/跨屏、presented frame、ETW、宿主性能；未写真实存档、媒体、云端或诊断数据。下一项 R06-07 空表保留结构。
+
 ## 2026-09-18 R06-05 列头说明
 
 - 先核对既有共享列头模板、排序箭头/拖拽部件和容量格式化：表头已有 `Wrap + TextTrimming=None`、22 DIP sort slot、透明 8 DIP resize thumbs；生产 DTO 已统一输出 `B/KiB/MiB/GiB` 1024 进制。缺口是单位、缩写和同名状态列没有可达解释。
