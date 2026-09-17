@@ -331,7 +331,8 @@
                             </UniformGrid>
                             <ListBox x:Name="PickerList" Grid.Row="2" Margin="0,10,0,0"
                                      ItemsSource="{Binding GamePicker.ItemsView}" SelectedItem="{Binding GamePicker.SelectedItem, Mode=TwoWay}"
-                                     SelectionChanged="OnPickerSelectionChanged" Background="Transparent" BorderThickness="0"
+                                     SelectionChanged="OnPickerSelectionChanged" PreviewMouseLeftButtonDown="OnPickerListPreviewMouseDown"
+                                     Background="Transparent" BorderThickness="0"
                                      ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                      VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling"
                                      AutomationProperties.Name="游戏列表">

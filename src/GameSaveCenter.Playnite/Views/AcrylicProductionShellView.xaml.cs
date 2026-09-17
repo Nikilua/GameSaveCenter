@@ -32,6 +32,8 @@ namespace GameSaveCenter.Playnite.Views
         private double pendingResponsiveWidth;
         private bool pickerFilterRestorePending;
         private bool gameSearchCompositionActive;
+        private bool pickerKeyboardNavigationActive;
+        private int pickerKeyboardNavigationGeneration;
 
         public AcrylicProductionShellView()
         {
@@ -174,6 +176,8 @@ namespace GameSaveCenter.Playnite.Views
             responsiveLayoutPending = false;
             pickerFilterRestorePending = false;
             gameSearchCompositionActive = false;
+            pickerKeyboardNavigationActive = false;
+            pickerKeyboardNavigationGeneration++;
             if (viewModel != null && viewModelSubscribed)
             {
                 viewModel.PropertyChanged -= OnViewModelPropertyChanged;
@@ -534,9 +538,18 @@ namespace GameSaveCenter.Playnite.Views
             e.Handled = true;
         }
 
+        private void OnPickerListPreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            // A pointer selection is the explicit commit gesture. Reset the short-lived
+            // keyboard guard first so a click arriving before the dispatcher cleanup can
+            // still use the existing selection-and-close behavior.
+            pickerKeyboardNavigationActive = false;
+            pickerKeyboardNavigationGeneration++;
+        }
+
         private void OnPickerSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (viewModel == null || gameSearchCompositionActive || e.AddedItems.Count == 0) return;
+            if (viewModel == null || gameSearchCompositionActive || pickerKeyboardNavigationActive || e.AddedItems.Count == 0) return;
             if (e.AddedItems[0] is GamePickerItem item)
             {
                 viewModel.SelectedGame = item.Game;
@@ -570,6 +583,12 @@ namespace GameSaveCenter.Playnite.Views
             if (gameSearchCompositionActive || e.Key == Key.ImeProcessed || e.ImeProcessedKey != Key.None)
                 return;
 
+            if (IsPickerKeyboardNavigationKey(e.Key))
+            {
+                BeginPickerKeyboardNavigationGuard();
+                return;
+            }
+
             if (e.Key == Key.Escape)
             {
                 ClosePickerAndRestoreFocus();
@@ -588,6 +607,23 @@ namespace GameSaveCenter.Playnite.Views
             ClosePickerAndRestoreFocus();
             e.Handled = true;
         }
+
+        private void BeginPickerKeyboardNavigationGuard()
+        {
+            pickerKeyboardNavigationActive = true;
+            var generation = ++pickerKeyboardNavigationGeneration;
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new Action(() =>
+            {
+                if (generation == pickerKeyboardNavigationGeneration)
+                    pickerKeyboardNavigationActive = false;
+            }));
+        }
+
+        private static bool IsPickerKeyboardNavigationKey(Key key)
+            => key == Key.Up || key == Key.Down
+                || key == Key.Left || key == Key.Right
+                || key == Key.PageUp || key == Key.PageDown
+                || key == Key.Home || key == Key.End;
 
         private void ClosePickerAndRestoreFocus()
         {
