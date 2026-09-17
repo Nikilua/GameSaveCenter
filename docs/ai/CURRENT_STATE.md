@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R05-03 弹层边缘适配
+
+- `cbfacd2064d6bb5400e3e203ec4f5f14493d44ad` 核对确认游戏选框是壳层内 Grid，共享 ComboBox 才是 WPF Popup；修复生产 `PickerPanel` 固定 460/500 在短壳层越界的问题，为其绑定 `PickerOverlay.ActualWidth`/`ActualHeight` 最大约束，保留现有筛选、滚动和命令链。
+- `R05PopupBoundaryBehaviorTests` 实际生产资源/STA WPF `2/2`：720×360 短壳层面板不越界、Auto 列表滚动和选定行可见；共享 ComboBox 在当前桌面右下工作区打开时 Popup 翻转回工作区，最大高度、滚动条和选定项可见均通过。420×220 极端壳层只有约 `92×92 DIP`，面板虽不越界但列表视口为 0，完整交互保留为最小尺寸/紧凑布局待定义边界。
+- clean Release XAML `24/24`、构建 `0/0`；clean artifact R05-03 `2/2`、R05-02 回归 `3/3`。clean RenderHarness 绑定完整 SHA，Light/Dark、297 PNG、`WorkingTreeClean=True`、`render-qa OK`，Shell/Settings 图已抽查。证据见 [`R05-03-POPUP-EDGE-20260917.md`](../design/reviews/ui-finesse-round3-20260915/evidence/R05-03-POPUP-EDGE-20260917.md)。
+- 边界：Popup 几何是在当前桌面工作区的设备坐标观察，不代表多物理屏/真实 Playnite；未把它写成 presented frame 无闪屏，真实 OS 输入/IME、读屏、UIA、物理 DPI/跨屏、ETW、宿主性能仍未验；未写真实存档、媒体或云端。下一可执行任务为 R05-04 多选摘要。
+
 ## 当前第三轮 R05-02 选项虚拟化焦点
 
 - `7a4ede84667d916ad61d382302b742cca8fd4704` 先复现生产 Shell 游戏选框第一次 `Down` 会因 `SelectionChanged` 误关闭弹层，再以最小范围补键盘导航保护：方向键、PageUp/PageDown、Home/End 更新活动项时不关闭；鼠标预览点击清除保护，保留原有点击选择提交和关闭语义；卸载清理代际状态。

@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-17 R05-03 弹层边缘适配
+
+- 先核对结构：生产游戏选框是 `PickerOverlay` 内 Grid，真正的共享 Popup 在 `GscWpfUiComboBoxTemplate`；后者已有 Bottom placement、`MaxDropDownHeight` 和 Auto 滚动。实际 420×220 探针发现固定 460 宽 PickerPanel 越界，另发现该极端壳层工作区仅约 92×92 DIP，列表无法获得视口。
+- `cbfacd20` 在 PickerPanel 增加基于 Overlay ActualWidth/ActualHeight 的最大约束，保持正常窗口尺寸和当前滚动/筛选/命令语义；不把 420×220 的不可用视口假称完整支持。
+- `R05PopupBoundaryBehaviorTests` `2/2`：720×360 短壳层面板边界、Auto 滚动、选定项可见；当前桌面右下 ComboBox Popup 的设备坐标工作区边界、翻转、最大高度、滚动和选定项可见。clean Release XAML `24/24`、构建 `0/0`，artifact R05-03 `2/2`、R05-02 `3/3`。
+- clean RenderHarness 绑定 `cbfacd20`，双主题 297 PNG、`WorkingTreeClean=True`、`render-qa OK`，Shell/Settings 图已抽查。边界：几何结果不等价 presented frame 无闪屏、真实 Playnite/多屏/DPI/输入/IME/读屏/UIA/ETW/宿主性能。下一可执行小批量为 R05-04 多选摘要。
+
 ## 2026-09-17 R05-02 选项虚拟化焦点
 
 - 先核对现有能力：`PickerList` 已有 Auto 垂直滚动和 Recycling 虚拟化，`GamePickerViewModel` 已有 `ICollectionView` 过滤、隐藏选择保留、恢复命令和 `SetItems` 首项回退；实际缺口是键盘移动也触发了“选择即关闭”。

@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-17
 
+## 2026-09-17 R05-03 弹层边缘适配
+
+- `cbfacd2064d6bb5400e3e203ec4f5f14493d44ad` 先用实际短窗探针复现固定 460 宽游戏选框越过壳层边界，再只在现有 `PickerPanel` 上增加 `MaxWidth`/`MaxHeight` 到 `PickerOverlay` Actual 尺寸的绑定。游戏选框不是 Popup；共享 ComboBox 原有 Popup、Auto 滚动和 `MaxDropDownHeight` 复用。
+- 实际 STA WPF `R05PopupBoundaryBehaviorTests 2/2` 覆盖 720×360 短壳层和当前桌面右下 Popup：面板不越界、列表滚动/选定项可见、Popup 翻转/最大高度/滚动条通过。420×220 只有约 `92×92 DIP`，列表视口为 0，作为最小尺寸待定义边界，不伪报完整交互。
+- clean Release XAML `24/24`、构建 `0/0`；clean artifact R05-03 `2/2`、R05-02 回归 `3/3`；RenderHarness 双主题 297 PNG、工作树 clean、`render-qa OK`。证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R05-03-POPUP-EDGE-20260917.md`。
+- 真实 presented frame 无闪屏、Playnite 嵌入、多屏/物理 DPI、OS 输入/IME、读屏、UIA、ETW、宿主性能未验；未写真实存档、媒体或云端。下一项 R05-04 多选摘要。
+
 ## 2026-09-17 R05-02 选项虚拟化焦点
 
 - `7a4ede84667d916ad61d382302b742cca8fd4704` 先复现实际缺口：生产 Shell ListBox 的键盘 Down 会被 `OnPickerSelectionChanged` 误认为选择提交并关闭弹层。修复只在选框预览键路由为方向键、PageUp/PageDown、Home/End 设置短暂保护；鼠标预览点击重置保护并保留旧的点击即提交路径。
