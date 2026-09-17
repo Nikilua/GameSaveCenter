@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-18
 
+## 2026-09-18 R06-02 排序提示与稳定性
+
+- 先核对现有能力：共享 DataGrid 已提供排序箭头和用户排序开关，生产 Save/Task/Media 表格已有 DTO 绑定但缺少统一原始值/未知值/稳定次键契约；因此只新增控制器和 profile，没有把 main 旧实现带入当前分支，也没有替换游戏选框或滚动条。
+- `c577afc5` 接入 Save History/Candidates、Task Queue、Media Inbox。默认时间/置信度降序，数值按原始数值比较，时间按 `DateTime` 比较，枚举按定义值比较，未知值不因降序反转而跑到首位；同值使用 BackupId、Path+PlayniteId、TaskId、MediaId 稳定排序。列头点击和测试 hook 均走同一个升降序切换路径，箭头只标主列。
+- `R06SortingBehaviorTests 4/4` 覆盖同值稳定、数字 2/10、未知进度、未知媒体来源、清空后乱序刷新和升降序切换；R06-01 独立回归 `5/5`。XAML `24/24`、编译 `0/0`、源校验/diff check 通过。合并多组 WPF 回归曾因单 AppDomain/Application 和隐藏布局夹具失败，必须按独立进程解释。
+- clean RenderHarness 绑定完整 `c577afc5...`，双主题 357 PNG、`WorkingTreeClean=True`、`render-qa OK`；报告确认 Save/Task/Media 头部 `sort-arrow=visible`，多数据量/滚动/resize 通过。证据：`R06-02-SORT-STABILITY-20260918.md`。
+- 未验真实 Playnite 多线程刷新/点击、UIA/读屏、OS 输入/IME、物理 DPI/跨屏、presented frame、ETW、宿主性能；未写真实存档、媒体、云端或诊断数据。Maintenance 排序 profile 未扩展。下一项 R06-03 选中焦点区分。
+
 ## 2026-09-18 R06-01 列宽用户记忆
 
 - 先核对当前主要入口的真实 DataGrid：Save History/Candidates、Task Queue、Media Inbox 已有用户调整能力、最小宽度和自动横向滚动，但没有持久化；Media 主库是 ListBox，Maintenance 表格不在本项主要入口范围。没有从 main 带入旧实现，也没有改游戏选框或滚动条系统。

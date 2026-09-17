@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R06-02 排序提示与稳定性
+
+- `c577afc587a63acd7c8fbe73183812f574008f7d` 新增共享 `DataGridStableSortController`，复用现有 DataGrid、DTO、绑定和 `WpfUiProduction.xaml` 的 SortDirection 箭头。Save History/Candidates、Task Queue、Media Inbox 绑定原始时间/数字/枚举/文本值，稳定次键分别为 BackupId、Path+PlayniteId、TaskId、MediaId；默认时间/置信度降序，其余按 profile 默认方向。
+- 未知值由统一比较器在升、降序均放末尾：缺失时间/文本、非法数值、Task 负进度和排队中 0、Media 未知枚举均有固定规则。真实列头点击路径与行为夹具共用切换逻辑，同列升降序会同步 `DataGridColumn.SortDirection`；刷新清空后以乱序重加仍保持稳定次键顺序。游戏选框、滚动条、命令/Binding、取消/错误、安全恢复、有限列表和 net462 保持，Maintenance 表格本批不新增排序 profile。
+- `R06SortingBehaviorTests 4/4`、最终 Release XAML `24/24`、编译 `0/0`、源码校验和 diff check 通过；R06-01 独立回归 `5/5`。组合 WPF vstest 产生的 7 项失败是同一 AppDomain/Application、隐藏 Window/布局生命周期环境性问题，未计为绿色。
+- clean RenderHarness `.tmp/r06-02-render-final3/render-qa-report.txt` 绑定 `c577afc5...`，双主题、357 PNG、`WorkingTreeClean=True`、`render-qa OK`；列头 contract 报告 Save 7、Task 6、Media 5 的 `sort-arrow=visible`，Save/Task/Media `1040×700` 图已抽查，覆盖滚动、多数据量和窄窗恢复。
+- 边界：证据使用合成 DTO、隔离 CollectionView、STA WPF、隔离构建目录和 offscreen logical DIP；未验真实 Playnite 点击/多线程刷新录像、UIA/读屏、OS 输入/IME、物理 DPI/跨屏、presented frame、ETW、宿主性能；未写真实存档、媒体、云端或诊断数据。下一可执行任务为 R06-03 选中焦点区分。
+
 ## 当前第三轮 R06-01 列宽用户记忆
 
 - `75a6e6d826e39fe5a7f06438d7aefd1985ad1692` 在不覆盖 main 旧实现的前提下，复用现有 Playnite 设置保存链新增 `DataGridColumnLayoutController`。Save History/Candidates、Task Queue、Media Inbox 分别使用稳定 `v1/{view}/{column}` 键保存有效 Pixel 列宽；初始化/响应式默认布局不误写，Star 宽度不被当作用户偏好，卸载 flush，四处均有“重置列宽”。游戏选框、滚动条、命令/绑定、取消/错误、安全恢复、有限列表和 net462 保持。

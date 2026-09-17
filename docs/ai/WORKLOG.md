@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-18 R06-02 排序提示与稳定性
+
+- 先查到共享列头已有箭头模板，真实缺口是三类生产表没有统一 raw-value sort、unknown-last 和 stable tie-break 规则；本阶段沿用现有 DataGrid/DTO/滚动条/命令链。
+- `c577afc5` 新增 `DataGridStableSortController` 和 Save/Task/Media profiles。时间/置信度默认降序；数字和时间按值排序；未知时间、文本、非法数值、负/排队 0 进度、未知枚举在两个方向都末尾；同值用稳定 ID/组合键。生产 Sorting 事件、箭头状态和刷新排序共用路径。
+- `R06SortingBehaviorTests 4/4` 实际 STA WPF `ListCollectionView` 通过，新增同列升→降→升切换负例/正例；最终构建 XAML `24/24`、编译 `0/0`，R06-01 独立回归 `5/5`。多测试类合跑出现 7 个已知 WPF Application/布局隔离失败，未写成回归绿色。
+- clean RenderHarness 绑定 `c577afc5...`、双主题 357 PNG、`WorkingTreeClean=True`、`render-qa OK`；Save/Task/Media `1040×700` 代表图和头部箭头契约已抽查。证据：`R06-02-SORT-STABILITY-20260918.md`。
+- 本项仍只证明隔离合成数据/离屏 logical DIP；真实 Playnite 多线程刷新和点击、OS 输入/IME、UIA/读屏、物理 DPI/跨屏、presented frame、ETW、宿主性能未验。下一可执行小批量为 R06-03 选中焦点区分，先盘点共享 selected/focus/hover/error 行资源。
+
 ## 2026-09-18 R06-01 列宽用户记忆
 
 - 收口前先核对 R06 主要入口和已有能力：Save History/Candidates、Task Queue、Media Inbox 是本批实际接入的生产 DataGrid；Maintenance 表格不在列宽记忆范围，Media 主库为 ListBox。没有覆盖 main 旧实现。
