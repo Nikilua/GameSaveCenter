@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-17 R05-04 多选摘要
+
+- 先查实媒体收件箱已有 Extended DataGrid、`selectedInboxIdsByMode` 按 ID 保留、加载更多恢复和批量捕获去重；当前游戏媒体卡片没有批量动作消费点，不扩展不存在的功能。
+- `52900815` 将摘要改成总选择数 + 当前窗口可操作数 + 暂不可见例外，并新增独立“清空选择”按钮。清空在 `restoringSelection` 保护下清 DataGrid 和当前模式集合，未改收件箱模式或媒体搜索/类型筛选。
+- 标准 `build.ps1 -SkipTests`：XAML `24/24`、Release `0/0`；绑定提交 SHA 的 R05 定向 `11/11`，本项 `3/3`；RenderHarness clean 绑定 `52900815`，Light/Dark 357 PNG、`WorkingTreeClean=True`、`render-qa OK`，Media 双主题图已抽查。
+- 边界：跨窗口案例使用隔离保留 ID 夹具和真实生产 DataGrid 路由，不等价后端删除/真实 Playnite 分页；未验真实 OS 输入/IME/读屏/UIA、物理 DPI/跨屏、presented frame、ETW、宿主性能；未写真实存档、媒体或云端。下一可执行小批量为 R05-05 复选框三态。
+
 ## 2026-09-17 R05-03 弹层边缘适配
 
 - 先核对结构：生产游戏选框是 `PickerOverlay` 内 Grid，真正的共享 Popup 在 `GscWpfUiComboBoxTemplate`；后者已有 Bottom placement、`MaxDropDownHeight` 和 Auto 滚动。实际 420×220 探针发现固定 460 宽 PickerPanel 越界，另发现该极端壳层工作区仅约 92×92 DIP，列表无法获得视口。

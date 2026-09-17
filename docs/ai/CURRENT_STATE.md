@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R05-04 多选摘要
+
+- `52900815c1fb8a16550446b9ee8d5318b8238a25` 先复用媒体收件箱已有 Extended DataGrid、按媒体 ID 保留当前模式的选择集合、加载更多恢复和批量提交前去重/无效项统计；只补齐摘要的总数/当前窗口范围/不可见例外表达，并增加独立“清空选择”入口。
+- 实际生产 `MediaCenterView` + STA WPF 行为 `R05MultiSelectionSummaryBehaviorTests 3/3`：0 项显示未选择，1 项和多项只显示数量；保留一个当前窗口不可见 ID 时显示总选择与当前可操作数量；点击清空后选择集合归零，`已忽略` 收件箱模式保持不变。R05-01/02/03 回归合计 `11/11`。
+- clean Release `scripts/build.ps1`：XAML `24/24`、构建 `0/0`；clean RenderHarness 绑定完整 SHA、Light/Dark、357 PNG、`WorkingTreeClean=True`、`render-qa OK`，Media `1040×700` 双主题图已抽查。未改游戏选框/滚动条、命令绑定、取消/错误/恢复保护、有限列表、Playnite/net462 或真实业务写入。
+- 边界：跨窗口例外在隔离生产视觉树中以保留 ID 夹具和真实 DataGrid 选择验证，不等价真实 Playnite 分页、后端删除竞态、OS 输入/IME、读屏/UIA、物理 DPI/跨屏、presented frame、ETW 或宿主性能；渲染 `DpiScale=1.00` 仅 logical DIP。未写真实存档、媒体或云端。下一可执行任务为 R05-05 复选框三态。
+
 ## 当前第三轮 R05-03 弹层边缘适配
 
 - `cbfacd2064d6bb5400e3e203ec4f5f14493d44ad` 核对确认游戏选框是壳层内 Grid，共享 ComboBox 才是 WPF Popup；修复生产 `PickerPanel` 固定 460/500 在短壳层越界的问题，为其绑定 `PickerOverlay.ActualWidth`/`ActualHeight` 最大约束，保留现有筛选、滚动和命令链。

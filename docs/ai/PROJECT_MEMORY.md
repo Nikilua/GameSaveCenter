@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-17
 
+## 2026-09-17 R05-04 多选摘要
+
+- `52900815c1fb8a16550446b9ee8d5318b8238a25` 核对后确认真实批量消费点是媒体收件箱 DataGrid，不是当前游戏媒体卡片；原有 `selectedInboxIdsByMode`、加载更多恢复和 `CaptureInboxMediaSelection` 已提供按 ID/去重/无效项能力。
+- 生产 `MediaCenterView` 的摘要现在按总选择数和当前窗口作用域表达：空为 `未选择媒体 · Ctrl / Shift 多选`，普通选择为 `已选 N 项`，有保留但不可见 ID 时增加当前可操作数与暂不可见例外。新增“清空选择”只清当前模式选择集合，不改收件箱模式或媒体搜索/类型筛选。
+- `R05MultiSelectionSummaryBehaviorTests 3/3`，R05-01/02/03 回归合计 `11/11`；clean Release XAML `24/24`、构建 `0/0`；clean RenderHarness 绑定完整 SHA、双主题 357 PNG、工作树 clean、`render-qa OK`，Media 双主题 `1040×700` 已抽查。
+- 边界仍是隔离合成数据/STA WPF/offscreen logical DIP；跨窗口保留 ID 未替代真实后端分页删除竞态，未验真实 Playnite、OS 输入/IME、读屏/UIA、物理 DPI/跨屏、presented frame、ETW 或宿主性能；未写真实存档、媒体或云端。下一项 R05-05 先核对实际复选框消费点与 Q10-02 半选资源。
+
 ## 2026-09-17 R05-03 弹层边缘适配
 
 - `cbfacd2064d6bb5400e3e203ec4f5f14493d44ad` 先用实际短窗探针复现固定 460 宽游戏选框越过壳层边界，再只在现有 `PickerPanel` 上增加 `MaxWidth`/`MaxHeight` 到 `PickerOverlay` Actual 尺寸的绑定。游戏选框不是 Popup；共享 ComboBox 原有 Popup、Auto 滚动和 `MaxDropDownHeight` 复用。
