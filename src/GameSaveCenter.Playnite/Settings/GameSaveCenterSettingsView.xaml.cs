@@ -29,6 +29,7 @@ namespace GameSaveCenter.Playnite.Settings
         private bool responsiveLayoutPending;
         private bool adaptiveThemePending;
         private bool validationPending;
+        private bool pathValidationPending;
         private bool systemParametersSubscribed;
         private bool scrollSelectionPending;
         private bool settingsBaselineInitialized;
@@ -41,6 +42,9 @@ namespace GameSaveCenter.Playnite.Settings
         private FrameworkElement? draftFocusTarget;
         private int draftFocusCategoryIndex;
         private string savedSettingsFingerprint = string.Empty;
+        private long pathValidationGeneration;
+        private IReadOnlyList<string> pathValidationErrors = Array.Empty<string>();
+        private readonly LatestAsyncValidationCoordinator<SettingsPathValidationSnapshot, IReadOnlyList<string>> pathValidationCoordinator = new();
         private readonly List<ValidationFieldTarget> validationFieldTargets = new();
         private ValidationFieldTarget? firstValidationTarget;
 
@@ -126,6 +130,7 @@ namespace GameSaveCenter.Playnite.Settings
             AttachHostWindowClosingHandler();
             BeginUiSafely(EnsureHostWindowSize, DispatcherPriority.ContextIdle);
             RealHostUiAuditService.TryCaptureSettings(this);
+            StartPathValidation(++pathValidationGeneration);
             RefreshValidationSummary();
             RefreshSaveState();
             if (restoreDraftFocusOnLoad && HasUnsavedSettings)
@@ -182,6 +187,7 @@ namespace GameSaveCenter.Playnite.Settings
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
+            InvalidatePathValidation();
             if (observedSettings != null)
             {
                 observedSettings.SettingsCommitted -= OnSettingsCommitted;
@@ -203,6 +209,8 @@ namespace GameSaveCenter.Playnite.Settings
                 settingsBaselineInitialized = true;
             }
 
+            if (IsLoaded)
+                StartPathValidation(pathValidationGeneration);
             RefreshValidationSummary();
             RefreshSaveState();
         }
@@ -212,6 +220,9 @@ namespace GameSaveCenter.Playnite.Settings
             if (sender is not GameSaveCenterSettings settings) return;
             savedSettingsFingerprint = settings.CreateSettingsFingerprint();
             settingsBaselineInitialized = true;
+            InvalidatePathValidation();
+            if (IsLoaded)
+                StartPathValidation(pathValidationGeneration);
             RefreshValidationSummary();
             RefreshSaveState();
         }
@@ -221,6 +232,9 @@ namespace GameSaveCenter.Playnite.Settings
             if (sender is not GameSaveCenterSettings settings) return;
             savedSettingsFingerprint = settings.CreateSettingsFingerprint();
             settingsBaselineInitialized = true;
+            InvalidatePathValidation();
+            if (IsLoaded)
+                StartPathValidation(pathValidationGeneration);
             RefreshValidationSummary();
             RefreshSaveState();
         }
@@ -230,17 +244,19 @@ namespace GameSaveCenter.Playnite.Settings
         private void OnSettingsValidationErrorChanged(object sender, RoutedEventArgs e)
             => QueueValidationSummaryUpdate();
 
-        // VerifySettings checks executable paths and other file-backed values. Coalesce
-        // per-keystroke notifications so typing a long path does not synchronously hit the
-        // filesystem on every character or compete with the input caret/layout pass.
+        // Coalesce per-keystroke notifications so typing a long path does not synchronously
+        // hit the filesystem on every character or compete with the input caret/layout pass.
         private void QueueValidationSummaryUpdate()
         {
-            if (!IsLoaded || validationPending) return;
+            if (!IsLoaded) return;
+            pathValidationGeneration++;
+            if (validationPending) return;
             validationPending = true;
             if (BeginUiSafely(() =>
             {
                 validationPending = false;
                 if (!IsLoaded) return;
+                StartPathValidation(pathValidationGeneration);
                 RefreshValidationSummary();
             }, DispatcherPriority.Background)) return;
 
@@ -248,12 +264,21 @@ namespace GameSaveCenter.Playnite.Settings
         }
 
         private void RefreshValidationSummary()
+            => RefreshValidationSummary(!IsLoaded);
+
+        private void RefreshValidationSummary(bool includeSynchronousPathValidation)
         {
             var settings = CurrentSettings;
             if (settings == null || SettingsValidationSummary == null || SettingsValidationDetails == null
                 || SettingsValidationDetailsText == null || SettingsGeneralValidationHint == null) return;
             var errors = new List<string>();
-            settings.VerifySettings(out errors);
+            if (includeSynchronousPathValidation)
+                settings.VerifySettings(out errors);
+            else
+            {
+                settings.VerifySettingsWithoutPathAvailability(out errors);
+                errors.AddRange(pathValidationErrors);
+            }
             var entries = errors
                 .Select(error => new ValidationSummaryEntry(error, ResolveValidationTarget(error)))
                 .ToList();
@@ -307,6 +332,53 @@ namespace GameSaveCenter.Playnite.Settings
                 ? $"切换到“{GetSettingsCategoryName(firstValidationCategoryIndex)}”并查看首个校验错误。"
                 : $"切换到“{GetSettingsCategoryName(firstValidationCategoryIndex)}”并聚焦{firstValidationTarget.DisplayName}。";
             RefreshSaveState(false);
+        }
+
+        private void StartPathValidation(long generation)
+        {
+            if (!IsLoaded || generation != pathValidationGeneration) return;
+            var settings = CurrentSettings;
+            if (settings == null) return;
+
+            pathValidationPending = true;
+            pathValidationErrors = Array.Empty<string>();
+            var snapshot = settings.CreatePathValidationSnapshot();
+            pathValidationCoordinator.Start(
+                snapshot,
+                SettingsPathValidationService.ValidateAsync,
+                (_, errors) => PresentPathValidationResult(generation, errors),
+                (_, exception) => PresentPathValidationFailure(generation, exception));
+        }
+
+        private void PresentPathValidationResult(long generation, IReadOnlyList<string> errors)
+        {
+            BeginUiSafely(() =>
+            {
+                if (!IsLoaded || generation != pathValidationGeneration) return;
+                pathValidationPending = false;
+                pathValidationErrors = errors ?? Array.Empty<string>();
+                RefreshValidationSummary();
+            }, DispatcherPriority.Background);
+        }
+
+        private void PresentPathValidationFailure(long generation, Exception exception)
+        {
+            Logger.Error(exception, "GameSaveCenter settings path validation failed.");
+            BeginUiSafely(() =>
+            {
+                if (!IsLoaded || generation != pathValidationGeneration) return;
+                pathValidationPending = false;
+                pathValidationErrors = new[] { "设置路径校验失败，请稍后重试。" };
+                RefreshValidationSummary();
+            }, DispatcherPriority.Background);
+        }
+
+        private void InvalidatePathValidation()
+        {
+            pathValidationGeneration++;
+            pathValidationCoordinator.Cancel();
+            pathValidationPending = false;
+            pathValidationErrors = Array.Empty<string>();
         }
 
         private void OnSettingsValidationLocateClick(object sender, RoutedEventArgs e)
@@ -486,21 +558,27 @@ namespace GameSaveCenter.Playnite.Settings
             }
 
             var isDirty = !string.Equals(savedSettingsFingerprint, settings.CreateSettingsFingerprint(), StringComparison.Ordinal);
-            SettingsSaveHintText.Text = !settingsValid
-                ? "存在校验错误 · 保存前请修正"
-                : isDirty
-                    ? "有未保存更改 · 使用 Playnite 保存"
-                    : "已保存 · 由 Playnite 保存按钮提交";
-            SettingsSaveHintText.Foreground = FindResource(!settingsValid
-                ? "GscErrorBrush"
-                : isDirty
-                    ? "GscWarningBrush"
-                    : "GscSecondaryTextBrush") as Brush;
-            SettingsSaveHintText.ToolTip = !settingsValid
-                ? "存在设置校验错误，Playnite 保存前请先修正。"
-                : isDirty
-                    ? "设置已修改但尚未提交；请使用 Playnite 设置窗口的保存按钮，或使用取消按钮放弃修改。"
-                    : "当前设置已保存；继续修改后请使用 Playnite 的保存或取消按钮。";
+            SettingsSaveHintText.Text = pathValidationPending
+                ? "正在校验路径 · 保存前请稍候"
+                : !settingsValid
+                    ? "存在校验错误 · 保存前请修正"
+                    : isDirty
+                        ? "有未保存更改 · 使用 Playnite 保存"
+                        : "已保存 · 由 Playnite 保存按钮提交";
+            SettingsSaveHintText.Foreground = FindResource(pathValidationPending
+                ? "GscWarningBrush"
+                : !settingsValid
+                    ? "GscErrorBrush"
+                    : isDirty
+                        ? "GscWarningBrush"
+                        : "GscSecondaryTextBrush") as Brush;
+            SettingsSaveHintText.ToolTip = pathValidationPending
+                ? "路径正在后台校验；校验完成前不要提交设置。"
+                : !settingsValid
+                    ? "存在设置校验错误，Playnite 保存前请先修正。"
+                    : isDirty
+                        ? "设置已修改但尚未提交；请使用 Playnite 设置窗口的保存按钮，或使用取消按钮放弃修改。"
+                        : "当前设置已保存；继续修改后请使用 Playnite 的保存或取消按钮。";
         }
 
         private bool HasUnsavedSettings
@@ -622,6 +700,7 @@ namespace GameSaveCenter.Playnite.Settings
             RememberDraftFocus();
             restoreDraftFocusOnLoad = HasUnsavedSettings && draftFocusTarget != null;
             DetachHostWindowClosingHandler();
+            InvalidatePathValidation();
             SettingsShell.BeginAnimation(UIElement.OpacityProperty, null);
             if (SettingsShell.RenderTransform is TranslateTransform translate)
             {

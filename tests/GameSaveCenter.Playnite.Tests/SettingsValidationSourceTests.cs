@@ -12,6 +12,7 @@ public sealed class SettingsValidationSourceTests
         var root = FindRepositoryRoot();
         var view = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml"));
         var code = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml.cs"));
+        var pathValidation = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Infrastructure", "SettingsPathValidationService.cs"));
 
         Assert.Contains("x:Name=\"SettingsValidationSummary\"", view);
         Assert.Contains("AutomationProperties.Name=\"设置验证错误\"", view);
@@ -44,7 +45,13 @@ public sealed class SettingsValidationSourceTests
         Assert.Contains("Keyboard.Focus(field)", code);
         Assert.Contains("SettingsGeneralValidationHint", code);
         Assert.Contains("SettingsSectionTabs.SelectedIndex", code);
-        Assert.Contains("settings.VerifySettings(out errors)", code);
+        Assert.Contains("settings.VerifySettingsWithoutPathAvailability(out errors)", code);
+        Assert.Contains("settings.VerifySettings(out var errors)", code);
+        Assert.Contains("SettingsPathValidationService.ValidateAsync", code);
+        Assert.Contains("LatestAsyncValidationCoordinator", code);
+        Assert.Contains("pathValidationGeneration", code);
+        Assert.Contains("InvalidatePathValidation", code);
+        Assert.Contains("CancellationToken", pathValidation);
         Assert.Contains("有未保存更改 · 使用 Playnite 保存", code);
         Assert.Contains("存在校验错误 · 保存前请修正", code);
         Assert.Contains("CreateSettingsFingerprint", code);

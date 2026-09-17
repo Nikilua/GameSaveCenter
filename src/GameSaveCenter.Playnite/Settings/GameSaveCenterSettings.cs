@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Core.Services;
+using GameSaveCenter.Playnite.Infrastructure;
 using Newtonsoft.Json;
 using Playnite.SDK;
 using Playnite.SDK.Data;
@@ -202,23 +204,37 @@ namespace GameSaveCenter.Playnite.Settings
             return JsonConvert.SerializeObject(snapshot, Formatting.None);
         }
 
+        internal SettingsPathValidationSnapshot CreatePathValidationSnapshot()
+            => new SettingsPathValidationSnapshot(
+                WorkerExecutable,
+                LudusaviExecutable,
+                LudusaviBackupDirectory,
+                RcloneExecutable,
+                MediaArchiveDirectory,
+                EnableLocalMirror,
+                LocalMirrorPath);
+
         public bool VerifySettings(out List<string> errors)
         {
             errors = new List<string>();
-            if (string.IsNullOrWhiteSpace(WorkerExecutable) || !File.Exists(Environment.ExpandEnvironmentVariables(WorkerExecutable)))
-                errors.Add("未找到 GameSaveCenter Worker。请先运行打包脚本，或选择正确的 Worker 可执行文件。");
-            else if (!IsWorkerExecutable(WorkerExecutable))
-                errors.Add("Worker 路径必须指向 GameSaveCenter.Worker.exe，不能选择 Ludusavi 或其他程序。");
-            AddDirectoryPathError(errors, "存档目录", LudusaviBackupDirectory);
-            AddDirectoryPathError(errors, "媒体目录", MediaArchiveDirectory);
-            if (EnableLocalMirror && string.IsNullOrWhiteSpace(LocalMirrorPath))
-                errors.Add("启用本地镜像时必须填写镜像目录。");
-            else if (EnableLocalMirror)
-                AddDirectoryPathError(errors, "本地镜像", LocalMirrorPath);
-            if (!string.IsNullOrWhiteSpace(LudusaviExecutable) && !File.Exists(Environment.ExpandEnvironmentVariables(LudusaviExecutable)))
-                errors.Add("Ludusavi 路径不存在。");
-            if (!string.IsNullOrWhiteSpace(RcloneExecutable) && !File.Exists(Environment.ExpandEnvironmentVariables(RcloneExecutable)))
-                errors.Add("Rclone 路径不存在。");
+            errors.AddRange(SettingsPathValidationService.Validate(CreatePathValidationSnapshot(), CancellationToken.None));
+            AddValueRangeErrors(errors);
+            return errors.Count == 0;
+        }
+
+        /// <summary>
+        /// Returns only cheap value/range errors for the live editor. Path availability is
+        /// supplied separately by the cancellable background validator.
+        /// </summary>
+        internal bool VerifySettingsWithoutPathAvailability(out List<string> errors)
+        {
+            errors = new List<string>();
+            AddValueRangeErrors(errors);
+            return errors.Count == 0;
+        }
+
+        private void AddValueRangeErrors(List<string> errors)
+        {
             if (DefaultBackupIntervalMinutes < 1 || DefaultBackupIntervalMinutes > 1440)
                 errors.Add("定时备份间隔必须为 1–1440 分钟。");
             if (ProcessPollingSeconds < 2 || ProcessPollingSeconds > 60)
@@ -242,7 +258,6 @@ namespace GameSaveCenter.Playnite.Settings
             }
             if (CompressionLevel < -7 || CompressionLevel > 22)
                 errors.Add("压缩等级必须为 -7–22；zstd 建议使用 3。");
-            return errors.Count == 0;
         }
 
         public WorkerSettingsDto ToWorkerSettings() => new WorkerSettingsDto
@@ -421,57 +436,6 @@ namespace GameSaveCenter.Playnite.Settings
         private static void AddMissingDirectory(SettingsImportReport report, string label, string path)
         {
             if (!string.IsNullOrWhiteSpace(path) && !Directory.Exists(Expand(path))) report.MissingPaths.Add($"{label}：{path}");
-        }
-
-        private static void AddDirectoryPathError(List<string> errors, string label, string path)
-        {
-            if (string.IsNullOrWhiteSpace(path))
-            {
-                errors.Add($"{label}路径不能为空。");
-                return;
-            }
-
-            try
-            {
-                var fullPath = Path.GetFullPath(Expand(path));
-                if (File.Exists(fullPath))
-                {
-                    errors.Add($"{label}路径指向文件，不能作为目录：{path}");
-                    return;
-                }
-
-                if (Directory.Exists(fullPath)) return;
-
-                // Missing leaf directories are valid: Worker creates them on demand. A
-                // missing/unreachable volume or share is not, and must not be presented as
-                // a healthy configured path.
-                var root = Path.GetPathRoot(fullPath);
-                if (string.IsNullOrWhiteSpace(root) || !Directory.Exists(root))
-                    errors.Add($"{label}所在磁盘或网络共享不可访问：{path}");
-                else
-                {
-                    try
-                    {
-                        var attributes = File.GetAttributes(fullPath);
-                        if ((attributes & FileAttributes.Directory) == 0)
-                            errors.Add($"{label}路径不是目录：{path}");
-                    }
-                    catch (FileNotFoundException) { }
-                    catch (DirectoryNotFoundException) { }
-                    catch (UnauthorizedAccessException)
-                    {
-                        errors.Add($"{label}目录不可访问：{path}");
-                    }
-                    catch (IOException ex)
-                    {
-                        errors.Add($"{label}目录不可访问：{path}（{ex.Message}）");
-                    }
-                }
-            }
-            catch (Exception ex) when (ex is ArgumentException || ex is NotSupportedException || ex is PathTooLongException || ex is IOException || ex is UnauthorizedAccessException)
-            {
-                errors.Add($"{label}路径无效或不可访问：{path}（{ex.Message}）");
-            }
         }
 
         private static string Expand(string value) => string.IsNullOrWhiteSpace(value) ? string.Empty : Environment.ExpandEnvironmentVariables(value);
