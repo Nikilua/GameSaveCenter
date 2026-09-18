@@ -200,6 +200,19 @@ public static class Program
             return probeExitCode;
         }
 
+        if (args.Length > 0 && args[0].Equals("horizontalprobe", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "horizontalprobe");
+            var probeExitCode = 0;
+            var probeThread = new Thread(() => { probeExitCode = RunHorizontalScrollEndpointProbe(outputRoot); });
+            probeThread.SetApartmentState(ApartmentState.STA);
+            probeThread.Start();
+            probeThread.Join();
+            return probeExitCode;
+        }
+
         if (args.Length > 0 && args[0].Equals("v3shots", StringComparison.OrdinalIgnoreCase))
         {
             var outputRoot = args.Length > 1
@@ -7372,6 +7385,208 @@ public static class Program
 
         report.AppendLine($"  {themeName} Maintenance {height}: shellFooter={FormatRect(GetBounds((FrameworkElement)shell.FindName("FooterSurface"), host))}, surface={FormatRect(surfaceBounds)}, layout={FormatRect(layoutBounds)}, loadMore={FormatRect(loadMoreBounds)}");
         SavePng(host, Path.Combine(outputRoot, themeName, $"Maintenance-1040x{height}-load-more-bottom.png"));
+    }
+
+    private static int RunHorizontalScrollEndpointProbe(string outputRoot)
+    {
+        Directory.CreateDirectory(outputRoot);
+        var report = new StringBuilder();
+        report.AppendLine("GameSaveCenter horizontal scroll endpoint probe");
+        report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+        AppendRunMetadata(report, "horizontalprobe", "OffscreenRenderHarness", "light,dark", "synthetic long tables; production DataGrid template; left/right endpoint and clamp checks");
+        report.AppendLine("InputBoundary: endpoint replay uses the real production ScrollViewer; physical Ctrl/Shift modifier timing and trackpad hardware remain host checks");
+        report.AppendLine();
+        s_problems.Clear();
+
+        try
+        {
+            var app = new Application();
+            app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+            var cases = new[]
+            {
+                (Name: "Save", TabIndex: 0, Create: (Func<FakeDashboardData, UserControl>)(data => new SaveCenterView { DataContext = data }), GridName: "SaveHistoryGrid"),
+                (Name: "Task", TabIndex: -1, Create: (Func<FakeDashboardData, UserControl>)(data => new TaskCenterView { DataContext = data }), GridName: "TaskGrid"),
+                (Name: "Media", TabIndex: 0, Create: (Func<FakeDashboardData, UserControl>)(data => new MediaCenterView { DataContext = data }), GridName: "MediaInboxGrid"),
+                (Name: "Maintenance", TabIndex: 1, Create: (Func<FakeDashboardData, UserControl>)(data => new MaintenanceView { DataContext = data }), GridName: "CloudTransferGrid")
+            };
+
+            foreach (var (themeName, themeMode) in ThemeModes)
+            {
+                foreach (var fixture in cases)
+                {
+                    var data = new FakeDashboardData(60, WorkspaceFixtureState.Ready, OverviewFixtureProfile.Default, mediaInboxHasMore: true);
+                    if (fixture.Name == "Maintenance")
+                        data.CloudTransferViewSummary.HasMore = true;
+
+                    var view = fixture.Create(data);
+                    var host = MountShortWindowPage(view, data, themeMode, 700, out _, out var pageHost);
+                    if (fixture.TabIndex >= 0)
+                    {
+                        var tabs = FindVisualChildren<TabControl>(view).FirstOrDefault();
+                        if (tabs == null || fixture.TabIndex >= tabs.Items.Count)
+                        {
+                            s_problems.Add($"{fixture.Name}/{themeName} horizontal probe tab {fixture.TabIndex} is missing.");
+                            continue;
+                        }
+                        tabs.SelectedIndex = fixture.TabIndex;
+                        ApplyThemeResponsive(view, pageHost.ActualWidth, pageHost.ActualHeight);
+                        host.UpdateLayout();
+                    }
+
+                    var grid = FindVisualChildren<DataGrid>(view).FirstOrDefault(candidate => candidate.Name == fixture.GridName);
+                    if (grid == null)
+                    {
+                        s_problems.Add($"{fixture.Name}/{themeName} horizontal probe grid {fixture.GridName} is missing.");
+                        continue;
+                    }
+
+                    // Force a controlled long table without changing the production template
+                    // or Media's virtualization exception. Keep each terminal column below a
+                    // narrow viewport's readable budget; a column wider than the viewport is
+                    // an intentional truncation case, not evidence that the endpoint failed.
+                    foreach (var column in grid.Columns)
+                        column.Width = new DataGridLength(Math.Max(240, column.MinWidth + 96), DataGridLengthUnitType.Pixel);
+                    host.UpdateLayout();
+
+                    var scroller = FindVisualChildren<ScrollViewer>(grid)
+                        .FirstOrDefault(candidate => candidate.Name == "DG_ScrollViewer")
+                        ?? FindVisualChildren<ScrollViewer>(grid).OrderByDescending(candidate => candidate.ViewportWidth).FirstOrDefault();
+                    if (scroller == null || scroller.ScrollableWidth <= 1)
+                    {
+                        s_problems.Add($"{fixture.Name}/{themeName} horizontal probe did not expose a scrollable DG_ScrollViewer.");
+                        continue;
+                    }
+
+                    if (fixture.Name == "Media"
+                        && (!VirtualizingPanel.GetIsVirtualizing(grid)
+                            || VirtualizingPanel.GetVirtualizationMode(grid) != VirtualizationMode.Standard
+                            || grid.EnableColumnVirtualization
+                            || VirtualizingPanel.GetScrollUnit(grid) != ScrollUnit.Item))
+                    {
+                        s_problems.Add($"{fixture.Name}/{themeName} changed its protected Media virtualization contract: virtualizing={VirtualizingPanel.GetIsVirtualizing(grid)}, mode={VirtualizingPanel.GetVirtualizationMode(grid)}, column={grid.EnableColumnVirtualization}, unit={VirtualizingPanel.GetScrollUnit(grid)}.");
+                    }
+
+                    var headers = FindHorizontalHeaders(grid);
+                    var firstHeader = headers.FirstOrDefault();
+                    var lastHeader = headers.LastOrDefault();
+                    var firstRow = FindVisualChildren<DataGridRow>(grid)
+                        .FirstOrDefault(row => row.Visibility == Visibility.Visible && row.ActualHeight > 0);
+                    if (firstHeader == null || lastHeader == null || firstRow == null)
+                    {
+                        s_problems.Add($"{fixture.Name}/{themeName} horizontal probe lacks realized headers or rows.");
+                        continue;
+                    }
+
+                    scroller.ScrollToHorizontalOffset(-120);
+                    host.UpdateLayout();
+                    var negativeClamp = scroller.HorizontalOffset;
+                    var leftFirst = GetBounds(FindHorizontalHeaders(grid).First(), scroller);
+                    scroller.ScrollToHorizontalOffset(0);
+                    host.UpdateLayout();
+                    var leftOffset = scroller.HorizontalOffset;
+                    leftFirst = GetBounds(FindHorizontalHeaders(grid).First(), scroller);
+
+                    scroller.ScrollToHorizontalOffset(scroller.ScrollableWidth + 240);
+                    host.UpdateLayout();
+                    var rightOffset = scroller.HorizontalOffset;
+                    lastHeader = FindHorizontalHeaders(grid).Last();
+                    var rightLast = GetBounds(lastHeader, scroller);
+                    var lastCell = FindVisualChildren<DataGridCell>(firstRow)
+                        .Where(cell => cell.Visibility == Visibility.Visible && cell.Column != null && cell.Column.DisplayIndex == lastHeader.Column.DisplayIndex)
+                        .FirstOrDefault();
+                    var rightLastCell = lastCell == null ? Rect.Empty : GetBounds(lastCell, scroller);
+                    var horizontalBar = FindVisualChildren<ScrollBar>(scroller)
+                        .FirstOrDefault(bar => bar.Orientation == Orientation.Horizontal && bar.Visibility == Visibility.Visible);
+                    var verticalBar = FindVisualChildren<ScrollBar>(scroller)
+                        .FirstOrDefault(bar => bar.Orientation == Orientation.Vertical && bar.Visibility == Visibility.Visible);
+                    var horizontalBarBounds = horizontalBar == null ? Rect.Empty : GetBounds(horizontalBar, scroller);
+                    var firstRowBounds = GetBounds(firstRow, scroller);
+
+                    if (negativeClamp > 0.5 || leftOffset > 0.5)
+                        s_problems.Add($"{fixture.Name}/{themeName} left endpoint did not clamp to zero (negative={negativeClamp:0.##}, left={leftOffset:0.##}).");
+                    if (rightOffset < scroller.ScrollableWidth - 0.5)
+                        s_problems.Add($"{fixture.Name}/{themeName} right endpoint did not clamp (offset={rightOffset:0.##}, max={scroller.ScrollableWidth:0.##}).");
+                    if (!HorizontalInside(rightLast, scroller.ViewportWidth))
+                        s_problems.Add($"{fixture.Name}/{themeName} last header is not visible at the right endpoint (last={FormatRect(rightLast)}, viewport={scroller.ViewportWidth:0.##}).");
+                    if (!HorizontalInside(rightLastCell, scroller.ViewportWidth))
+                        s_problems.Add($"{fixture.Name}/{themeName} last realized cell/action is not visible at the right endpoint (cell={FormatRect(rightLastCell)}, viewport={scroller.ViewportWidth:0.##}).");
+                    if (horizontalBar != null && firstRowBounds.Bottom > horizontalBarBounds.Top + 0.5)
+                        s_problems.Add($"{fixture.Name}/{themeName} row content overlaps the horizontal bar (row={FormatRect(firstRowBounds)}, bar={FormatRect(horizontalBarBounds)}).");
+
+                    // Capture the actual right endpoint before restoring the left endpoint
+                    // used for the round-trip drift assertion.
+                    SavePng(host, Path.Combine(outputRoot, $"{themeName}-{fixture.Name}-right.png"));
+
+                    scroller.ScrollToHorizontalOffset(0);
+                    host.UpdateLayout();
+                    var returnedOffset = scroller.HorizontalOffset;
+                    var returnedFirst = GetBounds(FindHorizontalHeaders(grid).First(), scroller);
+                    if (returnedOffset > 0.5 || Math.Abs(returnedFirst.Left - leftFirst.Left) > 0.5)
+                        s_problems.Add($"{fixture.Name}/{themeName} left return drifted (offset={returnedOffset:0.##}, before={leftFirst.Left:0.##}, after={returnedFirst.Left:0.##}).");
+
+                    var diagnosticLine = DataGridScrollDiagnostics.CaptureNow(grid, "Ctrl+Shift/触控板等效:水平左端");
+                    var rowsPresenter = FindVisualChildren<DataGridRowsPresenter>(grid).FirstOrDefault();
+                    var headersPresenter = FindVisualChildren<DataGridColumnHeadersPresenter>(grid).FirstOrDefault();
+                    var cellsPanelOffset = ReadInternalDouble(grid, "CellsPanelHorizontalOffset");
+                    var nonFrozenOffset = ReadInternalDouble(grid, "NonFrozenColumnsViewportHorizontalOffset");
+                    var headerGeometry = string.Join(",", FindHorizontalHeaders(grid).Select(header =>
+                        $"{header.Column.DisplayIndex}:{header.ActualWidth:0.##}@{GetBounds(header, scroller).Left:0.##}..{GetBounds(header, scroller).Right:0.##}"));
+                    var rowHeader = FindVisualChildren<DataGridRowHeader>(grid).FirstOrDefault();
+                    var selectAllButton = FindVisualChildren<Button>(scroller).FirstOrDefault();
+                    var itemsPresenter = FindVisualChildren<ItemsPresenter>(grid).FirstOrDefault();
+                    var cellsPresenter = FindVisualChildren<DataGridCellsPresenter>(firstRow).FirstOrDefault();
+                    report.AppendLine(
+                        $"  {themeName} {fixture.Name}: items={grid.Items.Count}, columns={grid.Columns.Count}, "
+                        + $"offsets={leftOffset:0.##}->{rightOffset:0.##}->{returnedOffset:0.##}/{scroller.ScrollableWidth:0.##}, "
+                        + $"viewport={scroller.ViewportWidth:0.##}x{scroller.ViewportHeight:0.##}, "
+                        + $"lastHeader={FormatRect(rightLast)}, lastCell={FormatRect(rightLastCell)}, hbar={FormatRect(horizontalBarBounds)}, vbar={FormatRect(verticalBar == null ? Rect.Empty : GetBounds(verticalBar, scroller))}, "
+                        + $"grid={grid.ActualWidth:0.##}x{grid.ActualHeight:0.##}, padding={grid.Padding.Left:0.##}/{grid.Padding.Right:0.##}, "
+                        + $"presenters={headersPresenter?.ActualWidth:0.##}/{rowsPresenter?.ActualWidth:0.##}, internalOffsets={cellsPanelOffset:0.##}/{nonFrozenOffset:0.##}, cols={string.Join(",", grid.Columns.Select(column => $"{column.ActualWidth:0.##}"))}, "
+                        + $"headerGeometry={headerGeometry}, extentExtra={(scroller.ExtentWidth - grid.Columns.Sum(column => column.ActualWidth)):0.##}, "
+                        + $"rowHeader={FormatRect(rowHeader == null ? Rect.Empty : GetBounds(rowHeader, scroller))}, selectAll={FormatRect(selectAllButton == null ? Rect.Empty : GetBounds(selectAllButton, scroller))}, "
+                        + $"desired={itemsPresenter?.DesiredSize.Width:0.##}/{rowsPresenter?.DesiredSize.Width:0.##}/{cellsPresenter?.DesiredSize.Width:0.##}, "
+                        + $"realizedRows={FindVisualChildren<DataGridRow>(grid).Count(row => row.Visibility == Visibility.Visible)}, "
+                        + $"mediaVirtualization={(fixture.Name == "Media" ? $"{VirtualizingPanel.GetVirtualizationMode(grid)}/{VirtualizingPanel.GetScrollUnit(grid)}/column={grid.EnableColumnVirtualization}" : "n/a")}");
+                    report.AppendLine($"  {diagnosticLine}");
+                }
+            }
+
+            report.AppendLine(s_problems.Count == 0 ? "horizontalprobe OK" : "horizontalprobe FAILED");
+            foreach (var problem in s_problems)
+                report.AppendLine("  PROBLEM " + problem);
+            File.WriteAllText(Path.Combine(outputRoot, "horizontalprobe-report.txt"), report.ToString());
+            Console.WriteLine(report.ToString());
+            return s_problems.Count == 0 ? 0 : 1;
+        }
+        catch (Exception ex)
+        {
+            report.AppendLine("horizontalprobe FAILED");
+            report.AppendLine(ex.ToString());
+            File.WriteAllText(Path.Combine(outputRoot, "horizontalprobe-report.txt"), report.ToString());
+            Console.WriteLine(report.ToString());
+            return 1;
+        }
+    }
+
+    private static bool HorizontalInside(Rect bounds, double viewportWidth)
+        => !bounds.IsEmpty
+           && bounds.Width > 0
+           && bounds.Left >= -1
+           && bounds.Right <= viewportWidth + 1
+           && bounds.Right >= -1
+           && bounds.Left <= viewportWidth + 1;
+
+    private static DataGridColumnHeader[] FindHorizontalHeaders(DataGrid grid)
+        => FindVisualChildren<DataGridColumnHeader>(grid)
+            .Where(header => header.Visibility == Visibility.Visible && header.Column != null)
+            .OrderBy(header => header.Column.DisplayIndex)
+            .ToArray();
+
+    private static double ReadInternalDouble(DependencyObject source, string propertyName)
+    {
+        var property = source.GetType().GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        var value = property?.GetValue(source, null);
+        return value is double number ? number : double.NaN;
     }
 
     private static Grid MountShortWindowPage(UserControl page, FakeDashboardData data, GameSaveCenterThemeMode themeMode, int height, out AcrylicProductionShellView shell, out ContentControl pageHost)
