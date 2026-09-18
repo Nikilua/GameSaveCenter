@@ -20,6 +20,7 @@ namespace GameSaveCenter.Playnite.Settings
         private bool deviceIdWasLoaded;
         private int settingsSaveInProgress;
         private bool enableLocalMirror;
+        private List<FilterPresetDefinition> filterPresets = new List<FilterPresetDefinition>();
         private bool autoStartWorker = true;
         private bool onboardingCompleted;
         private bool enableProcessDetection = true;
@@ -148,6 +149,12 @@ namespace GameSaveCenter.Playnite.Settings
         public string TaskHistoryRangeState { get; set; } = "全部时间";
         public string MediaFilterState { get; set; } = "全部";
         public string MediaSearchTextState { get; set; } = string.Empty;
+        /// <summary>Named read-only filter combinations; live task/media objects are never persisted.</summary>
+        public List<FilterPresetDefinition> FilterPresets
+        {
+            get => filterPresets;
+            set => filterPresets = FilterPresetDefinition.NormalizeMany(value);
+        }
 
         /// <summary>
         /// User-adjusted DataGrid widths keyed by the versioned view/column identity.
@@ -512,6 +519,7 @@ namespace GameSaveCenter.Playnite.Settings
             TaskHistoryRangeState = IsSupportedTaskHistoryRange(other.TaskHistoryRangeState) ? other.TaskHistoryRangeState : "全部时间";
             MediaFilterState = string.IsNullOrWhiteSpace(other.MediaFilterState) ? "全部" : other.MediaFilterState;
             MediaSearchTextState = other.MediaSearchTextState ?? string.Empty;
+            FilterPresets = other.FilterPresets;
             DataGridColumnWidths = other.DataGridColumnWidths;
         }
 

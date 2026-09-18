@@ -259,7 +259,10 @@ namespace GameSaveCenter.Playnite.Views
                 TaskMoreFiltersHost.Orientation = compactFilters && width < 660
                     ? Orientation.Vertical
                     : Orientation.Horizontal;
-                TaskFiltersPanel.RowDefinitions[1].Height = new GridLength(0);
+                // The second row hosts the named filter presets. Keep it measurable
+                // after every responsive pass; collapsing it would silently remove
+                // the save/apply controls on the compact host path.
+                TaskFiltersPanel.RowDefinitions[1].Height = GridLength.Auto;
                 Grid.SetRow(TaskSearchBoxHost, 0);
                 Grid.SetColumn(TaskSearchBoxHost, 0);
                 Grid.SetRow(TaskStatusFilterLabel, 0);

@@ -267,6 +267,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             mediaSearchRefresh = new DebouncedRefresh(() => ApplyOnUi(RefreshMediaView), TimeSpan.FromMilliseconds(180));
             mediaPageQueryRefresh = new DebouncedRefresh(() => Run(LoadFilteredMediaPageAsync), TimeSpan.FromMilliseconds(240));
             uiStateSave = new DebouncedRefresh(SaveUiStateSettings, TimeSpan.FromMilliseconds(500));
+            InitializeFilterPresets();
             taskStatusFilter = TaskStatusFilterOptions.Contains(plugin.Settings.TaskStatusFilterState) ? plugin.Settings.TaskStatusFilterState : "全部";
             pendingTaskGameFilter = plugin.Settings.TaskGameFilterState ?? "全部";
             pendingTaskTypeFilter = plugin.Settings.TaskTypeFilterState ?? "全部";
@@ -308,6 +309,10 @@ namespace GameSaveCenter.Playnite.ViewModels
             LoadMoreMediaCommand = new RelayCommand(_ => Run(LoadMoreMediaPageAsync), _ => !IsBusy && CurrentWorkspace == WorkspaceKind.Media && SelectedGame != null && MediaPageHasMore);
             ReloadMediaWindowCommand = new RelayCommand(_ => Run(ReloadMediaWindowAsync), _ => !IsBusy && CurrentWorkspace == WorkspaceKind.Media && SelectedGame != null);
             ClearMediaFiltersCommand = new RelayCommand(_ => ClearMediaFilters(), _ => !IsBusy);
+            ApplyMediaFilterPresetCommand = new RelayCommand(_ => ApplyMediaFilterPreset(), _ => !IsBusy && SelectedMediaFilterPreset != null);
+            SaveMediaFilterPresetCommand = new RelayCommand(_ => Observe(SaveMediaFilterPresetAsync()), _ => !IsBusy && !string.IsNullOrWhiteSpace(MediaFilterPresetNameDraft));
+            RenameMediaFilterPresetCommand = new RelayCommand(_ => Observe(RenameMediaFilterPresetAsync()), _ => !IsBusy && SelectedMediaFilterPreset != null && !string.IsNullOrWhiteSpace(MediaFilterPresetNameDraft));
+            DeleteMediaFilterPresetCommand = new RelayCommand(_ => Observe(DeleteMediaFilterPresetAsync()), _ => !IsBusy && SelectedMediaFilterPreset != null);
             UpdateMediaMetadataCommand = new RelayCommand(_ => Run(UpdateMediaMetadataAsync), _ => !IsBusy && SelectedMedia != null);
             FavoriteSelectedMediaCommand = new RelayCommand(value => Run(() => UpdateMediaMetadataBatchAsync(value, true, false)), _ => !IsBusy);
             UnfavoriteSelectedMediaCommand = new RelayCommand(value => Run(() => UpdateMediaMetadataBatchAsync(value, false, false)), _ => !IsBusy);
@@ -333,6 +338,10 @@ namespace GameSaveCenter.Playnite.ViewModels
             RetryAllTasksCommand = new RelayCommand(_ => Run(RetryAllTasksAsync), _ => !IsBusy && RetryableTaskCount > 0);
             LoadMoreTasksCommand = new RelayCommand(_ => Run(() => LoadTaskPageAsync(false)), _ => !IsBusy && taskHistoryActive && TaskHistoryHasMore);
             ClearTaskFiltersCommand = new RelayCommand(_ => ClearTaskFilters(), _ => !IsBusy);
+            ApplyTaskFilterPresetCommand = new RelayCommand(_ => ApplyTaskFilterPreset(), _ => !IsBusy && SelectedTaskFilterPreset != null);
+            SaveTaskFilterPresetCommand = new RelayCommand(_ => Observe(SaveTaskFilterPresetAsync()), _ => !IsBusy && !string.IsNullOrWhiteSpace(TaskFilterPresetNameDraft));
+            RenameTaskFilterPresetCommand = new RelayCommand(_ => Observe(RenameTaskFilterPresetAsync()), _ => !IsBusy && SelectedTaskFilterPreset != null && !string.IsNullOrWhiteSpace(TaskFilterPresetNameDraft));
+            DeleteTaskFilterPresetCommand = new RelayCommand(_ => Observe(DeleteTaskFilterPresetAsync()), _ => !IsBusy && SelectedTaskFilterPreset != null);
             CopyTaskErrorCommand = new RelayCommand(
                 _ => Run(CopySelectedTaskErrorAsync),
                 _ => SelectedTask != null
@@ -1289,6 +1298,10 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand LoadMoreMediaCommand { get; }
         public ICommand ReloadMediaWindowCommand { get; }
         public ICommand ClearMediaFiltersCommand { get; }
+        public ICommand ApplyMediaFilterPresetCommand { get; }
+        public ICommand SaveMediaFilterPresetCommand { get; }
+        public ICommand RenameMediaFilterPresetCommand { get; }
+        public ICommand DeleteMediaFilterPresetCommand { get; }
         public ICommand UpdateMediaMetadataCommand { get; }
         public ICommand FavoriteSelectedMediaCommand { get; }
         public ICommand UnfavoriteSelectedMediaCommand { get; }
@@ -1312,6 +1325,10 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand RetryAllTasksCommand { get; }
         public ICommand LoadMoreTasksCommand { get; }
         public ICommand ClearTaskFiltersCommand { get; }
+        public ICommand ApplyTaskFilterPresetCommand { get; }
+        public ICommand SaveTaskFilterPresetCommand { get; }
+        public ICommand RenameTaskFilterPresetCommand { get; }
+        public ICommand DeleteTaskFilterPresetCommand { get; }
         public ICommand CopyTaskErrorCommand { get; }
         public ICommand CopyPathCommand { get; }
         public ICommand OpenAttentionCenterCommand { get; }
@@ -4994,12 +5011,12 @@ namespace GameSaveCenter.Playnite.ViewModels
                 UpdateBackupMetadataCommand, CompareBackupCommand, PreviewRetentionCommand,
                 AddMediaSourceCommand, AcceptCandidateCommand, RejectCandidateCommand, ReassignMediaCommand,
                 UpdateMediaMetadataCommand,OpenSelectedMediaCommand,RevealSelectedMediaCommand,
-                LoadMoreMediaCommand, ReloadMediaWindowCommand, OpenCloudQueueCommand, OpenMediaWorkspaceCommand, OpenActivityCommand, OpenSelectedFindingNavigationCommand, RefreshCloudTransfersCommand, LoadMoreCloudTransfersCommand, VerifyCloudTransferCommand, RetryCloudUploadCommand,
+                LoadMoreMediaCommand, ReloadMediaWindowCommand, ApplyMediaFilterPresetCommand, SaveMediaFilterPresetCommand, RenameMediaFilterPresetCommand, DeleteMediaFilterPresetCommand, OpenCloudQueueCommand, OpenMediaWorkspaceCommand, OpenActivityCommand, OpenSelectedFindingNavigationCommand, RefreshCloudTransfersCommand, LoadMoreCloudTransfersCommand, VerifyCloudTransferCommand, RetryCloudUploadCommand,
                 AssignInboxMediaCommand, IgnoreInboxMediaCommand, AssignInboxMediaBatchCommand, IgnoreInboxMediaBatchCommand, RestoreIgnoredMediaBatchCommand,
                 PreviewMediaClassificationCommand, ApplyMediaClassificationCommand, UndoMediaClassificationCommand,
                 RefreshMediaClassificationHistoryCommand, LoadMoreMediaClassificationHistoryCommand,
                 LoadMoreMediaInboxCommand, ReloadMediaInboxCommand,
-                CancelTaskCommand, RetryTaskCommand, RetryAllTasksCommand, LoadMoreTasksCommand, ClearMediaFiltersCommand, CopyTaskErrorCommand, CopyPathCommand, OpenSelectedTaskGameCommand, ReturnToNavigationSourceCommand, RefreshDiagnosticsCommand, RunMaintenanceActionCommand, LoadMoreRetentionQuarantineCommand, DiagnoseGameCommand, SyncGameDescriptorCommand, RetryGameMatchCommand, ClearGamePickerFiltersCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
+                CancelTaskCommand, RetryTaskCommand, RetryAllTasksCommand, LoadMoreTasksCommand, ClearMediaFiltersCommand, ApplyTaskFilterPresetCommand, SaveTaskFilterPresetCommand, RenameTaskFilterPresetCommand, DeleteTaskFilterPresetCommand, CopyTaskErrorCommand, CopyPathCommand, OpenSelectedTaskGameCommand, ReturnToNavigationSourceCommand, RefreshDiagnosticsCommand, RunMaintenanceActionCommand, LoadMoreRetentionQuarantineCommand, DiagnoseGameCommand, SyncGameDescriptorCommand, RetryGameMatchCommand, ClearGamePickerFiltersCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
                 StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,RunHealthInspectionCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,RefreshRetentionSimulationCommand,ApplyRetentionSimulationCommand,RefreshLocalMirrorStatusCommand,SyncLocalMirrorCommand,CopyMaintenanceReportCommand,ExportMaintenanceReportCommand,
                 SaveProcessMappingCommand,DeleteProcessMappingCommand,RunEnvironmentCheckCommand,SkipOnboardingCommand,CompleteOnboardingCommand,OnboardingTestBackupCommand,
                 OpenDataDirectoryCommand, OpenBackupDirectoryCommand, OpenMediaDirectoryCommand, OpenWorkerLogCommand

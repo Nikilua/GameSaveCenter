@@ -222,6 +222,15 @@
                                 </StackPanel>
                                 <ui:Button x:Name="MediaInboxCompactDetailsButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="查看预览与归类 ›" ToolTip="打开所选媒体的预览、归类建议和安全操作" AutomationProperties.Name="查看所选媒体预览与归类" Click="OnMediaInboxCompactDetailsClick" Visibility="Collapsed" Margin="2,0,0,4"/>
                             </WrapPanel>
+                            <WrapPanel x:Name="MediaFilterPresetRow" Margin="0,0,0,10" VerticalAlignment="Center">
+                                <TextBlock Text="筛选预设" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <ComboBox x:Name="MediaFilterPresetComboBox" Width="180" Style="{DynamicResource GscWpfUiFilterComboBox}" ItemsSource="{Binding MediaFilterPresets}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedMediaFilterPreset, Mode=TwoWay}" ToolTip="选择已保存的媒体筛选组合" AutomationProperties.Name="媒体筛选预设" Margin="0,0,8,0"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding ApplyMediaFilterPresetCommand}" Content="应用" ToolTip="应用选中的媒体筛选预设" AutomationProperties.Name="应用媒体筛选预设" Margin="0,0,8,0"/>
+                                <TextBox x:Name="MediaFilterPresetNameBox" Width="132" Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding MediaFilterPresetNameDraft, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="输入预设名称" AutomationProperties.Name="媒体筛选预设名称" Margin="0,0,8,0"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding SaveMediaFilterPresetCommand}" Content="保存" ToolTip="保存当前媒体筛选组合" AutomationProperties.Name="保存媒体筛选预设" Margin="0,0,8,0"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding RenameMediaFilterPresetCommand}" Content="重命名" ToolTip="确认后重命名选中的媒体筛选预设" AutomationProperties.Name="重命名媒体筛选预设" Margin="0,0,8,0"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding DeleteMediaFilterPresetCommand}" Content="删除" ToolTip="确认后删除选中的媒体筛选预设" AutomationProperties.Name="删除媒体筛选预设"/>
+                            </WrapPanel>
                             <Border Style="{DynamicResource GscActionAvailabilityHintBubble}" Padding="10,8" Margin="0,0,0,10">
                                 <Grid>
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>

@@ -136,7 +136,7 @@
             <Grid x:Name="TaskFiltersPanel" VerticalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="0"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -188,6 +188,15 @@
                 <ComboBox x:Name="TaskHistoryRangeComboBox" Grid.Row="0" Grid.Column="6" Style="{DynamicResource GscWpfUiFilterComboBox}" MinWidth="100" ItemsSource="{Binding TaskHistoryRangeOptions}" SelectedItem="{Binding TaskHistoryRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="时间范围" AutomationProperties.Name="任务时间范围" Margin="0,0,10,0"/>
                 <!-- Icon-only: toolbar refresh remains discoverable by tooltip and UI Automation. -->
                 <ui:Button x:Name="TaskRefreshButton" Grid.Row="0" Grid.Column="7" Style="{DynamicResource GscIconOnlyToolbarButton}" Command="{Binding RefreshCommand}" ToolTip="刷新任务列表" AutomationProperties.Name="刷新任务列表"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconBtnRefresh}" Width="18" Height="18"/></ui:Button>
+                <WrapPanel x:Name="TaskFilterPresetRow" Grid.Row="1" Grid.ColumnSpan="8" Margin="0,8,0,0" VerticalAlignment="Center">
+                    <TextBlock Text="筛选预设" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <ComboBox x:Name="TaskFilterPresetComboBox" Width="180" Style="{DynamicResource GscWpfUiFilterComboBox}" ItemsSource="{Binding TaskFilterPresets}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedTaskFilterPreset, Mode=TwoWay}" ToolTip="选择已保存的任务筛选组合" AutomationProperties.Name="任务筛选预设" Margin="0,0,8,0"/>
+                    <ui:Button x:Name="TaskFilterPresetApplyButton" Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding ApplyTaskFilterPresetCommand}" Content="应用" ToolTip="应用选中的任务筛选预设" AutomationProperties.Name="应用任务筛选预设" Margin="0,0,8,0"/>
+                    <TextBox x:Name="TaskFilterPresetNameBox" Width="132" Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding TaskFilterPresetNameDraft, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="输入预设名称" AutomationProperties.Name="任务筛选预设名称" Margin="0,0,8,0"/>
+                    <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding SaveTaskFilterPresetCommand}" Content="保存" ToolTip="保存当前任务筛选组合" AutomationProperties.Name="保存任务筛选预设" Margin="0,0,8,0"/>
+                    <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding RenameTaskFilterPresetCommand}" Content="重命名" ToolTip="确认后重命名选中的任务筛选预设" AutomationProperties.Name="重命名任务筛选预设" Margin="0,0,8,0"/>
+                    <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding DeleteTaskFilterPresetCommand}" Content="删除" ToolTip="确认后删除选中的任务筛选预设" AutomationProperties.Name="删除任务筛选预设"/>
+                </WrapPanel>
             </Grid>
         </Border>
         <Expander x:Name="TaskMoreFiltersExpander" Grid.Row="2" Grid.ColumnSpan="3" Style="{StaticResource GscDisclosureCard}" Visibility="Collapsed" Margin="0,0,0,8">
