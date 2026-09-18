@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-18 R08-05 页面切换轻量化
+
+- 先阅读第三轮任务、质量审查和账本并核对当前分支/主线均在 `01f6527f`；未将 main 旧源码覆盖到分支。复用当前真实生产壳层的页面缓存，不重建页面或滚动体系。
+- `ccd71c27`：`NavigateTo` 对同一缓存页面增加 `ReferenceEquals(PageHost.Content, page)` 保护；shell 暴露仅审计用 Measure/Arrange 计数；新增 `R08PageSwitchBehaviorTests`，覆盖跨页、同页负例、DataGrid 选择/滚动和全页 Blur/入口检查。
+- 验证：隔离源码/输出身份 `ccd71c27`；solution Release `0 warning / 0 error`，Playnite `net462`，XAML `24/24`；R08-05 `2/2`；R02/R08/ProductionShellChrome/UiFinesseFoundation 合并 `28/28`；`validate-source.py`、`check-xaml.ps1`、`git diff --check` 通过；WPF 静态审查 `0/21/177`（error/warning/info）。实际样本为任务→媒体 `2/2`、媒体→任务 `1/1`，offset `10→10`，同页 `0/0`。
+- 限制：合成 DTO/fake、隔离 STA/offscreen logical DIP；没有真实 Playnite/Worker、物理 DPI/跨屏、presented frame、UIA/读屏、ETW、宿主性能或 Demo 原始目录证据。本项没有页面级 XAML/响应式布局改动，未运行 render-qa，不把未验项写成通过。下一可执行任务为 R08-06 数字变化动效。
+
 ## 2026-09-15 第二轮质量复查与第三轮 192 项任务
 
 - 本轮是审查与规划交付。审查主基线 `35b82761c60b8ec8a3fedc283545e670bdf05127`，位于 Luna 的 `codex/ui-finesse-round2`；main 的旧生产源码尚未合并该分支。详情见[独立质量复查](../design/UI_FINESSE_QUALITY_REVIEW_2026-09-15.md)。

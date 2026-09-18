@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-18
 
+## 2026-09-18 R08-05 页面切换轻量化
+
+- 复用既有 `AcrylicProductionShellView` 页面注册表；`Attach` 创建真实页面一次，`NavigateTo` 现在仅在目标引用变化时写入 `PageHost.Content`，同页重复请求不重设视觉树。没有改服务、DTO、命令绑定、游戏选框、滚动条、取消/错误/恢复保护或有限列表策略。
+- `ccd71c27` 补真实生产 `TaskCenterView`/`MediaCenterView` STA WPF 夹具和 shell layout pass 计数。任务→媒体 `2/2`、媒体→任务 `1/1`；96 条合成任务的 DataGrid 选中项、DataContext、ItemsSource 和 offset `10→10` 保留；同页重复导航 `0/0`；PageHost 无 Effect 和全页 entrance 入口。
+- 隔离身份 `r08-05-source-ccd71c27` / `r08-05-build-ccd71c27` solution `0/0`、Playnite `net462`、XAML `24/24`；R08-05 `2/2`，相邻回归 `28/28`，source/XAML/diff check 通过；WPF 静态检查 `0 error / 21 warning / 177 info`。证据：`R08-05-PAGE-SWITCH-20260918.md`。
+- 只证明隔离 STA/offscreen logical DIP 与合成数据，不等价真实 Playnite、物理 DPI/跨屏、presented frame、UIA/读屏、ETW 或宿主性能；Demo 原始目录不可用。本项没有页面级 XAML/响应式变更，未运行 render-qa；下一项 R08-06。
+
 ## 2026-09-18 R08-04 业务完成节奏
 
 - 先复用并验证既有业务链：`BusyOperationCoordinator` 的真实 await、失败/取消分流、Dashboard 的终态任务通知和 Task Center 的 `StateDisplay`/错误详情已经满足“慢请求不假完成”；本阶段没有重建服务或 DTO。

@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R08-05 页面切换轻量化
+
+- 先核对已有能力：`AcrylicProductionShellView.Attach` 一次创建六个真实工作区页面，`NavigateTo` 通过页面缓存复用实例；本阶段只增加同页 `PageHost.Content` 引用保护，避免刷新期间重复导航触发无意义内容替换。没有重建页面、列表或导航体系。
+- `ccd71c27` 增加真实生产 shell/page 的 STA 行为夹具和仅供审计的 shell `MeasureOverride`/`ArrangeOverride` 计数。任务→媒体为 `2/2`，媒体→任务为 `1/1`；DataGrid offset `10→10`，选中项、DataContext、96 项 ItemsSource 保持引用；同页再次导航为 `0/0`。PageHost 无 Effect、无 `AnimateEntrance(PageHost)`。
+- 当前身份隔离 `r08-05-source-ccd71c27` / `r08-05-build-ccd71c27`：solution Release `0 warning / 0 error`、Playnite `net462`、XAML `24/24`；R08-05 `2/2`，相邻 R02/R08/壳层回归 `28/28`；source/XAML/diff check 通过；WPF 静态检查 `0 error / 21 warning / 177 info`。
+- 证据仍为合成 DTO/fake、真实生产 WPF、隔离 STA/offscreen logical DIP；未验真实 Playnite/Worker、物理 DPI/跨屏、presented frame、UIA/读屏、ETW/宿主性能。Demo 原始目录不可用，沿用恢复生产基线。本项无页面级 XAML/响应式布局改动，未把 render-qa 结果冒充本项证据。下一项为 R08-06 数字变化动效。
+
 ## 当前第三轮 R08-04 业务完成节奏
 
 - 先核对已有能力：`BusyOperationCoordinator` 等待真实 prepare/action 完成后才复位 `IsBusy`；Dashboard 任务通知只对 `Succeeded/Failed/Cancelled` 终态发出，任务列表和通知共同使用 `TaskStatusDto.State`，没有固定延迟伪造成功。`3bf90a00` 只在共享按钮补视觉忙态延迟，`43141399` 校正 net462 AutomationPeer 说明，不改变业务命令/DTO/安全语义。
