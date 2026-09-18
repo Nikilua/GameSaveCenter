@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R00-03 / R00-04 证据校正
+
+- 当前 HEAD `e5a12ff` 复核既有动效与搜索基准实现：R00-03 的实际 WPF Dispatcher 行为 `3/3`，R00-04 的 2,000 项搜索基准与有限时间负例 `2/2`；当前隔离 Release RenderHarness 构建 `0 warning/0 error`。
+- `motionreentryprobe` Light/Dark 均从当前渲染宽度接管到 `270 DIP`，最终 `X=0/finalAnimated=False`；`motionhotprobe` 两主题均捕获活动中间态，关闭动效后归一到 `72/Opacity=1`，禁用重入立即完成。
+- R00-04 当前 `.tmp/r00-03-04-test-artifacts/ui-qa/benchmarks/large-library.txt` 保留 `30` 个不同查询、`changed_result_sets=30`、原始 `p50/p95/max=46/47/48ms` 和 `75ms` 不可能结果负例；账本已改为已满足。R18-01 仍覆盖连续输入、IME、20ms debounce 的过滤次数/分配。
+- 证据仍是合成数据、隔离 STA WPF/offscreen logical DIP，不等价真实 Playnite 输入、Windows 偏好通知、物理 DPI/呈现帧、ETW 或宿主性能；Demo 原始目录仍缺失，沿用恢复生产基线。下一小批量转入 R00-05/R00-06 或其证据校正。
+
 ## 当前第三轮 R00-01 / R00-02 证据校正
 
 - 当前 HEAD `89aa27e1` 复核既有按压合成和组合缩放实现，没有重建生产功能；定向 Playnite WPF 行为测试 `4/4`，隔离 Release XAML `24/24`、解决方案 `0 warning/0 error`、RenderHarness `0/0`。

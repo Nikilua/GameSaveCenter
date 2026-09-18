@@ -16,6 +16,12 @@
 - `motionhotprobe`：两主题均在活动中间态确认 `duringAnimated=True`；关闭动效后 `disabledFinalWidth=72`、`disabledOpacity=1`、`disabledReentryWidth=270`、`disabledX=0`、`disabledReentryAnimated=False`。
 - 两个探针 exit `0` 并报告 `MotionReentryProbe OK` / `MotionHotChangeProbe OK`。这是同一生产壳层的受控窗口与审计覆盖，不等价真实 Playnite 输入、Windows 偏好通知、ETW 或物理屏幕呈现帧。
 
+## 2026-09-18 当前分支复核
+
+- 当前 HEAD `e5a12ffaea138c3a3efccaeb82c58d339ae7d494` 的实际 WPF Dispatcher 行为测试：完成态时钟释放、重入保持当前渲染值、Reduced Motion 中途取消共 `3/3` 通过；没有把源码字符串测试当作本批次唯一依据。
+- 当前隔离 Release RenderHarness `motionreentryprobe`：Light `103.40 → 103.33 → 168.91 → 270 DIP`、Dark `127.06 → 127.33 → 181.38 → 270 DIP`，最终 `X=0/finalAnimated=False`；`motionhotprobe` 两主题均在中间态 `duringAnimated=True`，热切换后 `disabledFinalWidth=72`、`disabledOpacity=1`、禁用重入立即到 `270/X=0`。两个探针均 `OK`，报告 `WorkingTreeClean=True`、offscreen `DpiScale=1.00`，原始报告目录为 `.tmp/r00-03-04-probes/`。
+- 因此 R00-03 的当前可控完成态、取消/卸载清理、重入和热关闭证据已满足；真实 Playnite Loaded/Unloaded 耐久、快速输入、Windows 偏好通知、ETW、物理呈现帧仍保持边界。
+
 ## 未验边界与下一步
 
 - 未把受控 Window 结果升级为真实宿主 Loaded/Unloaded 耐久、鼠标/键盘快速输入、ETW 生命周期或物理 DPI/呈现帧签收。
