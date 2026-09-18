@@ -1611,6 +1611,7 @@ namespace GameSaveCenter.Playnite.Views
 
         private void NormalizeDashboardMotion()
         {
+            GscMotion.NormalizeAll();
             NormalizeAnimatedElement(MainShell);
             NormalizeAnimatedElement(ProductionShellView.PageHostForAudit);
             NormalizeAnimatedElement(GameBrowserPanel);

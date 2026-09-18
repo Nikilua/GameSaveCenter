@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
 
 namespace GameSaveCenter.Playnite.Infrastructure
 {
@@ -17,10 +19,20 @@ namespace GameSaveCenter.Playnite.Infrastructure
             new Lazy<ResourceDictionary>(LoadCanonicalTokens);
         private static readonly ConditionalWeakTable<FrameworkElement, MotionState> MotionStates =
             new ConditionalWeakTable<FrameworkElement, MotionState>();
+        private static readonly ConditionalWeakTable<Dispatcher, MotionRegistry> MotionRegistries =
+            new ConditionalWeakTable<Dispatcher, MotionRegistry>();
 
         private sealed class MotionState
         {
             public int TranslateGeneration;
+            public int EntranceGeneration;
+        }
+
+        private sealed class MotionRegistry
+        {
+            public readonly object Gate = new object();
+            public readonly List<WeakReference<FrameworkElement>> Elements =
+                new List<WeakReference<FrameworkElement>>();
         }
 
         // XAML owns the timing values. The explicit fallbacks only cover a host that cannot
@@ -175,6 +187,73 @@ namespace GameSaveCenter.Playnite.Infrastructure
             return mutable;
         }
 
+        private static void Track(FrameworkElement element)
+        {
+            var registry = MotionRegistries.GetOrCreateValue(element.Dispatcher);
+            lock (registry.Gate)
+            {
+                for (var index = registry.Elements.Count - 1; index >= 0; index--)
+                {
+                    if (!registry.Elements[index].TryGetTarget(out var tracked))
+                    {
+                        registry.Elements.RemoveAt(index);
+                        continue;
+                    }
+
+                    if (ReferenceEquals(tracked, element))
+                        return;
+                }
+
+                registry.Elements.Add(new WeakReference<FrameworkElement>(element));
+            }
+        }
+
+        /// <summary>
+        /// Ends tracked render-only motion when an app or system preference disables
+        /// animations. The caller owns the semantic state; this method only releases
+        /// animation clocks and restores neutral visual values on the owning dispatcher.
+        /// </summary>
+        internal static void NormalizeAll()
+        {
+            FrameworkElement[] snapshot;
+            var dispatcher = Dispatcher.CurrentDispatcher;
+            if (!MotionRegistries.TryGetValue(dispatcher, out var registry))
+                return;
+
+            lock (registry.Gate)
+            {
+                var live = new List<FrameworkElement>();
+                for (var index = registry.Elements.Count - 1; index >= 0; index--)
+                {
+                    if (registry.Elements[index].TryGetTarget(out var tracked))
+                        live.Add(tracked);
+                    else
+                        registry.Elements.RemoveAt(index);
+                }
+
+                snapshot = live.ToArray();
+            }
+
+            foreach (var element in snapshot)
+            {
+                if (!element.Dispatcher.CheckAccess())
+                    continue;
+
+                var state = MotionStates.GetOrCreateValue(element);
+                state.TranslateGeneration++;
+                state.EntranceGeneration++;
+                element.BeginAnimation(UIElement.OpacityProperty, null);
+                if (element.RenderTransform is TranslateTransform translate)
+                {
+                    translate.BeginAnimation(TranslateTransform.XProperty, null);
+                    translate.BeginAnimation(TranslateTransform.YProperty, null);
+                    translate.X = 0;
+                    translate.Y = 0;
+                }
+                element.Opacity = 1;
+            }
+        }
+
         private static ScaleTransform? FindMutableScaleTransform(TransformGroup group)
         {
             for (var index = 0; index < group.Children.Count; index++)
@@ -208,6 +287,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
         internal static void AnimateTranslate(FrameworkElement element, double x, double y, TimeSpan duration)
         {
+            Track(element);
             var motionState = MotionStates.GetOrCreateValue(element);
             var generation = ++motionState.TranslateGeneration;
             var translate = GetMutableTranslateTransform(element);
@@ -247,6 +327,9 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
         internal static void AnimateEntrance(FrameworkElement element, double offsetY)
         {
+            Track(element);
+            var motionState = MotionStates.GetOrCreateValue(element);
+            var generation = ++motionState.EntranceGeneration;
             var translate = GetMutableTranslateTransform(element);
             var translateSource = DependencyPropertyHelper.GetValueSource(translate, TranslateTransform.YProperty);
             var opacitySource = DependencyPropertyHelper.GetValueSource(element, UIElement.OpacityProperty);
@@ -284,6 +367,9 @@ namespace GameSaveCenter.Playnite.Infrastructure
             };
             translateAnimation.Completed += (_, __) =>
             {
+                if (generation != motionState.EntranceGeneration)
+                    return;
+
                 element.BeginAnimation(UIElement.OpacityProperty, null);
                 translate.BeginAnimation(TranslateTransform.YProperty, null);
                 element.Opacity = 1;

@@ -1065,6 +1065,22 @@ namespace GameSaveCenter.Playnite.Settings
             // DynamicResource chain after a theme switch. Keep already-open Popup/ToolTip
             // instances on the same scoped palette without mutating Application resources.
             GscToolTipBehavior.RefreshOpenTransientSurfaces(this);
+            NormalizeMotionIfDisabled();
+        }
+
+        private void NormalizeMotionIfDisabled()
+        {
+            if (MotionEnabled)
+                return;
+
+            GscMotion.NormalizeAll();
+            SettingsShell.BeginAnimation(UIElement.OpacityProperty, null);
+            if (SettingsShell.RenderTransform is TranslateTransform translate)
+            {
+                translate.BeginAnimation(TranslateTransform.YProperty, null);
+                translate.Y = 0;
+            }
+            SettingsShell.Opacity = 1;
         }
 
         internal void ApplyThemeForAudit(GameSaveCenterThemeMode mode)
