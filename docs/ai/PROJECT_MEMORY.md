@@ -3838,3 +3838,10 @@
 - `3c258873` 的 `R10ContextGameBehaviorTests` 使用真实 `GamePickerViewModel` 验证两个同名 synthetic 游戏中按第二个 `PlayniteId` 选择；生产任务/媒体/Shell 接线同步复核。R10-02 `2/2`，相邻 R10/告警导航共 `15/15`，Release `0 warning / 0 error`、XAML `24/24`。
 - 证据已写入 `evidence/R10-02-CURRENT-GAME-20260919.md` 并同步账本；没有新增服务、DTO 或设计体系。Demo 原目录不可用，沿用恢复生产基线。
 - 未验真实 Playnite 定位操作、物理 DPI/跨屏、presented frame、UIA/读屏、IME、ETW、宿主性能、package-host；用户 main 安装器的 `73/588/57` 失败事实仍不改写为本项隔离失败。下一可执行任务：R10-03。
+
+## 2026-09-19 Round3 R10-03 搜索快捷键
+
+- 先查已有能力后复用 `DashboardView.FocusWorkspaceSearch`、现有各页 TextBox 和 Shell 的 `PickerOverlay` 状态，没有增加搜索服务、DTO 或新的快捷键体系。`563e6862` 只新增 `SearchShortcutPolicy` 作用域判断，并保持 IME、方向键、Enter、Esc 和 Playnite 全局绑定路径不变。
+- 对话框、游戏选框、紧凑浏览器打开时 Ctrl+F 均拒绝搜索路由；Ctrl+Z/C 和无 Ctrl 的 F 负例也拒绝。`R10SearchShortcutBehaviorTests` 与相邻接线合计 `9/9`，Release `0 warning / 0 error`、XAML `24/24`。
+- 证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R10-03-SEARCH-SHORTCUT-20260919.md`，账本已同步。Demo 原目录不可用，沿用恢复生产基线；未把隔离策略测试写成真实 Playnite 输入、UIA、呈现、DPI/跨屏、ETW、宿主性能或 package-host 结论。
+- `.tmp/r10-03-build` 清理尝试遇到 Access denied，未强制终止未知 dotnet/testhost 进程；用户 main 的 DEV-INSTALL-008 `73/588/57` 失败事实仍独立保留。下一可执行任务：R10-04 快捷键帮助。

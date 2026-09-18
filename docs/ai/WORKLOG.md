@@ -7387,3 +7387,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `3c258873` 新增 `R10ContextGameBehaviorTests`，实际测试重名 synthetic 游戏按 ID 选中目标，并核对 Task/Media/Shell 的真实生产接线。R10-02 `2/2`；与 R10-01、FindingNavigationResolver、PurposeNavigationSource 相邻合计 `15/15`。
 - 当前隔离 Release build `0 warning / 0 error`、XAML `24/24`，source validation、XAML、diff check 通过。证据 `evidence/R10-02-CURRENT-GAME-20260919.md` 已写入，账本已同步。
 - `.tmp/r10-02-build` 只用于本阶段构建/测试；收尾时若仍被 VBCSCompiler 锁定，保留锁定事实，不强制终止未知归属进程。真实 Playnite 定位、physical DPI/跨屏、presented frame、UIA/读屏、IME、ETW、宿主性能和 package-host 未验。下一可执行任务：R10-03。
+
+## 2026-09-19 Round3 R10-03 搜索快捷键
+
+- 先复用现有搜索框和 Dashboard 路由；实现 `563e6862` 新增 `SearchShortcutPolicy`，将 Ctrl+F 的作用域限制在无对话框、Shell 游戏选框和紧凑浏览器的当前页。保留输入框编辑快捷键及现有 IME/方向键/Enter/Esc 选框处理。
+- 行为定义覆盖正例和负例：当前页 Ctrl+F、三个输入占用场景、Ctrl+Z/C 和无 Ctrl 的 F；`R10SearchShortcutBehaviorTests` 与相邻接线定向结果 `9/9`。Release solution `0/0`、XAML `24/24`，source validation、XAML、diff check 通过。
+- 证据已写入 `evidence/R10-03-SEARCH-SHORTCUT-20260919.md`，账本已同步。只使用隔离 net472 testhost 和源码接线，未读取/修改真实存档、媒体、云端、用户配置或诊断数据；真实 Playnite 输入、全局键协作、呈现、UIA/读屏、DPI/跨屏、IME、ETW、宿主性能和 package-host 未验。Demo 原目录不可用，沿用恢复生产基线。
+- `.tmp/r10-03-build` 按规则尝试清理，但 `bin/obj/test-temp` 部分路径返回 Access denied，保留事实且不强杀未知 dotnet/testhost 进程；临时输出未提交。用户 DEV-INSTALL-008 main 全量 `73 failed / 588 passed / 57 skipped` 仍独立记录，main 用户文件未触碰。下一可执行任务：R10-04 快捷键帮助。

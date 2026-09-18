@@ -1570,3 +1570,10 @@
 - 当前隔离验证：Release solution `0 warning / 0 error`、XAML `24/24`、source/XAML/diff check 通过。证据：`evidence/R10-02-CURRENT-GAME-20260919.md`；账本 R10-02 已改为“已满足”。
 - 仅证明 synthetic DTO、真实选框 ViewModel、生产接线和隔离 net462 testhost；未验真实 Playnite 操作、presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW、宿主性能和 package-host。DEV-INSTALL-008 main 全量 `73 failed / 588 passed / 57 skipped` 仍为独立发布边界，main 未触碰。
 - 下一可执行任务：R10-03；真实宿主定位与呈现仍未完成。
+
+## 2026-09-19 Round3 R10-03 搜索快捷键
+
+- `563e6862` 复用现有 `FocusWorkspaceSearch` 和各页搜索框，新增最小 `SearchShortcutPolicy`；Ctrl+F 仅在没有对话框、Shell 游戏选框或紧凑游戏浏览器占用输入时聚焦当前页搜索。未改动 Playnite 全局键、IME、方向键、Enter 或 Esc 选框语义。
+- 行为与相邻接线定向测试 `9/9`；正式 Release/XAML `24/24`、solution `0 warning / 0 error`，source/XAML/diff check 通过。证据：`evidence/R10-03-SEARCH-SHORTCUT-20260919.md`；账本 R10-03 已改为“已满足”。
+- 证据只覆盖隔离 net472 testhost、生产源码接线和策略正/负例；未验真实 Playnite 全局快捷键协作、IME/物理输入、UIA/读屏、presented frame、物理 DPI/跨屏、ETW、宿主性能和 package-host。Demo 原目录不可用，沿用恢复生产基线；DEV-INSTALL-008 main 全量失败仍单列，main 未触碰。
+- `.tmp/r10-03-build` 清理已尝试，部分文件因 Access denied 仍被现有 dotnet/testhost 占用，未强杀未知进程，临时输出未提交。下一可执行任务：R10-04 快捷键帮助；真实 Playnite 输入与呈现仍未完成。
