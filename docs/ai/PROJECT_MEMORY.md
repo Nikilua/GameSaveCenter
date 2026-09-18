@@ -3744,3 +3744,10 @@
 - `RealHostUiAuditService.CountBlockingGateFiles` 现在排除 `overflow-classification.json` 诊断分类报告；定向 truthfulness 回归 `1/1` 通过。已有隔离产物只有该 JSON，因此修复规则下阻断门禁为 `0`；旧 `summary.json` 的 `HighGateCount=1` 不被篡改。
 - 当前 `cc63523` 的 Release 自动门禁为 XAML `24/24`、Core `83/83`、Worker `310/311`（1 skip）、Playnite `495/558`（63 skip），失败 `0`；打包、隔离安装和构建身份检查也通过。
 - 最新宿主启动在 Playnite CEF 初始化时以 `Access denied (0x5)` 退出，未生成新的真实 Dashboard/Settings 证据；历史 `69e1f84` 真实嵌入像素继续作为签收基线，Q00/Q25 账本未把未捕获宿主写成通过。旧 Worker `23304` 保持未触碰。
+
+## 2026-09-18 Round3 R08-07 对话框遮罩同步
+
+- `afa845a6` 在 `codex/ui-finesse-round2` 收口 `DashboardView` 对话框生命周期：Opening/Open/Closing/Closed 状态与一次性完成声明独立管理，关闭期保持 active，遮罩仅在卡片退场完成后折叠；`DialogOverlayMotion` 负责动画清理、减动效归一化与 watchdog 终态保护。
+- R08-07 的可重复证据为隔离 Release XAML `24/24`、构建 `0 warning / 0 error`、按类 R08 `16/16`、Core `83/83`、Worker `310/311`（1 skip）、源码校验与 diff check 通过。一个 testhost 合并运行的 `6` 项失败属于 WPF 调度/视觉资源污染，不能写成产品通过或回归。
+- C: worktree 的 WPF 临时项目路径权限仍是环境限制；D: 临时隔离源目录只用于同源码构建核验。任何后续证据仍须区分 synthetic/offscreen logical DIP 与真实 Playnite/物理屏幕/呈现帧，不能把离屏、代理性能或 ETW 缺失升级为真实宿主结论。
+- 下一步 R08-08 先查 `GscMotion` 的共用可变/冻结 `Freezable`、变换实例归属和已有 R00-02 覆盖，避免重复实现或把表格新增方向误判为缺失。

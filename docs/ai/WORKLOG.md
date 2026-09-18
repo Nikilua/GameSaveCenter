@@ -7293,3 +7293,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `f1ea52a` 将真实宿主汇总的阻断门禁统计改为排除 `gates/overflow-classification.json`；定向 `UiAuditTruthfulnessTests.OverflowClassificationReportIsNotCountedAsBlockingGate` 为 `1/1`。既有 `95d37cc` 隔离宿主产物只有该诊断 JSON，按新规则阻断门禁为 `0`，但旧摘要的 `HighGateCount=1` 原文保留。
 - `cc63523` 的 Release 构建、打包、隔离安装和全量自动测试通过：XAML `24/24`、Core `83/83`、Worker `310/311`（1 skip）、Playnite `495/558`（63 skip），失败 `0`。
 - `cc63523` 最新真实宿主重跑在 Playnite `Application started` 后因 CEF `mojo platform_channel` `Access denied (0x5)` 退出，没有 `summary.json` 或 Embedded Dashboard/Settings；该次只记录为宿主启动边界，不改写历史 `69e1f84` 真实嵌入证据，也未结束用户扩展目录 Worker PID `23304`。详见 `evidence/q13-q25/REAL_HOST_AUDIT-FP-FIX-20260915.md`。
+
+## 2026-09-18 Round3 R08-07 对话框遮罩同步
+
+- 在 `codex/ui-finesse-round2` 提交并推送 `afa845a6`：新增 `DialogLifecycleStateMachine` 与 `DialogOverlayMotion`，将 Dashboard 内嵌对话框的完成声明、关闭期重入保护、卡片退场和遮罩折叠收口到同一生命周期；保留命令绑定、取消/错误语义、游戏选框和现有滚动条系统。
+- 新增 R08-07 行为测试：生命周期一次性完成/关闭期重入、隔离 STA WPF 遮罩退场终态、Dashboard 焦点 scope/tab cycle 源契约；R08 相关测试按类隔离进程 `16/16`，Core `83/83`，Worker `310/311`（1 skip）。
+- D: 隔离源目录 Release 构建通过，XAML `24/24`、`0 warning / 0 error`；`python scripts/validate-source.py` 与 `git diff --check` 通过。合并 R08 testhost 的 `6 failed / 10 passed` 未计为产品通过，已记录为 WPF Dispatcher/视觉资源污染边界。
+- C: 现有分支工作树直接构建受 WPF 生成 `_wpftmp.csproj` 的 `Access denied` 阻塞，未绕过权限；使用 D: 临时隔离源目录完成相同源码身份的构建核验。未运行真实 Playnite、物理 DPI/跨屏、IME、UIA/读屏、presented frame 或 ETW；Demo 原目录不可用，沿用恢复生产基线。
+- 证据与第三轮账本已同步到 `evidence/R08-07-DIALOG-OVERLAY-20260918.md` 与 `ROUND3_PROGRESS.md`。main 保持用户现有未提交改动不变；下一可执行项为 R08-08 变换所有权。

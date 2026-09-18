@@ -1477,3 +1477,10 @@
 - `f1ea52a` 修正真实宿主 `HighGateCount` 统计：`overflow-classification.json` 仅是分类诊断，不再算阻断门禁；当前 Release truthfulness 定向回归 `1/1`，已有隔离产物按新规则为 `BlockingGateFiles=0`，但旧摘要原文仍是 `HighGateCount=1`。
 - `cc63523` 自动门禁与打包安装通过：XAML `24/24`、Core `83/83`、Worker `310/311`（1 skip）、Playnite `495/558`（63 skip），失败 `0`。
 - `cc63523` 的早期隔离 Playnite 曾在 CEF `mojo platform_channel` 访问拒绝后退出；该失败边界已由 `37f92f7` 的成功隔离重跑补充。当前成功产物绑定完整 SHA、`HighGateCount=0`，但 Q24-03 仍受单屏限制，用户 Worker PID `23304` 未终止。
+
+## 2026-09-18 Round3 R08-07 当前事实
+
+- 当前续作分支 `codex/ui-finesse-round2` 已推送 `afa845a6`。R08-07 的 `DialogLifecycleStateMachine`、`DialogOverlayMotion` 与行为测试已提交；main 工作树的用户改动未合并、未覆盖。
+- 受控验证：隔离 D: 源目录 Release 构建 XAML `24/24`、`0 warning / 0 error`；R08 按类 `16/16`，Core `83/83`，Worker `310/311`（1 skip），源码校验和 diff check 通过。C: worktree 直接 WPF 构建因 `_wpftmp.csproj` `Access denied` 未通过，不能把隔离路径结果改写成 C: 路径成功。
+- 未验边界：真实 Playnite 呈现、物理 DPI/跨屏、真实键盘/IME、UIA/读屏、presented frame、ETW 和宿主性能仍未验证；Demo 原目录仍不可用，当前以恢复生产资源基线为视觉依据。
+- 下一可执行任务：R08-08 变换所有权；先检查 `GscMotion` 的共享可变/冻结 `Freezable`、其他变换实例和 R00-02 已有证据，再做最小行为/负例补充。
