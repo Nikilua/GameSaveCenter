@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R07-05 详情断点稳定
+
+- 当前提交 `0daca6f0` 已推送到 `codex/ui-finesse-round2`。四个生产页面复用 `ResponsiveDetailBreakpointLatch`：980 DIP 为内容预算基线，进入紧凑需 `<972`，回宽需 `>=988`，临界测量不重复切换侧栏/下方详情；详情控件、选中对象、焦点和原 `ScrollViewer` 保持。
+- 隔离 `.tmp\\r07-05-build-0daca6f0`（构建身份与提交一致）：XAML `24/24`、solution Release `0 warning / 0 error`；断点协调器 `5/5`，Task 真实生产视图 STA 行为 `1/1`；滚动归属 `2/2`、Task 响应 `7/7`、详情预算 `2/2`，合并运行 `17/17`；源码校验和 diff check 通过。
+- 证据使用合成 DTO/fake、隔离 STA WPF/offscreen logical DIP；未启动真实 Playnite，不宣称物理 DPI/跨屏、设备拖拽、UIA/读屏、presented frame、ETW 或宿主性能。Demo 原始目录仍缺失，沿用恢复生产基线；下一可执行小批量为 R07-06 状态横幅预算。
+
 ## 当前第三轮 R01-08 跳过测试说明复验
 
 - 当前 HEAD 72be494d 的隔离输出 .tmp\r01-08-current-72be494d 已产出全部测试程序集；XAML 结构检查 24/24。Core 当前全量为 83/0/0，Playnite WorkerIpcClientBehaviorTests 为 7/0/0（其中 6 条 NamedPipe gated），Worker WorkerProcessRestartTests 为 1/0/0，源码清单确认 57 条 LegacyProductionUiBaselineFact。

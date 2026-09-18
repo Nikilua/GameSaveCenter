@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-18
 
+## 2026-09-18 R07-05 详情断点稳定
+
+- `0daca6f0` 在当前分支实现并推送详情断点滞回：980 DIP 基线，`<972` 进入紧凑，`>=988` 回宽；Save/Media/Task/Maintenance 都保留现有详情对象、选择、焦点和 `ScrollViewer`，不改游戏选框、滚动条和业务安全语义。
+- `.tmp\\r07-05-build-0daca6f0`（构建身份与提交一致）的 Release XAML `24/24`、solution `0/0`；`ResponsiveLayoutCoordinatorTests 5/5`、`R07DetailsBreakpointBehaviorTests 1/1`；相邻滚动归属 `2/2`、Task 响应 `7/7`、R06 详情预算 `2/2`，合并 `17/17`；源校验/diff check 通过。
+- 测试是合成 DTO/fake、隔离 STA WPF、offscreen logical DIP；不等价真实 Playnite 拖拽、物理 DPI/跨屏、设备输入、UIA/读屏、presented frame、ETW/宿主性能。Demo 原始目录不可用，继续以恢复生产基线为准。下一项 R07-06 状态横幅预算。
+
 ## 2026-09-18 R01-08 跳过测试说明复验
 
 - 当前 HEAD 72be494d 的隔离输出 .tmp\r01-08-current-72be494d 已产出测试程序集；Core 全量 83/0/0，Playnite 的 WorkerIpcClientBehaviorTests 7/0/0（含 6 条 NamedPipe gated），Worker 的 WorkerProcessRestartTests 1/0/0，源码清单 LegacyProductionUiBaselineFact=57。

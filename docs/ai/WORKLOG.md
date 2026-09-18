@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-18 R07-05 详情断点稳定
+
+- 先核对最新生产实现：Acrylic shell 已有 Render 优先级布局合并，Save/Media/Task/Maintenance 已有同一侧栏/下方详情结构；本阶段只补共享详情断点滞回和现有详情状态保持，没有替换 Demo-first 基线或重建滚动系统。
+- `0daca6f0` 已提交并推送。`ResponsiveDetailBreakpointLatch` 使用 `980/972/988 DIP` 内容预算带；隔离 Release 构建 `.tmp\\r07-05-build-0daca6f0`（身份一致）为 XAML `24/24`、solution `0/0`。
+- `ResponsiveLayoutCoordinatorTests 5/5`、R07-05 真实生产 Task STA WPF 行为 `1/1`，相邻滚动归属/Task 响应/R06 详情预算 `11/11`，提交身份合并 `17/17`；行为实际保持选中对象、焦点、详情 ScrollViewer offset，并验证紧凑态详情第 4 行。源校验和 diff check 通过。
+- 边界：合成 DTO/fake、隔离 WPF/offscreen logical DIP；无真实 Playnite/设备拖拽、物理 DPI/跨屏、UIA/读屏、presented frame、ETW、宿主性能或真实数据写入。Demo 原始目录仍缺失。下一可执行任务为 R07-06 状态横幅预算。
+
 ## 2026-09-18 R01-08 跳过测试说明复验
 
 - 当前 HEAD 72be494d 使用隔离输出 .tmp\r01-08-current-72be494d，XAML 结构检查 24/24；Core 当前全量 83/0/0，Playnite WorkerIpcClientBehaviorTests 7/0/0（其中 6 条 NamedPipe gated），Worker WorkerProcessRestartTests 1/0/0，源码清单统计 57 条 legacy skip。
