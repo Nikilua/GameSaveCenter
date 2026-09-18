@@ -167,17 +167,7 @@ public sealed class R06EmptyStateBehaviorTests
     }
 
     private static string FindRepositoryRoot()
-    {
-        var directory = new System.IO.DirectoryInfo(Environment.CurrentDirectory);
-        while (directory != null)
-        {
-            if (System.IO.File.Exists(System.IO.Path.Combine(directory.FullName, "GameSaveCenter.sln")))
-                return directory.FullName;
-            directory = directory.Parent;
-        }
-
-        throw new InvalidOperationException("无法从测试工作目录定位 GameSaveCenter.sln。");
-    }
+        => TestRepositoryContext.Root;
 
     private static void PumpLayout(Window window)
     {
