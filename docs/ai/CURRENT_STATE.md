@@ -1512,3 +1512,11 @@
 - 精确提交隔离验证：XAML `24/24`、Release solution `0 warning / 0 error`、Playnite `net462`；`R09IconSemanticBehaviorTests=2/2`，相邻图标/动作回归 `3/3`；源码校验与 diff check 通过。夹具覆盖非空 Geometry、真实生产 XAML 语义映射和禁用 Button 的 IconData/可见性/16x16 布局保留。
 - 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R09-02-ICON-SEMANTICS-20260919.md`；Demo 原目录不可用，沿用恢复生产资源基线。用户提供的 DEV-INSTALL-008 main 全量测试失败已记录为合入后需单一 checkout 重跑的发布边界，不改写本阶段精确隔离通过结论。
 - 未验真实 Playnite 呈现、物理 DPI/跨屏、presented frame、UIA/读屏、IME、ETW、宿主性能和 package-host；main 的用户未提交文件仍未触碰。下一可执行任务：R09-03 一像素描边。
+
+## 2026-09-19 Round3 R09-03 一像素描边
+
+- `083b7a22` 已在 `codex/ui-finesse-round2` 完成并通过实现验证：共享工作区 Tab、Dashboard 同构 Tab、Acrylic 壳层导航和 Dashboard 导航的圆角 Chrome 明确启用 `SnapsToDevicePixels=True`，保留 `UseLayoutRounding=True` 与 1 DIP 边框；没有改变游戏选框、滚动条、命令绑定、取消/错误语义、恢复保护或列表性能策略。
+- 新增 `R09PixelStrokeBehaviorTests`：实际 STA WPF 生产 `TabItem`/`RadioButton` 进入选中状态后检查模板 Chrome，再用离屏 `RenderTargetBitmap` 对 1 DIP 分隔线和圆角边框执行 `1.00/1.25/1.50/1.75/2.00` 明确缩放模拟。R09-03 为 `2/2`，相邻图标/共享资源回归合计 `6/6`。
+- 以 `083b7a22` 重建：XAML `24/24`、Release solution `0 warning / 0 error`、Playnite `net462`；`validate-source.py`、XAML 检查和 `git diff --check` 通过。证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R09-03-PIXEL-STROKE-20260919.md`。
+- 五档是 96-DPI 基线上的明确缩放模拟，不是物理显示器 DPI/跨屏/真实 Playnite 呈现或 presented frame；UIA/读屏、IME、ETW、宿主性能和 package-host 仍未验。Demo 原目录不可用，沿用恢复生产基线；main 用户文件未触碰。用户 DEV-INSTALL-008 的 main 全量失败仍需合入后单一 checkout 重跑。
+- 下一可执行任务：R09-04 阴影层次预算，先查共享 Effect、低 Tier 与高对比回退，再决定证据或最小修复。

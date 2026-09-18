@@ -7332,3 +7332,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `c7c7ae0d` 已提交并推送。精确提交重建：XAML `24/24`、Release `0 warning / 0 error`、Playnite `net462`；新 R09-02 `2/2`，相邻图标/动作回归 `3/3`；`validate-source.py`、XAML 检查、`git diff --check` 通过。
 - 用户提供的 DEV-INSTALL-008 日志：编译 `0/0`、Core `83/83`、Worker `311/311`，但 main checkout 的 Playnite.Tests 全量为 `73 failed / 588 passed / 57 skipped`，失败混合 DataGrid/STA/视觉资源/身份与时序错误。本阶段没有把它归因成图标修复失败；用户未授权前不在 main 上覆盖或安装，后续合入后需在单一 checkout 重新执行完整安装器。
 - 文档已同步 `ROUND3_PROGRESS.md` 与 R09-02 证据。Demo 原目录不可用，仍沿用恢复生产基线；真实 Playnite、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能和 package-host 未验。下一可执行任务：R09-03 一像素描边。
+
+## 2026-09-19 Round3 R09-03 一像素描边
+
+- 复核 `Redesign.xaml`、`DashboardView.xaml`、`AcrylicProductionResources.xaml` 后，针对共享选中/导航圆角 Chrome 的像素对齐不一致做最小修复：工作区 Tab 两份实现改为 `SnapsToDevicePixels=True`，两份导航模板显式声明 `SnapsToDevicePixels=True` 与 `UseLayoutRounding=True`。未改游戏选框、滚动条、命令、绑定、安全和取消/错误语义。
+- 新增 `R09PixelStrokeBehaviorTests`，实际实例化生产 Tab/导航模板并进入选中状态；另以 `RenderTargetBitmap` 的 96-DPI 显式缩放探针覆盖 `100/125/150/175/200%`。初次夹具失败是 Margin/Window opacity/抗锯齿采样假设，已改为 Canvas 实际坐标与按 scale 的带宽边界，未放宽生产门禁。
+- 实现提交 `083b7a22` 已完成：build.ps1 重建 XAML `24/24`、Release solution `0 warning / 0 error`，定向 `R09PixelStrokeBehaviorTests 2/2`，R09-02 图标和共享资源回归合计 `6/6`；`validate-source.py`、XAML 检查、diff check 通过。
+- 证据与账本已同步：`evidence/R09-03-PIXEL-STROKE-20260919.md`、`ROUND3_PROGRESS.md`。五档为明确模拟，不写成真实物理 DPI/Playnite/presented frame；Demo 原目录不可用，沿用恢复生产基线。下一可执行任务：R09-04 阴影层次预算。

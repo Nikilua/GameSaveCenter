@@ -3781,3 +3781,10 @@
 - 新增 `R09IconSemanticBehaviorTests`：从当前 checkout 文件流加载图标字典，实测六个 Geometry 非空且有边界；解析生产页面的真实 `IconData` 映射；禁用实际 WPF Button 后 IconData、可见性和 16x16 布局仍保留。精确提交隔离构建 XAML `24/24`、solution `0/0`，新夹具 `2/2`，相邻回归 `3/3`，源码校验/diff check 通过。
 - 证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R09-02-ICON-SEMANTICS-20260919.md`。Demo 原目录不可用；合成 STA/offscreen logical DIP 不代表真实 Playnite、物理 DPI/跨屏、呈现帧、UIA/读屏、IME、ETW 或宿主性能。用户 DEV-INSTALL-008 main 全量 Playnite.Tests 失败保留为合入后单 checkout 安装器重跑边界，未与本阶段精确产物混写。
 - 下一可执行小批量为 R09-03：先检查共享边框/分隔线/选中指示在 100/125/150/175/200% 的可模拟证据与真实宿主边界。
+
+## 2026-09-19 Round3 R09-03 一像素描边
+
+- 先查现有能力后确认主要缺口是共享圆角 Chrome 的像素吸附不一致：`GscRedesignWorkspaceTabItem` 与 Dashboard 同构 Tab 曾显式 `SnapsToDevicePixels=False`，Acrylic/Dashboard 导航 Chrome 没有明确声明。`083b7a22` 只在共享模板收口 `SnapsToDevicePixels=True` 与 `UseLayoutRounding=True`，没有引入新设计体系或改动业务契约。
+- 行为夹具实例化真实生产 `TabItem`/`RadioButton` 的选中模板，并以离屏 `RenderTargetBitmap` 的显式 `1.00/1.25/1.50/1.75/2.00` render scale 检查 1 DIP 分隔线和圆角连接。最终 R09-03 `2/2`，相邻 R09-02/共享资源 `6/6`，当前提交重建 `24/24`、0/0。
+- “五档 DPI”只能记为明确模拟：96-DPI 基线的显式位图缩放，不能上升为真实物理 DPI/跨屏或 Playnite 宿主呈现；真实 presented frame、UIA/读屏、IME、ETW、宿主性能和 package-host 继续单列。Demo 原始目录不可用，沿用恢复生产基线。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R09-03-PIXEL-STROKE-20260919.md`；main 的 `DashboardView.xaml.cs`、`src.zip`、R08 基础设施/测试用户改动继续保持未触碰。下一项 R09-04 阴影层次预算。
