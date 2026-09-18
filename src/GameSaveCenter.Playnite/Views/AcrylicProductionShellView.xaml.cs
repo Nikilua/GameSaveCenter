@@ -34,6 +34,8 @@ namespace GameSaveCenter.Playnite.Views
         private bool gameSearchCompositionActive;
         private bool pickerKeyboardNavigationActive;
         private int pickerKeyboardNavigationGeneration;
+        private int measurePasses;
+        private int arrangePasses;
 
         public AcrylicProductionShellView()
         {
@@ -123,7 +125,12 @@ namespace GameSaveCenter.Playnite.Views
         {
             if (viewModel == null) return;
             var page = GetPage(workspace);
-            PageHost.Content = page;
+            // Keep a same-page navigation request on the existing visual tree. The
+            // workspace command may be raised again while a refresh is completing;
+            // reassigning the same cached page would otherwise make the host perform
+            // an avoidable content transition and could disturb a nested scroll owner.
+            if (!ReferenceEquals(PageHost.Content, page))
+                PageHost.Content = page;
             UpdatePageHeader(workspace);
             var gameScoped = workspace != WorkspaceKind.Tasks && workspace != WorkspaceKind.Maintenance;
             GameContextButton.Visibility = gameScoped ? Visibility.Visible : Visibility.Collapsed;
@@ -401,6 +408,20 @@ namespace GameSaveCenter.Playnite.Views
         internal bool SidebarCollapsedForAudit => sidebarCollapsed;
         internal bool SidebarTransitionRunningForAudit => sidebarTransitionRunning;
         internal double SidebarWidthForAudit => SidebarColumn.Width.Value;
+        internal int MeasurePassesForAudit => measurePasses;
+        internal int ArrangePassesForAudit => arrangePasses;
+
+        protected override Size MeasureOverride(Size availableSize)
+        {
+            measurePasses++;
+            return base.MeasureOverride(availableSize);
+        }
+
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            arrangePasses++;
+            return base.ArrangeOverride(finalSize);
+        }
 
         private void RestoreSidebarState()
         {
