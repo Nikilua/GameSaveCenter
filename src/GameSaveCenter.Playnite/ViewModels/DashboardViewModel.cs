@@ -848,7 +848,12 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
         }
 
-        internal bool HasTaskNavigationTarget => !string.IsNullOrWhiteSpace(taskNavigationGameName);
+        public bool HasTaskNavigationTarget => !string.IsNullOrWhiteSpace(taskNavigationGameName);
+
+        public string TaskNavigationSourceSummary
+            => HasTaskNavigationTarget
+                ? $"已带入游戏“{taskNavigationGameName}”的诊断条件。清除后仅移除该条件，保留搜索、状态、类型和时间筛选。"
+                : string.Empty;
 
         private void ClearTaskNavigationTargetIfUserChangedFilter()
         {
@@ -857,6 +862,8 @@ namespace GameSaveCenter.Playnite.ViewModels
 
             taskNavigationGameId = string.Empty;
             taskNavigationGameName = string.Empty;
+            OnPropertyChanged(nameof(HasTaskNavigationTarget));
+            OnPropertyChanged(nameof(TaskNavigationSourceSummary));
             OnPropertyChanged(nameof(TaskHasActiveFilters));
             OnPropertyChanged(nameof(TaskActiveFiltersSummary));
         }
@@ -865,6 +872,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             taskNavigationGameId = target.IsExact ? target.PlayniteId : string.Empty;
             taskNavigationGameName = target.GameName ?? string.Empty;
+            OnPropertyChanged(nameof(HasTaskNavigationTarget));
+            OnPropertyChanged(nameof(TaskNavigationSourceSummary));
             OnPropertyChanged(nameof(TaskHasActiveFilters));
             OnPropertyChanged(nameof(TaskActiveFiltersSummary));
         }
@@ -5016,7 +5025,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 PreviewMediaClassificationCommand, ApplyMediaClassificationCommand, UndoMediaClassificationCommand,
                 RefreshMediaClassificationHistoryCommand, LoadMoreMediaClassificationHistoryCommand,
                 LoadMoreMediaInboxCommand, ReloadMediaInboxCommand,
-                CancelTaskCommand, RetryTaskCommand, RetryAllTasksCommand, LoadMoreTasksCommand, ClearMediaFiltersCommand, ApplyTaskFilterPresetCommand, SaveTaskFilterPresetCommand, RenameTaskFilterPresetCommand, DeleteTaskFilterPresetCommand, CopyTaskErrorCommand, CopyPathCommand, OpenSelectedTaskGameCommand, ReturnToNavigationSourceCommand, RefreshDiagnosticsCommand, RunMaintenanceActionCommand, LoadMoreRetentionQuarantineCommand, DiagnoseGameCommand, SyncGameDescriptorCommand, RetryGameMatchCommand, ClearGamePickerFiltersCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
+                CancelTaskCommand, RetryTaskCommand, RetryAllTasksCommand, LoadMoreTasksCommand, ClearMediaFiltersCommand, ApplyTaskFilterPresetCommand, SaveTaskFilterPresetCommand, RenameTaskFilterPresetCommand, DeleteTaskFilterPresetCommand, CopyTaskErrorCommand, CopyPathCommand, OpenSelectedTaskGameCommand, ReturnToNavigationSourceCommand, ClearTaskNavigationContextCommand, RefreshDiagnosticsCommand, RunMaintenanceActionCommand, LoadMoreRetentionQuarantineCommand, DiagnoseGameCommand, SyncGameDescriptorCommand, RetryGameMatchCommand, ClearGamePickerFiltersCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
                 StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,RunHealthInspectionCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,RefreshRetentionSimulationCommand,ApplyRetentionSimulationCommand,RefreshLocalMirrorStatusCommand,SyncLocalMirrorCommand,CopyMaintenanceReportCommand,ExportMaintenanceReportCommand,
                 SaveProcessMappingCommand,DeleteProcessMappingCommand,RunEnvironmentCheckCommand,SkipOnboardingCommand,CompleteOnboardingCommand,OnboardingTestBackupCommand,
                 OpenDataDirectoryCommand, OpenBackupDirectoryCommand, OpenMediaDirectoryCommand, OpenWorkerLogCommand

@@ -137,6 +137,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -197,6 +198,24 @@
                     <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding RenameTaskFilterPresetCommand}" Content="重命名" ToolTip="确认后重命名选中的任务筛选预设" AutomationProperties.Name="重命名任务筛选预设" Margin="0,0,8,0"/>
                     <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding DeleteTaskFilterPresetCommand}" Content="删除" ToolTip="确认后删除选中的任务筛选预设" AutomationProperties.Name="删除任务筛选预设"/>
                 </WrapPanel>
+                <Border x:Name="TaskNavigationSourceBanner" Grid.Row="2" Grid.ColumnSpan="8" Margin="0,8,0,0">
+                    <Border.Style>
+                        <Style TargetType="Border" BasedOn="{StaticResource GscDiagnosticHintBubble}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding HasTaskNavigationTarget}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <Grid>
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                        <ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconStatusInfo}" Width="18" Height="18" Foreground="{DynamicResource GscInfoBrush}" Margin="0,0,8,0" VerticalAlignment="Top"/>
+                        <TextBlock x:Name="TaskNavigationSourceText" Grid.Column="1" Text="{Binding TaskNavigationSourceSummary, Mode=OneWay}" Style="{StaticResource GscDiagnosticHintText}" VerticalAlignment="Center" TextWrapping="Wrap" ToolTip="{Binding TaskNavigationSourceSummary, Mode=OneWay}"/>
+                        <ui:Button Grid.Column="2" Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding ClearTaskNavigationContextCommand}" Content="清除带入条件" ToolTip="仅清除带入的游戏条件，保留其他任务筛选" AutomationProperties.Name="清除带入的任务筛选" Margin="12,0,0,0"/>
+                    </Grid>
+                </Border>
             </Grid>
         </Border>
         <Expander x:Name="TaskMoreFiltersExpander" Grid.Row="2" Grid.ColumnSpan="3" Style="{StaticResource GscDisclosureCard}" Visibility="Collapsed" Margin="0,0,0,8">

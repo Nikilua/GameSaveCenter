@@ -158,7 +158,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                           || !string.Equals(taskGameFilter, "全部", StringComparison.Ordinal)
                           || !string.Equals(taskTypeFilter, "全部", StringComparison.Ordinal)
                           || !string.Equals(taskHistoryScope, "最近任务", StringComparison.Ordinal)
-                          || !string.Equals(taskHistoryRange, "全部时间", StringComparison.Ordinal);
+                          || !string.Equals(taskHistoryRange, "全部时间", StringComparison.Ordinal)
+                          || HasTaskNavigationTarget;
             taskSearchText = string.Empty;
             taskStatusFilter = "全部";
             taskGameFilter = "全部";
@@ -168,12 +169,16 @@ namespace GameSaveCenter.Playnite.ViewModels
             pendingTaskDynamicFilterRestore = false;
             taskHistoryScope = "最近任务";
             taskHistoryRange = "全部时间";
+            taskNavigationGameId = string.Empty;
+            taskNavigationGameName = string.Empty;
             OnPropertyChanged(nameof(TaskSearchText));
             OnPropertyChanged(nameof(TaskStatusFilter));
             OnPropertyChanged(nameof(TaskGameFilter));
             OnPropertyChanged(nameof(TaskTypeFilter));
             OnPropertyChanged(nameof(TaskHistoryScope));
             OnPropertyChanged(nameof(TaskHistoryRange));
+            OnPropertyChanged(nameof(HasTaskNavigationTarget));
+            OnPropertyChanged(nameof(TaskNavigationSourceSummary));
             OnPropertyChanged(nameof(TaskHasActiveFilters));
             OnPropertyChanged(nameof(TaskActiveFiltersSummary));
             TasksView.Refresh();

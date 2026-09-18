@@ -19,6 +19,7 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         public ICommand OpenSelectedTaskGameCommand { get; private set; } = null!;
         public ICommand ReturnToNavigationSourceCommand { get; private set; } = null!;
+        public ICommand ClearTaskNavigationContextCommand { get; private set; } = null!;
 
         public bool HasNavigationReturnTarget => navigationHistory.CanReturn;
 
@@ -49,6 +50,30 @@ namespace GameSaveCenter.Playnite.ViewModels
             ReturnToNavigationSourceCommand = new RelayCommand(
                 _ => ReturnToNavigationSource(),
                 _ => !IsBusy && HasNavigationReturnTarget);
+            ClearTaskNavigationContextCommand = new RelayCommand(
+                _ => ClearTaskNavigationContext(),
+                _ => !IsBusy && HasTaskNavigationTarget);
+        }
+
+        private void ClearTaskNavigationContext()
+        {
+            if (!HasTaskNavigationTarget) return;
+
+            var gameName = taskNavigationGameName;
+            taskNavigationGameId = string.Empty;
+            taskNavigationGameName = string.Empty;
+            OnPropertyChanged(nameof(HasTaskNavigationTarget));
+            OnPropertyChanged(nameof(TaskNavigationSourceSummary));
+            OnPropertyChanged(nameof(TaskHasActiveFilters));
+            OnPropertyChanged(nameof(TaskActiveFiltersSummary));
+
+            // Keep the existing request cancellation and finite-list refresh path. The
+            // source target is transient and must not overwrite the user's other draft
+            // filters while the service query is invalidated.
+            RefreshTasksView();
+            RequestTaskHistoryRefresh(immediate: true, force: taskHistoryActive);
+            StatusMessage = $"已清除带入的游戏条件“{gameName}”，保留其他任务筛选。";
+            RaiseCommandStates();
         }
 
         internal void SetTaskGridScrollOffset(double offset)
@@ -213,6 +238,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             OnPropertyChanged(nameof(TaskTypeFilter));
             OnPropertyChanged(nameof(TaskHistoryScope));
             OnPropertyChanged(nameof(TaskHistoryRange));
+            OnPropertyChanged(nameof(HasTaskNavigationTarget));
+            OnPropertyChanged(nameof(TaskNavigationSourceSummary));
             OnPropertyChanged(nameof(TaskHasActiveFilters));
             OnPropertyChanged(nameof(TaskActiveFiltersSummary));
             RefreshTasksView();
