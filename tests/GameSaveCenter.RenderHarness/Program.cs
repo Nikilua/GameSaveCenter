@@ -38,6 +38,8 @@ namespace GameSaveCenter.RenderHarness;
 /// </summary>
 public static class Program
 {
+    private static readonly string RepositoryRoot = ResolveRepositoryRoot();
+
     private static readonly List<string> s_problems = new List<string>();
 
     private static readonly (int Width, int Height)[] WindowSizes =
@@ -4565,7 +4567,7 @@ public static class Program
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
-                WorkingDirectory = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", ".."))
+                WorkingDirectory = RepositoryRoot
             };
             using var process = Process.Start(startInfo);
             if (process == null) return "unknown";
@@ -4579,6 +4581,28 @@ public static class Program
         {
             return "unknown";
         }
+    }
+
+    private static string ResolveRepositoryRoot()
+    {
+        var metadata = typeof(Program).Assembly
+            .GetCustomAttributes<AssemblyMetadataAttribute>()
+            .ToDictionary(attribute => attribute.Key, attribute => attribute.Value, StringComparer.OrdinalIgnoreCase);
+        if (metadata.TryGetValue("GscSourceRoot", out var metadataRoot)
+            && !string.IsNullOrWhiteSpace(metadataRoot)
+            && File.Exists(Path.Combine(metadataRoot, "GameSaveCenter.sln")))
+        {
+            return Path.GetFullPath(metadataRoot);
+        }
+
+        var environmentRoot = Environment.GetEnvironmentVariable("GSC_SOURCE_ROOT");
+        if (!string.IsNullOrWhiteSpace(environmentRoot)
+            && File.Exists(Path.Combine(environmentRoot, "GameSaveCenter.sln")))
+        {
+            return Path.GetFullPath(environmentRoot);
+        }
+
+        return Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", ".."));
     }
 
     private static void CollectScrollDiagnostics(Grid host, StringBuilder report, string name, int windowW, int windowH, int tabIndex)

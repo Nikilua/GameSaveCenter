@@ -358,6 +358,7 @@ public sealed class UiFinesseFoundationTests
     {
         var root = FindRepositoryRoot();
         var motion = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Infrastructure", "GscMotion.cs"));
+        var dialogMotion = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Infrastructure", "DialogOverlayMotion.cs"));
         var overview = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml.cs"));
         var dashboard = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml.cs"));
         var shell = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml.cs"));
@@ -367,11 +368,14 @@ public sealed class UiFinesseFoundationTests
         Assert.Contains("GscMotion.MotionDurationKind.Normal", overview);
         Assert.Contains("GscMotion.MotionDurationKind.Fast", dashboard);
         Assert.Contains("GscMotion.GetDuration(StatusPill, GscMotion.MotionDurationKind.Normal)", dashboard);
-        Assert.Contains("GscMotion.GetDuration(DialogCard, GscMotion.MotionDurationKind.Normal)", dashboard);
+        Assert.Contains("GscMotion.GetDuration(card, GscMotion.MotionDurationKind.Normal)", dialogMotion);
         Assert.Contains("GscMotion.GetDuration(ToastHost, GscMotion.MotionDurationKind.Normal)", dashboard);
-        Assert.Contains("StopDialogMotion();", dashboard);
-        Assert.Contains("slide.Completed", dashboard);
-        Assert.Contains("dialogMotionGeneration", dashboard);
+        Assert.Contains("dialogMotion.BeginClose(MotionEnabled", dashboard);
+        Assert.Contains("dialogMotion.Normalize();", dashboard);
+        Assert.Contains("slide.Completed", dialogMotion);
+        Assert.Contains("StartCompletionWatchdog", dialogMotion);
+        Assert.Contains("dialogLifecycle.TryFinishClosing()", dashboard);
+        Assert.DoesNotContain("dialogMotionGeneration", dashboard);
         Assert.Contains("foreach (var card in cards)\n                RemoveToast(card);", dashboard);
         Assert.Contains("fade.Completed", dashboard);
         Assert.Contains("GscMotion.GetDuration(SidebarContentLayer, GscMotion.MotionDurationKind.Normal)", shell);

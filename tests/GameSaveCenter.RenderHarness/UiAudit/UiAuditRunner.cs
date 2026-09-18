@@ -696,6 +696,23 @@ public static class UiAuditRunner
 
     private static string FindRepositoryRoot()
     {
+        var metadata = typeof(UiAuditRunner).Assembly
+            .GetCustomAttributes<AssemblyMetadataAttribute>()
+            .ToDictionary(attribute => attribute.Key, attribute => attribute.Value, StringComparer.OrdinalIgnoreCase);
+        if (metadata.TryGetValue("GscSourceRoot", out var metadataRoot)
+            && !string.IsNullOrWhiteSpace(metadataRoot)
+            && File.Exists(Path.Combine(metadataRoot, "GameSaveCenter.sln")))
+        {
+            return Path.GetFullPath(metadataRoot);
+        }
+
+        var environmentRoot = Environment.GetEnvironmentVariable("GSC_SOURCE_ROOT");
+        if (!string.IsNullOrWhiteSpace(environmentRoot)
+            && File.Exists(Path.Combine(environmentRoot, "GameSaveCenter.sln")))
+        {
+            return Path.GetFullPath(environmentRoot);
+        }
+
         var directory = AppContext.BaseDirectory;
         for (var i = 0; i < 16; i++)
         {

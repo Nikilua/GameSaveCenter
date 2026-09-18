@@ -56,7 +56,7 @@ public sealed class UiFinesseRound2ControlSourceTests
 
         Assert.Contains("IsBusyProperty", controls);
         Assert.Contains("x:Name=\"BusyIndicatorHost\"", production);
-        Assert.Contains("<Trigger Property=\"IsBusy\" Value=\"True\">", production);
+        Assert.Contains("<Trigger Property=\"IsBusyIndicatorVisible\" Value=\"True\">", production);
         Assert.Contains("ContentPresenter Content=\"{TemplateBinding Content}\"", production);
         Assert.Contains("IsBusy=\"{Binding IsBusy}\"", dashboard);
         Assert.Equal(3, dashboard.Split(new[] { "IsBusy=\"{Binding IsBusy}\"" }, StringSplitOptions.None).Length - 1);
@@ -69,7 +69,7 @@ public sealed class UiFinesseRound2ControlSourceTests
 
         Assert.Contains("DialogConfirmButton.SetResourceReference(Control.BackgroundProperty, request.IsDangerous ? \"GscErrorBrush\" : \"GscAccentBrush\")", dashboardCode);
         Assert.Contains("OpenDialog(request.IsDangerous ? DialogCancelButton : DialogConfirmButton)", dashboardCode);
-        Assert.Contains("if (IsLoaded && DialogOverlay.Visibility == Visibility.Visible) initialFocus.Focus();", dashboardCode);
+        Assert.Contains("if (IsLoaded && DialogOverlay.Visibility == Visibility.Visible && !dialogLifecycle.IsClosing)", dashboardCode);
     }
 
     [Fact]
