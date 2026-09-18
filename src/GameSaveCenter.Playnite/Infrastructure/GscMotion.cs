@@ -26,6 +26,10 @@ namespace GameSaveCenter.Playnite.Infrastructure
         {
             public int TranslateGeneration;
             public int EntranceGeneration;
+            public int ScaleGeneration;
+            public bool HasScaleBase;
+            public double ScaleBaseX;
+            public double ScaleBaseY;
         }
 
         private sealed class MotionRegistry
@@ -242,6 +246,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 var state = MotionStates.GetOrCreateValue(element);
                 state.TranslateGeneration++;
                 state.EntranceGeneration++;
+                state.ScaleGeneration++;
                 element.BeginAnimation(UIElement.OpacityProperty, null);
                 if (element.RenderTransform is TranslateTransform translate)
                 {
@@ -249,6 +254,15 @@ namespace GameSaveCenter.Playnite.Infrastructure
                     translate.BeginAnimation(TranslateTransform.YProperty, null);
                     translate.X = 0;
                     translate.Y = 0;
+                }
+                if (state.HasScaleBase)
+                {
+                    var scale = GetMutableScaleTransform(element);
+                    scale.BeginAnimation(ScaleTransform.ScaleXProperty, null);
+                    scale.BeginAnimation(ScaleTransform.ScaleYProperty, null);
+                    scale.ScaleX = state.ScaleBaseX;
+                    scale.ScaleY = state.ScaleBaseY;
+                    state.HasScaleBase = false;
                 }
                 element.Opacity = 1;
             }
@@ -324,6 +338,86 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
         internal static void AnimateTranslate(FrameworkElement element, double x, double y, MotionDurationKind kind)
             => AnimateTranslate(element, x, y, GetDuration(element, kind));
+
+        /// <summary>
+        /// Gives a local numeric value a short render-only pulse. The base scale is kept
+        /// per element so an existing transform is restored exactly after completion or
+        /// when reduced motion normalizes the active clocks.
+        /// </summary>
+        internal static void AnimateScalePulse(FrameworkElement element, double peak, MotionDurationKind kind)
+        {
+            if (peak <= 0 || double.IsNaN(peak) || double.IsInfinity(peak))
+                return;
+
+            Track(element);
+            var motionState = MotionStates.GetOrCreateValue(element);
+            var generation = ++motionState.ScaleGeneration;
+            var scale = GetMutableScaleTransform(element);
+            if (!motionState.HasScaleBase)
+            {
+                motionState.ScaleBaseX = scale.ScaleX;
+                motionState.ScaleBaseY = scale.ScaleY;
+                motionState.HasScaleBase = true;
+            }
+
+            var baseX = motionState.ScaleBaseX;
+            var baseY = motionState.ScaleBaseY;
+            var currentX = scale.ScaleX;
+            var currentY = scale.ScaleY;
+            scale.BeginAnimation(ScaleTransform.ScaleXProperty, null);
+            scale.BeginAnimation(ScaleTransform.ScaleYProperty, null);
+            scale.ScaleX = currentX;
+            scale.ScaleY = currentY;
+
+            var duration = GetDuration(element, kind);
+            var halfDuration = TimeSpan.FromTicks(Math.Max(1, duration.Ticks / 2));
+            var easing = CreateEaseOut();
+            var peakX = baseX * peak;
+            var peakY = baseY * peak;
+            var upX = new DoubleAnimation(currentX, peakX, halfDuration)
+            {
+                EasingFunction = easing,
+                FillBehavior = FillBehavior.HoldEnd
+            };
+            var upY = new DoubleAnimation(currentY, peakY, halfDuration)
+            {
+                EasingFunction = easing,
+                FillBehavior = FillBehavior.HoldEnd
+            };
+            var downX = new DoubleAnimation(peakX, baseX, halfDuration)
+            {
+                EasingFunction = easing,
+                FillBehavior = FillBehavior.HoldEnd
+            };
+            var downY = new DoubleAnimation(peakY, baseY, halfDuration)
+            {
+                EasingFunction = easing,
+                FillBehavior = FillBehavior.HoldEnd
+            };
+
+            upX.Completed += (_, __) =>
+            {
+                if (generation != motionState.ScaleGeneration)
+                    return;
+
+                scale.BeginAnimation(ScaleTransform.ScaleXProperty, downX);
+                scale.BeginAnimation(ScaleTransform.ScaleYProperty, downY);
+            };
+            downX.Completed += (_, __) =>
+            {
+                if (generation != motionState.ScaleGeneration)
+                    return;
+
+                scale.BeginAnimation(ScaleTransform.ScaleXProperty, null);
+                scale.BeginAnimation(ScaleTransform.ScaleYProperty, null);
+                scale.ScaleX = baseX;
+                scale.ScaleY = baseY;
+                motionState.HasScaleBase = false;
+            };
+
+            scale.BeginAnimation(ScaleTransform.ScaleXProperty, upX);
+            scale.BeginAnimation(ScaleTransform.ScaleYProperty, upY);
+        }
 
         internal static void AnimateEntrance(FrameworkElement element, double offsetY)
         {

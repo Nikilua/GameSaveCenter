@@ -16,14 +16,29 @@ namespace GameSaveCenter.Playnite.Views
     /// </summary>
     public partial class OverviewView : UserControl
     {
-        /// <summary>
-        /// Mirrors the dashboard motion gate so hover feedback stays render-only and
-        /// respects the user's animation/transparency preferences. The dashboard
-        /// refreshes this flag whenever theme, settings or system parameters change.
-        /// </summary>
-        public bool UiAnimationsEnabled { get; set; } = true;
+        private bool uiAnimationsEnabled = true;
 
-        public OverviewView() => InitializeComponent();
+        public OverviewView()
+        {
+            InitializeComponent();
+            NumericChangeFeedback.SetMotionEnabled(this, true);
+        }
+
+        /// <summary>
+        /// Mirrors the dashboard motion gate so hover and counter feedback stay
+        /// render-only and respect the user's animation/transparency preferences. The
+        /// dashboard refreshes this flag whenever theme, settings or system parameters
+        /// change.
+        /// </summary>
+        public bool UiAnimationsEnabled
+        {
+            get => uiAnimationsEnabled;
+            set
+            {
+                uiAnimationsEnabled = value;
+                NumericChangeFeedback.SetMotionEnabled(this, value);
+            }
+        }
 
         private void OnStatCardMouseEnter(object sender, MouseEventArgs e)
             => AnimateTranslate(sender as FrameworkElement, 0, -3, GscMotion.MotionDurationKind.Normal);
