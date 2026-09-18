@@ -44,10 +44,12 @@ public sealed class R08MotionReverseBehaviorTests
                 var translate = GscMotion.GetMutableTranslateTransform(host);
                 GscMotion.AnimateTranslate(host, 12, 0, GscMotion.MotionDurationKind.Normal);
                 PumpDispatcher(TimeSpan.FromMilliseconds(80));
+                window.UpdateLayout();
                 firstMidpoint = translate.X;
                 GscMotion.AnimateTranslate(host, -8, 0, GscMotion.MotionDurationKind.Normal);
                 reversalStart = translate.X;
                 PumpDispatcher(TimeSpan.FromMilliseconds(500));
+                window.UpdateLayout();
                 finalValue = translate.X;
 
                 Assert.InRange(firstMidpoint, 0.2, 11.8);
@@ -104,15 +106,21 @@ public sealed class R08MotionReverseBehaviorTests
                 var layer = Assert.IsAssignableFrom<FrameworkElement>(shell.FindName("SidebarContentLayer"));
                 shell.SidebarCollapseButtonForAudit.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
                 PumpDispatcher(TimeSpan.FromMilliseconds(100));
+                window.UpdateLayout();
+                shell.UpdateLayout();
                 collapseMidpoint = sidebar.ActualWidth;
                 sidebarTrace = $"after-collapse collapsed={shell.SidebarCollapsedForAudit}; running={shell.SidebarTransitionRunningForAudit}; base={shell.SidebarWidthForAudit:0.###}; actual={sidebar.ActualWidth:0.###}";
 
                 shell.SidebarCollapseButtonForAudit.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
                 reversalStart = sidebar.ActualWidth;
                 PumpDispatcher(TimeSpan.FromMilliseconds(200));
+                window.UpdateLayout();
+                shell.UpdateLayout();
                 reverseMidpoint = sidebar.ActualWidth;
                 sidebarTrace += $" | after-reverse-200 collapsed={shell.SidebarCollapsedForAudit}; running={shell.SidebarTransitionRunningForAudit}; base={shell.SidebarWidthForAudit:0.###}; actual={sidebar.ActualWidth:0.###}";
                 PumpDispatcher(TimeSpan.FromMilliseconds(1000));
+                window.UpdateLayout();
+                shell.UpdateLayout();
                 finalWidth = sidebar.ActualWidth;
                 finalOpacity = layer.Opacity;
 
