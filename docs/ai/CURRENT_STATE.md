@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R07-04 横向滚动端点
+
+- `8f682fcb814a648de497728b17ebc870a13187aa` 先核对现有生产 DataGrid 模板和横向滚动系统，只新增隔离 RenderHarness 的 `horizontalprobe`；没有改生产 XAML、滚动条、游戏选框、命令绑定或服务。
+- Light/Dark×Save/Task/Media/Maintenance 共 8 组合均通过：负/超最大水平 offset 夹断、末列/末单元格完整落入 viewport、横向条不遮挡第一行、回到左端无漂移。clean 报告 `.tmp/r07-04-horizontal-clean/horizontalprobe-report.txt` 绑定 `WorkingTreeClean=True`、`DpiScale=1.00`；Task/Media 实际右端图已抽查。
+- Media 仍为 `Standard/Item/EnableColumnVirtualization=False`，只使用合成 60/6/8 条数据；XAML `24/24`、Release `0 warning/0 error`、RenderHarness `0/0`。Demo 原始目录仍缺失，继续以恢复生产基线为准。
+- 边界仍是合成 DTO/fake、隔离 STA WPF/offscreen logical DIP；未验真实 Playnite/设备输入、Ctrl/Shift/IME、UIA/读屏、物理 DPI/跨屏、presented frame、ETW 或宿主性能，未写真实用户数据。下一实际批次按用户要求转入 R00/R01 问题复核与证据校正；账本下一布局项为 R07-05。
+
 ## 当前第三轮 R07-03 短窗底栏可达
 
 - `d19e848b`、`447ac07e` 先核对最新生产实现：`AcrylicProductionShellView` 的 `FooterSurface` 已在固定 36 DIP 底栏行，`PageHost` 在主内容行；本阶段没有重建底栏、页面 ScrollViewer、DataGrid/详情滚动、游戏选框或滚动条系统，只新增隔离 RenderHarness 的实际 WPF 短窗探针和合成 `MediaInboxPageHasMore` 状态。

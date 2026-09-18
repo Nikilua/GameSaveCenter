@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-18 R07-04 横向滚动端点
+
+- `8f682fcb` 核对现有 DataGrid 模板和横向滚动端点，只新增隔离 RenderHarness 的 `horizontalprobe`，没有改生产 XAML、滚动条、游戏选框、命令绑定或服务。
+- Light/Dark×Save/Task/Media/Maintenance 共 8 组合通过负/超最大水平 offset 夹断、末列/末单元格完整、横向条不遮挡第一行、回左无漂移；Task 右端详情和 Media 右端文件/原因的截图是在真实右端 offset 时保存的。
+- Media 虚拟化保持 `Standard/Item/EnableColumnVirtualization=False`；XAML `24/24`、Release `0/0`、RenderHarness `0/0`，报告为 `.tmp/r07-04-horizontal-clean/horizontalprobe-report.txt`，绑定 `WorkingTreeClean=True`、offscreen `DpiScale=1.00`。此前错误命名的“右端图”已改为先截图后回左端，未把左端图写成右端证据。
+- 证据限于合成 DTO/fake、隔离 STA WPF/offscreen logical DIP；Demo 原始目录缺失，真实 Playnite/设备输入、Ctrl/Shift/IME、UIA、物理 DPI/跨屏、presented frame、ETW、宿主性能和真实数据写入未验。下一实际小批量按用户要求转入 R00/R01 复核与证据校正，R07-05 是账本下一布局项。
+
 ## 2026-09-18 R07-03 短窗底栏可达
 
 - 先核对最新生产实现：shell 的 `FooterSurface` 已是固定底栏行，页面主内容另占一行；Media/Save/Task/Maintenance 的提示条、内部滚动和真实操作控件均已有，不重建页面。

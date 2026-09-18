@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-18
 
+## 2026-09-18 R07-04 横向滚动端点
+
+- `8f682fcb` 先复用现有 DataGrid 模板和滚动条系统，只在 RenderHarness 增加实际 WPF `horizontalprobe`；没有改生产 XAML、游戏选框、命令/Binding 或业务服务。
+- Light/Dark×Save/Task/Media/Maintenance 共 8 组合通过水平负端点/超最大端点夹断、右端末列与末单元格完整可见、横向条不遮挡第一行、回左无漂移；Task 右端详情列和 Media 右端文件/原因列截图在真正右端 offset 时保存。
+- Media 继续保持 `Standard/Item/EnableColumnVirtualization=False`；XAML `24/24`、Release `0/0`、RenderHarness `0/0`。报告 `.tmp/r07-04-horizontal-clean/horizontalprobe-report.txt` 绑定 `WorkingTreeClean=True`、offscreen `DpiScale=1.00`。
+- 证据只覆盖合成 DTO/fake、隔离 STA WPF/offscreen logical DIP；Demo 原始目录仍缺失，沿用恢复生产基线。真实宿主、设备输入、Ctrl/Shift/IME、UIA、物理 DPI/跨屏、presented frame、ETW、宿主性能和真实数据写入未验。按用户续跑顺序下一小批量为 R00/R01 证据校正，R07-05 仍是账本下一布局项。
+
 ## 2026-09-18 R07-03 短窗底栏可达
 
 - 先复用现有生产布局：shell 固定 footer 与主内容分行，Media/Save/Task/Maintenance 已有提示条、页面/表格/详情滚动和加载/取消/保存命令；没有把 Demo 缺失误判成需要换设计体系。
