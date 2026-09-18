@@ -85,6 +85,13 @@ namespace GameSaveCenter.Playnite.Infrastructure
             FrameworkElement host,
             bool glassEnabled,
             int strengthPercent,
+            GameSaveCenterThemeMode themeMode = GameSaveCenterThemeMode.FollowPlaynite)
+            => CreateWithHighContrastOverride(host, glassEnabled, strengthPercent, themeMode, null);
+
+        public static AdaptiveThemePalette CreateWithHighContrastOverride(
+            FrameworkElement host,
+            bool glassEnabled,
+            int strengthPercent,
             GameSaveCenterThemeMode themeMode = GameSaveCenterThemeMode.FollowPlaynite,
             bool? highContrastOverride = null)
         {

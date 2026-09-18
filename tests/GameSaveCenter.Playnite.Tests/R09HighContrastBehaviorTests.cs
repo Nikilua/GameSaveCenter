@@ -19,7 +19,7 @@ public sealed class R09HighContrastBehaviorTests
         RunSta(() =>
         {
             var root = CreateProbeRoot();
-            var highContrast = AdaptiveThemePaletteFactory.Create(
+            var highContrast = AdaptiveThemePaletteFactory.CreateWithHighContrastOverride(
                 root,
                 glassEnabled: true,
                 strengthPercent: 78,
@@ -57,7 +57,7 @@ public sealed class R09HighContrastBehaviorTests
             Assert.Equal(highContrast.Accent, Assert.IsType<SolidColorBrush>(icon.Fill).Color);
             Assert.Equal(SystemColors.GrayTextColor, Assert.IsType<SolidColorBrush>(disabledText.Foreground).Color);
 
-            var normal = AdaptiveThemePaletteFactory.Create(
+            var normal = AdaptiveThemePaletteFactory.CreateWithHighContrastOverride(
                 root,
                 glassEnabled: true,
                 strengthPercent: 78,

@@ -538,7 +538,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("ApplySettingsMaterialResources", paletteSource);
         Assert.Contains("resources[\"GscPickerScrimBrush\"]", paletteSource);
         Assert.Contains("resources[\"GscPopupAllowsTransparency\"] = glassEnabled", paletteSource);
-        Assert.Contains("resources[\"GscPopupAnimation\"] = motionEnabled ? PopupAnimation.Fade : PopupAnimation.None", paletteSource);
+        Assert.Contains("resources[\"GscPopupAnimation\"] = motionEnabled && !palette.IsHighContrast ? PopupAnimation.Fade : PopupAnimation.None", paletteSource);
         Assert.Contains("if (!enabled) return null;", paletteSource);
         Assert.Contains("highContrast ? accent", paletteSource);
         Assert.DoesNotContain("{StaticResource GscAccentShadowColor}", dashboard);
