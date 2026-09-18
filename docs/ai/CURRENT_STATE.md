@@ -1542,3 +1542,10 @@
 - `R09HighContrastBehaviorTests` 使用实际 DynamicResource 绑定的 ProgressBar、Path、TextBlock，并在同一 ResourceDictionary 中验证高对比→普通 palette 的 material 恢复。正式 Release/XAML `24/24`、solution `0/0`；R09-06、相邻 R09 和高对比源码门禁 `13/13`；source/XAML/diff check 通过。
 - 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R09-06-HIGH-CONTRAST-20260919.md`。未切换真实 Windows High Contrast，不能写成 OS 方案或真实 Playnite presented frame 通过；DEV-INSTALL-008 的 main 合并后安装失败继续单列。Demo 原目录不可用，沿用恢复生产基线。
 - 下一可执行任务：R09-07 缩略图占位一致，先盘点加载/失败/无图/视频/损坏文件现有入口及行高约束。
+
+## 2026-09-19 Round3 R09-07 缩略图占位一致
+
+- `72a1a07b` 复用 `AsyncThumbnailImage` 的后台解码、取消/过期请求保护、冻结图像、缓存和并发限制，新增 `MediaThumbnailPreview` 固定媒体槽位；列表卡片保持 `164 x 154`、预览 `96 x 96`、操作区第二行 `58 DIP`，不改 DTO、命令绑定、游戏选框、滚动条或虚拟化策略。
+- 真实 STA WPF 夹具覆盖无图、录像、缺失文件、损坏文件和有效 PNG：R09-07 `1/1`；AsyncThumbnailImage `2/2`、AsyncThumbnailLoader `6/6`、MediaThumbnailConverter `1/1`，R09 定向 `12/12`。正式构建 XAML `24/24`、solution `0/0`，source/XAML/diff check 通过。
+- 详情截图状态文字补齐，录像继续由已有 MediaElement 承载并隐藏截图占位文字；成功缩略图迟到只替换固定槽位，不改变行高或挤占操作区。证据：`evidence/R09-07-THUMBNAIL-PLACEHOLDER-20260919.md`。
+- 使用隔离临时目录与合成媒体；未验真实 Playnite presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW、宿主性能和 package-host。Demo 原目录不可用，沿用恢复生产基线；DEV-INSTALL-008 main 全量安装失败仍单列，main 用户改动未触碰。下一可执行任务：R09-08 主题背景压力。

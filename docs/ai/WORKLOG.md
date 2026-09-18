@@ -7360,3 +7360,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `1f2eac4a` 在原 `AdaptiveThemePalette`/局部 ResourceDictionary 上最小修复：高对比使用 `SystemColors` 语义色，进度/图标/禁用文字和悬停/选中保持可读；关闭阴影、透明 Popup、动画、游戏背景模糊和环境洗色；恢复普通 palette 后重新得到 material。命令、绑定、取消/错误语义、恢复保护、游戏选框、滚动条和列表性能未改。
 - `R09HighContrastBehaviorTests` 实例化实际绑定资源的 ProgressBar/Path/TextBlock，并验证高对比→普通主题资源字典恢复；正式脚本 Release 构建 0/0、XAML 24/24，R09/源码门禁 13/13，source/XAML/diff check 通过。没有切换真实 OS High Contrast，故只记录为可控行为证据。
 - 证据已写入 `evidence/R09-06-HIGH-CONTRAST-20260919.md`，账本已同步。DEV-INSTALL-008 main 合并后安装错误仍未在 dirty main 上覆盖或重跑；Demo 原目录不可用，继续使用恢复生产基线。下一可执行任务：R09-07 缩略图占位一致。
+## 2026-09-19 Round3 R09-07 缩略图占位一致
+
+- 盘点确认：缩略图异步加载与缓存能力已存在，媒体卡片也已有固定项/行高；缺口是列表没有覆盖加载、无图、视频、缺失和损坏的统一语义占位。新增共享 `MediaThumbnailPreview`，保留现有加载器和 `MediaKind`，不改变媒体命令、绑定、滚动、选框与虚拟化。
+- 实现提交 `72a1a07b`：`AsyncThumbnailImage` 补 `NoImage/Missing/Failed` 状态与状态变化事件；媒体列表用固定 `96 DIP` 预览槽位，详情截图文字同步，视频详情隐藏截图文字并继续使用 `MediaElement`。测试夹具实际检查尺寸、状态文案、成功迟到不挤操作行和负例。
+- 验证：R09-07 `1/1`，AsyncThumbnailImage `2/2`，AsyncThumbnailLoader `6/6`，MediaThumbnailConverter `1/1`，R09 `12/12`；build.ps1 XAML `24/24`、solution `0 warning / 0 error`；source/XAML/diff check 通过。已结束一次无输出的组合测试进程并改用窄分组复跑，窄分组结果为权威证据。
+- 证据已写入 `evidence/R09-07-THUMBNAIL-PLACEHOLDER-20260919.md`，随本阶段文档同步提交。用户安装日志的 DEV-INSTALL-008 仍是 dirty main 全量 Playnite.Tests `73 failed / 588 passed / 57 skipped`，编译/Core/Worker 成功但测试宿主失败；未在 main 上覆盖或重跑安装器。Demo 原目录不可用，下一可执行任务：R09-08 主题背景压力；真实 Playnite、呈现帧、物理 DPI/跨屏、UIA/读屏/IME、ETW、宿主性能和 package-host 仍未验。

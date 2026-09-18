@@ -3810,3 +3810,10 @@
 - `R09HighContrastBehaviorTests` 用实际 ProgressBar、Path、TextBlock 的 DynamicResource 绑定验证行为/负边界，R09-06 与相邻 R09/源码门禁 `13/13`；正式 Release `0/0`、XAML `24/24`、source/XAML/diff check 通过。此前直接 `dotnet build` 的身份失败已改用 `scripts/build.ps1` 正式复验，不计为产品失败。
 - R09-06 证据：`evidence/R09-06-HIGH-CONTRAST-20260919.md`。不把隔离 palette override 说成真实 OS High Contrast、Playnite 呈现、物理 DPI/跨屏、UIA/读屏、IME、ETW 或宿主性能通过；DEV-INSTALL-008 main 安装失败继续保留发布边界。
 - Demo 原目录不可用，继续沿用恢复生产资源基线；下一项 R09-07 缩略图占位一致，先盘点现有媒体加载/失败/无图/视频/损坏占位和行高约束。
+
+## 2026-09-19 Round3 R09-07 缩略图占位一致
+
+- 先查现有能力后确认 `AsyncThumbnailLoader` 已提供后台解码、取消、过期请求保护、冻结 `BitmapSource`、缓存和并发上限；本阶段没有重建服务或 DTO。`MediaCenterView` 的卡片已有固定 `164 x 154` 项和 `96/58` 行约束，缺口是列表截图/录像/缺失/损坏状态没有统一有文字的固定槽位。
+- `72a1a07b` 新增 `MediaThumbnailPreview`，截图复用 `AsyncThumbnailImage`，状态映射为加载、无图、缺失、损坏、成功；录像/未知类型不启动截图占位。详情的截图状态文案补齐，视频状态交由既有 `MediaElement`，命令/绑定、取消/错误、安全、选框、滚动条和有限列表性能不变。
+- 夹具是隔离临时媒体 + 真实 STA WPF Window：固定槽位/操作区与五类语义状态通过；R09-07 `1/1`，相关缩略图/缓存/转换 `9/9`，R09 `12/12`。正式脚本构建 XAML `24/24`、Release `0/0`，source/XAML/diff check 通过。
+- UI 证据仍是逻辑 DIP/offscreen 行为，不是 Demo 像素、真实 Playnite presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW、宿主性能或 package-host 安装通过。用户 DEV-INSTALL-008 的 dirty main 全量 Playnite.Tests `73/588/57` 失败事实不与本阶段隔离通过混写；下一可执行任务：R09-08 主题背景压力。
