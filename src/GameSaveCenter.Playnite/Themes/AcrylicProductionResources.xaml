@@ -27,7 +27,8 @@
                     <Border x:Name="NavChrome" Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="12" Padding="{TemplateBinding Padding}">
+                            CornerRadius="12" Padding="{TemplateBinding Padding}"
+                            SnapsToDevicePixels="True" UseLayoutRounding="True">
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="Center"/>
                     </Border>

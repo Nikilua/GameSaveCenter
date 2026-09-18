@@ -625,7 +625,7 @@
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="11"
                                 Padding="{TemplateBinding Padding}"
-                                SnapsToDevicePixels="False"
+                                SnapsToDevicePixels="True"
                                 UseLayoutRounding="True"
                                 ClipToBounds="False">
                             <ContentPresenter ContentSource="Header"

@@ -181,7 +181,7 @@
                                     BorderThickness="{TemplateBinding BorderThickness}"
                                     CornerRadius="11"
                                     Padding="{TemplateBinding Padding}"
-                                    SnapsToDevicePixels="False"
+                                    SnapsToDevicePixels="True"
                                     UseLayoutRounding="True"
                                     ClipToBounds="False">
                                 <ContentPresenter ContentSource="Header"
@@ -523,7 +523,8 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="RadioButton">
                         <Border x:Name="NavChrome" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="12" Padding="{TemplateBinding Padding}">
+                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="12" Padding="{TemplateBinding Padding}"
+                                SnapsToDevicePixels="True" UseLayoutRounding="True">
                             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               VerticalAlignment="Center"/>
                         </Border>
