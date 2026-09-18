@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-18
 
+## 2026-09-18 R07-02 锚点删除回退
+
+- 先核对最新实现再补缺口：Task、Media 主库/Inbox、Findings、进程映射、云端队列、Save 历史/候选各自已有稳定键或组合键，但多个路径在对象删除/筛选后会首项回退或失选。新增 `SelectionAnchorResolver`，统一“稳定 ID 命中优先、旧行位邻近回退”；不触碰集合分页、虚拟化、滚动条和业务命令。
+- Task 全量快照/历史分页记录 `TaskId + 旧索引`，任务导航目标在行位回退前优先；Media 用 `MediaId`；Findings 用 `PlayniteId + Code + Title`；进程映射用 `ExecutableName`；云端用 `TransferKey` 并在一致性分页有后续页时继续 pending key；Save 历史用 `BackupId`，候选用既有 `PlayniteId + Path`。
+- `R07SelectionAnchorBehaviorTests 4/4` 包含稳定键位置变化、删除首项误选负例、实际 STA WPF DataGrid 删除行后的选中邻项，以及生产 Save 候选恢复方法；最终相邻回归 `20/20`、0 skipped。代码提交 `7acb61a5`，测试补充提交 `ef53a748`。
+- clean RenderHarness `.tmp/r07-02-anchor-final/render-qa-report.txt` 绑定 ef53a748、WorkingTreeClean、双主题、多尺寸/滚动/resize 与 50/400/2000/4468 合成数据量通过；当前 checkout 没有 Demo 原始目录，仍沿用恢复生产基线。离屏行为不等价真实 Playnite/Worker、设备输入、UIA/读屏、物理 DPI/跨屏、presented frame、ETW、宿主性能；未写真实用户数据。下一小批量为 R07-03 短窗底栏可达。
+
 ## 2026-09-18 R07-01 滚动所有权
 
 - 先盘点已有契约：`GscPageScrollViewer` 管页面垂直主滚动，`GscRedesignWorkspaceDataGrid` 模板的 `DG_ScrollViewer` 管虚拟化表格，`GscInspectorScrollViewer` 管详情；水平端点和当前滚动条系统不改。

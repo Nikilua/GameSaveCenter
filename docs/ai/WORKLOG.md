@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-18 R07-02 锚点删除回退
+
+- 审计发现 Task、Media 主库/Inbox、Findings、进程映射、云端队列和 Save 列表的刷新/删除路径存在首项回退或失选变体；按现有业务键复用，不把同索引对象冒充稳定对象。
+- `7acb61a5` 新增 `SelectionAnchorResolver` 并接入上述路径：稳定键优先，缺失时按旧行索引夹到邻近项；任务导航目标和云端一致性 pending key 仍保持既有优先级。Save 候选继续先按 `PlayniteId + Path`，有旧索引时再按邻项，未选中时仍按 Pending/首项初始化。
+- `ef53a748` 补 Save 候选删除负例；`R07SelectionAnchorBehaviorTests 4/4`，最终相邻回归 `20/20`、0 skipped。Release 标准构建清理后 `0 warning/0 error`，XAML `24/24`，源码校验和 diff check 通过。
+- clean RenderHarness `.tmp/r07-02-anchor-final/render-qa-report.txt` 绑定 ef53a748、`WorkingTreeClean=True`、Light/Dark、多尺寸/滚动/resize、50/400/2000/4468 合成数据量 `render-qa OK`；Task/Media/Maintenance 1040×700 代表图已查看。真实 Playnite/Worker、设备输入、UIA/读屏、物理 DPI/跨屏、presented frame、ETW、宿主性能未验，未写真实数据。下一项 R07-03 短窗底栏可达。
+
 ## 2026-09-18 R07-01 滚动所有权
 
 - 审计确认页面主滚动、DataGrid 内部 `DG_ScrollViewer`、详情 Inspector 和既有滚动条系统已存在，但缺少统一的滚轮边界传递；未接线的旧 Dashboard 固定三行处理器会吞边界事件，因此移除并迁移源码门禁到共享行为。

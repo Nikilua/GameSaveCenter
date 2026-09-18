@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R07-02 锚点删除回退
+
+- `7acb61a5976196c7e5add347920762912e1149ea` 新增共享 `SelectionAnchorResolver`，并接入 Task 全量/分页、Media 主库/Inbox、Findings、进程映射、云端队列、Save 历史/候选。刷新前记录稳定键与旧索引；稳定键不存在时按旧索引夹到邻近项，不跳首行；任务导航目标仍优先，云端一致性分页仍保留 pending key，Save 候选仍保留既有 Pending/首项初始化。
+- `ef53a7486d0c5cc5111d7f302d184fbe1a1f201d` 补 Save 候选稳定路径删除后的邻近回退负例。`R07SelectionAnchorBehaviorTests 4/4`，最终相邻回归 `20/20`、0 skipped；清理 Release 输出后标准构建 XAML `24/24`、编译 `0 warning/0 error`、源码校验/diff check 通过。
+- clean `.tmp/r07-02-anchor-final/render-qa-report.txt` 绑定 ef53a748、`WorkingTreeClean=True`、Light/Dark、多尺寸/滚动/resize、50/400/2000/4468 合成数据量 `render-qa OK`；1040×700 Save/Media/Maintenance/Task 为 `4/4`、`6/4`、`5/4`、`5/4`，1366 Task `4/4`。已查看 Task/Media/Maintenance 代表图。
+- 当前仍仅证明合成 DTO、生产共享恢复器、实际 STA WPF DataGrid 与 offscreen logical DIP；Demo 原始 `DesignShellView.xaml`/`Pages` 不存在，沿用恢复生产基线。真实 Playnite/Worker、后端刷新竞态、设备输入、UIA/读屏、物理 DPI/跨屏、presented frame、ETW、宿主性能未验；未写真实存档、媒体、云端或诊断数据。下一项为 R07-03 短窗底栏可达。
+
 ## 当前第三轮 R07-01 滚动所有权
 
 - `9c878b9cb9a8cd07075ede332c9534e1d957f6b3` 先核对既有页面主滚动、DataGrid 模板 `DG_ScrollViewer` 和 Inspector 详情滚动；保留 `CanContentScroll`、虚拟化、水平/垂直滚动条和游戏选框。当前 checkout 没有原始 Demo `DesignShellView.xaml`/`Pages`，沿用恢复生产基线。
