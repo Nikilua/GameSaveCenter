@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R07-07 触控板小增量
+
+- `98e8b244` 修正共享 `ScrollBoundaryRoutingBehavior` 的最终边界：内层/外层都不可滚动时收口无效滚轮事件，避免每个末端 no-op 触发一次布局；有可移动外层时仍按 delta 转发，正常小增量仍交给 WPF 原生处理。没有改游戏选框、滚动条、虚拟化、命令/绑定或安全语义。
+- 当前身份隔离 shadow 构建 `r07-07-build-98e8b244`：XAML `24/24`、solution Release `0 warning / 0 error`、Playnite `net462`；`R07FineScrollBehaviorTests 2/2`，R07 过滤回归 `13/13`，源校验和 diff check 通过。小增量 offset `0→36`、反向 `33→27`、末端 `154/154`；可见行 `6–9`；20 个事件布局 `17`，末端 5 个 no-op 布局增量 `0`；加速边界外层 `32→80/432`、内层 `628`、单事件布局 `1`。
+- 证据仅为合成数据、隔离 STA WPF/offscreen logical DIP；`-30/+120/-360` 是 routed wheel 夹具，不等价真实触控板/Playnite、物理 DPI/跨屏、UIA/读屏、presented frame、ETW 或宿主性能。Demo 原始目录仍缺失，沿用恢复生产基线；下一可执行任务为 R07-08 resize 压力序列。
+
 ## 当前第三轮 R07-06 状态横幅预算
 
 - 当前测试提交 `3551de81` 已生成隔离身份一致输出 `.tmp\\r07-06-build-3551de81`：XAML `24/24`、solution Release `0 warning / 0 error`、Playnite `net462`；没有修改生产状态/服务/DTO、游戏选框或滚动条。
