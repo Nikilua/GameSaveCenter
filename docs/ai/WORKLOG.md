@@ -7415,3 +7415,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 行为定义覆盖带入条件正例、无来源负例、按钮 `CanExecute/Execute` 和保留搜索/状态编辑草稿；`R10FilterSourceBehaviorTests` `2/2`，完整 R10 `16/16`。最后隔离 Release/net462 solution `0/0`、XAML `24/24`、source/XAML/diff check 通过。
 - 完整脚本另因 C: 磁盘空间耗尽无法进入全量测试，限制发生在复制既有 Worker 依赖和生成 XAML 中间文件，不是本阶段源码编译诊断。main 用户文件未触碰，DEV-INSTALL-008 `73/588/57` 仍独立保留。Demo 原目录不可用，沿用恢复生产基线。
 - 本阶段 full 输出已删除；build 输出仅余 VBCSCompiler 锁定的 `test-temp`，未强杀未知进程。真实 Playnite 清除按钮/服务响应、呈现帧、物理 DPI/跨屏、UIA/读屏、IME、ETW、宿主性能和 package-host 未验。下一可执行任务：R10-07 侧栏信息密度。
+
+## 2026-09-19 Round3 R10-07 侧栏信息密度
+
+- 复核 `AcrylicProductionShellView` 与 `AcrylicNavItem` 后确认本项已有实现：侧栏 `270/72 DIP` 收展，`ApplySidebarLayout` 隐藏标签、保留图标并切换居中；入口是 RadioButton，已有选中态、Tooltip、Automation 名称和 Tab 键入口；品牌版本徽标展开显示、折叠隐藏。
+- 新增两项真实 STA WPF 行为验证，不以 `Assert.Contains` 代替交互：`CollapsedSidebarPreservesSelectedWorkspaceAndAccessibleNavigation` 验证 7 个入口和选中态跨收展保持；`ExpandedSidebarKeepsBrandBadgeClearAndLeavesMainAreaAvailableForLongLabels` 验证长名称、徽标矩形和主区可用宽度。生产 Shell 测试 `12/12`，R10 组合 `28/28`。
+- Release/net462 `0 warning / 0 error`、XAML `24/24`、source validation、XAML check、diff check 均通过。没有生产实现变更，游戏选框、滚动条、命令/Binding、取消/错误、恢复保护和有限列表性能保持。
+- 证据已写入 `evidence/R10-07-SIDEBAR-DENSITY-20260919.md`，账本状态改为“已满足”。旧 `.tmp` 清理仍受 worktree Access denied/锁定句柄影响，未强杀未知进程；用户 main 改动未触碰。真实 Playnite/package-host、DPI/跨屏、呈现帧、UIA/IME、ETW、宿主性能仍未验。下一可执行任务：R10-08 最近操作续接。

@@ -3867,3 +3867,10 @@
 - 导航条件是临时状态，不进设置 JSON。`HasTaskNavigationTarget`/`TaskNavigationSourceSummary` 只说明当前查询叠加的诊断游戏；`ClearTaskNavigationContextCommand` 只清除两个导航字段，必须不触碰用户搜索、状态、游戏、类型和历史范围草稿。全量“清除任务筛选”才清除全部字段。
 - 可靠门禁顺序：先跑真实 TaskCenterView 的 STA 绑定正/负行为，再跑 R10 集合，最后跑 Release/net462/XAML/source/diff。源码 `Assert.Contains` 只作为接线补证，不可独立签收交互。
 - 当前证据：`R10FilterSourceBehaviorTests 2/2`、R10 `16/16`、Release `0/0`、XAML `24/24`。完整脚本因 C: 磁盘空间耗尽未进入全量测试；真实 Playnite 清除交互、presented frame、DPI/跨屏、UIA/读屏、IME、ETW、宿主性能和 package-host 仍未验。下一可执行任务：R10-07 侧栏信息密度。
+
+## 2026-09-19 Round3 R10-07 侧栏信息密度
+
+- 现有生产实现已满足表格条件：`AcrylicProductionShellView` 的侧栏列按 `270/72 DIP` 收展，主区是相邻星号列且侧栏 ClipToBounds；`ApplySidebarLayout` 在折叠时隐藏标签、保留并居中图标，边界按钮同步 glyph/Tooltip/Automation 名称。品牌版本徽标只在展开态出现，没有导航计数徽标遮挡图标。
+- `ProductionShellChromeSourceTests` 新增真实 STA WPF 行为测试：选中任务入口收展前后保持；7 个入口逐项检查图标、Tooltip、Automation 名称、Tab 键入口；长导航名称下版本徽标与品牌图标不相交且主区仍有宽度。生产 Shell `12/12`，R10 组合 `28/28`。
+- 本阶段只补行为证据和文档，不新建视觉体系或修改生产 XAML；命令/绑定、游戏选框、滚动条、取消/错误语义、恢复保护、有限列表性能和 Playnite/net462 保持。Release `0/0`、XAML `24/24`、source/XAML/diff check 通过。
+- 证据文件：`evidence/R10-07-SIDEBAR-DENSITY-20260919.md`。隔离 STA/合成长名称/逻辑 DIP 不能证明真实 Playnite、物理 DPI/跨屏、presented frame、UIA/读屏、真实键盘/IME、ETW 或宿主性能；Demo 原目录不可用。旧 `.tmp` 清理受 Access denied/锁定句柄影响且未强杀未知进程，main 用户文件未触碰。下一可执行任务：R10-08 最近操作续接。

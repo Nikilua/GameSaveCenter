@@ -1599,3 +1599,11 @@
 - `R10FilterSourceBehaviorTests` `2/2`，完整 R10 `16/16`；最后隔离 Release/net462 build `0 warning / 0 error`、XAML `24/24`、source/XAML/diff check 通过。测试使用真实 TaskCenterView/STA Window、正负可见性和实际绑定命令，不把源码字符串断言当作唯一交互证据。
 - 按协议执行的完整脚本因 C: 磁盘空间耗尽，在复制既有 Worker/XAML 中间文件阶段停止，未进入全量测试；不把它写成产品编译错误。main DEV-INSTALL-008 仍是 `0/0`、Core `83/83`、Worker `311/311`、Playnite `73/588/57`、安装器退出 1，main 用户改动未触碰。
 - `.tmp/r10-06-full-20260919` 已清理；`.tmp/r10-06-build-20260919` 仅余被长驻 VBCSCompiler 锁定的 `test-temp` analyzer DLL 父目录，未强杀未知进程。真实 Playnite 清除交互、presented frame、DPI/跨屏、UIA/读屏、IME、ETW、宿主性能和 package-host 未验；Demo 原目录不可用，沿用恢复生产基线。下一可执行任务：R10-07 侧栏信息密度。
+
+## 2026-09-19 Round3 R10-07 侧栏信息密度
+
+- 先核对最新生产 Shell：`SidebarColumn` 已有 `270/72 DIP` 收展、固定侧栏 + 主区星号列、`ClipToBounds=True`；每个入口已有独立图标、选中模板、Tooltip、Automation 名称和 RadioButton Tab 键入口。折叠只隐藏标签并把图标槽位居中，品牌版本徽标收起时隐藏，不存在覆盖图标的导航计数徽标，因此没有重建控件。
+- `ProductionShellChromeSourceTests` 新增两个真实 STA WPF Window 行为测试：折叠/展开后任务入口选中态保持，7 个入口逐项保留图标/Tooltip/Automation/Tab 入口；长导航名称下展开侧栏仍为 `270 DIP`，品牌图标与版本徽标不相交，`MainPageHost` 仍有可用宽度。该类 `12/12`，R10 组合 `28/28`。
+- 当前身份绑定的 Release/net462 组合构建 `0 warning / 0 error`，XAML `24/24`，`validate-source.py`、XAML 检查和 `git diff --check` 通过。只改测试与本阶段文档，没有改生产 XAML、服务/DTO、命令绑定、游戏选框、滚动条、取消/错误、恢复保护或有限列表性能。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R10-07-SIDEBAR-DENSITY-20260919.md`。证据为隔离 STA WPF、合成长名称和逻辑 DIP；真实 Playnite/package-host、物理 DPI/跨屏、presented frame、UIA/读屏、真实键盘/IME、ETW、宿主性能仍未验；Demo 原目录不可用，沿用恢复生产基线。旧 `.tmp` 清理仍受 Access denied/锁定句柄影响，未强杀未知进程；main 用户文件未触碰。
+- 下一可执行任务：R10-08 最近操作续接；继续保持用户文件、现有游戏选框/滚动条系统和 net462 兼容边界。
