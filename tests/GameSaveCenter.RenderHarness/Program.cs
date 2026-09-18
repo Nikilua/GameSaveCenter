@@ -7193,7 +7193,7 @@ public static class Program
         var report = new StringBuilder();
         report.AppendLine("GameSaveCenter short-window bottom reachability probe");
         report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
-        AppendRunMetadata(report, "shortwindowprobe", "OffscreenRenderHarness", "production default palette", "synthetic stale banners; 1040x700 and 1040x560; page/grid/inspector end-scroll checks");
+        AppendRunMetadata(report, "shortwindowprobe", "OffscreenRenderHarness", "light,dark", "synthetic stale banners; 1040x700 and 1040x560; page/grid/inspector end-scroll checks");
         report.AppendLine();
         s_problems.Clear();
 
@@ -7201,12 +7201,16 @@ public static class Program
         {
             var app = new Application();
             app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
-            foreach (var height in new[] { 700, 560 })
+            foreach (var (themeName, themeMode) in ThemeModes)
             {
-                RunShortWindowMediaProbe(outputRoot, height, report);
-                RunShortWindowSaveProbe(outputRoot, height, report);
-                RunShortWindowTaskProbe(outputRoot, height, report);
-                RunShortWindowMaintenanceProbe(outputRoot, height, report);
+                Directory.CreateDirectory(Path.Combine(outputRoot, themeName));
+                foreach (var height in new[] { 700, 560 })
+                {
+                    RunShortWindowMediaProbe(outputRoot, themeName, themeMode, height, report);
+                    RunShortWindowSaveProbe(outputRoot, themeName, themeMode, height, report);
+                    RunShortWindowTaskProbe(outputRoot, themeName, themeMode, height, report);
+                    RunShortWindowMaintenanceProbe(outputRoot, themeName, themeMode, height, report);
+                }
             }
 
             report.AppendLine(s_problems.Count == 0 ? "shortwindowprobe OK" : "shortwindowprobe FAILED");
@@ -7226,11 +7230,11 @@ public static class Program
         }
     }
 
-    private static void RunShortWindowMediaProbe(string outputRoot, int height, StringBuilder report)
+    private static void RunShortWindowMediaProbe(string outputRoot, string themeName, GameSaveCenterThemeMode themeMode, int height, StringBuilder report)
     {
         var data = new FakeDashboardData(60, WorkspaceFixtureState.Stale, OverviewFixtureProfile.Default, mediaInboxHasMore: true);
         var view = new MediaCenterView { DataContext = data };
-        var host = MountShortWindowPage(view, data, height, out var shell, out var pageHost);
+        var host = MountShortWindowPage(view, data, themeMode, height, out var shell, out var pageHost);
         var tabs = FindVisualChildren<TabControl>(view).First(candidate => candidate.Name == "MediaTabControl");
         tabs.SelectedIndex = 0;
         view.ApplyResponsiveLayout(pageHost.ActualWidth, pageHost.ActualHeight);
@@ -7262,15 +7266,15 @@ public static class Program
         if (!IsInside(viewport, footerBounds) || !IsInside(viewport, loadMoreBounds))
             s_problems.Add($"Media short window {height} bottom actions are outside the end viewport (viewport={FormatRect(viewport)}, footer={FormatRect(footerBounds)}, loadMore={FormatRect(loadMoreBounds)}).");
 
-        report.AppendLine($"  Media {height}: shellFooter={FormatRect(GetBounds((FrameworkElement)shell.FindName("FooterSurface"), host))}, pageScroll={pageScroller.VerticalOffset:0.##}/{pageScroller.ScrollableHeight:0.##}, viewport={FormatRect(viewport)}, stale={FormatRect(staleBounds)}, footer={FormatRect(footerBounds)}, loadMore={FormatRect(loadMoreBounds)}");
-        SavePng(host, Path.Combine(outputRoot, $"Media-1040x{height}-bottom.png"));
+        report.AppendLine($"  {themeName} Media {height}: shellFooter={FormatRect(GetBounds((FrameworkElement)shell.FindName("FooterSurface"), host))}, pageScroll={pageScroller.VerticalOffset:0.##}/{pageScroller.ScrollableHeight:0.##}, viewport={FormatRect(viewport)}, stale={FormatRect(staleBounds)}, footer={FormatRect(footerBounds)}, loadMore={FormatRect(loadMoreBounds)}");
+        SavePng(host, Path.Combine(outputRoot, themeName, $"Media-1040x{height}-bottom.png"));
     }
 
-    private static void RunShortWindowSaveProbe(string outputRoot, int height, StringBuilder report)
+    private static void RunShortWindowSaveProbe(string outputRoot, string themeName, GameSaveCenterThemeMode themeMode, int height, StringBuilder report)
     {
         var data = new FakeDashboardData(60, WorkspaceFixtureState.Stale);
         var view = new SaveCenterView { DataContext = data };
-        var host = MountShortWindowPage(view, data, height, out var shell, out var pageHost);
+        var host = MountShortWindowPage(view, data, themeMode, height, out var shell, out var pageHost);
         var tabs = FindVisualChildren<TabControl>(view).First();
         tabs.SelectedIndex = 0;
         view.ApplyResponsiveLayout(pageHost.ActualWidth, pageHost.ActualHeight);
@@ -7302,15 +7306,15 @@ public static class Program
         if (!IsInside(viewport, saveBounds))
             s_problems.Add($"Save short window {height} save action is outside the reachable viewport (viewport={FormatRect(viewport)}, save={FormatRect(saveBounds)}).");
 
-        report.AppendLine($"  Save {height}: shellFooter={FormatRect(GetBounds((FrameworkElement)shell.FindName("FooterSurface"), host))}, policyScroll={initialOffset:0.##}->{policyScroller.VerticalOffset:0.##}/{policyScroller.ScrollableHeight:0.##}, viewport={FormatRect(viewport)}, save={FormatRect(saveBounds)}");
-        SavePng(host, Path.Combine(outputRoot, $"Save-1040x{height}-policy-bottom.png"));
+        report.AppendLine($"  {themeName} Save {height}: shellFooter={FormatRect(GetBounds((FrameworkElement)shell.FindName("FooterSurface"), host))}, policyScroll={initialOffset:0.##}->{policyScroller.VerticalOffset:0.##}/{policyScroller.ScrollableHeight:0.##}, viewport={FormatRect(viewport)}, save={FormatRect(saveBounds)}");
+        SavePng(host, Path.Combine(outputRoot, themeName, $"Save-1040x{height}-policy-bottom.png"));
     }
 
-    private static void RunShortWindowTaskProbe(string outputRoot, int height, StringBuilder report)
+    private static void RunShortWindowTaskProbe(string outputRoot, string themeName, GameSaveCenterThemeMode themeMode, int height, StringBuilder report)
     {
         var data = new FakeDashboardData(60, WorkspaceFixtureState.Stale);
         var view = new TaskCenterView { DataContext = data };
-        var host = MountShortWindowPage(view, data, height, out var shell, out var pageHost);
+        var host = MountShortWindowPage(view, data, themeMode, height, out var shell, out var pageHost);
         view.ApplyResponsiveLayout(pageHost.ActualWidth, pageHost.ActualHeight);
         host.UpdateLayout();
         var grid = FindVisualChildren<DataGrid>(view).First(candidate => candidate.Name == "TaskGrid");
@@ -7337,16 +7341,16 @@ public static class Program
         if (!IsInside(viewport, cancelBounds))
             s_problems.Add($"Task short window {height} cancel action is outside the end inspector viewport (viewport={FormatRect(viewport)}, cancel={FormatRect(cancelBounds)}).");
 
-        report.AppendLine($"  Task {height}: shellFooter={FormatRect(GetBounds((FrameworkElement)shell.FindName("FooterSurface"), host))}, inspectorScroll={inspector.VerticalOffset:0.##}/{inspector.ScrollableHeight:0.##}, viewport={FormatRect(viewport)}, cancel={FormatRect(cancelBounds)}");
-        SavePng(host, Path.Combine(outputRoot, $"Task-1040x{height}-cancel-bottom.png"));
+        report.AppendLine($"  {themeName} Task {height}: shellFooter={FormatRect(GetBounds((FrameworkElement)shell.FindName("FooterSurface"), host))}, inspectorScroll={inspector.VerticalOffset:0.##}/{inspector.ScrollableHeight:0.##}, viewport={FormatRect(viewport)}, cancel={FormatRect(cancelBounds)}");
+        SavePng(host, Path.Combine(outputRoot, themeName, $"Task-1040x{height}-cancel-bottom.png"));
     }
 
-    private static void RunShortWindowMaintenanceProbe(string outputRoot, int height, StringBuilder report)
+    private static void RunShortWindowMaintenanceProbe(string outputRoot, string themeName, GameSaveCenterThemeMode themeMode, int height, StringBuilder report)
     {
         var data = new FakeDashboardData(60, WorkspaceFixtureState.Stale);
         data.CloudTransferViewSummary.HasMore = true;
         var view = new MaintenanceView { DataContext = data };
-        var host = MountShortWindowPage(view, data, height, out var shell, out var pageHost);
+        var host = MountShortWindowPage(view, data, themeMode, height, out var shell, out var pageHost);
         var tabs = FindVisualChildren<TabControl>(view).First(candidate => candidate.Name == "MaintenanceTabControl");
         tabs.SelectedIndex = 1;
         view.ApplyResponsiveLayout(pageHost.ActualWidth, pageHost.ActualHeight);
@@ -7366,17 +7370,19 @@ public static class Program
         if (!IsInside(surfaceBounds, layoutBounds) || !IsInside(surfaceBounds, loadMoreBounds) || loadMoreBounds.Top < layoutBounds.Top - 1)
             s_problems.Add($"Maintenance short window {height} load-more action escapes the cloud queue surface (surface={FormatRect(surfaceBounds)}, layout={FormatRect(layoutBounds)}, loadMore={FormatRect(loadMoreBounds)}).");
 
-        report.AppendLine($"  Maintenance {height}: shellFooter={FormatRect(GetBounds((FrameworkElement)shell.FindName("FooterSurface"), host))}, surface={FormatRect(surfaceBounds)}, layout={FormatRect(layoutBounds)}, loadMore={FormatRect(loadMoreBounds)}");
-        SavePng(host, Path.Combine(outputRoot, $"Maintenance-1040x{height}-load-more-bottom.png"));
+        report.AppendLine($"  {themeName} Maintenance {height}: shellFooter={FormatRect(GetBounds((FrameworkElement)shell.FindName("FooterSurface"), host))}, surface={FormatRect(surfaceBounds)}, layout={FormatRect(layoutBounds)}, loadMore={FormatRect(loadMoreBounds)}");
+        SavePng(host, Path.Combine(outputRoot, themeName, $"Maintenance-1040x{height}-load-more-bottom.png"));
     }
 
-    private static Grid MountShortWindowPage(UserControl page, FakeDashboardData data, int height, out AcrylicProductionShellView shell, out ContentControl pageHost)
+    private static Grid MountShortWindowPage(UserControl page, FakeDashboardData data, GameSaveCenterThemeMode themeMode, int height, out AcrylicProductionShellView shell, out ContentControl pageHost)
     {
         shell = new AcrylicProductionShellView { DataContext = data };
         page.DataContext = data;
         pageHost = shell.PageHostForAudit as ContentControl
             ?? throw new InvalidOperationException("Production shell PageHost is not a ContentControl.");
         pageHost.Content = page;
+        ApplyThemePalette(shell, themeMode, glassEnabled: true, motionEnabled: false);
+        ApplyThemePalette(page, themeMode, glassEnabled: true, motionEnabled: false);
         var host = new Grid
         {
             Width = 1040,
