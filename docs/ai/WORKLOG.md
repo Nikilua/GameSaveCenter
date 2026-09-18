@@ -7366,3 +7366,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 实现提交 `72a1a07b`：`AsyncThumbnailImage` 补 `NoImage/Missing/Failed` 状态与状态变化事件；媒体列表用固定 `96 DIP` 预览槽位，详情截图文字同步，视频详情隐藏截图文字并继续使用 `MediaElement`。测试夹具实际检查尺寸、状态文案、成功迟到不挤操作行和负例。
 - 验证：R09-07 `1/1`，AsyncThumbnailImage `2/2`，AsyncThumbnailLoader `6/6`，MediaThumbnailConverter `1/1`，R09 `12/12`；build.ps1 XAML `24/24`、solution `0 warning / 0 error`；source/XAML/diff check 通过。已结束一次无输出的组合测试进程并改用窄分组复跑，窄分组结果为权威证据。
 - 证据已写入 `evidence/R09-07-THUMBNAIL-PLACEHOLDER-20260919.md`，随本阶段文档同步提交。用户安装日志的 DEV-INSTALL-008 仍是 dirty main 全量 Playnite.Tests `73 failed / 588 passed / 57 skipped`，编译/Core/Worker 成功但测试宿主失败；未在 main 上覆盖或重跑安装器。Demo 原目录不可用，下一可执行任务：R09-08 主题背景压力；真实 Playnite、呈现帧、物理 DPI/跨屏、UIA/读屏/IME、ETW、宿主性能和 package-host 仍未验。
+
+## 2026-09-19 Round3 R09-08 主题背景压力
+
+- 盘点后确认主题压力验证可直接复用现有 palette/guard；没有新增服务、DTO 或设计体系。`7de5c3de` 新增隔离 STA/WPF 夹具，使用四种合成宿主背景读取实际运行时 backdrop、ambient、glass/strong 资源，透明 stop 保持可见，按 alpha 合成后的正文对比度均达到项目门槛 `4.5`；黑底红层故意失败负例 `1/1` 被正确拒绝。
+- 同阶段修复 R09-06 的兼容性回归：恢复四参数 `AdaptiveThemePaletteFactory.Create`，显式高对比隔离测试改用 `CreateWithHighContrastOverride`，并修正过时的结构断言。R09-08 `2/2`，主题/材质 `8/8`，高对比/主题/阴影 `5/5`，R09 `14/14`；正式 Release/XAML `24/24`、solution `0 warning / 0 error`，源码校验、XAML、diff check 通过。
+- 证据已写入 `evidence/R09-08-BACKGROUND-PRESSURE-20260919.md`，本阶段文档随提交同步。验证边界仍为隔离逻辑 DIP/offscreen 行为，不是 Demo 像素、真实 Playnite presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW、宿主性能、package-host 或真实 Windows High Contrast；Demo 原目录不可用，沿用恢复生产基线。DEV-INSTALL-008 的 dirty main 全量安装失败未在 main 上覆盖或重跑；下一可执行任务：R10-01 上下文返回。

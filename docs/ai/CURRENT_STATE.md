@@ -1549,3 +1549,8 @@
 - 真实 STA WPF 夹具覆盖无图、录像、缺失文件、损坏文件和有效 PNG：R09-07 `1/1`；AsyncThumbnailImage `2/2`、AsyncThumbnailLoader `6/6`、MediaThumbnailConverter `1/1`，R09 定向 `12/12`。正式构建 XAML `24/24`、solution `0/0`，source/XAML/diff check 通过。
 - 详情截图状态文字补齐，录像继续由已有 MediaElement 承载并隐藏截图占位文字；成功缩略图迟到只替换固定槽位，不改变行高或挤占操作区。证据：`evidence/R09-07-THUMBNAIL-PLACEHOLDER-20260919.md`。
 - 使用隔离临时目录与合成媒体；未验真实 Playnite presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW、宿主性能和 package-host。Demo 原目录不可用，沿用恢复生产基线；DEV-INSTALL-008 main 全量安装失败仍单列，main 用户改动未触碰。下一可执行任务：R09-08 主题背景压力。
+## 2026-09-19 Round3 R09-08 主题背景压力
+
+- `7de5c3de` 复用现有 `AdaptiveThemePaletteContrastGuard` 的真实 alpha 合成路径，新增 `R09BackgroundPressureBehaviorTests`：浅/深/暖/蓝四种合成宿主背景读取实际运行时 backdrop、ambient、glass 资源，透明 stop 保持可见，正文合成对比度均达到 `4.5`；故意失败负例 `1/1` 被拒绝。
+- 同阶段修复 R09-06 的主题工厂兼容性回归：恢复四参数 `AdaptiveThemePaletteFactory.Create`，高对比隔离 override 使用独立方法；更新过时结构断言后，主题/材质 `8/8`、高对比/主题/阴影 `5/5`、R09 `14/14`。正式 Release/XAML `24/24`、solution `0/0`，source/XAML/diff check 通过。
+- 证据：`evidence/R09-08-BACKGROUND-PRESSURE-20260919.md`。证据是隔离 STA/逻辑 DIP 资源合成，不是真实 Playnite presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW、宿主性能或 package-host；Demo 原目录不可用，沿用恢复生产基线。DEV-INSTALL-008 main 全量失败仍单列，main 用户文件未触碰。下一可执行任务：R10-01 上下文返回。
