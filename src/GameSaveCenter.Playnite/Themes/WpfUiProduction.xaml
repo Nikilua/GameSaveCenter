@@ -974,7 +974,7 @@
                             <Setter TargetName="FocusOverlay" Property="Opacity" Value="1"/>
                             <Setter TargetName="ButtonChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
                         </Trigger>
-                        <Trigger Property="IsBusy" Value="True">
+                        <Trigger Property="IsBusyIndicatorVisible" Value="True">
                             <Setter TargetName="BusyIndicatorHost" Property="Visibility" Value="Visible"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">

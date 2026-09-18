@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -1411,7 +1412,7 @@ namespace GameSaveCenter.Playnite.Views
                 : kind == UiNotificationKind.Success ? "GscSuccessBrush"
                 : "GscInfoBrush";
 
-            var card = new Border
+            var card = new GameSaveCenter.Playnite.Controls.FeedbackToast
             {
                 Style = (Style)Resources["GscRedesignFeedbackToastCard"],
                 Opacity = MotionEnabled ? 0 : 1,
@@ -1450,6 +1451,7 @@ namespace GameSaveCenter.Playnite.Views
             Grid.SetColumn(close, 2);
             layout.Children.Add(close);
             card.Child = layout;
+            ApplyToastAutomation(card, title, message);
             var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(kind == UiNotificationKind.Error ? 7 : 3.8) };
             toastTimers[card] = timer;
             Action dismiss = () => DismissToast(card, timer);
@@ -1489,6 +1491,15 @@ namespace GameSaveCenter.Playnite.Views
                 card.BeginAnimation(OpacityProperty, fade);
                 translate.BeginAnimation(TranslateTransform.XProperty, slide);
             }
+        }
+
+        internal static void ApplyToastAutomation(FrameworkElement toast, string title, string message)
+        {
+            var summary = string.IsNullOrWhiteSpace(message) ? title : $"{title}：{message}";
+            AutomationProperties.SetName(toast, summary);
+            AutomationProperties.SetHelpText(toast, "任务状态通知；最终状态以任务中心记录为准。" + summary);
+            if (toast is GameSaveCenter.Playnite.Controls.FeedbackToast feedbackToast)
+                feedbackToast.RaiseFeedbackChanged();
         }
 
         private void DismissToast(Border card, DispatcherTimer timer)

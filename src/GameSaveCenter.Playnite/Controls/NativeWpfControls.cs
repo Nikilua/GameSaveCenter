@@ -1,5 +1,7 @@
 using System;
 using System.Windows;
+using System.Windows.Automation;
+using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -19,6 +21,7 @@ namespace GameSaveCenter.Playnite.Controls
 
         public Button()
         {
+            Loaded += OnButtonLoaded;
             Unloaded += OnButtonUnloaded;
         }
 
@@ -47,7 +50,7 @@ namespace GameSaveCenter.Playnite.Controls
         }
 
         public static readonly DependencyProperty IsBusyProperty =
-            DependencyProperty.Register("IsBusy", typeof(bool), typeof(Button), new PropertyMetadata(false));
+            DependencyProperty.Register("IsBusy", typeof(bool), typeof(Button), new FrameworkPropertyMetadata(false, OnIsBusyChanged));
 
         public bool IsBusy
         {
@@ -55,7 +58,76 @@ namespace GameSaveCenter.Playnite.Controls
             set => SetValue(IsBusyProperty, value);
         }
 
-        private void OnButtonUnloaded(object sender, RoutedEventArgs e) => ResetInteractionLayers();
+        private static readonly DependencyPropertyKey IsBusyIndicatorVisibleKey =
+            DependencyProperty.RegisterReadOnly(
+                "IsBusyIndicatorVisible",
+                typeof(bool),
+                typeof(Button),
+                new FrameworkPropertyMetadata(false));
+
+        /// <summary>
+        /// Visual-only busy state. The command gate remains <see cref="IsBusy"/> immediately;
+        /// this state waits briefly so a fast task does not flash a one-frame spinner.
+        /// </summary>
+        public static readonly DependencyProperty IsBusyIndicatorVisibleProperty = IsBusyIndicatorVisibleKey.DependencyProperty;
+
+        public bool IsBusyIndicatorVisible => (bool)GetValue(IsBusyIndicatorVisibleProperty);
+
+        private static readonly TimeSpan BusyIndicatorDelay = TimeSpan.FromMilliseconds(120);
+        private DispatcherTimer? busyIndicatorTimer;
+
+        private static void OnIsBusyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+        {
+            ((Button)sender).UpdateBusyIndicator((bool)args.NewValue);
+        }
+
+        private void OnButtonLoaded(object sender, RoutedEventArgs e)
+        {
+            if (IsBusy)
+                StartBusyIndicatorDelay();
+        }
+
+        private void OnButtonUnloaded(object sender, RoutedEventArgs e)
+        {
+            StopBusyIndicatorDelay();
+            SetValue(IsBusyIndicatorVisibleKey, false);
+            ResetInteractionLayers();
+        }
+
+        private void UpdateBusyIndicator(bool isBusy)
+        {
+            StopBusyIndicatorDelay();
+            SetValue(IsBusyIndicatorVisibleKey, false);
+            if (isBusy && IsLoaded)
+                StartBusyIndicatorDelay();
+        }
+
+        private void StartBusyIndicatorDelay()
+        {
+            if (!IsLoaded || !IsBusy) return;
+
+            busyIndicatorTimer = new DispatcherTimer(DispatcherPriority.Background, Dispatcher)
+            {
+                Interval = BusyIndicatorDelay
+            };
+            busyIndicatorTimer.Tick += OnBusyIndicatorDelayTick;
+            busyIndicatorTimer.Start();
+        }
+
+        private void OnBusyIndicatorDelayTick(object? sender, EventArgs e)
+        {
+            StopBusyIndicatorDelay();
+            if (IsLoaded && IsBusy)
+                SetValue(IsBusyIndicatorVisibleKey, true);
+        }
+
+        private void StopBusyIndicatorDelay()
+        {
+            if (busyIndicatorTimer == null) return;
+            busyIndicatorTimer.Stop();
+            busyIndicatorTimer.Tick -= OnBusyIndicatorDelayTick;
+            busyIndicatorTimer = null;
+        }
 
         private void ResetInteractionLayers()
         {
@@ -84,6 +156,38 @@ namespace GameSaveCenter.Playnite.Controls
                 overlay.Opacity = 0;
             }
         }
+    }
+
+    /// <summary>
+    /// Page-local task feedback surface with a UI Automation live-region peer.
+    /// The peer keeps terminal task feedback readable without taking keyboard focus.
+    /// </summary>
+    public class FeedbackToast : Border
+    {
+        protected override AutomationPeer OnCreateAutomationPeer()
+            => new FeedbackToastAutomationPeer(this);
+
+        public void RaiseFeedbackChanged()
+        {
+            // net462 does not expose live-region event/property helpers. A Name property
+            // change is the compatible non-focus UI Automation signal for terminal feedback.
+            var peer = UIElementAutomationPeer.CreatePeerForElement(this);
+            peer?.RaisePropertyChangedEvent(
+                AutomationElementIdentifiers.NameProperty,
+                string.Empty,
+                AutomationProperties.GetName(this));
+        }
+    }
+
+    internal sealed class FeedbackToastAutomationPeer : FrameworkElementAutomationPeer
+    {
+        public FeedbackToastAutomationPeer(FeedbackToast owner) : base(owner)
+        {
+        }
+
+        protected override string GetClassNameCore() => nameof(FeedbackToast);
+
+        protected override AutomationControlType GetAutomationControlTypeCore() => AutomationControlType.Custom;
     }
 
     public class Card : ContentControl

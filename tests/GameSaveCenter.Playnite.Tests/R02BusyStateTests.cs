@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 using GameSaveCenter.Playnite.Controls;
 using GameSaveCenter.Playnite.ViewModels;
 using GameSaveCenter.Playnite.Views.Development;
@@ -143,6 +144,10 @@ public sealed class R02BusyStateTests
                 button.ApplyTemplate();
                 var busyHost = (Border)button.Template!.FindName("BusyIndicatorHost", button)!;
                 var progress = FindVisualChild<ProgressBar>(busyHost);
+                Assert.Equal(Visibility.Collapsed, busyHost.Visibility);
+                PumpDispatcher(TimeSpan.FromMilliseconds(150));
+                root.UpdateLayout();
+                button.ApplyTemplate();
                 busyWidth = button.ActualWidth;
                 indicatorVisible = busyHost.Visibility == Visibility.Visible;
                 indicatorIsHitTestVisible = busyHost.IsHitTestVisible;
@@ -178,6 +183,60 @@ public sealed class R02BusyStateTests
         Assert.True(indicatorIsIndeterminate);
         Assert.True(busyFocusRetained);
         Assert.True(restoredFocusRetained);
+    }
+
+    [Fact]
+    public void SharedProductionButtonSuppressesIndicatorForFastCompletion()
+    {
+        Exception? exception = null;
+        var indicatorVisibility = Visibility.Visible;
+        var visualState = false;
+
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var resourceHost = new UiFrameworkProbeView();
+                var state = new BusyState();
+                var root = new UserControl { DataContext = state };
+                root.Resources.MergedDictionaries.Add(resourceHost.Resources);
+                var button = new ProductionButton
+                {
+                    Width = 180,
+                    Height = 44,
+                    Content = "快速任务",
+                    Style = (Style)resourceHost.Resources["GscWpfUiPrimaryButton"]
+                };
+                root.Content = button;
+                window = CreateWindow(root);
+                window.Show();
+                window.UpdateLayout();
+                button.ApplyTemplate();
+                var busyHost = (Border)button.Template!.FindName("BusyIndicatorHost", button)!;
+
+                state.IsBusy = true;
+                root.UpdateLayout();
+                state.IsBusy = false;
+                PumpDispatcher(TimeSpan.FromMilliseconds(150));
+                root.UpdateLayout();
+
+                indicatorVisibility = busyHost.Visibility;
+                visualState = button.IsBusyIndicatorVisible;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        Assert.Null(exception);
+        Assert.Equal(Visibility.Collapsed, indicatorVisibility);
+        Assert.False(visualState);
     }
 
     [Fact]
@@ -240,6 +299,19 @@ public sealed class R02BusyStateTests
         thread.Join();
         if (exception != null)
             throw new Xunit.Sdk.XunitException(exception.ToString());
+    }
+
+    private static void PumpDispatcher(TimeSpan duration)
+    {
+        var frame = new DispatcherFrame();
+        var timer = new DispatcherTimer { Interval = duration };
+        timer.Tick += (_, __) =>
+        {
+            timer.Stop();
+            frame.Continue = false;
+        };
+        timer.Start();
+        Dispatcher.PushFrame(frame);
     }
 
     private static string Read(params string[] segments)
