@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R07-08 resize 压力序列
+
+- `9f478cac` 补真实生产 `AcrylicProductionShellView` + `TaskCenterView` 的隔离 STA WPF resize 夹具；复用 shell Render 优先级合并、独立详情 `ScrollViewer`、游戏选择器 overlay 和现有命令/绑定，没有换布局体系。序列为 `1366×900→960×700→960×560→1440×900→1366×900`，任务详情、游戏选择器、搜索焦点全程保持。
+- 当前身份 shadow 构建 `r07-08-build-9f478cac`：XAML `24/24`、solution Release `0 warning / 0 error`、Playnite `net462`；`R07ResizeStressBehaviorTests 1/1`，R07 过滤回归 `14/14`，源校验和 diff check 通过。表格 ActualHeight `525.333/180/180/525.333/525.333`，Task MaxHeight 全为 `∞`；详情 MaxHeight 宽态 `∞`、紧凑/短窗 `160` 后恢复 `∞`；选择器 ActualHeight `122.667`，MaxHeight `401.333–774.667`。
+- 测试只覆盖合成 DTO/fake、隔离 STA WPF/offscreen logical DIP；WPF 退出时的 `TextServicesContext.InvalidComObjectException` 已记录，vstest 退出码为 0。未验真实 Playnite 拖拽 resize、物理 DPI/跨屏、presented frame、UIA/读屏、ETW 或宿主性能。Demo 原始目录仍缺失；下一可执行任务为 R08-01 中途反向连续。
+
 ## 当前第三轮 R07-07 触控板小增量
 
 - `98e8b244` 修正共享 `ScrollBoundaryRoutingBehavior` 的最终边界：内层/外层都不可滚动时收口无效滚轮事件，避免每个末端 no-op 触发一次布局；有可移动外层时仍按 delta 转发，正常小增量仍交给 WPF 原生处理。没有改游戏选框、滚动条、虚拟化、命令/绑定或安全语义。

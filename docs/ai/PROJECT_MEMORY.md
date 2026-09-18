@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-18
 
+## 2026-09-18 R07-08 resize 压力序列
+
+- 先核对 shell 的 Render 优先级 resize 合并、Task 独立详情滚动和游戏选择器 overlay；没有新增布局体系。`9f478cac` 新增真实生产 shell/page 夹具，执行 `1366×900→960×700→960×560→1440×900→1366×900`，详情、菜单和搜索框焦点均保持。
+- 当前身份 shadow 构建 `r07-08-build-9f478cac` 为 XAML `24/24`、solution `0/0`、Playnite `net462`；`R07ResizeStressBehaviorTests 1/1`、R07 过滤回归 `14/14`。表格 ActualHeight `525.333/180/180/525.333/525.333`，Task MaxHeight 全 `∞`，详情 MaxHeight `∞/160/160/∞/∞`，选择器 ActualHeight `122.667` 且 MaxHeight `774.667/541.333/401.333/774.667/774.667`。
+- WPF 退出阶段有已知 TextServices COM 清理诊断，但测试退出码为 0；该输出没有被改写成宿主通过。边界仍是合成 DTO、隔离 STA WPF/offscreen logical DIP，无真实 Playnite/拖拽 resize/物理呈现/UIA/ETW/宿主性能。Demo 原始目录不可用。下一项 R08-01 中途反向连续。
+
 ## 2026-09-18 R07-07 触控板小增量
 
 - 核对最新实现后确认滚动所有权和 delta 加速已经存在；`98e8b244` 只补共享行为的最终边界收口：没有可移动内层/外层时标记 no-op，避免 WPF 重复安排布局；仍保留可移动外层的边界转发和内层原生滚动。

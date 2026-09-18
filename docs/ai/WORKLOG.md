@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-18 R07-08 resize 压力序列
+
+- 复用现有 shell/page resize 合并、详情滚动和游戏选择器 overlay；`9f478cac` 补实际 `AcrylicProductionShellView` + `TaskCenterView` 隔离行为夹具，覆盖 `1366×900→960×700→960×560→1440×900→1366×900`，不改生产布局体系。
+- 当前身份 shadow 构建 `r07-08-build-9f478cac`：XAML `24/24`、solution `0/0`、Playnite `net462`；`R07ResizeStressBehaviorTests 1/1`、R07 回归 `14/14`、源校验/diff check 通过。详情/菜单/焦点全程保持；表格高度 `525.333/180/180/525.333/525.333`，Task MaxHeight 全 `∞`，详情 `∞/160/160/∞/∞`，选择器 `122.667` 高且 MaxHeight `401.333–774.667` 合法。
+- 退出阶段 TextServices COM 清理诊断仍存在但 vstest 退出码为 0；证据是合成 DTO/fake、STA WPF/offscreen logical DIP，不等价真实 Playnite、拖拽 resize、物理呈现、ETW 或宿主性能。Demo 原始目录缺失。下一可执行任务为 R08-01 中途反向连续。
+
 ## 2026-09-18 R07-07 触控板小增量
 
 - 先核对 `ScrollBoundaryRoutingBehavior` 和既有 R07-01 夹具，确认没有新滚动条体系缺口；实际失败数据是末端 5 次无位移事件各触发一次 `LayoutUpdated`。`98e8b244` 只在没有任何可达滚动目标时收口 no-op，保留有外层可滚动时的 delta 转发。
