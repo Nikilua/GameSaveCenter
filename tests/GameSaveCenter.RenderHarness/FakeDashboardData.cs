@@ -36,6 +36,7 @@ public enum OverviewFixtureProfile
 public sealed class FakeDashboardData
 {
     private readonly WorkspaceFixtureState fixtureState;
+    private readonly bool mediaInboxHasMore;
 
     public string OnboardingTitle => "首次使用：准备环境";
     public string OnboardingDescription => "先确认 Worker、目录、SQLite 与备份工具可用。所有检查都是非破坏性的；你可以跳过，之后随时在维护中心重新运行。";
@@ -85,8 +86,14 @@ public sealed class FakeDashboardData
     }
 
     public FakeDashboardData(int rowCount, WorkspaceFixtureState state, OverviewFixtureProfile overviewProfile)
+        : this(rowCount, state, overviewProfile, false)
+    {
+    }
+
+    public FakeDashboardData(int rowCount, WorkspaceFixtureState state, OverviewFixtureProfile overviewProfile, bool mediaInboxHasMore)
     {
         fixtureState = state;
+        this.mediaInboxHasMore = mediaInboxHasMore;
         rowCount = Math.Max(8, rowCount);
         Snapshot = new DashboardSnapshotDto
         {
@@ -863,7 +870,7 @@ public sealed class FakeDashboardData
     public string MediaLoadedSummary => $"当前保留 {Media.Count} 条（窗口上限 2000）";
     public ObservableCollection<MediaItemDto> UnassignedMedia { get; } = new ObservableCollection<MediaItemDto>();
     public ObservableCollection<MediaItemDto> MediaInboxItems => UnassignedMedia;
-    public bool MediaInboxPageHasMore => false;
+    public bool MediaInboxPageHasMore => mediaInboxHasMore;
     public string MediaInboxLoadedSummary => $"当前保留 {MediaInboxItems.Count} 条（窗口上限 2000）";
     public bool IsWorkerOffline => IsFixtureOffline;
     public bool IsBusy => false;

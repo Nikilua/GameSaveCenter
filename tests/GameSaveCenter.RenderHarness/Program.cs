@@ -187,6 +187,19 @@ public static class Program
             return shellExitCode;
         }
 
+        if (args.Length > 0 && args[0].Equals("shortwindowprobe", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "shortwindowprobe");
+            var probeExitCode = 0;
+            var probeThread = new Thread(() => { probeExitCode = RunShortWindowReachabilityProbe(outputRoot); });
+            probeThread.SetApartmentState(ApartmentState.STA);
+            probeThread.Start();
+            probeThread.Join();
+            return probeExitCode;
+        }
+
         if (args.Length > 0 && args[0].Equals("v3shots", StringComparison.OrdinalIgnoreCase))
         {
             var outputRoot = args.Length > 1
@@ -7172,6 +7185,233 @@ public static class Program
                 s_problems.Add($"{label} failed: {ex.Message}");
             }
         }
+    }
+
+    private static int RunShortWindowReachabilityProbe(string outputRoot)
+    {
+        Directory.CreateDirectory(outputRoot);
+        var report = new StringBuilder();
+        report.AppendLine("GameSaveCenter short-window bottom reachability probe");
+        report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+        AppendRunMetadata(report, "shortwindowprobe", "OffscreenRenderHarness", "production default palette", "synthetic stale banners; 1040x700 and 1040x560; page/grid/inspector end-scroll checks");
+        report.AppendLine();
+        s_problems.Clear();
+
+        try
+        {
+            var app = new Application();
+            app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+            foreach (var height in new[] { 700, 560 })
+            {
+                RunShortWindowMediaProbe(outputRoot, height, report);
+                RunShortWindowSaveProbe(outputRoot, height, report);
+                RunShortWindowTaskProbe(outputRoot, height, report);
+                RunShortWindowMaintenanceProbe(outputRoot, height, report);
+            }
+
+            report.AppendLine(s_problems.Count == 0 ? "shortwindowprobe OK" : "shortwindowprobe FAILED");
+            foreach (var problem in s_problems)
+                report.AppendLine("  PROBLEM " + problem);
+            File.WriteAllText(Path.Combine(outputRoot, "shortwindowprobe-report.txt"), report.ToString());
+            Console.WriteLine(report.ToString());
+            return s_problems.Count == 0 ? 0 : 1;
+        }
+        catch (Exception ex)
+        {
+            report.AppendLine("shortwindowprobe FAILED");
+            report.AppendLine(ex.ToString());
+            File.WriteAllText(Path.Combine(outputRoot, "shortwindowprobe-report.txt"), report.ToString());
+            Console.WriteLine(report.ToString());
+            return 1;
+        }
+    }
+
+    private static void RunShortWindowMediaProbe(string outputRoot, int height, StringBuilder report)
+    {
+        var data = new FakeDashboardData(60, WorkspaceFixtureState.Stale, OverviewFixtureProfile.Default, mediaInboxHasMore: true);
+        var view = new MediaCenterView { DataContext = data };
+        var host = MountShortWindowPage(view, data, height, out var shell, out var pageHost);
+        var tabs = FindVisualChildren<TabControl>(view).First(candidate => candidate.Name == "MediaTabControl");
+        tabs.SelectedIndex = 0;
+        view.ApplyResponsiveLayout(pageHost.ActualWidth, pageHost.ActualHeight);
+        host.UpdateLayout();
+
+        var pageScroller = FindVisualChildren<ScrollViewer>(view).FirstOrDefault(candidate => candidate.Name == "MediaInboxPageScrollViewer");
+        var surface = FindVisualChildren<FrameworkElement>(view).FirstOrDefault(candidate => candidate.Name == "MediaInboxPageSurface");
+        var staleBanner = FindVisualChildren<FrameworkElement>(view).FirstOrDefault(candidate => candidate.Name == "MediaInboxStaleBanner");
+        var footer = FindVisualChildren<FrameworkElement>(view).FirstOrDefault(candidate => candidate.Name == "MediaInboxFooter");
+        var loadMore = FindVisualChildren<Button>(view).FirstOrDefault(candidate => AutomationProperties.GetName(candidate) == "加载更多媒体收件箱项目");
+        if (pageScroller == null || surface == null || staleBanner == null || footer == null || loadMore == null)
+        {
+            s_problems.Add($"Media short window {height} probe elements are missing.");
+            return;
+        }
+
+        if (staleBanner.Visibility != Visibility.Visible)
+            s_problems.Add($"Media short window {height} did not show the stale-data hint.");
+        var staleBounds = GetBounds(staleBanner, surface);
+        var footerInContent = GetBounds(footer, surface);
+        if (staleBounds.Bottom > footerInContent.Top + 1)
+            s_problems.Add($"Media short window {height} stale hint overlaps the footer (stale={FormatRect(staleBounds)}, footer={FormatRect(footerInContent)}).");
+
+        pageScroller.ScrollToVerticalOffset(pageScroller.ScrollableHeight);
+        host.UpdateLayout();
+        var viewport = GetBounds(pageScroller, host);
+        var footerBounds = GetBounds(footer, host);
+        var loadMoreBounds = GetBounds(loadMore, host);
+        if (!IsInside(viewport, footerBounds) || !IsInside(viewport, loadMoreBounds))
+            s_problems.Add($"Media short window {height} bottom actions are outside the end viewport (viewport={FormatRect(viewport)}, footer={FormatRect(footerBounds)}, loadMore={FormatRect(loadMoreBounds)}).");
+
+        report.AppendLine($"  Media {height}: shellFooter={FormatRect(GetBounds((FrameworkElement)shell.FindName("FooterSurface"), host))}, pageScroll={pageScroller.VerticalOffset:0.##}/{pageScroller.ScrollableHeight:0.##}, viewport={FormatRect(viewport)}, stale={FormatRect(staleBounds)}, footer={FormatRect(footerBounds)}, loadMore={FormatRect(loadMoreBounds)}");
+        SavePng(host, Path.Combine(outputRoot, $"Media-1040x{height}-bottom.png"));
+    }
+
+    private static void RunShortWindowSaveProbe(string outputRoot, int height, StringBuilder report)
+    {
+        var data = new FakeDashboardData(60, WorkspaceFixtureState.Stale);
+        var view = new SaveCenterView { DataContext = data };
+        var host = MountShortWindowPage(view, data, height, out var shell, out var pageHost);
+        var tabs = FindVisualChildren<TabControl>(view).First();
+        tabs.SelectedIndex = 0;
+        view.ApplyResponsiveLayout(pageHost.ActualWidth, pageHost.ActualHeight);
+        host.UpdateLayout();
+        var staleBanner = FindVisualChildren<FrameworkElement>(view).FirstOrDefault(candidate => candidate.Name == "SaveDetailsStaleBanner");
+        if (staleBanner == null || staleBanner.Visibility != Visibility.Visible)
+            s_problems.Add($"Save short window {height} did not show the stale-data hint on history.");
+
+        tabs.SelectedIndex = 2;
+        host.UpdateLayout();
+        view.ApplyResponsiveLayout(pageHost.ActualWidth, pageHost.ActualHeight);
+        host.UpdateLayout();
+        var policyStack = FindVisualChildren<FrameworkElement>(view).FirstOrDefault(candidate => candidate.Name == "SavePolicyStack");
+        var policyScroller = policyStack == null ? null : FindVisualAncestor<ScrollViewer>(policyStack);
+        var saveButton = FindVisualChildren<Button>(view).FirstOrDefault(candidate => string.Equals(candidate.Content?.ToString(), "保存策略", StringComparison.Ordinal));
+        if (policyScroller == null || saveButton == null)
+        {
+            s_problems.Add($"Save short window {height} policy action probe elements are missing.");
+            return;
+        }
+
+        policyScroller.ScrollToVerticalOffset(0);
+        host.UpdateLayout();
+        var initialOffset = policyScroller.VerticalOffset;
+        saveButton.BringIntoView();
+        host.UpdateLayout();
+        var viewport = GetBounds(policyScroller, host);
+        var saveBounds = GetBounds(saveButton, host);
+        if (!IsInside(viewport, saveBounds))
+            s_problems.Add($"Save short window {height} save action is outside the reachable viewport (viewport={FormatRect(viewport)}, save={FormatRect(saveBounds)}).");
+
+        report.AppendLine($"  Save {height}: shellFooter={FormatRect(GetBounds((FrameworkElement)shell.FindName("FooterSurface"), host))}, policyScroll={initialOffset:0.##}->{policyScroller.VerticalOffset:0.##}/{policyScroller.ScrollableHeight:0.##}, viewport={FormatRect(viewport)}, save={FormatRect(saveBounds)}");
+        SavePng(host, Path.Combine(outputRoot, $"Save-1040x{height}-policy-bottom.png"));
+    }
+
+    private static void RunShortWindowTaskProbe(string outputRoot, int height, StringBuilder report)
+    {
+        var data = new FakeDashboardData(60, WorkspaceFixtureState.Stale);
+        var view = new TaskCenterView { DataContext = data };
+        var host = MountShortWindowPage(view, data, height, out var shell, out var pageHost);
+        view.ApplyResponsiveLayout(pageHost.ActualWidth, pageHost.ActualHeight);
+        host.UpdateLayout();
+        var grid = FindVisualChildren<DataGrid>(view).First(candidate => candidate.Name == "TaskGrid");
+        grid.SelectedIndex = 0;
+        view.ApplyResponsiveLayout(pageHost.ActualWidth, pageHost.ActualHeight);
+        host.UpdateLayout();
+        var detailsButton = FindVisualChildren<Button>(view).FirstOrDefault(candidate => candidate.Name == "TaskCompactDetailsButton");
+        var inspector = FindVisualChildren<ScrollViewer>(view).FirstOrDefault(candidate => candidate.Name == "TaskDetailScrollViewer");
+        var cancel = FindVisualChildren<Button>(view).FirstOrDefault(candidate => AutomationProperties.GetName(candidate) == "取消任务");
+        if (detailsButton == null || inspector == null || cancel == null)
+        {
+            s_problems.Add($"Task short window {height} cancel action probe elements are missing.");
+            return;
+        }
+
+        if (detailsButton.Visibility == Visibility.Visible)
+            detailsButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+        view.ApplyResponsiveLayout(pageHost.ActualWidth, pageHost.ActualHeight);
+        host.UpdateLayout();
+        inspector.ScrollToVerticalOffset(inspector.ScrollableHeight);
+        host.UpdateLayout();
+        var viewport = GetBounds(inspector, host);
+        var cancelBounds = GetBounds(cancel, host);
+        if (!IsInside(viewport, cancelBounds))
+            s_problems.Add($"Task short window {height} cancel action is outside the end inspector viewport (viewport={FormatRect(viewport)}, cancel={FormatRect(cancelBounds)}).");
+
+        report.AppendLine($"  Task {height}: shellFooter={FormatRect(GetBounds((FrameworkElement)shell.FindName("FooterSurface"), host))}, inspectorScroll={inspector.VerticalOffset:0.##}/{inspector.ScrollableHeight:0.##}, viewport={FormatRect(viewport)}, cancel={FormatRect(cancelBounds)}");
+        SavePng(host, Path.Combine(outputRoot, $"Task-1040x{height}-cancel-bottom.png"));
+    }
+
+    private static void RunShortWindowMaintenanceProbe(string outputRoot, int height, StringBuilder report)
+    {
+        var data = new FakeDashboardData(60, WorkspaceFixtureState.Stale);
+        data.CloudTransferViewSummary.HasMore = true;
+        var view = new MaintenanceView { DataContext = data };
+        var host = MountShortWindowPage(view, data, height, out var shell, out var pageHost);
+        var tabs = FindVisualChildren<TabControl>(view).First(candidate => candidate.Name == "MaintenanceTabControl");
+        tabs.SelectedIndex = 1;
+        view.ApplyResponsiveLayout(pageHost.ActualWidth, pageHost.ActualHeight);
+        host.UpdateLayout();
+        var surface = FindVisualChildren<FrameworkElement>(view).FirstOrDefault(candidate => candidate.Name == "CloudTransfersSurface");
+        var layout = FindVisualChildren<FrameworkElement>(view).FirstOrDefault(candidate => candidate.Name == "CloudTransfersLayout");
+        var loadMore = FindVisualChildren<Button>(view).FirstOrDefault(candidate => AutomationProperties.GetName(candidate) == "加载更多云端队列");
+        if (surface == null || layout == null || loadMore == null)
+        {
+            s_problems.Add($"Maintenance short window {height} cloud queue probe elements are missing.");
+            return;
+        }
+
+        var surfaceBounds = GetBounds(surface, host);
+        var layoutBounds = GetBounds(layout, host);
+        var loadMoreBounds = GetBounds(loadMore, host);
+        if (!IsInside(surfaceBounds, layoutBounds) || !IsInside(surfaceBounds, loadMoreBounds) || loadMoreBounds.Top < layoutBounds.Top - 1)
+            s_problems.Add($"Maintenance short window {height} load-more action escapes the cloud queue surface (surface={FormatRect(surfaceBounds)}, layout={FormatRect(layoutBounds)}, loadMore={FormatRect(loadMoreBounds)}).");
+
+        report.AppendLine($"  Maintenance {height}: shellFooter={FormatRect(GetBounds((FrameworkElement)shell.FindName("FooterSurface"), host))}, surface={FormatRect(surfaceBounds)}, layout={FormatRect(layoutBounds)}, loadMore={FormatRect(loadMoreBounds)}");
+        SavePng(host, Path.Combine(outputRoot, $"Maintenance-1040x{height}-load-more-bottom.png"));
+    }
+
+    private static Grid MountShortWindowPage(UserControl page, FakeDashboardData data, int height, out AcrylicProductionShellView shell, out ContentControl pageHost)
+    {
+        shell = new AcrylicProductionShellView { DataContext = data };
+        page.DataContext = data;
+        pageHost = shell.PageHostForAudit as ContentControl
+            ?? throw new InvalidOperationException("Production shell PageHost is not a ContentControl.");
+        pageHost.Content = page;
+        var host = new Grid
+        {
+            Width = 1040,
+            Height = height,
+            Background = CreateHarnessBackground(shell),
+            ClipToBounds = true
+        };
+        host.Children.Add(shell);
+        shell.ApplyResponsiveLayout(1040, height);
+        host.Measure(new Size(1040, height));
+        host.Arrange(new Rect(0, 0, 1040, height));
+        host.UpdateLayout();
+        shell.ApplyResponsiveLayout(1040, height);
+        host.UpdateLayout();
+        return host;
+    }
+
+    private static bool IsInside(Rect outer, Rect inner)
+        => !outer.IsEmpty
+           && !inner.IsEmpty
+           && inner.Left >= outer.Left - 1
+           && inner.Right <= outer.Right + 1
+           && inner.Top >= outer.Top - 1
+           && inner.Bottom <= outer.Bottom + 1;
+
+    private static T? FindVisualAncestor<T>(DependencyObject node) where T : DependencyObject
+    {
+        var current = VisualTreeHelper.GetParent(node);
+        while (current != null)
+        {
+            if (current is T match)
+                return match;
+            current = VisualTreeHelper.GetParent(current);
+        }
+        return null;
     }
 
     private static void RunProductionShellMediaProbe(string outputRoot, StringBuilder report)
