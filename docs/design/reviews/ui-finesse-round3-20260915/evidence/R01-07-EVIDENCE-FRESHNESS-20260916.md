@@ -7,8 +7,8 @@ R01-07 已满足。新增 check-ui-evidence-freshness.ps1 和版本化 UI_EVIDEN
 ## 2026-09-18 当前分支扫描
 
 - R00-01-02、R00-03、R00-04、R00-05、R00-06、R00-07、R00-08 和 R01-01、R01-02、R01-03 已用当前证据重跑，因此将 baseline 的 `sourceCommit` 重新绑定到各自可复核的当前隔离证据身份：`89aa27e1`、`e5a12ffa`、`e8fe1aab`、`4f585024`、`a5219c09`、`c2399d7b`（按证据条目对应，完整值见 JSON）。没有把未重跑的记录强行标 fresh。
-- 以源码 HEAD `989abec46173475a32ee9934c8f3093d63fd685f` 扫描 14 条记录：`12` 条 fresh、`2` 条 stale；当前包身份 `not-provided`，没有真实 package-host 安装或重装结论。随后只提交了文档与 baseline 变更，按规则不需因文档-only 变化重跑。
-- 仍需重跑的是 R01-05（命中 `AdaptiveThemePalette.cs`、`AcrylicProductionShellView.xaml.cs`）与 R01-06（命中 `RenderHarness/Program.cs`）。这表示其历史证据与当前源码路径之间存在变更，不表示工具已经发现产品缺陷；下一小批量先处理 R01-05，再处理 R01-06。
+- 以源码 HEAD `b185997aae99cbb3d8caaa178bc404ae5e57f7d9` 扫描 14 条记录：`13` 条 fresh、`1` 条 stale；当前包身份 `not-provided`，没有真实 package-host 安装或重装结论。随后只提交了文档与 baseline 变更，按规则不需因文档-only 变化重跑。
+- 仍需重跑的是 R01-06（命中 `RenderHarness/Program.cs`）。这表示历史宿主归档与当前审计入口之间存在变更，不表示工具已经发现产品缺陷；下一小批量处理 R01-06。
 
 ## 当前分支扫描
 
@@ -16,11 +16,11 @@ R01-07 已满足。新增 check-ui-evidence-freshness.ps1 和版本化 UI_EVIDEN
 
 | 项目 | 结果 |
 | --- | --- |
-| 扫描时源码身份 | `989abec46173475a32ee9934c8f3093d63fd685f` |
+| 扫描时源码身份 | `b185997aae99cbb3d8caaa178bc404ae5e57f7d9` |
 | 当前包身份 | not-provided；本轮没有真实包或宿主安装 |
-| 扫描记录 | 14 条；12 条 fresh，2 条 stale |
-| 需要重跑 | R01-05、R01-06 |
-| 保持新鲜 | 其余 12 条，包括本批已重跑的 R00/R01 证据 |
+| 扫描记录 | 14 条；13 条 fresh，1 条 stale |
+| 需要重跑 | R01-06 |
+| 保持新鲜 | 其余 13 条，包括本批已重跑的 R00/R01 证据 |
 
 需要重跑只表示证据提交后其关联源码或测试路径发生变化，不表示扫描发现产品缺陷。命中的页面/范围和具体路径保存在 JSON 的 scopes、matchedSourcePaths 中。
 
@@ -51,4 +51,4 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\test-ui-evidence-fre
 
 ## 下一步
 
-R01-07 已满足；下一可执行小批量为 R01-05“负例注册表”当前证据重跑，随后处理 R01-06 宿主证据保全。R01-08 仍保留既有 skip 盘点，不把当前包身份缺失写成已安装宿主验证。
+R01-07 已满足；下一可执行小批量为 R01-06“宿主证据保全”当前证据重跑。R01-08 仍保留既有 skip 盘点，不把当前包身份缺失写成已安装宿主验证。

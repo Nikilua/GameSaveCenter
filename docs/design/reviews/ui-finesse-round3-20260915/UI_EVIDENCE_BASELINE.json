@@ -144,7 +144,7 @@
     {
       "id": "R01-05",
       "evidence": "evidence/R01-05-NEGATIVE-REGISTRY-20260916.md",
-      "sourceCommit": "5e6d64a",
+      "sourceCommit": "810114e2",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": ["negative-fixtures", "all-pages"],

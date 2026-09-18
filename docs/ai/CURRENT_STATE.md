@@ -10,9 +10,9 @@
 ## 当前第三轮 R01-07 freshness 基线复核
 
 - 版本化 `UI_EVIDENCE_BASELINE.json` 已把本批实际重跑的 R00-01-02、R00-03、R00-04、R00-05、R00-06、R00-07、R00-08、R01-01、R01-02、R01-03 绑定到各自当前隔离证据身份；没有把未重跑的旧证据强行标 fresh。
-- `test-ui-evidence-freshness.ps1` 的文档-only、共享 `Redesign.xaml`、合成 package identity 三类 smoke 均通过。扫描时源码 `989abec4` 的 14 条记录为 `12 fresh / 2 stale`；R01-05 命中 `AdaptiveThemePalette.cs`/`AcrylicProductionShellView.xaml.cs`，R01-06 命中 `RenderHarness/Program.cs`。
+- `test-ui-evidence-freshness.ps1` 的文档-only、共享 `Redesign.xaml`、合成 package identity 三类 smoke 均通过。扫描时源码 `b185997a` 的 14 条记录为 `13 fresh / 1 stale`；仅 R01-06 命中 `RenderHarness/Program.cs`。
 - stale 只表示历史证据与当前源码路径发生变更，不是产品缺陷结论。R01-05/R01-06 在当前账本标为“需重跑证据”；当前包身份仍为 `not-provided`，不宣称 package-host 安装或真实 Playnite。
-- 下一可执行任务为 R01-05 当前负例注册表复核，再处理 R01-06 宿主证据保全；本阶段继续保留 Demo 原始目录缺失、offscreen logical DIP 和真实宿主/UIA/物理呈现/ETW/性能未验边界。
+- 下一可执行任务为 R01-06 当前宿主证据保全；本阶段继续保留 Demo 原始目录缺失、offscreen logical DIP 和真实宿主/UIA/物理呈现/ETW/性能未验边界。
 
 ## 当前第三轮 R01-03 每项证据直达
 
