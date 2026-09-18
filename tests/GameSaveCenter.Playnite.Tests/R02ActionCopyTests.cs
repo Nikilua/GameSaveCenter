@@ -25,7 +25,8 @@ public sealed class R02ActionCopyTests
         var reloadButtons = dashboard
             .Concat(overview)
             .Concat(save)
-            .Where(element => string.Equals(element.Attribute("Command")?.Value, "{Binding LoadDetailsCommand}", StringComparison.Ordinal))
+            .Where(element => string.Equals(element.Attribute("Command")?.Value, "{Binding LoadDetailsCommand}", StringComparison.Ordinal)
+                && !string.Equals(element.Attribute("Content")?.Value, "重试", StringComparison.Ordinal))
             .ToList();
         Assert.Equal(4, reloadButtons.Count);
         Assert.All(reloadButtons, button =>
@@ -40,6 +41,15 @@ public sealed class R02ActionCopyTests
             if (name != null)
                 Assert.Contains("重新加载", name);
         });
+
+        var retryButtons = dashboard
+            .Concat(overview)
+            .Concat(save)
+            .Where(element => string.Equals(element.Attribute("Command")?.Value, "{Binding LoadDetailsCommand}", StringComparison.Ordinal)
+                && string.Equals(element.Attribute("Content")?.Value, "重试", StringComparison.Ordinal))
+            .ToList();
+        Assert.Single(retryButtons);
+        Assert.Contains("重试", retryButtons[0].Attribute("AutomationProperties.Name")?.Value);
     }
 
     [Fact]

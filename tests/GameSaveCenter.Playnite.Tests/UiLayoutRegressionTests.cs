@@ -571,8 +571,13 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("x:Key=\"SaveSizeValue\"", xaml);
             Assert.Contains("Property=\"TextTrimming\" Value=\"None\"", xaml);
             Assert.Contains("Property=\"Tag\" Value=\"SaveHistorySize\"", xaml);
-            Assert.Contains("Header=\"大小\" Binding=\"{Binding SizeDisplay, Mode=OneWay}\" Width=\"116\"", xaml);
-            Assert.Contains("BasedOn=\"{StaticResource SaveSizeValue}\"", xaml);
+            var document = XDocument.Parse(xaml);
+            var sizeColumn = document.Descendants()
+                .Single(element => string.Equals(element.Name.LocalName, "DataGridTextColumn", StringComparison.Ordinal)
+                    && string.Equals(element.Attribute("Header")?.Value, "大小", StringComparison.Ordinal));
+            Assert.Equal("{Binding SizeDisplay, Mode=OneWay}", sizeColumn.Attribute("Binding")?.Value);
+            Assert.Equal("116", sizeColumn.Attribute("Width")?.Value);
+            Assert.Contains("BasedOn=\"{StaticResource SaveSizeValue}\"", sizeColumn.ToString(SaveOptions.DisableFormatting));
         }
 
         [Fact]
