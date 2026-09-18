@@ -7317,3 +7317,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 验证：最终提交干净隔离 Release/XAML `24/24`、solution `0 warning / 0 error`；Foundation `9/9`、R08-01 `2/2`、R08-02 `1/1`、R08-03 `1/1`、R08-05 `2/2`、R08-06 `3/3`、R08-07 `3/3`；源码校验和 diff check 通过。一次合并 testhost 的 14 项失败来自缺少构建身份和 WPF/时序污染，已改为带 `GSC_BUILD_COMMIT` 的串行隔离重跑，未计为产品失败。
 - 证据已写入 `evidence/R08-08-TRANSFORM-OWNERSHIP-20260919.md` 与第三轮账本；本阶段临时 worktree/build 已清理，main 用户改动不变。未验真实 Playnite/物理屏幕/呈现帧、UIA/读屏、ETW、宿主性能、动态资源绑定后续推送和 package-host。
 - 下一可执行任务：R09-01 主题转换闪白，继续先查现有能力和共享资源顺序。
+
+## 2026-09-19 Round3 R09-01 主题转换闪白
+
+- 先查现有能力：Dashboard/Settings 已有完整局部 palette 应用、DynamicResource、ToolTip 瞬态刷新和 in-host 游戏选择器；没有把表格方向误判成缺失而重建主题服务。
+- 新增 `R09ThemeSwitchBehaviorTests`，修正一次 Dispatcher `BeginInvoke` 参数顺序后，当前提交 `fe048952` 定向 `1/1`；Light→Dark 在下一 Render 优先级的 Popup、Path icon、placeholder/text 都得到新资源，host 哨兵未污染。
+- 当前提交干净隔离 Release/XAML `24/24`、solution `0 warning / 0 error`，源码门禁和 diff check 通过；临时 worktree/build 已清理。该结果不等价真实 presented frame 零闪、Playnite 系统主题、物理 DPI/跨屏、UIA/读屏、ETW 或宿主性能。
+- 证据与账本已准备同步；下一可执行任务为 R09-02 图标语义统一，先查现有资源映射和缺字负例。

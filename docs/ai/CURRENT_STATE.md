@@ -1499,3 +1499,9 @@
 - 新增真实 STA 行为测试覆盖直接 `TranslateTransform` 与带旋转子节点的 `TransformGroup`；R00-02 1000 次组合缩放稳定性仍通过。当前提交隔离 Release/XAML `24/24`、解决方案 `0/0`，Foundation `9/9`，R08 相关串行回归通过。
 - 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-08-TRANSFORM-OWNERSHIP-20260919.md`。未把 synthetic/offscreen logical DIP 写成真实 Playnite、物理屏幕、presented frame、UIA/读屏、ETW 或宿主性能通过。
 - Demo 原目录不可用，沿用恢复生产基线；命令/绑定、游戏选框、滚动条、取消/错误语义和恢复保护未改。下一可执行任务：R09-01 主题转换闪白。
+
+## 2026-09-19 Round3 R09-01 主题转换闪白
+
+- 最新生产实现已具备局部主题切换能力：Dashboard/Settings/ProductionShell/workspace 各自应用完整 palette，游戏选择器继续是宿主内 scrim，脱离式 ToolTip 通过既有刷新入口同步；未写 `Application.Current.Resources`。
+- `fe048952` 新增真实 STA WPF 行为夹具，Light→Dark 后在下一 Render 优先级取样 Popup surface、Path icon、thumbnail placeholder 和文本，均完成资源更新且宿主字典哨兵未变；定向 `1/1`，干净 Release/XAML `24/24`、solution `0/0`。
+- 这只是 Dispatcher/local-resource 的可控证据，不是物理呈现帧零闪截图；Demo 原目录不可用，真实 Playnite、系统主题切换、物理 DPI/跨屏、UIA/读屏、ETW、宿主性能和 package-host 仍未验。下一任务：R09-02 图标语义统一。

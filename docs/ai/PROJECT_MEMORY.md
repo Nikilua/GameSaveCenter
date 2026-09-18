@@ -3766,3 +3766,10 @@
 - 行为覆盖了两个控件共享未冻结 `TranslateTransform`、两个控件共享带旋转子节点的 `TransformGroup`，以及 R00-02 的冻结组合树 1000 次复用；当前提交隔离构建 XAML `24/24`、0/0，Foundation `9/9`，R08 相关类串行通过。
 - 不把该策略扩展解释为动态资源绑定或真实宿主呈现已验；离屏 STA/逻辑 DIP、物理 DPI/跨屏、UIA/读屏、presented frame、ETW、宿主性能和 package-host 仍分开记录。Demo 原目录不可用，保持生产资源基线。
 - 下一可执行小批量为 R09-01：核对主题切换的资源更新顺序、Popup/占位图更新和负例，再决定是否需要共享资源修复。
+
+## 2026-09-19 Round3 R09-01 主题转换闪白
+
+- R09-01 没有生产实现缺口需要重建。`DashboardView.ApplyAdaptiveTheme` 与 Settings 的同名路径已将完整 palette 写入插件局部字典，并刷新打开的脱离式 ToolTip；游戏选框为宿主内 `GameBrowserScrim`，不使用 WPF Popup。所有页面/浮层/矢量图标/占位表面使用动态资源键。
+- `fe048952` 的 `R09ThemeSwitchBehaviorTests` 在 STA WPF 中先应用 Light、再在 Background 回调切换 Dark，并在下一 Render 采样 Popup/Path/placeholder/text；颜色全部更新，独立 host 哨兵保持，`1/1`。干净隔离构建 XAML `24/24`、0/0。
+- 证据仅证明同一 Dispatcher 的局部资源切换顺序和作用域；不把它写成物理屏幕 presented frame 无闪烁或真实 Playnite 系统主题验证。Demo 原目录不可用，继续使用恢复生产基线。
+- 下一可执行小批量为 R09-02：盘点现有图标语义映射、尺寸、ThemeAwareIcon/PNG 使用和缺字负例。
