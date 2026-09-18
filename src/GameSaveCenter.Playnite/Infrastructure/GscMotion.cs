@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -14,6 +15,13 @@ namespace GameSaveCenter.Playnite.Infrastructure
     {
         private static readonly Lazy<ResourceDictionary> CanonicalTokens =
             new Lazy<ResourceDictionary>(LoadCanonicalTokens);
+        private static readonly ConditionalWeakTable<FrameworkElement, MotionState> MotionStates =
+            new ConditionalWeakTable<FrameworkElement, MotionState>();
+
+        private sealed class MotionState
+        {
+            public int TranslateGeneration;
+        }
 
         // XAML owns the timing values. The explicit fallbacks only cover a host that cannot
         // load a pack URI (for example an isolated unit test or an early shutdown path); they
@@ -200,6 +208,8 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
         internal static void AnimateTranslate(FrameworkElement element, double x, double y, TimeSpan duration)
         {
+            var motionState = MotionStates.GetOrCreateValue(element);
+            var generation = ++motionState.TranslateGeneration;
             var translate = GetMutableTranslateTransform(element);
             var currentX = translate.X;
             var currentY = translate.Y;
@@ -220,6 +230,9 @@ namespace GameSaveCenter.Playnite.Infrastructure
             };
             xAnimation.Completed += (_, __) =>
             {
+                if (generation != motionState.TranslateGeneration)
+                    return;
+
                 translate.BeginAnimation(TranslateTransform.XProperty, null);
                 translate.BeginAnimation(TranslateTransform.YProperty, null);
                 translate.X = x;
