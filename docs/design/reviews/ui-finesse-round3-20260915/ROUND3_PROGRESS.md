@@ -6,8 +6,8 @@
 
 | ID | 任务 | 状态 | 实现 commit | 自动验证 | 视觉/交互 | 宿主/性能 | 证据与下一步 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| R00-01 | 按压合成算法 | 代码完成待验收 | a95e900 / e216e9b | 当前 SHA 定向 `5/5`；黑底灰背景负例、非等距 stop 和 88 状态样本通过 | Light/Dark clean-tree 受控 WPF 均 `finesse-fixture OK`、88 样本 0 violation；不代替真实按压/屏幕帧 | 算法/资源计算，不适用真实宿主性能签收 | [R00-01/02 证据](evidence/R00-01-02-CONTRAST-SCALE-20260916.md)；真实宿主按边界待验 |
-| R00-02 | 组合缩放复用 | 代码完成待验收 | a95e900 | 当前 SHA 定向 `5/5`；冻结组合树连续 1000 次复用、节点/深度稳定、独立实例通过 | 受控 STA WPF 通过；真实宿主呈现仍未验 | 变换树辅助不适用库性能签收；不宣称物理呈现 | [R00-01/02 证据](evidence/R00-01-02-CONTRAST-SCALE-20260916.md)；R08-08 继续补可变共享隔离 |
+| R00-01 | 按压合成算法 | 已满足 | a95e900 / e216e9b | 当前 HEAD 定向 `4/4`；黑底灰背景负例、非等距 stop 和 88 状态样本通过；当前隔离 Release XAML `24/24`、解决方案 `0/0`、RenderHarness `0/0` | Light/Dark 当前 HEAD clean-tree 受控 WPF 均 `finesse-fixture OK`、88 样本 0 violation；不代替真实按压/屏幕帧 | 算法/资源计算，不适用真实宿主性能签收；真实宿主按压/屏幕帧未验 | [R00-01/02 证据](evidence/R00-01-02-CONTRAST-SCALE-20260916.md)；R00-01 当前可控条件已满足 |
+| R00-02 | 组合缩放复用 | 已满足 | a95e900 | 当前 HEAD 定向 `4/4`；冻结组合树连续 1000 次复用、节点/深度稳定、独立实例通过；当前隔离 Release 构建 `0/0` | 当前 HEAD 受控 STA WPF 通过；真实宿主呈现仍未验 | 变换树辅助不适用库性能签收；不宣称物理呈现；可变共享隔离留给 R08-08 | [R00-01/02 证据](evidence/R00-01-02-CONTRAST-SCALE-20260916.md)；R00-02 当前可控条件已满足，R08-08 保留独立边界 |
 | R00-03 | 动画结束基值 | 代码完成待验收 | 4414f05 / cda168c | Release 单节点构建 0/0；完成/重入/取消/卸载定向 `5/5` | `motionreentryprobe`、`motionhotprobe` 双主题 clean-tree 均通过；真实输入/屏幕帧未验 | 受控生产壳层通过；真实 Playnite/ETW/物理呈现未验 | [R00-03 动效证据](evidence/R00-03-MOTION-LIFECYCLE-20260916.md)；继续 R00-04 |
 | R00-04 | 搜索基准真实性 | 代码完成待验收 | df884b0 | Release 单节点构建 `0/0`；合成 2,000 项定向 `2/2`；30 个不同查询均等待到对应可见 ID 集合，错误期望 `75ms` 超时负例通过 | 受控 WPF/Dispatcher 集合变化通过；未验真实 Playnite 输入、IME 或屏幕帧 | 合成 2,000 项 p50/p95/max 为 `45/60/60ms`，不宣称宿主帧性能 | [R00-04 证据](evidence/R00-04-SEARCH-BENCHMARK-20260916.md)；R18-01 继续覆盖连续输入/IME/debounce 分配 |
 | R00-05 | 上下文禁用透明度 | 代码完成待验收 | aebcefc | Release 单节点构建 `0/0`；Light/Dark 真实 WPF 派生样式定向 `2/2`；Context/RemoteRestore/MediaBatch 均只保留模板 `ButtonChrome=0.72` | 复合标签/图标/解释文字非透明，启用/禁用高度差 `<0.01 DIP`；受控主题合成最低对比度 `3.0`；未验真实宿主像素 | 样式无独立库性能影响；命令/绑定/安全语义未改，不宣称宿主呈现 | [R00-05 证据](evidence/R00-05-CONTEXT-DISABLED-20260916.md)；R00-06 继续媒体四行门禁 |

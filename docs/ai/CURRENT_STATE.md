@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R00-01 / R00-02 证据校正
+
+- 当前 HEAD `89aa27e1` 复核既有按压合成和组合缩放实现，没有重建生产功能；定向 Playnite WPF 行为测试 `4/4`，隔离 Release XAML `24/24`、解决方案 `0 warning/0 error`、RenderHarness `0/0`。
+- Light/Dark 当前 HEAD `finesseprobe` 均 `finesse-fixture OK`：88 个 normal/hover/focus/pressed 组合 0 violation；非等距 stop 与黑底灰背景负例通过；1000 次组合变换树节点/深度稳定、控件实例隔离；NumericReadability 4/4 可读，窄列负例按预期失败。
+- 证据报告为 `.tmp/r00-01-02-current-built/ui-finesse-fixture-report.txt`（当前隔离构建生成，`WorkingTreeClean=True`、offscreen `DpiScale=1.00`）；R00-01/R00-02 账本已改为已满足。真实宿主按压/屏幕帧、物理 DPI、可变 Freezable 跨控件共享仍未验，后者留给 R08-08。
+- Demo 原始目录仍缺失，继续沿用恢复生产基线；游戏选框、滚动条、命令/Binding、取消/错误、恢复保护、有限列表和 net462 未改。下一小批量继续处理 R00-03/R00-04 或其现有证据校正。
+
 ## 当前第三轮 R07-04 横向滚动端点
 
 - `8f682fcb814a648de497728b17ebc870a13187aa` 先核对现有生产 DataGrid 模板和横向滚动系统，只新增隔离 RenderHarness 的 `horizontalprobe`；没有改生产 XAML、滚动条、游戏选框、命令绑定或服务。

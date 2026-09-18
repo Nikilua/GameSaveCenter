@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-18 R00-01 / R00-02 证据校正
+
+- 当前 HEAD `89aa27e1` 先查已有实现并复跑行为：按压合成/非等距 stop、语义状态和组合变换树 1000 次复用定向 `4/4`；没有重复造生产功能。
+- 当前隔离 Release 构建 XAML `24/24`、解决方案 `0 warning/0 error`、RenderHarness `0/0`；Light/Dark `finesseprobe` 均 `finesse-fixture OK`，88 状态样本 0 violation，数值列 `4/4` 可读，窄列负例按预期失败。
+- 账本将 R00-01/R00-02 改为“已满足”。证据仍限定为合成数据、fake/受控 STA WPF/offscreen logical DIP；真实宿主按压、物理 DPI/屏幕帧未验，可变 Freezable 共享隔离留给 R08-08。Demo 原始目录仍缺失，保留恢复生产基线。
+- 下一可执行小批量为 R00-03 动效生命周期与 R00-04 搜索基准的现有能力/证据复核，继续保持小提交。
+
 ## 2026-09-18 R07-04 横向滚动端点
 
 - `8f682fcb` 核对现有 DataGrid 模板和横向滚动端点，只新增隔离 RenderHarness 的 `horizontalprobe`，没有改生产 XAML、滚动条、游戏选框、命令绑定或服务。
