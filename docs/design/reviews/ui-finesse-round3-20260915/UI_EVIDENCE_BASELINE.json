@@ -158,7 +158,7 @@
     {
       "id": "R01-06",
       "evidence": "evidence/R01-06-HOST-EVIDENCE-20260916.md",
-      "sourceCommit": "3929ed7",
+      "sourceCommit": "c2399d7be9f723e77226619172be16778fe3646f",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": ["audit", "host-evidence"],

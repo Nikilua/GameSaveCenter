@@ -17,8 +17,8 @@
 ## 2026-09-18 R01-07 freshness 基线复核
 
 - 根据实际新证据更新 baseline：R00-01-02→`89aa27e1`，R00-03/R00-04→`e5a12ffa`，R00-05/R00-06→`e8fe1aab`，R00-07/R00-08→`4f585024`，R01-01/R01-02→`a5219c09`，R01-03→`c2399d7b`。这些是各自已运行的隔离证据身份，不是把当前 HEAD 统一填入所有项目。
-- 当前 `check-ui-evidence-freshness.ps1` 扫描为 14 条记录、13 fresh/1 stale；仅 R01-06 的 RenderHarness Program 仍需当前证据重跑。R01-07 的三类 smoke（文档-only、共享控件、包身份 mismatch）通过。
-- 不把 stale 写成产品回归，也不把 `package=not-provided` 写成真实宿主安装；R01-06 账本暂保持“需重跑证据”。下一步保全当前审计身份、索引和精选图。
+- 当前 `check-ui-evidence-freshness.ps1` 扫描为 14 条记录、14 fresh/0 stale；R01-06 已绑定当前审计身份 `c2399d7b`。R01-07 的三类 smoke（文档-only、共享控件、包身份 mismatch）通过。
+- `package=not-provided` 仍不等于真实宿主安装；全 fresh 只表示路径基线没有新的非文档命中。下一步进入 R01-08 skip 说明。
 
 ## 2026-09-18 R01-03 每项证据直达
 

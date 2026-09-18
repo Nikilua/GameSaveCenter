@@ -7,8 +7,8 @@ R01-07 已满足。新增 check-ui-evidence-freshness.ps1 和版本化 UI_EVIDEN
 ## 2026-09-18 当前分支扫描
 
 - R00-01-02、R00-03、R00-04、R00-05、R00-06、R00-07、R00-08 和 R01-01、R01-02、R01-03 已用当前证据重跑，因此将 baseline 的 `sourceCommit` 重新绑定到各自可复核的当前隔离证据身份：`89aa27e1`、`e5a12ffa`、`e8fe1aab`、`4f585024`、`a5219c09`、`c2399d7b`（按证据条目对应，完整值见 JSON）。没有把未重跑的记录强行标 fresh。
-- 以源码 HEAD `b185997aae99cbb3d8caaa178bc404ae5e57f7d9` 扫描 14 条记录：`13` 条 fresh、`1` 条 stale；当前包身份 `not-provided`，没有真实 package-host 安装或重装结论。随后只提交了文档与 baseline 变更，按规则不需因文档-only 变化重跑。
-- 仍需重跑的是 R01-06（命中 `RenderHarness/Program.cs`）。这表示历史宿主归档与当前审计入口之间存在变更，不表示工具已经发现产品缺陷；下一小批量处理 R01-06。
+- 以源码 HEAD `c3e67cb4bc13da7865a28dc8fa6067b7035d662b` 扫描 14 条记录：`14` 条 fresh、`0` 条 stale；当前包身份 `not-provided`，没有真实 package-host 安装或重装结论。R01-06 已将当前审计身份写入 baseline，随后只提交文档与 baseline 变更，按规则不需因文档-only 变化重跑。
+- 本次没有隐藏 stale 或把 `package=not-provided` 写成宿主安装通过；14 条记录的关联 sourcePaths 均未命中新的非文档变更。
 
 ## 当前分支扫描
 
@@ -16,11 +16,11 @@ R01-07 已满足。新增 check-ui-evidence-freshness.ps1 和版本化 UI_EVIDEN
 
 | 项目 | 结果 |
 | --- | --- |
-| 扫描时源码身份 | `b185997aae99cbb3d8caaa178bc404ae5e57f7d9` |
+| 扫描时源码身份 | `c3e67cb4bc13da7865a28dc8fa6067b7035d662b` |
 | 当前包身份 | not-provided；本轮没有真实包或宿主安装 |
-| 扫描记录 | 14 条；13 条 fresh，1 条 stale |
-| 需要重跑 | R01-06 |
-| 保持新鲜 | 其余 13 条，包括本批已重跑的 R00/R01 证据 |
+| 扫描记录 | 14 条；14 条 fresh，0 条 stale |
+| 需要重跑 | 无 |
+| 保持新鲜 | 全部 14 条；R00/R01 当前证据和 R01-06 归档身份均已重新绑定 |
 
 需要重跑只表示证据提交后其关联源码或测试路径发生变化，不表示扫描发现产品缺陷。命中的页面/范围和具体路径保存在 JSON 的 scopes、matchedSourcePaths 中。
 
@@ -51,4 +51,4 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\test-ui-evidence-fre
 
 ## 下一步
 
-R01-07 已满足；下一可执行小批量为 R01-06“宿主证据保全”当前证据重跑。R01-08 仍保留既有 skip 盘点，不把当前包身份缺失写成已安装宿主验证。
+R01-07 当前 baseline 与 freshness 校验已满足；下一可执行小批量为 R01-08“跳过测试说明”，继续区分本机可验证 gated 能力、历史 skip 和未启动真实 Playnite/package-host 的边界。
