@@ -7401,3 +7401,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 行为定义覆盖启用/禁用命令目录、媒体/维护当前页文案、真实 STA WPF 点击打开/关闭 Popup 与生产接线；最终定向结果 `13/13`。最终 D: 隔离全 solution Release `0 warning / 0 error`、Playnite `net462`、XAML `24/24`，source validation、XAML、diff check 通过。
 - 证据已写入 `evidence/R10-04-KEYBOARD-HELP-20260919.md`，账本已同步。只使用隔离 Window、合成 ViewModel 和真实生产 Shell/XAML；真实 Playnite presented frame、physical DPI/跨屏、UIA/读屏、真实输入/IME、全局键协作、ETW、宿主性能和 package-host 未验。Demo 原目录不可用，沿用恢复生产基线。
 - C: 盘空间不足曾使一次隔离构建失败，最终改用 D: 仓库 `.tmp\continuation-r10-04-build-final-20260919` 成功并清理；旧 VBCSCompiler 文件仍可能锁定，未强杀未知进程。用户 DEV-INSTALL-008 main 全量 `73 failed / 588 passed / 57 skipped` 独立记录，main 用户文件未触碰。下一可执行任务：R10-05 筛选预设。
+## 2026-09-19 Round3 R10-05 筛选预设
+
+- 先核对现有能力：`PolicyTemplates` 是备份策略模板，不等于筛选预设；任务筛选、媒体筛选、媒体“待归类/已忽略”模式、设置 JSON 和既有 `ConfirmAsync` 均可复用。
+- `005dc2c5` 已实现并推送 `FilterPresetDefinition`、设置规范化、任务/媒体页保存/应用/重命名/确认删除入口和紧凑任务预设行修复。持久化只包含字符串与稳定预设 ID，不保存任务/游戏/媒体 DTO 或临时对象；最多 32 条，非法旧值回退。
+- 验证：R10-05 `4/4`，R10 相邻 `14/14`，直接相关设置/状态/可访问性/响应式/预设回归 `25/25`；最终 Release/net462 solution `0 warning / 0 error`、XAML `24/24`，source/XAML/diff check 通过。Core `83/83`、Worker `311/311` 通过；全量 Playnite testhost 为 `84 failed / 610 passed / 57 skipped`，失败为混合既有 WPF PresentationSource/STA/资源/动画/DataGrid/源码契约边界，未写成 R10-05 通过。
+- 事实边界：用户 main 的 DEV-INSTALL-008 仍为 `0/0`、Core `83/83`、Worker `311/311`、Playnite `73/588/57`、安装器退出 1；main 未触碰。Demo 原目录不可用，继续沿用恢复生产基线；未验真实 Playnite 保存/确认 Popup、呈现、DPI/跨屏、UIA/IME、ETW、宿主性能和 package-host。
+- D: R10-05 5 个隔离构建目录中 4 个已按精确路径清理；`continuation-r10-05-build-20260919` 的部分 VBCSCompiler analyzer DLL 仍锁定，未强杀未知进程。下一可执行任务：R10-06 筛选来源提示。

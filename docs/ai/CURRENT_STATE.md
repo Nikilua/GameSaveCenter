@@ -1584,3 +1584,11 @@
 - 真实 STA WPF 点击行为与目录负例、当前页文案及生产接线定向回归 `13/13`；正式 Release/XAML `24/24`、solution `0 warning / 0 error`，source/XAML/diff check 通过。证据：`evidence/R10-04-KEYBOARD-HELP-20260919.md`；账本 R10-04 已改为“已满足”。
 - 证据覆盖隔离 STA Window、真实 Shell/XAML 和合成工作区状态；未验真实 Playnite Popup 呈现、物理 DPI/跨屏、UIA/读屏、真实键盘/IME、全局键协作、ETW、宿主性能和 package-host。Demo 原目录不可用，沿用恢复生产基线；DEV-INSTALL-008 main 全量失败仍单列，main 未触碰。
 - 一次 C: 盘 `0.21 GB` 空间不足的隔离构建已改用 D: 仓库 `.tmp` 成功完成并清理；旧 VBCSCompiler 锁定事实保留，未强杀未知进程。下一可执行任务：R10-05 筛选预设。
+## 2026-09-19 Round3 R10-05 筛选预设
+
+- 当前续作分支实现提交为 `005dc2c5`，已推送 `origin/codex/ui-finesse-round2`。先核对发现既有 `PolicyTemplates` 只服务备份策略，不把它误记成筛选预设。
+- 新增 `FilterPresetDefinition` 与 `GameSaveCenterSettings.FilterPresets`：仅保存稳定预设 ID、名称、工作区及任务/媒体字符串筛选值；配置最多 32 条，非法旧配置在 setter/clone/JSON 往返时回退或丢弃。任务游戏值仍沿用现有查询字符串名契约，不是 DTO 引用。
+- 任务/媒体页新增保存、应用、重命名、确认删除；应用复用原筛选属性和分页/刷新路径。任务紧凑布局重排不再把预设第二行设为 0 高度。未改游戏选框、滚动条、命令绑定、取消/错误语义、恢复保护和有限列表性能。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R10-05-FILTER-PRESETS-20260919.md`；账本 R10-05 已改为“已满足”。R10-05 `4/4`，R10 `14/14`，直接相关回归 `25/25`；Release/net462 `0/0`、XAML `24/24`、source/XAML/diff check 通过。
+- 全量门禁事实必须分开写：Core `83/83`、Worker `311/311` 通过；同一当前 testhost 的 Playnite 为 `84 failed / 610 passed / 57 skipped`，主要是已有 PresentationSource/STA/资源/动画/DataGrid/源码契约问题，不作为本项通过依据。用户 main DEV-INSTALL-008 仍为 `73 failed / 588 passed / 57 skipped` 且安装器退出 1，main 未覆盖。
+- 未验真实 Playnite 的保存/确认 Popup、最终呈现、物理 DPI/跨屏、UIA/读屏、IME、ETW、宿主性能和 package-host；Demo 原目录不可用，继续使用恢复生产基线。D: 5 个临时构建目录已清理 4 个，`continuation-r10-05-build-20260919` 的部分 VBCSCompiler analyzer DLL 仍锁定。下一可执行任务：R10-06 筛选来源提示。

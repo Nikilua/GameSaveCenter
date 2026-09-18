@@ -3852,3 +3852,11 @@
 - 真实 STA WPF 帮助按钮交互：当前媒体页显示“媒体中心 / Ctrl+F”，Popup 可打开和关闭；目录正/负例、当前工作区说明、生产接线及 R10-03/R10-02/R10-01 相邻回归共 `13/13`。Release `0 warning / 0 error`、XAML `24/24`。
 - 证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R10-04-KEYBOARD-HELP-20260919.md`，账本已同步。Demo 原目录不可用，沿用恢复生产基线；未把隔离 STA Popup 写成真实 Playnite 呈现、UIA、DPI/跨屏、IME、ETW、宿主性能或 package-host 结论。
 - C: 盘空间不足的构建尝试改用 D: `.tmp` 成功并清理；旧 VBCSCompiler 锁定目录不强杀。用户 main `73/588/57` 失败事实仍独立保留。下一可执行任务：R10-05 筛选预设。
+## 2026-09-19 Round3 R10-05 筛选预设
+
+- 现有能力盘点结论：`PolicyTemplates` 是 Worker/备份策略模板，不能复用为筛选预设；可复用的是真实任务/媒体筛选属性、媒体收件箱模式、Playnite 设置 JSON、`RelayCommand` 和 `plugin.ConfirmAsync`。
+- `005dc2c5` 的持久化模型 `FilterPresetDefinition` 必须保持纯标量：`Id/Name/Workspace` 和任务/媒体字符串字段；设置入口统一 `NormalizeMany`，丢弃空名称/未知工作区/重复 ID，限制 32 条，非法状态/范围/媒体值回退。不要把 `TaskStatusDto`、`GameStatusDto`、`MediaItemDto` 或 live ViewModel 写入配置。
+- 任务游戏筛选当前协议是展示名字符串（已有查询 `GameName`/选项同步如此），只能记录为标量兼容事实；若后续要稳定 PlayniteId，需另建查询和迁移批次，不能暗中改变本阶段语义。
+- 删除、重命名和同名覆盖必须经过确认；任务紧凑布局的预设行不能被响应式重排设为 0。继续保留游戏选框/滚动条/命令绑定/取消错误/恢复保护/有限列表性能。
+- 证据门禁：R10-05 `4/4`、R10 相邻 `14/14`、直接相关 `25/25`，Release solution `0/0`、XAML `24/24`。全量 Playnite 当前 testhost `84/610/57` 只能作为混合 WPF/宿主边界；main 的 DEV-INSTALL-008 `73/588/57` 和退出 1 继续独立记录。
+- Demo 原目录不可用；不把隔离 STA/offscreen/逻辑 DIP 写成真实 Playnite presented frame、物理 DPI/跨屏、UIA/IME、ETW 或宿主性能。下一可执行任务：R10-06 筛选来源提示。
