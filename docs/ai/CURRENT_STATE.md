@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R08-04 业务完成节奏
+
+- 先核对已有能力：`BusyOperationCoordinator` 等待真实 prepare/action 完成后才复位 `IsBusy`；Dashboard 任务通知只对 `Succeeded/Failed/Cancelled` 终态发出，任务列表和通知共同使用 `TaskStatusDto.State`，没有固定延迟伪造成功。`3bf90a00` 只在共享按钮补视觉忙态延迟，`43141399` 校正 net462 AutomationPeer 说明，不改变业务命令/DTO/安全语义。
+- `Button.IsBusy` 仍即时作为命令门禁；只读 `IsBusyIndicatorVisible` 在持续 `120ms` 后才显示共享 spinner，快速完成会停止计时器并保持折叠，卸载会清理。实际反馈 Toast 使用兼容 net462 的 Name/HelpText 与 Name 属性变更信号，不写不存在的 `LiveSetting/LiveRegionChanged` API。
+- 最终隔离身份 `GscBuildCommit=43141399` 的 solution Release `0 error`、Playnite `net462`，R02 忙态 `4/4`、R08-04 反馈 `4/4`、XAML `24/24`、源校验通过；8 条 `NU1900` 是漏洞索引网络警告。边界仍是合成 DTO/fake、STA WPF/offscreen logical DIP；未验真实 Playnite/Worker 长请求、Narrator/真实 UIA、物理呈现、ETW/宿主性能。Demo 原始目录不可用，沿用恢复生产基线。下一可执行任务为 R08-05 页面切换轻量化。
+
 ## 当前第三轮 R08-03 离屏与隐藏停机
 
 - 先核对现有实现：不确定进度条原本只跟随 `IsIndeterminate` 的模板触发，真实入口是生产壳层忙碌按钮和 Dashboard 后台刷新提示。`4a18fe0c` 新增 `IndeterminateProgressBehavior`，按有效可见性、Loaded/Unloaded 和宿主 `WindowState` 控制共享 storyboard 的暂停/恢复，不改变业务 `IsIndeterminate`、命令绑定、服务 DTO、游戏选框、滚动条或安全语义。

@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-18
 
+## 2026-09-18 R08-04 业务完成节奏
+
+- 先复用并验证既有业务链：`BusyOperationCoordinator` 的真实 await、失败/取消分流、Dashboard 的终态任务通知和 Task Center 的 `StateDisplay`/错误详情已经满足“慢请求不假完成”；本阶段没有重建服务或 DTO。
+- `3bf90a00` 在共享 `Button` 中把即时 `IsBusy` 与视觉 `IsBusyIndicatorVisible` 分离，视觉延迟 `120ms`，快速完成负例不显示 spinner，慢任务实际显示；按钮卸载/结束会停止 DispatcherTimer。`43141399` 将反馈 peer 的说明校正为 net462 实际能力。
+- `FeedbackToast` 使用 `AutomationProperties.Name/HelpText` 与 `AutomationElementIdentifiers.NameProperty` 的 property-changed 信号；net462 没有 `LiveSetting/LiveRegionChanged`，因此不宣称 Narrator 或真实读屏已通过。R02/R08-04 定向 `8/8`，solution `0 error`、Playnite `net462`、XAML `24/24`、源校验通过；构建保留 8 条 `NU1900` 漏洞索引网络警告。
+- 证据仍限于合成 DTO/fake、隔离 STA WPF/offscreen logical DIP；真实 Playnite/Worker 长请求、真实 UIA/Narrator、物理 DPI/跨屏、presented frame、ETW、宿主性能未验。游戏选框、滚动条、有限列表、命令绑定、取消/错误/恢复保护未改。证据见 `R08-04-BUSINESS-FEEDBACK-20260918.md`；下一项 R08-05 页面切换轻量化。
+
 ## 2026-09-18 R08-03 离屏与隐藏停机
 
 - 先核对共享 `ProgressBar` 模板和两个实际不确定进度入口；原有实现只在 `IsIndeterminate` 触发器中无限循环，没有处理 Tab 隐藏或窗口最小化。`4a18fe0c` 增加 `IndeterminateProgressBehavior`，用真实 `Loaded/Unloaded`、`IsVisible` 和宿主窗口状态控制模板 `PauseStoryboard/ResumeStoryboard`，不改业务忙碌状态。

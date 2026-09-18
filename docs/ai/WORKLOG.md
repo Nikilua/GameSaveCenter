@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-18 R08-04 业务完成节奏
+
+- 复核既有实现后确认业务状态已经真实驱动：`BusyOperationCoordinator` 等待 prepare/action，取消/失败不落成功；`ShowTaskNotification` 只处理终态并按 `TaskState` 选标题、摘要和严重级别。本阶段只修共享反馈层。
+- `3bf90a00` 增加共享 `Button.IsBusyIndicatorVisible`，`IsBusy` 仍即时门禁，视觉 spinner 延迟 `120ms`；真实 STA 行为覆盖慢任务可见、快速任务 `150ms` 负例折叠，宽度/内容/焦点保持。Toast 通过兼容 net462 的 `FeedbackToastAutomationPeer` 暴露最终文案和 Name 属性变更信号；`43141399` 校正说明性命名。
+- 最终隔离身份 `43141399`：solution Release `0 error`、Playnite `net462`，定向 `8/8`，XAML `24/24`，源校验通过；8 条 `NU1900` 只记录 NuGet 漏洞索引网络不可达。证据使用合成 DTO/fake、隔离 STA WPF/offscreen logical DIP，不写真实存档/媒体/云端/诊断。
+- 未验真实 Playnite/Worker 长请求、Narrator/真实 UIA、物理 DPI/跨屏、presented frame、ETW 或宿主性能；Demo 原始目录不可用，沿用恢复生产基线。下一可执行任务为 R08-05 页面切换轻量化。
+
 ## 2026-09-18 R08-03 离屏与隐藏停机
 
 - 现有共享 `ProgressBar` 不确定模板只在 `IsIndeterminate` 变化时启停；实际循环入口是生产壳层按钮忙碌指示器和 Dashboard 后台刷新。`4a18fe0c` 新增附加行为，跟踪 `Loaded/Unloaded`、有效 `IsVisible`、宿主 `WindowState/IsVisible`，通过模板可控 storyboard 暂停/恢复；没有把业务忙碌状态改成假完成。
