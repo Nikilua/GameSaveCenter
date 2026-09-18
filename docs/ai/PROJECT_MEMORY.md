@@ -3891,3 +3891,11 @@
 - 长摘要仍通过状态 ToolTip/右侧详情承载，固定 DataGrid 列宽与滚动系统不变；恢复命令、取消/错误、保护语义、游戏选框和 net462 保持。
 - `R11VersionSummaryBehaviorTests` `2/2`，Save 相邻 `13/13`，定向 Release 编译成功，XAML `24/24`、source/XAML/diff check 通过。证据：`evidence/R11-01-VERSION-SUMMARY-20260919.md`。
 - 仅证明 synthetic DTO、真实 SaveCenterView/STA Window 和逻辑 DIP；未证明真实 Playnite/package-host、presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW、宿主性能。main DEV-INSTALL-008 `73/588/57`/安装器退出 1 仍独立记录，main 用户文件未触碰。下一可执行任务：R11-02 双版本对比选择。
+
+## 2026-09-19 Round3 R11-02 双版本对比选择
+
+- R11-02 先查明现有差异能力已完整存在：`BackupCompareRequestDto` 传递 `LeftBackupId/RightBackupId`，Worker 复用 `FileManifestDiffService.Compare(left,right)`，`BackupDiffDto` 已承载新增/删除/修改/未变化/大小增量；缺口是 UI 选择和方向语义，不是服务缺失。
+- 生产 SaveCenter 比较页现在提供 `CompareLeftBackup`（A 基准）与 `CompareRightBackup`（B 对照）两个 ComboBox；选中版本变化时默认保持上一版本→当前版本，用户可选任意不同版本。`SwapCompareBackupCommand` 交换 A/B 后重新发起原有比较请求，摘要始终说明新增属于 B、删除属于 A。版本详情按钮也改为 A/B 文案，避免“上一版本”误导。
+- 同一 BackupId（忽略大小写）、空选择或缺少稳定 ID均拒绝比较；同版本界面提示“不发起比较或恢复”，交换按钮只在已有比较结果且选择有效时可用。恢复命令、取消/错误语义、游戏选框、滚动系统、有限列表和 net462 兼容没有变更。
+- `R11VersionComparisonBehaviorTests 2/2` 和相邻 `15/15` 通过；前后方向反例使用真实 Core diff service，视图证据使用真实 SaveCenterView/STA Window，不以字符串断言作为唯一交互证据。Release/net462 无 warning/error，XAML `24/24`，source/XAML/diff check 通过。证据：`evidence/R11-02-VERSION-COMPARISON-20260919.md`。
+- 仍不可把隔离 STA/合成 manifest/逻辑 DIP扩写成真实 Worker IPC、归档读取、Playnite/package-host、presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW或宿主性能通过；Demo 原目录不可用。main DEV-INSTALL-008 `73/588/57`/安装器退出 1 仍独立记录，main 用户改动未触碰。下一可执行任务：R11-03 差异列表搜索。

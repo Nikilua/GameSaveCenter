@@ -7439,3 +7439,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 实际验证：`R11VersionSummaryBehaviorTests 2/2`，Save 页面相邻空态/排序/列宽回归 `13/13`；真实 STA SaveCenterView/DataGrid 加载 7 列和历史集合；定向 Release 编译（Playnite `net462`/Tests `net472`）通过；XAML `24/24`、source/XAML/diff check 通过。
 - 证据已写入 `evidence/R11-01-VERSION-SUMMARY-20260919.md`，账本已改为“已满足”。未验真实 Playnite/package-host 安装呈现、physical DPI/跨屏、UIA/读屏、IME、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线。main DEV-INSTALL-008 `73/588/57` 与安装器退出 1 未在 dirty main 覆盖或重跑。
 - 下一可执行任务：R11-02 双版本对比选择；继续保持真实存档/媒体/云端隔离边界。
+
+## 2026-09-19 Round3 R11-02 双版本对比选择
+
+- 复核发现最新代码已有 `BackupCompareRequestDto`、`BackupDiffDto`、`CompareBackups` 和 `FileManifestDiffService`，但 Playnite 端仍只隐含比较“上一版本→当前版本”，比较页没有 A/B 选择、交换方向或同版本负例提示；按任务要求复用现有能力补齐边界。
+- `BackupVersionDto` 新增 `ComparisonDisplay`；`DashboardViewModel` 增加 A/B 选择属性、默认选择恢复、稳定 ID 校验、方向摘要和 `SwapCompareBackupCommand`。交换只重新走 `MessageTypes.CompareBackups`，不触碰真实恢复；同一版本命令不可执行并显示“不发起比较或恢复”。`SaveCenterView.xaml` 增加两个有限 `ComboBox`、交换按钮、A/B 语义提示，历史详情旧按钮文案同步。
+- `R11VersionComparisonBehaviorTests` 通过 `2/2`：Core 真实差异服务验证正反方向新增/删除/修改/大小增量，真实 SaveCenterView STA Window 验证 A/B 选择绑定、方向提示、交换入口和同版本禁用。R11-02 + R11-01 + Save R06 相邻回归 `15/15`；Release/net462 编译无 warning/error；XAML `24/24`；source/XAML/diff check 通过。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R11-02-VERSION-COMPARISON-20260919.md`；Round3 进度账本已改为“已满足”。本阶段没有读取/写入真实存档、媒体、云端或诊断，也未覆盖 dirty main；用户 main 安装失败事实仍为 Playnite `73 failed / 588 passed / 57 skipped`、安装器退出 1。
+- 未验真实 Worker IPC/归档读取、Playnite/package-host 安装与呈现、physical DPI/跨屏、UIA/读屏、IME、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线。下一可执行任务：R11-03 差异列表搜索。

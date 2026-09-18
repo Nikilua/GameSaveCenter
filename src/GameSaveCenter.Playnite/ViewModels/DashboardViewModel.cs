@@ -153,6 +153,10 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string policyTemplateNameDraft = string.Empty;
         private bool policyTemplatesLoaded;
         private BackupDiffDto? lastBackupDiff;
+        private BackupVersionDto? compareLeftBackup;
+        private BackupVersionDto? compareRightBackup;
+        private string compareSelectionSummary = "请选择两个不同版本。A 为基准版本，B 为对照版本；新增属于 B，删除属于 A。";
+        private bool suppressComparisonSelectionRefresh;
         private RetentionPreviewDto? lastRetentionPreview;
         private bool suppressSelectionLoad;
         private string gameSearchText = string.Empty;
@@ -300,7 +304,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             ApplyPolicyTemplateCommand = new RelayCommand(_ => Run(ApplyPolicyTemplateAsync), _ => !IsBusy && SelectedGame != null && SelectedPolicyTemplate != null && !string.IsNullOrWhiteSpace(SelectedPolicyTemplate.TemplateId));
             DeletePolicyTemplateCommand = new RelayCommand(_ => Run(DeletePolicyTemplateAsync), _ => !IsBusy && PolicyTemplateDraft != null && !PolicyTemplateDraft.IsBuiltIn && !string.IsNullOrWhiteSpace(PolicyTemplateDraft.TemplateId));
             UpdateBackupMetadataCommand = new RelayCommand(_ => Run(UpdateBackupMetadataAsync), _ => !IsBusy && SelectedGame != null && SelectedBackup != null);
-            CompareBackupCommand = new RelayCommand(_ => Run(CompareBackupAsync), _ => !IsBusy && SelectedGame != null && SelectedBackup != null && Backups.IndexOf(SelectedBackup) >= 0 && Backups.IndexOf(SelectedBackup) + 1 < Backups.Count);
+            CompareBackupCommand = new RelayCommand(_ => Run(CompareBackupAsync), _ => !IsBusy && SelectedGame != null && CanCompareSelectedBackups);
+            SwapCompareBackupCommand = new RelayCommand(_ => Run(SwapAndCompareBackupAsync), _ => !IsBusy && SelectedGame != null && CanCompareSelectedBackups && LastBackupDiff != null);
             PreviewRetentionCommand = new RelayCommand(_ => Run(PreviewRetentionAsync), _ => !IsBusy && SelectedGame != null && Backups.Count > 0);
             AddMediaSourceCommand = new RelayCommand(_ => Run(AddMediaSourceAsync), _ => !IsBusy && SelectedGame != null);
             UpdateMediaSourceCommand = new RelayCommand(value => Run(() => UpdateMediaSourceAsync(value as MediaSourceRuleDto)), _ => !IsBusy);
@@ -1023,8 +1028,11 @@ namespace GameSaveCenter.Playnite.ViewModels
                     selectedBackup = value!;
                     OnPropertyChanged(nameof(SelectedBackup));
                 }
-                if (!sameBackup)
+                if (!sameBackup || !IsBackupInCurrentCollection(CompareLeftBackup) || !IsBackupInCurrentCollection(CompareRightBackup))
+                {
                     ClearBackupComparison();
+                    SetDefaultComparisonSelection(value);
+                }
                 SyncBackupEditor(value, sameBackup);
                 OnPropertyChanged(nameof(RestoreAvailabilityHint));
                 OnPropertyChanged(nameof(RestoreAvailabilityNeedsMaintenance));
@@ -1250,8 +1258,30 @@ namespace GameSaveCenter.Playnite.ViewModels
         }
         public string DiffSummary { get => diffSummary; private set => SetValue(ref diffSummary, value); }
         public string DiffComparedSummary { get => diffComparedSummary; private set => SetValue(ref diffComparedSummary, value); }
+        public string CompareSelectionSummary { get => compareSelectionSummary; private set => SetValue(ref compareSelectionSummary, value); }
         public string RetentionSummary { get => retentionSummary; private set => SetValue(ref retentionSummary, value); }
         public BackupDiffDto? LastBackupDiff { get => lastBackupDiff; private set => SetValue(ref lastBackupDiff, value); }
+        public BackupVersionDto? CompareLeftBackup
+        {
+            get => compareLeftBackup;
+            set
+            {
+                if (ReferenceEquals(compareLeftBackup, value)) return;
+                SetValue(ref compareLeftBackup, value);
+                OnComparisonSelectionChanged();
+            }
+        }
+        public BackupVersionDto? CompareRightBackup
+        {
+            get => compareRightBackup;
+            set
+            {
+                if (ReferenceEquals(compareRightBackup, value)) return;
+                SetValue(ref compareRightBackup, value);
+                OnComparisonSelectionChanged();
+            }
+        }
+        public bool CanCompareSelectedBackups => IsValidComparisonSelection(CompareLeftBackup, CompareRightBackup);
         public RetentionPreviewDto? LastRetentionPreview { get => lastRetentionPreview; private set => SetValue(ref lastRetentionPreview, value); }
         public BackupPolicyTemplateDto SelectedPolicyTemplate
         {
@@ -1300,6 +1330,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand DeletePolicyTemplateCommand { get; }
         public ICommand UpdateBackupMetadataCommand { get; }
         public ICommand CompareBackupCommand { get; }
+        public ICommand SwapCompareBackupCommand { get; }
         public ICommand PreviewRetentionCommand { get; }
         public ICommand AddMediaSourceCommand { get; }
         public ICommand UpdateMediaSourceCommand { get; }
@@ -3842,32 +3873,118 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task CompareBackupAsync()
         {
-            var index = Backups.IndexOf(SelectedBackup);
-            if (index < 0 || index + 1 >= Backups.Count)
+            if (!TryGetComparisonSelection(out var leftBackup, out var rightBackup, out var selectionMessage))
             {
                 ClearBackupComparison();
-                DiffSummary = "没有可比较的上一个版本。";
-                DiffComparedSummary = "当前版本没有可比较的上一个版本。";
+                DiffSummary = selectionMessage;
+                DiffComparedSummary = selectionMessage;
                 return;
             }
 
             var gameId = SelectedGame?.PlayniteId ?? throw new InvalidOperationException("请先选择游戏。");
-            var leftBackup = Backups[index + 1];
-            var rightBackup = SelectedBackup;
             var leftBackupId = leftBackup.BackupId;
             var rightBackupId = rightBackup.BackupId;
-            var comparedSummary = $"比较范围：{leftBackup.CreatedLocal:yyyy-MM-dd HH:mm}（上一版本） → {rightBackup.CreatedLocal:yyyy-MM-dd HH:mm}（当前版本）";
-            var diff = await plugin.RequestAsync<BackupDiffDto>(MessageTypes.CompareBackups, new BackupCompareRequestDto { PlayniteId = gameId, LeftBackupId = leftBackupId, RightBackupId = rightBackupId });
-            var currentIndex = Backups.IndexOf(SelectedBackup);
+            var comparedSummary = BuildComparisonSummary(leftBackup, rightBackup);
+            var diff = await plugin.RequestAsync<BackupDiffDto>(MessageTypes.CompareBackups,
+                new BackupCompareRequestDto { PlayniteId = gameId, LeftBackupId = leftBackupId, RightBackupId = rightBackupId });
             if (CurrentWorkspace != WorkspaceKind.Saves
                 || !IsSelectedGame(gameId)
-                || currentIndex < 0
-                || currentIndex + 1 >= Backups.Count
-                || !string.Equals(SelectedBackup?.BackupId, rightBackupId, StringComparison.OrdinalIgnoreCase)
-                || !string.Equals(Backups[currentIndex + 1].BackupId, leftBackupId, StringComparison.OrdinalIgnoreCase)) return;
+                || !IsSameBackup(CompareLeftBackup, leftBackupId)
+                || !IsSameBackup(CompareRightBackup, rightBackupId)) return;
             LastBackupDiff = diff;
             DiffSummary = diff.Summary;
             DiffComparedSummary = comparedSummary;
+        }
+
+        private async Task SwapAndCompareBackupAsync()
+        {
+            if (!CanCompareSelectedBackups) return;
+            var left = CompareLeftBackup;
+            var right = CompareRightBackup;
+            suppressComparisonSelectionRefresh = true;
+            try
+            {
+                CompareLeftBackup = right;
+                CompareRightBackup = left;
+            }
+            finally
+            {
+                suppressComparisonSelectionRefresh = false;
+            }
+            OnComparisonSelectionChanged();
+            await CompareBackupAsync();
+        }
+
+        private void SetDefaultComparisonSelection(BackupVersionDto? selected)
+        {
+            var index = selected == null ? -1 : Backups.IndexOf(selected);
+            var previous = index >= 0 && index + 1 < Backups.Count ? Backups[index + 1] : null;
+            suppressComparisonSelectionRefresh = true;
+            try
+            {
+                CompareLeftBackup = previous;
+                CompareRightBackup = selected;
+            }
+            finally
+            {
+                suppressComparisonSelectionRefresh = false;
+            }
+            OnComparisonSelectionChanged();
+        }
+
+        private void OnComparisonSelectionChanged()
+        {
+            if (suppressComparisonSelectionRefresh) return;
+            if (LastBackupDiff != null) ClearBackupComparison();
+            CompareSelectionSummary = BuildComparisonSelectionSummary(CompareLeftBackup, CompareRightBackup);
+            OnPropertyChanged(nameof(CanCompareSelectedBackups));
+            RaiseCommandStates();
+        }
+
+        private bool TryGetComparisonSelection(out BackupVersionDto left, out BackupVersionDto right, out string message)
+        {
+            left = CompareLeftBackup!;
+            right = CompareRightBackup!;
+            if (left == null || right == null)
+            {
+                message = "请选择 A、B 两个版本后再比较。";
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(left.BackupId) || string.IsNullOrWhiteSpace(right.BackupId))
+            {
+                message = "版本缺少稳定 ID，不能发起比较。";
+                return false;
+            }
+            if (string.Equals(left.BackupId, right.BackupId, StringComparison.OrdinalIgnoreCase))
+            {
+                message = "A、B 不能选择同一版本；不会发起比较或恢复。";
+                return false;
+            }
+            message = string.Empty;
+            return true;
+        }
+
+        private static bool IsValidComparisonSelection(BackupVersionDto? left, BackupVersionDto? right)
+            => left != null
+                && right != null
+                && !string.IsNullOrWhiteSpace(left.BackupId)
+                && !string.IsNullOrWhiteSpace(right.BackupId)
+                && !string.Equals(left.BackupId, right.BackupId, StringComparison.OrdinalIgnoreCase);
+
+        private static bool IsSameBackup(BackupVersionDto? backup, string backupId)
+            => backup != null && string.Equals(backup.BackupId, backupId, StringComparison.OrdinalIgnoreCase);
+
+        private bool IsBackupInCurrentCollection(BackupVersionDto? backup)
+            => backup != null && Backups.Any(item => IsSameBackup(item, backup.BackupId));
+
+        private static string BuildComparisonSummary(BackupVersionDto left, BackupVersionDto right)
+            => $"比较方向：A（{left.CreatedLocal:yyyy-MM-dd HH:mm} · {left.BackupId}） → B（{right.CreatedLocal:yyyy-MM-dd HH:mm} · {right.BackupId}）";
+
+        private static string BuildComparisonSelectionSummary(BackupVersionDto? left, BackupVersionDto? right)
+        {
+            if (left == null || right == null) return "请选择两个不同版本。A 为基准版本，B 为对照版本；新增属于 B，删除属于 A。";
+            if (string.Equals(left.BackupId, right.BackupId, StringComparison.OrdinalIgnoreCase)) return "A、B 当前是同一版本；请选择不同版本，不会发起比较或恢复。";
+            return $"A：{left.ComparisonDisplay} → B：{right.ComparisonDisplay}；新增属于 B，删除属于 A。";
         }
 
         private void ClearBackupComparison()
@@ -5022,7 +5139,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 DetectPathsCommand, ValidateCommand, RestoreCommand,
                 ValidateRestoreReadinessCommand, UndoRestoreCommand, LoadDetailsCommand, SavePolicyCommand,
                 CreatePolicyTemplateCommand, SavePolicyTemplateCommand, ApplyPolicyTemplateCommand, DeletePolicyTemplateCommand,
-                UpdateBackupMetadataCommand, CompareBackupCommand, PreviewRetentionCommand,
+                UpdateBackupMetadataCommand, CompareBackupCommand, SwapCompareBackupCommand, PreviewRetentionCommand,
                 AddMediaSourceCommand, AcceptCandidateCommand, RejectCandidateCommand, ReassignMediaCommand,
                 UpdateMediaMetadataCommand,OpenSelectedMediaCommand,RevealSelectedMediaCommand,
                 LoadMoreMediaCommand, ReloadMediaWindowCommand, ApplyMediaFilterPresetCommand, SaveMediaFilterPresetCommand, RenameMediaFilterPresetCommand, DeleteMediaFilterPresetCommand, OpenCloudQueueCommand, OpenMediaWorkspaceCommand, OpenActivityCommand, OpenRecentAccessCommand, OpenSelectedFindingNavigationCommand, RefreshCloudTransfersCommand, LoadMoreCloudTransfersCommand, VerifyCloudTransferCommand, RetryCloudUploadCommand,

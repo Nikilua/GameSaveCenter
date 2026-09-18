@@ -288,7 +288,7 @@
                                 <TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding BackupComment, UpdateSourceTrigger=PropertyChanged}" MinHeight="64" AcceptsReturn="True" TextWrapping="Wrap"/>
                                 <Grid Margin="0,14,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><StackPanel><TextBlock Text="锁定版本" FontWeight="SemiBold"/><TextBlock Text="保留策略不会清理锁定版本" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel><CheckBox Grid.Column="1" Style="{DynamicResource GscCheckBox}" Content="锁定" IsChecked="{Binding LockSelectedBackup}" VerticalAlignment="Center"/></Grid>
                                 <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding UpdateBackupMetadataCommand}" Content="保存备注与锁定" Margin="0,16,0,0"/>
-                                <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding CompareBackupCommand}" Content="与上一版本比较" Margin="0,8,0,0"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding CompareBackupCommand}" Content="比较 A/B 版本" ToolTip="使用比较与保留页选择的 A/B 版本；默认是上一版本与当前版本" AutomationProperties.Name="在历史详情中比较 A 与 B 版本" Margin="0,8,0,0"/>
                                 <Separator Margin="0,16,0,12"/>
                                 <TextBlock Text="恢复操作" FontWeight="SemiBold"/>
                                 <TextBlock Text="恢复前会创建并锁定当前快照，完成后可校验并撤销。" Style="{DynamicResource GscCaptionStyle}" Margin="0,5,0,0" TextWrapping="Wrap"/>
@@ -464,7 +464,7 @@
                         <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                         <Border Grid.Column="0" Style="{DynamicResource GscReadingCardStyle}" Padding="18,14">
                             <Grid>
-                                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                                 <Grid>
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                     <Grid MinWidth="0">
@@ -474,10 +474,23 @@
                                             <TextBlock Text="{Binding LastBackupDiff.ComparisonQualityDisplay, TargetNullValue=等待比较, FallbackValue=等待比较}" Foreground="{DynamicResource GscInfoBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextTrimming="CharacterEllipsis" ToolTip="{Binding LastBackupDiff.ComparisonQualityDisplay, TargetNullValue=等待比较, FallbackValue=等待比较}" VerticalAlignment="Center"/>
                                         </Border>
                                     </Grid>
-                                    <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding CompareBackupCommand}" Content="比较当前与上一版本" HorizontalAlignment="Right" Margin="12,0,0,0" AutomationProperties.Name="比较当前选中版本与上一版本"/>
+                                    <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding CompareBackupCommand}" Content="比较 A/B" HorizontalAlignment="Right" Margin="12,0,0,0" AutomationProperties.Name="比较 A 与 B 版本"/>
                                 </Grid>
-                                <TextBlock Grid.Row="1" Text="{Binding DiffComparedSummary, TargetNullValue=尚未选择可比较的版本。, FallbackValue=尚未选择可比较的版本。}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,6,0,0"/>
-                                <Grid Grid.Row="2" Margin="0,12,0,0">
+                                <Grid Grid.Row="1" Margin="0,12,0,0">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0" MinWidth="0">
+                                        <TextBlock Text="A · 基准版本" Style="{DynamicResource GscCaptionStyle}"/>
+                                        <ComboBox Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding Backups}" SelectedItem="{Binding CompareLeftBackup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="ComparisonDisplay" ToolTip="A 是比较基准；B 中新增的文件会显示为新增。" AutomationProperties.Name="选择 A 基准版本" Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2" MinWidth="0">
+                                        <TextBlock Text="B · 对照版本" Style="{DynamicResource GscCaptionStyle}"/>
+                                        <ComboBox Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding Backups}" SelectedItem="{Binding CompareRightBackup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="ComparisonDisplay" ToolTip="B 是比较对照；A 中有而 B 中没有的文件会显示为删除。" AutomationProperties.Name="选择 B 对照版本" Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                    <ui:Button Grid.Column="3" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding SwapCompareBackupCommand}" Content="交换 A/B" ToolTip="交换比较方向并重新计算差异" AutomationProperties.Name="交换 A 和 B 版本" VerticalAlignment="Bottom" Margin="12,0,0,0"/>
+                                </Grid>
+                                <TextBlock Grid.Row="2" Text="{Binding CompareSelectionSummary, TargetNullValue=请选择两个不同版本。, FallbackValue=请选择两个不同版本。}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,8,0,0"/>
+                                <TextBlock Grid.Row="3" Text="{Binding DiffComparedSummary, TargetNullValue=尚未选择可比较的版本。, FallbackValue=尚未选择可比较的版本。}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                <Grid Grid.Row="4" Margin="0,12,0,0">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                     <StackPanel>
                                         <TextBlock Text="{Binding LastBackupDiff.Added.Count, TargetNullValue=—}" FontSize="24" FontWeight="SemiBold" Foreground="{DynamicResource GscSuccessBrush}"/>

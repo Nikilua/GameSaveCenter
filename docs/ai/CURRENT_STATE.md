@@ -1625,3 +1625,12 @@
 - `R11VersionSummaryBehaviorTests` `2/2`；Save 页面相邻回归 `13/13`；定向 Release 编译成功（Playnite `net462`/Tests `net472`）；XAML `24/24`；source/XAML/diff check 通过。证据：`evidence/R11-01-VERSION-SUMMARY-20260919.md`。
 - 证据使用合成 DTO、真实 SaveCenterView/STA Window 和逻辑 DIP；未验真实 Playnite/package-host、最终呈现、物理 DPI/跨屏、UIA/读屏、IME、ETW、宿主性能。Demo 原目录不可用，沿用恢复生产基线；main DEV-INSTALL-008 `73/588/57` 与安装器退出 1 未覆盖或重跑。
 - 下一可执行任务：R11-02 双版本对比选择。
+
+## 2026-09-19 Round3 R11-02 双版本对比选择
+
+- 先复用现有 `BackupCompareRequestDto`、`MessageTypes.CompareBackups`、`BackupDiffDto` 和 Worker `FileManifestDiffService`；既有差异算法已按 `Left → Right` 计算，本阶段未新增比较服务、恢复命令或第二套数据契约。
+- 存档比较页新增真实 A/B 选择框：`CompareLeftBackup` 为 A 基准、`CompareRightBackup` 为 B 对照，初始仍沿用上一版本→当前版本；`SwapCompareBackupCommand` 交换选择后重新提交现有比较请求。摘要明确“新增属于 B，删除属于 A”，历史详情按钮改为同一 A/B 语义。
+- 同一版本、缺少稳定 ID或不完整选择均不会执行比较；同版本提示明确“不发起比较或恢复”。比较命令只走 `CompareBackups`，恢复保护/取消/错误/游戏选框/滚动系统和 Playnite net462 保持。
+- `R11VersionComparisonBehaviorTests` `2/2`：真实 SaveCenterView/STA 绑定和同版本禁用，加上 Core manifest 反向方向反例；R11-02 与 R11-01、Save R06 相邻回归 `15/15`。定向 Release 编译无 warning/error，XAML `24/24`、source/XAML/diff check 通过。证据：`evidence/R11-02-VERSION-COMPARISON-20260919.md`。
+- 证据仍只覆盖 synthetic manifest、隔离 STA WPF、真实生产视图和逻辑 DIP；未证明真实 Worker IPC/归档读取、Playnite/package-host 安装呈现、presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW 或宿主性能。Demo 原目录不可用，继续沿用恢复生产基线。main DEV-INSTALL-008 `73/588/57`、安装器退出 1 和 main 用户文件仍独立未覆盖。
+- 下一可执行任务：R11-03 差异列表搜索；保持有限加载、完整路径复制和零变化/未知差异的既有边界。
