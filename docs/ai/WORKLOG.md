@@ -7309,3 +7309,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - freshness 报告 `14/14 fresh`，docs-only/shared-control/package-identity 三类测试通过；包身份保持 `not-provided`。没有把 R00-07、R01-01、R01-07 的既有 fresh 状态说成同一批重跑产物。
 - 本阶段证据已写入 `evidence/R00-R01-CURRENT-RECHECK-20260919.md` 和第三轮账本；临时构建、探针、审计输出待提交前清理。main 的用户文件未触碰。
 - 未验边界：Demo 原目录、真实 Playnite 呈现、物理 DPI/跨屏、IME/UIA、presented frame、ETW、宿主性能、真实 package-host 安装。下一可执行任务为 R08-08 变换所有权。
+
+## 2026-09-19 Round3 R08-08 变换所有权
+
+- 先核对质量审查 F04 和 R00-02：旧 `GscMotion` 只克隆冻结变换，共用未冻结 `TranslateTransform/TransformGroup` 会串扰；没有把该风险误写成已发生的生产页面错位。
+- 在 `194a16fe` 收口 per-element RenderTransform 所有权：外部树首次进入 helper 即按当前值克隆，控件状态记录自有根，重复调用复用；新增 STA 行为测试验证共享直接变换和共享组合变换隔离，并保留旋转/平移几何。
+- 验证：最终提交干净隔离 Release/XAML `24/24`、solution `0 warning / 0 error`；Foundation `9/9`、R08-01 `2/2`、R08-02 `1/1`、R08-03 `1/1`、R08-05 `2/2`、R08-06 `3/3`、R08-07 `3/3`；源码校验和 diff check 通过。一次合并 testhost 的 14 项失败来自缺少构建身份和 WPF/时序污染，已改为带 `GSC_BUILD_COMMIT` 的串行隔离重跑，未计为产品失败。
+- 证据已写入 `evidence/R08-08-TRANSFORM-OWNERSHIP-20260919.md` 与第三轮账本；本阶段临时 worktree/build 已清理，main 用户改动不变。未验真实 Playnite/物理屏幕/呈现帧、UIA/读屏、ETW、宿主性能、动态资源绑定后续推送和 package-host。
+- 下一可执行任务：R09-01 主题转换闪白，继续先查现有能力和共享资源顺序。

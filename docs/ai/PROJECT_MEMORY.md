@@ -3759,3 +3759,10 @@
 - 复核证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20260919.md`。R00-07、R01-01、R01-07 原先已 fresh，不为统一时间戳重复构建；不要把每条记录描述成同一批运行。
 - Demo 原目录不可用，沿用恢复生产资源基线；离屏 synthetic/STA WPF 不能替代真实 Playnite、物理 DPI/跨屏、IME/UIA、presented frame、ETW、宿主性能或 package-host。main 的用户未提交改动不可覆盖。
 - 下一可执行小批量为 R08-08：检查 `GscMotion` 的共享可变/冻结 `Freezable`、变换实例归属和 R00-02 覆盖，再决定最小改动。
+
+## 2026-09-19 Round3 R08-08 变换所有权
+
+- `194a16fe588a2f102047792a94252e25ba5e7714` 已推送。`GscMotion` 不能可靠枚举 WPF 可变 Freezable 的全部依赖属性所有者，因此外部 RenderTransform 首次进入 helper 时统一 `CloneCurrentValue()`，由 `MotionState.OwnedRenderTransform` 记录控件所有权；后续同一控件复用，不再嵌套新组。
+- 行为覆盖了两个控件共享未冻结 `TranslateTransform`、两个控件共享带旋转子节点的 `TransformGroup`，以及 R00-02 的冻结组合树 1000 次复用；当前提交隔离构建 XAML `24/24`、0/0，Foundation `9/9`，R08 相关类串行通过。
+- 不把该策略扩展解释为动态资源绑定或真实宿主呈现已验；离屏 STA/逻辑 DIP、物理 DPI/跨屏、UIA/读屏、presented frame、ETW、宿主性能和 package-host 仍分开记录。Demo 原目录不可用，保持生产资源基线。
+- 下一可执行小批量为 R09-01：核对主题切换的资源更新顺序、Popup/占位图更新和负例，再决定是否需要共享资源修复。

@@ -1492,3 +1492,10 @@
 - freshness 当前为 `14/14 fresh`，负例测试通过；包身份保持 `not-provided`。R00-07、R01-01、R01-07 原本已 fresh，未伪造为同一批构建产物。
 - main 工作树仍保留用户未提交文件，续作分支只提交自身实现和本阶段文档；真实 Playnite、物理屏幕/DPI/跨屏、IME/UIA、presented frame、ETW、宿主性能和 package-host 仍未验证。
 - 下一可执行任务：R08-08，检查 `GscMotion` 的共享可变/冻结 `Freezable` 和变换实例归属，再做最小行为/负例补充。
+
+## 2026-09-19 Round3 R08-08 变换所有权
+
+- `194a16fe` 已推送。`GscMotion` 对外部/样式 RenderTransform 在 motion helper 首次使用时按当前值克隆并登记到控件状态；同一控件复用自有树，两个控件共享未冻结直接变换或组合变换时不会互相移动，原有旋转/平移几何保留。
+- 新增真实 STA 行为测试覆盖直接 `TranslateTransform` 与带旋转子节点的 `TransformGroup`；R00-02 1000 次组合缩放稳定性仍通过。当前提交隔离 Release/XAML `24/24`、解决方案 `0/0`，Foundation `9/9`，R08 相关串行回归通过。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-08-TRANSFORM-OWNERSHIP-20260919.md`。未把 synthetic/offscreen logical DIP 写成真实 Playnite、物理屏幕、presented frame、UIA/读屏、ETW 或宿主性能通过。
+- Demo 原目录不可用，沿用恢复生产基线；命令/绑定、游戏选框、滚动条、取消/错误语义和恢复保护未改。下一可执行任务：R09-01 主题转换闪白。
