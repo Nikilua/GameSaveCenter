@@ -40,6 +40,9 @@ namespace GameSaveCenter.Playnite.Views
         public AcrylicProductionShellView()
         {
             InitializeComponent();
+            FocusWorkspaceSearchCommand = new RelayCommand(
+                _ => FocusWorkspaceSearchRequested?.Invoke(),
+                _ => FocusWorkspaceSearchRequested != null);
             TextCompositionManager.AddPreviewTextInputStartHandler(GameSearchTextBox, OnGameSearchCompositionStarted);
             TextCompositionManager.AddPreviewTextInputUpdateHandler(GameSearchTextBox, OnGameSearchCompositionUpdated);
             TextCompositionManager.AddPreviewTextInputHandler(GameSearchTextBox, OnGameSearchTextInput);
@@ -63,6 +66,12 @@ namespace GameSaveCenter.Playnite.Views
 
         public FrameworkElement PageHostForAudit => PageHost;
         internal bool IsGamePickerOpen => PickerOverlay.Visibility == Visibility.Visible;
+        public ICommand FocusWorkspaceSearchCommand { get; }
+        public Action? FocusWorkspaceSearchRequested { get; set; }
+        internal IReadOnlyList<KeyboardShortcutHelpItem> KeyboardShortcutHelpItems
+            => viewModel == null
+                ? Array.Empty<KeyboardShortcutHelpItem>()
+                : KeyboardShortcutHelpCatalog.Create(viewModel.CurrentWorkspace, FocusWorkspaceSearchCommand);
 
         public TextBox GameSearchBoxForFocus => GameSearchTextBox;
 
@@ -517,6 +526,13 @@ namespace GameSaveCenter.Playnite.Views
                       || e.PropertyName == nameof(DashboardViewModel.NavigationReturnToolTip))
                      && viewModel != null)
                 UpdateNavigationReturnButton();
+        }
+
+        private void OnKeyboardHelpClick(object sender, RoutedEventArgs e)
+        {
+            KeyboardShortcutHelpItemsControl.ItemsSource = KeyboardShortcutHelpItems;
+            KeyboardShortcutHelpPopup.IsOpen = !KeyboardShortcutHelpPopup.IsOpen;
+            e.Handled = true;
         }
 
         private void UpdateNavigationReturnButton()

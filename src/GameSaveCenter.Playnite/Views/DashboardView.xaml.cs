@@ -54,6 +54,7 @@ namespace GameSaveCenter.Playnite.Views
             viewModel = new DashboardViewModel(plugin);
             DataContext = viewModel;
             ProductionShellView.Attach(viewModel);
+            ProductionShellView.FocusWorkspaceSearchRequested = FocusWorkspaceSearch;
             ProductionShellView.MotionEnabledProvider = () => MotionEnabled;
             ProductionShellView.SidebarCollapsedProvider = () => plugin.Settings.SidebarCollapsed;
             ProductionShellView.SidebarCollapsedChanged = value =>
@@ -1349,7 +1350,7 @@ namespace GameSaveCenter.Playnite.Views
                     ProductionShellView.IsGamePickerOpen,
                     compactGameBrowserOpen))
             {
-                FocusWorkspaceSearch();
+                ProductionShellView.FocusWorkspaceSearchCommand.Execute(null);
                 e.Handled = true;
                 return;
             }
