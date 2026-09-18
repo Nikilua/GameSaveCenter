@@ -51,13 +51,20 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
         private static void OnPreviewMouseWheel(object sender, MouseWheelEventArgs args)
         {
-            if (args.Handled) return;
+            if (args.Handled || args.Delta == 0) return;
 
             var nested = ResolveNestedScroller(sender, args.OriginalSource as DependencyObject);
             if (nested == null || CanScroll(nested, args.Delta)) return;
 
             var outer = FindParentScrollViewer(nested);
-            if (outer == null || !CanScroll(outer, args.Delta)) return;
+            if (outer == null || !CanScroll(outer, args.Delta))
+            {
+                // At the final reachable boundary there is no scroll target left. Consume
+                // the no-op so WPF does not schedule a layout pass for every repeated wheel
+                // event, while still leaving events with a movable outer surface untouched.
+                args.Handled = true;
+                return;
+            }
 
             ScrollByWheelDelta(outer, args.Delta);
             args.Handled = true;
