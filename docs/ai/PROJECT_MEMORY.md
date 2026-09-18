@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-18
 
+## 2026-09-18 R01-07 freshness 基线复核
+
+- 根据实际新证据更新 baseline：R00-01-02→`89aa27e1`，R00-03/R00-04→`e5a12ffa`，R00-05/R00-06→`e8fe1aab`，R00-07/R00-08→`4f585024`，R01-01/R01-02→`a5219c09`，R01-03→`c2399d7b`。这些是各自已运行的隔离证据身份，不是把当前 HEAD 统一填入所有项目。
+- 当前 `check-ui-evidence-freshness.ps1` 扫描为 14 条记录、12 fresh/2 stale；R01-05 的生产调色板/壳层路径和 R01-06 的 RenderHarness Program 仍需当前证据重跑。R01-07 的三类 smoke（文档-only、共享控件、包身份 mismatch）通过。
+- 不把 stale 写成产品回归，也不把 `package=not-provided` 写成真实宿主安装；R01-05/R01-06 账本暂降为“需重跑证据”。下一步先复核负例注册表，再保全当前审计身份/索引/精选图。
+
 ## 2026-09-18 R01-03 每项证据直达
 
 - 当前提交 `c2399d7b` 新建隔离构建并运行完整 RenderHarness 审计，输出身份 `c2399d7be9f723e77226619172be16778fe3646f`；solution/RenderHarness `0/0`、XAML `24/24`。

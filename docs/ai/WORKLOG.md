@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-18 R01-07 freshness 基线复核
+
+- 读取现有 baseline 与脚本后，没有用一条“当前 HEAD”覆盖所有记录：只把已实际重跑的 R00/R01 项绑定到对应隔离证据提交；当前 R01-03 审计使用 `c2399d7b`，R01-01/R01-02 使用 `a5219c09`。
+- `test-ui-evidence-freshness.ps1` 通过文档-only、共享控件和 package identity 三类 smoke；正式扫描 `989abec4` 为 `12 fresh / 2 stale`。R01-05 命中 `AdaptiveThemePalette.cs` 与壳层，R01-06 命中 RenderHarness `Program.cs`，均如实保留 stale。
+- 账本将 R01-05/R01-06 暂记为“需重跑证据”，下一批为 R01-05 当前负例检测器/注册表行为，而不是修改生产样式或伪造宿主证据。Demo 原始目录、真实 Playnite、物理 DPI、presented frame、ETW、宿主性能仍未验。
+
 ## 2026-09-18 R01-03 每项证据直达
 
 - 先读取既有 `UiEvidenceIndexBuilder`、`validate-ui-evidence-index.ps1` 和 freshness 脚本；没有重复实现索引，也没有把 20 行索引当作交互/动画/焦点/性能签收。
