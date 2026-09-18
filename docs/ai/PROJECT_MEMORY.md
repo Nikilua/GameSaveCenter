@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-18
 
+## 2026-09-18 R08-01 中途反向连续
+
+- 先核对当前代码：侧栏已有 `sidebarTransitionGeneration`；`GscMotion.AnimateTranslate` 的旧完成回调是实际缺口。`a7aaa89e` 用 `ConditionalWeakTable<FrameworkElement, MotionState>` 增加按元素 generation guard，`d62757e9` 只稳定真实 STA WPF 取样，不重建动画体系，也不改变命令/绑定、选框、滚动条、取消/错误/恢复或服务 DTO。
+- 当前身份 shadow `r08-01-build-d62757e9`、完整 solution shadow `r08-01-solution-build-d62757e9` 均为 `0/0`，Playnite `net462`，XAML `24/24`；R08 `2/2`，相邻 Chrome `10/10`、Foundation `8/8`。实际 Translate `8.403→8.403→-8`，侧栏 `169.333→169.333→221.333→270`，opacity `1`，transition/opacity clocks released。
+- 夹具断言中点、反向当前值、最新目标、最终状态和 clock release。事实边界是合成/fake、隔离 STA WPF/offscreen logical DIP；没有真实 Playnite/物理输入/DPI/呈现/UIA/ETW/宿主性能或 OS reduced-motion 证据。Demo 原始目录不可用，继续恢复生产基线。下一项 R08-02 热关闭动画。
+
 ## 2026-09-18 R07-08 resize 压力序列
 
 - 先核对 shell 的 Render 优先级 resize 合并、Task 独立详情滚动和游戏选择器 overlay；没有新增布局体系。`9f478cac` 新增真实生产 shell/page 夹具，执行 `1366×900→960×700→960×560→1440×900→1366×900`，详情、菜单和搜索框焦点均保持。

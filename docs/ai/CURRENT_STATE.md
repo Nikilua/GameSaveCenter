@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R08-01 中途反向连续
+
+- 先核对已有实现：`AcrylicProductionShellView` 的侧栏开合已有 `sidebarTransitionGeneration`；发现通用 `GscMotion.AnimateTranslate` 的旧 `Completed` 回调可能覆盖最新目标。`a7aaa89e` 只补按元素 generation guard，`d62757e9` 稳定真实 STA WPF 取样，没有改变命令/绑定、游戏选框、滚动条、取消/错误/恢复语义或服务 DTO。
+- 当前身份隔离 Release 输出 `r08-01-build-d62757e9` 与完整 solution 输出 `r08-01-solution-build-d62757e9` 均为 `0 warning / 0 error`，Playnite `net462`；XAML `24/24`；R08-01 `2/2`，相邻 `ProductionShellChromeSourceTests 10/10`、`UiFinesseFoundationTests 8/8`，源校验和 diff check 通过。Translate 实际取样 `8.403→8.403→-8`；侧栏 `169.333→169.333→221.333→270`，最终 opacity `1` 且时钟释放。
+- 夹具检查了中点、有效值连续性、最新目标、最终状态和时钟释放，不是 Assert.Contains-only。边界仍是合成/fake、隔离 STA WPF/offscreen logical DIP；未验真实 Playnite、物理输入/DPI/跨屏、呈现/UIA/读屏、ETW、宿主性能或 OS reduced-motion。Demo 原始目录不可用，沿用恢复生产基线。下一可执行任务为 R08-02 热关闭动画。
+
 ## 当前第三轮 R07-08 resize 压力序列
 
 - `9f478cac` 补真实生产 `AcrylicProductionShellView` + `TaskCenterView` 的隔离 STA WPF resize 夹具；复用 shell Render 优先级合并、独立详情 `ScrollViewer`、游戏选择器 overlay 和现有命令/绑定，没有换布局体系。序列为 `1366×900→960×700→960×560→1440×900→1366×900`，任务详情、游戏选择器、搜索焦点全程保持。

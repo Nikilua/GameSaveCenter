@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-18 R08-01 中途反向连续
+
+- 先核对已有能力：侧栏已有 generation guard；真实缺口是通用 `GscMotion.AnimateTranslate` 的旧完成回调可以覆盖中途反向后的最新目标。`a7aaa89e` 增加按元素 generation guard，`d62757e9` 稳定实际取样夹具，没有重建动效或改动命令/绑定、选框、滚动条和安全语义。
+- 当前身份 Release shadow：XAML `24/24`、完整 solution `0/0`、Playnite `net462`；R08-01 `2/2`，相邻 Chrome `10/10`、Foundation `8/8`，源校验和 diff check 通过。实际 Translate `8.403→8.403→-8`；侧栏 `169.333→169.333→221.333→270`，最终 opacity `1`、transition/opacity clock 清理。测试断言中点、当前有效值连续性、最新目标、最终状态和时钟释放。
+- 证据仍限于合成/fake、真实生产 WPF shell、隔离 STA/offscreen logical DIP；未验真实 Playnite/物理输入/DPI/呈现/UIA/ETW/宿主性能或 OS reduced-motion，Demo 原始目录不可用，沿用恢复生产基线。下一可执行任务为 R08-02 热关闭动画。
+
 ## 2026-09-18 R07-08 resize 压力序列
 
 - 复用现有 shell/page resize 合并、详情滚动和游戏选择器 overlay；`9f478cac` 补实际 `AcrylicProductionShellView` + `TaskCenterView` 隔离行为夹具，覆盖 `1366×900→960×700→960×560→1440×900→1366×900`，不改生产布局体系。
