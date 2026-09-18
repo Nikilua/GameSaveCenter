@@ -3831,3 +3831,10 @@
 - 定向 `13/13`、XAML `24/24`、Release `0 warning / 0 error`、source/XAML/diff check 通过。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R10-01-CONTEXT-RETURN-20260919.md`；账本 R10-01 已改为“已满足”。
 - 当前证据是隔离 fake/合成状态、STA WPF 和逻辑 DIP；不能升级为真实 Playnite、物理 DPI/跨屏、presented frame、UIA/读屏、IME、ETW、宿主性能或 package-host 结论。Demo 原目录不可用，沿用恢复生产基线。
 - 用户提供的 main 安装器日志保留为独立边界：编译 `0/0`、Core `83/83`、Worker `311/311`，Playnite `73 failed / 588 passed / 57 skipped`；未在 dirty main 上覆盖或重跑安装器。下一可执行任务：R10-02。
+
+## 2026-09-19 Round3 R10-02 定位当前游戏
+
+- 现有能力已满足本项：任务详情入口按 `SelectedTask.GameId` 定位；媒体页的当前游戏名称和 Shell 选框沿用 `SelectedGame`，媒体请求使用 `SelectedGame.PlayniteId`。不按显示名定位，避免重名游戏误选。
+- `3c258873` 的 `R10ContextGameBehaviorTests` 使用真实 `GamePickerViewModel` 验证两个同名 synthetic 游戏中按第二个 `PlayniteId` 选择；生产任务/媒体/Shell 接线同步复核。R10-02 `2/2`，相邻 R10/告警导航共 `15/15`，Release `0 warning / 0 error`、XAML `24/24`。
+- 证据已写入 `evidence/R10-02-CURRENT-GAME-20260919.md` 并同步账本；没有新增服务、DTO 或设计体系。Demo 原目录不可用，沿用恢复生产基线。
+- 未验真实 Playnite 定位操作、物理 DPI/跨屏、presented frame、UIA/读屏、IME、ETW、宿主性能、package-host；用户 main 安装器的 `73/588/57` 失败事实仍不改写为本项隔离失败。下一可执行任务：R10-03。

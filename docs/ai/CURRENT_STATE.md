@@ -1562,3 +1562,11 @@
 - 当前隔离验证：source validation 通过、XAML `24/24`、Release solution `0 warning / 0 error`、R10 与相邻告警路由 `13/13`、diff check 通过。证据：`evidence/R10-01-CONTEXT-RETURN-20260919.md`。
 - 证据仅覆盖 fake/合成状态、隔离 STA WPF 和逻辑 DIP；未验真实 Playnite 返回序列、presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW、宿主性能和 package-host。Demo 原目录不可用，沿用恢复生产基线。用户 DEV-INSTALL-008 main 全量日志的 `73 failed / 588 passed / 57 skipped` 作为独立发布边界记录，未在 dirty main 上覆盖或重跑。
 - 下一可执行任务：R10-02；真实宿主与 main 合并后的单 checkout 安装器复验仍未完成。
+
+## 2026-09-19 Round3 R10-02 定位当前游戏
+
+- 盘点确认无需另建选择器：任务详情沿用 R10-01 的 `SelectedTask.GameId` 精确入口；媒体页沿用当前游戏 Shell 选框、`SelectedGame.Name` 和 `SelectedGame.PlayniteId` 请求身份。`GamePickerViewModel` 已按 ID 选取，不按重名显示名猜测。
+- `3c258873` 新增 R10-02 行为夹具：两个同名 synthetic 游戏中指定第二个稳定 ID，实际 `GamePickerViewModel.SelectGame` 选中第二个；同时核对任务/媒体/Shell 生产接线。R10-02 `2/2`，R10-01/告警/页面相邻合计 `15/15`。
+- 当前隔离验证：Release solution `0 warning / 0 error`、XAML `24/24`、source/XAML/diff check 通过。证据：`evidence/R10-02-CURRENT-GAME-20260919.md`；账本 R10-02 已改为“已满足”。
+- 仅证明 synthetic DTO、真实选框 ViewModel、生产接线和隔离 net462 testhost；未验真实 Playnite 操作、presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW、宿主性能和 package-host。DEV-INSTALL-008 main 全量 `73 failed / 588 passed / 57 skipped` 仍为独立发布边界，main 未触碰。
+- 下一可执行任务：R10-03；真实宿主定位与呈现仍未完成。

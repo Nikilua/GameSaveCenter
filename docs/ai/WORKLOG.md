@@ -7380,3 +7380,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 行为定义覆盖正例和负例：LIFO 快照恢复游戏/页签/筛选/任务或诊断选择/滚动；原游戏、原任务或诊断项消失时不自动换成其他对象并说明。实现后 source validation、XAML `24/24`、Release solution `0/0`、R10 与相邻导航 `13/13`、diff check 全部通过。
 - 证据已写入 `evidence/R10-01-CONTEXT-RETURN-20260919.md`，账本 R10-01 已同步。用户安装日志事实为 main checkout 编译/Core/Worker 通过，但 Playnite 全量 `73/588/57` 失败混合 WPF 宿主/资源/布局/时序错误；不将其改写成 R10-01 隔离回归，也未在 dirty main 上安装或覆盖。
 - `.tmp/r10-01-build` 的构建输出已清理；仅剩 `test-temp/VBCSCompiler/AnalyzerAssemblyLoader` 被已有长驻 dotnet 进程锁定，未强制终止未知归属进程，待其自然退出后再安全删除。真实 Playnite 返回序列、physical DPI/跨屏、presented frame、UIA/读屏、IME、ETW、宿主性能和 package-host 未验。下一可执行任务：R10-02。
+
+## 2026-09-19 Round3 R10-02 定位当前游戏
+
+- 先查已有能力后确认无需新增导航体系：R10-01 已提供任务详情按 `SelectedTask.GameId` 定位；媒体页已有当前游戏名称、Shell 选框和按 `SelectedGame.PlayniteId` 的加载/操作路径；`GamePickerViewModel` 自带稳定 ID 选择。
+- `3c258873` 新增 `R10ContextGameBehaviorTests`，实际测试重名 synthetic 游戏按 ID 选中目标，并核对 Task/Media/Shell 的真实生产接线。R10-02 `2/2`；与 R10-01、FindingNavigationResolver、PurposeNavigationSource 相邻合计 `15/15`。
+- 当前隔离 Release build `0 warning / 0 error`、XAML `24/24`，source validation、XAML、diff check 通过。证据 `evidence/R10-02-CURRENT-GAME-20260919.md` 已写入，账本已同步。
+- `.tmp/r10-02-build` 只用于本阶段构建/测试；收尾时若仍被 VBCSCompiler 锁定，保留锁定事实，不强制终止未知归属进程。真实 Playnite 定位、physical DPI/跨屏、presented frame、UIA/读屏、IME、ETW、宿主性能和 package-host 未验。下一可执行任务：R10-03。
