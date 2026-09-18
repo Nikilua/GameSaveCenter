@@ -1,6 +1,6 @@
 {
-  "GeneratedUtc": "2026-09-16T11:19:12.9218368Z",
-  "CommitSha": "3929ed73e1056a964d7ceacc54a6046abcc9983e",
+  "GeneratedUtc": "2026-09-18T03:36:08.9824686Z",
+  "CommitSha": "c2399d7be9f723e77226619172be16778fe3646f",
   "PluginVersion": "0.6.73.0",
   "PlayniteVersion": "6.16.0.0",
   "WindowsVersion": "Microsoft Windows NT 6.2.9200.0",
@@ -77,6 +77,6 @@
       "Note": "logical DIP"
     }
   ],
-  "OutputRoot": ".tmp\\r01-06-audit",
-  "ZipPath": ".tmp\\GameSaveCenter-ui-audit.zip"
+  "OutputRoot": "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-host-evidence-20260916",
+  "ZipPath": ".tmp/GameSaveCenter-ui-audit.zip (reproducible temporary output; not archived)"
 }

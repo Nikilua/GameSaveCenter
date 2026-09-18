@@ -6,15 +6,15 @@
 
 - View 数量：10
 - Tab 数量：32
-- Button/ToggleButton 数量：234
+- Button/ToggleButton 数量：246
 - DataGrid 数量：14
 - ScrollViewer 数量：34
-- 条件 UI 数量：235
+- 条件 UI 数量：247
 - Expander 数量：16
 - ComboBox 数量：34
 - CheckBox 数量：3
-- TextBox/PasswordBox 数量：50
-- TextBlock 数量：850
+- TextBox/PasswordBox 数量：54
+- TextBlock 数量：857
 
 ## Dashboard 外壳
 
@@ -42,15 +42,15 @@
 - Border | GameDetailCard | Style={StaticResource GscWorkspaceHostSurface}
 - Border | SelectedGameHeader | Style={StaticResource GscRedesignSectionCard}
 - Border | SelectedGameHealthPill | Style={StaticResource GscRedesignContextPill}
-- Border |
+- Border | 
 - Border | DemoFooter
 - Border | StatusPill
-- Border |
+- Border | 
 - Border | 后台更新
-- Button |
+- Button | 
 - ListBox | {Binding Initials}
-- TextBlock |
-- TextBlock |
+- TextBlock | 
+- TextBlock | 
 - TextBlock | 搜索游戏…
 - TextBlock | 没有符合条件的游戏
 请调整搜索或筛选条件。
@@ -85,7 +85,7 @@
 - Button | HeaderMediaButton | Command={Binding SyncMediaCommand} | Style={DynamicResource GscRedesignHeaderButton}
 - Button | HeaderBackupSelectedButton | Command={Binding BackupSelectedCommand} | Style={DynamicResource GscRedesignPrimaryHeaderButton}
 - Button | HeaderBackupButton | Command={Binding BackupAllCommand} | Style={DynamicResource GscRedesignPrimaryHeaderButton}
-- Button |
+- Button | GameSearchClearButton
 - ComboBox | GamePickerStatusComboBox | Style={DynamicResource GscWpfUiPickerFilterComboBox}
 - ComboBox | GamePickerPlatformComboBox | Style={DynamicResource GscWpfUiPickerFilterComboBox}
 - ComboBox | GamePickerSortComboBox | Style={DynamicResource GscWpfUiPickerFilterComboBox}
@@ -107,10 +107,10 @@
 - Border | DemoShell
 - Border | PickerPanel | Style={DynamicResource GscRedesignFloatingPickerCard}
 - Border | FooterSurface
-- Button |
+- Button | GameSearchClearButton
 - TextBlock | 搜索游戏
-- TextBlock |
-- TextBlock |
+- TextBlock | 
+- TextBlock | 
 
 
 ## Development 探针
@@ -216,7 +216,7 @@
 - Button |  | Command={Binding DataContext.OpenSelectedFindingNavigationCommand}
 - Button |  | Command={Binding DataContext.LoadMoreRetentionQuarantineCommand}
 - DataGrid | FindingsGrid | Style={StaticResource MaintenanceDataGrid}
-- Expander |
+- Expander | 
 - Expander | MaintenanceActionsDisclosure | Style={StaticResource GscDisclosureCard}
 - ItemsControl | {Binding Title}
 - ScrollViewer | MaintenanceDiagnosticsInspector
@@ -227,7 +227,7 @@
 - TabItem | 下一步运维
 - TextBlock | 当前没有需要处理的诊断项。
 Worker、备份和媒体状态正常时，这里会保持为空。
-- TextBlock |
+- TextBlock | 
 
 
 ### 云端队列
@@ -236,6 +236,7 @@ Worker、备份和媒体状态正常时，这里会保持为空。
 
 - Button |  | Command={Binding RefreshCloudTransfersCommand} | Style={DynamicResource GscWpfUiToolbarButton}
 - Button | CloudTransferCompactDetailsButton | Style={DynamicResource GscWpfUiSecondaryButton}
+- Button |  | Command={Binding OpenMaintenanceCommand}
 - Button |  | Command={Binding VerifyCloudTransferCommand} | Style={DynamicResource GscWpfUiPrimaryActionButton}
 - Button |  | Command={Binding RetryCloudUploadCommand} | Style={DynamicResource GscWpfUiToolbarButton}
 - Button |  | Command={Binding LoadMoreCloudTransfersCommand} | Style={DynamicResource GscWpfUiToolbarButton}
@@ -253,6 +254,10 @@ Worker、备份和媒体状态正常时，这里会保持为空。
 #### 条件显示 UI
 
 - Border | CloudTransferTableFrame | Style={DynamicResource GscRedesignTableFrame}
+- Border | 队列详情 | Style={DynamicResource GscRedesignSectionCard}
+- Border | {Binding CloudTransferAvailabilityHint, Mode=OneWay} | Style={DynamicResource GscActionAvailabilityHintBubble}
+- Button |  | Command={Binding OpenMaintenanceCommand}
+- ScrollViewer | CloudTransferInspector | Style={DynamicResource GscInspectorScrollViewer}
 - TabItem | 待处理
 - TextBlock | 暂无符合筛选条件的云端传输记录。
 上传成功不代表远端已校验，请选择记录查看保证级别。
@@ -475,12 +480,12 @@ Worker、备份和媒体状态正常时，这里会保持为空。
 - Border | MaintenanceDiagnosticsActionCard | Style={DynamicResource GscReadingCardStyle}
 - Border | 安全模式已开启：自动备份、自动媒体同步、云端上传和工具自动启动已暂停；手动操作仍可用。
 - Button |  | Command={Binding DataContext.LoadMoreRetentionQuarantineCommand}
-- Expander |
+- Expander | 
 - Expander | MaintenanceActionsDisclosure | Style={StaticResource GscDisclosureCard}
 - ItemsControl | {Binding Title}
 - ScrollViewer | MaintenanceDiagnosticsOverviewScrollSurface | Style={DynamicResource GscPageScrollViewer}
 - TabItem | 下一步运维
-- TextBlock |
+- TextBlock | 
 
 
 ### 发现的问题
@@ -535,16 +540,20 @@ Worker、备份和媒体状态正常时，这里会保持为空。
 #### 操作与输入
 
 - Button |  | Command={Binding ReloadMediaInboxCommand} | Style={DynamicResource GscWpfUiSecondaryButton}
+- Button | MediaInboxClearSelectionButton | Style={DynamicResource GscWpfUiActionButton}
+- Button |  | Style={DynamicResource GscWpfUiActionButton}
 - Button |  | Command={Binding AssignInboxMediaBatchCommand} | Style={DynamicResource GscWpfUiPrimaryActionButton}
 - Button | MediaInboxCompactDetailsButton | Style={DynamicResource GscWpfUiSecondaryButton}
+- Button |  | Command={Binding OpenMaintenanceCommand}
 - Button | ReloadMediaInboxButton | Command={Binding ReloadMediaInboxCommand}
 - Button | MediaInboxHistoryButton | Style={DynamicResource GscWpfUiSecondaryButton}
 - Button |  | Command={Binding LoadMoreMediaInboxCommand}
 - Button |  | Command={Binding IgnoreInboxMediaBatchCommand} | Style={DynamicResource GscWpfUiActionButton}
 - Button |  | Command={Binding PreviewMediaClassificationCommand} | Style={DynamicResource GscWpfUiSecondaryButton}
-- Button |  | Command={Binding ApplyMediaClassificationCommand} | Style={DynamicResource GscWpfUiPrimaryActionButton}
+- Button |  | Command={Binding ApplyMediaClassificationCommand}
 - Button |  | Command={Binding RestoreIgnoredMediaBatchCommand}
 - Button |  | Command={Binding UndoMediaClassificationCommand} | Style={DynamicResource GscWpfUiSecondaryButton}
+- Button |  | Command={Binding CopyPathCommand} | Style={DynamicResource GscWpfUiActionButton}
 - Button |  | Command={Binding RefreshMediaClassificationHistoryCommand} | Style={DynamicResource GscIconOnlyButtonBase}
 - Button |  | Command={Binding LoadMoreMediaClassificationHistoryCommand}
 - Button |  | Command={Binding UndoMediaClassificationCommand} | Style={DynamicResource GscWpfUiSecondaryButton}
@@ -555,6 +564,7 @@ Worker、备份和媒体状态正常时，这里会保持为空。
 - ComboBox | {Binding Name} | Style={DynamicResource GscWpfUiComboBox}
 - ComboBox | MediaClassificationHistoryStateCombo | Style={DynamicResource GscWpfUiComboBox}
 - ComboBox | {Binding Name} | Style={DynamicResource GscWpfUiComboBox}
+- TextBox | {Binding SelectedInboxMedia.ArchivePath, Mode=OneWay, TargetNullValue=未生成归档路径} | Style={StaticResource GscWpfUiPathDetailTextBox}
 
 #### 数据表
 
@@ -569,10 +579,13 @@ Worker、备份和媒体状态正常时，这里会保持为空。
 
 - Border | MediaInboxTableFrame | Style={StaticResource MediaTableFrame}
 - Border | MediaInboxStaleBanner
+- Border | {Binding MediaInboxAvailabilityHint, Mode=OneWay} | Style={DynamicResource GscActionAvailabilityHintBubble}
 - Border | MediaInboxInspectorFrame | Style={DynamicResource GscReadingCardStyle}
 - Border | MediaInboxPreviewPanel
 - Border | 归类建议预览 | Style={DynamicResource GscRedesignInfoBand}
+- Button |  | Command={Binding OpenMaintenanceCommand}
 - Button |  | Command={Binding LoadMoreMediaInboxCommand}
+- Button |  | Command={Binding ApplyMediaClassificationCommand}
 - Button |  | Command={Binding RestoreIgnoredMediaBatchCommand}
 - Button |  | Command={Binding LoadMoreMediaClassificationHistoryCommand}
 - Button |  | Command={Binding RestoreIgnoredMediaBatchCommand}
@@ -581,14 +594,14 @@ Worker、备份和媒体状态正常时，这里会保持为空。
 - ScrollViewer | MediaInboxInspectorScrollViewer | Style={DynamicResource GscInspectorScrollViewer}
 - TabItem | {Binding MediaInboxTitle, Mode=OneWay}
 - TextBlock | {Binding MediaInboxEmptyText, Mode=OneWay}
-- TextBlock |
+- TextBlock | 
 
 
 ### 当前游戏媒体
 
 #### 操作与输入
 
-- Button |
+- Button | 
 - Button |  | Command={Binding ClearMediaFiltersCommand}
 - Button |  | Command={Binding ReloadMediaWindowCommand} | Style={DynamicResource GscWpfUiSecondaryButton}
 - Button | ReloadMediaWindowButton | Command={Binding ReloadMediaWindowCommand}
@@ -597,6 +610,7 @@ Worker、备份和媒体状态正常时，这里会保持为空。
 - Button |  | Command={Binding UnfavoriteSelectedMediaCommand} | Style={DynamicResource GscWpfUiMediaBatchButton}
 - Button |  | Command={Binding CommentSelectedMediaCommand} | Style={DynamicResource GscWpfUiMediaBatchButton}
 - Button | MediaCompactDetailsButton | Style={DynamicResource GscWpfUiSecondaryButton}
+- Button |  | Command={Binding CopyPathCommand} | Style={DynamicResource GscWpfUiActionButton}
 - Button |  | Command={Binding UpdateMediaMetadataCommand} | Style={DynamicResource GscWpfUiPrimaryActionButton}
 - Button |  | Command={Binding OpenSelectedMediaCommand} | Style={DynamicResource GscWpfUiActionButton}
 - Button |  | Command={Binding RevealSelectedMediaCommand} | Style={DynamicResource GscWpfUiActionButton}
@@ -607,6 +621,7 @@ Worker、备份和媒体状态正常时，这里会保持为空。
 - ComboBox |  | Style={DynamicResource GscWpfUiFilterComboBox}
 - ComboBox | {Binding Name} | Style={DynamicResource GscWpfUiComboBox}
 - TextBox | MediaSearchTextBox | Style={DynamicResource GscWpfUiTextBox}
+- TextBox | {Binding SelectedMedia.ArchivePath, Mode=OneWay, TargetNullValue=未生成归档路径} | Style={StaticResource GscWpfUiPathDetailTextBox}
 - TextBox | {Binding MediaComment, UpdateSourceTrigger=PropertyChanged} | Style={DynamicResource GscWpfUiTextBox}
 
 #### 滚动容器
@@ -621,7 +636,7 @@ Worker、备份和媒体状态正常时，这里会保持为空。
 - Border | MediaInspectorFrame
 - Border | MediaInspectorPanel | Style={DynamicResource GscReadingCardStyle}
 - Border | MediaPreviewPanel
-- Button |
+- Button | 
 - Button |  | Command={Binding ClearMediaFiltersCommand}
 - Button |  | Command={Binding LoadMoreMediaCommand}
 - ListBox | MediaGrid
@@ -639,7 +654,7 @@ Worker、备份和媒体状态正常时，这里会保持为空。
 #### 操作与输入
 
 - Button |  | Command={Binding AddMediaSourceCommand} | Style={DynamicResource GscWpfUiPrimaryActionButton}
-- Button |  | Command={Binding DataContext.DeleteMediaSourceCommand} | Style={DynamicResource GscWpfUiContextButton}
+- Button |  | Command={Binding DataContext.DeleteMediaSourceCommand} | Style={DynamicResource GscWpfUiContextDangerButton}
 - TextBox | {Binding CustomMediaSourcePath, UpdateSourceTrigger=PropertyChanged} | Style={DynamicResource GscWpfUiTextBox}
 - TextBox | {Binding CustomMediaPattern, UpdateSourceTrigger=PropertyChanged} | Style={DynamicResource GscWpfUiTextBox}
 
@@ -701,14 +716,14 @@ Worker、备份和媒体状态正常时，这里会保持为空。
 - ItemsControl | !
 - ListBox | OverviewActivityList
 - ListBox | OverviewProtectionPreviewItems
-- ProgressBar |
-- ProgressBar |
+- ProgressBar | 
+- ProgressBar | 
 - ScrollViewer | OverviewStackScrollSurface | Style={DynamicResource GscPageScrollViewer}
 - ScrollViewer | OverviewRiskViewport | Style={DynamicResource GscPageScrollViewer}
 - ScrollViewer | OverviewAttentionScrollViewer | Style={DynamicResource GscPageScrollViewer}
-- TextBlock |
-- TextBlock |
-- TextBlock |
+- TextBlock | 
+- TextBlock | 
+- TextBlock | 
 - TextBlock | {Binding Snapshot.WarningGames, Mode=OneWay, TargetNullValue=0, FallbackValue=0}
 - TextBlock | 无需处理
 - TextBlock | 暂无任务记录
@@ -723,14 +738,17 @@ Worker、备份和媒体状态正常时，这里会保持为空。
 
 #### 操作与输入
 
+- Button |  | Command={Binding LoadDetailsCommand} | Style={DynamicResource GscWpfUiSecondaryButton}
 - Button |  | Command={Binding DetectPathsCommand} | Style={DynamicResource GscWpfUiCompactButton}
 - Button |  | Command={Binding ValidateCommand} | Style={DynamicResource GscWpfUiCompactButton}
 - Button |  | Command={Binding LoadDetailsCommand} | Style={DynamicResource GscWpfUiCompactButton}
+- Button |  | Style={DynamicResource GscWpfUiCompactButton}
+- Button |  | Command={Binding OpenMaintenanceCommand}
 - Button | SaveHistoryCompactDetailsButton | Style={DynamicResource GscWpfUiSecondaryButton}
 - Button |  | Command={Binding ValidateRestoreReadinessCommand} | Style={DynamicResource GscWpfUiActionButton}
 - Button |  | Command={Binding UpdateBackupMetadataCommand} | Style={DynamicResource GscWpfUiPrimaryActionButton}
 - Button |  | Command={Binding CompareBackupCommand} | Style={DynamicResource GscWpfUiActionButton}
-- Button |  | Command={Binding RestoreCommand} | Style={DynamicResource GscWpfUiPrimaryActionButton}
+- Button |  | Command={Binding RestoreCommand} | Style={DynamicResource GscWpfUiDangerActionButton}
 - Button |  | Command={Binding UndoRestoreCommand} | Style={DynamicResource GscWpfUiContextButton}
 - CheckBox |  | Style={DynamicResource GscCheckBox}
 - TextBox | {Binding BackupComment, UpdateSourceTrigger=PropertyChanged} | Style={DynamicResource GscWpfUiTextBox}
@@ -746,12 +764,15 @@ Worker、备份和媒体状态正常时，这里会保持为空。
 #### 条件显示 UI
 
 - Border | {Binding SelectedGame.MatchStateDisplay, Mode=OneWay, TargetNullValue=当前规则未匹配} | Style={StaticResource SaveTableFrame}
+- Border | SaveHistorySummaryCard | Style={DynamicResource GscReadingCardStyle}
+- Border | SaveDetailsStaleBanner
 - Border | {Binding LockStateDisplay, Mode=OneWay, Converter={StaticResource GscStatusGlyphConverter}}
+- Border | {Binding RestoreAvailabilityHint, Mode=OneWay} | Style={DynamicResource GscActionAvailabilityHintBubble}
+- Button |  | Command={Binding OpenMaintenanceCommand}
 - DataGrid | SaveHistoryGrid | Style={StaticResource SaveDataGrid}
 - ScrollViewer | SaveHistoryActionsScrollViewer
 - TabItem | {Binding SelectedGame.MatchStateDisplay, Mode=OneWay, TargetNullValue=当前规则未匹配}
-- TextBlock | 暂无存档历史
-完成一次备份后，历史版本会显示在这里。
+- TextBlock | SaveHistoryEmptyStateText
 
 
 ### 路径与校验
@@ -762,9 +783,11 @@ Worker、备份和媒体状态正常时，这里会保持为空。
 - Button | SaveValidateButton | Command={Binding ValidateCommand} | Style={DynamicResource GscWpfUiActionButton}
 - Button | SaveLoadDetailsButton | Command={Binding LoadDetailsCommand} | Style={DynamicResource GscIconOnlyButtonBase}
 - Button | SaveCandidateCompactDetailsButton | Style={DynamicResource GscWpfUiSecondaryButton}
+- Button |  | Command={Binding CopyPathCommand} | Style={DynamicResource GscWpfUiActionButton}
 - Button |  | Command={Binding DetectPathsCommand} | Style={DynamicResource GscWpfUiActionButton}
 - Button |  | Command={Binding AcceptCandidateCommand} | Style={DynamicResource GscWpfUiPrimaryActionButton}
 - Button |  | Command={Binding RejectCandidateCommand} | Style={DynamicResource GscWpfUiActionButton}
+- TextBox | {Binding SelectedCandidate.Path, Mode=OneWay, TargetNullValue=选择候选路径后查看详情} | Style={StaticResource GscWpfUiPathDetailTextBox}
 
 #### 数据表
 
@@ -779,8 +802,7 @@ Worker、备份和媒体状态正常时，这里会保持为空。
 - Border | {Binding Score, Mode=OneWay, StringFormat=P0} | Style={StaticResource SaveTableFrame}
 - ScrollViewer | SaveCandidateInspectorScrollViewer
 - TabItem | {Binding SelectedGame.MatchStateDisplay, Mode=OneWay, TargetNullValue=未匹配}
-- TextBlock | 暂无待处理的存档路径候选
-可以点击“立即扫描”重新检测候选目录。
+- TextBlock | SaveCandidateEmptyStateText
 
 
 ### 备份策略
@@ -796,12 +818,12 @@ Worker、备份和媒体状态正常时，这里会保持为空。
 - Button |  | Command={Binding DeletePolicyTemplateCommand} | Style={DynamicResource GscIconOnlyDangerButton}
 - ComboBox | {Binding Display} | Style={DynamicResource GscWpfUiComboBox}
 - ComboBox | {Binding Name} | Style={DynamicResource GscWpfUiComboBox}
-- TextBox | {Binding SelectedGame.Policy.DuringPlayIntervalMinutes, UpdateSourceTrigger=LostFocus} | Style={StaticResource GscNumericFieldInput}
+- TextBox |  | Style={StaticResource GscNumericFieldInput}
 - TextBox | {Binding PolicyTemplateNameDraft, UpdateSourceTrigger=PropertyChanged} | Style={DynamicResource GscWpfUiTextBox}
-- TextBox | {Binding PolicyTemplateDraft.Policy.DuringPlayIntervalMinutes, UpdateSourceTrigger=LostFocus} | Style={StaticResource GscNumericFieldInput}
-- TextBox | {Binding PolicyTemplateDraft.Policy.KeepRecentAllHours, UpdateSourceTrigger=LostFocus} | Style={StaticResource GscNumericFieldInput}
-- TextBox | {Binding PolicyTemplateDraft.Policy.KeepDailyDays, UpdateSourceTrigger=LostFocus} | Style={StaticResource GscNumericFieldInput}
-- TextBox | {Binding PolicyTemplateDraft.Policy.KeepWeeklyWeeks, UpdateSourceTrigger=LostFocus} | Style={StaticResource GscNumericFieldInput}
+- TextBox |  | Style={StaticResource GscNumericFieldInput}
+- TextBox |  | Style={StaticResource GscNumericFieldInput}
+- TextBox |  | Style={StaticResource GscNumericFieldInput}
+- TextBox |  | Style={StaticResource GscNumericFieldInput}
 
 #### 滚动容器
 
@@ -817,7 +839,7 @@ Worker、备份和媒体状态正常时，这里会保持为空。
 - Border |  | Style={DynamicResource GscRedesignSubCard}
 - ScrollViewer | 备份自动化 | Style={DynamicResource GscPageScrollViewer}
 - TabItem | 备份自动化
-- TextBlock |
+- TextBlock | 
 
 
 ### 比较与保留
@@ -842,11 +864,12 @@ Worker、备份和媒体状态正常时，这里会保持为空。
 
 #### 操作与输入
 
-- Button |
+- Button | 
 - Button | TaskRefreshButton | Command={Binding RefreshCommand} | Style={DynamicResource GscIconOnlyToolbarButton}
 - Button | TaskClearFiltersButton | Command={Binding ClearTaskFiltersCommand}
 - Button |  | Command={Binding RetryAllTasksCommand} | Style={DynamicResource GscWpfUiContextButton}
 - Button |  | Command={Binding LoadMoreTasksCommand}
+- Button |  | Style={DynamicResource GscWpfUiActionButton}
 - Button |  | Command={Binding RefreshCommand} | Style={DynamicResource GscWpfUiActionButton}
 - Button | TaskCompactDetailsButton | Style={DynamicResource GscWpfUiSecondaryButton}
 - Button |  | Command={Binding CopyTaskErrorCommand} | Style={DynamicResource GscIconOnlyButtonBase}
@@ -881,7 +904,7 @@ Worker、备份和媒体状态正常时，这里会保持为空。
 - Border | {Binding StateDisplay, Mode=OneWay, Converter={StaticResource GscStatusGlyphConverter}} | Style={StaticResource TaskTableFrame}
 - Border | TaskDetailCard
 - Border | TaskInspectorErrorCard
-- Button |
+- Button | 
 - Button | TaskClearFiltersButton | Command={Binding ClearTaskFiltersCommand}
 - Button |  | Command={Binding LoadMoreTasksCommand}
 - DataGrid | TaskGrid | Style={StaticResource TaskDataGrid}
@@ -889,6 +912,7 @@ Worker、备份和媒体状态正常时，这里会保持为空。
 - ScrollViewer | TaskDetailScrollViewer
 - TextBlock | 搜索任务…
 - TextBlock | TaskQueueFilterSummary
+- TextBlock | TaskCancellationStatusText
 
 
 ## 修改器中心
@@ -906,6 +930,7 @@ Worker、备份和媒体状态正常时，这里会保持为空。
 - Button |  | Command={Binding ConfirmGameToolImportCommand} | Style={DynamicResource GscWpfUiPrimaryActionButton}
 - Button |  | Command={Binding CancelGameToolImportCommand} | Style={DynamicResource GscWpfUiActionButton}
 - Button | TrainerToolsCompactDetailsButton | Style={DynamicResource GscWpfUiSecondaryButton}
+- Button |  | Command={Binding CopyPathCommand} | Style={DynamicResource GscWpfUiActionButton}
 - Button |  | Command={Binding LaunchGameToolCommand} | Style={DynamicResource GscWpfUiPrimaryActionButton}
 - Button |  | Command={Binding SaveGameToolCommand} | Style={DynamicResource GscWpfUiActionButton}
 - Button |  | Command={Binding OpenGameToolDirectoryCommand} | Style={DynamicResource GscWpfUiActionButton}
@@ -916,9 +941,10 @@ Worker、备份和媒体状态正常时，这里会保持为空。
 - ComboBox | {Binding Display} | Style={DynamicResource GscWpfUiComboBox}
 - ComboBox | {Binding Display} | Style={DynamicResource GscWpfUiComboBox}
 - TextBox | {Binding SelectedGameTool.DisplayName, UpdateSourceTrigger=LostFocus} | Style={DynamicResource GscWpfUiTextBox}
+- TextBox | {Binding SelectedGameToolVersion.EntryPath, Mode=OneWay, TargetNullValue=未选择版本} | Style={StaticResource GscWpfUiPathDetailTextBox}
 - TextBox | {Binding SelectedGameToolVersion.WorkingDirectory, UpdateSourceTrigger=LostFocus} | Style={DynamicResource GscWpfUiPathTextBox}
 - TextBox | {Binding SelectedGameToolVersion.Arguments, UpdateSourceTrigger=LostFocus} | Style={DynamicResource GscWpfUiTextBox}
-- TextBox | {Binding SelectedGameTool.LaunchDelaySeconds, UpdateSourceTrigger=LostFocus} | Style={StaticResource TrainerCompactNumericTextBox}
+- TextBox |  | Style={StaticResource TrainerCompactNumericTextBox}
 
 #### 滚动容器
 
@@ -949,14 +975,14 @@ Worker、备份和媒体状态正常时，这里会保持为空。
 - Border | 确认导入 | Style={DynamicResource GscReadingCardStyle}
 - Border | 请选择要启动的 EXE，然后确认导入；取消会清理本次临时导入，不影响已有工具。 | Style={DynamicResource GscRedesignInfoBand}
 - TabItem | 确认导入
-- TextBlock |
+- TextBlock | 
 
 
 ### FLiNG 在线库
 
 #### 操作与输入
 
-- Button |
+- Button | 
 - Button |  | Command={Binding SearchTrainerCatalogCommand} | Style={DynamicResource GscWpfUiPrimaryActionButton}
 - Button |  | Command={Binding SyncTrainerCatalogCommand} | Style={DynamicResource GscWpfUiActionButton}
 - Button |  | Command={Binding DataContext.LoadTrainerReleasesCommand} | Style={DynamicResource GscWpfUiPrimaryActionButton}
@@ -966,7 +992,7 @@ Worker、备份和媒体状态正常时，这里会保持为空。
 
 - Border |  | Style={DynamicResource GscReadingCardStyle}
 - Border | TrainerCatalogResultsPanel | Style={StaticResource TrainerTableFrame}
-- Button |
+- Button | 
 - TabItem | {Binding SourceDisplay, Mode=OneWay}
 - TextBlock | 没有匹配的 FLiNG 条目
 先搜索本地缓存，或点击“刷新目录”同步最新目录。
@@ -990,7 +1016,7 @@ Worker、备份和媒体状态正常时，这里会保持为空。
 - Border | TrainerReleaseInfoPanel | Style={DynamicResource GscRedesignSectionCard}
 - Border | {Binding TrainerDownloadStatus} | Style={DynamicResource GscReadingCardStyle}
 - Button |  | Command={Binding CancelTrainerDownloadCommand}
-- ProgressBar |
+- ProgressBar | 
 - ScrollViewer | TrainerReleaseInfoScrollViewer
 - TabItem | {Binding OptionCountDisplay, Mode=OneWay}
 - TextBlock | 选择 FLiNG 搜索结果后查看可下载版本。
@@ -1012,25 +1038,25 @@ Worker、备份和媒体状态正常时，这里会保持为空。
 - ComboBox |  | Style={StaticResource GscWpfUiComboBox}
 - ComboBox | ThemeModeSelector | Style={StaticResource GscWpfUiComboBox}
 - ComboBox |  | Style={StaticResource GscWpfUiComboBox}
-- ComboBox |  | Style={StaticResource GscWpfUiComboBox}
+- ComboBox | RecentProtectionWindowComboBox | Style={StaticResource GscWpfUiComboBox}
 - Slider | GlassStrengthSlider | Style={StaticResource GscSlider}
-- TextBox | {Binding WorkerExecutable, UpdateSourceTrigger=PropertyChanged} | Style={StaticResource GscWpfUiPathTextBox}
-- TextBox | {Binding LudusaviExecutable, UpdateSourceTrigger=PropertyChanged} | Style={StaticResource GscWpfUiPathTextBox}
-- TextBox | {Binding LudusaviBackupDirectory, UpdateSourceTrigger=PropertyChanged} | Style={StaticResource GscWpfUiPathTextBox}
-- TextBox | {Binding RcloneExecutable, UpdateSourceTrigger=PropertyChanged} | Style={StaticResource GscWpfUiPathTextBox}
+- TextBox | WorkerExecutableTextBox | Style={StaticResource GscWpfUiPathTextBox}
+- TextBox | LudusaviExecutableTextBox | Style={StaticResource GscWpfUiPathTextBox}
+- TextBox | LudusaviBackupDirectoryTextBox | Style={StaticResource GscWpfUiPathTextBox}
+- TextBox | RcloneExecutableTextBox | Style={StaticResource GscWpfUiPathTextBox}
 - TextBox | {Binding RcloneDestination, UpdateSourceTrigger=PropertyChanged} | Style={StaticResource GscWpfUiPathTextBox}
-- TextBox | {Binding MediaArchiveDirectory, UpdateSourceTrigger=PropertyChanged} | Style={StaticResource GscWpfUiPathTextBox}
-- TextBox | {Binding LocalMirrorPath, UpdateSourceTrigger=PropertyChanged} | Style={StaticResource GscWpfUiPathTextBox}
+- TextBox | MediaArchiveDirectoryTextBox | Style={StaticResource GscWpfUiPathTextBox}
+- TextBox | LocalMirrorPathTextBox | Style={StaticResource GscWpfUiPathTextBox}
+- TextBox | FullBackupLimitTextBox | Style={StaticResource GscNumericTextBox}
+- TextBox | DifferentialBackupLimitTextBox | Style={StaticResource GscNumericTextBox}
+- TextBox | CompressionLevelTextBox | Style={StaticResource GscNumericTextBox}
 - TextBox |  | Style={StaticResource GscNumericTextBox}
 - TextBox |  | Style={StaticResource GscNumericTextBox}
-- TextBox |  | Style={StaticResource GscNumericTextBox}
-- TextBox |  | Style={StaticResource GscNumericTextBox}
-- TextBox |  | Style={StaticResource GscNumericTextBox}
-- TextBox |  | Style={StaticResource GscNumericTextBox}
-- TextBox |  | Style={StaticResource GscNumericTextBox}
-- TextBox |  | Style={StaticResource GscNumericTextBox}
-- TextBox |  | Style={StaticResource GscNumericTextBox}
-- TextBox |  | Style={StaticResource GscNumericTextBox}
+- TextBox | DefaultBackupIntervalMinutesTextBox | Style={StaticResource GscNumericTextBox}
+- TextBox | ProcessPollingSecondsTextBox | Style={StaticResource GscNumericTextBox}
+- TextBox | DashboardRefreshSecondsTextBox | Style={StaticResource GscNumericTextBox}
+- TextBox | HealthInspectionIntervalMinutesTextBox | Style={StaticResource GscNumericTextBox}
+- TextBox | HealthInspectionStaleAfterDaysTextBox | Style={StaticResource GscNumericTextBox}
 
 #### 滚动容器
 
@@ -1044,3 +1070,5 @@ Worker、备份和媒体状态正常时，这里会保持为空。
 
 - Border | 暂停云端自动重试队列 | Style={DynamicResource GscRedesignSubCard}
 - Border | 通知级别 | Style={DynamicResource GscRedesignSubCard}
+
+

@@ -1,7 +1,7 @@
 # UI Route Map
 
-生成时间：2026-09-16T11:19:12.9218368Z
-Commit：3929ed73e1056a964d7ceacc54a6046abcc9983e
+生成时间：2026-09-18T03:36:08.9824686Z
+Commit：c2399d7be9f723e77226619172be16778fe3646f
 
 路由来自真实 XAML 源码自动发现；新增页面加入 Dashboard 或 Views 目录后会自动出现在本文件。
 
@@ -49,7 +49,7 @@ Commit：3929ed73e1056a964d7ceacc54a6046abcc9983e
   - 云端队列
     - DataGrid：CloudTransferGrid
     - ScrollViewer：CloudTransferInspector
-    - 条件 UI：3 个
+    - 条件 UI：7 个
   - 设备状态
     - DataGrid：MaintenanceDeviceGrid
     - ScrollViewer：MaintenanceDeviceInspectorScrollViewer
@@ -88,7 +88,7 @@ Commit：3929ed73e1056a964d7ceacc54a6046abcc9983e
   - 待归类
     - DataGrid：MediaInboxGrid
     - ScrollViewer：MediaInboxPageScrollViewer、MediaInboxInspectorScrollViewer
-    - 条件 UI：15 个
+    - 条件 UI：18 个
   - 当前游戏媒体
     - ScrollViewer：MediaInspectorScrollViewer
     - 条件 UI：16 个
@@ -113,7 +113,7 @@ Commit：3929ed73e1056a964d7ceacc54a6046abcc9983e
   - 历史版本
     - DataGrid：SaveHistoryGrid
     - ScrollViewer：SaveHistoryActionsScrollViewer
-    - 条件 UI：6 个
+    - 条件 UI：10 个
   - 路径与校验
     - DataGrid：SaveCandidateGrid
     - ScrollViewer：SaveCandidateInspectorScrollViewer
@@ -132,7 +132,7 @@ Commit：3929ed73e1056a964d7ceacc54a6046abcc9983e
   - 页面
     - DataGrid：TaskGrid
     - ScrollViewer：TaskDetailScrollViewer
-    - 条件 UI：14 个
+    - 条件 UI：15 个
 
 ## 修改器中心 (`trainer-center`)
 
@@ -158,3 +158,4 @@ Commit：3929ed73e1056a964d7ceacc54a6046abcc9983e
   - 页面
     - ScrollViewer：SettingsScroller
     - 条件 UI：2 个
+

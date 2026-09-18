@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-18
 
+## 2026-09-18 R01-06 宿主证据保全复核
+
+- 旧归档因 `RenderHarness/Program.cs` 后续变化被 freshness 正确标为 stale；没有直接沿用 `3929ed7`。复用当前 `c2399d7b` R01-03 审计生成并更新归档，保存完整身份、summary、manifest、route/fidelity/layout、20 行索引和六张精选图。
+- 当前归档结果：161 运行时快照、80 INFO、0 Fidelity、0 失败路由、0 HIGH/0 MEDIUM；索引校验 `20/20`。完整 362 张图不进仓库，README 用当前身份的 solution + RenderHarness 独立 restore/build/audit 命令复现。
+- metadata 的 OutputRoot/ZipPath 已改为仓库相对或可再生临时路径；未保留绝对工作树、旧 zip 或完整截图。范围仍是 WPF offscreen logical DIP，不等价真实 Playnite/物理呈现/输入/ETW/宿主性能。下一步更新 R01-07 baseline 身份。
+
 ## 2026-09-18 R01-05 负例注册表复核
 
 - `810114e2` 当前隔离构建绑定源码根，XAML `24/24`、Release `0/0`；`UiNegativeFixtureRegistryTests` `1/1`。五类 expected-failure 均由实际 detector 捕获：对比度 1 violation、数值列横向失败、无结果 Enter 保持旧选择、层级 overflow gate、Loading 底层不可命中。

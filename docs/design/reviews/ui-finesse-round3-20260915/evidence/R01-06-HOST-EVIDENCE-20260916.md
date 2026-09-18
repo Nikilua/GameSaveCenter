@@ -8,18 +8,18 @@ R01-06 已满足。当前受控审计的关键身份、摘要、manifest、路�
 
 | 项目 | 结果 |
 | --- | --- |
-| 代码身份 | 3929ed73e1056a964d7ceacc54a6046abcc9983e |
+| 代码身份 | c2399d7be9f723e77226619172be16778fe3646f |
 | 运行时审计 | 161 个快照；0 Fidelity 警告；0 失败路由 |
-| 风险摘要 | 0 HIGH；0 MEDIUM；73 条 INFO 均为已分类的滚动/可见性信息 |
-| 静态关键计数 | View 10；Tab 32；Button/Toggle 234；DataGrid 14；ScrollViewer 34；条件 UI 235 |
+| 风险摘要 | 0 HIGH；0 MEDIUM；80 条 INFO 均为已分类的滚动/可见性信息 |
+| 静态关键计数 | View 10；Tab 32；Button/Toggle 246；DataGrid 14；ScrollViewer 34；条件 UI 247 |
 | 具体索引 | 20 / 20 行，包含结果入口、40 位身份、样本和未验边界 |
 | 精选图 | 壳层、首页标准/窄窗口、维护诊断、存档候选、任务中心，共 6 张 |
 
 ## 验证
 
-- RenderHarness Release 构建：0 warning / 0 error；审计命令成功返回 UI audit complete。
-- 归档前人工检查了标准尺寸壳层、首页、维护诊断三张图；图片是受控 WPF 离屏暗色主题，不写成真实宿主呈现。
-- audit-metadata.json 已将输出根和 ZIP 路径改为仓库相对路径；README.md 提供从固定 commit 重现全量截图/JSON 的命令。
+- 当前 R01-03 隔离 RenderHarness Release 构建：0 warning / 0 error；审计命令成功返回 UI audit complete。`validate-ui-evidence-index.ps1` 对归档的 `EVIDENCE_INDEX.md` 输出 `rows=20, references=20/20, identities=20/20, samples=20/20, boundaries=20/20`。
+- 当前审计生成 362 张图；归档保留壳层、首页标准/窄窗口、维护诊断、存档候选、任务中心 6 张精选图，完整图集仍按 README 在隔离 `.tmp` 中重现，不复制到证据目录。
+- 已人工查看当前标准尺寸壳层、首页、维护诊断代表图；图片是受控 WPF 离屏暗色主题，不写成真实宿主呈现。`audit-metadata.json` 的 OutputRoot/ZipPath 已改为仓库相对/可再生临时路径，没有保留机器绝对路径。
 
 ## 边界
 
@@ -29,4 +29,4 @@ R01-06 已满足。当前受控审计的关键身份、摘要、manifest、路�
 
 ## 下一步
 
-R01-06 已满足；下一可执行小批量为 R01-07“基线失效规则”，先核对现有校验器/报告在代码或尺寸身份变化后是否明确失效，再补最小行为负例。
+R01-06 当前身份、摘要、manifest、索引和精选图已满足；下一可执行小批量为 R01-07 freshness baseline 增量更新，把本次 `c2399d7b` 归档身份写入后再推进 R01-08 跳过测试说明。

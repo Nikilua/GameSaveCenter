@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-18 R01-06 宿主证据保全复核
+
+- freshness 先指出旧归档绑定 `3929ed7` 与当前 RenderHarness `Program.cs` 之间的变更；本阶段复用当前 `c2399d7b` 审计，不启动真实 Playnite。
+- 将当前 `AUDIT_SUMMARY`、metadata、manifest、route/fidelity/layout、EVIDENCE_INDEX 和六张代表图写入既有 R01-06 归档；161 快照、80 INFO、0 Fidelity、0 失败路由、0 HIGH/0 MEDIUM，索引 validator `20/20`。
+- 修正归档 README 的可重现流程：solution 隔离 build 后独立 restore/build RenderHarness，再 audit；metadata 不再带绝对临时路径。完整截图和 zip 均不保留。下一步把 `c2399d7b` 写入 freshness baseline，再处理 R01-08。
+
 ## 2026-09-18 R01-05 负例注册表复核
 
 - 复用 `UiNegativeFixtureRegistryTests` 与已有 detector，没有新增生产入口。当前 `810114e2` 隔离构建 `0/0`、XAML `24/24`，注册表 `1/1`；N01–N05 的详细 detector 输出均为 `detected=True`。

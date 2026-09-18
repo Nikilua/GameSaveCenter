@@ -9,7 +9,7 @@
 | AcrylicProductionShellView | 页面 | HeaderBackupSelectedButton | Button | {Binding BackupSelectedCommand} | No | Yes |
 | AcrylicProductionShellView | 页面 | HeaderBackupButton | Button | {Binding BackupAllCommand} | No | Yes |
 | AcrylicProductionShellView | 页面 | GameSearchTextBox | TextBox |  | No | No |
-| AcrylicProductionShellView | 页面 |  | Button |  | Yes | Yes |
+| AcrylicProductionShellView | 页面 | GameSearchClearButton | Button |  | Yes | No |
 | AcrylicProductionShellView | 页面 | GamePickerStatusComboBox | ComboBox |  | No | No |
 | AcrylicProductionShellView | 页面 | GamePickerPlatformComboBox | ComboBox |  | No | No |
 | AcrylicProductionShellView | 页面 | GamePickerSortComboBox | ComboBox |  | No | No |
@@ -66,6 +66,7 @@
 | 维护中心 | 云端队列 |  | ComboBox |  | No | Yes |
 | 维护中心 | 云端队列 |  | Button | {Binding RefreshCloudTransfersCommand} | No | Yes |
 | 维护中心 | 云端队列 | CloudTransferCompactDetailsButton | Button |  | No | Yes |
+| 维护中心 | 云端队列 |  | Button | {Binding OpenMaintenanceCommand} | Yes | Yes |
 | 维护中心 | 云端队列 |  | Button | {Binding VerifyCloudTransferCommand} | No | Yes |
 | 维护中心 | 云端队列 |  | Button | {Binding RetryCloudUploadCommand} | No | Yes |
 | 维护中心 | 云端队列 |  | Button | {Binding LoadMoreCloudTransfersCommand} | No | Yes |
@@ -141,18 +142,23 @@
 | 维护中心 | 发现的问题 |  | Button | {Binding RefreshDiagnosticsCommand} | No | Yes |
 | 维护中心 | 发现的问题 |  | Button | {Binding DataContext.CopyDiagnosticsCommand} | No | Yes |
 | 媒体中心 | 待归类 |  | Button | {Binding ReloadMediaInboxCommand} | No | Yes |
+| 媒体中心 | 待归类 | MediaInboxClearSelectionButton | Button |  | No | Yes |
+| 媒体中心 | 待归类 |  | Button |  | No | Yes |
 | 媒体中心 | 待归类 | MediaInboxModeCombo | ComboBox |  | No | Yes |
 | 媒体中心 | 待归类 |  | ComboBox |  | No | Yes |
 | 媒体中心 | 待归类 |  | Button | {Binding AssignInboxMediaBatchCommand} | No | Yes |
 | 媒体中心 | 待归类 | MediaInboxCompactDetailsButton | Button |  | No | Yes |
+| 媒体中心 | 待归类 |  | Button | {Binding OpenMaintenanceCommand} | Yes | Yes |
 | 媒体中心 | 待归类 | ReloadMediaInboxButton | Button | {Binding ReloadMediaInboxCommand} | No | No |
 | 媒体中心 | 待归类 | MediaInboxHistoryButton | Button |  | No | Yes |
 | 媒体中心 | 待归类 |  | Button | {Binding LoadMoreMediaInboxCommand} | Yes | Yes |
 | 媒体中心 | 待归类 |  | Button | {Binding IgnoreInboxMediaBatchCommand} | No | Yes |
 | 媒体中心 | 待归类 |  | Button | {Binding PreviewMediaClassificationCommand} | No | Yes |
-| 媒体中心 | 待归类 |  | Button | {Binding ApplyMediaClassificationCommand} | No | Yes |
+| 媒体中心 | 待归类 |  | Button | {Binding ApplyMediaClassificationCommand} | Yes | Yes |
 | 媒体中心 | 待归类 |  | Button | {Binding RestoreIgnoredMediaBatchCommand} | Yes | Yes |
 | 媒体中心 | 待归类 |  | Button | {Binding UndoMediaClassificationCommand} | No | Yes |
+| 媒体中心 | 待归类 |  | TextBox |  | No | Yes |
+| 媒体中心 | 待归类 |  | Button | {Binding CopyPathCommand} | No | Yes |
 | 媒体中心 | 待归类 |  | Button | {Binding RefreshMediaClassificationHistoryCommand} | No | Yes |
 | 媒体中心 | 待归类 | MediaClassificationHistoryStateCombo | ComboBox |  | No | Yes |
 | 媒体中心 | 待归类 |  | Button | {Binding LoadMoreMediaClassificationHistoryCommand} | Yes | Yes |
@@ -172,6 +178,8 @@
 | 媒体中心 | 当前游戏媒体 |  | Button | {Binding UnfavoriteSelectedMediaCommand} | No | Yes |
 | 媒体中心 | 当前游戏媒体 |  | Button | {Binding CommentSelectedMediaCommand} | No | Yes |
 | 媒体中心 | 当前游戏媒体 | MediaCompactDetailsButton | Button |  | No | Yes |
+| 媒体中心 | 当前游戏媒体 |  | TextBox |  | No | Yes |
+| 媒体中心 | 当前游戏媒体 |  | Button | {Binding CopyPathCommand} | No | Yes |
 | 媒体中心 | 当前游戏媒体 |  | TextBox |  | No | Yes |
 | 媒体中心 | 当前游戏媒体 |  | Button | {Binding UpdateMediaMetadataCommand} | No | Yes |
 | 媒体中心 | 当前游戏媒体 |  | Button | {Binding OpenSelectedMediaCommand} | No | Yes |
@@ -197,9 +205,12 @@
 | 首页 | 页面 |  | Button | {Binding OpenProtectionGamesCommand} | No | Yes |
 | 首页 | 页面 |  | Button | {Binding ApplyRecommendedProtectionCommand} | No | Yes |
 | 首页 | 页面 |  | Button | {Binding OpenAttentionCenterCommand} | No | Yes |
+| 存档中心 | 历史版本 |  | Button | {Binding LoadDetailsCommand} | No | Yes |
 | 存档中心 | 历史版本 |  | Button | {Binding DetectPathsCommand} | No | Yes |
 | 存档中心 | 历史版本 |  | Button | {Binding ValidateCommand} | No | Yes |
 | 存档中心 | 历史版本 |  | Button | {Binding LoadDetailsCommand} | No | Yes |
+| 存档中心 | 历史版本 |  | Button |  | No | Yes |
+| 存档中心 | 历史版本 |  | Button | {Binding OpenMaintenanceCommand} | Yes | Yes |
 | 存档中心 | 历史版本 | SaveHistoryCompactDetailsButton | Button |  | No | Yes |
 | 存档中心 | 历史版本 |  | Button | {Binding ValidateRestoreReadinessCommand} | No | Yes |
 | 存档中心 | 历史版本 |  | TextBox |  | No | Yes |
@@ -212,6 +223,8 @@
 | 存档中心 | 路径与校验 | SaveValidateButton | Button | {Binding ValidateCommand} | No | Yes |
 | 存档中心 | 路径与校验 | SaveLoadDetailsButton | Button | {Binding LoadDetailsCommand} | No | Yes |
 | 存档中心 | 路径与校验 | SaveCandidateCompactDetailsButton | Button |  | No | Yes |
+| 存档中心 | 路径与校验 |  | TextBox |  | No | Yes |
+| 存档中心 | 路径与校验 |  | Button | {Binding CopyPathCommand} | No | Yes |
 | 存档中心 | 路径与校验 |  | Button | {Binding DetectPathsCommand} | No | Yes |
 | 存档中心 | 路径与校验 |  | Button | {Binding AcceptCandidateCommand} | No | Yes |
 | 存档中心 | 路径与校验 |  | Button | {Binding RejectCandidateCommand} | No | Yes |
@@ -245,6 +258,7 @@
 | 任务中心 | 页面 | TaskGameFilterComboBox | ComboBox |  | No | No |
 | 任务中心 | 页面 |  | Button | {Binding RetryAllTasksCommand} | No | Yes |
 | 任务中心 | 页面 |  | Button | {Binding LoadMoreTasksCommand} | Yes | Yes |
+| 任务中心 | 页面 |  | Button |  | No | Yes |
 | 任务中心 | 页面 |  | Button | {Binding RefreshCommand} | No | Yes |
 | 任务中心 | 页面 | TaskCompactDetailsButton | Button |  | No | Yes |
 | 任务中心 | 页面 | TaskTechnicalDetailsExpander | Expander |  | No | Yes |
@@ -262,6 +276,8 @@
 | 修改器中心 | 已绑定工具 | TrainerToolsCompactDetailsButton | Button |  | No | Yes |
 | 修改器中心 | 已绑定工具 |  | TextBox |  | No | Yes |
 | 修改器中心 | 已绑定工具 |  | ComboBox |  | No | Yes |
+| 修改器中心 | 已绑定工具 |  | TextBox |  | No | Yes |
+| 修改器中心 | 已绑定工具 |  | Button | {Binding CopyPathCommand} | No | Yes |
 | 修改器中心 | 已绑定工具 |  | TextBox |  | No | Yes |
 | 修改器中心 | 已绑定工具 |  | TextBox |  | No | Yes |
 | 修改器中心 | 已绑定工具 |  | ComboBox |  | No | Yes |
@@ -285,28 +301,28 @@
 | 修改器中心 | 可下载版本 |  | Button | {Binding DownloadTrainerCommand} | No | Yes |
 | 设置 | 页面 | SettingsValidationLocateButton | Button |  | No | Yes |
 | 设置 | 页面 | SettingsValidationDetails | Expander |  | No | Yes |
+| 设置 | 页面 | WorkerExecutableTextBox | TextBox |  | No | Yes |
+| 设置 | 页面 | LudusaviExecutableTextBox | TextBox |  | No | Yes |
+| 设置 | 页面 | LudusaviBackupDirectoryTextBox | TextBox |  | No | Yes |
+| 设置 | 页面 | RcloneExecutableTextBox | TextBox |  | No | Yes |
 | 设置 | 页面 |  | TextBox |  | No | Yes |
-| 设置 | 页面 |  | TextBox |  | No | Yes |
-| 设置 | 页面 |  | TextBox |  | No | Yes |
-| 设置 | 页面 |  | TextBox |  | No | Yes |
-| 设置 | 页面 |  | TextBox |  | No | Yes |
-| 设置 | 页面 |  | TextBox |  | No | Yes |
+| 设置 | 页面 | MediaArchiveDirectoryTextBox | TextBox |  | No | Yes |
 | 设置 | 页面 |  | CheckBox |  | No | Yes |
-| 设置 | 页面 |  | TextBox |  | No | Yes |
+| 设置 | 页面 | LocalMirrorPathTextBox | TextBox |  | No | Yes |
 | 设置 | 页面 |  | ComboBox |  | No | Yes |
 | 设置 | 页面 |  | ComboBox |  | No | Yes |
-| 设置 | 页面 |  | TextBox |  | No | Yes |
-| 设置 | 页面 |  | TextBox |  | No | Yes |
-| 设置 | 页面 |  | TextBox |  | No | Yes |
+| 设置 | 页面 | FullBackupLimitTextBox | TextBox |  | No | No |
+| 设置 | 页面 | DifferentialBackupLimitTextBox | TextBox |  | No | No |
+| 设置 | 页面 | CompressionLevelTextBox | TextBox |  | No | No |
 | 设置 | 页面 | ThemeModeSelector | ComboBox |  | No | No |
 | 设置 | 页面 |  | TextBox |  | No | Yes |
 | 设置 | 页面 |  | TextBox |  | No | Yes |
 | 设置 | 页面 |  | ComboBox |  | No | Yes |
-| 设置 | 页面 |  | TextBox |  | No | Yes |
-| 设置 | 页面 |  | TextBox |  | No | Yes |
-| 设置 | 页面 |  | TextBox |  | No | Yes |
-| 设置 | 页面 |  | TextBox |  | No | Yes |
-| 设置 | 页面 |  | TextBox |  | No | Yes |
-| 设置 | 页面 |  | ComboBox |  | No | Yes |
+| 设置 | 页面 | DefaultBackupIntervalMinutesTextBox | TextBox |  | No | No |
+| 设置 | 页面 | ProcessPollingSecondsTextBox | TextBox |  | No | No |
+| 设置 | 页面 | DashboardRefreshSecondsTextBox | TextBox |  | No | No |
+| 设置 | 页面 | HealthInspectionIntervalMinutesTextBox | TextBox |  | No | No |
+| 设置 | 页面 | HealthInspectionStaleAfterDaysTextBox | TextBox |  | No | No |
+| 设置 | 页面 | RecentProtectionWindowComboBox | ComboBox |  | No | No |
 | 设置 | 页面 |  | Button |  | No | Yes |
 | 设置 | 页面 |  | Button |  | No | Yes |

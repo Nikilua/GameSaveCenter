@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R01-06 宿主证据保全
+
+- 复用当前 R01-03 审计输出，在 `c2399d7be9f723e77226619172be16778fe3646f` 身份下更新 R01-06 归档：161 快照、80 条预期 INFO、0 Fidelity、0 失败路由、0 HIGH/0 MEDIUM；E01～E20 索引校验 `20/20`。
+- 归档报告、metadata、manifest、route/fidelity/layout、EVIDENCE_INDEX 和 6 张精选图已更新；完整 362 张截图不入库，README 给出独立 clone 的 build/restore/harness/audit 重现命令。metadata 不再含机器绝对输出路径，ZIP 只记为可再生临时输出且未保留。
+- 本项没有修改生产 UI、服务/DTO、命令绑定、游戏选框、滚动条或安全语义。下一小步是 R01-07 把本次 `c2399d7b` 归档身份写入 freshness baseline，再推进 R01-08；真实 Playnite、物理 DPI、OS 输入/IME、presented frame、UIA/读屏、ETW 与宿主性能仍未验。
+
 ## 当前第三轮 R01-05 负例注册表复核
 
 - 当前提交 `810114e2` 新建 `.tmp\r01-05-build-810114e2`，XAML `24/24`、solution Release `0 warning / 0 error`；`UiNegativeFixtureRegistryTests` 在构建绑定源码根下 `1/1` 通过，`python scripts/validate-source.py` 通过。

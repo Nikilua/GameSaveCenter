@@ -2,14 +2,14 @@
 
 ## 归档身份
 
-- 审计提交：3929ed73e1056a964d7ceacc54a6046abcc9983e
-- 生成时间：2026-09-16T11:19:12.9218368Z
+- 审计提交：c2399d7be9f723e77226619172be16778fe3646f
+- 生成时间：2026-09-18T03:36:08.9824686Z
 - 插件版本：0.6.73.0
 - Playnite SDK：6.16.0.0
 - 受控窗口：WPF 离屏窗口，逻辑 DPI 1.0
-- 结果：运行时快照 161、Fidelity 警告 0、失败路由 0、HIGH 0、MEDIUM 0
+- 结果：运行时快照 161、INFO 80、Fidelity 警告 0、失败路由 0、HIGH 0、MEDIUM 0
 
-这是在 R01-06 文档提交前对干净代码状态生成的审计；后续提交只增加本归档和 AI/账本文档，不改变被审计的生产代码。
+这是在当前 RenderHarness/生产代码身份 `c2399d7b` 下生成的受控审计；后续 `fe4ea9d8` 只更新 freshness baseline 和文档，不改变被审计的生产代码。
 
 ## 归档内容
 
@@ -20,16 +20,20 @@
 - [UI_FIDELITY_MATRIX.md](UI_FIDELITY_MATRIX.md)：交互入口与快照可见性的逐项矩阵。
 - [LAYOUT_REPORT.md](LAYOUT_REPORT.md)：运行时 DataGrid/ScrollViewer 几何结果。
 - [EVIDENCE_INDEX.md](EVIDENCE_INDEX.md)：20 个具体控件/状态样本的结果入口、代码身份、样本和边界。
-- [screenshots/](screenshots/)：6 张精选代表图；完整 353 张图不提交，按下述命令重现。
+- [screenshots/](screenshots/)：6 张当前精选代表图；完整 362 张图不提交，按下述命令重现。
 
 ## 复核和重现
 
-换机器只需 clone 仓库即可阅读本目录。若要重现同一份身份，先在独立 clone/worktree 中 checkout 3929ed73e1056a964d7ceacc54a6046abcc9983e，再执行：
+换机器只需 clone 仓库即可阅读本目录。若要重现同一份身份，先在独立 clone/worktree 中 checkout `c2399d7be9f723e77226619172be16778fe3646f`，再执行：
 
 ~~~powershell
 $buildRoot = '.tmp\r01-06-reproduce-build'
 $auditRoot = '.tmp\r01-06-reproduce-audit'
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts\build.ps1 -Configuration Release -OutputRoot $buildRoot
+$env:GSC_SOURCE_ROOT = (Get-Location).Path
+$env:GSC_BUILD_COMMIT = (git rev-parse HEAD).Trim()
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\build.ps1 -Configuration Release -SkipTests -OutputRoot $buildRoot
+dotnet restore tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj -m:1 "-p:GscBuildOutputRoot=$buildRoot" -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false
+dotnet build tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj -c Release --no-restore -m:1 -nodeReuse:false "-p:GscBuildOutputRoot=$buildRoot" -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false
 & "$buildRoot\bin\GameSaveCenter.RenderHarness\Release\net472\GameSaveCenter.RenderHarness.exe" audit $auditRoot
 ~~~
 
