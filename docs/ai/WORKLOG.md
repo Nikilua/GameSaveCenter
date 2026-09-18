@@ -7353,3 +7353,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 在 `3f7d0b30` 新增 `R09FocusOutlineBehaviorTests`。真实 STA WPF 控件验证 primary Button 焦点/失焦负例、共享焦点 Border 实例、selected Tab 不裁切、TextBox 非法 `9` 的错误边框以及改回 `2` 后的焦点状态恢复；R09-05 `2/2`。
 - 首轮两项夹具在连续 STA 中受全局 `Application.Current`/已关闭 Dispatcher 污染，已移除测试内跨 STA Application 依赖并用 collection 串行本组窗口；这记录为测试宿主边界，不放宽断言。Release 精确相邻回归 `11/11`，build XAML `24/24`、solution `0/0`，源码/XAML/diff check 通过。
 - 文档证据已写入 `evidence/R09-05-FOCUS-OUTLINE-20260919.md` 与 `ROUND3_PROGRESS.md`；没有把无系统键盘输入源时未自动出现的 Focus Adorner 写成真实呈现通过。Demo 原目录不可用，沿用恢复生产基线；main 用户未提交文件继续保持不动。下一可执行任务：R09-06 高对比真实配色。
+
+## 2026-09-19 Round3 R09-06 高对比真实配色
+
+- 现有高对比分支已经关闭玻璃，但复核发现进度轨道仍为硬编码颜色、禁用文字仍走普通主题透明度，且 helper 直接依赖全局 `SystemParameters.HighContrast`，无法做隔离恢复验证。
+- `1f2eac4a` 在原 `AdaptiveThemePalette`/局部 ResourceDictionary 上最小修复：高对比使用 `SystemColors` 语义色，进度/图标/禁用文字和悬停/选中保持可读；关闭阴影、透明 Popup、动画、游戏背景模糊和环境洗色；恢复普通 palette 后重新得到 material。命令、绑定、取消/错误语义、恢复保护、游戏选框、滚动条和列表性能未改。
+- `R09HighContrastBehaviorTests` 实例化实际绑定资源的 ProgressBar/Path/TextBlock，并验证高对比→普通主题资源字典恢复；正式脚本 Release 构建 0/0、XAML 24/24，R09/源码门禁 13/13，source/XAML/diff check 通过。没有切换真实 OS High Contrast，故只记录为可控行为证据。
+- 证据已写入 `evidence/R09-06-HIGH-CONTRAST-20260919.md`，账本已同步。DEV-INSTALL-008 main 合并后安装错误仍未在 dirty main 上覆盖或重跑；Demo 原目录不可用，继续使用恢复生产基线。下一可执行任务：R09-07 缩略图占位一致。

@@ -1535,3 +1535,10 @@
 - `3f7d0b30` 新增 `R09FocusOutlineBehaviorTests`：真实生产 Button 聚焦/失焦负例、共享焦点模板实例化、选中 Tab、TextBox `1..3` 校验错误与 `9→2` 恢复均通过，R09-05 `2/2`。测试 collection 串行 WPF 窗口，并避免跨 STA 共享 `Application.Current`；这只是 testhost 隔离，不改变生产代码。
 - 当前 Release 精确验证：XAML `24/24`、solution `0 warning / 0 error`、Playnite `net462`；R09-02/R09-03/R09-04/共享焦点资源相邻回归合计 `11/11`；`validate-source.py`、XAML、`git diff --check` 通过。证据见 `evidence/R09-05-FOCUS-OUTLINE-20260919.md`。
 - 受控 STA 未提供系统键盘输入源，未把 WPF Focus Adorner 自动挂载写成通过；真实 Playnite、物理 DPI/跨屏、presented frame、UIA/读屏、IME、High Contrast、ETW、宿主性能和 package-host 仍未验。Demo 原目录不可用，沿用恢复生产基线；main 用户文件未触碰。下一可执行任务：R09-06 高对比真实配色。
+
+## 2026-09-19 Round3 R09-06 高对比真实配色
+
+- `1f2eac4a` 在现有 `AdaptiveThemePalette`/局部 ResourceDictionary 管线内补齐 `IsHighContrast` 状态：高对比使用 Window/WindowText/Control/ControlDark/Highlight/HighlightText/GrayText/HotTrack 语义资源；进度、图标、禁用文字、选中/悬停、按钮 opaque stop、Popup/阴影/背景模糊回退均由同一状态驱动。未修改 Windows 全局设置。
+- `R09HighContrastBehaviorTests` 使用实际 DynamicResource 绑定的 ProgressBar、Path、TextBlock，并在同一 ResourceDictionary 中验证高对比→普通 palette 的 material 恢复。正式 Release/XAML `24/24`、solution `0/0`；R09-06、相邻 R09 和高对比源码门禁 `13/13`；source/XAML/diff check 通过。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R09-06-HIGH-CONTRAST-20260919.md`。未切换真实 Windows High Contrast，不能写成 OS 方案或真实 Playnite presented frame 通过；DEV-INSTALL-008 的 main 合并后安装失败继续单列。Demo 原目录不可用，沿用恢复生产基线。
+- 下一可执行任务：R09-07 缩略图占位一致，先盘点加载/失败/无图/视频/损坏文件现有入口及行高约束。

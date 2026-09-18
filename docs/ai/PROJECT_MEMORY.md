@@ -3802,3 +3802,11 @@
 - `3f7d0b30` 只新增行为证据 `R09FocusOutlineBehaviorTests`。实际生产资源与控件验证 Button 焦点/失焦、共享焦点模板实例、selected Tab、TextBox 错误态和有效值恢复，R09-05 `2/2`；xUnit collection 串行本组 WPF STA，并避免已关闭 Dispatcher 的跨测试 `Application.Current` 污染。
 - 精确 Release 验证为 XAML `24/24`、solution `0/0`、Playnite `net462`；R09-02/R09-03/R09-04/共享焦点资源相邻合计 `11/11`，源码校验/XAML/diff check 通过。系统输入源缺失时不会自动挂载 Focus Adorner，已作为边界记录，不能把模板实例化冒充真实键盘呈现。
 - 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R09-05-FOCUS-OUTLINE-20260919.md`；真实 Playnite、物理 DPI/跨屏、presented frame、UIA/读屏、IME、OS High Contrast、ETW、宿主性能和 package-host 仍未验。Demo 原目录不可用，main 用户文件未触碰。下一项 R09-06 高对比真实配色。
+
+## 2026-09-19 Round3 R09-06 高对比真实配色
+
+- 复用 `AdaptiveThemePalette` 和既有资源键，没有另建主题体系。高对比 palette 现在显式记录 `IsHighContrast`；默认来自 `SystemParameters.HighContrast`，override 只供隔离测试，不写 Windows 设置。
+- `1f2eac4a` 将高对比页面背景/文字/控件/边框/选中/禁用/进度/图标收口到 `SystemColors` 语义资源；玻璃、阴影、Popup transparency/动画、游戏背景模糊和 ambient wash 均关闭或回退到真实 null/透明；普通主题重新应用后材质 stop/ambient 恢复。
+- `R09HighContrastBehaviorTests` 用实际 ProgressBar、Path、TextBlock 的 DynamicResource 绑定验证行为/负边界，R09-06 与相邻 R09/源码门禁 `13/13`；正式 Release `0/0`、XAML `24/24`、source/XAML/diff check 通过。此前直接 `dotnet build` 的身份失败已改用 `scripts/build.ps1` 正式复验，不计为产品失败。
+- R09-06 证据：`evidence/R09-06-HIGH-CONTRAST-20260919.md`。不把隔离 palette override 说成真实 OS High Contrast、Playnite 呈现、物理 DPI/跨屏、UIA/读屏、IME、ETW 或宿主性能通过；DEV-INSTALL-008 main 安装失败继续保留发布边界。
+- Demo 原目录不可用，继续沿用恢复生产资源基线；下一项 R09-07 缩略图占位一致，先盘点现有媒体加载/失败/无图/视频/损坏占位和行高约束。
