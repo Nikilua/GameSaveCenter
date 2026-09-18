@@ -21,6 +21,7 @@ namespace GameSaveCenter.Playnite.Views
         private double responsiveWidth;
         private double responsiveHeight;
         private bool isApplyingLayout;
+        private readonly ResponsiveDetailBreakpointLatch detailBreakpoint = new ResponsiveDetailBreakpointLatch();
         private bool mediaInspectorOpen;
         private bool mediaInboxInspectorOpen;
         private bool mediaInboxHistoryOpen;
@@ -481,7 +482,16 @@ namespace GameSaveCenter.Playnite.Views
                 // window because of the sidebar. Keep the Demo's grid and inspector
                 // side by side until the compact breakpoint instead of hiding the
                 // inspector at ordinary 1040 DIP layouts.
-                var stack = width < 980;
+                var wasWideDetailLayout = detailBreakpoint.IsInitialized && !detailBreakpoint.IsCompact;
+                var stack = detailBreakpoint.Evaluate(width);
+                if (wasWideDetailLayout && stack
+                    && MediaGrid.SelectedItem != null
+                    && MediaInspectorScrollViewer.Visibility == Visibility.Visible)
+                {
+                    // Keep the same selected inspector open when it moves below the
+                    // table. Its ScrollViewer and keyboard target are not recreated.
+                    mediaInspectorOpen = true;
+                }
                 if (stack)
                 {
                     MediaCurrentActionRow.RowDefinitions[1].Height = GridLength.Auto;

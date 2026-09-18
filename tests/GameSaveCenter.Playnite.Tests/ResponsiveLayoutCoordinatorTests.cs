@@ -89,4 +89,24 @@ public sealed class ResponsiveLayoutCoordinatorTests
             Assert.Equal(first.IsComfortableHeight, second.IsComfortableHeight);
         }
     }
+
+    [Fact]
+    public void DetailBreakpointDoesNotChatterInsideTheContentBudgetBand()
+    {
+        var latch = new ResponsiveDetailBreakpointLatch();
+
+        Assert.False(latch.Evaluate(980));
+        foreach (var width in new[] { 979d, 981d, 973d, 987d, 980d })
+            Assert.False(latch.Evaluate(width));
+        Assert.Equal(0, latch.TransitionCount);
+
+        Assert.True(latch.Evaluate(971));
+        Assert.Equal(1, latch.TransitionCount);
+        foreach (var width in new[] { 972d, 979d, 987d })
+            Assert.True(latch.Evaluate(width));
+        Assert.Equal(1, latch.TransitionCount);
+
+        Assert.False(latch.Evaluate(988));
+        Assert.Equal(2, latch.TransitionCount);
+    }
 }

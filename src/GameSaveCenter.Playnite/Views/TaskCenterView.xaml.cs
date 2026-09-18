@@ -12,6 +12,7 @@ namespace GameSaveCenter.Playnite.Views
     public partial class TaskCenterView : UserControl
     {
         private bool isApplyingLayout;
+        private readonly ResponsiveDetailBreakpointLatch detailBreakpoint = new ResponsiveDetailBreakpointLatch();
         private bool taskInspectorOpen;
         private DataGridColumnLayoutController? columnLayout;
         private DataGridStableSortController? sortController;
@@ -91,7 +92,16 @@ namespace GameSaveCenter.Playnite.Views
                 // inspector stacks below it, reserve a readable table viewport and
                 // let only the inspector consume the remaining finite height.
                 const double tableMinHeight = 236d;
-                var stack = width < 980;
+                var wasWideDetailLayout = detailBreakpoint.IsInitialized && !detailBreakpoint.IsCompact;
+                var stack = detailBreakpoint.Evaluate(width);
+                if (wasWideDetailLayout && stack
+                    && TaskGrid.SelectedItem != null
+                    && TaskDetailScrollViewer.Visibility == Visibility.Visible)
+                {
+                    // Preserve the selected task's existing inspector when the same
+                    // ScrollViewer moves below the queue at the compact breakpoint.
+                    taskInspectorOpen = true;
+                }
                 var compactInspectorOpen = stack && taskInspectorOpen && TaskGrid.SelectedItem != null;
                 // The compact inspector is a secondary drawer. Once it is open, keep
                 // three 36-DIP rows plus the header visible instead of allowing the

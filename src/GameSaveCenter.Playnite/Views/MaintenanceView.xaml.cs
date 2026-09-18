@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.ViewModels;
 
 namespace GameSaveCenter.Playnite.Views
@@ -13,6 +14,7 @@ namespace GameSaveCenter.Playnite.Views
         private double responsiveWidth;
         private double responsiveHeight;
         private bool isApplyingLayout;
+        private readonly ResponsiveDetailBreakpointLatch detailBreakpoint = new ResponsiveDetailBreakpointLatch();
         private bool deviceInspectorOpen;
         private bool cloudTransferInspectorOpen;
         private bool diagnosticsInspectorOpen;
@@ -222,7 +224,6 @@ namespace GameSaveCenter.Playnite.Views
             isApplyingLayout = true;
             try
             {
-            var previousWidth = responsiveWidth;
             responsiveWidth = width;
             responsiveHeight = height;
             // At the demo minimum the measured workspace is about 700 DIP. Two health
@@ -266,14 +267,20 @@ namespace GameSaveCenter.Playnite.Views
                 MaintenanceDeviceGrid.MinHeight = 280;
                 MaintenanceProcessGrid.MinHeight = 280;
             }
-            var compact = width < 980;
-            if (compact && previousWidth >= 980)
+            var wasWideDetailLayout = detailBreakpoint.IsInitialized && !detailBreakpoint.IsCompact;
+            var compact = detailBreakpoint.Evaluate(width);
+            if (wasWideDetailLayout && compact)
             {
-                // A desktop inspector is not implicitly reopened when the shell is
-                // resized back into compact mode; the primary list remains the safe
-                // default and the user can opt into the detail drawer again.
-                diagnosticsInspectorOpen = false;
-                processInspectorOpen = false;
+                // Keep any visible desktop inspector open when it moves below its
+                // selected table. The same control and ScrollViewer are retained.
+                diagnosticsInspectorOpen = FindingsGrid.SelectedItem != null
+                    && MaintenanceDiagnosticsInspector.Visibility == Visibility.Visible;
+                processInspectorOpen = MaintenanceProcessGrid.SelectedItem != null
+                    && MaintenanceProcessInspector.Visibility == Visibility.Visible;
+                deviceInspectorOpen = MaintenanceDeviceGrid.SelectedItem != null
+                    && MaintenanceDeviceInspectorScrollViewer.Visibility == Visibility.Visible;
+                cloudTransferInspectorOpen = CloudTransferGrid.SelectedItem != null
+                    && CloudTransferInspector.Visibility == Visibility.Visible;
             }
             // The retention page follows the Demo's wide reading canvas. Keep a
             // cap so the cards do not become uncomfortably wide on ultrawide
@@ -298,7 +305,7 @@ namespace GameSaveCenter.Playnite.Views
                 : new GridLength(0);
             Grid.SetColumn(MaintenanceRetentionDemoTopLayout.Children[1], stackRetentionDemoTop ? 0 : 2);
             Grid.SetRow(MaintenanceRetentionDemoTopLayout.Children[1], stackRetentionDemoTop ? 1 : 0);
-            var stackRetentionDemoOperations = width < 980;
+            var stackRetentionDemoOperations = compact;
             MaintenanceRetentionDemoOperationsLayout.Width = stackRetentionDemoOperations
                 ? MaintenanceRetentionStack.Width
                 : Math.Min(1310, MaintenanceRetentionStack.Width);
@@ -363,7 +370,7 @@ namespace GameSaveCenter.Playnite.Views
             // because the sidebar is already accounted for. Keep the Demo's two-column
             // findings/inspector composition at normal desktop widths and stack only
             // below the documented compact breakpoint.
-            var stackDiagnostics = width < 980;
+            var stackDiagnostics = compact;
             var hasDiagnosticsSelection = FindingsGrid.SelectedItem != null;
             if (stackDiagnostics)
             {
@@ -399,7 +406,7 @@ namespace GameSaveCenter.Playnite.Views
             // summary strip stays below the table. In stacked mode both share a finite
             // vertical budget so the findings table keeps the remaining rows.
             MaintenanceDiagnosticsInspector.MaxHeight = showDiagnosticsInspector && stackDiagnostics ? Math.Max(150, height * 0.34) : double.PositiveInfinity;
-            var stackProcess = width < 980;
+            var stackProcess = compact;
             var hasProcessSelection = MaintenanceProcessGrid.SelectedItem != null;
             if (stackProcess)
             {
@@ -466,7 +473,7 @@ namespace GameSaveCenter.Playnite.Views
             // separate columns at normal desktop widths. The Playnite shell leaves
             // less content width than its outer window, so 980 DIP is the compact
             // breakpoint used by the other page-level inspectors.
-            var stackDevice = width < 980;
+            var stackDevice = compact;
             if (stackDevice)
             {
                 var hasDeviceSelection = MaintenanceDeviceGrid.SelectedItem != null;
@@ -522,7 +529,7 @@ namespace GameSaveCenter.Playnite.Views
                 ? deviceInspectorHeight
                 : double.PositiveInfinity;
 
-            var stackCloudTransfers = width < 980;
+            var stackCloudTransfers = compact;
             var hasCloudTransferSelection = CloudTransferGrid.SelectedItem != null;
             if (stackCloudTransfers)
             {
@@ -566,7 +573,7 @@ namespace GameSaveCenter.Playnite.Views
             CloudTransferGrid.Height = double.NaN;
             CloudTransferGrid.MaxHeight = double.PositiveInfinity;
 
-            var stackAudit = width < 980;
+            var stackAudit = compact;
             var showAuditInspector = MaintenanceAuditInspector.Visibility == Visibility.Visible;
             var auditSideBySide = showAuditInspector && !stackAudit;
             MaintenanceAuditLayout.ColumnDefinitions[1].Width = auditSideBySide ? new GridLength(14) : new GridLength(0);

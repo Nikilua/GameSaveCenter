@@ -12,6 +12,7 @@ namespace GameSaveCenter.Playnite.Views
         private double responsiveWidth;
         private double responsiveHeight;
         private bool isApplyingLayout;
+        private readonly ResponsiveDetailBreakpointLatch detailBreakpoint = new ResponsiveDetailBreakpointLatch();
         private bool historyInspectorOpen;
         private bool candidateInspectorOpen;
         private DataGridColumnLayoutController? historyColumnLayout;
@@ -121,7 +122,20 @@ namespace GameSaveCenter.Playnite.Views
                 // 1040x700 breakpoint.  The previous 1200 DIP cutoff pushed the
                 // Playnite host into the drawer layout even when there was enough
                 // room, which made the production page structurally different.
-                var compact = width < 980;
+                var wasWideDetailLayout = detailBreakpoint.IsInitialized && !detailBreakpoint.IsCompact;
+                var compact = detailBreakpoint.Evaluate(width);
+                if (wasWideDetailLayout && compact)
+                {
+                    // The same inspector is already visible beside the selected row.
+                    // Keep it open when the layout moves below the table so focus and
+                    // its ScrollViewer offset remain attached to the selected object.
+                    if (SaveHistoryGrid.SelectedItem != null
+                        && SaveHistoryActionsScrollViewer.Visibility == Visibility.Visible)
+                        historyInspectorOpen = true;
+                    if (SaveCandidateGrid.SelectedItem != null
+                        && SaveCandidateInspectorScrollViewer.Visibility == Visibility.Visible)
+                        candidateInspectorOpen = true;
+                }
                 var ruleCardCompact = width < 700;
                 if (SaveCurrentRuleActions != null)
                 {

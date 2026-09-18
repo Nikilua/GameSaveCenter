@@ -73,7 +73,50 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
     public static class ResponsiveLayoutCoordinator
     {
+        // The detail inspector needs a small content-budget hysteresis band. Without it,
+        // a host that reports 979/980 DIP while the user drags its edge repeatedly
+        // moves the same inspector between a column and a drawer on every render pass.
+        public const double DetailCompactThreshold = 980d;
+        public const double DetailCompactEnterThreshold = 972d;
+        public const double DetailWideExitThreshold = 988d;
+
         public static ResponsiveLayoutState Calculate(double width, double height)
             => new ResponsiveLayoutState(width, height);
+    }
+
+    /// <summary>
+    /// Holds a detail layout decision while a host is inside the small measurement
+    /// band around the content-budget breakpoint. The visual tree and its ScrollViewer
+    /// remain the same object when the decision changes.
+    /// </summary>
+    public sealed class ResponsiveDetailBreakpointLatch
+    {
+        private bool initialized;
+        private bool isCompact;
+
+        public bool IsInitialized => initialized;
+        public bool IsCompact => isCompact;
+        public int TransitionCount { get; private set; }
+
+        public bool Evaluate(double width)
+        {
+            if (!initialized)
+            {
+                initialized = true;
+                isCompact = width < ResponsiveLayoutCoordinator.DetailCompactThreshold;
+                return isCompact;
+            }
+
+            var next = isCompact
+                ? width < ResponsiveLayoutCoordinator.DetailWideExitThreshold
+                : width < ResponsiveLayoutCoordinator.DetailCompactEnterThreshold;
+            if (next != isCompact)
+            {
+                isCompact = next;
+                TransitionCount++;
+            }
+
+            return isCompact;
+        }
     }
 }
