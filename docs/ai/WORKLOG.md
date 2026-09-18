@@ -7301,3 +7301,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - D: 隔离源目录 Release 构建通过，XAML `24/24`、`0 warning / 0 error`；`python scripts/validate-source.py` 与 `git diff --check` 通过。合并 R08 testhost 的 `6 failed / 10 passed` 未计为产品通过，已记录为 WPF Dispatcher/视觉资源污染边界。
 - C: 现有分支工作树直接构建受 WPF 生成 `_wpftmp.csproj` 的 `Access denied` 阻塞，未绕过权限；使用 D: 临时隔离源目录完成相同源码身份的构建核验。未运行真实 Playnite、物理 DPI/跨屏、IME、UIA/读屏、presented frame 或 ETW；Demo 原目录不可用，沿用恢复生产基线。
 - 证据与第三轮账本已同步到 `evidence/R08-07-DIALOG-OVERLAY-20260918.md` 与 `ROUND3_PROGRESS.md`。main 保持用户现有未提交改动不变；下一可执行项为 R08-08 变换所有权。
+
+## 2026-09-19 Round3 R00/R01 当前提交复核
+
+- 在 `3354fd82` 发现并修正 R00/R01 旧源码断言与证据身份问题：R01-07 历史当前扫描曾写入 `c3e67cb4`，隔离输出目录还会使 RenderHarness/UiAuditRunner 误认 main；现在使用 `GscSourceRoot/GscBuildCommit` 元数据并以完整 `3354fd82400df6659165a688b8fcb1eb87116ca4` 复核。
+- 干净隔离验证：XAML `24/24`、Release `0 warning / 0 error`；当前提交的受影响测试、双主题 finesse/motion、media geometry、审计与 Evidence Index 均通过。审计 `161` runtime snapshots、`0` Fidelity、`0` failed routes、无 HIGH/MEDIUM，索引校验 `20/20`。
+- freshness 报告 `14/14 fresh`，docs-only/shared-control/package-identity 三类测试通过；包身份保持 `not-provided`。没有把 R00-07、R01-01、R01-07 的既有 fresh 状态说成同一批重跑产物。
+- 本阶段证据已写入 `evidence/R00-R01-CURRENT-RECHECK-20260919.md` 和第三轮账本；临时构建、探针、审计输出待提交前清理。main 的用户文件未触碰。
+- 未验边界：Demo 原目录、真实 Playnite 呈现、物理 DPI/跨屏、IME/UIA、presented frame、ETW、宿主性能、真实 package-host 安装。下一可执行任务为 R08-08 变换所有权。

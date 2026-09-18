@@ -1484,3 +1484,11 @@
 - 受控验证：隔离 D: 源目录 Release 构建 XAML `24/24`、`0 warning / 0 error`；R08 按类 `16/16`，Core `83/83`，Worker `310/311`（1 skip），源码校验和 diff check 通过。C: worktree 直接 WPF 构建因 `_wpftmp.csproj` `Access denied` 未通过，不能把隔离路径结果改写成 C: 路径成功。
 - 未验边界：真实 Playnite 呈现、物理 DPI/跨屏、真实键盘/IME、UIA/读屏、presented frame、ETW 和宿主性能仍未验证；Demo 原目录仍不可用，当前以恢复生产资源基线为视觉依据。
 - 下一可执行任务：R08-08 变换所有权；先检查 `GscMotion` 的共享可变/冻结 `Freezable`、其他变换实例和 R00-02 已有证据，再做最小行为/负例补充。
+
+## 2026-09-19 Round3 R00/R01 当前提交复核
+
+- `3354fd82` 修正了 R00/R01 仍指向旧对话框动画、旧忙碌触发器和旧焦点保护的源码断言；同时让 RenderHarness 与 UiAuditRunner 从 `GscSourceRoot/GscBuildCommit` 元数据解析隔离源码身份，避免 `.tmp` 输出目录向上误认 main。
+- 干净提交验证：XAML `24/24`、Release `0 warning / 0 error`；受影响源码/行为测试均通过，浅/深合成 finesse、motion hot/re-entry、media geometry、审计和 evidence index 均通过；审计 `161` snapshots、`0` Fidelity、`0` failed routes、无 HIGH/MEDIUM，EVIDENCE_INDEX `20/20`。
+- freshness 当前为 `14/14 fresh`，负例测试通过；包身份保持 `not-provided`。R00-07、R01-01、R01-07 原本已 fresh，未伪造为同一批构建产物。
+- main 工作树仍保留用户未提交文件，续作分支只提交自身实现和本阶段文档；真实 Playnite、物理屏幕/DPI/跨屏、IME/UIA、presented frame、ETW、宿主性能和 package-host 仍未验证。
+- 下一可执行任务：R08-08，检查 `GscMotion` 的共享可变/冻结 `Freezable` 和变换实例归属，再做最小行为/负例补充。

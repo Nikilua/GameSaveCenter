@@ -3751,3 +3751,11 @@
 - R08-07 的可重复证据为隔离 Release XAML `24/24`、构建 `0 warning / 0 error`、按类 R08 `16/16`、Core `83/83`、Worker `310/311`（1 skip）、源码校验与 diff check 通过。一个 testhost 合并运行的 `6` 项失败属于 WPF 调度/视觉资源污染，不能写成产品通过或回归。
 - C: worktree 的 WPF 临时项目路径权限仍是环境限制；D: 临时隔离源目录只用于同源码构建核验。任何后续证据仍须区分 synthetic/offscreen logical DIP 与真实 Playnite/物理屏幕/呈现帧，不能把离屏、代理性能或 ETW 缺失升级为真实宿主结论。
 - 下一步 R08-08 先查 `GscMotion` 的共用可变/冻结 `Freezable`、变换实例归属和已有 R00-02 覆盖，避免重复实现或把表格新增方向误判为缺失。
+
+## 2026-09-19 Round3 R00/R01 当前提交复核
+
+- 当前续作分支身份为 `3354fd82400df6659165a688b8fcb1eb87116ca4`。R00/R01 旧源码断言已按现有 `DialogOverlayMotion`、`IsBusyIndicatorVisible` 和关闭期焦点保护校正；RenderHarness/UiAuditRunner 已优先使用 `GscSourceRoot/GscBuildCommit`，隔离 `.tmp` 输出不会再解析成 main。
+- 当前干净 Release/XAML 门禁为 `24/24`、`0 warning / 0 error`；当前提交的受影响行为测试、双主题合成探针、审计和证据索引已复核。新鲜度为 `14 fresh / 0 stale`，freshness 三类负例通过，包身份仍为 `not-provided`。
+- 复核证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20260919.md`。R00-07、R01-01、R01-07 原先已 fresh，不为统一时间戳重复构建；不要把每条记录描述成同一批运行。
+- Demo 原目录不可用，沿用恢复生产资源基线；离屏 synthetic/STA WPF 不能替代真实 Playnite、物理 DPI/跨屏、IME/UIA、presented frame、ETW、宿主性能或 package-host。main 的用户未提交改动不可覆盖。
+- 下一可执行小批量为 R08-08：检查 `GscMotion` 的共享可变/冻结 `Freezable`、变换实例归属和 R00-02 覆盖，再决定最小改动。
