@@ -28,6 +28,12 @@
    - `unreachable-toolbar`：同一命名祖先下垂直滚动被禁用，分类为 `action-toolbar`、`reachable=False`，命中 `TOOLBAR_UNREACHABLE`；同时保留横向几何数据。
 4. `RenderHarness.exe audit .tmp\r00-07-audit-final`：`161` 个运行时快照、`73` 个运行时警告、`0` Fidelity、`0` 失败路由；HIGH 和 MEDIUM 均为“无”，既有合法嵌套/页级滚动保持 INFO。
 
+## 2026-09-18 当前分支复核
+
+- 当前 HEAD `4f5850247d1775fe0f9ffe252b727f06eea0699e` 使用隔离 OutputRoot `.tmp/r00-07-08-build-clean` 重建；审计源/响应式控件契约定向 `30/30` 通过，RenderHarness `0 warning / 0 error`。
+- clean-tree `.tmp/r00-07-toolbarprobe-clean/toolbar-probe-report.txt` 的 `toolbarprobe` 为 `OK`：正常长表单分类为 `settings-form` 且 `excluded=True`，记录“表单输入流：包含输入控件但没有命令按钮”；同一 `TrainerToolsSettingsScrollViewer` 下的 `700 DIP` 宽动作栏命中 `TOOLBAR_HORIZONTAL_OVERFLOW`，垂直不可达动作栏命中 `TOOLBAR_UNREACHABLE`，两者均保留真实几何和 `reachable` 字段。
+- 这批没有按字符串断言签收工具栏行为，负例由实际 WPF 面板布局和审计分类结果捕获；相邻 clean 审计已证明当前分析器为 `161` 快照、0 HIGH/0 MEDIUM，INFO 仍保留合法滚动上下文。
+
 ## 校准记录与边界
 
 - 首轮全量审计曾因 `Rect.Empty.Width=-∞` 把页面当前滚动位置外的合法动作栏误报为横向溢出；最终判定已收窄为有效需求宽度比较，并用 clean-tree 全量审计复核为 0 HIGH/0 MEDIUM。这是检测器校准事实，不是生产页面缺陷。

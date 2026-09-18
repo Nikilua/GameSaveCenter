@@ -32,6 +32,12 @@ dotnet test tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.cs
 3. 当前 `PickerList` 可见候选的 Enter 被处理，弹层关闭，候选写回共享选择状态，键盘焦点返回 `GameContextButton`。
 4. 既有生产 Shell Escape STA 测试同时通过，确认关闭、Handled 和焦点返回没有回归。
 
+## 2026-09-18 当前分支复核
+
+- 当前 HEAD `4f5850247d1775fe0f9ffe252b727f06eea0699e` 使用隔离 OutputRoot `.tmp/r00-07-08-build-clean` 重建；`GamePickerKeyboardBehaviorTests|KeyboardFocusSourceTests|GamePickerViewModelTests` 当前通过 `31/31`，其中包含活动 text composition 未提交时 Enter 保持弹层、提交后才确认的实际 WPF 路由负例。
+- 运行覆盖仍是生产 `AcrylicProductionShellView`、真实 WPF `Window`、`Keyboard.Focus` 和 PreviewKeyDown/TextComposition 路由：无结果 Enter 不处理且旧选择不变；IME/方向键不关闭；可见候选 Enter 关闭并回焦点；Esc 和清除按钮焦点行为保持。
+- 当前输出来自 clean-tree 隔离构建，未启动 Playnite/Worker，也未把 `Key.ImeProcessed` 夹具等同于 Windows 中文输入法候选窗口；真实 OS IME 时序、物理键盘/DPI、presented frame、ETW 和宿主性能仍是边界。
+
 ## 边界
 
 - 测试通过真实生产 `AcrylicProductionShellView`、真实 WPF `Window`、控件路由和 `Keyboard.Focus` 验证行为；游戏数据为合成 DTO，Dashboard 仅以未初始化的最小测试承载注入 `GamePicker` 字段，未启动 Worker、Playnite 或任何真实文件操作。

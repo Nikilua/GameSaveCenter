@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R00-07 / R00-08 证据校正
+
+- 当前 HEAD `4f585024` 用隔离 `.tmp/r00-07-08-build-clean` 重建后复核：R00-07 审计源/响应式契约 `30/30`，RenderHarness `0/0`；R00-08 生产选框键盘/焦点/搜索测试 `31/31`。
+- clean `toolbarprobe` 三场景通过：正常长表单按用途排除并记录理由，同祖先超宽动作栏命中 `TOOLBAR_HORIZONTAL_OVERFLOW`，同祖先不可达动作栏命中 `TOOLBAR_UNREACHABLE`；没有按字符串断言签收。
+- R00-08 实际生产 `AcrylicProductionShellView`/WPF Window 路由覆盖无结果 Enter、活动 composition Enter、IME/方向键、可见候选 Enter、Esc/清除焦点回返；当前可控条件已满足。真实 OS IME、Playnite、物理输入/呈现/性能未验。
+- Demo 原始目录仍缺失，沿用恢复生产基线；游戏选框、滚动条、命令/Binding、取消/错误、恢复保护、有限列表和 net462 未改。下一实际批次转入 R01-01/R01-03 证据与身份校正。
+
 ## 当前第三轮 R00-05 / R00-06 证据校正与夹具修正
 
 - 旧默认 `bin\Release` 的一次 R00-05/R00-06 复跑被 R01-01 身份门禁正确阻止（程序集 `447ac07e`、源码根为当前提交）；按源码根绑定协议改用 `.tmp/r00-05-06-build-clean` 后定向集合 `6/6` 通过，未绕过旧根。
