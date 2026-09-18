@@ -54,9 +54,8 @@ public sealed class R08NumericChangeBehaviorTests
                 value.Text = "100";
                 feedbackCount = NumericChangeFeedback.GetFeedbackCountForAudit(value);
                 var scale = FindScale(value.RenderTransform);
-                scaleWasAnimated = scale != null
-                    && DependencyPropertyHelper.GetValueSource(scale, ScaleTransform.ScaleXProperty).IsAnimated;
                 FlushLayout(window);
+                scaleWasAnimated = WaitForAnimatedScale(window, scale);
 
                 // A burst of refreshes must not restart a pulse on every sample.
                 value.Text = "101";
@@ -175,6 +174,24 @@ public sealed class R08NumericChangeBehaviorTests
         window.UpdateLayout();
         window.Dispatcher.Invoke(DispatcherPriority.Render, new Action(() => { }));
         window.UpdateLayout();
+    }
+
+    private static bool WaitForAnimatedScale(Window window, ScaleTransform? scale)
+    {
+        if (scale == null)
+            return false;
+
+        var deadline = DateTime.UtcNow.AddMilliseconds(250);
+        while (DateTime.UtcNow < deadline)
+        {
+            if (DependencyPropertyHelper.GetValueSource(scale, ScaleTransform.ScaleXProperty).IsAnimated)
+                return true;
+
+            window.Dispatcher.Invoke(DispatcherPriority.Render, new Action(() => { }));
+            Thread.Sleep(5);
+        }
+
+        return DependencyPropertyHelper.GetValueSource(scale, ScaleTransform.ScaleXProperty).IsAnimated;
     }
 
     private static ScaleTransform? FindScale(Transform? transform)
