@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R01-03 每项证据直达
+
+- 当前提交 `c2399d7b` 已用新隔离构建 `.tmp\r01-03-build-c2399d7b` 复核：solution/RenderHarness Release `0 warning / 0 error`、XAML `24/24`；完整受控审计 `.tmp\r01-03-audit-c2399d7b` 的身份为完整 `c2399d7be9f723e77226619172be16778fe3646f`。
+- 审计实际为 161 个运行时快照、80 条预期 INFO、0 Fidelity、0 失败路由、0 HIGH/0 MEDIUM；`validate-ui-evidence-index.ps1` 对 E01～E20 输出 `rows=20, references=20/20, identities=20/20, samples=20/20, boundaries=20/20`。索引同时区分运行时 DataGrid 与仅静态 manifest 的条目，不把索引完整性写成视觉/交互全量签收。
+- freshness 工具按旧版本化 baseline 仍将 R01-03 标为需重跑，因为 `Program.cs` 自历史身份 `9d5146d` 后变化；本批已经用 `c2399d7b` 完成该重跑，R01-01/R01-02 也完成当前提交复核。R01-07 后续需单独更新 baseline 扫描事实，不能静默改旧 JSON。
+- Demo 原始目录仍缺失，当前审计沿用恢复生产基线；证据来自合成数据、实际 WPF 视图、隔离窗口和 offscreen logical DIP。未启动真实 Playnite，不宣称物理 DPI、OS 输入/IME、presented frame、UIA/读屏、ETW 或宿主性能；未执行真实业务写入。下一执行项为 R01-07 freshness 基线复核，再视结果推进 R01-08。
+
 ## 当前第三轮 R01-01 / R01-02 收口
 
 - 当前代码提交 `a5219c09` 已推送到 `codex/ui-finesse-round2`。先用旧默认 `bin\Release` 复跑时，R01-01 身份门禁正确拒绝了程序集 `447ac07e` 与当前源码不一致；在当前隔离构建中又定位到 `R06EmptyStateBehaviorTests.cs` 的残留 `Environment.CurrentDirectory` 回溯，现已改为 `TestRepositoryContext.Root`。这只修测试源码根绑定，没有把 main 的旧实现带入当前分支，也没有改生产空表逻辑。

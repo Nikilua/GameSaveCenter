@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-18
 
+## 2026-09-18 R01-03 每项证据直达
+
+- 当前提交 `c2399d7b` 新建隔离构建并运行完整 RenderHarness 审计，输出身份 `c2399d7be9f723e77226619172be16778fe3646f`；solution/RenderHarness `0/0`、XAML `24/24`。
+- 审计保留 161 个运行时快照和 80 条预期内部滚动 INFO，Fidelity/失败路由/HIGH/MEDIUM 均为 0。`EVIDENCE_INDEX.md` 实际有 E01～E20，校验器四项均 `20/20`：报告/源码入口、完整身份、样本、未验边界；静态-only 行明确没有运行时几何样本。
+- 当前 freshness 扫描发现旧 R01-03 baseline 因 `Program.cs` 后续变更而需重跑，本次已完成新审计并在证据中保留该事实；R01-07 后续负责校正版本化 baseline/扫描记录，不把“需要重跑”改写成产品缺陷。
+- 证据继续限于合成/fake、实际 WPF、隔离 STA/offscreen logical DIP；真实 Playnite、物理 DPI/跨屏、OS 输入/IME、presented frame、UIA/读屏、ETW 和宿主性能未验。Demo 原始目录缺失，沿用恢复生产基线。下一项为 R01-07 基线失效规则复核。
+
 ## 2026-09-18 R01-01 / R01-02 收口
 
 - `a5219c09` 修正 R01-01 发现的最后一个源码回溯：`R06EmptyStateBehaviorTests.FindRepositoryRoot()` 改用 `TestRepositoryContext.Root`。缺陷来自当前隔离定向身份扫描，先前的旧默认程序集错根拒绝仍保留为有效负例；没有改生产 UI、DTO、服务、命令或空表状态语义。

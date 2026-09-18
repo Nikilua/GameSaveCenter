@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-18 R01-03 每项证据直达
+
+- 先读取既有 `UiEvidenceIndexBuilder`、`validate-ui-evidence-index.ps1` 和 freshness 脚本；没有重复实现索引，也没有把 20 行索引当作交互/动画/焦点/性能签收。
+- 当前 `c2399d7b` 隔离 build + RenderHarness audit：构建 `0/0`、XAML `24/24`；`.tmp\r01-03-audit-c2399d7b` 记录完整身份、161 快照、80 INFO、0 Fidelity、0 失败路由、0 HIGH/0 MEDIUM。
+- 校验器真实输出 `rows=20, references=20/20, identities=20/20, samples=20/20, boundaries=20/20`。索引 E01～E20 的结果入口按运行时 `LAYOUT_REPORT` 或静态 `UI_MANIFEST`/`UI_FIDELITY_MATRIX` 区分，静态项保留无几何样本说明。
+- freshness 当前仍按旧 baseline 命中 R01-03 的 `Program.cs` 变化；已把“旧记录需重跑”与“当前重跑已完成”并列记录。下一小批量为 R01-07 更新基线失效事实；旧未引用 zip/中间物不保留。
+
 ## 2026-09-18 R01-01 / R01-02 收口与证据校正
 
 - 收口过程中没有直接假定旧证据有效：旧默认 bin 的身份门禁先以程序集 `447ac07e` / 当前源码不一致阻断；当前 checkout 的隔离身份筛查再发现 `R06EmptyStateBehaviorTests` 仍会从当前工作目录回溯 `.sln`。用最小改动将该 helper 改为 `TestRepositoryContext.Root`，提交 `a5219c09` 并推送。

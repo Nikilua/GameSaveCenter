@@ -1,9 +1,10 @@
 # R01-03 每项证据直达证据
 
-日期：2026-09-16  
+日期：2026-09-16；当前审计复核：2026-09-18
 分支：`codex/ui-finesse-round2`  
 实现提交：`3875f88`、`2eb4c46`、`591deae`、`f6a3209`、`9d5146d`  
-最终审计身份：`9d5146d4a4d604b2779f933f3dee00e730c68b71`
+历史审计身份：`9d5146d4a4d604b2779f933f3dee00e730c68b71`
+当前审计身份：`c2399d7be9f723e77226619172be16778fe3646f`
 
 ## 对照缺口
 
@@ -15,6 +16,13 @@
 - `UiEvidenceIndexBuilder` 从实际 `UiAuditRunResult` 的 manifest、运行时布局和快照集合生成索引：优先抽取生产页面的 DataGrid，再按 route 分散抽取交互控件；每行包含页面/Tab、具体控件、状态、结果文件和检索键、40 位提交身份、样本字段及未验边界。
 - 运行时 DataGrid 条目直达 `LAYOUT_REPORT.md` 的 route/Tab/size/DataGrid；静态-only 条目直达 `UI_MANIFEST.md` 的 source file/line，并明确没有本轮运行时几何样本。交互条目直达 `UI_FIDELITY_MATRIX.md` 和 manifest source。
 - `scripts/validate-ui-evidence-index.ps1` 校验 E01～E20、报告与源码入口、完整 commit、样本和边界字段；`UiAuditSourceTests` 增加接入契约测试。`9d5146d` 同时修正新脚本的 Windows PowerShell BOM、R01-01 身份命令参数的源码分隔符兼容，以及当前 `ButtonChrome=0.72` 的既有源码守卫。
+
+## 当前提交审计复核
+
+- 从当前 `c2399d7b` 新建 `.tmp\r01-03-build-c2399d7b`，solution 与 RenderHarness Release 构建均 `0 warning / 0 error`，XAML 结构校验 `24/24`。RenderHarness 使用当前程序集和源码根运行，没有复用旧默认 bin。
+- 完整受控审计输出为 `.tmp\r01-03-audit-c2399d7b`；`AUDIT_SUMMARY.md` 记录静态 View `10`、Tab `32`、DataGrid `14`、运行时快照 `161`、INFO `80`、Fidelity 警告 `0`、失败路由 `0`、HIGH/MEDIUM `0`。
+- `scripts/validate-ui-evidence-index.ps1 -AuditRoot .tmp\r01-03-audit-c2399d7b` 实际输出：`rows=20, references=20/20, identities=20/20, samples=20/20, boundaries=20/20`；E01～E20 的代码身份均为完整 `c2399d7b...`，运行时条目直达 `LAYOUT_REPORT.md`，静态条目明确标注无本轮运行时几何样本。
+- 当前 freshness 扫描仍会按版本化基线把 R01-03 标为“需要重跑”，原因是 `Program.cs` 自 `9d5146d` 后有变更；本节的当前审计正是完成该重跑后的新证据，不能把旧 JSON 的状态当作当前审计结论。R01-01/R01-02 同批也已用新提交重跑，R01-07 的基线扫描后续再单独收口。
 
 ## 实际验证
 
@@ -64,4 +72,4 @@
 
 ## 下一步
 
-R01-03 的索引实现与完整性校验已完成，下一可执行小批量为 R01-04“动效行为替代字符串”：复用现有 `GscMotion` 行为测试，证明删掉关键终态处理会失败，同时保留源码门禁的结构用途。
+R01-03 的索引实现与当前提交完整性校验已完成，下一可执行小批量为 R01-07“基线失效规则复核”：用刚完成的 R00/R01 重跑结果校正版本化 freshness 记录，再决定是否推进 R01-08 跳过测试说明。
