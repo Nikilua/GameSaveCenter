@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-18
 
+## 2026-09-18 R07-06 状态横幅预算
+
+- 先核对当前生产实现后确认状态语义已存在：Task 无旧数据失败走 `WorkspaceStatePresenter`，保留旧数据的失败/刷新走带重试横幅；Save/Media/Maintenance Stale 横幅和安全模式恢复入口也已绑定。`3551de81` 只新增真实 WPF 行为夹具，没有重建生产状态或改变安全语义。
+- `.tmp\\r07-06-build-3551de81` 身份一致构建为 XAML `24/24`、solution `0/0`；R07-06 `4/4`，相邻空态/Task 响应/R06 详情/R07 滚动 `13/13`，合并 `17/17`。实际检查重试/恢复命令、错误 presenter、表格最小高度和非零 viewport。
+- 更宽相邻合跑的 Media 源契约失败期待旧字符串，另有一条既有 intentional skip；未改写、未归入本项通过。边界仍是合成/fake、隔离 WPF/offscreen logical DIP、无真实 Playnite/设备输入/物理呈现/ETW/宿主性能/真实数据写入。下一项 R07-07 触控板小增量。
+
 ## 2026-09-18 R07-05 详情断点稳定
 
 - `0daca6f0` 在当前分支实现并推送详情断点滞回：980 DIP 基线，`<972` 进入紧凑，`>=988` 回宽；Save/Media/Task/Maintenance 都保留现有详情对象、选择、焦点和 `ScrollViewer`，不改游戏选框、滚动条和业务安全语义。

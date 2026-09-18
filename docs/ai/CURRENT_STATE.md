@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R07-06 状态横幅预算
+
+- 当前测试提交 `3551de81` 已生成隔离身份一致输出 `.tmp\\r07-06-build-3551de81`：XAML `24/24`、solution Release `0 warning / 0 error`、Playnite `net462`；没有修改生产状态/服务/DTO、游戏选框或滚动条。
+- `R07StatusBannerBudgetBehaviorTests 4/4` 实际覆盖 Task 失败保留旧数据、无数据失败、Save Stale、Maintenance Stale/安全模式；相邻空态 `2/2`、Task 响应 `7/7`、R06 详情 `2/2`、R07 滚动 `2/2`，提交身份合并 `17/17`。横幅重试/恢复命令可达，表格最小高度与实际 viewport 不归零，真实失败仍由错误 presenter 展示。
+- 更宽相邻合跑仍有一条旧 `WorkspaceStateSourceTests` Media 源字符串契约失败和一条 intentional skip，未改写为通过；它们不属于本项。证据仅是合成 DTO/fake、隔离 STA WPF/offscreen logical DIP；Demo 原始目录缺失，下一可执行任务为 R07-07 触控板小增量。
+
 ## 当前第三轮 R07-05 详情断点稳定
 
 - 当前提交 `0daca6f0` 已推送到 `codex/ui-finesse-round2`。四个生产页面复用 `ResponsiveDetailBreakpointLatch`：980 DIP 为内容预算基线，进入紧凑需 `<972`，回宽需 `>=988`，临界测量不重复切换侧栏/下方详情；详情控件、选中对象、焦点和原 `ScrollViewer` 保持。
