@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-18 R01-05 负例注册表复核
+
+- 复用 `UiNegativeFixtureRegistryTests` 与已有 detector，没有新增生产入口。当前 `810114e2` 隔离构建 `0/0`、XAML `24/24`，注册表 `1/1`；N01–N05 的详细 detector 输出均为 `detected=True`。
+- N02 使用行高通过但列宽不足，N03 保留旧选择，N04 写入隔离 overflow gate，N05 检查 presenter 命中测试可见性；因此不是只依赖 Assert.Contains。`python scripts/validate-source.py` 通过。
+- R01-05 证据已同步并恢复已满足；下一小步更新 freshness baseline 的 R01-05 绑定，再继续 R01-06 当前宿主证据保全。真实 Playnite、物理呈现、ETW、宿主性能和 Demo 原始目录边界保持不变。
+
 ## 2026-09-18 R01-07 freshness 基线复核
 
 - 读取现有 baseline 与脚本后，没有用一条“当前 HEAD”覆盖所有记录：只把已实际重跑的 R00/R01 项绑定到对应隔离证据提交；当前 R01-03 审计使用 `c2399d7b`，R01-01/R01-02 使用 `a5219c09`。

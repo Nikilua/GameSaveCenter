@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R01-05 负例注册表复核
+
+- 当前提交 `810114e2` 新建 `.tmp\r01-05-build-810114e2`，XAML `24/24`、solution Release `0 warning / 0 error`；`UiNegativeFixtureRegistryTests` 在构建绑定源码根下 `1/1` 通过，`python scripts/validate-source.py` 通过。
+- N01–N05 不是字符串登记：当前 detector 逐项返回 `detected=True`。N01 对比度 violation=1；N02 长负数横向失败/纵向通过且不可读；N03 无可见候选 Enter 不处理并保留旧选择；N04 隔离 gate 生成 `CHILD_LAYOUT_OVERFLOW`；N05 Loading presenter 屏蔽底层命中。
+- 本批只重跑测试侧既有注册表，没有修改生产 UI、服务/DTO、命令绑定、游戏选框、滚动条或安全语义。R01-05 账本恢复“已满足”；R01-06 因 freshness 命中 RenderHarness Program 仍待重跑。
+- 证据仍是合成夹具、隔离 STA WPF/offscreen logical DIP；真实 Playnite/OS 输入/IME/物理 DPI/presented frame/UIA/ETW/宿主性能未验。下一项先做 R01-07 baseline 增量更新，再处理 R01-06。
+
 ## 当前第三轮 R01-07 freshness 基线复核
 
 - 版本化 `UI_EVIDENCE_BASELINE.json` 已把本批实际重跑的 R00-01-02、R00-03、R00-04、R00-05、R00-06、R00-07、R00-08、R01-01、R01-02、R01-03 绑定到各自当前隔离证据身份；没有把未重跑的旧证据强行标 fresh。

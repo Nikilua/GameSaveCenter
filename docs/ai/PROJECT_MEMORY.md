@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-18
 
+## 2026-09-18 R01-05 负例注册表复核
+
+- `810114e2` 当前隔离构建绑定源码根，XAML `24/24`、Release `0/0`；`UiNegativeFixtureRegistryTests` `1/1`。五类 expected-failure 均由实际 detector 捕获：对比度 1 violation、数值列横向失败、无结果 Enter 保持旧选择、层级 overflow gate、Loading 底层不可命中。
+- `validate-source.py` 通过；本批没有修改生产入口或安全语义，只确认旧测试侧注册表在当前源码下仍有效。R01-05 可满足，R01-06 仍因 freshness 命中 RenderHarness `Program.cs` 待重跑。
+- 继续使用合成/fake、隔离 WPF/offscreen logical DIP，不宣称真实 Playnite/OS 输入、物理 DPI、presented frame、ETW 或宿主性能。下一步先把 R01-05 的 `sourceCommit` 更新到当前证据，再处理 R01-06。
+
 ## 2026-09-18 R01-07 freshness 基线复核
 
 - 根据实际新证据更新 baseline：R00-01-02→`89aa27e1`，R00-03/R00-04→`e5a12ffa`，R00-05/R00-06→`e8fe1aab`，R00-07/R00-08→`4f585024`，R01-01/R01-02→`a5219c09`，R01-03→`c2399d7b`。这些是各自已运行的隔离证据身份，不是把当前 HEAD 统一填入所有项目。

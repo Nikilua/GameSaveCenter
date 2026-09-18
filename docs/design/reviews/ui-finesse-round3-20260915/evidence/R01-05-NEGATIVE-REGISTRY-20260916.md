@@ -24,6 +24,12 @@ R01-05 已满足。`5e6d64aea3a64bc3fcde85627a84ce7cff5759e2` 在测试项目新
 - R01-05 注册表定向测试：`1/1` 通过；源码校验 `python scripts/validate-source.py` 通过。
 - 代码提交 `5e6d64a` 已推送到 `origin/codex/ui-finesse-round2`；该提交只新增测试项目文件，未修改生产入口。
 
+## 2026-09-18 当前分支复核
+
+- 以当前提交 `810114e2` 新建 `.tmp\r01-05-build-810114e2`：XAML `24/24`，solution Release `0 warning / 0 error`；测试程序集通过构建绑定身份校验，没有复用旧默认 bin。
+- `UiNegativeFixtureRegistryTests.RegisteredNegativeFixturesAreRejectedByTheirDetectors` 当前 `1/1`。运行时逐项输出均为 `detected=True`：N01 对比度 `violations=1`；N02 长负数 `horizontalFit=False / verticalFit=True / isReadable=False`；N03 `handled=False / overlay=Visible / selectionPreserved=True`；N04 隔离 `CHILD_LAYOUT_OVERFLOW` gate `gateExists=True`；N05 `retry=Collapsed / underlyingHit=False / presenterHitTestVisible=True`。
+- `python scripts/validate-source.py` 当前通过。此次没有修改生产 UI、服务/DTO、命令/绑定、游戏选框、滚动条或安全语义；只是用当前源码重新执行既有测试侧注册表。
+
 ## 边界
 
 - 夹具使用合成颜色、DTO、WPF 控件、隔离 Window 和 offscreen logical DIP；不等价真实 Playnite 嵌入、OS 输入/IME、物理 DPI、presented frame、ETW 或宿主性能。
@@ -32,4 +38,4 @@ R01-05 已满足。`5e6d64aea3a64bc3fcde85627a84ce7cff5759e2` 在测试项目新
 
 ## 下一步
 
-R01-05 已满足；下一可执行小批量为 R01-06“宿主证据保全”，只归档可由 clone 后复核的身份、manifest、summary 和精选证据，不保留无引用临时构建物。
+R01-05 当前证据已满足；下一可执行小批量为 R01-07 freshness baseline 的增量更新，然后处理 R01-06“宿主证据保全”，只归档可由 clone 后复核的身份、manifest、summary 和精选证据，不保留无引用临时构建物。
