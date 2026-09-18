@@ -1577,3 +1577,10 @@
 - 行为与相邻接线定向测试 `9/9`；正式 Release/XAML `24/24`、solution `0 warning / 0 error`，source/XAML/diff check 通过。证据：`evidence/R10-03-SEARCH-SHORTCUT-20260919.md`；账本 R10-03 已改为“已满足”。
 - 证据只覆盖隔离 net472 testhost、生产源码接线和策略正/负例；未验真实 Playnite 全局快捷键协作、IME/物理输入、UIA/读屏、presented frame、物理 DPI/跨屏、ETW、宿主性能和 package-host。Demo 原目录不可用，沿用恢复生产基线；DEV-INSTALL-008 main 全量失败仍单列，main 未触碰。
 - `.tmp/r10-03-build` 清理已尝试，部分文件因 Access denied 仍被现有 dotnet/testhost 占用，未强杀未知进程，临时输出未提交。下一可执行任务：R10-04 快捷键帮助；真实 Playnite 输入与呈现仍未完成。
+
+## 2026-09-19 Round3 R10-04 快捷键帮助
+
+- `19be9f12` 复用现有 `RelayCommand`/`CanExecute` 和 R10-03 的搜索路由，新增 Shell 页头键盘操作入口及 Popup；帮助目录按当前工作区生成 Ctrl+F 说明，禁用命令不显示，未增加未接线的全局快捷键。
+- 真实 STA WPF 点击行为与目录负例、当前页文案及生产接线定向回归 `13/13`；正式 Release/XAML `24/24`、solution `0 warning / 0 error`，source/XAML/diff check 通过。证据：`evidence/R10-04-KEYBOARD-HELP-20260919.md`；账本 R10-04 已改为“已满足”。
+- 证据覆盖隔离 STA Window、真实 Shell/XAML 和合成工作区状态；未验真实 Playnite Popup 呈现、物理 DPI/跨屏、UIA/读屏、真实键盘/IME、全局键协作、ETW、宿主性能和 package-host。Demo 原目录不可用，沿用恢复生产基线；DEV-INSTALL-008 main 全量失败仍单列，main 未触碰。
+- 一次 C: 盘 `0.21 GB` 空间不足的隔离构建已改用 D: 仓库 `.tmp` 成功完成并清理；旧 VBCSCompiler 锁定事实保留，未强杀未知进程。下一可执行任务：R10-05 筛选预设。

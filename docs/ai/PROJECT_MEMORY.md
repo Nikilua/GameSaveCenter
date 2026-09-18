@@ -3845,3 +3845,10 @@
 - 对话框、游戏选框、紧凑浏览器打开时 Ctrl+F 均拒绝搜索路由；Ctrl+Z/C 和无 Ctrl 的 F 负例也拒绝。`R10SearchShortcutBehaviorTests` 与相邻接线合计 `9/9`，Release `0 warning / 0 error`、XAML `24/24`。
 - 证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R10-03-SEARCH-SHORTCUT-20260919.md`，账本已同步。Demo 原目录不可用，沿用恢复生产基线；未把隔离策略测试写成真实 Playnite 输入、UIA、呈现、DPI/跨屏、ETW、宿主性能或 package-host 结论。
 - `.tmp/r10-03-build` 清理尝试遇到 Access denied，未强制终止未知 dotnet/testhost 进程；用户 main 的 DEV-INSTALL-008 `73/588/57` 失败事实仍独立保留。下一可执行任务：R10-04 快捷键帮助。
+
+## 2026-09-19 Round3 R10-04 快捷键帮助
+
+- 先查已有能力后复用 `RelayCommand`、`CanExecute`、`CurrentWorkspace` 和 R10-03 的 `FocusWorkspaceSearch`，没有新增服务或命令体系。`19be9f12` 增加 Shell 页头帮助按钮、Demo-first 浮层 Popup 和 `KeyboardShortcutHelpCatalog`；目录当前只展示已接线的 Ctrl+F，并过滤 `CanExecute=false`。
+- 真实 STA WPF 帮助按钮交互：当前媒体页显示“媒体中心 / Ctrl+F”，Popup 可打开和关闭；目录正/负例、当前工作区说明、生产接线及 R10-03/R10-02/R10-01 相邻回归共 `13/13`。Release `0 warning / 0 error`、XAML `24/24`。
+- 证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R10-04-KEYBOARD-HELP-20260919.md`，账本已同步。Demo 原目录不可用，沿用恢复生产基线；未把隔离 STA Popup 写成真实 Playnite 呈现、UIA、DPI/跨屏、IME、ETW、宿主性能或 package-host 结论。
+- C: 盘空间不足的构建尝试改用 D: `.tmp` 成功并清理；旧 VBCSCompiler 锁定目录不强杀。用户 main `73/588/57` 失败事实仍独立保留。下一可执行任务：R10-05 筛选预设。

@@ -7394,3 +7394,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 行为定义覆盖正例和负例：当前页 Ctrl+F、三个输入占用场景、Ctrl+Z/C 和无 Ctrl 的 F；`R10SearchShortcutBehaviorTests` 与相邻接线定向结果 `9/9`。Release solution `0/0`、XAML `24/24`，source validation、XAML、diff check 通过。
 - 证据已写入 `evidence/R10-03-SEARCH-SHORTCUT-20260919.md`，账本已同步。只使用隔离 net472 testhost 和源码接线，未读取/修改真实存档、媒体、云端、用户配置或诊断数据；真实 Playnite 输入、全局键协作、呈现、UIA/读屏、DPI/跨屏、IME、ETW、宿主性能和 package-host 未验。Demo 原目录不可用，沿用恢复生产基线。
 - `.tmp/r10-03-build` 按规则尝试清理，但 `bin/obj/test-temp` 部分路径返回 Access denied，保留事实且不强杀未知 dotnet/testhost 进程；临时输出未提交。用户 DEV-INSTALL-008 main 全量 `73 failed / 588 passed / 57 skipped` 仍独立记录，main 用户文件未触碰。下一可执行任务：R10-04 快捷键帮助。
+
+## 2026-09-19 Round3 R10-04 快捷键帮助
+
+- 盘点确认没有现成快捷键帮助目录；复用现有 Shell、`RelayCommand`/`CanExecute`、当前工作区和 R10-03 搜索路由。`19be9f12` 新增页头帮助入口、键盘操作 Popup 和按当前页生成的最小元数据目录，只列 Ctrl+F，不虚构未接线快捷键。
+- 行为定义覆盖启用/禁用命令目录、媒体/维护当前页文案、真实 STA WPF 点击打开/关闭 Popup 与生产接线；最终定向结果 `13/13`。最终 D: 隔离全 solution Release `0 warning / 0 error`、Playnite `net462`、XAML `24/24`，source validation、XAML、diff check 通过。
+- 证据已写入 `evidence/R10-04-KEYBOARD-HELP-20260919.md`，账本已同步。只使用隔离 Window、合成 ViewModel 和真实生产 Shell/XAML；真实 Playnite presented frame、physical DPI/跨屏、UIA/读屏、真实输入/IME、全局键协作、ETW、宿主性能和 package-host 未验。Demo 原目录不可用，沿用恢复生产基线。
+- C: 盘空间不足曾使一次隔离构建失败，最终改用 D: 仓库 `.tmp\continuation-r10-04-build-final-20260919` 成功并清理；旧 VBCSCompiler 文件仍可能锁定，未强杀未知进程。用户 DEV-INSTALL-008 main 全量 `73 failed / 588 passed / 57 skipped` 独立记录，main 用户文件未触碰。下一可执行任务：R10-05 筛选预设。
