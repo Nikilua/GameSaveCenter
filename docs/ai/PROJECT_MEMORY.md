@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-18
 
+## 2026-09-18 R08-02 热关闭动画
+
+- 先核对已有能力：Dashboard 的应用/系统监听和侧栏关闭归一化已经存在，Settings 也已有系统参数与 `Checked/Unchecked` 入口；缺口是通用 render-only 时钟没有按 Dispatcher 集中失效，Settings 入场时钟在自身开关关闭时没有明确收口。`459de0de` 增加弱引用登记、generation guard 和 `NormalizeAll`，不改变业务契约或安全语义。
+- 当前身份 `r08-02-build-459de0de` / `r08-02-solution-build-459de0de` 为 `0/0`，Playnite `net462`，XAML `24/24`；串行焦点 `21/21`（1+2+10+8）。Settings 真实窗口关闭时 opacity/Y 时钟释放并落到 `1/0`，重新启用不重放；并行合跑的 3 条 WPF Foundation 时序抖动未计入通过。
+- 边界仍是合成设置、隔离 STA/offscreen logical DIP；没有实际修改 Windows 动画偏好，也未验真实 Playnite/物理输入/DPI/呈现/UIA/ETW/宿主性能。WPF 退出 COM 清理诊断已记录且测试退出码为 0；Demo 原始目录不可用，继续恢复生产基线。下一项 R08-03 离屏与隐藏停机。
+
 ## 2026-09-18 R08-01 中途反向连续
 
 - 先核对当前代码：侧栏已有 `sidebarTransitionGeneration`；`GscMotion.AnimateTranslate` 的旧完成回调是实际缺口。`a7aaa89e` 用 `ConditionalWeakTable<FrameworkElement, MotionState>` 增加按元素 generation guard，`d62757e9` 只稳定真实 STA WPF 取样，不重建动画体系，也不改变命令/绑定、选框、滚动条、取消/错误/恢复或服务 DTO。

@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-18 R08-02 热关闭动画
+
+- 先查现有入口：Dashboard 已接应用视觉设置和 `SystemParameters.StaticPropertyChanged`，侧栏已有 reduced-motion 收口；Settings 已接系统参数与动画开关，但 SettingsShell/通用动效缺少统一时钟失效。`459de0de` 增加 Dispatcher 隔离弱引用登记、generation 保护和关闭归一化，保留现有命令/绑定、选框、滚动条和安全语义。
+- 当前身份隔离构建 `r08-02-build-459de0de`、完整 solution `r08-02-solution-build-459de0de` 均 `0/0`，Playnite `net462`；串行焦点 `21/21`（HotChange `1/1`、Reverse `2/2`、ProductionShell `10/10`、Foundation `8/8`），XAML `24/24`，源校验/diff check 通过。Settings 实际开关关闭会让入场时钟立即归一到 opacity `1`/Y `0`，重新开启不重播旧动画。
+- 一次并行合跑只得到 `18/21`，3 条 Foundation 是 WPF 多 STA 取样抖动，随后按类串行稳定通过；不把并行结果伪装成通过。退出阶段 `TextServicesContext.InvalidComObjectException` 仍是环境诊断，vstest 退出码为 0。未验真实 Windows 偏好切换、Playnite 宿主、物理呈现/UIA/ETW/宿主性能；Demo 原始目录不可用。下一可执行任务为 R08-03 离屏与隐藏停机。
+
 ## 2026-09-18 R08-01 中途反向连续
 
 - 先核对已有能力：侧栏已有 generation guard；真实缺口是通用 `GscMotion.AnimateTranslate` 的旧完成回调可以覆盖中途反向后的最新目标。`a7aaa89e` 增加按元素 generation guard，`d62757e9` 稳定实际取样夹具，没有重建动效或改动命令/绑定、选框、滚动条和安全语义。

@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R08-02 热关闭动画
+
+- `459de0de` 先复用已有入口：Dashboard 已监听 `plugin.VisualSettingsChanged` 与 `SystemParameters.StaticPropertyChanged`，侧栏已有关闭动效归一化；Settings 已监听系统参数和动画开关事件。本次补按 Dispatcher 隔离的弱引用动效登记、generation 失效和 `NormalizeAll`，并让 Settings 自身入场时钟在关闭动画后立即落到 opacity `1`/Y `0`；没有改变服务/DTO、命令绑定、选框、滚动条或安全语义。
+- 当前身份输出 `r08-02-build-459de0de`、`r08-02-solution-build-459de0de` 均为 `0 warning / 0 error`，Playnite `net462`，XAML `24/24`；串行焦点 `21/21`：HotChange `1/1`、Reverse `2/2`、ProductionShell `10/10`、Foundation `8/8`。源校验和 diff check 通过。
+- 实际 Settings WPF 行为确认关闭开关会释放 opacity/Y 时钟并保持稳定可见；重新开启等待原时长不重放旧入场。并行合跑曾出现 3 条 Foundation STA 时序抖动，未作为通过依据；WPF 退出 COM 诊断仍记录，vstest 退出码为 0。未验真实 Windows 偏好切换、真实 Playnite、物理输入/DPI/呈现/UIA/ETW/宿主性能。Demo 原始目录不可用，沿用恢复生产基线。下一可执行任务为 R08-03 离屏与隐藏停机。
+
 ## 当前第三轮 R08-01 中途反向连续
 
 - 先核对已有实现：`AcrylicProductionShellView` 的侧栏开合已有 `sidebarTransitionGeneration`；发现通用 `GscMotion.AnimateTranslate` 的旧 `Completed` 回调可能覆盖最新目标。`a7aaa89e` 只补按元素 generation guard，`d62757e9` 稳定真实 STA WPF 取样，没有改变命令/绑定、游戏选框、滚动条、取消/错误/恢复语义或服务 DTO。
