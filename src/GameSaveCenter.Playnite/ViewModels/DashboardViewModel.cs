@@ -29,6 +29,7 @@ namespace GameSaveCenter.Playnite.ViewModels
     public sealed partial class DashboardViewModel : ObservableObject
     {
         partial void OnWorkspaceStateInitialize();
+        partial void OnNavigationStateInitialize();
         partial void OnWorkspaceStateInputsChanged();
 
         private static readonly ILogger Logger = LogManager.GetLogger();
@@ -244,6 +245,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             gamePicker.StateChanged += OnGamePickerStateChanged;
             gamePicker.PropertyChanged += OnGamePickerPropertyChanged;
             OnWorkspaceStateInitialize();
+            OnNavigationStateInitialize();
             gameIconProvider = new PlayniteGameIconProvider(plugin.PlayniteApi);
             gameBackgroundProvider = new PlayniteGameBackgroundProvider(plugin.PlayniteApi);
             gameSearchText = gamePicker.SearchText;
@@ -325,6 +327,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             LoadMoreMediaInboxCommand = new RelayCommand(_ => Run(LoadMoreMediaInboxPageAsync), _ => !IsBusy && MediaInboxPageHasMore);
             ReloadMediaInboxCommand = new RelayCommand(_ => Run(ReloadMediaInboxWindowAsync), _ => !IsBusy && CurrentWorkspace == WorkspaceKind.Media);
             CancelTaskCommand = new RelayCommand(_ => _ = CancelSelectedTaskAsync(), _ => SelectedTask != null && SelectedTask.CanCancel && !IsCancellingTask);
+            // Purpose-navigation commands are initialized by the navigation partial so
+            // route state stays separate from business operations.
             RetryTaskCommand = new RelayCommand(_ => Run(RetrySelectedTaskAsync), _ => !IsBusy && CanRetrySelectedTask());
             RetryAllTasksCommand = new RelayCommand(_ => Run(RetryAllTasksAsync), _ => !IsBusy && RetryableTaskCount > 0);
             LoadMoreTasksCommand = new RelayCommand(_ => Run(() => LoadTaskPageAsync(false)), _ => !IsBusy && taskHistoryActive && TaskHistoryHasMore);
@@ -1579,6 +1583,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                         return;
                     }
 
+                    PushNavigationReturnTarget("返回告警", $"来源：维护中心 · {finding?.Title ?? "诊断项"}");
                     SelectedGame = Games.First(game => string.Equals(
                         game.PlayniteId,
                         saveTarget.PlayniteId,
@@ -1595,6 +1600,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                         return;
                     }
 
+                    PushNavigationReturnTarget("返回告警", $"来源：维护中心 · {finding?.Title ?? "诊断项"}");
                     applyingTaskNavigation = true;
                     try
                     {
@@ -2573,8 +2579,13 @@ namespace GameSaveCenter.Playnite.ViewModels
                     var merged = reset
                         ? incoming
                         : Tasks.Concat(incoming.Where(item => !Tasks.Any(existing => string.Equals(existing.TaskId, item.TaskId, StringComparison.OrdinalIgnoreCase)))).ToList();
-                    var selectedTaskIndex = SelectedTask == null ? -1 : Tasks.IndexOf(SelectedTask);
-                    var selectedTaskId = SelectedTask?.TaskId;
+                    var restoringNavigationSelection = restoringNavigationTaskSelection;
+                    var selectedTaskIndex = restoringNavigationSelection
+                        ? pendingNavigationTaskIndex
+                        : SelectedTask == null ? -1 : Tasks.IndexOf(SelectedTask);
+                    var selectedTaskId = restoringNavigationSelection
+                        ? pendingNavigationTaskId
+                        : SelectedTask?.TaskId;
                     var changed = Replace(Tasks, merged, SnapshotComparers.Task);
                     if (changed) taskIndex.Rebuild(Tasks);
                     taskHistoryCursor = page?.NextCursor ?? string.Empty;
@@ -2594,6 +2605,12 @@ namespace GameSaveCenter.Playnite.ViewModels
                     CompleteTaskPageLoad();
                     StatusMessage = TaskLoadedSummary;
                     RestoreTaskSelection(selectedTaskId, selectedTaskIndex);
+                    if (restoringNavigationSelection)
+                    {
+                        restoringNavigationTaskSelection = false;
+                        pendingNavigationTaskId = string.Empty;
+                        pendingNavigationTaskIndex = -1;
+                    }
                     RaiseCommandStates();
                 });
             }
@@ -4411,6 +4428,12 @@ namespace GameSaveCenter.Playnite.ViewModels
             var restored = !string.IsNullOrWhiteSpace(selectedTaskId)
                 ? Tasks.FirstOrDefault(item => string.Equals(item.TaskId, selectedTaskId, StringComparison.OrdinalIgnoreCase))
                 : null;
+            if (restoringNavigationTaskSelection && !string.IsNullOrWhiteSpace(selectedTaskId) && restored == null)
+            {
+                SelectedTask = null!;
+                StatusMessage = "返回任务时原任务已不在当前结果中，未替换为其他任务。筛选条件已恢复。";
+                return;
+            }
             if (restored == null && !string.IsNullOrWhiteSpace(taskNavigationGameName))
                 restored = Tasks.FirstOrDefault(MatchesTaskNavigationTarget);
             if (restored == null)
@@ -4976,7 +4999,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 PreviewMediaClassificationCommand, ApplyMediaClassificationCommand, UndoMediaClassificationCommand,
                 RefreshMediaClassificationHistoryCommand, LoadMoreMediaClassificationHistoryCommand,
                 LoadMoreMediaInboxCommand, ReloadMediaInboxCommand,
-                CancelTaskCommand, RetryTaskCommand, RetryAllTasksCommand, LoadMoreTasksCommand, ClearMediaFiltersCommand, CopyTaskErrorCommand, CopyPathCommand, RefreshDiagnosticsCommand, RunMaintenanceActionCommand, LoadMoreRetentionQuarantineCommand, DiagnoseGameCommand, SyncGameDescriptorCommand, RetryGameMatchCommand, ClearGamePickerFiltersCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
+                CancelTaskCommand, RetryTaskCommand, RetryAllTasksCommand, LoadMoreTasksCommand, ClearMediaFiltersCommand, CopyTaskErrorCommand, CopyPathCommand, OpenSelectedTaskGameCommand, ReturnToNavigationSourceCommand, RefreshDiagnosticsCommand, RunMaintenanceActionCommand, LoadMoreRetentionQuarantineCommand, DiagnoseGameCommand, SyncGameDescriptorCommand, RetryGameMatchCommand, ClearGamePickerFiltersCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
                 StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,RunHealthInspectionCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,RefreshRetentionSimulationCommand,ApplyRetentionSimulationCommand,RefreshLocalMirrorStatusCommand,SyncLocalMirrorCommand,CopyMaintenanceReportCommand,ExportMaintenanceReportCommand,
                 SaveProcessMappingCommand,DeleteProcessMappingCommand,RunEnvironmentCheckCommand,SkipOnboardingCommand,CompleteOnboardingCommand,OnboardingTestBackupCommand,
                 OpenDataDirectoryCommand, OpenBackupDirectoryCommand, OpenMediaDirectoryCommand, OpenWorkerLogCommand

@@ -138,6 +138,7 @@ namespace GameSaveCenter.Playnite.Views
             HeaderBackupSelectedButton.Visibility = workspace == WorkspaceKind.Saves ? Visibility.Visible : Visibility.Collapsed;
             HeaderBackupButton.Visibility = Visibility.Visible;
             HeaderRefreshButton.Visibility = Visibility.Visible;
+            UpdateNavigationReturnButton();
 
             suppressNavigation = true;
             try
@@ -510,6 +511,19 @@ namespace GameSaveCenter.Playnite.Views
                 NavigateTo(viewModel.CurrentWorkspace);
             else if (e.PropertyName == nameof(DashboardViewModel.SelectedGame) && viewModel != null)
                 UpdatePageHeader(viewModel.CurrentWorkspace);
+            else if ((e.PropertyName == nameof(DashboardViewModel.HasNavigationReturnTarget)
+                      || e.PropertyName == nameof(DashboardViewModel.NavigationReturnLabel)
+                      || e.PropertyName == nameof(DashboardViewModel.NavigationReturnToolTip))
+                     && viewModel != null)
+                UpdateNavigationReturnButton();
+        }
+
+        private void UpdateNavigationReturnButton()
+        {
+            var visible = viewModel?.HasNavigationReturnTarget == true;
+            HeaderBackButton.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
+            HeaderBackButton.ToolTip = viewModel?.NavigationReturnToolTip ?? string.Empty;
+            AutomationProperties.SetName(HeaderBackButton, viewModel?.NavigationReturnLabel ?? "返回来源");
         }
 
         private void UpdatePageHeader(WorkspaceKind workspace)

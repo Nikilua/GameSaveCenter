@@ -229,6 +229,14 @@
                     <WrapPanel x:Name="HeaderActionsPanel" Grid.Row="0" Grid.Column="1"
                                Orientation="Horizontal" VerticalAlignment="Center"
                                HorizontalAlignment="Right" MinWidth="0" Panel.ZIndex="1">
+                        <ui:Button x:Name="HeaderBackButton"
+                                   Style="{DynamicResource GscWpfUiContextButton}"
+                                   Content="{Binding NavigationReturnLabel}"
+                                   Command="{Binding ReturnToNavigationSourceCommand}"
+                                   ToolTip="{Binding NavigationReturnToolTip}"
+                                   AutomationProperties.Name="返回来源"
+                                   Visibility="Collapsed"
+                                   Margin="0,0,8,0"/>
                         <Button x:Name="GameContextButton" Style="{DynamicResource GscRedesignGameContextButton}"
                                 Width="300" MinWidth="0" MaxWidth="300" Click="OnGameContextClick"
                                 AutomationProperties.Name="选择当前游戏">

@@ -1,8 +1,11 @@
 using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Threading;
 using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.ViewModels;
 
@@ -16,11 +19,16 @@ namespace GameSaveCenter.Playnite.Views
         private bool taskInspectorOpen;
         private DataGridColumnLayoutController? columnLayout;
         private DataGridStableSortController? sortController;
+        private ScrollViewer? taskGridScrollViewer;
+        private DashboardViewModel? navigationViewModel;
+        private bool restoringTaskGridScroll;
 
         public TaskCenterView()
         {
             InitializeComponent();
             DataGridScrollDiagnostics.Attach(TaskGrid, "TaskGrid", GetScrollDiagnosticContext);
+            TaskGrid.Loaded += OnTaskGridLoaded;
+            TaskGrid.Unloaded += OnTaskGridUnloaded;
             TaskDetailScrollViewer.IsVisibleChanged += OnTaskDetailScrollViewerIsVisibleChanged;
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
@@ -29,6 +37,8 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
+            SubscribeNavigationViewModel();
+            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(TryRestoreTaskGridScroll));
             if (columnLayout != null || !(DataContext is DashboardViewModel viewModel)) return;
             columnLayout = new DataGridColumnLayoutController(
                 TaskGrid,
@@ -41,6 +51,9 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
+            CaptureTaskGridScroll();
+            DetachTaskGridScrollViewer();
+            UnsubscribeNavigationViewModel();
             columnLayout?.Dispose();
             sortController?.Dispose();
             columnLayout = null;
@@ -49,6 +62,8 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
+            UnsubscribeNavigationViewModel();
+            SubscribeNavigationViewModel();
             if (!IsLoaded) return;
             OnUnloaded(this, new RoutedEventArgs());
             OnLoaded(this, new RoutedEventArgs());
@@ -58,6 +73,100 @@ namespace GameSaveCenter.Playnite.Views
             => DataContext is DashboardViewModel viewModel
                 ? viewModel.GetTaskScrollDiagnosticContext()
                 : "vm=none";
+
+        private void OnTaskGridLoaded(object sender, RoutedEventArgs e)
+        {
+            AttachTaskGridScrollViewer();
+            TryRestoreTaskGridScroll();
+        }
+
+        private void OnTaskGridUnloaded(object sender, RoutedEventArgs e)
+        {
+            CaptureTaskGridScroll();
+            DetachTaskGridScrollViewer();
+        }
+
+        private void SubscribeNavigationViewModel()
+        {
+            if (navigationViewModel != null || !(DataContext is DashboardViewModel viewModel)) return;
+            navigationViewModel = viewModel;
+            navigationViewModel.PropertyChanged += OnNavigationViewModelPropertyChanged;
+        }
+
+        private void UnsubscribeNavigationViewModel()
+        {
+            if (navigationViewModel == null) return;
+            navigationViewModel.PropertyChanged -= OnNavigationViewModelPropertyChanged;
+            navigationViewModel = null;
+        }
+
+        private void OnNavigationViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != nameof(DashboardViewModel.PendingTaskGridScrollRestore)
+                && e.PropertyName != nameof(DashboardViewModel.TaskPageState)) return;
+            if (Dispatcher.HasShutdownStarted || Dispatcher.HasShutdownFinished) return;
+            Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(TryRestoreTaskGridScroll));
+        }
+
+        private void AttachTaskGridScrollViewer()
+        {
+            if (taskGridScrollViewer != null) return;
+            taskGridScrollViewer = FindVisualChild<ScrollViewer>(TaskGrid);
+            if (taskGridScrollViewer != null)
+                taskGridScrollViewer.ScrollChanged += OnTaskGridScrollChanged;
+        }
+
+        private void DetachTaskGridScrollViewer()
+        {
+            if (taskGridScrollViewer == null) return;
+            taskGridScrollViewer.ScrollChanged -= OnTaskGridScrollChanged;
+            taskGridScrollViewer = null;
+        }
+
+        private void OnTaskGridScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (!restoringTaskGridScroll)
+                navigationViewModel?.SetTaskGridScrollOffset(e.VerticalOffset);
+        }
+
+        private void CaptureTaskGridScroll()
+        {
+            if (taskGridScrollViewer != null)
+                navigationViewModel?.SetTaskGridScrollOffset(taskGridScrollViewer.VerticalOffset);
+        }
+
+        private void TryRestoreTaskGridScroll()
+        {
+            var viewModel = navigationViewModel;
+            var viewer = taskGridScrollViewer;
+            var pending = viewModel?.PendingTaskGridScrollRestore;
+            if (viewModel == null || viewer == null || !pending.HasValue) return;
+            var target = Math.Max(0, pending.Value);
+            if (target > 0 && viewer.ScrollableHeight <= 0) return;
+            restoringTaskGridScroll = true;
+            try
+            {
+                viewer.ScrollToVerticalOffset(Math.Min(target, viewer.ScrollableHeight));
+                viewModel.CompleteTaskGridScrollRestore();
+            }
+            finally
+            {
+                restoringTaskGridScroll = false;
+            }
+        }
+
+        private static T? FindVisualChild<T>(DependencyObject? parent) where T : DependencyObject
+        {
+            if (parent == null) return null;
+            for (var index = 0; index < VisualTreeHelper.GetChildrenCount(parent); index++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, index);
+                if (child is T match) return match;
+                var nested = FindVisualChild<T>(child);
+                if (nested != null) return nested;
+            }
+            return null;
+        }
 
         private void OnClearSearchTextBoxClick(object sender, RoutedEventArgs e)
         {

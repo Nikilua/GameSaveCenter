@@ -38,6 +38,25 @@ public sealed class PurposeNavigationSourceTests
         Assert.Contains("MaintenanceTabIndex, Mode=TwoWay", maintenance);
     }
 
+    [Fact]
+    public void ContextReturnKeepsStableRouteAndRealScrollOwners()
+    {
+        var root = FindRepositoryRoot();
+        var viewModel = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.Navigation.cs"));
+        var dashboard = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
+        var shell = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml"));
+        var task = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml"));
+        var taskCode = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml.cs"));
+
+        Assert.Contains("WorkspaceNavigationStack", viewModel);
+        Assert.Contains("PushNavigationReturnTarget(\"返回告警\"", dashboard);
+        Assert.Contains("OpenSelectedTaskGameCommand", viewModel);
+        Assert.Contains("Command=\"{Binding ReturnToNavigationSourceCommand}\"", shell);
+        Assert.Contains("Command=\"{Binding OpenSelectedTaskGameCommand}\"", task);
+        Assert.Contains("SetTaskGridScrollOffset", taskCode);
+        Assert.Contains("CompleteTaskGridScrollRestore", taskCode);
+    }
+
     private static string FindRepositoryRoot()
         => TestRepositoryContext.Root;
 }

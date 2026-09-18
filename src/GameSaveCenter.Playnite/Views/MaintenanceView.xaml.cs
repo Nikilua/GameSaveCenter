@@ -1,9 +1,11 @@
 using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.ViewModels;
 
@@ -19,6 +21,9 @@ namespace GameSaveCenter.Playnite.Views
         private bool cloudTransferInspectorOpen;
         private bool diagnosticsInspectorOpen;
         private bool processInspectorOpen;
+        private ScrollViewer? findingsScrollViewer;
+        private DashboardViewModel? navigationViewModel;
+        private bool restoringFindingsScroll;
 
         public MaintenanceView()
         {
@@ -28,6 +33,8 @@ namespace GameSaveCenter.Playnite.Views
             // per grid so generated headers never fall back to a Playnite host default.
             // The XAML HeaderStyle declarations own the theme; no visual-tree scanning here.
             FindingsGrid.Loaded += DataGridLoaded;
+            FindingsGrid.Loaded += OnFindingsGridLoaded;
+            FindingsGrid.Unloaded += OnFindingsGridUnloaded;
             MaintenanceDeviceGrid.Loaded += DataGridLoaded;
             MaintenanceAuditFindingsGrid.Loaded += DataGridLoaded;
             MaintenanceAuditLogGrid.Loaded += DataGridLoaded;
@@ -38,6 +45,108 @@ namespace GameSaveCenter.Playnite.Views
             MaintenanceProcessInspector.IsVisibleChanged += InspectorIsVisibleChanged;
             MaintenanceDeviceInspectorScrollViewer.IsVisibleChanged += InspectorIsVisibleChanged;
             MaintenanceDeviceGrid.SelectionChanged += OnMaintenanceDeviceSelectionChanged;
+            Loaded += OnLoaded;
+            Unloaded += OnUnloaded;
+            DataContextChanged += OnDataContextChanged;
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            SubscribeNavigationViewModel();
+            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(TryRestoreFindingsScroll));
+        }
+
+        private void OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            CaptureFindingsScroll();
+            DetachFindingsScrollViewer();
+            UnsubscribeNavigationViewModel();
+        }
+
+        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            UnsubscribeNavigationViewModel();
+            SubscribeNavigationViewModel();
+        }
+
+        private void OnFindingsGridLoaded(object sender, RoutedEventArgs e)
+        {
+            AttachFindingsScrollViewer();
+            TryRestoreFindingsScroll();
+        }
+
+        private void OnFindingsGridUnloaded(object sender, RoutedEventArgs e)
+        {
+            CaptureFindingsScroll();
+            DetachFindingsScrollViewer();
+        }
+
+        private void SubscribeNavigationViewModel()
+        {
+            if (navigationViewModel != null || !(DataContext is DashboardViewModel viewModel)) return;
+            navigationViewModel = viewModel;
+            navigationViewModel.PropertyChanged += OnNavigationViewModelPropertyChanged;
+        }
+
+        private void UnsubscribeNavigationViewModel()
+        {
+            if (navigationViewModel == null) return;
+            navigationViewModel.PropertyChanged -= OnNavigationViewModelPropertyChanged;
+            navigationViewModel = null;
+        }
+
+        private void OnNavigationViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != nameof(DashboardViewModel.PendingMaintenanceFindingsScrollRestore)) return;
+            if (Dispatcher.HasShutdownStarted || Dispatcher.HasShutdownFinished) return;
+            Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(TryRestoreFindingsScroll));
+        }
+
+        private void AttachFindingsScrollViewer()
+        {
+            if (findingsScrollViewer != null) return;
+            findingsScrollViewer = FindVisualChild<ScrollViewer>(FindingsGrid);
+            if (findingsScrollViewer != null)
+                findingsScrollViewer.ScrollChanged += OnFindingsScrollChanged;
+        }
+
+        private void DetachFindingsScrollViewer()
+        {
+            if (findingsScrollViewer == null) return;
+            findingsScrollViewer.ScrollChanged -= OnFindingsScrollChanged;
+            findingsScrollViewer = null;
+        }
+
+        private void OnFindingsScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (!restoringFindingsScroll)
+                navigationViewModel?.SetMaintenanceFindingsScrollOffset(e.VerticalOffset);
+        }
+
+        private void CaptureFindingsScroll()
+        {
+            if (findingsScrollViewer != null)
+                navigationViewModel?.SetMaintenanceFindingsScrollOffset(findingsScrollViewer.VerticalOffset);
+        }
+
+        private void TryRestoreFindingsScroll()
+        {
+            var viewModel = navigationViewModel;
+            var viewer = findingsScrollViewer;
+            var pending = viewModel?.PendingMaintenanceFindingsScrollRestore;
+            if (viewModel == null || viewer == null || !pending.HasValue) return;
+            var target = Math.Max(0, pending.Value);
+            if (target > 0 && viewer.ScrollableHeight <= 0) return;
+            restoringFindingsScroll = true;
+            try
+            {
+                viewer.ScrollToVerticalOffset(Math.Min(target, viewer.ScrollableHeight));
+                viewModel.CompleteMaintenanceFindingsScrollRestore();
+            }
+            finally
+            {
+                restoringFindingsScroll = false;
+            }
         }
 
         private void DataGridLoaded(object sender, RoutedEventArgs e)
