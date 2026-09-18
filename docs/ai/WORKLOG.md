@@ -2,6 +2,14 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-18 R01-01 / R01-02 收口与证据校正
+
+- 收口过程中没有直接假定旧证据有效：旧默认 bin 的身份门禁先以程序集 `447ac07e` / 当前源码不一致阻断；当前 checkout 的隔离身份筛查再发现 `R06EmptyStateBehaviorTests` 仍会从当前工作目录回溯 `.sln`。用最小改动将该 helper 改为 `TestRepositoryContext.Root`，提交 `a5219c09` 并推送。
+- `scripts/build.ps1 -SkipTests -OutputRoot .tmp\r01-01-02-build-clean-a5219c09`：XAML `24/24`，solution `0 warning/0 error`；RenderHarness 因不在 solution restore 列表而先补独立 restore，随后 `0/0`。当前身份/代表性定向 `16/16`，数字可读测试 `2/2`。
+- 当前 `finesseprobe` Light/Dark 复用既有生产资源和 `NumericCellReadability`：正例 `expected=4/realized=4/horizontalFit=4/verticalFit=4`，对比度违规 `0`；`-99,999,999,999,999` 在 `56 DIP` 列中保持横向失败、纵向通过，负例 `must-fail=passed`。报告目录为 `.tmp\r01-02-finesse-clean-a5219c09-light` 与 `...-dark`。
+- 已同步 R01-01/R01-02 证据和第三轮账本，仅记录本阶段事实；生产功能、游戏选框、滚动条、命令绑定、取消/错误/恢复保护、有限列表性能与 net462 未改。Demo 原始目录缺失，未把离屏/fake 结果写成真实宿主或系统追踪证据。
+- 下一可执行任务：R01-03 逐项证据直达。需要复用既有 `validate-ui-evidence-index.ps1` / freshness 校验，核对断链/错链负例后再决定是否合并当前分支；未被证据引用的临时构建目录随后清理。
+
 ## 2026-09-18 R00-07 / R00-08 证据校正
 
 - 当前 HEAD `4f585024` 用隔离 OutputRoot 复跑：R00-07 审计/响应式源码契约 `30/30`，R00-08 选框键盘/焦点行为 `31/31`；旧默认程序集没有被拿来冒充当前源。

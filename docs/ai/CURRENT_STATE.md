@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R01-01 / R01-02 收口
+
+- 当前代码提交 `a5219c09` 已推送到 `codex/ui-finesse-round2`。先用旧默认 `bin\Release` 复跑时，R01-01 身份门禁正确拒绝了程序集 `447ac07e` 与当前源码不一致；在当前隔离构建中又定位到 `R06EmptyStateBehaviorTests.cs` 的残留 `Environment.CurrentDirectory` 回溯，现已改为 `TestRepositoryContext.Root`。这只修测试源码根绑定，没有把 main 的旧实现带入当前分支，也没有改生产空表逻辑。
+- 新建 `.tmp\r01-01-02-build-clean-a5219c09` 后，Release solution/RenderHarness 均 `0 warning / 0 error`、XAML `24/24`；`RepositoryIdentityTests + UiFinesseFoundationTests + UiAuditSourceTests` 为 `16/16`，`NumericCellReadabilityTests` 为 `2/2`。
+- Light/Dark 当前 `finesseprobe` 报告分别保留在 `.tmp\r01-02-finesse-clean-a5219c09-light` 与 `...-dark`：均 `WorkingTreeClean=True`、`expected=4 realized=4 horizontalFit=4 verticalFit=4 allReadable=True`、contrast violations `0`；窄列负例保持 `HorizontalFit=False / VerticalFit=True / must-fail=passed`。生产数值列能力复用 `acfe1ea`，本批没有重建业务实现。
+- R01-01/R01-02 账本已更新为“已满足”。证据仍是合成/fake、隔离 STA WPF/offscreen logical DIP；未启动真实 Playnite，不把离屏结果写成物理 DPI、presented frame、OS 输入/IME、ETW 或宿主性能验证。Demo 原始目录仍缺失，沿用恢复生产基线；游戏选框、滚动条、命令/Binding、取消/错误、恢复保护、有限列表和 net462 未改。
+- 下一可执行小批量为 R01-03“每项证据直达”：复用现有索引/校验脚本，先验证当前分支的 20 行索引、报告入口、源码身份、样本和边界，并补断链/错链负例；本批新建的隔离输出中未被文档引用的旧目录仍待清理。
+
 ## 当前第三轮 R00-07 / R00-08 证据校正
 
 - 当前 HEAD `4f585024` 用隔离 `.tmp/r00-07-08-build-clean` 重建后复核：R00-07 审计源/响应式契约 `30/30`，RenderHarness `0/0`；R00-08 生产选框键盘/焦点/搜索测试 `31/31`。

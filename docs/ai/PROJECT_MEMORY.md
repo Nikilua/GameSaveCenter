@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-18
 
+## 2026-09-18 R01-01 / R01-02 收口
+
+- `a5219c09` 修正 R01-01 发现的最后一个源码回溯：`R06EmptyStateBehaviorTests.FindRepositoryRoot()` 改用 `TestRepositoryContext.Root`。缺陷来自当前隔离定向身份扫描，先前的旧默认程序集错根拒绝仍保留为有效负例；没有改生产 UI、DTO、服务、命令或空表状态语义。
+- 当前提交新建隔离 OutputRoot 后，solution 与 RenderHarness 为 `0 warning/0 error`，XAML `24/24`；身份/代表性源码筛查 `16/16`，R01-02 的实际 STA WPF 数值测试 `2/2`。两项账本均已满足当前可控条件。
+- Light/Dark `finesseprobe` 分别保留独立报告和 PNG，均绑定完整 `a5219c09...`、`WorkingTreeClean=True`，四个正例 `4/4` 完整，窄列长负数明确 `HorizontalFit=False` 但 `VerticalFit=True`，不是只看 Assert.Contains 或行高。
+- 运行边界继续写实：合成数据/fake、隔离 STA WPF、offscreen logical DIP；没有真实 Playnite、OS 输入/IME、物理 DPI/跨屏、presented frame、UIA/读屏、ETW 或宿主性能证据，也没有真实存档/媒体/云端/诊断写入。Demo 原始目录缺失，继续以恢复生产基线为准。
+- 下一步按 `R01-03-EVIDENCE-INDEX-20260916.md` 检查 20 项索引的直达性和负例；只有被引用的当前证据目录保留，旧的未引用隔离输出在验证完成后清理。合适的小阶段完成后再评估把当前分支合并回 main，合并前必须保护 main 的用户 `src.zip`。
+
 ## 2026-09-18 R00-07 / R00-08 证据校正
 
 - 当前 HEAD `4f585024` 的隔离构建复核 R00-07/R00-08：toolbar 源契约 `30/30`、选框键盘/焦点/搜索实际 WPF 路由 `31/31`，RenderHarness `0/0`。
