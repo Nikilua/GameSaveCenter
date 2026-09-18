@@ -340,6 +340,55 @@ public sealed class UiFinesseFoundationTests
     }
 
     [Fact]
+    public void ExternalMutableTransformsAreOwnedPerElement()
+    {
+        Exception? exception = null;
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var sharedTranslate = new TranslateTransform(9, -3);
+                var first = new Border { RenderTransform = sharedTranslate };
+                var second = new Border { RenderTransform = sharedTranslate };
+
+                var firstTranslate = GscMotion.GetMutableTranslateTransform(first);
+                var secondTranslate = GscMotion.GetMutableTranslateTransform(second);
+
+                Assert.NotSame(sharedTranslate, firstTranslate);
+                Assert.NotSame(sharedTranslate, secondTranslate);
+                firstTranslate.X = 42;
+                Assert.Equal(9, secondTranslate.X);
+                Assert.Equal(9, sharedTranslate.X);
+                Assert.Equal(-3, secondTranslate.Y);
+
+                var sharedGroup = new TransformGroup();
+                sharedGroup.Children.Add(new RotateTransform(7));
+                var groupedFirst = new Border { RenderTransform = sharedGroup };
+                var groupedSecond = new Border { RenderTransform = sharedGroup };
+
+                var firstScale = GscMotion.GetMutableScaleTransform(groupedFirst);
+                var secondScale = GscMotion.GetMutableScaleTransform(groupedSecond);
+
+                Assert.NotSame(sharedGroup, groupedFirst.RenderTransform);
+                Assert.NotSame(sharedGroup, groupedSecond.RenderTransform);
+                firstScale.ScaleX = 1.25;
+                Assert.Equal(1, secondScale.ScaleX);
+                Assert.Equal(7, Assert.IsType<RotateTransform>(
+                    Assert.IsType<TransformGroup>(groupedSecond.RenderTransform).Children[0]).Angle);
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+    }
+
+    [Fact]
     public void EntranceMotionTakesOverFromTheCurrentEffectiveValue()
     {
         var motion = File.ReadAllText(Path.Combine(FindRepositoryRoot(), "src", "GameSaveCenter.Playnite", "Infrastructure", "GscMotion.cs"));
