@@ -62,6 +62,7 @@ namespace GameSaveCenter.Playnite.Views
             => GetWorkspaceView(workspace) as T;
 
         public FrameworkElement PageHostForAudit => PageHost;
+        internal bool IsGamePickerOpen => PickerOverlay.Visibility == Visibility.Visible;
 
         public TextBox GameSearchBoxForFocus => GameSearchTextBox;
 

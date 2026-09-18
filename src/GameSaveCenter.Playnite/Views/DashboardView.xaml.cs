@@ -1342,7 +1342,12 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.F && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            if (SearchShortcutPolicy.ShouldFocusWorkspaceSearch(
+                    e.Key,
+                    Keyboard.Modifiers,
+                    DialogOverlay.Visibility == Visibility.Visible,
+                    ProductionShellView.IsGamePickerOpen,
+                    compactGameBrowserOpen))
             {
                 FocusWorkspaceSearch();
                 e.Handled = true;

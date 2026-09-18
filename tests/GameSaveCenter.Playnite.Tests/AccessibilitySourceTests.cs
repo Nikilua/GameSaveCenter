@@ -17,7 +17,8 @@ public sealed class AccessibilitySourceTests
         var mediaXaml = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
         var trainerXaml = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml"));
 
-        Assert.Contains("e.Key == Key.F && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control", dashboardCode);
+        Assert.Contains("SearchShortcutPolicy.ShouldFocusWorkspaceSearch", dashboardCode);
+        Assert.Contains("ProductionShellView.IsGamePickerOpen", dashboardCode);
         Assert.Contains("FocusWorkspaceSearch", dashboardCode);
         Assert.Contains("TrainerSearchTextBox", dashboardCode);
         Assert.Contains("TaskSearchTextBox", dashboardCode);
