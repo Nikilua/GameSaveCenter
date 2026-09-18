@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R01-08 跳过测试说明复验
+
+- 当前 HEAD 72be494d 的隔离输出 .tmp\r01-08-current-72be494d 已产出全部测试程序集；XAML 结构检查 24/24。Core 当前全量为 83/0/0，Playnite WorkerIpcClientBehaviorTests 为 7/0/0（其中 6 条 NamedPipe gated），Worker WorkerProcessRestartTests 为 1/0/0，源码清单确认 57 条 LegacyProductionUiBaselineFact。
+- R01-08 只签收通过/失败/跳过分类与可执行 gated 补测，不把当前直接 Playnite 全量中观察到的非 R01 WPF 资源树、动画、布局和 R02/R06/R07 行为失败改成 skip 或绿色；这些边界留在各自任务证据中继续处理。
+- 本项未修改生产 UI、服务/DTO、命令绑定、游戏选框、滚动条或安全语义。R02-01～R02-05 已有独立证据，R02-06 仍受宿主菜单 visual tree 阻塞；下一可执行小批量为 R07-05 详情断点稳定。真实 Playnite、物理 DPI、OS 输入/IME、presented frame、UIA/读屏、ETW 与宿主性能仍未验。
+
 ## 当前第三轮 R01-06 宿主证据保全
 
 - 复用当前 R01-03 审计输出，在 `c2399d7be9f723e77226619172be16778fe3646f` 身份下更新 R01-06 归档：161 快照、80 条预期 INFO、0 Fidelity、0 失败路由、0 HIGH/0 MEDIUM；E01～E20 索引校验 `20/20`。

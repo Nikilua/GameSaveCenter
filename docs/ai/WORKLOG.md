@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-18 R01-08 跳过测试说明复验
+
+- 当前 HEAD 72be494d 使用隔离输出 .tmp\r01-08-current-72be494d，XAML 结构检查 24/24；Core 当前全量 83/0/0，Playnite WorkerIpcClientBehaviorTests 7/0/0（其中 6 条 NamedPipe gated），Worker WorkerProcessRestartTests 1/0/0，源码清单统计 57 条 legacy skip。
+- 当前直接 Playnite 全量运行还出现非 R01 的现有 WPF 资源/视觉树、动画、布局及 R02/R06/R07 行为失败；没有得到可安全宣称的全量绿色摘要。本阶段未将失败改成 skip，也未修改生产实现。
+- R01-08 证据与账本已改为上述定向分类事实；R02-01～R02-05 已有证据，R02-06 仍受宿主菜单 visual tree 阻塞，下一可执行任务为 R07-05 详情断点稳定。真实 Playnite、物理 DPI/跨屏、OS 输入/IME、presented frame、UIA/读屏、ETW、宿主性能仍未验。
+
 ## 2026-09-18 R01-06 宿主证据保全复核
 
 - freshness 先指出旧归档绑定 `3929ed7` 与当前 RenderHarness `Program.cs` 之间的变更；本阶段复用当前 `c2399d7b` 审计，不启动真实 Playnite。

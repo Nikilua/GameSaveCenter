@@ -2,24 +2,33 @@
 
 ## 结论
 
-R01-08 已满足。当前隔离 Release 全流程把通过、失败和跳过分开记录，并按能力说明 gated 用例。任务表所称的 63 项可对应 Playnite 测试侧的 57 条 legacy UI 基线和 6 条 NamedPipe IPC gated；本机 Named Pipe 可用，因此这 6 条实际通过，实际 Playnite skip 为 57。Worker 项目另有 1 条 WorkerProcessFact gated，本机也通过。没有把环境限制改写成测试通过。
+R01-08 已满足当前可执行条件。当前 HEAD 72be494d 的隔离构建把通过、失败和跳过分开记录，并按能力说明 gated 用例。任务表所称的 63 项可对应 Playnite 测试侧的 57 条 legacy UI 基线和 6 条 NamedPipe IPC gated；本机 Named Pipe 可用，因此这 6 条实际通过，legacy skip 仍为 57。Worker 项目另有 1 条 WorkerProcessFact gated，本机也通过。没有把环境限制改写成测试通过。
 
 ## 当前 Release 结果
+
+构建身份与输出目录：
+
+~~~text
+sourceCommit=72be494d（完整身份以当前 checkout HEAD 为准）
+.tmp\r01-08-current-72be494d
+~~~
 
 执行：
 
 ~~~powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts\build.ps1 -Configuration Release -OutputRoot .tmp\r01-08-skip-build
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\build.ps1 -Configuration Release -OutputRoot .tmp\r01-08-current-72be494d
 ~~~
 
-| 测试项目 | 通过 | 失败 | 跳过 | 总计 |
+| 当前可执行分类/测试项目 | 通过 | 失败 | 跳过 | 总计 |
 | --- | ---: | ---: | ---: | ---: |
-| Core | 83 | 0 | 0 | 83 |
-| Worker | 311 | 0 | 0 | 311 |
-| Playnite | 523 | 0 | 57 | 580 |
-| 合计 | 917 | 0 | 57 | 974 |
+| Core 全量当前程序集 | 83 | 0 | 0 | 83 |
+| Playnite WorkerIpcClientBehaviorTests（6 NamedPipe gated + 1 隔离管道契约） | 7 | 0 | 0 | 7 |
+| Worker WorkerProcessRestartTests | 1 | 0 | 0 | 1 |
+| Legacy UI 分类清单 | 0 | 0 | 57 | 57 |
 
-XAML 结构检查为 24/24，解决方案构建为 0 warning / 0 error。
+XAML 结构检查为 24/24；当前隔离输出已产出 Core、Worker、Playnite 及测试程序集。上表是 R01-08 的当前可执行/分类统计，不冒充一次全量 Playnite 绿色结果。
+
+当前直接运行 Playnite 全量程序集还观察到若干非 R01-08 的 WPF 资源树、动画、布局和现有 R02/R06/R07 行为失败；这些失败没有被重分类为 skip，也没有用本项 gated 结果覆盖。相关阶段证据继续保留各自的失败/环境边界，后续按独立任务处理。
 
 ## Skip / gated 分类
 
@@ -48,11 +57,11 @@ XAML 结构检查为 24/24，解决方案构建为 0 warning / 0 error。
 - CallerCancellationDuringReplayWaitStopsWithAmbiguousOutcome：重放等待取消时保留 ambiguous 结果。
 - CancellationDuringLargeWriteIsReportedAsAmbiguousAndIsNotRetried：大写入取消标记 ambiguous，不自动重试。
 
-这组直接影响 IPC、取消和恢复保护语义；当前 6/6 随 Playnite 全量通过。
+这组直接影响 IPC、取消和恢复保护语义；当前定向 WorkerIpcClientBehaviorTests 中 6/6 NamedPipe gated 通过，另有 1 条隔离管道契约通过。
 
 ### WORKER_RESTART_RECOVERY：1 条，NamedPipe 可用时可执行
 
-属性：WorkerProcessFact。HardRestartReconcilesDurableIncompleteTask 启动隔离 Worker，硬停止后由第二进程回收未完成 durable task；Named Pipe 不可用时才 skip。本机实际通过，当前 Worker 为 311/311。
+属性：WorkerProcessFact。HardRestartReconcilesDurableIncompleteTask 启动隔离 Worker，硬停止后由第二进程回收未完成 durable task；Named Pipe 不可用时才 skip。本机定向测试实际为 1/1。
 
 这项直接影响 Worker 重启恢复、持久任务状态和宿主/Worker 协调，不等价真实用户数据目录或运行中 Playnite 宿主。
 
@@ -64,4 +73,4 @@ XAML 结构检查为 24/24，解决方案构建为 0 warning / 0 error。
 
 ## 下一步
 
-R01-08 已满足；下一可执行小批量为 R02-01“动作优先级”，先核对主页、详情和批量栏现有 Primary/Danger/次要语义，再用真实控件级聚合验证避免重复高亮。
+R01-08 已满足；R02-01～R02-05 已有独立证据，R02-06 仍受 Playnite 宿主菜单 visual tree 外部边界阻塞。下一可执行小批量为 R07-05“详情断点稳定”，先核对现有详情面断点实现和 Q/R 对应能力。

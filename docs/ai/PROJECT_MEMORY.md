@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-18
 
+## 2026-09-18 R01-08 跳过测试说明复验
+
+- 当前 HEAD 72be494d 的隔离输出 .tmp\r01-08-current-72be494d 已产出测试程序集；Core 全量 83/0/0，Playnite 的 WorkerIpcClientBehaviorTests 7/0/0（含 6 条 NamedPipe gated），Worker 的 WorkerProcessRestartTests 1/0/0，源码清单 LegacyProductionUiBaselineFact=57。
+- R01-08 现在只以定向 gated 结果和 57 条 legacy 分类签收；当前全量 Playnite 直接复跑观察到非 R01 的 WPF 资源树、动画、布局及 R02/R06/R07 行为失败，未计为 skip，也未写成全量通过。后续必须按独立任务处理，不能用本项摘要掩盖。
+- 生产 UI、服务/DTO、命令绑定、游戏选框、滚动条、取消/错误/恢复保护和有限列表性能未改。R02-01～R02-05 已有证据，R02-06 仍为宿主菜单 visual tree 外部阻塞；下一可执行小批量为 R07-05 详情断点稳定。真实 Playnite、物理 DPI/跨屏、OS 输入/IME、presented frame、UIA/读屏、ETW 与宿主性能未验。
+
 ## 2026-09-18 R01-06 宿主证据保全复核
 
 - 旧归档因 `RenderHarness/Program.cs` 后续变化被 freshness 正确标为 stale；没有直接沿用 `3929ed7`。复用当前 `c2399d7b` R01-03 审计生成并更新归档，保存完整身份、summary、manifest、route/fidelity/layout、20 行索引和六张精选图。
