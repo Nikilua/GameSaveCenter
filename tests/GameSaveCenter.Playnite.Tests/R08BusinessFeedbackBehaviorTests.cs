@@ -13,7 +13,7 @@ namespace GameSaveCenter.Playnite.Tests;
 public sealed class R08BusinessFeedbackBehaviorTests
 {
     [Fact]
-    public void TaskToastIsLiveRegionWithTheFinalStateText()
+    public void TaskToastAutomationPeerCarriesTheFinalStateText()
     {
         Exception? exception = null;
         string? name = null;

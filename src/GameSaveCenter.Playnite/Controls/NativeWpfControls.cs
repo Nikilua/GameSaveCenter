@@ -159,8 +159,8 @@ namespace GameSaveCenter.Playnite.Controls
     }
 
     /// <summary>
-    /// Page-local task feedback surface with a UI Automation live-region peer.
-    /// The peer keeps terminal task feedback readable without taking keyboard focus.
+    /// Page-local task feedback surface with a UI Automation feedback peer.
+    /// The peer exposes terminal task feedback without taking keyboard focus.
     /// </summary>
     public class FeedbackToast : Border
     {
