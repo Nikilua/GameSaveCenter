@@ -7408,3 +7408,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 验证：R10-05 `4/4`，R10 相邻 `14/14`，直接相关设置/状态/可访问性/响应式/预设回归 `25/25`；最终 Release/net462 solution `0 warning / 0 error`、XAML `24/24`，source/XAML/diff check 通过。Core `83/83`、Worker `311/311` 通过；全量 Playnite testhost 为 `84 failed / 610 passed / 57 skipped`，失败为混合既有 WPF PresentationSource/STA/资源/动画/DataGrid/源码契约边界，未写成 R10-05 通过。
 - 事实边界：用户 main 的 DEV-INSTALL-008 仍为 `0/0`、Core `83/83`、Worker `311/311`、Playnite `73/588/57`、安装器退出 1；main 未触碰。Demo 原目录不可用，继续沿用恢复生产基线；未验真实 Playnite 保存/确认 Popup、呈现、DPI/跨屏、UIA/IME、ETW、宿主性能和 package-host。
 - D: R10-05 5 个隔离构建目录中 4 个已按精确路径清理；`continuation-r10-05-build-20260919` 的部分 VBCSCompiler analyzer DLL 仍锁定，未强杀未知进程。下一可执行任务：R10-06 筛选来源提示。
+
+## 2026-09-19 Round3 R10-06 筛选来源提示
+
+- 盘点确认 R10-01 已有临时导航游戏 ID/名称、服务端 `GameName` 查询、本地任务过滤和 `RelayCommand`，无需新建服务或 DTO。`5403d797` 增加任务页来源提示与专用清除命令，复用现有取消/请求失效/有限列表刷新路径。
+- 行为定义覆盖带入条件正例、无来源负例、按钮 `CanExecute/Execute` 和保留搜索/状态编辑草稿；`R10FilterSourceBehaviorTests` `2/2`，完整 R10 `16/16`。最后隔离 Release/net462 solution `0/0`、XAML `24/24`、source/XAML/diff check 通过。
+- 完整脚本另因 C: 磁盘空间耗尽无法进入全量测试，限制发生在复制既有 Worker 依赖和生成 XAML 中间文件，不是本阶段源码编译诊断。main 用户文件未触碰，DEV-INSTALL-008 `73/588/57` 仍独立保留。Demo 原目录不可用，沿用恢复生产基线。
+- 本阶段 full 输出已删除；build 输出仅余 VBCSCompiler 锁定的 `test-temp`，未强杀未知进程。真实 Playnite 清除按钮/服务响应、呈现帧、物理 DPI/跨屏、UIA/读屏、IME、ETW、宿主性能和 package-host 未验。下一可执行任务：R10-07 侧栏信息密度。

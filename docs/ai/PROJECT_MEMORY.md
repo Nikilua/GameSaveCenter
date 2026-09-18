@@ -3860,3 +3860,10 @@
 - 删除、重命名和同名覆盖必须经过确认；任务紧凑布局的预设行不能被响应式重排设为 0。继续保留游戏选框/滚动条/命令绑定/取消错误/恢复保护/有限列表性能。
 - 证据门禁：R10-05 `4/4`、R10 相邻 `14/14`、直接相关 `25/25`，Release solution `0/0`、XAML `24/24`。全量 Playnite 当前 testhost `84/610/57` 只能作为混合 WPF/宿主边界；main 的 DEV-INSTALL-008 `73/588/57` 和退出 1 继续独立记录。
 - Demo 原目录不可用；不把隔离 STA/offscreen/逻辑 DIP 写成真实 Playnite presented frame、物理 DPI/跨屏、UIA/IME、ETW 或宿主性能。下一可执行任务：R10-06 筛选来源提示。
+
+## 2026-09-19 Round3 R10-06 筛选来源提示
+
+- 继续沿用 Demo-first 和生产基线：来源提示使用现有 `GscDiagnosticHintBubble`，不新建视觉体系；任务页响应式预设行与当前滚动条系统保持不变。
+- 导航条件是临时状态，不进设置 JSON。`HasTaskNavigationTarget`/`TaskNavigationSourceSummary` 只说明当前查询叠加的诊断游戏；`ClearTaskNavigationContextCommand` 只清除两个导航字段，必须不触碰用户搜索、状态、游戏、类型和历史范围草稿。全量“清除任务筛选”才清除全部字段。
+- 可靠门禁顺序：先跑真实 TaskCenterView 的 STA 绑定正/负行为，再跑 R10 集合，最后跑 Release/net462/XAML/source/diff。源码 `Assert.Contains` 只作为接线补证，不可独立签收交互。
+- 当前证据：`R10FilterSourceBehaviorTests 2/2`、R10 `16/16`、Release `0/0`、XAML `24/24`。完整脚本因 C: 磁盘空间耗尽未进入全量测试；真实 Playnite 清除交互、presented frame、DPI/跨屏、UIA/读屏、IME、ETW、宿主性能和 package-host 仍未验。下一可执行任务：R10-07 侧栏信息密度。

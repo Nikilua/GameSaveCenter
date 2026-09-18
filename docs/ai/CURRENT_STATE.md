@@ -1592,3 +1592,10 @@
 - 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R10-05-FILTER-PRESETS-20260919.md`；账本 R10-05 已改为“已满足”。R10-05 `4/4`，R10 `14/14`，直接相关回归 `25/25`；Release/net462 `0/0`、XAML `24/24`、source/XAML/diff check 通过。
 - 全量门禁事实必须分开写：Core `83/83`、Worker `311/311` 通过；同一当前 testhost 的 Playnite 为 `84 failed / 610 passed / 57 skipped`，主要是已有 PresentationSource/STA/资源/动画/DataGrid/源码契约问题，不作为本项通过依据。用户 main DEV-INSTALL-008 仍为 `73 failed / 588 passed / 57 skipped` 且安装器退出 1，main 未覆盖。
 - 未验真实 Playnite 的保存/确认 Popup、最终呈现、物理 DPI/跨屏、UIA/读屏、IME、ETW、宿主性能和 package-host；Demo 原目录不可用，继续使用恢复生产基线。D: 5 个临时构建目录已清理 4 个，`continuation-r10-05-build-20260919` 的部分 VBCSCompiler analyzer DLL 仍锁定。下一可执行任务：R10-06 筛选来源提示。
+
+## 2026-09-19 Round3 R10-06 筛选来源提示
+
+- `5403d797` 复用 R10-01 的临时任务导航游戏条件、现有任务查询和 `RelayCommand`；任务页新增真实来源提示、无来源折叠状态和“清除带入条件”入口。专用清除只清 `taskNavigationGameId/taskNavigationGameName`，保留搜索、状态、游戏、类型、历史范围草稿；普通全量清除也会清掉临时来源条件。
+- `R10FilterSourceBehaviorTests` `2/2`，完整 R10 `16/16`；最后隔离 Release/net462 build `0 warning / 0 error`、XAML `24/24`、source/XAML/diff check 通过。测试使用真实 TaskCenterView/STA Window、正负可见性和实际绑定命令，不把源码字符串断言当作唯一交互证据。
+- 按协议执行的完整脚本因 C: 磁盘空间耗尽，在复制既有 Worker/XAML 中间文件阶段停止，未进入全量测试；不把它写成产品编译错误。main DEV-INSTALL-008 仍是 `0/0`、Core `83/83`、Worker `311/311`、Playnite `73/588/57`、安装器退出 1，main 用户改动未触碰。
+- `.tmp/r10-06-full-20260919` 已清理；`.tmp/r10-06-build-20260919` 仅余被长驻 VBCSCompiler 锁定的 `test-temp` analyzer DLL 父目录，未强杀未知进程。真实 Playnite 清除交互、presented frame、DPI/跨屏、UIA/读屏、IME、ETW、宿主性能和 package-host 未验；Demo 原目录不可用，沿用恢复生产基线。下一可执行任务：R10-07 侧栏信息密度。
