@@ -16,6 +16,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
     /// </summary>
     internal sealed class AdaptiveThemePalette
     {
+        public bool IsHighContrast { get; set; }
         public bool IsDark { get; set; }
         public Color Background { get; set; }
         public Color PrimaryText { get; set; }
@@ -80,11 +81,17 @@ namespace GameSaveCenter.Playnite.Infrastructure
             "HoverBrush"
         };
 
-        public static AdaptiveThemePalette Create(FrameworkElement host, bool glassEnabled, int strengthPercent, GameSaveCenterThemeMode themeMode = GameSaveCenterThemeMode.FollowPlaynite)
+        public static AdaptiveThemePalette Create(
+            FrameworkElement host,
+            bool glassEnabled,
+            int strengthPercent,
+            GameSaveCenterThemeMode themeMode = GameSaveCenterThemeMode.FollowPlaynite,
+            bool? highContrastOverride = null)
         {
             var forcedLight = themeMode == GameSaveCenterThemeMode.Light;
             var forcedDark = themeMode == GameSaveCenterThemeMode.Dark;
-            var highContrast = SystemParameters.HighContrast;
+            var highContrast = highContrastOverride ?? SystemParameters.HighContrast;
+            glassEnabled = glassEnabled && !highContrast;
             var hostText = highContrast ? null : ResolveResourceColor(host, "TextBrush");
             var hostInverseText = highContrast ? null : ResolveResourceColor(host, "TextBrushDark");
             var hostThemeDark = highContrast ? null : ResolveResourceBoolean(host, "ThemeDarkStyle");
@@ -120,18 +127,26 @@ namespace GameSaveCenter.Playnite.Infrastructure
             // Keep the embedded page in AcrylicFork's neutral graphite family even when the
             // host theme exposes a vivid blue/black background. We still retain a small amount
             // of the host's light/dark character, but do not let it tint every reading surface.
-            var stableBase = Blend(rawBackground, isDark ? Color.FromRgb(17, 19, 25) : Color.FromRgb(248, 249, 252), isDark ? 0.56 : 0.34);
-            primaryText = ChooseBestText(stableBase, text, inverseText, isDark);
-            if (ContrastRatio(primaryText, stableBase) < 7)
+            var stableBase = highContrast
+                ? SystemColors.WindowColor
+                : Blend(rawBackground, isDark ? Color.FromRgb(17, 19, 25) : Color.FromRgb(248, 249, 252), isDark ? 0.56 : 0.34);
+            primaryText = highContrast
+                ? SystemColors.WindowTextColor
+                : ChooseBestText(stableBase, text, inverseText, isDark);
+            if (!highContrast && ContrastRatio(primaryText, stableBase) < 7)
                 primaryText = isDark ? Colors.White : Colors.Black;
 
             var strength = Math.Max(20, Math.Min(100, strengthPercent)) / 100.0;
-            var controlFill = isDark
-                ? Blend(stableBase, Colors.White, 0.075)
-                : Blend(stableBase, Colors.Black, 0.035);
-            var strongControl = isDark
-                ? Blend(stableBase, Colors.White, 0.105)
-                : Blend(stableBase, Colors.Black, 0.02);
+            var controlFill = highContrast
+                ? SystemColors.ControlColor
+                : isDark
+                    ? Blend(stableBase, Colors.White, 0.075)
+                    : Blend(stableBase, Colors.Black, 0.035);
+            var strongControl = highContrast
+                ? SystemColors.ControlColor
+                : isDark
+                    ? Blend(stableBase, Colors.White, 0.105)
+                    : Blend(stableBase, Colors.Black, 0.02);
             // Keep the standalone demo and the embedded Playnite view on the same blue
             // interaction language. AcrylicFork's reference accents are indigo #7C8CF8,
             // sky #4FA3F0, cyan #35B8C9, mint #4CC08A, violet #A07BF5, amber #E8973C,
@@ -197,30 +212,31 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
             return new AdaptiveThemePalette
             {
+                IsHighContrast = highContrast,
                 IsDark = isDark,
                 GlassStrength = strength,
-                GlassEnabled = glassEnabled,
+                GlassEnabled = glassEnabled && !highContrast,
                 Background = stableBase,
                 PrimaryText = primaryText,
-                SecondaryText = EnsureTextContrast(primaryText, stableBase, 4.5, isDark, 0.74),
-                MutedText = EnsureTextContrast(primaryText, stableBase, 4.5, isDark, 0.56),
-                DisabledText = WithAlpha(primaryText, 0.38),
-                ControlFill = WithAlpha(controlFill, glassEnabled
+                SecondaryText = highContrast ? SystemColors.ControlTextColor : EnsureTextContrast(primaryText, stableBase, 4.5, isDark, 0.74),
+                MutedText = highContrast ? SystemColors.GrayTextColor : EnsureTextContrast(primaryText, stableBase, 4.5, isDark, 0.56),
+                DisabledText = highContrast ? SystemColors.GrayTextColor : WithAlpha(primaryText, 0.38),
+                ControlFill = WithAlpha(controlFill, highContrast ? 1 : glassEnabled
                     ? 0.78 + (0.10 * (1 - strength))
                     : 1),
                 // UiLab uses a hairline rather than a bright outline. Keep the production
                 // surfaces readable while avoiding the sharp blue/white frame seen in the
                 // host screenshots at 125–150% DPI.
-                ControlStroke = WithAlpha(primaryText, isDark ? 0.10 : 0.09),
-                Divider = WithAlpha(primaryText, isDark ? 0.09 : 0.08),
+                ControlStroke = highContrast ? SystemColors.ControlDarkColor : WithAlpha(primaryText, isDark ? 0.10 : 0.09),
+                Divider = highContrast ? SystemColors.ControlDarkColor : WithAlpha(primaryText, isDark ? 0.09 : 0.08),
                 SurfaceTop = surfaceTop,
                 SurfaceBottom = surfaceBottom,
                 StrongSurfaceTop = strongTop,
                 StrongSurfaceBottom = strongBottom,
-                SidebarTop = glassEnabled ? WithAlpha(strongControl, 0.74 * strength) : WithAlpha(strongControl, 1),
-                SidebarBottom = glassEnabled ? WithAlpha(stableBase, 0.64 * strength) : WithAlpha(stableBase, 1),
-                Backdrop = WithAlpha(stableBase, glassEnabled ? 0.26 : 1),
-                Highlight = WithAlpha(primaryText, isDark ? 0.075 : 0.24),
+                SidebarTop = highContrast ? SystemColors.ControlColor : glassEnabled ? WithAlpha(strongControl, 0.74 * strength) : WithAlpha(strongControl, 1),
+                SidebarBottom = highContrast ? SystemColors.WindowColor : glassEnabled ? WithAlpha(stableBase, 0.64 * strength) : WithAlpha(stableBase, 1),
+                Backdrop = highContrast ? SystemColors.WindowColor : WithAlpha(stableBase, glassEnabled ? 0.26 : 1),
+                Highlight = highContrast ? SystemColors.HighlightColor : WithAlpha(primaryText, isDark ? 0.075 : 0.24),
                 Accent = accent,
                 AccentHover = accentHover,
                 AccentPressed = accentPressed,
@@ -264,7 +280,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscAccentPressedBrush"] = Brush(palette.AccentPressed);
             resources["GscAccentTintBrush"] = Brush(palette.AccentTint);
             resources["GscAccentTintStrongBrush"] = Brush(palette.AccentTintStrong);
-            resources["GscSelectionInactiveBrush"] = Brush(SemanticTint(palette.Accent, palette.IsDark ? 0.12 : 0.08));
+            resources["GscSelectionInactiveBrush"] = Brush(SemanticTint(palette.Accent, palette.IsDark ? 0.12 : 0.08, palette.IsHighContrast));
             resources["GscAccentIconFillBrush"] = Brush(palette.AccentIconFill);
             resources["GscOnAccentTextBrush"] = Brush(palette.OnAccentText);
             resources["GscOnDangerTextBrush"] = Brush(
@@ -273,7 +289,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
                     Colors.White,
                     Colors.Black,
                     RelativeLuminance(palette.Error) < 0.5));
-            resources["GscSelectionTextBrush"] = Brush(SystemParameters.HighContrast ? SystemColors.HighlightTextColor : palette.PrimaryText);
+            resources["GscSelectionTextBrush"] = Brush(palette.IsHighContrast ? SystemColors.HighlightTextColor : palette.PrimaryText);
             // Pressed/hover layers must move the surface away from the actual OnAccent
             // polarity. A fixed white wash is helpful for black text but reduces contrast
             // for white text on a dark accent; derive both state layers from the live choice.
@@ -288,29 +304,29 @@ namespace GameSaveCenter.Playnite.Infrastructure
             // setting intentionally fall back to opaque colors for readable keyboard/UIA states.
             var buttonGlassTop = Blend(Opaque(palette.StrongSurfaceTop), Opaque(palette.Accent), palette.IsDark ? 0.06 : 0.035);
             var buttonGlassBottom = Blend(Opaque(palette.StrongSurfaceBottom), Opaque(palette.AccentPressed), palette.IsDark ? 0.045 : 0.025);
-            var buttonGlassTopOpacity = SystemParameters.HighContrast || !palette.GlassEnabled
+            var buttonGlassTopOpacity = palette.IsHighContrast || !palette.GlassEnabled
                 ? 1
                 : palette.IsDark ? 0.60 : 0.66;
-            var buttonGlassBottomOpacity = SystemParameters.HighContrast || !palette.GlassEnabled
+            var buttonGlassBottomOpacity = palette.IsHighContrast || !palette.GlassEnabled
                 ? 1
                 : palette.IsDark ? 0.50 : 0.58;
             resources["GscButtonGlassBrush"] = Gradient(
                 WithAlpha(buttonGlassTop, buttonGlassTopOpacity),
                 WithAlpha(buttonGlassBottom, buttonGlassBottomOpacity));
             resources["GscButtonGlassBorderBrush"] = Brush(
-                SystemParameters.HighContrast || !palette.GlassEnabled
+                palette.IsHighContrast || !palette.GlassEnabled
                     ? Opaque(palette.ControlStroke)
                     : WithAlpha(Opaque(palette.PrimaryText), palette.IsDark ? 0.22 : 0.16));
             // A primary CTA is text-bearing chrome, not ambient material. Keeping both
             // gradient stops opaque prevents a bright/dark artwork or glass backdrop from
             // changing the effective OnAccent contrast at the stop or midpoint of the button.
             var primaryButtonTop = Opaque(palette.Accent);
-            var primaryButtonBottom = SystemParameters.HighContrast
+            var primaryButtonBottom = palette.IsHighContrast
                 ? Opaque(palette.AccentPressed)
                 : Opaque(palette.Accent);
             resources["GscPrimaryButtonBrush"] = Gradient(primaryButtonTop, primaryButtonBottom);
             resources["GscPrimaryButtonBorderBrush"] = Brush(
-                SystemParameters.HighContrast || !palette.GlassEnabled
+                palette.IsHighContrast || !palette.GlassEnabled
                     ? Opaque(palette.AccentHover)
                     : WithAlpha(Opaque(palette.AccentHover), palette.IsDark ? 0.94 : 0.86));
             // The strength slider used to affect mostly surface opacity, so a value of 100
@@ -323,12 +339,12 @@ namespace GameSaveCenter.Playnite.Infrastructure
             // These semantic surfaces are used by both the extracted workspaces and the
             // settings page. Keep them in the same palette as their status strokes instead
             // of leaving the static DesignTokens fallback active after a theme switch.
-            resources["GscErrorTintBrush"] = Brush(SemanticTint(palette.Error, palette.IsDark ? 0.20 : 0.12));
-            resources["GscRestoreInfoFillBrush"] = Brush(SemanticTint(palette.Info, palette.IsDark ? 0.20 : 0.11));
-            resources["GscRestoreInfoStrokeBrush"] = Brush(SemanticTint(palette.Info, palette.IsDark ? 0.46 : 0.32));
-            resources["GscSafetyFillBrush"] = Brush(SemanticTint(palette.Warning, palette.IsDark ? 0.20 : 0.12));
-            resources["GscSafetyStrokeBrush"] = Brush(SemanticTint(palette.Warning, palette.IsDark ? 0.48 : 0.34));
-            resources["GscMutedStatusBrush"] = Brush(SemanticTint(palette.PrimaryText, palette.IsDark ? 0.54 : 0.46));
+            resources["GscErrorTintBrush"] = Brush(SemanticTint(palette.Error, palette.IsDark ? 0.20 : 0.12, palette.IsHighContrast));
+            resources["GscRestoreInfoFillBrush"] = Brush(SemanticTint(palette.Info, palette.IsDark ? 0.20 : 0.11, palette.IsHighContrast));
+            resources["GscRestoreInfoStrokeBrush"] = Brush(SemanticTint(palette.Info, palette.IsDark ? 0.46 : 0.32, palette.IsHighContrast));
+            resources["GscSafetyFillBrush"] = Brush(SemanticTint(palette.Warning, palette.IsDark ? 0.20 : 0.12, palette.IsHighContrast));
+            resources["GscSafetyStrokeBrush"] = Brush(SemanticTint(palette.Warning, palette.IsDark ? 0.48 : 0.34, palette.IsHighContrast));
+            resources["GscMutedStatusBrush"] = Brush(SemanticTint(palette.PrimaryText, palette.IsDark ? 0.54 : 0.46, palette.IsHighContrast));
             resources["GscInfoIconFillBrush"] = Brush(palette.InfoIconFill);
             resources["GscSuccessIconFillBrush"] = Brush(palette.SuccessIconFill);
             resources["GscWarningIconFillBrush"] = Brush(palette.WarningIconFill);
@@ -342,6 +358,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
         /// </summary>
         public static void ApplyMaterialResources(ResourceDictionary resources, AdaptiveThemePalette palette, bool glassEnabled, bool motionEnabled)
         {
+            glassEnabled = glassEnabled && palette.GlassEnabled;
             resources["GscSurfaceEffect"] = CreateShadowEffect(glassEnabled, Colors.Black, 14, 2, palette.IsDark ? 0.34 : 0.24);
             resources["GscPrimaryButtonEffect"] = CreateShadowEffect(glassEnabled, palette.Accent, 18, 0, 0.40);
             resources["GscSidebarEffect"] = CreateShadowEffect(glassEnabled, Colors.Black, 24, 3, palette.IsDark ? 0.42 : 0.30);
@@ -349,7 +366,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscDialogEffect"] = CreateShadowEffect(glassEnabled, Colors.Black, 34, 8, palette.IsDark ? 0.52 : 0.44);
             resources["GscSliderThumbEffect"] = CreateShadowEffect(glassEnabled, Colors.Black, 6, 1, 0.26);
             resources["GscPopupAllowsTransparency"] = glassEnabled;
-            resources["GscPopupAnimation"] = motionEnabled ? PopupAnimation.Fade : PopupAnimation.None;
+            resources["GscPopupAnimation"] = motionEnabled && !palette.IsHighContrast ? PopupAnimation.Fade : PopupAnimation.None;
             var glassStrength = Math.Max(0.2, Math.Min(1, palette.GlassStrength));
             // The production shell owns the one ambient wash across sidebar, pages and footer.
             // Page-local AmbientMaterialLayer instances remain for compatibility and game
@@ -358,7 +375,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscShellAmbientOpacity"] = glassEnabled
                 ? 0.68 + (0.32 * glassStrength)
                 : 0d;
-            var gameBackgroundVisible = glassEnabled && !SystemParameters.HighContrast;
+            var gameBackgroundVisible = glassEnabled && !palette.IsHighContrast;
             resources["GscGameBackgroundOpacity"] = gameBackgroundVisible
                 ? (palette.IsDark ? 0.48 : 0.40)
                 : 0d;
@@ -419,6 +436,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
         /// </summary>
         public static void ApplyRuntimeThemeResources(ResourceDictionary resources, AdaptiveThemePalette palette, bool glassEnabled, bool motionEnabled)
         {
+            glassEnabled = glassEnabled && palette.GlassEnabled;
             ApplyAccentResources(resources, palette);
             ApplyMaterialResources(resources, palette, glassEnabled, motionEnabled);
             ApplyWpfUiResources(resources, palette);
@@ -428,24 +446,24 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscDisabledTextBrush"] = Brush(palette.DisabledText);
             resources["GscControlFillBrush"] = Brush(palette.ControlFill);
             resources["GscSegmentFillBrush"] = Brush(Color.FromArgb(
-                palette.IsDark ? (byte)89 : (byte)38,
+                palette.IsHighContrast ? (byte)255 : palette.IsDark ? (byte)89 : (byte)38,
                 palette.PrimaryText.R,
                 palette.PrimaryText.G,
                 palette.PrimaryText.B));
             resources["GscSegmentItemFillBrush"] = Brush(Color.FromArgb(
-                palette.IsDark ? (byte)242 : (byte)240,
+                palette.IsHighContrast ? (byte)255 : palette.IsDark ? (byte)242 : (byte)240,
                 palette.StrongSurfaceTop.R,
                 palette.StrongSurfaceTop.G,
                 palette.StrongSurfaceTop.B));
             resources["GscSegmentItemStrokeBrush"] = Brush(Color.FromArgb(
-                palette.IsDark ? (byte)28 : (byte)20,
+                palette.IsHighContrast ? (byte)255 : palette.IsDark ? (byte)28 : (byte)20,
                 palette.PrimaryText.R,
                 palette.PrimaryText.G,
                 palette.PrimaryText.B));
-            resources["GscProgressTrackBrush"] = Brush(palette.IsDark
-                ? Color.FromRgb(45, 50, 62)
-                : Color.FromRgb(214, 220, 232));
-            resources["GscProgressFillBrush"] = Brush(palette.Accent);
+            resources["GscProgressTrackBrush"] = Brush(palette.IsHighContrast
+                ? SystemColors.ControlDarkColor
+                : palette.IsDark ? Color.FromRgb(45, 50, 62) : Color.FromRgb(214, 220, 232));
+            resources["GscProgressFillBrush"] = Brush(palette.IsHighContrast ? SystemColors.HighlightColor : palette.Accent);
             resources["GscControlStrokeBrush"] = Brush(palette.ControlStroke);
             resources["GscDividerBrush"] = Brush(palette.Divider);
             resources["GscTableDividerBrush"] = Brush(Color.FromArgb(
@@ -465,29 +483,36 @@ namespace GameSaveCenter.Playnite.Infrastructure
             // without adding a second outer rectangle or changing the project's scrollbar.
             resources["GscTableHeaderBrush"] = Brush(palette.StrongSurfaceTop);
             resources["GscTableRowBrush"] = Brush(Color.FromArgb(
-                SystemParameters.HighContrast ? (byte)0 : palette.IsDark ? (byte)10 : (byte)6,
+                palette.IsHighContrast ? (byte)0 : palette.IsDark ? (byte)10 : (byte)6,
                 palette.PrimaryText.R, palette.PrimaryText.G, palette.PrimaryText.B));
             resources["GscTableAlternateRowBrush"] = Brush(Color.FromArgb(
-                SystemParameters.HighContrast ? (byte)0 : palette.IsDark ? (byte)18 : (byte)12,
+                palette.IsHighContrast ? (byte)0 : palette.IsDark ? (byte)18 : (byte)12,
                 palette.PrimaryText.R, palette.PrimaryText.G, palette.PrimaryText.B));
             resources["GscRowHoverBrush"] = Brush(Color.FromArgb(
-                palette.IsDark ? (byte)12 : (byte)8, palette.PrimaryText.R, palette.PrimaryText.G, palette.PrimaryText.B));
-            resources["GscRowHoverStrongBrush"] = Brush(Color.FromArgb(
-                SystemParameters.HighContrast ? (byte)0 : palette.IsDark ? (byte)32 : (byte)18,
-                palette.PrimaryText.R, palette.PrimaryText.G, palette.PrimaryText.B));
+                palette.IsHighContrast ? (byte)255 : palette.IsDark ? (byte)12 : (byte)8,
+                palette.IsHighContrast ? SystemColors.HighlightColor.R : palette.PrimaryText.R,
+                palette.IsHighContrast ? SystemColors.HighlightColor.G : palette.PrimaryText.G,
+                palette.IsHighContrast ? SystemColors.HighlightColor.B : palette.PrimaryText.B));
+            resources["GscRowHoverStrongBrush"] = Brush(palette.IsHighContrast
+                ? SystemColors.HighlightColor
+                : Color.FromArgb(
+                    palette.IsDark ? (byte)32 : (byte)18,
+                    palette.PrimaryText.R, palette.PrimaryText.G, palette.PrimaryText.B));
             resources["GscScrollTrackBrush"] = Brush(Color.FromArgb(
                 palette.IsDark ? (byte)28 : (byte)20, palette.PrimaryText.R, palette.PrimaryText.G, palette.PrimaryText.B));
             resources["GscScrollThumbBrush"] = Brush(Color.FromArgb(
                 palette.IsDark ? (byte)88 : (byte)68, palette.PrimaryText.R, palette.PrimaryText.G, palette.PrimaryText.B));
             // Scrollbar hover must follow the active Playnite accent (blue, purple, or a
             // custom high-contrast highlight) instead of retaining the old purple fallback.
-            resources["GscScrollThumbHoverBrush"] = Brush(WithAlpha(palette.AccentHover, palette.IsDark ? 0.78 : 0.66));
+            resources["GscScrollThumbHoverBrush"] = Brush(palette.IsHighContrast
+                ? palette.AccentHover
+                : WithAlpha(palette.AccentHover, palette.IsDark ? 0.78 : 0.66));
             resources["GscOverlayBrush"] = Brush(Color.FromArgb(
                 palette.IsDark ? (byte)138 : (byte)72, 0, 0, 0));
             resources["GscPickerScrimBrush"] = Brush(Color.FromArgb(
                 palette.IsDark ? (byte)54 : (byte)34, 0, 0, 0));
             WpfUiThemeScope.Apply(resources, palette.IsDark);
-            ApplyDemoCoreResources(resources, palette.IsDark);
+            ApplyDemoCoreResources(resources, palette.IsDark, palette.IsHighContrast);
             // The shell sidebar is one continuous translucent material surface. Keep this
             // separate from GscSidebarBrush, which is also used by standalone rounded cards
             // in the settings view; the shell brush can therefore carry a broad navigation wash
@@ -511,10 +536,11 @@ namespace GameSaveCenter.Playnite.Infrastructure
             bool hasGameMaterial,
             bool glassEnabled)
         {
+            glassEnabled = glassEnabled && palette.GlassEnabled;
             var gameBackgroundVisible = glassEnabled
                 && hasGameMaterial
                 && ambientBrush != null
-                && !SystemParameters.HighContrast;
+                && !palette.IsHighContrast;
             var strength = Math.Max(0.2, Math.Min(1, palette.GlassStrength));
             resources["GscGameBackgroundOpacity"] = gameBackgroundVisible
                 ? (palette.IsDark ? 0.48 : 0.40)
@@ -525,11 +551,11 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 : Colors.Transparent);
             resources["GscGameBackgroundEffect"] = CreateGameBackgroundBlurEffect(gameBackgroundVisible, strength);
 
-            if (!glassEnabled || !hasGameMaterial || ambientBrush == null || SystemParameters.HighContrast)
+            if (!glassEnabled || !hasGameMaterial || ambientBrush == null || palette.IsHighContrast)
             {
                 // ApplyDemoCoreResources is the single source of truth for the neutral fallback
                 // values. This also restores the fallback immediately when a game has no image.
-                ApplyDemoCoreResources(resources, palette.IsDark);
+                ApplyDemoCoreResources(resources, palette.IsDark, palette.IsHighContrast);
                 return;
             }
 
@@ -563,12 +589,13 @@ namespace GameSaveCenter.Playnite.Infrastructure
             AdaptiveThemePalette palette,
             bool glassEnabled)
         {
+            glassEnabled = glassEnabled && palette.GlassEnabled;
             resources["GscSettingsAmbientBrush"] = CreateSettingsAmbientBrush(
-                palette, glassEnabled && !SystemParameters.HighContrast);
+                palette, glassEnabled && !palette.IsHighContrast);
             resources["GscSettingsAmbientEffect"] = CreateSettingsAmbientBlurEffect(
-                glassEnabled && !SystemParameters.HighContrast, palette.GlassStrength);
+                glassEnabled && !palette.IsHighContrast, palette.GlassStrength);
 
-            if (!glassEnabled || SystemParameters.HighContrast)
+            if (!glassEnabled || palette.IsHighContrast)
             {
                 resources["GscSettingsShellBrush"] = Brush(Opaque(palette.Background));
                 resources["GscSettingsPanelBrush"] = Brush(Opaque(palette.StrongSurfaceTop));
@@ -607,7 +634,12 @@ namespace GameSaveCenter.Playnite.Infrastructure
         /// </summary>
         public static void ApplyDemoCoreResources(ResourceDictionary resources, bool isDark)
         {
-            if (SystemParameters.HighContrast)
+            ApplyDemoCoreResources(resources, isDark, SystemParameters.HighContrast);
+        }
+
+        internal static void ApplyDemoCoreResources(ResourceDictionary resources, bool isDark, bool highContrast)
+        {
+            if (highContrast)
                 return;
 
             var canvasStart = isDark ? Color.FromRgb(29, 32, 39) : Color.FromRgb(239, 239, 244);
@@ -952,7 +984,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
         private static LinearGradientBrush CreateSidebarMaterialBrush(AdaptiveThemePalette palette, bool glassEnabled)
         {
-            if (!glassEnabled || SystemParameters.HighContrast)
+            if (!glassEnabled || palette.IsHighContrast)
                 return Gradient(palette.SidebarTop, palette.SidebarBottom);
 
             // Use a diagonal, full-width material wash instead of a right-edge fade. The
@@ -984,7 +1016,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
         private static LinearGradientBrush CreateAmbientWideWashBrush(AdaptiveThemePalette palette, bool glassEnabled)
         {
-            if (!glassEnabled || SystemParameters.HighContrast)
+            if (!glassEnabled || palette.IsHighContrast)
                 return Gradient(Colors.Transparent, Colors.Transparent);
 
             var glassStrength = Math.Max(0.2, Math.Min(1, palette.GlassStrength));
@@ -1258,11 +1290,11 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 (byte)Math.Round(foreground.B * opacity + background.B * (1 - opacity)));
         }
 
-        private static Color SemanticTint(Color color, double opacity)
+        private static Color SemanticTint(Color color, double opacity, bool highContrast)
         {
             // High-contrast themes do not reliably render translucent fills. Use the solid
             // semantic color there so the associated border/status remains visible.
-            return SystemParameters.HighContrast ? color : WithAlpha(color, opacity);
+            return highContrast ? color : WithAlpha(color, opacity);
         }
 
         private static double ContrastRatio(Color first, Color second)

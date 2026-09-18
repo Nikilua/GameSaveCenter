@@ -5286,9 +5286,11 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("resources[\"GscErrorBrush\"]", palette);
         Assert.Contains("resources[\"GscTableAlternateRowBrush\"]", palette);
         Assert.Contains("resources[\"GscRowHoverStrongBrush\"]", palette);
-        Assert.Contains("resources[\"GscScrollThumbHoverBrush\"] = Brush(WithAlpha(palette.AccentHover", palette);
+        Assert.Contains("resources[\"GscScrollThumbHoverBrush\"] = Brush(palette.IsHighContrast", palette);
         Assert.DoesNotContain("Color.FromArgb(166, 124, 92, 252)", palette);
-        Assert.Contains("SystemParameters.HighContrast ? (byte)0", palette);
+        Assert.Contains("palette.IsHighContrast ? (byte)0", palette);
+        Assert.Contains("SystemColors.ControlDarkColor", palette);
+        Assert.Contains("SystemColors.HighlightColor", palette);
         Assert.Contains("ApplyRuntimeThemeResources(Resources, palette", dashboardCode);
         Assert.Contains("ApplyRuntimeThemeResources(workspaceView.Resources, palette", dashboardCode);
         Assert.Contains("GetLegacyCompatibilityWorkspaceViews()", dashboardCode);
@@ -5312,9 +5314,9 @@ public sealed class WpfUiResourceDictionaryTests
         var settingsCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml.cs"));
 
         Assert.Contains("public static void ApplyDemoCoreResources(ResourceDictionary resources, bool isDark)", palette);
-        Assert.Contains("if (SystemParameters.HighContrast)\n                return;", palette);
-        Assert.Contains("ApplyDemoCoreResources(resources, palette.IsDark);", palette);
-        Assert.Contains("ApplyDemoCoreResources(Resources, palette.IsDark);", settingsCode);
+        Assert.Contains("if (highContrast)\n                return;", palette);
+        Assert.Contains("ApplyDemoCoreResources(resources, palette.IsDark, palette.IsHighContrast);", palette);
+        Assert.Contains("ApplyDemoCoreResources(Resources, palette.IsDark, palette.IsHighContrast);", settingsCode);
         Assert.Contains("Color.FromArgb(0xEE, 0x26, 0x2B, 0x36)", palette);
         Assert.Contains("Color.FromArgb(0xF5, 0xFF, 0xFF, 0xFF)", palette);
         Assert.Contains("resources[\"GscTableHeaderBrush\"] = Brush(tableHeader);", palette);

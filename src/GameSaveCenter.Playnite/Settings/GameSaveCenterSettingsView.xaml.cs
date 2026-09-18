@@ -1051,7 +1051,7 @@ namespace GameSaveCenter.Playnite.Settings
             // Keep the same host-neutral baseline used by DashboardView. The settings
             // material below only changes structural surfaces; it must not leave core
             // semantic brushes inherited from a Playnite host dictionary.
-            AdaptiveThemePaletteFactory.ApplyDemoCoreResources(Resources, palette.IsDark);
+            AdaptiveThemePaletteFactory.ApplyDemoCoreResources(Resources, palette.IsDark, palette.IsHighContrast);
             AdaptiveThemePaletteFactory.ApplySettingsMaterialResources(Resources, palette, glassEnabled);
 
             // Keep the fixed background ambient layer out of the render tree when glass is
