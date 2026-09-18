@@ -1505,3 +1505,10 @@
 - 最新生产实现已具备局部主题切换能力：Dashboard/Settings/ProductionShell/workspace 各自应用完整 palette，游戏选择器继续是宿主内 scrim，脱离式 ToolTip 通过既有刷新入口同步；未写 `Application.Current.Resources`。
 - `fe048952` 新增真实 STA WPF 行为夹具，Light→Dark 后在下一 Render 优先级取样 Popup surface、Path icon、thumbnail placeholder 和文本，均完成资源更新且宿主字典哨兵未变；定向 `1/1`，干净 Release/XAML `24/24`、solution `0/0`。
 - 这只是 Dispatcher/local-resource 的可控证据，不是物理呈现帧零闪截图；Demo 原目录不可用，真实 Playnite、系统主题切换、物理 DPI/跨屏、UIA/读屏、ETW、宿主性能和 package-host 仍未验。下一任务：R09-02 图标语义统一。
+
+## 2026-09-19 Round3 R09-02 图标语义统一
+
+- `c7c7ae0d` 已推送到 `codex/ui-finesse-round2`：在现有 `ThemeAwareIcon + Geometry/Path` 体系内补齐备份、恢复、上传、校验、归类、忽略六类动作资源，并新增共享 `GscActionIcon` 尺寸 `16x16`；生产 Dashboard/Overview/Save/Maintenance/Media 按钮复用图标，命令、绑定、参数、恢复保护和禁用语义保持不变。
+- 精确提交隔离验证：XAML `24/24`、Release solution `0 warning / 0 error`、Playnite `net462`；`R09IconSemanticBehaviorTests=2/2`，相邻图标/动作回归 `3/3`；源码校验与 diff check 通过。夹具覆盖非空 Geometry、真实生产 XAML 语义映射和禁用 Button 的 IconData/可见性/16x16 布局保留。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R09-02-ICON-SEMANTICS-20260919.md`；Demo 原目录不可用，沿用恢复生产资源基线。用户提供的 DEV-INSTALL-008 main 全量测试失败已记录为合入后需单一 checkout 重跑的发布边界，不改写本阶段精确隔离通过结论。
+- 未验真实 Playnite 呈现、物理 DPI/跨屏、presented frame、UIA/读屏、IME、ETW、宿主性能和 package-host；main 的用户未提交文件仍未触碰。下一可执行任务：R09-03 一像素描边。

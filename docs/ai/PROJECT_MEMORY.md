@@ -3773,3 +3773,11 @@
 - `fe048952` 的 `R09ThemeSwitchBehaviorTests` 在 STA WPF 中先应用 Light、再在 Background 回调切换 Dark，并在下一 Render 采样 Popup/Path/placeholder/text；颜色全部更新，独立 host 哨兵保持，`1/1`。干净隔离构建 XAML `24/24`、0/0。
 - 证据仅证明同一 Dispatcher 的局部资源切换顺序和作用域；不把它写成物理屏幕 presented frame 无闪烁或真实 Playnite 系统主题验证。Demo 原目录不可用，继续使用恢复生产基线。
 - 下一可执行小批量为 R09-02：盘点现有图标语义映射、尺寸、ThemeAwareIcon/PNG 使用和缺字负例。
+
+## 2026-09-19 Round3 R09-02 图标语义统一
+
+- 先核对现有能力：生产已经使用 `ThemeAwareIcon`、`GscIconPack.xaml` 的矢量 Geometry 和主题前景继承，不存在需要重建的字体图标体系；实际缺口是上传/校验/归类/忽略没有共享动作映射，且若干备份/恢复按钮仍是纯文字。
+- `c7c7ae0d` 在原体系内补齐 `GscIconActionBackup/Restore/Upload/Verify/Categorize/Ignore` 和 `GscActionIcon`（统一 `16x16`），并把真实生产动作按钮改为图标加原文案；命令、Binding、CommandParameter、危险样式、恢复保护和现有游戏选框/滚动条没有改变。
+- 新增 `R09IconSemanticBehaviorTests`：从当前 checkout 文件流加载图标字典，实测六个 Geometry 非空且有边界；解析生产页面的真实 `IconData` 映射；禁用实际 WPF Button 后 IconData、可见性和 16x16 布局仍保留。精确提交隔离构建 XAML `24/24`、solution `0/0`，新夹具 `2/2`，相邻回归 `3/3`，源码校验/diff check 通过。
+- 证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R09-02-ICON-SEMANTICS-20260919.md`。Demo 原目录不可用；合成 STA/offscreen logical DIP 不代表真实 Playnite、物理 DPI/跨屏、呈现帧、UIA/读屏、IME、ETW 或宿主性能。用户 DEV-INSTALL-008 main 全量 Playnite.Tests 失败保留为合入后单 checkout 安装器重跑边界，未与本阶段精确产物混写。
+- 下一可执行小批量为 R09-03：先检查共享边框/分隔线/选中指示在 100/125/150/175/200% 的可模拟证据与真实宿主边界。

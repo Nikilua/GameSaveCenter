@@ -7324,3 +7324,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 新增 `R09ThemeSwitchBehaviorTests`，修正一次 Dispatcher `BeginInvoke` 参数顺序后，当前提交 `fe048952` 定向 `1/1`；Light→Dark 在下一 Render 优先级的 Popup、Path icon、placeholder/text 都得到新资源，host 哨兵未污染。
 - 当前提交干净隔离 Release/XAML `24/24`、solution `0 warning / 0 error`，源码门禁和 diff check 通过；临时 worktree/build 已清理。该结果不等价真实 presented frame 零闪、Playnite 系统主题、物理 DPI/跨屏、UIA/读屏、ETW 或宿主性能。
 - 证据与账本已准备同步；下一可执行任务为 R09-02 图标语义统一，先查现有资源映射和缺字负例。
+
+## 2026-09-19 Round3 R09-02 图标语义统一
+
+- 盘点确认：`ThemeAwareIcon` 已是生产矢量入口，备份/恢复已有部分 Geometry，但上传、校验、归类、忽略缺共享动作资源；没有字体缺字方框实现需要迁移。补充 `GscIconPack.xaml` 六个动作 Geometry 与统一 `GscActionIcon`，复用到 Dashboard/Overview/Save/Maintenance/Media 的真实按钮。
+- 先用合成 STA WPF 夹具验证真实 `ResourceDictionary`/`ThemeAwareIcon`，修正了 Pack URI 不适用于隔离 net472 testhost、XAML `clr-namespace` 需要 assembly-qualified 和 .NET Framework 字符串 API 不兼容等夹具环境问题；没有放宽生产门禁或绕过权限。
+- `c7c7ae0d` 已提交并推送。精确提交重建：XAML `24/24`、Release `0 warning / 0 error`、Playnite `net462`；新 R09-02 `2/2`，相邻图标/动作回归 `3/3`；`validate-source.py`、XAML 检查、`git diff --check` 通过。
+- 用户提供的 DEV-INSTALL-008 日志：编译 `0/0`、Core `83/83`、Worker `311/311`，但 main checkout 的 Playnite.Tests 全量为 `73 failed / 588 passed / 57 skipped`，失败混合 DataGrid/STA/视觉资源/身份与时序错误。本阶段没有把它归因成图标修复失败；用户未授权前不在 main 上覆盖或安装，后续合入后需在单一 checkout 重新执行完整安装器。
+- 文档已同步 `ROUND3_PROGRESS.md` 与 R09-02 证据。Demo 原目录不可用，仍沿用恢复生产基线；真实 Playnite、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能和 package-host 未验。下一可执行任务：R09-03 一像素描边。
