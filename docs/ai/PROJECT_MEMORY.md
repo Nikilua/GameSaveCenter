@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-18
 
+## 2026-09-18 R08-06 数字变化动效
+
+- 复用 Overview 现有六个摘要计数与 `GscMotion`，新增 `NumericChangeFeedback` 附加行为；只在整数值真正变化时对局部 `ScaleTransform` 做 `1.04` pulse，`420ms` 节流，高频进度与技术文本不动。六个计数固定 `96 DIP` 槽位，`99→100` 不推挤邻项；减动效即时更新。
+- `acbfe7e0` 为生产实现，`e264acff` 为真实 WPF 动画取样修正。最终隔离 Release `0/0`、Playnite `net462`、XAML `24/24`；R08Numeric `3/3`、R08PageSwitch `2/2`、R08BusinessFeedback `4/4`；源码/XAML/diff check 通过，WPF `0/21/177`。
+- RenderHarness 绑定 `e264acff`、`WorkingTreeClean=True`、357 张 PNG；Overview 1040×700 和 1600×900 已抽查。全量报告退出 `1`，只命中既有 Save/Task resize `3/4` 可读问题，不能写成全量通过。证据见 `R08-06-NUMERIC-CHANGE-20260918.md`。
+- 边界仍为合成数据、fake/生产资源、隔离 STA/offscreen logical DIP；未验真实 Playnite/Worker、presented frame、物理 DPI/跨屏、UIA/读屏、ETW/宿主性能。Demo 原始目录不可用，沿用恢复生产基线。下一项 R08-07。
+
 ## 2026-09-18 R08-05 页面切换轻量化
 
 - 复用既有 `AcrylicProductionShellView` 页面注册表；`Attach` 创建真实页面一次，`NavigateTo` 现在仅在目标引用变化时写入 `PageHost.Content`，同页重复请求不重设视觉树。没有改服务、DTO、命令绑定、游戏选框、滚动条、取消/错误/恢复保护或有限列表策略。

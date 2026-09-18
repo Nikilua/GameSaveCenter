@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R08-06 数字变化动效
+
+- 先核对已有能力：概览页原有六个摘要计数、进度条和技术文本均已存在；本阶段只为六个摘要计数增加 `NumericChangeFeedback`，不改变服务/DTO/命令、游戏选框、滚动条、取消/错误/恢复保护或有限列表策略。`OverviewTaskProgressBar` 与技术时间文本明确排除。
+- `acbfe7e0` 使用现有 `GscMotion` 的 render-only `ScaleTransform` pulse，峰值 `1.04`、最短反馈间隔 `420ms`；`e264acff` 仅修正 STA 测试取样，在渲染队列后检查真实动画时钟。六个指标固定 `96 DIP` 槽位，减动效即时落字。
+- 最终隔离身份 `r08-06-source-e264acff` / `r08-06-build-e264acff`：solution Release `0 warning / 0 error`、Playnite `net462`、XAML `24/24`；R08Numeric `3/3`、R08PageSwitch `2/2`、R08BusinessFeedback `4/4`；源校验、XAML、diff check 通过；WPF 静态审查 `0 error / 21 warning / 177 info`。
+- 最终 RenderHarness 绑定 `e264acff` 生成 `357` 张 PNG，双尺寸 Overview 已人工抽查，未见本项新增挤压；完整脚本真实退出 `1`，仅报告既有 Save/Task resize 的 `3/4` 行可读问题，不写成 `render-qa OK`。证据使用合成数据/隔离 STA/offscreen logical DIP；Demo 原始目录不可用，沿用恢复生产基线。
+- 未验真实 Playnite/Worker 高频刷新、宿主呈现帧、物理 DPI/跨屏、UIA/读屏、ETW 或宿主性能。下一可执行任务为 R08-07 对话框遮罩同步。
+
 ## 当前第三轮 R08-05 页面切换轻量化
 
 - 先核对已有能力：`AcrylicProductionShellView.Attach` 一次创建六个真实工作区页面，`NavigateTo` 通过页面缓存复用实例；本阶段只增加同页 `PageHost.Content` 引用保护，避免刷新期间重复导航触发无意义内容替换。没有重建页面、列表或导航体系。

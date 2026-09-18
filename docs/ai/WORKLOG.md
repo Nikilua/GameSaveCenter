@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-18 R08-06 数字变化动效
+
+- 先核对已有 Overview 计数、进度条和技术文本；实现只覆盖六个摘要计数。`acbfe7e0` 复用 `GscMotion` 增加 render-only `ScaleTransform` pulse（`1.04`、`420ms` 节流），`96 DIP` 固定槽位防止 `99→100` 推挤；减动效和系统动画关闭时即时落字，进度/技术文本不动画。
+- `e264acff` 修正 R08Numeric 测试的取样顺序，在 Render dispatcher 后检查真实 `ScaleTransform.ScaleX` 动画源；不是放宽为字符串断言。最终串行定向：R08Numeric `3/3`、R08PageSwitch `2/2`、R08BusinessFeedback `4/4`。
+- 最终隔离身份 `r08-06-source-e264acff` / `r08-06-build-e264acff`：solution Release `0 warning / 0 error`，Playnite `net462`，XAML `24/24`；`validate-source.py`、`check-xaml.ps1`、`git diff --check` 通过；WPF 静态审查 `0/21/177`。
+- 最终 RenderHarness 绑定 `e264acff`，WorkingTreeClean=True，生成 357 张 PNG；Overview 1040×700/1600×900 已抽查，指标列对齐。完整脚本退出 `1`，真实报告只列既有 Save/Task resize 的 `3/4` 行可读问题，未冒充全量通过。证据：`R08-06-NUMERIC-CHANGE-20260918.md`。
+- 边界：合成/fake、隔离 STA/offscreen logical DIP；无真实存档/媒体/云端/诊断写入。未验真实 Playnite/Worker、物理 DPI/跨屏、presented frame、UIA/读屏、ETW、宿主性能；Demo 原始目录不可用，沿用恢复生产基线。下一可执行任务为 R08-07 对话框遮罩同步。
+
 ## 2026-09-18 R08-05 页面切换轻量化
 
 - 先阅读第三轮任务、质量审查和账本并核对当前分支/主线均在 `01f6527f`；未将 main 旧源码覆盖到分支。复用当前真实生产壳层的页面缓存，不重建页面或滚动体系。
