@@ -1585,7 +1585,7 @@ def check_wpf_ui_production_scope_guards() -> None:
           "<ui:Card", "<ui:ToggleSwitch", "<ui:Button")),
         (dashboard_code, "Dashboard production feedback",
          ("ShowToast", "ShowFallbackConfirmation",
-          "if (confirmationOpen)", "confirmationOpen = false",
+          "if (dialogLifecycle.IsActive)", "dialogLifecycle.ForceClosed()",
           "return Task.CompletedTask")),
         (settings_code, "Settings production feedback",
          ("ShowSettingsMessage", "Task.Run", "MessageBox.Show")),

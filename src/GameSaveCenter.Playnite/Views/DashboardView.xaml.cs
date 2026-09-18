@@ -35,8 +35,8 @@ namespace GameSaveCenter.Playnite.Views
         private UiChoiceEventArgs? activeChoice;
         private bool dialogShowsResult;
         private bool choiceDialog;
-        private bool confirmationOpen;
-        private int dialogMotionGeneration;
+        private readonly DialogLifecycleStateMachine dialogLifecycle = new DialogLifecycleStateMachine();
+        private readonly DialogOverlayMotion dialogMotion;
         private string activeDialogDetailMessage = string.Empty;
         private UIElement? dialogReturnFocus;
         private bool responsiveLayoutPending;
@@ -49,6 +49,7 @@ namespace GameSaveCenter.Playnite.Views
         {
             this.plugin = plugin;
             InitializeComponent();
+            dialogMotion = new DialogOverlayMotion(DialogOverlay, DialogCard);
 
             viewModel = new DashboardViewModel(plugin);
             DataContext = viewModel;
@@ -151,13 +152,11 @@ namespace GameSaveCenter.Playnite.Views
             activeConfirmation = null;
             activeChoice?.Completion.TrySetResult(ProtectionPromptChoice.Later);
             activeChoice = null;
-            confirmationOpen = false;
+            dialogLifecycle.ForceClosed();
             dialogReturnFocus = null;
             responsiveLayoutPending = false;
-            dialogMotionGeneration++;
+            dialogMotion.ForceClosed();
             NormalizeDashboardMotion();
-            DialogOverlay.Visibility = Visibility.Collapsed;
-            DialogCard.Opacity = 0;
             ClearToasts();
         }
 
@@ -1083,7 +1082,7 @@ namespace GameSaveCenter.Playnite.Views
             if (!IsLoaded || !IsVisible) return;
             e.Handled = true;
 
-            if (confirmationOpen)
+            if (dialogLifecycle.IsActive)
             {
                 // Never stack modal prompts inside Playnite. The caller receives a safe cancellation
                 // and can expose the action again after the current decision is complete.
@@ -1098,7 +1097,7 @@ namespace GameSaveCenter.Playnite.Views
         {
             if (!IsLoaded || !IsVisible) return;
             e.Handled = true;
-            if (confirmationOpen)
+            if (dialogLifecycle.IsActive)
             {
                 e.Completion.TrySetResult(ProtectionPromptChoice.Later);
                 return;
@@ -1108,7 +1107,6 @@ namespace GameSaveCenter.Playnite.Views
 
         private Task ShowFrameworkConfirmationAsync(UiConfirmationEventArgs request)
         {
-            confirmationOpen = true;
             activeConfirmation?.Completion.TrySetResult(false);
             activeConfirmation = request;
             try
@@ -1122,7 +1120,8 @@ namespace GameSaveCenter.Playnite.Views
             {
                 Logger.Error(ex, "GameSaveCenter embedded confirmation failed.");
                 activeConfirmation = null;
-                confirmationOpen = false;
+                dialogLifecycle.ForceClosed();
+                dialogMotion.ForceClosed();
                 request.Completion.TrySetResult(false);
             }
 
@@ -1131,7 +1130,6 @@ namespace GameSaveCenter.Playnite.Views
 
         private Task ShowFrameworkChoiceAsync(UiChoiceEventArgs request)
         {
-            confirmationOpen = true;
             activeChoice?.Completion.TrySetResult(ProtectionPromptChoice.Later);
             activeChoice = request;
             try
@@ -1142,7 +1140,8 @@ namespace GameSaveCenter.Playnite.Views
             {
                 Logger.Error(ex, "GameSaveCenter embedded choice dialog failed.");
                 activeChoice = null;
-                confirmationOpen = false;
+                dialogLifecycle.ForceClosed();
+                dialogMotion.ForceClosed();
                 request.Completion.TrySetResult(ProtectionPromptChoice.Later);
             }
             return Task.CompletedTask;
@@ -1190,7 +1189,6 @@ namespace GameSaveCenter.Playnite.Views
         {
             activeConfirmation?.Completion.TrySetResult(false);
             activeConfirmation = null;
-            confirmationOpen = true;
             dialogShowsResult = true;
             activeDialogDetailMessage = string.IsNullOrWhiteSpace(message) ? "未知错误" : message;
             DialogTitleText.Text = title;
@@ -1210,48 +1208,26 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OpenDialog(Control initialFocus)
         {
+            if (!dialogLifecycle.TryBeginOpening())
+                return;
+
             var currentFocus = Keyboard.FocusedElement as UIElement;
             dialogReturnFocus = currentFocus != null && !IsDescendantOf(currentFocus, DialogOverlay)
                 ? currentFocus
                 : null;
-            var motionGeneration = ++dialogMotionGeneration;
-            StopDialogMotion();
-            DialogOverlay.Visibility = Visibility.Visible;
-            DialogCard.Opacity = MotionEnabled ? 0 : 1;
-            var translate = GscMotion.GetMutableTranslateTransform(DialogCard);
-            translate.Y = MotionEnabled ? 14 : 0;
-            if (MotionEnabled)
-            {
-                var duration = GscMotion.GetDuration(DialogCard, GscMotion.MotionDurationKind.Normal);
-                var easing = GscMotion.CreateEaseOut();
-                var fade = new DoubleAnimation(0, 1, duration)
-                {
-                    EasingFunction = easing,
-                    FillBehavior = FillBehavior.HoldEnd
-                };
-                var slide = new DoubleAnimation(14, 0, duration)
-                {
-                    EasingFunction = easing,
-                    FillBehavior = FillBehavior.HoldEnd
-                };
-                slide.Completed += (_, __) =>
-                {
-                    if (motionGeneration != dialogMotionGeneration || DialogOverlay.Visibility != Visibility.Visible)
-                        return;
-
-                    StopDialogMotion();
-                    DialogCard.Opacity = 1;
-                };
-                DialogCard.BeginAnimation(OpacityProperty, fade);
-                translate.BeginAnimation(TranslateTransform.YProperty, slide);
-            }
+            dialogMotion.BeginOpen(MotionEnabled, () => dialogLifecycle.TryMarkOpen());
             BeginUiSafely(() =>
             {
-                if (IsLoaded && DialogOverlay.Visibility == Visibility.Visible) initialFocus.Focus();
+                if (IsLoaded && DialogOverlay.Visibility == Visibility.Visible && !dialogLifecycle.IsClosing)
+                    initialFocus.Focus();
             }, DispatcherPriority.Input);
         }
 
-        private void OnDialogCancelClick(object sender, RoutedEventArgs e) => CompleteDialog(false);
+        private void OnDialogCancelClick(object sender, RoutedEventArgs e)
+        {
+            if (dialogLifecycle.IsClosing) return;
+            CompleteDialog(false);
+        }
 
         private async void OnDialogCopyClick(object sender, RoutedEventArgs e)
         {
@@ -1287,6 +1263,7 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnDialogConfirmClick(object sender, RoutedEventArgs e)
         {
+            if (dialogLifecycle.IsClosing) return;
             if (dialogShowsResult)
             {
                 CloseDialog();
@@ -1302,6 +1279,9 @@ namespace GameSaveCenter.Playnite.Views
 
         private void CompleteDialog(bool result)
         {
+            if (!dialogLifecycle.TryClaimCompletion())
+                return;
+
             var completion = activeConfirmation?.Completion;
             activeConfirmation = null;
             CloseDialog();
@@ -1310,6 +1290,9 @@ namespace GameSaveCenter.Playnite.Views
 
         private void CompleteChoice(ProtectionPromptChoice choice)
         {
+            if (!dialogLifecycle.TryClaimCompletion())
+                return;
+
             var completion = activeChoice?.Completion;
             activeChoice = null;
             CloseDialog();
@@ -1318,28 +1301,32 @@ namespace GameSaveCenter.Playnite.Views
 
         private void CloseDialog()
         {
+            if (!dialogLifecycle.TryBeginClosing())
+                return;
+
             var returnFocus = dialogReturnFocus;
             dialogReturnFocus = null;
-            confirmationOpen = false;
             dialogShowsResult = false;
             choiceDialog = false;
             activeDialogDetailMessage = string.Empty;
             DialogCopyButton.Visibility = Visibility.Collapsed;
             DialogCopyButton.Content = "复制详情";
-            DialogOverlay.Visibility = Visibility.Collapsed;
-            dialogMotionGeneration++;
-            StopDialogMotion();
-            DialogCard.Opacity = 0;
-            if (returnFocus != null)
+            dialogMotion.BeginClose(MotionEnabled, () =>
             {
-                BeginUiSafely(() =>
+                if (!dialogLifecycle.TryFinishClosing())
+                    return;
+
+                if (returnFocus != null)
                 {
-                    if (!returnFocus.IsVisible || !returnFocus.IsEnabled || !returnFocus.Focusable)
-                        return;
-                    returnFocus.Focus();
-                    Keyboard.Focus(returnFocus);
-                }, DispatcherPriority.Input);
-            }
+                    BeginUiSafely(() =>
+                    {
+                        if (!returnFocus.IsVisible || !returnFocus.IsEnabled || !returnFocus.Focusable)
+                            return;
+                        returnFocus.Focus();
+                        Keyboard.Focus(returnFocus);
+                    }, DispatcherPriority.Input);
+                }
+            });
         }
 
         private static bool IsDescendantOf(DependencyObject element, DependencyObject ancestor)
@@ -1351,16 +1338,6 @@ namespace GameSaveCenter.Playnite.Views
                 current = VisualTreeHelper.GetParent(current);
             }
             return false;
-        }
-
-        private void StopDialogMotion()
-        {
-            DialogCard.BeginAnimation(OpacityProperty, null);
-            if (DialogCard.RenderTransform is TranslateTransform translate)
-            {
-                translate.BeginAnimation(TranslateTransform.YProperty, null);
-                translate.Y = 0;
-            }
         }
 
         private void OnPreviewKeyDown(object sender, KeyEventArgs e)
@@ -1381,6 +1358,7 @@ namespace GameSaveCenter.Playnite.Views
             if (e.Key == Key.Escape)
             {
                 e.Handled = true;
+                if (dialogLifecycle.IsClosing) return;
                 if (dialogShowsResult) CloseDialog(); else CompleteDialog(false);
             }
         }
@@ -1622,6 +1600,7 @@ namespace GameSaveCenter.Playnite.Views
 
         private void NormalizeDashboardMotion()
         {
+            dialogMotion.Normalize();
             GscMotion.NormalizeAll();
             NormalizeAnimatedElement(MainShell);
             NormalizeAnimatedElement(ProductionShellView.PageHostForAudit);
