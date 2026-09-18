@@ -7372,3 +7372,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 盘点后确认主题压力验证可直接复用现有 palette/guard；没有新增服务、DTO 或设计体系。`7de5c3de` 新增隔离 STA/WPF 夹具，使用四种合成宿主背景读取实际运行时 backdrop、ambient、glass/strong 资源，透明 stop 保持可见，按 alpha 合成后的正文对比度均达到项目门槛 `4.5`；黑底红层故意失败负例 `1/1` 被正确拒绝。
 - 同阶段修复 R09-06 的兼容性回归：恢复四参数 `AdaptiveThemePaletteFactory.Create`，显式高对比隔离测试改用 `CreateWithHighContrastOverride`，并修正过时的结构断言。R09-08 `2/2`，主题/材质 `8/8`，高对比/主题/阴影 `5/5`，R09 `14/14`；正式 Release/XAML `24/24`、solution `0 warning / 0 error`，源码校验、XAML、diff check 通过。
 - 证据已写入 `evidence/R09-08-BACKGROUND-PRESSURE-20260919.md`，本阶段文档随提交同步。验证边界仍为隔离逻辑 DIP/offscreen 行为，不是 Demo 像素、真实 Playnite presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW、宿主性能、package-host 或真实 Windows High Contrast；Demo 原目录不可用，沿用恢复生产基线。DEV-INSTALL-008 的 dirty main 全量安装失败未在 main 上覆盖或重跑；下一可执行任务：R10-01 上下文返回。
+
+## 2026-09-19 Round3 R10-01 上下文返回
+
+- 启动协议已完成：读取 `CURRENT_STATE.md`、`PROJECT_MEMORY.md`、`WORKLOG.md`、`DEVELOPMENT_HANDOFF.md`、质量审查、Round3 账本，并核对续作分支 `codex/ui-finesse-round2` 的状态与 git 历史；main 的用户文件保持未触碰。
+- 盘点确认现有 `FindingNavigationResolver`、稳定 PlayniteId、任务 DTO、缓存页签和现有滚动条系统可复用；没有重建服务或 DTO。`97770ed4` 新增会话内返回栈、任务关联游戏命令、Shell 返回按钮及真实 Task/Maintenance DataGrid ScrollViewer 捕获/恢复。
+- 行为定义覆盖正例和负例：LIFO 快照恢复游戏/页签/筛选/任务或诊断选择/滚动；原游戏、原任务或诊断项消失时不自动换成其他对象并说明。实现后 source validation、XAML `24/24`、Release solution `0/0`、R10 与相邻导航 `13/13`、diff check 全部通过。
+- 证据已写入 `evidence/R10-01-CONTEXT-RETURN-20260919.md`，账本 R10-01 已同步。用户安装日志事实为 main checkout 编译/Core/Worker 通过，但 Playnite 全量 `73/588/57` 失败混合 WPF 宿主/资源/布局/时序错误；不将其改写成 R10-01 隔离回归，也未在 dirty main 上安装或覆盖。
+- `.tmp/r10-01-build` 的构建输出已清理；仅剩 `test-temp/VBCSCompiler/AnalyzerAssemblyLoader` 被已有长驻 dotnet 进程锁定，未强制终止未知归属进程，待其自然退出后再安全删除。真实 Playnite 返回序列、physical DPI/跨屏、presented frame、UIA/读屏、IME、ETW、宿主性能和 package-host 未验。下一可执行任务：R10-02。

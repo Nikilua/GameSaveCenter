@@ -3823,3 +3823,11 @@
 - 先复用现有 `AdaptiveThemePaletteContrastGuard`、`AdaptiveThemePaletteFactory` 和运行时资源，不重建主题体系。`7de5c3de` 新增 `R09BackgroundPressureBehaviorTests`，在浅色中性、深色中性、暖色浅背景、蓝色深背景四种合成宿主中读取实际 backdrop/ambient/glass 资源，检查透明 stop 仍存在，并按真实 alpha 层叠计算正文对比度；全部达到 `4.5`，故意失败负例 `1/1` 被拒绝。
 - 复验发现 R09-06 后四参数 `AdaptiveThemePaletteFactory.Create` 的反射兼容入口被可选参数改坏，已恢复四参数入口并将隔离高对比 override 收口到 `CreateWithHighContrastOverride`；同步更新过时结构断言。主题/材质 `8/8`、高对比/主题/阴影 `5/5`、R09 `14/14`，正式 Release/XAML `24/24`、solution `0/0`，源码校验、XAML、diff check 通过。
 - 证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R09-08-BACKGROUND-PRESSURE-20260919.md`。证据只覆盖隔离 STA/WPF、合成 ResourceDictionary 和逻辑 DIP；未验真实 Playnite presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW、宿主性能、package-host 和真实 Windows High Contrast。Demo 原目录不可用，沿用恢复生产基线；DEV-INSTALL-008 main 全量安装失败仍单列，main 用户文件未触碰。下一可执行任务：R10-01 上下文返回。
+
+## 2026-09-19 Round3 R10-01 上下文返回
+
+- 实现提交 `97770ed4`。优先复用稳定 ID、现有告警解析和任务 DTO；`WorkspaceNavigationSnapshot`/`WorkspaceNavigationStack` 只存当前会话 UI 状态，不写真实存档、媒体、云端或用户配置。
+- 真实命令路径覆盖告警→存档/失败任务和任务→关联游戏；返回恢复工作区、页签、筛选、历史范围、任务/诊断选择以及 DataGrid 内部实际滚动偏移。返回时先切换工作区；删除或刷新导致原对象消失时不替换其他目标，并保留解释性状态消息。
+- 定向 `13/13`、XAML `24/24`、Release `0 warning / 0 error`、source/XAML/diff check 通过。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R10-01-CONTEXT-RETURN-20260919.md`；账本 R10-01 已改为“已满足”。
+- 当前证据是隔离 fake/合成状态、STA WPF 和逻辑 DIP；不能升级为真实 Playnite、物理 DPI/跨屏、presented frame、UIA/读屏、IME、ETW、宿主性能或 package-host 结论。Demo 原目录不可用，沿用恢复生产基线。
+- 用户提供的 main 安装器日志保留为独立边界：编译 `0/0`、Core `83/83`、Worker `311/311`，Playnite `73 failed / 588 passed / 57 skipped`；未在 dirty main 上覆盖或重跑安装器。下一可执行任务：R10-02。

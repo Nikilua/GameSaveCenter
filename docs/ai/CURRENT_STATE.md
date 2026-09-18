@@ -1554,3 +1554,11 @@
 - `7de5c3de` 复用现有 `AdaptiveThemePaletteContrastGuard` 的真实 alpha 合成路径，新增 `R09BackgroundPressureBehaviorTests`：浅/深/暖/蓝四种合成宿主背景读取实际运行时 backdrop、ambient、glass 资源，透明 stop 保持可见，正文合成对比度均达到 `4.5`；故意失败负例 `1/1` 被拒绝。
 - 同阶段修复 R09-06 的主题工厂兼容性回归：恢复四参数 `AdaptiveThemePaletteFactory.Create`，高对比隔离 override 使用独立方法；更新过时结构断言后，主题/材质 `8/8`、高对比/主题/阴影 `5/5`、R09 `14/14`。正式 Release/XAML `24/24`、solution `0/0`，source/XAML/diff check 通过。
 - 证据：`evidence/R09-08-BACKGROUND-PRESSURE-20260919.md`。证据是隔离 STA/逻辑 DIP 资源合成，不是真实 Playnite presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW、宿主性能或 package-host；Demo 原目录不可用，沿用恢复生产基线。DEV-INSTALL-008 main 全量失败仍单列，main 用户文件未触碰。下一可执行任务：R10-01 上下文返回。
+
+## 2026-09-19 Round3 R10-01 上下文返回
+
+- `97770ed4` 复用既有 `FindingNavigationResolver`、稳定 `PlayniteId` 和任务 DTO，新增不落盘的 `WorkspaceNavigationSnapshot`/LIFO 栈；告警→存档/失败任务、任务→关联游戏均有真实命令与返回入口。恢复前先切工作区，再恢复游戏，避免选中游戏监听器在错误页启动详情加载。
+- 返回快照覆盖 Save/Media/Maintenance 页签、任务筛选/历史范围/导航目标、任务/诊断选择和实际 DataGrid 内部 ScrollViewer 偏移。`TaskCenterView`/`MaintenanceView` 通过 `Loaded/Unloaded/ScrollChanged` 真实捕获与恢复有限列表滚动；对象消失时不替换其他游戏/任务并给出状态说明。
+- 当前隔离验证：source validation 通过、XAML `24/24`、Release solution `0 warning / 0 error`、R10 与相邻告警路由 `13/13`、diff check 通过。证据：`evidence/R10-01-CONTEXT-RETURN-20260919.md`。
+- 证据仅覆盖 fake/合成状态、隔离 STA WPF 和逻辑 DIP；未验真实 Playnite 返回序列、presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW、宿主性能和 package-host。Demo 原目录不可用，沿用恢复生产基线。用户 DEV-INSTALL-008 main 全量日志的 `73 failed / 588 passed / 57 skipped` 作为独立发布边界记录，未在 dirty main 上覆盖或重跑。
+- 下一可执行任务：R10-02；真实宿主与 main 合并后的单 checkout 安装器复验仍未完成。
