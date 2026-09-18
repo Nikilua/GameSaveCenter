@@ -1733,7 +1733,24 @@ public static class Program
             .GetValue(view)!;
         if (alternateDensity)
         {
+            // The production header style has a 42 DIP MinHeight. Override both
+            // the DataGrid value and the realized header style in this fixture so
+            // the alternate-density case actually measures a 36/44 DIP table,
+            // instead of silently testing only the row-density half.
             grid.ColumnHeaderHeight = 36;
+            var headerStyle = new Style(typeof(DataGridColumnHeader), grid.ColumnHeaderStyle);
+            headerStyle.Setters.Add(new Setter(FrameworkElement.HeightProperty, 36d));
+            headerStyle.Setters.Add(new Setter(FrameworkElement.MinHeightProperty, 36d));
+            grid.ColumnHeaderStyle = headerStyle;
+            foreach (var column in grid.Columns)
+            {
+                var columnHeaderStyle = new Style(
+                    typeof(DataGridColumnHeader),
+                    column.HeaderStyle ?? grid.ColumnHeaderStyle);
+                columnHeaderStyle.Setters.Add(new Setter(FrameworkElement.HeightProperty, 36d));
+                columnHeaderStyle.Setters.Add(new Setter(FrameworkElement.MinHeightProperty, 36d));
+                column.HeaderStyle = columnHeaderStyle;
+            }
             var rowStyle = new Style(typeof(DataGridRow), grid.RowStyle);
             rowStyle.Setters.Add(new Setter(FrameworkElement.HeightProperty, 44d));
             rowStyle.Setters.Add(new Setter(FrameworkElement.MinHeightProperty, 44d));
