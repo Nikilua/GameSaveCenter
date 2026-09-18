@@ -30,6 +30,7 @@ namespace GameSaveCenter.Playnite.ViewModels
     {
         partial void OnWorkspaceStateInitialize();
         partial void OnNavigationStateInitialize();
+        partial void OnRecentAccessInitialize();
         partial void OnWorkspaceStateInputsChanged();
 
         private static readonly ILogger Logger = LogManager.GetLogger();
@@ -246,6 +247,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             gamePicker.PropertyChanged += OnGamePickerPropertyChanged;
             OnWorkspaceStateInitialize();
             OnNavigationStateInitialize();
+            OnRecentAccessInitialize();
             gameIconProvider = new PlayniteGameIconProvider(plugin.PlayniteApi);
             gameBackgroundProvider = new PlayniteGameBackgroundProvider(plugin.PlayniteApi);
             gameSearchText = gamePicker.SearchText;
@@ -891,6 +893,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 SetValue(ref currentWorkspace, value);
                 plugin.SessionLastWorkspace = value;
                 uiStateSave?.Schedule();
+                RecordRecentAccess();
             }
         }
         public LayoutMode LayoutMode { get => layoutMode; set => SetValue(ref layoutMode, value); }
@@ -2130,6 +2133,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                             ? CloneGameWithPolicy(game, selectedGamePolicyDraft)
                             : game).ToList();
                     var gamesChanged = Replace(Games, displayGames, SnapshotComparers.Game);
+                    RefreshRecentAccessItems(pruneMissing: true);
                     var pickerChanged = gamePicker.SetItems(Games, selectedGameId ?? plugin.Settings.GamePickerSelectedGameId);
                     if (gamesChanged || pickerChanged)
                         RefreshGameView(false);
@@ -4644,6 +4648,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             // duplicate IPC requests for the same game.
             if (!string.Equals(e.PropertyName, nameof(GamePickerViewModel.SelectedItem), StringComparison.Ordinal)) return;
             var selected = gamePicker.SelectedGame;
+            RecordRecentAccess();
             if (selected != null && !string.Equals(GameDiagnosticPlayniteId, selected.PlayniteId, StringComparison.OrdinalIgnoreCase))
                 GameDiagnosticPlayniteId = selected.PlayniteId;
             UpdateSelectedGamePolicyBaseline(selected);
@@ -5020,7 +5025,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 UpdateBackupMetadataCommand, CompareBackupCommand, PreviewRetentionCommand,
                 AddMediaSourceCommand, AcceptCandidateCommand, RejectCandidateCommand, ReassignMediaCommand,
                 UpdateMediaMetadataCommand,OpenSelectedMediaCommand,RevealSelectedMediaCommand,
-                LoadMoreMediaCommand, ReloadMediaWindowCommand, ApplyMediaFilterPresetCommand, SaveMediaFilterPresetCommand, RenameMediaFilterPresetCommand, DeleteMediaFilterPresetCommand, OpenCloudQueueCommand, OpenMediaWorkspaceCommand, OpenActivityCommand, OpenSelectedFindingNavigationCommand, RefreshCloudTransfersCommand, LoadMoreCloudTransfersCommand, VerifyCloudTransferCommand, RetryCloudUploadCommand,
+                LoadMoreMediaCommand, ReloadMediaWindowCommand, ApplyMediaFilterPresetCommand, SaveMediaFilterPresetCommand, RenameMediaFilterPresetCommand, DeleteMediaFilterPresetCommand, OpenCloudQueueCommand, OpenMediaWorkspaceCommand, OpenActivityCommand, OpenRecentAccessCommand, OpenSelectedFindingNavigationCommand, RefreshCloudTransfersCommand, LoadMoreCloudTransfersCommand, VerifyCloudTransferCommand, RetryCloudUploadCommand,
                 AssignInboxMediaCommand, IgnoreInboxMediaCommand, AssignInboxMediaBatchCommand, IgnoreInboxMediaBatchCommand, RestoreIgnoredMediaBatchCommand,
                 PreviewMediaClassificationCommand, ApplyMediaClassificationCommand, UndoMediaClassificationCommand,
                 RefreshMediaClassificationHistoryCommand, LoadMoreMediaClassificationHistoryCommand,

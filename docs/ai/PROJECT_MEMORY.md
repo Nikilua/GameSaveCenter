@@ -3874,3 +3874,12 @@
 - `ProductionShellChromeSourceTests` 新增真实 STA WPF 行为测试：选中任务入口收展前后保持；7 个入口逐项检查图标、Tooltip、Automation 名称、Tab 键入口；长导航名称下版本徽标与品牌图标不相交且主区仍有宽度。生产 Shell `12/12`，R10 组合 `28/28`。
 - 本阶段只补行为证据和文档，不新建视觉体系或修改生产 XAML；命令/绑定、游戏选框、滚动条、取消/错误语义、恢复保护、有限列表性能和 Playnite/net462 保持。Release `0/0`、XAML `24/24`、source/XAML/diff check 通过。
 - 证据文件：`evidence/R10-07-SIDEBAR-DENSITY-20260919.md`。隔离 STA/合成长名称/逻辑 DIP 不能证明真实 Playnite、物理 DPI/跨屏、presented frame、UIA/读屏、真实键盘/IME、ETW 或宿主性能；Demo 原目录不可用。旧 `.tmp` 清理受 Access denied/锁定句柄影响且未强杀未知进程，main 用户文件未触碰。下一可执行任务：R10-08 最近操作续接。
+
+## 2026-09-19 Round3 R10-08 最近操作续接
+
+- R10-08 先核对现有能力：`OverviewTasks` 明确是任务历史，`Activities`/`OpenActivityCommand` 是全局活动，`GamePickerViewModel` 和 `Games` 已提供稳定 PlayniteId；未重建服务、DTO 或导航体系。
+- `RecentAccessRecord` 是纯标量持久化模型：`PlayniteId`、白名单工作区、范围内 TabIndex、UTC 时间，最多 8 条，按稳定 ID 去重排序。`RecentAccessItem` 只从当前 `Games` 快照派生名称和工作区文案；快照替换后清理不存在的 ID，因此不保存名称、路径、DTO 或 ViewModel。
+- `DashboardViewModel.RecentAccess.cs` 复用现有 `uiStateSave`、`GamePickerViewModel.SelectGame`、工作区页签属性和 `RequestWorkspaceLoad`。恢复入口有专用 `OpenRecentAccessCommand`；对象缺失时删除记录并说明，不自动替换其他对象。Overview 的独立列表最大 `280 DIP`、Recycling、本地滚动，保留游戏选框和既有滚动系统。
+- `R10RecentAccessBehaviorTests` 通过 `2/2`：真实 Overview STA Window 命令点击一次；设置记录正/负行为验证上限、去重、归一化、移除清理和无路径 JSON。R10 `18/18`，定向 Release 编译（Playnite `net462`）成功，XAML `24/24`、source/XAML/diff check 通过。证据：`evidence/R10-08-RECENT-ACCESS-20260919.md`。
+- 不把 synthetic/STA/offscreen/逻辑 DIP 写成真实 Playnite package-host、presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW 或宿主性能通过；Demo 原目录不可用，继续恢复生产基线。main DEV-INSTALL-008 `73/588/57`/安装器退出 1 仍是独立边界，main 用户文件未触碰。
+- 下一可执行任务：R11-01 版本信息摘要；保持每阶段小批量、实现后验证再同步文档/提交。

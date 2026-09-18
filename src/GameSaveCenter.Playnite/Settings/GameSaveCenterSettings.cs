@@ -43,6 +43,7 @@ namespace GameSaveCenter.Playnite.Settings
         private bool sidebarCollapsed;
         private bool healthInspectionEnabled = true;
         private Dictionary<string, double> dataGridColumnWidths = new Dictionary<string, double>(StringComparer.Ordinal);
+        private List<RecentAccessRecord> recentAccess = new List<RecentAccessRecord>();
 
         /// <summary>Raised after Playnite commits the current edit buffer.</summary>
         public event EventHandler? SettingsCommitted;
@@ -165,6 +166,13 @@ namespace GameSaveCenter.Playnite.Settings
         {
             get => dataGridColumnWidths;
             set => dataGridColumnWidths = CloneDataGridColumnWidths(value);
+        }
+
+        /// <summary>Stable-id-only recent game access records; names and paths are never persisted.</summary>
+        public List<RecentAccessRecord> RecentAccess
+        {
+            get => recentAccess;
+            set => recentAccess = RecentAccessRecord.NormalizeMany(value);
         }
 
         internal bool TryGetDataGridColumnWidth(string viewKey, string columnKey, out double width)
@@ -521,6 +529,7 @@ namespace GameSaveCenter.Playnite.Settings
             MediaSearchTextState = other.MediaSearchTextState ?? string.Empty;
             FilterPresets = other.FilterPresets;
             DataGridColumnWidths = other.DataGridColumnWidths;
+            RecentAccess = other.RecentAccess;
         }
 
         private static string BuildDataGridColumnWidthKey(string viewKey, string columnKey)

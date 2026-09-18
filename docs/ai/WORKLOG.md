@@ -7422,3 +7422,12 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 新增两项真实 STA WPF 行为验证，不以 `Assert.Contains` 代替交互：`CollapsedSidebarPreservesSelectedWorkspaceAndAccessibleNavigation` 验证 7 个入口和选中态跨收展保持；`ExpandedSidebarKeepsBrandBadgeClearAndLeavesMainAreaAvailableForLongLabels` 验证长名称、徽标矩形和主区可用宽度。生产 Shell 测试 `12/12`，R10 组合 `28/28`。
 - Release/net462 `0 warning / 0 error`、XAML `24/24`、source validation、XAML check、diff check 均通过。没有生产实现变更，游戏选框、滚动条、命令/Binding、取消/错误、恢复保护和有限列表性能保持。
 - 证据已写入 `evidence/R10-07-SIDEBAR-DENSITY-20260919.md`，账本状态改为“已满足”。旧 `.tmp` 清理仍受 worktree Access denied/锁定句柄影响，未强杀未知进程；用户 main 改动未触碰。真实 Playnite/package-host、DPI/跨屏、呈现帧、UIA/IME、ETW、宿主性能仍未验。下一可执行任务：R10-08 最近操作续接。
+
+## 2026-09-19 Round3 R10-08 最近操作续接
+
+- 先查已有能力：`OverviewTasks`/`Activities`/`OpenActivityCommand` 已区分任务历史与全局活动；`GamePickerViewModel`、`Games` 和稳定 `PlayniteId` 可直接复用，没有新增服务或 DTO。
+- 新增 `RecentAccessRecord`、`RecentAccessItem` 和 `DashboardViewModel.RecentAccess.cs`。设置只落稳定 ID、工作区、TabIndex、UTC 时间，最多 8 条；按 ID 去重/排序，快照后清理已移除游戏；标题从当前快照解析，不保存本地路径。恢复入口复用现有选框、页签、工作区和加载请求，缺失对象只清理并提示。
+- Overview 新增独立“最近访问”卡片，`280 DIP` 最大高度、本地滚动、Recycling 虚拟化和专用 `OpenRecentAccessCommand`；“最近任务”保持原列表和语义。为该列表补充 `validate-source.py` 有限视口白名单，防止页级无限测量逃逸大列表门禁。
+- 验证：R10RecentAccess `2/2`；R10 组合 `18/18`；定向 Release 编译成功（Contracts/Core/Playnite `net462`、Tests `net472`）；XAML `24/24`；`validate-source.py`、XAML 检查、`git diff --check` 通过。行为包含真实 Overview STA WPF ButtonBase 点击，不以 `Assert.Contains` 单独签收。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R10-08-RECENT-ACCESS-20260919.md`，Round3 账本已改为“已满足”。main 用户文件未触碰；DEV-INSTALL-008 main `73 failed / 588 passed / 57 skipped` 和安装器退出 1 未在 dirty main 覆盖或重跑。Demo 原目录不可用，沿用恢复生产基线。
+- 未验真实 Playnite/package-host 安装与呈现、physical DPI/跨屏、UIA/读屏、真实键盘/IME、ETW、宿主性能；未读取/写入真实存档、媒体、用户云端或对外诊断。下一可执行任务：R11-01 版本信息摘要。

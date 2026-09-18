@@ -223,6 +223,26 @@
                 <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
                 <Setter Property="ToolTip" Value="打开对应工作区"/>
             </Style>
+            <Style x:Key="OverviewRecentAccessItemStyle" TargetType="ListBoxItem">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ListBoxItem">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              ContentStringFormat="{TemplateBinding ContentStringFormat}"/>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
             <Style x:Key="OverviewCloudQueueCardButton"
                    TargetType="ui:Button"
                    BasedOn="{StaticResource GscWpfUiButton}">
@@ -457,8 +477,74 @@
                     Grid.ColumnSpan="2"
                     VerticalAlignment="Top"
                     MinHeight="0">
-                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-              <Border x:Name="OverviewRecentActivityCard" Grid.Row="0" Style="{StaticResource OverviewReadingCard}" Margin="0,0,0,14" MinHeight="0">
+                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+              <Border x:Name="OverviewRecentAccessCard" Grid.Row="0" Style="{StaticResource OverviewReadingCard}" Margin="0,0,0,14" MinHeight="0">
+                <Grid>
+                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource OverviewDemoSectionTitle}" Text="最近访问"/>
+                            <TextBlock Style="{StaticResource OverviewDemoCaption}" Text="从稳定的游戏入口续接上次工作的页面" Margin="0,4,0,0"/>
+                        </StackPanel>
+                        <TextBlock Grid.Column="1" Text="{Binding RecentAccessItems.Count, StringFormat=全部 {0} 个}" Style="{StaticResource OverviewDemoCaption}" Foreground="{DynamicResource GscAccentBrush}" TextElement.Foreground="{DynamicResource GscAccentBrush}" FontWeight="SemiBold" HorizontalAlignment="Right" TextTrimming="CharacterEllipsis" ToolTip="最近访问数量"/>
+                    </Grid>
+                    <Border Grid.Row="1" Style="{StaticResource OverviewActivityFrame}" MinHeight="0">
+                        <Grid>
+                            <ListBox x:Name="OverviewRecentAccessList"
+                                     ItemsSource="{Binding RecentAccessItems}"
+                                     ItemContainerStyle="{StaticResource OverviewRecentAccessItemStyle}"
+                                     HorizontalContentAlignment="Stretch"
+                                     MinHeight="0"
+                                     MaxHeight="280"
+                                     Background="Transparent"
+                                     BorderThickness="0"
+                                     VirtualizingPanel.IsVirtualizing="True"
+                                     VirtualizingPanel.VirtualizationMode="Recycling"
+                                     ScrollViewer.CanContentScroll="True"
+                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <ui:Button Style="{StaticResource OverviewActivityRowButton}"
+                                                   Command="{Binding DataContext.OpenRecentAccessCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                   CommandParameter="{Binding}"
+                                                   AutomationProperties.Name="打开最近访问对象"
+                                                   ToolTip="{Binding SummaryDisplay}">
+                                            <Border Style="{StaticResource GscActivityRowBorder}">
+                                                <Grid MinHeight="52">
+                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                    <Border Width="34" Height="34" CornerRadius="10" Background="{DynamicResource GscAccentTintBrush}" BorderBrush="{DynamicResource GscAccentTintBrush}" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                                        <ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconActionHistory}" Width="18" Height="18" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    </Border>
+                                                    <StackPanel Grid.Column="1" Margin="0,0,12,0" VerticalAlignment="Center" MinWidth="0">
+                                                        <TextBlock Text="{Binding GameName, Mode=OneWay}" FontSize="{DynamicResource GscBodyFontSize}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/>
+                                                        <TextBlock Text="{Binding SummaryDisplay, Mode=OneWay}" FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,2,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding SummaryDisplay}"/>
+                                                    </StackPanel>
+                                                    <TextBlock Grid.Column="2" Text="›" FontSize="22" Foreground="{DynamicResource GscMutedTextBrush}" VerticalAlignment="Center" Margin="4,0,2,2"/>
+                                                </Grid>
+                                            </Border>
+                                        </ui:Button>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <TextBlock Text="暂无最近访问&#x0a;选择游戏并进入工作区后会显示在这里。" IsHitTestVisible="False">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource OverviewEmptyText}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RecentAccessItems.Count}" Value="0">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </Border>
+                </Grid>
+             </Border>
+              <Border x:Name="OverviewRecentActivityCard" Grid.Row="1" Style="{StaticResource OverviewReadingCard}" Margin="0,0,0,14" MinHeight="0">
                 <Grid>
                     <!-- The recent-task frame must follow the real item count. A fixed
                          second row makes a short list look like an empty oversized card
@@ -556,7 +642,7 @@
              </Border>
              </Grid>
              </Border>
-              <Border Grid.Row="1" Style="{StaticResource OverviewReadingCard}" Margin="0,0,0,14" MinHeight="0">
+              <Border Grid.Row="2" Style="{StaticResource OverviewReadingCard}" Margin="0,0,0,14" MinHeight="0">
                 <Grid>
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
                     <Grid Margin="0,0,0,12">

@@ -1487,6 +1487,15 @@ def check_final_redesign_guards() -> None:
             )
         )
         bounded_workspace_scroll = bounded_workspace_scroll or (
+            control.attrib.get("{http://schemas.microsoft.com/winfx/2006/xaml}Name") == "OverviewRecentAccessList"
+            and control.attrib.get("MaxHeight") == "280"
+            and any(
+                local_name(node.tag) == "ScrollViewer"
+                and node.attrib.get("{http://schemas.microsoft.com/winfx/2006/xaml}Name", "") == "OverviewStackScrollSurface"
+                for node in ancestor_nodes
+            )
+        )
+        bounded_workspace_scroll = bounded_workspace_scroll or (
             control.attrib.get("{http://schemas.microsoft.com/winfx/2006/xaml}Name") == "OverviewProtectionPreviewItems"
             and control.attrib.get("Tag") == "FiniteViewport"
             and any(
