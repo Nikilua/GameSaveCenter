@@ -7293,3 +7293,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `f1ea52a` 将真实宿主汇总的阻断门禁统计改为排除 `gates/overflow-classification.json`；定向 `UiAuditTruthfulnessTests.OverflowClassificationReportIsNotCountedAsBlockingGate` 为 `1/1`。既有 `95d37cc` 隔离宿主产物只有该诊断 JSON，按新规则阻断门禁为 `0`，但旧摘要的 `HighGateCount=1` 原文保留。
 - `cc63523` 的 Release 构建、打包、隔离安装和全量自动测试通过：XAML `24/24`、Core `83/83`、Worker `310/311`（1 skip）、Playnite `495/558`（63 skip），失败 `0`。
 - `cc63523` 最新真实宿主重跑在 Playnite `Application started` 后因 CEF `mojo platform_channel` `Access denied (0x5)` 退出，没有 `summary.json` 或 Embedded Dashboard/Settings；该次只记录为宿主启动边界，不改写历史 `69e1f84` 真实嵌入证据，也未结束用户扩展目录 Worker PID `23304`。详见 `evidence/q13-q25/REAL_HOST_AUDIT-FP-FIX-20260915.md`。
+
+## 2026-09-18 合并后 Playnite 测试门禁修复
+
+- 用户提供的合并后日志显示：XAML `24/24`、Release 构建 `0` 错误、Core `83/83`、Worker `311/311` 均通过，但 Playnite 全量在同一测试宿主中为 `588 passed / 73 failed / 57 skipped`，因此脚本在安装前停止。
+- 在干净提交快照复现为同类 WPF 生命周期污染：全量套件失败，而逐类独立进程及代表性 WPF 类通过；另发现 5 处源码断言仍锁定旧实现/属性顺序，已改为语义校验。没有修改生产游戏选框、滚动条、命令、取消/错误语义或 Playnite 兼容实现。
+- 新增 `scripts/run-playnite-tests-isolated.ps1`，按测试类发现 WPF 生命周期依赖并逐类启动独立测试进程；`scripts/build.ps1` 已接入该门禁，任何失败仍会停止，不以跳过换取通过。提交 `d08509f3`（`修复Playnite测试隔离与构建门禁`）已推送 `origin/main`。
+- 本轮提交后的干净快照全量复核被本机磁盘空间阻塞：为避免污染用户工作树生成的临时构建输出耗尽系统盘，MSBuild 报“磁盘空间不足”；临时目录已清理。该次不计为构建或安装通过，也未启动真实 Playnite 安装。
+- 当前工作树仍保留用户未提交的 R08 对话框收尾改动与 `src.zip`，不能直接用它做 clean install。下一执行项：在有足够磁盘空间的干净提交树上运行 `scripts/build.ps1 -Configuration Release`，确认隔离 Playnite 全量通过后，再按脚本保护流程打包、隔离安装和启动；真实宿主像素、DPI、IME、读屏、ETW 与耐久边界仍未验。

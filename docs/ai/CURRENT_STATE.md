@@ -1477,3 +1477,9 @@
 - `f1ea52a` 修正真实宿主 `HighGateCount` 统计：`overflow-classification.json` 仅是分类诊断，不再算阻断门禁；当前 Release truthfulness 定向回归 `1/1`，已有隔离产物按新规则为 `BlockingGateFiles=0`，但旧摘要原文仍是 `HighGateCount=1`。
 - `cc63523` 自动门禁与打包安装通过：XAML `24/24`、Core `83/83`、Worker `310/311`（1 skip）、Playnite `495/558`（63 skip），失败 `0`。
 - `cc63523` 的早期隔离 Playnite 曾在 CEF `mojo platform_channel` 访问拒绝后退出；该失败边界已由 `37f92f7` 的成功隔离重跑补充。当前成功产物绑定完整 SHA、`HighGateCount=0`，但 Q24-03 仍受单屏限制，用户 Worker PID `23304` 未终止。
+
+## 2026-09-18 合并后构建错误收口
+
+- 合并后用户日志的实际停止点是 Playnite 全量测试：`588 passed / 73 failed / 57 skipped`；XAML `24/24`、Release 构建、Core `83/83`、Worker `311/311` 已先通过，安装因此尚未开始。
+- 已推送 `d08509f3`：Playnite WPF 生命周期类改为独立测试进程运行，并校正 5 处已过时的源码契约断言；脚本仍严格失败，不跳过失败类。
+- 后续干净快照复核受到系统盘空间耗尽阻塞，临时输出已清理；不能将该次写为构建或安装通过。当前 main 仍保留用户 R08 未提交改动和 `src.zip`，下一步必须在干净提交树、有足够磁盘空间的环境重跑隔离 Release 门禁，再继续打包/安装/启动验证。

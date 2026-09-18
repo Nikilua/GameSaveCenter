@@ -3744,3 +3744,9 @@
 - `RealHostUiAuditService.CountBlockingGateFiles` 现在排除 `overflow-classification.json` 诊断分类报告；定向 truthfulness 回归 `1/1` 通过。已有隔离产物只有该 JSON，因此修复规则下阻断门禁为 `0`；旧 `summary.json` 的 `HighGateCount=1` 不被篡改。
 - 当前 `cc63523` 的 Release 自动门禁为 XAML `24/24`、Core `83/83`、Worker `310/311`（1 skip）、Playnite `495/558`（63 skip），失败 `0`；打包、隔离安装和构建身份检查也通过。
 - 最新宿主启动在 Playnite CEF 初始化时以 `Access denied (0x5)` 退出，未生成新的真实 Dashboard/Settings 证据；历史 `69e1f84` 真实嵌入像素继续作为签收基线，Q00/Q25 账本未把未捕获宿主写成通过。旧 Worker `23304` 保持未触碰。
+
+## 2026-09-18 合并后 Playnite 门禁修复事实
+
+- 用户合并后的安装日志中，XAML、Release 构建、Core 和 Worker 均通过，但同一进程运行 Playnite 全量测试出现 `588 passed / 73 failed / 57 skipped`，安装尚未开始。干净快照复现表明主要限制是多个 STA/WPF `Application`、Window、Dispatcher 测试共享宿主生命周期；逐类独立进程可通过，不能把全量宿主污染误判为生产 UI 回归。
+- `d08509f3` 已加入 `scripts/run-playnite-tests-isolated.ps1`，按类隔离 WPF 生命周期测试并接入 `scripts/build.ps1`；同时把 5 处过时源码断言改为验证当前语义，而不是放宽产品行为。失败仍会使门禁失败，未改变游戏选框、滚动条、绑定、命令、取消/错误和恢复保护语义。
+- d08509f3 已推送 `origin/main`。其后的干净快照全量复核因临时输出耗尽系统盘而停止；临时目录已清理，不能记为构建/安装通过。当前 main 仍有用户 R08 未提交改动和 `src.zip`，后续验证必须使用干净提交树并保留真实宿主/性能边界。
