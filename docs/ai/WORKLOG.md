@@ -7339,3 +7339,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 新增 `R09PixelStrokeBehaviorTests`，实际实例化生产 Tab/导航模板并进入选中状态；另以 `RenderTargetBitmap` 的 96-DPI 显式缩放探针覆盖 `100/125/150/175/200%`。初次夹具失败是 Margin/Window opacity/抗锯齿采样假设，已改为 Canvas 实际坐标与按 scale 的带宽边界，未放宽生产门禁。
 - 实现提交 `083b7a22` 已完成：build.ps1 重建 XAML `24/24`、Release solution `0 warning / 0 error`，定向 `R09PixelStrokeBehaviorTests 2/2`，R09-02 图标和共享资源回归合计 `6/6`；`validate-source.py`、XAML 检查、diff check 通过。
 - 证据与账本已同步：`evidence/R09-03-PIXEL-STROKE-20260919.md`、`ROUND3_PROGRESS.md`。五档为明确模拟，不写成真实物理 DPI/Playnite/presented frame；Demo 原目录不可用，沿用恢复生产基线。下一可执行任务：R09-04 阴影层次预算。
+
+## 2026-09-19 Round3 R09-04 阴影层次预算
+
+- 复核现有资源后没有重建实现：`GscSurface` 无 Effect，`GscElevatedSurface` 仅主卡片使用；工厂按 surface/primary/sidebar/popup/dialog/slider 分配有限冻结阴影，玻璃关闭返回真实 null。
+- 新增 `R09ShadowBudgetBehaviorTests`，覆盖浅/深 palette 的实际资源对象、低成本回退以及 3 张真实 WPF 卡片在 ScrollViewer 中有/无阴影的 `ExtentHeight` 对比；R09-04 `3/3`，组合 R09-02/R09-03/共享资源 `9/9`。
+- `3ad61099` 精确重建：XAML `24/24`、Release solution `0 warning / 0 error`、Playnite `net462`；源码校验、XAML 检查、diff check 通过。高对比 OS 未切换，R09-06 单独保留；不把离屏资源/布局写成真实宿主呈现。
+- 证据已准备同步：`evidence/R09-04-SHADOW-BUDGET-20260919.md`、`ROUND3_PROGRESS.md`。Demo 原目录不可用，继续使用恢复生产基线；下一可执行任务：R09-05 焦点轮廓合成。

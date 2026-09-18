@@ -1520,3 +1520,11 @@
 - 以 `083b7a22` 重建：XAML `24/24`、Release solution `0 warning / 0 error`、Playnite `net462`；`validate-source.py`、XAML 检查和 `git diff --check` 通过。证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R09-03-PIXEL-STROKE-20260919.md`。
 - 五档是 96-DPI 基线上的明确缩放模拟，不是物理显示器 DPI/跨屏/真实 Playnite 呈现或 presented frame；UIA/读屏、IME、ETW、宿主性能和 package-host 仍未验。Demo 原目录不可用，沿用恢复生产基线；main 用户文件未触碰。用户 DEV-INSTALL-008 的 main 全量失败仍需合入后单一 checkout 重跑。
 - 下一可执行任务：R09-04 阴影层次预算，先查共享 Effect、低 Tier 与高对比回退，再决定证据或最小修复。
+
+## 2026-09-19 Round3 R09-04 阴影层次预算
+
+- 现有 `AdaptiveThemePaletteFactory.ApplyMaterialResources` 已经有有限角色层级：surface `14/2`、primary button `18/0`、popup `20/5`、sidebar `24/3`、dialog `34/8`、slider thumb `6/1`（Blur/Depth）；`GscSurface` 默认无 Effect，`GscElevatedSurface` 只给主卡片使用，没有重建阴影系统。
+- `3ad61099` 新增 `R09ShadowBudgetBehaviorTests`：浅/深 palette 六个冻结 Effect 参数、`glassEnabled=false` 的真实 null/透明 wash 回退、三个真实带阴影 Border 的 ScrollViewer ExtentHeight 保持均通过，R09-04 为 `3/3`。
+- 精确提交重建：XAML `24/24`、Release solution `0 warning / 0 error`、Playnite `net462`；R09-02/R09-03/共享资源相邻回归合计 `9/9`，源码校验/XAML/diff check 通过。证据见 `evidence/R09-04-SHADOW-BUDGET-20260919.md`。
+- 本阶段没有切换真实 Windows High Contrast；高对比系统语义归 R09-06，不能由 `glassEnabled=false` 代替。未验真实 Playnite 呈现、物理 DPI/跨屏、UIA/读屏/IME、ETW、宿主性能和 package-host；Demo 原目录不可用，main 用户文件未触碰。
+- 下一可执行任务：R09-05 焦点轮廓合成，重点验证焦点与 hover/selected/error 的实际模板叠加及圆角 Clip 边界。

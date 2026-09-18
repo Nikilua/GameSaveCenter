@@ -3788,3 +3788,10 @@
 - 行为夹具实例化真实生产 `TabItem`/`RadioButton` 的选中模板，并以离屏 `RenderTargetBitmap` 的显式 `1.00/1.25/1.50/1.75/2.00` render scale 检查 1 DIP 分隔线和圆角连接。最终 R09-03 `2/2`，相邻 R09-02/共享资源 `6/6`，当前提交重建 `24/24`、0/0。
 - “五档 DPI”只能记为明确模拟：96-DPI 基线的显式位图缩放，不能上升为真实物理 DPI/跨屏或 Playnite 宿主呈现；真实 presented frame、UIA/读屏、IME、ETW、宿主性能和 package-host 继续单列。Demo 原始目录不可用，沿用恢复生产基线。
 - 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R09-03-PIXEL-STROKE-20260919.md`；main 的 `DashboardView.xaml.cs`、`src.zip`、R08 基础设施/测试用户改动继续保持未触碰。下一项 R09-04 阴影层次预算。
+
+## 2026-09-19 Round3 R09-04 阴影层次预算
+
+- 先复用既有 `ApplyMaterialResources` 与 `GscSurface/GscElevatedSurface`：现有资源已经把 shadow 限制为 surface/sidebar/popup/dialog/primary/slider 六种角色，不把所有卡片、列表和输入框都加 Effect；`glassEnabled=false` 通过真实 null 回退，避免保留 Opacity=0 的视觉管线。
+- `3ad61099` 的真实 WPF 行为夹具验证浅/深主题冻结 `DropShadowEffect` 参数、low-cost null/透明 wash、PopupAnimation 关闭语义，并用三个实际卡片比较有/无 Effect 的 ScrollViewer `ExtentHeight`，确认阴影不扩大滚动范围。R09-04 `3/3`，组合相邻回归 `9/9`。
+- 只把高对比回退记为未验：测试没有改 OS High Contrast，R09-06 仍需独立检查系统语义资源；离屏/逻辑布局不能替代真实 Playnite、呈现帧、物理 DPI/跨屏、UIA/读屏、IME、ETW 或宿主性能。Demo 原始目录不可用，沿用恢复生产基线。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R09-04-SHADOW-BUDGET-20260919.md`。main 用户未提交文件继续不碰。下一项 R09-05 焦点轮廓合成。
