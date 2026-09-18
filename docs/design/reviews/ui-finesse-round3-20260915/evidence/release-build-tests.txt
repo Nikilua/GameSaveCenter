@@ -1,0 +1,233 @@
+当前可用 SDK：
+  9.0.302 [C:\Program Files\dotnet\sdk]
+隔离构建输出：D:\workplace\github\GameSaveCenter\.tmp\round2-quality-review\.tmp\b
+测试临时目录：D:\workplace\github\GameSaveCenter\.tmp\round2-quality-review\.tmp\b\test-temp
+
+==> 检查 XAML 结构
+XAML structural validation passed for 24 file(s).
+
+==> 显示当前 SDK 信息
+.NET SDK:
+ Version:           9.0.302
+ Commit:            bb2550b9af
+ Workload version:  9.0.300-manifests.183aaee6
+ MSBuild version:   17.14.13+65391c53b
+
+运行时环境:
+ OS Name:     Windows
+ OS Version:  10.0.22000
+ OS Platform: Windows
+ RID:         win-x64
+ Base Path:   C:\Program Files\dotnet\sdk\9.0.302\
+
+已安装 .NET 工作负载:
+没有要显示的已安装工作负载。
+配置为在安装新清单时使用 loose manifests。
+
+Host:
+  Version:      9.0.7
+  Architecture: x64
+  Commit:       3c298d9f00
+
+.NET SDKs installed:
+  9.0.302 [C:\Program Files\dotnet\sdk]
+
+.NET runtimes installed:
+  Microsoft.AspNetCore.App 8.0.18 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+  Microsoft.AspNetCore.App 9.0.7 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+  Microsoft.NETCore.App 8.0.18 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+  Microsoft.NETCore.App 9.0.7 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+  Microsoft.WindowsDesktop.App 8.0.18 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+  Microsoft.WindowsDesktop.App 9.0.7 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+
+Other architectures found:
+  x86   [C:\Program Files (x86)\dotnet]
+    registered at [HKLM\SOFTWARE\dotnet\Setup\InstalledVersions\x86\InstallLocation]
+
+Environment variables:
+  Not set
+
+global.json file:
+  D:\workplace\github\GameSaveCenter\.tmp\round2-quality-review\global.json
+
+Learn more:
+  https://aka.ms/dotnet/info
+
+Download .NET:
+  https://aka.ms/dotnet/download
+
+==> 还原 NuGet 依赖
+  正在确定要还原的项目…
+  所有项目均是最新的，无法还原。
+
+==> 编译解决方案（Release）
+  GameSaveCenter.Contracts -> D:\workplace\github\GameSaveCenter\.tmp\round2-quality-review\.tmp\b\bin\GameSaveCenter.Contracts\Release\netstandard2.0\GameSaveCenter.Contracts.dll
+  GameSaveCenter.Core -> D:\workplace\github\GameSaveCenter\.tmp\round2-quality-review\.tmp\b\bin\GameSaveCenter.Core\Release\netstandard2.0\GameSaveCenter.Core.dll
+  GameSaveCenter.Worker -> D:\workplace\github\GameSaveCenter\.tmp\round2-quality-review\.tmp\b\bin\GameSaveCenter.Worker\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.dll
+  GameSaveCenter.Playnite -> D:\workplace\github\GameSaveCenter\.tmp\round2-quality-review\.tmp\b\bin\GameSaveCenter.Playnite\Release\net462\GameSaveCenter.Playnite.dll
+  GameSaveCenter.Core.Tests -> D:\workplace\github\GameSaveCenter\.tmp\round2-quality-review\.tmp\b\bin\GameSaveCenter.Core.Tests\Release\net8.0\GameSaveCenter.Core.Tests.dll
+  GameSaveCenter.Worker.Tests -> D:\workplace\github\GameSaveCenter\.tmp\round2-quality-review\.tmp\b\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll
+  GameSaveCenter.Playnite.Tests -> D:\workplace\github\GameSaveCenter\.tmp\round2-quality-review\.tmp\b\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll
+
+已成功生成。
+    0 个警告
+    0 个错误
+
+已用时间 00:01:40.93
+
+==> 运行核心单元测试
+D:\workplace\github\GameSaveCenter\.tmp\round2-quality-review\.tmp\b\bin\GameSaveCenter.Core.Tests\Release\net8.0\GameSaveCenter.Core.Tests.dll (.NETCoreApp,Version=v8.0)的测试运行
+VSTest 版本 17.14.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+
+已通过! - 失败:     0，通过:    83，已跳过:     0，总计:    83，持续时间: 39 ms - GameSaveCenter.Core.Tests.dll (net8.0)
+
+==> 运行 Worker 集成测试
+D:\workplace\github\GameSaveCenter\.tmp\round2-quality-review\.tmp\b\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll (.NETCoreApp,Version=v8.0)的测试运行
+VSTest 版本 17.14.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:11.86]     GameSaveCenter.Worker.Tests.WorkerProcessRestartTests.HardRestartReconcilesDurableIncompleteTask [SKIP]
+  已跳过 GameSaveCenter.Worker.Tests.WorkerProcessRestartTests.HardRestartReconcilesDurableIncompleteTask [1 ms]
+
+已通过! - 失败:     0，通过:   310，已跳过:     1，总计:   311，持续时间: 1 m 16 s - GameSaveCenter.Worker.Tests.dll (net8.0)
+
+==> 运行 Playnite 设置迁移测试
+D:\workplace\github\GameSaveCenter\.tmp\round2-quality-review\.tmp\b\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.14.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:03.26]     GameSaveCenter.Playnite.Tests.SettingsAndAutoSelectSourceTests.OnboardingUsesMaintenanceWorkspaceAndExplicitCommands [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.SettingsAndAutoSelectSourceTests.OnboardingUsesMaintenanceWorkspaceAndExplicitCommands [1 ms]
+[xUnit.net 00:00:03.34]     GameSaveCenter.Playnite.Tests.SettingsAndAutoSelectSourceTests.AutoSelectUsesEventsAndResolverWithoutPolling [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.SettingsAndAutoSelectSourceTests.AutoSelectUsesEventsAndResolverWithoutPolling [1 ms]
+[xUnit.net 00:00:03.45]     GameSaveCenter.Playnite.Tests.WorkspaceStateSourceTests.SharedWorkspaceStatePresenterExistsAndIsUsedAcrossPages [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.WorkspaceStateSourceTests.SharedWorkspaceStatePresenterExistsAndIsUsedAcrossPages [1 ms]
+[xUnit.net 00:00:03.64]     GameSaveCenter.Playnite.Tests.OvernightClosureV6Tests.ChipAndCellSpacingUseSharedTokens [SKIP]
+[xUnit.net 00:00:03.65]     GameSaveCenter.Playnite.Tests.OvernightClosureV6Tests.FiltersAndSearchControlsHaveSemanticPrefixes [SKIP]
+[xUnit.net 00:00:03.69]     GameSaveCenter.Playnite.Tests.OvernightClosureV6Tests.OverviewUsesOnlyTheRootPageScrollSurface [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.OvernightClosureV6Tests.ChipAndCellSpacingUseSharedTokens [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.OvernightClosureV6Tests.FiltersAndSearchControlsHaveSemanticPrefixes [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.OvernightClosureV6Tests.OverviewUsesOnlyTheRootPageScrollSurface [1 ms]
+[xUnit.net 00:00:03.70]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewGlobalActivityUsesStableFourColumnRow [SKIP]
+[xUnit.net 00:00:03.72]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.SaveHistoryStatusStaysInNarrowViewport [SKIP]
+[xUnit.net 00:00:03.72]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.CompactDetailsButtonsOwnADedicatedActionRow [SKIP]
+[xUnit.net 00:00:03.72]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewHeroStatusPillsUseAFullWidthSecondRow [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewGlobalActivityUsesStableFourColumnRow [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.SaveHistoryStatusStaysInNarrowViewport [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.CompactDetailsButtonsOwnADedicatedActionRow [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewHeroStatusPillsUseAFullWidthSecondRow [1 ms]
+[xUnit.net 00:00:03.75]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewGlobalActivityTimelineUsesCuratedBusinessEvents [SKIP]
+[xUnit.net 00:00:03.76]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewProtectionActionsHaveTheirOwnResponsiveRow [SKIP]
+[xUnit.net 00:00:03.77]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.MediaCurrentListStartsAtTheTopOfItsVirtualizedViewport [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewGlobalActivityTimelineUsesCuratedBusinessEvents [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewProtectionActionsHaveTheirOwnResponsiveRow [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.MediaCurrentListStartsAtTheTopOfItsVirtualizedViewport [1 ms]
+[xUnit.net 00:00:03.77]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.TypographyUsesCentralizedChineseAwareFontChain [SKIP]
+[xUnit.net 00:00:03.79]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewFlowUsesTheFiniteViewportWhenHorizontalScrollingIsDisabled [SKIP]
+[xUnit.net 00:00:03.80]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.MediaSearchBoxUsesStretchableColumn [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.TypographyUsesCentralizedChineseAwareFontChain [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewFlowUsesTheFiniteViewportWhenHorizontalScrollingIsDisabled [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.MediaSearchBoxUsesStretchableColumn [1 ms]
+[xUnit.net 00:00:03.85]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewStatStripUsesTheDemoContinuousSummaryStructure [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewStatStripUsesTheDemoContinuousSummaryStructure [1 ms]
+[xUnit.net 00:00:04.10]     GameSaveCenter.Playnite.Tests.OvernightV4SaveFormTests.SaveBackupAutomationFormHasLabelsUnitsAndHelpers [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.OvernightV4SaveFormTests.SaveBackupAutomationFormHasLabelsUnitsAndHelpers [1 ms]
+[xUnit.net 00:00:05.03]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceAuditTableSpansFullWidthUntilAFindingIsSelected [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceAuditTableSpansFullWidthUntilAFindingIsSelected [1 ms]
+[xUnit.net 00:00:06.16]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInspectorReleasesEmptyRightColumn [SKIP]
+[xUnit.net 00:00:06.16]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DiagnosticInspectorKeepsLongContentScrollableAndOwnsNoDeadRightColumn [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInspectorReleasesEmptyRightColumn [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DiagnosticInspectorKeepsLongContentScrollableAndOwnsNoDeadRightColumn [1 ms]
+[xUnit.net 00:00:06.54]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterProvidesDemoComparisonAndRetentionInspector [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterProvidesDemoComparisonAndRetentionInspector [1 ms]
+[xUnit.net 00:00:06.55]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskInspectorReleasesEmptyRightColumn [SKIP]
+[xUnit.net 00:00:06.58]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskWorkspaceKeepsRecoveryActionsReachableWhenDetailsWrap [SKIP]
+[xUnit.net 00:00:06.59]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerInspectorReleasesEmptyRightColumn [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskInspectorReleasesEmptyRightColumn [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskWorkspaceKeepsRecoveryActionsReachableWhenDetailsWrap [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerInspectorReleasesEmptyRightColumn [1 ms]
+[xUnit.net 00:00:06.90]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceWorkspaceReflowsHealthCardsAndMappingEditor [SKIP]
+[xUnit.net 00:00:06.92]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskInspectorRestoresAfterCompactResize [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceWorkspaceReflowsHealthCardsAndMappingEditor [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskInspectorRestoresAfterCompactResize [1 ms]
+[xUnit.net 00:00:06.93]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDeviceCompactInspectorTogglesToUsableHeight [SKIP]
+[xUnit.net 00:00:06.93]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.EveryDashboardViewModelCommandRemainsReachableFromTheRedesignedDashboard [SKIP]
+[xUnit.net 00:00:06.94]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DemoPhaseTwoLayoutKeepsNaturalFormsAndDesktopInspectors [SKIP]
+[xUnit.net 00:00:06.95]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ExtractedWorkspacesRetainTheLessObviousOperationalEntrypoints [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDeviceCompactInspectorTogglesToUsableHeight [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.EveryDashboardViewModelCommandRemainsReachableFromTheRedesignedDashboard [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DemoPhaseTwoLayoutKeepsNaturalFormsAndDesktopInspectors [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ExtractedWorkspacesRetainTheLessObviousOperationalEntrypoints [1 ms]
+[xUnit.net 00:00:07.02]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerInspectorRestoresAfterCompactResize [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerInspectorRestoresAfterCompactResize [1 ms]
+[xUnit.net 00:00:07.48]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerWorkspaceStacksVirtualizedPanesBeforeTheirControlsBecomeUnreadable [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerWorkspaceStacksVirtualizedPanesBeforeTheirControlsBecomeUnreadable [1 ms]
+[xUnit.net 00:00:07.51]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewStatCardsShowRealRatioBarsThatCollapseOnEmptyLibrary [SKIP]
+[xUnit.net 00:00:07.53]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterReleasesEmptyHistoryAndCandidateInspectors [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewStatCardsShowRealRatioBarsThatCollapseOnEmptyLibrary [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterReleasesEmptyHistoryAndCandidateInspectors [1 ms]
+[xUnit.net 00:00:07.60]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterInspectorsRestoreAfterCompactResize [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterInspectorsRestoreAfterCompactResize [1 ms]
+[xUnit.net 00:00:08.05]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewWorkspaceIsPhysicallyExtractedWithoutBreakingResponsiveCoordinator [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewWorkspaceIsPhysicallyExtractedWithoutBreakingResponsiveCoordinator [1 ms]
+[xUnit.net 00:00:08.08]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerCompactInspectorDefaultsToDetailsButtonAndToggleOpen [SKIP]
+[xUnit.net 00:00:08.09]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewShowsTheSameAttentionAndRuntimeCountersReturnedByTheSnapshot [SKIP]
+[xUnit.net 00:00:08.14]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDiagnosticsActionsUseDemoCardWithoutDroppingCommands [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerCompactInspectorDefaultsToDetailsButtonAndToggleOpen [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewShowsTheSameAttentionAndRuntimeCountersReturnedByTheSnapshot [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDiagnosticsActionsUseDemoCardWithoutDroppingCommands [1 ms]
+[xUnit.net 00:00:08.27]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedDataGridChromeCoversHeadersCellsAndRowsAcrossExtractedWorkspaces [SKIP]
+[xUnit.net 00:00:08.29]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.CompactLayoutsKeepSummaryInformationAndUseThePageScroller [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedDataGridChromeCoversHeadersCellsAndRowsAcrossExtractedWorkspaces [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.CompactLayoutsKeepSummaryInformationAndUseThePageScroller [1 ms]
+[xUnit.net 00:00:08.33]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewStatStripKeepsSixRealSnapshotMetricsWithMotionGatedHover [SKIP]
+[xUnit.net 00:00:08.36]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskStackedInspectorReservesTheDemoQueueViewport [SKIP]
+[xUnit.net 00:00:08.36]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskCompactInspectorDefaultsToDetailsButtonAndToggleOpen [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewStatStripKeepsSixRealSnapshotMetricsWithMotionGatedHover [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskStackedInspectorReservesTheDemoQueueViewport [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskCompactInspectorDefaultsToDetailsButtonAndToggleOpen [1 ms]
+[xUnit.net 00:00:08.39]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInspectorStacksBeforeItsEditingControlsAreCompressed [SKIP]
+[xUnit.net 00:00:08.39]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.AttentionActionsExposeAnAccessibleExplanationPath [SKIP]
+[xUnit.net 00:00:08.39]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.RecentProtectionCardSupportsSelectionAndRecommendedBatchAction [SKIP]
+[xUnit.net 00:00:08.44]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaCompactInspectorDefaultsToDetailsButtonAndToggleOpen [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInspectorStacksBeforeItsEditingControlsAreCompressed [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.AttentionActionsExposeAnAccessibleExplanationPath [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.RecentProtectionCardSupportsSelectionAndRecommendedBatchAction [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaCompactInspectorDefaultsToDetailsButtonAndToggleOpen [1 ms]
+[xUnit.net 00:00:08.59]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewHeroMatchesDemoHeadlineScaleWithWideAmbientMaterial [SKIP]
+[xUnit.net 00:00:08.61]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterCompactInspectorsDefaultToDetailsButtonAndToggleOpen [SKIP]
+[xUnit.net 00:00:08.64]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskGameFilterMovesIntoMoreFiltersOnCompactPanes [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewHeroMatchesDemoHeadlineScaleWithWideAmbientMaterial [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterCompactInspectorsDefaultToDetailsButtonAndToggleOpen [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskGameFilterMovesIntoMoreFiltersOnCompactPanes [1 ms]
+[xUnit.net 00:00:08.67]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDiagnosticsTableSpansFullWidthUntilAFindingIsSelected [SKIP]
+[xUnit.net 00:00:08.67]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.CommonWindowSizesKeepPrimaryOverviewAndTableContentReachable [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDiagnosticsTableSpansFullWidthUntilAFindingIsSelected [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.CommonWindowSizesKeepPrimaryOverviewAndTableContentReachable [1 ms]
+[xUnit.net 00:00:08.73]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewRecentActivityUsesDemoIconTileRhythmWithSemanticTriggers [SKIP]
+[xUnit.net 00:00:08.74]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDeviceStateUsesAStarTableRowAndInternalScrolling [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewRecentActivityUsesDemoIconTileRhythmWithSemanticTriggers [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDeviceStateUsesAStarTableRowAndInternalScrolling [1 ms]
+[xUnit.net 00:00:08.79]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.NestedWorkspaceScrollChannelsUseSharedPageOrInspectorStyles [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.NestedWorkspaceScrollChannelsUseSharedPageOrInspectorStyles [1 ms]
+[xUnit.net 00:00:09.34]     GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.CallerCancellationBeforeConnectDoesNotOpenARequest [SKIP]
+[xUnit.net 00:00:09.34]     GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.HostShutdownDuringReadIsDistinctFromCallerCancellation [SKIP]
+[xUnit.net 00:00:09.34]     GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.CallerCancellationDuringReadClosesThePipeAndReturnsPromptly [SKIP]
+[xUnit.net 00:00:09.34]     GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.LostWriteResponseIsRecoveredWithTheSameRequestId [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.CallerCancellationBeforeConnectDoesNotOpenARequest [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.HostShutdownDuringReadIsDistinctFromCallerCancellation [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.CallerCancellationDuringReadClosesThePipeAndReturnsPromptly [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.LostWriteResponseIsRecoveredWithTheSameRequestId [1 ms]
+[xUnit.net 00:00:09.35]     GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.CallerCancellationDuringReplayWaitStopsWithAmbiguousOutcome [SKIP]
+[xUnit.net 00:00:09.35]     GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.CancellationDuringLargeWriteIsReportedAsAmbiguousAndIsNotRetried [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.CallerCancellationDuringReplayWaitStopsWithAmbiguousOutcome [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.CancellationDuringLargeWriteIsReportedAsAmbiguousAndIsNotRetried [1 ms]
+
+已通过! - 失败:     0，通过:   485，已跳过:    63，总计:   548，持续时间: 6 s - GameSaveCenter.Playnite.Tests.dll (net472)
+
+构建与测试全部成功。下一步可运行 scripts/package.ps1

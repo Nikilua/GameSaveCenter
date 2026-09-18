@@ -1,0 +1,7 @@
+Scale reused: False
+Root transform: TransformGroup; child0: TransformGroup; child0.child0: TransformGroup
+Shared mutable transform sibling X: 42
+Entrance after clock removal: opacity=0; Y=12
+Nonexistent font reported glyph A: False
+Pressed 0.5 black text / white chrome / black backdrop: reported background=#FFFFFFFF; foreground=#FF7F7F7F; ratio=4.00410695661485
+Expected composition: background=#808080; foreground=#000000 (entire chrome and text group at opacity 0.5)
