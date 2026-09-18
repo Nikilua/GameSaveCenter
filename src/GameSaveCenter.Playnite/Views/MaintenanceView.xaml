@@ -560,8 +560,12 @@
                                         </Grid>
                                     </Border>
                                     <WrapPanel Margin="0,14,0,0">
-                                        <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding VerifyCloudTransferCommand}" Content="校验远端内容" ToolTip="只读校验远端内容，不会上传或覆盖" AutomationProperties.Name="校验远端内容" Margin="0,0,8,8"/>
-                                        <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RetryCloudUploadCommand}" Content="重试上传" ToolTip="只重新提交失败或已排队的上传" AutomationProperties.Name="重试云端上传" Margin="0,0,0,8"/>
+                                        <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding VerifyCloudTransferCommand}" ToolTip="只读校验远端内容，不会上传或覆盖" AutomationProperties.Name="校验远端内容" Margin="0,0,8,8">
+                                            <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionVerify}"/><TextBlock Text="校验远端内容" VerticalAlignment="Center"/></StackPanel>
+                                        </ui:Button>
+                                        <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RetryCloudUploadCommand}" ToolTip="只重新提交失败或已排队的上传" AutomationProperties.Name="重试云端上传" Margin="0,0,0,8">
+                                            <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionUpload}"/><TextBlock Text="重试上传" VerticalAlignment="Center"/></StackPanel>
+                                        </ui:Button>
                                     </WrapPanel>
                                 </StackPanel>
                             </Border>

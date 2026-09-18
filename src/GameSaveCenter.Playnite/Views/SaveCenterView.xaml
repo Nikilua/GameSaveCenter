@@ -124,9 +124,15 @@
                                         </Border>
                                     </StackPanel>
                                     <WrapPanel x:Name="SaveHistorySummaryActions" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="14,0,0,0">
-                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Appearance="Primary" Command="{Binding DetectPathsCommand}" Content="立即扫描" MinWidth="100" Margin="0,0,8,0"/>
-                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding ValidateCommand}" Content="重新校验" MinWidth="100" Margin="0,0,8,0"/>
-                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding LoadDetailsCommand}" Content="重新加载详情" MinWidth="100" AutomationProperties.Name="重新加载存档详情" Margin="0,0,8,0"/>
+                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Appearance="Primary" Command="{Binding DetectPathsCommand}" MinWidth="100" Margin="0,0,8,0" AutomationProperties.Name="立即扫描存档路径">
+                                            <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionBrowseFolder}"/><TextBlock Text="立即扫描" VerticalAlignment="Center"/></StackPanel>
+                                        </ui:Button>
+                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding ValidateCommand}" MinWidth="100" Margin="0,0,8,0" AutomationProperties.Name="重新校验存档路径">
+                                            <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionVerify}"/><TextBlock Text="重新校验" VerticalAlignment="Center"/></StackPanel>
+                                        </ui:Button>
+                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding LoadDetailsCommand}" MinWidth="100" AutomationProperties.Name="重新加载存档详情" Margin="0,0,8,0">
+                                            <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionRefresh}"/><TextBlock Text="重新加载详情" VerticalAlignment="Center"/></StackPanel>
+                                        </ui:Button>
                                         <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="重置列宽" ToolTip="恢复存档历史和候选路径表格的默认列宽" AutomationProperties.Name="重置存档表格列宽" Click="OnResetColumnLayoutClick"/>
                                     </WrapPanel>
                                 </Grid>
@@ -262,7 +268,9 @@
                                 <TextBlock Text="{Binding SelectedBackup.RestoreReadinessSummaryDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                                 <TextBlock Text="{Binding SelectedBackup.RestoreReadinessMetricsDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                                 <TextBlock Text="{Binding SelectedBackup.RestoreReadinessCheckedDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/>
-                                <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding ValidateRestoreReadinessCommand}" Content="验证可恢复性" Margin="0,10,0,0" AutomationProperties.Name="验证所选版本的可恢复性"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding ValidateRestoreReadinessCommand}" Margin="0,10,0,0" AutomationProperties.Name="验证所选版本的可恢复性">
+                                    <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionVerify}"/><TextBlock Text="验证可恢复性" VerticalAlignment="Center"/></StackPanel>
+                                </ui:Button>
                                 <Separator Margin="0,16,0,12"/>
                                 <TextBlock Text="版本备注" Style="{DynamicResource GscCaptionStyle}" Margin="0,0,0,6"/>
                                 <TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding BackupComment, UpdateSourceTrigger=PropertyChanged}" MinHeight="64" AcceptsReturn="True" TextWrapping="Wrap"/>
@@ -272,8 +280,12 @@
                                 <Separator Margin="0,16,0,12"/>
                                 <TextBlock Text="恢复操作" FontWeight="SemiBold"/>
                                 <TextBlock Text="恢复前会创建并锁定当前快照，完成后可校验并撤销。" Style="{DynamicResource GscCaptionStyle}" Margin="0,5,0,0" TextWrapping="Wrap"/>
-                                <ui:Button Style="{DynamicResource GscWpfUiDangerActionButton}" Command="{Binding RestoreCommand}" Content="安全恢复" ToolTip="恢复前先创建并锁定当前快照；完成后可撤销" AutomationProperties.Name="安全恢复所选版本" Margin="0,12,0,0"/>
-                                <ui:Button Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding UndoRestoreCommand}" Content="撤销最近恢复" Margin="0,8,0,0"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiDangerActionButton}" Command="{Binding RestoreCommand}" ToolTip="恢复前先创建并锁定当前快照；完成后可撤销" AutomationProperties.Name="安全恢复所选版本" Margin="0,12,0,0">
+                                    <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionRestore}"/><TextBlock Text="安全恢复" VerticalAlignment="Center"/></StackPanel>
+                                </ui:Button>
+                                <ui:Button Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding UndoRestoreCommand}" Margin="0,8,0,0" AutomationProperties.Name="撤销最近恢复">
+                                    <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionRestore}"/><TextBlock Text="撤销最近恢复" VerticalAlignment="Center"/></StackPanel>
+                                </ui:Button>
                             </StackPanel>
                         </Border>
                     </ScrollViewer>
@@ -309,7 +321,9 @@
                             <WrapPanel x:Name="SaveCurrentRuleActions" Grid.Column="3" Margin="14,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Right">
                                 <!-- Scan and validation have distinct outcomes, so retain explicit text. -->
                                 <ui:Button x:Name="SaveDetectPathsButton" Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding DetectPathsCommand}" Content="立即扫描" ToolTip="扫描并重新识别存档路径" AutomationProperties.Name="立即扫描存档路径" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                                <ui:Button x:Name="SaveValidateButton" Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding ValidateCommand}" Content="重新校验" ToolTip="重新校验当前存档规则" AutomationProperties.Name="重新校验存档路径" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                <ui:Button x:Name="SaveValidateButton" Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding ValidateCommand}" ToolTip="重新校验当前存档规则" AutomationProperties.Name="重新校验存档路径" Margin="0,0,8,0" VerticalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionVerify}"/><TextBlock Text="重新校验" VerticalAlignment="Center"/></StackPanel>
+                                </ui:Button>
                                 <ui:Button x:Name="SaveLoadDetailsButton" Style="{DynamicResource GscIconOnlyButtonBase}" Command="{Binding LoadDetailsCommand}" ToolTip="重新加载存档详情" AutomationProperties.Name="重新加载存档详情" VerticalAlignment="Center"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconBtnRefresh}" Width="18" Height="18"/></ui:Button>
                             </WrapPanel>
                         </Grid>
@@ -347,7 +361,9 @@
                                             <TextBlock Text="备份自动化" Style="{DynamicResource GscSectionTitleStyle}"/>
                                             <TextBlock Text="作用于当前游戏" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/>
                                         </StackPanel>
-                                        <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding BackupSelectedCommand}" Content="立即备份" Margin="12,0,0,0" ToolTip="只备份当前选中的游戏"/>
+                                        <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding BackupSelectedCommand}" Margin="12,0,0,0" ToolTip="只备份当前选中的游戏" AutomationProperties.Name="立即备份当前游戏">
+                                            <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionBackup}"/><TextBlock Text="立即备份" VerticalAlignment="Center"/></StackPanel>
+                                        </ui:Button>
                                     </Grid>
                                     <StackPanel Margin="0,14,0,0">
                                         <Grid MinHeight="34" VerticalAlignment="Center"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center"><TextBlock Text="启用备份策略" Style="{DynamicResource GscBodyStyle}" VerticalAlignment="Center"/><ContentControl Style="{DynamicResource ChipAccent}" Content="重要游戏 · 严格" Margin="8,0,0,0" VerticalAlignment="Center"/></StackPanel><ui:ToggleSwitch Grid.Column="1" Style="{DynamicResource GscWpfUiToggleSwitch}" IsChecked="{Binding SelectedGame.Policy.Enabled}" HorizontalAlignment="Right" VerticalAlignment="Center"/></Grid>

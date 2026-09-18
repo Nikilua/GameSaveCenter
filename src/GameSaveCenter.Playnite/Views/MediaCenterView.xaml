@@ -216,7 +216,9 @@
                                     <ComboBox Width="160" Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding Games}" SelectedItem="{Binding InboxTargetGame}" ToolTip="批量归类目标游戏" AutomationProperties.Name="批量归类目标游戏" Margin="0,0,8,4">
                                         <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/></DataTemplate></ComboBox.ItemTemplate>
                                     </ComboBox>
-                                    <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding AssignInboxMediaBatchCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Content="归类所选" Margin="0,0,8,4"/>
+                                    <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding AssignInboxMediaBatchCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Margin="0,0,8,4" AutomationProperties.Name="归类所选媒体">
+                                        <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionCategorize}"/><TextBlock Text="归类所选" VerticalAlignment="Center"/></StackPanel>
+                                    </ui:Button>
                                 </StackPanel>
                                 <ui:Button x:Name="MediaInboxCompactDetailsButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="查看预览与归类 ›" ToolTip="打开所选媒体的预览、归类建议和安全操作" AutomationProperties.Name="查看所选媒体预览与归类" Click="OnMediaInboxCompactDetailsClick" Visibility="Collapsed" Margin="2,0,0,4"/>
                             </WrapPanel>
@@ -291,7 +293,9 @@
                                 </ui:Button>
                             </WrapPanel>
                             <WrapPanel x:Name="MediaInboxSecondaryActions" Grid.Row="1" VerticalAlignment="Center" Margin="0,8,0,0">
-                                <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding IgnoreInboxMediaBatchCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Content="忽略所选" Margin="0,0,8,4"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding IgnoreInboxMediaBatchCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Margin="0,0,8,4" AutomationProperties.Name="忽略所选媒体">
+                                    <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionIgnore}"/><TextBlock Text="忽略所选" VerticalAlignment="Center"/></StackPanel>
+                                </ui:Button>
                                 <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding PreviewMediaClassificationCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Content="生成归类建议" ToolTip="根据来源规则、游戏会话和进程映射生成可解释预览" Margin="0,0,8,4"/>
                                 <ui:Button Command="{Binding ApplyMediaClassificationCommand}" Content="应用高置信建议" ToolTip="只应用预览中唯一且高置信的建议" Margin="0,0,8,4">
                                     <ui:Button.Style>
@@ -301,7 +305,8 @@
                                         </Style>
                                     </ui:Button.Style>
                                 </ui:Button>
-                                <ui:Button Command="{Binding RestoreIgnoredMediaBatchCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Content="恢复到待归类" AutomationProperties.Name="恢复所选已忽略媒体到待归类" Margin="0,0,8,4">
+                                <ui:Button Command="{Binding RestoreIgnoredMediaBatchCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" AutomationProperties.Name="恢复所选已忽略媒体到待归类" Margin="0,0,8,4">
+                                    <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionRestore}"/><TextBlock Text="恢复到待归类" VerticalAlignment="Center"/></StackPanel>
                                     <ui:Button.Style>
                                         <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiPrimaryActionButton}">
                                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -435,10 +440,15 @@
                                     </StackPanel.Style>
                                     <TextBlock Text="归类到" Style="{DynamicResource GscCaptionStyle}" Margin="0,0,0,5"/>
                                     <ComboBox Style="{DynamicResource GscWpfUiComboBox}" MinWidth="180" ItemsSource="{Binding Games}" SelectedItem="{Binding InboxTargetGame}" Margin="0,0,0,8"><ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/></DataTemplate></ComboBox.ItemTemplate></ComboBox>
-                                    <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding AssignInboxMediaCommand}" Content="确认归类" HorizontalAlignment="Left"/>
-                                    <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding IgnoreInboxMediaCommand}" Content="忽略并保留副本" Margin="0,8,0,0" HorizontalAlignment="Left"/>
+                                    <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding AssignInboxMediaCommand}" AutomationProperties.Name="确认归类" HorizontalAlignment="Left">
+                                        <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionCategorize}"/><TextBlock Text="确认归类" VerticalAlignment="Center"/></StackPanel>
+                                    </ui:Button>
+                                    <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding IgnoreInboxMediaCommand}" AutomationProperties.Name="忽略并保留副本" Margin="0,8,0,0" HorizontalAlignment="Left">
+                                        <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionIgnore}"/><TextBlock Text="忽略并保留副本" VerticalAlignment="Center"/></StackPanel>
+                                    </ui:Button>
                                 </StackPanel>
-                                <ui:Button Command="{Binding RestoreIgnoredMediaBatchCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Content="恢复到待归类" AutomationProperties.Name="恢复已忽略媒体到待归类" HorizontalAlignment="Left" Margin="0,0,0,0">
+                                <ui:Button Command="{Binding RestoreIgnoredMediaBatchCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" AutomationProperties.Name="恢复已忽略媒体到待归类" HorizontalAlignment="Left" Margin="0,0,0,0">
+                                    <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionRestore}"/><TextBlock Text="恢复到待归类" VerticalAlignment="Center"/></StackPanel>
                                     <ui:Button.Style>
                                         <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiPrimaryActionButton}">
                                             <Setter Property="Visibility" Value="Collapsed"/>

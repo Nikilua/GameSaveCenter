@@ -1125,10 +1125,18 @@
                                 </UniformGrid>
                             </Grid>
                             <WrapPanel x:Name="GameHeaderActions" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="16,0,0,0">
-                                <ui:Button x:Name="BackupSelectedButton" Style="{StaticResource GscWpfUiToolbarPrimaryButton}" Command="{Binding BackupSelectedCommand}" Content="立即备份" Margin="0,0,8,0"/>
-                                <ui:Button x:Name="ValidateButton" Style="{StaticResource GscWpfUiToolbarButton}" Command="{Binding ValidateCommand}" Content="重新校验" ToolTip="重新校验当前游戏的存档规则" AutomationProperties.Name="重新校验当前游戏存档规则" Margin="0,0,8,0"/>
-                                <ui:Button x:Name="DetectPathsButton" Style="{StaticResource GscWpfUiToolbarButton}" Command="{Binding DetectPathsCommand}" Content="侦测路径" Margin="0,0,8,0"/>
-                                <ui:Button Style="{StaticResource GscWpfUiToolbarButton}" Command="{Binding LoadDetailsCommand}" Content="重新加载详情" ToolTip="重新加载当前游戏的备份、媒体和策略详情" AutomationProperties.Name="重新加载当前游戏详情" Margin="0,0,8,0"/>
+                                <ui:Button x:Name="BackupSelectedButton" Style="{StaticResource GscWpfUiToolbarPrimaryButton}" Command="{Binding BackupSelectedCommand}" AutomationProperties.Name="立即备份当前游戏" Margin="0,0,8,0">
+                                    <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionBackup}"/><TextBlock Text="立即备份" VerticalAlignment="Center"/></StackPanel>
+                                </ui:Button>
+                                <ui:Button x:Name="ValidateButton" Style="{StaticResource GscWpfUiToolbarButton}" Command="{Binding ValidateCommand}" ToolTip="重新校验当前游戏的存档规则" AutomationProperties.Name="重新校验当前游戏存档规则" Margin="0,0,8,0">
+                                    <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionVerify}"/><TextBlock Text="重新校验" VerticalAlignment="Center"/></StackPanel>
+                                </ui:Button>
+                                <ui:Button x:Name="DetectPathsButton" Style="{StaticResource GscWpfUiToolbarButton}" Command="{Binding DetectPathsCommand}" Margin="0,0,8,0">
+                                    <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionBrowseFolder}"/><TextBlock Text="侦测路径" VerticalAlignment="Center"/></StackPanel>
+                                </ui:Button>
+                                <ui:Button Style="{StaticResource GscWpfUiToolbarButton}" Command="{Binding LoadDetailsCommand}" ToolTip="重新加载当前游戏的备份、媒体和策略详情" AutomationProperties.Name="重新加载当前游戏详情" Margin="0,0,8,0">
+                                    <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionRefresh}"/><TextBlock Text="重新加载详情" VerticalAlignment="Center"/></StackPanel>
+                                </ui:Button>
                                 <ui:Button x:Name="PolicyToggleButton" Style="{StaticResource GscWpfUiToolbarButton}" Click="OnTogglePolicy" Content="策略"/>
                             </WrapPanel>
                         </Grid>

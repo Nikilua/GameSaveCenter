@@ -265,9 +265,13 @@
                         <ui:Button x:Name="HeaderMediaButton" Style="{DynamicResource GscRedesignHeaderButton}"
                                    Command="{Binding SyncMediaCommand}" Content="同步媒体" ToolTip="同步媒体" AutomationProperties.Name="同步媒体"/>
                         <ui:Button x:Name="HeaderBackupSelectedButton" Style="{DynamicResource GscRedesignPrimaryHeaderButton}"
-                                   Command="{Binding BackupSelectedCommand}" Content="立即备份" ToolTip="只备份当前选中的游戏" AutomationProperties.Name="立即备份当前游戏"/>
+                                   Command="{Binding BackupSelectedCommand}" ToolTip="只备份当前选中的游戏" AutomationProperties.Name="立即备份当前游戏">
+                            <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionBackup}"/><TextBlock Text="立即备份" VerticalAlignment="Center"/></StackPanel>
+                        </ui:Button>
                         <ui:Button x:Name="HeaderBackupButton" Style="{DynamicResource GscRedesignPrimaryHeaderButton}"
-                                   Command="{Binding BackupAllCommand}" Content="全部备份" ToolTip="全部备份" AutomationProperties.Name="备份全部游戏"/>
+                                   Command="{Binding BackupAllCommand}" ToolTip="全部备份" AutomationProperties.Name="备份全部游戏">
+                            <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionBackup}"/><TextBlock Text="全部备份" VerticalAlignment="Center"/></StackPanel>
+                        </ui:Button>
                     </WrapPanel>
                 </Grid>
             </Border>

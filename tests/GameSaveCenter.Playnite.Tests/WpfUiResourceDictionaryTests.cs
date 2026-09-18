@@ -224,6 +224,7 @@ public sealed class WpfUiResourceDictionaryTests
             "GscIconNavTasks", "GscIconNavMaintenance", "GscIconNavSettings",
             "GscIconActionBackup", "GscIconActionBrowseFolder", "GscIconActionHistory",
             "GscIconActionRefresh", "GscIconActionRestore", "GscIconActionRun",
+            "GscIconActionUpload", "GscIconActionVerify", "GscIconActionCategorize", "GscIconActionIgnore",
             "GscIconSectionAppearance", "GscIconSectionAutomation", "GscIconSectionBackupRestore",
             "GscIconSectionGeneralDirectory", "GscIconSectionMigration", "GscIconStatusError", "GscIconStatusInfo",
             "GscIconStatusSuccess", "GscIconStatusWarning"
