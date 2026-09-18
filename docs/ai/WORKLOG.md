@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-18 R07-03 短窗底栏可达
+
+- 先核对最新生产实现：shell 的 `FooterSurface` 已是固定底栏行，页面主内容另占一行；Media/Save/Task/Maintenance 的提示条、内部滚动和真实操作控件均已有，不重建页面。
+- `d19e848b`、`447ac07e` 仅补隔离 RenderHarness/fake 的实际 WPF 短窗探针。Light/Dark、1040×700/560 16 组合通过，实际验证 Media `LoadMore`、Save `保存策略`、Task `取消任务`、Maintenance 云端 `加载更多` 的矩形、可见性和滚动端点；首次 Save 最大滚动假设失败后改为 `BringIntoView`，形成真实负例覆盖。
+- `shortwindowprobe OK`；相关相邻回归 `20/20`、XAML `24/24`、Release `0/0`、源码校验/diff check 通过。报告为 `.tmp/r07-03-short-window/shortwindowprobe-report.txt`，清洁且绑定最终代码提交。全套 Playnite 仅记录 `578/695` 通过、`60` 失败、`57` 跳过，未写成全量绿色。
+- 证据仍限于合成数据、fake、隔离 STA WPF/offscreen logical DIP；Demo 原始目录缺失，真实宿主/设备输入/UIA/物理 DPI/跨屏/presented frame/ETW/性能和真实数据写入未验。下一项 R07-04 横向滚动端点。
+
 ## 2026-09-18 R07-02 锚点删除回退
 
 - 审计发现 Task、Media 主库/Inbox、Findings、进程映射、云端队列和 Save 列表的刷新/删除路径存在首项回退或失选变体；按现有业务键复用，不把同索引对象冒充稳定对象。

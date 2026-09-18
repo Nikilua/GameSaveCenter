@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-18
 
+## 2026-09-18 R07-03 短窗底栏可达
+
+- 先复用现有生产布局：shell 固定 footer 与主内容分行，Media/Save/Task/Maintenance 已有提示条、页面/表格/详情滚动和加载/取消/保存命令；没有把 Demo 缺失误判成需要换设计体系。
+- `d19e848b` 新增隔离 RenderHarness 短窗探针及合成 Media page-more 状态，`447ac07e` 扩展到 Light/Dark 两主题和 1040×700/560 两高度。实际 STA WPF 元素矩形、祖先关系、可见性和 ScrollViewer offset 验证 16 个组合均 `shortwindowprobe OK`；Save 先发现最大 offset 不能代表中间按钮可达，改为真实按钮 `BringIntoView` 并保留该负例。
+- R07-03 相关相邻回归 `20/20`，XAML `24/24`，Release `0/0`，源码校验/diff check 通过。clean 报告 `.tmp/r07-03-short-window/shortwindowprobe-report.txt` 绑定 `447ac07e...`、WorkingTreeClean；证据为合成/fake/隔离 STA WPF/offscreen logical DIP，不等价真实 Playnite、物理 DPI/跨屏、呈现帧或性能。
+- 当前分支仍未覆盖真实 Playnite/Worker 时序、设备输入、UIA/读屏、ETW、宿主性能或真实数据写入；Demo 原始目录仍缺失。下一小批量为 R07-04 横向滚动端点。
+
 ## 2026-09-18 R07-02 锚点删除回退
 
 - 先核对最新实现再补缺口：Task、Media 主库/Inbox、Findings、进程映射、云端队列、Save 历史/候选各自已有稳定键或组合键，但多个路径在对象删除/筛选后会首项回退或失选。新增 `SelectionAnchorResolver`，统一“稳定 ID 命中优先、旧行位邻近回退”；不触碰集合分页、虚拟化、滚动条和业务命令。

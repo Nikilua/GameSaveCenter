@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R07-03 短窗底栏可达
+
+- `d19e848b`、`447ac07e` 先核对最新生产实现：`AcrylicProductionShellView` 的 `FooterSurface` 已在固定 36 DIP 底栏行，`PageHost` 在主内容行；本阶段没有重建底栏、页面 ScrollViewer、DataGrid/详情滚动、游戏选框或滚动条系统，只新增隔离 RenderHarness 的实际 WPF 短窗探针和合成 `MediaInboxPageHasMore` 状态。
+- `shortwindowprobe` 在 Light/Dark、1040×700/1040×560 共 16 个组合中检查实际 shell/page/inner surface 几何和滚动状态：Media 末端 `LoadMore`、Save `保存策略`、Task 详情 `取消任务`、Maintenance 云端 `加载更多` 均可达，提示条与固定 footer 不互相覆盖；报告末尾为 `shortwindowprobe OK`。Save 探针还保留了“最大滚动值不等于按钮可达”的首次负例修正，改用真实按钮 `BringIntoView`。
+- 相关回归 `20/20`、XAML `24/24`、Release `0 warning/0 error`、`validate-source.py`、`git diff --check` 通过；clean `.tmp/r07-03-short-window/shortwindowprobe-report.txt` 绑定 `447ac07e...`、`WorkingTreeClean=True`。全套 Playnite 本次观测 `578/695 passed`、`60 failed`、`57 skipped`，失败未用于 R07-03 绿灯结论。
+- 证据只覆盖合成数据、fake、隔离 STA WPF/offscreen logical DIP；Demo 原始目录仍缺失，沿用恢复生产基线。真实 Playnite/Worker、设备输入、UIA/读屏、物理 DPI/跨屏、presented frame、ETW、宿主性能和真实服务失败时序仍未验，未写真实用户数据。下一项为 R07-04 横向滚动端点。
+
 ## 当前第三轮 R07-02 锚点删除回退
 
 - `7acb61a5976196c7e5add347920762912e1149ea` 新增共享 `SelectionAnchorResolver`，并接入 Task 全量/分页、Media 主库/Inbox、Findings、进程映射、云端队列、Save 历史/候选。刷新前记录稳定键与旧索引；稳定键不存在时按旧索引夹到邻近项，不跳首行；任务导航目标仍优先，云端一致性分页仍保留 pending key，Save 候选仍保留既有 Pending/首项初始化。
