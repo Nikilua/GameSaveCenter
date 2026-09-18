@@ -2,6 +2,13 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-18 R00-05 / R00-06 证据校正与夹具修正
+
+- 默认旧测试程序集被 R01-01 身份门禁拒绝后，使用当前 checkout 的 `.tmp/r00-05-06-build-clean` 重建并复跑，R00-05/R00-06 定向 `6/6`，没有绕过身份校验。
+- 修正 `e8fe1aab` 仅作用于 RenderHarness：alternate-density 同时覆盖 DataGrid 各列 HeaderStyle，真实测量 `36/44`；Light/Dark 几何五场景 `OK`，short fallback 和 blocked-parent 仍分别表达可达回退与预期 HIGH 负例。
+- clean `shellqa OK` 覆盖 Media 1040/1100/1366 DIP；完整审计 161 快照、80 INFO、0 HIGH/0 MEDIUM。账本将 R00-05/R00-06 改为已满足，生产命令/Binding、滚动条、选框和 net462 未改。
+- 证据边界仍是合成/fake、隔离 STA WPF/offscreen logical DIP；真实 Playnite、物理 DPI/设备输入、呈现帧、ETW、宿主性能未验。下一小批量为 R00-07/R00-08。
+
 ## 2026-09-18 R00-03 / R00-04 证据校正
 
 - 当前 HEAD `e5a12ff` 复跑 R00-03 的完成/重入/Reduced Motion 实际 WPF 行为 `3/3`，双主题 `motionreentryprobe` 与 `motionhotprobe` 均通过；没有把源码字符串断言当作唯一验收。

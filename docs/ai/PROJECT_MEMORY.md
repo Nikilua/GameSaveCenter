@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-18
 
+## 2026-09-18 R00-05 / R00-06 证据校正与夹具修正
+
+- R00-05/R00-06 一次默认 bin 复跑因旧程序集 `447ac07e` 与当前源码身份不一致被 R01-01 正确阻断；改用当前 checkout 的隔离 OutputRoot 后定向 `6/6`，其中 R00-05 `2/2`、R00-06 `4/4`。
+- `e8fe1aab` 修正 RenderHarness alternate-density 夹具：生产 DataGrid 各列的 HeaderStyle 也覆盖到 `36 DIP`，与行 `44 DIP` 一起被实际测量；没有降低生产列头 `42 DIP MinHeight`，也没有改滚动条/页面/游戏选框。
+- clean `mediageometryprobe` 双主题五场景 OK，包含水平条、短窗回退和 blocked-parent HIGH 负例；clean `shellqa` 三尺寸通过；审计 161 快照、80 INFO、0 HIGH/0 MEDIUM、0 Fidelity/路由失败。R00-05/R00-06 已满足当前可控条件。
+- 边界仍为合成/fake、隔离 WPF/offscreen logical DIP；Demo 原始目录缺失，沿用恢复生产基线，真实宿主和物理输入/呈现/性能未验。下一小批量为 R00-07/R00-08。
+
 ## 2026-09-18 R00-03 / R00-04 证据校正
 
 - 当前 HEAD `e5a12ff` 复核已有动效生命周期和搜索基准，R00-03 实际 WPF Dispatcher 行为 `3/3`，R00-04 合成 2,000 项基准/不可能结果负例 `2/2`；隔离 Release RenderHarness `0/0`。

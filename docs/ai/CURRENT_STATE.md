@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R00-05 / R00-06 证据校正与夹具修正
+
+- 旧默认 `bin\Release` 的一次 R00-05/R00-06 复跑被 R01-01 身份门禁正确阻止（程序集 `447ac07e`、源码根为当前提交）；按源码根绑定协议改用 `.tmp/r00-05-06-build-clean` 后定向集合 `6/6` 通过，未绕过旧根。
+- `e8fe1aab` 只修正 RenderHarness 的备用密度夹具：列级 HeaderStyle 与行 Style 同时覆盖，Light/Dark `mediageometryprobe` 五场景均 `OK`，alternate-density 实测 `36/44`；生产 `42 DIP MinHeight`、滚动条和页面结构未改。
+- clean-tree 证据：`shellqa OK`（Media 1040/1100/1366 DIP）；完整审计 161 快照、80 分类 INFO、0 Fidelity、0 失败路由、0 HIGH、0 MEDIUM。R00-05/R00-06 账本已改为已满足。
+- 证据仍限于合成媒体 DTO/fake、隔离 STA WPF/offscreen logical DIP；INFO 是可解释滚动上下文，不是缺陷清零，亦不等价真实 Playnite、物理 DPI、设备输入、presented frame、ETW 或宿主性能。下一小批量为 R00-07/R00-08 或对应 R01 校正。
+
 ## 当前第三轮 R00-03 / R00-04 证据校正
 
 - 当前 HEAD `e5a12ff` 复核既有动效与搜索基准实现：R00-03 的实际 WPF Dispatcher 行为 `3/3`，R00-04 的 2,000 项搜索基准与有限时间负例 `2/2`；当前隔离 Release RenderHarness 构建 `0 warning/0 error`。

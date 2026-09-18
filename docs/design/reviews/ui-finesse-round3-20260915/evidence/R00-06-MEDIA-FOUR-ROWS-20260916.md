@@ -38,6 +38,13 @@
 
 其中 `alternate-density` 证明公式跟随实际密度变化，不能被误读为恢复旧的 `212 DIP` 固定 floor；`blocked-parent` 是父级不可达的明确失败负例。
 
+## 2026-09-18 当前分支复核
+
+- 首次用默认旧 `bin\Release` 跑 R00-05/R00-06 定向集合时，R01-01 身份门禁明确拒绝了旧程序集读取当前源码；随后按源码根绑定协议用 `.tmp/r00-05-06-build-clean` 从当前 checkout 重建，定向集合 `6/6` 通过，其中 R00-05 `2/2`，R00-06 几何/审计源/控件契约 `4/4`。没有把旧程序集的拒绝绕过或写成产品回归。
+- 当前提交 `e8fe1aab966d7390a9498cacd57def45e9147e3a` 的 clean-tree `mediageometryprobe` 报告为 `.tmp/r00-05-06-geometry-clean/media-geometry-report.txt`，Light/Dark 五场景均 `OK`：normal `42/52`、horizontal-scroll `42/52 + 12 DIP`、alternate-density 实测 `36/44`、short-fallback 明确 page fallback、blocked-parent 明确 `pageScroll=False` 与 PRIMARY HIGH 负例。
+- 当前 clean-tree `shellqa` 报告为 `.tmp/r00-05-06-shellqa-clean/shell-qa-report.txt`，Media 在 `1040/1100/1366 DIP` 均保留表格和页尾的可达几何，末尾 `shell-qa OK`。完整审计 `.tmp/r00-05-06-audit-clean/AUDIT_SUMMARY.md`：161 快照、80 条分类 INFO、0 Fidelity、0 失败路由、0 HIGH、0 MEDIUM；INFO 不被写成缺陷清零或宿主性能证明。
+- 本阶段唯一代码修正是 `e8fe1aab`：备用密度夹具同时覆盖生产 DataGrid 的列级 HeaderStyle，避免生产 `42 DIP MinHeight` 静默吞掉夹具的 `36 DIP` 备用密度；没有降低生产列头门槛，也没有改变游戏选框、滚动条、命令/Binding 或 `net462`。
+
 ## 证据边界
 
 - 这是使用真实生产 WPF 视图、合成 20 条媒体数据和隔离输出目录的 STA/offscreen 行为证据；不写入真实存档、媒体、云端或用户配置。
