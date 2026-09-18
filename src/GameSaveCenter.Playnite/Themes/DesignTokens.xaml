@@ -1274,6 +1274,14 @@
                                 <StopStoryboard BeginStoryboardName="GscIndeterminateSweep"/>
                             </Trigger.ExitActions>
                         </Trigger>
+                        <Trigger Property="ui:IndeterminateProgressBehavior.IsAnimationPaused" Value="True">
+                            <Trigger.EnterActions>
+                                <PauseStoryboard BeginStoryboardName="GscIndeterminateSweep"/>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <ResumeStoryboard BeginStoryboardName="GscIndeterminateSweep"/>
+                            </Trigger.ExitActions>
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

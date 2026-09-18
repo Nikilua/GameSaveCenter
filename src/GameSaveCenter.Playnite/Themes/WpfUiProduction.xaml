@@ -893,6 +893,7 @@
                                              Minimum="0"
                                              Maximum="1"
                                              IsIndeterminate="True"
+                                             ui:IndeterminateProgressBehavior.PauseWhenUnavailable="True"
                                              Foreground="{DynamicResource GscAccentBrush}"
                                              Background="{DynamicResource GscAccentTintBrush}"
                                              BorderThickness="0"/>
