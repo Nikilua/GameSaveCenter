@@ -1616,3 +1616,12 @@
 - `R10RecentAccessBehaviorTests` `2/2`；R10 组合 `18/18`；定向 Release 编译成功（Contracts/Core/Playnite `net462`/Tests `net472`）；XAML `24/24`；source/XAML/diff check 通过。证据：`evidence/R10-08-RECENT-ACCESS-20260919.md`。
 - 证据仅覆盖 synthetic 设置/DTO、隔离 STA WPF 和逻辑 DIP；未验真实 Playnite/package-host、最终 presented frame、物理 DPI/跨屏、UIA/读屏、真实键盘/IME、ETW、宿主性能。Demo 原目录不可用，沿用恢复生产基线；用户 main 的 DEV-INSTALL-008 `73/588/57` 与安装器退出 1 未覆盖或重跑。
 - 下一可执行任务：R11-01 版本信息摘要；停止前真实未验边界仍为宿主安装/呈现和上述系统级能力。
+
+## 2026-09-19 Round3 R11-01 版本信息摘要
+
+- 先查现有 `BackupVersionDto`/`RestoreReadinessDto` 和 SaveCenter 版本表：时间、文件数、大小、备注、锁定、设备、恢复可用性详情均已存在；没有新增服务、DTO 请求或恢复命令。
+- `SaveHistoryDeviceColumn` 改用已有 `SourceDisplay`，空来源显示“未知设备”；新增 `ProtectionAndReadinessDisplay` 组合锁定与恢复状态。状态列改为 `Ready` 才成功色，Warning/Corrupted/Failed 分别提示，Unknown/Checking/未提供校验保持中性，移除锁定即绿色的误导触发。
+- 右侧版本详情、恢复校验按钮、固定列宽和现有 DataGrid 滚动保持；长摘要进入 ToolTip/详情，不推宽历史表格。游戏选框、命令绑定、取消/错误、恢复保护和有限列表性能未改。
+- `R11VersionSummaryBehaviorTests` `2/2`；Save 页面相邻回归 `13/13`；定向 Release 编译成功（Playnite `net462`/Tests `net472`）；XAML `24/24`；source/XAML/diff check 通过。证据：`evidence/R11-01-VERSION-SUMMARY-20260919.md`。
+- 证据使用合成 DTO、真实 SaveCenterView/STA Window 和逻辑 DIP；未验真实 Playnite/package-host、最终呈现、物理 DPI/跨屏、UIA/读屏、IME、ETW、宿主性能。Demo 原目录不可用，沿用恢复生产基线；main DEV-INSTALL-008 `73/588/57` 与安装器退出 1 未覆盖或重跑。
+- 下一可执行任务：R11-02 双版本对比选择。

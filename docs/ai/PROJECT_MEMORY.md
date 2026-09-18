@@ -3883,3 +3883,11 @@
 - `R10RecentAccessBehaviorTests` 通过 `2/2`：真实 Overview STA Window 命令点击一次；设置记录正/负行为验证上限、去重、归一化、移除清理和无路径 JSON。R10 `18/18`，定向 Release 编译（Playnite `net462`）成功，XAML `24/24`、source/XAML/diff check 通过。证据：`evidence/R10-08-RECENT-ACCESS-20260919.md`。
 - 不把 synthetic/STA/offscreen/逻辑 DIP 写成真实 Playnite package-host、presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW 或宿主性能通过；Demo 原目录不可用，继续恢复生产基线。main DEV-INSTALL-008 `73/588/57`/安装器退出 1 仍是独立边界，main 用户文件未触碰。
 - 下一可执行任务：R11-01 版本信息摘要；保持每阶段小批量、实现后验证再同步文档/提交。
+
+## 2026-09-19 Round3 R11-01 版本信息摘要
+
+- R11-01 复用现有备份 DTO：`BackupVersionDto` 已含 `CreatedUtc`、`TotalBytes`、`FileCount`、`IsLocked`、`SourceDevice`、`RestoreReadiness` 和显示属性；右侧版本详情已经有隔离可恢复性说明，未重建数据层。
+- 历史表设备列改为 `SourceDisplay`，空来源回退“未知设备”；`ProtectionAndReadinessDisplay` 只组合锁定和恢复校验摘要。不要把锁定状态当作校验成功：状态模板仅在 `RestoreReadiness.Status == Ready` 使用成功色，未知/未验证必须中性。
+- 长摘要仍通过状态 ToolTip/右侧详情承载，固定 DataGrid 列宽与滚动系统不变；恢复命令、取消/错误、保护语义、游戏选框和 net462 保持。
+- `R11VersionSummaryBehaviorTests` `2/2`，Save 相邻 `13/13`，定向 Release 编译成功，XAML `24/24`、source/XAML/diff check 通过。证据：`evidence/R11-01-VERSION-SUMMARY-20260919.md`。
+- 仅证明 synthetic DTO、真实 SaveCenterView/STA Window 和逻辑 DIP；未证明真实 Playnite/package-host、presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW、宿主性能。main DEV-INSTALL-008 `73/588/57`/安装器退出 1 仍独立记录，main 用户文件未触碰。下一可执行任务：R11-02 双版本对比选择。

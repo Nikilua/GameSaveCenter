@@ -116,6 +116,7 @@ namespace GameSaveCenter.Contracts
         public string SourceDisplay => string.IsNullOrWhiteSpace(SourceDevice) ? "未知设备" : SourceDevice;
         public string OperatingSystemDisplay => string.IsNullOrWhiteSpace(OperatingSystem) ? "未知系统" : OperatingSystem;
         public string RestoreReadinessStatusDisplay => RestoreReadiness?.StatusDisplay ?? "未验证";
+        public string ProtectionAndReadinessDisplay => $"{LockStateDisplay} · {RestoreReadinessStatusDisplay}";
         public string RestoreReadinessSummaryDisplay => RestoreReadiness?.Summary ?? "尚未验证该版本的可恢复性。";
         public string RestoreReadinessMetricsDisplay => RestoreReadiness == null
             ? string.Empty

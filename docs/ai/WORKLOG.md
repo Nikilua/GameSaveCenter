@@ -7431,3 +7431,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 验证：R10RecentAccess `2/2`；R10 组合 `18/18`；定向 Release 编译成功（Contracts/Core/Playnite `net462`、Tests `net472`）；XAML `24/24`；`validate-source.py`、XAML 检查、`git diff --check` 通过。行为包含真实 Overview STA WPF ButtonBase 点击，不以 `Assert.Contains` 单独签收。
 - 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R10-08-RECENT-ACCESS-20260919.md`，Round3 账本已改为“已满足”。main 用户文件未触碰；DEV-INSTALL-008 main `73 failed / 588 passed / 57 skipped` 和安装器退出 1 未在 dirty main 覆盖或重跑。Demo 原目录不可用，沿用恢复生产基线。
 - 未验真实 Playnite/package-host 安装与呈现、physical DPI/跨屏、UIA/读屏、真实键盘/IME、ETW、宿主性能；未读取/写入真实存档、媒体、用户云端或对外诊断。下一可执行任务：R11-01 版本信息摘要。
+
+## 2026-09-19 Round3 R11-01 版本信息摘要
+
+- 盘点确认 `BackupVersionDto`/`RestoreReadinessDto` 已有时间、大小、文件数、锁定、设备和隔离可恢复性字段；右侧版本详情与验证命令已存在，本阶段未新增服务或 DTO 请求。
+- `SaveHistoryDeviceColumn` 复用 `SourceDisplay`，空来源显示“未知设备”；新增 `ProtectionAndReadinessDisplay`。状态列取消 `IsLocked=True` 的绿色触发，改按恢复校验状态着色：Ready 成功、Warning 警告、Corrupted/Failed 错误、Unknown/未验证中性。长摘要放 ToolTip/详情，不改变固定列宽。
+- 实际验证：`R11VersionSummaryBehaviorTests 2/2`，Save 页面相邻空态/排序/列宽回归 `13/13`；真实 STA SaveCenterView/DataGrid 加载 7 列和历史集合；定向 Release 编译（Playnite `net462`/Tests `net472`）通过；XAML `24/24`、source/XAML/diff check 通过。
+- 证据已写入 `evidence/R11-01-VERSION-SUMMARY-20260919.md`，账本已改为“已满足”。未验真实 Playnite/package-host 安装呈现、physical DPI/跨屏、UIA/读屏、IME、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线。main DEV-INSTALL-008 `73/588/57` 与安装器退出 1 未在 dirty main 覆盖或重跑。
+- 下一可执行任务：R11-02 双版本对比选择；继续保持真实存档/媒体/云端隔离边界。
