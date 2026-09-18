@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R08-03 离屏与隐藏停机
+
+- 先核对现有实现：不确定进度条原本只跟随 `IsIndeterminate` 的模板触发，真实入口是生产壳层忙碌按钮和 Dashboard 后台刷新提示。`4a18fe0c` 新增 `IndeterminateProgressBehavior`，按有效可见性、Loaded/Unloaded 和宿主 `WindowState` 控制共享 storyboard 的暂停/恢复，不改变业务 `IsIndeterminate`、命令绑定、服务 DTO、游戏选框、滚动条或安全语义。
+- 当前身份隔离源码根 `r08-03-source-hiddenstop` 的 solution Release 构建为 `0 warning / 0 error`，Playnite `net462`，XAML `24/24`；焦点串行 `22/22`：Offscreen `1/1`、HotChange `1/1`、Reverse `2/2`、ProductionShell `10/10`、Foundation `8/8`；源校验通过。
+- 实际 WPF 取样确认可见 spinner 移动超过 `0.5 DIP`；隐藏 Tab 和最小化窗口各在 `360ms` 等待中保持位置到小数后三位，恢复后继续运动。相邻资源字典类 `136/176`、`39` skipped、1 条既有 Save 时间列源码期望失败未归入本项。边界仍是合成控件、隔离 STA/offscreen logical DIP；未验真实 Playnite/物理呈现/UIA/ETW/宿主性能。Demo 原始目录不可用，沿用恢复生产基线。下一可执行任务为 R08-04 业务完成节奏。
+
 ## 当前第三轮 R08-02 热关闭动画
 
 - `459de0de` 先复用已有入口：Dashboard 已监听 `plugin.VisualSettingsChanged` 与 `SystemParameters.StaticPropertyChanged`，侧栏已有关闭动效归一化；Settings 已监听系统参数和动画开关事件。本次补按 Dispatcher 隔离的弱引用动效登记、generation 失效和 `NormalizeAll`，并让 Settings 自身入场时钟在关闭动画后立即落到 opacity `1`/Y `0`；没有改变服务/DTO、命令绑定、选框、滚动条或安全语义。

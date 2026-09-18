@@ -2,6 +2,12 @@
 
 > 每完成一个有意义的阶段追加一条；只记录对未来开发有帮助的信息。
 
+## 2026-09-18 R08-03 离屏与隐藏停机
+
+- 现有共享 `ProgressBar` 不确定模板只在 `IsIndeterminate` 变化时启停；实际循环入口是生产壳层按钮忙碌指示器和 Dashboard 后台刷新。`4a18fe0c` 新增附加行为，跟踪 `Loaded/Unloaded`、有效 `IsVisible`、宿主 `WindowState/IsVisible`，通过模板可控 storyboard 暂停/恢复；没有把业务忙碌状态改成假完成。
+- 提交后身份 `GscBuildCommit=4a18fe0c` 的隔离 solution Release 构建 `0/0`，Playnite `net462`，XAML `24/24`，源校验通过。焦点类串行 `22/22`：R08-03 `1/1`、R08-02 `1/1`、R08-01 `2/2`、生产壳层 `10/10`、Foundation `8/8`。
+- 实际行为夹具在共享模板上确认：可见状态两个 180ms 样本移动 `>0.5 DIP`；切换 Tab 或窗口最小化后 `360ms` 位置不变到小数后三位；恢复后继续。资源字典类 `136/176`、`39` skipped、1 条既有 Save 时间列字符串期望失败原样记录，未扩大本阶段范围。未验真实 Playnite、物理呈现/UIA/ETW/宿主性能；Demo 原始目录不可用。下一可执行任务为 R08-04 业务完成节奏。
+
 ## 2026-09-18 R08-02 热关闭动画
 
 - 先查现有入口：Dashboard 已接应用视觉设置和 `SystemParameters.StaticPropertyChanged`，侧栏已有 reduced-motion 收口；Settings 已接系统参数与动画开关，但 SettingsShell/通用动效缺少统一时钟失效。`459de0de` 增加 Dispatcher 隔离弱引用登记、generation 保护和关闭归一化，保留现有命令/绑定、选框、滚动条和安全语义。

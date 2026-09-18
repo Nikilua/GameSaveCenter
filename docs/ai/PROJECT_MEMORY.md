@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-18
 
+## 2026-09-18 R08-03 离屏与隐藏停机
+
+- 先核对共享 `ProgressBar` 模板和两个实际不确定进度入口；原有实现只在 `IsIndeterminate` 触发器中无限循环，没有处理 Tab 隐藏或窗口最小化。`4a18fe0c` 增加 `IndeterminateProgressBehavior`，用真实 `Loaded/Unloaded`、`IsVisible` 和宿主窗口状态控制模板 `PauseStoryboard/ResumeStoryboard`，不改业务忙碌状态。
+- 当前身份隔离源码根 `r08-03-source-hiddenstop`：solution Release `0/0`、Playnite `net462`、XAML `24/24`；焦点串行 `22/22`（1+1+2+10+8）。真实共享模板行为在可见时移动 `>0.5 DIP`，隐藏 Tab/最小化各暂停 `360ms` 且位置保持到小数后三位，恢复后继续运动。
+- 资源字典类相邻运行 `136 passed / 39 skipped / 1 failed`；唯一失败是既有 Save“时间”列源码字符串期望，不归入本项。边界为合成 Tab/ProgressBar、隔离 STA WPF/offscreen logical DIP，不等价真实 Playnite/物理呈现/UIA/ETW/宿主性能；Demo 原始目录不可用，沿用恢复生产基线。下一项 R08-04 业务完成节奏。
+
 ## 2026-09-18 R08-02 热关闭动画
 
 - 先核对已有能力：Dashboard 的应用/系统监听和侧栏关闭归一化已经存在，Settings 也已有系统参数与 `Checked/Unchecked` 入口；缺口是通用 render-only 时钟没有按 Dispatcher 集中失效，Settings 入场时钟在自身开关关闭时没有明确收口。`459de0de` 增加弱引用登记、generation guard 和 `NormalizeAll`，不改变业务契约或安全语义。
