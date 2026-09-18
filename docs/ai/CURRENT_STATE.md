@@ -1528,3 +1528,10 @@
 - 精确提交重建：XAML `24/24`、Release solution `0 warning / 0 error`、Playnite `net462`；R09-02/R09-03/共享资源相邻回归合计 `9/9`，源码校验/XAML/diff check 通过。证据见 `evidence/R09-04-SHADOW-BUDGET-20260919.md`。
 - 本阶段没有切换真实 Windows High Contrast；高对比系统语义归 R09-06，不能由 `glassEnabled=false` 代替。未验真实 Playnite 呈现、物理 DPI/跨屏、UIA/读屏/IME、ETW、宿主性能和 package-host；Demo 原目录不可用，main 用户文件未触碰。
 - 下一可执行任务：R09-05 焦点轮廓合成，重点验证焦点与 hover/selected/error 的实际模板叠加及圆角 Clip 边界。
+
+## 2026-09-19 Round3 R09-05 焦点轮廓合成
+
+- 复核最新生产资源后确认没有需要重建的焦点体系：`GscSharedFocusVisual` 实际为 `2 DIP`、`CornerRadius=13` 的 accent Border；`GscWpfUiButton` 用完整圆角 `FocusOverlay` 叠加键盘焦点，Workspace Tab 的 Chrome 不裁切共享焦点描边，TextBox 的错误触发器在焦点触发器之后覆盖错误底色/边框。
+- `3f7d0b30` 新增 `R09FocusOutlineBehaviorTests`：真实生产 Button 聚焦/失焦负例、共享焦点模板实例化、选中 Tab、TextBox `1..3` 校验错误与 `9→2` 恢复均通过，R09-05 `2/2`。测试 collection 串行 WPF 窗口，并避免跨 STA 共享 `Application.Current`；这只是 testhost 隔离，不改变生产代码。
+- 当前 Release 精确验证：XAML `24/24`、solution `0 warning / 0 error`、Playnite `net462`；R09-02/R09-03/R09-04/共享焦点资源相邻回归合计 `11/11`；`validate-source.py`、XAML、`git diff --check` 通过。证据见 `evidence/R09-05-FOCUS-OUTLINE-20260919.md`。
+- 受控 STA 未提供系统键盘输入源，未把 WPF Focus Adorner 自动挂载写成通过；真实 Playnite、物理 DPI/跨屏、presented frame、UIA/读屏、IME、High Contrast、ETW、宿主性能和 package-host 仍未验。Demo 原目录不可用，沿用恢复生产基线；main 用户文件未触碰。下一可执行任务：R09-06 高对比真实配色。

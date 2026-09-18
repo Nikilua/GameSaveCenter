@@ -3795,3 +3795,10 @@
 - `3ad61099` 的真实 WPF 行为夹具验证浅/深主题冻结 `DropShadowEffect` 参数、low-cost null/透明 wash、PopupAnimation 关闭语义，并用三个实际卡片比较有/无 Effect 的 ScrollViewer `ExtentHeight`，确认阴影不扩大滚动范围。R09-04 `3/3`，组合相邻回归 `9/9`。
 - 只把高对比回退记为未验：测试没有改 OS High Contrast，R09-06 仍需独立检查系统语义资源；离屏/逻辑布局不能替代真实 Playnite、呈现帧、物理 DPI/跨屏、UIA/读屏、IME、ETW 或宿主性能。Demo 原始目录不可用，沿用恢复生产基线。
 - 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R09-04-SHADOW-BUDGET-20260919.md`。main 用户未提交文件继续不碰。下一项 R09-05 焦点轮廓合成。
+
+## 2026-09-19 Round3 R09-05 焦点轮廓合成
+
+- 先查现有能力：共享焦点资源已经提供 `2 DIP`/圆角 `13` 的非颜色轮廓；按钮 FocusOverlay 覆盖完整圆角 Chrome，选中 Tab 的 Chrome `ClipToBounds=False`，输入框错误触发器在焦点触发器之后明确使用错误色与 `2 DIP` 边框，不需要另建设计体系。
+- `3f7d0b30` 只新增行为证据 `R09FocusOutlineBehaviorTests`。实际生产资源与控件验证 Button 焦点/失焦、共享焦点模板实例、selected Tab、TextBox 错误态和有效值恢复，R09-05 `2/2`；xUnit collection 串行本组 WPF STA，并避免已关闭 Dispatcher 的跨测试 `Application.Current` 污染。
+- 精确 Release 验证为 XAML `24/24`、solution `0/0`、Playnite `net462`；R09-02/R09-03/R09-04/共享焦点资源相邻合计 `11/11`，源码校验/XAML/diff check 通过。系统输入源缺失时不会自动挂载 Focus Adorner，已作为边界记录，不能把模板实例化冒充真实键盘呈现。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R09-05-FOCUS-OUTLINE-20260919.md`；真实 Playnite、物理 DPI/跨屏、presented frame、UIA/读屏、IME、OS High Contrast、ETW、宿主性能和 package-host 仍未验。Demo 原目录不可用，main 用户文件未触碰。下一项 R09-06 高对比真实配色。

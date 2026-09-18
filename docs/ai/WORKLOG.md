@@ -7346,3 +7346,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 新增 `R09ShadowBudgetBehaviorTests`，覆盖浅/深 palette 的实际资源对象、低成本回退以及 3 张真实 WPF 卡片在 ScrollViewer 中有/无阴影的 `ExtentHeight` 对比；R09-04 `3/3`，组合 R09-02/R09-03/共享资源 `9/9`。
 - `3ad61099` 精确重建：XAML `24/24`、Release solution `0 warning / 0 error`、Playnite `net462`；源码校验、XAML 检查、diff check 通过。高对比 OS 未切换，R09-06 单独保留；不把离屏资源/布局写成真实宿主呈现。
 - 证据已准备同步：`evidence/R09-04-SHADOW-BUDGET-20260919.md`、`ROUND3_PROGRESS.md`。Demo 原目录不可用，继续使用恢复生产基线；下一可执行任务：R09-05 焦点轮廓合成。
+
+## 2026-09-19 Round3 R09-05 焦点轮廓合成
+
+- 先复核 `DesignTokens.xaml`、`WpfUiProduction.xaml`、`Redesign.xaml`：共享 `GscSharedFocusVisual`、Button `FocusOverlay`、selected Tab Chrome 和 TextBox `Validation.HasError` 已形成完整状态叠加，未发现需要修改生产模板的缺口。
+- 在 `3f7d0b30` 新增 `R09FocusOutlineBehaviorTests`。真实 STA WPF 控件验证 primary Button 焦点/失焦负例、共享焦点 Border 实例、selected Tab 不裁切、TextBox 非法 `9` 的错误边框以及改回 `2` 后的焦点状态恢复；R09-05 `2/2`。
+- 首轮两项夹具在连续 STA 中受全局 `Application.Current`/已关闭 Dispatcher 污染，已移除测试内跨 STA Application 依赖并用 collection 串行本组窗口；这记录为测试宿主边界，不放宽断言。Release 精确相邻回归 `11/11`，build XAML `24/24`、solution `0/0`，源码/XAML/diff check 通过。
+- 文档证据已写入 `evidence/R09-05-FOCUS-OUTLINE-20260919.md` 与 `ROUND3_PROGRESS.md`；没有把无系统键盘输入源时未自动出现的 Focus Adorner 写成真实呈现通过。Demo 原目录不可用，沿用恢复生产基线；main 用户未提交文件继续保持不动。下一可执行任务：R09-06 高对比真实配色。
