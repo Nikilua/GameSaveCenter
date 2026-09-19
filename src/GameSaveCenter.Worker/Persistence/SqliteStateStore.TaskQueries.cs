@@ -19,7 +19,7 @@ public sealed partial class SqliteStateStore
         await connection.OpenAsync(token).ConfigureAwait(false);
         var command = connection.CreateCommand();
         command.CommandText = @"
-SELECT task_id,request_id,session_id,worker_session_id,task_type,game_id,game_name,state,progress,message,stage_message,cancellation_state,created_utc,started_utc,finished_utc,error_code,error_message,restore_report_json
+SELECT task_id,request_id,session_id,worker_session_id,task_type,game_id,game_name,state,progress,message,stage_message,cancellation_state,created_utc,started_utc,finished_utc,error_code,error_message,restore_report_json,source_references_json
 FROM tasks
 WHERE state IN ($queued,$running,$waiting)
 ORDER BY created_utc DESC,task_id DESC;";
@@ -43,7 +43,7 @@ ORDER BY created_utc DESC,task_id DESC;";
         await connection.OpenAsync(token).ConfigureAwait(false);
         var command = connection.CreateCommand();
         command.CommandText = $@"
-SELECT task_id,request_id,session_id,worker_session_id,task_type,game_id,game_name,state,progress,message,stage_message,cancellation_state,created_utc,started_utc,finished_utc,error_code,error_message,restore_report_json
+SELECT task_id,request_id,session_id,worker_session_id,task_type,game_id,game_name,state,progress,message,stage_message,cancellation_state,created_utc,started_utc,finished_utc,error_code,error_message,restore_report_json,source_references_json
 FROM tasks
 WHERE {filter.Sql}
 ORDER BY created_utc DESC,task_id DESC
@@ -209,7 +209,8 @@ WHERE state=$state AND finished_utc IS NOT NULL
             ErrorMessage = reader.IsDBNull(16) ? string.Empty : reader.GetString(16),
             RestoreReport = reader.IsDBNull(17) || string.IsNullOrWhiteSpace(reader.GetString(17))
                 ? null
-                : JsonSerializer.Deserialize<RestoreReportDto>(reader.GetString(17), _json)
+                : JsonSerializer.Deserialize<RestoreReportDto>(reader.GetString(17), _json),
+            SourceReferences = DeserializeTaskSourceReferences(reader.IsDBNull(18) ? string.Empty : reader.GetString(18))
         };
 
     private static string EncodeTaskCursor(DateTime createdUtc, string taskId)

@@ -68,6 +68,7 @@ public sealed class TaskEventBroadcaster
             FinishedUtc = change.Task.FinishedUtc,
             ErrorCode = change.Task.ErrorCode,
             ErrorMessage = change.Task.ErrorMessage,
+            SourceReferences = change.Task.SourceReferences?.Select(reference => reference.Clone()).ToList() ?? new List<TaskSourceReferenceDto>(),
             BackupResult = change.Task.BackupResult == null ? null : new BackupResultDto
             {
                 LocalState = change.Task.BackupResult.LocalState,

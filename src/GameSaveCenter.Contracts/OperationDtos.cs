@@ -284,6 +284,8 @@ namespace GameSaveCenter.Contracts
         public string ErrorMessage { get; set; } = string.Empty;
         public BackupResultDto? BackupResult { get; set; }
         public RestoreReportDto? RestoreReport { get; set; }
+        /// <summary>Stable, credential-free objects that the task detail can navigate to.</summary>
+        public List<TaskSourceReferenceDto> SourceReferences { get; set; } = new List<TaskSourceReferenceDto>();
         public bool HasRestoreReport => RestoreReport != null;
         public DateTime CreatedLocal => CreatedUtc.ToLocalTime();
         public int ProgressValue => Math.Max(0, Math.Min(100, ProgressPercent));

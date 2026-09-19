@@ -1325,7 +1325,17 @@ public sealed class MediaSyncService
         if(!policy.UploadAfterBackup)
         {
             await _cloudState.MarkPausedAsync(CloudTransferKind.Media,playniteId,"该游戏策略未允许媒体上传，已暂停自动重试。",token).ConfigureAwait(false);
-            return new TaskStatusDto{TaskType="CloudUpload",GameId=playniteId,GameName=game.Name,State=TaskState.Cancelled,Message="媒体云端上传已按策略暂停",CreatedUtc=DateTime.UtcNow,FinishedUtc=DateTime.UtcNow};
+            return new TaskStatusDto{TaskType="CloudUpload",GameId=playniteId,GameName=game.Name,State=TaskState.Cancelled,Message="媒体云端上传已按策略暂停",CreatedUtc=DateTime.UtcNow,FinishedUtc=DateTime.UtcNow,SourceReferences=new List<TaskSourceReferenceDto>
+            {
+                new TaskSourceReferenceDto
+                {
+                    Kind = TaskSourceReferenceKind.CloudTransfer,
+                    StableId = CloudTransferStateService.GetTransferKey(CloudTransferKind.Media, playniteId),
+                    PlayniteId = playniteId,
+                    DisplayName = "媒体云队列",
+                    Detail = "策略暂停；没有重新执行本地媒体扫描"
+                }
+            }};
         }
         using var lease=await _gameLock.AcquireAsync(playniteId,GameOperationKind.CloudUpload,TimeSpan.FromSeconds(10),token).ConfigureAwait(false);
         if(lease==null)throw new WorkerOperationException("GAME_OPERATION_BUSY","该游戏已有操作正在执行，已跳过媒体云端上传重试。",playniteId);
@@ -1353,7 +1363,17 @@ public sealed class MediaSyncService
             await _store.UpdateMediaCloudStateAsync(playniteId,"Synced",ct).ConfigureAwait(false);
             await _cloudState.MarkUploadedAsync(CloudTransferKind.Media,playniteId,ct).ConfigureAwait(false);
             await progress.ReportAsync(100,"媒体云端复制重试完成").ConfigureAwait(false);
-        },token).ConfigureAwait(false);
+        },token,sourceReferences: new[]
+        {
+            new TaskSourceReferenceDto
+            {
+                Kind = TaskSourceReferenceKind.CloudTransfer,
+                StableId = CloudTransferStateService.GetTransferKey(CloudTransferKind.Media, game.PlayniteId),
+                PlayniteId = game.PlayniteId,
+                DisplayName = "媒体云队列",
+                Detail = "仅重试已保留的本地媒体归档"
+            }
+        }).ConfigureAwait(false);
     }
 
     /// <summary>

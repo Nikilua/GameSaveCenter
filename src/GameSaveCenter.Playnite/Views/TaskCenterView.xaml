@@ -470,6 +470,33 @@
                     </ScrollViewer>
                 </StackPanel>
             </Border>
+            <Border x:Name="TaskSourceReferenceCard" Padding="10" Margin="0,10,0,0">
+                <Border.Style>
+                    <Style TargetType="Border" BasedOn="{StaticResource GscRedesignSubCard}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                        <DataTrigger Binding="{Binding HasSelectedTaskObjectReferences}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <StackPanel>
+                    <TextBlock Text="任务来源" FontWeight="SemiBold"/>
+                    <TextBlock Text="仅使用持久化稳定 ID 定位；来源对象消失时保留诊断，不替换为同名对象。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,6"/>
+                    <ItemsControl ItemsSource="{Binding SelectedTaskObjectReferences}" AutomationProperties.Name="任务来源对象">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <ui:Button Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding DataContext.OpenSelectedTaskSourceCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" HorizontalContentAlignment="Stretch" Margin="0,2,0,2" ToolTip="{Binding Detail}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding KindDisplay}" FontWeight="SemiBold"/>
+                                        <TextBlock Text="{Binding IdentityDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap"/>
+                                        <TextBlock Text="查看来源对象" Style="{DynamicResource GscCaptionStyle}" Foreground="{DynamicResource GscAccentBrush}" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </ui:Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
         </StackPanel>
         </ScrollViewer>
     </Grid>

@@ -185,7 +185,17 @@ public sealed class RestoreOrchestrator
             }
             state=RestoreState.Completed;report.Stage="已完成";report.OutcomeKind="Completed";report.FailureCode=string.Empty;progress.SetRestoreReport(report);await AuditAsync(game.PlayniteId,state,new{request,preVersion.BackupId},ct).ConfigureAwait(false);
             await progress.ReportAsync(100,"安全恢复完成；执行前保护快照已创建并锁定").ConfigureAwait(false);
-        },token, requestId: request.RequestId).ConfigureAwait(false);
+        },token, requestId: request.RequestId, sourceReferences: new[]
+        {
+            new TaskSourceReferenceDto
+            {
+                Kind = TaskSourceReferenceKind.BackupVersion,
+                StableId = request.BackupId,
+                PlayniteId = game.PlayniteId,
+                DisplayName = request.BackupId,
+                Detail = "恢复目标版本；版本消失时保留任务诊断，不跳转其他版本"
+            }
+        }).ConfigureAwait(false);
     }
 
     private Task<LudusaviCommandResult> RestoreTargetAsync(string? backupPath,string game,string backupId,bool preview,CancellationToken token)

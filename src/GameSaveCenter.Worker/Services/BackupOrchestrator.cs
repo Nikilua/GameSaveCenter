@@ -645,7 +645,17 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
             backupResult.Summary = "本地历史版本已保留；云端上传成功，尚未进行远端校验。";
             progress.SetBackupResult(backupResult);
             await progress.ReportAsync(100,"云端复制重试完成").ConfigureAwait(false);
-        },token).ConfigureAwait(false);
+        },token,sourceReferences: new[]
+        {
+            new TaskSourceReferenceDto
+            {
+                Kind = TaskSourceReferenceKind.CloudTransfer,
+                StableId = CloudTransferStateService.GetTransferKey(CloudTransferKind.Backup, game.PlayniteId),
+                PlayniteId = game.PlayniteId,
+                DisplayName = "备份云队列",
+                Detail = "仅重试已保留的本地备份副本"
+            }
+        }).ConfigureAwait(false);
         return result;
     }
 

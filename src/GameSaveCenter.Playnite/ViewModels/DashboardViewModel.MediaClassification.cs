@@ -123,7 +123,13 @@ public sealed partial class DashboardViewModel
                 if (restored != null && string.Equals(pendingMediaClassificationBatchId, restored.BatchId, StringComparison.OrdinalIgnoreCase))
                     pendingMediaClassificationBatchId = null;
                 else if (!shouldLoadPending)
+                {
+                    var missingPendingBatchId = pendingMediaClassificationBatchId;
                     pendingMediaClassificationBatchId = null;
+                    if (restored == null && !string.IsNullOrWhiteSpace(missingPendingBatchId)
+                        && response?.HasMore != true)
+                        StatusMessage = $"任务来源媒体批次“{missingPendingBatchId}”已不存在，未选择其他批次；任务诊断仍可查看。";
+                }
                 if (string.IsNullOrWhiteSpace(LastMediaClassificationBatchId))
                 {
                     var latestUndoable = MediaClassificationHistoryItems.FirstOrDefault(x => x.IsUndoable);

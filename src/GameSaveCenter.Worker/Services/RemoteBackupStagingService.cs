@@ -42,7 +42,17 @@ public sealed class RemoteBackupStagingService : IRemoteBackupStageProvider
         RemoteBackupStageResultDto? stagedResult=null;
         var task=await tasks.RunAsync("RemoteStage",request.PlayniteId,game.Name,
             async (progress,stageToken)=>stagedResult=await StageCoreAsync(request,game.Name,match.Name,progress,stageToken).ConfigureAwait(false),
-            token,requestId:requestId).ConfigureAwait(false);
+            token,requestId:requestId,sourceReferences: new[]
+            {
+                new TaskSourceReferenceDto
+                {
+                    Kind = TaskSourceReferenceKind.BackupVersion,
+                    StableId = request.BackupId,
+                    PlayniteId = game.PlayniteId,
+                    DisplayName = request.BackupId,
+                    Detail = "远端暂存目标版本；版本消失时保留任务诊断"
+                }
+            }).ConfigureAwait(false);
         if(task.State==TaskState.Succeeded&&stagedResult!=null)return stagedResult;
         if(task.State==TaskState.Succeeded)
             throw new InvalidOperationException("远端下载任务已成功，但没有返回隔离结果。");

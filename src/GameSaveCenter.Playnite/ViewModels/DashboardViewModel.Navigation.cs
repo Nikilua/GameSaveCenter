@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 
@@ -18,6 +19,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private bool restoringNavigationTaskSelection;
 
         public ICommand OpenSelectedTaskGameCommand { get; private set; } = null!;
+        public ICommand OpenSelectedTaskSourceCommand { get; private set; } = null!;
         public ICommand ReturnToNavigationSourceCommand { get; private set; } = null!;
         public ICommand ClearTaskNavigationContextCommand { get; private set; } = null!;
 
@@ -37,6 +39,66 @@ namespace GameSaveCenter.Playnite.ViewModels
         public bool HasSelectedTaskGameTarget
             => SelectedTask != null && !string.IsNullOrWhiteSpace(SelectedTask.GameId);
 
+        public IReadOnlyList<TaskSourceReferenceDto> SelectedTaskSourceReferences
+        {
+            get
+            {
+                var task = SelectedTask;
+                if (task == null) return Array.Empty<TaskSourceReferenceDto>();
+
+                var references = new List<TaskSourceReferenceDto>();
+                foreach (var reference in task.SourceReferences ?? new List<TaskSourceReferenceDto>())
+                {
+                    if (reference == null || !reference.HasStableIdentity) continue;
+                    if (references.Any(existing => existing.Kind == reference.Kind
+                        && string.Equals(existing.StableId, reference.StableId, StringComparison.OrdinalIgnoreCase)))
+                        continue;
+                    references.Add(reference.Clone());
+                }
+
+                // Older durable tasks predate SourceReferences. Reconstruct only identities
+                // already carried by the task; display names never become a navigation key.
+                if (task.RestoreReport != null && !string.IsNullOrWhiteSpace(task.RestoreReport.BackupId)
+                    && !references.Any(reference => reference.Kind == TaskSourceReferenceKind.BackupVersion
+                        && string.Equals(reference.StableId, task.RestoreReport.BackupId, StringComparison.OrdinalIgnoreCase)))
+                {
+                    references.Add(new TaskSourceReferenceDto
+                    {
+                        Kind = TaskSourceReferenceKind.BackupVersion,
+                        StableId = task.RestoreReport.BackupId,
+                        PlayniteId = task.RestoreReport.PlayniteId,
+                        DisplayName = task.RestoreReport.BackupId,
+                        Detail = "从恢复报告恢复的目标版本；版本消失时保留任务诊断"
+                    });
+                }
+
+                if (!string.IsNullOrWhiteSpace(task.GameId)
+                    && !references.Any(reference => reference.Kind == TaskSourceReferenceKind.Game
+                        && string.Equals(reference.StableId, task.GameId, StringComparison.OrdinalIgnoreCase)))
+                {
+                    references.Insert(0, new TaskSourceReferenceDto
+                    {
+                        Kind = TaskSourceReferenceKind.Game,
+                        StableId = task.GameId,
+                        PlayniteId = task.GameId,
+                        DisplayName = task.GameName,
+                        Detail = "任务关联的 Playnite 游戏 ID"
+                    });
+                }
+
+                return references;
+            }
+        }
+
+        public bool HasSelectedTaskSources => SelectedTaskSourceReferences.Count > 0;
+
+        public IReadOnlyList<TaskSourceReferenceDto> SelectedTaskObjectReferences
+            => SelectedTaskSourceReferences
+                .Where(reference => reference.Kind != TaskSourceReferenceKind.Game)
+                .ToList();
+
+        public bool HasSelectedTaskObjectReferences => SelectedTaskObjectReferences.Count > 0;
+
         internal double TaskGridScrollOffset => taskGridScrollOffset;
         internal double MaintenanceFindingsScrollOffset => maintenanceFindingsScrollOffset;
         internal double? PendingTaskGridScrollRestore => pendingTaskGridScrollRestore;
@@ -47,6 +109,9 @@ namespace GameSaveCenter.Playnite.ViewModels
             OpenSelectedTaskGameCommand = new RelayCommand(
                 _ => OpenSelectedTaskGame(),
                 _ => !IsBusy && HasSelectedTaskGameTarget);
+            OpenSelectedTaskSourceCommand = new RelayCommand(
+                value => OpenSelectedTaskSource(value as TaskSourceReferenceDto),
+                value => !IsBusy && value is TaskSourceReferenceDto reference && reference.HasStableIdentity);
             ReturnToNavigationSourceCommand = new RelayCommand(
                 _ => ReturnToNavigationSource(),
                 _ => !IsBusy && HasNavigationReturnTarget);
@@ -146,16 +211,48 @@ namespace GameSaveCenter.Playnite.ViewModels
             OnNavigationHistoryChanged();
         }
 
+        private void OpenSelectedTaskSource(TaskSourceReferenceDto? source)
+        {
+            if (source == null || !source.HasStableIdentity) return;
+
+            switch (source.Kind)
+            {
+                case TaskSourceReferenceKind.Game:
+                    OpenTaskGame(string.IsNullOrWhiteSpace(source.PlayniteId) ? source.StableId : source.PlayniteId);
+                    break;
+                case TaskSourceReferenceKind.BackupVersion:
+                    OpenTaskBackupVersion(source);
+                    break;
+                case TaskSourceReferenceKind.MediaBatch:
+                    OpenTaskMediaBatch(source);
+                    break;
+                case TaskSourceReferenceKind.CloudTransfer:
+                    OpenTaskCloudTransfer(source);
+                    break;
+                default:
+                    StatusMessage = $"任务来源“{source.IdentityDisplay}”类型未知，已保留任务诊断，未执行跳转。";
+                    break;
+            }
+        }
+
         private void OpenSelectedTaskGame()
         {
             var task = SelectedTask;
             if (task == null || string.IsNullOrWhiteSpace(task.GameId)) return;
 
-            var game = Games.FirstOrDefault(candidate =>
-                string.Equals(candidate.PlayniteId, task.GameId, StringComparison.OrdinalIgnoreCase));
+            OpenTaskGame(task.GameId);
+        }
+
+        private void OpenTaskGame(string gameId)
+        {
+            var task = SelectedTask;
+            if (task == null || string.IsNullOrWhiteSpace(gameId)) return;
+
+            var game = TaskSourceNavigationResolver.ResolveExactGame(
+                new TaskSourceReferenceDto { StableId = gameId, PlayniteId = gameId }, Games);
             if (game == null)
             {
-                StatusMessage = $"任务对应的游戏（{task.GameId}）已不在当前快照中，未切换到其他游戏。请先刷新游戏库。";
+                StatusMessage = $"任务来源游戏（{gameId}）已不在当前快照中，未切换到其他游戏。请先刷新游戏库。";
                 return;
             }
 
@@ -167,6 +264,67 @@ namespace GameSaveCenter.Playnite.ViewModels
             SelectedGame = game;
             StatusMessage = $"已打开任务对应的游戏“{game.Name}”详情。可以使用顶部“{NavigationReturnLabel}”返回任务。";
             RequestWorkspaceLoad();
+        }
+
+        private void OpenTaskBackupVersion(TaskSourceReferenceDto source)
+        {
+            var task = SelectedTask;
+            var resolvedGameId = string.IsNullOrWhiteSpace(source.PlayniteId) ? task?.GameId ?? string.Empty : source.PlayniteId;
+            if (string.IsNullOrWhiteSpace(resolvedGameId))
+            {
+                StatusMessage = $"任务来源版本“{source.IdentityDisplay}”缺少可验证的游戏 ID，保留诊断但未跳转。";
+                return;
+            }
+
+            var game = TaskSourceNavigationResolver.ResolveExactGame(
+                new TaskSourceReferenceDto
+                {
+                    StableId = source.StableId,
+                    PlayniteId = resolvedGameId
+                }, Games);
+            if (game == null)
+            {
+                StatusMessage = $"任务来源游戏（{resolvedGameId}）已不在当前快照中，未切换到其他游戏，也未跳转同名版本。";
+                return;
+            }
+
+            PushNavigationReturnTarget("返回任务", $"来源：任务中心 · {task?.GameName ?? game.Name}");
+            pendingTaskBackupId = source.StableId;
+            SaveTabIndex = 0;
+            CurrentWorkspace = WorkspaceKind.Saves;
+            SelectedBackup = null!;
+            SelectedGame = game;
+            StatusMessage = $"正在打开任务来源版本“{source.StableId}”；仅按稳定版本 ID 查找。";
+            RequestWorkspaceLoad();
+        }
+
+        private void OpenTaskMediaBatch(TaskSourceReferenceDto source)
+        {
+            var task = SelectedTask;
+            PushNavigationReturnTarget("返回任务", $"来源：任务中心 · {task?.GameName ?? source.IdentityDisplay}");
+            pendingMediaClassificationBatchId = source.StableId;
+            MediaTabIndex = 0;
+            CurrentWorkspace = WorkspaceKind.Media;
+            RequestWorkspaceLoad();
+            StatusMessage = $"正在打开任务来源媒体批次“{source.StableId}”；仅按稳定批次 ID 查找。";
+        }
+
+        private void OpenTaskCloudTransfer(TaskSourceReferenceDto source)
+        {
+            CloudTransferKind kind;
+            if (source.StableId.StartsWith("Backup:", StringComparison.OrdinalIgnoreCase))
+                kind = CloudTransferKind.Backup;
+            else if (source.StableId.StartsWith("Media:", StringComparison.OrdinalIgnoreCase))
+                kind = CloudTransferKind.Media;
+            else
+            {
+                StatusMessage = $"任务来源云队列“{source.IdentityDisplay}”缺少可验证的队列键，保留诊断但未跳转。";
+                return;
+            }
+
+            PushNavigationReturnTarget("返回任务", $"来源：任务中心 · {SelectedTask?.GameName ?? source.IdentityDisplay}");
+            OpenCloudQueue(source.StableId, transferKind: kind);
+            StatusMessage = $"正在打开任务来源云队列“{source.StableId}”；不会按游戏名称替换对象。";
         }
 
         private void ReturnToNavigationSource()

@@ -49,14 +49,33 @@ public sealed class TaskCoordinator
         string sessionId = "",
         string? taskId = null,
         DateTime? createdUtc = null,
-        string requestId = "")
+        string requestId = "",
+        IReadOnlyCollection<TaskSourceReferenceDto>? sourceReferences = null)
     {
+        var taskSources = (sourceReferences ?? Array.Empty<TaskSourceReferenceDto>())
+            .Where(reference => reference != null && reference.HasStableIdentity)
+            .Select(reference => reference.Clone())
+            .ToList();
+        if (!string.IsNullOrWhiteSpace(gameId)
+            && !taskSources.Any(reference => reference.Kind == TaskSourceReferenceKind.Game
+                && string.Equals(reference.StableId, gameId, StringComparison.OrdinalIgnoreCase)))
+        {
+            taskSources.Insert(0, new TaskSourceReferenceDto
+            {
+                Kind = TaskSourceReferenceKind.Game,
+                StableId = gameId,
+                PlayniteId = gameId,
+                DisplayName = gameName ?? string.Empty,
+                Detail = "任务关联的 Playnite 游戏 ID"
+            });
+        }
         var task = new TaskStatusDto
         {
             TaskId=string.IsNullOrWhiteSpace(taskId) ? Guid.NewGuid().ToString("N") : taskId,
             RequestId=requestId ?? string.Empty,
-            SessionId=sessionId ?? string.Empty, WorkerSessionId=workerSessionId, TaskType=taskType, GameId=gameId, GameName=gameName,
-            State=TaskState.Queued, ProgressPercent=0, Message="等待执行", StageMessage="等待执行", CancellationState=TaskCancellationStates.None, CreatedUtc=createdUtc ?? DateTime.UtcNow
+            SessionId=sessionId ?? string.Empty, WorkerSessionId=workerSessionId, TaskType=taskType, GameId=gameId, GameName=gameName ?? string.Empty,
+            State=TaskState.Queued, ProgressPercent=0, Message="等待执行", StageMessage="等待执行", CancellationState=TaskCancellationStates.None, CreatedUtc=createdUtc ?? DateTime.UtcNow,
+            SourceReferences=taskSources
         };
         var gate=_gameLocks.GetOrAdd(string.IsNullOrWhiteSpace(gameId)?"__global__":gameId,_=>new SemaphoreSlim(1,1));
         using var linked=CancellationTokenSource.CreateLinkedTokenSource(outerToken);
@@ -314,6 +333,7 @@ public sealed class TaskCoordinator
             RequestId=task.RequestId,
             ProgressPercent=task.ProgressPercent,Message=task.Message,StageMessage=task.StageMessage,CancellationState=task.CancellationState,CreatedUtc=task.CreatedUtc,StartedUtc=task.StartedUtc,
             FinishedUtc=task.FinishedUtc,ErrorCode=task.ErrorCode,ErrorMessage=task.ErrorMessage,
+            SourceReferences=task.SourceReferences?.Select(reference => reference.Clone()).ToList() ?? new List<TaskSourceReferenceDto>(),
             BackupResult=task.BackupResult == null ? null : new BackupResultDto
             {
                 LocalState = task.BackupResult.LocalState,

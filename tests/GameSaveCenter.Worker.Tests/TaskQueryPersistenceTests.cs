@@ -126,6 +126,25 @@ public sealed class TaskQueryPersistenceTests : IDisposable
                 FailureCode = "RESTORE_FAILED_ROLLED_BACK",
                 WasRolledBack = true,
                 TaskId = "restore-report"
+            },
+            SourceReferences = new List<TaskSourceReferenceDto>
+            {
+                new TaskSourceReferenceDto
+                {
+                    Kind = TaskSourceReferenceKind.BackupVersion,
+                    StableId = "backup-b",
+                    PlayniteId = "game-1",
+                    DisplayName = "backup-b",
+                    Detail = "合成测试版本"
+                },
+                new TaskSourceReferenceDto
+                {
+                    Kind = TaskSourceReferenceKind.CloudTransfer,
+                    StableId = "Backup:game-1",
+                    PlayniteId = "game-1",
+                    DisplayName = "备份云队列",
+                    Detail = "合成测试队列"
+                }
             }
         }, CancellationToken.None);
 
@@ -139,6 +158,10 @@ public sealed class TaskQueryPersistenceTests : IDisposable
         Assert.Equal("校验中", page.StageDisplay);
         Assert.Equal(TaskCancellationStates.Finalizing, recent.CancellationState);
         Assert.Equal("无法立即中断 · 正在安全收尾", page.CancellationDisplay);
+        Assert.Contains(recent.SourceReferences, reference => reference.Kind == TaskSourceReferenceKind.BackupVersion
+            && reference.StableId == "backup-b");
+        Assert.Contains(page.SourceReferences, reference => reference.Kind == TaskSourceReferenceKind.CloudTransfer
+            && reference.StableId == "Backup:game-1");
     }
 
     [Fact]
