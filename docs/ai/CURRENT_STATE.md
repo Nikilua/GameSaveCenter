@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R13-08 失败分类帮助（代码已提交，环境待验）
+
+- `96a4c6a9` 已推送到 `codex/ui-finesse-round2`。复用稳定 Rclone 错误码，新增无空间 `RCLONE_NO_SPACE`、限流 `RCLONE_RATE_LIMITED`；认证、空间、远端不存在、校验差异、限流各有 display-only 下一步，未知错误不生成建议。
+- 维护详情沿用共享样式，已识别帮助与默认折叠的“原始诊断”分开；原始错误码/详情保留，可访问名称保留。限流进入既有有界退避，不改上传、取消、恢复保护和本地副本语义。已加入 Core/Worker/Playnite 定向夹具但未执行。
+- 已验证：源码校验、XAML `24/24`、diff check。未验证：Core/Worker/Playnite 测试、Release/net462、RenderHarness、真实 rclone/远端配额和宿主。主机只有 SDK `9.0.302`，`global.json` 的 `8.0.100` 向上滚动命中缺失 Workload resolver 目录，Worker restore 退出 `1`；不写成 build/test 通过。
+- 只用合成/fake/隔离数据，Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并。R13-07 隔离源目录仍有 Contracts 子目录被外部进程占用，未强杀。
+- 下一可执行任务：释放并清理隔离源目录，在可用 SDK/Workload 环境同时重跑 R13-07/R13-08 定向测试和相关回归，通过后推进 `R14-01 归类建议解释`。
+
 ## 当前第三轮 R13-07 队列筛选与汇总（代码已提交，环境待验）
 
 - `d6c2af90` 已推送到 `codex/ui-finesse-round2`。复用既有状态/类型筛选、查询一致性 token、分页追加、`existingKeys` 去重和选中项恢复；新增游戏/Playnite ID 片段、来源设备、24 小时/7 天/30 天时间窗口以及未筛选 `GlobalTotalCount`。维护页摘要区分当前筛选与全局计数，筛选栏使用可收缩列；RenderHarness 合成 ViewModel 同步新绑定。
