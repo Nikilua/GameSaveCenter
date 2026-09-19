@@ -244,7 +244,10 @@ public sealed class GameToolService
                     var percent=total>0?(int)Math.Min(80,5+received*75/total.Value):35;
                     if(percent<=lastDownloadPercent)return;
                     lastDownloadPercent=percent;
-                    await progress.ReportAsync(percent,"正在下载 FLiNG 修改器").ConfigureAwait(false);
+                    if(total.HasValue && total.Value>0)
+                        await progress.ReportWorkAsync(received,total.Value,"字节","正在下载 FLiNG 修改器",percent).ConfigureAwait(false);
+                    else
+                        await progress.ReportAsync(percent,"正在下载 FLiNG 修改器").ConfigureAwait(false);
                 },taskToken).ConfigureAwait(false);
                 await progress.ReportAsync(82,"正在安全解压").ConfigureAwait(false);
                 var toolId=existingTool?.ToolId??Guid.NewGuid().ToString("N");var versionId=Guid.NewGuid().ToString("N");

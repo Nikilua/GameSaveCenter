@@ -504,7 +504,12 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
                                 : $"已记录结果：{processed}/{total} · {game.Name}";
                             job.CompletedGameIdsJson = JsonSerializer.Serialize(completedGameIds.OrderBy(x => x, StringComparer.OrdinalIgnoreCase));
                             await _store.UpdateBackupAllJobAsync(job, CancellationToken.None).ConfigureAwait(false);
-                            await progress.ReportAsync(job.ProgressPercent, job.Message).ConfigureAwait(false);
+                            await progress.ReportWorkAsync(
+                                processed,
+                                total,
+                                "游戏",
+                                job.Message,
+                                job.ProgressPercent).ConfigureAwait(false);
                         }).ConfigureAwait(false);
 
                     operationToken.ThrowIfCancellationRequested();

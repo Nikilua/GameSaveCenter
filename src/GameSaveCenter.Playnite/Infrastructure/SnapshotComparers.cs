@@ -44,6 +44,12 @@ namespace GameSaveCenter.Playnite.Infrastructure
             && string.Equals(a.GameName, b.GameName, StringComparison.Ordinal)
             && a.State == b.State
             && a.ProgressPercent == b.ProgressPercent
+            && a.ProgressCompletedUnits == b.ProgressCompletedUnits
+            && a.ProgressTotalUnits == b.ProgressTotalUnits
+            && string.Equals(a.ProgressUnit, b.ProgressUnit, StringComparison.Ordinal)
+            && a.ProgressRatePerSecond == b.ProgressRatePerSecond
+            && a.ProgressEtaSeconds == b.ProgressEtaSeconds
+            && a.ProgressUpdatedUtc == b.ProgressUpdatedUtc
             && string.Equals(a.Message, b.Message, StringComparison.Ordinal)
             && string.Equals(a.StageMessage, b.StageMessage, StringComparison.Ordinal)
             && string.Equals(a.CancellationState, b.CancellationState, StringComparison.Ordinal)

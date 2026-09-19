@@ -284,6 +284,17 @@ namespace GameSaveCenter.Contracts
         public string ErrorMessage { get; set; } = string.Empty;
         public BackupResultDto? BackupResult { get; set; }
         public RestoreReportDto? RestoreReport { get; set; }
+        /// <summary>
+        /// Optional reliable work sample. A task must explicitly report a known
+        /// total before the UI may derive a rate or ETA; stage percentages alone
+        /// are intentionally not treated as throughput data.
+        /// </summary>
+        public long ProgressCompletedUnits { get; set; } = -1;
+        public long ProgressTotalUnits { get; set; } = -1;
+        public string ProgressUnit { get; set; } = string.Empty;
+        public double ProgressRatePerSecond { get; set; }
+        public double? ProgressEtaSeconds { get; set; }
+        public DateTime? ProgressUpdatedUtc { get; set; }
         /// <summary>Stable, credential-free objects that the task detail can navigate to.</summary>
         public List<TaskSourceReferenceDto> SourceReferences { get; set; } = new List<TaskSourceReferenceDto>();
         public bool HasRestoreReport => RestoreReport != null;
@@ -294,6 +305,35 @@ namespace GameSaveCenter.Contracts
             || (State == TaskState.Running && ProgressPercent == 0 && string.Equals(StageMessage, "正在执行", StringComparison.Ordinal))
             ? "—"
             : $"{ProgressValue}%";
+        public bool HasReliableProgressMetrics => ProgressTotalUnits > 0
+            && ProgressCompletedUnits >= 0
+            && ProgressCompletedUnits <= ProgressTotalUnits
+            && ProgressRatePerSecond > 0
+            && !double.IsNaN(ProgressRatePerSecond)
+            && !double.IsInfinity(ProgressRatePerSecond)
+            && !string.IsNullOrWhiteSpace(ProgressUnit)
+            && State != TaskState.Queued
+            && State != TaskState.WaitingForUser
+            && (State != TaskState.Running
+                || !ProgressUpdatedUtc.HasValue
+                || DateTime.UtcNow - ProgressUpdatedUtc.Value <= TimeSpan.FromSeconds(10));
+        public string ProgressRateDisplay => HasReliableProgressMetrics
+            ? FormatWorkRate(ProgressRatePerSecond, ProgressUnit)
+            : "—";
+        public string ProgressEtaDisplay
+        {
+            get
+            {
+                if (State != TaskState.Running || !HasReliableProgressMetrics || !ProgressEtaSeconds.HasValue)
+                    return "—";
+                var seconds = ProgressEtaSeconds.Value;
+                if (double.IsNaN(seconds) || double.IsInfinity(seconds) || seconds < 0 || seconds > TimeSpan.FromDays(7).TotalSeconds) return "—";
+                if (seconds < 1) return "< 1 秒";
+                if (seconds < 60) return $"{seconds:0} 秒";
+                if (seconds < 3600) return $"{seconds / 60:0.#} 分钟";
+                return $"{seconds / 3600:0.#} 小时";
+            }
+        }
         public string StageKey => TaskStageResolver.ResolveKey(TaskType, string.IsNullOrWhiteSpace(StageMessage) ? Message : StageMessage);
         public string StageDisplay => TaskStageResolver.GetDisplay(StageKey);
         public bool HasKnownStage => !string.Equals(StageKey, TaskStageResolver.Unknown, StringComparison.Ordinal);
@@ -360,6 +400,22 @@ namespace GameSaveCenter.Contracts
                 if (duration.TotalHours < 1) return $"{duration.TotalMinutes:0.#} 分钟";
                 return $"{duration.TotalHours:0.#} 小时";
             }
+        }
+
+        private static string FormatWorkRate(double rate, string unit)
+        {
+            if (string.Equals(unit, "字节", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(unit, "bytes", StringComparison.OrdinalIgnoreCase))
+                return $"{FormatBytes(rate)}/秒";
+            return $"{rate:0.#} {unit}/秒";
+        }
+
+        private static string FormatBytes(double value)
+        {
+            if (value < 1024) return $"{value:0.#} B";
+            if (value < 1024 * 1024) return $"{value / 1024:0.#} KiB";
+            if (value < 1024 * 1024 * 1024) return $"{value / (1024 * 1024):0.#} MiB";
+            return $"{value / (1024 * 1024 * 1024):0.#} GiB";
         }
     }
 

@@ -1213,7 +1213,7 @@ public sealed class MediaSyncService
             {
                 ct.ThrowIfCancellationRequested();index++;
                 if(await ArchiveCandidateAsync(candidate.Path,candidate.Source,game,"游戏专属来源",ct).ConfigureAwait(false))copied++;
-                if(index%20==0)await progress.ReportAsync(Math.Min(85,5+(int)(80d*index/Math.Max(1,candidates.Count))),$"已检查 {index}/{candidates.Count}").ConfigureAwait(false);
+                if(index%20==0)await progress.ReportWorkAsync(index,candidates.Count,"文件",$"已检查 {index}/{candidates.Count}",Math.Min(85,5+(int)(80d*index/Math.Max(1,candidates.Count)))).ConfigureAwait(false);
             }
 
             var policy=await _store.GetPolicyAsync(game.PlayniteId,ct).ConfigureAwait(false);

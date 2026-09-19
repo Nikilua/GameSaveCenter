@@ -68,6 +68,12 @@ public sealed class TaskEventBroadcaster
             FinishedUtc = change.Task.FinishedUtc,
             ErrorCode = change.Task.ErrorCode,
             ErrorMessage = change.Task.ErrorMessage,
+            ProgressCompletedUnits = change.Task.ProgressCompletedUnits,
+            ProgressTotalUnits = change.Task.ProgressTotalUnits,
+            ProgressUnit = change.Task.ProgressUnit,
+            ProgressRatePerSecond = change.Task.ProgressRatePerSecond,
+            ProgressEtaSeconds = change.Task.ProgressEtaSeconds,
+            ProgressUpdatedUtc = change.Task.ProgressUpdatedUtc,
             SourceReferences = change.Task.SourceReferences?.Select(reference => reference.Clone()).ToList() ?? new List<TaskSourceReferenceDto>(),
             BackupResult = change.Task.BackupResult == null ? null : new BackupResultDto
             {

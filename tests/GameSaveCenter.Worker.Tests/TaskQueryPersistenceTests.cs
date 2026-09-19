@@ -165,6 +165,77 @@ public sealed class TaskQueryPersistenceTests : IDisposable
     }
 
     [Fact]
+    public async Task ReliableProgressMetricsRoundTripAndUnknownWorkDoesNotExposeEta()
+    {
+        var sampled = DateTime.UtcNow.AddSeconds(-1);
+        await store.AddOrUpdateTaskAsync(new TaskStatusDto
+        {
+            TaskId = "sampled-progress",
+            TaskType = "TrainerDownload",
+            GameId = "game-1",
+            GameName = "测试游戏",
+            State = TaskState.Running,
+            ProgressPercent = 42,
+            Message = "正在下载",
+            CreatedUtc = sampled.AddMinutes(-1),
+            StartedUtc = sampled.AddMinutes(-1),
+            ProgressCompletedUnits = 420,
+            ProgressTotalUnits = 1000,
+            ProgressUnit = "字节",
+            ProgressRatePerSecond = 21,
+            ProgressEtaSeconds = 28,
+            ProgressUpdatedUtc = sampled
+        }, CancellationToken.None);
+
+        var recent = Assert.Single(await store.GetRecentTasksAsync(10, CancellationToken.None));
+        var page = Assert.Single((await store.GetTaskPageAsync(new TaskQueryDto { Limit = 10 }, CancellationToken.None)).Items);
+
+        Assert.Equal(420, recent.ProgressCompletedUnits);
+        Assert.Equal(1000, page.ProgressTotalUnits);
+        Assert.Equal("字节", recent.ProgressUnit);
+        Assert.Equal(21, page.ProgressRatePerSecond);
+        Assert.Equal(28, recent.ProgressEtaSeconds);
+        Assert.Equal("21 B/秒", recent.ProgressRateDisplay);
+        Assert.Equal("28 秒", recent.ProgressEtaDisplay);
+
+        var unknown = new TaskStatusDto
+        {
+            State = TaskState.Running,
+            ProgressCompletedUnits = -1,
+            ProgressTotalUnits = -1,
+            ProgressRatePerSecond = 99,
+            ProgressEtaSeconds = 1
+        };
+        var waiting = new TaskStatusDto
+        {
+            State = TaskState.WaitingForUser,
+            ProgressCompletedUnits = 5,
+            ProgressTotalUnits = 10,
+            ProgressUnit = "文件",
+            ProgressRatePerSecond = 1,
+            ProgressEtaSeconds = 5
+        };
+        var stale = new TaskStatusDto
+        {
+            State = TaskState.Running,
+            ProgressCompletedUnits = 5,
+            ProgressTotalUnits = 10,
+            ProgressUnit = "文件",
+            ProgressRatePerSecond = 1,
+            ProgressEtaSeconds = 5,
+            ProgressUpdatedUtc = DateTime.UtcNow.AddSeconds(-11)
+        };
+        Assert.False(unknown.HasReliableProgressMetrics);
+        Assert.Equal("—", unknown.ProgressRateDisplay);
+        Assert.Equal("—", unknown.ProgressEtaDisplay);
+        Assert.False(waiting.HasReliableProgressMetrics);
+        Assert.Equal("—", waiting.ProgressEtaDisplay);
+        Assert.False(stale.HasReliableProgressMetrics);
+        Assert.Equal("—", stale.ProgressRateDisplay);
+        Assert.Equal("—", stale.ProgressEtaDisplay);
+    }
+
+    [Fact]
     public async Task SearchFindsMatchingTaskOutsideTheDefaultRecentWindow()
     {
         var old = DateTime.UtcNow.AddDays(-30);

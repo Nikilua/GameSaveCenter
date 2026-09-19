@@ -19,7 +19,7 @@ public sealed partial class SqliteStateStore
         await connection.OpenAsync(token).ConfigureAwait(false);
         var command = connection.CreateCommand();
         command.CommandText = @"
-SELECT task_id,request_id,session_id,worker_session_id,task_type,game_id,game_name,state,progress,message,stage_message,cancellation_state,created_utc,started_utc,finished_utc,error_code,error_message,restore_report_json,source_references_json
+SELECT task_id,request_id,session_id,worker_session_id,task_type,game_id,game_name,state,progress,message,stage_message,cancellation_state,created_utc,started_utc,finished_utc,error_code,error_message,restore_report_json,source_references_json,progress_completed_units,progress_total_units,progress_unit,progress_rate,progress_eta_seconds,progress_updated_utc
 FROM tasks
 WHERE state IN ($queued,$running,$waiting)
 ORDER BY created_utc DESC,task_id DESC;";
@@ -43,7 +43,7 @@ ORDER BY created_utc DESC,task_id DESC;";
         await connection.OpenAsync(token).ConfigureAwait(false);
         var command = connection.CreateCommand();
         command.CommandText = $@"
-SELECT task_id,request_id,session_id,worker_session_id,task_type,game_id,game_name,state,progress,message,stage_message,cancellation_state,created_utc,started_utc,finished_utc,error_code,error_message,restore_report_json,source_references_json
+SELECT task_id,request_id,session_id,worker_session_id,task_type,game_id,game_name,state,progress,message,stage_message,cancellation_state,created_utc,started_utc,finished_utc,error_code,error_message,restore_report_json,source_references_json,progress_completed_units,progress_total_units,progress_unit,progress_rate,progress_eta_seconds,progress_updated_utc
 FROM tasks
 WHERE {filter.Sql}
 ORDER BY created_utc DESC,task_id DESC
@@ -210,7 +210,13 @@ WHERE state=$state AND finished_utc IS NOT NULL
             RestoreReport = reader.IsDBNull(17) || string.IsNullOrWhiteSpace(reader.GetString(17))
                 ? null
                 : JsonSerializer.Deserialize<RestoreReportDto>(reader.GetString(17), _json),
-            SourceReferences = DeserializeTaskSourceReferences(reader.IsDBNull(18) ? string.Empty : reader.GetString(18))
+            SourceReferences = DeserializeTaskSourceReferences(reader.IsDBNull(18) ? string.Empty : reader.GetString(18)),
+            ProgressCompletedUnits = reader.IsDBNull(19) ? -1 : reader.GetInt64(19),
+            ProgressTotalUnits = reader.IsDBNull(20) ? -1 : reader.GetInt64(20),
+            ProgressUnit = reader.IsDBNull(21) ? string.Empty : reader.GetString(21),
+            ProgressRatePerSecond = reader.IsDBNull(22) ? 0 : reader.GetDouble(22),
+            ProgressEtaSeconds = reader.IsDBNull(23) ? null : reader.GetDouble(23),
+            ProgressUpdatedUtc = reader.IsDBNull(24) ? null : DateTime.Parse(reader.GetString(24)).ToUniversalTime()
         };
 
     private static string EncodeTaskCursor(DateTime createdUtc, string taskId)

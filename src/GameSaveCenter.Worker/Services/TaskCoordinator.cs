@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Worker.Configuration;
 using GameSaveCenter.Worker.Ipc;
@@ -107,6 +108,14 @@ public sealed class TaskCoordinator
             {
                 report.TaskId = task.TaskId;
                 task.RestoreReport = report;
+            }, metrics =>
+            {
+                task.ProgressCompletedUnits = metrics?.CompletedUnits ?? -1;
+                task.ProgressTotalUnits = metrics?.TotalUnits ?? -1;
+                task.ProgressUnit = metrics?.Unit ?? string.Empty;
+                task.ProgressRatePerSecond = metrics?.RatePerSecond ?? 0;
+                task.ProgressEtaSeconds = metrics?.EtaSeconds;
+                task.ProgressUpdatedUtc = metrics?.UpdatedUtc;
             });
             await operation(progress,linked.Token).ConfigureAwait(false);
             await CompleteSuccessAsync(runtime, progress).ConfigureAwait(false);
@@ -333,6 +342,8 @@ public sealed class TaskCoordinator
             RequestId=task.RequestId,
             ProgressPercent=task.ProgressPercent,Message=task.Message,StageMessage=task.StageMessage,CancellationState=task.CancellationState,CreatedUtc=task.CreatedUtc,StartedUtc=task.StartedUtc,
             FinishedUtc=task.FinishedUtc,ErrorCode=task.ErrorCode,ErrorMessage=task.ErrorMessage,
+            ProgressCompletedUnits=task.ProgressCompletedUnits,ProgressTotalUnits=task.ProgressTotalUnits,ProgressUnit=task.ProgressUnit,
+            ProgressRatePerSecond=task.ProgressRatePerSecond,ProgressEtaSeconds=task.ProgressEtaSeconds,ProgressUpdatedUtc=task.ProgressUpdatedUtc,
             SourceReferences=task.SourceReferences?.Select(reference => reference.Clone()).ToList() ?? new List<TaskSourceReferenceDto>(),
             BackupResult=task.BackupResult == null ? null : new BackupResultDto
             {
@@ -351,13 +362,119 @@ public sealed class TaskProgress
     private readonly Func<int,string,Task> _report;
     private readonly Action<BackupResultDto>? _setBackupResult;
     private readonly Action<RestoreReportDto>? _setRestoreReport;
-    public TaskProgress(Func<int,string,Task> report, Action<BackupResultDto>? setBackupResult = null, Action<RestoreReportDto>? setRestoreReport = null)
+    private readonly Action<TaskProgressMetrics?>? _setMetrics;
+    private readonly Queue<WorkSample> _samples = new();
+    private long lastCompletedUnits = -1;
+    private long lastTotalUnits = -1;
+    private string lastUnit = string.Empty;
+    private long lastAdvancedTimestamp;
+    private DateTime lastAdvancedUtc;
+    private static readonly TimeSpan SamplingResetAfter = TimeSpan.FromSeconds(15);
+    private static readonly TimeSpan StaleAfter = TimeSpan.FromSeconds(10);
+
+    public TaskProgress(
+        Func<int,string,Task> report,
+        Action<BackupResultDto>? setBackupResult = null,
+        Action<RestoreReportDto>? setRestoreReport = null,
+        Action<TaskProgressMetrics?>? setMetrics = null)
     {
         _report=report;
         _setBackupResult=setBackupResult;
         _setRestoreReport=setRestoreReport;
+        _setMetrics=setMetrics;
     }
-    public Task ReportAsync(int percent,string message)=>_report(percent,message);
+    public Task ReportAsync(int percent,string message)
+    {
+        _setMetrics?.Invoke(null);
+        return _report(percent,message);
+    }
+
+    /// <summary>
+    /// Reports a known unit total. The sampler deliberately needs two advancing
+    /// observations before exposing a rate or ETA, and resets after a long gap so
+    /// a pause cannot turn into an absurd estimate.
+    /// </summary>
+    public Task ReportWorkAsync(long completedUnits,long totalUnits,string unit,string message,int? percent = null)
+    {
+        var nowUtc=DateTime.UtcNow;
+        var nowTimestamp=Stopwatch.GetTimestamp();
+        var valid=totalUnits>0 && completedUnits>=0 && completedUnits<=totalUnits && !string.IsNullOrWhiteSpace(unit);
+        if(!valid)
+        {
+            _setMetrics?.Invoke(null);
+            return _report(percent ?? 0,message);
+        }
+
+        var identityChanged=totalUnits!=lastTotalUnits
+            || !string.Equals(unit,lastUnit,StringComparison.OrdinalIgnoreCase)
+            || completedUnits<lastCompletedUnits;
+        var gapAfterProgress=lastAdvancedTimestamp!=0
+            && ElapsedSeconds(lastAdvancedTimestamp,nowTimestamp)>SamplingResetAfter.TotalSeconds;
+        if(identityChanged || gapAfterProgress)
+        {
+            _samples.Clear();
+            lastAdvancedTimestamp=0;
+        }
+
+        if(completedUnits>lastCompletedUnits)
+        {
+            _samples.Enqueue(new WorkSample(completedUnits,nowTimestamp));
+            while(_samples.Count>5)_samples.Dequeue();
+            lastAdvancedTimestamp=nowTimestamp;
+            lastAdvancedUtc=nowUtc;
+        }
+
+        lastCompletedUnits=completedUnits;
+        lastTotalUnits=totalUnits;
+        lastUnit=unit;
+
+        double rate=0;
+        double? eta=null;
+        if(_samples.Count>=2)
+        {
+            var first=_samples.Peek();
+            var latest=_samples.Last();
+            var elapsed=ElapsedSeconds(first.Timestamp,latest.Timestamp);
+            var delta=latest.CompletedUnits-first.CompletedUnits;
+            if(elapsed>=0.25 && delta>0)
+            {
+                rate=delta/elapsed;
+                if(completedUnits<totalUnits)eta=(totalUnits-completedUnits)/rate;
+            }
+        }
+        if(lastAdvancedTimestamp==0 || ElapsedSeconds(lastAdvancedTimestamp,nowTimestamp)>StaleAfter.TotalSeconds)
+        {
+            rate=0;
+            eta=null;
+        }
+
+        _setMetrics?.Invoke(new TaskProgressMetrics
+        {
+            CompletedUnits=completedUnits,
+            TotalUnits=totalUnits,
+            Unit=unit.Trim(),
+            RatePerSecond=rate,
+            EtaSeconds=eta,
+            UpdatedUtc=lastAdvancedTimestamp==0 ? (DateTime?)null : lastAdvancedUtc
+        });
+        var resolvedPercent=percent ?? (int)Math.Max(0,Math.Min(100,Math.Round(completedUnits*100d/totalUnits)));
+        return _report(resolvedPercent,message);
+    }
+
+    private static double ElapsedSeconds(long start,long end)
+        => (end-start)/(double)Stopwatch.Frequency;
+
+    private readonly struct WorkSample
+    {
+        public WorkSample(long completedUnits,long timestamp)
+        {
+            CompletedUnits=completedUnits;
+            Timestamp=timestamp;
+        }
+
+        public long CompletedUnits { get; }
+        public long Timestamp { get; }
+    }
     public void SetBackupResult(BackupResultDto result)=>_setBackupResult?.Invoke(result);
     public RestoreReportDto? RestoreReport { get; private set; }
     public void SetRestoreReport(RestoreReportDto report)
@@ -367,4 +484,14 @@ public sealed class TaskProgress
     }
     public string CancellationMessage { get; private set; } = string.Empty;
     public void SetCancellationMessage(string message)=>CancellationMessage=message??string.Empty;
+}
+
+public sealed class TaskProgressMetrics
+{
+    public long CompletedUnits { get; init; }
+    public long TotalUnits { get; init; }
+    public string Unit { get; init; } = string.Empty;
+    public double RatePerSecond { get; init; }
+    public double? EtaSeconds { get; init; }
+    public DateTime? UpdatedUtc { get; init; }
 }
