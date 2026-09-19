@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R16-02 策略差异预览（代码已提交，受控验证完成；真实宿主待验）
+
+- `b327d5ef` 复用现有策略/模板 DTO、模板目录归一化、Worker IPC 和保存基线，新增 13 字段有界差异服务与 `BackupPolicyDto` 字段通知；Save 页面分开展示当前已保存基线、显式游戏草稿和模板将覆盖值，模板明确为一次性复制而非实时继承。
+- “取消未保存修改”只把保存基线复制回当前游戏草稿，不调用 `RequestAsync`；保存仍走原 `SavePolicyAsync`。存在未保存游戏策略草稿时，应用模板命令保持禁用，避免覆盖本地草稿。
+- 外部隔离 Release solution `0 errors/7 warnings`（均为离线 NuGet `NU1900`）；策略差异/复制/通知核心 `5/5`，Playnite 源契约 `1/1`；source、XAML `24/24`、diff 和 WPF `0/28/177` 通过。未把源契约测试写成宿主交互或视觉通过。
+- 保留游戏选框、滚动条、命令/Binding、取消/错误/恢复保护、有限列表和 net462；未验真实 Playnite/package-host、最终浅深主题呈现、DPI/UIA/IME、ETW、宿主性能或 RenderHarness presented frame。Demo 原目录不可用，linked `obj` 仍 `Access denied`，只用合成/fake/隔离目录；main 用户改动和 `src.zip` 未碰、未合并。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R16-02-POLICY-DIFF-20260920.md`。
+- 下一项：`R16-03 模板应用范围`，先核对现有模板 DTO、应用命令和一次性复制边界，再补目标范围/取消与负例证据。
+
 ## 当前第三轮 R16-01 设置搜索定位（代码已提交，受控验证完成；真实宿主待验）
 
 - `a4e35578` 在现有设置分类上增加轻量搜索框、匹配字段索引和结果摘要；不复制 DTO/服务，不改原控件 Binding。搜索输入只改变匹配字段与分类的可见性，首次搜索记录原分类，清空恢复；验证错误定位先清空搜索后复用已有分类/滚动/焦点路径。

@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R16-02 策略差异预览
+
+- 先核对并复用现有 `BackupPolicyDto`、`BackupPolicyTemplateDto`、模板目录、Worker IPC 和 `DashboardViewModel` 保存/刷新基线；在 `b327d5ef` 中补充 13 字段有界差异、字段通知、游戏策略保存前差异卡和模板应用前差异卡。
+- 本地取消只复制保存基线回草稿，不发 Worker 请求；未保存游戏草稿时模板应用按钮禁用。实际核心测试验证差异字段、复制不改源对象和变更通知；Playnite 源测试验证取消无 `RequestAsync` 以及模板应用保护。
+- 外部隔离 Release solution 单节点 `0 errors/7 warnings`，警告均为离线 NuGet `NU1900`；核心 `5/5`、Playnite 源契约 `1/1`；`validate-source.py`、XAML `24/24`、diff、WPF `0/28/177` 通过。Demo 原目录不可用，linked `obj` 仍 `Access denied`，只用合成/fake/隔离目录，未碰 main 用户改动。
+- 代码提交已推送 `origin/codex/ui-finesse-round2`；本阶段外部临时副本随后清理。未验真实 Playnite/package-host、最终呈现、DPI/UIA/IME、ETW 或宿主性能。证据：[R16-02 策略差异预览](../design/reviews/ui-finesse-round3-20260915/evidence/R16-02-POLICY-DIFF-20260920.md)。下一可执行任务：`R16-03 模板应用范围`。
+
 ## 2026-09-20 R16-01 设置搜索定位
 
 - 在 `a4e35578` 中沿用设置页现有分类、控件和 Binding，增加搜索框、结果摘要和 `SearchTerms` 附加属性；匹配只控制字段/分类可见性，清空恢复原分类，验证错误定位先清空搜索，不改设置值或保存取消语义。

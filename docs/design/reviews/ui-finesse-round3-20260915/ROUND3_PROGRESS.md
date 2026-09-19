@@ -135,7 +135,7 @@
 | R15-07 | 失败结果复制 | 已实现，待环境验证 | 37dd4a03 | `validate-source.py`、XAML `24/24`、`git diff --check`；Playnite R15 定向 `6/6`；R06/R12/R15 相邻回归 `14/14`；外部隔离 Release solution `7 warnings/0 errors`；WPF 静态 `0/28/162` | 复用现有任务复制命令和脱敏入口；失败卡显示 240 字符以内脱敏首行摘要与错误码；技术详情默认收起，使用有限高、只读可选择 TextBox；剪贴板 COM/InvalidOperation 瞬时失败最多 4 次，失败不清除当前选中任务 | 未验真实 Playnite/package-host、RenderHarness/最终呈现、物理 DPI/跨屏、UIA/读屏、IME、ETW 或宿主性能；linked `obj` 仍 `Access denied`，外部副本构建警告为 `NU1900`；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并 | [R15-07 失败结果复制](evidence/R15-07-TASK-FAILURE-COPY-20260920.md)；下一项 `R15-08 清理历史范围`，先核对运行中任务保护、恢复账本和日期/状态预览 |
 | R15-08 | 清理历史范围 | 已满足 | a07f0518、88bde5de、a841e42c、77d5f346 | Worker 清理/隔离账本回归 `16/16`；Playnite `net462` 维护页契约 `3/3`；XAML `24/24`；source/diff 门禁通过 | 复用已有 Retention Simulation、日期/原因/影响摘要和持久化隔离账本；预览句柄/过期/状态变化校验，运行中备份/恢复/媒体共享锁忙碌跳过，锁定/健康/PreRestore 保护，应用二次确认 | 未验真实 Playnite/package-host、RenderHarness presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 src.zip 未碰、未合并 | [R15-08 清理历史范围](evidence/R15-08-HISTORY-CLEANUP-SCOPE-20260920.md)；下一项 `R16-01 设置搜索定位`，先核对现有设置页定位能力 |
 | R16-01 | 设置搜索定位 | 已实现，待环境验证 | a4e35578 | 外部隔离 Release solution `0 errors/10 warnings`；R16 搜索行为 `1/1`、源契约 `1/1`；验证导航/草稿各独立 `1/1`；`validate-source.py`、XAML `24/24`、diff 通过；WPF `0/28/177` | 受控 STA WPF 实际输入搜索词，匹配字段可见且可编辑；清空恢复进入搜索前分类；搜索不改配置、不产生 pending edit；联合筛选受既有 Application 多实例夹具冲突影响，已拆分 testhost | 未验真实 Playnite/package-host、浅深主题最终呈现、RenderHarness presented frame、DPI/UIA/IME、ETW 或宿主性能；Demo 原目录不可用，外部副本构建，main 用户改动未碰 | [R16-01 设置搜索定位](evidence/R16-01-SETTINGS-SEARCH-20260920.md)；下一项 `R16-02 策略差异预览` |
-| R16-02 | 策略差异预览 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
+| R16-02 | 策略差异预览 | 已实现，待环境验证 | b327d5ef | 外部隔离 Release solution `0 errors/7 warnings`；策略差异核心 `5/5`；Playnite 源契约 `1/1`；`validate-source.py`、XAML `24/24`、diff 通过；WPF `0/28/177` | 保存前按 13 个字段展示已保存基线/显式草稿与模板覆盖差异；实际复制回退测试通过；取消不发 Worker 请求，未保存游戏草稿时模板应用禁用 | 未验真实 Playnite/package-host、最终浅深主题呈现、DPI/UIA/IME、ETW、宿主性能和 presented frame；Demo 原目录不可用，外部副本构建，main 用户改动未碰 | [R16-02 策略差异预览](evidence/R16-02-POLICY-DIFF-20260920.md)；下一项 `R16-03 模板应用范围` |
 | R16-03 | 模板应用范围 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R16-04 | 恢复默认粒度 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R16-05 | 路径编辑一致 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
@@ -457,6 +457,14 @@
 - 外部隔离副本 Release solution 单节点构建 `0 errors/10 warnings`；警告仅为离线 NuGet `NU1900` 和既有 `MediaCenterView.xaml.cs:664` nullable warning。`validate-source.py`、XAML `24/24`、diff 通过；WPF 静态 `0/28/177`。联合 WPF 筛选因既有 Application 多实例生命周期夹具出现 `2 passed/2 failed`，已拆成独立 testhost，未写成联合通过。
 - 保留游戏选框、滚动条、命令/Binding、保存取消、错误/恢复保护、有限列表性能和 net462；未验真实 Playnite/package-host、最终呈现、浅深主题截图、DPI/UIA/IME、ETW 或宿主性能。只用合成/fake/隔离目录，Demo 原目录不可用，linked `obj` 仍 `Access denied`，main 用户改动和 `src.zip` 未碰、未合并。证据见 [R16-01 设置搜索定位](evidence/R16-01-SETTINGS-SEARCH-20260920.md)。
 - 下一可执行小批量：`R16-02 策略差异预览`，先查现有策略/模板 DTO、继承与显式覆盖来源，限定为只读差异、取消无写入和保存字段范围；R16-01 的真实宿主呈现和联合 WPF 夹具边界继续保留。
+
+## 2026-09-20 Round3 R16-02 策略差异预览
+
+- `b327d5ef` 复用现有策略/模板 DTO、模板目录归一化、Worker IPC 和保存基线，新增 13 字段有界差异服务与 `BackupPolicyDto` 字段通知；保存卡分开展示已保存基线和显式草稿，模板卡展示应用前覆盖差异。模板仍为一次性复制，不建立实时继承。
+- “取消未保存修改”只把保存基线复制回当前游戏草稿，不调用 `RequestAsync`；保存继续走现有 `SavePolicyAsync`。未保存游戏草稿存在时模板应用命令禁用，防止刷新/应用覆盖本地草稿。
+- 外部隔离 Release solution `0 errors/7 warnings`（警告均为离线 NuGet `NU1900`）；策略差异/复制/通知核心 `5/5`，Playnite 源契约 `1/1`；`validate-source.py`、XAML `24/24`、diff 通过；WPF `0/28/177`。未把源契约断言当作真实交互或宿主呈现通过。
+- 保留游戏选框、滚动条、命令/Binding、取消/错误/恢复保护、有限列表和 net462；未验真实 Playnite/package-host、浅深主题最终呈现、RenderHarness presented frame、DPI/UIA/IME、ETW 或宿主性能。只用合成/fake/隔离目录，Demo 原目录不可用，linked `obj` 仍 `Access denied`；main 用户改动和 `src.zip` 未碰、未合并。证据见 [R16-02 策略差异预览](evidence/R16-02-POLICY-DIFF-20260920.md)。
+- 下一可执行小批量：`R16-03 模板应用范围`，先核对现有模板 DTO、应用命令和一次性复制边界，再补目标范围/取消与负例证据。
 
 ## 2026-09-19 R00/R01 当前提交复核
 

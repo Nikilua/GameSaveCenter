@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R16-02 策略差异预览（2026-09-20）
+
+- `b327d5ef` 在现有策略/模板能力上新增 `BackupPolicyDiff`，比较 13 个策略字段并复用 `BackupPolicyTemplateCatalog.ClonePolicy` 的归一化；`BackupPolicyDto` 增加字段通知，使 Save 页面差异卡随草稿输入更新。模板依旧是一次性复制，未引入实时继承模型。
+- Save 页面分开展示已保存基线与显式草稿、模板覆盖值；本地取消通过 `BackupPolicyDiff.CopyTo` 恢复基线，源码门禁确认取消方法体没有 `RequestAsync`。未保存游戏策略草稿时禁用应用模板命令，避免刷新保留草稿与模板应用交叉覆盖。
+- 外部隔离 Release solution `0 errors/7 warnings`，警告仅为离线 `NU1900`；核心差异/复制/通知 `5/5`、Playnite 源契约 `1/1`，source/XAML `24/24`/diff、WPF `0/28/177` 通过。真实 Playnite/package-host、最终呈现、DPI/UIA/IME、ETW、宿主性能仍待验；Demo 原目录不可用，linked `obj` 仍 `Access denied`，main 用户改动未碰、未合并。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R16-02-POLICY-DIFF-20260920.md`。下一项：`R16-03 模板应用范围`。
+
 ## 第三轮 R16-01 设置搜索定位（2026-09-20）
 
 - `a4e35578` 复用设置页现有五个分类、控件和 Binding，新增 `SearchTerms` 附加属性、轻量搜索框和结果摘要；逻辑树登记匹配宿主，查询时只切换可见性并定位首个分类，清空恢复首次搜索前分类，不写配置对象。
