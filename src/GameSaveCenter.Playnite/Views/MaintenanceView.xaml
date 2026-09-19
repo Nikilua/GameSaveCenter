@@ -566,6 +566,7 @@
                                             <TextBlock Text="{Binding SelectedCloudTransfer.QueuePhaseDisplay, TargetNullValue=选择一条记录查看队列阶段}" TextWrapping="Wrap"/>
                                             <TextBlock Text="{Binding SelectedCloudTransfer.GuaranteeLevelDisplay, TargetNullValue=选择一条记录查看远端保证级别}" TextWrapping="Wrap" Margin="0,4,0,0"/>
                                             <TextBlock Text="{Binding SelectedCloudTransfer.DetailDisplay, TargetNullValue=暂无状态详情}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,5,0,0"/>
+                                            <TextBlock Text="{Binding SelectedCloudTransfer.NetworkRecoveryDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,5,0,0" AutomationProperties.Name="网络恢复反馈" AutomationProperties.HelpText="{Binding SelectedCloudTransfer.NetworkRecoveryDisplay}"/>
                                         </StackPanel>
                                     </Border>
                                     <TextBlock Text="远端对象" Style="{DynamicResource GscCaptionStyle}" Margin="0,14,0,3"/>

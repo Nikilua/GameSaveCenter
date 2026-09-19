@@ -156,9 +156,21 @@ public sealed class CloudTransferStatusDto
         ? "手动范围：仅当前选中项；只重试云端上传，不重新执行本地备份。"
         : "当前状态不可手动重试；传输中或已完成项不会重复提交。";
 
-    private bool IsNetworkWait => string.Equals(State, "RetryScheduled", StringComparison.OrdinalIgnoreCase)
-        && (string.Equals(LastErrorCode, "RCLONE_NETWORK_FAILED", StringComparison.OrdinalIgnoreCase)
-            || string.Equals(LastErrorCode, "RCLONE_TRANSFER_INCOMPLETE", StringComparison.OrdinalIgnoreCase));
+    /// <summary>
+    /// Explains the bounded offline recovery path without claiming that every queued item
+    /// will start at once when connectivity returns.
+    /// </summary>
+    public string NetworkRecoveryDisplay => State switch
+    {
+        "RetryScheduled" when IsNetworkFailure => $"等待网络恢复；按退避时间重试（已用 {Math.Max(0, AttemptCount)}/6 次自动重试，本轮最多 10 项）",
+        "Transferring" when IsNetworkFailure => "网络已恢复；按批次上传中",
+        _ => string.Empty
+    };
+
+    private bool IsNetworkFailure => string.Equals(LastErrorCode, "RCLONE_NETWORK_FAILED", StringComparison.OrdinalIgnoreCase)
+        || string.Equals(LastErrorCode, "RCLONE_TRANSFER_INCOMPLETE", StringComparison.OrdinalIgnoreCase);
+
+    private bool IsNetworkWait => string.Equals(State, "RetryScheduled", StringComparison.OrdinalIgnoreCase) && IsNetworkFailure;
 
     private static string FormatRemaining(TimeSpan remaining)
     {

@@ -122,6 +122,36 @@ public sealed class UiDisplayMappingTests
     }
 
     [Fact]
+    public void CloudRecoveryExplainsBackoffAndOnlineBatchTransition()
+    {
+        var waiting = new CloudTransferStatusDto
+        {
+            State = "RetryScheduled",
+            AttemptCount = 2,
+            LastErrorCode = "RCLONE_NETWORK_FAILED"
+        };
+        var recovering = new CloudTransferStatusDto
+        {
+            State = "Transferring",
+            AttemptCount = 2,
+            LastErrorCode = "RCLONE_TRANSFER_INCOMPLETE"
+        };
+        var authentication = new CloudTransferStatusDto
+        {
+            State = "RetryScheduled",
+            AttemptCount = 2,
+            LastErrorCode = "RCLONE_AUTH_FAILED"
+        };
+
+        Assert.Contains("等待网络恢复", waiting.NetworkRecoveryDisplay, StringComparison.Ordinal);
+        Assert.Contains("2/6", waiting.NetworkRecoveryDisplay, StringComparison.Ordinal);
+        Assert.Contains("最多 10 项", waiting.NetworkRecoveryDisplay, StringComparison.Ordinal);
+        Assert.Contains("网络已恢复", recovering.NetworkRecoveryDisplay, StringComparison.Ordinal);
+        Assert.Contains("按批次", recovering.NetworkRecoveryDisplay, StringComparison.Ordinal);
+        Assert.Equal(string.Empty, authentication.NetworkRecoveryDisplay);
+    }
+
+    [Fact]
     public void UnknownCloudStateDoesNotLeakInternalValue()
     {
         var transfer = new CloudTransferStatusDto { State = "FutureProviderState" };

@@ -50,6 +50,19 @@ public sealed class R13CloudTransferStageBehaviorTests
         Assert.Contains("[已隐藏]", copied, StringComparison.Ordinal);
     }
 
+    [Fact]
+    public void MaintenanceInspectorExplainsBoundedOfflineRecovery()
+    {
+        var root = TestRepositoryContext.Root;
+        var view = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+        var retry = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Worker", "Services", "CloudRetryService.cs"));
+
+        Assert.Contains("SelectedCloudTransfer.NetworkRecoveryDisplay", view, StringComparison.Ordinal);
+        Assert.Contains("PollInterval = TimeSpan.FromSeconds(30)", retry, StringComparison.Ordinal);
+        Assert.Contains(".Take(10)", retry, StringComparison.Ordinal);
+        Assert.DoesNotContain("ShowTaskNotification", retry, StringComparison.Ordinal);
+    }
+
     [Theory]
     [InlineData("Failed", true)]
     [InlineData("RetryScheduled", true)]
