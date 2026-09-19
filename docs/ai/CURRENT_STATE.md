@@ -1,12 +1,13 @@
 # GameSaveCenter 当前事实入口
 
-## 当前第三轮 R12-02 恢复校验结果解释
+## 当前第三轮 R12-03 目标路径核对
 
-- 6cc3a618 复用已有 RestoreReadinessDto、Worker 校验服务、SQLite JSON 持久化和 SaveCenter 详情卡，补齐哈希覆盖数/可覆盖总数、NotAvailable/Partial/Validated/Failed 显示及旧结果提示；没有新增服务、IPC、游戏选框或滚动条系统。
-- 有效 Manifest 但未提供哈希现在返回 Warning，摘要明确“这不等于校验成功”；部分覆盖显示 x/y 并说明未覆盖文件不能视为已校验。超过一天的历史检查显示结果较旧并建议重新验证。原命令、取消/错误、PreRestore/回滚和页面滚动语义保持。
-- 隔离 scripts/build.ps1 全流程：XAML 24/24；Release solution 0 warning / 0 error；Core 85/85、Worker 324/324；Playnite source 组和 84 个 WPF 类隔离进程全部返回 0。用户失败类 WpfUiResourceDictionaryTests 在 commit 身份下为 137/39/0，总计 176。
-- validate-source.py、XAML、diff check 通过；WPF 静态审查 0 error / 24 warning / 177 info，warning 是既有外层滚动/布局提示。证据使用合成 ZIP/Manifest、fake/隔离 SQLite、STA WPF 和 .tmp，不代表真实 Playnite/package-host、物理 DPI/跨屏、presented frame、ETW 或宿主性能。Demo 原目录不可用，沿用恢复生产基线。
-- main 的用户文件未触碰；main 的 DEV-INSTALL-008 73 failed / 588 passed / 57 skipped 与安装器退出 1 仍独立保留，当前分支代码已推送但尚未合并 main。下一可执行小批量为 R12-03 目标路径核对。
+- `c0adb1b7` 先复用已有 `PathRemapService.PreviewAsync`、DTO、IPC 和设置写回链路，补齐原路径/重映射路径的完整可复制对照、目标存在状态和路径变化后的预览失效；没有新增文件移动或用户目录写入。
+- Maintenance 预览表使用有限高度 `260 DIP`、`FiniteViewport`、Recycling 虚拟化和只读完整路径单元格；合成长路径、不同盘符和相似旧根负例均保持可区分，预览不改变隔离 SQLite 或目标文件。
+- 隔离 `scripts/build.ps1` 全流程：XAML `24/24`；Release solution `0 warning / 0 error`；Core `85/85`、Worker `325/325`；Playnite source `68` 类与 WPF `84` 类隔离进程全部返回 0；资源字典类 `137/39/0`。
+- `validate-source.py`、XAML、diff check 通过；WPF 静态审查 `0 error / 25 warning / 177 info`，warning/info 为既有外层布局、Canvas 和颜色令牌提示。证据见 [R12-03 路径核对](../design/reviews/ui-finesse-round3-20260915/evidence/R12-03-PATH-REMAP-PREVIEW-20260919.md)。Demo 原目录不可用，沿用恢复生产基线。
+- 最新 main 一键命令 `GameSaveCenter-一键构建安装运行.cmd` 的 `DEV-INSTALL-008` 在安装前仍失败：Playnite 源码组 `273 passed / 18 skipped / 1 failed / 292 total`，失败为 `UiFinesseRound2ControlSourceTests.DangerousConfirmationKeepsCancelAsTheInitialFocusTarget`。main 的 dirty R08 对话框实现已经加入 `!dialogLifecycle.IsClosing`，但 main 跟踪测试仍期待旧字符串；本分支 `UiFinesseRound2ControlSourceTests` 已为 `24/24`，未覆盖或修改 main 用户文件。
+- 当前分支已推送，main 尚未合并。下一可执行小批量为 R12-04 恢复保护备份；真实 Playnite/package-host、物理 DPI/跨屏、presented frame、UIA/IME、ETW 和宿主性能仍未验。
 
 ## 当前第三轮 R12-01 恢复流程分步摘要
 

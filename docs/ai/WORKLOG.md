@@ -1,11 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
-## 2026-09-19 R12-02 恢复校验结果解释
+## 2026-09-19 R12-03 目标路径核对
 
-- 在 codex/ui-finesse-round2 先复用现有 readiness DTO/service/SQLite JSON 与 SaveCenter 详情卡。6cc3a618 增加哈希覆盖/可覆盖计数、未提供/部分/通过/失败文案和旧结果提示；有效 Manifest 无哈希不再返回 Ready。健康检查成功夹具补入正确 SHA-256，损坏、缺失、取消和隔离目录负例未放宽。
-- 定向证据：Worker RestoreReadinessTests 13/13，Core UiDisplayMappingTests 19/19。真实隔离 scripts/build.ps1 -Configuration Release -OutputRoot .tmp/r12-02-full-build-v2 为 XAML 24/24、Release 0/0、Core 85/85、Worker 324/324；Playnite source 组和 84 个 WPF 类隔离进程全部返回 0。WpfUiResourceDictionaryTests 为 137 passed / 39 skipped / 0 failed。
-- validate-source.py、XAML、git diff --check 通过；WPF 技能静态检查 0 error / 24 warning / 177 info。未把离屏/STA/隔离测试写成真实 Playnite、物理 DPI、跨屏、presented frame、UIA/IME、ETW 或宿主性能通过。Demo 原目录不可用，沿用恢复生产基线。
-- 代码提交已推送 origin/codex/ui-finesse-round2；main 用户文件未触碰，main 的 73/588/57 安装失败基线仍单列。下一可执行小批量为 R12-03 目标路径核对；当前分支尚未合并 main。
+- 在 `codex/ui-finesse-round2` 先核对已有 `PathRemapService`、预览 DTO、IPC 和设置更新；`c0adb1b7` 只补路径预览对照、目标状态、完整复制文本和旧预览失效，不新增移动/删除文件链路。
+- `MaintenanceView` 的路径预览表限定 `260 DIP`，声明 `FiniteViewport` 与 Recycling 虚拟化，路径单元格用只读 TextBox 保留完整字符串；Worker 行为夹具使用长路径、不同盘符、相似旧根和隔离 SQLite，确认预览不写目标目录。
+- 定向证据：Worker `PathRemapServiceTests 4/4`，Playnite `R12PathRemapBehaviorTests 2/2`，源代码契约 `UiFinesseRound2ControlSourceTests 24/24`，资源字典类 `137/39/0`。完整隔离构建 `scripts/build.ps1 -Configuration Release -OutputRoot .tmp/r12-03-full-build` 为 XAML `24/24`、Release `0/0`、Core `85/85`、Worker `325/325`，source `68` 类/WPF `84` 类隔离进程全返回 0。
+- `validate-source.py`、XAML、`git diff --check` 通过；WPF 静态审查 `0 error / 25 warning / 177 info`。警告/info 为既有布局和颜色令牌提示。证据使用合成数据/fake、隔离目录/SQLite、STA WPF/offscreen logical DIP，不代表真实 Playnite/package-host、物理 DPI/跨屏、presented frame、UIA/IME、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线。
+- 最新 main 一键命令 `GameSaveCenter-一键构建安装运行.cmd` 在安装前失败于 `UiFinesseRound2ControlSourceTests.DangerousConfirmationKeepsCancelAsTheInitialFocusTarget`：`273 passed / 18 skipped / 1 failed / 292 total`。main dirty R08 实现已包含 `!dialogLifecycle.IsClosing`，main 跟踪测试仍期待旧字符串；续接分支对应测试已通过，main 用户文件未触碰，未宣称安装成功。
+- 代码提交已推送 `origin/codex/ui-finesse-round2`；文档将在本阶段同步后再推送。main 尚未合并。下一可执行小批量为 R12-04 恢复保护备份。
 
 ## 2026-09-19 R12-01 恢复流程分步摘要
 

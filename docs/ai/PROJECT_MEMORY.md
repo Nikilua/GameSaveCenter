@@ -2,12 +2,13 @@
 
 > 维护时间：2026-09-19
 
-## 2026-09-19 R12-02 恢复校验结果解释
+## 2026-09-19 R12-03 目标路径核对
 
-- 6cc3a618 先核对现有 readiness/SQLite/SaveCenter 能力，再补 HashCoveredFileCount、HashEligibleFileCount 和稳定中文显示。有效 Manifest 没有任何文件哈希时服务返回 Warning，NotAvailable 不再被当作成功；部分覆盖返回 Partial，失败仍为 Failed。
-- 详情卡显示哈希状态、覆盖量和检查时间；超过一天的历史结果提示“结果较旧，建议重新验证”。命令绑定、页面滚动、游戏选框、取消/错误、PreRestore 和恢复回滚未改。成功健康检查夹具使用正确 SHA-256，负例保持隔离/损坏/取消语义。
-- 证据：RestoreReadinessTests 13/13、UiDisplayMappingTests 19/19；隔离全流程 Release 0/0、Core 85/85、Worker 324/324，Playnite source 组和 84 个 WPF 隔离类返回 0；资源字典类 137/39/0；XAML 24/24；WPF 静态 0/24/177。
-- 证据边界仍是合成 ZIP/Manifest、fake/隔离 SQLite、STA WPF/offscreen logical DIP；Demo 原目录不可用，沿用恢复生产基线。没有真实 Playnite/package-host、物理 DPI/跨屏、presented frame、UIA/IME、ETW 或宿主性能证据。main 用户改动未触碰，main 安装失败事实不改写。下一项 R12-03。
+- `c0adb1b7` 复用 `PathRemapService.PreviewAsync`、现有 DTO/IPC 和设置写回链路；UI 显示原路径与新路径的完整文本、目标存在状态，并在根路径变化时清除旧预览，避免把过期目标误当成当前预览。
+- 路径预览 DataGrid 使用 `FiniteViewport`、`MaxHeight=260`、Recycling 虚拟化和只读 TextBox；服务仍只改索引/Worker 设置，不移动或删除文件。长路径、不同盘符和相似路径负例在隔离 SQLite/文件夹中验证。
+- 证据：Worker `PathRemapServiceTests 4/4`、Playnite `R12PathRemapBehaviorTests 2/2`、`UiFinesseRound2ControlSourceTests 24/24`、资源字典类 `137/39/0`；隔离全流程 Release `0/0`、Core `85/85`、Worker `325/325`，source `68` 类/WPF `84` 类全返回 0，XAML `24/24`；WPF 静态 `0/25/177`。
+- 边界仍是合成路径/fake/隔离 SQLite、STA WPF/offscreen logical DIP；没有真实 Playnite/package-host、物理 DPI/跨屏、presented frame、UIA/IME、ETW 或宿主性能证据。Demo 原目录不可用，沿用恢复生产基线。最新 main 一键安装前失败为 `273 passed / 18 skipped / 1 failed`，失败类是 `DangerousConfirmationKeepsCancelAsTheInitialFocusTarget`：main dirty R08 实现与跟踪源断言不同步；本分支测试已通过，未修改 main。
+- 当前分支已推送，main 尚未合并。下一项 R12-04 恢复保护备份。
 
 ## 2026-09-19 R12-01 恢复流程分步摘要
 
