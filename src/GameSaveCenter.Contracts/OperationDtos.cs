@@ -1,5 +1,7 @@
 using System;
+using System.ComponentModel;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace GameSaveCenter.Contracts
 {
@@ -11,21 +13,44 @@ namespace GameSaveCenter.Contracts
     }
 
     /// <summary>Per-game backup and synchronization policy.</summary>
-    public sealed class BackupPolicyDto
+    public sealed class BackupPolicyDto : INotifyPropertyChanged
     {
-        public bool Enabled { get; set; } = true;
-        public bool BackupOnGameStop { get; set; } = true;
-        public bool BackupDuringPlay { get; set; } = true;
-        public int DuringPlayIntervalMinutes { get; set; } = 30;
-        public bool UploadAfterBackup { get; set; }
-        public bool SyncMediaDuringPlay { get; set; } = true;
-        public bool SyncMediaOnGameStop { get; set; } = true;
-        public bool AllowAutomaticRestore { get; set; }
-        public BackupAnomalyProtectionLevel AnomalyProtectionLevel { get; set; } = BackupAnomalyProtectionLevel.Normal;
-        public int KeepRecentAllHours { get; set; } = 24;
-        public int KeepDailyDays { get; set; } = 30;
-        public int KeepWeeklyWeeks { get; set; } = 12;
-        public int KeepMonthlyMonths { get; set; } = 24;
+        private bool enabled = true;
+        private bool backupOnGameStop = true;
+        private bool backupDuringPlay = true;
+        private int duringPlayIntervalMinutes = 30;
+        private bool uploadAfterBackup;
+        private bool syncMediaDuringPlay = true;
+        private bool syncMediaOnGameStop = true;
+        private bool allowAutomaticRestore;
+        private BackupAnomalyProtectionLevel anomalyProtectionLevel = BackupAnomalyProtectionLevel.Normal;
+        private int keepRecentAllHours = 24;
+        private int keepDailyDays = 30;
+        private int keepWeeklyWeeks = 12;
+        private int keepMonthlyMonths = 24;
+
+        public bool Enabled { get => enabled; set => SetValue(ref enabled, value); }
+        public bool BackupOnGameStop { get => backupOnGameStop; set => SetValue(ref backupOnGameStop, value); }
+        public bool BackupDuringPlay { get => backupDuringPlay; set => SetValue(ref backupDuringPlay, value); }
+        public int DuringPlayIntervalMinutes { get => duringPlayIntervalMinutes; set => SetValue(ref duringPlayIntervalMinutes, value); }
+        public bool UploadAfterBackup { get => uploadAfterBackup; set => SetValue(ref uploadAfterBackup, value); }
+        public bool SyncMediaDuringPlay { get => syncMediaDuringPlay; set => SetValue(ref syncMediaDuringPlay, value); }
+        public bool SyncMediaOnGameStop { get => syncMediaOnGameStop; set => SetValue(ref syncMediaOnGameStop, value); }
+        public bool AllowAutomaticRestore { get => allowAutomaticRestore; set => SetValue(ref allowAutomaticRestore, value); }
+        public BackupAnomalyProtectionLevel AnomalyProtectionLevel { get => anomalyProtectionLevel; set => SetValue(ref anomalyProtectionLevel, value); }
+        public int KeepRecentAllHours { get => keepRecentAllHours; set => SetValue(ref keepRecentAllHours, value); }
+        public int KeepDailyDays { get => keepDailyDays; set => SetValue(ref keepDailyDays, value); }
+        public int KeepWeeklyWeeks { get => keepWeeklyWeeks; set => SetValue(ref keepWeeklyWeeks, value); }
+        public int KeepMonthlyMonths { get => keepMonthlyMonths; set => SetValue(ref keepMonthlyMonths, value); }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        private void SetValue<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(field, value)) return;
+            field = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 
     /// <summary>Request to back up one game or all games.</summary>

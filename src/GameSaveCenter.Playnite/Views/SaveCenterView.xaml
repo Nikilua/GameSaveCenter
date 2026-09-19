@@ -477,7 +477,34 @@
                                         <Border Height="1" Background="{DynamicResource GscDividerBrush}" Margin="0,12"/>
                                         <Grid VerticalAlignment="Center"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><StackPanel Grid.Column="0"><TextBlock Text="异常保护等级" Style="{DynamicResource GscBodyStyle}"/><TextBlock Text="大量删除参与异常检测" Style="{DynamicResource GscCaptionStyle}" Margin="0,2,0,0"/></StackPanel><ComboBox Grid.Column="1" Style="{DynamicResource GscWpfUiComboBox}" Width="140" ItemsSource="{Binding BackupAnomalyProtectionOptions}" SelectedValuePath="Value" SelectedValue="{Binding SelectedGame.Policy.AnomalyProtectionLevel}" HorizontalAlignment="Right" VerticalAlignment="Center"><ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Display}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Display}"/></DataTemplate></ComboBox.ItemTemplate></ComboBox></Grid>
                                     </StackPanel>
-                                    <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding SavePolicyCommand}" Content="保存策略" Width="104" Margin="0,16,0,0" HorizontalAlignment="Left"/>
+                                     <Border Style="{DynamicResource GscRedesignSubCard}" Padding="12" Margin="0,14,0,0" AutomationProperties.Name="游戏策略保存前差异">
+                                         <StackPanel>
+                                             <TextBlock Text="保存前差异" Style="{DynamicResource GscBodyStyle}"/>
+                                             <TextBlock Text="{Binding SelectedGamePolicyDiffSummary}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                             <Grid Margin="0,10,0,0">
+                                                 <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                 <TextBlock Text="字段" Style="{DynamicResource GscCaptionStyle}"/>
+                                                 <TextBlock Grid.Column="1" Text="当前已保存/继承基线" Style="{DynamicResource GscCaptionStyle}" Margin="12,0,0,0"/>
+                                                 <TextBlock Grid.Column="2" Text="显式草稿值" Style="{DynamicResource GscCaptionStyle}" Margin="12,0,0,0"/>
+                                             </Grid>
+                                             <ItemsControl ItemsSource="{Binding SelectedGamePolicyDiffEntries}" AutomationProperties.Name="游戏策略差异列表">
+                                                 <ItemsControl.ItemTemplate>
+                                                     <DataTemplate>
+                                                         <Grid Margin="0,4,0,0">
+                                                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                             <TextBlock Text="{Binding FieldName}" TextWrapping="Wrap"/>
+                                                             <TextBlock Grid.Column="1" Text="{Binding InheritedValue}" Margin="12,0,0,0"/>
+                                                             <TextBlock Grid.Column="2" Text="{Binding ExplicitValue}" Margin="12,0,0,0" FontWeight="SemiBold"/>
+                                                         </Grid>
+                                                     </DataTemplate>
+                                                 </ItemsControl.ItemTemplate>
+                                             </ItemsControl>
+                                         </StackPanel>
+                                     </Border>
+                                     <WrapPanel Margin="0,14,0,0">
+                                         <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding CancelPolicyDraftCommand}" Content="取消未保存修改" ToolTip="只恢复当前已保存基线，不写入 Worker" AutomationProperties.Name="取消未保存策略修改" Margin="0,0,8,8"/>
+                                         <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding SavePolicyCommand}" Content="保存策略" Width="104" Margin="0,0,0,8"/>
+                                     </WrapPanel>
                                 </StackPanel>
                             </Border>
 
@@ -528,8 +555,32 @@
                                             <Grid Margin="0,10,0,0"><StackPanel><TextBlock Text="每周保留" Style="{DynamicResource GscBodyStyle}"/><TextBlock Text="周 · 不得为负，溢出会拒绝" Style="{DynamicResource GscCaptionStyle}" Margin="0,2,0,0" TextWrapping="Wrap"/></StackPanel><TextBox Style="{StaticResource GscNumericFieldInput}" Width="76" infra:SelectAllOnKeyboardFocus.Enabled="True" ToolTip="允许 0 或更大；空值、负数和整数溢出会被拒绝。" HorizontalAlignment="Right"><TextBox.Text><Binding Path="PolicyTemplateDraft.Policy.KeepWeeklyWeeks" UpdateSourceTrigger="LostFocus" ValidatesOnExceptions="True" NotifyOnValidationError="True"><Binding.ValidationRules><infra:IntegerRangeValidationRule Minimum="0" Maximum="2147483647"/></Binding.ValidationRules></Binding></TextBox.Text></TextBox></Grid>
                                             <TextBlock Text="自动恢复不属于模板可编辑项，始终保持关闭。" Style="{DynamicResource GscCaptionStyle}" Margin="0,10,0,0" TextWrapping="Wrap"/>
                                         </StackPanel>
-                                    </Expander>
-                                    <!-- Icon-only: template deletion remains visibly dangerous and accessible. -->
+                                     </Expander>
+                                     <Border Style="{DynamicResource GscRedesignSubCard}" Padding="12" Margin="0,12,0,0" AutomationProperties.Name="策略模板应用前差异">
+                                         <StackPanel>
+                                             <TextBlock Text="应用前差异" Style="{DynamicResource GscBodyStyle}"/>
+                                             <TextBlock Text="{Binding PolicyTemplateDiffSummary}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                             <Grid Margin="0,10,0,0">
+                                                 <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                 <TextBlock Text="字段" Style="{DynamicResource GscCaptionStyle}"/>
+                                                 <TextBlock Grid.Column="1" Text="当前已保存/继承基线" Style="{DynamicResource GscCaptionStyle}" Margin="12,0,0,0"/>
+                                                 <TextBlock Grid.Column="2" Text="模板将覆盖值" Style="{DynamicResource GscCaptionStyle}" Margin="12,0,0,0"/>
+                                             </Grid>
+                                             <ItemsControl ItemsSource="{Binding PolicyTemplateDiffEntries}" AutomationProperties.Name="策略模板差异列表">
+                                                 <ItemsControl.ItemTemplate>
+                                                     <DataTemplate>
+                                                         <Grid Margin="0,4,0,0">
+                                                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                             <TextBlock Text="{Binding FieldName}" TextWrapping="Wrap"/>
+                                                             <TextBlock Grid.Column="1" Text="{Binding InheritedValue}" Margin="12,0,0,0"/>
+                                                             <TextBlock Grid.Column="2" Text="{Binding ExplicitValue}" Margin="12,0,0,0" FontWeight="SemiBold"/>
+                                                         </Grid>
+                                                     </DataTemplate>
+                                                 </ItemsControl.ItemTemplate>
+                                             </ItemsControl>
+                                         </StackPanel>
+                                     </Border>
+                                     <!-- Icon-only: template deletion remains visibly dangerous and accessible. -->
                                     <WrapPanel Margin="0,12,0,0"><ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding CreatePolicyTemplateCommand}" Content="新建副本" Margin="0,0,8,8"/><ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding SavePolicyTemplateCommand}" Content="保存" Margin="0,0,8,8"/><ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding ApplyPolicyTemplateCommand}" Content="应用" Margin="0,0,8,8"/><ui:Button Style="{DynamicResource GscIconOnlyDangerButton}" Command="{Binding DeletePolicyTemplateCommand}" ToolTip="删除策略模板" AutomationProperties.Name="删除策略模板" Margin="0,0,0,8"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconBtnDelete}" Width="18" Height="18"/></ui:Button></WrapPanel>
                                     <Border Style="{DynamicResource GscRedesignSubCard}" Padding="12" Margin="0,6,0,0"><TextBlock Text="内置模板不可修改或删除；恢复操作永远不会被模板自动启用。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap"/></Border>
                                 </StackPanel>

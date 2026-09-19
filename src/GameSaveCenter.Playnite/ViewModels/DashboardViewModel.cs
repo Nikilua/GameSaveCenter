@@ -85,6 +85,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         private DateTime lastFullDashboardRefreshUtc=DateTime.MinValue;
         private string? selectedGamePolicyId;
         private BackupPolicyDto? selectedGamePolicyBaseline;
+        private BackupPolicyDto? subscribedSelectedGamePolicy;
+        private BackupPolicyDto? subscribedPolicyTemplateDraftPolicy;
         private string statusMessage = "准备就绪";
         private BackupVersionDto selectedBackup = null!;
         private DashboardSnapshotDto snapshot = new DashboardSnapshotDto();
@@ -332,9 +334,10 @@ namespace GameSaveCenter.Playnite.ViewModels
             UndoRestoreCommand = new RelayCommand(_ => Run(UndoRestoreAsync), _ => !IsBusy && SelectedGame != null && Backups.Any(x => x.IsPreRestore));
             LoadDetailsCommand = new RelayCommand(_ => Run(() => LoadDetailsAsync(true)), _ => !IsBusy && SelectedGame != null);
             SavePolicyCommand = new RelayCommand(_ => Run(SavePolicyAsync), _ => !IsBusy && SelectedGame != null);
+            CancelPolicyDraftCommand = new RelayCommand(_ => CancelPolicyDraft(), _ => !IsBusy && HasSelectedGamePolicyChanges);
             CreatePolicyTemplateCommand = new RelayCommand(_ => CreatePolicyTemplate(), _ => !IsBusy);
             SavePolicyTemplateCommand = new RelayCommand(_ => Run(SavePolicyTemplateAsync), _ => !IsBusy && PolicyTemplateDraft != null && !PolicyTemplateDraft.IsBuiltIn && !string.IsNullOrWhiteSpace(PolicyTemplateNameDraft));
-            ApplyPolicyTemplateCommand = new RelayCommand(_ => Run(ApplyPolicyTemplateAsync), _ => !IsBusy && SelectedGame != null && SelectedPolicyTemplate != null && !string.IsNullOrWhiteSpace(SelectedPolicyTemplate.TemplateId));
+            ApplyPolicyTemplateCommand = new RelayCommand(_ => Run(ApplyPolicyTemplateAsync), _ => !IsBusy && SelectedGame != null && !HasSelectedGamePolicyChanges && SelectedPolicyTemplate != null && !string.IsNullOrWhiteSpace(SelectedPolicyTemplate.TemplateId));
             DeletePolicyTemplateCommand = new RelayCommand(_ => Run(DeletePolicyTemplateAsync), _ => !IsBusy && PolicyTemplateDraft != null && !PolicyTemplateDraft.IsBuiltIn && !string.IsNullOrWhiteSpace(PolicyTemplateDraft.TemplateId));
             UpdateBackupMetadataCommand = new RelayCommand(_ => Run(UpdateBackupMetadataAsync), _ => !IsBusy && SelectedGame != null && SelectedBackup != null);
             CancelBackupMetadataCommand = new RelayCommand(_ => CancelBackupMetadataEdit(), _ => !IsBusy && SelectedBackup != null && HasBackupMetadataChanges);
@@ -1478,6 +1481,28 @@ namespace GameSaveCenter.Playnite.ViewModels
         public string DiffPathFilterSummary { get => diffPathFilterSummary; private set => SetValue(ref diffPathFilterSummary, value); }
         public string DiffUnknownSummary { get => diffUnknownSummary; private set => SetValue(ref diffUnknownSummary, value); }
         public string RetentionSummary { get => retentionSummary; private set => SetValue(ref retentionSummary, value); }
+        public IReadOnlyList<BackupPolicyDiffEntry> SelectedGamePolicyDiffEntries
+            => SelectedGame == null || selectedGamePolicyBaseline == null
+                ? Array.Empty<BackupPolicyDiffEntry>()
+                : BackupPolicyDiff.Compare(selectedGamePolicyBaseline, SelectedGame.Policy);
+        public bool HasSelectedGamePolicyChanges => SelectedGamePolicyDiffEntries.Count > 0;
+        public string SelectedGamePolicyDiffSummary
+            => HasSelectedGamePolicyChanges
+                ? $"当前草稿将显式覆盖 {SelectedGamePolicyDiffEntries.Count} 项；保存前不会写入 Worker。"
+                : "当前草稿与已保存值一致，不会写入策略变更。";
+        public IReadOnlyList<BackupPolicyDiffEntry> PolicyTemplateDiffEntries
+            => !HasPolicyTemplateDraft || SelectedGame == null || selectedGamePolicyBaseline == null || PolicyTemplateDraft == null
+                ? Array.Empty<BackupPolicyDiffEntry>()
+                : BackupPolicyDiff.Compare(selectedGamePolicyBaseline, PolicyTemplateDraft.Policy);
+        public bool HasPolicyTemplateDiff => PolicyTemplateDiffEntries.Count > 0;
+        public string PolicyTemplateDiffSummary
+            => HasSelectedGamePolicyChanges
+                ? "当前游戏还有未保存的策略草稿，请先保存或取消；模板不会覆盖未保存草稿。"
+                : !HasPolicyTemplateDraft
+                ? "选择或新建策略模板后，这里会显示应用前的字段差异。"
+                : HasPolicyTemplateDiff
+                ? $"模板将一次性覆盖 {PolicyTemplateDiffEntries.Count} 项；不会建立继承关系。"
+                : "模板与当前已保存策略一致；应用不会产生策略差异。";
         public BackupDiffDto? LastBackupDiff
         {
             get => lastBackupDiff;
@@ -1521,6 +1546,10 @@ namespace GameSaveCenter.Playnite.ViewModels
                     ? new BackupPolicyTemplateDto()
                     : GameSaveCenter.Core.Services.BackupPolicyTemplateCatalog.Clone(value);
                 PolicyTemplateNameDraft = PolicyTemplateDraft.Name;
+                OnPropertyChanged(nameof(HasPolicyTemplateDraft));
+                OnPropertyChanged(nameof(PolicyTemplateDiffEntries));
+                OnPropertyChanged(nameof(HasPolicyTemplateDiff));
+                OnPropertyChanged(nameof(PolicyTemplateDiffSummary));
                 RaiseCommandStates();
             }
         }
@@ -1530,14 +1559,27 @@ namespace GameSaveCenter.Playnite.ViewModels
             private set
             {
                 SetValue(ref policyTemplateDraft, value ?? new BackupPolicyTemplateDto());
+                SubscribePolicyTemplateDraft(policyTemplateDraft);
                 OnPropertyChanged(nameof(CanEditPolicyTemplate));
+                OnPropertyChanged(nameof(PolicyTemplateDiffEntries));
+                OnPropertyChanged(nameof(HasPolicyTemplateDiff));
+                OnPropertyChanged(nameof(PolicyTemplateDiffSummary));
             }
         }
         public bool CanEditPolicyTemplate => PolicyTemplateDraft != null && !PolicyTemplateDraft.IsBuiltIn;
+        public bool HasPolicyTemplateDraft
+            => SelectedPolicyTemplate != null || !string.IsNullOrWhiteSpace(PolicyTemplateNameDraft);
         public string PolicyTemplateNameDraft
         {
             get => policyTemplateNameDraft;
-            set { SetValue(ref policyTemplateNameDraft, value ?? string.Empty); RaiseCommandStates(); }
+            set
+            {
+                SetValue(ref policyTemplateNameDraft, value ?? string.Empty);
+                OnPropertyChanged(nameof(HasPolicyTemplateDraft));
+                OnPropertyChanged(nameof(PolicyTemplateDiffEntries));
+                OnPropertyChanged(nameof(PolicyTemplateDiffSummary));
+                RaiseCommandStates();
+            }
         }
 
         public ICommand RefreshCommand { get; }
@@ -1553,6 +1595,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand UndoRestoreCommand { get; }
         public ICommand LoadDetailsCommand { get; }
         public ICommand SavePolicyCommand { get; }
+        public ICommand CancelPolicyDraftCommand { get; }
         public ICommand CreatePolicyTemplateCommand { get; }
         public ICommand SavePolicyTemplateCommand { get; }
         public ICommand ApplyPolicyTemplateCommand { get; }
@@ -2472,6 +2515,13 @@ namespace GameSaveCenter.Playnite.ViewModels
                     }
                     if (selectedGamePolicyDraft == null)
                         UpdateSelectedGamePolicyBaseline(SelectedGame);
+                    else
+                    {
+                        SubscribeSelectedGamePolicy(SelectedGame);
+                        OnPropertyChanged(nameof(SelectedGamePolicyDiffEntries));
+                        OnPropertyChanged(nameof(HasSelectedGamePolicyChanges));
+                        OnPropertyChanged(nameof(SelectedGamePolicyDiffSummary));
+                    }
                 }
                 finally { suppressSelectionLoad = false; }
                 // Cache-first snapshots can be older than the current wall clock. The protection
@@ -2593,12 +2643,68 @@ namespace GameSaveCenter.Playnite.ViewModels
             return GameSaveCenter.Core.Services.BackupPolicyTemplateCatalog.ClonePolicy(selected.Policy);
         }
 
+        private void SubscribeSelectedGamePolicy(GameStatusDto? game)
+        {
+            var policy = game?.Policy;
+            if (ReferenceEquals(subscribedSelectedGamePolicy, policy)) return;
+            if (subscribedSelectedGamePolicy != null)
+                subscribedSelectedGamePolicy.PropertyChanged -= OnSelectedGamePolicyChanged;
+            subscribedSelectedGamePolicy = policy;
+            if (subscribedSelectedGamePolicy != null)
+                subscribedSelectedGamePolicy.PropertyChanged += OnSelectedGamePolicyChanged;
+        }
+
+        private void SubscribePolicyTemplateDraft(BackupPolicyTemplateDto? template)
+        {
+            var policy = template?.Policy;
+            if (ReferenceEquals(subscribedPolicyTemplateDraftPolicy, policy)) return;
+            if (subscribedPolicyTemplateDraftPolicy != null)
+                subscribedPolicyTemplateDraftPolicy.PropertyChanged -= OnPolicyTemplateDraftChanged;
+            subscribedPolicyTemplateDraftPolicy = policy;
+            if (subscribedPolicyTemplateDraftPolicy != null)
+                subscribedPolicyTemplateDraftPolicy.PropertyChanged += OnPolicyTemplateDraftChanged;
+        }
+
+        private void OnSelectedGamePolicyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(SelectedGamePolicyDiffEntries));
+            OnPropertyChanged(nameof(HasSelectedGamePolicyChanges));
+            OnPropertyChanged(nameof(SelectedGamePolicyDiffSummary));
+            RaiseCommandStates();
+        }
+
+        private void OnPolicyTemplateDraftChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(PolicyTemplateDiffEntries));
+            OnPropertyChanged(nameof(HasPolicyTemplateDiff));
+            OnPropertyChanged(nameof(PolicyTemplateDiffSummary));
+            RaiseCommandStates();
+        }
+
+        private void CancelPolicyDraft()
+        {
+            if (SelectedGame == null || selectedGamePolicyBaseline == null) return;
+            BackupPolicyDiff.CopyTo(selectedGamePolicyBaseline, SelectedGame.Policy);
+            StatusMessage = "已撤销未保存的游戏策略修改；未写入 Worker。";
+            OnPropertyChanged(nameof(SelectedGamePolicyDiffEntries));
+            OnPropertyChanged(nameof(HasSelectedGamePolicyChanges));
+            OnPropertyChanged(nameof(SelectedGamePolicyDiffSummary));
+            RaiseCommandStates();
+        }
+
         private void UpdateSelectedGamePolicyBaseline(GameStatusDto? game)
         {
             selectedGamePolicyId = game?.PlayniteId;
             selectedGamePolicyBaseline = game == null
                 ? null
                 : GameSaveCenter.Core.Services.BackupPolicyTemplateCatalog.ClonePolicy(game.Policy);
+            SubscribeSelectedGamePolicy(game);
+            OnPropertyChanged(nameof(SelectedGamePolicyDiffEntries));
+            OnPropertyChanged(nameof(HasSelectedGamePolicyChanges));
+            OnPropertyChanged(nameof(SelectedGamePolicyDiffSummary));
+            OnPropertyChanged(nameof(PolicyTemplateDiffEntries));
+            OnPropertyChanged(nameof(HasPolicyTemplateDiff));
+            OnPropertyChanged(nameof(PolicyTemplateDiffSummary));
         }
 
         private static GameStatusDto CloneGameWithPolicy(GameStatusDto source, BackupPolicyDto policy)
@@ -5635,7 +5741,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 RefreshCommand, BackupSelectedCommand, BackupAllCommand, SyncMediaCommand,
                 PreviewBackupCommand, RetrySelectedGameCloudUploadCommand,
                 DetectPathsCommand, ValidateCommand, RestoreCommand,
-                ValidateRestoreReadinessCommand, UndoRestoreCommand, LoadDetailsCommand, SavePolicyCommand,
+                ValidateRestoreReadinessCommand, UndoRestoreCommand, LoadDetailsCommand, SavePolicyCommand, CancelPolicyDraftCommand,
                 CreatePolicyTemplateCommand, SavePolicyTemplateCommand, ApplyPolicyTemplateCommand, DeletePolicyTemplateCommand,
                 UpdateBackupMetadataCommand, CancelBackupMetadataCommand, CompareBackupCommand, SwapCompareBackupCommand, LoadMoreDiffPathsCommand, ClearDiffPathFiltersCommand, PreviewRetentionCommand,
                 ClearBackupHistoryRangeCommand, JumpToRecentBackupCommand, JumpToEarlierBackupCommand,
