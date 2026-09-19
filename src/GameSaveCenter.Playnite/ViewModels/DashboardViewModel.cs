@@ -1055,6 +1055,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 }
                 if (!sameBackup || !IsBackupInCurrentCollection(CompareLeftBackup) || !IsBackupInCurrentCollection(CompareRightBackup))
                 {
+                    ResetRestoreWorkflow();
                     ClearBackupComparison();
                     SetDefaultComparisonSelection(value);
                 }
@@ -3938,12 +3939,22 @@ namespace GameSaveCenter.Playnite.ViewModels
             var gameId = game.PlayniteId;
             var gameName = game.Name;
             var selectedId = SelectedBackup?.BackupId ?? throw new InvalidOperationException("请先选择备份版本。");
-            var result = await plugin.RequestAsync<RestoreReadinessDto>(MessageTypes.ValidateRestoreReadiness,
-                new RestoreReadinessRequestDto { PlayniteId = gameId, BackupId = selectedId },
-                TimeSpan.FromMinutes(15));
-            if (CurrentWorkspace == WorkspaceKind.Saves && IsSelectedGame(gameId))
-                await LoadDetailsAsync(true);
-            ConfirmSuccess($"{gameName} / {selectedId}：{result.StatusDisplay}。{result.Summary}");
+            BeginRestoreReadinessCheck();
+            try
+            {
+                var result = await plugin.RequestAsync<RestoreReadinessDto>(MessageTypes.ValidateRestoreReadiness,
+                    new RestoreReadinessRequestDto { PlayniteId = gameId, BackupId = selectedId },
+                    TimeSpan.FromMinutes(15));
+                if (CurrentWorkspace == WorkspaceKind.Saves && IsSelectedGame(gameId))
+                    await LoadDetailsAsync(true);
+                CompleteRestoreReadinessCheck();
+                ConfirmSuccess($"{gameName} / {selectedId}：{result.StatusDisplay}。{result.Summary}");
+            }
+            catch (Exception ex)
+            {
+                CompleteRestoreReadinessCheck(ex.Message);
+                throw;
+            }
         }
 
         private async Task SavePolicyAsync()
@@ -4265,16 +4276,28 @@ namespace GameSaveCenter.Playnite.ViewModels
                     confirmation,
                     "开始安全恢复",
                     "取消")) return;
-            var task = await plugin.RequestAsync<TaskStatusDto>(MessageTypes.RestoreExecute, new RestoreRequestDto
+            BeginRestoreExecution();
+            TaskStatusDto? task = null;
+            try
             {
-                PlayniteId = gameId,
-                BackupId = backupId,
-                ConfirmedCurrentSnapshot = true,
-                ConfirmedGameClosed = true,
-                UserComment = "Playnite restore wizard"
-            }, TimeSpan.FromMinutes(30));
-            await RefreshCoreAsync(false);
-            NotifyTaskResults(new[] { task });
+                task = await plugin.RequestAsync<TaskStatusDto>(MessageTypes.RestoreExecute, new RestoreRequestDto
+                {
+                    PlayniteId = gameId,
+                    BackupId = backupId,
+                    ConfirmedCurrentSnapshot = true,
+                    ConfirmedGameClosed = true,
+                    UserComment = "Playnite restore wizard"
+                }, TimeSpan.FromMinutes(30));
+                CompleteRestoreExecution(task);
+                await RefreshCoreAsync(false);
+                NotifyTaskResults(new[] { task });
+            }
+            catch (Exception ex)
+            {
+                if (task == null)
+                    CompleteRestoreExecution(null, ex.Message);
+                throw;
+            }
         }
 
         private async Task UndoRestoreAsync()

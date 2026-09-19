@@ -344,6 +344,29 @@
                                     <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionVerify}"/><TextBlock Text="验证可恢复性" VerticalAlignment="Center"/></StackPanel>
                                 </ui:Button>
                                 <Separator Margin="0,16,0,12"/>
+                                <TextBlock Text="恢复流程" FontWeight="SemiBold"/>
+                                <TextBlock Text="{Binding RestoreWorkflowSummary, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0" AutomationProperties.Name="恢复流程摘要"/>
+                                <Border Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,8,0,0">
+                                    <ItemsControl ItemsSource="{Binding RestoreWorkflowSteps}" AutomationProperties.Name="恢复四步流程">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Background="{DynamicResource GscControlFillBrush}" BorderBrush="{DynamicResource GscDividerBrush}" BorderThickness="1" Padding="8" Margin="0,0,0,6">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions><ColumnDefinition Width="26"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                        <TextBlock Text="{Binding Glyph}" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Top"/>
+                                                        <StackPanel Grid.Column="1" Margin="6,0,8,0">
+                                                            <TextBlock Text="{Binding Title}" FontWeight="SemiBold"/>
+                                                            <TextBlock Text="{Binding Detail}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,2,0,0"/>
+                                                        </StackPanel>
+                                                        <TextBlock Grid.Column="2" Text="{Binding StatusDisplay}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Top"/>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </Border>
+                                <TextBlock Text="执行阶段才会写入当前存档目录；在此之前 Worker 会创建并锁定 PreRestore。失败时当前步骤和任务详情会保留。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0" AutomationProperties.HelpText="恢复执行会先建立 PreRestore 保护；失败时保留当前阶段与任务详情。"/>
+                                <Separator Margin="0,16,0,12"/>
                                 <TextBlock Text="版本备注" Style="{DynamicResource GscCaptionStyle}" Margin="0,0,0,6"/>
                                 <TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding BackupComment, UpdateSourceTrigger=PropertyChanged}" MinHeight="64" AcceptsReturn="True" TextWrapping="Wrap" AutomationProperties.Name="版本备注"/>
                                 <Grid Margin="0,14,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><StackPanel><TextBlock Text="锁定版本" FontWeight="SemiBold"/><TextBlock Text="{Binding BackupProtectionExplanationDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0" TextWrapping="Wrap"/></StackPanel><CheckBox Grid.Column="1" Style="{DynamicResource GscCheckBox}" Content="锁定" IsChecked="{Binding LockSelectedBackup}" VerticalAlignment="Center" ToolTip="锁定并保存后，保留预览会跳过此版本；取消锁定并保存后才会重新按策略评估。"/></Grid>
