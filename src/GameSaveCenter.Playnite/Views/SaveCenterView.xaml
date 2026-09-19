@@ -108,6 +108,7 @@
                                             </Border>
                                         </StackPanel>
                                         <TextBlock Style="{DynamicResource GscCaptionStyle}" Margin="0,2,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedGame.HealthReasonDisplay, Mode=OneWay}"><Run Text="{Binding SelectedGame.MatchStateDisplay, Mode=OneWay, TargetNullValue=当前规则未匹配}"/><Run Text=" · "/><Run Text="{Binding SelectedGame.HealthStateDisplay, Mode=OneWay, TargetNullValue=尚未校验}"/></TextBlock>
+                                        <TextBlock Text="{Binding BackupHistoryRangeSummary, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0" TextWrapping="Wrap" AutomationProperties.HelpText="历史版本日期范围和可见数量"/>
                                         <Border x:Name="SaveDetailsStaleBanner" Padding="8" Margin="0,8,0,0">
                                             <Border.Style>
                                                 <Style TargetType="Border" BasedOn="{StaticResource GscDiagnosticHintBubble}">
@@ -170,6 +171,13 @@
                                         </Border>
                                     </StackPanel>
                                     <WrapPanel x:Name="SaveHistorySummaryActions" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="14,0,0,0">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,8,0">
+                                            <TextBlock Text="历史范围" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                            <ComboBox Style="{DynamicResource GscWpfUiFilterComboBox}" ItemsSource="{Binding BackupHistoryRangeOptions}" SelectedItem="{Binding BackupHistoryRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="108" ToolTip="按本地日历日期筛选历史版本；今天/昨天不按固定 24 小时计算。" AutomationProperties.Name="历史版本日期范围"/>
+                                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="清空范围" Command="{Binding ClearBackupHistoryRangeCommand}" Margin="5,0,0,0" ToolTip="恢复显示全部历史版本" AutomationProperties.Name="清空历史版本日期范围"/>
+                                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="最近版本" Command="{Binding JumpToRecentBackupCommand}" Margin="5,0,0,0" ToolTip="选择当前日期范围内最新的版本" AutomationProperties.Name="跳到最近历史版本"/>
+                                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="较早版本" Command="{Binding JumpToEarlierBackupCommand}" Margin="5,0,0,0" ToolTip="选择当前日期范围内最早的版本" AutomationProperties.Name="跳到较早历史版本"/>
+                                        </StackPanel>
                                         <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding PreviewBackupCommand}" MinWidth="100" Margin="0,0,8,0" ToolTip="只扫描当前游戏本次备份范围，不创建归档" AutomationProperties.Name="预览当前游戏备份范围">
                                             <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionVerify}"/><TextBlock Text="预览备份" VerticalAlignment="Center"/></StackPanel>
                                         </ui:Button>

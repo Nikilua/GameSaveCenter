@@ -1,6 +1,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.ViewModels;
@@ -38,6 +39,8 @@ namespace GameSaveCenter.Playnite.Views
         {
             if (!IsLoaded) return;
             DetachColumnLayouts();
+            if (!(DataContext is DashboardViewModel))
+                SaveHistoryGrid.SetBinding(ItemsControl.ItemsSourceProperty, new Binding("Backups"));
             AttachColumnLayouts();
         }
 
@@ -56,6 +59,7 @@ namespace GameSaveCenter.Playnite.Views
                 new[] { "confidence", "status", "path", "reason" },
                 viewModel.PluginSettings,
                 viewModel.PersistUiPreference);
+            SaveHistoryGrid.SetBinding(ItemsControl.ItemsSourceProperty, new Binding(nameof(DashboardViewModel.BackupHistoryView)));
             historySort = ProductionDataGridSortProfiles.AttachSaveHistory(SaveHistoryGrid);
             candidateSort = ProductionDataGridSortProfiles.AttachSaveCandidates(SaveCandidateGrid);
         }
