@@ -573,7 +573,7 @@
                                     <TextBlock Text="错误详情" Style="{DynamicResource GscCaptionStyle}" Margin="0,10,0,3"/>
                                     <TextBlock Text="{Binding SelectedCloudTransfer.LastError, TargetNullValue=无}" TextWrapping="Wrap" Foreground="{DynamicResource GscSecondaryTextBrush}"/>
                                     <TextBlock Text="下一次尝试" Style="{DynamicResource GscCaptionStyle}" Margin="0,10,0,3"/>
-                                    <TextBlock Text="{Binding SelectedCloudTransfer.NextAttemptLocal, StringFormat={}{0:yyyy-MM-dd HH:mm}, TargetNullValue=暂无自动重试}" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding SelectedCloudTransfer.RetryTimingDisplay}" TextWrapping="Wrap"/>
                                     <Border Style="{DynamicResource GscDiagnosticHintBubble}" Padding="10" Margin="0,14,0,0"><TextBlock Text="远端校验只读取并比对远端内容，不上传、不覆盖本地存档或媒体。认证失败不会被当作可自动重试的上传。" Style="{DynamicResource GscDiagnosticHintText}" TextWrapping="Wrap"/></Border>
                                     <Border Style="{DynamicResource GscActionAvailabilityHintBubble}" Padding="10,8">
                                         <Grid>

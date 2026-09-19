@@ -59,6 +59,26 @@ public sealed class UiDisplayMappingTests
     }
 
     [Fact]
+    public void CloudRetryTimingClampsExpiredAndKeepsAbsoluteTime()
+    {
+        var future = new CloudTransferStatusDto { NextAttemptUtc = DateTime.UtcNow.AddMinutes(5) };
+        var expired = new CloudTransferStatusDto { NextAttemptUtc = DateTime.UtcNow.AddMinutes(-5) };
+
+        Assert.Contains("·", future.RetryTimingDisplay);
+        Assert.Contains("后", future.RetryTimingDisplay);
+        Assert.Contains("可立即重试", expired.RetryTimingDisplay);
+        Assert.DoesNotContain("负", expired.RetryTimingDisplay);
+    }
+
+    [Fact]
+    public void CloudRetryTimingKeepsNoRetryDistinctFromAnExpiredRetry()
+    {
+        var noRetry = new CloudTransferStatusDto();
+
+        Assert.Equal("无自动重试", noRetry.RetryTimingDisplay);
+    }
+
+    [Fact]
     public void UnknownCloudStateDoesNotLeakInternalValue()
     {
         var transfer = new CloudTransferStatusDto { State = "FutureProviderState" };

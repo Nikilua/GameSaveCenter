@@ -81,6 +81,19 @@ public sealed class CloudTransferStatusDto
     public DateTime UpdatedUtc { get; set; }
 
     public DateTime? NextAttemptLocal => NextAttemptUtc?.ToLocalTime();
+    public string RetryTimingDisplay
+    {
+        get
+        {
+            if (!NextAttemptUtc.HasValue) return "无自动重试";
+            var remaining = NextAttemptUtc.Value - DateTime.UtcNow;
+            var relative = remaining <= TimeSpan.Zero
+                ? "可立即重试"
+                : $"约 {FormatRemaining(remaining)} 后";
+            var nextAttemptLocal = NextAttemptUtc.Value.ToLocalTime();
+            return $"{nextAttemptLocal:yyyy-MM-dd HH:mm} · {relative}";
+        }
+    }
     public string KindDisplay => Kind == CloudTransferKind.Backup ? "备份" : "媒体";
     public string StateDisplay => State switch
     {
@@ -115,6 +128,13 @@ public sealed class CloudTransferStatusDto
     private bool IsNetworkWait => string.Equals(State, "RetryScheduled", StringComparison.OrdinalIgnoreCase)
         && (string.Equals(LastErrorCode, "RCLONE_NETWORK_FAILED", StringComparison.OrdinalIgnoreCase)
             || string.Equals(LastErrorCode, "RCLONE_TRANSFER_INCOMPLETE", StringComparison.OrdinalIgnoreCase));
+
+    private static string FormatRemaining(TimeSpan remaining)
+    {
+        if (remaining.TotalDays >= 1) return $"{(int)remaining.TotalDays} 天";
+        if (remaining.TotalHours >= 1) return $"{(int)remaining.TotalHours} 小时";
+        return $"{Math.Max(1, (int)Math.Ceiling(remaining.TotalMinutes))} 分钟";
+    }
 
     /// <summary>Explains what has actually been established about the remote copy.</summary>
     public string GuaranteeLevelDisplay => State switch

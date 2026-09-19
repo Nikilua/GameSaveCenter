@@ -15,4 +15,14 @@ public sealed class R13CloudTransferStageBehaviorTests
         Assert.Contains("GuaranteeLevelDisplay", source);
         Assert.Contains("QueueControlDisplay", source);
     }
+
+    [Fact]
+    public void MaintenanceInspectorUsesBoundedRetryTimingDisplay()
+    {
+        var root = TestRepositoryContext.Root;
+        var source = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+
+        Assert.Contains("SelectedCloudTransfer.RetryTimingDisplay", source);
+        Assert.DoesNotContain("SelectedCloudTransfer.NextAttemptLocal, StringFormat", source);
+    }
 }
