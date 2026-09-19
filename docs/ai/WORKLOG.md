@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R16-01 设置搜索定位
+
+- 在 `a4e35578` 中沿用设置页现有分类、控件和 Binding，增加搜索框、结果摘要和 `SearchTerms` 附加属性；匹配只控制字段/分类可见性，清空恢复原分类，验证错误定位先清空搜索，不改设置值或保存取消语义。
+- 外部隔离副本 Release solution 单节点构建 `0 errors/10 warnings`；R16 行为 `1/1`、源契约 `1/1`，验证导航/草稿分别独立 `1/1`；`validate-source.py`、XAML `24/24`、diff 通过；WPF 静态 `0/28/177`。警告为离线 `NU1900` 与既有 `MediaCenterView.xaml.cs:664` nullable。
+- 联合 WPF 筛选触发既有 Application 多实例生命周期夹具冲突，改用独立 testhost 后全部通过；只用合成设置/fake/隔离目录，未碰真实用户数据。Demo 原目录不可用，linked `obj` 仍 `Access denied`，真实 Playnite/package-host、最终呈现、DPI/UIA/IME、ETW/性能仍待验；main 用户改动未碰、未合并。
+- 证据：[R16-01 设置搜索定位](../design/reviews/ui-finesse-round3-20260915/evidence/R16-01-SETTINGS-SEARCH-20260920.md)。下一可执行任务：`R16-02 策略差异预览`。
+
 ## 2026-09-20 R15-08 清理历史范围
 
 - 先核对既有 Retention Simulation、维护页和 SQLite 隔离账本，确认任务表方向已由现有实现覆盖：预览含日期、候选原因、保留/保护影响、预计释放和隔离账本状态，应用必须二次确认并匹配 Worker 预览句柄。

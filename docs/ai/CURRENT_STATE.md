@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R16-01 设置搜索定位（代码已提交，受控验证完成；真实宿主待验）
+
+- `a4e35578` 在现有设置分类上增加轻量搜索框、匹配字段索引和结果摘要；不复制 DTO/服务，不改原控件 Binding。搜索输入只改变匹配字段与分类的可见性，首次搜索记录原分类，清空恢复；验证错误定位先清空搜索后复用已有分类/滚动/焦点路径。
+- 外部隔离 Release solution 单节点构建 `0 errors/10 warnings`（离线 `NU1900` 与既有 `MediaCenterView.xaml.cs:664` nullable warning）；R16 搜索行为 `1/1`、源契约 `1/1`，验证导航/草稿分别独立 `1/1`；source、XAML `24/24`、diff 通过；WPF `0/28/177`。
+- 受控行为覆盖匹配字段可见且可编辑、未命中字段隐藏、清空回原分类、配置路径不变和无 pending edit。联合 WPF 筛选受既有 AppDomain Application 多实例夹具冲突影响，不能作为门禁通过。
+- 未验真实 Playnite/package-host、最终浅深主题呈现、RenderHarness presented frame、DPI/跨屏、UIA/IME、ETW 或宿主性能；Demo 原目录不可用，linked `obj` 仍 `Access denied`，只用合成/fake/隔离目录；main 用户改动未碰、未合并。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R16-01-SETTINGS-SEARCH-20260920.md`。
+- 下一项：`R16-02 策略差异预览`，先核对策略/模板 DTO 的继承值和显式覆盖值，再限定只读差异与取消无写入。
+
 ## 当前第三轮 R15-08 清理历史范围（既有实现已满足，隔离证据完成；真实宿主待验）
 
 - 既有 `88bde5de`、`a841e42c`、`77d5f346` 已提供全局 Retention Simulation、日期/原因/影响预览、共享游戏锁和持久化隔离账本；`a07f0518` 补齐当前提交下的行为/维护页证据并修正一条 R15-07 后陈旧源码断言。
