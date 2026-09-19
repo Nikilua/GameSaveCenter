@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R15-01 任务阶段可读
+
+- 在 `4e7ac33a` 中先核对并复用现有任务协调、阶段事件、任务 DTO 和 SQLite 查询；新增共享阶段解析、最后真实阶段字段和 Task Center 阶段列/详情。未知进度显示 `—`，失败/取消不覆盖最后阶段，错误继续单独可见。
+- `tasks.stage_message` 通过现有迁移入口接入新增、更新和分页读取；命令绑定、取消语义、滚动/有限列表和 net462 路径保持。
+- 验证：`validate-source.py`、XAML `24/24`、diff check；Worker Release 隔离定向测试 `12/12`；Playnite Release `net462` 定向测试 `2/2`；WPF 静态检查 `0/28/177`。Playnite 构建只有既有 nullable warning 2 条。
+- 仅使用合成/fake/隔离数据，未写真实存档、媒体、云端或诊断。Demo 原目录不可用，沿用恢复生产基线；真实 Playnite/RenderHarness、宿主阶段事件全覆盖、最终呈现、DPI/UIA/IME、ETW、性能未验；main 用户改动和 `src.zip` 未碰、未合并。
+- 证据：[R15-01 任务阶段可读](../design/reviews/ui-finesse-round3-20260915/evidence/R15-01-TASK-STAGES-20260920.md)。下一可执行任务：`R15-02 取消过程展示`，先核对取消请求、取消中状态和竞争终态。
+
 ## 2026-09-20 R14-08 来源规则试运行
 
 - 在 `89141528` 中复用现有来源规则 DTO、媒体匹配器和 Worker IPC，增加只读草稿试运行。UI 样本显示命中/排除、大小、路径和原因；保存规则、媒体入库、移动和归类链均不被试运行调用。

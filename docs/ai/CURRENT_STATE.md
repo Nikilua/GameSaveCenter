@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R15-01 任务阶段可读（代码已提交，隔离验证完成；真实宿主待验）
+
+- `4e7ac33a` 复用现有 `TaskCoordinator`、任务 DTO、SQLite 查询和 `TaskCenterView`，新增 Contracts 层 `TaskStageResolver` 与 `TaskStatusDto.StageMessage`。已有 Worker 阶段事件可显示为扫描、校验、索引、上传、下载、恢复、清理等可读阶段；失败/取消保留最后真实阶段，错误和技术详情独立显示。
+- 运行中无可靠总量时进度显示 `—`，不把 0% 当成真实进度；`tasks.stage_message` 通过现有迁移入口补列，旧库空值可继续读取。Task Center 增加阶段列和详情，不改变任务命令、取消入口、滚动或有限列表边界。
+- 已验证：`validate-source.py`、XAML `24/24`、`git diff --check`；Worker Release 隔离定向测试 `12/12`；Playnite Release `net462` 定向测试 `2/2`，构建有既有 `MediaCenterView.xaml.cs:664` nullable warning 2 条；WPF 静态检查 `0/28/177`。
+- 未验：真实 Playnite/RenderHarness、真实宿主各类阶段事件全覆盖、最终呈现、DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能。Demo 原目录不可用，沿用恢复生产基线；main 用户改动与 `src.zip` 未碰、未合并。
+- 证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R15-01-TASK-STAGES-20260920.md`。下一可执行任务：`R15-02 取消过程展示`，先核对取消请求、取消中状态和成功/取消竞争的终态收敛。
+
 ## 当前第三轮 R14-08 来源规则试运行（代码已提交，隔离验证完成；真实宿主待验）
 
 - `89141528` 复用现有来源规则 DTO、媒体扩展名和文件模式匹配，增加来源规则草稿的只读试运行 IPC/Worker/UI 链。每个样本显示命中/排除、文件名、大小、路径和确定原因；试运行不保存规则、不写媒体记录、不移动文件。

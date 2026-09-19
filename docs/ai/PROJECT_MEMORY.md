@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-20
 
+## 2026-09-20 R15-01 任务阶段可读（代码已提交，隔离验证完成；真实宿主待验）
+
+- `4e7ac33a` 先复用 `TaskCoordinator`、任务 DTO、SQLite 查询和任务中心视图。`TaskStageResolver` 将已有后端事件映射为真实可读阶段，`StageMessage` 保留最后阶段；终态错误/取消仍在 `Message` 和详情中单独显示，未知进度显示 `—`。
+- `tasks.stage_message` 使用现有 SQLite 迁移入口，新增/更新/最近任务/分页查询保持一致；任务中心只增加阶段列和阶段详情，保留现有命令绑定、取消、滚动、有限列表和 net462 路径。
+- `validate-source.py`、XAML `24/24`、diff check、Worker 定向 `12/12`、Playnite Release `net462` 定向 `2/2` 已通过；Playnite 构建的 2 条 `MediaCenterView.xaml.cs:664` nullable warning 为既有告警；WPF 静态审查 `0/28/177`。
+- 只用合成/fake/隔离数据，未写真实存档、媒体、云端或诊断。Demo 原目录不可用，沿用恢复生产基线；真实 Playnite/RenderHarness、各类宿主阶段事件全覆盖、最终呈现、DPI/UIA/IME、ETW、性能仍待验；main 用户改动和 `src.zip` 未碰、未合并。
+- 证据为 `R15-01-TASK-STAGES-20260920.md`；下一项为 `R15-02 取消过程展示`，先核对取消请求和成功/取消竞争的终态。
+
 ## 2026-09-20 R14-08 来源规则试运行（代码已提交，隔离验证完成；真实宿主待验）
 
 - `89141528` 先复用 `MediaSourceRuleDto`、Worker 已有媒体扩展名和 `MatchesIncludePattern`，新增来源规则草稿的只读预览 DTO、IPC dispatcher、ViewModel 命令和来源设置样本列表。样本带确定的命中/排除原因、大小和路径，试运行不调用保存、入库、移动或归类。
