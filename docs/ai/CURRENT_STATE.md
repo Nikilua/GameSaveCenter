@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R13-04 暂停与允许时段
+
+- `cca3f052` 已推送到 `codex/ui-finesse-round2`。复用现有 `CloudUploadQueuePaused`、允许时段持久化、`CloudRetryService` 和设置页入口；`QueueControlDisplay` 现在实际区分用户暂停、允许时段外、队列空闲和运行中。
+- 设置页明确暂停只影响后台自动重试，恢复后继续处理已保存队列；允许时段修改在下一轮 Worker 检查生效，已开始的上传不会被取消。源代码复核确认暂停跳过 sweep、时段外持久化 defer，未把静态复核写成真实云端运行时证明。
+- 证据：Core 定向 `1/1`；Worker 允许时段/暂停持久化 `3/3`；Playnite `R13CloudTransferStageBehaviorTests 9/9`、既有 `PortableSettingsTests 10/10`；隔离 Debug `0 warning / 0 error`、XAML `24/24`、source validation/diff check 通过。证据见 [R13-04 暂停与允许时段](../design/reviews/ui-finesse-round3-20260915/evidence/R13-04-PAUSE-WINDOW-20260919.md)。
+- 只使用合成 DTO、fake/隔离设置和外部构建，未触碰真实云端、存档、媒体或诊断；未验真实 Playnite/package-host、进行中上传时序、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能。Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并。
+- 下一可执行任务：`R13-05 远端证据详情`，先核对远端验证结果、脱敏和“已上传不等于已验证”的详情入口。
+
 ## 当前第三轮 R13-03 手动重试范围
 
 - `680ea83a` 已推送到 `codex/ui-finesse-round2`。先复用现有单项/媒体重试入口、任务中心批量入口和 IPC ledger；新增 `CloudTransferStatusDto.CanManuallyRetry` 与 `ManualRetryScopeDisplay`，维护页明确仅重试当前选中的失败/排队项，只复制已保留的云端源，不重新执行本地备份。

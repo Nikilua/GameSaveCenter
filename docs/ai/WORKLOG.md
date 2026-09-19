@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-19 R13-04 暂停与允许时段
+
+- 先查并复用 `WorkerOptions.CloudUploadQueuePaused`、允许时段字段、`CloudRetryService` 和现有设置页开关；没有重建队列或改变调度器。队列摘要按暂停、允许时段外、空队列、运行中投影，补足“队列空闲”与运行中边界。
+- 设置页保留现有暂停恢复入口，补充恢复已保存队列、下一轮 Worker 检查生效和不取消进行中上传的明确说明。源码复核确认暂停跳过自动 sweep、时段外持久化 defer；没有把静态源审查写成真实云端运行时通过。
+- 验证：Core 定向 `1/1`；Worker 允许时段/暂停持久化 `3/3`；Playnite `R13CloudTransferStageBehaviorTests 9/9`、`PortableSettingsTests 10/10`；外部隔离 Debug solution `0 warning / 0 error`；XAML `24/24`；source validation/diff check 通过。
+- 代码提交 `cca3f052` 已推送；证据：[R13-04 暂停与允许时段](../design/reviews/ui-finesse-round3-20260915/evidence/R13-04-PAUSE-WINDOW-20260919.md)。隔离副本/输出已清理；未验真实 Playnite/package-host、真实远端/进行中上传时序、最终呈现、物理 DPI/跨屏、UIA/IME、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并。`.tmp/r12-07-build-final` 仍因 Access denied 暂留。下一可执行任务：`R13-05 远端证据详情`。
+
 ## 2026-09-19 R13-03 手动重试范围
 
 - 先查并复用现有维护页单项/媒体重试、任务中心选中/批量重试、`CloudTransferStateService`、`TaskCoordinator` 和 IPC ledger；没有重建云端服务或另造 RequestId 系统。`CanManuallyRetry` 仅允许 `Failed`/`RetryScheduled`，详情明确只重试当前选中云端项，不重新执行本地备份。
