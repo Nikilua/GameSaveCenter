@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R14-05 重复媒体识别视图（代码完成，环境待验）
+
+- `136285d5` 已推送。先复用既有 SHA-256 入库去重、`MediaItemDto` 和当前游戏媒体查询，新增当前游戏范围的确定/疑似重复组只读视图；确定组为相同非空哈希，疑似组为同类型、文件名和大小一致且排除确定组。
+- Worker 扫描上限 5000、最多 100 组、每组展示 24 项；Media 新 Tab 的组和组内列表使用有限高度、FiniteViewport、Recycling，只有选择查看和重新识别，没有删除/移动/重新归类命令。请求带取消和 generation，失败不阻塞主媒体详情。
+- 已验证：`validate-source.py`、XAML `24/24`、`git diff --check`；Worker/Playnite 夹具已加入但当前 linked `obj` Access denied/SDK-Workload 环境未产出可签收构建或运行时测试。现有 `media.sha256` 唯一约束意味着确定组主要兼容历史/异常数据，不把空结果写成全库绝对无重复。
+- 只用合成/fake/隔离数据；Demo 原目录不可用，沿用恢复生产基线；main 用户改动、`src.zip` 未碰、未合并，没有新增 artifacts/.tmp。证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R14-05-DUPLICATE-INSPECTION-20260920.md`。
+- 下一可执行任务：在可用 SDK/Workload 环境补跑 R14-04/R14-05 定向验证，再推进 `R14-06 批量目标防误选`。
+
 ## 当前第三轮 R14-04 撤销边界说明（实现已满足，运行时环境待验）
 
 - 既有 `1c0c5a37`/`a7c39922` 已提供媒体归类历史、最近批次和所选可回退批次的撤销入口；`03521991` 补充应用后人工修改再撤销的隔离负例夹具。

@@ -122,7 +122,7 @@
 | R14-02 | 预览选择编辑 | 已实现，待环境验证 | 69cf2a72 | `validate-source.py`、XAML `24/24`、`git diff --check`；Contracts/Core Release 隔离构建 `0 warning / 0 error`；Core 测试宿主未产出可签收结果，Worker/Playnite 未执行 | 预览卡支持按稳定 MediaId 排除条目；高置信建议可在当前游戏目录中调整目标，汇总显示纳入/排除/可应用数量；排除项不提交，全部排除时命令门禁同步禁用 | 未验 Worker/Playnite 定向运行、Release/net462、RenderHarness、真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线；本批临时构建目录已清理 | [R14-02 预览选择编辑](evidence/R14-02-CLASSIFICATION-SELECTION-20260920.md)；先在可用 SDK/Workload 环境补跑 R13-07/R13-08/R14-01/R14-02 定向测试，再推进 R14-03 |
 | R14-03 | 部分成功处理 | 已实现，待环境验证 | aef251b1 | `validate-source.py`、XAML `24/24`、`git diff --check`；Worker 逐项失败夹具已加入但未执行 | 批量归类/忽略/恢复保留逐项失败 ID 与原因；失败列表为有限高度/Recycling，重试确认只提交上次失败项，成功项不会再次执行 | 未验 Worker/Playnite 定向运行、Release/net462、RenderHarness、真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线 | [R14-03 部分成功处理](evidence/R14-03-PARTIAL-RETRY-20260920.md)；先在可用 SDK/Workload 环境补跑 R13-07/R13-08/R14-01/R14-02/R14-03，再推进 R14-04 |
 | R14-04 | 撤销边界说明 | 已满足 | 1c0c5a37、a7c39922、03521991 | `validate-source.py`；XAML `24/24`；diff check；既有正常撤销隔离夹具；新增应用后人工修改的撤销冲突负例已加入但当前 testhost 未产出汇总 | 现有历史页提供上次/所选可回退入口；确认文案和 Tooltip 说明不可撤销边界；撤销前重新核对批次目标与当前媒体，冲突项保留当前状态且不覆盖后来决定 | 定向 Worker 测试已尝试但当前 dotnet 长时间无输出，未写成运行时通过；未验 Release/net462、Playnite/RenderHarness、真实宿主呈现、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并 | [R14-04 撤销边界说明](evidence/R14-04-UNDO-BOUNDARY-20260920.md)；下一项 R14-05 重复媒体识别视图 |
-| R14-05 | 重复媒体识别视图 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
+| R14-05 | 重复媒体识别视图 | 已实现，待环境验证 | 136285d5 | validate-source.py；XAML 24/24；diff check；Worker 疑似组隔离夹具和 Playnite 只读契约已加入但当前构建/testhost 未产出结果 | 复用现有 SHA-256 入库去重能力；当前游戏范围内区分确定哈希组与同类型/文件名/大小疑似组；只读选择查看；扫描上限 5000、组上限 100、组内展示上限 24，列表有限/Recycling | Worker/Contracts 构建受 linked obj Access denied 与 SDK/Workload 环境阻塞；未验 Worker/Playnite 运行时、Release/net462、RenderHarness、真实 Playnite/宿主呈现、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 src.zip 未碰、未合并 | R14-05 重复媒体识别视图（evidence/R14-05-DUPLICATE-INSPECTION-20260920.md）；先补跑 R14-04/R14-05 定向验证，再推进 R14-06 |
 | R14-06 | 批量目标防误选 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R14-07 | 媒体详情浏览 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R14-08 | 来源规则试运行 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
@@ -356,6 +356,15 @@
 - 既有隔离夹具覆盖应用后重启 Store 的正常撤销。本阶段 `03521991` 增加“应用后人工修改收藏/备注再撤销”的负例，断言 `UndoneWithConflicts`、人工决定和应用后归档路径均保留。`validate-source.py`、XAML `24/24`、diff check 通过；定向 Worker testhost 当前长时间无输出，未获得运行时汇总，不冒充通过。
 - 只用合成/fake/隔离目录，未触碰真实存档、媒体、云端或诊断；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并。证据见 [R14-04 撤销边界说明](evidence/R14-04-UNDO-BOUNDARY-20260920.md)。
 - 下一可执行小批量：先核对重复检测已有 hash/元数据能力，再推进 `R14-05 重复媒体识别视图`；R14-04 Worker/Playnite 运行时复跑仍待可用 SDK/Workload 环境。
+
+## 2026-09-20 Round3 R14-05 重复媒体识别视图
+
+- 先核对发现现有入库路径已经按 SHA-256 去重，media.sha256 有唯一约束，但没有用户可查看的重复组视图。本阶段复用现有 MediaItemDto/GetMediaAsync，新增当前游戏范围的有界只读重复检查。
+- Worker 将非空 SHA-256 完全一致作为“确定重复”（兼容历史/异常数据），将同类型、文件名和大小一致且未被确定组占用的项目作为“疑似重复”；结果显示依据、稳定组 ID 和有限组内条目，不触发删除、移动或重新归类。
+- Media 中心新增“重复识别”Tab，组与组内媒体均使用有限高度、FiniteViewport、Recycling；请求使用取消/generation 和重载命令，失败不阻塞主媒体详情。Worker/Playnite 隔离夹具已加入，源码校验、XAML 24/24、diff check 通过；linked obj Access denied/SDK-Workload 阻塞构建和运行时测试。
+- 只用合成/fake/隔离数据，Demo 原目录不可用，沿用恢复生产基线；未触碰真实存档、媒体、云端或诊断，main 用户改动和 src.zip 未碰、未合并。证据见 R14-05 重复媒体识别视图（evidence/R14-05-DUPLICATE-INSPECTION-20260920.md）。
+- 下一可执行小批量：先在可用 SDK/Workload 环境补跑 R14-04/R14-05 定向验证，再推进 R14-06 批量目标防误选。
+
 
 ## 2026-09-19 R00/R01 当前提交复核
 

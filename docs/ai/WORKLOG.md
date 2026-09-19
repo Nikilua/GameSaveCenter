@@ -1,5 +1,14 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R14-05 重复媒体识别视图
+
+- 先核对现有扫描入库已通过 SHA-256 去重，但没有用户回看入口；复用现有 MediaItemDto/GetMediaAsync，新增当前游戏范围的只读确定/疑似重复组查询。
+- Worker 按相同非空哈希生成确定组，按同类型、文件名和大小一致生成疑似组；扫描 5000、组 100、组内 24 的有界结果，Media Tab 使用有限高度/Recycling，只能选择查看，不提供删除、移动或归类命令。
+- Worker 疑似组隔离夹具、Playnite 只读契约和取消/generation 代码已加入，代码提交 `136285d5` 已推送。
+- 验证：`python scripts/validate-source.py`、XAML `24/24`、`git diff --check` 通过；linked `obj` Access denied/SDK-Workload 阻塞构建和运行时测试，未写成通过。
+- 仅使用合成/fake/隔离目录，未写真实存档、媒体、云端或诊断；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并。证据：[R14-05 重复媒体识别视图](../design/reviews/ui-finesse-round3-20260915/evidence/R14-05-DUPLICATE-INSPECTION-20260920.md)。
+- 下一可执行任务：在可用 SDK/Workload 环境补跑 R14-04/R14-05 定向验证，再推进 `R14-06 批量目标防误选`。
+
 ## 2026-09-20 R14-04 撤销边界说明
 
 - 先核对既有媒体归类历史和撤销链，确认 `1c0c5a37`/`a7c39922` 已具备入口、批次选择和安全回退条件；本阶段只补边界行为证据。
