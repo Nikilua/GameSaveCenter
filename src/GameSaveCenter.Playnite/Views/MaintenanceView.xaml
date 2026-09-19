@@ -580,10 +580,26 @@
                                     <TextBlock Text="{Binding SelectedCloudTransfer.LastAttemptDisplay, TargetNullValue=未知}" TextWrapping="Wrap"/>
                                     <TextBlock Text="最后成功校验" Style="{DynamicResource GscCaptionStyle}" Margin="0,10,0,3"/>
                                     <TextBlock Text="{Binding SelectedCloudTransfer.LastSuccessfulVerificationDisplay, TargetNullValue=未知}" TextWrapping="Wrap"/>
-                                    <TextBlock Text="错误码" Style="{DynamicResource GscCaptionStyle}" Margin="0,14,0,3"/>
-                                    <TextBlock Text="{Binding SelectedCloudTransfer.LastErrorCode, TargetNullValue=无}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedCloudTransfer.LastErrorCode}"/>
-                                    <TextBlock Text="错误详情" Style="{DynamicResource GscCaptionStyle}" Margin="0,10,0,3"/>
-                                    <TextBlock Text="{Binding SelectedCloudTransfer.LastError, TargetNullValue=无}" TextWrapping="Wrap" Foreground="{DynamicResource GscSecondaryTextBrush}"/>
+                                    <Border Padding="10" Margin="0,14,0,0">
+                                        <Border.Style>
+                                            <Style TargetType="Border" BasedOn="{StaticResource GscDiagnosticHintBubble}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers><DataTrigger Binding="{Binding SelectedCloudTransfer.HasRecognizedFailure}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding SelectedCloudTransfer.FailureCategoryDisplay}" FontWeight="SemiBold"/>
+                                            <TextBlock Text="{Binding SelectedCloudTransfer.FailureNextStepDisplay}" TextWrapping="Wrap" Margin="0,4,0,0" Style="{DynamicResource GscDiagnosticHintText}"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <Expander Style="{StaticResource GscDisclosureCard}" Header="原始诊断" IsExpanded="False" Margin="0,10,0,0" AutomationProperties.Name="展开原始云端诊断">
+                                        <StackPanel>
+                                            <TextBlock Text="错误码" Style="{DynamicResource GscCaptionStyle}"/>
+                                            <TextBlock Text="{Binding SelectedCloudTransfer.LastErrorCode, TargetNullValue=无}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedCloudTransfer.LastErrorCode}"/>
+                                            <TextBlock Text="错误详情" Style="{DynamicResource GscCaptionStyle}" Margin="0,8,0,3"/>
+                                            <TextBlock Text="{Binding SelectedCloudTransfer.LastError, TargetNullValue=无}" TextWrapping="Wrap" Foreground="{DynamicResource GscSecondaryTextBrush}"/>
+                                        </StackPanel>
+                                    </Expander>
                                     <TextBlock Text="下一次尝试" Style="{DynamicResource GscCaptionStyle}" Margin="0,10,0,3"/>
                                     <TextBlock Text="{Binding SelectedCloudTransfer.RetryTimingDisplay}" TextWrapping="Wrap"/>
                                     <TextBlock Text="{Binding SelectedCloudTransfer.ManualRetryScopeDisplay, TargetNullValue=选择记录查看手动重试范围}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,8,0,0" AutomationProperties.Name="手动重试范围" AutomationProperties.HelpText="{Binding SelectedCloudTransfer.ManualRetryScopeDisplay, TargetNullValue=选择记录查看手动重试范围}"/>

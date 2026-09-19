@@ -7,7 +7,9 @@ public enum RcloneFailureKind
     Authentication,
     Permission,
     RemoteNotFound,
-    Incomplete
+    Incomplete,
+    NoSpace,
+    RateLimited
 }
 
 /// <summary>Converts provider-specific Rclone text into stable, actionable task codes.</summary>
@@ -17,16 +19,19 @@ public static class RcloneFailureClassifier
     {
         var value = (error ?? string.Empty).ToLowerInvariant();
         if (value.Contains("authentication") || value.Contains("unauthorized") || value.Contains("invalid token") || value.Contains("expired token")) return RcloneFailureKind.Authentication;
+        if (value.Contains("no space") || value.Contains("not enough space") || value.Contains("insufficient space") || value.Contains("disk full") || value.Contains("quota exceeded") || value.Contains("storage quota")) return RcloneFailureKind.NoSpace;
         if (value.Contains("permission denied") || value.Contains("access denied") || value.Contains("forbidden")) return RcloneFailureKind.Permission;
         if (value.Contains("not found") || value.Contains("doesn't exist") || value.Contains("does not exist") || value.Contains("no such file")) return RcloneFailureKind.RemoteNotFound;
         if (value.Contains("partial") || value.Contains("incomplete") || value.Contains("transferred") && value.Contains("error")) return RcloneFailureKind.Incomplete;
-        if (value.Contains("timeout") || value.Contains("timed out") || value.Contains("connection") || value.Contains("network") || value.Contains("temporarily unavailable") || value.Contains("429")) return RcloneFailureKind.Network;
+        if (value.Contains("rate limit") || value.Contains("too many requests") || value.Contains("throttled") || value.Contains("429")) return RcloneFailureKind.RateLimited;
+        if (value.Contains("timeout") || value.Contains("timed out") || value.Contains("connection") || value.Contains("network") || value.Contains("temporarily unavailable")) return RcloneFailureKind.Network;
         return RcloneFailureKind.Unknown;
     }
 
     public static bool IsRetryable(string? errorCode)
         => string.Equals(errorCode, "RCLONE_NETWORK_FAILED", StringComparison.OrdinalIgnoreCase)
-           || string.Equals(errorCode, "RCLONE_TRANSFER_INCOMPLETE", StringComparison.OrdinalIgnoreCase);
+           || string.Equals(errorCode, "RCLONE_TRANSFER_INCOMPLETE", StringComparison.OrdinalIgnoreCase)
+           || string.Equals(errorCode, "RCLONE_RATE_LIMITED", StringComparison.OrdinalIgnoreCase);
 
     public static string GetErrorCode(RcloneFailureKind kind) => kind switch
     {
@@ -35,6 +40,8 @@ public static class RcloneFailureClassifier
         RcloneFailureKind.RemoteNotFound => "RCLONE_REMOTE_NOT_FOUND",
         RcloneFailureKind.Network => "RCLONE_NETWORK_FAILED",
         RcloneFailureKind.Incomplete => "RCLONE_TRANSFER_INCOMPLETE",
+        RcloneFailureKind.NoSpace => "RCLONE_NO_SPACE",
+        RcloneFailureKind.RateLimited => "RCLONE_RATE_LIMITED",
         _ => "RCLONE_COPY_FAILED"
     };
 
@@ -45,6 +52,8 @@ public static class RcloneFailureClassifier
         RcloneFailureKind.RemoteNotFound => "Rclone 找不到配置的远端或目标目录，请检查远端名称。",
         RcloneFailureKind.Network => "网络暂时不可用，已保留本地备份并安排有限次重试。",
         RcloneFailureKind.Incomplete => "远端只收到部分内容，已保留本地备份并安排有限次重试。",
+        RcloneFailureKind.NoSpace => "本地或远端空间不足，已保留本地备份；请处理空间或配额后再重试。",
+        RcloneFailureKind.RateLimited => "远端暂时限流，已保留本地备份并按退避等待后重试。",
         _ => "云端复制失败；本地备份已保留。"
     };
 }

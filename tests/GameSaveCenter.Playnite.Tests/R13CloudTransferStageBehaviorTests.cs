@@ -64,6 +64,21 @@ public sealed class R13CloudTransferStageBehaviorTests
     }
 
     [Fact]
+    public void MaintenanceInspectorSeparatesKnownFailureHelpFromRawDiagnostics()
+    {
+        var root = TestRepositoryContext.Root;
+        var view = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+        var contracts = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Contracts", "CloudFailureExplanation.cs"));
+        var classifier = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Worker", "Infrastructure", "RcloneFailureClassifier.cs"));
+
+        Assert.Contains("SelectedCloudTransfer.HasRecognizedFailure", view, StringComparison.Ordinal);
+        Assert.Contains("SelectedCloudTransfer.FailureNextStepDisplay", view, StringComparison.Ordinal);
+        Assert.Contains("Header=\"原始诊断\"", view, StringComparison.Ordinal);
+        Assert.Contains("RCLONE_NO_SPACE", contracts, StringComparison.Ordinal);
+        Assert.Contains("RCLONE_RATE_LIMITED", classifier, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void MaintenanceQueueKeepsFilterScopeAndPagingSelectionContracts()
     {
         var root = TestRepositoryContext.Root;

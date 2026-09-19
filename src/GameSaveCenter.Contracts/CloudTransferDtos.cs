@@ -173,8 +173,13 @@ public sealed class CloudTransferStatusDto
         _ => string.Empty
     };
 
+    public bool HasRecognizedFailure => CloudFailureExplanation.Resolve(LastErrorCode).IsRecognized;
+    public string FailureCategoryDisplay => CloudFailureExplanation.Resolve(LastErrorCode).CategoryDisplay;
+    public string FailureNextStepDisplay => CloudFailureExplanation.Resolve(LastErrorCode).NextStepDisplay;
+
     private bool IsNetworkFailure => string.Equals(LastErrorCode, "RCLONE_NETWORK_FAILED", StringComparison.OrdinalIgnoreCase)
-        || string.Equals(LastErrorCode, "RCLONE_TRANSFER_INCOMPLETE", StringComparison.OrdinalIgnoreCase);
+        || string.Equals(LastErrorCode, "RCLONE_TRANSFER_INCOMPLETE", StringComparison.OrdinalIgnoreCase)
+        || string.Equals(LastErrorCode, "RCLONE_RATE_LIMITED", StringComparison.OrdinalIgnoreCase);
 
     private bool IsNetworkWait => string.Equals(State, "RetryScheduled", StringComparison.OrdinalIgnoreCase) && IsNetworkFailure;
 

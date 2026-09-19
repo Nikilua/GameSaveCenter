@@ -151,6 +151,32 @@ public sealed class UiDisplayMappingTests
         Assert.Equal(string.Empty, authentication.NetworkRecoveryDisplay);
     }
 
+    [Theory]
+    [InlineData("RCLONE_AUTH_FAILED", "认证失败", "检查云端凭据")]
+    [InlineData("RCLONE_NO_SPACE", "空间不足", "释放本地或远端空间")]
+    [InlineData("RCLONE_REMOTE_NOT_FOUND", "远端不存在", "检查远端名称")]
+    [InlineData("RCLONE_CHECK_FAILED", "校验差异", "查看本地与远端内容差异")]
+    [InlineData("RCLONE_RATE_LIMITED", "远端限流", "等待限流窗口")]
+    public void CloudFailureExplanationOffersOnlyRecognizedNextSteps(string errorCode, string category, string nextStep)
+    {
+        var transfer = new CloudTransferStatusDto { LastErrorCode = errorCode };
+
+        Assert.True(transfer.HasRecognizedFailure);
+        Assert.Equal(category, transfer.FailureCategoryDisplay);
+        Assert.Contains(nextStep, transfer.FailureNextStepDisplay, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void UnknownCloudFailureKeepsRawCodeWithoutInventingNextStep()
+    {
+        var transfer = new CloudTransferStatusDto { LastErrorCode = "RCLONE_PROVIDER_NEW_FAILURE" };
+
+        Assert.False(transfer.HasRecognizedFailure);
+        Assert.Equal(string.Empty, transfer.FailureCategoryDisplay);
+        Assert.Equal(string.Empty, transfer.FailureNextStepDisplay);
+        Assert.Equal("RCLONE_PROVIDER_NEW_FAILURE", transfer.LastErrorCode);
+    }
+
     [Fact]
     public void UnknownCloudStateDoesNotLeakInternalValue()
     {

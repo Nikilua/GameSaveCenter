@@ -51,11 +51,13 @@ public sealed class CloudRetryPersistenceTests : IDisposable
     [InlineData("remote not found", RcloneFailureKind.RemoteNotFound, "RCLONE_REMOTE_NOT_FOUND")]
     [InlineData("network timeout", RcloneFailureKind.Network, "RCLONE_NETWORK_FAILED")]
     [InlineData("partial transfer; incomplete", RcloneFailureKind.Incomplete, "RCLONE_TRANSFER_INCOMPLETE")]
+    [InlineData("quota exceeded: no space left", RcloneFailureKind.NoSpace, "RCLONE_NO_SPACE")]
+    [InlineData("429 too many requests", RcloneFailureKind.RateLimited, "RCLONE_RATE_LIMITED")]
     public void RcloneFailuresBecomeActionableBoundedCodes(string text, RcloneFailureKind expected, string code)
     {
         Assert.Equal(expected, RcloneFailureClassifier.Classify(text));
         Assert.Equal(code, RcloneFailureClassifier.GetErrorCode(expected));
-        Assert.Equal(expected is RcloneFailureKind.Network or RcloneFailureKind.Incomplete, RcloneFailureClassifier.IsRetryable(code));
+        Assert.Equal(expected is RcloneFailureKind.Network or RcloneFailureKind.Incomplete or RcloneFailureKind.RateLimited, RcloneFailureClassifier.IsRetryable(code));
     }
 
     [Fact]
