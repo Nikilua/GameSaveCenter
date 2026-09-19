@@ -2,6 +2,15 @@
 
 > 维护时间：2026-09-19
 
+## 2026-09-19 R13-05 远端证据详情
+
+- `e280cf1c` 已推送。复用现有 `CloudTransferStatusDto`、`CloudTransferStateService`、队列/远端布局与维护页详情，不另建上传服务；新增 `CloudRemoteDisplay` 和四项 display-only 证据字段。
+- 远端对象显示按现有备份/媒体相对路径生成，并对 URI 用户信息、query/key-value secret、Bearer 值统一脱敏；复制诊断仍走既有 `ClipboardValueSanitizer`。未知字段保持未知，来源设备为空为“未知设备”。
+- 现有队列不持久化历史成功校验时间，只有当前 `RemoteVerified` 的 `UpdatedUtc` 可作为可证实成功时间；转为 `Uploaded` 后回到未知，不用上传时间伪造历史校验。
+- Core `2/2`、Worker `1/1`、Playnite R13 `10/10`、Release `0/0`、XAML `24/24`、source/diff check 通过。证据见 [R13-05 远端证据详情](../design/reviews/ui-finesse-round3-20260915/evidence/R13-05-REMOTE-EVIDENCE-20260919.md)。WPF 只做 Demo-first 共享样式/详情容器质量检查，未运行 RenderHarness 或真实宿主。
+- 边界：合成/fake/隔离数据，未写真实云端、存档、媒体、诊断；Demo 原目录不可用，沿用恢复生产基线；main 未合并且用户改动未触碰；旧 `.tmp/r12-07-build-final` 仍因 Access denied 暂留。
+- 下一项 `R13-06 离线恢复反馈`：先查现有离线状态与恢复入口及 Q 依赖。
+
 ## 2026-09-19 R13-04 暂停与允许时段
 
 - `cca3f052` 已推送。复用 `WorkerOptions` 的暂停/允许时段字段、`CloudRetryService` 与设置页入口；队列摘要新增“队列空闲”分支，优先级为暂停、时段外、空闲、运行中，没有另建队列或替换调度器。

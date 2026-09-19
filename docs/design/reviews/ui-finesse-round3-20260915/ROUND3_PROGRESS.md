@@ -114,7 +114,7 @@
 | R13-02 | 下次重试时间 | 已满足 | 6fd22892 | Core `UiDisplayMappingTests 29/29`；Playnite `R13CloudTransferStageBehaviorTests 2/2`；Worker `CloudTransferStateTests 11/11`；隔离 Debug solution `0 warning / 0 error`；XAML `24/24`；source validation、diff check 通过 | 复用 NextAttemptUtc/Local；详情同时显示绝对时间和有界相对提示；未来/已到期/无重试分别可读，已到期不显示负倒计时；没有新增每行常驻计时器 | 合成 DTO/fake/隔离 Worker 与 net462 Playnite 程序集；未验真实 Playnite/package-host、真实远端、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线；main dirty R08 文件和 `src.zip` 未触碰、未合并 | [R13-02 下次重试时间证据](evidence/R13-02-RETRY-TIMING-20260919.md)；当前分支已推送，下一项 R13-03 手动重试范围 |
 | R13-03 | 手动重试范围 | 已满足 | 680ea83a | Playnite `R13CloudTransferStageBehaviorTests 8/8`；Core `UiDisplayMappingTests 29/29`；Worker `CloudTransferStateTests|BackupResultLayerTests 19/19`；Worker `IpcRequestLedgerTests 6/6`；隔离 Debug solution `0 warning / 0 error`；XAML `24/24`；source validation/diff check 通过 | 维护页手动重试明确限定当前选中且失败/排队的单项；传输中、已上传、已校验负例不可重试；忙态第二次点击不增加提交；任务中心既有批量入口只处理当前筛选结果并按任务类型/游戏去重；云端重试复用已成功本地副本，不重新执行本地备份；RetryCloudUpload/RetryMediaCloudUpload 保持同一 RequestId 的 replay protection | 合成 DTO、真实 RelayCommand 门控、fake/隔离 SQLite 和外部 Debug 构建；Playnite IPC 客户端 named-pipe 时序 `1 passed / 6 skipped / 0 failed`，跳过项未计为真实 IPC 通过；未验真实 Playnite/package-host、真实远端、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线；main dirty R08 文件和 `src.zip` 未触碰、未合并 | [R13-03 手动重试范围证据](evidence/R13-03-MANUAL-RETRY-SCOPE-20260919.md)；当前分支已推送，下一项 R13-04 暂停与允许时段 |
 | R13-04 | 暂停与允许时段 | 已满足 | cca3f052 | Core 定向队列状态 `1/1`；Worker 允许时段/暂停持久化 `3/3`；Playnite `R13CloudTransferStageBehaviorTests 9/9`、既有 `PortableSettingsTests 10/10`；隔离 Debug solution `0 warning / 0 error`；XAML `24/24`；source validation、diff check 通过 | 摘要明确区分用户暂停、允许时段外、队列空闲和运行中；设置页明确恢复入口、下一轮 Worker 检查生效且不取消已开始上传 | 合成 DTO、现有 Worker 策略/fake 设置和 net462 Playnite 程序集；未验真实 Playnite/package-host、真实远端、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能 | [R13-04 暂停与允许时段证据](evidence/R13-04-PAUSE-WINDOW-20260919.md)；当前分支已推送，下一项 R13-05 远端证据详情 |
-| R13-05 | 远端证据详情 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
+| R13-05 | 远端证据详情 | 已满足 | e280cf1c | Core 定向 `2/2`；Worker 云状态映射 `1/1`；Playnite `R13CloudTransferStageBehaviorTests 10/10`；Release 隔离 solution `0 warning / 0 error`，Playnite `net462`；XAML `24/24`；source validation、diff check 通过 | 维护页现有详情滚动容器/共享卡片样式接入远端对象、来源设备、最后尝试和最后成功校验；实际 DTO/Worker 映射和认证参数负例通过；未运行 RenderHarness/真实呈现 | 只使用合成 DTO、fake/隔离 SQLite、外部源码/输出；远端路径只生成脱敏显示值；历史成功校验没有持久化时保持未知；未验真实 Playnite/package-host、真实云端、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；main 用户改动和 `src.zip` 未触碰 | [R13-05 远端证据详情](evidence/R13-05-REMOTE-EVIDENCE-20260919.md)；当前分支已推送，下一项 R13-06 离线恢复反馈 |
 | R13-06 | 离线恢复反馈 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R13-07 | 队列筛选与汇总 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R13-08 | 失败分类帮助 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
@@ -289,6 +289,15 @@
 - Core 定向队列摘要 `1/1`；Worker `CloudUploadWindowPolicyTests` 两项及 `CloudQueueWindowSettingsAreClampedAndRoundTrip` 合计 `3/3`；Playnite `R13CloudTransferStageBehaviorTests 9/9`，既有 `PortableSettingsTests 10/10`。隔离 Debug solution `0 warning / 0 error`、XAML `24/24`；`validate-source.py` 与 `git diff --check` 通过。
 - 证据只使用合成 DTO、现有 Worker 策略和 fake/隔离设置、net462 程序集及外部隔离构建；未写真实云端、存档、媒体或诊断。未验真实 Playnite/package-host、真实远端/进行中上传时序、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并；`.tmp/r12-07-build-final` 仍因 Access denied 暂留，未扩大清理范围。
 - 下一可执行小批量为 `R13-05 远端证据详情`：先核对远端验证结果、凭据/路径脱敏和“已上传不等于已验证”的详情入口。
+
+## 2026-09-19 Round3 R13-05 远端证据详情
+
+- `e280cf1c` 先复用现有 `CloudTransferStatusDto`、`CloudTransferStateService` 的队列状态/远端布局和维护页详情入口，没有新建上传服务或改变上传、校验、取消语义。新增 display-only `CloudRemoteDisplay`，对 URI 用户信息、query/key-value secret、Bearer 值统一显示 `[已隐藏]`；Worker 按现有备份/媒体远端相对路径生成安全远端对象显示值，并补来源设备、最后尝试时间和最后成功校验时间。
+- DTO 正负行为实际验证：空远端/设备/时间显示为“未知/未知设备”；带 URI 密码、token 和 Bearer 的远端对象不泄漏原值；Worker `RemoteVerified` 行以当前 `UpdatedUtc` 作为可证实的成功校验时间，转为 `Uploaded` 后历史时间恢复“未知”，不伪造队列未持久化的历史校验记录。既有 `CopyDiagnosticsCommand` 仍经 `ClipboardValueSanitizer`，认证参数负例实际不进入复制文本。
+- 维护页在既有 `GscInspectorScrollViewer`、`GscRedesignSectionCard` 和表格滚动模型内增加四个绑定字段，没有改游戏选框、滚动条、命令/绑定、取消/错误/恢复保护、有限列表或 net462。WPF 质量检查仅按 Demo-first 约束复核共享样式、详情容器、换行/省略和 Tooltip；本阶段没有把离屏或静态结果写成真实视觉呈现通过。
+- 验证：Core `2/2`；Worker 云状态映射 `1/1`；Playnite `R13CloudTransferStageBehaviorTests 10/10`；Release 隔离 solution `0 warning / 0 error`、Playnite `net462`；XAML `24/24`；`python scripts/validate-source.py`、`git diff --check` 通过。代码提交已推送 `origin/codex/ui-finesse-round2`。
+- 证据仅来自合成 DTO、fake/隔离 SQLite、脱敏负例和外部隔离构建；未写真实云端、存档、媒体或诊断，未运行真实 Playnite/package-host、RenderHarness、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能。Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未触碰、未合并；本批 `.tmp/r13-05-*` 已清理，旧 `.tmp/r12-07-build-final` 仍因 Access denied 暂留且未扩大清理范围。
+- 下一可执行小批量为 `R13-06 离线恢复反馈`：先查现有 Worker/维护页离线状态、恢复入口和错误分类，再补网络恢复前后状态变化与真实未验边界。
 
 ## 2026-09-19 R00/R01 当前提交复核
 

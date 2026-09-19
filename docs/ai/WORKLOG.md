@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-19 R13-05 远端证据详情
+
+- 先查并复用现有云端 DTO、队列状态、远端布局、维护页详情和复制诊断链；新增共享 display-only 脱敏投影，没有改变上传/校验/取消语义。远端对象按现有备份/媒体相对路径生成，来源设备、最后尝试和最后成功校验进入详情。
+- 实际行为覆盖未知字段、URI 密码、query token、Bearer token、`RemoteVerified → Uploaded` 历史未知边界；Worker 映射 `1/1`，Core 脱敏/显示 `2/2`，Playnite R13 `10/10`。既有复制诊断 sanitizer 的认证负例未泄漏原值。
+- Release 外部隔离 solution `0 warning / 0 error`，Playnite `net462`；XAML `24/24`，source validation/diff check 通过。WPF 仅按 Demo-first 检查共享详情容器、样式、换行/省略和 Tooltip，未把静态/离屏结果写成真实视觉通过。
+- 代码提交 `e280cf1c` 已推送；证据：[R13-05 远端证据详情](../design/reviews/ui-finesse-round3-20260915/evidence/R13-05-REMOTE-EVIDENCE-20260919.md)。本批临时目录已清理；未写真实云端、存档、媒体或诊断，main 用户改动和 `src.zip` 未碰、未合并；旧 `.tmp/r12-07-build-final` 仍因 Access denied 暂留。
+- 下一可执行任务：`R13-06 离线恢复反馈`，先查现有 Worker/维护页离线状态、恢复入口和错误分类。
+
 ## 2026-09-19 R13-04 暂停与允许时段
 
 - 先查并复用 `WorkerOptions.CloudUploadQueuePaused`、允许时段字段、`CloudRetryService` 和现有设置页开关；没有重建队列或改变调度器。队列摘要按暂停、允许时段外、空队列、运行中投影，补足“队列空闲”与运行中边界。

@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R13-05 远端证据详情
+
+- `e280cf1c` 已推送到 `codex/ui-finesse-round2`。复用现有云端队列、远端路径布局、`CloudTransferStatusDto`、`CloudTransferStateService` 和维护页详情入口，新增 display-only 远端对象/来源设备/最后尝试/最后成功校验字段；没有改变上传、校验、取消、错误或恢复语义。
+- `CloudRemoteDisplay` 对 URI 用户信息、query/key-value secret 和 Bearer 值脱敏；既有 `CopyDiagnosticsCommand` 继续经 `ClipboardValueSanitizer`。当前行 `RemoteVerified` 的 `UpdatedUtc` 才作为可证实成功校验时间，其他状态显示未知，因为队列没有历史成功校验持久化列。
+- 验证：Release 外部隔离 solution `0 warning / 0 error`、Playnite `net462`；Core `2/2`、Worker `1/1`、Playnite R13 `10/10`、XAML `24/24`、source validation/diff check 通过。只用合成 DTO、fake/隔离 SQLite 和脱敏负例；未运行 RenderHarness/真实 Playnite/package-host/真实远端或最终呈现。
+- Demo 原目录不可用，沿用恢复生产基线；游戏选框、滚动条、命令绑定、取消/错误/恢复保护、有限列表和 net462 保持。main 用户改动与 `src.zip` 未碰、未合并；本批 `.tmp/r13-05-*` 已清理，旧 `.tmp/r12-07-build-final` 仍因 Access denied 暂留。
+- 下一可执行任务：`R13-06 离线恢复反馈`，先查现有 Worker/维护页离线状态、恢复入口和错误分类，再补网络恢复前后状态变化与负例。
+
 ## 当前第三轮 R13-04 暂停与允许时段
 
 - `cca3f052` 已推送到 `codex/ui-finesse-round2`。复用现有 `CloudUploadQueuePaused`、允许时段持久化、`CloudRetryService` 和设置页入口；`QueueControlDisplay` 现在实际区分用户暂停、允许时段外、队列空闲和运行中。
