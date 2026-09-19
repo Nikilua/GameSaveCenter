@@ -5,7 +5,7 @@
 - 先核对并复用现有 `DashboardViewModel`、`RestoreOrchestrator`、`RestoreReadinessService`、版本/映射 DTO 和 PreRestore 链路；`00724e62` 只补确认返回后的游戏/版本身份守卫。确认期间切换对象会清空流程并拒绝旧确认，不改变命令、取消/错误、选框、滚动或 net462。
 - Worker 既有最新映射/精确 `BackupId` 解析和目标重预览已由行为测试钉住：调用顺序为 `preview → write → post-validation`。新增同大小归档替换夹具，Manifest SHA-256 不一致时二次 readiness 返回 `Corrupted/Failed`。
 - 验证：隔离 Debug solution `0 warning / 0 error`、XAML `24/24`；Playnite R12 `13/13`；Worker `RestoreReadinessTests|RestoreOrchestratorTests 27/27`；`validate-source.py`、`git diff --check` 通过。已推送 `00724e62`。
-- 证据：[R12-07 预览失效重验证据](../design/reviews/ui-finesse-round3-20260915/evidence/R12-07-RESTORE-REVALIDATION-20260919.md)。证据仅使用合成 Manifest/归档、fake Worker 和隔离目录；未验真实 Playnite/package-host、全量 WPF、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线。main 用户 R08 改动和 `src.zip` 未触碰、未合并。下一可执行任务：R12-08 恢复结果报告。
+- 证据：[R12-07 预览失效重验证据](../design/reviews/ui-finesse-round3-20260915/evidence/R12-07-RESTORE-REVALIDATION-20260919.md)。证据仅使用合成 Manifest/归档、fake Worker 和隔离目录；未验真实 Playnite/package-host、全量 WPF、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线。main 用户 R08 改动和 `src.zip` 未触碰、未合并。已关闭 MSBuild 并尝试精确清理 `.tmp/r12-07-build-final`，VB/C# 编译器服务器拒绝 shutdown，目录暂留，未强杀未知进程；下一次启动先重试清理，再执行 R12-08 恢复结果报告。
 
 ## 2026-09-19 R12-06 恢复冲突说明
 

@@ -5,7 +5,7 @@
 - `00724e62` 复用既有恢复确认、映射解析、readiness 校验和 PreRestore；`DashboardViewModel.RestoreAsync` 在确认返回后重新比较游戏 ID/版本 ID，确认期间切换对象不会提交旧确认。
 - Worker 真实编排保持最新映射/精确 `BackupId`，在写入前重新预览目标，写入后继续结果校验；新增 fake 行为证据固定为 `true → false → true`。同大小归档内容替换在 Manifest SHA-256 下返回 `Corrupted/Failed`。
 - 隔离 Debug solution `0 warning / 0 error`、XAML `24/24`、Playnite R12 `13/13`、Worker `27/27`；源码校验与 diff check 通过。没有新增 XAML/视觉资源，选框、滚动条、命令绑定、取消/错误、恢复保护和有限列表保持。
-- 证据见 [R12-07 预览失效重验证据](../design/reviews/ui-finesse-round3-20260915/evidence/R12-07-RESTORE-REVALIDATION-20260919.md)。未验真实 Playnite/package-host、全量 WPF、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线。main 用户改动和 `src.zip` 未碰。下一可执行任务：R12-08 恢复结果报告。
+- 证据见 [R12-07 预览失效重验证据](../design/reviews/ui-finesse-round3-20260915/evidence/R12-07-RESTORE-REVALIDATION-20260919.md)。未验真实 Playnite/package-host、全量 WPF、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线。main 用户改动和 `src.zip` 未碰。`.tmp/r12-07-build-final` 已尝试精确清理但受 VB/C# 编译器服务器锁定而暂留，未强杀未知进程；下一次启动先重试清理，再执行 R12-08 恢复结果报告。
 
 ## 当前第三轮 R12-06 恢复冲突说明
 
