@@ -98,6 +98,46 @@ public sealed class TaskQueryPersistenceTests : IDisposable
     }
 
     [Fact]
+    public async Task RestoreReportRoundTripsThroughRecentAndPagedTaskQueries()
+    {
+        await store.AddOrUpdateTaskAsync(new TaskStatusDto
+        {
+            TaskId = "restore-report",
+            TaskType = "Restore",
+            GameId = "game-1",
+            GameName = "测试游戏",
+            State = TaskState.Failed,
+            ProgressPercent = 60,
+            Message = "执行失败",
+            CreatedUtc = DateTime.UtcNow,
+            ErrorCode = "RESTORE_FAILED_ROLLED_BACK",
+            ErrorMessage = "已回滚",
+            RestoreReport = new RestoreReportDto
+            {
+                PlayniteId = "game-1",
+                GameName = "测试游戏",
+                BackupId = "backup-b",
+                FileCount = 4,
+                TotalBytes = 4096,
+                PreRestoreBackupId = "pre-1",
+                PreRestoreCreated = true,
+                Stage = "回滚",
+                OutcomeKind = "RolledBack",
+                FailureCode = "RESTORE_FAILED_ROLLED_BACK",
+                WasRolledBack = true,
+                TaskId = "restore-report"
+            }
+        }, CancellationToken.None);
+
+        var recent = Assert.Single(await store.GetRecentTasksAsync(10, CancellationToken.None));
+        var page = Assert.Single((await store.GetTaskPageAsync(new TaskQueryDto { Limit = 10 }, CancellationToken.None)).Items);
+
+        Assert.Equal("backup-b", recent.RestoreReport?.BackupId);
+        Assert.Equal("pre-1", page.RestoreReport?.PreRestoreBackupId);
+        Assert.Equal("RolledBack", page.RestoreReport?.OutcomeKind);
+    }
+
+    [Fact]
     public async Task SearchFindsMatchingTaskOutsideTheDefaultRecentWindow()
     {
         var old = DateTime.UtcNow.AddDays(-30);

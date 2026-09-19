@@ -53,6 +53,10 @@ public sealed class RestoreOrchestratorTests : IDisposable
         var result = await CreateOrchestrator().ExecuteAsync(Request("B"), CancellationToken.None);
 
         Assert.Equal(TaskState.Failed, result.State);
+        Assert.Equal("RolledBack", result.RestoreReport?.OutcomeKind);
+        Assert.True(result.RestoreReport?.WasRolledBack);
+        Assert.Equal("RESTORE_FAILED_ROLLED_BACK", result.RestoreReport?.FailureCode);
+        Assert.True(result.RestoreReport?.PreRestoreCreated);
         Assert.Equal("A", client.CurrentSave);
         Assert.Contains("B", client.RestoreCalls);
         Assert.Contains(client.RestoreCalls, x => x.StartsWith("pre-", StringComparison.OrdinalIgnoreCase));
@@ -72,6 +76,9 @@ public sealed class RestoreOrchestratorTests : IDisposable
 
         var restore = await CreateOrchestrator().ExecuteAsync(Request("B"), CancellationToken.None);
         Assert.Equal(TaskState.Succeeded, restore.State);
+        Assert.Equal("Completed", restore.RestoreReport?.OutcomeKind);
+        Assert.True(restore.RestoreReport?.PreRestoreCreated);
+        Assert.False(string.IsNullOrWhiteSpace(restore.RestoreReport?.PreRestoreBackupId));
         Assert.Equal("B", client.CurrentSave);
 
         var undo = await CreateOrchestrator().UndoAsync("game-1", CancellationToken.None);

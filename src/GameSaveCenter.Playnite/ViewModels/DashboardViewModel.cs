@@ -372,7 +372,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             CopyTaskErrorCommand = new RelayCommand(
                 _ => Run(CopySelectedTaskErrorAsync),
                 _ => SelectedTask != null
-                     && (!string.IsNullOrWhiteSpace(SelectedTask.ErrorMessage)
+                     && (SelectedTask.HasRestoreReport
+                         || !string.IsNullOrWhiteSpace(SelectedTask.ErrorMessage)
                          || !string.IsNullOrWhiteSpace(SelectedTask.ErrorCode)
                          || !string.IsNullOrWhiteSpace(SelectedTask.DetailMessage)));
             CopyPathCommand = new RelayCommand(
@@ -4565,6 +4566,14 @@ namespace GameSaveCenter.Playnite.ViewModels
         private async Task CopySelectedTaskErrorAsync()
         {
             if (SelectedTask == null) return;
+            if (SelectedTask.RestoreReport != null)
+            {
+                await CopyTextWithRetryAsync(
+                    SelectedTask.RestoreReport.ToRedactedText(),
+                    "恢复报告已复制",
+                    "已复制不含路径和诊断凭据的恢复结果报告。");
+                return;
+            }
             var text = $"{SelectedTask.GameName} · {SelectedTask.TaskType}\r\n"
                        + $"失败原因：{SelectedTask.ErrorMessage}\r\n"
                        + $"错误码：{SelectedTask.ErrorCode}\r\n"

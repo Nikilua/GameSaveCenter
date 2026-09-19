@@ -59,7 +59,11 @@ public sealed class TaskCoordinator
             {
                 task.ProgressPercent=Math.Clamp(percent,0,100);task.Message=message;
                 await PersistAndPublishAsync(task,CancellationToken.None).ConfigureAwait(false);
-            }, result => task.BackupResult = result);
+            }, result => task.BackupResult = result, report =>
+            {
+                report.TaskId = task.TaskId;
+                task.RestoreReport = report;
+            });
             await operation(progress,linked.Token).ConfigureAwait(false);
             task.State=TaskState.Succeeded;
             task.ProgressPercent=100;
@@ -70,6 +74,11 @@ public sealed class TaskCoordinator
         {
             task.State=TaskState.Cancelled;
             task.Message=string.IsNullOrWhiteSpace(progress?.CancellationMessage)?"已取消":progress.CancellationMessage;
+            if (progress?.RestoreReport != null)
+            {
+                progress.RestoreReport.OutcomeKind = "Cancelled";
+                progress.RestoreReport.FailureCode = string.Empty;
+            }
             task.FinishedUtc=DateTime.UtcNow;
         }
         catch(WorkerOperationException ex)
@@ -79,12 +88,14 @@ public sealed class TaskCoordinator
             task.ErrorCode=ex.Code;
             task.ErrorMessage=string.IsNullOrWhiteSpace(ex.DiagnosticDetail)?ex.Message:$"{ex.Message} | {ex.DiagnosticDetail}";
             task.Message="执行失败";
+            MarkRestoreFailure(progress, ex.Code);
             task.FinishedUtc=DateTime.UtcNow;
         }
         catch(Exception ex)
         {
             _logger.LogError(ex,"Task {TaskType} failed for {Game}",taskType,gameName);
-            task.State=TaskState.Failed;task.ErrorCode=ex.GetType().Name;task.ErrorMessage=ex.Message;task.Message="执行失败";task.FinishedUtc=DateTime.UtcNow;
+            task.State=TaskState.Failed;task.ErrorCode=ex.GetType().Name;task.ErrorMessage=ex.Message;task.Message="执行失败";
+            MarkRestoreFailure(progress, task.ErrorCode);task.FinishedUtc=DateTime.UtcNow;
         }
         finally
         {
@@ -108,6 +119,14 @@ public sealed class TaskCoordinator
             }
         }
         return task;
+    }
+
+    private static void MarkRestoreFailure(TaskProgress? progress, string errorCode)
+    {
+        if (progress?.RestoreReport == null) return;
+        progress.RestoreReport.FailureCode = errorCode ?? string.Empty;
+        if (progress.RestoreReport.OutcomeKind is not ("RolledBack" or "ManualIntervention"))
+            progress.RestoreReport.OutcomeKind = "Failed";
     }
 
     public bool Cancel(string taskId)
@@ -183,7 +202,8 @@ public sealed class TaskCoordinator
                 CloudState = task.BackupResult.CloudState,
                 Summary = task.BackupResult.Summary,
                 Remediation = task.BackupResult.Remediation
-            }
+            },
+            RestoreReport=task.RestoreReport?.Clone()
     };
 }
 
@@ -192,13 +212,21 @@ public sealed class TaskProgress
 {
     private readonly Func<int,string,Task> _report;
     private readonly Action<BackupResultDto>? _setBackupResult;
-    public TaskProgress(Func<int,string,Task> report, Action<BackupResultDto>? setBackupResult = null)
+    private readonly Action<RestoreReportDto>? _setRestoreReport;
+    public TaskProgress(Func<int,string,Task> report, Action<BackupResultDto>? setBackupResult = null, Action<RestoreReportDto>? setRestoreReport = null)
     {
         _report=report;
         _setBackupResult=setBackupResult;
+        _setRestoreReport=setRestoreReport;
     }
     public Task ReportAsync(int percent,string message)=>_report(percent,message);
     public void SetBackupResult(BackupResultDto result)=>_setBackupResult?.Invoke(result);
+    public RestoreReportDto? RestoreReport { get; private set; }
+    public void SetRestoreReport(RestoreReportDto report)
+    {
+        RestoreReport=report;
+        _setRestoreReport?.Invoke(report);
+    }
     public string CancellationMessage { get; private set; } = string.Empty;
     public void SetCancellationMessage(string message)=>CancellationMessage=message??string.Empty;
 }

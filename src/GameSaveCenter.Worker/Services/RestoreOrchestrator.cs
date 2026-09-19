@@ -61,16 +61,32 @@ public sealed class RestoreOrchestrator
                 "RESTORE_READINESS_FAILED",
                 "目标备份最近一次隔离恢复校验未通过，已阻止真实恢复。请先重新验证该版本并处理归档问题。",
                 request.PlayniteId);
+        var report = new RestoreReportDto
+        {
+            PlayniteId = game.PlayniteId,
+            GameName = game.Name,
+            BackupId = request.BackupId,
+            FileCount = indexedTarget?.RestoreReadiness?.ExpectedFileCount > 0
+                ? indexedTarget.RestoreReadiness.ExpectedFileCount
+                : indexedTarget?.FileCount ?? 0,
+            TotalBytes = indexedTarget?.RestoreReadiness?.ExpectedTotalSize > 0
+                ? indexedTarget.RestoreReadiness.ExpectedTotalSize
+                : indexedTarget?.TotalBytes ?? 0,
+            Stage = "目标核对"
+        };
         return await _tasks.RunAsync("Restore",game.PlayniteId,game.Name,async(progress,ct)=>
         {
+            progress.SetRestoreReport(report);
             var state=RestoreState.Requested;
             await AuditAsync(game.PlayniteId,state,request,ct).ConfigureAwait(false);
+            report.Stage="目标核对";progress.SetRestoreReport(report);
             await progress.ReportAsync(5,"正在确认游戏已关闭").ConfigureAwait(false);
             await EnsureGameClosedAsync(game.PlayniteId,ct).ConfigureAwait(false);
             state=RestoreState.GameClosedVerified;await AuditAsync(game.PlayniteId,state,request,ct).ConfigureAwait(false);
 
             var before=await _ludusavi.ListBackupsAsync(new[]{match},ct).ConfigureAwait(false);
             var beforeIds=before.Success&&before.Json.HasValue?LudusaviResultParser.ParseBackupList(before.Json.Value,game.PlayniteId,match).Select(x=>x.BackupId).ToHashSet(StringComparer.OrdinalIgnoreCase):new HashSet<string>();
+            report.Stage="保护备份";progress.SetRestoreReport(report);
             await progress.ReportAsync(15,"正在创建 PreRestore 安全快照").ConfigureAwait(false);
             var pre=await _ludusavi.BackupAsync(new[]{match},true,false,ct).ConfigureAwait(false);
             if(!pre.Success||!pre.Json.HasValue||LudusaviResultParser.SomeGamesFailed(pre.Json.Value))
@@ -106,14 +122,17 @@ public sealed class RestoreOrchestrator
                     ex);
             }
             state=RestoreState.PreRestoreBackupCreated;await AuditAsync(game.PlayniteId,state,new{request,preVersion.BackupId},ct).ConfigureAwait(false);
+            report.PreRestoreCreated=true;report.PreRestoreBackupId=preVersion.BackupId;report.Stage="目标预览";progress.SetRestoreReport(report);
 
             await progress.ReportAsync(40,"正在预览目标版本").ConfigureAwait(false);
             var preview=await RestoreTargetAsync(targetBackupPath,match,request.BackupId,true,ct).ConfigureAwait(false);
             if(!preview.Success||!preview.Json.HasValue||LudusaviResultParser.SomeGamesFailed(preview.Json.Value)) throw new InvalidOperationException("Restore preview failed; live files were not changed.");
 
+            report.Stage="传输协调";progress.SetRestoreReport(report);
             await progress.ReportAsync(55,"正在等待现有云端传输安全结束").ConfigureAwait(false);
             using var cloudPause=await _cloudTransfers.PauseForRestoreAsync(ct).ConfigureAwait(false);
             state=RestoreState.CloudJobsPaused;await AuditAsync(game.PlayniteId,state,request,ct).ConfigureAwait(false);
+            report.Stage="写入目标";progress.SetRestoreReport(report);
             await progress.ReportAsync(60,"正在恢复指定版本").ConfigureAwait(false);
             try
             {
@@ -124,6 +143,7 @@ public sealed class RestoreOrchestrator
                 if(!restored.Success||!restored.Json.HasValue||LudusaviResultParser.SomeGamesFailed(restored.Json.Value))
                     throw new WorkerOperationException("RESTORE_WRITE_FAILED","恢复未完整写入目标存档。",restored.ErrorMessage);
                 state=RestoreState.RestoreExecuted;await AuditAsync(game.PlayniteId,state,request,ct).ConfigureAwait(false);
+                report.Stage="恢复后校验";progress.SetRestoreReport(report);
                 await progress.ReportAsync(88,"正在执行恢复后校验").ConfigureAwait(false);
                 var post=await RestoreTargetAsync(targetBackupPath,match,request.BackupId,true,ct).ConfigureAwait(false);
                 if(!post.Success||!post.Json.HasValue||LudusaviResultParser.SomeGamesFailed(post.Json.Value))
@@ -142,10 +162,12 @@ public sealed class RestoreOrchestrator
                     if(!rollback.Success||!rollback.Json.HasValue||LudusaviResultParser.SomeGamesFailed(rollback.Json.Value))
                     {
                         state=RestoreState.ManualInterventionRequired;
+                        report.Stage="回滚";report.OutcomeKind="ManualIntervention";report.RequiresManualIntervention=true;report.FailureCode="RESTORE_ROLLBACK_FAILED";progress.SetRestoreReport(report);
                         await AuditAsync(game.PlayniteId,state,new{request,preVersion.BackupId,error=restoreError.Message,rollback=rollback.ErrorMessage},CancellationToken.None).ConfigureAwait(false);
                         throw new WorkerOperationException("RESTORE_ROLLBACK_FAILED","恢复失败，自动回滚也失败，需要人工检查存档目录。",rollback.ErrorMessage,restoreError);
                     }
                     state=RestoreState.RolledBack;
+                    report.Stage="回滚";report.OutcomeKind="RolledBack";report.WasRolledBack=true;report.FailureCode="RESTORE_FAILED_ROLLED_BACK";progress.SetRestoreReport(report);
                     await AuditAsync(game.PlayniteId,state,new{request,preVersion.BackupId,error=restoreError.Message},CancellationToken.None).ConfigureAwait(false);
                     throw new WorkerOperationException("RESTORE_FAILED_ROLLED_BACK","恢复未完成，已自动恢复到操作前的 PreRestore 快照。",restoreError.Message,restoreError);
                 }
@@ -156,11 +178,12 @@ public sealed class RestoreOrchestrator
                 catch(Exception rollbackError)
                 {
                     state=RestoreState.ManualInterventionRequired;
+                    report.Stage="回滚";report.OutcomeKind="ManualIntervention";report.RequiresManualIntervention=true;report.FailureCode="RESTORE_ROLLBACK_FAILED";progress.SetRestoreReport(report);
                     await AuditAsync(game.PlayniteId,state,new{request,preVersion.BackupId,error=restoreError.Message,rollback=rollbackError.Message},CancellationToken.None).ConfigureAwait(false);
                     throw new WorkerOperationException("RESTORE_ROLLBACK_FAILED","恢复失败，自动回滚也发生异常，需要人工检查存档目录。",rollbackError.Message,restoreError);
                 }
             }
-            state=RestoreState.Completed;await AuditAsync(game.PlayniteId,state,new{request,preVersion.BackupId},ct).ConfigureAwait(false);
+            state=RestoreState.Completed;report.Stage="已完成";report.OutcomeKind="Completed";report.FailureCode=string.Empty;progress.SetRestoreReport(report);await AuditAsync(game.PlayniteId,state,new{request,preVersion.BackupId},ct).ConfigureAwait(false);
             await progress.ReportAsync(100,"安全恢复完成；执行前保护快照已创建并锁定").ConfigureAwait(false);
         },token, requestId: request.RequestId).ConfigureAwait(false);
     }

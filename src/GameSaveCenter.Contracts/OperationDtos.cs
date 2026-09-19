@@ -158,6 +158,89 @@ namespace GameSaveCenter.Contracts
         public string UserComment { get; set; } = string.Empty;
     }
 
+    /// <summary>Durable, credential-free summary of one restore execution.</summary>
+    public sealed class RestoreReportDto
+    {
+        public string PlayniteId { get; set; } = string.Empty;
+        public string GameName { get; set; } = string.Empty;
+        public string BackupId { get; set; } = string.Empty;
+        public int FileCount { get; set; }
+        public long TotalBytes { get; set; }
+        public string PreRestoreBackupId { get; set; } = string.Empty;
+        public bool PreRestoreCreated { get; set; }
+        public string Stage { get; set; } = string.Empty;
+        public string OutcomeKind { get; set; } = "Running";
+        public string FailureCode { get; set; } = string.Empty;
+        public bool WasRolledBack { get; set; }
+        public bool RequiresManualIntervention { get; set; }
+        public string TaskId { get; set; } = string.Empty;
+
+        public string FileScopeDisplay => FileCount > 0 || TotalBytes > 0
+            ? $"目标清单：{FileCount} 个文件 · {FormatBytes(TotalBytes)}"
+            : "目标文件范围：由执行前预览确认，未返回可计数清单";
+
+        public string ProtectionDisplay => PreRestoreCreated
+            ? $"保护备份：已创建并锁定 {PreRestoreBackupId}"
+            : "保护备份：尚未确认创建";
+
+        public string OutcomeDisplay => OutcomeKind switch
+        {
+            "Completed" => "全部完成",
+            "RolledBack" => "未完成，已回滚到保护快照",
+            "ManualIntervention" => "未完成，需人工检查",
+            "Cancelled" => "已取消",
+            "Failed" => "未完成",
+            _ => "执行中"
+        };
+
+        public string FailureDisplay => string.IsNullOrWhiteSpace(FailureCode)
+            ? string.IsNullOrWhiteSpace(Stage) ? "无失败阶段" : $"阶段：{Stage}"
+            : $"阶段：{Stage} · 错误码：{FailureCode}";
+
+        public RestoreReportDto Clone() => new RestoreReportDto
+        {
+            PlayniteId = PlayniteId,
+            GameName = GameName,
+            BackupId = BackupId,
+            FileCount = FileCount,
+            TotalBytes = TotalBytes,
+            PreRestoreBackupId = PreRestoreBackupId,
+            PreRestoreCreated = PreRestoreCreated,
+            Stage = Stage,
+            OutcomeKind = OutcomeKind,
+            FailureCode = FailureCode,
+            WasRolledBack = WasRolledBack,
+            RequiresManualIntervention = RequiresManualIntervention,
+            TaskId = TaskId
+        };
+
+        public string ToRedactedText()
+        {
+            var lines = new List<string>
+            {
+                $"恢复结果：{OutcomeDisplay}",
+                $"游戏：{GameName}",
+                $"游戏 ID：{PlayniteId}",
+                $"目标版本：{BackupId}",
+                FileScopeDisplay,
+                ProtectionDisplay,
+                $"失败阶段：{FailureDisplay}",
+                $"任务 ID：{TaskId}"
+            };
+            if (WasRolledBack) lines.Add("回滚：已执行");
+            if (RequiresManualIntervention) lines.Add("人工介入：需要检查当前存档目录");
+            return string.Join("\r\n", lines);
+        }
+
+        private static string FormatBytes(long bytes)
+        {
+            if (bytes < 1024) return $"{bytes} B";
+            if (bytes < 1024L * 1024) return $"{bytes / 1024d:0.##} KiB";
+            if (bytes < 1024L * 1024 * 1024) return $"{bytes / 1024d / 1024d:0.##} MiB";
+            return $"{bytes / 1024d / 1024d / 1024d:0.##} GiB";
+        }
+    }
+
     /// <summary>Request to validate one indexed backup without touching live save files.</summary>
     public sealed class RestoreReadinessRequestDto
     {
@@ -196,6 +279,8 @@ namespace GameSaveCenter.Contracts
         public string ErrorCode { get; set; } = string.Empty;
         public string ErrorMessage { get; set; } = string.Empty;
         public BackupResultDto? BackupResult { get; set; }
+        public RestoreReportDto? RestoreReport { get; set; }
+        public bool HasRestoreReport => RestoreReport != null;
         public DateTime CreatedLocal => CreatedUtc.ToLocalTime();
         public int ProgressValue => Math.Max(0, Math.Min(100, ProgressPercent));
         public string ProgressDisplay => ProgressPercent < 0 || (State == TaskState.Queued && ProgressPercent == 0)
