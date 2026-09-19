@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-20
 
+## 2026-09-20 R15-03 任务详情时间线（代码已提交，隔离验证完成；真实宿主待验）
+
+- `fe0c05a9` 先复用现有任务变更 DTO、协调器、Worker 广播和 Task Center；增加 Worker 观察到的 `OccurredUtc`，广播 clone 同步阶段与取消字段。`TaskTimelineBuilder` 只整理已知创建/开始/阶段/取消/结束记录，按 UTC 和序号稳定排序，同时显示本地时间与 UTC。
+- 缺少事件或时间时显示“时间未知”，没有事件关联依据不猜测重试。Dashboard 运行期事件窗口最多 64 条/任务、200 个任务；详情卡有限高度 220 DIP，继续使用现有滚动、选框、命令/绑定、取消/错误/恢复保护和 net462 路径。
+- `validate-source.py`、XAML `24/24`、diff check、Worker Release 隔离定向 `11/11`、Playnite Release `net462` 定向 `11/11` 已通过；Playnite 构建仅有既有 `MediaCenterView.xaml.cs:664` 两条 nullable warning；WPF 静态检查 `0/28/162`。
+- 未验真实 Worker 重启后的持久时间线、完整 solution/RenderHarness、真实 Playnite/最终呈现、DPI/UIA/IME、ETW 或宿主性能；只用合成/fake/隔离数据，Demo 原目录不可用，沿用恢复生产基线；main 用户改动与 `src.zip` 未碰、未合并。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R15-03-TASK-TIMELINE-20260920.md`。下一项：`R15-04 重复通知归并`，先查现有通知、会话摘要和失败历史入口。
+
 ## 2026-09-20 R15-02 取消过程展示（代码已提交，隔离验证完成；真实宿主待验）
 
 - `9c8241fb` 复用现有 `TaskCoordinator`、取消 IPC、任务 DTO、SQLite 查询和 Task Center；共享 `TaskCancellationStates` 区分可取消、正在取消、安全收尾、已取消和无法中断的已结束任务。运行时闸门保证连点取消只发一次令牌取消，成功/取消竞争按已接受取消收敛为 `Cancelled`，取消后真实失败为 `NotInterruptible`，终态不保留取消中状态。

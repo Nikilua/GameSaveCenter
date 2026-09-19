@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R15-03 任务详情时间线
+
+- 在 `fe0c05a9` 中先核对并复用 `TaskChangeEventDto`、`TaskCoordinator`、Worker 广播和 Task Center；新增 `OccurredUtc`，没有另建历史服务，也没有把任务刷新快照冒充重试记录。
+- `TaskTimelineBuilder` 只整理已知创建、开始、阶段、取消和结束记录，按 UTC/序号稳定排序并显示本地时间与 UTC；缺失事件/时间显示“时间未知”，无关联依据不生成重试条目。Dashboard 事件窗口最多 64 条/任务、200 个任务，详情卡 `MaxHeight=220`，现有滚动、选框、命令绑定、取消/错误/恢复保护和 net462 保持。
+- 验证：`validate-source.py`、XAML `24/24`、diff check；Worker Release 隔离定向 `11/11`；Playnite Release `net462` 构建 0 错误、R06 取消回归 + R15-01/R15-02/R15-03 `11/11`；WPF 静态检查 `0/28/162`。Playnite 的 `MediaCenterView.xaml.cs:664` 2 条 nullable warning 为既有告警。
+- 四个本批隔离输出目录已清理。仅用合成 DTO、fake/内存事件和隔离构建，未写真实存档、媒体、云端或诊断；Demo 原目录不可用，沿用恢复生产基线；未宣称完整 solution/RenderHarness/真实宿主、重启持久时间线、最终呈现、DPI/UIA/IME、ETW 或性能通过；main 用户改动和 `src.zip` 未碰、未合并。
+- 证据：[R15-03 任务详情时间线](../design/reviews/ui-finesse-round3-20260915/evidence/R15-03-TASK-TIMELINE-20260920.md)。下一可执行任务：`R15-04 重复通知归并`，先查现有任务通知、会话摘要和失败历史入口，并补重复事件不刷屏/重要失败不静音的负例。
+
 ## 2026-09-20 R15-02 取消过程展示
 
 - 在 `9c8241fb` 中先核对并复用现有 TaskCoordinator、取消 IPC、任务 DTO、SQLite 查询和 Task Center；增加持久化取消阶段与详情状态卡。运行时闸门保证连点取消只调用一次令牌取消，`Requested → Finalizing → Cancelled` 以及取消后失败/晚到请求均有稳定终态。

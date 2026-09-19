@@ -128,7 +128,7 @@
 | R14-08 | 来源规则试运行 | 已实现，待环境验证 | 89141528 | `validate-source.py`、XAML `24/24`、`git diff --check`；Worker Release 隔离构建 `0 warning / 0 error`，来源预览行为 `1/1`；Playnite Release `net462` 与 R14-08 契约 `1/1`（2 条既有 nullable warning） | 复用现有来源 DTO、媒体扩展名和文件模式匹配；样本显示命中/排除、大小、路径和原因；试运行只读，不保存规则、移动文件或写媒体记录；列表 `MaxHeight=240`、Recycling、有限 viewport | Worker 时间预算 100–5000ms、扫描预算 1–5000、样本预算 1–200，并保留取消语义；未验真实来源权限/超大目录、真实 Playnite/RenderHarness/最终呈现、DPI/UIA/IME/presented frame/ETW/宿主性能；Demo 原目录不可用，沿用恢复生产基线 | [R14-08 来源规则试运行](evidence/R14-08-SOURCE-RULE-PREVIEW-20260920.md)；下一项 `R15-01 任务阶段可读`，真实宿主复跑仍待验 |
 | R15-01 | 任务阶段可读 | 已实现，待环境验证 | 4e7ac33a | `validate-source.py`；XAML `24/24`；`git diff --check`；Worker Release 隔离定向测试 `12/12`；Playnite Release `net462` 定向测试 `2/2` | 复用已有 TaskCoordinator/任务事件；新增共享阶段解析和 `StageMessage`，备份、下载、校验、恢复、清理等已有事件显示可读阶段；未知进度显示 `—`；终态错误与最后阶段分离；SQLite 迁移保留旧库读取 | 未验真实 Playnite/RenderHarness/最终呈现、各类真实宿主阶段事件全覆盖、DPI/UIA/IME、presented frame、ETW 或宿主性能；Playnite 构建保留 `MediaCenterView.xaml.cs:664` 的 2 条既有 nullable warning；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并 | [R15-01 任务阶段可读](evidence/R15-01-TASK-STAGES-20260920.md)；下一项 `R15-02 取消过程展示` |
 | R15-02 | 取消过程展示 | 已实现，待环境验证 | 9c8241fb | `validate-source.py`、XAML `24/24`、`git diff --check`；Worker Release 隔离项目定向测试 `14/14`；Playnite Release `net462` 定向测试 `8/8` | 复用现有 TaskCoordinator、取消 IPC、TaskStatusDto 和 Task Center；新增持久化取消阶段，重复取消只发一次令牌，`Requested → Finalizing → Cancelled` 收敛；成功/取消竞争和取消后失败分别落到稳定终态；SQLite 旧库通过迁移默认空值兼容 | 完整 solution 脚本在 linked worktree 生成 WPF 临时项目时被 `Access denied` 阻断，未写成全 solution 通过；Worker/Playnite 项目分别实际构建。未验真实 Playnite/RenderHarness/最终呈现、DPI/UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并 | [R15-02 取消过程展示](evidence/R15-02-TASK-CANCELLATION-20260920.md)；下一项 `R15-03 任务详情时间线`，先核对任务事件缓存、阶段字段和详情滚动容器 |
-| R15-03 | 任务详情时间线 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
+| R15-03 | 任务详情时间线 | 已实现，待环境验证 | fe0c05a9 | `validate-source.py`、XAML `24/24`、`git diff --check`；Worker Release 隔离项目定向测试 `11/11`；Playnite Release `net462` 定向测试 `11/11` | 复用现有 TaskChangeEventDto/TaskCoordinator/TaskEventBroadcaster/Task Center；新增真实 OccurredUtc、UTC/本地双显示和稳定排序；事件窗口最多 64 条/任务、200 个任务；缺失事件/时间显示未知，不推断重试；广播 clone 保留阶段与取消状态 | 本批按 Worker/Playnite 项目级隔离构建，未宣称完整 solution/RenderHarness/真实宿主；Playnite 构建保留既有 MediaCenterView.xaml.cs:664 2 条 nullable warning；未验重启后持久时间线、真实呈现/DPI/UIA/IME/ETW/性能；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 src.zip 未碰、未合并 | [R15-03 任务详情时间线](evidence/R15-03-TASK-TIMELINE-20260920.md)；下一项 R15-04 重复通知归并，先核对现有通知/会话摘要和失败历史入口 |
 | R15-04 | 重复通知归并 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R15-05 | 任务来源定位 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R15-06 | 耗时与吞吐 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
@@ -408,6 +408,15 @@
 - `validate-source.py`、XAML `24/24`、diff check 通过；Worker Release 隔离项目定向测试 `14/14`；Playnite Release `net462` 构建 0 错误、定向测试 `8/8`。Playnite 构建保留 `MediaCenterView.xaml.cs:664` 的 2 条既有 nullable warning；WPF 静态检查为 `0/28/162`。
 - 完整 solution 脚本在 linked worktree 生成 WPF 临时项目时遇到 `Access denied`，不记为完整 solution 通过；Worker 与 Playnite 项目已分别实际构建，四个本批隔离输出目录已清理。只用合成/fake/隔离目录，未写真实存档、媒体、云端或诊断；Demo 原目录不可用，沿用恢复生产基线。main 用户改动和 `src.zip` 未碰、未合并。证据见 [R15-02 取消过程展示](evidence/R15-02-TASK-CANCELLATION-20260920.md)。
 - 下一可执行小批量：`R15-03 任务详情时间线`，先核对已有任务事件缓存、阶段字段和详情滚动容器；真实 Playnite/RenderHarness、最终呈现、DPI/UIA/IME、presented frame、ETW 和宿主性能仍待验。
+
+## 2026-09-20 Round3 R15-03 任务详情时间线
+
+- `fe0c05a9` 先核对现有 `TaskChangeEventDto`、`TaskCoordinator`、Worker 事件广播和 Task Center 详情，复用已有任务阶段/取消字段；没有另建历史服务，也没有把刷新快照当作重试记录。
+- 变更事件增加 Worker 观察到的 `OccurredUtc`；Task Center 使用 `TaskTimelineBuilder` 整理已知创建、开始、阶段、取消和结束事件，按 UTC 再按序号稳定排序，同时显示本地时间与 UTC。缺少事件或时间显示“时间未知”，没有可关联的重试记录就不生成重试条目。
+- Dashboard 只保留最多 64 条/任务、最多 200 个任务的运行期事件窗口；详情时间线卡为有限高度 `220 DIP`，沿用现有外层滚动条、选框、命令/绑定、取消/错误/恢复保护和 net462 路径。广播 clone 同步阶段和取消字段，避免实时事件丢失前两项真实状态。
+- `validate-source.py`、XAML `24/24`、diff check 通过；Worker Release 隔离项目定向测试 `11/11`；Playnite Release `net462` 构建 0 错误、R06 取消回归 + R15-01/R15-02/R15-03 定向测试 `11/11`。Playnite 构建保留 `MediaCenterView.xaml.cs:664` 的 2 条既有 nullable warning；WPF 静态检查 `0/28/162`。
+- 本批隔离输出目录已清理。只用合成 DTO、fake/内存事件和隔离构建，未写真实存档、媒体、云端或诊断；Demo 原目录不可用，沿用恢复生产基线；未宣称完整 solution、RenderHarness、真实 Playnite、重启后持久时间线、最终呈现、DPI/UIA/IME、ETW 或宿主性能通过。main 用户改动和 `src.zip` 未碰、未合并。证据见 [R15-03 任务详情时间线](evidence/R15-03-TASK-TIMELINE-20260920.md)。
+- 下一可执行小批量：`R15-04 重复通知归并`，先核对现有任务通知、会话摘要和失败历史入口；保持重要新失败可见并为重复进度事件补屏幕通知负例。
 
 ## 2026-09-19 R00/R01 当前提交复核
 

@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R15-03 任务详情时间线（代码已提交，隔离验证完成；真实宿主待验）
+
+- `fe0c05a9` 复用现有 `TaskChangeEventDto`、`TaskCoordinator`、Worker 事件广播和 `TaskCenterView`；变更事件增加 Worker 观察到的 `OccurredUtc`，广播 clone 保留 `StageMessage` 与 `CancellationState`。
+- `TaskTimelineBuilder` 仅整理已知创建、开始、阶段、取消和结束事件，按 UTC/序号稳定排序并同时显示本地时间与 UTC；缺少事件或时间显示“时间未知”，没有关联依据不推断重试。Dashboard 运行期事件窗口最多 64 条/任务、200 个任务，详情时间线为有限高度卡片。
+- 已验证：`validate-source.py`、XAML `24/24`、`git diff --check`；Worker Release 隔离定向 `11/11`；Playnite Release `net462` 构建 0 错误、R06 取消回归 + R15-01/R15-02/R15-03 定向 `11/11`；WPF 静态检查 `0/28/162`。Playnite 保留 `MediaCenterView.xaml.cs:664` 的 2 条既有 nullable warning。
+- 未验真实 Worker 重启后历史事件的持久化时间线；本批未宣称完整 solution、RenderHarness、真实 Playnite/最终呈现、DPI/UIA/IME、ETW 或宿主性能。只用合成/fake/隔离数据，Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并。
+- 证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R15-03-TASK-TIMELINE-20260920.md`。下一可执行任务：`R15-04 重复通知归并`，先核对现有通知、会话摘要和失败历史入口。
+
 ## 当前第三轮 R15-02 取消过程展示（代码已提交，隔离验证完成；真实宿主待验）
 
 - `9c8241fb` 先复用现有 `TaskCoordinator`、取消 IPC、任务 DTO、SQLite 查询和 `TaskCenterView`，新增共享取消阶段 `Requested`、`Finalizing`、`Cancelled`、`NotInterruptible`。任务运行时闸门保证连点取消只调用一次令牌取消；成功/取消竞争、取消后失败和终态晚到取消分别收敛，不永久停在取消中。
