@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R15-07 失败结果复制
+
+- 在 `37dd4a03` 中复用已有 `CopyTaskErrorCommand`、错误字段、恢复报告脱敏文本和剪贴板入口；新增 Contracts 共享 `ClipboardTextSanitizer`、240 字符以内 `FailureSummary`、安全 `SafeDetailMessage`、完整复制格式化器和最多 4 次瞬时失败重试。完整复制仍保留错误摘要、错误码、详情和任务 ID，但返回前统一脱敏。
+- Task Center 失败卡显示脱敏短摘要和错误码；技术详情默认收起，使用 `GscWpfUiTextBox` 只读、可选择、有限高 180 的文本框。未改动当前选框、滚动条、命令/Binding、取消/错误/恢复语义或 net462 兼容。
+- 验证：Playnite R15TaskFailureCopy `6/6`；R06/R12/R15 相邻回归 `14/14`；完整外部 Release solution `7 warnings/0 errors`（均为离线 NuGet `NU1900`）；定向 Playnite 保留 `MediaCenterView.xaml.cs:664` 的 2 条既有 warning；source/XAML/diff、WPF `0/28/162` 通过。R06 旧复制夹具按当前任务表补回“阶段”列后通过；未重复跑 Worker 全量，R15-06 的既有单项失败仍保留。
+- 未验真实 Playnite/package-host、RenderHarness、最终呈现、DPI/跨屏、UIA/IME、ETW 和宿主性能；linked `obj` 仍 `Access denied`，使用外部源码副本。只用合成 DTO、fake 剪贴板和隔离 STA WPF，Demo 原目录不可用；未写真实存档/媒体/云端/诊断/系统剪贴板。证据：[R15-07 失败结果复制](../design/reviews/ui-finesse-round3-20260915/evidence/R15-07-TASK-FAILURE-COPY-20260920.md)。下一项：`R15-08 清理历史范围`。
+
 ## 2026-09-20 R15-06 耗时与吞吐
 
 - 在 `6f65638e` 中先核对现有 `StartedUtc/FinishedUtc`、TaskProgress 百分比和各操作总量；没有把阶段百分比误当吞吐。新增可选工作量采样与平滑速率/ETA，只接入整库游戏数、媒体专属候选文件数和已知下载总字节。

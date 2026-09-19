@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R15-07 失败结果复制（2026-09-20）
+
+- `37dd4a03` 先复用已有 `CopyTaskErrorCommand`、任务错误字段、恢复报告脱敏文本和剪贴板入口；新增 Contracts 共享 `ClipboardTextSanitizer`、`FailureSummary`、`SafeDetailMessage`、完整复制格式化器和最多 4 次 COM/`InvalidOperationException` 瞬时失败重试。完整 payload 仍含 `ErrorMessage`、`ErrorCode`、`DetailMessage` 和任务 ID，但 formatter 返回前已脱敏。
+- Task Center 失败卡现在显示 240 字符以内的脱敏首行摘要与错误码；技术详情默认收起，使用 `GscWpfUiTextBox` 只读、可选择、`MaxHeight=180` 的详情控件。复制失败不会改动当前任务选择，现有选框、滚动条、命令/Binding、取消/错误/恢复保护和 net462 保留。
+- 行为验证：R15TaskFailureCopy `6/6`；R06/R12/R15 相邻回归 `14/14`；完整外部 Release solution `7 warnings/0 errors`（均为离线 NuGet `NU1900`）；Playnite 定向构建保留 `MediaCenterView.xaml.cs:664` 2 条既有 warning；source/XAML/diff、WPF `0/28/162` 通过。R06 旧复制夹具按当前任务表补回“阶段”列后通过。
+- 未验真实 Playnite/package-host、RenderHarness、最终呈现、物理 DPI/跨屏、UIA/IME、ETW、宿主性能；linked `obj` 仍 `Access denied`，本批用外部源码副本。只用合成 DTO、fake 剪贴板和隔离 STA WPF，Demo 原目录不可用，未写真实存档/媒体/云端/诊断/系统剪贴板；main 用户改动和 `src.zip` 未碰、未合并。证据：`R15-07-TASK-FAILURE-COPY-20260920.md`。
+- 下一项：`R15-08 清理历史范围`，先核对已有清理命令、运行中任务保护、恢复账本和日期/状态预览边界。
+
 ## 第三轮 R15-06 耗时与吞吐（2026-09-20）
 
 - `6f65638e` 在现有 `TaskProgress`/`TaskStatusDto`/SQLite 任务链上增加可选工作量采样。只有明确总量的整库游戏数、媒体专属候选文件数和已知下载字节接入；未知总量、远端 rclone 和恢复写入不显示推算速率或 ETA。

@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R15-07 失败结果复制（代码已提交，隔离验证完成；真实宿主待验）
+
+- `37dd4a03` 复用已有 `CopyTaskErrorCommand`、任务错误字段、恢复报告脱敏文本和剪贴板重试入口；新增 Contracts 共享 `ClipboardTextSanitizer`、短摘要 `FailureSummary`、安全详情 `SafeDetailMessage`、可测试的复制格式化器和最多 4 次 COM/`InvalidOperationException` 瞬时失败重试。完整复制继续保留 `ErrorMessage`、`ErrorCode`、`DetailMessage` 和任务 ID。
+- Task Center 失败卡先显示脱敏首行摘要与错误码；技术详情默认收起，使用生产 `GscWpfUiTextBox` 的只读可选择有限高控件，避免长堆栈撑开任务页。游戏选框、滚动条、命令绑定、取消/错误/恢复保护和 net462 保持。
+- `R15TaskFailureCopyTests` `6/6`；R06/R12/R15 相邻回归 `14/14`；外部源码副本完整 Release solution `7 warnings/0 errors`（均为离线 NuGet `NU1900`）；Playnite `net462` 定向构建保留 `MediaCenterView.xaml.cs:664` 的 2 条既有 warning；source/XAML/diff 和 WPF 静态 `0/28/162` 通过。
+- 未验真实 Playnite/package-host、RenderHarness、最终呈现、DPI/UIA/IME、presented frame、ETW 或宿主性能；linked `obj` 仍 `Access denied`，使用外部源码副本。只用合成 DTO、fake 剪贴板 setter、隔离 STA WPF/构建，Demo 原目录不可用；main 用户改动和 `src.zip` 未碰、未合并。R15-06 的 Worker 全量 `342/1 skipped/1 failed/344` 既有失败未改写。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R15-07-TASK-FAILURE-COPY-20260920.md`。下一可执行任务：`R15-08 清理历史范围`，先核对清理命令、运行中任务保护、恢复账本和日期/状态预览。
+
 ## 当前第三轮 R15-06 耗时与吞吐（代码已提交，隔离验证完成；真实宿主待验）
 
 - `6f65638e` 复用现有 `TaskProgress`、`TaskStatusDto`、SQLite 任务查询和 Task Center 详情，新增可选可靠工作量采样。明确总量的整库游戏数、媒体专属候选文件数和已知下载总字节才展示速率/ETA；普通阶段、未知总量和恢复/远端无实际进度的任务不推算。
