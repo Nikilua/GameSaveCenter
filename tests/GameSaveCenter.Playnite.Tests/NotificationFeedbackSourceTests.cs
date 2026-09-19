@@ -17,6 +17,10 @@ public sealed class NotificationFeedbackSourceTests
         Assert.Contains("string? detailMessage = null", plugin);
         Assert.Contains("DetailMessage", plugin);
         Assert.Contains("BuildTaskNotificationDetail", plugin);
+        Assert.Contains("TaskNotificationDeduper", plugin);
+        Assert.Contains("ShowTaskNotificationCore", plugin);
+        Assert.Contains("emittedSessionNotificationIds", plugin);
+        Assert.Contains("shouldShowNewImportantFailure", plugin);
         Assert.Contains("UiNotificationKind.Warning", plugin);
         Assert.Contains("public void ShowWarning", plugin);
         Assert.Contains("e.DetailMessage", dashboard);

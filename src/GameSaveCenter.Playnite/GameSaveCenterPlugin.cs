@@ -40,7 +40,11 @@ namespace GameSaveCenter.Playnite
         private readonly SemaphoreSlim synchronizationGate = new SemaphoreSlim(1, 1);
         private readonly object synchronizationRequestGate = new object();
         private readonly SemaphoreSlim taskNotificationPollGate = new SemaphoreSlim(1, 1);
+        // Keep the task-ID ledger for the existing source gate and historical monitor
+        // semantics; outcome evidence below is the finer-grained duplicate policy.
         private readonly BoundedTaskIdSet notifiedTaskIds = new BoundedTaskIdSet();
+        private readonly TaskNotificationDeduper taskNotificationDeduper = new TaskNotificationDeduper();
+        private readonly BoundedTaskIdSet emittedSessionNotificationIds = new BoundedTaskIdSet();
         private readonly ConcurrentDictionary<string, SessionNotificationAccumulator> sessionNotifications = new ConcurrentDictionary<string, SessionNotificationAccumulator>(StringComparer.OrdinalIgnoreCase);
         private readonly ConcurrentDictionary<string, ConcurrentDictionary<string, TaskStatusDto>> pendingSessionTasks = new ConcurrentDictionary<string, ConcurrentDictionary<string, TaskStatusDto>>(StringComparer.OrdinalIgnoreCase);
         private Timer? taskNotificationTimer;
@@ -943,8 +947,13 @@ namespace GameSaveCenter.Playnite
         public void ShowTaskNotification(TaskStatusDto task)
         {
             if (!Settings.EnableTaskNotifications || task == null) return;
-            if (task.State != TaskState.Succeeded && task.State != TaskState.Failed && task.State != TaskState.Cancelled) return;
-            if (!notifiedTaskIds.TryAdd(task.TaskId)) return;
+            if (!taskNotificationDeduper.TryClaim(task)) return;
+            notifiedTaskIds.TryAdd(task.TaskId);
+            ShowTaskNotificationCore(task);
+        }
+
+        private void ShowTaskNotificationCore(TaskStatusDto task)
+        {
             var game = string.IsNullOrWhiteSpace(task.GameName) ? "后台任务" : task.GameName;
             var text = task.State == TaskState.Failed
                 ? $"{game} · {task.TaskTypeDisplay} 失败：{LimitNotificationText(task.DetailMessage)}"
@@ -1093,9 +1102,9 @@ namespace GameSaveCenter.Playnite
                         var terminal = task.State == TaskState.Succeeded || task.State == TaskState.Failed || task.State == TaskState.Cancelled;
                         if (!terminal) continue;
                         if (task.CreatedUtc < taskNotificationMonitorStartedUtc.AddSeconds(-5))
-                            notifiedTaskIds.TryAdd(task.TaskId);
+                            taskNotificationDeduper.TryClaim(task);
                         else if (Settings.EnableTaskNotifications) HandleTerminalTaskNotification(task);
-                        else notifiedTaskIds.TryAdd(task.TaskId);
+                        else taskNotificationDeduper.TryClaim(task);
                     }
                     taskNotificationSnapshotInitialized = true;
                 }
@@ -1115,7 +1124,7 @@ namespace GameSaveCenter.Playnite
                     if (terminal)
                     {
                         if (Settings.EnableTaskNotifications) HandleTerminalTaskNotification(task);
-                        else notifiedTaskIds.TryAdd(task.TaskId);
+                        else taskNotificationDeduper.TryClaim(task);
                     }
                     lastTaskNotificationSequence=Math.Max(lastTaskNotificationSequence,change.Sequence);
                 }
@@ -1152,23 +1161,30 @@ namespace GameSaveCenter.Playnite
 
         private void HandleTerminalTaskNotification(TaskStatusDto task)
         {
-            if (notifiedTaskIds.Contains(task.TaskId)) return;
+            // Progress changes never enter this method: only a terminal outcome can claim a
+            // screen notification. Repeated terminal delivery with the same evidence is also
+            // ignored, while a distinct later failure remains eligible.
+            if (!taskNotificationDeduper.TryClaim(task)) return;
             if (!string.IsNullOrWhiteSpace(task.SessionId))
             {
+                var sessionSummaryWasEmitted = emittedSessionNotificationIds.Contains(task.SessionId);
                 var session = sessionNotifications.GetOrAdd(task.SessionId, _ => new SessionNotificationAccumulator(task.GameName));
                 session.Add(task);
-                if (Settings.NotificationLevel == NotificationLevel.Verbose
-                    && NotificationLevelPolicy.ShouldEmitTask(Settings.NotificationLevel, task))
-                    ShowTaskNotification(task);
+                var importantFailure = task.State == TaskState.Failed || task.State == TaskState.Cancelled;
+                var shouldShowDetailedTask = Settings.NotificationLevel == NotificationLevel.Verbose
+                    && NotificationLevelPolicy.ShouldEmitTask(Settings.NotificationLevel, task);
+                var shouldShowNewImportantFailure = importantFailure
+                    && (sessionSummaryWasEmitted
+                        || Settings.NotificationLevel == NotificationLevel.ImportantOnly && !session.HasExpectedTaskCount);
+                if (shouldShowDetailedTask || shouldShowNewImportantFailure)
+                    ShowTaskNotificationCore(task);
                 if (!session.HasExpectedTaskCount)
                     pendingSessionTasks.GetOrAdd(task.SessionId, _ => new ConcurrentDictionary<string, TaskStatusDto>(StringComparer.OrdinalIgnoreCase))[task.TaskId] = task;
                 TryEmitSessionSummary(task.SessionId, session);
                 return;
             }
             if (NotificationLevelPolicy.ShouldEmitTask(Settings.NotificationLevel, task))
-                ShowTaskNotification(task);
-            else
-                notifiedTaskIds.TryAdd(task.TaskId);
+                ShowTaskNotificationCore(task);
         }
 
         private void TryEmitSessionSummary(string sessionId, SessionNotificationAccumulator session)
@@ -1176,6 +1192,7 @@ namespace GameSaveCenter.Playnite
             if (!session.IsComplete || !session.TryMarkEmitted()) return;
             sessionNotifications.TryRemove(sessionId, out _);
             pendingSessionTasks.TryRemove(sessionId, out _);
+            emittedSessionNotificationIds.TryAdd(sessionId);
             var summary = GameSaveCenter.Core.Services.GameSessionSummaryBuilder.Build(session.GameName, session.Tasks);
             if (NotificationLevelPolicy.ShouldEmitSessionSummary(Settings.NotificationLevel, summary))
             {
@@ -1184,7 +1201,7 @@ namespace GameSaveCenter.Playnite
                 if (!RaiseUiNotification("退出备份摘要", summary.Message, kind))
                     AddNotification("Session." + sessionId, summary.Message, summary.IsFailure ? NotificationType.Error : NotificationType.Info);
             }
-            foreach (var completed in session.Tasks) notifiedTaskIds.TryAdd(completed.TaskId);
+            foreach (var completed in session.Tasks) taskNotificationDeduper.TryClaim(completed);
         }
 
         private async Task ApplySettingsCoreAsync()
